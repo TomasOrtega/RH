@@ -29,21 +29,17 @@ variable {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : �
   {gp : Fin 2 → ℕ}
 
 /- English proof (translation)
-Use `letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Use `haveI := Formalism.L2.Col.rlt_topRing (F := F) (E := E)`. Establish `hfin : ∀ a, {v : HeightOneSpectrum (𝓞 F) | (gp a : 𝓞 F) ∈ v.asIdeal}.Finite` using `fun a => by`. Establish `h0 : Ideal.span {(gp a : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.cast_ne_zero.2 (hgp a)`. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`. Establish `h1 : ∀ᶠ x : UPts σ J (FiniteAdeleRing (𝓞 F) F) in nhds 1, x.1 ∈ S.U` using `S.U_open.mem_nhds S.U.one_mem`. Establish `hone : ∀ a v h, G.mat a v h (L.fr a v h) (bc (prV (E` using `E) v) (1 : UPts σ J (FiniteAdeleRing (𝓞 F) F)).1) = 1 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a v h`. Simplify using `[GLoc.mat]`. Establish `h2 : ∀ᶠ x : UPts σ J (FiniteAdeleRing (𝓞 F) F) in nhds 1, ∀ a : Fin 2, ∀ v ∈ {v : HeightOneSpectrum (𝓞 F) | (gp a : 𝓞 F) ∈ v.asIdeal}, ∀ h : (gp a : 𝓞 F) ∈ v.asIdeal, redM F v (G.mat a v h (L.fr a v h) (bc (prV (E` using `E) v) x.1)) = 1 := by`. Use `Filter.eventually_all.2 fun a => (Filter.eventually_all_finite (hfin a)).2 fun v h => ?_` and prove the remaining obligations. Establish `hc : Continuous fun x : UPts σ J (FiniteAdeleRing (𝓞 F) F) => G.mat a v h (L.fr a v h) (bc (prV (E` using `E) v) x.1) := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c0 : Continuous fun x : UPts σ J (FiniteAdeleRing (𝓞 F) F) => (x.1.val).map ((G.phi a v h).comp (prV (E` using `E) v)) := (Units.continuous_val.comp continuous_subtype_val).matrix_map (GlobalTheory.LevelCharOpen.continuous_phi_prV G a v h)`. Conclude with `((continuous_const (y := ((L.fr a v h)⁻¹).val)).matrix_mul c0).matrix_mul (continuous_const (y := (L.fr a v h).val))`. Establish `h3 : ∀ᶠ x : UPts σ J (FiniteAdeleRing (𝓞 F) F) in nhds 1, ∀ i j, Valued.v (G.mat a v h (L.fr a v h) (bc (prV (E` using `E) v) x.1) i j - (1 : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j) < 1 := by`. Use `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations. Establish `c1 : Continuous fun x : UPts σ J (FiniteAdeleRing (𝓞 F) F) => G.mat a v h (L.fr a v h) (bc (prV (E` using `E) v) x.1) i j - (1 : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j := (hc.matrix_elem i j).sub continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `ho : IsOpen {y : v.adicCompletion F | Valued.v y < 1}`. Simplify using `using Valued.isOpen_ball (v.adicCompletion F) 1`. Use `(ho.preimage c1).mem_nhds ?_` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, Set.mem_setOf_eq, hone, sub_self, map_zero]`. Conclude with `zero_lt_one`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3.mono fun x hx _ => GlobalTheory.LevelCharOpen.redM_eq_one v _ hx`. Use `filter_upwards [h1, h2] with x hx hr`. Use `⟨hx, Units.ext ?_⟩` and prove the remaining obligations. Establish `hr1 : ∀ a v h, redM F v (G.mat a v h (L.fr a v h) (bc (prV (E` using `E) v) (1 : S.U).1)) = 1 := fun a v h => GlobalTheory.LevelCharOpen.redM_eq_one v _ fun i j => by`. Use `hone a v h` as an intermediate fact.
-
-Simplify using `only [OneMemClass.coe_one] at this ⊢`. Rewrite using `[this, sub_self, map_zero]`. Conclude with `zero_lt_one`. Rewrite using `[← map_one S.chi, L.chi_eq, L.chi_eq]`. Use `Finset.prod_congr rfl fun a _ => finprod_congr fun v => finprod_congr fun h => ?_` and prove the remaining obligations.
-
-Rewrite using `[hr a v h h, hr1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_chi {S : StepLevel F E σ J T f bad} {G : GLoc F E σ gp} {a t nb skip fc : ℕ} {zl : Bool}
     (L : GLev S G a t nb skip fc zl) (hgp : ∀ a, gp a ≠ 0) :
@@ -102,15 +98,15 @@ open scoped TensorProduct Classical ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hJ` using the available equality. Use `letI := tensTopL (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Establish `hev` using `eventually_chi L fun a => (D.host.g_prime a).ne_zero`.
+Substitute using the available equality. Substitute using the available equality. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : GA D V →* GL (Fin V.rank) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)` to `(bc (toEAf D)).comp (matHom V)`. Establish `hφ : ∀ g, (φ g).1 = finM V rfl g` using `fun g => RdLaw.finGL_val V g`. Establish `hmem : ∀ g, φ g ∈ UPts (sigD D) (V.gram.reindex (finCongr rfl) (finCongr rfl)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `fun g => by`. Take `⟨x, hx⟩` from `RdVal.finM_mem V rfl _ rfl g`. Establish `e : φ g = x.1` using `Units.ext (by rw [hφ, hx])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `x.2`. Establish `hc : Continuous fun g => (⟨φ g, hmem g⟩ : UPts (sigD D) (V.gram.reindex (finCongr rfl) (finCongr rfl)) _)` using `(RdLaw.continuous_finGL V).subtype_mk _`. Use `⟨(S.chi.ker.map S.U.subtype).comap φ, Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (⟨φ 1, hmem 1⟩ : UPts (sigD D) (V.gram.reindex (finCongr rfl) (finCongr rfl)) _) = 1` using `Subtype.ext (map_one φ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht` using `hc.tendsto' 1 1 e1`. Use `(ht.eventually hev).mono ?_` and prove the remaining obligations. Introduce and unpack `g ⟨hx, h1⟩`. Conclude with `⟨⟨φ g, hx⟩, h1, rfl⟩`. Introduce and unpack `k ⟨κ', h1, e⟩ - κ hκ`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: κ = κ'` using `Subtype.ext (Units.ext (by rw [hκ, ← hφ, ← e]; rfl))`. Rewrite using `[this]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_open {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) {J : Matrix (Fin n) (Fin n) D.host.E}
     (hJ : J = V.gram.reindex (finCongr hn) (finCongr hn)) {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
@@ -145,17 +141,17 @@ theorem exists_open {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) {J : Matrix
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hJ` using the available equality. Establish `hinj : Function.Injective (incA D)` using `Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`. Establish `hm : ∀ δ : UJ (sigD D : D.host.E →+* D.host.E) (V.gram.reindex (finCongr rfl) (finCongr rfl)), bc (incA D) δ.1 ∈ HR (AF D.host.F) D.sp.cm.sig V.gram` using `fun δ => by`. Establish `hδ' : cT (sigD D : D.host.E →+* D.host.E) δ.1.1 * V.gram * δ.1.1 = V.gram` using `δ.2`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun M => M.map (incA D)) hδ'`. Simplify using `only [Matrix.map_mul] at h2`. Conclude with `h2`. Set `e : UJ (sigD D : D.host.E →+* D.host.E) (V.gram.reindex (finCongr rfl) (finCongr rfl)) → GQ V` to `fun δ => ⟨⟨bc (incA D) δ.1, hm δ⟩, Subgroup.mem_subgroupOf.2 ⟨δ.1, δ.2, rfl⟩⟩`. Establish `he : ∀ δ, finM V rfl (e δ).1 = (bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ.1).1 := fun δ => RdLaw.rat_finM V δ.1 _ rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ δ, (∃ κ : S.U, finM V rfl (e δ).1 * y.1.1 = y.1.1 * κ.1.1) ↔ δ ∈ i.range` using `fun δ => by`. Rewrite using `[hr, he]`. Generalize the expression as in `bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ.1 = x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, hκ⟩`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : x * y.1 = y.1 * κ.1` using `Units.ext hκ`. Conclude with `⟨κ.1, κ.2, (mul_inv_eq_of_eq_mul h1.symm)⟩`. Introduce and unpack `⟨κ, hκ, h1⟩`. Establish `h2 : y.1 * κ * y.1⁻¹ = x` using `h1`. Conclude with `⟨⟨κ, hκ⟩, congrArg Units.val (eq_mul_of_mul_inv_eq h2).symm⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Nat.card_eq_of_bijective (fun s : Γ => (⟨e (i s), (key _).2 ⟨s, rfl⟩⟩ : {γ : GQ V // ∃ κ : S.U, finM V rfl γ.1 * y.1.1 = y.1.1 * κ.1.1})) ⟨fun s s' h => hi ?_, ?_⟩).symm` and prove the remaining obligations. Establish `h1 : (i s).1.1.map (incA D) = (i s').1.1.map (incA D)` using `congrArg (fun z => z.1.1.1.1) h`. Conclude with `Subtype.ext (Units.ext (Matrix.map_injective hinj h1))`. Introduce and unpack `⟨γ, hγ⟩`. Take `⟨δ, hδ, e'⟩` from `Subgroup.mem_subgroupOf.1 γ.2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : e ⟨δ, hδ⟩ = γ` using `Subtype.ext (Subtype.ext e')`. Take `⟨s, hs⟩` from `(key ⟨δ, hδ⟩).1 (h1 ▸ hγ)`. Conclude with `⟨s, Subtype.ext (by simp only [hs, h1])⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_stab {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) {J : Matrix (Fin n) (Fin n) D.host.E}
     (hJ : J = V.gram.reindex (finCongr hn) (finCongr hn)) {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
@@ -201,23 +197,19 @@ theorem card_stab {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) {J : Matrix (
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hJ` using the available equality. Establish `hPD : ∀ τ, (gramAt D V τ).PosDef` using `fun τ => by`. Use `hS (tauE D τ)` as an intermediate fact. Rewrite `this` using `[hP]`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`. Use `choose h hh1 hh2 using fun a => GlobalTheory.Core.Mi.PinModel.exists_finM V rfl (yc a)`. Take `⟨vol, ν, hvol, hν, -, hsum⟩` from `GlobalTheory.T.integral_definiteQuotient_eq_classSum D θ hθ V _ rfl _ rfl T f bad S cl yc hb hS hPD μ 𝓕 hμ h𝓕 h fun a => ⟨hh1 a, hh2 a⟩`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : T2Space (GA D V) := by`. Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Apply the tactic sequence `first | exact hT.1 | exact hT.2.1 | exact hT.2.2.1 | exact hT.2.2.2.1 | exact hT.2.2.2.2.1 | exact hT.2.2.2.2.2.1 | exact hT.2.2.2.2.2.2`. Use `haveI : CompactSpace (GinfC V) := isCompact_iff_compactSpace.1 (Formalism.IndefR.Eqv.isCompact_GinfC hS fun τ => Or.inl (hP τ))`. Use `haveI : BorelSpace (GinfC V) := Subtype.borelSpace _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : ∀ τ, infM θ V rfl 1 τ = 1` using `RdLaw.infM_fin θ V 1 (one_mem _)`. Establish `hu : ∀ (k : GinfC V) τ, IsUnit (infM θ V rfl k.1 τ).det` using `fun k τ => Matrix.isUnit_det_of_right_inverse (B := infM θ V rfl k.1⁻¹ τ) (by rw [← RdLaw.infM_mul, mul_inv_cancel, hone])`. Take `⟨c, hc, havg⟩` from `GlobalTheory.ValSchur.avg_eq (G := gramC (V.gram.reindex (finCongr rfl) (finCongr rfl)) (embT D)) hPD lam ν (fun k : GinfC V => infM θ V rfl k.1) hu (fun τ => (RdLaw.continuous_infM θ hθ V τ).comp continuous_subtype_val) (fun a b τ => RdLaw.infM_mul θ V a.1 b.1 τ) (fun g hg => by`. Take `⟨k, hk, e⟩` from `(GlobalTheory.SmoothForms.RealPts.glue θ hθ V).2 g hg`. Conclude with `⟨⟨k, hk⟩, fun τ => (RdLaw.infM_rfl θ V k τ).trans (e τ)⟩) y`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨vol * c, mul_pos hvol hc, fun ip hip φ hφ ψ hψ => ?_⟩` and prove the remaining obligations. Establish `L1` using `RdLaw.rdS_laws D θ hθ V _ rfl _ rfl T f bad S cl yc hb lam φ hφ y`. Establish `L2` using `RdLaw.rdS_laws D θ hθ V _ rfl _ rfl T f bad S cl yc hb lam ψ hψ y`. Establish `hval : ∀ φ ∈ FiC S (embT D) lam yc, ∀ a, φ a ∈ ValC _ lam ∧ ∀ k : GinfC V, rdS θ V rfl S yc φ y (h a * k.1) = φ a (Frames.tr (infM θ V rfl k.1) (hu k) y)`. Introduce and unpack `_ ⟨Φ, hΦ, rfl⟩ a`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Submodule.mem_inf.1 hΦ).2 (yc a) (Set.mem_univ _), fun k => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.AdForm.rdS_val D θ hθ V _ rfl _ rfl T f bad S cl yc hb Φ (Submodule.mem_inf.1 hΦ).1 y (h a * k.1)).2.2 (yc a) _ ?_ fun τ => ?_` and prove the remaining obligations. Rewrite using `[RdLaw.finM_mul, RdLaw.finM_inf V k.1 k.2, Matrix.mul_one, hh2]`. Rewrite using `[RdLaw.infM_mul, RdLaw.infM_fin θ V _ (hh1 a), Matrix.one_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `(hsum (fun g => rdS θ V rfl S yc φ y g * star (rdS θ V rfl S yc ψ y g)) ((L1.2.2.2 hW).mul (L2.2.2.2 hW).star) (fun γ hγ x => by simp only [L1.1 γ hγ, L2.1 γ hγ]) ?_).trans ?_` and prove the remaining obligations. Use `swap`. Rewrite using `[Complex.ofReal_mul, mul_assoc, Finset.mul_sum (a := (c : ℂ))]`. Use `congrArg _ (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations. Simplify using `only [(hval φ hφ a).2, (hval ψ hψ a).2]`.
-
-Rewrite using `[havg _ (hip a).1 (hip a).2 _ (hval ψ hψ a).1 _ (hval φ hφ a).1]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `k hk ⟨κ, hκ⟩ x`. Establish `h1 : (S.chi κ : ℂ) * star (S.chi κ : ℂ) = 1`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, hχ]`.
-
-Simplify using the standard rewrite rules. Simplify using `only [L1.2.1 k hk κ hκ, L2.2.1 k hk κ hκ, star_mul']`. Take the linear combination `(rdS θ V rfl S yc φ y x * star (rdS θ V rfl S yc ψ y x)) * h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem integral_rdS {D : D7} (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) {n : ℕ} (hn : V.rank = n) {J : Matrix (Fin n) (Fin n) D.host.E}
     (hJ : J = V.gram.reindex (finCongr hn) (finCongr hn)) {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
@@ -297,15 +289,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D u F θ hθ _ vS y`. Take `⟨c, hc, H⟩` from `GlobalTheory.StepZeroNorm.integral_rdS θ hθ (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) rfl F.cls0.lev F.cls0.y F.cls0.y_bij (D.sp.X_sig 0) (D7.X_posDef D 0 (Nat.zero_le _)) F.glev0.chi_unit (GlobalTheory.StepZeroNorm.exists_open _ _ rfl F.glev0) (Formalism.L2.Forms …`. Use `⟨c, hc, fun φ ψ => ?_⟩` and prove the remaining obligations. Establish `hm : ∀ φ : D.what₂.Mu u, (fun a z => (D.eMu u φ).1 a (F.val0.eY.symm z)) ∈ Formalism.L2.Forms.FiC F.cls0.lev (Formalism.L2.Forms.embT D) (Formalism.L2.Forms.lamT u 0) F.cls0.y` using `fun φ => (F.val0.Fi _).1 (by rw [(D.fm u).Fi_zero]; exact (D.eMu u φ).2.1)`. Establish `h1` using `H (fun a f g => (D.fm u).ipV 0 a (fun z => f (F.val0.eY z)) (fun z => g (F.val0.eY z))) (fun a => ⟨?_, ?_, ?_⟩) _ (hm φ) _ (hm ψ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[D.eMu_isom, MemberForms.ipC]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.StepZeroNorm.card_stab _ _ rfl F.cls0.lev (F.cls0.y a) (F.cls0.stabI a) (F.cls0.stabI_inj a) (F.cls0.stabI_range a)]`. Simplify using `only [Equiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Introduce `o ho P hP Q hQ`. Establish `h2` using `F.val0.ipV a o ho P (Formalism.L2.Forms.lamT_zero u ▸ hP) Q (Formalism.L2.Forms.lamT_zero u ▸ hQ)`. Rewrite `h2` using `[← Formalism.L2.Forms.lamT_zero u]`. Conclude with `h2`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z f f' g`. Establish `e : (fun x => (z • f + f') (F.val0.eY x)) = z • (fun x => f (F.val0.eY x)) + fun x => f' (F.val0.eY x)` using `rfl`. Simplify using `only [e, map_add, LinearMap.map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Introduce `z f g g'`. Establish `e : (fun x => (z • g + g') (F.val0.eY x)) = z • (fun x => g (F.val0.eY x)) + fun x => g' (F.val0.eY x)` using `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, map_add, map_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.StepZeroNorm.integral_rd_eq_inner : ∀ (D : D7) (u : D.what₂.Word) (F : Formalism.L2.Forms.Forms0 D u) (θ : InfFam D), IsInfFam θ → CoCpt (D.sp.X 0) → ∀ (vS : Vol (D.sp.X 0)) (y : (D.mem u).C.Y 0), ∃ c : ℝ, 0 < c ∧ ∀ φ ψ : D.what₂.Mu u, ∫ g in vS.𝓕, (GlobalTheory.Core.Mi.chart0 F).rd θ (D.eMu u φ).1 y g * star ((GlobalTheory.Core.Mi.chart0 F).rd θ (D.eMu u ψ).1 y g) ∂vS.μ = (c : ℂ) * inner ℂ ψ φ := by
   intro D u F θ hθ _ vS y

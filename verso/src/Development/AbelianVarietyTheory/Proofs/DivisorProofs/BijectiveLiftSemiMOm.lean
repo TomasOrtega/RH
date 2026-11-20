@@ -13,13 +13,13 @@ open TensorProduct GlobalTheory.CechDR GlobalTheory.DeRham
 namespace GlobalTheory.FormsBaseChange
 
 /- English proof (translation)
-Establish `hc : (liftSemi g : R' ⊗[R] M → N) = φ.liftBaseChange B' ∘ (Algebra.IsPushout.cancelBaseChange R R' B B' M).symm`. Use function extensionality and compare the values at `z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [Function.comp_apply, map_add] at hx hy ⊢`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hx, hy]`. Consider the case `tmul s m => simp [e]`. Rewrite using `[hc, Function.Bijective.of_comp_iff _ (LinearEquiv.bijective _)]`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `IsBaseChange.of_equiv (LinearEquiv.ofBijective _ H) fun x ↦ by simp`. Introduce `H`. Establish `: (φ.liftBaseChange B' : B' ⊗[B] M → N) = H.equiv`. Use function extensionality and compare the values at `z`. Proceed by induction on `z with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul s m => simp`. Rewrite using `[this]`. Conclude with `H.equiv.bijective`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_liftSemi_iff {R R' B B' M N : Type} [CommRing R] [CommRing R'] [CommRing B]
     [CommRing B'] [Algebra R R'] [Algebra R B] [Algebra R' B'] [Algebra B B'] [Algebra R B']
@@ -50,15 +50,15 @@ theorem bijective_liftSemi_iff {R R' B B' M N : Type} [CommRing R] [CommRing R']
     exact H.equiv.bijective
 
 /- English proof (translation)
-Use `letI : Algebra B B' := α.toAlgebra`. Use `letI : Algebra R B' := ((algebraMap R' B').comp (algebraMap R R')).toAlgebra`. Use `haveI : IsScalarTower R R' B' := .of_algebraMap_eq fun _ ↦ rfl`. Use `haveI : IsScalarTower R B B' := .of_algebraMap_eq fun r ↦ (h.map_algebraMap r).symm`. Use `haveI : Algebra.IsPushout R R' B B' := ⟨IsBaseChange.of_equiv (LinearEquiv.ofBijective _ h0) fun x ↦ by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `liftSemi f (1 ⊗ₜ x) = α x`. Rewrite using `[liftSemi_tmul, one_smul, hf]⟩`. Set `φ : Ω[B⁄R] →ₗ[B] Ω[B'⁄R']` to `{ toFun := h.m1 map_add' := map_add _ map_smul' := fun b x ↦ by`. Rewrite using `[h.oneFormMap_smul_semilinear, RingHom.id_apply, ← algebraMap_smul B' b]`. Use `rfl }`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hφ : IsBaseChange B' φ` using `(bijective_liftSemi_iff φ h.m1 fun _ ↦ rfl).1 h1`. Use `(bijective_liftSemi_iff _ (h.mOm j) ?_).2 (GlobalTheory.TopForm.isBaseChange_exteriorPower hφ j)` and prove the remaining obligations. Set `ψ : Om R B j →ₗ[B] Om R' B' j` to `{ toFun := h.mOm j map_add' := map_add _ map_smul' := fun b x ↦ by`. Rewrite using `[h.mOm_smul, RingHom.id_apply, ← algebraMap_smul B' b]`. Use `rfl }`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-It suffices to establish `H : ψ = _ from fun x ↦ LinearMap.congr_fun H x`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use `ext1 v`. Simplify using `only [LinearMap.compAlternatingMap_apply, exteriorPowerMapOver_ιMulti]`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `h.mDR (exteriorPower.ιMulti B j v : DR R B) = _`. Rewrite using `[exteriorPower.ιMulti_apply_coe, exteriorPower.ιMulti_apply_coe, ExteriorAlgebra.ιMulti_apply, ExteriorAlgebra.ιMulti_apply, map_list_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Conclude with `h.mDR_ι _`.
+A detailed English derivation is pending.
 -/
 theorem bijective_liftSemi_mOm (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (B B' : Type)
     [CommRing B] [CommRing B'] [Algebra R B] [Algebra R' B'] (α : B →+* B')

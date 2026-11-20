@@ -9,21 +9,21 @@ open scoped Classical
 open UpperTheory.Gal.InertialTypesAlt.G
 
 /- English proof (translation)
-Introduce `G _ _ _ K f hK hN hf`. Take `⟨hlc, hcs⟩` from `hf`. Establish `h1 : ∀ x : G, ∃ V : Subgroup G, IsOpen (V : Set G) ∧ ∀ a ∈ V, f (a * x) = f x`. Introduce `x`. Establish `hopen : IsOpen ((fun a : G => a * x) ⁻¹' (f ⁻¹' {f x}))` using `(hlc.isOpen_fiber (f x)).preimage (continuous_mul_right x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨V, hV, hVs⟩` from `hN _ (hopen.mem_nhds (by simp))`. Conclude with `⟨V, hV, fun a ha => by simpa using hVs (SetLike.mem_coe.2 ha)⟩`. Use `choose V hVo hVc using h1`. Take `⟨t, -, hcov⟩` from `hcs.isCompact.elim_nhds_subcover (fun x => (fun y : G => y * x⁻¹) ⁻¹' (V x : Set G)) (fun x _ => ((hVo x).preimage (continuous_mul_right x⁻¹)).mem_nhds (by simp [one_mem]))`. Establish `hz : ∀ y, (∀ x ∈ t, y * x⁻¹ ∉ V x) → f y = 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Assume the negation of the conclusion as `h`. Establish `hm` using `hcov (subset_tsupport f (Function.mem_support.2 h))`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe, exists_prop] at hm`. Take `⟨x, hx, hxy⟩` from `hm`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hy x hx hxy`. Establish `hNU : (K : Set G) ∩ ⋂ x ∈ t, (V x : Set G) ∈ nhds (1 : G)` using `inter_mem (hK.mem_nhds K.one_mem) ((Filter.biInter_finset_mem t).2 fun x _ => (hVo x).mem_nhds (V x).one_mem)`. Take `⟨U, hU, hUs⟩` from `hN _ hNU`. Use `⟨U, hU, fun u hu => (hUs hu).1, fun u hu g => ?_⟩` and prove the remaining obligations. Establish `hUV : ∀ x ∈ t, u ∈ V x` using `fun x hx => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `(hUs hu).2`. Simplify using `only [Set.mem_iInter, SetLike.mem_coe] at h2`. Conclude with `h2 x hx`. Distinguish the cases in `hg : ∃ x ∈ t, g * x⁻¹ ∈ V x`. Take `⟨x, hx, hgx⟩` from `hg`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hVc x _ hgx`. Establish `e2` using `hVc x _ ((V x).mul_mem (hUV x hx) hgx)`. Establish `r1 : g * x⁻¹ * x = g` using `by group`. Establish `r2 : u * (g * x⁻¹) * x = u * g` using `by group`. Rewrite `e1` using `[r1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `e2` using `[r2]`. Rewrite using `[e1, e2]`. Use `push_neg at hg`. Rewrite using `[hz g hg, hz (u * g)]`. Introduce `x hx hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply `hg x hx` to reduce the goal to its premises. Establish `h3` using `(V x).mul_mem ((V x).inv_mem (hUV x hx)) hm`. Establish `r3 : u⁻¹ * (u * g * x⁻¹) = g * x⁻¹` using `by group`. Rewrite `h3` using `[r3]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.G.levEx :
     UpperTheory.Gal.InertialTypesAlt.G.LevEx := by

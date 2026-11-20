@@ -9,9 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.St.G.IotaSigmaCompatibility
 
 /- English proof (translation)
-Introduce `D X ιA h a`. Establish `he : ∀ x : X.B.I.E, X.ιE (X.B.I.cm.sig x) = Formalism.L2.Forms.sigD D (X.ιE x)`. Introduce `x`. Establish `h1 : X.B.I.cm.sig x = star x` using `rfl`. Establish `h2 : Formalism.L2.Forms.sigD D (X.ιE x) = star (X.ιE x)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, X.ιE_conj, Formalism.BasicNotions.bridge_star_holds D.R D.host]`. Conclude with `GlobalTheory.St.G.IotaConj.iota_sigR X.B.I.F X.B.I.E D.host.F D.host.E X.B.I.cm.sig (Formalism.L2.Forms.sigD D) X.ιE ιA he h.1 h.2 a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaA_sigA : ∀ (D : D7) (X : HidaSetting D)
     (ιA : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] Ad D.host.F), IsAdeleIso X ιA →

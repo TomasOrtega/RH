@@ -10,9 +10,9 @@ open MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `L : SchwartzMap V ℂ →ₗ[ℝ] ContinuousMultilinearMap ℝ (fun _ : Fin n => V) ℂ` to `{ toFun := fun f => iteratedFDeriv ℝ n f x map_add' := fun f g => iteratedFDeriv_add_apply ((f.smooth n).contDiffAt) ((g.smooth n).contDiffAt) map_smul' := fun c f => by`. Simplify using `using iteratedFDeriv_const_smul_apply (𝕜 := ℝ) (a := c) ((f.smooth n).contDiffAt) }`. Establish `: Continuous L`. Use `Seminorm.cont_withSeminorms_normedSpace _ (schwartz_withSeminorms ℝ V ℂ) L ⟨{(0, n)}, 1, fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [Seminorm.comp_apply, coe_normSeminorm, Finset.sup_singleton, one_smul]`.
+Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify `SchwartzMap.le_seminorm ℝ 0 n f x` using `[L]`. Conclude with `this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_iteratedFDeriv_apply_schwartz {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (n : ℕ) (x : V) :
     Continuous (fun f : SchwartzMap V ℂ => iteratedFDeriv ℝ n f x) := by
@@ -28,11 +28,11 @@ theorem continuous_iteratedFDeriv_apply_schwartz {V : Type} [NormedAddCommGroup 
   exact this
 
 /- English proof (translation)
-Introduce `V _ _ _ W _ _ _ _ _ μ T Φ hΦ hb φ hφ hmom h hh`. Use `GlobalTheory.T.schwartz_family_pairing_integral_commute μ T Φ hΦ hb φ hφ hmom h (fun n x => ?_)` and prove the remaining obligations. Establish `hfun : (⇑h) = fun y => ∫ w, φ w * Φ w y ∂μ` using `funext hh`. Rewrite using `[hfun]`. Use `GlobalTheory.T.iteratedFDeriv_weighted_integral μ Φ φ (fun m => ?_) (fun m y => ?_) n x` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC⟩` from `hb 0 m`. Use `⟨fun w => |C| * ((1 + ‖w‖) ^ m * ‖φ w‖), (hmom m).const_mul _, fun w y => ?_⟩` and prove the remaining obligations. Use `hC w y` as an intermediate fact. Simplify using `only [pow_zero, one_mul] at this`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hφ.smul ((continuous_iteratedFDeriv_apply_schwartz m y).comp hΦ).aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 theorem schwartz_functional_integral_exchange : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W] [MeasurableSpace W] [BorelSpace W]
@@ -55,19 +55,19 @@ theorem schwartz_functional_integral_exchange : ∀ {V : Type} [NormedAddCommGro
   · exact hφ.smul ((continuous_iteratedFDeriv_apply_schwartz m y).comp hΦ).aestronglyMeasurable
 
 /- English proof (translation)
-Introduce `V _ _ _ T g hT ψ h hh`. Take `⟨H, hH, hHb⟩` from `GlobalTheory.T.fourier_modulated_schwartz_bounds g`. Take `⟨m, A, φ, hφc, hφi, hψ⟩` from `GlobalTheory.T.schwartz_fourier_superposition ψ`. Use `set Φ : EuclideanSpace ℝ (Fin m) → SchwartzMap V ℂ := fun w => H (A w) with hΦ`. Establish `hb : ∀ k n : ℕ, ∃ C : ℝ, ∀ w x, ‖x‖ ^ k * ‖iteratedFDeriv ℝ n (Φ w) x‖ ≤ C * (1 + ‖w‖) ^ n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k n`. Take `⟨C, hC⟩` from `hHb k n`. Use `⟨|C| * (1 + ‖A‖) ^ n, fun w x => (hC (A w) x).trans ?_⟩` and prove the remaining obligations. Establish `h1 : 1 + ‖A w‖ ≤ (1 + ‖A‖) * (1 + ‖w‖)`. Use polynomial arithmetic with `[A.le_opNorm w, norm_nonneg A, norm_nonneg w]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hcont : Continuous Φ`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `w0`. Use `schwartz_continuousAt_of_pointwise_of_bounded Φ w0 (fun v => ?_) (fun k n => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hΦ, hH] fun_prop`. Take `⟨C, hC⟩` from `hb k n`. Use `⟨|C| * (2 + ‖w0‖) ^ n, ?_⟩` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds w0 one_pos] with w hw v`. Use `(hC w v).trans (mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (by positivity) ?_ n) (by positivity) (abs_nonneg C))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `mem_ball_iff_norm.1 hw`. Establish `h2` using `norm_sub_norm_le w w0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrep : ∀ x, h x = ∫ w, φ w * Φ w x`. Introduce `x`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hh, hψ, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `only [hΦ, hH]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[schwartz_functional_integral_exchange volume T Φ hcont hb φ hφc.aestronglyMeasurable hφi h hrep]`. Establish `: ∀ w, T (Φ w) = 0` using `fun w => hT (A w) (Φ w) (hH _)`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kill_schwartz_multiple_of_kill_characters : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (T : SchwartzMap V ℂ →L[ℂ] ℂ)
     (g : SchwartzMap V ℂ), (∀ (ξ : V →L[ℝ] ℝ) (h : SchwartzMap V ℂ), (∀ x, h x = Complex.exp ((ξ x : ℂ) * Complex.I) * g x) → T h = 0) →

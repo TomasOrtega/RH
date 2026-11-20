@@ -11,7 +11,7 @@ namespace Formalism.FourierDecayAlt.P.DiagonalScalarMatrices
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.Dx2.DF
 
 /- English proof (translation)
-Use `⟨Lagrange.interpolate Finset.univ node f, fun i => ?_⟩` and prove the remaining obligations. Conclude with `Lagrange.eval_interpolate_at_node f hinj.injOn (Finset.mem_univ i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem interp_any {ι : Type} [Fintype ι] (node : ι → ℂ) (hinj : Function.Injective node) (f : ι → ℂ) :
     ∃ q : Polynomial ℂ, ∀ i, q.eval (node i) = f i := by
@@ -25,15 +25,15 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Take `⟨hB1, hB2, hB3⟩` from `hB`. Use `⟨hB1, hB2, fun a v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [List.mem_cons, List.mem_singleton] at hv`. Break down `hv with rfl | rfl | hv` into its components or cases.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨-, ⟨α, -, hα⟩, -⟩` from `hD`. Establish `hcof : Formalism.FourierDecayAlt.D.cofL S γ = S.z`. Unfold `Formalism.FourierDecayAlt.D.cofL`. Simplify using `[Matrix.adjugate_fin_one, fvec, Matrix.one_apply]`. Rewrite `hα` using `[hcof]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hvb : (fun i : Fin (2 * 0 + k + 1) => if 0 ≤ i.val ∧ i.val ≤ 0 + k then (γ⁻¹ *ᵥ S.z) i else 0) = γ⁻¹ *ᵥ S.z`. Use function extensionality and compare the values at `i`. Use `i.isLt` as an intermediate fact. Rewrite using `[if_pos (by omega)]`. Establish `hpr : γ⁻¹ *ᵥ S.z = Formalism.FourierDecayAlt.D.prW k 0 S.z' (γ⁻¹ *ᵥ S.z) + (herm (Hpk k 0) (γ⁻¹ *ᵥ S.z) S.z' / herm (Hpk k 0) S.z' S.z') • S.z'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Formalism.FourierDecayAlt.D.prW`. Simplify using `only`. Rewrite using `[hvb, sub_add_cancel]`. Establish `h1 : herm (Hpk k 0) (Bs a) ν' = 0` using `hB3 a ν' (by simp)`. Establish `h2 : herm (Hpk k 0) (Bs a) S.z' = 0` using `hB3 a S.z' (by simp)`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpr, hα]`. Unfold `herm at h1 h2 ⊢`. Rewrite using `[star_add, star_smul, star_smul, add_dotProduct, smul_dotProduct, smul_dotProduct, h1, h2, smul_zero, smul_zero, add_zero]`. Conclude with `hB3 a S.z' (by simp)`. Simplify using `at hv`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_dframe (S : B.RealPlaceData k r Wp Wq) (hr : r = 0) {ν' : Fin (2 * r + k + 1) → ℂ} {m₀ γ : B.Mat k r}
     (hD : D.IsDFrame S ν' m₀ γ) {m : ℕ} {Bs : Fin m → Fin (2 * r + k + 1) → ℂ} (hB : Q.IsFrameOf k r [S.z', ν'] Bs) :
@@ -108,29 +108,27 @@ open Finset Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayA
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p w X μ L st ν'r m₀r hD hcut hLF x hx γ₀ hγG hζ hγF hex h hh y e`. Take `⟨hl1, hlk, hk2⟩` from `p.hl`. Establish `hr : P.r - P.r = 0` using `by omega`. Establish `hD'` using `hD`. Take `⟨hPl, -, -, -, hq, hinv, -, -⟩` from `hD'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hOK` using `hPl.1`. Establish `hw` using `Formalism.FourierDecayAlt.P.JCTx5.wordOK_of (JC.parLev P P.r) _ _ _ _ st p.l0 hOK hl1 hlk hq hinv w hcut.1 hcut.2`. Establish `hGx : 0 < Complex.normSq (Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) x.2) - Tz P.k (P.r - P.r) (p.T.bs P.r).z * Tz P.k (P.r - P.r) (p.T.bs P.r).z'` using `hx.2.2`. Establish `hx' : (x.1, γ₀) ∈ Q.DomR (JC.parLev P P.r).k (JC.parLev P P.r).r (p.T.bs P.r).z (p.T.bs P.r).z'`. Use `⟨hx.1, ⟨hγG, fun a ha => by exfalso; have h1 := a.isLt; have h2 : (JC.parLev P P.r).r = P.r - P.r := rfl; omega⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show 0 < Complex.normSq (Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) γ₀) - Tz P.k (P.r - P.r) (p.T.bs P.r).z * Tz P.k (P.r - P.r) (p.T.bs P.r).z'`. Rewrite using `[hζ]`. Conclude with `hGx`. Establish `hbase` using `hLF.2.2`. Take `⟨hν, hνz, hνν, -, -⟩` from `id hbase`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Bs', hB'⟩` from `Formalism.FourierDecayAlt.P.Topx1.vecw_frame_exists P.k (P.r - P.r) (by omega) (p.T.bs P.r).z' ν'r (p.T.bs P.r).z'_mem (p.T.bs P.r).T'_pos hν hνz hνν`. Establish `hBγ` using `DiagonalScalarMatrices.frame_dframe (p.T.bs P.r) hr hγF hB'`. Take `⟨Y₀, hY₀⟩` from `Formalism.FourierDecayAlt.P5.Kfp.sep_real hOK`. Use `set f : M.Ty P → ℂ := fun ρ => Fr.cs (M.x0 P p.l0 ρ) (M.qC P) (D.positionted w) e with hfdef`. Take `⟨q, hq'⟩` from `DiagonalScalarMatrices.interp_any (fun ρ : M.Ty P => M.xC P ρ (Y₀ : ℂ)) hY₀ f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set V := ((y e : Q.RadSp (JC.parLev P P.r).k (JC.parLev P P.r).r (p.T.bs P.r).z (p.T.bs P.r).z' (p.T.bs P.r).π (p.T.bs P.r).π') : Q.Fn (JC.parLev P P.r).k (JC.parLev P P.r).r (Wq →L[ℂ] Wp)) x.1 γ₀ with hVdef`. Establish `hV` using `PBI.grpInt_at_dframe p hLF (y e) x hx hγG hζ hγF`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `h1` using `DiagonalScalarMatrices.dw_pt (JC.parLev P P.r) _ _ _ _ X μ L st p.l0 hD (D.positionted w) hw Y₀ e q hq' y x.1 γ₀ hx' Bs' hBγ v`. Establish `h2` using `DiagonalScalarMatrices.poly_types p ν'r m₀r hLF hB' V hV (hex (y e)) (Y₀ : ℂ) q v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[show ((JC.parLev P P.r).k : ℂ) = (P.k : ℂ) from rfl, ← hVdef]`. Use `erw [h2] at h1`. Rewrite using `[h1]`. Simplify using `only [ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[hq' ρ]`. Use `set ζx := Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) x.2 with hζx`. Establish `hTb : Tz P.k P.r p.T.base.z = P.T` using `p.hP.2.2.2.1`. Establish `hTb' : Tz P.k P.r p.T.base.z' = P.T'` using `p.hP.2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTr : Tz P.k (P.r - P.r) (p.T.bs P.r).z = P.T` using `hPl.2.2.2.1`. Establish `hTr' : Tz P.k (P.r - P.r) (p.T.bs P.r).z' = P.T'` using `hPl.2.2.2.2.1`. Establish `hzγ : Q.zetaL (JC.parLev P P.r).k (JC.parLev P P.r).r (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last (JC.parLev P P.r).r) γ₀ = ζx` using `hζ`. Establish `hGG : Q.GGl (JC.parLev P P.r).k (JC.parLev P P.r).r (p.T.bs P.r).z (p.T.bs P.r).z' γ₀ = Complex.normSq ζx - P.T * P.T'` using `by show Complex.normSq (Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) γ₀) - Tz P.k (P.r - P.r) (p.T.bs P.r).z * Tz P.k (P.r - P.r) (p.T.bs P.r).z' = _`. Rewrite using `[hζ, hTr, hTr']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hG0 : 0 < Complex.normSq ζx - P.T * P.T'` using `by rw [← hTr, ← hTr']; exact hGx`. Establish `hlen : (D.positionted w).length = w.length` using `List.length_ofFn`. Establish `hcW : Top.cW P p.l0 w e ρ = f ρ`. Simplify using `only [Top.cW, hfdef]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `Formalism.FourierDecayAlt.P.c_pos_truncated Formalism.FourierDecayAlt.P.interlacing_sign Formalism.FourierDecayAlt.P.q_positive_interlacing Formalism.FourierDecayAlt.P.q_positive_shift Formalism.FourierDecayAlt.P.cPos_true (Fin w.length) P.k P.u P.u' (M.rho P ρ) p.l0 P.T P.T' (D. …`. Establish `hpos : 0 < f ρ` using `by rw [Complex.lt_def]; exact ⟨hc.1, hc.2.symm⟩`. Establish `hre : 0 < (f ρ).re` using `(Complex.lt_def.1 hpos).1`. Establish `him : (f ρ).im = 0` using `(Complex.lt_def.1 hpos).2.symm`. Establish `hfre : f ρ = ((f ρ).re : ℂ)` using `Complex.ext (by simp) (by simp [him])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hW` using `PBI.wPt_app (P.T * P.T') ζx h P.r hh`. Establish `hWnn : 0 ≤ Top.wPt (P.T * P.T') P.r (h ++ [(1, ζx)])`. Rewrite using `[hW]`. Conclude with `div_nonneg (Complex.normSq_nonneg _) hG0.le`. Unfold `Top.dH`.
-
-Rewrite using `[hTb, hTb', hW, hcW, Real.sq_sqrt (mul_nonneg (pow_nonneg (by rw [← hW]; exact hWnn) _) hre.le), hGG, hzγ, hlen]`. Rewrite using `[hfre]`. Use `push_cast`. Rewrite using `[div_eq_mul_inv, Complex.ofReal_re]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem head_weight_at_of_exists : DiagonalScalarMatrices.HeadWeightAtOfEx := by
   intro Wp Wq _ _ _ _ _ _ P p w X μ L st ν'r m₀r hD hcut hLF x hx γ₀ hγG hζ hγF hex h hh y e

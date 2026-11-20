@@ -15,15 +15,13 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ x e hP hF G i hi`. Take `⟨hc, hcoord, hrel, hrange⟩` from `hRel D Ω κ x e hP hF G`. Establish `: CharZero G.Φ'` using `charZero_of_inj_zero hc`. Establish `hz : ∀ k, G.x' ⟨k.1, i k⟩ ≠ 0` using `fun k h => hi k (by`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal, RingHom.mem_ker, aeval_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h)`. Establish `hch` using `Inter.ChartRankAdjoin.proof (FibreBlock (Sum.inr : Unit → Unit ⊕ Unit)) (fibreIdx (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1)))) Sum.inr) G.Φ G.Φ' (fun q => G.x' ⟨q.1.1, q.2⟩) i hz (hPt D Ω κ x e hP hF G).1.2.1`. Set `k₀ : FibreBlock (Sum.inr : Unit → Unit ⊕ Unit)` to `⟨Sum.inl (), fun ⟨_, h⟩ => Sum.inr_ne_inl h⟩`. Set `u : Ix κ → G.Φ'` to `fun p => G.x' ⟨Sum.inl p.1, p.2⟩`. Establish `hset : (Set.range fun q : (Σ k : FibreBlock (Sum.inr : Unit → Unit ⊕ Unit), fibreIdx (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1)))) Sum.inr k) => G.x' ⟨q.1.1, q.2⟩ / G.x' ⟨q.1.1, i q.1⟩) = Set.range fun p : Ix κ => u p / u ⟨(), i k₀⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨(t | t), h⟩, j⟩, rfl⟩`. Conclude with `⟨⟨(), j⟩, rfl⟩`. Conclude with `absurd ⟨t, rfl⟩ h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨_, j⟩, rfl⟩`. Conclude with `⟨⟨k₀, j⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `ptDeg (RingHom.ker _) i = _`. Rewrite using `[hch, hset]`. Rewrite using `[hDeg (Ix κ) G.Φ' u D e (fun k => G.x' ⟨Sum.inr (), k⟩) ⟨(), i k₀⟩ G.Φ (hz k₀) (fun k => ProjFrameGraph.genFibre_x'_ne_zero G (e k).2 (ProjFrameGraph.frame_ne_zero hF k)) hrel (hTr D Ω κ x e hP hF G) hrange]`.
-
-Conclude with `hRat (Ix κ) G.Φ' Ω u x D e hcoord`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ProjFrameFibreDeg.proof (hPt : ProjFrameFibrePt.Statement) (hRel : ProjFrameGenPtRel.Statement)
     (hTr : ProjFrameGenPtTransc.Statement) (hDeg : TranscRatioDeg.Statement) (hRat : RatioFieldDeg.Statement) :

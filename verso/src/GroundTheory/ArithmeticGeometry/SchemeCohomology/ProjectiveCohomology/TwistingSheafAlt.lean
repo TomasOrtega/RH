@@ -20,7 +20,7 @@ variable {A σ : Type u} [CommRing A] [SetLike σ A] [AddSubgroupClass σ A]
 variable {𝒜 : ℕ → σ} [GradedRing 𝒜]
 
 /- English proof (translation)
-The claim follows from `ratio_mul_ratio' hu hv hw`.
+A detailed English derivation is pending.
 -/
 theorem ratio_mul_ratio {u v w : A} (hu : u ∈ 𝒜 1) (hv : v ∈ 𝒜 1) (hw : w ∈ 𝒜 1) :
     resO (inf_le_right : Proj.basicOpen 𝒜 u ⊓ Proj.basicOpen 𝒜 v ≤ Proj.basicOpen 𝒜 v)
@@ -38,9 +38,9 @@ section Iso
 variable {X : Scheme.{u}}
 
 /- English proof (translation)
-Use `⟨isQuasicoherent_unit X, fun U _ => ?_⟩` and prove the remaining obligations. Set `one : Γ(𝟙_ X.Modules, U)` to `(1 : Γ(X, U))`. Use `⟨⟨{one}, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `m _`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : m = (show Γ(X, U) from m) • one` using `(mul_one (show Γ(X, U) from m)).symm`. Rewrite using `[hm]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_singleton_self _)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isCoherent_unit' : IsCoherent (𝟙_ X.Modules) := by
   refine ⟨isQuasicoherent_unit X, fun U _ => ?_⟩
@@ -53,9 +53,9 @@ private theorem isCoherent_unit' : IsCoherent (𝟙_ X.Modules) := by
   exact Submodule.smul_mem _ _ (Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_singleton_self _)))
 
 /- English proof (translation)
-Take `⟨hq, hf⟩` from `hM`. Use `⟨(SheafOfModules.isQuasicoherent X.ringCatSheaf).prop_of_iso e hq, fun U hU => ?_⟩` and prove the remaining obligations. Use `hf U hU` as an intermediate fact. Set `φ : Γ(M, U) →ₗ[Γ(X, U)] Γ(N, U)` to `{ toFun := e.hom.app U map_add' := map_add _ map_smul' := fun r m => Scheme.Modules.Hom.app_smul e.hom r m }`. Use `Module.Finite.of_surjective φ fun n => ⟨e.inv.app U n, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(e.inv ≫ e.hom).app U n = n`. Rewrite using `[e.inv_hom_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem isCoherent_of_iso' {M N : X.Modules} (e : M ≅ N) (hM : IsCoherent M) :
     IsCoherent N := by
@@ -80,7 +80,7 @@ variable {A : Type u} [CommRing A] {n : ℕ}
 open ProjTwist
 
 /- English proof (translation)
-The claim follows from `isCoherent_of_iso' (λ_ _) (isCoherent_tensor_of_invertible isCoherent_unit' (isInvertibleSheaf_twistingSheaf k))`.
+A detailed English derivation is pending.
 -/
 theorem isCoherent_twistingSheaf (k : ℤ) : IsCoherent (twistingSheaf (grading A n) k) :=
   isCoherent_of_iso' (λ_ _)
@@ -102,7 +102,7 @@ instance isQuasicoherent_twist (G : (projectiveSpace A n).Modules) [G.IsQuasicoh
   isQuasicoherent_tensor_of_invertible G (isInvertibleSheaf_twistingSheaf k)
 
 /- English proof (translation)
-The claim follows from `isCoherent_tensor_of_invertible hG (isInvertibleSheaf_twistingSheaf k)`.
+A detailed English derivation is pending.
 -/
 theorem isCoherent_twist {G : (projectiveSpace A n).Modules} (hG : IsCoherent G) (k : ℤ) :
     IsCoherent (twist G k) :=

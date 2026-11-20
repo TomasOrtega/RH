@@ -14,11 +14,11 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors Pointwise in
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (_root_.Formalism.QuantumDeterminants.eI k r a)]`. Simplify using `[_root_.Formalism.QuantumDeterminants.Hpk, _root_.Formalism.QuantumDeterminants.eI, _root_.Formalism.QuantumDeterminants.esI]`. Use linear arithmetic over natural numbers and integers. Introduce `j _ hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj' : (j : ℕ) ≠ a` using `fun h => hj (Fin.ext (by simp [_root_.Formalism.QuantumDeterminants.eI, h]))`. Simplify using `only [_root_.Formalism.QuantumDeterminants.Hpk, _root_.Formalism.QuantumDeterminants.esI, Matrix.of_apply, Fin.val_mk]`. Establish `c1 : ¬(2 * r + k - (a : ℕ) < r ∧ 2 * r + k - (a : ℕ) + (j : ℕ) = 2 * r + k)` using `by omega`. Establish `c2 : ¬((j : ℕ) < r ∧ 2 * r + k - (a : ℕ) + (j : ℕ) = 2 * r + k)` using `by omega`. Establish `c3 : ¬(2 * r + k - (a : ℕ) ≤ r + k)` using `by omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[c1, c2, c3]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.IntG.Hpk_mulVec_esI (k r : ℕ) (a : Fin r) (y : Fin (2 * r + k + 1) → ℂ) :
     (_root_.Formalism.QuantumDeterminants.Hpk k r *ᵥ y) (_root_.Formalism.QuantumDeterminants.esI k r a) = y (_root_.Formalism.QuantumDeterminants.eI k r a) := by
@@ -43,7 +43,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors Pointwise in
 variable {E : Type} [Field E] [NumberField E] in
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hx`. Establish `hint : IsIntegral ℤ (t (algebraMap (𝓞 E) E y))` using `(y.isIntegral_coe).map (t.toAlgHom.restrictScalars ℤ)`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨⟨_, hint⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma algEquiv_map_mem_one_fractionalIdeal {E : Type} [Field E] [NumberField E] (t : E ≃ₐ[ℚ] E) {x : E}
     (hx : x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)) : t x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) := by
@@ -56,7 +56,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors Pointwise in
 variable {E : Type} [Field E] [NumberField E] in
 /- English proof (translation)
-Establish `h : t y * a = t (y * t a)` using `by rw [map_mul, ht]`. Rewrite using `[h, Algebra.trace_eq_of_algEquiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma trace_map_mul_eq_trace_mul_map_of_involutive {E : Type} [Field E] [NumberField E] (t : E ≃ₐ[ℚ] E)
     (ht : ∀ x, t (t x) = x) (y a : E) :
@@ -68,7 +68,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors Pointwise in
 variable {E : Type} [Field E] [NumberField E] in
 /- English proof (translation)
-Establish `h1 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `Ne.symm (zero_ne_one' _)`. Rewrite `hy`, the goal using `[FractionalIdeal.mem_dual h1]`. Introduce `a ha`. Use `hy (t a) (algEquiv_map_mem_one_fractionalIdeal t ha)` as an intermediate fact. Simplify `this` using `[Algebra.traceForm_apply, trace_map_mul_eq_trace_mul_map_of_involutive t ht]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma map_mem_dual_one_of_involutive {E : Type} [Field E] [NumberField E] (t : E ≃ₐ[ℚ] E)
     (ht : ∀ x, t (t x) = x) {y : E}
@@ -84,9 +84,9 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors Pointwise in
 variable {E : Type} [Field E] [NumberField E] in
 /- English proof (translation)
-Rewrite `hx`, the goal using `[coeIdeal_differentIdeal ℤ ℚ]`. Establish `h0 : FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ (Ne.symm (zero_ne_one' (FractionalIdeal (𝓞 E)⁰ E)))`. Rewrite `hx`, the goal using `[FractionalIdeal.mem_inv_iff h0]`. Introduce `y hy`. Establish `h1` using `algEquiv_map_mem_one_fractionalIdeal t (hx (t y) (map_mem_dual_one_of_involutive t ht hy))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, ht]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma map_mem_differentIdeal_of_involutive {E : Type} [Field E] [NumberField E] (t : E ≃ₐ[ℚ] E)
     (ht : ∀ x, t (t x) = x) {x : E}
@@ -104,11 +104,9 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors Pointwise in
 variable {E : Type} [Field E] [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `m generalizing x with`. Consider the case `zero => rw [pow_zero] at hx ⊢`. Conclude with `algEquiv_map_mem_one_fractionalIdeal t hx`. Consider the case `succ n ih`. Rewrite `hx`, the goal using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `FractionalIdeal.mul_induction_on (C := fun z => t z ∈ _) hx ?_ ?_` and prove the remaining obligations. Introduce `i hi j hj`. Rewrite using `[map_mul]`. Conclude with `FractionalIdeal.mul_mem_mul (ih hi) (map_mem_differentIdeal_of_involutive t ht hj)`. Introduce `a b ha hb`.
-
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma map_mem_differentIdeal_pow_of_involutive {E : Type} [Field E] [NumberField E] (t : E ≃ₐ[ℚ] E)
     (ht : ∀ x, t (t x) = x) (m : ℕ) {x : E}
@@ -131,11 +129,11 @@ open scoped TensorProduct ENNReal nonZeroDivisors Pointwise in
 variable {E : Type} [Field E] [NumberField E] in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.SgGlob.dInv`. Establish `hD : ((differentIdeal ℤ (𝓞 E) : FractionalIdeal (𝓞 E)⁰ E)) ≠ 0`. Rewrite using `[ne_eq, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `differentIdeal_ne_bot`. Rewrite using `[inv_pow, two_mul, pow_add, FractionalIdeal.mem_inv_iff (mul_ne_zero (pow_ne_zero _ hD) (pow_ne_zero _ hD))]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Use `FractionalIdeal.mul_induction_on (C := fun w => c * w ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)) hz ?_ ?_` and prove the remaining obligations. Introduce `i hi j hj`. Take `⟨u, hu⟩` from `h i hi (t j) (map_mem_differentIdeal_pow_of_involutive t ht m hj)`. Use `(FractionalIdeal.mem_one_iff _).2 ⟨u, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, ht]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b ha hb`. Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.IntG.mem_dInv_two_mul (t : E ≃ₐ[ℚ] E) (ht : ∀ x, t (t x) = x) (m : ℕ) (c : E)
     (h : ∀ x ∈ ((differentIdeal ℤ (𝓞 E) : FractionalIdeal (𝓞 E)⁰ E)) ^ m,
@@ -169,15 +167,15 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors Pointwise in
 variable {E : Type} [Field E] in
 /- English proof (translation)
-Use `set fw : Fin (2 * r + k + 1) → ℂ := fun i => w.embedding (f i a) with hfw`. Establish `hs' : ((s a : ℂ)) ≠ 0` using `by exact_mod_cast hs`. Establish `hinv : (A w)⁻¹ *ᵥ Pi.single (_root_.Formalism.QuantumDeterminants.esI k r a) 1 = ((s a : ℂ)) • fw`. Establish `h : Pi.single (_root_.Formalism.QuantumDeterminants.esI k r a) (1 : ℂ) = A w *ᵥ (((s a : ℂ)) • fw)`. Rewrite using `[Matrix.mulVec_smul, hf, smul_smul, mul_inv_cancel₀ hs', one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hdet), Matrix.one_mulVec]`. Establish `h1 : _root_.GlobalTheory.SnMass.VolN.gM A γ w (_root_.Formalism.QuantumDeterminants.eI k r a) (_root_.Formalism.QuantumDeterminants.esI k r a) = ((s a : ℂ)) * (A w *ᵥ (γ.map w.embedding *ᵥ fw)) (_root_.Formalism.QuantumDeterminants.eI k r a)`. Unfold `_root_.GlobalTheory.SnMass.VolN.gM`. Establish `e : (A w * γ.map w.embedding * (A w)⁻¹) (_root_.Formalism.QuantumDeterminants.eI k r a) (_root_.Formalism.QuantumDeterminants.esI k r a) = ((A w * γ.map w.embedding * (A w)⁻¹) *ᵥ Pi.single (_root_.Formalism.QuantumDeterminants.esI k r a) 1) (_root_.Formalism.QuantumDeterminants.e …`. Rewrite using `[Matrix.mulVec_single_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e, ← Matrix.mulVec_mulVec, hinv, ← Matrix.mulVec_mulVec, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Both sides reduce to the same expression. Establish `h2 : w.embedding ((fun i => σ (f i a)) ⬝ᵥ (J *ᵥ (γ *ᵥ fun i => f i a))) = ((s a : ℂ))⁻¹ * (A w *ᵥ (γ.map w.embedding *ᵥ fw)) (_root_.Formalism.QuantumDeterminants.eI k r a)`. Establish `e1 : w.embedding ((fun i => σ (f i a)) ⬝ᵥ (J *ᵥ (γ *ᵥ fun i => f i a))) = star fw ⬝ᵥ (J.map w.embedding *ᵥ (γ.map w.embedding *ᵥ fw))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[dotProduct, Matrix.mulVec, map_sum, hconj, hfw]`. Rewrite using `[e1, ← hA, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, hf, star_smul, smul_dotProduct, show star (Pi.single (_root_.Formalism.QuantumDeterminants.esI k r a) 1 : Fin (2 * r + k + 1) → ℂ) = Pi.single (_root_.Formalism.QuantumDeter …`. Apply the tactic sequence `ext i; by_cases h : i = _root_.Formalism.QuantumDeterminants.esI k r a <;> simp [Pi.single_apply, h],`. Use the proof step `single_dotProduct, one_mul, _root_.GlobalTheory.SnMass.VolN.IntG.Hpk_mulVec_esI]`. Simplify using `[Complex.conj_ofReal]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[h1, h2]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 private lemma modelEntry_eq_sq_mul_pairing_lemma_6 (σ : E →+* E) {k r : ℕ}
     (J γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E)
@@ -224,31 +222,27 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors Pointwise in
 
 /- English proof (translation)
-Introduce `hV γ hγ a hre`. Unfold `_root_.GlobalTheory.SnMass.VolN.IsVolData at hV`. Take `⟨hT, -, hJ, hΛ, -, -, hspan, hA, hs, hAd⟩` from `hV`. Simplify using `only [_root_.GlobalTheory.SnMass.VolN.GN, Set.mem_setOf_eq, _root_.GlobalTheory.SgGlob.latMap] at hγ`. Take `⟨-, hγΛ⟩` from `hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hconj : ∀ (w : InfinitePlace E) (x : E), w.embedding (σ x) = star (w.embedding x)` using `fun w x => hT.2.2.2 _ x`. Use `set c : E := (fun i => σ (f i a)) ⬝ᵥ (J *ᵥ (γ *ᵥ fun i => f i a)) with hc`. Establish `hdet : ∀ w : InfinitePlace E, (A w).det ≠ 0`. Introduce `w h`. Establish `hd` using `congrArg Matrix.det (hA w)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, h, mul_zero]`. Establish `hw : w.embedding J.det = 0`. Rewrite using `[RingHom.map_det]`. Conclude with `hd.symm`. Conclude with `hJ.2 ((map_eq_zero_iff _ w.embedding.injective).1 hw)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `have hentry : ∀ w, _root_.GlobalTheory.SnMass.VolN.gM A γ w (_root_.Formalism.QuantumDeterminants.eI k r a) (_root_.Formalism.QuantumDeterminants.esI k r a) = ((s a : ℂ)) ^ 2 * w.embedding c := fun w => modelEntry_eq_sq_mul_pairing_lemma_6 (σ : E →+* E) J γ A f s w a (hconj w) (h …`. Take `⟨w₀⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Establish `hinvol : ∀ x, σ (σ x) = x` using `fun x => w₀.embedding.injective (by rw [hconj, hconj, star_star])`. Establish `hsc : σ c = -c`. Apply `w₀.embedding.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `hre w₀`. Rewrite `h0` using `[hentry]`. Establish `hre0 : (w₀.embedding c).re = 0`. Establish `e : (((s a : ℂ)) ^ 2 * w₀.embedding c).re = (s a) ^ 2 * (w₀.embedding c).re`. Rewrite using `[← Complex.ofReal_pow, Complex.re_ofReal_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h0` using `[e]`. Conclude with `(mul_eq_zero.1 h0).resolve_left (pow_ne_zero _ (hs a).ne')`. Rewrite using `[hconj, map_neg]`. Apply the tactic sequence `apply Complex.ext <;> simp [hre0]`. Establish `hmemΛ : ∀ z ∈ ((differentIdeal ℤ (𝓞 E) : FractionalIdeal (𝓞 E)⁰ E)) ^ (r - a.val), (z • fun i => f i a) ∈ Λ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `z hz`. Apply `hspan` to reduce the goal to its premises. Unfold `_root_.GlobalTheory.SnMass.tupLat`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨Fin.natAdd (r + 1) a, z, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [_root_.GlobalTheory.SnMass.id1, Fin.append_right]`. Rewrite using `[_root_.GlobalTheory.SgGlob.dInv, inv_pow, inv_inv]`. Conclude with `hz`. Use function extensionality and compare the values at `i`. Simplify using `[_root_.GlobalTheory.SnMass.sideM, Fin.append_right]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Set `t : E ≃ₐ[ℚ] E` to `{ toFun := σ, invFun := σ, left_inv := hinvol, right_inv := hinvol, map_mul' := map_mul σ, map_add' := map_add σ, commutes' := fun q => by rw [eq_ratCast (algebraMap ℚ E) q]; exact map_ratCast σ q }`. Establish `ht : ∀ x, t x = σ x` using `fun x => rfl`. Unfold `_root_.GlobalTheory.SnMass.VolN.skewLat`. Use `⟨c, ?_, hsc, fun w => ?_⟩` and prove the remaining obligations. Use `_root_.GlobalTheory.SnMass.VolN.IntG.mem_dInv_two_mul t (fun x => by rw [ht, ht, hinvol]) (r - a.val) c ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx y hy`. Establish `hγmem : γ *ᵥ (x • fun i => f i a) ∈ Λ`. Establish `hm` using `Submodule.mem_map_of_mem (f := (γ.mulVecLin.restrictScalars (𝓞 E))) (hmemΛ x hx)`. Rewrite `hm` using `[hγΛ]`. Conclude with `hm`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hpair` using `(hΛ.2 _).1 hγmem _ (hmemΛ y hy)`. Use `hpair using 1` and compare the differences between its conclusion and the goal. Unfold `_root_.GlobalTheory.SgAlg.form`. Establish `e : (fun i => (σ : E →+* E) ((y • fun i => f i a) i)) = σ y • fun i => (σ : E →+* E) (f i a)`. Use function extensionality and compare the values at `i`.
-
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, e, smul_dotProduct, dotProduct_smul, ht]`. Express the relevant statement in the definitionally equal form `x * σ y * c = σ y * (x * c)`. Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce`.
-
-Rewrite using `[hentry, ← Complex.ofReal_pow, Complex.im_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.IntG.antidiag_mem_skewLat (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (k r : ℕ) (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E)

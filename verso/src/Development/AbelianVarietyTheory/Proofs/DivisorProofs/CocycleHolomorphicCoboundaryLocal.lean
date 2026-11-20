@@ -9,23 +9,23 @@ open scoped Real ContDiff
 namespace GlobalTheory.RealPeriodCocycle
 
 /- English proof (translation)
-Establish `hπ : 3 < π` using `Real.pi_gt_three`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hne : ‖Complex.exp w‖ = Real.exp w.re` using `Complex.norm_exp w`. Distinguish the cases in `h1 : 1 ≤ w.re`. Establish `h2` using `norm_sub_norm_le (Complex.exp w) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h3` using `Real.add_one_le_exp w.re`. Rewrite `h2` using `[hne, norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `h2 : w.re ≤ -1`. Establish `h3` using `norm_sub_norm_le 1 (Complex.exp w)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `h3` using `[hne, norm_one, norm_sub_rev]`. Establish `h4 : Real.exp w.re ≤ Real.exp (-1)` using `Real.exp_le_exp.2 h2`. Establish `h5 : Real.exp (-1) ≤ 1 / 2`. Use `Real.exp_neg_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `push Not at h1 h2`. Use `set ρ : ℝ := (2 * n + 1) * π with hρ`. Establish `hρ1 : 1 ≤ ρ` using `by nlinarith`. Establish `hsq : w.re ^ 2 + w.im ^ 2 = ρ ^ 2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hw, Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hre : w.re ^ 2 ≤ 1` using `by nlinarith`. Establish `hup : |w.im| ≤ ρ` using `hw ▸ Complex.abs_im_le_norm w`. Establish `hlo : ρ - 1 ≤ |w.im|`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `abs_le_of_sq_le_sq' _ (abs_nonneg _) |>.2` to reduce the goal to its premises. Rewrite using `[sq_abs]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hcos : Real.cos w.im ≤ 0`. Establish `e : Real.cos w.im = - Real.cos (ρ - |w.im|)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.cos_abs w.im]`. Establish `: |w.im| = (π - (ρ - |w.im|)) + n * (2 * π)` using `by rw [hρ]; ring`. Use `conv_lhs => rw [this]`. Rewrite using `[Real.cos_add_nat_mul_two_pi, Real.cos_pi_sub]`. Rewrite using `[e, neg_nonpos]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply `Real.cos_nonneg_of_mem_Icc` to reduce the goal to its premises. Apply the tactic sequence `constructor <;> linarith`. Establish `h3` using `Complex.abs_re_le_norm (Complex.exp w - 1)`. Rewrite `h3` using `[Complex.sub_re, Complex.exp_re, Complex.one_re]`. Establish `h4 : Real.exp w.re * Real.cos w.im ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (Real.exp_pos _).le hcos`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h5` using `neg_abs_le (Real.exp w.re * Real.cos w.im - 1)`. Establish `h6` using `neg_le_abs (Real.exp w.re * Real.cos w.im - 1)`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem half_le_norm_exp_sub_one (n : ℕ) {w : ℂ} (hw : ‖w‖ = (2 * n + 1) * π) :
     1 / 2 ≤ ‖Complex.exp w - 1‖ := by
@@ -83,7 +83,7 @@ Check the signs of the components of the expression.
 theorem radius_pos (n : ℕ) : (0 : ℝ) < (2 * n + 1) * π := by positivity
 
 /- English proof (translation)
-Introduce `h`. Use `half_le_norm_exp_sub_one n (w := w) (by simpa using hw)` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Evaluate the numerical expressions using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem exp_sub_one_ne (n : ℕ) {w : ℂ} (hw : w ∈ Metric.sphere (0 : ℂ) ((2 * n + 1) * π)) :
     Complex.exp w - 1 ≠ 0 := by
@@ -93,7 +93,7 @@ theorem exp_sub_one_ne (n : ℕ) {w : ℂ} (hw : w ∈ Metric.sphere (0 : ℂ) (
   norm_num at this
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[sub_zero]`. Use `radius_pos n` as an intermediate fact. Rewrite `hw` using `[h]`. Simplify using `only [mem_sphere_iff_norm, sub_self, norm_zero] at hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -107,13 +107,11 @@ theorem ne_zero_of_mem (n : ℕ) {w : ℂ} (hw : w ∈ Metric.sphere (0 : ℂ) (
   linarith
 
 /- English proof (translation)
-Unfold `hurwitz`. Use `Differentiable.const_mul ?_ _` and prove the remaining obligations. Rewrite using `[← differentiableOn_univ]`. Unfold `circleIntegral`. Establish `hm : ∀ t, circleMap 0 ((2 * n + 1) * π) t ∈ Metric.sphere (0 : ℂ) ((2 * n + 1) * π)` using `fun t => circleMap_mem_sphere _ (radius_pos n).le t`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `(GlobalTheory.differentiableOn_intervalIntegral_of_holomorphic_of_continuousOn (F := fun (t : ℝ) (z : ℂ) => deriv (circleMap 0 ((2 * n + 1) * π)) t • ((1 / (circleMap 0 ((2 * n + 1) * π) t - 0) ^ (n + 1)) • (Complex.exp (circleMap 0 ((2 * n + 1) * π) t * z) / (Complex.exp (circle …` and prove the remaining obligations. Apply `Continuous.continuousOn` to reduce the goal to its premises. Simplify using `only [deriv_circleMap, smul_eq_mul]`. Unfold `Function.uncurry`. Establish `hc : Continuous fun p : ℝ × ℂ => circleMap 0 ((2 * n + 1) * π) p.1` using `(continuous_circleMap _ _).comp continuous_fst`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `(hc.mul continuous_const).mul (Continuous.mul ?_ ?_)` and prove the remaining obligations. Conclude with `continuous_const.div ((hc.sub continuous_const).pow _) fun p => pow_ne_zero _ (ne_zero_of_mem n (hm _))`. Conclude with `(Complex.continuous_exp.comp (hc.mul continuous_snd)).div ((Complex.continuous_exp.comp hc).sub continuous_const) fun p => exp_sub_one_ne n (hm _)`. Introduce `t _`. Apply `Differentiable.differentiableOn` to reduce the goal to its premises.
-
-Simplify using `only [smul_eq_mul]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_hurwitz (n : ℕ) : Differentiable ℂ (hurwitz n) := by
   unfold hurwitz
@@ -143,7 +141,7 @@ theorem differentiable_hurwitz (n : ℕ) : Differentiable ℂ (hurwitz n) := by
     fun_prop
 
 /- English proof (translation)
-Apply `ContinuousOn.circleIntegrable (radius_pos n).le` to reduce the goal to its premises. Simplify using `only [smul_eq_mul]`. Use `ContinuousOn.mul (ContinuousOn.div (by fun_prop) (by fun_prop) fun w hw => pow_ne_zero _ (ne_zero_of_mem n hw)) (ContinuousOn.div (by fun_prop) (by fun_prop) fun w hw => exp_sub_one_ne n hw)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem circleIntegrable_kernel (n : ℕ) (z : ℂ) : CircleIntegrable (fun w : ℂ =>
     (1 / (w - 0) ^ (n + 1)) • (Complex.exp (w * z) / (Complex.exp w - 1))) 0
@@ -155,13 +153,13 @@ theorem circleIntegrable_kernel (n : ℕ) (z : ℂ) : CircleIntegrable (fun w : 
     fun w hw => exp_sub_one_ne n hw)
 
 /- English proof (translation)
-Establish `h1` using `(show DifferentiableOn ℂ (fun w : ℂ => Complex.exp (w * z)) (Metric.closedBall 0 ((2 * n + 1) * π)) by fun_prop).circleIntegral_one_div_sub_center_pow_smul (radius_pos n) n`. Establish `h2 : iteratedDeriv n (fun w : ℂ => Complex.exp (w * z)) 0 = z ^ n`. Use `congrFun (iteratedDeriv_cexp_const_mul n z) 0` as an intermediate fact. Simplify using `only [mul_comm z] at this`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[h2]`. Establish `h3` using `circleIntegral.integral_sub (circleIntegrable_kernel n (z + 1)) (circleIntegrable_kernel n z)`. Establish `h4 : (∮ w in C(0, (2 * n + 1) * π), ((1 / (w - 0) ^ (n + 1)) • (Complex.exp (w * (z + 1)) / (Complex.exp w - 1)) - (1 / (w - 0) ^ (n + 1)) • (Complex.exp (w * z) / (Complex.exp w - 1)))) = ∮ w in C(0, (2 * n + 1) * π), (1 / (w - 0) ^ (n + 1)) • Complex.exp (w * z)`. Apply `circleIntegral.integral_congr (radius_pos n).le` to reduce the goal to its premises. Introduce `w hw`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `exp_sub_one_ne n hw` as an intermediate fact. Simplify using `only [smul_eq_mul, mul_add, mul_one, Complex.exp_add]`. Clear the denominators using the available nonvanishing facts. Rewrite `h3` using `[h4, h1]`. Unfold `hurwitz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← sub_eq_iff_eq_add', ← mul_sub, ← h3, smul_eq_mul]`. Establish `: (π : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem hurwitz_add_one (n : ℕ) (z : ℂ) :
     hurwitz n (z + 1) = hurwitz n z + (n.factorial : ℂ)⁻¹ * z ^ n := by
@@ -191,15 +189,15 @@ theorem hurwitz_add_one (n : ℕ) (z : ℂ) :
   field_simp
 
 /- English proof (translation)
-Use `set ρ : ℝ := (2 * n + 1) * π with hρ`. Establish `hρ0 : 0 < ρ` using `radius_pos n`. Establish `h1 : ‖hurwitz n z‖ ≤ ρ * (1 / ρ ^ (n + 1) * (Real.exp (ρ * S) / (1 / 2)))`. Unfold `hurwitz`. Rewrite using `[← smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `circleIntegral.norm_two_pi_i_inv_smul_integral_le_of_norm_le_const hρ0.le` to reduce the goal to its premises. Introduce `w hw`. Establish `hw' : ‖w‖ = ρ` using `by simpa using hw`. Rewrite using `[norm_smul, norm_div, norm_div, norm_pow, sub_zero, hw', norm_one]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `div_le_div₀ (by positivity) ?_ (by norm_num) (half_le_norm_exp_sub_one n hw')` and prove the remaining obligations. Use `(Complex.norm_exp_le_exp_norm _).trans (Real.exp_le_exp.2 ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, hw']`. Conclude with `mul_le_mul_of_nonneg_left hz hρ0.le`. Establish `h2 : (n.factorial : ℝ) ≤ ρ ^ n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a : (n.factorial : ℝ) ≤ (n : ℝ) ^ n` using `by exact_mod_cast Nat.factorial_le_pow n`. Use `a.trans (pow_le_pow_left₀ (Nat.cast_nonneg n) ?_ n)` and prove the remaining obligations. Use `Real.pi_gt_three` as an intermediate fact. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : Real.exp (ρ * S) = Real.exp (π * S) * Real.exp (2 * π * S) ^ n`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add, hρ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_hurwitz_le (n : ℕ) {S : ℝ} {z : ℂ} (hz : ‖z‖ ≤ S) :
     n.factorial * ‖hurwitz n z‖ ≤ 2 * Real.exp (π * S) * Real.exp (2 * π * S) ^ n := by
@@ -234,9 +232,9 @@ noncomputable def guichard (α : ℂ → ℂ) (z : ℂ) : ℂ :=
   ∑' n : ℕ, iteratedDeriv n α 0 * hurwitz n z
 
 /- English proof (translation)
-Establish `hR : 0 < 2 * Real.exp (2 * π * S)` using `by positivity`. Establish `h1` using `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le n hR hα.diffContOnCl hC`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC _ (circleMap_mem_sphere 0 hR.le 0))`. Establish `h2` using `norm_hurwitz_le n hz`. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_term_le {α : ℂ → ℂ} (hα : Differentiable ℂ α) {S C : ℝ}
     (hC : ∀ ζ ∈ Metric.sphere (0 : ℂ) (2 * Real.exp (2 * π * S)), ‖α ζ‖ ≤ C) (n : ℕ) {z : ℂ}
@@ -258,7 +256,7 @@ theorem norm_term_le {α : ℂ → ℂ} (hα : Differentiable ℂ α) {S C : ℝ
     _ = _ := by rw [mul_pow, one_div, inv_pow]; field_simp
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `(isCompact_sphere (0 : ℂ) (2 * Real.exp (2 * π * ‖z‖))).exists_bound_of_continuousOn hα.continuous.continuousOn`. Conclude with `Summable.of_norm_bounded (summable_geometric_two.mul_left _) fun n => norm_term_le hα hC n le_rfl`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem summable_term {α : ℂ → ℂ} (hα : Differentiable ℂ α) (z : ℂ) :
     Summable fun n : ℕ => iteratedDeriv n α 0 * hurwitz n z := by
@@ -268,9 +266,9 @@ theorem summable_term {α : ℂ → ℂ} (hα : Differentiable ℂ α) (z : ℂ)
     fun n => norm_term_le hα hC n le_rfl
 
 /- English proof (translation)
-Establish `h` using `(summable_term hα z).hasSum.add (Complex.hasSum_taylorSeries_of_entire hα 0 z)`. Use `HasSum.tsum_eq ?_` and prove the remaining obligations. Establish `e : (fun n : ℕ => iteratedDeriv n α 0 * hurwitz n (z + 1)) = fun n : ℕ => iteratedDeriv n α 0 * hurwitz n z + (n.factorial : ℂ)⁻¹ • (z - 0) ^ n • iteratedDeriv n α 0`. Use function extensionality and compare the values at `n`. Rewrite using `[hurwitz_add_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul, sub_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem guichard_add_one {α : ℂ → ℂ} (hα : Differentiable ℂ α) (z : ℂ) :
     guichard α (z + 1) = guichard α z + α z := by
@@ -287,11 +285,11 @@ theorem guichard_add_one {α : ℂ → ℂ} (hα : Differentiable ℂ α) (z : �
   exact h
 
 /- English proof (translation)
-Establish `hO : IsOpen (X ×ˢ (Set.univ : Set ℂ))` using `hX.prod isOpen_univ`. Establish `hent : ∀ x ∈ X, Differentiable ℂ fun ζ => F (x, ζ)` using `fun x hx ζ => (hF.differentiableAt (hO.mem_nhds ⟨hx, trivial⟩)).comp ζ (by fun_prop)`. Use `(GlobalTheory.SCV.differentiableOn_tsum_of_normal_on_compacts (F := fun n x => iteratedDeriv n (fun ζ => F (x, ζ)) 0 * hurwitz n (l x)) hX ?_ ?_).1` and prove the remaining obligations. Introduce `n`. Use `DifferentiableOn.mul ?_ ((differentiable_hurwitz n).comp hl).differentiableOn` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : DifferentiableOn ℂ (fun x : V => iteratedFDeriv ℂ n F (x, 0)) X` using `(GlobalTheory.SCV.differentiableOn_iteratedFDeriv hO hF n).comp (f := fun x : V => (x, (0 : ℂ))) (by fun_prop) fun x hx => ⟨hx, trivial⟩`. Establish `h2` using `(ContinuousMultilinearMap.apply ℂ (fun _ : Fin n => V × ℂ) ℂ (fun _ => ((0 : V), (1 : ℂ)))).differentiable.comp_differentiableOn h1`. Use `h2.congr fun x hx => ?_` and prove the remaining obligations. Establish `h3` using `GlobalTheory.SCV.iteratedDeriv_line hO hF (c := (x, 0)) ⟨hx, trivial⟩ ((0 : V), (1 : ℂ)) n`. Simplify using `using h3`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `K hK hKc`. Take `⟨S, hS⟩` from `hKc.exists_bound_of_continuousOn hl.continuous.continuousOn`. Take `⟨C, hC⟩` from `(hKc.prod (isCompact_sphere (0 : ℂ) (2 * Real.exp (2 * π * S)))).exists_bound_of_continuousOn (hF.continuousOn.mono (Set.prod_mono hK (Set.subset_univ _)))`. Conclude with `⟨_, summable_geometric_two.mul_left _, fun n x hx => norm_term_le (hent x (hK hx)) (fun ζ hζ => hC (x, ζ) ⟨hx, hζ⟩) n (hS x hx)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem differentiableOn_guichard {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     [FiniteDimensional ℂ V] {X : Set V} (hX : IsOpen X) {F : V × ℂ → ℂ}
@@ -326,19 +324,19 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensiona
   {U : Set E}
 
 /- English proof (translation)
-Establish `hO : IsOpen (cov U g)` using `hU.prod isOpen_univ`. Establish `hG : Differentiable ℂ fun Q : Pt E g × ℂ => ((Q.1.1, Function.update Q.1.2 m Q.2) : Pt E g)`. Use `Differentiable.prodMk (by fun_prop) (differentiable_pi.2 fun j => ?_)` and prove the remaining obligations. Distinguish the cases in `h : j = m`. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Function.update_self]`. Use `fun_prop`. Simplify using `only [Function.update_of_ne h]`. Use `fun_prop`. Establish `hF : DifferentiableOn ℂ (fun Q : Pt E g × ℂ => b (Q.1.1, Function.update Q.1.2 m Q.2)) (cov U g ×ˢ Set.univ)` using `hb.comp hG.differentiableOn fun Q hQ => ⟨hQ.1.1, trivial⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun P => guichard (fun ζ => b (P.1, Function.update P.2 m ζ)) (P.2 m), differentiableOn_guichard hO hF (l := fun P => P.2 m) (by fun_prop), ?_, ?_⟩` and prove the remaining obligations. Introduce `P hP`. Establish `hent : Differentiable ℂ fun ζ => b (P.1, Function.update P.2 m ζ)` using `fun ζ => (hF.differentiableAt ((hO.prod isOpen_univ).mem_nhds (x := (P, ζ)) ⟨hP, trivial⟩)).comp ζ (f := fun ζ : ℂ => (P, ζ)) (by fun_prop)`. Establish `e : ∀ ζ, Function.update (P.2 + Pi.single m 1) m ζ = Function.update P.2 m ζ`. Introduce `ζ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = m`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h, Pi.single_eq_of_ne h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e, Pi.add_apply, Pi.single_eq_same]`. Rewrite using `[guichard_add_one hent, Function.update_eq_self]`. Introduce `k hk hper P hP`. Establish `e : ∀ ζ, b (P.1, Function.update (P.2 + Pi.single k 1) m ζ) = b (P.1, Function.update P.2 m ζ)`. Introduce `ζ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hper (P.1, Function.update P.2 m ζ) ⟨hP.1, trivial⟩]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = m`. Substitute `h` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hk.symm]`. Simplify using `[Function.update_of_ne h]`. Simplify using `only [e, Pi.add_apply, Pi.single_eq_of_ne hk.symm, add_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_solution_direction (hU : IsOpen U) (m : Fin g) {b : Pt E g → ℂ}
     (hb : DifferentiableOn ℂ b (cov U g)) :
@@ -382,15 +380,15 @@ theorem exists_solution_direction (hU : IsOpen U) (m : Fin g) {b : Pt E g → �
     simp only [e, Pi.add_apply, Pi.single_eq_of_ne hk.symm, add_zero]
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (Fin g), ∃ ψ : Pt E g → ℂ, DifferentiableOn ℂ ψ (cov U g) ∧ ∀ k ∈ s, ∀ P ∈ cov U g, ψ (P.1, P.2 + Pi.single k 1) = ψ P + a k P`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨fun _ => 0, differentiableOn_const _, by simp⟩`. Consider the case `insert m s hm ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨ψ, hψ, hs⟩` from `ih`. Establish `hψ' : DifferentiableOn ℂ (fun P : Pt E g => ψ (P.1, P.2 + Pi.single m 1)) (cov U g)` using `hψ.comp (f := fun P : Pt E g => ((P.1, P.2 + Pi.single m 1) : Pt E g)) (by fun_prop) fun P hP => ⟨hP.1, trivial⟩`. Take `⟨φ, hφ, h1, h2⟩` from `exists_solution_direction hU m (b := fun P => a m P - (ψ (P.1, P.2 + Pi.single m 1) - ψ P)) ((ha m).sub (hψ'.sub hψ))`. Use `⟨fun P => ψ P + φ P, hψ.add hφ, fun k hk P hP => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hk with rfl | hk` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [h1 P hP]`. Expand and normalize the polynomial expressions, which then agree. Establish `hkm : k ≠ m` using `fun h => hm (h ▸ hk)`. Establish `h3` using `h2 k hkm (fun Q hQ => by`. Establish `e1` using `hs k hk Q hQ`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hs k hk (Q.1, Q.2 + Pi.single m 1) ⟨hQ.1, trivial⟩`. Establish `e3` using `hc k m Q hQ`. Simplify using `only at e2 ⊢`. Rewrite using `[add_right_comm Q.2, e1, e2]`. Take the linear combination `-e3) P hP`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [h3, hs k hk P hP]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨ψ, h1, h2⟩` from `key Finset.univ`. Conclude with `⟨ψ, h1, fun k => h2 k (Finset.mem_univ k)⟩`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_coboundary (hU : IsOpen U) (a : Fin g → Pt E g → ℂ)
     (ha : ∀ k, DifferentiableOn ℂ (a k) (cov U g))
@@ -429,7 +427,7 @@ theorem exists_coboundary (hU : IsOpen U) (a : Fin g → Pt E g → ℂ)
 end Main
 
 /- English proof (translation)
-Introduce `E _ _ _ g U hU a ha hc b₀ hb₀`. Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.1 hU b₀ hb₀`. Take `⟨ψ, h1, h2⟩` from `exists_coboundary hU a ha hc`. Establish `hsub : cov (Metric.ball b₀ r) g ⊆ cov U g` using `fun P hP => ⟨hrU hP.1, trivial⟩`. Conclude with `⟨r, hr, hrU, ψ, h1.mono hsub, fun k P hP => h2 k P (hsub hP)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem main : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g : ℕ} {U : Set E}, IsOpen U → ∀ a : Fin g → Pt E g → ℂ, (∀ k, DifferentiableOn ℂ (a k) (cov U g)) → (∀ k j, ∀ P ∈ cov U g, a k (P.1, P.2 + Pi.single j 1) + a j P = a j (P.1, P.2 + Pi.single k 1) + a k P) → ∀ b₀ ∈ U, ∃ r > 0, Metric.ball b₀ r ⊆ U ∧ ∃ ψ : Pt E g → ℂ, DifferentiableOn ℂ ψ (cov (Metric.ball b₀ r) g) ∧ ∀ k, ∀ P ∈ cov (Metric.ball b₀ r) g, ψ (P.1, P.2 + Pi.single k 1) = ψ P + a k P := by
   intro E _ _ _ g U hU a ha hc b₀ hb₀

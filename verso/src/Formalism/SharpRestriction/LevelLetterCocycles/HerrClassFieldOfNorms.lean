@@ -23,7 +23,7 @@ def AdmNat (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Form
 def HerrNaturalityTheorem (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := AdmNat D HW F → HerrNaturality D HW F
 
 /- English proof (translation)
-Introduce `h l _ K s LL g`. Use `⟨(h l K s LL g).2.2, ?_⟩` and prove the remaining obligations. Introduce `hg T T' f pr pr' hp`. Establish `h1` using `(h l K s LL g).1 hg T`. Conclude with `(h1.2.2 T' f pr pr' hp).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem herr_naturality_theorem_holds (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : HerrNaturalityTheorem D HW F := by
   intro h l _ K s LL g
@@ -33,7 +33,7 @@ theorem herr_naturality_theorem_holds (D : D7) (HW : HWOf D.loc) (F : FonOf D.lo
   exact (h1.2.2 T' f pr pr' hp).symm
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem herr_naturality_iff (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : HerrNaturality D HW F ↔ Formalism.MainNotions.HerrCohomologyExtensions.adm18 D HW F := Iff.rfl
 
@@ -44,7 +44,7 @@ def AdmExt (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := FN D
 def HerrExtensionTheorem (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := AdmExt D HW F → HerrExtensionClass D HW F
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem herr_extension_iff (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : HerrExtensionClass D HW F ↔ Formalism.MainNotions.HerrCohomologyExtensions.adm16 D HW F := Iff.rfl
 
@@ -57,13 +57,13 @@ def AdmExtU (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Her
 def HerrExtensionUnitTheorem (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := AdmExtU D HW F → HerrExtensionUpToUnit D HW F
 
 /- English proof (translation)
-Introduce `l _ K s LL h` and use `⟨(h1 l K s LL h).1, (h1 l K s LL h).2, (h2 l K s LL h).1, (h2 l K s LL h).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem herr_class_maps_of_naturality (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h1 : HerrNaturality D HW F) (h2 : HerrExtensionUpToUnit D HW F) : Formalism.MainNotions.ElementDenominator.HerrClassMapsLocal D HW F :=
   fun l _ K s LL h => ⟨(h1 l K s LL h).1, (h1 l K s LL h).2, (h2 l K s LL h).1, (h2 l K s LL h).2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => ⟨fun l _ K s LL h => ⟨(H l K s LL h).1, (H l K s LL h).2.1⟩, fun l _ K s LL h => (H l K s LL h).2.2⟩, fun H => herr_class_maps_of_naturality D HW F H.1 H.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem herr_class_maps_iff (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Formalism.MainNotions.ElementDenominator.HerrClassMapsLocal D HW F ↔ HerrNaturality D HW F ∧ HerrExtensionUpToUnit D HW F :=
   ⟨fun H => ⟨fun l _ K s LL h => ⟨(H l K s LL h).1, (H l K s LL h).2.1⟩,

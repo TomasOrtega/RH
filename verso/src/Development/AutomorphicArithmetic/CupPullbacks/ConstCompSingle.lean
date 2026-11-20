@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace UpperTheory.Pbf
 
 /- English proof (translation)
-The claim follows from `CategoryTheory.Functor.ext (fun _ => rfl) (fun a b h => by simp)`.
+A detailed English derivation is pending.
 -/
 private theorem const_comp_single {A B : Type} [Monoid A] [Monoid B] (G : SingleObj A ⥤ SingleObj B) (J : Type) [Category J] :
     (Functor.const J).obj (SingleObj.star A) ⋙ G = (Functor.const J).obj (SingleObj.star B) :=

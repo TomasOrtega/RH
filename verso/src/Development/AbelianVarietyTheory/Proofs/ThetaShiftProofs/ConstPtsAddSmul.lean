@@ -14,15 +14,15 @@ namespace GlobalTheory.ArcPts
 open ConstGrp
 
 /- English proof (translation)
-Introduce `hL hL2 E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W Λ Ξ`. Take `⟨hadd, -, hact⟩` from `GlobalTheory.T.analyticDictionaryExp_additive_surjective_linear hL hL2 E H D l c O β b a Λ`. Establish `hG` using `hL.globalFns`. Take `⟨gp, hw, -, ho, -, -⟩` from `W.spec`. Establish `hw'` using `(isGen_iff _).1 hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : ∀ v, (Ξ.g v).b.left ≫ W.φ = spMap (PowerSeries.C (R` using `ℂ)) ≫ (Λ.ex0 v).b.left := fun v => (Ξ.g_rel v 0).1 2`. Set `ρ : Over.mk (selfR.hom ≫ spMap (PowerSeries.C (R` to `ℂ))) ⟶ Out.TF (R := ℂ) ℂ := Over.homMk (spMap (PowerSeries.C (R := ℂ))) (by`. Rewrite using `[← Over.w (Λ.ex0 0).b]`. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (hb 0).symm).trans ?_)` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) gp.1.w).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) (Over.w (Ξ.g 0).b)))`. Establish `r : ∀ v, Rel gp W.w W.e ρ (Ξ.g v) (Λ.ex0 v)` using `fun v => rel_of_pmaps (fun x => (Ξ.g_rel v x).1) fun x => pmaps_of_genRelR hw' W.P.D.toPre.P.isLB a.D₀.P.isLB ((Ξ.g v).isGen _) (DVR.pullGen_isGen _ _ _ _ ((Λ.ex0 v).isGen x) _) (Ξ.g_rel v x)`. Establish `hc : ∀ x, pushHom gp selfR (DVR.cP W.P.D.toPre selfR (W.e x)) = ρ ≫ DVR.cP a.D₀ _ x` using `fun x => Over.OverMorphism.ext ((Ξ.g_rel 0 x).1 1)`. Establish `: IsHausdorff ((Ideal.span {(PowerSeries.X : ℂ⟦X⟧)}).map (algebraMap ℂ⟦X⟧ ℂ⟦X⟧)) ℂ⟦X⟧`. Rewrite using `[Algebra.algebraMap_self, Ideal.map_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `infer_instance`. Use `⟨fun v v' => (Ξ.x_pt (v + v')).unique (((Ξ.x_pt v).mul hG (Ξ.x_pt v') (isAdd_of_rel hG hw' hc W.e.surjective (r v) (r v') (r (v + v')) (hadd v v')))), fun e v => ?_⟩` and prove the remaining obligations. Establish `hs` using `hact e v`. Use `clear hact hadd`. Establish `r₁` using `r v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r₂` using `r (Λ.A.actV e v)`. Establish `x₁` using `Ξ.x_pt v`. Establish `x₂` using `Ξ.x_pt (Λ.A.actV e v)`. Use `letI := H.starRing`. Conclude with `x₂.unique (x₁.smul hG W.P.lin e (isSmulPt_of_rel hG hw' hc W.e.surjective W.P.oD a.oa (fun s x => W.e.map_smul s x) ho e r₁ r₂ hs))`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem constPts_add_smul : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (χ : Sp ℂ⟦X⟧ ⟶ Y.X) (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ) (Λ : GtAn a) (Ξ : ConstPts W Λ) , (∀ v v', Ξ.x (v + v') = Ξ.x v * Ξ.x v') ∧ ∀ (e : 𝓞 E) v, Ξ.x (Λ.A.actV e v) = Ξ.x v ≫ W.t.act.act e := by
   intro hL hL2 E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W Λ Ξ

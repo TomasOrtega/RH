@@ -16,9 +16,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.XR
 
 /- English proof (translation)
-Unfold `genPt`. Use `show ξ ((spMap i) (closedPoint Ω)) = ξ (closedPoint K)`. Use `congr 1`. Use `first`. Consider the case `exact Subsingleton.elim _ _`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact IsLocalRing.comap_closedPoint i`. Consider the case `exact (IsLocalRing.PrimeSpectrum.comap_closedPoint i)`.
+A detailed English derivation is pending.
 -/
 theorem genPt_spMap_comp {X : Scheme.{0}} {K Ω : Type} [Field K] [Field Ω] (i : K →+* Ω) (ξ : Sp K ⟶ X) :
     genPt (spMap i ≫ ξ) = genPt ξ := by
@@ -31,17 +31,17 @@ theorem genPt_spMap_comp {X : Scheme.{0}} {K Ω : Type} [Field K] [Field Ω] (i 
   | exact (IsLocalRing.PrimeSpectrum.comap_closedPoint i)
 
 /- English proof (translation)
-Establish `hA : ∀ p : Sp K, (ξ.stalkMap p).hom.Finite`. Introduce `p`. Take `rfl : p = closedPoint K` from `Subsingleton.elim _ _`. Apply `RingHom.Finite.of_surjective` to reduce the goal to its premises. Establish `e : Scheme.stalkClosedPointTo ξ = ξ.stalkMap (closedPoint K) ≫ (stalkClosedPointIso (CommRingCat.of K)).hom` using `by first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Consider the case `rfl`. Consider the case `simp [Scheme.stalkClosedPointTo]`. Introduce `y`. Take `⟨a, ha⟩` from `hξ ((stalkClosedPointIso (CommRingCat.of K)).hom y)`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `(ConcreteCategory.bijective_of_isIso (stalkClosedPointIso (CommRingCat.of K)).hom).1` to reduce the goal to its premises. Rewrite using `[← ha, e]`. Both sides reduce to the same expression. Establish `hB : (Scheme.stalkClosedPointTo (spMap i)).hom.Finite`. Express the relevant statement in the definitionally equal form `(Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom i))).hom.Finite`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h` using `Scheme.germ_stalkClosedPointTo_Spec (CommRingCat.ofHom i)`. Use `RingHom.Finite.of_comp_finite (f := ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ (Spec (CommRingCat.of K)).presheaf.germ ⊤ ((Spec.map (CommRingCat.ofHom i)) (closedPoint Ω)) trivial).hom) ?_` and prove the remaining obligations. Rewrite using `[← CommRingCat.hom_comp, Category.assoc, h, Iso.inv_hom_id_assoc]`. Simplify using `using hi`. Establish `hC : (Scheme.stalkClosedPointTo (spMap i ≫ ξ)).hom.Finite`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e2` using `Scheme.stalkClosedPointTo_comp (R := CommRingCat.of Ω) (spMap i) ξ`. Establish `h3` using `hB.comp (hA ((spMap i) (closedPoint Ω)))`. Rewrite `h3` using `[← CommRingCat.hom_comp]`. Use `first`. Consider the case `exact e2 ▸ h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (congrArg (fun φ => (CommRingCat.Hom.hom φ).Finite) e2).mpr h3`. Consider the case `(rw [e2]; exact h3)`. Use `RingHom.Finite.of_comp_finite (f := (X.residue _).hom) ?_` and prove the remaining obligations. Rewrite using `[← CommRingCat.hom_comp, Scheme.residue_descResidueField]`. Conclude with `hC`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_descResidueField_spMap_comp {X : Scheme.{0}} {K Ω : Type} [Field K] [Field Ω] (i : K →+* Ω)
     (hi : i.Finite) (ξ : Sp K ⟶ X) (hξ : Function.Surjective (Scheme.stalkClosedPointTo ξ).hom) :
@@ -82,15 +82,13 @@ theorem finite_descResidueField_spMap_comp {X : Scheme.{0}} {K Ω : Type} [Field
   exact hC
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y e he N hN`. Take `⟨K, _, _, n0, x0, y0, htie, -, hgen⟩` from `GlobalTheory.T.generic_point_normal_coords E H D l Xo c Y e he`. Take `⟨Ω, _, _, z, ev, hfd, hfull⟩` from `GlobalTheory.T.exists_full_level_finite_extension E H D l Xo c _ _ Y K y0 N hN`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap K Ω).injective`. Use `haveI : NumberField c.F := { to_charZero := inferInstance, to_finiteDimensional := c.fin }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hproj : IsProjOver (Y.s ≫ spMap (Int.castRingHom (𝓞 c.F)))` using `GlobalTheory.T.projective_over_restrict_int _ Y.X Y.s Y.proj`. Establish `hsurj : Function.Surjective (Scheme.stalkClosedPointTo (y0 ≫ Y.j)).hom`. Take `⟨hg, -, -, -⟩` from `htie`. Take `⟨hb, -⟩` from `hg`. Conclude with `hb.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hi : (algebraMap K Ω).Finite` using `by first`. Consider the case `exact RingHom.finite_algebraMap.mpr hfd`. Consider the case `exact hfd`. Establish `hfin` using `finite_descResidueField_spMap_comp (algebraMap K Ω) hi (y0 ≫ Y.j) hsurj`. Take `⟨n, x, M, π, hMn, hπ, hMπ⟩` from `GlobalTheory.T.exists_finite_normal_model_of_residue_finite Y.X _ hproj Ω (spMap (algebraMap K Ω) ≫ (y0 ≫ Y.j)) hfin`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hMg : IsCptGen M.ξ`. Take `⟨hg, -, -, -⟩` from `M.tie`. Conclude with `hg`. Take `⟨t, hx, ev', h1, h2, h3⟩` from `GlobalTheory.T.full_level_generic_cover E H D l Xo c Y K Ω (algebraMap K Ω) y0 N z ev hN hfull M.X M.ξ hMg hMn π hMπ`. Use `⟨Ω, inferInstance, inferInstance, n, x, M, π, spMap (algebraMap K Ω) ≫ y0, t, hx, z, ev', hMn, hπ, ?_, ?_, h1, h2, h3⟩` and prove the remaining obligations.
-
-Use `show genPt (M.ξ ≫ π) = e`. Rewrite using `[hMπ, genPt_spMap_comp, hgen]`. Rewrite using `[hMπ, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelCover : LevelCoverSt := by
   intro E _ _ _ H D l Xo c Y e he N hN

@@ -12,25 +12,23 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.Proof.CoefField
 
 /- English proof (translation)
-Set `φ : O →+* Qbar l` to `ι.comp (algebraMap O (FractionRing O))`. Establish `hφ : ∀ z : ℤ_[l], φ (algebraMap ℤ_[l] O z) = algebraMap ℚ_[l] (Qbar l) (z : ℚ_[l])` using `hι`. Establish `hQ : ∀ q : ℚ_[l], algebraMap ℚ_[l] (Qbar l) q ∈ ι.fieldRange`. Introduce `q`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := ℤ_[l]) q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_div₀]`. Use `div_mem ?_ ?_` and prove the remaining obligations. Conclude with `⟨_, hι a⟩`. Conclude with `⟨_, hι b⟩`. Set `K : IntermediateField ℚ_[l] (Qbar l)` to `ι.fieldRange.toIntermediateField hQ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hK : ∀ z, z ∈ K ↔ ∃ x, ι x = z` using `fun z => Iff.rfl`. Take `⟨s, hs⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ_[l] O).FG)`. Set `S : Set (Qbar l)` to `φ '' (s : Set O)`. Establish `hint : ∀ x ∈ S, IsIntegral ℚ_[l] x`. Introduce and unpack `_ ⟨y, -, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨p, hp, hy⟩ : IsIntegral ℤ_[l] y` from `Algebra.IsIntegral.isIntegral y`. Use `⟨p.map (algebraMap ℤ_[l] ℚ_[l]), hp.map _, ?_⟩` and prove the remaining obligations. Use `congrArg φ hy` as an intermediate fact. Rewrite `this` using `[map_zero, Polynomial.hom_eval₂]`. Establish `e : (algebraMap ℚ_[l] (Qbar l)).comp (algebraMap ℤ_[l] ℚ_[l]) = φ.comp (algebraMap ℤ_[l] O)` using `RingHom.ext fun z => (hφ z).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.eval₂_map, e]`. Conclude with `this`. Use `haveI : Finite S := (s.finite_toSet.image φ).to_subtype`. Establish `hfd : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] S)` using `IntermediateField.finiteDimensional_adjoin hint`. Establish `hle : K ≤ IntermediateField.adjoin ℚ_[l] S`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hO : ∀ y : O, φ y ∈ IntermediateField.adjoin ℚ_[l] S`. Introduce `y`. Establish `hy : y ∈ Submodule.span ℤ_[l] (s : Set O)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact IntermediateField.subset_adjoin _ _ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[Algebra.smul_def, map_mul, hφ]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (IntermediateField.algebraMap_mem _ _) hx`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := O) x`. Rewrite using `[map_div₀]`. Conclude with `div_mem (hO a) (hO b)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `⟨K, hK, ?_, fun x => (GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate.mem_range_iff ι hι x).symm⟩` and prove the remaining obligations. Establish `hge : IntermediateField.adjoin ℚ_[l] S ≤ K`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `⟨_, rfl⟩`.
-
-Establish `heq : K = IntermediateField.adjoin ℚ_[l] S` using `le_antisymm hle hge`. Rewrite using `[heq]`. Conclude with `hfd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coefField {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (ι : FractionRing O →+* Qbar l)
@@ -90,7 +88,7 @@ theorem exists_coefField {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDom
   exact hfd
 
 /- English proof (translation)
-Introduce `R H what₂ N A i`. Conclude with `exists_coefField (A.iotaQ i) (A.iotaQ_alg i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coefField_range : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N) (i : N.Loc), ∃ K : IntermediateField ℚ_[N.l i] (Qbar (N.l i)), (∀ z, z ∈ K ↔ ∃ x, A.iotaQ i x = z) ∧ FiniteDimensional ℚ_[N.l i] K ∧ ∀ x : FractionRing (N.O i), ‖A.iotaQ i x‖ ≤ 1 ↔ x ∈ (algebraMap (N.O i) (FractionRing (N.O i))).range := by
   intro R H what₂ N A i

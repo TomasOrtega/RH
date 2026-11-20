@@ -4,7 +4,7 @@ open Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Apply the tactic sequence `let e : (∀ i, Fin (m i)) × Fin (m i₀) ≃ (∀ i, Fin (m i)) × Fin (m i₀) := { toFun := fun p => (Function.update p.1 i₀ p.2, p.1 i₀) invFun := fun p => (Function.update p.1 i₀ p.2, p.1 i₀) left_inv := fun p => by ext <;> simp right_inv := fun p => by ext <;> simp }`. Rewrite using `[← Fintype.sum_prod_type' (fun J j => G (Function.update J i₀ j))]`. Rewrite using `[Fintype.sum_equiv e (fun p => G (Function.update p.1 i₀ p.2)) (fun p => G p.1) (fun p => rfl)]`. Rewrite using `[Fintype.sum_prod_type' (fun J (_ : Fin (m i₀)) => G J)]`. Simplify using `[Finset.mul_sum]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_update_fiber_count {ι : Type} [Fintype ι] [DecidableEq ι] {m : ι → ℕ} (i₀ : ι)
     (G : (∀ i, Fin (m i)) → ℂ) :
@@ -20,17 +20,15 @@ theorem sum_update_fiber_count {ι : Type} [Fintype ι] [DecidableEq ι] {m : ι
   simp [Finset.mul_sum]
 
 /- English proof (translation)
-Introduce `ι _ _ X W _ _ m k ℓ i₀ F F' w w' hone v`. Establish `key : ∀ (u : W i₀) (H : (∀ i, X i) → ℂ) (J : ∀ i, Fin (m i)), ∑ j, (∏ i, ℓ i (Function.update J i₀ j i) (Function.update v i₀ u i)) * H (fun i => k i (Function.update J i₀ j i)) = (∏ i ∈ ({i₀}ᶜ : Finset ι), ℓ i (J i) (v i)) * ∑ j, ℓ i₀ j u * H (Function.update (fun i => k i (J i) …`. Introduce `u H J`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.prod_eq_mul_prod_compl i₀]`. Establish `hrest : ∏ i ∈ ({i₀}ᶜ : Finset ι), ℓ i (Function.update J i₀ j i) (Function.update v i₀ u i) = ∏ i ∈ ({i₀}ᶜ : Finset ι), ℓ i (J i) (v i)`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hne : i ≠ i₀` using `by simpa using hi`. Rewrite using `[Function.update_of_ne hne, Function.update_of_ne hne]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : (fun i => k i (Function.update J i₀ j i)) = Function.update (fun i => k i (J i)) i₀ (k i₀ j)`. Use function extensionality and compare the values at `i`. Conclude with `Function.apply_update k J i₀ j i`. Rewrite using `[hrest, hk, Function.update_self, Function.update_self]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : m i₀ = 0`. Use `haveI : IsEmpty (∀ i, Fin (m i)) := ⟨fun J => by`. Establish `h` using `J i₀`. Rewrite `h` using `[hm]`. Conclude with `h.elim0⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Establish `hm' : (m i₀ : ℂ) ≠ 0` using `by exact_mod_cast hm`. Apply `mul_left_cancel₀ hm'` to reduce the goal to its premises. Rewrite using `[← sum_update_fiber_count, ← sum_update_fiber_count]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[key w' F J, key w F' J, hone J]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_prod_update_regroup : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] {X : ι → Type} {W : ι → Type}
     [∀ i, AddCommGroup (W i)] [∀ i, Module ℂ (W i)]

@@ -20,13 +20,13 @@ open GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.LieRead
 set_option autoImplicit false
 
 /- English proof (translation)
-Introduce `hP hH D O hc hf A T H hR`. Take `⟨C, hC⟩` from `GlobalTheory.T.graded_degree_height_bound hP hH D O hc hf A T H hR`. Use `⟨max C 0 * ∑ τ : D.host.E →+* ℂ, (O.S.Dw.mult τ : ℝ), ?_⟩` and prove the remaining obligations. Introduce `y hy K _ _ F ι h hT hh τ k hk`. Take `⟨_, _, _, -, -, -, -, hg, -⟩` from `id hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hfull : Full F.lieLat` using `SemiFib.full_lieLat K F`. Use `⟨GlobalTheory.T.semistable_lattice_rank D O K F hg hfull τ k hk, ?_⟩` and prove the remaining obligations. Establish `hdeg : ∀ k ≤ O.S.Dw.mult τ, deg h (stepLat O F τ k) = ∑ i ∈ Finset.range k, stepGrDeg O F h τ i`. Introduce `k hk`. Proceed by induction on `k with`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp [stepLat_zero, HadamardFrameExtension.deg_bot]`. Consider the case `succ k ih => rw [GlobalTheory.T.filtration_degree_recursion D O K F h hg hfull τ k (by omega), ih (by omega), Finset.sum_range_succ]`. Establish `hb : ∀ i ∈ Finset.range k, |stepGrDeg O F h τ i - (adlOf (O.Φ.C _) (O.met.hm _) (Finsupp.single (ArIn.ind ∅, none, .inl (τ, i)) 1)).ht (basePt O.Φ y)| ≤ max C 0` using `fun i hi => (hC y hy K F ι h hT hh τ i (by simp at hi; omega)).trans (le_max_left _ _)`. Rewrite using `[hdeg k hk, stepHt, ← sub_eq_add_neg, ← Finset.sum_sub_distrib]`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `mul_le_mul_of_nonneg_left ?_ (le_max_right _ _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem GlobalTheory.LieRead.steps_read_heights : Hypotheses2 → HypothesesH → OnObj fun D O _ _ H _ => ∃ C : ℝ, ∀ y : Pt O.s, y ∈ H.int → ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K) (ι : K →+* Qb) (h : HermFam K (Fin F.P₀.g → K)), FibTie O y F ι → F.IsHerm h → ∀ τ, ∀ k ≤ O.S.Dw.mult τ, latRank K (stepLat O F τ k) = k ∧ |deg h (stepLat O F τ k) + stepHt O O.met.hm y τ k| ≤ C := by
   intro hP hH D O hc hf A T H hR

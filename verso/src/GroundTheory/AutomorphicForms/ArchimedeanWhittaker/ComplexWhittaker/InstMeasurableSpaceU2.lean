@@ -36,21 +36,21 @@ instance : μK.IsInvInvariant := by
   exact Measure.isHaarMeasure_eq_of_isProbabilityMeasure _ _
 
 /- English proof (translation)
-The claim follows from `integral_mul_left_eq_self f g`.
+A detailed English derivation is pending.
 -/
 theorem integral_mul_left_K {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (f : U2 → E)
     (g : U2) : ∫ k, f (g * k) ∂μK = ∫ k, f k ∂μK :=
   integral_mul_left_eq_self f g
 
 /- English proof (translation)
-The claim follows from `integral_mul_right_eq_self f g`.
+A detailed English derivation is pending.
 -/
 theorem integral_mul_right_K {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (f : U2 → E)
     (g : U2) : ∫ k, f (k * g) ∂μK = ∫ k, f k ∂μK :=
   integral_mul_right_eq_self f g
 
 /- English proof (translation)
-The claim follows from `integral_inv_eq_self f μK`.
+A detailed English derivation is pending.
 -/
 theorem integral_inv_K {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (f : U2 → E) :
     ∫ k, f k⁻¹ ∂μK = ∫ k, f k ∂μK :=

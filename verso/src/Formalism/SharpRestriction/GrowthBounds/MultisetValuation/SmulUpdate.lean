@@ -16,9 +16,7 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   (P : Places p O Kf)
 
 /- English proof (translation)
-Establish `hres` using `(P.setting v).res_card`. Establish `hfin : Finite (P.W v ⧸ Ideal.span {(p : P.W v)})`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[hres]`. Conclude with `pow_ne_zero _ (P.setting v).prime.ne_zero`.
-
-Conclude with `ef_edges_finite_gen p (P.n' v) i (P.m + 1) hfin L`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tm_fin (v : Fin P.nV) (i : ℕ) (L : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) :
     {L'' : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v) | IsEdge p (P.n' v) i ⟨L'', L⟩}.Finite := by
@@ -34,7 +32,7 @@ def tmE (v : Fin P.nV) (i : ℕ) (L : Submodule (P.W v) (Fin (P.m + 1) → P.Qq 
   (tm_fin P v i L).toFinset
 
 /- English proof (translation)
-Use `show (∑ᶠ (L'' : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) (_ : L'' ∈ {L'' : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v) | IsEdge p (P.n' v) i ⟨L'', L v⟩}), F (Function.update L v L'')) = _`. Conclude with `finsum_mem_eq_finite_toFinset_sum _ (tm_fin P v i (L v))`.
+A detailed English derivation is pending.
 -/
 theorem tm_eq (v : Fin P.nV) (i : ℕ) (F : P.Tup → P.Xsp) (L : P.Tup) :
     P.Tminus v i F L = ∑ L'' ∈ tmE P v i (L v), F (Function.update L v L'') := by
@@ -44,11 +42,11 @@ theorem tm_eq (v : Fin P.nV) (i : ℕ) (F : P.Tup → P.Xsp) (L : P.Tup) :
   exact finsum_mem_eq_finite_toFinset_sum _ (tm_fin P v i (L v))
 
 /- English proof (translation)
-Rewrite using `[tm_eq]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `L'' hL''`. Apply `hF` to reduce the goal to its premises. Introduce `hlat`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hL` to reduce the goal to its premises. Use `show ∀ w, IsLattice (P.W w) (L w)`. Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `he : IsEdge p (P.n' w) i ⟨L'', L w⟩` using `(tm_fin P w i (L w)).mem_toFinset.mp hL''`. Conclude with `he.2.1`. Simplify `hlat w` using `[Function.update, hw]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tm_zero (v : Fin P.nV) (i : ℕ) (F : P.Tup → P.Xsp) (hF : ∀ L, ¬ P.IsLatTup L → F L = 0) (L : P.Tup)
     (hL : ¬ P.IsLatTup L) : P.Tminus v i F L = 0 := by
@@ -67,7 +65,7 @@ theorem tm_zero (v : Fin P.nV) (i : ℕ) (F : P.Tup → P.Xsp) (hF : ∀ L, ¬ P
   · simpa [Function.update, hw] using hlat w
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `[Function.update, Level.smul, nt_phi]`. Simplify using `[Function.update, hw, Level.smul, nt_phi]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem smul_update (C : Level P) (γ : C.Γ) (v : Fin P.nV) (L : P.Tup)
     (A : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) :
@@ -80,13 +78,11 @@ theorem smul_update (C : Level P) (γ : C.Γ) (v : Fin P.nV) (L : P.Tup)
   · simp [Function.update, hw, Level.smul, nt_phi]
 
 /- English proof (translation)
-Rewrite using `[tm_eq, tm_eq, map_sum, Finset.smul_sum]`. Use `symm`. Apply `Finset.sum_nbij' (fun A => A.map (nt_phi (P.W v) (C.act v γ))) (fun A => A.map (nt_phi (P.W v) (C.act v γ)⁻¹))` to reduce the goal to its premises. Introduce `A hA`. Establish `hA' : IsEdge p (P.n' v) i ⟨A, L v⟩` using `(tm_fin P v i (L v)).mem_toFinset.mp hA`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(tm_fin P v i (C.smul γ L v)).mem_toFinset.mpr (nt_edge_map p (P.n' v) i (C.act v γ) A (L v) hA')`. Introduce `B hB`. Establish `hB' : IsEdge p (P.n' v) i ⟨B, (L v).map (nt_phi (P.W v) (C.act v γ))⟩` using `(tm_fin P v i (C.smul γ L v)).mem_toFinset.mp hB`. Establish `h2` using `nt_edge_map p (P.n' v) i (C.act v γ)⁻¹ B ((L v).map (nt_phi (P.W v) (C.act v γ))) hB'`. Rewrite `h2` using `[nt_map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(tm_fin P v i (L v)).mem_toFinset.mpr h2`. Introduce `A _`. Conclude with `nt_map_inv _ _`. Introduce `B _`. Conclude with `nt_map_inv' _ _`.
-
-Introduce `A _`. Establish `h` using `hF' γ (Function.update L v A)`. Rewrite `h` using `[smul_update]`. Conclude with `h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tm_equiv (C : Level P) (v : Fin P.nV) (i : ℕ) (F : P.Tup → P.Xsp)
     (hF' : ∀ (γ : C.Γ) (L : P.Tup), F (C.smul γ L) = (C.χ γ : O) • C.actX γ (F L)) (γ : C.Γ) (L : P.Tup) :
@@ -118,7 +114,7 @@ end Gen
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Introduce `J v i F hF`. Use `⟨fun c L hL => ?_, fun c γ L => ?_⟩` and prove the remaining obligations. Conclude with `tm_zero (X.Pj J) (X.vJ J v) i (F c) (fun L' hL' => hF.1 c L' hL') L hL`. Conclude with `tm_equiv (X.Pj J) (X.Lv.lev J c) (X.vJ J v) i (F c) (fun γ' L' => hF.2 c γ' L') γ L`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem restTmEquiv (X : Sys p) : RestTmEquiv X := by
   intro J v i F hF
@@ -127,7 +123,7 @@ theorem restTmEquiv (X : Sys p) : RestTmEquiv X := by
   · exact tm_equiv (X.Pj J) (X.Lv.lev J c) (X.vJ J v) i (F c) (fun γ' L' => hF.2 c γ' L') γ L
 
 /- English proof (translation)
-The claim follows from `formB_of D Y hA (restTmEquiv X)`.
+A detailed English derivation is pending.
 -/
 theorem formB (D : Formalism.BasicNotions.D7) (X : Sys p) (Y : Pend X) (hA : admitted D X Y) : FormB X Y :=
   formB_of D Y hA (restTmEquiv X)

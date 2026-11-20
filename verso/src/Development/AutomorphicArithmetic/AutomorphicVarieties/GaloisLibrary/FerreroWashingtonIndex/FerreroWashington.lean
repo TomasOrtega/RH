@@ -16,33 +16,31 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Establish `hf0 : 0 < f` using `by omega`. Establish `hl0 : 0 < l` using `hl.out.pos`. Establish `hfl0 : 0 < f * l` using `Nat.mul_pos hf0 hl0`. Establish `hcodd : Odd (2 * (f * l) + 1)` using `⟨f * l, by ring⟩`. Establish `hc1 : 1 < 2 * (f * l) + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcfl : (2 * (f * l) + 1).Coprime (f * l)`. Simplify using `[Nat.coprime_mul_left_add_left]`. Take `⟨N, n₀, hn₀2, hmem⟩` from `memZ l f (2 * (f * l) + 1) hf hcodd hc1 hcfl`. Take `⟨B, hB⟩` from `ambCyc l f hf`. Distinguish the cases in `hl2 : l = 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hl2` using the available equality. Use `⟨((2 ^ (f * 2 ^ ee 2).totient) ^ N * B ^ N) ^ 2, n₀, ?_⟩` and prove the remaining obligations. Introduce `n hn L _ _ _`. Use `haveI : NeZero (f * 2 ^ n) := ⟨(Nat.mul_pos hf0 (pow_pos hl0 n)).ne'⟩`. Establish `hM2 : 2 < f * 2 ^ n`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 4 ≤ 2 ^ n`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities. Use `haveI : IsCMField L := IsCyclotomicExtension.Rat.isCMField L ⟨f * 2 ^ n, Set.mem_singleton _, hM2⟩`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ, hγ1, hγidx, hγmem⟩` from `hmem n hn`. Establish `hcM : (2 * (f * 2) + 1).Coprime (f * 2 ^ n)`. Take `⟨h1, h2⟩` from `Nat.coprime_mul_iff_right.mp hcfl`. Conclude with `Nat.coprime_mul_iff_right.mpr ⟨h1, h2.pow_right n⟩`. Establish `hcore` using `core 2 (ZMod (f * 2 ^ n))ˣ (Cl L) (cycRep (f * 2 ^ n) L) (-1) γ (clA (f * 2 ^ n) L (-1)) (clA (f * 2 ^ n) L γ) (thetaH (f * 2 ^ n) (2 * (f * 2) + 1)) N (by simp) (fun x => cycRep_apply _ _ _ x) (fun x => cycRep_apply _ _ _ x) (stickH _ _ L hcM hcodd hM2) hγmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hamb` using `hB n L γ (by omega) hγ1`. Establish `hbound : Nat.card ↥(difR (clA (f * 2 ^ n) L (-1)) ⊓ torK (Cl L) 2) ≤ B ^ N` using `hcore.trans (Nat.pow_le_pow_left hamb N)`. Establish `hfodd : Odd f` using `Nat.coprime_two_right.mp hf`. Take `⟨_, hcE2⟩` from `conjEq (f * 2 ^ n) L`. Establish `hsgn` using `sgnCyc f n (2 * (f * 2) + 1) N L γ hfodd h1 (by omega) hcM hcodd hγmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hsgn` using `[← hcE2, hγidx]`. Establish `hinv : ∀ x : Cl L, clA (f * 2 ^ n) L (-1) (clA (f * 2 ^ n) L (-1) x) = x`. Introduce `x`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Rewrite using `[← cycRep_apply, ← cycRep_apply, ← Module.End.mul_apply, ← map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `hp` using `pTwo (Cl L) (clA (f * 2 ^ n) L (-1)) hinv`. Conclude with `hp.trans (Nat.pow_le_pow_left (Nat.mul_le_mul hsgn hbound) 2)`. Use `⟨l * (B ^ N) ^ 2, n₀, ?_⟩` and prove the remaining obligations. Introduce `n hn L _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `haveI : NeZero (f * l ^ n) := ⟨(Nat.mul_pos hf0 (pow_pos hl0 n)).ne'⟩`. Establish `hl3 : 3 ≤ l`. Use `hl.out.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hM2 : 2 < f * l ^ n`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: 3 ≤ l ^ n`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities. Use `haveI : IsCMField L := IsCyclotomicExtension.Rat.isCMField L ⟨f * l ^ n, Set.mem_singleton _, hM2⟩`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ, hγ1, _, hγmem⟩` from `hmem n hn`. Establish `hcM : (2 * (f * l) + 1).Coprime (f * l ^ n)`. Take `⟨h1, h2⟩` from `Nat.coprime_mul_iff_right.mp hcfl`. Conclude with `Nat.coprime_mul_iff_right.mpr ⟨h1, h2.pow_right n⟩`. Establish `hcore` using `core l (ZMod (f * l ^ n))ˣ (Cl L) (cycRep (f * l ^ n) L) (-1) γ (clA (f * l ^ n) L (-1)) (clA (f * l ^ n) L γ) (thetaH (f * l ^ n) (2 * (f * l) + 1)) N (by simp) (fun x => cycRep_apply _ _ _ x) (fun x => cycRep_apply _ _ _ x) (stickH _ _ L hcM hcodd hM2) hγmem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hamb` using `hB n L γ (by omega) hγ1`. Establish `hbound : Nat.card ↥(difR (clA (f * l ^ n) L (-1)) ⊓ torK (Cl L) l) ≤ B ^ N` using `hcore.trans (Nat.pow_le_pow_left hamb N)`. Establish `hlodd : Odd l` using `hl.out.odd_of_ne_two hl2`. Take `⟨ζ, hζ⟩` from `IsCyclotomicExtension.exists_isPrimitiveRoot ℚ L (Set.mem_singleton (f * l ^ n)) (NeZero.ne _)`. Establish `hsplit : f * l ^ n = f * l ^ (n - 1) * l`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_assoc, ← pow_succ]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Establish `hζl : IsPrimitiveRoot (ζ ^ (f * l ^ (n - 1))) l` using `hζ.pow (NeZero.pos _) hsplit`. Take `⟨_, hcE2⟩` from `conjEq (f * l ^ n) L`.
-
-Establish `hrefl` using `reflOdd L l _ hl2 hζl`. Rewrite `hrefl` using `[← hcE2]`. Establish `hp` using `pOdd l (Cl L) (clA (f * l ^ n) L (-1)) hlodd hrefl`. Conclude with `hp.trans (Nat.mul_le_mul_left _ (Nat.pow_le_pow_left hbound 2))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.cyc (l : ℕ) [hl : Fact l.Prime] (f : ℕ) (hf : f.Coprime l) (h1 : 1 < f) :
     ∃ B n₀ : ℕ, ∀ n, n₀ ≤ n → ∀ (L : Type) [Field L] [NumberField L] [IsCyclotomicExtension {f * l ^ n} ℚ L],
@@ -131,11 +129,11 @@ theorem UpperTheory.V.FW.cyc (l : ℕ) [hl : Fact l.Prime] (f : ℕ) (hf : f.Cop
     exact hp.trans (Nat.mul_le_mul_left _ (Nat.pow_le_pow_left hbound 2))
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Published.FerreroWashington`. Introduce `l _ K _ _ _ _`. Take `⟨f, D, hf, h1, hemb⟩` from `embed l K`. Take `⟨B, n₀, hB⟩` from `cyc l f hf h1`. Use `⟨D * l ^ n₀ * B, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n K' _ _ _ _`. Take `⟨m, L, iF, iN, iA, iC, hm, hdeg⟩` from `hemb n n₀ K'`. Take `⟨htc, hidx⟩` from `hB m hm L`. Establish `hd` using `desc l K' L htc`. Establish `hl2 : 1 < l` using `(Fact.out : l.Prime).one_lt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : Nat.card (ClassGroup (𝓞 K') ⧸ (powMonoidHom l).range) ≤ D * l ^ n₀ * B`. Establish `e : Nat.card (ClassGroup (𝓞 K') ⧸ (powMonoidHom l).range) = (powR (Cl K') l).index` using `rfl`. Rewrite using `[e]`. Conclude with `hd.trans (Nat.mul_le_mul hdeg hidx)`. Conclude with `key.trans (Nat.lt_pow_self hl2).le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.ferreroWashington : UpperTheory.V.Published.FerreroWashington := by
   unfold UpperTheory.V.Published.FerreroWashington

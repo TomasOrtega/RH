@@ -8,7 +8,7 @@ open CategoryTheory AlgebraicGeometry NumberField MonoidalCategory CartesianMono
 attribute [local instance] Over.cartesianMonoidalCategory CategoryTheory.Hom.group
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.OActFinEt.finite_etale_act` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRingActionFiniteEtaleAbelianVarietyCharZero.lean&line=28#L28)
 -/

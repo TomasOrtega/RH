@@ -11,7 +11,7 @@ open scoped Classical
 namespace DiscreteGroups.T1.G
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `: SigmaFinite μ₁` using `sigmaFinite_of_locallyFinite`. Establish `: SigmaFinite μ₂` using `sigmaFinite_of_locallyFinite`. Use `⟨μ₁.prod μ₂, ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, hF, fun _ => rfl, fun f hc hs => ?_⟩` and prove the remaining obligations. Conclude with `integral_prod f (hc.integrable_of_hasCompactSupport hs)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem domOne_measure {X Y : Type} [Group X] [Group Y] [TopologicalSpace X] [TopologicalSpace Y]
     [IsTopologicalGroup X] [IsTopologicalGroup Y] [LocallyCompactSpace X] [LocallyCompactSpace Y]
@@ -36,11 +36,11 @@ theorem domOne_measure {X Y : Type} [Group X] [Group Y] [TopologicalSpace X] [To
   exact integral_prod f (hc.integrable_of_hasCompactSupport hs)
 
 /- English proof (translation)
-Introduce `E _ _ _ n _ _ _ _ μ₁ _ μ₂ _`. Take `⟨F₁, h₁⟩` from `domEx_holds E n μ₁`. Take `⟨F₂, h₂⟩` from `domEx_holds E 0 μ₂`. Use `CuspidalL2GL.locallyCompactSpace_GA E n` as an intermediate fact. Use `CuspidalL2GL.locallyCompactSpace_GA E 0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `CuspidalL2GL.secondCountableTopology_GA E n` as an intermediate fact. Use `CuspidalL2GL.secondCountableTopology_GA E 0` as an intermediate fact. Use `GlobalTheory.CompanionTheory.PairDom.isMulRightInvariant_GA E n μ₁` as an intermediate fact. Use `GlobalTheory.CompanionTheory.PairDom.isMulRightInvariant_GA E 0 μ₂` as an intermediate fact. Establish `: SigmaFinite μ₁` using `sigmaFinite_of_locallyFinite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SigmaFinite μ₂` using `sigmaFinite_of_locallyFinite`. Take `⟨μ, hh, hf, hi, hc⟩` from `domOne_measure μ₁ μ₂ (ratH E n 0) (F₁ ×ˢ F₂) (GlobalTheory.CompanionTheory.PairDom.isFundamentalDomain_range_prodMap μ₁ μ₂ (ratGL E n) (ratGL E 0) F₁ F₂ h₁ h₂) (borelH E n 0) Prod.borelSpace.measurable_eq`. Conclude with `⟨F₁, F₂, ⟨μ, hh, F₁ ×ˢ F₂, hf⟩, h₁, h₂, fun τ φ => hi _, fun F hF hs => hc F hF hs⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem domOne : DomOne := by
   intro E _ _ _ n _ _ _ _ μ₁ _ μ₂ _

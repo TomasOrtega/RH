@@ -19,11 +19,9 @@ namespace PositivityTheory.Xgn.NoPoleDisc
 open PositivityTheory.Xgn.HolomorphicChart
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨Q, hQ, h1, h2⟩` from `Ideal.exists_le_prime_disjoint (Ideal.span {c}) ((nonZeroDivisors P).map (algebraMap P B)) (by`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ hx ⟨q, hq, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `h q (nonZeroDivisors.ne_zero hq) (Ideal.mem_span_singleton.1 hx))`. Establish `h3 : Q.under P = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `q hq`. Assume the negation of the conclusion as `h0`.
-
-Conclude with `Set.disjoint_left.1 h2 hq ⟨q, mem_nonZeroDivisors_of_ne_zero h0, rfl⟩`. Establish `h4 : (⊥ : Ideal B) = Q` using `Algebra.QuasiFinite.eq_of_le_of_under_eq (R := P) ⊥ Q bot_le (le_antisymm (Ideal.comap_mono bot_le) (h3 ▸ bot_le))`. Conclude with `hc (by simpa [← h4] using h1)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_dvd {P B : Type} [CommRing P] [IsDomain P] [CommRing B] [IsDomain B] [Algebra P B]
     [Algebra.QuasiFinite P B] {c : B} (hc : c ≠ 0) : ∃ q : P, q ≠ 0 ∧ c ∣ algebraMap P B q := by
@@ -44,7 +42,7 @@ theorem exists_dvd {P B : Type} [CommRing P] [IsDomain P] [CommRing B] [IsDomain
   exact hc (by simpa [← h4] using h1)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.DYhc4.main σ p hb`.
+A detailed English derivation is pending.
 -/
 theorem exists_point {K A : Type} [Field K] [CommRing A] [Algebra K A] [Algebra.FiniteType K A] (σ : K →+* ℂ)
     (p : Ideal A) [hp : p.IsPrime] {b : A} (hb : b ∉ p) :
@@ -52,13 +50,13 @@ theorem exists_point {K A : Type} [Field K] [CommRing A] [Algebra K A] [Algebra.
   _root_.UpperTheory.Reformulated.B.DYhc4.main σ p hb
 
 /- English proof (translation)
-Establish `hP : ∀ q : MvPolynomial (Fin d) K, δ (algebraMap _ B q) = 0` using `fun q => by`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C k => rw [← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply, hK]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, add_zero]`. Consider the case `mul_X p i hp => rw [map_mul, hmul, hp, hz]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using the standard rewrite rules. Set `: Algebra B ℂ` to `ψ.toAlgebra`. Set `: Algebra (MvPolynomial (Fin d) K) ℂ` to `(ψ.comp (algebraMap _ B)).toAlgebra`. Establish `: IsScalarTower (MvPolynomial (Fin d) K) B ℂ` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `L : B →ₗ[MvPolynomial (Fin d) K] ℂ` to `{ toFun := δ map_add' := δ.map_add map_smul' := fun k a => by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[Algebra.smul_def, hmul, hP, mul_zero, add_zero]`. Use `rfl }`. Set `D : Derivation (MvPolynomial (Fin d) K) B ℂ` to `Derivation.mk' L fun a b => hmul a b`. Use `D.liftKaehlerDifferential_comp_D a` as an intermediate fact. Rewrite `this` using `[Subsingleton.elim (KaehlerDifferential.D _ B a) 0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem der_zero_etale {K B : Type} [Field K] [CommRing B] [Algebra K B] {d : ℕ} [Algebra (MvPolynomial (Fin d) K) B]
     [IsScalarTower K (MvPolynomial (Fin d) K) B] [Algebra.FormallyUnramified (MvPolynomial (Fin d) K) B]
@@ -84,13 +82,11 @@ theorem der_zero_etale {K B : Type} [Field K] [CommRing B] [Algebra K B] {d : �
   exact this.symm
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, MvPolynomial.eval w Q ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hQ (MvPolynomial.funext fun x => by simpa using h x)`. Use `⟨w - c, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `R : Polynomial ℂ` to `MvPolynomial.aeval (fun i => Polynomial.C (c i) + Polynomial.X * Polynomial.C ((w - c) i)) Q`. Establish `hR : ∀ t, R.eval t = MvPolynomial.eval (c + t • (w - c)) Q` using `fun t => by`. Rewrite using `[← Polynomial.coe_aeval_eq_eval, ← MvPolynomial.aeval_eq_eval]`. Use `show ((Polynomial.aeval t).comp (MvPolynomial.aeval _)) Q = _`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using the standard rewrite rules. Establish `h0 : R ≠ 0` using `fun h => hw (by simpa [h] using (hR 1).symm)`. Use `(Polynomial.finite_setOfPred_isRoot h0).eventually_cofinite_notMem` as an intermediate fact. Use `filter_upwards [nhdsNE_le_cofinite (0 : ℂ) this] with t ht`.
-
-Rewrite using `[← hR]`. Conclude with `ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_ne {d : ℕ} (Q : MvPolynomial (Fin d) ℂ) (hQ : Q ≠ 0) (c : Fin d → ℂ) :
     ∃ v : Fin d → ℂ, ∀ᶠ t : ℂ in 𝓝[≠] 0, MvPolynomial.eval (c + t • v) Q ≠ 0 := by
@@ -113,23 +109,21 @@ theorem line_ne {d : ℕ} (Q : MvPolynomial (Fin d) ℂ) (hQ : Q ≠ 0) (c : Fin
   exact ht
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Algebra.IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial d K B`. Set `` to `g.toRingHom.toAlgebra`. Establish `: IsScalarTower K (MvPolynomial (Fin d) K) B` using `IsScalarTower.of_algebraMap_eq' g.comp_algebraMap.symm`. Establish `: Algebra.Etale (MvPolynomial (Fin d) K) B` using `hg`. Take `⟨q, hq, e, he⟩` from `exists_dvd (P := MvPolynomial (Fin d) K) hc`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨O, Φ, oO, mO, a₁, a₂, a₃⟩` from `chart_alt_bis d σ ψ₀ h₀ (fun i => algebraMap _ B (MvPolynomial.X (R := K) i)) (fun δ h1 h2 h3 => der_zero_etale ψ₀ δ h1 h2 h3)`. Use `set c₀ : Fin d → ℂ := fun i => ψ₀ (algebraMap _ B (MvPolynomial.X (R := K) i)) with hc₀`. Establish `e₀ : Φ c₀ = ψ₀`. Simplify `h₀)` using `using a₃ (pure ()) (fun _ => ψ₀) (fun _ => tendsto_const_nhds) (by simpa`. Take `⟨v, hv⟩` from `line_ne (MvPolynomial.map σ q) (fun h => hq (MvPolynomial.map_injective σ σ.injective (by simpa using h))) c₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ev : ∀ u ∈ O, Φ u (algebraMap _ B q) = MvPolynomial.eval u (MvPolynomial.map σ q)` using `fun u hu => by`. Rewrite using `[MvPolynomial.eval_map, ← MvPolynomial.coe_eval₂Hom]`. Use `show ((Φ u).comp (algebraMap _ B)) q = _`. Use `congr 1`. Use extensionality with `k`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← (a₁ u hu).1]`. Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C]`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Simplify using `using (a₁ u hu).2 k`. Set `L : ℂ → (Fin d → ℂ)` to `fun t => c₀ + t • v`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dL : Differentiable ℂ L` using `by fun_prop`. Establish `L0 : L 0 = c₀` using `by simp [L]`. Establish `nO : O ∈ 𝓝 (L 0)` using `L0 ▸ oO.mem_nhds mO`. Establish `dΦ : ∀ x, DifferentiableAt ℂ (fun t => Φ (L t) x) 0` using `fun x => ((a₂ x).differentiableAt nO).comp 0 (dL 0)`. Establish `b0 : Φ (L 0) b ≠ 0` using `by rwa [L0, e₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `((dΦ a).div (dΦ b) b0).isBigO_sub.bound`. Establish `t₁ : ∀ᶠ t in 𝓝 (0 : ℂ), L t ∈ O` using `(dL 0).continuousAt.preimage_mem_nhds nO`. Establish `t₂` using `(dΦ b).continuousAt.eventually_ne b0`. Take `⟨ε, ε0, hε⟩` from `Metric.mem_nhds_iff.1 (t₁.and (t₂.and (hC.and (eventually_nhdsWithin_iff.1 hv))))`. Establish `εC : (ε : ℂ) ≠ 0` using `by exact_mod_cast ε0.ne'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `nε : ∀ z : Fin 1 → ℂ, ‖(ε : ℂ) * z 0‖ = ε * ‖z 0‖` using `fun z => by`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg ε0.le]`. Establish `mε : ∀ z ∈ ball (0 : Fin 1 → ℂ) 1, (ε : ℂ) * z 0 ∈ ball (0 : ℂ) ε` using `fun z hz => by`. Rewrite `hz`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[nε]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_lt_of_lt_one_right ε0 ((norm_le_pi_norm z 0).trans_lt hz)`. Use `⟨fun z => Φ (L (ε * z 0)), C * ε, ⟨isOpen_ball, fun x => ?_⟩, fun z hz => (a₁ _ (hε (mε z hz)).1).1, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `(a₂ x).comp (f := fun z : Fin 1 → ℂ => L (ε * z 0)) (by fun_prop) fun z hz => (hε (mε z hz)).1`. Take `⟨h1, h2, h3, h4⟩` from `hε (mε z hz.1)`. Use `⟨fun h => h4 (mul_ne_zero εC (hz.2 0 one_pos)) ?_, h2, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← ev _ h1, he, map_mul, h, zero_mul]`. Simplify `h3` using `[L0, e₀, ha, abs_of_pos ε0, _root_.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem disc_smooth {K B : Type} [Field K] [CommRing B] [IsDomain B] [Algebra K B] (d : ℕ)
     [Algebra.IsStandardSmoothOfRelativeDimension d K B] (σ : K →+* ℂ) (ψ₀ : B →+* ℂ)
@@ -185,13 +179,13 @@ theorem disc_smooth {K B : Type} [Field K] [CommRing B] [IsDomain B] [Algebra K 
     · simpa [L0, e₀, ha, abs_of_pos ε0, _root_.mul_assoc] using h3
 
 /- English proof (translation)
-Establish `: CharZero K` using `σ.charZero`. Establish `: IsRegularLocalRing (Localization.AtPrime p)` using `IsRegularLocalRing.of_ringEquiv (IsLocalization.algEquiv p.primeCompl S (Localization.AtPrime p)).toRingEquiv`. Establish `: Algebra.IsSmoothAt K p` using `GlobalTheory.formallySmooth_of_isRegularLocalRing_of_perfectField K _`. Establish `: Algebra.FinitePresentation K A` using `Algebra.FinitePresentation.of_finiteType.1 inferInstance`. Take `⟨g, hg, ⟨_, _, _, _, ⟨P⟩⟩⟩` from `Algebra.IsSmoothAt.exists_notMem_isStandardSmooth K p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Algebra.IsStandardSmoothOfRelativeDimension P.dimension K (Localization.Away g)` using `⟨_, _, _, ‹_›, P, rfl⟩`. Establish `g0 : g ≠ 0` using `fun h => hg (h ▸ p.zero_mem)`. Establish `hle : Submonoid.powers g ≤ nonZeroDivisors A` using `powers_le_nonZeroDivisors_of_noZeroDivisors g0`. Establish `: IsDomain (Localization.Away g)` using `IsLocalization.isDomain_localization hle`. Take `⟨χ, h1, h2, h3⟩` from `exists_point σ p (Ideal.IsPrime.mul_notMem ‹_› hb hg)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[map_mul]`. Set `ψ₀ : Localization.Away g →+* ℂ` to `IsLocalization.Away.lift g (g := χ) (right_ne_zero_of_mul h3).isUnit`. Establish `hψ : ∀ x, ψ₀ (algebraMap A _ x) = χ x` using `IsLocalization.Away.lift_eq g _`. Take `⟨ψ, C, b₁, b₂, b₃⟩` from `disc_smooth P.dimension σ ψ₀ (by rw [← h1]; ext k; simp [IsScalarTower.algebraMap_apply K A (Localization.Away g), hψ]) (c := algebraMap A _ c) (a := algebraMap A _ a) (b := algebraMap A _ b) (fun h => hc (IsLocalization.injective _ hle (h.trans (map_zero _).symm))) (by rw [hψ, h …`. Use `⟨fun z => (ψ z).comp (algebraMap A _), C, ⟨isOpen_ball, fun x => b₁.2 _⟩, fun z hz => ?_, b₃⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← b₂ z hz, RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem disc_domain {K A S : Type} [Field K] [CommRing A] [IsDomain A] [Algebra K A] [Algebra.FiniteType K A]
     [CommRing S] [IsRegularLocalRing S] [Algebra A S] (p : Ideal A) [p.IsPrime] [IsLocalization.AtPrime S p]
@@ -222,11 +216,11 @@ theorem disc_domain {K A S : Type} [Field K] [CommRing A] [IsDomain A] [Algebra 
   rw [← b₂ z hz, RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq]
 
 /- English proof (translation)
-Set `I` to `RingHom.ker (algebraMap A S)`. Establish `: I.IsPrime` using `RingHom.ker_isPrime _`. Set `: Algebra (A ⧸ I) S` to `(RingHom.kerLift (algebraMap A S)).toAlgebra`. Establish `hm : ∀ x : A, algebraMap (A ⧸ I) S (Ideal.Quotient.mk I x) = algebraMap A S x` using `fun _ => rfl`. Set `p' : Ideal (A ⧸ I)` to `(IsLocalRing.maximalIdeal S).comap (algebraMap (A ⧸ I) S)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hp : ∀ x : A, Ideal.Quotient.mk I x ∈ p' ↔ x ∈ p` using `fun x => IsLocalization.AtPrime.to_map_mem_maximal_iff S p x`. Establish `: IsLocalization.AtPrime S p'`. Use `(isLocalization_iff _ _).2 ⟨fun y => ?_, fun s => ?_, fun h => ⟨1, ?_⟩⟩` and prove the remaining obligations. Conclude with `(IsLocalRing.notMem_maximalIdeal).1 y.2`. Take `⟨⟨x, y⟩, h⟩` from `IsLocalization.surj p.primeCompl s`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨Ideal.Quotient.mk I x, Ideal.Quotient.mk I y, fun h' => y.2 ((hp y).1 h')⟩, h⟩`. Rewrite using `[RingHom.kerLift_injective _ h]`. Take `⟨ψ, C, b₁, b₂, b₃⟩` from `disc_domain (S := S) p' σ (c := Ideal.Quotient.mk I c) (a := Ideal.Quotient.mk I a) (b := Ideal.Quotient.mk I b) (fun h => hc (by rw [← hm, h, map_zero])) ((hp a).2 ha) (fun h => hb ((hp b).1 h))`. Use `⟨fun z => (ψ z).comp (Ideal.Quotient.mk I), C, ⟨isOpen_ball, fun x => b₁.2 _⟩, fun z hz => b₂ z hz, fun z t ht => ?_, b₃⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 ht, map_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disc_ring {K A S : Type} [Field K] [CommRing A] [Algebra K A] [Algebra.FiniteType K A]
     [CommRing S] [IsDomain S] [IsRegularLocalRing S] [Algebra A S] (p : Ideal A) [p.IsPrime] [IsLocalization.AtPrime S p]
@@ -254,7 +248,7 @@ theorem disc_ring {K A S : Type} [Field K] [CommRing A] [Algebra K A] [Algebra.F
   rw [RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 ht, map_zero]
 
 /- English proof (translation)
-Establish `h1 : (s.appLE ⊤ V (fun _ _ => trivial)).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ _`. Conclude with `RingHom.finiteType_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ft_sec {K : Type} [Field K] {X : Scheme.{0}} (s : X ⟶ Sp K) [LocallyOfFiniteType s] {V : X.Opens}
     (hV : IsAffineOpen V) : @Algebra.FiniteType K Γ(X, V) _ _ (Geo.ResK.secAlgebra s V) := by
@@ -265,7 +259,7 @@ theorem ft_sec {K : Type} [Field K] {X : Scheme.{0}} (s : X ⟶ Sp K) [LocallyOf
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X}
 
 /- English proof (translation)
-Establish `e` using `X.presheaf.germ_stalkSpecializes hq q.2`. Simplify using `only [genMap]`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem genMap_germ (V : X.Opens) (q : Cpt ξ) (hq : q.1 ∈ V) (h : genPt ξ ∈ V) (v : Γ(X, V)) :
     genMap ξ q (X.presheaf.germ V q.1 hq v) =
@@ -276,7 +270,7 @@ theorem genMap_germ (V : X.Opens) (q : Cpt ξ) (hq : q.1 ∈ V) (h : genPt ξ �
   rfl
 
 /- English proof (translation)
-Establish `e₂` using `(top_le_iff _ V).2 (centre_mem hV χ)`. Establish `k` using `SectionNear.germ_closedPoint (R := CommRingCat.of ℂ) (spMap χ ≫ hV.fromSpec) V (centre_mem hV χ) e₂`. Conclude with `congrArg (fun φ => φ.hom v) (k.trans (SectionNear.spMap_fromSpec_appLE hV χ e₂))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_germ {V : X.Opens} (hV : IsAffineOpen V) (χ : Γ(X, V) →+* ℂ) (v : Γ(X, V)) :
     (Scheme.stalkClosedPointTo (spMap χ ≫ hV.fromSpec)).hom
@@ -286,7 +280,7 @@ theorem val_germ {V : X.Opens} (hV : IsAffineOpen V) (χ : Γ(X, V) →+* ℂ) (
   exact congrArg (fun φ => φ.hom v) (k.trans (SectionNear.spMap_fromSpec_appLE hV χ e₂))
 
 /- English proof (translation)
-Rewrite using `[specializes_iff_forall_open]`. Introduce `U hU hc`. Take `⟨t, h1, h2⟩` from `hV.exists_basicOpen_le (V := ⟨U, hU⟩) ⟨_, hc⟩ (centre_mem hV χ)`. Conclude with `h1 (h t ((centre_mem_basicOpen hV χ t).1 h2))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem spec_centre {V : X.Opens} (hV : IsAffineOpen V) (χ : Γ(X, V) →+* ℂ) {q : X}
     (h : ∀ t, χ t ≠ 0 → q ∈ X.basicOpen t) : q ⤳ centre (spMap χ ≫ hV.fromSpec) := by
@@ -296,7 +290,7 @@ theorem spec_centre {V : X.Opens} (hV : IsAffineOpen V) (χ : Γ(X, V) →+* ℂ
   exact h1 (h t ((centre_mem_basicOpen hV χ t).1 h2))
 
 /- English proof (translation)
-Rewrite using `[X.mem_basicOpen t _ h]`. Conclude with `⟨fun hu => (hu.map _).ne_zero, fun h0 => (Scheme.isLocalHom_stalkClosedPointTo' ξ).map_nonunit _ h0.isUnit⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem gen_mem_basicOpen (hξ : IsCptGen ξ) {V : X.Opens} (h : genPt ξ ∈ V) (t : Γ(X, V)) :
     genPt ξ ∈ X.basicOpen t ↔ (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ V (genPt ξ) h t) ≠ 0 := by
@@ -304,15 +298,15 @@ theorem gen_mem_basicOpen (hξ : IsCptGen ξ) {V : X.Opens} (h : genPt ξ ∈ V)
   exact ⟨fun hu => (hu.map _).ne_zero, fun h0 => (Scheme.isLocalHom_stalkClosedPointTo' ξ).map_nonunit _ h0.isUnit⟩
 
 /- English proof (translation)
-Establish `hg : genPt ξ ∈ V` using `x.2.mem_open V.isOpen hx`. Take `⟨s, rfl⟩` from `hξ.bij.2 f`. Set `` to `X.presheaf.algebra_section_stalk ⟨genPt ξ, hg⟩`. Use `hV.isLocalization_stalk ⟨genPt ξ, hg⟩` as an intermediate fact. Take `⟨⟨t, u⟩, h⟩` from `IsLocalization.surj (S := X.presheaf.stalk (genPt ξ)) (hV.primeIdealOf ⟨genPt ξ, hg⟩).asIdeal.primeCompl s`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu : genMap ξ x (X.presheaf.germ V x.1 hx u.1) ≠ 0`. Rewrite using `[genMap_germ V x hx hg]`. Conclude with `((IsLocalization.map_units (X.presheaf.stalk (genPt ξ)) u).map _).ne_zero`. Establish `e : (Scheme.stalkClosedPointTo ξ).hom s * genMap ξ x (X.presheaf.germ V x.1 hx u.1) = genMap ξ x (X.presheaf.germ V x.1 hx t)`. Rewrite using `[genMap_germ V x hx hg, genMap_germ V x hx hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `F : X.presheaf.stalk (genPt ξ) →+* Ω` to `(Scheme.stalkClosedPointTo ξ).hom`. Conclude with `(map_mul F s _).symm.trans (congrArg F h)`. Generalize the expression as in `(Scheme.stalkClosedPointTo ξ).hom s = f at *`. Take `⟨w, hw | hw⟩` from `ValuationRing.cond (X.presheaf.germ V x.1 hx t) (X.presheaf.germ V x.1 hx u.1)`. Establish `e' : f * genMap ξ x w = 1`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_right_cancel₀ hu` to reduce the goal to its premises. Rewrite using `[mul_right_comm, e, ← map_mul, hw, _root_.one_mul]`. Use `⟨w, fun ⟨w', hw'⟩ => hf ⟨w'.inv, ?_⟩, e'⟩` and prove the remaining obligations. Rewrite using `[← _root_.one_mul (genMap ξ x _), ← e', _root_.mul_assoc, ← map_mul, ← hw', w'.val_inv, map_one, _root_.mul_one]`. Use `(hf ⟨w, ?_⟩).elim` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_right_cancel₀ hu` to reduce the goal to its premises. Rewrite using `[e, ← hw, map_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_frac (hξ : IsCptGen ξ) {V : X.Opens} (hV : IsAffineOpen V) (x : Cpt ξ) (hx : x.1 ∈ V)
     [IsDomain (X.presheaf.stalk x.1)] [ValuationRing (X.presheaf.stalk x.1)] {f : Ω} (hf : f ∉ regAt ξ x) :
@@ -346,23 +340,21 @@ end PositivityTheory.Xgn.NoPoleDisc
 
 open PositivityTheory.Xgn.HolomorphicChart PositivityTheory.Xgn.NoPoleDisc in
 /- English proof (translation)
-Introduce `K _ σ X s Ω _ ξ W x N f hs hξ hW _ hN hR hf`. Take `⟨_, ⟨V, hV, rfl⟩, hx, hVN⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hN N.isOpen`. Use `replace hV : IsAffineOpen V := hV`. Use `replace hx : x.1 ∈ V := hx`. Establish `hg : genPt ξ ∈ V` using `x.2.mem_open V.isOpen hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : X.presheaf.stalk x.1 ≃+* regAt ξ x` to `RingEquiv.ofBijective (genMap ξ x).rangeRestrict ⟨fun a b h => hξ.inj x (congrArg Subtype.val h), (genMap ξ x).rangeRestrict_surjective⟩`. Establish `: IsDomain (X.presheaf.stalk x.1)` using `(hξ.inj x).isDomain _`. Establish `: IsDiscreteValuationRing (X.presheaf.stalk x.1)` using `IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e.symm`. Take `⟨w, hw, hfw⟩` from `exists_frac hξ hV x hx hf`. Set `` to `X.presheaf.algebra_section_stalk ⟨x.1, hx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `hV.isLocalization_stalk ⟨x.1, hx⟩` as an intermediate fact. Set `` to `Geo.ResK.secAlgebra s V`. Use `ft_sec s hV` as an intermediate fact. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (S := X.presheaf.stalk x.1) (hV.primeIdealOf ⟨x.1, hx⟩).asIdeal.primeCompl w`. Take `⟨h, h1, h2⟩` from `hV.exists_basicOpen_le ⟨genPt ξ, hW⟩ hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : Γ(X, V) → Ω` to `fun t => (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ V (genPt ξ) hg t)`. Establish `hφ : ∀ t, genMap ξ x (algebraMap Γ(X, V) (X.presheaf.stalk x.1) t) = φ t` using `genMap_germ V x hx hg`. Establish `hub` using `IsLocalization.map_units (X.presheaf.stalk x.1) b`. Establish `fab : f * φ a = φ b`. Rewrite using `[← hφ, ← hφ, ← hab, map_mul, ← _root_.mul_assoc, hfw, _root_.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a0 : φ a ≠ 0` using `fun h0 => (hub.map (genMap ξ x)).ne_zero (by rw [hφ, ← fab, h0, mul_zero])`. Establish `h0 : φ h ≠ 0` using `(gen_mem_basicOpen hξ hg h).1 h2`. Take `⟨ψ, C, b₁, b₂, b₃, b₄⟩` from `disc_ring (S := X.presheaf.stalk x.1) (hV.primeIdealOf ⟨x.1, hx⟩).asIdeal σ (c := h * a) (a := a) (b := b.1) (fun h' => mul_ne_zero h0 a0 (by rw [← hφ, ← hφ, ← map_mul, ← map_mul, h', map_zero])) ((IsLocalization.AtPrime.to_map_mem_maximal_iff (X.presheaf.stalk x.1) _ a).1 (hab ▸ …`. Establish `sp : ∀ z, genPt ξ ⤳ centre (spMap (ψ z) ≫ hV.fromSpec)` using `fun z => spec_centre hV _ fun t ht => (gen_mem_basicOpen hξ hg t).2 fun h' => ht (b₃ z t (hξ.inj x ((hφ t).trans (h'.trans (map_zero _).symm))))`. Use `⟨V, hV, ψ, fun z => ψ z b / ψ z a, C, hVN, b₁, fun z hz => ⟨(over_iff s hV σ _).2 (b₂ z hz), sp z⟩, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c₁, c₂, c₃⟩` from `b₄ z hz`. Rewrite `c₁` using `[map_mul]`. Establish `c₄` using `right_ne_zero_of_mul c₁`. Use `⟨(top_le_iff _ W).2 (h1 ((centre_mem_basicOpen hV _ h).2 (left_ne_zero_of_mul c₁))), ?_, div_ne_zero c₂ c₄, by rwa [inv_div]⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `(X.mem_basicOpen a _ (centre_mem hV (ψ z))).1 ((centre_mem_basicOpen hV _ a).2 c₄)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k : X.presheaf.germ V _ (centre_mem hV (ψ z)) b.1 * u.inv * X.presheaf.germ V _ (centre_mem hV (ψ z)) a = X.presheaf.germ V _ (centre_mem hV (ψ z)) b.1`. Rewrite using `[_root_.mul_assoc]`. Conclude with `(congrArg _ (hu ▸ u.inv_val)).trans (_root_.mul_one _)`. Use `⟨sp z, X.presheaf.germ V _ (centre_mem hV (ψ z)) b.1 * u.inv, mul_right_cancel₀ a0 ?_, eq_div_of_mul_eq c₄ ?_⟩` and prove the remaining obligations. Use `congrArg (genMap ξ ⟨_, sp z⟩) k` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `this` using `[map_mul, genMap_germ V ⟨_, sp z⟩ _ hg a, genMap_germ V ⟨_, sp z⟩ _ hg b.1]`. Rewrite using `[fab]`. Conclude with `this`. Set `F : X.presheaf.stalk (centre (spMap (ψ z) ≫ hV.fromSpec)) →+* ℂ` to `(Scheme.stalkClosedPointTo (spMap (ψ z) ≫ hV.fromSpec)).hom`. Establish `hF : ∀ v, F (X.presheaf.germ V _ (centre_mem hV (ψ z)) v) = ψ z v` using `val_germ hV (ψ z)`.
-
-Use `congrArg F k` as an intermediate fact. Rewrite `this` using `[map_mul, hF a, hF b.1]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.exists_holomorphic_disc_avoiding_pole : ∀ (K : Type) [Field K] (σ : K →+* ℂ) (X : Scheme.{0}) (s : X ⟶ Sp K) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (W : X.Opens) (x : Cpt ξ) (N : X.Opens) (f : Ω), LocallyOfFiniteType s → IsCptGen ξ → genPt ξ ∈ W → x.1 ∉ W → x.1 ∈ N → IsDiscreteValuationRing (regAt ξ x) → f ∉ regAt ξ x → ∃ (V : X.Opens) (hV : IsAffineOpen V) (ψ : (Fin 1 → ℂ) → (Γ(X, V) →+* ℂ)) (r : (Fin 1 → ℂ) → ℂ) (C : ℝ), V ≤ N ∧ IsHolPts (ball 0 1) ψ ∧ (∀ z ∈ ball (0 : Fin 1 → ℂ) 1, spMap (ψ z) ≫ hV.fromSpec ≫ s = spMap σ ∧ genPt ξ ⤳ centre (spMap (ψ z) ≫ hV.fromSpec)) ∧ ∀ z ∈ punct 1 1 1, ⊤ ≤ (spMap (ψ z) ≫ hV.fromSpec) ⁻¹ᵁ W ∧ ValAt ξ (spMap (ψ z) ≫ hV.fromSpec) f (r z) ∧ r z ≠ 0 ∧ ‖(r z)⁻¹‖ ≤ C * ‖z 0‖ := by
   intro K _ σ X s Ω _ ξ W x N f hs hξ hW _ hN hR hf

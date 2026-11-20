@@ -4,21 +4,21 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ σ hσ ε hε hσε n E D hEE hEh hED hrank`. Establish `h1 : E * (D.map σ)ᵀ = -(D * E)` using `eq_neg_of_add_eq_zero_left hED`. Establish `h2 : E * (D.map σ)ᵀ = -(E * D * E)`. Combine the equalities or inequalities in the displayed calculation. Establish `hDE : D * E = E * D * E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `h1.symm.trans h2` as an intermediate fact. Conclude with `neg_inj.mp this`. Establish `h3 : E * (D.map σ)ᵀ * E = -(E * D * E)`. Rewrite using `[h2, Matrix.neg_mul, Matrix.mul_assoc (E * D) E E, hEE]`. Establish `hV : E * (ε • (1 : Matrix (Fin n) (Fin n) k) - D) * E = ε • E - E * D * E`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hEE]`. Use `⟨E * (ε • 1 - D) * E, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hV]`. Establish `hm : ((ε • E - E * D * E).map σ)ᵀ = (σ ε) • (E.map σ)ᵀ - (E.map σ)ᵀ * (D.map σ)ᵀ * (E.map σ)ᵀ`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hs : ((ε • E).map σ)ᵀ = σ ε • (E.map σ)ᵀ`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.map_sub _ (map_sub σ), Matrix.map_mul, Matrix.map_mul, Matrix.transpose_sub, Matrix.transpose_mul, Matrix.transpose_mul, ← Matrix.mul_assoc, hs]`. Rewrite using `[hm, hEh, h3, hσε, neg_smul, sub_neg_eq_add, neg_sub]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `hM : E * (E * (ε • 1 - D) * E) + D = ε • E - E * D * E + D`. Rewrite using `[hV, Matrix.mul_sub, Matrix.mul_smul, hEE, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hEE]`. Rewrite using `[hM]`. Establish `hME : (ε • E - E * D * E + D) * E = ε • E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.add_mul, Matrix.sub_mul, Matrix.smul_mul, hEE, Matrix.mul_assoc (E * D) E E, hEE, hDE]`. Normalize the expressions using the abelian group laws. Introduce `hdet`. Take `⟨a, ha0, ha⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hdet`. Establish `haE : a ᵥ* E = 0`.
+Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: a ᵥ* ((ε • E - E * D * E + D) * E) = 0` using `by rw [← Matrix.vecMul_vecMul, ha, Matrix.zero_vecMul]`. Rewrite `this` using `[hME, Matrix.vecMul_smul]`. Conclude with `(smul_eq_zero.mp this).resolve_left hε`. Establish `haD : a ᵥ* D = 0`. Establish `hx : a ᵥ* (E * D * E) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.vecMul_vecMul, haE, Matrix.zero_vecMul]`. Rewrite `ha` using `[Matrix.vecMul_add, Matrix.vecMul_sub, Matrix.vecMul_smul, haE, hx]`. Simplify using `using ha`. Conclude with `ha0 (hrank a haE haD)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem skewHermitian_perturb_idempotent_det_ne_zero :
     ∀ (k : Type) [Field k] (σ : k →+* k), (∀ x, σ (σ x) = x) → ∀ ε : k, ε ≠ 0 → σ ε = -ε →

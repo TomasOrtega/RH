@@ -23,9 +23,9 @@ def rowAct (u : Matrix (Fin r) (Fin r) ℂ) (B : Fin r → Fin (k + 1) → ℂ) 
   fun a j => ∑ c, star (u a c) * B c j
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, herm_Hb, rowAct, star_sum, star_mul', star_star, Matrix.conjTranspose_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem herm_rowAct (u : Matrix (Fin r) (Fin r) ℂ) (B : Fin r → Fin (k + 1) → ℂ) :
     (Matrix.of fun a b => herm (Hb k) (rowAct u B b) (rowAct u B a)) =
@@ -39,17 +39,17 @@ theorem herm_rowAct (u : Matrix (Fin r) (Fin r) ℂ) (B : Fin r → Fin (k + 1) 
   refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Establish `h1 : ∀ a b, ∑ c, u⁻¹ a c * u c b = if a = b then 1 else 0` using `fun a b => by`. Rewrite using `[← Matrix.mul_apply, Matrix.nonsing_inv_mul u hu, Matrix.one_apply]`. Establish `h2 : uᴴ * (u⁻¹)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.nonsing_inv_mul u hu, Matrix.conjTranspose_one]`. Use extensionality with `x y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, sum3, sum3]`. Apply the tactic sequence `induction x using cases3 <;> induction y using cases3 <;>`. Apply the tactic sequence `simp only [pEl_ee, pEl_ew, pEl_es, pEl_we, pEl_ww, pEl_ws, pEl_se, pEl_sw, pEl_ss, ← mI_eq, u_ee, u_em, u_es, u_me, u_mm, u_ms, u_se, u_sm, u_ss] <;> simp only [mI_eq] <;>`. Simplify using `[pEl_ee, pEl_ew, pEl_es, pEl_we, pEl_ww, pEl_ws, pEl_se, pEl_sw, pEl_ss]`. Simplify using `[rowAct, Finset.sum_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Name the introduced variables `a b set G : Matrix (Fin r) (Fin r) ℂ := Matrix.of fun a b => herm (Hb k) (B b) (B a) with hG`. Establish `h3 : ∀ a c, herm (Hb k) (rowAct u B c) (rowAct u B a) = (u * G * uᴴ) a c` using `fun a c => congrFun (congrFun (herm_rowAct u B) a) c`. Establish `h4 : u * (S - (1 / 2 : ℂ) • G) = (u * S * uᴴ - (1 / 2 : ℂ) • (u * G * uᴴ)) * (u⁻¹)ᴴ`. Rewrite using `[Matrix.sub_mul, Matrix.smul_mul, Matrix.mul_assoc _ uᴴ, Matrix.mul_assoc _ uᴴ, h2, Matrix.mul_one, Matrix.mul_one, Matrix.mul_sub, Matrix.mul_smul]`. Establish `h5` using `congrFun (congrFun h4 a) b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h5` using `[Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `only [h3]`. Use `h5 using 2 with c _ c _` and compare the differences between its conclusion and the goal. Simplify using `[hG, div_eq_inv_mul]`. Simplify using `[div_eq_inv_mul]`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Name the introduced variables `i b`. Simplify using `only [rowAct, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ d, ∑ c, star (u c d) * B d i * (starRingEnd ℂ) (u⁻¹ b c) = star (∑ c, u⁻¹ b c * u c d) * B d i`. Introduce `d`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[star_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => by simp; ring`. Simplify using `only [this, h1]`. Simplify using `[apply_ite (starRingEnd ℂ)]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uEmb_mul_pEl (u : Matrix (Fin r) (Fin r) ℂ) (hu : IsUnit u.det) (B : Fin r → Fin (k + 1) → ℂ)
     (S : Matrix (Fin r) (Fin r) ℂ) :
@@ -89,11 +89,11 @@ theorem uEmb_mul_pEl (u : Matrix (Fin r) (Fin r) ℂ) (hu : IsUnit u.det) (B : F
     simp [apply_ite (starRingEnd ℂ)]
 
 /- English proof (translation)
-Establish `hL : IsNilpotent (L - 1)`. Take `⟨n, hn⟩` from `hT`. Establish `: ∀ (m : ℕ) (v : V), ι (((L - 1) ^ m) v) = ((T - 1) ^ m) (ι v)`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ m ih => intro v`. Simplify using `[pow_succ, ih, h]`. Use `⟨n, LinearMap.ext fun v => hι ?_⟩` and prove the remaining obligations. Rewrite using `[this, hn]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hc` using `hL.neg.charpoly_eq_X_pow_finrank`. Establish `he` using `LinearMap.eval_charpoly (-(L - 1)) 1`. Rewrite `he` using `[hc]`. Simplify using `using he.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_eq_one {V W : Type*} [AddCommGroup V] [Module ℝ V] [FiniteDimensional ℝ V] [AddCommGroup W] [Module ℝ W]
     (ι : V →ₗ[ℝ] W) (hι : Function.Injective ι) (L : Module.End ℝ V) (T : Module.End ℝ W)
@@ -113,7 +113,7 @@ theorem det_eq_one {V W : Type*} [AddCommGroup V] [Module ℝ V] [FiniteDimensio
   simpa using he.symm
 
 /- English proof (translation)
-Establish `e : a * b - 1 = (a - 1) * b + (b - 1)` using `by noncomm_ring`. Establish `c1 : Commute (a - 1) b` using `h.sub_left (Commute.one_left b)`. Rewrite using `[e]`. Use `Commute.isNilpotent_add ?_ (c1.isNilpotent_mul_right ha) hb` and prove the remaining obligations. Conclude with `Commute.mul_left (c1.sub_right (Commute.one_right _)) ((Commute.refl b).sub_right (Commute.one_right _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nil_mul {R : Type*} [Ring R] {a b : R} (h : Commute a b) (ha : IsNilpotent (a - 1)) (hb : IsNilpotent (b - 1)) :
     IsNilpotent (a * b - 1) := by
@@ -124,9 +124,9 @@ theorem nil_mul {R : Type*} [Ring R] {a b : R} (h : Commute a b) (ha : IsNilpote
   exact Commute.mul_left (c1.sub_right (Commute.one_right _)) ((Commute.refl b).sub_right (Commute.one_right _))
 
 /- English proof (translation)
-Establish `hc : (upper x - 1).charpoly = Polynomial.X ^ r`. Rewrite using `[Matrix.charpoly_of_upperTriangular]`. Simplify using `[upper]`. Introduce `a b h`. Establish `h : b < a` using `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[upper, h.not_gt, h.ne']`. Use `Matrix.aeval_self_charpoly (upper x - 1)` as an intermediate fact. Rewrite `this` using `[hc]`. Conclude with `⟨r, by simpa using this⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nil_upper (x : UT r → ℂ) : IsNilpotent (upper x - 1) := by
   have hc : (upper x - 1).charpoly = Polynomial.X ^ r := by
@@ -160,7 +160,7 @@ def coordLin (r : ℕ) : Matrix (Fin r) (Fin r) ℂ →ₗ[ℝ] ((UT r → ℂ) 
   map_smul' c S := by ext <;> simp
 
 /- English proof (translation)
-Use extensionality with `q`. Simplify using `[coordLin, skewLin, skewM, q.2]`. Simplify using `[coordLin, skewLin, skewM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coord_skew (p : (UT r → ℂ) × (Fin r → ℝ)) : coordLin r (skewLin r p) = p := by
   ext q
@@ -168,7 +168,7 @@ theorem coord_skew (p : (UT r → ℂ) × (Fin r → ℝ)) : coordLin r (skewLin
   · simp [coordLin, skewLin, skewM]
 
 /- English proof (translation)
-Take `⟨p, hp, -⟩` from `skewM_unique S hS`. Establish `: S = skewLin r p` using `hp`. Rewrite using `[this, coord_skew]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem skew_coord (S : Matrix (Fin r) (Fin r) ℂ) (hS : Sᴴ = -S) : skewLin r (coordLin r S) = S := by
   obtain ⟨p, hp, -⟩ := skewM_unique S hS
@@ -182,7 +182,7 @@ def skewAct (u : Matrix (Fin r) (Fin r) ℂ) : Module.End ℝ ((UT r → ℂ) ×
   coordLin r ∘ₗ conjLin u ∘ₗ skewLin r
 
 /- English proof (translation)
-Establish `h : (skewLin r p)ᴴ = -skewLin r p` using `skewM_skew p.1 p.2`. Establish `e : skewAct u p = coordLin r (u * skewLin r p * uᴴ)`. Simplify using `[skewAct, conjLin, Matrix.mul_assoc]`. Rewrite using `[e, skew_coord]`. Simplify using `[Matrix.conjTranspose_mul, h, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem skew_skewAct (u : Matrix (Fin r) (Fin r) ℂ) (p : (UT r → ℂ) × (Fin r → ℝ)) :
     skewLin r (skewAct u p) = u * skewLin r p * uᴴ := by
@@ -193,7 +193,7 @@ theorem skew_skewAct (u : Matrix (Fin r) (Fin r) ℂ) (p : (UT r → ℂ) × (Fi
   simp [Matrix.conjTranspose_mul, h, Matrix.mul_assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨L.continuous_of_finiteDimensional.measurable, by rw [Measure.map_linearMap_addHaar_eq_smul_addHaar μ (by rw [h]; exact one_ne_zero), h]; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mp_of_det {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [MeasurableSpace E] [BorelSpace E]
     [FiniteDimensional ℝ E] (μ : Measure E) [μ.IsAddHaarMeasure] (L : E →ₗ[ℝ] E) (h : LinearMap.det L = 1) :
@@ -204,7 +204,7 @@ theorem mp_of_det {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [Measur
 def parAct (u : Matrix (Fin r) (Fin r) ℂ) (q : PPar k r) : PPar k r := (rowLin k u q.1, skewAct u q.2)
 
 /- English proof (translation)
-Establish `h` using `skew_skewAct u q.2`. Unfold `pOf`. Rewrite using `[uEmb_mul_pEl u hu]`. Use `congr 2`. Conclude with `h.symm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem uEmb_mul_pOf (u : Matrix (Fin r) (Fin r) ℂ) (hu : IsUnit u.det) (q : PPar k r) :
     uEmb k r u * pOf k r q = pOf k r (parAct u q) * uEmb k r u := by
@@ -215,7 +215,7 @@ theorem uEmb_mul_pOf (u : Matrix (Fin r) (Fin r) ℂ) (hu : IsUnit u.det) (q : P
   exact h.symm
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Unfold `upper`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cont_upper (r : ℕ) : Continuous (upper : (UT r → ℂ) → Matrix (Fin r) (Fin r) ℂ) := by
   refine continuous_pi fun a => continuous_pi fun b => ?_
@@ -223,11 +223,9 @@ theorem cont_upper (r : ℕ) : Continuous (upper : (UT r → ℂ) → Matrix (Fi
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Establish `hi : Continuous fun x : UT r → ℂ => (upper x)⁻¹`. Establish `: (fun x : UT r → ℂ => (upper x)⁻¹) = fun x => (upper x).adjugate`. Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.inv_def, det_upper]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `(cont_upper r).matrix_adjugate`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Unfold `uEmb`. Use `split_ifs`.
-
-Conclude with `(cont_upper r).matrix_elem _ _`. Conclude with `(hi.matrix_elem _ _).star`. Apply the tactic sequence `all_goals exact continuous_const`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_uEmb (k r : ℕ) : Continuous fun x : UT r → ℂ => uEmb k r (upper x) := by
   have hi : Continuous fun x : UT r → ℂ => (upper x)⁻¹ := by
@@ -242,7 +240,7 @@ theorem cont_uEmb (k r : ℕ) : Continuous fun x : UT r → ℂ => uEmb k r (upp
   all_goals exact continuous_const
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Unfold `pOf pEl skewM herm Matrix.mulVec dotProduct`. Simplify using `only [Pi.star_apply]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cont_pOf (k r : ℕ) : Continuous (pOf k r) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -251,9 +249,9 @@ theorem cont_pOf (k r : ℕ) : Continuous (pOf k r) := by
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Establish `hu : Continuous fun q : (UT r → ℂ) × PPar k r => upper q.1` using `(cont_upper r).comp continuous_fst`. Use `Continuous.prodMk ?_ ?_` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun q : (UT r → ℂ) × PPar k r => ∑ c, star (upper q.1 a c) * q.2.1 c j`. Conclude with `continuous_finset_sum _ fun c _ => (hu.matrix_elem a c).star.mul (by fun_prop)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hs : Continuous fun q : (UT r → ℂ) × PPar k r => skewLin r q.2.2` using `(skewLin r).continuous_of_finiteDimensional.comp (by fun_prop)`. Conclude with `(coordLin r).continuous_of_finiteDimensional.comp (hu.matrix_mul (hs.matrix_mul hu.matrix_conjTranspose))`.
+A detailed English derivation is pending.
 -/
 theorem cont_parAct (k r : ℕ) : Continuous fun q : (UT r → ℂ) × PPar k r => parAct (upper q.1) q.2 := by
   have hu : Continuous fun q : (UT r → ℂ) × PPar k r => upper q.1 := (cont_upper r).comp continuous_fst

@@ -21,7 +21,7 @@ def rhoBlockOne : Fin N →₀ ℕ :=
 
 omit [DecidableEq Ψ] in
 /- English proof (translation)
-Unfold `muPoly muOne`. Simplify using `only [map_sum, rename_X]`. Rewrite using `[Finset.sum_filter, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -34,7 +34,7 @@ theorem muPoly_eq_sum : muPoly Ψ N j = ∑ τ, rename (sliceEmb τ) (muOne N j)
   rfl
 
 /- English proof (translation)
-Simplify using `only [rename_monomial]`. Rewrite using `[← monomial_sum_prod Finset.univ (fun τ => Finsupp.mapDomain (sliceEmb τ) (rhoBlockOne N j)) (fun _ => (1 : ℚ)), Finset.prod_const_one, sum_mapDomain_sliceEmb]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem monomial_rhoBlock :
     (monomial (rhoBlock Ψ N j) (1 : ℚ) : RootPoly Ψ N) =
@@ -45,7 +45,7 @@ theorem monomial_rhoBlock :
   congr 1
 
 /- English proof (translation)
-Unfold `flagInt antisym`. Simplify using `only [map_sum, Finset.smul_sum, coeff_sum]`. Conclude with `Finset.sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flagInt_sum {ι : Type} (s : Finset ι) (P : ι → RootPoly Ψ N) :
     flagInt Ψ N (∑ i ∈ s, P i) = ∑ i ∈ s, flagInt Ψ N (P i) := by
@@ -54,7 +54,7 @@ theorem flagInt_sum {ι : Type} (s : Finset ι) (P : ι → RootPoly Ψ N) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Unfold `flagInt antisym`. Rewrite using `[coeff_sum, coeff_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [map_smul, coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flagInt_smul (c : ℚ) (P : RootPoly Ψ N) : flagInt Ψ N (c • P) = c * flagInt Ψ N P := by
   unfold flagInt antisym
@@ -64,9 +64,9 @@ theorem flagInt_smul (c : ℚ) (P : RootPoly Ψ N) : flagInt Ψ N (c • P) = c 
   ring
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_eq_sum, Finsupp.degree_eq_sum]`. Simplify using `only [rhoOne, rhoBlockOne, Finsupp.coe_equivFunOnFinite_symm]`. Establish `h : ∀ i : Fin N, N - 1 - (i : ℕ) = (if (i : ℕ) < j then N - j else 0) + (if (i : ℕ) < j then j - 1 - (i : ℕ) else N - 1 - (i : ℕ))`. Introduce `i`. Use `i.isLt` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[Finset.sum_congr rfl fun i _ => h i, Finset.sum_add_distrib, Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, smul_eq_mul, Fin.card_filter_val_lt, min_eq_right hj]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem degree_rhoOne {N j : ℕ} (hj : j ≤ N) :
     (rhoOne N).degree = j * (N - j) + (rhoBlockOne N j).degree := by
@@ -81,7 +81,7 @@ theorem degree_rhoOne {N j : ℕ} (hj : j ≤ N) :
     add_zero, Finset.sum_const, smul_eq_mul, Fin.card_filter_val_lt, min_eq_right hj]
 
 /- English proof (translation)
-Establish `hμ : (muOne N j).IsHomogeneous 1` using `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_X ℚ i`. Use `flagIntOne_eq_zero_of_isHomogeneous ((hμ.pow k).mul (isHomogeneous_monomial (1 : ℚ) rfl)) ?_` and prove the remaining obligations. Rewrite using `[degree_rhoOne hj]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem flagIntOne_muOne_eq_zero {N j : ℕ} (hj : j ≤ N) {k : ℕ} (hk : k ≠ j * (N - j)) :
     flagIntOne N (muOne N j ^ k * monomial (rhoBlockOne N j) 1) = 0 := by
@@ -92,7 +92,7 @@ theorem flagIntOne_muOne_eq_zero {N j : ℕ} (hj : j ≤ N) {k : ℕ} (hk : k �
   omega
 
 /- English proof (translation)
-Rewrite using `[muPoly_eq_sum, monomial_rhoBlock, Fintype.sum_unique, Fintype.prod_unique, ← map_pow, ← map_mul, ← Fintype.prod_unique (fun τ : Unit => rename (sliceEmb τ) (muOne N j ^ k * monomial (rhoBlockOne N j) 1)), flagInt_prod, Fintype.prod_unique]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem flagInt_unit {k : ℕ} :
     flagInt Unit N (muPoly Unit N j ^ k * monomial (rhoBlock Unit N j) 1) =
@@ -106,17 +106,15 @@ end FlagIntMuProd
 open FlagIntMuProd in
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j hj`. Use `set k0 : Ψ → ℕ := fun _ => j * (N - j) with hk0`. Establish `hterm : ∀ k : Ψ → ℕ, ((Nat.multinomial Finset.univ k : ℕ) : RootPoly Ψ N) * (∏ τ, rename (sliceEmb τ) (muOne N j) ^ k τ) * ∏ τ, rename (sliceEmb τ) (monomial (rhoBlockOne N j) (1 : ℚ)) = ((Nat.multinomial Finset.univ k : ℕ) : ℚ) • ∏ τ, rename (sliceEmb τ) (muOne N j ^ k τ * monom …`. Introduce `k`. Rewrite using `[mul_assoc, ← Finset.prod_mul_distrib, ← C_mul', map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_pow]`. Rewrite using `[muPoly_eq_sum Ψ N j, monomial_rhoBlock Ψ N j, Finset.sum_pow_eq_sum_piAntidiag, Finset.sum_mul, flagInt_sum]`. Repeatedly rewrite using `[hterm, flagInt_smul, flagInt_prod]`. Establish `hmem : k0 ∈ Finset.piAntidiag Finset.univ (dimN Ψ N j)`. Rewrite using `[Finset.mem_piAntidiag]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun i _ => Finset.mem_univ i⟩` and prove the remaining obligations. Simplify using `[hk0, dimN, mul_assoc]`. Rewrite using `[Finset.sum_eq_single_of_mem k0 hmem]`. Establish `hmul : ((Nat.multinomial Finset.univ k0 : ℕ) : ℚ) = ((dimN Ψ N j).factorial : ℚ) / ((j * (N - j)).factorial : ℚ) ^ Fintype.card Ψ`. Rewrite using `[eq_div_iff (by positivity)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Nat.multinomial_spec (Finset.univ : Finset Ψ) k0`. Simplify using `only [hk0, Finset.prod_const, Finset.sum_const, Finset.card_univ, smul_eq_mul] at h`. Rewrite using `[show dimN Ψ N j = Fintype.card Ψ * (j * (N - j)) by unfold dimN; ring, ← h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmul, flagInt_unit, hk0, Finset.prod_const, Finset.card_univ]`. Introduce `k _ hk`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, k τ ≠ j * (N - j) := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
-
-Conclude with `hk (funext h)`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ τ) (flagIntOne_muOne_eq_zero hj hτ), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagIntMuProd.proof : FlagIntMuProd.Statement := by
   intro Ψ _ _ N j hj

@@ -8,19 +8,19 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.LatVal ReciprocityTheory.
 namespace GlobalTheory.TauSmul
 
 /- English proof (translation)
-Introduce `γ τ`. Establish `hne : UpperHalfPlane.denom γ τ ≠ 0` using `UpperHalfPlane.denom_ne_zero _ τ`. Establish `hd : UpperHalfPlane.denom γ τ = (γ 1 0 : ℂ) * τ + (γ 1 1 : ℂ)` using `ModularGroup.denom_apply γ τ`. Establish `hs : ((γ • τ : ℍ) : ℂ) = ((γ 0 0 : ℂ) * τ + (γ 0 1 : ℂ)) / ((γ 1 0 : ℂ) * τ + (γ 1 1 : ℂ))`. Rewrite using `[UpperHalfPlane.coe_specialLinearGroup_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hdet : (γ 0 0 : ℂ) * γ 1 1 - γ 0 1 * γ 1 0 = 1`. Establish `h` using `γ.det_coe`. Rewrite `h` using `[Matrix.det_fin_two]`. Conclude with `h` after adjusting the coercions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨inv_ne_zero hne, fun x => ?_⟩, one_ne_zero, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[PeriodPair.mem_lattice]`. Simplify using `only [tauPair]`. Rewrite using `[hs, hd]`. Rewrite `hne` using `[hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Use `⟨m * γ 0 0 + n * γ 1 0, m * γ 0 1 + n * γ 1 1, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hne]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨u, v, rfl⟩`. Use `⟨u * γ 1 1 - v * γ 1 0, v * γ 0 0 - u * γ 0 1, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_inv_mul_iff_mul_eq₀ hne]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `((u : ℂ) * τ + v) * hdet`. Rewrite using `[PeriodPair.mem_lattice]`. Simplify using `only [tauPair, mul_one, one_mul]`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨fun ⟨m, n, h⟩ => ⟨m, n, h.symm⟩, fun ⟨m, n, h⟩ => ⟨m, n, h.symm⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (γ : SL(2, ℤ)) (τ : ℍ),
     IsTauOf (tauPair (γ • τ)) (UpperHalfPlane.denom γ τ)⁻¹ τ ∧ IsTauOf (tauPair τ) 1 τ := by

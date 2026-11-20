@@ -26,11 +26,9 @@ theorem levH_snd_entry {E : Type} [Field E] [NumberField E] [IsCMField E] {a b n
         (GlobalTheory.SmGL.stdSum h (Sum.inr i)) (GlobalTheory.SmGL.stdSum h (Sum.inr j)) := rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a b n h w p hp`. Establish `hp'` using `GlobalTheory.AdelicU.mem_GLint_iff.1 hp`. Establish `hinv1 : ((levH h w p).1)⁻¹ = (levH h w p⁻¹).1` using `by rw [map_inv, Prod.fst_inv]`. Establish `hinv2 : ((levH h w p).2)⁻¹ = (levH h w p⁻¹).2` using `by rw [map_inv, Prod.snd_inv]`. Use `⟨GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => ?_, fun i j => ?_⟩, GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => ?_, fun i j => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[levH_fst_entry]`. Conclude with `hp'.1 _ _`. Rewrite using `[hinv1, levH_fst_entry]`. Conclude with `hp'.2 _ _`. Rewrite using `[levH_snd_entry]`.
-
-Conclude with `hp'.1 _ _`. Rewrite using `[hinv2, levH_snd_entry]`. Conclude with `hp'.2 _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levH_mem_KGL_of_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b n : ℕ) (h : a + b = n) (w : Pl E)
     (p : GlobalTheory.LeviFubini.parB h w), (p : GLw n w) ∈ GlobalTheory.LFun.KGL w n →

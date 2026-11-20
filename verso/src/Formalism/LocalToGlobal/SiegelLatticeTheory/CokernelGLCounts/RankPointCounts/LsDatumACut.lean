@@ -109,9 +109,7 @@ def ModSideU (M : Model F E) (r n : ℕ) (mode : Bool) : Prop :=
       Nat.card (Theta H t₁ ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ φ φ') = M.nIsoBA Y₁ Y₂ be₁ be₂ al₁ al₂
 
 /- English proof (translation)
-Introduce `V _ _ H hn t₁ hg f₂ f₂' φ φ' hF hF' hI hs hs' S P₁ P₂`. Establish `hT : LocalCountHypotheses H t₁ f₂ f₂' φ φ'` using `⟨hg, hF, hF', hI, hs, hs'⟩`. Establish `hLat` using `hL V H hn t₁ f₂ f₂' φ φ' hT`. Use `⟨fun hD Z₁ Z₂ h₁ h₂ => ?_, fun hD Y₁ Y₂ be₁ be₂ al₁ al₂ hY hba => ?_⟩` and prove the remaining obligations. Conclude with `hLat.trans (h0 rfl V H hn t₁ f₂ f₂' φ φ' hT hD Z₁ Z₂ h₁ h₂)`.
-
-Conclude with `hLat.trans (hU rfl V H hn t₁ f₂ f₂' φ φ' hT hD Y₁ Y₂ be₁ be₂ al₁ al₂ hY hba)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem localCount_of_lattice_module (M : Model F E) (r n : ℕ) (hL : LatSide M r n) (h0 : ModSide0 M r n M.split.isSome)
     (hU : ModSideU M r n M.split.isSome) : Formalism.MainNotions.ThinScalesBound.FamilyLocalModel M r n := by

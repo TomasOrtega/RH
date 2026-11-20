@@ -18,7 +18,7 @@ def SmOn (A : Set E) (f : E → V) : Prop :=
     ∀ g ∈ U, g ∈ A → f g = F g
 
 /- English proof (translation)
-Introduce `a ha` and use `by obtain ⟨U, F, hU, haU, hF, hfF⟩ := hf a ha exact ⟨U, F, hU, haU, hF, fun g hg hgA => (h g hgA).trans (hfF g hg hgA)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SmOn.congr {A : Set E} {f f' : E → V} (hf : SmOn A f) (h : ∀ a ∈ A, f' a = f a) :
     SmOn A f' := fun a ha => by
@@ -26,7 +26,7 @@ theorem SmOn.congr {A : Set E} {f f' : E → V} (hf : SmOn A f) (h : ∀ a ∈ A
   exact ⟨U, F, hU, haU, hF, fun g hg hgA => (h g hgA).trans (hfF g hg hgA)⟩
 
 /- English proof (translation)
-Introduce `b hb` and use `by obtain ⟨U, F, hU, haU, hF, hfF⟩ := hf (φ b) (hm hb) exact ⟨φ ⁻¹' U, fun x => F (φ x), hU.preimage hφ.continuous, haU, hF.comp hφ.contDiffOn (fun x hx => hx), fun g hg hgB => hfF _ hg (hm hgB)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SmOn.comp {A : Set E} {B : Set E'} {f : E → V} (hf : SmOn A f) {φ : E' → E}
     (hφ : ContDiff ℝ ∞ φ) (hm : MapsTo φ B A) : SmOn B (fun b => f (φ b)) := fun b hb => by
@@ -35,13 +35,13 @@ theorem SmOn.comp {A : Set E} {B : Set E'} {f : E → V} (hf : SmOn A f) {φ : E
     hF.comp hφ.contDiffOn (fun x hx => hx), fun g hg hgB => hfF _ hg (hm hgB)⟩
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨univ, f, isOpen_univ, mem_univ _, hf.contDiffOn, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem SmOn.of_contDiff {A : Set E} {f : E → V} (hf : ContDiff ℝ ∞ f) : SmOn A f :=
   fun _ _ => ⟨univ, f, isOpen_univ, mem_univ _, hf.contDiffOn, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `a ha` and use `by obtain ⟨U, F, hU, haU, hF, hfF⟩ := hf a ha obtain ⟨U', F', hU', haU', hF', hfF'⟩ := hf' a ha exact ⟨U ∩ U', fun x => F x + F' x, hU.inter hU', ⟨haU, haU'⟩, (hF.mono inter_subset_left).add (hF'.mono inter_subset_right), fun g hg hgA => by simp only [hfF g hg.1 hgA, hfF' g hg.2 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SmOn.add {A : Set E} {f f' : E → V} (hf : SmOn A f) (hf' : SmOn A f') :
     SmOn A (fun a => f a + f' a) := fun a ha => by
@@ -52,7 +52,7 @@ theorem SmOn.add {A : Set E} {f f' : E → V} (hf : SmOn A f) (hf' : SmOn A f') 
     fun g hg hgA => by simp only [hfF g hg.1 hgA, hfF' g hg.2 hgA]⟩
 
 /- English proof (translation)
-Introduce `a ha` and use `by obtain ⟨U, F, hU, haU, hF, hfF⟩ := hf a ha exact ⟨U, fun x => L (F x), hU, haU, L.contDiff.comp_contDiffOn hF, fun g hg hgA => by simp only [hfF g hg hgA]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SmOn.clm {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] {A : Set E} {f : E → V}
     (hf : SmOn A f) (L : V →L[ℝ] W) : SmOn A (fun a => L (f a)) := fun a ha => by
@@ -61,9 +61,7 @@ theorem SmOn.clm {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] {A : Set
     fun g hg hgA => by simp only [hfF g hg hgA]⟩
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨U, F, hU, haU, hF, hfF⟩` from `hf a ha`. Establish `h1 : ContinuousWithinAt F A a` using `(hF.continuousOn.continuousAt (hU.mem_nhds haU)).continuousWithinAt`. Use `h1.congr_of_eventuallyEq ?_ (hfF a haU ha)` and prove the remaining obligations. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (hU.mem_nhds haU), self_mem_nhdsWithin] with g h1 h2`.
-
-Conclude with `hfF g h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem SmOn.continuousOn {A : Set E} {f : E → V} (hf : SmOn A f) : ContinuousOn f A := by
   intro a ha
@@ -75,9 +73,7 @@ theorem SmOn.continuousOn {A : Set E} {f : E → V} (hf : SmOn A f) : Continuous
   exact hfF g h1 h2
 
 /- English proof (translation)
-Establish `hFd : DifferentiableAt ℝ F a` using `(hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds haU)`. Establish `hcomp : HasDerivAt (fun t : ℝ => F (γ t)) (fderiv ℝ F a v) 0` using `hFd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hd h0.symm`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, γ t ∈ U` using `hd.continuousAt.preimage_mem_nhds (by rw [h0]; exact hU.mem_nhds haU)`. Use `hcomp.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hmem] with t ht`.
-
-Conclude with `hfF _ ht (hγ t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_local {A U : Set E} {f F : E → V} {a v : E} {γ : ℝ → E} (hγ : ∀ t, γ t ∈ A)
     (h0 : γ 0 = a) (hd : HasDerivAt γ v 0) (hU : IsOpen U) (haU : a ∈ U)
@@ -94,9 +90,7 @@ theorem hasDerivAt_local {A U : Set E} {f F : E → V} {a v : E} {γ : ℝ → E
   exact hfF _ ht (hγ t)
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨U, F, hU, haU, hF, hfF⟩` from `hf a ha`. Conclude with `(hasDerivAt_local (hγ a ha) (h0 a) (hd a) hU haU hF hfF).differentiableAt`. Take `⟨U, F, hU, haU, hF, hfF⟩` from `hf a ha`. Use `⟨U, fun x => fderiv ℝ F x (v x), hU, haU, ?_, fun g hg hgA => ?_⟩` and prove the remaining obligations.
-
-Conclude with `(hF.fderiv_of_isOpen hU (by simp)).clm_apply hv.contDiffOn`. Conclude with `(hasDerivAt_local (hγ g hgA) (h0 g) (hd g) hU hg hF hfF).deriv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem SmOn.flow {A : Set E} {f : E → V} (hf : SmOn A f) {γ : E → ℝ → E} {v : E → E}
     (hγ : ∀ a ∈ A, ∀ t, γ a t ∈ A) (h0 : ∀ a, γ a 0 = a) (hd : ∀ a, HasDerivAt (γ a) (v a) 0)
@@ -120,7 +114,7 @@ variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [NormedSpace ℂ H]
 abbrev Mat (n : ℕ) := Matrix (Fin n) (Fin n) ℂ
 
 /- English proof (translation)
-Set `B : Mat n →L[ℝ] Mat n →L[ℝ] Mat n` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : (Mat n →ₗ[ℝ] Mat n) ≃ₗ[ℝ] _).toLinearMap ∘ₗ LinearMap.mul ℝ (Mat n))`. Conclude with `B.isBoundedBilinearMap.contDiff`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem contDiff_mul : ContDiff ℝ ∞ (fun p : Mat n × Mat n => p.1 * p.2) := by
   let B : Mat n →L[ℝ] Mat n →L[ℝ] Mat n :=
@@ -130,7 +124,7 @@ theorem contDiff_mul : ContDiff ℝ ∞ (fun p : Mat n × Mat n => p.1 * p.2) :=
   exact B.isBoundedBilinearMap.contDiff
 
 /- English proof (translation)
-The claim follows from `contDiff_mul.comp (hf.prodMk hg)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_mul' {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {f g : E → Mat n}
     (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) : ContDiff ℝ ∞ (fun x => f x * g x) :=
@@ -139,12 +133,12 @@ theorem contDiff_mul' {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {f 
 def ex (X : Mat n) (t : ℝ) : Mat n := NormedSpace.exp ((t : ℂ) • X)
 
 /- English proof (translation)
-Simplify using `[ex, NormedSpace.exp_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ex_zero (X : Mat n) : ex X 0 = 1 := by simp [ex, NormedSpace.exp_zero]
 
 /- English proof (translation)
-The claim follows from `Formalism.REAL.hasDerivAt_mul_exp_smul_zero g X`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_mul_ex (g X : Mat n) : HasDerivAt (fun t => g * ex X t) (g * X) 0 :=
   Formalism.REAL.hasDerivAt_mul_exp_smul_zero g X
@@ -172,15 +166,15 @@ def IsSm (G : Set (Mat n)) (σ : Mat n → (H →L[ℂ] H)) (v : H) : Prop := Sm
 variable {G : Set (Mat n)} {σ : Mat n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Rewrite using `[h.map_mul a ha b hb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem RepOn.apply_mul (h : RepOn G σ) {a b : Mat n} (ha : a ∈ G) (hb : b ∈ G) (v : H) :
     σ (a * b) v = σ a (σ b v) := by rw [h.map_mul a ha b hb]; rfl
 
 /- English proof (translation)
-Establish `h1` using `((σ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hu.hasDerivAt`. Establish `h2 : (fun t => σ (g * ex X t) u) = ((σ g).restrictScalars ℝ) ∘ fun t => σ (ex X t) u`. Use extensionality with `t`. Conclude with `h.apply_mul hg (hX t) u`. Rewrite using `[h2, h1.deriv]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem apply_ds (h : RepOn G σ) {X g : Mat n} (hX : ∀ t, ex X t ∈ G) (hg : g ∈ G) {u : H}
     (hu : DifferentiableAt ℝ (fun t => σ (ex X t) u) 0) :
@@ -191,7 +185,7 @@ theorem apply_ds (h : RepOn G σ) {X g : Mat n} (hX : ∀ t, ex X t ∈ G) (hg :
   rw [h2, h1.deriv]; rfl
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hu.flow (γ := fun q t => (q.1 * ex X t, q.2)) (v := fun q => (q.1 * X, 0)) (fun q hq t => ⟨h.mul_mem _ hq.1 _ (hX t), hq.2⟩) (fun q => by simp [ex_zero]) (fun q => (hasDerivAt_mul_ex q.1 X).prodMk (hasDerivAt_const _ _)) ((contDiff_mul' contDiff_fst contDiff_const).prodMk contDif …`. Establish `h3 : ∀ p ∈ A, DifferentiableAt ℝ (fun t => σ (ex X t) (u p)) 0` using `fun p hp => by`. Simplify using `using h1 (1, p) ⟨h.one_mem, hp⟩`. Conclude with `⟨h3, h2.congr fun q hq => apply_ds h hX hq.1 (h3 _ hq.2)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem smOn_ds {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (h : RepOn G σ) {A : Set E}
     {u : E → H} (hu : SmOn (G ×ˢ A) (fun q : Mat n × E => σ q.1 (u q.2))) {X : Mat n}
@@ -207,7 +201,7 @@ theorem smOn_ds {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (h : RepO
   exact ⟨h3, h2.congr fun q hq => apply_ds h hX hq.1 (h3 _ hq.2)⟩
 
 /- English proof (translation)
-The claim follows from `| [], _ => hu | X :: W, hW => (smOn_ds h (u := fun p => dsW σ W (u p)) (smOn_dsW h hu fun Y hY => hW Y (List.mem_cons_of_mem _ hY)) (hW X List.mem_cons_self)).2`.
+A detailed English derivation is pending.
 -/
 theorem smOn_dsW {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (h : RepOn G σ) {A : Set E}
     {u : E → H} (hu : SmOn (G ×ˢ A) (fun q : Mat n × E => σ q.1 (u q.2))) :
@@ -219,21 +213,21 @@ theorem smOn_dsW {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (h : Rep
       (smOn_dsW h hu fun Y hY => hW Y (List.mem_cons_of_mem _ hY)) (hW X List.mem_cons_self)).2
 
 /- English proof (translation)
-The claim follows from `SmOn.comp hv contDiff_fst fun _ hq => hq.1`.
+A detailed English derivation is pending.
 -/
 theorem IsSm.prod {v : H} (hv : IsSm G σ v) :
     SmOn (G ×ˢ (univ : Set ℝ)) (fun q : Mat n × ℝ => σ q.1 v) :=
   SmOn.comp hv contDiff_fst fun _ hq => hq.1
 
 /- English proof (translation)
-The claim follows from `(smOn_ds h (u := fun _ : ℝ => v) hv.prod hX).1 0 (mem_univ _)`.
+A detailed English derivation is pending.
 -/
 theorem IsSm.differentiableAt (h : RepOn G σ) {v : H} (hv : IsSm G σ v) {X : Mat n}
     (hX : ∀ t, ex X t ∈ G) : DifferentiableAt ℝ (fun t => σ (ex X t) v) 0 :=
   (smOn_ds h (u := fun _ : ℝ => v) hv.prod hX).1 0 (mem_univ _)
 
 /- English proof (translation)
-The claim follows from `SmOn.comp (smOn_dsW h (u := fun _ : ℝ => v) hv.prod hW) (φ := fun g : Mat n => (g, (0 : ℝ))) (contDiff_id.prodMk contDiff_const) fun _ hg => ⟨hg, mem_univ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsSm.dsW (h : RepOn G σ) {v : H} (hv : IsSm G σ v) {W : List (Mat n)} (hW : LieW G W) :
     IsSm G σ (dsW σ W v) :=
@@ -241,32 +235,32 @@ theorem IsSm.dsW (h : RepOn G σ) {v : H} (hv : IsSm G σ v) {W : List (Mat n)} 
     (contDiff_id.prodMk contDiff_const) fun _ hg => ⟨hg, mem_univ _⟩
 
 /- English proof (translation)
-The claim follows from `(SmOn.add hv hv').congr fun _ _ => map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem IsSm.add {v v' : H} (hv : IsSm G σ v) (hv' : IsSm G σ v') : IsSm G σ (v + v') :=
   (SmOn.add hv hv').congr fun _ _ => map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `(SmOn.clm hv ((c • ContinuousLinearMap.id ℂ H).restrictScalars ℝ)).congr fun _ _ => by simp`.
+A detailed English derivation is pending.
 -/
 theorem IsSm.smul {v : H} (hv : IsSm G σ v) (c : ℂ) : IsSm G σ (c • v) :=
   (SmOn.clm hv ((c • ContinuousLinearMap.id ℂ H).restrictScalars ℝ)).congr fun _ _ => by simp
 
 /- English proof (translation)
-The claim follows from `(SmOn.of_contDiff (contDiff_const (c := (0 : H)))).congr fun _ _ => map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem IsSm.zero : IsSm G σ 0 :=
   (SmOn.of_contDiff (contDiff_const (c := (0 : H)))).congr fun _ _ => map_zero _
 
 /- English proof (translation)
-Use `hv.add (hv'.smul (-1))` as an intermediate fact. Rewrite `this` using `[neg_one_smul, ← sub_eq_add_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsSm.sub {v v' : H} (hv : IsSm G σ v) (hv' : IsSm G σ v') : IsSm G σ (v - v') := by
   have := hv.add (hv'.smul (-1))
   rwa [neg_one_smul, ← sub_eq_add_neg] at this
 
 /- English proof (translation)
-The claim follows from `(SmOn.comp hw contDiff_mul fun _ hq => h.mul_mem _ hq.1 _ hq.2).congr fun _ hq => (h.apply_mul hq.1 hq.2 w).symm`.
+A detailed English derivation is pending.
 -/
 theorem IsSm.smOn_mul (h : RepOn G σ) {w : H} (hw : IsSm G σ w) :
     SmOn (G ×ˢ G) (fun q : Mat n × Mat n => σ q.1 (σ q.2 w)) :=
@@ -274,7 +268,7 @@ theorem IsSm.smOn_mul (h : RepOn G σ) {w : H} (hw : IsSm G σ w) :
     fun _ hq => (h.apply_mul hq.1 hq.2 w).symm
 
 /- English proof (translation)
-The claim follows from `SmOn.comp (hw.smOn_mul h) (φ := fun g : Mat n => (g, x)) (contDiff_id.prodMk contDiff_const) fun _ hg => ⟨hg, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsSm.apply (h : RepOn G σ) {w : H} (hw : IsSm G σ w) {x : Mat n} (hx : x ∈ G) :
     IsSm G σ (σ x w) :=
@@ -282,7 +276,7 @@ theorem IsSm.apply (h : RepOn G σ) {w : H} (hw : IsSm G σ w) {x : Mat n} (hx :
     fun _ hg => ⟨hg, hx⟩
 
 /- English proof (translation)
-Unfold `ds`. Simplify using `only [map_add]`. Conclude with `deriv_fun_add (hv.differentiableAt h hX) (hv'.differentiableAt h hX)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ds_add (h : RepOn G σ) {X : Mat n} (hX : ∀ t, ex X t ∈ G) {v v' : H} (hv : IsSm G σ v)
     (hv' : IsSm G σ v') : ds σ X (v + v') = ds σ X v + ds σ X v' := by
@@ -291,7 +285,7 @@ theorem ds_add (h : RepOn G σ) {X : Mat n} (hX : ∀ t, ex X t ∈ G) {v v' : H
   exact deriv_fun_add (hv.differentiableAt h hX) (hv'.differentiableAt h hX)
 
 /- English proof (translation)
-Unfold `ds`. Simplify using `only [map_smul]`. Conclude with `deriv_fun_const_smul c (hv.differentiableAt h hX)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ds_smul (h : RepOn G σ) {X : Mat n} (hX : ∀ t, ex X t ∈ G) {v : H} (hv : IsSm G σ v)
     (c : ℂ) : ds σ X (c • v) = c • ds σ X v := by
@@ -300,7 +294,7 @@ theorem ds_smul (h : RepOn G σ) {X : Mat n} (hX : ∀ t, ex X t ∈ G) {v : H} 
   exact deriv_fun_const_smul c (hv.differentiableAt h hX)
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | X :: W, hW => by have hW' : LieW G W := fun Y hY => hW Y (List.mem_cons_of_mem _ hY) simp only [dsW_cons] rw [dsW_add h hv hv' hW', ds_add h (hW X List.mem_cons_self) (hv.dsW h hW') (hv'.dsW h hW')]`.
+A detailed English derivation is pending.
 -/
 theorem dsW_add (h : RepOn G σ) {v v' : H} (hv : IsSm G σ v) (hv' : IsSm G σ v') :
     ∀ {W : List (Mat n)}, LieW G W → dsW σ W (v + v') = dsW σ W v + dsW σ W v'
@@ -311,7 +305,7 @@ theorem dsW_add (h : RepOn G σ) {v v' : H} (hv : IsSm G σ v) (hv' : IsSm G σ 
     rw [dsW_add h hv hv' hW', ds_add h (hW X List.mem_cons_self) (hv.dsW h hW') (hv'.dsW h hW')]
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | X :: W, hW => by have hW' : LieW G W := fun Y hY => hW Y (List.mem_cons_of_mem _ hY) simp only [dsW_cons] rw [dsW_smul h hv c hW', ds_smul h (hW X List.mem_cons_self) (hv.dsW h hW')]`.
+A detailed English derivation is pending.
 -/
 theorem dsW_smul (h : RepOn G σ) {v : H} (hv : IsSm G σ v) (c : ℂ) :
     ∀ {W : List (Mat n)}, LieW G W → dsW σ W (c • v) = c • dsW σ W v
@@ -322,7 +316,7 @@ theorem dsW_smul (h : RepOn G σ) {v : H} (hv : IsSm G σ v) (c : ℂ) :
     rw [dsW_smul h hv c hW', ds_smul h (hW X List.mem_cons_self) (hv.dsW h hW')]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ v', dsW_add h hv (hv'.smul _) hW, dsW_smul h hv' _ hW, neg_one_smul, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dsW_sub (h : RepOn G σ) {v v' : H} (hv : IsSm G σ v) (hv' : IsSm G σ v')
     {W : List (Mat n)} (hW : LieW G W) : dsW σ W (v - v') = dsW σ W v - dsW σ W v' := by
@@ -330,7 +324,7 @@ theorem dsW_sub (h : RepOn G σ) {v v' : H} (hv : IsSm G σ v) (hv' : IsSm G σ 
     neg_one_smul, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `h1` using `SmOn.comp (smOn_dsW h (u := fun x => σ x w) (hw.smOn_mul h) hW) (φ := fun x : Mat n => ((1 : Mat n), x)) (B := G) (contDiff_const.prodMk contDiff_id) fun _ hg => ⟨h.one_mem, hg⟩`. Use `h1.continuousOn.congr fun x _ => ?_` and prove the remaining obligations. Simplify using `[h.map_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem continuousOn_dsW_orbit (h : RepOn G σ) {w : H} (hw : IsSm G σ w) {W : List (Mat n)}
     (hW : LieW G W) : ContinuousOn (fun x => dsW σ W (σ x w)) G := by

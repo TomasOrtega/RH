@@ -17,23 +17,21 @@ namespace GlobalTheory.CharValsFixed
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.TorusExt GlobalTheory.BXOf GlobalTheory.UnramTorsion
 
 /- English proof (translation)
-Introduce `R _ _ D F _ _ T _ φ₁ hφ₁ J₀ h₀ J hJ eJ σ hσ g b hb hbA S hS hSfix`. Set `ρ : TF (R` to `R) F ⟶ Over.mk (spMap φ₁) := Over.homMk (spMap T.subtype) (by show spMap T.subtype ≫ spMap φ₁ = jFK (R := R) F ≫ jK R`. Rewrite using `[jFK, jK, spMap, spMap, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext hφ₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Set `w : ((TF (R` to `R) F).left.presheaf.stalk (closedPoint F))ˣ →* Fˣ := (Units.map σ.toMonoidHom).comp (sig F) * (sig F)⁻¹`. Establish `hwv : ∀ u, ((w u : Fˣ) : F) = σ (sig F u : F) * ((sig F u)⁻¹ : Fˣ)` using `fun u => rfl`. Establish `hw1 : ∀ u, w u = 1 ↔ σ (sig F u : F) = (sig F u : F)` using `fun u => by`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `congrArg Units.val h`. Rewrite `e` using `[hwv, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[_root_.mul_assoc, Units.inv_mul, _root_.mul_one]`. Use `_ = (sig F u : F) := by rw [e, _root_.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hwv, h, Units.mul_inv, Units.val_one]`. Establish `hw : ∀ (Y : Scheme.{0}) (K : Type) [Fintype K] (φ : K → (Y ⟶ D.P.A.left)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb D.P.L φ ε)) (r : (Over.mk (spMap φ₁)).left ⟶ Y), w (val t (ρ.left ≫ r) (closedPoint F) J) = 1`. Introduce `Y K _ φ ε t r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu⟩` from `val_integral T.subtype h₀ eJ t r`. Use `(hw1 _).2 ?_` and prove the remaining obligations. Establish `hu' : (sig F (val t (ρ.left ≫ r) (closedPoint F) J) : F) = T.subtype u` using `hu`. Rewrite using `[hu']`. Conclude with `hσ _ (u : T).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b' : Over.mk (spMap φ₁) ⟶ D.P.A` to `Over.homMk b hbA`. Establish `hgb : g.b = ρ ≫ b'` using `by ext1`. Conclude with `hb.symm`. Establish `hth : ∀ χ χ', w (th D (closedPoint F) J (cP D _ χ) (cP D _ χ') g.b) = 1` using `fun χ χ' => by`. Rewrite using `[hgb, ← comp_cP D ρ χ, ← comp_cP D ρ χ']`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `w_th ρ w hw _ _ _`. Set `H : AddSubgroup D.X` to `{ carrier := {χ | w (charVal g χ (closedPoint F) J) = 1} zero_mem' := by show w _ = 1`. Rewrite using `[charVal_zero g hJ, map_one]`. Use the proof step `add_mem' := fun {χ χ'} (h : w _ = 1) (h' : w _ = 1) => by show w _ = 1`. Establish `e` using `congrArg w (charVal_add g hJ χ χ')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e` using `[map_mul, map_mul, hth, h, h', _root_.mul_one, _root_.mul_one]`. Conclude with `e`. Use the proof step `neg_mem' := fun {χ} (h : w _ = 1) => by show w _ = 1`. Establish `e` using `congrArg w (charVal_add g hJ χ (-χ))`. Rewrite `e` using `[map_mul, map_mul, hth, h, _root_.mul_one, _root_.one_mul, add_neg_cancel, charVal_zero g hJ, map_one]`.
-
-Conclude with `e.symm }`. Establish `hSH : S ⊆ H` using `fun χ hχ => (hw1 _).2 (hSfix χ hχ)`. Establish `hH : H = ⊤` using `eq_top_iff.2 (hS ▸ (AddSubgroup.closure_le H).2 hSH)`. Introduce `χ`. Conclude with `(hw1 _).1 (show χ ∈ H by rw [hH]; trivial)`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (T : Subring F) [IsLocalRing T] (φ₁ : R →+* T), (∀ r, (φ₁ r : F) = algebraMap (FractionRing R) F (algebraMap R _ r)) → ∀ (J₀ : D.P.A.left → D.P.L.ι), (∀ x, x ∈ D.P.L.U (J₀ x)) → ∀ (J : ((TF (R := R) F).left ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L (Z := (TF (R := R) F).left) (closedPoint F) J → (∀ ψ : Sp T ⟶ D.P.A.left, J (spMap T.subtype ≫ ψ) = J₀ (ψ (closedPoint T))) → ∀ (σ : F →+* F), (∀ t ∈ T, σ t = t) → ∀ (g : GtPtF D F) (b : Sp T ⟶ D.P.A.left), spMap T.subtype ≫ b = g.b.left → b ≫ D.P.A.hom = spMap φ₁ → ∀ (S : Set D.X), AddSubgroup.closure S = ⊤ → (∀ χ ∈ S, σ (GlobalTheory.BXOf.sig F (GlobalTheory.TorusExt.charVal g χ (closedPoint F) J) : F) = (GlobalTheory.BXOf.sig F (GlobalTheory.TorusExt.charVal g χ (closedPoint F) J) : F)) → ∀ χ, σ (GlobalTheory.BXOf.sig F (GlobalTheory.TorusExt.charVal g χ (closedPoint F) J) : F) = (GlobalTheory.BXOf.sig F (GlobalTheory.TorusExt.charVal g χ (closedPoint F) J) : F) := by
   intro R _ _ D F _ _ T _ φ₁ hφ₁ J₀ h₀ J hJ eJ σ hσ g b hb hbA S hS hSfix

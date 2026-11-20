@@ -11,9 +11,9 @@ section Count
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (Q : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-Establish `h1 : Ideal.absNorm Q.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `Q.isPrime.ne_top`. Establish `h0 : Ideal.absNorm Q.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Q.ne_bot`. Establish `hc : Nat.card (𝓞 E ⧸ Q.asIdeal) = Ideal.absNorm Q.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem one_lt_card_residue : 1 < Nat.card (𝓞 E ⧸ Q.asIdeal) := by
   have h1 : Ideal.absNorm Q.asIdeal ≠ 1 := by
@@ -25,9 +25,9 @@ theorem one_lt_card_residue : 1 < Nat.card (𝓞 E ⧸ Q.asIdeal) := by
   omega
 
 /- English proof (translation)
-Use `haveI : Q.asIdeal.IsMaximal := Q.isMaximal`. Use `letI : Field (𝓞 E ⧸ Q.asIdeal) := Ideal.Quotient.field Q.asIdeal`. Establish `htor : Module.IsTorsionBySet (𝓞 E) M (Q.asIdeal : Set (𝓞 E))`. Introduce `x a`. Conclude with `hM a.1 a.2 x`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Module (𝓞 E ⧸ Q.asIdeal) M := htor.module`. Use `haveI : Module.Finite (𝓞 E ⧸ Q.asIdeal) M := Module.Finite.of_finite`. Use `⟨Module.finrank (𝓞 E ⧸ Q.asIdeal) M, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr (Module.finBasis (𝓞 E ⧸ Q.asIdeal) M).equivFun.toEquiv, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_eq_card_quotient_pow_of_ideal_smul_eq_zero {M : Type} [AddCommGroup M] [Module (𝓞 E) M] [Finite M]
     (hM : ∀ p ∈ Q.asIdeal, ∀ x : M, p • x = 0) : ∃ m, Nat.card M = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ m := by
@@ -43,19 +43,19 @@ theorem card_eq_card_quotient_pow_of_ideal_smul_eq_zero {M : Type} [AddCommGroup
     Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]
 
 /- English proof (translation)
-Use `Q.isMaximal` as an intermediate fact. Set `_ : Field (𝓞 E ⧸ Q.asIdeal)` to `Ideal.Quotient.field Q.asIdeal`. Establish `: Finite (𝓞 E ⧸ Q.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ Q.ne_bot`. Establish `hq : 1 < Nat.card (𝓞 E ⧸ Q.asIdeal)` using `Finite.one_lt_card`. Establish `ht : Module.IsTorsionBySet (𝓞 E) U (Q.asIdeal : Set (𝓞 E))` using `fun x p => hU p.1 p.2 x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `_ : Module (𝓞 E ⧸ Q.asIdeal) U` to `ht.module`. Establish `: IsScalarTower (𝓞 E) (𝓞 E ⧸ Q.asIdeal) U` using `ht.isScalarTower`. Establish `: FiniteDimensional (𝓞 E ⧸ Q.asIdeal) U` using `Module.Finite.of_finite`. Set `_ : Fintype (𝓞 E ⧸ Q.asIdeal)` to `Fintype.ofFinite _`. Set `eS : Submodule (𝓞 E ⧸ Q.asIdeal) U ≃ Submodule (𝓞 E) U` to `{ toFun := fun W => W.restrictScalars (𝓞 E) invFun := fun W => wmpToK Q W left_inv := fun W => Submodule.ext fun x => Iff.rfl right_inv := fun W => Submodule.ext fun x => Iff.rfl }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcardW : ∀ W : Submodule (𝓞 E ⧸ Q.asIdeal) U, Nat.card W = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ finrank (𝓞 E ⧸ Q.asIdeal) W`. Introduce `W`. Set `_ : Fintype W` to `Fintype.ofFinite W`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Conclude with `Module.card_eq_pow_finrank`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : finrank (𝓞 E ⧸ Q.asIdeal) U = a + b`. Establish `h1 : Nat.card U = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ finrank (𝓞 E ⧸ Q.asIdeal) U`. Set `_ : Fintype U` to `Fintype.ofFinite U`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Conclude with `Module.card_eq_pow_finrank`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hab` using `[h1]`. Conclude with `Nat.pow_right_injective hq hab`. Establish `hc : ∀ m, Nat.card {W : Submodule (𝓞 E) U // Nat.card W = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ m} = Nat.card {W : Submodule (𝓞 E ⧸ Q.asIdeal) U // finrank (𝓞 E ⧸ Q.asIdeal) W = m}`. Introduce `m`. Use `Nat.card_congr (eS.symm.subtypeEquiv fun W => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `Nat.card W = _ ↔ finrank (𝓞 E ⧸ Q.asIdeal) (wmpToK Q W) = m`. Rewrite using `[← card_wmpToK (P := Q) W, hcardW]`. Conclude with `⟨fun h => Nat.pow_right_injective hq h, fun h => by rw [h]⟩`. Rewrite using `[hc a, hc b, card_subspaces_finrank, ← card_subspaces_cofinrank]`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun W => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `Submodule.finrank_quotient_add_finrank W` as an intermediate fact. Rewrite `this` using `[hfin]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem card_submodules_complement {U : Type} [AddCommGroup U] [Module (𝓞 E) U] [Finite U]
     (hU : ∀ p ∈ Q.asIdeal, ∀ x : U, p • x = 0) {a b : ℕ}
@@ -103,11 +103,11 @@ theorem card_submodules_complement {U : Type} [AddCommGroup U] [Module (𝓞 E) 
   omega
 
 /- English proof (translation)
-Use `set K := W.comap p.mkQ with hK`. Establish `hpK : p ≤ K`. Introduce `x hx`. Rewrite using `[hK, Submodule.mem_comap, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero p).mpr hx]`. Conclude with `W.zero_mem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : K →ₗ[𝓞 E] W` to `p.mkQ.restrict (p := K) (q := W) (by intro x hx; exact hx)`. Establish `hf : Function.Surjective f`. Introduce and unpack `⟨w, hw⟩`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective p w`. Conclude with `⟨⟨m, hw⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hker : LinearMap.ker f = p.comap K.subtype`. Use extensionality with `⟨x, hx⟩`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply, ← Submodule.Quotient.mk_eq_zero p (x := x)]`. Conclude with `⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f), Nat.card_congr (f.quotKerEquivOfSurjective hf).toEquiv, hker, Nat.card_congr (Submodule.comapSubtypeEquivOfLe hpK).toEquiv]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_comap_mkQ {M : Type} [AddCommGroup M] [Module (𝓞 E) M] (p : Submodule (𝓞 E) M)
     (W : Submodule (𝓞 E) (M ⧸ p)) : Nat.card (W.comap p.mkQ) = Nat.card p * Nat.card W := by
@@ -135,59 +135,53 @@ def submoduleChainSet (X : Type) [AddCommGroup X] [Module (𝓞 E) X] (i j : ℕ
     Nat.card (X ⧸ Y) = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ i ∧ Nat.card Y = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ j}
 
 /- English proof (translation)
-Take `⟨Y₀, h1, h2, h3, h4⟩` from `hY`. Establish `hq` using `one_lt_card_residue Q`. Establish `hq0 : 0 < Nat.card (𝓞 E ⧸ Q.asIdeal)` using `by omega`. Establish `hX : Nat.card X = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ (i + j)`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card Y₀, h4, h3, pow_add, mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : ∀ p ∈ Q.asIdeal, ∀ p' ∈ Q.asIdeal, ∀ x : X, p • p' • x = 0`. Introduce `p hp p' hp' x`. Establish `hx : p' • x ∈ Y₀` using `h1 (Submodule.smul_mem_smul hp' Submodule.mem_top)`. Establish `h5 : p • (p' • x) ∈ Q.asIdeal • Y₀` using `Submodule.smul_mem_smul hp hx`. Rewrite `h5` using `[h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.mem_bot _).1 h5`. Take `⟨a, ha, c, hcQ, hc⟩` from `wmp_exists_unif Q`. Take `⟨s, r, hr, hsr⟩` from `Q.isMaximal.exists_inv hcQ`. Establish `key : ∀ p ∈ Q.asIdeal, ∃ t : 𝓞 E, ∀ x : X, p • x = (s * t) • (a • x)`. Introduce `p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hc p hp`. Use `⟨t, fun x => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsq r hr p hp x, add_zero, ht, ← mul_smul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Set `φ : X →ₗ[𝓞 E] X` to `a • LinearMap.id`. Establish `hφ : ∀ x, φ x = a • x` using `fun x => rfl`. Use `set K := LinearMap.ker φ with hK`. Use `set R := Q.asIdeal • (⊤ : Submodule (𝓞 E) X) with hR`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hRrange : R = LinearMap.range φ`. Use `le_antisymm (Submodule.smul_le.2 fun p hp x _ => ?_) ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `key p hp`. Conclude with `⟨(s * t) • x, by rw [hφ, ht, smul_comm]⟩`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `Submodule.smul_mem_smul ha Submodule.mem_top`. Establish `hkill : ∀ Y : Submodule (𝓞 E) X, Q.asIdeal • Y = ⊥ ↔ Y ≤ K`. Introduce `Y`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : a • y ∈ Q.asIdeal • Y` using `Submodule.smul_mem_smul ha hy`. Rewrite `h5` using `[h]`. Conclude with `LinearMap.mem_ker.2 ((Submodule.mem_bot _).1 h5)`. Introduce `h`. Rewrite using `[eq_bot_iff, Submodule.smul_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p hp y hy`. Take `⟨t, ht⟩` from `key p hp`. Establish `h0 : a • y = 0` using `LinearMap.mem_ker.1 (h hy)`. Rewrite using `[ht, h0, smul_zero]`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hRK : R ≤ K`. Introduce `y hy`. Rewrite `hy` using `[hRrange]`. Take `⟨x, rfl⟩` from `hy`. Conclude with `LinearMap.mem_ker.2 (hsq a ha a ha x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hXKR : Nat.card X = Nat.card K * Nat.card R`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card K, Nat.card_congr φ.quotKerEquivRange.toEquiv, ← hRrange]`. Use `set R' := R.comap K.subtype with hR'`. Establish `hR'card : Nat.card R' = Nat.card R` using `Nat.card_congr (Submodule.comapSubtypeEquivOfLe hRK).toEquiv`. Establish `: Finite (K ⧸ R')` using `Finite.of_surjective _ (Submodule.mkQ_surjective R')`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hUkill : ∀ p ∈ Q.asIdeal, ∀ u : K ⧸ R', p • u = 0`. Introduce `p hp u`. Proceed by induction on `u using Submodule.Quotient.induction_on with`. Consider the case `_ y`. Rewrite using `[← Submodule.Quotient.mk_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : p • (y : X) ∈ Q.asIdeal • K` using `Submodule.smul_mem_smul hp y.2`. Rewrite `h5` using `[(hkill K).2 le_rfl]`. Establish `h6 : p • y = 0` using `Subtype.ext ((Submodule.mem_bot _).1 h5)`. Rewrite using `[h6, Submodule.Quotient.mk_zero]`. Establish `hRkill : ∀ p ∈ Q.asIdeal, ∀ x : R, p • x = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p hp x`. Establish `h5 : p • (x : X) ∈ Q.asIdeal • R` using `Submodule.smul_mem_smul hp x.2`. Rewrite `h5` using `[(hkill R).2 hRK]`. Conclude with `Subtype.ext ((Submodule.mem_bot _).1 h5)`. Take `⟨γ, hγ⟩` from `card_eq_card_quotient_pow_of_ideal_smul_eq_zero Q hRkill`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Take `⟨u, hu⟩` from `card_eq_card_quotient_pow_of_ideal_smul_eq_zero Q hUkill`. Establish `hKcard : Nat.card K = Nat.card R * Nat.card (K ⧸ R')`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card R', hR'card]`. Establish `hsum : i + j = 2 * γ + u`. Establish `e : Nat.card (𝓞 E ⧸ Q.asIdeal) ^ (i + j) = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ (2 * γ + u)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hX, hXKR, hKcard, hγ, hu, ← pow_add, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Nat.pow_right_injective hq e`. Set `F : Submodule (𝓞 E) (K ⧸ R') → Submodule (𝓞 E) X` to `fun W => (W.comap R'.mkQ).map K.subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `G : Submodule (𝓞 E) X → Submodule (𝓞 E) (K ⧸ R')` to `fun Y => (Y.comap K.subtype).map R'.mkQ`. Establish `hFcard : ∀ W, Nat.card (F W) = Nat.card R * Nat.card W`. Introduce `W`. Rewrite using `[Nat.card_congr (Submodule.equivMapOfInjective K.subtype K.injective_subtype (W.comap R'.mkQ)).symm.toEquiv, card_comap_mkQ, hR'card]`. Establish `hFR : ∀ W, R ≤ F W`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W x hx`. Use `⟨⟨x, hRK hx⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero R').2 hx]`. Conclude with `W.zero_mem`. Establish `hFK : ∀ W, F W ≤ K` using `fun W => Submodule.map_subtype_le _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hGF : ∀ W, G (F W) = W`. Introduce `W`. Express the relevant statement in the definitionally equal form `Submodule.map R'.mkQ (Submodule.comap K.subtype (Submodule.map K.subtype (W.comap R'.mkQ))) = W`. Rewrite using `[Submodule.comap_map_eq_of_injective K.injective_subtype, Submodule.map_comap_eq_of_surjective (Submodule.mkQ_surjective R')]`. Establish `hFG : ∀ Y, R ≤ Y → Y ≤ K → F (G Y) = Y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `Y hRY hYK`. Express the relevant statement in the definitionally equal form `Submodule.map K.subtype (Submodule.comap R'.mkQ (Submodule.map R'.mkQ (Y.comap K.subtype))) = Y`. Rewrite using `[Submodule.comap_map_mkQ, sup_eq_right.2 (Submodule.comap_mono hRY), Submodule.map_comap_subtype, inf_eq_right.2 hYK]`. Establish `hcount : ∀ i' j', i' + j' = i + j → Nat.card (submoduleChainSet Q X i' j') = Nat.card {W : Submodule (𝓞 E) (K ⧸ R') // Nat.card R * Nat.card W = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ j'}`. Introduce `i' j' hij`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.card_congr { toFun := fun Y => ⟨G Y.1, ?_⟩ invFun := fun W => ⟨F W.1, ?_⟩ left_inv := fun Y => Subtype.ext (hFG Y.1 Y.2.1 ((hkill Y.1).1 Y.2.2.1)) right_inv := fun W => Subtype.ext (hGF W.1) }` and prove the remaining obligations. Rewrite using `[← hFcard, hFG Y.1 Y.2.1 ((hkill Y.1).1 Y.2.2.1)]`. Conclude with `Y.2.2.2.2`. Use `⟨hFR W.1, (hkill _).2 (hFK W.1), ?_, by rw [hFcard]; exact W.2⟩` and prove the remaining obligations. Establish `e` using `Submodule.card_eq_card_quotient_mul_card (F W.1)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[hX, ← hij, hFcard, W.2, pow_add, mul_comm]`. Conclude with `Nat.eq_of_mul_eq_mul_left (pow_pos hq0 _) e.symm`. Establish `hW₀` using `hFcard (G Y₀)`. Rewrite `hW₀` using `[hFG Y₀ h1 ((hkill Y₀).1 h2), h4, hγ]`. Establish `hγj : γ ≤ j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Assume the negation of the conclusion as `hlt`. Establish `: Nat.card (𝓞 E ⧸ Q.asIdeal) ^ j < Nat.card (𝓞 E ⧸ Q.asIdeal) ^ γ` using `Nat.pow_lt_pow_right hq (by omega)`. Establish `hpos : 0 < Nat.card (G Y₀)` using `Nat.card_pos`. Use the polynomial consequences of the given equalities and inequalities. Establish `hWle : Nat.card (G Y₀) ≤ Nat.card (K ⧸ R')` using `Nat.card_le_card_of_injective _ Subtype.val_injective`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hγi : γ ≤ i`. Establish `e1 : Nat.card (𝓞 E ⧸ Q.asIdeal) ^ j = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ γ * Nat.card (𝓞 E ⧸ Q.asIdeal) ^ (j - γ)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hγj]`. Rewrite `hW₀` using `[e1]`. Establish `e2` using `Nat.eq_of_mul_eq_mul_left (pow_pos hq0 γ) hW₀`.
-
-Rewrite `hWle` using `[← e2, hu]`. Use `(Nat.pow_le_pow_iff_right hq).1 hWle` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hcount i j rfl, hcount j i (add_comm j i), hγ]`. Establish `conv : ∀ m, γ ≤ m → Nat.card {W : Submodule (𝓞 E) (K ⧸ R') // Nat.card (𝓞 E ⧸ Q.asIdeal) ^ γ * Nat.card W = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ m} = Nat.card {W : Submodule (𝓞 E) (K ⧸ R') // Nat.card W = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ (m - γ)}`.
-
-Introduce `m hm`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun W => ?_)` and prove the remaining obligations. Rewrite using `[show Nat.card (𝓞 E ⧸ Q.asIdeal) ^ m = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ γ * Nat.card (𝓞 E ⧸ Q.asIdeal) ^ (m - γ) by`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hm]]`. Conclude with `⟨fun h => Nat.eq_of_mul_eq_mul_left (pow_pos hq0 γ) h, fun h => by rw [h]⟩`.
-
-Rewrite using `[conv j hγj, conv i hγi]`. Conclude with `card_submodules_complement Q hUkill (by rw [hu]; congr 1; omega)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_submodulePairs_symm_of {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Finite X] {i j : ℕ}
     (hY : (submoduleChainSet Q X i j).Nonempty) : Nat.card (submoduleChainSet Q X i j) = Nat.card (submoduleChainSet Q X j i) := by
@@ -344,9 +338,7 @@ theorem card_submodulePairs_symm_of {X : Type} [AddCommGroup X] [Module (𝓞 E)
   exact card_submodules_complement Q hUkill (by rw [hu]; congr 1; omega)
 
 /- English proof (translation)
-Distinguish the cases in `h1 : (submoduleChainSet Q X i j).Nonempty`. Conclude with `card_submodulePairs_symm_of Q h1`. Distinguish the cases in `h2 : (submoduleChainSet Q X j i).Nonempty`. Conclude with `(card_submodulePairs_symm_of Q h2).symm`. Rewrite `h1`, `h2` using `[Set.not_nonempty_iff_eq_empty]`.
-
-Rewrite using `[h1, h2]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_submodulePairs_symm (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Finite X] (i j : ℕ) :
     Nat.card (submoduleChainSet Q X i j) = Nat.card (submoduleChainSet Q X j i) := by
@@ -372,9 +364,9 @@ theorem inf_toAddSubgroup {R V : Type} [Ring R] [AddCommGroup V] [Module R V] (p
 open Classical in
 
 /- English proof (translation)
-Establish `hP : P.asIdeal ≠ ⊥` using `P.ne_bot`. Establish `hP'` using `conjIdeal_ne_bot hP`. Establish `hQ : Q.asIdeal ≠ ⊥` using `Q.ne_bot`. Establish `hQ'` using `conjIdeal_ne_bot hQ`. Unfold `decorationPathCount`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Nat.card_eq_finsetCard]`. Apply `Nat.card_congr` to reduce the goal to its premises. Apply `Equiv.subtypeEquivRight` to reduce the goal to its premises. Introduce `e`. Simplify using `only [Finset.mem_filter, DecoSet.mem_heckeNb hP hP', DecoSet.mem_heckeNb hQ hQ']`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem pathCount_eq_card_middle (P Q : HeightOneSpectrum (𝓞 E)) (i j : ℕ) (d f : DecoSet E n ST SG) :
     decorationPathCount P.asIdeal Q.asIdeal i j d f =
@@ -391,9 +383,9 @@ theorem pathCount_eq_card_middle (P Q : HeightOneSpectrum (𝓞 E)) (i j : ℕ) 
   simp only [Finset.mem_filter, DecoSet.mem_heckeNb hP hP', DecoSet.mem_heckeNb hQ hQ']
 
 /- English proof (translation)
-Establish `hne' : P.asIdeal ≠ (conjPrime₂ P).asIdeal` using `fun h => hne (HeightOneSpectrum.ext h.symm)`. Establish `htop` using `Ideal.IsMaximal.coprime_of_ne P.isMaximal (conjPrime₂ P).isMaximal hne'`. Establish `h1mem : (1 : 𝓞 E) ∈ P.asIdeal ⊔ (conjPrime₂ P).asIdeal` using `by rw [htop]; trivial`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp h1mem`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : x = a • x + b • x` using `by rw [← add_smul, hab, one_smul]`. Rewrite using `[hx']`. Conclude with `e.add_mem (h1 (Submodule.smul_mem_smul ha hx.1)) (h2 (Submodule.smul_mem_smul hb hx.2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_inf_le {P : HeightOneSpectrum (𝓞 E)} (hne : conjPrime₂ P ≠ P) {N M e : Submodule (𝓞 E) (Sp E n)}
     (h1 : P.asIdeal • M ≤ e) (h2 : (conjPrime₂ P).asIdeal • N ≤ e) : M ⊓ N ≤ e := by
@@ -407,9 +399,9 @@ theorem split_inf_le {P : HeightOneSpectrum (𝓞 E)} (hne : conjPrime₂ P ≠ 
   exact e.add_mem (h1 (Submodule.smul_mem_smul ha hx.1)) (h2 (Submodule.smul_mem_smul hb hx.2))
 
 /- English proof (translation)
-Establish `hne' : P.asIdeal ≠ (conjPrime₂ P).asIdeal` using `fun h => hne (HeightOneSpectrum.ext h.symm)`. Establish `htop` using `Ideal.IsMaximal.coprime_of_ne P.isMaximal (conjPrime₂ P).isMaximal hne'`. Establish `h1mem : (1 : 𝓞 E) ∈ P.asIdeal ⊔ (conjPrime₂ P).asIdeal` using `by rw [htop]; trivial`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp h1mem`. Use `le_antisymm (sup_le inf_le_left inf_le_right) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Establish `hx' : x = a • x + b • x` using `by rw [← add_smul, hab, one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.add_mem_sup ⟨e.smul_mem a hx, h1 (Submodule.smul_mem_smul ha hx)⟩ ⟨h2 (Submodule.smul_mem_smul hb hx), e.smul_mem b hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_sup_inf_eq {P : HeightOneSpectrum (𝓞 E)} (hne : conjPrime₂ P ≠ P) {N M e : Submodule (𝓞 E) (Sp E n)}
     (h1 : P.asIdeal • e ≤ N) (h2 : (conjPrime₂ P).asIdeal • e ≤ M) : (e ⊓ N) ⊔ (M ⊓ e) = e := by
@@ -425,9 +417,9 @@ theorem split_sup_inf_eq {P : HeightOneSpectrum (𝓞 E)} (hne : conjPrime₂ P 
     ⟨h2 (Submodule.smul_mem_smul hb hx), e.smul_mem b hx⟩
 
 /- English proof (translation)
-Establish `key : (M ⊓ e).relIndex ((e ⊓ N) ⊔ (M ⊓ e)) = (M ⊓ e).relIndex (e ⊓ N)` using `AddSubgroup.relIndex_sup_right (e ⊓ N) (M ⊓ e)`. Rewrite `key` using `[h]`. Rewrite using `[← AddSubgroup.inf_relIndex_right M e, key, ← AddSubgroup.inf_relIndex_right (M ⊓ e) (e ⊓ N), ← AddSubgroup.inf_relIndex_right (M ⊓ N) (e ⊓ N)]`. Use `congr 1`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [AddSubgroup.mem_inf]`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem relIndex_of_sup_eq {G : Type} [AddCommGroup G] {M e N : AddSubgroup G} (h : (e ⊓ N) ⊔ (M ⊓ e) = e) :
     M.relIndex e = (M ⊓ N).relIndex (e ⊓ N) := by
@@ -442,9 +434,9 @@ theorem relIndex_of_sup_eq {G : Type} [AddCommGroup G] {M e N : AddSubgroup G} (
   tauto
 
 /- English proof (translation)
-Establish `hC'B' : C.comap N.subtype ≤ B.comap N.subtype` using `Submodule.comap_mono hCB`. Establish `hidx : ∀ A : Submodule (𝓞 E) (Sp E n), Nat.card (N ⧸ A.comap N.subtype) = A.toAddSubgroup.relIndex N.toAddSubgroup`. Introduce `A`. Rewrite using `[← Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : Nat.card ((N ⧸ C.comap N.subtype) ⧸ (B.comap N.subtype).map (C.comap N.subtype).mkQ) = B.toAddSubgroup.relIndex N.toAddSubgroup`. Rewrite using `[Nat.card_congr (Submodule.quotientQuotientEquivQuotient _ _ hC'B').toEquiv, hidx]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1, ← hidx C, Submodule.card_eq_card_quotient_mul_card ((B.comap N.subtype).map (C.comap N.subtype).mkQ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_quotient_relIndex {C B N : Submodule (𝓞 E) (Sp E n)} (hCB : C ≤ B) :
     Nat.card ((N ⧸ C.comap N.subtype) ⧸ (B.comap N.subtype).map (C.comap N.subtype).mkQ) =
@@ -465,7 +457,7 @@ theorem card_quotient_relIndex {C B N : Submodule (𝓞 E) (Sp E n)} (hCB : C �
     Submodule.card_eq_card_quotient_mul_card ((B.comap N.subtype).map (C.comap N.subtype).mkQ)]
 
 /- English proof (translation)
-Take `⟨e⟩` from `h`. Rewrite using `[Nat.card_congr e.toEquiv, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin i), Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_of_equiv_fin {A : Type} [AddCommGroup A] [Module (𝓞 E) A] {Q : Ideal (𝓞 E)} {i : ℕ}
     (h : Nonempty (A ≃ₗ[𝓞 E] (Fin i → 𝓞 E ⧸ Q))) : Nat.card A = Nat.card (𝓞 E ⧸ Q) ^ i := by
@@ -473,11 +465,9 @@ theorem card_of_equiv_fin {A : Type} [AddCommGroup A] [Module (𝓞 E) A] {Q : I
   rw [Nat.card_congr e.toEquiv, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin i), Fintype.card_fin]
 
 /- English proof (translation)
-Establish `hMN : (P.asIdeal * P.asIdeal) • M ≤ M ⊓ N`. Use `le_inf Submodule.smul_le_right ?_` and prove the remaining obligations. Rewrite using `[Submodule.mul_smul, Submodule.smul_le]`. Introduce `a ha y hy`. Use `Submodule.smul_induction_on (p := fun y => a • y ∈ N) hy ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r hr x hx`. Conclude with `hPM a ha r hr x hx`. Introduce `x y hx hy`. Simplify using `only [smul_add]`. Conclude with `N.add_mem hx hy`.
-
-Conclude with `le_trans hMN hB`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ideal_sq_smul_le {P : HeightOneSpectrum (𝓞 E)} {N M B : Submodule (𝓞 E) (Sp E n)}
     (hPM : ∀ p ∈ P.asIdeal, ∀ p' ∈ P.asIdeal, ∀ x ∈ M, p • p' • x ∈ N) (hB : M ⊓ N ≤ B) :
@@ -495,59 +485,51 @@ theorem ideal_sq_smul_le {P : HeightOneSpectrum (𝓞 E)} {N M B : Submodule (�
   exact le_trans hMN hB
 
 /- English proof (translation)
-Use `set N := d.1.N with hNdef`. Use `set M := f.1.N with hMdef`. Use `set C' := (M ⊓ N).comap N.subtype with hC'`. Establish `hq0 : 0 < Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal)` using `by have := one_lt_card_residue (conjPrime₂ P); omega`. Establish `hmem : ∀ e : {e : DecoSet E n ST SG // e ∈ d.heckeSet P.asIdeal i ∧ f ∈ e.heckeSet P.asIdeal j}, ((e.1.1.N ⊓ N).comap N.subtype).map C'.mkQ ∈ submoduleChainSet (conjPrime₂ P) (N ⧸ C') i j`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨e, ⟨hn1, -, -⟩, ⟨hn2, -, -⟩⟩`. Take `⟨i11, i12, ⟨i13⟩⟩` from `(isHeckeNbr_iff P i _ _).1 hn1`. Take `⟨i21, i22, ⟨i23⟩⟩` from `(isHeckeNbr_iff P j _ _).1 hn2`. Establish `hCB : M ⊓ N ≤ e.1.N ⊓ N` using `le_inf (split_inf_le hne i21 i12) inf_le_right`. Take `⟨c1, c2⟩` from `card_quotient_relIndex (N := N) hCB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hBN : (e.1.N ⊓ N).toAddSubgroup.relIndex N.toAddSubgroup = Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal) ^ i`. Rewrite using `[← wmp_card_quot]`. Conclude with `card_of_equiv_fin ⟨i13⟩`. Use `⟨?_, ?_, by rw [c1, hBN], ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.smul_le]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `p hp y _`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `_ x`. Rewrite using `[← Submodule.Quotient.mk_smul]`. Conclude with `Submodule.mem_map_of_mem (f := C'.mkQ) (show p • x ∈ (e.1.N ⊓ N).comap N.subtype from ⟨i12 (Submodule.smul_mem_smul hp x.2), N.smul_mem p x.2⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[eq_bot_iff, Submodule.smul_le]`. Introduce `p hp y hy`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`. Rewrite using `[Submodule.mem_bot, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨i22 (Submodule.smul_mem_smul hp hx.1), N.smul_mem p x.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hglue` using `split_sup_inf_eq hne i11 i22`. Establish `hg : (e.1.N.toAddSubgroup ⊓ N.toAddSubgroup) ⊔ (M.toAddSubgroup ⊓ e.1.N.toAddSubgroup) = e.1.N.toAddSubgroup`. Rewrite using `[← inf_toAddSubgroup, ← inf_toAddSubgroup, ← Submodule.sup_toAddSubgroup, hglue]`. Establish `hj : M.toAddSubgroup.relIndex e.1.N.toAddSubgroup = Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal) ^ j`. Rewrite using `[← AddSubgroup.inf_relIndex_right, ← inf_toAddSubgroup, ← wmp_card_quot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `card_of_equiv_fin ⟨i23⟩`. Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex (H := (M ⊓ N).toAddSubgroup) (K := (e.1.N ⊓ N).toAddSubgroup) (L := N.toAddSubgroup) (fun x hx => hCB hx) (fun x hx => hx.2)`. Rewrite `hmul` using `[inf_toAddSubgroup M N, inf_toAddSubgroup e.1.N N, ← relIndex_of_sup_eq hg, hj, ← inf_toAddSubgroup e.1.N N, hBN, ← inf_toAddSubgroup M N]`. Rewrite `c2` using `[hBN, ← hmul]`. Conclude with `Nat.eq_of_mul_eq_mul_right (pow_pos hq0 i) c2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `Φ : {e : DecoSet E n ST SG // e ∈ d.heckeSet P.asIdeal i ∧ f ∈ e.heckeSet P.asIdeal j} → submoduleChainSet (conjPrime₂ P) (N ⧸ C') i j` to `fun e => ⟨_, hmem e⟩`. Use `Nat.card_eq_of_bijective Φ ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨e₁, ⟨hn1, hf1, hb1⟩, h1⟩ ⟨e₂, ⟨hn2, hf2, hb2⟩, h2⟩ h`. Establish `h'` using `congrArg (fun Y : submoduleChainSet (conjPrime₂ P) (N ⧸ C') i j => (Y.1.comap C'.mkQ).map N.subtype) h`. Establish `hC1 : C' ≤ (e₁.1.N ⊓ N).comap N.subtype` using `Submodule.comap_mono (le_inf (split_inf_le hne ((isHeckeNbr_iff P j _ _).1 h1.1).1 ((isHeckeNbr_iff P i _ _).1 hn1).2.1) inf_le_right)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hC2 : C' ≤ (e₂.1.N ⊓ N).comap N.subtype` using `Submodule.comap_mono (le_inf (split_inf_le hne ((isHeckeNbr_iff P j _ _).1 h2.1).1 ((isHeckeNbr_iff P i _ _).1 hn2).2.1) inf_le_right)`. Simplify using `only [Φ, Submodule.comap_map_mkQ, sup_eq_right.2 hC1, sup_eq_right.2 hC2, Submodule.map_comap_subtype] at h'`. Establish `hB : e₁.1.N ⊓ N = e₂.1.N ⊓ N`. Rewrite `h'` using `[inf_eq_right.2 (inf_le_right : e₁.1.N ⊓ N ≤ N), inf_eq_right.2 (inf_le_right : e₂.1.N ⊓ N ≤ N)]`. Conclude with `h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g₁` using `hn1.eq_glue d.2.lat d.2.uni e₁.2.uni P hne`. Establish `g₂` using `hn2.eq_glue d.2.lat d.2.uni e₂.2.uni P hne`. Conclude with `Subtype.ext (Subtype.ext (Deco.ext (by rw [g₁, g₂, hB]) (hf1.trans hf2.symm) (hb1.trans hb2.symm)))`. Introduce and unpack `⟨Y, hY1, hY2, hY3, hY4⟩`. Use `set B' := Y.comap C'.mkQ with hB'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `set B := B'.map N.subtype with hBdef`. Establish `hYB : B'.map C'.mkQ = Y` using `Submodule.map_comap_eq_of_surjective (Submodule.mkQ_surjective C') Y`. Establish `hC'B' : C' ≤ B'` using `fun x hx => by`. Rewrite using `[hB', Submodule.mem_comap, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero C').2 hx]`. Conclude with `Y.zero_mem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hB'eq : B.comap N.subtype = B'` using `Submodule.comap_map_eq_of_injective N.injective_subtype B'`. Establish `hCB : M ⊓ N ≤ B` using `fun x hx => ⟨⟨x, hx.2⟩, hC'B' hx, rfl⟩`. Establish `hBN : B ≤ N` using `Submodule.map_subtype_le _ _`. Establish `hkillB : ∀ p ∈ (conjPrime₂ P).asIdeal, ∀ z : N ⧸ B', p • z = 0`. Introduce `p hp z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `_ x`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, hB', Submodule.mem_comap, map_smul]`. Conclude with `hY1 (Submodule.smul_mem_smul hp Submodule.mem_top)`. Establish `hcardB : Nat.card (N ⧸ B') = Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal) ^ i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.card_congr (Submodule.quotientQuotientEquivQuotient C' B' hC'B').toEquiv, hYB]`. Conclude with `hY3`. Take `⟨ψ⟩` from `wmp_quot_equiv_of_card (conjPrime₂ P) (N ⧸ B') hkillB hcardB`. Set `φ : N →ₗ[𝓞 E] (Fin i → 𝓞 E ⧸ (conjPrime₂ P).asIdeal)` to `(ψ : (N ⧸ B') →ₗ[𝓞 E] _) ∘ₗ B'.mkQ`. Establish `hφ : Function.Surjective φ` using `ψ.surjective.comp (Submodule.mkQ_surjective B')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hkφ : LinearMap.ker φ = B'`. Rewrite using `[LinearMap.ker_comp, LinearEquiv.ker, Submodule.comap_bot, Submodule.ker_mkQ]`. Take `⟨N', hl, hu, hnb, hsame, hinf⟩` from `exists_heckeNbr_ker d.2.lat d.2.uni P hne φ hφ`. Rewrite `hinf` using `[hkφ]`. Establish `hglue` using `hnb.eq_glue d.2.lat d.2.uni hu P hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hglue` using `[hinf]`. Take `⟨n11, n12, -⟩` from `(isHeckeNbr_iff P i _ _).1 hnb`. Establish `hPbB : (conjPrime₂ P).asIdeal • B ≤ M`. Rewrite using `[Submodule.smul_le]`. Introduce `p hp x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x', hx', rfl⟩` from `Submodule.mem_map.1 hx`. Establish `h5 : p • C'.mkQ x' ∈ (conjPrime₂ P).asIdeal • Y` using `Submodule.smul_mem_smul hp hx'`. Rewrite `h5` using `[hY2, Submodule.mem_bot, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h5.1`. Establish `hsq : (P.asIdeal * P.asIdeal) • M ≤ B` using `ideal_sq_smul_le hPM hCB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hPbar : (conjPrime₂ P).asIdeal • N' ≤ M`. Rewrite using `[hglue, Submodule.smul_sup]`. Use `sup_le hPbB ?_` and prove the remaining obligations. Rewrite using `[Submodule.smul_le]`. Introduce `t ht z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `Submodule.smul_induction_on (p := fun z => t • z ∈ M) hz (fun r hr u hu' => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `conj_smul_dual_mem f.2.uni hsq ?_ hu'` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_mul ht hr`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[smul_add]`. Conclude with `M.add_mem ha hb`. Establish `hPM' : P.asIdeal • M ≤ N'`. Rewrite using `[Submodule.smul_le]`. Introduce `p hp x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `conj_smul_dual_mem hu hPbar ?_ ?_` and prove the remaining obligations. Rewrite using `[mem_conjP, cO_cO]`. Conclude with `hp`. Rewrite using `[show dual (hStd E n) M = M from f.2.uni]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkill' : ∀ p ∈ (conjPrime₂ P).asIdeal, ∀ z : N' ⧸ (M ⊓ N').comap N'.subtype, p • z = 0`. Introduce `p hp z`. Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `_ y`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hPbar (Submodule.smul_mem_smul hp y.2), N'.smul_mem p y.2⟩`. Establish `hcard' : Nat.card (N' ⧸ (M ⊓ N').comap N'.subtype) = Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal) ^ j`. Take `⟨c1, c2⟩` from `card_quotient_relIndex (N := N) hCB`. Establish `hBNi : B.toAddSubgroup.relIndex N.toAddSubgroup = Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal) ^ i`. Rewrite using `[← wmp_card_quot, hB'eq]`.
-
-Conclude with `hcardB`. Establish `hYc : Nat.card ((B.comap N.subtype).map C'.mkQ) = Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal) ^ j`. Rewrite using `[hB'eq, hYB]`. Conclude with `hY4`. Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex (H := (M ⊓ N).toAddSubgroup) (K := B.toAddSubgroup) (L := N.toAddSubgroup) (fun x hx => hCB hx) (fun x hx => hBN hx)`.
-
-Rewrite `c2` using `[hYc, hBNi]`. Rewrite `hmul` using `[hBNi, ← c2]`. Establish `hMB : (M ⊓ N).toAddSubgroup.relIndex B.toAddSubgroup = Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal) ^ j` using `Nat.eq_of_mul_eq_mul_right (pow_pos hq0 i) hmul`. Establish `hglue2` using `split_sup_inf_eq hne n11 hPbar`. Establish `hg : (N'.toAddSubgroup ⊓ N.toAddSubgroup) ⊔ (M.toAddSubgroup ⊓ N'.toAddSubgroup) = N'.toAddSubgroup`.
-
-Rewrite using `[← inf_toAddSubgroup, ← inf_toAddSubgroup, ← Submodule.sup_toAddSubgroup, hglue2]`. Rewrite using `[wmp_card_quot, inf_toAddSubgroup, AddSubgroup.inf_relIndex_right, relIndex_of_sup_eq hg, ← inf_toAddSubgroup, ← inf_toAddSubgroup, hinf]`. Conclude with `hMB`. Take `⟨ψ'⟩` from `wmp_quot_equiv_of_card (conjPrime₂ P) _ hkill' hcard'`. Set `e : DecoSet E n ST SG` to `⟨{ N := N', f := d.1.f, be := d.1.be }, d.2.replN hl hu (fun R => hsame R.1 (hST R).1 (hST R).2) (fun w => hsame w.1 (hSG w).1 (hSG w).2)⟩`.
-
-Establish `he1 : e ∈ d.heckeSet P.asIdeal i` using `⟨hnb, rfl, rfl⟩`. Establish `he2 : f ∈ e.heckeSet P.asIdeal j` using `⟨(isHeckeNbr_iff P j _ _).2 ⟨hPM', hPbar, ⟨ψ'⟩⟩, hf, hb⟩`. Use `⟨⟨e, he1, he2⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((N' ⊓ N).comap N.subtype).map C'.mkQ = Y`. Rewrite using `[hinf, hB'eq, hYB]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_paths_eq_submodulePairs (P : HeightOneSpectrum (𝓞 E)) (hne : conjPrime₂ P ≠ P)
     (hST : ∀ R : ST, R.1 ≠ P ∧ R.1 ≠ conjPrime₂ P) (hSG : ∀ w : SG, w.1 ≠ P ∧ w.1 ≠ conjPrime₂ P)
@@ -712,17 +694,17 @@ theorem card_paths_eq_submodulePairs (P : HeightOneSpectrum (𝓞 E)) (hne : con
     rw [hinf, hB'eq, hYB]
 
 /- English proof (translation)
-Rewrite using `[pathCount_eq_card_middle P P i j d f, pathCount_eq_card_middle P P j i d f]`. Distinguish the cases in `hc : f.1.f = d.1.f ∧ f.1.be = d.1.be ∧ (∀ p ∈ P.asIdeal, ∀ p' ∈ P.asIdeal, ∀ x ∈ f.1.N, p • p' • x ∈ d.1.N)`. Take `⟨hf, hb, hPM⟩` from `hc`. Rewrite using `[card_paths_eq_submodulePairs P hne hST hSG d f hf hb hPM i j, card_paths_eq_submodulePairs P hne hST hSG d f hf hb hPM j i]`. Distinguish the cases in `hfin : Finite (d.1.N ⧸ (f.1.N ⊓ d.1.N).comap d.1.N.subtype)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[card_submodulePairs_symm]`. Establish `hq` using `one_lt_card_residue (conjPrime₂ P)`. Establish `hT : ∀ k l, Nat.card (submoduleChainSet (conjPrime₂ P) (d.1.N ⧸ (f.1.N ⊓ d.1.N).comap d.1.N.subtype) k l) = 0`. Introduce `k l`. Rewrite using `[Nat.card_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Use `⟨fun Y => hfin ?_⟩` and prove the remaining obligations. Take `⟨Y, hY⟩` from `Y`. Take `⟨_, _, hXY, hY'⟩` from `hY`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.card_eq_card_quotient_mul_card Y, hXY, hY']`. Conclude with `Nat.mul_ne_zero (pow_ne_zero _ (by omega)) (pow_ne_zero _ (by omega))`. Rewrite using `[hT, hT]`. Establish `h0 : ∀ k l, Nat.card {e : DecoSet E n ST SG // e ∈ d.heckeSet P.asIdeal k ∧ f ∈ e.heckeSet P.asIdeal l} = 0`. Introduce `k l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.card_eq_zero]`. Use `left`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨e, he1, he2⟩` from `x`. Simplify using `only [DecoSet.heckeSet, Set.mem_setOf_eq] at he1 he2`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hc` to reduce the goal to its premises. Use `⟨he2.2.1.trans he1.2.1, he2.2.2.trans he1.2.2, ?_⟩` and prove the remaining obligations. Introduce `p hp p' hp' x hx`. Conclude with `he1.1.1 (Submodule.smul_mem_smul hp (he2.1.1 (Submodule.smul_mem_smul hp' hx)))`. Rewrite using `[h0, h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pathCount_symm_same_prime (P : HeightOneSpectrum (𝓞 E)) (hne : conjPrime₂ P ≠ P)
     (hST : ∀ R : ST, R.1 ≠ P ∧ R.1 ≠ conjPrime₂ P) (hSG : ∀ w : SG, w.1 ≠ P ∧ w.1 ≠ conjPrime₂ P) (i j : ℕ)

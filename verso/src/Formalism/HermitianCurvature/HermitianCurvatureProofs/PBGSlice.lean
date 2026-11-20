@@ -17,17 +17,15 @@ variable {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace 
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_zero, ⟨0, fun _ _ h => (h rfl).elim⟩, ⟨1, one_pos, fun _ _ h => (h rfl).elim⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem cpt_zero (Bs : B.RealPlaceData k ρ Wp Wq) : KB.CptCoef Bs (fun _ => (0 : Wq →L[ℂ] Wp)) :=
   ⟨Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_zero, ⟨0, fun _ _ h => (h rfl).elim⟩, ⟨1, one_pos, fun _ _ h => (h rfl).elim⟩⟩
 
 /- English proof (translation)
-Take `⟨s₁, ⟨R₁, hR₁⟩, ⟨ε₁, hε₁, hG₁⟩⟩` from `h₁`. Take `⟨s₂, ⟨R₂, hR₂⟩, ⟨ε₂, hε₂, hG₂⟩⟩` from `h₂`. Use `⟨Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_add s₁ (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_smul c s₂), ⟨max R₁ R₂, fun g hg hne => ?_⟩, ⟨min ε₁ ε₂, lt_min hε₁ hε₂, fun g hg hne => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `h0 : F₁ g = 0`. Establish `: F₂ g ≠ 0` using `fun h2 => hne (by simp [h0, h2])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `(hR₂ g hg this).trans (le_max_right _ _)`. Conclude with `(hR₁ g hg h0).trans (le_max_left _ _)`. Distinguish the cases in `h0 : F₁ g = 0`. Establish `: F₂ g ≠ 0` using `fun h2 => hne (by simp [h0, h2])`. Conclude with `(min_le_right _ _).trans (hG₂ g hg this)`.
-
-Conclude with `(min_le_left _ _).trans (hG₁ g hg h0)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cpt_add_smul (Bs : B.RealPlaceData k ρ Wp Wq) {F₁ F₂ : B.Mat k ρ → (Wq →L[ℂ] Wp)} (c : ℂ)
     (h₁ : KB.CptCoef Bs F₁) (h₂ : KB.CptCoef Bs F₂) : KB.CptCoef Bs (F₁ + c • F₂) := by
@@ -45,9 +43,7 @@ theorem cpt_add_smul (Bs : B.RealPlaceData k ρ Wp Wq) {F₁ F₂ : B.Mat k ρ �
     · exact (min_le_left _ _).trans (hG₁ g hg h0)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `cpt_zero Bs`. Consider the case `insert b t hb ih`. Rewrite using `[Finset.sum_insert hb, add_comm]`.
-
-Conclude with `cpt_add_smul Bs (c b) ih (hF b)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpt_sum (Bs : B.RealPlaceData k ρ Wp Wq) {ι : Type} (S : Finset ι) (c : ι → ℂ) (F : ι → B.Mat k ρ → (Wq →L[ℂ] Wp))
     (hF : ∀ i, KB.CptCoef Bs (F i)) : KB.CptCoef Bs (∑ i ∈ S, c i • F i) := by
@@ -59,7 +55,7 @@ theorem cpt_sum (Bs : B.RealPlaceData k ρ Wp Wq) {ι : Type} (S : Finset ι) (c
     exact cpt_add_smul Bs (c b) ih (hF b)
 
 /- English proof (translation)
-Take `⟨hs, ⟨R, hR⟩, ⟨ε, -, hG⟩⟩` from `h`. Use `⟨ε, hs, fun A m => Formalism.FourierDecayAlt.P.JFxG.cptInCC_G hs (Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le k ρ R) (fun g hg hgC => ?_) A m, hG⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `hgC (hR g hg h0)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem nice_of_cpt (Bs : B.RealPlaceData k ρ Wp Wq) {F : B.Mat k ρ → (Wq →L[ℂ] Wp)} (h : KB.CptCoef Bs F) :
     ∃ ε, JC.NiceCoef Bs ε F := by
@@ -70,9 +66,9 @@ theorem nice_of_cpt (Bs : B.RealPlaceData k ρ Wp Wq) {F : B.Mat k ρ → (Wq �
   exact hgC (hR g hg h0)
 
 /- English proof (translation)
-Establish `hx : ∀ a, KB.CptCoef Bs (x a)` using `h`. Use `choose εf hεf using fun a => (hx a).2.2`. Distinguish the cases in `hS : Nonempty S`. Use `⟨Finset.univ.inf' Finset.univ_nonempty εf, fun a => ?_⟩` and prove the remaining obligations. Take `⟨ε', hε'⟩` from `nice_of_cpt Bs (hx a)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hε'.1, hε'.2.1, fun g hg hne => ?_⟩` and prove the remaining obligations. Conclude with `(Finset.inf'_le _ (Finset.mem_univ a)).trans ((hεf a).2 g hg hne)`. Use `⟨0, fun a => (hS ⟨a⟩).elim⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nice_vec_of_cpt {S : Type} [Fintype S] (Bs : B.RealPlaceData k ρ Wp Wq) {x : S → B.Mat k ρ → (Wq →L[ℂ] Wp)}
     (h : ∀ a, KB.CptCoef Bs (x a)) : ∃ ε, ∀ a, JC.NiceCoef Bs ε (x a) := by
@@ -92,17 +88,17 @@ end cpt
 section shift
 
 /- English proof (translation)
-Use `⟨fun m => ∑ l : Fin (d + 1), (if (m : ℕ) ≤ l then (((l : ℕ).choose m : ℂ) * δ ^ ((l : ℕ) - m)) else 0) • c l, ?_, fun t => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finset.sum_eq_single (Fin.last d)]`. Simplify using the standard rewrite rules. Introduce `l _ hl`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `l.isLt` as an intermediate fact. Establish `hl' : (l : ℕ) ≠ d` using `fun e => hl (Fin.ext (by simp [e]))`. Rewrite using `[if_neg (by simp; omega), zero_smul]`. Simplify using the standard rewrite rules. Simplify using `only [Finset.smul_sum, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hl` using `l.isLt`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun m => t ^ m * if m ≤ (l : ℕ) then ((l : ℕ).choose m : ℂ) * δ ^ ((l : ℕ) - m) else 0) (d + 1)]`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not (Finset.range (d + 1)) (fun m => m ≤ (l : ℕ))]`. Establish `h1 : (Finset.range (d + 1)).filter (fun m => m ≤ (l : ℕ)) = Finset.range ((l : ℕ) + 1)`. Use extensionality with `m`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, Finset.sum_eq_zero (s := (Finset.range (d + 1)).filter (fun m => ¬ m ≤ (l : ℕ))) (fun m hm => by simp at hm; rw [if_neg (by omega), mul_zero]), add_zero, add_pow]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `m hm`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at hm`. Rewrite using `[if_pos (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem poly_shift {E : Type} [AddCommGroup E] [Module ℂ E] (d : ℕ) (c : Fin (d + 1) → E) (δ : ℂ) :
     ∃ c' : Fin (d + 1) → E, c' (Fin.last d) = c (Fin.last d) ∧
@@ -142,13 +138,11 @@ end shift
 section vand
 
 /- English proof (translation)
-Establish `hdet : (Matrix.vandermonde τ).det ≠ 0` using `Matrix.det_vandermonde_ne_zero_iff.mpr hτ`. Establish `hinv : (Matrix.vandermonde τ)⁻¹ * Matrix.vandermonde τ = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_mul, Finset.mul_sum, Matrix.vandermonde_apply]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = ∑ l : Fin n, t ^ (l : ℕ) * (1 : Matrix (Fin n) (Fin n) ℂ) l m := by`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[← Matrix.mul_apply, hinv]`. Use `_ = t ^ (m : ℕ) := by`.
-
-Simplify using `[Matrix.one_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vand_ident {n : ℕ} (τ : Fin n → ℂ) (hτ : Function.Injective τ) (t : ℂ) (m : Fin n) :
     ∑ i : Fin n, (∑ l : Fin n, t ^ (l : ℕ) * (Matrix.vandermonde τ)⁻¹ l i) * τ i ^ (m : ℕ) = t ^ (m : ℕ) := by
@@ -166,7 +160,7 @@ theorem vand_ident {n : ℕ} (τ : Fin n → ℂ) (hτ : Function.Injective τ) 
         simp [Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hdet : (Matrix.vandermonde τ).det ≠ 0` using `Matrix.det_vandermonde_ne_zero_iff.mpr hτ`. Establish `hinv : (Matrix.vandermonde τ)⁻¹ * Matrix.vandermonde τ = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet)`. Use `congrFun (congrFun hinv l) m` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify `this` using `[Matrix.vandermonde_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vand_row {n : ℕ} (τ : Fin n → ℂ) (hτ : Function.Injective τ) (l m : Fin n) :
     ∑ i : Fin n, (Matrix.vandermonde τ)⁻¹ l i * τ i ^ (m : ℕ) = if l = m then 1 else 0 := by
@@ -185,7 +179,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `γ`. Unfold `D.sliceAt`. Use `split_ifs`. Simplify using `[U.PhiFun, D.castF]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sliceAt_zero (z z' : Fin (2 * r + k + 1) → ℂ) (p : C.LPt) :
     D.sliceAt k r z z' (fun _ => (0 : Wq →L[ℂ] Wp)) p = fun _ => 0 := by
@@ -196,35 +190,31 @@ theorem sliceAt_zero (z z' : Fin (2 * r + k + 1) → ℂ) (p : C.LPt) :
   · rfl
 
 /- English proof (translation)
-Use `set τ : Fin (j + 1) → ℂ := fun i => (((i : ℕ) : ℝ) : ℂ) with hτdef`. Establish `hτ : Function.Injective τ`. Introduce `a b' hab`. Simplify using `only [hτdef, Complex.ofReal_inj, Nat.cast_inj] at hab`. Conclude with `Fin.ext hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set Vi := (Matrix.vandermonde τ)⁻¹ with hVi`. Use `set Vt : Fin (j + 1) → Wd.Ix (Fin w'.length) → B.Mat k (r - j) → (Wq →L[ℂ] Wp) := fun i a => KB.slv T F j hj ((b, ((i : ℕ) : ℝ) + δ) :: w') h hh.2 (Fin.cons e a) with hVt`. Use `set top : Wd.Ix (Fin w'.length) → B.Mat k (r - j) → (Wq →L[ℂ] Wp) := if e = 0 then KB.slv T F j hj w' h hh.2 else 0 with htop`. Use `⟨fun l => if l = Fin.last j then top else ∑ i, Vi l i • Vt i, if_pos rfl, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : ∀ (i : ℕ) (hi : i ≤ r) (hi1 : 1 ≤ i) (w : List C.Letter) (hp : D.IsLocPt h i) (a : Wd.Ix (Fin w.length)), KB.CptCoef (T.bs i) (KB.slv T F i hi w h hp.2 a)` using `fun i hi hi1 w hp a => Formalism.FourierDecayAlt.P.PBE.slice_pos_cpt k r Wp Wq T F hF i hi hi1 w h (by rw [hp.2]) hp a`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `l`. Distinguish the cases in `hl : l = Fin.last j`. Distinguish the cases in `he : e = 0`. Simplify using `only [hl, if_pos rfl, htop, he, if_true]`. Conclude with `nice_vec_of_cpt (T.bs j) (fun a => hc j hj hj1 w' hh a)`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hl, if_pos rfl, htop, he, if_false]`. Conclude with `⟨0, fun a => Formalism.FourierDecayAlt.P.JCx2.mn_nice_zero⟩`. Simplify using `only [hl, if_false]`. Use `nice_vec_of_cpt (T.bs j) (fun a => ?_)` and prove the remaining obligations. Establish `e1 : (∑ i, Vi l i • Vt i) a = ∑ i, Vi l i • Vt i a` using `by simp [Finset.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1]`. Conclude with `cpt_sum (T.bs j) _ _ _ (fun i => hc j hj hj1 _ hh _)`. Introduce `t a γ hγ`. Establish `hcast : r - j = r - D.ptSize h` using `by rw [hh.2]`. Establish `hγ' : D.castM hcast γ ∈ B.GV k (r - D.ptSize h)` using `Formalism.FourierDecayAlt.P.PBE.castM_GV hcast hγ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hL` using `sliceAt_lincomb k r Wp Wq T F hF j hj hj1 h hh Finset.univ (fun i => ∑ l : Fin (j + 1), (t : ℂ) ^ (l : ℕ) * Vi l i) (fun i => (b, ((i : ℕ) : ℝ) + δ) :: w') (fun _ => Fin.cons e a) (D.uwG k r T.base.z T.base.z' F j hj ((b, t + δ) :: w') (Fin.cons e a)) (by`. Introduce `g hg hD`. Take `⟨c, -, hc⟩` from `hpt a g hg hD`. Rewrite using `[hc t]`. Simplify using `only [hc]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `m _`. Rewrite using `[← Finset.sum_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use `vand_ident τ hτ (t : ℂ) m` as an intermediate fact. Simplify using `only [hτdef] at this`. Rewrite using `[← this]) (D.castM hcast γ) hγ'`. Establish `hT` using `sliceAt_lincomb k r Wp Wq T F hF j hj hj1 h hh Finset.univ (fun i => Vi (Fin.last j) i) (fun i => (b, ((i : ℕ) : ℝ) + δ) :: w') (fun _ => Fin.cons e a) (if e = 0 then D.uwG k r T.base.z T.base.z' F j hj w' a else fun _ => 0) (by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg hD`. Take `⟨c, hcl, hc⟩` from `hpt a g hg hD`. Simplify using `only [hc]`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ m : Fin (j + 1), ∑ i : Fin (j + 1), (Vi (Fin.last j) i * ((((i : ℕ) : ℝ) : ℂ)) ^ (m : ℕ)) • c m = (if Fin.last j = m then (1 : ℂ) else 0) • c m`. Introduce `m`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Use `vand_row τ hτ (Fin.last j) m` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hτdef] at this`. Rewrite using `[← this]`. Simplify using `only [this, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[hcl]`. Apply the tactic sequence `split_ifs <;> simp) (D.castM hcast γ) hγ'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `show D.castF _ (D.sliceAt k r T.base.z T.base.z' (D.uwG k r T.base.z T.base.z' F j hj ((b, t + δ) :: w') (Fin.cons e a)) h) γ = _`. Simplify using `only [D.castF]`. Rewrite using `[hL]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Establish `hR : ∀ x : Fin (j + 1), (if x = Fin.last j then top else ∑ i, Vi x i • Vt i) a γ = ∑ q, Vi x q • D.sliceAt k r T.base.z T.base.z' (D.uwG k r T.base.z T.base.z' F j hj ((b, ((q : ℕ) : ℝ) + δ) :: w') (Fin.cons e a)) h (D.castM hcast γ)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Distinguish the cases in `hx : x = Fin.last j`. Rewrite using `[if_pos hx, hx, ← hT]`. Simplify using `only [htop]`. Distinguish the cases in `he : e = 0`.
-
-Simplify using `only [he, if_true, KB.slv, D.castF]`. Simplify using `only [he, if_false, sliceAt_zero, Pi.zero_apply]`. Rewrite using `[if_neg hx]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, hVt, KB.slv, D.castF]`. Simplify using `only [hR, Finset.smul_sum, smul_smul, Finset.sum_smul]`.
-
-Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slicePoly_of_pt (T : D.LevTower k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (hF : KB.CptCoef T.base F)
     (j : ℕ) (hj : j ≤ r) (hj1 : 1 ≤ j) (h : C.LPt) (hh : D.IsLocPt h j) (w' : List C.Letter) (b : Bool) (δ : ℝ)

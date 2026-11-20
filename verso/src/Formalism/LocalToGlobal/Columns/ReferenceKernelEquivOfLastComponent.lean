@@ -23,9 +23,9 @@ def oneG {j : ℕ} (g : FormG (Λ j)) : FrmG (Λ j) (LevQFam.top X.E X.K (R.N j)
 variable {Λ sel mu}
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Use function extensionality and compare the values at `⟨P, hP⟩`. Rewrite `hP` using `[hQ]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hP`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftQ_oneG {j : ℕ} (g : FormG (Λ j)) (p : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs) :
     (liftQ hQ ((formAct (Λ j)).toSMul.smul g p) : ChPt (R := R) sel mu u j) =
@@ -38,7 +38,7 @@ theorem liftQ_oneG {j : ℕ} (g : FormG (Λ j)) (p : DecoSet X.E (R.N j) (Pr.vT 
     simp at hP
 
 /- English proof (translation)
-Use `show (((Λ j).chr g.2 * (LevQFam.top X.E X.K (R.N j) (QE sel (mu : Chr X.F X.E X.K))).chr 1 : X.Kˣ) : X.K) • (colVal W u j (Pr.vT u) Pr.vGs).rho g.1 = (((Λ j).chr g.2 : X.Kˣ) : X.K) • (colVal W u j (Pr.vT u) Pr.vGs).rho g.1`. Rewrite using `[map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frmRho_oneG {j : ℕ} (g : FormG (Λ j)) :
     frmRho (colValF W sel mu u j) (Λ j) (LevQFam.top X.E X.K (R.N j) (QE sel (mu : Chr X.F X.E X.K))) (oneG Λ sel mu g) =
@@ -66,7 +66,7 @@ def RefKEquiv (i : ℕ) : Prop :=
 variable {W Λ Ch sel mu cst hQ m2 Am u}
 
 /- English proof (translation)
-Unfold `XiEquiv refXi1`. Introduce `a`. Unfold `ClsEq xiKer XiRef`. Introduce `g g' p p'`. Conclude with `h a g g' p p'`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem xiEquiv_of_refK (h : ∀ i, RefKEquiv W Λ Ch sel mu cst hQ m2 Am u i) :
     XiEquiv W Λ Ch sel mu cst Am u
@@ -78,13 +78,13 @@ theorem xiEquiv_of_refK (h : ∀ i, RefKEquiv W Λ Ch sel mu cst hQ m2 Am u i) :
   exact h a g g' p p'
 
 /- English proof (translation)
-Introduce `g g' p p'`. Establish `e : ∀ (q : ChPt (R` using `R) sel mu u i) (q' : ChPt (R := R) sel mu u (i + 1)), refK W Ch sel mu cst (oneIdx Λ (QE sel (mu : Chr X.F X.E X.K)) m2) (chTh W Ch sel mu cst Am u m2) (oneAl Λ sel mu m2) i q q' = matK W Ch sel mu cst (oneIdx Λ (QE sel (mu : Chr X.F X.E X.K)) m2) (chTh W Ch sel mu cst Am u m2) i …`. Introduce `q q'`. Unfold `refK matK`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Unfold `XiRef`. Rewrite using `[dif_pos hi]`. Rewrite using `[e, e, liftQ_oneG, liftQ_oneG]`. Establish `h` using `hM i hi (oneAl Λ sel mu m2 i (by omega)) (oneAl Λ sel mu m2 (i + 1) (by omega)) (oneG Λ sel mu g) (oneG Λ sel mu g') (liftQ hQ p) (liftQ hQ p')`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h.trans ?_` and prove the remaining obligations. Establish `h1` using `frmRho_oneG (W := W) (u := u) (sel := sel) (mu := mu) g'`. Establish `h2` using `frmRho_oneG (W := W) (u := u) (sel := sel) (mu := mu) g⁻¹`. Use `show (frmRho (colValF W sel mu u (i + 1)) (Λ (i + 1)) _ (oneG Λ sel mu g')) ∘ₗ _ ∘ₗ (frmRho (colValF W sel mu u i) (Λ i) _ (oneG Λ sel mu g)⁻¹) = _`. Establish `h3 : (oneG Λ sel mu g)⁻¹ = oneG Λ sel mu g⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `oneG`. Simplify using the standard rewrite rules. Rewrite using `[h3, h1, h2]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem refKEquiv_of_mat {i : ℕ} (hi : i < m2)
     (hM : MatEquiv W Ch sel mu cst (oneIdx Λ (QE sel (mu : Chr X.F X.E X.K)) m2) (chTh W Ch sel mu cst Am u m2)) :
@@ -114,23 +114,23 @@ theorem refKEquiv_of_mat {i : ℕ} (hi : i < m2)
   rfl
 
 /- English proof (translation)
-Unfold `FixE at hF`. Establish `hact : ((formAct (Λ (m2 + 1))).toSMul.smul g' p').1 = Deco.act ↑g'.1 ↑g'.2 p'.1` using `rfl`. Establish `hloc : ∀ (P : HeightOneSpectrum (𝓞 X.E)) (y : _), y ∈ (Deco.act ↑g'.1 ↑g'.2 p'.1).at P ↔ g'.1.1.symm y ∈ p'.1.at P`. Introduce `P y`. Express the relevant statement in the definitionally equal form `(∃ s ∈ P.asIdeal.primeCompl, s • y ∈ gmap g'.1.1 p'.1.N) ↔ (∃ s ∈ P.asIdeal.primeCompl, s • g'.1.1.symm y ∈ p'.1.N)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hy⟩`. Take `⟨z, hz, hzy⟩` from `Submodule.mem_map.mp hy`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `e1 : g'.1.1.symm (s • y) = s • g'.1.1.symm y` using `(g'.1.1.symm.toLinearMap.restrictScalars (𝓞 X.E)).map_smul s y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← e1, ← hzy]`. Simplify using `using hz`. Introduce and unpack `⟨s, hs, hy⟩`. Use `⟨s, hs, Submodule.mem_map.mpr ⟨_, hy, ?_⟩⟩` and prove the remaining obligations. Establish `e1 : g'.1.1 (s • g'.1.1.symm y) = s • g'.1.1 (g'.1.1.symm y)` using `(g'.1.1.toLinearMap.restrictScalars (𝓞 X.E)).map_smul s _`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using e1`. Establish `hbe : ∀ (w : Pr.vGs) (y : _), (Deco.act ↑g'.1 ↑g'.2 p'.1).be w y = Loc.eN (𝓞 X.E ⧸ w.1.asIdeal) (R.N (m2 + 1)) R.k ↔ p'.1.be w (g'.1.1.symm y) = Loc.eN (𝓞 X.E ⧸ w.1.asIdeal) (R.N (m2 + 1)) R.k`. Introduce `w y`. Establish `hM` using `hF g'.2.1 g'.2.2 w`. Express the relevant statement in the definitionally equal form `(g'.2.1 w).1.mulVec (p'.1.be w (g'.1.1.symm y)) = _ ↔ _`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Generalize the expression as in `p'.1.be w (g'.1.1.symm y) = z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Replace the chosen expression with an arbitrary variable. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ((g'.2.1 w)⁻¹).1.mulVec ((g'.2.1 w).1.mulVec (Loc.eN (𝓞 X.E ⧸ w.1.asIdeal) (R.N (m2 + 1)) R.k)) := by`. Rewrite using `[hz, hM]`. Use `_ = _ := by rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Introduce and unpack `rfl`. Conclude with `hM`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hact]`. Use extensionality with `v`. Simplify using `only [Deco.y0, Deco.yOf, Set.mem_image, Set.mem_setOf_eq, Nat.cast_smul_eq_nsmul]`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨g'.1.1.symm v, fun w => ?_, by simp⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `H w`. Rewrite `h1` using `[hloc, map_nsmul]`. Rewrite `h2` using `[hbe, map_nsmul]`. Conclude with `⟨h1, h2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, hx, rfl⟩ w`. Take `⟨h1, h2⟩` from `hx w`. Rewrite using `[hloc, hbe, map_nsmul, LinearEquiv.symm_apply_apply]`. Conclude with `⟨h1, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lastVectorLine_equivariant (hF : FixE (R := R) Λ m2) (g' : FormG (Λ (m2 + 1))) (p' : DecoSet X.E (R.N (m2 + 1)) (Pr.vT u) Pr.vGs) :
     ((formAct (Λ (m2 + 1))).toSMul.smul g' p').1.y0 R.k = (fun v => g'.1.1 v) '' (p'.1.y0 R.k) := by
@@ -187,15 +187,15 @@ theorem lastVectorLine_equivariant (hF : FixE (R := R) Λ m2) (g' : FormG (Λ (m
     exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `g g' p p'`. Establish `hmem : ∀ q' : DecoSet X.E (R.N (m2 + 1)) (Pr.vT u) Pr.vGs, q'.1.y0 R.k ∈ ybSet sel mu cst q'.1.N` using `fun q' => yOf_mem_ybSet sel mu cst hX hPr (pc_rowSG hQ) q' _`. Establish `e : ∀ (q : ChPt (R` using `R) sel mu u m2) (q' : DecoSet X.E (R.N (m2 + 1)) (Pr.vT u) Pr.vGs), refK W Ch sel mu cst (oneIdx Λ (QE sel (mu : Chr X.F X.E X.K)) m2) (chTh W Ch sel mu cst Am u m2) (oneAl Λ sel mu m2) m2 q (liftQ hQ q') = cp1K W Ch sel mu cst (oneIdx Λ (QE sel (mu : Chr X.F X.E X.K)) m2) (chTh …`. Introduce `q q'`. Unfold `refK cp1K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos (show q'.1.y0 R.k ∈ ybSet sel mu cst (liftQ hQ q' : ChPt (R := R) sel mu u (m2 + 1)).deco.1.N from hmem q')]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Unfold `XiRef`. Rewrite using `[dif_neg (lt_irrefl _), dif_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, e, lastVectorLine_equivariant hF, liftQ_oneG, liftQ_oneG]`. Establish `h` using `h1 (oneAl Λ sel mu m2 m2 (by omega)) (oneG Λ sel mu g) (oneG Λ sel mu g') (liftQ hQ p) (liftQ hQ p') (p'.1.y0 R.k) (hmem p')`. Use `h.trans ?_` and prove the remaining obligations. Establish `h1'` using `frmRho_oneG (W := W) (u := u) (sel := sel) (mu := mu) g'`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2'` using `frmRho_oneG (W := W) (u := u) (sel := sel) (mu := mu) g⁻¹`. Use `show (frmRho (colValF W sel mu u (m2 + 1)) (Λ (m2 + 1)) _ (oneG Λ sel mu g')) ∘ₗ _ ∘ₗ (frmRho (colValF W sel mu u m2) (Λ m2) _ (oneG Λ sel mu g)⁻¹) = _`. Establish `h3 : (oneG Λ sel mu g)⁻¹ = oneG Λ sel mu g⁻¹`. Unfold `oneG`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, h1', h2']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem referenceKernelEquiv_of_lastComponent (hX : X.Ok) (hPr : Pr.Ok) (hF : FixE (R := R) Λ m2)
     (hY : YbHyp (R := R) sel mu cst (oneIdx Λ (QE sel (mu : Chr X.F X.E X.K)) m2) u m2 (oneAl Λ sel mu m2 (m2 + 1) le_rfl))
@@ -230,9 +230,9 @@ theorem referenceKernelEquiv_of_lastComponent (hX : X.Ok) (hPr : Pr.Ok) (hF : Fi
   rfl
 
 /- English proof (translation)
-Introduce `g g' p p'`. Establish `e : ∀ (q : ChPt (R` using `R) sel mu u i) (q' : ChPt (R := R) sel mu u (i + 1)), refK W Ch sel mu cst (oneIdx Λ (QE sel (mu : Chr X.F X.E X.K)) m2) (chTh W Ch sel mu cst Am u m2) (oneAl Λ sel mu m2) i q q' = 0 := by`. Introduce `q q'`. Unfold `refK`. Use `kerOf_zero _ _ _ _ _ _ _ _ _ fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `XiRef`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), if_neg (by omega)]`. Rewrite using `[e, e]`. Use extensionality with `x`. Conclude with `(map_zero (formRho (colVal W u (i + 1) (Pr.vT u) Pr.vGs) (Λ (i + 1)) g')).symm ▸ rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem refKEquiv_above {i : ℕ} (hi : m2 + 1 < i) : RefKEquiv W Λ Ch sel mu cst hQ m2 Am u i := by
   intro g g' p p'

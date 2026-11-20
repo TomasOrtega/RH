@@ -16,9 +16,9 @@ namespace DetH
 variable {D : D7}
 
 /- English proof (translation)
-Use `(traceForm_nondegenerate ℚ D.host.E).1 t fun e => ?_` and prove the remaining obligations. Establish `halg : IsAlgebraic ℤ e` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.E).2 (Algebra.IsIntegral.isIntegral (R := ℚ) e).isAlgebraic`. Take `⟨y, hy0, hyi⟩` from `halg.exists_integral_multiple`. Establish `h1 : Algebra.trace ℚ D.host.E (t * (y • e)) = 0` using `h ⟨y • e, hyi⟩`. Rewrite `h1` using `[mul_smul_comm, map_zsmul, zsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Algebra.traceForm_apply]`. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `absurd (by exact_mod_cast h2) hy0`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_trace {t : D.host.E}
     (h : ∀ o : 𝓞 D.host.E, Algebra.trace ℚ D.host.E (t * o) = 0) : t = 0 := by
@@ -36,13 +36,13 @@ theorem eq_zero_of_trace {t : D.host.E}
 variable (X : HidaSetting D)
 
 /- English proof (translation)
-Establish `h1 : ∀ y ∈ X.Lb, (VS D).hT x y = 0` using `fun y hy => eq_zero_of_trace fun o => by`. Establish `h2` using `h (o • y) (X.Lb.smul_mem o hy)`. Rewrite `h2` using `[← algebraMap_smul D.host.E o y, LinearMap.map_smul, smul_eq_mul, mul_comm]`. Then use the resulting hypothesis. Establish `hxW` using `(mem_Wb X).1 (Lb_le_alt X hx)`. Establish `he : ∀ c, (VS D).hT x (X.eX c) = 0` using `fun c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[herm_swap (X.eX c) x, (hxW c).1, star_zero]`. Establish `hf : ∀ c, (VS D).hT x (X.fY c) = 0` using `fun c => by`. Rewrite using `[herm_swap (X.fY c) x, (hxW c).2, star_zero]`. Establish `h2 : ∀ y ∈ (VS D).L0, (VS D).hT x y = 0`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨α, β, l, hl, rfl⟩` from `decomp X hy`. Simplify using `[map_add, map_sum, map_smul, he, hf, h1 l hl]`. Establish `hle : Submodule.span D.host.E ((VS D).L0 : Set (VS D).V) ≤ LinearMap.ker ((VS D).hT x)` using `Submodule.span_le.2 fun y hy => LinearMap.mem_ker.2 (h2 y hy)`. Use `(VS D).nondeg.1 x fun v => ?_` and prove the remaining obligations. Establish `hv : v ∈ Submodule.span D.host.E ((VS D).L0 : Set (VS D).V)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[(VS D).standardTuple_isLattice.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `LinearMap.mem_ker.1 (hle hv)`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_trB {x : (VS D).V} (hx : x ∈ X.Lb)
     (h : ∀ y ∈ X.Lb, Algebra.trace ℚ D.host.E ((VS D).hT x y) = 0) : x = 0 := by
@@ -66,9 +66,7 @@ theorem eq_zero_of_trB {x : (VS D).V} (hx : x ∈ X.Lb)
   exact LinearMap.mem_ker.1 (hle hv)
 
 /- English proof (translation)
-Establish `e : y = ∑ i, (ℓ.repr ⟨y, hy⟩ i) • (ℓ i : (VS D).V)`. Establish `h` using `congrArg Subtype.val (ℓ.sum_repr ⟨y, hy⟩)`. Rewrite `h` using `[Submodule.coe_sum]`. Simplify `h.symm` using `[Submodule.coe_smul]`. Use `conv_lhs => rw [e]`.
-
-Conclude with `trB_sum_right _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem trB_expand {N : ℕ} (ℓ : Module.Basis (Fin N) ℤ (X.Lb.restrictScalars ℤ)) (x y : (VS D).V) (hy : y ∈ X.Lb) :
     Algebra.trace ℚ D.host.E ((VS D).hT x y) =
@@ -85,33 +83,31 @@ end DetH
 open DetH in
 
 /- English proof (translation)
-Introduce `D X N ℓ ℓs`. Establish `hGi : ∀ m i, ∃ z : ℤ, Algebra.trace ℚ D.host.E ((VS D).hT (ℓ m : (VS D).V) (ℓ i : (VS D).V)) = z` using `fun m i => (Lb_le_Ldual X (ℓ m).2).2 _ (ℓ i).2`. Use `choose Gz hGz using hGi`. Establish `hHi : ∀ k j, ∃ z : ℤ, Algebra.trace ℚ D.host.E ((VS D).hT (ℓs k : (VS D).V) (ℓ j : (VS D).V)) = z` using `fun k j => (ℓs k).2.2 _ (ℓ j).2`. Use `choose Hz hHz using hHi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set G : Matrix (Fin N) (Fin N) ℤ := Matrix.of Gz with hG`. Use `set H : Matrix (Fin N) (Fin N) ℤ := Matrix.of Hz with hH`. Establish `hind : LinearIndependent ℤ (fun m => (ℓ m : (VS D).V))` using `ℓ.linearIndependent.map' (X.Lb.restrictScalars ℤ).subtype (Submodule.ker_subtype _)`. Establish `hcomb : ∀ (a : Fin N → ℤ) (i : Fin N), Algebra.trace ℚ D.host.E ((VS D).hT (∑ m, a m • (ℓ m : (VS D).V)) (ℓ i : (VS D).V)) = ((Matrix.vecMul a G) i : ℚ)`. Introduce `a i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[trB_sum_left]`. Simplify using `only [hGz, Matrix.vecMul, dotProduct, hG, Matrix.of_apply]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hmem : ∀ a : Fin N → ℤ, ∑ m, a m • (ℓ m : (VS D).V) ∈ X.Lb` using `fun a => Submodule.sum_mem _ fun m _ => Submodule.smul_of_tower_mem _ _ (ℓ m).2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdet : G.det ≠ 0`. Introduce `h0`. Take `⟨a, ha0, ha⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Establish `hx : ∑ m, a m • (ℓ m : (VS D).V) = 0`. Use `eq_zero_of_trB X (hmem a) fun y hy => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[trB_expand X ℓ _ y hy]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hcomb, ha]`. Simplify using the standard rewrite rules. Conclude with `ha0 (funext fun m => Fintype.linearIndependent_iff.1 hind a hx m)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hdetQ : ((G.det : ℤ) : ℚ) ≠ 0` using `by exact_mod_cast hdet`. Use `set r : ℚ := ((G.det : ℤ) : ℚ)⁻¹ with hr`. Set `xs : Fin N → (VS D).V` to `fun j => ((r : ℚ) : D.host.E) • ∑ m, G.adjugate j m • (ℓ m : (VS D).V)`. Establish `hpair : ∀ j (y : (VS D).V), Algebra.trace ℚ D.host.E ((VS D).hT (xs j) y) = r * Algebra.trace ℚ D.host.E ((VS D).hT (∑ m, G.adjugate j m • (ℓ m : (VS D).V)) y)`. Introduce `j y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [xs, LinearMap.map_smulₛₗ₂, smul_eq_mul]`. Rewrite using `[map_ratCast, ← Rat.smul_def, LinearMap.map_smul, smul_eq_mul]`. Establish `hdual : ∀ j i, Algebra.trace ℚ D.host.E ((VS D).hT (xs j) (ℓ i : (VS D).V)) = ((1 : Matrix (Fin N) (Fin N) ℤ) j i : ℚ)`. Introduce `j i`. Rewrite using `[hpair, hcomb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : (Matrix.vecMul (G.adjugate j) G) i = (G.adjugate * G) j i` using `rfl`. Rewrite using `[hv, Matrix.adjugate_mul, Matrix.smul_apply, smul_eq_mul, Int.cast_mul, hr, ← mul_assoc, inv_mul_cancel₀ hdetQ, one_mul]`. Establish `hxsW : ∀ j, xs j ∈ Ldual X`. Introduce `j`. Use `⟨(Wb X).smul_mem _ (Lb_le_alt X (hmem _)), fun y hy => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `⟨ℓ.repr ⟨y, hy⟩ j, ?_⟩` and prove the remaining obligations. Rewrite using `[trB_expand X ℓ _ y hy]`. Simplify using `only [hdual, Matrix.one_apply]`. Use `push_cast`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `C : Matrix (Fin N) (Fin N) ℤ` to `Matrix.of fun j k => ℓs.repr ⟨xs j, hxsW j⟩ k`. Establish `hCH : C * H = 1`. Use extensionality with `j i`. Establish `e : xs j = ∑ k, C j k • (ℓs k : (VS D).V)`. Establish `h` using `congrArg Subtype.val (ℓs.sum_repr ⟨xs j, hxsW j⟩)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[Submodule.coe_sum]`. Simplify `h.symm` using `[C, Submodule.coe_smul]`. Establish `h1` using `hdual j i`. Rewrite `h1` using `[e, trB_sum_left]`. Simplify using `only [hHz] at h1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (((C * H) j i : ℤ) : ℚ) = ((1 : Matrix (Fin N) (Fin N) ℤ) j i : ℚ)`. Rewrite using `[← h1, Matrix.mul_apply]`. Use `push_cast`. Simplify using `[hH]`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hHC : H.det * C.det = 1` using `by rw [mul_comm, ← Matrix.det_mul, hCH, Matrix.det_one]`. Establish `hunit : IsUnit H.det` using `⟨⟨H.det, C.det, hHC, by rw [mul_comm]; exact hHC⟩, rfl⟩`. Establish `hmat : (Matrix.of fun k j => Algebra.trace ℚ D.host.E ((VS D).hT (ℓs k : (VS D).V) (ℓ j : (VS D).V))) = H.map (Int.cast : ℤ → ℚ)`. Use extensionality with `k j`. Simplify using `[hH, hHz]`.
-
-Establish `hdH : (H.map (Int.cast : ℤ → ℚ)).det = ((H.det : ℤ) : ℚ)`. Simplify using `using (RingHom.map_det (Int.castRingHom ℚ) H).symm`. Rewrite using `[hmat, hdH]`. Apply the tactic sequence `rcases Int.isUnit_iff.1 hunit with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem detHOne_holds : DetHOne := by
   intro D X N ℓ ℓs

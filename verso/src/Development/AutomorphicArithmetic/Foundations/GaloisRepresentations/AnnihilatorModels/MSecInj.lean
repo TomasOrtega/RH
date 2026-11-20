@@ -13,9 +13,7 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Use `haveI : IsAffine X := isAffine_of_isAffineHom f`. Establish `hE : (Scheme.Hom.appTop f).hom.Etale` using `HasRingHomProperty.appTop @Etale f inferInstance`. Establish `hF : IsField Γ(Sp K, ⊤)` using `MulEquiv.isField (Field.toIsField K) (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toMulEquiv`. Use `letI : Field Γ(Sp K, ⊤) := hF.toField`. Use `letI := (Scheme.Hom.appTop f).hom.toAlgebra`.
-
-Use `haveI : Algebra.Etale Γ(Sp K, ⊤) Γ(X, ⊤) := hE.toAlgebra`. Use `haveI : _root_.IsReduced Γ(X, ⊤) := Algebra.FormallyUnramified.isReduced_of_field Γ(Sp K, ⊤) Γ(X, ⊤)`. Conclude with `isReduced_of_isAffine_isReduced X`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem reduced_of_finite_etale {K : Type} [Field K] {X : Scheme.{0}} (f : X ⟶ Sp K) [IsFinite f] [Etale f] : IsReduced X := by
   haveI : IsAffine X := isAffine_of_isAffineHom f
@@ -30,11 +28,11 @@ private theorem reduced_of_finite_etale {K : Type} [Field K] {X : Scheme.{0}} (f
   exact isReduced_of_isAffine_isReduced X
 
 /- English proof (translation)
-Establish `hR` using `(hRead p D O b N M r w j c T (Sp K) x (x ≫ M.s) o₁ m₁ y hy P a).1`. Establish `hR'` using `(hRead p D O b N M r w j c T (Sp K) x (x ≫ M.s) o₁ m₁ y' hy' P' a).1`. Establish `hkw : KilledBy o₁ w a` using `(P.tj K (𝟙 _)).1 a ha.1 ha.2`. Establish `hw : (Over.Hom.left a ≫ m₁.φ) ≫ M.univ.A.hom = x`. Rewrite using `[Category.assoc, m₁.cart.1.w, ← Category.assoc, Over.w a]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Category.id_comp x`. Take `⟨g, hg⟩ : ∃ g : Over.mk x ⟶ M.univ.A, Over.Hom.left g = Over.Hom.left a ≫ m₁.φ` from `⟨@Over.homMk _ _ _ (Over.mk x) M.univ.A (Over.Hom.left a ≫ m₁.φ : Sp K ⟶ M.univ.A.left) hw, rfl⟩`. Establish `hK` using `(hKer p D O b N M.X (Sp K) M.s (x ≫ M.s) x M.univ M.univ o₁ o₁ m₁ m₁ (𝟙 _) (𝟙 _) (by simp)).1 (𝟙_ (Over (Sp K))) (Over.mk x) rfl a g (by rw [hg, eqToHom_refl, Category.id_comp])`. Establish `hkg : KilledBy M.univ w g` using `(hK.2.2 w).1 hkw`. Establish `h1` using `hag g hkg (by rw [hg]; exact hR.1 ha.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hg]`. Conclude with `hR'.2 h1`.
+A detailed English derivation is pending.
 -/
 private theorem half_pt (hRead : PulledRead) (hKer : PullKer) {p : ℕ} [Fact p.Prime] {D : Datum p} {O : Type} [CommRing O]
     {b : Base D O} {N : ℕ} {M : Model b N} {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} (T : TjD M r w j c)
@@ -59,17 +57,13 @@ private theorem half_pt (hRead : PulledRead) (hKer : PullKer) {p : ℕ} [Fact p.
   exact hR'.2 h1
 
 /- English proof (translation)
-Take `⟨Ks, e, i, -, -, hfin, het, -, -, hiff⟩` from `GlobalTheory.UPel.HT.ES.KerUPart.exists_kerUPart p D O b N hN hNp hm r w j c hw hu hj hc (Sp K) (x ≫ M.s) hpU o₁ P.o' P.ψ P.isog P.tj`. Use `⟨?_, hg.2⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(hiff U g).1 hg`. It suffices to establish `hi : i ≫ P'.ψ = 1 by`. Rewrite using `[Category.assoc, hi]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `haveI : IsFinite Ks.hom := hfin`. Use `haveI : Etale Ks.hom := het`. Use `haveI : IsReduced Ks.left := reduced_of_finite_etale Ks.hom`. Use `haveI : IsProper P'.o'.A.hom := IsAbelianScheme.proper (self := P'.o'.ab)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Smooth P'.o'.A.hom := IsAbelianScheme.smooth (self := P'.o'.ab)`. Establish `hw1 : Over.Hom.left (i ≫ P'.ψ) ≫ P'.o'.A.hom = Ks.hom` using `Over.w _`. Use `haveI : LocallyOfFiniteType (Over.Hom.left (i ≫ P'.ψ) ≫ P'.o'.A.hom) := by`. Rewrite using `[hw1]`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `ext_of_apply_eq P'.o'.A.hom Set.univ isClosed_univ.isLocallyClosed dense_univ ?_ ?_` and prove the remaining obligations. Introduce `pt _ hpt`. Take `⟨aK, haK⟩ : ∃ aK : 𝟙_ (Over (Sp K)) ⟶ Ks, Over.Hom.left aK = pointOfClosedPoint Ks.hom pt hpt` from `⟨Over.homMk (pointOfClosedPoint Ks.hom pt hpt) (pointOfClosedPoint_comp Ks.hom pt hpt), rfl⟩`. Establish `h0 : (aK ≫ i) ≫ P'.ψ = 1` using `half_pt hRead hKer T x y y' hy hy' hag m₁ P P' (aK ≫ i) ((hiff _ _).2 ⟨aK, rfl⟩)`.
-
-Establish `hp1 : pt = (pointOfClosedPoint Ks.hom pt hpt) (IsLocalRing.closedPoint K)` using `(pointOfClosedPoint_apply Ks.hom pt hpt _).symm`. Establish `e1 : (pointOfClosedPoint Ks.hom pt hpt ≫ Over.Hom.left (i ≫ P'.ψ)) (IsLocalRing.closedPoint K) = (pointOfClosedPoint Ks.hom pt hpt ≫ Over.Hom.left (1 : Ks ⟶ P'.o'.A)) (IsLocalRing.closedPoint K)`. Rewrite using `[← haK, ← Over.comp_left, ← Over.comp_left, ← Category.assoc, h0]`. Simplify using the standard rewrite rules. Rewrite using `[hp1]`.
-
-Conclude with `e1`. Rewrite using `[Over.w, Over.w]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem half_ker (hRead : PulledRead) (hKer : PullKer) {p : ℕ} [Fact p.Prime] {D : Datum p} {O : Type} [CommRing O]
     {b : Base D O} {N : ℕ} (hN : 3 ≤ N) (hNp : N.Coprime p) (hm : D.m = 1) {M : Model b N} {r : ℤ} {w : Ideal (𝓞 D.F)}
@@ -113,11 +107,9 @@ private theorem half_ker (hRead : PulledRead) (hKer : PullKer) {p : ℕ} [Fact p
   · rw [Over.w, Over.w]
 
 /- English proof (translation)
-Set `φ : O →+* K` to `(Spec.preimage s).hom`. Establish `hφp : φ p = (p : K)` using `map_natCast φ p`. Use `haveI : (RingHom.ker φ).IsPrime := RingHom.ker_isPrime φ`. Distinguish the cases in `hb : RingHom.ker φ = ⊥`. Conclude with `charZero_of_injective_ringHom ((RingHom.injective_iff_ker_eq_bot φ).2 hb)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `hmax : (RingHom.ker φ).IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hb`. Establish `hm : RingHom.ker φ = IsLocalRing.maximalIdeal O` using `IsLocalRing.eq_maximalIdeal hmax`. Apply `hK` to reduce the goal to its premises. Rewrite using `[← hφp, ← RingHom.mem_ker, hm]`.
-
-Conclude with `hp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem charZero_of_pt {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] {p : ℕ}
     (hp : (p : O) ∈ IsLocalRing.maximalIdeal O) {K : Type} [Field K] (hK : (p : K) ≠ 0) (s : Sp K ⟶ Sp O) : CharZero K := by
@@ -134,15 +126,15 @@ private theorem charZero_of_pt {O : Type} [CommRing O] [IsDomain O] [IsDiscreteV
     exact hp
 
 /- English proof (translation)
-Introduce `hEx hRead hKer hKF hIso p _ D O _ _ _ _ f b N r w _ hStd M j hj T K _ _ hp x y y' hy hy' hag`. Use `haveI : CharZero K := charZero_of_pt hStd.pmem hp (x ≫ M.s)`. Establish `hf : 0 < f`. Break down `Nat.eq_zero_or_pos f with h | h` into its components or cases. Establish `hcard` using `hStd.card`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcard` using `[h, pow_zero, Nat.card_eq_one_iff_unique]`. Conclude with `(not_subsingleton_iff_nontrivial.2 inferInstance hcard.1).elim`. Conclude with `h`. Establish `hpU : IsUnit ((p : ℕ) : Γ(Sp K, ⊤))`. Use `(IsUnit.mk0 _ hp).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Establish `hc : ∃ e : ℕ, p ^ (f * j) = p ^ e ∧ (0 < j → 0 < e)` using `⟨f * j, rfl, fun h => Nat.mul_pos hf h⟩`. Take `⟨o₁, ⟨m₁⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObject_pullback p D O b N M.X (Sp K) M.s x M.univ`. Take `⟨P⟩` from `hEx p D O b N hStd.three hStd.cop M r w j _ T (Sp K) x (x ≫ M.s) rfl o₁ m₁ y hy`. Take `⟨P'⟩` from `hEx p D O b N hStd.three hStd.cop M r w j _ T (Sp K) x (x ≫ M.s) rfl o₁ m₁ y' hy'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : ∀ U g, UKer r o₁ P.ψ U g ↔ UKer r o₁ P'.ψ U g` using `fun U g => ⟨half_ker hRead hKer hStd.three hStd.cop hStd.m1 inferInstance hStd.ule hj hc T hpU x y y' hy hy' (fun g h => (hag g h).1) m₁ P P' U g, half_ker hRead hKer hStd.three hStd.cop hStd.m1 inferInstance hStd.ule hj hc T hpU x y' y hy' hy (fun g h => (hag g h).2) m₁ P' P U g …`. Establish `hne : w ≠ ⊤` using `Ideal.IsMaximal.ne_top inferInstance`. Establish `hker : ∀ (U : Over (Sp K)) (g : U ⟶ o₁.A), g ≫ P.ψ = 1 ↔ g ≫ P'.ψ = 1` using `fun U g => ⟨hKF p D O b N r w hne hStd.ule K (x ≫ M.s) _ o₁ P.o' P'.o' P.ψ P'.ψ P.isog P'.isog hU U g, hKF p D O b N r w hne hStd.ule K (x ≫ M.s) _ o₁ P'.o' P.o' P'.ψ P.ψ P'.isog P.isog (fun U g => (hU U g).symm) U g⟩`. Take `⟨m, hmφ⟩` from `hIso p D O b N K (x ≫ M.s) _ o₁ P.o' P'.o' P.ψ P'.ψ P.isog P'.isog hker`. Take `⟨n, hn⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ m P'.m'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Establish `hex : ∃ n' : ObjMap P.o' T.o' y', n'.φ = m.φ ≫ P'.m'.φ` using `by revert n hn`. Rewrite using `[Category.id_comp]`. Conclude with `fun n hn => ⟨n, hn⟩`. Take `⟨n', hn'⟩` from `hex`. Conclude with `(T.univ (Sp K) x o₁ P.o' m₁ P.ψ hpU P.isog P.tj).unique ⟨hy, P.m₀, P.m', P.sq⟩ ⟨hy', P'.m₀, n', by rw [P'.sq, hn', ← hmφ, Category.assoc]⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.secInj_of :
     PulledEx → PulledRead → PullKer → KerFromU → IsoOfKer → SecInj := by

@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.
 open scoped ComplexOrder ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FlagFibre.lminor_block` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FLeadingMinorBlockDecomposition.lean&line=9#L9)
 -/

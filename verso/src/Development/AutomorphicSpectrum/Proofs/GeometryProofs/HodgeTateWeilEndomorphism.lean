@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.HtEnd
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp only [pow_zero, CategoryTheory.MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, CategoryTheory.MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pullPow {X : Scheme.{0}} {G : Over X} [GrpObj G] {A B : Over X} (ψ : A ⟶ B) (g : B ⟶ G) (n : ℕ) :
     ψ ≫ g ^ n = (ψ ≫ g) ^ n := by
@@ -18,7 +18,7 @@ theorem pullPow {X : Scheme.{0}} {G : Over X} [GrpObj G] {A B : Over X} (ψ : A 
   | succ n ih => rw [pow_succ, pow_succ, CategoryTheory.MonObj.comp_mul, ih]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp only [pow_zero, CategoryTheory.MonObj.one_comp]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, CategoryTheory.MonObj.mul_comp, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem homPow {X : Scheme.{0}} {G : Over X} [GrpObj G] {Z : Over X} (a : G ⟶ G) [IsMonHom a] (x : Z ⟶ G) (n : ℕ) :
     (x ^ n) ≫ a = (x ≫ a) ^ n := by
@@ -27,9 +27,9 @@ theorem homPow {X : Scheme.{0}} {G : Over X} [GrpObj G] {Z : Over X} (a : G ⟶ 
   | succ n ih => rw [pow_succ, pow_succ, CategoryTheory.MonObj.mul_comp, ih]
 
 /- English proof (translation)
-Use `letI := a.toAlgebra`. Use `haveI : AlgebraicGeometry.Flat (Spec.map (CommRingCat.ofHom a)) := by`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @AlgebraicGeometry.Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.mpr inferInstance`. Use `haveI : AlgebraicGeometry.Surjective (Spec.map (CommRingCat.ofHom a)) := by`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[AlgebraicGeometry.surjective_iff]`. Introduce `y`. Conclude with `⟨(default : PrimeSpectrum K), Subsingleton.elim (α := PrimeSpectrum Ω) _ _⟩`. Conclude with `AlgebraicGeometry.Flat.epi_of_flat_of_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem epiSp {Ω K : Type} [Field Ω] [Field K] (a : Ω →+* K) : Epi (spMap a) := by
   letI := a.toAlgebra
@@ -43,7 +43,7 @@ theorem epiSp {Ω K : Type} [Field Ω] [Field K] (a : Ω →+* K) : Epi (spMap a
   exact AlgebraicGeometry.Flat.epi_of_flat_of_surjective _
 
 /- English proof (translation)
-Set `ψ : Over.mk (spMap a ≫ ξ) ⟶ Over.mk ξ` to `Over.homMk (spMap a)`. Use `haveI : Epi ψ := Over.epi_of_epi_left ψ (hk := epiSp a)`. Establish `hψ : ψ ≫ g₀ = g` using `Over.OverMorphism.ext (by simp [ψ, e])`. Apply `(cancel_epi ψ).mp` to reduce the goal to its premises. Rewrite using `[pullPow, hψ, hg, CategoryTheory.MonObj.comp_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powDescend {X : Scheme.{0}} {G : Over X} [GrpObj G] {Ω K : Type} [Field Ω] [Field K]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {N : ℕ} (a : Ω →+* K)
@@ -56,7 +56,7 @@ theorem powDescend {X : Scheme.{0}} {G : Over X} [GrpObj G] {Ω K : Type} [Field
   rw [pullPow, hψ, hg, CategoryTheory.MonObj.comp_one]
 
 /- English proof (translation)
-Simplify using `only [secVal, Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem secVal_app {B : Type} [CommRing B] {Z Z' : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ Z) (φ : Z ⟶ Z')
     (W : Z'.Opens) (f : Γ(Z', W)) (h : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ W)) (h' : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ W) :
@@ -69,23 +69,21 @@ end GlobalTheory.CompanionTheory.Ar.HtEnd
 open GlobalTheory.CompanionTheory.Ar.HtEnd in
 
 /- English proof (translation)
-Introduce `X _ Ω _ _ ξ _ _ G _ _ L n _ hFT ep hW E _ _ M a _ A hA y y' hy hy' hyy' q w hH`. Take `⟨hw, W, f, hη, P1, P2⟩` from `hH`. Establish `hExt : ∀ {e' : E} {v}, M.Extends q e' v → M.Extends q (A e') (v ≫ a)`. Introduce `e' v hv`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hv.1`. Unfold `IsTanAt at h1 ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, h1, ← Over.comp_left, CategoryTheory.MonObj.one_comp]`. Rewrite using `[hA e', Over.comp_left, hv.2] erw [Category.assoc]`. Establish `hlat : ∀ e' ∈ M.lat q, A e' ∈ M.lat q`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `e' he'`. Establish `hle : M.lat q ≤ (M.lat q).comap (A.restrictScalars (regAt ξ q))`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `e'' ⟨v, hv⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨v ≫ a, hExt hv⟩`. Conclude with `hle he'`. Establish `hw' : ∀ e' ∈ M.lat q, w e' ∈ regAt ξ q` using `hw`. Use `⟨?_, a.left ⁻¹ᵁ W, (a.left.app W).hom f, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ∀ e' ∈ M.lat q, (w ∘ₗ A) e' ∈ regAt ξ q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `e' he'`. Conclude with `hw' (A e') (hlat e' he')`. Establish `h1 : (η[G] ≫ a).left = (η[G]).left` using `by rw [IsMonHom.one_hom] show a.left ((η[G]).left q.1) ∈ W`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, h1]`. Conclude with `hη`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k _ _ i xk g c h hx hg hWe`. Establish `h2 : ⊤ ≤ (g.left ≫ a.left) ⁻¹ᵁ W` using `h`. Rewrite using `[secVal_app g.left a.left W f h h2]`. Take `⟨g₀, hg₀⟩` from `hFT k i g hg`. Establish `hg₀n : g₀ ^ n = 1` using `powDescend i hg₀ hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hga : (g ≫ a) ^ n = 1` using `by rw [← homPow, hg, CategoryTheory.MonObj.one_comp]`. Establish `hg₀a : (g₀ ≫ a) ^ n = 1` using `by rw [← homPow, hg₀n, CategoryTheory.MonObj.one_comp]`. Establish `hc : (c : k) = i (ep y' g₀)` using `(hW.weil y' g₀ hy' hg₀n k i xk g c hx hg₀).mp hWe`. Rewrite `hc` using `[hyy' g₀ hg₀n]`. Set `xk0 : Over.mk (spMap i ≫ ξ) ⟶ G` to `Over.homMk (spMap i ≫ y.left)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg' : (g ≫ a).left = spMap i ≫ (g₀ ≫ a).left`. Rewrite using `[Over.comp_left, Over.comp_left, hg₀, Category.assoc]`. Establish `hWa` using `(hW.weil y (g₀ ≫ a) hy hg₀a k i xk0 (g ≫ a) c rfl hg').mpr hc`. Conclude with `P1 k i xk0 (g ≫ a) c h2 rfl hga hWa`. Introduce `e' v hv h`.
-
-Establish `h2 : ⊤ ≤ (v.left ≫ a.left) ⁻¹ᵁ W` using `h`. Take `⟨r, hr, hE⟩` from `P2 (A e') (v ≫ a) (hExt hv) h2`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, secVal_app v.left a.left W f h h2]`. Conclude with `hE`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.LieModel.isHTAt_end : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X), IsCptGen ξ → Flat.NormalCpt ξ → ∀ (G : Over X) [GrpObj G], IsSemiAbelian G → ∀ (L : LB G.left) (n : ℕ), 1 ≤ n → FullTorsion G ξ n → ∀ e, GenWeil G L ξ n e → ∀ (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (a : G ⟶ G) [IsMonHom a] (A : E →ₗ[Ω] E), M.IsDiffOf a A → ∀ (y y' : Over.mk ξ ⟶ G), y ^ n = 1 → y' ^ n = 1 → (∀ g, g ^ n = 1 → e y' g = e y (g ≫ a)) → ∀ (q : Cpt ξ) (w : Module.Dual Ω E), M.IsHTAt L n y q w → M.IsHTAt L n y' q (w ∘ₗ A) := by
   intro X _ Ω _ _ ξ _ _ G _ _ L n _ hFT ep hW E _ _ M a _ A hA y y' hy hy' hyy' q w hH

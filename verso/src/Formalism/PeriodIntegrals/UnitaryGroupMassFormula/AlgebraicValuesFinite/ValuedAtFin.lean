@@ -9,11 +9,11 @@ namespace PI.AlgValsFin.W
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Unfold `ordF`. Rewrite using `[neg_neg, WithZero.exp_log ((Valuation.ne_zero_iff _).2 k.ne_zero)]`. Simplify using `only [atFin, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`. Use `first`. Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (k : L)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation v (k : L)`. Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := L) v (k : L)`. Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (K := L) v (k : L)`. Consider the case `exact Valued.extension_extends _`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Consider the case `simp [HeightOneSpectrum.valuedAdicCompletion_eq_valuation]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem valued_atFin (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) :
     Valued.v ((atFin v k : (v.adicCompletion L)ˣ) : v.adicCompletion L) = WithZero.exp (-ordF v k) := by
@@ -31,9 +31,9 @@ theorem valued_atFin (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) :
   | simp [HeightOneSpectrum.valuedAdicCompletion_eq_valuation]
 
 /- English proof (translation)
-Introduce `χ v k hχ`. Establish `hu : IsUnifAt v (atFin v (unif v))` using `Classical.choose_spec (exists_unif v)`. Unfold `IsUnifAt at hu`. Establish `hunit : IsUnitAt v (atFin v k * (atFin v (unif v) ^ ordF v k)⁻¹)`. Unfold `IsUnitAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, hu, valued_atFin, ← WithZero.exp_zsmul, smul_neg, smul_eq_mul, mul_one, mul_inv_cancel₀ WithZero.exp_ne_zero]`. Establish `h1` using `hχ _ hunit`. Rewrite `h1` using `[map_mul, map_inv, map_zpow, mul_inv_eq_one]`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem locVal : LocVal L := by
   intro χ v k hχ

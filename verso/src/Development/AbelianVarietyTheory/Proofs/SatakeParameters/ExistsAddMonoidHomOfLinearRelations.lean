@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ImportsExtra
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NormBoundTheorem.main`. Consider the case `exact _root_.GlobalTheory.NormBoundTheorem.main`. Consider the case `(apply _root_.GlobalTheory.NormBoundTheorem.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NormBoundTheorem.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NormBoundTheorem.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NormBoundTheorem.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_addMonoidHom_of_linear_relations : ∀ (M ι T : Type) [AddCommGroup T] [Module ℚ T] (Y : ι → M → ℚ) (t : ι → T), (∀ (s : Finset ι) (c : ι → ℚ), ∑ i ∈ s, c i • Y i = 0 → ∑ i ∈ s, c i • t i = 0) → ∃ Ξ : (M → ℚ) →+ T, ∀ i, Ξ (Y i) = t i := by
   first

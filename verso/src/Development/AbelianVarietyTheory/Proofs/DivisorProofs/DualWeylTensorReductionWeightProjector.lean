@@ -12,9 +12,9 @@ open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.HighWtEmb
 namespace GlobalTheory.HighWtEmb
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_monomial]`. Apply the tactic sequence `by_cases h : Finsupp.weight w d = n <;> by_cases hd : d = m`. Substitute `hd` using the available equality. Simplify using `[h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, hd, coeff_monomial]`. Substitute `hd` using the available equality. Simplify using `[h]`. Simplify using `[h, hd]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem wComp_monomial_eq_ite {σ R M : Type} [CommSemiring R] [AddCommMonoid M] [DecidableEq M] (w : σ → M) (n : M) (d : σ →₀ ℕ) (c : R) :
     weightedHomogeneousComponent w n (monomial d c) = if Finsupp.weight w d = n then monomial d c else 0 := by
@@ -28,13 +28,13 @@ theorem wComp_monomial_eq_ite {σ R M : Type} [CommSemiring R] [AddCommMonoid M]
   · simp [h, hd]
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_mul, coeff_mul]`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hq : coeff x.2 Q = 0`. Simplify using `[hq]`. Establish `h2` using `hQ hq`. Establish `hm : x.1 + x.2 = m` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hx`. Establish `e : Finsupp.weight w x.1 = n` using `by rw [← h, ← hm, map_add, h2, add_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos e]`. Use `symm`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent]`. Distinguish the cases in `hq : coeff x.2 Q = 0`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hq]`. Establish `h2` using `hQ hq`. Establish `hm : x.1 + x.2 = m` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hx`. Establish `e : Finsupp.weight w x.1 ≠ n` using `by rw [← hm, map_add, h2, add_zero] at h; exact h`. Rewrite using `[if_neg e, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wComp_mul_of_weight_zero {σ R M : Type} [CommSemiring R] [AddCommMonoid M] (w : σ → M) (n : M) (P Q : MvPolynomial σ R)
     (hQ : IsWeightedHomogeneous w Q 0) :
@@ -62,7 +62,7 @@ theorem wComp_mul_of_weight_zero {σ R M : Type} [CommSemiring R] [AddCommMonoid
       rw [if_neg e, zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [blockRed, MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p v hp => rw [map_mul, hp]`. Simplify using `[blockRed]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem blockRed_eq_rename_map (O : Type) [CommRing O] (N : ℕ) {ι : Type} (ϖ : O) (τ : ι) (f : MvPolynomial (Fin N × Fin N) O) :
     blockRed O N ϖ τ f = rename (fun v => ((τ, v) : BVar N ι)) (map (Ideal.Quotient.mk (Ideal.span {ϖ})) f) := by
@@ -72,7 +72,7 @@ theorem blockRed_eq_rename_map (O : Type) [CommRing O] (N : ℕ) {ι : Type} (ϖ
   | mul_X p v hp => rw [map_mul, hp]; simp [blockRed]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum_mapDomain_index (h := fun i c => c • blockW N τ i) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)]`. Simplify using `[blockW, rowW]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weight_blockW_mapDomain_self (N : ℕ) {ι : Type} [DecidableEq ι] (τ : ι) (d : Fin N × Fin N →₀ ℕ) :
     Finsupp.weight (blockW N τ) (Finsupp.mapDomain (fun v => ((τ, v) : BVar N ι)) d) = Finsupp.weight (rowW N N) d := by
@@ -80,7 +80,7 @@ theorem weight_blockW_mapDomain_self (N : ℕ) {ι : Type} [DecidableEq ι] (τ 
   simp [blockW, rowW]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_mapDomain_index (h := fun i c => c • blockW N τ i) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)]`. Simplify using `[blockW, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weight_blockW_mapDomain_of_ne (N : ℕ) {ι : Type} [DecidableEq ι] {τ σ : ι} (h : σ ≠ τ) (d : Fin N × Fin N →₀ ℕ) :
     Finsupp.weight (blockW N τ) (Finsupp.mapDomain (fun v => ((σ, v) : BVar N ι)) d) = 0 := by
@@ -92,7 +92,7 @@ end GlobalTheory.HighWtEmb
 namespace GlobalTheory.HighWtEmb
 
 /- English proof (translation)
-Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[weightedHomogeneousComponent_apply, map_sum, map_sum, map_sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [blockRed_eq_rename_map, map_monomial, rename_monomial]`. Rewrite using `[wComp_monomial_eq_ite, weight_blockW_mapDomain_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockRed_wComp_rowW (O : Type) [CommRing O] (N : ℕ) {ι : Type} [DecidableEq ι] (ϖ : O) (τ : ι) (v : Fin N → ℕ)
     (f : MvPolynomial (Fin N × Fin N) O) :
@@ -106,7 +106,7 @@ theorem blockRed_wComp_rowW (O : Type) [CommRing O] (N : ℕ) {ι : Type} [Decid
   rw [wComp_monomial_eq_ite, weight_blockW_mapDomain_self]
 
 /- English proof (translation)
-Rewrite using `[blockRed_eq_rename_map, f.as_sum, map_sum, map_sum, ← mem_weightedHomogeneousSubmodule]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule, map_monomial, rename_monomial]`. Conclude with `isWeightedHomogeneous_monomial _ _ _ (weight_blockW_mapDomain_of_ne N h d)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockRed_isWeightedHomogeneous_zero (O : Type) [CommRing O] (N : ℕ) {ι : Type} [DecidableEq ι] (ϖ : O) {τ σ : ι} (h : σ ≠ τ)
     (f : MvPolynomial (Fin N × Fin N) O) : IsWeightedHomogeneous (blockW N τ) (blockRed O N ϖ σ f) 0 := by
@@ -116,7 +116,7 @@ theorem blockRed_isWeightedHomogeneous_zero (O : Type) [CommRing O] (N : ℕ) {�
   exact isWeightedHomogeneous_monomial _ _ _ (weight_blockW_mapDomain_of_ne N h d)
 
 /- English proof (translation)
-Simplify using `[redT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem redT_tprod_prod_blockRed (O : Type) [CommRing O] (N : ℕ) {ι : Type} [Fintype ι] [DecidableEq ι] (mu : ι → ℕ → ℕ) (ϖ : O)
     (x : ∀ τ, dualWeyl O N N (res N (mu τ))) :
@@ -124,13 +124,11 @@ theorem redT_tprod_prod_blockRed (O : Type) [CommRing O] (N : ℕ) {ι : Type} [
   simp [redT]
 
 /- English proof (translation)
-Introduce `O _ N ι _ _ mu ϖ τ v a ha y`. Establish `key : (redT O N mu ϖ).comp a = ((weightedHomogeneousComponent (blockW N τ) v).restrictScalars O).comp (redT O N mu ϖ)`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, LinearMap.restrictScalars_apply]`. Set `yy : dualWeyl O N N (res N (mu τ))` to `rowProj O N (res N (mu τ)) v (x τ)`. Establish `hQ : IsWeightedHomogeneous (blockW N τ) (∏ σ ∈ ({τ}ᶜ : Finset ι), blockRed O N ϖ σ (x σ)) 0`. Use `IsWeightedHomogeneous.prod ({τ}ᶜ : Finset ι) (fun σ => blockRed O N ϖ σ (x σ)) (fun _ => (0 : Fin N → ℕ)) (fun σ hσ => blockRed_isWeightedHomogeneous_zero O N ϖ (by simpa using hσ) (x σ))` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[ha x yy rfl, redT_tprod_prod_blockRed, redT_tprod_prod_blockRed, Fintype.prod_eq_mul_prod_compl τ, Fintype.prod_eq_mul_prod_compl τ, Function.update_self, wComp_mul_of_weight_zero _ _ _ _ hQ]`. Use `congr 1`. Use `show blockRed O N ϖ τ (weightedHomogeneousComponent (rowW N N) v (x τ : MvPolynomial (Fin N × Fin N) O)) = _`. Conclude with `blockRed_wComp_rowW O N ϖ τ v _`. Use `Finset.prod_congr rfl fun σ hσ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Function.update_of_ne (by simpa using hσ)]`. Conclude with `LinearMap.congr_fun key y`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redT_isProj : ∀ (O : Type) [CommRing O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (mu : ι → ℕ → ℕ) (ϖ : O) (τ : ι) (v : Fin N → ℕ) (a : Module.End O (NablaT O N mu)), IsProj O N mu τ v a → ∀ y : NablaT O N mu, redT O N mu ϖ (a y) = weightedHomogeneousComponent (blockW N τ) v (redT O N mu ϖ y) := by
   intro O _ N ι _ _ mu ϖ τ v a ha y

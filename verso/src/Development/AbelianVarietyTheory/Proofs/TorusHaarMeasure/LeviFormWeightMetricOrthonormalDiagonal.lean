@@ -21,16 +21,16 @@ def dDir (ξ : Fin n → ℂ) (f : V n → ℂ) (x : V n) : ℂ := ∑ j, wd n j
 def dbDir (ξ : Fin n → ℂ) (f : V n → ℂ) (x : V n) : ℂ := ∑ k, wdb n k f x * conj (ξ k)
 
 /- English proof (translation)
-Simplify using `only [wd, h.fderiv_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wd_congr' {j : Fin n} {f g : V n → ℂ} {x : V n} (h : f =ᶠ[𝓝 x] g) :
     wd n j f x = wd n j g x := by
   simp only [wd, h.fderiv_eq]
 
 /- English proof (translation)
-Establish `hev : ∀ k : Fin n, wdb n k (fun y => f y + g y) =ᶠ[𝓝 x] fun y => wdb n k f y + wdb n k g y`. Introduce `k`. Use `filter_upwards [eventually_differentiableAt_of_contDiffAt hf, eventually_differentiableAt_of_contDiffAt hg] with y h1 h2`. Conclude with `wdb_add h1 h2`. Simplify using `only [leviV, wd_congr' (hev _), wd_add (differentiableAt_wdb hf) (differentiableAt_wdb hg), ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem leviV_add' {f g : V n → ℂ} {x : V n} (hf : ContDiffAt ℝ 2 f x) (hg : ContDiffAt ℝ 2 g x)
     (ξ : Fin n → ℂ) : leviV n (fun y => f y + g y) x ξ = leviV n f x ξ + leviV n g x ξ := by
@@ -46,11 +46,11 @@ theorem leviV_add' {f g : V n → ℂ} {x : V n} (hf : ContDiffAt ℝ 2 f x) (hg
   ring
 
 /- English proof (translation)
-Establish `hf1 : DifferentiableAt ℝ f x` using `hf.differentiableAt (by simp)`. Establish `hg1 : DifferentiableAt ℝ g x` using `hg.differentiableAt (by simp)`. Establish `hev : ∀ k : Fin n, wdb n k (fun y => f y * g y) =ᶠ[𝓝 x] fun y => wdb n k f y * g y + f y * wdb n k g y`. Introduce `k`. Use `filter_upwards [eventually_differentiableAt_of_contDiffAt hf, eventually_differentiableAt_of_contDiffAt hg] with y h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `wdb_mul h1 h2`. Establish `hterm : ∀ j k : Fin n, wd n j (wdb n k (fun y => f y * g y)) x = wd n j (wdb n k f) x * g x + wdb n k f x * wd n j g x + (wd n j f x * wdb n k g x + f x * wd n j (wdb n k g) x)`. Introduce `j k`. Rewrite using `[wd_congr' (hev k), wd_add (f := fun y => wdb n k f y * g y) (g := fun y => f y * wdb n k g y) ((differentiableAt_wdb hf).mul hg1) (hf1.mul (differentiableAt_wdb hg)), wd_mul (differentiableAt_wdb hf) hg1, wd_mul hf1 (differentiableAt_wdb hg)]`. Rewrite using `[mul_comm (dbDir ξ f x)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [leviV, hterm, dDir, dbDir, Finset.sum_mul_sum]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem leviV_mul' {f g : V n → ℂ} {x : V n} (hf : ContDiffAt ℝ 2 f x) (hg : ContDiffAt ℝ 2 g x)
     (ξ : Fin n → ℂ) : leviV n (fun y => f y * g y) x ξ =
@@ -78,7 +78,7 @@ theorem leviV_mul' {f g : V n → ℂ} {x : V n} (hf : ContDiffAt ℝ 2 f x) (hg
   ring
 
 /- English proof (translation)
-Establish `h0 : ∀ k : Fin n, wdb n k (fun _ : V n => c) = fun _ => 0` using `fun k => by`. Use function extensionality and compare the values at `y`. Simplify using `[wdb]`. Simplify using `[leviV, h0, wd]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem leviV_const' (c : ℂ) (x : V n) (ξ : Fin n → ℂ) : leviV n (fun _ => c) x ξ = 0 := by
   have h0 : ∀ k : Fin n, wdb n k (fun _ : V n => c) = fun _ => 0 := fun k => by
@@ -94,12 +94,12 @@ def tJ : JetRing := TrivSqZeroExt.inl DualNumber.eps
 def cJ (c : ℂ) : JetRing := TrivSqZeroExt.inl (TrivSqZeroExt.inl c)
 
 /- English proof (translation)
-The claim follows from `DualNumber.eps_mul_eps`.
+A detailed English derivation is pending.
 -/
 theorem sJ_sq : sJ * sJ = 0 := DualNumber.eps_mul_eps
 
 /- English proof (translation)
-Rewrite using `[tJ, TrivSqZeroExt.inl_mul_inl, DualNumber.eps_mul_eps, TrivSqZeroExt.inl_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tJ_sq : tJ * tJ = 0 := by
   rw [tJ, TrivSqZeroExt.inl_mul_inl, DualNumber.eps_mul_eps, TrivSqZeroExt.inl_zero]
@@ -114,16 +114,16 @@ structure HasJet (ξ : Fin n → ℂ) (x : V n) (f : V n → ℂ) (a : JetRing) 
 variable {ξ : Fin n → ℂ} {x : V n}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨contDiffAt_const, by simp [cJ], by simp [cJ, dDir, wd], by simp [cJ, dbDir, wdb], by simp [cJ, leviV_const']⟩`.
+Supply the required witnesses or components.
 -/
 theorem HasJet.const (c : ℂ) : HasJet ξ x (fun _ => c) (cJ c) :=
   ⟨contDiffAt_const, by simp [cJ], by simp [cJ, dDir, wd], by simp [cJ, dbDir, wdb],
     by simp [cJ, leviV_const']⟩
 
 /- English proof (translation)
-Establish `hf1 : DifferentiableAt ℝ f x` using `hf.cd.differentiableAt (by simp)`. Establish `hg1 : DifferentiableAt ℝ g x` using `hg.cd.differentiableAt (by simp)`. Use `⟨hf.cd.add hg.cd, by simp [hf.val, hg.val], ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[← hf.hol, ← hg.hol, dDir, wd_add hf1 hg1, add_mul, Finset.sum_add_distrib]`. Simplify using `[← hf.anti, ← hg.anti, dbDir, wdb_add hf1 hg1, add_mul, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[← hf.lev, ← hg.lev, leviV_add' hf.cd hg.cd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem HasJet.add {f g : V n → ℂ} {a b : JetRing} (hf : HasJet ξ x f a) (hg : HasJet ξ x g b) :
     HasJet ξ x (fun y => f y + g y) (a + b) := by
@@ -135,11 +135,11 @@ theorem HasJet.add {f g : V n → ℂ} {a b : JetRing} (hf : HasJet ξ x f a) (h
   · simp [← hf.lev, ← hg.lev, leviV_add' hf.cd hg.cd]
 
 /- English proof (translation)
-Establish `hf1 : DifferentiableAt ℝ f x` using `hf.cd.differentiableAt (by simp)`. Establish `hg1 : DifferentiableAt ℝ g x` using `hg.cd.differentiableAt (by simp)`. Use `⟨hf.cd.mul hg.cd, by simp [hf.val, hg.val], ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: dDir ξ (fun y => f y * g y) x = f x * dDir ξ g x + dDir ξ f x * g x`. Simplify using `only [dDir, wd_mul hf1 hg1, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[this, hf.val, hg.val, hf.hol, hg.hol]`. Simplify using `[DualNumber.snd_mul]`. Establish `: dbDir ξ (fun y => f y * g y) x = f x * dbDir ξ g x + dbDir ξ f x * g x`. Simplify using `only [dbDir, wdb_mul hf1 hg1, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[this, hf.val, hg.val, hf.anti, hg.anti]`. Simplify using `[DualNumber.snd_mul]`. Rewrite using `[leviV_mul' hf.cd hg.cd, hf.val, hg.val, hf.anti, hg.anti, hf.hol, hg.hol, hf.lev, hg.lev]`. Simplify using `[DualNumber.snd_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HasJet.mul {f g : V n → ℂ} {a b : JetRing} (hf : HasJet ξ x f a) (hg : HasJet ξ x g b) :
     HasJet ξ x (fun y => f y * g y) (a * b) := by
@@ -160,7 +160,7 @@ theorem HasJet.mul {f g : V n → ℂ} {a b : JetRing} (hf : HasJet ξ x f a) (h
     simp [DualNumber.snd_mul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa [cJ] using HasJet.const (ξ := ξ) (x := x) 0`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.sum_insert hi]`. Conclude with `(h i (Finset.mem_insert_self _ _)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HasJet.sum {ι : Type*} (s : Finset ι) {f : ι → V n → ℂ} {a : ι → JetRing}
     (h : ∀ i ∈ s, HasJet ξ x (f i) (a i)) : HasJet ξ x (fun y => ∑ i ∈ s, f i y) (∑ i ∈ s, a i) := by
@@ -172,7 +172,7 @@ theorem HasJet.sum {ι : Type*} (s : Finset ι) {f : ι → V n → ℂ} {a : ι
     exact (h i (Finset.mem_insert_self _ _)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa [cJ] using HasJet.const (ξ := ξ) (x := x) 1`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.prod_insert hi]`. Conclude with `(h i (Finset.mem_insert_self _ _)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HasJet.prod {ι : Type*} (s : Finset ι) {f : ι → V n → ℂ} {a : ι → JetRing}
     (h : ∀ i ∈ s, HasJet ξ x (f i) (a i)) : HasJet ξ x (fun y => ∏ i ∈ s, f i y) (∏ i ∈ s, a i) := by
@@ -184,7 +184,7 @@ theorem HasJet.prod {ι : Type*} (s : Finset ι) {f : ι → V n → ℂ} {a : �
     exact (h i (Finset.mem_insert_self _ _)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `HasJet.sum _ fun σ _ => HasJet.mul ?_ (HasJet.prod _ fun i _ => h _ _)` and prove the remaining obligations. Use `HasJet.const (ξ := ξ) (x := x) (((Equiv.Perm.sign σ : ℤ) : ℂ))` as an intermediate fact. Simplify `this` using `[cJ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem HasJet.det {m : ℕ} {M : V n → Matrix (Fin m) (Fin m) ℂ} {A : Matrix (Fin m) (Fin m) JetRing}
     (h : ∀ a b, HasJet ξ x (fun y => M y a b) (A a b)) : HasJet ξ x (fun y => (M y).det) A.det := by
@@ -194,13 +194,13 @@ theorem HasJet.det {m : ℕ} {M : V n → Matrix (Fin m) (Fin m) ℂ} {A : Matri
   simpa [cJ] using this
 
 /- English proof (translation)
-The claim follows from `(EuclideanSpace.proj (𝕜 := ℂ) m : V n →L[ℂ] ℂ).differentiable`.
+A detailed English derivation is pending.
 -/
 theorem coord_diff (m : Fin n) : Differentiable ℂ (fun z : V n => z m) :=
   (EuclideanSpace.proj (𝕜 := ℂ) m : V n →L[ℂ] ℂ).differentiable
 
 /- English proof (translation)
-Rewrite using `[wd_of_differentiableAt (coord_diff m y)]`. Establish `: fderiv ℂ (fun z : V n => z m) y = (EuclideanSpace.proj (𝕜` using `ℂ) m : V n →L[ℂ] ℂ) := (EuclideanSpace.proj (𝕜 := ℂ) m : V n →L[ℂ] ℂ).fderiv`. Rewrite using `[this]`. Simplify using `[bas, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wd_coord (m j : Fin n) (y : V n) : wd n j (fun z : V n => z m) y = if m = j then 1 else 0 := by
   rw [wd_of_differentiableAt (coord_diff m y)]
@@ -210,15 +210,15 @@ theorem wd_coord (m j : Fin n) (y : V n) : wd n j (fun z : V n => z m) y = if m 
   simp [bas, Pi.single_apply]
 
 /- English proof (translation)
-The claim follows from `((EuclideanSpace.proj (𝕜 := ℂ) m : V n →L[ℂ] ℂ).contDiff (n := 2)).restrict_scalars ℝ`.
+A detailed English derivation is pending.
 -/
 theorem coord_cd (m : Fin n) : ContDiff ℝ 2 (fun z : V n => z m) :=
   ((EuclideanSpace.proj (𝕜 := ℂ) m : V n →L[ℂ] ℂ).contDiff (n := 2)).restrict_scalars ℝ
 
 /- English proof (translation)
-Establish `h0 : ∀ k, wdb n k (fun z : V n => z m) = fun _ => 0` using `fun k =>`. Use function extensionality and compare the values at `fun y => wdb_of_differentiableAt (coord_diff m y)`. Use `⟨(coord_cd m).contDiffAt, by simp [sJ], ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[dDir, wd_coord, sJ, cJ, DualNumber.snd_mul]`. Simplify using `[dbDir, h0, sJ, cJ, DualNumber.snd_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[leviV, h0, wd, sJ, cJ, DualNumber.snd_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem HasJet.coord (m : Fin n) : HasJet ξ 0 (fun z : V n => z m) (sJ * cJ (ξ m)) := by
   have h0 : ∀ k, wdb n k (fun z : V n => z m) = fun _ => 0 := fun k =>
@@ -229,9 +229,9 @@ theorem HasJet.coord (m : Fin n) : HasJet ξ 0 (fun z : V n => z m) (sJ * cJ (ξ
   · simp [leviV, h0, wd, sJ, cJ, DualNumber.snd_mul]
 
 /- English proof (translation)
-Establish `hd : ∀ y, DifferentiableAt ℝ (fun z : V n => z m) y` using `fun y => (coord_diff m y).restrictScalars ℝ`. Establish `h0 : ∀ k, wdb n k (fun z : V n => conj (z m)) = fun _ => if m = k then 1 else 0` using `fun k =>`. Apply the tactic sequence `funext fun y => by rw [wdb_conj (hd y), wd_coord]; split_ifs <;> simp`. Use `⟨(Complex.conjCLE.contDiff.comp (coord_cd m)).contDiffAt, by simp [tJ], ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[dDir, wd_conj (hd _), wdb_of_differentiableAt (coord_diff m _), tJ, cJ, DualNumber.snd_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[dbDir, h0, tJ, cJ, DualNumber.snd_mul]`. Simplify using `[leviV, h0, wd, tJ, cJ, DualNumber.snd_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem HasJet.conj_coord (m : Fin n) :
     HasJet ξ 0 (fun z : V n => conj (z m)) (tJ * cJ (conj (ξ m))) := by
@@ -252,17 +252,17 @@ section Alg
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Use `set D := Matrix.diagonal ε`. Establish `hDD : D * D = 1`. Simplify using `[D, Matrix.diagonal_mul_diagonal, hε]`. Establish `huni : ∀ (u : A) (W : Matrix (Fin m) (Fin m) A), (∀ a b, a ≤ b → W a b = 0) → (1 + u • W).det = 1`. Introduce `u W hW`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_of_lowerTriangular]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Simplify using `[hW a a le_rfl]`. Introduce `a b hab`. Establish `hab' : a < b` using `hab`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hW a b hab'.le, hab'.ne]`. Establish `hfac : D + s • (Zᵀ * D) + t • (D * Z') + (s * t) • R = (1 + s • Z)ᵀ * (D * (1 + (s * t) • (D * (R - Zᵀ * D * Z')))) * (1 + t • Z')`. Establish `h1 : D * (1 + (s * t) • (D * (R - Zᵀ * D * Z'))) = D + (s * t) • (R - Zᵀ * D * Z')`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, ← Matrix.mul_assoc, hDD, Matrix.one_mul]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Q := R - Zᵀ * D * Z' with hQ`. Establish `hR : R = Q + Zᵀ * D * Z'` using `by rw [hQ]; abel`. Establish `e1 : s * (s * t) = 0` using `by rw [← mul_assoc, hs, zero_mul]`. Establish `e2 : t * (s * t) = 0` using `by rw [mul_left_comm, ht, mul_zero]`. Establish `e4 : s * t * s = 0` using `by rw [mul_comm, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hR]`. Simplify using `only [Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_smul, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_add, e1, e2, e4, mul_zero, zero_smul, add_zero, mul_comm t s]`. Normalize the expressions using the abelian group laws. Rewrite using `[hfac, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, huni _ _ hZ, huni _ _ hZ', Matrix.det_one_add_smul]`. Establish `e3 : (s * t) ^ 2 = 0` using `by rw [mul_pow, sq, hs, zero_mul]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e3, mul_zero, add_zero, one_mul, mul_one, Matrix.det_diagonal]`. Use `congr 3`. Simplify using `[D, Matrix.trace, Matrix.diagonal_mul, Matrix.mul_apply, Matrix.diagonal_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_jet_sq {m : ℕ} {s t : A} (hs : s * s = 0) (ht : t * t = 0) (ε : Fin m → A)
     (hε : ∀ a, ε a * ε a = 1) (Z Z' R : Matrix (Fin m) (Fin m) A)
@@ -311,19 +311,19 @@ section Log
 variable {n : ℕ} {ξ : Fin n → ℂ} {x : V n}
 
 /- English proof (translation)
-Establish `h2` using `hd.mul hd`. Establish `hu : (fun y => d y * d y) = fun y => ((Complex.normSq (d y) : ℝ) : ℂ)`. Use function extensionality and compare the values at `y`. Rewrite using `[← Complex.mul_conj, hreal]`. Rewrite `h2` using `[hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcd : ContDiffAt ℝ 2 (fun y => Complex.normSq (d y)) x`. Use `Complex.reCLM.contDiff.contDiffAt.comp x h2.cd` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `hv : Complex.normSq (d x) = 1`. Use `h2.val` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[cJ, sJ, tJ, he] at this`. Conclude with `this`. Establish `hh : dDir ξ (fun y => ((Complex.normSq (d y) : ℝ) : ℂ)) x = 0`. Rewrite using `[h2.hol]`. Simplify using `[cJ, sJ, tJ, DualNumber.snd_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hl : leviV n (fun y => ((Complex.normSq (d y) : ℝ) : ℂ)) x ξ = 2 * c`. Rewrite using `[h2.lev]`. Simplify using `[cJ, sJ, tJ, DualNumber.snd_mul]`. Take the linear combination `(2 * c) * he`. Establish `hlog : ContDiffAt ℝ 2 Real.log (Complex.normSq (d x))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Conclude with `Real.contDiffAt_log.2 one_ne_zero`. Establish `hc` using `ReciprocityTheory.L2DbarEstimates.leviChain n Real.log (fun v => Complex.normSq (d v)) x ξ hcd hlog`. Establish `hd1 : deriv Real.log (Complex.normSq (d x)) = 1`. Rewrite using `[Real.deriv_log', hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using the standard rewrite rules. Unfold `dDir at hh`. Rewrite `hc` using `[hh, hl, hd1]`. Establish `hf : (fun y => ((Real.log ‖d y‖ : ℝ) : ℂ)) = fun y => (((1 / 2 : ℝ) * Real.log (Complex.normSq (d y)) : ℝ) : ℂ)`. Use function extensionality and compare the values at `y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[IW.log_norm_eq]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf, Y.LocalMaximumSecondDerivative.leviV_ofReal_const_mul (f := fun y => Real.log (Complex.normSq (d y))) _ (hcd.log (by rw [hv]; exact one_ne_zero)), hc]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviV_log_norm {d : V n → ℂ} {e c : ℂ} (he : e * e = 1) (hreal : ∀ y, conj (d y) = d y)
     (hd : HasJet ξ x d (cJ e * (1 + cJ c * (sJ * tJ)))) :
@@ -359,7 +359,7 @@ theorem leviV_log_norm {d : V n → ℂ} {e c : ℂ} (he : e * e = 1) (hreal : �
   simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using leviV_const' 0 x ξ`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.sum_insert hi]`. Rewrite using `[leviV_add' (h i (Finset.mem_insert_self _ _)) (ContDiffAt.sum fun j hj => h j (Finset.mem_insert_of_mem hj)), ih fun j hj => h j (Finset.mem_insert_of_mem hj)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviV_sum' {ι : Type*} (s : Finset ι) {f : ι → V n → ℂ}
     (h : ∀ i ∈ s, ContDiffAt ℝ 2 (f i) x) :
@@ -374,7 +374,7 @@ theorem leviV_sum' {ι : Type*} (s : Finset ι) {f : ι → V n → ℂ}
       ih fun j hj => h j (Finset.mem_insert_of_mem hj)]
 
 /- English proof (translation)
-Rewrite using `[leviV_mul' (f := fun _ => c) contDiffAt_const h, leviV_const']`. Simplify using `[dDir, dbDir, wd, wdb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem leviV_const_mul' (c : ℂ) {f : V n → ℂ} (h : ContDiffAt ℝ 2 f x) :
     leviV n (fun y => c * f y) x ξ = c * leviV n f x ξ := by
@@ -384,7 +384,7 @@ theorem leviV_const_mul' (c : ℂ) {f : V n → ℂ} (h : ContDiffAt ℝ 2 f x) 
 end Log
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_bij (fun b _ => Fin.castLE h b) (fun b _ => by simp) (fun a _ b _ hab => Fin.castLE_injective h hab) (fun b hb => ?_) (fun _ _ => rfl)` and prove the remaining obligations. Conclude with `⟨⟨b, by simpa using hb⟩, Finset.mem_univ _, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem sum_castLE {M : Type*} [AddCommMonoid M] {m r : ℕ} (h : m ≤ r) (f : Fin r → M) :
     ∑ b : Fin m, f (Fin.castLE h b) = ∑ b : Fin r, if (b : ℕ) < m then f b else 0 := by
@@ -406,9 +406,9 @@ Both sides reduce to the same expression.
 theorem cJ_eq (a : ℂ) : cJ a = cH a := rfl
 
 /- English proof (translation)
-Simplify using `only [ExF.nM, mat, nmat, zMat, Matrix.of_apply]`. Distinguish the cases in `h : b < a`. Simplify using `only [dif_pos h, if_neg h.ne', zero_add]`. Conclude with `HasJet.coord _`. Simplify using `only [dif_neg h, map_zero, mul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `HasJet.const (ξ := ξ) (x := 0) (if a = b then 1 else 0)` as an intermediate fact. Rewrite `this` using `[cJ_eq]`. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa using this`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem jet_nM (ξ : Fin (nd X) → ℂ) (τ : X.Ψ) (a b : Fin r) :
     HasJet ξ 0 (fun z => ExF.nM X z τ a b) ((if a = b then 1 else 0) + sJ * cH (zMat X ξ τ a b)) := by
@@ -422,9 +422,9 @@ theorem jet_nM (ξ : Fin (nd X) → ℂ) (τ : X.Ψ) (a b : Fin r) :
     split_ifs at this ⊢ <;> simpa using this
 
 /- English proof (translation)
-Simplify using `only [ExF.nM, mat, nmat, zMat, Matrix.of_apply]`. Distinguish the cases in `h : b < a`. Simplify using `only [dif_pos h, if_neg h.ne', zero_add]`. Conclude with `HasJet.conj_coord _`. Simplify using `only [dif_neg h, map_zero, mul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `HasJet.const (ξ := ξ) (x := 0) (if a = b then 1 else 0)` as an intermediate fact. Rewrite `this` using `[cJ_eq]`. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa using this`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem jet_conj_nM (ξ : Fin (nd X) → ℂ) (τ : X.Ψ) (a b : Fin r) :
     HasJet ξ 0 (fun z => conj (ExF.nM X z τ a b))
@@ -439,7 +439,7 @@ theorem jet_conj_nM (ξ : Fin (nd X) → ℂ) (τ : X.Ψ) (a b : Fin r) :
     split_ifs at this ⊢ <;> simpa using this
 
 /- English proof (translation)
-Establish `hg : gram τ.1 X.Gm (mat (cpt X x0 z) τ) = (ExF.nM X z τ)ᵀ * Matrix.diagonal (fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) * (ExF.nM X z τ).map (starRingEnd ℂ)`. Rewrite using `[ExF.mat_cpt, FrameDegreeData.gram_mul, ho τ]`. Rewrite using `[hg, Matrix.mul_apply]`. Simplify using `[Matrix.mul_diagonal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_cpt_apply {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (z : V (nd X)) (τ : X.Ψ) (b c : Fin r) :
     gram τ.1 X.Gm (mat (cpt X x0 z) τ) b c =
@@ -452,15 +452,15 @@ theorem gram_cpt_apply {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (z : V (nd X)) (τ
   simp [Matrix.mul_diagonal]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sgn; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_mul_self (p a : ℕ) : sgn p a * sgn p a = 1 := by
   unfold sgn; split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `dmin lminor`. Rewrite using `[RingHom.map_det, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `b c`. Simplify using `only [Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.submatrix_apply, gram_cpt_apply X ho, map_sum, map_mul, Complex.conj_ofReal, Complex.conj_conj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem dmin_cpt_real {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (z : V (nd X)) (τ : X.Ψ)
     (i : Fin (r + 1)) : conj (dmin X.Gm (cpt X x0 z) τ i) = dmin X.Gm (cpt X x0 z) τ i := by
@@ -474,25 +474,23 @@ theorem dmin_cpt_real {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (z : V (nd X)) (τ 
   exact Finset.sum_congr rfl fun a _ => by ring
 
 /- English proof (translation)
-Establish `hi : (i : ℕ) ≤ r` using `Nat.le_of_lt_succ i.isLt`. Use `set κ : Fin i → Fin r := Fin.castLE hi with hκ`. Use `set ε : Fin r → ℂ := fun a => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) with hε`. Establish `hεε : ∀ a, ε a * ε a = 1` using `fun a => by`. Simplify using `only [hε]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Complex.ofReal_mul, sgn_mul_self]`. Simplify using the standard rewrite rules. Use `set Z := zMat X ξ τ with hZ`. Establish `hZ0 : ∀ a b, a ≤ b → Z a b = 0` using `fun a b h => by simp [hZ, zMat, not_lt.2 h]`. Establish `hdet` using `det_jet_sq sJ_sq tJ_sq (fun a : Fin i => cH (ε (κ a))) (fun a => by rw [← map_mul, hεε, map_one]) (Matrix.of fun a b => cH (Z (κ a) (κ b))) (Matrix.of fun a b => cH (conj (Z (κ a) (κ b)))) (Matrix.of fun b c => ∑ a, cH (Z a (κ b)) * cH (ε a) * cH (conj (Z a (κ c)))) (fun a b h => …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hjet : HasJet ξ 0 (fun z => dmin X.Gm (cpt X x0 z) τ i) (Matrix.of fun b c => ∑ a, ((if a = κ b then 1 else 0) + sJ * cH (Z a (κ b))) * cH (ε a) * ((if a = κ c then 1 else 0) + tJ * cH (conj (Z a (κ c))))).det`. Unfold `dmin lminor`. Use `HasJet.det fun b c => ?_` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply, gram_cpt_apply X ho, Matrix.of_apply]`. Conclude with `HasJet.sum _ fun a _ => ((jet_nM X ξ τ a _).mul (HasJet.const _)).mul (jet_conj_nM X ξ τ a _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hκi : ∀ b c, κ b = κ c ↔ b = c` using `fun b c => (Fin.castLE_injective hi).eq_iff`. Establish `hmat : (Matrix.of fun b c => ∑ a, ((if a = κ b then 1 else 0) + sJ * cH (Z a (κ b))) * cH (ε a) * ((if a = κ c then 1 else 0) + tJ * cH (conj (Z a (κ c))))) = Matrix.diagonal (fun a : Fin i => cH (ε (κ a))) + sJ • ((Matrix.of fun a b => cH (Z (κ a) (κ b)))ᵀ * Matrix.diagonal (fun …` using `by ext1 b c`. Simplify using `only [Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.transpose_apply, Matrix.diagonal_apply, smul_eq_mul, add_mul, mul_add, Finset.sum_add_distrib, ite_mul, mul_ite, one_mul, zero_mul, mul_one, mul_zero, Finset.sum_ite_eq', …`. Establish `e1 : ∑ a, sJ * cH (Z a (κ b)) * cH (ε a) * (tJ * cH (conj (Z a (κ c)))) = ∑ a, sJ * tJ * (cH (Z a (κ b)) * cH (ε a) * cH (conj (Z a (κ c))))` using `Finset.sum_congr rfl fun a _ => by ring`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `hbc : b = c`. Substitute `hbc` using the available equality. Simplify using `only [if_true]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg hbc, if_neg (Ne.symm hbc)]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hjet` using `[hmat, hdet]`. Simplify using `only [Matrix.of_apply, ← map_mul, ← map_sum, ← map_sub, ← map_prod] at hjet`. Simplify using `only [← cJ_eq] at hjet`. Establish `hee : (∏ a, ε (κ a)) * (∏ a, ε (κ a)) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun a _ => hεε _`. Use `leviV_log_norm hee (fun y => dmin_cpt_real X ho y τ i) hjet` as an intermediate fact. Simplify using `only [IW.Lm]`. Rewrite using `[this, Finset.sum_comm, sum_castLE hi (fun b => ε b * (∑ a, Z a b * ε a * conj (Z a b) - ∑ a : Fin i, Z (κ a) b * ε (κ a) * conj (Z (κ a) b)))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[sum_castLE hi (fun a => Z a b * ε a * conj (Z a b))]`. Distinguish the cases in `hb : (b : ℕ) < i`. Rewrite using `[if_pos hb, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : (a : ℕ) < i`. Simplify using `[ha, not_le.2 ha]`. Simplify using `only [if_neg ha, hb, not_lt.1 ha, and_self, if_true, hε]`. Use `push_cast`. Rewrite using `[← Complex.mul_conj']`.
-
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[hb]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviV_Lm {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (ξ : Fin (nd X) → ℂ) (τ : X.Ψ)
     (i : Fin (r + 1)) :
@@ -564,19 +562,19 @@ theorem leviV_Lm {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (ξ : Fin (nd X) → ℂ
   · simp [hb]
 
 /- English proof (translation)
-Establish `h0` using `IW.zero_mem_OmF X x ho`. Establish `hcd : ∀ τ i, ContDiffAt ℝ 2 (fun z => ((IW.Lm X (cpt X x z) τ i : ℝ) : ℂ)) 0` using `fun τ i => Complex.ofRealCLM.contDiff.contDiffAt.comp 0 ((IW.Lm_cpt_cdAt X x h0 τ i).of_le HE.two_le_inf)`. Establish `hev : (fun w => ((phla X la (cpt X x w) : ℝ) : ℂ)) =ᶠ[𝓝 0] fun w => ∑ τ, ∑ i : Fin r, ((la τ i : ℂ) * ((IW.Lm X (cpt X x w) τ i.succ : ℝ) : ℂ) + (-(la τ i : ℂ)) * ((IW.Lm X (cpt X x w) τ i.castSucc : ℝ) : ℂ))` using `by filter_upwards [IW.phla_cpt_eventually X x h0 la] with w hw`. Rewrite using `[hw]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => by ring`. Establish `hc1 : ∀ τ (c : ℂ) i, ContDiffAt ℝ 2 (fun z => c * ((IW.Lm X (cpt X x z) τ i : ℝ) : ℂ)) 0` using `fun τ c i => contDiffAt_const.mul (hcd τ i)`. Unfold `leviM`. Rewrite using `[leviV_congr hev, leviV_sum' _ fun τ _ => ContDiffAt.sum fun i _ => (hc1 _ _ _).add (hc1 _ _ _), Fintype.sum_prod_type, Complex.re_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[leviV_sum' _ fun i _ => (hc1 _ _ _).add (hc1 _ _ _)]`. Simplify using `only [leviV_add' (hc1 _ _ _) (hc1 _ _ _), leviV_const_mul' _ (hcd _ _), leviV_Lm X ho]`. Use `set w : Fin r → Fin r → ℝ := fun a b => sgn X.p0 a * sgn X.p0 b * ‖zMat X ξ τ a b‖ ^ 2 with hw`. Establish `hR : ∑ y : {p : Fin r × Fin r // p.2 < p.1}, sgn X.p0 y.1.1 * sgn X.p0 y.1.2 * ((la τ y.1.2 : ℝ) - (la τ y.1.1 : ℝ)) * ‖ξ (Fintype.equivFin (Ent X) (τ, y))‖ ^ 2 = ∑ a : Fin r, ∑ b : Fin r, if b < a then ((la τ b : ℝ) - (la τ a : ℝ)) * w a b else 0`. Rewrite using `[← Fintype.sum_prod_type' (f := fun a b : Fin r => if b < a then ((la τ b : ℝ) - (la τ a : ℝ)) * w a b else 0), ← Finset.sum_filter, Finset.sum_subtype (p := fun p : Fin r × Fin r => p.2 < p.1) _ (by simp)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [hw, zMat, dif_pos y.2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hR]`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm, Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Complex.re_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hba : b < a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi : ∀ i : Fin r, ((la τ i : ℂ) * (if (b : ℕ) < i.succ ∧ (i.succ : ℕ) ≤ a then ((w a b : ℝ) : ℂ) else 0) + (-(la τ i : ℂ)) * (if (b : ℕ) < i.castSucc ∧ (i.castSucc : ℕ) ≤ a then ((w a b : ℝ) : ℂ) else 0)) = (if i = b then (la τ i : ℂ) * (w a b : ℝ) else 0) - (if i = a then (la τ …`. Introduce `i`. Establish `hba' : (b : ℕ) < a` using `hba`. Simplify using `only [Fin.val_succ, Fin.val_castSucc, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hw] at hi`. Rewrite using `[Finset.sum_congr rfl fun i _ => hi i, Finset.sum_sub_distrib, if_pos hba]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true, ← sub_mul, hw]`. Use `norm_cast`. Simplify using `[hba, zMat]`.
+Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levi_phla_zero (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (x : Frame X.Ψ r) (ho : IsOrth X x)
     (ξ : Fin (nd X) → ℂ) :
@@ -634,7 +632,7 @@ theorem levi_phla_zero (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (x : Frame X.Ψ
   · simp [hba, zMat]
 
 /- English proof (translation)
-The claim follows from `levi_phla_zero`.
+A detailed English derivation is pending.
 -/
 theorem leviZero : (∀ (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (x : Frame X.Ψ r), IsOrth X x → ∀ ξ : Fin (nd X) → ℂ, leviM X (phla X la) x 0 ξ = ∑ e : Ent X, sgn X.p0 e.2.1.1 * sgn X.p0 e.2.1.2 * ((la e.1 e.2.1.2 : ℝ) - (la e.1 e.2.1.1 : ℝ)) * ‖ξ (Fintype.equivFin (Ent X) e)‖ ^ 2) :=
   levi_phla_zero

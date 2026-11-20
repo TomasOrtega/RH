@@ -7,9 +7,9 @@ open UpperTheory.V.Af (algSat)
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Use `haveI : Algebra.FormallyUnramified (𝓞 (maximalRealSubfield E)) (𝓞 E) := by`. Rewrite using `[Algebra.formallyUnramified_iff_forall]`. Introduce `q`. Take `⟨Q, hQ, hqQ⟩` from `Ideal.exists_le_maximal q.1 q.2.ne_top`. Establish `hne : Q ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hQ (RingOfIntegers.not_isField E)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `hE ⟨Q, hQ.isPrime, hne⟩`. Establish `hopen` using `Algebra.isOpen_unramifiedLocus (R := 𝓞 (maximalRealSubfield E)) (A := 𝓞 E)`. Conclude with `hopen.stableUnderGeneralization ((PrimeSpectrum.le_iff_specializes q ⟨Q, hQ.isPrime⟩).mp hqQ) hU`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem unram_of_forall {E : Type} [Field E] [NumberField E] [IsCMField E]
     (hE : ∀ w : HeightOneSpectrum (𝓞 E), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal) :
@@ -26,7 +26,7 @@ private theorem unram_of_forall {E : Type} [Field E] [NumberField E] [IsCMField 
   exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Establish `hle : v.asIdeal ≤ (w.under (𝓞 F)).asIdeal` using `by show v.asIdeal ≤ w.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E))`. Rewrite using `[← Ideal.map_le_iff_le_comap]`. Conclude with `h.le`. Conclude with `(v.isMaximal.eq_of_le (w.under (𝓞 F)).isPrime.ne_top hle).symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem under_eq_of_inert {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} (h : Formalism.UG.IsInertAt F E v w) :
@@ -39,9 +39,9 @@ private theorem under_eq_of_inert {F E : Type} [Field F] [NumberField F] [Field 
   exact (v.isMaximal.eq_of_le (w.under (𝓞 F)).isPrime.ne_top hle).symm
 
 /- English proof (translation)
-Introduce and unpack `⟨u, hne, hu⟩`. Apply `hne` to reduce the goal to its premises. Establish `hv : u.under (𝓞 (maximalRealSubfield E)) = v` using `hu.trans (under_eq_of_inert h)`. Establish `hle : w.asIdeal ≤ u.asIdeal`. Rewrite using `[← show Ideal.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) v.asIdeal = w.asIdeal from h, Ideal.map_le_iff_le_comap, ← hv]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_rfl`. Conclude with `(HeightOneSpectrum.ext ((w.isMaximal.eq_of_le u.isPrime.ne_top hle))).symm`.
+A detailed English derivation is pending.
 -/
 private theorem not_split_of_inert {E : Type} [Field E] [NumberField E] [IsCMField E]
     {v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))} {w : HeightOneSpectrum (𝓞 E)}
@@ -55,9 +55,9 @@ private theorem not_split_of_inert {E : Type} [Field E] [NumberField E] [IsCMFie
   exact (HeightOneSpectrum.ext ((w.isMaximal.eq_of_le u.isPrime.ne_top hle))).symm
 
 /- English proof (translation)
-Introduce `hS E _ _ _ hE hI`. Establish `hcm : IsCMExt (maximalRealSubfield E) E (UpperTheory.TP.cj E)` using `⟨inferInstance, inferInstance, Algebra.IsQuadraticExtension.finrank_eq_two _ _, fun τ x => IsCMField.complexEmbedding_complexConj E τ x⟩`. Establish `hu` using `unram_of_forall hE`. Take `⟨B, δ, 𝔞, -, -, hP, hstd, -, h1, h2⟩` from `hS (maximalRealSubfield E) E (UpperTheory.TP.cj E) hcm hu`. Use `⟨B, δ, 𝔞, ?_, h1, h2⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `{ cm := hcm unram := hu std := hstd inert := fun v w h => by`. Take `⟨a, b, c⟩` from `hI w (not_split_of_inert h)`. Rewrite `a`, `b`, `c` using `[under_eq_of_inert h]`. Conclude with `⟨a, b, PositivityTheory.Mix.psiUnr_of_not_le hstd v c⟩`. Use `psiP := fun v hv => absurd hv (by simp [hP]) }`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Sub.baseNG_holds :
     UpperTheory.Gal.TP.Skew.SkewLine → BaseNG := by

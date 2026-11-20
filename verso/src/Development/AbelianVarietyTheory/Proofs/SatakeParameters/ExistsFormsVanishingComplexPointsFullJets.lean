@@ -21,11 +21,11 @@ namespace GlobalTheory.EtProj.Jets
 open GlobalTheory.ProjSpace GlobalTheory.ProjFrac
 
 /- English proof (translation)
-Establish `e : X.basicOpen (fRatio ι f g hf hg) = fOpen ι g ⊓ fOpen ι f`. Establish `e0 : X.basicOpen (fRatio ι f g hf hg) = ι ⁻¹ᵁ (PSpace ℂ N).basicOpen (frac (grading ℂ N) _ f g hf hg le_rfl)` using `(Scheme.preimage_basicOpen ι _).symm`. Rewrite using `[e0, basicOpen_frac]`. Both sides reduce to the same expression. Establish `h1` using `CxPts.mem_ptsIn_basicOpen hz (fRatio ι f g hf hg)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `h1` using `[e, CxPts.mem_ptsIn_inf, CxPts.ev_eq hz]`. Prove the components needed by the constructor for the conclusion. Introduce `h0 hf'`. Conclude with `(h1.1 ⟨hz, hf'⟩) h0`. Introduce `hn`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hn (h1.2 h0).2`.
+A detailed English derivation is pending.
 -/
 theorem ev_ratio_eq_zero_iff {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {N n : ℕ} (ι : X ⟶ PSpace ℂ N)
     {f g : MvPolynomial (Fin (N + 1)) ℂ} (hf : f ∈ grading ℂ N n) (hg : g ∈ grading ℂ N n)
@@ -47,9 +47,9 @@ theorem ev_ratio_eq_zero_iff {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {N n : ℕ} (ι
     exact hn (h1.2 h0).2
 
 /- English proof (translation)
-Use `ext fun x hx => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_mem_chart ℂ N x`. Establish `hW : V ⊓ chart ℂ N i ≤ V` using `inf_le_left`. Establish `hxW : x ∈ V ⊓ chart ℂ N i` using `⟨hx, hi⟩`. Rewrite using `[← ev_resG hW x hxW, ← ev_resG hW x hxW, map_mul, resG_algebraMap, resG_frac, resG_frac, ← formOn_C (hi := (inf_le_right : V ⊓ chart ℂ N i ≤ chart ℂ N i)), formOn]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `(frac_mul_eq ?_).symm` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frac_smul_n {N n : ℕ} (V : (PSpace ℂ N).Opens) (f g : MvPolynomial (Fin (N + 1)) ℂ)
     (hf : f ∈ grading ℂ N n) (hg : g ∈ grading ℂ N n) (hV : V ≤ Proj.basicOpen (grading ℂ N) g) (c : ℂ)
@@ -67,7 +67,7 @@ theorem frac_smul_n {N n : ℕ} (V : (PSpace ℂ N).Opens) (f g : MvPolynomial (
   ring
 
 /- English proof (translation)
-Unfold `fRatio`. Rewrite using `[frac_add (ha := h₁) (ha₂ := h₂)]`. Conclude with `map_add _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fRatio_add_n {X : Scheme.{0}} {N n : ℕ} (ι : X ⟶ PSpace ℂ N) {f₁ f₂ g : MvPolynomial (Fin (N + 1)) ℂ}
     (h₁ : f₁ ∈ grading ℂ N n) (h₂ : f₂ ∈ grading ℂ N n) (h : f₁ + f₂ ∈ grading ℂ N n) (hg : g ∈ grading ℂ N n) :
@@ -77,7 +77,7 @@ theorem fRatio_add_n {X : Scheme.{0}} {N n : ℕ} (ι : X ⟶ PSpace ℂ N) {f�
   exact map_add _ _ _
 
 /- English proof (translation)
-Establish `e` using `RatLin.app_const p ι hι (Proj.basicOpen (grading ℂ N) g) c`. Use `Eq.trans ?_ (Algebra.smul_def (A := Sec p (fOpen ι g)) c _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (· * (show Sec p (fOpen ι g) from fRatio ι f g hf hg)) e)` and prove the remaining obligations. Unfold `fRatio`. Rewrite using `[frac_smul_n _ f g hf hg le_rfl c h, map_mul, algebraMap_sections_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -96,7 +96,7 @@ def rat {X : Scheme.{0}} (p : X ⟶ Sp ℂ) {N n : ℕ} (ι : X ⟶ PSpace ℂ N
     (hf : f ∈ grading ℂ N n) (hg : g ∈ grading ℂ N n) : Sec p (fOpen ι g) := fRatio ι f g hf hg
 
 /- English proof (translation)
-Establish `hc : (-c) • g ∈ grading ℂ N n` using `Submodule.smul_mem _ _ hg`. Establish `e1 : rat p ι (f + (-c) • g) g h hg = rat p ι f g hf hg + rat p ι ((-c) • g) g hc hg` using `fRatio_add_n ι hf hc h hg`. Establish `e2 : rat p ι ((-c) • g) g hc hg = (-c) • rat p ι g g hg hg` using `fRatio_smul_n p ι hι (-c) hg hc hg`. Establish `e3 : rat p ι g g hg hg = 1` using `fRatio_self ι g hg`. Rewrite using `[e1, e2, e3, Algebra.algebraMap_eq_smul_one, neg_smul, sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rat_sub_const {X : Scheme.{0}} (p : X ⟶ Sp ℂ) {N n : ℕ} (ι : X ⟶ PSpace ℂ N)
     (hι : ι ≫ PSpace.str ℂ N = p) {f g : MvPolynomial (Fin (N + 1)) ℂ} (c : ℂ)
@@ -110,7 +110,7 @@ theorem rat_sub_const {X : Scheme.{0}} (p : X ⟶ Sp ℂ) {N n : ℕ} (ι : X �
   rw [e1, e2, e3, Algebra.algebraMap_eq_smul_one, neg_smul, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `e0 : X.basicOpen ((ι.app V).hom (frac (grading ℂ N) V f g hf hg hV)) = ι ⁻¹ᵁ (PSpace ℂ N).basicOpen (frac (grading ℂ N) V f g hf hg hV)` using `(Scheme.preimage_basicOpen ι _).symm`. Rewrite using `[e0, basicOpen_frac]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem basicOpen_app_frac {X : Scheme.{0}} {N n : ℕ} (ι : X ⟶ PSpace ℂ N) (V : (PSpace ℂ N).Opens)
     {f g : MvPolynomial (Fin (N + 1)) ℂ} (hf : f ∈ grading ℂ N n) (hg : g ∈ grading ℂ N n)
@@ -123,15 +123,15 @@ theorem basicOpen_app_frac {X : Scheme.{0}} {N n : ℕ} (ι : X ⟶ PSpace ℂ N
   rfl
 
 /- English proof (translation)
-Establish `hle : f₀ ∈ grading ℂ N m * grading ℂ N m`. Establish `e : ∀ k, grading ℂ N k = grading ℂ N 1 ^ k` using `fun k => (MvPolynomial.homogeneousSubmodule_one_pow _ k).symm`. Rewrite using `[e m, ← pow_add, ← e]`. Conclude with `hf₀`. Establish `hK : ∀ b (hb : b ∈ grading ℂ N m), fRatio ι (q * b) f₀ (SetLike.mul_mem_graded hq hb) hf₀ ∈ RingHom.ker (CxPts.evHom hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Use `(ev_ratio_eq_zero_iff ι _ hf₀ hy).2 fun h => ?_` and prove the remaining obligations. Conclude with `(mem_fOpen ι _ _).1 (CxPts.mem_ptsIn.1 h) (Ideal.mul_mem_right b _ hyq)`. Establish `key : ∀ f ∈ grading ℂ N m * grading ℂ N m, ∃ hf : f ∈ grading ℂ N (m + m), fRatio ι (q * q) f₀ hh hf₀ * fRatio ι f f₀ hf hf₀ ∈ RingHom.ker (CxPts.evHom hy) ^ 2`. Introduce `f hf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.mul_induction_on hf ?_ ?_` and prove the remaining obligations. Introduce `b hb c hc`. Use `⟨SetLike.mul_mem_graded hb hc, ?_⟩` and prove the remaining obligations. Establish `e : fRatio ι (q * q) f₀ hh hf₀ * fRatio ι (b * c) f₀ (SetLike.mul_mem_graded hb hc) hf₀ = fRatio ι (q * b) f₀ (SetLike.mul_mem_graded hq hb) hf₀ * fRatio ι (q * c) f₀ (SetLike.mul_mem_graded hq hc) hf₀`. Unfold `fRatio`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(map_mul _ _ _).symm.trans (Eq.trans (congrArg _ ?_) (map_mul _ _ _))` and prove the remaining obligations. Conclude with `frac_mul.trans ((frac_eq (by ring)).trans frac_mul.symm)`. Rewrite using `[e, pow_two]`. Conclude with `Ideal.mul_mem_mul (hK b hb) (hK c hc)`. Introduce and unpack `b c ⟨hb, hb'⟩ ⟨hc, hc'⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨add_mem hb hc, ?_⟩` and prove the remaining obligations. Rewrite using `[fRatio_add_n ι hb hc, mul_add]`. Conclude with `add_mem hb' hc'`. Take `⟨_, h⟩` from `key f₀ hle`. Rewrite `h` using `[fRatio_self, mul_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem ratio_sq_mem {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {N : ℕ} (ι : X ⟶ PSpace ℂ N) {m : ℕ}
     {q f₀ : MvPolynomial (Fin (N + 1)) ℂ} (hq : q ∈ grading ℂ N m)
@@ -176,9 +176,7 @@ namespace GlobalTheory.EtProj.Jets
 open GlobalTheory.ProjSpace
 
 /- English proof (translation)
-Use `haveI : Subsingleton (Sp ℂ) := inferInstanceAs (Subsingleton (PrimeSpectrum ℂ))`. Establish `hid : y.1 ≫ p = 𝟙 _` using `y.2.trans (Spec.map_id _)`. Use `haveI := isClosedImmersion_of_comp_eq_id p y.1 hid`. Establish `hc : IsClosed ({y.1 (IsLocalRing.closedPoint ℂ)} : Set X)`. Use `y.1.isClosedEmbedding.isClosedMap _ (IsLocalRing.isClosed_singleton_closedPoint ℂ)` as an intermediate fact.
-
-Conclude with `(Set.image_singleton (f := ⇑y.1) (a := IsLocalRing.closedPoint ℂ)) ▸ this`. Conclude with `h.mem_closed hc rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_specializes {X : Scheme.{0}} {p : X ⟶ Sp ℂ} (y : CxPts p (RingHom.id ℂ)) {x : X}
     (h : y.1 (IsLocalRing.closedPoint ℂ) ⤳ x) : x = y.1 (IsLocalRing.closedPoint ℂ) := by
@@ -191,11 +189,9 @@ theorem eq_of_specializes {X : Scheme.{0}} {p : X ⟶ Sp ℂ} (y : CxPts p (Ring
   exact h.mem_closed hc rfl
 
 /- English proof (translation)
-Establish `hyU : y.1 (IsLocalRing.closedPoint ℂ) ∈ U` using `CxPts.mem_ptsIn.1 hy`. Establish `hgU : genericPoint X ∈ U` using `hg ▸ hyU`. Establish `h1 : genericPoint X ∉ X.basicOpen u`. Introduce `h`. Rewrite `h` using `[← hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(CxPts.mem_ptsIn_basicOpen hy u).1 (CxPts.mem_ptsIn.2 h) (by rw [CxPts.ev_eq hy]; exact hu)`. Rewrite `h1` using `[Scheme.mem_basicOpen _ _ _ hgU]`. Establish `h3 : X.presheaf.germ U (genericPoint X) hgU u = 0`. Assume the negation of the conclusion as `h`. Conclude with `h1 (isUnit_iff_ne_zero.2 (show (X.presheaf.germ U (genericPoint X) hgU u : X.functionField) ≠ 0 from h))`.
-
-Conclude with `germ_injective_of_isIntegral X (genericPoint X) hgU (h3.trans (map_zero _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_generic {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp ℂ} {U : X.Opens}
     {y : CxPts p (RingHom.id ℂ)} (hy : y ∈ CxPts.ptsIn p (RingHom.id ℂ) U)
@@ -214,34 +210,32 @@ theorem eq_zero_of_generic {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp ℂ} {U
   exact germ_injective_of_isIntegral X (genericPoint X) hgU (h3.trans (map_zero _).symm)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (ext_of_apply_closedPoint_eq (K := ℂ) p (y.2.trans (Spec.map_id _)) (z.2.trans (Spec.map_id _)) h)`.
+A detailed English derivation is pending.
 -/
 theorem pt_inj {X : Scheme.{0}} {p : X ⟶ Sp ℂ} [LocallyOfFiniteType p] {y z : CxPts p (RingHom.id ℂ)}
     (h : y.1 (IsLocalRing.closedPoint ℂ) = z.1 (IsLocalRing.closedPoint ℂ)) : y = z :=
   Subtype.ext (ext_of_apply_closedPoint_eq (K := ℂ) p (y.2.trans (Spec.map_id _)) (z.2.trans (Spec.map_id _)) h)
 
 /- English proof (translation)
-Use `by_contra! H`. Take `⟨i, hi⟩` from `Generic.exists_X_notMem (ι.base (y.1 (IsLocalRing.closedPoint ℂ)))`. Establish `hg` using `X_mem ℂ N i`. Establish `hy : y ∈ CxPts.ptsIn p (RingHom.id ℂ) (fOpen ι (MvPolynomial.X i))` using `CxPts.mem_ptsIn.2 hi`. Set `e : Sec p (fOpen ι (MvPolynomial.X i)) →+* ℂ` to `CxPts.evHom hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : ∀ c : ℂ, e (algebraMap ℂ _ c) = c` using `fun c => (CxPts.ev_eq hy _).symm.trans (CxPts.ev_algX hy c)`. Set `r : Fin (N + 1) → Sec p (fOpen ι (MvPolynomial.X i))` to `fun l => rat p ι (MvPolynomial.X l) (MvPolynomial.X i) (X_mem ℂ N l) hg`. Establish `hL : ∀ l, (MvPolynomial.X l + (-e (r l)) • MvPolynomial.X i : MvPolynomial (Fin (N + 1)) ℂ) ∈ grading ℂ N 1` using `fun l => add_mem (X_mem ℂ N l) (Submodule.smul_mem _ _ hg)`. Establish `hr : ∀ l, rat p ι _ _ (hL l) hg = r l - algebraMap ℂ _ (e (r l))` using `fun l => rat_sub_const p ι hp _ (X_mem ℂ N l) (hL l) hg`. Establish `hLx : ∀ l, (MvPolynomial.X l + (-e (r l)) • MvPolynomial.X i : MvPolynomial (Fin (N + 1)) ℂ) ∈ (ι.base x).asHomogeneousIdeal`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Use `H _ (hL l) ?_` and prove the remaining obligations. Establish `h0 : e (rat p ι _ _ (hL l) hg) = 0` using `by rw [hr, map_sub, he, sub_self]`. Assume the negation of the conclusion as `hn`. Conclude with `(ev_ratio_eq_zero_iff ι (hL l) hg hy).1 h0 (CxPts.mem_ptsIn.2 hn)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxU : x ∈ fOpen ι (MvPolynomial.X i)`. Introduce `h`. Take `⟨l, hl⟩` from `Generic.exists_X_notMem (ι.base x)`. Use `Ideal.sub_mem _ (hLx l) (Ideal.mul_mem_left _ (MvPolynomial.C (-e (r l))) h)` as an intermediate fact. Rewrite `this` using `[← MvPolynomial.smul_eq_C_mul, add_sub_cancel_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hl this`. Set `φ : Sec p (fOpen ι (MvPolynomial.X i)) →+* X.presheaf.stalk x` to `(X.presheaf.germ _ x hxU).hom`. Set `I : Ideal (Sec p (fOpen ι (MvPolynomial.X i)))` to `(IsLocalRing.maximalIdeal _).comap φ`. Establish `hI : ∀ u : Sec p (fOpen ι (MvPolynomial.X i)), u ∈ I ↔ x ∉ X.basicOpen (U` using `fOpen ι (MvPolynomial.X i)) u := fun u => (not_congr (Scheme.mem_basicOpen X (U := fOpen ι (MvPolynomial.X i)) u x hxU)).symm`. Establish `key : ∀ u, u - algebraMap ℂ _ (e u) ∈ I`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u`. Establish `hr' : Algebra.adjoin ℂ (Set.range r) = ⊤` using `RatSpan.adjoin_fRatio_eq_top p ι hp hg`. Establish `hu : u ∈ Algebra.adjoin ℂ (Set.range r)` using `hr' ▸ Algebra.mem_top`. Proceed by induction on `hu using Algebra.adjoin_induction with`. Consider the case `mem _ h`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨l, rfl⟩` from `h`. Rewrite using `[← hr, hI]`. Introduce `h`. Conclude with `((basicOpen_app_frac ι _ (hL l) hg le_rfl).le h).2 (hLx l)`. Consider the case `algebraMap c => rw [he, sub_self]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `I.zero_mem`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add, map_add]`. Use `I.add_mem ha hb using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Consider the case `mul a b _ _ ha hb`. Rewrite using `[map_mul, map_mul]`. Use `I.add_mem (I.mul_mem_right b ha) (I.mul_mem_left (algebraMap ℂ _ (e a)) hb) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hU : IsAffineOpen (fOpen ι (MvPolynomial.X i))` using `(Proj.isAffineOpen_basicOpen (grading ℂ N) _ hg one_pos).preimage ι`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hx (eq_of_specializes y (specializes_iff_forall_open.2 fun s hs hxs => ?_))` and prove the remaining obligations. Take `⟨f, hf, hxf⟩` from `hU.exists_basicOpen_le (V := ⟨s, hs⟩) ⟨x, hxs⟩ hxU`. Use `hf (CxPts.mem_ptsIn.1 ((CxPts.mem_ptsIn_basicOpen hy f).2 fun h0 => ?_))` and prove the remaining obligations. Establish `h1 : e f = 0` using `(CxPts.ev_eq hy f).symm.trans h0`. Establish `h2 : ∀ u, e u = 0 → u ∈ I` using `fun u hu => by simpa only [hu, map_zero, sub_zero] using key u`.
-
-Conclude with `(hI f).1 (h2 f h1) hxf`.
+A detailed English derivation is pending.
 -/
 theorem exists_lin_sep {X : Scheme.{0}} (p : X ⟶ Sp ℂ) {N : ℕ} (ι : X ⟶ PSpace ℂ N) [IsClosedImmersion ι]
     (hp : ι ≫ PSpace.str ℂ N = p) (y : CxPts p (RingHom.id ℂ)) (x : X)
@@ -306,13 +300,11 @@ theorem exists_lin_sep {X : Scheme.{0}} (p : X ⟶ Sp ℂ) {N : ℕ} (ι : X ⟶
   exact (hI f).1 (h2 f h1) hxf
 
 /- English proof (translation)
-Use `choose l hl1 hl2 hl3 using fun y : S => exists_lin_sep p ι hp y.1 x (hx y.1 y.2)`. Take `⟨i, hi⟩` from `Generic.exists_X_notMem (ι.base x)`. Establish `hprod` using `SetLike.prod_mem_graded (grading ℂ N) (fun _ : S => 1) l (F := Finset.univ) (fun y _ => hl1 y)`. Establish `hpow` using `SetLike.pow_mem_graded (m - S.card) (X_mem ℂ N i)`. Establish `hdeg : (m - S.card) • 1 + ∑ _y ∈ (Finset.univ : Finset S), 1 = m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_mul, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_coe]`. Use linear arithmetic over natural numbers and integers. Use `⟨MvPolynomial.X i ^ (m - S.card) * ∏ y, l y, hdeg ▸ SetLike.mul_mem_graded hpow hprod, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem l (Finset.mem_univ ⟨y, hy⟩)) (hl2 ⟨y, hy⟩)`. Introduce `hmem`. Establish `hP` using `(ι.base x).isPrime`. Break down `hP.mem_or_mem hmem with h | h` into its components or cases. Conclude with `hi (hP.mem_of_pow_mem _ h)`.
-
-Take `⟨y, -, hy⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hP)).1 h`. Conclude with `hl3 y hy`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_sep {X : Scheme.{0}} (p : X ⟶ Sp ℂ) {N : ℕ} (ι : X ⟶ PSpace ℂ N) [IsClosedImmersion ι]
     (hp : ι ≫ PSpace.str ℂ N = p) (S : Finset (CxPts p (RingHom.id ℂ))) (m : ℕ) (hm : S.card ≤ m) (x : X)
@@ -344,21 +336,19 @@ namespace GlobalTheory.EtProj.Jets
 open GlobalTheory.ProjSpace GlobalTheory.ProjFrac
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Establish `hy' : y ∈ CxPts.ptsIn p (RingHom.id ℂ) (fOpen ι g₀)` using `hy`. Set `e : Sec p (fOpen ι g₀) →+* ℂ` to `Generic.ev₀ ι g₀ hy'`. Establish `he : ∀ c : ℂ, e (algebraMap ℂ _ c) = c` using `Generic.ev₀_algebraMap ι g₀ hy'`. Set `u' : Sec p (fOpen ι g₀)` to `u`.
+Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨c, hc⟩` from `RatSpan.ratio_span_cotangent X p N ι hι hp g₀ hg₀ y hy' u' hu`. Establish `h1 : u' - (Generic.fr ι g₀ hg₀ c - algebraMap ℂ _ (e (Generic.fr ι g₀ hg₀ c))) ∈ RingHom.ker e ^ 2` using `(Generic.mkQ_eq_mkQ ι g₀ hy' _ _).1 (((Generic.mkQ_eq_mkQ ι g₀ hy' _ _).2 hc).trans ((Generic.Lm_apply' ι g₀ hg₀ hy' c).symm.trans (Generic.Lm_apply ι g₀ hg₀ hy' hp c)))`. Establish `hl₁ : Generic.lin c + (-e (Generic.fr ι g₀ hg₀ c)) • g₀ ∈ grading ℂ N 1` using `add_mem (Generic.lin_mem c) (Submodule.smul_mem _ _ hg₀)`. Establish `hs : rat p ι _ g₀ hl₁ hg₀ = Generic.fr ι g₀ hg₀ c - algebraMap ℂ _ (e (Generic.fr ι g₀ hg₀ c))` using `rat_sub_const p ι hp _ (Generic.lin_mem c) hl₁ hg₀`. Establish `hs0 : e (rat p ι _ g₀ hl₁ hg₀) = 0` using `by rw [hs, map_sub, he, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hs]`. Generalize the expression as in `Generic.lin c + (-e (Generic.fr ι g₀ hg₀ c)) • g₀ = l₁ at hl₁ hs0 h1`. Establish `hgk : g₀ ^ k ∈ grading ℂ N k` using `by simpa using SetLike.pow_mem_graded k hg₀`. Establish `hVk : Proj.basicOpen (grading ℂ N) g₀ ≤ Proj.basicOpen (grading ℂ N) (g₀ ^ k)` using `fun x hx h => hx (x.isPrime.mem_of_pow_mem k h)`. Set `t : Sec p (fOpen ι g₀)` to `(ι.app _).hom (frac (grading ℂ N) _ w (g₀ ^ k) hw hgk hVk)`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ht : e t ≠ 0`. Establish `h2` using `(CxPts.mem_ptsIn_basicOpen hy' t).1 (CxPts.mem_ptsIn.2 ((basicOpen_app_frac ι _ hw hgk hVk).ge ⟨CxPts.mem_ptsIn.1 hy', hyw⟩))`. Conclude with `fun h => h2 ((CxPts.ev_eq hy' t).trans h)`. Establish `hl : (e t)⁻¹ • l₁ ∈ grading ℂ N 1` using `Submodule.smul_mem _ _ hl₁`. Establish `hly : l₁ ∈ (ι.base (y.1 (IsLocalRing.closedPoint ℂ))).asHomogeneousIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Conclude with `(ev_ratio_eq_zero_iff ι hl₁ hg₀ hy').1 hs0 (CxPts.mem_ptsIn.2 hn)`. Use `⟨(e t)⁻¹ • l₁, SetLike.mul_mem_graded hl hw, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul]`. Conclude with `Ideal.mul_mem_left _ _ hly`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `v : Sec p (fOpen ι g₀)` to `(ι.app _).hom (frac (grading ℂ N) _ ((e t)⁻¹ • l₁ * w) (g₀ * g₀ ^ k) (SetLike.mul_mem_graded hl hw) ha hVa)`. Establish `e1 : v = rat p ι _ g₀ hl hg₀ * t` using `Eq.trans (congrArg (ι.app _).hom (frac_mul_eq rfl).symm) (map_mul _ _ _)`. Establish `e2 : rat p ι _ g₀ hl hg₀ = (e t)⁻¹ • rat p ι l₁ g₀ hl₁ hg₀` using `fRatio_smul_n p ι hp _ hl₁ hl hg₀`. Establish `h3 : 1 - algebraMap ℂ _ (e t)⁻¹ * t ∈ RingHom.ker e`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, he, map_one, inv_mul_cancel₀ ht, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : u' - v ∈ RingHom.ker e ^ 2`. Establish `h5` using `Ideal.mul_mem_mul (RingHom.mem_ker.2 hs0) h3`. Rewrite `h5` using `[← pow_two]`. Use `add_mem h1 h5 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[e1, e2, Algebra.smul_def]`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `h4`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_lin_mul {X : Scheme.{0}} (p : X ⟶ Sp ℂ) {N : ℕ} (ι : X ⟶ PSpace ℂ N) (hι : IsClosedImmersion ι)
     (hp : ι ≫ PSpace.str ℂ N = p) {k : ℕ} {g₀ w : MvPolynomial (Fin (N + 1)) ℂ} (hg₀ : g₀ ∈ grading ℂ N 1)
@@ -417,9 +407,9 @@ theorem exists_lin_mul {X : Scheme.{0}} (p : X ⟶ Sp ℂ) {N : ℕ} (ι : X ⟶
     exact h4
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Take `⟨w, hw, hwS, hwy⟩` from `exists_sep p ι hp (S.erase y) k (Finset.card_erase_le.trans hk) (y.1 (IsLocalRing.closedPoint ℂ)) (fun z hz e => (Finset.mem_erase.1 hz).1 (pt_inj e).symm)`. Establish `hV : Proj.basicOpen (grading ℂ N) (g₀ * g₀ ^ k) = Proj.basicOpen (grading ℂ N) g₀`. Rewrite using `[← pow_succ', Proj.basicOpen_pow _ _ _ (Nat.succ_pos k)]`. Take `⟨l, hg, hl, h⟩` from `exists_lin_mul p ι hι hp hg₀ hw hwy _ hV ha le_rfl hy u hu`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨l * w, hg, fun z hz => ?_, h⟩` and prove the remaining obligations. Distinguish the cases in `e : z = y`. Substitute `e` using the available equality. Conclude with `Ideal.mul_mem_right w _ hl`. Conclude with `Ideal.mul_mem_left _ l (hwS z (Finset.mem_erase.2 ⟨e, hz⟩))`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_form_jet {X : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] {N : ℕ} (ι : X ⟶ PSpace ℂ N)
     (hι : IsClosedImmersion ι) (hp : ι ≫ PSpace.str ℂ N = p) (S : Finset (CxPts p (RingHom.id ℂ))) {k n : ℕ}
@@ -456,7 +446,7 @@ def vanS (k : ℕ) : Submodule ℂ (MvPolynomial (Fin (N + 1)) ℂ) :=
   grading ℂ N k ⊓ ⨅ y ∈ S, (ι.base (y.1 (IsLocalRing.closedPoint ℂ))).asHomogeneousIdeal.toIdeal.restrictScalars ℂ
 
 /- English proof (translation)
-Simplify using `only [vanS, Submodule.mem_inf, Submodule.mem_iInf, Submodule.restrictScalars_mem]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_vanS {k : ℕ} {f : MvPolynomial (Fin (N + 1)) ℂ} :
     f ∈ vanS ι S k ↔ f ∈ grading ℂ N k ∧ ∀ y ∈ S, f ∈ (ι.base (y.1 (IsLocalRing.closedPoint ℂ))).asHomogeneousIdeal := by
@@ -486,21 +476,19 @@ def jet (hp : ι ≫ PSpace.str ℂ N = p) (k : ℕ) {a : MvPolynomial (Fin (N +
     (fRatio_smul_n p ι hp c ((mem_vanS ι S).1 f.2).1 _ ha)).trans (map_smul _ _ _)
 
 /- English proof (translation)
-Take `⟨g, hg0, hgs, hgi⟩` from `GlobalTheory.CotDim.exists_cotangent_basis X p d (fOpen ι a) hU y hy`. Establish `hq : ∀ u v : Sec p (fOpen ι a), (sqI p hy).mkQ u = (sqI p hy).mkQ v ↔ u - v ∈ RingHom.ker (evS p hy) ^ 2`. Introduce `u v`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `Iff.rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Establish `hmem : ∀ u : Sec p (fOpen ι a), CxPts.evHom hy u = 0 → (sqI p hy).mkQ u ∈ LinearMap.range (jet ι S hp k ha hy)`. Introduce `u hu`. Take `⟨f, hf, hfS, hfu⟩` from `honto u hu`. Establish `hfv : f ∈ vanS ι S k` using `(mem_vanS ι S).2 ⟨hf, hfS⟩`. Conclude with `⟨⟨f, hfv⟩, ((hq _ _).2 hfu).symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hspan : LinearMap.range (jet ι S hp k ha hy) = Submodule.span ℂ (Set.range fun j => (sqI p hy).mkQ (g j))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨f, rfl⟩`. Establish `hf0 : CxPts.evHom hy (fRatio ι f.1 a ((mem_vanS ι S).1 f.2).1 ha) = 0`. Rewrite using `[ev_ratio_eq_zero_iff, CxPts.mem_ptsIn, mem_fOpen, not_not]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((mem_vanS ι S).1 f.2).2 y hyS`. Take `⟨b, hb⟩` from `hgs _ hf0`. Express the relevant statement in the definitionally equal form `(sqI p hy).mkQ _ ∈ _`. Rewrite using `[(hq _ _).2 hb, map_sum]`. Conclude with `Submodule.sum_mem _ fun j _ => by`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hmem _ (hg0 j)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hli : LinearIndependent ℂ (fun j => (sqI p hy).mkQ (g j))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `b hb`. Use `congrFun (hgi b ?_)` and prove the remaining obligations. Establish `: (sqI p hy).mkQ (∑ j, b j • g j) = (sqI p hy).mkQ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sum]`. Simplify `hb` using `only [map_smul, map_zero]`. Establish `h2` using `(hq _ _).1 this`. Rewrite `h2` using `[sub_zero]`. Conclude with `h2`.
-
-Use `⟨?_, ?_, hmem⟩` and prove the remaining obligations. Rewrite using `[hspan]`. Conclude with `FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Rewrite using `[hspan, finrank_span_eq_card hli, Fintype.card_fin]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jet_range (hp : ι ≫ PSpace.str ℂ N = p) (d : ℕ) [SmoothOfRelativeDimension d p]
     (k : ℕ) {a : MvPolynomial (Fin (N + 1)) ℂ} (ha : a ∈ grading ℂ N k)
@@ -564,71 +552,61 @@ namespace GlobalTheory.EtProj.Jets
 open GlobalTheory.ProjSpace
 
 /- English proof (translation)
-Introduce `X _ p d _ N ι hι hp S`. Use `haveI : IsClosedImmersion ι := hι`. Use `haveI : Smooth p := SmoothOfRelativeDimension.smooth d p`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian p`. Use `haveI := isProper_str ℂ N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : CompactSpace (PSpace ℂ N) := QuasiCompact.compactSpace_of_compactSpace (PSpace.str ℂ N)`. Use `haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace ι`. Use `haveI : IsNoetherian X := {}`. Establish `hcoh : ∀ x : X, Order.coheight x ≤ d` using `fun x => GlobalTheory.AffineCover.coheight_le_of_smooth p inferInstance x`. Use `set m := S.card + 1 with hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set n := m + m with hn`. Establish `hn0 : 0 < n` using `by omega`. Set `Simg : Set X` to `{x | ∃ y ∈ S, x = y.1 (IsLocalRing.closedPoint ℂ)}`. Establish `hsep : ∀ x : X, x ∉ Simg → ∃ f ∈ grading ℂ N m, (∀ y ∈ S, f ∈ (ι.base (y.1 (IsLocalRing.closedPoint ℂ))).asHomogeneousIdeal) ∧ f ∉ (ι.base x).asHomogeneousIdeal` using `fun x hx => exists_sep p ι hp S m (by omega) x (fun y hy e => hx ⟨y, hy, e⟩)`. Establish `hvanm : ∀ x : X, x ∉ Simg → vanAt ι S m x ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `x hx htop`. Take `⟨f, hf, hfS, hfx⟩` from `hsep x hx`. Establish `: (⟨f, (mem_vanS ι S).2 ⟨hf, hfS⟩⟩ : vanS ι S m) ∈ vanAt ι S m x` using `htop ▸ Submodule.mem_top`. Conclude with `hfx this`. Establish `hvann : ∀ x : X, x ∉ Simg → vanAt ι S n x ≠ ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `x hx htop`. Take `⟨f, hf, hfS, hfx⟩` from `hsep x hx`. Establish `hff : f * f ∈ vanS ι S n` using `(mem_vanS ι S).2 ⟨SetLike.mul_mem_graded hf hf, fun y hy => Ideal.mul_mem_left _ _ (hfS y hy)⟩`. Establish `: (⟨f * f, hff⟩ : vanS ι S n) ∈ vanAt ι S n x` using `htop ▸ Submodule.mem_top`. Conclude with `hfx (((ι.base x).isPrime.mem_or_mem this).elim id id)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g₀, hg₀, -, hg₀S⟩` from `GlobalTheory.EtProj.exists_form_genericPoint_cxPts X p N ι 1 S`. Establish `hnk : n = 1 + (n - 1)` using `by omega`. Establish `ha : g₀ * g₀ ^ (n - 1) ∈ grading ℂ N n`. Establish `h0 : g₀ ^ (n - 1) ∈ grading ℂ N (n - 1)` using `by simpa using SetLike.pow_mem_graded (n - 1) hg₀`. Establish `h1` using `SetLike.mul_mem_graded hg₀ h0`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hnk]`. Then use the resulting hypothesis. Establish `haS : ∀ y ∈ S, y ∈ CxPts.ptsIn p (RingHom.id ℂ) (fOpen ι (g₀ * g₀ ^ (n - 1)))`. Introduce `y hy`. Establish `h0` using `(mem_fOpen ι _ _).1 (CxPts.mem_ptsIn.1 (hg₀S y hy))`. Establish `hP` using `(ι.base (y.1 (IsLocalRing.closedPoint ℂ))).isPrime`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `CxPts.mem_ptsIn.2 fun h => (hP.mem_or_mem h).elim h0 fun h' => h0 (hP.mem_of_pow_mem _ h')`. Establish `honto` using `fun (y : CxPts p (RingHom.id ℂ)) (hy : y ∈ S) => exists_form_jet p ι hι hp S hnk (by omega) hg₀ ha (haS y hy)`. Generalize the expression as in `g₀ * g₀ ^ (n - 1) = a at ha haS honto`. Establish `hU : IsAffineOpen (fOpen ι a)` using `(Proj.isAffineOpen_basicOpen (grading ℂ N) a ha hn0).preimage ι`. Establish `hR` using `fun y : (S : Set (CxPts p (RingHom.id ℂ))) => jet_range ι S hp d n ha hU y.2 (haS y.1 y.2) (honto y.1 y.2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Set `J` to `fun y : (S : Set (CxPts p (RingHom.id ℂ))) => jet ι S hp n ha (haS y.1 y.2)`. Establish `hgenS : 0 < d → genericPoint X ∉ Simg`. Introduce and unpack `hd ⟨y, hy, e⟩`. Take `⟨b, hb0, -, hbi⟩` from `GlobalTheory.CotDim.exists_cotangent_basis X p d (fOpen ι a) hU y (haS y hy)`. Establish `hz : b ⟨0, hd⟩ = 0` using `eq_zero_of_generic (haS y hy) e.symm _ (hb0 _)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : (∑ j, (Pi.single ⟨0, hd⟩ (1 : ℂ) : Fin d → ℂ) j • b j) = b ⟨0, hd⟩`. Simplify using `[Pi.single_apply]`. Establish `h1` using `congrFun (hbi (Pi.single ⟨0, hd⟩ 1) (by rw [hsum, hz]; exact zero_mem _)) ⟨0, hd⟩`. Simplify using `at h1`. Establish `key : ∀ k, k ≤ d → ∃ c : Fin k → vanS ι S n, (∀ i, genericPoint X ∈ fOpen ι (c i).1) ∧ (∀ x : X, x ∉ Simg → (∀ i, x ∉ fOpen ι (c i).1) → (k : ℕ∞) ≤ Order.coheight x) ∧ ∀ y : (S : Set (CxPts p (RingHom.id ℂ))), LinearIndependent ℂ (J y ∘ c)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_`. Conclude with `⟨Fin.elim0, fun i => i.elim0, fun x _ _ => by simp, fun y => linearIndependent_empty_type⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ k ih`. Introduce `hk`. Take `⟨c, hgen, hZ, hli⟩` from `ih (Nat.le_of_succ_le hk)`. Set `Z : Set X` to `⋂ i, (↑(fOpen ι (c i).1) : Set X)ᶜ`. Establish `hZc : IsClosed Z` using `isClosed_iInter fun i => (fOpen ι (c i).1).isOpen.isClosed_compl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T, hTf, hTZ, hT⟩` from `Generic.exists_finite_gen Z hZc`. Set `T' : Set X` to `T \ Simg`. Use `(hTf.diff (t := Simg)).to_subtype` as an intermediate fact. Set `W : Option (T' ⊕ (S : Set (CxPts p (RingHom.id ℂ)))) → Submodule ℂ (vanS ι S n)` to `fun o => o.elim (vanAt ι S n (genericPoint X)) (Sum.elim (fun t => vanAt ι S n t.1) (fun y => (Submodule.span ℂ (Set.range (J y ∘ c))).comap (J y)))`. Establish `hW : ∀ o, W o ≠ ⊤`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `(_ | t | y)`. Conclude with `hvann _ (hgenS (by omega))`. Conclude with `hvann _ t.2.2`. Introduce `htop`. Take `⟨hfd, hrk, -⟩` from `hR y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : LinearMap.range (J y) ≤ Submodule.span ℂ (Set.range (J y ∘ c))`. Introduce and unpack `_ ⟨v, rfl⟩`. Establish `: v ∈ W (some (Sum.inr y))` using `htop ▸ Submodule.mem_top`. Conclude with `this`. Use `haveI := FiniteDimensional.span_of_finite ℂ (Set.finite_range (J y ∘ c))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Establish `h1` using `(Submodule.finrank_mono hle).trans (finrank_range_le_card _)`. Rewrite `h1` using `[hrk, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Take `⟨c', hc'⟩` from `Submodule.exists_forall_notMem_of_forall_ne_top W hW`. Use `⟨Fin.snoc c c', fun i => ?_, fun x hx hxi => ?_, fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.snoc_last]`. Conclude with `(mem_fOpen ι _ _).2 (hc' none)`. Rewrite using `[Fin.snoc_castSucc]`. Conclude with `hgen i`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxZ : x ∈ Z` using `Set.mem_iInter.2 fun i => by`. Use `hxi i.castSucc` as an intermediate fact. Rewrite `this` using `[Fin.snoc_castSucc]`. Conclude with `this`. Establish `hx' : x ∉ fOpen ι c'.1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hxi (Fin.last k)` as an intermediate fact. Rewrite `this` using `[Fin.snoc_last]`. Then use the resulting hypothesis. Take `⟨t, ht, htx⟩` from `hT x hxZ`. Distinguish the cases in `htS : t ∈ Simg`. Take `⟨y, hy, rfl⟩` from `htS`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd ⟨y, hy, eq_of_specializes y htx⟩ hx`. Establish `htZ` using `hTZ ht`. Establish `h1` using `hZ t htS (fun i => Set.mem_iInter.1 htZ i)`. Establish `h2` using `Generic.coheight_step htx _ (fOpen ι c'.1).isOpen ((mem_fOpen ι _ _).2 (hc' (some (Sum.inl ⟨t, ht, htS⟩)))) hx'`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Fin.comp_snoc, linearIndependent_fin_snoc]`. Conclude with `⟨hli y, hc' (some (Sum.inr y))⟩`. Take `⟨c, hgen, hZ, hli⟩` from `key d le_rfl`. Set `Z : Set X` to `⋂ i, (↑(fOpen ι (c i).1) : Set X)ᶜ`. Establish `hZc : IsClosed Z` using `isClosed_iInter fun i => (fOpen ι (c i).1).isOpen.isClosed_compl`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨T, hTf, hTZ, hT⟩` from `Generic.exists_finite_gen Z hZc`. Set `T' : Set X` to `T \ Simg`. Use `(hTf.diff (t := Simg)).to_subtype` as an intermediate fact. Take `⟨q, hq⟩` from `Submodule.exists_forall_notMem_of_forall_ne_top (fun t : T' => vanAt ι S m t.1) (fun t => hvanm _ t.2.2)`. Take `⟨hqm, hqS⟩` from `(mem_vanS ι S).1 q.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : q.1 * q.1 ∈ grading ℂ N n` using `SetLike.mul_mem_graded hqm hqm`. Set `g : Fin d → MvPolynomial (Fin (N + 1)) ℂ` to `fun j => (c j).1`. Establish `hg : ∀ j, g j ∈ grading ℂ N n` using `fun j => ((mem_vanS ι S).1 (c j).2).1`. Use `⟨n, q.1 * q.1, g, hh, hg, hn0, hgen, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy j hyj`.
+Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((mem_fOpen ι _ _).1 (CxPts.mem_ptsIn.1 hyj)) (((mem_vanS ι S).1 (c j).2).2 y hy)`. Introduce `z hzh hzg`. Establish `hx : z.1 (IsLocalRing.closedPoint ℂ) ∈ Simg`. Assume the negation of the conclusion as `hx`. Establish `hxg : ∀ i, z.1 (IsLocalRing.closedPoint ℂ) ∉ fOpen ι (c i).1` using `fun i h => hzg i (CxPts.mem_ptsIn.2 h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hxZ : z.1 (IsLocalRing.closedPoint ℂ) ∈ Z` using `Set.mem_iInter.2 hxg`. Take `⟨t, ht, htx⟩` from `hT _ hxZ`. Distinguish the cases in `htS : t ∈ Simg`. Take `⟨y, hy, rfl⟩` from `htS`. Conclude with `hx ⟨y, hy, eq_of_specializes y htx⟩`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htq : t ∈ fOpen ι (q.1 * q.1)`. Introduce `hmem`. Conclude with `hq ⟨t, ht, htS⟩ (((ι.base t).isPrime.mem_or_mem hmem).elim id id)`. Establish `hxh : z.1 (IsLocalRing.closedPoint ℂ) ∉ fOpen ι (q.1 * q.1)` using `fun h => hzh (CxPts.mem_ptsIn.2 h)`. Establish `h2` using `Generic.coheight_step htx _ (fOpen ι (q.1 * q.1)).isOpen htq hxh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3` using `hZ t htS (fun i => Set.mem_iInter.1 (hTZ ht) i)`. Establish `h4 : (d : ℕ∞) + 1 ≤ Order.coheight t + 1` using `by gcongr`. Use `h4.trans (h2.trans (hcoh _))` as an intermediate fact. Normalize the coercions in `at this`. Use linear arithmetic over natural numbers and integers.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y, hy, e⟩` from `hx`. Rewrite using `[pt_inj e]`. Conclude with `hy`. Introduce `y hy f₀ hf₀ hyf`. Use `⟨ratio_sq_mem ι hqm hh hf₀ hyf (hqS y hy), ?_⟩` and prove the remaining obligations.
-
-Establish `hya` using `haS y hy`. Take `⟨hfd, hrk, hmem⟩` from `hR ⟨y, hy⟩`. Use `GlobalTheory.EtProj.span_ratio_of_span_ratio X p N ι hι n hn0 d g a f₀ hg ha hf₀ y hya hyf ?_` and prove the remaining obligations. Set `r : Fin d → Sec p (fOpen ι a)` to `fun j => fRatio ι (g j) a (hg j) ha`. It suffices to establish `H : ∀ u : Sec p (fOpen ι a), evS p hya u = 0 → u ∈ Ideal.span (Set.range r) ⊔ RingHom.ker (evS p hya) ^ 2 from fun u hu => H u hu`.
-
-Introduce `u hu`. Establish `hsp : Submodule.span ℂ (Set.range (J ⟨y, hy⟩ ∘ c)) = LinearMap.range (J ⟨y, hy⟩)` using `Submodule.eq_of_le_of_finrank_eq (Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact ⟨c j, rfl⟩)) (by rw [finrank_span_eq_card (hli ⟨y, hy⟩), Fintype.card_fin, hrk])`. Establish `h1` using `hmem u hu`. Rewrite `h1` using `[← hsp]`. Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 h1`.
-
-Establish `h2 : u - ∑ j, b j • r j ∈ RingHom.ker (evS p hya) ^ 2`. Establish `e1 : (sqI p hya).mkQ (∑ j, b j • r j) = (sqI p hya).mkQ u`. Rewrite using `[← hb, map_sum]`. Simplify using `only [map_smul]`. Both sides reduce to the same expression.
-
-Rewrite `e1` using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Establish `e2` using `neg_mem e1`. Rewrite `e2` using `[neg_sub]`. Conclude with `e2`. Establish `e : u = (u - ∑ j, b j • r j) + ∑ j, b j • r j` using `(sub_add_cancel _ _).symm`.
-
-Rewrite using `[e]`. Use `Ideal.add_mem _ (Ideal.mem_sup_right h2) (Ideal.mem_sup_left ?_)` and prove the remaining obligations. Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_jet_forms : ∀ (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d p] (N : ℕ)
     (ι : X ⟶ PSpace ℂ N), IsClosedImmersion ι → ι ≫ PSpace.str ℂ N = p → ∀ S : Finset (CxPts p (RingHom.id ℂ)),

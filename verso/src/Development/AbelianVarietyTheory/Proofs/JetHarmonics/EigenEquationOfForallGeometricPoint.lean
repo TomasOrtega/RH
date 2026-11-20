@@ -12,21 +12,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.EigenAll
 
 /- English proof (translation)
-Unfold `gs`. Apply the tactic sequence `split <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gs_zero {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y U 0 = 0 := by
   unfold gs
   split <;> simp
 
 /- English proof (translation)
-Rewrite using `[gs_eq f y U h, gs_eq f y U h, gs_eq f y U h, map_sub, map_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_sub {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a b : Γ(X, U)) :
     gs f y U (a - b) = gs f y U a - gs f y U b := by
   rw [gs_eq f y U h, gs_eq f y U h, gs_eq f y U h, map_sub, map_sub]
 
 /- English proof (translation)
-Establish `hp : m ⁻¹ᵁ V ⊓ s ⁻¹ᵁ V ≤ p ⁻¹ᵁ (⊤ : H.Opens)` using `fun _ _ => trivial`. Use `⟨(Y.presheaf.map (homOfLE inf_le_left).op).hom ((m.app V).hom t) - (Y.presheaf.map (homOfLE hp).op).hom ((p.app ⊤).hom u) * (Y.presheaf.map (homOfLE inf_le_right).op).hom ((s.app V).hom t), ?_⟩` and prove the remaining obligations. Introduce `Z g z hz`. Rewrite using `[gs_sub g z _ hz, gs_mul g z _ hz, gs_res g z _ hz, gs_res g z _ hz, gs_res g z _ hz, gs_pull g m z V hz.1, gs_pull g p z ⊤ trivial, gs_pull g s z V hz.2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_defect {Y G H : Scheme.{0}} (m s : Y ⟶ G) (p : Y ⟶ H) (V : G.Opens) (t : Γ(G, V))
     (u : Γ(H, ⊤)) : ∃ f : Γ(Y, m ⁻¹ᵁ V ⊓ s ⁻¹ᵁ V), ∀ (Z : Scheme.{0}) (g : Z ⟶ Y) (z : Z),

@@ -17,15 +17,15 @@ open PI.UpqRep
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `fdegOf`. Take `⟨hd, hI⟩` from `h`. Take `⟨_, heq⟩` from `hI w w w w`. Establish `hw' : ‖w‖ ≠ 0` using `norm_ne_zero_iff.mpr hw`. Establish `h1 : ∀ g : UJ ε, coefOn σ w w g * star (coefOn σ w w g) = ((‖coefOn σ w w g‖ ^ 2 : ℝ) : ℂ)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g`. Use `first`. Consider the case `(rw [RCLike.star_def, RCLike.mul_conj]; push_cast; rfl)`. Consider the case `(rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]; push_cast; rfl)`. Consider the case `(rw [Complex.star_def, Complex.mul_conj']; push_cast; rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Rewrite `heq` using `[h1]`. Rewrite `heq` using `[integral_complex_ofReal, inner_self_eq_norm_sq_to_K]`. Establish `key : ∫ g, ‖coefOn σ w w g‖ ^ 2 ∂μ = ‖w‖ ^ 4 / d`. Establish `h2 : ((‖w‖ : ℂ) ^ 2 * (‖w‖ : ℂ) ^ 2 / (d : ℂ)) = ((‖w‖ ^ 4 / d : ℝ) : ℂ)`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `first`. Consider the case `exact_mod_cast heq.trans h2`. Consider the case `(apply Complex.ofReal_injective; rw [heq]; push_cast; ring)`. Consider the case `(apply Complex.ofReal_injective; rw [heq, ← h2])`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[key]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem fdegOf_eq {ε : Fin n → Bool} (μ : Measure (UJ ε)) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (d : ℝ) (w : H) (h : IsFdeg μ σ d) (hw : w ≠ 0) :
@@ -59,25 +59,23 @@ def vUnit {P P₂ : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (hP₂ : IsUnit 
   hP.unit * hP₂.unit⁻¹
 
 /- English proof (translation)
-Simplify using `[vUnit, Matrix.coe_units_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vUnit_val {P P₂ : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (hP₂ : IsUnit P₂) :
     ((vUnit hP hP₂ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = P * P₂⁻¹ := by
   simp [vUnit, Matrix.coe_units_inv]
 
 /- English proof (translation)
-Simplify using `[vUnit, _root_.mul_inv_rev, Matrix.coe_units_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vUnit_inv_val {P P₂ : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (hP₂ : IsUnit P₂) :
     (((vUnit hP hP₂)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = P₂ * P⁻¹ := by
   simp [vUnit, _root_.mul_inv_rev, Matrix.coe_units_inv]
 
 /- English proof (translation)
-Use `show inUJ ε ((vUnit hP hP₂ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[vUnit_val]`. Unfold `inUJ`. Establish `hd : IsUnit P₂.det` using `(Matrix.isUnit_iff_isUnit_det P₂).mp hP₂`. Establish `h1 : P₂ * P₂⁻¹ = 1` using `Matrix.mul_nonsing_inv P₂ hd`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (P₂⁻¹)ᴴ * P₂ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (P₂⁻¹)ᴴ * P₂ᴴ * Jm ε * (P₂ * P₂⁻¹) := by rw [← hJ]; simp only [Matrix.mul_assoc]`.
-
-Use `_ = Jm ε := by rw [h2, h1, Matrix.one_mul, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vUnit_mem (ε : Fin n → Bool) {P P₂ : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (hP₂ : IsUnit P₂)
     (hJ : P₂ᴴ * Jm ε * P₂ = Pᴴ * Jm ε * P) : vUnit hP hP₂ ∈ UJ ε := by
@@ -97,9 +95,9 @@ def vU (ε : Fin n → Bool) {P P₂ : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit 
   ⟨vUnit hP hP₂, vUnit_mem ε hP hP₂ hJ⟩
 
 /- English proof (translation)
-Unfold `PI.UnitaryGroupMassFormula.BesselL2FixAtZero.conjPrime₂`. Use `congr 1`. Establish `hP1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P ((Matrix.isUnit_iff_isUnit_det P).mp hP)`. Simplify using `[vU, toM, vUnit_val, vUnit_inv_val]`. Simplify using `only [Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det P₂).mp hP₂), ← Matrix.mul_assoc, hP1, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_assoc _ P⁻¹ P, hP1, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conjP_eq_conjP_conj (ε : Fin n → Bool) {P P₂ : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (hP₂ : IsUnit P₂)
     (hJ : P₂ᴴ * Jm ε * P₂ = Pᴴ * Jm ε * P) (g : UJ ε) :
@@ -113,7 +111,7 @@ theorem conjP_eq_conjP_conj (ε : Fin n → Bool) {P P₂ : Matrix (Fin n) (Fin 
   rw [Matrix.mul_assoc _ P⁻¹ P, hP1, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h1 : (fun g : UJ ε => v * g * v⁻¹) = (fun g => g * v⁻¹) ∘ (fun g => v * g)` using `rfl`. Rewrite using `[h1, ← Measure.map_map (continuous_mul_const v⁻¹).measurable (continuous_const_mul v).measurable, map_mul_left_eq_self]`. Conclude with `Formalism.REAL.indefinite_unitary_unimodular n ε v⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muG_conj (ε : Fin n → Bool) (v : UJ ε) : (muG ε).map (fun g => v * g * v⁻¹) = muG ε := by
   have h1 : (fun g : UJ ε => v * g * v⁻¹) = (fun g => g * v⁻¹) ∘ (fun g => v * g) := rfl
@@ -122,11 +120,11 @@ theorem muG_conj (ε : Fin n → Bool) (v : UJ ε) : (muG ε).map (fun g => v * 
   exact Formalism.REAL.indefinite_unitary_unimodular n ε v⁻¹
 
 /- English proof (translation)
-Establish `hfun : PI.UnitaryGroupMassFormula.BesselL2FixAtZero.conjPrime₂ ε P₂ = PI.UnitaryGroupMassFormula.BesselL2FixAtZero.conjPrime₂ ε P ∘ (fun g => vU ε hP hP₂ hJ * g * (vU ε hP hP₂ hJ)⁻¹)`. Use function extensionality and compare the values at `(conjP_eq_conjP_conj ε hP hP₂ hJ)`. Establish `hE` using `PI.UnitaryGroupMassFormula.BesselL2FixAtZero.conjP_measurableEmbedding ε P hP`. Establish `hcont : Continuous (fun g : UJ ε => vU ε hP hP₂ hJ * g * (vU ε hP hP₂ hJ)⁻¹)` using `(continuous_const.mul continuous_id).mul continuous_const`. Rewrite `h` using `[hfun, ← Measure.map_map hE.measurable hcont.measurable]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Measure.map_smul, muG_conj] at h`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : UJ ε)`. Establish `hpos : 0 < muG ε K` using `Measure.measure_pos_of_mem_nhds (muG ε) hK1`. Establish `hfin : muG ε K < ⊤` using `hK.measure_lt_top`. Establish `h2` using `congrArg (fun m : Measure (Fin n → Fin n → ℂ) => m (PI.UnitaryGroupMassFormula.BesselL2FixAtZero.conjPrime₂ ε P '' K)) h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hE.map_apply, Set.preimage_image_eq _ hE.injective, Measure.smul_apply, smul_eq_mul] at h2`. Conclude with `(ENNReal.mul_left_inj hpos.ne' hfin.ne).mp h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scale_eq (ε : Fin n → Bool) {P P₂ : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (hP₂ : IsUnit P₂)
     (hJ : P₂ᴴ * Jm ε * P₂ = Pᴴ * Jm ε * P) (c c₂ : ℝ≥0∞) (hc : c ≠ ⊤)
@@ -150,21 +148,19 @@ theorem scale_eq (ε : Fin n → Bool) {P P₂ : Matrix (Fin n) (Fin n) ℂ} (hP
 end Scale
 
 /- English proof (translation)
-Introduce `k r ε μG hG`. Take `⟨cH, hcH, hH⟩` from `hHC (2 * r + k + 1) ε`. Establish `: SigmaFinite μG` using `hG.1`. Establish `key : ∀ P, IsCayleyU k r ε P → ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ∞ ∧ μG = (c • muG ε).map (PI.UnitaryGroupMassFormula.BesselL2FixAtZero.conjPrime₂ ε P)`. Introduce `P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hconc : μG {x | Matrix.of x ∉ PI.UpqRep.UH (Pᴴ * Jm ε * P)} = 0`. Rewrite using `[hP.1.2]`. Conclude with `hG.2.2.1`. Establish `hinv : ∀ s ∈ PI.UpqRep.UH (Pᴴ * Jm ε * P), μG.map (fun x => Matrix.of.symm (s * Matrix.of x)) = μG`. Rewrite using `[hP.1.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Conclude with `hG.2.2.2 s hs`. Conclude with `PI.UnitaryGroupMassFormula.BesselL2FixAtZero.haar_transport ε P hP.1.1 μG hG.2.1 hconc hinv`. Distinguish the cases in `hex : ∃ P, IsCayleyU k r ε P`. Use `swap`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations. Introduce `lam H _ _ _ σ w _ hds _`. Take `⟨P, hP, -⟩` from `hds`. Conclude with `absurd ⟨P, hP⟩ hex`. Take `⟨P₀, hP₀⟩` from `hex`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀, hc0, hctop, hμ0⟩` from `key P₀ hP₀`. Use `⟨cH / c₀.toReal, div_pos hcH (ENNReal.toReal_pos hc0 hctop), ?_⟩` and prove the remaining obligations. Introduce `lam H _ _ _ σ w hl hds hw`. Take `⟨P, hP, hDS⟩` from `hds`. Take `⟨c, -, hct, hμ⟩` from `key P hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hcc : c = c₀` using `scale_eq ε hP.1.1 hP₀.1.1 (by rw [hP.1.2, hP₀.1.2]) c c₀ hct (hμ.symm.trans hμ0)`. Establish `hF` using `hH lam H (fun g => σ (P⁻¹ * g * P)) hl hDS`. Establish `hread` using `fdegOf_eq (muG ε) (fun g => σ (P⁻¹ * g * P)) _ w hF hw`. Establish `hE` using `PI.UnitaryGroupMassFormula.BesselL2FixAtZero.conjP_measurableEmbedding ε P hP.1.1`. Unfold `PI.BesselPeriodGGP.fdegH`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hμ, hE.integral_map, integral_smul_measure]`. Establish `hfun : (fun g : UJ ε => ‖⟪w, σ (Matrix.of (PI.UnitaryGroupMassFormula.BesselL2FixAtZero.conjPrime₂ ε P g)) w⟫_ℂ‖ ^ 2) = fun g => ‖coefOn (ε` using `ε) (fun g => σ (P⁻¹ * g * P)) w w g‖ ^ 2 := rfl`. Rewrite using `[hfun, hcc, smul_eq_mul, div_mul_eq_div_div_swap]`. Unfold `fdegOf at hread`. Rewrite using `[hread]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fdegHpkHC_of (hHC : PI.HCFdeg) : Formalism.FourierDecayAlt.P.CutBP.Jmu.FdegHpkHC := by
   intro k r ε μG hG

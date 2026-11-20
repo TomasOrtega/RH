@@ -54,11 +54,11 @@ namespace GlobalTheory.TripleDarboux
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model SplitsFully Chars HasExp)
 
 /- English proof (translation)
-Use `{ cm := GlobalTheory.AdelicU.isCMExt_host D galois := D.host.hostE_isGalois unram := GlobalTheory.InertOfConj.unram D std := GlobalTheory.BaseGoodPlace.isStd_of_isStdChar hψ inert := ?_ psiP := fun v hv => GlobalTheory.BaseGoodPlace.psiUnr_of_not_le hψ v fun hle => hP v hv (Ideal …` and prove the remaining obligations. Introduce `v w hw`. Establish `hns : ¬ Formalism.MainNotions.KudlaSiegelWeil.Split D v`. Introduce and unpack `⟨w1, w2, hne, h1, h2⟩`. Apply `hne` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `key : ∀ u : HeightOneSpectrum (𝓞 D.host.E), Formalism.MainNotions.KudlaSiegelWeil.Over D u v → u = w` using `fun u hu => by`. Establish `hle : w.asIdeal ≤ u.asIdeal`. Rewrite using `[← hw]`. Conclude with `Ideal.map_le_iff_le_comap.2 (le_of_eq hu.symm)`. Conclude with `HeightOneSpectrum.ext (w.isMaximal.eq_of_le u.isPrime.ne_top hle).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[key w1 h1, key w2 h2]`. Take `⟨h2, h3, hd, -⟩` from `Formalism.MainNotions.KudlaSiegelWeil.inert_conditions_hold D v hns`. Conclude with `⟨h2, h3, GlobalTheory.BaseGoodPlace.psiUnr_of_not_le hψ v hd⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem base_isGood {D : D7} (B : Base D.host.F D.host.E) (hψ : IsStdChar D B.ψ (-1))
     (hP : ∀ v ∈ B.P, ¬ v.asIdeal ∣ differentIdeal ℤ (𝓞 D.host.F)) : B.IsGood D.sp.cm.sig := by
@@ -82,15 +82,15 @@ theorem base_isGood {D : D7} (B : Base D.host.F D.host.E) (hψ : IsStdChar D B.�
   exact ⟨h2, h3, GlobalTheory.BaseGoodPlace.psiUnr_of_not_le hψ v hd⟩
 
 /- English proof (translation)
-Establish `hn : D.host.QS ≠ 0` using `D.host.QS_pos.ne'`. Establish `hq : D.host.q ≠ 0` using `D.host.hyp.1.ne_zero`. Establish `hd : D.host.d ≠ 0` using `D.host.hyp.2.1.ne_zero`. Establish `hm : D.host.QS * D.host.q * D.host.d ≠ 0` using `mul_ne_zero (mul_ne_zero hn hq) hd`. Take `⟨p, hp, hlt, hc⟩` from `Nat.exists_prime_gt_modEq_one (∑ u ∈ S, Ideal.absNorm u.asIdeal) hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, -, -⟩` from `GlobalTheory.HostSplit.split_completely_of_modEq_one D.R D.host p hp hc`. Establish `h : (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 D.host.E)).ncard = Module.finrank ℚ D.host.E`. Rewrite using `[← GlobalTheory.HostSplit.ncard_placesOver _ hp]`. Conclude with `h1`. Take `⟨v, hv⟩` from `GlobalTheory.SplitChoice.exists_place_over D.host.F hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨v, fun hu => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.SplitChoice.natCast_notMem_of_absNorm_lt v hp ?_ hv` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun u : HeightOneSpectrum (𝓞 D.host.F) => Ideal.absNorm u.asIdeal) (fun _ _ => Nat.zero_le _) hu` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hp).irreducible`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Ideal.span {(p : ℤ)} ≤ v.asIdeal.under ℤ`. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]`. Simplify using `using hv`. Establish `hunder : v.asIdeal.under ℤ = Ideal.span {(p : ℤ)}` using `(hmax.eq_of_le (Ideal.IsPrime.under ℤ v.asIdeal).ne_top hle).symm`. Unfold `SplitsFully`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hunder]`. Conclude with `h`. Rewrite using `[GlobalTheory.AdelicU.nonempty_split_iff (GlobalTheory.AdelicU.isCMExt_host D)]`. Conclude with `GlobalTheory.GoodPlace.ncard_primesOver_eq_two (GlobalTheory.AdelicU.isCMExt_host D).2.2.1 hp h v hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_good_place (D : D7) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) :
     ∃ v₁ : HeightOneSpectrum (𝓞 D.host.F), v₁ ∉ S ∧ SplitsFully D.host.E v₁ ∧

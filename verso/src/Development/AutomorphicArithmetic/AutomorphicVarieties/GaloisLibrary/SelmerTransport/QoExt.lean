@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base TensorProduct
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hϖ`. Rewrite using `[IsDiscreteValuationRing.addVal_def _ u hϖ m rfl, Ideal.span_singleton_mul_left_unit u.isUnit, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem length_quotient_span_eq_addVal (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     (x : R) (hx : x ≠ 0) :
@@ -18,29 +18,25 @@ private theorem length_quotient_span_eq_addVal (R : Type) [CommRing R] [IsDomain
     IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]
 
 /- English proof (translation)
-Introduce `l _ G _ _ _ O _ _ _ _ _ O' _ _ _ _ _ _ _ θ U 𝒟`. Take `⟨hiO, -, hlocO, -, -, -, -, hvO, -⟩` from `dvrFacts l O`. Take `⟨hiO', -, -, -, -, -, -, hvO', -⟩` from `dvrFacts l O'`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hl0 : (l : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlO : (l : O) ≠ 0`. Introduce `h`. Apply `hl0` to reduce the goal to its premises. Apply `hiO` to reduce the goal to its premises. Rewrite using `[map_natCast, h, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hlmax : (l : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] O), isUnit_map_iff]`. Conclude with `PadicInt.p_nonunit`. Establish `hdvd : ϖ ∣ (l : O)`. Rewrite `hlmax` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hϖ' : algebraMap O O' ϖ ≠ 0`. Introduce `h`. Take `⟨c, hc⟩` from `hdvd`. Apply `hl0` to reduce the goal to its premises. Apply `hiO'` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, IsScalarTower.algebraMap_apply ℤ_[l] O O', map_natCast, hc, map_mul, h, zero_mul]`. Establish `hinj : Function.Injective (algebraMap O O')`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hx0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ`. Rewrite `hx` using `[map_mul, map_pow]`. Break down `mul_eq_zero.mp hx with h | h` into its components or cases. Conclude with `(u.isUnit.map (algebraMap O O')).ne_zero h`. Conclude with `hϖ' (pow_eq_zero_iff'.mp h).1`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : FaithfulSMul O O' := (faithfulSMul_iff_algebraMap_injective O O').mpr hinj`. Use `haveI : Module.Finite O O' := Module.Finite.of_restrictScalars_finite ℤ_[l] O O'`. Use `haveI : Module.Free O O' := Module.free_of_finite_type_torsion_free'`. Use `haveI : IsLocalHom (algebraMap O O') := inferInstance`. Establish `hf : Module.length O' (O' ⧸ Ideal.map (algebraMap O O') (IsLocalRing.maximalIdeal O)) * eO l O = eO l O'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hlO hϖ`. Establish `hlO' : ((l : O') ) = algebraMap O O' u * (algebraMap O O' ϖ) ^ n`. Rewrite using `[← map_natCast (algebraMap O O'), hu, map_mul, map_pow]`. Rewrite using `[hvO, hvO', hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, length_quotient_span_eq_addVal O' _ hϖ', IsDiscreteValuationRing.addVal_def _ u hϖ n hu, hlO', IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_pow, (IsDiscreteValuationRing.addVal_eq_zero_iff) …`. Use `letI : Module O (QO l O') := TensorProduct.leftModule`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : IsScalarTower O O' (QO l O') := (inferInstance : IsScalarTower O O' (TensorProduct ℤ_[l] O' (QZ l)))`. Use `haveI : IsScalarTower ℤ_[l] O (QO l O') := (inferInstance : IsScalarTower ℤ_[l] O (TensorProduct ℤ_[l] O' (QZ l)))`. Set `j : QO l O →ₗ[O] QO l O'` to `TensorProduct.AlgebraTensorModule.map (Algebra.linearMap O O') LinearMap.id`. Establish `hj : IsBaseChange O' j`. Use `(QO.isBaseChange l O).of_comp ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `QO.isBaseChange l O' using 1` and compare the differences between its conclusion and the goal. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `m`. Express the relevant statement in the definitionally equal form `TensorProduct.AlgebraTensorModule.map (Algebra.linearMap O O') LinearMap.id ((1 : O) ⊗ₜ[ℤ_[l]] m) = (1 : O') ⊗ₜ[ℤ_[l]] m`. Rewrite using `[TensorProduct.AlgebraTensorModule.map_tmul, Algebra.linearMap_apply, map_one, LinearMap.id_apply]`.
-
-Establish `hcomp : ∀ (g : G) (m : QO l O), j ((twist₂ l θ) g m) = (twist₂ l ((Units.map (algebraMap O O').toMonoidHom).comp θ)) g (j m)`. Introduce `g m`. Simplify using `only [twist₂, scalRep, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.smul_apply, LinearMap.id_coe, id_eq, map_smul, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Rewrite using `[algebraMap_smul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[selBase O G (QO l O) (twist₂ l θ) O' (QO l O') _ j hj hcomp U 𝒟, mul_assoc, hf]`. Introduce `_ h𝒟 W ψ`. Rewrite using `[(selBaseEig O G (QO l O) (twist₂ l θ) O' (QO l O') _ j hj hcomp U 𝒟 h𝒟).1 W ψ, mul_assoc, hf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.qoExt :
     ∀ (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (O' : Type) [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra ℤ_[l] O'] [Module.Finite ℤ_[l] O'] [Algebra O O'] [IsScalarTower ℤ_[l] O O'] (θ : G →* Oˣ)

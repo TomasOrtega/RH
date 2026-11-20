@@ -36,9 +36,9 @@ def GQSS : Prop :=
 def GQQSSFOfCut : Prop := GQBridge → GQKap → GQSS → GQQSSF
 
 /- English proof (translation)
-Introduce `hB hK hS Wp Wq _ _ _ _ _ _ P Bs hk X d hA e he hg`. Establish `hQ : ∀ (Y : ℝ) (a b : Fin 2), Gauge.GC.Intw P Bs e (d.QQ (Y : ℂ) a b) (MA.QQr P (MA.DQ P) (Y : ℂ) a b)`. Introduce `Y a b`. Rewrite using `[← hA.2.2.2.2 (Y : ℂ)]`. Conclude with `hB Wp Wq P Bs hk X d hA e he hg Y a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hκ` using `hK Wp Wq P Bs hk X d hA e he hQ`. Introduce `l hl Φ`. Conclude with `⟨(hS Wp Wq P Bs hk X d hA e he hQ hκ l hl).1 Φ, (hS Wp Wq P Bs hk X d hA e he hQ hκ l hl).2 Φ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gQQSSF_of_cut : GQQSSFOfCut := by
   intro hB hK hS Wp Wq _ _ _ _ _ _ P Bs hk X d hA e he hg

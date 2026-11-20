@@ -12,9 +12,9 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Establish `hinj : LinearMap.ker B.transpose.mulVecLin = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`. Introduce `v w h`. Establish `h' : B.transpose.mulVec v = B.transpose.mulVec w` using `h`. Rewrite `h'` using `[Matrix.mulVec_transpose, Matrix.mulVec_transpose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Matrix.vecMul_injective_iff.2 hB h'`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hinj`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `hl : Matrix.toLin' B.transpose = B.transpose.mulVecLin` using `rfl`. Rewrite using `[← LinearMap.toMatrix'_toLin' B.transpose, ← LinearMap.toMatrix'_comp, hl, hg, LinearMap.toMatrix'_id]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_transpose_eq_one {F : Type} [Field F] {n N : ℕ} (B : Matrix (Fin n) (Fin N) F)
     (hB : LinearIndependent F B) : ∃ D : Matrix (Fin n) (Fin N) F, D * B.transpose = 1 := by
@@ -34,9 +34,9 @@ section Bundle
 variable {K : Type} {ι : K → Type}
 
 /- English proof (translation)
-Establish `key : (projBundleMap P B).comp (rename (inlV (ι₂` using `fun _ : Unit => Fin N1)) : MRing ι →ₐ[ℤ] MRing (PBlk ι N1)).toRingHom = (C : FnField P →+* MvPolynomial (Fin n) (FnField P)).comp ((algebraMap (MRing ι ⧸ P) (FnField P)).comp (Ideal.Quotient.mk P)) := by`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)` and prove the remaining obligations. Establish `hC` using `RingHom.ext_int (((projBundleMap P B).comp (rename (inlV (ι₂ := fun _ : Unit => Fin N1)) : MRing ι →ₐ[ℤ] MRing (PBlk ι N1)).toRingHom).comp C) (((C : FnField P →+* MvPolynomial (Fin n) (FnField P)).comp ((algebraMap (MRing ι ⧸ P) (FnField P)).comp (Ideal.Quotient.mk P))).comp C)`. Conclude with `RingHom.congr_fun hC r`. Take `⟨k, i⟩` from `p`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[projBundleMap, inlV, genPt]`. Conclude with `RingHom.congr_fun key g`.
+A detailed English derivation is pending.
 -/
 theorem projBundleMap_rename_inlV (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin n) (Fin N1) (FnField P))
     (g : MRing ι) :
@@ -62,29 +62,27 @@ def projBundleAlgHom (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin n) (Fi
   ⟨projBundleMap P B, fun r => by simp⟩
 
 /- English proof (translation)
-Use `set F := projBundleAlgHom P B`. Establish `hker : RingHom.ker F = projBundleIdeal P B` using `rfl`. Set `e : (MRing (PBlk ι N1) ⧸ projBundleIdeal P B) ≃ₐ[ℤ] F.range` to `AlgEquiv.ofRingEquiv (f := ((Ideal.quotientEquivAlgOfEq ℤ hker.symm).trans (Ideal.quotientKerEquivRange F)).toRingEquiv) fun x => Subtype.ext (by simp)`. Rewrite using `[AlgEquiv.trdeg_eq (R := ℤ) (A := MRing (PBlk ι N1) ⧸ projBundleIdeal P B) (A' := F.range) e]`. Use `set S := F.range`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemS : ∀ g : MRing ι, (C (algebraMap (MRing ι ⧸ P) (FnField P) (Ideal.Quotient.mk P g)) : MvPolynomial (Fin n) (FnField P)) ∈ S` using `fun g => ⟨rename (inlV (ι₂ := fun _ : Unit => Fin N1)) g, projBundleMap_rename_inlV P B g⟩`. Establish `hlin : ∀ j, (∑ a, C (B a j) * X a : MvPolynomial (Fin n) (FnField P)) ∈ S` using `fun j => ⟨X ⟨Sum.inr (), j⟩, projBundleMap_X_inr P B () j⟩`. Establish `halgS : ∀ x ∈ S, IsAlgebraic S x` using `fun x hx => isAlgebraic_algebraMap (⟨x, hx⟩ : S)`. Establish `halgC : ∀ φ : FnField P, IsAlgebraic S (C φ : MvPolynomial (Fin n) (FnField P))`. Introduce `φ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := MRing ι ⧸ P) φ`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective s`. Establish `hs0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (K := FnField P) hs`. Establish `hC0 : (C (algebraMap (MRing ι ⧸ P) (FnField P) (Ideal.Quotient.mk P s)) : MvPolynomial (Fin n) (FnField P)) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ne, C_eq_zero]`. Conclude with `hs0`. Use `IsAlgebraic.of_mul (mem_nonZeroDivisors_of_ne_zero hC0) (halgS _ (hmemS s)) ?_` and prove the remaining obligations. Rewrite using `[← C_mul, mul_div_cancel₀ _ hs0]`. Conclude with `halgS _ (hmemS a)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨D, hD⟩` from `exists_mul_transpose_eq_one B hB`. Establish `halgX : ∀ b, IsAlgebraic S (X b : MvPolynomial (Fin n) (FnField P))`. Introduce `b`. Establish `h1 : ∀ a, ∑ j, D b j * B a j = if b = a then 1 else 0` using `fun a => by`. Use `congrFun (congrFun hD b) a` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `hX : (X b : MvPolynomial (Fin n) (FnField P)) = ∑ j, C (D b j) * ∑ a, C (B a j) * X a`. Repeatedly rewrite using `[Finset.mul_sum, ← mul_assoc, ← C_mul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_mul, ← map_sum, h1]`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[hX]`. Conclude with `(Subalgebra.mem_algebraicClosure S _).1 (Subalgebra.sum_mem _ fun j _ => Subalgebra.mul_mem _ ((Subalgebra.mem_algebraicClosure S _).2 (halgC _)) ((Subalgebra.mem_algebraicClosure S _).2 (halgS _ (hlin j))))`. Establish `hall : ∀ p : MvPolynomial (Fin n) (FnField P), p ∈ Subalgebra.algebraicClosure S _` using `fun p => MvPolynomial.induction_on p (fun φ => halgC φ) (fun _ _ hp hq => Subalgebra.add_mem _ hp hq) (fun _ b hp => Subalgebra.mul_mem _ hp (halgX b))`. Establish `hAlg : Algebra.IsAlgebraic S (MvPolynomial (Fin n) (FnField P))` using `⟨fun p => hall p⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hA : Function.Injective (algebraMap ℤ (MRing ι ⧸ P))` using `algebraMap_int_injective P hPz`. Establish `hΦ : Function.Injective (algebraMap ℤ (FnField P))`. Rewrite using `[show algebraMap ℤ (FnField P) = (algebraMap (MRing ι ⧸ P) (FnField P)).comp (algebraMap ℤ _) from RingHom.ext_int _ _]`. Conclude with `(IsFractionRing.injective (MRing ι ⧸ P) (FnField P)).comp hA`. Establish `hM : Function.Injective (algebraMap ℤ (MvPolynomial (Fin n) (FnField P)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show algebraMap ℤ (MvPolynomial (Fin n) (FnField P)) = (C : FnField P →+* _).comp (algebraMap ℤ _) from RingHom.ext_int _ _]`. Conclude with `(C_injective _ _).comp hΦ`. Use `(faithfulSMul_iff_algebraMap_injective ℤ (MRing ι ⧸ P)).2 hA` as an intermediate fact. Use `(faithfulSMul_iff_algebraMap_injective (MRing ι ⧸ P) (FnField P)).2 (IsFractionRing.injective (MRing ι ⧸ P) (FnField P))` as an intermediate fact. Use `(faithfulSMul_iff_algebraMap_injective ℤ (FnField P)).2 hΦ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(faithfulSMul_iff_algebraMap_injective (FnField P) (MvPolynomial (Fin n) (FnField P))).2 (C_injective _ _)` as an intermediate fact. Use `(faithfulSMul_iff_algebraMap_injective S (MvPolynomial (Fin n) (FnField P))).2 Subtype.val_injective` as an intermediate fact. Use `(faithfulSMul_iff_algebraMap_injective ℤ S).2 fun a b h => hM (by` as an intermediate fact. Rewrite using `[IsScalarTower.algebraMap_apply ℤ S (MvPolynomial (Fin n) (FnField P)) a, IsScalarTower.algebraMap_apply ℤ S (MvPolynomial (Fin n) (FnField P)) b, h])`. Establish `: Algebra.IsAlgebraic (MRing ι ⧸ P) (FnField P)` using `IsLocalization.isAlgebraic _ (nonZeroDivisors _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `trdeg_add_eq ℤ S (A := MvPolynomial (Fin n) (FnField P))`. Establish `e2` using `trdeg_add_eq ℤ (FnField P) (A := MvPolynomial (Fin n) (FnField P))`. Establish `e3` using `trdeg_add_eq ℤ (MRing ι ⧸ P) (A := FnField P)`. Rewrite `e1` using `[trdeg_eq_zero (R := S) (A := MvPolynomial (Fin n) (FnField P)), add_zero]`. Rewrite `e3` using `[trdeg_eq_zero (R := MRing ι ⧸ P) (A := FnField P), add_zero]`.
-
-Rewrite `e2` using `[MvPolynomial.trdeg_of_isDomain, Cardinal.lift_id, Cardinal.mk_fin]`. Rewrite using `[e1, ← e2, e3]`.
+A detailed English derivation is pending.
 -/
 theorem trdeg_projBundle (P : Ideal (MRing ι)) [P.IsPrime] (hPz : IsHorizontal P) {N1 n : ℕ}
     (B : Matrix (Fin n) (Fin N1) (FnField P)) (hB : LinearIndependent (FnField P) B) :
@@ -168,13 +166,13 @@ theorem trdeg_projBundle (P : Ideal (MRing ι)) [P.IsPrime] (hPz : IsHorizontal 
 end Bundle
 
 /- English proof (translation)
-Introduce `K _ ι _ N1 n P d B hP hB`. Take `⟨-, ⟨hPr, -, -⟩, hPz, -⟩` from `hP`. Establish `hHor : IsHorizontal (projBundleIdeal P B)`. Use extensionality with `z`. Rewrite using `[Ideal.mem_comap, Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2 : (C z : MRing ι) ∈ P` using `(rename_inlV_mem_projBundleIdeal_iff P B (C z)).1 (by simpa using h)`. Establish `h3 : z ∈ P.comap (C : ℤ →+* MRing ι)` using `h2`. Rewrite `h3` using `[hPz]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Establish `hprime : (projBundleIdeal P B).IsPrime` using `RingHom.ker_isPrime _`. Rewrite using `[hInt _ (algebraMap_int_injective _ hHor), hInt _ (algebraMap_int_injective P hPz), trdeg_projBundle P hPz B hB, map_add, map_natCast]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ProjBundleDim.proof (hInt : IntDomainDim.Statement) : ProjBundleDim.Statement := by
   intro K _ ι _ N1 n P d B hP hB

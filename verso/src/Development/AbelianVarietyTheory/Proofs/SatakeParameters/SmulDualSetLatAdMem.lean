@@ -15,19 +15,15 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hlat : latAd y Lb = Formalism.UG.CS.globLat y Lb` using `Submodule.span_eq (Formalism.UG.CS.globLat y Lb)`. Use `set a : 𝓞 E := (T : 𝓞 E) with ha`. Establish `ha0 : a ≠ 0`. Rewrite using `[ha]`. Conclude with `hT.ne'` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsm : ∀ w : Fin N → E, a • w = (T : E) • w`. Introduce `w`. Rewrite using `[← algebraMap_smul E a w, ha, map_natCast]`. Establish `hdl : ∀ w ∈ Formalism.L2.GlobalTheoryTheory.Comp.dl sp.cm.sig J Lb, a • w ∈ Lb`. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => rw [hsm]`. Conclude with `hdual w hw`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `add u v _ _ hu hv => rw [smul_add]`. Conclude with `add_mem hu hv`. Consider the case `smul c w _ hw => rw [smul_comm]`. Conclude with `Lb.smul_mem c hw`. Establish `hle : Ideal.span {a} • Formalism.L2.GlobalTheoryTheory.Comp.dl sp.cm.sig J Lb ≤ Lb`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.smul_le.2 fun r hr w hw => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`. Rewrite using `[mul_smul]`. Conclude with `Lb.smul_mem c (hdl w hw)`. Establish `hz' : z ∈ Formalism.UG.CS.globLat y (Formalism.L2.GlobalTheoryTheory.Comp.dl sp.cm.sig J Lb)`.
-
-Rewrite using `[Formalism.L2.GlobalTheoryTheory.Comp.glob_dl sp.cm.sig J (GlobalTheory.isLat_dl_of_isOrthCo sp J hco) hLb y hy]`. Rewrite `hz` using `[hlat]`. Conclude with `Submodule.subset_span hz`. Establish `h1 : a • z ∈ Ideal.span {a} • Formalism.UG.CS.globLat y (Formalism.L2.GlobalTheoryTheory.Comp.dl sp.cm.sig J Lb)` using `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self a) hz'`. Establish `h2` using `Formalism.L2.GlobalTheoryTheory.Comp.glob_mono y hle (Formalism.L2.GlobalTheoryTheory.Comp.smul_glob_le _ a y h1)`.
-
-Rewrite using `[hlat, ← hsm]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_dualSet_latAd_mem {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (sp : Spaces R F E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E)

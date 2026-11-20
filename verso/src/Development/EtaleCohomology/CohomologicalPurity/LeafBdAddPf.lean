@@ -6,15 +6,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainCo
 namespace LateralTheory.CohomologicalPurity.Cl.Flq
 
 /- English proof (translation)
-Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, map_zero _, map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨b, hb0, hb⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc0, hc⟩` from `hy`. Use `⟨b + c, ?_, ?_⟩` and prove the remaining obligations. Use `show ((K.X (n-1)).obj.map U'.ι.op).hom (b + c) = 0`. Rewrite using `[map_add, show ((K.X (n-1)).obj.map U'.ι.op).hom b = 0 from hb0, show ((K.X (n-1)).obj.map U'.ι.op).hom c = 0 from hc0, add_zero]`. Use `show ((K.d (n - 1) n).hom.app (op Y)).hom (b + c) = x + y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Rewrite using `[← hb, ← hc]`. Consider the case `neg x _ hx`. Take `⟨b, hb0, hb⟩` from `hx`. Use `⟨-b, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((K.X (n-1)).obj.map U'.ι.op).hom (-b) = 0`. Rewrite using `[map_neg]`. Rewrite using `[show ((K.X (n-1)).obj.map U'.ι.op).hom b = 0 from hb0, neg_zero]`. Use `show ((K.d (n - 1) n).hom.app (op Y)).hom (-b) = -x`. Rewrite using `[map_neg]`.
-
-Rewrite using `[← hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_section_boundary_of_mem_addSubgroup_closure {R : Type} [CommRing R] (K : Cx R) {Y : Scheme.{0}} (U' : Y.Opens) (n : ℤ)
     (a : Sec (K.X n) Y) (ha : a ∈ AddSubgroup.closure {a | Bd K U' n a}) : Bd K U' n a := by
@@ -38,7 +36,7 @@ theorem etale_section_boundary_of_mem_addSubgroup_closure {R : Type} [CommRing R
       rw [map_neg]; rw [← hb]
 
 /- English proof (translation)
-Introduce `R _ K X U n W a ha`. Conclude with `etale_section_boundary_of_mem_addSubgroup_closure K _ n a ha`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LeafBdAdd_of : LeafBdAdd := by
   intro R _ K X U n W a ha

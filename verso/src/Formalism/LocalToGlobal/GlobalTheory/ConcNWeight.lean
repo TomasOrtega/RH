@@ -25,7 +25,7 @@ section Weights
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `wtOf`. Rewrite using `[D.ntypes.eSer_zero k f hf, mul_zero]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wtOf_eq_zero_of_not_label {k : Fin 2} (a : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k))))
     {f : (ZMod (D.host.g k))[X]} (hf : ¬ IsLabel D k f) : wtOf D k a f = 0 := by
@@ -34,19 +34,19 @@ theorem wtOf_eq_zero_of_not_label {k : Fin 2} (a : MonoidAlgebra ℂ (GL (Fin D.
   simp
 
 /- English proof (translation)
-Take `⟨S, hS, hsum⟩` from `D.ntypes.eSer_sum k`. Establish `hcoeff : ∀ (c : Fin D.R.r → ZMod (D.host.g k)) (i : Fin D.R.r), (Formalism.CyclotomicNorms.monicOf c).coeff (i : ℕ) = c i`. Introduce `c i`. Unfold `Formalism.CyclotomicNorms.monicOf`. Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_X_pow, if_neg i.isLt.ne, zero_add, Polynomial.finset_sum_coeff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hj (Fin.ext h).symm`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective (fun c : Fin D.R.r → ZMod (D.host.g k) => Formalism.CyclotomicNorms.monicOf c)`. Introduce `c c' h`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrArg (fun p => Polynomial.coeff p (i : ℕ)) h` as an intermediate fact. Simplify `this` using `[hcoeff]`. Establish `hsurj : ∀ f ∈ S, f = Formalism.CyclotomicNorms.monicOf (fun i : Fin D.R.r => f.coeff (i : ℕ))`. Introduce `f hf`. Take `⟨hm, hdeg, -⟩` from `(hS f).1 hf`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `conv_lhs => rw [hm.as_sum, hdeg]`. Unfold `Formalism.CyclotomicNorms.monicOf`. Use `congr 1`. Conclude with `(Fin.sum_univ_eq_sum_range (fun i => Polynomial.C (f.coeff i) * Polynomial.X ^ i) _).symm`. Establish `himg : ∑ f ∈ Finset.univ.image (fun c : Fin D.R.r → ZMod (D.host.g k) => Formalism.CyclotomicNorms.monicOf c), D.ntypes.eSer k f = ∑ c, D.ntypes.eSer k (Formalism.CyclotomicNorms.monicOf c)` using `Finset.sum_image (fun a _ b _ h => hinj h)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[← himg, ← hsum]`. Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `f hf`. Rewrite using `[Finset.mem_image]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, Finset.mem_univ _, (hsurj f hf).symm⟩`. Introduce `f _ hf`. Conclude with `D.ntypes.eSer_zero k f (fun h => hf ((hS f).2 h))`.
+A detailed English derivation is pending.
 -/
 theorem sum_eSer (k : Fin 2) :
     ∑ c : Fin D.R.r → ZMod (D.host.g k), D.ntypes.eSer k (Formalism.CyclotomicNorms.monicOf c) = 1 := by
@@ -90,9 +90,9 @@ theorem sum_eSer (k : Fin 2) :
     exact D.ntypes.eSer_zero k f (fun h => hf ((hS f).2 h))
 
 /- English proof (translation)
-Establish `h` using `sum_eSer (D := D) k`. Set `L : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k))) →+ ℝ` to `AddMonoidHom.mk' (fun x => (x.coeff 1).re) (fun x y => by simp)`. Establish `hL : ∀ x, L x = (x.coeff 1).re` using `fun x => rfl`. Establish `hs` using `map_sum L (fun c : Fin D.R.r → ZMod (D.host.g k) => a * D.ntypes.eSer k (Formalism.CyclotomicNorms.monicOf c)) Finset.univ`. Simplify using `only [hL] at hs`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hs` using `[← Finset.mul_sum, h, mul_one]`. Unfold `wtOf`. Rewrite using `[← Finset.sum_div, ← hs, div_self ha]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_wtOf (k : Fin 2) (a : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k))))
     (ha : (a.coeff 1).re ≠ 0) :
@@ -112,7 +112,7 @@ end Weights
 section Value
 
 /- English proof (translation)
-Unfold `entN`. Use `split_ifs with h'`. Conclude with `Matrix.one_apply_ne (fun he => h (congrArg Fin.val he))`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem entN_one_ne {A : Type} [Zero A] [One A] {N : ℕ} {a b : ℕ} (h : a ≠ b) :
     entN (1 : Matrix (Fin N) (Fin N) A) a b = 0 := by
@@ -122,13 +122,13 @@ theorem entN_one_ne {A : Type} [Zero A] [One A] {N : ℕ} {a b : ℕ} (h : a ≠
   · rfl
 
 /- English proof (translation)
-Establish `h1 : (ψ₀ (φ 1))⁻¹ = 1` using `by rw [hφ, AddChar.map_zero_eq_one, inv_one]`. Establish `hc : 0 < (Finset.univ.filter (fun u : GL (Fin N) (ZMod g) => P (u : Matrix (Fin N) (Fin N) (ZMod g)))).card` using `Finset.card_pos.mpr ⟨1, by simp [hP]⟩`. Unfold `eDat`. Simplify using `[h1, hP]`. Rewrite using `[Finset.sum_eq_single (1 : GL (Fin N) (ZMod g))]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h1, hφ] first`. Consider the case `exact hc`. Consider the case `positivity`. Consider the case `exact inv_pos.mpr (by exact_mod_cast hc)`. Consider the case `exact Finset.card_pos.mp hc`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ⟨1, by simp [hP]⟩`. Consider the case `exact (rfl : (0:ℕ) = 0)`. Introduce `b _ hb`. Simplify using `[Finsupp.single_apply, hb]`. Introduce `h`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (by simp [hP]) h`.
+A detailed English derivation is pending.
 -/
 theorem eDat_coeff_one_re_pos (g N : ℕ) [NeZero g] (P : Matrix (Fin N) (Fin N) (ZMod g) → Prop)
     (φ : Matrix (Fin N) (Fin N) (ZMod g) → ZMod g) (ψ₀ : AddChar (ZMod g) ℂ) (hP : P 1) (hφ : φ 1 = 0) :
@@ -155,9 +155,7 @@ theorem eDat_coeff_one_re_pos (g N : ℕ) [NeZero g] (P : Matrix (Fin N) (Fin N)
     exact absurd (by simp [hP]) h
 
 /- English proof (translation)
-Unfold `eU`. Use `eDat_coeff_one_re_pos g N _ _ ψ₀ ?_ ?_` and prove the remaining obligations. Introduce `a b`. Conclude with `⟨fun hab => Matrix.one_apply_ne hab.ne', fun hab => by subst hab; exact Matrix.one_apply_eq a⟩`. Use `beta_reduce`.
-
-Conclude with `Finset.sum_eq_zero fun i _ => entN_one_ne (by omega)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eU_coeff_one_re_pos (g N : ℕ) [NeZero g] (ψ₀ : AddChar (ZMod g) ℂ) :
     0 < ((eU g N ψ₀).coeff 1).re := by
@@ -169,11 +167,11 @@ theorem eU_coeff_one_re_pos (g N : ℕ) [NeZero g] (ψ₀ : AddChar (ZMod g) ℂ
     exact Finset.sum_eq_zero fun i _ => entN_one_ne (by omega)
 
 /- English proof (translation)
-Unfold `eJ`. Establish `e : ∀ a b : ℕ, a ≠ b → entN (1 : Matrix (Fin N) (Fin N) (ZMod g)) a b = 0` using `fun a b h => entN_one_ne h`. Use `eDat_coeff_one_re_pos g N _ _ ψ₀ ?_ ?_` and prove the remaining obligations. Use `⟨?_, fun a _ h2 => e _ _ (by omega)⟩` and prove the remaining obligations. Introduce `a b`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨fun hab => Matrix.one_apply_ne hab.ne', fun hab => by subst hab; exact Matrix.one_apply_eq a⟩`. Unfold `phiJ`. Establish `h1 : ∑ i ∈ Finset.range (s - 1), entN (1 : Matrix (Fin N) (Fin N) (ZMod g)) i (i + 1) = 0` using `Finset.sum_eq_zero fun i _ => e _ _ (by omega)`. Establish `h2 : ∑ i ∈ Finset.range (s - 1), entN (1 : Matrix (Fin N) (Fin N) (ZMod g)) (s + kk + 1 + i) (s + kk + 2 + i) = 0` using `Finset.sum_eq_zero fun i _ => e _ _ (by omega)`. Establish `h3 : ∑ a ∈ Finset.range (kk - 1), entN (1 : Matrix (Fin N) (Fin N) (ZMod g)) (s + a) (s + a + 1) = 0` using `Finset.sum_eq_zero fun a _ => e _ _ (by omega)`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, h3]`. Use `split_ifs with hs`. Rewrite using `[e (s - 1) (s + kk) (by omega), e (s + kk) (s + kk + 1) (by omega)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eJ_coeff_one_re_pos (g N kk s : ℕ) [NeZero g] (ψ₀ : AddChar (ZMod g) ℂ) :
     0 < ((eJ g N kk s ψ₀).coeff 1).re := by
@@ -199,14 +197,14 @@ theorem eJ_coeff_one_re_pos (g N kk s : ℕ) [NeZero g] (ψ₀ : AddChar (ZMod g
     · simp
 
 /- English proof (translation)
-Conclude with `eU_coeff_one_re_pos (D.host.g k) D.R.r ψ₀`.
+A detailed English derivation is pending.
 -/
 theorem eUk_coeff_one_re_pos {D : D7} (k : Fin 2) (ψ₀ : AddChar (ZMod (D.host.g k)) ℂ) :
     0 < ((eUk D k ψ₀).coeff 1).re := by
   exact eU_coeff_one_re_pos (D.host.g k) D.R.r ψ₀
 
 /- English proof (translation)
-Conclude with `eJ_coeff_one_re_pos (D.host.g k) D.R.r D.R.k (D.R.m / 2 - 1) ψ₀`.
+A detailed English derivation is pending.
 -/
 theorem eJk_coeff_one_re_pos {D : D7} (k : Fin 2) (ψ₀ : AddChar (ZMod (D.host.g k)) ℂ) :
     0 < ((eJk D k ψ₀).coeff 1).re := by
@@ -219,25 +217,23 @@ section PropWRec
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hadm` using `hA k`. Unfold `Formalism.BasicNotions.NTypes.admissible at hadm`. Establish `hmod : D.host.g k % (D.host.QS * D.host.q * D.host.d) = 1` using `hadm.2.2.2`. Establish `hM : D.host.QS * D.host.q * D.host.d ∣ D.host.g k - 1`. Establish `h` using `Nat.dvd_sub_mod (n := D.host.QS * D.host.q * D.host.d) (D.host.g k)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hmod]`. Then use the resulting hypothesis. Establish `h16 : 16 ∣ D.host.QS`. Establish `h` using `(Nat.pow_dvd_pow 2 (show 4 ≤ D.R.toFrame.e + 2 by have := D.host.two_le_e; omega)).trans D.host.tower_dvd`. Simplify using `using h`. Establish `h2 : 2 ∣ D.host.QS` using `(show 2 ∣ 16 by norm_num).trans h16`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc : Nat.Coprime 2 (D.host.q * D.host.d)` using `Nat.Coprime.coprime_dvd_left h2 D.host.QS_coprime`. Establish `hq2 : D.host.q ≠ 2`. Introduce `h`. Use `Nat.Coprime.coprime_dvd_right (dvd_mul_right D.host.q D.host.d) hc` as an intermediate fact. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd this (by decide)`. Establish `hd2 : D.host.d ≠ 2`. Introduce `h`. Use `Nat.Coprime.coprime_dvd_right (dvd_mul_left D.host.d D.host.q) hc` as an intermediate fact. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd this (by decide)`. Establish `hbig : 16 ≤ max D.host.q D.host.d`. Establish `hq` using `D.host.qd_big.1`. Establish `hr : 6 ≤ D.R.r`. Establish `e1 : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ht : 11 ≤ D.R.t`. Use `D.R.two_le_m` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.rank_add_five_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hTR : 11 * 6 ≤ D.R.t * D.R.r` using `Nat.mul_le_mul ht hr`. Establish `e2 : 4 * D.R.t * D.R.r = 4 * (D.R.t * D.R.r)` using `Nat.mul_assoc _ _ _`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hq` using `[e2]`. Conclude with `le_max_of_le_left (by omega)`. Use `⟨?_, ?_, ?_, hq2, hd2, hbig, (h16.trans (dvd_mul_of_dvd_left (dvd_mul_right _ _) _)).trans hM, (dvd_mul_of_dvd_left (dvd_mul_left _ _) _).trans hM, (dvd_mul_left _ _).trans hM⟩` and prove the remaining obligations. Take `⟨x1, -, -⟩` from `D.host.hyp`. Conclude with `x1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨-, x2, -⟩` from `D.host.hyp`. Conclude with `x2`. Take `⟨-, -, x3, x4, -⟩` from `D.host.hyp`. Introduce `h`. Rewrite `x3` using `[h]`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem host_facts (hA : TieAdmG D) (k : Fin 2) :
     D.host.q.Prime ∧ D.host.d.Prime ∧ D.host.q ≠ D.host.d ∧ D.host.q ≠ 2 ∧ D.host.d ≠ 2 ∧
@@ -293,11 +289,11 @@ theorem host_facts (hA : TieAdmG D) (k : Fin 2) :
     omega
 
 /- English proof (translation)
-Unfold `Formalism.L2.GlobalTheoryTheory.ConcN.SizesRec Formalism.L2.GlobalTheoryTheory.ConcN.SizesAt at h`. Unfold `RangeW`. Use `⟨(h 0).2.2.2.2.1, fun k => ?_⟩` and prove the remaining obligations. Establish `hg` using `(h k).1`. Establish `h2 : (2:ℝ) ≤ Real.exp 1`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.add_one_le_exp (1:ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h12 : Real.exp 1 ^ 12 ≤ Real.exp (8 * x ^ ε)`. Rewrite using `[← Real.exp_nat_mul]`. Conclude with `Real.exp_le_exp.mpr (by push_cast; linarith)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (2:ℝ) ^ 12 ≤ Real.exp 1 ^ 12` using `by gcongr`. Establish `h4 : ((2 ^ 12 : ℕ) : ℝ) ≤ (D.host.g k : ℝ)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h4` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rangeW_of_sizes {x ε Cs : ℝ} (h : SizesRec D x ε Cs) (hx : 3 / 2 ≤ x ^ ε) : RangeW D := by
   unfold Formalism.L2.GlobalTheoryTheory.ConcN.SizesRec Formalism.L2.GlobalTheoryTheory.ConcN.SizesAt at h
@@ -317,39 +313,35 @@ theorem rangeW_of_sizes {x ε Cs : ℝ} (h : SizesRec D x ε Cs) (hx : 3 / 2 ≤
   exact_mod_cast h4
 
 /- English proof (translation)
-Take `⟨ψ₀, hψ, hv⟩` from `hV`. Take `⟨hnn, hsq, hcmp, -⟩` from `hL k (ψ₀ k) (hψ k)`. Take `⟨hq, hd, hqd, hq2, hd2, h16m, h16, hqg, hdg⟩` from `host_facts hA k`. Set `wJ : D.nd.PlG k → (Fin D.R.r → ZMod (D.host.g k)) → ℝ` to `fun v c => wtOf D k (A.eVec k v) (Formalism.CyclotomicNorms.monicOf c)`. Set `P : (Fin D.R.r → ZMod (D.host.g k)) → ℝ` to `fun c => wtOf D k (eUk D k (ψ₀ k)) (Formalism.CyclotomicNorms.monicOf c)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hJnn : ∀ v f, 0 ≤ wtOf D k (A.eVec k v) f`. Introduce `v f`. Apply the tactic sequence `rcases hv k v with h | h <;> rw [h]`. Conclude with `(hnn f).1`. Conclude with `(hnn f).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPnn : ∀ c, 0 ≤ P c` using `fun c => (hnn _).1`. Establish `hJsum : ∀ v, ∑ c, wJ v c = 1`. Introduce `v`. Break down `hv k v with h | h` into its components or cases. Simplify using `only [wJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Conclude with `sum_wtOf k _ (eUk_coeff_one_re_pos k _).ne'`. Simplify using `only [wJ]`. Rewrite using `[h]`. Conclude with `sum_wtOf k _ (eJk_coeff_one_re_pos k _).ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPsum : ∑ c, P c = 1` using `sum_wtOf k _ (eUk_coeff_one_re_pos k _).ne'`. Establish `hg1 : (1 : ℝ) ≤ (D.host.g k : ℝ)` using `by exact_mod_cast (D.host.g_prime k).one_lt.le`. Establish `hcmpv : ∀ v c, (1 - 1 / (D.host.g k : ℝ)) * P c ≤ wJ v c`. Introduce `v c`. Establish `hle : 1 - 1 / (D.host.g k : ℝ) ≤ 1` using `sub_le_self _ (by positivity)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `hv k v with h | h` into its components or cases. Establish `: wJ v c = P c` using `by simp only [wJ, P]; rw [h]`. Rewrite using `[this]`. Conclude with `mul_le_of_le_one_left (hPnn c) hle`. Establish `: wJ v c = wtOf D k (eJk D k (ψ₀ k)) (Formalism.CyclotomicNorms.monicOf c)` using `by simp only [wJ]; rw [h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Distinguish the cases in `hlab : IsLabel D k (Formalism.CyclotomicNorms.monicOf c)`. Conclude with `hcmp _ hlab`. Simplify using `only [P]`. Rewrite using `[wtOf_eq_zero_of_not_label _ hlab, wtOf_eq_zero_of_not_label _ hlab, mul_zero]`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hred : locShare D A.eVec k S ≤ ∑ x ∈ (Finset.univ : Finset (D.nd.PlG k → Fin D.R.r → ZMod (D.host.g k))).filter (fun x => ¬ Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.GoodAt (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) D.R.r (fun v => Formalism. …`. Unfold `locShare`. Set `cv : Tup D k → (D.nd.PlG k → Fin D.R.r → ZMod (D.host.g k))` to `fun t v i => (t v).coeff i`. Establish `hS' : ∑ t ∈ S, ∏ v, wtOf D k (A.eVec k v) (t v) = ∑ t ∈ S.filter (fun t => ∀ v, IsLabel D k (t v)), ∏ v, wtOf D k (A.eVec k v) (t v)`. Rewrite using `[Finset.sum_filter_of_ne]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t _ hne v`. Assume the negation of the conclusion as `hv'`. Conclude with `hne (Finset.prod_eq_zero (Finset.mem_univ v) (wtOf_eq_zero_of_not_label _ hv'))`. Establish `hcv : ∀ t : Tup D k, (∀ v, IsLabel D k (t v)) → ∀ v, Formalism.CyclotomicNorms.monicOf (cv t v) = t v` using `fun t ht v => Formalism.CyclotomicNorms.Sqf.monicOf_coeffs (t v) (ht v).1 (ht v).2.1`. Rewrite using `[hS']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Establish `ht` using `(Finset.mem_filter.1 ht).2`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `only [wJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcv t ht v]`. Use `_ = ∑ x ∈ (S.filter (fun t => ∀ v, IsLabel D k (t v))).image cv, ∏ v, wJ v (x v) := by`. Rewrite using `[Finset.sum_image]`. Introduce `t ht t' ht' h`. Establish `ht` using `(Finset.mem_filter.1 ht).2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht'` using `(Finset.mem_filter.1 ht').2`. Use function extensionality and compare the values at `v`. Rewrite using `[← hcv t ht v, ← hcv t' ht' v]`. Conclude with `congrArg Formalism.CyclotomicNorms.monicOf (congrFun h v)`. Use `_ ≤ _ := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ fun x _ _ => Finset.prod_nonneg fun v _ => hJnn v _` and prove the remaining obligations. Introduce `x hx`. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨htS, htl⟩` from `Finset.mem_filter.1 ht`. Use `Finset.mem_filter.2 ⟨Finset.mem_univ _, fun hgood => hS t htS ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfun : (fun v => Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf (cv t v)) = t` using `funext fun v => hcv t htl v`. Rewrite `hgood` using `[hfun]`. Conclude with `Formalism.MainNotions.N.PlaceLabelTeichmuller.good_of D.R.r t (D.nd.chiT k) hgood`. Establish `hT` using `Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.comparison_transfer_holds (D.nd.PlG k) (fun _ => Fin D.R.r → ZMod (D.host.g k)) (fun _ => P) wJ (D.host.g k : ℝ) ((Finset.univ : Finset (D.nd.PlG k → Fin D.R.r → ZMod (D.host.g k))).filter (fun x => ¬ Formalism.IrreducibleC …`. Establish `hW` using `Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.property_W_of_estimates (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) (D.nd.PlG k) (Fin D.R.m) D.R.r D.host.q D.host.d (D.nd.chiT k) P hR.1 (by rw [ZMod.card]; exact hR.2 k) hq hd hqd hq2 hd2 h16m (by rw …`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Establish `hc' : c ∈ (Finset.univ : Finset (Fin D.R.r → ZMod (D.host.g k))).filter (fun c => Squarefree (Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c) ∧ (Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c).coeff 0 ≠ 0)`. Unfold `Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.sqSet at hc`. Use `hc` and compare the differences between its conclusion and the goal. Take `⟨-, hsqf, h0⟩` from `Finset.mem_filter.1 hc'`.
-
-Establish `hlab : IsLabel D k (Formalism.CyclotomicNorms.monicOf c)` using `⟨Formalism.CyclotomicNorms.Sqf.monic_monicOf c, Formalism.CyclotomicNorms.Sqf.natDegree_monicOf c, h0⟩`. Use `show wtOf D k (eUk D k (ψ₀ k)) (Formalism.CyclotomicNorms.monicOf c) = _`. Rewrite using `[hsq _ hlab hsqf, Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.sqWeight, ZMod.card, one_div, ← Multiset.prod_map_inv]`. Apply the tactic sequence `convert rfl <;> rfl)`. Use `le_trans hred (le_trans hT ?_)` and prove the remaining obligations.
-
-Use `le_trans (add_le_add hW le_rfl) (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[ZMod.card, D.nd.card_PlG k, Fintype.card_fin]`. Unfold `Wg`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem locShare_le_Wg (A : AllRows D) (hL : admLq D) (hA : TieAdmG D) (hR : RangeW D) (hV : TieVecW A)
     (k : Fin 2) (S : Finset (Tup D k)) (hS : ∀ t ∈ S, ¬ goodAt D k t) :
@@ -459,9 +451,9 @@ theorem locShare_le_Wg (A : AllRows D) (hL : admLq D) (hA : TieAdmG D) (hR : Ran
 end PropWRec
 
 /- English proof (translation)
-Unfold `WeightAllRows`. Use `⟨fun k v f => ?_, fun k S hS => locShare_le_Wg A hL hA hR hV k S hS⟩` and prove the remaining obligations. Take `⟨ψ₀, hne, hv⟩` from `hV`. Unfold `admLq at hL`. Break down `hv k v with h | h` into its components or cases.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h]`. Conclude with `((hL k (ψ₀ k) (hne k)).1 f).1`. Rewrite using `[h]`. Conclude with `((hL k (ψ₀ k) (hne k)).1 f).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weightAllRows_of {D : D7} (A : AllRows D) (hL : admLq D) (hA : TieAdmG D) (hR : RangeW D)
     (hV : TieVecW A) : WeightAllRows A := by

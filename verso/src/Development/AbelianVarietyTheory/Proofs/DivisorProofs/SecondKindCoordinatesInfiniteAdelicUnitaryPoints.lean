@@ -7,7 +7,7 @@ open scoped TensorProduct ContDiff
 namespace GlobalTheory.InfChartConcat
 
 /- English proof (translation)
-The claim follows from `| [] => ⟨0, Fin.elim0, fun _ => Fin.elim0, fun i => i.elim0, tendsto_pi_nhds.2 fun i => i.elim0, fun x => by simp⟩ | j :: L => by obtain ⟨m, η', s', hP', hs', he⟩ := concat l P d η s hP hs L refine ⟨d j + m, Fin.append (η j) η', fun x => Fin.append (s j x) (s' x), ?_, ?_, ?_⟩ · i …`.
+A detailed English derivation is pending.
 -/
 theorem concat {G X ι : Type*} [Monoid G] (l : Filter X) (P : (ℝ → G) → Prop)
     (d : ι → ℕ) (η : ∀ j, Fin (d j) → ℝ → G) (s : ∀ j, X → Fin (d j) → ℝ)
@@ -41,9 +41,9 @@ theorem concat {G X ι : Type*} [Monoid G] (l : Filter X) (P : (ℝ → G) → P
       simp
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons w L ih`. Simplify using `only [List.map_cons, List.prod_cons, ih, List.count_cons]`. Distinguish the cases in `h : w = u`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[pow_succ']`. Simplify using `[h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prod_map_ite_eq {ι M : Type*} [DecidableEq ι] [Monoid M] (u : ι) (a : M) (L : List ι) :
     (L.map fun w => if w = u then a else 1).prod = a ^ L.count u := by
@@ -56,11 +56,11 @@ theorem prod_map_ite_eq {ι M : Type*} [DecidableEq ι] [Monoid M] (u : ι) (a :
     · simp [h]
 
 /- English proof (translation)
-Apply `GAd_ext σ J` to reduce the goal to its premises. Introduce `u`. Rewrite using `[map_list_prod, List.map_map]`. Establish `hf : (projArch σ J u ∘ fun w => embArch σ J w (projArch σ J w x)) = fun w => if w = u then projArch σ J u x else 1`. Use function extensionality and compare the values at `w`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : w = u`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, projArch_embArch_ne σ J (Ne.symm h)]`. Rewrite using `[hf, prod_map_ite_eq, List.count_eq_one_of_mem (Finset.nodup_toList _) (Finset.mem_toList.2 (Finset.mem_univ _)), pow_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Rewrite using `[map_list_prod, List.map_map, (mem_infPts_iff_forall).1 hx v]`. Simplify using `[Function.comp_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem decomp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {x : GAd σ J} (hx : x ∈ infPts σ J) :
@@ -85,11 +85,9 @@ theorem decomp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
 end GlobalTheory.InfChartConcat
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J hJ`. Establish `hp` using `fun w => GlobalTheory.T.exists_secondKindCoordinates_unitaryArchimedeanPlace F E σ hCM n J hJ w`. Use `choose d η s hη hs he using hp`. Establish `hproj : ∀ w, Tendsto (projArch σ J w) (𝓝[(infPts σ J : Set (GAd σ J))] 1) (𝓝 1)` using `fun w => by`. Use `(continuous_projArch σ J w).tendsto 1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_one]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Take `⟨m, η', s', hP', hs', heq⟩` from `GlobalTheory.InfChartConcat.concat (𝓝[(infPts σ J : Set (GAd σ J))] 1) (IsRealLine σ J) d η (fun w x => s w (projArch σ J w x)) hη (fun w => (hs w).comp (hproj w)) (Finset.univ : Finset (InfinitePlace F)).toList`. Use `⟨m, η', s', hP', hs', ?_⟩` and prove the remaining obligations. Establish `hev : ∀ᶠ x in 𝓝[(infPts σ J : Set (GAd σ J))] 1, ∀ w, embArch σ J w (projArch σ J w x) = (List.ofFn fun i => η w i (s w (projArch σ J w x) i)).prod` using `Filter.eventually_all.2 fun w => (hproj w).eventually (he w)`.
-
-Use `filter_upwards [hev, self_mem_nhdsWithin] with x hx hmem`. Rewrite using `[heq x, List.map_congr_left (fun w _ => (hx w).symm)]`. Conclude with `GlobalTheory.InfChartConcat.decomp σ J hmem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.infPts_secondKind_chart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E),

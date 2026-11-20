@@ -15,7 +15,7 @@ def ChartHessCompare.Statement : Prop :=
       ((C : ℂ) • cxHessian (hermChartPot N) y - cxHessian (hermChartPot M) y).PosSemidef
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, Matrix.PosDef.one⟩`.
+Supply the required witnesses or components.
 -/
 example : (Matrix.diagonal ![(4 : ℂ), 1] : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef ∧
     (1 : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef :=

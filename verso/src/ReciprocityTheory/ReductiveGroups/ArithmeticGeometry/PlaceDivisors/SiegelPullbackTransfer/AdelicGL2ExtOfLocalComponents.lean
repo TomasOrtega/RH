@@ -13,7 +13,7 @@ namespace ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison
 variable {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Simplify using the standard rewrite rules. Conclude with `pullback.lift_fst _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pullback_map_left_fst' {A B : Over S} (g : A ⟶ B) :
     ((Over.pullback f).map g).left ≫ pullback.fst B.hom f = pullback.fst A.hom f ≫ g.left := by
@@ -26,28 +26,28 @@ def pφ₂ : (G2 ((Over.pullback f).obj G)).left ⟶ (G2 G).left :=
   (Functor.LaxMonoidal.μ (Over.pullback f) G G).left ≫ pullback.fst (G ⊗ G).hom f
 
 /- English proof (translation)
-Rewrite using `[show pφ f G = pullback.fst G.hom f from rfl, pφ₂, Category.assoc, ← pullback_map_left_fst', ← Category.assoc, ← Over.comp_left, Functor.Monoidal.μ_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pφ₂_fst : pφ₂ f G ≫ (fst G G).left = (fst ((Over.pullback f).obj G) ((Over.pullback f).obj G)).left ≫ pφ f G := by
   rw [show pφ f G = pullback.fst G.hom f from rfl, pφ₂, Category.assoc, ← pullback_map_left_fst',
     ← Category.assoc, ← Over.comp_left, Functor.Monoidal.μ_fst]
 
 /- English proof (translation)
-Rewrite using `[show pφ f G = pullback.fst G.hom f from rfl, pφ₂, Category.assoc, ← pullback_map_left_fst', ← Category.assoc, ← Over.comp_left, Functor.Monoidal.μ_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pφ₂_snd : pφ₂ f G ≫ (snd G G).left = (snd ((Over.pullback f).obj G) ((Over.pullback f).obj G)).left ≫ pφ f G := by
   rw [show pφ f G = pullback.fst G.hom f from rfl, pφ₂, Category.assoc, ← pullback_map_left_fst',
     ← Category.assoc, ← Over.comp_left, Functor.Monoidal.μ_snd]
 
 /- English proof (translation)
-The claim follows from `And.intro (pφ₂_fst f G) (pφ₂_snd f G)`.
+Prove both required implications or components.
 -/
 theorem isSquare : IsSquare (pφ f G) (pφ₂ f G) := And.intro (pφ₂_fst f G) (pφ₂_snd f G)
 
 /- English proof (translation)
-Establish `hab : a ≫ (G ⊗ G).hom = b ≫ (G ⊗ G).hom`. Rewrite using `[← Over.w (fst G G), reassoc_of% h1]`. Establish `key : (Over.homMk a : Over.mk (a ≫ (G ⊗ G).hom) ⟶ G ⊗ G) = Over.homMk b hab.symm`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Use `ext`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `using h1`. Use `ext`. Simplify using `using h2`. Conclude with `congrArg Over.Hom.left key`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem adelic_GL2_ext_of_local_components {R : Scheme.{0}} (a b : R ⟶ (G2 G).left)
     (h1 : a ≫ (fst G G).left = b ≫ (fst G G).left) (h2 : a ≫ (snd G G).left = b ≫ (snd G G).left) :
@@ -63,7 +63,7 @@ theorem adelic_GL2_ext_of_local_components {R : Scheme.{0}} (a b : R ⟶ (G2 G).
   exact congrArg Over.Hom.left key
 
 /- English proof (translation)
-Establish `key : (Over.homMk u : Over.mk (u ≫ (𝟙_ (Over S)).hom) ⟶ 𝟙_ (Over S)) = Over.homMk v h.symm` using `CartesianMonoidalCategory.toUnit_unique _ _`. Conclude with `congrArg Over.Hom.left key`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem unit_left_ext_lemma {Z : Scheme.{0}} (u v : Z ⟶ (𝟙_ (Over S)).left)
     (h : u ≫ (𝟙_ (Over S)).hom = v ≫ (𝟙_ (Over S)).hom) : u = v := by
@@ -72,11 +72,11 @@ private theorem unit_left_ext_lemma {Z : Scheme.{0}} (u v : Z ⟶ (𝟙_ (Over S
   exact congrArg Over.Hom.left key
 
 /- English proof (translation)
-Establish `e : (toUnit ((Over.pullback f).obj G)).left ≫ (Functor.LaxMonoidal.ε (Over.pullback f)).left ≫ pullback.snd (𝟙_ (Over S)).hom f = pullback.snd G.hom f`. Establish `h0` using `Over.w (toUnit ((Over.pullback f).obj G) ≫ Functor.LaxMonoidal.ε (Over.pullback f))`. Rewrite `h0` using `[Over.comp_left, Category.assoc]`. Conclude with `h0`. Establish `hε : (toUnit ((Over.pullback f).obj G)).left ≫ (Functor.LaxMonoidal.ε (Over.pullback f)).left ≫ pullback.fst (𝟙_ (Over S)).hom f = pullback.fst G.hom f ≫ (toUnit G).left`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `unit_left_ext_lemma` to reduce the goal to its premises. Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition, reassoc_of% e, Over.w, pullback.condition]`. Rewrite using `[Hom.one_def, Hom.one_def, Functor.obj.η_def]`. Simplify using `only [Over.comp_left, Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show pφ f G = pullback.fst G.hom f from rfl, pullback_map_left_fst', reassoc_of% hε]`.
+A detailed English derivation is pending.
 -/
 theorem one_left_pφ :
     (1 : (Over.pullback f).obj G ⟶ (Over.pullback f).obj G).left ≫ pφ f G =
@@ -96,7 +96,7 @@ theorem one_left_pφ :
   rw [show pφ f G = pullback.fst G.hom f from rfl, pullback_map_left_fst', reassoc_of% hε]
 
 /- English proof (translation)
-Rewrite using `[Functor.obj.μ_def, Over.comp_left, Category.assoc, show pφ f G = pullback.fst G.hom f from rfl, pullback_map_left_fst', pφ₂, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mul_left_pphi_lemma_2 :
     (MonObj.mul : (Over.pullback f).obj G ⊗ (Over.pullback f).obj G ⟶ (Over.pullback f).obj G).left ≫ pφ f G =
@@ -105,11 +105,11 @@ private theorem mul_left_pphi_lemma_2 :
     pullback_map_left_fst', pφ₂, Category.assoc]
 
 /- English proof (translation)
-Use `⟨IsPullback.of_hasPullback G.hom f, ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Establish `hl : (lift x₀ y₀).left = (lift x y).left ≫ pφ₂ f G`. Apply `adelic_GL2_ext_of_local_components` to reduce the goal to its premises. Establish `e1` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_fst x₀ y₀)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e2` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_fst x y)`. Rewrite `e1`, `e2` using `[Over.comp_left]`. Rewrite using `[e1, Category.assoc, pφ₂_fst, reassoc_of% e2, hx]`. Establish `e1` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_snd x₀ y₀)`. Establish `e2` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_snd x y)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1`, `e2` using `[Over.comp_left]`. Rewrite using `[e1, Category.assoc, pφ₂_snd, reassoc_of% e2, hy]`. Rewrite using `[Hom.mul_def, Hom.mul_def, Over.comp_left, Over.comp_left, Category.assoc, mul_left_pphi_lemma_2 f G, ← Category.assoc, ← hl]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isGrpPullback : IsGrpPullback ((Over.pullback f).obj G) G f (pφ f G) := by
   refine ⟨IsPullback.of_hasPullback G.hom f, ?_⟩
@@ -128,11 +128,11 @@ theorem isGrpPullback : IsGrpPullback ((Over.pullback f).obj G) G f (pφ f G) :=
     ← Category.assoc, ← hl]
 
 /- English proof (translation)
-Apply `adelic_GL2_ext_of_local_components` to reduce the goal to its premises. Establish `e1` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_fst (1 : (Over.pullback f).obj G ⟶ (Over.pullback f).obj G) (𝟙 ((Over.pullback f).obj G)))`. Establish `e2` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_fst (1 : G ⟶ G) (𝟙 G))`. Rewrite `e1`, `e2` using `[Over.comp_left]`. Rewrite using `[Category.assoc, pφ₂_fst, reassoc_of% e1, Category.assoc, e2]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_left_pφ f G`. Establish `e1` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_snd (1 : (Over.pullback f).obj G ⟶ (Over.pullback f).obj G) (𝟙 ((Over.pullback f).obj G)))`. Establish `e2` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_snd (1 : G ⟶ G) (𝟙 G))`. Rewrite `e1`, `e2` using `[Over.comp_left]`. Rewrite using `[Category.assoc, pφ₂_snd, reassoc_of% e1, Category.assoc, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.id_left, Category.id_comp, Category.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem lift_one_id :
     (lift (1 : (Over.pullback f).obj G ⟶ (Over.pullback f).obj G) (𝟙 _)).left ≫ pφ₂ f G =
@@ -150,11 +150,11 @@ theorem lift_one_id :
     simp only [Over.id_left, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Apply `adelic_GL2_ext_of_local_components` to reduce the goal to its premises. Establish `e1` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_fst (𝟙 ((Over.pullback f).obj G)) (1 : (Over.pullback f).obj G ⟶ (Over.pullback f).obj G))`. Establish `e2` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_fst (𝟙 G) (1 : G ⟶ G))`. Rewrite `e1`, `e2` using `[Over.comp_left]`. Rewrite using `[Category.assoc, pφ₂_fst, reassoc_of% e1, Category.assoc, e2]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Over.id_left, Category.id_comp, Category.comp_id]`. Establish `e1` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_snd (𝟙 ((Over.pullback f).obj G)) (1 : (Over.pullback f).obj G ⟶ (Over.pullback f).obj G))`. Establish `e2` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_snd (𝟙 G) (1 : G ⟶ G))`. Rewrite `e1`, `e2` using `[Over.comp_left]`. Rewrite using `[Category.assoc, pφ₂_snd, reassoc_of% e1, Category.assoc, e2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_left_pφ f G`.
+A detailed English derivation is pending.
 -/
 theorem lift_id_one :
     (lift (𝟙 _) (1 : (Over.pullback f).obj G ⟶ (Over.pullback f).obj G)).left ≫ pφ₂ f G =
@@ -172,11 +172,11 @@ theorem lift_id_one :
     exact one_left_pφ f G
 
 /- English proof (translation)
-Apply `adelic_GL2_ext_of_local_components` to reduce the goal to its premises. Establish `e1` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_fst (snd ((Over.pullback f).obj G) ((Over.pullback f).obj G)) (fst ((Over.pullback f).obj G) ((Over.pullback f).obj G)))`. Establish `e2` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_fst (snd G G) (fst G G))`. Rewrite `e1`, `e2` using `[Over.comp_left]`. Rewrite using `[Category.assoc, pφ₂_fst, reassoc_of% e1, Category.assoc, e2]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pφ₂_snd]`. Establish `e1` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_snd (snd ((Over.pullback f).obj G) ((Over.pullback f).obj G)) (fst ((Over.pullback f).obj G) ((Over.pullback f).obj G)))`. Establish `e2` using `congrArg Over.Hom.left (CartesianMonoidalCategory.lift_snd (snd G G) (fst G G))`. Rewrite `e1`, `e2` using `[Over.comp_left]`. Rewrite using `[Category.assoc, pφ₂_snd, reassoc_of% e1, Category.assoc, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pφ₂_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_swap :
     (lift (snd ((Over.pullback f).obj G) ((Over.pullback f).obj G))

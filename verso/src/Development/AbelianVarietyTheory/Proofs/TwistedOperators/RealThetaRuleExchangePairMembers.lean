@@ -19,14 +19,14 @@ local notation "FP" => Formalism.BasicNotions.TH.Pol
 variable {p q r s : ℕ}
 
 /- English proof (translation)
-Rewrite using `[rename_rename, Prod.swap_swap_eq, rename_id_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_swap_swap (P : FP p q r s) :
     rename Prod.swap (rename Prod.swap P : FP r s p q) = P := by
   rw [rename_rename, Prod.swap_swap_eq, rename_id_apply]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem comm_comm' {V1 V2 : Type*} [AddCommGroup V1] [Module ℂ V1] [AddCommGroup V2] [Module ℂ V2]
     (x : V1 ⊗[ℂ] V2) : TensorProduct.comm ℂ V2 V1 (TensorProduct.comm ℂ V1 V2 x) = x := by
@@ -36,7 +36,7 @@ theorem comm_comm' {V1 V2 : Type*} [AddCommGroup V1] [Module ℂ V1] [AddCommGro
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem comm_map' {V1 V2 W1 W2 : Type*} [AddCommGroup V1] [Module ℂ V1] [AddCommGroup V2] [Module ℂ V2]
     [AddCommGroup W1] [Module ℂ W1] [AddCommGroup W2] [Module ℂ W2]
@@ -63,28 +63,28 @@ theorem tr_apply (f : FP r s p q →ₗ[ℂ] V2 ⊗[ℂ] V1) (P : FP p q r s) :
     tr f P = TensorProduct.comm ℂ V2 V1 (f (rename Prod.swap P)) := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Rewrite using `[tr_apply, tr_apply, rename_swap_swap, comm_comm']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_tr (f : FP r s p q →ₗ[ℂ] V2 ⊗[ℂ] V1) : tr (tr f) = f := by
   refine LinearMap.ext fun P => ?_
   rw [tr_apply, tr_apply, rename_swap_swap, comm_comm']
 
 /- English proof (translation)
-Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Simplify using `[tr_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tr_smul (c : ℂ) (f : FP r s p q →ₗ[ℂ] V2 ⊗[ℂ] V1) : tr (c • f) = c • tr f := by
   refine LinearMap.ext fun P => ?_
   simp [tr_apply]
 
 /- English proof (translation)
-Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Simplify using `[tr_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tr_zero : tr (0 : FP r s p q →ₗ[ℂ] V2 ⊗[ℂ] V1) = 0 := by
   refine LinearMap.ext fun P => ?_
   simp [tr_apply]
 
 /- English proof (translation)
-Rewrite using `[← tr_tr f, h, tr_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_eq_zero {f : FP r s p q →ₗ[ℂ] V2 ⊗[ℂ] V1} (h : tr f = 0) : f = 0 := by
   rw [← tr_tr f, h, tr_zero]
@@ -101,9 +101,9 @@ local notation "FP" => Formalism.BasicNotions.TH.Pol
 variable {p q r s : ℕ}
 
 /- English proof (translation)
-Use `⟨fun Z => LinearMap.ext fun P => ?_, fun Z => LinearMap.ext fun P => ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun (hf.2 Z) (rename Prod.swap P)`. Simplify using `only [FockData.act1, FockData.act2, LinearMap.comp_apply] at h ⊢`. Rewrite using `[tr_apply, tr_apply, GlobalTheory.FockSwap.rename_fockAct1, h, comm_map']`. Establish `h` using `LinearMap.congr_fun (hf.1 Z) (rename Prod.swap P)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [FockData.act1, FockData.act2, LinearMap.comp_apply] at h ⊢`. Rewrite using `[tr_apply, tr_apply, GlobalTheory.FockSwap.rename_fockAct2, h, comm_map']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem intw_tr {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpData p q} {T2 : GrpData r s}
     (F : FockData T0 T1 T2) {T0' : GrpData (r * p + s * q) (r * q + s * p)} {T1' : GrpData r s}
@@ -119,9 +119,9 @@ theorem intw_tr {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpData p q
     rw [tr_apply, tr_apply, GlobalTheory.FockSwap.rename_fockAct2, h, comm_map']
 
 /- English proof (translation)
-Take `⟨hne, hmem⟩` from `hv`. Use `⟨fun h0 => hne (he (by rw [h0, map_zero])), ?_⟩` and prove the remaining obligations. Simplify using `only [hwSub, wtSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at hmem ⊢`. Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[← h, ← map_smul, ← map_sub, hmem.1 a, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, hmem.2 a b hab, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isHW_map {n m : ℕ} {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (act : Mat n m →ₗ[ℂ] Module.End ℂ V) (act' : Mat n m →ₗ[ℂ] Module.End ℂ W) (e : V →ₗ[ℂ] W)
@@ -136,9 +136,9 @@ theorem isHW_map {n m : ℕ} {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddC
   · rw [← h, hmem.2 a b hab, map_zero]
 
 /- English proof (translation)
-Simplify using `only [map_sum, map_smul, sum_inner, inner_sum, inner_smul_left, inner_smul_right, F.fockIP]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `only [if_true]`. Simplify using `[mul_assoc, mul_left_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `j hj hji`. Rewrite using `[if_neg (fun h => hji (hm hj hi h))]`. Simplify using the standard rewrite rules. Introduce `hi'`. Conclude with `absurd hi hi'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fock_inner_sum {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpData p q}
     {T2 : GrpData r s} (F : FockData T0 T1 T2) {ι : Type*} (t : Finset ι) (c : ι → ℂ)
@@ -155,7 +155,7 @@ theorem fock_inner_sum {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpD
   · intro hi'; exact absurd hi hi'
 
 /- English proof (translation)
-Use `conv_lhs => rw [P.as_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pol_as_sum (P : FP p q r s) : P = ∑ α ∈ P.support, coeff α P • monomial α 1 := by
   conv_lhs => rw [P.as_sum]
@@ -163,13 +163,13 @@ theorem pol_as_sum (P : FP p q r s) : P = ∑ α ∈ P.support, coeff α P • m
   rw [smul_monomial, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Establish `h1 : rename Prod.swap Φ = ∑ α ∈ Φ.support, coeff α Φ • monomial (Finsupp.mapDomain Prod.swap α) 1` using `by conv_lhs => rw [pol_as_sum Φ]`. Simplify using `only [map_sum, map_smul, rename_monomial]`. Establish `hinj : Set.InjOn (fun α : Ix r s × Ix p q →₀ ℕ => Finsupp.mapDomain Prod.swap α) Φ.support` using `fun a _ b _ h => Finsupp.mapDomain_injective Prod.swap_injective h`. Establish `e1` using `fock_inner_sum F Φ.support (fun α => coeff α Φ) _ hinj`. Establish `e2` using `fock_inner_sum F' Φ.support (fun α => coeff α Φ) id (Set.injOn_id _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [id] at e2`. Rewrite `e2` using `[← pol_as_sum Φ]`. Rewrite `e1` using `[← h1]`. Establish `hprod : ∀ α : Ix r s × Ix p q →₀ ℕ, (Finsupp.mapDomain Prod.swap α).prod (fun _ k => (k.factorial : ℂ)) = α.prod (fun _ k => (k.factorial : ℂ))`. Introduce `α`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finsupp.prod_equivMapDomain (Equiv.prodComm _ _) α (fun _ k => (k.factorial : ℂ))` as an intermediate fact. Rewrite `this` using `[Finsupp.equivMapDomain_eq_mapDomain]`. Conclude with `this`. Simplify using `only [hprod] at e1`. Rewrite `e1` using `[← e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `k1` using `inner_self_eq_norm_sq (𝕜 := ℂ) (F.ι (rename Prod.swap Φ))`. Establish `k2` using `inner_self_eq_norm_sq (𝕜 := ℂ) (F'.ι Φ)`. Rewrite `k1` using `[e1, k2]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 k1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_swap {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpData p q}
     {T2 : GrpData r s} (F : FockData T0 T1 T2) {T0' : GrpData (r * p + s * q) (r * q + s * p)}
@@ -209,9 +209,9 @@ local notation "FP" => Formalism.BasicNotions.TH.Pol
 variable {p q r s : ℕ}
 
 /- English proof (translation)
-Take `⟨hJ, h1, h2, hn⟩` from `h`. Establish `hinj : Function.Injective (rename Prod.swap : FP r s p q →ₐ[ℂ] FP p q r s).toLinearMap` using `rename_injective _ Prod.swap_injective`. Use `⟨⟨fun Z hZ => ?_, fun Z hZ => ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [FockData.act1]`. Conclude with `(GlobalTheory.FockSwap.minusPart_eq_zero_iff (Equiv.prodComm _ _) (fockAct2 r s p q Z) _ (GlobalTheory.FockSwap.rename_fockAct2 Z) Φ).1 (hJ.2 Z hZ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [FockData.act2]`. Conclude with `(GlobalTheory.FockSwap.minusPart_eq_zero_iff (Equiv.prodComm _ _) (fockAct1 r s p q Z) _ (GlobalTheory.FockSwap.rename_fockAct1 Z) Φ).1 (hJ.1 Z hZ)`. Conclude with `isHW_map F'.act2 F.act1 _ hinj (fun Z v => GlobalTheory.FockSwap.rename_fockAct2 Z v) Λ Φ h2`. Conclude with `isHW_map F'.act1 F.act2 _ hinj (fun Z v => GlobalTheory.FockSwap.rename_fockAct1 Z v) Λ' Φ h1`. Rewrite using `[norm_swap F F' Φ, hn]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jointHW_swap {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpData p q}
     {T2 : GrpData r s} (F : FockData T0 T1 T2) {T0' : GrpData (r * p + s * q) (r * q + s * p)}
@@ -233,21 +233,21 @@ theorem jointHW_swap {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpDat
   · rw [norm_swap F F' Φ, hn]
 
 /- English proof (translation)
-Introduce `X p q r s lam lam'`. Use `⟨fun hUp => ?_, fun hL => ?_, fun hiv => ?_⟩` and prove the remaining obligations. Introduce `MM f hf hne`. Establish `hf'` using `intw_tr (X.fock p q r s) (X.fock r s p q) (X.ds p q lam).HK MM.M f hf`. Establish `hne' : tr f ≠ 0` using `fun h0 => hne (by rw [← tr_tr f, h0, tr_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨N, hN, e, he, hr⟩, hΦ⟩` from `hUp MM (tr f) hf' hne'`. Use `⟨⟨N, hN, e, he, ?_⟩, fun Φ hJ => ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨P, rfl⟩`. Establish `hm : TensorProduct.comm ℂ _ _ (f P) ∈ LinearMap.range (tr f)` using `⟨rename Prod.swap P, by rw [tr_apply, rename_swap_swap]⟩`. Rewrite `hm` using `[hr]`. Take `⟨t, ht⟩` from `hm`. Use `⟨TensorProduct.comm ℂ _ _ t, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← comm_map', ht, comm_comm']`. Introduce and unpack `⟨t, rfl⟩`. Establish `hm : TensorProduct.comm ℂ _ _ (TensorProduct.map N.subtype LinearMap.id t) ∈ LinearMap.range (tr f)`. Rewrite using `[hr, comm_map']`. Conclude with `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨P, hP⟩` from `hm`. Use `⟨rename Prod.swap P, ?_⟩` and prove the remaining obligations. Rewrite `hP` using `[tr_apply]`. Use `congrArg (TensorProduct.comm ℂ _ _) hP` as an intermediate fact. Rewrite `this` using `[comm_comm', comm_comm']`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hJ'` using `jointHW_swap (X.fock p q r s) (X.fock r s p q) _ _ Φ hJ`. Take `⟨hne1, hu⟩` from `hΦ _ hJ'`. Establish `key : tr f (rename Prod.swap Φ) = TensorProduct.comm ℂ _ _ (f Φ)`. Rewrite using `[tr_apply, rename_swap_swap]`. Use `⟨fun h0 => hne1 (by rw [key, h0, map_zero]), fun f' hf'' hΦf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `hu (tr f') (intw_tr (X.fock p q r s) (X.fock r s p q) _ _ f' hf'') (by rw [key, tr_apply, rename_swap_swap, hΦf])`. Rewrite using `[← tr_tr f', h2, tr_tr]`. Take `⟨f₀, h₀, hne, hu⟩` from `hL`. Use `⟨tr f₀, intw_tr (X.fock r s p q) (X.fock p q r s) _ _ f₀ h₀, fun h0 => hne (tr_eq_zero h0), fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hu (tr g) (intw_tr (X.fock p q r s) (X.fock r s p q) _ _ g hg)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, by rw [← tr_tr g, hc, tr_smul]⟩`. Introduce `i h1 hir his MM f hf`. Conclude with `tr_eq_zero (hiv i h1 hir his MM (tr f) (intw_tr (X.fock p q (r - i) (s - i)) (X.fock (r - i) (s - i) p q) _ _ f hf))`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem swap_rule : ∀ (X : ProvA) (p q r s : ℕ) (lam : Ix p q → ℚ) (lam' : Ix r s → ℚ),
     (Formalism.MainNotions.SchurIrreducible.ARiiiUp X lam lam' → Formalism.MainNotions.SchurIrreducible.ARiiiDown X lam' lam) ∧

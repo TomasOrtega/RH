@@ -18,9 +18,9 @@ open GlobalTheory.Dict
 namespace GlobalTheory.Dict
 
 /- English proof (translation)
-Establish `hwv : (w : E) • v ∈ L`. Establish `h` using `L.smul_mem w hv`. Rewrite `h` using `[← algebraMap_smul E w v]`. Then use the resulting hypothesis. Take `⟨k, hk⟩` from `(hL.2 v).1 hv ((w : E) • v) hwv`. Unfold `eps1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[hk, ← Complex.exp_neg, Complex.exp_eq_exp_iff_exists_int]`. Use `⟨-k, ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaSignExpEF_inv_of_selfDual_lattice {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (L : Lt E r) (hL : SelfD X L) (w : 𝓞 E) (v : Fin r → E) (hv : v ∈ L) :
@@ -36,9 +36,9 @@ theorem thetaSignExpEF_inv_of_selfDual_lattice {E : Type} [Field E] [NumberField
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ r g X bas idx e x L y A hs hx hL θ hθ`. Take `⟨-, hall⟩` from `reads_existsUnique_theta E H Dw l Xo c r g X bas idx e x L y A hs hx hL 1 y.s`. Take `⟨hd, hper⟩` from `hall θ hθ`. Use `⟨hd, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h` using `hper v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[analyticFibre_principalBundle_sign_eq E H Dw l Xo c r g X bas idx e x L y A hs hx hL v hv, pow_one, thetaSignExpEF_inv_of_selfDual_lattice X L hL H.w0 v hv]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTheta1_of_reads_generator : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (x : Frame X.Ψ r) (L : Lt E r) (y : FrPt Xo c ℂ) (A : AnFib X bas idx e x L y), IsSympl X bas → x ∈ X.dom → SelfD X L → ∀ θ, A.Reads 1 y.s θ → IsTheta1 X bas idx (H.w0 : E) x L θ := by
   intro E _ _ _ H Dw l Xo c _ r g X bas idx e x L y A hs hx hL θ hθ

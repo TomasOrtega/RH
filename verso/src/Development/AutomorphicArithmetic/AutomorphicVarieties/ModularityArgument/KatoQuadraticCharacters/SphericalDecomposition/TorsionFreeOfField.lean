@@ -16,9 +16,7 @@ local instance (priority := high + 1) torsionFreeOfField (L Ω : Type) [Field L]
   DivisionSemiring.to_moduleIsTorsionFree
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((N : ℕ) : 𝓞 ℚ)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hN` after adjusting the coercions. Use `Filter.eventually_cofinite.2 ((Ideal.finite_factors h0).subset fun w hw => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_not] at hw`.
-
-Conclude with `Ideal.dvd_span_singleton.2 hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cofinite_notMem (N : ℕ) (hN : N ≠ 0) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 ℚ) in Filter.cofinite, ((N : ℕ) : 𝓞 ℚ) ∉ w.asIdeal := by
@@ -30,9 +28,9 @@ private theorem cofinite_notMem (N : ℕ) (hN : N ≠ 0) :
   exact Ideal.dvd_span_singleton.2 hw
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Establish `e : normV w = Ideal.absNorm w.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Rewrite using `[Nat.cast_mul, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `w.asIdeal.mul_mem_right _ (Ideal.absNorm_mem _)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_of_normV_dvd {N : ℕ} {w : HeightOneSpectrum (𝓞 ℚ)} (h : normV w ∣ N) :
     ((N : ℕ) : 𝓞 ℚ) ∈ w.asIdeal := by
@@ -43,11 +41,11 @@ private theorem mem_of_normV_dvd {N : ℕ} {w : HeightOneSpectrum (𝓞 ℚ)} (h
   exact w.asIdeal.mul_mem_right _ (Ideal.absNorm_mem _)
 
 /- English proof (translation)
-Establish `hcard : B.card = 2`. Establish `h1` using `congrArg natDegree h`. Rewrite `h1` using `[natDegree_map, Matrix.charpoly_natDegree_eq_dim, natDegree_multiset_prod_X_sub_C_eq_card]`. Simplify using `using h1.symm`. Take `⟨x, y, rfl⟩` from `Multiset.card_eq_two.1 hcard`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite `h`, the goal using `[Matrix.charpoly_fin_two]`. Simplify using `only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton, Multiset.prod_cons, Multiset.prod_singleton, Polynomial.map_add, Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_pow, map_X, map_C, Matrix.trace_smul, Matrix.det_smul, smul_eq_mul, map_mul, map_pow, …`. Establish `e0` using `congrArg (eval 0) h`. Establish `e1` using `congrArg (eval 1) h`. Simplify using `only [eval_add, eval_sub, eval_mul, eval_pow, eval_X, eval_C] at e0 e1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : φ M.det = x * y` using `by linear_combination e0`. Establish `ht : φ M.trace = x + y` using `by linear_combination e0 - e1`. Simplify using `only [hd, ht, C_add, C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem charpoly_scale {k : Type} [Field k] (φ : k →+* ℂ) (M : Matrix (Fin 2) (Fin 2) k) (c : k) (B : Multiset ℂ)
     (h : M.charpoly.map φ = (B.map fun b => X - C b).prod) :
@@ -70,7 +68,7 @@ private theorem charpoly_scale {k : Type} [Field k] (φ : k →+* ℂ) (M : Matr
   ring
 
 /- English proof (translation)
-Simplify using `only [zpow_zero, one_mul] at hP hQ`. Rewrite using `[charpoly_scale φ M c (algSat 2 q B) (h.trans hP.symm), ← hQ, hu]`. Simplify using `only [algSat, Multiset.bind_singleton, Multiset.map_map, Multiset.pure_def, Multiset.bind_def]`. Use `congrArg _ (Multiset.map_congr rfl fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Put the polynomial expressions in normal form.
 -/
@@ -87,11 +85,11 @@ private theorem scale_sat {k : Type} [Field k] (φ : k →+* ℂ) (M : Matrix (F
   ring_nf
 
 /- English proof (translation)
-Establish `key : ∀ W, IsInv (tw r χ) W ↔ IsInv r W` using `fun W => by`. Prove the components needed by the constructor for the conclusion. Introduce `h g v hv`. Use `W.smul_mem ((χ g : k)⁻¹) (h g v hv)` as an intermediate fact. Rewrite `this` using `[tw_val, Matrix.smul_mulVec, smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h g v hv`. Rewrite using `[tw_val, Matrix.smul_mulVec]`. Conclude with `W.smul_mem _ (h g v hv)`. Introduce `W hW`. Take `⟨W', hW', hc⟩` from `h W ((key W).1 hW)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨W', (key W').2 hW', hc⟩`.
+A detailed English derivation is pending.
 -/
 private theorem ss_twist {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ)
     (h : IsSSRep r) : IsSSRep (tw r χ) := by
@@ -108,9 +106,9 @@ private theorem ss_twist {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ �
   exact ⟨W', (key W').2 hW', hc⟩
 
 /- English proof (translation)
-Establish `hfin : {ζ : Ω | ζ ^ N = 1}.Finite` using `by classical`. Use `(Polynomial.nthRoots N (1 : Ω)).toFinset.finite_toSet.subset fun ζ hζ => ?_` and prove the remaining obligations. Simplify `hζ` using `[Polynomial.mem_nthRoots hN]`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hfin.isOpen_biInter fun ζ _ => stabilizer_isOpen_of_isIntegral (K := ℚ) ζ).mem_nhds ?_) fun s hs => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_iInter]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `fun ζ _ => Subgroup.one_mem _`. Simplify using `only [Set.mem_iInter] at hs`. Conclude with `hκ s fun ζ hζ => hs ζ hζ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isOpen_ker {Ω C : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [Group C] {N : ℕ} (hN : 1 ≤ N)
     {κ : G ℚ Ω →* C} (hκ : KillsMu N κ) : IsOpen (κ.ker : Set (G ℚ Ω)) := by
@@ -126,17 +124,15 @@ private theorem isOpen_ker {Ω C : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosu
     exact hκ s fun ζ hζ => hs ζ hζ
 
 /- English proof (translation)
-Take `⟨art, ha⟩ : ∃ art : Neutral.B1.Ideles ℚ →* Gab ℚ Ω, IsGlobalArtin art` from `P.toClassicalTheorems.litN.aut.art _ Ω`. Establish `ho` using `isOpen_ker hN hκ`. Establish `: IsGalois ℚ Ω` using `IsAlgClosure.isGalois ℚ Ω`. Establish `hfi : Finite (G ℚ Ω ⧸ κ.ker)` using `Subgroup.quotient_finite_of_isOpen _ ho`. Establish `hm : 0 < κ.ker.index` using `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨χ, ⟨h1, hL⟩, -⟩` from `exists_unique_hchar_of_finite_order ha ι κ (continuous_of_isOpen_ker' κ ho) hm (MonoidHom.ext fun s => by`. Rewrite using `[MonoidHom.pow_apply, ← map_pow]`. Conclude with `κ.ker.pow_index_mem s)`. Establish `hexpo : ∀ v, TR.expo χ v = 0` using `GlobalTheory.HenQ.expo_eq_zero_of_pow χ hm h1`. Take `⟨π, hinf, hsat⟩` from `P.toClassicalTheorems.newform k hk f 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `UpperTheory.V.Af.repNewform k hk 0 (π.twist χ) fun v => by`. Use `(hinf v).twist χ` as an intermediate fact. Rewrite `this` using `[hexpo v]`. Simplify using `using this`. Use `⟨g, ss_twist _ _ hf.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [hf.2, Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified χ), cofinite_notMem l hl.out.ne_zero, cofinite_notMem f.M f.pos.ne', cofinite_notMem g.M g.pos.ne'] with w hw hu hwl hwf hwg A hA`. Take `⟨B, hB, hpB⟩` from `hsat w fun h => hwf (mem_of_normV_dvd h)`. Take `⟨S, hS, hpS⟩` from `hg w fun h => hwg (mem_of_normV_dvd h)`. Take `rfl : S = B.map (· * χ.val w)` from `hS.unique (hB.twist hu)`. Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1 : κ s = 1` using `(hL.unr_iff ha (Or.inl hwl) hA).2 hu s hs`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[tw_val, e1, (hw A hA).1 s hs, Units.val_one, one_smul, Units.val_one]`. Establish `e1 : ι.toRingHom ((κ σ⁻¹ : (Qbar l)ˣ) : Qbar l) = (χ.val w : ℂ)`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val, hL.frob_unr ha (Or.inl hwl) hu hA hσ, inv_inv]`.
-
-Conclude with `ι.apply_symm_apply _`. Rewrite using `[tw_val]`. Conclude with `scale_sat ι.toRingHom _ _ B _ _ e1 _ _ ((hw A hA).2 σ hσ) hpB hpS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_att (P : Af.HypothesesH) {k : ℕ} (hk : 2 ≤ k) (f : Newform k) {l : ℕ} [hl : Fact l.Prime] {Ω : Type} [Field Ω]
     [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (V : G ℚ Ω →* GL (Fin 2) (Qbar l)) (hf : f.Att ι V)
@@ -177,11 +173,11 @@ end UpperTheory.V.Z.Kato.WeilSphericalRecords.TwistNewform
 
 open UpperTheory.V.Z.Kato.WeilSphericalRecords.TwistNewform in
 /- English proof (translation)
-Introduce `P l _ Ω _ _ _ ι e W _ he hA M φ hM hφ`. Take `⟨f, M', φ', hM', hφ', hf⟩` from `hA.modular`. Establish `hMM : 1 ≤ M * M'` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega))`. Establish `hκ : KillsMu (M * M') (φ * φ'⁻¹)` using `fun s hs => by`. Establish `h1 : φ s = 1` using `hφ s fun ζ hζ => hs ζ (by rw [pow_mul, hζ, one_pow])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : φ' s = 1` using `hφ' s fun ζ hζ => hs ζ (by rw [mul_comm, pow_mul, hζ, one_pow])`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, h1, h2, inv_one, one_mul]`. Take `⟨g, hg⟩` from `twist_att P (by omega) f ι _ hf (φ * φ'⁻¹) hMM hκ`. Use `⟨g, ?_⟩` and prove the remaining obligations. Use `hg using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `ext1 s`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [tw_val, smul_smul, MonoidHom.mul_apply, MonoidHom.inv_apply, ← Units.val_mul]`. Use `congr 2`. Rewrite using `[mul_comm (φ s) (φ' s)⁻¹, mul_assoc, ← mul_assoc (φ s), mul_comm _ (φ' s), inv_mul_cancel_left, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.WeilSphericalRecords.twNew :
     Af.HypothesesH → GlobalTheory.Ord2.TwNewQ := by

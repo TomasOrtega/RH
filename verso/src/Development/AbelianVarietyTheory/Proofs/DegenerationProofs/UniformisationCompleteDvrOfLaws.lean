@@ -18,9 +18,9 @@ open GlobalTheory.LN
 namespace GlobalTheory.LN
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 V _ _ _ A G _ _ s`. Take `⟨D, U, hL, hg, -⟩` from `GlobalTheory.T.exists_degenerationData_uniformisation_of_torsionCount (GlobalTheory.T.card_torsion_points_abelianVariety h1.globalFns h1.rigidity) h1 h2 V A G s`. Use `⟨D, U, hL, hg, ?_⟩` and prove the remaining obligations. Take `⟨hdvr, hcomp, hchar⟩` from `s.cdvr`. Establish `hadm : AdmBase V (IsLocalRing.maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hcomp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `F _ _ _ k hk p`. Take `⟨f, hf, -⟩` from `GlobalTheory.TorsionIso.torsion_eq ⟨h1, h2, h3, h4, h5⟩ V _ hadm D A G s.semi U F k hk`. Conclude with `⟨f p, (hf p _).2 rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem uniformisation_dvr : Laws → Laws2 → Laws3 → Laws4 → Laws5 → USt := by
   intro h1 h2 h3 h4 h5 V _ _ _ A G _ _ s

@@ -8,21 +8,19 @@ open UpperTheory.V.Af.Bc (cPl)
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
 /- English proof (translation)
-Introduce `hEn hP hG E _ _ _ hunr n hn π hreg hd`. Take `⟨l₁, hl⟩` from `hG E hunr n hn π hreg hd`. Use `⟨l₁, fun l₂ S hS Z hZ B τ hB hτ => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hst⟩` from `hl l₂ S hS Z hZ B τ hB hτ`. Use `⟨c, hc, fun φ hφ hr => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨J, _, D, B₁, hD, hInf, hbd⟩` from `hst φ hφ hr`. Establish `hoff : ∀ w : Pl E, ¬ IsSplitAt w → Off Z w`. Introduce `w hw`. Establish `hcw : cPl w = w`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hw (((hP E).2.1 w).2.2 h)`. Establish `hwZ : w ∉ Z` using `fun h => hw (hZ w h).2`. Conclude with `⟨hwZ, by rwa [hcw]⟩`. Set `good : J → Prop` to `fun j => ∀ w, ¬ IsSplitAt w → inv (B w) = B w → inv (B₁ j w) = B₁ j w`. Use `⟨{j // good j}, inferInstance, fun j => D j.1, fun j => B₁ j.1, fun j => hD j.1, fun j => hInf j.1, fun j => j.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hT hTZ e₁ e₂ ρ hρ hlt`. Establish `hbad : ∀ i : {j // ¬ good j}, ∃ w, ¬ IsSplitAt w ∧ inv (B w) = B w ∧ inv (B₁ i.1 w) ≠ B₁ i.1 w`. Introduce `i`. Establish `h` using `i.2`. Simplify using `only [good, not_forall] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨w, h1, h2, h3⟩` from `h`. Conclude with `⟨w, h1, h2, h3⟩`. Use `choose u hu1 hu2 hu3 using hbad`. Establish `hcard : ∀ j w, ¬ IsSplitAt w → (B₁ j w).card = n` using `fun j w hw => sat_card ((hD j).2 w (hoff w hw))`. Establish `hBcard : ∀ w, ¬ IsSplitAt w → (B w).card = n` using `fun w hw => (hB w (hoff w hw)).card`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T', e₁', e₂', hT'S, hT'Z, hT'e, hzero, hval, hgeom⟩` from `hEn E hunr n 0 S hS Z T hZ hT hTZ e₁ e₂ {j // ¬ good j} u (fun i => B₁ i.1) (fun _ => 0) (fun i => ⟨hu1 i, hcard _ _ (hu1 i), Multiset.card_zero, fun h => hu3 i h.1⟩)`. Establish `hvj : ∀ j, good j → val T' e₁' e₂' (B₁ j) 0 = val T e₁ e₂ (B₁ j) 0` using `fun j hj => hval (B₁ j) 0 fun i => ⟨hcard _ _ (hu1 i), Multiset.card_zero, hj _ (hu1 i) (hu2 i), Multiset.map_zero _⟩`. Establish `hvB : val T' e₁' e₂' B 0 = val T e₁ e₂ B 0` using `hval B 0 fun i => ⟨hBcard _ (hu1 i), Multiset.card_zero, hu2 i, Multiset.map_zero _⟩`. Establish `hsm` using `hbd T' hT'S hT'Z e₁' e₂' ρ hT'e hρ fun j => by`. Distinguish the cases in `hj : good j`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hvj j hj]`. Conclude with `hlt ⟨j, hj⟩`. Establish `h0 : val T' e₁' e₂' (B₁ j) 0 = 0` using `hzero ⟨j, hj⟩`. Rewrite using `[h0, norm_zero]`. Conclude with `hρ`.
-
-Simplify `hsm` using `only [hgeom, hvB]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.stableS :
     Enlarge → Places → StableBlockG → StableBlockS := by

@@ -9,65 +9,57 @@ open scoped ENNReal NNReal
 noncomputable section
 
 /- English proof (translation)
-Introduce `P H hP hH hHP τ β δ hτ hβ hδc hτP _ hτH hβH μ _ ν _ ρ _ hδ`. Establish `: LocallyCompactSpace H` using `hH.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: LocallyCompactSpace P` using `hP.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology H` using `inferInstanceAs (SecondCountableTopology (H : Set G))`. Establish `: SecondCountableTopology P` using `inferInstanceAs (SecondCountableTopology (P : Set G))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hUo : IsOpen (interior K)` using `isOpen_interior`. Establish `hU1 : (1 : G) ∈ interior K` using `mem_interior_iff_mem_nhds.2 hK1`. Use `set f : G → ℝ≥0∞ := (interior K).indicator 1 with hf_def`. Establish `hfm : Measurable f` using `measurable_one.indicator hUo.measurableSet`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : ∫⁻ x : H, f x ∂ν = ν (Subtype.val ⁻¹' interior K)`. Rewrite using `[← lintegral_indicator_one (hUo.preimage continuous_subtype_val).measurableSet]`. Use `congr 1`. Establish `hI0 : ∫⁻ x : H, f x ∂ν ≠ 0`. Rewrite using `[hI]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((hUo.preimage continuous_subtype_val).measure_pos ν ⟨1, hU1⟩).ne'`. Establish `hItop : ∫⁻ x : H, f x ∂ν ≠ ∞`. Rewrite using `[hI]`. Conclude with `((measure_mono (Set.preimage_mono interior_subset)).trans_lt (hH.isClosedEmbedding_subtypeVal.isCompact_preimage hK).measure_lt_top).ne`. Establish `hmul : ∀ s t, δ (s * t) = δ s * δ t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s t`. Establish `e1` using `hδ (s * t) f hfm`. Establish `e2 : ∫⁻ x : H, f (τ s * (τ t * x * (τ t)⁻¹) * (τ s)⁻¹) ∂ν = δ t * ∫⁻ x : H, f (τ s * x * (τ s)⁻¹) ∂ν` using `hδ t (fun z => f (τ s * z * (τ s)⁻¹)) (hfm.comp ((continuous_const.mul continuous_id).mul continuous_const).measurable)`. Establish `e3` using `hδ s f hfm`. Establish `e : ∫⁻ x : H, f (τ (s * t) * x * (τ (s * t))⁻¹) ∂ν = ∫⁻ x : H, f (τ s * (τ t * x * (τ t)⁻¹) * (τ s)⁻¹) ∂ν`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [map_mul, mul_inv_rev, mul_assoc]`. Rewrite `e1` using `[e, e2, e3, ← mul_assoc]`. Establish `h` using `(ENNReal.mul_left_inj hI0 hItop).1 e1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(ENNReal.coe_injective (by rw [ENNReal.coe_mul]; exact h)).symm.trans (mul_comm _ _)`. Establish `hone : δ 1 = 1`. Establish `e` using `hδ 1 f hfm`. Simplify using `only [map_one, one_mul, inv_one, mul_one] at e`. Establish `h` using `(ENNReal.mul_left_inj hI0 hItop).1 (e.symm.trans (one_mul _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h` after adjusting the coercions. Establish `hpos : ∀ t, δ t ≠ 0` using `fun t h => by`. Establish `e` using `hmul t t⁻¹`. Rewrite `e` using `[mul_inv_cancel, hone, h, zero_mul]`. Conclude with `one_ne_zero e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Φ : T × H → P` to `fun q => ⟨(q.2 : G) * τ q.1, P.mul_mem (hHP q.2.2) (hτP q.1)⟩`. Establish `hΦc : Continuous Φ` using `((continuous_subtype_val.comp continuous_snd).mul (hτ.comp continuous_fst)).subtype_mk _`. Establish `hΦm : Measurable Φ` using `hΦc.measurable`. Establish `hδm : Measurable fun t => (δ t : ℝ≥0∞)` using `(ENNReal.continuous_coe.comp hδc).measurable`. Set `m : Measure P` to `Measure.map Φ ((ρ.withDensity fun t => (δ t : ℝ≥0∞)).prod ν)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : ∀ ψ : P → ℝ≥0∞, Measurable ψ → ∫⁻ p, ψ p ∂m = ∫⁻ t, δ t * ∫⁻ x : H, ψ (Φ (t, x)) ∂ν ∂ρ`. Introduce `ψ hψ`. Rewrite using `[lintegral_map hψ hΦm, lintegral_prod (fun z => ψ (Φ z)) (hψ.comp hΦm).aemeasurable, lintegral_withDensity_eq_lintegral_mul _ hδm]`. Both sides reduce to the same expression. Conclude with `(hψ.comp hΦm).lintegral_prod_right'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ (p₀ : P) (ψ : P → ℝ≥0∞), Measurable ψ → ∫⁻ p, ψ (p₀ * p) ∂m = ∫⁻ p, ψ p ∂m`. Introduce `p₀ ψ hψ`. Rewrite using `[hm (fun p => ψ (p₀ * p)) (hψ.comp (measurable_const_mul p₀)), hm _ hψ]`. Use `set s := β p₀ with hs`. Set `y : H` to `⟨(p₀ : G) * (τ s)⁻¹, hβH p₀⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Set `ψ' : G → ℝ≥0∞` to `Function.extend Subtype.val ψ 0`. Establish `hψ' : Measurable ψ'` using `(MeasurableEmbedding.subtype_coe hP.measurableSet).measurable_extend hψ measurable_const`. Establish `hψ'e : ∀ p : P, ψ' p = ψ p` using `fun p => Subtype.val_injective.extend_apply ψ 0 p`. Establish `inner : ∀ t, ∫⁻ x : H, ψ (p₀ * Φ (t, x)) ∂ν = δ s * ∫⁻ x : H, ψ (Φ (s * t, x)) ∂ν`. Introduce `t`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∫⁻ x : H, ψ' ((y : G) * (τ s * x * (τ s)⁻¹) * τ (s * t)) ∂ν = δ s * ∫⁻ x : H, ψ' ((y : G) * x * τ (s * t)) ∂ν` using `hδ s (fun z => ψ' ((y : G) * z * τ (s * t))) (hψ'.comp ((continuous_const.mul continuous_id).mul continuous_const).measurable)`. Establish `h2 : ∫⁻ x : H, ψ' ((y : G) * x * τ (s * t)) ∂ν = ∫⁻ x : H, ψ (Φ (s * t, x)) ∂ν`. Rewrite using `[← lintegral_mul_left_eq_self (μ := ν) (fun x : H => ψ (Φ (s * t, x))) y]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hψ'e]`. Both sides reduce to the same expression. Rewrite using `[← h2, ← h1]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hψ'e]`. Use `congr 1`. Simplify using `only [Φ, y, Subgroup.coe_mul, map_mul]`. Use `group`. Use `Eq.trans ?_ (lintegral_mul_left_eq_self (μ := ρ) (fun u => (δ u : ℝ≥0∞) * ∫⁻ x : H, ψ (Φ (u, x)) ∂ν) s)` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[inner, hmul, ENNReal.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `: Measure.IsMulLeftInvariant m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Prove the components needed by the constructor for the conclusion. Introduce `p₀`. Use extensionality with `S hS`. Rewrite using `[Measure.map_apply (measurable_const_mul p₀) hS, ← lintegral_indicator_one hS, ← lintegral_indicator_one (measurable_const_mul p₀ hS)]`. Conclude with `hinv p₀ _ (measurable_one.indicator hS)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hβΦ : ∀ t (x : H), β (Φ (t, x)) = t`. Introduce `t x`. Establish `h` using `H.mul_mem (H.inv_mem x.2) (hβH (Φ (t, x)))`. Establish `h' : τ (t * (β (Φ (t, x)))⁻¹) ∈ H`. Simplify `h` using `[Φ, map_mul, map_inv, mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mul_inv_eq_one.1 (hτH _ h')).symm`. Set `α : P → H` to `fun p => ⟨(p : G) * (τ (β p))⁻¹, hβH p⟩`. Establish `hα : Continuous α` using `(continuous_subtype_val.mul (hτ.comp hβ).inv).subtype_mk _`. Establish `hαΦ : ∀ t (x : H), α (Φ (t, x)) = x`. Introduce `t x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [α, hβΦ]`. Simplify using `[Φ]`. Establish `: IsFiniteMeasureOnCompacts m`. Prove the components needed by the constructor for the conclusion.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `K hK`. Establish `hL : IsCompact (closure K)` using `hK.closure`. Use `(measure_mono subset_closure).trans_lt ?_` and prove the remaining obligations. Establish `hLm : MeasurableSet (closure K)` using `isClosed_closure.measurableSet`. Take `⟨C, hC⟩` from `(hL.image hβ).bddAbove_image hδc.continuousOn`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lintegral_indicator_one hLm, hm _ (measurable_one.indicator hLm)]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun t => ?_` and prove the remaining obligations. Distinguish the cases in `ht : t ∈ β '' closure K`. Rewrite using `[Set.indicator_of_mem ht] gcongr`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hC ⟨t, ht, rfl⟩` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : Φ (t, x) ∈ closure K`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (show x ∈ α '' closure K from ⟨Φ (t, x), hx, hαΦ t x⟩)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx]`. Conclude with `bot_le`. Use `_ ≤ 1 * ν (α '' closure K) := lintegral_indicator_const_le _ _`. Use `_ = ν (α '' closure K) := one_mul _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ∀ x : H, (closure K).indicator (1 : P → ℝ≥0∞) (Φ (t, x)) = 0` using `fun x => Set.indicator_of_notMem (fun hx => ht ⟨Φ (t, x), hx, hβΦ t x⟩) _`. Simplify using `[h0]`. Use `_ ≤ (C : ℝ≥0∞) * ν (α '' closure K) * ρ (β '' closure K) := lintegral_indicator_const_le _ _`. Use `_ < ∞ := ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.coe_lt_top (hL.image hα).measure_lt_top) (hL.image hβ).measure_lt_top`. Establish `hm0 : m ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Establish `e` using `hm (fun _ => 1) measurable_const`. Rewrite `e` using `[h0, lintegral_zero_measure]`. Simplify using `only [lintegral_const, one_mul] at e`. Rewrite `e` using `[lintegral_mul_const _ hδm]`.
-
-Establish `hν : ν Set.univ ≠ 0` using `isOpen_univ.measure_ne_zero ν Set.univ_nonempty`. Establish `hρ : ∫⁻ t, (δ t : ℝ≥0∞) ∂ρ ≠ 0`. Rewrite using `[Ne, lintegral_eq_zero_iff hδm]`. Introduce `h`. Establish `hF : ∀ᵐ _t ∂ρ, False` using `h.mono fun t ht => hpos t (by simpa using ht)`.
-
-Rewrite `hF` using `[Filter.eventually_false_iff_eq_bot, ae_eq_bot]`. Conclude with `isOpen_univ.measure_ne_zero ρ Set.univ_nonempty (by rw [hF]; rfl)`. Conclude with `mul_ne_zero hρ hν e.symm`. Establish `hsc` using `Measure.isMulLeftInvariant_eq_smul m μ`. Use `set c₀ := Measure.haarScalarFactor m μ with hc₀`.
-
-Establish `hc0 : c₀ ≠ 0`. Introduce `h`. Apply `hm0` to reduce the goal to its premises. Rewrite using `[hsc, h, zero_smul]`. Use `⟨c₀⁻¹, inv_ne_zero hc0, fun φ hφ => ?_⟩` and prove the remaining obligations.
-
-Establish `key : ∫⁻ p, φ p ∂m = ∫⁻ t, δ t * ∫⁻ x : H, φ (x * τ t) ∂ν ∂ρ` using `hm _ (hφ.comp continuous_subtype_val.measurable)`. Rewrite `key` using `[hsc, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[← key, ENNReal.coe_inv hc0, ← mul_assoc, ENNReal.inv_mul_cancel (by exact_mod_cast hc0) ENNReal.coe_ne_top, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SemidirectHaar.proof (G T : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]

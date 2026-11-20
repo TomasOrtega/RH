@@ -30,7 +30,7 @@ Both sides reduce to the same expression.
     (ofL2Summand V hV hirr).carrier = summandCuspForms V := rfl
 
 /- English proof (translation)
-The claim follows from `topologicalClosure_map_ofSummand V hV hirr _`.
+A detailed English derivation is pending.
 -/
 theorem topologicalClosure_map_ofL2Summand (V : Submodule ℂ (CuspL2 μ)) [CompleteSpace V]
     (hV : (cuspRepT μ).IsInvariant V) (hirr : ((cuspRepT μ).restrict V hV).IsIrreducible) :
@@ -38,7 +38,7 @@ theorem topologicalClosure_map_ofL2Summand (V : Submodule ℂ (CuspL2 μ)) [Comp
   topologicalClosure_map_ofSummand V hV hirr _
 
 /- English proof (translation)
-The claim follows from `(ofL2Summand V hV hirr).nonempty_adelicDecomposition`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_adelicDecomposition_ofL2Summand (V : Submodule ℂ (CuspL2 μ)) [CompleteSpace V]
     (hV : (cuspRepT μ).IsInvariant V) (hirr : ((cuspRepT μ).restrict V hV).IsIrreducible) :
@@ -67,7 +67,7 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 variable (μ : Measure (Reduction.normOneGL K n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Take `⟨V, hVmin, hVW⟩` from `UnitaryRep.exists_isMinimal_le (π := cuspRepT μ) (μ := μ) (fun f => isCompactOperator_cuspRep μ f) hWc hW hW0`. Establish `: CompleteSpace V` using `hVmin.1.completeSpace_coe`. Establish `hirr` using `UnitaryRep.isIrreducible_restrict_of_isMinimal hVmin.2.1 hVmin`. Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (summandCuspForms_ne_bot μ V hVmin.2.1 hirr)`. Conclude with `⟨φ, hφ.1, hφ0, hVW hφ.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cuspForm_mem_of_ne_bot {W : Submodule ℂ (CuspL2 μ)} (hWc : IsClosed (W : Set (CuspL2 μ)))
     (hW : (cuspRepT μ).IsInvariant W) (hW0 : W ≠ ⊥) :
@@ -80,11 +80,9 @@ theorem exists_cuspForm_mem_of_ne_bot {W : Submodule ℂ (CuspL2 μ)} (hWc : IsC
   exact ⟨φ, hφ.1, hφ0, hVW hφ.2⟩
 
 /- English proof (translation)
-Use `set Y := ((centralCuspForms K n).map (cuspVecL μ)).topologicalClosure`. Establish `hYc : IsClosed (Y : Set (CuspL2 μ))` using `Submodule.isClosed_topologicalClosure _`. Establish `: CompleteSpace Y` using `hYc.completeSpace_coe`. Establish `hY : (cuspRepT μ).IsInvariant Y` using `isInvariant_topologicalClosure_map μ le_rfl (fun X φ hφ => ρ_mem_centralCuspForms X hφ) (fun k φ hφ => σ_mem_centralCuspForms k hφ) (fun g φ hφ => finRepCusp_mem_centralCuspForms g hφ)`. Rewrite using `[← Submodule.orthogonal_eq_bot_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Take `⟨φ, hφ, hφ0, hφY⟩` from `exists_cuspForm_mem_of_ne_bot μ (Submodule.isClosed_orthogonal Y) hY.orthogonal h0`. Establish `hmem : cuspVecL μ φ ∈ Y` using `Submodule.le_topologicalClosure _ ⟨φ, hφ, rfl⟩`. Establish `h1` using `Submodule.inner_right_of_mem_orthogonal hmem hφY`. Rewrite `h1` using `[inner_self_eq_zero]`.
-
-Conclude with `hφ0 (eq_zero_of_cuspVecL_eq_zero hφ h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalClosure_map_centralCuspForms :
     ((centralCuspForms K n).map (cuspVecL μ)).topologicalClosure = ⊤ := by

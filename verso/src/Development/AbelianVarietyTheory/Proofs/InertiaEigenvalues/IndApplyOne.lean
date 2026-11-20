@@ -13,14 +13,14 @@ def D0 (G : Type) [Group G] : AddSubgroup (G → ℂ) :=
     f = ind H (fun h => (χ h : ℂ)) - ind H (fun _ => 1)}
 
 /- English proof (translation)
-The claim follows from `(indAddHomComplex T).map_sub a b`.
+A detailed English derivation is pending.
 -/
 theorem ind_sub {G : Type} [Group G] [Finite G] (T : Subgroup G) (a b : T → ℂ) :
     ind T (a - b) = ind T a - ind T b :=
   (indAddHomComplex T).map_sub a b
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite G`. Simplify using `only [ind, finsum_eq_sum_of_fintype, ext0]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ind_const {G : Type} [Group G] [Finite G] (T : Subgroup G) (c : ℂ) (g : G) :
     ind T (fun _ => c) g = c * ind T (fun _ => 1) g := by
@@ -32,9 +32,9 @@ theorem ind_const {G : Type} [Group G] [Finite G] (T : Subgroup G) (c : ℂ) (g 
   split_ifs <;> ring
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite G`. Establish `h1 : ∀ x : G, ext0 T ψ (x⁻¹ * 1 * x) = ψ 1` using `fun x => by`. Establish `e : x⁻¹ * 1 * x = 1` using `by group`. Simplify using `only [ext0, e, dif_pos T.one_mem]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [ind, finsum_eq_sum_of_fintype]`. Rewrite using `[Finset.sum_congr rfl (fun x _ => h1 x), Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card, ← T.card_mul_index]`. Establish `: (Nat.card T : ℂ) ≠ 0` using `by exact_mod_cast (Nat.card_pos (α := T)).ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ind_apply_one {G : Type} [Group G] [Finite G] (T : Subgroup G) (ψ : T → ℂ) :
     ind T ψ 1 = (T.index : ℂ) * ψ 1 := by
@@ -52,9 +52,9 @@ theorem ind_apply_one {G : Type} [Group G] [Finite G] (T : Subgroup G) (ψ : T �
   field_simp
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite G`. Use function extensionality and compare the values at `g`. Simplify using `only [ind, finsum_eq_sum_of_fintype, ext0, Subgroup.mem_top, dite_true, hF]`. Establish `hc : Nat.card {x : G // True} = Nat.card G` using `Nat.card_congr (Equiv.subtypeUnivEquiv (fun _ => trivial))`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card, hc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (Nat.card G : ℂ) ≠ 0` using `by exact_mod_cast (Nat.card_pos (α := G)).ne'`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ind_top {G : Type} [Group G] [Finite G] (F : G → ℂ) (hF : ∀ g x : G, F (x⁻¹ * g * x) = F g) :
     ind (⊤ : Subgroup G) (fun h => F h) = F := by
@@ -68,7 +68,7 @@ theorem ind_top {G : Type} [Group G] [Finite G] (F : G → ℂ) (hF : ∀ g x : 
   field_simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [GlobalTheory.Published.indFun, ind, finsum_eq_sum_of_fintype, ext0]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem indFun_eq_ind {G : Type} [Group G] [Fintype G] (H : Subgroup G) (f : H → ℂ) :
     GlobalTheory.Published.indFun H f = ind H f := by

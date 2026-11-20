@@ -9,9 +9,9 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.GaugeEx.Polar
 
 /- English proof (translation)
-Establish `hs : sigR R σ (algebraMap R (R ⊗[F] E) r) = algebraMap R (R ⊗[F] E) r`. Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`. Establish `h : hR R σ J (algebraMap R (R ⊗[F] E) r • z) (algebraMap R (R ⊗[F] E) r • z) = (r * r) • hR R σ J z z`. Rewrite using `[Algebra.smul_def (r * r), map_mul]`. Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, hs, Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [qR, h, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qR_scalar {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (R : Type) [CommRing R] [Algebra F R] {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (r : R)
@@ -29,7 +29,7 @@ theorem qR_scalar {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `[lrAct, Matrix.smul_mulVec, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lrAct_scalar {S : Type} [CommRing S] {n M : ℕ} (c : S) (X : Fin n → Fin M → S) :
     lrAct (c • (1 : Matrix (Fin M) (Fin M) S)) 1 X = c • X := by
@@ -37,21 +37,19 @@ theorem lrAct_scalar {S : Type} [CommRing S] {n M : ℕ} (c : S) (X : Fin n → 
   simp [lrAct, Matrix.smul_mulVec, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ R _ _ _ _ _ _ _ _ _ hN M J lam ν β m hlam hν hβ hfib W ρ hW hρ f hf hf0`. Take `⟨fib, hfam, hm⟩` from `id hfib`. Establish `h2` using `hfam.2.1 f hf`. Rewrite `h2` using `[Measure.restrict_univ]`. Rewrite using `[h2, ← lintegral_indicator hW]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b ∈ W`. Rewrite using `[Set.indicator_of_mem hb]`. Take `⟨hr, hrb⟩` from `hρ b hb`. Use `set c : R ⊗[F] E := algebraMap R (R ⊗[F] E) (ρ b) with hc`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdet : (c • (1 : Matrix (Fin M) (Fin M) (R ⊗[F] E))).det = c ^ M`. Simplify using the standard rewrite rules. Establish `hcu : IsUnit c` using `hr.map _`. Establish `h1` using `GlobalTheory.GaugeEx.fibAt_similitude F E σ R hN M J J lam ν β (ρ b * ρ b) m (c • (1 : Matrix (Fin M) (Fin M) (R ⊗[F] E))) hlam hν (by rw [hdet]; exact hcu.pow M) (hr.mul hr) (fun z => by`. Rewrite using `[Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `qR_scalar σ R J (ρ b) z) hfib`. Rewrite `h1` using `[hrb, hdet]`. Establish `hbu : IsUnit b` using `hrb ▸ (hr.mul hr).mul hβ`. Establish `h3` using `(GlobalTheory.GaugeEx.FibBasic.fibAt_basic F E σ R hN M J _ ν b _ hν hbu h1).2.2 (fib b) ⟨fib, hfam, rfl⟩`. Establish `hl : lrAct (n` using `1) (c • (1 : Matrix (Fin M) (Fin M) (R ⊗[F] E))) 1 = fun X => c • X :=`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun X => lrAct_scalar c X`. Establish `hcont : Continuous fun X : Fin 1 → Fin M → R ⊗[F] E => c • X` using `continuous_const_smul c`. Rewrite using `[h3, hl, lintegral_smul_measure, lintegral_map hf hcont.measurable]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hb]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hfam.1 b`. Establish `hae : f =ᵐ[fib b] 0`. Use `measure_mono_null (fun X hX => ?_) h1` and prove the remaining obligations. Introduce `hX'`. Apply `hX` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hf0` to reduce the goal to its premises. Establish `: qR R σ J (X 0) = b` using `hX'.1`. Rewrite using `[this]`. Conclude with `hb`. Rewrite using `[lintegral_congr_ae hae]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polar : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R], Nice R → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (lam : Measure (R ⊗[F] E)) (ν : Measure R) (β : R) (m : Measure (Fin 1 → Fin M → R ⊗[F] E)), lam.IsAddHaarMeasure → ν.IsAddHaarMeasure → IsUnit β → FibAt R σ J (tupMeas lam 1 M) ν β m → ∀ (W : Set R) (ρ : R → R), MeasurableSet W → (∀ b ∈ W, IsUnit (ρ b) ∧ ρ b * ρ b * β = b) → ∀ f : (Fin 1 → Fin M → R ⊗[F] E) → ℝ≥0∞, Measurable f → (∀ X, qR R σ J (X 0) ∉ W → f X = 0) → ∫⁻ X, f X ∂(tupMeas lam 1 M) = ∫⁻ b in W, ((modu (R ⊗[F] E) (algebraMap R (R ⊗[F] E) (ρ b) ^ M) * (modu R (ρ b * ρ b))⁻¹ : ℝ≥0) : ℝ≥0∞) * ∫⁻ X, f (algebraMap R (R ⊗[F] E) (ρ b) • X) ∂m ∂ν := by
   intro F E _ _ _ _ _ σ R _ _ _ _ _ _ _ _ _ hN M J lam ν β m hlam hν hβ hfib W ρ hW hρ f hf hf0

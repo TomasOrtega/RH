@@ -10,9 +10,9 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands Glo
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil`. Express the relevant statement in the definitionally equal form `(WD.lpZero h).lpTw s = WD.lpZero h`. Rewrite using `[WD.lpZero, WD.lpTw_mk]`. Conclude with `WD.sound ⟨.refl _ _, fun _ _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩`.
+Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cons x L ih`. Express the relevant statement in the definitionally equal form `(x.lpSum (sumList L)).lpTw s = (x.lpTw s).lpSum (sumList (L.map fun x => x.lpTw s))`. Rewrite using `[WD.lpTw_sum, ih]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tw_sumList {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} (s : ℝ) (L : List (WD h)) :
@@ -27,13 +27,13 @@ private theorem tw_sumList {E Ω : Type} [Field E] [NumberField E] [Field Ω] [A
     rw [WD.lpTw_sum, ih]
 
 /- English proof (translation)
-Introduce `H E Ω _ _ _ _ _ _ n c a d hn P w ρ σ _ hP hS τ e A h rc hrc`. Establish `L` using `H.litN.loc`. Establish `h1` using `GlobalTheory.FormDict.RecTLaws.locProd_eq hrc hn σ τ e`. Establish `h2 : ∀ i, rc (cls (ParLaws.toRep (σ i))) = sumList ((List.range (d i)).map fun k : ℕ => (rc (cls (ParLaws.toRep (ρ i)))).lpTw (((d i : ℝ) - 1) / 2 - k))` using `fun i => by`. Establish `hd : ∑ _ : Fin (d i), a i = d i * a i` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.local_langlands_speh_product _ _ _ w _ _ hrc (GlobalTheory.T.generic_unitary_dual_gl L.unit L.sq L.gen L.multi L.cos) L.cos (a i) (d i) _ hd (ρ i) (σ i) (hS i).1 (GlobalTheory.CuspRep.Generic.isGeneric_of_isLocComp E (a i) (P i) w (ρ i) (hP i)) (GlobalTheory.Discre …`. Rewrite using `[rec_algNorm hrc]`. Express the relevant statement in the definitionally equal form `_ = (rc (cls (ParLaws.toRep τ))).lpTw _`. Rewrite using `[h1, tw_sumList, List.map_ofFn]`. Use `congrArg sumList (congrArg List.ofFn (funext fun i => ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.comp_apply, h2, tw_sumList, List.map_map, List.ofFn_eq_map, ← List.map_coe_finRange_eq_range, List.map_map]`. Use `congrArg sumList (List.map_congr_left fun k _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, WD.lpTw_add]`. Use `congrArg₂ WD.lpTw rfl ?_` and prove the remaining obligations. Simplify using `only [ex]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.total_reciprocity :
     HypothesesH → RecTot := by

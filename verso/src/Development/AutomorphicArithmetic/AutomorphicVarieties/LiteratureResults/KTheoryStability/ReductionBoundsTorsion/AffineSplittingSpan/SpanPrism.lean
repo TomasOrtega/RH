@@ -23,14 +23,14 @@ theorem prism_succ (φ : Y → Y) {n : ℕ} (F : (Fin (n + 2) → Y) → ℝ) (y
       prism φ (fun w => F (Fin.cons (y 0) w)) (Fin.tail y) := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `funext j; refine Fin.cases ?_ (fun k => ?_) j <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem comp_cons' {Z : Type} (φ : Y → Z) {n : ℕ} (a : Y) (w : Fin n → Y) :
     (fun i => φ ((Fin.cons a w : Fin (n + 1) → Y) i)) = Fin.cons (φ a) (fun i => φ (w i)) := by
   funext j; refine Fin.cases ?_ (fun k => ?_) j <;> simp
 
 /- English proof (translation)
-Rewrite using `[prism_succ]`. Simplify using `only [Fin.cons_zero, Fin.tail_cons, comp_cons']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prism_cons (φ : Y → Y) {n : ℕ} (F : (Fin (n + 2) → Y) → ℝ) (a : Y) (w : Fin n → Y) :
     prism φ F (Fin.cons a w) = F (Fin.cons a (Fin.cons (φ a) (fun i => φ (w i)))) -
@@ -39,26 +39,26 @@ theorem prism_cons (φ : Y → Y) {n : ℕ} (F : (Fin (n + 2) → Y) → ℝ) (a
   simp only [Fin.cons_zero, Fin.tail_cons, comp_cons']
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qj27.dc_cons F a w`.
+A detailed English derivation is pending.
 -/
 theorem dc_cons {m : ℕ} (F : (Fin (m + 2) → Y) → ℝ) (a : Y) (w : Fin (m + 2) → Y) :
     dc F (Fin.cons a w) = F w - dc (fun w' => F (Fin.cons a w')) w :=
   _root_.UpperTheory.Reformulated.B.Qj27.dc_cons F a w
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [dc, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dc_sub {m : ℕ} (F G : (Fin (m + 1) → Y) → ℝ) : dc (F - G) = dc F - dc G := by
   funext y; simp only [dc, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [dc, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dc_add {m : ℕ} (F G : (Fin (m + 1) → Y) → ℝ) : dc (F + G) = dc F + dc G := by
   funext y; simp only [dc, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [dc, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dc_smul {m : ℕ} (r : ℝ) (F : (Fin (m + 1) → Y) → ℝ) : dc (r • F) = r • dc F := by
   funext y; simp only [dc, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
@@ -66,7 +66,7 @@ theorem dc_smul {m : ℕ} (r : ℝ) (F : (Fin (m + 1) → Y) → ℝ) : dc (r �
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[dc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dc_zero {m : ℕ} : dc (0 : (Fin (m + 1) → Y) → ℝ) = 0 := by
   funext y; simp [dc]
@@ -78,7 +78,7 @@ theorem dc_comp {Z : Type} {m : ℕ} (F : (Fin (m + 1) → Z) → ℝ) (ψ : Y �
     dc (fun w => F (fun i => ψ (w i))) y = dc F (fun i => ψ (y i)) := rfl
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => by funext y; simp [prism] | n + 1, F, G => by funext y simp only [prism_succ, Pi.sub_apply] have := prism_sub φ (n := n) (fun w => F (Fin.cons (y 0) w)) (fun w => G (Fin.cons (y 0) w)) have h2 : (fun w => F (Fin.cons (y 0) w) - G (Fin.cons (y 0) w)) = (fun w => F (Fi …`.
+A detailed English derivation is pending.
 -/
 theorem prism_sub (φ : Y → Y) : ∀ {n : ℕ} (F G : (Fin (n + 1) → Y) → ℝ),
     prism φ (F - G) = prism φ F - prism φ G
@@ -93,7 +93,7 @@ theorem prism_sub (φ : Y → Y) : ∀ {n : ℕ} (F G : (Fin (n + 1) → Y) → 
     ring
 
 /- English proof (translation)
-The claim follows from `| 0, F, y => by simp [dc, prism, Fin.sum_univ_succ, Fin.tail] have h1 : (Fin.cons (y 0) (fun i : Fin 1 => φ (y (Fin.succAbove 1 i))) : Fin 2 → Y) = fun j => (Fin.cons (y 0) (fun i => φ (y i)) : Fin 3 → Y) (Fin.succAbove 2 j) := by funext j; fin_cases j <;> rfl have h2 : (fun j => …`.
+A detailed English derivation is pending.
 -/
 theorem prism_dc (φ : Y → Y) : ∀ (m : ℕ) (F : (Fin (m + 2) → Y) → ℝ) (y : Fin (m + 2) → Y),
     dc (prism φ F) y + prism φ (dc F) y = F (fun i => φ (y i)) - F y
@@ -133,14 +133,14 @@ theorem prism_dc (φ : Y → Y) : ∀ (m : ℕ) (F : (Fin (m + 2) → Y) → ℝ
     linarith
 
 /- English proof (translation)
-Apply the tactic sequence `funext j; refine Fin.cases ?_ (fun k => ?_) j <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_cons {P : Type} [Group P] (h a : P) {n : ℕ} (w : Fin n → P) :
     (fun i => h * (Fin.cons a w : Fin (n + 1) → P) i) = Fin.cons (h * a) (fun i => h * w i) := by
   funext j; refine Fin.cases ?_ (fun k => ?_) j <;> simp
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => rfl | n + 1, F, y => by rw [prism_succ, prism_succ] have ih := prism_mul φ h (n := n) (fun w => F (Fin.cons (h * y 0) w)) (Fin.tail y) have et : Fin.tail (fun i => h * y i) = fun i => h * Fin.tail y i := rfl rw [et, ih, mul_cons] congr 1 · congr 1; congr 1; funext i; …`.
+A detailed English derivation is pending.
 -/
 theorem prism_mul {P : Type} [Group P] (φ : P → P) (h : P) : ∀ {n : ℕ} (F : (Fin (n + 1) → P) → ℝ)
     (y : Fin n → P), prism φ F (fun i => h * y i) =
@@ -156,7 +156,7 @@ theorem prism_mul {P : Type} [Group P] (φ : P → P) (h : P) : ∀ {n : ℕ} (F
     · congr 1; funext z; rw [mul_cons]
 
 /- English proof (translation)
-Introduce `g hg y`. Rewrite using `[prism_mul]`. Establish `e1 : (fun z => g⁻¹ * φ (g * z)) = φ` using `by funext z; rw [hφ g hg, inv_mul_cancel_left]`. Establish `e2 : (fun z : Fin (n + 1) → P => F (fun i => g * z i)) = F` using `by funext z; exact hF g hg z`. Rewrite using `[e1, e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prism_inv {P : Type} [Group P] (φ : P → P) (S : Set P) (hφ : ∀ g ∈ S, ∀ z, φ (g * z) = g * φ z)
     {n : ℕ} (F : (Fin (n + 1) → P) → ℝ) (hF : InvS S F) : InvS S (prism φ F) := by
@@ -167,7 +167,7 @@ theorem prism_inv {P : Type} [Group P] (φ : P → P) (S : Set P) (hφ : ∀ g �
   rw [e1, e2]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, _ => rfl | n + 1, F, y, hF, hy => by rw [prism_succ] have h1 : F (Fin.cons (y 0) (fun i => φ (y i))) = 0 := by apply hF; intro i; refine Fin.cases ?_ (fun k => ?_) i · simpa using hy 0 · simpa using hφ _ (hy k) have h2 := prism_eq_zero_of_set φ S hφ (n := n) (fun w …`.
+A detailed English derivation is pending.
 -/
 theorem prism_eq_zero_of_set (φ : Y → Y) (S : Set Y) (hφ : ∀ z ∈ S, φ z ∈ S) : ∀ {n : ℕ}
     (F : (Fin (n + 1) → Y) → ℝ) (y : Fin n → Y), (∀ z : Fin (n + 1) → Y, (∀ i, z i ∈ S) → F z = 0) →
@@ -185,7 +185,7 @@ theorem prism_eq_zero_of_set (φ : Y → Y) (S : Set Y) (hφ : ∀ z ∈ S, φ z
     rw [h1, h2, sub_zero]
 
 /- English proof (translation)
-The claim follows from `| 0, F, y, hF => by rw [prism_succ, hF _ (by simp)]; simp [prism] | n + 1, F, y, hF => by rw [prism_succ, hF _ (by simp)] rw [prism_eq_zero_of_head φ (n := n) (fun w => F (Fin.cons (y 0) w)) (Fin.tail y) (fun z _ => hF _ (by simp)), sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem prism_eq_zero_of_head (φ : Y → Y) : ∀ {n : ℕ} (F : (Fin (n + 2) → Y) → ℝ) (y : Fin (n + 1) → Y),
     (∀ z : Fin (n + 2) → Y, z 0 = y 0 → F z = 0) → prism φ F y = 0

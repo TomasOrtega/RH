@@ -21,17 +21,17 @@ noncomputable section
 namespace Zz
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.langlands_single_segment_is_segment_rep`.
+A detailed English derivation is pending.
 -/
 theorem zblsegsingle : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (Δ : Segment k) (N : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsL {Δ} π → IsLSeg Δ π := GlobalTheory.T.langlands_single_segment_is_segment_rep
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.square_integrable_single_segment`.
+A detailed English derivation is pending.
 -/
 theorem zbz1core : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], Zc.LSocleGL k → Zl.CasselmanNecSq k → Zc.LSegExists k → ∀ (𝔪 : Multiset (Segment k)) (N : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), 1 ≤ N → IsSmooth π → π.IsIrreducible → IsSqIntCoeff π → IsL 𝔪 π → 𝔪.card = 1 := GlobalTheory.T.square_integrable_single_segment
 
 /- English proof (translation)
-Take `⟨𝔪, h𝔪⟩` from `hE k δ`. Establish `hc` using `zbz1core k hS hC hL 𝔪 δ.1 δ.rep h1 δ.2.rep.smooth δ.2.rep.irr hδ h𝔪`. Take `⟨Δ, rfl⟩` from `Multiset.card_eq_one.1 hc`. Conclude with `⟨Δ, zblsegsingle k Δ δ.1 δ.rep h𝔪⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sqInt_isLSeg (hE : GlobalTheory.Published.LanglandsExhaustionGL) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (hS : Zc.LSocleGL k)
     (hC : Zl.CasselmanNecSq k) (hL : Zc.LSegExists k) (δ : IrrGL k) (h1 : 1 ≤ δ.1) (hδ : IsSqIntCoeff δ.rep) :

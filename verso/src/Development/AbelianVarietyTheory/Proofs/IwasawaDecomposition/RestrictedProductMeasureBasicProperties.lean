@@ -10,7 +10,7 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.GaugeEx.ProdBasic
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem repr_map {F E R R' : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
     [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R') {d : ℕ} (b : Module.Basis (Fin d) F E)
@@ -30,9 +30,9 @@ def box (S : Finset (HeightOneSpectrum (𝓞 F))) : Set (Fin n → Fin M → AF 
   {X | ∀ v ∉ S, projV v (projFin X) ∈ latV b v}
 
 /- English proof (translation)
-Establish `h : box (n` using `n) (M := M) b S = ⋂ a, ⋂ i, ⋂ k, (fun X : Fin n → Fin M → AF F ⊗[F] E => ((Algebra.TensorProduct.basis (AF F) b).coord k (X a i)).2) ⁻¹' {x : Af F | ∀ v, v ∉ S → x.1 v ∈ (v.adicCompletionIntegers F : Set (v.adicCompletion F))} := by`. Use extensionality with `X`. Simplify using `only [box, latV, projV, projFin, repr_map, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]`. Conclude with `⟨fun h a i k v hv => h v hv a i k, fun h v hv a i k => h a i k v hv⟩`. Rewrite using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => IsOpen.preimage ?_ ?_` and prove the remaining obligations. Establish `h1 : Continuous ((Algebra.TensorProduct.basis (AF F) b).coord k)` using `IsModuleTopology.continuous_of_linearMap _`. Conclude with `continuous_snd.comp (h1.comp ((continuous_apply i).comp (continuous_apply a)))`. Conclude with `RestrictedProduct.isOpen_forall_imp_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun _ => Valued.isOpen_valuationSubring _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_box (S : Finset (HeightOneSpectrum (𝓞 F))) : IsOpen (box (n := n) (M := M) b S) := by
   have h : box (n := n) (M := M) b S = ⋂ a, ⋂ i, ⋂ k,
@@ -55,15 +55,15 @@ theorem isOpen_box (S : Finset (HeightOneSpectrum (𝓞 F))) : IsOpen (box (n :=
       (fun _ => Valued.isOpen_valuationSubring _)
 
 /- English proof (translation)
-Introduce `_ hX v hv` and use `hX v fun hs => hv (h hs)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem box_mono {S T : Finset (HeightOneSpectrum (𝓞 F))} (h : S ⊆ T) :
     box (n := n) (M := M) b S ⊆ box b T := fun _ hX v hv => hX v fun hs => hv (h hs)
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.GaugeGlue.adelicTuple_measurableEmbedding F E d b n M).2.1`. Establish `hX : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, projV v (projFin X) ∈ latV b v`. Establish `h1` using `Set.mem_range_self (f := fun X : Fin n → Fin M → AF F ⊗[F] E => (projInf X, fun v : HeightOneSpectrum (𝓞 F) => projV v (projFin X))) X`. Rewrite `h1` using `[h, Set.mem_setOf_eq]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hf` using `Filter.eventually_cofinite.1 hX`. Use `⟨hf.toFinset, fun v hv => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `hv (by simpa using h')`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_mem_box (X : Fin n → Fin M → AF F ⊗[F] E) : ∃ S, X ∈ box b S := by
   have h := (GlobalTheory.GaugeGlue.adelicTuple_measurableEmbedding F E d b n M).2.1
@@ -82,15 +82,15 @@ variable {b} {ν : Measure (Fin n → Fin M → AF F ⊗[F] E)}
   {mv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)}
 
 /- English proof (translation)
-Establish `hm` using `(GlobalTheory.GaugeGlue.adelicTuple_measurableEmbedding F E d b n M).1.measurable`. Establish `hmi : Measurable (projInf (F` using `F) (E := E) (M := M) (n := n)) := measurable_fst.comp hm`. Establish `hmv : ∀ v : HeightOneSpectrum (𝓞 F), Measurable fun X : Fin n → Fin M → AF F ⊗[F] E => projV v (projFin X)` using `fun v => (measurable_pi_apply v).comp (measurable_snd.comp hm)`. Establish `hR : MeasurableSet {X : Fin n → Fin M → AF F ⊗[F] E | projInf X ∈ Ai ∧ ∀ v ∈ S, projV v (projFin X) ∈ Av v}`. Establish `: {X : Fin n → Fin M → AF F ⊗[F] E | projInf X ∈ Ai ∧ ∀ v ∈ S, projV v (projFin X) ∈ Av v} = projInf ⁻¹' Ai ∩ ⋂ v ∈ S, (fun X => projV v (projFin X)) ⁻¹' Av v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `X`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(hmi hi).inter (S.measurableSet_biInter fun v _ => hmv v (hv v))`. Establish `key` using `h.2 S (Ai.indicator 1) (fun v => (Av v).indicator 1) (measurable_const.indicator hi) (fun v => measurable_const.indicator (hv v))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [lintegral_indicator_one hi, lintegral_indicator_one (hv _)] at key`. Rewrite using `[← key, ← Measure.restrict_apply hR, ← lintegral_indicator_one hR]`. Use `lintegral_congr fun X => ?_` and prove the remaining obligations. Distinguish the cases in `hX : projInf X ∈ Ai ∧ ∀ v ∈ S, projV v (projFin X) ∈ Av v`. Rewrite using `[Set.indicator_of_mem (by exact hX), Set.indicator_of_mem hX.1, Finset.prod_eq_one fun v hv => Set.indicator_of_mem (hX.2 v hv) _]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (by exact hX)]`. Break down `not_and_or.1 hX with h1 | h1` into its components or cases. Rewrite using `[Set.indicator_of_notMem h1, zero_mul]`. Use `push Not at h1`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv, h1⟩` from `h1`. Rewrite using `[Finset.prod_eq_zero hv (Set.indicator_of_notMem h1 _), mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem measure_rect (h : IsProd b ν mi mv) (S : Finset (HeightOneSpectrum (𝓞 F)))
     {Ai : Set (Fin n → Fin M → Ainf F ⊗[F] E)}
@@ -128,11 +128,11 @@ theorem measure_rect (h : IsProd b ν mi mv) (S : Finset (HeightOneSpectrum (�
       rw [Finset.prod_eq_zero hv (Set.indicator_of_notMem h1 _), mul_zero]
 
 /- English proof (translation)
-Establish `hs` using `h.2.2`. Establish `ht` using `hs.tendsto_cofinite_zero.eventually (gt_mem_nhds (show (0 : ℝ) < 1 from one_pos))`. Establish `hf` using `Filter.eventually_cofinite.1 ht`. Use `⟨hf.toFinset, ?_⟩` and prove the remaining obligations. Establish `hpos : ∀ v : {v : HeightOneSpectrum (𝓞 F) // v ∉ hf.toFinset}, 0 < (mv v.1 (latV b v.1)).toReal` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : |(mv v.1 (latV b v.1)).toReal - 1| < 1`. Assume the negation of the conclusion as `h'`. Conclude with `v.2 (by simpa using h')`. Combine the linear relations using `[(abs_lt.1 h1).1]`. Establish `hs' : Summable fun v : {v : HeightOneSpectrum (𝓞 F) // v ∉ hf.toFinset} => (mv v.1 (latV b v.1)).toReal - 1` using `(hs.of_abs).subtype _`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `Real.summable_log_one_add_of_summable hs'`. Simplify using `only [add_sub_cancel] at hl`. Rewrite using `[tailProd, ← Real.rexp_tsum_eq_tprod hpos hl]`. Conclude with `(ENNReal.ofReal_pos.2 (Real.exp_pos _)).ne'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tailProd_ne_zero (h : Conv b mi mv) : ∃ S, tailProd b mv S ≠ 0 := by
   have hs := h.2.2
@@ -153,11 +153,9 @@ theorem exists_tailProd_ne_zero (h : Conv b mi mv) : ∃ S, tailProd b mv S ≠ 
   exact (ENNReal.ofReal_pos.2 (Real.exp_pos _)).ne'
 
 /- English proof (translation)
-Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hK.elim_directed_cover (box b) (isOpen_box b) (fun X _ => Set.mem_iUnion.2 (exists_mem_box b X)) (fun S T => ⟨S ∪ T, box_mono b Finset.subset_union_left, box_mono b Finset.subset_union_right⟩)`. Establish `hc` using `(GlobalTheory.GaugeGlue.adelicTuple_measurableEmbedding F E d b n M).2.2`. Establish `hi` using `hK.image hc.1`. Establish `hv` using `fun v => hK.image (hc.2 v)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `measure_rect h S hi.measurableSet (fun v => (hv v).measurableSet)`. Use `haveI := h.1.1`. Use `haveI := h.1.2.1`. Use `lt_of_le_of_lt (measure_mono fun X hX => ?_) (key.trans_lt ?_)` and prove the remaining obligations. Conclude with `⟨⟨⟨X, hX, rfl⟩, fun v _ => ⟨X, hX, rfl⟩⟩, hS hX⟩`.
-
-Conclude with `ENNReal.mul_lt_top (ENNReal.mul_lt_top hi.measure_lt_top (ENNReal.prod_lt_top fun v _ => (hv v).measure_lt_top)) ENNReal.ofReal_lt_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finiteOnCompacts (h : IsProd b ν mi mv) : IsFiniteMeasureOnCompacts ν := by
   classical
@@ -177,7 +175,7 @@ theorem finiteOnCompacts (h : IsProd b ν mi mv) : IsFiniteMeasureOnCompacts ν 
       (ENNReal.prod_lt_top fun v _ => (hv v).measure_lt_top)) ENNReal.ofReal_lt_top
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `exists_tailProd_ne_zero h.1`. Use `measure_rect h S (Av := fun _ => Set.univ) MeasurableSet.univ fun _ => MeasurableSet.univ` as an intermediate fact. Introduce and unpack `rfl`. Conclude with `mul_ne_zero (mul_ne_zero (Measure.measure_univ_ne_zero.2 hi) (Finset.prod_ne_zero_iff.2 fun v _ => Measure.measure_univ_ne_zero.2 (hv v))) hS this.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_zero (h : IsProd b ν mi mv) (hi : mi ≠ 0) (hv : ∀ v, mv v ≠ 0) : ν ≠ 0 := by
   obtain ⟨S, hS⟩ := exists_tailProd_ne_zero h.1
@@ -187,11 +185,11 @@ theorem ne_zero (h : IsProd b ν mi mv) (hi : mi ≠ 0) (hv : ∀ v, mv v ≠ 0)
     (Finset.prod_ne_zero_iff.2 fun v _ => Measure.measure_univ_ne_zero.2 (hv v))) hS this.symm
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum F`. Establish `h1 : ∀ S, ν ({X | projInf X ∈ Aiᶜ ∧ ∀ v ∈ S, projV v (projFin X) ∈ Set.univ} ∩ box b S) = 0` using `fun S => by`. Rewrite using `[measure_rect h S (Av := fun _ => Set.univ) hi.compl fun _ => MeasurableSet.univ, zi, zero_mul, zero_mul]`. Establish `h2 : ∀ (w : HeightOneSpectrum (𝓞 F)) (S : Finset (HeightOneSpectrum (𝓞 F))), ν ({X | projInf X ∈ Set.univ ∧ ∀ v ∈ insert w S, projV v (projFin X) ∈ (if v = w then (Av v)ᶜ else Set.univ)} ∩ box b (insert w S)) = 0` using `fun w S => by`. Rewrite using `[measure_rect h (insert w S) (Av := fun v => if v = w then (Av v)ᶜ else Set.univ) MeasurableSet.univ fun v => by split_ifs exacts [(hv v).compl, MeasurableSet.univ], Finset.prod_eq_zero (Finset.mem_insert_self w S) (by simpa using zv w), mul_zero, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `measure_mono_null (fun X hX => ?_) (measure_union_null (measure_iUnion_null h1) (measure_iUnion_null fun w => measure_iUnion_null (h2 w)))` and prove the remaining obligations. Take `⟨S, hS⟩` from `exists_mem_box b X`. Break down `not_and_or.1 hX with h3 | h3` into its components or cases. Conclude with `Or.inl (Set.mem_iUnion.2 ⟨S, ⟨h3, fun _ _ => trivial⟩, hS⟩)`. Take `⟨w, hw⟩` from `not_forall.1 h3`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr (Set.mem_iUnion₂.2 ⟨w, S, ⟨trivial, fun v _ => ?_⟩, box_mono b (Finset.subset_insert w S) hS⟩)` and prove the remaining obligations. Use `split_ifs with h4`. Substitute `h4` using the available equality. Conclude with `hw`. Discharge the goal by the elementary cases of `trivial`.
+Substitute using the available equality. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem null (h : IsProd b ν mi mv) (Ai : Set (Fin n → Fin M → Ainf F ⊗[F] E))
     (Av : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin n → Fin M → Fv F v ⊗[F] E))
@@ -228,9 +226,9 @@ theorem null (h : IsProd b ν mi mv) (Ai : Set (Fin n → Fin M → Ainf F ⊗[F
 end GlobalTheory.GaugeEx.ProdBasic
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ d b n M ν mi mv h`. Use `⟨ProdBasic.finiteOnCompacts h, ProdBasic.ne_zero h, fun ν' h' => ?_, ProdBasic.null h⟩` and prove the remaining obligations. Use `GlobalTheory.T.adelicTupleMeasure_ext_of_pureTensor_integrals F E d b n M ν' ν fun Φ Φi Φf Φv h1 h2 h3 h4 => ?_` and prove the remaining obligations. Establish `k` using `GlobalTheory.T.restrictedProduct_integral_pureTensor_eq_prod F E d b n M ν mi mv h d b Φ Φi Φf Φv h1 h2 h3 h4`. Establish `k'` using `GlobalTheory.T.restrictedProduct_integral_pureTensor_eq_prod F E d b n M ν' mi mv h' d b Φ Φi Φf Φv h1 h2 h3 h4`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨k'.1, k.1, k'.2.2.trans k.2.2.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.GaugeEx.isProd_basic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ) (ν : Measure (Fin n → Fin M → AF F ⊗[F] E)) (mi : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (mv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)), IsProd b ν mi mv → IsFiniteMeasureOnCompacts ν ∧ (mi ≠ 0 → (∀ v, mv v ≠ 0) → ν ≠ 0) ∧ (∀ ν', IsProd b ν' mi mv → ν' = ν) ∧ ∀ (Ai : Set (Fin n → Fin M → Ainf F ⊗[F] E)) (Av : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin n → Fin M → Fv F v ⊗[F] E)), MeasurableSet Ai → (∀ v, MeasurableSet (Av v)) → mi Aiᶜ = 0 → (∀ v, mv v (Av v)ᶜ = 0) → ν {X | ¬ (projInf X ∈ Ai ∧ ∀ v, projV v (projFin X) ∈ Av v)} = 0 := by
   intro F E _ _ _ _ _ d b n M ν mi mv h

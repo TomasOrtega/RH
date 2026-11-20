@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open UpperTheory.ComplexUniformization
 
 /- English proof (translation)
-Establish `e : actOn rep R (r ⊗ₜ c) = Algebra.ofId R _ r * (Module.End.baseChangeHom ℚ R V) (rep c)` using `Algebra.TensorProduct.lift_tmul _ _ _ r c`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `r • ((rep c).baseChange R (s ⊗ₜ v)) = _`. Rewrite using `[LinearMap.baseChange_tmul, TensorProduct.smul_tmul', smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem actOn_tmul {C V R : Type} [Ring C] [Algebra ℚ C] [AddCommGroup V] [Module ℚ V]
     [CommRing R] [Algebra ℚ R] (rep : C →ₐ[ℚ] Module.End ℚ V) (r s : R) (c : C) (v : V) :
@@ -29,19 +29,19 @@ private theorem actOn_tmul {C V R : Type} [Ring C] [Algebra ℚ C] [AddCommGroup
   rw [LinearMap.baseChange_tmul, TensorProduct.smul_tmul', smul_eq_mul]
 
 /- English proof (translation)
-Establish `main : ∀ z : R ⊗[ℚ] C, actOn rep R z = 0 → z = 0`. Introduce `z hz`. Set `bR` to `Module.Basis.ofVectorSpace ℚ R`. Set `bC` to `Module.Basis.ofVectorSpace ℚ C`. Set `Ψ : (R →ₗ[ℚ] ℚ) → R ⊗[ℚ] C →ₗ[ℚ] C` to `fun f => (TensorProduct.lid ℚ C).toLinearMap ∘ₗ LinearMap.rTensor C f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Φ : (R →ₗ[ℚ] ℚ) → R ⊗[ℚ] V →ₗ[ℚ] V` to `fun f => (TensorProduct.lid ℚ V).toLinearMap ∘ₗ LinearMap.rTensor V f`. Establish `hΦ : ∀ f (w : R ⊗[ℚ] C) (v : V), Φ f (actOn rep R w (1 ⊗ₜ v)) = rep (Ψ f w) v`. Introduce `f w v`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul r c => simp [Φ, Ψ, actOn_tmul]`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb]`. Establish `hΨ : ∀ f, Ψ f z = 0`. Introduce `f`. Apply `hrep` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero]`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, ← hΦ, hz, LinearMap.zero_apply, map_zero]`. Establish `hrepr : ∀ (w : R ⊗[ℚ] C) i j, (bR.tensorProduct bC).repr w (i, j) = bC.repr (Ψ (bR.coord i) w) j`. Introduce `w i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r c => simp [Ψ, Module.Basis.tensorProduct_repr_tmul_apply, mul_comm]`. Consider the case `add a b ha hb => simp only [map_add, Finsupp.add_apply, ha, hb]`. Apply `(bR.tensorProduct bC).repr.injective` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `⟨i, j⟩`. Rewrite using `[hrepr, hΨ]`. Simplify using the standard rewrite rules. Introduce `x y hxy`. Rewrite using `[← sub_eq_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `main` to reduce the goal to its premises. Rewrite using `[map_sub, hxy, sub_self]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem actOn_inj {C V R : Type} [Ring C] [Algebra ℚ C] [AddCommGroup V] [Module ℚ V]
     [CommRing R] [Algebra ℚ R] (rep : C →ₐ[ℚ] Module.End ℚ V) (hrep : Function.Injective rep) :
@@ -84,11 +84,9 @@ private theorem actOn_inj {C V R : Type} [Ring C] [Algebra ℚ C] [AddCommGroup 
   rw [map_sub, hxy, sub_self]
 
 /- English proof (translation)
-Introduce `p _ D G L R _ _`. Use `haveI : Module.Finite ℤ D.La := D.finLa`. Use `⟨fun A hA => ?_, actOn_inj L.rep L.rep_inj⟩` and prove the remaining obligations. Take `⟨k, r, h, hh, hA'⟩` from `UpperTheory.exists_sum_baseChange_of_commute_baseChange D.O (VQ D) (VQ D) R (actQ D) (actQ D) A hA`. Establish `hx : ∀ l, ∃ x, L.rep x = h l` using `fun l => (L.rep_range (h l)).2 (fun b => hh l b)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose x hx using hx`. Use `⟨∑ l, r l ⊗ₜ[ℚ] x l, ?_⟩` and prove the remaining obligations. Rewrite using `[hA', map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `TensorProduct.AlgebraTensorModule.curry_injective (LinearMap.ext_ring (LinearMap.ext fun v => ?_))` and prove the remaining obligations.
-
-Simplify using `only [TensorProduct.AlgebraTensorModule.curry_apply, LinearMap.restrictScalars_apply, TensorProduct.curry_apply, actOn_tmul, LinearMap.smul_apply, LinearMap.baseChange_tmul, hx, _root_.mul_one, TensorProduct.smul_tmul', smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.commutant_eq_range_actOn_and_injective :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (G : HTGroup p) (L : Link D G) (R : Type) [CommRing R] [Algebra ℚ R], (∀ A : Module.End R (R ⊗[ℚ] VQ D), (∀ b : D.O, A ∘ₗ (actQ D b).baseChange R = (actQ D b).baseChange R ∘ₗ A) → ∃ c : R ⊗[ℚ] G.C, actOn L.rep R c = A) ∧ Function.Injective (actOn L.rep R) := by

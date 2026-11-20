@@ -12,17 +12,17 @@ noncomputable section
 namespace GlobalTheory.PointLattice
 
 /- English proof (translation)
-Establish `e1 : Formalism.UG.latS (F` using `I.F) (Af I.F) (IntAf I.F I.E) I.L = I.Lf := by`. Unfold `Formalism.UG.latS AutInst.Lf lamAf`. Rewrite using `[Set.image_eq_range]`. Both sides reduce to the same expression. Establish `hfin` using `Module.Finite.iff_fg.2 I.L_fg`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hu` using `Formalism.UG.P.csSpan_back Formalism.UG.P.csGlob_intAdApprox I.L hfin I.L_span (x.2 : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) (I.fmat x.2 *ᵥ w) (by rw [mulVec_mulVec, Units.inv_mul, one_mulVec]; exact e1.symm ▸ hw)`. Rewrite `hu` using `[← lamX_eq_globLat]`. Rewrite using `[← mulVec_mulVec]`. Generalize the expression as in `I.fmat x.2 *ᵥ w = u at hu`. Proceed by induction on `hu using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `mem u hu`. Take `⟨y, hy, rfl⟩` from `hu`. Take `⟨z, hz, e⟩` from `hM y hy`. Use `⟨_, (GlobalTheory.Count.Test.mem_lamX I x z).1 hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, ← mulVec_smul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h` using `(RingHom.map_mulVec (Formalism.UG.inclE (F := I.F) (Af I.F) : I.E →+* _) M y i).symm`. Rewrite `h` using `[e]`. Use `h.trans ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨z, hz, e⟩` from `hu`. Take `⟨z', hz', e'⟩` from `hv`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z + z', add_mem hz hz', by rw [mulVec_add, e, e', smul_add]⟩`. Consider the case `smul s u _ hu`. Take `⟨z, hz, e⟩` from `hu`. Use `⟨s • z, Submodule.smul_mem _ s hz, ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, Subring.smul_def, mulVec_smul, e, smul_comm]`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mulVec_eq_smul (I : AutInst) (x : I.GA) (c : ℕ) (M : Matrix (Fin I.n) (Fin I.n) I.E)
     (hM : ∀ y ∈ lamX I x, ∃ z ∈ lamX I x, M *ᵥ y = (c : I.E) • z)
@@ -63,17 +63,15 @@ theorem conj_mulVec_eq_smul (I : AutInst) (x : I.GA) (c : ℕ) (M : Matrix (Fin 
     rw [Subring.smul_def, Subring.smul_def, mulVec_smul, e, smul_comm]
 
 /- English proof (translation)
-Introduce `I x a g γ ha h1 h2`. Establish `hk : I.fmat (x⁻¹ * a * x).2 = I.fmat x.2⁻¹ * I.fmat a.2 * I.fmat x.2` using `rfl`. Establish `hx1 : I.fmat x.2⁻¹ * I.fmat x.2 = 1` using `Units.inv_mul _`. Establish `hx2 : I.fmat x.2 * I.fmat x.2⁻¹ = 1` using `Units.mul_inv _`. Establish `hc : ∀ y ∈ I.Lf, ∃ z ∈ I.Lf, (I.fmat (x⁻¹ * a * x).2 - 1) *ᵥ y = (g : I.E ⊗[I.F] Af I.F) • z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨z, hz, e⟩` from `conj_mulVec_eq_smul I x g _ h1 y hy`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, hk, ha, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), mul_sub, sub_mul, mul_one, hx1]`. Use `⟨fun y => ?_, hc⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Use `show I.fmat (x⁻¹ * a * x).2 *ᵥ y ∈ I.Lf ↔ y ∈ I.Lf`. Use `⟨fun hy => ?_, fun hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `conj_mulVec_eq_smul I x 1 _ (fun y hy => ⟨_, h2 y hy, by rw [Nat.cast_one, one_smul]⟩) _ hy`. Rewrite `e` using `[Nat.cast_one, one_smul, mulVec_mulVec, hk, ha]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hγ : ((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F` using `I.F) (Af I.F)) * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F := I.F) (Af I.F)) = 1 := by`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h3 : ∀ A B C D : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F), A * B = 1 → B * A = 1 → C * D = 1 → A * C * B * (A * D * B) = 1`. Introduce `A B C D p q r`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[h3 _ _ _ _ hx1 hx2 hγ, one_mulVec]`. Conclude with `e ▸ hz`. Take `⟨z, hz, e⟩` from `hc y hy`. Rewrite `e` using `[sub_mulVec, one_mulVec, sub_eq_iff_eq_add, Nat.cast_smul_eq_nsmul]`. Rewrite using `[e]`.
-
-Conclude with `add_mem (nsmul_mem hz g) hy`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_Kg_of_congr : ∀ (I : AutInst) (x a : I.GA) (g : ℕ) (γ : GL (Fin I.n) I.E), I.fmat a.2 = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F := I.F) (Af I.F)) → (∀ y ∈ lamX I x, ∃ z ∈ lamX I x, ((γ : Matrix (Fin I.n) (Fin I.n) I.E) - 1) *ᵥ y = (g : I.E) • z) → (∀ y ∈ lamX I x, ((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ y ∈ lamX I x) → (x⁻¹ * a * x).2 ∈ I.Kg g := by
   intro I x a g γ ha h1 h2

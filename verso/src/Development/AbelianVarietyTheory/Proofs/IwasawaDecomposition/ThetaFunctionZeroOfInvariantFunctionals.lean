@@ -15,41 +15,35 @@ noncomputable section
 namespace GlobalTheory.ThetaStalk
 
 /- English proof (translation)
-Set `A` to `AddMonoidAlgebra ℂ G`. Set `π : A →ₐ[ℂ] Module.End ℂ V` to `AddMonoidAlgebra.lift ℂ (Module.End ℂ V) G ρ.toMonoidHom`. Set `x : G → A` to `fun u => AddMonoidAlgebra.single u 1`. Establish `hπ : ∀ u, π (x u) = ρ u` using `fun u => by`. Simplify using `[π, x, A]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hx0 : x 0 = 1` using `rfl`. Establish `hxa : ∀ u w, x (u + w) = x u * x w` using `fun u w => by`. Simplify using `[x, A, AddMonoidAlgebra.single_mul_single]`. Establish `hxn : ∀ (n : ℕ) u, x (n • u) = x u ^ n` using `fun n u => by`. Simplify using `[x, A, AddMonoidAlgebra.single_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `I : Ideal A` to `{ carrier := {a | π a g = 0} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[map_add, LinearMap.add_apply, ha, hb, add_zero]`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c a ha => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[smul_eq_mul, map_mul, Module.End.mul_apply, ha, map_zero] }`. Establish `hI : I ≠ ⊤` using `fun h => hg (by`. Establish `: π 1 g = 0` using `(h.ge Submodule.mem_top : (1 : A) ∈ I)`. Simplify using `using this)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal I hI`. Establish `hfix : ∀ u, ρ u g = g → Ideal.Quotient.mk m (x u) = 1` using `fun u hu => by`. Rewrite using `[← map_one (Ideal.Quotient.mk m), Ideal.Quotient.eq]`. Use `hIm ?_` and prove the remaining obligations. Use `show π (x u - 1) g = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_sub, map_one, hπ, LinearMap.sub_apply, hu, Module.End.one_apply, sub_self]`. Establish `hint : Algebra.IsIntegral ℂ (A ⧸ m)` using `⟨fun y => by`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Proceed by induction on `a using AddMonoidAlgebra.induction_on with`. Consider the case `of u`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨N, hN, h⟩` from `ht u`. Use `IsIntegral.of_pow hN ?_` and prove the remaining obligations. Use `hfix _ h` as an intermediate fact. Rewrite `this` using `[hxn, map_pow]`. Express the relevant statement in the definitionally equal form `IsIntegral ℂ (Ideal.Quotient.mk m (x u) ^ N)`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `isIntegral_one`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `ha.add hb`. Consider the case `smul r a ha => exact ha.smul r⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `φ : ℂ ≃ₐ[ℂ] (A ⧸ m)` to `AlgEquiv.ofBijective (Algebra.ofId ℂ (A ⧸ m)) IsAlgClosed.algebraMap_bijective_of_isIntegral`. Set `c : A →ₐ[ℂ] ℂ` to `φ.symm.toAlgHom.comp (Ideal.Quotient.mkₐ ℂ m)`. Establish `hc : ∀ a, π a g = 0 → c a = 0` using `fun a ha => by`. Establish `: Ideal.Quotient.mk m a = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (hIm ha)`. Use `show φ.symm (Ideal.Quotient.mk m a) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Rewrite using `[this, map_zero]`. Set `χ : AddChar G ℂ` to `{ toFun := fun u => c (x u) map_zero_eq_one' := by rw [hx0, map_one] map_add_eq_mul' := fun u w => by rw [hxa, map_mul] }`. Establish `hχ : ∀ u, ρ u g = g → χ u = 1` using `fun u hu => by show φ.symm (Ideal.Quotient.mk m (x u)) = 1`. Rewrite using `[hfix u hu, map_one]`. Set `S : Submodule ℂ V` to `{ carrier := {f | ∃ a, c a ≠ 0 ∧ π a f = 0} add_mem' := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `f f' ⟨a, ha, haf⟩ ⟨b, hb, hbf⟩`. Use `⟨a * b, by rw [map_mul]; exact mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Establish `h1 : π (a * b) f = 0` using `by rw [mul_comm, map_mul, Module.End.mul_apply, haf, map_zero]`. Rewrite using `[map_add, h1, map_mul, Module.End.mul_apply, hbf, map_zero, add_zero]`. Use the proof step `zero_mem' := ⟨1, by rw [map_one]; exact one_ne_zero, map_zero _⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `r f ⟨a, ha, haf⟩`. Conclude with `⟨a, ha, by rw [map_smul, haf, smul_zero]⟩ }`. Establish `hgS : g ∉ S`. Introduce and unpack `⟨a, ha, hag⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ha (hc a hag)`. Take `⟨ℓ, hℓ, hℓS⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hgS inferInstance`. Use `⟨χ, ℓ, hℓ, hχ, fun u f N hN hf => ?_⟩` and prove the remaining obligations. Take `⟨N₀, hN₀, h₀⟩` from `ht u`. Establish `hz : χ u ^ (N * N₀) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, pow_mul, ← AddChar.map_nsmul_eq_pow, hχ _ h₀, one_pow]`. Establish `hM : 0 < N * N₀` using `Nat.mul_pos hN hN₀`. Establish `hz0 : χ u ≠ 0` using `fun h => by`. Rewrite `hz` using `[h, zero_pow hM.ne']`. Conclude with `zero_ne_one hz`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hxf : π (x u ^ (N * N₀)) f = f`. Rewrite using `[pow_mul, ← hxn, map_pow, hπ, Module.End.pow_apply]`. Conclude with `Function.iterate_fixed hf _`. Establish `hmem : ρ u f - χ u • f ∈ S`. Use `⟨∑ i ∈ Finset.range (N * N₀), x u ^ i * algebraMap ℂ A (χ u) ^ (N * N₀ - 1 - i), ?_, ?_⟩` and prove the remaining obligations.
-
-Establish `h1 : c (x u) = χ u` using `rfl`. Simplify using `only [map_sum, map_mul, map_pow, AlgHom.commutes, h1, Algebra.algebraMap_self, RingHom.id_apply]`. Rewrite using `[geom_sum₂_self]`. Conclude with `mul_ne_zero (Nat.cast_ne_zero.2 hM.ne') (pow_ne_zero _ hz0)`. Establish `h2 : ρ u f - χ u • f = π (x u - algebraMap ℂ A (χ u)) f`.
-
-Rewrite using `[map_sub, hπ, AlgHom.commutes, LinearMap.sub_apply, Module.algebraMap_end_apply]`. Rewrite using `[h2, ← Module.End.mul_apply, ← map_mul, geom_sum₂_mul, map_sub, LinearMap.sub_apply, hxf, ← map_pow, hz, map_one, map_one, Module.End.one_apply, sub_self]`. Establish `h3 : ℓ (ρ u f - χ u • f) = 0`. Use `Submodule.mem_map_of_mem (f := ℓ) hmem` as an intermediate fact. Rewrite `this` using `[hℓS, Submodule.mem_bot]`. Then use the resulting hypothesis.
-
-Rewrite `h3` using `[map_sub, map_smul, smul_eq_mul, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_char_form {G V : Type} [AddCommGroup G] [AddCommGroup V] [Module ℂ V]
     (ρ : AddChar G (Module.End ℂ V)) (g : V) (hg : g ≠ 0) (ht : ∀ u, ∃ N, 0 < N ∧ ρ (N • u) g = g) :
@@ -153,9 +147,9 @@ theorem exists_char_form {G V : Type} [AddCommGroup G] [AddCommGroup V] [Module 
   rwa [map_sub, map_smul, smul_eq_mul, sub_eq_zero] at h3
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hχ`. Establish `h0 : (QuotientAddGroup.mk χ : AddChar Q ℂ ⧸ H) ≠ 0` using `fun e => hχ ((QuotientAddGroup.eq_zero_iff _).1 e)`. Take `⟨Λ, hΛ⟩` from `AddChar.exists_apply_ne_zero.2 h0`. Take `⟨x, hx⟩` from `(AddChar.doubleDualEquiv (α := Q)).surjective (Λ.compAddMonoidHom (QuotientAddGroup.mk' H))`. Establish `hev : ∀ φ : AddChar Q ℂ, φ x = Λ (QuotientAddGroup.mk φ)` using `fun φ => DFunLike.congr_fun hx φ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hx0 : x = 0`. Conclude with `hΛ (by rw [← hev, hx0, AddChar.map_zero_eq_one])`. Take `⟨φ, hφ, hφx⟩` from `h x hx0`. Conclude with `hφx (by rw [hev, (QuotientAddGroup.eq_zero_iff _).2 hφ, AddChar.map_zero_eq_one])`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_top_of_separates {Q : Type} [AddCommGroup Q] [Finite Q] (H : AddSubgroup (AddChar Q ℂ))
     (h : ∀ x : Q, x ≠ 0 → ∃ χ ∈ H, χ x ≠ 1) (χ : AddChar Q ℂ) : χ ∈ H := by
@@ -170,9 +164,9 @@ theorem eq_top_of_separates {Q : Type} [AddCommGroup Q] [Finite Q] (H : AddSubgr
     exact hφx (by rw [hev, (QuotientAddGroup.eq_zero_iff _).2 hφ, AddChar.map_zero_eq_one])
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.KeyLemmaTwo.main`. Consider the case `exact _root_.GlobalTheory.KeyLemmaTwo.main`. Consider the case `(apply _root_.GlobalTheory.KeyLemmaTwo.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.KeyLemmaTwo.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.KeyLemmaTwo.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.KeyLemmaTwo.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_near {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
   first
@@ -184,9 +178,9 @@ theorem eq_one_of_pow_near {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) 
   | (intros; exact _root_.GlobalTheory.KeyLemmaTwo.main ..)
 
 /- English proof (translation)
-Establish `: DiscreteTopology (G ⧸ U)` using `QuotientAddGroup.discreteTopology hU`. Establish `hfin : ((QuotientAddGroup.mk : G → G ⧸ U) '' Metric.closedBall 0 ‖x‖).Finite` using `((isCompact_closedBall _ _).image QuotientAddGroup.continuous_mk).finite_of_discrete`. Take `⟨a, b, hab, e⟩` from `hfin.exists_lt_map_eq_of_forall_mem (f := fun n : ℕ => (QuotientAddGroup.mk (n • x) : G ⧸ U)) (fun n => Set.mem_image_of_mem _ (mem_closedBall_zero_iff.2 (IsUltrametricDist.norm_nsmul_le x n)))`. Use `⟨b - a, Nat.sub_pos_of_lt hab, ?_⟩` and prove the remaining obligations. Use `QuotientAddGroup.eq.1 e` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[sub_nsmul _ hab.le, add_comm]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_nsmul_mem_open {G : Type} [NormedAddCommGroup G] [IsUltrametricDist G] [ProperSpace G]
     (U : AddSubgroup G) (hU : IsOpen (U : Set G)) (x : G) : ∃ N, 0 < N ∧ N • x ∈ U := by
@@ -201,37 +195,31 @@ theorem exists_nsmul_mem_open {G : Type} [NormedAddCommGroup G] [IsUltrametricDi
   rwa [sub_nsmul _ hab.le, add_comm]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hψδ⟩ : ∃ δ > 0, ∀ x : K, ‖x‖ < δ → ψ x = 1 := by`. Take `⟨δ, hδ, h⟩` from `Metric.continuousAt_iff.1 (hc.continuousAt (x := 0)) (1 / 2) (by norm_num)`. Use `⟨δ, hδ, fun x hx => eq_one_of_pow_near fun n => ?_⟩` and prove the remaining obligations. Use `h (x := n • x) (by` as an intermediate fact. Rewrite using `[dist_zero_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUltrametricDist.norm_nsmul_le x n).trans_lt hx)`. Rewrite `this` using `[AddChar.map_zero_eq_one, dist_eq_norm, AddChar.map_nsmul_eq_pow]`. Then use the resulting hypothesis. Establish `hZ : IsClosed {y : K | ψ y ≠ 1}`. Rewrite using `[← isOpen_compl_iff, Metric.isOpen_iff]`. Use `fun y hy => ⟨δ, hδ, fun y' hy' => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq, not_not] at hy ⊢`. Rewrite using `[← add_sub_cancel y y', AddChar.map_add_eq_mul, hy, one_mul]`. Conclude with `hψδ _ (mem_ball_iff_norm.1 hy')`. Take `⟨y₀, hy₀, hd⟩` from `hZ.exists_infDist_eq_dist hne 0`. Establish `hmin : ∀ y, ‖y‖ < ‖y₀‖ → ψ y = 1` using `fun y hy => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `Metric.infDist_le_dist_of_mem (x := (0 : K)) (s := {y : K | ψ y ≠ 1}) h` as an intermediate fact. Rewrite `this` using `[hd, dist_zero_left, dist_zero_left]`. Conclude with `absurd hy (not_lt.2 this)`. Establish `hy0 : 0 < ‖y₀‖` using `norm_pos_iff.2 fun h => hy₀ (by rw [h, AddChar.map_zero_eq_one])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `U : AddSubgroup K` to `{ carrier := Metric.ball 0 r add_mem' := fun {a b} ha hb => mem_ball_zero_iff.2 ((IsUltrametricDist.norm_add_le_max a b).trans_lt (max_lt (mem_ball_zero_iff.1 ha) (mem_ball_zero_iff.1 hb))) zero_mem' := Metric.mem_ball_self hr neg_mem' := fun {a} ha => by simpa using ha }`. Establish `hU : ∀ x, x ∈ U ↔ ‖x‖ < r` using `fun x => mem_ball_zero_iff`. Establish `hlift : ∀ φ : AddChar K ℂ, (∀ x ∈ U, φ x = 1) → ∃ Λ : AddChar (K ⧸ U) ℂ, ∀ x : K, Λ x = φ x`. Introduce `φ hφ`. Use `⟨⟨Quotient.lift φ fun a b hab => ?_, φ.map_zero_eq_one, ?_⟩, fun x => rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `hφ _ (QuotientAddGroup.leftRel_apply.1 hab)` as an intermediate fact. Rewrite using `[← add_neg_cancel_left a b, AddChar.map_add_eq_mul, this, mul_one]`. Introduce and unpack `⟨a⟩ ⟨b⟩`. Conclude with `φ.map_add_eq_mul a b`. Set `B : Set K` to `{a | ∀ u ∈ U, ψ (a * u) = 1}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hB : IsCompact B`. Use `(isCompact_closedBall (0 : K) (‖y₀‖ / r)).of_isClosed_subset ?_ fun a ha => ?_` and prove the remaining obligations. Simplify using `only [B, Set.setOf_forall]`. Conclude with `isClosed_iInter fun u => isClosed_iInter fun _ => isClosed_eq (hc.comp (continuous_id.mul continuous_const)) continuous_const`. Assume the negation of the conclusion as `hn`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hn` using `[mem_closedBall_zero_iff, not_le]`. Establish `hpos : 0 < ‖a‖` using `lt_of_le_of_lt (by positivity) hn`. Use `hy₀ ?_` and prove the remaining obligations. Use `ha (y₀ / a) ((hU _).2 (by` as an intermediate fact. Rewrite using `[norm_div, div_lt_iff₀ hpos]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hn` using `[div_lt_iff₀ hr]`. Use the proof step `linarith))`. Rewrite `this` using `[mul_div_cancel₀ _ (norm_pos_iff.1 hpos)]`. Then use the resulting hypothesis. Take `⟨a, -, ha⟩` from `hB.inter_iInter_nonempty (fun x : K => {a | χ x = ψ (a * x)}) (fun x => isClosed_eq continuous_const (hc.comp (continuous_id.mul continuous_const))) fun s => by`. Set `P : AddSubgroup (K ⧸ U)` to `AddSubgroup.closure (s.image (QuotientAddGroup.mk : K → K ⧸ U) : Finset (K ⧸ U))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Finite P` using `AddCommGroup.finite_of_fg_torsion P (by`. Introduce and unpack `⟨⟨x⟩, hx⟩`. Take `⟨N, hN, h⟩` from `exists_nsmul_mem_open U Metric.isOpen_ball x`. Conclude with `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨N, hN, Subtype.ext ((QuotientAddGroup.eq_zero_iff _).2 h)⟩)`. Set `H : AddSubgroup (AddChar P ℂ)` to `{ carrier := {Λ | ∃ a ∈ B, ∀ (x : K) (hx : (x : K ⧸ U) ∈ P), Λ ⟨x, hx⟩ = ψ (a * x)} add_mem' := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `Λ Λ' ⟨a, ha, h⟩ ⟨b, hb, h'⟩`. Use `⟨a + b, fun u hu => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[add_mul, AddChar.map_add_eq_mul, ha u hu, hb u hu, mul_one]`. Rewrite using `[add_mul, AddChar.map_add_eq_mul, AddChar.add_apply, h, h']`. Use the proof step `zero_mem' := ⟨0, fun u _ => by simp, fun x _ => by simp⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use the proof step `neg_mem' := by`. Introduce and unpack `Λ ⟨a, ha, h⟩`. Use `⟨-a, fun u hu => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[neg_mul, ← mul_neg]`. Conclude with `ha _ (U.neg_mem hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[neg_mul, ← mul_neg, AddChar.neg_apply]`. Conclude with `h (-x) (P.neg_mem hx) }`. Take `⟨Λ, hΛ⟩` from `hlift χ fun x hx => hχ x ((hU x).1 hx)`. Take `⟨a, ha, h⟩` from `eq_top_of_separates H (by`. Introduce and unpack `⟨⟨x⟩, hx⟩ hx0`.
-
-Establish `hxr : r ≤ ‖x‖` using `not_lt.1 fun h => hx0 (Subtype.ext ((QuotientAddGroup.eq_zero_iff _).2 ((hU x).2 h)))`. Establish `hxp : 0 < ‖x‖` using `hr.trans_le hxr`. Establish `hb : y₀ / x ∈ B` using `fun u hu => hmin _ (by`. Rewrite using `[norm_mul, norm_div, div_mul_eq_mul_div, div_lt_iff₀ hxp]`. Conclude with `mul_lt_mul_of_pos_left (((hU u).1 hu).trans_le hxr) hy0)`.
-
-Take `⟨Λ', hΛ'⟩` from `hlift (ψ.mulShift (y₀ / x)) hb`. Use `⟨Λ'.compAddMonoidHom P.subtype, ⟨_, hb, fun z _ => hΛ' z⟩, fun h => hy₀ ?_⟩` and prove the remaining obligations. Use `(hΛ' x).symm.trans h` as an intermediate fact. Rewrite using `[AddChar.mulShift_apply, div_mul_cancel₀ _ (norm_pos_iff.1 hxp)] at this) (Λ.compAddMonoidHom P.subtype)` and apply the resulting hypothesis. Use `⟨a, ha, Set.mem_iInter₂.2 fun x hx => ?_⟩` and prove the remaining obligations.
-
-Conclude with `(hΛ x).symm.trans (h x (AddSubgroup.subset_closure (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hx))))`. Conclude with `⟨a, fun x => Set.mem_iInter.1 ha x⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_dilate {K : Type} [NormedField K] [IsUltrametricDist K] [ProperSpace K] (ψ : AddChar K ℂ)
     (hc : Continuous ψ) (hne : ∃ y, ψ y ≠ 1) (χ : AddChar K ℂ) {r : ℝ} (hr : 0 < r)
@@ -327,7 +315,7 @@ section Heis
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Simplify using `only [hO, Matrix.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hO_smul_smul (a b : AE D) (x y : WO S T) : hO S T (a • x) (b • y) = a * cA D b * hO S T x y := by
   simp only [hO, Matrix.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
@@ -335,9 +323,9 @@ theorem hO_smul_smul (a b : AE D) (x y : WO S T) : hO S T (a • x) (b • y) = 
     Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.OrientedHeis.heisO_heisO, GlobalTheory.OrientedHeis.heisO_heisO, smul_smul, ← AddChar.map_add_eq_mul, add_comm t u]`. Use `congr 2`. Establish `h : algebraMap D.host.F (AF D.host.F) (1 / 2) + algebraMap D.host.F (AF D.host.F) (1 / 2) = 1`. Rewrite using `[← map_add, add_halves, map_one]`. Rewrite using `[symplOH, symplOH, (GlobalTheory.SymplecticOrthogonalSesquilinear.symplO_alt D S T).2.2.1 t u]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `symplO S T u t * h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem heisO_comm (u t : WO S T) (f : WO S T → ℂ) :
     heisO ψ S T u (heisO ψ S T t f) = ψ (symplO S T u t) • heisO ψ S T t (heisO ψ S T u f) := by
@@ -354,7 +342,7 @@ def heisL (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) : Module.E
   map_smul' c f := funext fun w => mul_left_comm _ _ _
 
 /- English proof (translation)
-Use `⟨ratW T S fun c b => star ((S.gram * Matrix.single j i e * T.gram⁻¹) b c), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.RatAnnih.sum_single (incA D) S.gram T.gram (GlobalTheory.LatVac.gram_det_isUnit S) (GlobalTheory.LatVac.gram_det_isUnit T) j i e x, hO]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun t => incA D (S.gram⁻¹ a b) * t * incA D (T.gram c d) * x d a) ((GlobalTheory.DualPairCheck.cA_incA _).trans (congrArg (incA D) (star_star _)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_hO_eq (S T : HSp D) (i : Fin T.rank) (j : Fin S.rank) (e : D.host.E) :
     ∃ γ : WO S T, ∀ x, hO S T x γ = incA D e * x i j := by
@@ -372,35 +360,31 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.IdemModTwo in
 
 /- English proof (translation)
-Introduce `D ψ hψ S T e hε g hg H`. Assume the negation of the conclusion as `hg0`. Take `⟨v, he⟩` from `(isSplitIdem_iff e).1 hε`. Establish `he'` using `he.conj`. Establish `: IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Establish `: ProperSpace (Fv D.host.F v)` using `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion D.host.F v`. Set `sg : Fv D.host.F v →+ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F` to `AddMonoidHom.ofMapSub (singleV D.host.F v) (singleV_sub D v)`. Set `ι : Fv D.host.F v →+ AF D.host.F` to `AddMonoidHom.mk' (fun y => pairA D.host.F 0 (sg y)) fun a b => by`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Prod.ext (add_zero _).symm rfl`. Establish `hι : Continuous ι` using `Continuous.prodMk continuous_const (GlobalTheory.SplitAnnihilator.continuous_singleV D.host.F v)`. Set `G` to `Fin T.rank × Fin S.rank → Fv D.host.F v`. Set `J : G →+ WO S T` to `AddMonoidHom.mk' (fun y => Matrix.of fun i k => fj D (sg (y (i, k))) * cA D e) fun a b => by`. Use extensionality with `i k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [G, Matrix.of_apply, Matrix.add_apply, Pi.add_apply, map_add, add_mul]`. Establish `hJ : Continuous J` using `continuous_matrix fun i k => ((IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AF D.host.F) (AE D))).comp (hι.comp (continuous_apply (i, k)))).mul continuous_const`. Establish `hJe : ∀ y, cA D e • J y = J y` using `fun y => Matrix.ext fun i k => by show cA D e * (_ * cA D e) = _ * cA D e`. Rewrite using `[mul_left_comm, he'.1]`. Establish `hJinf : ∀ y, (J y).map (infPart D) = 0` using `fun y => Matrix.ext fun i k => by show infPart D (_ * _) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: infPart D (fj D (sg (y (i, k)))) = 0` using `TensorProduct.zero_tmul _ _`. Rewrite using `[map_mul, this, zero_mul]`. Establish `hJs : ∀ u : WO S T, IsHalf (cA D e) u → ∃ y, J y = u` using `fun u hu => by choose y hy using fun p : Fin T.rank × Fin S.rank => he'.exists_scalar (u p.1 p.2)`. Conclude with `⟨y, Matrix.ext fun i k => (hy (i, k)).symm.trans (hu i k)⟩`. Set `ρ : AddChar G (Module.End ℂ (WO S T → ℂ))` to `{ toFun := fun y => heisL ψ S T (J y) map_zero_eq_one' := LinearMap.ext fun f => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `GlobalTheory.OrientedHeis.heisO_zero f`. Use the proof step `map_add_eq_mul' := fun y y' => LinearMap.ext fun f => by`. Establish `h0 : hO S T (J y) (J y') = 0`. Rewrite using `[← hJe y, ← hJe y', hO_smul_smul, he'.2.1, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show heisO ψ S T _ f = heisO ψ S T _ (heisO ψ S T _ f)`. Rewrite using `[GlobalTheory.OrientedHeis.heisO_heisO, symplOH, symplO, h0, mul_zero, map_zero, mul_zero, AddChar.map_zero_eq_one, one_smul, map_add] }`. Establish `hlev : ∀ f, IsThetaFunO ψ S T f → ∃ U : AddSubgroup G, IsOpen (U : Set G) ∧ ∀ y ∈ U, ρ y f = f` using `fun f hf => by`. Take `⟨U, hU, h⟩` from `hf.level`. Conclude with `⟨U.comap J, hU.preimage hJ, fun y hy => h _ hy (hJinf y)⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨U, hU, hUg⟩` from `hlev g hg`. Take `⟨χ, ℓ, hℓ, hχ, hℓχ⟩` from `exists_char_form ρ g hg0 fun y => by`. Take `⟨N, hN, h⟩` from `exists_nsmul_mem_open U hU y`. Conclude with `⟨N, hN, hUg _ h⟩`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 hU 0 U.zero_mem`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `choose a ha using fun p : Fin T.rank × Fin S.rank => exists_eq_dilate (ψ.compAddMonoidHom ι) (hψ.1.1.comp hι) (GlobalTheory.StdCharLocal.psiV_ne_one D ψ hψ v) (χ.compAddMonoidHom (AddMonoidHom.single (fun _ => Fv D.host.F v) p)) hr fun x hx => hχ _ (hUg _ (hball (mem_ball_zero_if …`. Rewrite using `[Pi.norm_single]))))` and apply the resulting hypothesis. Use `choose γ hγ using fun p : Fin T.rank × Fin S.rank => exists_hO_eq S T p.1 p.2 D.host.xi0⁻¹`. Set `t : WO S T` to `∑ p, (fj D (sg (a p)) * e) • γ p`. Establish `hte : IsHalf e (-t)` using `fun i k => by`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [t, Matrix.neg_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, mul_neg, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun p _ => by rw [← mul_assoc, mul_left_comm e, he.1]`. Establish `hχt : ∀ y, χ y = ψ (symplO S T (J y) t)` using `fun y => by`. Set `B : WO S T →+ AF D.host.F` to `AddMonoidHom.mk' (symplO S T (J y)) ((GlobalTheory.SymplecticOrthogonalSesquilinear.symplO_alt D S T).2.1 _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ p, B ((fj D (sg (a p)) * e) • γ p) = ι (a p * y p)` using `fun p => by show Algebra.trace _ _ (_ * hO S T _ _) = _`. Rewrite using `[← one_smul (AE D) (J y), hO_smul_smul, hγ, one_mul, mul_left_comm, ← mul_assoc (incA D _), ← map_mul (incA D), mul_inv_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one, one_mul, map_mul (cA D), cA_fj]`. Conclude with `GlobalTheory.SplitAnnihilator.trace_split he' _ _`. Establish `h2 : symplO S T (J y) t = ∑ p, ι (a p * y p)`. Rewrite using `[← Finset.sum_congr rfl fun p _ => h1 p, ← map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `conv_lhs => rw [← Finset.univ_sum_single y]`. Rewrite using `[h2]`. Use `Finset.induction_on (motive := fun s => χ (∑ p ∈ s, Pi.single p (y p)) = ψ (∑ p ∈ s, ι (a p * y p))) Finset.univ (by simp) fun p s hp ih => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hp, Finset.sum_insert hp, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, ih]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg (· * _) (ha p (y p))`. Establish `hne : ∀ x, ψ x ≠ 0` using `fun x h => by simpa [h] using hψ.1.2.1 x`. Establish `hcomm : ∀ y f, ρ y (heisO ψ S T t f) = χ y • heisO ψ S T t (ρ y f)` using `fun y f => by`. Rewrite using `[hχt]`. Conclude with `heisO_comm _ _ _`.
-
-Establish `h` using `H (ℓ.comp (heisL ψ S T t)) (fun u hu f hf => by`. Take `⟨y, rfl⟩` from `hJs u hu`. Take `⟨U', hU', hUf⟩` from `hlev f hf`. Take `⟨N, hN, h⟩` from `exists_nsmul_mem_open (U ⊓ U') (hU.inter hU') y`. Establish `h1` using `hℓχ y (heisO ψ S T t f) N hN (by rw [hcomm, hχ _ (hUg _ h.1), hUf _ h.2, one_smul])`.
-
-Rewrite `h1` using `[hcomm, map_smul, smul_eq_mul]`. Conclude with `mul_left_cancel₀ (hχt y ▸ hne _) h1) (-t) hte`. Express the relevant statement in the definitionally equal form `ℓ (heisO ψ S T t (heisO ψ S T (-t) g)) = 0 at h`. Rewrite `h` using `[GlobalTheory.OrientedHeis.heisO_heisO, add_neg_cancel, GlobalTheory.OrientedHeis.heisO_zero, map_smul, smul_eq_mul]`. Conclude with `mul_ne_zero (hne _) hℓ h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_invariant_forms : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (e : AE D), IsSplitIdem D e → ∀ g, IsThetaFunO ψ S T g → (∀ ℓ : (WO S T → ℂ) →ₗ[ℂ] ℂ, (∀ u, IsHalf (cA D e) u → ∀ f, IsThetaFunO ψ S T f → ℓ (heisO ψ S T u f) = ℓ f) → ∀ t, IsHalf e t → ℓ (heisO ψ S T t g) = 0) → g = 0 := by
   intro D ψ hψ S T e hε g hg H

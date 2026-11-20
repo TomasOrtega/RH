@@ -23,7 +23,7 @@ def quotT (x : Frame X.Ψ r) : ℝ :=
     sumSq X Xa Fl x ^ ((T : ℝ) + nd X + 6 + 1 / 2)
 
 /- English proof (translation)
-Unfold `quotT thetaFac sumSq`. Rewrite using `[pointwiseNorm_invariance_holds r X _ _ Xa.et_sec γ hγ x hx b hb, pointwiseNorm_invariance_holds r X _ _ hf γ hγ x hx b hb, pointwiseNorm_invariance_holds r X _ _ Xa.firstTheta_vanishes.1.1.1 γ hγ x hx b hb, pointwiseNorm_invariance_holds r X _ _ Xa.secondTheta_vanishes.1.1.1 γ h …`. Use `congr 2`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[pointwiseNorm_invariance_holds r X _ _ (Fl.s_van k).1.1.1 γ hγ x hx b hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem quotT_inv (hf : X.IsSec (Xa.Fp + T • Xa.L) f) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ)
     {x : Frame X.Ψ r} (hx : x ∈ X.dom) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) :
@@ -37,7 +37,7 @@ theorem quotT_inv (hf : X.IsSec (Xa.Fp + T • Xa.L) f) {γ : GL (Fin r) E} (hγ
   rw [pointwiseNorm_invariance_holds r X _ _ (Fl.s_van k).1.1.1 γ hγ x hx b hb]
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (thetaFac X Xa) X.dom` using `(((BigB.pnorm_contOn X _ Xa.secondTheta_vanishes.1.1.1).pow 2).mul ((BigB.pnorm_contOn X _ Xa.firstTheta_vanishes.1.1.1).pow 2)).mul (((BigB.pnorm_contOn X _ Xa.et_sec).pow 2).rpow_const fun _ _ => Or.inr (by positivity))`. Establish `h2 : ContinuousOn (sumSq X Xa Fl) X.dom` using `continuousOn_finsetSum _ fun k _ => (BigB.pnorm_contOn X _ (Fl.s_van k).1.1.1).pow 2`. Use `ContinuousOn.div ((((BigB.pnorm_contOn X _ hf).pow 2).mul h1).mono hA) ((h2.mono hA).rpow_const fun _ _ => Or.inr (by positivity)) fun x hx => ?_` and prove the remaining obligations. Conclude with `(Real.rpow_pos_of_pos (hS x hx) _).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem quotT_contOn (hf : X.IsSec (Xa.Fp + T • Xa.L) f) {A : Set (Frame X.Ψ r)} (hA : A ⊆ X.dom)
     (hS : ∀ x ∈ A, 0 < sumSq X Xa Fl x) : ContinuousOn (quotT X Xa Fl T f) A := by
@@ -52,23 +52,21 @@ theorem quotT_contOn (hf : X.IsSec (Xa.Fp + T • Xa.L) f) {A : Set (Frame X.Ψ 
   exact (Real.rpow_pos_of_pos (hS x hx) _).ne'
 
 /- English proof (translation)
-Establish `hx` using `Fl.xs_mem j`. Take `⟨d, hd, ev1⟩` from `sumSq_lower X Xa Fl j`. Take `⟨C, hC, ev2⟩` from `hO.exists_pos`. Take `⟨B, hB, hBle⟩` from `thetaFac_bdd X Xa`. Establish `hc0 : Filter.Tendsto (cpt X (Fl.xs j)) (𝓝 0) (𝓝 (Fl.xs j))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(KU.cont_cpt X (Fl.xs j)).tendsto 0` as an intermediate fact. Rewrite `this` using `[VanishPf.cpt_zero]`. Then use the resulting hypothesis. Establish `hnb` using `(PoinPf.isOpenDom X).mem_nhds hx`. Use `set N := X.nfac (Xa.Fp + T • Xa.L) (Fl.xs j) + 1 with hN`. Establish `hN0 : 0 < N` using `by have := BoundedSectionAlgebra.nfac_pos X hx (Xa.Fp + T • Xa.L); linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ev3 : ∀ᶠ z in 𝓝 (0 : V (nd X)), X.nfac (Xa.Fp + T • Xa.L) (cpt X (Fl.xs j) z) < N` using `(((ExtFPf.nfac_contOn X _).continuousAt hnb).tendsto.comp hc0).eventually (Iio_mem_nhds (by linarith))`. Use `set p : ℝ := (T : ℝ) + nd X + 6 + 1 / 2 with hp`. Establish `hp0 : 0 < p` using `by positivity`. Use `set K : ℝ := (C * N) ^ 2 * B / d ^ p with hK`. Establish `hK0 : 0 < K` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ev4 : ∀ᶠ z in 𝓝 (0 : V (nd X)), ‖z‖ < ε / K` using `by filter_upwards [Metric.ball_mem_nhds (0 : V (nd X)) (div_pos hε hK0)] with z hz`. Simplify using `using hz`. Use `filter_upwards [ev1, ev2.bound, ev3, ev4, hc0.eventually hnb] with z h1 h2 h3 h4 hy`. Use `⟨hy, ?_⟩` and prove the remaining obligations. Use `set y := cpt X (Fl.xs j) z with hydef`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `h2` using `[Real.norm_of_nonneg (by positivity)]`. Establish `hf : X.pnorm (Xa.Fp + T • Xa.L) f y ≤ C * ‖z‖ ^ (T + nd X + 7) * N` using `mul_le_mul h2 h3.le (BoundedSectionAlgebra.nfac_pos X hy _).le (by positivity)`. Establish `hnum : X.pnorm (Xa.Fp + T • Xa.L) f y ^ 2 * thetaFac X Xa y ≤ (C * ‖z‖ ^ (T + nd X + 7) * N) ^ 2 * B` using `mul_le_mul (pow_le_pow_left₀ (pnorm_nonneg X _ _ hy) hf 2) (hBle y hy) (thetaFac_nonneg X Xa y) (by positivity)`. Break down `(norm_nonneg z).eq_or_lt with h0 | h0` into its components or cases. Establish `h5 : X.pnorm (Xa.Fp + T • Xa.L) f y ^ 2 * thetaFac X Xa y ≤ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hnum` using `[← h0]`. Simplify using `using hnum`. Conclude with `lt_of_le_of_lt (div_nonpos_of_nonpos_of_nonneg h5 (Real.rpow_nonneg (sumSq_nonneg X Xa Fl y) _)) hε`. Establish `hden : d ^ p * ‖z‖ ^ (2 * (T + nd X) + 13) ≤ sumSq X Xa Fl y ^ p`. Use `le_trans (le_of_eq ?_) (Real.rpow_le_rpow (by positivity) h1 hp0.le)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Real.mul_rpow hd.le (by positivity), ← Real.rpow_natCast ‖z‖ 2, ← Real.rpow_mul h0.le, ← Real.rpow_natCast]`. Use `congr 2`. Rewrite using `[hp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h6 : quotT X Xa Fl T f y ≤ (C * ‖z‖ ^ (T + nd X + 7) * N) ^ 2 * B / (d ^ p * ‖z‖ ^ (2 * (T + nd X) + 13))` using `div_le_div₀ (by positivity) hnum (by positivity) hden`. Establish `h7 : (C * ‖z‖ ^ (T + nd X + 7) * N) ^ 2 * B / (d ^ p * ‖z‖ ^ (2 * (T + nd X) + 13)) = ‖z‖ * K`. Rewrite using `[hK]`. Establish `: 0 < d ^ p` using `by positivity`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h6` using `[h7]`. Conclude with `h6.trans_lt ((lt_div_iff₀ hK0).mp h4)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotT_near (j : Fin Fl.δ)
     (hO : (fun z : V (nd X) => f (cpt X (Fl.xs j) z)) =O[𝓝 0] fun z => ‖z‖ ^ (T + nd X + 7))
@@ -129,21 +127,21 @@ theorem quotT_near (j : Fin Fl.δ)
     exact h6.trans_lt ((lt_div_iff₀ hK0).mp h4)
 
 /- English proof (translation)
-Take `⟨Cf, hCf⟩` from `hf.2`. Take `⟨B, hB, hBle⟩` from `thetaFac_le X Xa`. Take `⟨ca, ε0, hca, hε0, hp1⟩` from `Xa.p1`. Establish `hβ` using `hrate`. Use `set p : ℝ := (T : ℝ) + nd X + 6 + 1 / 2 with hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : 0 < p` using `by positivity`. Use `set β : ℝ := 4 / (Xa.g0 : ℝ) - 2 * Xa.c * p with hβdef`. Use `set K : ℝ := (max Cf 1) ^ 2 * B / d ^ p with hK`. Establish `hK0 : 0 < K` using `by positivity`. Use `set M : ℝ := K / (ε * β) with hM`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : 0 < M` using `by positivity`. Use `⟨min ε0 (Real.sqrt (ca / M)), lt_min hε0 (Real.sqrt_pos.mpr (by positivity)), fun x hx hxA hl => ?_⟩` and prove the remaining obligations. Establish `hlpos : 0 < X.la1 x` using `ModeHalfC.first_minimum_pos X hx (BigB.lam_ne X Xa)`. Establish `hph : ca / X.la1 x ^ 2 ≤ Xa.ph x` using `hp1 x hx (lt_of_lt_of_le hl (min_le_left _ _))`. Establish `hl2 : X.la1 x ^ 2 < ca / M` using `(Real.lt_sqrt hlpos.le).mp (lt_of_lt_of_le hl (min_le_right _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hbig : M < Xa.ph x`. Use `lt_of_lt_of_le ?_ hph` and prove the remaining obligations. Rewrite using `[lt_div_iff₀ (by positivity)]`. Rewrite `hl2` using `[lt_div_iff₀ hM0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hnum : X.pnorm (Xa.Fp + T • Xa.L) f x ^ 2 * thetaFac X Xa x ≤ (max Cf 1) ^ 2 * (B * Real.exp (-(4 / (Xa.g0 : ℝ)) * Xa.ph x))` using `mul_le_mul (pow_le_pow_left₀ (pnorm_nonneg X _ _ hx) ((hCf x hx).trans (le_max_left _ _)) 2) (hBle x hx) (thetaFac_nonneg X Xa x) (by positivity)`. Establish `hden : d ^ p * Real.exp (-(2 * Xa.c * Xa.ph x) * p) ≤ sumSq X Xa Fl x ^ p`. Use `le_trans (le_of_eq ?_) (Real.rpow_le_rpow (by positivity) (hA x hx hxA) hp0.le)` and prove the remaining obligations. Rewrite using `[Real.mul_rpow hd.le (Real.exp_pos _).le, ← Real.exp_mul]`. Establish `h6 : quotT X Xa Fl T f x ≤ (max Cf 1) ^ 2 * (B * Real.exp (-(4 / (Xa.g0 : ℝ)) * Xa.ph x)) / (d ^ p * Real.exp (-(2 * Xa.c * Xa.ph x) * p))` using `div_le_div₀ (by positivity) hnum (by positivity) hden`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h7 : (max Cf 1) ^ 2 * (B * Real.exp (-(4 / (Xa.g0 : ℝ)) * Xa.ph x)) / (d ^ p * Real.exp (-(2 * Xa.c * Xa.ph x) * p)) = K / Real.exp (β * Xa.ph x)`. Establish `e : Real.exp (-(2 * Xa.c * Xa.ph x) * p) = Real.exp (-(4 / (Xa.g0 : ℝ)) * Xa.ph x) * Real.exp (β * Xa.ph x)`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Rewrite using `[hβdef]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: 0 < d ^ p` using `by positivity`. Rewrite using `[e, hK]`. Clear the denominators using the available nonvanishing facts. Rewrite `h6` using `[h7]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h6.trans_lt ?_` and prove the remaining obligations. Rewrite using `[div_lt_iff₀ (Real.exp_pos _)]`. Establish `h8` using `Real.add_one_le_exp (β * Xa.ph x)`. Rewrite `hbig` using `[hM, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem quotT_far (hf : X.IsBddSec (Xa.Fp + T • Xa.L) f)
     (hrate : 0 < 4 / (Xa.g0 : ℝ) - 2 * Xa.c * ((T : ℝ) + nd X + 6 + 1 / 2)) {A : Set (Frame X.Ψ r)} {d : ℝ}
@@ -198,23 +196,21 @@ theorem quotT_far (hf : X.IsBddSec (Xa.Fp + T • Xa.L) f)
   nlinarith
 
 /- English proof (translation)
-Take `⟨x1, hx1, hε⟩` from `hpos`. Establish `hρ : ∀ j, ∃ ρ : ℝ, 0 < ρ ∧ IsOpen {x | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z' ∈ Metric.ball (0 : V (nd X)) ρ, x = lact γ (rmul (cpt X (Fl.xs j) z') b)} ∧ ∀ z ∈ Metric.ball (0 : V (nd X)) ρ, cpt X (Fl.xs j) z ∈ X.dom ∧ quotT X Xa Fl T f (cpt X (Fl.xs j) z) < quotT X Xa Fl T f x1`. Introduce `j`. Take `⟨ρ0, hρ0, hop⟩` from `sat_open X (Fl.xs_mem j)`. Take `⟨ρ1, hρ1, h1⟩` from `Metric.eventually_nhds_iff_ball.mp (quotT_near X Xa Fl T f j (hO j) hε)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨min ρ0 ρ1, lt_min hρ0 hρ1, hop _ (min_le_left _ _), fun z hz => h1 z (Metric.ball_subset_ball (min_le_right _ _) hz)⟩`. Use `choose ρ hρ0 hop hsm using hρ`. Use `set U : Set (Frame X.Ψ r) := ⋃ j, {x | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z' ∈ Metric.ball (0 : V (nd X)) (ρ j), x = lact γ (rmul (cpt X (Fl.xs j) z') b)} with hUdef`. Establish `hU : IsOpen U` using `isOpen_iUnion hop`. Establish `hxs : ∀ j, Fl.xs j ∈ U` using `fun j => Set.mem_iUnion.mpr ⟨j, 1, X.Γ.one_mem, ExtFPf.oneF X, ExtFPf.oneF_mem X, 0, Metric.mem_ball_self (hρ0 j), by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ExtFPf.rmul_oneF, KU.lact_one, VanishPf.cpt_zero]⟩`. Establish `hsat : ∀ x ∈ U, ∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r, lact γ (rmul x b) ∈ U`. Introduce `x hx γ hγ b hb`. Take `⟨j, γ', hγ', b', hb', z, hz, rfl⟩` from `Set.mem_iUnion.mp hx`. Use `Set.mem_iUnion.mpr ⟨j, γ * γ', X.Γ.mul_mem hγ hγ', rmul b' b, ExtFPf.mul_mem X hb' hb, z, hz, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← PoinPf.lact_rmul', KU.lact_lact, ExtFPf.rmul_assoc]`. Establish `hUsm : ∀ x ∈ U, quotT X Xa Fl T f x < quotT X Xa Fl T f x1`. Introduce `x hx`. Take `⟨j, γ', hγ', b', hb', z, hz, rfl⟩` from `Set.mem_iUnion.mp hx`. Rewrite using `[quotT_inv X Xa Fl T f hf.1 hγ' (hsm j z hz).1 hb']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hsm j z hz).2`. Take `⟨d, hd, hfar⟩` from `sumSq_far X Xa Fl hU hxs hsat`. Take `⟨δ, hδ, hsmall⟩` from `quotT_far X Xa Fl T f hf hrate (A := Uᶜ) hd hfar hε`. Take `⟨Kc, hKc, hKsub, hrep⟩` from `reductionTheory_holds r X δ hδ`. Establish `hSpos : ∀ x ∈ Kc \ U, 0 < sumSq X Xa Fl x` using `fun x hx => lt_of_lt_of_le (by positivity) (hfar x (hKsub hx.1) hx.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmove : ∀ x ∈ X.dom, quotT X Xa Fl T f x1 ≤ quotT X Xa Fl T f x → ∃ y ∈ Kc \ U, quotT X Xa Fl T f y = quotT X Xa Fl T f x`. Introduce `x hx hle`. Establish `hxU : x ∉ U` using `fun h => absurd (hUsm x h) (not_lt.mpr hle)`. Establish `hl : δ ≤ X.la1 x`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `absurd (hsmall x hx hxU (not_le.mp h)) (not_lt.mpr hle)`. Take `⟨γ, hγ, b, hb, hy⟩` from `hrep x hx hl`. Establish `he` using `quotT_inv X Xa Fl T f hf.1 hγ hx hb`. Conclude with `⟨_, ⟨hy, fun h => absurd (he ▸ hUsm _ h) (not_lt.mpr hle)⟩, he⟩`. Take `⟨y1, hy1, he1⟩` from `hmove x1 hx1 le_rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨x0, hx0, hmax⟩` from `(hKc.diff hU).exists_isMaxOn ⟨y1, hy1⟩ (quotT_contOn X Xa Fl T f hf.1 (fun x hx => hKsub hx.1) hSpos)`. Establish `hge : quotT X Xa Fl T f x1 ≤ quotT X Xa Fl T f x0` using `he1 ▸ hmax hy1`. Use `⟨x0, hKsub hx0.1, ?_, hε.trans_le hge, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h push Not at h`. Establish `h0` using `hSpos x0 hx0`.
-
-Simplify using `[sumSq, Data.pnorm, h] at h0`. Break down `le_or_gt (quotT X Xa Fl T f x1) (quotT X Xa Fl T f x) with hle | hlt` into its components or cases. Take `⟨y, hy, he⟩` from `hmove x hx hle`. Conclude with `he ▸ hmax hy`. Conclude with `hlt.le.trans hge`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_maxT (hf : X.IsBddSec (Xa.Fp + T • Xa.L) f)
     (hrate : 0 < 4 / (Xa.g0 : ℝ) - 2 * Xa.c * ((T : ℝ) + nd X + 6 + 1 / 2))
@@ -283,9 +279,9 @@ theorem exists_maxT (hf : X.IsBddSec (Xa.Fp + T • Xa.L) f)
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ r X Xa Fl T f hrate hf hO Φ hpos`. Establish `he : Φ = quotT X Xa Fl T f`. Use function extensionality and compare the values at `x`. Simplify using `only [Φ, quotT, thetaFac, sumSq, mul_assoc]`. Rewrite `hpos`, the goal using `[he]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `exists_maxT X Xa Fl T f hf hrate hO hpos`.
+A detailed English derivation is pending.
 -/
 theorem mainT : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) (T : ℕ) (f : Frame X.Ψ r → ℂ), 0 < 4 / (Xa.g0 : ℝ) - 2 * Xa.c * ((T : ℝ) + nd X + 6 + 1 / 2) → X.IsBddSec (Xa.Fp + T • Xa.L) f → (∀ j, (fun z : V (nd X) => f (cpt X (Fl.xs j) z)) =O[𝓝 0] fun z => ‖z‖ ^ (T + nd X + 7)) → let Φ : Frame X.Ψ r → ℝ := fun x => X.pnorm (Xa.Fp + T • Xa.L) f x ^ 2 * X.pnorm ((nd X + 4) • Xa.L - Xa.Fp) Xa.th2 x ^ 2 * X.pnorm (2 • Xa.L - Xa.de) Xa.th1 x ^ 2 * (X.pnorm ((Xa.i * (Xa.g0 / 2)) • Xa.de) Xa.et x ^ 2) ^ ((1 : ℝ) / (Xa.i * (Xa.g0 / 2) : ℕ)) / (∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2) ^ ((T : ℝ) + nd X + 6 + 1 / 2); (∃ x ∈ X.dom, 0 < Φ x) → ∃ x0 ∈ X.dom, (∃ k, Fl.s k x0 ≠ 0) ∧ 0 < Φ x0 ∧ ∀ x ∈ X.dom, Φ x ≤ Φ x0 := by
   intro E _ _ _ r X Xa Fl T f hrate hf hO Φ hpos
@@ -296,29 +292,27 @@ theorem mainT : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
   exact exists_maxT X Xa Fl T f hf hrate hO hpos
 
 /- English proof (translation)
-Introduce `E _ _ _ r X Xa Fl T f hf Φ x0 hx0 ⟨k0, hk0⟩ hpos hmax`. Establish `hU : IsOpen (OmF X x0)` using `OntoB.isOpen_OmF X x0`. Establish `h0U : (0 : V (nd X)) ∈ OmF X x0` using `by show cpt X x0 0 ∈ X.dom; rw [IW.cpt_zero]; exact hx0`. Use `set n1 : ℝ := ((Xa.i * (Xa.g0 / 2) : ℕ) : ℝ) with hn1`. Establish `hn1p : 0 < n1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g2, hg2⟩` from `Xa.genus_even`. Establish `h1` using `Xa.i_pos`. Establish `h2` using `Xa.genus_pos`. Establish `h3 : 1 ≤ Xa.g0 / 2` using `by omega`. Rewrite using `[hn1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: 1 ≤ Xa.i * (Xa.g0 / 2)` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Conclude with `this` after adjusting the coercions. Establish `hz : ∀ (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ), P x0 = 0 → X.pnorm la P x0 ^ 2 = 0`. Introduce `la P h`. Rewrite using `[OW.pnorm_eq, h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hf0 : f x0 ≠ 0` using `fun h => by`. Simplify using `only [Φ, hz _ _ h, zero_mul, zero_div, lt_irrefl] at hpos`. Establish `h20 : Xa.th2 x0 ≠ 0` using `fun h => by`. Simplify using `only [Φ, hz _ _ h, zero_mul, mul_zero, zero_div, lt_irrefl] at hpos`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h10 : Xa.th1 x0 ≠ 0` using `fun h => by`. Simplify using `only [Φ, hz _ _ h, zero_mul, mul_zero, zero_div, lt_irrefl] at hpos`. Establish `he0 : Xa.et x0 ≠ 0` using `fun h => by`. Establish `: (0 : ℝ) ^ ((1 : ℝ) / n1) = 0` using `Real.zero_rpow (by positivity)`. Simplify using `only [Φ, hz _ _ h, ← hn1, this, mul_zero, zero_div, lt_irrefl] at hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlog : ∀ x ∈ X.dom, f x ≠ 0 → Xa.th2 x ≠ 0 → Xa.th1 x ≠ 0 → Xa.et x ≠ 0 → Fl.s k0 x ≠ 0 → 0 < Φ x ∧ Real.log (Φ x) = Real.log (Complex.normSq (f x)) + Real.log (Complex.normSq (Xa.th2 x)) + Real.log (Complex.normSq (Xa.th1 x)) + (1 / n1) * Real.log (Complex.normSq (Xa.et x)) + (- …`. Introduce `x hx a1 a2 a3 a4 a5`. Establish `hp : ∀ (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ), P x ≠ 0 → 0 < X.pnorm la P x ^ 2`. Introduce `la P h`. Rewrite using `[OW.pnorm_sq X la P hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_pos (Complex.normSq_pos.2 h) (Real.exp_pos _)`. Establish `hsp` using `OW.sums_pos Fl a5`. Establish `hS : 0 < ∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2`. Rewrite using `[OW.sum_pnorm_sq X _ _ hx]`. Conclude with `mul_pos hsp (Real.exp_pos _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p1` using `hp (Xa.Fp + T • Xa.L) f a1`. Establish `p2` using `hp ((nd X + 4) • Xa.L - Xa.Fp) Xa.th2 a2`. Establish `p3` using `hp (2 • Xa.L - Xa.de) Xa.th1 a3`. Establish `p4` using `hp ((Xa.i * (Xa.g0 / 2)) • Xa.de) Xa.et a4`. Establish `p5` using `Real.rpow_pos_of_pos p4 (1 / n1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `p6` using `Real.rpow_pos_of_pos hS ((T : ℝ) + nd X + 6 + 1 / 2)`. Use `⟨div_pos (mul_pos (mul_pos (mul_pos p1 p2) p3) p5) p6, ?_⟩` and prove the remaining obligations. Simplify using `only [Φ]`. Rewrite using `[Real.log_div (mul_pos (mul_pos (mul_pos p1 p2) p3) p5).ne' p6.ne', Real.log_mul (mul_pos (mul_pos p1 p2) p3).ne' p5.ne', Real.log_mul (mul_pos p1 p2).ne' p3.ne', Real.log_mul p1.ne' p2.ne', Real.log_rpow p4, Real.log_rpow hS, BigC.log_pnorm_sq X hx a1, BigC.log_pnorm_sq X hx a2, …`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `d1` using `OntoB.hol_comp X x0 hf.1`. Establish `d2` using `OntoB.hol_comp X x0 Xa.secondTheta_vanishes.1.1.1.1`. Establish `d3` using `OntoB.hol_comp X x0 Xa.firstTheta_vanishes.1.1.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d4` using `OntoB.hol_comp X x0 Xa.et_sec.1`. Establish `d5` using `fun k => OntoB.hol_comp X x0 (OW.s_diffOn Fl k)`. Establish `hc0 : cpt X x0 0 = x0` using `IW.cpt_zero X x0`. Establish `ev : ∀ {P : Frame X.Ψ r → ℂ}, DifferentiableOn ℂ (fun z => P (cpt X x0 z)) (OmF X x0) → P x0 ≠ 0 → ∀ᶠ z in 𝓝 (0 : V (nd X)), P (cpt X x0 z) ≠ 0` using `fun hP h => (hP.continuousOn.continuousAt (hU.mem_nhds h0U)).eventually_ne (by rw [hc0]; exact h)`. Use `no_localMax hU h0U (a := fun z => f (cpt X x0 z)) (b := fun z => Xa.th2 (cpt X x0 z)) (c := fun z => Xa.th1 (cpt X x0 z)) (d := fun z => Xa.et (cpt X x0 z)) d1 d2 d3 d4 (by simpa only [hc0] using hf0) (by simpa only [hc0] using h20) (by simpa only [hc0] using h10) (by simpa only …` and prove the remaining obligations.
-
-Use `filter_upwards [hU.mem_nhds h0U, ev d1 hf0, ev d2 h20, ev d3 h10, ev d4 he0, ev (d5 k0) hk0] with z hz a1 a2 a3 a4 a5`. Take `⟨q1, q2⟩` from `hlog _ hz a1 a2 a3 a4 a5`. Take `⟨-, q3⟩` from `hlog _ hx0 hf0 h20 h10 he0 hk0`. Rewrite using `[hc0, ← q2, ← q3]`. Conclude with `Real.log_le_log q1 (hmax _ hz)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem no_pos_maxT : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) (T : ℕ) (f : Frame X.Ψ r → ℂ), X.IsSec (Xa.Fp + T • Xa.L) f → let Φ : Frame X.Ψ r → ℝ := fun x => X.pnorm (Xa.Fp + T • Xa.L) f x ^ 2 * X.pnorm ((nd X + 4) • Xa.L - Xa.Fp) Xa.th2 x ^ 2 * X.pnorm (2 • Xa.L - Xa.de) Xa.th1 x ^ 2 * (X.pnorm ((Xa.i * (Xa.g0 / 2)) • Xa.de) Xa.et x ^ 2) ^ ((1 : ℝ) / (Xa.i * (Xa.g0 / 2) : ℕ)) / (∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2) ^ ((T : ℝ) + nd X + 6 + 1 / 2); ∀ x0 ∈ X.dom, (∃ k, Fl.s k x0 ≠ 0) → 0 < Φ x0 → ¬ ∀ x ∈ X.dom, Φ x ≤ Φ x0 := by
   intro E _ _ _ r X Xa Fl T f hf Φ x0 hx0 ⟨k0, hk0⟩ hpos hmax
@@ -400,13 +394,13 @@ theorem no_pos_maxT : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r 
   exact Real.log_le_log q1 (hmax _ hz)
 
 /- English proof (translation)
-Establish `hg : (1 : ℝ) ≤ Xa.g0` using `by exact_mod_cast Xa.genus_pos`. Establish `hc` using `Xa.c_pos`. Establish `hT : (2 * nd X : ℝ) + 11 ≤ Xa.T`. Establish `h1` using `Xa.T_ge`. Establish `h2` using `Xa.n_ge`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 2 * nd X + 11 ≤ Xa.T` using `by nlinarith`. Conclude with `this` after adjusting the coercions. Establish `hn : (0 : ℝ) ≤ nd X` using `Nat.cast_nonneg _`. Establish `h1 : (Xa.T : ℝ) * Xa.c * Xa.g0 ≤ 1` using `Xa.Tcg0`. Use `set y : ℝ := Xa.c * Xa.g0 with hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : 0 < y` using `by positivity`. Establish `h2 : y * (2 * nd X + 21 / 2) < y * Xa.T` using `mul_lt_mul_of_pos_left (by linarith) hy0`. Establish `h3 : 2 * y * ((Xa.T : ℝ) + 2 * nd X + 21 / 2) < 4` using `by nlinarith`. Establish `h4 : 4 / (Xa.g0 : ℝ) - 2 * Xa.c * (((Xa.T + (nd X + 4) : ℕ) : ℝ) + nd X + 6 + 1 / 2) = (4 - 2 * y * ((Xa.T : ℝ) + 2 * nd X + 21 / 2)) / Xa.g0`. Rewrite using `[hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]`. Conclude with `div_pos (by linarith) (by linarith)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rate_shift {X : Data E r} (Xa : ArchInM X) :
     0 < 4 / (Xa.g0 : ℝ) - 2 * Xa.c * (((Xa.T + (nd X + 4) : ℕ) : ℝ) + nd X + 6 + 1 / 2) := by
@@ -436,17 +430,15 @@ namespace GlobalTheory.UpperShift
 open GlobalTheory.UpperModel GlobalTheory.IndefiniteRowSideFullHecke.FrameWeightGapBounds GlobalTheory.ShareOn
 
 /- English proof (translation)
-Introduce `E _ _ _ r X Xa Fl m f hf hind`. Assume the negation of the conclusion as `hm`. Take `⟨u, hu, hO⟩` from `exists_comb Fl (Xa.T + (nd X + 4) + nd X + 6) m f (fun q => (hf q).1.1) (by`. Rewrite using `[show Xa.T + (nd X + 4) + nd X + 6 + nd X = Xa.T + 3 * nd X + 10 by ring]; omega)`. Establish `hg` using `isBddSec_sum X hf u`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg0 : ∃ x ∈ X.dom, ∑ q, u q * f q x ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hu (hind u h)`. Take `⟨k, hk⟩` from `exists_s_ne Fl`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1` using `hg.1.1`. Establish `d2` using `Xa.secondTheta_vanishes.1.1.1.1`. Establish `d3` using `Xa.firstTheta_vanishes.1.1.1.1`. Establish `d4` using `Xa.et_sec.1`. Establish `d5` using `(Fl.s_van k).1.1.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨x, hx, hne⟩` from `exists_mul_ne (((d1.mul d2).mul d3).mul d4) d5 (exists_mul_ne ((d1.mul d2).mul d3) d4 (exists_mul_ne (d1.mul d2) d3 (exists_mul_ne d1 d2 hg0 Xa.secondTheta_ne_zero) Xa.firstTheta_ne_zero) Xa.et_ne) hk`. Simplify using `only [Pi.mul_apply, ne_eq, mul_eq_zero, not_or] at hne`. Take `⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩` from `hne`. Take `⟨x0, hx0, hs0, hpos, hmax⟩` from `mainT E r X Xa Fl (Xa.T + (nd X + 4)) _ (rate_shift Xa) hg hO ⟨x, hx, by`. Establish `p1` using `pnorm_pos X (Xa.Fp + (Xa.T + (nd X + 4)) • Xa.L) (P := fun x => ∑ q, u q * f q x) hx h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p2` using `pnorm_pos X ((nd X + 4) • Xa.L - Xa.Fp) hx h2`. Establish `p3` using `pnorm_pos X (2 • Xa.L - Xa.de) hx h3`. Establish `p4` using `pnorm_pos X ((Xa.i * (Xa.g0 / 2)) • Xa.de) hx h4`. Establish `p5 : 0 < ∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2` using `Finset.sum_pos' (fun _ _ => sq_nonneg _) ⟨k, Finset.mem_univ _, pow_pos (pnorm_pos X _ hx h5) 2⟩`. Use the proof step `positivity⟩`.
-
-Conclude with `no_pos_maxT E r X Xa Fl _ _ hg.1 x0 hx0 hs0 hpos hmax`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem upper_shift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) (m : ℕ) (f : Fin m → Frame X.Ψ r → ℂ), (∀ q, X.IsBddSec (Xa.Fp + (Xa.T + (nd X + 4)) • Xa.L) (f q)) → (∀ u : Fin m → ℂ, (∀ x ∈ X.dom, ∑ q, u q * f q x = 0) → u = 0) → m ≤ Fl.δ * (Xa.T + 3 * nd X + 10).choose (nd X) := by
   intro E _ _ _ r X Xa Fl m f hf hind

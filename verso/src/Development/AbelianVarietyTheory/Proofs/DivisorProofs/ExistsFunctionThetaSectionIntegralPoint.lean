@@ -20,7 +20,7 @@ open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.Poinc.Sep.Frames Glob
 namespace GlobalTheory.IntPointFn
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, GlobalTheory.Poinc.ThetaOne.c_zero]`. Simplify using `only [padd, comp_one]`. Use `show (b ≫ (𝟙 D.P.A * 1)).left = b.left`. Rewrite using `[_root_.mul_one, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_padd_c_zero (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (b : 𝟙_ (Over (Sp V)) ⟶ D.P.A) :
     b.left ≫ (padd D.P.A (𝟙 D.P.A) (toUnit D.P.A ≫ D.c 0)).left = b.left := by
@@ -30,7 +30,7 @@ theorem comp_padd_c_zero (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (b 
   rw [_root_.mul_one, Category.comp_id]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, GlobalTheory.Poinc.ThetaOne.c_zero, ← SymFrame.eta_eq, ← Category.assoc, toUnit_unique (b ≫ toUnit D.P.A) (𝟙 _), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_toUnit_c_zero (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (b : 𝟙_ (Over (Sp V)) ⟶ D.P.A) :
     b.left ≫ (toUnit D.P.A ≫ D.c 0).left = (η[D.P.A]).left := by
@@ -38,7 +38,7 @@ theorem comp_toUnit_c_zero (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (
     toUnit_unique (b ≫ toUnit D.P.A) (𝟙 _), Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, ← Category.assoc, toUnit_unique (b ≫ toUnit D.P.A) (𝟙 _), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_toUnit_eta (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (b : 𝟙_ (Over (Sp V)) ⟶ D.P.A) :
     b.left ≫ (toUnit D.P.A ≫ η[D.P.A]).left = (η[D.P.A]).left := by
@@ -49,15 +49,15 @@ end GlobalTheory.IntPointFn
 namespace GlobalTheory.IntPointFn
 
 /- English proof (translation)
-Introduce `V _ _ D θ b t ht ρ₀ hρ`. Establish `hL` using `D.P.isLB`. Establish `hu` using `mulGen_isGen D.P.L _ _ _ _ t (LB.invGen D.P.L _ _ ρ₀) ht (invGen_isGen _ _ _ _ hρ)`. Establish `hF : FormEq (Sum.elim (fun k => b.left ≫ D.famφB 0 k) (Sum.elim ![(η[D.P.A]).left, b.left] (fun _ : PUnit => eSec D.P.A))) (Sum.elim (DegPre.famε 1) (Sum.elim (DegPre.lineε 1) (fun _ : PUnit => -(1 : ℤ)))) (PEmpty.elim : PEmpty → (Sp V ⟶ D.P.A.left)) (PEmpty.elim : PEmpty → ℤ)`. Introduce `U _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_four, Fin.prod_univ_two, Fintype.prod_empty, Fintype.prod_unique, DegPre.famφB, DegPre.famε, DegPre.lineε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_con …`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_one]`. Normalize the expressions using the abelian group laws. Take `⟨s', hs'⟩` from `exists_sec hL hF (pullMulSec (θ : LB.Sec (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) b.left (LB.mulGen D.P.L _ _ _ _ t (LB.invGen D.P.L _ _ ρ₀)) hu)`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Establish `hle : (⊤ : (Sp V).Opens) ≤ LB.wchart D.P.L (PEmpty.elim : PEmpty → (Sp V ⟶ D.P.A.left)) (PEmpty.elim : PEmpty → D.P.L.ι)` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom (((Sp V).presheaf.map (homOfLE hle).op).hom (s'.f (PEmpty.elim : PEmpty → D.P.L.ι))), fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Establish `e1` using `(hs' Z r z J hJ).trans (sval_pullMulSec _ _ _ hu r z hJ)`. Rewrite `e1` using `[val_mul hJ, val_inv, sval_of s' r z J (PEmpty.elim : PEmpty → D.P.L.ι) (fun k => k.elim)]`. Establish `e2 : (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom (((Sp V).presheaf.map (homOfLE hle).op).hom (s'.f (PEmpty.elim : PEmpty → D.P.L.ι)))) = ((Sp V).presheaf.map (homOfLE hle).op).hom (s'.f (PEmpty.elim : PEmpty → D.P.L.ι))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id]`. Both sides reduce to the same expression. Establish `e3` using `gs_res r z hle (by trivial) (s'.f (PEmpty.elim : PEmpty → D.P.L.ι))`. Rewrite using `[e2]`. Use `erw [e3, e1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, _root_.mul_assoc, _root_.mul_assoc, ← Units.val_mul, _root_.inv_mul_cancel, Units.val_one, _root_.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem fn_of_theta : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) (b : 𝟙_ (Over (Sp V)) ⟶ D.P.A) (t : LB.Gen (LB.LinComb D.P.L ![(η[D.P.A]).left, b.left] (DegPre.lineε 1))), t.IsGen → ∀ (ρ₀ : LB.Gen (D.P.L.pull (eSec D.P.A))), ρ₀.IsGen → ∃ f : V, ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp V) (z : Z) J, Good D.P.L z J → sval (θ : LB.Sec (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) (r ≫ b.left) z J * (val t r z J).val = gs r z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom f) * (val ρ₀ r z J).val := by
   intro V _ _ D θ b t ht ρ₀ hρ

@@ -1,27 +1,25 @@
 import Mathlib
 
 /- English proof (translation)
-Take `⟨n, s, hs⟩` from `Module.Finite.exists_fin (R := A) (M := M)`. Establish `key : ∀ (J : Ideal A) (x : M), x ∈ (J • ⊤ : Submodule A M) → ∃ d : Fin n → A, (∀ i, d i ∈ J) ∧ ∑ i, d i • s i = x`. Introduce `J x hx`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `r hr y _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : y ∈ Submodule.span A (Set.range s)` using `hs ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun A).1 hy`. Use `⟨fun i => r * c i, fun i => J.mul_mem_right _ hr, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Finset.smul_sum]`. Simplify using `[mul_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `x y ⟨d, hd, rfl⟩ ⟨e, he, rfl⟩`. Use `⟨fun i => d i + e i, fun i => J.add_mem (hd i) (he i), ?_⟩` and prove the remaining obligations. Simplify using `[add_smul, Finset.sum_add_distrib]`. Use `choose d hd hdf using fun m => key (I ^ m) _ (hf m)`. Set `g : ℕ → Fin n → A` to `fun m i => ∑ k ∈ Finset.range m, d k i`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : ∀ m, f m = f 0 - ∑ i, g m i • s i`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp [g]`. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1 : ∑ i, g (m + 1) i • s i = ∑ i, g m i • s i + ∑ i, d m i • s i`. Simplify using `[g, Finset.sum_range_succ, add_smul, Finset.sum_add_distrib]`. Rewrite using `[h1, hdf m, ← sub_sub, ← ih]`. Normalize the expressions using the abelian group laws. Establish `hc : ∀ i, ∀ m k, m ≤ k → g m i - g k i ∈ I ^ m`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i m k hmk`. Proceed by induction on `k, hmk using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ k hmk ih`. Establish `h1 : g m i - g (k + 1) i = g m i - g k i - d k i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, Finset.sum_range_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `(I ^ m).sub_mem ih (Ideal.pow_le_pow_right hmk (hd k i))`. Establish `hl : ∀ i, ∃ a : A, ∀ m, g m i - a ∈ I ^ m`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Take `⟨a, ha⟩` from `hI.prec (f := fun m => g m i) (by`. Introduce `m k hmk`. Rewrite using `[SModEq.sub_mem]`. Simplify using `using hc i m k hmk)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨a, fun m => ?_⟩` and prove the remaining obligations. Use `ha m` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem]`. Simplify using `using this`. Use `choose a ha using hl`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f 0 - ∑ i, a i • s i, fun m => ?_⟩` and prove the remaining obligations. Establish `h2 : f m - (f 0 - ∑ i, a i • s i) = -∑ i, (g m i - a i) • s i`. Rewrite using `[hg m]`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[h2]`. Conclude with `Submodule.neg_mem _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (ha i m) Submodule.mem_top)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.LimitOfFinite.aux {A : Type*} {M : Type*} [CommRing A] [AddCommGroup M] [Module A M]
     [Module.Finite A M] (I : Ideal A) (hI : IsPrecomplete I A) (f : ℕ → M)
@@ -83,7 +81,7 @@ private theorem UpperTheory.Reformulated.B.LimitOfFinite.aux {A : Type*} {M : Ty
     Submodule.smul_mem_smul (ha i m) Submodule.mem_top)
 
 /- English proof (translation)
-Introduce `A M _ _ _ _ I hI f hf`. Conclude with `UpperTheory.Reformulated.B.LimitOfFinite.aux I hI f hf`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LimitOfFinite.exists_limit_of_finite.{u_1, u_2} :
     ∀ {A : Type u_1} {M : Type u_2} [inst : CommRing A] [inst_1 : AddCommGroup M]

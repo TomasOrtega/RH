@@ -1,21 +1,19 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `O σ _ _ f`. Establish `key : ∀ m : σ →₀ ℕ, ∃ o : Option σ, (m ≠ 0 → ∃ j, o = some j) ∧ ∀ j, o = some j → m j ≠ 0`. Introduce `m`. Distinguish the cases in `hm : m = 0`. Conclude with `⟨none, fun h => (h hm).elim, fun j hj => by cases hj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨j, hj⟩` from `Finsupp.ne_iff.1 hm`. Use `⟨some j, fun _ => ⟨j, rfl⟩, fun k hk => ?_⟩` and prove the remaining obligations. Consider the cases of `hk`. Simplify using `using hj`. Use `choose c hc₁ hc₂ using key`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `h : σ → MvPowerSeries σ O` to `fun i m => if c (m + Finsupp.single i 1) = some i then MvPowerSeries.coeff (m + Finsupp.single i 1) f else 0`. Establish `hh : ∀ i m, MvPowerSeries.coeff m (h i) = if c (m + Finsupp.single i 1) = some i then MvPowerSeries.coeff (m + Finsupp.single i 1) f else 0` using `fun _ _ => rfl`. Establish `hX : ∀ i m, MvPowerSeries.coeff m (MvPowerSeries.X i * h i) = if c m = some i then MvPowerSeries.coeff m f else 0`. Introduce `i m`. Rewrite using `[MvPowerSeries.X_def, MvPowerSeries.coeff_monomial_mul, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hle : Finsupp.single i 1 ≤ m`. Rewrite using `[if_pos hle, hh, tsub_add_cancel_of_le hle]`. Rewrite using `[if_neg hle, if_neg]`. Introduce `hi`. Conclude with `hle (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 (hc₂ m i hi)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨h, ?_, fun i => ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Rewrite using `[map_add, map_sum, MvPowerSeries.coeff_C]`. Simplify using `only [hX]`. Distinguish the cases in `hm : m = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hm` using the available equality. Establish `: ∀ i, ¬ c 0 = some i` using `fun i hi => hc₂ 0 i hi rfl`. Simplify using `[this]`. Take `⟨j, hj⟩` from `hc₁ m hm`. Simplify using `[hm, hj]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hne : (Finsupp.single i 1 : σ →₀ ℕ) ≠ 0` using `by simp`. Take `⟨j, hj⟩` from `hc₁ _ hne`. Establish `hji : j = i`. Assume the negation of the conclusion as `hji`. Conclude with `hc₂ _ j hj (Finsupp.single_eq_of_ne hji)`.
-
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hh, zero_add, if_pos (hji ▸ hj)]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf39.ev_decomp :
     ∀ {O σ : Type} [inst : CommRing O] [inst_1 : Fintype σ]

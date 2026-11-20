@@ -24,7 +24,7 @@ private noncomputable def coord {V : Scheme.{0}} (f : V ⟶ Line) : Γ(V, ⊤) :
   f.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of ℤ[X])).inv.hom X)
 
 /- English proof (translation)
-The claim follows from `Presieve.isSheaf_of_le _ Scheme.etaleTopology_le_proetaleTopology (GrothendieckTopology.Subcanonical.isSheaf_of_isRepresentable _)`.
+A detailed English derivation is pending.
 -/
 private lemma line_sheaf : Presieve.IsSheaf Scheme.etaleTopology (yoneda.obj Line) :=
   Presieve.isSheaf_of_le _ Scheme.etaleTopology_le_proetaleTopology
@@ -33,7 +33,7 @@ private lemma line_sheaf : Presieve.IsSheaf Scheme.etaleTopology (yoneda.obj Lin
 end UpperTheory.GmInj
 
 /- English proof (translation)
-Unfold `UpperTheory.GmInj.coord UpperTheory.GmInj.toLine`. Rewrite using `[Scheme.Hom.comp_appTop]`. Simplify using `[UpperTheory.GmInj.evalT]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem gmInj_coord_toLine {V : Scheme.{0}} (a : Γ(V, ⊤)) :
     UpperTheory.GmInj.coord (UpperTheory.GmInj.toLine a) = a := by
@@ -42,9 +42,9 @@ private theorem gmInj_coord_toLine {V : Scheme.{0}} (a : Γ(V, ⊤)) :
   simp [UpperTheory.GmInj.evalT]
 
 /- English proof (translation)
-Unfold `UpperTheory.GmInj.toLine`. Rewrite using `[← Category.assoc, Scheme.toSpecΓ_naturality, Category.assoc, ← Spec.map_comp]`. Use `congr 2`. Use `ext1`. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Simplify using `[UpperTheory.GmInj.evalT]`. Simplify using `[UpperTheory.GmInj.evalT]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem comp_gmInj_toLine {V W : Scheme.{0}} (f : W ⟶ V) (a : Γ(V, ⊤)) :
     f ≫ UpperTheory.GmInj.toLine a = UpperTheory.GmInj.toLine (f.appTop.hom a) := by
@@ -58,11 +58,11 @@ private theorem comp_gmInj_toLine {V W : Scheme.{0}} (f : W ⟶ V) (a : Γ(V, �
   · simp [UpperTheory.GmInj.evalT]
 
 /- English proof (translation)
-Introduce `U u v h`. Establish `hS` using `Presheaf.equalizerSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)) (X := op U) (ULift.up (Additive.ofMul u)) (ULift.up (Additive.ofMul v)) h`. Establish `key : UpperTheory.GmInj.toLine (u : Γ(U, ⊤)) = UpperTheory.GmInj.toLine (v : Γ(U, ⊤))`. Use `(UpperTheory.GmInj.line_sheaf _ hS).isSeparatedFor (fun W f _ => f ≫ UpperTheory.GmInj.toLine (u : Γ(U, ⊤))) _ _ (fun W f hf => rfl) (fun W f hf => ?_)` and prove the remaining obligations. Use `show f ≫ UpperTheory.GmInj.toLine _ = f ≫ UpperTheory.GmInj.toLine _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_gmInj_toLine, comp_gmInj_toLine]`. Establish `h2` using `congrArg (fun z : ULift (Additive (Scheme.Γ.obj (op W))ˣ) => ((Additive.toMul z.down : (Scheme.Γ.obj (op W))ˣ) : Scheme.Γ.obj (op W))) hf`. Establish `h3 : f.appTop.hom (u : Γ(U, ⊤)) = f.appTop.hom v` using `h2`. Rewrite using `[h3]`. Establish `h4` using `congrArg UpperTheory.GmInj.coord key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[gmInj_coord_toLine, gmInj_coord_toLine]`. Conclude with `Units.ext h4`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.eq_of_unitGlobalSection_eq :
     ∀ (U : Scheme.{0}) (u v : (Γ(U, ⊤))ˣ), unitSec u = unitSec v → u = v := by

@@ -18,7 +18,7 @@ def ratHom {S : Type} [CommRing S] (hu : ∀ m : ℕ, m ≠ 0 → IsUnit (m : S)
     · rw [e]; simpa using h)
 
 /- English proof (translation)
-Establish `h1 : (m : S) * algebraMap ℚ S (m : ℚ)⁻¹ = 1`. Rewrite using `[← map_natCast (algebraMap ℚ S), ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hm), map_one]`. Establish `h : IsUnit (m : S)` using `IsUnit.of_mul_eq_one _ h1`. Apply `h.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[Algebra.smul_def, ← mul_assoc, ← mul_assoc, h1, Ring.mul_inverse_cancel _ h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_smul_eq {S : Type} [CommRing S] [Algebra ℚ S] (m : ℕ) (hm : m ≠ 0) (x : S) :
     ((m : ℚ)⁻¹) • x = Ring.inverse (m : S) * x := by
@@ -29,7 +29,7 @@ theorem inv_smul_eq {S : Type} [CommRing S] [Algebra ℚ S] (m : ℕ) (hm : m �
   rw [Algebra.smul_def, ← mul_assoc, ← mul_assoc, h1, Ring.mul_inverse_cancel _ h]
 
 /- English proof (translation)
-Use `letI : Algebra ℚ S := (ratHom hu).toAlgebra`. Establish `e : ∀ (k : ℕ) (z : S), ((k.factorial : ℚ)⁻¹) • z ^ k = Ring.inverse (k.factorial : S) * z ^ k` using `fun k z => inv_smul_eq _ k.factorial_ne_zero _`. Use `hLA S T (fun k z => ((k.factorial : ℚ)⁻¹) • z ^ k) (fun _ _ => rfl) x y (fun k => by simp only [e]; exact hx k) (fun k => by simp only [e]; exact hy k)` as an intermediate fact. Simplify `this` using `only [e]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem core (hLA : LogAlg) {S : Type} [CommRing S] (hu : ∀ m : ℕ, m ≠ 0 → IsUnit (m : S)) (T : Subring S) (x y : S)
     (hx : ∀ k : ℕ, Ring.inverse (k.factorial : S) * x ^ k ∈ T)
@@ -48,7 +48,7 @@ theorem core (hLA : LogAlg) {S : Type} [CommRing S] (hu : ∀ m : ℕ, m ≠ 0 �
   simpa only [e] using this
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Conclude with `e`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem sum_eq_of_coe {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (T : Subalgebra R S) (f f' f'' : ℕ → T)
     (N : ℕ) (c : T)
@@ -65,20 +65,20 @@ theorem sum_eq_of_coe {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (T : 
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `ACris.pow_dvd_factorial (p := l) (le_refl (l * n))`. Rewrite using `[hd, Nat.cast_mul, Nat.cast_pow, A.pow_l_acr, zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem factorial_acr (A : PAlg l) (n : ℕ) : (((l * n).factorial : ℕ) : A.Acr n) = 0 := by
   obtain ⟨d, hd⟩ := ACris.pow_dvd_factorial (p := l) (le_refl (l * n))
   rw [hd, Nat.cast_mul, Nat.cast_pow, A.pow_l_acr, zero_mul]
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hy`. Take `⟨g', hg', rfl⟩` from `hy'`. Establish `hab : algebraMap A.W (WL l A.A) (w * w' - 1) = algebraMap A.W (WL l A.A) (w - 1) + algebraMap A.W (WL l A.A) (w' - 1) + algebraMap A.W (WL l A.A) (w - 1) * algebraMap A.W (WL l A.A) (w' - 1)`. Simplify using `only [map_sub, map_mul, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨hT, hN⟩` from `core hLA (fun m hm => A.isUnit_natCast hm) A.Acr0.toSubring (algebraMap A.W (WL l A.A) (w - 1)) (algebraMap A.W (WL l A.A) (w' - 1)) (fun k => by have h := (g k).2; rw [hg k] at h; exact h) (fun k => by have h := (g' k).2; rw [hg' k] at h; exact h)`. Establish `hmem : ∀ k, dpw k (w * w' - 1) ∈ A.Acr0` using `fun k => by`. Rewrite using `[dpw, hab]`. Conclude with `hT k`. Take `⟨c, hc, e⟩` from `hN (l * n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k => ⟨dpw k (w * w' - 1), hmem k⟩, fun _ => rfl, ?_⟩` and prove the remaining obligations. Establish `e0` using `sum_eq_of_coe A.Acr0 g g' (fun k => ⟨dpw k (w * w' - 1), hmem k⟩) (l * n) ⟨c, hc⟩ (by`. Simplify using `only [hg, hg']`. Simplify using `only [dpw, hab]`. Conclude with `e)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1` using `congrArg (A.mkAcr n) e0`. Simplify using `only [map_add, map_sum, map_mul, map_pow, map_neg, map_one, map_natCast] at e1`. Rewrite using `[e1, factorial_acr, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLog_mul (hLA : LogAlg) (A : PAlg l) (n : ℕ) (w w' : A.W) (y y' : A.Acr n)
     (hy : IsLog A n w y) (hy' : IsLog A n w' y') : IsLog A n (w * w') (y + y') := by
@@ -105,7 +105,7 @@ theorem isLog_mul (hLA : LogAlg) (A : PAlg l) (n : ℕ) (w w' : A.W) (y y' : A.A
   rw [e1, factorial_acr, zero_mul, add_zero]
 
 /- English proof (translation)
-Introduce `h _ _ _ A n w w' y y' _ _ hy hy'` and use `isLog_mul h A n w w' y y' hy hy'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem logMul : CrystallineSemistableComparison.E.LogAlg → CrystallineSemistableComparison.E.LogEx → CrystallineSemistableComparison.E.LogMul :=
   fun h _ _ _ A n w w' y y' _ _ hy hy' => isLog_mul h A n w w' y y' hy hy'

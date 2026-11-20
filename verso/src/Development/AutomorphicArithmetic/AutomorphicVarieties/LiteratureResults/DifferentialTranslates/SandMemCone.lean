@@ -71,12 +71,12 @@ variable (E a) in
 def cone : Set (HV E a) := {p | ∃ g : GL (Fin a) (Cinf E), sand g (hOne E a) = p}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by rw [map_one]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem hOne_mem_cone : hOne E a ∈ cone E a := ⟨1, by rw [map_one]; rfl⟩
 
 /- English proof (translation)
-Take `⟨h, rfl⟩` from `hp`. Conclude with `⟨g * h, by rw [map_mul]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sand_mem_cone (g : GL (Fin a) (Cinf E)) {p : HV E a} (hp : p ∈ cone E a) : sand g p ∈ cone E a := by
   obtain ⟨h, rfl⟩ := hp
@@ -132,7 +132,7 @@ theorem geo_ξ (γ : (⊤ : Subgroup (GL (Fin a) E))) :
     (geo ho U Ξ).ξ γ = Ξ.mat (GeneralLinearGroup.map (pInf E) (ratGL E a γ.1)) := rfl
 
 /- English proof (translation)
-Use extensionality with `γ f s i`. Rewrite using `[Geo.lev_apply, geo_σ]`. Simplify using `only [Subgroup.coe_inv, map_inv]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem geo_lev : (geo ho U Ξ).lev = levelRep ⊤ U (ratC Ξ) := by
   ext γ f s i

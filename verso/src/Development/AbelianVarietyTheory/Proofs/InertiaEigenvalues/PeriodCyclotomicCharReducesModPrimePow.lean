@@ -10,9 +10,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.CycLevel
 
 /- English proof (translation)
-Establish `h1 : ‖u - (a : ℤ_[l])‖ ≤ (l : ℝ) ^ (-(r : ℤ))`. Rewrite using `[PadicInt.norm_def]`. Use `push_cast`. Conclude with `h`. Establish `h2` using `(PadicInt.norm_le_pow_iff_mem_span_pow (u - (a : ℤ_[l])) r).mp h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, sub_eq_zero]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem toZModPow_eq_of_norm_sub_le {l : ℕ} [Fact l.Prime] (u : ℤ_[l]) (a : ℕ) (r : ℕ)
     (h : ‖(u : ℚ_[l]) - (a : ℚ_[l])‖ ≤ (l : ℝ) ^ (-(r : ℤ))) :
@@ -24,13 +24,13 @@ theorem toZModPow_eq_of_norm_sub_le {l : ℕ} [Fact l.Prime] (u : ℤ_[l]) (a : 
   exact h2
 
 /- English proof (translation)
-Take `⟨ζ, hζ1, hζ⟩` from `GlobalTheory.LocDualInt.exists_root_pow_cyclotomicCharacter_congr K.1 (IntermediateField.fixingSubgroupEquiv K.1 g) r`. Take `⟨a, ha, hga⟩` from `P.χQ_cyc (g : GQ l) r ζ hζ1`. Establish `key` using `hζ a hga`. Establish `hr : (l : ℝ) ^ (-(r : ℤ)) ≤ 1`. Apply `zpow_le_one_of_nonpos₀` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(Fact.out : l.Prime).one_lt.le` after adjusting the coercions. Simplify using the standard rewrite rules. Establish `hnorm : ‖((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l])‖ ≤ 1`. Establish `e : ((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]) = (((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]) - (a : ℚ_[l])) + (a : ℚ_[l])` using `by ring`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha.trans hr) ?_)` and prove the remaining obligations. Use `PadicInt.norm_le_one (a : ℤ_[l])` as an intermediate fact. Rewrite `this` using `[PadicInt.norm_def, PadicInt.coe_natCast]`. Then use the resulting hypothesis. Set `u : ℤ_[l]` to `⟨_, hnorm⟩`. Establish `hu : (u : ℚ_[l]) = ((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l])` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : ‖(u : ℚ_[l]) - (a : ℚ_[l])‖ ≤ (l : ℝ) ^ (-(r : ℤ))` using `by rw [hu]; exact ha`. Use `⟨u, (P.PD_χ K g).trans hu.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[toZModPow_eq_of_norm_sub_le u a r ha', key]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chi_reduces (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (r : ℕ) (g : ↥(GK K)) :
     ∃ u : ℤ_[l], (((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) = (u : ℚ_[l]) ∧

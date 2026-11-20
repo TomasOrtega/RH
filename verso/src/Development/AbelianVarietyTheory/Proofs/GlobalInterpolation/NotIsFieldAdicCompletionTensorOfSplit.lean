@@ -7,11 +7,11 @@ open NumberField IsDedekindDomain Polynomial
 namespace GlobalTheory.SplitPlace
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`. Use `set O := v.adicCompletionIntegers F`. Take `⟨r, hr, -⟩` from `HenselianRing.is_henselian (I := IsLocalRing.maximalIdeal O) (X ^ 2 + C (algebraMap (𝓞 F) O t) * X + C (algebraMap (𝓞 F) O n)) (by monicity!) 0 (by`. Simplify using `only [eval_add, eval_pow, eval_X, eval_mul, eval_C, mul_zero, add_zero]`. Rewrite using `[zero_pow two_ne_zero, zero_add, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun h => h hn)`. Use the proof step `(by`. Use `IsUnit.map _ ?_` and prove the remaining obligations. Use `(GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff v t).2 ht` as an intermediate fact. Simplify using `using this)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Use `congrArg (fun x : O => (x : v.adicCompletion F)) hr` as an intermediate fact. Simplify using `only [IsRoot.def, eval_add, eval_pow, eval_X, eval_mul, eval_C] at this`. Move the coercions through the operations in `at this`. Conclude with `this`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem exists_root {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (t n : 𝓞 F) (hn : n ∈ v.asIdeal) (ht : t ∉ v.asIdeal) :
@@ -38,9 +38,7 @@ theorem exists_root {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum 
 open scoped TensorProduct in
 open NumberField IsDedekindDomain Polynomial in
 /- English proof (translation)
-Take `⟨hp, ho⟩` from `h`. Use `haveI := hp`. Use `haveI := ho`. Use `haveI := v.isMaximal`. Use `⟨Ideal.IsMaximal.of_liesOver_isMaximal P v.asIdeal, fun a => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Ideal.over_def P v.asIdeal, Ideal.under_def, Ideal.mem_comap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isMaximal_and_algebraMap_mem_iff_of_mem_primesOver (F E : Type) [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) (P : Ideal (𝓞 E))
@@ -54,7 +52,7 @@ private lemma isMaximal_and_algebraMap_mem_iff_of_mem_primesOver (F E : Type) [F
 open scoped TensorProduct in
 open NumberField IsDedekindDomain Polynomial in
 /- English proof (translation)
-Establish `hmon : (X ^ 2 + C b * X + C c : R[X]).Monic` using `by monicity!`. Take `⟨β, hβ, -⟩` from `HenselianRing.is_henselian (I := IsLocalRing.maximalIdeal R) (X ^ 2 + C b * X + C c) hmon 0 (by simpa using hc) (by simpa using hb.map _)`. Conclude with `⟨β, by simpa using hβ⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_root_quadratic_of_isUnit_of_mem_maximalIdeal (R : Type) [CommRing R]
     [IsLocalRing R] [IsAdicComplete (IsLocalRing.maximalIdeal R) R] (b c : R)
@@ -68,43 +66,35 @@ open scoped TensorProduct in
 open NumberField IsDedekindDomain Polynomial in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ hrank v hsplit hfield`. Take `⟨P, Q, hPQ, hset⟩` from `Set.ncard_eq_two.mp hsplit`. Take `⟨hPmax, hPmem⟩` from `isMaximal_and_algebraMap_mem_iff_of_mem_primesOver F E v P (by rw [hset]; exact Set.mem_insert _ _)`. Take `⟨hQmax, hQmem⟩` from `isMaximal_and_algebraMap_mem_iff_of_mem_primesOver F E v Q (by rw [hset]; exact Set.mem_insert_of_mem _ rfl)`. Take `⟨α, hαP, hαQ⟩` from `SetLike.not_le_iff_exists.mp (fun h => hPQ (hPmax.eq_of_le hQmax.ne_top h))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hαF : (α : E) ∉ (algebraMap F E).range`. Introduce and unpack `⟨a, ha⟩`. Establish `hint : IsIntegral ℤ a`. Establish `h1 : IsIntegral ℤ (algebraMap F E a)` using `ha ▸ RingOfIntegers.isIntegral_coe α`. Conclude with `(isIntegral_algHom_iff ((Algebra.ofId F E).restrictScalars ℤ) (algebraMap F E).injective).mp h1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hα : algebraMap (𝓞 F) (𝓞 E) ⟨a, hint⟩ = α` using `RingOfIntegers.ext (by rw [← ha]; rfl)`. Establish `hav : (⟨a, hint⟩ : 𝓞 F) ∈ v.asIdeal` using `(hPmem _).mp (hα ▸ hαP)`. Conclude with `hαQ (hα ▸ (hQmem _).mpr hav)`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_eq_succ hrank`. Establish `hint : IsIntegral (𝓞 F) α` using `Algebra.IsIntegral.isIntegral α`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : (minpoly (𝓞 F) α).natDegree = 2`. Establish `hE : minpoly (𝓞 F) (α : E) = minpoly (𝓞 F) α` using `minpoly.algHom_eq (IsScalarTower.toAlgHom (𝓞 F) (𝓞 E) E) Subtype.val_injective α`. Establish `hF : minpoly F (α : E) = (minpoly (𝓞 F) α).map (algebraMap (𝓞 F) F)`. Rewrite using `[← hE]`. Conclude with `minpoly.isIntegrallyClosed_eq_field_fractions' F (hint.map (IsScalarTower.toAlgHom (𝓞 F) (𝓞 E) E))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : (minpoly F (α : E)).natDegree ≤ 2` using `hrank ▸ minpoly.natDegree_le (α : E)`. Establish `hne1 : (minpoly F (α : E)).natDegree ≠ 1` using `fun h => hαF (minpoly.natDegree_eq_one_iff.mp h)`. Establish `hpos : 0 < (minpoly F (α : E)).natDegree` using `minpoly.natDegree_pos (Algebra.IsIntegral.isIntegral _)`. Rewrite `hle`, `hne1`, `hpos` using `[hF, (minpoly.monic hint).natDegree_map]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set b := (minpoly (𝓞 F) α).coeff 1 with hb`. Use `set c := (minpoly (𝓞 F) α).coeff 0 with hc`. Establish `hα2 : α ^ 2 + algebraMap (𝓞 F) (𝓞 E) b * α + algebraMap (𝓞 F) (𝓞 E) c = 0`. Establish `h` using `minpoly.aeval (𝓞 F) α`. Establish `h2 : (minpoly (𝓞 F) α).coeff 2 = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hdeg]`. Conclude with `(minpoly.monic hint).coeff_natDegree`. Rewrite `h` using `[aeval_eq_sum_range, hdeg, Finset.sum_range_succ, Finset.sum_range_succ, Finset.sum_range_one, h2]`. Simplify using `only [Algebra.smul_def, map_one, one_mul, pow_zero, pow_one, mul_one] at h`. Take the linear combination `h`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcv : c ∈ v.asIdeal`. Rewrite using `[← hPmem]`. Establish `hce : algebraMap (𝓞 F) (𝓞 E) c = -(α ^ 2 + algebraMap (𝓞 F) (𝓞 E) b * α)`. Take the linear combination `hα2`. Rewrite using `[hce]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `P.neg_mem (P.add_mem (P.pow_mem_of_mem hαP 2 two_pos) (P.mul_mem_left _ hαP))`. Establish `hbv : b ∉ v.asIdeal`. Introduce `hbv`. Establish `hsq : α ^ 2 = -(algebraMap (𝓞 F) (𝓞 E) b * α + algebraMap (𝓞 F) (𝓞 E) c)`. Take the linear combination `hα2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : α ^ 2 ∈ Q`. Rewrite using `[hsq]`. Conclude with `Q.neg_mem (Q.add_mem (Q.mul_mem_right _ ((hQmem b).mpr hbv)) ((hQmem c).mpr hcv))`. Conclude with `hαQ (hQmax.isPrime.mem_of_pow_mem 2 hmem)`. Use `haveI := _root_.GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨β, hβ⟩` from `exists_root_quadratic_of_isUnit_of_mem_maximalIdeal (v.adicCompletionIntegers F) (algebraMap (𝓞 F) _ b) (algebraMap (𝓞 F) _ c) ((_root_.GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff v b).mpr hbv) (by`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, _root_.GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff]`. Conclude with `not_not.mpr hcv)`. Establish `hβF : (β : v.adicCompletion F) ^ 2 + algebraMap F (v.adicCompletion F) (b : F) * β + algebraMap F (v.adicCompletion F) (c : F) = 0`. Establish `h` using `congrArg (v.adicCompletionIntegers F).subtype hβ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h` using `[map_add, map_add, map_mul, map_pow, map_zero]`. Conclude with `h`. Establish `hαE : (α : E) ^ 2 + algebraMap F E (b : F) * α + algebraMap F E (c : F) = 0`. Establish `h` using `congrArg (algebraMap (𝓞 E) E) hα2`. Rewrite `h` using `[map_add, map_add, map_mul, map_pow, map_zero]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Use `set x : v.adicCompletion F ⊗[F] E := Algebra.TensorProduct.includeLeft (S := F) (B := E) (β : v.adicCompletion F) with hx`. Use `set y : v.adicCompletion F ⊗[F] E := Algebra.TensorProduct.includeRight (A := v.adicCompletion F) (α : E) with hy`. Establish `hxeq : x ^ 2 + algebraMap F _ (b : F) * x + algebraMap F _ (c : F) = 0`. Establish `h` using `congrArg (Algebra.TensorProduct.includeLeft (R := F) (S := F) (B := E)) hβF`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `h` using `[map_add, map_add, map_mul, map_pow, AlgHom.commutes, AlgHom.commutes, map_zero]`. Conclude with `h`. Establish `hyeq : y ^ 2 + algebraMap F _ (b : F) * y + algebraMap F _ (c : F) = 0`. Establish `h` using `congrArg (Algebra.TensorProduct.includeRight (R := F) (A := v.adicCompletion F)) hαE`. Rewrite `h` using `[map_add, map_add, map_mul, map_pow, AlgHom.commutes, AlgHom.commutes, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hprod : (x - y) * (x + y + algebraMap F _ (b : F)) = 0`. Take the linear combination `hxeq - hyeq`. Use `haveI := hfield.isDomain`. Take `⟨z, hz⟩ : ∃ z : v.adicCompletion F, y = Algebra.TensorProduct.includeLeft (S` from `F) (B := E) z := by`.
-
-Break down `mul_eq_zero.mp hprod with h | h` into its components or cases. Conclude with `⟨β, (sub_eq_zero.mp h).symm⟩`. Use `⟨-(β : v.adicCompletion F) - algebraMap F _ (b : F), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_neg, AlgHom.commutes, ← hx]`. Take the linear combination `h`.
-
-Choose the witnesses or unpack the hypotheses as in `⟨ℓ, hℓ1, hℓα⟩ : ∃ ℓ : E →ₗ[F] F, ℓ 1 = 0 ∧ ℓ α = 1 := by`. Establish `hnot : (α : E) ∉ Submodule.span F {(1 : E)}`. Rewrite using `[Submodule.mem_span_singleton]`. Introduce and unpack `⟨a, ha⟩`. Conclude with `hαF ⟨a, by rw [Algebra.algebraMap_eq_smul_one]; exact ha⟩`.
-
-Take `⟨ℓ, hℓ, hℓα⟩` from `LinearMap.exists_extend_of_notMem (0 : Submodule.span F {(1 : E)} →ₗ[F] F) hnot 1`. Use `⟨ℓ, ?_, hℓα⟩` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun hℓ ⟨1, Submodule.mem_span_singleton_self 1⟩`. Simplify using `using h`. Establish `key` using `congrArg ((TensorProduct.rid F (v.adicCompletion F)).toLinearMap ∘ₗ LinearMap.lTensor (v.adicCompletion F) ℓ) hz`.
-
-Simplify using `[hy, hℓ1, hℓα, Algebra.TensorProduct.includeLeft_apply] at key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SplitPlace.not_isField_of_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E], Module.finrank F E = 2 → ∀ v : HeightOneSpectrum (𝓞 F),

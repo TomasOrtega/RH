@@ -24,7 +24,7 @@ namespace GlobalTheory.ShiftUnitPart
 open ReciprocityTheory.ChartRestriction.G.DVR
 
 /- English proof (translation)
-Introduce `ψ` and use `by have := hJ (r ≫ ψ) rwa [Scheme.Hom.comp_apply] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_comp' {X Y Z : Scheme.{0}} {L : LB X} (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     Good L (r z) (fun ψ => J (r ≫ ψ)) := fun ψ => by
@@ -32,7 +32,7 @@ theorem good_comp' {X Y Z : Scheme.{0}} {L : LB X} (r : Z ⟶ Y) (z : Z) {J : (Z
   rwa [Scheme.Hom.comp_apply] at this
 
 /- English proof (translation)
-Rewrite using `[← gs_pull r h z U hU, gs_eq r z (h ⁻¹ᵁ U) hU, gs_eq h (r z) U hU]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply r (h ⁻¹ᵁ U) z hU _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_comp_stalk' {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (h : Y ⟶ X) (z : Z) (U : X.Opens) (hU : h (r z) ∈ U)
     (a : Γ(X, U)) : gs (r ≫ h) z U a = (r.stalkMap z).hom (gs h (r z) U a) := by
@@ -40,7 +40,7 @@ theorem gs_comp_stalk' {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (h : Y ⟶ X) (z : Z) 
   exact (Scheme.Hom.germ_stalkMap_apply r (h ⁻¹ᵁ U) z hU _).symm
 
 /- English proof (translation)
-Rewrite using `[← gs_unit _ _ _ hU, ← gs_unit (r ≫ h) z U (by rwa [Scheme.Hom.comp_apply])]`. Conclude with `gs_comp_stalk' r h z U hU _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_comp_stalk' {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (h : Y ⟶ X) (z : Z) (U : X.Opens) (hU : h (r z) ∈ U)
     (a : Γ(X, U)ˣ) : (gm (r ≫ h) z U a).val = (r.stalkMap z).hom (gm h (r z) U a).val := by
@@ -48,7 +48,7 @@ theorem gm_comp_stalk' {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (h : Y ⟶ X) (z : Z) 
   exact gs_comp_stalk' r h z U hU _
 
 /- English proof (translation)
-Rewrite using `[val_of t (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc]), val_of t h (r z) (fun ψ => J (r ≫ ψ)) (fun k => J (r ≫ h ≫ φ k)) (fun k => rfl)]`. Establish `hm : (r ≫ h) z ∈ LB.wchart L φ (fun k => J (r ≫ h ≫ φ k))` using `Set.mem_iInter.2 fun k => hJ (r ≫ h ≫ φ k)`. Conclude with `(gs_unit _ z _ hm _).symm.trans ((gs_comp_stalk' r h z _ hm _).trans (congrArg _ (gs_unit h (r z) _ hm _)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_comp_stalk' {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (r : Z ⟶ Y') (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -59,9 +59,9 @@ theorem val_comp_stalk' {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K
   exact (gs_unit _ z _ hm _).symm.trans ((gs_comp_stalk' r h z _ hm _).trans (congrArg _ (gs_unit h (r z) _ hm _)))
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `e1` using `val_comp_stalk' t (𝟙 Y) r z hJ`. Establish `e2` using `val_comp_stalk' t' (𝟙 Y) r z hJ`. Establish `e3` using `gm_comp_stalk' r (𝟙 Y) z ⊤ trivial c`. Simplify using `only [Category.comp_id] at e1 e2 e3`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.val_mul, e1, e2, e3, h _ _ (good_comp' r z hJ), Units.val_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_transport {X Y Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε'))
@@ -78,9 +78,9 @@ section Gen
 variable {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R)
 
 /- English proof (translation)
-Establish `e₀ : ρ.left ≫ Q.famφB α 0 = ρ.left` using `Category.comp_id _`. Establish `e₁ : ρ.left ≫ Q.famφB α 1 = (ρ * cP Q _ α).left` using `congrArg (fun q => q.left) ((MonObj.comp_mul ρ (𝟙 _) (cP Q _ α)).trans (by rw [Category.comp_id, comp_cP]))`. Establish `e₂ : ρ.left ≫ Q.famφB α 2 = (cP Q _ α).left` using `congrArg (fun q => q.left) (comp_cP Q ρ α)`. Establish `e₃ : ρ.left ≫ Q.famφB α 3 = (1 : Q.P.A ⟶ Q.P.A).left` using `congrArg (fun q : Q.P.A ⟶ Q.P.A => q.left) (MonObj.comp_one (M := Q.P.A) ρ)`. Rewrite using `[Fin.prod_univ_four, e₀, e₁, e₂, e₃]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ ^ ((k : ℤ) - 1) * _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) * _ ^ (1 : ℤ) = _`. Rewrite using `[zpow_one, zpow_one, zpow_neg_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_famB (ρ : Q.P.A ⟶ Q.P.A) (α : Q.X) (k : ℕ) {U : Type} [CommGroup U] (h : (Q.P.A.left ⟶ Q.P.A.left) → U) :
     ∏ i, h (ρ.left ≫ Q.famφB α i) ^ DegPre.famε k i =
@@ -96,21 +96,21 @@ theorem prod_famB (ρ : Q.P.A ⟶ Q.P.A) (α : Q.X) (k : ℕ) {U : Type} [CommGr
   rw [zpow_one, zpow_one, zpow_neg_one]
 
 /- English proof (translation)
-Take `⟨a, ha⟩ : ∃ a : Q.P.A ⟶ Q.P.A, cP Q _ α = a` from `⟨_, rfl⟩`. Take `⟨mm, hmm⟩ : ∃ mm : Q.P.A ⟶ Q.P.A, cP Q _ mu = mm` from `⟨_, rfl⟩`. Take `⟨x, hx⟩ : ∃ x : Q.P.A ⟶ Q.P.A, 𝟙 Q.P.A = x` from `⟨_, rfl⟩`. Rewrite using `[ha, hmm, hx]`. Take `⟨N, hN, vN⟩` from `exists_cubN Q.cub a mm x e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `U` to `LB.mulGen Q.P.L _ _ _ _ (LB.mulGen Q.P.L _ _ _ _ N (LB.invGen Q.P.L _ _ (LB.pullGen Q.P.L (thφ Q.P.A (x3 Q.P.A)) thε Q.cub.t (lift a (lift x mm)).left))) (LB.pullGen Q.P.L _ _ v (toUnit Q.P.A).left)`. Establish `hU : U.IsGen` using `mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ hN (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ Q.cub.isGen _))) (pullGen_isGen _ _ _ _ hv _)`. Establish `c₁ : x * mm * a = a * x * mm` using `by rw [mul_comm, ← _root_.mul_assoc]`. Establish `c₂ : mm * x = x * mm` using `mul_comm _ _`. Establish `c₃ : cP Q Q.P.A (mu + α) = a * mm` using `by rw [cPoint_add, ha, hmm, mul_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₄ : cP Q Q.P.A (α + e • mu) = a * mm ^ e` using `by rw [cPoint_add, cPoint_nsmul, ha, hmm]`. Establish `c₅ : x * (a * mm ^ e) = a * mm ^ e * x` using `mul_comm _ _`. Take `⟨σ₁u, hσ⟩` from `exists_sec Q.P.isLB (φ' := Q.famφB (α + e • mu)) (ε' := DegPre.famε e) (fun U _ h => by`. Establish `p₀` using `prod_famB Q (x * mm) α e h`. Establish `p₁` using `prod_cub a x mm h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p₂` using `hF U (fun q => h ((toUnit Q.P.A).left ≫ q))`. Establish `p₃` using `prod_famB Q (𝟙 _) (α + e • mu) e h`. Establish `e₀ : ∀ i, (𝟙 Q.P.A : Q.P.A ⟶ Q.P.A).left ≫ Q.famφB (α + e • mu) i = Q.famφB (α + e • mu) i` using `fun i => by`. Rewrite using `[Over.id_left, Category.id_comp]`. Simplify using `only [e₀] at p₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `p₃` using `[hx]`. Establish `t₁ : ∀ χ, (toUnit Q.P.A).left ≫ (cP Q (𝟙_ (Over (Spec (CommRingCat.of R)))) χ).left = (cP Q Q.P.A χ).left` using `fun χ => congrArg (fun q => q.left) (comp_cP Q (toUnit Q.P.A) χ)`. Establish `t₂ : (toUnit Q.P.A).left ≫ (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ Q.P.A).left = (1 : Q.P.A ⟶ Q.P.A).left` using `congrArg (fun q : Q.P.A ⟶ Q.P.A => q.left) (MonObj.comp_one (M := Q.P.A) (toUnit Q.P.A))`. Simplify using `only [t₁, t₂] at p₂`. Rewrite `p₂` using `[c₃, hmm, ha]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `p₀` using `[ha, c₁]`. Rewrite `p₃` using `[c₄, c₅]`. Use `Eq.trans (prod_sum₂ _ p₀ (prod_sum₂ _ (prod_sum₂ _ rfl (prod_neg _ _ p₁)) p₂)) (Eq.trans ?_ p₃.symm)` and prove the remaining obligations. Rewrite using `[c₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_succ, Fin.prod_univ_zero, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, Matrix.cons_val_zero, Matrix.cons_val_succ, Fin.succ_zero_eq_one, Fin.succ_one_eq_two, Matrix.cons_val_one, Matrix.head_cons, _root_.mul_one, ofMul_one]`. Use the proof step `module)`. Use the proof step `(pullMulSec σ (x * mm).left U hU)`. Use `⟨σ₁u, fun T ρ z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hσ _ _ z J hJ, sval_pullMulSec _ _ _ _ _ z hJ, Over.comp_left]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use `(val_mul hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[val_pull hJ]`. Use `congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((vN T ρ z J hJ).trans (by rw [← hx, Category.comp_id])) ((val_inv _ _).trans (congrArg (·⁻¹) ((val_cub Q.cub ρ hJ _ _ _).trans (by rw [← hx, Category.comp_id])))))) (by rw [Over.comp_left])` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_U (e : ℕ) (mu α : Q.X) {Kv : Type} [Fintype Kv]
     {φv : Kv → ((𝟙_ (Over (Spec (CommRingCat.of R)))).left ⟶ Q.P.A.left)} {εv : Kv → ℤ}
@@ -173,11 +173,11 @@ theorem exists_U (e : ℕ) (mu α : Q.X) {Kv : Type} [Fintype Kv]
 end Gen
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Establish `key : ∀ x : ℤ, 0 ≤ 2 * x * g mu α + g α α` using `fun x => by`. Use `hnn (x • mu + α)` as an intermediate fact. Simplify using `only [map_add, map_zsmul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hn, ← hs] at this`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : g mu α = 0`. Assume the negation of the conclusion as `hne`. Use `key (-(g α α + 1) * g mu α)` as an intermediate fact.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_pos_of_ne_zero hne, hnn α]`. Simplify using `[h0]`. Establish `h1 : -(g mu α) ≤ ((g mu α).natAbs : ℤ)` using `by rw [Int.natCast_natAbs]; exact neg_le_abs _`. Establish `h2 : ((g mu α).natAbs : ℤ) ≤ e` using `by exact_mod_cast he`. Establish `h3 : (1 : ℤ) ≤ n` using `by exact_mod_cast hpos`.
+Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -202,13 +202,13 @@ theorem nonneg_shift {X : Type} [AddCommGroup X] (g : LinearMap.BilinForm ℤ X)
     nlinarith
 
 /- English proof (translation)
-Rewrite using `[gs_eq f z ⊤ trivial, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_zero' {Y Z : Scheme.{0}} (f : Z ⟶ Y) (z : Z) : gs f z ⊤ (0 : Γ(Y, ⊤)) = 0 := by
   rw [gs_eq f z ⊤ trivial, map_zero, map_zero]
 
 /- English proof (translation)
-The claim follows from `(gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * _) (gs_res r z le_top (hJ.mem φ r) c))`.
+A detailed English derivation is pending.
 -/
 theorem sval_secScale' {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (c : Γ(Y, ⊤)) (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -216,56 +216,52 @@ theorem sval_secScale' {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {�
   (gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * _) (gs_res r z le_top (hJ.mem φ r) c))
 
 /- English proof (translation)
-The claim follows from `gs_pull f g z ⊤ trivial a`.
+A detailed English derivation is pending.
 -/
 theorem gs_appTop {Z Y X : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (a : Γ(X, ⊤)) :
     gs f z ⊤ (g.appTop.hom a) = gs (f ≫ g) z ⊤ a :=
   gs_pull f g z ⊤ trivial a
 
 /- English proof (translation)
-Introduce `E _ _ _ H k _ _ m d t P gam hM hli hab`. Introduce `Y n' v' dd hdd D q hq h hB hDef hΘ ρ hρ B' _ π₁ π₂ c' h₁ h₂ h₃ h₄ mu α n ψ₀ τ₀ hψ hτ`. Establish `hsym : ∀ i, gam i mu α = gam i α mu` using `GlobalTheory.T.exponentForms_symm_of_isUnit_tau_on_toricChart k m d P.D.toPre gam hM mu α τ₀ hτ`. Establish `hN : ∀ e : ℕ, (∑ i, (gam i mu α).natAbs) ≤ e → ∀ i, 0 ≤ (e : ℤ) * n i + gam i mu α` using `fun e he i => nonneg_shift (gam i) mu α (hsym i) (hM.nonneg i) (n i) (hψ.2.1 i) e ((Finset.single_le_sum (f := fun i => (gam i mu α).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)).trans he)`. Use `⟨∑ i, (gam i mu α).natAbs, fun e he => ⟨hN e he, fun σ => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG : GlobalFnsSt` using `GlobalTheory.ExpansionTotal.globalFns`. Establish `hc0 : P.D.toPre.c 0 = η[P.D.toPre.P.A]`. Establish `h` using `P.D.toPre.c_add 0 0`. Rewrite `h` using `[add_zero]`. Establish `h' : P.D.toPre.c 0 * P.D.toPre.c 0 = P.D.toPre.c 0` using `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : P.D.toPre.c 0 = 1` using `mul_eq_left.1 h'`. Rewrite using `[h1, Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Set `v₀` to `LB.mulGen P.D.toPre.P.L _ _ _ _ (LB.mulGen P.D.toPre.P.L _ _ _ _ (GeneratorPullback.powGen P.D.toPre.P.L _ _ ψ₀ e) τ₀) (GeneratorPullback.powGen P.D.toPre.P.L _ _ P.D.toPre.rig e)`. Establish `hv₀ : v₀.IsGen` using `mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (powGen_isGen _ _ _ _ hψ.1 e) hτ.1) (powGen_isGen _ _ _ _ P.D.toPre.rig_gen e)`. Establish `kc : ∀ χ, (P.D.toPre.c χ).left = (cP P.D.toPre (𝟙_ (Over (Spec (CommRingCat.of (ChartRing k m d))))) χ).left` using `fun χ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[cP, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `k1 : (P.D.toPre.c 0).left = (1 : 𝟙_ (Over (Spec (CommRingCat.of (ChartRing k m d)))) ⟶ P.D.toPre.P.A).left`. Rewrite using `[hc0, Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `k0 : eSec P.D.toPre.P.A = (1 : 𝟙_ (Over (Spec (CommRingCat.of (ChartRing k m d)))) ⟶ P.D.toPre.P.A).left`. Rewrite using `[← k1, hc0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨σ₁u, hσu⟩` from `exists_U P.D.toPre e mu α v₀ hv₀ (fun U _ h => by`. Simplify using `only [Fintype.prod_sum_type, Fintype.prod_unique, Fin.prod_univ_four, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons]`. Rewrite using `[k1, k0, kc, kc, kc]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, Matrix.vecHead, Matrix.vecTail, Function.comp_apply, Fin.succ_zero_eq_one, Fin.succ_one_eq_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_succ, Matrix.head_cons, Matrix.tail_cons]`. Use the proof step `module) σ`. Establish `hne : ∀ i, algebraMap (ChartRing k m d) (FractionRing (ChartRing k m d)) (bdParam k m d i) ≠ 0` using `fun i => (map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 (by`. Introduce `h0`. Use `congrArg (MvPowerSeries.coeff (Finsupp.single (Sum.inl i : Fin m ⊕ Fin d) 1)) h0` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[bdParam, MvPowerSeries.coeff_X] at this)`. Take `⟨-, -, e1, he1, hv1⟩` from `hψ`. Take `⟨-, e', he', hv'⟩` from `hτ`. Set `tN : ChartRing k m d` to `∏ i, bdParam k m d i ^ ((e : ℤ) * n i + gam i mu α).toNat`. Establish `hE : ((e1 ^ e * e' : (FractionRing (ChartRing k m d))ˣ) : FractionRing (ChartRing k m d)) = algebraMap (ChartRing k m d) _ tN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val, he1, he']`. Simplify using `only [tN, map_prod, map_pow]`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, ← zpow_natCast, ← zpow_natCast (algebraMap _ _ _) (((e : ℤ) * n i + gam i mu α).toNat), ← zpow_add₀ (hne i), Int.toNat_of_nonneg (hN e he i)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨DVR.SecOps.secScale (Out.scal P.D.toPre.P.A.hom tN) σ₁u, σ₁u, ?_, fun Z x z J hJ => ?_, ?_⟩` and prove the remaining obligations. Use `rotate_left`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[sval_secScale' _ _ _ _ hJ]`. Conclude with `congrArg (· * _) (gs_appTop x P.D.toPre.P.A.hom z _)`. Introduce `Z r z J hJ`. Set `T' : Over (Spec (CommRingCat.of (ChartRing k m d)))` to `Over.mk r`. Establish `ht : (toUnit T').left = r` using `(Category.comp_id _).symm.trans (Over.w (toUnit T'))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `ρ' : T' ⟶ P.D.toPre.P.A` to `Over.homMk (r ≫ (P.D.toPre.c 0).left) (by show (r ≫ (P.D.toPre.c 0).left) ≫ P.D.toPre.P.A.hom = r`. Rewrite using `[Category.assoc, Over.w (P.D.toPre.c 0)]`. Conclude with `Category.comp_id r)`. Establish `hρ1 : ρ' = 1`. Rewrite using `[Hom.one_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, ht, ← hc0]`. Both sides reduce to the same expression. Establish `hρu : ρ' ≫ toUnit P.D.toPre.P.A = toUnit T'` using `toUnit_unique _ _`. Establish `hρm : ρ' ≫ (𝟙 P.D.toPre.P.A * cP P.D.toPre _ mu) = toUnit T' ≫ P.D.toPre.c mu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_mul, Category.comp_id, comp_cP, hρ1, _root_.one_mul]`. Both sides reduce to the same expression. Establish `C : IsCub (cubV P.D.toPre.cub z J)` using `isCub_cubV (T := T') P.D.toPre.cub hJ`. Establish `c1 : cubN (cubV P.D.toPre.cub z J) e (ρ' ≫ cP P.D.toPre _ α) (ρ' ≫ cP P.D.toPre _ mu) ρ' = 1`. Rewrite using `[hρ1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `C.N_one _ _ _`. Establish `c2 : cubV P.D.toPre.cub z J (ρ' ≫ cP P.D.toPre _ α) ρ' (ρ' ≫ cP P.D.toPre _ mu) = 1`. Rewrite using `[hρ1]`. Conclude with `C.face₂ _ _`. Establish `hv` using `hσu T' ρ' z J hJ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hv` using `[c1, c2, hρu, hρm, inv_one, _root_.one_mul, _root_.one_mul]`. Use `show sval σ₁u ρ'.left z J = _`. Rewrite using `[hv, Over.comp_left, ht]`. Rewrite using `[val_mul hJ, val_mul hJ, val_pow, val_pow, mul_comm]`. Introduce `uu hu hc z J hJ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ((fst (TF (R` using `ChartRing k m d) (FractionRing (ChartRing k m d))) P.D.toPre.P.A).left ≫ jFK (R := ChartRing k m d) (FractionRing (ChartRing k m d))) ≫ (toUnit (TK (ChartRing k m d))).left = (DegPre.prB P.D.toPre (FractionRing (ChartRing k m d)) ≫ toUnit P.D.toPre.P.A).left := by`. Use `congrArg (fun q => q.left) (toUnit_unique (fst (TF (R := ChartRing k m d) (FractionRing (ChartRing k m d))) P.D.toPre.P.A ≫ (Over.homMk (jFK (R := ChartRing k m d) (FractionRing (ChartRing k m d))) rfl : TF (R := ChartRing k m d) (FractionRing (ChartRing k m d)) ⟶ TK (ChartRing k …` as an intermediate fact. Simplify `this` using `[Category.assoc]`. Establish `hu' : unitOn (e1 ^ e * e') = unitOn e1 ^ e * unitOn e'` using `by simp [unitOn, map_mul, map_pow]`. Establish `hfm : val (DegPre.famMult P.D.toPre (FractionRing (ChartRing k m d)) e mu α) (fst (TF (R` using `ChartRing k m d) (FractionRing (ChartRing k m d))) P.D.toPre.P.A).left z J = gm ((fst (TF (R := ChartRing k m d) (FractionRing (ChartRing k m d))) P.D.toPre.P.A).left ≫ jFK (R := ChartRing k m d) (FractionRing (ChartRing k m d))) z ⊤ (unitOn (e1 ^ e * e')) * val v₀ (DegPre.prB P. …`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `P1` using `val_transport (P.D.toPre.psi mu) (LB.pullGen P.D.toPre.P.L _ _ ψ₀ (toUnit (TK (ChartRing k m d))).left) (unitOn e1) (fun y J hJ => (hv1 y J hJ).trans (by rw [val_pull hJ, Category.id_comp])) ((fst (TF (R := ChartRing k m d) (FractionRing (ChartRing k m d))) P.D.toPre.P.A).left ≫ …`. Establish `P2` using `val_transport (P.D.toPre.tau mu α) (LB.pullGen P.D.toPre.P.L _ _ τ₀ (toUnit (TK (ChartRing k m d))).left) (unitOn e') (fun y J hJ => (hv' y J hJ).trans (by rw [val_pull hJ, Category.id_comp])) ((fst (TF (R := ChartRing k m d) (FractionRing (ChartRing k m d))) P.D.toPre.P.A).left …`. Rewrite `P1`, `P2` using `[val_pull hJ]`. Rewrite using `[val_famMult (fst _ _) hJ e mu α, val_pow, val_pow, P1, P2, DegPre.rigK, val_pull hJ, hr, val_mul hJ, val_mul hJ, val_pow, val_pow, hu', map_mul, map_pow, mul_pow]`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val]`. Expand and normalize the polynomial expressions, which then agree. Establish `hGv : (gm ((fst (TF (R` using `ChartRing k m d) (FractionRing (ChartRing k m d))) P.D.toPre.P.A).left ≫ jFK (R := ChartRing k m d) (FractionRing (ChartRing k m d))) z ⊤ (unitOn (e1 ^ e * e'))).val = gs (DegPre.prB P.D.toPre (FractionRing (ChartRing k m d))).left z ⊤ (Out.scal P.D.toPre.P.A.hom tN) := by`. Rewrite using `[← gs_unit _ z ⊤ trivial]`. Use `show gs _ z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing (ChartRing k m d)))).inv.hom ((e1 ^ e * e' : (FractionRing (ChartRing k m d))ˣ) : FractionRing (ChartRing k m d))) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE]`. Use `all_goals`. Establish `nat` using `congrArg (fun f => f.hom tN) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap (ChartRing k m d) (FractionRing (ChartRing k m d)))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at nat`. Rewrite using `[nat, gs_appTop, Out.scal, gs_appTop]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `G` using `(gen_fe (F := FractionRing (ChartRing k m d)) hG e mu α).2 uu hu hc _ (𝟙 _) z J hJ`. Rewrite `G` using `[Over.id_left]`. Rewrite using `[G]`. Establish `hz0 : Out.scal (DegPre.BF P.D.toPre (FractionRing (ChartRing k m d))).hom (0 : ChartRing k m d) = 0`.
-
-Simplify using `[Out.scal]`. Rewrite using `[hz0, gs_zero', zero_mul, add_zero, sval_secScale' _ _ _ _ hJ]`. Establish `etr : DegPre.trF P.D.toPre (FractionRing (ChartRing k m d)) mu ≫ DegPre.prB P.D.toPre _ = DegPre.prB P.D.toPre _ ≫ (𝟙 P.D.toPre.P.A * cP P.D.toPre _ mu)`. Rewrite using `[MonObj.comp_mul, Category.comp_id, comp_cP]`. Conclude with `lift_snd _ _`.
-
-Rewrite using `[etr, hσu _ (DegPre.prB P.D.toPre _) z J hJ, uVal_id, Category.id_comp, hfm]`. Simplify using `only [comp_cP, Units.val_mul, th]`. Rewrite using `[hGv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_shift_div_monomial : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k : Type) [Field k] [CharZero k] (m d : ℕ) (t : SAB H (Sp (ChartRing k m d))) (P : PELUnif (maximalIdeal (ChartRing k m d)) t) (gam : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsMonomial P.D.toPre (bdParam k m d) gam → LinearIndependent ℤ gam → (∀ p : Sp (ChartRing k m d), p ∈ abLocus t.G ↔ ∏ i, bdParam k m d i ∉ p.asIdeal) → letI := H.starRing; ∀ (Y : Ray P.oD) (n' : ℕ) (v' : Module.Basis (Fin n') (ChartRing k m d) (TanM (𝟙 (Sp (ChartRing k m d))) Y.H)) (dd : Fin n' → Fld Y.H.left), (∀ a, IsInv Y.H (v' a) (dd a)) → ∀ (D : Derivation ℤ (ChartRing k m d) (ChartRing k m d)) (q : Fin m → ChartRing k m d), (∀ i, D (bdParam k m d i) = q i * bdParam k m d i) → ∀ h : Heat Y.H Y.q.left P.D.toPre.P.L dd ⇑D, IsBasic Y h → HasDefect Y h (fun _ _ _ => 0) → (∀ a b, h.Θ a b ∈ maximalIdeal (ChartRing k m d)) → ∀ ρ : ChartRing k m d →+* DualNumber k, (∀ r, ρ r = TrivSqZeroExt.inl (MvPowerSeries.constantCoeff r) + TrivSqZeroExt.inr (MvPowerSeries.constantCoeff (D r))) → ∀ (B' : Over (Sp (DualNumber k))) [GrpObj B'] (π₁ π₂ : B'.left ⟶ P.D.toPre.P.A.left) (c' : P.D.toPre.X → (Sp (DualNumber k) ⟶ B'.left)), IsGrpPullback B' P.D.toPre.P.A (spMap ρ) π₁ → IsGrpPullback B' P.D.toPre.P.A (spMap (constHom ρ)) π₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (y : Z ⟶ Sp k), x ≫ B'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) → (∀ y, c' y ≫ B'.hom = 𝟙 _ ∧ c' y ≫ π₁ = spMap ρ ≫ (P.D.toPre.c y).left ∧ c' y ≫ π₂ = spMap (constHom ρ) ≫ (P.D.toPre.c y).left) → ∀ (mu α : P.D.toPre.X) (n : Fin m → ℕ) (ψ₀ : LB.Gen (LB.LinComb P.D.toPre.P.L (K := PUnit) (fun _ => (P.D.toPre.c mu).left) fun _ => -1)) τ₀, GlobalTheory.LogKSChart.IsUnitPart P.D.toPre (bdParam k m d) gam mu n ψ₀ → IsUnitTau P.D.toPre (bdParam k m d) gam mu α τ₀ → ∃ e₀ : ℕ, ∀ e : ℕ, e₀ ≤ e → (∀ i, 0 ≤ (e : ℤ) * n i + gam i mu α) ∧ ∀ σ : P.D.toPre.SecB e α, ∃ σ₁ σ₁u : P.D.toPre.SecB e (α + e • mu), ShiftEq P.D.toPre e mu α σ σ₁ 0 σ₁ ∧ (∀ (Z : Scheme.{0}) (x : Z ⟶ P.D.toPre.P.A.left) (z : Z) J, Good P.D.toPre.P.L z J → sval σ₁ x z J = gs (x ≫ P.D.toPre.P.A.hom) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (ChartRing k m d))).inv.hom (∏ i, bdParam k m d i ^ ((e : ℤ) * n i + gam i mu α).toNat)) * sval σ₁u x z J) ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp (ChartRing k m d)) (z : Z) J, Good P.D.toPre.P.L z J → sval σ₁u (r ≫ (P.D.toPre.c 0).left) z J = ((val ψ₀ r z J) ^ e * val τ₀ r z J * (val P.D.toPre.rig r z J) ^ e).val * sval σ (r ≫ (P.D.toPre.c mu).left) z J := by
   intro E _ _ _ H k _ _ m d t P gam hM hli hab

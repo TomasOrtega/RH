@@ -13,9 +13,9 @@ open PI.FglGram
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Unfold `Good`. Use `⟨by simp [PI.FglGram.Xv], ?_⟩` and prove the remaining obligations. Unfold `PI.FglGram.IntegralMv`. Introduce `n`. Unfold `PI.FglGram.IsIntP`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `PI.FglGram.Xv`. Rewrite using `[MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem good_X {σ : Type*} (i : σ) : Good (Xv (p := p) i) := by
   unfold Good
@@ -28,7 +28,7 @@ theorem good_X {σ : Type*} (i : σ) : Good (Xv (p := p) i) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `hP`. Rewrite using `[Prod.fst_sum]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hP_fst {κ : Type*} [Fintype κ] (x y : κ → ℂ_[p] × ℂ_[p]) :
     (hP x y).1 = ∑ i, (x i).1 * (y i).2 := by
@@ -37,11 +37,11 @@ theorem hP_fst {κ : Type*} [Fintype κ] (x y : κ → ℂ_[p] × ℂ_[p]) :
   rfl
 
 /- English proof (translation)
-Introduce `p _ l ex ph S H k c d hcd`. Establish `hg : ∀ j, Good (mulBy l ex (c j) (Xv j : MvPowerSeries (Fin k) ℂ_[p]))` using `fun j => goodMul p l ex ph S H (Fin k) (c j, d j) (hcd j) _ (good_X j)`. Establish `e : lin l ex c (fun j => (Xv j : MvPowerSeries (Fin k) ℂ_[p])) = pt ex (∑ j, lg l (mulBy l ex (c j) (Xv j)))`. Unfold `lin`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Unfold `mulBy`. Rewrite using `[lg_pt H.data (by rw [map_mul, cc_lg H.data (cc_X _), mul_zero])]`. Rewrite using `[e]`. Use `sTrans (hE p l ex ph S H (Fin k) k _ hg) (sAdd ?_ ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sSum _ fun j _ => normSub p l ex ph S H (Fin k) (c j, d j) (hcd j) _ (good_X j)`. Conclude with `sSum _ fun j _ => sSum _ fun j' _ => moveSub p l ex ph S H (Fin k) (c j, d j) (c j', d j') (hcd j) (hcd j') _ _ (good_X j) (good_X j')`.
+A detailed English derivation is pending.
 -/
 theorem column_of (hE : Expand) : Column := by
   intro p _ l ex ph S H k c d hcd
@@ -61,15 +61,15 @@ theorem column_of (hE : Expand) : Column := by
       moveSub p l ex ph S H (Fin k) (c j, d j) (c j', d j') (hcd j) (hcd j') _ _ (good_X j) (good_X j')
 
 /- English proof (translation)
-Introduce `p _ l ex ph S H hC κ _ k A hA`. Establish `hcol : ∀ i, Simeq (phAt ph (lin l ex (fun e => (A e i).1) (fun e => (Xv e : MvPowerSeries (Fin k) ℂ_[p])))) (∑ j, MvPowerSeries.C ((A j i).1 * (A j i).2) * phAt ph (Xv j) + ∑ j, ∑ j' ∈ Finset.univ.filter (fun j' => j < j'), be l ex ph (mulBy l ex ((A j' i).2 * (A j i).1) (Xv j)) …` using `fun i => hC k (fun j => (A j i).1) (fun j => (A j i).2) (fun j => by simpa using hA j i)`. Unfold `PhOn GramRhs`. Use `sTrans (sSum Finset.univ fun i _ => hcol i) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sAdd (sOfEq ?_) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, ← map_sum, hP_fst]`. Establish `e1 : (∑ i, ∑ j, ∑ j' ∈ Finset.univ.filter (fun j' => j < j'), be l ex ph (mulBy l ex ((A j' i).2 * (A j i).1) (Xv j)) (Xv j') : MvPowerSeries (Fin k) ℂ_[p]) = ∑ j, ∑ j' ∈ Finset.univ.filter (fun j' => j < j'), ∑ i, be l ex ph (mulBy l ex ((A j' i).2 * (A j i).1) (Xv j)) (Xv j')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Rewrite using `[e1]`. Use `sSum _ fun j _ => sSum _ fun j' _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : ∀ i ∈ (Finset.univ : Finset κ), Good (mulBy l ex ((A j' i).2 * (A j i).1) (Xv j : MvPowerSeries (Fin k) ℂ_[p]))`. Introduce `i _`. Rewrite using `[← mulBy_mulBy H.data _ _ (cc_X _)]`. Conclude with `goodMul p l ex ph S H (Fin k) (A j' i).swap (H.swap _ (hA j' i)) _ (goodMul p l ex ph S H (Fin k) (A j i) (hA j i) _ (good_X j))`. Establish `h` using `hSF p l ex ph S H (Fin k) κ Finset.univ (fun i => (A j' i).2 * (A j i).1) (Xv j) (Xv j') (good_X j) (good_X j') hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (hP (A j) (A j')).1 = ∑ i, (A j' i).2 * (A j i).1`. Rewrite using `[hP_fst]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[e2]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gather_of (hSF : SumFirst) : Gather := by
   intro p _ l ex ph S H hC κ _ k A hA
@@ -109,9 +109,9 @@ theorem gather_of (hSF : SumFirst) : Gather := by
     exact h
 
 /- English proof (translation)
-Establish `hC` using `column_of hE`. Establish `hG` using `gather_of hSF`. Unfold `Column at hC`. Unfold `Gather at hG`. Unfold `PI.FglGram.PhGram`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Introduce `p _ l ex ph S hD hsw hint hadd hph hbe hbadd κ _ k A hA`. Establish `hH : Hyps l ex ph S` using `Hyps.mk hD hsw hint hadd hph hbe hbadd`. Conclude with `hG p l ex ph S hH (hC p l ex ph S hH) κ k A hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem phGram_of_steps (hE : Expand) (hSF : SumFirst) : PI.FglGram.PhGram := by
   have hC := column_of hE

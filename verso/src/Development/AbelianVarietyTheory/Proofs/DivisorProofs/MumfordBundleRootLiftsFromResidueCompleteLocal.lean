@@ -27,11 +27,11 @@ open GlobalTheory.PolRoot
 namespace GlobalTheory.PolRootComplete
 
 /- English proof (translation)
-Take `⟨C, _, _, c, c₂, hc, hsqc, L, hL, H⟩` from `h`. Set `φ : B.left ⟶ C.left` to `hc.1.lift β B.hom hβ.1.w`. Establish `hφc : φ ≫ c = β` using `hc.1.lift_fst _ _ _`. Establish `hφw : φ ≫ C.hom = B.hom ≫ 𝟙 T` using `(hc.1.lift_snd _ _ _).trans (Category.comp_id _).symm`. Establish `hφ : IsGrpPullback B C (𝟙 T) φ` using `hc.cancel (hβ.congr (Category.id_comp t).symm hφc.symm) hφw`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ₂, hφ₂⟩` from `GlobalTheory.ZM.SiegPull.exists_isSquare hφw`. Establish `e : φ₂ ≫ c₂ = β₂` using `GlobalTheory.ZM.SiegPull.isSquare_unique (GlobalTheory.ZM.SiegPull.isSquare_comp hφ₂ hsqc) hsq hφc`. Establish `hLφ : (L.pull φ).IsLB` using `pull_isLB hL φ`. Use `⟨L.pull φ, hLφ, ?_⟩` and prove the remaining obligations. Establish `h1 : LBIso (abelian₂ B (L.pull φ)) ((abelian₂ C L).pull φ₂)` using `GlobalTheory.ZM.SiegPull.lbIso_lam_pull hφ (GlobalTheory.GtBaseChange.lbIso_refl hLφ) hφ₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : LBIso ((abelian₂ C L).pull φ₂) (P.pull (φ₂ ≫ c₂))` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp H φ₂`. Rewrite `h2` using `[e]`. Conclude with `LBIso.trans (LB.isLB_linComb hLφ _ _) (pull_isLB (LB.isLB_linComb hL _ _) _) (pull_isLB hP _) h1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_given {S T : Scheme.{0}} {A : Over S} [GrpObj A] {P : LB (G2 A).left} (hP : P.IsLB) {t : T ⟶ S}
     (h : Root A P t) {B : Over T} [GrpObj B] [IsCommMonObj B] {β : B.left ⟶ A.left}
@@ -54,11 +54,11 @@ theorem root_given {S T : Scheme.{0}} {A : Over S} [GrpObj A] {P : LB (G2 A).lef
   exact LBIso.trans (LB.isLB_linComb hLφ _ _) (pull_isLB (LB.isLB_linComb hL _ _) _) (pull_isLB hP _) h1 h2
 
 /- English proof (translation)
-Set `Q : ∀ e, LB (thickObj R (maximalIdeal R) e B).left → Prop` to `fun e L => L.IsLB ∧ ∀ b₂ : (G2 (thickObj R (maximalIdeal R) e B)).left ⟶ (G2 B).left, IsSquare (pullback.fst B.hom (thick R (maximalIdeal R) e)) b₂ → LBIso (abelian₂ (thickObj R (maximalIdeal R) e B) L) (P.pull b₂)`. Establish `step : ∀ e (L : {L // Q e L}), ∃ L' : {L' // Q (e + 1) L'}, LBIso (L'.1.pull (thickMap R (maximalIdeal R) e B)) L.1` using `fun e L => by`. Take `⟨L', h1', h2', h3'⟩` from `GlobalTheory.T.line_bundle_thickening_square_theorem R B hB P hP g1 g2 e L.1 L.2.1 L.2.2`. Conclude with `⟨⟨L', h1', h2'⟩, h3'⟩`. Use `choose F hF using step`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨L₀, hL₀⟩` from `h0`. Set `N : ∀ e, {L // Q e L}` to `fun e => Nat.rec ⟨L₀, hL₀⟩ (fun e L => F e L) e`. Establish `hN : ∀ e, LBIso ((N (e + 1)).1.pull (thickMap R (maximalIdeal R) e B)) (N e).1` using `fun e => hF e (N e)`. Establish `hproj : GlobalTheory.AbLaw.IsProjBy B.hom` using `GlobalTheory.WtTower.isProjBy_of_relAmple B (pull_isLB hP _) gamp`. Take `⟨M, hM, HM⟩` from `GlobalTheory.LBAlgComplete.exists_lineBundle_of_reductions GlobalTheory.formalAlgebraisation R (maximalIdeal R) hR B hproj (fun e => thickObj R (maximalIdeal R) e B) (fun e => thickMap R (maximalIdeal R) e B) (fun e => pullback.fst B.hom (thick R (maximalIdeal R) e)) (fun e => (i …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := GlobalTheory.WtTower.isLocalRing_quotient_pow R 0`. Take `⟨b₂, hb₂⟩` from `GlobalTheory.ZM.SiegPull.exists_isSquare (isGrpPullback_pullback B (thick R (maximalIdeal R) 0)).1.w`. Conclude with `⟨M, hM, GlobalTheory.T.lineBundleIso_mumfordLambda_of_local_quotient R (R ⧸ maximalIdeal R ^ (0 + 1)) (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective B (thickObj R (maximalIdeal R) 0 B) (pullback.fst _ _) b₂ hB (isGrpPullback_pullback B _) hb₂ P hP g1 g2 M (N 0).1 hM (N 0).2.1 …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem root_of_closedFibre (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (hR : IsAdicComplete (maximalIdeal R) R) (B : Over (Sp R)) [GrpObj B] [IsCommMonObj B]
@@ -97,15 +97,13 @@ theorem root_of_closedFibre (R : Type) [CommRing R] [IsLocalRing R] [IsNoetheria
     (isGrpPullback_pullback B _) hb₂ P hP g1 g2 M (N 0).1 hM (N 0).2.1 (HM 0).symm ((N 0).2.2 b₂ hb₂)⟩
 
 /- English proof (translation)
-Introduce `S A _ _ hA P hP h1 h2 hamp R _ _ _ hR t hroot`. Take `⟨B, _, β, hβ⟩` from `GlobalTheory.FlagTan.exists_isGrpPullback A t`. Establish `hB : IsAbelianScheme B` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hβ`. Use `haveI : IsCommMonObj B := hB.comm`. Take `⟨β₂, hsq⟩` from `GlobalTheory.ZM.SiegPull.exists_isSquare hβ.1.w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g1, g2⟩` from `GlobalTheory.T.axisTrivial_lineBundle_groupPullback S (Sp R) A P hP h1 h2 t B β β₂ hβ hsq`. Establish `gamp` using `GlobalTheory.T.relAmple_diagonal_pullback_baseChange S (Sp R) A hA P hP hamp t B β β₂ hβ.1 hsq`. Establish `le : maximalIdeal R ≤ maximalIdeal R ^ (0 + 1)` using `by rw [zero_add, pow_one]`. Establish `ethick : thick R (maximalIdeal R) 0 = spMap (Ideal.Quotient.factor le) ≫ spMap (residue R)`. Simplify using `only [thick, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hres : Root A P (thick R (maximalIdeal R) 0 ≫ t)`. Rewrite using `[ethick, Category.assoc]`. Conclude with `hroot.comp hA _`. Establish `hY` using `isGrpPullback_pullback B (thick R (maximalIdeal R) 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b₂, hb₂⟩` from `GlobalTheory.ZM.SiegPull.exists_isSquare hY.1.w`. Take `⟨L₀, hL₀, H₀⟩` from `root_given hP hres (hY.comp hβ) (GlobalTheory.ZM.SiegPull.isSquare_comp hb₂ hsq)`. Take `⟨L, hL, HL⟩` from `root_of_closedFibre R hR B hB (P.pull β₂) (pull_isLB hP _) g1 g2 gamp ⟨L₀, hL₀, fun b₂' hb₂' => by`. Establish `e : b₂' = b₂` using `GlobalTheory.ZM.SiegPull.isSquare_unique hb₂' hb₂ rfl`. Substitute `e` using the available equality.
-
-Conclude with `LBIso.trans (LB.isLB_linComb hL₀ _ _) (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) H₀ (GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GlobalTheory.GtBaseChange.lbIso_refl (pull_isLB hP β₂)) b₂').symm⟩`. Conclude with `⟨B, inferInstance, inferInstance, β, β₂, hβ, hsq, L, hL, HL⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem root_of_residue : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (P : LB (G2 A).left), P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) → ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R], IsAdicComplete (maximalIdeal R) R → ∀ t : Sp R ⟶ S, Root A P (spMap (residue R) ≫ t) → Root A P t := by
   intro S A _ _ hA P hP h1 h2 hamp R _ _ _ hR t hroot

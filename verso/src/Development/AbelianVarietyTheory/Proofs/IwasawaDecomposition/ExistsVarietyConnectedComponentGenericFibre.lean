@@ -13,21 +13,19 @@ open Classical
 namespace GlobalTheory.CompOfVar
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e hsm Y π hπ`. Establish `hS : Smooth (genStr Z)` using `SmoothOfRelativeDimension.smooth Dw.dim _`. Use `isProper_genStr Z` as an intermediate fact. Establish `: IsLocallyNoetherian (gen Z)` using `LocallyOfFiniteType.isLocallyNoetherian (genStr Z)`. Establish `: CompactSpace (gen Z)` using `QuasiCompact.compactSpace_of_compactSpace (genStr Z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherian (gen Z)` using `{}`. Establish `hcc` using `fun z : gen Z => PtComp.connectedComponent_mem TopologicalSpace.NoetherianSpace.finite_irreducibleComponents (fun W hW W' hW' => PtComp.disjoint_of_smooth (genStr Z) hS W W' hW hW') z`. Set `z : gen Z` to `π (genericPoint Y.X)`. Set `V : (gen Z).Opens` to `⟨connectedComponent z, (hcc z).2⟩`. Establish `hred : IsReduced (gen Z)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `GlobalTheory.isNormalScheme_of_smooth (genStr Z)` as an intermediate fact. Conclude with `GlobalTheory.IsNormalScheme.isReduced`. Establish `: CharZero F` using `e.toRingHom.charZero`. Establish `: IsIso (spMap e.toRingHom)` using `inferInstanceAs (IsIso (Spec.map e.toCommRingCatIso.hom))`. Establish `hproj : IsProjOver (genStr Z ≫ spMap e.toRingHom)` using `GlobalTheory.GenFibreComp.isProjOver_comp_equiv e _ ((GlobalTheory.ProjSpace.points_and_stability O 0).2.2.1 c.F β Z.X Z.s Z.proj)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IrreducibleSpace V.toScheme` using `Subtype.irreducibleSpace (hcc z).1.1`. Establish `: IsIntegral V.toScheme` using `isIntegral_of_irreducibleSpace_of_isReduced _`. Establish `hcl : IsClosedImmersion V.ι` using `IsClosedImmersion.of_isPreimmersion _ (by`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `isClosed_connectedComponent)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : IsProjOver (V.ι ≫ genStr Z ≫ spMap e.toRingHom)` using `(GlobalTheory.ProjSpace.points_and_stability F 0).2.2.2.1 _ _ _ _ hcl hproj`. Establish `hsd : SmoothOfRelativeDimension Dw.dim (V.ι ≫ genStr Z ≫ spMap e.toRingHom)`. Establish `h : SmoothOfRelativeDimension (0 + (Dw.dim + 0)) (V.ι ≫ genStr Z ≫ spMap e.toRingHom)` using `inferInstance`. Simplify using `using h`. Establish `hr : Set.range π ⊆ Set.range V.ι`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(isPreconnected_range π.continuous).subset_connectedComponent ⟨_, rfl⟩`. Set `g : Y.X ⟶ V.toScheme` to `IsOpenImmersion.lift V.ι π hr`. Establish `hg : g ≫ V.ι = π` using `IsOpenImmersion.lift_fac _ _ _`. Establish `: Smooth (V.ι ≫ genStr Z ≫ spMap e.toRingHom)` using `SmoothOfRelativeDimension.smooth Dw.dim _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: GlobalTheory.IsNormalScheme V.toScheme` using `GlobalTheory.ModifSections.isNormalScheme_of_smooth (V.ι ≫ genStr Z ≫ spMap e.toRingHom)`. Establish `: GeometricallyConnected (V.ι ≫ genStr Z ≫ spMap e.toRingHom)`. Use `GlobalTheory.GeomConnFn.geometricallyConnected_of_locallyOfFiniteType _ ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.algebraicConstants_descend_to_normalIntegralScheme F V.toScheme Y.X _ Y.str g (by rw [reassoc_of% hg, hπ]) (GlobalTheory.T.geometricallyIntegral_algebraicConstants_mem_range F Y.X Y.str)`. Take `⟨X, ε, -, hs⟩` from `GlobalTheory.ProjVar.Var.exists_iso _ Dw.dim hp`.
-
-Use `⟨X, ε.inv ≫ V.ι, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hs, Iso.inv_hom_id_assoc]`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, ε.inv.surjective.range_eq, Set.image_univ]`. Conclude with `hr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_var_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F), SmoothOfRelativeDimension Dw.dim (genStr Z) → ∀ (Y : Var F) (π : Y.X ⟶ gen Z), π ≫ genStr Z ≫ spMap e.toRingHom = Y.str → ∃ (X : Var F) (j : X.X ⟶ gen Z), IsOpenImmersion j ∧ j ≫ genStr Z ≫ spMap e.toRingHom = X.str ∧ Set.range π ⊆ Set.range j := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e hsm Y π hπ

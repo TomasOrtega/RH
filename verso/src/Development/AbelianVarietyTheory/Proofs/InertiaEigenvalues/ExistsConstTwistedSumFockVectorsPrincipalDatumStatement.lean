@@ -11,7 +11,7 @@ set_option maxHeartbeats 1600000
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LevTransl.sum_om_fock_princ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsConstTwistedSumFockVectorsPrincipalDatum.lean&line=320#L320)
 -/

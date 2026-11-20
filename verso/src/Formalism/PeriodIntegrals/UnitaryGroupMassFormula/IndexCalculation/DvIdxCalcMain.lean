@@ -9,49 +9,45 @@ namespace PI.Dv.IdxW
 open NumberField IsDedekindDomain Module
 
 /- English proof (translation)
-Introduce `K _ _ V _ _ _ _ w M N hM hN hMN`. Take `⟨c, hc0, hcMN⟩` from `den_of_span (K := K) M N hM hMN`. Take `⟨e, he0, heNM⟩` from `den_of_span (K := K) N M hN hMN.symm`. Establish `h1 : lenAt w M N ≠ ⊤` using `lenS_ne_top w M N hM hc0 hcMN`. Use `⟨h1, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `P hP hPN`. Take `⟨c2, hc2, hc2MP⟩` from `den_of_span (K := K) M P hM (hMN.trans hPN.symm)`. Take `⟨e2, he2, he2PM⟩` from `den_of_span (K := K) P M hP (hPN.trans hMN.symm)`. Use `set D := Ideal.span {c * c2} • M with hD`. Establish `hDM : D ≤ M` using `Submodule.smul_le_right`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDN : D ≤ N` using `span_smul_le _ M N (fun x hx => by`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `N.smul_mem c2 (hcMN x hx))`. Establish `hDP : D ≤ P` using `span_smul_le _ M P (fun x hx => by`. Rewrite using `[mul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `P.smul_mem c (hc2MP x hx))`. Establish `fM : lenS w.asIdeal.primeCompl M D ≠ ⊤` using `lenS_ne_top w M D hM (mul_ne_zero hc0 hc2) (fun x hx => smul_mem_span_smul _ M hx)`. Establish `fN : lenS w.asIdeal.primeCompl N D ≠ ⊤` using `lenS_ne_top w N D hN (mul_ne_zero (mul_ne_zero hc0 hc2) he0) (fun x hx => by`. Rewrite using `[mul_smul]`. Conclude with `smul_mem_span_smul _ M (heNM x hx))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `fP : lenS w.asIdeal.primeCompl P D ≠ ⊤` using `lenS_ne_top w P D hP (mul_ne_zero (mul_ne_zero hc0 hc2) he2) (fun x hx => by`. Rewrite using `[mul_smul]`. Conclude with `smul_mem_span_smul _ M (he2PM x hx))`. Rewrite using `[idx_via w M P D hDM hDP fM fP, idx_via w M N D hDM hDN fM fN, idx_via w N P D hDN hDP fN fP]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `V' _ _ _ _ φ`. Use `set φ' := φ.restrictScalars (𝓞 K) with hφ'`. Use `set k := (LinearMap.ker φ).restrictScalars (𝓞 K) with hkdef`. Establish `hk : ∀ x, x ∈ k ↔ φ' x = 0` using `fun x => by`. Rewrite using `[hkdef, Submodule.restrictScalars_mem, LinearMap.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `set D := Ideal.span {c} • M with hD`. Establish `hDM : D ≤ M` using `Submodule.smul_le_right`. Establish `hDN : D ≤ N` using `span_smul_le c M N hcMN`. Establish `hce : c * e ≠ 0` using `mul_ne_zero hc0 he0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNin : ∀ x ∈ N, (c * e) • x ∈ D` using `fun x hx => by`. Rewrite using `[mul_smul]`. Conclude with `smul_mem_span_smul c M (heNM x hx)`. Establish `fMD : lenS w.asIdeal.primeCompl M D ≠ ⊤` using `lenS_ne_top w M D hM hc0 (fun x hx => smul_mem_span_smul c M hx)`. Establish `fND : lenS w.asIdeal.primeCompl N D ≠ ⊤` using `lenS_ne_top w N D hN hce hNin`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hMk : (M ⊓ k).FG` using `Submodule.FG.of_le hM inf_le_left`. Establish `hNk : (N ⊓ k).FG` using `Submodule.FG.of_le hN inf_le_left`. Establish `fMk : lenS w.asIdeal.primeCompl (M ⊓ k) (D ⊓ k) ≠ ⊤` using `lenS_ne_top w _ _ hMk hc0 (fun x hx => ⟨smul_mem_span_smul c M hx.1, k.smul_mem c hx.2⟩)`. Establish `fNk : lenS w.asIdeal.primeCompl (N ⊓ k) (D ⊓ k) ≠ ⊤` using `lenS_ne_top w _ _ hNk hce (fun x hx => ⟨hNin x hx.1, k.smul_mem _ hx.2⟩)`. Establish `fMi : lenS w.asIdeal.primeCompl (M.map φ') (D.map φ') ≠ ⊤` using `lenS_ne_top w _ _ (hM.map φ') hc0 (by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨c • x, smul_mem_span_smul c M hx, by rw [map_smul]⟩)`. Establish `fNi : lenS w.asIdeal.primeCompl (N.map φ') (D.map φ') ≠ ⊤` using `lenS_ne_top w _ _ (hN.map φ') hce (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨(c * e) • x, hNin x hx, by rw [map_smul]⟩)`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `eM` using `lenS_ker_img w.asIdeal.primeCompl φ' k hk D M hDM`. Establish `eN` using `lenS_ker_img w.asIdeal.primeCompl φ' k hk D N hDN`. Rewrite using `[idx_via w M N D hDM hDN fMD fND, idx_via w (M ⊓ k) (N ⊓ k) (D ⊓ k) (inf_le_inf_right k hDM) (inf_le_inf_right k hDN) fMk fNk, idx_via w (M.map φ') (N.map φ') (D.map φ') (Submodule.map_mono hDM) (Submodule.map_mono hDN) fMi fNi, eM, eN, ENat.toNat_add fMk fMi, ENat.toNat_add fNk …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `F hF`. Use `set N' := N ⊓ (w.asIdeal ^ F) • M with hN'`. Establish `hloc : ∀ x ∈ N, ∃ s ∈ w.asIdeal.primeCompl, s • x ∈ N'` using `fun x hx => by`. Take `⟨s, hs, hsx⟩` from `hF x hx`. Conclude with `⟨s, Ideal.mem_primeCompl_iff.mpr hs, N.smul_mem s hx, hsx⟩`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwM : (w.asIdeal ^ F) • M ≤ M` using `Submodule.smul_le_right`. Establish `hN'MN : N' ≤ M ⊓ N` using `le_inf (inf_le_right.trans hwM) inf_le_left`. Establish `h0 : lenAt w N M = 0`. Rewrite using `[lenAt_eq, lenS_inf]`. Use `nonpos_iff_eq_zero.mp ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hge : ((F * Formalism.HN.rkK M : ℕ) : ℕ∞) ≤ lenAt w M N`. Rewrite using `[lenAt_eq, lenS_inf]`. Establish `a1` using `lenS_add w.asIdeal.primeCompl N' (M ⊓ N) M hN'MN inf_le_left`. Establish `a2` using `lenS_add w.asIdeal.primeCompl N' ((w.asIdeal ^ F) • M) M inf_le_right hwM`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `a3 : lenS w.asIdeal.primeCompl (M ⊓ N) N' = 0` using `lenS_eq_zero _ _ _ (fun x hx => hloc x hx.2)`. Rewrite `a1` using `[a3, add_zero]`. Rewrite using `[← a1, a2, len_pow w M hM F]`. Conclude with `le_self_add`. Unfold `idxAt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[h0]`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp h1`. Rewrite `hge`, the goal using `[← hn]`. Establish `hle : F * Formalism.HN.rkK M ≤ n` using `by exact_mod_cast hge`. Simplify using `only [ENat.toNat_coe, ENat.toNat_zero, Nat.cast_zero, sub_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hle` after adjusting the coercions. Introduce `F`. Establish `hwM : (w.asIdeal ^ F) • M ≤ M` using `Submodule.smul_le_right`. Unfold `idxAt`. Rewrite using `[lenAt_eq, lenAt_eq, len_pow w M hM F, lenS_of_le _ _ _ hwM]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [ENat.toNat_coe, ENat.toNat_zero, Nat.cast_zero, sub_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `n hn hNM hnMN`. Establish `hc : ((n : ℕ) : 𝓞 K) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : ((n : ℕ) : K) = 0`. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K) n, h, map_zero]`. Conclude with `hn.ne' (by exact_mod_cast h')`. Take `⟨k, hk, hlen⟩` from `len_c w M hM hc`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `hle1 : Ideal.span {((n : ℕ) : 𝓞 K)} • M ≤ N` using `span_smul_le _ M N hnMN`. Establish `hle2` using `lenS_le w.asIdeal.primeCompl _ N M hle1 hNM`. Rewrite `hle2` using `[hlen]`. Establish `hv : Formalism.BasicNotions.vAdd w ((n : ℕ) : K) = k`. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K) n]`.
-
-Conclude with `hk`. Unfold `idxAt`. Rewrite using `[lenAt_eq, lenAt_eq, lenS_of_le _ N M hNM, hv]`. Establish `hfin : lenS w.asIdeal.primeCompl M N ≠ ⊤` using `ne_top_of_le_ne_top (ENat.natCast_ne_top _) hle2`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp hfin`.
-
-Rewrite `hle2`, the goal using `[← hm]`. Establish `hle : m ≤ k * Formalism.HN.rkK M` using `by exact_mod_cast hle2`. Simplify using `only [ENat.toNat_coe, ENat.toNat_zero, Nat.cast_zero, sub_zero]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem dvIdxCalc_main : PI.Dv.IdxCalc := by
   intro K _ _ V _ _ _ _ w M N hM hN hMN

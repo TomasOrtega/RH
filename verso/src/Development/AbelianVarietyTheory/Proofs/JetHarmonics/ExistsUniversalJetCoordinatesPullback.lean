@@ -28,29 +28,25 @@ variable [Algebra R R'] {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
   {π : G'.left ⟶ G.left} (hπ : IsGrpPullback G' G (Spec.map (CommRingCat.ofHom (algebraMap R R'))) π)
 
 /- English proof (translation)
-Use `⟨fun m => push_injective hπ ?_, fun m => push_injective hπ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[push_spMap, hx', hx', ← hx.1 m, ← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp]`. Use `congr 2`. Use `jet_ext fun j => ?_` and prove the remaining obligations. Use `show jetTruncR R' _ m (jetCoeff R R' _ _ (zR _ j)) = jetCoeff R R' _ _ (zR _ j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jetCoeff_zR, jetCoeff_zR]`. Both sides reduce to the same expression. Rewrite using `[push_spMap, hx', push_one, ← Category.assoc, spMap_comp]`. Establish `: ((jetAug R' κ m).restrictScalars R).comp (jetCoeff R R' κ m) = (Algebra.ofId R R').comp (jetAug R κ m)`. Use `jet_ext fun j => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show jetAug R' _ m (jetCoeff R R' _ _ (zR _ j)) = algebraMap R R' (jetAug R _ m (zR m j))`. Rewrite using `[jetCoeff_zR, jetAug_zR, jetAug_zR, map_zero]`. Rewrite using `[this, ← spMap_comp, Category.assoc, hx.2.1, MonObj.comp_one]`. Introduce `A _ _ aug m hJ y hy`. Use `letI : Algebra R A := ((algebraMap R' A).comp (algebraMap R R')).toAlgebra`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : IsScalarTower R R' A := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨C⟩` from `exists_chart G`. Set `q : A →ₐ[R] R'` to `aug.restrictScalars R`. Establish `hq : Function.Surjective q` using `fun r => ⟨algebraMap R' A r, aug.commutes r⟩`. Establish `hJq : (RingHom.ker q) ^ (m + 1) = ⊥` using `hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, hqh⟩` from `exists_pt_of_aug C q hq hJq (push hπ y) (by`. Rewrite using `[← push_spMap, hy, push_one])`. Take `⟨k, hk, hqk⟩` from `exists_pt_of_aug C (jetAug R κ m) (fun r => ⟨algebraMap _ _ r, AlgHom.commutes _ r⟩) (ker_jetAug_pow _ m) (x m) (hx.2.1 m)`. Set `h₀` to `fibLift q (eps C) h hqh`. Take `⟨ψ₀, ⟨ha, hψ₀⟩, hu⟩` from `hx.2.2 (fib q) (fibFst q) m (fib_ker q hJq) (ReciprocityTheory.ChartRestriction.G.Chart.pt C h₀) (by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[spMap_pt]`. Conclude with `pt_eps_self C)`. Establish `hb : ∀ j, fibSnd q (ψ₀ (zR m j)) ∈ RingHom.ker aug` using `fun j => by show q _ = 0`. Rewrite using `[fib_cond, show fibFst q (ψ₀ (zR m j)) = 0 from (AlgHom.congr_fun ha _).trans (jetAug_zR m j), map_zero]`. Use `⟨jetLift R' (RingHom.ker aug) hJ _ hb, ⟨jet_ext fun j => ?_, push_injective hπ ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.comp_apply, jetLift_zR, jetAug_zR]`. Conclude with `hb j`. Establish `: ((jetLift R' (RingHom.ker aug) hJ _ hb).restrictScalars R).comp (jetCoeff R R' κ m) = (fibSnd q).comp ψ₀`. Use `jet_ext fun j => ?_` and prove the remaining obligations. Use `show jetLift R' (RingHom.ker aug) hJ _ hb (jetCoeff R R' _ _ (zR _ j)) = _`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Rewrite using `[jetCoeff_zR, jetLift_zR]`. Both sides reduce to the same expression. Rewrite using `[push_spMap, hx', ← Category.assoc, spMap_comp, this, ← spMap_comp, Category.assoc, ← hψ₀, spMap_pt, hh]`. Both sides reduce to the same expression. Introduce and unpack `ψ ⟨hψa, hψ⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `v` to `(ψ.restrictScalars R).comp (jetCoeff R R' κ m)`. Establish `hv : q.comp v = (Algebra.ofId R R').comp (jetAug R κ m)`. Use `jet_ext fun j => ?_` and prove the remaining obligations. Use `show aug.comp ψ (jetCoeff R R' _ _ (zR _ j)) = algebraMap R R' (jetAug R _ m (zR m j))`. Rewrite using `[jetCoeff_zR, hψa, jetAug_zR, jetAug_zR, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvk : h = v.comp k`. Apply `pt_injective C` to reduce the goal to its premises. Rewrite using `[← hh, hψ, push_spMap, hx', ← Category.assoc, spMap_comp, hk, spMap_pt]`. Establish `e` using `hu (fibLift q (jetAug R κ m) v hv) ⟨rfl, by`. Rewrite using `[hk, spMap_pt]`.
-
-Use `congr 1`. Use `AlgHom.ext fun s => Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `(AlgHom.congr_fun hqk s).symm`. Conclude with `AlgHom.congr_fun hvk s⟩`. Use `jet_ext fun j => ?_` and prove the remaining obligations.
-
-Rewrite using `[jetLift_zR, ← e]`. Use `show _ = ψ (jetCoeff R R' _ _ (zR _ j))`. Rewrite using `[jetCoeff_zR]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnivSp_baseChange [IsLocalRing R] {κ : Type} {x : ∀ m : ℕ, sp (R₀ := R) (JetR R κ m) ⟶ G}
     (hx : IsUnivSp G κ x) {x' : ∀ m : ℕ, sp (R₀ := R') (JetR R' κ m) ⟶ G'}
@@ -135,13 +131,13 @@ def ofSp (y : Chart.sp (R₀ := V) A ⟶ G) : overAt (𝟙 (Sp V)) A ⟶ G :=
   Over.homMk y.left ((Over.w y).trans (Category.comp_id _).symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Over.OverMorphism.ext (congrArg (fun k => k.left) h), fun h => h ▸ rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem toSp_inj {y y' : overAt (𝟙 (Sp V)) A ⟶ G} : toSp y = toSp y' ↔ y = y' :=
   ⟨fun h => Over.OverMorphism.ext (congrArg (fun k => k.left) h), fun h => h ▸ rfl⟩
 
 /- English proof (translation)
-Establish `: toSp (1 : overAt (𝟙 (Sp V)) A ⟶ G) = (Over.homMk (𝟙 _) ((Category.id_comp _).trans (Category.comp_id _)) : Chart.sp (R₀` using `V) A ⟶ overAt (𝟙 (Sp V)) A) ≫ (1 : overAt (𝟙 (Sp V)) A ⟶ G) := Over.OverMorphism.ext (Category.id_comp _).symm`. Rewrite using `[this, MonObj.comp_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem toSp_one [GrpObj G] : toSp (1 : overAt (𝟙 (Sp V)) A ⟶ G) = 1 := by
   have : toSp (1 : overAt (𝟙 (Sp V)) A ⟶ G) =
@@ -151,11 +147,11 @@ theorem toSp_one [GrpObj G] : toSp (1 : overAt (𝟙 (Sp V)) A ⟶ G) = 1 := by
   rw [this, MonObj.comp_one]
 
 /- English proof (translation)
-Use `and_congr (forall_congr' fun m => ?_) (and_congr (forall_congr' fun m => ?_) ?_)` and prove the remaining obligations. Rewrite using `[← toSp_inj]`. Conclude with `Iff.rfl`. Rewrite using `[← toSp_inj, toSp_one]`. Conclude with `Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H A _ _ aug m hJ y hy`. Use `H A aug m hJ (ofSp y) (by rw [← toSp_inj, toSp_one]; exact hy)` as an intermediate fact. Simplify using `only [← toSp_inj] at this`. Conclude with `this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H A _ _ aug m hJ y hy`. Use `H A aug m hJ (toSp y) (by rw [← toSp_inj, toSp_one] at hy; exact hy)` as an intermediate fact. Simplify using `only [← toSp_inj]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnivJ_iff [GrpObj G] {κ : Type} (z : GlobalTheory.PowGerm.JetPts G κ) :
     GlobalTheory.PowGerm.IsUnivJ G κ z ↔ IsUnivSp G κ (fun m => toSp (z m)) := by
@@ -186,9 +182,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out
 
 /- English proof (translation)
-Introduce `V V' _ _ _ φ G _ G' _ F hF κ z hz`. Use `letI : Algebra V V' := φ.toAlgebra`. Establish `hπ : IsGrpPullback G' G (Spec.map (CommRingCat.ofHom (algebraMap V V'))) F` using `hF`. Use `choose x' hx' using fun m => GlobalTheory.ChartBaseChange.push_surjective hπ (Chart.spMap (GlobalTheory.ChartBaseChange.jetCoeff V V' κ m) ≫ GlobalTheory.UnivJetBaseChange.toSp (z m))`. Use `⟨fun m => GlobalTheory.UnivJetBaseChange.ofSp (x' m), (GlobalTheory.UnivJetBaseChange.isUnivJ_iff _).2 (GlobalTheory.UnivJetBaseChange.isUnivSp_baseChange hπ ((GlobalTheory.UnivJetBaseChange.isUnivJ_iff z).1 hz) hx'), fun m => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (GlobalTheory.ChartBaseChange.jetCoeff V V' κ m).toRingHom = jetCoef φ κ m` using `Ideal.Quotient.ringHom_ext (RingHom.ext fun p => GlobalTheory.ChartBaseChange.jetCoeff_mk m p)`. Rewrite using `[← e]`. Conclude with `congrArg (fun k => k.left) (hx' m)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UnivJetBaseChange.exists_univ_pullback : ∀ (V V' : Type) [CommRing V] [IsLocalRing V] [CommRing V'] (φ : V →+* V') (G : Over (Sp V)) [GrpObj G] (G' : Over (Sp V')) [GrpObj G'] (F : G'.left ⟶ G.left), IsGrpPullback G' G (spMap φ) F → ∀ (κ : Type) (z : GlobalTheory.PowGerm.JetPts G κ), GlobalTheory.PowGerm.IsUnivJ G κ z → ∃ z' : GlobalTheory.PowGerm.JetPts G' κ, GlobalTheory.PowGerm.IsUnivJ G' κ z' ∧ ∀ m, (z' m).left ≫ F = spMap (jetCoef φ κ m) ≫ (z m).left := by
   intro V V' _ _ _ φ G _ G' _ F hF κ z hz

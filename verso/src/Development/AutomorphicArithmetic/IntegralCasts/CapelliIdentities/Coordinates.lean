@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 open scoped IntermediateField TensorProduct Matrix Pointwise NumberField Topology ContDiff NNReal ENNReal Polynomial DirectSum BigOperators InnerProductSpace Manifold
 
 /- English proof (translation)
-Introduce `E _ _ _ A z hz`. Establish `h1` using `congrArg (algebraMap (𝓞 E) E) A.tr_eq`. Establish `h2` using `congrArg (algebraMap (𝓞 E) E) A.nm_eq`. Simplify using `only [map_add, map_mul, map_intCast] at h1 h2`. Establish `hq : (A.ω : E) * (A.ω : E) = (A.tr : E) * (A.ω : E) - (A.nm : E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h1, ← h2]`. Simplify using `only [NumberField.RingOfIntegers.coe_eq_algebraMap]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hz` using `[← IntermediateField.mem_toSubalgebra, IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic _)]`. Proceed by induction on `hz using Algebra.adjoin_induction with`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem x hx => exact ⟨0, 1, by simpa using hx⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add x y _ _ hx hy => obtain ⟨a, b, rfl⟩ := hx; obtain ⟨c, d, rfl⟩ := hy; exact ⟨a + c, b + d, by push_cast; ring⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, b, rfl⟩` from `hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, d, rfl⟩` from `hy`. Conclude with `⟨a * c - b * d * A.nm, a * d + b * c + b * d * A.tr, by push_cast; linear_combination (b * d : E) * hq⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.AdjoinSimpleRationalCoordinates.coords :
     ∀ {E : Type} [inst : Field E]

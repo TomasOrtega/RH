@@ -20,15 +20,13 @@ open GlobalTheory.VertCmp
 open scoped Classical
 
 /- English proof (translation)
-Use `haveI : Nonempty V := ⟨⟨x, hx⟩⟩`. Use `haveI : IsIntegral V.toScheme := inferInstance`. Set `x' : V.toScheme` to `⟨x, hx⟩`. Set `σ : Spec (V.toScheme.presheaf.stalk x') ⟶ Spec (X.presheaf.stalk x)` to `Spec.map (V.ι.stalkMap x')`. Use `haveI : IsIso σ := inferInstanceAs (IsIso (Spec.map (V.ι.stalkMap x')))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσ : σ ≫ X.fromSpecStalk x = V.toScheme.fromSpecStalk x' ≫ V.ι` using `Scheme.SpecMap_stalkMap_fromSpecStalk V.ι`. Establish `hσ' : σ ≫ V.fromSpecStalkOfMem x hx = V.toScheme.fromSpecStalk x'`. Rewrite using `[← cancel_mono V.ι, Category.assoc, Scheme.Opens.fromSpecStalkOfMem_ι, hσ]`. Take `⟨U', hU', h', h₁, h₂⟩` from `spread_out_of_isGermInjective' sV sY (σ ≫ q) (by rw [Category.assoc, hq, reassoc_of% hσ'])`. Set `U : X.Opens` to `V.ι ''ᵁ U'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Establish `hU : x ∈ U` using `⟨x', hU', rfl⟩`. Set `k : U.toScheme ⟶ U'.toScheme` to `IsOpenImmersion.lift (U'.ι ≫ V.ι) U.ι (by`. Introduce and unpack `_ ⟨⟨_, y, hy, rfl⟩, rfl⟩`. Conclude with `⟨⟨y, hy⟩, rfl⟩)`. Establish `hk : k ≫ U'.ι ≫ V.ι = U.ι` using `IsOpenImmersion.lift_fac _ _ _`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨U, hU, k ≫ U'.ι, k ≫ h', ?_, by rw [Category.assoc, hk], ?_, by rw [Category.assoc, h₂, Category.assoc]⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `y.2`. Establish `: σ ≫ U.fromSpecStalkOfMem x hU ≫ k = U'.fromSpecStalkOfMem x' hU'`. Rewrite using `[← cancel_mono (U'.ι ≫ V.ι), Category.assoc, Category.assoc, hk, Scheme.Opens.fromSpecStalkOfMem_ι, hσ, Scheme.Opens.fromSpecStalkOfMem_ι_assoc]`.
-
-Rewrite using `[← cancel_epi σ, reassoc_of% this, h₁]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spread {X S Y : Scheme.{0}} [IsIntegral X] (V : X.Opens) (x : X) (hx : x ∈ V) (sV : V.toScheme ⟶ S)
     (sY : Y ⟶ S) [LocallyOfFiniteType sY] (q : Spec (X.presheaf.stalk x) ⟶ Y)
@@ -72,17 +70,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {O : Type} [CommRing O] {β : O →+* i₀.c.F}
 
 /- English proof (translation)
-Take `⟨b, r, ν, hb, hj, hs, hν, hl⟩` from `GlobalTheory.LocM.Cocycle.exists_sab_of_isTrans h`. Take `⟨π, hπ, hpb, -⟩` from `(GlobalTheory.LevelCompare.levelMaps_iff hpq).1 (GlobalTheory.moduliScheme_levelMaps_heckePoints.2 E H Dw hpq).1 _ _ Z.dvd (Xo i₀.l) (Xo Z.i.l)`. Establish `w : (pullback.fst _ _ ≫ π : (Xo Z.i.l).XF Z.i.c ⟶ _) ≫ (Xo i₀.l).s = (pullback.snd _ _ ≫ spMap (incl Z)) ≫ spMap (IntermediateField.inclusion i₀.c.le).toRingHom`. Rewrite using `[Category.assoc, hπ, ← Category.assoc, pullback.condition, Category.assoc, Category.assoc, GlobalTheory.IndefiniteRowSideFullHecke.RelativeGroupHatForm.spMap_inclusion_comp]`. Conclude with `congrArg _ (GlobalTheory.IndefiniteRowSideFullHecke.RelativeGroupHatForm.spMap_inclusion_comp _ _).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `r₀ : (Xo Z.i.l).XF Z.i.c ⟶ (Xo i₀.l).XF i₀.c` to `pullback.lift _ _ w`. Establish `hr : r₀ ≫ pullback.fst _ _ = pullback.fst _ _ ≫ π` using `pullback.lift_fst _ _ _`. Establish `hr' : r₀ ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap (incl Z)` using `pullback.lift_snd _ _ _`. Take `⟨m, hm⟩` from `hpb`. Take `⟨n, hn⟩` from `LevelCover.sab_comp (Y Z.i).m0.toSABMap m hr.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ν₀, hν₀⟩` from `LevelCover.sab_cancel (Y i₀).m0.toSABMap n r₀ rfl`. Establish `hsnd : r ≫ pullback.snd _ _ = r₀ ≫ pullback.snd _ _`. Use `mono_spMap_subtype (i₀.c.V W)` as an intermediate fact. Rewrite using `[hr', ← cancel_mono (spMap (i₀.c.V W).subtype), Category.assoc, Category.assoc, ← ModelRelProbe.j_over (Y i₀), ← reassoc_of% hj, hs, reassoc_of% ModelRelProbe.j_over (Y Z.i), ModelRelProbe.spMap_comp, ModelRelProbe.spMap_comp]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `hb x`. Establish `hS` using `TransitionUnique.isReduced_XF (Xo Z.i.l) Z.i.c`. Establish `hrr : r = r₀` using `TransitionUnique.map_unique (Y i₀) ν ν₀ hsnd (fun a => ⟨_, hl.1 a, LevelCover.sec_cancel ν₀ (Y i₀).m0.toSABMap _ _ (by`. Rewrite using `[hν₀, hn, ← Category.assoc, LevelCover.sec_pow _ _ _ ((Y Z.i).m0.eta a), Category.assoc, hm.1 a, (Y i₀).m0.eta a, reassoc_of% hr])⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use the proof step `(fun a => ⟨_, hl.2 a, LevelCover.sec_cancel ν₀ (Y i₀).m0.toSABMap _ _ (by`. Rewrite using `[hν₀, hn, ← Category.assoc, LevelCover.sec_pow _ _ _ ((Y Z.i).m0.etaA a), Category.assoc, hm.2 a, (Y i₀).m0.etaA a, reassoc_of% hr])⟩)`. Substitute `hrr` using the available equality. Take `⟨n', hn'⟩` from `LevelCover.sab_comp ν (Y i₀).m0.toSABMap rfl`. Take `⟨ν', hν'⟩` from `LevelCover.sab_cancel T.m0.toSABMap n' r₀ rfl`.
-
-Conclude with `⟨⟨r₀, ν', hr', π, hπ, ⟨m, hm⟩, hr⟩, ν, hj, hν, hν'.trans hn'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_lev (Z : LocM.Mdl Y i₀) (T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo i₀.l) i₀.c β)
     (hpq : 1 ≤ Dw.p + Dw.q) {τ : (Y Z.i).X ⟶ (Y i₀).X} {mu : SABMap (Y Z.i).t (Y i₀).t τ}
@@ -128,33 +124,25 @@ private theorem exists_lev (Z : LocM.Mdl Y i₀) (T : ReciprocityTheory.ChartRes
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `haveI := Z.i.c.fin`. Use `haveI := i₀.c.fin`. Establish `hG` using `fun C : (nmodel Z).Comp => UpperTheory.generic_fibre_open_projective (Z.i.c.V W) Z.i.c.F ((nmodel Z).comp C)`. Use `choose hI hO hR hP hD ε hε using hG`. Set `X : (nmodel Z).Comp → Scheme.{0}` to `fun C => ((nmodel Z).comp C).toBase.genFibre`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ι : ∀ C, X C ⟶ Z.X` to `fun C => ((nmodel Z).comp C).toBase.genFibreι ≫ (nmodel Z).compι C`. Set `sX : ∀ C, X C ⟶ Sp F` to `fun C => ((nmodel Z).comp C).toBase.genFibreStr ≫ spMap ((ε C).toRingHom.comp ((incl Z).comp e.toRingHom))`. Use `haveI : ∀ C, IsIntegral (X C) := hI`. Establish `hfin : (incl Z).Finite` using `RingHom.Finite.of_comp_finite (f := algebraMap ℚ i₀.c.F) (by`. Rewrite using `[Subsingleton.elim ((incl Z).comp (algebraMap ℚ i₀.c.F)) (algebraMap ℚ Z.i.c.F)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `RingHom.finite_algebraMap.2 inferInstance)`. Use `haveI : ∀ C, LocallyOfFiniteType (sX C) := fun C => by haveI := (isProper_and_exists_isAmpleLB_of_isProjOver (hP C)).1 haveI : LocallyOfFiniteType (spMap ((ε C).toRingHom.comp ((incl Z).comp e.toRingHom))) := (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 ((RingHom.F …`. Conclude with `inferInstanceAs (LocallyOfFiniteType (_ ≫ _))`. Establish `hgp : ∀ C, ((nmodel Z).comp C).toBase.genFibreι (genericPoint (X C)) = genericPoint _` using `fun C => haveI := hO C genericPoint_eq_of_isOpenImmersion _`. Establish `hcl : ∀ {k : Type} [Field k] (x : Sp k), x = closedPoint k` using `fun x => Subsingleton.elim (α := PrimeSpectrum _) _ _`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hpos : 0 < ConsGeo.embDeg (incl Z)`. Use `letI := (incl Z).toAlgebra`. Use `haveI : Module.Finite i₀.c.F Z.i.c.F := hfin`. Conclude with `Module.finrank_pos`. Take `⟨b, θ, hb, -⟩` from `UpperTheory.degree_matching_families F (i₀.c.F.val.toRingHom.comp e.toRingHom) (nmodel Z).Comp U.Comp X (fun c => (Φ.C c).Y.X) sX (fun c => (Φ.C c).Y.str) d (levDeg Z.dvd (Xo i₀.l) i₀.c (Xo Z.i.l) Z.i.c * ConsGeo.embDeg (incl Z)) (fun C => ι C ⁻¹' Z.opn) (fun c => (Φ.C c).π ⁻¹' S …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ι C _ ∈ Z.opn`. Rewrite using `[Scheme.Hom.comp_apply, hgp]`. Conclude with `hgen C)`. Use the proof step `(fun c => by`. Establish `h` using `congrArg (fun u => u (closedPoint _)) (Φ.C c).y0_x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ _).symm.trans (h.trans ((Scheme.Hom.comp_apply _ _ _).trans (congrArg (Φ.C c).π Scheme.fromSpecStalk_closedPoint)))⟩)`. Use the proof step `(fun k _ C c w q h => by`. Take `⟨h₁, h₂, ⟨f, h₃, h₄⟩, -⟩` from `UpperTheory.level_flag_compact_point L (Φ.C c) _ q h`. Use `⟨?_, h₁, h₂⟩` and prove the remaining obligations. Use `mono_spMap_subtype (Z.i.c.V W)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₅ : w ≫ ((nmodel Z).comp C).toBase.genFibreStr ≫ spMap (ε C).toRingHom = spMap f`. Rewrite using `[← cancel_mono (spMap (Z.i.c.V W).subtype), ← h₃, Category.assoc, Category.assoc, Category.assoc]`. Conclude with `congrArg (w ≫ ·) ((hε C).trans (Category.assoc _ _ _).symm)`. Rewrite using `[← (Φ.C c).π_str, reassoc_of% h₄, ← h₅]`. Simplify using `only [sX, ← ModelRelProbe.spMap_comp, Category.assoc])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun k _ C w hw => UpperTheory.level_unfolding_flag Φ L _ hw)`. Use the proof step `(fun k _ C c c' w q q' h h' => UpperTheory.level_unfolding_metric Φ L hfull _ c c' q q' h h')`. Use the proof step `(fun k k' _ _ ψ C c w q h => by`. Rewrite using `[Category.assoc]`. Conclude with `(UpperTheory.level_flag_compact_point L (Φ.C c) _ q h).2.2.2 k' ψ)`.
+Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `(fun c q hq hQ => by haveI := T.jQ_open`. Set `y` to `IsOpenImmersion.lift T.jQ (q ≫ (Φ.C c).π) (by`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[hcl x]`. Conclude with `hQ)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hy : q ≫ (Φ.C c).π = y ≫ T.jQ` using `(IsOpenImmersion.lift_fac _ _ _).symm`. Establish `hys : y ≫ pullback.snd _ _ = spMap i₀.c.F.val.toRingHom`. Establish `h1 : T.jQ ≫ genStr T = pullback.snd _ _` using `T.jQ_over`. Use `haveI : IsIso (spMap e.toRingHom) := inferInstanceAs (IsIso (Spec.map e.toCommRingCatIso.hom))`. Rewrite using `[← cancel_mono (spMap e.toRingHom), ← h1, Category.assoc, Category.assoc, ← reassoc_of% hy, (Φ.C c).π_str, hq, ModelRelProbe.spMap_comp]`.
-
-Take `⟨e₁⟩` from `UpperTheory.level_flag_multiplicity L (Φ.C c) hfull q y hy`. Rewrite using `[← UpperTheory.level_point_count L hpq ⟨y, hys⟩, ← Nat.card_congr e₁]`. Take `⟨hinj, hsurj⟩` from `UpperTheory.points_generic_fibre_components _ (nmodel Z) ℂ`. Use `Nat.card_eq_of_bijective (fun w => ⟨w.1.2 ≫ ι w.1.1, w.2⟩) ⟨fun w w' h => Subtype.ext (hinj (congrArg Subtype.val h)), fun w => ?_⟩` and prove the remaining obligations. Take `⟨C, w', hw⟩` from `hsurj w.1 (hopn (UpperTheory.level_flag_compact_point L (Φ.C c) _ q w.2).1)`.
-
-Conclude with `⟨⟨⟨C, w'⟩, by`. Express the relevant statement in the definitionally equal form `ConsGeo.Match L (Φ.C c) (w' ≫ _ ≫ _) q`. Rewrite using `[hw]`. Conclude with `w.2⟩, Subtype.ext hw⟩)`. Use `haveI := hO C`.
-
-Choose the witnesses or unpack the hypotheses as in `⟨ρ, hρ⟩ : ∃ ρ : (X C).functionField →+* ((nmodel Z).comp C).X.functionField, spMap ρ ≫ gpt (X C) ≫ ((nmodel Z).comp C).toBase.genFibreι = gpt _ := by`. Establish `key : ∀ {A B : Scheme.{0}} (j : A ⟶ B) [IsOpenImmersion j] (x : A) (y : B), j x = y → ∃ ρ : A.presheaf.stalk x ⟶ B.presheaf.stalk y, Spec.map ρ ≫ A.fromSpecStalk x ≫ j = B.fromSpecStalk y`. Introduce and unpack `A B j _ x _ rfl`. Conclude with `⟨inv (j.stalkMap x), by`. Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk, ← Category.assoc, ← Spec.map_comp, IsIso.hom_inv_id, Spec.map_id, Category.id_comp]⟩`.
-
-Take `⟨ρ, hρ⟩` from `key _ _ _ (hgp C)`. Conclude with `⟨ρ.hom, hρ⟩`. Use `⟨b C, ρ.comp (θ C), ?_⟩` and prove the remaining obligations. Use `(UpperTheory.level_flag_compact_point L (Φ.C (b C)) _ _ (hb C)).2.2.2 _ ρ` as an intermediate fact. Rewrite `this` using `[← Category.assoc (spMap ρ) (spMap _), ModelRelProbe.spMap_comp, reassoc_of% hρ]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem generic_match (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.c.V W)]
     {T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo i₀.l) i₀.c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* i₀.c.F}
@@ -258,11 +246,9 @@ private theorem generic_match (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.
   rwa [← Category.assoc (spMap ρ) (spMap _), ModelRelProbe.spMap_comp, reassoc_of% hρ] at this
 
 /- English proof (translation)
-Establish `ex : ∀ τ i, ∃ V : TanM x' t'.G, pushE mu x' hx V = tanOf (h.1 τ i).1` using `fun τ i => (pushE mu x' hx).surjective _`. Use `choose V hV using ex`. Establish `e : ∀ τ i, (tv (V τ i)).left ≫ mu.φ = u τ i` using `fun τ i => congrArg (fun z => (tv z).left) (hV τ i)`. Use `⟨fun τ i => (tv (V τ i)).left, ⟨fun τ i => ⟨isTan_tv _, fun a => ?_⟩, fun τ w hw he => ?_⟩, e⟩` and prove the remaining obligations. Use `(eig_iff (V τ i) a _).2 ((pushE mu x' hx).injective ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pushE_act, map_smul, hV]`. Conclude with `(eig_iff _ a _).1 ((h.1 τ i).2 a)`. Use `h.2 τ (w ≫ mu.φ) (isTan_push mu x' hx hw) fun a => by` as an intermediate fact. Rewrite using `[Category.assoc, ← mu.act, ← Category.assoc, he, Category.assoc]`. Use `(existsUnique_congr fun cf => comb_push mu hx (fun i => isTan_tv (V τ i)) hw cf).1 ?_` and prove the remaining obligations.
-
-Simplify `this` using `only [e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem frame_pull {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {l : Level H} {c : Coeff l}
@@ -283,19 +269,19 @@ private theorem frame_pull {E : Type} [Field E] [NumberField E] [IsCMField E] {H
     simpa only [e] using this
 
 /- English proof (translation)
-Establish `hys : y ≫ pullback.snd _ _ = spMap (φ.comp (Z.alg a))`. Use `mono_spMap_subtype (Z.i.c.V W)` as an intermediate fact. Establish `hjs : (Y Z.i).j ≫ (Y Z.i).s = pullback.snd _ _ ≫ spMap (Z.i.c.V W).subtype`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, (Y Z.i).jQ_over]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono (spMap (Z.i.c.V W).subtype), Category.assoc, ← hjs, reassoc_of% hy, affineOpenChart_comp_structure_eq_spMap Z hφ]`. Establish `hu` using `chart_frame Z hφ`. Take `⟨v, hv, hvu⟩` from `frame_pull (Y Z.i).m hy hu`. Set `φ' : i₀.c.F →+* k` to `(φ.comp (Z.alg a)).comp (incl Z)`. Establish `h1` using `frame_push (c := i₀.c) (f := φ') L.ν (x := y ≫ L.r) rfl (fun τ x => rfl) hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2` using `frame_push (c := i₀.c) (f := φ') T.m (x := (y ≫ L.r ≫ T.jQ) ≫ genι T) (by simp only [Category.assoc]) (fun τ x => rfl) h1`. Establish `hx : (y ≫ L.r ≫ T.jQ) ≫ genStr T = spMap φ'`. Establish `: T.jQ ≫ genStr T = pullback.snd _ _` using `T.jQ_over`. Rewrite using `[Category.assoc, Category.assoc, this, L.snd, reassoc_of% hys, ModelRelProbe.spMap_comp]`. Set `g : EigFrame T φ' ((y ≫ L.r ≫ T.jQ) ≫ genι T)` to `⟨_, fun τ i => (h2.1 τ i).1, fun τ i => (h2.1 τ i).2, h2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨⟨c', q'⟩, ⟨hq, hC⟩, -⟩` from `UpperTheory.flag_torus_generic_point Φ k φ' _ hx g`. Establish `tr : ∀ (x x' : Sp k ⟶ T.X) (g : EigFrame T φ' x), x' = x → (Φ.C c').Carries q' g → ∃ g' : EigFrame T φ' x', (Φ.C c').Carries q' g' ∧ g'.v = g.v`. Introduce and unpack `x _ g rfl h`. Conclude with `⟨g, h, rfl⟩`. Take `⟨g', hg', hgv⟩` from `tr _ (q' ≫ (Φ.C c').π ≫ genι T) g (by rw [← Category.assoc]; exact congrArg (· ≫ genι T) hq) hC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `huv : (fun τ i => v τ i ≫ (Y Z.i).m.φ) = (Z.fr a).bc φ` using `funext fun τ => funext fun i => hvu τ i`. Establish `hM' : ConsGeo.Match L (Φ.C c') w q'`. Use `⟨y, v, φ', g', hy.symm, hq, fun τ i => (hv.1 τ i).1, ?_, hg', fun τ i => ?_⟩` and prove the remaining obligations. Rewrite using `[huv]`. Use `⟨a, φ, hφ, hu, fun τ n _ i hi => ⟨Pi.single i 1, fun j hj => Pi.single_eq_of_ne ?_ _, isCombAtG_single _ _ (fun j => (hu.1 τ j).1) i⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hgv]`. Conclude with `Category.assoc _ _ _`. Establish `key` using `UpperTheory.level_unfolding_metric Φ L hfull w c c' q q' hM hM'`.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, hqq⟩` from `Sigma.mk.inj_iff.1 key`. Take `rfl` from `eq_of_heq hqq`. Use `⟨hq, hys, φ', g', fun σ i => ⟨v σ i ≫ L.ν.φ, v σ i ≫ ν.φ, (isTan_push L.ν y rfl (hv.1 σ i).1).1, (isTan_push ν y rfl (hv.1 σ i).1).1, by rw [Category.assoc, hν', Category.assoc], by rw [hgv], ?_⟩, hg'⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hν, reassoc_of% hvu σ i]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem link_of_match {Z : LocM.Mdl Y i₀} {T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo i₀.l) i₀.c β} {F : Type} [Field F]
     {e : F ≃+* i₀.c.F} {σ : i₀.c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf (Xo i₀.l) i₀.c σ N} (Φ : FlagTor T e U)
@@ -351,29 +337,27 @@ private theorem link_of_match {Z : LocM.Mdl Y i₀} {T : ReciprocityTheory.Chart
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨L, ν, hj, hν, hν'⟩` from `exists_lev Z T hpq hT`. Establish `hopen : IsOpen Z.opn` using `Z.cover ▸ isOpen_iUnion fun a => (Z.U a).1.isOpen`. Establish `hgen : ∀ C, (nmodel Z).compι C (genericPoint _) ∈ Z.opn` using `fun C => by`. Take `⟨x, hxC, hxo⟩` from `Z.dense.inter_open_nonempty _ C.opens.isOpen C.2.1.nonempty`. Conclude with `((genericPoint_specializes (show ((nmodel Z).comp C).X from ⟨x, hxC⟩)).map ((nmodel Z).compι C).continuous).mem_open hopen hxo`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, θ, hM⟩` from `generic_match Z Φ L hpq hfull d hZ hΦ hgen (Z.cover ▸ Set.iUnion_subset hopn) C`. Take `⟨a, ha⟩` from `Set.mem_iUnion.1 (Z.cover.ge (hgen C))`. Set `V : ((nmodel Z).comp C).X.Opens` to `(nmodel Z).compι C ⁻¹ᵁ (Z.U a).1`. Establish `hV : genericPoint _ ∈ V` using `ha`. Use `haveI : IsOpenImmersion (Z.chart a) := IsAffineOpen.isOpenImmersion_fromSpec (Z.U a).2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Set `ρ : V.toScheme ⟶ Sp Γ(Z.X, (Z.U a).1)` to `IsOpenImmersion.lift (Z.chart a) (V.ι ≫ (nmodel Z).compι C) (by`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[show Set.range (Z.chart a) = _ from (Z.U a).2.range_fromSpec]`. Conclude with `x.2)`. Establish `hρ : ρ ≫ Z.chart a = V.ι ≫ (nmodel Z).compι C` using `IsOpenImmersion.lift_fac _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hid : spMap (RingHom.id _) ≫ Z.chart a = Z.chart a`. Rewrite using `[LevelCover.spMap_id', Category.id_comp]`. Take `⟨y₁, hy₁⟩` from `Pull.exists_open_lift Z hid`. Set `ψ : Γ(Z.X, (Z.U a).1) →+* ((nmodel Z).comp C).X.functionField` to `(Spec.preimage (V.fromSpecStalkOfMem _ hV ≫ ρ)).hom`. Establish `hψ : spMap ψ = V.fromSpecStalkOfMem _ hV ≫ ρ` using `Spec.map_preimage _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hψ' : spMap ψ ≫ Z.chart a = ConsGeo.gpt _ ≫ (nmodel Z).compι C`. Rewrite using `[hψ, Category.assoc, hρ, Scheme.Opens.fromSpecStalkOfMem_ι_assoc]`. Take `⟨hq, -, f, g, hTr, hC⟩` from `link_of_match Φ L hfull hν hν' hψ' (y := spMap ψ ≫ y₁) (by rw [Category.assoc, hy₁, reassoc_of% hψ', Category.assoc]) hM`. Use `haveI : LocallyOfFiniteType ((Φ.C c).π ≫ genStr T ≫ spMap e.toRingHom) := by`. Rewrite using `[(Φ.C c).π_str]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Use `haveI : LocallyOfFiniteType (Φ.C c).π := locallyOfFiniteType_of_comp _ (genStr T ≫ spMap e.toRingHom)`. Take `⟨U', hU, k, h, hUV, hk, hh, hh'⟩` from `spread V _ hV (ρ ≫ y₁ ≫ L.r ≫ T.jQ) (Φ.C c).π (spMap θ ≫ ConsGeo.gpt _) (hq.trans (by rw [hψ]; simp only [Category.assoc]))`. Establish `hy₁s : y₁ ≫ pullback.snd _ _ = spMap (Z.alg a)`. Use `mono_spMap_subtype (Z.i.c.V W)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono (spMap (Z.i.c.V W).subtype), Category.assoc, ← ModelRelProbe.j_over, reassoc_of% hy₁, Pull.affineOpenChart_comp_structure_eq_spMap Z hid, RingHom.id_comp]`. Establish `hkU : U'.fromSpecStalkOfMem _ hU ≫ k = V.fromSpecStalkOfMem _ hV`. Rewrite using `[← cancel_mono V.ι, Category.assoc, hk, Scheme.Opens.fromSpecStalkOfMem_ι, Scheme.Opens.fromSpecStalkOfMem_ι]`. Establish `hstr : h ≫ (Φ.C c).Y.str ≫ spMap (algebraMap (𝓞 F) F) = U'.ι ≫ ((nmodel Z).comp C).str ≫ spMap b`. Establish `h1 : T.jQ ≫ genStr T = pullback.snd _ _` using `T.jQ_over`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2 : U'.ι ≫ ((nmodel Z).comp C).str = k ≫ ρ ≫ Z.chart a ≫ Z.s`. Rewrite using `[reassoc_of% hρ, reassoc_of% hk]`. Both sides reduce to the same expression. Rewrite using `[← (Φ.C c).π_str, Category.assoc, reassoc_of% hh', Category.assoc, reassoc_of% h1, reassoc_of% L.snd, reassoc_of% hy₁s, reassoc_of% h2, reassoc_of% Z.alg_s]`. Simplify using `only [ModelRelProbe.spMap_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 3`. Use `RingHom.ext fun x => congrArg (Z.alg a) ?_` and prove the remaining obligations. Conclude with `(hb x).symm`. Establish `hy : U'.fromSpecStalkOfMem _ hU ≫ k ≫ ρ ≫ y₁ ≫ L.r = (spMap ψ ≫ y₁) ≫ L.r`. Rewrite using `[reassoc_of% hkU, hψ]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Establish `key : ∀ (q' : Sp ((nmodel Z).comp C).X.functionField ⟶ (Φ.C c).Y.X) (y' : Sp ((nmodel Z).comp C).X.functionField ⟶ (Xo i₀.l).XF i₀.c), q' = spMap θ ≫ ConsGeo.gpt _ → y' = (spMap ψ ≫ y₁) ≫ L.r → ∃ g : EigFrame T f (q' ≫ (Φ.C c).π ≫ genι T), (∀ σ i, Transp T (Y i₀) y' (g.v σ i) ((Z …`. Introduce and unpack `_ _ rfl rfl`. Conclude with `⟨g, hTr, hC⟩`. Take `⟨g', hTr', hC'⟩` from `key _ _ hh hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `e₁ : (k ≫ ρ ≫ y₁ ≫ L.r) ≫ (Y i₀).j = U'.ι ≫ (nmodel Z).compι C ≫ Z.π ≫ τ`. Simplify using `only [Category.assoc]`. Rewrite using `[← hj, reassoc_of% hy₁, reassoc_of% hρ, reassoc_of% hk]`. Establish `e₂ : (k ≫ ρ ≫ y₁ ≫ L.r) ≫ T.jQ = h ≫ (Φ.C c).π`. Rewrite using `[hh']`.
-
-Simplify using `only [Category.assoc]`. Conclude with `⟨c, ⟨U', hU, h, hstr, θ, hh⟩, a, τ, mu, k ≫ ρ ≫ y₁ ≫ L.r, ψ, f, g', hUV, hT, e₁, e₂, hψ', hTr', hC'⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_link (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.c.V W)]
     {T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo i₀.l) i₀.c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* i₀.c.F}
@@ -456,7 +440,7 @@ private theorem exists_link (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.
 end
 
 /- English proof (translation)
-Introduce `D A N j S κ s fl hdim p hp W hW z _ ε b hε hb C`. Establish `hpq : 1 ≤ S.Dw.p + S.Dw.q` using `(one_le_two.trans S.two_le).trans S.rank_eq.ge`. Take `⟨τ, mu, hT⟩` from `Pull.exists_trans (S.sys.clauses p W hp hW).1 z.Z.dvd z.Z.le`. Conclude with `exists_link z.Z fl hT hpq z.full _ (RelDim.relDim_comp D A N j S κ p hp W hW z) hdim (fun a => chart_le_gen hp hW a) b (fun x => Subtype.ext ((congrArg Subtype.val (hb x)).trans ((hε x).trans (κ.e_emb x).symm))) C`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.admissible_point_discrete_valuation :
     ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (fl : s.Flag), (∀ k, (fl.C k).Y.dim = Formalism.DegreeFormula.dimFl D.what₂.Tau N) → ∀ (p : ℕ) (hp : p.Prime) (W : ValuationSubring ℂ) (hW : (p : ℂ) ∈ W.nonunits) (z : AdmAt S κ hp hW) [IsDiscreteValuationRing (z.Z.i.c.V W)] (ε : D.what₂.LL →+* z.Z.i.c.F) (b : 𝓞 D.what₂.LL →+* z.Z.i.c.V W), (∀ x, ((ε x : z.Z.i.c.F) : ℂ) = D.what₂.embLL x) → (∀ x : 𝓞 D.what₂.LL, ((b x : z.Z.i.c.V W) : z.Z.i.c.F) = ε (x : D.what₂.LL)) → ∀ C : (nmodel z.Z).Comp, ∃ (c : s.Comp) (μ : Match (fl.C c).Y b ((nmodel z.Z).comp C)), Link z.Z C (fl.C c) μ := by

@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.Proof.IdempotentLatticeSequence
 
 /- English proof (translation)
-Use `show x ∈ (PadicComplex.valued p).v.valuationSubring ↔ _`. Rewrite using `[Valuation.mem_valuationSubring_iff, PadicComplex.norm_eq_norm, Valuation.norm_def, ← map_one (PadicComplex.valued p).v, ← Valuation.restrict_le_iff]`. Simplify `((Valuation.RankOne.strictMono (PadicComplex.valued p).v).le_iff_le (b := 1)).symm` using `only [map_one, NNReal.coe_le_one]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_int_iff {p : ℕ} [Fact p.Prime] (x : ℂ_[p]) : x ∈ PadicComplexInt p ↔ ‖x‖ ≤ 1 := by
   show x ∈ (PadicComplex.valued p).v.valuationSubring ↔ _
@@ -21,7 +21,7 @@ theorem mem_int_iff {p : ℕ} [Fact p.Prime] (x : ℂ_[p]) : x ∈ PadicComplexI
     ((Valuation.RankOne.strictMono (PadicComplex.valued p).v).le_iff_le (b := 1)).symm
 
 /- English proof (translation)
-Take `⟨P, hmon, hev⟩` from `RingOfIntegers.isIntegral_coe a`. Establish `key : ∀ f : ℤ →+* ℂ_[p], Polynomial.eval₂ f (φ (a : M)) P = 0` using `fun f => by`. Rewrite using `[RingHom.ext_int f (φ.comp (algebraMap ℤ M)), ← Polynomial.hom_eval₂, hev, map_zero]`. Conclude with `GlobalTheory.SplitEmbSep.norm_le_one_of_isIntegral ⟨P, hmon, key _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_int_le {p : ℕ} [Fact p.Prime] {M : Type} [Field M] (φ : M →+* ℂ_[p]) (a : 𝓞 M) : ‖φ (a : M)‖ ≤ 1 := by
   obtain ⟨P, hmon, hev⟩ := RingOfIntegers.isIntegral_coe a
@@ -30,15 +30,15 @@ theorem norm_int_le {p : ℕ} [Fact p.Prime] {M : Type} [Field M] (φ : M →+* 
   exact GlobalTheory.SplitEmbSep.norm_le_one_of_isIntegral ⟨P, hmon, key _⟩
 
 /- English proof (translation)
-Set `f : (J → A) →ₗ[A] (κ → A)` to `Matrix.mulVecLin (Matrix.of fun k j => b k j)`. Set `x : (κ → A) →ₗ[A] B` to `Fintype.linearCombination A r`. Establish `hxf : x ∘ₗ f = 0`. Use `LinearMap.ext fun c => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply, x, f, Fintype.linearCombination_apply, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.sum_smul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_comm (b _ j) (c j), mul_smul]`. Rewrite using `[← Finset.smul_sum, h j, smul_zero]`. Take `⟨n, a', y', hxa, haf⟩` from `Module.Flat.exists_factorization_of_comp_eq_zero_of_free hxf`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨n, fun k l => a' (Pi.single k 1) l, fun l => y' (Finsupp.single l 1), fun k => ?_, fun l j => ?_⟩` and prove the remaining obligations. Establish `hr : r k = x (Pi.single k 1)`. Simplify using `[x, Fintype.linearCombination_apply, Pi.single_apply]`. Rewrite using `[hr, hxa, LinearMap.comp_apply]`. Use `conv_lhs => rw [← Finsupp.univ_sum_single (a' (Pi.single k 1))]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.smul_single_one, map_smul]`. Establish `h1` using `congrArg (fun v => v l) (LinearMap.congr_fun haf (Pi.single j 1))`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply, Finsupp.coe_zero, Pi.zero_apply] at h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hf : f (Pi.single j 1) = ∑ k, b k j • Pi.single k 1`. Use extensionality with `k'`. Simplify using `[f, Matrix.mulVec, dotProduct, Pi.single_apply, Finset.sum_apply]`. Rewrite `h1` using `[hf, map_sum]`. Simplify `h1` using `[Finsupp.finsetSum_apply, map_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem flat_system {A B : Type} [CommRing A] [AddCommGroup B] [Module A B] [Module.Flat A B] {κ J : Type}
     [Fintype κ] [Fintype J] (b : κ → J → A) (r : κ → B) (h : ∀ j, ∑ k, b k j • r k = 0) :
@@ -84,14 +84,14 @@ def primeOf {p : ℕ} [Fact p.Prime] {E : Type} [Field E] (φ : E →+* ℂ_[p])
     exact (mul_le_of_le_one_left (norm_nonneg _) (norm_int_le φ c)).trans_lt ha
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_primeOf {p : ℕ} [Fact p.Prime] {E : Type} [Field E] (φ : E →+* ℂ_[p]) (a : 𝓞 E) :
     a ∈ primeOf φ ↔ ‖φ (algebraMap (𝓞 E) E a)‖ < 1 := by
   exact Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_primeOf]`. Establish `h1 : ‖((p : ℚ_[p]) : ℂ_[p])‖ < 1`. Rewrite using `[PadicComplex.norm_extends', Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt)`. Simplify using `using h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem natCast_mem_primeOf {p : ℕ} [Fact p.Prime] {E : Type} [Field E] (φ : E →+* ℂ_[p]) :
     (p : 𝓞 E) ∈ primeOf φ := by
@@ -102,9 +102,9 @@ theorem natCast_mem_primeOf {p : ℕ} [Fact p.Prime] {E : Type} [Field E] (φ : 
   simpa using h1
 
 /- English proof (translation)
-Use `⟨?_, fun {a b} hab => ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.eq_top_iff_one, mem_primeOf]`. Simplify using the standard rewrite rules. Rewrite `hab` using `[mem_primeOf, map_mul, map_mul, norm_mul]`. Rewrite using `[mem_primeOf, mem_primeOf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : ‖φ (algebraMap (𝓞 E) E a)‖ ≤ 1` using `norm_int_le φ a`. Establish `hb : ‖φ (algebraMap (𝓞 E) E b)‖ ≤ 1` using `norm_int_le φ b`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_or, not_lt, not_lt]`. Use polynomial arithmetic with `[h.1, h.2, norm_nonneg (φ (algebraMap (𝓞 E) E a))]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem primeOf_isPrime {p : ℕ} [Fact p.Prime] {E : Type} [Field E] (φ : E →+* ℂ_[p]) : (primeOf φ).IsPrime := by
   refine ⟨?_, fun {a b} hab => ?_⟩
@@ -119,7 +119,7 @@ theorem primeOf_isPrime {p : ℕ} [Fact p.Prime] {E : Type} [Field E] (φ : E �
     nlinarith [h.1, h.2, norm_nonneg (φ (algebraMap (𝓞 E) E a))]
 
 /- English proof (translation)
-Use `(primeOf_isPrime φ).isMaximal ?_` and prove the remaining obligations. Introduce `h`. Establish `hp` using `natCast_mem_primeOf φ`. Rewrite `hp` using `[h, Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero) hp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeOf_isMaximal {p : ℕ} [Fact p.Prime] {E : Type} [Field E] [NumberField E] (φ : E →+* ℂ_[p]) :
     (primeOf φ).IsMaximal := by

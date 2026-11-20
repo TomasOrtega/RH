@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Rewrite using `[abs_of_pos ha]`. Establish `p1 : 0 ≤ 1 / a ^ (3 / 2 : ℝ)` using `by positivity`. Establish `p2 : 0 ≤ 1 / a ^ (5 : ℝ)` using `by positivity`. Break down `le_or_gt 1 a with h | h` into its components or cases. Establish `h' : a ^ e ≤ a ^ (-(3 / 2) : ℝ)` using `Real.rpow_le_rpow_of_exponent_le h h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `h'` using `[Real.rpow_neg ha.le, ← one_div]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h' : a ^ e ≤ a ^ (-5 : ℝ)` using `Real.rpow_le_rpow_of_exponent_ge ha h.le h1`. Rewrite `h'` using `[Real.rpow_neg ha.le, ← one_div]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem termdiff_rpow_le {a e : ℝ} (ha : 0 < a) (h1 : -5 ≤ e) (h2 : e ≤ -(3 / 2)) :
     a ^ e ≤ 1 / |a| ^ (3 / 2 : ℝ) + 1 / |a| ^ (5 : ℝ) := by
@@ -23,29 +23,27 @@ private theorem termdiff_rpow_le {a e : ℝ} (ha : 0 < a) (h1 : -5 ≤ e) (h2 : 
     linarith
 
 /- English proof (translation)
-Conclude with `Differentiable.const_cpow differentiable_id.neg (Or.inl (by exact_mod_cast ha.ne'))`.
+A detailed English derivation is pending.
 -/
 private theorem termdiff_cpow {a : ℝ} (ha : 0 < a) : Differentiable ℂ (fun s : ℂ => (a : ℂ) ^ (-s)) := by
   exact Differentiable.const_cpow differentiable_id.neg (Or.inl (by exact_mod_cast ha.ne'))
 
 /- English proof (translation)
-Introduce `x hx0 hx1`. Establish `hU : IsOpen ({s : ℂ | -1 / 2 < s.re} ∩ Metric.ball 0 3)` using `(isOpen_lt continuous_const Complex.continuous_re).inter Metric.isOpen_ball`. Use `Complex.differentiableOn_tsum_of_summable_norm (u := fun n : ℕ => 24 * (1 / |(n : ℝ) + x| ^ (3 / 2 : ℝ) + 1 / |(n : ℝ) + x| ^ (5 : ℝ))) ?_ ?_ hU ?_` and prove the remaining obligations. Conclude with `(((Real.summable_one_div_nat_add_rpow x (3 / 2)).2 (by norm_num)).add ((Real.summable_one_div_nat_add_rpow x 5).2 (by norm_num))).mul_left 24`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb : ∀ b : ℝ, 0 < b → Differentiable ℂ (fun s : ℂ => (b : ℂ) ^ (-s))` using `fun b hb => termdiff_cpow hb`. Establish `h1 : (0 : ℝ) < (n : ℝ) + x` using `by positivity`. Establish `h2 : (0 : ℝ) < (n : ℝ) + 1` using `by positivity`. Establish `h3 : (0 : ℝ) < (n : ℝ) + 2` using `by positivity`. Conclude with `(((hb _ h1).sub (hb _ h2)).sub ((differentiable_const _).mul ((hb _ h2).sub (hb _ h3)))).differentiableOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n s hs`. Take `⟨hre, hball⟩` from `hs`. Simplify using `only [Set.mem_setOf_eq] at hre`. Rewrite `hball` using `[mem_ball_zero_iff]`. Establish `ha : (0 : ℝ) < (n : ℝ) + x` using `by positivity`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre2 : -2 ≤ s.re` using `by linarith`. Establish `hR1` using `b_taylor2 s ((n : ℝ) + x) ((n : ℝ) + 1) ((n : ℝ) + x) ha (by linarith) le_rfl hre2`. Establish `hR2` using `b_taylor2 s ((n : ℝ) + x) ((n : ℝ) + 1) ((n : ℝ) + 2) ha (by linarith) (by linarith) hre2`. Establish `hA` using `termdiff_rpow_le ha (e := -s.re - 2) (by linarith [Complex.re_le_norm s]) (by linarith)`. Establish `hA0 : 0 ≤ ((n : ℝ) + x) ^ (-s.re - 2)` using `Real.rpow_nonneg ha.le _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1 : ‖s + 1‖ ≤ 4`. Use `norm_add_le s 1` as an intermediate fact. Rewrite `this` using `[norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hP : ‖s‖ * ‖s + 1‖ ≤ 3 * 4` using `mul_le_mul hball.le hs1 (norm_nonneg _) (by norm_num)`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := 1 / |(n : ℝ) + x| ^ (3 / 2 : ℝ) + 1 / |(n : ℝ) + x| ^ (5 : ℝ) with hB`. Establish `hB0 : 0 ≤ B` using `hA0.trans hA`. Establish `hsq1 : ((n : ℝ) + x - ((n : ℝ) + 1)) ^ 2 ≤ 1` using `by nlinarith`. Establish `hsq2 : ((n : ℝ) + 2 - ((n : ℝ) + 1)) ^ 2 ≤ 1` using `by nlinarith`. Establish `hR1'` using `hR1.trans (mul_le_mul (mul_le_mul hP hA hA0 (by norm_num)) hsq1 (sq_nonneg _) (by positivity))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR2'` using `hR2.trans (mul_le_mul (mul_le_mul hP hA hA0 (by norm_num)) hsq2 (sq_nonneg _) (by positivity))`. Establish `hnx : ‖(1 : ℂ) - (x : ℂ)‖ ≤ 1`. Rewrite using `[← Complex.ofReal_one, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 3 * 4 * B * 1 + 1 * (3 * 4 * B * 1) := (norm_add_le _ _).trans (by`. Rewrite using `[norm_mul]`.
-
-Conclude with `add_le_add hR1' (mul_le_mul hnx hR2' (norm_nonneg _) zero_le_one))`. Use `_ = 24 * B := by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Bern.b_termdiff :
     ∀ (x : ℝ), 0 < x → x ≤ 1 → DifferentiableOn ℂ (fun s : ℂ => ∑' n : ℕ, ((((n : ℝ) + x : ℝ) : ℂ) ^ (-s) - (((n : ℝ) + 1 : ℝ) : ℂ) ^ (-s) - (1 - (x : ℂ)) * ((((n : ℝ) + 1 : ℝ) : ℂ) ^ (-s) - (((n : ℝ) + 2 : ℝ) : ℂ) ^ (-s)))) ({s : ℂ | -1 / 2 < s.re} ∩ Metric.ball 0 3) := by

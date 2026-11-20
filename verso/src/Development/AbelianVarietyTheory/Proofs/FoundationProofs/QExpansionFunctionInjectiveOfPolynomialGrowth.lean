@@ -9,13 +9,13 @@ noncomputable section
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Take `⟨C, A, h⟩` from `ha`. Establish `hs : Summable fun n : ℕ => C * 2 ^ A * ((n : ℝ) ^ A * r ^ n + r ^ n)`. Use `Summable.mul_left _ (Summable.add ?_ ?_)` and prove the remaining obligations. Conclude with `summable_pow_mul_geometric_of_norm_lt_one A (by rwa [Real.norm_eq_abs, abs_of_nonneg hr0])`. Conclude with `summable_geometric_of_lt_one hr0 hr1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Summable.of_nonneg_of_le (fun n => mul_nonneg (norm_nonneg _) (pow_nonneg hr0 _)) (fun n => ?_) hs` and prove the remaining obligations. Establish `hb : ((n : ℝ) + 1) ^ A ≤ 2 ^ A * ((n : ℝ) ^ A + 1)`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `only [Nat.cast_zero, zero_add, one_pow]`. Establish `: (1 : ℝ) ≤ 2 ^ A` using `one_le_pow₀ (by norm_num)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[pow_nonneg (le_refl (0:ℝ)) A]`. Establish `h1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `: ((n : ℝ) + 1) ^ A ≤ (2 * n) ^ A` using `pow_le_pow_left₀ (by positivity) (by linarith) A`. Rewrite `this` using `[mul_pow]`. Use polynomial arithmetic with `[pow_nonneg (show (0:ℝ) ≤ 2 by norm_num) A]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hC : 0 ≤ C` using `le_trans (norm_nonneg _) ((h 0).trans (by simp))`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem polyB_summable_norm_mul_pow {a : ℕ → ℂ} (ha : PolyB a) {r : ℝ} (hr0 : 0 ≤ r) (hr1 : r < 1) :
     Summable fun n : ℕ => ‖a n‖ * r ^ n := by
@@ -41,13 +41,13 @@ theorem polyB_summable_norm_mul_pow {a : ℕ → ℂ} (ha : PolyB a) {r : ℝ} (
     _ = C * 2 ^ A * ((n : ℝ) ^ A * r ^ n + r ^ n) := by ring
 
 /- English proof (translation)
-Establish `hπ : (2 * π * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `him : 0 < (Complex.log q / (2 * π * Complex.I)).im`. Establish `e : Complex.log q / (2 * π * Complex.I) = -Complex.I * Complex.log q / (2 * π)`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
 
-Simplify using `[Complex.I_sq]`. Rewrite using `[e]`. Establish `: (-Complex.I * Complex.log q / (2 * π)).im = - (Complex.log q).re / (2 * π)`. Rewrite using `[show (2 * π : ℂ) = ((2 * π : ℝ) : ℂ) by push_cast; ring, Complex.div_ofReal_im]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Complex.log_re]`. Establish `hl : Real.log ‖q‖ < 0` using `Real.log_neg (norm_pos_iff.mpr h0) h1`. Establish `: 0 < 2 * π` using `by positivity`. Apply `div_pos (by simpa using hl) this` to reduce the goal to its premises. Use `⟨⟨_, him⟩, fun n => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: 2 * π * Complex.I * (n : ℂ) * ((⟨_, him⟩ : ℍ) : ℂ) = n * Complex.log q`. Simplify using `only [UpperHalfPlane.coe_mk]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Complex.exp_nat_mul, Complex.exp_log h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_upperHalfPlane_exp_eq {q : ℂ} (h0 : q ≠ 0) (h1 : ‖q‖ < 1) :
     ∃ τ : ℍ, ∀ n : ℕ, cexp (2 * π * Complex.I * n * τ) = q ^ n := by
@@ -72,23 +72,19 @@ theorem exists_upperHalfPlane_exp_eq {q : ℂ} (h0 : q ≠ 0) (h1 : ‖q‖ < 1)
   rw [this, Complex.exp_nat_mul, Complex.exp_log h0]
 
 /- English proof (translation)
-Introduce `a b ha hb hab`. Use `set c : ℕ → ℂ := fun n => a n - b n with hcdef`. Establish `hsum : ∀ r : ℝ, 0 ≤ r → r < 1 → Summable fun n : ℕ => ‖c n‖ * r ^ n`. Introduce `r h0 h1`. Use `Summable.of_nonneg_of_le (fun n => mul_nonneg (norm_nonneg _) (pow_nonneg h0 _)) (fun n => ?_) ((polyB_summable_norm_mul_pow ha h0 h1).add (polyB_summable_norm_mul_pow hb h0 h1))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_sub_le _ _) (pow_nonneg h0 _)`. Use `set p : FormalMultilinearSeries ℂ ℂ ℂ := FormalMultilinearSeries.ofScalars ℂ c with hp`. Establish `hrad : ((1 / 2 : NNReal) : ENNReal) ≤ p.radius`. Use `p.le_radius_of_summable_norm ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hsum (1 / 2) (by norm_num) (by norm_num)` as an intermediate fact. Use `this.congr (fun n => ?_)` and prove the remaining obligations. Rewrite using `[hp, FormalMultilinearSeries.ofScalars_norm]`. Simplify using the standard rewrite rules. Establish `hpos : 0 < p.radius` using `lt_of_lt_of_le (by simp) hrad`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP` using `p.hasFPowerSeriesOnBall hpos`. Establish `hval : ∀ q : ℂ, q ≠ 0 → ‖q‖ < 1 → p.sum q = 0`. Introduce `q h0 h1`. Take `⟨τ, hτ⟩` from `exists_upperHalfPlane_exp_eq h0 h1`. Establish `ha' : Summable fun n => a n * q ^ n` using `Summable.of_norm (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `polyB_summable_norm_mul_pow ha (norm_nonneg q) h1)` using `[norm_mul, norm_pow]`. Establish `hb' : Summable fun n => b n * q ^ n` using `Summable.of_norm (by`. Simplify `polyB_summable_norm_mul_pow hb (norm_nonneg q) h1)` using `[norm_mul, norm_pow]`. Establish `e` using `congrFun hab τ`. Simplify using `only [qs, hτ] at e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ∑' n, p n (fun _ => q) = 0`. Simplify using `only [hp, FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul, hcdef, sub_mul]`. Rewrite using `[Summable.tsum_sub ha' hb', e, sub_self]`. Establish `hcont : ContinuousAt p.sum 0` using `hP.continuousOn.continuousAt (EMetric.ball_mem_nhds 0 hpos)`. Establish `h0 : p.sum 0 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hev : p.sum =ᶠ[𝓝[≠] (0 : ℂ)] fun _ => (0 : ℂ)` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (Metric.ball_mem_nhds (0 : ℂ) one_pos)] with q hq0 hq1`. Conclude with `hval q hq0 (by simpa using hq1)`. Conclude with `tendsto_nhds_unique (hcont.tendsto.mono_left nhdsWithin_le_nhds) (tendsto_const_nhds.congr' hev.symm)`. Establish `hloc : p.sum =ᶠ[𝓝 (0 : ℂ)] 0` using `by filter_upwards [Metric.ball_mem_nhds (0 : ℂ) one_pos] with q hq`. Distinguish the cases in `hq0 : q = 0`.
-
-Substitute `hq0` using the available equality. Conclude with `h0`. Conclude with `hval q hq0 (by simpa using hq)`. Establish `hpz : p = 0` using `hP.hasFPowerSeriesAt.eq_zero_of_eventually hloc`. Use function extensionality and compare the values at `n`.
-
-Establish `hn : p n = 0` using `by rw [hpz]; rfl`. Establish `: c n = 0` using `(FormalMultilinearSeries.ofScalars_eq_zero (E := ℂ) (c := c) n).mp hn`. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qs_injective : ∀ a b : ℕ → ℂ, PolyB a → PolyB b → qs a = qs b → a = b := by
   intro a b ha hb hab

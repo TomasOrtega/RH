@@ -14,9 +14,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Take `⟨α, rfl⟩` from `x.mk_surjective`. Take `⟨β, hβ⟩` from `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R ρ).1 E n α`. Take `⟨β', hβ'⟩` from `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R ρ').1 E n α`. Establish `hsub : (ρ.sub ρ').IsImage α.1 (β - β').1`. Introduce `p s h U x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show (β - β').1 = β.1 - β'.1 from rfl, ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 β.1 β'.1 p s h U x).2.1, hβ p s h U x, hβ' p s h U x]`. Both sides reduce to the same expression. Rewrite using `[(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R _).2 E n α _ hsub, (GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R ρ).2 E n α β hβ, (GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R ρ').2 E n α β' hβ', CohomologyClass.mk_sub …`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem SemiMap.sub_op {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ ρ' : SemiMap I J)
     (E : Spc) (n : ℤ) (x : CohomologyClass ((chains S).obj E) I n) :
@@ -33,11 +33,11 @@ theorem SemiMap.sub_op {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx
     (GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R ρ').2 E n α β' hβ', CohomologyClass.mk_sub]
 
 /- English proof (translation)
-Introduce `R S _ _ φ E F n`. Take `⟨ρ₀, h₀, hb⟩` from `GlobalTheory.T.restrictScalars_resolution_comparison R S φ F`. Establish `hz` using `GlobalTheory.T.semilinearResolutionMap_cohomology_eq_zero_of_kill S R F ((restr φ).obj F) ((restrMap φ F).sub ρ₀) (fun U a => by`. Express the relevant statement in the definitionally equal form `(restrMap φ F).app U 0 _ - ρ₀.app U 0 _ = 0`. Rewrite using `[GlobalTheory.T.restrictScalarsResolutionMap_augmentation_spec R S φ F U a, h₀ U a, sub_self])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `he : restrH φ E F n = ρ₀.op.app E n`. Use extensionality with `x`. Use `hz E n x` as an intermediate fact. Rewrite `this` using `[SemiMap.sub_op]`. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `hb E n`.
+A detailed English derivation is pending.
 -/
 theorem a8 : A8 := by
   intro R S _ _ φ E F n

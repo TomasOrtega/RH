@@ -16,17 +16,15 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SiegelTor
 
 /- English proof (translation)
-Introduce `g n hg hn hodd`. Establish `hn1 : n ≠ 1` using `by omega`. Establish `hlp : n.minFac.Prime` using `Nat.minFac_prime hn1`. Establish `hln : n.minFac ∣ n` using `Nat.minFac_dvd n`. Establish `hlodd : Odd n.minFac` using `Odd.of_dvd_nat hodd hln`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, hj, ⟨F⟩⟩` from `GlobalTheory.SiegelTor.exists_sFam_primePow_sq g n.minFac hg hlp hlodd`. Use `set l := n.minFac with hl`. Use `set k := (l ^ j) ^ 2 with hk`. Establish `hl3 : 3 ≤ l`. Break down `hlodd with ⟨m, hm⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hlp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hk3 : 3 ≤ k`. Establish `h1 : l ≤ l ^ j` using `Nat.le_self_pow (by omega) l`. Establish `h2 : l ^ j ≤ (l ^ j) ^ 2` using `Nat.le_self_pow (by norm_num) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hkodd : Odd k` using `(hlodd.pow).pow`. Establish `hN0 : n * k ≠ 0` using `by positivity`. Establish `hNodd : Odd (n * k)` using `hodd.mul hkodd`. Take `⟨i, hi, hz, -⟩` from `GlobalTheory.T.exists_inclusion_cyclotomicAwayRing_finite_etale k (n * k) hN0 (dvd_mul_left k n)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨F₂⟩` from `GlobalTheory.SiegelFamilyNumberField.nonempty_baseChange F i hi`. Rewrite `F₂` using `[hz]`. Use `haveI : IsDedekindDomain (cycAway (n * k)) := (arBase_cycAway (n * k) hN0).1`. Establish `hup : Nonempty (SFam g (n * k) ((cycBase hN0).ζ : cycAway (n * k)))` using `GlobalTheory.T.siegelFamily_deeper_level_of_dvd g k (n * k) (cycAway (n * k)) (cycBase hN0) hk3 hNodd (dvd_mul_left k n) (by rw [cycBase_ζ]; exact ⟨F₂⟩)`. Rewrite `hup` using `[cycBase_ζ]`.
-
-Use `GlobalTheory.T.nonempty_siegelFamily_of_divisor_level_same_primes g n (n * k) hn hNodd (dvd_mul_right n k) ⟨2 * j + 1, ?_⟩ hup` and prove the remaining obligations. Rewrite using `[pow_succ', hk, ← pow_mul, mul_comm j 2]`. Conclude with `mul_dvd_mul_left n (pow_dvd_pow_of_dvd hln _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sFam_cycAway : ∀ g n : ℕ, 1 ≤ g → 3 ≤ n → Odd n → Nonempty (SFam g n (zetaAway n)) := by
   intro g n hg hn hodd

@@ -7,7 +7,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.ThA
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : p = id` using `funext fun j => Fin.ext (hp j)`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qminorOp_eq_qdetOp_of_val {n t : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E))
@@ -19,11 +19,11 @@ theorem qminorOp_eq_qdetOp_of_val {n t : ℕ} {E : Type*} [NormedAddCommGroup E]
   rfl
 
 /- English proof (translation)
-Introduce `k r V _ _ Y F`. Establish `hm : Q.mdim k r 0 = 2 * r + k + 1` using `by simp [Q.mdim]`. Establish `hu : Q.uC k r 0 Y = Y + ((2 * r + k : ℕ) : ℂ) / 2`. Unfold `Q.uC`. Rewrite using `[hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key : Q.CV k r Y F = capelliH (Hpk k r) (Y + ((2 * r + k : ℕ) : ℂ) / 2) F`. Unfold `Q.CV Q.capL capelliH`. Rewrite using `[hu]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `qminorOp_eq_qdetOp_of_val _ hm _ (fun j => by simp [Q.posL]) _ _`. Conclude with `⟨key, key⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem centredCapelli_forms_agree :
     ∀ (k r : ℕ) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (Y : ℂ) (F : B.Mat k r → V),

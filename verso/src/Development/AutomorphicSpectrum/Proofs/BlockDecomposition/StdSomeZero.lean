@@ -19,11 +19,11 @@ namespace GlobalTheory.CompanionTheory.ChartLocBc
 section Alg
 
 /- English proof (translation)
-Substitute `hA` using the available equality. Use `letI := A₁`. Set `w : R' ⊗[R] M ≃+ M'` to `((TensorProduct.congr (LinearEquiv.refl R R') u.symm).toAddEquiv.trans t.toAddEquiv).trans v`. Use `⟨(LinearEquiv.funUnique Unit R (R' ⊗[R] M)).toAddEquiv.trans w, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟩ n x`.
+Substitute using the available equality. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨y, rfl⟩` from `u.surjective x`. Establish `e : t (n ⊗ₜ y) = i n * φ y`. Establish `: n ⊗ₜ[R] y = (n ⊗ₜ[R] (1 : B)) * ((1 : R') ⊗ₜ[R] y)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[this, map_mul, h1, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, ← e]`. Simplify using `[w]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tens_of_ring {R R' : Type} [CommRing R] [CommRing R'] (A₁ A₂ : Algebra R R') (hA : A₁ = A₂)
     {M M' : Type} [AddCommGroup M] [Module R M] [AddCommGroup M'] {B B' : Type} [CommRing B] [CommRing B']
@@ -76,15 +76,15 @@ variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPower
 open CrystallineSemistableComparison.Pb.Site
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem e_mem (B : Type) [CommRing B] (J : Ideal B) : (pq B).e 1 ∈ (pq B).ext J :=
   Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩)
 
 /- English proof (translation)
-Take `⟨F, ⟨hF1, hF2, hF3⟩, hFu⟩` from `GlobalTheory.CompanionTheory.PDUniv.pdPoly_universal T.δ T'.δ φ.φ φ.dp x hx`. Establish `hle : (pq T.B).ext T.J ≤ T'.J.comap F` using `Ideal.map_le_iff_le_comap.1 hF3.1`. Use `⟨descOf φ F hF1 hF3 hle, ⟨hom_ext hF1, hF2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `ψ ⟨h1, h2⟩`. Use `hom_ext ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `ψ.φ = F`. Conclude with `hFu ψ.φ ⟨congrArg Thick.Hom.φ h1, h2, ψ.dp⟩`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem univ_poly (T : Thick (nlFun γ p X q κ)) (hp : p ≠ 0) {T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T')
     (x : T'.B) (hx : x ∈ T'.J) :
@@ -118,9 +118,9 @@ section Std
 variable {b : Base} {L : b.Fun}
 
 /- English proof (translation)
-Establish `h : (sFil Q r).S T = ⊤`. Express the relevant statement in the definitionally equal form `T.obj.pdPow r.toNat = ⊤`. Rewrite using `[Int.toNat_of_nonpos hr]`. Conclude with `T.obj.pdPow_zero`. Express the relevant statement in the definitionally equal form `(sFil Q r).S T ⊔ _ = ⊤`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, top_sup_eq]`.
+A detailed English derivation is pending.
 -/
 theorem std_some_top (Q : ObjectProperty (Thick L)) (c : b.R) {r : ℤ} (hr : r ≤ 0) (T : Q.FullSubcategory) :
     (stdI Q (some r) c).S T = ⊤ := by
@@ -132,7 +132,7 @@ theorem std_some_top (Q : ObjectProperty (Thick L)) (c : b.R) {r : ℤ} (hr : r 
   rw [h, top_sup_eq]
 
 /- English proof (translation)
-Rewrite using `[std_some_top Q c hr T]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 -/
 theorem mem_some (Q : ObjectProperty (Thick L)) (c : b.R) {r : ℤ} (hr : r ≤ 0) (T : Q.FullSubcategory)
     (x : (sP Q).A.obj T) : x ∈ (stdI Q (some r) c).S T := by
@@ -140,7 +140,7 @@ theorem mem_some (Q : ObjectProperty (Thick L)) (c : b.R) {r : ℤ} (hr : r ≤ 
   trivial
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(⊥ : Ideal _) ⊔ Ideal.span {algebraMap b.R _ 0} = ⊥`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem std_none_bot (Q : ObjectProperty (Thick L)) (T : Q.FullSubcategory) :
     (stdI Q none 0).S T = ⊥ := by
@@ -148,7 +148,7 @@ theorem std_none_bot (Q : ObjectProperty (Thick L)) (T : Q.FullSubcategory) :
   simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(sFil Q r).S T ⊔ Ideal.span {algebraMap b.R _ 0} = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem std_some_zero (Q : ObjectProperty (Thick L)) (r : ℤ) (T : Q.FullSubcategory) :
     (stdI Q (some r) 0).S T = (sFil Q r).S T := by
@@ -163,22 +163,20 @@ variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPower
   {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
 /- English proof (translation)
-Introduce `T b` and use `⟨fun _ k => mem_some _ _ (by omega) _ _, fun _ => mem_some _ _ hr _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem crit_some (hp : p ≠ 0) (𝒱 : Set X.Opens) (c : R) {r : ℤ} (hr : r ≤ 0) :
     (polyS (γ := γ) (q := q) (κ := κ) hp 𝒱).Crit (fun r => stdI _ (some r) c) r := fun T b =>
   ⟨fun _ k => mem_some _ _ (by omega) _ _, fun _ => mem_some _ _ hr _ _⟩
 
 /- English proof (translation)
-Introduce `T b`. Establish `key` using `GlobalTheory.CompanionTheory.SiteTrCrit.repr_sum T.obj.δ b`. Use `⟨fun h k => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h0` using `h`. Express the relevant statement in the definitionally equal form `_ ∈ (stdI _ none 0).S _ at h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h0` using `[std_none_bot, Ideal.mem_bot]`. Express the relevant statement in the definitionally equal form `_ ∈ (stdI _ none 0).S T`. Rewrite using `[std_none_bot, Ideal.mem_bot]`. Establish `h1 : b = 0`. Rewrite using `[← key]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg _ h0).trans (map_zero _)`. Rewrite using `[h1]`. Both sides reduce to the same expression. Establish `h1 : b = 0`. Use extensionality with `k`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `h k` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ ∈ (stdI _ none 0).S T at this`. Rewrite `this` using `[std_none_bot, Ideal.mem_bot]`. Conclude with `this`. Substitute `h1` using the available equality.
-
-Conclude with `Ideal.zero_mem _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem crit_none (hp : p ≠ 0) (𝒱 : Set X.Opens) (r : ℤ) :
     (polyS (γ := γ) (q := q) (κ := κ) hp 𝒱).Crit (fun _ => stdI _ none 0) r := by
@@ -205,7 +203,7 @@ theorem crit_none (hp : p ≠ 0) (𝒱 : Set X.Opens) (r : ℤ) :
     exact Ideal.zero_mem _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(stdI _ none 0).S T ≤ (stdI _ (some r') 0).S T`. Rewrite using `[std_none_bot]`. Conclude with `bot_le`. Use `ca _ h := crit_some hp 𝒱 0 h`. Use `cb r' _ := crit_none hp 𝒱 r'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ladder (hp : p ≠ 0) (𝒱 : Set X.Opens) :
     (polyS (γ := γ) (q := q) (κ := κ) hp 𝒱).Ladder (fun r => stdI _ (some r) 0) (fun _ => stdI _ none 0) 0 where
@@ -230,7 +228,7 @@ variable {O R R' : Type} [CommRing O] [CommRing R] [CommRing R'] {I : Ideal R} {
   {κ : O →+* R ⧸ I} {κ' : O →+* R' ⧸ I'} {σ : R →+* R'}
 
 /- English proof (translation)
-Introduce `T x hx`. Rewrite `hx`, the goal using `[std_some_zero]`. Conclude with `Ideal.mul_mem_left _ _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leC_some (m : NMor γ q κ γ' q κ' σ) (Q : ObjectProperty (Thick (nlFun γ p X q κ)))
     (Q' : ObjectProperty (Thick (nlFun γ' p X q κ'))) (h : ∀ T, Q' T → Q ((m.mor p).functor.obj T)) (c : R') (r : ℤ) :
@@ -240,7 +238,7 @@ theorem leC_some (m : NMor γ q κ γ' q κ' σ) (Q : ObjectProperty (Thick (nlF
   exact Ideal.mul_mem_left _ _ hx
 
 /- English proof (translation)
-Introduce `T x hx`. Rewrite `hx` using `[std_none_bot, Ideal.mem_bot]`. Substitute `hx` using the available equality. Rewrite using `[map_zero, mul_zero]`. Conclude with `Ideal.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leC_none (m : NMor γ q κ γ' q κ' σ) (Q : ObjectProperty (Thick (nlFun γ p X q κ)))
     (Q' : ObjectProperty (Thick (nlFun γ' p X q κ'))) (h : ∀ T, Q' T → Q ((m.mor p).functor.obj T)) (c : R') :
@@ -254,13 +252,13 @@ theorem leC_none (m : NMor γ q κ γ' q κ' σ) (Q : ObjectProperty (Thick (nlF
 end Main
 
 /- English proof (translation)
-Introduce `O R R' _ _ _ _ _ I I' γ γ' p hp hn X q κ κ' m hu hg V d c Q Q' hQ hQ' h ha hb j`. Substitute `hQ hQ'` using the available equality. Take `⟨c₀, -, -⟩` from `GlobalTheory.CompanionTheory.FlatChartP.exists_flat_chart γ p hp hn q κ c`. Take `⟨c', e, he, -, f, hf1, hf2⟩` from `GlobalTheory.CompanionTheory.ChartBc.chart_bc_of_ne m hp hu hg c₀`. Establish `g₀` using `GlobalTheory.CompanionTheory.ChartMaps.good c₀`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `g'` using `GlobalTheory.CompanionTheory.ChartMaps.good c'`. Establish `hV : ∀ T, St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ {V} T → InU V T := by`. Introduce and unpack `T ⟨-, W, rfl, hW⟩`. Conclude with `hW`. Establish `hV' : ∀ T, St (γ` using `γ') (p := p) (q := q) (κ := κ') ⊤ {V} T → InU V T := by`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `T ⟨-, W, rfl, hW⟩`. Conclude with `hW`. Establish `hD : St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ {V} c₀.D := ⟨trivial, V, rfl, c₀.inV⟩`. Establish `hD' : St (γ` using `γ') (p := p) (q := q) (κ := κ') ⊤ {V} c'.D := ⟨trivial, V, rfl, c'.inV⟩`. Establish `hFr` using `GlobalTheory.CompanionTheory.ChartFrames.smor_Fr_frame m c₀ c' g₀ g' _ _ h hV hD hV' hD' e he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI := c₀.D.i.toAlgebra`. Conclude with `GlobalTheory.CompanionTheory.LocBC.local_base_change (m.smor _ _ h) (polyS hp {V}) (polyS hp {V}) (c₀.frame g₀ _ hV hD) (c'.frame g' _ hV' hD') (ObjectProperty.homMk e) hFr (fun _ => Function.injective_id) (ι := Unit) (fun _ => R') (fun _ => LinearMap.id) (fun _ r => stdI _ (some …`. Use `tens_of_ring (B := c₀.D.B) (B' := c'.D.B) (algebraMap R R').toAlgebra inferInstance (Algebra.algebra_ext _ _ fun _ => rfl) (sqEquiv (stdI _ (some r') 0) (stdI _ none 0) (⟨c₀.D, hD⟩ : (St ⊤ {V}).FullSubcategory) (std_some_top _ _ hr' _) (std_none_bot _ _)) (sqEquiv (stdI _ (some r …` and prove the remaining obligations. Introduce `n y`. Conclude with `Subtype.ext rfl) j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem local_bc : ∀ {O R R' : Type} [CommRing O] [CommRing R] [CommRing R'] [Algebra R R'] [Module.Flat R R'] {I : Ideal R}
     {I' : Ideal R'} {γ : DividedPowers I} {γ' : DividedPowers I'} {p : ℕ} (hp : p ≠ 0) (hn : IsNilpotent (p : R))

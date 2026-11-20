@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PullAddInjec
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.PolFan.OrbMark
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolFan.cone_match_rays_of_nonneg | exact GlobalTheory.PolFan.cone_match_rays_of_nonneg | (intros; apply GlobalTheory.PolFan.cone_match_rays_of_nonneg <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cone_match_rays_after_dropping_zero_coords : ∀ {X : Type} [AddCommGroup X] {m₀ : ℕ} (p : Fin m₀ → LinearMap.BilinForm ℤ X) (t : Fin m₀ → ℝ), (∀ i, 0 ≤ t i) →
   LinearIndependent ℤ (fun i : {i // 0 < t i} => p i) →

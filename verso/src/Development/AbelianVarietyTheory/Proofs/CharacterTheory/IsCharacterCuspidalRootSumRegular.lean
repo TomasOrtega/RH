@@ -17,15 +17,15 @@ namespace GlobalTheory.CuspGL
 
 open Polynomial in
 /- English proof (translation)
-Establish `: Fintype (Submodule F (Fin d → F))` using `Fintype.ofFinite _`. Set `Fn : Submodule F (Fin d → F) → ℂ` to `fun W => if h : ∀ v ∈ W, g v ∈ W then Ψ W h else 0`. Establish `hsub : ∀ (p : Submodule F (Fin d → F) → Prop) [DecidablePred p], (∀ W, p W → ∀ v ∈ W, g v ∈ W) → ∀ (hp : ∀ W : { W // p W }, ∀ v ∈ W.1, g v ∈ W.1), (∑ᶠ (W : { W // p W }), Ψ W.1 (hp W)) = ∑ W, if p W then Fn W else 0`. Introduce `p _ hpi hp`. Rewrite using `[finsum_eq_sum_of_fintype, ← Finset.sum_filter, Finset.sum_subtype (p := p) (Finset.univ.filter p) (fun W => by simp) Fn]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun W _ => (dif_pos (hp W)).symm`. Rewrite using `[hsub (fun W => W ≠ ⊤ ∧ ∀ x ∈ W, g x ∈ W) (fun W h => h.2) (fun W => W.2.2)]`. Rewrite using `[Finset.sum_congr rfl fun a _ => hsub (fun W => Module.finrank F W = a ∧ ∀ v ∈ W, g v ∈ W) (fun W h => h.2) (fun W => W.2.2)]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hinv : ∀ v ∈ W, g v ∈ W`. Simplify using `only [and_iff_left hinv]`. Rewrite using `[Finset.sum_ite_eq]`. Establish `hd : Module.finrank F (Fin d → F) = d` using `Module.finrank_fin_fun F`. Establish `hiff : W ≠ ⊤ ↔ Module.finrank F W < d`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `Submodule.finrank_lt h`. Rewrite `h'` using `[hd]`. Then use the resulting hypothesis. Introduce and unpack `h rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[finrank_top, hd]`. Conclude with `lt_irrefl _ h`. Simplify using `only [Finset.mem_range, hiff]`. Simplify using `[hinv]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma finsum_proper_invariant_eq_sum_range_finrank {F : Type} [Field F] [Finite F] (d : ℕ)
     (g : Module.End F (Fin d → F)) (Ψ : ∀ W : Submodule F (Fin d → F), (∀ v ∈ W, g v ∈ W) → ℂ) :
@@ -64,9 +64,9 @@ private lemma finsum_proper_invariant_eq_sum_range_finrank {F : Type} [Field F] 
 
 open Polynomial in
 /- English proof (translation)
-Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Establish `hconj : ∀ (V V' : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V] [AddCommGroup V'] [Module F V'] [FiniteDimensional F V'] (e : V ≃ₗ[F] V') (g : Module.End F V), _root_.GlobalTheory.CuspGL.psi (_root_.GlobalTheory.CuspGL.rootSum θ k) V' (e.conj g) = _root_.GlobalTheor …` using `fun V V' _ _ _ _ _ _ e g => _root_.GlobalTheory.CuspGL.psi_conj F _ V V' e g`. Establish `heq : (fun x : GL (Fin d) F => _root_.GlobalTheory.CuspGL.psi (_root_.GlobalTheory.CuspGL.rootSum θ k) (Fin d → F) (Matrix.toLin' (x : Matrix (Fin d) (Fin d) F))) = (fun x : GL (Fin d) F => _root_.GlobalTheory.CuspGL.rootSum θ k (x : Matrix (Fin d) (Fin d) F).charpoly) - ∑ a ∈ Fi …`. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[_root_.GlobalTheory.CuspGL.psi_eq, Matrix.charpoly_toLin', finsum_proper_invariant_eq_sum_range_finrank d (Matrix.toLin' (x : Matrix (Fin d) (Fin d) F)) (fun W h => _root_.GlobalTheory.CuspGL.psi (_root_.GlobalTheory.CuspGL.rootSum θ k) (↥W) ((Matrix.toLin' (x : Matrix (Fin d) ( …`. Simplify using `[Finset.sum_apply]`. Rewrite using `[heq]`. Use `sub_mem (_root_.GlobalTheory.CuspGL.rootSum_charpoly_mem_virt F θ hθ d k) (sum_mem fun a ha => ?_)` and prove the remaining obligations. Conclude with `_root_.GlobalTheory.ParabVirt.parab_virt F (fun V _ _ _ g => _root_.GlobalTheory.CuspGL.psi (_root_.GlobalTheory.CuspGL.rootSum θ k) V g) hconj a d (ih a (Finset.mem_range.1 ha))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma psi_rootSum_charpoly_mem_virt (F : Type) [Field F] [Finite F]
     (θ : AlgebraicClosure F →* ℂ)
@@ -106,35 +106,33 @@ private lemma psi_rootSum_charpoly_mem_virt (F : Type) [Field F] [Finite F]
 open Polynomial in
 
 /- English proof (translation)
-Take `⟨hadd, hX⟩` from `_root_.GlobalTheory.CuspGL.rootSum_isAdditive_and_pow_X_sub_one F θ k`. Establish `hfr : Module.finrank F (Fin d → F) = d` using `Module.finrank_fin_fun F`. Establish `hfr0 : 0 < Module.finrank F (Fin d → F)` using `by rw [hfr]; exact hd`. Establish `hip : _root_.GlobalTheory.CuspGL.ipGL (_root_.GlobalTheory.CuspGL.psi (_root_.GlobalTheory.CuspGL.rootSum θ k) (Fin d → F)) (_root_.GlobalTheory.CuspGL.psi (_root_.GlobalTheory.CuspGL.rootSum θ k) (Fin d → F)) = _root_.GlobalTheory.CuspGL.glCard F d`. Rewrite using `[_root_.GlobalTheory.CuspGL.PrimOrth.ipGL_psi_eq F _ _ hadd _ (_root_.GlobalTheory.CuspGL.isPrimitive_psi F _ _ hadd), _root_.GlobalTheory.CuspGL.ipGL_psi_rootSum F _ θ hθ hfr0 k k, hfr]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hset : (Finset.range d).filter (fun i => k * Nat.card F ^ i ≡ k [MOD Nat.card F ^ d - 1]) = {0}`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hi, hcong⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hk i (Nat.pos_of_ne_zero h0) hi hcong`. Introduce and unpack `rfl`. Conclude with `⟨hd, by simp [Nat.ModEq.refl]⟩`. Rewrite using `[hset, Finset.card_singleton, Nat.cast_one, mul_one]`.
+Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hip⟩` and prove the remaining obligations. Use `set ψ : GL (Fin d) F → ℂ := fun x => _root_.GlobalTheory.CuspGL.psi (_root_.GlobalTheory.CuspGL.rootSum θ k) (Fin d → F) (Matrix.toLin' (x : Matrix (Fin d) (Fin d) F)) with hψ`. Use `set χ : GL (Fin d) F → ℂ := fun x => (-1) ^ (d - 1) * ψ x with hχ`. Establish `hψv : ψ ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ (GL (Fin d) F)` using `psi_rootSum_charpoly_mem_virt F θ hθ k d`. Establish `hχv : χ ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ (GL (Fin d) F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `he : χ = ((-1 : ℤ) ^ (d - 1)) • ψ`. Use function extensionality and compare the values at `x`. Simplify using `[hχ, zsmul_eq_mul]`. Rewrite using `[he]`. Conclude with `zsmul_mem hψv _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsign : ((-1 : ℂ) ^ (d - 1)) * star ((-1 : ℂ) ^ (d - 1)) = 1`. Rewrite using `[star_pow, star_neg, star_one, ← mul_pow, neg_one_mul, neg_neg, one_pow]`. Establish `hnorm : ∑ᶠ x : GL (Fin d) F, χ x * star (χ x) = (Nat.card (GL (Fin d) F) : ℂ)`. Establish `h1 : ∀ x, χ x * star (χ x) = ψ x * star (ψ x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hχ, star_mul']`. Take the linear combination `(ψ x * star (ψ x)) * hsign`. Repeatedly rewrite using `[h1]`. Rewrite using `[hψ, ← ((_root_.GlobalTheory.CuspGL.extZero_spec F d ψ).2.2.1 _ _), hip]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm' : ∑ᶠ x : GL (Fin d) F, (-χ) x * star ((-χ) x) = (Nat.card (GL (Fin d) F) : ℂ)`. Simplify `hnorm` using `[Pi.neg_apply, star_neg, neg_mul_neg]`. Establish `hq : 1 < Nat.card F` using `Finite.one_lt_card`. Establish `hval : χ 1 = ((∏ i ∈ Finset.Ico 1 d, (Nat.card F ^ i - 1) : ℕ) : ℂ)`. Establish `h1 : ψ 1 = ∏ i ∈ Finset.Ico 1 d, (1 - (Nat.card F : ℂ) ^ i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hψ, Units.val_one, Matrix.toLin'_one]`. Rewrite using `[← Module.End.one_eq_id, _root_.GlobalTheory.CuspGL.psi_one F _ _ hX hfr0, hfr]`. Establish `h2 : ∏ i ∈ Finset.Ico 1 d, (1 - (Nat.card F : ℂ) ^ i) = (-1) ^ (d - 1) * ∏ i ∈ Finset.Ico 1 d, ((Nat.card F : ℂ) ^ i - 1)`. Rewrite using `[show ((-1 : ℂ) ^ (d - 1)) = ∏ _i ∈ Finset.Ico 1 d, (-1 : ℂ) by`. Rewrite using `[Finset.prod_const, Nat.card_Ico], ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun i _ => by ring`. Use `show (-1 : ℂ) ^ (d - 1) * ψ 1 = _`. Rewrite using `[h1, h2, ← mul_assoc, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_mul, Nat.cast_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ (by omega)), Nat.cast_pow, Nat.cast_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hpos : 0 < ∏ i ∈ Finset.Ico 1 d, (Nat.card F ^ i - 1)`. Use `Finset.prod_pos fun i hi => ?_` and prove the remaining obligations. Establish `hi1 : i ≠ 0`. Use `(Finset.mem_Ico.1 hi).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Use `Nat.one_lt_pow hi1 hq` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hIrrChar : ∀ φ : GL (Fin d) F → ℂ, _root_.GlobalTheory.BI.IsIrrChar ℂ ℂ φ → _root_.GlobalTheory.BI.IsChar ℂ ℂ φ`. Introduce `φ hφ`. Unfold `_root_.GlobalTheory.BI.IsIrrChar at hφ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Unfold `_root_.GlobalTheory.BI.IsChar`. Take `⟨n, ρ, -, h⟩` from `hφ`. Conclude with `⟨n, ρ, h⟩`. Break down `(_root_.GlobalTheory.BI.irr_of_norm_one _ χ hχv hnorm).1 with hirr | hirr` into its components or cases. Conclude with `hIrrChar χ hirr`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-It suffices to derive a contradiction. Take `⟨n, hn, hn1⟩` from `((_root_.GlobalTheory.BI.irr_of_norm_one _ (-χ) (neg_mem hχv) hnorm').2 (hIrrChar _ hirr)).2`. Rewrite `hn1` using `[Pi.neg_apply, hval]`. Establish `h3 : ((n + ∏ i ∈ Finset.Ico 1 d, (Nat.card F ^ i - 1) : ℕ) : ℂ) = 0`. Rewrite using `[Nat.cast_add]`.
-
-Take the linear combination `-hn1`. Rewrite `h3` using `[Nat.cast_eq_zero]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CuspGL.isChar_psi_rootSum_of_regular (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ)
     (hθ : ∀ x y : AlgebraicClosure F, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (d k : ℕ) (hd : 0 < d)

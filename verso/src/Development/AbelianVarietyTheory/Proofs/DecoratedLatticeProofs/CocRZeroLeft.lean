@@ -15,20 +15,20 @@ def cocR (x y : Formalism.L2.Col.HomE E a b) : ℝ :=
     Formalism.L2.Th1.H.altE (HV sc) (embH emb δ x) (embH emb δ y)) / 2
 
 /- English proof (translation)
-Simplify using `only [cocR, Formalism.L2.Th1.H.altE, map_add, LinearMap.add_apply, Complex.add_re, Complex.add_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cocR_add_left (x y z : Formalism.L2.Col.HomE E a b) :
     cocR emb δ d sc (x + y) z = cocR (ι := ι) emb δ d sc x z + cocR emb δ d sc y z := by
   simp only [cocR, Formalism.L2.Th1.H.altE, map_add, LinearMap.add_apply, Complex.add_re, Complex.add_im]; ring
 
 /- English proof (translation)
-Simplify using `[cocR, Formalism.L2.Th1.H.altE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cocR_zero_left (z : Formalism.L2.Col.HomE E a b) : cocR (ι := ι) emb δ d sc 0 z = 0 := by
   simp [cocR, Formalism.L2.Th1.H.altE]
 
 /- English proof (translation)
-Simplify using `only [HV, LinearMap.mk₂'ₛₗ_apply, embH, AddMonoidHom.coe_mk, ZeroHom.coe_mk, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul, hconj, Complex.conj_conj]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hv_embH_smul (hconj : ∀ τ x, emb τ (star x) = starRingEnd ℂ (emb τ x)) (r : E) (x y : Formalism.L2.Col.HomE E a b) :
     HV (ι := ι) sc (embH emb δ (r • x)) (embH emb δ y) = HV sc (embH emb δ x) (embH emb δ (star r • y)) := by
@@ -39,28 +39,26 @@ theorem hv_embH_smul (hconj : ∀ τ x, emb τ (star x) = starRingEnd ℂ (emb �
   ring
 
 /- English proof (translation)
-Simplify using `only [cocR, Formalism.L2.Th1.H.altE, hv_embH_smul emb δ sc hconj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cocR_smul (hconj : ∀ τ x, emb τ (star x) = starRingEnd ℂ (emb τ x)) (r : E) (x y : Formalism.L2.Col.HomE E a b) :
     cocR (ι := ι) emb δ d sc (r • x) y = cocR emb δ d sc x (star r • y) := by
   simp only [cocR, Formalism.L2.Th1.H.altE, hv_embH_smul emb δ sc hconj]
 
 /- English proof (translation)
-Introduce `E _ _ _ ι _ _ a b emb δ d sc M c e _ hconj hc he _ _ hM`. Establish `hH : Formalism.L2.Th1.H.IsHerm (HV (ι` using `ι) (a := a) (b := b) sc) := fun x y => by`. Simplify using `[Formalism.L2.Ker.HV, map_sum, mul_comm]`. Establish `h0 : ∀ x ∈ M, ∀ y ∈ M, ∃ n : ℤ, cocR emb δ d sc x y = n` using `fun x hx y hy => (GlobalTheory.KerLaw.semi_iff hH (Real.sqrt d) _).1 hM (embH emb δ x) ⟨x, hx, rfl⟩ (embH emb δ y) ⟨y, hy, rfl⟩`. Use `(GlobalTheory.KerLaw.semi_iff hH (Real.sqrt d) _).2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `∃ n : ℤ, cocR emb δ d sc x y = n`. Set `I : Ideal (𝓞 E)` to `{ carrier := {r | ∀ s : 𝓞 E, ∃ n : ℤ, cocR emb δ d sc ((s * r) • x) y = n} zero_mem' := fun s => ⟨0, by simp [cocR_zero_left]⟩ add_mem' := fun {r r'} hr hr' s => by`. Take `⟨n, hn⟩` from `hr s`. Take `⟨m, hm⟩` from `hr' s`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n + m, by rw [mul_add, add_smul, cocR_add_left, hn, hm, Int.cast_add]⟩`. Use the proof step `smul_mem' := fun t r hr s => by`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hr _ }`. Establish `hI : I = ⊤`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Set `Q : HeightOneSpectrum (𝓞 E)` to `⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)⟩`. Take `⟨u, hu, hx⟩` from `(Formalism.L2.Col.mem_locP _ _ _).1 ((GlobalTheory.KerLaw.mem_tw _ _ _ _).1 hx Q)`. Take `⟨v, hv, hy⟩` from `(Formalism.L2.Col.mem_locP _ _ _).1 ((GlobalTheory.KerLaw.mem_tw _ _ _ _).1 hy (Formalism.L2.Col.conjPrime₂ Q))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy` using `[he, zpow_neg, inv_inv]`. Establish `hmem : u * Formalism.L2.Col.cO E v ∈ I`. Introduce `s`. Take `⟨n, hn⟩` from `h0 _ (Submodule.smul_mem _ s hx) _ hy`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hn]`. Establish `e1 : (s * (u * Formalism.L2.Col.cO E v)) • x = (star (algebraMap (𝓞 E) E v) * (c : E) ^ e Q) • (s • u • ((c : E) ^ e Q)⁻¹ • x)`. Rewrite using `[← algebraMap_smul E s, ← algebraMap_smul E u, ← algebraMap_smul E (s * _), smul_smul, smul_smul, smul_smul, map_mul, map_mul, Formalism.L2.Col.algebraMap_cO]`. Use `congr 1`. Establish `hk : (c : E) ^ e Q ≠ 0` using `zpow_ne_zero _ (Nat.cast_ne_zero.2 hc.ne')`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, cocR_smul emb δ d sc hconj, star_mul', star_star, star_zpow₀, star_natCast, mul_smul, algebraMap_smul]`. Break down `hm.isPrime.mem_or_mem (hle hmem) with h' | h'` into its components or cases. Conclude with `hu h'`. Conclude with `hv h'`.
-
-Establish `: (1 : 𝓞 E) ∈ I` using `hI ▸ Submodule.mem_top`. Simplify using `using this 1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem semiChar_twO : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (ι : Type) [Fintype ι] [Nonempty ι] (a b : ℕ) (emb : ι → E →+* ℂ) (δ : ℂ) (d : ℕ) (sc : ℝ) (M : Submodule (𝓞 E) (Formalism.L2.Col.HomE E a b)) (c : ℕ) (e : HeightOneSpectrum (𝓞 E) → ℤ), δ ≠ 0 → (∀ (τ : ι) (x : E), emb τ (star x) = starRingEnd ℂ (emb τ x)) → 0 < c → (∀ Q, e (Formalism.L2.Col.conjPrime₂ Q) = -e Q) → (∀ Q, e Q = 1 ∨ e Q = 0 ∨ e Q = -1) → Formalism.L2.Th1.H.IsSelfDual (HV sc) (laV emb δ M) → Formalism.L2.Th1.H.IsSemiChar (HV sc) (laV emb δ M) (alV d sc) → Formalism.L2.Th1.H.IsSemiChar (HV sc) (laV emb δ (twist₂ M c e)) (alV d sc) := by
   intro E _ _ _ ι _ _ a b emb δ d sc M c e _ hconj hc he _ _ hM

@@ -15,9 +15,9 @@ noncomputable def UpperTheory.Reformulated.B.Qk29.WtGe.{u, v} :
       ∀ (n : ι →₀ ℕ), UpperTheory.Reformulated.B.Qk29.MonoWtGe pi r w n ((MvPowerSeries.coeff n : MvPowerSeries ι K → K) f)
 
 /- English proof (translation)
-Unfold `UpperTheory.Reformulated.B.Qk29.dot`. Apply `Finsupp.sum_add_index'` to reduce the goal to its premises. Introduce `i`. Simplify using the standard rewrite rules. Introduce `i m n`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem UpperTheory.Reformulated.B.Qk29.dot_add {ι : Type*} (a b : ι →₀ ℕ) (r : ι → ℝ) :
     UpperTheory.Reformulated.B.Qk29.dot (a + b) r = UpperTheory.Reformulated.B.Qk29.dot a r + UpperTheory.Reformulated.B.Qk29.dot b r := by
@@ -27,9 +27,9 @@ private theorem UpperTheory.Reformulated.B.Qk29.dot_add {ι : Type*} (a b : ι �
   · intro i m n; push_cast; ring
 
 /- English proof (translation)
-Introduce `n`. Unfold `UpperTheory.Reformulated.B.Qk29.MonoWtGe`. Rewrite using `[MvPowerSeries.coeff_one]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[UpperTheory.Reformulated.B.Qk29.dot]`. Rewrite using `[norm_zero]`. Conclude with `(Real.rpow_pos_of_pos hpi _).le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qk29.wtGe_one {K : Type*} [NormedField K] {ι : Type*} {pi : ℝ}
     (hpi : 0 < pi) (r : ι → ℝ) : UpperTheory.Reformulated.B.Qk29.WtGe pi r 0 (1 : MvPowerSeries ι K) := by
@@ -44,11 +44,11 @@ private theorem UpperTheory.Reformulated.B.Qk29.wtGe_one {K : Type*} [NormedFiel
     exact (Real.rpow_pos_of_pos hpi _).le
 
 /- English proof (translation)
-Introduce `n`. Unfold `UpperTheory.Reformulated.B.Qk29.MonoWtGe`. Rewrite using `[MvPowerSeries.coeff_mul]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_pos_of_pos hpi _).le` to reduce the goal to its premises. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn : p.1 + p.2 = n` using `by simpa using hp`. Establish `h1` using `hf p.1`. Establish `h2` using `hg p.2`. Unfold `UpperTheory.Reformulated.B.Qk29.MonoWtGe at h1 h2`. Establish `he : a + b - UpperTheory.Reformulated.B.Qk29.dot n r = (a - UpperTheory.Reformulated.B.Qk29.dot p.1 r) + (b - UpperTheory.Reformulated.B.Qk29.dot p.2 r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[← hn, UpperTheory.Reformulated.B.Qk29.dot_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, Real.rpow_add hpi, norm_mul]`. Conclude with `mul_le_mul h1 h2 (norm_nonneg _) (Real.rpow_pos_of_pos hpi _).le`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qk29.wtGe_mul {K : Type*} [NormedField K] {ι : Type*}
     [IsUltrametricDist K] {pi : ℝ} (hpi : 0 < pi) {r : ι → ℝ} {a b : ℝ}
@@ -71,9 +71,9 @@ private theorem UpperTheory.Reformulated.B.Qk29.wtGe_mul {K : Type*} [NormedFiel
   exact mul_le_mul h1 h2 (norm_nonneg _) (Real.rpow_pos_of_pos hpi _).le
 
 /- English proof (translation)
-Introduce `K inst ι _ pi hpi r α s wt F h`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using UpperTheory.Reformulated.B.Qk29.wtGe_one hpi r`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `UpperTheory.Reformulated.B.Qk29.wtGe_mul hpi (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk29.wtGe_prod.{u, v, w} :
     ∀ {K : Type u} [inst : NormedField K] {ι : Type v} [IsUltrametricDist K] {pi : ℝ},

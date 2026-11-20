@@ -9,19 +9,19 @@ open MeasureTheory Metric Filter Topology
 open scoped ENNReal ContDiff
 
 /- English proof (translation)
-Establish `hA0 : ∀ x, 0 ≤ ‖w x‖ ^ 2 * ρ x` using `fun x => mul_nonneg (sq_nonneg _) (hρ x)`. Establish `hB0 : ∀ x, 0 ≤ ‖G x‖ ^ 2 * ρ x` using `fun x => mul_nonneg (sq_nonneg _) (hρ x)`. Establish `hC0 : ∀ x, 0 ≤ ‖w x - G x‖ ^ 2 * ρ x` using `fun x => mul_nonneg (sq_nonneg _) (hρ x)`. Establish `hAm : Measurable (fun x => ‖w x‖ ^ 2 * ρ x)` using `(hw.norm.pow_const 2).mul hρm`. Establish `hBm : Measurable (fun x => ‖G x‖ ^ 2 * ρ x)` using `(hG.norm.pow_const 2).mul hρm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAi : Integrable (fun x => ‖w x‖ ^ 2 * ρ x) μ` using `⟨hAm.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall hA0)).2 hwf⟩`. Establish `hBi : Integrable (fun x => ‖G x‖ ^ 2 * ρ x) μ` using `⟨hBm.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall hB0)).2 hGf⟩`. Establish `hPm : Measurable (fun x => w x * (starRingEnd ℂ) (G x) * (ρ x : ℂ))` using `(hw.mul (Complex.continuous_conj.measurable.comp hG)).mul (Complex.measurable_ofReal.comp hρm)`. Establish `hPi : Integrable (fun x => w x * (starRingEnd ℂ) (G x) * (ρ x : ℂ)) μ`. Use `(hAi.add hBi).mono' hPm.aestronglyMeasurable (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.add_apply]`. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj, Complex.norm_real, Real.norm_of_nonneg (hρ x)]`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg (‖w x‖ - ‖G x‖)) (hρ x), mul_nonneg (mul_nonneg (norm_nonneg (w x)) (norm_nonneg (G x))) (hρ x)]`. Establish `hPre` using `Complex.reCLM.integrable_comp hPi`. Simplify using `only [Complex.reCLM_apply] at hPre`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hre : ∀ x, ‖w x - G x‖ ^ 2 * ρ x = ‖w x‖ ^ 2 * ρ x + ‖G x‖ ^ 2 * ρ x - 2 * (w x * (starRingEnd ℂ) (G x) * (ρ x : ℂ)).re`. Introduce `x`. Simplify using `only [← Complex.normSq_eq_norm_sq, Complex.normSq_apply, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im, Complex.sub_re, Complex.sub_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `hCi : Integrable (fun x => ‖w x - G x‖ ^ 2 * ρ x) μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `((hAi.add hBi).sub (hPre.const_mul 2)).congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Rewrite using `[hre x]`. Establish `hP0 : ∫ x, (w x * (starRingEnd ℂ) (G x) * (ρ x : ℂ)).re ∂μ = 0`. Establish `h1` using `Complex.reCLM.integral_comp_comm hPi`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Complex.reCLM_apply] at h1`. Rewrite using `[h1, horth, Complex.zero_re]`. Establish `hint : ∫ x, ‖w x - G x‖ ^ 2 * ρ x ∂μ = ∫ x, ‖w x‖ ^ 2 * ρ x ∂μ + ∫ x, ‖G x‖ ^ 2 * ρ x ∂μ`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hre)]`. Rewrite using `[integral_sub, integral_add, integral_const_mul, hP0, mul_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `all_goals first | exact hAi | exact hBi | exact hAi.add hBi | exact hPre.const_mul 2`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hAi (Filter.Eventually.of_forall hA0), ← ofReal_integral_eq_lintegral_ofReal hCi (Filter.Eventually.of_forall hC0)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[hint]`. Combine the linear relations using `[integral_nonneg (μ := μ) (f := fun x => ‖G x‖ ^ 2 * ρ x) (fun x => hB0 x)]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem twb_pyth {α : Type*} [MeasurableSpace α] (μ : Measure α) (w G : α → ℂ) (ρ : α → ℝ)
     (hw : Measurable w) (hG : Measurable G) (hρm : Measurable ρ) (hρ : ∀ x, 0 ≤ ρ x)
@@ -78,13 +78,13 @@ theorem twb_pyth {α : Type*} [MeasurableSpace α] (μ : Measure α) (w G : α �
   linarith [integral_nonneg (μ := μ) (f := fun x => ‖G x‖ ^ 2 * ρ x) (fun x => hB0 x)]
 
 /- English proof (translation)
-Establish `hm1 : Measurable (fun x => ENNReal.ofReal (‖f x‖ ^ 2 * ρ x))` using `((hf.norm.pow_const 2).mul hρm).ennreal_ofReal`. Establish `hm2 : Measurable (fun x => ENNReal.ofReal (‖g x‖ ^ 2 * ρ x))` using `((hg.norm.pow_const 2).mul hρm).ennreal_ofReal`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono (fun x => ?_)` and prove the remaining obligations. Establish `ha : 0 ≤ ‖f x‖ ^ 2 * ρ x` using `mul_nonneg (sq_nonneg _) (hρ x)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : 0 ≤ ‖g x‖ ^ 2 * ρ x` using `mul_nonneg (sq_nonneg _) (hρ x)`. Establish `h1 : ‖f x - g x‖ ≤ ‖f x‖ + ‖g x‖` using `norm_sub_le _ _`. Establish `h3 : ‖f x - g x‖ ^ 2 ≤ (‖f x‖ + ‖g x‖) ^ 2` using `by gcongr`. Establish `h2 : ‖f x - g x‖ ^ 2 ≤ 2 * ‖f x‖ ^ 2 + 2 * ‖g x‖ ^ 2`. Use polynomial arithmetic with `[sq_nonneg (‖f x‖ - ‖g x‖)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `key : ‖f x - g x‖ ^ 2 * ρ x ≤ 2 * (‖f x‖ ^ 2 * ρ x) + 2 * (‖g x‖ ^ 2 * ρ x)`. Establish `h4` using `mul_le_mul_of_nonneg_right h2 (hρ x)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_mul (by norm_num)]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `_ = 2 * ∫⁻ x, ENNReal.ofReal (‖f x‖ ^ 2 * ρ x) ∂μ + 2 * ∫⁻ x, ENNReal.ofReal (‖g x‖ ^ 2 * ρ x) ∂μ := by`. Rewrite using `[lintegral_add_left (hm1.const_mul 2), lintegral_const_mul 2 hm1, lintegral_const_mul 2 hm2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twb_sub_le {α : Type*} [MeasurableSpace α] (μ : Measure α) (f g : α → ℂ) (ρ : α → ℝ)
     (hf : Measurable f) (hg : Measurable g) (hρm : Measurable ρ) (hρ : ∀ x, 0 ≤ ρ x) :
@@ -120,7 +120,7 @@ theorem twb_sub_le {α : Type*} [MeasurableSpace α] (μ : Measure α) (f g : α
           lintegral_const_mul 2 hm2]
 
 /- English proof (translation)
-Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono (fun x => ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul hc]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem twb_wmono {α : Type*} [MeasurableSpace α] (μ : Measure α) (f ρ₁ ρ₂ : α → ℝ) (c : ℝ)
     (hc : 0 ≤ c) (hf : ∀ x, 0 ≤ f x) (h : ∀ x, ρ₁ x ≤ c * ρ₂ x) :
@@ -133,11 +133,11 @@ theorem twb_wmono {α : Type*} [MeasurableSpace α] (μ : Measure α) (f ρ₁ �
     _ = c * (f x * ρ₂ x) := by ring
 
 /- English proof (translation)
-Establish `hD0 : ‖D0‖ ≤ Real.sqrt a * Real.sqrt T`. Rewrite using `[← Real.sqrt_mul ha]`. Establish `h2` using `Real.abs_le_sqrt h0`. Rewrite `h2` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis. Establish `hDP : ‖DP‖ ≤ Real.sqrt b * Real.sqrt T`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← Real.sqrt_mul hb]`. Establish `h2` using `Real.abs_le_sqrt h1`. Rewrite `h2` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis. Establish `hsum : ‖D0 + u * DP‖ ≤ (Real.sqrt a + ‖u‖ * Real.sqrt b) * Real.sqrt T`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hT' : Real.sqrt T ^ 2 = T` using `Real.sq_sqrt hT`. Establish `he : Real.exp p ^ 2 = Real.exp (2 * p)` using `by rw [sq, ← Real.exp_add, two_mul]`. Rewrite using `[norm_mul, Complex.norm_exp_ofReal, mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, hT', he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -166,13 +166,13 @@ theorem twb_pt (p a b T : ℝ) (D0 DP u : ℂ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hT
         rw [mul_pow, hT', he]; ring
 
 /- English proof (translation)
-Establish `hF0' : Ck n z 1 F0` using `Smooth.ck n z 1 F0 hF0`. Establish `hF' : Ck n z 1 F` using `Smooth.ck n z 1 F (Holo.smooth n z F hF)`. Establish `hPh' : Ck n z 1 (fun y => (Ph y : ℂ))` using `Smooth.ck n z 1 _ hPh`. Establish `hsub : Ck n z 1 (fun y => F0 y - F y)` using `Ck.sub n z 1 F0 F hF0' hF'`. Establish `hexp : Ck n z 1 (fun y => Complex.exp (Ph y : ℂ))` using `Ck.cexp n z 1 _ hPh'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdsub : ∀ j, db n z j (fun y => F0 y - F y) x = db n z j F0 x`. Introduce `j`. Establish `e1 : (fun y => F0 y - F y) = fun y => F0 y + (-1 : ℂ) * F y` using `by funext y; ring`. Rewrite using `[e1, db_add n z _ _ hF0' (Ck.mul n z 1 _ _ (Ck.const n z 1 (-1)) hF') j x, db_const_mul n z (-1) F hF' j x, Holo.db_eq_zero n z F hF j x]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hterm : ∀ j, db n z j (fun y => (F0 y - F y) * Complex.exp (Ph y : ℂ)) x = Complex.exp (Ph x) * (db n z j F0 x + (F0 x - F x) * db n z j (fun y => (Ph y : ℂ)) x)`. Introduce `j`. Rewrite using `[db_mul n z (fun y => F0 y - F y) (fun y => Complex.exp (Ph y : ℂ)) hsub hexp j x, hdsub j, db_cexp n z _ hPh' j x]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [dbarDot, hterm, mul_add, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twb_dbar {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (F0 F : M → ℂ)
     (Ph : M → ℝ) (hF0 : Smooth n z F0) (hF : Holo n z F) (hPh : SmoothR n z Ph) (x : M)
@@ -202,35 +202,33 @@ theorem twb_dbar {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (F0 
   ring
 
 /- English proof (translation)
-Introduce `X ps Ph F0 a b hps hPh hC hlevi hF0 hF0w ha hb ha0 hb0 hA hB F hF`. Take `⟨C, hC⟩` from `hC`. Take `⟨hFh, hFw, horthF⟩` from `hF`. Establish `hz` using `X.isLocalHomeomorph`. Establish `hF0c : Continuous F0` using `Smooth.continuous n X.z hz F0 hF0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFc : Continuous F` using `Smooth.continuous n X.z hz F (Holo.smooth n X.z F hFh)`. Establish `hPhc : Continuous Ph` using `Complex.continuous_re.comp (Smooth.continuous n X.z hz _ hPh)`. Establish `hpsc : Continuous ps` using `Complex.continuous_re.comp (Smooth.continuous n X.z hz _ hps)`. Establish `huc : Continuous (fun x => F0 x - F x)` using `hF0c.sub hFc`. Establish `hCx : ∀ x, Ph x ≤ C` using `fun x => (abs_le.mp (hC x)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCx' : ∀ x, -C ≤ Ph x` using `fun x => (abs_le.mp (hC x)).1`. Establish `hF1 : Smooth n X.z (fun y => (F0 y - F y) * Complex.exp (Ph y))` using `Smooth.mul n X.z _ _ (Smooth.sub n X.z _ _ hF0 (Holo.smooth n X.z F hFh)) (Smooth.cexp n X.z _ hPh)`. Establish `hhm : Measurable (fun x => ENNReal.ofReal (Real.exp (2 * Ph x) * (Real.sqrt (a x) + ‖F0 x - F x‖ * Real.sqrt (b x)) ^ 2))` using `((Real.continuous_exp.comp (continuous_const.mul hPhc)).measurable.mul ((ha.sqrt.add (huc.norm.measurable.mul hb.sqrt)).pow_const 2)).ennreal_ofReal`. Establish `hbound : ∀ (x : M) (ξ : Fin n → ℂ), ENNReal.ofReal (‖dbarDot n X.z (fun y => (F0 y - F y) * Complex.exp (Ph y)) x ξ‖ ^ 2) ≤ ENNReal.ofReal (Real.exp (2 * Ph x) * (Real.sqrt (a x) + ‖F0 x - F x‖ * Real.sqrt (b x)) ^ 2) * ENNReal.ofReal (Levi n X.z (fun y => ps y + Ph y) x ξ).re`. Introduce `x ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `twb_pt (Ph x) (a x) (b x) (Levi n X.z (fun y => ps y + Ph y) x ξ).re (dbarDot n X.z F0 x ξ) (dbarDot n X.z (fun y => (Ph y : ℂ)) x ξ) (F0 x - F x) (ha0 x) (hb0 x) (hlevi x ξ) (hA x ξ) (hB x ξ)`. Rewrite using `[twb_dbar n X.z F0 F Ph hF0 hFh hPh x ξ, ← ENNReal.ofReal_mul (by positivity)]`. Conclude with `ENNReal.ofReal_le_ofReal h1`. Take `⟨G, hGh, hGw⟩` from `hH X (fun y => ps y + Ph y) (fun y => (F0 y - F y) * Complex.exp (Ph y)) _ (SmoothR.add n X.z _ _ hps hPh) hlevi hF1 hhm hbound`. Establish `hRHS : ∫⁻ x, ENNReal.ofReal (Real.exp (2 * Ph x) * (Real.sqrt (a x) + ‖F0 x - F x‖ * Real.sqrt (b x)) ^ 2) * ENNReal.ofReal (Real.exp (-(ps x + Ph x))) ∂vol n X.z = ∫⁻ x, ENNReal.ofReal ((Real.sqrt (a x) + ‖F0 x - F x‖ * Real.sqrt (b x)) ^ 2 * Real.exp (Ph x - ps x)) ∂vol n X.z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Rewrite using `[show Real.exp (Ph x - ps x) = Real.exp (2 * Ph x) * Real.exp (-(ps x + Ph x)) by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.exp_add]`. Use `congr 1`. Use the proof step `ring]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hR : ∫⁻ x, ENNReal.ofReal ((Real.sqrt (a x) + ‖F0 x - F x‖ * Real.sqrt (b x)) ^ 2 * Real.exp (Ph x - ps x)) ∂vol n X.z = ⊤`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hR]`. Conclude with `le_top`. Establish `hRlt` using `lt_top_iff_ne_top.mpr hR`. Establish `hGc : Continuous G` using `Smooth.continuous n X.z hz G (Holo.smooth n X.z G hGh)`. Establish `hw : ∀ x, ‖(F0 x - F x) * Complex.exp (Ph x)‖ ^ 2 * Real.exp (-(ps x + Ph x)) = ‖F0 x - F x‖ ^ 2 * Real.exp (Ph x - ps x)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Establish `e1 : Real.exp (Ph x) ^ 2 * Real.exp (-(ps x + Ph x)) = Real.exp (Ph x - ps x)`. Rewrite using `[sq, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, Complex.norm_exp_ofReal, mul_pow, mul_assoc, e1]`. Establish `hIu : ∫⁻ x, ENNReal.ofReal (‖F0 x - F x‖ ^ 2 * Real.exp (-ps x)) ∂vol n X.z < ⊤`. Use `lt_of_le_of_lt (twb_sub_le (vol n X.z) F0 F (fun x => Real.exp (-ps x)) hF0c.measurable hFc.measurable (Real.continuous_exp.comp hpsc.neg).measurable (fun x => (Real.exp_pos _).le)) ?_` and prove the remaining obligations. Conclude with `ENNReal.add_lt_top.2 ⟨ENNReal.mul_lt_top (by simp) hF0w, ENNReal.mul_lt_top (by simp) hFw⟩`. Establish `hwf : ∫⁻ x, ENNReal.ofReal (‖(F0 x - F x) * Complex.exp (Ph x)‖ ^ 2 * Real.exp (-(ps x + Ph x))) ∂vol n X.z < ⊤`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[hw]`. Use `lt_of_le_of_lt (twb_wmono (vol n X.z) (fun x => ‖F0 x - F x‖ ^ 2) (fun x => Real.exp (Ph x - ps x)) (fun x => Real.exp (-ps x)) (Real.exp C) (Real.exp_pos _).le (fun x => sq_nonneg _) (fun x => ?_)) (ENNReal.mul_lt_top (by simp) hIu)` and prove the remaining obligations. Rewrite using `[← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by linarith [hCx x])`. Establish `hwG : ∫⁻ x, ENNReal.ofReal (‖(F0 x - F x) * Complex.exp (Ph x) - G x‖ ^ 2 * Real.exp (-(ps x + Ph x))) ∂vol n X.z < ⊤`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion repeatedly using the stated equalities.
 
-Use `lt_of_le_of_lt hGw ?_` and prove the remaining obligations. Rewrite using `[hRHS]`. Conclude with `hRlt`. Establish `hGf : ∫⁻ x, ENNReal.ofReal (‖G x‖ ^ 2 * Real.exp (-(ps x + Ph x))) ∂vol n X.z < ⊤`. Establish `e3 : ∀ x, G x = (F0 x - F x) * Complex.exp (Ph x) - ((F0 x - F x) * Complex.exp (Ph x) - G x)` using `fun x => by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[fun x => congrArg (fun t => ENNReal.ofReal (‖t‖ ^ 2 * Real.exp (-(ps x + Ph x)))) (e3 x)]`. Use `lt_of_le_of_lt (twb_sub_le (vol n X.z) _ _ (fun x => Real.exp (-(ps x + Ph x))) (huc.mul (Complex.continuous_exp.comp (Complex.continuous_ofReal.comp hPhc))).measurable ((huc.mul (Complex.continuous_exp.comp (Complex.continuous_ofReal.comp hPhc))).sub hGc).measurable (Real.contin …` and prove the remaining obligations. Conclude with `ENNReal.add_lt_top.2 ⟨ENNReal.mul_lt_top (by simp) hwf, ENNReal.mul_lt_top (by simp) hwG⟩`. Establish `hGps : wint n X.z G ps < ⊤`. Use `lt_of_le_of_lt (twb_wmono (vol n X.z) (fun x => ‖G x‖ ^ 2) (fun x => Real.exp (-ps x)) (fun x => Real.exp (-(ps x + Ph x))) (Real.exp C) (Real.exp_pos _).le (fun x => sq_nonneg _) (fun x => ?_)) (ENNReal.mul_lt_top (by simp) hGf)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by linarith [hCx x])`. Establish `horth : ∫ x, (F0 x - F x) * Complex.exp (Ph x) * (starRingEnd ℂ) (G x) * ((Real.exp (-(ps x + Ph x)) : ℝ) : ℂ) ∂vol n X.z = 0`. Establish `hpt : ∀ x, (F0 x - F x) * Complex.exp (Ph x) * (starRingEnd ℂ) (G x) * ((Real.exp (-(ps x + Ph x)) : ℝ) : ℂ) = (F0 x - F x) * (starRingEnd ℂ) (G x) * ((Real.exp (-ps x) : ℝ) : ℂ)`. Introduce `x`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : Complex.exp (Ph x) * ((Real.exp (-(ps x + Ph x)) : ℝ) : ℂ) = ((Real.exp (-ps x) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_exp, Complex.ofReal_exp, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt)]`. Conclude with `horthF G hGh hGps`. Establish `hpyth` using `twb_pyth (vol n X.z) (fun x => (F0 x - F x) * Complex.exp (Ph x)) G (fun x => Real.exp (-(ps x + Ph x))) (huc.mul (Complex.continuous_exp.comp (Complex.continuous_ofReal.comp hPhc))).measurable hGc.measurable (Real.continuous_exp.comp (hpsc.add hPhc).neg).measurable (fun x => (Re …`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem twBound (n : ℕ) (M : Type u) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [MeasurableSpace M] [BorelSpace M]

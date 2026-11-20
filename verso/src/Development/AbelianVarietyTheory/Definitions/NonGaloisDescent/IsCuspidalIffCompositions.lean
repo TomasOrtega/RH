@@ -16,9 +16,7 @@ section Groups
 variable {k : Type} [Field k] {N : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨fun i j hij => h i j (ne_of_gt hij), fun i j hij => h i j (ne_of_lt (OrderDual.toDual_lt_toDual.1 hij))⟩`. Introduce and unpack `⟨h1, h2⟩ i j hij`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `h2 (OrderDual.toDual_lt_toDual.2 h)`.
-
-Conclude with `h1 h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem blockDiag_iff {b : Fin N → ℕ} {M : Matrix (Fin N) (Fin N) k} :
     (∀ i j, b i ≠ b j → M i j = 0) ↔ M.BlockTriangular b ∧ M.BlockTriangular (OrderDual.toDual ∘ b) := by
@@ -51,25 +49,25 @@ def levi (b : Fin N → ℕ) : Subgroup (GL (Fin N) k) where
     exact ⟨blockTriangular_inv_of_blockTriangular hx'.1, blockTriangular_inv_of_blockTriangular hx'.2⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_levi {b : Fin N → ℕ} {g : GL (Fin N) k} :
     g ∈ levi k b ↔ ∀ i j, b i ≠ b j → (g : Matrix (Fin N) (Fin N) k) i j = 0 := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [mem_levi, ne_eq, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem levi_congr {b b' : Fin N → ℕ} (h : ∀ i j, b i = b j ↔ b' i = b' j) : levi k b = levi k b' := by
   ext g
   simp only [mem_levi, ne_eq, h]
 
 /- English proof (translation)
-Introduce `_ hg i j hij` and use `hg i j (ne_of_gt hij)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levi_le_blockTri (b : Fin N → ℕ) : levi k b ≤ blockTri b := fun _ hg i j hij => hg i j (ne_of_gt hij)
 
 /- English proof (translation)
-Introduce `_ hu` and use `blockTriangular_of_sub_one hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unipRadical_le_blockTri (b : Fin N → ℕ) : unipRadical k b ≤ blockTri b :=
   fun _ hu => blockTriangular_of_sub_one hu
@@ -84,11 +82,11 @@ theorem diagPart_apply (b : Fin N → ℕ) (M : Matrix (Fin N) (Fin N) k) (i j :
     diagPart b M i j = if b i = b j then M i j else 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [diagPart_apply, Matrix.mul_apply]`. Use `split_ifs with hij`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy (b l) (b i) with h | h | h` into its components or cases.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX h, if_neg h.ne', zero_mul, zero_mul]`. Rewrite using `[if_pos h.symm, if_pos (h.trans hij)]`. Rewrite using `[hY (hij ▸ h), if_neg h.ne, mul_zero, zero_mul]`. Use `(Finset.sum_eq_zero fun l _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `h : b i = b l`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h' : b l = b j => hij (h.trans h')), mul_zero]`. Rewrite using `[if_neg h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagPart_mul {b : Fin N → ℕ} {X Y : Matrix (Fin N) (Fin N) k} (hX : X.BlockTriangular b)
     (hY : Y.BlockTriangular b) : diagPart b (X * Y) = diagPart b X * diagPart b Y := by
@@ -126,9 +124,9 @@ theorem leviProj_apply (b : Fin N → ℕ) (p : blockTri (κ := k) b) (i j : Fin
       if b i = b j then ((p : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j else 0 := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[leviProj_apply]`. Use `split_ifs with h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `(m.2 i j h).symm`.
+A detailed English derivation is pending.
 -/
 theorem leviProj_inclusion (b : Fin N → ℕ) (m : levi k b) :
     leviProj b (Subgroup.inclusion (levi_le_blockTri b) m) = m := by
@@ -141,13 +139,13 @@ theorem leviProj_inclusion (b : Fin N → ℕ) (m : levi k b) :
   · exact (m.2 i j h).symm
 
 /- English proof (translation)
-Rewrite using `[mem_unipRadical]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`. Establish `e` using `leviProj_apply b p i j`. Rewrite `e` using `[h]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hij.eq_or_lt with h' | h'` into its components or cases. Rewrite `e` using `[if_pos h'.symm]`. Rewrite using `[Matrix.sub_apply, ← e]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.sub_apply, p.2 h', Matrix.one_apply_ne (fun e => by rw [e] at h'; exact lt_irrefl _ h'), sub_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[leviProj_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h'`. Use `h i j h'.ge` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, sub_eq_zero]`. Simplify using `using this`. Simplify using `[Matrix.one_apply_ne (fun e => h' (congrArg b e))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviProj_eq_one_iff (b : Fin N → ℕ) (p : blockTri (κ := k) b) :
     leviProj b p = 1 ↔ (p : GL (Fin N) k) ∈ unipRadical k b := by
@@ -173,14 +171,14 @@ theorem leviProj_eq_one_iff (b : Fin N → ℕ) (p : blockTri (κ := k) b) :
     · simp [Matrix.one_apply_ne (fun e => h' (congrArg b e))]
 
 /- English proof (translation)
-The claim follows from `Subgroup.ext fun p => leviProj_eq_one_iff b p`.
+A detailed English derivation is pending.
 -/
 theorem ker_leviProj (b : Fin N → ℕ) :
     (leviProj (k := k) b).ker = (unipRadical k b).subgroupOf (blockTri b) :=
   Subgroup.ext fun p => leviProj_eq_one_iff b p
 
 /- English proof (translation)
-Rewrite using `[← Subgroup.normal_subgroupOf_iff_le_normalizer (unipRadical_le_blockTri b), ← ker_leviProj]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockTri_le_normalizer (b : Fin N → ℕ) :
     blockTri b ≤ Subgroup.normalizer ((unipRadical k b : Subgroup (GL (Fin N) k)) : Set (GL (Fin N) k)) := by
@@ -195,7 +193,7 @@ def relProj (a c : Fin N → ℕ) : (blockTri (κ := k) c).subgroupOf (levi k a)
       rw [(p : levi k a).2 i j hij, ite_self], fun _ _ hij => if_neg hij⟩
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_normalizer_iff]`. Introduce `u`. Conclude with `Subgroup.mem_normalizer_iff.1 (blockTri_le_normalizer c (levi_le_blockTri c m.2.2)) u`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inclusion_mem_normalizer (a c : Fin N → ℕ) (m : ↥(levi k a ⊓ levi k c)) :
     Subgroup.inclusion (inf_le_left : levi k a ⊓ levi k c ≤ levi k a) m ∈
@@ -209,7 +207,7 @@ variable (k) in
 def permGL : Equiv.Perm (Fin N) →* GL (Fin N) k := (Matrix.permMatrixHom (R := k)).toHomUnits
 
 /- English proof (translation)
-Use `show (w⁻¹.permMatrix k) i j = _`. Simplify using `only [PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, Equiv.Perm.inv_eq_iff_eq]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem permGL_apply (w : Equiv.Perm (Fin N)) (i j : Fin N) :
     ((permGL k w : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j = if i = w j then 1 else 0 := by
@@ -217,7 +215,7 @@ theorem permGL_apply (w : Equiv.Perm (Fin N)) (i j : Fin N) :
   simp only [PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, Equiv.Perm.inv_eq_iff_eq]
 
 /- English proof (translation)
-Rewrite using `[← map_inv, Units.val_mul, Units.val_mul]`. Simplify using `only [Matrix.mul_apply, permGL_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem conj_permGL_apply (w : Equiv.Perm (Fin N)) (g : GL (Fin N) k) (i j : Fin N) :
     ((permGL k w * g * (permGL k w)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (w i) (w j) =
@@ -227,9 +225,9 @@ theorem conj_permGL_apply (w : Equiv.Perm (Fin N)) (g : GL (Fin N) k) (i j : Fin
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`. Rewrite using `[← conj_permGL_apply w, h _ _ hij, hc]`. Introduce `h i j hij`. Take `⟨i, rfl⟩` from `w.surjective i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `w.surjective j`. Rewrite using `[conj_permGL_apply, h _ _ hij, hc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_iff {w : Equiv.Perm (Fin N)} {g : GL (Fin N) k} (R : Fin N → Fin N → Prop) (c : Matrix (Fin N) (Fin N) k)
     (hc : ∀ i j, c (w i) (w j) = c i j) :
@@ -244,21 +242,21 @@ theorem conj_mem_iff {w : Equiv.Perm (Fin N)} {g : GL (Fin N) k} (R : Fin N → 
     rw [conj_permGL_apply, h _ _ hij, hc]
 
 /- English proof (translation)
-The claim follows from `conj_mem_iff (fun i j => b j < b i) 0 fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_blockTri {b : Fin N → ℕ} {w : Equiv.Perm (Fin N)} {g : GL (Fin N) k} :
     permGL k w * g * (permGL k w)⁻¹ ∈ blockTri b ↔ g ∈ blockTri (b ∘ w) :=
   conj_mem_iff (fun i j => b j < b i) 0 fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `conj_mem_iff (fun i j => b i ≠ b j) 0 fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_levi {b : Fin N → ℕ} {w : Equiv.Perm (Fin N)} {g : GL (Fin N) k} :
     permGL k w * g * (permGL k w)⁻¹ ∈ levi k b ↔ g ∈ levi k (b ∘ w) :=
   conj_mem_iff (fun i j => b i ≠ b j) 0 fun _ _ => rfl
 
 /- English proof (translation)
-Simplify using `only [mem_unipRadical, Matrix.sub_apply, sub_eq_zero]`. Conclude with `conj_mem_iff (fun i j => b j ≤ b i) 1 fun i j => by simp [Matrix.one_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mem_unipRadical {b : Fin N → ℕ} {w : Equiv.Perm (Fin N)} {g : GL (Fin N) k} :
     permGL k w * g * (permGL k w)⁻¹ ∈ unipRadical k b ↔ g ∈ unipRadical k (b ∘ w) := by
@@ -273,7 +271,7 @@ def leviConj (b : Fin N → ℕ) (w : Equiv.Perm (Fin N)) : levi k (b ∘ w) ≃
   map_mul' x y := Subtype.ext (by simp [mul_assoc])
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem comp_symm_comp (b : Fin N → ℕ) (w : Equiv.Perm (Fin N)) : (b ∘ w.symm) ∘ w = b := by
   ext i; simp
@@ -316,7 +314,7 @@ variable {h : ℕ} {d : Fin h → ℕ}
 def blockOf (e : (Σ a, Fin (d a)) ≃ Fin N) : Fin N → ℕ := fun i => ((e.symm i).1 : ℕ)
 
 /- English proof (translation)
-Simplify using `[blockOf]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blockOf_apply (e : (Σ a, Fin (d a)) ≃ Fin N) (x : Σ a, Fin (d a)) : blockOf e (e x) = x.1 := by
   simp [blockOf]
@@ -372,7 +370,7 @@ def stdEquiv (d : Fin h → ℕ) (hd : ∑ a, d a = N) : (Σ a, Fin (d a)) ≃ F
   finSigmaFinEquiv.trans (finCongr hd)
 
 /- English proof (translation)
-Use `show (finSigmaFinEquiv ⟨a, i⟩ : ℕ) = _`. Rewrite using `[finSigmaFinEquiv_apply]`. Use `congr 1`. Use `Finset.sum_bij (fun c _ => Fin.castLE a.2.le c) (fun c _ => ?_) (fun _ _ _ _ e => Fin.castLE_injective _ e) (fun c hc => ⟨⟨c, (Finset.mem_Iio.1 hc : c < a)⟩, Finset.mem_univ _, rfl⟩) fun _ _ => rfl` and prove the remaining obligations. Conclude with `Finset.mem_Iio.2 c.2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stdEquiv_val (d : Fin h → ℕ) (hd : ∑ a, d a = N) (a : Fin h) (i : Fin (d a)) :
     (stdEquiv d hd ⟨a, i⟩ : ℕ) = ∑ c ∈ Finset.Iio a, d c + i := by
@@ -384,9 +382,9 @@ theorem stdEquiv_val (d : Fin h → ℕ) (hd : ∑ a, d a = N) (a : Fin h) (i : 
   exact Finset.mem_Iio.2 c.2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Take `⟨⟨c, l⟩, rfl⟩` from `(stdEquiv _ hd).surjective i`. Establish `hl` using `l.2`. Rewrite using `[blockOf_apply, twoBlocks, stdEquiv_val]`. Use `fin_cases c`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Finset.Iio (0 : Fin 2) = ∅` using `by decide`. Simplify using `at hl`. Simplify using `[this, hl]`. Establish `: Finset.Iio (1 : Fin 2) = {0}` using `by decide`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockOf_stdEquiv_two {r t : ℕ} (hd : ∑ c, (![r, t] : Fin 2 → ℕ) c = N) :
     blockOf (stdEquiv ![r, t] hd) = twoBlocks N r := by
@@ -404,7 +402,7 @@ theorem blockOf_stdEquiv_two {r t : ℕ} (hd : ∑ c, (![r, t] : Fin 2 → ℕ) 
 def IsTwoBlock (r : ℕ) (b : Fin N → ℕ) : Prop := ∀ i j, b i = b j ↔ ((i : ℕ) < r ↔ (j : ℕ) < r)
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [twoBlocks]`. Apply the tactic sequence `split_ifs <;> simp [*]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isTwoBlock_twoBlocks (N r : ℕ) : IsTwoBlock r (twoBlocks N r) := by
   intro i j
@@ -493,7 +491,7 @@ variable {G H : Type} [Group G] [Group H] {V W X : Type} [AddCommGroup V] [Modul
   [AddCommGroup X] [Module ℂ X]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h u hu`. Simplify using `using h ⟨u, hu⟩`. Introduce `h u`. Simplify using `using h u u.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixed {ρ : Representation ℂ G V} {U : Subgroup G} {v : V} : v ∈ fixed ρ U ↔ ∀ u ∈ U, ρ u v = v := by
   constructor
@@ -503,17 +501,15 @@ theorem mem_fixed {ρ : Representation ℂ G V} {U : Subgroup G} {v : V} : v ∈
     simpa using h u u.2
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite U`. Establish `hc : (Fintype.card U : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Set `S : V →ₗ[ℂ] V` to `∑ u : U, ρ u`. Establish `hS : ∀ v, S v = ∑ u : U, ρ u v` using `fun v => LinearMap.sum_apply _ _ _`. Establish `hker : twKer ρ U 1 ≤ LinearMap.ker S`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, v, rfl⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, SetLike.mem_coe, LinearMap.mem_ker]`. Rewrite using `[map_sub, hS, hS, sub_eq_zero]`. Conclude with `Fintype.sum_equiv (Equiv.mulRight n) _ _ fun u => by simp`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Establish `h1 : S v = 0` using `hker ((Submodule.Quotient.mk_eq_zero _).1 hv)`. Rewrite `h1` using `[hS, Finset.sum_congr rfl fun (u : U) _ => mem_fixed.1 v.2 u u.2, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext ((smul_eq_zero.1 h1).resolve_left hc)`. Introduce `q`. Take `⟨v, rfl⟩` from `Submodule.mkQ_surjective _ q`. Establish `hf : (Fintype.card U : ℂ)⁻¹ • S v ∈ fixed ρ U`. Use `Submodule.smul_mem _ _ (mem_fixed.2 fun n hn => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hS, map_sum]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft (⟨n, hn⟩ : U)) _ _ fun u => by simp`. Use `⟨⟨_, hf⟩, ?_⟩` and prove the remaining obligations. Use `show (twKer ρ U 1).mkQ ((Fintype.card U : ℂ)⁻¹ • S v) = _`. Establish `h2 : ∀ u : U, (twKer ρ U 1).mkQ (ρ u v) = (twKer ρ U 1).mkQ v` using `fun u => (Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨u, v, by simp⟩)`.
-
-Rewrite using `[map_smul, hS, map_sum, Finset.sum_congr rfl fun u _ => h2 u, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_fixed_mkQ (ρ : Representation ℂ G V) (U : Subgroup G) [Finite U] :
     Function.Bijective ((twKer ρ U 1).mkQ ∘ₗ (fixed ρ U).subtype) := by
@@ -552,12 +548,12 @@ def Embeds (ρ : Representation ℂ G V) (σ : Representation ℂ G W) : Prop :=
   ∃ f : ρ.IntertwiningMap σ, Function.Injective f
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.id ρ, fun _ _ h => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem Embeds.refl (ρ : Representation ℂ G V) : Embeds ρ ρ := ⟨.id ρ, fun _ _ h => h⟩
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `h`. Take `⟨g, hg⟩` from `h'`. Conclude with `⟨g.comp f, hg.comp hf⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Embeds.trans {ρ : Representation ℂ G V} {σ : Representation ℂ G W} {τ : Representation ℂ G X}
     (h : Embeds ρ σ) (h' : Embeds σ τ) : Embeds ρ τ := by
@@ -566,13 +562,13 @@ theorem Embeds.trans {ρ : Representation ℂ G V} {σ : Representation ℂ G W}
   exact ⟨g.comp f, hg.comp hf⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨e.toIntertwiningMap, e.toLinearEquiv.injective⟩`.
+Supply the required witnesses or components.
 -/
 theorem Embeds.of_equiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ) : Embeds ρ σ :=
   ⟨e.toIntertwiningMap, e.toLinearEquiv.injective⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Representation.irreducible_iff_isSimpleModule_asModule]`. Conclude with `IsSimpleModule.congr (LinearEquiv.ofBijective (Representation.IntertwiningMap.equivLinearMapAsModule σ ρ e.symm.toIntertwiningMap) e.symm.toLinearEquiv.bijective)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIrreducible_of_equiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ)
     (h : ρ.IsIrreducible) : σ.IsIrreducible := by
@@ -594,7 +590,7 @@ def extTensor {ι : Type} {Γ Y : ι → Type} [∀ a, Group (Γ a)] [∀ a, Add
   PiTensorProduct.mapMonoidHom.comp (Pi.monoidHom fun a => (ρ a).comp (Pi.evalMonoidHom Γ a))
 
 /- English proof (translation)
-The claim follows from `PiTensorProduct.map_tprod _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem extTensor_tprod {ι : Type} {Γ Y : ι → Type} [∀ a, Group (Γ a)] [∀ a, AddCommGroup (Y a)]
     [∀ a, Module ℂ (Y a)] (ρ : ∀ a, Representation ℂ (Γ a) (Y a)) (x : ∀ a, Γ a) (v : ∀ a, Y a) :
@@ -614,7 +610,7 @@ def RepClass : Type 1 := Quotient (isoSetoid G)
 def cls [FiniteDimensional ℂ V] (ρ : Representation ℂ G V) : RepClass G := Quotient.mk (isoSetoid G) (FDRep.of ρ)
 
 /- English proof (translation)
-The claim follows from `Quotient.eq (r := isoSetoid G)`.
+A detailed English derivation is pending.
 -/
 theorem cls_eq_iff [FiniteDimensional ℂ V] [FiniteDimensional ℂ W] (ρ : Representation ℂ G V)
     (σ : Representation ℂ G W) : cls ρ = cls σ ↔ Nonempty (ρ.Equiv σ) :=
@@ -657,7 +653,7 @@ abbrev IndSpace (b : Fin N → ℕ) (σ : Representation ℂ (levi k b) W) : Sub
   Representation.coindV (blockTri (κ := k) b).subtype (inflate b σ)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_indSpace {b : Fin N → ℕ} {σ : Representation ℂ (levi k b) W} {f : GL (Fin N) k → W} :
     f ∈ IndSpace b σ ↔ ∀ (p : blockTri (κ := k) b) (g : GL (Fin N) k), f (p * g) = σ (leviProj b p) (f g) := Iff.rfl
@@ -697,7 +693,7 @@ Both sides reduce to the same expression.
     (hcIndMap b f φ : GL (Fin N) k → W) x = f ((φ : GL (Fin N) k → V) x) := rfl
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `h`. Conclude with `⟨hcResMap b f, fun _ _ e => Subtype.ext (hf (congrArg Subtype.val e))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Embeds.hcRes (b : Fin N → ℕ) {ρ : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) W}
     (h : Embeds ρ σ) : Embeds (hcRes b ρ) (hcRes b σ) := by
@@ -705,7 +701,7 @@ theorem Embeds.hcRes (b : Fin N → ℕ) {ρ : Representation ℂ (GL (Fin N) k)
   exact ⟨hcResMap b f, fun _ _ e => Subtype.ext (hf (congrArg Subtype.val e))⟩
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `h`. Conclude with `⟨hcIndMap b f, fun _ _ e => Subtype.ext (funext fun x => hf (congrFun (congrArg Subtype.val e) x))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Embeds.hcInd (b : Fin N → ℕ) {ρ : Representation ℂ (levi k b) V} {σ : Representation ℂ (levi k b) W}
     (h : Embeds ρ σ) : Embeds (hcInd b ρ) (hcInd b σ) := by
@@ -728,7 +724,7 @@ Both sides reduce to the same expression.
     (x : GL (Fin N) k) : (toHcInd b ρ σ L hL v : GL (Fin N) k → W) x = L (ρ x v) := rfl
 
 /- English proof (translation)
-Introduce `v w e` and use `by have h := congrFun (congrArg Subtype.val e) 1 simp only [toHcInd_apply, map_one, Module.End.one_apply] at h exact hi h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toHcInd_injective (b : Fin N → ℕ) (ρ : Representation ℂ (GL (Fin N) k) V) (σ : Representation ℂ (levi k b) W)
     (L : V →ₗ[ℂ] W) (hL : ∀ (p : blockTri (κ := k) b) (v : V), L (ρ p v) = σ (leviProj b p) (L v))
@@ -781,7 +777,7 @@ def leviTensor (e : (Σ a, Fin (d a)) ≃ Fin N) (ρ : ∀ a, Representation ℂ
   (extTensor ρ).comp (leviEquiv e).toMonoidHom
 
 /- English proof (translation)
-The claim follows from `extTensor_tprod _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem leviTensor_tprod (e : (Σ a, Fin (d a)) ≃ Fin N) (ρ : ∀ a, Representation ℂ (GL (Fin (d a)) k) (Y a))
     (m : levi k (blockOf e)) (v : ∀ a, Y a) :
@@ -813,16 +809,16 @@ section Cuspidal
 variable {k : Type} [Field k] {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Simplify using `only [Submodule.eq_bot_iff, mem_fixed]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fixed_eq_bot_iff {ρ : Representation ℂ (GL (Fin N) k) V} {U : Subgroup (GL (Fin N) k)} :
     fixed ρ U = ⊥ ↔ ∀ v : V, (∀ u ∈ U, ρ u v = v) → v = 0 := by
   simp only [Submodule.eq_bot_iff, mem_fixed]
 
 /- English proof (translation)
-Use `⟨fun h b ⟨i, j, hij⟩ => fixed_eq_bot_iff.2 fun v hv => ?_, fun h b _ hb => fixed_eq_bot_iff.1 (h b hb)⟩` and prove the remaining obligations. Use `set w := Tuple.sort b`. Establish `h0 : ρ (permGL k w)⁻¹ v = 0`. Use `h (b ∘ w) (Tuple.monotone_sort b) ⟨w.symm i, w.symm j, by simpa using hij⟩ _ fun u hu => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← hv _ (conj_mem_unipRadical.2 hu)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`. Establish `h1` using `congrArg (ρ (permGL k w)) h0`. Rewrite `h1` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, map_zero, Module.End.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isCuspidal_iff_forall (ρ : Representation ℂ (GL (Fin N) k) V) :
     IsCuspidal ρ ↔ ∀ b : Fin N → ℕ, (∃ i j, b i ≠ b j) → fixed ρ (unipRadical k b) = ⊥ := by
@@ -838,7 +834,7 @@ theorem isCuspidal_iff_forall (ρ : Representation ℂ (GL (Fin N) k) V) :
   rwa [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, map_zero, Module.End.one_apply] at h1
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `h`. Introduce `b hb hne v hv`. Use `hf ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `hσ b hb hne _ fun u hu => by rw [← f.isIntertwining, hv u hu]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Embeds.isCuspidal {ρ : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) W}
     (h : Embeds ρ σ) (hσ : IsCuspidal σ) : IsCuspidal ρ := by
@@ -862,7 +858,7 @@ def HasCuspSupport (κ : Representation ℂ (GL (Fin N) k) V) (s : Multiset (Gra
     (∀ a, 0 < d a) ∧ (∀ a, (ρ a).IsIrreducible) ∧ (∀ a, IsCuspidal (ρ a)) ∧ Embeds κ (prodInd d hd ρ) ∧ s = classes ρ
 
 /- English proof (translation)
-Take `⟨-, h, d, hd, Y, _, _, _, ρ, -, -, -, -, rfl⟩` from `h`. Rewrite using `[classes, Multiset.map_map]`. Conclude with `hd`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasCuspSupport.sum_fst {κ : Representation ℂ (GL (Fin N) k) V} {s : Multiset (GradedClass k)}
     (h : HasCuspSupport κ s) : (s.map Sigma.fst).sum = N := by
@@ -871,7 +867,7 @@ theorem HasCuspSupport.sum_fst {κ : Representation ℂ (GL (Fin N) k) V} {s : M
   exact hd
 
 /- English proof (translation)
-Take `⟨-, h, d, hd, Y, _, _, _, ρ, hpos, hi, hc, -, rfl⟩` from `h`. Take `⟨a, -, ha⟩` from `Multiset.mem_map.1 hσ`. Take `rfl : d a = n` from `congrArg Sigma.fst ha`. Take `⟨e⟩` from `(cls_eq_iff _ _).1 (sigma_mk_injective (β := fun n => RepClass (GL (Fin n) k)) ha)`. Conclude with `⟨hpos a, isIrreducible_of_equiv e (hi a), (Embeds.of_equiv e.symm).isCuspidal (hc a)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasCuspSupport.of_mem {κ : Representation ℂ (GL (Fin N) k) V} {s : Multiset (GradedClass k)}
     (h : HasCuspSupport κ s) {n : ℕ} [FiniteDimensional ℂ W] {σ : Representation ℂ (GL (Fin n) k) W}
@@ -883,7 +879,7 @@ theorem HasCuspSupport.of_mem {κ : Representation ℂ (GL (Fin N) k) V} {s : Mu
   exact ⟨hpos a, isIrreducible_of_equiv e (hi a), (Embeds.of_equiv e.symm).isCuspidal (hc a)⟩
 
 /- English proof (translation)
-Take `⟨hκ, h, d, hd, Y, _, _, _, ρ, hpos, hi, hc, he, rfl⟩` from `h`. Conclude with `⟨isIrreducible_of_equiv e hκ, h, d, hd, Y, _, _, _, ρ, hpos, hi, hc, (Embeds.of_equiv e.symm).trans he, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasCuspSupport.of_equiv {κ : Representation ℂ (GL (Fin N) k) V} {κ' : Representation ℂ (GL (Fin N) k) W}
     {s : Multiset (GradedClass k)} (h : HasCuspSupport κ s) (e : κ.Equiv κ') : HasCuspSupport κ' s := by
@@ -894,13 +890,13 @@ def detRep (N : ℕ) (χ : kˣ →* ℂˣ) : Representation ℂ (GL (Fin N) k) (
   lineRep ((Units.coeHom ℂ).comp (χ.comp Matrix.GeneralLinearGroup.det))
 
 /- English proof (translation)
-Establish `hd : ∑ _ : Fin 1, N = N` using `by simp`. Use `⟨hi, 1, fun _ => N, hd, fun _ => V, inferInstance, inferInstance, inferInstance, fun _ => κ, fun _ => hN, fun _ => hi, fun _ => hc, ?_, by simp [classes]⟩` and prove the remaining obligations. Set `L` to `(PiTensorProduct.subsingletonEquiv (R := ℂ) (s := fun _ : Fin 1 => V) 0).symm`. Establish `hL : ∀ v, L v = PiTensorProduct.tprod ℂ fun _ => v` using `fun v => by`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨toHcInd _ κ _ L.toLinearMap fun p v => ?_, toHcInd_injective _ _ _ _ _ L.injective⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, hL, hL, leviTensor_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 2`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `he : ∀ i : Fin N, stdEquiv (fun _ : Fin 1 => N) hd ⟨a, i⟩ = i` using `fun i => Fin.ext (by`. Rewrite using `[stdEquiv_val, Subsingleton.elim a 0]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Rewrite using `[leviEquiv_apply, leviProj_apply, blockOf_apply, blockOf_apply, if_pos rfl, he, he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasCuspSupport_self [FiniteDimensional ℂ V] (hN : 0 < N) {κ : Representation ℂ (GL (Fin N) k) V}
     (hi : κ.IsIrreducible) (hc : IsCuspidal κ) : HasCuspSupport κ {⟨N, cls κ⟩} := by
@@ -924,20 +920,20 @@ theorem hasCuspSupport_self [FiniteDimensional ℂ V] (hN : 0 < N) {κ : Represe
   rw [leviEquiv_apply, leviProj_apply, blockOf_apply, blockOf_apply, if_pos rfl, he, he]
 
 /- English proof (translation)
-The claim follows from `hasCuspSupport_self two_pos signGL₂_cuspidal.1 signGL₂_cuspidal.2`.
+A detailed English derivation is pending.
 -/
 example : HasCuspSupport (lineRep signGL₂) {⟨2, cls (lineRep signGL₂)⟩} :=
   hasCuspSupport_self two_pos signGL₂_cuspidal.1 signGL₂_cuspidal.2
 
 /- English proof (translation)
-Introduce `hm` and use `not_isCuspidal_trivial le_rfl (h.of_mem hm).2.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {κ : Representation ℂ (GL (Fin N) k) V} {s : Multiset (GradedClass k)} (h : HasCuspSupport κ s) :
     (⟨2, cls (Representation.trivial ℂ (GL (Fin 2) k) ℂ)⟩ : GradedClass k) ∉ s :=
   fun hm => not_isCuspidal_trivial le_rfl (h.of_mem hm).2.2
 
 /- English proof (translation)
-Rewrite using `[blockOf_stdEquiv_two, mem_unipRadical, mem_unipRadical]`. Use `⟨fun i j hij => ?_, fun h => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [transvGL₂, twoBlocks] at hij ⊢`. Simplify `h 0 1 (by simp [oppTwoBlocks])` using `[transvGL₂]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 example (hd : ∑ a, (![1, 1] : Fin 2 → ℕ) a = 2) :
     transvGL₂ ∈ unipRadical (ZMod 2) (blockOf (stdEquiv ![1, 1] hd)) ∧
@@ -948,7 +944,7 @@ example (hd : ∑ a, (![1, 1] : Fin 2 → ℕ) a = 2) :
   · simpa [transvGL₂] using h 0 1 (by simp [oppTwoBlocks])
 
 /- English proof (translation)
-Rewrite using `[permGL_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : ((permGL ℚ (finRotate 3) : GL (Fin 3) ℚ) : Matrix (Fin 3) (Fin 3) ℚ) 1 0 = 1 := by
   rw [permGL_apply]; simp

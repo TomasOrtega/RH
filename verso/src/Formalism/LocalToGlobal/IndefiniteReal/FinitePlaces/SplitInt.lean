@@ -19,21 +19,21 @@ variable {D : D7}
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `heps : e * phiE w 1 = e` using `by rw [← hs, mul_add, h1, h2, add_zero]`. Establish `hcc : cA D e * cA D e = cA D e` using `by rw [← map_mul, h1]`. Take `⟨u, hu0⟩ : ∃ u : AE D, u = incA D D.host.sqrtMinusD` from `⟨_, rfl⟩`. Establish `hadj0 : star D.host.sqrtMinusD ≠ D.host.sqrtMinusD`. Rewrite using `[star_sqrt]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `: D.host.sqrtMinusD = 0` using `by linear_combination -h / 2`. Conclude with `Formalism.MainNotions.UnusedSlot33.HK.b_ne_zero D.host this`. Establish `ht0 : algebraMap D.host.F D.host.E 0 = D.host.sqrtMinusD + star D.host.sqrtMinusD` using `by rw [star_sqrt]; simp`. Establish `hN0 : algebraMap D.host.F D.host.E (D.host.d : D.host.F) = D.host.sqrtMinusD * star D.host.sqrtMinusD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_sqrt, mul_neg, sqrt_sq, neg_neg, map_natCast]`. Establish `hadj` using `adjoin_top_of D.host.sqrtMinusD 0 (D.host.d : D.host.F) ht0 hN0 hadj0`. Establish `hinj : Function.Injective (algebraMap (AF D.host.F) (AE D))`. Introduce `x y h`. Apply `Algebra.TensorProduct.includeLeft_injective (R := D.host.F) (S := D.host.F) (A := AF D.host.F) (B := D.host.E) (FaithfulSMul.algebraMap_injective D.host.F D.host.E)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, RingHom.id_apply]`. Conclude with `h`. Take `⟨a, ha0⟩ : ∃ a : AE D, a = e - cA D e` from `⟨_, rfl⟩`. Establish `hca : cA D a = -a` using `by rw [ha0, map_sub, cA_cA]; ring`. Establish `hcu : cA D u = -u` using `by rw [hu0, cA_incA, star_sqrt, map_neg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `fixed_AE hadj (z := a * u) (by rw [map_mul, hca, hcu]; ring)`. Establish `haa : a * a = phiE w 1`. Rewrite using `[ha0, ← hs]`. Take the linear combination `h1 + hcc - 2 * h2`. Establish `hu2 : u * u = algebraMap D.host.F (AE D) (-(D.host.d : D.host.F))`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu0, ← map_mul, sqrt_sq, show -(D.host.d : D.host.E) = algebraMap D.host.F D.host.E (-(D.host.d : D.host.F)) by simp, incA_alg]`. Establish `hrr : r * r = sA w (algebraMap D.host.F (w.adicCompletion D.host.F) (-(D.host.d : D.host.F)) * 1)`. Apply `hinj` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Take `⟨s, hsdef⟩ : ∃ s, s = evalV D.host.F w (sndA D.host.F r)` from `⟨_, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hss : s * s = algebraMap D.host.F (w.adicCompletion D.host.F) (-(D.host.d : D.host.F))`. Use `congrArg (fun x : AF D.host.F => evalV D.host.F w (sndA D.host.F x)) hrr` as an intermediate fact. Simplify using `only [map_mul, mul_one] at this`. Rewrite using `[hsdef]`. Conclude with `this.trans (sglV_same w _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hroot : s ^ 2 - ((0 : D.host.F) : w.adicCompletion D.host.F) * s + ((D.host.d : D.host.F) : w.adicCompletion D.host.F) = 0`. Rewrite using `[← algebraMap_adic_eq, ← algebraMap_adic_eq, map_zero, sq, hss, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨ι, hι, -⟩` from `emb_exists w D.host.sqrtMinusD 0 (D.host.d : D.host.F) ht0 hN0 hadj0 s hroot`. Conclude with `⟨s, ι, hss, hι⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem split_emb {w : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D} (h1 : e * e = e) (h2 : e * cA D e = 0)
     (hs : e + cA D e = phiE w 1) :
@@ -99,13 +99,11 @@ def valIdeal {w : HeightOneSpectrum (𝓞 D.host.F)} (ι : D.host.E →ₐ[D.hos
     exact lt_of_le_of_lt (mul_le_of_le_one_left zero_le (val_emb_le w ι c)) hx
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (1 : 𝓞 D.host.E) ∈ valIdeal ι` using `h ▸ Submodule.mem_top`. Express the relevant statement in the definitionally equal form `Valued.v (ι ((1 : 𝓞 D.host.E) : D.host.E)) < 1 at h1`. Rewrite `h1` using `[show ((1 : 𝓞 D.host.E) : D.host.E) = 1 from rfl, map_one, Valuation.map_one]`. Conclude with `lt_irrefl _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `mem_or_mem' := by`. Introduce `x y hxy`. Express the relevant statement in the definitionally equal form `Valued.v (ι ((x * y : 𝓞 D.host.E) : D.host.E)) < 1 at hxy`. Rewrite `hxy` using `[show ((x * y : 𝓞 D.host.E) : D.host.E) = (x : D.host.E) * (y : D.host.E) from rfl, map_mul, Valuation.map_mul]`. Assume the negation of the conclusion as `hc`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `push Not at hc`. Take `⟨hx, hy⟩` from `hc`. Express the relevant statement in the definitionally equal form `¬ Valued.v (ι (x : D.host.E)) < 1 at hx`. Express the relevant statement in the definitionally equal form `¬ Valued.v (ι (y : D.host.E)) < 1 at hy`. Use `push Not at hx hy`.
-
-Conclude with `absurd hxy (not_lt.2 (one_le_mul hx hy))`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem valIdeal_prime {w : HeightOneSpectrum (𝓞 D.host.F)} (ι : D.host.E →ₐ[D.host.F] w.adicCompletion D.host.F) :
     (valIdeal ι).IsPrime where
@@ -129,7 +127,7 @@ theorem valIdeal_prime {w : HeightOneSpectrum (𝓞 D.host.F)} (ι : D.host.E �
     exact absurd hxy (not_lt.2 (one_le_mul hx hy))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Valued.v (ι ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) f : 𝓞 D.host.E) : D.host.E)) < 1`. Rewrite using `[algebraMap_O, AlgHom.commutes]`. Conclude with `(val_coe_lt_one_iff w f).2 hf`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_valIdeal {w : HeightOneSpectrum (𝓞 D.host.F)}
     (ι : D.host.E →ₐ[D.host.F] w.adicCompletion D.host.F) {f : 𝓞 D.host.F} (hf : f ∈ w.asIdeal) :
@@ -150,9 +148,9 @@ def plOf {w : HeightOneSpectrum (𝓞 D.host.F)} (ι : D.host.E →ₐ[D.host.F]
     exact hn0 this
 
 /- English proof (translation)
-Establish `hc : IsCoprime (p : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne)`. Take `⟨a, b, hab⟩` from `hc.map (Int.castRingHom (𝓞 D.host.F))`. Apply `hI` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Simplify using `only [eq_intCast, Int.cast_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `add_mem (I.mul_mem_left _ hpI) (I.mul_mem_left _ hqI)`.
+A detailed English derivation is pending.
 -/
 theorem not_two_primes_F {I : Ideal (𝓞 D.host.F)} (hI : I ≠ ⊤) {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q)
     (hpI : (p : 𝓞 D.host.F) ∈ I) (hqI : (q : 𝓞 D.host.F) ∈ I) : False := by
@@ -166,33 +164,27 @@ theorem not_two_primes_F {I : Ideal (𝓞 D.host.F)} (hI : I ≠ ⊤) {p q : ℕ
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `hc`. Take `⟨n, hnw, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot`. Establish `hnl : w.intValuation n < 1` using `(HeightOneSpectrum.intValuation_lt_one_iff_mem w n).2 hnw`. Establish `key : ∀ x : 𝓞 D.host.E, Valued.v (ι (x : D.host.E) - ι (star (x : D.host.E))) < 1`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, hb⟩` from `Formalism.L2.S.Pv.PsiTrCore.exists_approx (sglV w (ι (x : D.host.E))) (fun v => by`. Distinguish the cases in `hv : v = w`. Substitute `hv; exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ v).2 (by` using the available equality. Rewrite using `[show (sglV v (ι (x : D.host.E))) v = evalV D.host.F v (sglV v (ι (x : D.host.E))) from rfl, sglV_same]`. Conclude with `val_emb_le v ι x)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (sglV w (ι (x : D.host.E))) v = evalV D.host.F v (sglV w (ι (x : D.host.E))) from rfl, sglV_ne w _ hv]`. Conclude with `zero_mem _) n hn0`. Establish `hbw : Valued.v (ι (x : D.host.E) - algebraMap D.host.F (w.adicCompletion D.host.F) (b : D.host.F)) < 1`. Use `hb w` as an intermediate fact. Rewrite `this` using `[show (sglV w (ι (x : D.host.E))) w = evalV D.host.F w (sglV w (ι (x : D.host.E))) from rfl, sglV_same]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `lt_of_le_of_lt this hnl`. Establish `hy : x - algebraMap (𝓞 D.host.F) (𝓞 D.host.E) b ∈ (plOf ι).asIdeal`. Express the relevant statement in the definitionally equal form `Valued.v (ι ((x - algebraMap (𝓞 D.host.F) (𝓞 D.host.E) b : 𝓞 D.host.E) : D.host.E)) < 1`. Rewrite using `[show ((x - algebraMap (𝓞 D.host.F) (𝓞 D.host.E) b : 𝓞 D.host.E) : D.host.E) = (x : D.host.E) - algebraMap D.host.F D.host.E (b : D.host.F) from rfl, map_sub, AlgHom.commutes]`. Conclude with `hbw`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hcP, hce⟩` from `hc _ hy`. Express the relevant statement in the definitionally equal form `Valued.v (ι (c : D.host.E)) < 1 at hcP`. Rewrite `hcP` using `[hce, show ((x - algebraMap (𝓞 D.host.F) (𝓞 D.host.E) b : 𝓞 D.host.E) : D.host.E) = (x : D.host.E) - algebraMap D.host.F D.host.E (b : D.host.F) from rfl, star_sub, show star (algebraMap D.host.F D.host.E (b : D.host.F)) = algebraMap D.host.F D.host.E (b : D.host.F) from (D.sp.cm …`. Rewrite using `[show ι (x : D.host.E) - ι (star (x : D.host.E)) = (ι (x : D.host.E) - algebraMap D.host.F (w.adicCompletion D.host.F) (b : D.host.F)) - (ι (star (x : D.host.E)) - algebraMap D.host.F (w.adicCompletion D.host.F) (b : D.host.F)) by ring]`. Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt hbw hcP)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : Valued.v s < 1`. Use `key ⟨alphaH D.host, alphaH_integral D.host⟩` as an intermediate fact. Establish `hsa` using `star_alphaH D.host`. Express the relevant statement in the definitionally equal form `Valued.v (ι (alphaH D.host) - ι (star (alphaH D.host))) < 1 at this`. Rewrite `this` using `[hsa, ← map_sub, show alphaH D.host - (1 - alphaH D.host) = D.host.sqrtMinusD by unfold alphaH; ring, hι]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hdw : ((D.host.d : ℕ) : 𝓞 D.host.F) ∈ w.asIdeal`. Use `(val_coe_lt_one_iff w _).1 ?_` and prove the remaining obligations. Establish `h2 : Valued.v (s * s) < 1`. Rewrite using `[Valuation.map_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_lt_one_of_lt_of_le hd (le_of_lt hd)`. Rewrite `h2` using `[hs, map_neg, Valuation.map_neg]`. Rewrite using `[← algebraMap_adic_eq, show (((D.host.d : ℕ) : 𝓞 D.host.F) : D.host.F) = (D.host.d : D.host.F) by push_cast; rfl]`. Conclude with `h2`. Take `⟨aq, haq⟩ : ∃ aq : D.host.E, aq = (D.host.sqq : D.host.E)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `haq2 : aq * aq = -(D.host.q : D.host.E)`. Rewrite using `[haq, ← sq]`. Conclude with `D.host.sqq_sq`. Establish `hsaq : star aq = -aq` using `by rw [haq, Formalism.BasicNotions.Examples₂.star_eq_conj, Formalism.BasicNotions.Examples₂.conj_aE]`. Establish `hq8 : D.host.q % 8 = 3` using `D.host.hyp.2.2.1`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hβi : IsIntegral ℤ ((1 + aq) / 2)`. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (((D.host.q + 1) / 4 : ℕ) : ℤ), by monicity!, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, algebraMap_int_eq, eq_intCast, Int.cast_natCast]`. Establish `h4 : ((D.host.q + 1) / 4 : ℕ) * 4 = D.host.q + 1` using `by omega`. Establish `h4' : ((((D.host.q + 1) / 4 : ℕ) : D.host.E)) * 4 = (D.host.q : D.host.E) + 1` using `by exact_mod_cast h4`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `(1 / 4 : D.host.E) * haq2 + (1 / 4 : D.host.E) * h4'`. Establish `hq : Valued.v (ι aq) < 1`. Use `key ⟨(1 + aq) / 2, hβi⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `Valued.v (ι ((1 + aq) / 2) - ι (star ((1 + aq) / 2))) < 1 at this`. Rewrite using `[show star ((1 + aq) / 2) = (1 - aq) / 2 by`.
-
-Rewrite using `[star_div₀, star_add, star_one, hsaq, show star (2 : D.host.E) = 2 from star_ofNat 2]`. Use the proof step `ring,`. Use the proof step `← map_sub, show (1 + aq) / 2 - (1 - aq) / 2 = aq by ring] at this`. Conclude with `this`. Establish `hqw : ((D.host.q : ℕ) : 𝓞 D.host.F) ∈ w.asIdeal`.
-
-Use `(val_coe_lt_one_iff w _).1 ?_` and prove the remaining obligations. Establish `h2 : Valued.v (ι aq * ι aq) < 1`. Rewrite using `[Valuation.map_mul]`. Conclude with `mul_lt_one_of_lt_of_le hq (le_of_lt hq)`. Rewrite `h2` using `[← map_mul, haq2, map_neg, Valuation.map_neg, show ((D.host.q : ℕ) : D.host.E) = algebraMap D.host.F D.host.E (D.host.q : D.host.F) by simp, AlgHom.commutes]`.
-
-Rewrite using `[← algebraMap_adic_eq, show (((D.host.q : ℕ) : 𝓞 D.host.F) : D.host.F) = (D.host.q : D.host.F) by push_cast; rfl]`. Conclude with `h2`. Conclude with `not_two_primes_F w.isPrime.ne_top D.host.hyp.2.1 D.host.hyp.1 (fun h => D.host.hypOdd.2.2.1 h.symm) hdw hqw`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plOf_split {w : HeightOneSpectrum (𝓞 D.host.F)} (ι : D.host.E →ₐ[D.host.F] w.adicCompletion D.host.F)
     (s : w.adicCompletion D.host.F) (hs : s * s = algebraMap D.host.F (w.adicCompletion D.host.F) (-(D.host.d : D.host.F)))
@@ -277,11 +269,11 @@ theorem plOf_split {w : HeightOneSpectrum (𝓞 D.host.F)} (ι : D.host.E →ₐ
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨h1, h2, w, ε, hpl, hsε⟩` from `he`. Rewrite `hsε` using `[placeIdem_eq hpl]`. Express the relevant statement in the definitionally equal form `e + cA D e = phiE w 1 at hsε`. Take `⟨s, ι, hs, hι⟩` from `split_emb h1 h2 hsε`. Establish `hsp` using `plOf_split ι s hs hι`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : w.asIdeal ≤ (belowPl (plOf ι)).asIdeal` using `fun f hf => algebraMap_mem_valIdeal ι hf`. Establish `hbel : belowPl (plOf ι) = w` using `(HeightOneSpectrum.ext (w.isMaximal.eq_of_le (belowPl (plOf ι)).isPrime.ne_top hle)).symm`. Rewrite `hsε` using `[← hbel]`. Take `⟨e₀, ι₀, he₀, -, hs₀, hz, hκ⟩` from `idem_data (plOf ι) hsp (belowPl (plOf ι)) rfl`. Break down `idem_class (plOf ι) hsp e₀ ι₀ hs₀ hz hκ he₀.1.1 he₀.1.2.1 e h1 h2 hsε with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h]`. Conclude with `idemAt_int he₀`. Rewrite using `[h, finPart_cA]`. Conclude with `cF_int (idemAt_int he₀)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitIdem_int {e : AE D} (he : IsSplitIdem D e) : finPart D e ∈ intAE D := by
   obtain ⟨h1, h2, w, ε, hpl, hsε⟩ := he
@@ -299,7 +291,7 @@ theorem splitIdem_int {e : AE D} (he : IsSplitIdem D e) : finPart D e ∈ intAE 
   · rw [h, finPart_cA]; exact cF_int (idemAt_int he₀)
 
 /- English proof (translation)
-Establish `: u.map (fun a => e * a) = e • u` using `by ext i j; rfl`. Rewrite using `[this]`. Conclude with `latO_smul_mem S T ΛS ΛT (splitIdem_int he) hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latO_map_splitIdem (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) {e : AE D} (he : IsSplitIdem D e) {u : WO S T}

@@ -22,9 +22,9 @@ def trU (L : LB X) (a b : Y ⟶ X) (j j' : L.ι) (V : Y.Opens)
     (Units.map (b.appLE _ V hB).hom.toMonoidHom (L.g j j'))⁻¹
 
 /- English proof (translation)
-Establish `e : ∀ (c : Y ⟶ X) (hC : V ≤ c ⁻¹ᵁ (L.U j ⊓ L.U j')) (hC' : V' ≤ (h ≫ c) ⁻¹ᵁ (L.U j ⊓ L.U j')), Units.map (h.appLE V V' hV).hom.toMonoidHom (Units.map (c.appLE _ V hC).hom.toMonoidHom (L.g j j')) = Units.map ((h ≫ c).appLE _ V' hC').hom.toMonoidHom (L.g j j')`. Introduce `c hC hC'`. Use `ext`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Use `Scheme.Hom.appLE_comp_appLE h c _ V V' hC hV` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrArg (fun q => q.hom (L.g j j' : Γ(X, L.U j ⊓ L.U j'))) this`. Rewrite using `[trU, trU, map_mul, map_inv, e a hA hA', e b hB hB']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trU_pull (L : LB X) (a b : Y ⟶ X) (j j' : L.ι) (V : Y.Opens)
     (hA : V ≤ a ⁻¹ᵁ (L.U j ⊓ L.U j')) (hB : V ≤ b ⁻¹ᵁ (L.U j ⊓ L.U j'))
@@ -43,7 +43,7 @@ theorem trU_pull (L : LB X) (a b : Y ⟶ X) (j j' : L.ι) (V : Y.Opens)
   rw [trU, trU, map_mul, map_inv, e a hA hA', e b hB hB']
 
 /- English proof (translation)
-Substitute `ea eb` using the available equality. Conclude with `trU_pull L a b j j' V hA hB h V' hV hA' hB'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem trU_pull' (L : LB X) (a b : Y ⟶ X) (j j' : L.ι) (V : Y.Opens)
     (hA : V ≤ a ⁻¹ᵁ (L.U j ⊓ L.U j')) (hB : V ≤ b ⁻¹ᵁ (L.U j ⊓ L.U j'))
@@ -54,7 +54,7 @@ theorem trU_pull' (L : LB X) (a b : Y ⟶ X) (j j' : L.ι) (V : Y.Opens)
   exact trU_pull L a b j j' V hA hB h V' hV hA' hB'
 
 /- English proof (translation)
-Establish `e : Y.presheaf.map (homOfLE h₁).op ≫ Y.presheaf.map (homOfLE h₂).op = Y.presheaf.map (homOfLE h₃).op ≫ Y.presheaf.map (homOfLE h₄).op`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp]`. Both sides reduce to the same expression. Conclude with `congrArg (fun q => q.hom s.val) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_value_compose {U U₁ U₂ V : Y.Opens} (h₁ : U₁ ≤ U) (h₂ : V ≤ U₁) (h₃ : U₂ ≤ U) (h₄ : V ≤ U₂) (s : Γ(Y, U)ˣ) :
     (res h₂ (res h₁ s)).val =
@@ -66,14 +66,14 @@ theorem res_value_compose {U U₁ U₂ V : Y.Opens} (h₁ : U₁ ≤ U) (h₂ : 
   exact congrArg (fun q => q.hom s.val) e
 
 /- English proof (translation)
-The claim follows from `mul_inv_cancel _`.
+A detailed English derivation is pending.
 -/
 theorem trU_congr (L : LB X) (a : Y ⟶ X) (j j' : L.ι) (V : Y.Opens)
     (hA hB : V ≤ a ⁻¹ᵁ (L.U j ⊓ L.U j')) : trU L a a j j' V hA hB = 1 :=
   mul_inv_cancel _
 
 /- English proof (translation)
-Establish `e : c.app O ≫ Y.presheaf.map (homOfLE h₂).op ≫ Y.presheaf.map (homOfLE h₃).op = c.appLE O V hC`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression. Use `ext`. Conclude with `congrArg (fun q => q.hom (u : Γ(X, O))) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem res_res_pull (c : Y ⟶ X) (O : X.Opens) (W V : Y.Opens) (h₂ : W ≤ c ⁻¹ᵁ O) (h₃ : V ≤ W)
     (hC : V ≤ c ⁻¹ᵁ O) (u : Γ(X, O)ˣ) :
@@ -86,9 +86,9 @@ theorem res_res_pull (c : Y ⟶ X) (O : X.Opens) (W V : Y.Opens) (h₂ : W ≤ c
   exact congrArg (fun q => q.hom (u : Γ(X, O))) e
 
 /- English proof (translation)
-Use `show res hV (∏ k : Fin 2, (res _ (pullU (![a, b] k) _ (L.g j j'))) ^ (![m, -m] k)) = _`. Rewrite using `[Fin.prod_univ_two, map_mul, map_zpow, map_zpow]`. Establish `ea` using `res_res_pull a _ _ V (le_inf (inf_le_left.trans (LB.wchart_le L ![a, b] (fun _ => j) 0)) (inf_le_right.trans (LB.wchart_le L ![a, b] (fun _ => j') 0)) : LB.wchart L ![a, b] (fun _ => j) ⊓ LB.wchart L ![a, b] (fun _ => j') ≤ a ⁻¹ᵁ (L.U j ⊓ L.U j')) hV hA (L.g j j')`. Establish `eb` using `res_res_pull b _ _ V (le_inf (inf_le_left.trans (LB.wchart_le L ![a, b] (fun _ => j) 1)) (inf_le_right.trans (LB.wchart_le L ![a, b] (fun _ => j') 1)) : LB.wchart L ![a, b] (fun _ => j) ⊓ LB.wchart L ![a, b] (fun _ => j') ≤ b ⁻¹ᵁ (L.U j ⊓ L.U j')) hV hB (L.g j j')`. Use `erw [ea, eb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[trU, mul_zpow, inv_zpow, zpow_neg]`.
+A detailed English derivation is pending.
 -/
 theorem linComb_g (L : LB X) (a b : Y ⟶ X) (m : ℤ) (j j' : L.ι) (V : Y.Opens)
     (hV : V ≤ (LB.LinComb L (K := Fin 2) ![a, b] ![m, -m]).U (fun _ => j) ⊓
@@ -114,7 +114,7 @@ section Thick
 variable {X0 : Scheme.{0}} (G : Over X0) {k : Type} [Field k] (x : Sp k ⟶ X0)
 
 /- English proof (translation)
-Rewrite using `[dltOn, dltOn, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dltOn_res (m : ℕ) {V V' : (Ym G x m).Opens} (h : V' ≤ V) :
     ((Ym G x m).presheaf.map (homOfLE h).op).hom (dltOn G x m V) = dltOn G x m V' := by
@@ -122,9 +122,9 @@ theorem dltOn_res (m : ℕ) {V V' : (Ym G x m).Opens} (h : V' ≤ V) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, dltOn_res]`. Use `congr 1`. Use `(prZ G x m).naturality (homOfLE h).op` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `(congrArg (fun q => q.hom (c i)) this).symm`.
+A detailed English derivation is pending.
 -/
 theorem sum_res (m : ℕ) {W W' : (pullback G.hom x).Opens} (h : W' ≤ W) (h' : prZ G x m ⁻¹ᵁ W' ≤ prZ G x m ⁻¹ᵁ W)
     (c : Fin (m + 1) → Γ(pullback G.hom x, W)) :
@@ -139,11 +139,11 @@ theorem sum_res (m : ℕ) {W W' : (pullback G.hom x).Opens} (h : W' ≤ W) (h' :
   exact (congrArg (fun q => q.hom (c i)) this).symm
 
 /- English proof (translation)
-Substitute `e` using the available equality. Substitute `eδ` using the available equality. Establish `e1 : ∀ i, (g.appLE (prZ G x m ⁻¹ᵁ W) V' hV).hom (((prZ G x m).app W).hom (c i)) = ((g ≫ prZ G x m).appLE W V' hV').hom (c i)`. Introduce `i`. Use `Scheme.Hom.appLE_comp_appLE g (prZ G x m) W _ V' (le_refl _) hV` as an intermediate fact.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg (fun q => q.hom (c i)) this`. Establish `e2 : (g.appLE (prZ G x m ⁻¹ᵁ W) V' hV).hom (dltOn G x m _) = (Y'.presheaf.map (homOfLE (le_top : V' ≤ ⊤)).op).hom ((g.appTop).hom (dlt G x m))`. Establish `h1` using `Scheme.Hom.map_appLE g hV (homOfLE (le_top : prZ G x m ⁻¹ᵁ W ≤ ⊤)).op`. Conclude with `congrArg (fun q => q.hom (dlt G x m)) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, e1, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_pull (m : ℕ) {Y' : Scheme.{0}} (g : Y' ⟶ Ym G x m) (π' : Y' ⟶ pullback G.hom x)
     (e : g ≫ prZ G x m = π') (δ' : Γ(Y', ⊤)) (eδ : (g.appTop).hom (dlt G x m) = δ')
@@ -168,14 +168,14 @@ theorem sum_pull (m : ℕ) {Y' : Scheme.{0}} (g : Y' ⟶ Ym G x m) (π' : Y' ⟶
   rw [map_mul, map_pow, e1, e2]
 
 /- English proof (translation)
-Conclude with `(Category.id_comp _).trans ((congrArg Z.presheaf.map (Subsingleton.elim _ _)).trans (Z.presheaf.map_id _))`.
+A detailed English derivation is pending.
 -/
 theorem id_appLE' {Z : Scheme.{0}} (W : Z.Opens) (h : W ≤ (𝟙 Z : Z ⟶ Z) ⁻¹ᵁ W) :
     (𝟙 Z : Z ⟶ Z).appLE W W h = 𝟙 _ := by
   exact (Category.id_comp _).trans ((congrArg Z.presheaf.map (Subsingleton.elim _ _)).trans (Z.presheaf.map_id _))
 
 /- English proof (translation)
-Rewrite using `[sum_pull G x m (secZ G x m) (𝟙 _) (secZ_prZ G x m) 0 (secZ_dlt G x m) W W h le_rfl c]`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [map_zero, ne_eq, Fin.val_succ, Nat.add_eq_zero_iff, one_ne_zero, and_false, not_false_eq_true, zero_pow, mul_zero, Finset.sum_const_zero, add_zero, Fin.val_zero, pow_zero, _root_.mul_one]`. Conclude with `congrArg (fun q => q.hom (c 0)) (id_appLE' W _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sec_sum (m : ℕ) (W : (pullback G.hom x).Opens) (h : W ≤ secZ G x m ⁻¹ᵁ (prZ G x m ⁻¹ᵁ W))
     (c : Fin (m + 1) → Γ(pullback G.hom x, W)) :
@@ -187,9 +187,9 @@ theorem sec_sum (m : ℕ) (W : (pullback G.hom x).Opens) (h : W ≤ secZ G x m �
   exact congrArg (fun q => q.hom (c 0)) (id_appLE' W _)
 
 /- English proof (translation)
-Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, by omega⟩`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Establish `: ∀ i : Fin q, c i.succ.succ * d ^ ((i.succ.succ : Fin (q + 1 + 1)) : ℕ) = 0`. Introduce `i`. Simplify using `only [Fin.val_succ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (i : ℕ) + 1 + 1 = i + 2 from rfl, pow_add, hd, mul_zero, mul_zero]`. Simplify using `only [this, Finset.sum_const_zero, add_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_trunc {R : Type*} [CommRing R] (d : R) (hd : d ^ 2 = 0) (p : ℕ) (hp : 1 ≤ p) (c : Fin (p + 1) → R) :
     ∑ i, c i * d ^ (i : ℕ) = c 0 + c ⟨1, by omega⟩ * d := by
@@ -203,13 +203,13 @@ theorem sum_trunc {R : Type*} [CommRing R] (d : R) (hd : d ^ 2 = 0) (p : ℕ) (h
   simp
 
 /- English proof (translation)
-Rewrite using `[dltOn, ← map_pow, dlt_pow, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dltOn_pow (m : ℕ) (V : (Ym G x m).Opens) : dltOn G x m V ^ (m + 1) = 0 := by
   rw [dltOn, ← map_pow, dlt_pow, map_zero]
 
 /- English proof (translation)
-Rewrite using `[sum_pull G x p (trY G x p hp) (prZ G x 1) (trY_prZ G x p hp) (dlt G x 1) (trY_dlt G x p hp) W _ h le_rfl c]`. Use `sum_trunc (dltOn G x 1 (prZ G x 1 ⁻¹ᵁ W)) (dltOn_pow G x 1 _) p hp (fun i => ((prZ G x 1).app W).hom (c i))` as an intermediate fact. Simplify using `only [Scheme.Hom.app_eq_appLE] at this ⊢`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tr_sum (p : ℕ) (hp : 1 ≤ p) (W : (pullback G.hom x).Opens)
     (h : prZ G x 1 ⁻¹ᵁ W ≤ trY G x p hp ⁻¹ᵁ (prZ G x p ⁻¹ᵁ W))
@@ -223,7 +223,7 @@ theorem tr_sum (p : ℕ) (hp : 1 ≤ p) (W : (pullback G.hom x).Opens)
   exact this
 
 /- English proof (translation)
-Set `ψ : k →+* Γ(Ym G x m, V)` to `((Ym G x m).presheaf.map (homOfLE (le_top : V ≤ ⊤)).op).hom.comp (((fst (Tm x m) G).left.appTop).hom.comp ((toΓ (Jet k Unit m)).comp (algebraMap k (Jet k Unit m))))`. Use `map_natCast ψ p` as an intermediate fact. Rewrite `this` using `[CharP.cast_eq_zero k p, map_zero]`. Conclude with `this.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cast_p (m : ℕ) (V : (Ym G x m).Opens) (p : ℕ) [CharP k p] : ((p : ℕ) : Γ(Ym G x m, V)) = 0 := by
   let ψ : k →+* Γ(Ym G x m, V) := ((Ym G x m).presheaf.map (homOfLE (le_top : V ≤ ⊤)).op).hom.comp
@@ -233,7 +233,7 @@ theorem cast_p (m : ℕ) (V : (Ym G x m).Opens) (p : ℕ) [CharP k p] : ((p : �
   exact this.symm
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `GlobalTheory.T.zero_section_surjective X0 G k x p y`. Establish `e : secZ G x p ≫ prZ G x p ≫ pullback.fst G.hom x = pullback.fst G.hom x`. Rewrite using `[← Category.assoc, secZ_prZ, Category.id_comp]`. Establish `h1` using `congrArg (fun q : pullback G.hom x ⟶ G.left => q z) (ha.trans e.symm)`. Simplify using `using h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem base_eq (p : ℕ) (a : Ym G x p ⟶ G.left) (ha : secZ G x p ≫ a = pullback.fst G.hom x)
     (y : Ym G x p) : a y = (prZ G x p ≫ pullback.fst G.hom x) y := by
@@ -250,7 +250,7 @@ variable {X0 : Scheme.{0}} (G : Over X0) {k : Type} [Field k] (x : Sp k ⟶ X0) 
   (L : LB G.left) (a : Ym G x p ⟶ G.left)
 
 /- English proof (translation)
-Introduce `y hy`. Use `show a y ∈ O`. Rewrite using `[base_eq G x p a ha]`. Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_pre (ha : secZ G x p ≫ a = pullback.fst G.hom x) (O : G.left.Opens) :
     prZ G x p ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ O) ≤ a ⁻¹ᵁ O := by
@@ -260,7 +260,7 @@ theorem le_pre (ha : secZ G x p ≫ a = pullback.fst G.hom x) (O : G.left.Opens)
   exact hy
 
 /- English proof (translation)
-Introduce `y hy`. Use `Set.mem_iInter.2 fun q => ?_` and prove the remaining obligations. Use `fin_cases q`. Conclude with `le_pre G x p a ha (L.U j) hy`. Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem le_chart (ha : secZ G x p ≫ a = pullback.fst G.hom x) (m : ℤ) (j : L.ι) :
     prZ G x p ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ L.U j) ≤
@@ -272,7 +272,7 @@ theorem le_chart (ha : secZ G x p ≫ a = pullback.fst G.hom x) (m : ℤ) (j : L
   · exact hy
 
 /- English proof (translation)
-Introduce `z hz`. Use `show (secZ G x p ≫ prZ G x p) z ∈ W`. Rewrite using `[secZ_prZ]`. Conclude with `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_sec (W : (pullback G.hom x).Opens) : W ≤ secZ G x p ⁻¹ᵁ (prZ G x p ⁻¹ᵁ W) := by
   intro z hz
@@ -281,9 +281,9 @@ theorem le_sec (W : (pullback G.hom x).Opens) : W ≤ secZ G x p ⁻¹ᵁ (prZ G
   exact hz
 
 /- English proof (translation)
-Take `⟨c, hc, -⟩` from `GlobalTheory.T.power_series_expansion_in_delta_unique X0 G k x p _ (((Ym G x p).presheaf.map (homOfLE (le_chart G x p L a ha (p : ℤ) j)).op).hom (C.s fun _ => j).val)`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hs` using `le_sec G x p (pullback.fst G.hom x ⁻¹ᵁ L.U j)`. Rewrite using `[← sec_sum G x p _ hs c, ← hc]`. Establish `h2` using `Scheme.Hom.map_appLE (secZ G x p) hs (homOfLE (le_chart G x p L a ha (p : ℤ) j)).op`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg (fun q => q.hom (C.s fun _ => j).val) h2).trans (hn j _)`.
+A detailed English derivation is pending.
 -/
 theorem chart_coef (ha : secZ G x p ≫ a = pullback.fst G.hom x)
     (C : LB.Gen (LB.LinComb L (K := Fin 2) ![a, prZ G x p ≫ pullback.fst G.hom x] ![(p : ℤ), -(p : ℤ)]))
@@ -302,9 +302,9 @@ theorem chart_coef (ha : secZ G x p ≫ a = pullback.fst G.hom x)
   exact (congrArg (fun q => q.hom (C.s fun _ => j).val) h2).trans (hn j _)
 
 /- English proof (translation)
-Take `⟨u, hu, -⟩` from `GlobalTheory.T.power_series_expansion_in_delta_unique X0 G k x p _ (trU L a (prZ G x p ≫ pullback.fst G.hom x) j j' _ hA hB).val`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `hs` using `le_sec G x p (pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j')`. Rewrite using `[← sec_sum G x p _ hs u, ← hu]`. Establish `e : secZ G x p ≫ prZ G x p ≫ pullback.fst G.hom x = pullback.fst G.hom x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, secZ_prZ, Category.id_comp]`. Establish `h1` using `trU_pull' L a (prZ G x p ≫ pullback.fst G.hom x) j j' _ hA hB (secZ G x p) _ hs (pullback.fst G.hom x) (pullback.fst G.hom x) ha e le_rfl le_rfl`. Conclude with `congrArg Units.val (h1.trans (trU_congr _ _ _ _ _ _ _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tr_coef (ha : secZ G x p ≫ a = pullback.fst G.hom x) (j j' : L.ι)
     (hA : prZ G x p ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j') ≤ a ⁻¹ᵁ (L.U j ⊓ L.U j'))
@@ -324,11 +324,11 @@ theorem tr_coef (ha : secZ G x p ≫ a = pullback.fst G.hom x) (j j' : L.ι)
   exact congrArg Units.val (h1.trans (trU_congr _ _ _ _ _ _ _))
 
 /- English proof (translation)
-Establish `i₁ : prZ G x p ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j') ≤ prZ G x p ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ L.U j)` using `fun _ hy => hy.1`. Establish `i₂ : prZ G x p ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j') ≤ prZ G x p ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ L.U j')` using `fun _ hy => hy.2`. Establish `hV` using `le_inf (i₁.trans (le_chart G x p L a ha (p : ℤ) j)) (i₂.trans (le_chart G x p L a ha (p : ℤ) j'))`. Establish `hg` using `congrArg (res hV) (hC (fun _ => j) (fun _ => j'))`. Rewrite `hg` using `[map_mul, linComb_g L a _ (p : ℤ) j j' _ hV hA hB, zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg'` using `congrArg Units.val hg`. Rewrite `hg'` using `[Units.val_mul, Units.val_pow_eq_pow_val, res_value_compose _ _ (le_chart G x p L a ha (p : ℤ) j) i₁, res_value_compose _ _ (le_chart G x p L a ha (p : ℤ) j') i₂, h₁, h₂, hu, sum_res G x p inf_le_left i₁, sum_res G x p inf_le_right i₂]`. Use `GlobalTheory.T.truncated_expansion_pth_power_coeff _ _ ((prZ G x p).app _).hom (dltOn G x p _) p (cast_p G x _ _ p) (dltOn_pow G x p _) ?_ u _ _ u₀ ?_ ?_ hg'` and prove the remaining obligations. Introduce `c c' e`. Conclude with `(GlobalTheory.T.power_series_expansion_in_delta_unique X0 G k x p _ _).unique rfl e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, map_one]`. Rewrite using `[e₂, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem overlap [Fact p.Prime] [CharP k p] (ha : secZ G x p ≫ a = pullback.fst G.hom x)
     (C : LB.Gen (LB.LinComb L (K := Fin 2) ![a, prZ G x p ≫ pullback.fst G.hom x] ![(p : ℤ), -(p : ℤ)]))
@@ -376,7 +376,7 @@ def tU (W : (pullback G.hom x).Opens) (s : Γ(pullback G.hom x, W)) : Γ(Ym G x 
     linear_combination (-(((prZ G x 1).app W).hom s) ^ 2) * dltOn_pow G x 1 (prZ G x 1 ⁻¹ᵁ W)
 
 /- English proof (translation)
-Use `show ((Ym G x 1).presheaf.map (homOfLE h').op).hom (1 + dltOn G x 1 _ * ((prZ G x 1).app W).hom s) = _`. Rewrite using `[map_add, map_one, map_mul, dltOn_res]`. Use `congr 2`. Use `(prZ G x 1).naturality (homOfLE h).op` as an intermediate fact. Conclude with `(congrArg (fun q => q.hom s) this).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tU_res {W W' : (pullback G.hom x).Opens} (h : W' ≤ W) (h' : prZ G x 1 ⁻¹ᵁ W' ≤ prZ G x 1 ⁻¹ᵁ W)
     (s : Γ(pullback G.hom x, W)) :
@@ -389,7 +389,7 @@ theorem tU_res {W W' : (pullback G.hom x).Opens} (h : W' ≤ W) (h' : prZ G x 1 
   exact (congrArg (fun q => q.hom s) this).symm
 
 /- English proof (translation)
-Use `ext`. Use `show (b.app O).hom u.val = (b.appLE O _ h).hom u.val`. Rewrite using `[Scheme.Hom.app_eq_appLE]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullU_eq {X Y : Scheme.{0}} (b : Y ⟶ X) (O : X.Opens) (u : Γ(X, O)ˣ) (h : b ⁻¹ᵁ O ≤ b ⁻¹ᵁ O) :
     pullU b O u = Units.map (b.appLE O _ h).hom.toMonoidHom u := by
@@ -398,24 +398,24 @@ theorem pullU_eq {X Y : Scheme.{0}} (b : Y ⟶ X) (O : X.Opens) (u : Γ(X, O)ˣ)
   rw [Scheme.Hom.app_eq_appLE]
 
 /- English proof (translation)
-Take the linear combination `(-(S - S') * S') * h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ring_step {R : Type*} [CommRing R] (d S S' : R) (h : d ^ (1 + 1) = 0) :
     1 + d * S = (1 + (S - S') * d) * (1 + d * S') := by
   linear_combination (-(S - S') * S') * h
 
 /- English proof (translation)
-Establish `e : trY G x p hp ≫ prZ G x p ≫ pullback.fst G.hom x = prZ G x 1 ≫ pullback.fst G.hom x`. Rewrite using `[← Category.assoc, trY_prZ]`. Rewrite using `[e]`. Use `GlobalTheory.T.line_bundle_cocycle_pullback_transform _ _ L hL _ _ ?_ (fun j => tU G x _ (s j)) ?_` and prove the remaining obligations. Introduce `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `base_eq G x p a ha (trY G x p hp y)`. Establish `h'` using `congrArg (fun q : Ym G x 1 ⟶ G.left => q y) e`. Simplify using `only [Scheme.Hom.comp_apply] at h h' ⊢`. Rewrite using `[h, h']`. Introduce `j j' h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : prZ G x 1 ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j') ≤ trY G x p hp ⁻¹ᵁ (prZ G x p ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j'))`. Introduce `y hy`. Use `show (trY G x p hp ≫ prZ G x p) y ∈ (pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j')`. Rewrite using `[trY_prZ]`. Conclude with `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `trU_pull' L a (prZ G x p ≫ pullback.fst G.hom x) j j' _ (hA j j') (hB j j') (trY G x p hp) _ hs (trY G x p hp ≫ a) (prZ G x 1 ≫ pullback.fst G.hom x) rfl e h le_rfl`. Establish `hv` using `congrArg Units.val hU`. Establish `hv' : (trU L (trY G x p hp ≫ a) (prZ G x 1 ≫ pullback.fst G.hom x) j j' (prZ G x 1 ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j')) h le_rfl).val = ((prZ G x 1).app _).hom (cu j j' 0) + ((prZ G x 1).app _).hom (cu j j' ⟨1, by omega⟩) * dltOn G x 1 _`. Rewrite using `[← hv, ← tr_sum G x p hp _ hs, ← hcu]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hv'` using `[h0, h1, map_one, map_sub]`. Establish `hT : Units.map ((trY G x p hp ≫ a).appLE _ _ h).hom.toMonoidHom (L.g j j') * (pullU (prZ G x 1 ≫ pullback.fst G.hom x) _ (L.g j j'))⁻¹ = trU L (trY G x p hp ≫ a) (prZ G x 1 ≫ pullback.fst G.hom x) j j' _ h le_rfl`. Rewrite using `[pullU_eq _ _ _ le_rfl]`. Both sides reduce to the same expression. Rewrite using `[hT]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₁` using `tU_res G x (inf_le_left : pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j' ≤ _) (fun _ hy => hy.1) (s j)`. Establish `t₂` using `tU_res G x (inf_le_right : pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j' ≤ _) (fun _ hy => hy.2) (s j')`. Use `ext`. Use `t₁.trans (Eq.trans ?_ (congrArg₂ (· * ·) hv'.symm t₂.symm))` and prove the remaining obligations. Conclude with `ring_step _ _ _ (dltOn_pow G x 1 _)`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem second (hp : 1 ≤ p) (hL : L.IsLB) (ha : secZ G x p ≫ a = pullback.fst G.hom x)
     (s : ∀ j, Γ(pullback G.hom x, pullback.fst G.hom x ⁻¹ᵁ L.U j))
@@ -476,11 +476,11 @@ namespace PositivityTheory.HtPt.Qam
 open CoreP in
 
 /- English proof (translation)
-Introduce `X0 G k _ x p _ _ hp _ _ hZ L hL a b hb ha C hC hn j₀ _ hr`. Substitute `hb` using the available equality. Use `choose cf hcf hcf0 using chart_coef G x p L a ha C hn`. Establish `hA : ∀ j j', prZ G x p ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j') ≤ a ⁻¹ᵁ (L.U j ⊓ L.U j')` using `fun j j' => le_pre G x p a ha (L.U j ⊓ L.U j')`. Establish `hB : ∀ j j', prZ G x p ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j') ≤ (prZ G x p ≫ pullback.fst G.hom x) ⁻¹ᵁ (L.U j ⊓ L.U j')` using `fun _ _ _ hy => hy`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose cu hcu hcu0 using fun j j' => tr_coef G x p L a ha j j' (hA j j') (hB j j')`. Establish `hnp : ∀ j j', cu j j' ⟨1, Nat.succ_lt_succ (Nat.Prime.pos Fact.out)⟩ ^ p = ((pullback G.hom x).presheaf.map (homOfLE (inf_le_left : pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j' ≤ _)).op).hom (cf j (Fin.last p)) - ((pullback G.hom x).presheaf.map (homOfLE (inf_ …`. Introduce `j j'`. Rewrite using `[overlap G x p L a ha C hC j j' (cf j) (cf j') (hcf j) (hcf j') (hcf0 j) (hcf0 j') (hA j j') (hB j j') (cu j j') (hcu j j') (hcu0 j j')]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr'⟩` from `hr (cf j₀) (le_chart G x p L a ha (p : ℤ) j₀) (hcf j₀)`. Take `⟨s, hs⟩` from `GlobalTheory.T.artin_schreier_cocycle_root (pullback G.hom x) p hZ L.ι (fun j => pullback.fst G.hom x ⁻¹ᵁ L.U j) (fun j j' => cu j j' ⟨1, Nat.succ_lt_succ (Nat.Prime.pos Fact.out)⟩) (fun j => cf j (Fin.last p)) j₀ hnp ⟨r, hr'⟩`. Conclude with `second G x p L a hp hL ha s cu hA hB hcu hcu0 hs`.
+A detailed English derivation is pending.
 -/
 theorem core_firstOrder : ∀ (X0 : Scheme.{0}) (G : Over X0) (k : Type) [Field k] (x : Sp k ⟶ X0) (p : ℕ) [Fact p.Prime] [CharP k p] (hp : 1 ≤ p) [IsIntegral (pullback G.hom x)] [CharP (pullback G.hom x).functionField p], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (pullback G.hom x) → ∀ (L : LB G.left), L.IsLB → ∀ (a b : Ym G x p ⟶ G.left), b = prZ G x p ≫ pullback.fst G.hom x → secZ G x p ≫ a = pullback.fst G.hom x → ∀ (C : LB.Gen (LB.LinComb L (K := Fin 2) ![a, b] ![(p : ℤ), -(p : ℤ)])), C.IsGen → (∀ (j : L.ι) (h : pullback.fst G.hom x ⁻¹ᵁ L.U j ≤ secZ G x p ⁻¹ᵁ LB.wchart L (K := Fin 2) ![a, b] (fun _ => j)), ((secZ G x p).appLE _ _ h).hom (C.s fun _ => j).val = 1) → ∀ (j₀ : L.ι) [Nonempty (pullback.fst G.hom x ⁻¹ᵁ L.U j₀)], (∀ (c : Fin (p + 1) → Γ(pullback G.hom x, pullback.fst G.hom x ⁻¹ᵁ L.U j₀)) (h : prZ G x p ⁻¹ᵁ (pullback.fst G.hom x ⁻¹ᵁ L.U j₀) ≤ LB.wchart L (K := Fin 2) ![a, b] (fun _ => j₀)), ((Ym G x p).presheaf.map (homOfLE h).op).hom (C.s fun _ => j₀).val = ∑ i, ((prZ G x p).app _).hom (c i) * dltOn G x p _ ^ (i : ℕ) → ∃ r : (pullback G.hom x).functionField, r ^ p = ((pullback G.hom x).germToFunctionField _).hom (c (Fin.last p))) → ∃ c : LB.Gen (LB.LinComb L (K := Fin 2) ![trY G x p hp ≫ a, trY G x p hp ≫ b] ![1, -1]), c.IsGen := by
   intro X0 G k _ x p _ _ hp _ _ hZ L hL a b hb ha C hC hn j₀ _ hr

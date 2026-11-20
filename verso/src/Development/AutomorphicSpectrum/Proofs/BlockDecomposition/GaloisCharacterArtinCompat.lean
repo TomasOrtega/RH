@@ -11,7 +11,7 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.HeckeLocal
 
 /- English proof (translation)
-Rewrite using `[h _ σ hx, infPow_localIdele, inv_one, mul_one, lPow_localIdele]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isLAdicOf_localIdele {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (art : Ideles E →* Gab E Ω) (χ : HChar E) (n : (E →+* ℂ) → ℤ)

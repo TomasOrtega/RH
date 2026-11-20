@@ -16,13 +16,13 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.QChi.NearWd
 
 /- English proof (translation)
-Introduce `x hx`. Establish `e1 : g (g⁻¹ (g' x)) = g' x` using `by show (g * g⁻¹) (g' x) = g' x`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Establish `e : (((qOf P : ℕ) : E) ^ c)⁻¹ • (g' x - g x) = g ((((qOf P : ℕ) : E) ^ c)⁻¹ • ((g⁻¹ * g') x - x))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[map_smul, map_sub]`. Use `show _ = _ • (g (g⁻¹ (g' x)) - g x)`. Rewrite using `[e1]`. Rewrite using `[e]`. Use `(hg _).2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[stdAt, mem_localization_standardLattice]`. Introduce `l`. Establish `hs` using `GlobalTheory.TopStep.apply_eq_sum ((g⁻¹ * g').toLinearMap - LinearMap.id) x l`. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearEquiv.coe_coe, Pi.sub_apply] at hs`. Rewrite using `[Pi.smul_apply, Pi.sub_apply, smul_eq_mul, hs, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_induction _ (IntAt P) (fun a b ha hb => ha.add hb) (by simpa using GlobalTheory.TopInv.intAt_nat (P := P) 0) fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `(hx j).mul (h j l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congE_of_cols {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (c : ℕ)
     (g g' : Sp E n ≃ₗ[E] Sp E n) (hg : g ∈ Formalism.L2.Col.GLint E n P)
@@ -48,7 +48,7 @@ theorem congE_of_cols {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ
   exact (hx j).mul (h j l)
 
 /- English proof (translation)
-Establish `e : GlobalTheory.TwU.ratA F (k⁻¹ * k') = (y⁻¹ * GlobalTheory.TwU.ratA F k)⁻¹ * (y⁻¹ * GlobalTheory.TwU.ratA F k')`. Rewrite using `[map_mul, map_inv]`. Use `group`. Rewrite using `[e]`. Conclude with `GlobalTheory.CongProd.congAt_mul_prod _ _ _ _ _ _ _ (GlobalTheory.TwU.congAt_inv_pos_depth _ _ _ _ _ _ hn h) h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congAt_of_near_same {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (Q : HeightOneSpectrum (𝓞 E)) (n : ℕ) (hn : 1 ≤ n) (y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (k k' : GL (Fin N) E)
@@ -59,15 +59,13 @@ theorem congAt_of_near_same {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   exact GlobalTheory.CongProd.congAt_mul_prod _ _ _ _ _ _ _ (GlobalTheory.TwU.congAt_inv_pos_depth _ _ _ _ _ _ hn h) h'
 
 /- English proof (translation)
-Establish `hL` using `hOk.idx_ok a`. Take `⟨r, hr, hrx, rfl⟩` from `hz`. Take `⟨r', hr', hrx', rfl⟩` from `hz'`. Establish `hgC : g ∈ prCat (Pr` using `B.primes X) (R := B.R) (I.cst a).sharp j P.1 ((I.idx a).h j b P) := ⟨r, hr, hrx⟩`. Establish `hgI : g ∈ Formalism.L2.Col.GLint B.fields.E (B.R.N j) P.1` using `hL.int j b P hgC`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `G : ↥(Formalism.L2.Col.GLint B.fields.E (B.R.N j) P.1)` to `⟨g, hgI⟩`. Distinguish the cases in `hP : P.1 ∈ (B.primes X).vGs`. Establish `hred : ∀ x ∈ stdAt B.fields.E (B.R.N j) P.1, redV P.1 (g x) = (GlobalTheory.TopStep.redGL _ P.1 G).1.mulVec (redV P.1 x)` using `fun x hx => GlobalTheory.TopStep.redV_redGL G hx`. Establish `hmem : GlobalTheory.TopStep.redGL _ P.1 G ∈ ((I.idx a).levG j b ⟨P.1, hP⟩).H` using `(hL.grpG j b ⟨P.1, hP⟩ _).2 ⟨g, hgC, hred⟩`. Establish `hκ : (GlobalTheory.TopStep.redGL _ P.1 G)⁻¹ ∈ ((I.idx a).levG j b ⟨P.1, hP⟩).H` using `inv_mem hmem`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hred' : ∀ x ∈ stdAt B.fields.E (B.R.N j) P.1, redV P.1 (g x) = (((GlobalTheory.TopStep.redGL _ P.1 G)⁻¹)⁻¹).1.mulVec (redV P.1 x)`. Introduce `x hx`. Rewrite using `[inv_inv]`. Conclude with `hred x hx`. Rewrite using `[chiInv_at_type I hOk a j b P hP g g r hr hrx _ hκ hred' (congE_refl _ _ _), chiInv_at_type I hOk a j b P hP g' g r' hr' hrx' _ hκ hred' hgg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ : P.1 ∈ I.Q a` using `(Finset.mem_union.mp P.2).resolve_left hP`. Establish `hH : G ∈ ((I.idx a).levQ j b ⟨P.1, hQ⟩).H`. Rewrite using `[hL.grpQ j b ⟨P.1, hQ⟩]`. Conclude with `Subgroup.mem_subgroupOf.2 hgC`. Establish `hg1 : g = ((G⁻¹)⁻¹).1` using `by rw [inv_inv]`.
-
-Rewrite using `[chiInv_at_twist I hOk a j hj b P hQ g g r hr hrx G⁻¹ (inv_mem hH) hg1 (congE_refl _ _ _), chiInv_at_twist I hOk a j hj b P hQ g' g r' hr' hrx' G⁻¹ (inv_mem hH) hg1 hgg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq_of_congE {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (a : I.ι) (j : ℕ) (hj : j < B.R.m) (b : (I.idx a).β j)
     (P : SBof I a) (g g' : Sp B.fields.E (B.R.N j) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N j)) (z z' : B.fields.K)
@@ -106,13 +104,13 @@ end GlobalTheory.Mem.Col2.QChi.NearWd
 namespace GlobalTheory.Mem.Col2.QChi
 
 /- English proof (translation)
-Introduce `B X I hOk l Z a v P x g g' z z' h h'`. Establish `hL` using `hOk.idx_ok a`. Establish `hm` using `hL.hm`. Establish `key : ∀ j, j = B.R.m - 2 + 1 → ∃ b : (I.idx a).β j, (I.idx a).h j b P = 1`. Introduce and unpack `j rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨b, -⟩` from `hL.last_uniq`. Conclude with `⟨b, hL.last_h b P⟩`. Take `⟨b, hb⟩` from `key (B.R.m - 1) (by omega)`. Take `⟨hz, hn⟩` from `h`. Take `⟨hz', hn'⟩` from `h'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hz`, `hz'` using `[← hb]`. Establish `hD : 1 ≤ (I.cst a).D P` using `hL.cst_ok.D_pos P`. Unfold `NearV at hn hn'`. Establish `hc` using `NearWd.congAt_of_near_same _ _ hD _ _ _ hn hn'`. Establish `hgI : g ∈ Formalism.L2.Col.GLint B.fields.E (B.R.N (B.R.m - 1)) P.1` using `hL.int _ b P ((GlobalTheory.TwU.exists_midLev_iff _ _ _ _ _ _ _ g).1 ⟨z, hz⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `NearWd.val_eq_of_congE I hOk a (B.R.m - 1) (by omega) b P g g' z z' hz hz' (NearWd.congE_of_cols P.1 _ g g' hgI (GlobalTheory.LevFrame.cols_of_congAt (sm I l Z) P.1 _ (g⁻¹ * g') (by rw [map_mul, map_inv]; exact hc)))`.
+A detailed English derivation is pending.
 -/
 theorem nearPair_val_unique : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι)
     (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) (P : SBof I a)

@@ -7,25 +7,21 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `hA l _ ι H _ _ hp P hP hcard`. Set `P' : Submodule (Qbar l) (H → Qbar l)` to `{ carrier := {f | (fun h => ι (f h)) ∈ P} zero_mem' := by show (fun h => ι ((0 : H → Qbar l) h)) ∈ P`. Use `P.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `h`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use the proof step `add_mem' := by`. Introduce `a b ha hb`. Use `show (fun h => ι ((a + b) h)) ∈ P`. Use `P.add_mem ha hb using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `h`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`. Introduce `r a ha`. Use `show (fun h => ι ((r • a) h)) ∈ P`. Use `P.smul_mem (ι r) ha using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `h`. Simplify using `}`. Set `j : P ≃+ P'` to `{ toFun := fun c => ⟨fun h => ι.symm (c.1 h), by show (fun h => ι (ι.symm (c.1 h))) ∈ P`. Simplify using `using c.2⟩`. Use `invFun := fun f => ⟨fun h => ι (f.1 h), f.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `left_inv := by`. Introduce `c`. Use extensionality with `h`. Simplify using the standard rewrite rules. Use `right_inv := by`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `f`. Use extensionality with `h`. Simplify using the standard rewrite rules. Use the proof step `map_add' := by`. Introduce `a b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `h`. Simplify using `}`. Establish `hrank : Module.rank ℂ P = Module.rank (Qbar l) P'`. Use `rank_eq_of_equiv_equiv (fun z => ι.symm z) j ι.symm.bijective ?_` and prove the remaining obligations. Introduce `r m`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use extensionality with `h`. Simplify using `[j, smul_eq_mul, map_mul]`. Establish `hfin : Module.finrank ℂ P = Module.finrank (Qbar l) P'`. Unfold `Module.finrank`. Rewrite using `[hrank]`.
-
-Establish `hinv : ∀ c ∈ P', ∀ g : H, (fun h => c (h * g)) ∈ P'`. Introduce `c hc g`. Conclude with `hP _ hc g`. Take `⟨c, hc, hbound⟩` from `hA (Qbar l) l H hp P' hinv (hfin ▸ hcard)`. Use `⟨fun h => ι (c h), hc, ?_⟩` and prove the remaining obligations.
-
-Introduce `h`. Simplify using `using hbound h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.algC_pf :
     UpperTheory.Gal.Gen.Alg → UpperTheory.Gal.Gen.AlgC := by

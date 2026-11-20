@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨L, hL, hfg, hsp⟩` from `GlobalTheory.SplitHeckeLabel.exists_coord_lattice V`. Establish `hd : finPart D (Formalism.L2.Theta.mt V g).det = (finMat D.sp.cm.sig V.gram g).det` using `RingHom.map_det (finPart D) (Formalism.L2.Theta.mt V g)`. Rewrite using `[hd, GlobalTheory.CharFin.integralFiniteAdeles_eq_adelicCompletion_integers]`. Rewrite `h` using `[← hL]`. Conclude with `GlobalTheory.DetTranslate.det_mem_int D.host.F L _ hfg hsp h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_intAE (V : HSp D) (g : GA D V)
     (h : ∀ y ∈ Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E (L0c D V),
@@ -32,7 +32,7 @@ theorem det_mem_intAE (V : HSp D) (g : GA D V)
   exact GlobalTheory.DetTranslate.det_mem_int D.host.F L _ hfg hsp h
 
 /- English proof (translation)
-Establish `h1 : finPart D e ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, he])`. Establish `h2 : finPart D (1 - e) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul]; congr 1; linear_combination he)`. Rewrite using `[RingHom.map_add, RingHom.map_mul]`. Conclude with `add_mem (GlobalTheory.SplitHeckeLabel.mul_mem_intA h1 hd) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part_mem_intAE {e d : AE D} (he : e * e = e) (hd : finPart D d ∈ intAE D) :
     finPart D (e * d + (1 - e)) ∈ intAE D := by
@@ -43,13 +43,13 @@ theorem part_mem_intAE {e d : AE D} (he : e * e = e) (hd : finPart D d ∈ intAE
   exact add_mem (GlobalTheory.SplitHeckeLabel.mul_mem_intA h1 hd) h2
 
 /- English proof (translation)
-Introduce `D V ε e he hε g hg`. Take `⟨h1, h0, -⟩` from `he`. Establish `hm : Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V g⁻¹ = 1`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : (Formalism.L2.Theta.mt V g).det * (Formalism.L2.Theta.mt V g⁻¹).det = 1`. Rewrite using `[← Matrix.det_mul, hm, Matrix.det_one]`. Establish `hf : finMat D.sp.cm.sig V.gram g * finMat D.sp.cm.sig V.gram g⁻¹ = 1`. Express the relevant statement in the definitionally equal form `(finHom V g).1 * (finHom V g⁻¹).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `i1` using `det_mem_intAE V g fun y hy => (hg.2.1 y).1 hy`. Establish `i2` using `det_mem_intAE V g⁻¹ fun y hy => (hg.2.1 _).2 (by rw [Matrix.mulVec_mulVec, hf, Matrix.one_mulVec]; exact hy)`. Generalize the expression as in `(Formalism.L2.Theta.mt V g⁻¹).det = d' at hd i2`. Establish `hx : (e * (Formalism.L2.Theta.mt V g).det + (1 - e)) * (e * d' + (1 - e)) = 1`. Take the linear combination `e * e * hd + (2 - (Formalism.L2.Theta.mt V g).det - d') * h1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨⟨_, _, hx, (mul_comm _ _).trans hx⟩, rfl, fun χ hχ => hχ _ ?_ (part_mem_intAE h1 i1) (part_mem_intAE h1 i2)⟩` and prove the remaining obligations. Rewrite using `[← hε]`. Express the relevant statement in the definitionally equal form `(e + cA D e) * (e * (Formalism.L2.Theta.mt V g).det + (1 - e) - 1) = e * (Formalism.L2.Theta.mt V g).det + (1 - e) - 1`. Take the linear combination `((Formalism.L2.Theta.mt V g).det - 1) * h1 + ((Formalism.L2.Theta.mt V g).det - 1) * h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_isDetAt_unram : ∀ (D : D7) (V : HSp D) (ε : AF D.host.F) (e : AE D), IsSplitIdem D e → e + cA D e = algebraMap (AF D.host.F) (AE D) ε → ∀ g ∈ KsphC V ∅, ∃ x, IsDetAt e V g x ∧ ∀ χ : (AE D)ˣ →* Circle, UnramAt ε χ → χ x = 1 := by
   intro D V ε e he hε g hg

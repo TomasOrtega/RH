@@ -11,7 +11,7 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.BetaLUniq
 
 /- English proof (translation)
-The claim follows from `betaLUniq_of'' gram_matrix_nondegenerate agreeOnH h3 h5`.
+A detailed English derivation is pending.
 -/
 theorem betaLUniq_of_aniso_eigen (h3 : WAniso) (h5 : EigenvalueLastLineOne) : PI.BetaLUniq :=
   betaLUniq_of'' gram_matrix_nondegenerate agreeOnH h3 h5

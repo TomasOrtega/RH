@@ -13,7 +13,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
 
 /- English proof (translation)
-Rewrite using `[(Chart.isLieComb_iff cv v w).1 h, ← Chart.isTan_iff]`. Use `List.prod_induction Chart.IsTan (fun a b ha hb => Chart.isTan_mul ha hb) Chart.isTan_one ?_` and prove the remaining obligations. Introduce `a ha`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 ha`. Conclude with `Chart.isTan_scale (cv i) ((Chart.isTan_iff _).2 (hv i))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isTangent_of_isLieComb {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {n : ℕ} {cv : Fin n → R}
     {v : Fin n → (epsR R ⟶ G)} {w : epsR R ⟶ G} (hv : ∀ i, IsTangent (v i)) (h : IsLieComb cv v w) :
@@ -25,19 +25,17 @@ theorem isTangent_of_isLieComb {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj
   exact Chart.isTan_scale (cv i) ((Chart.isTan_iff _).2 (hv i))
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y M R _ _ f x Λ`. Take `⟨v, hv, hb, -⟩` from `M.lie R f Λ.t' Λ.m2`. Establish `key : ∀ cv w, Λ.Vec cv w ↔ ∃ u', IsLieComb cv v u' ∧ u'.left ≫ Λ.m1.φ = w`. Introduce `cv w`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨v', u', h1, h2, h3⟩`. Establish `e : v' = v` using `funext fun j => Chart.inj_over Λ.m2.cart ((h1 j).trans (hv j).symm)`. Conclude with `⟨u', e ▸ h2, h3⟩`. Introduce and unpack `⟨u', h2, h3⟩`. Conclude with `⟨v, u', hv, h2, h3⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `⟨fun cv => ?_, fun cv w h => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `⟨(Chart.prodPts cv v).left ≫ Λ.m1.φ, (key _ _).2 ⟨_, (Chart.isLieComb_iff cv v _).2 rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨u', h2, h3⟩` from `(key _ _).1 hw`. Rewrite using `[← h3, (Chart.isLieComb_iff cv v _).1 h2]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u', h2, rfl⟩` from `(key _ _).1 h`. Use `⟨?_, (Chart.tan_push Λ.m1.cart u').1 (isTangent_of_isLieComb hb.1 h2)⟩` and prove the remaining obligations. Establish `e1 : Λ.m1.φ ≫ Xo.univ.t.G.hom = Λ.t'.G.hom ≫ x` using `Λ.m1.cart.1.w`. Establish `e2 : u'.left ≫ Λ.t'.G.hom = spMap (algebraMap R (DualNumber R))` using `Over.w u'`. Rewrite using `[Category.assoc, e1, ← Category.assoc, e2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `u' : epsR R ⟶ Λ.t'.G` to `Over.homMk (Λ.m1.cart.1.lift w (spMap (algebraMap R (DualNumber R))) hw.1) (Λ.m1.cart.1.lift_snd _ _ _)`. Establish `hu : u'.left ≫ Λ.m1.φ = w` using `Λ.m1.cart.1.lift_fst _ _ _`. Establish `ht : IsTangent u'` using `(Chart.tan_push Λ.m1.cart u').2 (by`. Use `hw.2` as an intermediate fact. Rewrite `this` using `[← hu]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this)`. Take `⟨cv, hc, huniq⟩` from `hb.2 u' ht`. Use `⟨cv, (key _ _).2 ⟨u', hc, hu⟩, fun cv' h' => ?_⟩` and prove the remaining obligations. Take `⟨u'', h2, h3⟩` from `(key _ _).1 h'`. Establish `e : u'' = u'` using `Chart.inj_over Λ.m1.cart (h3.trans hu.symm)`.
-
-Conclude with `huniq cv' (e ▸ h2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vec_bijective : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (M : MChart Y), ∀ (R : Type) [CommRing R] [Algebra c.F R] (f : Γ(Y.X, M.U) →+* R) (x : Sp R ⟶ Xo.X) (Λ : M.Lift f x), (∀ cv, ∃! w, Λ.Vec cv w) ∧ (∀ cv w, Λ.Vec cv w → IsTanAt x w) ∧ ∀ w, IsTanAt x w → ∃! cv, Λ.Vec cv w := by
   intro E _ _ _ H Dw l Xo c O _ β Y M R _ _ f x Λ

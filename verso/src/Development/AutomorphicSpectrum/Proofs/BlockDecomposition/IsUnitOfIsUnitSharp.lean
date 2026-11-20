@@ -10,11 +10,11 @@ open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison Crys
 namespace GlobalTheory.CompanionTheory.Untilt
 
 /- English proof (translation)
-Establish `hu : IsUnit (A.aToU1 a)`. Rewrite using `[CrystallineSemistableComparison.PAlg.sharpMap_eq]`. Conclude with `h.map _`. Take `⟨hsurj, hker⟩` from `sharp_map_surjective_ker A`. Take `⟨v, hv⟩` from `hu.exists_right_inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `hsurj v`. Establish `hmem : a * b - 1 ∈ Ideal.span {A.pi}`. Rewrite using `[← hker, RingHom.mem_ker, map_sub, map_mul, hv, map_one, sub_self]`. Establish `hjac : Ideal.span {A.pi} ≤ (⊥ : Ideal A.A).jacobson` using `by haveI : IsAdicComplete (Ideal.span {A.pi}) A.A := A.compl`. Conclude with `IsAdicComplete.le_jacobson_bot _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hunit` using `Ideal.mem_jacobson_bot.mp (hjac hmem) 1`. Rewrite `hunit` using `[mul_one, sub_add_cancel]`. Conclude with `isUnit_of_mul_isUnit_left hunit`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_isUnit_sharp {l : ℕ} [Fact l.Prime] (A : PAlg l) (a : A.A)
     (h : IsUnit (A.sharp a)) : IsUnit a := by

@@ -11,29 +11,27 @@ open GlobalTheory.Mem.LevFin
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Establish `hc : ((q ^ (j + 1) : ℕ) : E) ≠ 0` using `by rw [Nat.cast_pow]; exact pow_ne_zero _ hq`. Establish `hq' : ((q ^ (j + 1) : ℕ) : 𝓞 E) ≠ 0` using `fun h0 => hc (by simpa using congrArg (algebraMap (𝓞 E) E) h0)`. Establish `hfin : Finite (𝓞 E ⧸ Ideal.span {((q ^ (j + 1) : ℕ) : 𝓞 E)})` using `Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa only [Ne, Ideal.span_singleton_eq_bot] using hq')`. Establish `hz : ∀ l : ℕ, (q : E) ^ e l ≠ 0` using `fun l => zpow_ne_zero _ hq`. Establish `he : ∀ i : Fin N, (Pi.single i ((q : E) ^ e i.1) : Sp E N) ∈ LocE.sclLat P q N e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[GlobalTheory.CongLevel.mem_sclLat]`. Introduce `l`. Rewrite using `[Pi.single_apply]`. Use `split_ifs with hl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl, inv_mul_cancel₀ (hz _)]`. Conclude with `GlobalTheory.GO.ChRoot.intAt_one'`. Rewrite using `[mul_zero]`. Conclude with `GlobalTheory.GO.ChRoot.intAt_zero'`. Set `m : (Sp E N ≃ₗ[E] Sp E N) → Fin N → Fin N → E` to `fun h i l => ((q : E) ^ e l.1)⁻¹ * ((q : E) ^ j * h (Pi.single i ((q : E) ^ e i.1)) l)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hex : ∀ a : E, ∃ r : 𝓞 E, IntAt P a → IntAt P (((q ^ (j + 1) : ℕ) : E)⁻¹ * (a - algebraMap (𝓞 E) E r))`. Introduce `a`. Distinguish the cases in `ha : IntAt P a`. Take `⟨r, hr⟩` from `exists_int_congr hc ha`. Conclude with `⟨r, fun _ => hr⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨0, fun h => (ha h).elim⟩`. Use `choose r hr using hex`. Use `⟨Fin N → Fin N → 𝓞 E ⧸ Ideal.span {((q ^ (j + 1) : ℕ) : 𝓞 E)}, inferInstance, fun h i l => Ideal.Quotient.mk _ (r (m h i l)), fun a b ha hb hab x hx => ?_⟩` and prove the remaining obligations. Establish `hma : ∀ i l, IntAt P (m a i l)` using `fun i l => (GlobalTheory.CongLevel.mem_sclLat P q N e _).1 (ha _ (he i)).2 l`. Establish `hmb : ∀ i l, IntAt P (m b i l)` using `fun i l => (GlobalTheory.CongLevel.mem_sclLat P q N e _).1 (hb _ (he i)).2 l`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∀ i l, IntAt P (((q ^ (j + 1) : ℕ) : E)⁻¹ * (m b i l - m a i l))`. Introduce `i l`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 (congrFun (congrFun hab i) l))`. Establish `ht'` using `congrArg (algebraMap (𝓞 E) E) ht`. Simplify using `only [map_mul, map_natCast, map_sub] at ht'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts.
 
-Use `((hr _ (hmb i l)).add (intAt_neg (hr _ (hma i l)))).add (intAt_neg (IntAt.coe P t))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Generalize the expression as in `((q ^ (j + 1) : ℕ) : E) = c at *`. Clear the denominators using the available nonvanishing facts. Take the linear combination `ht'`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (q : E)⁻¹ • ((a⁻¹ * b) x - x) = a⁻¹ ((q : E)⁻¹ • (b x - a x))`. Rewrite using `[map_smul, map_sub, show a⁻¹ (a x) = x from LinearEquiv.symm_apply_apply _ x]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Use `(ha _ ?_).1` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `hx`, the goal using `[GlobalTheory.CongLevel.mem_sclLat]`. Introduce `l`. Establish `ex : x = ∑ i, (((q : E) ^ e i.1)⁻¹ * x i) • (Pi.single i ((q : E) ^ e i.1) : Sp E N)`. Use function extensionality and compare the values at `l`. Use `hz l.1` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Clear the denominators using the available nonvanishing facts. Establish `e2 : ((q : E) ^ e l.1)⁻¹ * ((q : E)⁻¹ • (b x - a x)) l = ∑ i, (((q : E) ^ e i.1)⁻¹ * x i) * (((q ^ (j + 1) : ℕ) : E)⁻¹ * (m b i l - m a i l))` using `by conv_lhs => rw [ex]`. Simplify using `only [map_sum, map_smul, Pi.smul_apply, Pi.sub_apply, Finset.sum_apply, smul_eq_mul, ← Finset.sum_sub_distrib, Finset.mul_sum, m]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `hz l.1` as an intermediate fact. Use `hz i.1` as an intermediate fact. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e2]`. Conclude with `Finset.sum_induction _ (IntAt P) (fun _ _ => IntAt.add) GlobalTheory.GO.ChRoot.intAt_zero' fun i _ => (hx i).mul (h1 i l)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_classes {N q : ℕ} (hq : (q : E) ≠ 0) (e : ℕ → ℤ) (j : ℕ) :
     ∃ (ι : Type) (_ : Finite ι) (f : (Sp E N ≃ₗ[E] Sp E N) → ι), ∀ h h' : Sp E N ≃ₗ[E] Sp E N,
@@ -107,13 +105,13 @@ theorem exists_classes {N q : ℕ} (hq : (q : E) ≠ 0) (e : ℕ → ℤ) (j : �
     (hx i).mul (h1 i l)
 
 /- English proof (translation)
-Introduce `X Pr R sharp j P`. Establish `hq` using `qOf_ne P`. Establish `hb : ∀ h : AutY X R j, admitted Pr j P h → ∀ x ∈ lamYat (Pr` using `Pr) (R := R) j P, h⁻¹ x ∈ lamYat (Pr := Pr) (R := R) j P ∧ ((qOf P : X.E) ^ j) • h x ∈ lamYat (Pr := Pr) (R := R) j P := by`. Introduce `h hh`. Distinguish the cases in `hP : P ∈ Pr.vGs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hs` using `hh.1 hP`. Introduce `x hx`. Use `⟨((inv_mem hs) x).2 hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.cast_pow]`. Conclude with `natCast_smul_mem _ _ ((hs x).2 hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(between_iff hP h).2 (hh.2 hP)`. Take `⟨ι, hι, f, hf⟩` from `exists_classes (P := P) (N := R.N j + cOf R j) hq (LocE.scE (R.N j) (if P ∈ Pr.vGs then fun i => i + 1 else 0)) j`. Use `⟨ι, hι, f, fun h h' hh hh' e => ?_⟩` and prove the remaining obligations. Establish `h1` using `hf h h' (hb h hh) (hb h' hh') e`. Establish `h2` using `hf h' h (hb h' hh') (hb h hh) e.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mem_Jat _ _ _ _ (stab_of_cong hq _ _ h1 ?_) h1` and prove the remaining obligations. Rewrite using `[mul_inv_rev, inv_inv]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_finite_index_of_adm_cosets : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (sharp : Bool) (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)), ∃ (ι : Type) (_ : Finite ι) (f : AutY X R j → ι), ∀ h h' : AutY X R j, admitted Pr j P h → admitted Pr j P h' → f h = f h' → h⁻¹ * h' ∈ Jat (Pr := Pr) sharp j P := by
   intro X Pr R sharp j P

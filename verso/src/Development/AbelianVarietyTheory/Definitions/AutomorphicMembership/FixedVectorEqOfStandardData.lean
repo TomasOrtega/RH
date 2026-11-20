@@ -29,11 +29,11 @@ def ReadsTop (u : B.Word) (a : I.ι) {Ch : Type} (chOf : (I.stp u a B.R.m).Cl �
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨k, hR, hk⟩` from `h`. Establish `h1 : (I.stp u a B.R.m).act c.1 1 ((I.stp u a B.R.m).rep c) = (I.stp u a B.R.m).rep c` using `@one_smul _ _ _ ((I.stp u a B.R.m).actD c.1) _`. Establish `e : y c * ((y c)⁻¹ * g) * k (chOf c) = g * k (chOf c)` using `by group`. Establish `hq : PtOf (y c * ((y c)⁻¹ * g) * k (chOf c)) ((I.stp u a B.R.m).act c.1 1 ((I.stp u a B.R.m).rep c)).1.1`. Rewrite using `[e, h1, hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk _ d g' g hd hg`. Establish `hx : (y c)⁻¹ * g ∈ U (chOf c)` using `(hR.lev c _ _ hq).2 ⟨1, map_one _, rfl, by rw [h1]⟩`. Establish `hχ` using `hR.chr c ⟨_, hx⟩ 1 (map_one _) hq`. Rewrite `hχ` using `[map_one, Units.val_one, map_one]`. Establish `e2 : g⁻¹ * y c = ((y c)⁻¹ * g)⁻¹` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e2 ▸ inv_mem hx, ?_⟩` and prove the remaining obligations. Establish `e3 : (⟨g⁻¹ * y c, e2 ▸ inv_mem hx⟩ : U (chOf c)) = (⟨_, hx⟩ : U (chOf c))⁻¹` using `Subtype.ext e2`. Rewrite using `[e3, map_inv, inv_eq_one]`. Conclude with `Units.ext hχ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ReadsTop.mem_chi {u : B.Word} {a : I.ι} {Ch : Type} {chOf : (I.stp u a B.R.m).Cl → Ch}
     {Lb : Ch → Submodule (𝓞 B.host.E) (Fin (B.R.N B.R.m) → B.host.E)} {U : Ch → Subgroup (GA B (B.R.N B.R.m))} {chi : ∀ β, U β →* ℂˣ}
@@ -59,7 +59,7 @@ theorem ReadsTop.mem_chi {u : B.Word} {a : I.ι} {Ch : Type} {chOf : (I.stp u a 
   exact Units.ext hχ
 
 /- English proof (translation)
-Introduce `c d g' g hc hd hg` and use `hβ c ▸ (h.mem_chi I l Z c d g' g hc hd hg).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ReadsTop.topBase {u : B.Word} {a : I.ι} {Ch : Type} {chOf : (I.stp u a B.R.m).Cl → Ch}
     {Lb : Ch → Submodule (𝓞 B.host.E) (Fin (B.R.N B.R.m) → B.host.E)} {U : Ch → Subgroup (GA B (B.R.N B.R.m))} {chi : ∀ β, U β →* ℂˣ}
@@ -74,7 +74,7 @@ def ReadsKTop (u : B.Word) (a : I.ι) {bad : Set (HeightOneSpectrum (𝓞 B.host
     (fun c => ((K (chOf c)).y ⟨c, rfl⟩).1) (fun c s => ((K (chOf c)).stabI ⟨c, rfl⟩ s).1)
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ hk => hk.1`.
+A detailed English derivation is pending.
 -/
 theorem ReadsKTop.readsK {u : B.Word} {a : I.ι} {bad : Set (HeightOneSpectrum (𝓞 B.host.F))} {Ch : Type} {chOf : (I.stp u a B.R.m).Cl → Ch}
     {K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) bad B.R.m le_rfl (fun c : {c // chOf c = β} => (I.chain l u a).stab B.R.m c.1)
@@ -108,14 +108,14 @@ def TopK (W : TwFormsTiedS (I.rec7 l Z) (I.tw l l0 Z) T J F) : Prop := ∀ u a (
 variable {I l Z l0} {W : TwFormsTiedS (I.rec7 l Z) (I.tw l l0 Z) T J F} {Lv : SymmetricTwistedLevelData W}
 
 /- English proof (translation)
-The claim follows from `(h.what₂ u a ha).lat c`.
+A detailed English derivation is pending.
 -/
 theorem StdP.lat_eq {P : TwPTiedS Lv} {E : TwPEvzS P} (h : I.StdP l Z l0 P E) (u a ha) (c : (I.stX a).Cl) :
     (P.cls u a ha).lat c = ((I.stX a).rep c).1.1.deco.1.N :=
   (h.what₂ u a ha).lat c
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearEquiv.ext fun z => (h.eWz u a z).trans (h'.eWz u a z).symm, fun ha => ⟨fun c => (h.lat_eq u a ha c).trans (h'.lat_eq u a ha c).symm, fun h1 => (h.z0 u a ha h1).trans (h'.z0 u a ha h1).symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem StdP.unique {P P' : TwPTiedS Lv} {E : TwPEvzS P} {E' : TwPEvzS P'} (h : I.StdP l Z l0 P E) (h' : I.StdP l Z l0 P' E') (u a) :
     E.eWz u a = E'.eWz u a ∧ ∀ ha, (∀ c, (P.cls u a ha).lat c = (P'.cls u a ha).lat c) ∧
@@ -134,13 +134,13 @@ def EntOk {D : D7} {Y : DivX D} {Tw : TwForms D} (E : KerEnt D Y Tw) (O : ∀ u 
   (∃ kf : ∀ u μ w, LevFree Y u μ w → GL3Columns.KFTie E (O u μ) w, ∀ u μ w (h : LevFree Y u μ w), (kf u μ w h).UnIs) ∧ AdaptedTh E O
 
 /- English proof (translation)
-The claim follows from `if_pos hj`.
+A detailed English derivation is pending.
 -/
 example (u : B.Word) (j : Fin (B.R.N B.R.m)) (hj : j.1 + 1 = B.R.N B.R.m) :
     TC.z0 X u j = ((X.piT u : 𝓞 B.host.E) : B.host.E) := if_pos hj
 
 /- English proof (translation)
-The claim follows from `if_neg hj`.
+A detailed English derivation is pending.
 -/
 example (u : B.Word) (j : Fin (B.R.N B.R.m)) (hj : j.1 + 1 ≠ B.R.N B.R.m) : TC.z0 X u j = 0 := if_neg hj
 

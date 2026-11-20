@@ -39,18 +39,18 @@ Both sides reduce to the same expression.
 theorem powPS_apply (g : PowerSeries R) : powPS ha g = PowerSeries.expand a (by omega) g := rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun r => PowerSeries.expand_C a (by omega) r`.
+A detailed English derivation is pending.
 -/
 theorem powPS_comp_C : (powPS ha).comp (PowerSeries.C (R := R)) = PowerSeries.C :=
   RingHom.ext fun r => PowerSeries.expand_C a (by omega) r
 
 /- English proof (translation)
-The claim follows from `PowerSeries.expand_X a (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem powPS_X : powPS ha (PowerSeries.X : PowerSeries R) = PowerSeries.X ^ a := PowerSeries.expand_X a (by omega)
 
 /- English proof (translation)
-Introduce `f g h` and use `by ext m have := congrArg (PowerSeries.coeff (a * m)) h simpa only [powPS_apply, PowerSeries.coeff_expand_mul] using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem powPS_injective : Function.Injective (powPS ha : PowerSeries R → PowerSeries R) := fun f g h => by
   ext m
@@ -58,7 +58,7 @@ theorem powPS_injective : Function.Injective (powPS ha : PowerSeries R → Power
   simpa only [powPS_apply, PowerSeries.coeff_expand_mul] using this
 
 /- English proof (translation)
-The claim follows from `PowerSeries.map_expand a (by omega) f g`.
+A detailed English derivation is pending.
 -/
 theorem map_powPS {S : Type} [CommRing S] (f : R →+* S) (g : PowerSeries R) :
     PowerSeries.map f (powPS ha g) = powPS ha (PowerSeries.map f g) := PowerSeries.map_expand a (by omega) f g
@@ -70,23 +70,23 @@ def powLS : LaurentSeries K →+* LaurentSeries K :=
     fun _ _ => mul_le_mul_iff_right₀ (Int.natCast_pos.2 (by omega))
 
 /- English proof (translation)
-The claim follows from `HahnSeries.embDomain_coeff`.
+A detailed English derivation is pending.
 -/
 theorem coeff_powLS_mul (f : LaurentSeries K) (n : ℤ) : (powLS ha f).coeff (a * n) = f.coeff n :=
   HahnSeries.embDomain_coeff
 
 /- English proof (translation)
-The claim follows from `HahnSeries.embDomain_of_notMem_range fun ⟨m, hm⟩ => h ⟨m, hm.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem coeff_powLS_of_not_dvd (f : LaurentSeries K) {n : ℤ} (h : ¬ (a : ℤ) ∣ n) : (powLS ha f).coeff n = 0 :=
   HahnSeries.embDomain_of_notMem_range fun ⟨m, hm⟩ => h ⟨m, hm.symm⟩
 
 /- English proof (translation)
-Use extensionality with `n`. Distinguish the cases in `h : (a : ℤ) ∣ n`. Take `⟨m, rfl⟩` from `h`. Rewrite using `[coeff_powLS_mul]`. Establish `ha' : (0 : ℤ) < a` using `Int.natCast_pos.2 (by omega)`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `lt_or_ge m 0 with hm | hm` into its components or cases. Simplify using `[PowerSeries.coeff_coe, hm, mul_neg_of_pos_of_neg ha' hm]`. Use `lift m to ℕ using hm`. Rewrite using `[← Nat.cast_mul, LaurentSeries.coeff_coe_powerSeries, LaurentSeries.coeff_coe_powerSeries, powPS_apply, PowerSeries.coeff_expand_mul]`. Rewrite using `[coeff_powLS_of_not_dvd ha _ h, PowerSeries.coeff_coe] split_ifs`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `(PowerSeries.coeff_expand_of_not_dvd a (by omega) g fun h' => h (Int.natCast_dvd.2 h')).symm`.
+A detailed English derivation is pending.
 -/
 theorem powLS_coe (g : PowerSeries K) :
     powLS ha (HahnSeries.ofPowerSeries ℤ K g) = HahnSeries.ofPowerSeries ℤ K (powPS ha g) := by
@@ -106,7 +106,7 @@ theorem powLS_coe (g : PowerSeries K) :
     · exact (PowerSeries.coeff_expand_of_not_dvd a (by omega) g fun h' => h (Int.natCast_dvd.2 h')).symm
 
 /- English proof (translation)
-Use `RingHom.ext fun g => ?_` and prove the remaining obligations. Use `show powLS ha (HahnSeries.ofPowerSeries ℤ _ (PowerSeries.map _ g)) = HahnSeries.ofPowerSeries ℤ _ (PowerSeries.map _ (powPS ha g))`. Rewrite using `[powLS_coe, map_powPS]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powLS_comp_toLaurent {p : ℕ} (F : DVF p) : (powLS ha).comp F.toLaurent = F.toLaurent.comp (powPS ha) := by
   refine RingHom.ext fun g => ?_
@@ -117,7 +117,7 @@ theorem powLS_comp_toLaurent {p : ℕ} (F : DVF p) : (powLS ha).comp F.toLaurent
 end Subst
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])`.
+A detailed English derivation is pending.
 -/
 theorem dualMap_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     dualMap (g.comp f) = (dualMap g).comp (dualMap f) :=
@@ -131,7 +131,7 @@ theorem coe_nsmul_apply {N : ℕ} {X : Type} [AddCommGroup X] [Module (𝓞 E) X
   simp
 
 /- English proof (translation)
-Rewrite using `[coe_nsmul_apply, Int.mul_ediv_assoc _ hk, zpow_mul, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_zpow_form {F : Type} [Field F] (uF : F) (n : ℕ) {N : ℕ} {X : Type} [AddCommGroup X] [Module (𝓞 E) X]
     (γ : levelForms H N X) (y z : X) {k : ℤ} (hk : k ∣ (γ : LinearMap.BilinForm ℤ X) y z) :
@@ -140,7 +140,7 @@ theorem pow_zpow_form {F : Type} [Field F] (uF : F) (n : ℕ) {N : ℕ} {X : Typ
   rw [coe_nsmul_apply, Int.mul_ediv_assoc _ hk, zpow_mul, zpow_natCast]
 
 /- English proof (translation)
-Use `⟨fun y hy => ?_, fun y z => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_nsmul_apply]`. Conclude with `mul_pos (by exact_mod_cast hn) (h.1 y hy)`. Rewrite using `[coe_nsmul_apply]`. Conclude with `Dvd.dvd.mul_left (h.2 y z) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_adm {N : ℕ} {X : Type} [AddCommGroup X] [Module (𝓞 E) X] {γ : levelForms H N X}
     (h : γ ∈ admitted H N X) {n : ℕ} (hn : 1 ≤ n) : n • γ ∈ admitted H N X := by
@@ -191,11 +191,11 @@ def reform {γ : levelForms H l.M' a₀.D₀.X} {h : γ ∈ admitted H l.M' a₀
 end Reform
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃, -⟩` from `hχ`. Establish `mem : ∀ (x : Sp (PowerSeries A)) (s : PowerSeries A), s ∈ (spMap (powPS (R` using `A) ha) x).asIdeal ↔ powPS ha s ∈ x.asIdeal := fun _ _ => Iff.rfl`. Establish `ev : ∀ x, (spMap (powPS (R` using `A) ha) ≫ χ) x = χ (spMap (powPS (R := A) ha) x) := fun _ => rfl`. Use `⟨?_, fun x => ?_, fun x hx => ?_, (Y.hasArcData_iff _ _ _ _ _).2 hW⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h₁, ← Category.assoc, ← spMap_comp, powPS_comp_C]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev]`. Use `(h₂ (spMap (powPS (R := A) ha) x)).trans ?_` and prove the remaining obligations. Rewrite using `[mem, powPS_X]`. Conclude with `not_congr ⟨fun h => x.isPrime.mem_of_pow_mem a h, fun h => Ideal.pow_mem_of_mem _ h a (by omega)⟩`. Rewrite using `[ev]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h₃ (spMap (powPS (R := A) ha) x) fun hm => hx ?_` and prove the remaining obligations. Rewrite `hm` using `[mem, map_mul, powPS_X, ← RingHom.comp_apply, powPS_comp_C]`. Break down `x.isPrime.mem_or_mem hm with hm | hm` into its components or cases. Conclude with `Ideal.mul_mem_right _ _ hm`. Conclude with `Ideal.mul_mem_left _ _ (x.isPrime.mem_of_pow_mem a hm)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isArcChart_pow {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     {Y : Model Xo c β} {A : Type} [CommRing A] [IsDomain A] {b : O →+* A} {a₀ a₁ : ArcIn Dw l β A b} {ϖ : A}
@@ -219,9 +219,9 @@ theorem isArcChart_pow {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type}
     · exact Ideal.mul_mem_left _ _ (x.isPrime.mem_of_pow_mem a hm)
 
 /- English proof (translation)
-Establish `cond : (spMap (dualMap g) ≫ w.left) ≫ G.hom = (epsR R').hom ≫ Out.specOf g`. Rewrite using `[Category.assoc, Over.w w]`. Conclude with `GlobalTheory.ArcCompare.dual_over g`. Use `⟨Over.homMk (pullback.lift _ _ cond ≫ bc.inv.left) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w bc.inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `pullback.lift_snd _ _ _`. Simplify using `only [Over.homMk_left]`. Rewrite using `[Category.assoc, ← Category.assoc bc.inv.left, ← Over.comp_left, Iso.inv_hom_id, Over.id_left, Category.id_comp]`. Conclude with `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_bc {R R' : Type} [CommRing R] [CommRing R'] (g : R →+* R') {G : Over (Sp R)} {G' : Over (Sp R')}
     (bc : G' ≅ (Over.pullback (Out.specOf g)).obj G) (w : epsR R ⟶ G) :
@@ -237,9 +237,9 @@ theorem exists_lift_bc {R R' : Type} [CommRing R] [CommRing R'] (g : R →+* R')
     exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Take `⟨a, φ, e, hfr, hfl⟩` from `h`. Use `⟨a, s.comp φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, spMap_comp, Category.assoc]`. Use `GlobalTheory.LocM.isFrame_bc E H Dw _ _ _ _ _ _ _ s _ _ hfr` as an intermediate fact. Rewrite using `[Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `GlobalTheory.DRFlag.Spez.sameFlag_bc s hfl` as an intermediate fact. Rewrite `this` using `[Vecs.bc_bc]`. Rewrite using `[Category.assoc]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem flagAt_bc {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W}
     {i₀ : Idx H p} (Z : Mdl Y i₀) {k k' : Type} [Field k] [Field k'] (s : k →+* k') {x : Sp k ⟶ Z.X}
@@ -258,13 +258,11 @@ variable {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ
   {Z : Mdl Y i₀} {F : DVF p} (t : CuspOn Z F)
 
 /- English proof (translation)
-Take `⟨h, ϖ, χ, Wt, w, hϖ, hχ, hw, hxχ, hv, hfl⟩` from `hx`. Establish `h' : a • γ ∈ t.Dir` using `smul_mem_adm h ha`. Establish `hI : (Ideal.span {(PowerSeries.X : PowerSeries F.O)}).map (powPS (R` using `F.O) ha) ≤ Ideal.span {PowerSeries.X} := by`. Rewrite using `[Ideal.map_span, Set.image_singleton, powPS_X]`. Conclude with `Ideal.span_singleton_le_span_singleton.2 (dvd_pow_self _ (by omega))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨W₁, hD, bc, -, hU, hm, he, w₁, hφ, hw₁, T⟩` from `ArcWit.baseChange GlobalTheory.allSixLaws.2.2.1.cubePull GlobalTheory.polBaseChange_holds GlobalTheory.UnifPullGuards.unifBaseChange_holds GlobalTheory.allSixLaws.2.2.2.2.1 (qkPullExists GlobalTheory.globalFns_holds) polOActPull (GlobalTheory.ArcPull.admissibleBase_powerSeries_sp …`. Set `W' : Wit (Y Z.i) (withForm t.a (a • γ) h') (spMap (powPS (R` to `F.O) ha) ≫ χ) := reform (f' := PowerSeries.C) (u := PowerSeries.X) h' W₁ (powPS_comp_C ha) (powPS_X ha)`. Use `choose w' hw' using fun τ k => exists_lift_bc (R := PowerSeries F.O) (R' := PowerSeries F.O) (G := Wt.t.G) (G' := W₁.t.G) (powPS (R := F.O) ha) bc (w τ k)`. Establish `hX : powPS (R` using `F.O) ha (PowerSeries.X : PowerSeries F.O) ∈ Ideal.span {PowerSeries.X} := hI (Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton_self _))`. Use `⟨h', ϖ, spMap (powPS (R := F.O) ha) ≫ χ, W', w', hϖ, isArcChart_pow ha hχ ⟨W'⟩, fun τ k => ?_, ?_, fun τ k => ?_, flagAt_bc Z _ hfl⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `GlobalTheory.T.admissible_forms_arc_compare E H Dw _ _ _ _ _ (Y Z.i) F.O _ t.a γ (a • γ) h h' χ (powPS (R := F.O) ha) Wt W' hD bc w₁ (powPS_comp_C ha) hX hU he hφ hw₁ T (t.e τ k) (w τ k) (w' τ k) (hw τ k) (hw' τ k)`. Rewrite using `[Category.assoc, hxχ, ← Category.assoc, ← Category.assoc, ← spMap_comp, ← spMap_comp, powLS_comp_toLaurent]`. Express the relevant statement in the definitionally equal form `spMap (dualMap (powLS ha)) ≫ v τ k = spMap (dualMap F.toLaurent) ≫ (w' τ k).left ≫ W₁.m.φ`. Rewrite using `[hv, hm]`. Simplify using `only [Category.assoc]`.
-
-Rewrite using `[reassoc_of% (hw' τ k), ← Category.assoc, ← Category.assoc (spMap (dualMap F.toLaurent)), ← spMap_comp, ← spMap_comp, ← dualMap_comp, ← dualMap_comp, powLS_comp_toLaurent]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsArc.pow {a : ℕ} (ha : 1 ≤ a) {γ : t.Forms} {x : Sp (LaurentSeries ↥F.K) ⟶ Z.X}
     {v : Vecs Dw (Y Z.i).t (LaurentSeries ↥F.K)} (hx : IsArc t γ x v) :

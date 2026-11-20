@@ -4,11 +4,11 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E A _ _ _ _ _ y htop hred`. Establish `hint : IsIntegral E y` using `Algebra.IsIntegral.isIntegral y`. Set `pb` to `PowerBasis.ofAdjoinEqTop hint htop`. Establish `hfin : Module.finrank E A = (minpoly E y).natDegree` using `pb.finrank`. Establish `hmin : minpoly E (LinearMap.mulLeft E y) = minpoly E y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `minpoly.algHom_eq (Algebra.lmul E A) (Algebra.lmul_injective (R := E) (A := A)) y`. Rewrite using `[← h]`. Both sides reduce to the same expression. Establish `hdvd : minpoly E y ∣ (LinearMap.mulLeft E y).charpoly` using `hmin ▸ LinearMap.minpoly_dvd_charpoly _`. Establish `heq : (LinearMap.mulLeft E y).charpoly = minpoly E y` using `eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) (LinearMap.charpoly_monic _) hdvd (by rw [LinearMap.charpoly_natDegree, hfin])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Establish `hsq : Squarefree (minpoly E y)` using `(minpoly.isRadical E y).squarefree (minpoly.ne_zero hint)`. Conclude with `PerfectField.separable_iff_squarefree.mpr hsq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charpoly_mulLeft_separable_of_adjoin_eq_top : ∀ (E A : Type) [Field E] [CharZero E] [CommRing A]
     [Algebra E A] [Module.Finite E A] (y : A), Algebra.adjoin E ({y} : Set A) = ⊤ → IsReduced A →

@@ -10,7 +10,7 @@ open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 
 /- English proof (translation)
-Introduce `S T f n`. Conclude with `⟨((VB.isFrame_freeFrame T (Fin n)).pullback f).iso (VB.isFrame_freeFrame S (Fin n))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.pullback_freeModule_iso_free : ∀ (S T : Scheme.{0}) (f : S ⟶ T) (n : ℕ), Nonempty ((Scheme.Modules.pullback f).obj (GlobalTheory.QCoh.freeModule (X := T) (Fin n)) ≅ GlobalTheory.QCoh.freeModule (X := S) (Fin n)) := by
   intro S T f n

@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.Mem.LiteralAutomorphy.GridRow
 
 /- English proof (translation)
-Use `(GlobalTheory.Mem.AtSize.eventually_sizeRows hL p).mono fun κ K _ H β hq => ⟨H β hq, ?_⟩` and prove the remaining obligations. Establish `h` using `β.val.dlog`. Rewrite `h` using `[β.sc]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_sizeRows_and_logDeriv_le (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL) : EvP fun _ K => ∀ β : BPt K, β.Is (IsGoodE p.s) →
     GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows β.O.L ∧ |β.O.L.logDerivativeAtOne| ≤ K.s.x ^ K.s.eps := by
@@ -31,15 +31,15 @@ theorem eventually_sizeRows_and_logDeriv_le (hL : GlobalTheory.Published.LocalLa
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `(eventually_sizeRows_and_logDeriv_le hL (prmR (NEa hL N (GridA CF)) S Γ)).mono fun κ K hk H β hq c b hl => ?_` and prove the remaining obligations. Take `⟨q, b', ⟨w⟩, he⟩` from `hl`. Establish `h2 : (⟨β.D, β.O⟩ : Σ D : D7, Obj D) = ⟨q.w.D q.Z, q.O⟩` using `congrArg (fun s : Σ (D : D7) (O : Obj D), GlobalTheory.Fc.Bundle D O c => (⟨s.1, s.2.1⟩ : Σ D : D7, Obj D)) he`. Establish `hL' : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows q.O.L ∧ |q.O.L.logDerivativeAtOne| ≤ K.s.x ^ K.s.eps` using `Eq.ndrec (motive := fun s : Σ D : D7, Obj D => GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows s.2.L ∧ |s.2.L.logDerivativeAtOne| ≤ K.s.x ^ K.s.eps) (H β hq) h2`. Establish `hsc0 : β.O.L.sc = K.s` using `β.sc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsc : q.O.L.sc = K.s` using `Eq.ndrec (motive := fun s : Σ D : D7, Obj D => s.2.L.sc = K.s) hsc0 h2`. Establish `hA : GridA CF K q.B q.f q.T` using `q.x.nx.2.2.down`. Establish `hG : GridAt K.s CF (q.w.st q.Z) q.f (q.T.set q.f)` using `hA _ _ _ _ _ _`. It suffices to establish `key : ∀ t : b'.Comparison₂, (b'.part t).pt.Ties → ∀ G₀ : GlobalTheory.BigTop.Fun.Grid (b'.part t).pt CF, ∃ G : GlobalTheory.BigTop.Fun.Grid (b'.part t).pt CF, G.pl.v0 = G₀.pl.v0 ∧ G.pl.w G.pl.v0 = G₀.pl.w G₀.pl.v0 ∧ (∀ a : Fin (q.w.D q.Z).R.m, G.ch.chiH (a.1 + 1) = G₀.ch.chiH (a. …`. Establish `h1` using `congrArg (fun s : Σ (D : D7) (O : Obj D), GlobalTheory.Fc.Bundle D O c => ∀ t : s.2.2.Comparison₂, (s.2.2.part t).pt.Ties → ∀ G₀ : GlobalTheory.BigTop.Fun.Grid (s.2.2.part t).pt CF, ∃ G : GlobalTheory.BigTop.Fun.Grid (s.2.2.part t).pt CF, G.pl.v0 = G₀.pl.v0 ∧ G.pl.w G.pl.v0 = G₀. …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Establish an intermediate fact.
 
-Conclude with `cast h1.symm key`. Introduce `t ht G₀`. Take `⟨hW1, hEx, hfin⟩` from `GlobalTheory.Mem.Top.Bl.weight_one_places_are_twist_places_of_witness hL _ K q c b' w hsc`. Take `⟨hC, hoff, hxi⟩` from `GlobalTheory.RowEx.bwit_frame_twists hL _ K q c b' w`. Establish `hset : GlobalTheory.RowClaim.HidaSetting q.O.L b'.B.Q.Rl.toRealDat b'.B.Q.F.lv2` using `GlobalTheory.PrimIn.rowTest_setting _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ b'.B t.pins hW1 hEx hL'.1 ht.eSer hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrec : GlobalTheory.SqTop.Rec q.O.L` using `⟨hL'.1, hset.host, hset.hF, by rw [hsc]; exact hL'.2⟩`. Establish `hb : (b'.part t).pt.Z.b = K.s.b`. Establish `h0 : (b'.part t).pt.Z.b = q.O.L.sc.b` using `rfl`. Rewrite using `[h0, hsc]`. Establish `gen : ∀ z : ℝ, z = K.s.b → ∀ G₀ : GlobalTheory.ChiGrid.GridData b'.B.Q.Rl.toRealDat.toLevCh ⟨1, CF, z⟩, ∃ G : GlobalTheory.ChiGrid.GridData b'.B.Q.Rl.toRealDat.toLevCh ⟨1, CF, z⟩, G.pl.v0 = G₀.pl.v0 ∧ G.pl.w G.pl.v0 = G₀.pl.w G₀.pl.v0 ∧ (∀ a : Fin (q.w.D q.Z).R.m, G.ch.chiH (a.1 …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `z rfl G₀`. Take `⟨G, hk, hF⟩` from `@hG q.O.L hsc hrec _ _ _ _ _ _ _ _ _ b'.B.alg b'.B.Q.Rl.toRealDat b'.B.Q.F.lv2 hset hC hoff hxi G₀`. Conclude with `⟨G, congrArg Prod.fst hk, congrArg (fun x => x.2.1) hk, fun a => congrFun (congrArg (fun x => x.2.2) hk) a, hF⟩`. Conclude with `gen _ hb G₀`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rowE_full_grid (hL : GlobalTheory.Published.LocalLanglandsGL) (CF : ℝ) (N : NExt hL) (S : SExt) (Γ : GeoP) : RowE (IsGoodE (prmR (NEa hL N (GridA CF)) S Γ).s) (IsLinked (prmR (NEa hL N (GridA CF)) S Γ)) fun _ D O c b => ∀ t : b.Comparison₂, (b.part t).pt.Ties → ∀ G₀ : GlobalTheory.BigTop.Fun.Grid (b.part t).pt CF, ∃ G : GlobalTheory.BigTop.Fun.Grid (b.part t).pt CF, G.pl.v0 = G₀.pl.v0 ∧ G.pl.w G.pl.v0 = G₀.pl.w G₀.pl.v0 ∧ (∀ a : Fin D.R.m, G.ch.chiH (a.1 + 1) = G₀.ch.chiH (a.1 + 1)) ∧ Full (b.part t).pt.R.toRealDat G := by
   refine (eventually_sizeRows_and_logDeriv_le hL (prmR (NEa hL N (GridA CF)) S Γ)).mono fun κ K hk H β hq c b hl => ?_
@@ -80,13 +80,11 @@ theorem rowE_full_grid (hL : GlobalTheory.Published.LocalLanglandsGL) (CF : ℝ)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `RowE.of_all fun κ K β c b _ _ hl => ?_` and prove the remaining obligations. Take `⟨q, b', ⟨w⟩, he⟩` from `hl`. Establish `hsc : β.O.L.sc = K.s` using `β.sc`. Establish `hsc' : q.O.L.sc = K.s`. Use `congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => s.2.1.L.sc) he` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.symm.trans hsc`. Establish `e` using `congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => ∀ t : s.2.2.Comparison₂, (s.2.2.part t).pt.Ties → ∃ G₀ : GlobalTheory.BigTop.Fun.Grid (s.2.2.part t).pt CF, GlobalTheory.BigTop.Fun.FieldHas G₀ (Formalism.L2.Host.embLL0 s.1) ∧ GlobalTheory.LamTie.IsLamTieFull s.1.ntw (Glo …`. Use `cast e.symm ?_` and prove the remaining obligations. Introduce `t _`. Take `⟨nl⟩` from `hN _ _ _ _ _ _ _ _ _ _ _ _ _ q.x.nx.2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : GlobalTheory.HeightCounting.Up.ListPin (q.w.st q.Z).toD7 q.x.what₂.r.z.R.toRealDat.toLevCh CF K.s.b` using `nl.2.down`. Establish `h1` using `GlobalTheory.Mem.LiteralAutomorphy.PinPt.listPin_twArgs w.a hp`. Rewrite `h1` using `[eq_of_heq w.ax]`. Establish `h2` using `GlobalTheory.Mem.LiteralAutomorphy.PinPt.listPin_rpk w.y.y (rpkB b') w.y.eq h1`. Rewrite `h2` using `[← hsc']`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowE_pinned_grid (hL : GlobalTheory.Published.LocalLanglandsGL) (CF : ℝ) (N : NExt hL) (S : SExt) (Γ : GeoP) (hN : ∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (GlobalTheory.HeightCounting.Up.NEl hL CF K B f T w Z Wt p0 t nch n xd c)) : RowE (IsGoodE (prmR (NEa hL N (GridA CF)) S Γ).s) (IsLinked (prmR (NEa hL N (GridA CF)) S Γ)) fun _ D O c b => ∀ t : b.Comparison₂, (b.part t).pt.Ties → ∃ G₀ : GlobalTheory.BigTop.Fun.Grid (b.part t).pt CF, GlobalTheory.BigTop.Fun.FieldHas G₀ (Formalism.L2.Host.embLL0 D) ∧ GlobalTheory.LamTie.IsLamTieFull D.ntw (GlobalTheory.BigTop.Fun.lamOf G₀) := by
   refine RowE.of_all fun κ K β c b _ _ hl => ?_

@@ -18,11 +18,11 @@ def pairMap (n : ℕ) : Fin n ⊕ Pairs n → Pairs (n + 1)
   | .inr p => ⟨(p.1.1.succ, p.1.2.succ), Fin.succ_lt_succ_iff.2 p.2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro (j | ⟨⟨i, j⟩, h⟩) (j' | ⟨⟨i', j'⟩, h'⟩) hh <;>`. Simplify using `[pairMap, Subtype.ext_iff, Prod.ext_iff, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm]`. Introduce and unpack `⟨⟨i, j⟩, h⟩`. Proceed by induction on `i using Fin.cases with`.
+Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `zero`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact absurd h (lt_irrefl _)`. Consider the case `succ j => exact ⟨.inl j, rfl⟩`. Consider the case `succ i`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact absurd h (Fin.not_lt_zero _)`. Consider the case `succ j => exact ⟨.inr ⟨(i, j), Fin.succ_lt_succ_iff.1 h⟩, rfl⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pairMap_bijective (n : ℕ) : Function.Bijective (pairMap n) := by
   constructor
@@ -72,14 +72,14 @@ theorem splitE_symm_fst_succ {R K : Type} {n : ℕ} (q : R × (Fin n → K) × C
     ((splitE R K n).symm q).1 i.succ = q.2.2.1 i := rfl
 
 /- English proof (translation)
-Simplify using `[splitE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem splitE_symm_snd_inl {R K : Type} {n : ℕ} (q : R × (Fin n → K) × Coords R K n) (j : Fin n) :
     ((splitE R K n).symm q).2 (pairEquiv n (.inl j)) = q.2.1 j := by
   simp [splitE]
 
 /- English proof (translation)
-Simplify using `[splitE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem splitE_symm_snd_inr {R K : Type} {n : ℕ} (q : R × (Fin n → K) × Coords R K n) (p : Pairs n) :
     ((splitE R K n).symm q).2 (pairEquiv n (.inr p)) = q.2.2.2 p := by
@@ -106,9 +106,9 @@ def splitH (R K : Type) [TopologicalSpace R] [TopologicalSpace K] (n : ℕ) :
         exact (continuous_apply q).comp (continuous_snd.comp (continuous_snd.comp continuous_snd))
 
 /- English proof (translation)
-Establish `h1` using `measurePreserving_prodAssoc a b (c.prod d)`. Establish `h2` using `(measurePreserving_prodAssoc b c d).symm MeasurableEquiv.prodAssoc`. Establish `h3 : MeasurePreserving (Prod.map Prod.swap id) ((b.prod c).prod d) ((c.prod b).prod d)` using `(Measure.measurePreserving_swap).prod (MeasurePreserving.id d)`. Establish `h4` using `measurePreserving_prodAssoc c b d`. Establish `h5` using `(MeasurePreserving.id a).prod (h4.comp (h3.comp h2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h5.comp h1`.
+A detailed English derivation is pending.
 -/
 theorem shuffle_mp {A B C D : Type} [MeasurableSpace A] [MeasurableSpace B] [MeasurableSpace C]
     [MeasurableSpace D] (a : Measure A) (b : Measure B) (c : Measure C) (d : Measure D) [SFinite a]
@@ -124,9 +124,9 @@ theorem shuffle_mp {A B C D : Type} [MeasurableSpace A] [MeasurableSpace B] [Mea
   exact h5.comp h1
 
 /- English proof (translation)
-Establish `h1` using `measurePreserving_piFinSuccAbove (fun _ : Fin (n + 1) => lam) 0`. Establish `h2` using `measurePreserving_arrowCongr' (fun _ : Pairs (n + 1) => κ) (fun _ : Fin n ⊕ Pairs n => κ) (pairEquiv n).symm (MeasurableEquiv.refl K) (fun _ => MeasurePreserving.id κ)`. Establish `h3` using `measurePreserving_sumPiEquivProdPi (X := fun _ : Fin n ⊕ Pairs n => K) (fun _ : Fin n ⊕ Pairs n => κ)`. Establish `h4` using `h1.prod (h3.comp h2)`. Establish `h5` using `(shuffle_mp lam (Measure.pi fun _ : Fin n => lam) (Measure.pi fun _ : Fin n => κ) (Measure.pi fun _ : Pairs n => κ)).comp h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h5 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c`. Use `Prod.ext rfl (Prod.ext ?_ (Prod.ext ?_ ?_))` and prove the remaining obligations. Both sides reduce to the same expression. Use function extensionality and compare the values at `i show c.1 i.succ = c.1 (Fin.succAbove 0 i)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
@@ -169,9 +169,9 @@ def hermMat (σ : E →ₐ[F] E) (n : ℕ) (c : Coords R (R ⊗[F] E) n) : Matri
     if h' : j < i then sigR R σ (c.2 ⟨(j, i), h'⟩) else algebraMap R (R ⊗[F] E) (c.1 i)
 
 /- English proof (translation)
-Introduce `a b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Simplify using `only [hermMat, dif_pos h, dif_neg (not_lt_of_gt h)]`. Conclude with `GlobalTheory.GaussMean.OneVec.sigR_sigR R hσ _`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [hermMat, lt_irrefl, dif_neg, not_false_eq_true]`. Conclude with `GlobalTheory.GaussMean.OneVec.sigR_algebraMap R _`. Simplify using `[hermMat, h, not_lt_of_gt h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermMat_mem (hσ : IsCMExt F E σ) (n : ℕ) (c : Coords R (R ⊗[F] E) n) :
     hermMat R σ n c ∈ HermR R σ n := by
@@ -205,9 +205,7 @@ def chart (hσ : IsCMExt F E σ) (n : ℕ) : HermR R σ n ≃ Coords R (R ⊗[F]
 variable [TopologicalSpace R] [IsTopologicalRing R]
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousSMul R (R ⊗[F] E) := IsModuleTopology.toContinuousSMul R (R ⊗[F] E)`. Establish `: (algebraMap R (R ⊗[F] E) : R → R ⊗[F] E) = fun r => r • (1 : R ⊗[F] E)`. Use function extensionality and compare the values at `r`. Conclude with `Algebra.algebraMap_eq_smul_one r`.
-
-Rewrite using `[this]`. Conclude with `(continuous_id (X := R)).smul (continuous_const (y := (1 : R ⊗[F] E)))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_algebraMapK : Continuous (algebraMap R (R ⊗[F] E)) := by
   haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
@@ -239,14 +237,14 @@ def chartH (hσ : IsCMExt F E σ) (htr : Continuous (Algebra.trace R (R ⊗[F] E
         exact (continuous_algebraMapK R).comp ((continuous_apply i).comp continuous_fst)
 
 /- English proof (translation)
-Simplify using `[hermMat, splitE_symm_fst_zero, Algebra.TensorProduct.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermMat_zero_zero (n : ℕ) (q : R × (Fin n → R ⊗[F] E) × Coords R (R ⊗[F] E) n) :
     hermMat R σ (n + 1) ((splitE R (R ⊗[F] E) n).symm q) 0 0 = q.1 ⊗ₜ[F] (1 : E) := by
   simp [hermMat, splitE_symm_fst_zero, Algebra.TensorProduct.algebraMap_apply]
 
 /- English proof (translation)
-Establish `h : (0 : Fin (n + 1)) < j.succ` using `Fin.succ_pos j`. Simplify using `only [hermMat, dif_pos h]`. Conclude with `splitE_symm_snd_inl q j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermMat_zero_succ (n : ℕ) (q : R × (Fin n → R ⊗[F] E) × Coords R (R ⊗[F] E) n) (j : Fin n) :
     hermMat R σ (n + 1) ((splitE R (R ⊗[F] E) n).symm q) 0 j.succ = q.2.1 j := by
@@ -255,11 +253,9 @@ theorem hermMat_zero_succ (n : ℕ) (q : R × (Fin n → R ⊗[F] E) × Coords R
   exact splitE_symm_snd_inl q j
 
 /- English proof (translation)
-Distinguish the cases in `h : i < j`. Establish `h1 : i.succ < j.succ` using `Fin.succ_lt_succ_iff.2 h`. Simplify using `only [hermMat, dif_pos h, dif_pos h1]`. Conclude with `splitE_symm_snd_inr q ⟨(i, j), h⟩`. Establish `h1 : ¬ i.succ < j.succ` using `fun hh => h (Fin.succ_lt_succ_iff.1 hh)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h' : j < i`. Establish `h2 : j.succ < i.succ` using `Fin.succ_lt_succ_iff.2 h'`. Simplify using `only [hermMat, dif_neg h, dif_neg h1, dif_pos h', dif_pos h2]`. Conclude with `congrArg _ (splitE_symm_snd_inr q ⟨(j, i), h'⟩)`. Establish `h2 : ¬ j.succ < i.succ` using `fun hh => h' (Fin.succ_lt_succ_iff.1 hh)`.
-
-Simplify using `only [hermMat, dif_neg h, dif_neg h1, dif_neg h', dif_neg h2]`. Conclude with `congrArg _ (splitE_symm_fst_succ q i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermMat_succ_succ (n : ℕ) (q : R × (Fin n → R ⊗[F] E) × Coords R (R ⊗[F] E) n) (i j : Fin n) :
     hermMat R σ (n + 1) ((splitE R (R ⊗[F] E) n).symm q) i.succ j.succ = hermMat R σ n q.2.2 i j := by
@@ -279,21 +275,15 @@ theorem hermMat_succ_succ (n : ℕ) (q : R × (Fin n → R ⊗[F] E) × Coords R
 end Chart
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ R _ _ _ _ _ _ _ _ _ d b lam hlam n`. Take `⟨hKring, hKlc, hKsc, hKt2, hsig, htr, -, -, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`. Use `haveI := hKring`. Use `haveI := hKlc`. Use `haveI := hKsc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hKt2`. Use `haveI := hlam`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI hκ := (GlobalTheory.T.coordinate_haar_measure F E σ hσ R d b lam hlam).1`. Use `haveI hHerm : ∀ m, BorelSpace (HermR R σ m) := fun _ => ⟨rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Set `C` to `fun m => chartH (F := F) (E := E) (σ := σ) R hσ htr hsig m`. Use `haveI hsc : ∀ m, SecondCountableTopology (HermR R σ m) := fun m => (C m).secondCountableTopology`. Establish `hC : ∀ m, coordHerm R σ b lam m = ((Measure.pi fun _ : Fin m => lam).prod (Measure.pi fun _ : Pairs m => coordK R b lam)).map (C m).symm`. Introduce `m`. Use extensionality with `s hs`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(C m).symm.measurableEmbedding.map_apply]`. Use `show Measure.comap (C m) _ s = _`. Rewrite using `[(C m).measurableEmbedding.comap_apply]`. Use `congr 1`. Conclude with `(C m).toEquiv.image_eq_preimage_symm s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Set `e : (R × (Fin n → R ⊗[F] E) × HermR R σ n) ≃ₜ HermR R σ (n + 1)` to `((Homeomorph.refl R).prodCongr ((Homeomorph.refl _).prodCongr (C n))).trans ((splitH R (R ⊗[F] E) n).symm.trans (C (n + 1)).symm)`. Use `⟨e, fun p => ?_, fun p j => ?_, fun p i j => ?_, ?_⟩` and prove the remaining obligations. Conclude with `hermMat_zero_zero (σ := σ) R n _`. Conclude with `hermMat_zero_succ (σ := σ) R n _ j`. Use `(hermMat_succ_succ (σ := σ) R n _ i j).trans ?_` and prove the remaining obligations.
-
-Establish `h` using `congrArg Subtype.val ((chart R hσ n).left_inv p.2.2)`. Conclude with `congrFun (congrFun h i) j`. Establish `hmp` using `splitE_mp lam (coordK R b lam) n`. Establish `hmp2 : MeasurePreserving (C n).symm ((Measure.pi fun _ : Fin n => lam).prod (Measure.pi fun _ : Pairs n => coordK R b lam)) (((Measure.pi fun _ : Fin n => lam).prod (Measure.pi fun _ : Pairs n => coordK R b lam)).map (C n).symm)` using `⟨(C n).symm.continuous.measurable, rfl⟩`. Establish `hmp4` using `((MeasurePreserving.id lam).prod ((MeasurePreserving.id (Measure.pi fun _ : Fin n => coordK R b lam)).prod hmp2)).comp hmp`.
-
-Rewrite using `[hC n, hC (n + 1), ← hmp4.map_eq, Measure.map_map e.continuous.measurable hmp4.measurable]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Establish `hq : (C n) ((C n).symm ((splitE R (R ⊗[F] E) n) c).2.2) = ((splitE R (R ⊗[F] E) n) c).2.2` using `(C n).apply_symm_apply _`. Use `show (C (n + 1)).symm ((splitE R (R ⊗[F] E) n).symm (((splitE R (R ⊗[F] E) n) c).1, ((splitE R (R ⊗[F] E) n) c).2.1, (C n) ((C n).symm ((splitE R (R ⊗[F] E) n) c).2.2))) = _`.
-
-Rewrite using `[hq]`. Conclude with `congrArg _ ((splitE R (R ⊗[F] E) n).symm_apply_apply c)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R], ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ (lam : Measure R), lam.IsAddHaarMeasure → ∀ n : ℕ, ∃ e : (R × (Fin n → R ⊗[F] E) × HermR R σ n) ≃ₜ HermR R σ (n + 1), (∀ p, (e p : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) 0 0 = p.1 ⊗ₜ[F] (1 : E)) ∧ (∀ p j, (e p : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) 0 (Fin.succ j) = p.2.1 j) ∧ (∀ p i j, (e p : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) (Fin.succ i) (Fin.succ j) = (p.2.2 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) i j) ∧ (lam.prod ((Measure.pi fun _ => coordK R b lam).prod (coordHerm R σ b lam n))).map e = coordHerm R σ b lam (n + 1) := by
   intro F E _ _ _ _ _ σ hσ R _ _ _ _ _ _ _ _ _ d b lam hlam n

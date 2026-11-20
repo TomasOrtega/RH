@@ -5,27 +5,25 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Use `set G : Matrix (Fin r) (Fin r) ℝ := Matrix.of fun i j => (b (v i) (v j) : ℝ) with hG`. Establish `hint : ∀ m : Fin r → ℤ, 0 ≤ ∑ i, ∑ j, (m i : ℝ) * (m j : ℝ) * G i j`. Introduce `m`. Establish `key : (∑ i, ∑ j, m i * m j * b (v i) (v j) : ℤ) = b (∑ i, m i • v i) (∑ j, m j • v j)`. Simplify using `only [map_sum, LinearMap.sum_apply, map_zsmul, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hsymm (v i) (v j)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : (0:ℝ) ≤ ((∑ i, ∑ j, m i * m j * b (v i) (v j) : ℤ) : ℝ)`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hpos _` after adjusting the coercions. Simplify `h0` using `[hG]`. Establish `hrat : ∀ c : Fin r → ℚ, 0 ≤ ∑ i, ∑ j, (c i : ℝ) * (c j : ℝ) * G i j`. Introduce `c`. Use `set N : ℕ := ∏ i, (c i).den with hN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNpos : (0:ℝ) < N`. Establish `: 0 < N` using `Finset.prod_pos (fun i _ => (c i).den_pos)`. Conclude with `this` after adjusting the coercions. Establish `hm : ∀ i, ∃ k : ℤ, (k : ℝ) = N * (c i : ℝ)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩ : (c i).den ∣ N` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ i)`. Use `⟨(c i).num * t, ?_⟩` and prove the remaining obligations. Establish `h1 : ((c i).num : ℚ) = c i * (c i).den` using `(Rat.mul_den_eq_num (c i)).symm`. Establish `h2 : ((c i).num : ℝ) = (c i : ℝ) * (c i).den` using `by exact_mod_cast h1`. Rewrite using `[ht]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Use `choose m hm using hm`. Establish `h3` using `hint m`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h3` using `[hm]`. Establish `e : ∑ i, ∑ j, ((N:ℝ) * c i) * (N * c j) * G i j = (N:ℝ) ^ 2 * ∑ i, ∑ j, (c i : ℝ) * (c j : ℝ) * G i j`. Repeatedly rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h3` using `[e]`. Conclude with `(mul_nonneg_iff_of_pos_left (by positivity)).mp h3`. Establish `hreal : ∀ x : Fin r → ℝ, 0 ≤ ∑ i, ∑ j, x i * x j * G i j`. Introduce `x`. Establish `hd : DenseRange (Pi.map fun (_ : Fin r) (q : ℚ) => (q : ℝ))` using `DenseRange.piMap fun _ => Rat.denseRange_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `hd.induction_on (p := fun x : Fin r → ℝ => 0 ≤ ∑ i, ∑ j, x i * x j * G i j) x ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_le continuous_const (by fun_prop)`. Introduce `c`. Simplify `hrat c` using `[Pi.map]`. Use `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use extensionality with `i j`. Simplify using `[hG, Matrix.conjTranspose_apply, hsymm]`. Introduce `x`. Establish `e : star x ⬝ᵥ (G *ᵥ x) = ∑ i, ∑ j, x i * x j * G i j`. Simplify using `only [dotProduct, mulVec, star_trivial, Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hreal x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_posSemidef_of_int_form {X : Type} [AddCommGroup X] {r : ℕ}
     (b : LinearMap.BilinForm ℤ X) (hsymm : ∀ y z, b y z = b z y) (hpos : ∀ y, 0 ≤ b y y)

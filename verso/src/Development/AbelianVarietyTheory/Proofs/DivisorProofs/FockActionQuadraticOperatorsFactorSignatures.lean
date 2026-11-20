@@ -20,9 +20,9 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ι → ℕ}
 abbrev MD (P Q R S : ι → ℕ) (w : ι) : Type := Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ
 
 /- English proof (translation)
-Unfold `sumPl`. Rewrite using `[Finset.sum_eq_single w]`. Simplify using the standard rewrite rules. Introduce `b _ hb dsimp only`. Rewrite using `[Pi.single_eq_of_ne hb, heisOp_zero, atPl_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sumPl_singleD (w : ι) (M : MD P Q R S w) :
     sumPl (V := fun w => Pol (P w) (Q w) (R w) (S w))
@@ -39,25 +39,25 @@ def eS (w : ι) (a : Ix (P w) (Q w)) (b : Ix (R w) (S w)) (x : ℂ) : ∀ w', MD
   Pi.single w (Matrix.single a b x)
 
 /- English proof (translation)
-Simplify using `[eS, Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eS_ne (w : ι) (a : Ix (P w) (Q w)) (b : Ix (R w) (S w)) (x : ℂ) {w' : ι} (h : w' ≠ w) :
     eS w a b x w' = 0 := by
   simp [eS, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Simplify using `[eS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eS_same (w : ι) (a : Ix (P w) (Q w)) (b : Ix (R w) (S w)) (x : ℂ) :
     eS w a b x w = Matrix.single a b x := by
   simp [eS]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single w]`. Rewrite using `[eS_same, Finset.sum_eq_single a, Finset.sum_eq_single b]`. Simplify using `[Matrix.single_apply]`. Introduce `y _ hy`. Simplify using `[Matrix.single_apply, hy, Ne.symm hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `y _ hy`. Use `Finset.sum_eq_zero fun b' _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.single_apply, hy, Ne.symm hy]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `y _ hy`. Simplify using `[eS_ne w a b x hy]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_eS (w : ι) (a : Ix (P w) (Q w)) (b : Ix (R w) (S w)) (x : ℂ) (c : ∀ w', MD P Q R S w') :
     (∑ w', ∑ a', ∑ b', lineSign a' b' * eS w a b x w' a' b' * star (c w' a' b')) =
@@ -76,13 +76,13 @@ theorem sum_eS (w : ι) (a : Ix (P w) (Q w)) (b : Ix (R w) (S w)) (x : ℂ) (c :
   · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Use extensionality with `a b`. Simplify using `only [Finset.sum_apply, Matrix.sum_apply, Pi.add_apply, Pi.smul_apply, Matrix.add_apply, Matrix.smul_apply]`. Rewrite using `[Finset.sum_eq_single w]`. Simplify using `only [eS_same]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single a, Finset.sum_eq_single b]`. Simplify using `only [Matrix.single_apply, and_self, if_true, Complex.real_smul, mul_one]`. Conclude with `(Complex.re_add_im _).symm`. Introduce `y _ hy`. Simplify using `[Matrix.single_apply, hy, Ne.symm hy]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `y _ hy`. Use `Finset.sum_eq_zero fun b' _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.single_apply, hy, Ne.symm hy]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y _ hy`. Use `Finset.sum_eq_zero fun a' _ => Finset.sum_eq_zero fun b' _ => ?_` and prove the remaining obligations. Simplify using `[eS_ne _ _ _ _ (Ne.symm hy)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem decomp (c : ∀ w, MD P Q R S w) :
     c = ∑ w, ∑ a, ∑ b, ((c w a b).re • eS w a b 1 + (c w a b).im • eS w a b Complex.I) := by
@@ -116,7 +116,7 @@ def cv (i : Idx P Q R S) : ∀ w, MD P Q R S w :=
   if i.2.2.2 then eS i.1 i.2.1 i.2.2.1 Complex.I else eS i.1 i.2.1 i.2.2.1 1
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma]`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_idx {M : Type} [AddCommMonoid M] (f : Idx P Q R S → M) :
     ∑ i, f i = ∑ w, ∑ a, ∑ b, (f ⟨w, a, b, true⟩ + f ⟨w, a, b, false⟩) := by
@@ -124,11 +124,11 @@ theorem sum_idx {M : Type} [AddCommMonoid M] (f : Idx P Q R S → M) :
   simp only [Fintype.sum_prod_type, Fintype.sum_bool]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `φ.surjective x`. Establish `e1 : ∀ i, sympl (φ (cv i)) (φ c) • φ (cu i) = φ (sympl (φ (cv i)) (φ c) • cu i)` using `fun i => (map_smul φ _ _).symm`. Simplify using `only [e1, ← map_sum]`. Use `congr 1`. Use `conv_rhs => rw [decomp c]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_idx]`. Simplify using `only [cu, cv, if_true, Bool.false_eq_true, if_false, hφ, sum_eS]`. Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, lineSign_eq_sgn]`. Establish `h2` using `sgn_mul_self a b`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Simplify using `[Complex.mul_im, Complex.mul_re]`. Take the linear combination `(c w a b).re * h2`. Simplify using `[Complex.mul_im, Complex.mul_re]`. Take the linear combination `(c w a b).im * h2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dual {l : Type} [Fintype l] (φ : (∀ w, MD P Q R S w) ≃ₗ[ℝ] (l ⊕ l → ℝ))
     (hφ : ∀ c c', sympl (φ c) (φ c') = 2 * (∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b)).im)
@@ -159,7 +159,7 @@ open GlobalTheory.RealLift.QuadFock
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ι → ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Simplify using `only [cu, eS, if_true, Pi.smul_apply, Pi.single_eq_same, Matrix.smul_mul]`. Simplify using `[cu, eS, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cu_true_mul (Y : ∀ w, Mat (R w) (S w)) (w : ι) (a : Ix (P w) (Q w)) (b : Ix (R w) (S w)) (w' : ι) :
     cu (P := P) (Q := Q) ⟨w, a, b, true⟩ w' * (Y w')ᵀ =
@@ -170,7 +170,7 @@ theorem cu_true_mul (Y : ∀ w, Mat (R w) (S w)) (w : ι) (a : Ix (P w) (Q w)) (
   · simp [cu, eS, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Simplify using `only [cu, eS, Bool.false_eq_true, if_false, Pi.smul_apply, Pi.single_eq_same, Matrix.smul_mul]`. Simplify using `[cu, eS, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cu_false_mul (Y : ∀ w, Mat (R w) (S w)) (w : ι) (a : Ix (P w) (Q w)) (b : Ix (R w) (S w)) (w' : ι) :
     cu (P := P) (Q := Q) ⟨w, a, b, false⟩ w' * (Y w')ᵀ =
@@ -181,7 +181,7 @@ theorem cu_false_mul (Y : ∀ w, Mat (R w) (S w)) (w : ι) (a : Ix (P w) (Q w)) 
   · simp [cu, eS, h]
 
 /- English proof (translation)
-Simplify using `[cv, eS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cv_true (w : ι) (a : Ix (P w) (Q w)) (b : Ix (R w) (S w)) :
     cv (P := P) (Q := Q) (R := R) (S := S) ⟨w, a, b, true⟩ =
@@ -189,7 +189,7 @@ theorem cv_true (w : ι) (a : Ix (P w) (Q w)) (b : Ix (R w) (S w)) :
   simp [cv, eS]
 
 /- English proof (translation)
-Simplify using `[cv, eS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cv_false (w : ι) (a : Ix (P w) (Q w)) (b : Ix (R w) (S w)) :
     cv (P := P) (Q := Q) (R := R) (S := S) ⟨w, a, b, false⟩ =
@@ -203,13 +203,13 @@ namespace GlobalTheory.HoweD
 open GlobalTheory.RealLift.QuadFock GlobalTheory.HoweD.QuadFockD
 
 /- English proof (translation)
-Introduce `ι l _ _ _ _ P Q R S φ hφ Ψ hΨ Y hY Z hZ T`. Establish `hq` using `GlobalTheory.T.metaplecticQuadraticOperator_eq_sum_symplectic_dual l (Idx P Q R S) Z (fun i => φ (QuadFockD.cu i)) (fun i => φ (QuadFockD.cv i)) (QuadFockD.dual φ hφ)`. Establish `hop : sumPl (V` using `fun w => Pol (P w) (Q w) (R w) (S w)) (fun w => fockAct2 (P w) (Q w) (R w) (S w) (Y w)) = (4 * Real.pi * Complex.I : ℂ)⁻¹ • ∑ i : Idx P Q R S, (1 / 2 : ℂ) • (sumPl (V := fun w => Pol (P w) (Q w) (R w) (S w)) (fun w => heisOp (QuadFockD.cu i w * (Y w)ᵀ)) * sumPl (V := fun w => Pol …`. Rewrite using `[sum_idx]`. Simplify using `only [QuadFockD.cu_true_mul, QuadFockD.cu_false_mul, QuadFockD.cv_true, QuadFockD.cv_false, sumPl_singleD, heisOp_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `sumPl`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[GlobalTheory.T.fockAct2_eq_symmetrised_heisenbergQuadratic (P w) (Q w) (R w) (S w) (Y w) (hY w)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← atPlLin_apply, map_smul, map_sum, map_sub, map_add, atPlLin_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[lineSign_eq_sgn]`. Simplify using `only [smul_mul_assoc, mul_smul_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Use `module`. Rewrite using `[hop, hq]`. Use `clear hq hop hφ hY`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.mul_apply, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.add_apply, Module.End.mul_apply, map_smul, map_sum, map_add, hΨ, hZ]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quad_fockD : ∀ (ι l : Type) [Fintype ι] [DecidableEq ι] [Fintype l] [DecidableEq l] (P Q R S : ι → ℕ)
     (φ : (∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) ≃ₗ[ℝ] (l ⊕ l → ℝ)),

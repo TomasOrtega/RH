@@ -9,7 +9,7 @@ namespace Formalism.L2.SG.LocalCountModules.LocCnt0LAlg
 variable {E : Type} [CommRing E] (O : Subring E) (cj : E →+* E) {r : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast a => simp [h a, Pi.single_eq_of_ne (Fin.castSucc_lt_last a).ne]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem supp_inl (Y : Ix r → O) (h : ∀ a : Fin r, Y (Sum.inl a.castSucc) = 0) :
     (fun j => Y (Sum.inl j)) = Y (Sum.inl (Fin.last r)) • Pi.single (Fin.last r) 1 := by
@@ -19,7 +19,7 @@ theorem supp_inl (Y : Ix r → O) (h : ∀ a : Fin r, Y (Sum.inl a.castSucc) = 0
   | cast a => simp [h a, Pi.single_eq_of_ne (Fin.castSucc_lt_last a).ne]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast a => simp [h a, Pi.single_eq_of_ne (Fin.castSucc_lt_last a).ne]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem supp_inr (Y : Ix r → O) (h : ∀ a : Fin r, Y (Sum.inr a.castSucc) = 0) :
     (fun j => Y (Sum.inr j)) = Y (Sum.inr (Fin.last r)) • Pi.single (Fin.last r) 1 := by
@@ -29,14 +29,14 @@ theorem supp_inr (Y : Ix r → O) (h : ∀ a : Fin r, Y (Sum.inr a.castSucc) = 0
   | cast a => simp [h a, Pi.single_eq_of_ne (Fin.castSucc_lt_last a).ne]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem elim_eta (Y : Ix r → O) : Y = Sum.elim (fun j => Y (Sum.inl j)) (fun j => Y (Sum.inr j)) := by
   funext i
   cases i <;> rfl
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.eq, liftOf_spec, Submodule.Quotient.mk_smul, Submodule.Quotient.mk_smul, map_smul]`. Conclude with `congrArg (s • ·) he`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_e_mem {Z Z' : Matrix (Fin (r + 1)) (Fin (r + 1)) O} (f : MbMod Z →ₗ[O] MbMod Z')
     (he : f (eCl Z) = eCl Z') (s : O) :
@@ -45,7 +45,7 @@ theorem lift_e_mem {Z Z' : Matrix (Fin (r + 1)) (Fin (r + 1)) O} (f : MbMod Z �
   exact congrArg (s • ·) he
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.eq, liftOf_spec, hy, LinearEquiv.coe_toLinearMap, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_rep_mem {Z Z' : Matrix (Fin (r + 1)) (Fin (r + 1)) O} (f : MbMod Z ≃ₗ[O] MbMod Z')
     (y : Fin (r + 1) → O) (y₂ : Fin (r + 1) → O)

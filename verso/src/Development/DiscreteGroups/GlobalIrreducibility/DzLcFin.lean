@@ -9,15 +9,15 @@ open scoped Classical
 namespace DiscreteGroups.sglob.DzLc
 
 /- English proof (translation)
-Take `⟨E, hE⟩ : ∃ E : Module.End ℂ τ, E = ∑ u : U, τ.ρ (u : G)` from `⟨_, rfl⟩`. Rewrite using `[← hE]`. Establish `hinv : ∀ v : U, τ.ρ (v : G) * E = E`. Introduce `v`. Rewrite using `[hE, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv (Equiv.mulLeft v) _ _ fun u => ?_` and prove the remaining obligations. Simplify using `[map_mul]`. Establish `hsq : E * E = (Fintype.card U : ℂ) • E`. Combine the equalities or inequalities in the displayed calculation. Establish `htE : LinearMap.trace ℂ τ E = 0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hE, map_sum]`. Conclude with `h`. Establish `hc : (Fintype.card U : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Take `⟨P, hP⟩ : ∃ P : Module.End ℂ τ, P = (Fintype.card U : ℂ)⁻¹ • E` from `⟨_, rfl⟩`. Establish `hPP : P * P = P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, smul_mul_assoc, mul_smul_comm, hsq, smul_smul, smul_smul, mul_assoc, inv_mul_cancel₀ hc, mul_one]`. Establish `hproj : LinearMap.IsProj (LinearMap.range P) P` using `⟨fun x => LinearMap.mem_range_self P x, fun x hx => by`. Take `⟨y, rfl⟩` from `hx`. Conclude with `congrArg (fun f : Module.End ℂ τ => f y) hPP⟩`. Establish `htP : LinearMap.trace ℂ τ P = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hP, map_smul, htE, smul_zero]`. Rewrite `htP` using `[hproj.trace, Nat.cast_eq_zero, Submodule.finrank_eq_zero, LinearMap.range_eq_bot]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_rho_eq_zero {G : Type} [Group G] [Fintype G] (τ : FDRep ℂ G) (U : Subgroup G) {_ : Fintype U}
     (h : ∑ u : U, τ.character (u : G) = 0) : ∑ u : U, τ.ρ (u : G) = 0 := by
@@ -52,7 +52,7 @@ theorem sum_rho_eq_zero {G : Type} [Group G] [Fintype G] (τ : FDRep ℂ G) (U :
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Unfold `res`. Rewrite using `[← Finset.sum_filter, Finset.sum_subtype (p := fun x => x ∈ GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a)) _ (fun x => by rw [GlobalTheory.SerSys.TameGen.mem_unipRadical_iff ha]; simp) χ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_eq {n a : ℕ} (ha : a < n) (χ : Gn g n → ℂ) :
     res a (n - a) χ 1 1 = ((g : ℂ) ^ (a * (n - a)))⁻¹ *
@@ -62,9 +62,9 @@ theorem res_eq {n a : ℕ} (ha : a < n) (χ : Gn g n → ℂ) :
     (GlobalTheory.FiniteGL.twoBlocks n a)) _ (fun x => by rw [GlobalTheory.SerSys.TameGen.mem_unipRadical_iff ha]; simp) χ]
 
 /- English proof (translation)
-Use `sum_rho_eq_zero τ _ ?_` and prove the remaining obligations. Establish `hres` using `hτ.2.2 a h0 ha`. Rewrite `hres` using `[res_eq ha]`. Use `(mul_eq_zero.1 hres).resolve_left ?_` and prove the remaining obligations. Establish `: (g : ℂ) ≠ 0` using `by exact_mod_cast (Fact.out : g.Prime).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `inv_ne_zero (pow_ne_zero _ this)`.
+A detailed English derivation is pending.
 -/
 theorem sum_unip_eq_zero {n a : ℕ} (τ : FDRep ℂ (Gn g n)) (hτ : IsCusp τ.character) (h0 : 0 < a) (ha : a < n) :
     ∑ u : GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a), τ.ρ (u : Gn g n) = 0 := by

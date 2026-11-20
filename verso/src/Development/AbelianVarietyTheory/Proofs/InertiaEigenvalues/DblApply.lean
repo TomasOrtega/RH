@@ -19,7 +19,7 @@ def dbl (V W : HSp D) (f₁ f₂ : WO V W → ℂ) : WO (GlobalTheory.Doubling.d
   GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta W V (GlobalTheory.PairLift.dag V W f₂) (GlobalTheory.PairLift.dag V W f₁)
 
 /- English proof (translation)
-Simplify using `only [dbl, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta, GlobalTheory.PairLift.dag, Complex.conj_conj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dbl_apply (V W : HSp D) (f₁ f₂ : WO V W → ℂ) (x : WO (GlobalTheory.Doubling.dblSp W) V) :
     dbl V W f₁ f₂ x = starRingEnd ℂ (f₂ (GlobalTheory.PairLift.adjO V W (GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.resL W V x))) *

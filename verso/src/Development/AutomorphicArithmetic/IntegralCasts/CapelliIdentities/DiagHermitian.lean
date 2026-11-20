@@ -4,15 +4,15 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Hermiti
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FixedQuadraticMemBase
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n T hT`. Take `⟨-, hC, h2, hτ⟩` from `hCM`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hinv : ∀ x, σ (σ x) = x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hτ τ, hτ τ, star_star]`. Establish `hnr : ¬ NumberField.ComplexEmbedding.IsReal τ`. Introduce `hr`. Use `hC.isComplex (NumberField.InfinitePlace.mk τ)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[NumberField.InfinitePlace.isComplex_mk_iff]`. Conclude with `this hr`. Choose the witnesses or unpack the hypotheses as in `⟨α, hα⟩ : ∃ α, σ α ≠ α := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hnr` to reduce the goal to its premises. Rewrite using `[NumberField.ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Simplify using `only [NumberField.ComplexEmbedding.conjugate_coe_eq]`. Use `hτ τ x` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hcon x]`. Conclude with `this.symm`. Establish `hfix` using `UpperTheory.fixed_quadratic_mem_base h2 σ α hα`. Take `⟨g, D, h⟩` from `UpperTheory.hermitian_diagonalisation σ hinv hfix n T hT.1 hT.2`. Conclude with `⟨g, D, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Gka4.diag_hermitian :
     ∀ (F E : Type) [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [inst_3 : NumberField E]

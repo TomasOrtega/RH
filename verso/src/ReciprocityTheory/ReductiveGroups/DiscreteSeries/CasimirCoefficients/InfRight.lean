@@ -19,7 +19,7 @@ variable {n : ℕ}
 variable {ε : Fin n → Bool} {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Establish `h'` using `congrArg (fun w => c⁻¹ • w) h`. Simplify `h'` using `[smul_smul, inv_mul_cancel₀ hc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma smul_cancel_lemma {E : Type*} [AddCommGroup E] [Module ℂ E] {c : ℂ} (hc : c ≠ 0)
     {u v : E} (h : c • u = c • v) : u = v := by
@@ -27,15 +27,15 @@ private lemma smul_cancel_lemma {E : Type*} [AddCommGroup E] [Module ℂ E] {c :
   simpa [smul_smul, inv_mul_cancel₀ hc] using h'
 
 /- English proof (translation)
-Take `⟨hAs, hAb⟩` from `(inK_iff ε A).1 hA`. Establish `hH : IsBlock ε (Complex.I • A)`. Introduce `i j hij`. Rewrite using `[Matrix.smul_apply, hAb i j hij, smul_zero]`. Establish `hI : star Complex.I = -Complex.I` using `Complex.conj_I`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hHh : (Complex.I • A)ᴴ = Complex.I • A`. Rewrite using `[Matrix.conjTranspose_smul, hAs, hI, neg_smul_neg]`. Establish `h1` using `psM_inf_herm T μ hμ hx hH hHh`. Establish `e1 : Complex.I • A * x + x * (Complex.I • A) = Complex.I • (A * x + x * A)`. Rewrite using `[smul_mul_assoc, mul_smul_comm, smul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[e1]`. Establish `hs : fderiv ℂ (psM T μ) x (A * x) + fderiv ℂ (psM T μ) x (x * A) = -(T.dτ A * psM T μ x + psM T μ x * T.dτ A)`. Apply `smul_cancel_lemma Complex.I_ne_zero` to reduce the goal to its premises. Simplify `h1` using `only [map_smul, map_add, smul_mul_assoc, mul_smul_comm, smul_add, smul_neg]`. Establish `hd : fderiv ℂ (psM T μ) x (x * A) - fderiv ℂ (psM T μ) x (A * x) = psM T μ x * T.dτ A - T.dτ A * psM T μ x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← map_sub]`. Conclude with `infR_conj T μ hx hA`. Prove the components needed by the constructor for the conclusion. Apply `smul_cancel_lemma (two_ne_zero : (2 : ℂ) ≠ 0)` to reduce the goal to its premises. Rewrite using `[two_smul, two_smul]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `smul_cancel_lemma (two_ne_zero : (2 : ℂ) ≠ 0)` to reduce the goal to its premises. Rewrite using `[two_smul, two_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma infR_skew (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsMu lam μ)
     {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) {A : Matrix (Fin n) (Fin n) ℂ} (hA : inK ε A) :
@@ -81,9 +81,9 @@ lemma infR_skew (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsMu la
       _ = -(psM T μ x * T.dτ A) + -(psM T μ x * T.dτ A) := by abel
 
 /- English proof (translation)
-Take `⟨A, B, hA, hB, rfl, -⟩` from `block_decomp hY`. Establish `hA'` using `infR_skew T μ hμ hx hA`. Establish `hB'` using `infR_skew T μ hμ hx hB`. Prove the components needed by the constructor for the conclusion. Simplify using `only [mul_add, add_mul, mul_smul_comm, smul_mul_assoc, map_add, map_smul, hA'.1, hB'.1, neg_add, smul_neg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_add, add_mul, mul_smul_comm, smul_mul_assoc, map_add, map_smul, hA'.2, hB'.2, neg_add, smul_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psM_inf_right (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsMu lam μ) {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : x.PosDef) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : IsBlock ε Y) :

@@ -25,17 +25,17 @@ attribute [instance] Cos.ab Cos.md
 def Cos.d (K : Cos.{w} R) (n : ℕ) : K.X n →ₗ[R] K.X (n + 1) := ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • K.δ n i
 
 /- English proof (translation)
-Simplify using `only [Cos.d, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Cos.d_apply (K : Cos.{w} R) (n : ℕ) (x : K.X n) : K.d n x = ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • K.δ n i x := by
   simp only [Cos.d, LinearMap.sum_apply, LinearMap.smul_apply]
 
 /- English proof (translation)
-Rewrite using `[Cos.d_apply, Cos.d_apply]`. Simplify using `only [map_sum, map_zsmul, Finset.smul_sum, smul_smul]`. Rewrite using `[← Fintype.sum_prod_type']`. Use `Finset.sum_involution (fun p _ => (p.1.succAbove p.2, p.2.predAbove p.1)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨j, i⟩ _ dsimp only`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[K.rel, GlobalTheory.CatH.DSq.sign_swap, neg_smul, add_neg_cancel]`. Introduce and unpack `⟨j, i⟩ _ _ h`. Conclude with `Fin.succAbove_ne j i (congrArg Prod.fst h)`. Introduce `_ _`. Conclude with `Finset.mem_univ _`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨j, i⟩ _`. Simplify using `only [Fin.succAbove_succAbove_predAbove, Fin.predAbove_predAbove_succAbove]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Cos.dd (K : Cos.{w} R) (n : ℕ) (x : K.X n) : K.d (n + 1) (K.d n x) = 0 := by
   rw [Cos.d_apply, Cos.d_apply]
@@ -118,7 +118,7 @@ Both sides reduce to the same expression.
 theorem D_apply (x : ∀ p q, K.X p q) (p q : ℕ) : K.D x p q = K.Dh x p q + (-1 : ℤ) ^ p • K.Dv x p q := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p q`. Apply the tactic sequence `rcases p with _ | _ | p <;> rcases q with _ | _ | q <;>`. Simplify using `[D_apply, Dh, Dv, K.hh, K.vv, K.hv, pow_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem DD (x : ∀ p q, K.X p q) : K.D (K.D x) = 0 := by
   funext p q
@@ -132,9 +132,9 @@ def T (n : ℕ) : Submodule R (∀ p q, K.X p q) where
   smul_mem' c x hx p q h := by simp [hx p q h]
 
 /- English proof (translation)
-Introduce `p q h`. Apply the tactic sequence `rcases p with _ | p <;> rcases q with _ | q`. Simplify using `[D_apply, Dh, Dv]`. Simplify using `[D_apply, Dh, Dv, hx 0 q (by omega)]`. Simplify using `[D_apply, Dh, Dv, hx p 0 (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[D_apply, Dh, Dv, hx p (q + 1) (by omega), hx (p + 1) q (by omega)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem D_mem (n : ℕ) (x : ∀ p q, K.X p q) (hx : x ∈ K.T n) : K.D x ∈ K.T (n + 1) := by
   intro p q h
@@ -153,12 +153,12 @@ def sgl (p q : ℕ) : K.X p q →ₗ[R] (∀ p q, K.X p q) :=
   (LinearMap.single R (fun p => ∀ q, K.X p q) p).comp (LinearMap.single R (fun q => K.X p q) q)
 
 /- English proof (translation)
-Simplify using `[sgl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sgl_self (p q : ℕ) (x : K.X p q) : K.sgl p q x p q = x := by simp [sgl]
 
 /- English proof (translation)
-Distinguish the cases in `hp : p' = p`. Substitute `hp` using the available equality. Simplify using `[sgl, Pi.single_eq_of_ne (h.resolve_left fun h => h rfl)]`. Simplify using `[sgl, Pi.single_eq_of_ne hp]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sgl_ne {p q p' q' : ℕ} (x : K.X p q) (h : p' ≠ p ∨ q' ≠ q) : K.sgl p q x p' q' = 0 := by
   by_cases hp : p' = p
@@ -167,15 +167,15 @@ theorem sgl_ne {p q p' q' : ℕ} (x : K.X p q) (h : p' ≠ p ∨ q' ≠ q) : K.s
   · simp [sgl, Pi.single_eq_of_ne hp]
 
 /- English proof (translation)
-Establish `h1 : K.Dh (K.sgl p q x) = K.sgl (p + 1) q (K.dh p q x)`. Use function extensionality and compare the values at `a b`. Break down `a with _ | a` into its components or cases. Rewrite using `[K.sgl_ne _ (Or.inl (by omega))]; rfl`. Distinguish the cases in `h : a = p ∧ b = q`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨rfl, rfl⟩` from `h`. Simplify using `only [Dh, sgl_self]`. Rewrite using `[K.sgl_ne _ (by omega)]; simp only [Dh]; rw [K.sgl_ne _ (by omega), map_zero]`. Establish `h2 : K.Dv (K.sgl p q x) = K.sgl p (q + 1) (K.dv p q x)`. Use function extensionality and compare the values at `a b`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Break down `b with _ | b` into its components or cases. Apply the tactic sequence `rw [K.sgl_ne _ (Or.inr (by omega))]; cases a <;> rfl`. Distinguish the cases in `h : a = p ∧ b = q`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `only [Dv, sgl_self]`.
+Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[K.sgl_ne _ (by omega)]; simp only [Dv]; rw [K.sgl_ne _ (by omega), map_zero]`. Use function extensionality and compare the values at `a b`. Rewrite using `[D_apply, h1, h2, Pi.add_apply, Pi.add_apply, Pi.smul_apply, Pi.smul_apply]`. Distinguish the cases in `h : a = p`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[K.sgl_ne (K.dv p q x) (Or.inl h), smul_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem D_sgl (p q : ℕ) (x : K.X p q) :
     K.D (K.sgl p q x) = K.sgl (p + 1) q (K.dh p q x) + (-1 : ℤ) ^ p • K.sgl p (q + 1) (K.dv p q x) := by

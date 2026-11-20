@@ -36,9 +36,7 @@ open ValuativeRel MeasureTheory in
 variable {F G M V : Type} [Field F] [Group G] [Group M] [AddCommGroup V] [Module F V] in
 
 /- English proof (translation)
-Use `⟨Representation.Equiv.mk { _root_.GlobalTheory.SmGL.Placing.indLeft w h with invFun := _root_.GlobalTheory.SmGL.Placing.indLeft w⁻¹ h' left_inv := fun f => ?_ right_inv := fun f => ?_ } fun g => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Conclude with `congrArg f.1.1 (mul_inv_cancel_left w x)`. Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Conclude with `congrArg f.1.1 (inv_mul_cancel_left w x)`.
-
-Use `LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Conclude with `congrArg f.1.1 (mul_assoc w x g)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SmGL.Placing.smInd_equiv [TopologicalSpace G] [IsTopologicalGroup G]
     {P Q : Subgroup G}
@@ -62,9 +60,9 @@ open ValuativeRel MeasureTheory in
 variable {F G M V : Type} [Field F] [Group G] [Group M] [AddCommGroup V] [Module F V] in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.PRep.twKer`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u, v, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Use `Submodule.subset_span ⟨⟨w * u * w⁻¹, h u u.2⟩, π w v, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub, map_mul, Module.End.mul_apply]`. Rewrite using `[← Module.End.mul_apply (π w⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma _root_.GlobalTheory.SmGL.Placing.twKer_le (π : Representation F G V)
     {N N' : Subgroup G} (w : G) (h : ∀ u ∈ N, w * u * w⁻¹ ∈ N') :
@@ -81,11 +79,11 @@ open ValuativeRel MeasureTheory in
 variable {F G M V : Type} [Field F] [Group G] [Group M] [AddCommGroup V] [Module F V] in
 
 /- English proof (translation)
-Establish `hK` using `_root_.GlobalTheory.SmGL.Placing.twKer_le π w h`. Establish `hK'` using `_root_.GlobalTheory.SmGL.Placing.twKer_le π w⁻¹ h'`. Establish `hinv : ∀ a b : G, a * b = 1 → ∀ v, π a (π b v) = v` using `fun a b hab v => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hab, map_one, Module.End.one_apply]`. Set `eq : _root_.GlobalTheory.PRep.Jacquet π N ≃ₗ[F] _root_.GlobalTheory.PRep.Jacquet π N'` to `LinearEquiv.ofLinear ((_root_.GlobalTheory.PRep.twKer π N 1).mapQ _ (π w) hK) ((_root_.GlobalTheory.PRep.twKer π N' 1).mapQ _ (π w⁻¹) hK') (Submodule.linearMap_qext _ (LinearMap.ext fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `[hinv w w⁻¹ (mul_inv_cancel w)]))`. Use the proof step `(Submodule.linearMap_qext _ (LinearMap.ext fun v => by`. Simplify using `[hinv w⁻¹ w (inv_mul_cancel w)]))`. Use `⟨Representation.Equiv.mk eq fun g => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective (_root_.GlobalTheory.PRep.twKer π N 1) x`. Establish `hv : π w (π (s g) v) = π (s' g) (π w v)`. Rewrite using `[← hw g, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hinv w⁻¹ w (inv_mul_cancel w)]`. Simplify using `[eq, _root_.GlobalTheory.SmGL.twist, _root_.GlobalTheory.PRep.jacquet, hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SmGL.Placing.jacquet_equiv (π : Representation F G V) {N N' : Subgroup G}
     {s s' : M →* G}
@@ -130,7 +128,7 @@ variable {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] in
 
 /- English proof (translation)
-Set `σ : n ≃ n` to `e.symm.trans e'`. Use `⟨⟨σ.symm.toPEquiv.toMatrix, σ.toPEquiv.toMatrix, ?_, ?_⟩, fun g x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans, Equiv.symm_trans_self, Equiv.toPEquiv_refl, PEquiv.toMatrix_refl]`. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans, Equiv.self_trans_symm, Equiv.toPEquiv_refl, PEquiv.toMatrix_refl]`. Simplify using `[σ, Units.inv_mk, PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.SmGL.Placing.exists_moves {ι : Type} (e e' : ι ≃ n) :
     ∃ w : GL n R, _root_.GlobalTheory.SmGL.Placing.Moves e e' w := by
@@ -143,7 +141,7 @@ theorem _root_.GlobalTheory.SmGL.Placing.exists_moves {ι : Type} (e e' : ι ≃
   · simp [σ, Units.inv_mk, PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]
 
 /- English proof (translation)
-Introduce `g x y`. Rewrite using `[← h]`. Use `congr 2`. Use `group`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Moves.symm {ι : Type} {e e' : ι ≃ n} {w : GL n R} (h : Moves e e' w) : Moves e' e w⁻¹ := by
   intro g x y
@@ -156,14 +154,14 @@ variable {e e' : (Σ a, m a) ≃ n} {w : GL n R}
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] in
 
 /- English proof (translation)
-The claim follows from `mem_parab_iff.2 fun a b i j hab => (h g _ _).trans (mem_parab_iff.1 hg a b i j hab)`.
+A detailed English derivation is pending.
 -/
 theorem Moves.parab (h : Moves e e' w) {g : GL n R} (hg : g ∈ parab R e) :
     w * g * w⁻¹ ∈ parab R e' :=
   mem_parab_iff.2 fun a b i j hab => (h g _ _).trans (mem_parab_iff.1 hg a b i j hab)
 
 /- English proof (translation)
-The claim follows from `mem_unipRad.2 ⟨h.parab (mem_unipRad.1 hg).1, fun a i j => (h g _ _).trans ((mem_unipRad.1 hg).2 a i j)⟩`.
+A detailed English derivation is pending.
 -/
 theorem Moves.unipRad (h : Moves e e' w) {g : GL n R} (hg : g ∈ unipRad R e) :
     w * g * w⁻¹ ∈ unipRad R e' :=
@@ -171,7 +169,7 @@ theorem Moves.unipRad (h : Moves e e' w) {g : GL n R} (hg : g ∈ unipRad R e) :
     fun a i j => (h g _ _).trans ((mem_unipRad.1 hg).2 a i j)⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use extensionality with `i j`. Conclude with `h p _ _`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem Moves.leviProj (h : Moves e e' w) (p : SmGL.parab R e) :
     leviProj R e' ⟨_, h.parab p.2⟩ = leviProj R e p := by
@@ -182,9 +180,9 @@ theorem Moves.leviProj (h : Moves e e' w) (p : SmGL.parab R e) :
 omit [LinearOrder α] in
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `e'.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e'.surjective j`. Rewrite using `[h]`. Distinguish the cases in `hab : a = b`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same, leviEmb_apply_same]`. Rewrite using `[leviEmb_apply_ne R e g hab, leviEmb_apply_ne R e' g hab]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Moves.leviEmb (h : Moves e e' w) (g : Levi R m) :
     w * leviEmb R e g * w⁻¹ = leviEmb R e' g := by
@@ -203,7 +201,7 @@ open ValuativeRel MeasureTheory in
 variable {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α]
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Introduce `g x y`. Use `hw (w⁻¹ * g * w⁻¹⁻¹) x y` as an intermediate fact. Rewrite using `[← this]`. Use `congr 2`. Use `group`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem moves_inv_of_moves {ι : Type} {e e' : ι ≃ n} {w : GL n R}
     (hw : _root_.GlobalTheory.SmGL.Placing.Moves e e' w) : _root_.GlobalTheory.SmGL.Placing.Moves e' e w⁻¹ := by
@@ -218,9 +216,9 @@ variable {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] in
 variable {e e' : (Σ a, m a) ≃ n} {w : GL n R} in
 /- English proof (translation)
-Establish `hg' : Matrix.BlockTriangular (g : Matrix n n R) (_root_.GlobalTheory.SmGL.blk e)` using `hg`. Express the relevant statement in the definitionally equal form `Matrix.BlockTriangular _ (_root_.GlobalTheory.SmGL.blk e')`. Introduce `i j hij`. Take `⟨x, rfl⟩` from `e'.surjective i`. Take `⟨y, rfl⟩` from `e'.surjective j`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hw]`. Conclude with `hg' (by simpa [_root_.GlobalTheory.SmGL.blk] using hij)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_mem_parab_of_moves (hw : _root_.GlobalTheory.SmGL.Placing.Moves e e' w)
     {g : GL n R} (hg : g ∈ _root_.GlobalTheory.SmGL.parab R e) :
@@ -238,7 +236,7 @@ variable {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] in
 variable {e e' : (Σ a, m a) ≃ n} {w : GL n R} in
 /- English proof (translation)
-Use `funext fun a => Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Simplify `hw (p : GL n R) ⟨a, i⟩ ⟨a, j⟩` using `[_root_.GlobalTheory.SmGL.leviProj, _root_.GlobalTheory.SmGL.diagBlock]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem leviProj_conj_of_moves (hw : _root_.GlobalTheory.SmGL.Placing.Moves e e' w)
     (p : _root_.GlobalTheory.SmGL.parab R e) :
@@ -252,7 +250,7 @@ variable {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] in
 variable {e e' : (Σ a, m a) ≃ n} {w : GL n R} in
 /- English proof (translation)
-Establish `hP` using `_root_.GlobalTheory.SmGL.unipRad_le_parab R e hu`. Establish `h1` using `(_root_.GlobalTheory.SmGL.coe_mem_unipRad R (p := ⟨u, hP⟩)).1 hu`. Conclude with `(_root_.GlobalTheory.SmGL.coe_mem_unipRad R (p := ⟨w * u * w⁻¹, conj_mem_parab_of_moves hw hP⟩)).2 ((leviProj_conj_of_moves hw ⟨u, hP⟩).trans h1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem conj_mem_unipRad_of_moves (hw : _root_.GlobalTheory.SmGL.Placing.Moves e e' w)
     {u : GL n R} (hu : u ∈ _root_.GlobalTheory.SmGL.unipRad R e) :
@@ -268,7 +266,7 @@ variable {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] in
 variable {e e' : (Σ a, m a) ≃ n} {w : GL n R} in
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Take `⟨p, rfl⟩` from `e'.surjective i`. Take `⟨q, rfl⟩` from `e'.surjective j`. Rewrite using `[hw]`. Simplify using `[_root_.GlobalTheory.SmGL.leviEmb, Matrix.reindex_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem leviEmb_conj_of_moves (hw : _root_.GlobalTheory.SmGL.Placing.Moves e e' w)
     (x : _root_.GlobalTheory.SmGL.Levi R m) :
@@ -282,11 +280,11 @@ private theorem leviEmb_conj_of_moves (hw : _root_.GlobalTheory.SmGL.Placing.Mov
 open ValuativeRel MeasureTheory in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α n m _ _ _ _ _ _ e e' V _ _`. Use `⟨fun ρ => ?_, fun π => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `_root_.GlobalTheory.SmGL.Placing.exists_moves (R := k) e' e`. Establish `hw'` using `moves_inv_of_moves hw`. Conclude with `_root_.GlobalTheory.SmGL.Placing.smInd_equiv w (fun q => ⟨⟨_, conj_mem_parab_of_moves hw q.2⟩, rfl, by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonoidHom.comp_apply]`. Rewrite using `[leviProj_conj_of_moves hw q]⟩)`. Use the proof step `(fun p => ⟨⟨_, conj_mem_parab_of_moves hw' p.2⟩, rfl, by`. Simplify using `only [MonoidHom.comp_apply]`. Rewrite using `[leviProj_conj_of_moves hw' p]⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `_root_.GlobalTheory.SmGL.Placing.exists_moves (R := k) e e'`. Establish `hw'` using `moves_inv_of_moves hw`. Conclude with `_root_.GlobalTheory.SmGL.Placing.jacquet_equiv π _ _ _ w (fun u hu => conj_mem_unipRad_of_moves hw hu) (fun u hu => conj_mem_unipRad_of_moves hw' hu) (leviEmb_conj_of_moves hw)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SmGL.Placing.parInd_jac_placing : ∀ (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (α n : Type) (m : α → Type) [Fintype α]

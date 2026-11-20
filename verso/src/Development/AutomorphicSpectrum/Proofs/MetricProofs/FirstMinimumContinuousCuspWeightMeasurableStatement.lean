@@ -9,7 +9,7 @@ open NumberField Matrix MeasureTheory Filter Topology GlobalTheory.CompanionTheo
 open scoped ENNReal InnerProductSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Cusp.FamilyMeas.first_minimum_cusp_weight_regular` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FFirstMinimumContinuousCuspWeightMeasurable.lean&line=19#L19)
 -/

@@ -25,9 +25,9 @@ noncomputable section
 namespace GlobalTheory.BottomIsom
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Use `⟨e, Matrix.GeneralLinearGroup.map (starRingEnd ℂ) P, ?_⟩` and prove the remaining obligations. Use `congrArg (fun A => Matrix.map A (starRingEnd ℂ)) hP` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Establish `hJ : (Formalism.UG.Jpq p q : Matrix _ _ ℂ).map (starRingEnd ℂ) = Formalism.UG.Jpq p q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `ext (a | a) (b | b) <;> simp [Formalism.UG.Jpq, Matrix.one_apply, apply_ite]`. Rewrite `this` using `[hJ]`. Conclude with `this`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSignature_map_star {n p q : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.UG.HasSignature M p q) :
     Formalism.UG.HasSignature (M.map (starRingEnd ℂ)) p q := by
@@ -41,9 +41,9 @@ theorem hasSignature_map_star {n p q : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h 
   exact this
 
 /- English proof (translation)
-Take `⟨τ, hσ | hσ⟩` from `GlobalTheory.DefiniteMult.exists_tauE_or_conj D σ`. Substitute `hσ` using the available equality. Simplify `h τ` using `[gramAt]`. Substitute `hσ` using the available equality. Establish `h1` using `hasSignature_map_star (by simpa [gramAt] using h τ)`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.map_map]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSignature_all {D : D7} {V : HSp D} (h : NegIdx V 0) (σ : D.host.E →+* ℂ) :
     Formalism.UG.HasSignature (V.gram.map σ) V.rank 0 := by
@@ -58,13 +58,13 @@ theorem hasSignature_all {D : D7} {V : HSp D} (h : NegIdx V 0) (σ : D.host.E �
 def posResign {D : D7} (V : HSp D) : HSp D := { V with sig := fun _ => (V.rank, 0) }
 
 /- English proof (translation)
-Introduce `σ` and use `hasSignature_all h σ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem posResign_sigOK {D : D7} {V : HSp D} (h : NegIdx V 0) : (posResign V).SigOK := fun σ =>
   hasSignature_all h σ
 
 /- English proof (translation)
-Introduce `D V V' hr h h'`. Take `⟨φ, hφ⟩` from `GlobalTheory.LandherrSignature.exists_isometry_host D (posResign V) (posResign V') (posResign_sigOK h) (posResign_sigOK h') hr (fun _ => by simp [posResign, hr])`. Conclude with `⟨GlobalTheory.Mem.Isom.IsoMat.ofEquiv φ hφ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isoMat_of_posDef : ∀ {D : D7} {V V' : HSp D}, V.rank = V'.rank → NegIdx V 0 → NegIdx V' 0 →
     Nonempty (GlobalTheory.Mem.Isom.IsoMat V V') := by

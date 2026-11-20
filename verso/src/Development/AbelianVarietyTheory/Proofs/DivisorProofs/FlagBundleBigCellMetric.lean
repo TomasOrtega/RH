@@ -17,9 +17,9 @@ namespace GlobalTheory.BigCell
 open ReciprocityTheory.L2DbarEstimates (bas) in
 
 /- English proof (translation)
-Use extensionality with `j l`. Establish `hb : ∀ (j : Fin D) (b : Fin n), (BigCell.base ε (bas D j)) b = if ε j = .inl b then 1 else 0`. Introduce `j b`. Establish `: ε.symm (.inl b) = j ↔ ε j = .inl b` using `by rw [Equiv.symm_apply_eq, eq_comm]`. Simplify using `[BigCell.base, bas, this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.HessPull.cHess_comp_apply D n g (baseL ε) Set.univ isOpen_univ v trivial (baseL ε).contDiff.contDiffOn hg j l` as an intermediate fact. Rewrite `this` using `[ContinuousLinearMap.fderiv]`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `only [hb, BigCell.blk, submatrix_apply, baseL_apply]`. Apply the tactic sequence `cases ε j <;> cases ε l <;> simp [diagonal_apply, apply_ite (starRingEnd ℂ)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cHess_comp_base {ι : Type} [Fintype ι] {r : ι → ℕ} {n D : ℕ} (ε : Fin D ≃ Fin n ⊕ (Σ a, Low (r a)))
     (g : V n → ℂ) (v : V D) (hg : ContDiffAt ℝ 2 g (BigCell.base ε v)) :
@@ -37,25 +37,21 @@ theorem cHess_comp_base {ι : Type} [Fintype ι] {r : ι → ℕ} {n D : ℕ} (�
   cases ε j <;> cases ε l <;> simp [diagonal_apply, apply_ite (starRingEnd ℂ)]
 
 /- English proof (translation)
-Introduce `k _ B Y q p π w ι _ r n D e σ E h H fl c cE c' hc hcf y hy`. Establish `hbase : ∀ v ∈ c'.e.target, c.e.symm (BigCell.base e v) = PtsOver.map π w (spMap σ) (c'.e.symm v)`. Introduce `v hv`. Establish `hy'` using `c'.e.map_target hv`. Establish `h1` using `hc.2.2 _ hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[c'.e.right_inv hv]`. Establish `h2` using `hy'`. Rewrite `h2` using `[hc.1]`. Rewrite using `[h1, c.e.left_inv h2.1]`. Establish `key : ∀ (a : ι) (i : Fin (r a)) (ac : GlobalTheory.VBExt.AdaptedChart (VMetric.stepSeq (fl a) i) i 1), (∀ y ∈ c'.e.source, y ∈ ptsIn p σ ac.U ∧ ((((h a).pull π w).stepMet (fl a) i).met σ).gram ac.frame y = (chg (uni (BigCell.fib e (c'.e y) a)) (((h a).met σ).G (cE a) (PtsOver.map …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a i ac hac v hv`. Rewrite using `[(hac _ (c'.e.map_target hv)).2, c'.e.right_inv hv, BigCell.stepGram, hbase v hv]`. Use `⟨fun z => ?_, fun a => ?_, fun A => ?_⟩` and prove the remaining obligations. Take `⟨ac, hac⟩` from `hcf z.1 z.2`. Establish `hU` using `(hac y hy).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[chernMat, c'.hess_eq (((VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w))).cInf σ) hy (i := ac.quot) hU (mem_pick _ y)]`. Unfold `AlgChart.hess`. Use `ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_` and prove the remaining obligations. Use `filter_upwards [c'.e.open_target.mem_nhds (c'.e.map_source hy)] with v hv`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `show -Real.log _ = -Real.log _`. Rewrite using `[← key z.1 z.2 ac hac v hv]`. Conclude with `congrArg (fun M : Matrix (Fin 1) (Fin 1) ℂ => -Real.log M.det.re) (Met.quot_G _ (VMetric.stepSeq_shortExact _ _) ((fl z.1).isVB z.2.castSucc) ((fl z.1).isVB_gr z.2) ac (hac _ (c'.e.map_target hv)).1)`. Rewrite using `[flagMat]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨ac, hac⟩` from `hcf a i`. Rewrite using `[bcMat, Met.bcForm_eq (h := (((h a).pull π w).stepMet (fl a) i).met σ) (VMetric.stepSeq_shortExact _ i) ac _ c' (((H a).pull π w).restrict _ _ σ) hy (hac y hy).1 (Met.exists_adapted (VMetric.stepSeq_shortExact _ i) ((fl a).isVB i.castSucc) ((fl a).isVB_gr i) y).choose_spec, Met.b …`. Use `set m := PtsOver.map π w (spMap σ) with hmdef`. Establish `hy' : m y ∈ c.e.source`. Establish `h2` using `hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hc.1]`. Conclude with `h2.1`. Use `set i := pick ((A.pull π w).φ σ).isLB y`. Establish `hi : y ∈ ptsIn p σ ((A.pull π w).B.U i)` using `mem_pick _ y`. Establish `him : m y ∈ ptsIn q σ (A.B.U (i PUnit.unit))` using `mem_of_mem_linComb (m := fun _ => m y) (fun _ => rfl) hi PUnit.unit`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set g : V n → ℂ := fun v => ((A.φ σ).φ (i PUnit.unit) (c.e.symm v) : ℂ)`. Establish `hFy : BigCell.base e (c'.e y) = c.e (m y)` using `hc.2.2 y hy`. Establish `hg : ContDiffAt ℝ 2 g (BigCell.base e (c'.e y))` using `hFy ▸ Complex.ofRealCLM.contDiff.contDiffAt.comp _ ((A.cInf σ).contDiffAt c hy' him)`. Establish `e' : (fun v => (((A.pull π w).φ σ).φ i (c'.e.symm v) : ℂ)) =ᶠ[𝓝 (c'.e y)] g ∘ BigCell.base e` using `by filter_upwards [c'.e.open_target.mem_nhds (c'.e.map_source hy)] with v hv`. Use `Weight.pull_φ (A.φ σ) π w i (c'.e.symm v)` as an intermediate fact.
-
-Simplify using `only [g, Function.comp_apply, hbase v hv]`. Conclude with `congrArg _ this`. Rewrite using `[chernMat, chernMat, c.hess_eq (A.cInf σ) hy' (i := i PUnit.unit) him (mem_pick _ _)]`. Use `show cHess D _ (c'.e y) = _`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e', cHess_comp_base e g _ hg, hFy]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chern_bc_cell : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (r : ι → ℕ) (n D : ℕ) (ε : Fin D ≃ Fin n ⊕ (Σ a, Low (r a))) (σ : k →+* ℂ) (E : ι → B.Modules) (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)) (c : AlgChart q σ n) (cE : ∀ a, Chart (E a) (r a)) (c' : AlgChart p σ D), BigCell.IsCell ε π w c c' → (∀ a, BigCell.IsCellFrame ε π w c' a (h a) (fl a) (cE a)) → ∀ y ∈ c'.e.source, (∀ z : Σ a, Fin (r a), chernMat ((VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w)).φ σ) c' y = cHess D (fun v => (BigCell.rootWt ε (fun a u => ((h a).met σ).G (cE a) (c.e.symm u)) z v : ℂ)) (c'.e y)) ∧ (∀ a, flagMat ((h a).pull π w) (fl a) σ c' y = ∑ i, formMat (extTrace (BigCell.stepGram ε (fun a u => ((h a).met σ).G (cE a) (c.e.symm u)) a i) (c'.e y))) ∧ ∀ A : HermLB q, chernMat ((A.pull π w).φ σ) c' y = BigCell.blk ε (chernMat (A.φ σ) c (PtsOver.map π w (spMap σ) y)) 0 := by
   intro k _ B Y q p π w ι _ r n D e σ E h H fl c cE c' hc hcf y hy

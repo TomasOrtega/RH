@@ -11,11 +11,11 @@ open Formalism.L2.SG.Pf.UnipB Formalism.L2.SG.Pf.Unip
 namespace Formalism.L2.SG.TermOp.Vanish
 
 /- English proof (translation)
-Introduce `D X Z n hni hn`. Take `⟨x, hx⟩` from `Formalism.L2.SG.Pf.ratPt_holds D X n hni`. Use `⟨x, hx, fun v => ?_⟩` and prove the remaining obligations. Take `⟨M', -, h1, -, h3⟩` from `hx`. Establish `hM : (M' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = gE X Z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Matrix.ext_of_mulVec_single` to reduce the goal to its premises. Introduce `i`. Take `⟨y, hy⟩` from `Formalism.L2.SG.Pf.crd_surj X (Pi.single i 1)`. Rewrite using `[← hy, ← h3, hn]`. Unfold `Mv`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1 v, hM, gE_real]`. Simplify using `only [← Matrix.mul_assoc, Bv'_mul_Bv, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Bv'_mul_Bv, Matrix.mul_one, cay_map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem memPtOf_holds : MemPtOf := by
   intro D X Z n hni hn

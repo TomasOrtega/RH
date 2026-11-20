@@ -22,27 +22,25 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `hSys hInt K _ ι _ Ω _ F _ _ _ y D L θ hP hbir hL hex`. Take `⟨II, hII, -⟩` from `hSys`. Take `⟨x, hx⟩ : ∃ x : F, x = ((θ : 𝓞 F) : F)` from `⟨_, rfl⟩`. Establish `hmul : ((((θ⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F)) * x = 1`. Rewrite using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (((θ⁻¹ : (𝓞 F)ˣ) : 𝓞 F) * (θ : 𝓞 F)) = 1` using `by simp`. Conclude with `congrArg (fun u : 𝓞 F => (u : F)) h1` after adjusting the coercions. Establish `hxinv : ((((θ⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F)) = x⁻¹` using `eq_inv_of_mul_eq_one_left hmul`. Establish `hx0 : x ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmul` using `[h0, mul_zero]`. Conclude with `zero_ne_one hmul`. Establish `hxI : IsIntegral ℤ x` using `hx ▸ RingOfIntegers.isIntegral_coe (θ : 𝓞 F)`. Establish `hxI' : IsIntegral ℤ x⁻¹` using `hxinv ▸ RingOfIntegers.isIntegral_coe ((θ⁻¹ : (𝓞 F)ˣ) : 𝓞 F)`. Rewrite using `[← hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : algebraMap F Ω x ≠ 0` using `(map_ne_zero _).mpr hx0`. Establish `htI : IsIntegral ℤ (algebraMap F Ω x)` using `hxI.map (algebraMap F Ω).toIntAlgHom`. Establish `htI' : IsIntegral ℤ (algebraMap F Ω x)⁻¹`. Rewrite using `[← map_inv₀]`. Conclude with `hxI'.map (algebraMap F Ω).toIntAlgHom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, f, g, hf, hg, hg0, hfg⟩` from `hbir (algebraMap F Ω x)`. Establish `hf0 : aeval y f ≠ 0`. Rewrite using `[hfg]`. Conclude with `mul_ne_zero ht0 hg0`. Establish `hgP : g ∉ mCoordIdeal y` using `fun h => hg0 ((GroundTheory.Heights₂.Heights.Targets.BoundedSectionTransfer.mem_mCoordIdeal_iff y hg).mp h)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfP : f ∉ mCoordIdeal y` using `fun h => hf0 ((GroundTheory.Heights₂.Heights.Targets.BoundedSectionTransfer.mem_mCoordIdeal_iff y hf).mp h)`. Take `⟨B, hB0, hBs, hBl⟩` from `exists_smooth_weight_const_near_embeddings K ι Ω F y (fun sg => ‖sg x‖) (fun sg => norm_pos_iff.mpr ((map_ne_zero sg).mpr hx0)) hex`. Take `⟨A, hAa, hA⟩ : ∃ A : HermLine ι, (∀ k, A.a k = d k) ∧ IsSmoothHerm A` from `⟨HermLine.ofMetrics (fun k => fsMetric (ι k)) (fun k => (d k : ℤ)), fun _ => rfl, GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs _⟩`. Establish `hAB : IsSmoothHerm (A.tensor B)` using `ContDiffOn.mul hA hBs`. Establish `hABa : ∀ k, (A.tensor B).a k = d k` using `fun k => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[HermLine.tensor, hB0, hAa k]`. Establish `hRA` using `(hII K ι).2.2 (mCoordIdeal y) D L A g d hP hL hA hAa hg hgP`. Establish `hRB` using `(hII K ι).2.2 (mCoordIdeal y) D L (A.tensor B) f d hP hL hAB hABa hf hfP`. Establish `hadd` using `(hII K ι).2.1 (mCoordIdeal y) D L A B hP hL hA hBs`. Take `⟨hsupp, hmult⟩` from `GlobalTheory.T.unit_ratio_divisor_support_eq K ι Ω y D d f g (algebraMap F Ω x) hP hf hg hg0 ht0 htI htI' hfg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlog : ∀ z ∈ mcPts (mCoordIdeal y), logNorm (A.tensor B) f z = logNorm A g z`. Introduce `z hz`. Take `⟨sg, hsg, -⟩` from `hex z hz`. Establish `hval : B.h z = ‖sg x‖` using `(hBl z hz sg hsg).self_of_nhds`. Establish `hfz` using `hsg d f g x hf hg hfg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hs0 : ‖sg x‖ ≠ 0` using `norm_ne_zero_iff.mpr ((map_ne_zero sg).mpr hx0)`. Establish `hAz : A.h z ≠ 0` using `(A.pos z hz.1).ne'`. Unfold `logNorm`. Use `congr 1`. Use `show ‖eval z (map (Int.castRingHom ℂ) f)‖ / (A.h z * B.h z) = _`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfz, hval, norm_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hrec : recR (II K ι) (mCoordIdeal y) L (A.tensor B) f = recR (II K ι) (mCoordIdeal y) L A g`. Unfold `recR`. Rewrite using `[hsupp]`.
-
-Use `congr 1`. Conclude with `finsum_mem_congr rfl fun W hW => by rw [hmult W hW]`. Conclude with `GroundTheory.Heights₂.Heights.Inter.DiagRAux.ptsIntegral_congr_mcPts _ (fun _ _ _ => rfl) hlog`. Rewrite using `[← intersection_locConst_trivial hInt K ι Ω F y D L B (fun sg => ‖sg x‖) II hII hP hL hB0 hBs hex hBl]`. Combine the linear relations using `[hRA, hRB, hadd, hrec]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_log_unit_mul_mass_eq_zero : ArithIntersectionSystemStatement → PtsIntegrableStatement → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] [Algebra F Ω] (y : (Σ k, ι k) → Ω) (D : ℕ) (L : Fin D → HermLine ι) (θ : (𝓞 F)ˣ), IsArithVar (mCoordIdeal y) (D + 1) → Birational y → (∀ j, IsSmoothHerm (L j)) → (∀ z ∈ mcPts (mCoordIdeal y), ∃! s : F →+* ℂ, LiesOver y s z) → ∑ sg : F →+* ℂ, Real.log ‖sg ((θ : 𝓞 F) : F)‖ * ptsIntegral (mCoordIdeal y) (pot L) ({z | LiesOver y sg z}.indicator fun _ => (1 : ℝ)) = 0 := by
   intro hSys hInt K _ ι _ Ω _ F _ _ _ y D L θ hP hbir hL hex

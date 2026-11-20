@@ -9,15 +9,15 @@ open MvPolynomial TensorProduct
 noncomputable section
 
 /- English proof (translation)
-Introduce `σ P r g hg`. Set `θ : MvPolynomial σ ℂ →ₐ[ℂ] ℂ ⊗[ℤ] (MvPolynomial σ ℤ ⧸ P)` to `(Algebra.TensorProduct.map (AlgHom.id ℂ ℂ) (Ideal.Quotient.mkₐ ℤ P)).comp (MvPolynomial.algebraTensorAlgEquiv ℤ ℂ).symm.toAlgHom`. Establish `hθ : ∀ p : MvPolynomial σ ℤ, θ (MvPolynomial.map (Int.castRingHom ℂ) p) = (1 : ℂ) ⊗ₜ Ideal.Quotient.mk P p`. Introduce `p`. Establish `h1 : MvPolynomial.map (Int.castRingHom ℂ) p = MvPolynomial.algebraTensorAlgEquiv ℤ ℂ ((1 : ℂ) ⊗ₜ p)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.algebraTensorAlgEquiv_tmul, one_smul]`. Use `congr 1`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id ℂ ℂ) (Ideal.Quotient.mkₐ ℤ P) ((MvPolynomial.algebraTensorAlgEquiv ℤ ℂ).symm (MvPolynomial.algebraTensorAlgEquiv ℤ ℂ ((1 : ℂ) ⊗ₜ p))) = _`. Rewrite using `[AlgEquiv.symm_apply_apply, Algebra.TensorProduct.map_tmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hle : ∀ a ∈ P.map (MvPolynomial.map (Int.castRingHom ℂ)), θ a = 0`. Establish `hker : P.map (MvPolynomial.map (Int.castRingHom ℂ)) ≤ RingHom.ker θ`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `p hp`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hθ, Ideal.Quotient.eq_zero_iff_mem.mpr hp, tmul_zero]`. Conclude with `fun a ha => hker ha`. Set `ψ` to `Ideal.Quotient.liftₐ _ θ hle`. Establish `key : LinearIndependent ℂ (fun i => (1 : ℂ) ⊗ₜ[ℤ] Ideal.Quotient.mk P (g i))` using `Module.Flat.linearIndependent_one_tmul hg`. Establish `hfun : (ψ.toLinearMap ∘ fun i => Ideal.Quotient.mk (P.map (MvPolynomial.map (Int.castRingHom ℂ))) (MvPolynomial.map (Int.castRingHom ℂ) (g i))) = fun i => (1 : ℂ) ⊗ₜ[ℤ] Ideal.Quotient.mk P (g i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `hθ (g i)`. Rewrite `key` using `[← hfun]`. Conclude with `key.of_comp`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IndependentModBaseChange.proof : IndependentModBaseChange.Statement := by
   intro σ P r g hg

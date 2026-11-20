@@ -10,7 +10,7 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (�
   (hL : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K.1 ℚ̄ S) [Normal K.1 L.1]
 
 /- English proof (translation)
-Introduce `τ _ hw` and use `galSmul_mem_placesOver (S := S) τ hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem placesOver_stable : ∀ (τ : L.1 ≃ₐ[K.1] L.1), ∀ w ∈ (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))),
     τ • w ∈ (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) :=

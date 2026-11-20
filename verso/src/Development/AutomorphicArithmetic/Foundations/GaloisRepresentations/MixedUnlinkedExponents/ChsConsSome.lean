@@ -15,9 +15,9 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h : ∃ η : kˣ →* ℂˣ, ∃ hη : IsSmoothChar η, IrrGL.ofChar ξ hξ = IrrGL.ofChar η hη` using `⟨ξ, hξ, rfl⟩`. Establish `hc : h.choose = ξ`. Take `⟨hη, he⟩` from `h.choose_spec`. Conclude with `(IrrGL.ofChar_inj.mp he).symm`. Unfold `chs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.filterMap_cons_some _ _ _ (by rw [dif_pos h])]`. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chs_cons_some (ξ : kˣ →* ℂˣ) (hξ) (s : Multiset (IrrGL k)) :
     chs (IrrGL.ofChar ξ hξ ::ₘ s) = ξ ::ₘ chs s := by
@@ -30,7 +30,7 @@ private theorem chs_cons_some (ξ : kˣ →* ℂˣ) (hξ) (s : Multiset (IrrGL k
   rw [hc]
 
 /- English proof (translation)
-Unfold `chs`. Rewrite using `[Multiset.filterMap_cons_none _ _ (by rw [dif_neg hy])]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem chs_cons_not {y : IrrGL k} (hy : ¬ ∃ ξ : kˣ →* ℂˣ, ∃ hξ, y = IrrGL.ofChar ξ hξ)
     (s : Multiset (IrrGL k)) : chs (y ::ₘ s) = chs s := by
@@ -40,11 +40,11 @@ private theorem chs_cons_not {y : IrrGL k} (hy : ¬ ∃ ξ : kˣ →* ℂˣ, ∃
 end Loc
 
 /- English proof (translation)
-Introduce `k k' _ _ _ _ _ _ _ _ i hi' s`. Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp [chs_zero]`. Consider the case `cons y s ih`. Rewrite using `[Multiset.map_cons]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hy : ∃ ξ : kˣ →* ℂˣ, ∃ hξ, y = IrrGL.ofChar ξ hξ`. Take `⟨ξ, hξ, rfl⟩` from `hy`. Establish `hξ' : IsSmoothChar (ξ.comp (Units.map (i.symm : k' →* k)))` using `hξ.comp _ (Units.continuous_map hi')`. Rewrite using `[GlobalTheory.CharLiftStep.trGL_ofChar i hi' ξ hξ _ hξ' (fun _ => rfl), chs_cons_some, chs_cons_some, Multiset.map_cons, ih]`. Establish `hy' : ¬ ∃ ξ : k'ˣ →* ℂˣ, ∃ hξ, GlobalTheory.SuppIne.trGL i hi' y = IrrGL.ofChar ξ hξ`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨ξ, hξ, he⟩`. Establish `h1 : y.fst = 1` using `congrArg Sigma.fst he`. Conclude with `hy (GlobalTheory.RoadU.PlainChars.exists_eq_ofChar y h1)`. Rewrite using `[chs_cons_not hy', chs_cons_not hy, ih]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.GamX.chsTr :
     UpperTheory.Gal.GamX.ChsTr := by

@@ -24,13 +24,13 @@ def zpowSec (σ : LB.Sec (lbZPow L m)) (k : ℕ) : LB.Sec (lbZPow L (k * m)) :=
       zpow_mul, zpow_natCast, Units.val_pow_eq_pow_val]
 
 /- English proof (translation)
-The claim follows from `zfun_zmkGlobal _ _ i`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zfun_zpowSec (σ : LB.Sec (lbZPow L m)) (k : ℕ) (i : L.ι) :
     zfun (zpowSec σ k) i = zfun σ i ^ k := zfun_zmkGlobal _ _ i
 
 /- English proof (translation)
-Rewrite using `[zfun, resG_resG]`. Use `(X.basicOpen_res _ (homOfLE (h.trans (le_zidx_U m i))).op).trans ?_` and prove the remaining obligations. Rewrite using `[← nonzeroLocus_inf_chart σ (zidx L m i), inf_comm (Out.nonzeroLocus σ), ← inf_assoc]`. Conclude with `congrArg (· ⊓ _) (inf_eq_left.2 (h.trans (le_zidx_U m i)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basicOpen_resG_zfun (σ : LB.Sec (lbZPow L m)) (i : L.ι) {W : X.Opens} (h : W ≤ L.U i) :
     X.basicOpen (resG X h (zfun σ i)) = W ⊓ Out.nonzeroLocus σ := by
@@ -40,14 +40,14 @@ theorem basicOpen_resG_zfun (σ : LB.Sec (lbZPow L m)) (i : L.ι) {W : X.Opens} 
   exact congrArg (· ⊓ _) (inf_eq_left.2 (h.trans (le_zidx_U m i)))
 
 /- English proof (translation)
-Rewrite using `[← basicOpen_resG_zfun σ i le_rfl, resG_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem basicOpen_zfun (σ : LB.Sec (lbZPow L m)) (i : L.ι) :
     X.basicOpen (zfun σ i) = L.U i ⊓ Out.nonzeroLocus σ := by
   rw [← basicOpen_resG_zfun σ i le_rfl, resG_self]
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨i, hi⟩` from `exists_chart hL x`. Establish `e` using `(basicOpen_zfun σ i).symm.trans (h i)`. Conclude with `⟨fun hx => (e.le ⟨hi, hx⟩).2, fun hx => (e.ge ⟨hi, hx⟩).2⟩`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem nonzeroLocus_eq_of_zfun (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) {V : X.Opens}
     (h : ∀ i, X.basicOpen (zfun σ i) = L.U i ⊓ V) : Out.nonzeroLocus σ = V := by
@@ -57,14 +57,14 @@ theorem nonzeroLocus_eq_of_zfun (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) {V : X.
   exact ⟨fun hx => (e.le ⟨hi, hx⟩).2, fun hx => (e.ge ⟨hi, hx⟩).2⟩
 
 /- English proof (translation)
-The claim follows from `nonzeroLocus_eq_of_zfun hL _ fun i => by rw [zfun_zofSec, ← nonzeroLocus_inf_chart, inf_comm]`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_zofSec (hL : L.IsLB) (s : LB.Sec L) :
     Out.nonzeroLocus (zofSec s) = Out.nonzeroLocus s :=
   nonzeroLocus_eq_of_zfun hL _ fun i => by rw [zfun_zofSec, ← nonzeroLocus_inf_chart, inf_comm]
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨i, hi⟩ := exists_chart hL x refine ((basicOpen_zfun (zpowSec σ k) i).le ?_).2 rw [zfun_zpowSec] rcases Nat.eq_zero_or_pos k with rfl | hk · rw [pow_zero, Scheme.basicOpen_one] exact hi · rw [Scheme.basicOpen_pow _ _ hk, basicOpen_zfun] exact ⟨hi, hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_le_zpowSec (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) (k : ℕ) :
     Out.nonzeroLocus σ ≤ Out.nonzeroLocus (zpowSec σ k) := fun x hx => by
@@ -78,9 +78,9 @@ theorem nonzeroLocus_le_zpowSec (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) (k : �
     exact ⟨hi, hx⟩
 
 /- English proof (translation)
-Establish `h : ∀ x : W, ∃ (T : X.Opens) (c : L.ι), IsAffineOpen T ∧ x.1 ∈ T ∧ T ≤ W ⊓ L.U c` using `fun x => by`. Take `⟨i, hi⟩` from `exists_chart hL x.1`. Take `⟨T, hT, hx, hle⟩` from `exists_isAffineOpen_mem_and_subset (U := W ⊓ L.U i) (x := x.1) ⟨x.2, hi⟩`. Conclude with `⟨T, i, hT, hx, hle⟩`. Use `choose T c hT hx hle using h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `hW.elim_finite_subcover (fun x => (T x : Set X)) (fun x => (T x).isOpen) fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, hx _⟩`. Use `⟨S, inferInstance, fun a => T a, fun a => c a, fun a => hT a, fun a => (hle a).trans inf_le_left, fun a => (hle a).trans inf_le_right, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, h⟩` from `Set.mem_iUnion₂.1 (hS hy)`. Conclude with `Opens.mem_iSup.2 ⟨⟨a, ha⟩, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_finite_affine_chart_cover (hL : L.IsLB) {W : X.Opens} (hW : IsCompact (W : Set X)) :
     ∃ (κ : Type) (_ : Finite κ) (T : κ → X.Opens) (c : κ → L.ι),
@@ -98,7 +98,7 @@ theorem exists_finite_affine_chart_cover (hL : L.IsLB) {W : X.Opens} (hW : IsCom
   exact Opens.mem_iSup.2 ⟨⟨a, ha⟩, h⟩
 
 /- English proof (translation)
-The claim follows from `zsec_ext fun i => by simp only [zcoord_mulSecOfEq_app, zfun_zpowSec, hc, smul_smul, pow_add, map_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem mulSecOfEq_zpowSec_app (σ : LB.Sec (lbZPow L m)) {a b c : ℕ} (hc : c = a + b) {d e : ℤ}
     (h₁ : n + a * m = d) (h₂ : d + b * m = e) (h₃ : n + c * m = e) {V : X.Opens}
@@ -111,11 +111,11 @@ theorem mulSecOfEq_zpowSec_app (σ : LB.Sec (lbZPow L m)) {a b c : ℕ} (hc : c 
 variable [F.IsQuasicoherent]
 
 /- English proof (translation)
-Take `⟨κ, _, T, c, hT, hTW, hTc, hc⟩` from `exists_finite_affine_chart_cover hL hW`. Establish `key : ∀ α, ∀ᶠ k : ℕ in atTop, resG X (hTc α) (zfun σ (c α)) ^ k • zchartEquiv hL n (c α) (hTc α) (resM _ (hTW α) a) = 0`. Introduce `α`. Take `⟨k, hk⟩` from `QCoh.Qcqs.exists_pow_smul_eq_zero_of_isCompact F (hT α).isCompact (resG X (hTc α) (zfun σ (c α))) inf_le_left (basicOpen_resG_zfun σ _ (hTc α)).symm (zchartEquiv hL n (c α) (hTc α) (resM _ (hTW α) a)) (by`. Establish `hle : T α ⊓ Out.nonzeroLocus σ ≤ V` using `(inf_le_inf_right _ (hTW α)).trans hV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(zchartEquiv_resM hL (c α) (hTc α) inf_le_left _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[resM_resM, ← resM_resM h hle, ha, map_zero, map_zero])`. Use `eventually_atTop.2 ⟨k, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le' hj`. Rewrite using `[pow_add, mul_smul, hk, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `(eventually_all.2 key).mono fun k hk d hd => sec_ext_of_cover T hTW hc fun α => ?_` and prove the remaining obligations. Apply `(zchartEquiv hL d (c α) (hTc α)).injective` to reduce the goal to its premises. Rewrite using `[← app_resM, zchartEquiv_mulSecOfEq_app, zfun_zpowSec, map_pow, hk, map_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eventually_mulSecOfEq_zpowSec_eq_zero (hL : L.IsLB) (σ : LB.Sec (lbZPow L m))
     {W V : X.Opens} (hW : IsCompact (W : Set X)) (h : V ≤ W) (hV : W ⊓ Out.nonzeroLocus σ ≤ V)
@@ -140,19 +140,19 @@ theorem eventually_mulSecOfEq_zpowSec_eq_zero (hL : L.IsLB) (σ : LB.Sec (lbZPow
   rw [← app_resM, zchartEquiv_mulSecOfEq_app, zfun_zpowSec, map_pow, hk, map_zero, map_zero]
 
 /- English proof (translation)
-Take `⟨κ, _, T, c, hT, hTW, hTc, hc⟩` from `exists_finite_affine_chart_cover hL hW`. Establish `hTV : ∀ α, T α ⊓ V = T α ⊓ Out.nonzeroLocus σ` using `fun α => by`. Rewrite using `[hV, ← inf_assoc, inf_eq_left.2 (hTW α)]`. Establish `key : ∀ α, ∀ᶠ k : ℕ in atTop, ∃ a : Γ(twistZ F L (n + k * m), T α), resM _ (inf_le_left : T α ⊓ V ≤ T α) a = (mulSec F (zpowSec σ k) n).app _ (resM _ inf_le_right b)`. Introduce `α`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc' : T α ⊓ V ≤ L.U (c α)` using `inf_le_left.trans (hTc α)`. Take `⟨k, t, hk⟩` from `QCoh.Qcqs.exists_pow_smul_eq_res_of_qcqs F (hT α).isCompact (hT α).isQuasiSeparated (resG X (hTc α) (zfun σ (c α))) (V := T α ⊓ V) inf_le_left ((hTV α).trans (basicOpen_resG_zfun σ _ (hTc α)).symm) (zchartEquiv hL n (c α) hc' (resM _ inf_le_right b))`. Establish `hk' : resG X hc' (zfun σ (c α)) ^ k • zchartEquiv hL n (c α) hc' (resM _ inf_le_right b) = resM F inf_le_left t`. Rewrite using `[← resG_resG (hTc α) inf_le_left]`. Conclude with `hk`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `eventually_atTop.2 ⟨k, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le' hj`. Use `⟨(zchartEquiv hL _ (c α) (hTc α)).symm (resG X (hTc α) (zfun σ (c α)) ^ j • t), ?_⟩` and prove the remaining obligations. Apply `(zchartEquiv hL _ (c α) hc').injective` to reduce the goal to its premises. Rewrite using `[zchartEquiv_resM hL (c α) (hTc α), LinearEquiv.apply_symm_apply, zchartEquiv_mulSecOfEq_app, zfun_zpowSec, resM_smul, map_pow, map_pow, resG_resG, pow_add, mul_smul, hk']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `(eventually_all.2 key).exists`. Use `choose a ha using hk`. Establish `key₂ : ∀ p : κ × κ, ∀ᶠ j : ℕ in atTop, ∀ (d : ℤ) (hd : n + k * m + j * m = d), (mulSecOfEq F (zpowSec σ j) hd).app (T p.1 ⊓ T p.2) (resM _ inf_le_left (a p.1) - resM _ inf_le_right (a p.2)) = 0` using `fun p => by`. Use `eventually_mulSecOfEq_zpowSec_eq_zero hL σ (hW' _ _ (hTW p.1) (T p.1).isOpen (hT p.1).isCompact (hTW p.2) (T p.2).isOpen (hT p.2).isCompact) (V := T p.1 ⊓ T p.2 ⊓ V) inf_le_left (le_inf inf_le_left (hV.ge.trans' (inf_le_inf_right _ (inf_le_left.trans (hTW p.1))))) _ ?_` and prove the remaining obligations. Establish `h₁ : T p.1 ⊓ T p.2 ⊓ V ≤ T p.1 ⊓ V` using `inf_le_inf_right _ inf_le_left`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₂ : T p.1 ⊓ T p.2 ⊓ V ≤ T p.2 ⊓ V` using `inf_le_inf_right _ inf_le_right`. Rewrite using `[map_sub, resM_resM, resM_resM, ← resM_resM inf_le_left h₁, ← resM_resM inf_le_left h₂, ha, ha, ← app_resM, ← app_resM, resM_resM, resM_resM, sub_self]`. Take `⟨j₀, hj₀⟩` from `eventually_atTop.1 (eventually_all.2 key₂)`. Use `eventually_atTop.2 ⟨k + j₀, fun l hl d hd => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le (le_of_add_le_left hl)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hd' : n + k * m + j * m = d` using `by rw [← hd]; push_cast; ring`. Take `⟨t, ht⟩` from `exists_sec_of_cover T hTW hc (fun α => (mulSecOfEq F (zpowSec σ j) hd').app _ (a α)) fun α β => by`. Use `hj₀ j (by omega) (α, β) d hd'` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[← app_resM, ← app_resM]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `⟨t, sec_ext_of_cover (fun α => T α ⊓ V) (fun _ => inf_le_right) ((le_inf (h.trans hc) le_rfl).trans (iSup_inf_eq _ _).le) fun α => ?_⟩` and prove the remaining obligations. Rewrite using `[resM_resM, ← resM_resM (hTW α) inf_le_left, ht, ← app_resM, ha, ← app_resM, mulSecOfEq_zpowSec_app σ rfl]`.
+A detailed English derivation is pending.
 -/
 theorem eventually_exists_resM_eq_mulSecOfEq_zpowSec (hL : L.IsLB) (σ : LB.Sec (lbZPow L m))
     {W V : X.Opens} (hW : IsCompact (W : Set X)) (hW' : IsQuasiSeparated (W : Set X)) (h : V ≤ W)

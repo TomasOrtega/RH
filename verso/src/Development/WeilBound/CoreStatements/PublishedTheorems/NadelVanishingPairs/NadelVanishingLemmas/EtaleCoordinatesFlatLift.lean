@@ -9,7 +9,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory GlobalTheory
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Introduce `p _ Y X g f π hP U n t hU ht y hy`. Take `⟨hs, hk⟩` from `GlobalTheory.T.mod_p_squared_stalk_surjective p Y X g f π hP y`. Establish `hfl` using `GlobalTheory.T.etale_coordinates_stalk_flat g U t hU ht (π y) hy`. Use `⟨hs, hk, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.flat_mod_p_squared_torsion p _ hfl w, hk w]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFlatLift_stalkMap_of_isEtCoord : ∀ (p : ℕ) [Fact p.Prime] (Y X : Scheme.{0}) (g : Y ⟶ Sp (ZMod (p ^ 2))) (f : X ⟶ Sp (ZMod p)) (π : X ⟶ Y), IsPullback π f g (spMap (ZMod.castHom (dvd_pow_self p two_ne_zero) (ZMod p))) → ∀ (U : Y.Opens) {n : ℕ} (t : Fin n → Γ(Y, U)), IsAffineOpen U → IsEtCoord g U t → ∀ y : X, π y ∈ U → IsFlatLift p (π.stalkMap y).hom := by
   intro p _ Y X g f π hP U n t hU ht y hy

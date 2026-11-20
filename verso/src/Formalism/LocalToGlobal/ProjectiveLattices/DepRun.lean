@@ -14,17 +14,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 
 /- English proof (translation)
-Introduce `τ`. Take `⟨⟨w, emb, hw, hbasis⟩, -⟩` from `hS T io y C τ`. Establish `huv` using `C.gen.1.2.2.2.2.2.2`. Use `choose A hA using fun m : Fin (chD C.ch) => (hbasis (Pi.single m 1)).exists`. Establish `hAw : (Matrix.of A) * (Matrix.of w) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `m j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[hA m j, Pi.single_apply]`. Distinguish the cases in `hjm : j = m`. Substitute `hjm` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[hjm, Ne.symm hjm]`. Establish `hwA : (Matrix.of w) * (Matrix.of A) = 1` using `by first`. Consider the case `exact mul_eq_one_comm.mp hAw`. Consider the case `exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp hAw`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i j => A j (emb i), fun i i' => ?_⟩` and prove the remaining obligations. Use `letI := io.toAlgebra`. Establish `e1 : ∀ j, C.ch.uvec ⟨τ, i'⟩ j * algebraMap T.V T.Fr (A j (emb i)) = algebraMap T.V T.Fr (w (emb i') j * A j (emb i))`. Introduce `j`. Rewrite using `[huv, map_mul, hw]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_congr rfl (fun j _ => e1 j)).trans ?_` and prove the remaining obligations. Rewrite using `[← map_sum]`. Establish `h3` using `congrFun (congrFun hwA (emb i')) (emb i)`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply] at h3`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hii : i' = i`. Substitute `hii` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h' => hii (emb.injective h')), if_neg hii, map_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satDir_of (hS : ChartSaturated Xo c) {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} (C : IntChart T io y) :
     SatDir T (letI := io.toAlgebra; C.ch.uvec) := by
@@ -59,9 +59,9 @@ theorem satDir_of (hS : ChartSaturated Xo c) {T : CDVR} {io : c.F →+* T.Fr} {y
   · rw [if_neg (fun h' => hii (emb.injective h')), if_neg hii, map_zero]
 
 /- English proof (translation)
-Unfold `nuW`. Use `max_le_max le_rfl ?_` and prove the remaining obligations. Unfold `nuSup`. Use `iSup_le fun T => iSup_le fun io => iSup_le fun e => iSup_le fun ho => iSup_le fun y => iSup_le fun hy => ?_` and prove the remaining obligations. Take `⟨C⟩` from `hE T io y hy`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Unfold `nuLoc`. Use `(iInf_le _ C).trans ?_` and prove the remaining obligations. Use `letI := io.toAlgebra`. Conclude with `(crude_inf C.ch.B C.ch.h C.ch.gauge H.w0 k C.ch.uvec (satDir_of hS C) a n ha hn ho).1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem nuW_le_crude (hE : IntChartEx Xo c) (hS : ChartSaturated Xo c) (la : HeightOneSpectrum (𝓞 c.F)) (k : ℕ)
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (ha : DomW Dw a) (hn : Fintype.card (Lt1 Dw) ≤ n) :
@@ -79,9 +79,9 @@ theorem nuW_le_crude (hE : IntChartEx Xo c) (hS : ChartSaturated Xo c) (la : Hei
 
 omit [StarRing (𝓞 E)] in
 /- English proof (translation)
-Rewrite using `[Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `τ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult`. Apply the tactic sequence `split_ifs <;> omega`. Use `_ = Module.finrank ℚ E * (Dw.p + Dw.q) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_Lt1_le_finrank_mul : Fintype.card (Lt1 Dw) ≤ Module.finrank ℚ E * (Dw.p + Dw.q) := by
   rw [Fintype.card_sigma]
@@ -99,15 +99,13 @@ end
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `j hj la`. Establish `hfr : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hr : (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r`. Rewrite using `[(hp.2.2.2 j hj).1, (hp.2.2.2 j hj).2.1]`. Use `hj.1` as an intermediate fact. Use `hj.2` as an intermediate fact. Simplify using `only [Ranks.sigW, Ranks.r]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hn : Fintype.card (Lt1 (T.Q.Dw j)) ≤ Dd.nW j`. Use `card_Lt1_le_finrank_mul.trans ?_` and prove the remaining obligations. Rewrite using `[hfr, hr]`. Conclude with `(hw j hj).2`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ne_top_of_le_ne_top ?_ (nuW_le_crude (hE j hj) (hS j hj) la _ _ _ (fun τ i i' h => (hw j hj).1 τ h) hn)` and prove the remaining obligations. Break down `le_total (0 : EReal) (crudeBd la (DF (T.Q.Dw j) (Dd.aL j)) : EReal) with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Conclude with `EReal.coe_ne_top _`. Rewrite using `[max_eq_left h]`.
-
-Conclude with `EReal.zero_ne_top`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuFinAt_of (T : Core D) (hp : T.Q.Pins) (Dd : DepData D.host.E) [StarRing (𝓞 D.host.E)]
     (hw : ∀ j, InR D j → (∀ τ, Antitone fun i => Dd.aL j (τ, i)) ∧ 2 * D.R.f * D.R.r ≤ Dd.nW j)
@@ -135,7 +133,7 @@ def depRun (T : Core D) (EX : ErrX D) (Tn : ℕ+) (vd : ℕ → ℝ) (wL wF ka :
     (fun j => ∑ τ, ∑ i, (ka j).aP τ i) fun j => ∑ τ, ∑ i, (ka j).aM τ i
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, rfl⟩ tPos := tPos_depDataOf .. sm := rfl wts j hj := ⟨(dom_wtA (wL j)).1, hn j hj⟩ piSplit := piSplit_depDataOf .. piHalf := piHalf_depDataOf _ _ _ _ _ _ _ _ _ h`.
+Supply the required witnesses or components.
 -/
 theorem lawsPi_depRun [StarRing (𝓞 D.host.E)] {T : Core D} (h : LawsM T) (EX : ErrX D) (Tn : ℕ+) (vd : ℕ → ℝ) (wL wF ka : ∀ j, WeightFamilies.Wt D j)
     (hn : ∀ j, InR D j → 2 * D.R.f * D.R.r ≤ (wL j).n) : LawsPi T (depRun T EX Tn vd wL wF ka) where

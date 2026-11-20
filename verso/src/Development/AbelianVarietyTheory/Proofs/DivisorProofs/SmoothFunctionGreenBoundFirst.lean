@@ -27,9 +27,9 @@ set_option autoImplicit false
 noncomputable section
 
 /- English proof (translation)
-Introduce `P2 PH SW D O hO hf A T H h B hB τ c g hg hgz ε π hπ hu hc`. Take `⟨gY, hgY⟩` from `exists_onPts (h.man c) g`. Take `⟨l, hN⟩` from `GlobalTheory.T.pulled_metric_smooth_on_flag_points D O A T H h B τ c g ε π hπ hu hc gY hgY`. Establish `hU` using `GlobalTheory.T.flat_section_div_det_unit D O c B τ`. Establish `hN2` using `GlobalTheory.CoverNorm.norms_mul_unit _ _ _ _ _ _ _ (fun z => flatSec O.s O.Φ c τ / detFn O c B τ z) hU hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ z, detFn O c B τ z ≠ 0` using `fun z e => (hU z).ne_zero (by rw [e, div_zero])`. Establish `hN3` using `hN2.congr (f' := fun _ => flatSec O.s O.Φ c τ) (fun z => div_mul_cancel₀ _ (hne z)) (fun _ _ => rfl) (fun _ _ _ => rfl)`. Use `GlobalTheory.T.cover_norms_rational_section_divisor _ _ _ _ _ _ _ hN3 fun σ => ?_` and prove the remaining obligations. Take `⟨C, hC⟩` from `GlobalTheory.T.green_function_pullback_equality D O hO A T H h B τ c g hg hgz gY hgY σ`. Conclude with `⟨C + O.Y.htDetT B c τ, fun y => by rw [← hC y]; ring⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.FlatSecCover.exists_ratSec_vertical_constNorm : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (B : ℝ), 2 ≤ B → ∀ (τ : D.what₂.Tau) (c : O.s.Comp)

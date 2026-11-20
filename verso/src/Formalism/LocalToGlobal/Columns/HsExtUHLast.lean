@@ -16,9 +16,9 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Use function extensionality and compare the values at `j`. Rewrite using `[padL_apply]`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[incl]`. Simplify using `[incl]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hs_padL_succ (n : ℕ) : padL E n (n + 1) = incl E n := by
   apply LinearMap.ext
@@ -30,9 +30,9 @@ theorem hs_padL_succ (n : ℕ) : padL E n (n + 1) = incl E n := by
   · simp [incl]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Rewrite using `[hs_padL_succ]`. Use `show extE g.1 (incl E n x) = incl E n (g.1 x)`. Apply `sp_ext` to reduce the goal to its premises. Rewrite using `[initL_extE, initL_incl, initL_incl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extE_last]`. Simplify using `[incl]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hs_extUH_pad {N n : ℕ} (hN : N = n + 1) (g : UF E n) (x : Fin n → E) :
     (extUH hN g).1 (padL E n N x) = padL E n N (g.1 x) := by
@@ -45,9 +45,9 @@ theorem hs_extUH_pad {N n : ℕ} (hN : N = n + 1) (g : UF E n) (x : Fin n → E)
     simp [incl]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Rewrite using `[← lastVector_eq_single]`. Use `show extE g.1 (z0 E n p) = z0 E n p`. Apply `sp_ext` to reduce the goal to its premises. Rewrite using `[initL_extE]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[z0]`. Rewrite using `[extE_last]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_extUH_last {N n : ℕ} (hN : N = n + 1) [NeZero N] (g : UF E n) (p : E) :
     (extUH hN g).1 (Pi.single (lastIdx N) p) = Pi.single (lastIdx N) p := by
@@ -60,7 +60,7 @@ theorem hs_extUH_last {N n : ℕ} (hN : N = n + 1) [NeZero N] (g : UF E n) (p : 
   · rw [extE_last]
 
 /- English proof (translation)
-Rewrite using `[inv_inv]`. Use `show g.1 (g.1.symm (e.1 (g.1 (g.1.symm w)))) = e.1 w`. Rewrite using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_conj {N : ℕ} (g e : UF E N) (w : Sp E N) : g.1 ((g⁻¹ * e * g⁻¹⁻¹).1 (g.1.symm w)) = e.1 w := by
   rw [inv_inv]
@@ -68,9 +68,9 @@ theorem hs_conj {N : ℕ} (g e : UF E N) (w : Sp E N) : g.1 ((g⁻¹ * e * g⁻�
   rw [LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `hγs : ∀ y, e (γ.symm y) = g₀.1.symm (e y)` using `fun y => by`. Rewrite using `[LinearEquiv.eq_symm_apply, ← hγ, LinearEquiv.apply_symm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Apply `e.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hγ, hM, hγs, hs_conj, hι, hs_extUH_pad, hι, hSs]`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hγ, hM, hγs, hs_conj, hz, hs_extUH_last]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_core {V V' : Type} [AddCommGroup V] [Module E V] [AddCommGroup V'] [Module E V'] {N n : ℕ} (hN : N = n + 1) [NeZero N]
     (e : V ≃ₗ[E] (Fin N → E)) (e' : V' ≃ₗ[E] (Fin n → E)) (ι : V' →ₗ[E] V) (hι : ∀ x, e (ι x) = padL E n N (e' x))
@@ -90,7 +90,7 @@ theorem hs_core {V V' : Type} [AddCommGroup V] [Module E V] [AddCommGroup V'] [M
 variable {F : Type} [Field F] [NumberField F] [Algebra F E]
 
 /- English proof (translation)
-Establish `h1` using `hq_reGL_mulVec b h ((Formalism.L2.Herm.toGLb b).symm g) x`. Rewrite `h1` using `[MulEquiv.apply_symm_apply, hg, ← rlc_ratHom_apply hc n]`. Establish `h2 : ratHom hc n ((ratEquiv hc n).symm t) = t` using `(ratEquiv hc n).apply_symm_apply t`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_stab_crd (hc : CMData F E) {V : Type} [AddCommGroup V] [Module E V] {n' n : ℕ} [NeZero n] (b : Basis (Fin n') E V) (h : n' = n)
     (g : GL (Fin n') E) (t : UF E n) (hg : Formalism.L2.Forms.reGL h E g = ((ratEquiv hc n).symm t).1) (x : V) :
@@ -110,7 +110,7 @@ variable {X : Fields} {Pr : Primes X} (hc : CMData X.F X.E) (hX : X.Ok) (hPr : P
   (c₀ : DiaG X.E (Pr.vT u)) (s : DecoCl n (Pr.vT u) Pr.vGs Λ.grp → DecoSet X.E n (Pr.vT u) Pr.vGs)
 
 /- English proof (translation)
-Take `⟨n', hn, J, rfl, f, rfl, bad, rfl, lat, hlat⟩` from `H`. Substitute `hn` using the available equality. Take `rfl : lat = fun c => (s c).1.L` from `funext fun c => (hlat c).trans (Formalism.L2.Forms.reL_rfl _)`. Conclude with `Formalism.L2.Forms.reGL_rfl _ _`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem levPack_stabI (hS : DecoPtSurj hc n (Pr.vT u) Pr.vGs) (hs : ∀ c, decoCls n (Pr.vT u) Pr.vGs Λ.grp (s c) = c)
     (hK : LocalLevelIsKOneAtT hc u Λ) (H : HCrd Pr n fun c => (s c).1.L) (c : DecoCl n (Pr.vT u) Pr.vGs Λ.grp)
@@ -131,7 +131,7 @@ variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) 
 include hS in
 
 /- English proof (translation)
-Rewrite using `[← iXc_eq a hS]`. Use `show _ = CF.crdN (d.colRec a) d.R.m le_rfl (d.sp.iX' ((CF.crdP (d.colRec a)).symm (CF.crdP (d.colRec a) x)))`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_iX (x : d.sp.X'.V) :
     CF.crdN (d.colRec a) d.R.m le_rfl (d.sp.iX' x) = padL d.host.E (d.R.N d.R.m - 1) (d.R.N d.R.m) (CF.crdP (d.colRec a) x) := by
@@ -140,7 +140,7 @@ theorem hs_iX (x : d.sp.X'.V) :
   rw [LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `(hqG_crd d.R.m le_rfl ((tildeLatticeAgreement a hS hH hP u).ga c) x).trans (tilGa_mulVec u c _)`.
+A detailed English derivation is pending.
 -/
 theorem hs_tilG (u : d.what₂.Word) (c : PCl d) (x : (d.sp.X d.R.m).V) :
     CF.crdN (d.colRec a) d.R.m le_rfl (((levelExponentAtT a hS hH hP u).tilG c).1 x) =
@@ -150,7 +150,7 @@ theorem hs_tilG (u : d.what₂.Word) (c : PCl d) (x : (d.sp.X d.R.m).V) :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `u h1 c s`. Conclude with `hs_core (E := d.X.E) (N_m_succ d.R) (CF.crdN (d.colRec a) d.R.m le_rfl) (CF.crdP (d.colRec a)) d.sp.iX' (hs_iX a hS) ((levelExponentAtT a hS hH hP u).tilG c).1 _ _ (d.tilMv u c).1 s.1.1 (hs_tilG a hS hH hP u c) (fun x => hs_stab_crd d.sp.cm (d.sp.X d.R.m).frame (CF.rankN (d.colRe …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stabMapTied (disc : ∀ u, AtTDisc (d.colRec a) u)
     (moves : ∀ u, AtTMoves (atTTied a hH u) (fun i hi => levelAgreement a hS hH u i hi)) :

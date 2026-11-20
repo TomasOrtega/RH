@@ -23,19 +23,19 @@ private def sumD {P₁ P₂ Q : PSh} (f : P₁ ⟶ Q) (g : P₂ ⟶ Q) : sumP P�
     · exact congrFun (congrArg (fun t => t.hom) (g.naturality k)) x
 
 /- English proof (translation)
-Introduce `R _ P₁ P₂ Q f g h`. Establish `mc : ∀ {P : PSh} (c : P ⟶ Q) {M : Shv R} (p : (free R).obj Q ⟶ M) (T : Scheme.{0}) (x : P.obj (op T)), Sec.map ((free R).map c ≫ p) (freeGen R P T x) = Sec.map p (freeGen R Q T (c.app (op T) x))`. Introduce `P c M p T x`. Establish `h4` using `(GlobalTheory.T.free_sections_ext_res_map R P M).2.2.2 Q c T x`. Use `show Sec.map p (Sec.map ((free R).map c) (freeGen R P T x)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4]`. Establish `hE : Epi ((free R).map (sumD f g))`. Apply `(GlobalTheory.T.freeEtaleModuleSheaf_map_mono_epi_iso R (sumD f g)).2.1` to reduce the goal to its premises. Introduce `T y`. Take `⟨S, hS, hP⟩` from `h T y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S, hS, fun W k hk => ?_⟩` and prove the remaining obligations. Break down `hP W k hk with ⟨x, hx⟩ | ⟨x, hx⟩` into its components or cases. Conclude with `⟨Sum.inl x, hx⟩`. Conclude with `⟨Sum.inr x, hx⟩`. Prove the components needed by the constructor for the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z u v huv`. Establish `ha : (free R).map f ≫ u = (free R).map f ≫ v`. Simplify using `using congrArg (biprod.inl ≫ ·) huv`. Establish `hb : (free R).map g ≫ u = (free R).map g ≫ v`. Simplify using `using congrArg (biprod.inr ≫ ·) huv`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi ((free R).map (sumD f g))]`. Apply `(GlobalTheory.T.free_sections_ext_res_map R (sumP P₁ P₂) Z).2.1` to reduce the goal to its premises. Introduce `T z`. Rewrite using `[mc, mc]`. Consider the cases of `z with`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inl x`. Establish `e` using `mc f u T x`. Establish `e'` using `mc f v T x`. Rewrite `e` using `[ha]`. Conclude with `e.symm.trans e'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `inr x`. Establish `e` using `mc g u T x`. Establish `e'` using `mc g v T x`. Rewrite `e` using `[hb]`. Conclude with `e.symm.trans e'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.epi_freeBiprodDesc_of_zariskiLocally_surjective :
     ∀ (R : Type) [CommRing R] {P₁ P₂ Q : PSh} (f : P₁ ⟶ Q) (g : P₂ ⟶ Q), (∀ (U : Scheme.{0}) (y : Q.obj (op U)), Loc U fun V h => (∃ x, f.app (op V) x = Q.map h.op y) ∨ ∃ x, g.app (op V) x = Q.map h.op y) → Epi (biprod.desc ((free R).map f) ((free R).map g)) := by

@@ -11,11 +11,11 @@ open scoped TensorProduct
 namespace MassDataMassesW
 
 /- English proof (translation)
-Establish `hf : AEMeasurable (fun x : α => Measure.map (Prod.mk x) ν) μ`. Assume the negation of the conclusion as `hf`. Apply `h0` to reduce the goal to its premises. Rewrite using `[Measure.prod, Measure.bind, Measure.map_of_not_aemeasurable hf, Measure.join_zero]`. Rewrite using `[Measure.prod, Measure.bind_apply (hs.prod ht) hf]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ x, Measure.map (Prod.mk x) ν (s ×ˢ t) = s.indicator (fun _ => ν t) x`. Introduce `x`. Rewrite using `[Measure.map_apply measurable_prodMk_left (hs.prod ht)]`. Distinguish the cases in `hx : x ∈ s`. Simplify using `[hx, Set.mk_preimage_prod_right hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hx, Set.mk_preimage_prod_right_eq_empty hx]`. Repeatedly rewrite using `[key]`. Rewrite using `[lintegral_indicator_const hs, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_rect_of_ne_zero {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] (μ : Measure α)
     (ν : Measure β) (h0 : μ.prod ν ≠ 0) {s : Set α} {t : Set β} (hs : MeasurableSet s)
@@ -35,9 +35,9 @@ theorem prod_rect_of_ne_zero {α β : Type*} [MeasurableSpace α] [MeasurableSpa
   rw [lintegral_indicator_const hs, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[tauF_tmul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem tauF_eq_comm {D : D7} (X : HidaSetting D) (y : AF X.B.I.F ⊗[X.B.I.F] X.B.I.E) :
     tauF X.B.I y = Algebra.TensorProduct.comm X.B.I.F (Af X.B.I.F) X.B.I.E
@@ -50,11 +50,11 @@ theorem tauF_eq_comm {D : D7} (X : HidaSetting D) (y : AF X.B.I.F ⊗[X.B.I.F] X
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `hbr` using `((toHA_isBridge X.B.I hb) (s, 1)).2`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun hbr i) j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [ofHAFin, Matrix.map_apply] at e`. Rewrite `e` using `[tauF_eq_comm]`. Establish `e2` using `congrArg (Algebra.TensorProduct.comm X.B.I.F (Af X.B.I.F) X.B.I.E).symm e`. Rewrite `e2` using `[AlgEquiv.symm_apply_apply]`. Use `show tensMap (E := X.B.I.E) (sndA X.B.I.F) _ = _`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e2]`. Use `show _ = (1 : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Af X.B.I.F ⊗[X.B.I.F] X.B.I.E)) i j`. Simplify using `only [Formalism.MainNotions.S.AutInst.fmat, OneMemClass.coe_one, Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem toHA_fin_one {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (s : X.B.I.Ginf) :
     (splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb (s, 1))).2 = 1 := by
@@ -78,11 +78,11 @@ section Split
 variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I)
 
 /- English proof (translation)
-Establish `hbr` using `((toHA_isBridge X.B.I hb) p).2`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun hbr i) j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [ofHAFin, Matrix.map_apply] at e`. Rewrite `e` using `[tauF_eq_comm]`. Establish `h2 : tensMap (E` using `X.B.I.E) (sndA X.B.I.F) (hmat X.B.I (toHA X.B.I hb p) i j) = (1 : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Af X.B.I.F ⊗[X.B.I.F] X.B.I.E)) i j := by`. Use `congrArg (fun g : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J => (HA.mat (Af X.B.I.F) X.B.I.cm.sig X.B.I.J g).val i j) h` as an intermediate fact. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[h2]`. Rewrite `e` using `[Formalism.MainNotions.S.AutInst.fmat]`. Use `show _ = (1 : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)) i j`. Rewrite using `[e, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eq_one_of_toHA_fin {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (p : X.B.I.GA)
     (h : (splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb p)).2 = 1) : p.2 = 1 := by
@@ -105,16 +105,16 @@ theorem eq_one_of_toHA_fin {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I)
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `Prod.ext rfl (toHA_fin_one X hb s)`.
+A detailed English derivation is pending.
 -/
 theorem split_unitary_infinite_one (s : X.B.I.Ginf) :
     splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb (s, 1)) = (X.toInf hb s, 1) :=
   Prod.ext rfl (toHA_fin_one X hb s)
 
 /- English proof (translation)
-Introduce `s t hst`. Take `⟨e, he⟩` from `hS X.B.I.cm.sig X.B.I.J`. Establish `h1 : e (toHA X.B.I hb (s, 1)) = e (toHA X.B.I hb (t, 1))`. Rewrite using `[he, split_unitary_infinite_one, split_unitary_infinite_one, hst]`. Establish `h2` using `(toHA X.B.I hb).injective (e.injective h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg Prod.fst h2`.
+A detailed English derivation is pending.
 -/
 theorem toInf_injective (hS : SplitIso) : Function.Injective (X.toInf hb) := by
   intro s t hst
@@ -125,7 +125,7 @@ theorem toInf_injective (hS : SplitIso) : Function.Injective (X.toInf hb) := by
   exact congrArg Prod.fst h2
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hS X.B.I.cm.sig X.B.I.J`. Establish `hc : Continuous (splitA X.B.I.cm.sig X.B.I.J)` using `by rw [← he]; exact e.continuous_toFun`. Conclude with `continuous_fst.comp (hc.comp ((toHA X.B.I hb).continuous_toFun.comp (continuous_id.prodMk continuous_const)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_toInf_of (hS : SplitIso) : Continuous (X.toInf hb) := by
   obtain ⟨e, he⟩ := hS X.B.I.cm.sig X.B.I.J
@@ -134,24 +134,22 @@ theorem continuous_toInf_of (hS : SplitIso) : Continuous (X.toInf hb) := by
     (continuous_id.prodMk continuous_const)))
 
 /- English proof (translation)
-Use `haveI : BorelSpace (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) := ⟨rfl⟩`. Conclude with `(continuous_toInf_of X hb hS).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_toInf_of (hS : SplitIso) : Measurable (X.toInf hb) := by
   haveI : BorelSpace (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) := ⟨rfl⟩
   exact (continuous_toInf_of X hb hS).measurable
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hS X.B.I.cm.sig X.B.I.J`. Set `Φ : X.B.I.GA ≃ₜ* (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J × HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)` to `(toHA X.B.I hb).trans e`. Establish `hΦ : ∀ s, Φ (s, 1) = (X.toInf hb s, 1)` using `fun s => by show e (toHA X.B.I hb (s, 1)) = _`. Rewrite using `[he]`. Conclude with `split_unitary_infinite_one X hb s`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ψ : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J → X.B.I.GA` to `fun y => Φ.symm (y, 1)`. Establish `hψc : Continuous ψ` using `Φ.symm.continuous_toFun.comp (continuous_id.prodMk continuous_const)`. Establish `hset : X.toInf hb '' FdN = (fun y => (ψ y).1) ⁻¹' FdN`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨s, hs, rfl⟩ show (Φ.symm (X.toInf hb s, 1)).1 ∈ FdN`. Rewrite using `[← hΦ, Φ.symm_apply_apply]`. Conclude with `hs`. Introduce `h1`. Establish `h2 : (ψ y).2 = 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `eq_one_of_toHA_fin X hb` to reduce the goal to its premises. Establish `h3 : e (toHA X.B.I hb (ψ y)) = (y, 1)` using `Φ.apply_symm_apply _`. Rewrite `h3` using `[he]`. Rewrite using `[h3]`. Use `⟨(ψ y).1, h1, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ψ y = ((ψ y).1, 1)` using `Prod.ext rfl h2`. Use `congrArg Φ hp` as an intermediate fact. Rewrite `this` using `[show Φ (ψ y) = (y, 1) from Φ.apply_symm_apply _, hΦ]`. Conclude with `(congrArg Prod.fst this).symm`. Use `haveI : BorelSpace (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) := ⟨rfl⟩`.
-
-Rewrite using `[hset]`. Conclude with `(continuous_fst.comp hψc).measurable hF`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_image_toInf (hS : SplitIso) {FdN : Set X.B.I.Ginf} (hF : MeasurableSet FdN) :
     MeasurableSet (X.toInf hb '' FdN) := by
@@ -189,19 +187,17 @@ theorem measurableSet_image_toInf (hS : SplitIso) {FdN : Set X.B.I.Ginf} (hF : M
 end Split
 
 /- English proof (translation)
-Introduce `hS D X hb u FdN hT hTie hF`. Use `haveI : BorelSpace (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) := ⟨rfl⟩`. Take `⟨e, he⟩` from `hS X.B.I.cm.sig X.B.I.J`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous (splitA X.B.I.cm.sig X.B.I.J)` using `by rw [← he]; exact e.continuous_toFun`. Establish `hm : Measurable (splitA X.B.I.cm.sig X.B.I.J)` using `(continuous_fst.comp hc).measurable.prodMk (continuous_snd.comp hc).measurable`. Establish `hTm : MeasurableSet (X.toInf hb '' FdN)` using `measurableSet_image_toInf X hb hS hF.1`. Establish `hKm : MeasurableSet (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))` using `(hKo X).2.measurableSet`. Establish `hRm : MeasurableSet ((X.toInf hb '' FdN) ×ˢ (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)))` using `hTm.prod hKm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hFd : FdA X hb u FdN = Subtype.val ⁻¹' (splitA X.B.I.cm.sig X.B.I.J ⁻¹' ((X.toInf hb '' FdN) ×ˢ (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))))`. Use extensionality with `n`. Simplify using `only [FdA, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_prod, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h1, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨s, hs, h1.symm⟩, h2⟩`. Introduce and unpack `⟨⟨s, hs, h1⟩, h2⟩`. Conclude with `⟨s, hs, h1.symm, h2⟩`. Establish `hN` using `hT.2.2.2.2.2.2.2.2.2.1`. Establish `hHaar : (X.measW u).μN.IsHaarMeasure` using `hT.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : (amb (X.measW u).μNinf).prod (amb (X.measW u).μNf) ≠ 0`. Rewrite using `[← hN]`. Introduce `h`. Establish `h'` using `congrArg (fun μ => μ Set.univ) h`. Simplify using `only [Measure.map_apply hm MeasurableSet.univ, Set.preimage_univ, Measure.map_apply measurable_subtype_coe MeasurableSet.univ, Measure.coe_zero, Pi.zero_apply] at h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(isOpen_univ.measure_ne_zero (X.measW u).μN Set.univ_nonempty) h'`. Rewrite using `[hFd]`. Use `erw [← Measure.map_apply measurable_subtype_coe (hm hRm)]`. Rewrite using `[← Measure.map_apply hm hRm]`. Express the relevant statement in the definitionally equal form `((amb (X.measW u).μN).map (splitA X.B.I.cm.sig X.B.I.J)) _ = _`.
-
-Rewrite using `[hN, prod_rect_of_ne_zero _ _ h0 hTm hKm, (hTie.2.2.2 u).1, Measure.map_apply (measurable_toInf_of X hb hS) hTm, Set.preimage_image_eq _ (toInf_injective X hb hS), Measure.map_apply measurable_subtype_coe hKm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem elliptic_centralizer_quotient_compact (hKo : KCompactOpen) : N4 := by
   intro hS D X hb u FdN hT hTie hF

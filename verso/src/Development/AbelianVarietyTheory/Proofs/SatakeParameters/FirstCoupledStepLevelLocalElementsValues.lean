@@ -10,9 +10,9 @@ namespace GlobalTheory.TwV
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _hPins hTie hi β κ`. Take `⟨hLe, -, hChi⟩` from `hTie.levMid t.m2 hi le_rfl β`. Establish `hκ` using `(((St t.m2 hi.le).K β).lev.U_eq κ.1).1 κ.2`. Establish `key : ∀ P : SB t μ, ∃ g z, A.midRel t.m2 hi β P g z ∧ InFrame t.seam (A.fb t.m2 hi.le β) (t.cst μ).D P κ.1 g`. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hLe P (HeightOneSpectrum.under (𝓞 D.host.F) (seamP t.seam P.1)) ?_ κ.1 hκ.1 (hκ.2 _)` and prove the remaining obligations. Unfold `IsOver`. Rewrite using `[HeightOneSpectrum.under_asIdeal]`. Use `choose g z hgz using key`. Conclude with `⟨g, z, hgz, hChi κ g z hgz⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levSrc_localData : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
   ∀ (hi : t.m2 < D.R.m) (β : (St t.m2 hi.le).Ch) (κ : ((St t.m2 hi.le).K β).lev.U),

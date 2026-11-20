@@ -16,11 +16,11 @@ namespace PKLt2
 variable {E : Type} [Field E] [NumberField E] {k : ℕ}
 
 /- English proof (translation)
-Unfold `lastRow`. Rewrite using `[Finset.sum_eq_single ⟨k - 1, by omega⟩]`. Rewrite using `[if_pos (by simp; omega)]`. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lastRow_eq (hk : 1 ≤ k) (y : GA E k) (c : Fin k) :
     lastRow y c = y.val ⟨k - 1, by omega⟩ c := by
@@ -38,7 +38,7 @@ theorem lastRow_eq (hk : 1 ≤ k) (y : GA E k) (c : Fin k) :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Rewrite using `[lastRow_eq hk, lastRow_eq hk, Units.val_mul, Matrix.mul_apply]`. Establish `h1 : ∀ j, p.val ⟨k - 1, by omega⟩ j = (1 : Matrix (Fin k) (Fin k) (Ad E)) ⟨k - 1, by omega⟩ j` using `fun j => hp _ _ (Or.inl le_rfl)`. Simplify using `only [h1, Matrix.one_apply, ite_mul, one_mul, zero_mul]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lastRow_mir (hk : 1 ≤ k) (p y : GA E k) (hp : Mir (k - 1) p) : lastRow (p * y) = lastRow y := by
   funext c
@@ -50,7 +50,7 @@ theorem lastRow_mir (hk : 1 ≤ k) (p y : GA E k) (hp : Mir (k - 1) p) : lastRow
 
 omit [NumberField E] in
 /- English proof (translation)
-Introduce `i c hic`. Rewrite using `[h γ, embM, Matrix.of_apply, dif_neg (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMir_emb {m : ℕ} (ιE : GL (Fin k) E →* GL (Fin m) E) (h : IsEmb ιE) (γ : GL (Fin k) E) :
     IsMir k (ιE γ) := by
@@ -60,49 +60,47 @@ theorem isMir_emb {m : ℕ} (ιE : GL (Fin k) E →* GL (Fin m) E) (h : IsEmb ι
 end PKLt2
 
 /- English proof (translation)
-Introduce `hD0 hN0 hH0 hG5 hK1 hK5e hK5a hK5b hK5c hK6 E _ _ _ m k hk hkm ψ hψ S hS ι hι α α' φ' hsec U φ hprep`. Take `⟨hDpos, hDmul, hDcont, hDrat, -⟩` from `hD0 E k`. Take `⟨hFgood, hpT, -, -, hsupp, hbd⟩` from `hK5a E m k hk hkm ψ hψ ι hι φ hprep.good`. Take `⟨C6, hC6c, hC6⟩` from `hK6 E m k hk hkm ψ hψ S hS ι hι α (m ^ 3) U φ hprep`. Take `⟨-, -, -, -, -, -, -, -, -, hNlast⟩` from `hN0 E k k hk le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hhtpos, -, -, -, hB5, -, -⟩` from `hH0 E k`. Take `⟨-, hdminpos, -⟩` from `hK1 E m (by omega)`. Take `⟨hιc, -, -, -, -, -, hιrat, -⟩` from `(hK5e E m k hkm.le).2 ι hι`. Take `⟨ιE, hιE⟩` from `(hK5e E m k hkm.le).1 E`. Establish `hrow : ∀ (g : GA E k) (ξ : RowT E k k), pT ψ k (m - k) (φ : GA E m → ℂ) (ι (ratGL E k (gam ξ) * g)) ≠ 0 → lastRow (ratGL E k (gam ξ) * g) ∈ C6`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g ξ hne`. Take `⟨p, hp, hw⟩` from `hsupp _ hne`. Use `hC6 _ hw` as an intermediate fact. Rewrite `this` using `[PKLt2.lastRow_mir hk _ _ hp]`. Then use the resulting hypothesis. Establish `hfin : ∀ g : GA E k, {ξ : RowT E k k | colT ψ k (pT ψ (k + 1) (m - (k + 1)) (φ : GA E m → ℂ)) (ι (ratGL E k (gam ξ) * g)) ≠ 0}.Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `g`. Conclude with `((hG5 E k hk C6 hC6c).1 g).subset fun ξ hξ => hrow g ξ (by rw [hpT]; exact hξ)`. Establish `hsumF : ∀ g, sumF (fun g => pT ψ k (m - k) (φ : GA E m → ℂ) (ι g)) g = pT ψ (k + 1) (m - (k + 1)) (φ : GA E m → ℂ) (ι g)`. Introduce `g`. Rewrite using `[hpT]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hK5b E m k hk hkm ψ hψ ι hι _ hFgood g).2 (hfin g)`. Establish `hFb : ∀ x, ‖pT ψ (k + 1) (m - (k + 1)) (φ : GA E m → ℂ) x‖ ≤ ‖φ‖` using `fun x => hbd (k + 1) x ‖φ‖ (by omega) (by omega) fun u _ => φ.norm_coe_le_norm _`. Establish `hcpow : ∀ g : GA E k, ‖(Dt g : ℂ) ^ (-(((m : ℂ) - k) / 2))‖ = Dt g ^ (-(((m : ℝ) - k) / 2))`. Introduce `g`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos (hDpos g)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Establish `hcont : Continuous fun g : GA E k => pT ψ (k + 1) (m - (k + 1)) (φ : GA E m → ℂ) (ι g) * conj (φ' g) * (Dt g : ℂ) ^ (-(((m : ℂ) - k) / 2))`. Use `((hFgood.cont.comp hιc).mul (Complex.continuous_conj.comp φ'.continuous)).mul ?_` and prove the remaining obligations. Conclude with `(Complex.continuous_ofReal.comp hDcont).cpow continuous_const fun g => Complex.ofReal_mem_slitPlane.2 (hDpos g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Repeatedly rewrite using `[hsumF]`. Use `⟨hcont.measurable, measurable_zero, ?_, fun _ _ => rfl, fun _ _ => rfl, ⟨0, fun _ => by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ g dsimp only`. Rewrite using `[map_mul ι, hιrat ιE hιE γ, hFgood.left _ (PKLt2.isMir_emb ιE hιE γ), hsec.inv γ g, hDmul, hDrat, one_mul]`. Introduce `M`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C₂, hC₂⟩` from `hsec.dec (k * M)`. Take `⟨B, hB⟩` from `hB5 C6 hC6c`. Use `⟨‖φ‖ * max C₂ 0 * max B 0 ^ (k * M), fun g hg => ?_⟩` and prove the remaining obligations. Establish `hD` using `hDpos g`. Establish `hk0 : (k : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnorm : ‖(Dt g : ℂ) ^ (-(((m : ℂ) - k) / 2))‖ ≤ 1`. Rewrite using `[hcpow]`. Apply `Real.rpow_le_one_of_one_le_of_nonpos hg` to reduce the goal to its premises. Establish `: (k : ℝ) < m` using `by exact_mod_cast hkm`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hnn : 0 ≤ max B 0 ^ (k * M) * (Dt g ^ M)⁻¹` using `by positivity`. Distinguish the cases in `hz : pT ψ (k + 1) (m - (k + 1)) (φ : GA E m → ℂ) (ι g) = 0`. Rewrite using `[hz, zero_mul, zero_mul, norm_zero]`. Conclude with `mul_nonneg (mul_nonneg (mul_nonneg (norm_nonneg _) (le_max_right _ _)) (by positivity)) (by positivity)`. Choose the witnesses or unpack the hypotheses as in `⟨ξ, hξ⟩ : ∃ ξ : RowT E k k, pT ψ k (m - k) (φ : GA E m → ℂ) (ι (ratGL E k (gam ξ) * g)) ≠ 0 := by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_not] at hcon`. Apply `hz` to reduce the goal to its premises. Rewrite using `[← hsumF g, sumF]`. Simplify using `only [hcon, tsum_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlr` using `hrow g ξ hξ`. Rewrite `hlr` using `[hNlast ξ g]`. Establish `hht` using `hB g ξ.1 ξ.2.1 hlr`. Establish `hp` using `hhtpos g ξ.1 ξ.2.1`. Establish `hht2 : ht g ξ.1 ≤ max B 0 / Dt g ^ ((k : ℝ)⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `ht`. Use `gcongr`. Conclude with `hht.trans (le_max_left _ _)`. Establish `hDk : (Dt g ^ ((k : ℝ)⁻¹)) ^ (k * M) = Dt g ^ M`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hD.le, Nat.cast_mul, ← mul_assoc, inv_mul_cancel₀ hk0, one_mul, Real.rpow_natCast]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hpow : ht g ξ.1 ^ (k * M) ≤ max B 0 ^ (k * M) * (Dt g ^ M)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hφ' : ‖φ' g‖ ≤ max C₂ 0 * (max B 0 ^ (k * M) * (Dt g ^ M)⁻¹)` using `(hC₂ g ξ.1 ξ.2.1).trans ((mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)).trans (mul_le_mul_of_nonneg_left hpow (le_max_right _ _)))`. Rewrite using `[norm_mul, norm_mul, RCLike.norm_conj]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C5, hC5⟩` from `hK5c E m k hk hkm ι hι`. Take `⟨Cφ, hCφ⟩` from `hprep.dec`. Establish `hm2 : (2 : ℝ) ≤ m` using `by exact_mod_cast (by omega : 2 ≤ m)`. Establish `hkm' : (k : ℝ) < m` using `by exact_mod_cast hkm`. Establish `hm0 : (m : ℝ) ≠ 0` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hm1 : (m : ℝ) - 1 ≠ 0` using `by linarith`. Establish `he : (((m : ℝ) - 1)⁻¹ - (m : ℝ)⁻¹) * ((m ^ 3 : ℕ) : ℝ) = (m : ℝ) ^ 2 / ((m : ℝ) - 1)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmle : (m : ℝ) ≤ (m : ℝ) ^ 2 / ((m : ℝ) - 1)`. Rewrite using `[le_div_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hexp : 0 ≤ (((m : ℝ) - 1)⁻¹ - (m : ℝ)⁻¹) * ((m ^ 3 : ℕ) : ℝ) + -(((m : ℝ) - k) / 2)`. Rewrite using `[he]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨max Cφ 0 * max C5 0 ^ (m ^ 3) * ‖φ'‖, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hD` using `hDpos g`. Establish `hFs : ‖pT ψ (k + 1) (m - (k + 1)) (φ : GA E m → ℂ) (ι g)‖ ≤ max Cφ 0 * (max C5 0 ^ (m ^ 3) * Dt g ^ ((((m : ℝ) - 1)⁻¹ - (m : ℝ)⁻¹) * ((m ^ 3 : ℕ) : ℝ)))`. Use `hbd (k + 1) (ι g) _ (by omega) (by omega) fun u hu => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hdm` using `(hC5 g u).2 hu`. Establish `hpos` using `hdminpos (u * ι g)`. Establish `hw0 : 0 ≤ wt (m ^ 3) (u * ι g)` using `pow_nonneg (le_min zero_le_one hpos.le) _`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ (le_max_right _ _)` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `wt`. Combine the equalities or inequalities in the displayed calculation. Establish `hrp : Dt g ^ ((((m : ℝ) - 1)⁻¹ - (m : ℝ)⁻¹) * ((m ^ 3 : ℕ) : ℝ)) * Dt g ^ (-(((m : ℝ) - k) / 2)) ≤ 1`. Rewrite using `[← Real.rpow_add hD]`. Conclude with `Real.rpow_le_one hD.le hg.le hexp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hφ'b : ‖φ' g‖ ≤ ‖φ'‖` using `φ'.norm_coe_le_norm g`. Establish `hA : 0 ≤ max Cφ 0 * max C5 0 ^ (m ^ 3) * ‖φ'‖` using `mul_nonneg (mul_nonneg (le_max_right _ _) (pow_nonneg (le_max_right _ _) _)) (norm_nonneg _)`. Rewrite using `[Pi.zero_apply, sub_zero, norm_mul, Complex.norm_real, Real.norm_of_nonneg hD.le, norm_mul, norm_mul, RCLike.norm_conj, hcpow, mul_comm _ (Dt g)]`. Apply `mul_le_mul_of_nonneg_left _ hD.le` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
-
-Apply `mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg hD.le _)` to reduce the goal to its premises. Conclude with `mul_le_mul hFs hφ'b (norm_nonneg _) ((norm_nonneg _).trans hFs)`. Use `_ = max Cφ 0 * max C5 0 ^ (m ^ 3) * ‖φ'‖ * (Dt g ^ ((((m : ℝ) - 1)⁻¹ - (m : ℝ)⁻¹) * ((m ^ 3 : ℕ) : ℝ)) * Dt g ^ (-(((m : ℝ) - k) / 2))) := by ring`. Use `_ ≤ max Cφ 0 * max C5 0 ^ (m ^ 3) * ‖φ'‖ * 1 := mul_le_mul_of_nonneg_left hrp hA`. Use `_ = _ := mul_one _`.
+A detailed English derivation is pending.
 -/
 theorem kernel_less_second_of : D0 → N0 → H0 → RowsInCompactSet → K1 → CornerEmbedding → TransformsEmbedding → FourierSeriesColumn → ShortRowsEmbedding → K6 → KLt2 := by
   intro hD0 hN0 hH0 hG5 hK1 hK5e hK5a hK5b hK5c hK6 E _ _ _ m k hk hkm ψ hψ S hS ι hι α α' φ' hsec U φ hprep

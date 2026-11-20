@@ -11,7 +11,7 @@ open GlobalTheory.CompanionTheory.VacLoc GlobalTheory.CompanionTheory.FinHeis Gl
 namespace GlobalTheory.CompanionTheory.VacLoc.ModelLine
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ ψ O u W _ _ B κ _ d μ S Γ al φ φ' hg hm`. Take `⟨Γ₀, al₀, φ₀, h1, h2, h3, h4, _⟩` from `GlobalTheory.T.schrodinger_model_selfDual_lattice ψ O u d μ S hg hm`. Establish `hcyc : φ ≠ 0 → Cyclic S φ` using `fun h => (GlobalTheory.CompanionTheory.FinHeis.Irred.irreducible S al₀ Γ₀ φ₀ h1 h2 h3 h4).2 φ h`. Use `⟨hcyc, fun hΓ hal hφ hφ' h0 => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.CompanionTheory.FinHeis.LawLine.law_line S al Γ φ φ' hΓ hal hφ (hcyc h0) hφ'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cyclic_and_line : ∀ {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R]
     [T2Space R] [Invertible (2 : R)] (ψ : AddChar R ℂ) (O : Subring R) (u : Rˣ) {W : Type} [AddCommGroup W] [Module R W]

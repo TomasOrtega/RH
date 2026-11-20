@@ -14,7 +14,7 @@ def IsSmooth {h : IsPlaceOver A w} {M : Type*} [Monoid M] (f : Weil h →* M) : 
   IsOpen {σ : Ine (F := E) A | f (ineIncl h σ) = 1}
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_of_mem_nhds (f.comp (ineIncl h)).ker (g := 1) (Filter.mem_of_superset (hU.mem_nhds h1) hf)`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.of_open {h : IsPlaceOver A w} {M : Type*} [Monoid M] {f : Weil h →* M}
     {U : Set (Ine (F := E) A)} (hU : IsOpen U) (h1 : 1 ∈ U)
@@ -23,7 +23,7 @@ theorem IsSmooth.of_open {h : IsPlaceOver A w} {M : Type*} [Monoid M] {f : Weil 
     (Filter.mem_of_superset (hU.mem_nhds h1) hf)
 
 /- English proof (translation)
-The claim follows from `.of_open hf (by simp) fun _ hσ => hg _ hσ`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.of_le {h : IsPlaceOver A w} {M M' : Type*} [Monoid M] [Monoid M']
     {f : Weil h →* M} {g : Weil h →* M'} (hf : IsSmooth f) (hg : ∀ σ, f σ = 1 → g σ = 1) :
@@ -31,7 +31,7 @@ theorem IsSmooth.of_le {h : IsPlaceOver A w} {M M' : Type*} [Monoid M] [Monoid M
   .of_open hf (by simp) fun _ hσ => hg _ hσ
 
 /- English proof (translation)
-The claim follows from `.of_open (hf.inter hf') (by simp) fun _ hσ => hg _ hσ.1 hσ.2`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.of_le₂ {h : IsPlaceOver A w} {M M' M'' : Type*} [Monoid M] [Monoid M']
     [Monoid M''] {f : Weil h →* M} {f' : Weil h →* M'} {g : Weil h →* M''} (hf : IsSmooth f)
@@ -39,7 +39,7 @@ theorem IsSmooth.of_le₂ {h : IsPlaceOver A w} {M M' M'' : Type*} [Monoid M] [M
   .of_open (hf.inter hf') (by simp) fun _ hσ => hg _ hσ.1 hσ.2
 
 /- English proof (translation)
-The claim follows from `.of_open isOpen_univ trivial fun σ _ => hf σ`.
+A detailed English derivation is pending.
 -/
 theorem IsSmooth.of_trivial {h : IsPlaceOver A w} {M : Type*} [Monoid M] {f : Weil h →* M}
     (hf : ∀ σ, f (ineIncl h σ) = 1) : IsSmooth f :=
@@ -59,7 +59,7 @@ structure WDRep [IsAlgClosure E Ω] (h : IsPlaceOver A w) (V : Type*) [AddCommGr
 variable [IsAlgClosure E Ω]
 
 /- English proof (translation)
-Use `compactSpace_Ine (E := E) A` as an intermediate fact. Establish `: Finite (Ine (F` using `E) A ⧸ (f.comp (ineIncl h)).ker) := Subgroup.quotient_finite_of_isOpen _ hf`. Use `(Set.finite_range (QuotientGroup.lift (f.comp (ineIncl h)).ker (f.comp (ineIncl h)) le_rfl)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨σ, rfl⟩`. Conclude with `⟨QuotientGroup.mk σ, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem IsSmooth.finite_range {h : IsPlaceOver A w} {M : Type*} [Monoid M] {f : Weil h →* M}
     (hf : IsSmooth f) : (Set.range fun σ : Ine (F := E) A => f (ineIncl h σ)).Finite := by
@@ -72,7 +72,7 @@ theorem IsSmooth.finite_range {h : IsPlaceOver A w} {M : Type*} [Monoid M] {f : 
   exact ⟨QuotientGroup.mk σ, rfl⟩
 
 /- English proof (translation)
-The claim follows from `.of_trivial fun σ => by simp`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_unrChar (h : IsPlaceOver A w) (c : ℂˣ) : IsSmooth (unrChar h c) :=
   .of_trivial fun σ => by simp
@@ -86,14 +86,14 @@ variable {V V' V'' V''' : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensio
   [AddCommGroup V'''] [Module ℂ V'''] [FiniteDimensional ℂ V''']
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (a.comm σ) v`.
+A detailed English derivation is pending.
 -/
 theorem comm_apply (a : WDRep h V) (σ : Weil h) (v : V) :
     a.ρ σ (a.N v) = ((normV w : ℕ) : ℂ) ^ deg σ • a.N (a.ρ σ v) :=
   LinearMap.congr_fun (a.comm σ) v
 
 /- English proof (translation)
-Rewrite using `[a.comm, smul_mul_assoc, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_N (a : WDRep h V) (σ : Weil h) :
     a.ρ σ * a.N * a.ρ σ⁻¹ = ((normV w : ℕ) : ℂ) ^ deg σ • a.N := by
@@ -103,19 +103,19 @@ def Iso (a : WDRep h V) (b : WDRep h V') : Prop :=
   ∃ e : V ≃ₗ[ℂ] V', (∀ σ v, e (a.ρ σ v) = b.ρ σ (e v)) ∧ ∀ v, e (a.N v) = b.N (e v)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.refl _ _, fun _ _ => rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Iso.refl (a : WDRep h V) : a.Iso a := ⟨.refl _ _, fun _ _ => rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `hab`. Conclude with `⟨e.symm, fun σ v => by simp [e.symm_apply_eq, h1], fun v => by simp [e.symm_apply_eq, h2]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Iso.symm {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) : b.Iso a := by
   obtain ⟨e, h1, h2⟩ := hab
   exact ⟨e.symm, fun σ v => by simp [e.symm_apply_eq, h1], fun v => by simp [e.symm_apply_eq, h2]⟩
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `hab`. Take `⟨e', h1', h2'⟩` from `hbc`. Conclude with `⟨e.trans e', fun σ v => by simp [h1, h1'], fun v => by simp [h2, h2']⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Iso.trans {a : WDRep h V} {b : WDRep h V'} {c : WDRep h V''} (hab : a.Iso b) (hbc : b.Iso c) :
     a.Iso c := by
@@ -134,7 +134,7 @@ def transport (a : WDRep h V) (e : V ≃ₗ[ℂ] V') : WDRep h V' where
     rw [← map_mul, a.comm, map_smul, map_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨e, fun σ v => by show _ = e.conjAlgEquiv ℂ (a.ρ σ) (e v) simp, fun v => by simp [transport]⟩`.
+Supply the required witnesses or components.
 -/
 theorem iso_transport (a : WDRep h V) (e : V ≃ₗ[ℂ] V') : a.Iso (a.transport e) :=
   ⟨e, fun σ v => by
@@ -169,7 +169,7 @@ Both sides reduce to the same expression.
 @[simp] theorem sum_N (a : WDRep h V) (b : WDRep h V') : (a.sum b).N = a.N.prodMap b.N := rfl
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `ha`. Take `⟨e', h1', h2'⟩` from `hb`. Conclude with `⟨e.prodCongr e', fun σ v => Prod.ext (h1 σ v.1) (h1' σ v.2), fun v => Prod.ext (h2 v.1) (h2' v.2)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Iso.sum {a : WDRep h V} {a' : WDRep h V'} {b : WDRep h V''} {b' : WDRep h V'''} (ha : a.Iso a')
     (hb : b.Iso b') : (a.sum b).Iso (a'.sum b') := by
@@ -203,7 +203,7 @@ Both sides reduce to the same expression.
     (a.twist χ hχ).N = a.N := rfl
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `hab`. Conclude with `⟨e, fun σ v => by simp [h1], h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Iso.twist {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) (χ : Weil h →* ℂˣ)
     (hχ : IsSmooth χ) : (a.twist χ hχ).Iso (b.twist χ hχ) := by
@@ -213,7 +213,7 @@ theorem Iso.twist {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) (χ : Weil h 
 def tw (a : WDRep h V) (s : ℝ) : WDRep h V := a.twist (unrChar h (qPow w s)) (isSmooth_unrChar h _)
 
 /- English proof (translation)
-Simplify using `[tw]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem tw_ρ (a : WDRep h V) (s : ℝ) (σ : Weil h) :
     (a.tw s).ρ σ = (((normV w : ℕ) : ℂ) ^ ((s : ℝ) : ℂ)) ^ deg σ • a.ρ σ := by
@@ -252,11 +252,11 @@ Both sides reduce to the same expression.
     (a.tensor b).N = a.N.rTensor V' + b.N.lTensor V := rfl
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `ha`. Take `⟨e', h1', h2'⟩` from `hb`. Use `⟨TensorProduct.congr e e', fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x y => simp [h1, h1']`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [h2, h2']`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem Iso.tensor {a : WDRep h V} {a' : WDRep h V'} {b : WDRep h V''} {b' : WDRep h V'''} (ha : a.Iso a')
     (hb : b.Iso b') : (a.tensor b).Iso (a'.tensor b') := by
@@ -301,7 +301,7 @@ Both sides reduce to the same expression.
 @[simp] theorem dual_N (a : WDRep h V) : a.dual.N = -a.N.dualMap := rfl
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `hab.symm`. Conclude with `⟨e.dualMap, fun σ f => by ext; simp [h1], fun f => by ext; simp [h2]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Iso.dual {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) : a.dual.Iso b.dual := by
   obtain ⟨e, h1, h2⟩ := hab.symm
@@ -342,7 +342,7 @@ def diag {ι : Type*} [Finite ι] (c : ι → ℂˣ) : WDRep h (ι → ℂ) :=
   ofChars h (fun i => unrChar h (c i)) fun _ => isSmooth_unrChar h _
 
 /- English proof (translation)
-Simplify using `[diag]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem diag_ρ {ι : Type*} [Finite ι] (c : ι → ℂˣ) (σ : Weil h) :
     (diag h c).ρ σ = diagEnd fun i => (c i : ℂ) ^ deg σ := by
@@ -377,7 +377,7 @@ def sp (n : ℕ) : WDRep h (Fin n → ℂ) where
     · simp
 
 /- English proof (translation)
-The claim follows from `diag_ρ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem sp_ρ (n : ℕ) (σ : Weil h) :
     (sp h n).ρ σ = diagEnd fun i => (spEig w n i : ℂ) ^ deg σ := diag_ρ _ _
@@ -435,13 +435,13 @@ def Tempered (a : WDRep h V) : Prop :=
   ∀ φ : Weil h, deg φ = 1 → IsPurePair ((normV w : ℕ) : ℝ) (a.ρ φ) a.N
 
 /- English proof (translation)
-The claim follows from `hab.choose.finrank_eq`.
+A detailed English derivation is pending.
 -/
 theorem Iso.finrank_eq {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) :
     finrank ℂ V = finrank ℂ V' := hab.choose.finrank_eq
 
 /- English proof (translation)
-Take `⟨e, h1, -⟩` from `hab`. Rewrite using `[← LinearEquiv.charpoly_conj e]`. Use `congr 1`. Use extensionality with `v`. Simplify using `[LinearEquiv.conj_apply, h1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Iso.charpoly_eq {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) (σ : Weil h) :
     (a.ρ σ).charpoly = (b.ρ σ).charpoly := by
@@ -452,7 +452,7 @@ theorem Iso.charpoly_eq {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) (σ : W
   simp [LinearEquiv.conj_apply, h1]
 
 /- English proof (translation)
-Take `⟨e, -, h2⟩` from `hab`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `e.surjective v`. Rewrite using `[← h2, show a.N = 0 from ha]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Iso.mono0 {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) (ha : a.Mono0) : b.Mono0 := by
   obtain ⟨e, -, h2⟩ := hab
@@ -461,7 +461,7 @@ theorem Iso.mono0 {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) (ha : a.Mono0
   rw [← h2, show a.N = 0 from ha]; simp
 
 /- English proof (translation)
-Take `⟨e, h1, -⟩` from `hab`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `e.surjective v`. Rewrite using `[← h1, ha]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Iso.ρ_eq_one {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) {σ : Weil h} (ha : a.ρ σ = 1) :
     b.ρ σ = 1 := by
@@ -471,13 +471,13 @@ theorem Iso.ρ_eq_one {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) {σ : Wei
   rw [← h1, ha]; simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hab.mono0 ha.1, fun σ => hab.ρ_eq_one (ha.2 σ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Iso.unr {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) (ha : a.Unr) : b.Unr :=
   ⟨hab.mono0 ha.1, fun σ => hab.ρ_eq_one (ha.2 σ)⟩
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `hab`. Conclude with `fun φ hφ => (ha φ hφ).of_equiv e (h1 φ) h2`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Iso.tempered {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) (ha : a.Tempered) :
     b.Tempered := by
@@ -485,7 +485,7 @@ theorem Iso.tempered {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) (ha : a.Te
   exact fun φ hφ => (ha φ hφ).of_equiv e (h1 φ) h2
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[End.mem_eigenspace_iff]`. Rewrite using `[a.comm_apply, hv, hφ, zpow_one, map_smul, smul_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_N_eigenspace (a : WDRep h V) {φ : Weil h} (hφ : deg φ = 1) {α : ℂ} {v : V}
     (hv : v ∈ End.eigenspace (a.ρ φ) α) :
@@ -494,13 +494,13 @@ theorem map_N_eigenspace (a : WDRep h V) {φ : Weil h} (hφ : deg φ = 1) {α : 
   rw [a.comm_apply, hv, hφ, zpow_one, map_smul, smul_smul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun σ => LinearMap.ext fun v => funext fun i => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem unr_diag {ι : Type*} [Finite ι] (c : ι → ℂˣ) : (diag h c).Unr :=
   ⟨rfl, fun σ => LinearMap.ext fun v => funext fun i => by simp⟩
 
 /- English proof (translation)
-Introduce `φ hφ` and use `by rw [sp_ρ, sp_N, hφ] refine isPurePair_diagEnd_shiftEnd (by exact_mod_cast one_lt_normV w) _ fun i => ?_ rw [zpow_one, spEig, norm_qPow]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tempered_sp (n : ℕ) : (sp h n).Tempered := fun φ hφ => by
   rw [sp_ρ, sp_N, hφ]
@@ -525,14 +525,14 @@ def std (a : WDRep h V) : Σ n : ℕ, WDRep h (Fin n → ℂ) :=
   ⟨finrank ℂ V, a.transport (finBasis ℂ V).equivFun⟩
 
 /- English proof (translation)
-The claim follows from `a.iso_transport _`.
+A detailed English derivation is pending.
 -/
 theorem iso_std (a : WDRep h V) : a.Iso (std a).2 := a.iso_transport _
 
 def mk (a : WDRep h V) : WD h := Quotient.mk (isoSetoid h) (std a)
 
 /- English proof (translation)
-Use `Quotient.eq.trans ⟨fun hab => ?_, fun hab => ?_⟩` and prove the remaining obligations. Conclude with `((iso_std a).trans hab).trans (iso_std b).symm`. Conclude with `((iso_std a).symm.trans hab).trans (iso_std b)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mk_eq_mk {a : WDRep h V} {b : WDRep h V'} : mk a = mk b ↔ a.Iso b := by
   refine Quotient.eq.trans ⟨fun hab => ?_, fun hab => ?_⟩
@@ -540,18 +540,18 @@ theorem mk_eq_mk {a : WDRep h V} {b : WDRep h V'} : mk a = mk b ↔ a.Iso b := b
   · exact ((iso_std a).symm.trans hab).trans (iso_std b)
 
 /- English proof (translation)
-The claim follows from `mk_eq_mk.mpr hab`.
+A detailed English derivation is pending.
 -/
 theorem sound {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) : mk a = mk b := mk_eq_mk.mpr hab
 
 /- English proof (translation)
-The claim follows from `Quotient.sound (iso_std a.2)`.
+A detailed English derivation is pending.
 -/
 theorem quotientMk_eq (a : Σ n : ℕ, WDRep h (Fin n → ℂ)) :
     Quotient.mk (isoSetoid h) a = mk a.2 := Quotient.sound (iso_std a.2)
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Quotient.exists_rep x`. Conclude with `⟨a.1, a.2, (quotientMk_eq a).symm⟩`. Use the proof step `@[elab_as_elim]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rep (x : WD h) : ∃ (n : ℕ) (a : WDRep h (Fin n → ℂ)), mk a = x := by
   obtain ⟨a, rfl⟩ := Quotient.exists_rep x
@@ -559,7 +559,7 @@ theorem exists_rep (x : WD h) : ∃ (n : ℕ) (a : WDRep h (Fin n → ℂ)), mk 
 
 @[elab_as_elim]
 /- English proof (translation)
-Take `⟨n, a, rfl⟩` from `exists_rep x`. Conclude with `hP n a`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ind {P : WD h → Prop} (hP : ∀ (n : ℕ) (a : WDRep h (Fin n → ℂ)), P (mk a)) (x : WD h) :
     P x := by
@@ -567,11 +567,9 @@ theorem ind {P : WD h → Prop} (hP : ∀ (n : ℕ) (a : WDRep h (Fin n → ℂ)
   exact hP n a
 
 /- English proof (translation)
-Take `⟨n, a, rfl⟩` from `exists_rep x`. Use `⟨n, a.toGL, LinearMap.toMatrix' a.N, a.smooth.of_le fun σ hσ => ?_, fun σ => ?_, ?_, fun σ => ?_, sound ⟨.refl _ _, fun σ v => ?_, fun v => ?_⟩⟩` and prove the remaining obligations. Use extensionality with `: 1`. Simplify using `[hσ]`. Simplify using `using a.semisimple σ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `a.nilpotent.map (LinearMap.toMatrixAlgEquiv' : End ℂ (Fin n → ℂ) ≃ₐ[ℂ] Matrix (Fin n) (Fin n) ℂ)`. Use `congrArg (LinearMap.toMatrixAlgEquiv' : End ℂ (Fin n → ℂ) ≃ₐ[ℂ] Matrix (Fin n) (Fin n) ℂ) (a.comm σ)` as an intermediate fact. Rewrite `this` using `[map_mul, map_smul, map_mul]`. Conclude with `this`. Use `show Matrix.toLin' (LinearMap.toMatrix' (a.ρ σ)) v = a.ρ σ v`.
-
-Rewrite using `[Matrix.toLin'_toMatrix']`. Use `show Matrix.toLin' (LinearMap.toMatrix' a.N) v = a.N v`. Rewrite using `[Matrix.toLin'_toMatrix']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ofMatrix (x : WD h) : ∃ (n : ℕ) (ρ : Weil h →* GL (Fin n) ℂ)
     (N : Matrix (Fin n) (Fin n) ℂ) (h1 : _) (h2 : _) (h3 : _) (h4 : _),
@@ -598,7 +596,7 @@ def lpDim (x : WD h) : ℕ :=
     (fun _ _ hab => WDRep.Iso.finrank_eq hab) x
 
 /- English proof (translation)
-The claim follows from `(iso_std a).finrank_eq.symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lpDim_mk (a : WDRep h V) : lpDim (mk a) = finrank ℂ V :=
   (iso_std a).finrank_eq.symm
@@ -608,7 +606,7 @@ def lpSum (x y : WD h) : WD h :=
     (fun _ _ _ _ ha hb => sound (WDRep.Iso.sum ha hb)) x y
 
 /- English proof (translation)
-The claim follows from `sound ((iso_std a).sum (iso_std b)).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lpSum_mk (a : WDRep h V) (b : WDRep h V') :
     lpSum (mk a) (mk b) = mk (a.sum b) :=
@@ -619,7 +617,7 @@ def lpTwist (x : WD h) (χ : Weil h →* ℂˣ) (hχ : IsSmooth χ) : WD h :=
     (fun _ _ hab => sound (WDRep.Iso.twist hab χ hχ)) x
 
 /- English proof (translation)
-The claim follows from `sound ((iso_std a).twist χ hχ).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lpTwist_mk (a : WDRep h V) (χ : Weil h →* ℂˣ) (hχ : IsSmooth χ) :
     lpTwist (mk a) χ hχ = mk (a.twist χ hχ) :=
@@ -628,7 +626,7 @@ The claim follows from `sound ((iso_std a).twist χ hχ).symm`.
 def lpTw (x : WD h) (s : ℝ) : WD h := lpTwist x (unrChar h (qPow w s)) (isSmooth_unrChar h _)
 
 /- English proof (translation)
-The claim follows from `lpTwist_mk _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lpTw_mk (a : WDRep h V) (s : ℝ) : lpTw (mk a) s = mk (a.tw s) := lpTwist_mk _ _ _
 
@@ -637,7 +635,7 @@ def lpChar (x y : WD h) : WD h :=
     (fun _ _ _ _ ha hb => sound (WDRep.Iso.tensor ha hb)) x y
 
 /- English proof (translation)
-The claim follows from `sound ((iso_std a).tensor (iso_std b)).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lpChar_mk (a : WDRep h V) (b : WDRep h V') :
     lpChar (mk a) (mk b) = mk (a.tensor b) :=
@@ -648,7 +646,7 @@ def lpDual (x : WD h) : WD h :=
     (fun _ _ hab => sound (WDRep.Iso.dual hab)) x
 
 /- English proof (translation)
-The claim follows from `sound (iso_std a).dual.symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lpDual_mk (a : WDRep h V) : lpDual (mk a) = mk a.dual :=
   sound (iso_std a).dual.symm
@@ -667,7 +665,7 @@ open Classical in
 def unitOf (z : ℂ) : ℂˣ := if hz : z = 0 then 1 else Units.mk0 z hz
 
 /- English proof (translation)
-Simplify using `[unitOf, hz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_unitOf {z : ℂ} (hz : z ≠ 0) : (unitOf z : ℂ) = z := by simp [unitOf, hz]
 
@@ -685,7 +683,7 @@ def mono0 (x : WD h) : Prop :=
     (fun _ _ hab => propext ⟨WDRep.Iso.mono0 hab, (WDRep.Iso.symm hab).mono0⟩) x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(iso_std a).symm.mono0, (iso_std a).mono0⟩`.
+Supply the required witnesses or components.
 -/
 @[simp] theorem monodromyZero_ofWeilDeligneRepClass_iff (a : WDRep h V) : mono0 (mk a) ↔ a.N = 0 :=
   ⟨(iso_std a).symm.mono0, (iso_std a).mono0⟩
@@ -695,7 +693,7 @@ def unr (x : WD h) : Prop :=
     (fun _ _ hab => propext ⟨WDRep.Iso.unr hab, (WDRep.Iso.symm hab).unr⟩) x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(iso_std a).symm.unr, (iso_std a).unr⟩`.
+Supply the required witnesses or components.
 -/
 @[simp] theorem unr_mk (a : WDRep h V) : unr (mk a) ↔ a.Unr :=
   ⟨(iso_std a).symm.unr, (iso_std a).unr⟩
@@ -705,7 +703,7 @@ def tempered (x : WD h) : Prop :=
     (fun _ _ hab => propext ⟨WDRep.Iso.tempered hab, (WDRep.Iso.symm hab).tempered⟩) x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(iso_std a).symm.tempered, (iso_std a).tempered⟩`.
+Supply the required witnesses or components.
 -/
 @[simp] theorem tempered_mk (a : WDRep h V) : tempered (mk a) ↔ a.Tempered :=
   ⟨(iso_std a).symm.tempered, (iso_std a).tempered⟩
@@ -715,7 +713,7 @@ def charPol (x : WD h) (σ : Weil h) : ℂ[X] :=
     (fun _ _ hab => WDRep.Iso.charpoly_eq hab σ) x
 
 /- English proof (translation)
-The claim follows from `((iso_std a).charpoly_eq σ).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem charPol_mk (a : WDRep h V) (σ : Weil h) : charPol (mk a) σ = (a.ρ σ).charpoly :=
   ((iso_std a).charpoly_eq σ).symm
@@ -723,7 +721,7 @@ The claim follows from `((iso_std a).charpoly_eq σ).symm`.
 def eig (x : WD h) (σ : Weil h) : Multiset ℂ := (charPol x σ).roots
 
 /- English proof (translation)
-Rewrite using `[eig, charPol_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem eig_mk (a : WDRep h V) (σ : Weil h) : eig (mk a) σ = (a.ρ σ).charpoly.roots := by
   rw [eig, charPol_mk]
@@ -731,7 +729,7 @@ Rewrite using `[eig, charPol_mk]`.
 def frobEig (x : WD h) : Multiset ℂ := eig x (frob h)
 
 /- English proof (translation)
-The claim follows from `eig_mk _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem frobEig_mk (a : WDRep h V) : frobEig (mk a) = (a.ρ (frob h)).charpoly.roots :=
   eig_mk _ _
@@ -741,54 +739,54 @@ open Classical in
 def inePol (x : WD h) (σ : G E Ω) : ℂ[X] := if hσ : σ ∈ Weil h then charPol x ⟨σ, hσ⟩ else 1
 
 /- English proof (translation)
-The claim follows from `dif_pos hσ`.
+A detailed English derivation is pending.
 -/
 theorem inePol_of_mem (x : WD h) {σ : G E Ω} (hσ : σ ∈ Weil h) :
     inePol x σ = charPol x ⟨σ, hσ⟩ := dif_pos hσ
 
 /- English proof (translation)
-The claim follows from `dif_neg hσ`.
+A detailed English derivation is pending.
 -/
 theorem inePol_of_not_mem (x : WD h) {σ : G E Ω} (hσ : σ ∉ Weil h) : inePol x σ = 1 := dif_neg hσ
 
 /- English proof (translation)
-The claim follows from `dif_pos (Ine_le_Weil h hσ)`.
+A detailed English derivation is pending.
 -/
 theorem inePol_of_mem_Ine (x : WD h) {σ : G E Ω} (hσ : σ ∈ Ine (F := E) A) :
     inePol x σ = charPol x (ineIncl h ⟨σ, hσ⟩) := dif_pos (Ine_le_Weil h hσ)
 
 /- English proof (translation)
-Proceed by induction on `x using ind with`. Consider the case `hP n a => rw [charPol_mk]`. Conclude with `LinearMap.charpoly_monic _`.
+Proceed by induction. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem charPol_monic (x : WD h) (σ : Weil h) : (charPol x σ).Monic := by
   induction x using ind with
   | hP n a => rw [charPol_mk]; exact LinearMap.charpoly_monic _
 
 /- English proof (translation)
-Proceed by induction on `x using ind with`. Consider the case `hP n a => rw [charPol_mk, lpDim_mk]`. Conclude with `LinearMap.charpoly_natDegree _`.
+Proceed by induction. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem charPol_natDegree (x : WD h) (σ : Weil h) : (charPol x σ).natDegree = lpDim x := by
   induction x using ind with
   | hP n a => rw [charPol_mk, lpDim_mk]; exact LinearMap.charpoly_natDegree _
 
 /- English proof (translation)
-The claim follows from `(IsAlgClosed.splits (charPol x σ)).eq_prod_roots_of_monic (charPol_monic x σ)`.
+A detailed English derivation is pending.
 -/
 theorem charPol_eq_prod (x : WD h) (σ : Weil h) :
     charPol x σ = ((eig x σ).map fun α => X - C α).prod :=
   (IsAlgClosed.splits (charPol x σ)).eq_prod_roots_of_monic (charPol_monic x σ)
 
 /- English proof (translation)
-Rewrite using `[eig, ← charPol_natDegree x σ]`. Conclude with `(IsAlgClosed.splits (charPol x σ)).natDegree_eq_card_roots.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_eig (x : WD h) (σ : Weil h) : Multiset.card (eig x σ) = lpDim x := by
   rw [eig, ← charPol_natDegree x σ]
   exact (IsAlgClosed.splits (charPol x σ)).natDegree_eq_card_roots.symm
 
 /- English proof (translation)
-Proceed by induction on `x using ind with`. Consider the case `hP n a`. Establish `h0 : deg (σ⁻¹ * τ) = 0` using `by simp [hστ]`. Establish `h1 : a.ρ (σ⁻¹ * τ) = 1` using `((unr_mk a).mp hx).2 ⟨_, deg_eq_zero_iff.mp h0⟩`. Establish `h2 : a.ρ τ = a.ρ σ`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_inv_cancel_left σ τ, map_mul, h1, mul_one]`. Rewrite using `[charPol_mk, charPol_mk, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem charPol_eq_of_unr {x : WD h} (hx : unr x) {σ τ : Weil h} (hστ : deg σ = deg τ) :
     charPol x σ = charPol x τ := by
@@ -801,14 +799,14 @@ theorem charPol_eq_of_unr {x : WD h} (hx : unr x) {σ τ : Weil h} (hστ : deg 
     rw [charPol_mk, charPol_mk, h2]
 
 /- English proof (translation)
-Rewrite using `[frobEig, eig, eig, charPol_eq_of_unr hx (hφ.trans deg_frob.symm)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eig_eq_frobEig {x : WD h} (hx : unr x) {φ : Weil h} (hφ : deg φ = 1) :
     eig x φ = frobEig x := by
   rw [frobEig, eig, eig, charPol_eq_of_unr hx (hφ.trans deg_frob.symm)]
 
 /- English proof (translation)
-Rewrite using `[frobEig_mk, WDRep.diag_ρ, charpoly_diagEnd, deg_frob]`. Simplify using `only [zpow_one]`. Use `roots_multiset_prod_X_sub_C (Finset.univ.val.map fun i => (c i : ℂ))` as an intermediate fact. Rewrite `this` using `[Multiset.map_map]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem frobEig_diag {ι : Type*} [Fintype ι] (c : ι → ℂˣ) :
     frobEig (mk (WDRep.diag h c)) = Finset.univ.val.map fun i => (c i : ℂ) := by
@@ -818,29 +816,29 @@ theorem frobEig_diag {ι : Type*} [Fintype ι] (c : ι → ℂˣ) :
   rwa [Multiset.map_map] at this
 
 /- English proof (translation)
-Simplify using `[lpSp]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lpDim_lpSp (n : ℕ) : lpDim (lpSp h n) = n := by simp [lpSp]
 
 /- English proof (translation)
-The claim follows from `(tempered_mk _).mpr (WDRep.tempered_sp n)`.
+A detailed English derivation is pending.
 -/
 theorem tempered_lpSp (n : ℕ) : tempered (lpSp h n) := (tempered_mk _).mpr (WDRep.tempered_sp n)
 
 /- English proof (translation)
-Introduce `h0` and use `shiftEnd_ne_zero hn ((monodromyZero_ofWeilDeligneRepClass_iff _).mp h0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_mono0_lpSp {n : ℕ} (hn : 2 ≤ n) : ¬ mono0 (lpSp h n) :=
   fun h0 => shiftEnd_ne_zero hn ((monodromyZero_ofWeilDeligneRepClass_iff _).mp h0)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `ha φ hφ`. Rewrite using `[eq_top_iff, ← h1]`. Use `iSup_le fun i v hv => ?_` and prove the remaining obligations. Break down `lt_trichotomy i 0 with hi | rfl | hi` into its components or cases. Take `⟨k, rfl⟩ : ∃ k : ℕ, i = -((k + 1 : ℕ) : ℤ)` from `⟨(-i - 1).toNat, by omega⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Establish `hv' : v ∈ absSpace (a.ρ φ) (((normV w : ℕ) : ℝ) ^ (-((k + 1 : ℕ) : ℝ) / 2))`. Simplify using `using hv`. Use `(h2 (k + 1)).2.1 hv' (zero_mem _) (by simp [hN])` as an intermediate fact. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hv`. Take `⟨k, rfl⟩ : ∃ k : ℕ, i = ((k + 1 : ℕ) : ℤ)` from `⟨(i - 1).toNat, by omega⟩`. Establish `hv' : v ∈ absSpace (a.ρ φ) (((normV w : ℕ) : ℝ) ^ (((k + 1 : ℕ) : ℝ) / 2))`. Simplify using `using hv`. Take `⟨u, -, hu⟩` from `(h2 (k + 1)).2.2 hv'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu, hN]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.WeilDeligne.WDRep.Tempered.norm_eq_one {a : WDRep h V} (ha : a.Tempered)
     (hN : a.N = 0) {φ : Weil h} (hφ : deg φ = 1) : absSpace (a.ρ φ) 1 = ⊤ := by
@@ -861,17 +859,17 @@ theorem _root_.GlobalTheory.WeilDeligne.WDRep.Tempered.norm_eq_one {a : WDRep h 
     rw [← hu, hN]; simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ht i`. Establish `h1` using `ht.norm_eq_one rfl deg_frob`. Establish `h2 : (Pi.single i 1 : ι → ℂ) ∈ absSpace ((WDRep.diag h c).ρ (frob h)) 1`. Rewrite using `[h1]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Rewrite `h2` using `[WDRep.diag_ρ, mem_absSpace_diagEnd]`. Assume the negation of the conclusion as `hc`. Simplify `hc)` using `using h2 i (by simpa`. Introduce `hc φ hφ`.
+Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq : (1 : ℝ) < ((normV w : ℕ) : ℝ)` using `by exact_mod_cast one_lt_normV w`. Establish `hz : ∀ (s : ℝ), s ≠ 0 → ∀ v ∈ absSpace ((WDRep.diag h c).ρ φ) (((normV w : ℕ) : ℝ) ^ s), v = 0`. Introduce `s hs v hv`. Rewrite `hv` using `[WDRep.diag_ρ, mem_absSpace_diagEnd]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hv i ?_` and prove the remaining obligations. Rewrite using `[hφ, zpow_one, hc, ← Real.rpow_zero ((normV w : ℕ) : ℝ), Ne, Real.rpow_right_inj (zero_lt_one.trans hq) hq.ne']`. Conclude with `hs.symm`. Use `⟨eq_top_iff.mpr fun v _ => Submodule.mem_iSup_of_mem 0 ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[WDRep.diag_ρ, mem_absSpace_diagEnd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Conclude with `absurd (by simp [hφ, hc]) hi`. Break down `Nat.eq_zero_or_pos i with rfl | hi` into its components or cases. Simplify using `only [pow_zero, Nat.cast_zero, neg_zero]`. Conclude with `Set.bijOn_id _`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hi' : (0 : ℝ) < i` using `by exact_mod_cast hi`. Use `⟨fun v hv => ?_, fun v hv v' hv' _ => ?_, fun v hv => ⟨0, zero_mem _, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hz _ (by linarith) v hv, map_zero]; exact zero_mem _`. Rewrite using `[hz _ (by linarith) v hv, hz _ (by linarith) v' hv']`. Rewrite using `[hz _ (by linarith) v hv, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tempered_diag_iff {ι : Type*} [Finite ι] (c : ι → ℂˣ) :
     (WDRep.diag h c).Tempered ↔ ∀ i, ‖(c i : ℂ)‖ = 1 := by
@@ -915,7 +913,7 @@ section Examples
 variable (h : IsPlaceOver A w)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨WD.lpDim_lpSp 2, WD.tempered_lpSp 2, WD.not_mono0_lpSp le_rfl, fun hu => shiftEnd_ne_zero le_rfl ((WD.unr_mk _).mp hu).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem sp_two_spec : (WD.lpSp h 2).lpDim = 2 ∧ (WD.lpSp h 2).tempered ∧ ¬ (WD.lpSp h 2).mono0 ∧
     ¬ (WD.lpSp h 2).unr :=
@@ -923,9 +921,9 @@ theorem sp_two_spec : (WD.lpSp h 2).lpDim = 2 ∧ (WD.lpSp h 2).tempered ∧ ¬ 
     fun hu => shiftEnd_ne_zero le_rfl ((WD.unr_mk _).mp hu).1⟩
 
 /- English proof (translation)
-Rewrite using `[WD.tempered_mk, WD.tempered_diag_iff]`. Introduce `hc`. Establish `hq : (1 : ℝ) < ((normV w : ℕ) : ℝ)` using `by exact_mod_cast one_lt_normV w`. Use `hc 0` as an intermediate fact. Rewrite `this` using `[WDRep.spEig, norm_qPow, ← Real.rpow_zero ((normV w : ℕ) : ℝ), Real.rpow_right_inj (zero_lt_one.trans hq) hq.ne']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at this`.
+Evaluate the numerical expressions.
 -/
 theorem not_tempered_diag_spEig : ¬ (WD.mk (WDRep.diag h (WDRep.spEig w 2))).tempered := by
   rw [WD.tempered_mk, WD.tempered_diag_iff]
@@ -937,7 +935,7 @@ theorem not_tempered_diag_spEig : ¬ (WD.mk (WDRep.diag h (WDRep.spEig w 2))).te
   norm_num at this
 
 /- English proof (translation)
-Establish `: ((WDRep.diag h fun _ : Fin 1 => 1).tw 1).ρ (frob h) = diagEnd fun _ => ((normV w : ℕ) : ℂ)`. Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[WD.lpTw_mk, WD.frobEig_mk, this, charpoly_diagEnd, Fin.prod_univ_one, roots_X_sub_C]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 example : ((WD.mk (WDRep.diag h fun _ : Fin 1 => 1)).lpTw 1).frobEig = {((normV w : ℕ) : ℂ)} := by
   have : ((WDRep.diag h fun _ : Fin 1 => 1).tw 1).ρ (frob h) =
@@ -947,14 +945,14 @@ example : ((WD.mk (WDRep.diag h fun _ : Fin 1 => 1)).lpTw 1).frobEig = {((normV 
   rw [WD.lpTw_mk, WD.frobEig_mk, this, charpoly_diagEnd, Fin.prod_univ_one, roots_X_sub_C]
 
 /- English proof (translation)
-Simplify using `[WD.lpZero]`.
+Simplify using the standard rewrite rules.
 -/
 example : (WD.lpZero h).lpDim = 0 := by simp [WD.lpZero]
 
 omit [IsAlgClosure E Ω] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, isPlaceOver_placeOf _ v, WD.lpSp _ 2, WD.not_mono0_lpSp le_rfl, WD.tempered_lpSp 2⟩`.
+Supply the required witnesses or components.
 -/
 example (v : HeightOneSpectrum (𝓞 E)) : ∃ (B : ValuationSubring (AlgebraicClosure E))
     (hB : IsPlaceOver B v) (x : WD hB), ¬ x.mono0 ∧ x.tempered :=

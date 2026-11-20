@@ -19,7 +19,7 @@ open GlobalTheory.XTermDecay
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Conclude with `(norm_qA_le (x i)).trans (Finset.single_le_sum (f := fun i => ∑ v : InfinitePlace F, ‖(x i).1 v‖) (fun _ _ => by positivity) (Finset.mem_univ i))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_evI_le {ι : Type} [Fintype ι] (x : ι → AF F) :
     ‖fun i => evI F (x i)‖ ≤ ∑ i, ∑ v : InfinitePlace F, ‖(x i).1 v‖ := by
@@ -28,19 +28,17 @@ theorem norm_evI_le {ι : Type} [Fintype ι] (x : ι → AF F) :
     (fun _ _ => by positivity) (Finset.mem_univ i))
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero`. Use `⟨0, fun x _ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖e (schrL ψ _ 0) y‖ * _ ≤ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`. Take `⟨C, hC⟩` from `ha`. Take `⟨D, hD⟩` from `hb`. Use `⟨C + D, fun x hx => le_trans ?_ (add_le_add (hC x hx) (hD x hx))⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `‖e (schrL ψ _ (a + b)) y‖ * _ ≤ ‖e (schrL ψ _ a) y‖ * _ + ‖e (schrL ψ _ b) y‖ * _`. Rewrite using `[map_add, map_add, ← add_mul]`. Use `gcongr`. Conclude with `norm_add_le _ _`. Consider the case `smul c a _ ha`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC⟩` from `ha`. Use `⟨‖c‖ * C, fun x hx => le_trans ?_ (mul_le_mul_of_nonneg_left (hC x hx) (norm_nonneg c))⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖e (schrL ψ _ (c • a)) y‖ * _ ≤ ‖c‖ * (‖e (schrL ψ _ a) y‖ * _)`. Rewrite using `[map_smul, map_smul, Pi.smul_apply, norm_smul, mul_assoc]`. Consider the case `mem Φ h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, g, hg, rfl⟩` from `h`. Take `⟨C, hC⟩` from `slice_decay (T := Unit) ψ hψ S U hSU e hsl hinv hg (fun _ => f) (fun p _ => ⟨p f, fun _ => le_rfl⟩) hΩ (SchwartzMap.seminorm ℂ 0 0) ((schwartz_withSeminorms ℂ _ ℂ).continuous_seminorm (0, 0)) N`. Use `⟨C, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨f₁, h1, h2⟩` from `hC () x hx`. Establish `h3` using `norm_evI_le x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r := ∑ i, ∑ v : InfinitePlace F, ‖(x i).1 v‖`. Establish `hr : 0 < 1 + r` using `by positivity`. Establish `h4 : ‖f₁ y‖ ≤ C * (1 + r) ^ (-(N : ℝ))` using `(SchwartzMap.norm_le_seminorm ℂ f₁ y).trans h2`. Rewrite `h4` using `[Real.rpow_neg hr.le, Real.rpow_natCast, ← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Rewrite using `[← h1]`.
-
-Use `le_trans ?_ h4` and prove the remaining obligations. Use `gcongr`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem value_decay {κ κ₁ ι : Type} [Fintype κ] [Fintype κ₁] [Fintype ι] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
     (S U : ι → (κ → AF F) × (κ → AF F)) (hSU : ∀ i j, (S j).1 ⬝ᵥ (U i).2 - (U i).1 ⬝ᵥ (S j).2 = if i = j then 1 else 0)
@@ -85,19 +83,17 @@ theorem value_decay {κ κ₁ ι : Type} [Fintype κ] [Fintype κ₁] [Fintype �
     gcongr
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Φ hΦ y m b₀ N`. Take `⟨K, hK, hK0⟩` from `GlobalTheory.ConeTateSupp.finsupp hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Φ hΦ y m b₀`. Use `choose c hc using GlobalTheory.ConeTateSupp.trace_mul_dual (F := F) (E := E) b₀`. Set `S` to `fun j => G.M.co.e (inclR (F := F) (AF F) (b₀ j) • Matrix.vecMulVec (incV F H.x) (incV F H'.y))`. Set `U` to `fun i => G.M.co.e (inclR (F := F) (AF F) (σ (c i)) • Matrix.vecMulVec (incV F H.y) (incV F H'.x))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hCb⟩` from `value_decay B.ψ hT.base.std S U (fun i j => by`. Establish `h` using `GlobalTheory.ConeTateSupp.symp_shift hT.base.cm hT.geo.hW.skew H H' hC.hH.xy hC.hH'.xy (inclR (F := F) (AF F) (b₀ j)) 1 (c i)`. Rewrite `h` using `[one_smul, one_mul, hc]`. Rewrite using `[← G.M.co.form]`. Use `h.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show inclR (F := F) (AF F) (b₀ j) = Algebra.TensorProduct.basis (AF F) b₀ j from (Algebra.TensorProduct.basis_apply _ _).symm, Module.Basis.equivFun_self]`. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Rewrite using `[if_pos rfl, if_pos rfl]`. Rewrite using `[if_neg hij, if_neg hij.symm])`. Use the proof step `(sliceL (fun q => (y q).2) ∘ₗ e) (exists_slice_clm hT.geo.hM he _) (fun i a Ψ hΨ => by`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `he.inv (Matrix.vecMulVec (a • inclR (F := F) (AF F) (σ (c i)) • incV F H.y) (incV F H'.x)) (Or.inl ⟨_, rfl⟩) Ψ hΨ` as an intermediate fact. Rewrite `this` using `[Matrix.smul_vecMulVec, Matrix.smul_vecMulVec, Darboux.rho, map_smul]`. Conclude with `congrArg (sliceL _) this) hK`. Use the proof step `(fun q => InfiniteAdeleRing.ringEquiv_mixedSpace F (y q).1) N Φ hΦ`. Use `⟨max C 0, fun a => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `ha : (fun i => ((Algebra.TensorProduct.basis (AF F) b₀).equivFun a i).2) ∈ K`. Use `swap`. Rewrite using `[hK0 a ha, norm_zero, zero_mul]`. Conclude with `le_max_right _ _`. Use `le_trans (le_of_eq ?_) ((hCb _ ha).trans (le_max_left _ _))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : G.M.co.e (a • Matrix.vecMulVec (incV F H.x) (incV F H'.y)) = ∑ i, (Algebra.TensorProduct.basis (AF F) b₀).equivFun a i • S i`. Simplify using `only [S, ← map_smul, ← map_sum, ← smul_assoc, ← Finset.sum_smul]`. Use `congr 2`. Use `((Algebra.TensorProduct.basis (AF F) b₀).sum_equivFun a).symm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression. Rewrite using `[← hS]`. Simplify using `only [LinearMap.comp_apply, sliceL, LinearMap.coe_mk, AddHom.coe_mk, RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem decay : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

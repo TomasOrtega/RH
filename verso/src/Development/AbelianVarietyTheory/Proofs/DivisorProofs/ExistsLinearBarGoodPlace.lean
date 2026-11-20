@@ -38,7 +38,7 @@ noncomputable section
 namespace GlobalTheory.LinBarAt
 
 /- English proof (translation)
-Rewrite using `[co.form]`. Simplify using `[GlobalTheory.LatVac.locCo, dotProduct, map_sum, map_mul, map_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem locCo_form' {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} {κ : Type} [Fintype κ] (co : Darboux B κ) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (x u : W) :
@@ -48,9 +48,9 @@ theorem locCo_form' {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGrou
   simp [GlobalTheory.LatVac.locCo, dotProduct, map_sum, map_mul, map_sub]
 
 /- English proof (translation)
-Use `⟨co.e.symm (fun k => GlobalTheory.LatVac.liftV v (w.1 k), fun k => GlobalTheory.LatVac.liftV v (w.2 k)), ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[← LinearEquiv.map_smul, ← co.e.symm.map_zero]`. Use `congr 1`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.LatVac.at_liftV v _ a ha`. Conclude with `GlobalTheory.LatVac.at_liftV v _ a ha`. Apply the tactic sequence `refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;>`. Simplify using `[GlobalTheory.LatVac.locCo, GlobalTheory.LatVac.evFin_liftV]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locCo_surj' {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} {κ : Type} [Fintype κ] (co : Darboux B κ) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
@@ -66,7 +66,7 @@ theorem locCo_surj' {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGrou
       simp [GlobalTheory.LatVac.locCo, GlobalTheory.LatVac.evFin_liftV]
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h` using `GlobalTheory.LatVac.symp_smul_smul σ JA JB (-1) a 1 x u`. Rewrite `h` using `[hx a ha, one_smul, mul_one, GlobalTheory.VacIndic.symp_zero_left]`. Rewrite using `[smul_eq_mul]`. Conclude with `h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_symp' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n d : ℕ} (JA : Matrix (Fin n) (Fin n) (AE F E)) (JB : Matrix (Fin d) (Fin d) (AE F E)) {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F}
@@ -83,29 +83,23 @@ end GlobalTheory.LinBarAt
 namespace GlobalTheory.LinBarAt
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hTr v hv t`. Take `⟨uT, uM, hT, hM, hspan, hsymp⟩` from `(GlobalTheory.T.exists_local_unipotent_additive) F E σ B a a' G X om om' hTr v t`. Establish `hψc : Continuous (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.VacAny.continuous_psiV hTr.base.std.1 v`. Establish `hunr : PsiUnr B.ψ v` using `(GlobalTheory.T.psi_unramified_away_different) F B.ψ hTr.base.std v (GlobalTheory.SplitFullyUnr.not_le_differentIdeal v hv.2)`. Establish `hunr' : ∀ x : Fv F v, (∀ y ∈ 𝒪[Fv F v], GlobalTheory.LatVac.psiAt B.ψ v (x * y) = 1) ↔ x ∈ 𝒪[Fv F v]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `only [GlobalTheory.FinPl.SplitPoint.mem_integer_iff]`. Conclude with `hunr x`. Establish `hcoM : ∀ z, coAt G t (uM z) = 0` using `fun z => coAt_eq_zero G t _ (hM z).2.1`. Use `haveI : CharZero (Fv F v) := charZero_of_injective_algebraMap (algebraMap F _).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨ι, hbij, htr, hmu⟩` from `GlobalTheory.T.stoneVonNeumann_schwartzBruhat_transverseLagrangians (GlobalTheory.LatVac.psiAt B.ψ v) hψc hunr' ((GlobalTheory.LatVac.locCo G.M'.co v).comp uT) ((GlobalTheory.LatVac.locCo G.M'.co v).comp uM) (fun Y Y' => by`. Simplify using `only [AddMonoidHom.comp_apply]`. Rewrite using `[locCo_form', hsymp _ _ (hT Y).1 (hT Y').1, (hT Y).2.1, (hT Y').2.1]`. Use the proof step `simp)`. Use the proof step `(fun z z' => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddMonoidHom.comp_apply]`. Rewrite using `[locCo_form', hsymp _ _ (hM z).1 (hM z').1, hcoM, hcoM]`. Use the proof step `simp)`. Use the proof step `(fun Y z => by`. Simplify using `only [AddMonoidHom.comp_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[locCo_form', hsymp _ _ (hT Y).1 (hM z).1, (hT Y).2.1, (hT Y).2.2, (hM z).2.2, hcoM]`. Use the proof step `simp)`. Use the proof step `(fun w => by`. Take `⟨u, hu, rfl⟩` from `locCo_surj' G.M'.co v w`. Take `⟨Y, z, rfl⟩` from `hspan u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨Y, z, by simp only [AddMonoidHom.comp_apply, map_add]⟩)`. Establish `hφ₁ : ∀ (u : Matrix (Fin a') (Fin (a + a')) (AE F E)), At (evFin F v) u → ∀ φ ∈ GlobalTheory.WeilM.SB _, ∀ φ₁, Acts (evFin F v) (G.M'.co.rho B.ψ u) φ φ₁ → φ₁ = GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M'.co v u) φ` using `fun u hu φ hφ φ₁ hact => GlobalTheory.TensUniq.eq_of_tens_eq v φ φ₁ _ hφ fun r hr => (hact r hr).symm.trans (GlobalTheory.VacBridge.rho_acts_locCo G.M'.co B.ψ v u hu φ r hr)`. Use `⟨ι, hbij, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu hu0 φ hφ φ₁ _ hact Y`. Establish `e1` using `hφ₁ u hu φ hφ φ₁ hact`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Y₀, z, rfl⟩` from `hspan u hu`. Establish `hz : z = 0`. Establish `h` using `hu0`. Rewrite `h` using `[Matrix.map_add _ (map_add _), (hT Y₀).2.1, (hM z).2.2, zero_add, neg_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hz` using the available equality. Rewrite `e1`, the goal using `[map_zero, add_zero]`. Use `show ι φ₁ Y = ι φ (Y + coAt G t (uT Y₀))`. Rewrite using `[(hT Y₀).2.2, e1]`. Conclude with `congrFun (htr Y₀ φ hφ) Y`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u hu hu1 φ hφ φ₁ _ hact x hx hx0`. Establish `e1` using `hφ₁ u hu φ hφ φ₁ hact`. Take `⟨Y₀, z, rfl⟩` from `hspan u hu`. Establish `hY : Y₀ = 0`. Establish `h` using `hu1`.
-
-Rewrite `h` using `[Matrix.map_add _ (map_add _), (hM z).2.1, add_zero]`. Rewrite using `[← (hT Y₀).2.2]`. Conclude with `coAt_eq_zero G t _ h`. Substitute `hY` using the available equality. Rewrite `e1`, the goal using `[map_zero, zero_add]`.
-
-Use `show ι φ₁ (coAt G t x) = _ * ι φ (coAt G t x)`. Rewrite using `[e1, GlobalTheory.VacIndic.psi_of_at B.ψ (at_symp' _ _ _ x (uM z) hx), hsymp x (uM z) hx (hM z).1, hx0, hcoM, (hM z).2.2]`. Establish `h2` using `congrFun (hmu z φ hφ) (coAt G t x)`. Simplify using `only [AddMonoidHom.comp_apply] at h2`. Rewrite using `[h2, ← GlobalTheory.LatVac.psiAt_apply]`.
-
-Use `congr 2`. Simplify using `[Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isLinBar_at : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ v, X.Good v →

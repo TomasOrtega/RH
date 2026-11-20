@@ -9,7 +9,7 @@ open LateralTheory.KummerTheory LateralTheory.KummerTheory.LHCut
 namespace MuPairClasses.Cb
 
 /- English proof (translation)
-Consider the cases of `e`. Consider the cases of `hw`. Consider the cases of `eq_of_heq hν`. Conclude with `hC (ZMod q) (twPair q i 0) Z rfl u v A B hu hv`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 private theorem pair_cls (hC : CupSch) (q : ℕ) {Z : Scheme.{0}} {i i' s t w : ℤ} (hw : s + t = w) (e : i + 0 = i')
     (ν : Pair (res _ (tw q i)) (res _ (tw q 0)) (res _ (tw q i'))) (hν : HEq ν (twPair q i 0))
@@ -22,13 +22,13 @@ private theorem pair_cls (hC : CupSch) (q : ℕ) {Z : Scheme.{0}} {i i' s t w : 
   exact hC (ZMod q) (twPair q i 0) Z rfl u v A B hu hv
 
 /- English proof (translation)
-The claim follows from `cast_heq _ _`.
+A detailed English derivation is pending.
 -/
 private theorem mu_heq (q : ℕ) (i : ℤ) : HEq (mu q i) (twPair q i 0) :=
   cast_heq _ _
 
 /- English proof (translation)
-The claim follows from `(hD (ZMod q) (res _ (tw q i)) Z s).2.2.2.2 f u A hu`.
+A detailed English derivation is pending.
 -/
 private theorem pull_cls (hD : Dict) (q : ℕ) {Y Z : Scheme.{0}} (f : Y ⟶ Z) {s i : ℤ} {u : Ht q (sch.obj Z) s i}
     {A : Sec ((res _ (tw q i)).X s) Z} (hu : IsCls u A) :
@@ -36,7 +36,7 @@ private theorem pull_cls (hD : Dict) (q : ℕ) {Y Z : Scheme.{0}} (f : Y ⟶ Z) 
   (hD (ZMod q) (res _ (tw q i)) Z s).2.2.2.2 f u A hu
 
 /- English proof (translation)
-The claim follows from `pair_cls hC q hw (add_zero i) ν hν (pull_cls hD q _ hx) (pull_cls hD q _ hy)`.
+A detailed English derivation is pending.
 -/
 private theorem ext_cls (hD : Dict) (hC : CupSch) (q : ℕ) {X S : Scheme.{0}} (p : X ⟶ S) (U : Over S) (a n i : ℤ)
     (hw : a + (n - a) = n) (ν : Pair (res _ (tw q i)) (res _ (tw q 0)) (res _ (tw q i))) (hν : HEq ν (twPair q i 0))
@@ -47,7 +47,7 @@ private theorem ext_cls (hD : Dict) (hC : CupSch) (q : ℕ) {X S : Scheme.{0}} (
   pair_cls hC q hw (add_zero i) ν hν (pull_cls hD q _ hx) (pull_cls hD q _ hy)
 
 /- English proof (translation)
-Take `⟨-, -, hsum, -⟩` from `clsMore_of hD (ZMod q) (res _ (tw q i)) (pullback p U.hom) n`. Conclude with `hsum (Fin (M + 1)) _ _ fun a => hsum (Fin (r a)) _ _ fun s => ext_cls hD hC q p U _ n i (by omega) ν hν (hγ a s) (hb a s)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem lh_cls (hD : Dict) (hC : CupSch) (q : ℕ) {X S : Scheme.{0}} (p : X ⟶ S) (i : ℤ) (r : ℕ → ℕ)
     (c : ∀ a : ℕ, Fin (r a) → Ht q (sch.obj X) a i) (γ : ∀ a : ℕ, Fin (r a) → Sec ((res _ (tw q i)).X (a : ℤ)) X)
@@ -62,7 +62,7 @@ private theorem lh_cls (hD : Dict) (hC : CupSch) (q : ℕ) {X S : Scheme.{0}} (p
 end MuPairClasses.Cb
 
 /- English proof (translation)
-Introduce `hD hC _ _ _ _ q X S p i r c γ hγ M n U y b hb`. Conclude with `MuPairClasses.Cb.lh_cls hD hC q p i r c γ hγ (mu q i) (MuPairClasses.Cb.mu_heq q i) M n U y b hb`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem MuPairClasses.Cb.etale_lefschetz_hochschild_section_of_cup_schema_and_kummer :
     LateralTheory.KummerTheory.Dict → LateralTheory.KummerTheory.CupSch → LateralTheory.KummerTheory.Ghost → LateralTheory.KummerTheory.InjSlice → LateralTheory.KummerTheory.StrictHenselization → LateralTheory.KummerTheory.Cont → LateralTheory.KummerTheory.LHCut.LhSec := by

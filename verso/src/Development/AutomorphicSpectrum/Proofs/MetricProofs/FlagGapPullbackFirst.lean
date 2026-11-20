@@ -10,7 +10,7 @@ open scoped ComplexOrder Classical
 namespace GlobalTheory.CompanionTheory.Ar.PB.StepW.Wgt
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `hb.2.2.2 ⟨k, m⟩ hk`. Rewrite using `[← hq]`. Conclude with `congrFun h q`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_on_block {K : Type} {ι : K → Type} {Kk : Type} {ιk : Kk → Type} {κ : Kk → K}
     {v : (Σ k, ιk k) → (Σ k, ι k)} (hb : IsBlockMap κ v) {a b : (Σ k, ι k) → ℂ} (h : a ∘ v = b ∘ v)
@@ -20,25 +20,23 @@ theorem eq_on_block {K : Type} {ι : K → Type} {Kk : Type} {ιk : Kk → Type}
   exact congrFun h q
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n BM p Kk _ ιk _ κ v e R pr H x y' z hy' hpr hz hzv`. Take `⟨hb, hr, -, H1⟩` from `H`. Take `⟨z₀, hz₀, hz₀v, hz₀o⟩` from `H1 y'`. Establish `hex : pr y' ∉ bdry BM.s ∧ ∃ z ∈ mcPts (mCoordIdeal y), z ∘ v = R.lift y' y'` using `⟨hpr, z₀, hz₀, hz₀v⟩`. Establish `hph : stepPh M BM p v R pr y' = stepGap M BM p hex.2.choose`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `stepPh`. Rewrite using `[dif_pos hex]`. Take `⟨hz₁, hz₁v⟩` from `hex.2.choose_spec`. Rewrite using `[hph]`. Generalize the expression as in `hex.2.choose = z₁ at hz₁ hz₁v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `hbase : ∀ {a b : (Σ k, ι k) → ℂ}, a ∘ v = b ∘ v → basePart M.blk a = basePart M.blk b`. Introduce `a b hab`. Use function extensionality and compare the values at `q`. Conclude with `eq_on_block hb hab (hr q.1.1 (Or.inl q.1.2)) q.2`. Establish `hz₁o : SameOrbit (basePart M.blk z₁) (BM.Rb.lift (pr y') (pr y'))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbase (hz₁v.trans hz₀v.symm)]`. Conclude with `hz₀o`. Take `⟨c, hc, hcl⟩` from `R.compat x y' y' ⟨hy', R.mem_U y'⟩`. Use `set c' : K → ℂ := Function.extend κ c 1 with hc'`. Establish `hc'0 : ∀ k, c' k ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Introduce `k`. Distinguish the cases in `hk : ∃ a, κ a = k`. Take `⟨a, rfl⟩` from `hk`. Rewrite using `[hc', hb.1.extend_apply]`. Conclude with `hc a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc', Function.extend_apply' _ _ _ hk]`. Conclude with `one_ne_zero`. Use `set z₂ : (Σ k, ι k) → ℂ := fun q => c' q.1 * z₁ q with hz₂`. Establish `hz₂m : z₂ ∈ mcPts (mCoordIdeal y)` using `((GlobalTheory.CompanionTheory.Ar.PB.StepW.TorusAct.main K ι Φ y z₁ c' hc'0).2 hz₁).1`. Establish `hz₂v : z₂ ∘ v = z ∘ v`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hzv, hcl]`. Use function extensionality and compare the values at `q`. Establish `h1 : z₁ (v q) = R.lift y' y' q` using `congrFun hz₁v q`. Establish `h2 : c' (v q).1 = c q.1`. Rewrite using `[hb.2.2.1 q, hc', hb.1.extend_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp, hz₂, h1, h2]`. Establish `ht : stepGap M BM p z₂ = stepGap M BM p z₁` using `GlobalTheory.CompanionTheory.Ar.PB.StepW.stepGap_torus K ι Φ y Ψ N j M n BM p z₁ c' hc'0 hz₁.1`. Establish `hz₂o : SameOrbit (basePart M.blk z₂) (BM.Rb.lift (pr y') (pr y'))`. Take `⟨d, hd, hdl⟩` from `hz₁o`. Use `⟨fun k => c' k.1 * d k, fun k => mul_ne_zero (hc'0 _) (hd k), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `q`. Establish `h1 : basePart M.blk z₁ q = d q.1 * BM.Rb.lift (pr y') (pr y') q` using `congrFun hdl q`. Establish `h2 : basePart M.blk z₂ q = c' q.1.1 * basePart M.blk z₁ q` using `rfl`. Rewrite using `[h2, h1, mul_assoc]`. Establish `hg : stepGap M BM p z₂ = stepGap M BM p z` using `GlobalTheory.T.flag_gap_same_base_orbit K ι Φ y Ψ N j M n BM p (pr y') z₂ z hpr hz₂m hz hz₂o (hbase hz₂v) (fun k hk m => eq_on_block hb hz₂v (hr k (Or.inr hk)) m)`.
-
-Rewrite using `[← ht, hg]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (BM : BaseMetric M n) (p : Ψ × Fin N) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (e : ℕ) (R : AnLogRes (mCoordIdeal (y ∘ v)) ⊤ e) (pr : R.X → BM.Rb.X), IsStepHyp M BM p κ v R pr → ∀ (x y' : R.X) (z : (Σ k, ι k) → ℂ), y' ∈ R.U x → pr y' ∉ bdry BM.s → z ∈ mcPts (mCoordIdeal y) → z ∘ v = R.lift x y' → stepPh M BM p v R pr y' = stepGap M BM p z := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n BM p Kk _ ιk _ κ v e R pr H x y' z hy' hpr hz hzv

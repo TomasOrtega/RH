@@ -14,11 +14,11 @@ open scoped TensorProduct
 namespace GlobalTheory.LogPair
 
 /- English proof (translation)
-Introduce `R _ X Y f e _ d s L σ h`. Use `⟨fun i => LB.isLB_pull (h.isLB i) e, fun y => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `h.chart (e y)`. Take `⟨_, ⟨W, hW, rfl⟩, hyW, hWV⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (a := y) (u := (e ⁻¹ᵁ C.U : Y.Opens)) hC (e ⁻¹ᵁ C.U).isOpen`. Establish `hle : W ≤ e ⁻¹ᵁ C.U` using `hWV`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hap : ∀ a : Γ(X, C.U), (e.appLE C.U W hle).hom a = resG Y hle ((e.app C.U).hom a)` using `fun _ => rfl`. Use `⟨{ U := W affine := hW t := fun a => (e.appLE C.U W hle).hom (C.t a) etale := GlobalTheory.T.isEtaleCoordinatesOnOpen_pull_openImmersion R X Y f e C.U W hle d C.t C.affine hW C.etale c := fun i _ => C.c i le := fun i => (hle.trans (e.preimage_mono (C.le i))).trans (Cartier.pull_U …` and prove the remaining obligations. Establish `h1` using `congrArg (e.appLE C.U W hle).hom (C.eq i)`. Rewrite `h1` using `[map_mul, hap, Cartier.app_resG, Cartier.resG_resG]`. Use `(Cartier.resG_resG _ _ _).trans (h1.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Consider the cases of `C.e i with`. Consider the case `none => exact map_one _`. Consider the case `some a => rfl`.
+Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem relSnc_pull_of_isOpenImmersion : ∀ (R : Type) [CommRing R] (X Y : Scheme.{0}) (f : X ⟶ Sp R) (e : Y ⟶ X) [IsOpenImmersion e] (d : ℕ) (s : ℕ) (L : Fin s → LB X) (σ : ∀ i, (L i).Sec), RelSnc f d L σ → RelSnc (e ≫ f) d (fun i => (L i).pull e) (fun i => Cartier.secPull (σ i) e) := by
   intro R _ X Y f e _ d s L σ h

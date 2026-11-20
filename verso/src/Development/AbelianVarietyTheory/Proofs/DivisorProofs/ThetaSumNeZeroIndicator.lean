@@ -18,21 +18,17 @@ noncomputable section
 namespace GlobalTheory.ThetaSumNeScaled
 
 /- English proof (translation)
-Introduce `F _ _ κ _ a _ hg`. Set `V` to `κ → mixedEmbedding.mixedSpace F`. Set `b : ContDiffBump (0 : V)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Set `f : SchwartzMap V ℂ` to `h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf : ∀ x, f x = ((b x : ℝ) : ℂ)` using `fun x => rfl`. Use `set g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ := Set.indicator {y | y - 0 ∈ GlobalTheory.EvAdm.scaledInt F κ a} fun _ => (1 : ℂ) with hgdef`. Use `⟨f, ?_⟩` and prove the remaining obligations. Use `set t : (κ → F) → ℂ := fun ξ => pureA F f g (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) with ht`. Establish `hsum : Summable t` using `summable_pureA F f hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hre : ∀ ξ, (t ξ).re = b (fun i => mixedEmbedding F (ξ i)) * (g (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i))).re` using `fun ξ => by`. Simplify using `only [ht, pureA_algebraMap, hf, Complex.re_ofReal_mul]`. Establish `hg0 : ∀ y, 0 ≤ (g y).re` using `fun y => by`. Rewrite using `[hgdef, Set.indicator_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnn : ∀ ξ, 0 ≤ (t ξ).re` using `fun ξ => by`. Rewrite using `[hre]`. Conclude with `mul_nonneg (b.nonneg) (hg0 _)`. Establish `hz : (t 0).re = 1`. Rewrite using `[hre]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0 : (fun i : κ => algebraMap F (FiniteAdeleRing (𝓞 F) F) ((0 : κ → F) i)) ∈ {y | y - 0 ∈ GlobalTheory.EvAdm.scaledInt F κ a}` using `by show _ - 0 ∈ GlobalTheory.EvAdm.scaledInt F κ a`. Establish `: (fun i : κ => algebraMap F (FiniteAdeleRing (𝓞 F) F) ((0 : κ → F) i)) = 0`. Use function extensionality and compare the values at `i`. Conclude with `map_zero _`. Rewrite using `[this, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem _`. Establish `hx : (fun i : κ => mixedEmbedding F ((0 : κ → F) i)) = 0`. Use function extensionality and compare the values at `i`. Conclude with `map_zero _`. Rewrite using `[hx, b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]`.
-
-Simplify using `only [g, Set.indicator_of_mem h0, Complex.one_re, one_mul]`. Establish `hpos : 0 < ∑' ξ, (t ξ).re` using `(Complex.reCLM.summable hsum).tsum_pos hnn 0 (by show 0 < (t 0).re; rw [hz]; exact one_pos)`. Introduce `h`. Establish `: (thetaSum F (pureA F f g)).re = ∑' ξ, (t ξ).re` using `Complex.re_tsum hsum`. Rewrite `this` using `[h, Complex.zero_re]`.
-
-Conclude with `hpos.ne' this.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_thetaSum_pureA_scaledInt_ne_zero : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     Set.indicator {y | y - 0 ∈ GlobalTheory.EvAdm.scaledInt F κ a} (fun _ => (1 : ℂ)) ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) →

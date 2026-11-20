@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.Core.SBesEx
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc]`. Simplify using `only [Matrix.mul_apply, conjTranspose_apply, hA, hB, dotProduct, mulVec, Pi.star_apply, Finset.mul_sum, star_mul']`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_scaled {E : Type} [Field E] [StarRing E] {n k l : Type} [Fintype n] (G : Matrix n n E)
     (A : Matrix n k E) (B : Matrix n l E) (α : k → E) (β : l → E) (x : k → n → E) (y : l → n → E)
@@ -28,7 +28,7 @@ theorem gram_scaled {E : Type} [Field E] [StarRing E] {n k l : Type} [Fintype n]
   ring
 
 /- English proof (translation)
-Establish `e : (I * P + J * Q)ᴴ * G * (I * P + J * Q) = Pᴴ * (Iᴴ * G * I) * P + Qᴴ * (Jᴴ * G * J) * Q + Pᴴ * (Iᴴ * G * J) * Q + Qᴴ * (Jᴴ * G * I) * P`. Simplify using `only [conjTranspose_add, conjTranspose_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hIJ, hJI]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_sum {E : Type} [Field E] [StarRing E] {n k l m : Type} [Fintype n] [Fintype k] [Fintype l]
     (G : Matrix n n E) (I : Matrix n k E) (J : Matrix n l E) (P : Matrix k m E) (Q : Matrix l m E)
@@ -42,7 +42,7 @@ theorem gram_sum {E : Type} [Field E] [StarRing E] {n k l m : Type} [Fintype n] 
   simp
 
 /- English proof (translation)
-Establish `e : (I * P + J * Q)ᴴ * G * C = Pᴴ * (Iᴴ * G * C) + Qᴴ * (Jᴴ * G * C)`. Simplify using `only [conjTranspose_add, conjTranspose_mul, Matrix.add_mul, Matrix.mul_assoc]`. Rewrite using `[e, hI, hJ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_sum_zero {E : Type} [Field E] [StarRing E] {n k l m p : Type} [Fintype n] [Fintype k] [Fintype l]
     (G : Matrix n n E) (I : Matrix n k E) (J : Matrix n l E) (P : Matrix k m E) (Q : Matrix l m E) (C : Matrix n p E)
@@ -54,35 +54,35 @@ theorem gram_sum_zero {E : Type} [Field E] [StarRing E] {n k l m p : Type} [Fint
   simp
 
 /- English proof (translation)
-Introduce `D X h u F₀ tr t lam ht hlam hiso hfr L hL hLg V₀ o`. Establish `hsym : ∀ x y : (VS D).V, (VS D).hT y x = star ((VS D).hT x y)` using `fun x y => (LinearMap.isSymm_def.1 (VS D).herm x y).symm`. Establish `hs : ∀ a : Fin D.R.rS, star (scl t lam a) ≠ 0` using `fun a => star_ne_zero.2 (mul_ne_zero ht (pow_ne_zero _ hlam))`. Use `set q : Fin (D.sp.X 0).rank → (VS D).V := fun i => Formalism.L2.SG.ColDict.qFr tr.wt (Fin.cast (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) i) with hq`. Establish `hE : ∀ i a, eM X h t lam i a = scl t lam a * cY X h (X.eX a) i` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE' : ∀ i a, e'M X h t lam i a = (star (scl t lam a))⁻¹ * cY X h (X.fY a) i` using `fun _ _ => rfl`. Establish `hQ : ∀ i a, qM X h tr.wt i a = (1 : D.host.E) * cY X h (q a) i` using `fun _ _ => (one_mul _).symm`. Establish `hZ : ∀ i a, zM X h u t L i a = t * cY X h (X.zu u) i` using `fun _ _ => rfl`. Establish `hzq : ∀ i, (VS D).hT (X.zu u) (q i) = 0`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsym, ← tr.wt_isom, tr.weight_z]`. Simplify using `only [hq, Formalism.L2.SG.ColDict.qFr, LinearEquiv.apply_symm_apply, Formalism.L2.SG.ColDict.xFr, D7.zmOf, map_smul]`. Rewrite using `[D.sp.zm_orth, smul_zero, star_zero]`. Establish `hqq : ∀ i j, (VS D).hT (q i) (q j) = (D.sp.X 0).gram i j`. Introduce `i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← tr.wt_isom]`. Simplify using `only [hq, Formalism.L2.SG.ColDict.qFr, LinearEquiv.apply_symm_apply, Formalism.L2.SG.ColDict.xFr]`. Rewrite using `[D.sp.iXY_isom 0 (lt_of_lt_of_le two_pos D.R.two_le_m)]`. Both sides reduce to the same expression. Establish `hQZ : (qM X h tr.wt)ᴴ * (D.sp.Y 0).gram * zM X h u t L = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Rewrite using `[gram_scaled _ _ _ _ (fun _ => t) _ (fun _ => cY X h (X.zu u)) hQ hZ, hiso, hsym, hzq]`. Simplify using the standard rewrite rules. Establish `hZQ : (zM X h u t L)ᴴ * (D.sp.Y 0).gram * qM X h tr.wt = 0`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gram_scaled _ _ _ (fun _ => t) _ (fun _ => cY X h (X.zu u)) _ hZ hQ, hiso, hzq]`. Simplify using the standard rewrite rules. Establish `hQQ : (qM X h tr.wt)ᴴ * (D.sp.Y 0).gram * qM X h tr.wt = (D.sp.X 0).gram`. Use extensionality with `a b`. Rewrite using `[gram_scaled _ _ _ _ _ _ _ hQ hQ, hiso, hqq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hZZ : (zM X h u t L)ᴴ * (D.sp.Y 0).gram * zM X h u t L = L.gram`. Use extensionality with `a b`. Rewrite using `[gram_scaled _ _ _ (fun _ => t) (fun _ => t) (fun _ => cY X h (X.zu u)) (fun _ => cY X h (X.zu u)) hZ hZ, hiso, hLg]`. Use `⟨⟨eM X h t lam, e'M X h t lam, i0M X h u tr.wt t o, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, rfl, rfl, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Rewrite using `[gram_scaled _ _ _ _ _ _ _ hE hE, hiso, X.ee]`. Simplify using the standard rewrite rules. Use extensionality with `a b`. Rewrite using `[gram_scaled _ _ _ _ _ _ _ hE' hE', hiso, X.ff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use extensionality with `a b`. Rewrite using `[gram_scaled _ _ _ _ _ _ _ hE' hE, hiso, hsym, X.ef, Matrix.one_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use `hs a` as an intermediate fact. Rewrite `this` using `[star_ne_zero]`. Simplify using `[this]`. Simplify using `[hab, Ne.symm hab]`. Rewrite using `[i0M, gram_sum _ _ _ _ _ hQZ hZQ, hQQ, hZZ]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `gram_sum V₀.gram o.iA o.iB o.qA o.qB o.orth' o.orth` as an intermediate fact. Rewrite `this` using `[o.iA_qA_add, o.isoA, o.isoB]`. Rewrite using `[← this]`. Simplify using the standard rewrite rules. Use `gram_sum_zero _ _ _ _ _ _ ?_ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Rewrite using `[gram_scaled _ _ _ _ _ _ _ hQ hE, hiso, (hfr a a b).2.1]`. Simplify using the standard rewrite rules. Use extensionality with `a b`. Rewrite using `[gram_scaled _ _ _ (fun _ => t) _ (fun _ => cY X h (X.zu u)) _ hZ hE, hiso, hsym, (X.zu_orth u b).1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `gram_sum_zero _ _ _ _ _ _ ?_ ?_` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[gram_scaled _ _ _ _ _ _ _ hQ hE', hiso, (hfr a a b).2.2.1]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Rewrite using `[gram_scaled _ _ _ (fun _ => t) _ (fun _ => cY X h (X.zu u)) _ hZ hE', hiso, hsym, (X.zu_orth u b).2]`. Simplify using the standard rewrite rules. Establish `h1` using `o.rank_add`. Establish `h2` using `D.sp.X_rank 0 (Nat.zero_le _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `D.sp.Y_rank 0 (Nat.zero_le _)`. Establish `h4` using `D.R.two_le_m`. Take `⟨c, hc⟩` from `D.R.m_even`. Simplify using `only [Ranks.N, Ranks.rankY, Ranks.r, Ranks.rS, zero_mul, add_zero] at h2 h3 ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_hypDec : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (F₀ : Formalism.L2.Forms.Forms0 D u) (tr : Formalism.L2.SG.ColDict.Transport X u F₀) (t lam : D.host.E), t ≠ 0 → lam ≠ 0 → (∀ y y' : (VS D).V, star (GlobalTheory.Core.SBesEx.cY X h y') ⬝ᵥ ((D.sp.Y 0).gram *ᵥ GlobalTheory.Core.SBesEx.cY X h y) = (VS D).hT y' y) → (∀ (i j : Fin (D.sp.X 0).rank) (a : Fin D.R.rS), (VS D).hT (Formalism.L2.SG.ColDict.qFr tr.wt (Fin.cast (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) i)) (Formalism.L2.SG.ColDict.qFr tr.wt (Fin.cast (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) j)) = (D.sp.X 0).gram i j ∧ (VS D).hT (Formalism.L2.SG.ColDict.qFr tr.wt (Fin.cast (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) i)) (X.eX a) = 0 ∧ (VS D).hT (Formalism.L2.SG.ColDict.qFr tr.wt (Fin.cast (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) i)) (X.fY a) = 0 ∧ (VS D).hT (X.zu u) (Formalism.L2.SG.ColDict.qFr tr.wt (Fin.cast (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) i)) = 0) → ∀ (L : HSp D), L.rank = 1 → (∀ i j, L.gram i j = star t * t * (VS D).hT (X.zu u) (X.zu u)) → ∀ (V₀ : HSp D) (o : OrthDec V₀ (D.sp.X 0) L), ∃ d : HypDec (D.sp.Y 0) V₀ D.R.rS, d.e = GlobalTheory.Core.SBesEx.eM X h t lam ∧ d.e' = GlobalTheory.Core.SBesEx.e'M X h t lam ∧ d.i₀ = GlobalTheory.Core.SBesEx.i0M X h u tr.wt t o := by
   intro D X h u F₀ tr t lam ht hlam hiso hfr L hL hLg V₀ o

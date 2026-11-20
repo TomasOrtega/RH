@@ -18,7 +18,7 @@ def baseRingHom (p : X ⟶ Spec R) (U : X.Opens) : R ⟶ Γ(X, U) :=
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Rewrite using `[← ConcreteCategory.comp_apply, baseRingHom, Category.assoc, Scheme.Hom.appLE_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem baseRingHom_res (p : X ⟶ Spec R) {U V : X.Opens} (h : V ≤ U) (r : R) :
     X.presheaf.map (homOfLE h).op (baseRingHom p U r) = baseRingHom p V r := by
@@ -26,7 +26,7 @@ theorem baseRingHom_res (p : X ⟶ Spec R) {U V : X.Opens} (h : V ≤ U) (r : R)
   rfl
 
 /- English proof (translation)
-Rewrite using `[baseRingHom, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem baseRingHom_top (p : X ⟶ Spec R) :
     baseRingHom p ⊤ = (Scheme.ΓSpecIso R).inv ≫ p.appTop := by
@@ -35,7 +35,7 @@ theorem baseRingHom_top (p : X ⟶ Spec R) :
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Rewrite using `[baseRingHom, baseRingHom, Category.assoc, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem baseRingHom_comp_app (g : Y ⟶ X) (p : X ⟶ Spec R) (U : X.Opens) :
     baseRingHom p U ≫ g.app U = baseRingHom (g ≫ p) (g ⁻¹ᵁ U) := by
@@ -43,7 +43,7 @@ theorem baseRingHom_comp_app (g : Y ⟶ X) (p : X ⟶ Spec R) (U : X.Opens) :
     Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Rewrite using `[← baseRingHom_comp_app]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem app_baseRingHom (g : Y ⟶ X) (p : X ⟶ Spec R) (U : X.Opens) (r : R) :
     g.app U (baseRingHom p U r) = baseRingHom (g ≫ p) (g ⁻¹ᵁ U) r := by
@@ -51,7 +51,7 @@ theorem app_baseRingHom (g : Y ⟶ X) (p : X ⟶ Spec R) (U : X.Opens) (r : R) :
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Rewrite using `[baseRingHom, baseRingHom, Scheme.ΓSpecIso_inv_naturality_assoc, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg _ (Scheme.Hom.appLE_comp_appLE q (Spec.map ι) ⊤ ⊤ V le_top le_top).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseRingHom_comp_SpecMap {L : CommRingCat.{u}} (q : Y ⟶ Spec L) (ι : R ⟶ L)
     (V : Y.Opens) : baseRingHom (q ≫ Spec.map ι) V = ι ≫ baseRingHom q V := by
@@ -103,7 +103,7 @@ include H
 
 omit S in
 /- English proof (translation)
-Rewrite using `[H.w, baseRingHom_comp_SpecMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem baseRingHom_algebraMap (V : Y.Opens) (r : R) :
     baseRingHom q V (algebraMap R L r) = baseRingHom (g ≫ p) V r := by
@@ -111,17 +111,17 @@ theorem baseRingHom_algebraMap (V : Y.Opens) (r : R) :
 
 omit S in
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @IsAffineHom) H.flip inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isAffineHom_of_isPullback_SpecMap : IsAffineHom g :=
   MorphismProperty.of_isPullback (P := @IsAffineHom) H.flip inferInstance
 
 /- English proof (translation)
-Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := ⊤) (UX := V) (UY := g ⁻¹ᵁ V) le_top le_top (by simp)).mp (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hV)`. Establish `po' : IsPushout (baseRingHom p V) (CommRingCat.ofHom (algebraMap R L)) (g.app V) (baseRingHom q (g ⁻¹ᵁ V))`. Use `po.of_iso (Scheme.ΓSpecIso R) (Iso.refl _) (Scheme.ΓSpecIso L) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[baseRingHom]`. Rewrite using `[← Scheme.ΓSpecIso_naturality, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `[Scheme.Hom.app_eq_appLE]`. Simplify using `[baseRingHom]`. Set `` to `(g.app V).hom.toAlgebra`. Set `` to `(baseRingHom p V).hom.toAlgebra`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `` to `(baseRingHom q (g ⁻¹ᵁ V)).hom.toAlgebra`. Set `` to `(baseRingHom (g ≫ p) (g ⁻¹ᵁ V)).hom.toAlgebra`. Establish `: IsScalarTower R Γ(X, V) Γ(Y, g ⁻¹ᵁ V)` using `.of_algebraMap_eq fun r ↦ (app_baseRingHom g p V r).symm`. Establish `: IsScalarTower R L Γ(Y, g ⁻¹ᵁ V)` using `.of_algebraMap_eq fun r ↦ (baseRingHom_algebraMap H _ r).symm`. Conclude with `(Algebra.isLocalization_iff_isPushout S L).mpr (CommRingCat.isPushout_iff_isPushout.mp po')`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocalization_app {V : X.Opens} (hV : IsAffineOpen V) :
     letI := (g.app V).hom.toAlgebra

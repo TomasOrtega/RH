@@ -21,7 +21,7 @@ def PsiP : MvPolynomial (TL J nL r × Fin r) (KK O) →ₐ[KK O] MvPolynomial (T
   aeval fun v => X (plVar Fr hk nL v.1 v.2) ^ lowP Fr p v.1
 
 /- English proof (translation)
-Unfold `PsiP psiExpP`. Rewrite using `[aeval_monomial, monomial_finsupp_sum_index, MvPolynomial.algebraMap_eq]`. Use `congr 1`. Use `Finsupp.prod_congr fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, X_pow_eq_monomial]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem PsiP_monomial (a : TL J nL r × Fin r →₀ ℕ) (c : KK O) :
     PsiP (O := O) Fr p hk nL (monomial a c) = monomial (psiExpP Fr p hk nL a) c := by
@@ -34,7 +34,7 @@ theorem PsiP_monomial (a : TL J nL r × Fin r →₀ ℕ) (c : KK O) :
 variable {Fr nL}
 
 /- English proof (translation)
-Establish `h1` using `congrArg Prod.fst h`. Establish `h2` using `congrArg Prod.snd h`. Simplify using `only [Formalism.MainNotions.TestSideWords.plVar] at h1 h2`. Conclude with `⟨dg_inj hV hr hJ hnL h1, Fin.castAdd_injective r K (Fin.cast_injective _ h2)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem plVar_inj {L₁ N₁ : ℕ} (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J)
     (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) {x x' : TL J nL r} {a a' : Fin r}
@@ -45,9 +45,9 @@ theorem plVar_inj {L₁ N₁ : ℕ} (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ
   exact ⟨dg_inj hV hr hJ hnL h1, Fin.castAdd_injective r K (Fin.cast_injective _ h2)⟩
 
 /- English proof (translation)
-Unfold `psiExpP`. Rewrite using `[Finsupp.sum_apply, Finsupp.sum_eq_single (x, a')]`. Rewrite using `[Finsupp.single_eq_same]`. Introduce `v _ hv`. Rewrite using `[Finsupp.single_apply, if_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Take `⟨e1, e2⟩` from `plVar_inj hk hV hr hJ hnL h`. Conclude with `hv (Prod.ext e1 e2)`. Introduce `_`. Rewrite using `[mul_zero, Finsupp.single_zero, Finsupp.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiExpP_apply {L₁ N₁ : ℕ} (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J)
     (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (a : TL J nL r × Fin r →₀ ℕ) (x : TL J nL r) (a' : Fin r) :
@@ -64,7 +64,7 @@ theorem psiExpP_apply {L₁ N₁ : ℕ} (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r)
     rw [mul_zero, Finsupp.single_zero, Finsupp.zero_apply]
 
 /- English proof (translation)
-Use extensionality with `⟨x, a'⟩`. Establish `hP : 0 < lowP Fr p x` using `pow_pos hp _`. Simplify using `only [plMon, Finsupp.coe_equivFunOnFinite_symm, Finsupp.add_apply]`. Rewrite using `[psiExpP_apply p hk hV hr hJ hnL, Nat.mul_add_div hP, add_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem plMon_psiExpP_add {L₁ N₁ : ℕ} (hp : 0 < p) (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J)
     (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (a : TL J nL r × Fin r →₀ ℕ) (c : TV n' (m + 1) →₀ ℕ) :
@@ -75,7 +75,7 @@ theorem plMon_psiExpP_add {L₁ N₁ : ℕ} (hp : 0 < p) (hV : Fr.Valid L₁ N�
   rw [psiExpP_apply p hk hV hr hJ hnL, Nat.mul_add_div hP, add_comm]
 
 /- English proof (translation)
-Proceed by induction on `H using MvPolynomial.induction_on' with`. Consider the case `monomial a k`. Rewrite using `[PsiP_monomial, monomial_mul, T5.monomialSubstitution_monomial, plMon_psiExpP_add p hk hp hV hr hJ hnL, monomial_mul, mul_one, one_mul]`. Consider the case `add F G hF hG => rw [map_add, add_mul, T5.monomialSubstitution_add, hF, hG, mul_add]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem levelAtPrime_character_mul {L₁ N₁ : ℕ} (hp : 0 < p) (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J)
     (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (H : MvPolynomial (TL J nL r × Fin r) (KK O))

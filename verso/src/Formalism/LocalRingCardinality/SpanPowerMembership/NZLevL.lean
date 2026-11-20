@@ -8,13 +8,11 @@ namespace Formalism.BasicNotions.Examples₂.NZ
 open Formalism.BasicNotions Formalism.BasicNotions.Examples₂ Formalism.BasicNotions.Examples₂.LevelValuationRings Formalism.MainNotions.G Formalism.FrobeniusOrbits NumberField Formalism.MainNotions.Inhab
 
 /- English proof (translation)
-Use `haveI := h.frac_alt`. Establish `hW : CharZero W`. Break down `CharP.char_is_prime_or_zero W (ringChar W) with hl | hl` into its components or cases. It suffices to derive a contradiction. Establish `hz : ((ringChar W : ℕ) : W) = 0` using `CharP.cast_eq_zero W _`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `he : ringChar W = p`. Rewrite `hz` using `[he]`. Conclude with `h.p_unif.ne_zero hz`. Establish `hc : IsCoprime ((ringChar W : ℕ) : ℤ) ((p : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hl h.prime).mpr he)`. Establish `hc'` using `hc.map (Int.castRingHom W)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_natCast, hz] at hc'`. Conclude with `h.p_unif.not_isUnit (isCoprime_zero_left.mp hc')`. Use `haveI : CharP W 0 := by rw [← hl]; exact ringChar.charP W`. Conclude with `CharP.charP_to_charZero W`. Establish `hQ : CharZero Qq` using `(RingHom.charZero_iff (IsFractionRing.injective W Qq)).mp hW`.
-
-Conclude with `(RingHom.charZero_iff ι.injective).mp hQ`.
+A detailed English derivation is pending.
 -/
 theorem charZero_of_setting {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
     [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]

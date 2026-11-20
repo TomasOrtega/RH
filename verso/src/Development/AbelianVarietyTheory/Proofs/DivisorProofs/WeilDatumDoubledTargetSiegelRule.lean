@@ -12,9 +12,9 @@ open Formalism.IndefR.DatumF
 noncomputable section
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ χS hχS rχS JB ξ hξ κ _ co hco ωd hωd omp htr`. Introduce `l hl hinv p t hpt φ hφ`. Take `⟨ν, 𝓕, hν, h𝓕⟩` from `GlobalTheory.TowerFD.exists_fd_any F E nS nT`. Take `⟨c, hc⟩` from `GlobalTheory.T.diagonalLagrangian_invariantForm_unique F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ JB ξ hξ κ co hco ν 𝓕 hν h𝓕 l hl hinv`. Take `⟨hmem, hrule⟩` from `GlobalTheory.T.siegelWeil_section_law_diagonalLagrangian F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ JB ξ hξ κ co hco ν 𝓕 hν h𝓕 χS hχS rχS ωd hωd omp htr p t hpt φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `show l (omp (p, 1) φ) = _`. Rewrite using `[hc _ hmem, hrule, hc _ hφ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.WeilSchrodinger.DblTargetF.siegelRule_dblTarget : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

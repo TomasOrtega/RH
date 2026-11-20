@@ -10,9 +10,7 @@ open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.CellPotSmooth
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `only [upM, upU, Matrix.of_apply, fb]`. Use `split_ifs with h1 h2`. Conclude with `((EuclideanSpace.proj (𝕜 := ℂ) (ε.symm (.inr ⟨τ, ⟨(b, a), h1⟩⟩))).contDiff.restrict_scalars ℝ).contDiffAt`. Conclude with `contDiffAt_const`.
-
-Conclude with `contDiffAt_const`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem upM_fb_contDiffAt_two {ι : Type} {m : ι → ℕ} {n d : ℕ} (ε : Fin n ≃ Fin d ⊕ Cell m) (τ : ι) (w : V n) :
     MContDiffAt 2 (fun w => upM (fb ε w) τ) w := by
@@ -24,7 +22,7 @@ theorem upM_fb_contDiffAt_two {ι : Type} {m : ι → ℕ} {n d : ℕ} (ε : Fin
   · exact contDiffAt_const
 
 /- English proof (translation)
-Introduce `a b`. Conclude with `(hG a b).comp w (((bsL ε).contDiff.restrict_scalars ℝ).contDiffAt)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem G_bsL_smooth {ι : Type} {m : ι → ℕ} {n d : ℕ} (ε : Fin n ≃ Fin d ⊕ Cell m) (G : V d → Mat m ℂ) (w : V n) (τ : ι)
     (hG : MContDiffAt 2 (fun v => G v τ) (bsL ε w)) : MContDiffAt 2 (fun w => G (bsL ε w) τ) w := by
@@ -32,25 +30,25 @@ theorem G_bsL_smooth {ι : Type} {m : ι → ℕ} {n d : ℕ} (ε : Fin n ≃ Fi
   exact (hG a b).comp w (((bsL ε).contDiff.restrict_scalars ℝ).contDiffAt)
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, upU_eq, Matrix.det_transpose, GlobalTheory.FlagFibre.det_uni]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upU_isUnit {s : ℕ} (y : Low s → ℂ) : IsUnit (upU y) := by
   rw [Matrix.isUnit_iff_isUnit_det, upU_eq, Matrix.det_transpose, GlobalTheory.FlagFibre.det_uni]
   exact isUnit_one
 
 /- English proof (translation)
-Establish `h` using `(hA.submatrix (Subtype.val_injective (p := fun a : Fin s => (a : ℕ) < j))).det_pos`. Conclude with `(Complex.pos_iff.1 h).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leadMinor_re_pos {s : ℕ} {A : Matrix (Fin s) (Fin s) ℂ} (hA : A.PosDef) (j : ℕ) : 0 < (leadMinor A j).re := by
   have h := (hA.submatrix (Subtype.val_injective (p := fun a : Fin s => (a : ℕ) < j))).det_pos
   exact (Complex.pos_iff.1 h).1
 
 /- English proof (translation)
-Introduce `ι m n d ε G w x hP hG`. Use `set A : V n → Matrix (Fin (m x.1)) (Fin (m x.1)) ℂ := fun w => upM (fb ε w) x.1 * G (bsL ε w) x.1 * (upM (fb ε w) x.1)ᴴ with hAdef`. Establish `hA : MContDiffAt 2 A w` using `((upM_fb_contDiffAt_two ε x.1 w).mul (G_bsL_smooth ε G w x.1 hG)).mul (upM_fb_contDiffAt_two ε x.1 w).conjTranspose`. Establish `hPA : (A w).PosDef`. Use `hP.mul_mul_conjTranspose_same ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Matrix.vecMul_injective_iff_isUnit.2 (upU_isUnit _)`. Establish `hm : ∀ j : ℕ, ContDiffAt ℝ 2 (fun w => (leadMinor (A w) j).re) w` using `fun j => Complex.reCLM.contDiff.contDiffAt.comp w (hA.submatrix _ _).det`. Establish `h1` using `leadMinor_re_pos hPA (x.2 + 1)`. Establish `h0` using `leadMinor_re_pos hPA x.2`. Establish `hpos : 0 < grD (A w) x.2` using `div_pos h1 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, hpos⟩` and prove the remaining obligations. Establish `hd : ContDiffAt ℝ 2 (fun w => grD (A w) x.2) w` using `(hm _).div (hm _) h0.ne'`. Conclude with `(hd.log hpos.ne').neg`.
+A detailed English derivation is pending.
 -/
 theorem cellPot_contDiffAt : ∀ (ι : Type) (m : ι → ℕ) (n d : ℕ) (ε : Fin n ≃ Fin d ⊕ Cell m) (G : V d → Mat m ℂ) (w : V n) (x : Root m), (G (bsL ε w) x.1).PosDef → MContDiffAt 2 (fun v => G v x.1) (bsL ε w) → ContDiffAt ℝ 2 (cellPot ε G x) w ∧ 0 < grD (upM (fb ε w) x.1 * G (bsL ε w) x.1 * (upM (fb ε w) x.1)ᴴ) x.2 := by
   intro ι m n d ε G w x hP hG

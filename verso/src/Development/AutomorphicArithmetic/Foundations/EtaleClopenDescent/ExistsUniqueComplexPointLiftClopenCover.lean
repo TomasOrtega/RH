@@ -4,17 +4,15 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.OmegaPullOmeg
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.HodgeCoh GlobalTheory.CechDR KaehlerDifferential GlobalTheory.W1
 
 /- English proof (translation)
-Introduce `Y s' M _ W hd hc y`. Set `x0 : (Sp ℂ : Scheme.{0})` to `IsLocalRing.closedPoint ℂ`. Establish `hone : ∀ a : (Sp ℂ : Scheme.{0}), a = x0` using `fun a => Subsingleton.elim a x0`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m, y.1 x0 ∈ W m := by`. Establish `h : y.1 x0 ∈ iSup W`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.mp h`. Establish `hr : Set.range y.1 ⊆ Set.range (W m).ι`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hone a, Scheme.Opens.range_ι]`. Conclude with `hm`. Use `⟨m, ?_, ?_⟩` and prove the remaining obligations. Use `⟨⟨IsOpenImmersion.lift (W m).ι y.1 hr, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `y.2`. Conclude with `IsOpenImmersion.lift_fac _ _ _`. Introduce `z hz`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← cancel_mono (W m).ι, hz]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(IsOpenImmersion.lift_fac _ _ _).symm`. Introduce and unpack `m' ⟨z, hz, -⟩`. Assume the negation of the conclusion as `hne`. Establish `h1 : y.1 x0 ∈ W m'`. Establish `hz' : z.1 ≫ (W m').ι = y.1` using `hz`.
-
-Rewrite using `[← hz', Scheme.Hom.comp_apply]`. Conclude with `(z.1 x0).2`. Establish `h2 : y.1 x0 ∈ W m' ⊓ W m` using `⟨h1, hm⟩`. Rewrite `h2` using `[hd m' m hne]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.existsUnique_complexPoint_lift_clopen_cover :
     ∀ (Y : Scheme.{0}) (s' : Y ⟶ Sp ℂ) (M : Type) [Fintype M] (W : M → Y.Opens), (∀ i j, i ≠ j → W i ⊓ W j = ⊥) → iSup W = ⊤ → ∀ y : CxPts s' (RingHom.id ℂ), ∃! m : M, ∃! y' : CxPts ((W m).ι ≫ s') (RingHom.id ℂ), y'.1 ≫ (W m).ι = y.1 := by

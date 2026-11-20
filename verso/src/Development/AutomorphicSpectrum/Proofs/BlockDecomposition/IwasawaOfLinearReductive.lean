@@ -17,7 +17,7 @@ open Matrix Topology Filter
 namespace GlobalTheory.CompanionTheory.IwaGen
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Express the relevant statement in the definitionally equal form `(NormedSpace.exp X)ᴴ * NormedSpace.exp X = 1`. Rewrite using `[← Matrix.exp_conjTranspose, hX]`. Conclude with `(Matrix.exp_neg X ▸ Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp X)))`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_mem_unitaryGroup {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X) :
     NormedSpace.exp X ∈ Matrix.unitaryGroup (Fin n) ℂ := by
@@ -27,17 +27,17 @@ theorem exp_mem_unitaryGroup {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (hX : X�
   exact (Matrix.exp_neg X ▸ Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp X)))
 
 /- English proof (translation)
-Take `⟨𝔞, hle, hH, hC, hM⟩` from `GlobalTheory.T.exists_maximal_abelian_hermitian 𝔤`. Take `⟨U₀, hU₀, hD⟩` from `GlobalTheory.T.commuting_hermitian_simultaneous_diag (𝔞 : Set (Matrix (Fin n) (Fin n) ℂ)) hH hC`. Take `⟨H, hHa, hreg⟩` from `GlobalTheory.T.exists_regular_element_abelian 𝔞 U₀`. Establish `hU₀' : U₀ * U₀ᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hU₀`. Establish `hU₀'' : U₀ᴴ * U₀ = 1` using `Matrix.mem_unitaryGroup_iff'.1 hU₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `d : Fin n → ℝ` to `fun i => ((U₀ᴴ * H * U₀) i i).re`. Establish `hdd : Matrix.diagonal (fun i => (d i : ℂ)) = U₀ᴴ * H * U₀`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `: star ((U₀ᴴ * H * U₀) i i) = (U₀ᴴ * H * U₀) i i`. Establish `h2 : (U₀ᴴ * H * U₀)ᴴ = U₀ᴴ * H * U₀`. Simplify using `[Matrix.conjTranspose_mul, hH H hHa, Matrix.mul_assoc]`. Conclude with `congrFun (congrFun h2 i) i`. Establish `h3` using `Complex.conj_eq_iff_real.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `h3`. Simplify using `[d, hr]`. Simplify using `[Matrix.diagonal_apply_ne _ hij, hD H hHa hij]`. Establish `hHd : U₀ * Matrix.diagonal (fun i => (d i : ℂ)) * U₀ᴴ = H`. Rewrite using `[hdd]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨U, hU, h, hanti, heq, hdiag⟩` from `GlobalTheory.T.antitone_diagonal_conjugate U₀ d hU₀`. Use `⟨U, hU, h, hanti, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, hHd]`. Conclude with `hle hHa`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `Y hY hYs hcomm`. Rewrite `hcomm` using `[heq, hHd]`. Apply `hdiag` to reduce the goal to its premises. Use `hD Y (hM Y hY hYs fun A hA => ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.T.centralizer_regular_commutes U₀ H A Y hU₀ (hD H hHa) (hD A hA) (fun i j hij => hreg i j hij A hA) hcomm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem frame {n : ℕ} (𝔤 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) :
     ∃ U ∈ Matrix.unitaryGroup (Fin n) ℂ, ∃ h : Fin n → ℝ, Antitone h ∧
@@ -76,19 +76,19 @@ theorem frame {n : ℕ} (𝔤 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) :
     exact GlobalTheory.T.centralizer_regular_commutes U₀ H A Y hU₀ (hD H hHa) (hD A hA) (fun i j hij => hreg i j hij A hA) hcomm
 
 /- English proof (translation)
-Take `⟨U, hU, h, hanti, hd, hreg⟩` from `frame 𝔤`. Establish `h1 : U * Uᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hU`. Establish `h2 : Uᴴ * U = 1` using `Matrix.mem_unitaryGroup_iff'.1 hU`. Establish `cj : ∀ Z : Matrix (Fin n) (Fin n) ℂ, U * (Uᴴ * Z * U) * Uᴴ = Z` using `fun Z => by`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `cj' : ∀ Z : Matrix (Fin n) (Fin n) ℂ, Uᴴ * (U * Z * Uᴴ) * U = Z` using `fun Z => by`. Combine the equalities or inequalities in the displayed calculation. Set `φ : (Matrix (Fin n) (Fin n) ℂ) →ₗ[ℝ] (Matrix (Fin n) (Fin n) ℂ)` to `{ toFun := fun Z => U * Z * Uᴴ map_add' := fun a b => by simp [Matrix.mul_add, Matrix.add_mul] map_smul' := fun r a => by simp }`. Set `𝔥 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)` to `𝔤.comap φ`. Establish `mem : ∀ Z, Z ∈ 𝔥 ↔ U * Z * Uᴴ ∈ 𝔤` using `fun Z => Iff.rfl`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `mem' : ∀ Z ∈ 𝔤, Uᴴ * Z * U ∈ 𝔥` using `fun Z hZ => by rw [mem, cj]; exact hZ`. Establish `mulc : ∀ P Q : Matrix (Fin n) (Fin n) ℂ, (U * P * Uᴴ) * (U * Q * Uᴴ) = U * (P * Q) * Uᴴ` using `fun P Q => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hs' : ∀ Z ∈ 𝔥, Zᴴ ∈ 𝔥` using `fun Z hZ => by`. Use `hs _ ((mem Z).1 hZ)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem]`. Simplify `this` using `[Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Establish `hb' : ∀ P ∈ 𝔥, ∀ Q ∈ 𝔥, P * Q - Q * P ∈ 𝔥` using `fun P hP Q hQ => by`. Use `hb _ ((mem P).1 hP) _ ((mem Q).1 hQ)` as an intermediate fact. Rewrite `this` using `[mulc, mulc]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem, Matrix.mul_sub, Matrix.sub_mul]`. Conclude with `this`. Establish `hreg' : ∀ Y ∈ 𝔥, Yᴴ = Y → Matrix.diagonal (fun i => (h i : ℂ)) * Y = Y * Matrix.diagonal (fun i => (h i : ℂ)) → Y.IsDiag`. Introduce `Y hY hYs hc`. Use `hreg _ ((mem Y).1 hY) (by simp [Matrix.conjTranspose_mul, hYs, Matrix.mul_assoc]) (by rw [mulc, mulc, hc])` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[cj']`. Then use the resulting hypothesis. Use `⟨U, hU, fun X hX => ?_⟩` and prove the remaining obligations. Take `⟨A, hA, B, hB, hAB, hAs, hBt⟩` from `GlobalTheory.T.exists_skewHermitian_add_blockTriangular 𝔥 h hanti (GlobalTheory.T.lie_algebra_function_calculus 𝔥 h ((mem _).2 hd) hb') hs' hreg' _ (mem' X hX)`. Use `⟨U * A * Uᴴ, (mem _).1 hA, U * B * Uᴴ, (mem _).1 hB, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.add_mul, ← Matrix.mul_add, ← hAB, cj]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.conjTranspose_mul, hAs, Matrix.mul_assoc]`. Rewrite using `[cj']` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem alg {n : ℕ} (𝔤 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) (hs : ∀ X ∈ 𝔤, Xᴴ ∈ 𝔤)
     (hb : ∀ X ∈ 𝔤, ∀ Y ∈ 𝔤, X * Y - Y * X ∈ 𝔤) :
@@ -134,19 +134,17 @@ theorem alg {n : ℕ} (𝔤 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) (hs : 
   · rwa [cj']
 
 /- English proof (translation)
-Introduce `n G hG`. Take `⟨𝔤, hiff, hV⟩` from `GlobalTheory.T.lie_algebra_of_exp_local hG`. Take `⟨hs, hb⟩` from `GlobalTheory.T.lie_algebra_star_closed_bracket hG 𝔤 hiff`. Take `⟨U, hU, hdec⟩` from `alg 𝔤 hs hb`. Establish `hexp : ∀ X ∈ 𝔤, NormedSpace.exp X ∈ G` using `fun X hX => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using (hiff X).1 hX 1`. Set `𝔨 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)` to `𝔤 ⊓ { carrier := {X | Xᴴ = -X} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[Matrix.conjTranspose_add, ha, hb, neg_add]`. Use the proof step `zero_mem' := by simp`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `smul_mem' := fun r a ha => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Use extensionality with `i j`. Use `congrFun (congrFun ha i) j` as an intermediate fact. Simplify using `only [Matrix.conjTranspose_apply, Matrix.neg_apply] at this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[Matrix.conjTranspose_apply, this] }`. Set `𝔟 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)` to `𝔤 ⊓ { carrier := {X | (Uᴴ * X * U).BlockTriangular id} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Conclude with `ha.add hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use the proof step `zero_mem' := by simp [Matrix.BlockTriangular]`. Use the proof step `smul_mem' := fun r a ha => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Introduce `i j hij`. Use `ha hij` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Uᴴ * (r • a) * U = r • (Uᴴ * a * U)` using `by simp`. Rewrite using `[e, Matrix.smul_apply, this, smul_zero] }`. Establish `hloc` using `GlobalTheory.T.local_exp_product_decomposition hG 𝔤 𝔨 𝔟 hiff hV inf_le_left inf_le_left (fun X hX => by`. Take `⟨A, hA, B, hB, hAB, hAs, hBt⟩` from `hdec X hX`. Rewrite using `[hAB]`.
-
-Conclude with `Submodule.add_mem_sup ⟨hA, hAs⟩ ⟨hB, hBt⟩)`. Take `h` from `GlobalTheory.T.cartan_local_to_global hG U hU (by filter_upwards [hloc] with g hg hgG`. Take `⟨X, hX, Y, hY, rfl⟩` from `hg hgG`. Conclude with `⟨_, ⟨hexp X hX.1, exp_mem_unitaryGroup X hX.2⟩, _, hexp Y hY.1, rfl, GlobalTheory.T.exp_block_triangular U Y hU hY.2⟩)`. Conclude with `⟨U, hU, h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iwaOn_of_isLinRed : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)}, GlobalTheory.LinRed.IsLinRed G → PositivityTheory.Tls2.Iua.IwaOn G := by
   intro n G hG

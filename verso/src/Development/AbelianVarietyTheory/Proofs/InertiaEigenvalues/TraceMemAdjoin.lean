@@ -8,13 +8,13 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 namespace GlobalTheory.CentralIdem
 
 /- English proof (translation)
-Use `haveI : NeZero n := ⟨hn⟩`. Rewrite using `[Module.End.trace_eq_sum_roots_charpoly_of_splits (IsAlgClosed.splits _)]`. Apply `Subalgebra.multiset_sum_mem` to reduce the goal to its premises. Introduce `μ hμ`. Establish `hr : T.charpoly.IsRoot μ` using `Polynomial.isRoot_of_mem_roots hμ`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : T.HasEigenvalue μ` using `(Module.End.hasEigenvalue_iff_isRoot_charpoly T μ).2 hr`. Take `⟨v, hv⟩` from `he.exists_hasEigenvector`. Establish `h1` using `hv.pow_apply (n + 1)`. Rewrite `h1` using `[hT, hv.apply_eq_smul]`. Establish `h2 : μ = μ ^ (n + 1)` using `smul_left_injective ℂ hv.2 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : μ = 0`. Rewrite using `[h0]`. Conclude with `Subalgebra.zero_mem _`. Establish `h3 : μ ^ n = 1`. Rewrite `h2` using `[pow_succ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_right_cancel₀ h0 (by rw [one_mul]; exact h2.symm)`. Take `⟨i, -, hi⟩` from `hζ.eq_pow_of_pow_eq_one h3`. Rewrite using `[← hi]`. Conclude with `Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_singleton ζ)) _`.
+A detailed English derivation is pending.
 -/
 theorem trace_mem_adjoin {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (T : Module.End ℂ V) {n : ℕ} (hn : n ≠ 0) (hT : T ^ (n + 1) = T) {ζ : ℂ} (hζ : IsPrimitiveRoot ζ n) :
@@ -39,11 +39,11 @@ theorem trace_mem_adjoin {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimen
     exact Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_singleton ζ)) _
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite Γ`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (MonoidAlgebra.basis Γ ℂ), Matrix.trace]`. Establish `: ∀ g : Γ, (LinearMap.toMatrix (MonoidAlgebra.basis Γ ℂ) (MonoidAlgebra.basis Γ ℂ) (Algebra.lmul ℂ (MonoidAlgebra ℂ Γ) x)).diag g = x.coeff 1`. Introduce `g`. Rewrite using `[Matrix.diag, LinearMap.toMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : MonoidAlgebra.basis Γ ℂ g = MonoidAlgebra.single g 1` using `by simp`. Rewrite using `[hb]`. Express the relevant statement in the definitionally equal form `(x * MonoidAlgebra.single g (1 : ℂ)).coeff g = _`. Rewrite using `[MonoidAlgebra.coeff_mul_single_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun g _ => this g]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_lmul {Γ : Type} [Group Γ] [Finite Γ] (x : MonoidAlgebra ℂ Γ) :
     LinearMap.trace ℂ _ (Algebra.lmul ℂ (MonoidAlgebra ℂ Γ) x) = (Nat.card Γ : ℂ) * x.coeff 1 := by
@@ -63,9 +63,9 @@ theorem trace_lmul {Γ : Type} [Group Γ] [Finite Γ] (x : MonoidAlgebra ℂ Γ)
   simp
 
 /- English proof (translation)
-Introduce `Γ _ _ e he hc ζ hζ h`. Use `haveI : Module.Finite ℂ (MonoidAlgebra ℂ Γ) := Module.Finite.of_basis (MonoidAlgebra.basis Γ ℂ)`. Use `set x : MonoidAlgebra ℂ Γ := MonoidAlgebra.single h⁻¹ (1 : ℂ) * e with hx`. Establish `hcm : Commute (MonoidAlgebra.single h⁻¹ (1 : ℂ)) e` using `(hc _).symm`. Establish `hid : IsIdempotentElem e` using `he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : x ^ (Nat.card Γ + 1) = x`. Rewrite using `[hx, hcm.mul_pow, hid.pow_succ_eq, MonoidAlgebra.single_pow, one_pow, pow_succ, pow_card_eq_one', one_mul]`. Establish `hT` using `trace_mem_adjoin (Algebra.lmul ℂ (MonoidAlgebra ℂ Γ) x) (n := Nat.card Γ) Nat.card_pos.ne' (by rw [← map_pow, hp]) hζ`. Rewrite `hT` using `[trace_lmul, hx, MonoidAlgebra.coeff_single_mul_apply]`. Simplify using `using hT`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem centralIdemCoeff : CentralIdemCoeff := by
   intro Γ _ _ e he hc ζ hζ h

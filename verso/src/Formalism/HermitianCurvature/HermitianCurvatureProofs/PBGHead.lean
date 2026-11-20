@@ -8,17 +8,15 @@ namespace Formalism.FourierDecayAlt.P.PBG
 open Formalism.FourierDecayAlt.C3 Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.P.SignAntidiagonal
 
 /- English proof (translation)
-Establish `hex : ∃ l0 : Fin (m + 1), ∀ l, (c l).val ≠ l0.val`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `choose f hf using hne`. Establish `hinj : Function.Injective f`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b hab`. Apply `Fin.ext` to reduce the goal to its premises. Use `hf a` as an intermediate fact. Use `hf b` as an intermediate fact. Rewrite `*` using `[hab]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `Fintype.card_le_of_injective f hinj` as an intermediate fact. Simplify using `at this`. Take `⟨l0, hl0⟩` from `hex`. Use `⟨l0, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `uniq_mono _ _ ?_ hc` to reduce the goal to its premises. Introduce `l`. Establish `h1 : (⟨(c l).val, hlt l⟩ : Fin (m + 1)) ≠ l0`. Introduce `h`. Apply `hl0 l` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← h]`. Take `⟨j, hj⟩` from `Fin.exists_succAbove_eq h1`. Use `⟨j, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `only [Function.comp_apply, xR, eI, Fin.val_castLE]`.
-
-Rewrite using `[hj]`. Conclude with `(fun a b hab => by simp only [Function.comp_apply, xR, eI]; exact Fin.strictMono_succAbove l0 hab)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mono_omit {k r m : ℕ} (hm : m + 1 ≤ r) (c : Fin m → Fin (2 * r + k + 1)) (hc : StrictMono c)
     (hlt : ∀ l, (c l).val < m + 1) : ∃ l0 : Fin (m + 1), c = xR k r (m + 1) hm ∘ l0.succAbove := by
@@ -46,7 +44,7 @@ theorem mono_omit {k r m : ℕ} (hm : m + 1 ≤ r) (c : Fin m → Fin (2 * r + k
   · exact (fun a b hab => by simp only [Function.comp_apply, xR, eI]; exact Fin.strictMono_succAbove l0 hab)
 
 /- English proof (translation)
-Introduce `l0 l1 h`. Apply `Fin.succAbove_left_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `l`. Establish `h2` using `congrArg Fin.val (congrFun h l)`. Conclude with `Fin.ext (by simpa [C3.xR, eI] using h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem omit_inj {k r m : ℕ} (hm : m + 1 ≤ r) :
     Function.Injective (fun l0 : Fin (m + 1) => xR k r (m + 1) hm ∘ l0.succAbove) := by
@@ -57,15 +55,13 @@ theorem omit_inj {k r m : ℕ} (hm : m + 1 ≤ r) :
   exact Fin.ext (by simpa [C3.xR, eI] using h2)
 
 /- English proof (translation)
-Unfold `AAx`. Use `set g := fun l0 : Fin (m + 1) => xR k r (m + 1) hm ∘ l0.succAbove`. Establish `hg : Function.Injective g` using `omit_inj hm`. Establish `hsub : Finset.image g Finset.univ ⊆ Finset.univ` using `Finset.subset_univ _`. Rewrite using `[← Finset.sum_subset hsub]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_image (fun a _ b _ h => hg h)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l0 _`. Rewrite using `[if_pos]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Simplify using `only [g, Function.comp_apply, xR, eI]`. Conclude with `Fin.strictMono_succAbove l0 hab`. Introduce `c _ hc split_ifs with hP`. Distinguish the cases in `hS : ∀ l, (c l).val < m + 1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l0, hl0⟩` from `mono_omit hm c hP hS`. Conclude with `absurd (Finset.mem_image.2 ⟨l0, Finset.mem_univ _, hl0.symm⟩) hc`. Use `push Not at hS`. Take `⟨l, hl⟩` from `hS`. Rewrite using `[Matrix.det_eq_zero_of_column_eq_zero l (fun a => by`.
-
-Simplify using `only [Matrix.of_apply]; exact hz _ _ (by simp) hl), zero_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem AAx_omit {A : Type} [Ring A] [Algebra ℂ A] (k r m : ℕ) (hm : m + 1 ≤ r)
     (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A) (xi : Fin r → Fin (2 * r + k + 1) → ℂ) (u : ℂ)
@@ -97,7 +93,7 @@ theorem AAx_omit {A : Type} [Ring A] [Algebra ℂ A] (k r m : ℕ) (hm : m + 1 �
     · rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.inv_def, Matrix.smul_apply, Matrix.adjugate_fin_succ_eq_det_submatrix, Fin.succAbove_last, Fin.val_last, smul_eq_mul, Ring.inverse_eq_inv']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_last {m : ℕ} (Z : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hZ : Z.det ≠ 0) (b : Fin (m + 1)) :
     Z⁻¹ b (Fin.last m) = Z.det⁻¹ * ((-1) ^ (m + (b : ℕ)) * (Z.submatrix Fin.castSucc b.succAbove).det) := by
@@ -105,69 +101,67 @@ theorem inv_last {m : ℕ} (Z : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hZ : Z.
     smul_eq_mul, Ring.inverse_eq_inv']
 
 /- English proof (translation)
-Introduce `A _ _ M _ _ k r m hm z' E La xi Z c u hG hR hZ hc hL hxi hxl`. Establish `hxi' : ∀ (a : Fin r) (q : Fin (2 * r + k + 1)) (ha : a.val < m + 1), xi a q = if h : q.val < m + 1 then Z ⟨a.val, ha⟩ ⟨q.val, h⟩ else 0`. Introduce `a q ha`. Use `hxi ⟨a.val, ha⟩ q` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hxl' : ∀ (a : Fin r) (q : Fin (2 * r + k + 1)), a.val = m + 1 → xi a q = if q.val = m + 1 then c else 0`. Introduce `a q ha`. Establish `e : a = ⟨m + 1, by omega⟩` using `Fin.ext ha`. Rewrite using `[e]`. Conclude with `hxl q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA2 : AAx k r E xi (m + 2) hm u = (Z.det * c) • qminor E (xR k r (m + 2) hm) (xR k r (m + 2) hm) u`. Rewrite using `[AAx_head k r E xi (m + 2) hm (Matrix.of fun a b : Fin (m + 2) => xi (Fin.castLE hm a) (xR k r (m + 2) hm b)) u ?_ (fun a b => rfl)]`. Use `congr 1`. Rewrite using `[Matrix.det_succ_row _ (Fin.last (m + 1)), Fin.sum_univ_castSucc, Finset.sum_eq_zero]`. Simplify using `only [Matrix.of_apply, Matrix.submatrix, Fin.succAbove_last, zero_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : xi (Fin.castLE hm (Fin.last (m + 1))) (xR k r (m + 2) hm (Fin.last (m + 1))) = c`. Rewrite using `[hxl' _ _ (by simp), if_pos (by simp [xR, eI])]`. Rewrite using `[h1]`. Establish `h2 : (Matrix.of fun i j : Fin (m + 1) => xi (Fin.castLE hm (Fin.castSucc i)) (xR k r (m + 2) hm (Fin.castSucc j))) = Z`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply]`. Apply the tactic sequence `rw [hxi' _ _ (by simp <;> omega), dif_pos (by simp [xR, eI] <;> omega)]`. Use `congr 1`. Rewrite using `[h2]`. Simplify using `only [Fin.val_last]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← two_mul, pow_mul]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Introduce `j _`. Simplify using `only [Matrix.of_apply]`.
+Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxl' _ _ (by simp), if_neg (by simp [xR, eI]; omega)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a p ha hp`. Distinguish the cases in `ha' : a.val < m + 1`. Rewrite using `[hxi' a p ha', dif_neg (by omega)]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxl' a p (by omega), if_neg (by omega)]`. Establish `hA1 : AAx k r E xi (m + 1) (by omega) u = Z.det • qminor E (xR k r (m + 1) (by omega)) (xR k r (m + 1) (by omega)) u`. Rewrite using `[AAx_head k r E xi (m + 1) (by omega) Z u]`. Introduce `a p ha hp`. Rewrite using `[hxi' a p ha, dif_neg (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Apply the tactic sequence `rw [hxi' _ _ (by simp <;> omega), dif_pos (by simp [xR, eI] <;> omega)]`. Use `congr 1`. Establish `hA0 : AAx k r E xi m (by omega) u = ∑ l0 : Fin (m + 1), (Z.submatrix Fin.castSucc l0.succAbove).det • qminor E (xR k r m (by omega)) (xR k r (m + 1) (by omega) ∘ l0.succAbove) u`. Rewrite using `[AAx_omit k r m (by omega) E xi u]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l0 _`. Use `congr 2`. Use extensionality with `a l`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [hxi' _ _ (by simp <;> omega), dif_pos (by simp [xR, eI] <;> omega)]`. Use `congr 1`. Introduce `a p ha hp`. Rewrite using `[hxi' a p (by omega), dif_neg (by omega)]`. Use `set a := xR k r (m + 2) hm with hadef`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hav : ∀ l, (a l).val = l.val` using `by intro l; simp [a, xR, eI]`. Establish `hcs : a ∘ Fin.castSucc = xR k r (m + 1) (by omega)`. Use function extensionality and compare the values at `l`. Use `ext`. Simplify using `[a, xR, eI]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmain : La (qminor E a a u) = La (qminor E (xR k r (m + 1) (by omega)) (xR k r (m + 1) (by omega)) u * Tm E (u - ((m + 1 : ℕ) : ℂ)) (eI k r ⟨m + 1, by omega⟩) (eI k r ⟨m + 1, by omega⟩)) - La (qminor E (a ∘ (Fin.castSucc (Fin.last m) : Fin (m + 2)).succAbove) (a ∘ Fin.castSucc) u …`. Establish `hexp` using `Formalism.FourierDecayAlt.P.expansion_last_column A _ (m + 1) E a a u`. Rewrite using `[hexp, map_sum, Fin.sum_univ_castSucc, Fin.sum_univ_castSucc]`. Establish `hzero : ∀ l : Fin m, La ((((-1 : ℤ) ^ (m + 1 + ((Fin.castSucc (Fin.castSucc l) : Fin (m + 2)) : ℕ)) : ℤ) : A) * (qminor E (a ∘ (Fin.castSucc (Fin.castSucc l)).succAbove) (a ∘ Fin.castSucc) u * Tm E (u - ((m + 1 : ℕ) : ℂ)) (a (Fin.castSucc (Fin.castSucc l))) (a (Fin.last (m + 1))) …`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[la_intmul]`. Establish `hne : a (Fin.castSucc (Fin.castSucc l)) ≠ a (Fin.last (m + 1))`. Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact. Rewrite `this` using `[hav, hav]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[tm_offdiag _ _ hne, hR _ _ _ (by simp only [InNp, hav]; simp; omega)]`. Establish `: dpsiP k r z' (a (Fin.castSucc (Fin.castSucc l))) (a (Fin.last (m + 1))) = 0`. Apply the tactic sequence `unfold dpsiP; simp only [hav]; simp; split_ifs <;> first | rfl | omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zero_smul, smul_zero]`. Rewrite using `[Finset.sum_eq_zero (fun l _ => hzero l), zero_add]`. Establish `hlast : La ((((-1 : ℤ) ^ (m + 1 + ((Fin.last (m + 1) : Fin (m + 2)) : ℕ)) : ℤ) : A) * (qminor E (a ∘ (Fin.last (m + 1)).succAbove) (a ∘ Fin.castSucc) u * Tm E (u - ((m + 1 : ℕ) : ℂ)) (a (Fin.last (m + 1))) (a (Fin.last (m + 1))))) = La (qminor E (xR k r (m + 1) (by omega)) (xR k …`. Rewrite using `[la_intmul, Fin.succAbove_last, hcs]`. Establish `h1 : a (Fin.last (m + 1)) = eI k r ⟨m + 1, by omega⟩` using `by ext; rw [hav]; simp [eI]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Establish `h2 : ((-1 : ℤ) ^ (m + 1 + ((Fin.last (m + 1) : Fin (m + 2)) : ℕ))) = 1`. Simplify using `only [Fin.val_last]`. Rewrite using `[← two_mul, pow_mul]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Simplify using the standard rewrite rules. Rewrite using `[hlast]`. Establish `hmT : La (qminor E (a ∘ (Fin.castSucc (Fin.last m) : Fin (m + 2)).succAbove) (a ∘ Fin.castSucc) u * Tm E (u - ((m + 1 : ℕ) : ℂ)) (a (Fin.castSucc (Fin.last m))) (a (Fin.last (m + 1)))) = La (qminor E (a ∘ (Fin.castSucc (Fin.last m) : Fin (m + 2)).succAbove) (a ∘ Fin.castSucc) u)`. Establish `hne : a (Fin.castSucc (Fin.last m)) ≠ a (Fin.last (m + 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact. Rewrite `this` using `[hav, hav]`. Simplify using `at this`. Rewrite using `[tm_offdiag _ _ hne, hR _ _ _ (by simp only [InNp, hav]; simp; omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `: dpsiP k r z' (a (Fin.castSucc (Fin.last m))) (a (Fin.last (m + 1))) = 1`. Apply the tactic sequence `unfold dpsiP; simp only [hav]; simp; split_ifs <;> first | rfl | omega`. Rewrite using `[this, one_smul]`. Rewrite using `[la_intmul, hmT]`. Establish `h3 : ((((-1 : ℤ) ^ (m + 1 + ((Fin.castSucc (Fin.last m) : Fin (m + 2)) : ℕ))) : ℤ) : ℂ) = -1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Fin.val_castSucc, Fin.val_last]`. Use `push_cast`. Rewrite using `[show m + 1 + m = 2 * m + 1 by ring, pow_succ, pow_mul]; norm_num`. Rewrite using `[h3, neg_one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set rowsP : Fin (m + 1) → Fin (2 * r + k + 1) := Fin.cons (eI k r ⟨m + 1, by omega⟩) (xR k r m (by omega)) with hrP`. Establish `hrows : a ∘ (Fin.castSucc (Fin.last m) : Fin (m + 2)).succAbove = rowsP ∘ (finRotate (m + 1))`. Use function extensionality and compare the values at `q`. Use `ext`. Simplify using `only [Function.comp_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hq : q = Fin.last m`. Substitute `hq` using the available equality. Rewrite using `[finRotate_last]`. Simplify using `only [rowsP, Fin.cons_zero]`. Rewrite using `[hav, succAbove_val]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[eI]`. Establish `hq' : q.val < m`. Use `q.isLt; have : q.val ≠ m := fun h' => hq (Fin.ext (by simp [h'])); omega` as an intermediate fact. Establish `hr1 : finRotate (m + 1) q = Fin.succ ⟨q.val, hq'⟩` using `by ext; rw [coe_finRotate_of_ne_last hq]; simp`. Rewrite using `[hr1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [rowsP, Fin.cons_succ]`. Rewrite using `[hav, succAbove_val]`. Simplify using `[xR, eI]`. Use linear arithmetic over natural numbers and integers. Establish `hQ : La (qminor E (a ∘ (Fin.castSucc (Fin.last m) : Fin (m + 2)).succAbove) (a ∘ Fin.castSucc) u) = ∑ l : Fin (m + 1), ((-1 : ℂ) ^ (m + (l : ℕ)) * (c * Z⁻¹ l (Fin.last m))) • La (qminor E (xR k r m (by omega)) (xR k r (m + 1) (by omega) ∘ l.succAbove) u)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hrows, Formalism.REAL.quantumMinorRowSkew_holds A _ (m + 1) E rowsP _ (finRotate (m + 1)) u, la_intmul, sign_finRotate]`. Rewrite using `[Formalism.FourierDecayAlt.P.expansion_first_line A _ m E hG rowsP _ u, map_sum, Finset.smul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[la_intmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr0 : rowsP 0 = eI k r ⟨m + 1, by omega⟩` using `by simp [rowsP]`. Establish `hrs : rowsP ∘ Fin.succ = xR k r m (by omega)` using `by funext q; simp [rowsP]`. Rewrite using `[hr0, hrs, hcs]`. Establish `hx : xR k r (m + 1) (by omega) l = eI k r ⟨l.val, by omega⟩` using `by ext; simp [xR, eI]`. Establish `hne : eI k r ⟨m + 1, by omega⟩ ≠ eI k r ⟨l.val, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact. Simplify using `[eI] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hx, tm_offdiag _ _ hne, hL l, smul_smul, smul_smul]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Rewrite using `[pow_add]`. Apply the tactic sequence `try ring`. Establish `hT : Tm E (u - ((m + 1 : ℕ) : ℂ)) (eI k r ⟨m + 1, by omega⟩) (eI k r ⟨m + 1, by omega⟩) = algebraMap ℂ A (u - ((m + 1 : ℕ) : ℂ)) + E (eI k r ⟨m + 1, by omega⟩) (eI k r ⟨m + 1, by omega⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[Tm]`. Rewrite using `[hA2, hA1, hA0, map_smul, smul_smul, inv_mul_cancel₀ (mul_ne_zero hZ hc), one_smul, smul_mul_assoc, map_smul, smul_smul, inv_mul_cancel₀ hZ, one_smul, map_sum, hmain, hQ, hT, Finset.smul_sum]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, smul_smul, inv_last Z hZ]`. Use `congr 1`. Establish `hs : ((-1 : ℂ) ^ (m + (l : ℕ))) * (-1) ^ (m + (l : ℕ)) = 1`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Evaluate the numerical expressions.
-
-Take the linear combination `(c * Z.det⁻¹ * (Z.submatrix Fin.castSucc l.succAbove).det) * hs`.
+Evaluate the numerical expressions. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.P.head_algebra_relations : Formalism.FourierDecayAlt.KB.HeadAlg := by
   intro A _ _ M _ _ k r m hm z' E La xi Z c u hG hR hZ hc hL hxi hxl

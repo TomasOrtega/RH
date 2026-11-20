@@ -11,15 +11,15 @@ namespace ReciprocityTheory.ChartRestriction.TR.Weyl
 open ReciprocityTheory.ChartRestriction.DS.S7
 
 /- English proof (translation)
-Introduce `N Λ _ T k t hk`. Take `⟨σ, hσk, hU, hK⟩` from `ReciprocityTheory.ChartRestriction.DS.HW.KType.exists_rep T`. Take `⟨lam, hlam, e, he⟩` from `ReciprocityTheory.ChartRestriction.DS.HW.model_equiv N (fun a => (Λ a : ℝ)) T.V σ ⊤ hU hK`. Establish `hw : lam.w = Λ`. Use function extensionality and compare the values at `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hlam a).symm` after adjusting the coercions. Set `g : GL (Fin N) ℂ` to `ReciprocityTheory.ChartRestriction.DS.HW.torepUnit _ k.2`. Establish `hg : (g : Matrix (Fin N) (Fin N) ℂ) = Matrix.diagonal t` using `hk`. Take `⟨f, hf, htr⟩` from `hS N lam g t hg`. Set `e' : T.V ≃ₗ[ℂ] Formalism.BasicNotions.nablaSq ℂ N lam` to `Submodule.topEquiv.symm.trans e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hconj : f = e'.conj ((T.op k : T.V →L[ℂ] T.V) : T.V →ₗ[ℂ] T.V)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hz` using `he g k.2 (e.symm y)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[hf y, ← hz, ← hσk k]`. Both sides reduce to the same expression. Establish `hk' : kChar T k = LinearMap.trace ℂ _ f`. Rewrite using `[hconj, LinearMap.trace_conj']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hk', htr, hw]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uChar_of (hS : SqCharStatement) : UCharStatement := by
   intro N Λ _ T k t hk

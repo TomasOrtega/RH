@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
 theorem mat_one' {W : Spc F E d} : mat (1 : UA σ W.J) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← mat_mul', inv_mul_cancel, mat_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_mul' {W : Spc F E d} (g : UA σ W.J) : mat g⁻¹ * mat g = 1 := by
   rw [← mat_mul', inv_mul_cancel, mat_one']
@@ -64,7 +64,7 @@ def stabilizer₂ (W : Spc F E d) (H' : Plane E d d₁) : Subgroup (UA σ W.J) w
     exact eq_sub_of_add_eq this
 
 /- English proof (translation)
-Use `(Subgroup.closure_le _).mpr ?_` and prove the remaining obligations. Introduce and unpack `u ⟨hx, hz⟩`. Conclude with `⟨⟨1, by rw [hx, Units.val_one, one_smul]⟩, hz⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem unip_le_stabP (W : Spc F E d) (H' : Plane E d d₁) : unip σ W H' ≤ stabilizer₂ σ W H' := by
   refine (Subgroup.closure_le _).mpr ?_

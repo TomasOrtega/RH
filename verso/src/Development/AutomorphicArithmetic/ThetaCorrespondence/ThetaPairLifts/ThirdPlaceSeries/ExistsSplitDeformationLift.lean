@@ -37,17 +37,15 @@ open Formalism.IndefR.FWT
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `_ _`. Establish `hw : _root_.GlobalTheory.CovTop.LiftWeightNumerator` using `_root_.GlobalTheory.CovTop.WtShape.wtN_z`. Unfold `_root_.GlobalTheory.CovTop.LiftWeightNumerator _root_.GlobalTheory.CovTop.LiftsCondition at *`. Use `Closed.imp hw ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨C, hC, x0, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨C, hC, x0, fun x hx hle ι p hp i hi hp' Hg _ _ φ hF => ?_⟩` and prove the remaining obligations. Establish `hW` using `ha x hx hle ι p hp i`. Establish `hj : InR (Fm.D x ι) ((i : ℕ) + 1)` using `⟨Nat.succ_pos _, hi.le⟩`. Establish `hq : (p.T.Q.Dw ((i : ℕ) + 1)).q = 0`. Establish `: (dat p i).q = (Fm.D x ι).R.m - ((i : ℕ) + 1)` using `by rw [hW.sig.2.1]; rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[dat, hi]`. Establish `hU` using `p.fw.laws.unf _ hj`. Establish `h : ActLev (Xo` using `p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c (p.O i).lev2 := (p.pins i).2.act.1`. Establish `hL : ActLev (Xo` using `p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c (fun g : Hg => (p.O i).lev2 (φ g)) := ⟨fun g => h.total (φ g), fun g => h.func (φ g), fun S _ _ y => by`. Use `h.one S y` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← map_one φ]`. Conclude with `this,`. Use `fun g g' S _ _ y y' y'' a b => by`. Use `h.mul (φ g) (φ g') S y y' y'' a b` as an intermediate fact. Rewrite `this` using `[← map_mul φ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this,`. Use `fun g => h.nat (φ g), fun g => h.bor (φ g)⟩`. Use `split_rules hq hL hF (GlobalTheory.DefHalf.CF p i) (fun b f hf => ?_) (fun g => _root_.GlobalTheory.DefHalf.groupActionOnCoefficients p i hp'.1 (φ g)) (fun g f => rfl) _` and prove the remaining obligations. Use `GlobalTheory.DefPt.ReadsPt.mem_cusp_of_sec hq hU hW.dom ?_` and prove the remaining obligations. Use `sec_mul _ _ _ _ _ _ (GlobalTheory.LevelCoverCompare.fnRule_mem b) (cusp_le_sec _ _ _ _ _ hf)` as an intermediate fact.
-
-Rewrite `this` using `[zero_add, zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_free_action_permuting_summands_thirdPlace : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.LiftsCondition fun Fm x _ ι p i _ _ => (i : ℕ) + 1 = (Fm.D x ι).R.m → ∀ (hp : _root_.GlobalTheory.CovTop.RowsTAlt p) (Hg : Type) [Group Hg] [Finite Hg] (φ : Hg →* p.P.Gp),
     GlobalTheory.DefPt.FreePt (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c (fun h => (p.O i).lev2 (φ h)) →
@@ -99,7 +97,7 @@ open scoped TensorProduct
 open Formalism.IndefR.FWT
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.DefSplit.exists_free_action_permuting_summands_thirdPlace | exact _root_.GlobalTheory.DefSplit.exists_free_action_permuting_summands_thirdPlace | (intros; apply _root_.GlobalTheory.DefSplit.exists_free_action_permuting_summands_thirdPlace <;> as …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_isInternal_free_permuted_thirdPlace : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.LiftsCondition fun Fm x _ ι p i _ _ => (i : ℕ) + 1 = (Fm.D x ι).R.m → ∀ (hp : _root_.GlobalTheory.CovTop.RowsTAlt p) (Hg : Type) [Group Hg] [Finite Hg] (φ : Hg →* p.P.Gp),
     GlobalTheory.DefPt.FreePt (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c (fun h => (p.O i).lev2 (φ h)) →

@@ -34,7 +34,7 @@ def pullGrIso (i : Fin N) : (Scheme.Modules.pullback π).obj (fl.gr i) ≅ (fl.p
   Limits.PreservesCokernel.iso (Scheme.Modules.pullback π) (fl.step i)
 
 /- English proof (translation)
-Establish `e` using `Limits.π_comp_cokernelComparison (fl.step i) (Scheme.Modules.pullback π)`. Rewrite `e` using `[← Limits.PreservesCokernel.iso_inv]`. Establish `e'` using `congrArg (· ≫ (Limits.PreservesCokernel.iso (Scheme.Modules.pullback π) (fl.step i)).hom) e`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id] at e'`. Conclude with `e'.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_π_pullGrIso (i : Fin N) :
     (Scheme.Modules.pullback π).map (fl.π i) ≫ (fl.pullGrIso π i).hom = (fl.pull π).π i := by
@@ -65,7 +65,7 @@ def pullStep (a : AdaptedChart (stepSeq fl i) i 1) : AdaptedChart (stepSeq (fl.p
       exact (congr(($(fl.map_π_pullGrIso π i)).app _ _)).symm }
 
 /- English proof (translation)
-Use `((fl.isVB i.succ)).isQuasicoherent` as an intermediate fact. Break down `j with j | j` into its components or cases. Conclude with `QCoh.pullback_map_app_pullbackSections π (fl.step i) _ _`. Both sides reduce to the same expression.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pullStep_frame (a : AdaptedChart (stepSeq fl i) i 1) (j : Fin i ⊕ Fin 1) :
     (pullStep fl π i a).frame j = pullbackSections π _ le_rfl (a.frame j) := by
@@ -77,9 +77,9 @@ theorem pullStep_frame (a : AdaptedChart (stepSeq fl i) i 1) (j : Fin i ⊕ Fin 
 variable {fl π i}
 
 /- English proof (translation)
-Establish `hz' : PtsOver.map π hπ _ z ∈ ptsIn p σ a.U` using `hz`. Use extensionality with `j l`. Express the relevant statement in the definitionally equal form `(((h.pull π hπ).met σ).restrict ((fl.pull π).isSubbundle i.succ) ((fl.pull π).isVB i.succ)).form _ _ z = ((h.met σ).restrict (fl.isSubbundle i.succ) (fl.isVB i.succ)).form _ _ _`. Use `(Met.form_restrict _ _ _ _ _ hz).trans (Eq.trans ?_ (Met.form_restrict _ _ _ _ _ hz').symm)` and prove the remaining obligations. Establish `e (j) : ((fl.pull π).ι i.succ).app (π ⁻¹ᵁ a.U) ((pullStep fl π i a).frame j) = pullbackSections π E le_rfl ((fl.ι i.succ).app a.U (a.frame j))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[pullStep_frame]`. Conclude with `QCoh.pullback_map_app_pullbackSections π _ _ _`. Rewrite using `[e j, e l]`. Conclude with `Met.form_pull _ π hπ _ _ _ hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_pullStep (h : VMetric p E r) (hπ : π ≫ p = q) (a : AdaptedChart (stepSeq fl i) i 1)
     {z : CxPts q σ} (hz : z ∈ ptsIn q σ (π ⁻¹ᵁ a.U)) :
@@ -99,7 +99,7 @@ theorem gram_pullStep (h : VMetric p E r) (hπ : π ≫ p = q) (a : AdaptedChart
   exact Met.form_pull _ π hπ _ _ _ hz
 
 /- English proof (translation)
-Rewrite using `[Met.bcDens_eq hS' h₁' h₃' a' c' H' hz ha', Met.bcDens_eq hS h₁ h₃ a c H hy ha, Met.bcForm, Met.bcForm, extTrace_congr hg, he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.Met.bcDens_eq_of_gram {S : ShortComplex X.Modules} {S' : ShortComplex Y.Modules}
     {r s : ℕ} {h : Met p σ S.X₂ (r + s)} {h' : Met q σ S'.X₂ (r + s)} (hS : S.ShortExact)
@@ -114,13 +114,11 @@ theorem _root_.GlobalTheory.Met.bcDens_eq_of_gram {S : ShortComplex X.Modules} {
     Met.bcForm, extTrace_congr hg, he]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Met.exists_adapted (stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i) (PtsOver.map π hπ _ z)`. Establish `ha' : z ∈ ptsIn q σ (π ⁻¹ᵁ a.U)` using `ha`. Establish `H₁ : (h.stepMet fl i).IsCInf` using `H.restrict _ _`. Establish `H₂ : ((h.pull π hπ).stepMet (fl.pull π) i).IsCInf` using `(H.pull π hπ).restrict _ _`. Establish `hm : Continuous (PtsOver.map π hπ (spMap σ))` using `PtsOver.continuous_map π hπ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsOpen (c'.e.source ∩ PtsOver.map π hπ (spMap σ) ⁻¹' (c.e.source ∩ ptsIn p σ a.U))` using `c'.e.open_source.inter ((c.e.open_source.inter (isOpen_ptsIn _)).preimage hm)`. Establish `hn` using `(isOpen_over c'.e hS).mem_nhds (mem_over c'.e hz (S := _) ⟨hz, hz', ha⟩)`. Use `Met.bcDens_eq_of_gram _ _ _ _ _ _ (H₁ σ) (H₂ σ) a (pullStep fl π i a) c c' hz' hz ha ha' (he z hz hz') ?_` and prove the remaining obligations. Use `filter_upwards [hn] with v hv`. Take `⟨h₁, h₂, h₃⟩` from `hv.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₁ : c.e.symm v = PtsOver.map π hπ _ (c'.e.symm v)`. Use `he _ h₁ h₂` as an intermediate fact. Rewrite `this` using `[c'.e.right_inv hv.1]`. Conclude with `(congrArg c.e.symm this).trans (c.e.left_inv h₂)`. Rewrite using `[e₁]`.
-
-Conclude with `gram_pullStep h hπ a h₃`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcDens_pullStep {h : VMetric p E r} (H : h.IsCInf) (hπ : π ≫ p = q) (c : AlgChart p σ 1)
     (c' : AlgChart q σ 1) {z : CxPts q σ} (hz : z ∈ c'.e.source)

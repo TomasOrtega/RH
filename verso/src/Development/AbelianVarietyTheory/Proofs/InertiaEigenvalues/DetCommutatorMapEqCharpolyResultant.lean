@@ -4,11 +4,11 @@ open GlobalTheory.UnitLemma GlobalTheory.StableLatCount Polynomial
 
 namespace GlobalTheory.DetAdResultant
 /- English proof (translation)
-Rewrite using `[resultant_comm, resultant_eq_prod_eval g A.charpoly _ le_rfl hs, hg.leadingCoeff, one_pow, one_mul]`. Set `φ : K[X] →* K` to `Matrix.detMonoidHom.comp (aeval A).toMonoidHom`. Establish `hφ : ∀ p, φ p = (aeval A p).det` using `fun p => rfl`. Establish `h1 : ∀ x : K, φ (X - C x) = (-1) ^ Fintype.card ι * eval x A.charpoly`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφ]`. Simplify using `only [map_sub, aeval_X, aeval_C, Matrix.eval_charpoly]`. Rewrite using `[← Matrix.det_neg, neg_sub]`. Both sides reduce to the same expression. Rewrite using `[← hφ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hs.eq_prod_roots_of_monic hg]`. Rewrite using `[map_multiset_prod, Multiset.map_map]`. Simplify using `only [Function.comp_def, h1]`. Rewrite using `[Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate, ← pow_mul, Matrix.charpoly_natDegree_eq_dim, ← hs.natDegree_eq_card_roots]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_aeval_eq_resultant_of_splits {K : Type} [Field K] {ι : Type} [Fintype ι] [DecidableEq ι]
     (A : Matrix ι ι K) (g : K[X]) (hg : g.Monic) (hs : g.Splits) :
@@ -30,9 +30,9 @@ theorem det_aeval_eq_resultant_of_splits {K : Type} [Field K] {ι : Type} [Finty
     Matrix.charpoly_natDegree_eq_dim, ← hs.natDegree_eq_card_roots]
 
 /- English proof (translation)
-Set `K` to `AlgebraicClosure E`. Apply `(algebraMap E K).injective` to reduce the goal to its premises. Establish `h` using `det_aeval_eq_resultant_of_splits (A.map (algebraMap E K)) (g.map (algebraMap E K)) (hg.map _) (IsAlgClosed.splits _)`. Rewrite `h` using `[Matrix.charpoly_map, natDegree_map, natDegree_map, resultant_map_map]`. Rewrite using `[← h, RingHom.map_det]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e : (algebraMap E K).mapMatrix (aeval A g) = (Algebra.ofId E K).mapMatrix (aeval A g)` using `rfl`. Rewrite using `[e, ← aeval_algHom_apply, aeval_map_algebraMap]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_aeval_eq_resultant {E : Type} [Field E] {ι : Type} [Fintype ι] [DecidableEq ι]
     (A : Matrix ι ι E) (g : E[X]) (hg : g.Monic) :
@@ -48,7 +48,7 @@ theorem det_aeval_eq_resultant {E : Type} [Field E] {ι : Type} [Fintype ι] [De
   rw [e, ← aeval_algHom_apply, aeval_map_algebraMap]
   rfl
 /- English proof (translation)
-Rewrite using `[← Matrix.det_det, ← Matrix.charpoly, Matrix.charpoly_transpose]`. Conclude with `det_aeval_eq_resultant A B.charpoly (Matrix.charpoly_monic B)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_det_charmatrix {E : Type} [Field E] {ι₁ ι₂ : Type} [Fintype ι₁] [DecidableEq ι₁]
     [Fintype ι₂] [DecidableEq ι₂] (A : Matrix ι₁ ι₁ E) (B : Matrix ι₂ ι₂ E) :
@@ -58,13 +58,13 @@ theorem det_det_charmatrix {E : Type} [Field E] {ι₁ ι₂ : Type} [Fintype ι
   exact det_aeval_eq_resultant A B.charpoly (Matrix.charpoly_monic B)
 
 /- English proof (translation)
-Use extensionality with `⟨a, j⟩ ⟨b, k⟩`. Rewrite using `[LinearMap.toMatrix_apply, Module.Basis.linearMap_repr_apply]`. Establish `hr : ∀ M : Matrix ι₁ ι₂ E, (Matrix.stdBasis E ι₁ ι₂).repr M (a, j) = M a j` using `fun M => rfl`. Establish `hψ : LinearMap.toMatrix b₂ b₁ (b₂.linearMap b₁ (b, k)) = Matrix.single b k 1`. Simplify using `[Module.Basis.linearMap, Matrix.stdBasis_eq_single]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hr, LinearMap.sub_apply, LinearMap.llcomp_apply', LinearMap.lcomp_apply', map_sub, LinearMap.toMatrix_comp b₂ b₁ b₁, LinearMap.toMatrix_comp b₂ b₂ b₁, hψ]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.prodComm_symm, Equiv.prodComm_apply, Prod.swap_prod_mk, Matrix.comp_apply, Matrix.map_apply, Matrix.charmatrix_apply, Matrix.transpose_apply]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Simplify using `[Matrix.sub_apply, Matrix.mul_apply, Matrix.single_apply, Matrix.algebraMap_matrix_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hab, Ne.symm hab]`. Simplify using `[Matrix.sub_apply, Matrix.mul_apply, Matrix.single_apply, Matrix.algebraMap_matrix_apply, hjk, Matrix.diagonal_apply_ne _ hjk]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[Ne.symm hjk]`. Simplify using `[hab, Ne.symm hab, Ne.symm hjk]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem toMatrix_ad {E : Type} [Field E] {V₁ V₂ : Type} [AddCommGroup V₁] [Module E V₁]
     [AddCommGroup V₂] [Module E V₂] {ι₁ ι₂ : Type} [Fintype ι₁] [DecidableEq ι₁]
@@ -96,7 +96,7 @@ theorem toMatrix_ad {E : Type} [Field E] {V₁ V₂ : Type} [AddCommGroup V₁] 
     · simp [hab, Ne.symm hab, Ne.symm hjk]
 
 /- English proof (translation)
-Introduce `E _ V₁ V₂ _ _ _ _ _ _ f₁ f₂`. Set `b₁` to `Module.finBasis E V₁`. Set `b₂` to `Module.finBasis E V₂`. Rewrite using `[← LinearMap.det_toMatrix (b₂.linearMap b₁), toMatrix_ad b₁ b₂, Matrix.det_reindex_self, det_det_charmatrix, LinearMap.charpoly_toMatrix, LinearMap.charpoly_toMatrix]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_ad_eq_resultant : ∀ (E : Type) [Field E] (V₁ V₂ : Type) [AddCommGroup V₁] [Module E V₁]
     [FiniteDimensional E V₁] [AddCommGroup V₂] [Module E V₂] [FiniteDimensional E V₂]

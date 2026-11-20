@@ -22,9 +22,7 @@ def contGood : Submodule ℂ (GA E a → ℂ) where
   smul_mem' := fun z _ h => ⟨h.1.const_smul z, (GlobalTheory.MSpanDecay.goodSub E a).smul_mem z h.2⟩
 
 /- English proof (translation)
-Use `sInf_le ⟨fun φ hφ => ?_, fun F hF h => ?_, fun F hF X _ ν hν k γ hk => ?_⟩` and prove the remaining obligations. Conclude with `⟨(GlobalTheory.RSnm.mem_goodFns ha hπ (Submodule.mem_sup_left ⟨φ, hφ, rfl⟩)).1, GlobalTheory.MSpanDecay.good_of_mem hπ hφ⟩`. Conclude with `⟨hF.1.comp (continuous_id.mul continuous_const), GlobalTheory.RtGood.good_mul_right E a F h hF.2⟩`. Use `haveI := hν`. Use `⟨?_, GlobalTheory.MSpanDecay.Good.kernel hF.2 hk⟩` and prove the remaining obligations.
-
-Conclude with `(GlobalTheory.JSW.kerOp_integrable_continuous E a X ν k γ hk ⟨F, hF.2.1⟩ hF.1 (GlobalTheory.RSnm.bounded_of_decays ha hF.2.decays)).2`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mspanR_le_contGood (ha : 0 < a) {π : CuspSub E a} (hπ : π.IsUnitary) :
     GlobalTheory.JSW.mspanR π ≤ contGood E a := by
@@ -37,7 +35,7 @@ theorem mspanR_le_contGood (ha : 0 < a) {π : CuspSub E a} (hπ : π.IsUnitary) 
       (GlobalTheory.RSnm.bounded_of_decays ha hF.2.decays)).2
 
 /- English proof (translation)
-Introduce `F hF` and use `⟨(mspanR_le_contGood ha hπ hF).1, (mspanR_le_contGood ha hπ hF).2.decays, (GlobalTheory.MSpanDecay.mspanR_le_goodSub hπ.contra (GlobalTheory.JSW.invT_mem_mspanR_contra E a π F hF)).decays⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mspanR_le_goodFns (ha : 0 < a) {π : CuspSub E a} (hπ : π.IsUnitary) :
     GlobalTheory.JSW.mspanR π ≤ GlobalTheory.RSnm.goodFns a := fun F hF =>
@@ -47,13 +45,13 @@ theorem mspanR_le_goodFns (ha : 0 < a) {π : CuspSub E a} (hπ : π.IsUnitary) :
 open GroundTheory.Automorphic in
 
 /- English proof (translation)
-Take `⟨C₁, hC₁⟩` from `GlobalTheory.RSnm.bounded_of_decays (hm0.trans hmn) g1.2.1`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.RSnm.bounded_of_decays hm0 g2.2.1`. Use `set A : GA E m → ℂ := fun h => FourierWhittaker.partialCoeff (GlobalTheory.RSnm.colSmooth m F φ) (m + 1) (FourierWhittaker.blockGL hmn.le h) * (starRingEnd ℂ) (φ' h)`. Establish `hAc : Continuous A` using `((FourierWhittaker.continuous_partialCoeff (GlobalTheory.RSnm.continuous_colSmooth hF g1.1 hC₁) (m + 1)).comp (GlobalTheory.RSnm.continuous_blockGL hmn.le)).mul (Complex.continuous_conj.comp g2.1)`. Establish `hbd : ∀ N : ℕ, ∃ C : ℝ, ∀ h, ‖A h‖ ≤ C * (min (GlobalTheory.RSnm.detAbs h) (GlobalTheory.RSnm.detAbs h)⁻¹) ^ N`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N`. Take `⟨C, hC⟩` from `GlobalTheory.RSnm.colSmooth_bound hmn g1 hF N`. Use `⟨C * C₂, fun h => ?_⟩` and prove the remaining obligations. Establish `hP` using `GlobalTheory.RSnm.partialCoeff_bound hmn (b := fun t => C * (min t t⁻¹) ^ N) hC (n - (m + 1)) (m + 1) (by omega) le_rfl _ (GlobalTheory.RSnm.inS_blockGL hmn h)`. Simplify using `only [GlobalTheory.RSnm.detAbs_blockGL] at hP`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, Complex.norm_conj]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hI, hD⟩` from `GlobalTheory.T.mellinType_integral_entire_of_rapid_decay (μ.restrict 𝓕) A GlobalTheory.RSnm.detAbs hAc.aestronglyMeasurable GlobalTheory.RSnm.continuous_detAbs.measurable GlobalTheory.RSnm.detAbs_pos (GlobalTheory.T.integrableOn_min_absDet_inv_fundamentalDomain E m hm0 μ 𝓕 h𝓕) hb …`. Establish `e : ∀ s, GlobalTheory.RSnm.rsIntegrand m hmn.le F φ φ' s = fun h => A h * ((GlobalTheory.RSnm.detAbs h : ℝ) : ℂ) ^ (s - ((n : ℂ) - m) / 2)` using `fun s => rfl`. Use `⟨fun s => by rw [e]; exact hI _, fun s => ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Conclude with `(hD.analyticAt _).comp (analyticAt_id.sub analyticAt_const)`.
+A detailed English derivation is pending.
 -/
 theorem rsIntegral_entire_good {m n : ℕ} (hm0 : 0 < m) (hmn : m < n) {φ : GA E n → ℂ} (g1 : φ ∈ GlobalTheory.RSnm.goodFns n)
     {φ' : GA E m → ℂ} (g2 : φ' ∈ GlobalTheory.RSnm.goodFns m) {F : (Fin m → Ad E) → ℂ}

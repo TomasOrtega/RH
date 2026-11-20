@@ -15,9 +15,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `hUeq : (⨆ f : s, X.basicOpen (f : Γ(X, U))) = U`. Use `le_antisymm (iSup_le fun f => Scheme.basicOpen_le (X := X) (f : Γ(X, U))) (SetLike.le_def.mpr ?_)` and prove the remaining obligations. Introduce `x hx`. Take `⟨t, hts, hxt⟩` from `hcov x hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨t, hts⟩, hxt⟩`.
-
-Conclude with `(IsAffineOpen.iSup_basicOpen_eq_self_iff hU).mp hUeq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem span_eq_top_of_forall_mem_basicOpen {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) (s : Set Γ(X, U))
@@ -32,9 +30,9 @@ private theorem span_eq_top_of_forall_mem_basicOpen {X : Scheme.{u}} {U : X.Open
   exact (IsAffineOpen.iSup_basicOpen_eq_self_iff hU).mp hUeq
 
 /- English proof (translation)
-Set `_ : Algebra R S` to `g.toAlgebra`. Establish `: IsLocalization M S` using `hlocal`. Establish `hf' : algebraMap R S f ∈ Ideal.map (algebraMap R S) b` using `hf`. Take `⟨⟨y, m⟩, he⟩` from `(IsLocalization.mem_map_algebraMap_iff (M := M) (S := S)).mp hf'`. Rewrite `he` using `[← map_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists (M := M) (S := S)).mp he`. Use `⟨(c : R) * (m : R), M.mul_mem c.2 m.2, ?_⟩` and prove the remaining obligations. Establish `h3 : (c : R) * (m : R) * f = (c : R) * (y : R)` using `by rw [← hc]; ring`. Rewrite using `[h3]`. Conclude with `b.mul_mem_left _ y.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_mul_mem_of_map_mem_map {R S : Type*} [CommRing R] [CommRing S]
     (g : R →+* S) (M : Submonoid R) (hlocal : @IsLocalization R _ M S _ g.toAlgebra)
@@ -52,7 +50,7 @@ private theorem exists_mul_mem_of_map_mem_map {R S : Type*} [CommRing R] [CommRi
   exact b.mul_mem_left _ y.2
 
 /- English proof (translation)
-Set `_ : Algebra R S` to `g.toAlgebra`. Establish `: IsLocalization M S` using `hlocal`. Establish `h1 : IsUnit (algebraMap R S t)` using `IsLocalization.map_units S (⟨t, ht⟩ : M)`. Conclude with `h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isUnit_map_of_mem_of_isLocalization {R S : Type*} [CommRing R] [CommRing S]
     (g : R →+* S) (M : Submonoid R) (hlocal : @IsLocalization R _ M S _ g.toAlgebra)
@@ -63,11 +61,11 @@ private theorem isUnit_map_of_mem_of_isLocalization {R S : Type*} [CommRing R] [
   exact h1
 
 /- English proof (translation)
-Establish `hC : ∀ g ∈ Ideal.span {t : R | t * f ∈ b}, g * f ∈ b`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy ihx ihy => simpa [add_mul] using b.add_mem ihx ihy`. Consider the case `smul a x hx ih => simpa [smul_eq_mul, mul_assoc] using b.mul_mem_left a ih`. Establish `h1 : (1 : R) ∈ Ideal.span {t : R | t * f ∈ b}`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hC 1 h1`.
+A detailed English derivation is pending.
 -/
 private theorem mem_of_span_mul_mem_eq_top {R : Type*} [CommRing R] (b : Ideal R)
     (f : R) (h : Ideal.span {t : R | t * f ∈ b} = ⊤) : f ∈ b := by
@@ -83,15 +81,15 @@ private theorem mem_of_span_mul_mem_eq_top {R : Type*} [CommRing R] (b : Ideal R
   simpa using hC 1 h1
 
 /- English proof (translation)
-Use `⟨fun h x => stalkIdeal_mono h x, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.le_def]`. Introduce `U f hf`. Establish `hU : IsAffineOpen U.1` using `U.2`. Establish `hlocal : ∀ (x : X) (hx : x ∈ U.1), @IsLocalization ↥Γ(X, U.1) _ (IsAffineOpen.primeIdealOf hU ⟨x, hx⟩).asIdeal.primeCompl ↥(X.presheaf.stalk x) _ ((X.presheaf.germ U.1 x hx).hom.toAlgebra)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Conclude with `IsAffineOpen.isLocalization_stalk hU ⟨x, hx⟩`. Establish `hbasic : ∀ (x : X) (hx : x ∈ U.1) (t : Γ(X, U.1)), IsUnit ((X.presheaf.germ U.1 x hx).hom t) → x ∈ X.basicOpen t`. Introduce `x hx t ht`. Conclude with `(Scheme.mem_basicOpen X t x hx).mpr ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (x : X) (hx : x ∈ U.1), ∃ t : Γ(X, U.1), t * f ∈ J.ideal U ∧ x ∈ X.basicOpen t`. Introduce `x hx`. Establish `hmemI : (X.presheaf.germ U.1 x hx).hom f ∈ stalkIdeal I x`. Rewrite using `[stalkIdeal_eq_map_germ I x U hx]`. Conclude with `Ideal.mem_map_of_mem _ hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hmem : (X.presheaf.germ U.1 x hx).hom f ∈ Ideal.map (X.presheaf.germ U.1 x hx).hom (J.ideal U)`. Establish `hh` using `h x hmemI`. Rewrite `hh` using `[stalkIdeal_eq_map_germ J x U hx]`. Then use the resulting hypothesis. Take `⟨t, htM, htf⟩` from `exists_mul_mem_of_map_mem_map (X.presheaf.germ U.1 x hx).hom (IsAffineOpen.primeIdealOf hU ⟨x, hx⟩).asIdeal.primeCompl (hlocal x hx) (J.ideal U) f hmem`. Conclude with `⟨t, htf, hbasic x hx t (isUnit_map_of_mem_of_isLocalization (X.presheaf.germ U.1 x hx).hom _ (hlocal x hx) t htM)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hspan : Ideal.span {t : Γ(X, U.1) | t * f ∈ J.ideal U} = ⊤`. Use `span_eq_top_of_forall_mem_basicOpen hU {t : Γ(X, U.1) | t * f ∈ J.ideal U} (fun x hx => ?_)` and prove the remaining obligations. Take `⟨t, htf, hxt⟩` from `key x hx`. Conclude with `⟨t, htf, hxt⟩`. Conclude with `mem_of_span_mul_mem_eq_top (J.ideal U) f hspan`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem le_iff_forall_stalkIdeal_le {X : Scheme.{u}} (I J : X.IdealSheafData) :
     I ≤ J ↔ ∀ x : X, stalkIdeal I x ≤ stalkIdeal J x := by
@@ -131,11 +129,11 @@ theorem le_iff_forall_stalkIdeal_le {X : Scheme.{u}} (I J : X.IdealSheafData) :
   exact mem_of_span_mul_mem_eq_top (J.ideal U) f hspan
 
 /- English proof (translation)
-Introduce `hxZ`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : x ∈ Set.range (⇑U.ι) := by`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hx`. Establish `h' : Z.comap U.ι = ⊤` using `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Scheme.IdealSheafData.support_comap Z U.ι`. Establish `h3 : (⇑U.ι) y ∈ Z.support`. Rewrite using `[hy]`. Conclude with `hxZ`. Establish `h4 : y ∈ (Z.comap U.ι).support`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `h3`. Rewrite `h4` using `[h', Scheme.IdealSheafData.support_top]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem notMem_support_of_mem_opens_of_restrictIdeal_eq_top {X : Scheme.{u}} (Z : X.IdealSheafData)
     (U : X.Opens) (h : restrictIdeal Z U = ⊤) (x : X) (hx : x ∈ U) : x ∉ Z.support := by
@@ -166,7 +164,7 @@ theorem orderAtGenericPoint_eq_orderAt {X : Scheme.{u}} (I : X.IdealSheafData) {
     orderAtGenericPoint I hC = orderAt I hC.genericPoint := rfl
 
 /- English proof (translation)
-Establish `hsupp : IsClosed ((D.support : Set X))` using `D.support.2`. Establish `hsub : closure C ⊆ (D.support : Set X)` using `closure_minimal hCsub hsupp`. Establish `heq : closure C = C` using `hCmax (closure C) hC.closure subset_closure hsub`. Rewrite using `[← heq]`. Conclude with `isClosed_closure`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_of_maximal_irreducible_subset_support {X : Scheme.{u}} (D : X.IdealSheafData)
     {C : Set X} (hC : IsIrreducible C) (hCsub : C ⊆ (D.support : Set X))
@@ -181,7 +179,7 @@ theorem isClosed_of_maximal_irreducible_subset_support {X : Scheme.{u}} (D : X.I
 variable {X : Scheme.{u}} {k : Type u} [Field k] (p : X ⟶ Spec (CommRingCat.of k))
 
 /- English proof (translation)
-Establish `h1 : stalkIdeal D y = Ideal.map (X.presheaf.germ V y hy).hom (D.ideal ⟨V, hV⟩)` using `stalkIdeal_eq_map_germ D y ⟨V, hV⟩ hy`. Establish `h2 : D.ideal ⟨V, hV⟩ = Ideal.span (c.coord '' (({j} : Finset (Fin n)) : Set (Fin n)))` using `EtaleChart.ideal_eq_span_coord c hV D {j} hD`. Rewrite using `[h1, h2, Ideal.map_span]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stalkIdeal_eq_span_germ_coord {V : X.Opens} (hV : IsAffineOpen V) {n : ℕ}
     (c : EtaleChart p V n) (j : Fin n) (D : X.IdealSheafData)
@@ -196,9 +194,9 @@ theorem stalkIdeal_eq_span_germ_coord {V : X.Opens} (hV : IsAffineOpen V) {n : �
   simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Set `_ : Algebra (Γ(X, V)) (X.presheaf.stalk y)` to `(X.presheaf.germ V y hy).hom.toAlgebra`. Establish `: IsLocalization.AtPrime (X.presheaf.stalk y) (hV.primeIdealOf ⟨y, hy⟩).asIdeal` using `hV.isLocalization_stalk ⟨y, hy⟩`. Establish `hunit : IsUnit ((X.presheaf.germ V y hy).hom (c.coord j))` using `IsLocalization.map_units (S := X.presheaf.stalk y) (M := (hV.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl) ⟨c.coord j, hcon⟩`. Use `(mem_support_iff_stalkIdeal_ne_top D y).mp hys ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[stalkIdeal_eq_span_germ_coord p hV c j D hD y hy]`. Conclude with `Ideal.span_singleton_eq_top.mpr hunit`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_mem_primeIdealOf_of_mem_support {V : X.Opens} (hV : IsAffineOpen V) {n : ℕ}
     (c : EtaleChart p V n) (j : Fin n) (D : X.IdealSheafData)
@@ -217,9 +215,9 @@ theorem coord_mem_primeIdealOf_of_mem_support {V : X.Opens} (hV : IsAffineOpen V
   exact Ideal.span_singleton_eq_top.mpr hunit
 
 /- English proof (translation)
-Set `_ : Algebra (Γ(Y, W)) (Y.presheaf.stalk y)` to `(Y.presheaf.germ W y hy).hom.toAlgebra`. Establish `: IsLocalization.AtPrime (Y.presheaf.stalk y) (hW.primeIdealOf ⟨y, hy⟩).asIdeal` using `hW.isLocalization_stalk ⟨y, hy⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hu hmem`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff (↥(Y.presheaf.stalk y)) (hW.primeIdealOf ⟨y, hy⟩).asIdeal f).mp hu hmem`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hmem`. Conclude with `IsLocalization.map_units (S := Y.presheaf.stalk y) (M := (hW.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl) ⟨f, hmem⟩`.
+A detailed English derivation is pending.
 -/
 private theorem isUnit_germ_iff_notMem_primeIdealOf {Y : Scheme.{u}} {W : Y.Opens}
     (hW : IsAffineOpen W) (y : Y) (hy : y ∈ W) (f : Γ(Y, W)) :
@@ -236,7 +234,7 @@ private theorem isUnit_germ_iff_notMem_primeIdealOf {Y : Scheme.{u}} {W : Y.Open
       (M := (hW.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl) ⟨f, hmem⟩
 
 /- English proof (translation)
-Introduce `f hf`. Assume the negation of the conclusion as `hcon`. Establish `hb' : b ∈ Y.basicOpen f` using `(Scheme.mem_basicOpen Y f b hb).mpr ((isUnit_germ_iff_notMem_primeIdealOf hW b hb f).mpr hcon)`. Establish `ha' : a ∈ Y.basicOpen f` using `h.mem_open (Y.basicOpen f).isOpen hb'`. Conclude with `((isUnit_germ_iff_notMem_primeIdealOf hW a ha f).mp ((Scheme.mem_basicOpen Y f a ha).mp ha')) hf`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem primeIdealOf_le_of_specializes {Y : Scheme.{u}} {W : Y.Opens}
     (hW : IsAffineOpen W) (a b : Y) (ha : a ∈ W) (hb : b ∈ W) (h : a ⤳ b) :
@@ -250,11 +248,9 @@ private theorem primeIdealOf_le_of_specializes {Y : Scheme.{u}} {W : Y.Opens}
     ((Scheme.mem_basicOpen Y f a ha).mp ha')) hf
 
 /- English proof (translation)
-Set `instPoly : Algebra (MvPolynomial (ULift.{u} (Fin n)) K) (Γ(Y, W))` to `c.algebra`. Establish `instEt : Algebra.Etale (MvPolynomial (ULift.{u} (Fin n)) K) (Γ(Y, W))` using `c.algebra_etale hW`. Set `instAlg : Algebra (Γ(Y, W)) (Y.presheaf.stalk y)` to `(Y.presheaf.germ W y hy).hom.toAlgebra`. Establish `instPrime : ((hW.primeIdealOf ⟨y, hy⟩).asIdeal).IsPrime` using `(hW.primeIdealOf ⟨y, hy⟩).isPrime`. Establish `instLoc : IsLocalization.AtPrime (Y.presheaf.stalk y) (hW.primeIdealOf ⟨y, hy⟩).asIdeal` using `hW.isLocalization_stalk ⟨y, hy⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcoordeq : etaleChartCoord K n (Γ(Y, W)) j = c.coord j`. Rewrite using `[etaleChartCoord_def]`. Conclude with `EtaleChart.coordRingHom_X c j`. Establish `h` using `isPrime_span_singleton_algebraMap_etaleChartCoord K n (Γ(Y, W)) ((hW.primeIdealOf ⟨y, hy⟩).asIdeal) (Y.presheaf.stalk y) j (by rw [hcoordeq]; exact hcoord)`. Rewrite `h` using `[hcoordeq]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPrime_span_germ_coord {Y : Scheme.{u}} {K : Type u} [Field K]
     {pr : Y ⟶ Spec (CommRingCat.of K)} {W : Y.Opens} (hW : IsAffineOpen W) {n : ℕ}
@@ -281,13 +277,13 @@ private theorem isPrime_span_germ_coord {Y : Scheme.{u}} {K : Type u} [Field K]
   exact h
 
 /- English proof (translation)
-Establish `hcoordq : c.coord j ∈ (hV.primeIdealOf ⟨η, hη⟩).asIdeal` using `coord_mem_primeIdealOf_of_mem_support p hV c j D hD η hη hηs`. Establish `hqle : (hV.primeIdealOf ⟨η, hη⟩).asIdeal ≤ (hV.primeIdealOf ⟨x, hx⟩).asIdeal` using `primeIdealOf_le_of_specializes hV η x hη hx hspec`. Establish `hsp : (Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x))).IsPrime` using `isPrime_span_germ_coord hV c j x hx (hqle hcoordq)`. Establish `hPprime : (Ideal.comap (X.presheaf.germ V x hx).hom (Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x)))).IsPrime` using `inferInstance`. Establish `htP : c.coord j ∈ Ideal.comap (X.presheaf.germ V x hx).hom (Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hmapspan : Ideal.map (X.presheaf.germ V x hx).hom (Ideal.span ({c.coord j} : Set Γ(X, V))) = Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x))`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Establish `hloc : @IsLocalization ↥Γ(X, V) _ (hV.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl ↥(X.presheaf.stalk x) _ ((X.presheaf.germ V x hx).hom.toAlgebra)` using `hV.isLocalization_stalk ⟨x, hx⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPle : Ideal.comap (X.presheaf.germ V x hx).hom (Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x))) ≤ (hV.primeIdealOf ⟨η, hη⟩).asIdeal`. Introduce `a ha`. Rewrite `ha` using `[Ideal.mem_comap, ← hmapspan]`. Take `⟨s, hs, hsa⟩` from `exists_mul_mem_of_map_mem_map (X.presheaf.germ V x hx).hom (hV.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl hloc (Ideal.span ({c.coord j} : Set Γ(X, V))) a ha`. Establish `hs' : s ∉ (hV.primeIdealOf ⟨x, hx⟩).asIdeal` using `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : s ∉ (hV.primeIdealOf ⟨η, hη⟩).asIdeal` using `fun hcon => hs' (hqle hcon)`. Establish `hle : Ideal.span ({c.coord j} : Set Γ(X, V)) ≤ (hV.primeIdealOf ⟨η, hη⟩).asIdeal` using `(Ideal.span_singleton_le_iff_mem _).mpr hcoordq`. Conclude with `((hV.primeIdealOf ⟨η, hη⟩).isPrime.mem_or_mem (hle hsa)).resolve_left hsq`. Conclude with `(hmin _ hPprime htP hPle).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem primeIdealOf_eq_comap_span_germ_coord {V : X.Opens} (hV : IsAffineOpen V) {n : ℕ}
     (c : EtaleChart p V n) (j : Fin n) (D : X.IdealSheafData)
@@ -339,13 +335,11 @@ theorem primeIdealOf_eq_comap_span_germ_coord {V : X.Opens} (hV : IsAffineOpen V
   exact (hmin _ hPprime htP hPle).symm
 
 /- English proof (translation)
-Set `_ : Algebra (Γ(X, V)) (X.presheaf.stalk η)` to `(X.presheaf.germ V η hη).hom.toAlgebra`. Establish `: IsLocalization.AtPrime (X.presheaf.stalk η) (hV.primeIdealOf ⟨η, hη⟩).asIdeal` using `hV.isLocalization_stalk ⟨η, hη⟩`. Establish `halg : (algebraMap (Γ(X, V)) (X.presheaf.stalk η)) = (X.presheaf.germ V η hη).hom` using `rfl`. Establish `hsp : stalkIdeal D η = Ideal.span ({(X.presheaf.germ V η hη).hom (c.coord j)} : Set (X.presheaf.stalk η))` using `stalkIdeal_eq_span_germ_coord p hV c j D hD η hη`. Establish `hpeq : (hV.primeIdealOf ⟨η, hη⟩).asIdeal = Ideal.comap (X.presheaf.germ V η hη).hom (Ideal.span ({(X.presheaf.germ V η hη).hom (c.coord j)} : Set (X.presheaf.stalk η)))` using `primeIdealOf_eq_comap_span_germ_coord p hV c j D hD η η hη hη specializes_rfl hηs hmin`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : stalkIdeal D η ≠ ⊤` using `(mem_support_iff_stalkIdeal_ne_top D η).mp hηs`. Establish `hsub : Ideal.comap (X.presheaf.germ V η hη).hom (IsLocalRing.maximalIdeal (X.presheaf.stalk η)) ≤ (hV.primeIdealOf ⟨η, hη⟩).asIdeal`. Introduce `a ha`. Assume the negation of the conclusion as `hcon`. Establish `hunit : IsUnit ((X.presheaf.germ V η hη).hom a)` using `IsLocalization.map_units (S := X.presheaf.stalk η) (M := (hV.primeIdealOf ⟨η, hη⟩).asIdeal.primeCompl) ⟨a, hcon⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `ha` using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `ha hunit`. Establish `h1 : Ideal.map (algebraMap (Γ(X, V)) (X.presheaf.stalk η)) (Ideal.comap (algebraMap (Γ(X, V)) (X.presheaf.stalk η)) (IsLocalRing.maximalIdeal (X.presheaf.stalk η))) = IsLocalRing.maximalIdeal (X.presheaf.stalk η)` using `IsLocalization.map_under (M := (hV.primeIdealOf ⟨η, hη⟩).asIdeal.primeCompl) (S := X.presheaf.stalk η) _`. Use `le_antisymm (IsLocalRing.le_maximalIdeal hne) ?_` and prove the remaining obligations. Rewrite using `[hsp, ← h1, Ideal.map_le_iff_le_comap, halg]`.
-
-Conclude with `le_trans hsub (le_of_eq hpeq)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkIdeal_eq_maximalIdeal_of_minimal {V : X.Opens} (hV : IsAffineOpen V) {n : ℕ}
     (c : EtaleChart p V n) (j : Fin n) (D : X.IdealSheafData)
@@ -389,15 +383,15 @@ theorem stalkIdeal_eq_maximalIdeal_of_minimal {V : X.Opens} (hV : IsAffineOpen V
   exact le_trans hsub (le_of_eq hpeq)
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero`. Introduce `s f _ _`. Rewrite using `[pow_zero, Ideal.span_singleton_one]`. Conclude with `Submodule.mem_top`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ b ih`. Introduce `s f hs hsf`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton.mp hsf`. Establish `hsf1 : s * f ∈ Ideal.span ({τ} : Set A)`. Use `Ideal.mem_span_singleton.mpr ⟨τ ^ b * d, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Expand and normalize the polynomial expressions, which then agree. Establish `hf1 : f ∈ Ideal.span ({τ} : Set A)` using `(hprime.mem_or_mem hsf1).resolve_left hs`. Take `⟨f', rfl⟩` from `Ideal.mem_span_singleton.mp hf1`. Establish `hcancel : (s * f' - τ ^ b * d) * τ = 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (s * f' - τ ^ b * d) * τ = s * (τ * f') - τ ^ (b + 1) * d` using `by ring`. Rewrite using `[h2, hd, sub_self]`. Establish `hsf' : s * f' = τ ^ b * d` using `eq_of_sub_eq_zero ((mem_nonZeroDivisors_iff.mp hnzd).2 _ hcancel)`. Establish `hf' : f' ∈ Ideal.span ({τ ^ b} : Set A)` using `ih s f' hs (Ideal.mem_span_singleton.mpr ⟨d, hsf'⟩)`. Take `⟨e, he⟩` from `Ideal.mem_span_singleton.mp hf'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mem_span_singleton.mpr ⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem mem_span_pow_of_mul_mem_span_pow {A : Type*} [CommRing A] (τ : A)
     (hprime : (Ideal.span ({τ} : Set A)).IsPrime) (hnzd : τ ∈ nonZeroDivisors A) (a : ℕ) :
@@ -430,33 +424,29 @@ private theorem mem_span_pow_of_mul_mem_span_pow {A : Type*} [CommRing A] (τ : 
       ring
 
 /- English proof (translation)
-Set `_ : Algebra (Γ(X, V)) (X.presheaf.stalk x)` to `(X.presheaf.germ V x hx).hom.toAlgebra`. Establish `: IsLocalization.AtPrime (X.presheaf.stalk x) (hV.primeIdealOf ⟨x, hx⟩).asIdeal` using `hV.isLocalization_stalk ⟨x, hx⟩`. Set `_ : Algebra (Γ(X, V)) (X.presheaf.stalk η)` to `(X.presheaf.germ V η hη).hom.toAlgebra`. Establish `: IsLocalization.AtPrime (X.presheaf.stalk η) (hV.primeIdealOf ⟨η, hη⟩).asIdeal` using `hV.isLocalization_stalk ⟨η, hη⟩`. Establish `halgη : (algebraMap (Γ(X, V)) (X.presheaf.stalk η)) = (X.presheaf.germ V η hη).hom` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqcomap : (hV.primeIdealOf ⟨η, hη⟩).asIdeal = Ideal.comap (X.presheaf.germ V x hx).hom (Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x)))` using `primeIdealOf_eq_comap_span_germ_coord p hV c j D hD x η hx hη hspec hηs hmin`. Establish `hqle : ∀ z : Γ(X, V), (X.presheaf.germ V x hx).hom z ∈ Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x)) → z ∈ (hV.primeIdealOf ⟨η, hη⟩).asIdeal`. Introduce `z hz`. Rewrite using `[hqcomap]`. Conclude with `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnetop : (Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x))) ≠ ⊤`. Introduce `hcon`. Establish `h1 : (hV.primeIdealOf ⟨η, hη⟩).asIdeal = ⊤`. Rewrite using `[hqcomap, hcon, Ideal.comap_top]`. Conclude with `(hV.primeIdealOf ⟨η, hη⟩).isPrime.ne_top h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hqp : (hV.primeIdealOf ⟨η, hη⟩).asIdeal ≤ (hV.primeIdealOf ⟨x, hx⟩).asIdeal`. Introduce `r hr`. Assume the negation of the conclusion as `hcon`. Establish `hunit : IsUnit ((X.presheaf.germ V x hx).hom r)` using `IsLocalization.map_units (S := X.presheaf.stalk x) (M := (hV.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl) ⟨r, hcon⟩`. Establish `hmemr : (X.presheaf.germ V x hx).hom r ∈ Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hr` using `[hqcomap]`. Conclude with `hr`. Conclude with `hnetop (Ideal.eq_top_of_isUnit_mem _ hmemr hunit)`. Establish `hdisj : Disjoint ((hV.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl : Set (Γ(X, V))) ((hV.primeIdealOf ⟨η, hη⟩).asIdeal : Set (Γ(X, V)))`. Rewrite using `[Set.disjoint_left]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r hr hr'`. Establish `hr1 : r ∉ (hV.primeIdealOf ⟨x, hx⟩).asIdeal` using `hr`. Conclude with `hr1 (hqp hr')`. Establish `hqcomap' : (hV.primeIdealOf ⟨η, hη⟩).asIdeal = Ideal.comap (algebraMap (Γ(X, V)) (X.presheaf.stalk x)) (Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x)))` using `hqcomap`. Establish `hmapq : Ideal.map (algebraMap (Γ(X, V)) (X.presheaf.stalk x)) (hV.primeIdealOf ⟨η, hη⟩).asIdeal = Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hqcomap']`. Conclude with `IsLocalization.map_under (M := (hV.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl) (S := X.presheaf.stalk x) _`. Establish `hprime : (Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x))).IsPrime`. Rewrite using `[← hmapq]`. Conclude with `IsLocalization.isPrime_of_isPrime_disjoint (hV.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl (X.presheaf.stalk x) (hV.primeIdealOf ⟨η, hη⟩).asIdeal (hV.primeIdealOf ⟨η, hη⟩).isPrime hdisj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnzd : (X.presheaf.germ V x hx).hom (c.coord j) ∈ nonZeroDivisors (X.presheaf.stalk x)` using `IsLocalization.nonZeroDivisors_le_comap (hV.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl (X.presheaf.stalk x) (coord_mem_nonZeroDivisors hV c j)`. Establish `hDx : stalkIdeal D x = Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x))` using `stalkIdeal_eq_span_germ_coord p hV c j D hD x hx`. Establish `hDη : stalkIdeal D η = Ideal.span ({(X.presheaf.germ V η hη).hom (c.coord j)} : Set (X.presheaf.stalk η))` using `stalkIdeal_eq_span_germ_coord p hV c j D hD η hη`. Establish `hmaxη : stalkIdeal D η = IsLocalRing.maximalIdeal (X.presheaf.stalk η)` using `stalkIdeal_eq_maximalIdeal_of_minimal p hV c j D hD x η hx hη hspec hηs hmin`. Establish `hIη : stalkIdeal I η ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk η) ^ a` using `(le_orderAt_iff I η a).mp ha`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmapη : IsLocalRing.maximalIdeal (X.presheaf.stalk η) ^ a = Ideal.map (algebraMap (Γ(X, V)) (X.presheaf.stalk η)) (Ideal.span ({c.coord j ^ a} : Set (Γ(X, V))))`. Rewrite using `[← hmaxη, hDη, Ideal.span_singleton_pow, Ideal.map_span, halgη]`. Simplify using `[Set.image_singleton, map_pow]`. Rewrite using `[hDx, Ideal.span_singleton_pow, stalkIdeal_eq_map_germ I x ⟨V, hV⟩ hx, Ideal.map_le_iff_le_comap]`. Introduce `g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap]`. Establish `hgη : (X.presheaf.germ V η hη).hom g ∈ stalkIdeal I η` using `germ_mem_stalkIdeal I η ⟨V, hV⟩ hη hg`. Establish `hstep : (X.presheaf.germ V η hη).hom g ∈ Ideal.map (algebraMap (Γ(X, V)) (X.presheaf.stalk η)) (Ideal.span ({c.coord j ^ a} : Set (Γ(X, V))))`. Rewrite using `[← hmapη]`. Conclude with `hIη hgη`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `(IsLocalization.mem_map_algebraMap_iff (M := (hV.primeIdealOf ⟨η, hη⟩).asIdeal.primeCompl) (S := X.presheaf.stalk η)).mp hstep`. Establish `hw' : algebraMap (Γ(X, V)) (X.presheaf.stalk η) (g * (w.2 : Γ(X, V))) = algebraMap (Γ(X, V)) (X.presheaf.stalk η) ((w.1 : Γ(X, V)))`. Rewrite using `[map_mul]`. Conclude with `hw`. Take `⟨cc, hcc⟩` from `(IsLocalization.eq_iff_exists (M := (hV.primeIdealOf ⟨η, hη⟩).asIdeal.primeCompl) (S := X.presheaf.stalk η)).mp hw'`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `humem : ((cc : Γ(X, V)) * (w.2 : Γ(X, V))) ∈ (hV.primeIdealOf ⟨η, hη⟩).asIdeal.primeCompl` using `Submonoid.mul_mem _ cc.2 w.2.2`. Establish `hug : ((cc : Γ(X, V)) * (w.2 : Γ(X, V))) * g ∈ Ideal.span ({c.coord j ^ a} : Set (Γ(X, V)))`. Establish `heq : ((cc : Γ(X, V)) * (w.2 : Γ(X, V))) * g = (cc : Γ(X, V)) * (w.1 : Γ(X, V))`. Rewrite using `[← hcc]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[heq]`. Conclude with `Ideal.mul_mem_left _ _ w.1.2`. Establish `hnotin : (X.presheaf.germ V x hx).hom ((cc : Γ(X, V)) * (w.2 : Γ(X, V))) ∉ Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j)} : Set (X.presheaf.stalk x))`. Introduce `hcon`. Conclude with `humem (hqle _ hcon)`.
-
-Take `⟨d, hd⟩` from `Ideal.mem_span_singleton.mp hug`. Establish `hA : (X.presheaf.germ V x hx).hom ((cc : Γ(X, V)) * (w.2 : Γ(X, V))) * (X.presheaf.germ V x hx).hom g ∈ Ideal.span ({(X.presheaf.germ V x hx).hom (c.coord j) ^ a} : Set (X.presheaf.stalk x))`. Use `Ideal.mem_span_singleton.mpr ⟨(X.presheaf.germ V x hx).hom d, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, hd, map_mul, map_pow]`. Conclude with `mem_span_pow_of_mul_mem_span_pow _ hprime hnzd a _ _ hnotin hA`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkIdeal_le_pow_stalkIdeal_of_minimal {V : X.Opens} (hV : IsAffineOpen V) {n : ℕ}
     (c : EtaleChart p V n) (j : Fin n) (D : X.IdealSheafData)
@@ -583,9 +573,9 @@ theorem stalkIdeal_le_pow_stalkIdeal_of_minimal {V : X.Opens} (hV : IsAffineOpen
   exact mem_span_pow_of_mul_mem_span_pow _ hprime hnzd a _ _ hnotin hA
 
 /- English proof (translation)
-Rewrite using `[specializes_iff_mem_closure, mem_closure_iff]`. Introduce `W hWopen hbW`. Establish `hbW' : b ∈ (⟨W, hWopen⟩ : Y.Opens)` using `hbW`. Take `⟨f, hfW, hbf⟩` from `hV.exists_basicOpen_le (⟨b, hbW'⟩ : ↥(⟨W, hWopen⟩ : Y.Opens)) hb`. Establish `hfb : f ∉ (hV.primeIdealOf ⟨b, hb⟩).asIdeal` using `(isUnit_germ_iff_notMem_primeIdealOf hV b hb f).mp ((Scheme.mem_basicOpen Y f b hb).mp hbf)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfa : f ∉ (hV.primeIdealOf ⟨a, ha⟩).asIdeal` using `fun hcon => hfb (h hcon)`. Establish `haf : a ∈ Y.basicOpen f` using `(Scheme.mem_basicOpen Y f a ha).mpr ((isUnit_germ_iff_notMem_primeIdealOf hV a ha f).mpr hfa)`. Conclude with `⟨a, SetLike.le_def.mp hfW haf, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem specializes_of_primeIdealOf_le {Y : Scheme.{u}} {V : Y.Opens}
     (hV : IsAffineOpen V) (a b : Y) (ha : a ∈ V) (hb : b ∈ V)
@@ -603,7 +593,7 @@ private theorem specializes_of_primeIdealOf_le {Y : Scheme.{u}} {V : Y.Opens}
   exact ⟨a, SetLike.le_def.mp hfW haf, rfl⟩
 
 /- English proof (translation)
-Establish `hsub : Set.range hV.fromSpec.base ⊆ (V : Set Y)` using `hV.range_fromSpec.subset`. Establish `hmem : hV.fromSpec.base (⟨P, hP⟩ : PrimeSpectrum Γ(Y, V)) ∈ V` using `hsub (Set.mem_range_self _)`. Use `⟨hV.fromSpec.base (⟨P, hP⟩ : PrimeSpectrum Γ(Y, V)), hmem, ?_⟩` and prove the remaining obligations. Establish `h1 : hV.fromSpec.base (hV.primeIdealOf ⟨hV.fromSpec.base (⟨P, hP⟩ : PrimeSpectrum Γ(Y, V)), hmem⟩) = hV.fromSpec.base (⟨P, hP⟩ : PrimeSpectrum Γ(Y, V))` using `hV.fromSpec_primeIdealOf ⟨hV.fromSpec.base (⟨P, hP⟩ : PrimeSpectrum Γ(Y, V)), hmem⟩`. Conclude with `congrArg PrimeSpectrum.asIdeal (hV.fromSpec.isOpenEmbedding.injective h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_mem_primeIdealOf_eq_of_isPrime {Y : Scheme.{u}} {V : Y.Opens} (hV : IsAffineOpen V)
     (P : Ideal Γ(Y, V)) (hP : P.IsPrime) :
@@ -619,27 +609,23 @@ private theorem exists_mem_primeIdealOf_eq_of_isPrime {Y : Scheme.{u}} {V : Y.Op
   exact congrArg PrimeSpectrum.asIdeal (hV.fromSpec.isOpenEmbedding.injective h1)
 
 /- English proof (translation)
-Establish `hCclosed : IsClosed C` using `isClosed_of_maximal_irreducible_subset_support D hC hCsub hCmax`. Establish `hgen0 : closure ({hC.genericPoint} : Set X) = closure C` using `(QuasiSober.sober hC.closure isClosed_closure).choose_spec`. Establish `hgen : closure ({hC.genericPoint} : Set X) = C`. Rewrite using `[hgen0]`. Conclude with `hCclosed.closure_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hηC : hC.genericPoint ∈ C`. Establish `h1 : hC.genericPoint ∈ closure ({hC.genericPoint} : Set X)` using `subset_closure rfl`. Rewrite `h1` using `[hgen]`. Then use the resulting hypothesis. Establish `hspec : hC.genericPoint ⤳ x`. Establish `h1 : x ∈ closure ({hC.genericPoint} : Set X)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgen]`. Conclude with `hx`. Conclude with `specializes_iff_mem_closure.mpr h1`. Take `⟨U, hxU, n, c, hcase⟩` from `hloc x`. Establish `hxsupp : x ∈ D.support` using `hCsub hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hne : ¬ (restrictIdeal D U = ⊤)` using `fun htop => notMem_support_of_mem_opens_of_restrictIdeal_eq_top D U htop x hxU hxsupp`. Take `⟨j, hDU⟩` from `hcase.resolve_left hne`. Take `⟨W, hxW, hW⟩` from `Scheme.exists_isAffineOpen_mem x`. Take `⟨f, hfU, hxf⟩` from `hW.exists_basicOpen_le (⟨x, hxU⟩ : ↥U) hxW`. Establish `hVaff : IsAffineOpen (X.basicOpen f)` using `hW.basicOpen f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVU : X.basicOpen f ≤ U` using `hfU`. Establish `hxV : x ∈ X.basicOpen f` using `hxf`. Establish `hηV : hC.genericPoint ∈ X.basicOpen f` using `hspec.mem_open (X.basicOpen f).isOpen hxV`. Establish `hDV : restrictIdeal D (X.basicOpen f) = (c.restrict hVU).coordIdeal {j}` using `restrictIdeal_eq_restrict_coordIdeal_of_le hVU c D {j} hDU`. Use `⟨X.basicOpen f, hVaff, hxV, hηV, n, c.restrict hVU, j, hDV, hspec, hCsub hηC, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `P hP hcoord hPle`. Take `⟨ξ, hξV, hξP⟩` from `exists_mem_primeIdealOf_eq_of_isPrime hVaff P hP`. Establish `hξsupp : ξ ∈ D.support`. Rewrite using `[mem_support_iff_stalkIdeal_ne_top, stalkIdeal_eq_span_germ_coord p hVaff (c.restrict hVU) j D hDV ξ hξV]`. Introduce `htop`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu` using `Ideal.span_singleton_eq_top.mp htop`. Establish `hnot` using `(isUnit_germ_iff_notMem_primeIdealOf hVaff ξ hξV ((c.restrict hVU).coord j)).mp hu`. Rewrite `hnot` using `[hξP]`. Conclude with `hnot hcoord`. Establish `hξη : ξ ⤳ hC.genericPoint` using `specializes_of_primeIdealOf_le hVaff ξ hC.genericPoint hξV hηV (by rw [hξP]; exact hPle)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hclosξ : closure ({ξ} : Set X) ⊆ (D.support : Set X)` using `closure_minimal (Set.singleton_subset_iff.mpr hξsupp) D.support.2`. Establish `hCsubξ : C ⊆ closure ({ξ} : Set X)`. Establish `h1 : closure ({hC.genericPoint} : Set X) ⊆ closure ({ξ} : Set X)` using `closure_minimal (Set.singleton_subset_iff.mpr (specializes_iff_mem_closure.mp hξη)) isClosed_closure`. Rewrite `h1` using `[hgen]`. Then use the resulting hypothesis. Establish `hEq : closure ({ξ} : Set X) = C` using `hCmax _ isIrreducible_singleton.closure hCsubξ hclosξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hξC : ξ ∈ C`. Establish `h1 : ξ ∈ closure ({ξ} : Set X)` using `subset_closure rfl`. Rewrite `h1` using `[hEq]`. Then use the resulting hypothesis. Establish `hηξ : hC.genericPoint ⤳ ξ`. Establish `h1 : ξ ∈ closure ({hC.genericPoint} : Set X)`.
-
-Rewrite using `[hgen]`. Conclude with `hξC`. Conclude with `specializes_iff_mem_closure.mpr h1`. Establish `hle2 : (hVaff.primeIdealOf ⟨hC.genericPoint, hηV⟩).asIdeal ≤ P`. Rewrite using `[← hξP]`.
-
-Conclude with `primeIdealOf_le_of_specializes hVaff hC.genericPoint ξ hηV hξV hηξ`. Conclude with `le_antisymm hPle hle2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_etaleChart_genericPoint_mem (D : X.IdealSheafData)
     (hloc : ∀ x : X, ∃ (U : X.Opens) (_ : x ∈ U) (n : ℕ) (c : EtaleChart p U n),
@@ -719,7 +705,7 @@ theorem exists_etaleChart_genericPoint_mem (D : X.IdealSheafData)
   exact le_antisymm hPle hle2
 
 /- English proof (translation)
-Take `⟨V, hV, hxV, hηV, n, c, j, hD, hspec, hηs, hmin⟩` from `exists_etaleChart_genericPoint_mem p D hloc hC hCsub hCmax x hx`. Conclude with `stalkIdeal_le_pow_stalkIdeal_of_minimal p hV c j D hD x hC.genericPoint hxV hηV hspec hηs hmin I a ha`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stalkIdeal_le_pow_of_le_orderAt_genericPoint (D : X.IdealSheafData)
     (hloc : ∀ x : X, ∃ (U : X.Opens) (_ : x ∈ U) (n : ℕ) (c : EtaleChart p U n),
@@ -735,7 +721,7 @@ theorem stalkIdeal_le_pow_of_le_orderAt_genericPoint (D : X.IdealSheafData)
     hηs hmin I a ha
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hC.1`. Take `⟨V, hV, hxV, hηV, n, c, j, hD, hspec, hηs, hmin⟩` from `exists_etaleChart_genericPoint_mem p D hloc hC hCsub hCmax x hx`. Conclude with `stalkIdeal_eq_maximalIdeal_of_minimal p hV c j D hD x hC.genericPoint hxV hηV hspec hηs hmin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stalkIdeal_genericPoint_eq_maximalIdeal (D : X.IdealSheafData)
     (hloc : ∀ x : X, ∃ (U : X.Opens) (_ : x ∈ U) (n : ℕ) (c : EtaleChart p U n),
@@ -751,9 +737,9 @@ theorem stalkIdeal_genericPoint_eq_maximalIdeal (D : X.IdealSheafData)
     hηs hmin
 
 /- English proof (translation)
-Introduce `hcon`. Rewrite `hcon` using `[stalkIdeal_genericPoint_eq_maximalIdeal p D hloc hC hCsub hCmax]`. Establish `h : ((a + 1 : ℕ) : ℕ∞) ≤ orderAt I hC.genericPoint` using `(le_orderAt_iff I hC.genericPoint (a + 1)).mpr hcon`. Rewrite `h` using `[ha]`. Establish `h2 : (a : ℕ∞) < ((a + 1 : ℕ) : ℕ∞)` using `by exact_mod_cast Nat.lt_succ_self a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd h (not_le.mpr h2)`.
+A detailed English derivation is pending.
 -/
 theorem not_stalkIdeal_le_pow_succ_genericPoint (D : X.IdealSheafData)
     (hloc : ∀ x : X, ∃ (U : X.Opens) (_ : x ∈ U) (n : ℕ) (c : EtaleChart p U n),

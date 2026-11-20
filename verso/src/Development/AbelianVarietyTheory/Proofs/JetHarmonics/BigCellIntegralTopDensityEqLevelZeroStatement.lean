@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.Bessel
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Filter Topology MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TopVec.integral_topDensity_eq_levelZero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FBigCellIntegralTopDensityEqLevelZero.lean&line=38#L38)
 -/

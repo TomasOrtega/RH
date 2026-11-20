@@ -14,21 +14,17 @@ open GlobalTheory.CompanionTheory.LTPer.Tilt
 namespace GlobalTheory.CompanionTheory.LTPer.Tilt
 
 /- English proof (translation)
-Introduce `l _ K π hπ`. Take `⟨⟨⟨hD, hV, -⟩, -⟩, hfin⟩` from `GlobalTheory.LocalIntegers.good_integers l K`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] ↥(OL K))`. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : algebraMap ℤ_[l] ↥K.1 a = algebraMap ℤ_[l] ↥K.1 b` using `congrArg Subtype.val hab`. Rewrite `h1` using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥K.1, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥K.1 b]`. Conclude with `IsFractionRing.injective ℤ_[l] ℚ_[l] ((algebraMap ℚ_[l] ↥K.1).injective h1)`. Establish `hi : Algebra.IsIntegral ℤ_[l] ↥(OL K)` using `integralClosure.AlgebraIsIntegral`. Establish `hf : FaithfulSMul ℤ_[l] ↥(OL K)` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ¬ IsUnit ((l : ℕ) : ↥(OL K))`. Introduce `hu`. Rewrite `hu` using `[← map_natCast (algebraMap ℤ_[l] ↥(OL K))]`. Conclude with `PadicInt.irreducible_p.not_isUnit (isUnit_of_map_unit _ _ hu)`. Establish `hdvd : π ∣ ((l : ℕ) : ↥(OL K))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hm : ((l : ℕ) : ↥(OL K)) ∈ IsLocalRing.maximalIdeal ↥(OL K)` using `hl`. Rewrite `hm` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Then use the resulting hypothesis. Establish `hle : Ideal.span {((l : ℕ) : ↥(OL K)) ^ 1} ≤ Ideal.span {π}`. Rewrite using `[pow_one, Ideal.span_singleton_le_iff_mem, Ideal.mem_span_singleton]`. Conclude with `hdvd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmax : (Ideal.span {π}).IsMaximal`. Rewrite using `[← hπ.maximalIdeal_eq]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal _`. Establish `hfinQ : Finite (↥(OL K) ⧸ Ideal.span {π})`. Use `hfin 1` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finite.of_surjective _ (Ideal.Quotient.factor_surjective hle)`. Use `⟨hmax, hfinQ, ?_⟩` and prove the remaining obligations. Use `letI : Field (↥(OL K) ⧸ Ideal.span {π}) := Ideal.Quotient.field _`. Use `haveI : Fintype (↥(OL K) ⧸ Ideal.span {π}) := Fintype.ofFinite _`. Establish `hz : ((l : ℕ) : ↥(OL K) ⧸ Ideal.span {π}) = 0`.
-
-Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {π})), Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `hdvd`. Use `haveI : CharP (↥(OL K) ⧸ Ideal.span {π}) l := (CharP.charP_iff_prime_eq_zero hlp).2 hz`. Take `⟨n, -, hn⟩` from `FiniteField.card (↥(OL K) ⧸ Ideal.span {π}) l`. Use `⟨n, n.pos, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[qOf, Nat.card_eq_fintype_card, hn]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resfield_of_irreducible : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)), Irreducible π →
     (Ideal.span {π}).IsMaximal ∧ Finite (↥(OL K) ⧸ Ideal.span {π}) ∧ ∃ f : ℕ, 0 < f ∧ qOf π = l ^ f := by

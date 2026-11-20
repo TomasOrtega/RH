@@ -22,7 +22,7 @@ namespace GlobalTheory.HkFam
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.obj_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) S S' s s' f rfl rfl (by rw [h]; simp [spMap]) o`.
+A detailed English derivation is pending.
 -/
 theorem desc_pull {S S' : Scheme.{0}} {s : S ⟶ Sp (KA l)} (s' : S' ⟶ Sp (KA l)) (f : S' ⟶ S) (h : f ≫ s = s')
     (o : Ob D l s) : ∃ o' : Ob D l s', Nonempty (ObjMap o' o f) :=
@@ -30,7 +30,7 @@ theorem desc_pull {S S' : Scheme.{0}} {s : S ⟶ Sp (KA l)} (s' : S' ⟶ Sp (KA 
     (by rw [h]; simp [spMap]) o
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ S S' S'' s s' s'' o o' o'').2 f f' m).1 m'`.
+A detailed English derivation is pending.
 -/
 theorem desc_comp {S S' S'' : Scheme.{0}} {s : S ⟶ Sp (KA l)} {s' : S' ⟶ Sp (KA l)} {s'' : S'' ⟶ Sp (KA l)}
     {o : Ob D l s} {o' : Ob D l s'} {o'' : Ob D l s''} {f : S' ⟶ S} {f' : S'' ⟶ S'} (m : ObjMap o' o f)
@@ -39,7 +39,7 @@ theorem desc_comp {S S' S'' : Scheme.{0}} {s : S ⟶ Sp (KA l)} {s' : S' ⟶ Sp 
   ((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ S S' S'' s s' s'' o o' o'').2 f f' m).1 m'
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ S S' S'' s s' s'' o o' o'').2 f f' m).2 m''`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem desc_cancel {S S' S'' : Scheme.{0}} {s : S ⟶ Sp (KA l)} {s' : S' ⟶ Sp (KA l)} {s'' : S'' ⟶ Sp (KA l)}
     {o : Ob D l s} {o' : Ob D l s'} {o'' : Ob D l s''} {f : S' ⟶ S} {f' : S'' ⟶ S'} {g : S'' ⟶ S} (m : ObjMap o' o f)
@@ -49,21 +49,21 @@ theorem desc_cancel {S S' S'' : Scheme.{0}} {s : S ⟶ Sp (KA l)} {s' : S' ⟶ S
   exact ((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ S S' S'' s s' s'' o o' o'').2 f f' m).2 m''
 
 /- English proof (translation)
-Establish `hab : pullback.fst π π ≫ π = pullback.snd π π ≫ π` using `pullback.condition`. Use `haveI : IsReduced (pullback π π) := GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.fst π π)`. Take `⟨oT, ⟨mT⟩⟩` from `desc_pull (pullback.fst π π ≫ π ≫ s) (pullback.fst π π ≫ π) (by simp) o`. Take `⟨ma, hma⟩` from `desc_cancel (f' := pullback.fst π π) m mT rfl`. Take `⟨mb, hmb⟩` from `desc_cancel (f' := pullback.snd π π) m mT hab.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨oa, ⟨na⟩⟩` from `desc_pull (pullback.fst π π ≫ π ≫ s) (pullback.fst π π) rfl o₂'`. Take `⟨ob, ⟨nb⟩⟩` from `desc_pull (pullback.fst π π ≫ π ≫ s) (pullback.snd π π) (by rw [reassoc_of% hab]) o₂'`. Take `⟨⟨ψa, hψa, -⟩, Ha⟩` from `GlobalTheory.HkFam.isog_pull E H D l p _ _ _ _ _ o' o₂' oT oa ma na ψ'`. Take `⟨⟨ψb, hψb, -⟩, Hb⟩` from `GlobalTheory.HkFam.isog_pull E H D l p _ _ _ _ _ o' o₂' oT ob mb nb ψ'`. Take `⟨ia, ka⟩` from `Ha ψa hψa`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ib, kb⟩` from `Hb ψb hψb`. Establish `ka' : KerSet ψa (mT.toSABMap.φ ⁻¹' K)`. Use `ka _ hψ.1.1 hker` as an intermediate fact. Rewrite using `[hma]`. Simplify `this` using `[Set.preimage_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `kb' : KerSet ψb (mT.toSABMap.φ ⁻¹' K)`. Use `kb _ hψ.1.1 hker` as an intermediate fact. Rewrite using `[hmb]`. Simplify `this` using `[Set.preimage_comp]`. Establish `hKT : HeckeSet D oT.t 𝔓 p i (mT.toSABMap.φ ⁻¹' K)` using `((GlobalTheory.heckeSets_pull E H D 𝔓 p i _ _ o.t oT.t _ mT.toSABMap o.proper).2 K).1 hK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨na', hna⟩` from `desc_comp n' na`. Take `⟨nb', hnb⟩` from `desc_comp n' nb`. Take `⟨e₁, e₂⟩` from `GlobalTheory.T.heckeQuotient_classifyingMap_isogeny_unique E H D l Xo 𝔓 p i _ _ oT oa ob ψa ψb _ _ _ na' nb' hA hKT (by rw [Category.assoc, hf']) (by rw [Category.assoc, hf', reassoc_of% hab]) (ia hψ) (ib hψ) ka' kb'`. Rewrite `e₂` using `[hna, hnb, reassoc_of% hψa, reassoc_of% hψb]`. Use `⟨fun x y hxy => ?_, fun x y hxy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `pullback.lift x y hxy ≫= e₁` as an intermediate fact. Rewrite `this` using `[pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Then use the resulting hypothesis. Establish `pm : IsPullback m.toSABMap.φ o'.t.G.hom o.t.G.hom π` using `m.cart.1`. Establish `pa : IsPullback ma.toSABMap.φ oT.t.G.hom o'.t.G.hom (pullback.fst π π)` using `ma.cart.1`. Establish `pb : IsPullback mb.toSABMap.φ oT.t.G.hom o'.t.G.hom (pullback.snd π π)` using `mb.cart.1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₀ : (x ≫ o'.t.G.hom) ≫ π = (y ≫ o'.t.G.hom) ≫ π`. Simplify using `only [Category.assoc, ← pm.w, reassoc_of% hxy]`. Set `w` to `pa.lift x (pullback.lift _ _ h₀) (pullback.lift_fst _ _ _).symm`. Establish `wa : w ≫ ma.toSABMap.φ = x` using `pa.lift_fst _ _ _`. Establish `wb : w ≫ mb.toSABMap.φ = y`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pm.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← hmb, hma, reassoc_of% wa, hxy]`. Rewrite using `[Category.assoc, pb.w, pa.lift_snd_assoc, pullback.lift_snd]`. Rewrite using `[← wa, ← wb, Category.assoc, Category.assoc, e₂]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem desc_cocycle (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) {S S' : Scheme.{0}} [IsReduced S']
     {s : S ⟶ Sp (KA l)} (π : S' ⟶ S) [Etale π] (o : Ob D l s) (o' o₂' : Ob D l (π ≫ s)) (m : ObjMap o' o π)
@@ -115,21 +115,17 @@ theorem desc_cocycle (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) {S S'
     rw [← wa, ← wb, Category.assoc, Category.assoc, e₂]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo 𝔓 p i S S' _ s π o o' m K hA hK hE hS hQ ⟨o₂', ψ', hψ, hker⟩`. Use `haveI : IsReduced S' := GlobalTheory.isReduced_of_smooth_of_isReduced π`. Take `⟨f', ⟨hf', ⟨n'⟩⟩, -⟩` from `Xo.rep S' (π ≫ s) inferInstance o₂'`. Take `⟨c₁, c₂⟩` from `desc_cocycle Xo 𝔓 p i π o o' o₂' m K hA hK ψ' hψ hker f' hf' n'`. Establish `pm : IsPullback m.toSABMap.φ o'.t.G.hom o.t.G.hom π` using `m.cart.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pn' : IsPullback n'.toSABMap.φ o₂'.t.G.hom Xo.univ.t.G.hom f'` using `n'.cart.1`. Use `haveI : Flat m.toSABMap.φ := MorphismProperty.of_isPullback pm.flip (inferInstance : Flat π)`. Use `haveI : Surjective m.toSABMap.φ := MorphismProperty.of_isPullback pm.flip hS`. Use `haveI : QuasiCompact m.toSABMap.φ := MorphismProperty.of_isPullback pm.flip hQ`. Use `haveI : EffectiveEpi π := inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : EffectiveEpi m.toSABMap.φ := inferInstance`. Take `⟨f, hf⟩ : ∃ f : S ⟶ Xo.X, π ≫ f = f'` from `⟨_, EffectiveEpi.fac π f' c₁⟩`. Take `⟨h, hh⟩ : ∃ h, m.toSABMap.φ ≫ h = ψ'.left ≫ n'.toSABMap.φ` from `⟨_, EffectiveEpi.fac _ _ c₂⟩`. Establish `hfs : f ≫ Xo.s = s` using `by rw [← cancel_epi π, reassoc_of% hf, hf']`. Take `⟨o₂, ⟨n⟩⟩` from `desc_pull s f hfs Xo.univ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨n₂, hn₂⟩` from `desc_cancel n n' hf`. Establish `pn : IsPullback n.toSABMap.φ o₂.t.G.hom Xo.univ.t.G.hom f` using `n.cart.1`. Establish `pn₂ : IsPullback n₂.toSABMap.φ o₂'.t.G.hom o₂.t.G.hom π` using `n₂.cart.1`. Establish `hw : h ≫ Xo.univ.t.G.hom = o.t.G.hom ≫ f`. Rewrite using `[← cancel_epi m.toSABMap.φ, reassoc_of% hh, pn'.w, pm.w_assoc, hf, Over.w_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `ψ : o.t.G ⟶ o₂.t.G` to `Over.homMk (pn.lift h _ hw) (pn.lift_snd _ _ _)`. Establish `hψn : ψ.left ≫ n.toSABMap.φ = h` using `pn.lift_fst _ _ _`. Establish `sq : ψ'.left ≫ n₂.toSABMap.φ = m.toSABMap.φ ≫ ψ.left`. Apply `pn.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, ← hn₂, hψn, hh]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, pn₂.w, Over.w_assoc, Over.w, pm.w]`. Establish `P : IsPullback m.toSABMap.φ ψ'.left ψ.left n₂.toSABMap.φ` using `IsPullback.of_bot (by rw [Over.w, Over.w]; exact pm) sq.symm pn₂`. Establish `q : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) n₂.toSABMap.φ` using `⟨⟨MorphismProperty.of_isPullback pn₂.flip hS, MorphismProperty.of_isPullback pn₂.flip (inferInstance : Flat π)⟩, MorphismProperty.of_isPullback pn₂.flip hQ⟩`. Establish `hEt : Etale ψ.left` using `MorphismProperty.of_isPullback_of_descendsAlong (P := @Etale) P.flip q hψ.1.2.2.1`. Use `haveI : IsFinite ψ'.left := hψ.1.2.1`.
-
-Use `haveI : IsAffineHom ψ.left := by`. Use `GlobalTheory.isAffineHom_of_isAffineHom_pullback_snd_of_fpqc _ _ _ ψ.left n₂.toSABMap.φ q.1.1 q.1.2 q.2 ?_` and prove the remaining obligations. Rewrite using `[← P.isoPullback_inv_snd]`. Use `infer_instance`. Use `haveI := o₂.proper`.
-
-Use `haveI : IsProper (ψ.left ≫ o₂.t.G.hom) := by rw [Over.w]; exact o.proper`. Use `haveI : IsProper ψ.left := IsProper.of_comp ψ.left o₂.t.G.hom`. Establish `hFin : IsFinite ψ.left` using `IsFinite.iff_isProper_and_isAffineHom.2 ⟨inferInstance, inferInstance⟩`. Take `⟨r₁, r₂⟩` from `GlobalTheory.isIsog_of_surjective_baseChange E H D l p S S' s _ π o o₂ o' o₂' m n₂ ψ ψ' hS sq hψ hFin hEt`. Conclude with `⟨o₂, ψ, r₁, r₂ K hker⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasQuot_descend : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) (S S' : Scheme.{0}) [IsReduced S] (s : S ⟶ Sp (KA l)) (π : S' ⟶ S) (o : Ob D l s) (o' : Ob D l (π ≫ s)) (m : ObjMap o' o π) (K : Set o.t.G.left), admitted l 𝔓 p → HeckeSet D o.t 𝔓 p i K → Etale π → Surjective π → QuasiCompact π → HasQuot o' p (m.toSABMap.φ ⁻¹' K) → HasQuot o p K := by
   intro E _ _ _ H D l Xo 𝔓 p i S S' _ s π o o' m K hA hK hE hS hQ ⟨o₂', ψ', hψ, hker⟩

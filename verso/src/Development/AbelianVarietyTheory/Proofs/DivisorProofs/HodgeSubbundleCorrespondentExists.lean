@@ -15,9 +15,9 @@ open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory.HodgeSubExists
 
 /- English proof (translation)
-Set `q` to `N.projectionOnto W hWN.symm`. Set `p : M →ₗ[R] M` to `N.subtype ∘ₗ q`. Establish `hp : ∀ x ∈ W, p x = 0` using `fun x hx ↦ by`. Establish `hq : q x = 0` using `(Submodule.projectionOnto_apply_eq_zero_iff hWN.symm).2 hx`. Simplify using `only [p, LinearMap.comp_apply, hq, map_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : p c = 0` using `(Module.forall_dual_apply_eq_zero_iff R (p c)).1 fun φ ↦ hc (φ ∘ₗ p) ((Submodule.mem_dualAnnihilator _).2 fun x hx ↦ by simp [hp x hx])`. Conclude with `(Submodule.projectionOnto_apply_eq_zero_iff hWN.symm).1 (Subtype.ext h0)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_dualAnnihilator {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Projective R M] {W N : Submodule R M} (hWN : IsCompl W N) {c : M}
@@ -36,11 +36,11 @@ section Affine
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G]
 
 /- English proof (translation)
-Establish `tv_congr : ∀ (v v' : epsR R ⟶ G) (hv : IsTangent v) (hv' : IsTangent v'), v = v' → tv v hv = tv v' hv'`. Introduce and unpack `v _ hv hv' rfl`. Both sides reduce to the same expression. Use `choose vh hvh vh_eq using hLie.1`. Establish `hl : ∀ h v (e : IsLieImage h v), tv (vh h) (hvh h).1 = tv v e.1` using `fun h v e ↦ tv_congr _ _ _ _ (vh_eq h v e).symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `l : Module.Dual R (HdR G)` to `{ toFun := fun h ↦ tv (vh h) (hvh h).1 map_add' := fun h k ↦ (hl _ _ ((hvh h).add (hvh k))).trans (tv_mul _ _ _ _ _) map_smul' := fun r h ↦ (hl _ _ ((hvh h).smul r)).trans (tv_smul _ _ _ _) }`. Take `⟨c, hc⟩` from `(Module.evalEquiv R (primDR G)).surjective l`. Establish `hc' : ∀ (h : HdR G) v (e : IsLieImage h v), h c = tv v e.1` using `fun h v e ↦ (LinearMap.congr_fun hc h).trans (hl h v e)`. Use `⟨c, mem_of_forall_dualAnnihilator hN fun φ hφ ↦ ?_, fun v h e ↦ hc' h v e⟩` and prove the remaining obligations. Establish `e : IsLieImage φ 1` using `isLieImage_one_iff.2 hφ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsTangent (GlobalTheory.GrpTangent.epsScale (0 : R) ≫ (1 : epsR R ⟶ G))`. Rewrite using `[MonObj.comp_one]`. Conclude with `e.1`. Rewrite using `[hc' φ 1 e, tv_congr _ _ e.1 h1 (MonObj.comp_one _).symm, tv_smul _ _ e.1 h1, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_class (hLie : LieExact G) [Module.Finite R (primDR G)]
     [Module.Projective R (primDR G)] {N : Submodule R (primDR G)} (hN : IsCompl (PrimitiveSubmodule G) N)
@@ -68,9 +68,9 @@ theorem exists_class (hLie : LieExact G) [Module.Finite R (primDR G)]
   rw [hc' φ 1 e, tv_congr _ _ e.1 h1 (MonObj.comp_one _).symm, tv_smul _ _ e.1 h1, zero_mul]
 
 /- English proof (translation)
-Establish `: QuasiSeparated G.hom` using `MorphismProperty.of_isPullback hφ.1 ‹_›`. Set `u` to `toOmega G ((omegaBase hφ).app ⊤ t)`. Take `⟨c, hc, H⟩` from `exists_class hLie hN (fun v hv ↦ u.1 ⟨v, (HodgeSubSurj.isTangent_iff_ptMap v).1 hv⟩) (fun v v' hv hv' hvv ↦ u.2.1 ⟨v, (HodgeSubSurj.isTangent_iff_ptMap v).1 hv⟩ ⟨v', (HodgeSubSurj.isTangent_iff_ptMap v').1 hv'⟩ _) (fun r v hv hrv ↦ u.2.2 r ⟨v, (HodgeSubSurj.isTangent_iff_ptMap v) …`. Use `⟨c, hc, fun v h e w we ↦ (H v h e).trans ?_⟩` and prove the remaining obligations. Set `x : Pdiv.LieG G` to `⟨v, (HodgeSubSurj.isTangent_iff_ptMap v).1 e.1⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `E` using `HodgeSubSurj.form_eq hφ x w we`. Use `(toOmega_apply _ x).trans (congrArg (fun a : Γ(Sp R, ⊤) => (Scheme.ΓSpecIso (.of R)).hom a) ?_)` and prove the remaining obligations. Conclude with `(congr(($E).app ⊤ t)).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_class_of_pullback {T : Scheme.{0}} {A : Over T} [GrpObj A] [QuasiSeparated A.hom]
     {b : Sp R ⟶ T} {φ : G.left ⟶ A.left} (hφ : IsGrpPullback G A b φ)
@@ -98,9 +98,9 @@ theorem exists_class_of_pullback {T : Scheme.{0}} {A : Over T} [GrpObj A] [Quasi
 end Affine
 
 /- English proof (translation)
-Introduce `P T A _ g hA hg V hV s`. Use `hA.proper` as an intermediate fact. Establish `hB` using `VB.isAbelianScheme_onAff A hA hV`. Establish `hgB` using `VB.smooth_onAff A hg hV`. Take `⟨hLie, ⟨N, hN⟩, -, -, -⟩` from `P.p5.2.1 Γ(T, V) (onAff A hV) g hB hgB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hF, hP, -⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim P.p5.1 hB hgB`. Establish `h : IsGrpPullback (onAff A hV) A hV.fromSpec (pullback.fst A.hom hV.fromSpec)` using `isGrpPullback_pullback A hV.fromSpec`. Conclude with `exists_class_of_pullback h hLie hN (GlobalTheory.QCoh.pullbackSections hV.fromSpec (omega A) hV.fromSpec_preimage_self.ge s)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.CovTop.Hypotheses2 → ∀ (T : Scheme.{0}) (A : Over T) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →

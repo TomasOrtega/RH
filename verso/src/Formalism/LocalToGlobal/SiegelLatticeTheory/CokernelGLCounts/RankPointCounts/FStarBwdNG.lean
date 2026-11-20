@@ -21,7 +21,7 @@ variable (p : PlF D) (γ : TermDef.Term D u u' F0 what₂)
 
 include hu in
 /- English proof (translation)
-Rewrite using `[tf, Units.smul_def, smul_smul, (hu a).val_inv_mul, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem baseChangeAt_frame_eq (a : Fin (D.R.rS + 1)) :
     baseChange₂ D p (frame (lf D F0) a) = ((hu a).unit⁻¹ : ((D.s.atP p).Ep)ˣ) • (tLoc Zd p γ).f a := by
@@ -29,11 +29,9 @@ theorem baseChangeAt_frame_eq (a : Fin (D.R.rS + 1)) :
 
 include hu in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `x ∈ Submodule.span D.host.E (Set.range F0.e) at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Rewrite using `[← frame_cs, baseChangeAt_frame_eq Zd p γ hu, Units.smul_def]`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
-
-Consider the case `smul c x _ hx => rw [Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bcP_X {x : (VS D).V} (hx : x ∈ Xsp (lf D F0)) : baseChange₂ D p x ∈ (locH Zd p).X (tLoc Zd p γ).f := by
   change x ∈ Submodule.span D.host.E (Set.range F0.e) at hx
@@ -47,11 +45,11 @@ theorem bcP_X {x : (VS D).V} (hx : x ∈ Xsp (lf D F0)) : baseChange₂ D p x �
   | smul c x _ hx => rw [Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Use `show ∀ w ∈ (locH Zd p).X (tLoc Zd p γ).f, (locH Zd p).h (baseChange₂ D p m) w = 0`. Introduce `w hw`. Rewrite using `[h_eq]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `hw`. Simplify using `only`. Rewrite using `[tf, frame_cs, LocFacts.localForm_smul_right, ← h_eq, localForm_baseChange, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hm _ (Submodule.subset_span ⟨i, rfl⟩), map_zero, mul_zero]`. Consider the case `zero => exact LocFacts.localForm_zero_right Zd p _`. Consider the case `add a b _ _ ha hb => rw [LocFacts.localForm_add_right, ha, hb, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c w _ hw => rw [LocFacts.localForm_smul_right, hw, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem baseChange_mem_perp_sup {m : (VS D).V} (hm : m ∈ orth (VS D) (Xsp (lf D F0))) :
     baseChange₂ D p m ∈ (locH Zd p).perp ((locH Zd p).X (tLoc Zd p γ).f) := by
@@ -69,7 +67,7 @@ theorem baseChange_mem_perp_sup {m : (VS D).V} (hm : m ∈ orth (VS D) (Xsp (lf 
   | smul c w _ hw => rw [LocFacts.localForm_smul_right, hw, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[(locH Zd p).h_herm v w, (show (locH Zd p).h v w = 0 from hv w hw), map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_X_perp {w v : Vp D p} (hw : w ∈ (locH Zd p).X (tLoc Zd p γ).f)
     (hv : v ∈ (locH Zd p).perp ((locH Zd p).X (tLoc Zd p γ).f)) : (locH Zd p).h w v = 0 := by
@@ -78,11 +76,11 @@ theorem h_X_perp {w v : Vp D p} (hw : w ∈ (locH Zd p).X (tLoc Zd p γ).f)
 end Place
 
 /- English proof (translation)
-Use `int_of_loc Zd fun p => ?_` and prove the remaining obligations. Rewrite using `[← localForm_baseChange]`. Establish `hv` using `baseChange_mem_perp_sup Zd p γ hxo`. Establish `hmem : (locH Zd p).mkW (tLoc Zd p γ).f ⟨baseChange₂ D p x, hv⟩ ∈ (locH Zd p).Lset (lattice₂ D Zd.M p Λ₂) (tLoc Zd p γ).f` using `⟨⟨baseChange₂ D p x, hv⟩, baseChange_mem_localLattice Zd hx p, rfl⟩`. Take `⟨x'', hx''Λ, hx''eq⟩` from `hL p hmem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdiff : (baseChange₂ D p x) - (x'' : Vp D p) ∈ (locH Zd p).X (tLoc Zd p γ).f`. Use `(Submodule.Quotient.eq _).1 hx''eq.symm` as an intermediate fact. Simplify using `using this`. Establish `e : baseChange₂ D p x = (x'' : Vp D p) + ((baseChange₂ D p x) - (x'' : Vp D p))` using `by abel`. Rewrite using `[e, (locH Zd p).h_add_left, h_X_perp Zd p γ hdiff (baseChange_mem_perp_sup Zd p γ hmo), add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hSD₁ p).2.2 x'').1 hx''Λ (baseChange₂ D p m) (baseChange_mem_localLattice Zd hm p)`.
+A detailed English derivation is pending.
 -/
 theorem pair_int (γ : TermDef.Term D u u' F0 what₂) {Λ₁ Λ₂ : Submodule (𝓞 D.host.E) (VS D).V}
     (hSD₁ : ∀ p, (locH Zd p).IsSelfDual (lattice₂ D Zd.M p Λ₁))
@@ -104,7 +102,7 @@ theorem pair_int (γ : TermDef.Term D u u' F0 what₂) {Λ₁ Λ₂ : Submodule 
   exact ((hSD₁ p).2.2 x'').1 hx''Λ (baseChange₂ D p m) (baseChange_mem_localLattice Zd hm p)
 
 /- English proof (translation)
-Use `mem_of_bcP Zd hΛb fun p => ?_` and prove the remaining obligations. Establish `h1 : baseChange₂ D p x ∈ Submodule.span (D.s.atP p).Ep (Set.range (tLoc Zd p γ).f)` using `Submodule.span_mono (Set.range_comp_subset_range _ _) (bcP_X Zd p γ (hu p) hx)`. Establish `h2` using `(ha p).2.2 _ (baseChange_mem_localLattice Zd hxa p) h1`. Conclude with `Submodule.span_le.2 (Set.range_subset_iff.2 fun a => (hb p).1 a) h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem memX (γ : TermDef.Term D u u' F0 what₂) {Λa Λb : Submodule (𝓞 D.host.E) (VS D).V}
     (ha : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p Λa) (tLoc Zd p γ).f)
@@ -118,7 +116,7 @@ theorem memX (γ : TermDef.Term D u u' F0 what₂) {Λa Λb : Submodule (𝓞 D.
   exact Submodule.span_le.2 (Set.range_subset_iff.2 fun a => (hb p).1 a) h2
 
 /- English proof (translation)
-The claim follows from `mem_of_bcP Zd hΛ fun p => by rw [← tf_last Zd p γ]; exact (h p).1 _`.
+A detailed English derivation is pending.
 -/
 theorem z_mem (γ : TermDef.Term D u u' F0 what₂) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hΛ : Submodule.IsLattice D.host.E Λ) (h : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p Λ) (tLoc Zd p γ).f) :

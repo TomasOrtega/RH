@@ -6,11 +6,11 @@ open Cardinal Filter Topology
 namespace ReciprocityTheory.ChartRestriction.T1
 
 /- English proof (translation)
-Establish `hseq : ∀ x : X, ∃ u : ℕ → D, Tendsto (f ∘ u) atTop (𝓝 x)`. Introduce `x`. Establish `hx : x ∈ closure (Set.range f)` using `by rw [hf.closure_range]; exact Set.mem_univ x`. Take `⟨v, hv, hlim⟩` from `mem_closure_iff_seq_limit.1 hx`. Use `choose u hu using hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, ?_⟩` and prove the remaining obligations. Establish `hfu : f ∘ u = v` using `funext hu`. Rewrite using `[hfu]`. Conclude with `hlim`. Use `choose g hg using hseq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective g`. Introduce `x y hxy`. Establish `h' : Tendsto (f ∘ g x) atTop (𝓝 y)` using `by rw [hxy]; exact hg y`. Conclude with `tendsto_nhds_unique (hg x) h'`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lat_mk_le_of_denseRange {D X : Type} [TopologicalSpace X] [FirstCountableTopology X] [T2Space X]
     (f : D → X) (hf : DenseRange f) : #X ≤ #D ^ ℵ₀ := by
@@ -34,9 +34,9 @@ theorem lat_mk_le_of_denseRange {D X : Type} [TopologicalSpace X] [FirstCountabl
     _ = Cardinal.mk D ^ ℵ₀ := by rw [← Cardinal.mk_nat, Cardinal.power_def]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Establish `h1 : Cardinal.mk ℚ_[p] ≤ 𝔠`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Cardinal.mk (PadicAlgCl p) ≤ 𝔠` using `(Algebra.IsAlgebraic.cardinalMk_le_max ℚ_[p] (PadicAlgCl p)).trans (max_le h1 Cardinal.aleph0_le_continuum)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Take `⟨g, -, -, hg⟩` from `Perfect.exists_nat_bool_injection (C := (Set.univ : Set ℂ_[p])) ⟨isClosed_univ, PerfectSpace.univ_preperfect⟩ ⟨0, trivial⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Cardinal.two_power_aleph0, ← Cardinal.mk_nat, ← Cardinal.mk_bool, Cardinal.power_def]`. Use `_ ≤ Cardinal.mk ℂ_[p] := Cardinal.mk_le_of_injective hg`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_mk_Cp (p : ℕ) [Fact p.Prime] : #ℂ_[p] = 𝔠 := by
   apply le_antisymm
@@ -63,13 +63,13 @@ end ReciprocityTheory.ChartRestriction.T1
 namespace ReciprocityTheory.ChartRestriction.B3
 
 /- English proof (translation)
-Use `letI : Algebra R K := f.toAlgebra`. Use `letI : Algebra R L := g.toAlgebra`. Use `haveI : FaithfulSMul R K := (faithfulSMul_iff_algebraMap_injective R K).2 f.injective`. Use `haveI : FaithfulSMul R L := (faithfulSMul_iff_algebraMap_injective R L).2 g.injective`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis R K`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `exists_isTranscendenceBasis R L`. Establish `h1` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt _ hs hR hK`. Establish `h2` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt _ ht hR (hKL ▸ hK)`. Simplify using `only [Cardinal.lift_id] at h1 h2`. Establish `hst : Cardinal.mk s = Cardinal.mk t` using `by rw [← h1, ← h2, hKL]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Take `⟨e⟩` from `Cardinal.eq.1 hst`. Use `letI := IsAlgClosed.isAlgClosure_of_transcendence_basis _ hs`. Use `letI := IsAlgClosed.isAlgClosure_of_transcendence_basis _ ht`. Set `eA : Algebra.adjoin R (Set.range (Subtype.val : s → K)) ≃ₐ[R] Algebra.adjoin R (Set.range (Subtype.val : t → L))` to `hs.1.aevalEquiv.symm.trans ((MvPolynomial.renameEquiv R e).trans ht.1.aevalEquiv)`. Use `⟨IsAlgClosure.equivOfEquiv K L eA.toRingEquiv, fun r => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : f r = algebraMap (Algebra.adjoin R (Set.range (Subtype.val : s → K))) K (algebraMap R _ r)` using `rfl`. Establish `e2 : g r = algebraMap (Algebra.adjoin R (Set.range (Subtype.val : t → L))) L (algebraMap R _ r)` using `rfl`. Rewrite using `[e1, IsAlgClosure.equivOfEquiv_algebraMap, e2]`. Use `congr 1`. Conclude with `eA.commutes r`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem iop_extEmb {R K L : Type} [Field R] [Field K] [Field L] [IsAlgClosed K]
     [IsAlgClosed L] (f : R →+* K) (g : R →+* L) (hR : #R ≤ ℵ₀) (hK : ℵ₀ < #K) (hKL : #K = #L) :

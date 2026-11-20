@@ -13,12 +13,12 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `analyticAt_H N t 0 (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_determinant_power_zero_int (N : ℕ) (t : ℤ) : AnalyticAt ℂ (H N t) 0 := analyticAt_H N t 0 (by simp)
 
 /- English proof (translation)
-Establish `h2 : AnalyticAt ℂ (fun L : F →L[ℂ] ℂ => L v) (fderiv ℂ G x)` using `(ContinuousLinearMap.apply ℂ ℂ v).analyticAt _`. Conclude with `h2.comp hG.fderiv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem analyticAt_fderiv_apply {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] [CompleteSpace F]
     (G : F → ℂ) (x v : F) (hG : AnalyticAt ℂ G x) : AnalyticAt ℂ (fun y => fderiv ℂ G y v) x := by
@@ -27,9 +27,9 @@ theorem analyticAt_fderiv_apply {F : Type} [NormedAddCommGroup F] [NormedSpace �
   exact h2.comp hG.fderiv
 
 /- English proof (translation)
-Establish `hc : Continuous fun X : Matrix (Fin N) (Fin (N + 1)) ℂ => (1 + piF X).det`. Unfold `piF`. Use `fun_prop`. Establish `hz : piF (0 : Matrix (Fin N) (Fin (N + 1)) ℂ) = 0`. Use extensionality with `k l`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[piF]`. Establish `h0 : (1 + piF (0 : Matrix (Fin N) (Fin (N + 1)) ℂ)).det ≠ 0`. Simplify using `[hz]`. Conclude with `hc.continuousAt.eventually_ne h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_piF (N : ℕ) : ∀ᶠ X in 𝓝 (0 : Matrix (Fin N) (Fin (N + 1)) ℂ), (1 + piF X).det ≠ 0 := by
   have hc : Continuous fun X : Matrix (Fin N) (Fin (N + 1)) ℂ => (1 + piF X).det := by
@@ -43,7 +43,7 @@ theorem ev_piF (N : ℕ) : ∀ᶠ X in 𝓝 (0 : Matrix (Fin N) (Fin (N + 1)) �
   exact hc.continuousAt.eventually_ne h0
 
 /- English proof (translation)
-Establish `h` using `iteratedFDeriv_const_smul_apply' (a := a) (i := n) (hG.contDiffAt (n := n))`. Simplify using `only [smul_eq_mul] at h`. Rewrite using `[h, ContinuousMultilinearMap.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem iconst_mul {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] (G : F → ℂ) (x : F) (a : ℂ)
     (hG : AnalyticAt ℂ G x) (n : ℕ) (u : Fin n → F) :
@@ -53,13 +53,11 @@ theorem iconst_mul {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] (G : F 
   rw [h, ContinuousMultilinearMap.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Set `Lℓ : E →ₗ[ℂ] F` to `{ toFun := φ, map_add' := hadd, map_smul' := hsmul }`. Set `L : E →L[ℂ] F` to `LinearMap.toContinuousLinearMap Lℓ`. Establish `hL : ∀ z, L z = φ z` using `fun z => rfl`. Take `⟨U, hUP, hUo, hyU⟩` from `eventually_nhds_iff.1 hG.eventually_analyticAt`. Establish `hU : ContDiffOn ℂ n G U` using `fun z hz => (hUP z hz).contDiffAt.contDiffWithinAt`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxU : L x ∈ U` using `by rw [hL, hxy]; exact hyU`. Establish `hpre : IsOpen (L ⁻¹' U)` using `hUo.preimage L.continuous`. Establish `key` using `L.iteratedFDerivWithin_comp_right hU hUo.uniqueDiffOn hpre.uniqueDiffOn hxU (i := n) le_rfl`. Rewrite `key` using `[iteratedFDerivWithin_of_isOpen n hpre (show x ∈ L ⁻¹' U from hxU), iteratedFDerivWithin_of_isOpen n hUo hxU]`. Establish `hcomp : G ∘ φ = G ∘ L` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcomp, key, ContinuousMultilinearMap.compContinuousLinearMap_apply]`. Use `show iteratedFDeriv ℂ n G (φ x) (fun i => φ (u i)) = _`. Rewrite using `[hxy]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
-
-Conclude with `huv i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem icompL {E F : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F]
@@ -87,50 +85,50 @@ theorem icompL {E F : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDi
   exact huv i
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `cases i using Fin.cases <;> simp [phiF_zero_row, phiF_succ_row]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phiF_add (a b : Matrix (Fin N) (Fin (N + 1)) ℂ) : phiF (a + b) = phiF a + phiF b := by
   ext i j
   cases i using Fin.cases <;> simp [phiF_zero_row, phiF_succ_row]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `cases i using Fin.cases <;> simp [phiF_zero_row, phiF_succ_row]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phiF_smul (c : ℂ) (a : Matrix (Fin N) (Fin (N + 1)) ℂ) : phiF (c • a) = c • phiF a := by
   ext i j
   cases i using Fin.cases <;> simp [phiF_zero_row, phiF_succ_row]
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem piF_add (a b : Matrix (Fin N) (Fin (N + 1)) ℂ) : piF (a + b) = piF a + piF b := by
   ext i j; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem piF_smul (c : ℂ) (a : Matrix (Fin N) (Fin (N + 1)) ℂ) : piF (c • a) = c • piF a := by
   ext i j; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `cases i using Fin.cases <;> simp [phiF_zero_row, phiF_succ_row]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phiF_zero : phiF (0 : Matrix (Fin N) (Fin (N + 1)) ℂ) = 0 := by
   ext i j
   cases i using Fin.cases <;> simp [phiF_zero_row, phiF_succ_row]
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem piF_zero : piF (0 : Matrix (Fin N) (Fin (N + 1)) ℂ) = 0 := by
   ext i j; rfl
 
 /- English proof (translation)
-Establish `hA : AnalyticAt ℂ (fun y => fderiv ℂ (H (N + 1) t) y (Matrix.single 0 0 1)) 0` using `analyticAt_fderiv_apply _ 0 _ (analyticAt_determinant_power_zero_int (N + 1) t)`. Establish `h1` using `icompL (fun y => fderiv ℂ (H (N + 1) t) y (Matrix.single 0 0 1)) phiF phiF_add phiF_smul 0 0 phiF_zero hA N (fun k => Matrix.single k (e k).succ 1) (fun k => Matrix.single k.succ (e k).succ 1) (fun k => phiF_single k (e k).succ)`. Rewrite using `[← h1]`. Establish `hpi : piF = ⇑(piL N)` using `funext fun X => (piL_apply X).symm`. Establish `hB : AnalyticAt ℂ (H N t ∘ piF) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpi]`. Use `(analyticAt_H N t (piL N 0) ?_).comp ((piL N).analyticAt 0)` and prove the remaining obligations. Rewrite using `[piL_apply, piF_zero, add_zero, det_one]`. Conclude with `one_ne_zero`. Establish `hev : (fun y => fderiv ℂ (H (N + 1) t) y (Matrix.single 0 0 1)) ∘ phiF =ᶠ[𝓝 0] fun X => (t : ℂ) * (H N t ∘ piF) X` using `by filter_upwards [ev_piF N] with X hX`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fderiv_determinant_power_corner_int t X hX`. Rewrite using `[(Filter.EventuallyEq.iteratedFDeriv ℂ hev N).eq_of_nhds, iconst_mul _ 0 _ hB]`. Use `congr 1`. Conclude with `icompL (H N t) piF piF_add piF_smul 0 0 piF_zero (analyticAt_determinant_power_zero_int N t) N _ _ (fun k => piF_single_succ k (e k))`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem iterated_derivative_corner_case_int (t : ℤ) (e : Equiv.Perm (Fin N)) :
     iteratedFDeriv ℂ N (fun y => fderiv ℂ (H (N + 1) t) y (Matrix.single 0 0 1)) 0

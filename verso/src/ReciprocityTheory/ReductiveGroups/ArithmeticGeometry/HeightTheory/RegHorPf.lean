@@ -5,9 +5,9 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `hu`. Establish `htop : (⊤ : Submodule O V) ≤ maximalIdeal O • ⊤`. Introduce `v _`. Take `⟨w, hw⟩ : ∃ w : V, algebraMap O V π * w = v` from `⟨hu.unit⁻¹ * v, by rw [← mul_assoc, IsUnit.mul_val_inv, one_mul]⟩`. Rewrite using `[← hw, ← Algebra.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul hπ Submodule.mem_top`. Establish `hbot` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal O) ⊤ Module.Finite.fg_top htop (IsLocalRing.maximalIdeal_le_jacobson _)`. Establish `h1 : (1 : V) ∈ (⊥ : Submodule O V)` using `hbot ▸ Submodule.mem_top`. Conclude with `one_ne_zero ((Submodule.mem_bot O).mp h1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_isUnit_algebraMap_of_finite {O V : Type} [CommRing O] [IsLocalRing O] [CommRing V]
     [Nontrivial V] [Algebra O V] [Module.Finite O V] (π : O) (hπ : π ∈ maximalIdeal O) :
@@ -25,61 +25,53 @@ theorem not_isUnit_algebraMap_of_finite {O V : Type} [CommRing O] [IsLocalRing O
   exact one_ne_zero ((Submodule.mem_bot O).mp h1)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hno`. Take `⟨a, s, haP, hsP, hfas⟩` from `hdvr hno`. Establish `hinj : Function.Injective (algebraMap A (FractionRing A))` using `IsFractionRing.injective A (FractionRing A)`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hno ⟨0, 1, (Ideal.ne_top_iff_one P).mp (Ideal.IsPrime.ne_top ‹_›), by simp⟩`. Establish `hs0 : algebraMap A (FractionRing A) s ≠ 0`. Rewrite using `[map_ne_zero_iff _ hinj]`. Introduce and unpack `rfl`. Conclude with `hsP P.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hfas` using `[map_zero, mul_eq_zero]`. Break down `hfas with h | h` into its components or cases. Conclude with `hf0 (inv_eq_zero.mp h)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hs0 h`. Establish `hfa : f * algebraMap A (FractionRing A) a = algebraMap A (FractionRing A) s`. Rewrite using `[← hfas, ← mul_assoc, mul_inv_cancel₀ hf0, one_mul]`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hmax : maximalIdeal O = Ideal.span {ϖ}` using `hϖ.maximalIdeal_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hϖm : ϖ ∈ maximalIdeal O` using `(mem_maximalIdeal _).mpr hϖ.not_isUnit`. Establish `hmapw : Ideal.map (algebraMap O A) (maximalIdeal O) = Ideal.span {algebraMap O A ϖ}`. Rewrite using `[hmax, Ideal.map_span, Set.image_singleton]`. Establish `hwP : algebraMap O A ϖ ∉ P` using `fun h => hh (by rw [hmapw, Ideal.span_le, Set.singleton_subset_iff]; exact h)`. Establish `hws : algebraMap O A ϖ * s ∉ P` using `fun h => (Ideal.IsPrime.mem_or_mem ‹_› h).elim hwP hsP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hws0 : algebraMap A (FractionRing A) (algebraMap O A ϖ * s) ≠ 0`. Rewrite using `[map_ne_zero_iff _ hinj]`. Introduce and unpack `h`. Conclude with `hws (h ▸ P.zero_mem)`. Establish `hOA : Function.Injective (algebraMap O A)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hx0`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ`. Rewrite `hx` using `[map_mul, map_pow, mul_eq_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Break down `hx with h | h` into its components or cases. Conclude with `(u.isUnit.map (algebraMap O A)).ne_zero h`. Conclude with `hwP (pow_eq_zero_iff'.mp h |>.1 ▸ P.zero_mem)`. Use `set y : FractionRing A := algebraMap A (FractionRing A) a / algebraMap A (FractionRing A) (algebraMap O A ϖ * s) with hy`. Set `B : Subalgebra A (FractionRing A)` to `Algebra.adjoin A {y}`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hyB : y ∈ B` using `Algebra.subset_adjoin rfl`. Set `S : Subalgebra A (FractionRing A)` to `{ carrier := {x | ∃ a' p t : A, p ∈ P ∧ t ∉ P ∧ x * algebraMap A (FractionRing A) t = algebraMap A (FractionRing A) (a' * t + p)} mul_mem' := by`. Introduce and unpack `x1 x2 ⟨a1, p1, t1, hp1, ht1, h1⟩ ⟨a2, p2, t2, hp2, ht2, h2⟩`. Use `⟨a1 * a2, a1 * t1 * p2 + a2 * t2 * p1 + p1 * p2, t1 * t2, P.add_mem (P.add_mem (P.mul_mem_left _ hp2) (P.mul_mem_left _ hp1)) (P.mul_mem_left _ hp2), fun h => (Ideal.IsPrime.mem_or_mem ‹_› h).elim ht1 ht2, ?_⟩` and prove the remaining obligations. Establish `: x1 * x2 * algebraMap A (FractionRing A) (t1 * t2) = (x1 * algebraMap A (FractionRing A) t1) * (x2 * algebraMap A (FractionRing A) t2)`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, h1, h2, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use the proof step `add_mem' := by`. Introduce and unpack `x1 x2 ⟨a1, p1, t1, hp1, ht1, h1⟩ ⟨a2, p2, t2, hp2, ht2, h2⟩`. Use `⟨a1 + a2, p1 * t2 + p2 * t1, t1 * t2, P.add_mem (P.mul_mem_right _ hp1) (P.mul_mem_right _ hp2), fun h => (Ideal.IsPrime.mem_or_mem ‹_› h).elim ht1 ht2, ?_⟩` and prove the remaining obligations. Establish `: (x1 + x2) * algebraMap A (FractionRing A) (t1 * t2) = (x1 * algebraMap A (FractionRing A) t1) * algebraMap A (FractionRing A) t2 + (x2 * algebraMap A (FractionRing A) t2) * algebraMap A (FractionRing A) t1`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, h1, h2, ← map_mul, ← map_mul, ← map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `algebraMap_mem' := fun r => ⟨r, 0, 1, P.zero_mem, (Ideal.ne_top_iff_one P).mp (Ideal.IsPrime.ne_top ‹_›), by simp⟩ }`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hyS : y ∈ S` using `⟨0, a, algebraMap O A ϖ * s, haP, hws, by`. Rewrite using `[hy, div_mul_cancel₀ _ hws0]`. Use the proof step `simp⟩`. Establish `hBS : B ≤ S` using `Algebra.adjoin_le (Set.singleton_subset_iff.mpr hyS)`. Establish `hcoe : ∀ r : O, ((algebraMap O B r : B) : FractionRing A) = algebraMap A (FractionRing A) (algebraMap O A r)` using `fun r => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply O A (FractionRing A)]`. Both sides reduce to the same expression. Establish `hOB : Function.Injective (algebraMap O B)`. Introduce `r1 r2 h`. Apply `hOA` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hcoe, ← hcoe, h]`. Establish `: Module.Flat O B`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout]`. Use `eq_bot_iff.mpr fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨r, hr⟩` from `(Submodule.mem_torsion_iff x).mp hx`. Rewrite `hr` using `[Submonoid.smul_def, Algebra.smul_def]`. Break down `mul_eq_zero.mp hr with h | h` into its components or cases. Conclude with `absurd (hOB (h.trans (map_zero _).symm)) (nonZeroDivisors.coe_ne_zero r)`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Establish `: Algebra.FiniteType A B` using `(Subalgebra.fg_iff_finiteType B).mp (by simpa using Subalgebra.fg_adjoin_finset ({y} : Finset _))`. Establish `: Algebra.FiniteType O B` using `Algebra.FiniteType.trans (S := A) inferInstance inferInstance`. Establish `hsp : Ideal.map (algebraMap O B) (maximalIdeal O) ≠ ⊤`. Rewrite using `[hmax, Ideal.map_span, Set.image_singleton, Ne, Ideal.span_singleton_eq_top]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce and unpack `⟨u, hu⟩`. Take `⟨a', p, t, hp, ht, h⟩` from `hBS (↑u⁻¹ : B).2`. Apply `hmeet` to reduce the goal to its premises. Rewrite using `[eq_top_iff, hmapw]`. Establish `hwb : algebraMap A (FractionRing A) (algebraMap O A ϖ) * ((↑u⁻¹ : B) : FractionRing A) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcoe, ← hu, ← Subalgebra.coe_mul, Units.mul_inv, Subalgebra.coe_one]`. Establish `hkey : algebraMap A (FractionRing A) (t - algebraMap O A ϖ * (a' * t + p)) = 0`. Rewrite using `[map_sub, map_mul, ← h]`. Combine the equalities or inequalities in the displayed calculation. Establish `hk` using `hinj (hkey.trans (map_zero _).symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `htw : t * (1 - algebraMap O A ϖ * a') ∈ P`. Establish `: t * (1 - algebraMap O A ϖ * a') = algebraMap O A ϖ * p`. Take the linear combination `hk`. Rewrite using `[this]`. Conclude with `P.mul_mem_left _ hp`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : 1 - algebraMap O A ϖ * a' ∈ P` using `(Ideal.IsPrime.mem_or_mem ‹_› htw).resolve_left ht`. Establish `: (1 : A) = (1 - algebraMap O A ϖ * a') + algebraMap O A ϖ * a'` using `by ring`. Introduce `z _`. Rewrite using `[← mul_one z, this, mul_add]`. Conclude with `Submodule.add_mem _ (Ideal.mem_sup_left (P.mul_mem_left _ h1)) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.subset_span rfl))))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `heas : algebraMap A B (e * a * s) ≠ 0`. Introduce `h`. Establish `h'` using `congrArg (fun x : B => (x : FractionRing A)) h`. Simplify using `only [Subalgebra.coe_algebraMap, ZeroMemClass.coe_zero] at h'`. Use `hinj (h'.trans (map_zero _).symm)` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Break down `mul_eq_zero.mp this with h2 | h2` into its components or cases. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `he h3`. Conclude with `ha0 h3`. Conclude with `hsP (h2 ▸ P.zero_mem)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨V, _, _, _, _, _, φ, hφ⟩` from `av_point hsp _ heas`. Set `φA : A →ₐ[O] V` to `φ.comp (IsScalarTower.toAlgHom O A B)`. Establish `hφA : ∀ x : A, φA x = φ (algebraMap A B x)` using `fun x => rfl`. Rewrite `hφ` using `[map_mul, map_mul, map_mul, map_mul]`. Establish `hφe : φA e ≠ 0` using `by rw [hφA]; intro h; apply hφ; rw [h]; ring`.
-
-Establish `hφa : φA a ≠ 0` using `by rw [hφA]; intro h; apply hφ; rw [h]; ring`. Establish `hφs : φA s ≠ 0` using `by rw [hφA]; intro h; apply hφ; rw [h]; ring`. Take `⟨v, hv⟩` from `hf V φA s a hfa hφa hφe`. Establish `hab : algebraMap A B a = algebraMap O B ϖ * algebraMap A B s * ⟨y, hyB⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_algebraMap]`. Rewrite using `[IsScalarTower.algebraMap_apply O A (FractionRing A) ϖ, hy, ← map_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hφab : φA a = algebraMap O V ϖ * φA s * φ ⟨y, hyB⟩`. Rewrite using `[hφA, hab, map_mul, map_mul, AlgHom.commutes]`.
-
-Both sides reduce to the same expression. Rewrite `hv` using `[hφab]`. Establish `hunit : algebraMap O V ϖ * (v * φ ⟨y, hyB⟩) = 1`. Establish `h2 : φA s * (1 - algebraMap O V ϖ * (v * φ ⟨y, hyB⟩)) = 0`. Take the linear combination `hv`.
-
-Establish `h3` using `(mul_eq_zero.mp h2).resolve_left hφs`. Take the linear combination `-h3`. Conclude with `not_isUnit_algebraMap_of_finite ϖ hϖm ⟨⟨algebraMap O V ϖ, v * φ ⟨y, hyB⟩, hunit, by rw [mul_comm]; exact hunit⟩, rfl⟩`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem reg_horizontal_pf {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [CharZero O]

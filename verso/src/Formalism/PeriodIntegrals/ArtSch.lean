@@ -10,11 +10,11 @@ section
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Establish `key : Valued.v ((l : ℕ) : ℂ_[l]) = ‖((l : ℕ) : ℚ_[l])‖₊`. Establish `e1 : ((l : ℕ) : ℂ_[l]) = (((l : ℕ) : PadicAlgCl l) : ℂ_[l])` using `by first`. Consider the case `exact (map_natCast (UniformSpace.Completion.coeRingHom : PadicAlgCl l →+* ℂ_[l]) l).symm`. Consider the case `norm_cast`. Consider the case `simp`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[e1, Valued.valuedCompletion_apply, ← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l))]`. Apply `NNReal.eq` to reduce the goal to its premises. Conclude with `PadicAlgCl.norm_extends l _`. Rewrite using `[(PadicComplexInt.integers l).isUnit_iff_valuation_eq_one, map_natCast, key]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ‖((l : ℕ) : ℚ_[l])‖ = 1`. Establish `h3` using `congrArg NNReal.toReal h`. Simplify using `using h3`. Conclude with `absurd h2 (ne_of_lt Padic.norm_p_lt_one)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem OC_l_not_unit : ¬ IsUnit ((l : ℕ) : PadicComplexInt l) := by
   have key : Valued.v ((l : ℕ) : ℂ_[l]) = ‖((l : ℕ) : ℚ_[l])‖₊ := by
@@ -75,7 +75,7 @@ def TiltSmall : Prop :=
 def TiltGlue : Prop := RootModP → TiltDiv → TiltSmall → TiltAS
 
 /- English proof (translation)
-Introduce `l _ x`. Conclude with `hW l (Cb l) (hT l) x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main_of (hW : WittLift) (hT : TiltAS) : Main := by
   intro l _ x

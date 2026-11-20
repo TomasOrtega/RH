@@ -5,7 +5,7 @@ universe u_1
 namespace GlobalTheory.AddMulInvMembership
 
 /- English proof (translation)
-Introduce `d1 K _ _ S π a b ha hb`. Use `show (a + b) * π⁻¹ ∈ S`. Rewrite using `[add_mul]`. Conclude with `S.add_mem ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_mul_inv_mem :
     (let d1 : {K : Type u_1} → [inst : Field K] → Subring K → K → K → Prop :=

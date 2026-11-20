@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.Full
 namespace Formalism.L2.SG.NGCut.VanishingOrbitalPoints
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.stepNormOne_of hOV fun D X Y u u' => Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u'`.
+A detailed English derivation is pending.
 -/
 theorem stepNormOne_of_ooVanish
     (hOV : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
@@ -19,7 +19,7 @@ theorem stepNormOne_of_ooVanish
   Formalism.L2.SG.NGCut.LeadingMinorIntegrality.stepNormOne_of hOV fun D X Y u u' => Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u'
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.NGCut.PtPf.stepPoints_of hOV fun D X Y u u' => Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u'`.
+A detailed English derivation is pending.
 -/
 theorem stepPoints_of_ooVanish
     (hOV : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
@@ -30,7 +30,7 @@ theorem stepPoints_of_ooVanish
 open Formalism.L2.SG.TermOp.Vanish in
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.stepNormOne_of_leaves hA hU hN hC hG h1 h2 h3 h4 fun D X Y u u' => Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u'`.
+A detailed English derivation is pending.
 -/
 theorem stepNormOne_of_vanishLeaves (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC)
     (hG : PsiInfChar) (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC) :
@@ -41,7 +41,7 @@ theorem stepNormOne_of_vanishLeaves (hA : AvgCore) (hU : GinfUnimod) (hN : NLamN
 open Formalism.L2.SG.TermOp.Vanish in
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.NGCut.PtPf.stepPoints_of_leaves hA hU hN hC hG h1 h2 h3 h4 fun D X Y u u' => Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u'`.
+A detailed English derivation is pending.
 -/
 theorem stepPoints_of_vanishLeaves (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC)
     (hG : PsiInfChar) (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC) :

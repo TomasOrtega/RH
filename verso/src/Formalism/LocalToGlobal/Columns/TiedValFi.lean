@@ -18,11 +18,11 @@ def InvAt (F : S.Cl → E.Y → ℂ) : Prop :=
     ∀ γ : S.G, γ ∈ MulAction.stabilizer S.G (S.outSec.rep c) → E.tr γ (F c) = F c
 
 /- English proof (translation)
-Unfold `Fi at hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨φ, rfl⟩` from `hx`. Introduce `c`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Submodule.subset_span ⟨_, rfl⟩, fun γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[emb_apply, E.tr_ev, ← φ.2 γ, MulAction.mem_stabilizer_iff.1 hγ]`. Consider the case `zero => exact fun c => ⟨zero_mem _, fun γ _ => map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Conclude with `fun c => ⟨add_mem (hx c).1 (hy c).1, fun γ hγ => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[Pi.add_apply, map_add, (hx c).2 γ hγ, (hy c).2 γ hγ]⟩`. Consider the case `smul a x _ hx`. Conclude with `fun c => ⟨Submodule.smul_mem _ _ (hx c).1, fun γ hγ => by`. Rewrite using `[Pi.smul_apply, map_smul, (hx c).2 γ hγ]⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem invAt_of_mem_Fi {F : S.Cl → E.Y → ℂ} (hF : F ∈ E.Fi) : E.InvAt F := by
   unfold Fi at hF
@@ -41,7 +41,7 @@ theorem invAt_of_mem_Fi {F : S.Cl → E.Y → ℂ} (hF : F ∈ E.Fi) : E.InvAt F
       rw [Pi.smul_apply, map_smul, (hx c).2 γ hγ]⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨_, (E.ev_eq_lin x).symm⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem span_ev_le_range_lin : Submodule.span ℂ (Set.range E.ev) ≤ LinearMap.range E.lin := by
   rw [Submodule.span_le]
@@ -56,9 +56,9 @@ def avg (h : S.Ok) (c : S.Cl) : S.V →ₗ[K] S.V :=
     ∑ γ : MulAction.stabilizer S.G (S.outSec.rep c), S.ρ (γ : S.G)
 
 /- English proof (translation)
-Use `letI := h.fintypeStab (S.outSec.rep c)`. Unfold `avg`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum]`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.mulLeft γ) _ _ fun γ' => ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `show S.ρ (γ : S.G) (S.ρ (γ' : S.G) v) = S.ρ ((γ * γ' : MulAction.stabilizer S.G (S.outSec.rep c)) : S.G) v`. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_avg (h : S.Ok) (c : S.Cl) (γ : MulAction.stabilizer S.G (S.outSec.rep c)) (v : S.V) :
     S.ρ (γ : S.G) (avg h c v) = avg h c v := by
@@ -72,7 +72,7 @@ theorem rho_avg (h : S.Ok) (c : S.Cl) (γ : MulAction.stabilizer S.G (S.outSec.r
   rw [Subgroup.coe_mul, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Use `letI := h.fintypeStab (S.outSec.rep c)`. Unfold `avg`. Rewrite using `[LinearMap.smul_apply, LinearMap.map_smulₛₗ, map_inv₀, map_natCast, LinearMap.sum_apply, map_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun γ _ => (E.tr_ev _ _).symm`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ev_avg (h : S.Ok) (c : S.Cl) (v : S.V) :
     letI := h.fintypeStab (S.outSec.rep c)
@@ -98,9 +98,9 @@ def bump (h : S.Ok) (c : S.Cl) (v : S.V) : S.EqFun :=
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[emb_apply, ← S.resOf_apply h S.outSec, bump, LinearEquiv.apply_symm_apply]`. Use `show E.ev ((Pi.single c (avg h c v) : S.Cl → S.V) c') = _`. Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality. Rewrite using `[Pi.single_eq_same, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hc, if_neg hc, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem emb_bump (h : S.Ok) (c : S.Cl) (v : S.V) (c' : S.Cl) :
     E.emb (bump h c v) c' = if c' = c then E.ev (avg h c v) else 0 := by
@@ -112,19 +112,17 @@ theorem emb_bump (h : S.Ok) (c : S.Cl) (v : S.V) (c' : S.Cl) :
   · rw [Pi.single_eq_of_ne hc, if_neg hc, map_zero]
 
 /- English proof (translation)
-Use `letI := h.fintypeCl`. Establish `hz : ∀ c, ∃ z : S.ιV → ℂ, E.lin z = F c` using `fun c => E.span_ev_le_range_lin (hF c).1`. Use `choose z hz using hz`. Establish `key : F = ∑ c, ∑ i, z c i • E.emb (bump h c (S.bV i))`. Use function extensionality and compare the values at `c'`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply, Finset.sum_eq_single c']`. Use `letI := h.fintypeStab (S.outSec.rep c')`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, emb_bump, if_true, ev_avg]`. Establish `h1 : ∀ i, z c' i • ((Fintype.card (MulAction.stabilizer S.G (S.outSec.rep c')) : ℂ)⁻¹ • ∑ γ : MulAction.stabilizer S.G (S.outSec.rep c'), E.tr (γ : S.G) (E.ev (S.bV i))) = (Fintype.card (MulAction.stabilizer S.G (S.outSec.rep c')) : ℂ)⁻¹ • ∑ γ : MulAction.stabilizer S.G (S.outSec …`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[smul_comm, Finset.smul_sum]`. Simplify using `only [map_smul]`. Simplify using `only [h1]`. Rewrite using `[← Finset.smul_sum, Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ γ : MulAction.stabilizer S.G (S.outSec.rep c'), ∑ i, E.tr (γ : S.G) (z c' i • E.ev (S.bV i)) = F c'`. Introduce `γ`. Rewrite using `[← map_sum]`. Establish `: ∑ i, z c' i • E.ev (S.bV i) = F c'`. Rewrite using `[← hz c']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[lin, Fintype.linearCombination_apply]`. Rewrite using `[this]`. Conclude with `(hF c').2 _ γ.2`. Simplify using `only [h2]`. Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀, one_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Introduce `c _ hc`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, emb_bump, if_neg (Ne.symm hc), smul_zero]`.
-
-Introduce `hc`. Conclude with `absurd (Finset.mem_univ c') hc`. Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Fi_of_invAt (h : S.Ok) {F : S.Cl → E.Y → ℂ} (hF : E.InvAt F) : F ∈ E.Fi := by
   classical
@@ -168,7 +166,7 @@ theorem mem_Fi_of_invAt (h : S.Ok) {F : S.Cl → E.Y → ℂ} (hF : E.InvAt F) :
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨E.invAt_of_mem_Fi, E.mem_Fi_of_invAt h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Fi_iff (h : S.Ok) (F : S.Cl → E.Y → ℂ) : F ∈ E.Fi ↔ E.InvAt F :=
   ⟨E.invAt_of_mem_Fi, E.mem_Fi_of_invAt h⟩
@@ -178,7 +176,7 @@ end GSD.Ev
 section Adelic
 
 /- English proof (translation)
-Use `show (toGLm E n) (glEquiv (γ : GL (Fin n) E)) = _`. Unfold `toGLm glEquiv`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vfi_ufGL_ratHom {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : CMData F E) (n : ℕ) (γ : URat hc n) : ufGL E n (ratHom hc n γ) = (γ : GL (Fin n) E) := by
@@ -198,7 +196,7 @@ structure IsLevOf : Prop where
     L.chi x = levTyp ((Units.map σ₀.toMonoidHom).comp Λ.chr) ⟨x.1, hx⟩
 
 /- English proof (translation)
-Establish `e : y = frMul σ₀ γ y'` using `Subtype.ext (funext fun τ => h τ)`. Rewrite using `[e, ← frMul_mul, inv_mul_cancel, frMul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem vfi_frMul_of_isTr (γ : GL (Fin n) X.E) (y y' : FrS X σ₀ n) (h : IsTr (atInf (embAt σ₀ X.emb) γ.1) y' y) :
     frMul σ₀ γ⁻¹ y = y' := by
@@ -206,7 +204,7 @@ theorem vfi_frMul_of_isTr (γ : GL (Fin n) X.E) (y y' : FrS X σ₀ n) (h : IsTr
   rw [e, ← frMul_mul, inv_mul_cancel, frMul_one]
 
 /- English proof (translation)
-Establish `h` using `rlc_decoOf_sm hc n ST SG Λ.grp γ κ⁻¹ x`. Rewrite `h` using `[Subgroup.coe_inv, inv_inv]`. Unfold `decoOfD`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vfi_decoOfD_sm (γ : URat hc n) (κ : levU hc n ST SG Λ.grp) (x : UAd hc n) :
     decoOfD n ST SG c₀ (bc (iA X.F X.E) (γ : GL (Fin n) X.E) * (x : GL (Fin n) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)) *
@@ -220,7 +218,7 @@ theorem vfi_decoOfD_sm (γ : URat hc n) (κ : levU hc n ST SG Λ.grp) (x : UAd h
   rfl
 
 /- English proof (translation)
-Unfold `levTyp levChr`. Rewrite using `[MonoidHom.inv_apply, ← map_inv]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vfi_typ (κ : levU hc n ST SG Λ.grp) :
     ((levTyp ((Units.map σ₀.toMonoidHom).comp Λ.chr) κ : ℂˣ) : ℂ) =
@@ -236,11 +234,11 @@ def adOf (φ : (formGSD (roundPk X lam Lf) Λ).EqFun) :
 variable {L}
 
 /- English proof (translation)
-Use `⟨?_, fun x _ => evV_mem_ValC X.emb 1 lam σ₀ _⟩` and prove the remaining obligations. Introduce `γ hγ x x' κ hx y y' hy`. Establish `hκ : κ.1 ∈ levU hc n ST SG Λ.grp` using `hL.U_eq ▸ κ.2`. Establish `e` using `vfi_decoOfD_sm hc Λ c₀ ⟨γ, hγ⟩ ⟨κ.1, hκ⟩ x`. Establish `e2 : decoOfD n ST SG c₀ x'.1 = ((ratHom hc n ⟨γ, hγ⟩, levRed hc n ST SG Λ.grp (⟨κ.1, hκ⟩ : levU hc n ST SG Λ.grp)⁻¹) : UF X.E n × Λ.grp) • decoOfD n ST SG c₀ x.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx]`. Conclude with `e`. Use `show (roundEv σ₀ hσ lam Lf Λ).ev ((φ : DecoSet X.E n ST SG → _) (decoOfD n ST SG c₀ x'.1)) y = _`. Rewrite using `[e2]`. Establish `e3` using `φ.2 ((ratHom hc n ⟨γ, hγ⟩, levRed hc n ST SG Λ.grp (⟨κ.1, hκ⟩ : levU hc n ST SG Λ.grp)⁻¹) : UF X.E n × Λ.grp) (decoOfD n ST SG c₀ x.1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, ← (roundEv σ₀ hσ lam Lf Λ).tr_ev, hL.chi_eq κ hκ, vfi_typ]`. Use `show σ₀ _ • (roundEv σ₀ hσ lam Lf Λ).ev _ (frMul σ₀ (ufGL X.E n (ratHom hc n ⟨γ, hγ⟩))⁻¹ y) = _`. Rewrite using `[vfi_ufGL_ratHom, vfi_frMul_of_isTr σ₀ γ y y' hy]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem adOf_mem (hL : IsLevOf hc σ₀ Λ L (ST := ST)) (φ : (formGSD (roundPk X lam Lf) Λ).EqFun) :
     adOf hc σ₀ hσ lam Lf Λ c₀ φ ∈ AdForms L (embAt σ₀ X.emb) lam := by
@@ -261,7 +259,7 @@ theorem adOf_mem (hL : IsLevOf hc σ₀ Λ L (ST := ST)) (φ : (formGSD (roundPk
   rfl
 
 /- English proof (translation)
-Introduce `τ`. Establish `e : frMul σ₀ γ (frMul σ₀ γ⁻¹ z) = z` using `by rw [← frMul_mul, mul_inv_cancel, frMul_one]`. Conclude with `(congrArg (fun w : FrS X σ₀ n => w.1 τ) e).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vfi_isTr_frMul (γ : GL (Fin n) X.E) (z : FrS X σ₀ n) :
     IsTr (atInf (embAt σ₀ X.emb) γ.1) (frMul σ₀ γ⁻¹ z) z := by
@@ -270,15 +268,13 @@ theorem vfi_isTr_frMul (γ : GL (Fin n) X.E) (z : FrS X σ₀ n) :
   exact (congrArg (fun w : FrS X σ₀ n => w.1 τ) e).symm
 
 /- English proof (translation)
-Introduce `c`. Use `⟨?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1` using `hg.2 (ptOfD hc n ST SG c₀ ((formGSD (roundPk X lam Lf) Λ).outSec.rep c)) trivial`. Rewrite `h1` using `[← span_evV X.emb 1 lam σ₀]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set yc : UAd hc n := ptOfD hc n ST SG c₀ ((formGSD (roundPk X lam Lf) Λ).outSec.rep c) with hyc`. Establish `h0 : decoOfD n ST SG c₀ (yc : GL (Fin n) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)) = (formGSD (roundPk X lam Lf) Λ).outSec.rep c` using `decoOfD_ptOfD hc n ST SG hS c₀ _`. Establish `h1 : decoOf ST SG (yc : GL (Fin n) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)) = (a : UF X.E n × Λ.grp) • decoOf ST SG (yc : GL (Fin n) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F))`. Apply `rla_dia_inj n ST SG c₀` to reduce the goal to its premises. Use `show decoOfD n ST SG c₀ (yc : GL (Fin n) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)) = (a : UF X.E n × Λ.grp) • decoOfD n ST SG c₀ (yc : GL (Fin n) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[h0]`. Conclude with `(MulAction.mem_stabilizer_iff.1 ha).symm`. Take `⟨γ, k, hγ, hk, e⟩` from `rlc_rel_of_orbit hc n ST SG Λ.grp a h1`. Use function extensionality and compare the values at `z`. Use `show σ₀ ((Λ.chr a.2 : X.Kˣ) : X.K) • g yc (frMul σ₀ (ufGL X.E n a.1)⁻¹ z) = g yc z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hk' : ((k⁻¹ : levU hc n ST SG Λ.grp) : GL (Fin n) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)) ∈ L.U`. Rewrite using `[hL.U_eq]`. Conclude with `(k⁻¹).2`. Establish `h2` using `hg.1 γ.1 γ.2 yc yc ⟨_, hk'⟩ (by rw [Subgroup.coe_inv]; exact e) z (frMul σ₀ (γ : GL (Fin n) X.E)⁻¹ z) (vfi_isTr_frMul σ₀ γ.1 z)`. Rewrite using `[h2, hL.chi_eq _ (k⁻¹).2, vfi_typ, inv_inv, hk, ← hγ, vfi_ufGL_ratHom]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem invAt_of_adForms (hS : DecoPtSurj hc n ST SG) (hL : IsLevOf hc σ₀ Λ L (ST := ST))
     (g : UPts hc.sig (1 : Matrix (Fin n) (Fin n) X.E) (FiniteAdeleRing (𝓞 X.F) X.F) → FrS X σ₀ n → ℂ)
@@ -311,11 +307,9 @@ theorem invAt_of_adForms (hS : DecoPtSurj hc n ST SG) (hL : IsLevOf hc σ₀ Λ 
     rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(Submodule.span_le.2 ?_ : (roundEv σ₀ hσ lam Lf Λ).Fi ≤ _) h` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨adOf hc σ₀ hσ lam Lf Λ c₀ x, adOf_mem hc σ₀ hσ lam Lf Λ c₀ hL x, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `c`. Use `show (roundEv σ₀ hσ lam Lf Λ).ev ((x : DecoSet X.E n ST SG → _) (decoOfD n ST SG c₀ (ptOfD hc n ST SG c₀ ((formGSD (roundPk X lam Lf) Λ).outSec.rep c) : GL (Fin n) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)))) = _`. Rewrite using `[decoOfD_ptOfD hc n ST SG hS c₀]`. Both sides reduce to the same expression. Introduce and unpack `⟨g, hg, rfl⟩`.
-
-Conclude with `(roundEv σ₀ hσ lam Lf Λ).mem_Fi_of_invAt hOk (invAt_of_adForms hc σ₀ hσ lam Lf Λ c₀ hS hL g hg)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fi_iff_FiC (hOk : (formGSD (roundPk X lam Lf) Λ).Ok) (hS : DecoPtSurj hc n ST SG) (hL : IsLevOf hc σ₀ Λ L (ST := ST))
     (φ : (formGSD (roundPk X lam Lf) Λ).Cl → FrS X σ₀ n → ℂ) :
@@ -344,13 +338,13 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : �
   (u : Pr.Word) (i : ℕ) (c₀ : DiaG X.E (Pr.vT u)) (hS : DecoPtSurj hc (R.N i) (Pr.vT u) Pr.vGs)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem tieLev_isLevOf {n : ℕ} [NeZero n] (Λ' : LevFam X.E X.K n Pr.vGs) :
     IsLevOf hc σ₀ Λ' (tieLev hc hX hPr σ₀ u Λ') (ST := Pr.vT u) := ⟨rfl, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `φ`. Conclude with `fi_iff_FiC hc σ₀ hσ (W.lamTrue u i) (fun d => d.1.Lsh) (Λ i) c₀ (stepOk W Λ hX u i) hS (tieLev_isLevOf hc hX hPr σ₀ u (Λ i)) φ`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Val.fi (Q : ValCrd W Λ σ₀ u i) : Val.Fi W Λ hc hX hPr σ₀ hσ u i c₀ hS Q := by
   obtain ⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩ := Q

@@ -17,11 +17,11 @@ open scoped ComplexOrder
 open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c K _ _ _ x t₀ B m m' τ w h a`. Take `⟨w', ⟨u, hu, hw'⟩, e⟩` from `h a`. Establish `h1 : w'.left = spMap (epsScaleR (LamF.labK c K τ (a : E))) ≫ w.left`. Rewrite using `[hw']`. Simplify using `using hu 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : w.left ≫ (t₀.act.act a).left = w'.left`. Apply `m'.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, m'.act a]`. Conclude with `e`. Rewrite using `[Category.assoc, Over.w (t₀.act.act a), Over.w w, Over.w w']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← m.act a, ← Category.assoc, h2, h1, Category.assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isEigAt_of_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (x : Sp K ⟶ Xo.X) (t₀ : SAB H (Sp K)) (B : SAB H (Sp (𝓞 K))) (m : SABMap t₀ Xo.univ.t x) (m' : SABMap t₀ B (spMap (algebraMap (𝓞 K) K))) (τ : E →+* ℂ) (w : epsR K ⟶ t₀.G), (∀ a : 𝓞 E, ∃ w' : epsR K ⟶ t₀.G, IsLieComb ![LamF.labK c K τ (a : E)] ![w] w' ∧ w.left ≫ m'.φ ≫ (B.act.act a).left = w'.left ≫ m'.φ) → IsEigAt c τ (w.left ≫ m.φ) := by
   intro E _ _ _ H Dw l Xo c K _ _ _ x t₀ B m m' τ w h a

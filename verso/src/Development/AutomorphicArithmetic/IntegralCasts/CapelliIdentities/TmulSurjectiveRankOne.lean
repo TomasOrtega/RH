@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `O T X _ _ _ _ _ x₀ h m`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, TensorProduct.zero_tmul T x₀⟩`. Consider the case `tmul t x`. Take `⟨c, rfl⟩` from `h x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c • t, TensorProduct.smul_tmul c t x₀⟩`. Consider the case `add a b ha hb`. Take `⟨s, rfl⟩` from `ha`. Take `⟨t, rfl⟩` from `hb`. Conclude with `⟨s + t, TensorProduct.add_tmul s t x₀⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.Qj4.tmul_surjective_rank_one :
     ∀ {O T X : Type} [inst : CommRing O]

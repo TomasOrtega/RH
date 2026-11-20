@@ -10,7 +10,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ _ _ _ A _ hA V hV hs`. Take `⟨c, L, hL, s, -, e⟩` from `GlobalTheory.T.affineOpen_meeting_fibres_is_nonvanishingLocus R A hA V hV hs`. Conclude with `⟨L, hL, s, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lineBundle_section_nonzeroLocus_eq_affineOpen :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] [IsDomain R] [IsIntegrallyClosed R]

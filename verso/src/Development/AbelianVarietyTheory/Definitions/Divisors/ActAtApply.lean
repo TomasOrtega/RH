@@ -90,7 +90,7 @@ def HoweAlg {T : Type} {R S : T → ℕ} {V : Type} [AddCommGroup V] [Module ℂ
   ∀ N N' : Submodule ℂ V, (∀ w, Stab (a w) N) → C ≤ N → N ≠ ⊤ → (∀ w, Stab (a w) N') → C ≤ N' → N' ≠ ⊤ → N ⊔ N' ≠ ⊤
 
 /- English proof (translation)
-Use `⟨fun a b c d => by simp, by simp [cas]⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 example : IsGl (fun _ _ : Fin 2 => (0 : Module.End ℂ ℂ)) ∧ cas (fun _ : Fin 2 => true) (fun _ _ => (0 : Module.End ℂ ℂ)) = 0 := by
   refine ⟨fun a b c d => by simp, by simp [cas]⟩

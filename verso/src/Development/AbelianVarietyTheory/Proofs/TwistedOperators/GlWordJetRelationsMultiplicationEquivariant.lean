@@ -8,7 +8,7 @@ open scoped InnerProductSpace ComplexOrder Matrix.Norms.L2Operator
 namespace GlobalTheory.SphJet
 
 /- English proof (translation)
-Rewrite using `[List.ofFn_succ', List.concat_eq_append, List.reverse_append]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rev_ofFn_succ {A : Type} {m : ℕ} (α : Fin (m + 1) → A) :
     (List.ofFn α).reverse = α (Fin.last m) :: (List.ofFn (Fin.init α)).reverse := by
@@ -16,15 +16,15 @@ theorem rev_ofFn_succ {A : Type} {m : ℕ} (α : Fin (m + 1) → A) :
   rfl
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro α p`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `α p`. Rewrite using `[Fin.sum_univ_castSucc]`. Establish `hl : ∀ q, (List.ofFn (Function.update α (Fin.last m) q)).reverse = q :: (List.ofFn (Fin.init α)).reverse`. Introduce `q`. Rewrite using `[rev_ofFn_succ, Function.update_self, Fin.init_update_last]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ (i : Fin m) q, (List.ofFn (Function.update α i.castSucc q)).reverse = α (Fin.last m) :: (List.ofFn (Function.update (Fin.init α) i q)).reverse`. Introduce `i q`. Rewrite using `[rev_ofFn_succ, Function.update_of_ne (Fin.castSucc_ne_last i).symm, Fin.init_update_castSucc]`. Simplify using `only [hl, hc]`. Establish `hi : ∀ i : Fin m, α i.castSucc = Fin.init α i` using `fun i => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hi]`. Rewrite using `[rev_ofFn_succ α]`. Establish `h1` using `ih (Fin.init α) (p ++ [α (Fin.last m)])`. Establish `h2` using `hB p (List.ofFn (Fin.init α)).reverse c d (α (Fin.last m)).1 (α (Fin.last m)).2`. Simplify using `only [List.append_assoc, List.cons_append, List.nil_append, Prod.mk.eta] at h1 h2 ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, ← h2]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem wordFun_move_letter {M : Type} [AddCommGroup M] {n : ℕ} (B : List (Fin n × Fin n) → M)
     (hB : ∀ (l₁ l₂ : List (Fin n × Fin n)) (a b c d : Fin n),
@@ -58,23 +58,23 @@ theorem wordFun_move_letter {M : Type} [AddCommGroup M] {n : ℕ} (B : List (Fin
     abel
 
 /- English proof (translation)
-Introduce `V W _ _ _ _ n ε E Λ u j B m hL hJ c d hcd y y' hy G G' hG`. Establish `hex : ∀ x : W, ∃ x' : W, j x' = E c d (j x)`. Introduce `x`. Establish `h1 : j x ∈ kSpan ε E u`. Rewrite using `[← hL.2.2.2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, rfl⟩`. Establish `h2` using `compact_span_compact_stable ε E u c d hcd _ h1`. Rewrite `h2` using `[← hL.2.2.2.2]`. Conclude with `h2`. Use `choose T hT using hex`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `happ : ∀ (F : (Fin m → Fin n × Fin n) → V) α, arrTo V n m F α = F α`. Introduce `F α`. Simplify using `[arrTo]`. Establish `hG' : ∀ α, G' α = ∑ i, ((if (α i).1 = c then G (Function.update α i (d, (α i).2)) else 0) - (if (α i).2 = d then G (Function.update α i ((α i).1, c)) else 0)) + T (G α)`. Introduce `α`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `j.injective` to reduce the goal to its premises. Establish `h` using `congrArg (fun F : Arr V n m => F α) hG`. Simplify using `only [arr_operator_apply, factorAction_apply', happ] at h`. Rewrite using `[h, map_add, map_sum, hT]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `hR : ∀ α : Fin m → Fin n × Fin n, B (List.ofFn α).reverse y' (G α) = ∑ i, ((if d = (α i).1 then B (List.ofFn (Function.update α i (c, (α i).2))).reverse y (G α) else 0) - (if (α i).2 = c then B (List.ofFn (Function.update α i ((α i).1, d))).reverse y (G α) else 0)) + B (List.ofFn …`. Introduce `α`. Establish `h` using `wordFun_move_letter (fun l => B l y (G α)) (fun l₁ l₂ a b c d => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun φ : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ => φ y (G α)) (hJ.1 l₁ l₂ a b c d)` as an intermediate fact. Simplify using `only [LinearMap.sub_apply] at this`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp) c d m α []`. Simplify using `only [List.nil_append] at h`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← h, hJ.2.1 _ c d hcd y (G α) _ (hT _), hJ.2.2.1 _ c d hcd y y' _ hy]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hR, hG', map_add, map_sum, Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_sub, Finset.sum_sub_distrib]`. Use `congr 1`. Use `((Finset.sum_congr rfl fun α _ => (apply_ite (B (List.ofFn α).reverse y) _ _ _).trans (by rw [map_zero]))).trans ((sum_update_first_index_swap i c d (fun α β => B (List.ofFn α).reverse y (G β))).trans ?_)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : (β i).1 = d`. Rewrite using `[if_pos h, if_pos h.symm]`. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`. Conclude with `((Finset.sum_congr rfl fun α _ => (apply_ite (B (List.ofFn α).reverse y) _ _ _).trans (by rw [map_zero]))).trans (sum_update_second_index_swap i c d (fun α β => B (List.ofFn α).reverse y (G β)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetRel_equivariant : ∀ (V W : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (Λ : Fin n → ℝ) (u : V) (j : W →ₗᵢ[ℂ] V) (B : List (Fin n × Fin n) → W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (m : ℕ), LowData ε E Λ u j → JetRel ε E Λ u j B → ∀ c d : Fin n, ε c = ε d → ∀ y y' : W, j y' = E d c (j y) → ∀ G G' : (Fin m → Fin n × Fin n) → W, arrTo V n m (fun α => j (G' α)) = arrE E m c d (arrTo V n m fun α => j (G α)) → ∑ α, B (List.ofFn α).reverse y (G' α) = ∑ α, B (List.ofFn α).reverse y' (G α) := by
   intro V W _ _ _ _ n ε E Λ u j B m hL hJ c d hcd y y' hy G G' hG

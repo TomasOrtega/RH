@@ -15,21 +15,21 @@ noncomputable def comps (f : O⟦X⟧) : Fin l → O⟦X⟧ :=
 
 include hφ in
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.powerSeries_existsUnique_decomp_over_frobeniusLike_endo l hl φ hφ f).exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 lemma comps_spec (f : O⟦X⟧) :
     f = ∑ j : Fin l, PowerSeries.X ^ j.val * φ (comps l hl φ hφ f j) :=
   (GlobalTheory.T.powerSeries_existsUnique_decomp_over_frobeniusLike_endo l hl φ hφ f).exists.choose_spec
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.powerSeries_existsUnique_decomp_over_frobeniusLike_endo l hl φ hφ f).unique (comps_spec l hl φ hφ f) h`.
+A detailed English derivation is pending.
 -/
 lemma comps_eq {f : O⟦X⟧} {c : Fin l → O⟦X⟧}
     (h : f = ∑ j : Fin l, PowerSeries.X ^ j.val * φ (c j)) : comps l hl φ hφ f = c :=
   (GlobalTheory.T.powerSeries_existsUnique_decomp_over_frobeniusLike_endo l hl φ hφ f).unique (comps_spec l hl φ hφ f) h
 
 /- English proof (translation)
-Apply `comps_eq` to reduce the goal to its premises. Simplify using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`. Rewrite using `[← comps_spec l hl φ hφ f, ← comps_spec l hl φ hφ f']`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma comps_add (f f' : O⟦X⟧) :
     comps l hl φ hφ (f + f') = comps l hl φ hφ f + comps l hl φ hφ f' := by
@@ -38,16 +38,16 @@ lemma comps_add (f f' : O⟦X⟧) :
   rw [← comps_spec l hl φ hφ f, ← comps_spec l hl φ hφ f']
 
 /- English proof (translation)
-Apply `comps_eq` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 lemma comps_zero : comps l hl φ hφ (0 : O⟦X⟧) = 0 := by
   apply comps_eq
   simp
 
 /- English proof (translation)
-Establish `: comps l hl φ hφ (φ c * f) = fun k => c * comps l hl φ hφ f k`. Apply `comps_eq` to reduce the goal to its premises. Use `conv_lhs => rw [comps_spec l hl φ hφ f]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma comps_mul_phi (c f : O⟦X⟧) (k : Fin l) :
     comps l hl φ hφ (φ c * f) k = c * comps l hl φ hφ f k := by
@@ -61,13 +61,11 @@ lemma comps_mul_phi (c f : O⟦X⟧) (k : Fin l) :
 
 include hl hφ in
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[hφ, PowerSeries.coeff_X_pow]`. Distinguish the cases in `h1 : l ∣ m`. Take `⟨q, rfl⟩` from `h1`. Rewrite using `[if_pos (dvd_mul_right l q), Nat.mul_div_cancel_left q (by omega), PowerSeries.coeff_X]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hq : q = 1`. Substitute `hq` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hq, if_neg]`. Introduce `h2`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hq` to reduce the goal to its premises. Establish `: l * q = l * 1` using `by simpa using h2`. Conclude with `Nat.eq_of_mul_eq_mul_left (by omega) this`. Rewrite using `[if_neg h1, if_neg]`. Introduce and unpack `rfl`.
-
-Conclude with `h1 dvd_rfl`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma phi_X : φ PowerSeries.X = PowerSeries.X ^ l := by
   ext m
@@ -87,7 +85,7 @@ lemma phi_X : φ PowerSeries.X = PowerSeries.X ^ l := by
     exact h1 dvd_rfl
 
 /- English proof (translation)
-Establish `: comps l hl φ hφ (PowerSeries.X ^ t) = fun j => if j = (⟨t % l, Nat.mod_lt _ (Nat.lt_of_lt_of_le (by norm_num) hl)⟩ : Fin l) then PowerSeries.X ^ (t / l) else 0`. Apply `comps_eq` to reduce the goal to its premises. Simplify using `only [apply_ite φ, map_zero, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[map_pow, phi_X l hl φ hφ, ← pow_mul, ← pow_add, Nat.mod_add_div]`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -103,17 +101,15 @@ lemma comps_X_pow (t : ℕ) :
   rw [this]; simp
 
 /- English proof (translation)
-Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.mp hf`. Use `clear hf`. Rewrite using `[comps_add, Pi.add_apply]`. Use `Submodule.add_mem_sup ?_ ?_` and prove the remaining obligations. Establish `key : ∀ r : O⟦X⟧, comps l hl φ hφ (r * x) k ∈ J`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `x ∈ Submodule.span O⟦X⟧ (φ '' (J : Set O⟦X⟧)) at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨j, hj, rfl⟩` from `hz`. Introduce `r`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, comps_mul_phi]`. Conclude with `J.mul_mem_right _ hj`. Consider the case `zero`. Introduce `r`. Rewrite using `[mul_zero, comps_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `J.zero_mem`. Consider the case `add z w _ _ hz hw`. Introduce `r`. Rewrite using `[mul_add, comps_add, Pi.add_apply]`. Conclude with `J.add_mem (hz r) (hw r)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `smul s z _ hz`. Introduce `r`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hz (r * s)`. Simplify using `using key 1`.
-
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Establish `e : c * (l : O⟦X⟧) ^ b = φ ((l : O⟦X⟧) ^ b) * c`. Rewrite using `[map_pow, map_natCast, mul_comm]`. Rewrite using `[e, comps_mul_phi]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma descend (J : Ideal O⟦X⟧) (b : ℕ) (f : O⟦X⟧)
     (hf : f ∈ J.map φ ⊔ Ideal.span {(l : O⟦X⟧) ^ b}) (k : Fin l) :
@@ -150,9 +146,9 @@ lemma descend (J : Ideal O⟦X⟧) (b : ℕ) (f : O⟦X⟧)
     exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Establish `: (PowerSeries.X : O⟦X⟧) ^ (e * (h + b - 1)) = ((PowerSeries.X ^ e + (l : O⟦X⟧)) + (-(l : O⟦X⟧))) ^ (h + b - 1)`. Rewrite using `[pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Apply `Ideal.add_pow_mem_of_pow_mem_of_le (m := h) (n := b)` to reduce the goal to its premises. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`. Rewrite using `[neg_pow]`. Conclude with `Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma pow_mem_binom (e h b : ℕ) (hb : 1 ≤ b) :
     (PowerSeries.X : O⟦X⟧) ^ (e * (h + b - 1)) ∈
@@ -174,23 +170,21 @@ namespace GlobalTheory
 open GlobalTheory.FrobIdealDeg in
 
 /- English proof (translation)
-Introduce `O _ l hl φ hφ a e h b _ I hb hhb hs hI`. Establish `step : ∀ τ t, (PowerSeries.X : O⟦X⟧) ^ t ∈ I τ ⊔ Ideal.span {(l : O⟦X⟧) ^ b} → (PowerSeries.X : O⟦X⟧) ^ (t + e * (h + b - 1)) ∈ (I (τ - 1)).map φ ⊔ Ideal.span {(l : O⟦X⟧) ^ b}`. Introduce `τ t ht`. Establish `hK` using `pow_mem_binom (O := O) l e h b hb`. Take `⟨r1, hr1, r2, hr2, hr⟩` from `Submodule.mem_sup.mp hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.mp ht`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hr1`. Rewrite using `[pow_add, ← hxy, ← hr]`. Establish `hring : (x + y) * (c * (PowerSeries.X ^ e + (l : O⟦X⟧)) ^ h + r2) = c * ((PowerSeries.X ^ e + (l : O⟦X⟧)) ^ h * x) + (y * (c * (PowerSeries.X ^ e + (l : O⟦X⟧)) ^ h + r2) + x * r2)` using `by ring`. Rewrite using `[hring]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem_sup (Ideal.mul_mem_left _ _ (hI τ x hx)) (Ideal.add_mem _ (Ideal.mul_mem_right _ _ hy) (Ideal.mul_mem_left _ _ hr2))`. Set `s : ZMod a → ℕ` to `fun τ => Nat.find (hs τ)`. Establish `hspec : ∀ τ, (PowerSeries.X : O⟦X⟧) ^ s τ ∈ I τ ⊔ Ideal.span {(l : O⟦X⟧) ^ b}` using `fun τ => Nat.find_spec (hs τ)`. Establish `down : ∀ τ, l * s τ ≤ s (τ + 1) + e * (h + b - 1)`. Introduce `τ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `step (τ + 1) (s (τ + 1)) (hspec (τ + 1))`. Rewrite `h1` using `[add_sub_cancel_right]`. Establish `h2` using `descend l hl φ hφ (I τ) b _ h1 ⟨(s (τ + 1) + e * (h + b - 1)) % l, Nat.mod_lt _ (by omega)⟩`. Rewrite `h2` using `[comps_X_pow]`. Establish `h3 : s τ ≤ (s (τ + 1) + e * (h + b - 1)) / l` using `Nat.find_min' _ h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨τ0, -, hmax⟩` from `Finset.exists_max_image Finset.univ s Finset.univ_nonempty`. Take `⟨n, hn⟩ : ∃ n, h + b - 1 = n` from `⟨_, rfl⟩`. Establish `hnl : n + 1 ≤ l` using `by omega`. Establish `hS : s τ0 ≤ e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d` using `down τ0`. Establish `m` using `hmax (τ0 + 1) (Finset.mem_univ _)`. Rewrite `d` using `[hn]`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `τ`. Establish `h1` using `step (τ + 1) (s (τ + 1)) (hspec (τ + 1))`. Rewrite `h1` using `[add_sub_cancel_right]`. Use `Ideal.pow_mem_of_pow_mem _ h1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m` using `hmax (τ + 1) (Finset.mem_univ _)`. Establish `: e * (h + b) = e * (h + b - 1) + e`. Rewrite using `[← Nat.mul_add_one]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem frobenius_ideal_degree_bound : ∀ {O : Type} [CommRing O] (l : ℕ), 2 ≤ l →
     ∀ (φ : O⟦X⟧ →ₐ[O] O⟦X⟧), (∀ (f : O⟦X⟧) (m : ℕ), PowerSeries.coeff m (φ f) =

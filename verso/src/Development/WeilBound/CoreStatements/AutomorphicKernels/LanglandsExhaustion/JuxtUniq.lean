@@ -9,11 +9,11 @@ namespace PositivityTheory.Exh
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨n, cx⟩` from `x`. Take `⟨m, cy⟩` from `y`. Take `⟨hx1, hxc⟩` from `hx`. Take `⟨hy1, hyc⟩` from `hy`. Establish `hnm : n = m` using `hx1.symm.trans hy1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hnm` using the available equality. Take `⟨e⟩` from `IsCosocle.unique hxc hyc`. Establish `hc : cx = cy`. Rewrite using `[← Quotient.out_eq cx, ← Quotient.out_eq cy]`. Conclude with `Quotient.sound ⟨e.symm⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_isLSeg (Δ : Segment k) (x y : IrrGL k) (hx : IsLSeg Δ x.rep) (hy : IsLSeg Δ y.rep) : x = y := by
   obtain ⟨n, cx⟩ := x

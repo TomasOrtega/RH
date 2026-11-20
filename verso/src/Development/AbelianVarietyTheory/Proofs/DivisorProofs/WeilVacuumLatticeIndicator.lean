@@ -18,7 +18,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.KSplit
 
 /- English proof (translation)
-Introduce `u _`. Simplify using `[mat]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem one_mem_UAt_fin {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (X : Spc F E n) (v : Pl F) : (1 : UA σ X.J) ∈ UAt σ X (evFin F v) := by
@@ -26,7 +26,7 @@ theorem one_mem_UAt_fin {F E : Type} [Field F] [NumberField F] [Field E] [Number
   simp [mat]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, zpow_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_eq_zpow_sum' {G ι : Type*} [CommGroup G] (a : G) (s : Finset ι) (f : ι → ℤ) :
     ∏ i ∈ s, a ^ f i = a ^ (∑ i ∈ s, f i) := by
@@ -38,21 +38,21 @@ theorem prod_zpow_eq_zpow_sum' {G ι : Type*} [CommGroup G] (a : G) (s : Finset 
 end GlobalTheory.KSplit
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r₁ s₁ hP v t b c ι hι hvac hunr ϖ hϖ e T hT k₁ hk₁ k₂ hk₂ g hg hgk`. Establish `h1` using `GlobalTheory.KSplit.one_mem_UAt_fin σ W v`. Take `⟨φ₁, ⟨hφ₁SB, hφ₁⟩, -⟩` from `(GlobalTheory.T.theta_action_exists hPr F E σ B n d X W M χX χW om r s r₁ s₁ hP v).1 g hg 1 h1 (M.vac v) (hP.good.vac v).1`. Use `⟨φ₁, hφ₁SB, hφ₁, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.linear_witt_model_unitary_action hPr F E σ B n d X W M χX χW om r s r₁ s₁ hP v t b c ι hι g hg 1 h1 _ (hP.good.vac v).1 φ₁ hφ₁SB hφ₁, hvac, map_one, hgk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set u : (Fv F v)ˣ := GlobalTheory.SplitFlip.gdet k₁ * GlobalTheory.SplitFlip.gdet k₂ with hu`. Establish `hdetT : GlobalTheory.SplitFlip.gdet T = ϖ ^ (∑ j, e j)`. Rewrite using `[← GlobalTheory.KSplit.prod_zpow_eq_zpow_sum']`. Apply `Units.ext` to reduce the goal to its premises. Use `show T.1.det = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hT, Matrix.det_diagonal, Units.coe_prod]`. Simplify using `only [Units.val_zpow_eq_zpow_val]`. Establish `hdet : GlobalTheory.SplitFlip.gdet (k₁ * T * k₂) = u * ϖ ^ (∑ j, e j)`. Rewrite using `[GlobalTheory.SplitFlip.gdet_mul, GlobalTheory.SplitFlip.gdet_mul, hdetT, hu, mul_right_comm]`. Establish `hvu : Valued.v ((u : Fv F v)) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hu, Units.val_mul, map_mul]`. Rewrite using `[show ((GlobalTheory.SplitFlip.gdet k₁ : (Fv F v)ˣ) : Fv F v) = k₁.1.det from rfl, show ((GlobalTheory.SplitFlip.gdet k₂ : (Fv F v)ˣ) : Fv F v) = k₂.1.det from rfl, GlobalTheory.GLintCover.det_v hk₁, GlobalTheory.GLintCover.det_v hk₂, one_mul]`. Establish `hchr : chrW χW t u = 1` using `(GlobalTheory.ChrWLocal.isUnram_chrW_iff χW t).2 hunr u ((GlobalTheory.ChrWLocal.valuation_eq_one_iff _).2 hvu)`. Establish `hvD : Valued.v ((GlobalTheory.SplitFlip.gdet (k₁ * T * k₂) : (Fv F v)ˣ) : Fv F v) = WithZero.exp (-(∑ j, e j))`. Rewrite using `[hdet, Units.val_mul, map_mul, hvu, one_mul, Units.val_zpow_eq_zpow_val, map_zpow₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show Valued.v (ϖ : Fv F v) = WithZero.exp (-1 : ℤ) from hϖ, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules. Establish `hnabs : GlobalTheory.SplitWeil.nabs (Fv F v) (GlobalTheory.SplitFlip.gdet (k₁ * T * k₂)) = (qV F v : ℝ) ^ (-(∑ j, e j))`. Rewrite using `[GlobalTheory.LGrp.BorelCompletion.nabs_completion, hvD, WithZero.log_exp]`. Establish `hq : (0 : ℝ) ≤ (qV F v : ℝ)` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `Y`. Simplify using `only [GlobalTheory.SplitFlip.omA, MonoidHom.inv_apply, inv_inv, map_one, Units.val_one, one_mul, Matrix.mul_one, Fintype.card_fin, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hdet, map_mul, hchr, one_mul, map_zpow, Units.val_zpow_eq_zpow_val]`. Rewrite using `[← hdet]`. Establish `ha1 : GlobalTheory.SplitFlip.apow (1 : (Fv F v)ˣ) (-(n : ℂ) / 2) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[GlobalTheory.SplitFlip.apow, GlobalTheory.SplitWeil.nabs]`. Establish `haD : GlobalTheory.SplitFlip.apow (GlobalTheory.SplitFlip.gdet (k₁ * T * k₂)) (-(d : ℂ) / 2) = (((qV F v : ℝ) ^ ((d : ℝ) / 2 * ((∑ j, e j : ℤ) : ℝ)) : ℝ) : ℂ)`. Rewrite using `[GlobalTheory.SplitFlip.apow, hnabs, show (-(d : ℂ) / 2) = ((-(d : ℝ) / 2 : ℝ) : ℂ) by push_cast; ring, ← Complex.ofReal_cpow (zpow_nonneg hq _), ← Real.rpow_intCast, ← Real.rpow_mul hq]`. Use `congr 2`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ha1, haD, mul_one]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KSplit.vac_act_torus : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r₁ s₁ : ℕ),
     IsPair B M χX χW om r s r₁ s₁ →

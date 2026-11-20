@@ -21,7 +21,7 @@ def sub (k r : ℕ) (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
   fun a b => m (bl k r a) (bl k r b)
 
 /- English proof (translation)
-Use `a.isLt` as an intermediate fact. Use `show r ≤ (bl k r a).val ∧ (bl k r a).val < r + k`. Use `show r ≤ r + a.val ∧ r + a.val < r + k`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma inB_bl (a : Fin k) : InB k r (bl k r a) := by
   have := a.isLt
@@ -30,7 +30,7 @@ lemma inB_bl (a : Fin k) : InB k r (bl k r a) := by
   omega
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h'` using `congrArg Fin.val h`. Express the relevant statement in the definitionally equal form `r + a.val = r + b.val at h'`. Conclude with `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 lemma blockIndex_injective : Function.Injective (bl k r) := by
   intro a b h
@@ -39,7 +39,7 @@ lemma blockIndex_injective : Function.Injective (bl k r) := by
   exact Fin.ext (by omega)
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Use `show r + c.val - r = c.val`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma mk_bl (c : Fin k) (p : (bl k r c).val - r < k) : (⟨(bl k r c).val - r, p⟩ : Fin k) = c := by
   apply Fin.ext
@@ -47,7 +47,7 @@ lemma mk_bl (c : Fin k) (p : (bl k r c).val - r < k) : (⟨(bl k r c).val - r, p
   omega
 
 /- English proof (translation)
-Establish `hi' : r ≤ i.val ∧ i.val < r + k` using `hi`. Apply `Fin.ext` to reduce the goal to its premises. Use `show r + (i.val - r) = i.val`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma block_mk {i : Fin (2 * r + k + 1)} (hi : InB k r i) (p : i.val - r < k) : bl k r ⟨i.val - r, p⟩ = i := by
   have hi' : r ≤ i.val ∧ i.val < r + k := hi
@@ -56,7 +56,7 @@ lemma block_mk {i : Fin (2 * r + k + 1)} (hi : InB k r i) (p : i.val - r < k) : 
   omega
 
 /- English proof (translation)
-Introduce `h`. Substitute `h` using the available equality. Conclude with `hj hi`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma ne_of_inB {i j : Fin (2 * r + k + 1)} (hi : InB k r i) (hj : ¬ InB k r j) : i ≠ j := by
   intro h
@@ -64,7 +64,7 @@ lemma ne_of_inB {i j : Fin (2 * r + k + 1)} (hi : InB k r i) (hj : ¬ InB k r j)
   exact hj hi
 
 /- English proof (translation)
-Establish `hi' : r ≤ i.val ∧ i.val < r + k` using `hi`. Establish `hj' : r ≤ j.val ∧ j.val < r + k` using `hj`. Simplify using `only [blockW]`. Rewrite using `[dif_pos hi', dif_pos hj']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma blockW_in (h : Matrix (Fin k) (Fin k) ℂ) {i j : Fin (2 * r + k + 1)} (hi : InB k r i)
     (hj : InB k r j) :
@@ -75,7 +75,7 @@ lemma blockW_in (h : Matrix (Fin k) (Fin k) ℂ) {i j : Fin (2 * r + k + 1)} (hi
   rw [dif_pos hi', dif_pos hj']
 
 /- English proof (translation)
-Establish `hi' : r ≤ i.val ∧ i.val < r + k` using `hi`. Establish `hj' : ¬ (r ≤ j.val ∧ j.val < r + k)` using `hj`. Simplify using `only [blockW]`. Rewrite using `[dif_pos hi', dif_neg hj']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma blockW_in_out (h : Matrix (Fin k) (Fin k) ℂ) {i j : Fin (2 * r + k + 1)} (hi : InB k r i)
     (hj : ¬ InB k r j) : blockW k r h i j = 0 := by
@@ -85,7 +85,7 @@ lemma blockW_in_out (h : Matrix (Fin k) (Fin k) ℂ) {i j : Fin (2 * r + k + 1)}
   rw [dif_pos hi', dif_neg hj']
 
 /- English proof (translation)
-Establish `hi' : ¬ (r ≤ i.val ∧ i.val < r + k)` using `hi`. Simplify using `only [blockW]`. Rewrite using `[dif_neg hi']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma blockW_out (h : Matrix (Fin k) (Fin k) ℂ) {i j : Fin (2 * r + k + 1)} (hi : ¬ InB k r i) :
     blockW k r h i j = if i = j then 1 else 0 := by
@@ -94,7 +94,7 @@ lemma blockW_out (h : Matrix (Fin k) (Fin k) ℂ) {i j : Fin (2 * r + k + 1)} (h
   rw [dif_neg hi']
 
 /- English proof (translation)
-Rewrite using `[blockW_in h (inB_bl a) (inB_bl b)]`. Simplify using `only [mk_bl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma blockW_bl (h : Matrix (Fin k) (Fin k) ℂ) (a b : Fin k) :
     blockW k r h (bl k r a) (bl k r b) = h a b := by
@@ -102,26 +102,26 @@ lemma blockW_bl (h : Matrix (Fin k) (Fin k) ℂ) (a b : Fin k) :
   simp only [mk_bl]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Conclude with `blockW_bl h a b`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma sub_blockW (h : Matrix (Fin k) (Fin k) ℂ) : sub k r (blockW k r h) = h := by
   funext a b
   exact blockW_bl h a b
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hi : InB k r i`. Establish `key : ∑ l, blockW k r a i l * blockW k r b l j = ∑ c : Fin k, blockW k r a i (bl k r c) * blockW k r b (bl k r c) j`. Establish `hm` using `Finset.sum_map (Finset.univ : Finset (Fin k)) ⟨bl k r, blockIndex_injective⟩ (fun l => blockW k r a i l * blockW k r b l j)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.Embedding.coeFn_mk] at hm`. Rewrite using `[← hm]`. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `l _ hl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl' : ¬ InB k r l`. Introduce `h'`. Apply `hl` to reduce the goal to its premises. Establish `h'' : r ≤ l.val ∧ l.val < r + k` using `h'`. Simplify using `only [Finset.mem_map, Finset.mem_univ, true_and, Function.Embedding.coeFn_mk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨⟨l.val - r, by omega⟩, block_mk h' _⟩`. Rewrite using `[blockW_in_out a hi hl', zero_mul]`. Rewrite using `[key]`. Distinguish the cases in `hj : InB k r j`. Rewrite using `[blockW_in (a * b) hi hj, Matrix.mul_apply]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `c _`. Rewrite using `[blockW_in a hi (inB_bl c), blockW_in b (inB_bl c) hj]`. Simplify using `only [mk_bl]`. Rewrite using `[blockW_in_out (a * b) hi hj]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Rewrite using `[blockW_in_out b (inB_bl c) hj, mul_zero]`. Rewrite using `[blockW_out (a * b) hi, Finset.sum_eq_single i]`. Rewrite using `[blockW_out a hi, if_pos rfl, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `blockW_out b hi`. Introduce `l _ hl`. Rewrite using `[blockW_out a hi, if_neg (Ne.symm hl), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma blockW_mul (a b : Matrix (Fin k) (Fin k) ℂ) :
     blockW k r a * blockW k r b = blockW k r (a * b) := by
@@ -164,13 +164,13 @@ lemma blockW_mul (a b : Matrix (Fin k) (Fin k) ℂ) :
       exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hi : InB k r i`. Distinguish the cases in `hj : InB k r j`. Rewrite using `[blockW_in _ hi hj, Matrix.one_apply, Matrix.one_apply]`. Establish `hi' : r ≤ i.val ∧ i.val < r + k` using `hi`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj' : r ≤ j.val ∧ j.val < r + k` using `hj`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hij, if_neg]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hij` to reduce the goal to its premises. Establish `h2` using `congrArg Fin.val h`. Express the relevant statement in the definitionally equal form `i.val - r = j.val - r at h2`. Conclude with `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[blockW_in_out _ hi hj, Matrix.one_apply, if_neg (ne_of_inB hi hj)]`. Rewrite using `[blockW_out _ hi, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma blockW_one : blockW k r (1 : Matrix (Fin k) (Fin k) ℂ) = 1 := by
   ext i j
@@ -192,11 +192,11 @@ lemma blockW_one : blockW k r (1 : Matrix (Fin k) (Fin k) ℂ) = 1 := by
   · rw [blockW_out _ hi, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply]`. Apply the tactic sequence `by_cases hi : InB k r i <;> by_cases hj : InB k r j`. Rewrite using `[blockW_in a hj hi, blockW_in _ hi hj, Matrix.conjTranspose_apply]`. Rewrite using `[blockW_out a hj, blockW_in_out _ hi hj, if_neg (ne_of_inB hi hj).symm, star_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[blockW_in_out a hj hi, blockW_out _ hi, if_neg (fun h => ne_of_inB hj hi h.symm), star_zero]`. Rewrite using `[blockW_out a hj, blockW_out _ hi]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hij, if_neg (Ne.symm hij), star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma blockW_conjTranspose (a : Matrix (Fin k) (Fin k) ℂ) : (blockW k r a)ᴴ = blockW k r aᴴ := by
   ext i j
@@ -212,7 +212,7 @@ lemma blockW_conjTranspose (a : Matrix (Fin k) (Fin k) ℂ) : (blockW k r a)ᴴ 
     · rw [if_neg hij, if_neg (Ne.symm hij), star_zero]
 
 /- English proof (translation)
-Establish `hi' : r ≤ i.val ∧ i.val < r + k` using `hi`. Unfold `piI`. Rewrite using `[if_pos (by omega)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma piI_in {i : Fin (2 * r + k + 1)} (hi : InB k r i) : piI k r i = i := by
   have hi' : r ≤ i.val ∧ i.val < r + k := hi
@@ -220,7 +220,7 @@ lemma piI_in {i : Fin (2 * r + k + 1)} (hi : InB k r i) : piI k r i = i := by
   rw [if_pos (by omega)]
 
 /- English proof (translation)
-Establish `hi' : r ≤ i.val ∧ i.val < r + k` using `hi`. Unfold `epsI`. Rewrite using `[if_neg (by omega)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma epsI_in {i : Fin (2 * r + k + 1)} (hi : InB k r i) : epsI k r i = 1 := by
   have hi' : r ≤ i.val ∧ i.val < r + k := hi
@@ -228,9 +228,7 @@ lemma epsI_in {i : Fin (2 * r + k + 1)} (hi : InB k r i) : epsI k r i = 1 := by
   rw [if_neg (by omega)]
 
 /- English proof (translation)
-Establish `hi' : ¬ (r ≤ i.val ∧ i.val < r + k)` using `hi`. Establish `h0` using `i.isLt`. Unfold `piI InB`. Use `split_ifs with h`. Conclude with `hi'`.
-
-Use `show ¬ (r ≤ 2 * r + k - i.val ∧ 2 * r + k - i.val < r + k)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma piI_out {i : Fin (2 * r + k + 1)} (hi : ¬ InB k r i) : ¬ InB k r (piI k r i) := by
   have hi' : ¬ (r ≤ i.val ∧ i.val < r + k) := hi
@@ -242,7 +240,7 @@ lemma piI_out {i : Fin (2 * r + k + 1)} (hi : ¬ InB k r i) : ¬ InB k r (piI k 
     omega
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hl` using `l.isLt`. Simplify using `only [Hpk, piI, epsI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> (try dsimp only at *) <;> first | rfl | (exfalso; omega) | norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Hpk_apply_wp_eq_ite (i l : Fin (2 * r + k + 1)) :
     Hpk k r i l = if l = piI k r i then epsI k r i else 0 := by
@@ -252,7 +250,7 @@ private lemma Hpk_apply_wp_eq_ite (i l : Fin (2 * r + k + 1)) :
   split_ifs <;> (try dsimp only at *) <;> first | rfl | (exfalso; omega) | norm_num
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Establish `hl` using `l.isLt`. Simplify using `only [Hpk, piI, epsI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> (try dsimp only at *) <;> first | rfl | (exfalso; omega) | norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Hpk_apply_eq_ite_piI (l j : Fin (2 * r + k + 1)) :
     Hpk k r l j = if l = piI k r j then epsI k r j else 0 := by
@@ -262,9 +260,9 @@ private lemma Hpk_apply_eq_ite_piI (l j : Fin (2 * r + k + 1)) :
   split_ifs <;> (try dsimp only at *) <;> first | rfl | (exfalso; omega) | norm_num
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (piI k r j)]`. Rewrite using `[Hpk_apply_eq_ite_piI, if_pos rfl]`. Introduce `l _ hl`. Rewrite using `[Hpk_apply_eq_ite_piI, if_neg hl, mul_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 private lemma mul_Hpk_apply_highest_weight_uniqueness (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (i j : Fin (2 * r + k + 1)) : (M * Hpk k r) i j = M i (piI k r j) * epsI k r j := by
@@ -276,9 +274,9 @@ private lemma mul_Hpk_apply_highest_weight_uniqueness (M : Matrix (Fin (2 * r + 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (piI k r i)]`. Rewrite using `[Hpk_apply_wp_eq_ite, if_pos rfl]`. Introduce `l _ hl`. Rewrite using `[Hpk_apply_wp_eq_ite, if_neg hl, zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 private lemma Hpk_mul_applyHighestWeightUniqueness (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (i j : Fin (2 * r + k + 1)) : (Hpk k r * M) i j = epsI k r i * M (piI k r i) j := by
@@ -290,11 +288,11 @@ private lemma Hpk_mul_applyHighestWeightUniqueness (M : Matrix (Fin (2 * r + k +
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Hpk_mul_applyHighestWeightUniqueness, mul_Hpk_apply_highest_weight_uniqueness]`. Distinguish the cases in `hi : InB k r i`. Rewrite using `[piI_in hi, epsI_in hi, one_mul]`. Distinguish the cases in `hj : InB k r j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[piI_in hj, epsI_in hj, mul_one]`. Rewrite using `[blockW_in_out a hi hj, blockW_in_out a hi (piI_out hj), zero_mul]`. Rewrite using `[blockW_out a hi, blockW_out a (piI_out hi)]`. Establish `hi' : ¬ (r ≤ i.val ∧ i.val < r + k)` using `hi`. Establish `h1` using `i.isLt`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `j.isLt`. Simplify using `only [piI, epsI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> (try dsimp only at *) <;> first | rfl | (exfalso; omega) | norm_num`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Hpk_blockW_comm (a : Matrix (Fin k) (Fin k) ℂ) :
     Hpk k r * blockW k r a = blockW k r a * Hpk k r := by
@@ -313,13 +311,13 @@ lemma Hpk_blockW_comm (a : Matrix (Fin k) (Fin k) ℂ) :
     split_ifs <;> (try dsimp only at *) <;> first | rfl | (exfalso; omega) | norm_num
 
 /- English proof (translation)
-Simplify using `[Jm, allPos]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Jm_allPos : Jm (allPos k) = 1 := by
   simp [Jm, allPos]
 
 /- English proof (translation)
-Use `show inUJ (allPos k) h ↔ hᴴ * h = 1`. Unfold `inUJ`. Rewrite using `[Jm_allPos, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_UJset_allPos {h : Matrix (Fin k) (Fin k) ℂ} : h ∈ UJset (allPos k) ↔ hᴴ * h = 1 := by
   show inUJ (allPos k) h ↔ hᴴ * h = 1
@@ -327,9 +325,9 @@ lemma mem_UJset_allPos {h : Matrix (Fin k) (Fin k) ℂ} : h ∈ UJset (allPos k)
   rw [Jm_allPos, mul_one]
 
 /- English proof (translation)
-Establish `h0 : (blockW k r h)ᴴ * Hpk k r * blockW k r h = Hpk k r` using `hm`. Rewrite `h0` using `[mul_assoc, Hpk_blockW_comm, ← mul_assoc, blockW_conjTranspose, blockW_mul]`. Use extensionality with `a b`. Establish `e` using `congrFun (congrFun h0 (bl k r a)) (bl k r b)`. Rewrite `e` using `[mul_Hpk_apply_highest_weight_uniqueness, Hpk_apply_wp_eq_ite, piI_in (inB_bl b), epsI_in (inB_bl b), mul_one, blockW_bl, piI_in (inB_bl a), epsI_in (inB_bl a)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, Matrix.one_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hab, if_neg (fun e' => hab (blockIndex_injective e').symm)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma unitary_of_blockW_mem {h : Matrix (Fin k) (Fin k) ℂ} (hm : blockW k r h ∈ UH (Hpk k r)) :
     hᴴ * h = 1 := by
@@ -346,14 +344,14 @@ lemma unitary_of_blockW_mem {h : Matrix (Fin k) (Fin k) ℂ} (hm : blockW k r h 
   · rw [if_neg hab, if_neg (fun e' => hab (blockIndex_injective e').symm)]
 
 /- English proof (translation)
-Simplify using `[bvec, Matrix.mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mulVec_bvec_apply (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j) :
     (g *ᵥ bvec j) i = g i j := by
   simp [bvec, Matrix.mulVec]
 
 /- English proof (translation)
-Simplify using `only [bvec, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma bvec_apply (i j : Fin (2 * r + k + 1)) : bvec j i = if i = j then 1 else 0 := by
   simp only [bvec, Pi.single_apply]
@@ -363,15 +361,13 @@ def FixEW (k r : ℕ) (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
     m *ᵥ bvec (wI k r (Fin.last k)) = bvec (wI k r (Fin.last k))
 
 /- English proof (translation)
-Establish `hcol : m *ᵥ bvec j = bvec j`. Establish `hj' : ¬ (r ≤ j.val ∧ j.val < r + k)` using `hj`. Establish `h0` using `j.isLt`. Take `⟨h1, h2⟩` from `hm`. Distinguish the cases in `c1 : j.val < r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Establish `e : j = eI k r ⟨j.val, c1⟩` using `Fin.ext rfl`. Rewrite using `[e]`. Conclude with `(h1 _).1`. Distinguish the cases in `c2 : j.val = r + k`. Establish `e : j = wI k r (Fin.last k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use `show j.val = r + (Fin.last k).val`. Rewrite using `[Fin.val_last]`. Conclude with `c2`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `h2`. Establish `e : j = esI k r ⟨2 * r + k - j.val, by omega⟩`. Apply `Fin.ext` to reduce the goal to its premises. Use `show j.val = 2 * r + k - (2 * r + k - j.val)`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[e]`. Conclude with `(h1 _).2`. Establish `e` using `congrFun hcol i`. Rewrite `e` using `[mulVec_bvec_apply, bvec_apply]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fix_col {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hm : FixEW k r m)
     (j : Fin (2 * r + k + 1)) (hj : ¬ InB k r j) (i : Fin (2 * r + k + 1)) :
@@ -403,7 +399,7 @@ lemma fix_col {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hm :
   exact e
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [piI]`. Apply the tactic sequence `split_ifs <;> (try dsimp only at *) <;> omega`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma piI_piI_highest_weight_uniqueness (i : Fin (2 * r + k + 1)) : piI k r (piI k r i) = i := by
   have hi := i.isLt
@@ -412,11 +408,11 @@ private lemma piI_piI_highest_weight_uniqueness (i : Fin (2 * r + k + 1)) : piI 
   split_ifs <;> (try dsimp only at *) <;> omega
 
 /- English proof (translation)
-Establish `hU' : mᴴ * Hpk k r * m = Hpk k r` using `hU`. Establish `hpo : ¬ InB k r (piI k r i)` using `piI_out hi`. Establish `e` using `congrFun (congrFun hU' (piI k r i)) j`. Rewrite `e` using `[mul_assoc, Matrix.mul_apply, Finset.sum_eq_single (piI k r i)]`. Rewrite `e` using `[Matrix.conjTranspose_apply, fix_col hm _ hpo, if_pos rfl, star_one, one_mul, Hpk_mul_applyHighestWeightUniqueness, Hpk_apply_wp_eq_ite, piI_piI_highest_weight_uniqueness, if_neg (ne_of_inB hj hi)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : epsI k r (piI k r i) ≠ 0`. Unfold `epsI`. Apply the tactic sequence `split_ifs <;> norm_num`. Conclude with `(mul_eq_zero.mp e).resolve_left hne`. Introduce `l _ hl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_apply, fix_col hm _ hpo, if_neg hl, star_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma fix_row {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU : m ∈ UH (Hpk k r))
     (hm : FixEW k r m) (i j : Fin (2 * r + k + 1)) (hi : ¬ InB k r i) (hj : InB k r j) : m i j = 0 := by
@@ -436,11 +432,11 @@ lemma fix_row {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hb : m = blockW k r (sub k r m)`. Use extensionality with `i j`. Distinguish the cases in `hj : InB k r j`. Distinguish the cases in `hi : InB k r i`. Rewrite using `[blockW_in _ hi hj] show m i j = m (bl k r _) (bl k r _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[block_mk hi, block_mk hj]`. Rewrite using `[fix_row hU hm i j hi hj, blockW_out _ hi, if_neg (ne_of_inB hj hi).symm]`. Rewrite using `[fix_col hm j hj i]`. Distinguish the cases in `hi : InB k r i`. Rewrite using `[blockW_in_out _ hi hj, if_neg (ne_of_inB hi hj)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[blockW_out _ hi]`. Use `⟨?_, hb⟩` and prove the remaining obligations. Rewrite using `[mem_UJset_allPos]`. Rewrite `hU` using `[hb]`. Conclude with `unitary_of_blockW_mem hU`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_block {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU : m ∈ UH (Hpk k r))
     (hm : FixEW k r m) : sub k r m ∈ UJset (allPos k) ∧ m = blockW k r (sub k r m) := by

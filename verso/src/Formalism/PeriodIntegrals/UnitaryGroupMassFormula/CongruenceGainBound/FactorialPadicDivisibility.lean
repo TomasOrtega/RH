@@ -10,7 +10,7 @@ namespace PI.UnitaryGroupMassFormula.PadicGainBound
 def PDiv (p n : ℕ) (r : ℝ) : Prop := ∃ V : ℕ, p ^ V ∣ n ∧ r ≤ V
 
 /- English proof (translation)
-Take `⟨V, h1, h2⟩` from `h`. Conclude with `⟨V, h1, hr.trans h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PDiv.mono {p n : ℕ} {r r' : ℝ} (h : PDiv p n r) (hr : r' ≤ r) : PDiv p n r' := by
   obtain ⟨V, h1, h2⟩ := h

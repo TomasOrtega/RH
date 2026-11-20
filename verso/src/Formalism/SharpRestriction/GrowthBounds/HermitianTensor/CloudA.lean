@@ -7,39 +7,37 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.CountingSumsFrames Formalism.GradedWeylDivisibility MvPolynomial Formalism.MainNotions.G.LatticeSystems
 
 /- English proof (translation)
-Introduce `p n' R mm hmm a ccl P Q lam hlam h0 hl hmid h8`. Take `⟨abelian₂, hK, hE, hI, nb, s, s', ka, hnb, hka, hs, hs', h24⟩` from `h p n' R mm hmm a ccl P Q lam hlam h0 hl hmid h8`. Use `R.std.1.frac_O` as an intermediate fact. Establish `hinj : Function.Injective (algebraMap R.O R.Kf)` using `IsFractionRing.injective R.O R.Kf`. Establish `hm1 : 1 ≤ mm + 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloA : Antitone (lam - wtPQ (mm + 1) P Q)` using `caLo_anti mm ccl P Q lam hlam h0 hl hmid`. Establish `hloA' : Antitone (dualWt (lam - wtPQ (mm + 1) P Q))` using `cc_dualWt_anti _ hloA`. Establish `hmuA : Antitone (wtPQ (mm + 1) P Q)` using `wtPQ_anti _ _ _ hm1`. Establish `hmpA : Antitone (wtPQ (mm + 1) (P + 2 * ccl) (Q + 2 * ccl))` using `wtPQ_anti _ _ _ hm1`. Establish `hzeA : Antitone (wtPQ (mm + 1) (2 * ccl) (2 * ccl))` using `wtPQ_anti _ _ _ hm1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlo0 : (lam - wtPQ (mm + 1) P Q) 0 = (ccl : ℤ)`. Rewrite using `[lo_val mm ccl P Q lam h0 hl, if_pos rfl]`. Establish `hloL : (lam - wtPQ (mm + 1) P Q) (Fin.last (mm + 1)) = -(ccl : ℤ)`. Rewrite using `[lo_val mm ccl P Q lam h0 hl, if_neg (caLast_ne_zero mm), if_pos rfl]`. Establish `hloL' : dualWt (lam - wtPQ (mm + 1) P Q) (Fin.last (mm + 1)) = -(ccl : ℤ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `dualWt`. Rewrite using `[Fin.rev_last, hlo0]`. Use `⟨abelian₂, hK, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `Λ ⟨g, hg, rfl⟩ v hv t ht`. Rewrite using `[mem_invariant_sections_iff_integral hinj _ _ hmpA g hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hv0` using `(mem_invariant_sections_iff_integral hinj _ lam hlam g hg v).1 hv`. Establish `ht0` using `(mem_invariant_sections_iff_integral hinj _ _ hloA' g hg t).1 ht`. Establish `hvK : v ∈ dualWeyl R.Kf (mm + 1 + 1) (mm + 1 + 1) (nuOf lam)` using `la_nablaLTw_le _ lam g hg v (H0_le_twisted_nabla _ lam hlam g hg hv)`. Establish `htK : t ∈ dualWeyl R.Kf (mm + 1 + 1) (mm + 1 + 1) (nuOf (dualWt (lam - wtPQ (mm + 1) P Q)))` using `la_nablaLTw_le _ _ g hg t (H0_le_twisted_nabla _ _ hloA' g hg ht)`. Establish `h3` using `hI _ hv0 _ ht0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_smul, map_smul, smul_mul_smul_comm, map_smul, hE g hg v hvK t htK, ← zpow_add₀ hg.ne_zero]`. Establish `he : lam (Fin.last (mm + 1)) + dualWt (lam - wtPQ (mm + 1) P Q) (Fin.last (mm + 1)) = wtPQ (mm + 1) (P + 2 * ccl) (Q + 2 * ccl) (Fin.last (mm + 1))`. Rewrite using `[hl, hloL', wtPQ_last]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h3` using `[he]`. Then use the resulting hypothesis. Introduce `g hg`. Establish `hgi : IsUnit (g⁻¹).det` using `Matrix.isUnit_nonsing_inv_det g hg`. Use `⟨nb, g.det ^ (2 * ccl) • rowAct R.Kf g⁻¹ (hw R.Kf (le_refl (mm + 1 + 1)) (nuOf (wtPQ (mm + 1) (2 * ccl) (2 * ccl)))), fun b => g.det ^ ccl • rowAct R.Kf g⁻¹ (s b), fun a' => g.det ^ ccl • rowAct R.Kf g⁻¹ (s' a'), ka, hnb, hka, ?_, ?_⟩` and prove the remaining obligations. Introduce `a' b F hF`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF0 : rowAct R.Kf g F ∈ dualWeyl R.Kf (mm + 1 + 1) (mm + 1 + 1) (nuOf (wtPQ (mm + 1) P Q))` using `dualWeylRowStable R.Kf _ _ _ g F hF`. Establish `e1 : F * (g.det ^ ccl • rowAct R.Kf g⁻¹ (s b)) = g.det ^ ccl • rowAct R.Kf g⁻¹ (rowAct R.Kf g F * s b)`. Rewrite using `[map_mul, rowAct_cancel_inv g hg, mul_smul_comm]`. Establish `hsK` using `intO_le (O := R.O) _ _ _ (hs b).1`. Establish `hsK'` using `intO_le (O := R.O) _ _ _ (hs' a').1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : rowAct R.Kf g F * s b ∈ dualWeyl R.Kf (mm + 1 + 1) (mm + 1 + 1) (nuOf lam)`. Establish `h4` using `dualWeyl_mul R.Kf _ _ _ _ hF0 hsK`. Rewrite `h4` using `[← nuOf_add _ _ hmuA hloA]`. Establish `e : wtPQ (mm + 1) P Q + (lam - wtPQ (mm + 1) P Q) = lam` using `by abel`. Rewrite `h4` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `show abelian₂ (blockEmb R.Kf true (F * (g.det ^ ccl • rowAct R.Kf g⁻¹ (s b))) * blockEmb R.Kf false (g.det ^ ccl • rowAct R.Kf g⁻¹ (s' a'))) = _`. Rewrite using `[e1, map_smul, map_smul, smul_mul_smul_comm, map_smul, hE g⁻¹ hgi _ hv _ hsK', h24 a' b _ hF0]`. Use `split_ifs`. Rewrite using `[map_smul, map_mul, rowAct_cancel_inv g hg, smul_smul, smul_mul_assoc, smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_zero, smul_zero]`. Introduce `c hc`. Establish `hgD : IsUnit (g * lb_D (mm + 1 + 1) 1 c).det`. Rewrite using `[Matrix.det_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hg.mul (lb_D_det _ 1 c hc)`. Establish `hzR : Row0 (hw R.Kf (le_refl (mm + 1 + 1)) (nuOf (wtPQ (mm + 1) (2 * ccl) (2 * ccl)))) (2 * ccl + 2 * ccl)`. Apply the tactic sequence `have h5 := highest_weight_first_entry (K := R.Kf) (mm + 1) _ (nuOf_anti _ hzeA)`. Establish `h6 : nuOf (wtPQ (mm + 1) (2 * ccl) (2 * ccl)) 0 = 2 * ccl + 2 * ccl`. Unfold `nuOf`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[wtPQ_zero, wtPQ_last]`. Use linear arithmetic over natural numbers and integers. Rewrite `h5` using `[h6]`. Then use the resulting hypothesis. Establish `hcz` using `core_id g hg c hc (2 * ccl) (2 * ccl) _ hzR`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[mem_invariant_sections_iff_integral hinj _ _ hzeA _ hgD, wtPQ_last, hcz]`. Conclude with `hw_int _ _ (nuOf_anti _ hzeA)`. Introduce and unpack `⟨z', hz', he⟩`. Establish `h7` using `(mem_invariant_sections_iff_integral hinj _ _ hzeA _ hgD z').1 hz'`. Rewrite `h7` using `[wtPQ_last]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hw_prim (O := R.O) (K := R.Kf) hinj R.w R.w_mem (mm + 1 + 1) (nuOf (wtPQ (mm + 1) (2 * ccl) (2 * ccl)))` to reduce the goal to its premises. Use `⟨_, h7, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcz, he, smulO_eq R.w z', map_smul, smulO_eq R.w, smul_comm]`. Introduce `b`. Establish `hR : Row0 (s b) (ccl + ccl)` using `by rw [← two_mul]; exact (hs b).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_invariant_sections_iff_integral hinj _ _ hloA _ hgD, hloL, core_id g hg c hc ccl ccl _ hR]`. Conclude with `(hs b).1`. Introduce `a'`. Establish `hR : Row0 (s' a') (ccl + ccl)` using `by rw [← two_mul]; exact (hs' a').2`. Rewrite using `[mem_invariant_sections_iff_integral hinj _ _ hloA' _ hgD, hloL', core_id g hg c hc ccl ccl _ hR]`.
-
-Conclude with `(hs' a').1`.
+A detailed English derivation is pending.
 -/
 theorem cloudOne_of (h : ContractionStandardLattice) : CloudOne := by
   intro p n' R mm hmm a ccl P Q lam hlam h0 hl hmid h8

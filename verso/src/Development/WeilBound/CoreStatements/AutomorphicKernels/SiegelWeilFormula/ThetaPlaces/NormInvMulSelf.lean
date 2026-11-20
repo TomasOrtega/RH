@@ -13,17 +13,17 @@ open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Simplify using `[piInf, compInf, infEmb_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piInf_one {w : InfinitePlace F} (τ : EmbOver E w) (x : E) : piInf τ ((1 : AF F) ⊗ₜ[F] x) = τ.1 x := by
   simp [piInf, compInf, infEmb_tmul]
 
 /- English proof (translation)
-Establish `hz' : z = (z.re : ℂ)` using `Complex.ext rfl (by simp [him])`. Establish `hn : ‖z‖ = |z.re|` using `by rw [hz', Complex.norm_real, Real.norm_eq_abs]; simp`. Establish `hre : z.re ≠ 0` using `fun h => hz (by rw [hz', h]; simp)`. Rewrite using `[hn]`. Use `split_ifs with hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_of_pos hpos, hz']`. Use `push_cast`. Rewrite using `[Complex.ofReal_re]`. Conclude with `inv_mul_cancel₀ (by exact_mod_cast hre)`. Establish `hneg : z.re < 0` using `lt_of_le_of_ne (not_lt.1 hpos) hre`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[abs_of_neg hneg, hz']`. Use `push_cast`. Rewrite using `[Complex.ofReal_re, inv_neg, neg_mul, inv_mul_cancel₀ (by exact_mod_cast hre)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_inv_mul_self {z : ℂ} (hz : z ≠ 0) (him : z.im = 0) :
     ((‖z‖⁻¹ : ℝ) : ℂ) * z = if 0 < z.re then 1 else -1 := by
@@ -42,35 +42,35 @@ theorem norm_inv_mul_self {z : ℂ} (hz : z ≠ 0) (him : z.im = 0) :
     rw [Complex.ofReal_re, inv_neg, neg_mul, inv_mul_cancel₀ (by exact_mod_cast hre)]
 
 /- English proof (translation)
-Introduce `w`. Use `set τ := (d.B.emb w).1 with hτ`. Use `set a := τ η with ha`. Use `set c := cW d.B η w with hc`. Establish `hθ1 : ∀ x : E, θ w ((1 : HeckeCharacterZeroLocus.SiegelWeilU.Ainf F) ⊗ₜ[F] x) = star (τ x)` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `th w ((1 : AF F) ⊗ₜ[F] x)` as an intermediate fact. Rewrite `this` using `[Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply, piInf_one]`. Conclude with `this`. Establish `hmat : (HeckeCharacterZeroLocus.SiegelWeilU.JR (HeckeCharacterZeroLocus.SiegelWeilU.Ainf F) (Jd d η)).map (θ w) = a • d.A.J.map τ`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply, HeckeCharacterZeroLocus.SiegelWeilU.JR, Jd, Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul, HeckeCharacterZeroLocus.SiegelWeilU.inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, hθ1]`. Rewrite using `[← hcm.2.2.2, herm, map_mul]`. Establish `hcs : star c = c` using `Complex.conj_ofReal _`. Establish `hfrH : ((fr w).1)ᴴ = c • ((R.fr w).1)ᵀ`. Rewrite using `[frc w, Matrix.conjTranspose_smul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `star c • _ = _`. Rewrite using `[hcs]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ : R.ζ ≠ 0`. Apply the tactic sequence `rcases hηζ with ⟨_, h⟩ | ⟨_, h⟩ <;> rw [h] <;> simp`. Establish `hfr' : (R.fr w).1ᵀ * d.A.J.map τ * (R.fr w).1.map star = (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ)) • 1`. Use `congrArg (fun M => R.ζ⁻¹ • M) (R.hfr w)` as an intermediate fact. Simplify using `only [smul_smul, inv_mul_cancel₀ hζ, one_smul] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Establish `ha0 : a ≠ 0` using `(map_ne_zero τ).2 hη`. Establish `hapos : 0 < ‖a‖` using `norm_pos_iff.2 ha0`. Establish `hcc : c * c = ((‖a‖⁻¹ : ℝ) : ℂ)`. Rewrite using `[hc, cW, ← Complex.ofReal_mul, ← Real.rpow_add hapos]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `[Real.rpow_neg_one]`. Use `set z := a / R.ζ * ((R.sg w : ℤ) : ℂ) with hz`. Establish `hsg : ‖((R.sg w : ℤ) : ℂ)‖ = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (R.sg w) with h | h <;> rw [h] <;> simp`. Establish `hsg0 : ((R.sg w : ℤ) : ℂ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hsg` using `[h]`. Simplify using `at hsg`. Establish `hsgim : (((R.sg w : ℤ) : ℂ)).im = 0` using `by simp`. Establish `hz0 : z ≠ 0` using `mul_ne_zero (div_ne_zero ha0 hζ) hsg0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzn : ‖z‖ = ‖a‖`. Rewrite using `[hz, norm_mul, norm_div, hsg]`. Apply the tactic sequence `rcases hηζ with ⟨_, h⟩ | ⟨_, h⟩ <;> rw [h] <;> simp`. Establish `hzim : z.im = 0`. Establish `hconj` using `hcm.2.2.2 τ η`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Break down `hηζ with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Rewrite `hconj` using `[h1]`. Establish `him : a.im = 0`. Use `congrArg Complex.im hconj` as an intermediate fact. Express the relevant statement in the definitionally equal form `a.im = (star a).im at this`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hz, h2, div_one, Complex.mul_im, him, hsgim]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hconj` using `[h1, map_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hre : a.re = 0`. Use `congrArg Complex.re hconj` as an intermediate fact. Express the relevant statement in the definitionally equal form `(-a).re = (star a).re at this`. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz, h2, Complex.div_I, Complex.mul_im, hsgim]`. Simplify using `[Complex.mul_im, hre]`. Establish `key : (fr w).1ᴴ * (HeckeCharacterZeroLocus.SiegelWeilU.JR (HeckeCharacterZeroLocus.SiegelWeilU.Ainf F) (Jd d η)).map (θ w) * (fr w).1 = (((‖z‖⁻¹ : ℝ) : ℂ) * z) • (1 : Matrix (Fin d.m) (Fin d.m) ℂ)`. Rewrite using `[hfrH, hmat, frc w, show ((‖(d.B.emb w).1 η‖ ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) = c from rfl]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfr', smul_smul, hzn, ← hcc, hz]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Express the relevant statement in the definitionally equal form `(fr w).1ᴴ * (HeckeCharacterZeroLocus.SiegelWeilU.JR (HeckeCharacterZeroLocus.SiegelWeilU.Ainf F) (Jd d η)).map (θ w) * (fr w).1 = _`. Rewrite using `[key, norm_inv_mul_self hz0 hzim]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[εsW, sgn, hz, ha, hτ]`. Simplify using `[hij]`.
+A detailed English derivation is pending.
 -/
 theorem isFrames_of' {d : SD σ} (R : RD d) (η : E) (hη : η ≠ 0) (hcm : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ)
     (herm : ∀ i j, σ (η * d.A.J j i) = η * d.A.J i j) (hηζ : (σ η = η ∧ R.ζ = 1) ∨ (σ η = -η ∧ R.ζ = Complex.I))

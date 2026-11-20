@@ -11,21 +11,19 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X₀ X _ _ K hK`. Establish `hsel : ∀ (Y : Type) [AddCommGroup Y] (w : Fin 8) (nu : Fin 8 → Y), (fun u : Fin 8 => ∑ v, (Matrix.of fun (_ : Fin 8) (v : Fin 8) => if v = w then (1:ℤ) else 0) u v • nu v) = fun _ => nu w`. Introduce `Y _ w nu`. Use function extensionality and compare the values at `u`. Simplify using `[Matrix.of_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hc : ∀ (mu : Fin 8 → X₀) (w : Fin 8), K (fun _ => mu w) = fun _ => K mu w`. Introduce `mu w`. Establish `h` using `hK (Matrix.of fun (_ : Fin 8) (v : Fin 8) => if v = w then (1:ℤ) else 0) mu`. Rewrite `h` using `[hsel, hsel]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `f : X₀ →+ X` to `{ toFun := fun x => K (fun _ => x) 0 map_zero' := by show K 0 0 = 0`. Simplify using the standard rewrite rules. Use the proof step `map_add' := by`. Introduce `x y`. Use `show K ((fun _ => x) + (fun _ => y)) 0 = _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[map_add]`. Use `rfl }`. Establish `hform : ∀ (mu : Fin 8 → X₀) (u : Fin 8), K mu u = f (mu u)`. Introduce `mu u`. Use `show K mu u = K (fun _ => mu u) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Establish `inj : Function.Injective f`. Use `(injective_iff_map_eq_zero f).2 fun x hx => ?_` and prove the remaining obligations. Establish `h1 : K (fun _ => x) = 0`. Use function extensionality and compare the values at `u`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hform]`. Conclude with `hx`. Establish `h2 : (fun _ : Fin 8 => x) = 0` using `K.injective (h1.trans (map_zero K).symm)`. Conclude with `congrFun h2 0`. Establish `surj : Function.Surjective f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Use `⟨K.symm (fun _ => y) 0, ?_⟩` and prove the remaining obligations. Establish `h` using `hform (K.symm fun _ => y) 0`. Rewrite using `[← h]`. Simplify using the standard rewrite rules.
-
-Use `⟨AddEquiv.ofBijective f ⟨inj, surj⟩, fun mu => funext fun u => ?_⟩` and prove the remaining obligations. Conclude with `hform mu u`.
+A detailed English derivation is pending.
 -/
 theorem smul_eighth_power_diag : ∀ (X₀ X : Type) [AddCommGroup X₀] [AddCommGroup X] (K : (Fin 8 → X₀) ≃+ (Fin 8 → X)), (∀ (a : Matrix (Fin 8) (Fin 8) ℤ) (mu : Fin 8 → X₀), K (fun u => ∑ v, a u v • mu v) = fun u => ∑ v, a u v • K mu v) → ∃ k : X₀ ≃+ X, ∀ mu, K mu = fun u => k (mu u) := by
   intro X₀ X _ _ K hK

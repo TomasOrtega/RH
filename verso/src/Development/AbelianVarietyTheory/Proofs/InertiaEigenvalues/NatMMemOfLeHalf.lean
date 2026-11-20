@@ -22,7 +22,7 @@ def delDet (V : HSp D) {C : Type} [AddCommGroup C] (u : GlobalTheory.ExportSerie
   Multiplicative.toAdd (GlobalTheory.ExportSeries.detChar V (u.delQ Q) g)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 example (V : HSp D) {C : Type} [AddCommGroup C] (Q : Finset (Pl D.host.E)) (g : GA D V) :
     delDet V (⟨fun _ => 1, fun _ => 1⟩ : GlobalTheory.ExportSeries.UnivTwist D C) Q g = 0 := by

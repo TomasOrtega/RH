@@ -7,27 +7,25 @@ namespace GlobalTheory.CasimirOrder
 open Matrix
 
 /- English proof (translation)
-Introduce `O _ r x s φ hs hss hφc hφs hpos a`. Use `set b := form s φ with hbdef`. Establish `hb : ∀ u v, b u v = b v u` using `form_symm hs hss hφs`. Use `set G := gram (⇑x) s φ with hGdef`. Establish `hA : ∀ i j, G.adjugate i j = G.adjugate j i` using `adjugate_gram_symm hs hss hφs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hds : ∀ v, G.det • v = ∑ i, ∑ j, (G.adjugate i j * b (x i) v) • x j` using `det_smul_eq_sum x b hb`. Establish `hδ : G.det ≠ 0`. Establish `h` using `(posDef_gram x b hb (fun w hw => hpos w hw)).det_pos`. Rewrite `h` using `[← Int.cast_det]`. Conclude with `h.ne'` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.Free ℤ O := Module.Free.of_basis x`. Establish `htf : Function.Injective (fun v : O => G.det • v)` using `smul_right_injective O hδ`. Establish `hbid : ∀ u v, b u (v * s a) = b v (u * a)`. Introduce `u v`. Rewrite using `[hb v]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hbdef, form_apply]`. Rewrite using `[hs, ← mul_assoc, hφc, ← mul_assoc]`. Use `set A := G.adjugate with hAdef`. Use `set F : Fin r → Fin r → Fin r → Fin r → O := fun i j k l => (A i j * (A k l * b (x k) (x i * s a))) • (s (x l) * x j) with hF`. Establish `key1 : ∀ i j, G.det • (A i j • (a * (s (x i) * x j))) = ∑ k, ∑ l, F i j k l`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Establish `e : a * (s (x i) * x j) = s (x i * s a) * x j` using `by rw [hs, hss, mul_assoc]`. Rewrite using `[e, smul_comm, show G.det • (s (x i * s a) * x j) = s (G.det • (x i * s a)) * x j by`. Rewrite using `[map_zsmul, smul_mul_assoc], hds, map_sum, Finset.sum_mul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, Finset.sum_mul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, smul_mul_assoc, smul_smul]`. Establish `key2 : ∀ p q, G.det • (A p q • (s (x p) * x q * a)) = ∑ i, ∑ j, F i j q p`. Introduce `p q`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Rewrite using `[smul_comm, mul_assoc, ← mul_smul_comm, hds, Finset.mul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_smul, hF, hA p q, ← hbid]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Apply `htf` to reduce the goal to its premises. Simplify using `only`. Establish `L : G.det • (a * casimir (⇑x) s φ) = ∑ i, ∑ j, ∑ k, ∑ l, F i j k l`. Unfold `casimir`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hGdef, ← hAdef, Finset.mul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, key1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `R : G.det • (casimir (⇑x) s φ * a) = ∑ l, ∑ k, ∑ i, ∑ j, F i j k l`. Unfold `casimir`. Rewrite using `[← hGdef, ← hAdef, Finset.sum_mul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.smul_sum]`.
-
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, key2]`. Rewrite using `[L, R]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem casimir_central : ∀ {O : Type} [Ring O] {r : ℕ} (x : Module.Basis (Fin r) ℤ O) (s : O →+ O) (φ : O →+ ℤ),
     (∀ a b, s (a * b) = s b * s a) → (∀ a, s (s a) = a) → (∀ a b, φ (a * b) = φ (b * a)) →

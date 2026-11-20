@@ -13,11 +13,11 @@ def IsCrisDRA (ι : A →+* P) (f : B →+* D) : Prop :=
   ∀ x : A, f (algebraMap A B x) = algebraMap P D (ι x)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hf x6`. Take `⟨x, rfl⟩` from `cA.surjective x6`. Establish `h1 : cBc.symm (Formalism.Per6.cB l (cA x)) = algebraMap A B x`. Rewrite using `[← hB x, RingEquiv.symm_apply_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[h1, hf x, hD, hι]`. Introduce `hf x`. Apply `cD.injective` to reduce the goal to its premises. Establish `h2` using `hf (cA x)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom] at h2`. Rewrite `h2` using `[← hB x, RingEquiv.symm_apply_apply]`. Rewrite using `[h2, hD, hι]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCrisDRA_iff (cA : A ≃+* ACris.ACris ℂ_[l] l) (cBc : B ≃+* Formalism.Per6.Bcris l) (cP : P ≃+* Formalism.Per6.BdRp l)
     (cD : D ≃+* Formalism.Per6.BdR l) (ι : A →+* P)

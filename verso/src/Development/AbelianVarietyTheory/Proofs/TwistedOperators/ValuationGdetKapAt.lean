@@ -30,11 +30,11 @@ theorem varsVol_eq [MeasurableSpace k] (G : Grid k) (ν : Measure k) :
 variable {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
 /- English proof (translation)
-Use `(show N k n c p ≤ (Matrix.GeneralLinearGroup.det (n := n ⊕ Fin c) (R := k)).ker from (Subgroup.closure_le _).2 fun g hg => ?_) hg` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `g.val.det = 1`. Rewrite using `[(GlobalTheory.RootEx.Model.inN_tri hg).det]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: g.val.toSquareBlock (lev p) a = 1`. Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Simplify using `only [Matrix.toSquareBlock_def, Matrix.of_apply]`. Rewrite using `[hg i j (by rw [hi, hj]), Matrix.one_apply, Matrix.one_apply]`. Simplify using `[Subtype.ext_iff]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, det_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gdet_of_mem_N {p : ℕ} {g : GL (n ⊕ Fin c) k} (hg : g ∈ N k n c p) : gdet g = 1 := by
   refine (show N k n c p ≤ (Matrix.GeneralLinearGroup.det (n := n ⊕ Fin c) (R := k)).ker from
@@ -51,14 +51,14 @@ theorem gdet_of_mem_N {p : ℕ} {g : GL (n ⊕ Fin c) k} (hg : g ∈ N k n c p) 
   rw [this, det_one]
 
 /- English proof (translation)
-The claim follows from `(show symN k n c ≤ (Matrix.GeneralLinearGroup.det (n := n ⊕ Fin c) (R := k)).ker from sup_le (fun _ h => gdet_of_mem_N h) fun _ h => gdet_of_mem_N h) hg`.
+A detailed English derivation is pending.
 -/
 theorem gdet_of_mem_symN {g : GL (n ⊕ Fin c) k} (hg : g ∈ symN k n c) : gdet g = 1 :=
   (show symN k n c ≤ (Matrix.GeneralLinearGroup.det (n := n ⊕ Fin c) (R := k)).ker from
     sup_le (fun _ h => gdet_of_mem_N h) fun _ h => gdet_of_mem_N h) hg
 
 /- English proof (translation)
-The claim follows from `Units.ext (by change (fromBlocks g.val 0 0 (1 : Matrix (Fin c) (Fin c) k)).det = g.val.det rw [det_fromBlocks_zero₂₁, det_one, mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem gdet_embX (g : GL n k) : gdet (embX c g) = gdet g :=
   Units.ext (by
@@ -66,16 +66,16 @@ theorem gdet_embX (g : GL n k) : gdet (embX c g) = gdet g :=
     rw [det_fromBlocks_zero₂₁, det_one, mul_one])
 
 /- English proof (translation)
-The claim follows from `Units.ext (det_submatrix_equiv_self _ _)`.
+A detailed English derivation is pending.
 -/
 theorem gdet_toFrame {G : Grid k} (hs : 1 ≤ G.s) {j : ℕ} (hj : j < G.m) (g : GL (Fin (G.rank (G.m, j))) k) :
     gdet (toFrame hs hj g) = gdet g :=
   Units.ext (det_submatrix_equiv_self _ _)
 
 /- English proof (translation)
-Take `⟨v, hv, _, ⟨u, hu, rfl⟩, h⟩` from `hκ`. Use `⟨u, hu, v, hv, h, ?_⟩` and prove the remaining obligations. Use `congrArg gdet h` as an intermediate fact. Rewrite `this` using `[gdet_mul, gdet_of_mem_symN hv, one_mul, gdet_embX]`. Rewrite using `[← this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `gdet (toFrame hs hj (g (G.m, j) * u * (g (G.m, j))⁻¹)) = _`. Rewrite using `[gdet_toFrame, gdet_mul, gdet_mul, mul_right_comm, ← gdet_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_of_mem_symPr {G : Grid k} (hs : 1 ≤ G.s) {J : G.Level} {g : G.VertexGroup} {j : ℕ} (hj : j < G.m)
     {κ : GL (Fin (topRank G j)) k} (hκ : κ ∈ symPr (conjLevel hs J g hj)) :
@@ -101,7 +101,7 @@ def movedPt (t : T) (j : ℕ) (hj : j + 1 < D.R.m) (g : FinPt G (.top (j + 1)))
     ⟨j + 1, hj⟩ (actO _ _ (g : GA D (G.V (.top (j + 1))))⁻¹ 1⁻¹ (x ⟨j + 1, hj⟩))
 
 /- English proof (translation)
-Break down `eq_or_ne j' ⟨j + 1, hj⟩ with rfl | h1` into its components or cases. Simplify using `only [movedFn, movedPt, Function.update_self]`. Break down `eq_or_ne j' ⟨j, by omega⟩ with rfl | h2` into its components or cases. Simplify using `only [movedFn, movedPt, Function.update_of_ne h1, Function.update_self]`. Simplify using `only [movedFn, movedPt, Function.update_of_ne h1, Function.update_of_ne h2]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem movedFn_apply (S : GridChoice W U) {t : T} (d : PureDat G t) (j : ℕ) (hj : j + 1 < D.R.m) (g : FinPt G (.top (j + 1)))
     (x : ∀ j' : Fin D.R.m, WO (G.pS (.top t j' : Pair T)) (G.pT (.top t j' : Pair T))) (j' : Fin D.R.m) :
@@ -117,7 +117,7 @@ def kapAt (S : GridChoice W U) (t : T) (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt
   inBasis (topRank_eq G t w hj.le) (S.βp (j + 1)) w (finG (G.V (.top (j + 1))) k)
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hk).1 w`.
+A detailed English derivation is pending.
 -/
 theorem kapAt_mem (S : GridChoice W U) {t : T} {Φ : G.Datum} {β : CosFam G t} {j : ℕ} (hj : j + 1 < D.R.m)
     {k : FinPt G (.top (j + 1))} (hk : finG (G.V (.top (j + 1))) k ∈ S.levTop t Φ β (j + 1) hj) (w : locPl G t) :
@@ -125,7 +125,7 @@ theorem kapAt_mem (S : GridChoice W U) {t : T} {Φ : G.Datum} {β : CosFam G t} 
   Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hk).1 w
 
 /- English proof (translation)
-Establish `key : ∀ i, 0 < i → givenLevel G t w (i, j + 1) = KO (Kw w) _`. Introduce and unpack `(_ | i) h`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Conclude with `key _ (by have := D.R.two_le_m; omega)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem givenLevel_col (t : T) (w : Pl D.host.E) (j : ℕ) : givenLevel G t w (D.R.m, j + 1) = KO (Kw w) _ := by
   have key : ∀ i, 0 < i → givenLevel G t w (i, j + 1) = KO (Kw w) _ := by
@@ -135,7 +135,7 @@ theorem givenLevel_col (t : T) (w : Pl D.host.E) (j : ℕ) : givenLevel G t w (D
   exact key _ (by have := D.R.two_le_m; omega)
 
 /- English proof (translation)
-Take `⟨u, hu, -, -, -, h⟩` from `exists_of_mem_symPr (G := locGrid G t w) one_le_sLen hj (kapAt_mem S hj hk w)`. Rewrite using `[h]`. Conclude with `valuation_gdet_of_mem_KO (givenLevel_col t w.1 j ▸ hu)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_gdet_kapAt (S : GridChoice W U) {t : T} {Φ : G.Datum} {β : CosFam G t} {j : ℕ} (hj : j + 1 < D.R.m)
     {k : FinPt G (.top (j + 1))} (hk : finG (G.V (.top (j + 1))) k ∈ S.levTop t Φ β (j + 1) hj) (w : locPl G t) :

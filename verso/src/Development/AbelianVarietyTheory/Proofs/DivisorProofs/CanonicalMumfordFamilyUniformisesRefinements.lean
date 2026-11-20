@@ -13,7 +13,7 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 namespace GlobalTheory.Mum.CanonFam
 
 /- English proof (translation)
-Establish `hm : (𝟙 X : X ⟶ X) x ∈ B.U p.1 ⊓ A.U p.2 ⊓ (B.U q.1 ⊓ A.U q.2)` using `⟨hp, hq⟩`. Establish `e` using `congrArg (gm (𝟙 X) x (B.U p.1 ⊓ A.U p.2 ⊓ (B.U q.1 ⊓ A.U q.2))) (hw p q)`. Conclude with `(gm_res _ x _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div A B (𝟙 X) x p q hm) (gm_res _ x _ hm _))))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gm_iso {X : Scheme.{0}} {A B : LB X} {w : LB.Iso A B} (hw : w.IsGen) (x : X) (p q : B.ι × A.ι)
     (hp : x ∈ B.U p.1 ⊓ A.U p.2) (hq : x ∈ B.U q.1 ⊓ A.U q.2) :
@@ -25,25 +25,23 @@ theorem gm_iso {X : Scheme.{0}} {A B : LB X} {w : LB.Iso A B} (hw : w.IsGen) (x 
     (gm_div A B (𝟙 X) x p q hm) (gm_res _ x _ hm _))))
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H`. Take `⟨w', hw'⟩` from `H'`. Establish `cself : ∀ (x : X) (r : C.ι) (p : B.ι), x ∈ C.U r → x ∈ B.U p → gm (𝟙 X) x (C.U r ⊓ C.U r) (C.g r r) = 1`. Introduce `x r p hr hp`. Establish `e` using `gm_iso hw' x (r, p) (r, p) ⟨hr, hp⟩ ⟨hr, hp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[gm_self hB (𝟙 X) x hp, inv_one, _root_.mul_one]`. Conclude with `mul_eq_right.1 e.symm`. Establish `glue : ∀ (r : C.ι) (i : A.ι), ∃ s : Γ(X, C.U r ⊓ A.U i)ˣ, ∀ (x : X) (p : B.ι), x ∈ C.U r → x ∈ B.U p → x ∈ A.U i → gm (𝟙 X) x _ s = gm (𝟙 X) x _ (w'.s (r, p)) * gm (𝟙 X) x _ (w.s (p, i))`. Introduce `r i`. Set `W : B.ι → X.Opens` to `fun p => C.U r ⊓ B.U p ⊓ A.U i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `l₀ : ∀ p, W p ≤ C.U r ⊓ A.U i` using `fun p x hx => ⟨hx.1.1, hx.2⟩`. Establish `l₁ : ∀ p, W p ≤ C.U r ⊓ B.U p` using `fun p x hx => hx.1`. Establish `l₂ : ∀ p, W p ≤ B.U p ⊓ A.U i` using `fun p x hx => ⟨hx.1.2, hx.2⟩`. Set `u : ∀ p, Γ(X, W p)ˣ` to `fun p => res (l₁ p) (w'.s (r, p)) * res (l₂ p) (w.s (p, i))`. Establish `hu : ∀ (x : X) (p : B.ι) (hx : x ∈ W p), gm (𝟙 X) x (W p) (u p) = gm (𝟙 X) x _ (w'.s (r, p)) * gm (𝟙 X) x _ (w.s (p, i))` using `fun x p hx => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res _ x (l₁ p) hx _) (gm_res _ x (l₂ p) hx _))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `glue_unit (C.U r ⊓ A.U i) W l₀ (fun x hx => by`. Take `⟨p, hp⟩` from `exists_chart hB x`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨p, ⟨⟨hx.1, hp⟩, hx.2⟩⟩) u (fun p p' x hx => by`. Rewrite using `[hu x p hx.1, hu x p' hx.2]`. Establish `hr : x ∈ C.U r` using `hx.1.1.1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : x ∈ B.U p` using `hx.1.1.2`. Establish `hp' : x ∈ B.U p'` using `hx.2.1.2`. Establish `hi : x ∈ A.U i` using `hx.1.2`. Rewrite using `[gm_iso hw' x (r, p) (r, p') ⟨hr, hp⟩ ⟨hr, hp'⟩, gm_iso hw x (p, i) (p', i) ⟨hp, hi⟩ ⟨hp', hi⟩]`. Simplify using `only []`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[cself x r p hr hp, gm_self hA (𝟙 X) x hi, inv_one]`. Simplify using `only [_root_.one_mul, _root_.mul_one]`. Rewrite using `[_root_.mul_mul_mul_comm, inv_mul_cancel, _root_.one_mul])`. Use `⟨s, fun x p hr hp hi => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ W p` using `⟨⟨hr, hp⟩, hi⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(gm_res _ x (l₀ p) hx s).symm.trans ((congrArg (gm (𝟙 X) x (W p)) (hs p)).trans (hu x p hx))`. Use `choose s hs using glue`. Use `⟨⟨fun q => s q.1 q.2⟩, fun q q' => unit_ext fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `exists_chart hB x`. Establish `hr : x ∈ C.U q.1` using `hx.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : x ∈ A.U q.2` using `hx.1.2`. Establish `hr' : x ∈ C.U q'.1` using `hx.2.1`. Establish `hi' : x ∈ A.U q'.2` using `hx.2.2`. Establish `hm : (𝟙 X : X ⟶ X) x ∈ C.U q.1 ⊓ A.U q.2 ⊓ (C.U q'.1 ⊓ A.U q'.2)` using `hx`. Use `(gm_res _ x _ hx _).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div A C (𝟙 X) x q q' hm) (gm_res _ x _ hx _))).symm)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show gm (𝟙 X) x _ (s q.1 q.2) = _ * _ * gm (𝟙 X) x _ (s q'.1 q'.2)`. Rewrite using `[hs q.1 q.2 x p hr hp hi, hs q'.1 q'.2 x p hr' hp hi', gm_iso hw' x (q.1, p) (q'.1, p) ⟨hr, hp⟩ ⟨hr', hp⟩, gm_iso hw x (p, q.2) (p, q'.2) ⟨hp, hi⟩ ⟨hp, hi'⟩]`. Simplify using `only []`. Rewrite using `[gm_self hB (𝟙 X) x hp, inv_one]`. Simplify using `only [_root_.one_mul, _root_.mul_one]`.
-
-The two sides agree by associativity and commutativity.
+The two sides agree by associativity and commutativity. A detailed English derivation is pending.
 -/
 theorem lbIso_trans {X : Scheme.{0}} {A B C : LB X} (hA : A.IsLB) (hB : B.IsLB) (H : LBIso A B) (H' : LBIso B C) :
     LBIso A C := by
@@ -102,7 +100,7 @@ theorem lbIso_trans {X : Scheme.{0}} {A B C : LB X} (hA : A.IsLB) (hB : B.IsLB) 
   ac_rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h.1, inferInstance, h.2.1, h.2.2.1⟩, h.2.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem base_of_isCN {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (h : IsCN R) : Base R :=
   ⟨⟨h.1, inferInstance, h.2.1, h.2.2.1⟩, h.2.2.2⟩
@@ -112,9 +110,9 @@ end GlobalTheory.Mum.CanonFam
 open GlobalTheory.Mum.CanonFam in
 
 /- English proof (translation)
-Introduce `R _ _ _ hR Q G _ _ P hG hC R' _ _ _ ρ hR' hinj hfin D ε hRef`. Take `⟨D', F, hF, A', G', _, _, U', oA, oG, G₁, _, _, inc, pr, π, π₂, hG', hlin, hG₁, hinc, hpr, hip, hpi, hpb, hsq, hlb⟩` from `GlobalTheory.T.refinement_isFactor_baseChange_canonicalMumfordFamily R hR Q G P hG hC R' ρ hR' hinj hfin D ε hRef`. Take `⟨A, U, hU⟩` from `GlobalTheory.T.idempotent_image_uniformised_by_factor_data R' (base_of_isCN hR') D D' F hF A' G' hG' U' oA oG hlin G₁ hG₁ inc pr hinc hpr hip hpi`. Use `⟨G₁, inferInstance, inferInstance, π, π₂, A, U, hpb, hsq, ?_⟩` and prove the remaining obligations. Establish `l1 : (abelian₂ G₁ U.LG.L).IsLB` using `DVR.linComb_isLB _ U.LG.isLB _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `l2 : (abelian₂ G' U'.LG.L).IsLB` using `DVR.linComb_isLB _ U'.LG.isLB _ _`. Conclude with `lbIso_trans l1 (pull_isLB l2 _) hU hlb`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.CanonFam.exists_unif_refines : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ (Q : Data R) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (P : LB (G2 G).left), IsSemiAbelian G → Canon Q G P → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), IsCN R' → Function.Injective ρ → ρ.Finite → ∀ (D : DegData R' (maximalIdeal R')) (ε : D.toPre.X ≃+ Q.X), Refines Q ρ D.toPre ε → ∃ (G' : Over (Sp R')) (_ : GrpObj G') (_ : IsCommMonObj G') (π : G'.left ⟶ G.left) (π₂ : (G2 G').left ⟶ (G2 G).left) (A : PolAV (Sp (FractionRing R'))) (U : Unif (maximalIdeal R') D A G'), IsGrpPullback G' G (spMap ρ) π ∧ IsSquare π π₂ ∧ LBIso (abelian₂ G' U.LG.L) (P.pull π₂) := by
   intro R _ _ _ hR Q G _ _ P hG hC R' _ _ _ ρ hR' hinj hfin D ε hRef

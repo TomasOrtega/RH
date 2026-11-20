@@ -23,9 +23,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l l₂ : Level H}
 
 /- English proof (translation)
-Establish `hA : l.A ∣ l₂.A` using `hd.2.2`. Take `⟨o, m₁, h₁, h₁A⟩` from `obj_lower_level E H D l l₂ (KA l₂) (baseOfFinerLevel hA) (baseKA l₂) Xo₂.X Xo₂.s Xo₂.univ hd (baseOfFinerLevel_rho hA) (baseOfFinerLevel_zeta hA)`. Establish `hred : IsReduced Xo₂.X`. Use `Xo₂.smooth` as an intermediate fact. Conclude with `(isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ Xo₂.s (SmoothOfRelativeDimension.smooth D.dim Xo₂.s)).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, ⟨hr, ⟨m₂⟩⟩, -⟩` from `moduli_rep_of_base ObjMaps.id_comp_cancel E H D l Xo (KA l₂) (baseOfFinerLevel hA) (levelFieldIncl hA) Xo₂.X Xo₂.s o hred (levelFieldIncl_rho hA) (levelFieldIncl_zeta hA)`. Take `⟨n, hφ⟩` from `LevelCover.sab_comp m₁ m₂.toSABMap (Category.id_comp r)`. Use `⟨r, n, hr, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (_ ≫ ·) hφ).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ m₂.toSABMap.φ) ((h₁ a).trans (Category.id_comp _))).trans (m₂.eta a)))`. Conclude with `(congrArg (_ ≫ ·) hφ).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ m₂.toSABMap.φ) ((h₁A a).trans (Category.id_comp _))).trans (m₂.etaA a)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_levelMap (Xo : Moduli D l) (Xo₂ : Moduli D l₂) (hd : l.Dvd l₂) :
     ∃ (r : Xo₂.X ⟶ Xo.X) (m : SABMap Xo₂.univ.t Xo.univ.t r),
@@ -47,11 +47,11 @@ theorem exists_levelMap (Xo : Moduli D l) (Xo₂ : Moduli D l₂) (hd : l.Dvd l�
       ((congrArg (· ≫ m₂.toSABMap.φ) ((h₁A a).trans (Category.id_comp _))).trans (m₂.etaA a)))
 
 /- English proof (translation)
-Take `⟨r, m, hr, hm₁, hm₂⟩` from `exists_levelMap Xo Xo₂ hd`. Establish `hring : (IntermediateField.inclusion c₂.le).toRingHom.comp (levelFieldIncl hd.2.2) = (IntermediateField.inclusion hc).toRingHom.comp (IntermediateField.inclusion c.le).toRingHom` using `RingHom.ext fun x => Subtype.ext (coe_levelFieldIncl hd.2.2 x)`. Establish `w : (pullback.fst Xo₂.s (spMap (IntermediateField.inclusion c₂.le).toRingHom) ≫ r) ≫ Xo.s = (pullback.snd Xo₂.s (spMap (IntermediateField.inclusion c₂.le).toRingHom) ≫ spMap (IntermediateField.inclusion hc).toRingHom) ≫ spMap (IntermediateField.inclusion c.le).toRingHom`. Rewrite using `[Category.assoc, hr, pullback.condition_assoc, Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hring]`. Take `⟨r', hr₁, hr₂⟩ : ∃ r' : Xo₂.XF c₂ ⟶ Xo.XF c, r' ≫ pullback.fst _ _ = pullback.fst _ _ ≫ r ∧ r' ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap (IntermediateField.inclusion hc).toRingHom` from `⟨_, pullback.lift_fst _ _ w, pullback.lift_snd _ _ w⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, hν⟩` from `LevelCover.sab_comp Y₂.m0.toSABMap m rfl`. Take `⟨ν', hν'⟩` from `LevelCover.sab_cancel Y.m0.toSABMap ν _ hr₁`. Use `⟨r', ν', hr₂, fun a => LevelCover.sec_cancel ν' Y.m0.toSABMap _ _ ?_, fun a => LevelCover.sec_cancel ν' Y.m0.toSABMap _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[hν', hν, ← Category.assoc, LevelCover.sec_pow Y₂.m0.toSABMap _ _ (Y₂.m0.eta a), Category.assoc, hm₁, ← Category.assoc, ← hr₁, Category.assoc]`. Conclude with `congrArg _ (Y.m0.eta a).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hν', hν, ← Category.assoc, LevelCover.sec_pow Y₂.m0.toSABMap _ _ (Y₂.m0.etaA a), Category.assoc, hm₂, ← Category.assoc, ← hr₁, Category.assoc]`. Conclude with `congrArg _ (Y.m0.etaA a).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_levelMap_coeff {Xo : Moduli D l} {Xo₂ : Moduli D l₂} {c : Coeff l} {c₂ : Coeff l₂} {O O₂ : Type}
     [CommRing O] [CommRing O₂] {β : O →+* c.F} {β₂ : O₂ →+* c₂.F} (Y : Model Xo c β) (Y₂ : Model Xo₂ c₂ β₂)
@@ -83,7 +83,7 @@ theorem exists_levelMap_coeff {Xo : Moduli D l} {Xo₂ : Moduli D l₂} {c : Coe
     exact congrArg _ (Y.m0.etaA a).symm
 
 /- English proof (translation)
-Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem openImmersion_comp_structure_eq_generic {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) :
     Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap β := by

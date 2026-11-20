@@ -13,13 +13,13 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.
 open UpperTheory.V.W UpperTheory.V.Pr UpperTheory.V.CA Formalism.MainNotions.N
 namespace UpperTheory.V.J
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s V c n r B ι J hn hE x hx`. Take `⟨ρ, -, hρ, hirr⟩` from `hx`. Take `⟨m, hm, hdet⟩` from `(g_gram _ _ _).1 ((isIrr_iff_span hn ρ).1 hirr)`. Use `choose g hg using hm`. Use `⟨Matrix.det (Matrix.of fun a b => B.u.D.tr (MonoidAlgebra.single (V.pr (g a * g b)) 1)), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Use `hdet ?_` and prove the remaining obligations. Establish `h1` using `gram_at hn B.u.D (x : B.B →+* Qbar l) V.pr (mat ρ) hρ g`. Establish `h2` using `h1.symm.trans h0`. Simplify `h2` using `only [hg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y w hJ hy hy0`. Establish `hA : y.Arith w` using `⟨hy.1, fun v j => by`. Take `⟨ph, hph, -⟩` from `hy.2 v`. Conclude with `⟨ph j, hph j⟩⟩`. Take `⟨ρ', hc', -, hρ', -⟩` from `_root_.UpperTheory.GalN.V.end1W' hE y w hJ hA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ρ', hc', hρ', (isIrr_iff_span hn ρ').2 ((g_gram _ _ _).2 ⟨fun a => mat ρ' (g a), fun a => ⟨_, rfl⟩, fun h => hy0 ?_⟩)⟩` and prove the remaining obligations. Establish `h1` using `gram_at hn B.u.D (y : B.B →+* Qbar l) V.pr (mat ρ') hρ' g`. Conclude with `h1.trans h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem irrOpenW_alt : _root_.UpperTheory.V.J.IrrOpenAlt := by
   intro l _ L Ω _ _ _ _ _ _ s V c n r B ι J hn hE x hx

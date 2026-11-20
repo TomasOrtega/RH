@@ -7,7 +7,7 @@ noncomputable section
 namespace GlobalTheory.ZM.DwModel
 
 /- English proof (translation)
-Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -16,14 +16,14 @@ private lemma spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage y).hom, by simp [spMap]⟩`.
+Supply the required witnesses or components.
 -/
 private lemma spMap_surjective' {A B : Type} [CommRing A] [CommRing B] (y : Sp B ⟶ Sp A) :
     ∃ f : A →+* B, spMap f = y :=
   ⟨(Spec.preimage y).hom, by simp [spMap]⟩
 
 /- English proof (translation)
-Establish `h'` using `Spec.map_injective h`. Conclude with `congrArg CommRingCat.Hom.hom h'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma spMap_inj_lemma_3 {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) :
     f = g := by
@@ -31,7 +31,7 @@ private lemma spMap_inj_lemma_3 {A B : Type} [CommRing A] [CommRing B] {f g : A 
   exact congrArg CommRingCat.Hom.hom h'
 
 /- English proof (translation)
-The claim follows from `inferInstance one := by show Spec.map _ = _ convert Spec.map_id (CommRingCat.of L) rfl mul a c := by show spMap (((a * c : L ≃ₐ[K] L) : L →+* L)) = _ rw [← spMap_comp_moduli_spaces] rfl inv a := by rw [← spMap_comp_moduli_spaces] congr 1 ext r exact a.commutes r fin := by show Is …`.
+A detailed English derivation is pending.
 -/
 theorem isGaloisCover_field (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] :
     IsGaloisCover (L ≃ₐ[K] L) (fun σ => spMap (σ : L →+* L)) (spMap (algebraMap K L)) where
@@ -92,7 +92,7 @@ theorem isGaloisCover_field (K L : Type) [Field K] [Field L] [Algebra K L] [Fini
       exact (RingHom.congr_fun hb' x).trans (AlgHom.congr_fun ha x).symm
 
 /- English proof (translation)
-Establish `: IsAlgClosure ℝ ℂ` using `⟨Complex.isAlgClosed, inferInstance⟩`. Establish `: IsGalois ℝ ℂ` using `⟨⟩`. Conclude with `⟨isGaloisCover_field ℝ ℂ, by rw [IsGalois.card_aut_eq_finrank, Complex.finrank_real_complex]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isGaloisCover_complex :
     IsGaloisCover (ℂ ≃ₐ[ℝ] ℂ) (fun σ => spMap (σ : ℂ →+* ℂ)) (spMap (algebraMap ℝ ℂ)) ∧ Nat.card (ℂ ≃ₐ[ℝ] ℂ) = 2 := by
@@ -101,7 +101,7 @@ theorem isGaloisCover_complex :
   exact ⟨isGaloisCover_field ℝ ℂ, by rw [IsGalois.card_aut_eq_finrank, Complex.finrank_real_complex]⟩
 
 /- English proof (translation)
-Introduce `h`. Take `⟨a, -, ha⟩` from `h.fibre ℂ (𝟙 _) (𝟙 _) rfl`. Establish `h1 : (1 : ℤˣ) = a` using `ha 1 (by simp)`. Establish `h2 : (-1 : ℤˣ) = a` using `ha (-1) (by simp)`. Conclude with `absurd (h1.trans h2.symm) (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_isGaloisCover_trivial :
     ¬ IsGaloisCover ℤˣ (fun _ => 𝟙 (Sp ℂ)) (𝟙 (Sp ℂ)) := by
@@ -112,16 +112,16 @@ theorem not_isGaloisCover_trivial :
   exact absurd (h1.trans h2.symm) (by decide)
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp [dirMap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dirMap_fst {K : Type} [Field K] {n : ℕ} (lam : (Fin n → K) →ₗ[K] K) (x : TrivSqZeroExt K (Fin n → K)) :
     (dirMap lam x).fst = x.fst ∧ (dirMap lam x).snd = lam x.snd := by
   constructor <;> simp [dirMap]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun x hx => h x fun p _ hp => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hx`. Conclude with `hp.mem_of_pow_mem k (hk ▸ p.zero_mem)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hR f hf`. Establish `hnil : f ∈ nilradical R`. Rewrite using `[nilradical_eq_sInf, Ideal.mem_sInf]`. Conclude with `fun p hp => hf p (Set.mem_univ p) hp`. Conclude with `(mem_nilradical.mp hnil).eq_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem densePrimes_univ_iff (R : Type) [CommRing R] : DenseP (Set.univ : Set (Ideal R)) ↔ _root_.IsReduced R := by
   constructor
@@ -136,7 +136,7 @@ theorem densePrimes_univ_iff (R : Type) [CommRing R] : DenseP (Set.univ : Set (I
     exact (mem_nilradical.mp hnil).eq_zero
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : (2 : ℤ) = 0` using `h 2 fun p hp _ => by`. Rewrite using `[Set.mem_singleton_iff.mp hp]`. Conclude with `Ideal.mem_span_singleton_self 2`. Evaluate the numerical expressions using `at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem not_denseP_two : ¬ DenseP ({Ideal.span {2}} : Set (Ideal ℤ)) := by
   intro h
@@ -146,9 +146,9 @@ theorem not_denseP_two : ¬ DenseP ({Ideal.span {2}} : Set (Ideal ℤ)) := by
   norm_num at h2
 
 /- English proof (translation)
-Take `⟨x, ⟨-, hx⟩, -⟩` from `W.Y.pts PUnit (algebraMap o PUnit) (fun _ => 0) (by`. Unfold `InMM`. Conclude with `⟨fun _ _ => Subsingleton.elim _ _, fun q hq => absurd (Subsingleton.elim q ⊤) hq.ne_top⟩)`. Set `x' : Sp PUnit ⟶ W.U.toScheme` to `specPUnitIsInitial.to _`. Establish `hx' : x' ≫ W.U.ι = x` using `specPUnitIsInitial.hom_ext _ _`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `(W.th PUnit x' (fun _ => 0)).2 (hx' ▸ hx)`. Unfold `TObj.HasTh Out.IsThetaPt at h`. Conclude with `h.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem odd_of_wfam {o : Type} [CommRing o] {g : ℕ} {J : Type} {n N' : ℕ} {b : TBase o (N' ^ 2)} {em : o →+* ℂ}
     {C : TObj g (N' ^ 2) J b (spMap em) → Prop} {Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ} {κ : ℕ}

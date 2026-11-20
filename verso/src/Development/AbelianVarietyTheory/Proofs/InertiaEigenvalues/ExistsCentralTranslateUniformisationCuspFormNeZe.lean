@@ -37,15 +37,15 @@ namespace GlobalTheory.MovedUnifNe
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.abelianSchemeLaws_all.2`. Establish `hA : BCEx (T.Q.Xo j) T.Q.c σ` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.bcEx_laws T.Q.c hL.secBaseChangeAny hL.secTwist σ`. Establish `hF : WtField (T.Q.Xo j) T.Q.c` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.wtField_laws T.Q.c hL.secBaseChangeAny hL.secTwist (hM.evalWD j hj)`. Introduce `m b hb`. Establish `hU : IsUnf (T.U j σ)` using `hM.unf j hj σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb'` using `hb.map' (sec (T.Q.Xo j) T.Q.c a n).subtype (Submodule.ker_subtype _)`. Establish `hfs : ∀ i, (⇑(sec (T.Q.Xo j) T.Q.c a n).subtype ∘ b) i ∈ sec (T.Q.Xo j) T.Q.c a n` using `fun i => (b i).2`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hrel : ∀ k (x : ((T.U j σ).X k).dom), ∑ i, g i * toC (evR (T.Q.Xo j) T.Q.c ((⇑(sec (T.Q.Xo j) T.Q.c a n).subtype ∘ b) i) ((T.U j σ).un k x)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k x`. Establish `h` using `congrFun (congrFun hg k) x.1`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h`. Rewrite using `[← h]`. Conclude with `Finset.sum_congr rfl fun i _ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ReciprocityTheory.ChartRestriction.G.PullbackSections.rdU_apply_dom (T.U j σ) _ k x]`. Both sides reduce to the same expression. Establish `hall` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.rel_of_frames (T.U j σ) hU.2.2.1 (hM.unTest j hj σ hσ) hF _ hfs g hrel`. Set `_ : Algebra T.Q.c.F ℂ` to `σ.toAlgebra`. Establish `hc` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.indep_of_complex (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) (hM.evalWD j hj) (fun p φ y => hA p y φ) _ (fun i => (hfs i).1) hb' g (fun z hz => hall z hz)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Conclude with `congrFun hc i`.
+A detailed English derivation is pending.
 -/
 theorem indepToC_sec {D : D7} (T : Core D) (hM : LawsM T) {j : ℕ} (hj : InR D j) {σ : T.Q.c.F →+* ℂ}
     (hσ : GoodEmb T.Q.c σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
@@ -80,21 +80,19 @@ theorem indepToC_sec {D : D7} (T : Core D) (hM : LawsM T) {j : ℕ} (hj : InR D 
   exact congrFun hc i
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.abelianSchemeLaws_all.2`. Establish `hF : WtField (T.Q.Xo j) T.Q.c` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.wtField_laws T.Q.c hL.secBaseChangeAny hL.secTwist (hM.evalWD j hj)`. Establish `hU : IsUnf (T.U j σ)` using `hM.unf j hj σ hσ`. Establish `hT` using `hM.unTest j hj σ hσ`. Take `⟨th, hr, -, hD⟩` from `hM.dictU j hj σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Use function extensionality and compare the values at `k x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Distinguish the cases in `hx : x ∈ ((T.U j σ).X k).dom`. Use `swap`.
+Equip the data with the indicated structure. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `e : rdU (T.U j σ) (fs i) k x = 0` using `by show (if h : x ∈ ((T.U j σ).X k).dom then _ else 0) = 0`. Rewrite using `[dif_neg hx]`. Rewrite using `[e, mul_zero]`. Take `⟨g0, γ, hγ, b, hb, hg0⟩` from `hD.2.2.2.2.1 k x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ0, hγ0, hrel⟩` from `h g0`. Take `⟨γ', hγ', hd⟩` from `hD.1 γ0 hγ0 g0`. Establish `hdom1` using `hD.2.2.2.1 g0`. Establish `hdom2` using `hD.2.2.2.1 (γ0 * g0)`. Rewrite `hrel`, `hdom2` using `[hd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `T.dict j σ g0 = p at hrel hdom1 hdom2 hγ' hg0`. Substitute `hg0` using the available equality. Simplify using `only at hrel hdom1 hdom2 hγ'`. Take `⟨t1, h1⟩` from `(hU.2.2.2.1 k k ⟨x, hx⟩ ⟨_, hdom1⟩).2 ⟨γ, hγ, b, hb, rfl⟩`. Take `⟨t2, h2⟩` from `(hU.2.2.2.1 k k ⟨_, hdom1⟩ ⟨_, hdom2⟩).2 ⟨γ', hγ', ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.oneF _, ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.oneF_mem _, by rw [ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.rmul_oneF]⟩`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv : ∀ i, rdU (T.U j σ) (fs i) k (lact γ' (rmul (lact γ x) b)) = toC (wchar (ex (T.Q.Dw j) a n) t2) * (toC (wchar (ex (T.Q.Dw j) a n) t1) * rdU (T.U j σ) (fs i) k x)`. Introduce `i`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.rdU_apply_dom (T.U j σ) (fs i) k ⟨_, hdom2⟩, ReciprocityTheory.ChartRestriction.G.PullbackSections.rdU_apply_dom (T.U j σ) (fs i) k ⟨x, hx⟩, hF a n (fs i) (hfs i) (CAt σ) t2 _ _ (hT k _) (hT k _) h2, hF a n (fs i) (hfs i) (CA …`. Both sides reduce to the same expression. Simplify using `only [hv] at hrel`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw1 : toC (wchar (ex (T.Q.Dw j) a n) t1) ≠ 0` using `wchar_ne_zero _ t1`. Establish `hw2 : toC (wchar (ex (T.Q.Dw j) a n) t2) ≠ 0` using `wchar_ne_zero _ t2`. Establish `e : ∑ i, g i * (toC (wchar (ex (T.Q.Dw j) a n) t2) * (toC (wchar (ex (T.Q.Dw j) a n) t1) * rdU (T.U j σ) (fs i) k x)) = (toC (wchar (ex (T.Q.Dw j) a n) t2) * toC (wchar (ex (T.Q.Dw j) a n) t1)) * ∑ i, g i * rdU (T.U j σ) (fs i) k x`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Rewrite `hrel` using `[e]`.
-
-Conclude with `(mul_eq_zero.1 hrel).resolve_left (mul_ne_zero hw2 hw1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_of_dict {D : D7} (T : Core D) (hM : LawsM T) {j : ℕ} (hj : InR D j) {σ : T.Q.c.F →+* ℂ}
     (hσ : GoodEmb T.Q.c σ) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n m : ℕ} (fs : Fin m → T.R j)
@@ -154,23 +152,21 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `letI : Algebra T.Q.c.F c'.F := (incF T.Q.c c' hle).toAlgebra`. Establish `hσ' : ∀ x : T.Q.c.F, σ' (algebraMap T.Q.c.F c'.F x) = (σ'.comp (incF T.Q.c c' hle)) x` using `fun _ => rfl`. Establish `hI` using `(GlobalTheory.ReadingComparison.indepToC_bcMap_iff hσ' ((rdU (T.U j (σ'.comp (incF T.Q.c c' hle)))).comp (sec (T.Q.Xo j) T.Q.c a n).subtype)).2 (indepToC_sec T hM hj hσ a n)`. Set `t : c'.F ⊗[T.Q.c.F] (sec (T.Q.Xo j) T.Q.c a n)` to `∑ i, as i ⊗ₜ[T.Q.c.F] (⟨gs i, hgs i⟩ : sec (T.Q.Xo j) T.Q.c a n)`. Establish `hbt : GlobalTheory.IndefiniteRowSideFullHecke.BaseChangeTensorProduct.bcMap hσ' ((rdU (T.U j (σ'.comp (incF T.Q.c c' hle)))).comp (sec (T.Q.Xo j) T.Q.c a n).subtype) t = 0`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [t, map_sum, GlobalTheory.ReadingComparison.bcMap_tmul]`. Conclude with `h0`. Establish `ht : t = 0`. Assume the negation of the conclusion as `ht`. Establish `h1` using `hI 1 ![t] (linearIndependent_unique_iff.2 (by exact ht))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `h1.ne_zero 0 (by exact hbt)`. Use function extensionality and compare the values at `p y`. Use `show f' p y = 0`. Use `letI : Algebra T.Q.c.F p.R := GlobalTheory.FieldBC.resAlg hle p.R`. Establish `hA : AlgOver T.Q.c c' hle p.R` using `fun _ => rfl`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hv : f' p y = evR (T.Q.Xo j) c' f' y`. Establish `hft : FromTest (K` using `c'.F) (fun S _ _ => FrPt (T.Q.Xo j) c' S) (fun φ y z => FrMap φ y z) y := ⟨p, AlgHom.id _ _, y, ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_refl y⟩`. Use `show _ = evalAt (K := c'.F) (fun S _ _ => FrPt (T.Q.Xo j) c' S) (fun φ y z => FrMap φ y z) f' y`. Unfold `evalAt`. Rewrite using `[dif_pos hft]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hf'.1 _ _ _ _ _ hft.choose_spec.choose_spec.choose_spec`. Rewrite using `[hv, hBC p.R hA y]`. Establish `hadd : ∀ g g' : T.R j, evR (T.Q.Xo j) T.Q.c (g + g') (y.res hle hA) = evR (T.Q.Xo j) T.Q.c g (y.res hle hA) + evR (T.Q.Xo j) T.Q.c g' (y.res hle hA)` using `fun g g' => evalAt_add _ _ g g' _`. Establish `hsmul : ∀ (k : T.Q.c.F) (g : T.R j), evR (T.Q.Xo j) T.Q.c (k • g) (y.res hle hA) = algebraMap T.Q.c.F p.R k * evR (T.Q.Xo j) T.Q.c g (y.res hle hA)` using `fun k g => evalAt_smul _ _ k g _`. Set `B : c'.F →+ (sec (T.Q.Xo j) T.Q.c a n) →+ p.R` to `{ toFun := fun x => { toFun := fun g => algebraMap c'.F p.R x * evR (T.Q.Xo j) T.Q.c (g : T.R j) (y.res hle hA) map_zero' := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZeroMemClass.coe_zero, show evR (T.Q.Xo j) T.Q.c (0 : T.R j) (y.res hle hA) = 0 from evalAt_zero _ _ _, mul_zero]`. Use the proof step `map_add' := fun g g' => by rw [Submodule.coe_add, hadd, mul_add] }`. Use the proof step `map_zero' := by ext g; simp`. Use the proof step `map_add' := fun x x' => by ext g; simp [add_mul] }`. Establish `hB : ∀ (k : T.Q.c.F) (x : c'.F) (g : sec (T.Q.Xo j) T.Q.c a n), B (k • x) g = B x (k • g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `k x g`. Simplify using `only [B, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[Submodule.coe_smul, hsmul, Algebra.smul_def, map_mul]`. Establish `e : algebraMap T.Q.c.F p.R k = algebraMap c'.F p.R (algebraMap T.Q.c.F c'.F k)` using `rfl`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Set `Φ : c'.F ⊗[T.Q.c.F] (sec (T.Q.Xo j) T.Q.c a n) →+ p.R` to `TensorProduct.liftAddHom B hB`. Establish `e` using `congrArg Φ ht`. Rewrite `e` using `[map_zero]`. Establish `e2 : Φ t = ∑ i, algebraMap c'.F p.R (as i) * evR (T.Q.Xo j) T.Q.c (gs i) (y.res hle hA)`.
-
-Simplify using `only [t, map_sum, Φ, TensorProduct.liftAddHom_tmul]`. Both sides reduce to the same expression. Rewrite using `[← e2, e]`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_rdU {D : D7} (T : Core D) (hM : LawsM T) {j : ℕ} (hj : InR D j) (c' : Coeff T.Q.l)
     (hle : T.Q.c.F ≤ c'.F) (σ' : c'.F →+* ℂ) (hσ : GoodEmb T.Q.c (σ'.comp (incF T.Q.c c' hle)))
@@ -236,9 +232,9 @@ theorem eq_zero_of_rdU {D : D7} (T : Core D) (hM : LawsM T) {j : ℕ} (hj : InR 
   rw [← e2, e]
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Introduce `x`. Establish `hq` using `h (Quotient.mk _ x)`. Establish `hr` using `@Quotient.mk_out _ (QuotientGroup.rightRel (GQ V)) x`. Rewrite `hr` using `[QuotientGroup.rightRel_apply]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(x * (Quotient.mk (QuotientGroup.rightRel (GQ V)) x).out⁻¹)⁻¹, inv_mem hr, ?_⟩` and prove the remaining obligations. Simplify `hq` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_gq_of_cast {D : D7} {V W : HSp D} (hV : V = W) (P : GA D V → Prop)
     (h : ∀ q : AutQ W, P (cast (congrArg (GA D) hV.symm) q.out)) : ∀ x : GA D V, ∃ γ ∈ GQ V, P (γ * x) := by
@@ -259,23 +255,21 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T0 A T _ R F κ v₀ O hnV hC hFW hIo j hP hrow f hf hf0 z hz`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨W⟩` from `hFW`. Establish `hM : LawsM T.toCore` using `W.laws.toLawsM`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : InR D ((j : ℕ) + 1)` using `⟨by omega, by have := j.isLt; omega⟩`. Establish `hs0 : GoodEmb T.Q.c (O j).s0`. Rewrite using `[OMDat.s0, sOv_eq]`. Conclude with `T.toCore.good_σ₀`. Establish `hact` using `hP.2.act.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hact'` using `hP.2.act.2`. Take `⟨m, as, fs, hfs, hBC⟩` from `(GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ (O j).hle).2 _ (T.toCore.U ((j : ℕ) + 1)) _ _ f hf`. Establish `hfsec` using `((mem_cusp _ _ _ _ _ _).1 hf).1`. Establish `hs : ∀ k, fs k ∈ sec _ T.Q.c (wtA (κ j)) (Vc D j).rank` using `fun k => ((mem_cusp _ _ _ _ _ _).1 (hfs k)).1`. Establish `h1` using `(GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ (O j).hle _ _ hact).2 _ _ z m as fs f hfsec hs hBC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgs : ∀ k, actLev T.Q.c (O j).lev2 z (fs k) ∈ sec _ T.Q.c (wtA (κ j)) (Vc D j).rank` using `fun k => GlobalTheory.LevelEquivCompare.actLev_mem_sec hact z (hs k)`. Establish `hF' : actLev (O j).c' (O j).lev2 z f ∈ sec _ (O j).c' (wtA (κ j)) (Vc D j).rank` using `GlobalTheory.LevelEquivCompare.actLev_mem_sec hact' z hfsec`. Establish `hrd` using `rdU_unfBC (O j).hle (T.toCore.U ((j : ℕ) + 1)) (inC (O j).c') h1`. Establish `hrel` using `rel_of_dict T.toCore hM hj hs0 _ hgs (fun i => inC (O j).c' (as i)) (by`. Use `exists_gq_of_cast (O j).hV (fun g => ∑ i, (inC (O j).c') (as i) * (rdU (T.U ((j : ℕ) + 1) (O j).s0)) ((actLev T.Q.c (O j).lev2 z) (fs i)) (T.dict ((j : ℕ) + 1) (O j).s0 g).fst (T.dict ((j : ℕ) + 1) (O j).s0 g).snd = 0) fun q => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `hne q`. Establish `hmu : (O j).mu q.out ≠ 0`. Establish `h` using `(hM.muUnit _ hj _ hs0).2.1 (cast (congrArg (GA D) (O j).hV.symm) q.out)`. Introduce `h0`. Establish `h0' : T.mu ((j : ℕ) + 1) (O j).s0 (cast (congrArg (GA D) (O j).hV.symm) q.out) = 0` using `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[h0', norm_zero]`. Conclude with `zero_ne_one h`. Establish `e2 : rdU (unfBC (O j).hle (T.toCore.U ((j : ℕ) + 1)) (inC (O j).c')) (actLev (O j).c' (O j).lev2 z f) ((O j).dict q.out).1 ((O j).dict q.out).2 = 0`. Establish `e1 : jFn (Wc D j) (inC (O j).c') (rdU (unfBC (O j).hle (T.toCore.U ((j : ℕ) + 1)) (inC (O j).c'))) (O j).dict (O j).mu (actLev (O j).c' (O j).lev2 z f) q = (O j).mu q.out * rdU (unfBC (O j).hle (T.toCore.U ((j : ℕ) + 1)) (inC (O j).c')) (actLev (O j).c' (O j).lev2 z f) ((O j).dic …` using `rfl`. Rewrite `e` using `[e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 e).resolve_left hmu`. Rewrite `e2` using `[hrd]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at e2`. Conclude with `e2)`. Establish `hz0` using `eq_zero_of_rdU T.toCore hM hj (O j).c' (O j).hle (inC (O j).c') hs0 hF' hgs h1 hrel`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hf0` to reduce the goal to its premises. Establish `e3 : actLev (O j).c' (O j).lev2 (z⁻¹ * z) f = f`. Rewrite using `[inv_mul_cancel]`. Conclude with `Formalism.L2.Pj.actL_one _ _ _ hact'.total hact'.func hact'.one hfsec.1`. Rewrite using `[← e3]`.
-
-Establish `e4` using `Formalism.L2.Pj.actL_mul _ _ _ hact'.total hact'.func hact'.mul z⁻¹ z hfsec.1`. Use `e4.trans ?_` and prove the remaining obligations. Use `show actLev (O j).c' (O j).lev2 z⁻¹ (actLev (O j).c' (O j).lev2 z f) = 0`. Rewrite using `[hz0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_jFn_actLev_ne : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T0 : Type) (A : FamIn D.what₂.LL Γ Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)), 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → GlobalTheory.Hk3.Core R F → Nonempty (FWTie T R κ v₀) → IoExt R → ∀ (j : Fin D.R.m), OMPins T R κ v₀ O j → OneMapRow0 T R κ v₀ O j → ∀ f ∈ GlobalTheory.OneMapAll.cuspOver (O j) (κ j), f ≠ 0 → ∀ z : Γ, z ∈ Subgroup.center Γ → ∃ q, jFn (Wc D j) (inC (O j).c') (rdU (unfBC (O j).hle (T.toCore.U ((j : ℕ) + 1)) (inC (O j).c'))) (O j).dict (O j).mu (actLev (O j).c' (O j).lev2 z f) q ≠ 0 := by
   intro D Γ _ _ Pl0 T0 A T _ R F κ v₀ O hnV hC hFW hIo j hP hrow f hf hf0 z hz

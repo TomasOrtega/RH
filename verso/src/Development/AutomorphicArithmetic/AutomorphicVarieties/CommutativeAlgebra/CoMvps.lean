@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Rewrite using `[← map_ringEquiv_maximalIdeal e, IsAdicComplete.congr_ringEquiv]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem co_mvps_equiv {A B : Type} [CommRing A] [CommRing B] [IsLocalRing A]
     [IsLocalRing B] (e : A ≃+* B) (h : IsAdicComplete (maximalIdeal A) A) :
@@ -13,7 +13,7 @@ private theorem co_mvps_equiv {A B : Type} [CommRing A] [CommRing B] [IsLocalRin
   exact h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact co_mvps_equiv (isEmptyEquiv (Fin 0) R).toRingEquiv.symm inferInstance`. Consider the case `succ n ih`. Conclude with `co_mvps_equiv (finSuccEquiv R n).toRingEquiv.symm (UpperTheory.V.abelian₂.adicComplete (MvPowerSeries (Fin n) R))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem co_mvps_fin (R : Type) [CommRing R] [IsLocalRing R]
     [IsAdicComplete (maximalIdeal R) R] (n : ℕ) :
@@ -25,11 +25,11 @@ private theorem co_mvps_fin (R : Type) [CommRing R] [IsLocalRing R]
       (UpperTheory.V.abelian₂.adicComplete (MvPowerSeries (Fin n) R))
 
 /- English proof (translation)
-Introduce `O _ _ R _ _ hR σ _`. Establish `hc : IsAdicComplete (maximalIdeal R) R` using `IsCO.complete (O := O)`. Establish `hl : IsLocalHom (algebraMap O R)` using `IsCO.isLocalHom`. Establish `hn : IsNoetherianRing R` using `hR.toIsNoetherian`. Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `{ toIsLocalRing := inferInstance toIsNoetherian := MvPowerSeries.isNoetherianRing R complete := co_mvps_equiv (renameEquiv R e.symm).toRingEquiv (co_mvps_fin R n) isLocalHom := ⟨fun a ha => ?_⟩ res_surj := fun x => ?_ }` and prove the remaining obligations. Establish `h` using `isUnit_constantCoeff _ ha`. Rewrite `h` using `[MvPowerSeries.algebraMap_apply, constantCoeff_C]`. Conclude with `IsLocalHom.map_nonunit a h`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) (constantCoeff x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, fun h => ha ?_⟩` and prove the remaining obligations. Establish `h2` using `isUnit_constantCoeff _ h`. Rewrite `h2` using `[map_sub, MvPowerSeries.algebraMap_apply, constantCoeff_C]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.co_mvps :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (σ : Type) [Finite σ], IsCO O (MvPowerSeries σ R) := by

@@ -17,7 +17,7 @@ def FirstRel (x : Matrix (Fin n) (Fin ρ) E) (j : Fin ρ) : Prop :=
     ∃ a : Fin ρ → E, a j = 1 ∧ (∀ i, j < i → a i = 0) ∧ x *ᵥ a = 0
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge k i with h | h` into its components or cases. Simplify using `[hu i k h]`. Simplify using `[ha k h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_apply_eq_zero_of_upper {u : Matrix (Fin ρ) (Fin ρ) E}
     (hu : ∀ i k, k < i → u i k = 0) {a : Fin ρ → E} {i : Fin ρ}
@@ -29,9 +29,9 @@ theorem mulVec_apply_eq_zero_of_upper {u : Matrix (Fin ρ) (Fin ρ) E}
   · simp [ha k h]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[hd]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[hu j k h]`. Simplify using `[ha k h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_apply_eq_of_upper {u : Matrix (Fin ρ) (Fin ρ) E}
     (hu : ∀ i k, k < i → u i k = 0) (hd : ∀ i, u i i = 1) {a : Fin ρ → E} {j : Fin ρ}
@@ -46,7 +46,7 @@ theorem mulVec_apply_eq_of_upper {u : Matrix (Fin ρ) (Fin ρ) E}
   · simp
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sum_smul_transpose (x : Matrix (Fin n) (Fin ρ) E) (a : Fin ρ → E) :
     ∑ i, a i • x.transpose i = x *ᵥ a := by
@@ -54,21 +54,21 @@ theorem sum_smul_transpose (x : Matrix (Fin n) (Fin ρ) E) (a : Fin ρ → E) :
   simp [Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Establish `key : LinearIndependent E xᵀ ↔ ∀ g : Fin ρ → E, x *ᵥ g = 0 → ∀ i, g i = 0`. Use `(Fintype.linearIndependent_iff (R := E) (v := (fun i => xᵀ i : Fin ρ → Fin n → E))).trans ?_` and prove the remaining obligations. Simplify using `only [sum_smul_transpose]`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h push_neg at h`. Take `⟨g, hg, i₀, hi₀⟩` from `h`. Set `S : Finset (Fin ρ)` to `Finset.univ.filter fun j => ∃ a : Fin ρ → E, a j ≠ 0 ∧ (∀ i, j < i → a i = 0) ∧ x *ᵥ a = 0`. Establish `hlast : ∀ b : Fin ρ → E, x *ᵥ b = 0 → ∀ i, b i ≠ 0 → ∃ k ∈ S, b k ≠ 0`. Introduce `b hb i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `T : Finset (Fin ρ)` to `Finset.univ.filter fun k => b k ≠ 0`. Establish `hT : T.Nonempty` using `⟨i, by simp [T, hi]⟩`. Establish `hk : T.max' hT ∈ T` using `Finset.max'_mem T hT`. Establish `hbk : b (T.max' hT) ≠ 0` using `by simpa [T] using hk`. Use `⟨T.max' hT, ?_, hbk⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [S, Finset.mem_filter, Finset.mem_univ, true_and]`. Use `⟨b, hbk, fun l hl => ?_, hb⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `: l ≤ T.max' hT` using `T.le_max' l (by simp [T, hne])`. Conclude with `absurd hl (not_lt.mpr this)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hkS, -⟩` from `hlast g hg i₀ hi₀`. Establish `hS : S.Nonempty` using `⟨k, hkS⟩`. Establish `hjS : S.min' hS ∈ S` using `Finset.min'_mem S hS`. Simplify using `only [S, Finset.mem_filter, Finset.mem_univ, true_and] at hjS`. Take `⟨a, haj, hagt, hax⟩` from `hjS`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S.min' hS, ?_, ?_⟩` and prove the remaining obligations. Introduce `b hb hbx`. Assume the negation of the conclusion as `hne`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hne`. Take `⟨k, hkS, hbk⟩` from `hlast b hbx i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hkj : k < S.min' hS`. Assume the negation of the conclusion as `h`. Conclude with `hbk (hb k (not_lt.mp h))`. Conclude with `absurd (S.min'_le k hkS) (not_le.mpr hkj)`. Use `⟨(a (S.min' hS))⁻¹ • a, by simp only [Pi.smul_apply, smul_eq_mul]; exact inv_mul_cancel₀ haj, fun i hi => by simp [hagt i hi], ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_smul, hax, smul_zero]`. Introduce and unpack `⟨j, -, a, haj, -, hax⟩ h`. Use `h a hax j` as an intermediate fact. Rewrite `this` using `[haj]`. Conclude with `one_ne_zero this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_linearIndependent_iff_exists (x : Matrix (Fin n) (Fin ρ) E) :
     ¬ LinearIndependent E x.transpose ↔ ∃ j, FirstRel x j := by
@@ -118,9 +118,9 @@ theorem not_linearIndependent_iff_exists (x : Matrix (Fin n) (Fin ρ) E) :
     exact one_ne_zero this
 
 /- English proof (translation)
-Establish `key : ∀ {j j' : Fin ρ}, FirstRel x j → FirstRel x j' → ¬ j < j'`. Introduce and unpack `j j' ⟨-, a, haj, hagt, hax⟩ ⟨h1, -⟩ hlt`. Establish `h0` using `h1 a (fun i hi => hagt i (lt_of_lt_of_le hlt hi)) hax`. Simplify using `[h0] at haj`. Break down `lt_trichotomy j j' with hl | he | hg` into its components or cases.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd hl (key h h')`. Conclude with `he`. Conclude with `absurd hg (key h' h)`.
+A detailed English derivation is pending.
 -/
 theorem firstRel_unique (x : Matrix (Fin n) (Fin ρ) E) {j j' : Fin ρ}
     (h : FirstRel x j) (h' : FirstRel x j') : j = j' := by
@@ -134,9 +134,9 @@ theorem firstRel_unique (x : Matrix (Fin n) (Fin ρ) E) {j j' : Fin ρ}
   · exact absurd hg (key h' h)
 
 /- English proof (translation)
-Take `⟨h1, a, haj, hagt, hax⟩` from `h`. Establish `hmv : ∀ b, (x * u) *ᵥ b = x *ᵥ (u *ᵥ b)` using `fun b => (Matrix.mulVec_mulVec b x u).symm`. Use `⟨fun b hb hbx => ?_, v *ᵥ a, ?_, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Establish `hub : u *ᵥ b = 0` using `h1 _ (fun i hi => mulVec_apply_eq_zero_of_upper hu (fun k hk => hb k (le_trans hi hk))) (by rw [← hmv]; exact hbx)`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mulVec_apply_eq_of_upper hv hvd hagt, haj]`. Conclude with `mulVec_apply_eq_zero_of_upper hv (fun k hk => hagt k (lt_of_lt_of_le hi hk))`. Rewrite using `[hmv, Matrix.mulVec_mulVec a u v, huv, Matrix.one_mulVec, hax]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstRel_mul (x : Matrix (Fin n) (Fin ρ) E) (j : Fin ρ) {u v : Matrix (Fin ρ) (Fin ρ) E}
     (hu : ∀ i k, k < i → u i k = 0) (hv : ∀ i k, k < i → v i k = 0) (hvd : ∀ i, v i i = 1)
@@ -154,15 +154,15 @@ theorem firstRel_mul (x : Matrix (Fin n) (Fin ρ) E) (j : Fin ρ) {u v : Matrix 
   · rw [hmv, Matrix.mulVec_mulVec a u v, huv, Matrix.one_mulVec, hax]
 
 /- English proof (translation)
-Establish `hdet : u.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i k h => hu i k h)]`. Simplify using `[hd]`. Establish `hunit : IsUnit u.det` using `by rw [hdet]; exact isUnit_one`. Use `letI : Invertible u := Matrix.invertibleOfIsUnitDet u hunit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `huv : u * u⁻¹ = 1` using `Matrix.mul_nonsing_inv u hunit`. Establish `hvu : u⁻¹ * u = 1` using `Matrix.nonsing_inv_mul u hunit`. Establish `hv : ∀ i k, k < i → u⁻¹ i k = 0` using `fun i k h => Matrix.blockTriangular_inv_of_blockTriangular (b := id) (fun i k h => hu i k h) h`. Establish `hvd : ∀ i, u⁻¹ i i = 1`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `congrFun (congrFun hvu i) i`. Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Simplify `e` using `[hd]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[hv i k h]`. Simplify using `[hu k i h]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Conclude with `firstRel_mul x j hu hv hvd huv hvu`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `firstRel_mul (x * u) j hv hu hd hvu huv h` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, huv, Matrix.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem firstRel_mul_iff (x : Matrix (Fin n) (Fin ρ) E) (j : Fin ρ) (u : Matrix (Fin ρ) (Fin ρ) E)
     (hd : ∀ i, u i i = 1) (hu : ∀ i k, k < i → u i k = 0) :
@@ -193,7 +193,7 @@ theorem firstRel_mul_iff (x : Matrix (Fin n) (Fin ρ) E) (j : Fin ρ) (u : Matri
     rwa [Matrix.mul_assoc, huv, Matrix.mul_one] at this
 
 /- English proof (translation)
-Introduce `E _ n ρ x`. Conclude with `⟨not_linearIndependent_iff_exists x, fun j j' h h' => firstRel_unique x h h', fun j u hd hu => firstRel_mul_iff x j u hd hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem dependent_frame_first_relation : ∀ (E : Type) [Field E] (n ρ : ℕ) (x : Matrix (Fin n) (Fin ρ) E), (¬ LinearIndependent E x.transpose ↔ ∃ j : Fin ρ, (∀ a : Fin ρ → E, (∀ i, j ≤ i → a i = 0) → x *ᵥ a = 0 → a = 0) ∧ ∃ a : Fin ρ → E, a j = 1 ∧ (∀ i, j < i → a i = 0) ∧ x *ᵥ a = 0) ∧ (∀ j j' : Fin ρ, ((∀ a : Fin ρ → E, (∀ i, j ≤ i → a i = 0) → x *ᵥ a = 0 → a = 0) ∧ ∃ a : Fin ρ → E, a j = 1 ∧ (∀ i, j < i → a i = 0) ∧ x *ᵥ a = 0) → ((∀ a : Fin ρ → E, (∀ i, j' ≤ i → a i = 0) → x *ᵥ a = 0 → a = 0) ∧ ∃ a : Fin ρ → E, a j' = 1 ∧ (∀ i, j' < i → a i = 0) ∧ x *ᵥ a = 0) → j = j') ∧ ∀ (j : Fin ρ) (u : Matrix (Fin ρ) (Fin ρ) E), (∀ i, u i i = 1) → (∀ i k, k < i → u i k = 0) → (((∀ a : Fin ρ → E, (∀ i, j ≤ i → a i = 0) → x *ᵥ a = 0 → a = 0) ∧ ∃ a : Fin ρ → E, a j = 1 ∧ (∀ i, j < i → a i = 0) ∧ x *ᵥ a = 0) ↔ ((∀ a : Fin ρ → E, (∀ i, j ≤ i → a i = 0) → (x * u) *ᵥ a = 0 → a = 0) ∧ ∃ a : Fin ρ → E, a j = 1 ∧ (∀ i, j < i → a i = 0) ∧ (x * u) *ᵥ a = 0)) := by
   intro E _ n ρ x

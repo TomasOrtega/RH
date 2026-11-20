@@ -35,7 +35,7 @@ variable {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp R')} [GrpObj A'] {φ : A'.l
   (m : GrpMor (dp0 R) (𝟙 _) A (dp0 R') (𝟙 _) A' σ (spMap σ) φ)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem ptsDown_comp {D D' : Type} [CommRing D] [Algebra R' D] [CommRing D'] [Algebra R' D'] (ψ : D →ₐ[R'] D') (x : Pt A' D) :
     letI := via σ D; letI := via σ D'
@@ -44,7 +44,7 @@ theorem ptsDown_comp {D D' : Type} [CommRing D] [Algebra R' D] [CommRing D'] [Al
   rfl
 
 /- English proof (translation)
-Use `letI := via σ D`. Use `letI := via σ D'`. Conclude with `((GlobalTheory.T.crystallineCocycleOnPoints_isCocycle_and_eval_eq R A f).2 D D' (ptsDown m D (fun _ ↦ rfl) x) (ptsDown m D' (fun _ ↦ rfl) (spOver ψ ≫ x)) (down σ ψ) (m.isMor.functor.map (trivMap ψ x)) (fun _ ↦ rfl)).2`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem fv_pull (f : Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))) {D D' : Type} [CommRing D] [Algebra R' D] [CommRing D'] [Algebra R' D'] (ψ : D →ₐ[R'] D') (x : Pt A' D) :
     letI := via σ D; letI := via σ D'
@@ -72,7 +72,7 @@ Both sides reduce to the same expression.
 @[simp] theorem sR_apply (n : ℕ) (a : G.A n) : sR σ m t t' n a = (t'.semiHom t m).app n a := rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(PDivGroup.TorsionTower.semiOf_y (t := t) (t' := t') m n).symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem ptsDown_y (n : ℕ) :
     letI := via σ (G'.A n)
@@ -144,9 +144,9 @@ def sRt (n : ℕ) : letI := via σ (G'.A n ⊗[R'] G'.A n); G.A n →ₐ[R] G'.A
       exact (Algebra.TensorProduct.algebraMap_apply' _).symm }
 
 /- English proof (translation)
-Use `letI := via σ (G'.A n ⊗[R'] G'.A n)`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b`. Rewrite using `[Algebra.TensorProduct.lift_tmul]`.
+Equip the data with the indicated structure. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((t'.semiHom t m).app n a ⊗ₜ[R'] (1 : G'.A n)) * ((1 : G'.A n) ⊗ₜ[R'] (t'.semiHom t m).app n b) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem lift_eq_two (n : ℕ) (c : G.A n ⊗[R] G.A n) :
     letI := via σ (G'.A n ⊗[R'] G'.A n)
@@ -163,9 +163,9 @@ theorem lift_eq_two (n : ℕ) (c : G.A n ⊗[R] G.A n) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `letI := via σ (G'.A n)`. Use `letI := via σ (G'.A n ⊗[R'] G'.A n)`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `a`. Rewrite using `[AlgHom.comp_apply, down_apply, sR_apply, AlgHom.convMul_apply, AlgHom.convMul_apply, ← SemiBialgHom.two_comul]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `Coalgebra.comul (R := R) a = c`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => rfl`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem coc_naturality (n : ℕ) :
     letI := via σ (G'.A n); letI := via σ (G'.A n ⊗[R'] G'.A n)
@@ -185,9 +185,9 @@ private theorem coc_naturality (n : ℕ) :
   | tmul a b => rfl
 
 /- English proof (translation)
-Use `letI := via σ T`. Use `letI := via σ (G'.A n)`. Establish `hc` using `(GlobalTheory.T.crystallineCocycleOnPoints_isCocycle_and_eval_eq R A d.f).1 (G.A n) (G'.A n) T (sR σ m t t' n) (down σ ψ) (t.y n) (sm_whole _)`. Establish `hp` using `fv_pull σ m d.f ψ (t'.y n)`. Rewrite `hp` using `[ptsDown_y σ m t t']`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `fv (m.isMor.coef.pullbackOneCocycle d.f) (G'.A n) T ψ (t'.y n) + ψ ((t'.semiHom t m).app n (d.h n) + corr σ m t t' d.f n) = _`. Rewrite using `[hp, hc, map_add]`. Simplify using `only [AlgHom.comp_apply, down_apply, sR_apply, corr]`. Normalize the expressions using the abelian group laws.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem coc_naturality_of_dat_algHom {c : primDR A} (d : Dat t c) (n : ℕ) {T : Type} [CommRing T] [Algebra R' T]
     (ψ : G'.A n →ₐ[R'] T) :
@@ -206,7 +206,7 @@ private theorem coc_naturality_of_dat_algHom {c : primDR A} (d : Dat t c) (n : �
   abel
 
 /- English proof (translation)
-Use `letI := via σ T`. Use `letI := via σ (G'.A n)`. Rewrite using `[ptsDown_comp σ m ψ (t'.y n), ptsDown_y σ m t t', ← Category.assoc, ← spOver_comp]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coc_naturality_algHom {T : Type} [CommRing T] [Algebra R' T] (n : ℕ) (ψ : G'.A n →ₐ[R'] T) :
     letI := via σ (G'.A n); letI := via σ T
@@ -216,7 +216,7 @@ private theorem coc_naturality_algHom {T : Type} [CommRing T] [Algebra R' T] (n 
   rw [ptsDown_comp σ m ψ (t'.y n), ptsDown_y σ m t t', ← Category.assoc, ← spOver_comp]
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem tensorProduct_lift_includeLeft_includeRight_apply (n : ℕ) (c : G'.A n ⊗[R'] G'.A n) :
     Algebra.TensorProduct.lift (Algebra.TensorProduct.includeLeft : G'.A n →ₐ[R'] G'.A n ⊗[R'] G'.A n)
@@ -227,7 +227,7 @@ private theorem tensorProduct_lift_includeLeft_includeRight_apply (n : ℕ) (c :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `letI := via σ (G'.A n)`. Use `letI := via σ (G'.A n ⊗[R'] G'.A n)`. Conclude with `AlgHom.ext fun _ ↦ rfl`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem coc_naturality_tensor (n : ℕ) :
     letI := via σ (G'.A n); letI := via σ (G'.A n ⊗[R'] G'.A n)
@@ -237,7 +237,7 @@ private theorem coc_naturality_tensor (n : ℕ) :
   exact AlgHom.ext fun _ ↦ rfl
 
 /- English proof (translation)
-Use `letI := via σ (G'.A n)`. Use `letI := via σ (G'.A n ⊗[R'] G'.A n)`. Conclude with `AlgHom.ext fun _ ↦ rfl`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem coc_naturality_tensor_swap (n : ℕ) :
     letI := via σ (G'.A n); letI := via σ (G'.A n ⊗[R'] G'.A n)
@@ -263,9 +263,9 @@ variable {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp R')} [GrpObj A'] {φ : A'.l
 variable {p : ℕ} {G : PDivGroup p R} {G' : PDivGroup p R'} {t : G.TorsionTower A} {t' : G'.TorsionTower A'}
 
 /- English proof (translation)
-Use `letI := via σ (G'.A n)`. Use `letI := via σ (G'.A n ⊗[R'] G'.A n)`. Establish `hL` using `GlobalTheory.T.cocycle_tensorLift_apply_eq_twoPointValue R A p G t c d n (G'.A n ⊗[R'] G'.A n) (sL σ m t t' n) (sRt σ m t t' n)`. Establish `hR` using `GlobalTheory.T.cocycle_tensorLift_apply_eq_twoPointValue R' A' p G' t' (m.pull c) (natDat (m := m) (t' := t') d) n (G'.A n ⊗[R'] G'.A n) Algebra.TensorProduct.includeLeft Algebra.TensorProduct.includeRight`. Rewrite `hL` using `[lift_eq_two]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hR` using `[tensorProduct_lift_includeLeft_includeRight_apply]`. Rewrite using `[hL, hR, coc_naturality_of_dat_pt, coc_naturality_algHom, coc_naturality_algHom, coc_naturality_of_dat_algHom d n, coc_naturality_of_dat_algHom d n, coc_naturality_of_dat_algHom d n, coc_naturality, coc_naturality_tensor, coc_naturality_tensor_swap]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coc_nat {c : primDR A} (d : Dat t c) (n : ℕ) :
     ((t'.semiHom t m).app n).two (d.coc n) = (natDat (m := m) (t' := t') d).coc n := by
@@ -288,9 +288,9 @@ variable {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp R')} [GrpObj A'] {φ : A'.l
 variable {p : ℕ} {G : PDivGroup p R} {G' : PDivGroup p R'} {t : G.TorsionTower A} {t' : G'.TorsionTower A'}
 
 /- English proof (translation)
-Use `letI := via σ (G'.A n)`. Set `a : trivAt (t.y n) ⟶ m.isMor.obj (trivAt (t'.y n))` to `Thick.trivHom (sR σ m t t' n) (PDivGroup.TorsionTower.semiOf_y (t := t) (t' := t') m n)`. Establish `e1` using `GlobalTheory.T.crystallineCocycleCotangentValue_baseChange_natural R R' σ A A' φ m.isMor (G.A n) (G'.A n) ((t'.semiHom t m).app n) (t.y n) (t'.y n) a d.f (fun _ ↦ rfl)`. Establish `e2 : ev d.f a = fv d.f (G.A n) (G'.A n) (sR σ m t t' n) (t.y n)` using `((GlobalTheory.T.crystallineCocycleOnPoints_isCocycle_and_eval_eq R A d.f).2 (G.A n) (G'.A n) (t.y n) (ptsDown m (G'.A n) (fun _ ↦ rfl) (t'.y n)) (sR σ m t t' n) a (fun _ ↦ rfl)).2`. Simplify using `only [Dat.om, natDat, corr]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, map_sub, SemiBialgHom.cot_d]`. Simplify using `only [dUnit, map_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem om_nat {c : primDR A} (d : Dat t c) (n : ℕ) :
     ((t'.semiHom t m).app n).cot (d.om n) = (natDat (m := m) (t' := t') d).om n := by
@@ -308,9 +308,9 @@ theorem om_nat {c : primDR A} (d : Dat t c) (n : ℕ) :
   abel
 
 /- English proof (translation)
-Introduce `p R R' _ _ A _ A' _ G G' t t' σ φ m c x hx`. Take `⟨d, z, w, hz, hw, rfl⟩` from `hx`. Use `⟨natDat (m := m) (t' := t') d, ((t'.semiHom t m).pair (z, w)).1, ((t'.semiHom t m).pair (z, w)).2, fun n ↦ ?_, fun n ↦ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← coc_nat, ← hz n]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← om_nat, ← hw n]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression.
 -/
 theorem isCan_pull : ∀ (p : ℕ) (R R' : Type) [CommRing R] [CommRing R'] (A : Over (Sp R)) [GrpObj A] (A' : Over (Sp R')) [GrpObj A'] (G : PDivGroup p R) (G' : PDivGroup p R') (t : G.TorsionTower A) (t' : G'.TorsionTower A') (σ : R →+* R') (φ : A'.left ⟶ A.left) (m : GrpMor (dp0 R) (𝟙 _) A (dp0 R') (𝟙 _) A' σ (spMap σ) φ) (c : primDR A) (x : G.RigExt), IsCan t c x → IsCan t' (m.pull c) ((t'.semiHom t m).rig x) := by
   intro p R R' _ _ A _ A' _ G G' t t' σ φ m c x hx

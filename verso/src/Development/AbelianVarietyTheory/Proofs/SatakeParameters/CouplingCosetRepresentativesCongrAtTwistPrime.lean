@@ -18,19 +18,19 @@ open GlobalTheory.TopInv
 variable {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {n : ℕ}
 
 /- English proof (translation)
-Establish `hqpow : ∀ m : ℕ, IntAt P (q ^ m)` using `fun m => mem_intS.1 ((intS P).pow_mem (mem_intS.2 hqi) m)`. Take `⟨s, hs⟩ : ∃ s, Dd = 2 * M + s` from `⟨Dd - 2 * M, by omega⟩`. Establish `hA : ∀ l, IntAt P ((q ^ M)⁻¹ * (k y0 - y0) l)`. Introduce `l`. Establish `h` using `hkD ((q ^ M) • y0) (fun l => by simpa [smul_eq_mul] using hy0 l) l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (q ^ M)⁻¹ * (k y0 - y0) l = q ^ s * ((q ^ Dd)⁻¹ * (k ((q ^ M) • y0) - (q ^ M) • y0) l)`. Simplify using `only [map_smul, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hs, pow_add, pow_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `mem_intS.1 ((intS P).mul_mem (mem_intS.2 (hqpow s)) (mem_intS.2 h))`. Establish `hB : ∀ l, IntAt P ((q ^ M)⁻¹ * (k V₁ - k y0) l)`. Introduce `l`. Establish `h` using `hkI ((q ^ M)⁻¹ • (V₁ - y0)) (fun l => by simpa [smul_eq_mul] using h1 l) l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[map_smul, map_sub, Pi.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis. Establish `hC : ∀ l, IntAt P ((q ^ M)⁻¹ * (k V₁ - y0) l)`. Introduce `l`. Establish `e : (q ^ M)⁻¹ * (k V₁ - y0) l = (q ^ M)⁻¹ * (k V₁ - k y0) l + (q ^ M)⁻¹ * (k y0 - y0) l`. Simplify using `only [Pi.sub_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(hB l).add (hA l)`. Establish `hE : ∀ l, IntAt P ((q ^ M)⁻¹ * (g (k V₁) - g y0) l)`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `hgI ((q ^ M)⁻¹ • (k V₁ - y0)) (fun l => by simpa [smul_eq_mul] using hC l) l`. Rewrite `h` using `[map_smul, map_sub, Pi.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis. Introduce `l`. Establish `e : (q ^ M)⁻¹ * (g (k V₁) - V₀) l = (q ^ M)⁻¹ * (g (k V₁) - g y0) l + (q ^ M)⁻¹ * (g y0 - y0) l + (-1 : E) * ((q ^ M)⁻¹ * (V₀ - y0) l)`. Simplify using `only [Pi.sub_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mem_intS.1 ((intS P).add_mem ((intS P).add_mem (mem_intS.2 (hE l)) (mem_intS.2 (hgy l))) ((intS P).mul_mem ((intS P).neg_mem (intS P).one_mem) (mem_intS.2 (h0 l))))`.
+A detailed English derivation is pending.
 -/
 theorem core (q : E) (hq : q ≠ 0) (hqi : IntAt P q) (M Dd : ℕ) (hD : 2 * M ≤ Dd) (y0 V₀ V₁ : Sp E n) (g k : Sp E n →ₗ[E] Sp E n)
     (hgI : ∀ x : Sp E n, (∀ l, IntAt P (x l)) → ∀ l, IntAt P (g x l))
@@ -81,19 +81,19 @@ namespace GlobalTheory.LocQCoset
 open GlobalTheory.TopInv
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP hTie hi β P hPG p p₁ g k hg hgy hk hkD hF`. Establish `hok` using `t.idx_ok μ`. Establish `hq` using `qOf_ne (E := t.X.E) P.1`. Establish `hqi : IntAt P.1 ((qOf P.1 : ℕ) : t.X.E)` using `intAt_nat (P := P.1) _`. Establish `memS : ∀ x : Sp t.X.E (D.R.N (t.m2 + 1)), x ∈ stdAt t.X.E (D.R.N (t.m2 + 1)) P.1 ↔ ∀ l, IntAt P.1 (x l)` using `fun x => mem_localization_standardLattice P.1 x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `rep : ∀ p' : ChPt (R` using `D.R) t.sel (t.tup μ) (t.word u) (t.m2 + 1), SameCoset t.sel (t.tup μ) (t.cst μ) P ((frsF t.sel (t.tup μ) p' P).symm (repY (cosetOf A (t.m2 + 1) hi β p'))) (y0At A (t.m2 + 1) hi β P) := by`. Introduce `p'`. Take `⟨r, hr⟩` from `GlobalTheory.T.exists_vector_prescribed_cosets_badPrimes_frames t.sel (t.tup μ) (t.cst μ) (frsF t.sel (t.tup μ) p') (fun P => y0At A (t.m2 + 1) hi β P)`. Establish `hrep : repY (cosetOf A (t.m2 + 1) hi β p') ∈ cosetOf A (t.m2 + 1) hi β p'` using `Classical.epsilon_spec (p := fun y => y ∈ cosetOf A (t.m2 + 1) hi β p') ⟨r, hr⟩`. Conclude with `hrep P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `unf : ∀ y y' : Sp t.X.E (D.R.N (t.m2 + 1)), SameCoset t.sel (t.tup μ) (t.cst μ) P y y' → ∀ l, IntAt P.1 ((((qOf P.1 : ℕ) : t.X.E) ^ (t.cst μ).M)⁻¹ * (y - y') l)`. Introduce `y y' h`. Unfold `SameCoset at h`. Simplify `h` using `only [if_neg hPG]`. Establish `bnd : ∀ y : Sp t.X.E (D.R.N (t.m2 + 1)), SameCoset t.sel (t.tup μ) (t.cst μ) P y (y0At A (t.m2 + 1) hi β P) → ∀ l, IntAt P.1 (((qOf P.1 : ℕ) : t.X.E) ^ (t.cst μ).M * y l)` using `fun y h => (GlobalTheory.T.chartBaseCoset_bounded_typePrimes_and_twist A dtU a hP hTie hi β P y h).2 hPG`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(memS _).2 fun l => ?_, (memS _).2 fun l => ?_, (memS _).2 fun l => ?_⟩` and prove the remaining obligations. Simplify `bnd _ (rep p) l` using `only [Pi.smul_apply, smul_eq_mul]`. Simplify `bnd _ (rep p₁) l` using `only [Pi.smul_apply, smul_eq_mul]`. Establish `hW : (frsF t.sel (t.tup μ) p P).symm (repY (cosetOf A (t.m2 + 1) hi β p₁)) = g (k ((frsF t.sel (t.tup μ) p₁ P).symm (repY (cosetOf A (t.m2 + 1) hi β p₁))))`. Apply `(frsF t.sel (t.tup μ) p P).injective` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.apply_symm_apply, ← hF, LinearEquiv.apply_symm_apply]`. Establish `hgI : ∀ x : Sp t.X.E (D.R.N (t.m2 + 1)), (∀ l, IntAt P.1 (x l)) → ∀ l, IntAt P.1 (g.toLinearMap x l)` using `fun x hx => (memS _).1 ((hg x).2 ((memS x).2 hx))`. Establish `hkI : ∀ x : Sp t.X.E (D.R.N (t.m2 + 1)), (∀ l, IntAt P.1 (x l)) → ∀ l, IntAt P.1 (k.toLinearMap x l)` using `fun x hx => (memS _).1 ((hk x).2 ((memS x).2 hx))`. Establish `hkD' : ∀ w : Sp t.X.E (D.R.N (t.m2 + 1)), (∀ l, IntAt P.1 (w l)) → ∀ l, IntAt P.1 ((((qOf P.1 : ℕ) : t.X.E) ^ (t.cst μ).D P)⁻¹ * (k.toLinearMap w - w) l)`. Introduce `w hw l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(memS _).1 (hkD w ((memS w).2 hw)) l` using `only [Pi.smul_apply, smul_eq_mul, LinearEquiv.coe_coe]`. Establish `hrefl : SameCoset t.sel (t.tup μ) (t.cst μ) P (y0At A (t.m2 + 1) hi β P) (y0At A (t.m2 + 1) hi β P)`. Unfold `SameCoset`. Introduce `l`. Rewrite using `[sub_self, Pi.zero_apply, mul_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using intAt_nat (E := t.X.E) (P := P.1) 0`. Establish `hy0` using `bnd _ hrefl`. Use `core _ hq hqi (t.cst μ).M ((t.cst μ).D P) (hok.depthQ P hPG) (y0At A (t.m2 + 1) hi β P) _ _ g.toLinearMap k.toLinearMap hgI hkI hkD' (unf _ _ hgy) hy0 (unf _ _ (rep p)) (unf _ _ (rep p₁)) l` as an intermediate fact. Rewrite using `[hW]`. Simplify `this` using `only [Pi.smul_apply, smul_eq_mul, LinearEquiv.coe_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coset_agree : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
   ∀ (hi : t.m2 + 1 ≤ D.R.m) (β : (St (t.m2 + 1) hi).Ch) (P : SB t μ), P.1 ∉ t.Pr.vGs →

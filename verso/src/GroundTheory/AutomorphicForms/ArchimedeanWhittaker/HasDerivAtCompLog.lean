@@ -15,12 +15,12 @@ noncomputable abbrev πσ : BanachRep FiltrationCocycleLiftCriterion H := Banach
 abbrev IsSm (v : H) : Prop := hGL2.IsSmoothVector (πσ σ) v
 
 /- English proof (translation)
-The claim follows from `σ.norm_map_le g`.
+A detailed English derivation is pending.
 -/
 theorem norm_πσ_le (g : FiltrationCocycleLiftCriterion) : ‖πσ σ g‖ ≤ 1 := σ.norm_map_le g
 
 /- English proof (translation)
-The claim follows from `hGL2.isSmoothVector_map (πσ σ) hv g`.
+A detailed English derivation is pending.
 -/
 theorem isSm_map {v : H} (hv : IsSm σ v) (g : FiltrationCocycleLiftCriterion) : IsSm σ (σ g v) :=
   hGL2.isSmoothVector_map (πσ σ) hv g
@@ -28,7 +28,7 @@ theorem isSm_map {v : H} (hv : IsSm σ v) (g : FiltrationCocycleLiftCriterion) :
 noncomputable abbrev dπ (X : gl2) (v : H) : H := hGL2.derivOp (πσ σ) X v
 
 /- English proof (translation)
-The claim follows from `hGL2.isSmoothVector_derivOp (πσ σ) hv X`.
+A detailed English derivation is pending.
 -/
 theorem isSm_dπ {v : H} (hv : IsSm σ v) (X : gl2) : IsSm σ (dπ σ X v) :=
   hGL2.isSmoothVector_derivOp (πσ σ) hv X
@@ -42,33 +42,33 @@ noncomputable def lT (x : H) : ℂ := if hx : IsSm σ x then l ⟨x, hx⟩ else 
 variable {σ l}
 
 /- English proof (translation)
-Rewrite using `[lT, dif_pos hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lT_of {x : H} (hx : IsSm σ x) : lT σ l x = l ⟨x, hx⟩ := by
   rw [lT, dif_pos hx]
 
 /- English proof (translation)
-Rewrite using `[lT_of hx, lT_of hy, lT_of ((hGL2.smoothVectors (πσ σ)).add_mem hx hy), ← map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lT_add {x y : H} (hx : IsSm σ x) (hy : IsSm σ y) :
     lT σ l (x + y) = lT σ l x + lT σ l y := by
   rw [lT_of hx, lT_of hy, lT_of ((hGL2.smoothVectors (πσ σ)).add_mem hx hy), ← map_add]; rfl
 
 /- English proof (translation)
-Rewrite using `[lT_of hx, lT_of ((hGL2.smoothVectors (πσ σ)).smul_mem c hx), ← smul_eq_mul, ← map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lT_smul {x : H} (hx : IsSm σ x) (c : ℂ) : lT σ l (c • x) = c * lT σ l x := by
   rw [lT_of hx, lT_of ((hGL2.smoothVectors (πσ σ)).smul_mem c hx), ← smul_eq_mul, ← map_smul]; rfl
 
 /- English proof (translation)
-Rewrite using `[lT_of hx, lT_of hy, lT_of ((hGL2.smoothVectors (πσ σ)).sub_mem hx hy), ← map_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lT_sub {x y : H} (hx : IsSm σ x) (hy : IsSm σ y) :
     lT σ l (x - y) = lT σ l x - lT σ l y := by
   rw [lT_of hx, lT_of hy, lT_of ((hGL2.smoothVectors (πσ σ)).sub_mem hx hy), ← map_sub]; rfl
 
 /- English proof (translation)
-Rewrite using `[lT_of (hGL2.isSmoothVector_zero (πσ σ))]`. Conclude with `map_zero l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lT_zero : lT σ l 0 = 0 := by
   rw [lT_of (hGL2.isSmoothVector_zero (πσ σ))]
@@ -81,7 +81,7 @@ noncomputable def Wt (u : H) (t : ℝ) : ℂ := lT σ l (σ (aT t) u)
 variable {σ l}
 
 /- English proof (translation)
-Simplify using `only [Wt, map_add]`. Conclude with `lT_add (isSm_map σ hu _) (isSm_map σ hv _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Wt_add {u v : H} (hu : IsSm σ u) (hv : IsSm σ v) (t : ℝ) :
     Wt σ l (u + v) t = Wt σ l u t + Wt σ l v t := by
@@ -89,14 +89,14 @@ theorem Wt_add {u v : H} (hu : IsSm σ u) (hv : IsSm σ v) (t : ℝ) :
   exact lT_add (isSm_map σ hu _) (isSm_map σ hv _)
 
 /- English proof (translation)
-Simplify using `only [Wt, map_smul]`. Conclude with `lT_smul (isSm_map σ hu _) c`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Wt_smul {u : H} (hu : IsSm σ u) (c : ℂ) (t : ℝ) : Wt σ l (c • u) t = c * Wt σ l u t := by
   simp only [Wt, map_smul]
   exact lT_smul (isSm_map σ hu _) c
 
 /- English proof (translation)
-Simplify using `only [Wt, map_sub]`. Conclude with `lT_sub (isSm_map σ hu _) (isSm_map σ hv _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Wt_sub {u v : H} (hu : IsSm σ u) (hv : IsSm σ v) (t : ℝ) :
     Wt σ l (u - v) t = Wt σ l u t - Wt σ l v t := by
@@ -104,13 +104,13 @@ theorem Wt_sub {u v : H} (hu : IsSm σ u) (hv : IsSm σ v) (t : ℝ) :
   exact lT_sub (isSm_map σ hu _) (isSm_map σ hv _)
 
 /- English proof (translation)
-Establish `key` using `hl.hasDerivAt_map_expG (norm_πσ_le σ) hu (aT t) lH`. Establish `e1 : (fun s : ℝ => l (hGL2.smoothMap (πσ σ) hu (aT t * hGL2.expG (s • lH)))) = fun s => Wt σ l u (t + s)`. Use function extensionality and compare the values at `s`. Rewrite using `[Wt, expG_lH, ← aT_add, lT_of (isSm_map σ hu _)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : l (hGL2.smoothMap (πσ σ) (hGL2.isSmoothVector_derivOp (πσ σ) hu lH) (aT t)) = Wt σ l (dπ σ lH u) t`. Rewrite using `[Wt, lT_of (isSm_map σ (isSm_dπ σ hu lH) _)]`. Both sides reduce to the same expression. Rewrite `key` using `[e1, e2]`. Establish `key' : HasDerivAt (fun s : ℝ => Wt σ l u (t + s)) (Wt σ l (dπ σ lH u) t) (t - t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_self]`. Conclude with `key`. Use `key'.comp_sub_const t t` as an intermediate fact. Use `this.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_Wt (hl : hGL2.IsSmoothContinuous (πσ σ) l) {u : H} (hu : IsSm σ u) (t : ℝ) :
     HasDerivAt (Wt σ l u) (Wt σ l (dπ σ lH u) t) t := by
@@ -133,11 +133,11 @@ theorem hasDerivAt_Wt (hl : hGL2.IsSmoothContinuous (πσ σ) l) {u : H} (hu : I
   rw [add_sub_cancel]
 
 /- English proof (translation)
-Establish `key` using `hl.hasDerivAt_map_expG (norm_πσ_le σ) hw 1 lE`. Establish `e1 : (fun s : ℝ => l (hGL2.smoothMap (πσ σ) hw (1 * hGL2.expG (s • lE)))) = fun s => ψ s * lT σ l w`. Use function extensionality and compare the values at `s`. Rewrite using `[one_mul, expG_lE, ← hW s w hw, lT_of (isSm_map σ hw _)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `key` using `[e1]`. Establish `e2 : l (hGL2.smoothMap (πσ σ) (hGL2.isSmoothVector_derivOp (πσ σ) hw lE) 1) = lT σ l (dπ σ lE w)`. Rewrite using `[lT_of (isSm_dπ σ hw lE)]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Rewrite `key` using `[e2]`. Conclude with `key.unique (hψ.mul_const _)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lT_dπ_lE (hl : hGL2.IsSmoothContinuous (πσ σ) l) {ψ : ℝ → ℂ} {β : ℂ}
     (hψ : HasDerivAt ψ β 0)
@@ -160,9 +160,9 @@ theorem lT_dπ_lE (hl : hGL2.IsSmoothContinuous (πσ σ) l) {ψ : ℝ → ℂ} 
   exact key.unique (hψ.mul_const _)
 
 /- English proof (translation)
-Establish `e : σ (aT t) (dπ σ lE u) = ((Real.exp (2 * t) : ℝ) : ℂ) • dπ σ lE (σ (aT t) u)`. Use `hGL2.derivOp_map (πσ σ) hu (aT t) lE` as an intermediate fact. Rewrite `this` using `[Ad_aT_lE, hGL2.derivOp_smul_left]`. Rewrite using `[Complex.coe_smul]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Wt, e, lT_smul (isSm_dπ σ (isSm_map σ hu _) lE), lT_dπ_lE hl hψ hW (isSm_map σ hu _), Wt]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Wt_dπ_lE (hl : hGL2.IsSmoothContinuous (πσ σ) l) {ψ : ℝ → ℂ} {β : ℂ}
     (hψ : HasDerivAt ψ β 0)
@@ -188,7 +188,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable {σ : UnitaryRep FiltrationCocycleLiftCriterion H}
 
 /- English proof (translation)
-Establish `h0 : HasDerivAt (fun s : ℝ => (s : ℂ)) 1 t`. Simplify using `using (hasDerivAt_id t).ofReal_comp`. Establish `h1 : HasDerivAt (fun s : ℝ => (k : ℂ) * (s : ℂ) * I) ((k : ℂ) * 1 * I) t` using `(h0.const_mul (k : ℂ)).mul_const I`. Conclude with `h1.cexp.congr_deriv (by simp [chi])`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_chi (k : ℤ) (t : ℝ) : HasDerivAt (chi k) (chi k t * ((k : ℂ) * I)) t := by
   have h0 : HasDerivAt (fun s : ℝ => (s : ℂ)) 1 t := by
@@ -198,33 +198,33 @@ theorem hasDerivAt_chi (k : ℤ) (t : ℝ) : HasDerivAt (chi k) (chi k t * ((k :
   exact h1.cexp.congr_deriv (by simp [chi])
 
 /- English proof (translation)
-The claim follows from `hGL2.derivOp_add_left _ X Y u`.
+A detailed English derivation is pending.
 -/
 theorem dπ_add_left (X Y : gl2) (u : H) : dπ σ (X + Y) u = dπ σ X u + dπ σ Y u :=
   hGL2.derivOp_add_left _ X Y u
 
 /- English proof (translation)
-The claim follows from `hGL2.derivOp_smul_left _ r X u`.
+A detailed English derivation is pending.
 -/
 theorem dπ_smul_left (r : ℝ) (X : gl2) (u : H) : dπ σ (r • X) u = r • dπ σ X u :=
   hGL2.derivOp_smul_left _ r X u
 
 /- English proof (translation)
-The claim follows from `hGL2.derivOp_neg_left _ X u`.
+A detailed English derivation is pending.
 -/
 theorem dπ_neg_left (X : gl2) (u : H) : dπ σ (-X) u = -dπ σ X u :=
   hGL2.derivOp_neg_left _ X u
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, dπ_add_left, dπ_neg_left, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dπ_sub_left (X Y : gl2) (u : H) : dπ σ (X - Y) u = dπ σ X u - dπ σ Y u := by
   rw [sub_eq_add_neg, dπ_add_left, dπ_neg_left, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `h1` using `hGL2.hasDerivAt_derivOp (πσ σ) hu lW`. Establish `e : (fun t : ℝ => (πσ σ) (hGL2.expG (t • lW)) u) = fun t => chi k t • u`. Use function extensionality and compare the values at `t`. Rewrite using `[expG_lW]`. Conclude with `hk t`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e]`. Establish `h2` using `(hasDerivAt_chi k 0).smul_const u`. Use `h1.unique h2` as an intermediate fact. Rewrite using `[show dπ σ lW u = hGL2.derivOp (πσ σ) lW u from rfl, this]`. Simplify using `[chi]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dπ_lW_of_mem {k : ℤ} {u : H} (hu : IsSm σ u) (hk : u ∈ weightSpace σ k) :
     dπ σ lW u = ((k : ℂ) * I) • u := by
@@ -240,7 +240,7 @@ theorem dπ_lW_of_mem {k : ℤ} {u : H} (hu : IsSm σ u) (hk : u ∈ weightSpace
   simp [chi]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [coe_lS, Submodule.coe_sub, Submodule.coe_smul, coe_lE, coe_lW]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp; norm_num`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lS_eq_two_lE_sub_lW : lS = (2 : ℝ) • lE - lW := by
   apply Subtype.ext
@@ -248,7 +248,7 @@ theorem lS_eq_two_lE_sub_lW : lS = (2 : ℝ) • lE - lW := by
   ext i j; fin_cases i <;> fin_cases j <;> simp; norm_num
 
 /- English proof (translation)
-Rewrite using `[lS_eq_two_lE_sub_lW, dπ_sub_left, dπ_smul_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dπ_lS (u : H) : dπ σ lS u = (2 : ℝ) • dπ σ lE u - dπ σ lW u := by
   rw [lS_eq_two_lE_sub_lW, dπ_sub_left, dπ_smul_left]
@@ -258,34 +258,34 @@ noncomputable def Rop (σ : UnitaryRep FiltrationCocycleLiftCriterion H) (u : H)
 noncomputable def Lop (σ : UnitaryRep FiltrationCocycleLiftCriterion H) (u : H) : H := dπ σ lH u - I • dπ σ lS u
 
 /- English proof (translation)
-The claim follows from `(hGL2.smoothVectors (πσ σ)).add_mem (isSm_dπ σ hu lH) ((hGL2.smoothVectors (πσ σ)).smul_mem I (isSm_dπ σ hu lS))`.
+A detailed English derivation is pending.
 -/
 theorem isSm_Rop {u : H} (hu : IsSm σ u) : IsSm σ (Rop σ u) :=
   (hGL2.smoothVectors (πσ σ)).add_mem (isSm_dπ σ hu lH)
     ((hGL2.smoothVectors (πσ σ)).smul_mem I (isSm_dπ σ hu lS))
 
 /- English proof (translation)
-The claim follows from `(hGL2.smoothVectors (πσ σ)).sub_mem (isSm_dπ σ hu lH) ((hGL2.smoothVectors (πσ σ)).smul_mem I (isSm_dπ σ hu lS))`.
+A detailed English derivation is pending.
 -/
 theorem isSm_Lop {u : H} (hu : IsSm σ u) : IsSm σ (Lop σ u) :=
   (hGL2.smoothVectors (πσ σ)).sub_mem (isSm_dπ σ hu lH)
     ((hGL2.smoothVectors (πσ σ)).smul_mem I (isSm_dπ σ hu lS))
 
 /- English proof (translation)
-The claim follows from `(hGL2.derivOp_map (πσ σ) hu g X).symm`.
+A detailed English derivation is pending.
 -/
 theorem map_dπ {u : H} (hu : IsSm σ u) (g : FiltrationCocycleLiftCriterion) (X : gl2) :
     σ g (dπ σ X u) = dπ σ (hGL2.Ad g X) (σ g u) :=
   (hGL2.derivOp_map (πσ σ) hu g X).symm
 
 /- English proof (translation)
-The claim follows from `hGL2.derivOp_smul (πσ σ) hu c X`.
+A detailed English derivation is pending.
 -/
 theorem dπ_smul_vec {u : H} (hu : IsSm σ u) (c : ℂ) (X : gl2) : dπ σ X (c • u) = c • dπ σ X u :=
   hGL2.derivOp_smul (πσ σ) hu c X
 
 /- English proof (translation)
-Rewrite using `[show (2 : ℂ) * θ * I = ((2 * θ : ℝ) : ℂ) * I by push_cast; ring, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem exp_two_mul_I (θ : ℝ) :
     Complex.exp ((2 : ℂ) * θ * I) = (Real.cos (2 * θ) : ℂ) + (Real.sin (2 * θ) : ℂ) * I := by
@@ -293,11 +293,9 @@ theorem exp_two_mul_I (θ : ℝ) :
     ← Complex.ofReal_cos, ← Complex.ofReal_sin]
 
 /- English proof (translation)
-Introduce `θ`. Simplify using `only [Rop, map_add, map_smul, map_dπ hu, Ad_kMat_lH, Ad_kMat_lS, hk θ, dπ_smul_vec hu, dπ_sub_left, dπ_add_left, dπ_smul_left]`. Establish `hchi : chi (k + 2) θ = chi k θ * ((Real.cos (2 * θ) : ℂ) + (Real.sin (2 * θ) : ℂ) * I)`. Rewrite using `[← exp_two_mul_I, chi, chi, ← Complex.exp_add]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hchi]`. Simplify using `only [← Complex.coe_smul]`. Use `match_scalars`.
-
-Apply the tactic sequence `all_goals ring_nf`. Apply the tactic sequence `all_goals (try simp only [Complex.I_sq])`. Apply the tactic sequence `all_goals ring`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Rop_mem {k : ℤ} {u : H} (hu : IsSm σ u) (hk : u ∈ weightSpace σ k) :
     Rop σ u ∈ weightSpace σ (k + 2) := by
@@ -314,13 +312,11 @@ theorem Rop_mem {k : ℤ} {u : H} (hu : IsSm σ u) (hk : u ∈ weightSpace σ k)
   all_goals ring
 
 /- English proof (translation)
-Introduce `θ`. Simplify using `only [Lop, map_sub, map_smul, map_dπ hu, Ad_kMat_lH, Ad_kMat_lS, hk θ, dπ_smul_vec hu, dπ_sub_left, dπ_add_left, dπ_smul_left]`. Establish `hchi : chi (k - 2) θ = chi k θ * ((Real.cos (2 * θ) : ℂ) - (Real.sin (2 * θ) : ℂ) * I)`. Establish `: (Real.cos (2 * θ) : ℂ) - (Real.sin (2 * θ) : ℂ) * I = Complex.exp (-((2 : ℂ) * θ * I))`. Rewrite using `[show -((2 : ℂ) * θ * I) = ((-(2 * θ) : ℝ) : ℂ) * I by push_cast; ring, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin, Real.cos_neg, Real.sin_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, chi, chi, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hchi]`. Simplify using `only [← Complex.coe_smul]`. Use `match_scalars`. Apply the tactic sequence `all_goals ring_nf`.
-
-Apply the tactic sequence `all_goals (try simp only [Complex.I_sq])`. Apply the tactic sequence `all_goals ring`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Lop_mem {k : ℤ} {u : H} (hu : IsSm σ u) (hk : u ∈ weightSpace σ k) :
     Lop σ u ∈ weightSpace σ (k - 2) := by
@@ -341,9 +337,9 @@ theorem Lop_mem {k : ℤ} {u : H} (hu : IsSm σ u) (hk : u ∈ weightSpace σ k)
   all_goals ring
 
 /- English proof (translation)
-Establish `hv'` using `hGL2.hasDerivAt_derivOp (πσ σ) hv X`. Establish `hw'` using `hGL2.hasDerivAt_derivOp (πσ σ) hw X`. Establish `hd` using `hv'.inner ℂ hw'`. Establish `hconst : (fun t : ℝ => ⟪(πσ σ) (hGL2.expG (t • X)) v, (πσ σ) (hGL2.expG (t • X)) w⟫_ℂ) = fun _ => ⟪v, w⟫_ℂ`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `σ.inner_map_map _ v w`. Rewrite `hd` using `[hconst]`. Establish `h0` using `hd.unique (hasDerivAt_const 0 _)`. Simplify using `only [zero_smul, IsExpLieAlgebra.expG_zero, BanachRep.map_one_apply] at h0`. Take the linear combination `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem inner_dπ_left {v w : H} (hv : IsSm σ v) (hw : IsSm σ w) (X : gl2) :
     ⟪dπ σ X v, w⟫_ℂ = -⟪v, dπ σ X w⟫_ℂ := by
@@ -359,7 +355,7 @@ theorem inner_dπ_left {v w : H} (hv : IsSm σ v) (hw : IsSm σ w) (X : gl2) :
   linear_combination h0
 
 /- English proof (translation)
-Simplify using `only [Rop, Lop, inner_add_left, inner_smul_left, inner_sub_right, inner_smul_right, inner_dπ_left hv hw, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_Rop {v w : H} (hv : IsSm σ v) (hw : IsSm σ w) :
     ⟪Rop σ v, w⟫_ℂ = -⟪v, Lop σ w⟫_ℂ := by
@@ -368,7 +364,7 @@ theorem inner_Rop {v w : H} (hv : IsSm σ v) (hw : IsSm σ w) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Lop, Rop, map_sub, map_smul, map_dπ hu, Ad_eps_lH, Ad_eps_lS, dπ_neg_left]`. Rewrite using `[smul_neg, sub_neg_eq_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_eps_Lop {u : H} (hu : IsSm σ u) : σ eps (Lop σ u) = Rop σ (σ eps u) := by
   simp only [Lop, Rop, map_sub, map_smul, map_dπ hu, Ad_eps_lH, Ad_eps_lS, dπ_neg_left]
@@ -393,7 +389,7 @@ variable (hl : hGL2.IsSmoothContinuous (πσ σ) l) {ψ : ℝ → ℂ} {β : ℂ
 include hl hψ hW
 
 /- English proof (translation)
-Rewrite using `[dπ_lS, ← Complex.coe_smul, Wt_sub ((hGL2.smoothVectors (πσ σ)).smul_mem _ (isSm_dπ σ hu lE)) (isSm_dπ σ hu lW), Wt_smul (isSm_dπ σ hu lE), Wt_dπ_lE hl hψ hW hu, dπ_lW_of_mem hu hk, Wt_smul hu]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Wt_dπ_lS {k : ℤ} {u : H} (hu : IsSm σ u) (hk : u ∈ weightSpace σ k) (t : ℝ) :
     Wt σ l (dπ σ lS u) t = (2 * β * Real.exp (2 * t) - (k : ℂ) * I) * Wt σ l u t := by
@@ -404,7 +400,7 @@ theorem Wt_dπ_lS {k : ℤ} {u : H} (hu : IsSm σ u) (hk : u ∈ weightSpace σ 
   ring
 
 /- English proof (translation)
-Rewrite using `[Rop, Wt_add (isSm_dπ σ hu lH) ((hGL2.smoothVectors (πσ σ)).smul_mem _ (isSm_dπ σ hu lS)), Wt_smul (isSm_dπ σ hu lS), Wt_dπ_lS hl hψ hW hu hk, bT]`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Wt_Rop {k : ℤ} {u : H} (hu : IsSm σ u) (hk : u ∈ weightSpace σ k) (t : ℝ) :
     Wt σ l (Rop σ u) t = Wt σ l (dπ σ lH u) t + (bT β t + k) * Wt σ l u t := by
@@ -415,7 +411,7 @@ theorem Wt_Rop {k : ℤ} {u : H} (hu : IsSm σ u) (hk : u ∈ weightSpace σ k) 
   ring
 
 /- English proof (translation)
-Rewrite using `[Lop, Wt_sub (isSm_dπ σ hu lH) ((hGL2.smoothVectors (πσ σ)).smul_mem _ (isSm_dπ σ hu lS)), Wt_smul (isSm_dπ σ hu lS), Wt_dπ_lS hl hψ hW hu hk, bT]`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Wt_Lop {k : ℤ} {u : H} (hu : IsSm σ u) (hk : u ∈ weightSpace σ k) (t : ℝ) :
     Wt σ l (Lop σ u) t = Wt σ l (dπ σ lH u) t - (bT β t + k) * Wt σ l u t := by
@@ -426,7 +422,7 @@ theorem Wt_Lop {k : ℤ} {u : H} (hu : IsSm σ u) (hk : u ∈ weightSpace σ k) 
   ring
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun s : ℝ => ((Real.exp (2 * s) : ℝ) : ℂ)) ((Real.exp (2 * t) * (2 * 1) : ℝ) : ℂ) t` using `(((hasDerivAt_id t).const_mul 2).exp).ofReal_comp`. Use `h1.const_mul (2 * I * β)` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [bT]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -438,11 +434,11 @@ theorem hasDerivAt_bT (t : ℝ) : HasDerivAt (bT β) (2 * bT β t) t := by
   simp only [bT]; push_cast; ring
 
 /- English proof (translation)
-Establish `hR` using `isSm_Rop hv`. Establish `hRk : Rop σ v ∈ weightSpace σ (k + 2)` using `Rop_mem hv hk`. Establish `d1` using `hasDerivAt_Wt hl hR t`. Establish `d2 : HasDerivAt (Wt σ l (Rop σ v)) (Wt σ l (dπ σ lH (dπ σ lH v)) t + (2 * bT β t * Wt σ l v t + (bT β t + k) * Wt σ l (dπ σ lH v) t)) t`. Establish `e : Wt σ l (Rop σ v) = fun s => Wt σ l (dπ σ lH v) s + (bT β s + k) * Wt σ l v s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Conclude with `Wt_Rop hl hψ hW hv hk s`. Rewrite using `[e]`. Conclude with `(hasDerivAt_Wt hl (isSm_dπ σ hv lH) t).add (((hasDerivAt_bT hl hψ hW t).add_const (k : ℂ)).mul (hasDerivAt_Wt hl hv t)) |>.congr_deriv (by ring)`. Establish `hd` using `d1.unique d2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hL` using `Wt_Lop hl hψ hW hR hRk t`. Rewrite `hL` using `[hα, Wt_smul hv, hd, Wt_Rop hl hψ hW hv hk t]`. Move the coercions through the operations in `at hL`. Take the linear combination `-hL`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Wt_second_order {k : ℤ} {v : H} (hv : IsSm σ v) (hk : v ∈ weightSpace σ k) {α : ℂ}
     (hα : Lop σ (Rop σ v) = α • v) (t : ℝ) :
@@ -480,9 +476,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable {σ : UnitaryRep FiltrationCocycleLiftCriterion H} {l : hGL2.smoothVectors (πσ σ) →ₗ[ℂ] ℂ}
 
 /- English proof (translation)
-Establish `e : (((aT t : FiltrationCocycleLiftCriterion) : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) = Matrix.diagonal ![Real.exp t, Real.exp (-t)]`. Apply the tactic sequence `rw [coe_aT]; ext i j; fin_cases i <;> fin_cases j <;> simp`. Rewrite using `[e, Matrix.l2_opNorm_diagonal]`. Use `(pi_norm_le_iff_of_nonneg (Real.exp_pos _).le).2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Conclude with `Real.exp_le_exp.2 (le_abs_self t)`. Simplify using `only [Fin.mk_one, Fin.isValue, Matrix.cons_val_one, Matrix.cons_val_fin_one, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Conclude with `Real.exp_le_exp.2 (neg_le_abs t)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_aT_le (t : ℝ) :
     ‖(((aT t : FiltrationCocycleLiftCriterion) : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ)‖ ≤ Real.exp |t| := by
@@ -500,11 +496,9 @@ theorem norm_aT_le (t : ℝ) :
     exact Real.exp_le_exp.2 (neg_le_abs t)
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ (Real.exp_pos _).le fun X => ?_` and prove the remaining obligations. Rewrite using `[IsExpLieAlgebra.AdL_apply]`. Use `show ‖((hGL2.Ad (aT t)⁻¹ X : gl2) : Matrix (Fin 2) (Fin 2) ℝ)‖ ≤ _ * ‖(X : Matrix (Fin 2) (Fin 2) ℝ)‖`. Rewrite using `[coe_Ad_GL2, inv_inv, aT_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_mul_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `norm_mul_le _ _`. Use `_ ≤ Real.exp |t| * ‖(X : Matrix (Fin 2) (Fin 2) ℝ)‖ * Real.exp |t| := by gcongr`. Use `norm_aT_le (-t)` as an intermediate fact.
-
-Rewrite `this` using `[abs_neg]`. Then use the resulting hypothesis. Conclude with `norm_aT_le t`. Use `_ = Real.exp (2 * |t|) * ‖(X : Matrix (Fin 2) (Fin 2) ℝ)‖ := by`. Rewrite using `[mul_comm _ (Real.exp |t|), ← mul_assoc, ← Real.exp_add]`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem norm_AdL_aT_inv_le (t : ℝ) : ‖hGL2.AdL (aT t)⁻¹‖ ≤ Real.exp (2 * |t|) := by
   refine ContinuousLinearMap.opNorm_le_bound _ (Real.exp_pos _).le fun X => ?_
@@ -526,11 +520,11 @@ theorem norm_AdL_aT_inv_le (t : ℝ) : ‖hGL2.AdL (aT t)⁻¹‖ ≤ Real.exp (
         rw [mul_comm _ (Real.exp |t|), ← mul_assoc, ← Real.exp_add]; ring_nf
 
 /- English proof (translation)
-Take `⟨C, N, hC⟩` from `hl.exists_norm_map_le (norm_πσ_le σ) hu`. Use `⟨|C| * 2 ^ N, N, fun t ht => ?_⟩` and prove the remaining obligations. Establish `h1` using `hC (aT t)`. Establish `e : Wt σ l u t = l (hGL2.smoothMap (πσ σ) hu (aT t))`. Rewrite using `[Wt, lT_of (isSm_map σ hu _)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Establish `h2 : (1 + ‖hGL2.AdL (aT t)⁻¹‖) ^ N ≤ (2 * Real.exp (2 * t)) ^ N`. Establish `h3` using `norm_AdL_aT_inv_le t`. Rewrite `h3` using `[abs_of_nonneg ht]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : 1 ≤ Real.exp (2 * t)` using `Real.one_le_exp (by linarith)`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_Wt_bound (hl : hGL2.IsSmoothContinuous (πσ σ) l) {u : H} (hu : IsSm σ u) :
     ∃ (C : ℝ) (N : ℕ), ∀ t ≥ 0, ‖Wt σ l u t‖ ≤ C * Real.exp (2 * t) ^ N := by
@@ -552,9 +546,9 @@ theorem exists_Wt_bound (hl : hGL2.IsSmoothContinuous (πσ σ) l) {u : H} (hu :
     _ = |C| * 2 ^ N * Real.exp (2 * t) ^ N := by rw [mul_pow]; ring
 
 /- English proof (translation)
-Substitute `ht` using the available equality. Establish `hs : HasDerivAt (fun y : ℝ => Real.log y / 2) (y⁻¹ / 2) y` using `(Real.hasDerivAt_log hy.ne').div_const 2`. Use `hF.scomp y hs` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[Complex.real_smul]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem hasDerivAt_comp_log {F F' : ℝ → ℂ} {t₀ : ℝ} {y : ℝ} (hy : 0 < y)
     (hF : HasDerivAt F (F' t₀) t₀) (ht : t₀ = Real.log y / 2) :
@@ -569,25 +563,23 @@ theorem hasDerivAt_comp_log {F F' : ℝ → ℂ} {t₀ : ℝ} {y : ℝ} (hy : 0 
   field_simp
 
 /- English proof (translation)
-Rewrite using `[show 2 * (Real.log y / 2) = Real.log y by ring, Real.exp_log hy]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem exp_log_half {y : ℝ} (hy : 0 < y) : Real.exp (2 * (Real.log y / 2)) = y := by
   rw [show 2 * (Real.log y / 2) = Real.log y by ring, Real.exp_log hy]
 
 /- English proof (translation)
-Establish `hθ2 : 0 < θ ^ 2` using `by positivity`. Use `⟨max 1 (2 * (‖A‖ + ‖B‖) / θ ^ 2), lt_of_lt_of_le one_pos (le_max_left _ _), ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hy1 : 1 ≤ y` using `le_trans (le_max_left _ _) hy`. Establish `hy0 : 0 < y` using `lt_of_lt_of_le one_pos hy1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy2 : 2 * (‖A‖ + ‖B‖) / θ ^ 2 ≤ y` using `le_trans (le_max_right _ _) hy`. Establish `hA : |(A / y).re| ≤ ‖A‖ / y`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : |(B / y ^ 2).re| ≤ ‖B‖ / y`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[show (B / (y : ℂ) ^ 2) = B / ((y ^ 2 : ℝ) : ℂ) by push_cast; ring]`. Conclude with `Complex.abs_re_le_norm _`. Use `_ = ‖B‖ / y ^ 2 := by rw [norm_div, norm_pow, Complex.norm_real, Real.norm_of_nonneg hy0.le]`. Use `_ ≤ ‖B‖ / y := by`. Apply `div_le_div_of_nonneg_left (norm_nonneg _) hy0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hre : ((θ ^ 2 : ℝ) + A / y + B / y ^ 2 : ℂ).re = θ ^ 2 + (A / y).re + (B / y ^ 2).re`. Simplify using `only [Complex.add_re, Complex.ofReal_re]`. Rewrite using `[hre]`. Establish `hsum : (‖A‖ + ‖B‖) / y ≤ θ ^ 2 / 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[div_le_iff₀ hy0]`. Rewrite `hy2` using `[div_le_iff₀ hθ2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `: (‖A‖ / y) + (‖B‖ / y) = (‖A‖ + ‖B‖) / y` using `by ring`. Establish `hab : |θ| ^ 2 = θ ^ 2` using `sq_abs θ`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[abs_le.1 hA, abs_le.1 hB]`. Introduce `y hy`. Establish `hy1 : 1 ≤ y` using `le_trans (le_max_left _ _) hy`. Establish `hy0 : 0 < y` using `lt_of_lt_of_le one_pos hy1`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hθ2.le, norm_div, norm_div, norm_pow, Complex.norm_real, Real.norm_of_nonneg hy0.le]`. Use `gcongr`. Conclude with `div_le_self (norm_nonneg _) hy1`. Conclude with `div_le_self (norm_nonneg _) (one_le_pow₀ hy1)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_bounds {θ : ℝ} (hθ : θ ≠ 0) (A B : ℂ) : ∃ Y₀ > (0 : ℝ),
     (∀ y ≥ Y₀, (|θ| / 2) ^ 2 ≤ ((θ ^ 2 : ℝ) + A / y + B / y ^ 2 : ℂ).re) ∧
@@ -642,13 +634,13 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable {σ : UnitaryRep FiltrationCocycleLiftCriterion H}
 
 /- English proof (translation)
-Rewrite using `[Wt, map_zero, lT_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Wt_zero (l : hGL2.smoothVectors (πσ σ) →ₗ[ℂ] ℂ) (t : ℝ) : Wt σ l 0 t = 0 := by
   rw [Wt, map_zero, lT_zero]
 
 /- English proof (translation)
-Take `⟨C, N, hC⟩` from `exists_Wt_bound hl hu`. Use `⟨C, N, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy0 : 0 < y` using `lt_of_lt_of_le one_pos hy`. Use `hC (Real.log y / 2) (div_nonneg (Real.log_nonneg hy) zero_le_two)` as an intermediate fact. Rewrite `this` using `[exp_log_half hy0]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_Wt_bound_y {l : hGL2.smoothVectors (πσ σ) →ₗ[ℂ] ℂ}
     (hl : hGL2.IsSmoothContinuous (πσ σ) l) {u : H} (hu : IsSm σ u) :
@@ -667,7 +659,7 @@ variable {l : hGL2.smoothVectors (πσ σ) →ₗ[ℂ] ℂ}
 include hl hψ hW
 
 /- English proof (translation)
-Rewrite using `[bT, exp_log_half hy]`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bT_log_half {y : ℝ} (hy : 0 < y) : bT (I * θ) (Real.log y / 2) = -2 * θ * y := by
   rw [bT, exp_log_half hy]
@@ -676,11 +668,11 @@ theorem bT_log_half {y : ℝ} (hy : 0 < y) : bT (I * θ) (Real.log y / 2) = -2 *
   ring
 
 /- English proof (translation)
-Establish `h1` using `hasDerivAt_comp_log hy (hasDerivAt_Wt hl (isSm_dπ σ hv lH) (Real.log y / 2)) rfl`. Establish `h2 : HasDerivAt (fun y : ℝ => (2 * y : ℂ)) 2 y`. Use `((hasDerivAt_id y).ofReal_comp).const_mul (2 : ℂ)` as an intermediate fact. Simplify using `using this`. Establish `hy' : (2 * y : ℂ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `: (y : ℂ) ≠ 0` using `by exact_mod_cast hy.ne'`. Conclude with `mul_ne_zero two_ne_zero this`. Establish `h3` using `h1.div h2 hy'`. Use `h3.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[Wt_second_order hl hψ hW hv hk hα, bT_log_half hl hψ hW hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (y : ℂ) ≠ 0` using `by exact_mod_cast hy.ne'`. Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_Wt_y' {k : ℤ} {v : H} (hv : IsSm σ v) (hk : v ∈ weightSpace σ k) {α : ℂ}
     (hα : Lop σ (Rop σ v) = α • v) {y : ℝ} (hy : 0 < y) :
@@ -703,7 +695,7 @@ theorem hasDerivAt_Wt_y' {k : ℤ} {v : H} (hv : IsSm σ v) (hk : v ∈ weightSp
   ring
 
 /- English proof (translation)
-The claim follows from `hasDerivAt_comp_log hy (hasDerivAt_Wt hl hv (Real.log y / 2)) rfl`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_Wt_y {v : H} (hv : IsSm σ v) {y : ℝ} (hy : 0 < y) :
     HasDerivAt (fun y => Wt σ l v (Real.log y / 2))
@@ -711,7 +703,7 @@ theorem hasDerivAt_Wt_y {v : H} (hv : IsSm σ v) {y : ℝ} (hy : 0 < y) :
   hasDerivAt_comp_log hy (hasDerivAt_Wt hl hv (Real.log y / 2)) rfl
 
 /- English proof (translation)
-Establish `hc : ContinuousOn (fun y : ℝ => (y : ℂ)) (Ioi 0)` using `Complex.continuous_ofReal.continuousOn`. Use `(continuousOn_const.add (continuousOn_const.div hc fun y hy => ?_)).add (continuousOn_const.div (hc.pow 2) fun y hy => ?_)` and prove the remaining obligations. Conclude with `(ne_of_gt hy)` after adjusting the coercions. Conclude with `pow_ne_zero 2 (by exact_mod_cast (ne_of_gt hy))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousOn_q (θ : ℝ) (A B : ℂ) :
     ContinuousOn (fun y : ℝ => (((θ ^ 2 : ℝ) : ℂ) + A / y + B / y ^ 2)) (Ioi 0) := by
@@ -724,9 +716,9 @@ theorem continuousOn_q (θ : ℝ) (A B : ℂ) :
 end Whittaker
 
 /- English proof (translation)
-Take `⟨Y₀, hY₀, hre, hnorm⟩` from `q_bounds hθ (-(θ * k) : ℂ) ((k * (k + 2) + α) / 4)`. Take `⟨Cl, Nl, hCl⟩` from `exists_Wt_bound_y hl hv`. Take `⟨Cm, Nm, hCm⟩` from `exists_Wt_bound_y hm hv`. Establish `hY : 0 < max Y₀ 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Establish `key` using `ArchWhittaker.wronskian_eq_zero_of_moderate (Y₀ := max Y₀ 1) (q := fun y : ℝ => (((θ ^ 2 : ℝ) : ℂ) + (-(θ * k) : ℂ) / y + ((k * (k + 2) + α) / 4) / y ^ 2)) hY (c := |θ| / 2) (by positivity) (fun y hy => hre y (le_trans (le_max_left _ _) hy)) (fun y hy => hnorm y (le_trans (le_max …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Real.log_one, zero_div, Complex.ofReal_one, mul_one] at key`. Take the linear combination `2 * key`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Wt_wronskian {l m : hGL2.smoothVectors (πσ σ) →ₗ[ℂ] ℂ}
     (hl : hGL2.IsSmoothContinuous (πσ σ) l) (hm : hGL2.IsSmoothContinuous (πσ σ) m)
@@ -755,7 +747,7 @@ theorem Wt_wronskian {l m : hGL2.smoothVectors (πσ σ) →ₗ[ℂ] ℂ}
   linear_combination 2 * key
 
 /- English proof (translation)
-Establish `key` using `ArchWhittaker.eq_zero_of_ode (q := fun y : ℝ => (((θ ^ 2 : ℝ) : ℂ) + (-(θ * k) : ℂ) / y + ((k * (k + 2) + α) / 4) / y ^ 2)) (continuousOn_q hl hψ hW θ _ _) (fun y hy => hasDerivAt_Wt_y hl hψ hW hv hy) (fun y hy => hasDerivAt_Wt_y' hl hψ hW hv hk hα hy) (by simp [h0]) (by simp [h1 …`. Introduce `t`. Use `key (Real.exp (2 * t)) (Real.exp_pos _)` as an intermediate fact. Rewrite `this` using `[Real.log_exp, mul_div_cancel_left₀ t two_ne_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Wt_eq_zero_of_init {l : hGL2.smoothVectors (πσ σ) →ₗ[ℂ] ℂ}
     (hl : hGL2.IsSmoothContinuous (πσ σ) l) {ψ : ℝ → ℂ} {θ : ℝ} (hψ : HasDerivAt ψ (I * θ) 0)
@@ -774,13 +766,13 @@ theorem Wt_eq_zero_of_init {l : hGL2.smoothVectors (πσ σ) →ₗ[ℂ] ℂ}
   rwa [Real.log_exp, mul_div_cancel_left₀ t two_ne_zero] at this
 
 /- English proof (translation)
-Establish `hF : ∀ y > 0, HasDerivAt (fun y => Wt σ l v (Real.log y / 2)) ((((k : ℝ) / (2 * y) + (-θ) : ℝ) : ℂ) * Wt σ l v (Real.log y / 2)) y`. Introduce `y hy`. Use `(hasDerivAt_Wt_y hl hψ hW hv hy).congr_deriv ?_` and prove the remaining obligations. Establish `e` using `Wt_Lop hl hψ hW hv hk (Real.log y / 2)`. Rewrite `e` using `[hL, Wt_zero, bT_log_half hl hψ hW hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show Wt σ l (dπ σ lH v) (Real.log y / 2) = (-2 * θ * y + k) * Wt σ l v (Real.log y / 2) by`. Take the linear combination `-e]`. Establish `: (y : ℂ) ≠ 0` using `by exact_mod_cast hy.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨C, N, hC⟩` from `exists_Wt_bound_y hl hv`. Establish `key` using `ArchWhittaker.eq_zero_of_first_order (m := k) (b := -θ) (by linarith) hF ⟨C, N, hC⟩`. Introduce `t`. Use `key (Real.exp (2 * t)) (Real.exp_pos _)` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.log_exp, mul_div_cancel_left₀ t two_ne_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Wt_eq_zero_of_Lop {l : hGL2.smoothVectors (πσ σ) →ₗ[ℂ] ℂ}
     (hl : hGL2.IsSmoothContinuous (πσ σ) l) {ψ : ℝ → ℂ} {θ : ℝ} (hθ : θ < 0)
@@ -807,13 +799,13 @@ theorem Wt_eq_zero_of_Lop {l : hGL2.smoothVectors (πσ σ) →ₗ[ℂ] ℂ}
   rwa [Real.log_exp, mul_div_cancel_left₀ t two_ne_zero] at this
 
 /- English proof (translation)
-Establish `hF : ∀ y > 0, HasDerivAt (fun y => Wt σ l v (Real.log y / 2)) (((((-k : ℤ) : ℝ) / (2 * y) + θ : ℝ) : ℂ) * Wt σ l v (Real.log y / 2)) y`. Introduce `y hy`. Use `(hasDerivAt_Wt_y hl hψ hW hv hy).congr_deriv ?_` and prove the remaining obligations. Establish `e` using `Wt_Rop hl hψ hW hv hk (Real.log y / 2)`. Rewrite `e` using `[hR, Wt_zero, bT_log_half hl hψ hW hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show Wt σ l (dπ σ lH v) (Real.log y / 2) = -((-2 * θ * y + k) * Wt σ l v (Real.log y / 2)) by`. Take the linear combination `-e]`. Establish `: (y : ℂ) ≠ 0` using `by exact_mod_cast hy.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨C, N, hC⟩` from `exists_Wt_bound_y hl hv`. Establish `key` using `ArchWhittaker.eq_zero_of_first_order (m := -k) (b := θ) hθ hF ⟨C, N, hC⟩`. Introduce `t`. Use `key (Real.exp (2 * t)) (Real.exp_pos _)` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.log_exp, mul_div_cancel_left₀ t two_ne_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Wt_eq_zero_of_Rop {l : hGL2.smoothVectors (πσ σ) →ₗ[ℂ] ℂ}
     (hl : hGL2.IsSmoothContinuous (πσ σ) l) {ψ : ℝ → ℂ} {θ : ℝ} (hθ : 0 < θ)

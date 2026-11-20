@@ -10,11 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ConjPlace
 
 /- English proof (translation)
-Unfold `GlobalTheory.SW.conjI`. Rewrite using `[Ideal.map, Set.image]`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, h⟩`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, h]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨b, hb, by rw [IsCMField.coe_ringOfIntegersComplexConj]; rfl⟩`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem conjI_eq_map {E : Type} [Field E] [NumberField E] [IsCMField E] (P : Ideal (𝓞 E)) :
     GlobalTheory.SW.conjI P = P.map (IsCMField.ringOfIntegersComplexConj E) := by
@@ -33,11 +33,9 @@ theorem conjI_eq_map {E : Type} [Field E] [NumberField E] [IsCMField E] (P : Ide
     exact ⟨b, hb, by rw [IsCMField.coe_ringOfIntegersComplexConj]; rfl⟩
 
 /- English proof (translation)
-Introduce `D PP`. Set `σ` to `IsCMField.ringOfIntegersComplexConj D.host.E`. Use `haveI : (PP.asIdeal.map σ).IsPrime := Ideal.map_isPrime_of_equiv σ`. Establish `hne : PP.asIdeal.map σ ≠ ⊥`. Rewrite using `[Ne, Ideal.map_eq_bot_iff_of_injective σ.injective]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `PP.ne_bot`. Use `⟨⟨PP.asIdeal.map σ, this, hne⟩, (conjI_eq_map PP.asIdeal).symm, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Take `⟨b, hb, rfl⟩` from `(Ideal.mem_map_of_equiv σ c).1 hc`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations.
-
-Use `show ((b : 𝓞 D.host.E) : D.host.E) = star (((σ b : 𝓞 D.host.E)) : D.host.E)`. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj]`. Conclude with `(IsCMField.complexConj_apply_apply D.host.E _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_place : ∀ (D : D7) (PP : Formalism.L2.DIV.Pl D.host.E), ∃ PP' : Formalism.L2.DIV.Pl D.host.E, PP'.asIdeal = conjI PP.asIdeal ∧ Formalism.IndefR.Lev.IsConjPl PP' PP := by
   intro D PP

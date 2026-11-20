@@ -20,7 +20,7 @@ open scoped ENNReal ComplexConjugate ContDiff
 open Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.JSW.blockGL_tl) | (exact GlobalTheory.JSW.blockGL_tl) | (intros; apply GlobalTheory.JSW.blockGL_tl <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.blockEmbeddingGL_torus_element_zero_padded : ∀ (E : Type) [Field E] [NumberField E] (m r : ℕ)
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) (l : HeightOneSpectrum (𝓞 E) →₀ (Fin (m + 1) → ℕ)),

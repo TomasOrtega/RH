@@ -25,22 +25,22 @@ def ndF (R : Type*) [CommRing R] (r n : ℕ) (l j : Fin n) :
   mkDerivation R fun v => if v.2 = l then X (v.1, j) else 0
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma nd_weight_apply (s : Fin n) (m : Fin r × Fin n →₀ ℕ) :
     Finsupp.weight (fun v => colW r n v s) m = Finsupp.weight (colW r n) m s := by
   simp only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply]
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on generalizing m with`. Consider the case `C a`. Rewrite using `[derivation_C, coeff_zero, coeff_C]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]`. Consider the case `mul_X p v hp`. Establish `hX : ndEul R r n s (X v) = colW r n v s • X v` using `mkDerivation_X _ _ _`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Derivation.leibniz, hX, coeff_add, smul_eq_mul, smul_eq_mul, mul_smul_comm, coeff_smul, coeff_mul_X', coeff_X_mul']`. Use `split_ifs with h`. Rewrite using `[hp]`. Establish `hle : Finsupp.single v 1 ≤ m`. Rewrite using `[Finsupp.single_le_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.one_le_iff_ne_zero.2 (Finsupp.mem_support_iff.1 h)`. Establish `hm : m = (m - Finsupp.single v 1) + Finsupp.single v 1` using `(tsub_add_cancel_of_le hle).symm`. Establish `hw : Finsupp.weight (fun v => colW r n v s) m = Finsupp.weight (fun v => colW r n v s) (m - Finsupp.single v 1) + colW r n v s` using `by conv_lhs => rw [hm]`. Rewrite using `[map_add, Finsupp.weight_single, one_smul]`. Rewrite using `[hw, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma ndEul_coeff (s : Fin n) (g : MvPolynomial (Fin r × Fin n) R) (m : Fin r × Fin n →₀ ℕ) :
     coeff m (ndEul R r n s g) =
@@ -70,7 +70,7 @@ lemma ndEul_coeff (s : Fin n) (g : MvPolynomial (Fin r × Fin n) R) (m : Fin r �
     · simp
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[ndEul_coeff, coeff_smul, smul_eq_mul]`. Distinguish the cases in `h : coeff m g = 0`. Simplify using `[h]`. Rewrite using `[nd_weight_apply, hg h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma ndEul_homog {g : MvPolynomial (Fin r × Fin n) R} {μ : Fin n → ℕ}
     (hg : IsWeightedHomogeneous (colW r n) g μ) (s : Fin n) :
@@ -82,9 +82,9 @@ lemma ndEul_homog {g : MvPolynomial (Fin r × Fin n) R} {μ : Fin n → ℕ}
   · rw [nd_weight_apply, hg h]
 
 /- English proof (translation)
-Use extensionality with `m`. Establish `h1` using `congrArg (coeff m) h`. Rewrite `h1` using `[ndEul_coeff, coeff_neg]`. Establish `h2 : ((Finsupp.weight (fun v => colW r n v s) m : R) + 1) * coeff m g = 0`. Take the linear combination `h1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 (Nat.cast_add_one_ne_zero _)`. Simplify using `using h3`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma ndEul_neg_eq_zero [IsDomain R] [CharZero R] {g : MvPolynomial (Fin r × Fin n) R}
     (s : Fin n) (h : ndEul R r n s g = -g) : g = 0 := by
@@ -98,11 +98,11 @@ lemma ndEul_neg_eq_zero [IsDomain R] [CharZero R] {g : MvPolynomial (Fin r × Fi
   · simpa using h3
 
 /- English proof (translation)
-Establish `key : ⁅ndE R r n l j, ndF R r n l j⁆ = ndEul R r n l - ndEul R r n j`. Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩`. Rewrite using `[Derivation.commutator_apply, Derivation.sub_apply]`. Distinguish the cases in `h1 : s = l`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h1` using the available equality. Simplify using `[ndE, ndF, ndEul, colW, hlj, hlj.symm, Pi.single_apply]`. Distinguish the cases in `h2 : s = j`. Substitute `h2` using the available equality. Simplify using `[ndE, ndF, ndEul, colW, h1, hlj, Pi.single_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[ndE, ndF, ndEul, colW, h1, h2, Ne.symm h1, Ne.symm h2, Pi.single_apply]`. Use `congrArg (fun D => D g) key` as an intermediate fact. Simplify using `only [Derivation.commutator_apply, Derivation.sub_apply] at this`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma nd_comm_EF {l j : Fin n} (hlj : l ≠ j) (g : MvPolynomial (Fin r × Fin n) R) :
     ndE R r n l j (ndF R r n l j g) =
@@ -123,11 +123,11 @@ lemma nd_comm_EF {l j : Fin n} (hlj : l ≠ j) (g : MvPolynomial (Fin r × Fin n
   rw [← this]; abel
 
 /- English proof (translation)
-Establish `key : ⁅ndEul R r n l, ndF R r n l j⁆ = -ndF R r n l j`. Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩`. Rewrite using `[Derivation.commutator_apply, Derivation.neg_apply]`. Distinguish the cases in `h1 : s = l`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h1` using the available equality. Simplify using `[ndE, ndF, ndEul, colW, hlj, hlj.symm, Pi.single_apply]`. Distinguish the cases in `h2 : s = j`. Substitute `h2` using the available equality. Simplify using `[ndE, ndF, ndEul, colW, h1, hlj, Pi.single_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[ndE, ndF, ndEul, colW, h1, h2, Ne.symm h1, Ne.symm h2, Pi.single_apply]`. Use `congrArg (fun D => D g) key` as an intermediate fact. Simplify using `only [Derivation.commutator_apply, Derivation.neg_apply] at this`. Rewrite using `[sub_eq_iff_eq_add.1 this]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma nd_comm_EulF_l {l j : Fin n} (hlj : l ≠ j) (g : MvPolynomial (Fin r × Fin n) R) :
     ndEul R r n l (ndF R r n l j g) = ndF R r n l j (ndEul R r n l g) - ndF R r n l j g := by
@@ -147,11 +147,11 @@ lemma nd_comm_EulF_l {l j : Fin n} (hlj : l ≠ j) (g : MvPolynomial (Fin r × F
   rw [sub_eq_iff_eq_add.1 this]; abel
 
 /- English proof (translation)
-Establish `key : ⁅ndEul R r n j, ndF R r n l j⁆ = ndF R r n l j`. Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩`. Rewrite using `[Derivation.commutator_apply]`. Distinguish the cases in `h1 : s = l`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h1` using the available equality. Simplify using `[ndE, ndF, ndEul, colW, hlj, hlj.symm, Pi.single_apply]`. Distinguish the cases in `h2 : s = j`. Substitute `h2` using the available equality. Simplify using `[ndE, ndF, ndEul, colW, h1, hlj, Pi.single_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[ndE, ndF, ndEul, colW, h1, h2, Ne.symm h1, Ne.symm h2, Pi.single_apply]`. Use `congrArg (fun D => D g) key` as an intermediate fact. Simplify using `only [Derivation.commutator_apply] at this`. Rewrite using `[sub_eq_iff_eq_add.1 this]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma nd_comm_EulF_j {l j : Fin n} (hlj : l ≠ j) (g : MvPolynomial (Fin r × Fin n) R) :
     ndEul R r n j (ndF R r n l j g) = ndF R r n l j (ndEul R r n j g) + ndF R r n l j g := by

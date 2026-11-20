@@ -12,15 +12,15 @@ section
 variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨b, hb, [], rfl, by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_bmon (d : Q.NFData P A) {b : A} (hb : b ∈ bmon d) : b ∈ nfSpan d ∅ 0 0 0 :=
   Submodule.subset_span ⟨b, hb, [], rfl, by simp, by simp⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨b, hb, H, hH, -, rfl⟩`. Rewrite using `[List.length_eq_zero_iff.mp hH]`. Simplify using `using Submodule.subset_span (R := ℂ) (s := (bmon d : Set A)) hb`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Submodule.span_le.mpr fun b hb => mem_of_bmon d hb`.
+A detailed English derivation is pending.
 -/
 theorem span_eq (d : Q.NFData P A) : nfSpan d ∅ 0 0 0 = Submodule.span ℂ (bmon d : Set A) := by
   apply le_antisymm
@@ -31,9 +31,9 @@ theorem span_eq (d : Q.NFData P A) : nfSpan d ∅ 0 0 0 = Submodule.span ℂ (bm
   · exact Submodule.span_le.mpr fun b hb => mem_of_bmon d hb
 
 /- English proof (translation)
-Rewrite `*` using `[span_eq]`. Establish `h` using `Submodule.mul_mem_mul hx hy`. Rewrite `h` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(bmon d).mul_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem span_mul (d : Q.NFData P A) {x y : A} (hx : x ∈ nfSpan d ∅ 0 0 0) (hy : y ∈ nfSpan d ∅ 0 0 0) :
     x * y ∈ nfSpan d ∅ 0 0 0 := by
@@ -45,13 +45,13 @@ theorem span_mul (d : Q.NFData P A) {x y : A} (hx : x ∈ nfSpan d ∅ 0 0 0) (h
   exact (bmon d).mul_mem ha hb
 
 /- English proof (translation)
-The claim follows from `mem_of_bmon d (Submonoid.subset_closure (Or.inl (Or.inl (Or.inr ⟨f, rfl⟩))))`.
+A detailed English derivation is pending.
 -/
 theorem kappa_mem (d : Q.NFData P A) (f : M.Ty P → ℂ) : d.κ f ∈ nfSpan d ∅ 0 0 0 :=
   mem_of_bmon d (Submonoid.subset_closure (Or.inl (Or.inl (Or.inr ⟨f, rfl⟩))))
 
 /- English proof (translation)
-The claim follows from `mem_of_bmon d (Submonoid.subset_closure (Or.inl (Or.inl (Or.inl (by simp)))))`.
+A detailed English derivation is pending.
 -/
 theorem zbi_mem (d : Q.NFData P A) : d.L.ζbi ∈ nfSpan d ∅ 0 0 0 :=
   mem_of_bmon d (Submonoid.subset_closure (Or.inl (Or.inl (Or.inl (by simp)))))
@@ -61,7 +61,7 @@ variable {S : Type} [Fintype S] [DecidableEq S]
 def BMat (d : Q.NFData P A) (E : SlopeTestRemainingChoices S A) : Prop := ∀ e e', E e e' ∈ nfSpan d ∅ 0 0 0
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Submodule.sum_mem _ fun k _ => span_mul d (hE i k) (hF k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BMat.mul {d : Q.NFData P A} {E F : SlopeTestRemainingChoices S A} (hE : BMat d E) (hF : BMat d F) : BMat d (E * F) :=
   fun i j => by
@@ -69,25 +69,25 @@ theorem BMat.mul {d : Q.NFData P A} {E F : SlopeTestRemainingChoices S A} (hE : 
     exact Submodule.sum_mem _ fun k _ => span_mul d (hE i k) (hF k j)
 
 /- English proof (translation)
-Introduce `i j` and use `add_mem (hE i j) (hF i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BMat.add {d : Q.NFData P A} {E F : SlopeTestRemainingChoices S A} (hE : BMat d E) (hF : BMat d F) : BMat d (E + F) :=
   fun i j => add_mem (hE i j) (hF i j)
 
 /- English proof (translation)
-Introduce `i j` and use `sub_mem (hE i j) (hF i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BMat.sub {d : Q.NFData P A} {E F : SlopeTestRemainingChoices S A} (hE : BMat d E) (hF : BMat d F) : BMat d (E - F) :=
   fun i j => sub_mem (hE i j) (hF i j)
 
 /- English proof (translation)
-Introduce `i j` and use `Submodule.smul_mem _ c (hE i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BMat.smul {d : Q.NFData P A} {E : SlopeTestRemainingChoices S A} (c : ℂ) (hE : BMat d E) : BMat d (c • E) :=
   fun i j => Submodule.smul_mem _ c (hE i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [io, Matrix.scalar_apply, Matrix.diagonal_apply] split_ifs · exact ha · exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bMat_io {d : Q.NFData P A} {a : A} (ha : a ∈ nfSpan d ∅ 0 0 0) : BMat d (io a : SlopeTestRemainingChoices S A) := fun i j => by
   simp only [io, Matrix.scalar_apply, Matrix.diagonal_apply]
@@ -96,21 +96,19 @@ theorem bMat_io {d : Q.NFData P A} {a : A} (ha : a ∈ nfSpan d ∅ 0 0 0) : BMa
   · exact zero_mem _
 
 /- English proof (translation)
-The claim follows from `map_add (Matrix.scalar (Ix S)) a b`.
+A detailed English derivation is pending.
 -/
 theorem io_add (a b : A) : (io (a + b) : SlopeTestRemainingChoices S A) = io a + io b := map_add (Matrix.scalar (Ix S)) a b
 
 /- English proof (translation)
-The claim follows from `map_mul (Matrix.scalar (Ix S)) a b`.
+A detailed English derivation is pending.
 -/
 theorem io_mul (a b : A) : (io (a * b) : SlopeTestRemainingChoices S A) = io a * io b := map_mul (Matrix.scalar (Ix S)) a b
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact fun Y hY => hY`. Consider the case `cons l w ih`. Introduce `Y hY`. Distinguish the cases in `hp : l.plus`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `e : ofWord L st (l :: w) = (ofWord L st w).plus L l.intersection_update_fsHerm_neg_one l.pt` using `by simp [ofWord, hp]`. Rewrite `hY` using `[e]`. Conclude with `ih Y hY.1`. Establish `e : ofWord L st (l :: w) = (ofWord L st w).minus L l.intersection_update_fsHerm_neg_one l.pt` using `by simp [ofWord, hp]`. Rewrite `hY` using `[e]`.
-
-Conclude with `ih Y hY.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_subset {r : ℕ} (L : LevelData A r) (st : Start A) (w : List (Letter ℂ S)) :
     ∀ Y ∈ (ofWord L st w).inv, Y ∈ st.inv := by
@@ -127,7 +125,7 @@ theorem inv_subset {r : ℕ} (L : LevelData A r) (st : Start A) (w : List (Lette
       exact ih Y hY.1
 
 /- English proof (translation)
-Establish `: (l + K * E) * β - β * (l + K * E) = K * (E * β - β * E)`. Rewrite using `[mul_add, h1, ← mul_assoc β K, h2]`. Use `noncomm_ring`. Rewrite using `[this, ← mul_assoc α K, h3]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comm_id {R : Type*} [Ring R] (l K E α β γ : R) (h1 : β * l = l * β) (h2 : β * K = K * β)
     (h3 : α * K = K * α) :
@@ -139,25 +137,25 @@ theorem comm_id {R : Type*} [Ring R] (l K E α β γ : R) (h1 : β * l = l * β)
 end
 
 /- English proof (translation)
-Introduce `P A _ _ _ _ d hd L st s hT S _ _ w hA Y hY hY1`. Take `⟨hk, h0⟩` from `GlobalTheory.T.frameStart_constants_normalForm_empty_word P A d hd L st s hT`. Take `⟨E0, hE0, e0⟩` from `h0 Y (inv_subset L st w Y hY)`. Take `⟨hH, hS, -⟩` from `hT`. Take `⟨-, -, -, -, -, -, -, s1, s2, s3, -, s4, s5⟩` from `hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hkap : (kapL L : SlopeTestRemainingChoices S A) = kapL d.L` using `by simp only [kapL, s1, s2, s4]`. Establish `htz : (tz L : SlopeTestRemainingChoices S A) = tz d.L` using `by simp only [tz, s3, s5]`. Establish `hl0 : (st.frame : FrameData S A).l L Y = io (d.L.l0 Y) + kapL d.L * io E0` using `by show io (L.l0 Y) + io (L.ζb * L.ζi * L.GGi) * io (st.ee Y) = io (d.L.l0 Y) + io (d.L.ζb * d.L.ζi * d.L.GGi) * io E0`. Rewrite using `[← io_mul, ← io_add, e0, io_add, io_mul]`. Establish `hsh` using `(Formalism.FourierDecayAlt.P.l_shape A S P.r L st w hH.starLev hH.start hA).2.2 Y hY hY1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsh` using `[hl0, hkap, htz]`. Establish `hc` using `hd.2.2.1.2.1`. Establish `cζb : ∀ f, Commute (d.κ f) d.L.ζb` using `fun f => hc f _ (by simp [LevelData.fns])`. Establish `cζi : ∀ f, Commute (d.κ f) d.L.ζi` using `fun f => hc f _ (by simp [LevelData.fns])`. Establish `cG : ∀ f, Commute (d.κ f) d.L.GGi` using `fun f => hc f _ (by simp [LevelData.fns])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cn : ∀ f, Commute (d.κ f) d.L.nab` using `fun f => hc f _ (by simp)`. Establish `cio : ∀ (a : A), (∀ f, Commute (d.κ f) a) → ∀ α : SlopeTestRemainingChoices S A, TL.kMat st α → α * io a = io a * α`. Introduce `a ha α hα`. Use `(Formalism.FourierDecayAlt.P.TLA.L1.io_comm fun i j => ?_).symm.eq` and prove the remaining obligations. Take `⟨f, hf⟩` from `hk _ (hα i j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hf]`. Conclude with `(ha f).symm`. Establish `cK : ∀ α : SlopeTestRemainingChoices S A, TL.kMat st α → α * kapL d.L = kapL d.L * α` using `cio _ fun f => ((cζb f).mul_right (cζi f)).mul_right (cG f)`. Establish `cl : ∀ α : SlopeTestRemainingChoices S A, TL.kMat st α → α * io (d.L.l0 Y) = io (d.L.l0 Y) * α` using `cio _ fun f => (cn f).neg_right.sub_right ((show Commute (d.κ f) (algebraMap ℂ A (Y + 1 / 2)) from (Algebra.commutes _ _).symm).mul_right ((cζb f).mul_right (cG f)))`. Establish `hB : ∀ α : SlopeTestRemainingChoices S A, TL.kMat st α → BMat d α`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α hα i j`. Take `⟨f, hf⟩` from `hk _ (hα i j)`. Rewrite using `[← hf]`. Conclude with `kappa_mem d f`. Establish `hE : BMat d (io E0 : SlopeTestRemainingChoices S A)` using `bMat_io hE0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ M ∈ TL.dSpan st (io (d.L.l0 Y) + kapL d.L * io E0 : SlopeTestRemainingChoices S A) (kapL d.L) (tz d.L), ∃ E : SlopeTestRemainingChoices S A, BMat d E ∧ M = kapL d.L * E`. Introduce `M hM`. Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨α, β, γ, h1, h2, h3, rfl⟩ | ⟨γ, h, rfl | rfl⟩` into its components or cases.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨_, ((hB α h1).mul ((hE.mul (hB β h2)).sub ((hB β h2).mul hE))).mul (hB γ h3), comm_id _ _ _ _ _ _ (cl β h2) (cK β h2) (cK α h1)⟩`. Conclude with `⟨γ, hB γ h, rfl⟩`. Conclude with `⟨tz d.L * γ, (bMat_io (Submodule.smul_mem _ _ (zbi_mem d))).mul (hB γ h), mul_assoc _ _ _⟩`. Consider the case `zero => exact ⟨0, fun _ _ => zero_mem _, (mul_zero _).symm⟩`. Consider the case `add x y _ _ hx hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E, hE, rfl⟩` from `hx`. Take `⟨F, hF, rfl⟩` from `hy`. Conclude with `⟨E + F, hE.add hF, (mul_add _ _ _).symm⟩`. Consider the case `smul c x _ hx`. Take `⟨E, hE, rfl⟩` from `hx`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c • E, hE.smul c, (mul_smul_comm _ _ _).symm⟩`. Take `⟨E, hE', e⟩` from `key _ hsh`. Use `⟨io E0 + E, hE.add hE', ?_⟩` and prove the remaining obligations. Rewrite using `[sub_eq_iff_eq_add.mp e, mul_add]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem word_l_shape : ∀ (P : M.Par) (A : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] (d : Q.NFData P A), HatHyp d → ∀ (L : LevelData A P.r) (st : Start A) (s : ℂ), Comparison₂ d L st s → ∀ (S : Type) [Fintype S] [DecidableEq S], ∀ w : List (Letter ℂ S), admitted st w → ∀ Y ∈ (ofWord L st w).inv, Y + 1 ∈ (ofWord L st w).inv → ∃ E : SlopeTestRemainingChoices S A, (∀ e e', E e e' ∈ nfSpan d ∅ 0 0 0) ∧ (ofWord L st w).l L Y = io (d.L.l0 Y) + kapL d.L * E := by
   intro P A _ _ _ _ d hd L st s hT S _ _ w hA Y hY hY1

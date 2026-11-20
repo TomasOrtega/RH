@@ -8,11 +8,11 @@ namespace GlobalTheory
 open MeasureTheory in
 open scoped Pointwise in
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Establish `: (QuotientAddGroup.mk '' K : Set (G ⧸ Γ)) = Set.univ`. Use `Set.eq_univ_of_forall fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Take `⟨γ, hγ, hx⟩` from `hcov x`. Use `⟨γ + x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.eq]`. Simplify using `using hγ`. Rewrite using `[← this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hK.image continuous_quotient_mk'`.
+A detailed English derivation is pending.
 -/
 private lemma compactSpace_quotient_of_cocompact {G : Type} [AddCommGroup G] [TopologicalSpace G]
     [IsTopologicalAddGroup G] (Γ : AddSubgroup G) {K : Set G} (hK : IsCompact K)
@@ -31,9 +31,9 @@ private lemma compactSpace_quotient_of_cocompact {G : Type} [AddCommGroup G] [To
 open MeasureTheory in
 open scoped Pointwise in
 /- English proof (translation)
-Establish `h : ∀ x y : G, (QuotientAddGroup.leftRel Γ) x y → Φ x = Φ y`. Introduce `x y hxy`. Rewrite `hxy` using `[QuotientAddGroup.leftRel_apply]`. Rewrite using `[← hper _ hxy x]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Normalize the expressions using the abelian group laws. Conclude with `⟨⟨Quotient.lift Φ h, hΦ.quotient_lift h⟩, fun x => rfl⟩`.
+Normalize the expressions using the abelian group laws. Supply the required witnesses or components.
 -/
 private lemma exists_continuous_descend_of_periodic {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     (Γ : AddSubgroup G) {Φ : G → ℂ} (hΦ : Continuous Φ) (hper : ∀ γ ∈ Γ, ∀ x, Φ (γ + x) = Φ x) :
@@ -47,9 +47,9 @@ private lemma exists_continuous_descend_of_periodic {G : Type} [AddCommGroup G] 
 open MeasureTheory in
 open scoped Pointwise in
 /- English proof (translation)
-Set `F : C(Q × Q, ℂ)` to `⟨fun p => f (p.2 + p.1), by fun_prop⟩`. Establish `hc : Continuous F.curry` using `F.curry.continuous`. Establish `ht` using `(hc.tendsto 0)`. Rewrite `ht` using `[Metric.tendsto_nhds]`. Use `filter_upwards [ht η hη] with w hw q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `ContinuousMap.dist_apply_le_dist (f := F.curry w) (g := F.curry 0) q`. Establish `e1 : F.curry w q = f (q + w)` using `rfl`. Establish `e2 : F.curry 0 q = f q` using `by simp [F]`. Rewrite `h` using `[e1, e2, dist_eq_norm]`. Conclude with `h.trans hw.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eventually_norm_translate_sub_le {Q : Type} [AddCommGroup Q] [TopologicalSpace Q]
     [IsTopologicalAddGroup Q] [CompactSpace Q] (f : C(Q, ℂ)) {η : ℝ} (hη : 0 < η) :
@@ -68,7 +68,7 @@ private lemma eventually_norm_translate_sub_le {Q : Type} [AddCommGroup Q] [Topo
 open MeasureTheory in
 open scoped Pointwise in
 /- English proof (translation)
-Take `⟨M, hM⟩` from `(hK.image hΦ.norm).bddAbove`. Use `⟨M, fun x => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hx⟩` from `hcov x`. Rewrite using `[← hper γ hγ x]`. Conclude with `hM ⟨_, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_norm_le_of_periodic {G : Type} [AddCommGroup G] [TopologicalSpace G]
     (Γ : AddSubgroup G) {K : Set G} (hK : IsCompact K) (hcov : ∀ x, ∃ γ ∈ Γ, γ + x ∈ K)
@@ -83,21 +83,19 @@ private lemma exists_norm_le_of_periodic {G : Type} [AddCommGroup G] [Topologica
 open MeasureTheory in
 open scoped Pointwise in
 /- English proof (translation)
-Use `set V := Submodule.span ℂ (Set.range ψ) with hV`. Establish `hVV : V * V ≤ V`. Rewrite using `[hV, Submodule.span_mul_span]`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨a + b, hmul a b⟩`. Establish `hone : (1 : C(Q, ℂ)) ∈ V` using `h0 ▸ Submodule.subset_span ⟨0, rfl⟩`. Establish `hst : ∀ p ∈ V, star p ∈ V`. Introduce `p hp`. Proceed by induction on `hp using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Rewrite using `[hstar]`. Conclude with `Submodule.subset_span ⟨-a, rfl⟩`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the case `add x y _ _ hx hy => rw [star_add]`. Conclude with `V.add_mem hx hy`. Consider the case `smul c x _ hx => rw [star_smul]`. Conclude with `V.smul_mem _ hx`. Set `S : StarSubalgebra ℂ C(Q, ℂ)` to `{ carrier := V mul_mem' := fun hp hq => hVV (Submodule.mul_mem_mul hp hq) one_mem' := hone add_mem' := fun hp hq => V.add_mem hp hq zero_mem' := V.zero_mem algebraMap_mem' := fun r => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `V.smul_mem r hone`. Use the proof step `star_mem' := fun hp => hst _ hp }`. Establish `hS : S.SeparatesPoints`. Introduce `p q hpq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hsep p q hpq`. Conclude with `⟨ψ a, ⟨ψ a, Submodule.subset_span ⟨a, rfl⟩, rfl⟩, ha⟩`. Establish `htop` using `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints S hS`. Establish `hf : f ∈ closure (S : Set C(Q, ℂ))`. Rewrite using `[← StarSubalgebra.topologicalClosure_coe, htop]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨g, hgS, hfg⟩` from `Metric.mem_closure_iff.mp hf δ hδ`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp (show g ∈ V from hgS)`. Use `⟨c.support, c, fun q => ?_⟩` and prove the remaining obligations. Establish `hgq : g q = ∑ a ∈ c.support, c a * ψ a q`.
-
-Rewrite using `[← hc, Finsupp.sum, ContinuousMap.coe_sum, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[← hgq]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma exists_charSum_approx {Q : Type} [TopologicalSpace Q] [CompactSpace Q] {A : Type}
     [AddCommGroup A] (ψ : A → C(Q, ℂ)) (hmul : ∀ a b, ψ (a + b) = ψ a * ψ b) (h0 : ψ 0 = 1)
@@ -152,81 +150,69 @@ open MeasureTheory in
 open scoped Pointwise in
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ _ K hK hcov A _ χ hχc hχmul hχadd hχ0 hχnorm hχΓ μ 𝓕 hμ h𝓕 l hl ε hε`. Use `haveI : Countable Γ := TopologicalSpace.separableSpace_iff_countable.mp inferInstance`. Use `haveI : IsClosed (Γ : Set G) := AddSubgroup.isClosed_of_discrete`. Use `haveI : CompactSpace (G ⧸ Γ) := compactSpace_quotient_of_cocompact Γ hK hcov`. Establish `hχz : ∀ a, χ a 0 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a`. Establish `h` using `hχmul a 0 0`. Rewrite `h` using `[add_zero]`. Establish `hne : χ a 0 ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hχnorm a 0` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Conclude with `(mul_right_eq_self₀.mp h.symm).resolve_right hne`. Establish `hχper : ∀ a, ∀ γ ∈ Γ, ∀ x, χ a (γ + x) = χ a x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a γ hγ x`. Rewrite using `[hχmul, (hχΓ γ).mpr hγ a, one_mul]`. Use `choose ψ hψ using fun a => exists_continuous_descend_of_periodic Γ (hχc a) (hχper a)`. Establish `hcc : ∀ a x, starRingEnd ℂ (χ a x) = χ (-a) x`. Introduce `a x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : χ a x * χ (-a) x = 1` using `by rw [← hχadd, add_neg_cancel, hχ0]`. Establish `h2 : starRingEnd ℂ (χ a x) * χ a x = 1`. Rewrite using `[Complex.conj_mul', hχnorm]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately.
 
-Rewrite using `[h1, _root_.mul_one]`. Use `_ = χ (-a) x := by rw [← _root_.mul_assoc, h2, _root_.one_mul]`. Establish `hψmul : ∀ a b, ψ (a + b) = ψ a * ψ b`. Introduce `a b`. Use extensionality with `q`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x => simp [hψ, hχadd]`. Establish `hψ0 : ψ 0 = 1`. Use extensionality with `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `H x => simp [hψ, hχ0]`. Establish `hψstar : ∀ a, star (ψ a) = ψ (-a)`. Introduce `a`. Use extensionality with `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `H x => simp [hψ, ← hcc]`. Establish `hψsep : ∀ p q : G ⧸ Γ, p ≠ q → ∃ a, ψ a p ≠ ψ a q`. Introduce `p q hpq`. Proceed by induction on `p using QuotientAddGroup.induction_on with`. Consider the case `H x`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H y`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hpq` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[QuotientAddGroup.eq]`. Apply `(hχΓ (-x + y)).mp` to reduce the goal to its premises. Introduce `a`. Establish `e` using `hcon a`. Rewrite `e` using `[hψ, hψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hχmul, ← e, ← hχmul, neg_add_cancel, hχz]`. Establish `hη : (0 : ℝ) < ε / 2` using `by positivity`. Establish `hev : ∀ Φ ∈ l.toFinset, ∀ᶠ w in nhds (0 : G ⧸ Γ), ∀ x y : G, (y : G ⧸ Γ) = w → ‖Φ (x + y) - Φ x‖ ≤ ε / 2`. Introduce `Φ hΦ`. Rewrite `hΦ` using `[List.mem_toFinset]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Ψ, hΨ⟩` from `exists_continuous_descend_of_periodic Γ (hl Φ hΦ).1 (hl Φ hΦ).2`. Use `filter_upwards [eventually_norm_translate_sub_le Ψ hη] with w hw x y hy`. Use `hw (x : G ⧸ Γ)` as an intermediate fact. Rewrite `this` using `[← hy, ← QuotientAddGroup.mk_add, hΨ, hΨ]`. Then use the resulting hypothesis. Take `⟨U, hU, hUprop⟩` from `((Filter.eventually_all_finset l.toFinset).2 hev).exists_mem`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨O, hOU, hOopen, h0O⟩` from `mem_nhds_iff.mp hU`. Take `⟨b, hb0, hb1, hb01⟩` from `exists_continuous_zero_one_of_isClosed hOopen.isClosed_compl (isClosed_singleton (x := (0 : G ⧸ Γ))) (Set.disjoint_singleton_right.mpr (by simpa using h0O))`. Establish `hMev : ∀ Φ ∈ l.toFinset, ∀ᶠ M in Filter.atTop, ∀ x, ‖Φ x‖ ≤ M`. Introduce `Φ hΦ`. Rewrite `hΦ` using `[List.mem_toFinset]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨M, hM⟩` from `exists_norm_le_of_periodic Γ hK hcov (hl Φ hΦ).1 (hl Φ hΦ).2`. Conclude with `Filter.eventually_atTop.2 ⟨M, fun M' hM' x => (hM x).trans hM'⟩`. Take `⟨M, hM⟩` from `((Filter.eventually_all_finset l.toFinset).2 hMev).exists`. Establish `hfin : μ 𝓕 < ⊤` using `_root_.GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact Γ hK hcov μ h𝓕`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.mpr hfin.ne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `set β : G → ℝ := fun y => b (y : G ⧸ Γ) with hβ`. Establish `hβc : Continuous β` using `b.continuous.comp continuous_quotient_mk'`. Establish `hβ0 : ∀ y, 0 ≤ β y` using `fun y => (hb01 _).1`. Establish `hβ1 : ∀ y, β y ≤ 1` using `fun y => (hb01 _).2`. Establish `hβU : ∀ y, β y ≠ 0 → (y : G ⧸ Γ) ∈ U`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy`. Assume the negation of the conclusion as `hyU`. Conclude with `hy (hb0 (fun h => hyU (hOU h)))`. Use `set I := ∫ y in 𝓕, β y ∂μ with hIdef`. Establish `hβper : ∀ γ ∈ Γ, ∀ y, β (γ + y) = β y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ y`. Simplify using `only [hβ]`. Use `congr 1`. Rewrite using `[QuotientAddGroup.eq]`. Use `Γ.neg_mem hγ using 1` and compare the differences between its conclusion and the goal.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hβint : IntegrableOn β 𝓕 μ` using `Integrable.of_bound hβc.aestronglyMeasurable 1 (Filter.Eventually.of_forall fun y => by`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (hβ0 y)]`. Conclude with `hβ1 y)`. Establish `hI : 0 < I`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hIdef, setIntegral_pos_iff_support_of_nonneg_ae (Filter.Eventually.of_forall hβ0) hβint]`. Rewrite using `[pos_iff_ne_zero]`. Introduce `h0`. Establish `hinv : ∀ g : Γ, g +ᵥ Function.support β = Function.support β`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `y`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Simplify using `only [Function.mem_support]`. Rewrite using `[show (-g) +ᵥ y = ((-g : Γ) : G) + y from rfl, hβper _ (-g).2 y]`. Establish `hzero` using `h𝓕.measure_zero_of_invariant _ hinv h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ00 : β 0 ≠ 0`. Simplify using `only [hβ, QuotientAddGroup.mk_zero]`. Rewrite using `[hb1 (Set.mem_singleton 0)]`. Simplify using the standard rewrite rules. Establish `hpos` using `(isOpen_ne_fun hβc continuous_const).measure_pos μ ⟨0, hβ00⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hpos.ne' hzero`. Use `set m := (μ 𝓕).toReal with hm`. Establish `hm0 : 0 ≤ m` using `ENNReal.toReal_nonneg`. Use `set δ := ε / (2 * (|M| + 1) * (m + 1)) with hδdef`. Establish `hδ : 0 < δ` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `f : C(G ⧸ Γ, ℂ)` to `⟨fun q => ((b q / I : ℝ) : ℂ), by fun_prop⟩`. Take `⟨s, d, hsd⟩` from `exists_charSum_approx ψ hψmul hψ0 hψstar hψsep f δ hδ`. Use `⟨s, fun a => starRingEnd ℂ (d a), fun Φ hΦ x => ?_⟩` and prove the remaining obligations. Take `⟨hΦc, hΦp⟩` from `hl Φ hΦ`. Establish `hMΦ : ∀ y, ‖Φ y‖ ≤ M` using `hM Φ (List.mem_toFinset.mpr hΦ)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hconv : ∀ a, (∫ y in 𝓕, Φ y * starRingEnd ℂ (χ a y) ∂μ) * χ a x = ∫ y in 𝓕, Φ (x + y) * starRingEnd ℂ (χ a y) ∂μ` using `fun a => (_root_.GlobalTheory.fourierCoeff_mul_char_conv_and_hasDerivAt G Γ K hK hcov μ 𝓕 hμ h𝓕 (χ a) (hχc a) (hχmul a) (hχnorm a) (fun γ hγ => (hχΓ γ).mpr hγ a) Φ hΦc hΦp).1 x`. Use `set k : G → ℂ := fun y => ∑ a ∈ s, d a * χ a y with hkdef`. Establish `hkc : Continuous k` using `by fun_prop`. Establish `hk : ∀ y, ‖((β y / I : ℝ) : ℂ) - k y‖ ≤ δ`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hsd (y : G ⧸ Γ)` as an intermediate fact. Simplify `this` using `[f, k, hψ, hβ]`. Establish `hkb : ∀ y, ‖k y‖ ≤ ∑ a ∈ s, ‖d a‖`. Introduce `y`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_mul, hχnorm, _root_.mul_one]`. Establish `hsum : ∑ a ∈ s, starRingEnd ℂ (d a) * ((∫ y in 𝓕, Φ y * starRingEnd ℂ (χ a y) ∂μ) * χ a x) = ∫ y in 𝓕, Φ (x + y) * starRingEnd ℂ (k y) ∂μ`. Repeatedly rewrite using `[hconv, ← integral_const_mul]`. Rewrite using `[← integral_finset_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [hkdef, map_sum, map_mul, Complex.conj_conj, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Introduce `a _`. Conclude with `Integrable.of_bound (by fun_prop) (‖starRingEnd ℂ (d a)‖ * M) (Filter.Eventually.of_forall fun y => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [norm_mul, Complex.norm_conj, hχnorm, _root_.mul_one]`. Conclude with `mul_le_mul_of_nonneg_left (hMΦ _) (norm_nonneg _))`. Rewrite using `[hsum]`. Establish `hIone : ∫ y in 𝓕, Φ x * ((β y / I : ℝ) : ℂ) ∂μ = Φ x`. Rewrite using `[integral_const_mul, integral_complex_ofReal, integral_div, ← hIdef, div_self hI.ne']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hint1 : Integrable (fun y => Φ x * ((β y / I : ℝ) : ℂ)) (μ.restrict 𝓕)` using `Integrable.of_bound (by fun_prop) (M * (1 / I)) (Filter.Eventually.of_forall fun y => by`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (div_nonneg (hβ0 y) hI.le)]`. Conclude with `mul_le_mul (hMΦ x) (div_le_div_of_nonneg_right (hβ1 y) hI.le) (div_nonneg (hβ0 y) hI.le) ((norm_nonneg _).trans (hMΦ x)))`. Establish `hint2 : Integrable (fun y => Φ (x + y) * starRingEnd ℂ (k y)) (μ.restrict 𝓕)` using `Integrable.of_bound (by fun_prop) (M * ∑ a ∈ s, ‖d a‖) (Filter.Eventually.of_forall fun y => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul (hMΦ _) (hkb y) (norm_nonneg _) ((norm_nonneg _).trans (hMΦ x)))`. Establish `hgint : Integrable (fun y => ε / 2 * (β y / I) + M * δ) (μ.restrict 𝓕)` using `((hβint.div_const I).const_mul _).add (integrable_const _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_sub hint1 hint2, hIone]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `_ ≤ ∫ y in 𝓕, (ε / 2 * (β y / I) + M * δ) ∂μ := by`. Use `norm_integral_le_of_norm_le hgint (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `e : Φ x * ((β y / I : ℝ) : ℂ) - Φ (x + y) * starRingEnd ℂ (k y) = (Φ x - Φ (x + y)) * ((β y / I : ℝ) : ℂ) + Φ (x + y) * starRingEnd ℂ (((β y / I : ℝ) : ℂ) - k y)`. Simplify using `only [map_sub, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Use `(norm_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (div_nonneg (hβ0 y) hI.le)]`. Distinguish the cases in `hy : β y = 0`. Simplify using `[hy]`.
-
-Use `mul_le_mul_of_nonneg_right ?_ (div_nonneg (hβ0 y) hI.le)` and prove the remaining obligations. Rewrite using `[norm_sub_rev]`. Conclude with `hUprop _ (hβU y hy) Φ (List.mem_toFinset.mpr hΦ) x y rfl`. Rewrite using `[norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul (hMΦ _) (hk y) (norm_nonneg _) ((norm_nonneg _).trans (hMΦ x))`.
-
-Use `_ = ε / 2 + M * δ * m := by`. Rewrite using `[integral_add ((hβint.div_const I).const_mul _) (integrable_const _), integral_const_mul, integral_div, ← hIdef, div_self hI.ne', setIntegral_const]`. Simplify using `[hm, smul_eq_mul, Measure.real]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ε := by`.
-
-Establish `h1 : M * δ * m ≤ ε / 2`. Establish `hMle : M ≤ |M| + 1` using `(le_abs_self M).trans (by linarith)`. Establish `hmle : m ≤ m + 1` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Break down `le_or_gt 0 M with hM0 | hM0` into its components or cases.
-
-Conclude with `mul_le_mul (mul_le_mul_of_nonneg_right hMle hδ.le) hmle hm0 (by positivity)`. Establish `: M * δ * m ≤ 0`. Use `mul_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hM0.le hδ.le) hm0` as an intermediate fact. Conclude with `this`. Conclude with `this.trans (by positivity)`.
-
-Use `_ = ε / 2 := by`. Rewrite using `[hδdef]`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_summation_kernel_periodic : ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Γ : AddSubgroup G) [DiscreteTopology Γ] (K : Set G), IsCompact K → (∀ x, ∃ γ ∈ Γ, γ + x ∈ K) → ∀ (A : Type) [AddCommGroup A] (χ : A → G → ℂ), (∀ a, Continuous (χ a)) → (∀ a x y, χ a (x + y) = χ a x * χ a y) → (∀ a b x, χ (a + b) x = χ a x * χ b x) → (∀ x, χ 0 x = 1) → (∀ a x, ‖χ a x‖ = 1) → (∀ x, (∀ a, χ a x = 1) ↔ x ∈ Γ) → ∀ (μ : Measure G) (𝓕 : Set G), μ.IsAddHaarMeasure → IsAddFundamentalDomain Γ 𝓕 μ → ∀ l : List (G → ℂ), (∀ Φ ∈ l, Continuous Φ ∧ ∀ γ ∈ Γ, ∀ x, Φ (γ + x) = Φ x) → ∀ ε : ℝ, 0 < ε → ∃ (s : Finset A) (c : A → ℂ), ∀ Φ ∈ l, ∀ x, ‖Φ x - ∑ a ∈ s, c a * ((∫ y in 𝓕, Φ y * starRingEnd ℂ (χ a y) ∂μ) * χ a x)‖ ≤ ε := by
   intro G _ _ _ _ _ _ _ _ Γ _ K hK hcov A _ χ hχc hχmul hχadd hχ0 hχnorm hχΓ μ 𝓕 hμ h𝓕 l hl ε hε

@@ -9,7 +9,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.Per.FontaineAdm
 
 /- English proof (translation)
-Introduce `D l _ K LL T`. Take `⟨h1, h2⟩` from `GlobalTheory.Per.FontaineBound.dcris_finite_le_of_tied (D.locT l) K LL T.V T.ρ`. Use `⟨⟨h1, h2⟩, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨hd, -⟩` from `GlobalTheory.Per.Components.components_finrank l (D.loc l) (D.locA l) (D.locT l) K LL T.V T.ρ`. Conclude with `⟨(hd τ).1, (hd τ).2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fontaine_bounds : ∀ D : D7, Formalism.MainNotions.ElementDenominator.adm8 D := by
   intro D l _ K LL T

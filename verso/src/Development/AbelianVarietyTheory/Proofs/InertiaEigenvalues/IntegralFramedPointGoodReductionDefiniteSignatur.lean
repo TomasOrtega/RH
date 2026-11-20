@@ -15,23 +15,21 @@ namespace GlobalTheory.GoodDefinite
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Take `⟨m, hm, hw⟩` from `exists_w0_relation H`. Take `⟨b, hb⟩` from `Spec.map_surjective (x ≫ Xo.s)`. Set `β : KA l →+* T.Fr` to `b.hom`. Establish `hβ : x ≫ Xo.s = spMap β` using `hb.symm`. Establish `: CharZero T.Fr` using `(RingHom.charZero_iff β.injective).1 inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρ : T.Fr` to `β (baseKA l).ρ`. Establish `hρ : ρ ^ 2 = -(H.d : T.Fr)` using `by rw [← map_pow, (baseKA l).ρ_sq, map_neg, map_natCast]`. Establish `hm' : (4 : T.Fr) * m = 1 + H.d` using `by exact_mod_cast hm`. Set `z : T.Fr` to `(1 + ρ) / 2`. Establish `hz2 : 2 * z = 1 + ρ` using `mul_div_cancel₀ _ two_ne_zero`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hz : z * z + m = z` using `mul_left_cancel₀ (show (4 : T.Fr) ≠ 0 by norm_num) (by`. Take the linear combination `(2 * z + ρ - 1) * hz2 + hρ + hm')`. Choose the witnesses or unpack the hypotheses as in `⟨z₀, hz₀⟩ : ∃ z₀ : T.V, algebraMap T.V T.Fr z₀ = z := by`. Break down `ValuationRing.isInteger_or_isInteger T.V z with h | ⟨u, hu⟩` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : z = 0`. Conclude with `⟨0, by rw [h0, map_zero]⟩`. Use `⟨1 - m * u, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_one, map_mul, map_natCast, hu]`. Clear the denominators using the available nonvanishing facts.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-hz`. Set `L` to `AlgebraicClosure T.Fr`. Set `a : T.Fr →+* L` to `algebraMap T.Fr L`. Establish `: CharZero L` using `(RingHom.charZero_iff a.injective).1 inferInstance`. Establish `hdet` using `(Xo.univ.geom L (spMap a ≫ x) (a.comp β) (by rw [Category.assoc, hβ, sp_comp])).1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `actsBy_of_detCond Dw hq _ (spMap a ≫ x) _ (a z) (by rw [← map_ofNat a 2, ← map_mul, hz2, map_add, map_one]; rfl) hdet`. Establish `h₂` using `(actsBy_pull m₂.cart (m₂.act H.w0) (spMap a) _).1 ((actsBy_pull m₁.cart (m₁.act H.w0) (spMap a) _).2 h₁)`. Use `G.semi.smooth` as an intermediate fact. Use `G.semi.separated` as an intermediate fact. Use `G.act.hom H.w0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : ActsBy G.G (G.act.act H.w0) (𝟙 _) z₀`. Use `actsBy_of_injective (a.comp (algebraMap T.V T.Fr)) (a.injective.comp (IsFractionRing.injective T.V T.Fr)) _ _ ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id, ← sp_comp, RingHom.comp_apply, hz₀]`. Conclude with `h₂`. Use `Set.eq_univ_of_forall fun p K _ _ t _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `Spec.map_surjective t`. Establish `h₄` using `actsBy_baseChange (k := K) j.hom (𝟙 _) _ h₃`. Establish `ht : spMap j.hom ≫ 𝟙 _ = t` using `(Category.comp_id _).trans hj`. Rewrite `h₄` using `[ht]`. Take `⟨X⟩` from `G.semi.fibres K t`.
-
-Conclude with `isProper_of_actsBy X (OAct.pullback t G.G G.act) H.d_prime hm hw _ ((actsBy_pull (isGrpPullback_pullback G.G t) (pullback.lift_fst _ _ _) _ _).2 (by rwa [Category.id_comp]))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem abLocus_eq_univ_of_definite (Xo : Moduli Dw l) (hq : Dw.q = 0) (T : CDVR) (x : Sp T.Fr ⟶ Xo.X)
     (G : SAB H (Sp T.V)) (t' : SAB H (Sp T.Fr)) (m₁ : SABMap t' Xo.univ.t x)
@@ -82,7 +80,7 @@ theorem abLocus_eq_univ_of_definite (Xo : Moduli Dw l) (hq : Dw.q = 0) (T : CDVR
     ((actsBy_pull (isGrpPullback_pullback G.G t) (pullback.lift_fst _ _ _) _ _).2 (by rwa [Category.id_comp]))
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hq T io y`. Take `⟨G, t', m₁, m₂, -⟩` from `y.2.2`. Conclude with `⟨G, t', m₁, m₂, GlobalTheory.GoodProper.isProper_of_abLocus_eq_univ E H Dw l Xo T _ G t' m₁ m₂ (abLocus_eq_univ_of_definite Xo hq T _ G t' m₁ m₂)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem good_of_definite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), Dw.q = 0 →

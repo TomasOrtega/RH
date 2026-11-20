@@ -21,7 +21,7 @@ namespace GlobalTheory.KS.TwoPull
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `congrArg (fun φ => φ.hom a) (Scheme.Hom.appLE_comp_appLE f g U V W e₁ e₂)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem pull_pull (f : Z ⟶ Y) (g : Y ⟶ X) (h : Z ⟶ X) (e : f ≫ g = h) {U : X.Opens} {V : Y.Opens} {W : Z.Opens}
     (e₁ : V ≤ g ⁻¹ᵁ U) (e₂ : W ≤ f ⁻¹ᵁ V) (e₃ : W ≤ h ⁻¹ᵁ U) (a : Γ(X, U)) :
@@ -30,21 +30,21 @@ theorem pull_pull (f : Z ⟶ Y) (g : Y ⟶ X) (h : Z ⟶ X) (e : f ≫ g = h) {U
   exact congrArg (fun φ => φ.hom a) (Scheme.Hom.appLE_comp_appLE f g U V W e₁ e₂)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q => q.hom a) (φ.appLE_map h (homOfLE h').op)`.
+A detailed English derivation is pending.
 -/
 theorem res_pull (φ : Y ⟶ X) {U : X.Opens} {V W : Y.Opens} (h : V ≤ φ ⁻¹ᵁ U) (h' : W ≤ V) (a : Γ(X, U)) :
     resG Y h' ((φ.appLE U V h).hom a) = (φ.appLE U W (h'.trans h)).hom a :=
   congrArg (fun q => q.hom a) (φ.appLE_map h (homOfLE h').op)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q => q.hom a) (φ.map_appLE h (homOfLE h').op)`.
+A detailed English derivation is pending.
 -/
 theorem pull_res (φ : Y ⟶ X) {U U' : X.Opens} {V : Y.Opens} (h : V ≤ φ ⁻¹ᵁ U') (h' : U' ≤ U) (a : Γ(X, U)) :
     (φ.appLE U' V h).hom (resG X h' a) = (φ.appLE U V (h.trans fun _ hy => h' hy)).hom a :=
   congrArg (fun q => q.hom a) (φ.map_appLE h (homOfLE h').op)
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.app_eq_appLE]`. Conclude with `(pull_res φ _ _ _).trans (res_pull φ _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_res (φ : Y ⟶ X) {U U' : X.Opens} (h' : U' ≤ U) (a : Γ(X, U)) :
     (φ.app U').hom (resG X h' a) = resG Y (fun _ hy => h' hy) ((φ.app U).hom a) := by
@@ -52,7 +52,7 @@ theorem app_res (φ : Y ⟶ X) {U U' : X.Opens} (h' : U' ≤ U) (a : Γ(X, U)) :
   exact (pull_res φ _ _ _).trans (res_pull φ _ _ _).symm
 
 /- English proof (translation)
-Establish `: (𝟙 X : X ⟶ X).appLE U U h = 𝟙 _`. Rewrite using `[Scheme.Hom.appLE, Scheme.Hom.id_app]`. Conclude with `(Category.id_comp _).trans (X.presheaf.map_id _)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem id_pull {U : X.Opens} (h : U ≤ (𝟙 X : X ⟶ X) ⁻¹ᵁ U) (a : Γ(X, U)) :
     ((𝟙 X : X ⟶ X).appLE U U h).hom a = a := by
@@ -63,7 +63,7 @@ theorem id_pull {U : X.Opens} (h : U ≤ (𝟙 X : X ⟶ X) ⁻¹ᵁ U) (a : Γ(
   rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun q => q.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`. Establish `h2 : (spMap f).appLE ⊤ ⊤ e = (spMap f).appTop` using `(Scheme.Hom.app_eq_appLE (spMap f) (U := ⊤)).symm`. Rewrite using `[h2]`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_pull_inv {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (e : ⊤ ≤ spMap f ⁻¹ᵁ ⊤)
     (r : R) :
@@ -75,7 +75,7 @@ theorem spec_pull_inv {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') 
   exact h.symm
 
 /- English proof (translation)
-Unfold `constFn`. Rewrite using `[← spec_pull_inv f le_top r]`. Conclude with `(pull_pull φ p _ hφ _ _ le_top _).trans (pull_pull p' (spMap f) _ rfl _ _ _ _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_const {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (φ : Y ⟶ X) (p : X ⟶ Sp R)
     (p' : Y ⟶ Sp R') (hφ : φ ≫ p = p' ≫ spMap f) {U : X.Opens} {V : Y.Opens} (h : V ≤ φ ⁻¹ᵁ U) (r : R) :
@@ -85,7 +85,7 @@ theorem pull_const {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (φ
   exact (pull_pull φ p _ hφ _ _ le_top _).trans (pull_pull p' (spMap f) _ rfl _ _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `res_pull q _ h _`.
+A detailed English derivation is pending.
 -/
 theorem res_const {R : Type} [CommRing R] (q : X ⟶ Sp R) {U V : X.Opens} (h : V ≤ U) (a : R) :
     resG X h (constFn q U a) = constFn q V a :=
@@ -101,14 +101,14 @@ theorem const_eq {R : Type} [CommRing R] (q : X ⟶ Sp R) (U : X.Opens) (a : R) 
     constFn q U a = twoPullConstantsRingHom q U a := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dual_decomp {k : Type} [Field k] (x : DualNumber k) :
     x = algebraMap k (DualNumber k) x.fst + DualNumber.eps * algebraMap k (DualNumber k) x.snd := by
   ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -119,37 +119,35 @@ end GlobalTheory.KS.TwoPull
 open GlobalTheory.KS.TwoPull in
 
 /- English proof (translation)
-Introduce `k _ R _ P ρ B' _ π₁ π₂ hπ₁ hπ₂ hagr A₀ _ m₀ hm₀ pr hpr hprA`. Substitute `hpr` using the available equality. Establish `hsp : spMap (constHom ρ) = spMap (algebraMap k (DualNumber k)) ≫ spMap ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ)`. Rewrite using `[← spMap_comp]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hpb : IsPullback pr B'.hom A₀.hom (spMap (algebraMap k (DualNumber k)))`. Use `IsPullback.of_right ?_ hprA hm₀.1` and prove the remaining obligations. Rewrite using `[← hsp]`. Conclude with `hπ₂.1`. Establish `hid : spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ spMap (algebraMap k (DualNumber k)) = 𝟙 _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← spMap_comp]`. Establish `: ((TrivSqZeroExt.fstHom k k k).toRingHom.comp (algebraMap k (DualNumber k))) = RingHom.id k`. Use extensionality with `x`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[spMap]`. Establish `hcomp : 𝟙 A₀.left ≫ A₀.hom = (A₀.hom ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom) ≫ spMap (algebraMap k (DualNumber k))`. Rewrite using `[Category.assoc, hid, Category.id_comp, Category.comp_id]`. Use `set j := hpb.lift (𝟙 _) (A₀.hom ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom) hcomp with hjdef`. Establish `hjρ : j ≫ pr = 𝟙 _` using `hpb.lift_fst _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjπ : j ≫ B'.hom = A₀.hom ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom` using `hpb.lift_snd _ _ _`. Establish `hm : j ≫ π₁ = m₀`. Rewrite using `[hagr _ j A₀.hom hjπ, ← Category.assoc, hjρ, Category.id_comp]`. Establish `hp : π₁ ≫ P.A.hom = B'.hom ≫ spMap ρ` using `hπ₁.1.w`. Establish `hW : ∀ W : P.A.left.Opens, pr ⁻¹ᵁ (m₀ ⁻¹ᵁ W) = π₁ ⁻¹ᵁ W` using `fun W => (GlobalTheory.T.preimage_eq_of_agree_on_closedFibre_dualNumbers k _ _ B'.hom π₁ (pr ≫ m₀) hagr W).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdec` using `GlobalTheory.T.existsUnique_add_eps_mul_on_dualNumber_thickening k A₀.left B'.left A₀.hom B'.hom pr hpb`. Establish `uniq : ∀ (O : A₀.left.Opens) (a b a' b' : Γ(A₀.left, O)), (pr.app O).hom a + constFn B'.hom _ DualNumber.eps * (pr.app O).hom b = (pr.app O).hom a' + constFn B'.hom _ DualNumber.eps * (pr.app O).hom b' → b = b'` using `fun O a b a' b' h => congrArg Prod.snd ((hdec O ((pr.app O).hom a + constFn B'.hom _ DualNumber.eps * (pr.app O).hom b)).unique (y₁ := (a, b)) (y₂ := (a', b')) rfl h)`. Establish `ex : ∀ (W : P.A.left.Opens) (f : Γ(P.A.left, W)), ∃ b : Γ(A₀.left, m₀ ⁻¹ᵁ W), (π₁.appLE W _ (hW W).le).hom f = (pr.app _).hom ((m₀.app W).hom f) + constFn B'.hom _ DualNumber.eps * (pr.app _).hom b`. Introduce `W f`. Take `⟨⟨a, b⟩, hab, -⟩` from `hdec (m₀ ⁻¹ᵁ W) ((π₁.appLE W _ (hW W).le).hom f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `hle : m₀ ⁻¹ᵁ W ≤ j ⁻¹ᵁ (pr ⁻¹ᵁ (m₀ ⁻¹ᵁ W))`. Rewrite using `[← Scheme.Hom.comp_preimage, hjρ]`. Conclude with `le_rfl`. Establish `h1` using `congrArg (j.appLE _ _ hle).hom hab`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[map_add, map_mul, pull_const _ j B'.hom A₀.hom hjπ, pull_pull j π₁ m₀ hm _ _ le_rfl]`. Establish `h2 : (j.appLE _ _ hle).hom ((pr.app (m₀ ⁻¹ᵁ W)).hom a) = a`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `(pull_pull j pr (𝟙 _) hjρ (U := m₀ ⁻¹ᵁ W) (W := m₀ ⁻¹ᵁ W) le_rfl hle le_rfl a).trans (id_pull _ a)`. Establish `h3 : constFn A₀.hom (m₀ ⁻¹ᵁ W) ((TrivSqZeroExt.fstHom k k k).toRingHom DualNumber.eps) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (TrivSqZeroExt.fstHom k k k).toRingHom DualNumber.eps = 0` using `by simp`. Rewrite using `[this, const_eq, map_zero]`. Establish `h4 : (m₀.app W).hom f = a`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Use `h1.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, zero_mul, add_zero]`. Conclude with `h2`. Rewrite using `[h4]`. Conclude with `hab`. Use `choose d hd using ex`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hee : ∀ O : B'.left.Opens, constFn B'.hom O DualNumber.eps * constFn B'.hom O DualNumber.eps = 0` using `fun O => by`. Rewrite using `[const_eq, ← map_mul, DualNumber.eps_mul_eps, map_zero]`. Use `⟨d, ⟨fun W _ f f' => ?_, fun W _ f f' => ?_, fun W W' h _ f => ?_, fun W _ r => ?_⟩, ?_⟩` and prove the remaining obligations. Use `uniq _ ((m₀.app W).hom (f + f')) _ ((m₀.app W).hom (f + f')) _ ?_` and prove the remaining obligations. Rewrite using `[← hd, map_add, hd, hd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree. Use `uniq _ ((m₀.app W).hom (f * f')) _ ((m₀.app W).hom (f * f')) _ ?_` and prove the remaining obligations. Rewrite using `[← hd, map_mul, hd, hd]`. Simplify using `only [map_add, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `(pr.app _).hom (d W f) * (pr.app _).hom (d W f') * hee _`. Establish `h0 : m₀ ⁻¹ᵁ W' ≤ m₀ ⁻¹ᵁ W` using `fun _ hy => h hy`. Rewrite using `[show rsT (d W f) (m₀ ⁻¹ᵁ W') = resG _ h0 (d W f) from dif_pos h0]`. Use `uniq _ ((m₀.app W').hom (resG _ h f)) _ ((m₀.app W').hom (resG _ h f)) _ ?_` and prove the remaining obligations. Establish `h0' : pr ⁻¹ᵁ (m₀ ⁻¹ᵁ W') ≤ pr ⁻¹ᵁ (m₀ ⁻¹ᵁ W)` using `fun _ hy => h hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `congrArg (resG _ h0') (hd W f)`. Rewrite `h1` using `[res_pull, map_add, map_mul, res_const]`. Rewrite using `[← hd, pull_res]`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[app_res m₀ h f]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg₂ (· + ·) (app_res pr h0 _).symm (congrArg (_ * ·) (app_res pr h0 _).symm)`. Use `uniq _ ((m₀.app W).hom (constFn P.A.hom W r)) _ (constFn A₀.hom _ (ρ r).fst) _ ?_` and prove the remaining obligations. Rewrite using `[← hd, pull_const ρ π₁ P.A.hom B'.hom hp, Scheme.Hom.app_eq_appLE, pull_const _ pr A₀.hom B'.hom hpb.w, pull_const _ pr A₀.hom B'.hom hpb.w]`. Simplify using `only [const_eq]`. Rewrite using `[← map_mul, ← map_add]`.
-
-Conclude with `congrArg _ (dual_decomp _)`. Introduce `W f show pbT π₁ f (pr ⁻¹ᵁ (m₀ ⁻¹ᵁ W)) = pbT (pr ≫ m₀) f (pr ⁻¹ᵁ (m₀ ⁻¹ᵁ W)) + constFn B'.hom (pr ⁻¹ᵁ (m₀ ⁻¹ᵁ W)) DualNumber.eps * pbT pr (d W f) (pr ⁻¹ᵁ (m₀ ⁻¹ᵁ W))`. Unfold `pbT`. Rewrite using `[dif_pos (hW W).le, dif_pos le_rfl, dif_pos (show pr ⁻¹ᵁ (m₀ ⁻¹ᵁ W) ≤ (pr ≫ m₀) ⁻¹ᵁ W from le_rfl), hd W f, Scheme.Hom.app_eq_appLE, Scheme.Hom.app_eq_appLE, pull_pull pr m₀ (pr ≫ m₀) rfl]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KS.TwoPull.exists_locDerK_of_two_pullbacks : ∀ (k : Type) [Field k] (R : Type) [CommRing R] (P : PolAV (Sp R)) (ρ : R →+* DualNumber k) (B' : Over (Sp (DualNumber k))) [GrpObj B'] (π₁ π₂ : B'.left ⟶ P.A.left), IsGrpPullback B' P.A (spMap ρ) π₁ → IsGrpPullback B' P.A (spMap (constHom ρ)) π₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (y : Z ⟶ Sp k), x ≫ B'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) → ∀ (A₀ : Over (Sp k)) [GrpObj A₀] (m₀ : A₀.left ⟶ P.A.left), IsGrpPullback A₀ P.A (spMap ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ)) m₀ → ∀ pr : B'.left ⟶ A₀.left, pr ≫ m₀ = π₂ → pr ≫ A₀.hom = B'.hom ≫ spMap (algebraMap k (DualNumber k)) → ∃ d : ∀ W : P.A.left.Opens, Γ(P.A.left, W) → Γ(A₀.left, m₀ ⁻¹ᵁ W), GlobalTheory.KS.LocDerK A₀.hom P.A.hom m₀ (fun r => (ρ r).snd) ⊤ d ∧ (∀ (W : P.A.left.Opens) (f : Γ(P.A.left, W)), pbT π₁ f (π₂ ⁻¹ᵁ W) = pbT π₂ f (π₂ ⁻¹ᵁ W) + constFn B'.hom (π₂ ⁻¹ᵁ W) DualNumber.eps * pbT pr (d W f) (π₂ ⁻¹ᵁ W)) := by
   intro k _ R _ P ρ B' _ π₁ π₂ hπ₁ hπ₂ hagr A₀ _ m₀ hm₀ pr hpr hprA

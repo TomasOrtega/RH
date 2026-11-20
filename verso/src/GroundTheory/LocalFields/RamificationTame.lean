@@ -19,7 +19,7 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
 /- English proof (translation)
-Rewrite using `[Ne, CharP.cast_eq_zero_iff 𝓀[L] (ringChar 𝓀[L]), ← Algebra.ringChar_eq 𝓀[K] 𝓀[L]]`. Introduce `hdvd`. Establish `h1` using `Nat.Coprime.eq_one_of_dvd he.symm hdvd`. Conclude with `Nat.not_prime_one (h1 ▸ CharP.char_is_prime 𝓀[K] (ringChar 𝓀[K]))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCast_ramificationIndex_ne_zero
     (he : Nat.Coprime (ramificationIndex K L) (ringChar 𝓀[K])) :
@@ -30,21 +30,17 @@ theorem natCast_ramificationIndex_ne_zero
   exact Nat.not_prime_one (h1 ▸ CharP.char_is_prime 𝓀[K] (ringChar 𝓀[K]))
 
 /- English proof (translation)
-Use `set e := ramificationIndex K L with he_def`. Take `⟨ϖK, hϖK⟩` from `exists_irreducible 𝒪[K]`. Take `⟨ϖL, hϖL⟩` from `exists_irreducible 𝒪[L]`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : Associated (algebraMap 𝒪[K] 𝒪[L] ϖK) (ϖL ^ e) := by`. Establish `h` using `map_maximalIdeal K L`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hϖK.maximalIdeal_eq, hϖL.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_pow, Ideal.span_singleton_eq_span_singleton]`. Conclude with `h`. Take `⟨c, hc⟩` from `exists_sub_algebraMap_mem_maximalIdeal K L hf (u : 𝒪[L])`. Establish `hcu : IsUnit c`. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnL : ¬ IsUnit (algebraMap 𝒪[K] 𝒪[L] c)` using `fun h ↦ hn (isUnit_of_map_unit _ _ h)`. Establish `hmem : algebraMap 𝒪[K] 𝒪[L] c ∈ 𝓂[L]` using `(mem_maximalIdeal _).mpr hnL`. Establish `: (u : 𝒪[L]) ∈ 𝓂[L]`. Use `add_mem hc hmem` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mem_maximalIdeal _).mp this u.isUnit`. Use `set c' := hcu.unit`. Use `set cL : 𝒪[L]ˣ := Units.map (algebraMap 𝒪[K] 𝒪[L] : 𝒪[K] →* 𝒪[L]) c' with hcL`. Establish `hcLval : (cL : 𝒪[L]) = algebraMap 𝒪[K] 𝒪[L] c` using `rfl`. Establish `hv : u * cL⁻¹ ∈ unitFiltration L 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_unitFiltration, pow_one, Units.val_mul, show (u : 𝒪[L]) * ((cL⁻¹ : 𝒪[L]ˣ) : 𝒪[L]) - 1 = ((u : 𝒪[L]) - cL) * ((cL⁻¹ : 𝒪[L]ˣ) : 𝒪[L]) by rw [sub_mul, Units.mul_inv], hcLval]`. Conclude with `Ideal.mul_mem_right _ _ hc`. Take `⟨w, hw⟩` from `unitFiltration_one_le_range_pow (natCast_ramificationIndex_ne_zero K L he) hv`. Establish `hw' : w ^ e = u * cL⁻¹` using `hw`. Establish `hinv : (w⁻¹) ^ e = cL * u⁻¹` using `by rw [inv_pow, hw', mul_inv_rev, inv_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `htot : ramificationIndex K L = Module.finrank K L`. Use `ramificationIndex_mul_residueDegree K L` as an intermediate fact. Rewrite `this` using `[hf, mul_one]`. Then use the resulting hypothesis. Use `⟨ϖK * (c' : 𝒪[K]), (irreducible_mul_isUnit c'.isUnit).mpr hϖK, ϖL * ((w⁻¹ : 𝒪[L]ˣ) : 𝒪[L]), (irreducible_mul_isUnit (w⁻¹).isUnit).mpr hϖL, ?_, ?_⟩` and prove the remaining obligations. Establish `hui` using `Units.mul_inv u`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, Units.val_pow_eq_pow_val]`. Use `_ = algebraMap 𝒪[K] 𝒪[L] ϖK * u * (cL * ((u⁻¹ : 𝒪[L]ˣ) : 𝒪[L])) := by`. Rewrite using `[← hu, hinv, Units.val_mul]`. Use `_ = algebraMap 𝒪[K] 𝒪[L] (ϖK * (c' : 𝒪[K])) := by`.
-
-Rewrite using `[map_mul, show algebraMap 𝒪[K] 𝒪[L] (c' : 𝒪[K]) = cL from rfl]`. Take the linear combination `(algebraMap 𝒪[K] 𝒪[L] ϖK * cL) * hui`. Conclude with `adjoin_eq_top_of_irreducible htot ((irreducible_mul_isUnit (w⁻¹).isUnit).mpr hϖL)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_uniformizer_of_residueDegree_eq_one (hf : residueDegree K L = 1)
     (he : Nat.Coprime (ramificationIndex K L) (ringChar 𝓀[K])) :
@@ -100,9 +96,9 @@ theorem exists_pow_eq_uniformizer_of_residueDegree_eq_one (hf : residueDegree K 
 variable {K L}
 
 /- English proof (translation)
-Establish `htow : ramificationIndex T L = ramificationIndex K L`. Rewrite using `[ramificationIndex_tower K T L, IsUnramified.ramificationIndex_eq_one (K := K) (L := T), one_mul]`. Establish `he' : Nat.Coprime (ramificationIndex T L) (ringChar 𝓀[T])`. Rewrite using `[htow, ← Algebra.ringChar_eq 𝓀[K] 𝓀[T]]`. Conclude with `he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨htow, ?_⟩` and prove the remaining obligations. Rewrite using `[← htow]`. Conclude with `exists_pow_eq_uniformizer_of_residueDegree_eq_one T L hf he'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_uniformizer_of_isUnramified (T : IntermediateField K L) [IsUnramified K T]
     (hf : residueDegree T L = 1) (he : Nat.Coprime (ramificationIndex K L) (ringChar 𝓀[K])) :

@@ -17,9 +17,9 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.PeriodTate
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Establish `: Module.Finite ℤ D.La` using `Module.Finite.trans (𝓞 E) D.La`. Establish `: Module.Flat ℤ D.La` using `Module.Flat.trans ℤ (𝓞 E) D.La`. Establish `: Module.Free ℤ D.La` using `Module.free_of_finite_type_torsion_free'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b` to `Module.Free.chooseBasis ℤ D.La`. Take `⟨i⟩` from `b.index_nonempty`. Take `⟨a, ha⟩` from `D.unimod.2 (b.coord i)`. Conclude with `⟨a, b i, by rw [ha]; simp⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pairing_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
     [Nontrivial D.La] : ∃ a b, D.EF a b = 1 := by
@@ -42,7 +42,7 @@ Both sides reduce to the same expression.
 theorem rt_val (n : ℕ) (x : ℤ) : (rt n x : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (x : ℂ) / n) := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_zpow_eq_zpow_val, rt_val, rt_val, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rt_mul (n : ℕ) (x y : ℤ) : rt n (x * y) = rt n x ^ y := by
   apply Units.ext
@@ -52,9 +52,9 @@ theorem rt_mul (n : ℕ) (x y : ℤ) : rt n (x * y) = rt n x ^ y := by
   ring
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Apply `Units.ext` to reduce the goal to its premises. Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Rewrite using `[rt_val, rt_val, Complex.exp_eq_exp_iff_exists_int]`. Use `⟨-c, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_eq_iff_eq_add.1 hc]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rt_congr {n : ℕ} (hn : 0 < n) {x y : ℤ} (h : (n : ℤ) ∣ x - y) : rt n x = rt n y := by
   obtain ⟨c, hc⟩ := h
@@ -68,9 +68,9 @@ theorem rt_congr {n : ℕ} (hn : 0 < n) {x y : ℤ} (h : (n : ℤ) ∣ x - y) : 
   ring
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Rewrite using `[Units.val_pow_eq_pow_val, rt_val, rt_val, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← div_div, mul_div_cancel₀ _ hm']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rt_pow {n m : ℕ} (hm : 0 < m) (x : ℤ) : rt (n * m) x ^ m = rt n x := by
   apply Units.ext
@@ -81,7 +81,7 @@ theorem rt_pow {n m : ℕ} (hm : 0 < m) (x : ℤ) : rt (n * m) x ^ m = rt n x :=
   rw [← div_div, mul_div_cancel₀ _ hm']
 
 /- English proof (translation)
-Rewrite using `[← IsPrimitiveRoot.coe_units_iff, rt_val]`. Use `Complex.isPrimitiveRoot_exp_of_isCoprime (-x) n hn.ne' h.neg_left` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rt_prim {n : ℕ} (hn : 0 < n) {x : ℤ} (h : IsCoprime x n) : IsPrimitiveRoot (rt n x) n := by
   rw [← IsPrimitiveRoot.coe_units_iff, rt_val]
@@ -91,11 +91,11 @@ theorem rt_prim {n : ℕ} (hn : 0 < n) {x : ℤ} (h : IsCoprime x n) : IsPrimiti
   ring
 
 /- English proof (translation)
-Introduce `x y h`. Establish `e : (toUnit (Over.mk (spMap β))).left = spMap β`. Simplify using `using Over.w (toUnit (Over.mk (spMap β)))`. Establish `hf : Flat (spMap β)`. Rewrite using `[Flat.SpecMap_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `letI := β.toAlgebra`. Conclude with `(inferInstance : Module.Flat ℂ k)`. Establish `hs : Surjective (spMap β)` using `⟨fun p => ⟨default, Subsingleton.elim (α := PrimeSpectrum ℂ) _ _⟩⟩`. Establish `: Epi (spMap β)` using `Flat.epi_of_flat_of_surjective _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (fun z => z.left) h`. Simplify using `only [Over.comp_left, e] at h'`. Conclude with `(cancel_epi (spMap β)).1 h'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pre_injective {k : Type} [Field k] (β : ℂ →+* k) (A : Over (Sp ℂ)) :
     Function.Injective fun x : 𝟙_ (Over (Sp ℂ)) ⟶ A => toUnit (Over.mk (spMap β)) ≫ x := by
@@ -114,11 +114,11 @@ theorem pre_injective {k : Type} [Field k] (β : ℂ →+* k) (A : Over (Sp ℂ)
   exact (cancel_epi (spMap β)).1 h'
 
 /- English proof (translation)
-Establish `hk : (n : k) ≠ 0`. Rewrite using `[← map_natCast β]`. Conclude with `(map_ne_zero β).2 (by exact_mod_cast hn.ne')`. Establish `c₁` using `(hM _ Q n hn).2.2.2.2 k (spMap β) hk`. Establish `c₀ : Nat.card {x : 𝟙_ (Over (Sp ℂ)) ⟶ Q.A // x ^ n = 1} = n ^ (2 * Q.g)` using `(hM _ Q n hn).2.2.2.2 ℂ (𝟙 _) (by exact_mod_cast hn.ne')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite {x : Over.mk (spMap β) ⟶ Q.A // x ^ n = 1}` using `Nat.finite_of_card_ne_zero (by rw [c₁]; positivity)`. Set `F : {x : 𝟙_ (Over (Sp ℂ)) ⟶ Q.A // x ^ n = 1} → {x : Over.mk (spMap β) ⟶ Q.A // x ^ n = 1}` to `fun y => ⟨toUnit _ ≫ y.1, by`. Use `map_pow (preHom (G := Q.A) (toUnit (Over.mk (spMap β)))) y.1 n` as an intermediate fact. Rewrite `this` using `[y.2, map_one]`. Conclude with `this.symm⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hF : Function.Injective F` using `fun y y' h => Subtype.ext (pre_injective β Q.A (congrArg Subtype.val h))`. Take `⟨y, hy⟩` from `(hF.bijective_of_nat_card_le (by rw [c₀, c₁])).2 ⟨x, hx⟩`. Conclude with `⟨y.1, y.2, congrArg Subtype.val hy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pre_onto (hM : Out.MulNSt) {k : Type} [Field k] [IsAlgClosed k] (β : ℂ →+* k) (Q : Out.PolAV (Sp ℂ))
     {n : ℕ} (hn : 0 < n) (x : Over.mk (spMap β) ⟶ Q.A) (hx : x ^ n = 1) :
@@ -141,7 +141,7 @@ theorem pre_onto (hM : Out.MulNSt) {k : Type} [Field k] [IsAlgClosed k] (β : �
   exact ⟨y.1, y.2, congrArg Subtype.val hy⟩
 
 /- English proof (translation)
-Establish `e : (toUnit (Over.mk (spMap β))).left = spMap β`. Simplify using `using Over.w (toUnit (Over.mk (spMap β)))`. Rewrite using `[e]`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(congrArg (fun q => q.hom (c : ℂ)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β))).symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem unitOn_pull {k : Type} [Field k] (β : ℂ →+* k) (c : ℂˣ) :
     Units.map (toUnit (Over.mk (spMap β))).left.appTop.hom.toMonoidHom (unitOn c) =
@@ -159,35 +159,35 @@ namespace GlobalTheory
 open PeriodTate in
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H D D' g ty P Q act e f ν hpq hP hadd hsurj hker hact hW htow hmod hν k _ _ β`. Establish `: Nontrivial D.La` using `Module.nontrivial_of_finrank_pos (R := 𝓞 E) (by rw [D.rank]; omega)`. Take `⟨a₀, b₀, h₀⟩` from `exists_pairing_one D`. Establish `: Nontrivial D'.La`. Use `⟨f 2 a₀, 0, fun h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `((hmod 2 two_pos).1 a₀).1 ⟨0, by rw [h, smul_zero]⟩`. Rewrite `h₀` using `[hc, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Use linear arithmetic over natural numbers and integers. Take `⟨a₁, b₁, h₁⟩` from `exists_pairing_one D'`. Establish `hcong : ∀ (n : ℕ) (a b c d : D'.La), (n : ℤ) ∣ D'.EF (a + n • c) (b + n • d) - D'.EF a b`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `n a b c d`. Use `⟨D'.EF a d + D'.EF c b + n * D'.EF c d, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcop : ∀ n : ℕ, 0 < n → IsCoprime (ν n) n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `n hn`. Take `⟨a, c, ha⟩` from `(hmod n hn).2 a₁`. Take `⟨b, d, hb⟩` from `(hmod n hn).2 b₁`. Take `⟨u, hu⟩` from `hcong n (f n a) (f n b) c d`. Take `⟨v, hv⟩` from `hν n hn a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hu` using `[← ha, ← hb, h₁]`. Conclude with `⟨D.EF a b, u + v, by linear_combination -hu - hv⟩`. Establish `hνt : ∀ n m : ℕ, 0 < n → 0 < m → (n : ℤ) ∣ ν (n * m) - ν n`. Introduce `n m hn hm`. Take `⟨c, hc⟩` from `htow n m hn hm a₀`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `htow n m hn hm b₀`. Take `⟨u, hu⟩` from `hcong n (f n a₀) (f n b₀) c d`. Take `⟨v, hv⟩` from `hν n hn a₀ b₀`. Take `⟨w, hw⟩` from `hν (n * m) (Nat.mul_pos hn hm) a₀ b₀`. Rewrite `hu` using `[← hc, ← hd]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv`, `hw` using `[h₀]`. Move the coercions through the operations in `at hw`. Conclude with `⟨u + v - m * w, by linear_combination hu + hv - hw⟩`. Set `e' : Multiplicative (Fin g → ℂ) →* (𝟙_ (Over (Sp ℂ)) ⟶ Q.A)` to `MonoidHom.mk' (fun z => e z.toAdd) fun z w => hadd _ _`. Establish `hpow : ∀ (n : ℕ) z, e z ^ n = e (n • z)` using `fun n z => (map_pow e' (Multiplicative.ofAdd z) n).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ρ` to `preHom (G := Q.A) (toUnit (Over.mk (spMap β)))`. Establish `hρ : Function.Injective ρ` using `pre_injective β Q.A`. Establish `hsm : ∀ n : ℕ, 0 < n → ∀ z : Fin g → ℂ, n • (n : ℂ)⁻¹ • z = z` using `fun n hn z => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ (by exact_mod_cast hn.ne'), one_smul]`. Establish `hsm' : ∀ n : ℕ, 0 < n → ∀ z : Fin g → ℂ, (n : ℂ)⁻¹ • n • z = z` using `fun n hn z => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_comm, hsm n hn]`. Establish `hshift : ∀ n : ℕ, 0 < n → ∀ a c : D'.La, e ((n : ℂ)⁻¹ • P (a + n • c)) = e ((n : ℂ)⁻¹ • P a)`. Introduce `n hn a c`. Rewrite using `[map_add, smul_add, hadd, map_nsmul, hsm' n hn, (hker _).2 ⟨c, rfl⟩, _root_.mul_one]`. Use `⟨{ ζ := fun n => Units.map β.toMonoidHom (rt n (ν n)) ζ_prim := fun n hn => (rt_prim hn (hcop n hn)).map_of_injective (Units.map_injective β.injective) ζ_pow := fun n m hn hm => by rw [← map_pow, rt_pow hm, rt_congr hn (hνt n m hn hm)] ev := fun n a => ρ (e ((n : ℂ)⁻¹ • P (f n a) …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show toUnit (Over.mk (spMap β)) ≫ _ = (toUnit (Over.mk (spMap β)) ≫ _) ≫ _`. Rewrite using `[Category.assoc, ← hact, map_smul]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, hP.1, smul_eq_mul, smul_eq_mul, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_eq_one_iff ρ hρ, hker, ← (hmod n hn).1 a]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, hP.2.1 (by rw [map_nsmul, hc, hsm n hn])⟩`. Introduce and unpack `⟨c, hc⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨c, by rw [hc, map_nsmul, hsm' n hn]⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, hy, rfl⟩` from `pre_onto hL.mulN β Q hn x hx`. Take `⟨z, rfl⟩` from `hsurj y`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[hpow, hker]`. Take `⟨a', ha'⟩` from `hy`. Take `⟨a, c, rfl⟩` from `(hmod n hn).2 a'`. Use `⟨a, congrArg ρ ?_⟩` and prove the remaining obligations. Rewrite using `[← hshift n hn _ c, ha', hsm' n hn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[← map_pow, hpow, hsm n hn, (hker _).2 ⟨_, rfl⟩, map_one]`. Take `⟨c, hc⟩` from `htow n m hn hm a`. Rewrite using `[← map_pow, hpow, Nat.cast_mul, mul_inv_rev, mul_smul, hsm m hm, hc, hshift n hn]`. Establish `h` using `CommPairing.weilIs_pull hL.globalFns Q.isAb Q.isLB (toUnit (Over.mk (spMap β))) (hW n (f n a) (f n b) (rt n _) hn (rt_val _ _))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[unitOn_pull, rt_congr hn (hν n hn a b), rt_mul, map_zpow]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_tateIso_of_periods : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D D' : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (P : D'.La →+ (Fin g → ℂ)) (Q : Out.PolAV (Sp ℂ)) (act : OAct (𝓞 E) Q.A) (e : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ Q.A)) (f : ℕ → D.La →ₗ[𝓞 E] D'.La) (ν : ℕ → ℤ), 1 ≤ D.p + D.q → IsPeriod D' ty P → (∀ z w, e (z + w) = e z * e w) → Function.Surjective e → (∀ z, e z = 1 ↔ z ∈ P.range) → (∀ (a : 𝓞 E) z, e (fun k => ty k (a : E) * z k) = e z ≫ act.act a) → (∀ (k : ℕ) (a b : D'.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF a b : ℂ) / k) → Out.WeilIs Q.A Q.L k (e ((k : ℂ)⁻¹ • P a)) (e ((k : ℂ)⁻¹ • P b)) (unitOn c)) → (∀ n m : ℕ, 0 < n → 0 < m → ∀ a, ∃ e, f (n * m) a = f n a + n • e) → (∀ n : ℕ, 0 < n → (∀ a, (∃ e, f n a = n • e) ↔ ∃ e, a = n • e) ∧ ∀ a', ∃ a e, a' = f n a + n • e) → (∀ n : ℕ, 0 < n → ∀ a a', (n : ℤ) ∣ D'.EF (f n a) (f n a') - ν n * D.EF a a') → ∀ (k : Type) [Field k] [IsAlgClosed k] (β : ℂ →+* k), ∃ I : TateIso D k (Over.mk (spMap β) ⟶ Q.A) (fun a x => x ≫ act.act a) (fun n x x' c => Out.WeilIs Q.A Q.L n x x' (unitOn c)), (∀ n : ℕ, (I.ζ n : k) = β (Complex.exp (-(2 * Real.pi * Complex.I) * (ν n : ℂ) / n))) ∧ ∀ (n : ℕ) a, I.ev n a = toUnit _ ≫ e ((n : ℂ)⁻¹ • P (f n a)) := by
   intro hL E _ _ _ H D D' g ty P Q act e f ν hpq hP hadd hsurj hker hact hW htow hmod hν k _ _ β

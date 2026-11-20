@@ -18,7 +18,7 @@ section Core
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : HermSpace K V} {r : ℕ}
 
 /- English proof (translation)
-Unfold `FlagD.X FlagD.Xa`. Rewrite using `[Submodule.map_span, Set.image_image]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[hG]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem X_map {F G : FlagD H r} (g : V ≃ₗ[K] V) (hG : ∀ c, G.e c = g (F.e c)) :
     G.X = F.X.map (g : V →ₗ[K] V) := by
@@ -28,9 +28,9 @@ theorem X_map {F G : FlagD H r} (g : V ≃ₗ[K] V) (hG : ∀ c, G.e c = g (F.e 
   ext x; simp [hG]
 
 /- English proof (translation)
-Unfold `FlagD.X FlagD.Xa at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨b, -, rfl⟩ := hy`. Conclude with `ha _`. Consider the case `zero => simp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ h1 h2 => rw [map_add, h1, h2]`. Consider the case `smul c y _ h1 => rw [map_smul, h1]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fix_X {F : FlagD H r} (a : V →ₗ[K] V) (ha : ∀ c, a (F.e c) = F.e c) {x : V} (hx : x ∈ F.X) :
     a x = x := by
@@ -42,71 +42,67 @@ theorem fix_X {F : FlagD H r} (a : V →ₗ[K] V) (ha : ∀ c, a (F.e c) = F.e c
   | smul c y _ h1 => rw [map_smul, h1]
 
 /- English proof (translation)
-Rewrite using `[← H.herm, h, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem B_sw {x y : V} (h : H.B x y = 0) : H.B y x = 0 := by
   rw [← H.herm, h, star_zero]
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sup_left (Submodule.mem_sup_left hx)`.
+A detailed English derivation is pending.
 -/
 theorem isotropicSpan_first_le_framePairSpace {F G : FlagD H r} {x : V} (hx : x ∈ F.X) : x ∈ V0 F G :=
   Submodule.mem_sup_left (Submodule.mem_sup_left hx)
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sup_left (Submodule.mem_sup_right hx)`.
+A detailed English derivation is pending.
 -/
 theorem isotropicSpan_second_le_framePairSpace {F G : FlagD H r} {x : V} (hx : x ∈ G.X) : x ∈ V0 F G :=
   Submodule.mem_sup_left (Submodule.mem_sup_right hx)
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sup_right (Submodule.subset_span (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem lastVector_first_mem_framePairSpace (F G : FlagD H r) : F.z ∈ V0 F G :=
   Submodule.mem_sup_right (Submodule.subset_span (by simp))
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sup_right (Submodule.subset_span (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem lastVector_second_mem_framePairSpace (F G : FlagD H r) : G.z ∈ V0 F G :=
   Submodule.mem_sup_right (Submodule.subset_span (by simp))
 
 /- English proof (translation)
-Use `set g₂ : V ≃ₗ[K] V := ((n'.trans a).trans γ).trans n with hg₂`. Establish `hg₂a : ∀ x, g₂ x = n (γ (a (n' x)))` using `fun x => rfl`. Establish `hX₁ : G₁.X = F.X.map (γ : V →ₗ[K] V)` using `X_map γ hG₁`. Establish `hX₂ : G₂.X = F.X.map (g₂ : V →ₗ[K] V)` using `X_map g₂ (fun c => by rw [hg₂a]; exact hG₂ c)`. Establish `hafX : ∀ x ∈ F.X, a x = x` using `fun x hx => fix_X (a : V →ₗ[K] V) ha hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnγX : ∀ x ∈ F.X, n (γ x) ∈ G₂.X`. Introduce `x hx`. Rewrite using `[hX₂]`. Use `Submodule.mem_map.2 ⟨n'.symm x, hn'sX x hx, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g₂ (n'.symm x) = n (γ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg₂a, LinearEquiv.apply_symm_apply, hafX x hx]`. Establish `hzP : ∀ b : Fin r, H.B (F.e b.castSucc) F.z = 0` using `fun b => F.zperp b`. Establish `hnV0 : ∀ u ∈ V0 F G₁, n u ∈ V0 F G₂`. Introduce `u hu`. Establish `hle : V0 F G₁ ≤ (V0 F G₂).comap (n : V →ₗ[K] V)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `sup_le (sup_le ?_ ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce `x hx`. Conclude with `isotropicSpan_first_le_framePairSpace (hnX x hx)`. Introduce `x hx`. Rewrite `hx` using `[hX₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hx`. Conclude with `isotropicSpan_second_le_framePairSpace (hnγX y hy)`. Introduce and unpack `x (rfl | rfl)`. Express the relevant statement in the definitionally equal form `n F.z ∈ V0 F G₂`. Establish `: n F.z = F.z + (n F.z - F.z)` using `by abel`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (lastVector_first_mem_framePairSpace F G₂) (isotropicSpan_first_le_framePairSpace (hnP _ hzP))`. Express the relevant statement in the definitionally equal form `n (G₁.z) ∈ V0 F G₂`. Establish `hx0 : n' F.z - F.z ∈ F.X` using `hn'P _ hzP`. Establish `hz2 : G₂.z = n (γ F.z) + n (γ (n' F.z - F.z))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FlagD.z, hG₂, ← map_add, ← map_add]`. Use `congr 2`. Establish `: n' (F.e (Fin.last r)) = F.z + (n' F.z - F.z)` using `by rw [FlagD.z]; abel`. Rewrite using `[this, map_add, hafX _ hx0]`. Establish `: a F.z = F.z` using `ha (Fin.last r)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Establish `h1 : G₁.z = γ F.z` using `hG₁ (Fin.last r)`. Rewrite using `[h1]`. Establish `: n (γ F.z) = G₂.z - n (γ (n' F.z - F.z))` using `by rw [hz2]; abel`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.sub_mem _ (lastVector_second_mem_framePairSpace F G₂) (isotropicSpan_second_le_framePairSpace (hnγX _ hx0))`. Conclude with `hle hu`. Rewrite `hy₁v` using `[hX₁]`. Take `⟨x₁, hx₁, hx₁e⟩` from `Submodule.mem_map.1 hy₁v`. Rewrite `hy₂v` using `[hX₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x₂, hx₂, hx₂e⟩` from `Submodule.mem_map.1 hy₂v`. Establish `hvP : ∀ b : Fin r, H.B (F.e b.castSucc) v = 0` using `fun b => hv _`. Establish `hx'' : n' v - v + n' x₂ ∈ F.X` using `Submodule.add_mem _ (hn'P v hvP) (hn'X x₂ hx₂)`. Establish `hy₂' : n.symm y₂ = γ (a v + (n' v - v + n' x₂))`. Establish `e1 : y₂ = g₂ (v + x₂)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_add]`. Express the relevant statement in the definitionally equal form `y₂ = n (γ (a (n' v))) + g₂ x₂`. Rewrite using `[show g₂ x₂ = (g₂ : V →ₗ[K] V) x₂ from rfl, hx₂e]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, hg₂a, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congr 1`. Establish `e2 : n' (v + x₂) = v + (n' v - v + n' x₂)` using `by rw [map_add]; abel`. Rewrite using `[e2, map_add, hafX _ hx'']`. Establish `hy₁' : y₁ = γ (v + x₁)`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `y₁ = γ v + (γ : V →ₗ[K] V) x₁`. Rewrite using `[hx₁e]`. Normalize the expressions using the abelian group laws. Use `set d := y₁ - n.symm y₂ with hd`. Establish `hdX : d ∈ F.X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : d = (y₁ - p) - n.symm (y₂ - p) - (n.symm p - p)` using `by rw [hd, map_sub]; abel`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ hy₁p (hnsX _ hy₂p)) (hnsP p (fun b => hp _))`. Establish `hdP : ∀ u ∈ V0 F G₁, H.B u d = 0`. Introduce `u hu`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : H.B u y₁ = 0` using `B_sw ((mem_perp_iff H _ _).1 hy₁ u hu)`. Establish `h2 : H.B u (n.symm y₂) = 0`. Use `hn u (n.symm y₂)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[← this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `B_sw ((mem_perp_iff H _ _).1 hy₂ _ (hnV0 u hu))`. Rewrite using `[hd, map_sub, h1, h2, sub_zero]`. Establish `hdG` using `hI d hdX hdP`. Rewrite `hdG` using `[hX₁]`. Take `⟨x₃, hx₃, hx₃e⟩` from `Submodule.mem_map.1 hdG`.
-
-Establish `e3 : γ x₃ = γ (v + x₁ - (a v + (n' v - v + n' x₂)))`. Express the relevant statement in the definitionally equal form `(γ : V →ₗ[K] V) x₃ = _`. Rewrite using `[hx₃e, hd, hy₂', hy₁', map_sub]`. Establish `e4` using `γ.injective e3`. Establish `e5 : a v - v = x₁ - (n' v - v + n' x₂) - x₃` using `by rw [e4]; abel`.
-
-Rewrite using `[e5]`. Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ hx₁ hx'') hx₃`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (F G₁ G₂ : FlagD H r) (γ n n' a : V ≃ₗ[K] V)
     (hG₁ : ∀ c, G₁.e c = γ (F.e c)) (hG₂ : ∀ c, G₂.e c = n (γ (a (n' (F.e c)))))
@@ -219,9 +215,9 @@ section Obj
 variable {D : D7} {X : HidaSetting D}
 
 /- English proof (translation)
-Use `show (frF (lf D (X.Fu u)).fl (tu_ne D u)).X = (lf D (X.Fu u)).fl.X`. Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.X Formalism.HermitianLatticeCounting.S6.FlagD.Xa FlagG.X`. Establish `h : (fun b : Fin D.R.rS => (frF (lf D (X.Fu u)).fl (tu_ne D u)).e b.castSucc) = (lf D (X.Fu u)).fl.e`. Use function extensionality and compare the values at `fun b => fv_cast _ b`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fixedFrameOfWord_isotropicSpan_eq (u : D.what₂.Word) : (F0 X u).X = Xsp (lf D (X.Fu u)) := by
   show (frF (lf D (X.Fu u)).fl (tu_ne D u)).X = (lf D (X.Fu u)).fl.X
@@ -233,9 +229,9 @@ theorem fixedFrameOfWord_isotropicSpan_eq (u : D.what₂.Word) : (F0 X u).X = Xs
   ext x; simp
 
 /- English proof (translation)
-Establish `hi : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Use `show (mapLF t.lin (lf D (X.Fu u))).fl.fvec a = t.lin ((lf D (X.Fu u)).fl.fvec a)`. Unfold `mapLF`. Simplify using `only [dif_pos hi]`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [FlagG.fvec, Fin.snoc_last, mapFlag]`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc, mapFlag]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Ft_e' {Y : Full X} {u : D.what₂.Word} (t : GT Y u) (a : Fin (D.R.rS + 1)) :
     (Ft t).e a = t.lin ((F0 X u).e a) := by
@@ -248,9 +244,9 @@ theorem Ft_e' {Y : Full X} {u : D.what₂.Word} (t : GT Y u) (a : Fin (D.R.rS + 
   · simp only [FlagG.fvec, Fin.snoc_castSucc, mapFlag]
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.BridgeLemma₂.c3eqv_mem_orth]`. Introduce `v hv`. Rewrite `hv` using `[← fixedFrameOfWord_isotropicSpan_eq]`. Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.X Formalism.HermitianLatticeCounting.S6.FlagD.Xa at hv`. Proceed by induction on `hv using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Proceed by induction.
 
-Consider the case `mem y hy => obtain ⟨b, -, rfl⟩ := hy`. Conclude with `p_symm_zero (VS D) (h b)`. Consider the case `zero => simp`. Consider the case `add y z _ _ h1 h2 => simp [map_add, h1, h2]`. Consider the case `smul c y _ h1 => simp [h1]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem orth_of (u : D.what₂.Word) {x : (VS D).V} (h : ∀ b : Fin D.R.rS, (HV D).B ((F0 X u).e b.castSucc) x = 0) :
     x ∈ orth (VS D) (Xsp (lf D (X.Fu u))) := by
@@ -265,9 +261,7 @@ theorem orth_of (u : D.what₂.Word) {x : (VS D).V} (h : ∀ b : Fin D.R.rS, (HV
   | smul c y _ h1 => simp [h1]
 
 /- English proof (translation)
-Introduce `b`. Rewrite `h` using `[Formalism.MainNotions.BridgeLemma₂.c3eqv_mem_orth]`. Establish `hb : (F0 X u).e b.castSucc ∈ Xsp (lf D (X.Fu u))`. Rewrite using `[← fixedFrameOfWord_isotropicSpan_eq]`. Conclude with `Submodule.subset_span ⟨b, b.2, rfl⟩`.
-
-Conclude with `p_symm_zero (VS D) (h _ hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_orth (u : D.what₂.Word) {x : (VS D).V} (h : x ∈ orth (VS D) (Xsp (lf D (X.Fu u)))) :
     ∀ b : Fin D.R.rS, (HV D).B ((F0 X u).e b.castSucc) x = 0 := by
@@ -285,41 +279,37 @@ open Formalism.HermitianLatticeCounting.S6 GlobalTheory.HermLat
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D large₂ X Y u hStd W HW hEmb t₁ t₂ hN hlam hEqv h hH₁ hH₂`. Take `⟨N, hd, hS, hS'⟩` from `hN`. Take `⟨hEq', n, a, hnL, ha_isom, ha_gmap, ha_fix, n', hn'L, hlin⟩` from `GlobalTheory.T.equivFramesSameSecondLatticeFiber_proof D large₂ X Y u hStd t₁ t₂ hlam hEqv`. Establish `hXF` using `fixedFrameOfWord_isotropicSpan_eq (X := X) u`. Establish `hI : ∀ x ∈ (F0 X u).X, (∀ v ∈ V0 (F0 X u) (Ft t₁), (HV D).B v x = 0) → x ∈ (Ft t₁).X`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx hperp`. Establish `hfull` using `(GlobalTheory.DegCnt.NFGeom.full N).2.2.2.2.2.1`. Rewrite `hfull` using `[GlobalTheory.DegAsm.AdaptInv.x_eq hS]`. Rewrite `hfull` using `[GlobalTheory.DegAsm.AdaptInv.sitesCommonSpace_v0_eq_Vp hS hS']`. Use `((hfull x hx).1 hperp).2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[GlobalTheory.DegAsm.AdaptInv.x_eq hS']`. Then use the resulting hypothesis. Establish `hnX : ∀ x ∈ (F0 X u).X, n x ∈ (F0 X u).X`. Rewrite using `[hXF]`. Conclude with `Formalism.MainNotions.BridgeLemma₂.c3eqv_N_X hnL`. Establish `hnsX : ∀ x ∈ (F0 X u).X, n.symm x ∈ (F0 X u).X`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hXF]`. Conclude with `Formalism.MainNotions.BridgeLemma₂.c3eqv_N_X (Formalism.MainNotions.BridgeLemma₂.c3eqv_NLam_symm hnL)`. Establish `hn'X : ∀ x ∈ (F0 X u).X, n' x ∈ (F0 X u).X`. Rewrite using `[hXF]`. Conclude with `Formalism.MainNotions.BridgeLemma₂.c3eqv_N_X hn'L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn'sX : ∀ x ∈ (F0 X u).X, n'.symm x ∈ (F0 X u).X`. Rewrite using `[hXF]`. Conclude with `Formalism.MainNotions.BridgeLemma₂.c3eqv_N_X (Formalism.MainNotions.BridgeLemma₂.c3eqv_NLam_symm hn'L)`. Establish `hnP : ∀ x, (∀ b : Fin D.R.rS, (HV D).B ((F0 X u).e b.castSucc) x = 0) → n x - x ∈ (F0 X u).X`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hXF]`. Conclude with `hnL.2.2 x (orth_of u hx)`. Establish `hnsP : ∀ x, (∀ b : Fin D.R.rS, (HV D).B ((F0 X u).e b.castSucc) x = 0) → n.symm x - x ∈ (F0 X u).X`. Introduce `x hx`. Rewrite using `[hXF]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Formalism.MainNotions.BridgeLemma₂.c3eqv_NLam_symm hnL).2.2 x (orth_of u hx)`. Establish `hn'P : ∀ x, (∀ b : Fin D.R.rS, (HV D).B ((F0 X u).e b.castSucc) x = 0) → n' x - x ∈ (F0 X u).X`. Introduce `x hx`. Rewrite using `[hXF]`. Conclude with `hn'L.2.2 x (orth_of u hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ x y, (HV D).B (n x) (n y) = (HV D).B x y` using `fun x y => hnL.1.1 y x`. Establish `hG₂ : ∀ c, (Ft t₂).e c = n (t₁.lin (a (n' ((F0 X u).e c))))`. Introduce `c`. Rewrite using `[Ft_e', hlin]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hemb : ∀ w : W, ∀ c, (HV D).B ((F0 X u).e c) (W.subtype w) = 0` using `fun w => (hEmb.2 _).2 (Submodule.mem_sup_left ⟨w, rfl⟩)`. Establish `hkey : ∀ w : W, a (w : (VS D).V) - w ∈ (F0 X u).X`. Introduce `w`. Take `⟨y₁, hy₁, hy₁p, hy₁v⟩` from `hH₁ w`. Take `⟨y₂, hy₂, hy₂p, hy₂v⟩` from `hH₂ w`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy₂v' : y₂ - n (t₁.lin (a (n' (W.subtype w)))) ∈ (Ft t₂).X`. Rewrite `hy₂v` using `[hlin]`. Conclude with `hy₂v`. Conclude with `core (F0 X u) (Ft t₁) (Ft t₂) t₁.lin n n' a (Ft_e' t₁) hG₂ hn hnX hnP hnsX hnsP hn'X hn'P hn'sX ha_fix hI (hemb w) (hemb (h w)) hy₁ hy₁p hy₁v hy₂ hy₂p hy₂v'`. Establish `hafX : ∀ x ∈ (F0 X u).X, a x = x` using `fun x hx => fix_X (a : (VS D).V →ₗ[D.host.E] (VS D).V) ha_fix hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `haL : a ∈ NLam t₁.lam' (lf D (X.Fu u))`. Use `⟨⟨ha_isom, ha_gmap⟩, fun j x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxX : x ∈ (F0 X u).X`. Rewrite using `[hXF]`. Use `(Submodule.span_mono ?_) hx` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨i, -, rfl⟩`. Conclude with `⟨i, rfl⟩`. Rewrite using `[hafX x hxX, sub_self]`. Conclude with `Submodule.zero_mem _`. Establish `hxP` using `of_orth u hx set F := F0 X u`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Establish `hzz : (HV D).B F.z F.z ≠ 0` using `by rw [FlagD.z, F.zz]; exact neg_ne_zero.2 F.hT`. Use `set c := (HV D).B x F.z / (HV D).B F.z F.z`. Use `set x' := x - c • F.z`. Establish `hx'c : ∀ k, (HV D).B (F.e k) x' = 0`. Introduce `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `B_sw ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun b => ?_) k` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(HV D).B x' F.z = 0`. Simplify using `only [x', c, map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [x', map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul]`. Establish `hz0 : (HV D).B F.z (F.e b.castSucc) = 0` using `B_sw (F.zperp b)`. Rewrite using `[B_sw (hxP b), hz0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Take `⟨y, hy, x0, hx0, hyx⟩` from `Submodule.mem_sup.1 ((hEmb.2 x').1 hx'c)`. Take `⟨w, rfl⟩` from `hy`. Establish `hz : a F.z = F.z` using `ha_fix (Fin.last _)`. Establish `ex : x = W.subtype w + x0 + c • F.z` using `by rw [hyx]; simp [x']`. Establish `: a x - x = a (W.subtype w) - W.subtype w`.
-
-Rewrite using `[ex, map_add, map_add, map_smul, hz, hafX x0 hx0]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, ← hXF]`. Conclude with `hkey w`. Use `GlobalTheory.TypeAsm.eqC_holds D X Y u t₁ t₂ hlam hEq' ⟨n, hnL, n'.trans a, Formalism.MainNotions.BridgeLemma₂.c3eqv_NLam_trans hn'L haL, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hlin]`. Use extensionality with `x`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem injC : InjC := by
   intro D large₂ X Y u hStd W HW hEmb t₁ t₂ hN hlam hEqv h hH₁ hH₂

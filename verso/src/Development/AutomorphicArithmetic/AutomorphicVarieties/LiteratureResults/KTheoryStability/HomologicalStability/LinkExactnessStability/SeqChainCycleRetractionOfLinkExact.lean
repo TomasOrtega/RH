@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.SeqCx
 
 /- English proof (translation)
-Distinguish the cases in `h : τ <+: l`. Take `⟨u, rfl⟩` from `h`. Rewrite using `[if_pos (List.prefix_append τ u)]`. Establish `hinj : Function.Injective (fun w : List V => τ ++ w)` using `fun a b hab => List.append_cancel_left hab`. Rewrite using `[Finsupp.mapDomain_apply hinj y u]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg h, Finsupp.mapDomain_notin_range]`. Introduce and unpack `⟨u, rfl⟩`. Conclude with `h (List.prefix_append τ u)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mapDomain_prepend_apply' {V : Type} (τ : List V) (y : List V →₀ ℤ) (l : List V) :
     Finsupp.mapDomain (fun w => τ ++ w) y l = if τ <+: l then y (l.drop τ.length) else 0 := by
@@ -27,11 +27,11 @@ theorem mapDomain_prepend_apply' {V : Type} (τ : List V) (y : List V →₀ ℤ
     exact h (List.prefix_append τ u)
 
 /- English proof (translation)
-Rewrite `hx` using `[Finsupp.supported_eq_span_single]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨l, hl, rfl⟩` from `hz`. Simplify using `only [bd, Finsupp.linearCombination_single, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `Finsupp.single_mem_supported ℤ _ (h l hl i (Finset.mem_range.1 hi))`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add]`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul r a _ ha`. Rewrite using `[LinearMap.map_smul]`. Conclude with `Submodule.smul_mem _ r ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bd_mem_supported_of_eraseIdx {V : Type} {A B : Set (List V)}
     (h : ∀ l ∈ A, ∀ i < l.length, l.eraseIdx i ∈ B) {x : List V →₀ ℤ}
@@ -52,7 +52,7 @@ theorem bd_mem_supported_of_eraseIdx {V : Type} {A B : Set (List V)}
     exact Submodule.smul_mem _ r ha
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[Finsupp.mem_supported]`. Introduce `l hl`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.mp (Finsupp.mapDomain_support hl)`. Conclude with `h a (hx ha)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mapDomain_mem_supported_of_maps {V : Type} {A B : Set (List V)} (f : List V → List V)
     (h : ∀ l ∈ A, f l ∈ B) {x : List V →₀ ℤ}
@@ -63,11 +63,11 @@ theorem mapDomain_mem_supported_of_maps {V : Type} {A B : Set (List V)} (f : Lis
   exact h a (hx ha)
 
 /- English proof (translation)
-Use `Submodule.finsuppSum_mem ℤ _ y _ fun w hw => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hwA : w ∈ A` using `(Finsupp.mem_supported ℤ y).1 hy (Finsupp.mem_support_iff.2 hw)`. Establish `hb : bd V (Finsupp.single τ 1) ∈ Finsupp.supported ℤ ℤ {σ | ∃ i < τ.length, σ = τ.eraseIdx i}`. Use `bd_mem_supported_of_eraseIdx (A := {τ}) ?_ (Finsupp.single_mem_supported ℤ 1 (Set.mem_singleton τ))` and prove the remaining obligations. Introduce `l hl i hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `rfl` from `Set.mem_singleton_iff.1 hl`. Conclude with `⟨i, hi, rfl⟩`. Use `mapDomain_mem_supported_of_maps _ ?_ hb` and prove the remaining obligations. Introduce `σ hσ`. Take `⟨i, hi, rfl⟩` from `hσ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h w hwA i hi`.
+A detailed English derivation is pending.
 -/
 theorem prepend_part_mem_supported {V : Type} (τ : List V) {A B : Set (List V)}
     (h : ∀ w ∈ A, ∀ i < τ.length, τ.eraseIdx i ++ w ∈ B) {y : List V →₀ ℤ}
@@ -88,7 +88,7 @@ theorem prepend_part_mem_supported {V : Type} (τ : List V) {A B : Set (List V)}
   exact h w hwA i hi
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => by simp | a :: t, 0, 0 => by simp | a :: t, 0, k + 1 => by simpa using List.drop_sublist_drop_left t (Nat.le_succ k) | a :: t, i + 1, 0 => by simpa using List.eraseIdx_sublist (a :: t) (i + 1) | a :: t, i + 1, k + 1 => by simpa using drop_eraseIdx_sublist_drop t i k`.
+A detailed English derivation is pending.
 -/
 theorem drop_eraseIdx_sublist_drop {V : Type} :
     ∀ (l : List V) (i k : ℕ), ((l.eraseIdx i).drop k).Sublist (l.drop k)
@@ -99,75 +99,67 @@ theorem drop_eraseIdx_sublist_drop {V : Type} :
   | a :: t, i + 1, k + 1 => by simpa using drop_eraseIdx_sublist_drop t i k
 
 /- English proof (translation)
-Introduce `V F S hF p k hex c hc hbd`. Establish `hcs : ∀ l, c l ≠ 0 → (l ∈ F ∧ ∀ y ∈ l.drop (k+1), y ∈ S) ∧ l.length = p` using `fun l hl => (Finsupp.mem_supported ℤ c).1 hc (Finsupp.mem_support_iff.2 hl)`. Use `set P : Finset (List V) := (c.support.filter (fun l => ¬ ∀ y ∈ l.drop k, y ∈ S)).image (List.take (k+1)) with hPdef`. Establish `hP : ∀ τ ∈ P, τ.length = k+1 ∧ τ ∈ F ∧ k+1 ≤ p ∧ ∃ hk : k < τ.length, τ[k] ∉ S ∧ τ.getLast? = some τ[k]`. Introduce `τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [P, Finset.mem_image, Finset.mem_filter, Finsupp.mem_support_iff] at hτ`. Take `⟨l, ⟨hl0, hlbad⟩, rfl⟩` from `hτ`. Take `⟨⟨hlF, hlS⟩, hlp⟩` from `hcs l hl0`. Establish `hkl : k < l.length`. Assume the negation of the conclusion as `hle`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hlbad` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[List.drop_eq_nil_of_le (by omega)]`. Simplify using `at hy`. Establish `hlk : l[k] ∉ S`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hs`. Apply `hlbad` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[List.drop_eq_getElem_cons hkl]`. Break down `List.mem_cons.1 hy with rfl | hy` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hs`. Conclude with `hlS y hy`. Establish `hlen : (l.take (k+1)).length = k+1`. Simplify using `only [List.length_take]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hlen, hF l hlF _ (List.take_sublist _ _), by omega, by omega, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hlk`. Rewrite using `[List.getLast?_eq_getElem?]`. Simplify using `[hlen]`. Establish `hpre : ∀ τ ∈ P, ∀ m, τ <+: m → ¬ ∀ y ∈ m.drop k, y ∈ S`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `τ hτ m hm hmS`. Take `⟨hlen, -, -, hk, hkS, -⟩` from `hP τ hτ`. Take `⟨u, rfl⟩` from `hm`. Apply `hkS` to reduce the goal to its premises. Apply `hmS` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.drop_append_of_le_length (by omega), List.drop_eq_getElem_cons hk]`. Conclude with `List.mem_append_left _ (List.mem_cons_self ..)`. Establish `huniq : ∀ τ ∈ P, ∀ τ' ∈ P, ∀ l, τ <+: l → τ' <+: l → τ' = τ`. Introduce `τ hτ τ' hτ' l h1 h2`. Establish `e1` using `List.prefix_iff_eq_take.1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `List.prefix_iff_eq_take.1 h2`. Rewrite `e1` using `[(hP τ hτ).1]`. Rewrite `e2` using `[(hP τ' hτ').1]`. Rewrite using `[e1, e2]`. Establish `hinj : ∀ τ : List V, Function.Injective (fun w : List V => τ ++ w)` using `fun τ a b hab => List.append_cancel_left hab`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ys : List V → (List V →₀ ℤ)` to `fun τ => Finsupp.comapDomain (fun w => τ ++ w) c (fun a _ b _ hab => hinj τ hab)`. Establish `hys : ∀ τ w, ys τ w = c (τ ++ w)` using `fun τ w => rfl`. Establish `happly : ∀ l, (∑ τ ∈ P, Finsupp.mapDomain (fun w => τ ++ w) (ys τ)) l = ∑ τ ∈ P, if τ <+: l then c l else 0`. Introduce `l`. Rewrite using `[Finsupp.finset_sum_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[mapDomain_prepend_apply']`. Use `split_ifs with h`. Rewrite using `[hys]`. Use `congr 1`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `List.prefix_iff_eq_append.1 h`. Both sides reduce to the same expression. Take `⟨Cg, hCg⟩ : ∃ C, C = c - ∑ τ ∈ P, Finsupp.mapDomain (fun w => τ ++ w) (ys τ)` from `⟨_, rfl⟩`. Establish `hCgmem : Cg ∈ chains {l ∈ F | ∀ y ∈ l.drop k, y ∈ S} p`. Rewrite using `[chains, Finsupp.mem_supported]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `l hl`. Rewrite `hl` using `[Finset.mem_coe, Finsupp.mem_support_iff, hCg, Finsupp.sub_apply, happly]`. Distinguish the cases in `hex' : ∃ τ ∈ P, τ <+: l`. Take `⟨τ0, hτ0, hpr⟩` from `hex'`. Rewrite `hl` using `[Finset.sum_eq_single τ0 (fun τ hτ hne => by rw [if_neg]; exact fun h => hne (huniq τ0 hτ0 τ hτ l hpr h)) (fun h => absurd hτ0 h), if_pos hpr, sub_self]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `absurd rfl hl`. Use `push_neg at hex'`. Rewrite `hl` using `[Finset.sum_eq_zero (fun τ hτ => if_neg (hex' τ hτ)), sub_zero]`. Take `⟨⟨hlF, _⟩, hlp⟩` from `hcs l hl`. Simplify using `only [Set.mem_setOf_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨hlF, ?_⟩, hlp⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hbad`. Apply `hex' (l.take (k+1)) _ (List.take_prefix _ _)` to reduce the goal to its premises. Conclude with `Finset.mem_image.2 ⟨l, Finset.mem_filter.2 ⟨Finsupp.mem_support_iff.2 hl, hbad⟩, rfl⟩`. Establish `hysmem : ∀ τ ∈ P, ys τ ∈ chains (linkIn F S τ) (p - τ.length)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `τ hτ`. Take `⟨hlen, -, -, -⟩` from `hP τ hτ`. Rewrite using `[chains, Finsupp.mem_supported]`. Introduce `w hw`. Rewrite `hw` using `[Finset.mem_coe, Finsupp.mem_support_iff, hys]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨⟨hF1, hS1⟩, hp1⟩` from `hcs _ hw`. Rewrite `hS1` using `[List.drop_left' hlen]`. Simplify using `only [Set.mem_setOf_eq, linkIn]`. Use `⟨⟨hS1, hF1⟩, ?_⟩` and prove the remaining obligations. Rewrite `hp1` using `[List.length_append]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hGood : ∀ τ ∈ P, ∀ w, (∀ x ∈ w, x ∈ S) → ∀ i < τ.length, ∀ y ∈ (τ.eraseIdx i ++ w).drop k, y ∈ S`. Introduce `τ hτ w hw i hi y hy`. Establish `hel : (τ.eraseIdx i).length = k`. Rewrite using `[List.length_eraseIdx_of_lt hi, (hP τ hτ).1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hy` using `[List.drop_left' hel]`. Conclude with `hw y hy`. Establish `hbdys : ∀ τ ∈ P, bd V (ys τ) = 0`. Establish `hdec : bd V c = bd V Cg + ∑ τ ∈ P, ((ys τ).sum fun w a => a • Finsupp.mapDomain (fun σ => σ ++ w) (bd V (Finsupp.single τ 1))) + ∑ τ ∈ P, (-1 : ℤ) ^ τ.length • Finsupp.mapDomain (fun w => τ ++ w) (bd V (ys τ))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hc2 : c = Cg + ∑ τ ∈ P, Finsupp.mapDomain (fun w => τ ++ w) (ys τ)`. Rewrite using `[hCg]`. Normalize the expressions using the abelian group laws. Use `conv_lhs => rw [hc2]`. Rewrite using `[map_add, map_sum, add_assoc, ← Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun τ _ => GlobalTheory.T.seqChain_boundary_prefix_chain V τ (ys τ)`. Use `set g := bd V Cg + ∑ τ ∈ P, ((ys τ).sum fun w a => a • Finsupp.mapDomain (fun σ => σ ++ w) (bd V (Finsupp.single τ 1))) with hg`. Establish `hgmem : g ∈ Finsupp.supported ℤ ℤ {l | ∀ y ∈ l.drop k, y ∈ S}`. Use `Submodule.add_mem _ ?_ (Submodule.sum_mem _ fun τ hτ => ?_)` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `bd_mem_supported_of_eraseIdx (A := {l | ∀ y ∈ l.drop k, y ∈ S}) ?_ (Finsupp.supported_mono ?_ hCgmem)` and prove the remaining obligations. Introduce `l hl i _`. Conclude with `fun y hy => hl y ((drop_eraseIdx_sublist_drop l i k).subset hy)`. Introduce `l hl`. Conclude with `hl.1.2`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `prepend_part_mem_supported τ (A := {w | ∀ x ∈ w, x ∈ S}) ?_ (Finsupp.supported_mono ?_ (hysmem τ hτ))` and prove the remaining obligations. Introduce `w hw i hi`. Conclude with `hGood τ hτ w hw i hi`. Introduce `w hw`. Conclude with `hw.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `τ0 hτ0`. Use extensionality with `w`. Establish `h0` using `congrArg (fun f => f (τ0 ++ w)) hdec`. Simplify using `only [hbd, Finsupp.zero_apply] at h0`. Rewrite `h0` using `[Finsupp.add_apply, Finsupp.finset_sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg0 : g (τ0 ++ w) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hpre τ0 hτ0 (τ0 ++ w) (List.prefix_append _ _) ((Finsupp.mem_supported ℤ g).1 hgmem (Finsupp.mem_support_iff.2 hne))`. Rewrite `h0` using `[hg0, zero_add, Finset.sum_eq_single τ0]`. Rewrite `h0` using `[Finsupp.smul_apply, mapDomain_prepend_apply', if_pos (List.prefix_append _ _), List.drop_left, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.zero_apply]`. Break down `mul_eq_zero.1 h0.symm with h | h` into its components or cases. Conclude with `absurd h (pow_ne_zero _ (by norm_num))`. Conclude with `h`. Introduce `τ hτ hne`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.smul_apply, mapDomain_prepend_apply', if_neg, smul_zero]`. Conclude with `fun h => hne (huniq τ0 hτ0 τ hτ _ (List.prefix_append _ _) h)`. Introduce `h`. Conclude with `absurd hτ0 h`. Establish `hz : ∀ τ ∈ P, ∃ z, z ∈ chains (linkIn F S τ) (p - τ.length + 1) ∧ bd V z = ys τ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ hτ`. Take `⟨hlen, hτF, hkp, hk, hkS, hlast⟩` from `hP τ hτ`. Take `⟨z, hzm, hzb⟩` from `hex τ hτF τ[k] hlast hkS hlen (by omega) (ys τ) (hysmem τ hτ) (hbdys τ hτ)`. Conclude with `⟨z, hzm, hzb⟩`. Use `choose! zf hzc hzb using hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ τ ∈ P, (-1 : ℤ) ^ τ.length • Finsupp.mapDomain (fun w => τ ++ w) (zf τ), ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun τ hτ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨hlen, hτF, hkp, -⟩` from `hP τ hτ`. Use `mapDomain_mem_supported_of_maps _ ?_ (hzc τ hτ)` and prove the remaining obligations. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_setOf_eq, linkIn] at hw ⊢`. Take `⟨⟨_, hwF⟩, hwl⟩` from `hw`. Use `⟨hwF, ?_⟩` and prove the remaining obligations. Rewrite using `[List.length_append, hwl]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbdb : bd V (∑ τ ∈ P, (-1 : ℤ) ^ τ.length • Finsupp.mapDomain (fun w => τ ++ w) (zf τ)) = ∑ τ ∈ P, ((-1 : ℤ) ^ τ.length • ((zf τ).sum fun w a => a • Finsupp.mapDomain (fun σ => σ ++ w) (bd V (Finsupp.single τ 1))) + Finsupp.mapDomain (fun w => τ ++ w) (ys τ))`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun τ hτ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, GlobalTheory.T.seqChain_boundary_prefix_chain, hzb τ hτ, smul_add, smul_smul, ← mul_pow]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hbdb, Finset.sum_add_distrib]`. Establish `hrw : c - (∑ τ ∈ P, (-1 : ℤ) ^ τ.length • ((zf τ).sum fun w a => a • Finsupp.mapDomain (fun σ => σ ++ w) (bd V (Finsupp.single τ 1))) + ∑ τ ∈ P, Finsupp.mapDomain (fun w => τ ++ w) (ys τ)) = Cg - ∑ τ ∈ P, (-1 : ℤ) ^ τ.length • ((zf τ).sum fun w a => a • Finsupp.mapDomain (fun σ = …`. Rewrite using `[hCg]`. Normalize the expressions using the abelian group laws. Rewrite using `[hrw]`.
-
-Use `Submodule.sub_mem _ hCgmem (Submodule.sum_mem _ fun τ hτ => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Take `⟨hlen, hτF, hkp, -⟩` from `hP τ hτ`. Use `prepend_part_mem_supported τ ?_ (hzc τ hτ)` and prove the remaining obligations. Introduce `w hw i hi`. Simplify using `only [Set.mem_setOf_eq, linkIn] at hw ⊢`.
-
-Take `⟨⟨hwS, hwF⟩, hwl⟩` from `hw`. Establish `hel : (τ.eraseIdx i).length = k`. Rewrite using `[List.length_eraseIdx_of_lt hi, hlen]`. Use linear arithmetic over natural numbers and integers. Use `⟨⟨hF _ hwF _ ((List.eraseIdx_sublist τ i).append_right w), ?_⟩, ?_⟩` and prove the remaining obligations.
-
-Introduce `y hy`. Rewrite `hy` using `[List.drop_left' hel]`. Conclude with `hwS y hy`. Rewrite using `[List.length_append, hel, hwl]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem retract_step : ∀ (V : Type) (F : Set (List V)) (S : Set V), SubClosed F → ∀ (p k : ℕ), (∀ τ ∈ F, ∀ x, τ.getLast? = some x → x ∉ S → τ.length = k + 1 → τ.length ≤ p → ExactAt (linkIn F S τ) (p - τ.length)) → ∀ c ∈ chains {l ∈ F | ∀ y ∈ l.drop (k + 1), y ∈ S} p, bd V c = 0 → ∃ b ∈ chains F (p + 1), c - bd V b ∈ chains {l ∈ F | ∀ y ∈ l.drop k, y ∈ S} p := by
   intro V F S hF p k hex c hc hbd
@@ -377,9 +369,9 @@ end
 section
 open GlobalTheory.SeqCx Matrix
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.SeqCx.retract_step`. Consider the case `exact @GlobalTheory.SeqCx.drop_eraseIdx_sublist_drop`. Consider the case `exact @GlobalTheory.SeqCx.prepend_part_mem_supported`. Consider the case `exact @GlobalTheory.SeqCx.mapDomain_mem_supported_of_maps`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact @GlobalTheory.SeqCx.bd_mem_supported_of_eraseIdx`. Consider the case `exact @GlobalTheory.SeqCx.mapDomain_prepend_apply'`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.seqChain_cycle_retraction_of_link_exact : ∀ (V : Type) (F : Set (List V)) (S : Set V), SubClosed F → ∀ (p k : ℕ), (∀ τ ∈ F, ∀ x, τ.getLast? = some x → x ∉ S → τ.length = k + 1 → τ.length ≤ p → ExactAt (linkIn F S τ) (p - τ.length)) → ∀ c ∈ chains {l ∈ F | ∀ y ∈ l.drop (k + 1), y ∈ S} p, bd V c = 0 → ∃ b ∈ chains F (p + 1), c - bd V b ∈ chains {l ∈ F | ∀ y ∈ l.drop k, y ∈ S} p := by
   first

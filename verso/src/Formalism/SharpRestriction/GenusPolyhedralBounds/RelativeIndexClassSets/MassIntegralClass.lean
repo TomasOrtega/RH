@@ -21,9 +21,7 @@ theorem stdForm_apply' (n : ℕ) (x y : Fin n → K) :
     stdForm K n x y = ∑ i, star (x i) * y i := rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `(intro x y`. Simplify using `only [stdForm_apply', map_sum, starRingEnd_apply, star_mul', star_star]`. Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _))`. Consider the case `(refine ⟨fun x y => ?_⟩`.
-
-Simplify using `only [stdForm_apply', map_sum, starRingEnd_apply, star_mul', star_star]`. Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _))`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdForm_isSymm (n : ℕ) : (stdForm K n).IsSymm := by
   first
@@ -35,7 +33,7 @@ theorem stdForm_isSymm (n : ℕ) : (stdForm K n).IsSymm := by
        exact Finset.sum_congr rfl (fun i _ => mul_comm _ _))
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range _) span_eq_top := by rw [stdLat, Submodule.span_span_of_tower] have h : (fun i : Fin n => (Pi.single i 1 : Fin n → K)) = Pi.basisFun K (Fin n) := by funext i simp [Pi.basisFun_apply] rw [h] exact (Pi.basisFun K (Fin n)).span_eq`.
+A detailed English derivation is pending.
 -/
 theorem stdLat_isLattice' (n : ℕ) : Submodule.IsLattice K (stdLat K n) where
   fg := Submodule.fg_span (Set.finite_range _)
@@ -51,13 +49,11 @@ variable (hc : ∀ (φ : K →+* ℂ) (a : K), φ (star a) = starRingEnd ℂ (φ
 
 include hc in
 /- English proof (translation)
-Establish `hsum : (algebraMap ℚ ℂ) (Algebra.trace ℚ K (star a * a)) = ((∑ σ : K →ₐ[ℚ] ℂ, Complex.normSq (σ a) : ℝ) : ℂ)`. Rewrite using `[trace_eq_sum_embeddings (E := ℂ), Complex.ofReal_sum]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Establish `h1 : σ (star a) = starRingEnd ℂ (σ a)` using `hc σ.toRingHom a`. Rewrite using `[map_mul, h1, Complex.normSq_eq_conj_mul_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < ∑ σ : K →ₐ[ℚ] ℂ, Complex.normSq (σ a)`. Establish `σ0 : K →ₐ[ℚ] ℂ` using `IsAlgClosed.lift`. Use `Finset.sum_pos' (fun σ _ => Complex.normSq_nonneg _) ⟨σ0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `Complex.normSq_pos.mpr ((map_ne_zero σ0).mpr ha)`. Establish `hq : ((Algebra.trace ℚ K (star a * a) : ℚ) : ℝ) = ∑ σ : K →ₐ[ℚ] ℂ, Complex.normSq (σ a)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← hsum]`. Simplify using the standard rewrite rules. Establish `h2 : (0 : ℝ) < ((Algebra.trace ℚ K (star a * a) : ℚ) : ℝ)`. Rewrite using `[hq]`.
-
-Conclude with `hpos`. Conclude with `h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_star_mul_pos (a : K) (ha : a ≠ 0) : 0 < Algebra.trace ℚ K (star a * a) := by
   classical
@@ -83,7 +79,7 @@ theorem trace_star_mul_pos (a : K) (ha : a ≠ 0) : 0 < Algebra.trace ℚ K (sta
 
 include hc in
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Conclude with `le_of_lt (trace_star_mul_pos K hc a ha)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_star_mul_nonneg (a : K) : 0 ≤ Algebra.trace ℚ K (star a * a) := by
   by_cases ha : a = 0
@@ -93,9 +89,7 @@ theorem trace_star_mul_nonneg (a : K) : 0 ≤ Algebra.trace ℚ K (star a * a) :
 
 include hc in
 /- English proof (translation)
-Rewrite using `[stdForm_apply', map_sum]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (funext h)`.
-
-Conclude with `Finset.sum_pos' (fun j _ => trace_star_mul_nonneg K hc (x j)) ⟨i, Finset.mem_univ _, trace_star_mul_pos K hc (x i) hi⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem stdForm_def (n : ℕ) (x : Fin n → K) (hx : x ≠ 0) :
     0 < Algebra.trace ℚ K (stdForm K n x x) := by
@@ -109,11 +103,11 @@ theorem stdForm_def (n : ℕ) (x : Fin n → K) (hx : x ≠ 0) :
 
 include hc in
 /- English proof (translation)
-Establish `hS` using `stdForm_isSymm K n`. Establish `hD : ∀ x : Fin n → K, x ≠ 0 → 0 < Algebra.trace ℚ K (stdForm K n x x)` using `stdForm_def K hc n`. Establish `hL` using `stdLat_isLattice' K n`. Take `⟨h1, h2, h3⟩` from `Formalism.HermitianLatticesTheory.massBasic K (Fin n → K) (stdForm K n) hS hD (stdLat K n) hL`. Take `⟨-, h4, -⟩` from `Formalism.ThetaLiftIndependence.classRepsDefinite K (Fin n → K) (stdForm K n) hS hD (stdLat K n) hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, h2, ?_, h3⟩` and prove the remaining obligations. Introduce `M hM`. Take `⟨m, hm, hw⟩` from `h4 M hM`. Unfold `Formalism.ThetaLiftIndependence.latWt at hw`. Establish `e1 : ((Nat.card (Formalism.ThetaLiftIndependence.autL (stdForm K n) M) : ℕ) : ℂ) = (m : ℂ)` using `inv_injective hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e2 : Nat.card (Formalism.ThetaLiftIndependence.autL (stdForm K n) M) = m` using `by exact_mod_cast e1`. Rewrite using `[e2]`. Conclude with `hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_class (n : ℕ) :
     (∃ s, Formalism.ThetaLiftIndependence.IsClassReps (stdForm K n) (stdLat K n) s) ∧
@@ -143,7 +137,7 @@ theorem std_class (n : ℕ) :
 end Std
 
 /- English proof (translation)
-Introduce `K H k`. Use `letI := H.cmStar`. Use `haveI := H.isCMField_hostE`. Conclude with `std_class H.E (fun φ a => NumberField.IsCMField.complexEmbedding_complexConj H.E φ a) k`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem mIClass : MIClass := by
   intro K H k

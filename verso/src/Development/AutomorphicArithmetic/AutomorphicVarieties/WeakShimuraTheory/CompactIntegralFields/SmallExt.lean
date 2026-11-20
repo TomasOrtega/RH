@@ -7,27 +7,21 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuat
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Use `letI : Field (A ⧸ maximalIdeal A) := Ideal.Quotient.field (maximalIdeal A)`. Establish `hinj : Function.Injective (algebraMap A B)` using `FaithfulSMul.algebraMap_injective A B`. Establish `hnzd : ∀ (c : A) (x : B), c ≠ 0 → c • x = 0 → x = 0`. Introduce `c x hc hx`. Rewrite `hx` using `[Algebra.smul_def]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `mul_eq_zero.mp hx with h | h` into its components or cases. Conclude with `absurd ((map_eq_zero_iff _ hinj).mp h) hc`. Conclude with `h`. Establish `hbound : ∀ s : Finset (B ⧸ (maximalIdeal A • ⊤ : Submodule A B)), LinearIndependent (A ⧸ maximalIdeal A) (fun i : s => (i : B ⧸ (maximalIdeal A • ⊤ : Submodule A B))) → s.card ≤ n`. Introduce `s hs`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlift : ∀ i : s, ∃ b : B, Submodule.Quotient.mk (p` using `(maximalIdeal A • ⊤ : Submodule A B)) b = (i : B ⧸ (maximalIdeal A • ⊤ : Submodule A B)) := fun i => Submodule.Quotient.mk_surjective _ _`. Use `choose b hb using hlift`. Establish `hli : LinearIndependent A b`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨i0, hi0⟩` from `hne`. Take `⟨j, hj, hjmin⟩` from `(Finset.univ.filter (fun i => c i ≠ 0)).exists_min_image (fun i => IsDiscreteValuationRing.addVal A (c i)) ⟨i0, by simpa using hi0⟩`. Establish `hcj : c j ≠ 0` using `by simpa using hj`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd : ∀ i, c j ∣ c i`. Introduce `i`. Distinguish the cases in `hci : c i = 0`. Rewrite using `[hci]`. Conclude with `dvd_zero _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsDiscreteValuationRing.addVal_le_iff_dvd.mp (hjmin i (by simpa using hci))`. Use `choose d hd using hdvd`. Establish `hsum : c j • ∑ i, d i • b i = 0`. Rewrite using `[Finset.smul_sum]`. Repeatedly rewrite using `[smul_smul, ← hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`. Establish `hsum' : ∑ i, d i • b i = 0` using `hnzd _ _ hcj hsum`. Establish `hdj : d j = 1`. Establish `h1 : c j * d j = c j * 1` using `by rw [mul_one, ← hd j]`. Conclude with `mul_left_cancel₀ hcj h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk : ∑ i, Ideal.Quotient.mk (maximalIdeal A) (d i) • (i : B ⧸ (maximalIdeal A • ⊤ : Submodule A B)) = 0`. Establish `h2` using `congrArg (Submodule.mkQ (maximalIdeal A • ⊤ : Submodule A B)) hsum'`. Simplify using `only [map_sum, map_zero, map_smul, Submodule.mkQ_apply] at h2`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hb i]`. Both sides reduce to the same expression. Establish `h3` using `Fintype.linearIndependent_iff.mp hs _ hk j`. Rewrite `h3` using `[hdj, map_one]`. Conclude with `one_ne_zero h3`.
-
-Establish `h4` using `hli.cardinal_le_rank`. Rewrite `h4` using `[Cardinal.mk_coe_finset]`. Conclude with `h4.trans h` after adjusting the coercions. Establish `hrank : Module.rank (A ⧸ maximalIdeal A) (B ⧸ (maximalIdeal A • ⊤ : Submodule A B)) ≤ n` using `rank_le hbound`. Use `haveI : Module.Finite (A ⧸ maximalIdeal A) (B ⧸ (maximalIdeal A • ⊤ : Submodule A B)) := Module.rank_lt_aleph0_iff.mp (hrank.trans_lt (Cardinal.nat_lt_aleph0 n))`.
-
-Conclude with `Module.Finite.trans (A ⧸ maximalIdeal A) _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fin_quot (A B : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [CommRing B] [IsDomain B]
     [Algebra A B] [FaithfulSMul A B] (n : ℕ) (h : Module.rank A B ≤ n) :
@@ -93,15 +87,15 @@ private theorem fin_quot (A B : Type) [CommRing A] [IsDomain A] [IsDiscreteValua
   exact Module.Finite.trans (A ⧸ maximalIdeal A) _
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Establish `hinj : Function.Injective (algebraMap A B)` using `FaithfulSMul.algebraMap_injective A B`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hx0`. Establish `hmem : ∀ n : ℕ, ∃ b : B, algebraMap A B (ϖ ^ n) * b = x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `n`. Establish `h1` using `(SModEq.zero).mp (hx n)`. Rewrite `h1` using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨b, _, hb⟩` from `h1`. Conclude with `⟨b, by rw [← hb, Algebra.smul_def]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hne` using `Ideal.comap_ne_bot_of_algebraic_mem hx0 (Ideal.mem_span_singleton_self x) (Algebra.IsAlgebraic.isAlgebraic (R := A) x)`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Rewrite `ha` using `[Ideal.mem_comap, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `ha`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 hϖ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hmem (k + 1)`. Establish `e : algebraMap A B (ϖ ^ k) * algebraMap A B (u : A) = algebraMap A B (ϖ ^ k) * (algebraMap A B ϖ * (b * c))`. Rewrite using `[← map_mul, mul_comm (ϖ ^ k), ← hu, ← hc, ← hb, pow_succ, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpk : algebraMap A B (ϖ ^ k) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← map_zero (algebraMap A B)]`. Conclude with `fun h => pow_ne_zero k hϖ.ne_zero (hinj h)`. Establish `e2` using `mul_left_cancel₀ hpk e`. Establish `hunit : IsUnit (algebraMap A B ϖ)` using `isUnit_of_mul_isUnit_left (e2 ▸ (u.isUnit.map (algebraMap A B)))`. Conclude with `hϖ.not_isUnit ((isUnit_map_iff (algebraMap A B) ϖ).mp hunit)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem haus (A B : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [CommRing B] [IsDomain B]
     [Algebra A B] [FaithfulSMul A B] [IsLocalHom (algebraMap A B)] [Algebra.IsAlgebraic A B] :
@@ -137,11 +131,9 @@ private theorem haus (A B : Type) [CommRing A] [IsDomain A] [IsDiscreteValuation
   exact hϖ.not_isUnit ((isUnit_map_iff (algebraMap A B) ϖ).mp hunit)
 
 /- English proof (translation)
-Use `haveI : IsHausdorff (maximalIdeal A) B := haus A B`. Use `haveI : Module.Finite A (B ⧸ (maximalIdeal A • ⊤ : Submodule A B)) := fin_quot A B n h`. Use `haveI : Module.Finite A B := GlobalTheory.finite_of_isHausdorff_of_finite_quotient (maximalIdeal A) B`. Use `haveI : IsNoetherianRing B := isNoetherian_of_tower A inferInstance`. Establish `hnf : ¬ IsField B`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Introduce `hF`. Establish `h0 : algebraMap A B ϖ ≠ 0`. Rewrite using `[← map_zero (algebraMap A B)]`. Conclude with `fun e => hϖ.ne_zero (FaithfulSMul.algebraMap_injective A B e)`.
-
-Take `⟨y, hy⟩` from `hF.mul_inv_cancel h0`. Establish `hu : IsUnit (algebraMap A B ϖ)` using `⟨⟨_, y, hy, by rw [mul_comm]; exact hy⟩, rfl⟩`. Conclude with `hϖ.not_isUnit ((isUnit_map_iff (algebraMap A B) ϖ).mp hu)`. Use `haveI hd : IsDiscreteValuationRing B := ((IsDiscreteValuationRing.TFAE B hnf).out 1 0).mp (inferInstance : ValuationRing B)`. Conclude with `⟨hd, GlobalTheory.FormalIsogeny.isAdicComplete_maximalIdeal_of_finite A B, IsLocalRing.ResidueField.finite_of_finite hf⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem key (A B : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     [IsAdicComplete (maximalIdeal A) A] [CommRing B] [IsDomain B] [ValuationRing B]
@@ -167,41 +159,31 @@ private theorem key (A B : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationR
     IsLocalRing.ResidueField.finite_of_finite hf⟩
 
 /- English proof (translation)
-Introduce `l _ 𝔞 A _ _ _ f hf s`. Establish `hinjK : Function.Injective (𝔞.toK.comp f)` using `fun a b h => hf.inj (Subtype.val_injective h)`. Set `E` to `FractionRing A`. Set `φ : E →+* 𝔞.K` to `IsFractionRing.lift hinjK`. Use `letI : Algebra E 𝔞.K := φ.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra A 𝔞.K := (𝔞.toK.comp f).toAlgebra`. Use `haveI : IsScalarTower A E 𝔞.K := IsScalarTower.of_algebraMap_eq (fun a => (IsFractionRing.lift_algebraMap hinjK a).symm)`. Establish `hint : ∀ x ∈ (s : Set 𝔞.K), IsIntegral E x`. Introduce `x _`. Take `⟨p, hp0, hp⟩` from `hf.alg x`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsAlgebraic.isIntegral ⟨p.map (algebraMap A E), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Polynomial.map_ne_zero_iff (IsFractionRing.injective A E)).mpr hp0`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map, ← IsScalarTower.algebraMap_eq]`. Conclude with `hp`. Set `L' : IntermediateField E 𝔞.K` to `IntermediateField.adjoin E (s : Set 𝔞.K)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional E L' := IntermediateField.finiteDimensional_adjoin hint`. Establish `hcl : ∀ y ∈ Subfield.closure (Set.range (𝔞.toK.comp f) ∪ ↑s), y ∈ L'`. Introduce `y hy`. Establish `hle : Subfield.closure (Set.range (𝔞.toK.comp f) ∪ ↑s) ≤ L'.toSubfield`. Rewrite using `[Subfield.closure_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce and unpack `z (⟨a, rfl⟩ | hz)`. Use `show (𝔞.toK.comp f) a ∈ L'`. Establish `e : (𝔞.toK.comp f) a = algebraMap E 𝔞.K (algebraMap A E a)` using `(IsFractionRing.lift_algebraMap hinjK a).symm`. Rewrite using `[e]`. Conclude with `L'.algebraMap_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IntermediateField.subset_adjoin E _ hz`. Conclude with `hle hy`. Set `B : Subring 𝔞.V` to `Subring.comap 𝔞.toK L'.toSubfield.toSubring`. Establish `hBext : ∀ x y : B, ((x : 𝔞.V) : 𝔞.K) = ((y : 𝔞.V) : 𝔞.K) → x = y` using `fun x y h => Subtype.ext (Subtype.ext h)`. Establish `hBmem : ∀ x : B, ((x : 𝔞.V) : 𝔞.K) ∈ L'` using `fun x => x.2`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Set `g : A →+* B` to `f.codRestrict B (fun a => by`. Use `hcl ((𝔞.toK.comp f) a) (Subfield.subset_closure (Or.inl ⟨a, rfl⟩))` as an intermediate fact. Conclude with `this)`. Establish `hgi : Function.Injective g` using `fun a b h => hf.inj (congrArg Subtype.val h)`. Use `letI : Algebra A B := g.toAlgebra`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : FaithfulSMul A B := (faithfulSMul_iff_algebraMap_injective A B).mpr hgi`. Use `haveI : IsLocalHom (algebraMap A B) := ⟨fun a ha => by haveI := hf.loc`. Conclude with `(isUnit_map_iff f a).mp (ha.map B.subtype)⟩`. Establish `hdvd : ∀ a b : B, a ∣ b ∨ b ∣ a`. Introduce `a b`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `ha : ((a : 𝔞.V) : 𝔞.K) = 0`. Use `right`. Conclude with `⟨0, hBext _ _ (by simp [ha])⟩`. Distinguish the cases in `hb : ((b : 𝔞.V) : 𝔞.K) = 0`. Use `left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨0, hBext _ _ (by simp [hb])⟩`. Establish `hq : ((b : 𝔞.V) : 𝔞.K) / ((a : 𝔞.V) : 𝔞.K) ∈ L'` using `L'.div_mem (hBmem b) (hBmem a)`. Break down `𝔞.V.mem_or_inv_mem (((b : 𝔞.V) : 𝔞.K) / ((a : 𝔞.V) : 𝔞.K)) with hv | hv` into its components or cases. Use `left`. Use `⟨⟨⟨_, hv⟩, hq⟩, hBext _ _ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ((b : 𝔞.V) : 𝔞.K) = ((a : 𝔞.V) : 𝔞.K) * (((b : 𝔞.V) : 𝔞.K) / ((a : 𝔞.V) : 𝔞.K))`. Clear the denominators using the available nonvanishing facts. Use `right`. Use `⟨⟨⟨_, hv⟩, L'.inv_mem hq⟩, hBext _ _ ?_⟩` and prove the remaining obligations. Use `show ((a : 𝔞.V) : 𝔞.K) = ((b : 𝔞.V) : 𝔞.K) * (((b : 𝔞.V) : 𝔞.K) / ((a : 𝔞.V) : 𝔞.K))⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Use `haveI : ValuationRing B := ValuationRing.iff_dvd_total.mpr ⟨hdvd⟩`. Use `haveI : Algebra.IsAlgebraic A B := ⟨fun x => by`. Take `⟨p, hp0, hp⟩` from `hf.alg ((x : 𝔞.V) : 𝔞.K)`. Use `⟨p, hp0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (𝔞.toK.comp B.subtype) (Polynomial.aeval x p) = 0`. Rewrite using `[Polynomial.aeval_def, Polynomial.hom_eval₂]`. Conclude with `hp`. Conclude with `hBext _ _ e⟩`. Use `haveI : IsAdicComplete (maximalIdeal A) A := hf.complete`.
-
-Set `ψ : B →ₗ[A] L'` to `{ toFun := fun x => ⟨((x : 𝔞.V) : 𝔞.K), hBmem x⟩ map_add' := fun x y => rfl map_smul' := fun a x => rfl }`. Establish `hψ : Function.Injective ψ` using `fun x y h => hBext x y (by`. Establish `h'` using `congrArg (fun z : L' => (z : 𝔞.K)) h`. Conclude with `h')`. Establish `hrank : Module.rank A B ≤ (Module.finrank E L' : ℕ)`.
-
-Combine the equalities or inequalities in the displayed calculation. Take `⟨hd, hc, hfin⟩` from `key A B (Module.finrank E L') hrank hf.fin`. Use `⟨B, inferInstance, inferInstance, hd, B.subtype, g, ?_, RingHom.ext fun a => rfl, ?_⟩` and prove the remaining obligations. Use `⟨Subtype.val_injective, ⟨fun x hx => ?_⟩, hc, hfin, fun x => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hx`.
-
-Establish `hu' : (u : 𝔞.V) = x` using `hu`. Establish `hxy : ((x : 𝔞.V) : 𝔞.K) * (((u⁻¹ : 𝔞.Vˣ) : 𝔞.V) : 𝔞.K) = 1`. Rewrite using `[← hu']`. Conclude with `congrArg Subtype.val u.mul_inv`. Establish `hmem : (((u⁻¹ : 𝔞.Vˣ) : 𝔞.V) : 𝔞.K) ∈ L'`.
-
-Rewrite using `[eq_inv_of_mul_eq_one_right hxy]`. Conclude with `L'.inv_mem (hBmem x)`. Conclude with `⟨⟨x, ⟨_, hmem⟩, hBext _ _ hxy, hBext _ _ (by rw [mul_comm]; exact hxy)⟩, rfl⟩`. Take `⟨p, hp0, hp⟩` from `hf.alg x`. Use `⟨p.map g, (Polynomial.map_ne_zero_iff hgi).mpr hp0, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hp`. Introduce `x hx`. Conclude with `RingHom.mem_range.mpr ⟨⟨x, hcl _ hx⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.smallExt :
     ∀ {l : ℕ} [Fact l.Prime] (𝔞 : Amb l) (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] (f : A →+* 𝔞.V), 𝔞.IsDvr f →

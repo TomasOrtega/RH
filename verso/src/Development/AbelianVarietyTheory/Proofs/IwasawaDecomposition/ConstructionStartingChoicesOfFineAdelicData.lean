@@ -67,14 +67,14 @@ variable (z : Dat X I hX T Wt) (e : z.R.toRealDat.ExAt) {Wt' : Set X.B.places.Pl
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `intertwinersExist_scalar_update_invariant (exAt_res z h e) _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_exAt : (res z e Wt' h hc).R.toRealDat.ExAt := intertwinersExist_scalar_update_invariant (exAt_res z h e) _ _
 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `h'` using `(z.inGeo_resGeo_iff h).2 hi`. Conclude with `⟨h'.jEvExists, h'.jEvBar, h'.evInj, h'.jUnif, h'.geoAct, h'.latFull, h'.dimMatch⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem res_inGeo (hi : GlobalTheory.RealGeo.InGeo z.geo) : GlobalTheory.RealGeo.InGeo (res z e Wt' h hc).geo := by
   have h' := (z.inGeo_resGeo_iff h).2 hi
@@ -83,7 +83,7 @@ theorem res_inGeo (hi : GlobalTheory.RealGeo.InGeo z.geo) : GlobalTheory.RealGeo
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[Dat.mem_nonzero_index_places_iff_at_place_or_conjugate, Dat.mem_nonzero_index_places_iff_at_place_or_conjugate]`. Conclude with `(nz_updS (z.resR h) _ _ _ F0 _).trans (exists_congr fun j => or_congr (z.nzAt_resR F0 h j _) (z.nzAt_resR F0 h j _))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictAdelicDataTwistedPlaces_nonzeroIndexPlaces (F0) : (res z e Wt' h hc).W1 F0 = z.W1 F0 := by
   ext w
@@ -93,7 +93,7 @@ theorem restrictAdelicDataTwistedPlaces_nonzeroIndexPlaces (F0) : (res z e Wt' h
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨⟨c, h1, h2, h5⟩, hV⟩` from `hs`. Use `⟨⟨c, h1, fun hc' t φ g x hm => h2 hc' (inclU I (usedOf_mono I T h) t) φ g x hm, h5⟩, fun i => ?_⟩` and prove the remaining obligations. Take `⟨cv, h3, h4, h6⟩` from `hV i`. Conclude with `⟨cv, h3, fun hc' t φ g x hm => h4 hc' (inclU I (usedOf_mono I T h) t) φ g x hm, h6⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem res_std (hs : z.Std) : (res z e Wt' h hc).Std := by
   obtain ⟨⟨c, h1, h2, h5⟩, hV⟩ := hs
@@ -110,7 +110,7 @@ open GlobalTheory.Mem.R3.ResEx
 variable {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {hX : B.fields.Ok} {Wt : Set B.places.Pl}
 
 /- English proof (translation)
-The claim follows from `(Fin.ext h : i = i') ▸ H i`.
+A detailed English derivation is pending.
 -/
 theorem of_diag {n : ℕ} {P : Fin n → Fin n → Prop} (H : ∀ i, P i i) (i i' : Fin n) (h : (i : ℕ) = i') : P i i' :=
   (Fin.ext h : i = i') ▸ H i
@@ -118,7 +118,7 @@ theorem of_diag {n : ℕ} {P : Fin n → Fin n → Prop} (H : ∀ i, P i i) (i i
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `HEq.rfl l := HEq.rfl c := HEq.rfl Dw := HEq.rfl Xo := HEq.rfl U := HEq.rfl V := HEq.rfl dict := HEq.rfl mu := HEq.rfl Kf := HEq.rfl cE := HEq.rfl chiW := HEq.rfl x₀ := HEq.rfl iota := HEq.rfl ψ := HEq.rfl θ := HEq.rfl βW := HEq.rfl βY := HEq.rfl nW := HEq.rfl βV := HEq.rfl ΛV := …`.
+A detailed English derivation is pending.
 -/
 theorem res_ext (z : Dat (w.st Z) w.I hX T Wt) (e : z.R.toRealDat.ExAt) {Wt' : Set B.places.Pl} (h : Wt' ⊆ Wt)
     (hc : ConjStable (w.st Z) Wt') : Ext z (res z e Wt' h hc) where
@@ -206,7 +206,7 @@ end GlobalTheory.Mem.R3.ResStd
 namespace GlobalTheory.Mem.R3.Rw
 
 /- English proof (translation)
-The claim follows from `Step.of_evG ((evG_of_ev h).imp fun _ _ _ _ _ H _ _ _ _ _ _ _ _ _ => H)`.
+A detailed English derivation is pending.
 -/
 theorem stepW_keep_of_ev {Q : Ctx → Prop} (h : Ev Q) (p : WP) : StepW p fun K _ _ _ _ => Q K :=
   Step.of_evG ((evG_of_ev h).imp fun _ _ _ _ _ H _ _ _ _ _ _ _ _ _ => H)
@@ -214,15 +214,15 @@ theorem stepW_keep_of_ev {Q : Ctx → Prop} (h : Ev Q) (p : WP) : StepW p fun K 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hWe hDS hHC hCR hHW`. Establish `hInp` using `GlobalTheory.LinksInputs.inputs_of_hypotheses hWe hDS hHC hCR`. Establish `hId : StepW Start Start` using `StepW.of_all fun _ _ _ _ _ _ _ h => h`. Establish `hAll` using `hId.and (hHW.and (stepW_keep_of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev Start))`. Use `hAll.trans (StepW.of_all fun K B f T w hO _ H => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨-, -, hCoh⟩, hHW', hHost⟩` from `H`. Introduce `Z hX z hG2 hGT hGA hKap hFine hsub hSp`. Take `⟨hEx, hGeo, hCore, hStd⟩` from `hFine`. Establish `hle : z.W1 (F0K K.s (w.D Z)) ⊆ {v | B.places.resChar v ∈ T.pl}` using `hsub`. Establish `hc : ConjStable (w.st Z) (z.W1 (F0K K.s (w.D Z)))` using `fun v hv => z.nonzero_index_places_conj_stable _ v hv`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `z'` to `ResStd.res z hEx _ hle hc`. Establish `hW : z'.W1 (F0K K.s (w.D Z)) = z.W1 (F0K K.s (w.D Z))` using `ResStd.restrictAdelicDataTwistedPlaces_nonzeroIndexPlaces z hEx hle hc _`. Establish `hEx' : z'.R.toRealDat.ExAt` using `ResStd.res_exAt z hEx hle hc`. Establish `hGeo' : GlobalTheory.RealGeo.InGeo z'.geo` using `ResStd.res_inGeo z hEx hle hc hGeo`. Establish `hCore' : CoreP z'` using `hCore`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hStd' : z'.Std` using `ResStd.res_std z hEx hle hc hStd`. Establish `hH : Holds z'.R z'.F` using `hHW' Z hX _ z' hGT hGA hKap hEx' hGeo' hCore' hG2 hW.symm hsub`. Establish `hcs : ∀ v, B.places.conj v ∈ z'.W1 (F0K K.s (w.D Z)) ↔ v ∈ z'.W1 (F0K K.s (w.D Z))` using `fun v => ⟨fun h => by simpa only [B.places.conj_conj] using z'.nonzero_index_places_conj_stable _ _ h, fun h => z'.nonzero_index_places_conj_stable _ v h⟩`. Take `⟨-, hFmax, -, -, hSt, -⟩` from `hHost (w.st Z) hO`. Take `⟨q⟩` from `GlobalTheory.T.nonempty_rowLiftFamily_over_columnChoices B f T w Z hX _ z' (hInp _) hFmax (hSt 0).1 (fun i => (hSt _).2.2 (by omega) i.2) hH hcs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨{ Z₀ := Z hX := hX Wt := _ z := z' q := q g := hG2 coh := hCoh grp := hGT grpAt := hGA kap := hKap intersectionNumber_baseChange := hH exAt := hEx' inGeo := hGeo' core := hCore'`. Conclude with `:= hW.symm`. Use `sub := hsub`. Use `supp := hSp`. Use `std := hStd' }, rfl, rfl, ResStd.res_ext z hEx hle hc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pre2_of_fine_of_resChar_mem : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite →
     GlobalTheory.Published.CuspRapidDecay → WeightCaseCondition → StepW Start fun K B f T w => ∀ (Z : w.Lt) (hX : B.fields.Ok)

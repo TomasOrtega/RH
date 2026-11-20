@@ -18,9 +18,9 @@ section
 variable {R S T : Type} [CommRing R] [CommRing S] [CommRing T]
 
 /- English proof (translation)
-Establish `h5 : z ∈ (I ^ n • ⊤ : Submodule R (AdicCompletion I R))`. Rewrite using `[AdicCompletion.pow_smul_top_eq_ker_eval hI, LinearMap.mem_ker]`. Proceed by induction on `z using AdicCompletion.induction_on with`. Consider the case `_ z`. Rewrite `hz` using `[AdicCompletion.evalₐ_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (z.1 n) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Simplify using `using hz`. Rewrite `h5` using `[Ideal.smul_top_eq_map]`. Conclude with `h5`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_map_of_evalₐ_eq_zero_pt (I : Ideal R) (hI : I.FG) (n : ℕ) (z : AdicCompletion I R)
     (hz : AdicCompletion.evalₐ I n z = 0) : z ∈ (I ^ n).map (algebraMap R (AdicCompletion I R)) := by
@@ -36,16 +36,16 @@ theorem mem_map_of_evalₐ_eq_zero_pt (I : Ideal R) (hI : I.FG) (n : ℕ) (z : A
   exact h5
 
 /- English proof (translation)
-The claim follows from `(AdicCompletion.evalₐ I n).commutes y`.
+A detailed English derivation is pending.
 -/
 theorem evalₐ_alg_pt (I : Ideal R) (n : ℕ) (y : R) :
     AdicCompletion.evalₐ I n (algebraMap R (AdicCompletion I R) y) = Ideal.Quotient.mk (I ^ n) y :=
   (AdicCompletion.evalₐ I n).commutes y
 
 /- English proof (translation)
-Establish `h1 : x - algebraMap R (AdicCompletion I R) y ∈ (I ^ n).map (algebraMap R (AdicCompletion I R))` using `mem_map_of_evalₐ_eq_zero_pt I hI n _ (by rw [map_sub, hy, evalₐ_alg_pt, sub_self])`. Establish `h2 : (I ^ n).map (algebraMap R (AdicCompletion I R)) ≤ RingHom.ker ((AdicCompletion.evalₐ K n).toRingHom.comp φ)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Establish `h3 : f r ∈ K ^ n` using `Ideal.le_comap_pow f n (Ideal.pow_right_mono hf n hr)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, RingHom.comp_apply, hφ]`. Conclude with `(evalₐ_alg_pt K n (f r)).trans (Ideal.Quotient.eq_zero_iff_mem.2 h3)`. Establish `h4 : AdicCompletion.evalₐ K n (φ (x - algebraMap R (AdicCompletion I R) y)) = 0` using `h2 h1`. Rewrite `h4` using `[map_sub, map_sub, hφ, evalₐ_alg_pt, sub_eq_zero]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalₐ_hom_pt (I : Ideal R) (hI : I.FG) (K : Ideal S) (f : R →+* S) (hf : I ≤ K.comap f)
     (φ : AdicCompletion I R →+* AdicCompletion K S)
@@ -66,7 +66,7 @@ theorem evalₐ_hom_pt (I : Ideal R) (hI : I.FG) (K : Ideal S) (f : R →+* S) (
   exact h4
 
 /- English proof (translation)
-Use `AdicCompletion.ext_evalₐ fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)`. Rewrite using `[evalₐ_hom_pt I hI K f hf φ hφ n x y hy.symm, evalₐ_hom_pt I hI K f hf ψ hψ n x y hy.symm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_ext_pt (I : Ideal R) (hI : I.FG) (K : Ideal S) (f : R →+* S) (hf : I ≤ K.comap f)
     (φ ψ : AdicCompletion I R →+* AdicCompletion K S)
@@ -78,11 +78,9 @@ theorem hom_ext_pt (I : Ideal R) (hI : I.FG) (K : Ideal S) (f : R →+* S) (hf :
   rw [evalₐ_hom_pt I hI K f hf φ hφ n x y hy.symm, evalₐ_hom_pt I hI K f hf ψ hψ n x y hy.symm]
 
 /- English proof (translation)
-Establish `hs : ∀ r, e.symm (algebraMap R (AdicCompletion I R) r) = i r` using `fun r => by`. Rewrite using `[← he, RingEquiv.symm_apply_apply]`. Establish `h` using `hom_ext_pt I hI I f hf (e.toRingHom.comp (φ.comp e.symm.toRingHom)) (e.toRingHom.comp (ψ.comp e.symm.toRingHom)) (fun r => by`. Express the relevant statement in the definitionally equal form `e (φ (e.symm _)) = _`. Rewrite using `[hs, hφ, he])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun r => by`. Express the relevant statement in the definitionally equal form `e (ψ (e.symm _)) = _`. Rewrite using `[hs, hψ, he]) (e x)`. Express the relevant statement in the definitionally equal form `e (φ (e.symm (e x))) = e (ψ (e.symm (e x))) at h`. Rewrite `h` using `[RingEquiv.symm_apply_apply]`.
-
-Conclude with `e.injective h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem endo_ext_pt {A : Type} [CommRing A] (I : Ideal R) (hI : I.FG) (i : R →+* A) (e : A ≃+* AdicCompletion I R)
     (he : ∀ r, e (i r) = algebraMap R (AdicCompletion I R) r) (f : R →+* R) (hf : I ≤ I.comap f)
@@ -102,14 +100,14 @@ theorem endo_ext_pt {A : Type} [CommRing A] (I : Ideal R) (hI : I.FG) (i : R →
   exact e.injective h
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_le_comap_pt (p : ℕ) (f : R →+* S) : Ideal.span {(p : R)} ≤ (Ideal.span {(p : S)}).comap f := by
   rw [Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]
   exact Ideal.mem_span_singleton_self _
 
 /- English proof (translation)
-Use `AdicCompletion.ext_evalₐ fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)`. Rewrite using `[GlobalTheory.AdicMaps.evalₐ_adicMap_mk I K k hk n x y hy.symm, GlobalTheory.AdicMaps.evalₐ_adicMap_mk J K g hg n _ (f y) (GlobalTheory.AdicMaps.evalₐ_adicMap_mk I J f hf n x y hy.symm), e]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem compMap_comp (I : Ideal R) (J : Ideal S) (K : Ideal T) (f : R →+* S) (g : S →+* T) (k : R →+* T)
     (hf : I ≤ J.comap f) (hg : J ≤ K.comap g) (hk : I ≤ K.comap k) (e : ∀ x, k x = g (f x))
@@ -121,7 +119,7 @@ theorem compMap_comp (I : Ideal R) (J : Ideal S) (K : Ideal T) (f : R →+* S) (
     GlobalTheory.AdicMaps.evalₐ_adicMap_mk J K g hg n _ (f y) (GlobalTheory.AdicMaps.evalₐ_adicMap_mk I J f hf n x y hy.symm), e]
 
 /- English proof (translation)
-Use `AdicCompletion.ext_evalₐ fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)`. Rewrite using `[GlobalTheory.AdicMaps.evalₐ_adicMap_mk I I f hf n x y hy.symm, e, hy]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem compMap_id (I : Ideal R) (f : R →+* R) (hf : I ≤ I.comap f) (e : ∀ x, f x = x)
     (x : AdicCompletion I R) : GlobalTheory.AdicMaps.adicMap I I f hf x = x := by
@@ -134,7 +132,7 @@ end
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `RingHom.congr_fun (IsLocalization.ringHom_ext (Submonoid.powers (l : Per.Ainf l)) (j := Per.extP k) (k := (Per.extP g).comp (Per.extP f)) (RingHom.ext fun y => ?_)) x` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, GlobalTheory.RingBasics.awayMap_algebraMap₂, e]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem awayMap_comp₂ (f g k : Per.Ainf l →+* Per.Ainf l) (e : ∀ x, k x = g (f x)) (x : Per.AinfP l) :
     Per.extP k x = Per.extP g (Per.extP f x) := by
@@ -143,7 +141,7 @@ theorem awayMap_comp₂ (f g k : Per.Ainf l →+* Per.Ainf l) (e : ∀ x, k x = 
   simp only [RingHom.comp_apply, GlobalTheory.RingBasics.awayMap_algebraMap₂, e]
 
 /- English proof (translation)
-Use `RingHom.congr_fun (IsLocalization.ringHom_ext (Submonoid.powers (l : Per.Ainf l)) (j := Per.extP f) (k := RingHom.id _) (RingHom.ext fun y => ?_)) x` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, GlobalTheory.RingBasics.awayMap_algebraMap₂, e, RingHom.id_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem awayMap_id₂ (f : Per.Ainf l →+* Per.Ainf l) (e : ∀ x, f x = x) (x : Per.AinfP l) :
     Per.extP f x = x := by
@@ -152,7 +150,7 @@ theorem awayMap_id₂ (f : Per.Ainf l →+* Per.Ainf l) (e : ∀ x, f x = x) (x 
   simp only [RingHom.comp_apply, GlobalTheory.RingBasics.awayMap_algebraMap₂, e, RingHom.id_apply]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.AdicMaps.exists_acris_completion l`. Conclude with `endo_ext_pt _ (Submodule.fg_span_singleton _) (algebraMap (Per.Acris0 l) (Per.Acris l)) e he f (span_le_comap_pt l f) φ ψ hφ hψ x`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem acris_ext_pt (f : Per.Acris0 l →+* Per.Acris0 l) (φ ψ : Per.Acris l →+* Per.Acris l)
     (hφ : ∀ r, φ (algebraMap (Per.Acris0 l) (Per.Acris l) r) = algebraMap (Per.Acris0 l) (Per.Acris l) (f r))
@@ -163,9 +161,7 @@ theorem acris_ext_pt (f : Per.Acris0 l →+* Per.Acris0 l) (φ ψ : Per.Acris l 
     (span_le_comap_pt l f) φ ψ hφ hψ x
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `GlobalTheory.RingIface.exists_bdRp_equiv l`. Establish `hfg : (Per.kerP l).FG`. Take `⟨ε, hε⟩` from `GlobalTheory.MemLoc.Model.exists_isEps l`. Rewrite using `[(GlobalTheory.MemLoc.thetaP_facts l).2.2.2.2.2.2 ε hε]`. Conclude with `Submodule.fg_span_singleton _`.
-
-Conclude with `endo_ext_pt _ hfg (algebraMap (Per.AinfP l) (Per.BdRp l)) e he f hf φ ψ hφ hψ x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdRp_ext_pt (f : Per.AinfP l →+* Per.AinfP l) (hf : Per.kerP l ≤ (Per.kerP l).comap f)
     (φ ψ : Per.BdRp l →+* Per.BdRp l)
@@ -180,7 +176,7 @@ theorem bdRp_ext_pt (f : Per.AinfP l →+* Per.AinfP l) (hf : Per.kerP l ≤ (Pe
   exact endo_ext_pt _ hfg (algebraMap (Per.AinfP l) (Per.BdRp l)) e he f hf φ ψ hφ hψ x
 
 /- English proof (translation)
-The claim follows from `acris_ext_pt ((Per.extP k).restrict _ _ hk.mem) K (G.comp F) (fun r => hk.env r) (fun r => by rw [RingHom.comp_apply, hf.env, hg.env] exact congrArg _ (Subtype.ext (awayMap_comp₂ f g k e r).symm)) x`.
+A detailed English derivation is pending.
 -/
 theorem extends_comp {f g k : Per.Ainf l →+* Per.Ainf l} {F G K : Per.Acris l →+* Per.Acris l}
     (hf : GlobalTheory.CrisMaps.Extends f F) (hg : GlobalTheory.CrisMaps.Extends g G) (hk : GlobalTheory.CrisMaps.Extends k K)
@@ -192,7 +188,7 @@ theorem extends_comp {f g k : Per.Ainf l →+* Per.Ainf l} {F G K : Per.Acris l 
       exact congrArg _ (Subtype.ext (awayMap_comp₂ f g k e r).symm)) x
 
 /- English proof (translation)
-The claim follows from `acris_ext_pt (RingHom.id _) F (RingHom.id _) (fun r => (hf.env r).trans (congrArg _ (Subtype.ext (awayMap_id₂ f e r)))) (fun _ => rfl) x`.
+A detailed English derivation is pending.
 -/
 theorem extends_id {f : Per.Ainf l →+* Per.Ainf l} {F : Per.Acris l →+* Per.Acris l}
     (hf : GlobalTheory.CrisMaps.Extends f F) (e : ∀ x, f x = x) (x : Per.Acris l) : F x = x :=
@@ -201,27 +197,27 @@ theorem extends_id {f : Per.Ainf l →+* Per.Ainf l} {F : Per.Acris l →+* Per.
     (fun _ => rfl) x
 
 /- English proof (translation)
-The claim follows from `extends_comp (GlobalTheory.CrisMaps.sigA_extends h) (GlobalTheory.CrisMaps.sigA_extends g) (GlobalTheory.CrisMaps.sigA_extends (g * h)) (GlobalTheory.RingBasics.σA_mul g h) x`.
+A detailed English derivation is pending.
 -/
 theorem sigA_mul (g h : Per.Gq l) (x : Per.Acris l) : sigA (g * h) x = sigA g (sigA h x) :=
   extends_comp (GlobalTheory.CrisMaps.sigA_extends h) (GlobalTheory.CrisMaps.sigA_extends g) (GlobalTheory.CrisMaps.sigA_extends (g * h))
     (GlobalTheory.RingBasics.σA_mul g h) x
 
 /- English proof (translation)
-The claim follows from `extends_id (GlobalTheory.CrisMaps.sigA_extends 1) GlobalTheory.RingBasics.σA_one x`.
+A detailed English derivation is pending.
 -/
 theorem sigA_one (x : Per.Acris l) : sigA 1 x = x :=
   extends_id (GlobalTheory.CrisMaps.sigA_extends 1) GlobalTheory.RingBasics.σA_one x
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.sigD_alg l g y`.
+A detailed English derivation is pending.
 -/
 theorem σD_alg (g : Per.Gq l) (y : Per.BdRp l) :
     Per.σD g (algebraMap (Per.BdRp l) (Per.BdR l) y) = algebraMap (Per.BdRp l) (Per.BdR l) (Per.σDp g y) :=
   GlobalTheory.RingIface.sigD_alg l g y
 
 /- English proof (translation)
-The claim follows from `bdRp_ext_pt (Per.extP (Per.σA (g * h))) (GlobalTheory.RingBasics.ker_σ (g * h)) (Per.σDp (g * h)) ((Per.σDp g).comp (Per.σDp h)) (GlobalTheory.RingIface.sigDp_alg l (g * h)) (fun r => by rw [RingHom.comp_apply, GlobalTheory.RingIface.sigDp_alg, GlobalTheory.RingIface.sigDp_alg, a …`.
+A detailed English derivation is pending.
 -/
 theorem σDp_mul (g h : Per.Gq l) (x : Per.BdRp l) : Per.σDp (g * h) x = Per.σDp g (Per.σDp h x) :=
   bdRp_ext_pt (Per.extP (Per.σA (g * h))) (GlobalTheory.RingBasics.ker_σ (g * h)) (Per.σDp (g * h)) ((Per.σDp g).comp (Per.σDp h))
@@ -231,7 +227,7 @@ theorem σDp_mul (g h : Per.Gq l) (x : Per.BdRp l) : Per.σDp (g * h) x = Per.σ
         awayMap_comp₂ _ _ _ (GlobalTheory.RingBasics.σA_mul g h)]) x
 
 /- English proof (translation)
-The claim follows from `bdRp_ext_pt (Per.extP (Per.σA (1 : Per.Gq l))) (GlobalTheory.RingBasics.ker_σ 1) (Per.σDp 1) (RingHom.id _) (GlobalTheory.RingIface.sigDp_alg l 1) (fun r => by rw [RingHom.id_apply, awayMap_id₂ _ GlobalTheory.RingBasics.σA_one]) x`.
+A detailed English derivation is pending.
 -/
 theorem σDp_one (x : Per.BdRp l) : Per.σDp 1 x = x :=
   bdRp_ext_pt (Per.extP (Per.σA (1 : Per.Gq l))) (GlobalTheory.RingBasics.ker_σ 1) (Per.σDp 1) (RingHom.id _)
@@ -239,7 +235,7 @@ theorem σDp_one (x : Per.BdRp l) : Per.σDp 1 x = x :=
     (fun r => by rw [RingHom.id_apply, awayMap_id₂ _ GlobalTheory.RingBasics.σA_one]) x
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.sigDp_alg l g a`.
+A detailed English derivation is pending.
 -/
 theorem σDp_alg (g : Per.Gq l) (a : Per.AinfP l) :
     Per.σDp g (algebraMap (Per.AinfP l) (Per.BdRp l) a) =
@@ -247,13 +243,13 @@ theorem σDp_alg (g : Per.Gq l) (a : Per.AinfP l) :
   GlobalTheory.RingIface.sigDp_alg l g a
 
 /- English proof (translation)
-Simplify using `only [aDp, RingHom.comp_apply, σDp_alg, GlobalTheory.RingBasics.awayMap_algebraMap₂]`.
+Simplify using the standard rewrite rules.
 -/
 theorem σDp_aDp (g : Per.Gq l) (a : Per.Ainf l) : Per.σDp g (aDp l a) = aDp l (Per.σA g a) := by
   simp only [aDp, RingHom.comp_apply, σDp_alg, GlobalTheory.RingBasics.awayMap_algebraMap₂]
 
 /- English proof (translation)
-Use `RingHom.congr_fun (GlobalTheory.CrisLoc.bdR_hom_ext l (f := Per.σD (g * h)) (g := (Per.σD g).comp (Per.σD h)) fun y => ?_) x` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, σD_alg, σDp_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem σD_mul (g h : Per.Gq l) (x : Per.BdR l) : Per.σD (g * h) x = Per.σD g (Per.σD h x) := by
   refine RingHom.congr_fun (GlobalTheory.CrisLoc.bdR_hom_ext l
@@ -261,7 +257,7 @@ theorem σD_mul (g h : Per.Gq l) (x : Per.BdR l) : Per.σD (g * h) x = Per.σD g
   simp only [RingHom.comp_apply, σD_alg, σDp_mul]
 
 /- English proof (translation)
-Use `RingHom.congr_fun (GlobalTheory.CrisLoc.bdR_hom_ext l (f := Per.σD 1) (g := RingHom.id _) fun y => ?_) x` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, σD_alg, σDp_one, RingHom.id_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem σD_one (x : Per.BdR l) : Per.σD 1 x = x := by
   refine RingHom.congr_fun (GlobalTheory.CrisLoc.bdR_hom_ext l
@@ -269,11 +265,11 @@ theorem σD_one (x : Per.BdR l) : Per.σD 1 x = x := by
   simp only [RingHom.comp_apply, σD_alg, σDp_one, RingHom.id_apply]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `WittVector.ext fun m => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec (m + 1) z)`. Establish `hz : z = (z.appr (m + 1) : ℤ_[l]) + w * (l : ℤ_[l]) ^ (m + 1)` using `by rw [hw]; ring`. Establish `h : F (Per.zA l z) - Per.zA l z ∈ Ideal.span {((l : ℕ) : Per.Ainf l) ^ (m + 1)}`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.mem_span_singleton'.2 ⟨F (Per.zA l w) - Per.zA l w, ?_⟩` and prove the remaining obligations. Generalize the expression as in `z.appr (m + 1) = a at hz`. Rewrite using `[hz]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[(WittVector.mem_span_p_pow_iff_le_coeff_eq_zero _ _).1 h m (Nat.lt_succ_self m), WittVector.zero_coeff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem endo_zA_pt (F : Per.Ainf l →+* Per.Ainf l) (z : ℤ_[l]) : F (Per.zA l z) = Per.zA l z := by
   rw [← sub_eq_zero]
@@ -289,14 +285,14 @@ theorem endo_zA_pt (F : Per.Ainf l →+* Per.Ainf l) (z : ℤ_[l]) : F (Per.zA l
   rw [(WittVector.mem_span_p_pow_iff_le_coeff_eq_zero _ _).1 h m (Nat.lt_succ_self m), WittVector.zero_coeff]
 
 /- English proof (translation)
-The claim follows from `endo_zA_pt (WittVector.map f) z`.
+A detailed English derivation is pending.
 -/
 theorem map_zA (f : Per.Fl l →+* Per.Fl l) (z : ℤ_[l]) :
     WittVector.map f (Per.zA l z) = Per.zA l z :=
   endo_zA_pt (WittVector.map f) z
 
 /- English proof (translation)
-Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RingIface.phiA_coeff, GlobalTheory.RingIface.sigA_coeff, GlobalTheory.RingIface.sigA_coeff, GlobalTheory.RingIface.phiA_coeff, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem φA_σA (g : Per.Gq l) (a : Per.Ainf l) : Per.φA l (Per.σA g a) = Per.σA g (Per.φA l a) := by
   refine WittVector.ext fun n => ?_
@@ -304,7 +300,7 @@ theorem φA_σA (g : Per.Gq l) (a : Per.Ainf l) : Per.φA l (Per.σA g a) = Per.
     map_pow]
 
 /- English proof (translation)
-Use `RingHom.congr_fun (GlobalTheory.CrisLoc.bcris_hom_ext l (f := (Per.φB l).comp (Per.σB g)) (g := (Per.σB g).comp (Per.φB l)) fun y => ?_) x` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, GlobalTheory.CrisMaps.φB_phiA, GlobalTheory.CrisMaps.σB_sigA, GlobalTheory.CrisMaps.phiA_sigA]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem φB_σB (g : Per.Gq l) (x : Per.Bcris l) : Per.φB l (Per.σB g x) = Per.σB g (Per.φB l x) := by
   refine RingHom.congr_fun (GlobalTheory.CrisLoc.bcris_hom_ext l
@@ -312,7 +308,7 @@ theorem φB_σB (g : Per.Gq l) (x : Per.Bcris l) : Per.φB l (Per.σB g x) = Per
   simp only [RingHom.comp_apply, GlobalTheory.CrisMaps.φB_phiA, GlobalTheory.CrisMaps.σB_sigA, GlobalTheory.CrisMaps.phiA_sigA]
 
 /- English proof (translation)
-Use `RingHom.congr_fun (GlobalTheory.CrisLoc.bcris_hom_ext l (f := Per.σB (g * h)) (g := (Per.σB g).comp (Per.σB h)) fun y => ?_) x` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, GlobalTheory.CrisMaps.σB_sigA, sigA_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem σB_mul (g h : Per.Gq l) (x : Per.Bcris l) : Per.σB (g * h) x = Per.σB g (Per.σB h x) := by
   refine RingHom.congr_fun (GlobalTheory.CrisLoc.bcris_hom_ext l
@@ -320,7 +316,7 @@ theorem σB_mul (g h : Per.Gq l) (x : Per.Bcris l) : Per.σB (g * h) x = Per.σB
   simp only [RingHom.comp_apply, GlobalTheory.CrisMaps.σB_sigA, sigA_mul]
 
 /- English proof (translation)
-Use `RingHom.congr_fun (GlobalTheory.CrisLoc.bcris_hom_ext l (f := Per.σB 1) (g := RingHom.id _) fun y => ?_) x` and prove the remaining obligations. Simplify using `only [GlobalTheory.CrisMaps.σB_sigA, sigA_one, RingHom.id_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem σB_one (x : Per.Bcris l) : Per.σB 1 x = x := by
   refine RingHom.congr_fun (GlobalTheory.CrisLoc.bcris_hom_ext l
@@ -328,19 +324,19 @@ theorem σB_one (x : Per.Bcris l) : Per.σB 1 x = x := by
   simp only [GlobalTheory.CrisMaps.σB_sigA, sigA_one, RingHom.id_apply]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.RingIface.aB_eq_alg, GlobalTheory.RingIface.aB_eq_alg, GlobalTheory.CrisMaps.σB_sigA, (GlobalTheory.CrisMaps.sigA_extends g).alg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σB_aB (g : Per.Gq l) (a : Per.Ainf l) : Per.σB g (Per.aB l a) = Per.aB l (Per.σA g a) := by
   rw [GlobalTheory.RingIface.aB_eq_alg, GlobalTheory.RingIface.aB_eq_alg, GlobalTheory.CrisMaps.σB_sigA, (GlobalTheory.CrisMaps.sigA_extends g).alg]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.RingIface.aB_eq_alg, GlobalTheory.RingIface.aB_eq_alg, GlobalTheory.CrisMaps.φB_phiA, (GlobalTheory.CrisMaps.phiA_extends l).alg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem φB_aB (a : Per.Ainf l) : Per.φB l (Per.aB l a) = Per.aB l (Per.φA l a) := by
   rw [GlobalTheory.RingIface.aB_eq_alg, GlobalTheory.RingIface.aB_eq_alg, GlobalTheory.CrisMaps.φB_phiA, (GlobalTheory.CrisMaps.phiA_extends l).alg]
 
 /- English proof (translation)
-Introduce `l _` and use `⟨σB_mul, σB_one, σD_mul, σD_one, φB_σB, σB_aB, φB_aB, fun g => endo_zA_pt (Per.σA g), endo_zA_pt (Per.φA l), σD_alg, σDp_aDp, GlobalTheory.CrisMaps.σB_sigA, GlobalTheory.CrisMaps.φB_phiA l⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem act_laws : ∀ (l : ℕ) [Fact l.Prime], (∀ (g h : Per.Gq l) (x : Per.Bcris l), Per.σB (g * h) x = Per.σB g (Per.σB h x)) ∧
     (∀ x : Per.Bcris l, Per.σB 1 x = x) ∧

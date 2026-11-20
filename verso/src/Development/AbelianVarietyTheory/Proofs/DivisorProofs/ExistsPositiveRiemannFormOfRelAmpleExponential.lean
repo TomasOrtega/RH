@@ -16,7 +16,7 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[smul_dotProduct, zsmul_eq_mul, Complex.mul_im]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem im_dot_mulVec_star_zsmul_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (c : ℤ) (v w : Fin g → ℂ) :
     ((c • v) ⬝ᵥ Hm *ᵥ star w).im = c * (v ⬝ᵥ Hm *ᵥ star w).im := by
@@ -24,7 +24,7 @@ theorem im_dot_mulVec_star_zsmul_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ
   simp
 
 /- English proof (translation)
-Rewrite using `[star_zsmul, Matrix.mulVec_smul, dotProduct_smul, zsmul_eq_mul, Complex.mul_im]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem im_dot_mulVec_star_zsmul_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (c : ℤ) (v w : Fin g → ℂ) :
     (v ⬝ᵥ Hm *ᵥ star (c • w)).im = c * (v ⬝ᵥ Hm *ᵥ star w).im := by
@@ -32,21 +32,17 @@ theorem im_dot_mulVec_star_zsmul_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) �
   simp
 
 /- English proof (translation)
-Introduce `X G _ _ g hG hsm L hL hamp y e La _ P he hP hker`. Take `⟨Λ, hd, hfull, hΛ⟩` from `GlobalTheory.T.complexFibreExponential_kernel_full_lattice X G g hG hsm y e he`. Take `⟨hadd, honto, hhol, -, -⟩` from `he`. Use `letI : GrpObj ((Over.pullback y).obj G) := Functor.grpObjObj`. Use `haveI : IsCommMonObj ((Over.pullback y).obj G) := Functor.isCommMonObj_obj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hp : IsGrpPullback ((Over.pullback y).obj G) G y (pullback.fst G.hom y)` using `isGrpPullback_pullback G y`. Establish `hLA : (L.pull (pullback.fst G.hom y)).IsLB` using `LB.isLB_pull hL _`. Take `⟨hA, hampA, -⟩` from `GlobalTheory.pol_pull X (Sp ℂ) G ((Over.pullback y).obj G) y (pullback.fst G.hom y) L (L.pull (pullback.fst G.hom y)) hL hLA hG hp (GlobalTheory.PolBaseChange.lbIso_refl hLA)`. Set `L₀ : LB G.left` to `⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩`. Set `u₀ : HolUnif ((Over.pullback y).obj G) (L₀.pull (pullback.fst G.hom y)) g` to `GlobalTheory.OrthoMetric.fibreUnif hp (L := L₀) e Λ.toAddSubgroup (fun _ _ => 1) hadd honto hΛ hd hfull hhol (fun _ => differentiableOn_const _) (fun _ _ _ => one_ne_zero) (fun j j' z hz => by show (1 : ℂ) = valAt' (e z).left (⊤ ⊓ ⊤) (1 : Γ(G.left, ⊤ ⊓ ⊤)ˣ).val * 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_one]`. Conclude with `(valAt'_one _ hz).symm)`. Take `⟨u, Hm, χ, hex, hF⟩` from `GlobalTheory.exists_isFactorAH_frame_of_unif _ hA _ g u₀ _ hLA`. Establish `hpos` using `GlobalTheory.AmpleHermPos.re_form_pos_of_relAmple _ hA _ hLA (hampA hamp) g u Hm χ hF.1 hF.2.1 hF.2.2`. Establish `hAH : u.IsAH Hm χ` using `GlobalTheory.TorusRM.isAH_of_isFactorAH hF hpos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `huΛ : ∀ z, z ∈ u.Λ ↔ z ∈ P.range` using `fun z => by`. Rewrite using `[← u.ker, hex]`. Conclude with `(u₀.ker z).trans ((hΛ z).symm.trans (hker z))`. Establish `hmem : ∀ a, P a ∈ u.Λ` using `fun a => (huΛ _).2 ⟨a, rfl⟩`. Use `choose N hN using fun a b => GlobalTheory.TorusRM.ahFactor_im_int g _ _ u Hm χ hLA hF (P a) (hmem a) (P b) (hmem b)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `EF : LinearMap.BilinForm ℤ La` to `LinearMap.mk₂ ℤ N (fun a a' b => Int.cast_injective (α := ℝ) (by push_cast; rw [← hN, ← hN, ← hN, map_add, add_dotProduct, Complex.add_im])) (fun c a b => Int.cast_injective (α := ℝ) (by`. Rewrite using `[smul_eq_mul, Int.cast_mul, ← hN, ← hN, map_zsmul]`. Conclude with `im_dot_mulVec_star_zsmul_left Hm c _ _))`. Use the proof step `(fun a b b' => Int.cast_injective (α := ℝ) (by push_cast; rw [← hN, ← hN, ← hN, map_add, star_add, Matrix.mulVec_add, dotProduct_add, Complex.add_im]))`. Use the proof step `(fun c a b => Int.cast_injective (α := ℝ) (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[smul_eq_mul, Int.cast_mul, ← hN, ← hN, map_zsmul]`. Conclude with `im_dot_mulVec_star_zsmul_right Hm c _ _))`. Establish `hEF : ∀ a b, EF a b = N a b` using `fun _ _ => rfl`. Establish `tr : ∀ (t : Sp ℂ ⟶ X), (𝟙_ (Over (Sp ℂ))).hom ≫ y = t → ∀ (k : ℤ) (x x' : 𝟙_ (Over (Sp ℂ)) ⟶ (Over.pullback y).obj G) (x₀ x₀' : Over.mk t ⟶ G) (c : Γ(Sp ℂ, ⊤)ˣ), x₀.left = x.left ≫ pullback.fst G.hom y → x₀'.left = x'.left ≫ pullback.fst G.hom y → Out.WeilIs _ (L.pull (pullback.f …`. Introduce `t ht`.
-
-Substitute `ht` using the available equality. Introduce `k x x' x₀ x₀' c h1 h2 hw`. Conclude with `(GlobalTheory.weilIs_iff_of_isGrpPullback_comm X (Sp ℂ) G _ y _ L _ hL hLA hp (GlobalTheory.PolBaseChange.lbIso_refl hLA) (𝟙_ _) k x x' x₀ x₀' c h1 h2).1 hw`. Establish `hexl : ∀ z, (e z).left = (u.ex z).left ≫ pullback.fst G.hom y` using `fun z => by`. Rewrite using `[hex]`.
-
-Conclude with `(GlobalTheory.OrthoMetric.liftPt_comp hp (e z)).symm`. Use `⟨Hm, EF, hF.1, fun z hz => hpos z hz, fun x x' => (hN x x').trans (by rw [hEF]), ?_⟩` and prove the remaining obligations. Introduce `k a b c hk hc`. Establish `hw` using `GlobalTheory.AHWeilAny.weilIs_exp_riemannForm _ hA _ hLA g u Hm χ hAH k (P a) (P b) c hk (hmem a) (hmem b) (by rw [hc, hN a b, hEF, Complex.ofReal_intCast])`. Conclude with `tr y (Category.id_comp y) k _ _ _ _ _ (hexl _) (hexl _) hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_riemannForm_of_relAmple : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (g : ℕ), IsAbelianScheme G → SmoothOfRelativeDimension g G.hom → ∀ (L : LB G.left), L.IsLB → Out.RelAmple G L → ∀ (y : Sp ℂ ⟶ X) (e : (Fin g → ℂ) → (Over.mk y ⟶ G)) (La : Type) [AddCommGroup La] (P : La →+ (Fin g → ℂ)), IsExp y e → Function.Injective P → (∀ z, e z = 1 ↔ z ∈ P.range) → ∃ (Hm : Matrix (Fin g) (Fin g) ℂ) (EF : LinearMap.BilinForm ℤ La), Hm.IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) ∧ (∀ x x', (hermForm Hm (P x) (P x')).im = EF x x') ∧ (∀ (k : ℕ) (a b : La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (EF a b : ℂ) / k) → Out.WeilIs G L k (e ((k : ℂ)⁻¹ • P a)) (e ((k : ℂ)⁻¹ • P b)) (unitOn c)) := by
   intro X G _ _ g hG hsm L hL hamp y e La _ P he hP hker

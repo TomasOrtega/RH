@@ -75,9 +75,9 @@ def JDRvChainM : Prop :=
 def JDRvConseq : Prop := JDRvTop → JDRvStepA → JDRvStepB → JDRvChainM
 
 /- English proof (translation)
-Establish `hCh` using `hC hT hA hS`. Introduce `k r`. Take `⟨σ, hσ, hβ⟩` from `hB k r`. Use `⟨-σ⁻¹, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ z z' π π' D Y hz hz' hD J hJ c hc g hg hcg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hβ (Wq →L[ℂ] Wp) z z' Y J hz c hc g hg`. Establish `h2` using `hCh Wp Wq k r z z' π π' D Y hz hz' hD J hJ c hc g hg hcg`. Simplify using `only [FNv, Q.resG] at h2`. Simplify using `only [Q.resG, rhvGrp, dMul, drF]`. Rewrite using `[h1, smul_smul, smul_smul, show ∀ a b : ℂ, a * -σ⁻¹ * (σ * b) = -b * a from fun a b => by field_simp, ← smul_smul, h2, smul_neg, neg_smul, neg_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem jDRRadM_of_parts (hB : JDRvBeta) (hT : JDRvTop) (hA : JDRvStepA) (hS : JDRvStepB) (hC : JDRvConseq) :
     JDRRadM := by

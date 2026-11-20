@@ -13,12 +13,12 @@ import Development.WeilBound.RepresentationTheoryGL.GaloisPermutationReps.Subquo
 namespace PositivityTheory.Rg.DzCount
 
 /- English proof (translation)
-The claim follows from `st3 st1a st1b st2 st3a`.
+A detailed English derivation is pending.
 -/
 theorem depth_zero_intermediate_holds : St3 := st3 st1a st1b st2 st3a
 
 /- English proof (translation)
-The claim follows from `st8a st4 st5 B.st6 st7`.
+A detailed English derivation is pending.
 -/
 theorem depth_zero_count_holds : St8a := st8a st4 st5 B.st6 st7
 

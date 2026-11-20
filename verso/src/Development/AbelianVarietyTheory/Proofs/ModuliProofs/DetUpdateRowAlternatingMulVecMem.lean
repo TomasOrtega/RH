@@ -5,15 +5,13 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set m' := m.updateRow p (Pi.single i 1) with hm'`. Establish `h1 : m'.adjugate.mulVec (m'.mulVec x) = m'.det • x`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `h2 : ∑ q, m'.adjugate j q * m'.mulVec x q = m'.det * x j`. Use `congrFun h1 j` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Matrix.mulVec, dotProduct]`. Rewrite `h2` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ p)]`. Establish `h3 : m'.adjugate j p = (m.updateRow p (Pi.single j 1)).det`. Rewrite using `[Matrix.adjugate_apply, hm', Matrix.updateRow_idem]`. Establish `h4 : m'.mulVec x p = x i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hm', Matrix.mulVec]`. Rewrite `h2` using `[h3, h4]`. Establish `h5 : ∑ q ∈ Finset.univ.erase p, m'.adjugate j q * m'.mulVec x q ∈ I`. Use `I.sum_mem fun q hq => I.mul_mem_left _ ?_` and prove the remaining obligations. Establish `hq' : q ≠ p` using `Finset.ne_of_mem_erase hq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: m'.mulVec x q = m.mulVec x q`. Simplify using `[hm', Matrix.mulVec, Matrix.updateRow_ne hq']`. Rewrite using `[this]`. Conclude with `hm q hq'`. Use `h5 using 1` and compare the differences between its conclusion and the goal.
-
-Take the linear combination `-h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem det_updateRow_single_mul_sub_mem {T : Type} [CommRing T] {g : ℕ} (x : Fin g → T)
     (I : Ideal T) (m : Matrix (Fin g) (Fin g) T) (p : Fin g)
@@ -42,17 +40,17 @@ theorem det_updateRow_single_mul_sub_mem {T : Type} [CommRing T] {g : ℕ} (x : 
   linear_combination -h2
 
 /- English proof (translation)
-Establish `h1 : (m.updateRow p (s.mulVec x)).det = ∑ ij : Fin g × Fin g, s ij.1 ij.2 * (x ij.2 * (m.updateRow p (Pi.single ij.1 1)).det)`. Establish `e : ∀ v : Fin g → T, (m.updateRow p v).det = ∑ i, v i * (m.updateRow p (Pi.single i 1)).det`. Introduce `v`. Use `Matrix.cramer_transpose_apply m v p` as an intermediate fact. Rewrite using `[← this, Matrix.cramer_eq_adjugate_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.adjugate_transpose, Matrix.transpose_apply, Matrix.adjugate_apply, mul_comm]`. Rewrite using `[e, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_mul, mul_assoc]`. Rewrite using `[h1, ← Ideal.Quotient.eq_zero_iff_mem, map_sum]`. Use `Finset.sum_ninvolution Prod.swap ?_ ?_ (fun _ => Finset.mem_univ _) Prod.swap_swap` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩`. Rewrite using `[← map_add, Ideal.Quotient.eq_zero_iff_mem]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hji : s j i = - s i j`. Use `congrFun (congrFun hs i) j` as an intermediate fact. Simplify using `using this`. Use `I.mul_mem_left (s i j) (det_updateRow_single_mul_sub_mem x I m p hm i j)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [Prod.fst_swap, Prod.snd_swap, hji]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨i, j⟩ h e`. Apply `h` to reduce the goal to its premises. Establish `: j = i` using `congrArg Prod.fst e`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using `[hd]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem det_updateRow_alternating_mulVec_mem {T : Type} [CommRing T] {g : ℕ} (x : Fin g → T)
     (I : Ideal T) (m : Matrix (Fin g) (Fin g) T) (p : Fin g)
@@ -91,23 +89,23 @@ theorem det_updateRow_alternating_mulVec_mem {T : Type} [CommRing T] {g : ℕ} (
     simp [hd]
 
 /- English proof (translation)
-Introduce `T _ g x hx c c' hc`. Use `set I := Ideal.span (Set.range (c.mulVec x)) with hI`. Set `M : Finset (Fin g) → Matrix (Fin g) (Fin g) T` to `fun S => Matrix.of fun i => if i ∈ S then c' i else c i`. Establish `hM : ∀ S q, (M S).mulVec x q = c.mulVec x q`. Introduce `S q`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : q ∈ S`. Rewrite using `[hc]`. Simplify using `[M, Matrix.mulVec, h]`. Simplify using `[M, Matrix.mulVec, h]`. Establish `key : ∀ S : Finset (Fin g), c.det - (M S).det ∈ I`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Establish `: M ∅ = c` using `by ext i j; simp [M]`. Simplify using `[this]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `insert p S hp ih`. Take `⟨s, hs, hd, hr⟩` from `hx (c p - c' p) (by`. Use `congrFun hc p` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Simplify using `only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mpr this)`. Establish `h1` using `det_updateRow_alternating_mulVec_mem x I (M S) p (fun q _ => by rw [hM]; exact Ideal.subset_span ⟨q, rfl⟩) s hs hd`. Rewrite `h1` using `[← hr]`. Establish `e1 : (M S).updateRow p (c' p) = M (insert p S)`. Use extensionality with `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : i = p`. Substitute `h` using the available equality. Simplify using `[M]`. Simplify using `[M, Matrix.updateRow_ne h, h]`. Establish `e2 : (M S).updateRow p (c p) = M S`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `i j`. Distinguish the cases in `h : i = p`. Substitute `h` using the available equality. Simplify using `[M, hp]`. Simplify using `[Matrix.updateRow_ne h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3` using `Matrix.det_updateRow_add (M S) p (c p - c' p) (c' p)`. Rewrite `e3` using `[sub_add_cancel, e1, e2]`. Use `I.add_mem ih h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `e3`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `key Finset.univ` as an intermediate fact. Establish `e : M Finset.univ = c'` using `by ext i j; simp [M]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem det_sub_det_mem_span_of_mulVec_eq :
     ∀ (T : Type) [CommRing T] (g : ℕ) (x : Fin g → T), (∀ r : Fin g → _, ∑ i, r i * x i = 0 → ∃ s : Matrix (Fin g) (Fin g) _, s.transpose = -s ∧ (∀ i, s i i = 0) ∧ r = s.mulVec x) → ∀ c c' : Matrix (Fin g) (Fin g) T, c.mulVec x = c'.mulVec x → c.det - c'.det ∈ Ideal.span (Set.range (c.mulVec x)) := by

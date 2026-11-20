@@ -11,9 +11,9 @@ namespace PositivityTheory.KB
 
 open NaturalTheta in
 /- English proof (translation)
-Introduce `k`. Establish `h0 : ∀ (G : Type) [Group G] (m : ℕ), bd G m ∘ₗ (eC G (m + 1)).toLinearMap = (eC G m).toLinearMap ∘ₗ (Dz G m).baseChange ℝ` using `fun G _ m => by rw [Dz_eq_bdZ]; exact bd_eC G m`. Use `⟨fun G _ => th (Dz G k) (pz G k) (eC G (k + 1)) (eC G k) (bd G k) (h0 G k), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `G _`. Conclude with `th_surjective _ _ _ _ _ (pz_surjective G k) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `G _ z`. Conclude with `th_eq_zero_iff (Dz G (k + 1)) (Dz G k) (pz G k) (eC G (k + 2)) (eC G (k + 1)) (eC G k) (bd G (k + 1)) (bd G k) (Dz_Dz G k) (pz_eq_zero_iff G k) (pz_surjective G k) (h0 G (k + 1)) (h0 G k) z`. Introduce `G H _ _ f z z' hz`. Conclude with `th_natural _ _ _ _ _ _ _ _ _ _ (h0 G k) (h0 H k) _ _ _ (cmap_eC G f (k + 1)) (map_mem_ker k f) (pz_natural k f) z z' hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sBridge_of : SBridge := by
   intro k

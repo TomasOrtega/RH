@@ -38,14 +38,14 @@ def latLevel (W : Spc F E d) : Subgroup (UA σ W.J) where
     exact (hx' w z hz).1
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latLevel {W : Spc F E d} {k : UA σ W.J} : k ∈ latLevel σ W ↔ k ∈ GlobalTheory.ThKAdm.FinPt σ W ∧
     ∀ w : Pl F, ∀ z ∈ GlobalTheory.InertSph.latAt W w,
       mat k *ᵥ z ∈ GlobalTheory.InertSph.latAt W w ∧ mat k⁻¹ *ᵥ z ∈ GlobalTheory.InertSph.latAt W w := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem latLevel_le (W : Spc F E d) : (latLevel σ W : Set (UA σ W.J)) ⊆ GlobalTheory.ThKAdm.FinPt σ W := fun _ h => h.1
 

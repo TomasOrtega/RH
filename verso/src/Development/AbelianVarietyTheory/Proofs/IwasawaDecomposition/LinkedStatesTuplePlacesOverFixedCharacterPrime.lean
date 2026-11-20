@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.SerMove.Places
 
 /- English proof (translation)
-Establish `hle : u.asIdeal ≤ u'.asIdeal` using `fun y hy => by`. Rewrite `hy` using `[← hs u]`. Rewrite using `[← hs u']`. Take `⟨c', hc', e⟩` from `h _ hy`. Establish `: c' = algebraMap (𝓞 X.F) (𝓞 X.E) y` using `RingOfIntegers.ext (e.trans (hX.star_F (y : X.F)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hc'` using `[this]`. Conclude with `hc'`. Rewrite using `[HeightOneSpectrum.ext (u.isMaximal.eq_of_le u'.isPrime.ne_top hle)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sel_eq_of_conj {X : Formalism.L2.Col.Fields} (hX : X.Ok) {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
     (hs : Formalism.L2.Col.IsSel X sel) {u u' : HeightOneSpectrum (𝓞 X.F)}
@@ -31,7 +31,7 @@ theorem sel_eq_of_conj {X : Formalism.L2.Col.Fields} (hX : X.Ok) {sel : HeightOn
   rw [HeightOneSpectrum.ext (u.isMaximal.eq_of_le u'.isPrime.ne_top hle)]
 
 /- English proof (translation)
-The claim follows from `forall₂_congr fun x hx => by rw [HChar.loc_mul, h' x hx, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem unrAt_mul_iff {L : Type} [Field L] [NumberField L] {χ χ' : HChar L} {v : HeightOneSpectrum (𝓞 L)} (h' : χ'.UnrAt v) :
     (χ * χ').UnrAt v ↔ χ.UnrAt v :=
@@ -43,9 +43,9 @@ def OverDel {P : Pre} (Q : HeightOneSpectrum (𝓞 P.host.E)) : Prop :=
   ((P.host.pde : ℕ) : 𝓞 P.host.E) ∈ Q.asIdeal ∨ ((P.host.pde' : ℕ) : 𝓞 P.host.E) ∈ Q.asIdeal
 
 /- English proof (translation)
-Use `unrAt_mul_iff ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Take `⟨-, hpr, -, hnot⟩` from `(T.psi_tw v).2.2.2 Q h`. Break down `hQ with hQ | hQ` into its components or cases. Distinguish the cases in `e : Ideal.absNorm Q.asIdeal = B.host.pde`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Conclude with `hnot (Or.inr (Or.inr (Or.inl e)))`. Conclude with `GlobalTheory.RowEx.DatTw.not_two_primes Q.asIdeal hpr B.host.pde_prime e (Ideal.absNorm_mem _) hQ`. Distinguish the cases in `e : Ideal.absNorm Q.asIdeal = B.host.pde'`. Conclude with `hnot (Or.inr (Or.inr (Or.inr (Or.inl e))))`. Conclude with `GlobalTheory.RowEx.DatTw.not_two_primes Q.asIdeal hpr B.host.pde'_prime e (Ideal.absNorm_mem _) hQ`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem unrAt_xiTw_iff {B : Base} (T : TwDat B) (f : Top.Fr B.toPre) (v : B.places.Pl) {Q : HeightOneSpectrum (𝓞 B.host.E)}
     (hQ : OverDel (P := B.toPre) Q) : (T.xiTw f v).UnrAt Q ↔ (delAt f (B.places.resChar v)).UnrAt Q := by
@@ -61,7 +61,7 @@ theorem unrAt_xiTw_iff {B : Base} (T : TwDat B) (f : Top.Fr B.toPre) (v : B.plac
     · exact GlobalTheory.RowEx.DatTw.not_two_primes Q.asIdeal hpr B.host.pde'_prime e (Ideal.absNorm_mem _) hQ
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `hf`. Consider the cases of `hs`. Conclude with `⟨Q', HEq.rfl, h1, h2, h3⟩`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem transport {P P' : Pre} (h : P' = P) {f : Top.Fr P} {f' : Top.Fr P'} (hf : HEq f' f)
     {sel : HeightOneSpectrum (𝓞 P.host.F) → HeightOneSpectrum (𝓞 P.host.E)}
@@ -76,9 +76,9 @@ theorem transport {P P' : Pre} (h : P' = P) {f : Top.Fr P} {f' : Top.Fr P'} (hf 
 variable {B : Base} {f : Top.Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {hX : B.fields.Ok} {Wt : Set B.places.Pl}
 
 /- English proof (translation)
-Establish `hr` using `(z.lev.is.Q_ram t Q).2 (Or.inl hQ)`. Establish `hq : Q ∈ w.I.Q (ixOf w.I (usedOf w.I T Wt) t)` using `(iff_of_eq (congrArg (Q ∈ ·) (z.lev.Q t))).1 hQ`. Use `⟨?_, (w.I.exists_of_mem_Q hq).imp fun u hu => hu.2.1⟩` and prove the remaining obligations. Break down `(mem_range_ixOf w.I).1 ⟨t, rfl⟩ with h | ⟨v, hv, h⟩` into its components or cases. Rewrite `hq` using `[h, w.I.twistPrimes_reference_tuple_eq_empty]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hq (Finset.notMem_empty _)`. Use `⟨v, hv, fun hu => hr ?_⟩` and prove the remaining obligations. Establish `e : z.R.xiH t = T.xiTw f v` using `(z.lev.xiH t).trans (h.trans (congrArg (T.xiTw · v) w.C_eq))`. Conclude with `(iff_of_eq (congrArg (fun c : HChar B.host.E => c.UnrAt Q) e)).2 hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_Q (z : Dat (w.st Z) w.I hX T Wt) {t : TupU w.I (usedOf w.I T Wt)} {Q : HeightOneSpectrum (𝓞 B.host.E)}
     (hQ : Q ∈ z.R.Q t) : (∃ v ∈ Wt, ¬ (T.xiTw f v).UnrAt Q) ∧ ∃ u, w.I.sel u = Q := by
@@ -93,11 +93,9 @@ theorem exists_of_mem_Q (z : Dat (w.st Z) w.I hX T Wt) {t : TupU w.I (usedOf w.I
     exact (iff_of_eq (congrArg (fun c : HChar B.host.E => c.UnrAt Q) e)).2 hu
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : T.xiTw f v ∈ Set.range w.I.xi := by`. Rewrite using `[w.xi_range]`. Conclude with `Or.inr ⟨v, rfl⟩`. Take `⟨t, ht⟩` from `(mem_range_ixOf w.I (U := usedOf w.I T Wt) (a := a)).2 (Or.inr ⟨v, hv, ha.trans (congrArg (T.xiTw · v) w.C_eq.symm)⟩)`. Establish `e : z.R.xiH t = T.xiTw f v` using `(z.lev.xiH t).trans ((congrArg w.I.xi ht).trans ha)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Break down `(z.lev.is.Q_ram t Q).1 (fun h => hr ((iff_of_eq (congrArg (fun c : HChar B.host.E => c.UnrAt Q) e)).1 h)) with h | ⟨Q₁, h, hc⟩` into its components or cases. Conclude with `h`. Take `⟨u₁, -, rfl, -⟩` from `w.I.exists_of_mem_Q ((iff_of_eq (congrArg (Q₁ ∈ ·) (z.lev.Q t))).1 h)`. Take `⟨u, rfl⟩` from `hu`.
-
-Conclude with `(iff_of_eq (congrArg (· ∈ z.R.Q t) (sel_eq_of_conj hX w.ok.sel_ok hc))).1 h`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_mem_Q (z : Dat (w.st Z) w.I hX T Wt) {v : B.places.Pl} (hv : v ∈ Wt) {Q : HeightOneSpectrum (𝓞 B.host.E)}
     (hr : ¬ (T.xiTw f v).UnrAt Q) (hu : ∃ u, w.I.sel u = Q) : ∃ t, Q ∈ z.R.Q t := by
@@ -116,11 +114,11 @@ theorem exists_mem_Q (z : Dat (w.st Z) w.I hX T Wt) {v : B.places.Pl} (hv : v �
     exact (iff_of_eq (congrArg (· ∈ z.R.Q t) (sel_eq_of_conj hX w.ok.sel_ok hc))).1 h
 
 /- English proof (translation)
-Introduce `K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a' i' t' Q' hQ hD`. Establish `h1 : Q' ∈ x'.m.z.R.Q t'` using `hQ`. Take `⟨⟨v', hv', hr⟩, hu⟩` from `exists_of_mem_Q x'.m.z h1`. Establish `hD' : OverDel (P` using `B'.toPre) Q' := by`. Establish `h2` using `(iff_of_eq (congrArg (Q' ∈ ·) ((Dof x').ntw.pD_eq i'))).1 hD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs at h2`. Conclude with `Or.inr h2`. Conclude with `Or.inl h2`. Take `⟨Q, hh, h2, h3, h4⟩` from `transport l.enl.1 l.fr l.sel (B'.places.resChar v') hD' (fun h => hr ((unrAt_xiTw_iff T' f' v' hD').2 h)) hu`. Rewrite `h3` using `[← GlobalTheory.Mem.Top.TwChar.resChar_plUnder l.enl v']`.
+Prove the second alternative. Prove the first alternative. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `exists_mem_Q x.m.z ((GlobalTheory.HeightCounting.Up.CopyEx.mem_Wt_iff l.enl l.ext v').2 hv') (fun h => h3 ((unrAt_xiTw_iff T f _ h2).1 h)) h4`. Conclude with `⟨t, Q, ht, hh⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem plCl_of_link : ∀ {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'} (x : St P) (x' : St P') (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0) (g : Geo x) (g' : Geo x'), Link x x' ι e g g' → ∀ (hg : GlobalTheory.RealGeo.InGeo g) (hg' : GlobalTheory.RealGeo.InGeo g') (a : BigHost (Dof x)) (a' : BigHost (Dof x')), PlCl (sideAt x g hg a) (sideAt x' g' hg' a') := by
   intro K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a' i' t' Q' hQ hD

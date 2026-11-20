@@ -24,7 +24,7 @@ def gsRealFamily (v : {v : InfinitePlace K.1 // v.IsReal}) :
   ⟨decompHomS v.1.Completion S (ιr v), continuous_decompHomS (Kv := v.1.Completion) S (ιr v)⟩
 
 /- English proof (translation)
-The claim follows from `decompHom_apply ((ιr v).comp (maxUnramifiedOutside K.1 ℚ̄ S).val) σ y`.
+A detailed English derivation is pending.
 -/
 theorem gsRealFamily_apply (v : {v : InfinitePlace K.1 // v.IsReal})
     (σ : Gal(AlgebraicClosure v.1.Completion / v.1.Completion)) (y : maxUnramifiedOutside K.1 ℚ̄ S) :

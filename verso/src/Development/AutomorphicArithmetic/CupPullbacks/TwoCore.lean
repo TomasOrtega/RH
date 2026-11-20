@@ -10,21 +10,21 @@ namespace UpperTheory.P2
 variable {q : ℕ} [NeZero q]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cup_hypercohomologyPullback _ (twPair q i j) f rfl a b`.
+A detailed English derivation is pending.
 -/
 theorem pull_cup {E E' : Spc} (f : E ⟶ E') {n m i j : ℤ} (a : Ht q E' n i) (b : Ht q E' m j) :
     pull _ f _ _ (cup q a b) = cup q (pull _ f _ _ a) (pull _ f _ _ b) :=
   GlobalTheory.T.cup_hypercohomologyPullback _ (twPair q i j) f rfl a b
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_smul {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (ε : ℤˣ) (x : Ht q E n i) :
     (ε • x).cast hn hi = ε • x.cast hn hi := by
   subst hn hi; rfl
 
 /- English proof (translation)
-Substitute `hn hi hn' hi'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_cast {E : Spc} {n i n' i' n'' i'' : ℤ} (hn : n = n') (hi : i = i') (hn' : n' = n'') (hi' : i' = i'')
     (x : Ht q E n i) : (x.cast hn hi).cast hn' hi' = x.cast (hn.trans hn') (hi.trans hi') := by
@@ -36,21 +36,21 @@ Both sides reduce to the same expression.
 theorem cast_self {E : Spc} {n i : ℤ} (hn : n = n) (hi : i = i) (x : Ht q E n i) : x.cast hn hi = x := rfl
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_neg {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E n i) :
     (-x).cast hn hi = -x.cast hn hi := by
   subst hn hi; rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.tateTwistCupProduct_graded_comm q E a b, cast_smul, cast_cast, cast_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gc {E : Spc} {n m i j : ℤ} (a : Ht q E n i) (b : Ht q E m j) (hn : n + m = m + n) (hi : i + j = j + i) :
     (cup q a b).cast hn hi = (n * m).negOnePow • cup q b a := by
   rw [GlobalTheory.T.tateTwistCupProduct_graded_comm q E a b, cast_smul, cast_cast, cast_self]
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mvd_cast {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) {n n' i i' : ℤ} (hn : n = n') (hi : i = i') (hn1 : n + 1 = n' + 1)
     {c : Ht q (pullback f g) n i} {x : Ht q E (n + 1) i} (h : IsMVd f g (tw q i) n c x) :
@@ -58,9 +58,9 @@ theorem mvd_cast {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) {n n' i i' : ℤ} (hn
   subst hn hi; exact h
 
 /- English proof (translation)
-Establish `M` using `((UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact R F n).1 f g hc)`. Take `⟨y, hy⟩` from `M.1 (-c)`. Establish `h0` using `M.2.2.1 _ _ _ _ h hy`. Rewrite `h0` using `[add_neg_cancel]`. Establish `h1 : x + y = 0` using `(M.2.2.2.1 _ _ h0).2 ⟨0, 0, by simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy` using `[eq_neg_of_add_eq_zero_right h1]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mvd_neg {R : Type} [CommRing R] {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) (hc : Cover2 R f g) (F : Shv R) (n : ℤ)
     {c : H R (pullback f g) F n} {x : H R E F (n + 1)} (h : IsMVd f g F n c x) : IsMVd f g F n (-c) (-x) := by
@@ -75,19 +75,17 @@ section Core
 variable {E X W₁ W₂ : Spc} (π : X ⟶ E) (f₁ : W₁ ⟶ X) (f₂ : W₂ ⟶ X)
 
 /- English proof (translation)
-Establish `hB : pull _ (pullback.fst f₁ f₂ ≫ f₁) _ _ (pull _ π _ _ b) = pull _ (pullback.fst f₁ f₂ ≫ f₁ ≫ π) _ _ b`. Rewrite using `[← pull_comp, Category.assoc]`. Use `set B := pull _ (pullback.fst f₁ f₂ ≫ f₁ ≫ π) _ _ b`. Use `set P := pull _ π _ _ b`. Establish `key : ∀ x : Ht q X (1 + 1) 1, IsMVd f₁ f₂ (tw q 1) 1 κ x → IsMVd f₁ f₂ (tw q (j + 1)) (m + 1) ((1 * m).negOnePow • cup q B κ) ((cup q P x).cast (by ring) rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `h` using `UpperTheory.mayerVietorisConnecting_cup_pullback q f₁ f₂ hc 1 m 1 j κ x P hx`. Rewrite `h` using `[hB]`. Establish `h'` using `mvd_cast (q := q) f₁ f₂ (n := 1 + m) (n' := m + 1) (i := 1 + j) (i' := j + 1) (by ring) (by ring) (by ring) h`. Rewrite `h'` using `[gc, cast_cast, ← cast_cast (hn := (by ring : 1 + 1 + m = m + (1 + 1))) (hi := (by ring : 1 + j = j + 1)), gc, show ((1 + 1) * m).negOnePow = 1 from ?_, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h'`. Conclude with `Int.negOnePow_even _ ⟨m, by ring⟩`. Establish `neg_both : ∀ {c : Ht q (pullback f₁ f₂) (m + 1) (j + 1)} {x : Ht q X (m + 1 + 1) (j + 1)}, IsMVd f₁ f₂ (tw q (j + 1)) (m + 1) (-c) x → IsMVd f₁ f₂ (tw q (j + 1)) (m + 1) c (-x)`. Introduce `c x h`. Simplify using `using mvd_neg f₁ f₂ hc _ _ h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `set Y : Ht q X (m + 1 + 1) (j + 1) := (cup q P ξ).cast (by ring) rfl with hY`. Establish `hY' : ((cup q P (-ξ)).cast (by ring) rfl : Ht q X (m + 1 + 1) (j + 1)) = -Y`. Rewrite using `[map_neg, cast_neg]`. Apply the tactic sequence `rcases Int.units_eq_one_or (1 * m).negOnePow with hs | hs <;> rcases hd with hd | hd`. Use `key _ hd` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative.
 
-Rewrite `this` using `[hs, one_smul]`. Conclude with `Or.inl this`. Use `key _ hd` as an intermediate fact. Rewrite `this` using `[hs, one_smul, hY']`. Conclude with `Or.inr this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `key _ hd` as an intermediate fact. Rewrite `this` using `[hs, Units.neg_smul, one_smul]`. Conclude with `Or.inr (neg_both this)`. Use `key _ hd` as an intermediate fact. Rewrite `this` using `[hs, Units.neg_smul, one_smul, hY']`.
-
-Establish `h2` using `neg_both this`. Rewrite `h2` using `[neg_neg]`. Conclude with `Or.inl h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem bd (hc : Cover2 (ZMod q) f₁ f₂) (ξ : Ht q X (1 + 1) 1) (κ : Ht q (pullback f₁ f₂) 1 1)
     (hd : IsMVd f₁ f₂ (tw q 1) 1 κ ξ ∨ IsMVd f₁ f₂ (tw q 1) 1 κ (-ξ)) {m j : ℤ} (b : Ht q E m j) :
@@ -125,62 +123,60 @@ theorem bd (hc : Cover2 (ZMod q) f₁ f₂) (ξ : Ht q X (1 + 1) 1) (κ : Ht q (
     exact Or.inl h2
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_add' {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x y : Ht q E n i) :
     (x + y).cast hn hi = x.cast hn hi + y.cast hn hi := by
   subst hn hi; rfl
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_zero' {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') :
     (0 : Ht q E n i).cast hn hi = 0 := by
   subst hn hi; rfl
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pull_cast {E E' : Spc} (f : E ⟶ E') {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E' n i) :
     pull _ f _ _ (x.cast hn hi) = Ht.cast hn hi (pull _ f _ _ x) := by
   subst hn hi; rfl
 
 /- English proof (translation)
-Use `set r := pullback.fst f₁ f₂ ≫ f₁ ≫ π with hr`. Establish `hr2 : pullback.snd f₁ f₂ ≫ f₂ ≫ π = r`. Rewrite using `[hr, ← Category.assoc, ← Category.assoc, pullback.condition]`. Establish `M1` using `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q 1) 1).1 f₁ f₂ hc`. Establish `M2` using `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q (j + 1)) (m + 1)).1 f₁ f₂ hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hξ : pull _ f₁ _ _ ξ = 0 ∧ pull _ f₂ _ _ ξ = 0`. Break down `hd with hd | hd` into its components or cases. Conclude with `(M1.2.2.2.2.1 _).2 ⟨_, hd⟩`. Use `(M1.2.2.2.2.1 _).2 ⟨_, hd⟩` as an intermediate fact. Simplify using `using this`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set C : Ht q E m j → Ht q X (m + 1 + 1) (j + 1) := fun b => (cup q (pull _ π _ _ b) ξ).cast hm rfl with hC`. Establish `Cadd : ∀ b b', C (b + b') = C b + C b'`. Introduce `b b'`. Simplify using `only [hC, map_add, AddMonoidHom.add_apply, cast_add']`. Establish `Cneg : ∀ b, C (-b) = - C b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `b`. Simplify using `only [hC, map_neg, AddMonoidHom.neg_apply, cast_neg]`. Establish `hres₁ : ∀ b, pull _ f₁ _ _ (C b) = 0`. Introduce `b`. Simplify using `only [hC]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pull_cast, pull_cup, hξ.1, map_zero, cast_zero']`. Establish `hres₂ : ∀ b, pull _ f₂ _ _ (C b) = 0`. Introduce `b`. Simplify using `only [hC]`. Rewrite using `[pull_cast, pull_cup, hξ.2, map_zero, cast_zero']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinjr : Function.Injective (pull (ZMod q) r (tw q (j + 1)) (m + 1 + 1))`. Introduce `a a' h`. Use `(hK (m + 1) j).1 (a₁ := (a, 0)) (a₂ := (a', 0)) (by simpa using h)` as an intermediate fact. Conclude with `congrArg Prod.fst this`. Establish `pr₁ : ∀ {n i} (a : Ht q E n i), pull _ (pullback.fst f₁ f₂) _ _ (pull _ (f₁ ≫ π) _ _ a) = pull _ r _ _ a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n i a`. Rewrite using `[← pull_comp]`. Establish `pr₂ : ∀ {n i} (a : Ht q E n i), pull _ (pullback.snd f₁ f₂) _ _ (pull _ (f₂ ≫ π) _ _ a) = pull _ r _ _ a`. Introduce `n i a`. Rewrite using `[← pull_comp, hr2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `bdC : ∀ b, IsMVd f₁ f₂ (tw q (j + 1)) (m + 1) (cup q (pull _ r _ _ b) κ) (C b) ∨ IsMVd f₁ f₂ (tw q (j + 1)) (m + 1) (cup q (pull _ r _ _ b) κ) (-C b)` using `fun b => bd π f₁ f₂ hc ξ κ hd b`. Prove the components needed by the constructor for the conclusion. Establish `ker : ∀ a b, pull _ π _ _ a + C b = 0 → a = 0 ∧ b = 0`. Introduce `a b h`. Establish `h1` using `congrArg (pull _ f₁ _ _) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_add, hres₁, add_zero, map_zero, ← pull_comp]`. Establish `ha : a = 0` using `(injective_iff_map_eq_zero _).1 ((h₁ (j + 1) (m + 1 + 1)).1) a h1`. Substitute `ha` using the available equality. Rewrite `h` using `[map_zero, zero_add]`. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : ∃ α β, cup q (pull _ r _ _ b) κ = pull _ (pullback.fst f₁ f₂) _ _ α - pull _ (pullback.snd f₁ f₂) _ _ β`. Break down `bdC b with hb | hb` into its components or cases. Conclude with `(M2.2.2.2.1 _ _ hb).1 h`. Conclude with `(M2.2.2.2.1 _ _ hb).1 (by rw [h, neg_zero])`. Take `⟨α, β, hαβ⟩` from `hz`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Take `⟨α', rfl⟩` from `(h₁ (j + 1) (m + 1)).2 α`. Take `⟨β', rfl⟩` from `(h₂ (j + 1) (m + 1)).2 β`. Rewrite `hαβ` using `[pr₁, pr₂, ← map_sub]`. Use `(hK m j).1 (a₁ := (0, b)) (a₂ := (α' - β', 0)) (by simpa using hαβ)` as an intermediate fact. Conclude with `congrArg Prod.snd this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩ h`. Simplify using `only at h`. Establish `h0 : pull _ π _ _ (a - a') + C (b + -b') = 0`. Rewrite using `[map_sub, Cadd, Cneg]`. Express the relevant statement in the definitionally equal form `pull _ π _ _ a + C b = pull _ π _ _ a' + C b' at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨e1, e2⟩` from `ker _ _ h0`. Conclude with `Prod.ext (sub_eq_zero.1 e1) (by simpa [← sub_eq_add_neg, sub_eq_zero] using e2)`. Introduce `y`. Take `⟨a₁, ha₁⟩` from `(h₁ (j + 1) (m + 1 + 1)).2 (pull _ f₁ _ _ y)`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a₂, ha₂⟩` from `(h₂ (j + 1) (m + 1 + 1)).2 (pull _ f₂ _ _ y)`. Establish `e : a₁ = a₂`. Apply `hinjr` to reduce the goal to its premises. Rewrite using `[← pr₁, ← pr₂, ha₁, ha₂, ← pull_comp, ← pull_comp, pullback.condition]`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hz₁ : pull _ f₁ _ _ (y - pull _ π _ _ a₁) = 0`. Rewrite using `[map_sub, ← pull_comp, ha₁, sub_self]`. Establish `hz₂ : pull _ f₂ _ _ (y - pull _ π _ _ a₁) = 0`. Rewrite using `[map_sub, ← pull_comp, ha₂, sub_self]`. Take `⟨c, hcz⟩` from `(M2.2.2.2.2.1 _).1 ⟨hz₁, hz₂⟩`.
+Establish an intermediate fact. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨a', b⟩, hab⟩` from `(hK m j).2 c`. Simplify using `only at hab`. Take `⟨x₀, hx₀⟩` from `M2.1 (pull _ r _ _ a')`. Establish `hx0 : x₀ = 0` using `(M2.2.2.2.1 _ _ hx₀).2 ⟨pull _ (f₁ ≫ π) _ _ a', 0, by rw [pr₁, map_zero, sub_zero]⟩`. Substitute `hx0` using the available equality.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `bdC b with hb | hb` into its components or cases. Establish `h3` using `M2.2.2.1 _ _ _ _ hx₀ hb`. Rewrite `h3` using `[hab, zero_add]`. Establish `h4` using `M2.2.1 _ _ _ hcz h3`. Conclude with `⟨(a₁, b), by simp only; rw [show (cup q (pull _ π _ _ b) ξ).cast hm rfl = C b from rfl, ← h4]; abel⟩`.
-
-Establish `h3` using `M2.2.2.1 _ _ _ _ hx₀ hb`. Rewrite `h3` using `[hab, zero_add]`. Establish `h4` using `M2.2.1 _ _ _ hcz h3`. Conclude with `⟨(a₁, -b), by simp only; rw [show (cup q (pull _ π _ _ (-b)) ξ).cast hm rfl = C (-b) from rfl, Cneg, ← h4]; abel⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem core' (hc : Cover2 (ZMod q) f₁ f₂) (ξ : Ht q X (1 + 1) 1) (κ : Ht q (pullback f₁ f₂) 1 1)
     (h₁ : ∀ i, Eqv _ (f₁ ≫ π) (tw q i)) (h₂ : ∀ i, Eqv _ (f₂ ≫ π) (tw q i))
@@ -278,7 +274,7 @@ theorem core' (hc : Cover2 (ZMod q) f₁ f₂) (ξ : Ht q X (1 + 1) 1) (κ : Ht 
       exact ⟨(a₁, -b), by simp only; rw [show (cup q (pull _ π _ _ (-b)) ξ).cast hm rfl = C (-b) from rfl, Cneg, ← h4]; abel⟩
 
 /- English proof (translation)
-Establish `key : ∀ (D : ℤ) (hD : m + (1 + 1) = D), Function.Bijective (fun p : Ht q E D (j + 1) × Ht q E m j => pull _ π _ _ p.1 + (cup q (pull _ π _ _ p.2) ξ).cast hD rfl) → Function.Bijective fun p : Ht q E (m + (1 + 1)) (j + 1) × Ht q E m j => pull _ π _ _ p.1 + cup q (pull _ π _ _ p.2) …`. Introduce `D hD h`. Substitute `hD` using the available equality. Conclude with `h`. Conclude with `key _ (by ring) (core' π f₁ f₂ hc ξ κ h₁ h₂ hK hd m j _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem core (hc : Cover2 (ZMod q) f₁ f₂) (ξ : Ht q X (1 + 1) 1) (κ : Ht q (pullback f₁ f₂) 1 1)
     (h₁ : ∀ i, Eqv _ (f₁ ≫ π) (tw q i)) (h₂ : ∀ i, Eqv _ (f₂ ≫ π) (tw q i))
@@ -297,21 +293,21 @@ theorem core (hc : Cover2 (ZMod q) f₁ f₂) (ξ : Ht q X (1 + 1) 1) (κ : Ht q
   exact key _ (by ring) (core' π f₁ f₂ hc ξ κ h₁ h₂ hK hd m j _)
 
 /- English proof (translation)
-Substitute `hm hj` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cup_cast_right {E : Spc} {n m i j m' j' : ℤ} (x : Ht q E n i) (y : Ht q E m j) (hm : m = m') (hj : j = j')
     (h1 : n + m = n + m') (h2 : i + j = i + j') : cup q x (y.cast hm hj) = (cup q x y).cast h1 h2 := by
   subst hm hj; rfl
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cup_cast_left {E : Spc} {n m i j n' i' : ℤ} (x : Ht q E n i) (y : Ht q E m j) (hn : n = n') (hi : i = i')
     (h1 : n + m = n' + m) (h2 : i + j = i' + j) : cup q (x.cast hn hi) y = (cup q x y).cast h1 h2 := by
   subst hn hi; rfl
 
 /- English proof (translation)
-Establish `e` using `gc x (one q E) (by ring : n + 0 = 0 + n) (by ring : i + 0 = 0 + i)`. Rewrite `e` using `[show (n * 0).negOnePow = 1 by simp, one_smul, (GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 E hE x]`. Establish `e2` using `congrArg (Ht.cast (by ring : 0 + n = n) (by ring : 0 + i = i)) e`. Rewrite `e2` using `[cast_cast, cast_cast]`. Conclude with `e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_one {E : Spc} (hE : Inv q E) {n i : ℤ} (x : Ht q E n i) (h1 : n + 0 = n) (h2 : i + 0 = i) :
     (cup q x (one q E)).cast h1 h2 = x := by
@@ -322,7 +318,7 @@ theorem cup_one {E : Spc} (hE : Inv q E) {n i : ℤ} (x : Ht q E n i) (h1 : n + 
   exact e2
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Rewrite using `[cpow_succ, cpow_zero, cup_cast_left (h1 := by simp) (h2 := by simp), (GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 E hE ξ, cast_cast, cast_cast]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem cpow_one' {E : Spc} (hE : Inv q E) (ξ : Ht q E 2 1) (k : ℕ) (hk : k = 1) (hn : 2 = 2 * (k : ℤ)) (hi : 1 = (k : ℤ)) :
     cpow q ξ k = ξ.cast hn hi := by
@@ -330,7 +326,7 @@ theorem cpow_one' {E : Spc} (hE : Inv q E) (ξ : Ht q E 2 1) (k : ℕ) (hk : k =
   rw [cpow_succ, cpow_zero, cup_cast_left (h1 := by simp) (h2 := by simp), (GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 E hE ξ, cast_cast, cast_cast]
 
 /- English proof (translation)
-Substitute `hk h3 h4` using the available equality. Rewrite using `[cpow_zero, cup_cast_right (h1 := by simp) (h2 := by simp), cast_cast]`. Conclude with `cup_one hX _ _ _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term0 {E X : Spc} (hX : Inv q X) (π : X ⟶ E) (ξ : Ht q X 2 1) (k : ℕ) (hk : k = 0) {N I N' I' : ℤ}
     (a : Ht q E N I) (h1 : N + 2 * (k : ℤ) = N') (h2 : I + (k : ℤ) = I') (h3 : N = N') (h4 : I = I') :
@@ -340,7 +336,7 @@ theorem term0 {E X : Spc} (hX : Inv q X) (π : X ⟶ E) (ξ : Ht q X 2 1) (k : �
   exact cup_one hX _ _ _
 
 /- English proof (translation)
-Substitute `hk h3 h4` using the available equality. Rewrite using `[cpow_one' hX ξ 1 rfl (by simp) (by simp), cup_cast_right (h1 := by simp) (h2 := by simp), cast_cast]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem term1 {E X : Spc} (hX : Inv q X) (π : X ⟶ E) (ξ : Ht q X 2 1) (k : ℕ) (hk : k = 1) {N I N' I' : ℤ}
     (a : Ht q E N I) (h1 : N + 2 * (k : ℤ) = N') (h2 : I + (k : ℤ) = I') (h3 : N + 2 = N') (h4 : I + 1 = I') :
@@ -349,14 +345,14 @@ theorem term1 {E X : Spc} (hX : Inv q X) (π : X ⟶ E) (ξ : Ht q X 2 1) (k : �
   rw [cpow_one' hX ξ 1 rfl (by simp) (by simp), cup_cast_right (h1 := by simp) (h2 := by simp), cast_cast]
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cast_inj {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') {x y : Ht q E n i}
     (h : x.cast hn hi = y.cast hn hi) : x = y := by
   subst hn hi; exact h
 
 /- English proof (translation)
-Substitute `hN hI` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cup_pull_cast {E X : Spc} (π : X ⟶ E) (ξ : Ht q X 2 1) {N I N₂ I₂ : ℤ} (a : Ht q E N I) (hN : N = N₂) (hI : I = I₂)
     (h1 : N + 2 = N₂ + 2) (h2 : I + 1 = I₂ + 1) :
@@ -364,19 +360,19 @@ theorem cup_pull_cast {E X : Spc} (π : X ⟶ E) (ξ : Ht q X 2 1) {N I N₂ I�
   subst hN hI; rfl
 
 /- English proof (translation)
-Introduce `n i`. Take `⟨m, rfl⟩ : ∃ m, n = m + 2` from `⟨n - 2, by ring⟩`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by ring⟩`. Establish `e0 : ∀ a : ∀ t : Fin 2, Ht q E (m + 2 - 2 * (((t : ℕ) : ℤ))) (j + 1 - (((t : ℕ) : ℤ))), ∑ t : Fin 2, ((cup q (pull _ π _ _ (a t)) (cpow q ξ t)).cast (by ring) (by ring) : Ht q X (m + 2) (j + 1)) = pull _ π _ _ ((a 0).cast (by simp) (by simp)) + cup q (pull _ π _ _ ((a 1).cast (by …`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Fin.sum_univ_two, term0 hX π ξ ((0 : Fin 2) : ℕ) (by simp) (N' := m + 2) (I' := j + 1) (a 0) _ _ (by simp) (by simp), term1 hX π ξ ((1 : Fin 2) : ℕ) (by simp) (N' := m + 2) (I' := j + 1) (a 1) _ _ (by simp) (by simp)]`. Use `congr 1`. Conclude with `cup_pull_cast π ξ _ _ _ _ _`. Prove the components needed by the constructor for the conclusion. Introduce `a a' e`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only at e`. Rewrite `e` using `[e0, e0]`. Use `(h m j).1 (a₁ := (_, _)) (a₂ := (_, _)) e` as an intermediate fact. Establish `t0` using `cast_inj _ _ (congrArg Prod.fst this)`. Establish `t1` using `cast_inj _ _ (congrArg Prod.snd this)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Use `fin_cases t`. Conclude with `t0`. Conclude with `t1`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Take `⟨⟨a₀, b₀⟩, hy⟩` from `(h m j).2 y`. Simplify using `only at hy`. Use `⟨fun t => match t with` and prove the remaining obligations. Consider the case `⟨0, _⟩ => a₀.cast (by simp) (by simp)`. Consider the case `⟨1, _⟩ => b₀.cast (by simp) (by simp), ?_⟩`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only`. Rewrite using `[e0]`. Rewrite using `[← hy]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `pull _ π _ _ (Ht.cast _ _ (Ht.cast _ _ a₀)) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cast_cast]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `cup q (pull _ π _ _ (Ht.cast _ _ (Ht.cast _ _ b₀))) ξ = _`. Rewrite using `[cast_cast]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lh2 {E X : Spc} (hX : Inv q X) (π : X ⟶ E) (ξ : Ht q X 2 1)
     (h : ∀ m j : ℤ, Function.Bijective fun p : Ht q E (m + 2) (j + 1) × Ht q E m j =>

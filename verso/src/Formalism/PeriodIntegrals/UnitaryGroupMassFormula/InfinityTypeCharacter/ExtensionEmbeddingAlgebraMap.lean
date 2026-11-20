@@ -19,7 +19,7 @@ def normalize : ℂˣ →* ℂˣ where
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Rewrite using `[InfinitePlace.Completion.algebraMap_apply]`. Conclude with `InfinitePlace.Completion.extensionEmbedding_coe w _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extensionEmbedding_algebraMap (w : InfinitePlace L) (k : L) :
     InfinitePlace.Completion.extensionEmbedding w (algebraMap L w.Completion k) = w.embedding k := by
@@ -27,7 +27,7 @@ theorem extensionEmbedding_algebraMap (w : InfinitePlace L) (k : L) :
   exact InfinitePlace.Completion.extensionEmbedding_coe w _
 
 /- English proof (translation)
-Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Use `⟨InfinitePlace.Completion.extensionEmbedding _, (InfinitePlace.Completion.isometry_extensionEmbedding _).continuous, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[extensionEmbedding_algebraMap, h]`. Use `⟨(starRingEnd ℂ).comp (InfinitePlace.Completion.extensionEmbedding _), Complex.continuous_conj.comp (InfinitePlace.Completion.isometry_extensionEmbedding _).continuous, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, extensionEmbedding_algebraMap, h, ComplexEmbedding.conjugate_coe_eq]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

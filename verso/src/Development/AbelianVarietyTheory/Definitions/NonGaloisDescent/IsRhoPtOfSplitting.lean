@@ -43,7 +43,7 @@ theorem chiE_apply (χ : Formalism.MainNotions.N.GE D.nd →* (D.nd.O i)ˣ) (g :
 include h in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((D.nbr i w hw).Kw.1.val).codRestrict L'.1.toSubalgebra fun x => h ((D.nbr i w hw).LL_split (D.nbr i w hw).Kw.1.val x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_embE : Nonempty (Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥L'.1) :=
   ⟨((D.nbr i w hw).Kw.1.val).codRestrict L'.1.toSubalgebra
@@ -91,7 +91,7 @@ def EpsAll (i : D.nd.Loc) : Prop :=
       1 + (D.nd.l i : ℤ_[D.nd.l i]) ^ D.nd.s0 i * z
 
 /- English proof (translation)
-Simplify using `using h w hw 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem EpsAll.exists_generator {D : D7} {i : D.nd.Loc} (h : EpsAll D i) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) : ∃ g ∈ Ine (F := D.host.E) (D.nd.plOm.1 w),
@@ -110,14 +110,14 @@ def AttachedIn (a : D.nd.Loc) (π : D.nd.X a) (j : D.ntw.Tw) (s : D.ntw.Sig j) :
   ∃ h : D.ntw.twOf a = j, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.Attached D a π (cast (congrArg D.ntw.Sig h.symm) s)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, h⟩ => h, fun h => ⟨rfl, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem attachedIn_self (a : D.nd.Loc) (π : D.nd.X a) (s : D.ntw.Sig (D.ntw.twOf a)) :
     AttachedIn D a π _ s ↔ GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.Attached D a π s :=
   ⟨fun ⟨_, h⟩ => h, fun h => ⟨rfl, h⟩⟩
 
 /- English proof (translation)
-Take `⟨rfl, _, _, -, -, -, ht⟩` from `h`. Conclude with `⟨ht.1, ht.2.1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem AttachedIn.jS_side {D : D7} {a : D.nd.Loc} {π : D.nd.X a} {j : D.ntw.Tw} {s : D.ntw.Sig j}
     (h : AttachedIn D a π j s) : D.ntw.jS j s = D.nd.j a ∧ D.ntw.side j s = D.ntw.twSide a := by
@@ -134,7 +134,7 @@ def SelCore (C : NChoice D) (ρ : ∀ i : D.nd.Loc, D.nd.X i → (Formalism.Main
     AttachedIn D i π (C.twI (D.nd.w i)) s
 
 /- English proof (translation)
-Introduce `π hπ`. Take `⟨s, h1, h2, h3, h4, h6⟩` from `h i π hπ`. Establish `h5` using `hs s h1 h6.jS_side.1 h2`. Conclude with `⟨h3 (ne_top_of_le_ne_top ENNReal.ofReal_ne_top h5), (ENNReal.ofReal_le_ofReal_iff hb).1 (h4.trans h5)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem SelCore.bound {D : D7} {C : NChoice D}
     {ρ : ∀ i : D.nd.Loc, D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O i))} (h : SelCore D C ρ)
@@ -159,7 +159,7 @@ def GoodPtRow : Prop :=
     GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.GoodRowOf D (D.nd.j a) σ ∧ HasParamW D.nd D.naut a σ Sg ∧ HasParamX D.nd D.naut a π Sg
 
 /- English proof (translation)
-Take `⟨σ, Sg, h1, h2, h3⟩` from `hG a π hπ`. Take `⟨s, h4, h5⟩` from `hT a σ Sg h1 h2`. Conclude with `⟨s, ⟨σ, Sg, h1, h2, h3, h4⟩, h5⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GoodPtRow.exists_attached {D : D7} (hG : GoodPtRow D) (hT : TriplesGood D) (a : D.nd.Loc)
     (π : D.nd.X a) (hπ : π ∈ D.nd.Zgood a) :
@@ -177,9 +177,9 @@ def SameTwistAt (a : D.nd.Loc) (j : D.ntw.Tw) (k : ℕ) (ψ : Formalism.MainNoti
     (D.ntw.psiL a) (cast (congrArg (fun j => Formalism.MainNotions.N.GE D.nd →* (D.ntw.Ok j k)ˣ) h.symm) ψ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl, h⟩`. Conclude with `⟨rfl, _, HEq.rfl, h⟩`. Introduce and unpack `⟨rfl, f, hf, h⟩`. Take `rfl` from `eq_of_heq hf`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨rfl, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameTwistAt_iff (a : D.nd.Loc) (j : D.ntw.Tw) (k : ℕ) (ψ : Formalism.MainNotions.N.GE D.nd →* (D.ntw.Ok j k)ˣ) :
     SameTwistAt D a j k ψ ↔ D.ntw.twOf a = j ∧ ∃ f : D.ntw.O0 j →+* D.nd.O a, HEq f (D.ntw.twist₂ a) ∧
@@ -195,13 +195,13 @@ def SameTwist (C : NChoice D) : Prop :=
   ∀ a : D.nd.Loc, SameTwistAt D a (C.twI (D.nd.w a)) (C.k' (D.nd.w a)) (psiG D C (D.nd.w a))
 
 /- English proof (translation)
-The claim follows from `(h a).1`.
+A detailed English derivation is pending.
 -/
 theorem SameTwist.twOf_eq {D : D7} {C : NChoice D} (h : SameTwist D C) (a : D.nd.Loc) :
     D.ntw.twOf a = C.twI (D.nd.w a) := (h a).1
 
 /- English proof (translation)
-The claim follows from `((sameTwistAt_iff D a _ _ _).1 (h a)).2`.
+A detailed English derivation is pending.
 -/
 theorem SameTwist.exists_heq {D : D7} {C : NChoice D} (h : SameTwist D C) (a : D.nd.Loc) :
     ∃ f : D.ntw.O0 (C.twI (D.nd.w a)) →+* D.nd.O a, HEq f (D.ntw.twist₂ a) ∧
@@ -214,7 +214,7 @@ section Splitting
 open GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.BlockJumps
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h.rho`. Conclude with `⟨h.cont, r, hr, e, fun g u => he g u⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isRhoPt_of_splitting (i : D.nd.Loc) (π : D.nd.X i)
     (r : Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)) (ρ : Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O i))
@@ -223,21 +223,21 @@ theorem isRhoPt_of_splitting (i : D.nd.Loc) (π : D.nd.X i)
   exact ⟨h.cont, r, hr, e, fun g u => he g u⟩
 
 /- English proof (translation)
-Use `⟨h.cont, ?_, (RepresentationOverSumChar.isRhoAt_iff D.nd i π ρ).1 (GlobalTheory.ComplementCompare.second_of_first D.nd i π r ρ hr h).1⟩` and prove the remaining obligations. Introduce `W hW`. Set `P : Subrepresentation (BlockRepresentationsSemisimple.blockRep ρ (D.nd.chi i) D.R.t)` to `⟨W.prod ⊥, fun g v hv => by`. Rewrite using `[BlockRepresentationsSemisimple.blockRep_apply]`. Use `⟨hW g _ hv.1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : v.2 = 0` using `hv.2`. Express the relevant statement in the definitionally equal form `_ = 0`. Use function extensionality and compare the values at `c`. Simplify using `[h2]⟩`. Take `⟨Q, hQ⟩` from `h.ss.exists_isCompl P`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hQ'` using `(GlobalTheory.ComplementCompare.isCompl_sub_iff P Q).1 hQ`. Use `⟨Q.toSubmodule.comap (LinearMap.inl _ _ _), fun g v hv => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Q.apply_mem_toSubmodule g hv` as an intermediate fact. Rewrite `this` using `[BlockRepresentationsSemisimple.blockRep_apply]`. Express the relevant statement in the definitionally equal form `(_, (0 : Fin D.R.t → _)) ∈ Q.toSubmodule`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Use function extensionality and compare the values at `c`. Simplify using the standard rewrite rules. Rewrite using `[Submodule.disjoint_def]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx hx'`. Use `(Submodule.disjoint_def.1 hQ'.disjoint) (x, 0) ⟨hx, rfl⟩ hx'` as an intermediate fact. Conclude with `congrArg Prod.fst this`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx : ((x, 0) : _ × (Fin D.R.t → FractionRing (D.nd.O i))) ∈ P.toSubmodule ⊔ Q.toSubmodule`. Rewrite using `[hQ'.sup_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 hx`. Establish `hp2 : p.2 = 0` using `hp.2`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq2 : q.2 = 0`. Use `congrArg Prod.snd hpq` as an intermediate fact. Simplify `this` using `[hp2]`. Use `Submodule.mem_sup.2 ⟨p.1, hp.1, q.1, ?_, congrArg Prod.fst hpq⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(q.1, (0 : Fin D.R.t → _)) ∈ Q.toSubmodule`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hq2]`. Conclude with `hq`.
+A detailed English derivation is pending.
 -/
 theorem RhoFrob.of_splitting (i : D.nd.Loc) (π : D.nd.X i)
     (r : Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)) (ρ : Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O i))
@@ -292,9 +292,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {LL : Type} [Field LL] [Algebra Qp LL]
 
 /- English proof (translation)
-Set `χ : G →* LLˣ` to `((Units.map (algebraMap Qp LL).toMonoidHom).comp PD.χ)⁻¹ ^ e`. Establish `hχ : ∀ g, ((χ g : LLˣ) : LL) = ((algebraMap Qp LL (PD.χ g : Qp))⁻¹) ^ e` using `fun g => by`. Simplify using `[χ]`. Establish `: σ = diagRep fun _ : Fin 1 => χ` using `by ext1 g`. Use `LinearMap.ext fun u => funext fun c => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subsingleton.elim c 0, h, diagRep_apply, hχ]`. Rewrite using `[this, multV_diagRep PD hF, Fin.sum_univ_one]`. Conclude with `multV_twist PD hs (Formalism.WeaklyAdmissibleFiltrations.charRep χ) e (fun g x => by rw [← hχ]; rfl) τ a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multV_cycPow_line [Algebra.IsSeparable Qp K] [FiniteDimensional Qp LL] (hF : IsField BdR)
     (hs : ∃ s ∈ PD.Fil (-1), PD.ι PD.t * s = 1) (σ : Representation LL G (Fin 1 → LL)) (e : ℕ)
@@ -315,29 +315,27 @@ end Periods
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : BlockJumpCount.IsBlockSum D.nd i r ρ π := by`. Take `⟨e, he⟩` from `hc.rho`. Conclude with `⟨e, fun g u => he g u⟩`. Introduce `w hw L' h τ`. Use `haveI : IsAlgClosed D.nd.Om := IsAlgClosure.isAlgClosed D.host.E`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `haveI := L'.2`. Set `s : Br.G D.nbr i w hw → Formalism.MainNotions.N.GE D.nd` to `fun g => decS D.nd w (Br.iota D.nbr i w hw g)`. Set `f` to `(inc D i w hw L' h).comp (Br.toLLK (D.nbr i w hw))`. Establish `hf : ∀ c, f (toK D.nd i c) = inc D i w hw L' h ((D.nbr i w hw).toLL c)` using `fun c => congrArg (inc D i w hw L' h) (Br.toLLK_alg (D.nbr i w hw) c)`. Establish `hχ : ∀ (c : ℕ), c < D.R.t → ∀ g, (chiU D.nd i 1)⁻¹ g * chiU D.nd i (c + 1) g = (epsU D.nd i g)⁻¹ ^ c` using `fun c hc g => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h` using `D.nd.chi_def i (c + 1) (by omega) hc`. Express the relevant statement in the definitionally equal form `(D.nd.chi i 1)⁻¹ g * D.nd.chi i (c + 1) g = _`. Rewrite using `[h, MonoidHom.mul_apply, MonoidHom.inv_apply, inv_mul_cancel_left, Nat.cast_add, Nat.cast_one, add_sub_cancel_right, MonoidHom.zpow_apply, zpow_neg, zpow_natCast, inv_pow]`. Both sides reduce to the same expression. Take `⟨e', he'⟩` from `split_map f (fun g => mapM (toK D.nd i) (rTwO D.nd i r π) (s g)) (fun g => mapM (toK D.nd i) (WpO D.nd i ρ π) (s g)) (fun g c => toK D.nd i (((epsU D.nd i (s g))⁻¹ ^ (c : ℕ) : (D.nd.O i)ˣ) : D.nd.O i)) e (fun g u => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ {k : ℕ} (M : Formalism.MainNotions.N.GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) v, (mapM (toK D.nd i) (twistM M (chiU D.nd i 1)⁻¹) (s g)).mulVec v = toK D.nd i (((chiU D.nd i 1)⁻¹ (s g) : (D.nd.O i)ˣ) : D.nd.O i) • (mapM (toK D.nd i) M (s g)).mulVec v` using `fun M v => by`. Rewrite using `[← Matrix.smul_mulVec]`. Use `congr 1`. Use extensionality with `a b`. Conclude with `map_mul (toK D.nd i) _ _`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[rTwO, WpO, h1, h1, map_smul, he]`. Use `Prod.ext rfl (funext fun c => ?_)` and prove the remaining obligations. Simplify using `only [← hχ _ c.2, Units.val_mul, map_mul, mul_assoc]`. Use the proof step `rfl)`. Establish `hε : ∀ g, inc D i w hw L' h ((D.nbr i w hw).toLL ((epsU D.nd i (s g) : (D.nd.O i)ˣ) : D.nd.O i)) = algebraMap ℚ_[D.nd.l i] ↥L'.1 ((Br.PD D.loc D.nbr i w hw).χ g : ℚ_[D.nd.l i])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Establish `h0 : (D.nbr i w hw).toLL ((epsU D.nd i (s g) : (D.nd.O i)ˣ) : D.nd.O i) = algebraMap ℚ_[D.nd.l i] (Br.LL D.nbr i w hw) ((Br.PD D.loc D.nbr i w hw).χ g : ℚ_[D.nd.l i])`. Rewrite using `[Br.PD, (D.loc _).PD_χ, ← cycZ_eq_chi (D.nbr i w hw) (D.loc _) g]`. Conclude with `congrArg Subtype.val ((D.nbr i w hw).eO_alg _)`. Rewrite using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(IntermediateField.inclusion h).commutes _`. Establish `hM : ∀ {k : ℕ} (M : Formalism.MainNotions.N.GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) g v, matRep (locE D i w hw L' h M) g v = ((mapM (toK D.nd i) M (s g)).map f).mulVec v` using `fun M g v => by`. Rewrite using `[show (mapM (toK D.nd i) M (s g)).map f = locE D i w hw L' h M g from Matrix.ext fun a b => hf _]`. Both sides reduce to the same expression. Establish `hs : ∃ x ∈ (Br.PD D.loc D.nbr i w hw).Fil (-1), (Br.PD D.loc D.nbr i w hw).ι (Br.PD D.loc D.nbr i w hw).t * x = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, hx1⟩` from `GlobalTheory.ThetaTie.exists_inverse_fontaineElement_mem_fil_neg_one (D.locT (D.nd.l i))`. Use `⟨x, ?_, by rw [Br.PD, (D.loc _).PD_ι, (D.loc _).period_datum_t_eq, hx1]⟩` and prove the remaining obligations. Conclude with `((D.locT _).fil _ _ _).2 (((D.locT _).fil _ _ _).1 hx)`. Establish `hF` using `GlobalTheory.SmallJumpExample.isField_bdR D (D.nd.l i)`. Use `⟨fun a => ?_, fun c hc a => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take `⟨J, h1, h2⟩` from `jumps_of_split (Br.PD D.loc D.nbr i w hw) hF hs (matRep (locE D i w hw L' h (rTwO D.nd i r π))) (matRep (locE D i w hw L' h (WpO D.nd i ρ π))) e' (fun g u => by`. Rewrite using `[hM, hM, he']`. Use `Prod.ext rfl (funext fun c => ?_)` and prove the remaining obligations. Use `congrArg (· * (e' u).2 c) ?_` and prove the remaining obligations. Rewrite using `[hf, Units.val_pow_eq_pow_val, map_pow, map_pow, map_units_inv, map_inv₀, hε]) τ`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1.2, h2.2, Multiset.count_add, BlockJumpCount.count_blockJumps]`. Use `push_cast`. Both sides reduce to the same expression. Take `⟨c, rfl⟩ : ∃ c', c = c' + 1` from `⟨c - 1, by have := (Finset.mem_Icc.1 hc).1; omega⟩`. Establish `hc' : c < D.R.t` using `(Finset.mem_Icc.1 hc).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[multV_cycPow_line (Br.PD D.loc D.nbr i w hw) hF hs _ c (fun g u => by`. Rewrite using `[hM]`. Establish `h1 : ((mapM (toK D.nd i) (chiRatO D.nd i (c + 1)) (s g)).map f) 0 0 = f (toK D.nd i (((epsU D.nd i (s g))⁻¹ ^ c : (D.nd.O i)ˣ) : D.nd.O i))`. Rewrite using `[← hχ c hc', mul_comm]`. Express the relevant statement in the definitionally equal form `f (toK D.nd i (_ * (1 : Matrix (Fin 1) (Fin 1) (D.nd.O i)) 0 0)) = _`.
-
-Rewrite using `[Matrix.one_apply_eq, mul_one]`. Both sides reduce to the same expression. Rewrite using `[Matrix.mulVec, dotProduct, Fin.sum_univ_one, h1, hf, Units.val_pow_eq_pow_val, map_pow, map_pow, map_units_inv, map_inv₀, hε]) τ a]`. Use `push_cast`. Rewrite using `[add_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BlockE.of_splitting (i : D.nd.Loc) (r : D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
@@ -438,27 +436,27 @@ variable {D} {r : ∀ i : D.nd.Loc, D.nd.X i → (Formalism.MainNotions.N.GE D.n
   {ρ : ∀ i : D.nd.Loc, D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O i))}
 
 /- English proof (translation)
-Introduce `i π hπ` and use `RhoFrob.of_splitting D i π _ _ (h.good i π) (h.compl i π hπ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem frob (h : PtFam D r ρ) : ∀ i, ∀ π ∈ D.nd.Z i, RhoFrob D i π (ρ i π) :=
   fun i π hπ => RhoFrob.of_splitting D i π _ _ (h.good i π) (h.compl i π hπ)
 
 /- English proof (translation)
-Introduce `i π hπ` and use `isRhoPt_of_splitting D i π _ _ (h.good i π) (h.compl i π hπ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pt (h : PtFam D r ρ) : ∀ i, ∀ π ∈ D.nd.Z i, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.IsRhoPt D i π (ρ i π) :=
   fun i π hπ => isRhoPt_of_splitting D i π _ _ (h.good i π) (h.compl i π hπ)
 
 /- English proof (translation)
-Introduce `i π hπ` and use `BlockE.of_splitting D i _ _ π (h.compl i π hπ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem block (h : PtFam D r ρ) : ∀ i, ∀ π ∈ D.nd.Z i, BlockE D i (r i) (ρ i) π :=
   fun i π hπ => BlockE.of_splitting D i _ _ π (h.compl i π hπ)
 
 /- English proof (translation)
-Use `⟨fun i π => if hπ : π ∈ D.nd.Z i then (hC i π hπ (r i π) (hr i π)).choose else 1, hr, fun i π => ?_, fun i π hπ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hπ : π ∈ D.nd.Z i`. Simplify using `only [dif_pos hπ]`. Conclude with `(hC i π hπ (r i π) (hr i π)).choose_spec.cont`. Simplify using `only [dif_neg hπ]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_const`. Simplify using `only [dif_pos hπ]`. Conclude with `(hC i π hπ (r i π) (hr i π)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem exists_extend (hC : GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.Complement_at D) (hr : ∀ i, GoodR D.nd i (r i)) :
     ∃ ρ, PtFam D r ρ := by
@@ -474,7 +472,7 @@ theorem exists_extend (hC : GlobalTheory.IndefiniteRowSideFullHecke.BlockReprese
     exact (hC i π hπ (r i π) (hr i π)).choose_spec
 
 /- English proof (translation)
-Use `choose r hr using hr`. Conclude with `⟨r, exists_extend hC hr⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pair (hC : GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.Complement_at D) (hr : ∀ i, ∃ r, GoodR D.nd i r) :
     ∃ r ρ, PtFam D r ρ := by
@@ -482,7 +480,7 @@ theorem exists_pair (hC : GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresent
   exact ⟨r, exists_extend hC hr⟩
 
 /- English proof (translation)
-Establish `h0` using `(h.block i π hπ w hw L' hL τ).1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h0 0, if_pos ⟨le_rfl, by exact_mod_cast ht⟩]`. Rewrite using `[h0 (-1), if_neg (by omega), add_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 example (h : PtFam D r ρ) (ht : 0 < D.R.t) (i : D.nd.Loc) (π : D.nd.X i) (hπ : π ∈ D.nd.Z i)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))

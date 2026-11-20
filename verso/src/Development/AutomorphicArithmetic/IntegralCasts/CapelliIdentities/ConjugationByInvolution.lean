@@ -5,9 +5,9 @@ noncomputable def UpperTheory.Reformulated.B.ConjugationByInvolution.Jmat.{u_1} 
     fun (R : Type u_1) [CommRing R] (m : ℕ) (i j : Fin m) ↦ if j = i.rev then (1 : R) else (0 : R)
 
 /- English proof (translation)
-Introduce `R _ m`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i.rev]`. Simplify using `[UpperTheory.Reformulated.B.ConjugationByInvolution.Jmat, Matrix.one_apply, eq_comm]`. Introduce `b _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[UpperTheory.Reformulated.B.ConjugationByInvolution.Jmat, hb]`. Introduce `hb`. Conclude with `absurd (Finset.mem_univ _) hb`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ConjugationByInvolution.aux2.{u_1} :
     ∀ {R : Type u_1} [inst : CommRing R] (m : ℕ),
@@ -28,7 +28,7 @@ noncomputable def UpperTheory.Reformulated.B.ConjugationByInvolution.Jgl.{u_1} :
         inv_val := UpperTheory.Reformulated.B.ConjugationByInvolution.aux2 m : (Matrix (Fin m) (Fin m) R)ˣ }
 
 /- English proof (translation)
-Introduce `n _ _ R _ g`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.ConjugationByInvolution.aux4.{u_1} :
     ∀ {n : Type} [inst : Fintype n] [inst_1 : DecidableEq n] {R : Type u_1} [inst_2 : CommRing R] (g : GL n R),
@@ -37,7 +37,7 @@ theorem UpperTheory.Reformulated.B.ConjugationByInvolution.aux4.{u_1} :
   rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]
 
 /- English proof (translation)
-Introduce `n _ _ R _ g`. Rewrite using `[← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.ConjugationByInvolution.aux5.{u_1} :
     ∀ {n : Type} [inst : Fintype n] [inst_1 : DecidableEq n] {R : Type u_1} [inst_2 : CommRing R] (g : GL n R),
@@ -57,14 +57,14 @@ noncomputable def UpperTheory.Reformulated.B.ConjugationByInvolution.theta.{u_1}
       UpperTheory.Reformulated.B.ConjugationByInvolution.Jgl R m * UpperTheory.Reformulated.B.ConjugationByInvolution.trInv g * UpperTheory.Reformulated.B.ConjugationByInvolution.Jgl R m
 
 /- English proof (translation)
-The claim follows from `Units.ext (UpperTheory.Reformulated.B.ConjugationByInvolution.aux2 m)`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.ConjugationByInvolution.Jgl_sq {m : ℕ} {R : Type*} [CommRing R] :
     UpperTheory.Reformulated.B.ConjugationByInvolution.Jgl R m * UpperTheory.Reformulated.B.ConjugationByInvolution.Jgl R m = 1 :=
   Units.ext (UpperTheory.Reformulated.B.ConjugationByInvolution.aux2 m)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(↑(g * h)⁻¹ : Matrix n n R).transpose = (↑g⁻¹ : Matrix n n R).transpose * (↑h⁻¹ : Matrix n n R).transpose`. Rewrite using `[mul_inv_rev, Units.val_mul, Matrix.transpose_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.Reformulated.B.ConjugationByInvolution.trInv_mul {n : Type} [Fintype n] [DecidableEq n] {R : Type*} [CommRing R]
     (g h : GL n R) :
@@ -75,16 +75,16 @@ private theorem UpperTheory.Reformulated.B.ConjugationByInvolution.trInv_mul {n 
   rw [mul_inv_rev, Units.val_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.ConjugationByInvolution.trInv_trInv {n : Type} [Fintype n] [DecidableEq n] {R : Type*} [CommRing R]
     (g : GL n R) : UpperTheory.Reformulated.B.ConjugationByInvolution.trInv (UpperTheory.Reformulated.B.ConjugationByInvolution.trInv g) = g :=
   Units.ext rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(UpperTheory.Reformulated.B.ConjugationByInvolution.Jmat R m).transpose = UpperTheory.Reformulated.B.ConjugationByInvolution.Jmat R m`. Use extensionality with `i j`. Establish `: i = j.rev ↔ j = i.rev`. Apply the tactic sequence `constructor <;> (rintro rfl; simp)`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Matrix.transpose_apply, UpperTheory.Reformulated.B.ConjugationByInvolution.Jmat, this]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.Reformulated.B.ConjugationByInvolution.trInv_Jgl {m : ℕ} {R : Type*} [CommRing R] :
     UpperTheory.Reformulated.B.ConjugationByInvolution.trInv (UpperTheory.Reformulated.B.ConjugationByInvolution.Jgl R m) = UpperTheory.Reformulated.B.ConjugationByInvolution.Jgl R m := by
@@ -96,7 +96,7 @@ private theorem UpperTheory.Reformulated.B.ConjugationByInvolution.trInv_Jgl {m 
   simp only [Matrix.transpose_apply, UpperTheory.Reformulated.B.ConjugationByInvolution.Jmat, this]
 
 /- English proof (translation)
-Introduce `m R _ g`. Unfold `UpperTheory.Reformulated.B.ConjugationByInvolution.theta`. Rewrite using `[UpperTheory.Reformulated.B.ConjugationByInvolution.trInv_mul, UpperTheory.Reformulated.B.ConjugationByInvolution.trInv_mul, UpperTheory.Reformulated.B.ConjugationByInvolution.trInv_Jgl, UpperTheory.Reformulated.B.ConjugationByInvolution.trInv_trInv, ← mul_assoc, ← mul_assoc, Upp …`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.ConjugationByInvolution.aux8.{u_1} :
     ∀ {m : ℕ} {R : Type u_1} [inst : CommRing R] (g : GL (Fin m) R), UpperTheory.Reformulated.B.ConjugationByInvolution.theta (UpperTheory.Reformulated.B.ConjugationByInvolution.theta g) = g := by
@@ -107,7 +107,7 @@ theorem UpperTheory.Reformulated.B.ConjugationByInvolution.aux8.{u_1} :
     mul_assoc, UpperTheory.Reformulated.B.ConjugationByInvolution.Jgl_sq, mul_one]
 
 /- English proof (translation)
-Introduce `m R _ g h`. Unfold `UpperTheory.Reformulated.B.ConjugationByInvolution.theta`. Rewrite using `[UpperTheory.Reformulated.B.ConjugationByInvolution.trInv_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (UpperTheory.Reformulated.B.ConjugationByInvolution.Jgl R m) (UpperTheory.Reformulated.B.ConjugationByInvolution.Jgl R m), UpperTheory.Reformulated.B.ConjugationByInvolution.Jgl_sq, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.ConjugationByInvolution.aux9.{u_1} :
     ∀ {m : ℕ} {R : Type u_1} [inst : CommRing R] (g h : GL (Fin m) R),
@@ -125,7 +125,7 @@ noncomputable def UpperTheory.Reformulated.B.ConjugationByInvolution.thetaAut.{u
         right_inv := UpperTheory.Reformulated.B.ConjugationByInvolution.aux8, map_mul' := UpperTheory.Reformulated.B.ConjugationByInvolution.aux9 : GL (Fin m) R ≃* GL (Fin m) R }
 
 /- English proof (translation)
-Introduce `m R _`. Conclude with `if_pos rfl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ConjugationByInvolution.aux11.{u_1} :
     ∀ (m : ℕ) (R : Type u_1) [inst : CommRing R],
@@ -135,7 +135,7 @@ theorem UpperTheory.Reformulated.B.ConjugationByInvolution.aux11.{u_1} :
   exact if_pos rfl
 
 /- English proof (translation)
-Introduce `m R _ s t`. Establish `hsq : UpperTheory.Reformulated.B.ConjugationByInvolution.thetaAut m R * UpperTheory.Reformulated.B.ConjugationByInvolution.thetaAut m R = 1` using `MulEquiv.ext fun g => UpperTheory.Reformulated.B.ConjugationByInvolution.aux8 g`. Establish `hne : (-1 : ℤˣ) ≠ 1` using `by decide`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> rcases Int.units_eq_one_or t with rfl | rfl <;>`. Simplify using `[hne, hsq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.ConjugationByInvolution.aux12.{u_1} :
     ∀ (m : ℕ) (R : Type u_1) [inst : CommRing R] (s t : ℤˣ),
@@ -175,7 +175,7 @@ noncomputable def UpperTheory.Reformulated.B.ConjugationByInvolution.conjBy.{u_1
         r
 
 /- English proof (translation)
-Introduce `G R _ _ m h r g`. Express the relevant statement in the definitionally equal form `(UpperTheory.Reformulated.B.ConjugationByInvolution.ofGL h * r g * (UpperTheory.Reformulated.B.ConjugationByInvolution.ofGL h)⁻¹ : UpperTheory.Reformulated.B.ConjugationByInvolution.GG m R).right = _`. Rewrite using `[SemidirectProduct.mul_right, SemidirectProduct.mul_right, SemidirectProduct.inv_right, SemidirectProduct.right_inl, inv_one, one_mul, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.ConjugationByInvolution.conjBy_right :
     ∀ {G R : Type} [inst : Group G] [inst_1 : CommRing R] {m : ℕ} (h : GL (Fin m) R) (r : G →* UpperTheory.Reformulated.B.ConjugationByInvolution.GG m R)

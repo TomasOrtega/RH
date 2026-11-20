@@ -12,11 +12,11 @@ namespace GlobalTheory.BSP
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Establish `h` using `congrArg (Polynomial.coeToPowerSeries.ringHom (R := Wq l bk.a)) bk.monic.as_sum`. Simplify using `only [map_add, map_sum, map_mul, map_pow, Polynomial.coeToPowerSeries.ringHom_apply, Polynomial.coe_C, Polynomial.coe_X] at h`. Establish `hs : ∑ i ∈ Finset.range bk.Ep.natDegree, C (bk.Ep.coeff i) * (X : bk.S) ^ i ∈ Ideal.span {(l : bk.S)}`. Use `Ideal.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `bk.dvd_coeff i (Finset.mem_range.1 hi)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc, map_mul, map_natCast, mul_assoc]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Establish `e : (X : bk.S) ^ bk.Ep.natDegree = bk.E - ∑ i ∈ Finset.range bk.Ep.natDegree, C (bk.Ep.coeff i) * (X : bk.S) ^ i`. Rewrite using `[BK.E, h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) (Ideal.mem_sup_left hs)`.
+A detailed English derivation is pending.
 -/
 theorem BK.X_pow_natDegree_mem {K : FinExt l} (bk : BK K) :
     (X : bk.S) ^ bk.Ep.natDegree ∈ Ideal.span {(l : bk.S)} ⊔ Ideal.span {bk.E} := by
@@ -38,21 +38,19 @@ theorem BK.X_pow_natDegree_mem {K : FinExt l} (bk : BK K) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hpoly : ∀ p : Polynomial (Wq l bk.a), BK.hf f (p : bk.S) = BK.hf g (p : bk.S)`. Establish `e : (BK.hf f).comp (Polynomial.coeToPowerSeries.ringHom (R` using `Wq l bk.a)) = (BK.hf g).comp Polynomial.coeToPowerSeries.ringHom := Polynomial.ringHom_ext (fun a => by simpa using hC a) (by simpa using hX)`. Conclude with `fun p => RingHom.congr_fun e p`. Establish `hle : Ideal.span {(l : bk.S)} ⊔ Ideal.span {bk.E} ≤ (Ideal.span {(l : B.A)} ⊔ B.I).comap (BK.hf f)`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.mem_sup_right (f.f_I _ (Ideal.mem_span_singleton_self _))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXe : BK.hf f X ^ bk.Ep.natDegree ∈ Ideal.span {(l : B.A)} ⊔ B.I`. Rewrite using `[← map_pow]`. Conclude with `hle bk.X_pow_natDegree_mem`. Use `Hom.ext' (RingHom.ext fun (s : bk.S) => ?_)` and prove the remaining obligations. Use `show BK.hf f s = BK.hf g s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsAdicComplete (Ideal.span {(l : B.A)} ⊔ B.I) B.A := B.complete`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus (inferInstance : IsHausdorff (Ideal.span {(l : B.A)} ⊔ B.I) B.A) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero]`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : (X : bk.S) ^ (bk.Ep.natDegree * n) ∣ s - (trunc (bk.Ep.natDegree * n) s : bk.S) := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Simplify using `[Polynomial.coeff_coe, coeff_trunc, hm]`. Establish `e : s = (trunc (bk.Ep.natDegree * n) s : bk.S) + X ^ (bk.Ep.natDegree * n) * r`. Rewrite using `[← hr]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hd : BK.hf f s - BK.hf g s = BK.hf f X ^ (bk.Ep.natDegree * n) * (BK.hf f r - BK.hf g r)`. Rewrite using `[e]`. Simplify using `only [map_add, map_mul, map_pow]`. Rewrite using `[hpoly (trunc (bk.Ep.natDegree * n) s), ← hX]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : BK.hf f X ^ (bk.Ep.natDegree * n) * (BK.hf f r - BK.hf g r) ∈ (Ideal.span {(l : B.A)} ⊔ B.I) ^ n`. Rewrite using `[pow_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hXe n)`. Establish `h3 : BK.hf f s - BK.hf g s ∈ (Ideal.span {(l : B.A)} ⊔ B.I) ^ n` using `by rw [hd]; exact h2`.
-
-Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem BK.hom_eq_of_X_C {K : FinExt l} (bk : BK K) {B : Obj l ↥(OL K)} (f g : Hom bk.prism B)
     (hX : BK.hf f X = BK.hf g X) (hC : ∀ w, BK.hf f (C w) = BK.hf g (C w)) : f = g := by
@@ -94,9 +92,9 @@ theorem BK.hom_eq_of_X_C {K : FinExt l} (bk : BK K) {B : Obj l ↥(OL K)} (f g :
   rw [Ideal.smul_eq_mul, Ideal.mul_top]; exact h3
 
 /- English proof (translation)
-Use `BK.hom_eq_of_X_C bk _ _ ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Per.σA (g : GQ l) (bk.ev X) = bk.ev X`. Rewrite using `[bk.ev_X]`. Conclude with `(GlobalTheory.RingIface.sigA_teich l _ _).trans (congrArg _ hg)`. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Per.σA (g : GQ l) (bk.ev (C w)) = bk.ev (C w)`. Rewrite using `[bk.ev_C, bk.gal_w]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BK.galHom_comp_ι_of_fixFlat {K : FinExt l} (bk : BK K) (g : ↥(GK K)) (hg : bk.FixFlat g) :
     (ainfHom K g).comp bk.ι = bk.ι := by
@@ -109,7 +107,7 @@ theorem BK.galHom_comp_ι_of_fixFlat {K : FinExt l} (bk : BK K) (g : ↥(GK K)) 
     rw [bk.ev_C, bk.gal_w]
 
 /- English proof (translation)
-Establish `e` using `h.gal g`. Rewrite `e` using `[BK.galHom_comp_ι_of_fixFlat bk g hg, S.ε_refl]`. Conclude with `e.trans ((congrArg (T * ·) (Matrix.map_one (inclW l) (map_zero _) (map_one _))).trans (Matrix.mul_one T))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MReal.gal_of_fixFlat {K : FinExt l} {bk : BK K} {d : ℕ} {S : Strat bk d}
     {ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]} {T : Matrix (Fin d) (Fin d) (WCb l)} (h : MReal S ρ T)
@@ -119,19 +117,17 @@ theorem MReal.gal_of_fixFlat {K : FinExt l} {bk : BK K} {d : ℕ} {S : Strat bk 
   exact e.trans ((congrArg (T * ·) (Matrix.map_one (inclW l) (map_zero _) (map_one _))).trans (Matrix.mul_one T))
 
 /- English proof (translation)
-Introduce `l _ K bk d d' S S' ρ ρ' T T' hT hT' f hf`. Take `⟨u, hu⟩` from `hT'.unit`. Establish `cancel : ∀ M N : Matrix (Fin d') (Fin d) (WCb l), T' * M = T' * N → M = N`. Introduce `M N h`. Establish `h2` using `congrArg (fun Z => (↑u⁻¹ : Matrix (Fin d') (Fin d') (WCb l)) * Z) h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [← hu, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul] at h2`. Conclude with `h2`. Establish `hzmul : ∀ {m n o : Type} [Fintype n] (A : Matrix m n ℤ_[l]) (B : Matrix n o ℤ_[l]), zW (A * B) = zW A * zW B` using `fun A B => Matrix.map_mul`. Use `set Xm : Matrix (Fin d') (Fin d) (WCb l) := (↑u⁻¹ : Matrix (Fin d') (Fin d') (WCb l)) * (zW f * T) with hXm`. Establish `hX : T' * Xm = zW f * T`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hXm, ← hu, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Use `⟨Xm, hX, fun g hg => ?_, ?_⟩` and prove the remaining obligations. Set `G : WCb l →+* WCb l` to `(galW l (g : GQ l)).toRingEquiv.toRingHom`. Establish `hzG : ∀ {m n : Type} (M : Matrix m n ℤ_[l]), (zW M).map G = zW M` using `fun M => Matrix.ext fun i j => (galW l (g : GQ l)).commutes _`. Establish `a1 : zW (ρ' g) * T'.map G = T'` using `hT'.gal_of_fixFlat g hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `a2 : zW (ρ g) * T.map G = T` using `hT.gal_of_fixFlat g hg`. Express the relevant statement in the definitionally equal form `Xm.map G = Xm`. Apply `cancel` to reduce the goal to its premises. Establish `h1` using `congrArg (fun M => M.map G) hX`. Simplify using `only [Matrix.map_mul, hzG] at h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, a1]`. Use `_ = zW (ρ' g * f) * T.map G := by rw [h1, hzmul, Matrix.mul_assoc]`. Use `_ = zW f * (zW (ρ g) * T.map G) := by rw [← hf g, hzmul, Matrix.mul_assoc]`. Use `_ = T' * Xm := by rw [a2, hX]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Set `F : WCb l →+* WCb l` to `(frobW l).toRingHom`. Establish `hzF : ∀ {m n : Type} (M : Matrix m n ℤ_[l]), (zW M).map F = zW M` using `fun M => Matrix.ext fun i j => (frobW l).commutes _`. Establish `b1 : bk.evW bk.E ^ S.a • T.map F = T * S.A.map bk.evW` using `hT.φ`. Establish `b2 : bk.evW bk.E ^ S'.a • T'.map F = T' * S'.A.map bk.evW` using `hT'.φ`. Express the relevant statement in the definitionally equal form `bk.evW bk.E ^ S.a • (S'.A.map bk.evW * Xm.map F) = bk.evW bk.E ^ S'.a • (Xm * S.A.map bk.evW)`.
-
-Apply `cancel` to reduce the goal to its premises. Establish `h1` using `congrArg (fun M => M.map F) hX`. Simplify using `only [Matrix.map_mul, hzF] at h1`. Rewrite using `[Matrix.mul_smul, Matrix.mul_smul, ← Matrix.mul_assoc, ← b2, Matrix.smul_mul, h1, smul_smul, ← Matrix.mul_assoc, hX, Matrix.mul_assoc, ← b1, Matrix.mul_smul, smul_smul, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MReal.exists_fixed_frob : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' : ℕ) (S : Strat bk d)
     (S' : Strat bk d') (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l])

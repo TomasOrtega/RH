@@ -39,19 +39,19 @@ open Matrix (GeneralLinearGroup)
 section G
 variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] {a : ℕ}
 /- English proof (translation)
-Take `⟨χ, hχ⟩` from `hp`. Establish `hreg : (CG.mk ((CuspSub.triv E (le_refl 1)).twist ψ)).IsRegAlg` using `(CG.isRegAlg_ofChar ψ).2 hr`. Take `⟨r, wt, HT, H⟩` from `hG E Ω l ι 1 le_rfl _ χ hreg hχ`. Establish `hcr : Continuous fun g => (r g : Matrix (Fin 1) (Fin 1) (Qbar l))` using `Units.continuous_val.comp H.cont`. Establish `hsc : (GeneralLinearGroup.scalar (Fin 1)).comp (Matrix.GeneralLinearGroup.det.comp r) = r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `g i j`. Rewrite using `[MonoidHom.comp_apply, coe_scalar, Subsingleton.elim i 0, Subsingleton.elim j 0]`. Rewrite using `[Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Express the relevant statement in the definitionally equal form `Matrix.det (r g : Matrix (Fin 1) (Fin 1) (Qbar l)) = _`. Rewrite using `[Matrix.det_fin_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : Continuous fun x : GL (Fin 1) (Qbar l) => Matrix.GeneralLinearGroup.det x` using `GeneralLinearGroup.continuous_det`. Use `⟨MonoidHom.comp Matrix.GeneralLinearGroup.det r, hdet.comp H.cont, fun w hl B g hB hg => ?_, fun P AI hT w A h O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Take `⟨y1, y2⟩` from `_root_.GlobalTheory.HodgeOfTrue.locPar_ofChar_unr_and_frobEig hL ψ hB (hu w)`. Establish `e1 : wdOf hB hl ι r = _root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.ofChar ψ) hB`. Rewrite using `[H.eq_locPar hL hF hl hB y1, show (1 - ((1 : ℕ) : ℝ)) / 2 = 0 by norm_num, WD.lpTw_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `f` using `frobEig_wdOf hl ι hcr (e1 ▸ y1) hB hg`. Rewrite `f` using `[e1, y2]`. Establish `h1 : (r g : Matrix (Fin 1) (Fin 1) (Qbar l)).charpoly = X - C ((r g : Matrix (Fin 1) (Fin 1) (Qbar l)) 0 0)`. Simplify using `[Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `f` using `[h1]`. Establish `f2` using `congrArg (fun p => p.coeff 0) f`. Simplify using `at f2`. Express the relevant statement in the definitionally equal form `ι (Matrix.det _) = _`. Rewrite using `[Matrix.det_fin_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `f2.trans (Units.val_inv_eq_inv_val _).symm`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E 1 ((CuspSub.triv E (le_refl 1)).twist ψ) w`. Establish `hc` using `(H.above P AI hT w A h O Bw hj).crys σ hσ ((_root_.GlobalTheory.CuspRep.ParLaws.reciprocity_unramified_iff_spherical (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h) (ParLaws.toRep σ)).1 (by`. Rewrite using `[← _root_.GlobalTheory.CuspRep.ParLaws.local_parameter_eq_reciprocity_of_is_local_component hL hσ h]`. Conclude with `(_root_.GlobalTheory.HodgeOfTrue.locPar_ofChar_unr_and_frobEig hL ψ h (hu w)).1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (GeneralLinearGroup.scalar (Fin 1)).comp ((Matrix.GeneralLinearGroup.det.comp r).comp (Dec (F` using `E) A).subtype) = r.comp (Dec (F := E) A).subtype := by`. Rewrite using `[← MonoidHom.comp_assoc, hsc]`. Rewrite using `[e]`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_galois_character_crystalline_at_places (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hG : _root_.UpperTheory.GalS.CuspUAlt)
     (ι : Qbar l ≃+* ℂ) (ψ : HChar E) (hu : ∀ v, ψ.UnrAt v) (hr : ∀ τ, ∃ n : ℤ, expo ψ τ = n)

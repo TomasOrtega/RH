@@ -17,7 +17,7 @@ section SlopeTestRemainingChoices
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic F Ω := Algebra.IsAlgebraic.tower_top (K := ℚ) F`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem algCl (F : IntermediateField ℚ Ω) : IsAlgClosure F Ω := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
@@ -25,16 +25,16 @@ private theorem algCl (F : IntermediateField ℚ Ω) : IsAlgClosure F Ω := by
   exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Use `haveI := algCl F`. Conclude with `(galEmbTop ℚ F Ω).1.continuous`.
+A detailed English derivation is pending.
 -/
 private theorem cont_resQ (F : IntermediateField ℚ Ω) [NumberField F] : Continuous (resQ F) := by
   haveI := algCl F
   exact (galEmbTop ℚ F Ω).1.continuous
 
 /- English proof (translation)
-Use `haveI := algCl F`. Use `haveI := algCl F'`. Rewrite using `[(galEmbTop ℚ F Ω).1.isInducing.continuous_iff]`. Establish `e : (galEmb ℚ F Ω) ∘ (resLe h) = galEmb ℚ F' Ω`. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(galEmbTop ℚ F' Ω).1.continuous`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_resLe {F F' : IntermediateField ℚ Ω} [NumberField F] [NumberField F'] (h : F ≤ F') :
     Continuous (resLe h) := by
@@ -49,9 +49,9 @@ private theorem cont_resLe {F F' : IntermediateField ℚ Ω} [NumberField F] [Nu
   exact (galEmbTop ℚ F' Ω).1.continuous
 
 /- English proof (translation)
-Use `open scoped Pointwise in`. Establish `hgA : g • A = A'`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← hA, AlgEquiv.smul_def, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Establish `hs' : s • A' = A'` using `MulAction.mem_stabilizer_iff.mp hs`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show g⁻¹ * s * g ∈ MulAction.stabilizer (G F Ω) A`. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, hgA, hs', ← hgA, inv_smul_smul]`.
+A detailed English derivation is pending.
 -/
 private theorem conj_dec {F : IntermediateField ℚ Ω} [NumberField F] {A A' : ValuationSubring Ω} {g s : G F Ω}
     (hA : ∀ x, g x ∈ A' ↔ x ∈ A) (hs : s ∈ Dec (F := F) A') : g⁻¹ * s * g ∈ Dec (F := F) A := by
@@ -64,9 +64,9 @@ private theorem conj_dec {F : IntermediateField ℚ Ω} [NumberField F] {A A' : 
   rw [MulAction.mem_stabilizer_iff, mul_smul, mul_smul, hgA, hs', ← hgA, inv_smul_smul]
 
 /- English proof (translation)
-Establish `hc` using `h i j 1`. Use `IsLocallyConstant.desc _ (Ideal.Quotient.mk ((⊥ : Ideal k) ^ 1)) hc ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `h1` using `Ideal.Quotient.eq.mp hxy`. Rewrite `h1` using `[pow_one, Ideal.mem_bot, sub_eq_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private theorem lc_of_cont {ι Γ k : Type} [Group Γ] [TopologicalSpace Γ] [Field k] {P : PD ι Γ k} (h : P.Cont ⊥) (i j : Fin 4) :
     IsLocallyConstant fun g => P.r g i j := by
@@ -78,9 +78,7 @@ private theorem lc_of_cont {ι Γ k : Type} [Group Γ] [TopologicalSpace Γ] [Fi
   exact h1
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hij : ∀ i j, ∀ᶠ y in nhds x, P.r y i j = P.r x i j` using `fun i j => (IsLocallyConstant.iff_eventually_eq _).mp (lc_of_cont h i j) x`. Use `filter_upwards [Filter.eventually_all.mpr (fun i => Filter.eventually_all.mpr (hij i))] with y hy`. Use extensionality with `i j`.
-
-Conclude with `hy i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem lc_mat {ι Γ k : Type} [Group Γ] [TopologicalSpace Γ] [Field k] {P : PD ι Γ k} (h : P.Cont ⊥) :
     IsLocallyConstant P.r := by
@@ -95,13 +93,11 @@ private theorem lc_mat {ι Γ k : Type} [Group Γ] [TopologicalSpace Γ] [Field 
 variable {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c}
 
 /- English proof (translation)
-Use `haveI := c.dvr`. Use `haveI := c.fin`. Establish `hp : l.Prime` using `Fact.out`. Establish `hloc : IsLocalHom (algebraMap ℤ_[l] c.O)` using `(dvrFacts l c.O).2.2.1`. Establish `hmem : (l : c.O) ∈ maximalIdeal c.O`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Establish `hu' : IsUnit (algebraMap ℤ_[l] c.O (l : ℤ_[l]))` using `by simpa using hu`. Establish `h2 : IsUnit ((l : ℤ_[l]))` using `(isUnit_map_iff (algebraMap ℤ_[l] c.O) _).mp hu'`. Establish `h3 : (l : ℤ_[l]) ∈ nonunits ℤ_[l]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[PadicInt.mem_nonunits, PadicInt.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)`. Conclude with `h3 h2`. Establish `h0 : (l : k) = 0`. Use `ha _ hmem` as an intermediate fact.
-
-Simplify using `using this`. Conclude with `(CharP.charP_iff_prime_eq_zero hp).mpr h0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem charP_of {k : Type} [Field k] (a : c.O →+* k) (ha : ∀ x ∈ maximalIdeal c.O, a x = 0) : CharP k l := by
   haveI := c.dvr
@@ -123,9 +119,9 @@ private theorem charP_of {k : Type} [Field k] (a : c.O →+* k) (ha : ∀ x ∈ 
   exact (CharP.charP_iff_prime_eq_zero hp).mpr h0
 
 /- English proof (translation)
-Use `show a ((D.ps (lab pr i) g : c.O)) = 1`. Establish `hj : residue c.O ((D.ps (lab pr i) g : c.O)) = 1`. Establish `h1` using `congrFun (congrFun hg (lab pr i)) (lab pr i)`. Simplify `h1` using `[Raw.rbar, mapRep, Raw.r0, diagRep, Matrix.diagonal_apply_eq]`. Establish `hm : ((D.ps (lab pr i) g : c.O)) - 1 ∈ maximalIdeal c.O`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[← map_one (residue c.O)]`. Conclude with `Ideal.Quotient.eq.mp hj`. Establish `h2` using `ha _ hm`. Rewrite `h2` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chi_one {k : Type} [Field k] (a : c.O →+* k) (ha : ∀ x ∈ maximalIdeal c.O, a x = 0) (pr : Bool) {g : G ℚ Ω}
     (hg : D.rbar g = 1) (i : Fin 4) : a (chi D pr i g) = 1 := by
@@ -141,23 +137,21 @@ private theorem chi_one {k : Type} [Field k] (a : c.O →+* k) (ha : ∀ x ∈ m
   exact h2
 
 /- English proof (translation)
-Use `haveI := T.nF`. Use `haveI : IsAlgClosure T.F Ω := algCl T.F`. Establish `hlp : l.Prime` using `Fact.out`. Use `haveI : CharP k l := charP_of a ha`. Establish `hSp` using `hS A hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdec : ∀ σ ∈ Ine (F` using `T.F) A, resQ T.F σ ∈ Dec (F := ℚ) A := fun σ hσ => Ine_le_Dec (F := T.F) A hσ`. Establish `hom : Dec (F` using `ℚ) A ≤ D.om.ker := fun x hx => (hSp hx).2`. Establish `hwl : l ∣ w - 1` using `Rt.splitMod D hD w hw A hA hl hom`. Take `⟨θ0, hθo, hθu, hθne⟩` from `Rt.thetaEx Ω l w hw hwl`. Establish `hFθ` using `hd θ0 hθo hθu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : ↥(Ine (F` to `T.F) A) →* UpperTheory.V.GradeZeroInterpolatingElement.M4 k := s.r.comp (Ine (F := T.F) A).subtype`. Set `θ : ↥(Ine (F` to `T.F) A) →* Multiplicative (ZMod l) := (θ0.comp (resQ T.F)).comp (Ine (F := T.F) A).subtype`. Establish `hφlc : IsLocallyConstant ⇑φ` using `(lc_mat hs.cont).comp_continuous continuous_subtype_val`. Establish `hφl : ∀ σ : ↥(Ine (F` using `T.F) A), φ σ ^ l = 1 := by`. Introduce `σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Rt.unipPow k l` to reduce the goal to its premises. Introduce `i`. Establish `h1` using `hs.res.diag σ.1 i`. Establish `hr : D.rbar (resQ T.F σ.1) = 1` using `(hSp (hdec σ.1 σ.2)).1.2`. Rewrite using `[show φ σ i i = s.r σ.1 i i from rfl, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `chi_one a ha T.pr hr i`. Break down `h5 with h5 | h5` into its components or cases. Use `left`. Use `⟨h5, ?_⟩` and prove the remaining obligations. Break down `hs.res.shape with h | h` into its components or cases.
+Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Or.inl (h.1 σ.1)`. Conclude with `Or.inr (h σ.1)`. Use `right`. Use `⟨?_, h5 σ.1⟩` and prove the remaining obligations. Use `hlp.two_le` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hD.l_odd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hθo' : IsOpen (θ.ker : Set ↥(Ine (F` using `T.F) A)) := hθo.preimage ((cont_resQ T.F).comp continuous_subtype_val)`. Establish `hθne' : θ ≠ 1`. Take `⟨g', hg'I, hg'⟩` from `hθne A hA`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : g' ∈ T.F.fixingSubgroup` using `(hSp (Ine_le_Dec (F := ℚ) A hg'I)).1.1`. Introduce `h`. Set `s' : G T.F Ω` to `IntermediateField.fixingSubgroupEquiv T.F ⟨g', hfix⟩`. Establish `hs'I : s' ∈ Ine (F` using `T.F) A := hg'I`. Use `DFunLike.congr_fun h ⟨s', hs'I⟩` as an intermediate fact.
-
-Conclude with `hg' this`. Establish `hgθ : θ ⟨g, hg⟩ = 1` using `hFθ hF`. Conclude with `Rt.tameExp T.F Ω l A hl (UpperTheory.V.GradeZeroInterpolatingElement.M4 k) φ hφlc hφl θ hθo' hθne' ⟨g, hg⟩ hgθ`.
+A detailed English derivation is pending.
 -/
 private theorem killW (hD : D.Good) (T : Tower D) {k : Type} [Field k] (a : c.O →+* k) (ha : ∀ x ∈ maximalIdeal c.O, a x = 0)
     {W : Finset ℕ} {s : PD T.ι (G T.F Ω) k} (hs : (T.fr W).IsRes a s) (h5 : 5 ≤ l ∨ Supp qQ s.r) {w : ℕ} (hw : w.Prime)
@@ -213,47 +207,37 @@ private theorem killW (hD : D.Good) (T : Tower D) {k : Type} [Field k] (a : c.O 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD T T' hT hFit k _ a ha W hW hWd s hs h5`. Use `haveI := T.nF`. Use `haveI := T'.nF`. Establish `hle : T.F ≤ T'.F` using `hT.le`. Establish `hQ : ∀ g : G T'.F Ω, resQ T.F (resLe hle g) = resQ T'.F g` using `fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use extensionality with `x`. Both sides reduce to the same expression. Establish `hcov : ∀ v' : T'.ι, ∃ v : T.ι, ∃ g : G T.F Ω, ∀ x, g x ∈ T'.pl v' ↔ x ∈ T.pl v` using `fun v' => (T.cover (T'.pl v') (T'.ovl v')).exists`. Use `choose bv bg hbg using hcov`. Establish `hnew : ∀ v' : T'.ι, ∃ n', IsLow n' ∧ IsUp (adj n' * s.r (bg v') * s.n (bv v')) ∧ (SuppM nP (s.r (bg v')) ∧ SuppM qQ (s.n (bv v')) → SuppM qQ n')`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `v'`. Apply `Rt.flagNew k (a ↑(D.th (resQ T.F (bg v'))))` to reduce the goal to its premises. Conclude with `((D.th (resQ T.F (bg v'))).isUnit.map a).ne_zero`. Conclude with `hs.pair.mult (bg v')`. Conclude with `hs.pair.low (bv v')`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hs.res.shape with ⟨h1, h2⟩ | h1` into its components or cases. Conclude with `Or.inl ⟨h1 _, h2 _⟩`. Conclude with `Or.inr (h1 _)`. Use `choose nn hnlow hnup hnq using hnew`. Establish `hconj : ∀ (v' : T'.ι) (t : G T.F Ω), t ∈ Dec (F` using `T.F) (T'.pl v') → (bg v')⁻¹ * t * bg v' ∈ Dec (F := T.F) (T.pl (bv v')) := fun v' t ht => conj_dec (hbg v') ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hmove : ∀ (v' : T'.ι) (t : G T.F Ω), t ∈ Dec (F` using `T.F) (T'.pl v') → IsUp (adj (nn v') * s.r t * nn v') ∧ ∀ i, (adj (nn v') * s.r t * nn v') i i = s.ψ (bv v') i ((bg v')⁻¹ * t * bg v') := by`. Introduce `v' t ht`. Establish `hZ` using `hs.pair.flag (bv v') _ (hconj v' t ht)`. Establish `key` using `Rt.flagMove k (s.r (bg v')) (s.r (bg v')⁻¹) (s.r ((bg v')⁻¹ * t * bg v')) (s.n (bv v')) (nn v') (by rw [← map_mul, mul_inv_cancel, map_one]) (hs.pair.low _) (hnlow v') (hnup v') hZ`. Establish `e : s.r (bg v') * s.r ((bg v')⁻¹ * t * bg v') * s.r (bg v')⁻¹ = s.r t`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use `group`. Rewrite `key` using `[e]`. Conclude with `⟨key.1, fun i => key.2 i⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `s' : PD T'.ι (G T'.F Ω) k` to `⟨s.r.comp (resLe hle), nn⟩`. Establish `hcont : s'.Cont ⊥`. Introduce `i j N`. Conclude with `(hs.cont i j N).comp_continuous (cont_resLe hle)`. Establish `hdiag : ∀ (g : G T'.F Ω) (i : Fin 4), s'.r g i i = a ↑(((T'.fr ∅).χ i) g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g i`. Use `hs.res.diag (resLe hle g) i` as an intermediate fact. Simplify using `only [Tower.fr, MonoidHom.comp_apply] at this ⊢`. Use `show s.r (resLe hle g) i i = _`. Rewrite using `[this, hQ, hT.pr]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hchar : ∀ (v' : T'.ι), ∀ t ∈ (T'.fr ∅).Gv v', ∀ i, s'.ψ v' i t = a ↑(((T'.fr ∅).χ i) t)`. Introduce `v' t ht i`. Establish `ht' : resLe hle t ∈ Dec (F` using `T.F) (T'.pl v') := ht`. Establish `h2` using `(hmove v' _ ht').2 i`. Establish `h3` using `hs.res.char (bv v') _ (hconj v' _ ht') i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `show (adj (nn v') * s.r (resLe hle t) * nn v') i i = _`. Rewrite using `[h2]`. Use `h3.trans ?_` and prove the remaining obligations. Simplify using `only [Tower.fr, MonoidHom.comp_apply, map_mul, map_inv]`. Rewrite using `[mul_comm _ ((chi D T.pr i) ((resQ T.F) (resLe hle t))), inv_mul_cancel_right, hQ, hT.pr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Use `haveI := charP_of (c := c) a ha`. Use `⟨s', ⟨⟨?_, ?_, ?_, hnlow, ?_, ?_⟩, ⟨hdiag, hchar, ?_⟩, hcont⟩, ⟨rfl, ?_⟩⟩` and prove the remaining obligations. Introduce `g`. Use `hs.pair.mult (resLe hle g)` as an intermediate fact. Simplify using `only [Tower.fr, MonoidHom.comp_apply] at this ⊢`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hQ]`. Conclude with `this`. Introduce and unpack `g ⟨A, hAw, hgI, hgr⟩ show s.r (resLe hle g) = 1`. Establish `hgI' : resLe hle g ∈ Ine (F` using `T.F) A := hgI`. Establish `hgr' : D.rbar (resQ T.F (resLe hle g)) = 1` using `by rw [hQ]; exact hgr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hlA : ¬ A.valuation (l : Ω) < 1` using `hAw l (Finset.mem_insert_self _ _)`. Break down `h5 with h5 | h5 | h5` into its components or cases. Use `rotate_left 2`. Conclude with `h5.pair.kill _ ⟨A, hAw, hgI', hgr'⟩`. Use `all_goals`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hAW : Raw.Away (insert l W) A`. Conclude with `hs.pair.kill _ ⟨A, hAW, hgI', hgr'⟩`. Simplify using `only [Raw.Away, not_forall, not_not] at hAW`. Take `⟨p, hp, hpA⟩` from `hAW`. Break down `Finset.mem_insert.mp hp with rfl | hpW` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `absurd hpA hlA`. Establish `hF : resQ T.F (resLe hle g) ∈ T'.F.fixingSubgroup`. Rewrite using `[hQ, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `g.commutes ⟨x, hx⟩`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Apply the tactic sequence `exact killW hD T a ha hs (by first | exact Or.inl h5 | exact Or.inr h5) (hW p hpW).1 (hW p hpW).2 (hWd p hpW) hpA hlA hgI' hF`. Take `⟨j, hj⟩` from `hT.g0`. Establish `e : resLe hle T'.g0 = T.g0 ^ l ^ j`. Use extensionality with `x`. Use `congrArg (fun σ : G ℚ Ω => σ x) (show resQ T.F (resLe hle T'.g0) = resQ T.F (T.g0 ^ l ^ j) by` as an intermediate fact.
-
-Rewrite using `[hQ, hj, map_pow])`. Conclude with `this`. Use `show Matrix.IsDiag (s.r (resLe hle T'.g0))`. Rewrite using `[e, map_pow]`. Establish `hd : Matrix.IsDiag (s.r T.g0)` using `hs.pair.nrm`.
-
-Rewrite `hd` using `[Matrix.isDiag_iff_diagonal_diag]`. Rewrite using `[← hd, Matrix.diagonal_pow]`. Conclude with `Matrix.isDiag_diagonal _`. Introduce `v' t ht`. Conclude with `(hmove v' _ ht).1`.
-
-Introduce `v' t ht i`. Use `(hchar v' t ht.1 i).trans ?_` and prove the remaining obligations. Set `ψh : G T'.F Ω →* k` to `a.toMonoidHom.comp ((Units.coeHom c.O).comp ((T'.fr ∅).χ i))`. Establish `hlc : IsLocallyConstant ψh`. Use `lc_of_cont hcont i i` as an intermediate fact.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Conclude with `(hdiag g i).symm`. Conclude with `Rt.muTriv l (G T'.F Ω) (Dec (F := T'.F) (T'.pl v')) k ψh hlc t ht`. Break down `hs.res.shape with ⟨h1, h2⟩ | h1` into its components or cases.
-
-Conclude with `Or.inl ⟨fun g => h1 _, fun v' => hnq v' ⟨h1 _, h2 _⟩⟩`. Conclude with `Or.inr (fun g => h1 _)`. Introduce `v'`. Conclude with `⟨bv v', bg v', hbg v', hnup v'⟩`.
+Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.restrT :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (T T' : Tower D) (hT : T.Le T'), T.Fit → ∀ (k : Type) [Field k] (a : c.O →+* k), (∀ x ∈ maximalIdeal c.O, a x = 0) → ∀ W : Finset ℕ, (∀ w ∈ W, w.Prime ∧ T.Splits w) → (∀ w ∈ W, Dies l w T'.F) →

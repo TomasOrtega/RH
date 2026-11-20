@@ -16,7 +16,7 @@ namespace GlobalTheory.FinTranslate
 variable {D : D7} (θ : InfFam D) (V : HSp D)
 
 /- English proof (translation)
-Establish `h1 : (GfC V).Normal` using `MonoidHom.normal_ker _`. Establish `h2 : (GinfC V).Normal` using `MonoidHom.normal_ker _`. Conclude with `Subgroup.commute_of_normal_of_disjoint (GfC V) (GinfC V) h1 h2 (Subgroup.disjoint_def.2 fun {x} hx hy => GlobalTheory.AutFunCounterexample.GfC_inf_GinfC V hx hy) a b ha hb`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comm_fin_real {a b : GA D V} (ha : a ∈ GfC V) (hb : b ∈ GinfC V) : a * b = b * a := by
   have h1 : (GfC V).Normal := MonoidHom.normal_ker _
@@ -25,7 +25,7 @@ theorem comm_fin_real {a b : GA D V} (ha : a ∈ GfC V) (hb : b ∈ GinfC V) : a
     (Subgroup.disjoint_def.2 fun {x} hx hy => GlobalTheory.AutFunCounterexample.GfC_inf_GinfC V hx hy) a b ha hb
 
 /- English proof (translation)
-Unfold `atTau`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `(GinfC V).one_mem`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem atTau_mem (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) : atTau θ V τ g ∈ GinfC V := by
   unfold atTau
@@ -34,7 +34,7 @@ theorem atTau_mem (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ
   · exact (GinfC V).one_mem
 
 /- English proof (translation)
-The claim follows from `atTau_mem θ V τ _`.
+A detailed English derivation is pending.
 -/
 theorem oneP_mem (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (t : ℝ) : oneP θ V τ X t ∈ GinfC V :=
   atTau_mem θ V τ _
@@ -49,7 +49,7 @@ theorem rTrL_apply (κ : GA D V) (φ : GA D V → ℂ) : rTrL V κ φ = rTr V κ
 variable {κ : GA D V}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Rder, rTr]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, mul_assoc, comm_fin_real V hκ (oneP_mem θ V τ X t)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rder_rTr (hκ : κ ∈ GfC V) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (φ : GA D V → ℂ) :
     Rder θ V τ X (rTr V κ φ) = rTr V κ (Rder θ V τ X φ) := by
@@ -60,7 +60,7 @@ theorem Rder_rTr (hκ : κ ∈ GfC V) (τ : D.what₂.Tau) (X : Matrix (Fin V.ra
   rw [mul_assoc, mul_assoc, comm_fin_real V hκ (oneP_mem θ V τ X t)]
 
 /- English proof (translation)
-Unfold `RderC`. Rewrite using `[Rder_rTr θ V hκ, Rder_rTr θ V hκ]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem RderC_rTr (hκ : κ ∈ GfC V) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (φ : GA D V → ℂ) :
     RderC θ V τ Z (rTr V κ φ) = rTr V κ (RderC θ V τ Z φ) := by
@@ -69,7 +69,7 @@ theorem RderC_rTr (hκ : κ ∈ GfC V) (τ : D.what₂.Tau) (Z : Matrix (Fin V.r
   rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons f l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih fun g hg => hl g (List.mem_cons_of_mem _ hg), hl f List.mem_cons_self]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_comm {α : Type} (T : α → α) (l : List (α → α)) (hl : ∀ f ∈ l, ∀ x, f (T x) = T (f x)) (x : α) :
     l.foldr (fun f acc => f acc) (T x) = T (l.foldr (fun f acc => f acc) x) := by
@@ -80,9 +80,9 @@ theorem foldr_comm {α : Type} (T : α → α) (l : List (α → α)) (hl : ∀ 
     rw [ih fun g hg => hl g (List.mem_cons_of_mem _ hg), hl f List.mem_cons_self]
 
 /- English proof (translation)
-Unfold `gelf`. Rewrite using `[← rTrL_apply V κ (∑ _, _), map_sum]`. Use `Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Rewrite using `[rTrL_apply]`. Use `foldr_comm (rTr V κ) _ ?_ φ` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f hf x`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hf`. Conclude with `RderC_rTr θ V hκ τ _ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gelf_rTr (hκ : κ ∈ GfC V) (τ : D.what₂.Tau) (k : ℕ) (φ : GA D V → ℂ) :
     gelf θ V τ k (rTr V κ φ) = rTr V κ (gelf θ V τ k φ) := by
@@ -96,7 +96,7 @@ theorem gelf_rTr (hκ : κ ∈ GfC V) (τ : D.what₂.Tau) (k : ℕ) (φ : GA D 
   exact RderC_rTr θ V hκ τ _ x
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons p l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih, Rder_rTr θ V hκ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_Rder_rTr (hκ : κ ∈ GfC V) (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ))
     (φ : GA D V → ℂ) :
@@ -108,11 +108,11 @@ theorem foldr_Rder_rTr (hκ : κ ∈ GfC V) (l : List (D.what₂.Tau × Matrix (
     rw [ih, Rder_rTr θ V hκ]
 
 /- English proof (translation)
-Use `GlobalTheory.AutFunCounterexample.topGroup_GA D V` as an intermediate fact. Use `⟨fun γ hγ g => ?_, ?_, h.cont.comp (continuous_id.mul continuous_const)⟩` and prove the remaining obligations. Simplify using `only [rTr]`. Rewrite using `[mul_assoc, h.left γ hγ]`. Take `⟨U, hU, hinv⟩` from `h.level`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨U.comap (MulAut.conj κ⁻¹).toMonoidHom, ?_, fun k hk hkf g => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun k : GA D V => κ⁻¹ * k * κ⁻¹⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`. Conclude with `hU.preimage hc`. Establish `hk' : κ⁻¹ * k * κ⁻¹⁻¹ ∈ U` using `hk`. Establish `hf : κ⁻¹ * k * κ⁻¹⁻¹ ∈ GfC V` using `(GfC V).mul_mem ((GfC V).mul_mem ((GfC V).inv_mem hκ) hkf) ((GfC V).inv_mem ((GfC V).inv_mem hκ))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [rTr]`. Rewrite using `[← hinv _ hk' hf (g * κ)]`. Use `congr 1`. Use `group`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isAutFun_rTr (hκ : κ ∈ GfC V) {φ : GA D V → ℂ} (h : IsAutFun V φ) : IsAutFun V (rTr V κ φ) := by
   have := GlobalTheory.AutFunCounterexample.topGroup_GA D V
@@ -133,15 +133,15 @@ theorem isAutFun_rTr (hκ : κ ∈ GfC V) {φ : GA D V → ℂ} (h : IsAutFun V 
       group
 
 /- English proof (translation)
-Introduce `D θ V κ hκ φ h`. Use `⟨isAutFun_rTr V hκ h.toIsAutFun, fun k τs Xs hX g => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun t : Fin k → ℝ => rTr V κ φ (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod)) = fun t : Fin k → ℝ => φ (g * κ * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod)`. Use function extensionality and compare the values at `t`. Establish `hm : (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod ∈ GinfC V`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `(GinfC V).list_prod_mem fun x hx => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `oneP_mem θ V _ _ _`. Simplify using `only [rTr]`. Rewrite using `[mul_assoc, mul_assoc, comm_fin_real V hκ hm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h.smooth k τs Xs hX (g * κ)`. Take `⟨W, hW, hφ, hst⟩` from `h.zfin`. Use `⟨W.map (rTrL V κ), inferInstance, ⟨φ, hφ, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `τ k _ ⟨f, hf, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨gelf θ V τ k f, hst τ k f hf, (gelf_rTr θ V hκ τ k f).symm⟩`. Take `⟨N, hN⟩` from `h.growth`. Use `⟨N, fun l hl x => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hN l hl (x * κ)`. Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[foldr_Rder_rTr θ V hκ]`. Simplify using `only [rTr]`. Rewrite using `[mul_assoc, ← comm_fin_real V hκ hg, ← mul_assoc]`. Conclude with `hC g hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAutFunSm_rTr : ∀ {D : D7} (θ : InfFam D) (V : HSp D) (κ : GA D V), κ ∈ GfC V → ∀ φ : GA D V → ℂ,
     IsAutFunSm θ V φ → IsAutFunSm θ V (rTr V κ φ) := by

@@ -13,13 +13,11 @@ noncomputable section
 namespace GlobalTheory.NablaDensity
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Establish `hp : (u.prod fun i j => (MvPolynomial.C (e i) * MvPolynomial.X i : MvPolynomial σ k) ^ j) = MvPolynomial.C (u.prod fun v j => e v ^ j) * MvPolynomial.monomial u 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_pow, MvPolynomial.C_pow]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = MvPolynomial.C (u.prod fun i j => e i ^ j) * u.prod (fun i j => (MvPolynomial.X i : MvPolynomial σ k) ^ j) := by`. Rewrite using `[Finsupp.prod_mul, map_finsuppProd]`. Use `_ = MvPolynomial.C (u.prod fun v j => e v ^ j) * MvPolynomial.monomial u 1 := by`. Rewrite using `[MvPolynomial.monomial_eq, MvPolynomial.C_1, one_mul]`. Establish `hmon : MvPolynomial.aeval (fun v => MvPolynomial.C (e v) * MvPolynomial.X v) (MvPolynomial.monomial u a : MvPolynomial σ k) = MvPolynomial.monomial u ((u.prod fun v j => e v ^ j) * a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.aeval_monomial, MvPolynomial.algebraMap_eq, hp, MvPolynomial.C_mul_monomial, MvPolynomial.C_mul_monomial, mul_one, mul_comm]`. Rewrite using `[hmon, MvPolynomial.coeff_monomial, MvPolynomial.coeff_monomial]`. Use `split_ifs with hu`. Substitute `hu` using the available equality. Both sides reduce to the same expression.
-
-Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [map_add, MvPolynomial.coeff_add, MvPolynomial.coeff_add, hp, hq, mul_add]`.
+Substitute using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeff_aeval_scale {k σ : Type} [Field k] (e : σ → k) (f : MvPolynomial σ k) (m : σ →₀ ℕ) :
     MvPolynomial.coeff m (MvPolynomial.aeval (fun v => MvPolynomial.C (e v) * MvPolynomial.X v) f) =
@@ -49,9 +47,9 @@ theorem coeff_aeval_scale {k σ : Type} [Field k] (e : σ → k) (f : MvPolynomi
   | add p q hp hq => rw [map_add, MvPolynomial.coeff_add, MvPolynomial.coeff_add, hp, hq, mul_add]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Formalism.GradedWeylDivisibility.rowAct, MvPolynomial.aeval_X, MvPolynomial.aeval_X, Finset.sum_eq_single v.1]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.diagonal_apply_ne _ (Ne.symm hb)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rowAct_diagonal {k : Type} [Field k] {r c : ℕ} (d : Fin r → k) :
     Formalism.GradedWeylDivisibility.rowAct k (n := c) (Matrix.diagonal d) =
@@ -65,7 +63,7 @@ theorem rowAct_diagonal {k : Type} [Field k] {r c : ℕ} (d : Fin r → k) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Use `show ∏ y, x a ^ m (a, y) = _`. Rewrite using `[Formalism.GradedWeylDivisibility.rowDeg, Finset.prod_pow_eq_pow_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_rowDeg {k : Type} [Field k] {r c : ℕ} (x : Fin r → k) (m : Fin r × Fin c →₀ ℕ) :
     (m.prod fun v j => x v.1 ^ j) = ∏ a, x a ^ Formalism.GradedWeylDivisibility.rowDeg m a := by
@@ -75,9 +73,9 @@ theorem prod_rowDeg {k : Type} [Field k] {r c : ℕ} (x : Fin r → k) (m : Fin 
   rw [Formalism.GradedWeylDivisibility.rowDeg, Finset.prod_pow_eq_pow_sum]
 
 /- English proof (translation)
-Establish `e1 : ((diagGL k r t : GL (Fin r) k) : Matrix (Fin r) (Fin r) k).transpose = Matrix.diagonal fun a => (t a : k)`. Simplify using `[diagGL]`. Establish `e2 : ((Matrix.GeneralLinearGroup.det (diagGL k r t) : kˣ) : k) = ∏ a, (t a : k)`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Simplify using `[diagGL, Matrix.det_diagonal]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `sqAct detPow`. Rewrite using `[MvPolynomial.coeff_smul, e1, rowAct_diagonal, coeff_aeval_scale, prod_rowDeg (fun a => (t a : k)), smul_eq_mul, Units.val_zpow_eq_zpow_val, e2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_sqAct_diag {k : Type} [Field k] {r : ℕ} (lam : DomWeight r) (t : Fin r → kˣ)
     (f : MvPolynomial (Fin r × Fin r) k) (m : Fin r × Fin r →₀ ℕ) :
@@ -94,7 +92,7 @@ theorem coeff_sqAct_diag {k : Type} [Field k] {r : ℕ} (lam : DomWeight r) (t :
     Units.val_zpow_eq_zpow_val, e2]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_prod_type, Formalism.GradedWeylDivisibility.rowDeg, Finset.sum_comm]`. Simplify using `[Formalism.GradedWeylDivisibility.rowW, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weight_rowW_apply {r c : ℕ} (m : Fin r × Fin c →₀ ℕ) (a : Fin r) :
     Finsupp.weight (Formalism.GradedWeylDivisibility.rowW r c) m a = Formalism.GradedWeylDivisibility.rowDeg m a := by
@@ -104,21 +102,19 @@ theorem weight_rowW_apply {r c : ℕ} (m : Fin r × Fin c →₀ ℕ) (a : Fin r
   simp [Formalism.GradedWeylDivisibility.rowW, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `k _ _ N lam f hf hwt`. Establish `hhom : MvPolynomial.IsWeightedHomogeneous (Formalism.GradedWeylDivisibility.rowW N N) f lam.natW`. Introduce `m hm`. Use function extensionality and compare the values at `a`. Rewrite using `[weight_rowW_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Set `u2 : kˣ` to `Units.mk0 2 two_ne_zero`. Set `t : Fin N → kˣ` to `Pi.mulSingle a u2`. Establish `hpn : ∀ n : Fin N → ℕ, ∏ b, ((t b : kˣ) : k) ^ n b = 2 ^ n a`. Introduce `n`. Rewrite using `[Finset.prod_eq_single a]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[t, u2]`. Introduce `b _ hb`. Simplify using `[t, Pi.mulSingle_eq_of_ne hb]`. Simplify using the standard rewrite rules. Establish `hp1 : ∏ b, ((t b : kˣ) : k) = 2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hpn (fun _ => 1)` as an intermediate fact. Simplify using `using this`. Establish `hpz : ((∏ b, t b ^ lam.w b : kˣ) : k) = 2 ^ lam.w a`. Rewrite using `[Units.coe_prod]`. Rewrite using `[Finset.prod_eq_single a]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[t, u2, Units.val_zpow_eq_zpow_val]`. Introduce `b _ hb`. Simplify using `[t, Pi.mulSingle_eq_of_ne hb]`. Simplify using the standard rewrite rules. Establish `h1` using `congrArg (MvPolynomial.coeff m) (hwt t)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[coeff_sqAct_diag, MvPolynomial.coeff_smul, smul_eq_mul, hp1, hpn, hpz]`. Establish `h2 : (2 : k) ^ lam.detShift * 2 ^ Formalism.GradedWeylDivisibility.rowDeg m a = 2 ^ lam.w a`. Establish `h1' : (2 : k) ^ lam.detShift * 2 ^ Formalism.GradedWeylDivisibility.rowDeg m a * MvPolynomial.coeff m f = 2 ^ lam.w a * MvPolynomial.coeff m f`. Rewrite using `[mul_assoc]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel₀ hm h1'`. Rewrite `h2` using `[← PI.WGB.natW_add_A lam a, zpow_add₀ two_ne_zero, zpow_natCast, mul_comm ((2 : k) ^ lam.natW a)]`. Establish `h3 : (2 : k) ^ Formalism.GradedWeylDivisibility.rowDeg m a = 2 ^ lam.natW a` using `mul_left_cancel₀ (zpow_ne_zero _ two_ne_zero) h2`. Establish `h4 : ((2 ^ Formalism.GradedWeylDivisibility.rowDeg m a : ℕ) : k) = ((2 ^ lam.natW a : ℕ) : k)` using `by push_cast; exact h3`. Conclude with `Nat.pow_right_injective le_rfl (Nat.cast_injective h4)`.
-
-Conclude with `GlobalTheory.Alc.hw_line_field k N lam.natW (PI.WGB.natW_anti_A lam) f hf hhom`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weightLine : ∀ (k : Type) [Field k] [CharZero k] (N : ℕ) (lam : DomWeight N)
     (f : MvPolynomial (Fin N × Fin N) k), f ∈ nablaSq k N lam →
@@ -167,7 +163,7 @@ theorem weightLine : ∀ (k : Type) [Field k] [CharZero k] (N : ℕ) (lam : DomW
 variable (k : Type) [Field k] (N : ℕ) (lam : DomWeight N)
 
 /- English proof (translation)
-Establish `h1 : Formalism.GradedWeylDivisibility.rowAct k (n` using `N) (1 : Matrix (Fin N) (Fin N) k) = AlgHom.id k _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[Formalism.GradedWeylDivisibility.rowAct, Matrix.one_apply]`. Simplify using `[sqAct, detPow, h1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sqAct_one (f : MvPolynomial (Fin N × Fin N) k) : sqAct k N lam 1 f = f := by
   have h1 : Formalism.GradedWeylDivisibility.rowAct k (n := N) (1 : Matrix (Fin N) (Fin N) k) =
@@ -215,13 +211,13 @@ theorem spanAlg_smul (a : spanAlg k N lam) (v : nablaSq k N lam) :
     a • v = (a : Module.End k (nablaSq k N lam)) v := rfl
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨g, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem rho_mem (g : GL (Fin N) k) : rho k N lam g ∈ spanAlg k N lam :=
   Algebra.subset_adjoin ⟨g, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[spanAlg, Algebra.adjoin_eq_span]`. Use `congr 1`. Rewrite using `[← MonoidHom.coe_mrange, Submonoid.closure_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem spanAlg_toSubmodule :
     Subalgebra.toSubmodule (spanAlg k N lam) = Submodule.span k (Set.range (rho k N lam)) := by
@@ -230,35 +226,31 @@ theorem spanAlg_toSubmodule :
   rw [← MonoidHom.coe_mrange, Submonoid.closure_eq]
 
 /- English proof (translation)
-The claim follows from `Formalism.GradedWeylDivisibility.hwMem k N N le_rfl lam.natW (PI.WGB.natW_anti_A lam)`.
+A detailed English derivation is pending.
 -/
 theorem extremal_mem : extremal k N lam ∈ nablaSq k N lam :=
   Formalism.GradedWeylDivisibility.hwMem k N N le_rfl lam.natW (PI.WGB.natW_anti_A lam)
 
 /- English proof (translation)
-The claim follows from `Formalism.GradedWeylDivisibility.hwNe k N N le_rfl lam.natW`.
+A detailed English derivation is pending.
 -/
 theorem extremal_ne : extremal k N lam ≠ 0 :=
   Formalism.GradedWeylDivisibility.hwNe k N N le_rfl lam.natW
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨extremal k N lam, extremal_mem k N lam⟩, 0, fun h => extremal_ne k N lam (congrArg Subtype.val h)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nontrivial : Nontrivial (nablaSq k N lam) :=
   ⟨⟨⟨extremal k N lam, extremal_mem k N lam⟩, 0, fun h => extremal_ne k N lam (congrArg Subtype.val h)⟩⟩
 
 /- English proof (translation)
-Use `haveI := nontrivial k N lam`. Use `{ eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Set `M : Submodule k (MvPolynomial (Fin N × Fin N) k)` to `(S.restrictScalars k).map (nablaSq k N lam).subtype`. Establish `hMle : M ≤ nablaSq k N lam`. Introduce and unpack `_ ⟨v, _, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `v.2`. Establish `hst : ∀ g : GL (Fin N) k, ∀ f ∈ M, sqAct k N lam g f ∈ M`. Introduce and unpack `g _ ⟨v, hv, rfl⟩`. Use `⟨rho k N lam g v, ?_, rfl⟩` and prove the remaining obligations. Use `S.smul_mem (⟨rho k N lam g, rho_mem k N lam g⟩ : spanAlg k N lam) hv` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Break down `hS M hMle hst with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (v : MvPolynomial (Fin N × Fin N) k) ∈ M` using `⟨v, hv, rfl⟩`. Rewrite `h2` using `[h, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `Subtype.ext h2`. Use `right`.
-
-Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `h2 : (v : MvPolynomial (Fin N × Fin N) k) ∈ M` using `by rw [h]; exact v.2`. Take `⟨w, hw, hwv⟩` from `h2`. Establish `: w = v` using `Subtype.ext hwv`.
-
-Conclude with `this ▸ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem simple (hS : ∀ M : Submodule k (MvPolynomial (Fin N × Fin N) k), M ≤ nablaSq k N lam →
       (∀ g : GL (Fin N) k, ∀ f ∈ M, sqAct k N lam g f ∈ M) → M = ⊥ ∨ M = nablaSq k N lam) :
@@ -292,19 +284,17 @@ theorem simple (hS : ∀ M : Submodule k (MvPolynomial (Fin N × Fin N) k), M �
     exact this ▸ hw
 
 /- English proof (translation)
-Establish `hsimp` using `simple k N lam hS`. Establish `hcomm : ∀ g v, ψ (rho k N lam g v) = rho k N lam g (ψ v)` using `fun g v => ψ.map_smul (⟨rho k N lam g, rho_mem k N lam g⟩ : spanAlg k N lam) v`. Set `h0 : nablaSq k N lam` to `⟨extremal k N lam, extremal_mem k N lam⟩`. Establish `hwt : ∀ t : Fin N → kˣ, sqAct k N lam (diagGL k N t) (ψ h0 : MvPolynomial (Fin N × Fin N) k) = ((∏ a, t a ^ lam.w a : kˣ) : k) • (ψ h0 : MvPolynomial (Fin N × Fin N) k)`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : rho k N lam (diagGL k N t) h0 = ((∏ a, t a ^ lam.w a : kˣ) : k) • h0` using `Subtype.ext (GlobalTheory.AlgWtF.DDHw.sqAct_diag k N lam t)`. Establish `e2` using `hcomm (diagGL k N t) h0`. Rewrite `e2` using `[e1, LinearMap.map_smul_of_tower]`. Establish `e3` using `congrArg Subtype.val e2`. Conclude with `e3.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `weightLine k N lam _ (ψ h0).2 hwt`. Use `⟨c, fun w => ?_⟩` and prove the remaining obligations. Set `K : Submodule (spanAlg k N lam) (nablaSq k N lam)` to `{ carrier := {w | ψ w = c • w} add_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at *`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, ha, hb, smul_add]`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := by`. Introduce `a x hx`. Simplify using `only [Set.mem_setOf_eq] at *`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_smul, hx, spanAlg_smul, spanAlg_smul, map_smul] }`. Establish `hK0 : h0 ∈ K` using `Subtype.ext hc`. Establish `hK : K = ⊤`. Break down `IsSimpleOrder.eq_bot_or_eq_top K with h | h` into its components or cases. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: h0 ∈ (⊥ : Submodule (spanAlg k N lam) (nablaSq k N lam))` using `h ▸ hK0`. Rewrite `this` using `[Submodule.mem_bot]`. Conclude with `extremal_ne k N lam (congrArg Subtype.val this)`. Conclude with `h`. Establish `: w ∈ K` using `hK ▸ Submodule.mem_top`.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem schur [CharZero k] (hS : ∀ M : Submodule k (MvPolynomial (Fin N × Fin N) k), M ≤ nablaSq k N lam →
       (∀ g : GL (Fin N) k, ∀ f ∈ M, sqAct k N lam g f ∈ M) → M = ⊥ ∨ M = nablaSq k N lam)
@@ -348,11 +338,11 @@ theorem schur [CharZero k] (hS : ∀ M : Submodule k (MvPolynomial (Fin N × Fin
   exact this
 
 /- English proof (translation)
-Use `haveI := simple k N lam hS`. Use `haveI := GlobalTheory.WeylDimGL.finiteDimensional_nablaSq k N lam`. Set `F : Module.End (Module.End (spanAlg k N lam) (nablaSq k N lam)) (nablaSq k N lam)` to `{ toFun := φ map_add' := φ.map_add map_smul' := by`. Introduce `ψ v`. Take `⟨c, hc⟩` from `schur k N lam hS ψ`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [Module.End.smul_def, RingHom.id_apply, hc, map_smul] }`. Set `b` to `Module.finBasis k (nablaSq k N lam)`. Take `⟨r, hr⟩` from `jacobson_density F (Finset.univ.image b)`. Establish `: (r : Module.End k (nablaSq k N lam)) = φ`. Apply `b.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Use `hr (b i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))` as an intermediate fact. Rewrite using `[← spanAlg_smul]`. Conclude with `this.symm`. Conclude with `this ▸ r.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_spanAlg [CharZero k] (hS : ∀ M : Submodule k (MvPolynomial (Fin N × Fin N) k), M ≤ nablaSq k N lam →
       (∀ g : GL (Fin N) k, ∀ f ∈ M, sqAct k N lam g f ∈ M) → M = ⊥ ∨ M = nablaSq k N lam)
@@ -382,9 +372,9 @@ end GlobalTheory.NablaDensity
 open GlobalTheory.NablaDensity in
 
 /- English proof (translation)
-Introduce `k _ _ N lam hS φ`. Establish `hφ : φ ∈ Subalgebra.toSubmodule (spanAlg k N lam)` using `mem_spanAlg k N lam hS φ`. Rewrite `hφ` using `[spanAlg_toSubmodule, Finsupp.mem_span_range_iff_exists_finsupp]`. Take `⟨c, hc⟩` from `hφ`. Use `⟨c.support, c, fun f => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hc, Finsupp.sum, LinearMap.sum_apply, Submodule.coe_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem GlobalTheory.NablaDensity.endo_eq_sum_sqAct : ∀ (k : Type) [Field k] [CharZero k] (N : ℕ) (lam : DomWeight N),
     (∀ M : Submodule k (MvPolynomial (Fin N × Fin N) k), M ≤ nablaSq k N lam →

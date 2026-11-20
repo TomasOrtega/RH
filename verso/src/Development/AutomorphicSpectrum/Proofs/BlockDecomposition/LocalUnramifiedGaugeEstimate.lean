@@ -8,9 +8,9 @@ section
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `h1 : normalizedValuation F x ≤ normalizedValuation F 1`. Rewrite using `[map_one, normalizedValuation_eq_exp_ord hx, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `normalizedValuation_le_iff.1 h1`. Rewrite `h2` using `[map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem mem_integers_of_ord_nonneg {x : F} (hx : x ≠ 0) (h : 0 ≤ ord x) : x ∈ 𝒪[F] := by
   have h1 : normalizedValuation F x ≤ normalizedValuation F 1 := by
@@ -21,7 +21,7 @@ theorem mem_integers_of_ord_nonneg {x : F} (hx : x ≠ 0) (h : 0 ≤ ord x) : x 
   exact h2
 
 /- English proof (translation)
-Rewrite using `[modulus_of_ne_zero a.ne_zero, NNReal.coe_zpow, NNReal.coe_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem modulus_coe (a : Fˣ) :
     ((modulus (a : F) : NNReal) : ℝ) = (residueCard F : ℝ) ^ (-ord (a : F)) := by

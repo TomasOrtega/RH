@@ -8,13 +8,13 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.EdgeClass
 
 /- English proof (translation)
-Introduce `_ hadd huniq R _ C _ F T hG j x x' h h' hx hx'`. Take `⟨z, hz, st, rfl⟩` from `hx`. Take `⟨z', hz', st', rfl⟩` from `hx'`. Use `⟨⟨z + z', ?_, (hadd R C F T j z z' j 0 x x' st st').1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hz, hz', add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `hv`. Establish `st2 : T.St (z - z') j 0 (x - x')` using `(hadd R C F T j z z' j 0 x x' st st').2`. Establish `hB : z - z' ∈ (cx F).B j`. Consider the cases of `j with`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => exact huniq R C F T hG 0 (z - z') 0 0 (x - x') st2 hv`. Consider the case `succ s`. Take `⟨b, hb, hbx⟩` from `hv`. Take `⟨a, hax, sta⟩` from `st2`. Use `huniq R C F T hG (s + 1) (z - z') s 1 _ sta ?_` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a - b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hax, hbx, sub_self]`. Rewrite using `[map_sub, hb, sub_zero, pow_zero, one_smul]`. Conclude with `(Submodule.Quotient.eq _).2 hB`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem edgeUniq_of : CrystallineSemistableComparison.E.StCol → CrystallineSemistableComparison.E.StAdd → CrystallineSemistableComparison.E.StUniq → CrystallineSemistableComparison.E.EdgeUniq := by
   intro _ hadd huniq R _ C _ F T hG j x x' h h' hx hx'

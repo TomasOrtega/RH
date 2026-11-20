@@ -25,7 +25,7 @@ def ChartSecMul.Statement : Prop :=
         chartSecOver S y k₀ e (γ + β) I
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by simpa using ht⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_chartSecOver_of_mem (y : (Σ k, ι k) → Ω) (k₀ : K) {N : ℕ} (e : ι k₀ ≃ Fin (N + 1)) (δ : K → ℤ)
     (I : Kleiman.Chart (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm)) {t : Ω} (ht : t ∈ secOver S y δ) :

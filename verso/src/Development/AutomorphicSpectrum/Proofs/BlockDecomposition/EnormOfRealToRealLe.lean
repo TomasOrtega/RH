@@ -16,11 +16,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [SecondCountableTopology G]
 
 /- English proof (translation)
-Establish `hs : ∀ x : G, ∃ K, IsCompact K ∧ K ∈ 𝓝 x` using `fun x => exists_compact_mem_nhds x`. Use `choose K hK hKn using hs`. Take `⟨s, hsc, hsu⟩` from `TopologicalSpace.countable_cover_nhds (f := fun x => interior (K x)) (fun x => interior_mem_nhds.2 (hKn x))`. Establish `hne : s.Nonempty`. Establish `: (1 : G) ∈ ⋃ x ∈ s, interior (K x)` using `by rw [hsu]; trivial`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, -⟩` from `mem_iUnion₂.1 this`. Conclude with `⟨x, hx⟩`. Take `⟨e, rfl⟩` from `hsc.exists_eq_range hne`. Use `⟨fun i => interior (K (e i)), fun i => K (e i), fun i => isOpen_interior, fun i => hK _, fun i => interior_subset, fun g => ?_⟩` and prove the remaining obligations. Establish `: g ∈ ⋃ x ∈ range e, interior (K x)` using `by rw [hsu]; trivial`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_cover :
     ∃ (U K : ℕ → Set G), (∀ i, IsOpen (U i)) ∧ (∀ i, IsCompact (K i)) ∧ (∀ i, U i ⊆ K i) ∧
@@ -42,35 +42,29 @@ theorem exists_open_cover :
 variable [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace T := hT.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : μT.IsMulRightInvariant := by`. Rewrite using `[← Measure.inv_eq_self μT]`. Use `infer_instance`. Use `haveI : SecondCountableTopology T := IsEmbedding.subtypeVal.secondCountableTopology`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : SigmaCompactSpace T := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SigmaFinite μT := Measure.IsHaarMeasure.sigmaFinite μT`. Take `⟨U, K, hU, hK, hUK, hcov⟩` from `exists_open_cover (G := G)`. Establish `hUm : ∀ i, MeasurableSet (U i)` using `fun i => (hU i).measurableSet`. Establish `hmulT : Measurable fun p : G × T => (p.2 : G) * p.1` using `(measurable_subtype_coe.comp measurable_snd).mul measurable_fst`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : ℕ → G → ℝ≥0∞` to `fun i => (U i).indicator 1`. Establish `hf : ∀ i, Measurable (f i)` using `fun i => measurable_one.indicator (hUm i)`. Set `m : ℕ → G → ℝ≥0∞` to `fun i g => ∫⁻ t : T, f i ((t : G) * g) ∂μT`. Establish `hmm : ∀ i, Measurable (m i)` using `fun i => ((hf i).comp hmulT).lintegral_prod_right'`. Establish `hinv : ∀ i (s : T) g, m i ((s : G) * g) = m i g`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i s g`. Use `lintegral_mul_right_eq_self (μ := μT) (fun t : T => f i ((t : G) * g)) s` as an intermediate fact. Simplify `this` using `[m, mul_assoc]`. Establish `hset : ∀ i g, m i g = μT ((fun t : T => (t : G) * g) ⁻¹' U i)`. Introduce `i g`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hme : MeasurableSet ((fun t : T => (t : G) * g) ⁻¹' U i)` using `(measurable_subtype_coe.mul_const g) (hUm i)`. Rewrite using `[← lintegral_indicator_one hme]`. Both sides reduce to the same expression. Establish `hfin : ∀ i g, m i g ≠ ∞`. Introduce `i g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hemb : IsClosedEmbedding (fun t : T => (t : G) * g)` using `(Homeomorph.mulRight g).isClosedEmbedding.comp hT.isClosedEmbedding_subtypeVal`. Establish `hc` using `hemb.isCompact_preimage (hK i)`. Rewrite using `[hset]`. Conclude with `ne_top_of_le_ne_top hc.measure_lt_top.ne (measure_mono (preimage_mono (hUK i)))`. Establish `hpos : ∀ i g, g ∈ U i → m i g ≠ 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i g hg`. Rewrite using `[hset]`. Establish `ho : IsOpen ((fun t : T => (t : G) * g) ⁻¹' U i)` using `(hU i).preimage (continuous_subtype_val.mul continuous_const)`. Conclude with `(ho.measure_pos μT ⟨1, by simpa using hg⟩).ne'`. Set `A : ℕ → Set G` to `fun i => {g | m i g ≠ 0}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hAm : ∀ i, MeasurableSet (A i)` using `fun i => (hmm i (measurableSet_singleton 0)).compl`. Set `B : ℕ → Set G` to `fun i => A i ∩ ⋂ j : Fin i, (A j)ᶜ`. Establish `hBm : ∀ i, MeasurableSet (B i)` using `fun i => (hAm i).inter (MeasurableSet.iInter fun j => (hAm j).compl)`. Establish `hBinv : ∀ i (s : T) g, (s : G) * g ∈ B i ↔ g ∈ B i`. Introduce `i s g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [B, A, mem_inter_iff, mem_iInter, mem_compl_iff, mem_setOf_eq, hinv]`. Set `c : ℕ → G → ℝ≥0∞` to `fun i => (B i).indicator (fun g => (m i g)⁻¹)`. Establish `hc : ∀ i, Measurable (c i)` using `fun i => (hmm i).inv.indicator (hBm i)`. Establish `hcinv : ∀ i (s : T) g, c i ((s : G) * g) = c i g`. Introduce `i s g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : g ∈ B i`. Simplify using `only [c, indicator_of_mem h, indicator_of_mem ((hBinv i s g).2 h), hinv]`. Simplify using `only [c, indicator_of_notMem h, indicator_of_notMem (fun h' => h ((hBinv i s g).1 h'))]`. Use `⟨fun g => ∑' i, c i g * f i g, Measurable.ennreal_tsum fun i => (hc i).mul (hf i), fun g => ?_⟩` and prove the remaining obligations. Establish `e1 : ∫⁻ t : T, ∑' i, c i ((t : G) * g) * f i ((t : G) * g) ∂μT = ∑' i, c i g * m i g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmt : ∀ i, AEMeasurable (fun t : T => c i ((t : G) * g) * f i ((t : G) * g)) μT` using `fun i => (((hc i).mul (hf i)).comp (measurable_subtype_coe.mul_const g)).aemeasurable`. Rewrite using `[lintegral_tsum hmt]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Simplify using `only [hcinv]`. Establish `hfm : Measurable fun t : T => f i ((t : G) * g)` using `(hf i).comp (measurable_subtype_coe.mul_const g)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[lintegral_const_mul _ hfm]`. Rewrite using `[e1]`. Establish `hex : ∃ i, g ∈ A i`. Take `⟨i, hi⟩` from `hcov g`. Conclude with `⟨i, hpos i g hi⟩`.
-
-Establish `hB0 : g ∈ B (Nat.find hex)`. Use `⟨Nat.find_spec hex, mem_iInter.2 fun j => ?_⟩` and prove the remaining obligations. Conclude with `Nat.find_min hex j.2`. Establish `hne : ∀ i, i ≠ Nat.find hex → g ∉ B i`. Introduce `i hi hB`.
-
-Break down `lt_or_gt_of_ne hi with h | h` into its components or cases. Conclude with `Nat.find_min hex h hB.1`. Conclude with `(mem_iInter.1 hB.2 ⟨_, h⟩) (Nat.find_spec hex)`. Rewrite using `[tsum_eq_single (Nat.find hex) fun i hi => by simp [c, indicator_of_notMem (hne i hi)]]`. Simplify using `only [c, indicator_of_mem hB0]`.
-
-Conclude with `ENNReal.inv_mul_cancel (Nat.find_spec hex) (hfin _ g)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_normaliser (T : Subgroup G) (hT : IsClosed (T : Set G)) (μT : Measure T)
     [μT.IsHaarMeasure] [μT.IsInvInvariant] : ∃ ρ, IsQuotNormaliser T μT ρ := by
@@ -159,9 +153,9 @@ end Norm
 section Count
 
 /- English proof (translation)
-Establish `hmi : Measurable (fun h : K => h⁻¹)` using `measurable_of_countable _`. Use `⟨?_⟩` and prove the remaining obligations. Use extensionality with `s hs`. Express the relevant statement in the definitionally equal form `Measure.map (fun h : K => h⁻¹) Measure.count s = _`. Rewrite using `[Measure.map_apply hmi hs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Inv.inv ⁻¹' s : Set K) = (fun h : K => h⁻¹) '' s`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this, Measure.count_injective_image' inv_injective hs ((Set.to_countable _).measurableSet)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem count_inv {K : Type*} [Group K] [MeasurableSpace K] [MeasurableSingletonClass K]
     [Countable K] : (Measure.count : Measure K).IsInvInvariant := by
@@ -175,11 +169,11 @@ theorem count_inv {K : Type*} [Group K] [MeasurableSpace K] [MeasurableSingleton
   rw [this, Measure.count_injective_image' inv_injective hs ((Set.to_countable _).measurableSet)]
 
 /- English proof (translation)
-Use `haveI : (Measure.count : Measure Γ).IsInvInvariant := count_inv`. Establish `hρ : IsQuotNormaliser Γ Measure.count (D.indicator (1 : K → ℝ≥0∞))`. Use `⟨measurable_one.indicator hDm, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[lintegral_count]`. Take `⟨h₀, h₁, hu⟩` from `hD g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tsum_eq_single h₀ (fun h hh => indicator_of_notMem (fun hm => hh (hu h hm)) _), indicator_of_mem h₁]`. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.CompanionTheory.QuotNorm.quotIntegral_eq hf hfΓ hρ, ← integral_indicator hDm]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hg : g ∈ D <;> simp [hg]`.
+A detailed English derivation is pending.
 -/
 theorem quotIntegral_strict {K : Type*} [Group K] [MeasurableSpace K] [MeasurableMul₂ K]
     [MeasurableInv K] {ν : Measure K} [ν.IsMulLeftInvariant] [SFinite ν] {Γ : Subgroup K}
@@ -207,11 +201,11 @@ section PiLocalization₂
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Apply `discreteTopology_of_isOpen_singleton_one` to reduce the goal to its premises. Take `⟨V', hV'o, hV'⟩` from `isOpen_induced_iff.1 (isOpen_discrete ({1} : Set Γ₀))`. Take `⟨V, hVo, rfl⟩` from `isOpen_induced_iff.1 hV'o`. Use `isOpen_induced_iff.2 ⟨V, hVo, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨h, hh⟩`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Take `⟨γ, hγ, rfl⟩` from `Subgroup.mem_map.1 hh`. Use `Set.ext_iff.1 hV' ⟨γ, hγ⟩` as an intermediate fact. Simplify using `only [mem_preimage, mem_singleton_iff] at this ⊢`. Use `this.trans ⟨fun h => Subtype.ext (congrArg (fun z : Γ₀ => ((z : T) : G)) h), fun h => ?_⟩` and prove the remaining obligations. Establish `h' : ((⟨T.subtype γ, hh⟩ : Γ₀.map T.subtype) : G) = 1` using `congrArg Subtype.val h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (Subtype.ext h')`.
+A detailed English derivation is pending.
 -/
 theorem map_discrete (T : Subgroup G) (Γ₀ : Subgroup T) [DiscreteTopology Γ₀] :
     DiscreteTopology (Γ₀.map T.subtype) := by
@@ -231,17 +225,17 @@ variable [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
   {T : Subgroup G} {μT : Measure T} [μT.IsMulLeftInvariant] [SFinite μT] [μT.IsInvInvariant]
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology T := IsEmbedding.subtypeVal.secondCountableTopology`. Establish `hj : Measurable fun p : G × T => ((p.2⁻¹ : T) : G) * p.1` using `(measurable_subtype_coe.comp measurable_snd.inv).mul measurable_fst`. Use `⟨(hσ.1.comp hj).lintegral_prod_right', fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[lintegral_count]`. Set `e : Γ₀ ≃ Γ₀.map T.subtype` to `(Γ₀.equivMapOfInjective T.subtype T.subtype_injective).toEquiv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : ∀ γ : Γ₀, ((e γ : Γ₀.map T.subtype) : G) = ((γ : T) : G)` using `fun _ => rfl`. Rewrite using `[← e.tsum_eq]`. Establish `e1 : ∀ γ : Γ₀, ∫⁻ t in D, σ (((t⁻¹ : T) : G) * (((e γ : Γ₀.map T.subtype) : G) * x)) ∂μT = ∫⁻ s : T, D.indicator (1 : T → ℝ≥0∞) ((γ : T) * s) * σ (((s⁻¹ : T) : G) * x) ∂μT`. Introduce `γ`. Rewrite using `[← lintegral_indicator hDm, ← lintegral_mul_left_eq_self _ (γ : T)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun s => ?_` and prove the remaining obligations. Rewrite using `[he]`. Distinguish the cases in `hs : (γ : T) * s ∈ D`. Simplify using `[hs, mul_assoc]`. Simplify using `[hs]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[e1]`. Establish `hm : ∀ γ : Γ₀, AEMeasurable (fun s : T => D.indicator (1 : T → ℝ≥0∞) ((γ : T) * s) * σ (((s⁻¹ : T) : G) * x)) μT` using `fun γ => (((measurable_one.indicator hDm).comp (measurable_const_mul _)).mul (hσ.1.comp ((measurable_subtype_coe.comp measurable_inv).mul_const x))).aemeasurable`. Rewrite using `[← lintegral_tsum hm]`. Establish `e2 : ∀ s : T, ∑' γ : Γ₀, D.indicator (1 : T → ℝ≥0∞) ((γ : T) * s) * σ (((s⁻¹ : T) : G) * x) = σ (((s⁻¹ : T) : G) * x)`. Introduce `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h₀, h₁, hu⟩` from `hD s`. Rewrite using `[tsum_eq_single h₀ fun h hh => by`. Simplify using `[indicator_of_notMem (fun hm => hh (hu h hm))]]`. Simplify using `[h₁]`. Repeatedly rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_inv_eq_self (fun s : T => σ ((s : G) * x))]`. Conclude with `hσ.2 x`.
+A detailed English derivation is pending.
 -/
 theorem stage_normaliser (Γ₀ : Subgroup T) [Countable Γ₀]
     [MeasurableSingletonClass (Γ₀.map T.subtype)] {D : Set T} (hDm : MeasurableSet D)
@@ -290,26 +284,24 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg]`. Conclude with `ENNReal.ofReal_toReal_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enorm_ofReal_toReal_le (r : ℝ≥0∞) : ‖((r.toReal : ℝ) : ℂ)‖ₑ ≤ r := by
   rw [← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg]
   exact ENNReal.ofReal_toReal_le
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology T := IsEmbedding.subtypeVal.secondCountableTopology`. Set `A : T × G → ℂ` to `fun p => F p.2 * (((σ (((p.1⁻¹ : T) : G) * p.2)).toReal : ℝ) : ℂ)`. Set `ψ : T × G → T × G` to `fun p => (p.1, (p.1 : G) * p.2)`. Establish `hj : Measurable fun p : T × G => ((p.1⁻¹ : T) : G) * p.2` using `(measurable_subtype_coe.comp measurable_fst.inv).mul measurable_snd`. Establish `hAm : Measurable A` using `(hF.comp measurable_snd).mul (Complex.measurable_ofReal.comp (hσ.comp hj).ennreal_toReal)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : MeasurePreserving ψ (ν.prod μ) (ν.prod μ)` using `(MeasurePreserving.id ν).skew_product (g := fun (t : T) (x : G) => (t : G) * x) ((measurable_subtype_coe.comp measurable_fst).mul measurable_snd) (ae_of_all _ fun t => map_mul_left_eq_self μ (t : G))`. Establish `hAi : Integrable A (ν.prod μ)`. Use `⟨hAm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm, lintegral_prod_symm _ hAm.enorm.aemeasurable]`. Use `lt_of_le_of_lt (lintegral_mono fun x => ?_) (lt_top_iff_ne_top.2 hfin)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm : Measurable fun t : T => σ (((t⁻¹ : T) : G) * x)` using `hσ.comp ((measurable_subtype_coe.comp measurable_inv).mul_const x)`. Rewrite using `[← lintegral_const_mul _ hm]`. Use `lintegral_mono fun t => ?_` and prove the remaining obligations. Simplify using `only [A, enorm_mul]`. Conclude with `mul_le_mul_right (enorm_ofReal_toReal_le _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBi : Integrable (A ∘ ψ) (ν.prod μ)` using `(hψ.integrable_comp hAm.aestronglyMeasurable).2 hAi`. Establish `e1 : ∫ x, F x * (((∫⁻ t, σ (((t⁻¹ : T) : G) * x) ∂ν).toReal : ℝ) : ℂ) ∂μ = ∫ p, A p ∂(ν.prod μ)`. Rewrite using `[integral_prod_symm _ hAi]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : Measurable fun t : T => σ (((t⁻¹ : T) : G) * x)` using `hσ.comp ((measurable_subtype_coe.comp measurable_inv).mul_const x)`. Simplify using `only [A]`. Rewrite using `[integral_const_mul, integral_complex_ofReal, integral_toReal hm.aemeasurable (ae_lt_top hm hx.ne)]`. Establish `e2 : ∫ p, A p ∂(ν.prod μ) = ∫ p, A (ψ p) ∂(ν.prod μ)` using `by conv_lhs => rw [← hψ.map_eq]`. Conclude with `integral_map hψ.measurable.aemeasurable hAm.aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e3 : ∫ p, A (ψ p) ∂(ν.prod μ) = ∫ x, (∫ t, F ((t : G) * x) ∂ν) * (((σ x).toReal : ℝ) : ℂ) ∂μ`. Rewrite using `[show ∫ p, A (ψ p) ∂(ν.prod μ) = ∫ p, (A ∘ ψ) p ∂(ν.prod μ) from rfl, integral_prod_symm _ hBi]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [A, ψ, Function.comp, Subgroup.coe_inv, inv_mul_cancel_left]`. Rewrite using `[integral_mul_const]`.
-
-Rewrite using `[e1, e2, e3]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_stage {T : Subgroup G} (μ : Measure G) [μ.IsMulLeftInvariant] [SFinite μ]
     (ν : Measure T) [SFinite ν] {F : G → ℂ} (hF : Measurable F) {σ : G → ℝ≥0∞} (hσ : Measurable σ)
@@ -365,29 +357,23 @@ theorem integral_stage {T : Subgroup G} (μ : Measure G) [μ.IsMulLeftInvariant]
 end Fubini
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ μ _ T μT _ _ Γ₀ F hT hdisc hF hFΓ hfin`. Use `haveI := hdisc`. Use `haveI : LocallyCompactSpace T := hT.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology T := IsEmbedding.subtypeVal.secondCountableTopology`. Use `haveI : SigmaCompactSpace T := sigmaCompactSpace_of_locallyCompact_secondCountable`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite μT := Measure.IsHaarMeasure.sigmaFinite μT`. Use `haveI : SigmaCompactSpace G := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SigmaFinite μ := Measure.IsHaarMeasure.sigmaFinite μ`. Use `haveI : μT.IsMulRightInvariant := by`. Rewrite using `[← Measure.inv_eq_self μT]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Use `haveI : SecondCountableTopology Γ₀ := IsEmbedding.subtypeVal.secondCountableTopology`. Use `haveI : Countable Γ₀ := countable_of_Lindelof_of_discrete`. Use `haveI : DiscreteTopology (Γ₀.map T.subtype) := map_discrete T Γ₀`. Use `haveI : Countable (Γ₀.map T.subtype) := (Γ₀.equivMapOfInjective T.subtype T.subtype_injective).toEquiv.surjective.countable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : (Measure.count : Measure (Γ₀.map T.subtype)).IsInvInvariant := count_inv`. Take `⟨σ, hσ⟩` from `exists_normaliser T hT μT`. Take `⟨D, hDm, hD⟩` from `GlobalTheory.CompanionTheory.QuotUnfold.exists_strict_domain Γ₀`. Establish `hρ` using `stage_normaliser Γ₀ hDm hD hσ`. Establish `hFH : ∀ h ∈ Γ₀.map T.subtype, ∀ x, F (h * x) = F x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `h hh x`. Take `⟨γ, hγ, rfl⟩` from `Subgroup.mem_map.1 hh`. Conclude with `hFΓ γ hγ x`. Establish `hmt : ∀ x, Measurable fun t : T => F ((t : G) * x)` using `fun x => hF.comp (measurable_subtype_coe.mul_const x)`. Establish `hΓt : ∀ x, ∀ h ∈ Γ₀, ∀ t : T, F (((h * t : T) : G) * x) = F ((t : G) * x)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `x h hh t`. Use `hFΓ h hh ((t : G) * x)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `hin : ∀ x, quotIntegral μT Γ₀ Measure.count (fun t : T => F ((t : G) * x)) = ∫ t in D, F ((t : G) * x) ∂μT` using `fun x => quotIntegral_strict hDm hD (hmt x) (hΓt x)`. Establish `hΦm : Measurable fun x => ∫ t in D, F ((t : G) * x) ∂μT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hj : Measurable fun p : G × T => F ((p.2 : G) * p.1)` using `hF.comp ((measurable_subtype_coe.comp measurable_snd).mul measurable_fst)`. Conclude with `(hj.stronglyMeasurable.integral_prod_right' (ν := μT.restrict D)).measurable`. Establish `hΦT : ∀ s ∈ T, ∀ x, ∫ t in D, F ((t : G) * (s * x)) ∂μT = ∫ t in D, F ((t : G) * x) ∂μT`. Introduce `s hs x`. Set `s' : T` to `⟨s, hs⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `D' : Set T` to `(fun t => t * s'⁻¹) ⁻¹' D`. Establish `hD'm : MeasurableSet D'` using `(measurable_mul_const _) hDm`. Establish `hD' : ∀ t : T, ∃! h : Γ₀, (h : T) * t ∈ D'`. Introduce `t`. Take `⟨h, h₁, hu⟩` from `hD (t * s'⁻¹)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Conclude with `⟨h, by simpa [D', mul_assoc] using h₁, fun k hk => hu k (by simpa [D', mul_assoc] using hk)⟩`. Establish `e : ∫ t in D, F ((t : G) * (s * x)) ∂μT = ∫ t in D', F ((t : G) * x) ∂μT`. Rewrite using `[← integral_indicator hDm, ← integral_indicator hD'm]`. Use `(integral_mul_right_eq_self _ s'⁻¹).symm.trans ?_` and prove the remaining obligations. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations.
-
-Use `beta_reduce`. Distinguish the cases in `ht : t * s'⁻¹ ∈ D`. Rewrite using `[indicator_of_mem ht, indicator_of_mem (show t ∈ D' from ht)]`. Simplify using `[s', mul_assoc]`. Rewrite using `[indicator_of_notMem ht, indicator_of_notMem (show t ∉ D' from ht)]`.
-
-Rewrite using `[e, ← quotIntegral_strict hD'm hD' (hmt x) (hΓt x), hin]`. Establish `hΨ : (fun x => quotIntegral μT Γ₀ Measure.count fun t : T => F ((t : G) * x)) = fun x => ∫ t in D, F ((t : G) * x) ∂μT` using `funext hin`. Rewrite using `[hΨ, GlobalTheory.CompanionTheory.QuotNorm.quotIntegral_eq hF hFH hρ, GlobalTheory.CompanionTheory.QuotNorm.quotIntegral_eq hΦm hΦT hσ]`. Establish `hfin' : ∫⁻ x, ‖F x‖ₑ * ∫⁻ t in D, σ (((t⁻¹ : T) : G) * x) ∂μT ∂μ ≠ ∞`. Establish `hex : ∃ ρ, IsQuotNormaliser (Γ₀.map T.subtype) Measure.count ρ` using `⟨_, hρ⟩`.
-
-Rewrite `hfin` using `[quotLIntegral, dif_pos hex]`. Rewrite using `[lintegral_normaliser_eq hF.enorm (fun h hh g => by simp only [hFH h hh g]) hρ hex.choose_spec]` and apply the resulting hypothesis. Conclude with `integral_stage μ (μT.restrict D) hF hσ.1 (GlobalTheory.CompanionTheory.QuotNorm.ae_lt_top_of_normaliser hρ) hfin'`.
+A detailed English derivation is pending.
 -/
 theorem quotStage_holds : PositivityTheory.Rg.BcB.D4.QuotStage := by
   intro G _ _ _ _ _ _ _ μ _ T μT _ _ Γ₀ F hT hdisc hF hFΓ hfin
@@ -458,7 +444,7 @@ theorem quotStage_holds : PositivityTheory.Rg.BcB.D4.QuotStage := by
     (GlobalTheory.CompanionTheory.QuotNorm.ae_lt_top_of_normaliser hρ) hfin'
 
 /- English proof (translation)
-The claim follows from `quotStage_holds`.
+A detailed English derivation is pending.
 -/
 theorem quotStage_of (_ : PositivityTheory.Rg.BcB.D4.NormEq) : PositivityTheory.Rg.BcB.D4.QuotStage := quotStage_holds
 

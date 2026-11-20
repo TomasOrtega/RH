@@ -4,21 +4,19 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.DeRhamLattices.HasPres
 open Formalism Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations TensorProduct UpperTheory.KN
 
 /- English proof (translation)
-Introduce `O LL _ _ _ _ _ _ lam hlam k Y _ _ _ φ`. Establish `hz : ∀ z : LL, ∃ a : ℕ, ∃ r : O, algebraMap O LL r = lam ^ a • z`. Introduce `z`. Take `⟨r, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := O) z`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hs0 hlam`. Use `⟨m, r * ↑u⁻¹, ?_⟩` and prove the remaining obligations. Establish `hU : algebraMap O LL ↑u⁻¹ * algebraMap O LL ↑u = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hU0 : algebraMap O LL ↑u ≠ 0` using `right_ne_zero_of_mul_eq_one hU`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : algebraMap O LL ↑u⁻¹ = (algebraMap O LL ↑u)⁻¹` using `eq_inv_of_mul_eq_one_left hU`. Establish `hL0 : algebraMap O LL (lam ^ m) ≠ 0`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ fun h => hlam.ne_zero ((IsFractionRing.injective O LL) (h.trans (map_zero _).symm))`. Rewrite using `[Algebra.smul_def, map_mul, map_mul, hinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `hq : ∀ x : (Fin k → LL) ⧸ stdG O LL k, ∃ a : ℕ, lam ^ a • x = 0`. Introduce `x`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `choose a r hr using fun i => hz (v i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ i, a i, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, stdG, LinearMap.mem_range]`. Use `⟨fun i => lam ^ (∑ j, a j - a i) * r i, funext fun i => ?_⟩` and prove the remaining obligations. Establish `hle : a i ≤ ∑ j, a j` using `Finset.single_le_sum (fun j _ => Nat.zero_le (a j)) (Finset.mem_univ i)`. Use `show algebraMap O LL (lam ^ (∑ j, a j - a i) * r i) = lam ^ (∑ j, a j) • v i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hr i, ← Algebra.smul_def, smul_smul, pow_sub_mul_pow lam hle]`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := O) (M := Y)`. Use `choose a ha using fun y => hq (φ y)`. Use `⟨∑ y ∈ s, a y, fun y => ?_⟩` and prove the remaining obligations. Establish `hmem : y ∈ Submodule.span O (s : Set Y)` using `hs ▸ Submodule.mem_top`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Proceed by induction on `hmem using Submodule.span_induction with`. Consider the case `mem x hx`. Rewrite using `[← pow_sub_mul_pow lam (Finset.single_le_sum (fun j _ => Nat.zero_le (a j)) hx), mul_smul, ha x, smul_zero]`. Consider the case `zero => rw [map_zero, smul_zero]`. Consider the case `add x z _ _ h1 h2 => rw [map_add, smul_add, h1, h2, add_zero]`.
-
-Consider the case `smul c x _ h => rw [map_smul, smul_comm, h, smul_zero]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.exists_pow_uniformizer_smul_eq_zero_quotient_lattice :
     ∀ {O LL : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field LL] [Algebra O LL] [IsFractionRing O LL]

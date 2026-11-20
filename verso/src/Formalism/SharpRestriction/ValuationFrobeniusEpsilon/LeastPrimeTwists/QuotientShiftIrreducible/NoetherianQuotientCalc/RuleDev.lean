@@ -9,7 +9,7 @@ open DirectSum
 section Prime
 
 /- English proof (translation)
-Take `rfl : dec = LinearOrder.toDecidableEq` from `Subsingleton.elim _ _`. Conclude with `hI.isPrime_of_homogeneous_mem_or_mem hne h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isPrime_of_dec {ι B R : Type} [CommRing B] [CommRing R] [Algebra B R]
     [AddCommMonoid ι] [LinearOrder ι] [IsOrderedCancelAddMonoid ι] [dec : DecidableEq ι]
@@ -23,7 +23,7 @@ theorem isPrime_of_dec {ι B R : Type} [CommRing B] [CommRing R] [Algebra B R]
 variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
 
 /- English proof (translation)
-The claim follows from `@isPrime_of_dec (Lex (Deg k)) B R _ _ _ _ _ _ (inferInstanceAs (DecidableEq (Deg k))) (fun m => 𝒜 (ofLex m)) inst I hI hne h`.
+A detailed English derivation is pending.
 -/
 theorem isPrime_of_hom (𝒜 : Deg k → Submodule B R) [inst : GradedAlgebra 𝒜] {I : Ideal R}
     (hI : I.IsHomogeneous 𝒜) (hne : I ≠ ⊤)
@@ -39,29 +39,25 @@ section Noeth
 variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
 
 /- English proof (translation)
-Use `h.noeth` as an intermediate fact. Use `choose s hs using fun i => h.fg i`. Set `T : Subalgebra B R` to `Algebra.adjoin B (⋃ i, (s i : Set R))`. Establish `h1 : ∀ i, 𝒜 (e i) ≤ Subalgebra.toSubmodule T`. Introduce `i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs i, Submodule.span_le]`. Introduce `x hx`. Conclude with `Algebra.subset_adjoin (Set.mem_iUnion.2 ⟨i, hx⟩)`. Establish `h2 : ∀ (n : ℕ) (m : Deg k), 0 ≤ m → (∑ i, m i) = (n : ℤ) → 𝒜 m ≤ Subalgebra.toSubmodule T`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `m hm hsum`. Establish `hm0 : m = 0`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => hm i)).1 (by simpa using hsum) i (Finset.mem_univ i)`. Substitute `hm0` using the available equality. Rewrite using `[h.zero]`. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `T.algebraMap_mem b`.
+Assume the hypotheses and unpack their components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Consider the case `succ n ih`. Introduce `m hm hsum`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, 0 < m i := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h0 : ∑ i, m i ≤ 0` using `Finset.sum_nonpos (fun i _ => hcon i)`. Rewrite `h0` using `[hsum]`. Move the coercions through the operations in `at h0`. Use linear arithmetic over natural numbers and integers. Establish `hm' : 0 ≤ m - e i`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `only [e, Pi.zero_apply, Pi.sub_apply, Pi.single_eq_same]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e, Pi.zero_apply, Pi.sub_apply, Pi.single_eq_of_ne hj, sub_zero]`. Conclude with `hm j`. Establish `hsum' : ∑ j, (m - e i) j = (n : ℤ)`. Simplify using `only [e, Pi.sub_apply, Finset.sum_sub_distrib, hsum, Finset.sum_pi_single', Finset.mem_univ, if_true]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hg` using `h.gen (m - e i) i hm'`. Rewrite `hg` using `[sub_add_cancel]`. Rewrite using `[hg, Submodule.mul_le]`. Introduce `a ha b hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `T.mul_mem (ih _ hm' hsum' ha) (h1 i hb)`. Establish `h3 : T = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[← DirectSum.sum_support_decompose 𝒜 x]`.
-
-Use `T.sum_mem (fun m _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hm : 0 ≤ m`. Conclude with `h2 _ m hm (Int.toNat_of_nonneg (Finset.sum_nonneg fun i _ => hm i)).symm (SetLike.coe_mem _)`. Establish `hb : ((decompose 𝒜 x m : 𝒜 m) : R) ∈ (⊥ : Submodule B R)` using `h.nonneg m hm ▸ SetLike.coe_mem _`. Rewrite using `[(Submodule.mem_bot B).1 hb]`.
-
-Conclude with `T.zero_mem`. Establish `: Algebra.FiniteType B R` using `⟨Subalgebra.fg_def.2 ⟨_, Set.finite_iUnion (fun i => (s i).finite_toSet), h3⟩⟩`. Conclude with `Algebra.FiniteType.isNoetherianRing B R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isNoetherianRing_of_std [IsLocalRing B] (𝒜 : Deg k → Submodule B R) [GradedAlgebra 𝒜]
     (h : Std 𝒜) : IsNoetherianRing R := by
@@ -139,13 +135,13 @@ variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
 variable (𝒜 : Deg k → Submodule B R) [GradedAlgebra 𝒜]
 
 /- English proof (translation)
-Establish `hterm : ∀ j, ((decompose F.gr (((decompose 𝒜 a j : 𝒜 j) : R) • x) m : F.gr m) : F.M) = if j + d = m then ((decompose 𝒜 a j : 𝒜 j) : R) • x else 0`. Introduce `j`. Rewrite using `[decompose_of_mem F.gr (hF.smul_mem (SetLike.coe_mem _) hx), DirectSum.coe_of_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `hsum : a • x = ∑ j ∈ (decompose 𝒜 a).support, ((decompose 𝒜 a j : 𝒜 j) : R) • x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_smul, DirectSum.sum_support_decompose 𝒜 a]`. Rewrite using `[hsum, decompose_sum, DFinsupp.finsetSum_apply, AddSubmonoidClass.coe_finsetSum]`. Repeatedly rewrite using `[hterm]`. Rewrite using `[Finset.sum_eq_single (m - d)]`. Rewrite using `[if_pos (sub_add_cancel m d)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce `hjd`. Conclude with `hj (eq_sub_of_add_eq hjd)`. Introduce `hns`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hns` using `[DFinsupp.notMem_support_iff]`. Rewrite using `[hns]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem devComp_smul {F : GMod B R k} (hF : F.IsGr 𝒜) [Decomposition F.gr] {d : Deg k} {x : F.M}
     (hx : x ∈ F.gr d) (a : R) (m : Deg k) :
@@ -172,9 +168,9 @@ theorem devComp_smul {F : GMod B R k} (hF : F.IsGr 𝒜) [Decomposition F.gr] {d
     simp
 
 /- English proof (translation)
-Set `` to `hF.internal.chooseDecomposition`. Introduce `j a ha`. Rewrite `ha`, the goal using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Establish `h` using `devComp_smul 𝒜 hF hx a (j + d)`. Rewrite `h` using `[ha, decompose_zero, add_sub_cancel_right]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem ker_hom {F : GMod B R k} (hF : F.IsGr 𝒜) {d : Deg k} {x : F.M} (hx : x ∈ F.gr d) :
     Ideal.IsHomogeneous 𝒜 (LinearMap.ker (LinearMap.toSpanSingleton R F.M x)) := by
@@ -186,7 +182,7 @@ theorem ker_hom {F : GMod B R k} (hF : F.IsGr 𝒜) {d : Deg k} {x : F.M} (hx : 
   exact h.symm
 
 /- English proof (translation)
-Set `` to `hF.internal.chooseDecomposition`. Use `⟨_, SetLike.coe_mem (decompose 𝒜 a (m - d)), ?_⟩` and prove the remaining obligations. Rewrite using `[← devComp_smul 𝒜 hF hx a m, decompose_of_mem_same F.gr h]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_strict {F : GMod B R k} (hF : F.IsGr 𝒜) {d : Deg k} {x : F.M} (hx : x ∈ F.gr d)
     (a : R) (m : Deg k) (h : a • x ∈ F.gr m) : ∃ a' ∈ 𝒜 (m - d), a' • x = a • x := by
@@ -195,19 +191,17 @@ theorem smul_strict {F : GMod B R k} (hF : F.IsGr 𝒜) {d : Deg k} {x : F.M} (h
   rw [← devComp_smul 𝒜 hF hx a m, decompose_of_mem_same F.gr h]
 
 /- English proof (translation)
-Set `` to `hG.internal.chooseDecomposition`. Set `S : Set (Ideal R)` to `{I | ∃ (d : Deg k) (x : G.M), x ∈ G.gr d ∧ x ≠ 0 ∧ I = LinearMap.ker (LinearMap.toSpanSingleton R G.M x)}`. Establish `hS : S.Nonempty`. Assume the negation of the conclusion as `hcon`. Establish `hall : ∀ (d : Deg k) (x : G.M), x ∈ G.gr d → x = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `d x hx`. Assume the negation of the conclusion as `hx0`. Conclude with `hcon ⟨_, d, x, hx, hx0, rfl⟩`. Take `⟨y, hy⟩` from `exists_ne (0 : G.M)`. Apply `hy` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← DirectSum.sum_support_decompose G.gr y]`. Conclude with `Finset.sum_eq_zero (fun m _ => hall m _ (SetLike.coe_mem _))`. Take `⟨I, ⟨d, x, hx, hx0, rfl⟩, hmax⟩` from `(set_has_maximal_iff_noetherian (R := R) (M := R)).2 inferInstance S hS`. Use `⟨d, x, hx, isPrime_of_hom 𝒜 (ker_hom 𝒜 hG hx) ?_ ?_⟩` and prove the remaining obligations. Introduce `htop`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : R) ∈ LinearMap.ker (LinearMap.toSpanSingleton R G.M x)`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Rewrite `h1` using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, one_smul]`. Conclude with `hx0 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `a b ⟨i, ha⟩ _ hab`. Distinguish the cases in `hax : a • x = 0`. Use `left`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Conclude with `hax`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Establish `hle : LinearMap.ker (LinearMap.toSpanSingleton R G.M x) ≤ LinearMap.ker (LinearMap.toSpanSingleton R G.M (a • x))`. Introduce `c hc`. Rewrite `hc`, the goal using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Rewrite using `[smul_comm, hc, smul_zero]`.
-
-Establish `heq` using `eq_of_le_of_not_lt hle (hmax _ ⟨i + d, a • x, hG.smul_mem ha hx, hax, rfl⟩)`. Rewrite using `[heq, LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, smul_smul, mul_comm]`. Rewrite `hab` using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Conclude with `hab`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_ker [IsNoetherianRing R] {G : GMod B R k} (hG : G.IsGr 𝒜)
     [Nontrivial G.M] :
@@ -259,41 +253,35 @@ section Step
 variable {k : ℕ}
 
 /- English proof (translation)
-Establish `: IsNoetherianRing X.R` using `isNoetherianRing_of_std X.𝒜 X.std`. Establish `hG : (F.quo N).IsGr X.𝒜` using `((hGr k X F hF).1 N hN).2`. Establish `: Nontrivial (F.quo N).M` using `(Submodule.Quotient.nontrivial_iff (p := N)).2 hne`. Take `⟨d, xb, hxb, hprime⟩` from `exists_prime_ker X.𝒜 hG`. Establish `hhom` using `ker_hom X.𝒜 hG hxb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hstrict` using `smul_strict X.𝒜 hG hxb`. Take `⟨x, hx, rfl⟩` from `hxb`. Express the relevant statement in the definitionally equal form `x ∈ F.gr d at hx`. Use `set xb : F.M ⧸ N := N.mkQ x with hxbdef`. Set `φ : X.R →ₗ[X.R] F.M ⧸ N` to `LinearMap.toSpanSingleton X.R (F.M ⧸ N) xb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Ideal.IsPrime (LinearMap.ker φ) at hprime`. Express the relevant statement in the definitionally equal form `Ideal.IsHomogeneous X.𝒜 (LinearMap.ker φ) at hhom`. Set `N' : Submodule X.R F.M` to `N ⊔ Submodule.span X.R {x}`. Establish `hxN' : x ∈ N'` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self x)`. Establish `hNN' : N ≤ N'` using `le_sup_left`.
+Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrange : ∀ y : N', (N.mkQ ∘ₗ N'.subtype) y ∈ LinearMap.range φ`. Introduce and unpack `⟨y, hy⟩`. Take `⟨n, hn, z, hz, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show a • N.mkQ x = N.mkQ (n + a • x)`. Rewrite using `[map_add, map_smul, (Submodule.Quotient.mk_eq_zero N).2 hn |> (show N.mkQ n = 0 from ·), zero_add]`. Set `g : N' →ₗ[X.R] X.R ⧸ LinearMap.ker φ` to `(φ.quotKerEquivRange.symm : LinearMap.range φ →ₗ[X.R] X.R ⧸ LinearMap.ker φ) ∘ₗ (LinearMap.codRestrict (LinearMap.range φ) (N.mkQ ∘ₗ N'.subtype) hrange)`. Establish `key : ∀ (y : N') (a : X.R), N.mkQ (y : F.M) = a • xb → g y = (LinearMap.ker φ).mkQ a`. Introduce `y a hya`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show φ.quotKerEquivRange.symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show N.mkQ (y : F.M) = φ a`. Rewrite using `[hya]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(LinearMap.toSpanSingleton_apply X.R (F.M ⧸ N) xb a).symm`. Use `⟨N', LinearMap.ker φ, d, ?_, ?_, hprime, hhom, ?_, ⟨?_⟩⟩` and prove the remaining obligations. Use `lt_of_le_of_ne hNN' ?_` and prove the remaining obligations. Introduce `heq`. Establish `hxN : x ∈ N` using `heq ▸ hxN'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hprime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, LinearMap.mem_ker]`. Use `show (1 : X.R) • N.mkQ x = 0`. Rewrite using `[one_smul]`. Conclude with `(Submodule.Quotient.mk_eq_zero N).2 hxN`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ ?_` and prove the remaining obligations. Conclude with `(show N = Submodule.span X.R {x | x ∈ N ∧ ∃ m, x ∈ F.gr m} from hN).le.trans (Submodule.span_mono (fun y hy => ⟨hNN' hy.1, hy.2⟩))`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.subset_span ⟨hxN', d, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `Submodule.span_le.2 (fun y hy => hy.1)`. Introduce `a ha`. Rewrite using `[LinearMap.mem_ker]`. Use `show a • N.mkQ x = 0`. Rewrite using `[← map_smul, Module.mem_annihilator.1 ha x, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `{ f := Submodule.inclusion hNN' g := g inj := Submodule.inclusion_injective hNN' surj := ?_` and prove the remaining obligations. Conclude with `:= ?_`. Use `f_gr := ?_`. Use `g_gr := ?_ }`. Introduce `q`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, rfl⟩` from `(LinearMap.ker φ).mkQ_surjective q`. Conclude with `⟨⟨a • x, N'.smul_mem a hxN'⟩, key _ a (map_smul _ _ _)⟩`. Introduce `(y : N')`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0 : LinearMap.codRestrict (LinearMap.range φ) (N.mkQ ∘ₗ N'.subtype) hrange y = 0` using `(LinearEquiv.map_eq_zero_iff φ.quotKerEquivRange.symm).1 hy`. Establish `h1 : N.mkQ (y : F.M) = 0` using `congrArg Subtype.val h0`. Establish `h2 : (y : F.M) ∈ N` using `(Submodule.Quotient.mk_eq_zero N).1 h1`. Conclude with `⟨⟨y, h2⟩, Subtype.ext rfl⟩`. Introduce and unpack `⟨n, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Establish `h1 : N.mkQ ((Submodule.inclusion hNN' n : N') : F.M) = (0 : X.R) • xb`. Rewrite using `[zero_smul]`. Conclude with `(Submodule.Quotient.mk_eq_zero N).2 n.2`. Establish `h2` using `key _ 0 h1`. Rewrite `h2` using `[map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `h2`. Introduce `m`. Use extensionality with `y`. Conclude with `Iff.rfl`. Introduce `m`.
-
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨(a : X.R), ha, rfl⟩`. Use `⟨⟨a • x, N'.smul_mem a hxN'⟩, ?_, key _ a (map_smul _ _ _)⟩` and prove the remaining obligations. Use `show a • x ∈ F.gr m`. Establish `h1` using `hF.smul_mem ha hx`.
-
-Rewrite `h1` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨(y : N'), hy, rfl⟩`. Take `⟨a, ha⟩` from `hrange y`. Establish `hy' : (y : F.M) ∈ F.gr m` using `hy`. Establish `h1 : a • xb ∈ (F.quo N).gr m` using `⟨(y : F.M), hy', ha.symm⟩`.
-
-Take `⟨a', ha', h2⟩` from `hstrict a m h1`. Conclude with `⟨a', ha', (key y a' (ha.symm.trans h2.symm)).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem step (hGr : RuleGr) (X : HidaSetting k) (F : X.Mod) (hF : F.IsGr X.𝒜)
     (N : Submodule X.R F.M) (hN : F.IsHomSub N) (hne : N ≠ ⊤) :
@@ -411,7 +399,7 @@ def Good (X : HidaSetting k) (F : X.Mod) (N₀ : Submodule X.R F.M) : Prop :=
       Nonempty (SES (F.sub (N i)) (F.sub (N (i + 1))) (((GMod.self X.𝒜).quo (𝔮 i)).shift (d i)))
 
 /- English proof (translation)
-Use `⟨0, fun _ => ⊥, fun _ => ⊥, fun _ => 0, rfl, rfl, ?_, fun _ => le_rfl, ?_⟩` and prove the remaining obligations. Introduce `_`. Conclude with `(Submodule.span_eq_bot.2 (fun x hx => (Submodule.mem_bot _).1 hx.1)).symm`. Introduce `i hi`. Conclude with `absurd hi (Nat.not_lt_zero i)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem good_bot (X : HidaSetting k) (F : X.Mod) : Good X F ⊥ := by
   refine ⟨0, fun _ => ⊥, fun _ => ⊥, fun _ => 0, rfl, rfl, ?_, fun _ => le_rfl, ?_⟩
@@ -421,17 +409,15 @@ theorem good_bot (X : HidaSetting k) (F : X.Mod) : Good X F ⊥ := by
     exact absurd hi (Nat.not_lt_zero i)
 
 /- English proof (translation)
-Take `⟨t, N, 𝔮, d, hN0, rfl, hhom, hmono, hstep⟩` from `h`. Use `⟨t + 1, fun i => if i ≤ t then N i else N', Function.update 𝔮 t 𝔮', Function.update d t d', ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Nat.zero_le, if_true]`. Conclude with `hN0`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Distinguish the cases in `hi : i ≤ t`. Simplify using `only [if_pos hi]`. Conclude with `hhom i`. Simplify using `only [if_neg hi]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `hN'`. Introduce `i`. Distinguish the cases in `hi : i + 1 ≤ t`. Simplify using `only [if_pos hi, if_pos (Nat.le_of_succ_le hi)]`. Conclude with `hmono i`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi' : i ≤ t`. Establish `hit : i = t` using `by omega`. Substitute `hit` using the available equality. Simplify using `only [if_neg hi, if_pos hi']`. Conclude with `hle`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg hi, if_neg hi']`. Conclude with `le_rfl`. Introduce `i hi`. Distinguish the cases in `hit : i = t`. Substitute `hit` using the available equality.
-
-Simplify using `only [le_refl, if_true, Nat.succ_le_iff, lt_irrefl, if_false, Function.update_self]`. Conclude with `⟨h1, h2, h3, h4⟩`. Establish `hlt : i < t` using `by omega`. Simplify using `only [if_pos hlt.le, if_pos (Nat.succ_le_of_lt hlt), Function.update_of_ne hit]`. Conclude with `hstep i hlt`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_step (X : HidaSetting k) (F : X.Mod) {N₀ N' : Submodule X.R F.M} (h : Good X F N₀)
     (hle : N₀ ≤ N') (hN' : F.IsHomSub N') {𝔮' : Ideal X.R} {d' : Deg k} (h1 : 𝔮'.IsPrime)
@@ -466,11 +452,11 @@ theorem good_step (X : HidaSetting k) (F : X.Mod) {N₀ N' : Submodule X.R F.M} 
       exact hstep i hlt
 
 /- English proof (translation)
-Introduce `hGr k X F hF`. Establish `: IsNoetherianRing X.R` using `isNoetherianRing_of_std X.𝒜 X.std`. Establish `: Module.Finite X.R F.M` using `hF.fin`. Establish `: IsNoetherian X.R F.M` using `isNoetherian_of_isNoetherianRing_of_finite X.R F.M`. Take `⟨N, hN, hmax⟩` from `(set_has_maximal_iff_noetherian (R := X.R) (M := F.M)).2 inferInstance {N | Good X F N} ⟨⊥, good_bot X F⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htop : N = ⊤`. Assume the negation of the conclusion as `hne`. Establish `hNhom : F.IsHomSub N`. Take `⟨t, Ns, _, _, _, rfl, hhom, _⟩` from `hN`. Conclude with `hhom t`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N', 𝔮, d, hlt, hN', h1, h2, h3, h4⟩` from `step hGr X F hF N hNhom hne`. Conclude with `hmax N' (good_step X F hN hlt.le hN' h1 h2 h3 h4) hlt`. Rewrite `hN` using `[htop]`. Conclude with `hN`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ruleDev : RuleGr → RuleDev := by
   intro hGr k X F hF

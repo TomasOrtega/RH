@@ -23,7 +23,7 @@ def latticeWords (n : ℕ) (lam : Fin m → ℕ) : Finset (Fin n → Fin m) :=
   univ.filter (fun w => IsLattice w ∧ ∀ i, pcnt w n i = lam i)
 
 /- English proof (translation)
-Unfold `pcnt`. Rewrite using `[Finset.card_filter, Finset.card_filter, Fin.sum_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.val_castSucc, Fin.snoc_last, Fin.val_last]`. Rewrite using `[if_neg (by omega), add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pcnt_castSucc_snoc {n : ℕ} (w : Fin n → Fin m) (a : Fin m) (t : ℕ) (ht : t ≤ n) (i : Fin m) :
     pcnt (Fin.snoc w a : Fin (n + 1) → Fin m) t i = pcnt w t i := by
@@ -33,9 +33,9 @@ theorem pcnt_castSucc_snoc {n : ℕ} (w : Fin n → Fin m) (a : Fin m) (t : ℕ)
   rw [if_neg (by omega), add_zero]
 
 /- English proof (translation)
-Unfold `pcnt`. Rewrite using `[Finset.card_filter, Finset.card_filter, Fin.sum_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.val_castSucc, Fin.snoc_last, Fin.val_last]`. Use `congr 1`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `s.isLt` as an intermediate fact. Apply the tactic sequence `by_cases h : w s = i <;> simp [h, this, Nat.lt_succ_of_lt this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem pcnt_snoc_last {n : ℕ} (w : Fin n → Fin m) (a : Fin m) (i : Fin m) :
     pcnt (Fin.snoc w a : Fin (n + 1) → Fin m) (n + 1) i = pcnt w n i + if a = i then 1 else 0 := by
@@ -49,13 +49,13 @@ theorem pcnt_snoc_last {n : ℕ} (w : Fin n → Fin m) (a : Fin m) (i : Fin m) :
   · simp
 
 /- English proof (translation)
-Unfold `pcnt`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pcnt_zero {n : ℕ} (w : Fin n → Fin m) (i : Fin m) : pcnt w 0 i = 0 := by
   unfold pcnt; simp
 
 /- English proof (translation)
-Unfold `pcnt`. Conclude with `Finset.card_le_card (fun s => by simp only [mem_filter, mem_univ, true_and]; omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pcnt_le_of_le {n : ℕ} (w : Fin n → Fin m) {t t' : ℕ} (h : t ≤ t') (i : Fin m) :
     pcnt w t i ≤ pcnt w t' i := by
@@ -63,9 +63,9 @@ theorem pcnt_le_of_le {n : ℕ} (w : Fin n → Fin m) {t t' : ℕ} (h : t ≤ t'
   exact Finset.card_le_card (fun s => by simp only [mem_filter, mem_univ, true_and]; omega)
 
 /- English proof (translation)
-Unfold `pcnt`. Rewrite using `[← Finset.card_biUnion]`. Establish `: (univ : Finset (Fin m)).biUnion (fun i => univ.filter (fun s : Fin n => (s : ℕ) < n ∧ w s = i)) = univ`. Use extensionality with `s`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Finset.card_univ, Fintype.card_fin]`. Introduce `i _ j _ hij`. Rewrite using `[Function.onFun, Finset.disjoint_filter]`. Introduce and unpack `s _ ⟨_, h1⟩ ⟨_, h2⟩`. Conclude with `hij (h1 ▸ h2)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem sum_pcnt {n : ℕ} (w : Fin n → Fin m) : ∑ i, pcnt w n i = n := by
   unfold pcnt
@@ -80,7 +80,7 @@ theorem sum_pcnt {n : ℕ} (w : Fin n → Fin m) : ∑ i, pcnt w n i = n := by
     exact hij (h1 ▸ h2)
 
 /- English proof (translation)
-Distinguish the cases in `hai : a = i`. Substitute `hai` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[Function.update_of_ne (Ne.symm hai), hai]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem update_pred_sub (lam : Fin m → ℕ) (a i : Fin m) (h : 1 ≤ lam a) :
     Function.update lam a (lam a - 1) i + (if a = i then 1 else 0) = lam i := by
@@ -89,23 +89,21 @@ theorem update_pred_sub (lam : Fin m → ℕ) (a i : Fin m) (h : 1 ≤ lam a) :
   · simp [Function.update_of_ne (Ne.symm hai), hai]
 
 /- English proof (translation)
-Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := fun w => w (Fin.last n)) (t := univ) (fun _ _ => mem_univ _)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with ha`. Use `Finset.card_nbij' (fun w => Fin.init w) (fun w => Fin.snoc w a) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [coe_filter, Set.mem_ofPred_eq, latticeWords, mem_filter, mem_univ, true_and] at hw ⊢`. Take `⟨⟨hlat, hcont⟩, hlast⟩` from `hw`. Establish `hw' : w = Fin.snoc (Fin.init w) a`. Rewrite using `[← hlast]`. Conclude with `(Fin.snoc_init_self w).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun t ht i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `hlat t (by omega) i j hij` as an intermediate fact. Rewrite `this` using `[hw', pcnt_castSucc_snoc _ _ _ ht, pcnt_castSucc_snoc _ _ _ ht]`. Then use the resulting hypothesis. Use `hcont i` as an intermediate fact. Rewrite `this` using `[hw', pcnt_snoc_last]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2` using `update_pred_sub lam a i ha`. Use linear arithmetic over natural numbers and integers. Introduce `w hw`. Simplify using `only [coe_filter, Set.mem_ofPred_eq, latticeWords, mem_filter, mem_univ, true_and] at hw ⊢`. Take `⟨hlat, hcont⟩` from `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨⟨fun t ht i j hij => ?_, fun i => ?_⟩, by simp⟩` and prove the remaining obligations. Break down `Nat.lt_or_ge t (n + 1) with htn | htn` into its components or cases. Rewrite using `[pcnt_castSucc_snoc _ _ _ (by omega), pcnt_castSucc_snoc _ _ _ (by omega)]`. Conclude with `hlat t (by omega) i j hij`. Establish `ht' : t = n + 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `ht'` using the available equality. Rewrite using `[pcnt_snoc_last, pcnt_snoc_last, hcont, hcont, update_pred_sub lam a i ha, update_pred_sub lam a j ha]`. Conclude with `hlam hij`. Rewrite using `[pcnt_snoc_last, hcont, update_pred_sub lam a i ha]`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [coe_filter, Set.mem_ofPred_eq] at hw`. Rewrite using `[← hw.2]`. Conclude with `Fin.snoc_init_self w`. Introduce `w hw`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `w hw hlast`. Simplify using `only [latticeWords, mem_filter, mem_univ, true_and] at hw`. Use `hw.2 a` as an intermediate fact. Establish `h1 : 1 ≤ pcnt w (n + 1) a`.
-
-Unfold `pcnt`. Conclude with `Finset.card_pos.mpr ⟨Fin.last n, by simp [hlast]⟩`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_latticeWords_succ (n : ℕ) (lam : Fin m → ℕ) (hlam : Antitone lam) :
     (latticeWords (n + 1) lam).card =
@@ -155,9 +153,9 @@ theorem card_latticeWords_succ (n : ℕ) (lam : Fin m → ℕ) (hlam : Antitone 
     omega
 
 /- English proof (translation)
-Rewrite using `[Finset.eq_empty_iff_forall_notMem]`. Introduce `w hw`. Simplify using `only [latticeWords, mem_filter, mem_univ, true_and] at hw`. Apply `h` to reduce the goal to its premises. Rewrite using `[← sum_pcnt w]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => (hw.2 i).symm`.
+A detailed English derivation is pending.
 -/
 theorem latticeWords_eq_empty_of_sum_ne (n : ℕ) (lam : Fin m → ℕ) (h : ∑ i, lam i ≠ n) :
     latticeWords n lam = ∅ := by
@@ -169,9 +167,9 @@ theorem latticeWords_eq_empty_of_sum_ne (n : ℕ) (lam : Fin m → ℕ) (h : ∑
   exact Finset.sum_congr rfl fun i _ => (hw.2 i).symm
 
 /- English proof (translation)
-Rewrite using `[Finset.eq_empty_iff_forall_notMem]`. Introduce `w hw`. Simplify using `only [latticeWords, mem_filter, mem_univ, true_and] at hw`. Apply `h` to reduce the goal to its premises. Introduce `i j hij`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hw.2 i, ← hw.2 j]`. Conclude with `hw.1 n le_rfl i j hij`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latticeWords_eq_empty_of_not_antitone (n : ℕ) (lam : Fin m → ℕ) (h : ¬ Antitone lam) :
     latticeWords n lam = ∅ := by

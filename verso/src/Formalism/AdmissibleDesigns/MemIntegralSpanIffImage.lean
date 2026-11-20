@@ -24,7 +24,7 @@ variable {O : Type} [CommRing O] [IsDomain O] {LL : Type} [Field LL] [Topologica
 abbrev modOL : Module OL (TrV e V) := Module.compHom _ (algebraMap OL LL)
 
 /- English proof (translation)
-Use `letI := modOL (V := V) e OL`. Conclude with `⟨fun a b v => by show (a • b) • v = (algebraMap OL LL a) • (b • v)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem towOL : @IsScalarTower OL LL (TrV e V) _ _ (modOL e OL).toSMul := by
   letI := modOL (V := V) e OL
@@ -46,7 +46,7 @@ variable {OL} (σ : O ≃+* OL) (hσ : ∀ c : O, algebraMap OL LL (σ c) = e (a
 include hσ in
 
 /- English proof (translation)
-Use `show e.symm (algebraMap OL LL (σ c)) • v = c • v`. Rewrite using `[hσ, RingEquiv.symm_apply_apply, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_OL (c : O) (v : V) :
     @HSMul.hSMul OL (TrV e V) (TrV e V) (@instHSMul _ _ (modOL (V := V) e OL).toSMul) (σ c) (show TrV e V from v) =
@@ -77,9 +77,9 @@ variable {O : Type} [CommRing O] [IsDomain O] {LL : Type} [Field LL] [Topologica
 
 include hσ hb in
 /- English proof (translation)
-Use `letI := modOL (V := V) e OL`. Establish `hm : tr e (iL m) = ∑ j, σ (bL.repr m j) • tr e (bV j)` using `by show iL m = ∑ j, e.symm (algebraMap OL LL (σ (bL.repr m j))) • bV j conv_lhs => rw [← bL.sum_repr m]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hb, hσ, RingEquiv.symm_apply_apply, algebraMap_smul]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iL_mem_latT (m : L) : letI := modOL (V := V) e OL
     tr e (iL m) ∈ latT e (OL := OL) bV := by
@@ -95,13 +95,13 @@ theorem iL_mem_latT (m : L) : letI := modOL (V := V) e OL
 
 include hσ hb in
 /- English proof (translation)
-Use `letI := modOL (V := V) e OL`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Conclude with `⟨bL j, hb j⟩`.
+Equip the data with the indicated structure. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, map_zero iL⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, map_add iL a b⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul o x _ hx`. Take `⟨a, rfl⟩` from `hx`. Use `⟨σ.symm o • a, ?_⟩` and prove the remaining obligations. Use `show iL (σ.symm o • a) = e.symm (algebraMap OL LL o) • iL a`. Rewrite using `[map_smul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← RingEquiv.apply_symm_apply σ o]`. Rewrite using `[hσ, RingEquiv.symm_apply_apply, algebraMap_smul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_mem_latT (x : TrV e V) (hx : letI := modOL (V := V) e OL; x ∈ latT e (OL := OL) bV) :
     ∃ m : L, tr e (iL m) = x := by
@@ -125,9 +125,9 @@ theorem exists_of_mem_latT (x : TrV e V) (hx : letI := modOL (V := V) e OL; x �
 
 include hσ in
 /- English proof (translation)
-Use `letI := modOL (V := V) e OL`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `o ho j`. Establish `h2 : ∑ k, (e.symm (algebraMap OL LL (o k))) • bV k = 0` using `ho`. Establish `h3` using `(Fintype.linearIndependent_iff.mp bV.linearIndependent) _ h2 j`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `σ.surjective (o j)`. Rewrite `h3` using `[← hc, hσ, RingEquiv.symm_apply_apply]`. Establish `: c = 0` using `IsFractionRing.injective O (FractionRing O) (h3.trans (map_zero _).symm)`. Rewrite using `[← hc, this, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem linInd_latT : letI := modOL (V := V) e OL
     LinearIndependent OL (fun j => tr e (bV j)) := by
@@ -142,9 +142,9 @@ theorem linInd_latT : letI := modOL (V := V) e OL
   rw [← hc, this, map_zero]
 
 /- English proof (translation)
-Use `letI := modOL (V := V) e OL`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv` using `bV.sum_repr (show V from v)`. Establish `h : v = ∑ j, e (bV.repr v j) • tr e (bV j)` using `by show (v : V) = ∑ j, e.symm (e (bV.repr v j)) • bV j`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [RingEquiv.symm_apply_apply]`. Conclude with `hv.symm`. Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.subset_span ⟨j, rfl⟩))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_latT : letI := modOL (V := V) e OL
     Submodule.span LL ((latT e (OL := OL) bV : Set (TrV e V))) = ⊤ := by
@@ -162,7 +162,7 @@ theorem span_latT : letI := modOL (V := V) e OL
 
 include hσ in
 /- English proof (translation)
-Use `letI := modOL (V := V) e OL`. Conclude with `Module.Free.of_basis (Basis.span (linInd_latT e σ hσ bV))`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem free_latT : letI := modOL (V := V) e OL
     Module.Free OL ↥(latT e (OL := OL) bV) := by
@@ -187,11 +187,11 @@ def latV (ρ : Representation O Γ V) (ι : G →* Γ) (hc : ∀ v : TrV e V, Co
 end Lat
 
 /- English proof (translation)
-Use `letI : Module R M := Module.compHom M σ.toRingHom`. Take `⟨s, hs⟩` from `hM.fg_top`. Use `⟨⟨s, eq_top_iff.2 fun x hx0 => ?_⟩⟩` and prove the remaining obligations. Use `clear hx0`. Establish `hx : x ∈ Submodule.span S (s : Set M)` using `by rw [hs]; trivial`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span hy`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => exact Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h : c • y = σ.symm c • y` using `by show c • y = σ (σ.symm c) • y`. Rewrite using `[RingEquiv.apply_symm_apply]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_compHom {R S M : Type} [CommRing R] [CommRing S] [AddCommGroup M] [Module S M] (σ : R ≃+* S)
     [hM : Module.Finite S M] : @Module.Finite R M _ _ (Module.compHom M σ.toRingHom) := by
@@ -231,7 +231,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsNoetherianRing O] {LL : Type} [
   (ρL : Representation O Γ L) (hiL : ∀ γ m, iL (ρL γ m) = ρ γ (iL m))
 
 /- English proof (translation)
-Establish `hp : (fun g => tr e (iL (((p : coZ1s ρL) : Γ → L) (ι g)))) ∈ finiteCocycles PD (repL e ρ ι)` using `p.2`. Conclude with `⟨hp.1, fun g _ => iL_mem_latT e σ hσ bV bL iL hb _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem transp_mem (p : ↥((KFin.finPreG iL (finZ e PD ρ ι)).comap (coZ1s ρL).subtype)) :
     (fun g => tr e (iL (((p : coZ1s ρL) : Γ → L) (ι g)))) ∈
@@ -260,17 +260,13 @@ def transportToH1Lattice :
 include hσ hb hiL in
 
 /- English proof (translation)
-Use `set LA := latV e σ hσ bV bL iL hb (Qp := Qp) ρ ι hc ρL hiL with hLA`. Use `letI : Module O (LatticeCohomology LA) := Module.compHom (LatticeCohomology LA) σ.toRingHom`. Use `haveI : Module.Finite O (LatticeCohomology LA) := finite_compHom σ`. Use `haveI : IsNoetherian O (LatticeCohomology LA) := isNoetherian_of_isNoetherianRing_of_finite O _`. Use `set P := (KFin.finPreG iL (finZ e PD ρ ι)).comap (coZ1s ρL).subtype with hP`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Φ := transportToH1Lattice e PD σ hσ bV bL iL hb ρ ι hc ρL hiL (Qp := Qp) with hΦ`. Establish `hker : LinearMap.ker Φ ≤ LinearMap.ker ((Submodule.mkQ ((coB1 ρL).comap (coZ1s ρL).subtype)).comp P.subtype)`. Introduce `p hp`. Rewrite `hp`, the goal using `[LinearMap.mem_ker]`. Establish `hp'` using `(Submodule.Quotient.mk_eq_zero _).mp hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxT, hx⟩` from `hp'`. Take `⟨m, rfl⟩` from `exists_of_mem_latT e σ hσ bV bL iL hb x hxT`. Use `show Submodule.Quotient.mk (p : coZ1s ρL) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `⟨m, funext fun γ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, rfl⟩` from `hι γ`. Establish `h` using `congrFun hx g`. Apply `hinj` to reduce the goal to its premises. Use `show iL (ρL (ι g) m - m) = iL (((p : coZ1s ρL) : Γ → L) (ι g))`. Rewrite using `[map_sub, hiL]`.
-
-Conclude with `h`. Use `haveI : Module.Finite O (↥P ⧸ LinearMap.ker Φ) := Module.Finite.equiv (Φ.quotKerEquivRange).symm`. Establish `hF : KFin.FfG ρL iL (finZ e PD ρ ι) = LinearMap.range ((LinearMap.ker Φ).liftQ ((Submodule.mkQ ((coB1 ρL).comap (coZ1s ρL).subtype)).comp P.subtype) hker)`. Rewrite using `[Submodule.range_liftQ, LinearMap.range_comp, Submodule.range_subtype]`. Both sides reduce to the same expression.
-
-Rewrite using `[hF]`. Use `infer_instance`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_FfG (hι : Function.Surjective ι) (hinj : Function.Injective iL)
     (hfin : Module.Finite OL (LatticeCohomology (latV e σ hσ bV bL iL hb (Qp := Qp) ρ ι hc ρL hiL))) :
@@ -314,7 +310,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp LL OL : Type} [Field Qp] 
 def DivT (T : Submodule OL A.V) : Prop := ∀ v : A.V, ∃ a : OL, a ≠ 0 ∧ a • v ∈ T
 
 /- English proof (translation)
-Establish `h : (fun w : A.V => a • w) = fun w => (algebraMap OL LL a) • w` using `funext fun w => (algebraMap_smul LL a w).symm`. Rewrite using `[h]`. Conclude with `continuous_const_smul _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_smulOL (a : OL) : Continuous fun w : A.V => a • w := by
   have h : (fun w : A.V => a • w) = fun w => (algebraMap OL LL a) • w := funext fun w => (algebraMap_smul LL a w).symm
@@ -322,9 +318,9 @@ theorem cont_smulOL (a : OL) : Continuous fun w : A.V => a • w := by
   exact continuous_const_smul _
 
 /- English proof (translation)
-Use `choose f hf0 hfT using hdiv`. Establish `hU : ∀ v, IsOpen {w : A.V | f v • w ∈ T}` using `fun v => hopen.preimage (cont_smulOL A (f v))`. Take `⟨t, ht⟩` from `hS.elim_finite_subcover (fun v => {w : A.V | f v • w ∈ T}) hU (fun w _ => Set.mem_iUnion.2 ⟨w, hfT w⟩)`. Use `⟨∏ v ∈ t, f v, Finset.prod_ne_zero_iff.2 fun v _ => hf0 v, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hwv⟩` from `Set.mem_iUnion₂.1 (ht hw)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_prod_erase t f hv, mul_comm, mul_smul]`. Conclude with `T.smul_mem _ hwv`.
+A detailed English derivation is pending.
 -/
 theorem bound_compact (T : Submodule OL A.V) (hopen : IsOpen (T : Set A.V)) (hdiv : DivT A T) (S : Set A.V)
     (hS : IsCompact S) : ∃ a : OL, a ≠ 0 ∧ ∀ v ∈ S, a • v ∈ T := by
@@ -340,7 +336,7 @@ theorem bound_compact (T : Submodule OL A.V) (hopen : IsOpen (T : Set A.V)) (hdi
 variable [CompactSpace G]
 
 /- English proof (translation)
-Take `⟨a, ha, h⟩` from `bound_compact A T hopen hdiv _ (isCompact_range hc)`. Conclude with `⟨a, ha, fun g => h _ ⟨g, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bound_cont (T : Submodule OL A.V) (hopen : IsOpen (T : Set A.V)) (hdiv : DivT A T) (c : G → A.V)
     (hc : Continuous c) : ∃ a : OL, a ≠ 0 ∧ ∀ g, a • c g ∈ T := by
@@ -378,17 +374,17 @@ theorem h1_lattice_to_vector_mk (LA : Lattice (O := OL) A.ρ) (c : ↥(latticeCo
     h1TV A LA (Submodule.Quotient.mk c) = Submodule.Quotient.mk (incT A LA c) := rfl
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hfin.fg_top`. Use `⟨⟨s.image (h1TV A LA), eq_top_iff.2 fun x _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨a, ha, hac⟩` from `bound_cont A LA.T hopen hdiv c.1 c.2.1`. Establish `hT : a • c.1 ∈ latticeCocycles LA` using `⟨(continuousCocycles A.ρ).restrictScalars OL |>.smul_mem a c.2, fun g _ => hac g⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI := Module.compHom (H1V A.ρ) (algebraMap OL LL)`. Establish `hrange : h1TV A LA (Submodule.Quotient.mk ⟨_, hT⟩) ∈ Submodule.span OL ((s.image (h1TV A LA) : Finset (H1V A.ρ)) : Set (H1V A.ρ))`. Establish `h1 : (Submodule.Quotient.mk ⟨_, hT⟩ : LatticeCohomology LA) ∈ Submodule.span OL (s : Set (LatticeCohomology LA))`. Rewrite using `[hs]`. Discharge the goal by the elementary cases of `trivial`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Establish `h2` using `Submodule.mem_map_of_mem (f := h1TV A LA) h1`. Rewrite `h2` using `[Submodule.map_span]`. Simplify `h2` using `[Finset.coe_image]`. Establish `hle : ∀ y ∈ (letI` using `Module.compHom (H1V A.ρ) (algebraMap OL LL) Submodule.span OL ((s.image (h1TV A LA) : Finset (H1V A.ρ)) : Set (H1V A.ρ))), y ∈ Submodule.span LL ((s.image (h1TV A LA) : Finset (H1V A.ρ)) : Set (H1V A.ρ)) := by`. Use `letI := Module.compHom (H1V A.ρ) (algebraMap OL LL)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span hy`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => exact Submodule.add_mem _ hy hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a y _ hy => exact Submodule.smul_mem _ (algebraMap OL LL a) hy`. Establish `hmem` using `hle _ hrange`. Establish `heq : h1TV A LA (Submodule.Quotient.mk ⟨_, hT⟩) = (algebraMap OL LL a) • Submodule.Quotient.mk c`. Rewrite using `[h1_lattice_to_vector_mk, ← Submodule.Quotient.mk_smul]`. Use `congr 1`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Subtype.ext (funext fun g => (algebraMap_smul LL a (c.1 g)).symm)`. Rewrite `hmem` using `[heq]`. Establish `ha' : algebraMap OL LL a ≠ 0` using `fun h0 => ha (hinj (h0.trans (map_zero _).symm))`. Use `Submodule.smul_mem _ (algebraMap OL LL a)⁻¹ hmem` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ ha', one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_H1V (LA : Lattice (O := OL) A.ρ) (hopen : IsOpen (LA.T : Set A.V)) (hdiv : DivT A LA.T)
     (hinj : Function.Injective (algebraMap OL LL)) [hfin : Module.Finite OL (LatticeCohomology LA)] :
@@ -429,9 +425,9 @@ theorem finite_H1V (LA : Lattice (O := OL) A.ρ) (hopen : IsOpen (LA.T : Set A.V
 omit [CompactSpace G] in
 
 /- English proof (translation)
-Set `f : FiniteCohomology PD A.ρ →ₗ[LL] H1V A.ρ` to `Submodule.mapQ _ _ (Submodule.inclusion (fun c hc => hc.1 : finiteCocycles PD A.ρ ≤ continuousCocycles A.ρ)) (fun c hc => hc)`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[LinearMap.mem_ker]`. Establish `h` using `(Submodule.Quotient.mk_eq_zero _).mp hx`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`. Conclude with `h`. Conclude with `Module.Finite.of_injective f hf`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finDim_H1fV {K₀ Kk B BdR : Type} [Field K₀] [Field Kk]
     [Algebra Qp K₀] [Algebra Qp Kk] [Algebra K₀ Kk] [IsScalarTower Qp K₀ Kk]
@@ -474,14 +470,14 @@ def T0 : Submodule OL A.V where
     rw [← algebraMap_smul LL o x, map_smul, Pi.smul_apply, ← ha, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_integral_span (x : A.V) : x ∈ T0 A b ↔ ∀ j, b.equivFun x j ∈ Set.range (algebraMap OL LL) := Iff.rfl
 
 /- English proof (translation)
-Establish `hc : Continuous b.equivFun` using `IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap`. Establish `h : ((T0 A b : Submodule OL A.V) : Set A.V) = b.equivFun ⁻¹' (Set.univ.pi fun _ => Set.range (algebraMap OL LL))`. Use extensionality with `x`. Simplify using `[mem_integral_span]`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => hO).preimage hc`.
+A detailed English derivation is pending.
 -/
 theorem integral_span_open [IsTopologicalRing LL] (hO : IsOpen (Set.range (algebraMap OL LL))) :
     IsOpen ((T0 A b : Submodule OL A.V) : Set A.V) := by
@@ -494,9 +490,9 @@ theorem integral_span_open [IsTopologicalRing LL] (hO : IsOpen (Set.range (algeb
   exact (isOpen_set_pi Set.finite_univ fun _ _ => hO).preimage hc
 
 /- English proof (translation)
-Introduce `v`. Take `⟨a, ha⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors OL) Finset.univ (fun j => b.equivFun v j)`. Use `⟨a, nonZeroDivisors.ne_zero a.2, fun j => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `ha j (Finset.mem_univ j)`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc, ← algebraMap_smul LL (a : OL) v, map_smul, Pi.smul_apply, smul_eq_mul, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_span_divisible [IsFractionRing OL LL] : DivT A (T0 A b) := by
   intro v
@@ -508,7 +504,7 @@ theorem integral_span_divisible [IsFractionRing OL LL] : DivT A (T0 A b) := by
   rw [hc, ← algebraMap_smul LL (a : OL) v, map_smul, Pi.smul_apply, smul_eq_mul, Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Basis.equivFun_self]`. Distinguish the cases in `h : j = k`. Conclude with `⟨1, by simp [h]⟩`. Conclude with `⟨0, by rw [map_zero, if_neg h]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem basis_mem_integral_span (j : n) : b j ∈ T0 A b := by
   intro k
@@ -518,7 +514,7 @@ theorem basis_mem_integral_span (j : n) : b j ∈ T0 A b := by
   · exact ⟨0, by rw [map_zero, if_neg h]⟩
 
 /- English proof (translation)
-Use `choose o ho using hx`. Use `⟨o, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_equivFun x]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← ho j, algebraMap_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_span_coordinates (x : A.V) (hx : x ∈ T0 A b) : ∃ o : n → OL, x = ∑ j, o j • b j := by
   choose o ho using hx
@@ -530,17 +526,15 @@ theorem integral_span_coordinates (x : A.V) (hx : x ∈ T0 A b) : ∃ o : n → 
 def Tst : Submodule OL A.V := Submodule.span OL (⋃ g : G, A.ρ g '' (T0 A b : Set A.V))
 
 /- English proof (translation)
-Introduce `x hx` and use `Submodule.subset_span (Set.mem_iUnion.2 ⟨1, x, hx, by simp⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_span_le_stable : T0 A b ≤ Tst A b := fun x hx =>
   Submodule.subset_span (Set.mem_iUnion.2 ⟨1, x, hx, by simp⟩)
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, y, hy, rfl⟩` from `Set.mem_iUnion.1 hx`. Use `Submodule.subset_span (Set.mem_iUnion.2 ⟨g * h, y, hy, ?_⟩)` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul o x _ hx => rw [LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Tst_stable (g : G) (x : A.V) (hx : x ∈ Tst A b) : A.ρ g x ∈ Tst A b := by
   induction hx using Submodule.span_induction with
@@ -554,13 +548,11 @@ theorem Tst_stable (g : G) (x : A.V) (hx : x ∈ Tst A b) : A.ρ g x ∈ Tst A b
   | smul o x _ hx => rw [LinearMap.map_smul_of_tower]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Establish `hS : IsCompact (⋃ j, Set.range fun g => A.ρ g (b j))` using `isCompact_iUnion fun j => isCompact_range (A.cont (b j))`. Take `⟨a, ha, hb⟩` from `bound_compact A (T0 A b) hopen hdiv _ hS`. Use `⟨a, ha, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Take `⟨g, y, hy, rfl⟩` from `Set.mem_iUnion.1 hx`. Take `⟨o, rfl⟩` from `integral_span_coordinates A b y hy`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower, smul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (hb _ (Set.mem_iUnion.2 ⟨j, g, rfl⟩))`. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul o x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Tst_bound [CompactSpace G] (hopen : IsOpen ((T0 A b : Submodule OL A.V) : Set A.V))
     (hdiv : DivT A (T0 A b)) : ∃ a : OL, a ≠ 0 ∧ ∀ x ∈ Tst A b, a • x ∈ T0 A b := by
@@ -581,7 +573,7 @@ theorem Tst_bound [CompactSpace G] (hopen : IsOpen ((T0 A b : Submodule OL A.V) 
   | smul o x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun {c x} h => by rw [← algebraMap_smul LL c x] at h rcases smul_eq_zero.1 h with h | h · exact Or.inl (hinj (h.trans (map_zero _).symm)) · exact Or.inr h⟩`.
+Supply the required witnesses or components.
 -/
 theorem noZero (hinj : Function.Injective (algebraMap OL LL)) : NoZeroSMulDivisors OL A.V :=
   ⟨fun {c x} h => by
@@ -644,9 +636,7 @@ def latSt [CompactSpace G] [IsNoetherianRing OL] [IsPrincipalIdealRing OL] [IsTo
     exact Submodule.span_le.2 fun x ⟨j, hj⟩ => hj ▸ Submodule.subset_span (integral_span_le_stable A b (basis_mem_integral_span A b j))
 
 /- English proof (translation)
-Use `haveI : ContinuousNeg A.V := ⟨by`. Establish `h : (fun v : A.V => -v) = fun v => (-1 : LL) • v` using `funext fun v => (neg_one_smul LL v).symm`. Rewrite using `[h]`. Conclude with `continuous_const_smul _⟩`. Use `haveI : IsTopologicalAddGroup A.V := {}`.
-
-Conclude with `Submodule.isOpen_mono (integral_span_le_stable A b) (integral_span_open A b hO)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latSt_open [CompactSpace G] [IsNoetherianRing OL] [IsPrincipalIdealRing OL] [IsTopologicalRing LL]
     (hO : IsOpen (Set.range (algebraMap OL LL))) [IsFractionRing OL LL] :
@@ -659,7 +649,7 @@ theorem latSt_open [CompactSpace G] [IsNoetherianRing OL] [IsPrincipalIdealRing 
   exact Submodule.isOpen_mono (integral_span_le_stable A b) (integral_span_open A b hO)
 
 /- English proof (translation)
-Introduce `v` and use `by obtain ⟨a, ha, h⟩ := integral_span_divisible A b v exact ⟨a, ha, integral_span_le_stable A b h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem latSt_div [CompactSpace G] [IsNoetherianRing OL] [IsPrincipalIdealRing OL] [IsTopologicalRing LL]
     (hO : IsOpen (Set.range (algebraMap OL LL))) [IsFractionRing OL LL] : DivT A (latSt A b hO).T := fun v => by
@@ -667,7 +657,7 @@ theorem latSt_div [CompactSpace G] [IsNoetherianRing OL] [IsPrincipalIdealRing O
   exact ⟨a, ha, integral_span_le_stable A b h⟩
 
 /- English proof (translation)
-Set `b₀` to `Module.finBasis LL A.V`. Use `haveI := hT (latSt A b₀ hO)`. Use `haveI := finite_H1V A (latSt A b₀ hO) (latSt_open A b₀ hO) (latSt_div A b₀ hO) (IsFractionRing.injective OL LL)`. Conclude with `finDim_H1fV A PD`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem finDim_of_tate [CompactSpace G] [IsNoetherianRing OL] [IsPrincipalIdealRing OL] [IsTopologicalRing LL]
     (hO : IsOpen (Set.range (algebraMap OL LL))) [IsFractionRing OL LL]
@@ -725,9 +715,9 @@ abbrev hF : ↥(PF e PD iL ρ ι ρL) →ₗ[O] H1z ρL :=
 
 include hiL in
 /- English proof (translation)
-Introduce `p hp`. Rewrite `hp`, the goal using `[LinearMap.mem_ker]`. Establish `h` using `(Submodule.Quotient.mk_eq_zero _).mp hp`. Take `⟨m, hm⟩` from `h`. Apply `(Submodule.Quotient.mk_eq_zero _).mpr` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨iL m, funext fun γ => ?_⟩` and prove the remaining obligations. Establish `h2 : ((p : coZ1s ρL) : Γ → L) γ = ρL γ m - m` using `(congrFun hm γ).symm`. Use `show ρ γ (iL m) - iL m = iL (((p : coZ1s ρL) : Γ → L) γ)`. Rewrite using `[h2, map_sub, hiL]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_le : LinearMap.ker (hF e PD iL ρ ι ρL) ≤ LinearMap.ker (thet0 e PD iL ρ ι ρL) := by
   intro p hp
@@ -741,7 +731,7 @@ theorem ker_le : LinearMap.ker (hF e PD iL ρ ι ρL) ≤ LinearMap.ker (thet0 e
   rw [h2, map_sub, hiL]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem F_eq : KFin.FfG ρL iL (finZ e PD ρ ι) = LinearMap.range (hF e PD iL ρ ι ρL) := by
   rw [LinearMap.range_comp, Submodule.range_subtype]
@@ -753,7 +743,7 @@ def thet : ↥(KFin.FfG ρL iL (finZ e PD ρ ι)) →ₗ[O] QF e PD ρ ι :=
       (LinearEquiv.ofEq _ _ (F_eq e PD iL ρ ι ρL)).toLinearMap)
 
 /- English proof (translation)
-Establish `h1 : LinearEquiv.ofEq _ _ (F_eq e PD iL ρ ι ρL) ⟨hF e PD iL ρ ι ρL p, (F_eq e PD iL ρ ι ρL).symm ▸ LinearMap.mem_range_self _ p⟩ = ⟨hF e PD iL ρ ι ρL p, LinearMap.mem_range_self _ p⟩` using `Subtype.ext rfl`. Use `show ((LinearMap.ker (hF e PD iL ρ ι ρL)).liftQ (thet0 e PD iL ρ ι ρL) (ker_le e PD iL ρ ι ρL hiL)) ((hF e PD iL ρ ι ρL).quotKerEquivRange.symm (LinearEquiv.ofEq _ _ (F_eq e PD iL ρ ι ρL) ⟨hF e PD iL ρ ι ρL p, (F_eq e PD iL ρ ι ρL).symm ▸ LinearMap.mem_range_self _ p⟩)) = _`. Rewrite using `[h1, LinearMap.quotKerEquivRange_symm_apply_image]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thet_mk (p : ↥(PF e PD iL ρ ι ρL)) :
     thet e PD iL ρ ι ρL hiL ⟨hF e PD iL ρ ι ρL p, (F_eq e PD iL ρ ι ρL).symm ▸ LinearMap.mem_range_self _ p⟩ =
@@ -814,7 +804,7 @@ def bA : Basis n LL (grepV e OL (Qp := Qp) ρ ι hc).V :=
         rw [LinearEquiv.apply_symm_apply, RingEquiv.apply_symm_apply] }
 
 /- English proof (translation)
-Unfold `bA`. Rewrite using `[Basis.equivFun_ofEquivFun]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bA_coord (x : (grepV e OL (Qp := Qp) ρ ι hc).V) (j : n) :
     (bA e (OL := OL) (Qp := Qp) bV ρ ι hc).equivFun x j = e (bV.equivFun (show V from x) j) := by
@@ -824,9 +814,9 @@ theorem bA_coord (x : (grepV e OL (Qp := Qp) ρ ι hc).V) (j : n) :
 
 include hσ hb in
 /- English proof (translation)
-Establish `h : iL m = bV.equivFun.symm (fun j => algebraMap O (FractionRing O) (bL.equivFun m j))`. Rewrite using `[Basis.equivFun_symm_apply]`. Use `conv_lhs => rw [← bL.sum_equivFun m]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, hb, algebraMap_smul]`. Rewrite using `[h, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_iL (m : L) (j : n) : bV.equivFun (iL m) j = algebraMap O (FractionRing O) (bL.equivFun m j) := by
   have h : iL m = bV.equivFun.symm (fun j => algebraMap O (FractionRing O) (bL.equivFun m j)) := by
@@ -840,13 +830,11 @@ theorem coord_iL (m : L) (j : n) : bV.equivFun (iL m) j = algebraMap O (Fraction
 include hσ hb in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx choose o ho using hx`. Use `⟨∑ j, σ.symm (o j) • bL j, ?_⟩` and prove the remaining obligations. Use `show iL (∑ j, σ.symm (o j) • bL j) = (x : V)`. Use `conv_rhs => rw [← bV.sum_equivFun (x : V)]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hb, ← algebraMap_smul (FractionRing O) (σ.symm (o j)) (bV j)]`. Use `congr 1`. Apply `e.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : algebraMap OL LL (o j) = e (bV.equivFun (show V from x) j)` using `(ho j).trans (bA_coord e (OL := OL) (Qp := Qp) bV ρ ι hc x j)`. Rewrite using `[← hσ, RingEquiv.apply_symm_apply, h1]`. Introduce and unpack `⟨m, rfl⟩ j`. Use `⟨σ (bL.equivFun m j), ?_⟩` and prove the remaining obligations. Rewrite using `[hσ, ← coord_iL e σ hσ bV bL iL hb]`.
-
-Conclude with `(bA_coord e (OL := OL) (Qp := Qp) bV ρ ι hc _ j).symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_integral_span_iff_image (x : TrV e V) :
     x ∈ T0 (grepV e OL (Qp := Qp) ρ ι hc) (bA e (OL := OL) (Qp := Qp) bV ρ ι hc) ↔ ∃ m : L, tr e (iL m) = x := by
@@ -874,9 +862,9 @@ variable [IsTopologicalRing LL] [IsFractionRing OL LL]
 include hb in
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) Finset.univ (fun j => bV.equivFun v j)`. Use `choose c hc using fun j => hs j (Finset.mem_univ j)`. Use `⟨s, nonZeroDivisors.ne_zero s.2, ∑ j, c j • bL j, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `conv_rhs => rw [← bV.sum_equivFun v, Finset.smul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hb, ← algebraMap_smul (FractionRing O) (c j), hc j, smul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem div_L (v : V) : ∃ s : O, s ≠ 0 ∧ ∃ m : L, iL m = s • v := by
   obtain ⟨s, hs⟩ := IsLocalization.exist_integer_multiples (nonZeroDivisors O) Finset.univ
@@ -893,11 +881,11 @@ variable [CompactSpace G]
 include hσ hb hc hiL in
 
 /- English proof (translation)
-Establish `hcont : Continuous fun g => tr e ((c : Γ → V) (ι g))` using `c.2.1.1`. Take `⟨a, ha, h⟩` from `bound_cont (grepV e OL (Qp := Qp) ρ ι hc) _ (integral_span_open _ (bA e (OL := OL) (Qp := Qp) bV ρ ι hc) hO) (integral_span_divisible _ (bA e (OL := OL) (Qp := Qp) bV ρ ι hc)) _ hcont`. Establish `hs : σ.symm a ≠ 0` using `fun h0 => ha (by rw [← σ.apply_symm_apply a, h0, map_zero])`. Establish `hγ : ∀ γ, ∃ m : L, iL m = σ.symm a • (c : Γ → V) γ`. Introduce `γ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, rfl⟩` from `hι γ`. Take `⟨m, hm⟩` from `(mem_integral_span_iff_image e σ hσ bV bL iL hb ρ ι hc (Qp := Qp) _).1 (h g)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `h2` using `smul_OL e σ hσ (σ.symm a) ((c : Γ → V) (ι g))`. Rewrite `h2` using `[RingEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h2]`. Conclude with `hm`. Use `choose p hp using hγ`. Conclude with `⟨σ.symm a, hs, p, hp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bound_fin (hι : Function.Surjective ι) (hO : IsOpen (Set.range (algebraMap OL LL))) (c : ↥(finZ e PD ρ ι)) :
     ∃ s : O, s ≠ 0 ∧ ∃ p : Γ → L, ∀ γ, iL (p γ) = s • (c : Γ → V) γ := by
@@ -943,27 +931,23 @@ variable {O : Type} [CommRing O] [IsDomain O] {LL : Type} [Field LL] [Topologica
 include hσ hb hc in
 
 /- English proof (translation)
-Rewrite using `[Module.End.isUnit_iff]`. Establish `hs : algebraMap O (FractionRing O) (s : O) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Prove the components needed by the constructor for the conclusion. Introduce `q1 q2 h`. Rewrite `h` using `[Module.algebraMap_end_apply, Module.algebraMap_end_apply, ← algebraMap_smul (FractionRing O) (s : O) q1, ← algebraMap_smul (FractionRing O) (s : O) q2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `smul_right_injective _ hs h`. Introduce `q`. Use `⟨(algebraMap O (FractionRing O) (s : O))⁻¹ • q, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.algebraMap_end_apply, ← algebraMap_smul (FractionRing O) (s : O), smul_smul, mul_inv_cancel₀ hs, one_smul]`. Use `surj q := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨s, hs, p, hp⟩` from `bound_fin e PD σ hσ bV bL iL hb ρ ι hc ρL hiL (Qp := Qp) hι.2 hO c`. Establish `hcoc : ∀ γ δ, (c : Γ → V) (γ * δ) = (c : Γ → V) γ + ρ γ ((c : Γ → V) δ)`. Introduce `γ δ`. Take `⟨g, rfl⟩` from `hι.2 γ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, rfl⟩` from `hι.2 δ`. Establish `h1` using `c.2.1.2 g h`. Rewrite using `[← map_mul]`. Conclude with `h1`. Establish `hpz : p ∈ coZ1s ρL` using `fun γ δ => hinj (by rw [map_add, hiL, hp, hp, hp, hcoc, smul_add, map_smul])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpf : p ∈ KFin.finPreG iL (finZ e PD ρ ι)` using `by show (fun γ => iL (p γ)) ∈ finZ e PD ρ ι`. Establish `h1 : (fun γ => iL (p γ)) = s • (c : Γ → V)` using `funext hp`. Rewrite using `[h1]`. Conclude with `((finZ e PD ρ ι).restrictScalars O).smul_mem s c.2`. Set `z : ↥(PF e PD iL ρ ι ρL)` to `⟨⟨p, hpz⟩, hpf⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `⟨(⟨hF e PD iL ρ ι ρL z, (F_eq e PD iL ρ ι ρL).symm ▸ LinearMap.mem_range_self _ z⟩, ⟨s, mem_nonZeroDivisors_of_ne_zero hs⟩), ?_⟩` and prove the remaining obligations. Use `show (s : O) • (Submodule.Quotient.mk c : QF e PD ρ ι) = _`. Rewrite using `[thet_mk, ← Submodule.Quotient.mk_smul]`. Use `congr 1`. Conclude with `Subtype.ext (funext fun γ => (hp γ).symm)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exists_of_eq {z1 z2} h := by`. Establish `hz : ((z1 - z2 : ↥(KFin.FfG ρL iL (finZ e PD ρ ι))) : H1z ρL) ∈ LinearMap.range (hF e PD iL ρ ι ρL)`. Rewrite using `[← F_eq e PD iL ρ ι ρL]`. Conclude with `(z1 - z2).2`. Take `⟨p, hp⟩` from `hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : thet e PD iL ρ ι ρL hiL (z1 - z2) = thet0 e PD iL ρ ι ρL p`. Establish `h2 : z1 - z2 = ⟨hF e PD iL ρ ι ρL p, (F_eq e PD iL ρ ι ρL).symm ▸ LinearMap.mem_range_self _ p⟩` using `Subtype.ext hp.symm`. Rewrite using `[h2, thet_mk]`. Establish `h0 : thet0 e PD iL ρ ι ρL p = 0` using `by rw [← h1, map_sub, h, sub_self]`. Take `⟨v, hv⟩` from `(Submodule.Quotient.mk_eq_zero _).mp h0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs, m, hm⟩` from `div_L bV bL iL hb v`. Use `⟨⟨s, mem_nonZeroDivisors_of_ne_zero hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← smul_sub]`. Use `show (s : O) • (z1 - z2) = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use `show (s : O) • ((z1 - z2 : ↥(KFin.FfG ρL iL (finZ e PD ρ ι))) : H1z ρL) = 0`. Rewrite using `[← hp]`. Use `show (s : O) • (Submodule.Quotient.mk (p : coZ1s ρL) : H1z ρL) = 0`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `⟨m, funext fun γ => hinj ?_⟩` and prove the remaining obligations.
-
-Use `show iL (ρL γ m - m) = iL ((s : O) • ((p : coZ1s ρL) : Γ → L) γ)`. Rewrite using `[map_sub, hiL, hm, map_smul, map_smul, ← smul_sub]`. Use `congr 1`. Conclude with `congrFun hv γ`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem thet_loc (hι : Function.Bijective ι) (hO : IsOpen (Set.range (algebraMap OL LL)))
     (hinj : Function.Injective iL) :
@@ -1033,9 +1017,9 @@ theorem thet_loc (hι : Function.Bijective ι) (hO : IsOpen (Set.range (algebraM
 include hσ hb hc hiL in
 
 /- English proof (translation)
-Use `haveI := thet_loc e PD σ hσ bV bL iL hb ρ ι hc ρL hiL (Qp := Qp) hι hO hinj`. Establish `h1 : Module.finrank O (↥(KFin.FfG ρL iL (finZ e PD ρ ι)) ⧸ Submodule.torsion O ↥(KFin.FfG ρL iL (finZ e PD ρ ι))) = Module.finrank O ↥(KFin.FfG ρL iL (finZ e PD ρ ι))`. Unfold `Module.finrank`. Rewrite using `[rank_quotient_eq_of_le_torsion le_rfl]`. Establish `h2` using `IsLocalizedModule.finrank_eq (p := nonZeroDivisors O) (f := thet e PD iL ρ ι ρL hiL) le_rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `IsLocalization.finrank_eq (S := FractionRing O) (p := nonZeroDivisors O) (N := QF e PD ρ ι) le_rfl`. Establish `h4 : Module.finrank (FractionRing O) (QF e PD ρ ι) = Module.finrank LL (FiniteCohomology PD (repL e ρ ι))`. Unfold `Module.finrank`. Rewrite using `[KDim.rank_finQuot (e := e) (PD := PD) (ρ := ρ) (hι := hι)]`. Rewrite using `[h1, ← h2, ← h3, h4]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_Ff (hι : Function.Bijective ι) (hO : IsOpen (Set.range (algebraMap OL LL)))
     (hinj : Function.Injective iL) :
@@ -1056,7 +1040,7 @@ theorem finrank_Ff (hι : Function.Bijective ι) (hO : IsOpen (Set.range (algebr
 include hσ hb hc hiL in
 
 /- English proof (translation)
-Substitute `hZ` using the available equality. Conclude with `finrank_Ff e PD σ hσ bV bL iL hb ρ ι hc ρL hiL (Qp := Qp) hι hO hinj`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem finrank_Ff' (hι : Function.Bijective ι) (hO : IsOpen (Set.range (algebraMap OL LL)))
     (hinj : Function.Injective iL) (Zf : Submodule (FractionRing O) (Γ → V)) (hZ : Zf = finZ e PD ρ ι) :
@@ -1083,9 +1067,9 @@ abbrev bLr : Basis {a // RepresentationBoundsCohomology.blk D.R a = 0} (D.nd.O i
   Pi.basisFun (D.nd.O i) {a // RepresentationBoundsCohomology.blk D.R a = 0}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Establish `h1 : (bLr i Dd j : {a // RepresentationBoundsCohomology.blk D.R a = 0} → D.nd.O i) k = (Pi.single j (1 : D.nd.O i) : _ → D.nd.O i) k` using `congrFun (Pi.basisFun_apply (D.nd.O i) {a // RepresentationBoundsCohomology.blk D.R a = 0} j) k`. Establish `h2 : (bVr i Dd j : {a // RepresentationBoundsCohomology.blk D.R a = 0} → FractionRing (D.nd.O i)) k = (Pi.single j (1 : FractionRing (D.nd.O i)) : _ → FractionRing (D.nd.O i)) k` using `congrFun (Pi.basisFun_apply (FractionRing (D.nd.O i)) {a // RepresentationBoundsCohomology.blk D.R a = 0} j) k`. Use `show algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) ((bLr i Dd j : {a // RepresentationBoundsCohomology.blk D.R a = 0} → D.nd.O i) k) = (bVr i Dd j : {a // RepresentationBoundsCohomology.blk D.R a = 0} → FractionRing (D.nd.O i)) k`. Rewrite using `[h1, h2]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne k j with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iLr_basis (j : {a // RepresentationBoundsCohomology.blk D.R a = 0}) : KFin.iLr i Dd (bLr i Dd j) = bVr i Dd j := by
   funext k
@@ -1102,7 +1086,7 @@ theorem iLr_basis (j : {a // RepresentationBoundsCohomology.blk D.R a = 0}) : KF
   · simp [h]
 
 /- English proof (translation)
-Introduce `_ _ h` and use `funext fun k => IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i)) (congrFun h k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem iLr_inj : Function.Injective (KFin.iLr i Dd) := fun _ _ h =>
   funext fun k => IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i)) (congrFun h k)
@@ -1111,7 +1095,7 @@ instance finDimVr : FiniteDimensional (FractionRing (D.nd.O i)) (KFin.Vr i Dd) :
   inferInstanceAs (FiniteDimensional (FractionRing (D.nd.O i)) ({a // RepresentationBoundsCohomology.blk D.R a = 0} → FractionRing (D.nd.O i)))
 
 /- English proof (translation)
-Establish `hn` using `KDim.col_over i dc l`. Use `show Module.Finite (D.nd.O i) ↥(KFin.FfG (KFin.ρL i dc Dd l) (KFin.iLr i Dd) (KHf.fZ i dc (K.colIdx i dc l) (KFin.ρV i dc Dd l)))`. Rewrite using `[KHf.fZ_pos i dc _ hn]`. Conclude with `finite_FfG (eK (D.nbr i _ hn)) (Br.PD D.loc D.nbr i _ hn) (D.nbr i _ hn).eO (fun c => (Br.toLLK_alg (D.nbr i _ hn) c).symm) (bVr i Dd) (bLr i Dd) (KFin.iLr i Dd) (iLr_basis i Dd) (KFin.ρV i dc Dd l) (Br.iota D.nbr i _ hn) (hO hn) (KFin.ρL i dc Dd l) (KFin.iL_equiv i dc Dd l) (Br. …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finFf_of (hFin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i) (l : K.Col i dc) (hO : KHf.OrbC i dc (KFin.ρV i dc Dd l)) :
     KFin.FinFf i dc Dd l := by
@@ -1138,14 +1122,14 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
 /- English proof (translation)
-The claim follows from `isCompact_iff_compactSpace.1 (InfiniteGalois.fixingSubgroup_isClosed _).isCompact`.
+A detailed English derivation is pending.
 -/
 theorem compact_G {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) :
     CompactSpace (Br.G D.nbr i w hw) :=
   isCompact_iff_compactSpace.1 (InfiniteGalois.fixingSubgroup_isClosed _).isCompact
 
 /- English proof (translation)
-Use `show KHf.jK i dc ρ π (K.colIdx i dc l) = _`. Unfold `KHf.jK`. Rewrite using `[dif_pos (KDim.col_over i dc l)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jr_eq (l : K.Col i dc) :
     KFin.jr i dc ρ π (K.colIdx i dc l) =
@@ -1168,9 +1152,7 @@ def DimV (l : K.Col i dc) : Prop :=
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hn` using `KDim.col_over i dc l`. Take `⟨⟨_, hdvr, hfr⟩, -, -, htop, hopen⟩` from `hO (D.nd.l i) (D.nbr i _ hn).LL`. Use `haveI := hfr`. Use `haveI := htop`. Use `haveI := compact_G i hn`.
-
-Establish `hZ : KFin.Zf i dc Dd l = finZ (eK (D.nbr i _ hn)) (Br.PD D.loc D.nbr i _ hn) (KFin.ρV i dc Dd l) (Br.iota D.nbr i _ hn)` using `KHf.fZ_pos i dc _ hn`. Establish `h1` using `finrank_Ff' (eK (D.nbr i _ hn)) (Br.PD D.loc D.nbr i _ hn) (D.nbr i _ hn).eO (fun c => (Br.toLLK_alg (D.nbr i _ hn) c).symm) (bVr i Dd) (bLr i Dd) (KFin.iLr i Dd) (iLr_basis i Dd) (KFin.ρV i dc Dd l) (Br.iota D.nbr i _ hn) (hOrb hn) (KFin.ρL i dc Dd l) (KFin.iL_equiv i dc Dd l) ( …`. Conclude with `h1.trans (hdim.trans (jr_eq i dc ρ π l).symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rankFf_of (hO : Formalism.MainNotions.N.LitGoodO) (l : K.Col i dc) (hOrb : KHf.OrbC i dc (KFin.ρV i dc Dd l))
     (hdim : DimV i dc Dd ρ π l) : KFin.RankFf i dc Dd ρ π l := by
@@ -1199,9 +1181,7 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (r : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* R') (χ : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* Tcˣ)
 
 /- English proof (translation)
-Use `letI := evalModO i (R' := R') x'`. Use `haveI := evalTower i (R' := R') x'`. Establish `hn` using `KDim.col_over i dc l`. Take `⟨⟨_, hdvr, hfr⟩, -, -, htop, hopen⟩` from `hO (D.nd.l i) (D.nbr i _ hn).LL`. Use `haveI := hdvr`.
-
-Use `haveI := hfr`. Use `haveI := htop`. Use `haveI := compact_G i hn`. Conclude with `finDim_of_tate (KDim.grepX i dc r χ x' l hc) hopen (fun LA => hFin _ hn (TruncatedSeriesCountingIdentities.CoefExt.self i _ hn) _ LA) (Br.PD D.loc D.nbr i _ hn)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finX_of (hFin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i) (hO : Formalism.MainNotions.N.LitGoodO) (x' : X') (l : K.Col i dc)
     (hc : KDim.ContX i dc r χ x' l) : KDim.FinX i dc r χ x' l := by
@@ -1229,7 +1209,7 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
 /- English proof (translation)
-The claim follows from `rankFf_of i dc Dd ρ π Formalism.MainNotions.N.T2.litGoodO l hOrb hdim`.
+A detailed English derivation is pending.
 -/
 theorem rankFf (l : K.Col i dc) (hOrb : KHf.OrbC i dc (KFin.ρV i dc Dd l)) (hdim : DimV i dc Dd ρ π l) :
     KFin.RankFf i dc Dd ρ π l :=
@@ -1247,7 +1227,7 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (r : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* R') (χ : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* Tcˣ)
 
 /- English proof (translation)
-The claim follows from `finX_of i dc r χ hFin Formalism.MainNotions.N.T2.litGoodO x' l hc`.
+A detailed English derivation is pending.
 -/
 theorem finX (hFin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i) (x' : X') (l : K.Col i dc) (hc : KDim.ContX i dc r χ x' l) :
     KDim.FinX i dc r χ x' l :=
@@ -1268,7 +1248,7 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))
 
 /- English proof (translation)
-The claim follows from `KOrb.orbC_uRep i dc r π g0 eB e₁ s Dd hD hc (V := KFin.Vr i Dd) (fun c v => KOrb.latM_alg (i := i) (Dd := Dd) (Dd.ρk 0) c v) (K.colIdx i dc l)`.
+A detailed English derivation is pending.
 -/
 theorem orbC_V
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
@@ -1277,7 +1257,7 @@ theorem orbC_V
     (fun c v => KOrb.latM_alg (i := i) (Dd := Dd) (Dd.ρk 0) c v) (K.colIdx i dc l)
 
 /- English proof (translation)
-The claim follows from `finFf_of i dc Dd hFin l (orbC_V i dc r π g0 eB e₁ s Dd hD hc l)`.
+A detailed English derivation is pending.
 -/
 theorem finFf_rec (hFin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i)
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
@@ -1285,7 +1265,7 @@ theorem finFf_rec (hFin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i)
   finFf_of i dc Dd hFin l (orbC_V i dc r π g0 eB e₁ s Dd hD hc l)
 
 /- English proof (translation)
-The claim follows from `rankFf i dc Dd ρ π l (orbC_V i dc r π g0 eB e₁ s Dd hD hc l) hdim`.
+A detailed English derivation is pending.
 -/
 theorem rankFf_rec
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
@@ -1293,7 +1273,7 @@ theorem rankFf_rec
   rankFf i dc Dd ρ π l (orbC_V i dc r π g0 eB e₁ s Dd hD hc l) hdim
 
 /- English proof (translation)
-The claim follows from `finX i dc Dd.r Dd.χ hFin x' l (KDim.contX_of_orbC i dc Dd.r Dd.χ x' l (KOrb.orbC_repE i dc r π g0 eB e₁ s Dd hD hc x' (K.colIdx i dc l)))`.
+A detailed English derivation is pending.
 -/
 theorem finX_rec (hFin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i)
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
@@ -1318,13 +1298,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ Kk : Type} [Field Qp
     (ρ : Representation LL G V) (ρ' : Representation LL G W)
 
 /- English proof (translation)
-Establish `heq' : ∀ g w, f.symm (ρ' g w) = ρ g (f.symm w)` using `fun g w => f.injective (by`. Rewrite using `[heq, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply])`. Set `φ : ↥(finiteCocycles PD ρ) →ₗ[LL] ↥(finiteCocycles PD ρ')` to `{ toFun := fun c => ⟨f ∘ c.1, (cocyclesFunctorial_holds G Qp K₀ Kk B BdR PD LL V W ρ ρ' f.toLinearMap hf heq c.1).2 c.2⟩ map_add' := fun a b => Subtype.ext (funext fun g => map_add f _ _) map_smul' := fun a b => Subtype.ext (funext fun g => map_smul f _ _) }`. Set `ψ : ↥(finiteCocycles PD ρ') →ₗ[LL] ↥(finiteCocycles PD ρ)` to `{ toFun := fun c => ⟨f.symm ∘ c.1, (cocyclesFunctorial_holds G Qp K₀ Kk B BdR PD LL W V ρ' ρ f.symm.toLinearMap hf' heq' c.1).2 c.2⟩ map_add' := fun a b => Subtype.ext (funext fun g => map_add f.symm _ _) map_smul' := fun a b => Subtype.ext (funext fun g => map_smul f.symm _ _) }`. Set `E : ↥(finiteCocycles PD ρ) ≃ₗ[LL] ↥(finiteCocycles PD ρ')` to `LinearEquiv.ofLinear φ ψ (LinearMap.ext fun c => Subtype.ext (funext fun g => f.apply_symm_apply _)) (LinearMap.ext fun c => Subtype.ext (funext fun g => f.symm_apply_apply _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hpq : ((B1 ρ).comap (finiteCocycles PD ρ).subtype).map E.toLinearMap = (B1 ρ').comap (finiteCocycles PD ρ').subtype`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c₀, ⟨x, hx⟩, rfl⟩`. Use `⟨f x, funext fun g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : (c₀ : G → V) g = ρ g x - x` using `(congrFun hx g).symm`. Use `show ρ' g (f x) - f x = f ((c₀ : G → V) g)`. Rewrite using `[h, map_sub, heq]`. Introduce and unpack `⟨y, hy⟩`. Use `⟨E.symm c, ⟨f.symm y, funext fun g => ?_⟩, E.apply_symm_apply c⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : (c : G → W) g = ρ' g y - y` using `(congrFun hy g).symm`. Use `show ρ g (f.symm y) - f.symm y = f.symm ((c : G → W) g)`. Rewrite using `[h, map_sub, heq']`. Conclude with `(Submodule.Quotient.equiv _ _ E hpq).finrank_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_H1fV_congr (f : V ≃ₗ[LL] W) (hf : Continuous f) (hf' : Continuous f.symm)
     (heq : ∀ g v, f (ρ g v) = ρ' g (f v)) :
@@ -1378,7 +1358,7 @@ def IsoV (l : K.Col i dc) : Prop :=
       KDim.repW i dc ρ π (K.colIdx i dc l) (KDim.col_over i dc l) g (f v)
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `h`. Establish `hn` using `KDim.col_over i dc l`. Take `⟨-, -, -, htop, -⟩` from `Formalism.MainNotions.N.T2.litGoodO (D.nd.l i) (D.nbr i _ hn).LL`. Use `haveI := htop`. Conclude with `finrank_H1fV_congr (Br.PD D.loc D.nbr i _ hn) _ _ f (IsModuleTopology.continuous_of_linearMap f.toLinearMap) (IsModuleTopology.continuous_of_linearMap f.symm.toLinearMap) hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dimV_of_iso (l : K.Col i dc) (h : IsoV i dc Dd ρ π l) : DimV i dc Dd ρ π l := by
   obtain ⟨f, hf⟩ := h
@@ -1390,7 +1370,7 @@ theorem dimV_of_iso (l : K.Col i dc) (h : IsoV i dc Dd ρ π l) : DimV i dc Dd �
     (IsModuleTopology.continuous_of_linearMap f.symm.toLinearMap) hf
 
 /- English proof (translation)
-The claim follows from `rankFf_rec i dc r π g0 eB e₁ s Dd ρ hD hc l (dimV_of_iso i dc Dd ρ π l hiso)`.
+A detailed English derivation is pending.
 -/
 theorem rankFf_iso (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (g0 : GE D.nd)
     (eB e₁ s : D.nd.X i → MatN D.nd i)

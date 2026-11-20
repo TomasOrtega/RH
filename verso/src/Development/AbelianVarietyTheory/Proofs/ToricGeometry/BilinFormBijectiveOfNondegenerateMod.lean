@@ -6,21 +6,19 @@ open scoped BigOperators Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set b := Module.Free.chooseBasis ℤ X`. Establish `hinj : Function.Injective E`. Use `(injective_iff_map_eq_zero E).2 fun a ha => ?_` and prove the remaining obligations. Use `b.ext_elem fun i => ?_` and prove the remaining obligations. Take `⟨n, hn⟩ : ∃ n, (b.repr a i).natAbs = n` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha'⟩` from `h (n + 1) a (Nat.succ_pos n) (fun y => by rw [ha]; simp)`. Establish `hdvd : ((n + 1 : ℕ) : ℤ) ∣ b.repr a i` using `⟨b.repr a' i, by rw [ha']; simp⟩`. Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs hdvd ?_` and prove the remaining obligations. Rewrite using `[Int.natAbs_natCast, hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.lt_succ_self n`. Establish `hrank : Module.rank ℤ (Module.Dual ℤ X ⧸ LinearMap.range E) = 0`. Establish `h1` using `rank_quotient_add_rank_of_isDomain (LinearMap.range E)`. Rewrite `h1` using `[← (LinearEquiv.ofInjective E hinj).rank_eq, ← b.toDualEquiv.rank_eq]`. Take `⟨n, hn⟩` from `Cardinal.lt_aleph0.1 (Module.rank_lt_aleph0 ℤ X)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hq : Module.rank ℤ (Module.Dual ℤ X ⧸ LinearMap.range E) < Cardinal.aleph0` using `lt_of_le_of_lt (le_self_add) (h1 ▸ Module.rank_lt_aleph0 ℤ X)`. Take `⟨m, hm⟩` from `Cardinal.lt_aleph0.1 hq`. Rewrite `h1` using `[hm, hn]`. Rewrite using `[hm]`. Establish `: m + n = n` using `by exact_mod_cast h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(by omega : m = 0)` after adjusting the coercions. Use `⟨hinj, fun f => ?_⟩` and prove the remaining obligations. Take `⟨c, hc0, hcf⟩` from `rank_eq_zero_iff.1 hrank (Submodule.Quotient.mk f)`. Rewrite `hcf` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨x, hx⟩` from `hcf`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : 0 < c.natAbs * c.natAbs` using `Nat.mul_pos (Int.natAbs_pos.2 hc0) (Int.natAbs_pos.2 hc0)`. Take `⟨a', ha'⟩` from `h (c.natAbs * c.natAbs) (c • x) hk (fun y => by`. Rewrite using `[Int.natAbs_mul_self, map_smul, hx, smul_smul]`. Use the proof step `simp)`. Use `⟨a', ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hEq : E (c • x) = ((c.natAbs * c.natAbs : ℕ) : ℤ) • f`. Rewrite using `[Int.natAbs_mul_self, map_smul, hx, smul_smul]`. Rewrite `hEq` using `[ha', map_smul]`. Use extensionality with `y`. Establish `hy` using `LinearMap.congr_fun hEq y`.
-
-Simplify using `only [LinearMap.smul_apply, smul_eq_mul] at hy`. Conclude with `mul_left_cancel₀ (by exact_mod_cast hk.ne') hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bilinForm_bijective_of_nondegenerate_mod (X : Type) [AddCommGroup X] [Module.Free ℤ X]
     [Module.Finite ℤ X] (E : LinearMap.BilinForm ℤ X)

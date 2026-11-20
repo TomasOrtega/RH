@@ -8,7 +8,7 @@ universe u
 
 namespace GlobalTheory.HilbAff
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_idealSheaf_comap_eq_of_openCover V f hf hcov J hJ`.
+A detailed English derivation is pending.
 -/
 theorem glue_exists {X : Scheme.{0}} {ι : Type u} (V : ι → Scheme.{0}) (f : ∀ i, V i ⟶ X)
     (hf : ∀ i, IsOpenImmersion (f i)) (hcov : ∀ x : X, ∃ i y, f i y = x)
@@ -18,14 +18,14 @@ theorem glue_exists {X : Scheme.{0}} {ι : Type u} (V : ι → Scheme.{0}) (f : 
     ∃ I : X.IdealSheafData, ∀ i, I.comap (f i) = J i :=
   GlobalTheory.T.exists_idealSheaf_comap_eq_of_openCover V f hf hcov J hJ
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.idealSheafData_ext_of_openCover' V f hf hcov I I' h`.
+A detailed English derivation is pending.
 -/
 theorem glue_ext {X : Scheme.{0}} {ι : Type u} (V : ι → Scheme.{0}) (f : ∀ i, V i ⟶ X)
     (hf : ∀ i, IsOpenImmersion (f i)) (hcov : ∀ x : X, ∃ i y, f i y = x)
     (I I' : X.IdealSheafData) (h : ∀ i, I.comap (f i) = I'.comap (f i)) : I = I' :=
   GlobalTheory.T.idealSheafData_ext_of_openCover' V f hf hcov I I' h
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isFiniteFlatRankClosedSubscheme_of_openCover A B r V f hf hcov g I h`.
+A detailed English derivation is pending.
 -/
 theorem good_local (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (r : ℕ)
     {T : Scheme.{0}} {ι : Type u} (V : ι → Scheme.{0}) (f : ∀ i, V i ⟶ T)
@@ -36,9 +36,9 @@ theorem good_local (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (r : ℕ
   GlobalTheory.T.isFiniteFlatRankClosedSubscheme_of_openCover A B r V f hf hcov g I h
 
 /- English proof (translation)
-Establish `hg : g₀ = g₁` using `congrArg Sigma.fst e`. Use `⟨hg, ?_⟩` and prove the remaining obligations. Substitute `hg` using the available equality. Establish `h2 : I₀ = I₁`. Use `(Sigma.mk.inj_iff.mp e).2` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val (eq_of_heq this)`. Establish `: pullback.map (str A B) g₀ (str A B) g₀ (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp) = 𝟙 _`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[this, Scheme.IdealSheafData.comap_id, h2]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snd_eq_of_sigma {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {r : ℕ} {T : Scheme.{0}}
     {g₀ g₁ : T ⟶ Spec (CommRingCat.of A)}
@@ -58,7 +58,7 @@ theorem snd_eq_of_sigma {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {r 
   rw [this, Scheme.IdealSheafData.comap_id, h2]
 
 /- English proof (translation)
-Apply the tactic sequence `apply pullback.hom_ext <;> simp only [bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fac_bc {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {T Z : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A)) (φ : Z ⟶ pullback (str A B) g) :
@@ -68,7 +68,7 @@ theorem fac_bc {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {T Z : Schem
   apply pullback.hom_ext <;> simp only [bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]`. Conclude with `e1`. Simplify using `only [bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_map_eq {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {T T' Z : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A)) (g' : T' ⟶ Spec (CommRingCat.of A))
@@ -87,7 +87,7 @@ theorem lift_map_eq {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {T T' Z
   · simp only [bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]
 
 /- English proof (translation)
-Take `⟨hh, hI⟩` from `snd_eq_of_sigma e`. Simplify using `only [Quiver.Hom.unop_op] at hh hI`. Rewrite using `[← fac_bc y.1 φ, ← fac_bc y'.1 φ', Scheme.IdealSheafData.comap_comp, hI, Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp _ _ (pullback.map _ _ _ _ _ _ _ _ _), lift_map_eq y.1 y'.1 φ φ' e1 hh, ← Scheme.IdealSheafData.comap_comp]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_eq_of_map_eq {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {r : ℕ}
     {X X' Z : Scheme.{0}} (y : (functor A B r).obj (op X)) (y' : (functor A B r).obj (op X'))
@@ -103,7 +103,7 @@ theorem comap_eq_of_map_eq {A B : Type} [CommRing A] [CommRing B] [Algebra A B] 
     lift_map_eq y.1 y'.1 φ φ' e1 hh, ← Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: pullback.map (str A B) g₀ (str A B) g₀ (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp) = 𝟙 _`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[this, Scheme.IdealSheafData.comap_id]`. Conclude with `hI`.
+Substitute using the available equality. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_transport {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {r : ℕ} {T : Scheme.{0}}
     {g₀ g : T ⟶ Spec (CommRingCat.of A)} (h : g₀ = g)
@@ -116,7 +116,7 @@ theorem good_transport {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {r :
   exact hI
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @IsOpenImmersion) (isPullback_bc A B g a).flip inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_bc (A B : Type) [CommRing A] [CommRing B] [Algebra A B] {T T' : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A)) (a : T' ⟶ T) [IsOpenImmersion a] :
@@ -124,27 +124,25 @@ theorem isOpenImmersion_bc (A B : Type) [CommRing A] [CommRing B] [Algebra A B] 
   MorphismProperty.of_isPullback (P := @IsOpenImmersion) (isPullback_bc A B g a).flip inferInstance
 
 /- English proof (translation)
-Rewrite using `[Precoverage.isSheaf_toGrothendieck_iff_of_isStableUnderBaseChange]`. Introduce and unpack `Y S hS`. Take `⟨(𝒰 : Scheme.OpenCover Y), rfl⟩` from `Scheme.exists_cover_of_mem_pretopology hS`. Rewrite using `[Presieve.isSheafFor_arrows_iff]`. Introduce `(x : ∀ j, (functor A B r).obj (op (𝒰.X j))) hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `replace hx : ∀ i j (Z : Scheme.{0}) (a : Z ⟶ 𝒰.X i) (a' : Z ⟶ 𝒰.X j), a ≫ 𝒰.f i = a' ≫ 𝒰.f j → (functor A B r).map a.op (x i) = (functor A B r).map a'.op (x j) := hx`. Set `g : Y ⟶ Spec (CommRingCat.of A)` to `𝒰.glueMorphisms (fun j => (x j).1) fun i j => congrArg Sigma.fst (hx i j _ _ _ pullback.condition)`. Establish `hg : ∀ j, 𝒰.f j ≫ g = (x j).1` using `fun j => 𝒰.ι_glueMorphisms _ _ j`. Establish `hoi : ∀ j, IsOpenImmersion (bc A B g (𝒰.f j))` using `fun j => isOpenImmersion_bc A B g (𝒰.f j)`. Establish `hcov : ∀ p : ↥(pullback (str A B) g : Scheme.{0}), ∃ j q, bc A B g (𝒰.f j) q = p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Take `⟨j, t, ht⟩` from `𝒰.exists_eq (pullback.snd (str A B) g p)`. Establish `hr` using `(isPullback_bc A B g (𝒰.f j)).isoPullback_hom_fst`. Establish `hmem : p ∈ Set.range (bc A B g (𝒰.f j))`. Rewrite using `[← hr, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, Set.range_eq_univ.mpr (ConcreteCategory.bijective_of_isIso _).2, Set.image_univ, Scheme.Pullback.range_fst]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨t, ht⟩`. Take `⟨q, hq⟩` from `hmem`. Conclude with `⟨j, q, hq⟩`. Set `J : ∀ j, (pullback (str A B) (𝒰.f j ≫ g)).IdealSheafData` to `fun j => (x j).2.1.comap (pullback.map _ _ _ _ (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp [hg j]))`. Establish `hJ : ∀ i j (Z : Scheme.{0}) (a : Z ⟶ pullback (str A B) (𝒰.f i ≫ g)) (a' : Z ⟶ pullback (str A B) (𝒰.f j ≫ g)), a ≫ bc A B g (𝒰.f i) = a' ≫ bc A B g (𝒰.f j) → (J i).comap a = (J j).comap a'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j Z a a' e`. Establish `f1 : ∀ k, bc A B g (𝒰.f k) ≫ pullback.fst (str A B) g = pullback.fst _ _` using `fun k => (pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Establish `f2 : ∀ k, bc A B g (𝒰.f k) ≫ pullback.snd (str A B) g = pullback.snd _ _ ≫ 𝒰.f k` using `fun k => pullback.lift_snd _ _ _`. Establish `p1 : ∀ k (b : Z ⟶ pullback (str A B) (𝒰.f k ≫ g)), (b ≫ pullback.map (str A B) (𝒰.f k ≫ g) (str A B) (x k).1 (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp [hg k])) ≫ pullback.fst _ _ = b ≫ pullback.fst _ _`. Introduce `k b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]`. Establish `p2 : ∀ k (b : Z ⟶ pullback (str A B) (𝒰.f k ≫ g)), (b ≫ pullback.map (str A B) (𝒰.f k ≫ g) (str A B) (x k).1 (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp [hg k])) ≫ pullback.snd _ _ = b ≫ pullback.snd _ _`. Introduce `k b`. Simplify using `only [bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]`. Establish `e1 : a ≫ pullback.fst _ _ = a' ≫ pullback.fst _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← f1 i, ← f1 j, ← Category.assoc, e, Category.assoc]`. Establish `e2 : (a ≫ pullback.snd _ _) ≫ 𝒰.f i = (a' ≫ pullback.snd _ _) ≫ 𝒰.f j`. Rewrite using `[Category.assoc, Category.assoc, ← f2 i, ← f2 j, ← Category.assoc, e, Category.assoc]`. Express the relevant statement in the definitionally equal form `((x i).2.1.comap _).comap a = ((x j).2.1.comap _).comap a'`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `comap_eq_of_map_eq (x i) (x j) _ _ (by rw [p1, p1, e1]) ?_` and prove the remaining obligations. Rewrite using `[p2, p2]`. Conclude with `hx i j Z _ _ e2`. Take `⟨I, hI⟩` from `glue_exists (fun j : 𝒰.I₀ => pullback (str A B) (𝒰.f j ≫ g)) (fun j : 𝒰.I₀ => bc A B g (𝒰.f j)) hoi hcov J hJ`. Establish `good : Good A B r g I` using `good_local A B r 𝒰.X 𝒰.f (fun j => inferInstance) (fun y => 𝒰.exists_eq y) g I (fun j => by rw [hI j]; exact good_transport (hg j) (x j).2.2)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `amal : ∀ j, (functor A B r).map (𝒰.f j).op ⟨g, ⟨I, good⟩⟩ = x j` using `fun j => sigma_eq A B r (hg j) (hI j) _ (x j).2.2`. Use `⟨⟨g, ⟨I, good⟩⟩, amal, fun y' hy' => ?_⟩` and prove the remaining obligations. Use `replace hy' : ∀ j, (functor A B r).map (𝒰.f j).op y' = x j := hy'`. Establish `e : y'.1 = g` using `𝒰.hom_ext _ _ fun j => (congrArg Sigma.fst (hy' j)).trans (hg j).symm`. Take `⟨g', I', hI'⟩` from `y'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `g' = g at e`. Substitute `e` using the available equality. Establish `: I' = I`. Use `glue_ext (fun j : 𝒰.I₀ => pullback (str A B) (𝒰.f j ≫ g)) (fun j : 𝒰.I₀ => bc A B g (𝒰.f j)) hoi hcov I' I fun j => ?_` and prove the remaining obligations. Use `(hy' j).trans (amal j).symm` as an intermediate fact.
-
-Conclude with `congrArg Subtype.val (eq_of_heq (Sigma.mk.inj_iff.mp this).2)`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isSheaf_functor (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (r : ℕ) :
     Presieve.IsSheaf Scheme.zariskiTopology (functor A B r) := by

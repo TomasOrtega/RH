@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ScaledIntegerPer
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.KSplit
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.IndSpK.eq_zero_of_KO_invariant_of_apply_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInducedSphericalVanishingAtIdentity.lean&line=10#L10)
 -/

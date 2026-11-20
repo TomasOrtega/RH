@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj 
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.DualWeyl.EvBound.sum_sq_norm_evalAt_onBasis_le_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDualWeylOrthonormalBasisValuesAtUnitarySumSqLeOn.lean&line=24#L24)
 -/

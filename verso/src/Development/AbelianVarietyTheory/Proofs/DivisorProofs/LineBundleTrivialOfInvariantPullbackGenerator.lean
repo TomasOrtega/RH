@@ -19,14 +19,14 @@ section Descent
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma appLE_eq_of_eq_hom {f g : X ⟶ Y} (h : f = g) (U : Y.Opens) (V : X.Opens) (e : V ≤ f ⁻¹ᵁ U) :
     f.appLE U V e = g.appLE U V (h ▸ e) := by
   subst h; rfl
 
 /- English proof (translation)
-Establish `e : U.ι.appLE U ⊤ U.ι_preimage_self.ge = U.topIso.inv`. Rewrite using `[Scheme.Opens.ι_appLE, Scheme.Opens.topIso_inv]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `ConcreteCategory.bijective_of_isIso U.topIso.inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma opens_toTop_bijective (U : X.Opens) : Function.Bijective (U.ι.appLE U ⊤ U.ι_preimage_self.ge) := by
   have e : U.ι.appLE U ⊤ U.ι_preimage_self.ge = U.topIso.inv := by
@@ -35,14 +35,14 @@ lemma opens_toTop_bijective (U : X.Opens) : Function.Bijective (U.ι.appLE U ⊤
   exact ConcreteCategory.bijective_of_isIso U.topIso.inv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, IsZariskiLocalAtTarget.restrict ‹_› V, by first | exact HasAffineProperty.restrict ‹_› V | exact IsZariskiLocalAtTarget.restrict (P := @IsAffineHom) ‹_› V | exact (MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom) (isPullback_morphismRestr …`.
+Supply the required witnesses or components.
 -/
 example (p : X ⟶ Y) [Flat p] [Surjective p] [IsAffineHom p] (V : Y.Opens) :
     Flat (p ∣_ V) ∧ Surjective (p ∣_ V) ∧ IsAffineHom (p ∣_ V) :=
   ⟨inferInstance, IsZariskiLocalAtTarget.restrict ‹_› V, by first | exact HasAffineProperty.restrict ‹_› V | exact IsZariskiLocalAtTarget.restrict (P := @IsAffineHom) ‹_› V | exact (MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom) (isPullback_morphismRestrict p V).flip ‹_›) | exact (inferInstance : IsAffineHom (p.resLE V (p ⁻¹ᵁ V) le_rfl))⟩
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply]`. Use `congr 1`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE, Scheme.Hom.app_eq_appLE]`. Use `erw [Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `congrArg _ (appLE_eq_of_eq_hom (morphismRestrict_ι p V) _ _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma restrict_appTop_toTop (p : X ⟶ Y) (V : Y.Opens) (a : Γ(Y, V)) :
     (p ∣_ V).appTop (V.ι.appLE V ⊤ V.ι_preimage_self.ge a) =
@@ -54,14 +54,14 @@ lemma restrict_appTop_toTop (p : X ⟶ Y) (V : Y.Opens) (a : Γ(Y, V)) :
   exact congrArg _ (appLE_eq_of_eq_hom (morphismRestrict_ι p V) _ _ _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, IsZariskiLocalAtTarget.restrict ‹_› V, by first | exact HasAffineProperty.restrict ‹_› V | exact IsZariskiLocalAtTarget.restrict (P := @IsAffineHom) ‹_› V | exact (MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom) (isPullback_morphismRestr …`.
+Supply the required witnesses or components.
 -/
 lemma restrict_props (p : X ⟶ Y) [Flat p] [Surjective p] [IsAffineHom p] (V : Y.Opens) :
     Flat (p ∣_ V) ∧ Surjective (p ∣_ V) ∧ IsAffineHom (p ∣_ V) :=
   ⟨inferInstance, IsZariskiLocalAtTarget.restrict ‹_› V, by first | exact HasAffineProperty.restrict ‹_› V | exact IsZariskiLocalAtTarget.restrict (P := @IsAffineHom) ‹_› V | exact (MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom) (isPullback_morphismRestrict p V).flip ‹_›) | exact (inferInstance : IsAffineHom (p.resLE V (p ⁻¹ᵁ V) le_rfl))⟩
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Use `erw [Scheme.Hom.appLE_comp_appLE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma appTop_toTop (V : X.Opens) {Z : Scheme.{0}} (y : Z ⟶ V.toScheme) (s : Γ(X, V)) :
     y.appTop (V.ι.appLE V ⊤ V.ι_preimage_self.ge s) =
@@ -71,9 +71,9 @@ lemma appTop_toTop (V : X.Opens) {Z : Scheme.{0}} (y : Z ⟶ V.toScheme) (s : Γ
   rfl
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `restrict_props p V`. Take `⟨v, hv⟩` from `ReciprocityTheory.ChartRestriction.G.Out.TLinPf.descend_gen (p ∣_ V) ((p ⁻¹ᵁ V).ι.appLE (p ⁻¹ᵁ V) ⊤ (p ⁻¹ᵁ V).ι_preimage_self.ge s) (fun y₁ y₂ h => by`. Rewrite using `[appTop_toTop, appTop_toTop]`. Use `hs _ _ _ ?_ _ _` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← morphismRestrict_ι, ← Category.assoc, h, Category.assoc])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `(opens_toTop_bijective V).2 v`. Use `⟨a, (opens_toTop_bijective (p ⁻¹ᵁ V)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← restrict_appTop_toTop]`. Conclude with `hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_app_eq_of_invariant (p : X ⟶ Y) [Flat p] [Surjective p] [IsAffineHom p] (V : Y.Opens)
     (s : Γ(X, p ⁻¹ᵁ V))
@@ -92,7 +92,7 @@ theorem exists_app_eq_of_invariant (p : X ⟶ Y) [Flat p] [Surjective p] [IsAffi
   exact hv
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.naturality, CommRingCat.comp_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma app_map_homOfLE (p : X ⟶ Y) {U V : Y.Opens} (h : V ≤ U) (a : Γ(Y, U)) :
     p.app V (Y.presheaf.map (homOfLE h).op a) =
@@ -105,17 +105,15 @@ end Descent
 open ReciprocityTheory.ChartRestriction.G.DVR.TG in
 
 /- English proof (translation)
-Introduce `X Y p _ _ _ M e he hinv`. Establish `hval : ∀ (k : M.ι) (u : Γ(X, p ⁻¹ᵁ M.U k)ˣ), (u = e k ∨ u = (e k)⁻¹) → ∃ a : Γ(Y, M.U k), p.app _ a = u`. Introduce `k u hu`. Use `exists_app_eq_of_invariant p (M.U k) u ?_` and prove the remaining obligations. Introduce `Z y₁ y₂ hy h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `H` using `hinv Z y₁ y₂ hy k ⊤ h₁ h₂`. Break down `hu with rfl | rfl` into its components or cases. Conclude with `congrArg Units.val H`. Establish `H'` using `congrArg (fun x => x⁻¹) H`. Simplify using `only [← map_inv] at H'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrArg Units.val H'`. Use `choose f hf using fun k => hval k (e k) (Or.inl rfl)`. Use `choose f' hf' using fun k => hval k (e k)⁻¹ (Or.inr rfl)`. Establish `inj` using `fun V => app_injective_of_flat_surj p V`. Establish `hmul : ∀ k, f k * f' k = 1` using `fun k => inj _ (by rw [map_mul, map_one, hf, hf', Units.mul_inv])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `fu : ∀ k, Γ(Y, M.U k)ˣ` to `fun k => ⟨f k, f' k, hmul k, by rw [mul_comm]; exact hmul k⟩`. Use `⟨⟨fu⟩, fun i j => Units.ext (inj _ ?_)⟩` and prove the remaining obligations. Establish `H` using `congrArg Units.val (he i j (p ⁻¹ᵁ (M.U i ⊓ M.U j)) (fun _ hx => hx.1) (fun _ hx => hx.2) le_rfl)`. Establish `eX : ∀ {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)ˣ), ((res h a : Γ(X, V)ˣ) : Γ(X, V)) = X.presheaf.map (homOfLE h).op a` using `fun _ _ => rfl`. Establish `eY : ∀ {U V : Y.Opens} (h : V ≤ U) (a : Γ(Y, U)ˣ), ((res h a : Γ(Y, V)ˣ) : Γ(Y, V)) = Y.presheaf.map (homOfLE h).op a` using `fun _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `eP : ((pullU p (M.U i ⊓ M.U j) (M.g i j) : Γ(X, p ⁻¹ᵁ (M.U i ⊓ M.U j))ˣ) : Γ(X, p ⁻¹ᵁ (M.U i ⊓ M.U j))) = p.app _ (M.g i j)` using `rfl`. Establish `eid : X.presheaf.map (homOfLE (le_rfl : p ⁻¹ᵁ (M.U i ⊓ M.U j) ≤ p ⁻¹ᵁ (M.U i ⊓ M.U j))).op = 𝟙 _`. Rewrite using `[show homOfLE (le_rfl : p ⁻¹ᵁ (M.U i ⊓ M.U j) ≤ _) = 𝟙 _ from rfl, op_id, CategoryTheory.Functor.map_id]`. Simplify using `only [Units.val_mul, eX, eP] at H`. Rewrite `H` using `[eid, CommRingCat.id_apply]`.
-
-Simplify using `only [Units.val_mul, map_mul, eY, app_map_homOfLE]`. Use `show X.presheaf.map _ (p.app _ (f i)) = _ * X.presheaf.map _ (p.app _ (f j))`. Rewrite using `[hf, hf]`. Conclude with `H`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_of_isPullGen_of_invariant : ∀ (X Y : Scheme.{0}) (p : X ⟶ Y), Flat p → Surjective p → IsAffineHom p → ∀ (M : LB Y) (e : ∀ k, Γ(X, p ⁻¹ᵁ M.U k)ˣ), IsPullGen p M e → (∀ (Z : Scheme.{0}) (y₁ y₂ : Z ⟶ X), y₁ ≫ p = y₂ ≫ p → ∀ (k : M.ι) (W : Z.Opens) (h₁ : W ≤ y₁ ⁻¹ᵁ (p ⁻¹ᵁ M.U k)) (h₂ : W ≤ y₂ ⁻¹ᵁ (p ⁻¹ᵁ M.U k)), res h₁ (pullU y₁ _ (e k)) = res h₂ (pullU y₂ _ (e k))) → Triv M := by
   intro X Y p _ _ _ M e he hinv

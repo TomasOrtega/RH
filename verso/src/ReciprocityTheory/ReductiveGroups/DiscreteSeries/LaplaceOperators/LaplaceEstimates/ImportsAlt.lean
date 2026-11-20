@@ -5,7 +5,7 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.Laplace
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
 /- English proof (translation)
-Introduce `hIS k r ε u h hg hp hq`. Conclude with `⟨stepDown hIS k r ε u h hg hp hq, stepUp hIS k r ε u h hg hp hq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem step : StepStatement := by
   intro hIS k r ε u h hg hp hq

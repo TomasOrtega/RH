@@ -19,49 +19,43 @@ namespace CrystallineSemistableComparison.Pb
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Use `haveI : IsClosedImmersion i := hci`. Use `haveI hXi : IsIntegral X := isIntegral_of_smooth q (n + 1)`. Use `haveI : Infinite K := Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective`. Take `⟨e, m, y, he, hy, halg, hfin⟩` from `GlobalTheory.T.noether_normalization_homogeneous K N (homIdeal i) (homIdeal_ne_top i) (homIdeal_homog i)`. Establish `hcov` using `iSup_preimage_eq_top i he y hy hfin`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨d, rfl⟩ : ∃ d, m = d + 1 := by`. Break down `m with _ | d` into its components or cases. It suffices to derive a contradiction. Take `⟨x⟩` from `(inferInstance : Nonempty X)`. Establish `hx : x ∈ (⊤ : X.Opens)` using `trivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite `hx` using `[← hcov, iSup_of_empty]`. Simplify using `at hx`. Conclude with `⟨d, rfl⟩`. Establish `hpos : ∀ S : Finset (Fin (d + 1)), S.Nonempty → 0 < S.card * e` using `fun S hS => Nat.mul_pos hS.card_pos he`. Establish `haff : ∀ S : Finset (Fin (d + 1)), S.Nonempty → IsAffineOpen (⨅ k ∈ S, i ⁻¹ᵁ Proj.basicOpen (grK K N) (y k))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `S hS`. Rewrite using `[biInf_preimage i y S]`. Conclude with `isAffineOpen_preimage i hci (yS_mem y hy S) (hpos S hS)`. Set `W : X.Opens` to `⨅ k ∈ (Finset.univ : Finset (Fin (d + 1))), i ⁻¹ᵁ Proj.basicOpen (grK K N) (y k)`. Establish `hWaff : IsAffineOpen W` using `haff _ Finset.univ_nonempty`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWV : W ≤ ⨅ k, i ⁻¹ᵁ Proj.basicOpen (grK K N) (y k)` using `le_iInf fun k => biInf_le _ (Finset.mem_univ k)`. Establish `hWS : W ≤ i ⁻¹ᵁ Proj.basicOpen (grK K N) (yS y Finset.univ)` using `(biInf_preimage i y _).le`. Establish `hWne : (W : Set X).Nonempty`. Establish `hne0 : Ideal.Quotient.mk (homIdeal i) (yS y Finset.univ) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1 : MvPolynomial.aeval (fun k => Ideal.Quotient.mk (homIdeal i) (y k)) (∏ k : Fin (d + 1), (MvPolynomial.X k : MvPolynomial (Fin (d + 1)) K)) = 0`. Rewrite using `[map_prod]`. Simplify `h0` using `[yS, map_prod]`. Establish `h2` using `halg (h1.trans (map_zero _).symm)`. Conclude with `Finset.prod_ne_zero_iff.2 (fun k _ => MvPolynomial.X_ne_zero k) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `preimage_basicOpen_nonempty i (hpos _ Finset.univ_nonempty) (yS_mem y hy Finset.univ) hne0` as an intermediate fact. Rewrite `this` using `[← biInf_preimage i y Finset.univ]`. Then use the resulting hypothesis. Use `letI algW : Algebra K Γ(X, W) := (strV q W).toAlgebra`. Establish `htW : ∀ k, IsUnit (tV i y hy W hWV k)` using `tV_isUnit i y hy hWV`. Establish `hindW : AlgebraicIndependent K (tV i y hy W hWV)` using `algebraicIndependent_tV i y hy hWV he q hiq halg hWne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nonempty W := hWne.to_subtype`. Establish `hintW : ∀ r : Γ(X, W), IsIntegral (torusS K (fun k => (htW k).unit) Finset.univ) r`. Introduce `r`. Establish `hr : r ∈ Set.range (resO (le_refl W))` using `⟨r, by simp [resO]⟩`. Rewrite `hr` using `[range_resO_eq i hci (yS_mem y hy _) (hpos _ Finset.univ_nonempty) (biInf_preimage i y _) le_rfl hWS]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hr`. Conclude with `isIntegral_torusS i y hy hWV he q hiq hfin Finset.univ hWS htW a`. Establish `halgW : Algebra.IsAlgebraic (Algebra.adjoin K (Set.range (tV i y hy W hWV))) Γ(X, W)` using `isAlgebraic_of_integral_torusS (fun k => (htW k).unit) hintW`. Use `haveI hlft : LocallyOfFiniteType q := by first`. Consider the case `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `(haveI : Smooth q := SmoothOfRelativeDimension.smooth (n + 1) q; infer_instance)`. Consider the case `(haveI : Smooth q := inferInstance; haveI : LocallyOfFinitePresentation q := inferInstance; infer_instance)`. Use `haveI : Algebra.FiniteType K Γ(X, W) := finiteType_affine q hWaff`. Take `⟨g, hg0, het⟩` from `exists_etale_away (tV i y hy W hWV) hindW halgW`. Take `⟨c, hc⟩` from `exists_coord_basicOpen q hWaff g (tV i y hy W hWV) het`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVne : ((X.basicOpen g : X.Opens) : Set X).Nonempty`. Rewrite using `[← TopologicalSpace.Opens.ne_bot_iff_nonempty]`. Introduce `h`. Conclude with `hg0 ((basicOpen_eq_bot_iff g).1 h)`. Establish `hdn : d = n + 1` using `coord_card_eq q (n + 1) hVne c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Substitute `hdn` using the available equality. Use `⟨e, he, y, hy, ?_⟩` and prove the remaining obligations. Introduce `U`. Establish `hV : X.basicOpen g ≤ ⨅ k, i ⁻¹ᵁ Proj.basicOpen (grK K N) (y k)` using `(X.basicOpen_le g).trans hWV`. Establish `hct : ∀ k, c.t k = tV i y hy (X.basicOpen g) hV k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k`. Rewrite using `[hc k]`. Simplify using `only [tV, resO]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`. Set `c' : Coord q (X.basicOpen g) (n + 1)` to `⟨c.affine, tV i y hy (X.basicOpen g) hV, by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `c.etale`. Rewrite using `[show c.t = tV i y hy (X.basicOpen g) hV from funext hct] at h⟩` and apply the resulting hypothesis. Use `⟨hcov, fun S hS => haff S hS, X.basicOpen g, hV, c', ?_⟩` and prove the remaining obligations. Use `letI algV : Algebra K Γ(X, X.basicOpen g) := (strV q _).toAlgebra`. Use `haveI : Nonempty (X.basicOpen g) := hVne.to_subtype`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨inferInstance, fun k => rfl, tV_isUnit i y hy hV, algebraicIndependent_tV i y hy hV he q hiq halg hVne, ?_⟩` and prove the remaining obligations. Set `B : Finset (Fin (n + 2)) → Subalgebra K Γ(X, X.basicOpen g)` to `fun S => { (resO (le_biInf_of_le hV S)).range with algebraMap_mem' := fun a => RingHom.mem_range.2 ⟨strV q _ a, (RingHom.congr_fun (strV_res q (le_biInf_of_le hV S)) a).symm⟩ }`. Establish `memB : ∀ S x, x ∈ B S ↔ x ∈ Set.range (resO (le_biInf_of_le hV S))` using `fun S x => RingHom.mem_range`. Use `⟨B, fun S _ => Set.ext fun x => memB S x, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `S _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `map_injective_of_isIntegral X (homOfLE (le_biInf_of_le hV S))`. Introduce `S hS`. Establish `hS' : X.basicOpen g ≤ i ⁻¹ᵁ Proj.basicOpen (grK K N) (yS y S)` using `(le_biInf_of_le hV S).trans (biInf_preimage i y S).le`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `tpow_mem_range i y hy hV he S hS' (tV_isUnit i y hy hV) m hm`. Rewrite `h1` using `[← range_resO_eq i hci (yS_mem y hy S) (hpos S hS) (biInf_preimage i y S) (le_biInf_of_le hV S) hS']`. Conclude with `(memB S _).2 h1`. Introduce `S hS`. Use `letI : Algebra K Γ(X, ⨅ k ∈ S, U k) := (strV q _).toAlgebra`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : Algebra.FiniteType K Γ(X, ⨅ k ∈ S, U k) := finiteType_affine q (haff S hS)`. Set `φ : Γ(X, ⨅ k ∈ S, U k) →ₐ[K] Γ(X, X.basicOpen g)` to `{ resO (le_biInf_of_le hV S) with commutes' := fun a => (RingHom.congr_fun (strV_res q (le_biInf_of_le hV S)) a).symm }`. Establish `hB : B S = φ.range`. Use extensionality with `x`. Rewrite using `[memB, AlgHom.mem_range]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hB, ← Algebra.map_top]`. Conclude with `Algebra.FiniteType.out.map φ`. Introduce `S hS b hb`. Establish `hS' : X.basicOpen g ≤ i ⁻¹ᵁ Proj.basicOpen (grK K N) (yS y S)` using `(le_biInf_of_le hV S).trans (biInf_preimage i y S).le`.
-
-Rewrite `hb` using `[memB, range_resO_eq i hci (yS_mem y hy S) (hpos S hS) (biInf_preimage i y S) (le_biInf_of_le hV S) hS']`. Take `⟨a, rfl⟩` from `hb`. Conclude with `isIntegral_torusS i y hy hV he q hiq hfin S hS' (tV_isUnit i y hy hV) a`. Introduce `j x hx`. Rewrite `hx`, the goal using `[memB]`.
-
-Take `⟨a, rfl⟩` from `hx`. Establish `hle : (⨅ k ∈ (Finset.univ : Finset (Fin (n + 2))), U k) ≤ ⨅ k ∈ Finset.univ.erase j, U k` using `biInf_mono fun k _ => Finset.mem_univ k`. Use `⟨resO hle a, ?_⟩` and prove the remaining obligations. Simplify using `only [resO]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`.
-
-Both sides reduce to the same expression. Introduce `r`. Take `⟨b, hb, b', hb', hne, h⟩` from `exists_frac_basicOpen hWaff g hVne r`. Conclude with `⟨b, (memB _ _).2 hb, b', (memB _ _).2 hb', hne, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem geo_setup {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     [ConnectedSpace X] (n : ℕ) [SmoothOfRelativeDimension (n + 1) q] (N : ℕ) (i : X ⟶ PSpace K N)

@@ -21,15 +21,15 @@ open GlobalTheory.SS
 namespace GlobalTheory.SemiPol
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
 /- English proof (translation)
-Establish `h : IsUnit ((2 : V) * ((3 : ℕ) : V) + -((5 : ℕ) : V))`. Establish `: (2 : V) * ((3 : ℕ) : V) + -((5 : ℕ) : V) = 1` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `isUnit_one`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨3, Nat.prime_three, le_rfl, isUnit_of_mul_isUnit_right h⟩`. Conclude with `⟨5, Nat.prime_five, by norm_num, by simpa using h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_prime_unit (V : Type) [CommRing V] [IsLocalRing V] :
     ∃ l : ℕ, l.Prime ∧ 3 ≤ l ∧ IsUnit (l : V) := by
@@ -41,7 +41,7 @@ theorem exists_prime_unit (V : Type) [CommRing V] [IsLocalRing V] :
   · exact ⟨5, Nat.prime_five, by norm_num, by simpa using h⟩
 
 /- English proof (translation)
-Take `⟨P', φ, hφ, -, mul, -⟩` from `polBaseChange_of_relAmple_local GlobalTheory.AmpleLocal.relAmple_of_locally S S' f P`. Use `⟨P', φ, hφ, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Establish `e₁ : x₀ = Out.toBase hφ.w x` using `Over.OverMorphism.ext hx`. Establish `e₂ : y₀ = Out.toBase hφ.w y` using `Over.OverMorphism.ext hy`. Rewrite using `[e₁, e₂, ← mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -56,21 +56,19 @@ theorem exists_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) (P : Out.PolAV S) :
   rfl
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_mulEquiv_of_isGrpPullback h (spMap (algebraMap K₁ Ω₁)) (spMap (algebraMap K₁ Ω₁) ≫ spMap (algebraMap K K₁)) rfl`. Set `u : Over.mk (spMap (algebraMap K Ω)) ⟶ Over.mk (spMap (algebraMap K₁ Ω₁) ≫ spMap (algebraMap K K₁))` to `Over.homMk (spMap j.symm.toRingEquiv.toRingHom) (by show spMap _ ≫ spMap _ ≫ spMap _ = spMap _`. Rewrite using `[sp_comp, sp_comp]`. Use `congr 1`. Use extensionality with `c`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[← IsScalarTower.algebraMap_apply])`. Take `⟨y, hy⟩` from `hr (u ≫ e x) (by rw [← MonObj.comp_pow, ← map_pow, hx, map_one, MonObj.comp_one])`. Establish `hy' : spMap (algebraMap K₁ Ω) ≫ y = spMap j.symm.toRingEquiv.toRingHom ≫ x.left ≫ φ`. Rewrite using `[hy, ← he]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h₁ : spMap (algebraMap K₁ Ω₁) ≫ y = x.left ≫ φ`. Establish `e₁ : spMap j.toRingEquiv.toRingHom ≫ spMap (algebraMap K₁ Ω) = spMap (algebraMap K₁ Ω₁)`. Rewrite using `[sp_comp]`. Use `congr 1`. Use extensionality with `c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `e₂ : spMap j.toRingEquiv.toRingHom ≫ spMap j.symm.toRingEquiv.toRingHom = 𝟙 _`. Rewrite using `[sp_comp, ← Spec.map_id]`. Use `congr 1`. Use extensionality with `c`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use `(congrArg (· ≫ y) e₁.symm).trans ((Category.assoc _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[hy', ← Category.assoc, e₂]`. Conclude with `Category.id_comp _`. Establish `hτ : spMap τ.toRingEquiv.toRingHom ≫ spMap (algebraMap K₁ Ω₁) = spMap (algebraMap K₁ Ω₁)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sp_comp]`. Use `congr 1`. Use extensionality with `c`. Simplify using the standard rewrite rules. Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (_ ≫ ·) h₁.symm).trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hτ, h₁]`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (_ ≫ ·) (Over.w x)).trans ?_` and prove the remaining obligations.
-
-Conclude with `hτ.trans (Over.w x).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fixed_of_rational {K K₁ Ω Ω₁ : Type} [Field K] [Field K₁] [Field Ω] [Field Ω₁] [Algebra K K₁] [Algebra K Ω]
     [Algebra K₁ Ω] [IsScalarTower K K₁ Ω] [Algebra K₁ Ω₁] (j : Ω ≃ₐ[K₁] Ω₁)
@@ -111,13 +109,13 @@ theorem fixed_of_rational {K K₁ Ω Ω₁ : Type} [Field K] [Field K₁] [Field
     exact hτ.trans (Over.w x).symm
 
 /- English proof (translation)
-Establish `hc` using `(GlobalTheory.T.torsion_points_polarised_abelianVariety_galois K P Ω l hl).1 1`. Rewrite `hc` using `[pow_one]`. Establish `hfin : Finite {x : (Over.mk (spMap (algebraMap K Ω)) ⟶ P.A) // x ^ l = 1}` using `Nat.finite_of_card_ne_zero (by rw [hc]; exact pow_ne_zero _ hl.ne_zero)`. Establish `hsm` using `P.smoothDim`. Establish `hsm' : Smooth P.A.hom` using `SmoothOfRelativeDimension.smooth P.g _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hft : LocallyOfFiniteType P.A.hom` using `inferInstance`. Establish `key : ∀ x : {x : (Over.mk (spMap (algebraMap K Ω)) ⟶ P.A) // x ^ l = 1}, ∃ s : Finset Ω, ∀ (K₁ : Type) [Field K₁] [Algebra K K₁] [Algebra K₁ Ω] [IsScalarTower K K₁ Ω], (∀ c ∈ s, c ∈ (algebraMap K₁ Ω).fieldRange) → ∃ y : Sp K₁ ⟶ P.A.left, spMap (algebraMap K₁ Ω) ≫ y = x.1.left`. Introduce `x`. Take `⟨E, -, h₂, h₃⟩` from `GlobalTheory.SS.exists_fieldOfValues P.A.left Ω x.1.left`. Take `⟨L, hL, rfl⟩` from `h₃ K P.A.hom hft (Over.w x.1) inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩ : (Subalgebra.toSubmodule L.toSubalgebra).FG` from `(Submodule.fg_iff_finiteDimensional _).2 hL`. Use `⟨s, fun K₁ _ _ _ _ hK => (h₂ K₁ _).1 fun c hc => ?_⟩` and prove the remaining obligations. Establish `: Subalgebra.toSubmodule L.toSubalgebra ≤ Subalgebra.toSubmodule (IsScalarTower.toAlgHom K K₁ Ω).range`. Rewrite using `[← hs, Submodule.span_le]`. Conclude with `fun d hd => hK d hd`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `this hc`. Use `choose s hs using key`. Use `Fintype.ofFinite {x : (Over.mk (spMap (algebraMap K Ω)) ⟶ P.A) // x ^ l = 1}` as an intermediate fact. Conclude with `⟨Finset.univ.biUnion s, fun K₁ _ _ _ _ hK x hx => hs ⟨x, hx⟩ K₁ fun c hc => hK c (Finset.mem_biUnion.2 ⟨_, Finset.mem_univ _, hc⟩)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finset (K : Type) [Field K] [CharZero K] (P : Out.PolAV (Sp K)) (Ω : Type) [Field Ω] [Algebra K Ω]
     [IsAlgClosure K Ω] (l : ℕ) (hl : l.Prime) :
@@ -154,19 +152,19 @@ theorem exists_finset (K : Type) [Field K] [CharZero K] (P : Out.PolAV (Sp K)) (
     hK c (Finset.mem_biUnion.2 ⟨_, Finset.mem_univ _, hc⟩)⟩
 
 /- English proof (translation)
-Introduce `V K _ _ _ _ _ _ _ _ hres P`. Take `⟨l, hl, h3, hu⟩` from `exists_prime_unit V`. Set `Ω` to `AlgebraicClosure K`. Take `⟨s, hs⟩` from `exists_finset K P Ω l hl`. Establish `hV : CharZero V` using `(algebraMap V K).charZero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (algebraMap V Ω)`. Rewrite using `[IsScalarTower.algebraMap_eq V K Ω]`. Conclude with `(algebraMap K Ω).injective.comp (IsFractionRing.injective V K)`. Establish `hf : FaithfulSMul V Ω` using `(faithfulSMul_iff_algebraMap_injective V Ω).2 hinj`. Establish `ha : Algebra.IsAlgebraic V Ω` using `(IsFractionRing.comap_isAlgebraic_iff (A := V) (K := K) (C := Ω)).2 inferInstance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hWc, -, hWf, -, hWl, hWs, -⟩` from `exists_complete_dvr_finite_subalgebra V Ω s`. Set `K₁` to `FractionRing W`. Establish `hinj₁ : Function.Injective ((algebraMap W K₁).comp (algebraMap V W))` using `(IsFractionRing.injective W K₁).comp fun a b h => hinj (congrArg Subtype.val h)`. Set `_ : Algebra K K₁` to `(IsFractionRing.lift hinj₁ : K →+* K₁).toAlgebra`. Set `_ : Algebra K₁ Ω` to `(IsFractionRing.lift (g := algebraMap W Ω) Subtype.val_injective : K₁ →+* Ω).toAlgebra`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `c₁ : ∀ a, algebraMap K K₁ (algebraMap V K a) = algebraMap W K₁ (algebraMap V W a)` using `fun a => IsFractionRing.lift_algebraMap hinj₁ a`. Establish `c₂ : ∀ a : W, algebraMap K₁ Ω (algebraMap W K₁ a) = a` using `fun a => IsFractionRing.lift_algebraMap (g := algebraMap W Ω) Subtype.val_injective a`. Establish `hT : IsScalarTower K K₁ Ω` using `IsScalarTower.of_algebraMap_eq' (by`. Use `IsLocalization.ringHom_ext (nonZeroDivisors V) (RingHom.ext fun a => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c₁, c₂, ← IsScalarTower.algebraMap_apply]`. Use the proof step `rfl)`. Establish `hK₁ : CharZero K₁` using `charZero_of_injective_algebraMap (algebraMap K K₁).injective`. Establish `hal : Algebra.IsAlgebraic K₁ Ω` using `Algebra.IsAlgebraic.tower_top (K := K) K₁`. Establish `hac : IsAlgClosure K₁ Ω` using `⟨inferInstance, hal⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hres₁ : Finite (IsLocalRing.ResidueField W)` using `Module.finite_of_finite (IsLocalRing.ResidueField V)`. Take `⟨P₁, φ, hφ⟩` from `exists_pullback (spMap (algebraMap K K₁)) P`. Use `GlobalTheory.SS.potModel_trans V K W K₁ (RingHom.ext fun a => (c₁ a).symm) hWf hWl P.A P₁.A φ hφ _ ?_` and prove the remaining obligations. Use `GlobalTheory.T.potentialSemistable_of_rational_lTorsion W K₁ hres₁ l hl h3 (by simpa using hu.map (algebraMap V W)) P₁ ?_` and prove the remaining obligations. Use `fixed_of_rational (IsAlgClosure.equiv K₁ Ω (AlgebraicClosure K₁)) hφ l (hs K₁ fun c hc => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, b, hb, hb0, h⟩` from `hWs c hc`. Use `⟨algebraMap W K₁ ⟨a, ha⟩ / algebraMap W K₁ ⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, c₂, c₂]`. Conclude with `(div_eq_iff hb0).2 h.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem potModel_semiAbelian : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K], Finite (IsLocalRing.ResidueField V) → ∀ P : Out.PolAV (Sp K), PotModel V K P.A (fun _ _ _ G _ => IsSemiAbelian G) := by
   intro V K _ _ _ _ _ _ _ _ hres P

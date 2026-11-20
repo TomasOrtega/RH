@@ -8,17 +8,15 @@ noncomputable section
 namespace Formalism.FN
 
 /- English proof (translation)
-Use `set B := b.ofZLatticeBasis ℝ L with hB`. Set `f : E ≃ᵐ (ι → ℝ)` to `B.equivFunL.toHomeomorph.toMeasurableEquiv`. Establish `hf : (f : E → ι → ℝ) = B.equivFun` using `rfl`. Establish `: (μ.map f).IsAddHaarMeasure` using `B.equivFunL.isAddHaarMeasure_map μ`. Establish `huniq` using `MeasureTheory.Measure.isAddLeftInvariant_eq_smul (μ.map f) volume`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩ : ∃ c, c = MeasureTheory.Measure.addHaarScalarFactor (μ.map f) volume` from `⟨_, rfl⟩`. Rewrite `huniq` using `[← hc]`. Establish `himg : ∀ T : Set E, μ T = c * volume (B.equivFun '' T)`. Introduce `T`. Establish `h1 : μ T = μ.map f (f '' T)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MeasurableEquiv.map_apply, Set.preimage_image_eq T f.injective]`. Rewrite using `[h1, huniq, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, hf]`. Establish `hD : (B.equivFun : E → ι → ℝ) '' ZSpan.fundamentalDomain B = Set.univ.pi fun _ : ι => Set.Ico (0 : ℝ) 1`. Establish `h : ZSpan.fundamentalDomain B = (B.equivFun : E → ι → ℝ) ⁻¹' (Set.univ.pi fun _ : ι => Set.Ico (0 : ℝ) 1)`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[ZSpan.mem_fundamentalDomain, Set.mem_pi]`. Rewrite using `[h, Set.image_preimage_eq _ B.equivFun.surjective]`. Establish `hvol : volume (Set.univ.pi fun _ : ι => Set.Ico (0 : ℝ) 1) = 1`. Rewrite using `[volume_pi_pi]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcov : c = ENNReal.ofReal (ZLattice.covolume L μ)`. Establish `h` using `himg (ZSpan.fundamentalDomain B)`. Rewrite `h` using `[hD, hvol, mul_one]`. Rewrite using `[← h, ZLattice.covolume_eq_measure_fundamentalDomain L μ (ZLattice.isAddFundamentalDomain b μ), measureReal_def, ENNReal.ofReal_toReal]`. Conclude with `(Bornology.IsBounded.measure_lt_top (ZSpan.fundamentalDomain_isBounded B)).ne`.
-
-Rewrite using `[himg S, hcov]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_eq_covolume_mul_volume_image {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
@@ -57,43 +55,39 @@ theorem measure_eq_covolume_mul_volume_image {E : Type} [NormedAddCommGroup E] [
   rw [himg S, hcov]
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ μ _ L _ _ K hKc hKconv hKsymm hK0`. Take `⟨v, hvli, hvL, hvK, hpos, hmono, hspan⟩` from `hs L K hKc hKconv hKsymm hK0`. Take `⟨b, hb⟩` from `ha L v hvli hvL`. Use `set B := b.ofZLatticeBasis ℝ L with hB`. Establish `hBfun : ∀ i, B i = (b i : E)` using `fun i => by simp [hB]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set lam : Fin (finrank ℝ E) → ℝ := fun i => succMin L K ((i : ℕ) + 1) with hlam`. Establish `hneg : ∀ a ∈ interior K, -a ∈ interior K`. Introduce `a ha'`. Establish `hU : IsOpen ((fun x : E => -x) ⁻¹' interior K)` using `isOpen_interior.preimage continuous_neg`. Establish `hsub : (fun x : E => -x) ⁻¹' interior K ⊆ K` using `fun x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hKsymm _ (interior_subset hx)`. Conclude with `interior_maximal hsub hU (by simpa using ha')`. Establish `hCo : IsOpen (B.equivFun '' ((1 / 2 : ℝ) • interior K))` using `B.equivFunL.toHomeomorph.isOpenMap _ (isOpen_interior.smul₀ (by norm_num))`. Establish `hCc : Convex ℝ (B.equivFun '' ((1 / 2 : ℝ) • interior K))` using `(hKconv.interior.smul (1 / 2 : ℝ)).linear_image B.equivFun.toLinearMap`. Establish `hCs : ∀ x ∈ B.equivFun '' ((1 / 2 : ℝ) • interior K), -x ∈ B.equivFun '' ((1 / 2 : ℝ) • interior K)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Rewrite `hw` using `[Set.mem_smul_set]`. Take `⟨a, ha', rfl⟩` from `hw`. Conclude with `⟨(1 / 2 : ℝ) • -a, Set.smul_mem_smul_set (hneg a ha'), by rw [smul_neg, map_neg]⟩`. Establish `hCb : Bornology.IsBounded (B.equivFun '' ((1 / 2 : ℝ) • interior K))` using `B.equivFunL.lipschitz.isBounded_image ((hKc.isBounded.subset interior_subset).smul₀ _)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `hc (finrank ℝ E) (B.equivFun '' ((1 / 2 : ℝ) • interior K)) lam hCo hCc hCs hCb hpos hmono (by`. Introduce `j x hx y hy hint i hji`. Rewrite `hx`, `hy` using `[Set.mem_smul_set]`. Take `⟨_, ⟨w, hw, rfl⟩, rfl⟩` from `hx`. Take `⟨_, ⟨w', hw', rfl⟩, rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hw`, `hw'` using `[Set.mem_smul_set]`. Take `⟨a, ha', rfl⟩` from `hw`. Take `⟨a', ha'', rfl⟩` from `hw'`. Take `⟨u, hu⟩ : ∃ u, u = lam j • ((1 / 2 : ℝ) • a - (1 / 2 : ℝ) • a')` from `⟨_, rfl⟩`. Establish `heu : B.equivFun u = lam j • B.equivFun ((1 / 2 : ℝ) • a) - lam j • B.equivFun ((1 / 2 : ℝ) • a')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hu, map_smul B.equivFun (lam j), map_sub, smul_sub]`. Establish `hrepr : ∀ i, B.repr u i = (lam j • B.equivFun ((1 / 2 : ℝ) • a)) i - (lam j • B.equivFun ((1 / 2 : ℝ) • a')) i`. Introduce `i`. Establish `h` using `congrFun heu i`. Rewrite `h` using `[B.equivFun_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Establish `huL : u ∈ L`. Rewrite using `[← B.sum_repr u]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hint i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrepr i, hm, hBfun i]`. Rewrite using `[Int.cast_smul_eq_zsmul ℝ m]`. Conclude with `L.smul_mem m (b i).2`. Establish `hmid : (1 / 2 : ℝ) • a - (1 / 2 : ℝ) • a' ∈ interior K`. Rewrite using `[sub_eq_add_neg, ← smul_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hKconv.interior ha' (hneg a' ha'') (by norm_num) (by norm_num) (by norm_num)`. Establish `hmem : u ∈ Submodule.span ℝ (v '' {k | k < j})` using `hspan j u huL (by rw [hu]; exact Set.smul_mem_smul_set hmid)`. Establish `hsub : Submodule.span ℝ (v '' {k | k < j}) ≤ Submodule.span ℝ (B '' {k | k < j})`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, hk, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1 : v k ∈ Submodule.span ℝ (v '' {k' | k' ≤ k})` using `Submodule.subset_span ⟨k, le_refl k, rfl⟩`. Rewrite `h1` using `[← hb k]`. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨k', hk', rfl⟩`. Conclude with `⟨k', show k' < j from lt_of_le_of_lt hk' hk, hBfun k'⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsupp` using `(B.mem_span_image).mp (hsub hmem)`. Establish `hz : B.repr u i = 0`. Assume the negation of the conclusion as `h`. Conclude with `absurd (hsupp (Finsupp.mem_support_iff.mpr h)) (not_lt.mpr hji)`. Establish `h0` using `hrepr i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[hz]`. Conclude with `sub_eq_zero.mp h0.symm)`. Establish `hthm` using `measure_eq_covolume_mul_volume_image μ L b ((1 / 2 : ℝ) • interior K)`. Rewrite `hthm` using `[← hB]`. Establish `hhalf : μ ((1 / 2 : ℝ) • interior K) = ENNReal.ofReal ((1 / 2 : ℝ) ^ finrank ℝ E) * μ (interior K)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.addHaar_smul, abs_of_pos (by positivity : (0 : ℝ) < (1 / 2 : ℝ) ^ finrank ℝ E)]`. Establish `hKfin : μ K < ⊤` using `hKc.measure_lt_top`. Establish `hIfin : μ (interior K) < ⊤` using `lt_of_le_of_lt (measure_mono interior_subset) hKfin`. Establish `hKle : μ K ≤ μ (interior K)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `measure_mono` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[← closure_eq_interior_union_frontier]`. Conclude with `subset_closure hx`. Use `_ ≤ μ (interior K) + μ (frontier K) := measure_union_le _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Use `_ = μ (interior K) := by rw [hKconv.addHaar_frontier μ, add_zero]`. Establish `hP : 0 ≤ ∏ i, lam i` using `Finset.prod_nonneg fun i _ => (hpos i).le`. Establish `hc0 : 0 ≤ ZLattice.covolume L μ` using `(ZLattice.covolume_pos L μ).le`. Establish `e1 : (μ ((1 / 2 : ℝ) • interior K)).toReal = ZLattice.covolume L μ * (volume (B.equivFun '' ((1 / 2 : ℝ) • interior K))).toReal`. Rewrite using `[hthm, ENNReal.toReal_mul, ENNReal.toReal_ofReal hc0]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (μ ((1 / 2 : ℝ) • interior K)).toReal = (1 / 2 : ℝ) ^ finrank ℝ E * (μ (interior K)).toReal`. Rewrite using `[hhalf, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`. Establish `e3 : (μ (interior K)).toReal = 2 ^ finrank ℝ E * (ZLattice.covolume L μ * (volume (B.equivFun '' ((1 / 2 : ℝ) • interior K))).toReal)`. Establish `h2 : (2 : ℝ) ^ finrank ℝ E * (1 / 2 : ℝ) ^ finrank ℝ E = 1`. Rewrite using `[← mul_pow]`.
-
-Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, h2, one_mul]`. Use `_ = _ := by rw [← e2, e1]`. Establish `hK' : μ.real K ≤ (μ (interior K)).toReal` using `ENNReal.toReal_mono hIfin.ne hKle`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e3]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 2 ^ finrank ℝ E * ZLattice.covolume L μ * 1 := mul_le_mul_of_nonneg_left key (mul_nonneg (by positivity) hc0)`. Use `_ = _ := mul_one _`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem minkowskiIIUpper_of (hc : MinkCore) (hs : SuccMinFacts) (ha : AdaptedBasis) :
     MinkowskiIIUpper := by

@@ -21,11 +21,11 @@ namespace GlobalTheory.SenLines.AllRoots
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.AdmLoc GlobalTheory.SenLines TensorProduct
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, s = m + 1` from `⟨s - 1, by omega⟩`. Establish `hpow : ∀ k, P.ζQ (k + 1) ^ l ^ k = P.ζQ 1`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]`. Establish `h1 : ¬ P.ζQ (m + 1) ^ l ^ m = 1` using `by rw [hpow]; exact P.ζQ_one`. Establish `h2 : P.ζQ (m + 1) ^ l ^ (m + 1) = 1`. Rewrite using `[pow_succ, pow_mul, hpow, P.ζQ_succ, P.ζQ_zero]`. Rewrite using `[← orderOf_eq_prime_pow h1 h2]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsPrimitiveRoot.orderOf _`.
+A detailed English derivation is pending.
 -/
 theorem zeta_isPrimitiveRoot {l : ℕ} [Fact l.Prime] (P : LocPrime l) {s : ℕ} (hs : 1 ≤ s) :
     IsPrimitiveRoot (P.ζQ s) (l ^ s) := by
@@ -42,13 +42,13 @@ theorem zeta_isPrimitiveRoot {l : ℕ} [Fact l.Prime] (P : LocPrime l) {s : ℕ}
   exact IsPrimitiveRoot.orderOf _
 
 /- English proof (translation)
-Establish `hs : 1 ≤ s` using `h.1`. Establish `hLL` using `h.2.2.2`. Establish `hprim` using `zeta_isPrimitiveRoot P hs`. Establish `: NeZero (l ^ s)` using `⟨(pow_pos (Fact.out : l.Prime).pos s).ne'⟩`. Set `Φ : Om l →ₐ[ℚ_[l]] Om l` to `((H.W K s LL h).emb i).liftNormal (Om l)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hΦ : ∀ x : ↥(K0 K), Φ (x : Om l) = (((H.W K s LL h).emb i x : ↥LL.1) : Om l)` using `fun x => AlgHom.liftNormal_commutes ((H.W K s LL h).emb i) (Om l) x`. Establish `hζ' : IsPrimitiveRoot (ζ : Om l) (l ^ s)` using `hζ.map_of_injective (f := LL.1.val) Subtype.val_injective`. Take `⟨a, -, ha⟩` from `(hprim.map_of_injective (f := Φ) Φ.injective).eq_pow_of_pow_eq_one hζ'.pow_eq_one`. Rewrite `ha` using `[← map_pow]`. Establish `hpa : IsPrimitiveRoot (P.ζQ s ^ a) (l ^ s)` using `IsPrimitiveRoot.of_map_of_injective (f := Φ) (ha ▸ hζ') Φ.injective`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hconj : IsConjRoot ↥(K0 K) (P.ζQ s ^ a) (P.ζQ s)`. Unfold `IsConjRoot`. Rewrite using `[GlobalTheory.Cyc.minpoly_unramifiedSubfield_eq_cyclotomic K s hs _ hprim, GlobalTheory.Cyc.minpoly_unramifiedSubfield_eq_cyclotomic K s hs _ hpa]`. Take `⟨σ, hσ⟩` from `hconj.exists_algEquiv`. Set `τ₀ : ↥(Ks K s) →ₐ[ℚ_[l]] Om l` to `(Φ.comp (σ.restrictScalars ℚ_[l]).toAlgHom).comp (Ks K s).val`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `τ : ↥(Ks K s) →ₐ[ℚ_[l]] ↥LL.1` to `τ₀.codRestrict LL.1.toSubalgebra (hLL τ₀)`. Establish `hτ : ∀ y : ↥(Ks K s), ((τ y : ↥LL.1) : Om l) = Φ (σ (y : Om l))` using `fun _ => rfl`. Use `⟨τ, fun x y hxy => Subtype.ext ?_, fun y hy => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hτ, hxy, show σ (x : Om l) = x from σ.commutes x, hΦ]`. Rewrite using `[hτ, hy, hσ, ha]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isPt {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P)
     {K : FinExt l} {s : ℕ} {LL : FinExt l} (h : Good K s LL)
@@ -78,13 +78,13 @@ theorem exists_isPt {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P)
   · rw [hτ, hy, hσ, ha]
 
 /- English proof (translation)
-Take `⟨τ, hpt⟩` from `exists_isPt H hA.2.2 i ζ (by rwa [pow_one])`. Establish `hbij : Function.Bijective (algebraMap ↥(K0 K) ↥K.1)` using `⟨(algebraMap ↥(K0 K) ↥K.1).injective, fun x => ⟨⟨x.1, x.2, hA.1 x.2⟩, rfl⟩⟩`. Establish `hτ : (GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.resEmb hA.2.2 τ).comp (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1) = (H.W K 1 LL hA.2.2).emb i` using `AlgHom.ext fun x => hpt.1 x _ rfl`. Set `e : ↥(K0 K) ≃ₐ[ℚ_[l]] ↥K.1` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1) hbij`. Establish `hcard : Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = Module.finrank ℚ_[l] ↥K.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Nat.card_congr (e.arrowCongr AlgEquiv.refl), ← Nat.card_eq_of_bijective _ (H.W K 1 LL hA.2.2).emb_bij, Nat.card_zmod, e.toLinearEquiv.finrank_eq]`. Take `⟨hdr, hspan⟩` from `GlobalTheory.Per.CrisDR.isDR_of_isCrys l P AI hT K LL T.V T.ρ hc.1`. Establish `hfil` using `GlobalTheory.Per.DdREqDcris.FildR_eq (P.PD K) T.ρ hbij.2 (GlobalTheory.Per.DdREqDcris.map_Dcris_eq (P.PD K) T.ρ hbij.2 hspan) (GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.resEmb hA.2.2 τ)`. Rewrite `hfil` using `[hτ]`. Establish `hr` using `(GlobalTheory.Per.LetterDim.tied_letter_component_finrank l P AI hT K LL T.V T.ρ).2 hcard hdr (GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.resEmb hA.2.2 τ)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI hT K LL T.V T.ρ).1` as an intermediate fact. Establish `: FiniteDimensional ↥LL.1 ↥(DdRE (P.PD K) T.ρ (GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.resEmb hA.2.2 τ))` using `Submodule.finiteDimensional_of_le (S₂ := DdR (P.PD K) T.ρ) inf_le_left`. Take `⟨u, d, hu, hd, hs⟩` from `GlobalTheory.Per.Sen.adapted_basis_jumps (DdRE (P.PD K) T.ρ (GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.resEmb hA.2.2 τ)) (FildR (P.PD K) T.ρ (GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.resEmb hA.2.2 τ)) (U i) _ hr (fun a b hab => inf_le_inf_left _ (GlobalTheo …`. Use `⟨u, d, hu, hd, GlobalTheory.SenLines.SplitFil.spanIsLines_of_graded _ u d _ ((H.W K 1 LL hA.2.2).levN_supp T i ζ) hs ?_⟩` and prove the remaining obligations. Use `((h4 K 1 LL hA.2.2 T hc.1 i ζ).2.1 τ hpt).2.trans (congrArg _ (funext fun a => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.Per.FilLetUnram.toDR_FilLet _ T i _ a hbij.2 hτ (hfil a)`.
+A detailed English derivation is pending.
 -/
 theorem linesAt_of_latticeAtLevels {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {H : LocHW l P}
     {E : LocFon l P AI H} {C : LocCmpT l P AI H E} (hT : LocTied l P AI)
@@ -122,7 +122,7 @@ theorem linesAt_of_latticeAtLevels {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI
   exact GlobalTheory.Per.FilLetUnram.toDR_FilLet _ T i _ a hbij.2 hτ (hfil a)
 
 /- English proof (translation)
-Introduce `h4 l _ P AI hT H F C _ _ hA U T hc _ i ζ hζ` and use `linesAt_of_latticeAtLevels hT (h4 l P AI hT H F C) hA T U hc i ζ hζ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem completionLines_of_latticeAtLevels :
     (∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →

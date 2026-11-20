@@ -17,9 +17,9 @@ open GlobalTheory.LatJet (EisExp IsEis FR)
 namespace GlobalTheory.HilbFam
 
 /- English proof (translation)
-Introduce `hE F _ _ _ hF s N L hs hN hL ι act α Ch κ hα hC`. Rewrite using `[GlobalTheory.T.isSLTwoPermutedModularFamily_iff_values]`. Introduce `i γ τ`. Establish `htw : twist N L (α (act i γ)) = mulMat (twist N L (α i)) (γ : Matrix (Fin 2) (Fin 2) ℤ)`. Rewrite using `[hα]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.hilbertLatticeTwistByMatrixModN_mul_SL2Z F N L (α i) γ hL.2`. Establish `h` using `GlobalTheory.T.quasiPeriod_normalised_jet_modular_transform hE F hF s N (twist N L (α i)) hs hN (GlobalTheory.T.hilbertLatticeTwist_hasLevel F N L (α i) hL) κ γ (Ch i) (Ch (act i γ)) τ ⟨_, GlobalTheory.T.hilbertLatticeTwist_hasLevel F N L (α (act i γ)) hL, htw⟩ (hC i γ τ)`. Rewrite using `[zpow_natCast]`. Use `beta_reduce`. Rewrite using `[h, htw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFam_hfun_twist : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (s N : ℕ) (L : Lat F), 1 ≤ s → 0 < N → HasLevel N L → ∀ (ι : Type) (act : ι → SL(2, ℤ) → ι) (α : ι → Matrix (Fin 2) (Fin 2) (ZMod N)) (Ch : ι → ℍ → ℂ) (κ : Emb F → ℕ), (∀ i γ, α (act i γ) = α i * (γ : Matrix (Fin 2) (Fin 2) ℤ).map (Int.cast : ℤ → ZMod N)) → (∀ i (γ : SL(2, ℤ)) (τ : ℍ), Ch i (γ • τ) = (((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) : ℂ) ^ 2 * Ch (act i γ) τ - ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ℂ) * ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) / (2 * Real.pi * Complex.I)) → IsFam act (wt (2 * s) κ : ℕ) (fun i ↦ hfun (2 * s) (twist N L (α i)) κ (Ch i)) := by
   intro hE F _ _ _ hF s N L hs hN hL ι act α Ch κ hα hC

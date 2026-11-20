@@ -17,19 +17,19 @@ namespace GlobalTheory.Core.Mi.Shift
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨j1, j2, j3, j4⟩` from `GlobalTheory.Mem.TrueRecord.top_NFlag B.V (isIsoSub_e B.d)`. Take `⟨-, -, hconj, -, hrat⟩` from `GlobalTheory.Unf.besSemi D ρ B`. Take `⟨-, hψrat, hψconj, -⟩` from `GlobalTheory.MixPer.charLaws D ψ hψ B.V B.V₀ B.A B.L ρ B.d B.o B.ζ 1`. Take `⟨u1, u2, u3⟩` from `B.vN.unit`. Use `set δ : GA D B.V := embA B.d B.o γ with hδdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hδ : δ ∈ GQ B.V`. Use `(hrat 1 (one_mem _) γ).2 ⟨one_mem _, hγ⟩` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `hmem : ∀ n : flagN B.d, δ⁻¹ * n.1 * δ ∈ flagN B.d` using `fun n => by`. Use `hconj n.1 n.2 γ⁻¹` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_inv, inv_inv]`. Then use the resulting hypothesis. Establish `hmem' : ∀ n : flagN B.d, δ * n.1 * δ⁻¹ ∈ flagN B.d` using `fun n => hconj n.1 n.2 γ`. Set `c : flagN B.d ≃ₜ* flagN B.d` to `{ toFun := fun n => ⟨δ⁻¹ * n.1 * δ, hmem n⟩ invFun := fun n => ⟨δ * n.1 * δ⁻¹, hmem' n⟩ left_inv := fun n => Subtype.ext (by simp [mul_assoc]) right_inv := fun n => Subtype.ext (by simp [mul_assoc]) map_mul' := fun a b => Subtype.ext (by simp [mul_assoc]) continuous_toFun := by f …`. Establish `hc : ∀ n, c n ∈ NFlagQ B.V B.d.e ↔ n ∈ NFlagQ B.V B.d.e` using `fun n => by`. Express the relevant statement in the definitionally equal form `δ⁻¹ * (n : GA D B.V) * δ ∈ GQ B.V ↔ (n : GA D B.V) ∈ GQ B.V`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mul_mem_cancel_right _ hδ, Subgroup.mul_mem_cancel_left _ (inv_mem hδ)]`. Establish `hK : ∀ γ' ∈ NFlagQ B.V B.d.e, ∀ n : flagN B.d, besFun ψ 1 B.d B.o B.ζ φ f h (γ' * n) = besFun ψ 1 B.d B.o B.ζ φ f h n` using `fun γ' hγ' n => by`. Establish `hγ'Q : (γ' : GA D B.V) ∈ GQ B.V` using `Subgroup.mem_subgroupOf.1 hγ'`. Simplify using `only [besFun, Subgroup.coe_mul]`. Rewrite using `[psiBes_mul B.d ψ 1 _ γ'.2 n.2, hψrat _ _ hγ'Q, one_mul, mul_assoc (γ' : GA D B.V), hf _ hγ'Q]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (GlobalTheory.Mem.TrueRecord.integral_aut _ u1 u2 u3 c hc _ hK)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `n`. Express the relevant statement in the definitionally equal form `_ = besFun ψ 1 B.d B.o B.ζ φ f h ⟨δ⁻¹ * n.1 * δ, hmem n⟩`. Simplify using `only [besFun]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : psiBes ψ B.d 1 (vecB B.o B.ζ) (δ⁻¹ * n.1 * δ) = psiBes ψ B.d 1 (vecB B.o B.ζ) n.1`. Use `hψconj n.1 γ⁻¹` as an intermediate fact. Rewrite `this` using `[map_inv, inv_inv]`. Then use the resulting hypothesis. Establish `e2 : f (δ⁻¹ * n.1 * δ * embA B.d B.o h) = f (n.1 * embA B.d B.o (γ * h))`. Rewrite using `[map_mul, ← hδdef, mul_assoc, mul_assoc, hf _ (inv_mem hδ)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, hφ γ hγ h]`.
+A detailed English derivation is pending.
 -/
 theorem inner_left {ρ : ℕ} (B : BesLev D ρ) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ)
     (φ : GA D B.A → ℂ) (f : GA D B.V → ℂ) (hφ : ∀ γ ∈ GQ B.A, ∀ g, φ (γ * g) = φ g)
@@ -77,7 +77,7 @@ theorem inner_left {ρ : ℕ} (B : BesLev D ρ) (ψ : AddChar (AF D.host.F) ℂ)
   rw [e1, e2, hφ γ hγ h]
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B.A`. Use `haveI := B.vA.haar`. Take `⟨K, hK, hcov⟩` from `B.cpt`. Conclude with `Formalism.L2.SG.CovariantRepresentation.haar_map_mul_right_of_lattice B.vA.μ (GQ B.A) hK hcov a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem map_mul_right {ρ : ℕ} (B : BesLev D ρ) (a : GA D B.A) : B.vA.μ.map (· * a) = B.vA.μ := by
   obtain ⟨i1, i2, i3, i4, i5, i6, i7⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B.A
@@ -86,9 +86,9 @@ theorem map_mul_right {ρ : ℕ} (B : BesLev D ρ) (a : GA D B.A) : B.vA.μ.map 
   exact Formalism.L2.SG.CovariantRepresentation.haar_map_mul_right_of_lattice B.vA.μ (GQ B.A) hK hcov a
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B.A`. Use `haveI := B.vA.haar`. Establish `hmp : MeasurePreserving (· * a) B.vA.μ B.vA.μ` using `⟨measurable_mul_const a, map_mul_right B a⟩`. Establish `hmp' : MeasurePreserving (· * a⁻¹) B.vA.μ B.vA.μ` using `⟨measurable_mul_const a⁻¹, map_mul_right B a⁻¹⟩`. Rewrite using `[← hmp.setIntegral_image_emb (measurableEmbedding_mulRight a) G B.vA.𝓕, Set.image_mul_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF : IsFundamentalDomain (GQ B.A) ((· * a⁻¹) ⁻¹' B.vA.𝓕) B.vA.μ` using `B.vA.fund.preimage_of_equiv hmp'.quasiMeasurePreserving (e := id) Function.bijective_id fun g x => by simp [Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Conclude with `(B.vA.fund.setIntegral_eq hF fun γ x => hG γ γ.2 x).symm`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_mul_right {ρ : ℕ} (B : BesLev D ρ) (G : GA D B.A → ℂ) (hG : ∀ γ ∈ GQ B.A, ∀ h, G (γ * h) = G h)
     (a : GA D B.A) : ∫ h in B.vA.𝓕, G (h * a) ∂B.vA.μ = ∫ h in B.vA.𝓕, G h ∂B.vA.μ := by
@@ -107,9 +107,9 @@ end GlobalTheory.Core.Mi.Shift
 open GlobalTheory.Core.Mi.Shift in
 
 /- English proof (translation)
-Introduce `D ψ ρ B φ f a hψ hφ hf`. Establish `hshift : ∀ h, ∫ n in B.vN.𝓝, besFun ψ 1 B.d B.o B.ζ (rTrans a φ) (rTrans (embA B.d B.o a) f) h n ∂B.vN.ν = ∫ n in B.vN.𝓝, besFun ψ 1 B.d B.o B.ζ φ f (h * a) n ∂B.vN.ν` using `fun h => by`. Simplify using `only [besFun, rTrans, map_mul, mul_assoc]`. Unfold `BesLev.per besPer`. Repeatedly rewrite using `[hshift]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `setIntegral_mul_right B (fun h => ∫ n in B.vN.𝓝, besFun ψ 1 B.d B.o B.ζ φ f h n ∂B.vN.ν) (fun γ hγ h => inner_left B ψ hψ.1 φ f hφ.1 hf.1 hγ h) a`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Core.Mi.per_rTrans : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (φ : GA D B.A → ℂ)
     (f : GA D B.V → ℂ) (a : GA D B.A), IsStdChar D ψ (-1) → IsContAut B.A φ → IsContAut B.V f →

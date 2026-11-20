@@ -9,7 +9,7 @@ open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDede
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HL.MassProduct.mass_eq_finprod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FHermitianLatticeMassEqFinprodLocal.lean&line=130#L130)
 -/

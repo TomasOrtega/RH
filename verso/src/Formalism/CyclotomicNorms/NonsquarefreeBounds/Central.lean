@@ -19,15 +19,15 @@ def contrN (j : ℕ) (y : ℕ → G) : ℕ → G :=
 def extN {m : ℕ} (x : Fin m → G) : ℕ → G := fun k => if h : k < m then x ⟨k, h⟩ else 1
 
 /- English proof (translation)
-Introduce `k`. Simplify using `[extN, k.isLt]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma extN_agree {m : ℕ} (x : Fin m → G) : ∀ k : Fin m, x k = extN x k := by
   intro k; simp [extN, k.isLt]
 
 /- English proof (translation)
-Introduce `k`. Break down `lt_trichotomy k i with h | h | h` into its components or cases. Rewrite using `[Fin.insertNth_apply_below h, eq_rec_constant, hx]`. Establish `h' : (k : ℕ) < i` using `h`. Simplify using `[insN, h']`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using `[insN]`. Rewrite using `[Fin.insertNth_apply_above h, eq_rec_constant, hx]`. Establish `h' : (i : ℕ) < k` using `h`. Simplify using `[insN, not_lt.mpr h'.le, h'.ne']`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma ins_agree {m : ℕ} (i : Fin (m + 1)) (a : G) (x : Fin m → G) (y : ℕ → G)
     (hx : ∀ k : Fin m, x k = y k) :
@@ -43,7 +43,7 @@ lemma ins_agree {m : ℕ} (i : Fin (m + 1)) (a : G) (x : Fin m → G) (y : ℕ �
     simp [insN, not_lt.mpr h'.le, h'.ne']
 
 /- English proof (translation)
-Introduce `k`. Simplify using `only [Fin.contractNth, contrN, hx, Fin.val_castSucc, Fin.val_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma contr_agree {m : ℕ} (j : Fin (m + 1)) (x : Fin (m + 1) → G) (y : ℕ → G)
     (hx : ∀ k : Fin (m + 1), x k = y k) :
@@ -56,7 +56,7 @@ section seq
 variable (a : G) (y : ℕ → G)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [insN, contrN]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (congr <;> omega)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma seq_a (M j : ℕ) (h : j < M) : contrN j (insN (M + 1) a y) = insN M a (contrN j y) := by
   funext k
@@ -64,7 +64,7 @@ lemma seq_a (M j : ℕ) (h : j < M) : contrN j (insN (M + 1) a y) = insN M a (co
   split_ifs <;> first | rfl | omega | (congr <;> omega)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [insN, contrN]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (congr <;> omega) | (subst_vars; exact (hz _).symm)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma seq_b (hz : ∀ g, a * g = g * a) (M : ℕ) :
     contrN M (insN (M + 1) a y) = contrN M (insN M a y) := by
@@ -73,7 +73,7 @@ lemma seq_b (hz : ∀ g, a * g = g * a) (M : ℕ) :
   split_ifs <;> first | rfl | omega | (congr <;> omega) | (subst_vars; exact (hz _).symm)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [insN, contrN]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (congr <;> omega)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma seq_c (M i : ℕ) (h : i ≤ M) : contrN (M + 1) (insN i a y) = insN i a (contrN M y) := by
   funext k
@@ -81,12 +81,12 @@ lemma seq_c (M i : ℕ) (h : i ≤ M) : contrN (M + 1) (insN i a y) = insN i a (
   split_ifs <;> first | rfl | omega | (congr <;> omega)
 
 /- English proof (translation)
-Simplify using `[insN]`.
+Simplify using the standard rewrite rules.
 -/
 lemma seq_d (i : ℕ) : insN (i + 1) a y 0 = y 0 := by simp [insN]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [insN]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (congr <;> omega)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma seq_e (i : ℕ) : (fun k => insN (i + 1) a y (k + 1)) = insN i a (fun k => y (k + 1)) := by
   funext k
@@ -94,18 +94,18 @@ lemma seq_e (i : ℕ) : (fun k => insN (i + 1) a y (k + 1)) = insN i a (fun k =>
   split_ifs <;> first | rfl | omega | (congr <;> omega)
 
 /- English proof (translation)
-Simplify using `[insN]`.
+Simplify using the standard rewrite rules.
 -/
 lemma seq_f : insN 0 a y 0 = a := by simp [insN]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[insN]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma seq_g : (fun k => insN 0 a y (k + 1)) = y := by
   funext k; simp [insN]
 
 /- English proof (translation)
-Simplify using `[insN, contrN, hk]`.
+Simplify using the standard rewrite rules.
 -/
 lemma seq_h (n k : ℕ) (hk : k < n + 1) : contrN (n + 1) (insN (n + 1) a y) k = y k := by
   simp [insN, contrN, hk]
@@ -113,15 +113,15 @@ lemma seq_h (n k : ℕ) (hk : k < n + 1) : contrN (n + 1) (insN (n + 1) a y) k =
 end seq
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Establish `eT : ∑ i ∈ range (N + 1 + 1), ∑ j ∈ range (N + 1 + 1), T i j = (∑ i ∈ range (N + 1), ∑ j ∈ range (N + 1), T i j) + (∑ i ∈ range (N + 1), T i (N + 1)) + ((∑ j ∈ range N, T (N + 1) j) + T (N + 1) N) + T (N + 1) (N + 1)`. Rewrite using `[sum_range_succ _ (N + 1)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sum_range_succ _ (N + 1), sum_add_distrib]`. Rewrite using `[← sum_range_succ (fun j => T (N + 1) j) N]`. Normalize the expressions using the abelian group laws. Establish `eS : ∑ i ∈ range (N + 1), ∑ j ∈ range (N + 1), S i j = (∑ i ∈ range N, ∑ j ∈ range N, S i j) + (∑ i ∈ range N, S i N) + (∑ j ∈ range N, S N j) + S N N`. Rewrite using `[sum_range_succ _ N]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sum_range_succ _ N, sum_add_distrib]`. Normalize the expressions using the abelian group laws. Establish `e1 : ∑ j ∈ range N, T (N + 1) j = - ∑ j ∈ range N, S N j`. Rewrite using `[← sum_neg_distrib]`. Conclude with `sum_congr rfl fun j hj => h1 N j (mem_range.mp hj)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∑ i ∈ range (N + 1), T i (N + 1) = - ((∑ i ∈ range N, S i N) + S N N)`. Rewrite using `[← sum_range_succ (fun i => S i N) N, ← sum_neg_distrib]`. Conclude with `sum_congr rfl fun i hi => h3 N i (Nat.lt_succ_iff.mp (mem_range.mp hi))`. Rewrite using `[eT, eS, e1, e2, h2 N]`. Establish `ih'` using `eq_sub_of_add_eq ih`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[ih']`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 lemma abstract {W : Type} [AddCommGroup W] (T S : ℕ → ℕ → W)
     (h1 : ∀ M j, j < M → T (M + 1) j = - S M j) (h2 : ∀ M, T (M + 1) M = - T M M)
@@ -157,29 +157,27 @@ lemma abstract {W : Type} [AddCommGroup W] (T S : ℕ → ℕ → W)
 variable {R W : Type} [CommRing R] [AddCommGroup W] [Module R W]
 
 /- English proof (translation)
-Rewrite using `[pow_succ, mul_neg_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sgn_succ (k : ℕ) : (-1 : R) ^ (k + 1) = - (-1 : R) ^ k := by
   rw [pow_succ, mul_neg_one]
 
 /- English proof (translation)
-Rewrite using `[show i + (i + 1) = 2 * i + 1 by ring, pow_succ, pow_mul]; simp`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma sgn_diag (i : ℕ) : (-1 : R) ^ (i + (i + 1)) = -1 := by
   rw [show i + (i + 1) = 2 * i + 1 by ring, pow_succ, pow_mul]; simp
 
 /- English proof (translation)
-Establish `h0 : (∑ i ∈ range (n + 2), (-1 : R) ^ i • ρ (insN i z y 0) (φ (fun k => insN i z y (k + 1)))) + ∑ i ∈ range (n + 2), ∑ j ∈ range (n + 2), (-1 : R) ^ (i + (j + 1)) • φ (contrN j (insN i z y)) = 0`. Rewrite using `[← sum_add_distrib]`. Use `sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Use `congrArg (fun w => (-1 : R) ^ i • w) (hcoc i (mem_range.mp hi))` as an intermediate fact. Simplify using `only [smul_add, smul_sum, smul_smul, ← pow_add, smul_zero] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Establish `hA : ∑ i ∈ range (n + 2), (-1 : R) ^ i • ρ (insN i z y 0) (φ (fun k => insN i z y (k + 1))) = ρ z (φ y) - ρ (y 0) (∑ i ∈ range (n + 1), (-1 : R) ^ i • φ (insN i z (fun k => y (k + 1))))`. Rewrite using `[sum_range_succ']`. Simplify using `only [seq_d, seq_e, seq_f, seq_g, pow_zero, one_smul, map_sum, map_smul, sgn_succ, neg_smul, sum_neg_distrib]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hK` using `abstract (fun i j => (-1 : R) ^ (i + (j + 1)) • φ (contrN j (insN i z y))) (fun i j => (-1 : R) ^ (i + (j + 1)) • φ (insN i z (contrN j y))) (fun M j h => by`. Rewrite using `[seq_a z y M j h, show M + 1 + (j + 1) = M + (j + 1) + 1 by omega, sgn_succ, neg_smul])`. Use the proof step `(fun M => by`. Rewrite using `[seq_b z y hz M, show M + 1 + (M + 1) = M + (M + 1) + 1 by omega, sgn_succ, neg_smul])`. Use the proof step `(fun M i h => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[seq_c z y M i h, show i + (M + 1 + 1) = i + (M + 1) + 1 by omega, sgn_succ, neg_smul])`. Use the proof step `(n + 1)`. Rewrite `hK` using `[sgn_diag, neg_one_smul, hφ _ y (seq_h z y n)]`. Establish `hB : ∑ j ∈ range (n + 1), (-1 : R) ^ (j + 1) • ∑ i ∈ range (n + 1), (-1 : R) ^ i • φ (insN i z (contrN j y)) = ∑ i ∈ range (n + 1), ∑ j ∈ range (n + 1), (-1 : R) ^ (i + (j + 1)) • φ (insN i z (contrN j y))`. Simplify using `only [smul_sum, smul_smul, ← pow_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[sum_comm]`. Use `sum_congr rfl fun i _ => sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show j + 1 + i = i + (j + 1) by omega]`. Rewrite `h0` using `[hA, eq_sub_of_add_eq hK]`. Rewrite using `[hB]`.
-
-Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← h0]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 lemma nat_identity (ρ : Representation R G W) (z : G) (hz : ∀ g, z * g = g * z) (n : ℕ)
     (φ : (ℕ → G) → W) (hφ : ∀ u v : ℕ → G, (∀ k < n + 1, u k = v k) → φ u = φ v) (y : ℕ → G)
@@ -230,9 +228,9 @@ def prism (R : Type) [CommRing R] [Module R W] {n : ℕ} (z : G) (f : (Fin (n + 
   ∑ i : Fin (n + 1), (-1 : R) ^ (i : ℕ) • f (Fin.insertNth (α := fun _ => G) i z x)
 
 /- English proof (translation)
-Unfold `prism`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => (-1 : R) ^ i • f (fun k => insN i z v k)) (n + 1)]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `ins_agree i z x v hx k`.
+A detailed English derivation is pending.
 -/
 lemma prism_eq {n : ℕ} (z : G) (f : (Fin (n + 1) → G) → W) (x : Fin n → G) (v : ℕ → G)
     (hx : ∀ k : Fin n, x k = v k) :
@@ -245,7 +243,7 @@ lemma prism_eq {n : ℕ} (z : G) (f : (Fin (n + 1) → G) → W) (x : Fin n → 
   exact ins_agree i z x v hx k
 
 /- English proof (translation)
-Establish `hV : Continuous fun x : Fin n → G => fun i : Fin (n + 1) => f (Fin.insertNth (α` using `fun _ => G) i z x) := continuous_pi fun i => hf.comp (continuous_const.finInsertNth i continuous_id)`. Conclude with `(continuous_of_discreteTopology (f := fun v : Fin (n + 1) → W => ∑ i : Fin (n + 1), (-1 : R) ^ (i : ℕ) • v i)).comp hV`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma prism_continuous [TopologicalSpace G] [TopologicalSpace W] [DiscreteTopology W] {n : ℕ}
     (z : G) (f : (Fin (n + 1) → G) → W) (hf : Continuous f) : Continuous (prism R z f) := by
@@ -259,21 +257,21 @@ end CentralScalarSequence
 
 open CentralScalarSequence in
 /- English proof (translation)
-Introduce `G R W _ _ _ _ _ _ _ ρ z c hz hc hρz`. Establish `hzc : ∀ g, z * g = g * z` using `fun g => (Subgroup.mem_center_iff.mp hz g).symm`. Take `⟨u, hu⟩` from `hc`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (c - 1) • w = 0` using `by rw [sub_smul, one_smul, ← hρz, hw, sub_self]`. Combine the equalities or inequalities in the displayed calculation. Introduce `n f hf hcoc`. Use `⟨fun x => (↑u⁻¹ : R) • prism R z f x, (continuous_of_discreteTopology (f := fun w : W => (↑u⁻¹ : R) • w)).comp (prism_continuous z f hf), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key : coboundary ρ n (prism R z f) g = (c - 1) • f g` using `by set y := extN g with hy`. Establish `hg` using `extN_agree g`. Rewrite `hg` using `[← hy]`. Simplify using `only [coboundary]`. Rewrite using `[prism_eq z f (fun i => g i.succ) (fun k => y (k + 1)) (fun k => by simp [hg])]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ j : Fin (n + 1), (-1 : R) ^ ((j : ℕ) + 1) • prism R z f (Fin.contractNth j (· * ·) g) = ∑ j ∈ range (n + 1), (-1 : R) ^ (j + 1) • ∑ i ∈ range (n + 1), (-1 : R) ^ i • f (fun k => insN i z (contrN j y) k)`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun j => (-1 : R) ^ (j + 1) • ∑ i ∈ range (n + 1), (-1 : R) ^ i • f (fun k => insN i z (contrN j y) k)) (n + 1)]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[prism_eq z f _ (contrN j y) (contr_agree j g y hg)]`. Rewrite using `[hsum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show f g = f (fun k => y k) from congrArg f (funext hg), sub_smul, one_smul, ← hρz, hg 0, Fin.val_zero]`. Use `nat_identity ρ z hzc n (fun v => f (fun k => v k)) ?_ y ?_` and prove the remaining obligations. Introduce `u v huv`. Conclude with `congrArg f (funext fun k => huv k k.isLt)`. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun hcoc (fun k : Fin (n + 2) => insN i z y k)` as an intermediate fact. Simplify using `only [coboundary, Pi.zero_apply] at this`. Establish `hsum : ∑ j : Fin (n + 2), (-1 : R) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) (fun k : Fin (n + 2) => insN i z y k)) = ∑ j ∈ range (n + 2), (-1 : R) ^ (j + 1) • f (fun k => contrN j (insN i z y) k)`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun j => (-1 : R) ^ (j + 1) • f (fun k => contrN j (insN i z y) k)) (n + 2)]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show Fin.contractNth j (· * ·) (fun k : Fin (n + 2) => insN i z y k) = fun k : Fin (n + 1) => contrN j (insN i z y) k from`. Use function extensionality and compare the values at `(contr_agree j _ _ fun _ => rfl)]`. Rewrite `this` using `[hsum]`. Simplify using `using this`. Establish `lin : coboundary ρ n (fun x => (↑u⁻¹ : R) • prism R z f x) g = (↑u⁻¹ : R) • coboundary ρ n (prism R z f) g`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [coboundary, map_smul, smul_add, smul_sum]`. Use `congr 1`. Conclude with `sum_congr rfl fun j _ => smul_comm _ _ _`. Rewrite using `[lin, key, ← hu, smul_smul, Units.inv_mul, one_smul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem central_scalar_holds : CentralScalar := by
   intro G R W _ _ _ _ _ _ _ ρ z c hz hc hρz

@@ -11,13 +11,13 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP.DivTransfer
 
 /- English proof (translation)
-Introduce `l _ K bk`. Establish `hF` using `fun m => (GlobalTheory.AinfEPow.ePow_facts l K bk m).2.2.1`. Establish `hS` using `fun m => (GlobalTheory.AinfEPow.ePow_facts l K bk m).2.1`. Use `⟨fun h0 => ?_, fun m s hd => ?_⟩` and prove the remaining obligations. Establish `h2 : bk.ev bk.E ^ 2 ∣ bk.ev bk.E` using `(hF 2 (bk.ev bk.E)).1 (by rw [h0]; exact Ideal.zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hS 2 bk.E h2`. Establish `h1 : bk.E * 1 = bk.E * (bk.E * c)` using `by rw [mul_one]; nth_rewrite 1 [hc]; ring`. Establish `hu : bk.E * c = 1` using `(mul_left_cancel₀ bk.E_ne_zero h1).symm`. Establish `hmem : (1 : Ainf l) ∈ RingHom.ker (Per.θ l)`. Rewrite using `[← bk.span_ev, ← map_one bk.ev, ← hu, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Rewrite `hmem` using `[RingHom.mem_ker, map_one]`. Conclude with `one_ne_zero hmem`. Apply `hS m s` to reduce the goal to its premises. Apply `(hF m _).1` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `hd`. Rewrite using `[hc, ← map_pow, ← map_pow]`. Conclude with `Ideal.mul_mem_right _ _ ((hF m _).2 (by rw [map_pow]))`.
+A detailed English derivation is pending.
 -/
 theorem div_transfer : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K), aDp l (bk.ev bk.E) ≠ 0 ∧
     ∀ (m : ℕ) (s : bk.S), aDp l (bk.ev bk.E) ^ m ∣ aDp l (bk.ev s) → bk.E ^ m ∣ s := by

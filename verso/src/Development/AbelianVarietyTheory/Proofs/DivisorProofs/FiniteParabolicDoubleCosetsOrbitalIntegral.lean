@@ -15,14 +15,14 @@ namespace GlobalTheory.LeviDesc.OrbFin
 open GlobalTheory.LeviDesc.Krylov
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_isUnit_det_krylovMatrix_of_separable y hy`.
+A detailed English derivation is pending.
 -/
 theorem exists_cyclic {F : Type} [Field F] {r : ℕ} (y : Matrix (Fin r) (Fin r) F) (hy : y.charpoly.Separable) :
     ∃ e : Fin r → F, IsUnit (krylov y e).det :=
   GlobalTheory.T.exists_isUnit_det_krylovMatrix_of_separable y hy
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.krylovMatrix_conj_eq_of_charpoly_eq y y' e e' hc he he'`.
+A detailed English derivation is pending.
 -/
 theorem krylov_conj_eq {F : Type} [Field F] {r : ℕ} (y y' : Matrix (Fin r) (Fin r) F) (e e' : Fin r → F)
     (hc : y.charpoly = y'.charpoly) (he : IsUnit (krylov y e).det) (he' : IsUnit (krylov y' e').det) :
@@ -30,11 +30,9 @@ theorem krylov_conj_eq {F : Type} [Field F] {r : ℕ} (y y' : Matrix (Fin r) (Fi
   GlobalTheory.T.krylovMatrix_conj_eq_of_charpoly_eq y y' e e' hc he he'
 
 /- English proof (translation)
-Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective`. Use `haveI : Infinite (w.adicCompletion E) := Infinite.of_injective Nat.cast Nat.cast_injective`. Establish `hset : {y : GLw r w | y.val.charpoly = χ} = ⋂ t : w.adicCompletion E, {y : GLw r w | ((Matrix.scalar (Fin r) t) - y.val).det = χ.eval t}`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy t`. Rewrite using `[← Matrix.eval_charpoly, hy]`. Introduce `hy; exact Polynomial.funext fun t => by rw [Matrix.eval_charpoly]; exact hy t`. Rewrite using `[hset]`.
-
-Use `isClosed_iInter fun t => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Conclude with `(continuous_const.sub Units.continuous_val).matrix_det`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_charpoly_eq (E : Type) [Field E] [NumberField E] (w : Pl E) (r : ℕ)
     (χ : (w.adicCompletion E)[X]) : IsClosed {y : GLw r w | y.val.charpoly = χ} := by
@@ -53,7 +51,7 @@ theorem isClosed_charpoly_eq (E : Type) [Field E] [NumberField E] (w : Pl E) (r 
   exact (continuous_const.sub Units.continuous_val).matrix_det
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_compact_invertible_krylovMatrices E w r Ω hΩ h`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_krylov (E : Type) [Field E] [NumberField E] (w : Pl E) (r : ℕ) (Ω : Set (GLw r w))
     (hΩ : IsCompact Ω) (h : ∀ y ∈ Ω, ∃ e, IsUnit (krylov y.val e).det) :
@@ -61,24 +59,22 @@ theorem exists_compact_krylov (E : Type) [Field E] [NumberField E] (w : Pl E) (r
   GlobalTheory.T.exists_compact_invertible_krylovMatrices E w r Ω hΩ h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LFun.IntPtsUnitary.isOpen_GLint _ (Valued.isOpen_integer (w.adicCompletion E))`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_KGL (E : Type) [Field E] [NumberField E] (w : Pl E) (r : ℕ) :
     IsOpen (GlobalTheory.LFun.KGL w r : Set (GLw r w)) :=
   GlobalTheory.LFun.IntPtsUnitary.isOpen_GLint _ (Valued.isOpen_integer (w.adicCompletion E))
 
 /- English proof (translation)
-Use `set Ωχ := Ω ∩ {y : GLw r w | y.val.charpoly = γ.val.charpoly} with hΩχ`. Establish `hcpt : IsCompact Ωχ` using `hΩ.inter_right (isClosed_charpoly_eq E w r _)`. Establish `hcyc : ∀ y ∈ Ωχ, ∃ e, IsUnit (krylov y.val e).det` using `fun y hy => exists_cyclic _ (by rw [hy.2]; exact hs)`. Take `⟨C, hC, hCy⟩` from `exists_compact_krylov E w r Ωχ hcpt hcyc`. Take `⟨f, hf⟩` from `exists_cyclic γ.val hs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfu : IsUnit (krylov γ.val f)` using `(Matrix.isUnit_iff_isUnit_det _).2 hf`. Use `set Bf : GLw r w := hfu.unit with hBf`. Use `set D : Set (GLw r w) := (fun c => Bf * c⁻¹) '' C with hD`. Establish `hDc : IsCompact D` using `hC.image (continuous_const.mul continuous_inv)`. Establish `hKo` using `isOpen_KGL E w r`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨T, hT⟩` from `hDc.elim_finite_subcover (fun c : GLw r w => (fun x => c⁻¹ * x) ⁻¹' (GlobalTheory.LFun.KGL w r : Set (GLw r w))) (fun c => hKo.preimage (continuous_const.mul continuous_id)) (fun x _ => Set.mem_iUnion.2 ⟨x, by simp⟩)`. Use `⟨(T : Set (GLw r w)), T.finite_toSet, fun q hq => ?_⟩` and prove the remaining obligations. Establish `hy : q⁻¹ * γ * q ∈ Ωχ`. Use `⟨hq, ?_⟩` and prove the remaining obligations. Use `show ((q⁻¹ * γ * q : GLw r w) : Matrix (Fin r) (Fin r) (w.adicCompletion E)).charpoly = γ.val.charpoly`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Matrix.charpoly_units_conj (q⁻¹) γ.val` as an intermediate fact. Simplify `this` using `[Matrix.coe_units_inv]`. Take `⟨e, c, hcC, hce⟩` from `hCy _ hy`. Establish `he : IsUnit (krylov (q⁻¹ * γ * q : GLw r w).val e).det`. Rewrite using `[← hce, ← Matrix.isUnit_iff_isUnit_det]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `c.isUnit`. Establish `hconj` using `krylov_conj_eq _ _ e f (hy.2) he hf`. Establish `h1 : c⁻¹ * (q⁻¹ * γ * q) * c = Bf⁻¹ * γ * Bf` using `by ext1`. Rewrite using `[Units.val_mul (c⁻¹ * (q⁻¹ * γ * q)) c, Units.val_mul c⁻¹ (q⁻¹ * γ * q), Units.val_mul (Bf⁻¹ * γ) Bf, Units.val_mul Bf⁻¹ γ, Matrix.coe_units_inv c, Matrix.coe_units_inv Bf, hce, hBf, IsUnit.unit_spec]`. Conclude with `hconj`.
-
-Establish `hxD : Bf * c⁻¹ ∈ D` using `⟨c, hcC, rfl⟩`. Take `⟨t, htT, ht⟩` from `Set.mem_iUnion₂.1 (hT hxD)`. Use `⟨q * c * Bf⁻¹, ?_, t, htT, t⁻¹ * (Bf * c⁻¹), ht, by group⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem orbit_fin (E : Type) [Field E] [NumberField E] (w : Pl E) (r : ℕ) (γ : GLw r w)
     (hs : γ.val.charpoly.Separable) (Ω : Set (GLw r w)) (hΩ : IsCompact Ω) :
@@ -120,7 +116,7 @@ theorem orbit_fin (E : Type) [Field E] [NumberField E] (w : Pl E) (r : ℕ) (γ 
     _ = γ * (q * c * Bf⁻¹) := by group
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Simplify using `[avg, hc]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_ne_zero_exists {H : Type} [Group H] (u : H → ℂ) (h : avg u ≠ 0) : ∃ x, u x ≠ 0 := by
   by_contra hc
@@ -129,9 +125,9 @@ theorem avg_ne_zero_exists {H : Type} [Group H] (u : H → ℂ) (h : avg u ≠ 0
   simp [avg, hc]
 
 /- English proof (translation)
-Establish `hM : IsUnit (Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * (0 : Matrix (Fin a) (Fin b) (w.adicCompletion E))) 0 m.2.val))`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_reindex_self, Matrix.mul_zero, Matrix.det_fromBlocks_zero₁₂]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp m.1.isUnit).mul ((Matrix.isUnit_iff_isUnit_det _).mp m.2.isUnit)`. Establish `hval : ((blk h w m 0 : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * (0 : Matrix (Fin a) (Fin b) (w.adicCompletion E))) 0 m.2.val)`. Simplify using `only [blk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hM]`. Both sides reduce to the same expression. Rewrite using `[hval, Matrix.charpoly_reindex, Matrix.mul_zero, Matrix.charpoly_fromBlocks_zero₁₂]`. Conclude with `hs`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_blk_separable (E : Type) [Field E] [NumberField E] (n a b : ℕ) (h : a + b = n) (w : Pl E)
     (m : GLw a w × GLw b w) (hs : (m.1.val.charpoly * m.2.val.charpoly).Separable) :
@@ -150,25 +146,21 @@ theorem charpoly_blk_separable (E : Type) [Field E] [NumberField E] (n a b : ℕ
   exact hs
 
 /- English proof (translation)
-Introduce `E _ _ n a b h w f hf m hs hγ`. Take `⟨K', -, hsupp, -⟩` from `hf`. Use `set γ : GLw n w := blk h w m 0 with hγdef`. Use `set P := GlobalTheory.LeviDesc.parP a n w`. Use `set K := GlobalTheory.LFun.KGL w n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set γP : P := ⟨γ, hγ⟩`. Take `⟨T, hT, hTq⟩` from `orbit_fin E w n γ (charpoly_blk_separable E n a b h w m hs) (tsupport f) hsupp`. Establish `hcent : ∀ z : GLw n w, z * γ = γ * z → z ∈ P` using `fun z hz => GlobalTheory.LeviDesc.twCent_blk_le_parP E n a b h w m hs (show z * γ = γ * MonoidHom.id _ z from hz)`. Set `Q : DoubleCoset.Quotient (twCent (MonoidHom.id _) γP : Set P) ((K.subgroupOf P : Subgroup P) : Set P) → GLw n w → Prop` to `fun d t => t ∈ T ∧ ∃ z : GLw n w, z * γ = γ * z ∧ ∃ k ∈ K, ((Quotient.out d : P) : GLw n w) = z * t * k`. Establish `hex : ∀ d ∈ {d : DoubleCoset.Quotient (twCent (MonoidHom.id _) γP : Set P) ((K.subgroupOf P : Subgroup P) : Set P) | GlobalTheory.LeviDesc.cavg K f (((Quotient.out d)⁻¹ * γP * Quotient.out d : P) : GLw n w) ≠ 0}, ∃ t, Q d t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `d hd`. Take `⟨k, hk⟩` from `avg_ne_zero_exists _ hd`. Use `set p : GLw n w := ((Quotient.out d : P) : GLw n w)`. Establish `hmem : (p * k)⁻¹ * γ * (p * k) ∈ tsupport f`. Apply `subset_tsupport` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (p * k)⁻¹ * γ * (p * k) = (k : GLw n w)⁻¹ * (((Quotient.out d)⁻¹ * γP * Quotient.out d : P) : GLw n w) * k`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, p, γP]`. Use `group`. Rewrite using `[this]`. Conclude with `hk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz, t, ht, k₁, hk₁, hq⟩` from `hTq _ hmem`. Use `⟨t, ht, z, hz, k₁ * (k : GLw n w)⁻¹, K.mul_mem hk₁ (K.inv_mem k.2), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← hq, mul_inv_cancel_right]`. Use `Set.Finite.of_injOn (f := fun d => if hd : ∃ t, Q d t then hd.choose else 1) (t := T) ?_ ?_ hT` and prove the remaining obligations. Introduce `d hd`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [dif_pos (hex d hd)]`. Conclude with `(hex d hd).choose_spec.1`. Introduce `d₁ hd₁ d₂ hd₂ heq`. Simplify using `only [dif_pos (hex d₁ hd₁), dif_pos (hex d₂ hd₂)] at heq`. Take `⟨-, z₁, hz₁, k₁, hk₁, hp₁⟩` from `(hex d₁ hd₁).choose_spec`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Take `⟨-, z₂, hz₂, k₂, hk₂, hp₂⟩` from `(hex d₂ hd₂).choose_spec`. Rewrite `hp₁` using `[heq]`. Use `set t := (hex d₂ hd₂).choose`. Establish `hzP : z₂ * z₁⁻¹ ∈ P` using `hcent _ (by`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set hP : P := ⟨z₂ * z₁⁻¹, hzP⟩`. Establish `hcP : hP ∈ twCent (MonoidHom.id _) γP` using `by show hP * γP = γP * MonoidHom.id _ hP`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, MonoidHom.id_apply, hP, γP]`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `set kP : P := (Quotient.out d₁)⁻¹ * hP⁻¹ * Quotient.out d₂`. Establish `hkv : (kP : GLw n w) = k₁⁻¹ * k₂`. Simplify using `only [kP, hP, Subgroup.coe_mul, Subgroup.coe_inv, hp₁, hp₂]`. Use `group`. Establish `hkK : kP ∈ K.subgroupOf P`.
-
-Rewrite using `[Subgroup.mem_subgroupOf, hkv]`. Conclude with `K.mul_mem (K.inv_mem hk₁) hk₂`. Rewrite using `[← DoubleCoset.out_eq' _ _ d₁, ← DoubleCoset.out_eq' _ _ d₂, DoubleCoset.eq]`. Conclude with `⟨hP, hcP, kP, hkK, by simp only [kP]; group⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fin_doubleCosets : ∀ (E : Type) [Field E] [NumberField E] (n a b : ℕ) (h : a + b = n) (w : Pl E) (f : GLw n w → ℂ), (∃ K' : Subgroup (GLw n w), IsOpen (K' : Set (GLw n w)) ∧ IsHecke K' f) → ∀ m : GLw a w × GLw b w, (m.1.val.charpoly * m.2.val.charpoly).Separable → ∀ hγ : blk h w m 0 ∈ GlobalTheory.LeviDesc.parP a n w, {d : DoubleCoset.Quotient (twCent (MonoidHom.id _) (⟨blk h w m 0, hγ⟩ : GlobalTheory.LeviDesc.parP a n w) : Set (GlobalTheory.LeviDesc.parP a n w)) (((GlobalTheory.LFun.KGL w n).subgroupOf (GlobalTheory.LeviDesc.parP a n w) : Subgroup _) : Set (GlobalTheory.LeviDesc.parP a n w)) | GlobalTheory.LeviDesc.cavg (GlobalTheory.LFun.KGL w n) f (((Quotient.out d)⁻¹ * ⟨blk h w m 0, hγ⟩ * Quotient.out d : GlobalTheory.LeviDesc.parP a n w) : GLw n w) ≠ 0}.Finite := by
   intro E _ _ n a b h w f hf m hs hγ

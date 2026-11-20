@@ -19,9 +19,9 @@ section Abs
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `e` using `Measure.isMulLeftInvariant_eq_smul μ' μ`. Establish `k4 : IsFundamentalDomain _ 𝓕 μ'` using `h2.mono (by rw [e]; exact Measure.smul_absolutelyContinuous)`. Establish `k5` using `k4.measure_eq k2`. Rewrite `k5` using `[k3, e, Measure.smul_apply, h3, ENNReal.smul_def, smul_eq_mul, mul_one, ENNReal.coe_eq_one]`. Rewrite `e` using `[k5, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `e` using the available equality. Conclude with `h2.setIntegral_eq k2 fun γ x => hf γ γ.2 x`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem abs_uniq [LocallyCompactSpace G] [SecondCountableTopology G] {Γ : Subgroup G} [Countable Γ] {μ μ' : Measure G}
     [μ.IsHaarMeasure] [μ'.IsHaarMeasure] {𝓕 𝓕' : Set G} (h2 : IsFundamentalDomain Γ 𝓕 μ) (h3 : μ 𝓕 = 1)
@@ -36,11 +36,11 @@ theorem abs_uniq [LocallyCompactSpace G] [SecondCountableTopology G] {Γ : Subgr
   exact h2.setIntegral_eq k2 fun γ x => hf γ γ.2 x
 
 /- English proof (translation)
-Set `φ : N ≃ₜ* N₂` to `{ toFun := fun u => ⟨γ⁻¹ * u * γ, (hN _).2 (by simpa [mul_assoc] using u.2)⟩ invFun := fun u => ⟨γ * u * γ⁻¹, (hN _).1 u.2⟩ left_inv := fun u => Subtype.ext (by simp [mul_assoc]) right_inv := fun u => Subtype.ext (by simp [mul_assoc]) map_mul' := fun u v => Subtype.ext (by simp [ …`. Set `ψ` to `φ.toHomeomorph.toMeasurableEquiv`. Establish `mp : MeasurePreserving ψ μ (μ.map ψ)` using `⟨ψ.measurable, rfl⟩`. Set `e : Γ.subgroupOf N ≃ Γ.subgroupOf N₂` to `φ.toEquiv.subtypeEquiv fun u => ⟨fun k => mul_mem (mul_mem (inv_mem hγ) (show u.1 ∈ Γ from k)) hγ, fun k => by`. Use `mul_mem (mul_mem hγ (show γ⁻¹ * u.1 * γ ∈ Γ from k)) (inv_mem hγ)` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `u.1 ∈ Γ`. Simplify `this⟩` using `[mul_assoc]`. Use `⟨μ.map ψ, ψ.symm ⁻¹' 𝓕, φ.isHaarMeasure_map μ, h2.preimage_of_equiv mp.symm.quasiMeasurePreserving e.bijective fun g x => ?_, ?_, fun f => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.symm (φ g.1 * x) = g.1 * φ.symm x`. Rewrite using `[map_mul, φ.symm_apply_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ψ.map_apply, ← Set.preimage_comp, ψ.symm_comp_self, Set.preimage_id]`. Conclude with `mp.symm.setIntegral_preimage_emb ψ.symm.measurableEmbedding (fun u : N => f u.1) 𝓕`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_conj {Γ N N₂ : Subgroup G} {γ : G} (hγ : γ ∈ Γ) (hN : ∀ u, u ∈ N₂ ↔ γ * u * γ⁻¹ ∈ N) (μ : Measure N) (𝓕 : Set N)
     [μ.IsHaarMeasure] (h2 : IsFundamentalDomain (Γ.subgroupOf N) 𝓕 μ) : ∃ (μ₂ : Measure N₂) (𝓕₂ : Set N₂), μ₂.IsHaarMeasure ∧
@@ -73,9 +73,9 @@ end Abs
 variable {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H : Plane E d d₁}
 
 /- English proof (translation)
-Take `⟨C, hC, hc⟩` from `hN.cov`. Establish `c : Continuous fun u : N => f (u.1 * h)` using `hf.1.comp (continuous_subtype_val.mul continuous_const)`. Take `⟨b, hb⟩` from `hC.exists_bound_of_continuousOn c.continuousOn`. Use `Measure.integrableOn_of_bounded (hN.fin μ 𝓕 hμ h𝓕).2.ne c.aestronglyMeasurable (M := b) (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Take `⟨γ, h1, h2⟩` from `hc u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `hb _ h2` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_mul, mul_assoc, hf.2 _ h1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UnipGood.integrable {N : Subgroup (UA σ W.J)} (hN : UnipGood N) {μ : Measure N} {𝓕 : Set N} (hμ : μ.IsHaarMeasure)
     (h𝓕 : IsFundamentalDomain ((ratU σ W.J).subgroupOf N) 𝓕 μ) {f : UA σ W.J → ℂ} (hf : IsAut f) (h : UA σ W.J) :
@@ -90,7 +90,7 @@ theorem UnipGood.integrable {N : Subgroup (UA σ W.J)} (hN : UnipGood N) {μ : M
   rwa [Subgroup.coe_mul, mul_assoc, hf.2 _ h1] at this
 
 /- English proof (translation)
-Take `⟨μ, 𝓕, h1, h2, h3⟩` from `hN.ex`. Use `hN.cnt` as an intermediate fact. Use `hN.right μ h1` as an intermediate fact. Rewrite using `[hc μ 𝓕 h1 h2 h3, hc μ 𝓕 h1 h2 h3, ← PositivityTheory.ThKF.L2.integral_right h2 (fun v => f (v.1 * h)) (fun γ hγ x => by rw [Subgroup.coe_mul, mul_assoc]; exact hf.2 _ hγ _) ⟨u, hu⟩]`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ct_inv (hN : UnipGood (unip σ W H)) {f c : UA σ W.J → ℂ} (hf : IsAut f) (hc : IsCT H f c) {u : UA σ W.J}
     (hu : u ∈ unip σ W H) (h : UA σ W.J) : c (u * h) = c h := by
@@ -102,9 +102,9 @@ theorem ct_inv (hN : UnipGood (unip σ W H)) {f c : UA σ W.J → ℂ} (hf : IsA
   simp only [Subgroup.coe_mul, mul_assoc]
 
 /- English proof (translation)
-Take `⟨μ, 𝓕, h1, h2, h3⟩` from `hN.ex`. Use `hN.cnt` as an intermediate fact. Use `hN.lc` as an intermediate fact. Use `hN.sc` as an intermediate fact. Conclude with `⟨fun h => ∫ u in 𝓕, f (u.1 * h) ∂μ, fun μ' 𝓕' k1 k2 k3 h => abs_uniq h2 h3 k2 k3 fun γ hγ x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite using `[Subgroup.coe_mul, mul_assoc]`. Conclude with `hf.2 _ hγ _⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ct (hN : UnipGood (unip σ W H)) {f : UA σ W.J → ℂ} (hf : IsAut f) : ∃ c, IsCT H f c := by
   obtain ⟨μ, 𝓕, h1, h2, h3⟩ := hN.ex
@@ -115,13 +115,13 @@ theorem exists_ct (hN : UnipGood (unip σ W H)) {f : UA σ W.J → ℂ} (hf : Is
     rw [Subgroup.coe_mul, mul_assoc]; exact hf.2 _ hγ _⟩
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨b, h2⟩ : ∃ b : w.Completion, ‖b‖ = 2 := by`. Use `⟨_, (InfinitePlace.Completion.norm_coe w ((WithAbs.equiv w.1).symm (2 : F))).trans ?_⟩` and prove the remaining obligations. Use `show w (2 : F) = 2`. Rewrite using `[← InfinitePlace.mk_embedding w, InfinitePlace.apply, map_ofNat]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `hne : b ≠ 0`. Introduce `h`. Rewrite `h2` using `[h, norm_zero]`. Evaluate the numerical expressions using `at h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GlobalTheory.Doubling.ideleAtInf F E w (Units.map (algebraMap w.Completion (w.Completion ⊗[F] E)).toMonoidHom (Units.mk0 b hne)), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Doubling.absE_ideleAtInf, GlobalTheory.Doubling.absEw_apply]`. Express the relevant statement in the definitionally equal form `1 < ((‖Algebra.norm w.Completion (algebraMap w.Completion (w.Completion ⊗[F] E) b)‖₊ ^ w.mult : ℝ≥0) : ℝ)`. Rewrite using `[Algebra.norm_algebraMap, Module.finrank_baseChange, NNReal.coe_pow, coe_nnnorm, norm_pow, h2, ← pow_mul]`. Establish `hn : 0 < Module.finrank F E` using `Module.finrank_pos`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hm : 0 < w.mult := by unfold InfinitePlace.mult; split_ifs <;> norm_num`. Conclude with `one_lt_pow₀ (by norm_num) (Nat.mul_ne_zero hn.ne' hm.ne')`.
+A detailed English derivation is pending.
 -/
 theorem exists_abs_gt : ∃ t : (AE F E)ˣ, 1 < (absE F E t : ℝ) := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -141,13 +141,13 @@ theorem exists_abs_gt : ∃ t : (AE F E)ˣ, 1 < (absE F E t : ℝ) := by
   exact one_lt_pow₀ (by norm_num) (Nat.mul_ne_zero hn.ne' hm.ne')
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H r s hB hW hH`. Establish `hN` using `unipGood hB.cm (Or.inr hW.skew) (det_ne_zero hW) hH`. Use `⟨fun f g cf cg c hf hg h1 h2 μ 𝓕 k1 k2 k3 h => ?_, fun f T T' χ χ' z z' hf hz hc l l' u hu h => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_sub (hN.integrable k1 k2 hf h) ((hN.integrable k1 k2 hg h).const_mul c), integral_const_mul, h1 μ 𝓕 k1 k2 k3, h2 μ 𝓕 k1 k2 k3]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `exists_abs_gt (F := F) (E := E)`. Take `⟨L1, L2⟩` from `leviPlane F E σ hB.cm d d₁ W W₁ H hW.skew hH`. Take `⟨m, hm⟩` from `L1 t 1`. Establish `e1` using `ct_inv hN hf hc hu h`. Establish `e2` using `ct_inv hN hf hc (L2 t 1 m hm u hu) (m * h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[show m * u * m⁻¹ * (m * h) = m * (u * h) by group]`. Simplify using `only [Pi.add_apply, l t m hm, l' t m hm] at e1 e2`. Establish `ne : (χ t : ℂ) * (((absE F E t : ℝ) ^ z : ℝ) : ℂ) - (χ' t : ℂ) * (((absE F E t : ℝ) ^ z' : ℝ) : ℂ) ≠ 0` using `fun k => by`. Use `congrArg norm (sub_eq_zero.1 k)` as an intermediate fact. Establish `p : (0 : ℝ) < absE F E t` using `zero_lt_one.trans ht`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg p.le _)] at this`. Conclude with `hz ((Real.rpow_right_inj p ht.ne').1 this)`. Establish `e3 : T (u * h) = T h` using `sub_eq_zero.1 (mul_left_cancel₀ ne (by`. Take the linear combination `e2 - (χ' t : ℂ) * (((absE F E t : ℝ) ^ z' : ℝ) : ℂ) * e1))`. Conclude with `⟨e3, by linear_combination e1 - e3⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ctBasic : CTBasic := by
   intro F E _ _ _ _ _ σ B d d₁ W W₁ H r s hB hW hH
@@ -173,9 +173,9 @@ theorem ctBasic : CTBasic := by
     exact ⟨e3, by linear_combination e1 - e3⟩
 
 /- English proof (translation)
-Introduce `μ 𝓕 h1 h2 h3 h`. Take `⟨μ₂, 𝓕₂, k1, k2, k3, k4⟩` from `abs_conj hγ hN μ 𝓕 h2`. Rewrite using `[← k4 fun u => f (u * h)]`. Use `(hc _ _ k1 k2 (k3.trans h3) _).trans ?_` and prove the remaining obligations. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[mul_assoc, mul_assoc, hf.2 _ hγ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem ct_conj {d₂ : ℕ} {H₂ : Plane E d d₂} {γ : UA σ W.J} (hγ : γ ∈ ratU σ W.J)
     (hN : ∀ u, u ∈ unip σ W H₂ ↔ γ * u * γ⁻¹ ∈ unip σ W H) {f c : UA σ W.J → ℂ} (hf : IsAut f) (hc : IsCT H₂ f c) :
@@ -189,17 +189,15 @@ theorem ct_conj {d₂ : ℕ} {H₂ : Plane E d d₂} {γ : UA σ W.J} (hγ : γ 
   rw [mul_assoc, mul_assoc, hf.2 _ hγ]
 
 /- English proof (translation)
-Introduce and unpack `F E _ _ _ _ _ σ B d d₁ W W₁ H r s χ z f hB hW hH hf ⟨d₂, W₂, H₂, c, hH₂, hc, hl⟩`. Establish `sk` using `Or.inr (a := ∀ i j, σ (W.J j i) = W.J i j) hW.skew`. Establish `ne : ∀ {k} {Y : Spc F E k} {P : Plane E d k}, IsPlane σ P W Y → P.x ≠ 0` using `fun h h0 => by`. Establish `e` using `h.xy`. Rewrite `e` using `[h0, form, zero_dotProduct]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one e`. Take `⟨g, g1, g2⟩` from `wittVec F E σ hB.cm d W.J hW.skew (det_ne_zero hW) _ _ (ne hH₂) (ne hH) hH₂.xx hH.xx`. Set `γ : UA σ W.J` to `⟨Matrix.GeneralLinearGroup.map (inclR (F := F) (AF F)) g, by`. Express the relevant statement in the definitionally equal form `(incM F g.1ᵀ) * incM F W.J * (incM F g.1).map (cA σ) = _`. Rewrite using `[incM_conj, ← incM_mul, ← incM_mul, g1]⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hγ : γ ∈ ratU σ W.J` using `⟨g, rfl⟩`. Establish `e1 : mat γ *ᵥ incV F H₂.x = (1 : (AE F E)ˣ).1 • incV F H.x`. Rewrite using `[Units.val_one, one_smul, ← g2]`. Conclude with `incM_mulVec _ _`. Establish `e2 : mat γ⁻¹ *ᵥ incV F H.x = (1 : (AE F E)ˣ).1 • incV F H₂.x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e1`, the goal using `[Units.val_one, one_smul]`. Conclude with `inv_vec e1`. Use `⟨_, ct_conj hγ (fun u => ?_) hf hc, fun t m hm h => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_unip hB.cm sk hH, mem_unip hB.cm sk hH₂]`. Conclude with `⟨fun k => k.conj e1, fun k => by simpa [mul_assoc] using k.conj e2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m₀, h₀⟩` from `(leviPlane F E σ hB.cm d d₂ W W₂ H₂ hW.skew hH₂).1 t 1`. Establish `p` using `((IsLevi.par (form_yx hB.cm sk hH) hH hm).conj e2).div (IsLevi.par (form_yx hB.cm sk hH₂) hH₂ h₀)`. Use `ct_inv (unipGood hB.cm sk (det_ne_zero hW) hH₂) hf hc ((mem_unip hB.cm sk hH₂).2 p) (m₀ * (γ⁻¹ * h))` as an intermediate fact. Rewrite `this` using `[hl t m₀ h₀]`. Rewrite using `[← this]`.
-
-Use `congr 1`. Use `group`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem lineMove : LineMove := by
   rintro F E _ _ _ _ _ σ B d d₁ W W₁ H r s χ z f hB hW hH hf ⟨d₂, W₂, H₂, c, hH₂, hc, hl⟩

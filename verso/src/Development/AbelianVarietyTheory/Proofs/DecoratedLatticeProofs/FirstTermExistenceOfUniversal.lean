@@ -36,7 +36,7 @@ def trivDec (T : HSp D) : HypDec T T 0 where
   rank_add := rfl
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.goodMajorantLevel_conj_unitaryAdelicMaximalCompact D T T₀ r d l.c hl.2.2 (GlobalTheory.T.adelic_iwasawa_decomposition_wittIsotropicStabilizer D T T₀ r d l.c GlobalTheory.Core.Rk.IP.Model.isSplit_two hl.2.2) l hl`. Conclude with `⟨h.1, h.2.1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem hasIw_of_good {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) {l : Lvl T} (hl : l.Good) :
     HasIw d l.K ∧ IsCompact (l.K : Set (GA D T)) := by

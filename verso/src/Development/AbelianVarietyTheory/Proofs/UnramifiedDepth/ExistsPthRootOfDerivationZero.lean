@@ -6,11 +6,11 @@ open Polynomial IntermediateField
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Use `symm`. Apply `minpoly.eq_of_irreducible_of_monic` to reduce the goal to its premises. Apply `X_pow_sub_C_irreducible_of_prime hp` to reduce the goal to its premises. Introduce `b hb`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx` to reduce the goal to its premises. Establish `h1 : (b : K) ^ p = x ^ p`. Use `congrArg (fun z : M => (z : K)) hb` as an intermediate fact. Simplify using `using this`. Establish `h2 : (b : K) = x` using `frobenius_inj K p (by simpa [frobenius_def] using h1)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← h2]`. Conclude with `b.2`. Simplify using `only [map_sub, map_pow, aeval_X, aeval_C]`. Conclude with `sub_self _`. Conclude with `monic_X_pow_sub_C _ hp.ne_zero`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem minpoly_eq_X_pow_sub_C_of_pow_mem {K : Type} [Field K] (p : ℕ) [Fact p.Prime] [CharP K p]
     (M : Subfield K) (hM : ∀ y : K, y ^ p ∈ M) (x : K) (hx : x ∉ M) :
@@ -31,7 +31,7 @@ theorem minpoly_eq_X_pow_sub_C_of_pow_mem {K : Type} [Field K] (p : ℕ) [Fact p
   · exact monic_X_pow_sub_C _ hp.ne_zero
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Use `⟨X ^ p - C (⟨x ^ p, hM x⟩ : M), monic_X_pow_sub_C _ hp.ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_def]`. Simplify using `only [map_sub, map_pow, aeval_X, aeval_C]`. Conclude with `sub_self _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_pow_mem_subfield {K : Type} [Field K] (p : ℕ) [Fact p.Prime]
     (M : Subfield K) (hM : ∀ y : K, y ^ p ∈ M) (x : K) : IsIntegral M x := by
@@ -42,25 +42,21 @@ theorem isIntegral_of_pow_mem_subfield {K : Type} [Field K] (p : ℕ) [Fact p.Pr
   exact sub_self _
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Assume the negation of the conclusion as `hne`. Set `S : Set (Subfield K)` to `{M | (∀ y : K, y ^ p ∈ M) ∧ f ∉ M}`. Establish `h0 : (frobenius K p).fieldRange ∈ S`. Use `⟨fun y => ⟨y, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y, hy⟩`. Conclude with `hne ⟨y, hy⟩`. Take `⟨M, -, hM⟩` from `zorn_le_nonempty₀ S (fun c hcS hc y hy => by`. Use `⟨sSup c, ⟨fun z => (le_sSup hy : y ≤ sSup c) ((hcS hy).1 z), ?_⟩, fun z hz => le_sSup hz⟩` and prove the remaining obligations. Rewrite using `[Subfield.mem_sSup_of_directedOn ⟨y, hy⟩ hc.directedOn]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨z, hz, hfz⟩`. Conclude with `(hcS hz).2 hfz) _ h0`. Take `⟨hMp, hMf⟩` from `hM.prop`. Establish `hrank : ∀ x : K, x ∉ M → Module.finrank M M⟮x⟯ = p`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[adjoin.finrank (isIntegral_of_pow_mem_subfield p M hMp x), minpoly_eq_X_pow_sub_C_of_pow_mem p M hMp x hx, natDegree_X_pow_sub_C]`. Establish `htop : ∀ x : K, x ∈ M⟮f⟯`. Introduce `x`. Distinguish the cases in `hx : x ∈ M`. Conclude with `(M⟮f⟯).algebraMap_mem ⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hle : M ≤ (M⟮x⟯).toSubfield` using `fun z hz => (M⟮x⟯).algebraMap_mem ⟨z, hz⟩`. Establish `hfx : f ∈ M⟮x⟯`. Assume the negation of the conclusion as `hcon`. Establish `h1 : (M⟮x⟯).toSubfield ∈ S` using `⟨fun y => hle (hMp y), hcon⟩`. Conclude with `hx (hM.le_of_ge h1 hle (mem_adjoin_simple_self M x))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := adjoin.finiteDimensional (isIntegral_of_pow_mem_subfield p M hMp x)`. Establish `heq : M⟮f⟯ = M⟮x⟯` using `eq_of_le_of_finrank_eq (adjoin_simple_le_iff.mpr hfx) (by rw [hrank f hMf, hrank x hx])`. Rewrite using `[heq]`. Conclude with `mem_adjoin_simple_self M x`. Establish `hsurj : Function.Surjective (aeval f : M[X] →ₐ[M] K)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Establish `h1 : x ∈ (M⟮f⟯).toSubalgebra` using `htop x`. Rewrite `h1` using `[adjoin_simple_toSubalgebra_of_isAlgebraic (isIntegral_of_pow_mem_subfield p M hMp f).isAlgebraic, Algebra.adjoin_singleton_eq_range_aeval]`. Conclude with `h1`. Establish `hd : ∀ q : M[X], aeval f q = 0 → aeval f ((derivative' : Derivation M M[X] M[X]) q) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `q hq`. Take `⟨r, rfl⟩` from `minpoly.dvd M f hq`. Establish `h1 : aeval f (derivative (minpoly M f)) = 0`. Rewrite using `[minpoly_eq_X_pow_sub_C_of_pow_mem p M hMp f hMf]`. Simplify using `[derivative_X_pow]`.
-
-Simplify using `[derivative'_apply, derivative_mul, h1]`. Establish `h2` using `hf ((Derivation.liftOfSurjective hsurj hd).restrictScalars ℤ)`. Establish `h3` using `Derivation.liftOfSurjective_apply hsurj hd X`. Rewrite `h2` using `[Derivation.restrictScalars_apply]`. Simplify using `only [aeval_X, derivative'_apply, derivative_X, map_one] at h3`.
-
-Conclude with `one_ne_zero (h3.symm.trans h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_of_forall_derivation_eq_zero (K : Type) [Field K] (p : ℕ) [Fact p.Prime]
     [CharP K p] (f : K) (hf : ∀ D : Derivation ℤ K K, D f = 0) : ∃ h : K, h ^ p = f := by

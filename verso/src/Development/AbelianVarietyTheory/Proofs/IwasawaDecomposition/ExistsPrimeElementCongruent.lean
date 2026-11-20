@@ -9,13 +9,13 @@ open scoped ComplexOrder
 namespace GlobalTheory.Mem.NormPrimes
 
 /- English proof (translation)
-Take `⟨φ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `hne : ComplexEmbedding.conjugate φ ≠ φ`. Introduce `h`. Conclude with `IsTotallyComplex.complexEmbedding_not_isReal φ (ComplexEmbedding.isReal_iff.2 h)`. Establish `hcard : Fintype.card (K →+* ℂ) = 2` using `by rw [Embeddings.card, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huniv : (Finset.univ : Finset (K →+* ℂ)) = {ComplexEmbedding.conjugate φ, φ}`. Use `symm`. Apply `Finset.eq_univ_of_card` to reduce the goal to its premises. Rewrite using `[Finset.card_pair hne, hcard]`. Establish `h1` using `Algebra.norm_eq_prod_embeddings ℚ ℂ (x : K)`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) (fun f => f (x : K)) (fun σ => σ (x : K)) (fun _ => by simp [RingHom.equivRatAlgHom_apply]), huniv, Finset.prod_pair hne, ComplexEmbedding.conjugate_coe_eq, mul_comm, Complex.mul_conj, ← Algebra.coe_norm_int]`. Establish `h3 : ((Algebra.norm ℤ x : ℤ) : ℝ) = Complex.normSq (φ x)`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4 : (0 : ℝ) ≤ ((Algebra.norm ℤ x : ℤ) : ℝ)` using `h3 ▸ Complex.normSq_nonneg _`. Conclude with `h4` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem norm_nonneg_of_imag_quadratic (K : Type) [Field K] [NumberField K] [IsTotallyComplex K]
     (h2 : Module.finrank ℚ K = 2) (x : 𝓞 K) : 0 ≤ Algebra.norm ℤ x := by
@@ -40,17 +40,17 @@ theorem norm_nonneg_of_imag_quadratic (K : Type) [Field K] [NumberField K] [IsTo
   exact_mod_cast h4
 
 /- English proof (translation)
-Take `⟨D⟩` from `GlobalTheory.T.ray_data_nonempty K M hM`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Establish `hu : IsUnit ((M : ℕ) : 𝓞 K)` using `isCoprime_zero_left.1 ha`. Establish `h1` using `hu.map (Algebra.norm ℤ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Algebra.norm ℤ ((M : ℕ) : 𝓞 K) = (M : ℤ) ^ 2`. Use `Algebra.norm_algebraMap (R := ℤ) (S := 𝓞 K) (M : ℤ)` as an intermediate fact. Rewrite `this` using `[RingOfIntegers.rank, h2]`. Simplify using `using this`. Rewrite `h1` using `[h3, isUnit_pow_iff two_ne_zero, Int.isUnit_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hac : IsCoprime (Ideal.span {a}) (Ideal.span {(M : 𝓞 K)})` using `(Ideal.isCoprime_span_singleton_iff _ _).2 ha`. Take `⟨v, hc, hp, hN⟩` from `GlobalTheory.T.infinitely_many_primes_in_ray_class K h2 M hM D (D.cls (Ideal.span {a})) N`. Take `⟨x, y, hx0, hy0, hx, hy, hxy⟩` from `(D.cls_eq _ _ v.2 hac v.1.ne_bot (by simpa using ha0)).1 hc`. Rewrite `hxy` using `[Ideal.span_singleton_mul_span_singleton]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdvd : x ∣ y * a`. Rewrite using `[← Ideal.mem_span_singleton]`. Establish `: y * a ∈ Ideal.span {x} * v.1.asIdeal`. Rewrite using `[hxy]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mul_le_left this`. Take `⟨π, hπ⟩` from `hdvd`. Establish `hv : v.1.asIdeal = Ideal.span {π}`. Rewrite `hxy` using `[hπ, ← Ideal.span_singleton_mul_span_singleton]`. Conclude with `mul_left_cancel₀ (by simpa using hx0) hxy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨π, Ideal.absNorm v.1.asIdeal, hp, hN, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hv, Ideal.absNorm_span_singleton, Int.natAbs_of_nonneg (norm_nonneg_of_imag_quadratic K h2 π)]`. Establish `: π - a = (y - 1) * a - (x - 1) * π` using `by linear_combination -hπ`. Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_right _ _ hy) (Ideal.mul_mem_right _ _ hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_norm_of_two_le (K : Type) [Field K] [NumberField K] [IsTotallyComplex K]
     (h2 : Module.finrank ℚ K = 2) (M : ℕ) (hM : 2 ≤ M) (a : 𝓞 K) (ha : IsCoprime a (M : 𝓞 K)) (N : ℕ) :
@@ -88,9 +88,9 @@ theorem exists_prime_norm_of_two_le (K : Type) [Field K] [NumberField K] [IsTota
     exact Ideal.sub_mem _ (Ideal.mul_mem_right _ _ hy) (Ideal.mul_mem_right _ _ hx)
 
 /- English proof (translation)
-Introduce `K _ _ _ h2 M hM a ha N`. Break down `Nat.lt_or_ge M 2 with h | h` into its components or cases. Take `rfl : M = 1` from `by omega`. Take `⟨π, p, hp, hN, hn, -⟩` from `exists_prime_norm_of_two_le K h2 2 le_rfl 1 isCoprime_one_left N`. Conclude with `⟨π, p, hp, hN, hn, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `exists_prime_norm_of_two_le K h2 M h a ha N`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_norm : ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 → ∀ (M : ℕ), M ≠ 0 → ∀ (a : 𝓞 K), IsCoprime a (M : 𝓞 K) → ∀ N : ℕ, ∃ (π : 𝓞 K) (p : ℕ), p.Prime ∧ N < p ∧ Algebra.norm ℤ π = p ∧ π - a ∈ Ideal.span {(M : 𝓞 K)} := by
   intro K _ _ _ h2 M hM a ha N

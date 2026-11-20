@@ -18,9 +18,9 @@ section SlopeTestRemainingChoices
 open IsLocalRing UpperTheory.V UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite `h` using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Establish `hl' : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])` using `(Polynomial.lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨q, hqm, by`. Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem int_of_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (h : ‖x‖ ≤ 1) : IsIntegral ℤ_[l] x := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -33,9 +33,9 @@ private theorem int_of_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (h : ‖
     rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
 
 /- English proof (translation)
-Set `g : R →+* f.range` to `f.rangeRestrict`. Establish `hg : Function.Surjective g` using `f.rangeRestrict_surjective`. Use `haveI : IsLocalRing f.range := IsLocalRing.of_surjective' g hg`. Establish `hl : IsLocalHom g` using `IsLocalHom.of_surjective _ hg`. Use `haveI : Algebra.IsIntegral f.range A := Algebra.IsIntegral.tower_top (R := O)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h2 : IsLocalHom (algebraMap f.range A)` using `Algebra.IsIntegral.isLocalHom _ _`. Conclude with `⟨fun x hx => hl.map_nonunit x (h2.map_nonunit (g x) hx)⟩`.
+A detailed English derivation is pending.
 -/
 private theorem loc_of_int {O R A : Type} [CommRing O] [CommRing R] [IsLocalRing R] [Algebra O R] [CommRing A]
     [Nontrivial A] [Algebra O A] [Algebra.IsIntegral O A] (f : R →ₐ[O] A) : IsLocalHom f := by
@@ -48,11 +48,11 @@ private theorem loc_of_int {O R A : Type} [CommRing O] [CommRing R] [IsLocalRing
   exact ⟨fun x hx => hl.map_nonunit x (h2.map_nonunit (g x) hx)⟩
 
 /- English proof (translation)
-Take `⟨-, -, hl, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Establish `hz : (l : R) ∈ maximalIdeal R` using `fun h => by`. Establish `h1 : IsUnit (algebraMap c.O R (l : c.O))` using `by rwa [map_natCast]`. Conclude with `hl (IsLocalHom.map_nonunit _ h1)`. Establish `hp : 0 < ‖((l : ℕ) : PadicAlgCl l)‖` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hx`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (‖((l : ℕ) : PadicAlgCl l)‖⁻¹) (not_le.1 hx)`. Establish `h1` using `hf (x ^ n * l) (Ideal.mul_mem_left _ _ hz)`. Rewrite `h1` using `[map_mul, map_pow, map_natCast, norm_mul, norm_pow]`. Establish `h2` using `mul_lt_mul_of_pos_right hn hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[inv_mul_cancel₀ hp.ne']`. Conclude with `lt_asymm h1 h2`.
+A detailed English derivation is pending.
 -/
 private theorem norm_le {l : ℕ} [Fact l.Prime] {c : Coef l} {R : Type} [CommRing R] [Algebra c.O R] [IsCO c.O R]
     {f : R →ₐ[c.O] PadicAlgCl l} (hf : IsLocPt f) (x : R) : ‖f x‖ ≤ 1 := by
@@ -70,13 +70,11 @@ private theorem norm_le {l : ℕ} [Fact l.Prime] {c : Coef l} {R : Type} [CommRi
   exact lt_asymm h1 h2
 
 /- English proof (translation)
-Use `haveI := (UpperTheory.V.abelian₂.dvr_finite l c.O).1`. Take `⟨E, hE⟩` from `Loc.ptFin (l := l) R ((TrivSqZeroExt.inlAlgHom c.O _ _).comp f) hf`. Establish `hE' : ∀ a, f a ∈ E.1` using `fun a => (hE a).1`. Use `haveI := E.2`. Take `⟨h1, h2, -⟩` from `UpperTheory.V.abelian₂.dvr_intClosure l E.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `j : E.1 →ₐ[ℤ_[l]] PadicAlgCl l` to `E.1.val.restrictScalars ℤ_[l]`. Establish `hj : Function.Injective j` using `Subtype.val_injective`. Set `e` to `(integralClosure ℤ_[l] E.1).equivMapOfInjective j hj`. Set `B` to `(integralClosure ℤ_[l] E.1).map j`. Establish `hB : ∀ x, f x ∈ B` using `fun x => ⟨⟨f x, hE' x⟩, (isIntegral_algHom_iff j hj).1 (int_of_norm _ (norm_le hf x)), rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `A : Subalgebra c.O (PadicAlgCl l)` to `{ B.toSubsemiring with algebraMap_mem' := fun a => f.commutes a ▸ hB _ }`. Establish `d1 : IsDiscreteValuationRing B` using `IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e`. Establish `d2 : Module.Finite ℤ_[l] B` using `Module.Finite.equiv e.toLinearEquiv`. Use `haveI : Module.Finite ℤ_[l] A := d2`. Use `haveI d3 : IsDiscreteValuationRing A := d1`.
-
-Conclude with `⟨A, d3, Module.Finite.of_restrictScalars_finite ℤ_[l] c.O A, f.codRestrict A hB, (UpperTheory.V.abelian₂.dvr_finite l A).1, fun _ => rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem factor {l : ℕ} [Fact l.Prime] {c : Coef l} {R : Type} [CommRing R] [Algebra c.O R] [IsCO c.O R]
     (f : R →ₐ[c.O] PadicAlgCl l) (hf : IsLocPt f) :

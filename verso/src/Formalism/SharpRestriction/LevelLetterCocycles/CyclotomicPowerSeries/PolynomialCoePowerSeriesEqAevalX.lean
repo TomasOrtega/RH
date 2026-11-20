@@ -7,7 +7,7 @@ namespace LevelStatements.Lv
 open PowerSeries
 
 /- English proof (translation)
-Rewrite using `[Polynomial.aeval_def]`. Conclude with `Polynomial.eval₂_C_X_eq_coe.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polynomial_coe_powerSeries_eq_aeval_X {O : Type*} [CommRing O] (P : Polynomial O) :
     (P : PowerSeries O) = Polynomial.aeval (X : PowerSeries O) P := by
@@ -15,7 +15,7 @@ theorem polynomial_coe_powerSeries_eq_aeval_X {O : Type*} [CommRing O] (P : Poly
   exact Polynomial.eval₂_C_X_eq_coe.symm
 
 /- English proof (translation)
-Rewrite using `[polynomial_coe_powerSeries_eq_aeval_X P]`. Conclude with `(Polynomial.aeval_algHom_apply φ X P).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psCyclo_algHom_coe {O : Type*} [CommRing O] (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (P : Polynomial O) : φ (P : PowerSeries O) = Polynomial.aeval (φ X) P := by
@@ -23,7 +23,7 @@ theorem psCyclo_algHom_coe {O : Type*} [CommRing O] (φ : PowerSeries O →ₐ[O
   exact (Polynomial.aeval_algHom_apply φ X P).symm
 
 /- English proof (translation)
-Rewrite using `[psCyclo_algHom_coe, polynomial_coe_powerSeries_eq_aeval_X, ← Polynomial.cyclotomic_expand_eq_cyclotomic hl hm]`. Simplify using `only [Polynomial.aeval_comp, Polynomial.expand_aeval, hφ, map_add, Polynomial.aeval_X, map_one]`. Conclude with `congrArg (fun y => Polynomial.aeval y (Polynomial.cyclotomic m O)) (by ring)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psCyclo_step {O : Type*} [CommRing O] (l : ℕ) (hl : l.Prime)
     (φ : PowerSeries O →ₐ[O] PowerSeries O) (hφ : φ X = (1 + X) ^ l - 1) (m : ℕ) (hm : l ∣ m) :
@@ -37,9 +37,9 @@ theorem psCyclo_step {O : Type*} [CommRing O] (l : ℕ) (hl : l.Prime)
   exact congrArg (fun y => Polynomial.aeval y (Polynomial.cyclotomic m O)) (by ring)
 
 /- English proof (translation)
-Unfold `PsCycloStatement`. Introduce `O _ l hl φ hφ q w hq s`. Proceed by induction on `s with`. Consider the case `zero => exact ⟨w, by rw [Function.iterate_zero_apply, zero_add, pow_one]; exact hq⟩`. Consider the case `succ s ih`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨w', hw'⟩` from `ih`. Use `⟨Units.map (φ : PowerSeries O →* PowerSeries O) w', ?_⟩` and prove the remaining obligations. Rewrite using `[Function.iterate_succ_apply', hw', map_mul, psCyclo_step l hl φ hφ (l ^ (s + 1)) (dvd_pow_self l (Nat.succ_ne_zero s)), ← pow_succ]`. Apply the tactic sequence `all_goals simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psCyclo : PsCycloStatement := by
   unfold PsCycloStatement

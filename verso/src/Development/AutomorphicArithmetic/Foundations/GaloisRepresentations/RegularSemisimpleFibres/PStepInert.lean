@@ -7,7 +7,7 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `letI := m`. Conclude with `Module.natCard_eq_pow_finrank`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem card_eq_pow_finrank {F F' : Type} [Field F] [Field F'] [Finite F'] (m : Module F F') :
     Nat.card F' = Nat.card F ^ @Module.finrank F F' _ _ m := by
@@ -15,7 +15,7 @@ private theorem card_eq_pow_finrank {F F' : Type} [Field F] [Field F'] [Finite F
   exact Module.natCard_eq_pow_finrank
 
 /- English proof (translation)
-The claim follows from `Nat.pow_right_injective (Finite.one_lt_card (α := F)) ((card_eq_pow_finrank m₁).symm.trans (card_eq_pow_finrank m₂))`.
+A detailed English derivation is pending.
 -/
 private theorem finrank_module_unique {F F' : Type} [Field F] [Field F'] [Finite F] [Finite F'] (m₁ m₂ : Module F F') :
     @Module.finrank F F' _ _ m₁ = @Module.finrank F F' _ _ m₂ :=
@@ -23,21 +23,19 @@ private theorem finrank_module_unique {F F' : Type} [Field F] [Field F'] [Finite
     ((card_eq_pow_finrank m₁).symm.trans (card_eq_pow_finrank m₂))
 
 /- English proof (translation)
-Introduce `hFT hSt hRE hRD hLO hJD P₀ hK K M Ω _ _ _ _ _ _ _ _ _ _ _ _ hl n hn π P hW A Θ hΘ v w hs hu e e' he he' τ τ' hτ hτ' a hPa hL`. Take `⟨hOk, hq, hna, hMeets⟩` from `hL`. Take `⟨r, j, hr, hj, hje⟩` from `hRE K M Ω A v w e e' he he'`. Use `letI := r.toAlgebra`. Take `⟨hfr, s, hsf⟩` from `hRD K M hl v w hs hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Establish `hfr' : @Module.finrank 𝓀[v.adicCompletion K] 𝓀[w.1.adicCompletion M] _ _ Algebra.toModule = Module.finrank K M` using `(finrank_module_unique _ _).trans hfr`. Establish `hl' : (@Module.finrank 𝓀[v.adicCompletion K] 𝓀[w.1.adicCompletion M] _ _ Algebra.toModule).Prime`. Rewrite using `[hfr']`. Conclude with `hl`. Set `ι : AlgebraicClosure 𝓀[v.adicCompletion K] →ₐ[𝓀[v.adicCompletion K]] AlgebraicClosure 𝓀[w.1.adicCompletion M]` to `{ j.toRingHom with commutes' := fun x => by show j (algebraMap _ _ x) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj x, IsScalarTower.algebraMap_apply 𝓀[v.adicCompletion K] 𝓀[w.1.adicCompletion M] (AlgebraicClosure 𝓀[w.1.adicCompletion M]) x]`. Use `rfl }`. Set `θ' : AlgebraicClosure 𝓀[w.1.adicCompletion M] →* ℂ` to `Θ.comp e'.toMonoidHom`. Establish `hθ' : Inj θ'` using `fun x y hx hy h => e'.injective (hΘ _ _ (fun h0 => hx (e'.injective (by simpa using h0))) (fun h0 => hy (e'.injective (by simpa using h0))) h)`. Establish `hpull : pullθ ι θ' = Θ.comp e.toMonoidHom`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Use `show Θ (e' (j x)) = Θ (e x)`. Rewrite using `[hje]`. Rewrite `hMeets` using `[← hpull]`. Substitute `hna` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlift` using `hLO a _ hl' hOk`. Use `⟨a.lift (@Module.finrank 𝓀[v.adicCompletion K] 𝓀[w.1.adicCompletion M] _ _ Algebra.toModule), Relation.ReflTransGen.single ⟨_, hl', rfl⟩, hlift.1, ?_, hlift.2.symm, ?_⟩` and prove the remaining obligations. Use `show a.q ^ _ = _`. Rewrite using `[hq]`. Conclude with `(card_eq_pow_finrank _).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `hz`. Establish `hf : IsCl fun g => star (JD (pullθ ι θ') a.D a.L a.rk g)` using `fun x y => by show star _ = star _`. Rewrite using `[(hJD _ (pullθ ι θ')).2.2 a.D a.L a.rk x y]`. Establish `hTr` using `hFT K M hl a.rk hn π P (hSt K M hl a.rk hn π P hW).1 hW v w hs hu τ τ' hτ hτ' hr s hsf _ hf hMeets`. Establish `hstar : ∀ δ, shLift s (fun g => star (JD (pullθ ι θ') a.D a.L a.rk g)) δ = star (shLift s (JD (pullθ ι θ') a.D a.L a.rk) δ)` using `fun δ => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Unfold `shLift`. Apply the tactic sequence `split_ifs <;> simp`. Use `haveI : FiniteDimensional ℂ (fixed τ'.ρ (KOne (w.1.adicCompletion M) (Fin a.rk))) := (UpperTheory.Zero.LLC.Pr.adm _ _ _ _ τ'.smooth τ'.irred).2 _ GlobalTheory.StepData.isOpen_KOne (levelPre_bot (k := w.1.adicCompletion M) (n := Fin a.rk) ▸ isCompact_levelPre ⊥)`. Use `hTr ?_` and prove the remaining obligations. Simplify using `only [hstar]`.
-
-Conclude with `hK _ _ s hl' hsf ι θ' hθ' a hPa hOk hq _ (levelZero τ'.ρ) hz`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.stepInert :
     FinTrace → StableOf → ResEmbCompat → ResDeg → LiftOk → JDEq → ∀ P₀, KillsOn P₀ → StepAt P₀ Not := by

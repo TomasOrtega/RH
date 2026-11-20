@@ -5,7 +5,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutTypeNormMeasHM
 namespace Formalism.FourierDecayAlt.P.CutBP
 
 /- English proof (translation)
-The claim follows from `TNM.typeNormMeas_of_typeComm_houseMeas TNM.type_commutation_holds TNM.HM.householder_measurability_holds`.
+A detailed English derivation is pending.
 -/
 theorem type_norm_measurability_holds : TDM.TypeNormMeas :=
   TNM.typeNormMeas_of_typeComm_houseMeas TNM.type_commutation_holds TNM.HM.householder_measurability_holds

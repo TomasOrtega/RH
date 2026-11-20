@@ -61,28 +61,28 @@ Simplify using the standard rewrite rules.
 theorem ip_smul_right (a : ℂ) (u v : M) : ip S u (a • v) = (starRingEnd ℂ) a * ip S u v := by simp
 
 /- English proof (translation)
-The claim follows from `S.B_conj v u`.
+A detailed English derivation is pending.
 -/
 theorem ip_conj (u v : M) : (starRingEnd ℂ) (ip S u v) = ip S v u := S.B_conj v u
 
 /- English proof (translation)
-The claim follows from `S.B_pos v hv`.
+A detailed English derivation is pending.
 -/
 theorem ip_pos (v : M) (hv : v ≠ 0) : 0 < (ip S v v).re := S.B_pos v hv
 
 /- English proof (translation)
-The claim follows from `S.B_rho x v u`.
+A detailed English derivation is pending.
 -/
 theorem ip_rho (x : X) (u v : M) : ip S (S.rho x u) (S.rho x v) = ip S u v := S.B_rho x v u
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem unitVac_iff_ip (al : X → ℂ) (Γ : AddSubgroup X) (φ : M) :
     UnitVac S al Γ φ ↔ Law S al Γ φ ∧ ip S φ φ = 1 := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, fun u v => h.2 v u⟩, fun h => ⟨h.1, fun u v => h.2 v u⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem implements_iff_ip (g : X ≃+ X) (T : M →ₗ[ℂ] M) :
     Implements S g T ↔ (∀ x v, T (S.rho x v) = S.rho (g x) (T v)) ∧ ∀ u v, ip S (T u) (T v) = ip S u v :=
@@ -91,7 +91,7 @@ theorem implements_iff_ip (g : X ≃+ X) (T : M →ₗ[ℂ] M) :
 namespace Sys
 
 /- English proof (translation)
-Establish `h` using `S.c_self (x + y)`. Rewrite `h` using `[S.c_add_left, S.c_add_right, S.c_add_right, S.c_self, S.c_self]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem c_mul_c_swap (x y : X) : S.c x y * S.c y x = 1 := by
   have h := S.c_self (x + y)
@@ -99,7 +99,7 @@ theorem c_mul_c_swap (x y : X) : S.c x y * S.c y x = 1 := by
   simpa using h
 
 /- English proof (translation)
-Introduce `h`. Use `S.c_norm x y` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem c_ne_zero (x y : X) : S.c x y ≠ 0 := by
   intro h
@@ -108,7 +108,7 @@ theorem c_ne_zero (x y : X) : S.c x y ≠ 0 := by
   simp at this
 
 /- English proof (translation)
-Establish `h` using `S.c_add_right x 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left₀ (S.c_ne_zero x 0)).1 h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_zero_right (x : X) : S.c x 0 = 1 := by
   have h := S.c_add_right x 0 0
@@ -116,14 +116,14 @@ theorem c_zero_right (x : X) : S.c x 0 = 1 := by
   exact (mul_eq_left₀ (S.c_ne_zero x 0)).1 h.symm
 
 /- English proof (translation)
-Establish `h` using `S.c_mul_c_swap x 0`. Rewrite `h` using `[S.c_zero_right, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem c_zero_left (x : X) : S.c 0 x = 1 := by
   have h := S.c_mul_c_swap x 0
   rwa [S.c_zero_right, one_mul] at h
 
 /- English proof (translation)
-Establish `h` using `S.c_add_right x x (-x)`. Rewrite `h` using `[add_neg_cancel, S.c_zero_right, S.c_self, one_mul]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_neg_self (x : X) : S.c x (-x) = 1 := by
   have h := S.c_add_right x x (-x)
@@ -131,25 +131,25 @@ theorem c_neg_self (x : X) : S.c x (-x) = 1 := by
   exact h.symm
 
 /- English proof (translation)
-Rewrite using `[S.rho_rho, S.c_neg_self, add_neg_cancel, S.rho_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_rho_neg (x : X) (v : M) : S.rho x (S.rho (-x) v) = v := by
   rw [S.rho_rho, S.c_neg_self, add_neg_cancel, S.rho_zero, one_smul]
 
 /- English proof (translation)
-Simplify using `using S.rho_rho_neg (-x) v`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rho_neg_rho (x : X) (v : M) : S.rho (-x) (S.rho x v) = v := by
   simpa using S.rho_rho_neg (-x) v
 
 /- English proof (translation)
-The claim follows from `Function.bijective_iff_has_inverse.2 ⟨S.rho (-x), S.rho_neg_rho x, S.rho_rho_neg x⟩`.
+A detailed English derivation is pending.
 -/
 theorem rho_bijective (x : X) : Function.Bijective (S.rho x) :=
   Function.bijective_iff_has_inverse.2 ⟨S.rho (-x), S.rho_neg_rho x, S.rho_rho_neg x⟩
 
 /- English proof (translation)
-Rewrite using `[S.rho_rho, S.rho_rho, smul_smul, add_comm y x]`. Use `congr 1`. Take the linear combination `(-(S.c x y)) * S.c_mul_c_swap x y`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rho_comm (x y : X) (v : M) : S.rho x (S.rho y v) = S.c x y ^ 2 • S.rho y (S.rho x v) := by
   rw [S.rho_rho, S.rho_rho, smul_smul, add_comm y x]
@@ -161,28 +161,28 @@ end Sys
 variable {S}
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h.1 x hx with e | e <;> rw [e] <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsSemi.mul_self {al : X → ℂ} {Γ : AddSubgroup X} (h : IsSemi S al Γ) {x : X} (hx : x ∈ Γ) :
     al x * al x = 1 := by
   rcases h.1 x hx with e | e <;> rw [e] <;> norm_num
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h.1 x hx with e | e <;> rw [e] <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsSemi.inv_eq {al : X → ℂ} {Γ : AddSubgroup X} (h : IsSemi S al Γ) {x : X} (hx : x ∈ Γ) :
     (al x)⁻¹ = al x := by
   rcases h.1 x hx with e | e <;> rw [e] <;> norm_num
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h.1 x hx with e | e <;> rw [e] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsSemi.conj_eq {al : X → ℂ} {Γ : AddSubgroup X} (h : IsSemi S al Γ) {x : X} (hx : x ∈ Γ) :
     (starRingEnd ℂ) (al x) = al x := by
   rcases h.1 x hx with e | e <;> rw [e] <;> simp
 
 /- English proof (translation)
-Rewrite using `[map_smul, S.rho_rho, h.2 x hx y hy]`. Simplify using `only [smul_smul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsSemi.op_op {al : X → ℂ} {Γ : AddSubgroup X} (h : IsSemi S al Γ) {x y : X} (hx : x ∈ Γ) (hy : y ∈ Γ)
     (v : M) : al x • S.rho x (al y • S.rho y v) = al (x + y) • S.rho (x + y) v := by
@@ -190,7 +190,7 @@ theorem IsSemi.op_op {al : X → ℂ} {Γ : AddSubgroup X} (h : IsSemi S al Γ) 
   simp only [smul_smul, mul_assoc]
 
 /- English proof (translation)
-Use `⟨fun hφ γ hγ => ?_, fun hφ γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ γ hγ, h.inv_eq hγ, smul_smul, h.mul_self hγ, one_smul]`. Rewrite using `[h.inv_eq hγ] conv_rhs => rw [← hφ γ hγ]`. Rewrite using `[smul_smul, h.mul_self hγ, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsSemi.law_iff {al : X → ℂ} {Γ : AddSubgroup X} (h : IsSemi S al Γ) (φ : M) :
     Law S al Γ φ ↔ ∀ γ ∈ Γ, al γ • S.rho γ φ = φ := by
@@ -201,7 +201,7 @@ theorem IsSemi.law_iff {al : X → ℂ} {Γ : AddSubgroup X} (h : IsSemi S al Γ
     rw [smul_smul, h.mul_self hγ, one_smul]
 
 /- English proof (translation)
-Rewrite using `[← h'.op_op hx hγ', hφ γ hγ, h'.inv_eq hγ', smul_smul (al γ) (al γ), h'.mul_self hγ', one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem term_add {al : X → ℂ} {Γ Γ' : AddSubgroup X} (h' : IsSemi S al Γ') {φ : M} (hφ : Law S al Γ φ)
     {x γ : X} (hx : x ∈ Γ') (hγ : γ ∈ Γ) (hγ' : γ ∈ Γ') :
@@ -209,9 +209,9 @@ theorem term_add {al : X → ℂ} {Γ Γ' : AddSubgroup X} (h' : IsSemi S al Γ'
   rw [← h'.op_op hx hγ', hφ γ hγ, h'.inv_eq hγ', smul_smul (al γ) (al γ), h'.mul_self hγ', one_smul]
 
 /- English proof (translation)
-Unfold `la`. Use `congr 1`. Use function extensionality and compare the values at `q`. Establish `hq : (QuotientAddGroup.mk (s q) : Γ' ⧸ Γ.addSubgroupOf Γ') = QuotientAddGroup.mk (Quotient.out q)`. Rewrite using `[hs]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Quotient.out_eq q).symm`. Establish `hd` using `AddSubgroup.mem_addSubgroupOf.1 (QuotientAddGroup.eq.1 hq)`. Use `term_add h' hφ (s q).2 hd (-(s q) + Quotient.out q).2` as an intermediate fact. Rewrite `this` using `[← AddSubgroup.coe_add, add_neg_cancel_left]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem la_eq_finsum {al : X → ℂ} {Γ Γ' : AddSubgroup X} (h' : IsSemi S al Γ') {φ : M} (hφ : Law S al Γ φ)
     (s : Γ' ⧸ Γ.addSubgroupOf Γ' → Γ') (hs : ∀ q, (QuotientAddGroup.mk (s q) : Γ' ⧸ Γ.addSubgroupOf Γ') = q) :
@@ -227,7 +227,7 @@ theorem la_eq_finsum {al : X → ℂ} {Γ Γ' : AddSubgroup X} (h' : IsSemi S al
   exact this
 
 /- English proof (translation)
-Rewrite using `[la_eq_finsum h' hφ s hs, finsum_eq_sum_of_fintype]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem la_eq_sum {al : X → ℂ} {Γ Γ' : AddSubgroup X} [Fintype (Γ' ⧸ Γ.addSubgroupOf Γ')] (h' : IsSemi S al Γ')
     {φ : M} (hφ : Law S al Γ φ) (s : Γ' ⧸ Γ.addSubgroupOf Γ' → Γ')
@@ -236,7 +236,7 @@ theorem la_eq_sum {al : X → ℂ} {Γ Γ' : AddSubgroup X} [Fintype (Γ' ⧸ Γ
   rw [la_eq_finsum h' hφ s hs, finsum_eq_sum_of_fintype]
 
 /- English proof (translation)
-Establish `: ((Real.sqrt (Γ.relIndex Γ' : ℝ) : ℝ) : ℂ) ≠ 0`. Establish `: (0 : ℝ) < (Γ.relIndex Γ' : ℝ)` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero hN)`. Conclude with `(Real.sqrt_pos.2 this).ne'` after adjusting the coercions. Rewrite using `[abelian₂, smul_smul, mul_inv_cancel₀ this, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem la_eq_sqrt_smul_Lam (al : X → ℂ) {Γ Γ' : AddSubgroup X} (hN : Γ.relIndex Γ' ≠ 0) (φ : M) :
     la S al Γ' Γ φ = ((Real.sqrt (Γ.relIndex Γ' : ℝ) : ℝ) : ℂ) • abelian₂ S al Γ' Γ φ := by
@@ -246,9 +246,9 @@ theorem la_eq_sqrt_smul_Lam (al : X → ℂ) {Γ Γ' : AddSubgroup X} (hN : Γ.r
   rw [abelian₂, smul_smul, mul_inv_cancel₀ this, one_smul]
 
 /- English proof (translation)
-Establish `hsub : Subsingleton (Γ ⧸ Γ.addSubgroupOf Γ)`. Rewrite using `[AddSubgroup.addSubgroupOf_self]`. Conclude with `QuotientAddGroup.subsingleton_quotient_top`. Use `letI : Unique (Γ ⧸ Γ.addSubgroupOf Γ) := uniqueOfSubsingleton 0`. Rewrite using `[abelian₂, AddSubgroup.relIndex_self, la, finsum_unique, (h.law_iff φ).1 hφ _ (Subtype.prop _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem Lam_self {al : X → ℂ} {Γ : AddSubgroup X} (h : IsSemi S al Γ) {φ : M} (hφ : Law S al Γ φ) :
     abelian₂ S al Γ Γ φ = φ := by
@@ -259,9 +259,9 @@ theorem Lam_self {al : X → ℂ} {Γ : AddSubgroup X} (h : IsSemi S al Γ) {φ 
   simp
 
 /- English proof (translation)
-Establish `: ¬ ∀ γ ∈ Γ, S.c γ x ^ 2 = 1` using `fun hh => hx ((hΓ x).2 hh)`. Use `push Not at this`. Take `⟨γ, hγ, hne⟩` from `this`. Establish `e1` using `ip_rho S γ (S.rho x φ) φ`. Rewrite `e1` using `[S.rho_comm γ x, hφ γ hγ, h.inv_eq hγ, map_smul (S.rho x), ip_smul_left, ip_smul_left, ip_smul_right, h.conj_eq hγ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (S.c γ x ^ 2 - 1) * ip S (S.rho x φ) φ = 0`. Take the linear combination `e1 - S.c γ x ^ 2 * ip S (S.rho x φ) φ * h.mul_self hγ`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ip_rho_eq_zero {al : X → ℂ} {Γ : AddSubgroup X} (hΓ : SelfDual S Γ) (h : IsSemi S al Γ) {φ : M}
     (hφ : Law S al Γ φ) {x : X} (hx : x ∉ Γ) : ip S (S.rho x φ) φ = 0 := by
@@ -276,21 +276,21 @@ theorem ip_rho_eq_zero {al : X → ℂ} {Γ : AddSubgroup X} (hΓ : SelfDual S �
   exact (mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Implements.refl : Implements S (AddEquiv.refl X) LinearMap.id := ⟨fun _ _ => rfl, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x v => by simp [h'.1, h.1], fun u v => by simp [h.2, h'.2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem Implements.comp {g g' : X ≃+ X} {T T' : M →ₗ[ℂ] M} (h : Implements S g T) (h' : Implements S g' T') :
     Implements S (g'.trans g) (T ∘ₗ T') :=
   ⟨fun x v => by simp [h'.1, h.1], fun u v => by simp [h.2, h'.2]⟩
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Assume the negation of the conclusion as `hne`. Use `S.B_pos v hne` as an intermediate fact. Rewrite `this` using `[← h.2, hv]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`.
+Simplify using the standard rewrite rules.
 -/
 theorem Implements.injective {g : X ≃+ X} {T : M →ₗ[ℂ] M} (h : Implements S g T) : Function.Injective T := by
   rw [injective_iff_map_eq_zero]
@@ -301,11 +301,11 @@ theorem Implements.injective {g : X ≃+ X} {T : M →ₗ[ℂ] M} (h : Implement
   simp at this
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne (0 : M)`. Establish `e : T (S.rho x (S.rho y v)) = T (S.c x y • S.rho (x + y) v)` using `by rw [S.rho_rho]`. Rewrite `e` using `[h.1, h.1, S.rho_rho, map_smul, h.1, map_add]`. Establish `hne : S.rho (g x + g y) (T v) ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hv` to reduce the goal to its premises. Apply `h.injective` to reduce the goal to its premises. Apply `(S.rho_bijective (g x + g y)).1` to reduce the goal to its premises. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `smul_left_injective ℂ hne e`.
+A detailed English derivation is pending.
 -/
 theorem Implements.c_map [Nontrivial M] {g : X ≃+ X} {T : M →ₗ[ℂ] M} (h : Implements S g T) (x y : X) :
     S.c (g x) (g y) = S.c x y := by
@@ -321,7 +321,7 @@ theorem Implements.c_map [Nontrivial M] {g : X ≃+ X} {T : M →ₗ[ℂ] M} (h 
   exact smul_left_injective ℂ hne e
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨γ, hγ, rfl⟩`. Express the relevant statement in the definitionally equal form `S.rho (g γ) (T φ) = (al (g γ))⁻¹ • T φ`. Rewrite using `[← h.1, hφ γ hγ, map_smul, hal γ hγ]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem Implements.law {g : X ≃+ X} {T : M →ₗ[ℂ] M} (h : Implements S g T) {al : X → ℂ} {Γ : AddSubgroup X}
     (hal : ∀ γ ∈ Γ, al (g γ) = al γ) {φ : M} (hφ : Law S al Γ φ) : Law S al (Γ.map g.toAddMonoidHom) (T φ) := by
@@ -330,7 +330,7 @@ theorem Implements.law {g : X ≃+ X} {T : M →ₗ[ℂ] M} (h : Implements S g 
   rw [← h.1, hφ γ hγ, map_smul, hal γ hγ]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.law hal hφ.1, by rw [h.2, hφ.2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem Implements.unitVac {g : X ≃+ X} {T : M →ₗ[ℂ] M} (h : Implements S g T) {al : X → ℂ} {Γ : AddSubgroup X}
     (hal : ∀ γ ∈ Γ, al (g γ) = al γ) {φ : M} (hφ : UnitVac S al Γ φ) :
@@ -342,7 +342,7 @@ namespace Inh
 def e (n : ZMod 4) : ℂ := Complex.I ^ n.val
 
 /- English proof (translation)
-Unfold `e`. Rewrite using `[← pow_add, ZMod.val_add]`. Use `conv_rhs => rw [← Nat.mod_add_div (m.val + n.val) 4, pow_add, pow_mul, Complex.I_pow_four, one_pow, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e_add (m n : ZMod 4) : e (m + n) = e m * e n := by
   unfold e
@@ -350,37 +350,37 @@ theorem e_add (m n : ZMod 4) : e (m + n) = e m * e n := by
   conv_rhs => rw [← Nat.mod_add_div (m.val + n.val) 4, pow_add, pow_mul, Complex.I_pow_four, one_pow, mul_one]
 
 /- English proof (translation)
-Simplify using `[e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem e_zero : e 0 = 1 := by simp [e]
 
 /- English proof (translation)
-Establish `: (1 : ZMod 4).val = 1` using `by decide`. Simplify using `[e, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem e_one : e 1 = Complex.I := by
   have : (1 : ZMod 4).val = 1 := by decide
   simp [e, this]
 
 /- English proof (translation)
-Establish `: (2 : ZMod 4).val = 2` using `by decide`. Simplify using `[e, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem e_two : e 2 = -1 := by
   have : (2 : ZMod 4).val = 2 := by decide
   simp [e, this]
 
 /- English proof (translation)
-Simplify using `[e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem e_norm (n : ZMod 4) : ‖e n‖ = 1 := by simp [e]
 
 /- English proof (translation)
-Rewrite using `[Complex.conj_mul', e_norm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem e_conj (n : ZMod 4) : (starRingEnd ℂ) (e n) * e n = 1 := by
   rw [Complex.conj_mul', e_norm]; simp
 
 /- English proof (translation)
-Establish `: n = 0 ∨ n = 2` using `by revert n; decide`. Break down `this with rfl | rfl` into its components or cases. Conclude with `Or.inl e_zero`. Conclude with `Or.inr e_two`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem e_eq_one (n : ZMod 4) (h : 2 * n = 0) : e n = 1 ∨ e n = -1 := by
   have : n = 0 ∨ n = 2 := by revert n; decide
@@ -389,9 +389,9 @@ theorem e_eq_one (n : ZMod 4) (h : 2 * n = 0) : e n = 1 ∨ e n = -1 := by
   · exact Or.inr e_two
 
 /- English proof (translation)
-Rewrite using `[sq, ← e_add, ← two_mul]`. Establish `: 2 * n = 0 ∨ 2 * n = 2` using `by revert n; decide`. Break down `this with h | h` into its components or cases. Rewrite using `[h, e_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, e_two]`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Evaluate the numerical expressions using `at hh`. Introduce `hh; exact absurd hh (by decide)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem e_sq (n : ZMod 4) : e n ^ 2 = 1 ↔ 2 * n = 0 := by
   rw [sq, ← e_add, ← two_mul]
@@ -408,12 +408,12 @@ def dbl (t : ZMod 2) : ZMod 4 := 2 * (t.val : ZMod 4)
 def red (a : ZMod 4) : ZMod 2 := (a.val : ZMod 2)
 
 /- English proof (translation)
-Use `revert a b`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem red_add (a b : ZMod 4) : red (a + b) = red a + red b := by revert a b; decide
 
 /- English proof (translation)
-Use `revert t a`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem dbl_add (t : ZMod 2) (a : ZMod 4) : dbl (t + red a) = dbl t + 2 * a := by revert t a; decide
 
@@ -433,7 +433,7 @@ theorem BEx_apply (f g : ZMod 2 → ℂ) :
     BEx f g = (starRingEnd ℂ) (f 0) * g 0 + (starRingEnd ℂ) (f 1) * g 1 := rfl
 
 /- English proof (translation)
-Use `revert t`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem zmod2 (t : ZMod 2) : t = 0 ∨ t = 1 := by revert t; decide
 
@@ -494,19 +494,19 @@ def G₂ : AddSubgroup (ZMod 4 × ZMod 4) where
   neg_mem' := by intro x hx; simp only [Set.mem_setOf_eq, Prod.fst_neg] at *; rw [mul_neg, hx, neg_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_G₁ (x : ZMod 4 × ZMod 4) : x ∈ G₁ ↔ 2 * x.2 = 0 := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_G₂ (x : ZMod 4 × ZMod 4) : x ∈ G₂ ↔ 2 * x.1 = 0 := Iff.rfl
 
 def alEx (x : ZMod 4 × ZMod 4) : ℂ := e (x.1 * x.2)
 
 /- English proof (translation)
-Introduce `x`. Simplify using `only [mem_G₁, sysEx, e_sq]`. Use `revert x`. Evaluate the decidable proposition.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem selfDual_G₁ : SelfDual sysEx G₁ := by
   intro x
@@ -514,7 +514,7 @@ theorem selfDual_G₁ : SelfDual sysEx G₁ := by
   revert x; decide
 
 /- English proof (translation)
-Introduce `x`. Simplify using `only [mem_G₂, sysEx, e_sq]`. Use `revert x`. Evaluate the decidable proposition.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem selfDual_G₂ : SelfDual sysEx G₂ := by
   intro x
@@ -522,9 +522,9 @@ theorem selfDual_G₂ : SelfDual sysEx G₂ := by
   revert x; decide
 
 /- English proof (translation)
-Use `⟨fun x hx => e_eq_one _ ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[mem_G₁]`. Take the linear combination `x.1 * hx`. Simplify using `only [alEx, sysEx, ← e_add, Prod.fst_add, Prod.snd_add]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `hx` using `[mem_G₁]`. Take the linear combination `y.1 * hx`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isSemi_G₁ : IsSemi sysEx alEx G₁ := by
   refine ⟨fun x hx => e_eq_one _ ?_, fun x hx y hy => ?_⟩
@@ -534,9 +534,9 @@ theorem isSemi_G₁ : IsSemi sysEx alEx G₁ := by
     rw [mem_G₁] at hx; linear_combination y.1 * hx
 
 /- English proof (translation)
-Use `⟨fun x hx => e_eq_one _ ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[mem_G₂]`. Take the linear combination `x.2 * hx`. Simplify using `only [alEx, sysEx, ← e_add, Prod.fst_add, Prod.snd_add]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `hy` using `[mem_G₂]`. Take the linear combination `x.2 * hy`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isSemi_G₂ : IsSemi sysEx alEx G₂ := by
   refine ⟨fun x hx => e_eq_one _ ?_, fun x hx y hy => ?_⟩
@@ -546,7 +546,7 @@ theorem isSemi_G₂ : IsSemi sysEx alEx G₂ := by
     rw [mem_G₂] at hy; linear_combination x.2 * hy
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨by rw [mem_G₁]; decide, ?_, ?_, ?_⟩ <;> simp [alEx, e_two, e_zero]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem alEx_nontrivial : ((1, 2) : ZMod 4 × ZMod 4) ∈ G₁ ∧ alEx (1, 2) = -1 ∧ alEx (1, 0) = 1 ∧ alEx (0, 2) = 1 := by
   refine ⟨by rw [mem_G₁]; decide, ?_, ?_, ?_⟩ <;> simp [alEx, e_two, e_zero]
@@ -554,11 +554,11 @@ theorem alEx_nontrivial : ((1, 2) : ZMod 4 × ZMod 4) ∈ G₁ ∧ alEx (1, 2) =
 def vac : ZMod 2 → ℂ := fun t => if t = 0 then 1 else 0
 
 /- English proof (translation)
-Use `⟨fun g hg => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isSemi_G₂.inv_eq hg]`. Rewrite `hg` using `[mem_G₂]`. Establish `h : red g.1 = 0`. Generalize the expression as in `g.1 = a at hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Use `revert a`. Evaluate the decidable proposition. Establish `d0 : dbl 0 = 0` using `by decide`. Use extensionality with `t`. Apply the tactic sequence `rcases zmod2 t with rfl | rfl <;> simp [sysEx, rhoEx, vac, h, d0, alEx]`.
+Evaluate the decidable proposition. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[sysEx, BEx_apply, vac]`.
+A detailed English derivation is pending.
 -/
 theorem unitVac_vac : UnitVac sysEx alEx G₂ vac := by
   refine ⟨fun g hg => ?_, ?_⟩
@@ -573,11 +573,11 @@ theorem unitVac_vac : UnitVac sysEx alEx G₂ vac := by
   · simp [sysEx, BEx_apply, vac]
 
 /- English proof (translation)
-Unfold `Cyclic`. Rewrite using `[eq_top_iff]`. Introduce `f _`. Establish `r0 : red 0 = 0` using `by decide`. Establish `r1 : red 1 = 1` using `by decide`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h11 : (1 : ZMod 2) + 1 = 0` using `by decide`. Establish `: f = f 0 • sysEx.rho (0, 0) vac + f 1 • sysEx.rho (1, 0) vac`. Use extensionality with `t`. Apply the tactic sequence `rcases zmod2 t with rfl | rfl <;> simp [sysEx, rhoEx, vac, r0, r1, h11, e_zero]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem cyclic_vac : Cyclic sysEx vac := by
   unfold Cyclic
@@ -594,9 +594,9 @@ theorem cyclic_vac : Cyclic sysEx vac := by
     (Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))
 
 /- English proof (translation)
-Rewrite using `[AddSubgroup.relIndex, AddSubgroup.index_eq_two_iff]`. Use `⟨⟨(1, 0), by rw [mem_G₁]; decide⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨a, b⟩, hb⟩`. Simplify using `only [AddSubgroup.mem_addSubgroupOf, mem_G₂, AddSubgroup.coe_add, Prod.fst_add, Xor']`. Use `clear hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Evaluate the decidable proposition.
 
-Use `revert a`. Evaluate the decidable proposition.
+A detailed English derivation is pending.
 -/
 theorem relIndex_ex : G₂.relIndex G₁ = 2 := by
   rw [AddSubgroup.relIndex, AddSubgroup.index_eq_two_iff]
@@ -621,11 +621,9 @@ def TEx : (ZMod 2 → ℂ) →ₗ[ℂ] (ZMod 2 → ℂ) where
   map_smul' a f := by ext t; simp; ring
 
 /- English proof (translation)
-Use `⟨fun x v => ?_, fun u v => ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Take `⟨a, b⟩` from `x`. Use `show e (ph t) * (e (a * b + b * dbl t) * v (t + red a)) = e (a * (b + a) + (b + a) * dbl t) * (e (ph (t + red a)) * v (t + red a))`. Rewrite using `[← mul_assoc, ← mul_assoc, ← e_add, ← e_add]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `revert a b t`. Evaluate the decidable proposition. Use `show BEx _ _ = BEx _ _`. Simplify using `only [BEx_apply, TEx, LinearMap.coe_mk, AddHom.coe_mk, map_mul]`.
-
-Take the linear combination `((starRingEnd ℂ) (u 0) * v 0) * e_conj (ph 0) + ((starRingEnd ℂ) (u 1) * v 1) * e_conj (ph 1)`.
+Evaluate the decidable proposition. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem implements_ex : Implements sysEx shear TEx := by
   refine ⟨fun x v => ?_, fun u v => ?_⟩
@@ -641,17 +639,15 @@ theorem implements_ex : Implements sysEx shear TEx := by
     linear_combination ((starRingEnd ℂ) (u 0) * v 0) * e_conj (ph 0) + ((starRingEnd ℂ) (u 1) * v 1) * e_conj (ph 1)
 
 /- English proof (translation)
-Establish `hN : G₂.relIndex G₁ ≠ 0` using `by rw [relIndex_ex]; norm_num`. Establish `: Finite (G₁ ⧸ G₂.addSubgroupOf G₁)` using `Nat.finite_of_card_ne_zero hN`. Use `letI : Fintype (G₁ ⧸ G₂.addSubgroupOf G₁) := Fintype.ofFinite _`. Set `a : G₁` to `⟨(1, 0), by rw [mem_G₁]; decide⟩`. Establish `ha : (QuotientAddGroup.mk a : G₁ ⧸ G₂.addSubgroupOf G₁) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Ne, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, mem_G₂]`. Evaluate the decidable proposition. Establish `hall : ∀ q : G₁ ⧸ G₂.addSubgroupOf G₁, q = 0 ∨ q = QuotientAddGroup.mk a`. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `H z`. Take `⟨⟨x, y⟩, hz⟩` from `z`. Rewrite using `[QuotientAddGroup.eq_zero_iff, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_addSubgroupOf, mem_G₂, mem_G₂]`. Use `show 2 * x = 0 ∨ 2 * (-x + 1) = 0`. Use `clear hz`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Establish an intermediate fact.
 
-Use `revert x`. Evaluate the decidable proposition. Establish `hu : (Finset.univ : Finset (G₁ ⧸ G₂.addSubgroupOf G₁)) = {0, QuotientAddGroup.mk a}`. Use extensionality with `q`. Simplify using `using hall q`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [abelian₂, relIndex_ex, la_eq_sum isSemi_G₁ unitVac_vac.1 (fun q => if q = 0 then 0 else a) (fun q => by rcases hall q with rfl | rfl <;> simp [ha]), hu, Finset.sum_pair ha.symm]`. Establish `r0 : red 0 = 0` using `by decide`. Establish `r1 : red 1 = 1` using `by decide`. Establish `h11 : (1 : ZMod 2) + 1 = 0` using `by decide`. Use function extensionality and compare the values at `t`.
-
-Apply the tactic sequence `rcases zmod2 t with rfl | rfl <;> simp [ha, a, sysEx, rhoEx, vac, alEx, r0, r1, h11, e_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Lam_vac : abelian₂ sysEx alEx G₁ G₂ vac = fun _ => ((Real.sqrt 2 : ℝ) : ℂ)⁻¹ := by
   have hN : G₂.relIndex G₁ ≠ 0 := by rw [relIndex_ex]; norm_num
@@ -683,12 +679,12 @@ theorem Lam_vac : abelian₂ sysEx alEx G₁ G₂ vac = fun _ => ((Real.sqrt 2 :
   rcases zmod2 t with rfl | rfl <;> simp [ha, a, sysEx, rhoEx, vac, alEx, r0, r1, h11, e_zero]
 
 /- English proof (translation)
-Simplify using `[sysEx, e_one]`.
+Simplify using the standard rewrite rules.
 -/
 example : sysEx.c (1, 0) (0, 1) ^ 2 = -1 := by simp [sysEx, e_one]
 
 /- English proof (translation)
-Establish `h` using `unitVac_vac.2`. Prove the components needed by the constructor for the conclusion. Rewrite using `[ip_smul_left, ip_apply, h, mul_one]`. Rewrite using `[← ip_apply, ip_smul_right, ip_apply, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : ip sysEx (Complex.I • vac) vac = Complex.I ∧ sysEx.B (Complex.I • vac) vac = -Complex.I := by
   have h := unitVac_vac.2
@@ -697,7 +693,7 @@ example : ip sysEx (Complex.I • vac) vac = Complex.I ∧ sysEx.B (Complex.I �
   · rw [← ip_apply, ip_smul_right, ip_apply, h]; simp
 
 /- English proof (translation)
-Rewrite using `[Lam_vac]`. Simplify using `[sysEx, BEx_apply, vac]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : ip sysEx (abelian₂ sysEx alEx G₁ G₂ vac) vac = ((Real.sqrt 2 : ℝ) : ℂ)⁻¹ := by
   rw [Lam_vac]; simp [sysEx, BEx_apply, vac]

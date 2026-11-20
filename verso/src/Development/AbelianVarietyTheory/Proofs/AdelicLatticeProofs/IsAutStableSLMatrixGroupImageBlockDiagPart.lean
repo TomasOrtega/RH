@@ -6,11 +6,11 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Establish `h1 : E * (1 - E) = 0` using `by rw [mul_sub, mul_one, hE, sub_self]`. Establish `h2 : (1 - E) * E = 0` using `by rw [sub_mul, one_mul, hE, sub_self]`. Establish `h3 : (1 - E) * (1 - E) = 1 - E` using `by rw [mul_sub, mul_one, h2, sub_zero]`. Use `set F := 1 - E with hF`. Establish `hs : E + F = 1` using `by rw [hF]; abel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : E * (g * h) * E = E * g * E * h * E`. Combine the equalities or inequalities in the displayed calculation. Establish `a2 : F * (g * h) * F = F * g * F * h * F`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[a1, a2]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private lemma idempotent_corner_part_mul {A : Type} [Ring A] (E g h : A) (hE : E * E = E)
     (hg : (1 - E) * g * E = 0) (hh : (1 - E) * h * E = 0) :
@@ -35,7 +35,7 @@ private lemma idempotent_corner_part_mul {A : Type} [Ring A] (E g h : A) (hE : E
     _ = _ := by rw [hE, h1, h2, h3]; noncomm_ring
 
 /- English proof (translation)
-Establish `: E * 1 * E + (1 - E) * 1 * (1 - E) = 1 + 2 * (E * E - E)` using `by noncomm_ring`. Rewrite using `[this, hE, sub_self, mul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma idempotent_corner_sum_one {A : Type} [Ring A] (E : A) (hE : E * E = E) :
     E * 1 * E + (1 - E) * 1 * (1 - E) = 1 := by
@@ -43,11 +43,11 @@ private lemma idempotent_corner_sum_one {A : Type} [Ring A] (E : A) (hE : E * E 
   rw [this, hE, sub_self, mul_zero, add_zero]
 
 /- English proof (translation)
-Establish `h2 : (1 - E) * E = 0` using `by rw [sub_mul, one_mul, hE, sub_self]`. Use `set F := 1 - E with hF`. Establish `hs : E + F = 1` using `by rw [hF]; abel`. Establish `a1 : E * g * E = g * E`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `a2 : h = (E * h * E + F * h * F) + E * h * F`. Combine the equalities or inequalities in the displayed calculation. Establish `a3 : g * (E * h * E + F * h * F) + g * (E * h * F) = 1`. Rewrite using `[← mul_add, ← a2, hgh]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← a3]`. Use `noncomm_ring`. Use `_ = 1 - E * g * E * h * F := by rw [a1]`. Use `_ = _ := by noncomm_ring`.
+A detailed English derivation is pending.
 -/
 private lemma idempotent_corner_part_inv {A : Type} [Ring A] (E g h : A) (hE : E * E = E)
     (hg : (1 - E) * g * E = 0) (hh : (1 - E) * h * E = 0) (hgh : g * h = 1) :
@@ -71,21 +71,19 @@ private lemma idempotent_corner_part_inv {A : Type} [Ring A] (E g h : A) (hE : E
     _ = _ := by noncomm_ring
 
 /- English proof (translation)
-Introduce `ι _ _ Γ e hΓ he htri`. Establish `hE : e.map (algebraMap ℚ ℂ) * e.map (algebraMap ℚ ℂ) = e.map (algebraMap ℚ ℂ)`. Rewrite using `[← Matrix.map_mul, he]`. Establish `hmul : ∀ g ∈ Γ, ∀ h ∈ Γ, blk e g * blk e h = blk e (g * h)` using `fun g hg h hh => idempotent_corner_part_mul _ g h hE (htri g hg) (htri h hh)`. Establish `hone : blk e (1 : Matrix ι ι ℂ) = 1` using `idempotent_corner_sum_one _ hE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hga : ∀ g ∈ Γ, g * g.adjugate = 1` using `fun g hg => by`. Rewrite using `[Matrix.mul_adjugate, hΓ.det_eq g hg, one_smul]`. Establish `hinv : ∀ g ∈ Γ, blk e g * blk e g.adjugate = 1` using `fun g hg => by`. Rewrite using `[hmul g hg _ (hΓ.adj_mem g hg), hga g hg, hone]`. Establish `hdet : ∀ g ∈ Γ, (blk e g).det = 1` using `fun g hg => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `idempotent_corner_part_inv _ g g.adjugate hE (htri g hg) (htri _ (hΓ.adj_mem g hg)) (hga g hg)`. Establish `h2 : (g * blk e g.adjugate).det = 1`. Unfold `blk`. Rewrite using `[h1, Matrix.det_one_add_mul_comm, mul_assoc, sub_mul, one_mul, hE, sub_self, mul_zero, add_zero, Matrix.det_one]`. Rewrite `h2` using `[Matrix.det_mul, hΓ.det_eq g hg, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg Matrix.det (hinv g hg)`. Rewrite `h3` using `[Matrix.det_mul, h2, mul_one, Matrix.det_one]`. Then use the resulting hypothesis. Use `⟨⟨1, hΓ.one_mem, hone⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩ _ ⟨h, hh, rfl⟩`. Conclude with `⟨g * h, hΓ.mul_mem g hg h hh, (hmul g hg h hh).symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `⟨g.adjugate, hΓ.adj_mem g hg, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.adjugate_mul, hdet g hg, one_smul, one_mul]`. Use `_ = _ := by rw [mul_assoc, hinv g hg, mul_one]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `hdet g hg`. Introduce and unpack `σ _ ⟨g, hg, rfl⟩`. Use `⟨g.map σ, hΓ.aut_mem σ g hg, ?_⟩` and prove the remaining obligations. Establish `hσ : (σ : ℂ →+* ℂ).mapMatrix (e.map (algebraMap ℚ ℂ)) = e.map (algebraMap ℚ ℂ)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `_ = (σ : ℂ →+* ℂ).mapMatrix (blk e g)`. Unfold `blk`. Rewrite using `[map_add, map_mul, map_mul, map_mul, map_mul, map_sub, map_one, hσ]`.
-
-Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isPre_blk_image :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)) (e : Matrix ι ι ℚ), IsPre Γ → e * e = e → (∀ g ∈ Γ, (1 - e.map (algebraMap ℚ ℂ)) * g * e.map (algebraMap ℚ ℂ) = 0) → IsPre (blk e '' Γ) := by

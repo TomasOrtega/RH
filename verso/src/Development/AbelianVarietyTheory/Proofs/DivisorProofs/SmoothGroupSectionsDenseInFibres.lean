@@ -15,34 +15,30 @@ noncomputable section
 
 namespace GlobalTheory.DenseSec
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_etale_chart_smooth_algebra_local_point`.
+A detailed English derivation is pending.
 -/
 theorem chart : ∀ (R : Type) [CommRing R] [IsLocalRing R] (A : Type) [CommRing A] [Algebra R A] [Algebra.Smooth R A] (ε : A →ₐ[R] R), ∃ (g : ℕ) (t : Fin g → A) (h : A), (∀ i, ε (t i) = 0) ∧ IsUnit (ε h) ∧ GlobalTheory.DenseSec.EtChart R A t h := GlobalTheory.T.exists_etale_chart_smooth_algebra_local_point
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_section_lifting_residue_values`.
+A detailed English derivation is pending.
 -/
 theorem hensel : ∀ (R : Type) [CommRing R] [IsLocalRing R], IsAdicComplete (maximalIdeal R) R → ∀ (A : Type) [CommRing A] [Algebra R A] (g : ℕ) (t : Fin g → A) (h : A), GlobalTheory.DenseSec.EtChart R A t h → ∀ (ε : A →ₐ[R] R), IsUnit (ε h) → ∀ c : Fin g → R, (∀ i, c i - ε (t i) ∈ maximalIdeal R) → ∃ a : A →ₐ[R] R, IsUnit (a h) ∧ ∀ i, a (t i) = c i := GlobalTheory.T.exists_section_lifting_residue_values
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_poly_vanishing_of_fiber`.
+A detailed English derivation is pending.
 -/
 theorem fibre : ∀ (R : Type) [CommRing R] (A : Type) [CommRing A] [Algebra R A] (g : ℕ) (t : Fin g → A) (h : A), GlobalTheory.DenseSec.EtChart R A t h → ∀ (Ω : Type) [Field Ω] [Algebra R Ω], IrreducibleSpace (PrimeSpectrum (TensorProduct R Ω A)) → ∀ f : TensorProduct R Ω A, ¬ IsNilpotent f → ∃ Q : MvPolynomial (Fin g) Ω, Q ≠ 0 ∧ ∀ a : A →ₐ[R] Ω, a h ≠ 0 → GlobalTheory.DenseSec.pt a f = 0 → MvPolynomial.eval (fun i => a (t i)) Q = 0 := GlobalTheory.T.exists_poly_vanishing_of_fiber
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.denseSections_of_algebraic_affineNbhd`.
+A detailed English derivation is pending.
 -/
 theorem reduce : (∀ (R : Type) [CommRing R] [IsLocalRing R], IsAdicComplete (maximalIdeal R) R → ∀ (A : Type) [CommRing A] [Algebra R A] [Algebra.Smooth R A] (ε : A →ₐ[R] R) (Ω : Type) [Field Ω] [Algebra R Ω], RingHom.ker (algebraMap R Ω) ≠ maximalIdeal R → IrreducibleSpace (PrimeSpectrum (TensorProduct R Ω A)) → ∀ f : TensorProduct R Ω A, ¬ IsNilpotent f → ∃ a : A →ₐ[R] R, GlobalTheory.DenseSec.pt ((Algebra.ofId R Ω).comp a) f ≠ 0) → ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R], IsAdicComplete (maximalIdeal R) R → ∀ (U : Over (Sp R)), Smooth U.hom → ∀ (e : Sp R ⟶ U.left), e ≫ U.hom = 𝟙 _ → ∀ (Ω : Type) [Field Ω] (x : Sp Ω ⟶ Sp R), closedPoint R ∉ Set.range x → IrreducibleSpace (pullback U.hom x : Scheme.{0}) → ∀ O : (pullback U.hom x).Opens, (O : Set (pullback U.hom x : Scheme.{0})).Nonempty → ∃ (a : Sp R ⟶ U.left) (aΩ : Sp Ω ⟶ pullback U.hom x), a ≫ U.hom = 𝟙 _ ∧ aΩ ≫ pullback.fst _ _ = x ≫ a ∧ aΩ ≫ pullback.snd _ _ = 𝟙 _ ∧ Set.range aΩ ⊆ O := GlobalTheory.T.denseSections_of_algebraic_affineNbhd
 
 /- English proof (translation)
-Establish `hle : RingHom.ker (algebraMap R Ω) ≤ maximalIdeal R` using `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top _)`. Choose the witnesses or unpack the hypotheses as in `⟨m0, hm0, hm0k⟩ : ∃ m0 ∈ maximalIdeal R, m0 ∉ RingHom.ker (algebraMap R Ω) := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hker (le_antisymm hle hcon)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm0k` using `[RingHom.mem_ker]`. Establish `hne : ∀ n k : ℕ, n < k → algebraMap R Ω (m0 ^ (n + 1)) ≠ algebraMap R Ω (m0 ^ (k + 1))`. Introduce `n k hnk heq`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt hnk`. Establish `h1 : algebraMap R Ω (m0 ^ (d + 1)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : algebraMap R Ω (m0 ^ (n + 1)) ≠ 0` using `by rw [map_pow]; exact pow_ne_zero _ hm0k`. Establish `: algebraMap R Ω (m0 ^ (n + 1)) * algebraMap R Ω (m0 ^ (d + 1)) = algebraMap R Ω (m0 ^ (n + 1)) * 1`. Rewrite using `[_root_.mul_one, ← map_mul, ← _root_.pow_add, heq]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ hpow this`. Establish `h2 : 1 - m0 ^ (d + 1) ∈ maximalIdeal R` using `hle (by rw [RingHom.mem_ker, map_sub, map_one, h1, sub_self])`. Establish `h3 : m0 ^ (d + 1) ∈ maximalIdeal R` using `Ideal.pow_mem_of_mem _ hm0 _ d.succ_pos`. Conclude with `(maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using Ideal.add_mem _ h2 h3))`. Establish `hinj : Function.Injective (fun n : ℕ => algebraMap R Ω (m0 ^ (n + 1)))`.
-
-Introduce `n k h`. Assume the negation of the conclusion as `hnk`. Break down `lt_or_gt_of_ne hnk with hlt | hlt` into its components or cases. Conclude with `hne n k hlt h`. Conclude with `hne k n hlt h.symm`.
-
-Conclude with `Set.infinite_of_injective_forall_mem hinj (fun n => ⟨m0 ^ (n + 1), Ideal.pow_mem_of_mem _ hm0 _ n.succ_pos, rfl⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem image_maximalIdeal_infinite {R Ω : Type} [CommRing R] [IsLocalRing R] [Field Ω] [Algebra R Ω]
     (hker : RingHom.ker (algebraMap R Ω) ≠ maximalIdeal R) :
@@ -77,9 +73,9 @@ theorem image_maximalIdeal_infinite {R Ω : Type} [CommRing R] [IsLocalRing R] [
   exact Set.infinite_of_injective_forall_mem hinj (fun n => ⟨m0 ^ (n + 1), Ideal.pow_mem_of_mem _ hm0 _ n.succ_pos, rfl⟩)
 
 /- English proof (translation)
-Take `⟨T, hTS, hT⟩` from `hS.exists_subset_card_eq (Q.totalDegree + 1)`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hQ` to reduce the goal to its premises. Use `MvPolynomial.eq_zero_of_eval_zero_at_prod_finset Q (fun _ => T) (fun i => ?_) (fun x hx => hcon x (fun i => hTS (hx i)))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT]`. Conclude with `Nat.lt_succ_of_le (MvPolynomial.degreeOf_le_totalDegree Q i)`.
+A detailed English derivation is pending.
 -/
 theorem exists_eval_ne_zero_of_infinite {Ω : Type} [Field Ω] (S : Set Ω) (hS : S.Infinite) (g : ℕ)
     (Q : MvPolynomial (Fin g) Ω) (hQ : Q ≠ 0) : ∃ c : Fin g → Ω, (∀ i, c i ∈ S) ∧ MvPolynomial.eval c Q ≠ 0 := by
@@ -92,11 +88,11 @@ theorem exists_eval_ne_zero_of_infinite {Ω : Type} [Field Ω] (S : Set Ω) (hS 
   exact Nat.lt_succ_of_le (MvPolynomial.degreeOf_le_totalDegree Q i)
 
 /- English proof (translation)
-Introduce `R _ _ hc A _ _ _ ε Ω _ _ hker hirr f hf`. Take `⟨g, t, h, ht0, hεh, hch⟩` from `chart R A ε`. Take `⟨Q, hQ, hQv⟩` from `fibre R A g t h hch Ω hirr f hf`. Take `⟨c', hc'S, hc'Q⟩` from `exists_eval_ne_zero_of_infinite _ (image_maximalIdeal_infinite hker) g Q hQ`. Use `choose c hcm hcc using hc'S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, hah, hat⟩` from `hensel R hc A g t h hch ε hεh c (fun i => by simpa [ht0] using hcm i)`. Use `⟨a, fun h0 => hc'Q ?_⟩` and prove the remaining obligations. Establish `hv` using `hQv ((Algebra.ofId R Ω).comp a) (by simpa using (hah.map (algebraMap R Ω)).ne_zero) h0`. Establish `hc' : c' = fun i => ((Algebra.ofId R Ω).comp a) (t i)`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[hat, hcc]`. Rewrite using `[hc']`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key : ∀ (R : Type) [CommRing R] [IsLocalRing R], IsAdicComplete (maximalIdeal R) R → ∀ (A : Type) [CommRing A] [Algebra R A] [Algebra.Smooth R A] (ε : A →ₐ[R] R) (Ω : Type) [Field Ω] [Algebra R Ω], RingHom.ker (algebraMap R Ω) ≠ maximalIdeal R → IrreducibleSpace (PrimeSpectrum (TensorProduct R Ω A)) → ∀ f : TensorProduct R Ω A, ¬ IsNilpotent f → ∃ a : A →ₐ[R] R, GlobalTheory.DenseSec.pt ((Algebra.ofId R Ω).comp a) f ≠ 0 := by
   intro R _ _ hc A _ _ _ ε Ω _ _ hker hirr f hf
@@ -114,7 +110,7 @@ theorem key : ∀ (R : Type) [CommRing R] [IsLocalRing R], IsAdicComplete (maxim
   exact hv
 
 /- English proof (translation)
-The claim follows from `reduce key`.
+A detailed English derivation is pending.
 -/
 theorem dense_sections : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R], IsAdicComplete (maximalIdeal R) R → ∀ (U : Over (Sp R)), Smooth U.hom → ∀ (e : Sp R ⟶ U.left), e ≫ U.hom = 𝟙 _ → ∀ (Ω : Type) [Field Ω] (x : Sp Ω ⟶ Sp R), closedPoint R ∉ Set.range x → IrreducibleSpace (pullback U.hom x : Scheme.{0}) → ∀ O : (pullback U.hom x).Opens, (O : Set (pullback U.hom x : Scheme.{0})).Nonempty → ∃ (a : Sp R ⟶ U.left) (aΩ : Sp Ω ⟶ pullback U.hom x), a ≫ U.hom = 𝟙 _ ∧ aΩ ≫ pullback.fst _ _ = x ≫ a ∧ aΩ ≫ pullback.snd _ _ = 𝟙 _ ∧ Set.range aΩ ⊆ O := reduce key
 end GlobalTheory.DenseSec

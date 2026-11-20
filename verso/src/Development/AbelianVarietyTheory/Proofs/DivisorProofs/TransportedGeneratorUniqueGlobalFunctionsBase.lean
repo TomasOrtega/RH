@@ -15,7 +15,7 @@ open TopologicalSpace
 variable {X X' Y : Scheme.{0}} {M : LB X} {M' : LB X'} {K₀ : Type} [Fintype K₀] {ψ : K₀ → (X' ⟶ X)} {δ : K₀ → ℤ}
 
 /- English proof (translation)
-Establish `hm : χ z ∈ LB.wchart M ψ jj ⊓ M'.U k ⊓ (LB.wchart M ψ jj' ⊓ M'.U k')` using `⟨⟨h₁, h₂⟩, h₁', h₂'⟩`. Establish `e` using `congrArg (gm χ z (LB.wchart M ψ jj ⊓ M'.U k ⊓ (LB.wchart M ψ jj' ⊓ M'.U k'))) (hw (jj, k) (jj', k'))`. Establish `d` using `gm_div M' (LB.LinComb M ψ δ) χ z (jj, k) (jj', k') hm`. Establish `l` using `gm_linComb M ψ δ χ z jj jj' h₁ h₁'`. Conclude with `(gm_res χ z _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (d.trans (congrArg₂ (· * ·) l rfl)) (gm_res χ z _ hm _))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem w_trans (w : LB.Iso M' (LB.LinComb M ψ δ)) (hw : w.IsGen) {Z : Scheme.{0}} (χ : Z ⟶ X') (z : Z)
     {jj jj' : K₀ → M.ι} {k k' : M'.ι} (h₁ : χ z ∈ LB.wchart M ψ jj) (h₁' : χ z ∈ LB.wchart M ψ jj')
@@ -31,7 +31,7 @@ theorem w_trans (w : LB.Iso M' (LB.LinComb M ψ δ)) (hw : w.IsGen) {Z : Scheme.
     (d.trans (congrArg₂ (· * ·) l rfl)) (gm_res χ z _ hm _))))
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_split {G : Type} [CommGroup G] {K : Type} [Fintype K] (ε : K → ℤ) (f : K × K₀ → G) :
     ∏ p, f p ^ (ε p.1 * δ p.2) = ∏ a, (∏ i, f (a, i) ^ δ i) ^ ε a := by
@@ -46,7 +46,7 @@ section Gen
 variable {K : Type} [Fintype K] {φ' : K → (Y ⟶ X')} {ε : K → ℤ}
 
 /- English proof (translation)
-Introduce `_ hy` and use `⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 (a, k), Set.mem_iInter.1 hy.2 a⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem chart_le (j : K × K₀ → M.ι) (q : K → M'.ι) (a : K) :
     LB.wchart M (fun p : K × K₀ => φ' p.1 ≫ ψ p.2) j ⊓ LB.wchart M' φ' q ≤
@@ -58,9 +58,9 @@ def locU (w : LB.Iso M' (LB.LinComb M ψ δ)) (t' : LB.Gen (LB.LinComb M' φ' ε
   (∏ a, res (chart_le j q a) (pullU (φ' a) _ (w.s (fun k => j (a, k), q a))) ^ ε a) * res inf_le_right (t'.s q)
 
 /- English proof (translation)
-Use `(map_mul (gm r z _) _ _).trans (congrArg₂ (· * ·) ((map_prod (gm r z _) _ _).trans (Finset.prod_congr rfl fun a _ => ?_)) ?_)` and prove the remaining obligations. Use `(map_zpow (gm r z _) _ _).trans (congrArg (· ^ ε a) ?_)` and prove the remaining obligations. Establish `hm : r z ∈ φ' a ⁻¹ᵁ (LB.div (LB.LinComb M ψ δ) M').U (fun k => j (a, k), q a)` using `chart_le (δ := δ) j q a hz`. Establish `h1` using `gm_res r z (chart_le (δ := δ) j q a) hz (pullU (φ' a) _ (w.s (fun k => j (a, k), q a)))`. Establish `h2` using `gm_pull r (φ' a) z ((LB.div (LB.LinComb M ψ δ) M').U (fun k => j (a, k), q a)) hm (w.s (fun k => j (a, k), q a))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.trans h2`. Conclude with `gm_res r z (inf_le_right : LB.wchart M (fun p : K × K₀ => φ' p.1 ≫ ψ p.2) j ⊓ LB.wchart M' φ' q ≤ LB.wchart M' φ' q) hz (t'.s q)`.
+A detailed English derivation is pending.
 -/
 theorem gm_locU (w : LB.Iso M' (LB.LinComb M ψ δ)) (t' : LB.Gen (LB.LinComb M' φ' ε)) (j : K × K₀ → M.ι)
     (q : K → M'.ι) {Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z)
@@ -80,21 +80,19 @@ theorem gm_locU (w : LB.Iso M' (LB.LinComb M ψ δ)) (t' : LB.Gen (LB.LinComb M'
       LB.wchart M' φ' q) hz (t'.s q)
 
 /- English proof (translation)
-Establish `tr : ∀ (j : K × K₀ → M.ι) (q q' : K → M'.ι) (y : Y), y ∈ (LB.wchart M (fun p : K × K₀ => φ' p.1 ≫ ψ p.2) j ⊓ LB.wchart M' φ' q) ⊓ (LB.wchart M (fun p : K × K₀ => φ' p.1 ≫ ψ p.2) j ⊓ LB.wchart M' φ' q') → gm (𝟙 Y) y _ (locU w t' j q) = gm (𝟙 Y) y _ (locU w t' j q')`. Introduce `j q q' y hy`. Rewrite using `[gm_locU w t' j q (𝟙 Y) y hy.1, gm_locU w t' j q' (𝟙 Y) y hy.2, gen_trans ht' (𝟙 Y) y hy.1.2 hy.2.2]`. Simplify using `only [trF, Category.id_comp]`. Establish `e : ∀ a, gm (φ' a) y (LB.wchart M ψ (fun k => j (a, k)) ⊓ M'.U (q a)) (w.s (fun k => j (a, k), q a)) = (gm (φ' a) y (M'.U (q a) ⊓ M'.U (q' a)) (M'.g (q a) (q' a)))⁻¹ * gm (φ' a) y (LB.wchart M ψ (fun k => j (a, k)) ⊓ M'.U (q' a)) (w.s (fun k => j (a, k), q' a))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a`. Establish `m` using `chart_le (δ := δ) j q a hy.1`. Establish `m'` using `chart_le (δ := δ) j q' a hy.2`. Rewrite using `[w_trans w hw (φ' a) y m.1 m.1 m.2 m'.2, Finset.prod_eq_one fun i _ => ?_, _root_.one_mul]`. Conclude with `(congrArg (· ^ δ i) (gm_self hM _ y (Set.mem_iInter.1 hy.1.1 (a, i)))).trans (one_zpow _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl fun a _ => congrArg (· ^ ε a) (e a)]`. Simplify using `only [mul_zpow, inv_zpow, Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `glue : ∀ j : K × K₀ → M.ι, ∃ s : Γ(Y, LB.wchart M (fun p : K × K₀ => φ' p.1 ≫ ψ p.2) j)ˣ, ∀ q, res inf_le_left s = locU w t' j q` using `fun j => glue_unit _ (fun q => LB.wchart M (fun p : K × K₀ => φ' p.1 ≫ ψ p.2) j ⊓ LB.wchart M' φ' q) (fun _ => inf_le_left) (fun y hy => by choose b hb using fun a => exists_chart hM' (φ' a y)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨b, hy, Set.mem_iInter.2 hb⟩) (locU w t' j) (tr j)`. Use `choose s hs using glue`. Establish `hv : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (j : K × K₀ → M.ι) (q : K → M'.ι) (hz : r z ∈ LB.wchart M (fun p : K × K₀ => φ' p.1 ≫ ψ p.2) j ⊓ LB.wchart M' φ' q), gm r z _ (s j) = gm r z _ (locU w t' j q)` using `fun Z r z j q hz => (gm_res r z inf_le_left hz (s j)).symm.trans (congrArg (gm r z _) (hs j q))`. Use `⟨⟨s⟩, fun j j' => unit_ext fun y hy => ?_, fun Z r z J J' hJ hJ' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `choose b hb using fun a => exists_chart hM' (φ' a y)`. Establish `hq : y ∈ LB.wchart M' φ' b` using `Set.mem_iInter.2 hb`. Use `erw [map_mul, gm_res _ y _ hy, gm_res _ y _ hy, gm_linComb M _ (fun p : K × K₀ => ε p.1 * δ p.2) (𝟙 Y) y j j' hy.1 hy.2]`. Use `erw [hv Y (𝟙 Y) y j b ⟨hy.1, hq⟩, hv Y (𝟙 Y) y j' b ⟨hy.2, hq⟩, gm_locU w t' j b (𝟙 Y) y ⟨hy.1, hq⟩, gm_locU w t' j' b (𝟙 Y) y ⟨hy.2, hq⟩]`. Simplify using `only [Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ a, gm (φ' a) y (LB.wchart M ψ (fun k => j (a, k)) ⊓ M'.U (b a)) (w.s (fun k => j (a, k), b a)) = (∏ i, gm (φ' a ≫ ψ i) y (M.U (j (a, i)) ⊓ M.U (j' (a, i))) (M.g (j (a, i)) (j' (a, i))) ^ δ i) * gm (φ' a) y (LB.wchart M ψ (fun k => j' (a, k)) ⊓ M'.U (b a)) (w.s (fun k => j' …`. Introduce `a`. Establish `m` using `chart_le (δ := δ) j b a ⟨hy.1, hq⟩`. Establish `m'` using `chart_le (δ := δ) j' b a ⟨hy.2, hq⟩`. Rewrite using `[w_trans w hw (φ' a) y m.1 m'.1 m.2 m.2, gm_self hM' _ y m.2, inv_one, _root_.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_congr rfl fun a _ => congrArg (· ^ ε a) (e a), prod_split ε]`. Simplify using `only [mul_zpow, Finset.prod_mul_distrib]`. Rewrite using `[_root_.mul_assoc]`. Establish `hz : r z ∈ LB.wchart M (fun p : K × K₀ => φ' p.1 ≫ ψ p.2) (fun p => J (r ≫ φ' p.1 ≫ ψ p.2)) ⊓ LB.wchart M' φ' (fun a => J' (r ≫ φ' a))` using `⟨hJ.mem _ r, hJ'.mem φ' r⟩`. Use `(hv Z r z _ _ hz).trans ((gm_locU w t' _ _ r z hz).trans ?_)` and prove the remaining obligations.
-
-Use `congrArg (· * _) (Finset.prod_congr rfl fun a _ => congrArg (· ^ ε a) ?_)` and prove the remaining obligations. Unfold `GlobalTheory.TensBal.isoV`. Establish `: (fun k => J ((r ≫ φ' a) ≫ ψ k)) = fun k => J (r ≫ φ' a ≫ ψ k)` using `funext fun k => by rw [Category.assoc]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gen_iso (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M ψ δ)) (hw : w.IsGen)
     {t' : LB.Gen (LB.LinComb M' φ' ε)} (ht' : t'.IsGen) :
@@ -161,7 +159,7 @@ theorem exists_gen_iso (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb 
 end Gen
 
 /- English proof (translation)
-Introduce `X X' Y S₀ M M' hM hM' K₀ _ ψ δ w hw K K₁ _ _ φ' ε φ ε₁ hF t' ht' t ht p e he hp h Z r z J J' hJ hJ'`. Take `⟨u, hu, hv⟩` from `exists_gen_iso hM hM' w hw ht'`. Establish `key` using `gen_unique' hM hF p e he hp ht hu (fun y I hI => by choose I' hI' using fun χ : S₀ ⟶ X' => exists_chart hM' (χ y)`. Conclude with `(h y I I' hI hI').symm.trans (hv _ e y I I' hI hI').symm) Z r z J hJ`. Conclude with `(hv Z r z J J' hJ hJ').symm.trans key.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iso_unique : ∀ {X X' Y S₀ : Scheme.{0}} {M : LB X} {M' : LB X'}, M.IsLB → M'.IsLB → ∀ {K₀ : Type} [Fintype K₀] {ψ : K₀ → (X' ⟶ X)} {δ : K₀ → ℤ} (w : LB.Iso M' (LB.LinComb M ψ δ)), w.IsGen → ∀ {K K₁ : Type} [Fintype K] [Fintype K₁] {φ' : K → (Y ⟶ X')} {ε : K → ℤ} {φ : K₁ → (Y ⟶ X)} {ε₁ : K₁ → ℤ}, FormEq (fun p : K × K₀ => φ' p.1 ≫ ψ p.2) (fun p => ε p.1 * δ p.2) φ ε₁ → ∀ {t' : LB.Gen (LB.LinComb M' φ' ε)}, t'.IsGen → ∀ {t : LB.Gen (LB.LinComb M φ ε₁)}, t.IsGen → ∀ (p : Y ⟶ S₀) (e : S₀ ⟶ Y), e ≫ p = 𝟙 _ → Function.Surjective p.appTop.hom → (∀ (y : S₀) (J : (S₀ ⟶ X) → M.ι) (J' : (S₀ ⟶ X') → M'.ι), Good M y J → Good M' y J' → (∏ a, GlobalTheory.TensBal.isoV w y J J' (e ≫ φ' a) ^ ε a) * val t' e y J' = val t e y J) → ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → M.ι) (J' : (Z ⟶ X') → M'.ι), Good M z J → Good M' z J' → (∏ a, GlobalTheory.TensBal.isoV w z J J' (r ≫ φ' a) ^ ε a) * val t' r z J' = val t r z J := by
   intro X X' Y S₀ M M' hM hM' K₀ _ ψ δ w hw K K₁ _ _ φ' ε φ ε₁ hF t' ht' t ht p e he hp h Z r z J J' hJ hJ'

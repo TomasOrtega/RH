@@ -27,7 +27,7 @@ def stabilizerCompact {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   Subtype.val ⁻¹' Formalism.L2.SG.TypedSets.Kv σ J Λ v
 
 /- English proof (translation)
-Use extensionality with `h`. Simplify using `[LocMassOrdW.stabilizerConjugateCompact, stabilizerCompact]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem stabilizer_compact_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
@@ -37,7 +37,7 @@ theorem stabilizer_compact_eq {F E : Type} [Field F] [NumberField F] [Field E] [
   simp [LocMassOrdW.stabilizerConjugateCompact, stabilizerCompact]
 
 /- English proof (translation)
-Use extensionality with `s`. Simplify using `[KSvT, KSv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem KSv_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
@@ -108,9 +108,9 @@ def NonDegT : Prop :=
       ((μS0 (stabilizerCompact σ J v Λ P)).toReal = 0 ∧ omAt σ J ψ v (TFl σ J v P) (LocMassOrdW.primSet v Λ r) = 0)
 
 /- English proof (translation)
-Substitute `hs hs'` using the available equality. Distinguish the cases in `hu : u = 0`. Substitute `hu` using the available equality. Simplify using the standard rewrite rules. Establish `hug'` using `hug hu`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[div_eq_div_iff (mul_ne_zero hu hug') (mul_ne_zero (mul_ne_zero ha hu) (mul_ne_zero ha' hu))]`. Take the linear combination `(u * u) * hM - (k * u) * hidx`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem arith (M a a' k k1 kn s s' u ug : ℝ) (hM : M * (a * a') = k * k1) (hs : s = a * u)
     (hs' : s' = a' * u) (hidx : kn * ug = k1 * u) (ha : a ≠ 0) (ha' : a' ≠ 0) (hug : u ≠ 0 → ug ≠ 0) :

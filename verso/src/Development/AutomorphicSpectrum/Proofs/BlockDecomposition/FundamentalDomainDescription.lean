@@ -22,13 +22,13 @@ Both sides reduce to the same expression.
 theorem md_eq (a : Jd) : md a = (ideleModule ℚ a : ℝ) := rfl
 
 /- English proof (translation)
-Establish `hF : Measurable (fun t : {r : ℝ // 0 < r} => ENNReal.ofReal (min 1 (t : ℝ)⁻¹ ^ M * (t : ℝ) ^ τ))` using `by fun_prop`. Rewrite using `[posRealMeasure_eq_map_expPos, lintegral_map hF measurable_expPos]`. Simplify using `only [coe_expPos]`. Rewrite using `[← lintegral_add_compl _ (measurableSet_Iic (a := (0 : ℝ))), Set.compl_Iic]`. Use `ENNReal.add_lt_top.2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(setLIntegral_mono (g := fun x => ENNReal.ofReal (Real.exp (τ * x))) (by fun_prop) fun x hx => ?_).trans_lt ?_` and prove the remaining obligations. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hm : min 1 (Real.exp x)⁻¹ ^ M ≤ 1` using `pow_le_one₀ (le_min zero_le_one (inv_nonneg.2 (Real.exp_pos x).le)) (min_le_left _ _)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Integrable.lintegral_lt_top (integrableOn_exp_mul_Iic h0 0)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `(setLIntegral_mono (g := fun x => ENNReal.ofReal (Real.exp (-((M : ℝ) - τ) * x))) (by fun_prop) fun x hx => ?_).trans_lt ?_` and prove the remaining obligations. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hm : min 1 (Real.exp x)⁻¹ ^ M ≤ (Real.exp x)⁻¹ ^ M` using `pow_le_pow_left₀ (le_min zero_le_one (inv_nonneg.2 (Real.exp_pos x).le)) (min_le_right _ _) M`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_neg, ← Real.exp_nat_mul, ← Real.exp_mul, ← Real.exp_add]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Integrable.lintegral_lt_top (exp_neg_integrableOn_Ioi 0 (sub_pos.2 h1))`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lintegral_posReal_weight_lt_top (τ : ℝ) (M : ℕ) (h0 : 0 < τ) (h1 : τ < M) :
     ∫⁻ t : {r : ℝ // 0 < r}, ENNReal.ofReal (min 1 (t : ℝ)⁻¹ ^ M * (t : ℝ) ^ τ) ∂posRealMeasure < ∞ := by
@@ -64,15 +64,15 @@ def fundD (w : InfinitePlace ℚ) : Set Jd :=
   (fun a => (normOneSplitting w a).1) ⁻¹' normOneFundamentalDomain ℚ
 
 /- English proof (translation)
-Conclude with `(measurableSet_normOneFundamentalDomain ℚ).preimage (measurePreserving_normOneSplitting w).measurable.fst`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_fundD (w : InfinitePlace ℚ) : MeasurableSet (fundD w) := by
   exact (measurableSet_normOneFundamentalDomain ℚ).preimage (measurePreserving_normOneSplitting w).measurable.fst
 
 /- English proof (translation)
-Establish `hp : pri α = (normOneSplitting w).symm (diagonalToNormOne ℚ α, 1)`. Simplify using `only [normOneSplitting_symm_apply, map_one, mul_one, coe_diagonalToNormOne, pri_eq_diagonal]`. Establish `key : normOneSplitting w (pri α) = (diagonalToNormOne ℚ α, 1)`. Rewrite using `[hp]`. Conclude with `(normOneSplitting w).apply_symm_apply _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, Prod.fst_mul, key]`. Conclude with `mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem split_pri_mul (w : InfinitePlace ℚ) (α : ℚˣ) (a : Jd) :
     (normOneSplitting w (pri α * a)).1 = (normOneSplitting w a).1 * diagonalToNormOne ℚ α := by
@@ -85,7 +85,7 @@ theorem split_pri_mul (w : InfinitePlace ℚ) (α : ℚˣ) (a : Jd) :
   exact mul_comm _ _
 
 /- English proof (translation)
-Establish `h : ∀ α : ℚˣ, pri α * a ∈ fundD w ↔ (normOneSplitting w a).1 * diagonalToNormOne ℚ α ∈ normOneFundamentalDomain ℚ`. Introduce `α`. Use `show (normOneSplitting w (pri α * a)).1 ∈ normOneFundamentalDomain ℚ ↔ _`. Rewrite using `[split_pri_mul]`. Conclude with `(existsUnique_congr h).2 (existsUnique_mul_mem_normOneFundamentalDomain ℚ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_pri_mul_mem (w : InfinitePlace ℚ) (a : Jd) :
     ∃! α : ℚˣ, pri α * a ∈ fundD w := by
@@ -97,11 +97,11 @@ theorem existsUnique_pri_mul_mem (w : InfinitePlace ℚ) (a : Jd) :
   exact (existsUnique_congr h).2 (existsUnique_mul_mem_normOneFundamentalDomain ℚ _)
 
 /- English proof (translation)
-Establish `hφm : Measurable (fun t : {r : ℝ // 0 < r} => ENNReal.ofReal (min 1 (t : ℝ)⁻¹ ^ M * (t : ℝ) ^ τ))` using `by fun_prop`. Establish `hIm : Measurable ((normOneFundamentalDomain ℚ).indicator (1 : normOneSubgroup ℚ → ℝ≥0∞))` using `measurable_one.indicator (measurableSet_normOneFundamentalDomain ℚ)`. Establish `hpt : ∀ a : Jd, (fundD w).indicator (fun a => ENNReal.ofReal (min 1 (md a)⁻¹ ^ M * md a ^ τ)) a = (fun p : normOneSubgroup ℚ × {r : ℝ // 0 < r} => (normOneFundamentalDomain ℚ).indicator 1 p.1 * ENNReal.ofReal (min 1 (p.2 : ℝ)⁻¹ ^ M * (p.2 : ℝ) ^ τ)) (normOneSplitting w a)`. Introduce `a`. Distinguish the cases in `ha : a ∈ fundD w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `ha' : (normOneSplitting w a).1 ∈ normOneFundamentalDomain ℚ` using `ha`. Simplify using `[Set.indicator_of_mem ha, Set.indicator_of_mem ha', normOneSplitting_apply_snd, md_eq]`. Establish `ha' : (normOneSplitting w a).1 ∉ normOneFundamentalDomain ℚ` using `ha`. Simplify using `[ha, ha']`. Rewrite using `[← lintegral_indicator (measurableSet_fundD w), lintegral_congr hpt, (measurePreserving_normOneSplitting w).lintegral_comp (f := fun p : normOneSubgroup ℚ × {r : ℝ // 0 < r} => (normOneFundamentalDomain ℚ).indicator 1 p.1 * ENNReal.ofReal (min 1 (p.2 : ℝ)⁻¹ ^ M * (p.2 : ℝ) ^ τ)) …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_lt_top (normOneMeasure_normOneFundamentalDomain_lt_top ℚ) (lintegral_posReal_weight_lt_top τ M h0 h1)`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_fundD_lt_top (w : InfinitePlace ℚ) (τ : ℝ) (M : ℕ) (h0 : 0 < τ) (h1 : τ < M) :
     ∫⁻ a in fundD w, ENNReal.ofReal (min 1 (md a)⁻¹ ^ M * md a ^ τ) ∂ideleMeasure ℚ < ∞ := by
@@ -128,7 +128,7 @@ theorem lintegral_fundD_lt_top (w : InfinitePlace ℚ) (τ : ℝ) (M : ℕ) (h0 
     (lintegral_posReal_weight_lt_top τ M h0 h1)
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace ℚ)` from `inferInstance`. Unfold `Ad3.R.D0`. Conclude with `⟨fundD w, measurableSet_fundD w, existsUnique_pri_mul_mem w, fun τ M h0 h1 => lintegral_fundD_lt_top w τ M h0 h1⟩`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem exists_idele_fundamentalDomain : Ad3.R.D0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace ℚ) := inferInstance

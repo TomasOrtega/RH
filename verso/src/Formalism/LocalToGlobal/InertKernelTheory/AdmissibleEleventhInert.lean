@@ -10,13 +10,13 @@ namespace Formalism.L2.KerInert
 open Formalism.MainNotions.GL3Theta Formalism.L2.G.Pend
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Sigma.invAlg', Sigma.secondEisensteinAlgebraic, endomorphisms_integral_inert, phi_norm_inert_prime⟩`.
+Supply the required witnesses or components.
 -/
 theorem inert_facts_first_hold : FactsA :=
   ⟨Sigma.invAlg', Sigma.secondEisensteinAlgebraic, endomorphisms_integral_inert, phi_norm_inert_prime⟩
 
 /- English proof (translation)
-The claim follows from `admissible_second_of_facts inert_facts_first_hold D cc δ p g hLT hAt h5 hin hW X Y hY`.
+A detailed English derivation is pending.
 -/
 theorem admissible_second_inert (D : Formalism.BasicNotions.D7) (cc : Ideal (NumberField.RingOfIntegers D.host.K)) (δ : ℂ) (p : ℕ)
     [Fact p.Prime] (g : G1 p) (hLT : LTIso g) (hAt : At D cc δ g) (h5 : 5 ≤ p) (hin : InertK D p)
@@ -25,7 +25,7 @@ theorem admissible_second_inert (D : Formalism.BasicNotions.D7) (cc : Ideal (Num
   admissible_second_of_facts inert_facts_first_hold D cc δ p g hLT hAt h5 hin hW X Y hY
 
 /- English proof (translation)
-The claim follows from `admissible_eleventh_of_facts inert_facts_first_hold D cc δ p g hLT hAt h5 hin hW X Y hY`.
+A detailed English derivation is pending.
 -/
 theorem admissible_eleventh_inert (D : Formalism.BasicNotions.D7) (cc : Ideal (NumberField.RingOfIntegers D.host.K)) (δ : ℂ) (p : ℕ)
     [Fact p.Prime] (g : G1 p) (hLT : LTIso g) (hAt : At D cc δ g) (h5 : 5 ≤ p) (hin : InertK D p)

@@ -26,7 +26,7 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `w i h1 h2 t ht hw c x hx hxT y hy n a f hsum`. Substitute `hx` using the available equality. Apply `hth w i hw _ hxT n a f` to reduce the goal to its premises. Rewrite using `[hsum, GlobalTheory.ExportPin.Model.theta_cast _ _ _ ht, hD.thTheta, hjW i _ y hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem classSumPin_of_read (p : PtAt ex Csz) (Yr : R3.Read (A3 := p.P.A3) p.R.toRealDat p.F.lv2 ex.p0)
     (hjW : ∀ (i : Fin D.R.m) (v : Fin ((p.P.A3.indefDown p.P.S0).dW i) → D.what₂.LL)
@@ -67,7 +67,7 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `⟨x.Y, ?_, h⟩` and prove the remaining obligations. Introduce `i v z hvz`. Take `rfl` from `eq_of_heq hvz`. Conclude with `x.Z.jW_read i v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem readAt_rpkX {R : Formalism.L2.RecT O.ex} {S : Formalism.L2.SG.SpectralTiesReal.STiesR R} {x : R3.TwIn O.ex} (y : R3.RealIn x R S)
     (h : GlobalTheory.HeightCounting.EMtTheta x.Y y.nexp O.ex.nch) : ReadAt (rpkX y) := by
@@ -80,7 +80,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨Yr, h1, h2⟩` from `h`. Conclude with `classSumPin_of_read (b.part t).pt Yr h1 h2 hD`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem classSumPin_of_readAt {c : ℝ} (b : Bundle D O c) (t : b.Comparison₂) (h : ReadAt (rpkB b)) (hD : Ind.PDiv D O c (b.part t)) :
     GlobalTheory.ExportPin.ClassSumPin (b.part t).pt := by
@@ -99,9 +99,9 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Consider the cases of `pack`. Consider the cases of `hS`. Introduce `w i hw x hx n a f hs`. Establish `e1 : E.eF = E'.eF` using `eq_of_heq hF`. Establish `e2 : E.fi = E'.fi` using `eq_of_heq hi`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : Y.mj.eW = Y'.mj.eW` using `eq_of_heq hW`. Rewrite `hs` using `[e2, e3]`. Rewrite using `[e1]`. Conclude with `h w i hw x hx n a f hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eMtTheta_of_pack {D : D7} {nch : NChoice D} {X0 : BaseLevelRowSide D} {G G' : Type} {g : Group G} {g' : Group G'} {fi : Fintype G}
     {fi' : Fintype G'} {Pl0 I0 T Pl0' I0' T' : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
@@ -136,7 +136,7 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Consider the cases of `ax`. Conclude with `eMtTheta_of_pack a.pack a.x.Y t.r.Y a.eW (eq_of_heq hS) E c.row.nexp hF hi h`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem eMtTheta_of_args {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : GlobalTheory.Mem.Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
     {Z : w.Lt} {Wt : Set B.places.Pl} {L : SizeData₂ (w.st Z).toD7} {hT : GatTies (w.st Z).toD7} {Gi : Formalism.MainNotions.G.Inst (w.st Z).toD7 L}
@@ -156,11 +156,9 @@ namespace GlobalTheory.ClassSumPinLink
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hL N S Γ hN K q c b hb t`. Use `⟨?_, fun hD => ?_⟩` and prove the remaining obligations. Take `⟨sP, sS, -, -, hS⟩` from `hb.s`. Establish `key : ∀ S' : Formalism.L2.SG.SpectralTiesReal.STiesR b.R, S' = sS.toSTiesR b.R → ∀ x : S'.X.B.I.E, HEq (S'.X.ιE x) x`. Introduce and unpack `S' rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `sP.pin`. Conclude with `key b.S hS`. Establish `hth : GlobalTheory.HeightCounting.EMtTheta hb.x.Y hb.y.y.nexp q.O.ex.nch`. Take `⟨m⟩` from `hN _ _ _ _ _ _ _ _ _ _ _ _ _ q.x.nx.2`. Conclude with `eMtTheta_of_args q.x.what₂ q.x.n (WPt.core (p := prmR N S Γ) q) hb.a hb.x hb.ax hb.y.y.nexp hb.sx hb.eF hb.fi m.1.th`.
-
-Establish `hR : ReadAt (rpkB b)`. Rewrite using `[hb.y.eq]`. Conclude with `readAt_rpkX hb.y.y hth`. Conclude with `classSumPin_of_readAt b t hR hD`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pIota_classSumPin : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (GlobalTheory.HeightCounting.Up.NEb hL K B f T w Z Wt p0 t nch n xd c)) → ∀ (K : Ctx) (q : WPt (prmR N S Γ).s K) (c : ℝ) (b : Bundle (q.w.D q.Z) q.O c) (_ : BWit (p := prmR N S Γ) q b) (t : b.Comparison₂), Ind.PIota _ _ c (b.part t) ∧ (Ind.PDiv _ _ c (b.part t) → GlobalTheory.ExportPin.ClassSumPin (b.part t).pt) := by
   intro hL N S Γ hN K q c b hb t

@@ -23,7 +23,7 @@ open GlobalTheory.CompanionTheory.BZSwap
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `h.trans (IsSubquotient.of_surjective E.symm.toIntertwiningMap E.symm.surjective)`.
+A detailed English derivation is pending.
 -/
 theorem isSubquotient_of_equiv {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup U] [Module ℂ U] {σ : Representation ℂ G W} {ρ : Representation ℂ G V} {ρ' : Representation ℂ G U}
@@ -31,7 +31,7 @@ theorem isSubquotient_of_equiv {G V W U : Type} [Group G] [AddCommGroup V] [Modu
   h.trans (IsSubquotient.of_surjective E.symm.toIntertwiningMap E.symm.surjective)
 
 /- English proof (translation)
-The claim follows from `(IsSubquotient.of_surjective E.toIntertwiningMap E.surjective).trans h`.
+A detailed English derivation is pending.
 -/
 theorem isSubquotient_of_equiv_left {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] [AddCommGroup U] [Module ℂ U] {σ : Representation ℂ G W} {τ : Representation ℂ G U}
@@ -39,7 +39,7 @@ theorem isSubquotient_of_equiv_left {G V W U : Type} [Group G] [AddCommGroup V] 
   (IsSubquotient.of_surjective E.toIntertwiningMap E.surjective).trans h
 
 /- English proof (translation)
-Rewrite using `[← isGeneric_iff_isGenericFor hψ h1]`. Conclude with `(GlobalTheory.CompanionTheory.Leib.genericProdIff_of_whitHeredity k hW h N (fun a => (x a).1) hd (fun a => (x a).2.rep.V) (fun a => (x a).rep) (fun a => (x a).2.rep.smooth)).2 fun a => hC _ _ _ (hc a).1 (x a).2.rep.smooth (x a).2.rep.irr (hc a).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenericFor_prodIrr (hW : GlobalTheory.BZMir.Leib.WhitHeredity k) (hC : GlobalTheory.BZSeg.CuspGeneric k)
     {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1) {h N : ℕ} (x : Fin h → IrrGL k)
@@ -50,9 +50,9 @@ theorem isGenericFor_prodIrr (hW : GlobalTheory.BZMir.Leib.WhitHeredity k) (hC :
       hC _ _ _ (hc a).1 (x a).2.rep.smooth (x a).2.rep.irr (hc a).2
 
 /- English proof (translation)
-Establish `hTs : IsSmooth T` using `hT.isSmooth hP`. Establish `hTf : GlobalTheory.SmGL.HasFiniteLength T` using `GlobalTheory.CompanionTheory.IrrSub.hasFiniteLength_of_isSubquotient hT hfl`. Take `⟨A, B, -, hi', -, hg'⟩` from `GlobalTheory.T.generic_has_generic_irreducible_subquotient k ψ hψ N T hTs hTf hTg`. Establish `s₁` using `GlobalTheory.ParIndExact.isSubquotient_subQuot A B`. Take `⟨e⟩` from `GlobalTheory.T.whittaker_rank_extension_bound k ψ hψ N P σ (subQuot A B) hP hr hi hi' hsq (s₁.trans hT) hgσ hg'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `isSubquotient_of_equiv_left e.symm (s₁.trans hT')`.
+A detailed English derivation is pending.
 -/
 theorem isSubquotient_of_generic_common {N : ℕ} {ψ : AddChar k Circle} (hψ : Continuous ψ) {U V V' W : Type}
     [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
@@ -70,7 +70,7 @@ theorem isSubquotient_of_generic_common {N : ℕ} {ψ : AddChar k Circle} (hψ :
   exact isSubquotient_of_equiv_left e.symm (s₁.trans hT')
 
 /- English proof (translation)
-Establish `hTg : IsGenericFor ψ (multiProd (stdBlocks d hN) τ)`. Take `⟨H⟩` from `hW ψ hψ h1 s N d hN Z τ hτ`. Establish `: Nontrivial (⨂[ℂ] a, TwJacquet (τ a) (unipB k (Fin (d a))) (whitChar ψ (d a)))` using `(GlobalTheory.CompanionTheory.Leib.nontrivial_piTensorProduct_iff _).2 hg`. Conclude with `H.toEquiv.nontrivial`. Conclude with `isSubquotient_of_generic_common hψ _ P P' (isSubquotient_of_equiv (GlobalTheory.T.product_preserves_subquotient k d N hN Z X τ π hπ hq) E) (isSubquotient_of_equiv (GlobalTheory.T.product_preserves_subquotient k d N hN Z Y τ π' hπ' hq') E') hTg hP hfl hr σ hi hgσ hsq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSubquotient_of_common {s N : ℕ} (hW : GlobalTheory.BZMir.Leib.WhitHeredity k) {ψ : AddChar k Circle}
     (hψ : Continuous ψ) (h1 : ψ ≠ 1) (d : Fin s → ℕ) (hN : ∑ a, d a = N) {X Y Z : Fin s → Type}
@@ -96,7 +96,7 @@ theorem isSubquotient_of_common {s N : ℕ} (hW : GlobalTheory.BZMir.Leib.WhitHe
     (isSubquotient_of_equiv (GlobalTheory.T.product_preserves_subquotient k d N hN Z Y τ π' hπ' hq') E') hTg hP hfl hr σ hi hgσ hsq
 
 /- English proof (translation)
-Establish `ex` using `fun a => GlobalTheory.T.generic_has_generic_irreducible_subquotient k ψ hψ (d a) (π a) (hπ a) (hf a) (hg a)`. Use `choose A B _ hirr hsm hgen using ex`. Establish `hq : ∀ a, IsSubquotient (subQuot (A a) (B a)) (π a)` using `fun a => GlobalTheory.ParIndExact.isSubquotient_subQuot _ _`. Conclude with `isSubquotient_of_common hW hψ h1 d hN π π' (fun a => subQuot (A a) (B a)) hπ hπ' hsm hq (fun a => hsw a _ _ (hsm a) (hirr a) (hq a)) hgen P P' E E' hP hfl hr σ hi hgσ hsq`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSubquotient_of_positions {s N : ℕ} (hW : GlobalTheory.BZMir.Leib.WhitHeredity k) {ψ : AddChar k Circle}
     (hψ : Continuous ψ) (h1 : ψ ≠ 1) (d : Fin s → ℕ) (hN : ∑ a, d a = N) {X Y : Fin s → Type}
@@ -120,7 +120,7 @@ theorem isSubquotient_of_positions {s N : ℕ} (hW : GlobalTheory.BZMir.Leib.Whi
     (fun a => hsw a _ _ (hsm a) (hirr a) (hq a)) hgen P P' E E' hP hfl hr σ hi hgσ hsq
 
 /- English proof (translation)
-Rewrite using `[fac_one hj x, fac'_one hj x]`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fac_rev {h j : ℕ} (hj : j + 1 < h) (x : Fin h → IrrGL k) (i : Fin 2) :
     (fac hj x 1 : Fin 2 → IrrGL k) (Fin.rev i) = (fac' hj x 1 : Fin 2 → IrrGL k) i := by
@@ -128,7 +128,7 @@ theorem fac_rev {h j : ℕ} (hj : j + 1 < h) (x : Fin h → IrrGL k) (i : Fin 2)
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem nonempty_equiv_of_eq {n M : ℕ} {u v : Fin n → IrrGL k} (e : u = v) (h₁ : ∑ a, (u a).1 = M)
     (h₂ : ∑ a, (v a).1 = M) : Nonempty ((prodIrr u h₁).Equiv (prodIrr v h₂)) := by
@@ -138,11 +138,9 @@ theorem nonempty_equiv_of_eq {n M : ℕ} {u v : Fin n → IrrGL k} (e : u = v) (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `fin_three_forall ?_ ?_ ?_` and prove the remaining obligations. Introduce `W _ _ g _ _ hq`. Take `⟨E⟩` from `nonempty_equiv_of_eq (fac'_zero hj x).symm (s₁ 0) (s₂ 0)`. Conclude with `isSubquotient_of_equiv hq E`. Introduce `W _ _ g hgs hgi hq`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd2 : ∑ a, (fac hj x 1 (Fin.rev a)).1 = d 1` using `(Equiv.sum_comp Fin.revPerm fun b => (fac hj x 1 b).1).trans (s₁ 1)`. Take `⟨E⟩` from `prodIrr_congr rfl (fun a => fac hj x 1 (Fin.rev a)) (fac' hj x 1) (fun i => fac_rev hj x i) hd2 (s₂ 1)`. Conclude with `isSubquotient_of_equiv (GlobalTheory.T.reversed_product_same_subquotients hA hGK (fac hj x 1) (s₁ 1) hd2 g hgs hgi hq) E`. Introduce `W _ _ g _ _ hq`. Take `⟨E⟩` from `nonempty_equiv_of_eq (fac'_two hj x).symm (s₁ 2) (s₂ 2)`.
-
-Conclude with `isSubquotient_of_equiv hq E`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem position_swap (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hGK : Zc.Cos.GKLocal k) {h j : ℕ} (hj : j + 1 < h)
     (x : Fin h → IrrGL k) (d : Fin 3 → ℕ)
@@ -166,7 +164,7 @@ theorem position_swap (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hGK
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hJ : j < h` using `by omega`. Establish `hkey : ∀ c, fac' hj x (ofLex (order hj c)).1 (ofLex (order hj c)).2 = x (Equiv.swap (⟨j, hJ⟩ : Fin h) ⟨j + 1, hj⟩ c)` using `fun c => congrArg (fun y => x (Equiv.swap (⟨j, hJ⟩ : Fin h) ⟨j + 1, hj⟩ y)) (place_order hj c)`. Take `⟨p⟩` from `flatten (grp h j) (fac hj x) d s₁ hN (order hj) x (fun c => congrArg x (place_order hj c)) hd`. Take `⟨q⟩` from `flatten (grp h j) (fac' hj x) d s₂ hN (order hj) (fun a => x (Equiv.swap (⟨j, hJ⟩ : Fin h) ⟨j + 1, hj⟩ a)) hkey hd'`. Conclude with `isSubquotient_of_positions hW hψ h1 d hN (fun a => prodIrr (fac hj x a) (s₁ a)) (fun a => prodIrr (fac' hj x a) (s₂ a)) (fun _ => isSmooth_prodIrr _ _) (fun _ => isSmooth_prodIrr _ _) (fun a => isGenericFor_prodIrr hW hC hψ h1 _ (fun _ => hc _) _) (fun _ => GlobalTheory.T.product …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem core (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hGK : Zc.Cos.GKLocal k) (hW : GlobalTheory.BZMir.Leib.WhitHeredity k)
     (hR : GlobalTheory.BZSeg.WhitRankIrr k) (hC : GlobalTheory.BZSeg.CuspGeneric k) (ψ : AddChar k Circle) (hψ : Continuous ψ)
@@ -190,9 +188,9 @@ theorem core (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hGK : Zc.Cos
     (isSmooth_prodIrr _ _) (GlobalTheory.T.product_irreducible_finite_length hA _ _) (GlobalTheory.T.whittaker_rank_product_le_one k hW hR ψ hψ h1 h N x hd) σ hi hg hsq
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA hGK hW hR hC ψ hψ h1 h N x hc hd j hj hd' W _ _ σ _ hi hg hsq`. Establish `t : ∑ b : Fin 2, ((fac' hj x 1 : Fin 2 → IrrGL k) b).1 = ∑ b : Fin 2, ((fac hj x 1 : Fin 2 → IrrGL k) b).1`. Rewrite using `[fac_one hj x, fac'_one hj x]`. Simplify using `[Fin.sum_univ_two, add_comm]`. Establish `s₂ : ∀ a, ∑ b, (fac' hj x a b).1 = ∑ b, (fac hj x a b).1` using `fin_three_forall (by rw [fac'_zero hj x]) t (by rw [fac'_two hj x])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `core hA hGK hW hR hC ψ hψ h1 hj x hc (fun a => ∑ b, (fac hj x a b).1) (fun _ => rfl) s₂ ((sum_place hj fun c => (x c).1).trans hd) hd hd' σ hi hg hsq`.
+A detailed English derivation is pending.
 -/
 theorem isSubquotient_prodIrr_swap : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → Zc.Cos.GKLocal k → GlobalTheory.BZMir.Leib.WhitHeredity k → GlobalTheory.BZSeg.WhitRankIrr k → GlobalTheory.BZSeg.CuspGeneric k → ∀ (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ {h N : ℕ} (x : Fin h → IrrGL k), (∀ a, (x a).IsCusp) → ∀ (hd : ∑ a, (x a).1 = N) (j : ℕ) (hj : j + 1 < h) (hd' : ∑ a, (x (Equiv.swap ⟨j, by omega⟩ ⟨j + 1, hj⟩ a)).1 = N) {W : Type} [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin N) k) W), IsSmooth σ → σ.IsIrreducible → IsGenericFor ψ σ → IsSubquotient σ (prodIrr x hd) → IsSubquotient σ (prodIrr (fun a => x (Equiv.swap ⟨j, by omega⟩ ⟨j + 1, hj⟩ a)) hd') := by
   intro k _ _ _ _ hA hGK hW hR hC ψ hψ h1 h N x hc hd j hj hd' W _ _ σ _ hi hg hsq

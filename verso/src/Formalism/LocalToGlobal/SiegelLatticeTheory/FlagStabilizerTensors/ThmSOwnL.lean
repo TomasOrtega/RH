@@ -30,19 +30,19 @@ def thDL (hC : Formalism.L2.SG.RowsConc.DiagCL) (l : List ℝ) : ℝ :=
   else 3
 
 /- English proof (translation)
-Use `closed_with (hOK.and (hLp fun _ => 1)) (thmDL C0 hC) (thDL C0 hC) fun Fm CH hc hQ hm h1 h2 => ?_` and prove the remaining obligations. Take `⟨x2, H2⟩` from `hQ.1 hc`. Take `⟨x3, H3⟩` from `hQ.2 hc`. Use `⟨max x2 (max x3 (max (sel Fm hc).1 (Fm.x1 + 1))), fun x hx i hH => ?_⟩` and prove the remaining obligations. Establish `hxa` using `le_trans (le_max_right _ _) hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx'` using `le_trans (le_max_right _ _) hxa`. Establish `hx1 : Fm.x1 < x` using `by have := le_trans (le_max_right _ _) hx'; linarith`. Establish `h0 : (sel Fm hc).1 ≤ x` using `le_trans (le_max_left _ _) hx'`. Set `c` to `concKOf ((sel Fm hc).2 x hx1 h0 i) (H2 x (le_trans (le_max_left _ _) hx) i hH hx1 h0)`. Establish `e0 : (Fm.cOut ++ Fm.cMid CH).take 16 = Fm.cOut` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e17 : (Fm.cOut ++ Fm.cMid CH).getD 17 0 = Fm.CGam` using `rfl`. Establish `hm' : thmDL C0 hC ((Fm.cOut ++ Fm.cMid CH).take 16) ≤ (Fm.cOut ++ Fm.cMid CH).getD 17 0`. Rewrite using `[e0, e17]`. Conclude with `hm`. Establish `e1 : thDL C0 hC (Fm.cOut ++ Fm.cMid CH) = max 3 (max ((cDiagL C0 hC ((Fm.cOut ++ Fm.cMid CH).take 16)).choose_spec.choose_spec.2.2 _ hm').choose ((cDiagL C0 hC ((Fm.cOut ++ Fm.cMid CH).take 16)).choose_spec.choose_spec.2.2 _ hm').choose_spec.choose)` using `dif_pos hm'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `((cDiagL C0 hC ((Fm.cOut ++ Fm.cMid CH).take 16)).choose_spec.choose_spec.2.2 _ hm').choose_spec.choose_spec`. Rewrite `h1`, `h2` using `[e1]`. Establish `hC' : 1 ≤ sC' Fm` using `le_trans (by norm_num) (le_trans (le_max_left _ _) h1)`. Establish `hCl : 2 < sCl Fm` using `lt_of_lt_of_le (by norm_num) (le_trans (le_max_left _ _) h2)`. Establish `hK2` using `Formalism.MainNotions.NonGenericAndKTwoTheorems.Hyp_of _ _ _ _ _ _ _ _ _ _ hH.1 hH.2.1 hH.2.2 hC'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Establish `hH5` using `Formalism.MainNotions.count_hypotheses_diagonal_words _ _ _ _ _ _ _ _ _ _ 1 hH.1 hH.2.1 hH.2.2 hCl hC' le_rfl u`. Establish `hA` using `hAbs _ c.X c.Y u u c.tie`. Take `⟨hRB, hRNS⟩` from `H3 x (le_trans (le_max_left _ _) hxa) i hx1 h0 u u hH5 c.tie hA`. Establish `hG : (Fm.L x i).CGam = (Fm.cOut ++ Fm.cMid CH).getD 17 0` using `by rw [e17]; exact Fm.CGam_eq x i`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `hs _ _ (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) h1)) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) h2)) _ _ c.X c.Y u hH5 hK2.2 c.tie hA hG hRB hRNS`. Unfold `Formalism.L2.SG.RowsOther.DiagRow Formalism.L2.SG.RowsConc.ddC at hd`. Rewrite `hd` using `[c.tie.2.2.1 u, c.tie.2.2.2.1, (Fm.D x i).GamP_eq u]`. Rewrite using `[hsNormSq_diag c.hI (hExp _ c.X c.Y u u c.tie) hA (Formalism.L2.SG.Pf.SatGram.idDegenerate_tO c.Y u u)]`. Unfold `AdmissibleBoundsFromSource.Gam AdmissibleBoundsFromSource.du AdmissibleBoundsFromSource.Dst`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem closed_clDiag_of_selOK (hC : Formalism.L2.SG.RowsConc.DiagCL) (hExp : KExpTied) (hAbs : Formalism.L2.SG.RowsConc.AbsConvTied)
     {𝒞 : FamClass} (sel : SSel 𝒞)

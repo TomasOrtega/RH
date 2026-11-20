@@ -35,13 +35,13 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace MaxOrderReduction
 
 /- English proof (translation)
-Introduce `T hT L _ _ f B b pB hpB IB EB hTB Q a b' hpb A y`. Substitute `hpB` using the available equality. Establish `hQ : IsPullback (Limits.pullback.fst b (Limits.pullback.fst T.structMap (specMapOfFieldHom T.base L f))) (Limits.pullback.snd b (Limits.pullback.fst T.structMap (specMapOfFieldHom T.base L f))) b (Limits.pullback.fst T.structMap (specMapOfFieldHom T.base L f))` using `IsPullback.of_hasPullback _ _`. Set `E : Q ≅ Limits.pullback (b ≫ T.structMap) (specMapOfFieldHom T.base L f)` to `hpb.isoIsPullback B (Limits.pullback T.structMap (specMapOfFieldHom T.base L f)) hQ ≪≫ Limits.pullbackRightPullbackFstIso T.structMap (specMapOfFieldHom T.base L f) b`. Establish `he : E.hom ≫ Limits.pullback.fst (b ≫ T.structMap) (specMapOfFieldHom T.base L f) = a`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[E, Iso.trans_hom]`. Establish `hcomp : A.comap a = (A.comap (Limits.pullback.fst (b ≫ T.structMap) (specMapOfFieldHom T.base L f))).comap E.hom`. Rewrite using `[← he]`. Simplify using `[Scheme.IdealSheafData.comap_comp]`. Establish `h1 : orderAt (A.comap a) y = orderAt (A.comap (Limits.pullback.fst (b ≫ T.structMap) (specMapOfFieldHom T.base L f))) (E.hom.base y)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hcomp]`. Conclude with `FunctorialResolution.EmbeddedResolution.orderAt_comap_of_isIso E.hom _ y`. Establish `h2` using `hG.orderAt_baseChange (MarkedIdealWithBoundary.mk T.base B (b ≫ T.structMap) IB T.mult EB) hTB L f A (E.hom.base y)`. Establish `h3 : orderAt A ((Limits.pullback.fst (b ≫ T.structMap) (specMapOfFieldHom T.base L f)).base (E.hom.base y)) = orderAt A (a y)`. Rewrite using `[← he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `h1.trans (h2.trans h3)`.
+A detailed English derivation is pending.
 -/
 private theorem orderAtBaseFieldChangeInvariance_of_geometryHypotheses (hG : PrincipalizationGeometryHypotheses.{u}) :
     OrderAtBaseFieldChangeInvariance.{u} := by
@@ -77,7 +77,7 @@ private theorem orderAtBaseFieldChangeInvariance_of_geometryHypotheses (hG : Pri
   exact h1.trans (h2.trans h3)
 
 /- English proof (translation)
-Establish `h` using `isLocallyMonomialPrincipalization_monomialPrincipalization hG.monomialInputs hinv (orderAtBaseFieldChangeInvariance_of_geometryHypotheses hG) (fun _ => True)`. Conclude with `{ cert := fun T hTm i hi => h.cert T hTm trivial i hi center_nonempty := fun T hTm i hi => h.center_nonempty T hTm trivial i hi resolves := fun T hTm => h.resolves T hTm trivial trivial_of_coSupport_empty := fun T hTm hc => h.trivial_of_coSupport_empty T hTm trivial hc }`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem monomialPrincipalization_spec (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) : MonomialPrincipalizationHypotheses hinv := by
@@ -90,13 +90,11 @@ theorem monomialPrincipalization_spec (hG : PrincipalizationGeometryHypotheses.{
       trivial_of_coSupport_empty := fun T hTm hc => h.trivial_of_coSupport_empty T hTm trivial hc }
 
 /- English proof (translation)
-Establish `hmon : MonomialPrincipalizationHypotheses hinv` using `monomialPrincipalization_spec hG hinv`. Use `{ cert := fun T hT hdim i hi => certificate_orderReductionSeq hG hinv hmon hspec hT hdim i hi orderRed_equiv := fun T hT hdim hE hord => orderReductionSeq_isomorphic_of_boundary_nil hG hinv hmon hspec hT hdim hE hord center_nonempty := fun T hT hdim i hi => center_support_nonempt …` and prove the remaining obligations. Introduce `T hT hdim L _ _ f E' hE hT' hdim'`. Conclude with `orderReductionSeq_isPullbackBlowupSequence_pullbackOverField hG hinv n A B hspec T hT hdim L (baseChangeStructMap T L f) (baseChangeProj T L f) E' hE.symm hT' hdim' (baseChangeCompatible_baseChangeProj_of_isOrderReduction hG hinv n A B hspec T hT hdim L f)`. Introduce `T hT hdim L _ _ f E' hE hT' hdim'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp` using `orderReductionSeq_isPullbackBlowupSequence_pullbackOverField hG hinv n A B hspec T hT hdim L (baseChangeStructMap T L f) (baseChangeProj T L f) E' hE.symm hT' hdim' (baseChangeCompatible_baseChangeProj_of_isOrderReduction hG hinv n A B hspec T hT hdim L f)`. Establish `hsurj : AlgebraicGeometry.Surjective (baseChangeProj T L f)` using `instSurjectivePullbackFstSpecMapField T.base L f T.scheme T.structMap`. Conclude with `hp.isStrictPullback_of_surjective fun i hi => (Scheme.IdealSheafData.support_nonempty_iff_ne_top _).mp (center_support_nonempty_orderReductionSeq hG hinv hmon hspec hT hdim i hi)`. Introduce `T hT hdim Y q h hsm hq E' hE hT' hdim'`. Use `hsm` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `orderReductionSeq_isPullbackBlowupSequence_pullbackOverField hG hinv n A B hspec T hT hdim T.base q h E' hE.symm hT' hdim' (baseChangeCompatible_of_smooth hG hinv n A B hspec T hT hdim h q hq)`. Introduce `T hT hdim Y q h hsm hsurj hq E' hE hT' hdim'`. Use `hsm` as an intermediate fact. Use `hsurj` as an intermediate fact. Establish `hp` using `orderReductionSeq_isPullbackBlowupSequence_pullbackOverField hG hinv n A B hspec T hT hdim T.base q h E' hE.symm hT' hdim' (baseChangeCompatible_of_smooth hG hinv n A B hspec T hT hdim h q hq)`.
-
-Conclude with `hp.isStrictPullback_of_surjective fun i hi => (Scheme.IdealSheafData.support_nonempty_iff_ne_top _).mp (center_support_nonempty_orderReductionSeq hG hinv hmon hspec hT hdim i hi)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isMaxOrderReduction_orderReductionSeq (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (n : ℕ)
     (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B) :
@@ -142,7 +140,7 @@ theorem isMaxOrderReduction_orderReductionSeq (hG : PrincipalizationGeometryHypo
         (center_support_nonempty_orderReductionSeq hG hinv hmon hspec hT hdim i hi)
 
 /- English proof (translation)
-The claim follows from `isMaxOrderReduction_orderReductionSeq hG comapIsoInvariance n A B hspec`.
+A detailed English derivation is pending.
 -/
 theorem isMaxOrderReduction_canonicalAlgorithmRules (hG : PrincipalizationGeometryHypotheses.{u})
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (n : ℕ) (A B : PrincipalizationAssignment.{u})

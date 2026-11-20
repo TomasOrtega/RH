@@ -3,9 +3,9 @@ import Formalism.GaloisIrreducibility.NoSolvableOf
 namespace Formalism.GaloisIrreducibility
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 α _ _ G σ p hp hσG hpc hlt hge htrans hsolv`. Take `⟨k, hk, hkc⟩` from `h1 α σ p hp hpc hlt`. Establish `hkG : σ ^ k ∈ G` using `G.pow_mem hσG k`. Establish `hprim` using `h2 α G (σ ^ k) p hp hkG hk hkc hlt htrans`. Establish `halt` using `h3 α G (σ ^ k) p hp hkG hk hkc hge hprim`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : 5 ≤ Fintype.card α` using `by have := hp.two_le; omega`. Apply `h4 α h5` to reduce the goal to its premises. Use `haveI := hsolv`. Conclude with `solvable_of_solvable_injective (Subgroup.inclusion_injective halt)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem no_solvable_subgroup_of : NoSolvableOf := by
   intro h1 h2 h3 h4 α _ _ G σ p hp hσG hpc hlt hge htrans hsolv

@@ -13,7 +13,7 @@ open GlobalTheory.LFun
 open Formalism.UG (IsUnifV Tj Ov diagJ GLint qV)
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `w.valuation_exists_uniformizer E`. Use `⟨algebraMap E _ π, ?_⟩` and prove the remaining obligations. Establish `h1 : Valued.v (algebraMap E (w.adicCompletion E) π) = w.valuation E π` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w π`. Rewrite using `[IsUnifV, h1, hπ]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem unif_exists {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     ∃ ϖ : w.adicCompletion E, IsUnifV E w ϖ := by
@@ -25,11 +25,11 @@ private theorem unif_exists {E : Type} [Field E] [NumberField E] (w : HeightOneS
   rfl
 
 /- English proof (translation)
-Use `⟨hfin.toFinset.image Quotient.out, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 hg`. Conclude with `(Set.Finite.mem_toFinset hfin).1 hq`. Introduce `V _ _ ρ x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_image (fun a _ b _ e => Quotient.out_injective e)]`. Establish `hsupp : (Function.support fun q : G ⧸ K => h q.out • ρ q.out x) ⊆ hfin.toFinset`. Introduce `q hq`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hq (by simp [h0])`. Establish `hsum : heckeVec ρ K h x = ∑ q ∈ hfin.toFinset, h q.out • ρ q.out x` using `finsum_eq_sum_of_support_subset _ hsupp`. Rewrite using `[hsum]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[h01 _ ((Set.Finite.mem_toFinset hfin).1 hq), one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hecke_eq_sum {G : Type} [Group G] (K : Subgroup G) (h : G → ℂ) (h01 : ∀ g, h g ≠ 0 → h g = 1)
     (hfin : {q : G ⧸ K | h q.out ≠ 0}.Finite) : ∃ R : Finset G, (∀ g ∈ R, h g ≠ 0) ∧
@@ -55,11 +55,9 @@ private theorem hecke_eq_sum {G : Type} [Group G] (K : Subgroup G) (h : G → �
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hyf` using `(Subgroup.mem_inf.1 hy).1`. Establish `hyo` using `(Subgroup.mem_inf.1 hy).2`. Establish `hc : z * y * z⁻¹ * y⁻¹ ∈ locU n w`. Use `Subgroup.mem_inf.2 ⟨?_, Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => ?_⟩` and prove the remaining obligations. Establish `h1 : cInf y = 1` using `MonoidHom.mem_ker.1 hyf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `MonoidHom.mem_ker.2 (by simp [h1])`. Establish `h1 : cLoc u y = 1` using `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hyo u) hu)`. Conclude with `MonoidHom.mem_ker.2 (by simp [h1])`. Establish `h1` using `GlobalTheory.SplitPts.eq_one_of_cLoc hw ⟨_, hc⟩ (by simp [hz])`. Establish `h2 : z * y * z⁻¹ * y⁻¹ = 1` using `congrArg Subtype.val h1`.
-
-Conclude with `(mul_inv_eq_iff_eq_mul.1 (mul_inv_eq_one.1 h2)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem comm_of_cLoc {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt w) (z : UA E n) (hz : cLoc w z = 1)
     (y : UA E n) (hy : y ∈ locU n w) : y * z = z * y := by
@@ -80,27 +78,25 @@ private noncomputable def repG {w : HeightOneSpectrum (𝓞 E)} (e : locU n w �
   (RU E n).comp ((locU n w).subtype.comp e.symm.toMulEquiv.toMonoidHom)
 
 /- English proof (translation)
-Take `⟨hirr, f, hf0, hfσ, hfe⟩` from `hc`. Establish `hpe : ∀ g, cLoc w ((e.symm g : locU n w) : UA E n) = g` using `fun g => by`. Rewrite using `[← he, e.apply_symm_apply]`. Establish `hrep : ∀ g, repG e g = RU E n ((e.symm g : locU n w) : UA E n)` using `fun g => rfl`. Set `C : Subgroup (UA E n)` to `Subgroup.centralizer (locU n w : Set (UA E n))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `F : C → τ.V →ₗ[ℂ] (UA E n → ℂ)` to `fun c => (RU E n c.1) ∘ₗ f`. Establish `hF : ∀ c v, F c v = RU E n c.1 (f v)` using `fun c v => rfl`. Establish `hRm : ∀ (a b : UA E n) ψ, RU E n a (RU E n b ψ) = RU E n (a * b) ψ` using `fun a b ψ => by`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hfg : ∀ g v, f (τ.ρ g v) = repG e g (f v)` using `fun g v => by`. Establish `h1` using `hfe (e.symm g) v`. Rewrite `h1` using `[MonoidHom.comp_apply, Subgroup.subtype_apply, hpe]`. Conclude with `h1`. Establish `hFe : ∀ c g v, F c (τ.ρ g v) = repG e g (F c v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c g v`. Rewrite using `[hF, hF, hfg, hrep, hRm, hRm]`. Establish `hcomm` using `Subgroup.mem_centralizer_iff.1 c.2 _ (e.symm g).2`. Rewrite using `[hcomm]`. Set `S : Submodule ℂ (UA E n → ℂ)` to `⨆ c, LinearMap.range (F c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hSσ : S ≤ σ` using `iSup_le fun c => by`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hσ.stable _ _ (hfσ v)`. Establish `hSst : ∀ x, ∀ ψ ∈ S, RU E n x ψ ∈ S`. Introduce `x ψ hψ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hle : S ≤ S.comap (RU E n x)` using `iSup_le fun c => by`. Introduce and unpack `_ ⟨v, rfl⟩`. Use `set g := cLoc w x with hg`. Use `set x1 : UA E n := ((e.symm g : locU n w) : UA E n) with hx1`. Establish `h2 : cLoc w (x1⁻¹ * x) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_inv, hx1, hpe, inv_mul_cancel]`. Establish `hx2 : x1⁻¹ * x ∈ C` using `Subgroup.mem_centralizer_iff.2 fun y hy => comm_of_cLoc hw _ h2 y hy`. Set `c' : C` to `⟨x1⁻¹ * x, hx2⟩ * c`. Establish `e1 : F c' (τ.ρ g v) = RU E n x (F c v)`. Establish `e2 : ((e.symm g : locU n w) : UA E n) * c'.1 = x * c.1` using `by show x1 * (x1⁻¹ * x * c.1) = x * c.1 group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[hFe, hrep, hF, hF, hRm, hRm, e2]`. Conclude with `Submodule.mem_comap.2 (e1 ▸ Submodule.mem_iSup_of_mem c' ⟨_, rfl⟩)`. Conclude with `hle hψ`. Establish `hS : S = σ`. Use `(hσ.irred S hSσ hSst).resolve_left fun hb => hf0 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `v : 1`. Establish `h1 : F 1 v ∈ S` using `Submodule.mem_iSup_of_mem 1 ⟨v, rfl⟩`. Rewrite `h1` using `[hb]`. Establish `h2 : F 1 v = f v`. Rewrite using `[hF]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← h2]`. Simplify using `using h1`. Establish `hφS : φ ∈ S` using `hS.symm ▸ hφ`. Use `GlobalTheory.HeightCounting.Blocks.isSatVecGL_of_mem_iSup hirr hB F hFe hφS (GlobalTheory.LGrp.mem_fixed.2 fun k hk => hK _ (e.symm k).2 ?_) h0` and prove the remaining obligations.
-
-Use `show cLoc w ((e.symm k : locU n w) : UA E n) ∈ KGL w n`. Rewrite using `[hpe]`. Conclude with `hk`.
+A detailed English derivation is pending.
 -/
 private theorem satVec_of_mem {σ : Submodule ℂ (UA E n → ℂ)} (hσ : IsAutRepU σ) {w : HeightOneSpectrum (𝓞 E)}
     (hw : IsSplitAt w) (e : locU n w ≃ₜ* GL (Fin n) (w.adicCompletion E))
@@ -165,7 +161,7 @@ private theorem satVec_of_mem {σ : Submodule ℂ (UA E n → ℂ)} (hσ : IsAut
   exact hk
 
 /- English proof (translation)
-Unfold `Tj at hg ⊢`. Conclude with `Set.indicator_of_mem (Set.mem_of_indicator_ne_zero hg) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem tj_one {L : Type} [Field L] {O : Subring L} {ϖ : L} {j : ℕ} (g : GL (Fin n) L)
     (hg : Tj ℂ n O ϖ j g ≠ 0) : Tj ℂ n O ϖ j g = 1 := by
@@ -173,7 +169,7 @@ private theorem tj_one {L : Type} [Field L] {O : Subring L} {ϖ : L} {j : ℕ} (
   exact Set.indicator_of_mem (Set.mem_of_indicator_ne_zero hg) _
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.UG.bc]`. Rewrite using `[← map_inv]`. Simplify using `[Formalism.UG.bc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem glint_val {L : Type} [Field L] (O : Subring L) {m : ℕ} {M : GL (Fin m) L}
     (h : M ∈ GLint (Fin m) O) : (∀ i j, M.val i j ∈ O) ∧ (∀ i j, (M⁻¹).val i j ∈ O) := by
@@ -184,7 +180,7 @@ private theorem glint_val {L : Type} [Field L] (O : Subring L) {m : ℕ} {M : GL
     simp [Formalism.UG.bc]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Conclude with `O.sum_mem fun σ _ => O.mul_mem (intCast_mem O _) (O.prod_mem fun i _ => h _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_mem {L : Type} [Field L] (O : Subring L) {m : ℕ} {M : Matrix (Fin m) (Fin m) L}
     (h : ∀ i j, M i j ∈ O) : M.det ∈ O := by
@@ -192,7 +188,7 @@ private theorem det_mem {L : Type} [Field L] (O : Subring L) {m : ℕ} {M : Matr
   exact O.sum_mem fun σ _ => O.mul_mem (intCast_mem O _) (O.prod_mem fun i _ => h _ _)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact O.sum_mem fun k _ => O.mul_mem (hM _ _) (hN _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem mul_entries {L : Type} [Field L] (O : Subring L) {m : ℕ} {M N : Matrix (Fin m) (Fin m) L}
     (hM : ∀ i j, M i j ∈ O) (hN : ∀ i j, N i j ∈ O) : ∀ i j, (M * N) i j ∈ O := fun i j => by
@@ -200,15 +196,15 @@ private theorem mul_entries {L : Type} [Field L] (O : Subring L) {m : ℕ} {M N 
   exact O.sum_mem fun k _ => O.mul_mem (hM _ _) (hN _ _)
 
 /- English proof (translation)
-The claim follows from `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).1 h`.
+A detailed English derivation is pending.
 -/
 private theorem v_of_mem {w : HeightOneSpectrum (𝓞 E)} {x : w.adicCompletion E} (h : x ∈ Ov E w) : Valued.v x ≤ 1 :=
   (HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).1 h
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `glint_val _ ha`. Establish `d1` using `v_of_mem (det_mem _ h1)`. Establish `d2` using `v_of_mem (det_mem _ h2)`. Establish `e : Valued.v a.val.det * Valued.v (a⁻¹).val.det = 1`. Rewrite using `[← map_mul, ← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `le_antisymm d1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 private theorem v_det_unit {w : HeightOneSpectrum (𝓞 E)} {a : GL (Fin n) (w.adicCompletion E)}
     (ha : a ∈ GLint (Fin n) (Ov E w)) : Valued.v a.val.det = 1 := by
@@ -224,15 +220,13 @@ private theorem v_det_unit {w : HeightOneSpectrum (𝓞 E)} {a : GL (Fin n) (w.a
     _ = _ := mul_one _
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, e⟩` from `Set.mem_of_indicator_ne_zero hg`. Establish `hϖO : ϖ ∈ Ov E w` using `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).2 (by`. Rewrite using `[hϖ]; exact WithZero.coe_le_one.2 (by decide))`. Establish `hD : ∀ i k, diagJ n ϖ j i k ∈ Ov E w` using `fun i k => by`. Distinguish the cases in `h : i = k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[diagJ, Matrix.diagonal_apply_eq]`. Use `split_ifs`. Conclude with `hϖO`. Conclude with `one_mem _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[diagJ, Matrix.diagonal_apply_ne _ h]`. Conclude with `zero_mem _`. Use `⟨fun i k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `v_of_mem (mul_entries _ (mul_entries _ (glint_val _ ha).1 hD) (glint_val _ hb).1 i k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : (diagJ n ϖ j).det = ϖ ^ j`. Rewrite using `[diagJ, Matrix.det_diagonal, Finset.prod_ite]`. Simplify using `[Fin.card_filter_val_lt, hj]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, map_mul, map_mul, v_det_unit ha, v_det_unit hb, hdet, map_pow, hϖ]`. Rewrite using `[one_mul, mul_one, ← WithZero.coe_pow, ← ofAdd_nsmul]`.
-
-Use `show _ = ((Multiplicative.ofAdd (-(j : ℤ)) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tj_int {w : HeightOneSpectrum (𝓞 E)} {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) {j : ℕ} (hj : j ≤ n)
     {g : GL (Fin n) (w.adicCompletion E)} (hg : Tj ℂ n (Ov E w) ϖ j g ≠ 0) :
@@ -263,29 +257,27 @@ private theorem tj_int {w : HeightOneSpectrum (𝓞 E)} {ϖ : w.adicCompletion E
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ n σ hσ w hw τ B hc hB`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E n w hw`. Establish `hpe : ∀ g, cLoc w ((e.symm g : locU n w) : UA E n) = g` using `fun g => by`. Rewrite using `[← he, e.apply_symm_apply]`. Use `⟨?_, hB.card, fun j hj => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hirr, f, hf0, hfσ, hfe⟩` from `hc`. Take `⟨x, hx⟩` from `hB.exists_vec`. Establish `hker : LinearMap.ker f = ⊥` using `((GlobalTheory.CuspRep.isIrreducible_iff τ.ρ).1 hirr).2 _ (fun g v hv => by`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Establish `h1` using `hfe (e.symm g) v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[MonoidHom.comp_apply, Subgroup.subtype_apply, hpe]`. Rewrite using `[h1, hv, map_zero]) |>.resolve_right fun h => hf0 (LinearMap.ker_eq_top.1 h)`. Use `⟨f x, hfσ x, (map_ne_zero_iff f (LinearMap.ker_eq_bot.1 hker)).2 hx.1, fun y hy hk => ?_⟩` and prove the remaining obligations. Establish `h2` using `GlobalTheory.LGrp.mem_fixed.1 hx.2.1 _ hk`. Establish `h1` using `hfe ⟨y, hy⟩ x`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `f (τ.ρ (cLoc w y) x) = RU E n y (f x) at h1`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`. Take `⟨ϖ, hϖ⟩` from `unif_exists w`. Establish `hcm` using `Formalism.UG.Final.GLintComm E w n`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `GlobalTheory.LFun.Tj_mem_hecke (n := n) hϖ j`. Take `⟨R, hR, hRe⟩` from `hecke_eq_sum (GlobalTheory.LFun.KGL w n) (Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) ϖ j) tj_one (Formalism.UG.P.finite_support_cosets hcm hT.2)`. Establish `hT' : Formalism.UG.FinDosetSupp (GlobalTheory.LFun.KGL w n) (fun g => Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) ϖ j g⁻¹)`. Take `⟨S, hS⟩` from `hT.2`. Use `⟨S.image (·⁻¹), fun g hg => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, a, b, h⟩` from `hS _ hg`. Use `⟨s⁻¹, Finset.mem_image_of_mem _ hs, b⁻¹, a⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv g, h]`. Simplify using `[mul_assoc]`. Take `⟨R', hR', hRe'⟩` from `hecke_eq_sum (GlobalTheory.LFun.KGL w n) (fun g => Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) ϖ j g⁻¹) (fun g => tj_one _) (Formalism.UG.P.finite_support_cosets hcm hT')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `lift : GL (Fin n) (w.adicCompletion E) → UA E n` to `fun g => ((e.symm g : locU n w) : UA E n)`. Establish `hinj : Function.Injective lift` using `fun a b h => e.symm.injective (Subtype.ext h)`. Establish `hq : (normV w : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (GlobalTheory.LFun.qV_ne_zero w)`. Establish `hsc : ∀ B' : Multiset ℂˣ, (normV w : ℂ) ^ j.choose 2 * GlobalTheory.LFun.satEig (Formalism.UG.qV E w) n B' j = (algSat n (normV w) B').esymm j` using `fun B' => by`. Rewrite using `[satEig_eq_algSat (GlobalTheory.LFun.qV_ne_zero w)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_inv_cancel_left₀ (pow_ne_zero _ hq) _`. Use `⟨R.image lift, R'.image lift, fun x hx => ?_, fun x hx => ?_, fun f hf hK => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hx`. Use `⟨(e.symm g).2, ?_⟩` and prove the remaining obligations. Use `show (∀ a b, Valued.v ((cLoc w ((e.symm g : locU n w) : UA E n)).val a b) ≤ 1) ∧ Valued.v (cLoc w ((e.symm g : locU n w) : UA E n)).val.det = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hpe]`. Conclude with `tj_int hϖ hj (hR g hg)`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hx`. Use `⟨(e.symm g).2, ?_⟩` and prove the remaining obligations. Use `show (∀ a b, Valued.v ((cLoc w ((e.symm g : locU n w) : UA E n)⁻¹).val a b) ≤ 1) ∧ Valued.v (cLoc w ((e.symm g : locU n w) : UA E n)⁻¹).val.det = _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_inv, hpe]`. Conclude with `tj_int hϖ hj (hR' g hg)`. Distinguish the cases in `f0 : f = 0`. Substitute `f0` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hs` using `satVec_of_mem hσ hw e he τ hc hB hf hK f0`. Establish `h1` using `hs.2.2.2 ϖ hϖ j hj`. Establish `h2` using `(GlobalTheory.ChainOnto.SatInv.satVec_iff_inv E w n _ (repG e) f B f0 hs.2.1 hs.2.2.1).1 hs ϖ hϖ j hj`. Rewrite `h1` using `[hRe]`. Rewrite `h2` using `[hRe']`.
-
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Finset.sum_image hinj.injOn, show ∑ x ∈ R, RU E n (lift x) f = _ from h1, smul_smul, hsc]`. Rewrite using `[Finset.sum_image hinj.injOn, show ∑ x ∈ R', RU E n (lift x) f = _ from h2, smul_smul, hsc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Int.eigAll :
     UpperTheory.V.Z.Int.EigAll := by

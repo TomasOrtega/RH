@@ -15,13 +15,13 @@ namespace TorusOfCharMap
 variable {S : Scheme.{0}} {X X' : Type} [AddCommGroup X] [AddCommGroup X']
 
 /- English proof (translation)
-The claim follows from `(splitTorusPointsEquiv S X Z).injective (MonoidHom.ext fun χ => h χ.toAdd)`.
+A detailed English derivation is pending.
 -/
 theorem ext_chV {Z : Over S} {a b : Z ⟶ splitTorus S X} (h : ∀ χ, chV a χ = chV b χ) : a = b :=
   (splitTorusPointsEquiv S X Z).injective (MonoidHom.ext fun χ => h χ.toAdd)
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[chV_val]`. Conclude with `SplitTorusPow.torusMap_char ρ χ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chV_torusMap (ρ : X' →+ X) (χ : X') :
     chV (SplitTorusPow.torusMap S ρ) χ = charUnit S X (ρ χ) := by
@@ -30,7 +30,7 @@ theorem chV_torusMap (ρ : X' →+ X) (χ : X') :
   exact SplitTorusPow.torusMap_char ρ χ
 
 /- English proof (translation)
-Unfold `chV`. Rewrite using `[SplitTorusPow.points_comp_torusMap]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chV_comp_torusMap (ρ : X' →+ X) {Z : Over S} (s : Z ⟶ splitTorus S X) (χ : X') :
     chV (s ≫ SplitTorusPow.torusMap S ρ) χ = chV s (ρ χ) := by
@@ -39,7 +39,7 @@ theorem chV_comp_torusMap (ρ : X' →+ X) {Z : Over S} (s : Z ⟶ splitTorus S 
   rfl
 
 /- English proof (translation)
-Use `ext_chV fun χ => ?_` and prove the remaining obligations. Rewrite using `[← Category.id_comp (SplitTorusPow.torusMap S ρ ≫ _), ← Category.assoc, chV_comp_torusMap, chV_comp_torusMap, ← Category.id_comp (SplitTorusPow.torusMap S (ρ.comp σ)), chV_comp_torusMap]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem torusMap_comp {X'' : Type} [AddCommGroup X''] (ρ : X' →+ X) (σ : X'' →+ X') :
     SplitTorusPow.torusMap S ρ ≫ SplitTorusPow.torusMap S σ = SplitTorusPow.torusMap S (ρ.comp σ) := by
@@ -49,7 +49,7 @@ theorem torusMap_comp {X'' : Type} [AddCommGroup X''] (ρ : X' →+ X) (σ : X''
   rfl
 
 /- English proof (translation)
-Use `ext_chV fun χ => ?_` and prove the remaining obligations. Rewrite using `[← Category.id_comp (SplitTorusPow.torusMap S _), chV_comp_torusMap]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem torusMap_id : SplitTorusPow.torusMap S (AddMonoidHom.id X) = 𝟙 _ := by
   refine ext_chV fun χ => ?_
@@ -59,11 +59,11 @@ theorem torusMap_id : SplitTorusPow.torusMap S (AddMonoidHom.id X) = 𝟙 _ := b
 end TorusOfCharMap
 
 /- English proof (translation)
-Introduce `S X _ X' _ ρ`. Establish `key : ∀ τ : splitTorus S X ⟶ splitTorus S X', (∀ χ, chV τ χ = charUnit S X (ρ χ)) → τ = SplitTorusPow.torusMap S ρ` using `fun τ h => TorusOfCharMap.ext_chV fun χ => (h χ).trans (TorusOfCharMap.chV_torusMap ρ χ).symm`. Use `⟨⟨_, TorusOfCharMap.chV_torusMap ρ⟩, fun τ h => ?_⟩` and prove the remaining obligations. Take `rfl` from `key τ h`. Use `⟨SplitTorusPow.isMonHom_torusMap ρ, fun hb => ?_, fun Z s χ => TorusOfCharMap.chV_comp_torusMap ρ s χ⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `e : X' ≃+ X` to `AddEquiv.ofBijective ρ hb`. Use `⟨⟨SplitTorusPow.torusMap S e.symm.toAddMonoidHom, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[TorusOfCharMap.torusMap_comp]`. Use `TorusOfCharMap.torusMap_id (S := S) (X := X)` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Conclude with `e.apply_symm_apply x`. Rewrite using `[TorusOfCharMap.torusMap_comp]`. Use `TorusOfCharMap.torusMap_id (S := S) (X := X')` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Conclude with `e.symm_apply_apply x`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem splitTorus_map_of_charHom : ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] (X' : Type) [AddCommGroup X'] (ρ : X' →+ X), (∃ (τ : splitTorus S X ⟶ splitTorus S X'), (∀ χ, chV τ χ = charUnit S X (ρ χ))) ∧ ∀ (τ : splitTorus S X ⟶ splitTorus S X'), (∀ χ, chV τ χ = charUnit S X (ρ χ)) → IsMonHom τ ∧ (Function.Bijective ρ → IsIso τ) ∧ ∀ (Z : Over S) (s : Z ⟶ splitTorus S X) (χ : X'), chV (s ≫ τ) χ = chV s (ρ χ) := by
   intro S X _ X' _ ρ

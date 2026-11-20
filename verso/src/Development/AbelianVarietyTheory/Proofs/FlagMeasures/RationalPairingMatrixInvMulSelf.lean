@@ -15,7 +15,7 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.GFrames
 
 /- English proof (translation)
-Unfold `lead`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem lead_last_eq_det {R : Type} [CommRing R] {N : ℕ} (Z : Matrix (Fin N) (Fin N) R) :
     lead Z (Fin.last N) = Z.det := by
@@ -23,9 +23,9 @@ theorem lead_last_eq_det {R : Type} [CommRing R] {N : ℕ} (Z : Matrix (Fin N) (
   congr 1
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply]`. Establish `h` using `(GlobalTheory.HL.RatExt.rational_extend A (k + 2 * r + 1) p).2.2.2.2.1 G.Hm (G.f' b) (G.f a)`. Establish `hZ : G.Zh a b = ∑ i, ∑ j, G.f' b i * G.Hm i j * sig (G.f a j)` using `rfl`. Rewrite using `[hZ, ← h, ← G.f_eq p a, ← G.f'_eq p b, ← G.Hm_eq p]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Frames.Zh, Frames.h, Matrix.of_apply, hf, Pi.smul_apply, smul_eq_mul, map_mul, AlgEquiv.commutes, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Zh_map_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} {A : Places F E sig} {r k : ℕ} (G : GFrames A r k) (p : HeightOneSpectrum (𝓞 F)) :
@@ -46,13 +46,11 @@ theorem Zh_map_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   ring
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `p : HeightOneSpectrum (𝓞 F)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField F)⟩`. Use `haveI := GlobalTheory.HL.PlacesInt.nontrivial_Ep (A.loc p)`. Use `haveI := (A.loc p).lf`. Use `haveI := (A.loc p).char0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hS : IsUnit ((G.S p).Zh.det)`. Use `(GlobalTheory.FrameBasic.main (A.L p) r k (G.S p)).2.2.2.1` as an intermediate fact. Rewrite `this` using `[Frames.D, lead_last_eq_det]`. Then use the resulting hypothesis. Establish `hd : IsUnit (Matrix.diagonal (fun a : Fin (r + 1) => algebraMap (A.loc p).Fp (A.loc p).Ep (((G.c p : (A.loc p).Fp)) ^ (r - (a : ℕ))))).det`. Rewrite using `[Matrix.det_diagonal, ← map_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(IsUnit.prod_univ_iff.2 fun a => ((G.c p).isUnit.pow _)).map (algebraMap (A.loc p).Fp (A.loc p).Ep)`. Establish `hι : IsUnit ((A.loc p).ιE G.Zh.det)`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Zh_map_eq, Matrix.det_mul, Matrix.det_mul]`. Conclude with `(hd.mul hS).mul hd`. Establish `hne : G.Zh.det ≠ 0`.
-
-Introduce `h0`. Rewrite `hι` using `[h0, map_zero]`. Conclude with `not_isUnit_zero hι`. Conclude with `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Zh_inv_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} (A : Places F E sig) (r k : ℕ) (G : GFrames A r k) : G.Zh⁻¹ * G.Zh = 1 := by

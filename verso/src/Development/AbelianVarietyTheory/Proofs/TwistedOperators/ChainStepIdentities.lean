@@ -10,13 +10,13 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil 
 namespace GlobalTheory.ChainStepIdentities
 
 /- English proof (translation)
-Use `hν.1` as an intermediate fact. Establish `h` using `GlobalTheory.IndexVolume.volumeOfGL ν hν.2 (Fin r)`. Establish `hS : (Units.val '' (KO k (Fin r) : Set (GL (Fin r) k)) : Set (Matrix (Fin r) (Fin r) k)) = GlobalTheory.IndefiniteRowSideFullHecke.GLVolumeIndex.groupSet (⊤ : Subgroup (GL (Fin r) 𝒪[k]))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨g, rfl⟩, rfl⟩`. Conclude with `⟨g, trivial, rfl⟩`. Introduce and unpack `⟨g, -, rfl⟩`. Conclude with `⟨_, ⟨g, rfl⟩, rfl⟩`. Establish `e : volAdd ν r = GlobalTheory.IndefiniteRowSideFullHecke.GLVolumeIndex.volGroup ν (⊤ : Subgroup (GL (Fin r) 𝒪[k]))`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Unfold `volAdd GlobalTheory.IndefiniteRowSideFullHecke.GLVolumeIndex.volGroup`. Rewrite using `[hS]`. Both sides reduce to the same expression. Rewrite using `[e, h, Fintype.card_fin, Formalism.MainNotions.ZetaProductPairs.qE]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[zetaAt, GlobalTheory.IndefiniteRowSideFullHecke.GLVolumeIndex.resCard, resCard, _root_.zpow_neg, _root_.zpow_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem volAdd_eq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν) (r : ℕ) :

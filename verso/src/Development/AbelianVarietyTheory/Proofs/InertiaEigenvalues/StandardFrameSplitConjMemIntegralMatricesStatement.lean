@@ -24,7 +24,7 @@ open scoped TensorProduct
 open Formalism.IndefR.principalLevelFrame Formalism.IndefR.Mult
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SplitFrameKO.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FStandardFrameSplitConjMemIntegralMatrices.lean&line=66#L66)
 -/

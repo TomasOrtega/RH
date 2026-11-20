@@ -10,27 +10,25 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Take `⟨C, hC, hs⟩` from `UpperTheory.ConvolutionTheory.R2.Pp.exists_cpt (F := ℚ)`. Conclude with `⟨Set.univ.pi fun _ : Fin 2 => C, isCompact_univ_pi fun _ => hC, Set.pi_mono fun _ _ => hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem compact_cover_fundamental_domain : ∃ C : Set (Fin 2 → A ℚ), IsCompact C ∧ FS2 ℚ ⊆ C := by
   obtain ⟨C, hC, hs⟩ := UpperTheory.ConvolutionTheory.R2.Pp.exists_cpt (F := ℚ)
   exact ⟨Set.univ.pi fun _ : Fin 2 => C, isCompact_univ_pi fun _ => hC, Set.pi_mono fun _ _ => hs⟩
 
 /- English proof (translation)
-The claim follows from `UpperTheory.ConvolutionTheory.R2.Pp.cont_n.comp (D.continuous_mkE' (continuous_apply 0) (continuous_apply 1))`.
+A detailed English derivation is pending.
 -/
 private theorem cont_nE {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) :
     Continuous (nE D : (Fin 2 → A ℚ) → GL (Fin 2) (A E)) :=
   UpperTheory.ConvolutionTheory.R2.Pp.cont_n.comp (D.continuous_mkE' (continuous_apply 0) (continuous_apply 1))
 
 /- English proof (translation)
-Introduce `E _ _ D ω φ hφ`. Take `⟨B, hB⟩` from `hφ.bdd`. Use `⟨?_, ⟨B, fun h => (UpperTheory.whittakerPeriod_add_smul_and_norm_le E D).2.2 φ B h hB⟩, fun u h => UpperTheory.whittaker_unipotent_mul_eq_additiveChar_mul E D φ ⟨hφ.cont, hφ.left⟩ u h, fun z h => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hs⟩` from `compact_cover_fundamental_domain`. Establish `e : Wo D φ = fun h => ∫ u in C, φ (nE D u * h) * ψ (u 1) ∂((adeleMeasurePi ℚ).restrict (FS2 ℚ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h`. Rewrite using `[Measure.restrict_restrict hC.measurableSet, Set.inter_eq_right.2 hs]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `haveI : IsFiniteMeasure ((adeleMeasurePi (ι := Fin 2) ℚ).restrict (FS2 ℚ)) := ⟨by simpa using (measure_mono hs).trans_lt hC.measure_lt_top⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `continuous_parametric_integral_of_continuous ((hφ.cont.comp (((cont_nE D).comp continuous_snd).mul continuous_fst)).mul (UpperTheory.ConvolutionTheory.R2.Pp.cont_ψ.comp ((continuous_apply 1).comp continuous_snd))) hC`. Unfold `Wo`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only []`.
-
-Rewrite using `[← mul_assoc, ← UpperTheory.ConvolutionTheory.R2.scalar_comm, mul_assoc, hφ.cen, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.whittakerFunction_continuous_bounded_equivariant :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ), admitted D ω φ →

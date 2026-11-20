@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.IwFinFlag
 
 /- English proof (translation)
-Establish `hinv : Mi * X = X * αi`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hP, Matrix.mul_assoc, hinv, ← Matrix.mul_assoc, hβ, hba, Matrix.mul_assoc, Matrix.mul_assoc, hα, Matrix.mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem matrix_map_ringHom_add_smul_sandwich {n r : Type} [Fintype n] [DecidableEq n] [Fintype r] [DecidableEq r] {A : Type} [CommRing A]
     (P Q Mi M : Matrix n n A) (X : Matrix n r A) (β b α αi : Matrix r r A) (hP : P = Q * Mi) (hβ : Q * X = X * β)
@@ -52,9 +52,9 @@ theorem mat_one {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommR
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V Φ L a hG v g`. Break down `(em (Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v)).elim (GlobalTheory.T.local_decomposition_split_place D V Φ L a hG v · g) (GlobalTheory.T.local_decomposition_nonsplit_place D V Φ L a hG v · g) with ⟨q, k, hk, rfl, β, hβ⟩` into its components or cases. Take `⟨b, α, hb, hα, hα', rfl⟩` from `GlobalTheory.T.local_iwasawa_block_triangular D v (wittIndex V) β`. Take `⟨m, hm, hmα⟩` from `GlobalTheory.T.integral_levi_element_exists D V Φ L a hG v α hα hα'`. Establish `hg : q * k = (q * m⁻¹) * (m * k)` using `by rw [mul_assoc, inv_mul_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : (HA.mat (F` using `D.host.F) (Fv D.host.F v) D.sp.cm.sig V.gram (m⁻¹ * m)).1 = 1 := by rw [inv_mul_cancel]; exact mat_one _ _ _`. Conclude with `⟨q * m⁻¹, GlobalTheory.T.parabolic_matrix_coordinates_triangular D V Φ v (q * m⁻¹) b.1 hb (matrix_map_ringHom_add_smul_sandwich _ _ _ _ _ _ b.1 α.1 (α⁻¹).1 (mat_mul _ _ _ _ _) hβ (Units.val_mul b α) hmα _ (mat_mul _ _ _ _ _) e1 α.mul_inv), m * k, mul_mem hm hk, hg⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem iwasawa_minPar_fin : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a → ∀ v (g : GLoc D.sp.cm.sig V.gram v), ∃ p ∈ PLoc Φ.flag0 v, ∃ k ∈ stabLoc D.sp.cm.sig V.gram L v, g = p * k := by
   intro D V Φ L a hG v g

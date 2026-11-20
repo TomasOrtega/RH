@@ -35,9 +35,9 @@ variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Local
 omit [LocallyCompactSpace H] in
 
 /- English proof (translation)
-Establish `hcover : 𝓕 ⊆ ⋃ g : Γ, (g • C)`. Introduce `h _`. Take `⟨γ, hγ, hk⟩` from `hcov h`. Use `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩⁻¹, ?_⟩` and prove the remaining obligations. Use `Set.mem_smul_set.2 ⟨γ * h, hk, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Subgroup.smul_def]`. Establish `hle : μ 𝓕 ≤ μ C`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hle.trans_lt hC.measure_lt_top`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fund_lt_top {C : Set H} (hC : IsCompact C) (hcov : ∀ g, ∃ γ ∈ Γ, γ * g ∈ C)
     (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) : μ 𝓕 < ⊤ := by
@@ -55,13 +55,13 @@ theorem fund_lt_top {C : Set H} (hC : IsCompact C) (hcov : ∀ g, ∃ γ ∈ Γ,
   exact hle.trans_lt hC.measure_lt_top
 
 /- English proof (translation)
-Establish `hm` using `Measure.isMulLeftInvariant_eq_smul (Measure.map (· * r) μ) μ`. Use `set c := Measure.haarScalarFactor (Measure.map (· * r) μ) μ`. Establish `hq : Measure.QuasiMeasurePreserving (· * r) μ μ` using `⟨measurable_mul_const r, by rw [hm]; exact Measure.smul_absolutelyContinuous⟩`. Establish `h' : IsFundamentalDomain Γ ((· * r) ⁻¹' 𝓕) μ` using `h𝓕.preimage_of_equiv hq (e := id) Function.bijective_id fun g x => by`. Simplify using `[Subgroup.smul_def, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he : MeasurableEmbedding (· * r)` using `(MeasurableEquiv.mulRight r).measurableEmbedding`. Establish `h1 : μ ((· * r) ⁻¹' 𝓕) = c * μ 𝓕`. Rewrite using `[← he.map_apply]`. Conclude with `(congrArg (fun m : Measure H => m 𝓕) hm).trans rfl`. Establish `h0 : μ 𝓕 ≠ 0` using `h𝓕.measure_ne_zero (NeZero.ne μ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : c = 1`. Rewrite `h1` using `[h'.measure_eq h𝓕]`. Establish `: (c : ENNReal) = 1`. Use `(ENNReal.mul_left_inj h0 hfin.ne).1 ?_` and prove the remaining obligations. Rewrite using `[← h1, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `hp : MeasurePreserving (· * r) μ μ` using `⟨measurable_mul_const r, by rw [hm, hc, one_smul]⟩`. Rewrite using `[← hp.setIntegral_preimage_emb he f 𝓕]`. Conclude with `h𝓕.setIntegral_eq h' fun g x => by`. Simplify `hf g g.2 (x * r)` using `[Subgroup.smul_def, mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mean_mul_right [SecondCountableTopology H] (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (hfin : μ 𝓕 < ⊤) (f : H → ℂ)
     (hf : ∀ γ ∈ Γ, ∀ x, f (γ * x) = f x) (r : H) : ∫ x in 𝓕, f (x * r) ∂μ = ∫ x in 𝓕, f x ∂μ := by
@@ -91,11 +91,11 @@ theorem mean_mul_right [SecondCountableTopology H] (h𝓕 : IsFundamentalDomain 
 omit [LocallyCompactSpace H] in
 
 /- English proof (translation)
-Establish `hfin` using `fund_lt_top hC hcov h𝓕`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `isFiniteMeasure_restrict.2 hfin.ne`. Establish `hb : ∀ p₀, ∃ B : ℝ, ∀ᶠ p in nhds p₀, ∀ x, ‖K x p‖ ≤ B` using `fun p₀ => by`. Take `⟨U, hU, hU'⟩` from `exists_compact_mem_nhds p₀`. Take `⟨B, hB⟩` from `(hC.prod hU).exists_bound_of_continuousOn hK.continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨B, Filter.mem_of_superset hU' fun p hp x => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hcov x`. Rewrite using `[← hinv γ hγ x p]`. Conclude with `hB (γ * x, p) ⟨hk, hp⟩`. Establish `hm : ∀ p, AEStronglyMeasurable (fun x => K x p) (μ.restrict 𝓕)` using `fun p => (hK.comp (Continuous.prodMk_left p)).aestronglyMeasurable`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun p => ?_, continuous_iff_continuousAt.2 fun p₀ => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hb p`. Conclude with `Integrable.of_bound (hm p) B (Filter.Eventually.of_forall hB.self_of_nhds)`. Take `⟨B, hB⟩` from `hb p₀`. Conclude with `continuousAt_of_dominated (bound := fun _ => B) (Filter.Eventually.of_forall hm) (hB.mono fun p hp => Filter.Eventually.of_forall hp) (integrable_const B) (Filter.Eventually.of_forall fun x => (hK.comp (Continuous.prodMk_right x)).continuousAt)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mean_continuous [SecondCountableTopology H] {C : Set H} (hC : IsCompact C) (hcov : ∀ g, ∃ γ ∈ Γ, γ * g ∈ C)
     (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) {P : Type} [TopologicalSpace P] [FirstCountableTopology P]
@@ -134,13 +134,13 @@ def orthZero (S : HSp D) : OrthDec S S (diagSp D 0 ![] 0 0) where
   rank_add := rfl
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Establish `dec` using `flag_jacobi_structure D W W₀ ρ d`. Take `⟨K₀, hK₀, h₀⟩` from `hc`. Take `⟨K, hK, hN⟩` from `(GlobalTheory.Mem.UnipCocompact.radicals_cocompact D W ρ d.e (isIsoSub_e d)).1`. Set `m : flagN d × GA D W₀ → jacGrp d` to `fun p => ⟨p.1.1 * d.emb0 p.2, mul_mem (Subgroup.mem_sup_left p.1.2) (Subgroup.mem_sup_right ⟨p.2, rfl⟩)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hm : Continuous m` using `((continuous_subtype_val.comp continuous_fst).mul (d.continuous_embed.comp continuous_snd)).subtype_mk _`. Use `⟨m '' (K ×ˢ K₀), (hK.prod hK₀).image hm, fun g => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, h, hg⟩` from `(dec.2.2.2.1 g.1).1 g.2`. Take `⟨δ, hδ, hk⟩` from `h₀ h`. Take `⟨γ, hγ, k, hkK, e⟩` from `hN ⟨_, dec.2.2.2.2.1 n hn δ⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e' : d.emb0 δ * n * (d.emb0 δ)⁻¹ = γ.1 * k.1` using `congrArg Subtype.val e`. Establish `hmem : γ.1⁻¹ * d.emb0 δ ∈ jacGrp d` using `mul_mem (inv_mem (Subgroup.mem_sup_left γ.2)) (Subgroup.mem_sup_right ⟨δ, rfl⟩)`. Establish `hγ' : γ.1 ∈ GQ W` using `hγ`. Establish `hq : γ.1⁻¹ * d.emb0 δ ∈ GQ W` using `mul_mem (inv_mem hγ') (d.wittDecomp_anisotropicEmbedding_mem_rationalPoints hδ)`. Use `⟨⟨_, hmem⟩, ⟨hq, hmem⟩, (k, δ * h), ⟨hkK, hk⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `k.1 * d.emb0 (δ * h) = γ.1⁻¹ * d.emb0 δ * g.1`. Rewrite using `[hg, map_mul, show k.1 = γ.1⁻¹ * (d.emb0 δ * n * (d.emb0 δ)⁻¹) by rw [e']; group]`. Use `group`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jac_cocompact {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (hc : CoCpt W₀) :
     ∃ C : Set (jacGrp d), IsCompact C ∧ ∀ g, ∃ γ ∈ (GQ W ⊓ jacGrp d).subgroupOf (jacGrp d), γ * g ∈ C := by
@@ -167,19 +167,19 @@ theorem jac_cocompact {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (hc : C
   group
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D J.W`. Establish `dec` using `flag_jacobi_structure D J.W J.W₀ ρ J.d`. Establish `base` using `GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d`. Take `⟨⟨hcl, hhaar⟩, -⟩` from `GlobalTheory.T.fourierJacobi_bessel_groups_closed_haar_product D J.W J.W₀ J.W₀ _ ρ J.d (orthZero J.W₀) J.vN.ν J.vN.𝓝 J.vN.unit`. Establish `hμ` using `hhaar J.v0.μ J.v0.haar`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨𝓡, h𝓡, hint⟩` from `GlobalTheory.T.semidirect_haar_measure_fundamental_domain D J.W J.W₀ (flagN J.d) J.d.emb0 J.d.continuous_embed (GlobalTheory.T.flag_subgroups_closed_normal_cocompact' D J.W J.W₀ ρ J.d).1 dec.2.2.2.2.1 dec.2.2.2.2.2.1 base.2.2.2.2.2 J.v0 J.vN.ν J.vN.𝓝 J.vN.unit.1 J.vN.unit.2.1 hμ`. Take `⟨C, hC, hcov⟩` from `jac_cocompact J.d J.cpt`. Establish `: LocallyCompactSpace (jacGrp J.d)` using `hcl.locallyCompactSpace`. Establish `: SecondCountableTopology (jacGrp J.d)` using `TopologicalSpace.Subtype.secondCountableTopology (jacGrp J.d : Set (GA D J.W))`. Establish `: Countable ((GQ J.W ⊓ jacGrp J.d).subgroupOf (jacGrp J.d))` using `Function.Injective.countable (f := fun x => (⟨x.1.1, x.2.1⟩ : GQ J.W)) fun a b hab => Subtype.ext (Subtype.ext (congrArg (fun z : GQ J.W => z.1) hab))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: J.μR.IsHaarMeasure` using `hμ`. Establish `h𝓡' : IsFundamentalDomain (α` using `jacGrp J.d) ((GQ J.W ⊓ jacGrp J.d).subgroupOf (jacGrp J.d)) 𝓡 J.μR := h𝓡`. Establish `hinv' : ∀ γ ∈ (GQ J.W ⊓ jacGrp J.d).subgroupOf (jacGrp J.d), ∀ (x : jacGrp J.d) p, K (γ * x : jacGrp J.d) p = K x p` using `fun γ hγ x p => hinv γ hγ.1 γ.2 x x.2 p`. Take `⟨hI, hcont⟩` from `mean_continuous hC hcov h𝓡' (fun (x : jacGrp J.d) p => K x p) hK hinv'`. Establish `hme : MeasurableEmbedding (Subtype.val : jacGrp J.d → GA D J.W)` using `MeasurableEmbedding.subtype_coe hcl.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ p, ∫ h in J.v0.𝓕, ∫ n in J.vN.𝓝, K (n.1 * J.d.emb0 h) p ∂J.vN.ν ∂J.v0.μ = ∫ x : jacGrp J.d in 𝓡, K x p ∂J.μR` using `fun p => by`. Set `f : GA D J.W → ℂ` to `Function.extend Subtype.val (fun x : jacGrp J.d => K x p) 0`. Establish `hf : ∀ x : jacGrp J.d, f x = K x p` using `fun x => Subtype.val_injective.extend_apply _ _ x`. Establish `hfm : Measurable f` using `hme.measurable_extend (hK.comp (Continuous.prodMk_left p)).measurable measurable_const`. Establish `hf' : ∀ (n : flagN J.d) h, f (n.1 * J.d.emb0 h) = K (n.1 * J.d.emb0 h) p` using `fun n h => hf ⟨_, mul_mem (Subgroup.mem_sup_left n.2) (Subgroup.mem_sup_right ⟨h, rfl⟩)⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hint f hfm`. Establish `h4` using `hI p`. Simplify using `only [← hf] at h4`. Establish `h3` using `h2 (h1.1 h4)`. Simplify using `only [hf'] at h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h3]`. Simplify using `only [← hf]`. Both sides reduce to the same expression. Simplify using `only [key]`. Use `⟨hcont, fun r hr p p' h => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mean_mul_right h𝓡' (fund_lt_top hC hcov h𝓡') (fun x => K x p) (fun γ hγ x => hinv' γ hγ x p) ⟨r, hr⟩]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun x => h x x.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jac_mean {ρ : ℕ} (J : JacLev D ρ) (K : GA D J.W → GA D J.W → ℂ)
     (hK : Continuous fun q : jacGrp J.d × GA D J.W => K q.1 q.2)
@@ -236,7 +236,7 @@ section Alg
 variable {ψ : AddChar (AF D.host.F) ℂ} {ρ : ℕ}
 
 /- English proof (translation)
-Use `neg_mem ⟨vecMulVec z fun i : Fin ρ => if i.1 + 1 = ρ then (1 : D.host.E) else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[zEll, GlobalTheory.CharLaws.ell_eq]`. Use function extensionality and compare the values at `i j`. Conclude with `map_mul (incA D) _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem yZero_rat (S : HSp D) (ρ : ℕ) (z : Fin S.rank → D.host.E) : yZero S ρ z ∈ ratMx D S.rank ρ := by
   refine neg_mem ⟨vecMulVec z fun i : Fin ρ => if i.1 + 1 = ρ then (1 : D.host.E) else 0, ?_⟩
@@ -245,9 +245,9 @@ theorem yZero_rat (S : HSp D) (ρ : ℕ) (z : Fin S.rank → D.host.E) : yZero S
   exact map_mul (incA D) _ _
 
 /- English proof (translation)
-Establish `h1 : d.incAdj S y ∈ ratMx D _ _` using `ratMx_mul (rat_mem _) (ratMx_smul _ (ratMx_mul (ratMx_adj hy) (rat_mem _)))`. Establish `h2 : mt T n⁻¹ ⬝ d.incAdj S y ∈ ratMx D _ _` using `ratMx_mul ((mem_GQ_iff T _).1 (inv_mem hn)) h1`. Take `⟨δ, hδ⟩ : ptT d S y n ∈ ratMx D _ _` from `ratMx_mul (rat_mem _) h2`. Take `⟨a, ha⟩` from `(GlobalTheory.OrientedFormLaws.symplOH_laws D S T).2.2.2.2.2.1 _ h1 _ h2`. Establish `h` using `hf.quasi δ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h` using `[show ratW T₀ S δ = ptT d S y n from hδ, add_zero, symplOH_zero_right, neg_zero, AddChar.map_zero_eq_one, one_mul]`. Rewrite using `[jacT, cenT, ha, hψ.1.2.2.1, one_smul, heisO, symplOH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacT_rat (hψ : IsStdChar D ψ (-1)) {T T₀ : HSp D} (d : HypDec T T₀ ρ) (S : HSp D) {y : Mx D S.rank ρ}
     (hy : y ∈ ratMx D S.rank ρ) {n : GA D T} (hn : n ∈ GQ T) {f : WO S T₀ → ℂ} (hf : IsThetaFunO ψ S T₀ f) :
@@ -266,7 +266,7 @@ abbrev ev (Ψ : WO B.V J.W → ℂ) (x : Mx D J.W.rank ρ) : WO B.V₀ J.W₀ �
   evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 Ψ x (yZero B.V₀ ρ (vecB B.o B.ζ))
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ s.weil.std).2 _ _ _ _ J.d _ _ s.vT.covol _ ((GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ s.weil.std).1 _ _ _ _ B.d _ _ s.vS.covol _ hΨ x) _`.
+A detailed English derivation is pending.
 -/
 theorem ev_theta {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) (x : Mx D J.W.rank ρ) :
     IsThetaFunO ψ B.V₀ J.W₀ (ev s Ψ x) :=
@@ -274,7 +274,7 @@ theorem ev_theta {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) (x 
     ((GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ s.weil.std).1 _ _ _ _ B.d _ _ s.vS.covol _ hΨ x) _
 
 /- English proof (translation)
-Rewrite using `[← Prod.mk_mul_mk, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem om_mul (a b : GA D B.V) (g h : GA D J.W) (Ψ : WO B.V J.W → ℂ) :
     s.om (a * b, g * h) Ψ = s.om (a, g) (s.om (b, h) Ψ) := by
@@ -284,9 +284,9 @@ variable {om' : Om B.V₀ J.W} (hom : IsWeilDatumO ψ B.V₀ J.W s.χV s.χW om'
 include hom
 
 /- English proof (translation)
-Establish `dec` using `flag_jacobi_structure D J.W J.W₀ ρ J.d`. Take `⟨v, hv, b, c, rfl⟩` from `(dec.1 n).1 hn`. Establish `hr : J.d.nB b * J.d.nC c ∈ radX J.d` using `(dec.2.1 _).2 ⟨b, c, rfl⟩`. Establish `e1 : mt J.W (J.d.levi v * (J.d.nB b * J.d.nC c) * J.d.emb0 h') ⬝ (J.d.jX ⬝ u.1.1) = xZero J.d ⬝ ((⟨v, hv⟩ : UX D ρ) * u).1.1`. Rewrite using `[← Matrix.mul_assoc, mt_mul, mt_mul, mt_mul, Matrix.mul_assoc _ _ J.d.jX, J.d.wittDecomp_anisotropicEmbedding_inclX, Matrix.mul_assoc _ _ J.d.jX, Matrix.mul_assoc _ _ J.d.jX, J.d.nC_jX, J.d.nB_jX, J.d.levi_jX, Matrix.mul_assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2` using `(GlobalTheory.T.doubleMixedModel_baseValue_equivariant D ψ ρ B J s om' hom _ (s.weil.om_pres (embA B.d B.o h₀, J.d.nB b * J.d.nC c * J.d.emb0 h') _ hΨ)).2 ((⟨v, hv⟩ : UX D ρ) * u) ⟨v, hv⟩`. Rewrite `e2` using `[inv_mul_cancel_left, ← om_mul, one_mul, ← mul_assoc, (GlobalTheory.T.doubleMixedModel_baseValue_equivariant D ψ ρ B J s om' hom _ hΨ).1 u h₀ _ hr h']`. Rewrite using `[e1, opA, jacT_levi_mul ψ J.d B.V₀ _ (yZero_mul _ _ hv)]`. Conclude with `e2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_om {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) (u : UX D ρ) (h₀ : GA D B.A) {n : GA D J.W}
     (hn : n ∈ flagN J.d) (h' : GA D J.W₀) :
@@ -312,7 +312,7 @@ def ker (φ : GA D B.A → ℂ) (Φ : WO B.V J.W → ℂ) (h₀ : GA D B.A) (r h
 
 omit hom in
 /- English proof (translation)
-Rewrite `hr` using `[← (GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d).2.2.2.1]`. Take `⟨u, hu, h⟩` from `hr`. Conclude with `⟨⟨u, hu⟩, h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_uni {r : GA D J.W} (hr : r ∈ jacGrp J.d) : ∃ u : UX D ρ, mt J.W r ⬝ J.d.jX = J.d.jX ⬝ u.1.1 := by
   rw [← (GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d).2.2.2.1] at hr
@@ -323,9 +323,9 @@ variable {φ : GA D B.A → ℂ} {Φ : WO B.V J.W → ℂ} (hφ : IsContAut B.A 
 include hΦ
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_uni hr`. Take `⟨n, hn, δ, rfl⟩` from `((flag_jacobi_structure D J.W J.W₀ ρ J.d).2.2.2.1 γ).1 hγ'`. Take `⟨hnq, hδ⟩` from `((GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d).2.2.2.2.2 n hn δ).1 hγ`. Establish `hΨ` using `s.weil.om_pres (embA B.d B.o h₀, r * h) _ hΦ`. Establish `e` using `ev_om s hom hΨ u 1 hn δ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[← om_mul, map_one, one_mul, ← hu, ← Matrix.mul_assoc, ← mt_mul, ← mul_assoc, Prod.mk_one_one, map_one, Prod.mk_one_one, map_one, Module.End.one_apply]`. Rewrite using `[ker, ker, e, opA, jacT_rat s.weil.std J.d B.V₀ (yZero_rat _ _ _) hnq (s.weil₀.om_pres _ _ (ev_theta s hΨ _)), s.weil₀.om_aut 1 (one_mem _) δ hδ _ (ev_theta s hΨ _)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_jac {γ : GA D J.W} (hγ : γ ∈ GQ J.W) (hγ' : γ ∈ jacGrp J.d) {r : GA D J.W} (hr : r ∈ jacGrp J.d) (h₀ h) :
     ker s φ Φ h₀ (γ * r) h = ker s φ Φ h₀ r h := by
@@ -340,7 +340,7 @@ theorem ker_jac {γ : GA D J.W} (hγ : γ ∈ GQ J.W) (hγ' : γ ∈ jacGrp J.d)
     s.weil₀.om_aut 1 (one_mem _) δ hδ _ (ev_theta s hΨ _)]
 
 /- English proof (translation)
-Establish `e` using `ev_om s hom (s.weil.om_pres (1, h) _ hΦ) 1 h₀ hn h'`. Rewrite `e` using `[← om_mul, mul_one, show J.d.jX ⬝ (1 : UX D ρ).1.1 = J.d.jX from Matrix.mul_one _]`. Rewrite using `[ker, e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ker_eq {n : GA D J.W} (hn : n ∈ flagN J.d) (h' h₀ h) : ker s φ Φ h₀ (n * J.d.emb0 h') h =
     φ h₀ * fjKer ψ J.d B.o B.ζ s.om₀ (evalBF s (s.om (1, h) Φ)) h₀ n h' := by
@@ -352,7 +352,7 @@ theorem ker_eq {n : GA D J.W} (hn : n ∈ flagN J.d) (h' h₀ h) : ker s φ Φ h
 include hφ
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_uni hr`. Establish `hΨ` using `s.weil.om_pres (embA B.d B.o h₀, r * h) _ hΦ`. Establish `e` using `ev_om s hom hΨ u γ (one_mem _) 1`. Rewrite `e` using `[← om_mul, map_one, one_mul, one_mul, mt_one, Matrix.one_mul, ← hu, ← map_mul, opA, jacT_one, id, Prod.mk_one_one, map_one, Module.End.one_apply]`. Rewrite using `[ker, ker, e, hφ.1 γ hγ, s.weil₀.om_aut _ (B.o.emb_mem_GQ hγ (one_mem _)) 1 (one_mem _) _ (ev_theta s hΨ _)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_left {γ : GA D B.A} (hγ : γ ∈ GQ B.A) {r : GA D J.W} (hr : r ∈ jacGrp J.d) (h₀ h) :
     ker s φ Φ (γ * h₀) r h = ker s φ Φ h₀ r h := by
@@ -365,9 +365,9 @@ theorem ker_left {γ : GA D B.A} (hγ : γ ∈ GQ B.A) {r : GA D J.W} (hr : r �
 
 omit hom in
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D J.W`. Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Establish `h` using `(GlobalTheory.T.weilMixedCoordinates_continuous_bounded_supNorm D ψ B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.χV s.χW s.om s.weil Φ hΦ).2`. Establish `hA : Continuous (embA B.d B.o)` using `B.d.continuous_embed.comp (B.o.continuous_emb.comp (continuous_id.prodMk continuous_const))`. Establish `hr : Continuous fun q : GA D B.A × jacGrp J.d × GA D J.W => (q.2.1 : GA D J.W)` using `continuous_subtype_val.comp continuous_snd.fst`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : Continuous fun q : GA D B.A × jacGrp J.d × GA D J.W => (mt J.W q.2.1 ⬝ J.d.jX : Mx D J.W.rank ρ)` using `((continuous_mt J.W).comp hr).matrix_mul continuous_const`. Establish `hp : Continuous fun q : GA D B.A × jacGrp J.d × GA D J.W => (((embA B.d B.o q.1, q.2.1 * q.2.2), mt J.W q.2.1 ⬝ J.d.jX, yZero B.V₀ ρ (vecB B.o B.ζ), 0) : (GA D B.V × GA D J.W) × Mx D J.W.rank ρ × Mx D B.V₀.rank ρ × WO B.V₀ J.W₀)` using `((hA.comp continuous_fst).prodMk (hr.mul continuous_snd.snd)).prodMk (hx.prodMk continuous_const)`. Establish `h2` using `h.comp hp`. Simplify using `only [Function.comp_def] at h2`. Conclude with `(hφ.2.comp continuous_fst).mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_cont : Continuous fun q : GA D B.A × jacGrp J.d × GA D J.W => ker s φ Φ q.1 q.2.1 q.2.2 := by
   obtain ⟨_, _, _, _, _, _, _⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D J.W
@@ -390,9 +390,9 @@ theorem ker_cont : Continuous fun q : GA D B.A × jacGrp J.d × GA D J.W => ker 
 end Alg
 
 /- English proof (translation)
-Establish `dec` using `flag_jacobi_structure D W W₀ ρ d`. Take `⟨n, hn, δ, rfl⟩` from `(dec.2.2.2.1 γ).1 hγ'`. Take `⟨m, hm, k, rfl⟩` from `(dec.2.2.2.1 r).1 hr`. Take `⟨hnq, -⟩` from `((GlobalTheory.T.unfolding_base_point_fourierJacobi_group D W W₀ ρ d).2.2.2.2.2 n hn δ).1 hγ`. Establish `h1 : ∀ g k, psiFlag ψ d (g * d.emb0 k) = psiFlag ψ d g` using `fun g k => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[psiFlag, psiFlag, blockX, blockX, mt_mul, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX]`. Rewrite using `[show n * d.emb0 δ * (m * d.emb0 k) = n * (d.emb0 δ * m * (d.emb0 δ)⁻¹) * d.emb0 (δ * k) by rw [map_mul]; group, h1, h1, psiFlag_mul d ψ hn (dec.2.2.2.2.1 m hm δ), GlobalTheory.CharLaws.psiFlag_conj, psiFlag_eq d ψ n, GlobalTheory.CharLaws.psiBes_rat ψ d hψ.1.2.2.1 1 0 hnq, one_m …`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem psiFlag_jac {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {ρ : ℕ} {W W₀ : HSp D} (d : HypDec W W₀ ρ)
     {γ : GA D W} (hγ : γ ∈ GQ W) (hγ' : γ ∈ jacGrp d) {r : GA D W} (hr : r ∈ jacGrp d) :
@@ -414,17 +414,15 @@ namespace GlobalTheory.Unf
 open EvalInv
 
 /- English proof (translation)
-Introduce `D ψ ρ B J s om' hom φ G Φ hφ hG hΦ`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D J.W`. Set `K : GA D J.W → GA D J.W → ℂ` to `fun r h => G (r * h) * star (psiFlag ψ J.d r) * ∫ h₀ in B.vA.𝓕, ker s φ Φ h₀ r h ∂B.vA.μ`. Establish `hper : ∀ h, J.perAll ψ B s.om₀ φ (rTrans h G) (evalBF s (s.om (1, h) Φ)) = ∫ h' in J.v0.𝓕, ∫ n in J.vN.𝓝, K (n.1 * J.d.emb0 h') h ∂J.vN.ν ∂J.v0.μ` using `fun h => by`. Unfold `JacLev.perAll fjAll`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use function extensionality and compare the values at `h'`. Use `congr 1`. Use function extensionality and compare the values at `n`. Establish `h1 : psiFlag ψ J.d (n.1 * J.d.emb0 h') = psiFlag ψ J.d n.1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[psiFlag, psiFlag, blockX, blockX, mt_mul, Matrix.mul_assoc, J.d.wittDecomp_anisotropicEmbedding_inclX]`. Simplify using `only [K, ker_eq s hom hΦ n.2, h1]`. Both sides reduce to the same expression. Establish `hpsi : Continuous (psiFlag ψ J.d)`. Rewrite using `[show psiFlag ψ J.d = psiBes ψ J.d 1 0 from funext (psiFlag_eq J.d ψ)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.CharLaws.continuous_psiBes ψ J.d s.weil.std.1.1 1 0`. Establish `hK : Continuous fun q : jacGrp J.d × GA D J.W => K q.1 q.2`. Establish `hr : Continuous fun q : jacGrp J.d × GA D J.W => (q.1 : GA D J.W)` using `continuous_subtype_val.comp continuous_fst`. Conclude with `((hG.continuous.comp (hr.mul continuous_snd)).mul (hpsi.comp hr).star).mul (GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D B.A B.cpt B.vA (jacGrp J.d × GA D J.W) (fun h₀ q => ker s φ Φ h₀ q.1 q.2) (ker_cont s hφ hΦ) fun γ hγ h₀ q => ker_left s hom hφ hΦ hγ …`. Take `⟨h1, h2⟩` from `jac_mean J K hK fun γ hγ hγ' r hr p => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [K, mul_assoc γ r p, hG.left hγ, psiFlag_jac s.weil.std J.d hγ hγ' hr, ker_jac s hom hΦ hγ hγ' hr]`. Simplify using `only [hper]`. Use `⟨h1, fun r hr h => h2 r (sup_le_sup_right (inf_le_left (b := fixer J.W J.d.jX)) _ hr) h (r * h) fun x _ => ?_⟩` and prove the remaining obligations. Establish `hs : r ∈ stabX J.d` using `sup_le (radX_le_stabX J.d) (by rintro _ ⟨k, rfl⟩; exact wittSmallGroupEmbedding_mem_pointwiseStabilizerIsotropic J.d k) hr`. Establish `e : mt J.W (x * r) ⬝ J.d.jX = mt J.W x ⬝ J.d.jX` using `by rw [mt_mul, Matrix.mul_assoc, mem_fixer.1 hs]`.
-
-Simplify using `only [K, ker, psiFlag, blockX, e, mul_assoc x r h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalIntegrand_continuous_invariant : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) (om' : Om B.V₀ J.W), IsWeilDatumO ψ B.V₀ J.W s.χV s.χW om' → ∀ (φ : GA D B.A → ℂ) (G : GA D J.W → ℂ) (Φ : WO B.V J.W → ℂ), IsContAut B.A φ → RapidDec J.W G → IsThetaFunO ψ B.V J.W Φ → (Continuous fun h => J.perAll ψ B s.om₀ φ (rTrans h G) (evalBF s (s.om (1, h) Φ))) ∧ ∀ r ∈ radX J.d ⊔ J.d.emb0.range, ∀ h, J.perAll ψ B s.om₀ φ (rTrans (r * h) G) (evalBF s (s.om (1, (r * h)) Φ)) = J.perAll ψ B s.om₀ φ (rTrans h G) (evalBF s (s.om (1, h) Φ)) := by
   intro D ψ ρ B J s om' hom φ G Φ hφ hG hΦ

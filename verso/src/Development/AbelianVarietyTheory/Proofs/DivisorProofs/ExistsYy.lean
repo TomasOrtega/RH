@@ -13,17 +13,15 @@ open GlobalTheory.Poinc.Sep
 namespace GlobalTheory.Poinc.Sep.UMem
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪 mu`. Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩`. Establish `hk : 1 ≤ X₁.S.r * X₁.S.N`. Take `⟨j, -, hj⟩` from `X₁.ρ.r_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn` using `X₁.ρ.n_prime.pos`. Rewrite using `[hj, X₁.ρ.N_eq]`. Conclude with `Nat.one_le_iff_ne_zero.2 (by positivity)`. Take `⟨h, hh⟩` from `GlobalTheory.TorusExt.exists_iota (F := AlgebraicClosure (FractionRing V)) 𝔪.D.tau_bimult (𝔪.e₈ mu)`. Take `⟨g', hg'⟩` from `(GlobalTheory.UT.gt_onto_divisible_kernel GlobalTheory.firstFiveLaws V (maximalIdeal V) hA 𝔪.D (AlgebraicClosure (FractionRing V))).2.1 _ hk h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `p : QkPt 𝔪.D.toPre (AlgebraicClosure (FractionRing V)) (X₁.S.r * X₁.S.N)` to `⟨𝔪.e₈ mu, g', h, hg', hh⟩`. Take `⟨f, hf, -⟩` from `GlobalTheory.TorsionIso.torsion_eq GlobalTheory.firstFiveLaws V (maximalIdeal V) hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U (AlgebraicClosure (FractionRing V)) _ hk`. Establish `hx` using `(hf p (f p)).2 rfl`. Take `⟨w, hw⟩` from `𝔪.U.ext`. Establish `hpow : f p ^ (X₁.S.r * X₁.S.N) = 1` using `(hx w hw).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `z` to `pushHom 𝔪.cart (TFK (R := V) (AlgebraicClosure (FractionRing V))) (f p)`. Establish `hz : z ^ (X₁.S.r * X₁.S.N) = 1`. Simplify using `only [z]`. Rewrite using `[← map_pow, hpow, map_one]`. Take `⟨a, ha, -⟩` from `X₁.ρ.pt_bij (AlgebraicClosure (FractionRing V)) _ z hz`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨a, p, f p, rfl, hx, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun q => q.left) ha`. Simplify using `only [Over.comp_left, Over.homMk_left] at e`. Establish `e2 : spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp 𝔪.yK) = jFK (R` using `V) (AlgebraicClosure (FractionRing V)) ≫ spMap 𝔪.yK := by`. Simplify using `[spMap, jFK, ← Spec.map_comp]`.
-
-Rewrite using `[e2]`. Conclude with `e.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_yy : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ) (mu : Fin 8 → X), ∃ a : X₁.S.Gam, 𝔪.YY a mu := by
   intro g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪 mu

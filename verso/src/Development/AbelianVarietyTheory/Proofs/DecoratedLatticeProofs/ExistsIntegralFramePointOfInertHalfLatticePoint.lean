@@ -21,7 +21,7 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.InertFrameLoc
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Use `show sigR _ _ _ = _`. Simplify using `[sigR]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cA_algebraMap_place (D : D7) (ε : AF D.host.F) :
     cA D (algebraMap (AF D.host.F) (AE D) ε) = algebraMap (AF D.host.F) (AE D) ε := by
@@ -30,11 +30,11 @@ theorem cA_algebraMap_place (D : D7) (ε : AF D.host.F) :
   simp [sigR]
 
 /- English proof (translation)
-Take `⟨α, rfl, h1, h0⟩` from `hε`. Establish `hα : α = singleFin v 1` using `FiniteAdeleRing.ext _ fun u => by`. Express the relevant statement in the definitionally equal form `evalV D.host.F u α = evalV D.host.F u (singleFin v 1)`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[evalV_singleFin_self, h1]`. Rewrite using `[evalV_singleFin_ne e, h0 u e]`. Establish `h2 : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) = GlobalTheory.EmbChart.tensAt D.host.E v 1`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, hα, Algebra.TensorProduct.one_def, GlobalTheory.EmbChart.tensAt_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h2, GlobalTheory.EmbChart.tensAt_mul_right, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem placeIdem_mul {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε)
     (a : AE D) : algebraMap (AF D.host.F) (AE D) ε * a = GlobalTheory.EmbChart.tensAt D.host.E v (compFin D.host.F D.host.E v a) := by
@@ -56,19 +56,17 @@ namespace GlobalTheory.InertFrameLoc
 variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSpectrum (𝓞 D.host.E)}
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Simplify using `only [← map_mul, ← map_sum]`. Establish `hX : ∑ k, s k • S.frame k ∈ S.L0` using `hs`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hY : ∑ m, y m • S.frame m ∈ S.L0` using `(mem_frameLat S y).1 hy`. Establish `hd : ∑ m, y m • S.frame m ∈ Formalism.HermitianLatticesTheory.dual S.hT S.L0` using `by rw [S.baseLattice_isUnimodular]; exact hY`. Establish `h1` using `Submodule.mem_iInf _ |>.1 (Submodule.mem_iInf _ |>.1 hd (∑ k, s k • S.frame k)) hX`. Rewrite `h1` using `[Submodule.mem_comap]`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : ∑ m, (∑ k, star (s k) * S.gram k m) * y m = algebraMap (𝓞 D.host.E) D.host.E o`. Rewrite using `[ho]`. Simplify using `only [LinearMap.restrictScalars_apply, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Formalism.BasicNotions.HSpace.gram, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [starRingEnd_apply, RingHom.id_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Rewrite using `[GlobalTheory.InertLoc.mem_intL, GlobalTheory.Idele.valued_algebraMap]`. Conclude with `HeightOneSpectrum.valuation_le_one w o`. Consider the case `zero => simp`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `e : ∑ m, algebraMap D.host.E (w.adicCompletion D.host.E) (∑ k, star (s k) * S.gram k m) * (c • x) m = (c : w.adicCompletion D.host.E) * ∑ m, algebraMap D.host.E (w.adicCompletion D.host.E) (∑ k, star (s k) * S.gram k m) * x m`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply]`. Use `show _ * ((c : w.adicCompletion D.host.E) * x m) = _`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `mul_mem (show Valued.v (c : w.adicCompletion D.host.E) ≤ 1 from c.2) hx`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_mem_intL (S : HSp D) {s : Fin S.rank → D.host.E} (hs : s ∈ L0c D S)
     {z : Fin S.rank → w.adicCompletion D.host.E} (hz : z ∈ latAt w (frameLat S)) :
@@ -119,7 +117,7 @@ def piW (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v)
   (GlobalTheory.LFun.InertChart.complEquiv hw h).toRingHom.comp (compFin D.host.F D.host.E v)
 
 /- English proof (translation)
-Use `show GlobalTheory.EmbChart.tensAt D.host.E v ((GlobalTheory.LFun.InertChart.complEquiv hw h).symm (GlobalTheory.LFun.InertChart.complEquiv hw h (compFin D.host.F D.host.E v a))) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secW_piW (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v) (a : AE D) :
     secW hw h (piW hw h a) = GlobalTheory.EmbChart.tensAt D.host.E v (compFin D.host.F D.host.E v a) := by
@@ -141,21 +139,19 @@ namespace GlobalTheory.InertFrameLoc
 variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSpectrum (𝓞 D.host.E)}
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction generalizing i j with`. Consider the case `mem x hx`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hx`. Set `c0` to `complMap h (evalV D.host.F v α)`. Set `t' : Fin T.rank → w.adicCompletion D.host.E` to `fun l => algebraMap D.host.E _ (t l)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `r : Fin S.rank → w.adicCompletion D.host.E` to `fun m => algebraMap D.host.E _ (∑ l, star (s l) * S.gram l m)`. Establish `e1 : Matrix.map (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * ∑ l, star (s l) * S.gram l j) : WO S T) (piW hw h) = (c0 * algebraMap D.host.E _ a) • vecMulVec t' r`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.of_apply, piW_tmul, Matrix.smul_apply, smul_eq_mul, vecMulVec_apply, map_mul, map_mul]`. Simplify using `only [mul_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[e1, Matrix.mul_smul, Matrix.smul_mul, mul_vecMulVec, vecMulVec_mul, smul_smul, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul]`. Establish `h1 : c0 ∈ Formalism.UG.intL (w.adicCompletion D.host.E)` using `complMap_mem h (hα v)`. Establish `h2 : k⁻¹ * algebraMap D.host.E _ a ∈ Formalism.UG.intL (w.adicCompletion D.host.E)` using `hk.2.2 a ha`. Establish `h3 : ((aT⁻¹).1 *ᵥ t') i ∈ Formalism.UG.intL (w.adicCompletion D.host.E)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(haT ((aT⁻¹).1 *ᵥ t')).2 ?_ i` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `Submodule.subset_span ⟨t, (mem_frameLat T t).2 ht, rfl⟩`. Establish `h4 : (r ᵥ* aS.1) j ∈ Formalism.UG.intL (w.adicCompletion D.host.E)`. Establish `hcol : (fun m => aS.1 m j) ∈ latAt w (frameLat S)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(haS (Pi.single j 1)).1 fun l => by` as an intermediate fact. Distinguish the cases in `e : l = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis. Use `show ∑ m, r m * aS.1 m j ∈ _`. Conclude with `pair_mem_intL S hs hcol`. Establish `e2 : k⁻¹ * (c0 * algebraMap D.host.E (w.adicCompletion D.host.E) a) * (((aT⁻¹).1 *ᵥ t') i * (r ᵥ* aS.1) j) = c0 * (k⁻¹ * algebraMap D.host.E _ a) * (((aT⁻¹).1 *ᵥ t') i * (r ᵥ* aS.1) j)` using `by ring`. Rewrite using `[e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `mul_mem (mul_mem h1 h2) (mul_mem h3 h4)`. Consider the case `zero`. Rewrite using `[Matrix.map_zero _ (map_zero _), Matrix.mul_zero, Matrix.zero_mul, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`.
-
-Rewrite using `[Matrix.map_add _ (map_add _), Matrix.mul_add, Matrix.add_mul, smul_add, Matrix.add_apply]`. Conclude with `add_mem (hx i j) (hy i j)`. Consider the case `neg x _ hx`. Rewrite using `[Matrix.map_neg _ (map_neg _), Matrix.mul_neg, Matrix.neg_mul, smul_neg, Matrix.neg_apply]`. Conclude with `neg_mem (hx i j)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latO_frame_int (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v) {S T : HSp D}
     {k : w.adicCompletion D.host.E} {aS : GL (Fin S.rank) (w.adicCompletion D.host.E)}
@@ -213,11 +209,11 @@ end GlobalTheory.InertFrameLoc
 namespace GlobalTheory.InertFrameLoc
 
 /- English proof (translation)
-Introduce `D v w hw h S T k aS aT hk haS haT e e' he u hu hhalf`. Take `⟨ε, hε, -, -, hee⟩` from `GlobalTheory.VacFixInert.inert_data (GlobalTheory.WeilAtPlace.conjPl_eq_of_inert hw h)`. Take `⟨rfl, -⟩` from `hee e e' he`. Rewrite `hε` using `[h]`. Establish `hh : IsHalf (algebraMap (AF D.host.F) (AE D) ε) u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `hhalf with h1 | h1` into its components or cases. Conclude with `h1`. Rewrite `h1` using `[cA_algebraMap_place]`. Then use the resulting hypothesis. Establish `hent : ∀ i j, secW hw h (piW hw h (u i j)) = u i j` using `fun i j => by`. Rewrite using `[secW_piW, ← placeIdem_mul hε, hh i j]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k⁻¹ • ((aT⁻¹).1 * u.map (piW hw h) * aS.1), fun i j => latO_frame_int hw h hk haS haT hu i j, ?_⟩` and prove the remaining obligations. Establish `e1 : k • ((aT.1 * (k⁻¹ • ((aT⁻¹).1 * u.map (piW hw h) * aS.1))) * (aS⁻¹).1) = u.map (piW hw h)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_inv_cancel₀ hk.1, one_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Use extensionality with `i j`. Rewrite using `[uPt, e1, Matrix.map_apply, Matrix.map_apply, hent]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uPt_of_half : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v) (S T : HSp D) (k : w.adicCompletion D.host.E) (aS : GL (Fin S.rank) (w.adicCompletion D.host.E)) (aT : GL (Fin T.rank) (w.adicCompletion D.host.E)), GlobalTheory.InertLoc.IsGen D w k → IsFrameAt w (frameLat S) aS → IsFrameAt w (frameLat T) aT → ∀ e e', IsPrimeIdem w e e' → ∀ u ∈ latO S T (L0c D S) (L0c D T) (fun _ => True), IsHalf e u ∨ IsHalf (cA D e) u → ∃ x : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E), (∀ i j, x i j ∈ Formalism.UG.intL (w.adicCompletion D.host.E)) ∧ uPt hw h k aS aT x = u := by
   intro D v w hw h S T k aS aT hk haS haT e e' he u hu hhalf

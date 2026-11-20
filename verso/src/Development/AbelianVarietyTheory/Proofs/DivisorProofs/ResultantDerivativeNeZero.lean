@@ -19,9 +19,9 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 namespace GlobalTheory.PencilDisc
 
 /- English proof (translation)
-Introduce `σ F _ _ _ p δ hδ hp hirr`. Set `K` to `FractionRing (MvPolynomial σ F)`. Establish `hinj : Function.Injective (algebraMap (MvPolynomial σ F) K)` using `IsFractionRing.injective _ _`. Use `haveI : CharZero K := charZero_of_injective_algebraMap hinj`. Establish `hprim : p.IsPrimitive` using `hirr.isPrimitive (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Irreducible (p.map (algebraMap _ K))` using `hprim.irreducible_iff_irreducible_map_fraction_map.1 hirr`. Establish `h2` using `Polynomial.resultant_ne_zero _ _ h1.separable`. Rewrite `h2` using `[Polynomial.natDegree_derivative, Polynomial.natDegree_map_eq_of_injective hinj, hp, Polynomial.derivative_map, Polynomial.resultant_map_map]`. Introduce `h`. Conclude with `h2 (by rw [h, map_zero])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem resultant_derivative_ne_zero : ∀ (σ F : Type) [Fintype σ] [Field F] [CharZero F] (p : Polynomial (MvPolynomial σ F)) (δ : ℕ), 1 ≤ δ → p.natDegree = δ → Irreducible p → Polynomial.resultant p (Polynomial.derivative p) δ (δ - 1) ≠ 0 := by
   intro σ F _ _ _ p δ hδ hp hirr
@@ -37,11 +37,11 @@ theorem resultant_derivative_ne_zero : ∀ (σ F : Type) [Fintype σ] [Field F] 
   exact h2 (by rw [h, map_zero])
 
 /- English proof (translation)
-Introduce `F S T _ _ R hR`. Establish `h1 : sumAlgEquiv F S T R ≠ 0` using `(map_ne_zero_iff _ (sumAlgEquiv F S T).injective).2 hR`. Take `⟨m, hm⟩` from `MvPolynomial.ne_zero_iff.1 h1`. Take `⟨v, hv⟩ : ∃ v : T → F, eval v (coeff m (sumAlgEquiv F S T R)) ≠ 0` from `by by_contra! H`. Conclude with `hm (MvPolynomial.funext fun x => by simpa using H x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨v, fun h => hv ?_⟩` and prove the remaining obligations. Establish `key : ∀ P : MvPolynomial (S ⊕ T) F, aeval (Sum.elim (fun i => (X i : MvPolynomial S F)) fun k => C (v k)) P = MvPolynomial.map (eval v) (sumAlgEquiv F S T P)`. Introduce `P`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, map_mul, map_mul, hp]`. Apply the tactic sequence `cases i <;> simp`. Rewrite using `[← coeff_map, ← key, h, coeff_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_specialise_ne_zero : ∀ (F S T : Type) [Field F] [Infinite F] (R : MvPolynomial (S ⊕ T) F), R ≠ 0 → ∃ v : T → F, MvPolynomial.aeval (Sum.elim (fun i => (MvPolynomial.X i : MvPolynomial S F)) fun k => MvPolynomial.C (v k)) R ≠ 0 := by
   intro F S T _ _ R hR
@@ -63,11 +63,9 @@ theorem exists_specialise_ne_zero : ∀ (F S T : Type) [Field F] [Infinite F] (R
   rw [← coeff_map, ← key, h, coeff_zero]
 
 /- English proof (translation)
-Establish `hinj` using `(algebraMap F L).injective`. Use `haveI : IsLocalHom (MvPolynomial.map (σ := σ) (algebraMap F L)) := ⟨fun g hg => by`. Take `⟨c, hc, e⟩` from `MvPolynomial.isUnit_iff_eq_C_of_isReduced.1 hg`. Establish `hc0 : algebraMap F L (coeff 0 g) = c`. Rewrite using `[← coeff_map, e, coeff_zero_C]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `MvPolynomial.isUnit_iff_eq_C_of_isReduced.2 ⟨coeff 0 g, ?_, ?_⟩` and prove the remaining obligations. Use `isUnit_iff_ne_zero.2 fun h0 => hc.ne_zero ?_` and prove the remaining obligations. Rewrite using `[← hc0, h0, map_zero]`. Apply `MvPolynomial.map_injective _ hinj` to reduce the goal to its premises. Rewrite using `[e, map_C, hc0]⟩`.
-
-Conclude with `Irreducible.of_map h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irreducible_of_map {F L : Type} [Field F] [Field L] [Algebra F L] {σ : Type} (f : MvPolynomial σ F)
     (h : Irreducible (MvPolynomial.map (algebraMap F L) f)) : Irreducible f := by
@@ -84,17 +82,17 @@ theorem irreducible_of_map {F L : Type} [Field F] [Field L] [Algebra F L] {σ : 
   exact Irreducible.of_map h
 
 /- English proof (translation)
-Introduce `F _ _ D N δ f hδ hf hirr`. Establish `hF : Irreducible f` using `irreducible_of_map f hirr`. Set `u : Fin D → Fin N → MvPolynomial ((Fin D × Fin N) ⊕ (Fin N ⊕ Fin N)) F` to `fun i j => X (Sum.inl (i, j))`. Set `a : Fin N → MvPolynomial ((Fin D × Fin N) ⊕ (Fin N ⊕ Fin N)) F` to `fun j => X (Sum.inr (Sum.inl j))`. Set `b : Fin N → MvPolynomial ((Fin D × Fin N) ⊕ (Fin N ⊕ Fin N)) F` to `fun j => X (Sum.inr (Sum.inr j))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hc` using `GlobalTheory.T.pencilLinePolynomial_natDegree_le_and_coeff F _ D N δ f hf u a b`. Set `g : Fin (D + 1) × Fin N → (Fin D × Fin N) ⊕ (Fin N ⊕ Fin N)` to `fun p => Fin.lastCases (motive := fun _ => (Fin D × Fin N) ⊕ (Fin N ⊕ Fin N)) (Sum.inr (Sum.inr p.2)) (fun i => Sum.inl (i, p.2)) p.1`. Establish `hg : Function.Injective g`. Introduce and unpack `⟨i, j⟩ ⟨i', j'⟩ h`. Apply the tactic sequence `induction i using Fin.lastCases <;> induction i' using Fin.lastCases <;> simp_all [g]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hjoin : join u b = fun p => X (g p)`. Use function extensionality and compare the values at `⟨i, j⟩`. Apply the tactic sequence `induction i using Fin.lastCases <;> simp [join, g, u, b]`. Establish `hlead : (line u a b f).coeff δ ≠ 0`. Rewrite using `[hc.2, hjoin, show (aeval fun p => (X (g p) : MvPolynomial _ F)) f = rename g f from congrArg (fun φ : MvPolynomial _ F →ₐ[F] MvPolynomial _ F => φ f) (MvPolynomial.algHom_ext fun p => by simp)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(rename_injective g hg).ne_iff' (map_zero _) |>.mpr hF.ne_zero`. Establish `hnat : (line u a b f).natDegree = δ` using `le_antisymm hc.1 (Polynomial.le_natDegree_of_ne_zero hlead)`. Establish `hR : disc δ u a b f ≠ 0` using `resultant_derivative_ne_zero _ F (line u a b f) δ hδ hnat (GlobalTheory.T.irreducible_pencilLinePolynomial_generic_line F D N f hF)`. Take `⟨v, hv⟩` from `exists_specialise_ne_zero F (Fin D × Fin N) (Fin N ⊕ Fin N) _ hR`. Use `⟨disc δ (fun i j => (X (i, j) : MvPolynomial (Fin D × Fin N) F)) (fun j => C (v (Sum.inl j))) (fun j => C (v (Sum.inr j))) f, ?_, GlobalTheory.T.totalDegree_pencilLineDiscriminant_le F D N δ f hf _ _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `map_disc (aeval (Sum.elim (fun i => (X i : MvPolynomial (Fin D × Fin N) F)) fun k => C (v k))) δ u a b f`. Rewrite `hv` using `[e]`. Simplify `hv` using `[u, a, b]`. Introduce `K _ _ s hs`. Establish `e` using `map_disc (aeval (fun p : Fin D × Fin N => s p.1 p.2)) δ (fun i j => (X (i, j) : MvPolynomial (Fin D × Fin N) F)) (fun j => C (v (Sum.inl j))) (fun j => C (v (Sum.inr j))) f`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[e]`. Simplify using `only [aeval_X, aeval_C] at hs`. Establish `hc'` using `GlobalTheory.T.pencilLinePolynomial_natDegree_le_and_coeff F K D N δ f hf s (fun j => algebraMap F K (v (Sum.inl j))) (fun j => algebraMap F K (v (Sum.inr j)))`. Conclude with `GlobalTheory.T.not_square_linear_factor_of_pencilLineDiscriminant_ne_zero F K D N δ f s _ _ hδ hc'.1 hc'.2 hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_poly_noSquare : ∀ (F : Type) [Field F] [CharZero F] (D N δ : ℕ) (f : MvPolynomial (Fin (D + 1) × Fin N) F), 1 ≤ δ → IsMultiHomogeneous (fun _ => δ) f → Irreducible (MvPolynomial.map (algebraMap F (AlgebraicClosure F)) f) → ∃ Q : MvPolynomial (Fin D × Fin N) F, Q ≠ 0 ∧ Q.totalDegree ≤ 2 * D * δ ^ 2 ∧ ∀ (K : Type) [Field K] [Algebra F K] (s : Fin D → Fin N → K), aeval (fun p : Fin D × Fin N => s p.1 p.2) Q ≠ 0 → NoSquare (spec s f) := by
   intro F _ _ D N δ f hδ hf hirr

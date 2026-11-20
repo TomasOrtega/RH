@@ -13,11 +13,11 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hc : ∀ g : Γ, (p ≫ (ρ g).hom) ≫ π = φ ≫ p'` using `fun g => by`. Rewrite using `[Category.assoc, hπ g, H.w]`. Set `e : Γ → (Y ⟶ Y)` to `fun g => H.lift (p ≫ (ρ g).hom) φ (hc g)`. Establish `e_p : ∀ g, e g ≫ p = p ≫ (ρ g).hom` using `fun g => H.lift_fst _ _ _`. Establish `e_φ : ∀ g, e g ≫ φ = φ` using `fun g => H.lift_snd _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e_one : e 1 = 𝟙 Y` using `H.hom_ext (by rw [e_p, map_one]; exact (Category.comp_id p).trans (Category.id_comp p).symm) (by rw [e_φ, Category.id_comp])`. Establish `e_mul : ∀ g h, e (g * h) = e h ≫ e g` using `fun g h => H.hom_ext (by`. Rewrite using `[e_p, Category.assoc, e_p, ← Category.assoc, e_p, Category.assoc, map_mul]`. Use the proof step `rfl)`. Use the proof step `(by rw [e_φ, Category.assoc, e_φ, e_φ])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `τf : Γ → Aut Y` to `fun g => { hom := e g inv := e g⁻¹ hom_inv_id := by rw [← e_mul, inv_mul_cancel, e_one] inv_hom_id := by rw [← e_mul, mul_inv_cancel, e_one] }`. Use `⟨{ toFun := τf, map_one' := ?_, map_mul' := ?_ }, fun g => ⟨e_φ g, e_p g⟩⟩` and prove the remaining obligations. Conclude with `Iso.ext e_one`. Introduce `g h`. Conclude with `Iso.ext (e_mul g h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_action_of_isPullback {Γ : Type} [Group Γ] {X X' Y Y' : Scheme.{0}}
     (ρ : Γ →* Aut X) {π : X ⟶ X'} {φ : Y ⟶ Y'} {p : Y ⟶ X} {p' : Y' ⟶ X'}
@@ -47,13 +47,11 @@ theorem exists_action_of_isPullback {Γ : Type} [Group Γ] {X X' Y Y' : Scheme.{
     exact Iso.ext (e_mul g h)
 
 /- English proof (translation)
-Introduce `Γ _ _ X X' Y Y' ρ π φ p p' hq H hflat`. Take `⟨hπa, hπ, hV⟩` from `hq`. Use `⟨exists_action_of_isPullback ρ hπ H.flip, fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `hQ : IsAffineQuotient ρ π` using `{ comp_eq := hπ isAffineHom := hπa app_injective := fun W => (hV W).1 mem_range_app := fun W s hs => (hV W).2 s (by`. Unfold `IsInvariantSection at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `g h`. Take `⟨_, e⟩` from `hs g`. Conclude with `e) }`. Use `haveI := hflat`. Establish `hB` using `hQ.of_isPullback H.flip (fun g => (hτ g).2) (fun g => (hτ g).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Conclude with `⟨hB.isAffineHom, hB.comp_eq, fun V => ⟨hB.app_injective V, fun f hf => hB.mem_range_app V f (by`. Unfold `IsInvariantSection`. Introduce `g`. Establish `hle : φ ⁻¹ᵁ V ≤ (τ g).hom ⁻¹ᵁ φ ⁻¹ᵁ V`. Rewrite using `[← Scheme.Hom.comp_preimage, (hτ g).1]`.
-
-Conclude with `⟨hle, hf g hle⟩)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quotient_flat_baseChange :
     ∀ (Γ : Type) [Group Γ] [Finite Γ] (X X' Y Y' : Scheme.{0}) (ρ : Γ →* Aut X) (π : X ⟶ X') (φ : Y ⟶ Y') (p : Y ⟶ X) (p' : Y' ⟶ X'), (IsAffineHom π ∧ (∀ g, (ρ g).hom ≫ π = π) ∧ ∀ V : X'.Opens, Function.Injective (π.app V).hom ∧ ∀ f : Γ(X, π ⁻¹ᵁ V), (∀ g (h : π ⁻¹ᵁ V ≤ (ρ g).hom ⁻¹ᵁ (π ⁻¹ᵁ V)), ((ρ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (π.app V).hom) → IsPullback φ p p' π → Flat p' → (∃ τ : Γ →* Aut Y, ∀ g, (τ g).hom ≫ φ = φ ∧ (τ g).hom ≫ p = p ≫ (ρ g).hom) ∧ ∀ τ : Γ →* Aut Y, (∀ g, (τ g).hom ≫ φ = φ ∧ (τ g).hom ≫ p = p ≫ (ρ g).hom) → (IsAffineHom φ ∧ (∀ g, (τ g).hom ≫ φ = φ) ∧ ∀ V : Y'.Opens, Function.Injective (φ.app V).hom ∧ ∀ f : Γ(Y, φ ⁻¹ᵁ V), (∀ g (h : φ ⁻¹ᵁ V ≤ (τ g).hom ⁻¹ᵁ (φ ⁻¹ᵁ V)), ((τ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (φ.app V).hom) := by

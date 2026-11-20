@@ -6,14 +6,14 @@ private noncomputable def kap {I : Type} (a : I) (n : ℕ) : Ch I n →ₗ[ℤ] 
   Finsupp.lmapDomain ℤ ℤ (fun t : Fin n → I => (Fin.cons a t : Fin (n + 1) → I))
 
 /- English proof (translation)
-Simplify using `[kap, Finsupp.mapDomain_single]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem kap_single {I : Type} (a : I) (n : ℕ) (t : Fin n → I) (m : ℤ) :
     kap a n (Finsupp.single t m) = Finsupp.single (Fin.cons a t : Fin (n + 1) → I) m := by
   simp [kap, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Simplify using `only [bd, Finsupp.linearCombination_single, one_smul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem bd_single {I : Type} (n : ℕ) (t : Fin (n + 1) → I) :
     bd I n (Finsupp.single t 1) =
@@ -21,7 +21,7 @@ private theorem bd_single {I : Type} (n : ℕ) (t : Fin (n + 1) → I) :
   simp only [bd, Finsupp.linearCombination_single, one_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem cons_zero_succAbove {I : Type} (a : I) (n : ℕ) (t : Fin n → I) :
     (Fin.cons a t : Fin (n + 1) → I) ∘ (0 : Fin (n + 1)).succAbove = t := by
@@ -29,7 +29,7 @@ private theorem cons_zero_succAbove {I : Type} (a : I) (n : ℕ) (t : Fin n → 
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem cons_succ_succAbove {I : Type} (a : I) (n : ℕ) (t : Fin (n + 1) → I)
     (j : Fin (n + 1)) :
@@ -41,9 +41,9 @@ private theorem cons_succ_succAbove {I : Type} (a : I) (n : ℕ) (t : Fin (n + 1
   · simp
 
 /- English proof (translation)
-Establish `hlin : (bd I 0).comp (kap a 0) = LinearMap.id`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `t m`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply]`. Rewrite using `[kap_single]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Finsupp.single (Fin.cons a t : Fin 1 → I) m = m • Finsupp.single (Fin.cons a t : Fin 1 → I) 1`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[e1, map_smul, bd_single, Fin.sum_univ_one, cons_zero_succAbove]`. Simplify using `[Finsupp.smul_single]`. Conclude with `LinearMap.congr_fun hlin c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bd_kap_zero {I : Type} (a : I) (c : Ch I 0) : bd I 0 (kap a 0 c) = c := by
   have hlin : (bd I 0).comp (kap a 0) = LinearMap.id := by
@@ -58,11 +58,11 @@ private theorem bd_kap_zero {I : Type} (a : I) (c : Ch I 0) : bd I 0 (kap a 0 c)
   exact LinearMap.congr_fun hlin c
 
 /- English proof (translation)
-Establish `hlin : (bd I (n + 1)).comp (kap a (n + 1)) = LinearMap.id - (kap a n).comp (bd I n)`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `t m`. Simplify using `only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply]`. Rewrite using `[kap_single]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Finsupp.single (Fin.cons a t : Fin (n + 2) → I) m = m • Finsupp.single (Fin.cons a t : Fin (n + 2) → I) 1`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`. Establish `e2 : Finsupp.single t m = m • Finsupp.single t 1`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[e1, e2, map_smul, map_smul, map_smul, bd_single, bd_single, Fin.sum_univ_succ, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, kap_single, cons_zero_succAbove, cons_succ_succAbove, Fin.val_zero, pow_zero, one_smul, Fin.val_succ, pow_succ]`. Simplify using `only [mul_neg, mul_one, neg_smul, Finset.sum_neg_distrib, smul_add, smul_neg, sub_eq_add_neg]`. Conclude with `LinearMap.congr_fun hlin c`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bd_kap_succ {I : Type} (a : I) (n : ℕ) (c : Ch I (n + 1)) :
     bd I (n + 1) (kap a (n + 1) c) = c - kap a n (bd I n c) := by
@@ -81,7 +81,7 @@ private theorem bd_kap_succ {I : Type} (a : I) (n : ℕ) (c : Ch I (n + 1)) :
   exact LinearMap.congr_fun hlin c
 
 /- English proof (translation)
-Rewrite `hc`, the goal using `[Finsupp.mem_supported]`. Introduce `u hu`. Establish `hu'` using `Finsupp.mapDomain_support (Finset.mem_coe.1 hu)`. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.1 hu'`. Conclude with `h t (hc ht)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem kap_mem {I : Type} (S : ∀ n, Set (Fin n → I)) (a : I) (n : ℕ)
     (h : ∀ t : Fin n → I, t ∈ S n → (Fin.cons a t : Fin (n + 1) → I) ∈ S (n + 1))
@@ -95,7 +95,7 @@ private theorem kap_mem {I : Type} (S : ∀ n, Set (Fin n → I)) (a : I) (n : �
   exact h t (hc ht)
 
 /- English proof (translation)
-Introduce `I S a h`. Use `⟨fun c hc => ⟨kap a 0 c, kap_mem S a 0 (h 0) c hc, bd_kap_zero a c⟩, fun n c hc h0 => ⟨kap a (n + 1) c, kap_mem S a (n + 1) (h (n + 1)) c hc, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[bd_kap_succ, h0, map_zero, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.ConeExtensionAcyclic.acyc_cone :
     ∀ {I : Type} (S : ∀ n, Set (Fin n → I)) (a : I), (∀ (n : ℕ) (t : Fin n → I), t ∈ S n → (Fin.cons a t : Fin (n + 1) → I) ∈ S (n + 1)) → Acyc S := by

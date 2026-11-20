@@ -10,11 +10,11 @@ namespace Formalism.L2
 variable {D : D7} {C : Host.CharFrame D} {nch : NChoice D}
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [qPl, Set.mem_setOf_eq, Host.TupTied.tup]`. Use `and_congr_right fun hv => exists_congr fun w => and_congr_right fun hw => not_congr ?_` and prove the remaining obligations. Establish `hm : (C.mu0 j).UnrAt w`. Use `(C.isMu0 j).unr w fun k hk => hv ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [gPl, Set.mem_setOf_eq]`. Conclude with `⟨w, hw, k, hk⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `hx'` using `h x hx`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hx'` using `[Host.HChar.loc_mul, hm x hx, one_mul]`. Conclude with `hx'`. Introduce `h x hx`. Rewrite using `[Host.HChar.loc_mul, hm x hx, h x hx, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qPl_tup (Tp : Host.TupTied D C nch) (μ : D.what₂.Tup) (j : Fin D.R.m) :
     qPl D (Tp.tup μ j) = {v | v ∉ gPl D ∧ ∃ w : PlE D.host, NG.OverPl w v ∧ ¬ (Tp.xi μ).UnrAt w} := by

@@ -11,9 +11,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CoreDesc
 /- English proof (translation)
-Establish `hc` using `hR.1.ties.core`. Establish `hpin : p.T.Q.Pins` using `hc.laws.pins`. Establish `hpos : 0 < D.host.g 0 * D.host.g 1 * D.host.pde` using `Nat.mul_pos (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos) D.host.pde_prime.pos`. Use `GlobalTheory.FinalJoin.FieldAlg.fnAlgClosed_of_pins D p.T.Q hpin hc.canon _ hpos hc.field₁.curve j hj p.T.Q.l (p.T.Q.Xo j) p.T.Q.c hpin.2.1.2 ?_ rfl` and prove the remaining obligations. Rewrite using `[hpin.2.1.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Dvd.intro _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem fnAlgClosed_core_alt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz)

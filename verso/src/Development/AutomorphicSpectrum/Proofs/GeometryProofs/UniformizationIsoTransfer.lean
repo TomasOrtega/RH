@@ -35,7 +35,7 @@ open GlobalTheory.CompanionTheory.Ar.Flat.PerGram
 variable {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A']
 
 /- English proof (translation)
-Establish `h₁ : η[A'] ≫ f = η[A]` using `IsMonHom.one_hom f`. Unfold `IsTangent at hv ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, hv, ← Over.comp_left, h₁]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTangent_comp (f : A' ⟶ A) [IsMonHom f] {v : epsR ℂ ⟶ A'} (hv : IsTangent v) : IsTangent (v ≫ f) := by
   have h₁ : η[A'] ≫ f = η[A] := IsMonHom.one_hom f
@@ -43,11 +43,11 @@ theorem isTangent_comp (f : A' ⟶ A) [IsMonHom f] {v : epsR ℂ ⟶ A'} (hv : I
   rw [Over.comp_left, ← Category.assoc, hv, ← Over.comp_left, h₁]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero F).2 fun z hz => ?_` and prove the remaining obligations. Establish `hone : ((1 : 𝟙_ (Over (Sp ℂ)) ⟶ A') ≫ e.hom) = 1` using `by rw [MonObj.one_comp]`. Establish `hmem : ∀ c : ℂ, c • z ∈ u'.Λ` using `fun c => by`. Use `(u'.ker _).1 ?_` and prove the remaining obligations. Establish `h0 : u'.ex (c • z) ≫ e.hom = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hF, map_smul, hz, smul_zero]`. Conclude with `(u.ker 0).2 u.Λ.zero_mem`. Establish `: (u'.ex (c • z) ≫ e.hom) ≫ e.inv = ((1 : 𝟙_ (Over (Sp ℂ)) ⟶ A') ≫ e.hom) ≫ e.inv` using `by rw [h0, hone]`. Simplify `this` using `only [Category.assoc, e.hom_inv_id, Category.comp_id]`. Use `haveI := u'.discrete`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : ℂ → u'.Λ` to `fun c => ⟨c • z, hmem c⟩`. Establish `hφ : Continuous φ` using `Continuous.subtype_mk (continuous_id.smul continuous_const) _`. Establish `h` using `PreconnectedSpace.constant (inferInstance : PreconnectedSpace ℂ) hφ (x := 1) (y := 0)`. Simplify `congrArg Subtype.val h` using `[φ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem linLift_injective {M : LB A.left} {M' : LB A'.left} {g g' : ℕ} (u : HolUnif A M g) (u' : HolUnif A' M' g')
     (e : A' ≅ A) [IsMonHom e.hom] (F : (Fin g' → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (hF : ∀ z, u.ex (F z) = u'.ex z ≫ e.hom) :
@@ -68,9 +68,9 @@ theorem linLift_injective {M : LB A.left} {M' : LB A'.left} {g g' : ℕ} (u : Ho
   simpa [φ] using congrArg Subtype.val h
 
 /- English proof (translation)
-Establish `a0` using `isDerivAt0_of_isDiff u (isTangent_comp e.hom ht) hd`. Establish `a1` using `isDerivAt0_comp_linMap (isHolTo_ex u) F a0`. Establish `a2` using `GlobalTheory.FibreDeriv.isDerivAt0_comp a1 e.inv.left`. Establish `l₁ : (v ≫ e.hom).left ≫ e.inv.left = v.left`. Rewrite using `[← Over.comp_left, Category.assoc, e.hom_inv_id, Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[l₁, show (fun z => (u.ex (F z)).left ≫ e.inv.left) = fun z => (u'.ex z).left from funext fun z => by`. Rewrite `a2` using `[← Over.comp_left, hF, Category.assoc, e.hom_inv_id, Category.comp_id]]`. Conclude with `fun U h f => a2.2 U h f`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isDiff_of_comp {M : LB A.left} {M' : LB A'.left} {g g' : ℕ} (u : HolUnif A M g) (u' : HolUnif A' M' g')
     (e : A' ≅ A) [IsMonHom e.hom] (F : (Fin g' → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (hF : ∀ z, u.ex (F z) = u'.ex z ≫ e.hom)
@@ -85,13 +85,13 @@ theorem isDiff_of_comp {M : LB A.left} {M' : LB A'.left} {g g' : ℕ} (u : HolUn
   exact fun U h f => a2.2 U h f
 
 /- English proof (translation)
-Introduce `A A' _ _ M M' g u u' e _ hAb d₁ d₂`. Establish `hol : IsHolTo (Set.univ : Set (Fin g → ℂ)) (fun w => (u'.ex w ≫ e.hom).left)`. Simplify `GlobalTheory.HolTorsion.isHolTo_comp (isHolTo_ex u') e.hom.left` using `only [Over.comp_left]`. Take `⟨F, hF, -⟩` from `GlobalTheory.existsUnique_linear_lift_of_isHolTo A hAb M g g u d₁ d₂ (fun w => u'.ex w ≫ e.hom) (fun p q => by rw [u'.ex_add, MonObj.mul_comp]) hol`. Establish `hinj : Function.Injective F` using `linLift_injective u u' e F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective F` using `LinearMap.injective_iff_surjective.1 hinj`. Use `⟨fun v hv => ?_, fun w => ?_⟩` and prove the remaining obligations. Take `⟨w₀, hw₀, huniq⟩` from `d₁ _ (isTangent_comp e.hom hv)`. Take `⟨c, rfl⟩` from `hsurj w₀`. Use `⟨c, isDiff_of_comp u u' e F hF hv hw₀, fun c' hc' => hinj (huniq _ ?_)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.CompanionTheory.Ar.HodgeUniq.isDiff_comp u u' d₂ e.hom F hF hv hc'`. Take `⟨t, ⟨ht, hd⟩, huniq⟩` from `d₂ (F w)`. Establish `hcomp : (t ≫ e.inv) ≫ e.hom = t` using `by rw [Category.assoc, e.inv_hom_id, Category.comp_id]`. Establish `hv : IsTangent (t ≫ e.inv)` using `GlobalTheory.CompanionTheory.Ar.HodgeUniq.tangent_of_iso e ht hcomp`. Use `⟨t ≫ e.inv, ⟨hv, isDiff_of_comp u u' e F hF hv (hcomp.symm ▸ hd)⟩, fun v' hv' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `huniq (v' ≫ e.hom) ⟨isTangent_comp e.hom hv'.1, GlobalTheory.CompanionTheory.Ar.HodgeUniq.isDiff_comp u u' d₂ e.hom F hF hv'.1 hv'.2⟩`. Rewrite using `[← h, Category.assoc, e.hom_inv_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tangentCoords_of_iso : ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (M : LB A.left) (M' : LB A'.left) (g : ℕ) (u : HolUnif A M g) (u' : HolUnif A' M' g) (e : A' ≅ A) [IsMonHom e.hom], IsAbelianScheme A → (∀ v, IsTangent v → ∃! w, u.IsDiff w v) → (∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v) → (∀ v, IsTangent v → ∃! w, u'.IsDiff w v) ∧ (∀ w, ∃! v, IsTangent v ∧ u'.IsDiff w v) := by
   intro A A' _ _ M M' g u u' e _ hAb d₁ d₂

@@ -32,7 +32,7 @@ namespace AutFinGL
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨(LinearMap.proj g).comp ((Sm E a).subtype.comp T), w, funext fun k => (congrFun (congrArg Subtype.val (hT k w)) g).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem type_of_map {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Kinf E a) W)
     (T : W →ₗ[ℂ] Sm E a) (hT : ∀ k w, T (ρ k w) = cptRep E a k (T w)) (w : W) (g : GA E a) :

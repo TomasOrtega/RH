@@ -8,23 +8,21 @@ set_option autoImplicit false
 namespace GlobalTheory.LogDerProj
 
 /- English proof (translation)
-Use `set E : Derivation ℤ R R := D₁.1 - D₂.1 with hE`. Establish `hloc : ∀ r, ∃ m : Submonoid.powers f, (m : R) * E r = 0`. Introduce `r`. Establish `h1` using `congrArg (fun D => D.1 (algebraMap R S r)) h`. Simplify using `only [res_apply] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : algebraMap R S (E r) = 0`. Rewrite using `[hE, Derivation.sub_apply, map_sub, h1, sub_self]`. Conclude with `(IsLocalization.map_eq_zero_iff (Submonoid.powers f) S _).1 h2`. Use `choose m hm using hloc`. Use `letI := φ.toAlgebra`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hft : Algebra.FiniteType k R` using `hφ`. Take `⟨s, hs⟩` from `hft.out`. Set `c : Submonoid.powers f` to `∏ x ∈ s, m x`. Establish `hcs : ∀ x ∈ s, (c : R) * E x = 0`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (c : R) = (∏ y ∈ s.erase x, m y : Submonoid.powers f) * m x`. Simplify using `only [c]`. Rewrite using `[← Submonoid.coe_mul, ← Finset.prod_erase_mul s m hx]`. Rewrite using `[this, mul_assoc, hm x, mul_zero]`. Establish `hall : ∀ r, (c : R) * E r = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Introduce `r`. Establish `hr : r ∈ Algebra.adjoin k (s : Set R)` using `by rw [hs]; trivial`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hcs x hx`. Consider the case `algebraMap a`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : D₁.1 (φ a) = 0` using `D₁.2.1 a`. Establish `e2 : D₂.1 (φ a) = 0` using `D₂.2.1 a`. Use `show (c : R) * E (φ a) = 0`. Rewrite using `[hE, Derivation.sub_apply, e1, e2, sub_self, mul_zero]`. Consider the case `add x y _ _ hx hy => rw [map_add, mul_add, hx, hy, add_zero]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mul x y _ _ hx hy`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul, mul_add]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨c, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `r`. Rewrite using `[Submonoid.smul_def, Submonoid.smul_def]`. Use `show ((c : R) • D₁.1) r = ((c : R) • D₂.1) r`. Rewrite using `[Derivation.smul_apply, Derivation.smul_apply, smul_eq_mul, smul_eq_mul, ← sub_eq_zero, ← mul_sub]`. Use `hall r` as an intermediate fact.
-
-Rewrite `this` using `[hE, Derivation.sub_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_eq_of_res_eq {k R S : Type} [Field k] [CommRing R] [CommRing S] [Algebra R S] (f : R)
     [IsLocalization.Away f S] (φ : k →+* R) (hφ : φ.FiniteType) (J : Ideal R) (D₁ D₂ : logSub φ J)

@@ -9,9 +9,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [evC]`. Consider the case `add p q hp hq`. Simplify using `only [evC, Polynomial.map_add, map_add] at hp hq ⊢`. Rewrite using `[hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul_X p i hp`. Simplify using `only [evC, map_mul, map_X, eval_X] at hp ⊢`. Rewrite using `[hp]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evC_conj {K : Type} {ι : K → Type} (z : (Σ k, ι k) → ℂ) (g : MRing ι) :
     evC (fun p => (starRingEnd ℂ) (z p)) g = (starRingEnd ℂ) (evC z g) := by
@@ -25,9 +25,9 @@ theorem evC_conj {K : Type} {ι : K → Type} (z : (Σ k, ι k) → ℂ) (g : MR
     rw [hp]
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ F _ _ y φ σ z h`. Take `⟨⟨hne, hvan⟩, hrel⟩` from `h`. Use `⟨⟨fun k => ?_, fun f hf => ?_⟩, fun a d g h' hg hh e => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hne k`. Conclude with `⟨i, by simpa using hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `evC_conj z f` as an intermediate fact. Establish `h0 : evC z f = 0` using `hvan f hf`. Rewrite `this` using `[h0, map_zero]`. Conclude with `this`. Rewrite using `[evC_conj, evC_conj, hrel a d g h' hg hh e, map_mul, ComplexEmbedding.conjugate_coe_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptOver_conj : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (F : Type)
     [Field F] [NumberField F] (y : (Σ k, ι k) → Ω) (φ : F →+* Ω) (σ : F →+* ℂ) (z : (Σ k, ι k) → ℂ),

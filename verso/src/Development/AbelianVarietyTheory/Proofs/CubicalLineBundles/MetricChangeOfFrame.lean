@@ -23,17 +23,15 @@ open scoped ComplexOrder
 open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 /- English proof (translation)
-Set `up : ∀ w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left, w ≫ Xo.univ.t.G.hom = spMap (algebraMap S (DualNumber S)) ≫ x → (epsR S ⟶ G')` to `fun w h => Over.homMk (hp.1.lift w _ h) (hp.1.lift_snd _ _ _)`. Establish `hup : ∀ w h, (up w h).left ≫ φ = w` using `fun w h => hp.1.lift_fst _ _ _`. Establish `one : ∀ T : Over (Sp S), (1 : T ⟶ G').left ≫ φ = (1 : Over.mk (T.hom ≫ x) ⟶ Xo.univ.t.G).left` using `fun T => congrArg (fun q => q.left) (map_one (pushHom hp T))`. Establish `e : η[G'].left ≫ φ = (1 : Over.mk x ⟶ Xo.univ.t.G).left`. Establish `e₁ : (1 : 𝟙_ (Over (Sp S)) ⟶ G') = η[G']` using `by rw [Hom.one_def]; simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e₁, one]`. Conclude with `congrArg (· ≫ (η[Xo.univ.t.G]).left) (Category.id_comp x)`. Establish `zs : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _`. Establish `e : (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S`. Use extensionality with `s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [spMap]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, e]`. Simplify using the standard rewrite rules. Establish `pr : ∀ {n} (u : Fin n → (epsR S ⟶ G')), (List.ofFn u).prod.left ≫ φ = (List.ofFn fun i => (pushPt hp.1.w (u i) : tEps x ⟶ Xo.univ.t.G)).prod.left` using `fun u => congrArg (fun q => q.left) ((map_list_prod (pushHom hp (epsR S)) _).trans (by rw [List.map_ofFn]; rfl))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun w h => hp.1.hom_ext ?_ ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans (h.2.trans e.symm)`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Over.w w, Over.w η[G']]`. Conclude with `zs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `n c v w ⟨u, hu, hw⟩`. Use `⟨(List.ofFn fun i => up (u i).left (Over.w _)).prod, (pr _).trans (Eq.trans ?_ hw), fun i => up (u i).left (Over.w _), fun i => hp.1.hom_ext ?_ ?_, rfl⟩` and prove the remaining obligations. Establish `: u = fun i => (pushPt hp.1.w (up (u i).left (Over.w _)) : tEps x ⟶ Xo.univ.t.G)`. Use function extensionality and compare the values at `fun i => Over.OverMorphism.ext (hup (u i).left (Over.w _)).symm`. Conclude with `(congrArg (fun q : _ → (tEps x ⟶ Xo.univ.t.G) => (List.ofFn q).prod.left) this).symm`.
-
-Conclude with `(hup _ _).trans ((hu i).trans (Category.assoc _ _ _).symm)`. Use `(Over.w (up (u i).left (Over.w _))).trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (spMap (epsScaleR (c i)) ≫ ·) (Over.w (v i))).symm` and prove the remaining obligations. Conclude with `(spMap_epsScaleR_comp (c i)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lift_comb {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {G' : Over (Sp S)} [GrpObj G']
@@ -88,9 +86,7 @@ def scaleSec {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {L : LB X
     ring
 
 /- English proof (translation)
-Unfold `Out.nonzeroLocus`. Use `iSup_congr fun k => ?_` and prove the remaining obligations. Establish `hu : IsUnit (constFn p (L.U k) a)` using `(ha.map _).map _`. Use `show X.basicOpen (constFn p _ a * s.f k) = _`. Rewrite using `[Scheme.basicOpen_mul, X.basicOpen_of_isUnit hu]`.
-
-Conclude with `inf_eq_right.2 (X.basicOpen_le _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_scaleSec {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {L : LB X} {a : R}
     (ha : IsUnit a) (s : LB.Sec L) : Out.nonzeroLocus (scaleSec p a s) = Out.nonzeroLocus s := by
@@ -102,7 +98,7 @@ theorem nonzeroLocus_scaleSec {R : Type} [CommRing R] {X : Scheme.{0}} (p : X �
   exact inf_eq_right.2 (X.basicOpen_le _)
 
 /- English proof (translation)
-Simplify using `only [hermForm, star_sum, star_smul, Matrix.mulVec_sum, Matrix.mulVec_smul, sum_dotProduct, dotProduct_sum, smul_dotProduct, dotProduct_smul, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermForm_sum {g n : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (W : Fin n → Fin g → ℂ) (c d : Fin n → ℂ) :
     hermForm Hm (∑ l, c l • W l) (∑ j, d j • W j) = ∑ l, ∑ j, star (d j) * hermForm Hm (W l) (W j) * c l := by
@@ -112,13 +108,13 @@ theorem hermForm_sum {g n : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (W : Fin n �
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Take `⟨Φ, u, Hm, χ, θ, Fd, w, W, h1, h2, h3, h4, h5, h6, h7, h8⟩` from `h`. Take `⟨l1, l2⟩` from `lift_comb Φ.m.cart`. Establish `hw : ∀ b, uu b = fun i => (w b i).left ≫ Φ.m.φ` using `fun b => funext fun i => (h7 b i).1.symm`. Establish `hx : ∀ b i, ∃ w' : epsR ℂ ⟶ Φ.T.t.G, w'.left ≫ Φ.m.φ = uu' b i ∧ IsLieComb (fun j => Y b j i) (w b) w'` using `fun b i => l2 _ _ (w b) _ (hw b ▸ hc b i)`. Use `choose w' hw1 hw2 using hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Φ' : FibKey Xo ℂ x` to `{ Φ with th := scaleSec Φ.T.t.G.hom a Φ.th th_ne := fun p => by rw [nonzeroLocus_scaleSec _ ha.isUnit]; exact Φ.th_ne p }`. Use `⟨Φ', u, Hm, χ, fun z => a * θ z, Fd, w', fun b i => ∑ j, Y b j i • W b j, ?_, h2, h3, ?_, h5, ?_, fun b i => ⟨hw1 b i, ?_⟩, fun b i k => ?_⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.LamT.TieCalc.secTie_calc E H Dw l Xo ℂ x Φ.T.t Φ.m Φ.th s h1).1 a x s' _ rfl hs).2 fun _ => rfl`. Introduce `i z hz`. Use `(valAt'_mul _ _ _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_assoc]`. Conclude with `congrArg₂ (· * ·) (valAt'_constFn _ _ (Over.w (u.ex z)) _ a hz) (h4 i z hz)`. Rewrite using `[h6, ← mul_div_assoc, ← integral_const_mul]`. Use `congr 2`. Use function extensionality and compare the values at `z`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_mul, mul_pow, _root_.mul_assoc]`. Conclude with `(GlobalTheory.T.tangentVector_existsUnique_uniformisingVector Φ.key u).2 _ (w b) (W b) _ (w' b i) (fun j => l1 _ ((h7 b j).1.symm ▸ ht b j)) (fun j => (h7 b j).2) (hw2 b i)`. Rewrite using `[hermForm_sum]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, h8, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem metricAt_change {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} (x : Sp ℂ ⟶ Xo.X) (s s' : LB.Sec (PPx x))
@@ -155,7 +151,7 @@ theorem metricAt_change {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ y y' N Gr Y a ha ⟨hx, hc, hs⟩ h`. Take `⟨x', hx', u', t', e', b', s', g'⟩` from `y'`. Take `⟨x, hx0, u, t, e, b, s, g⟩` from `y`. Take `rfl : x' = x` from `hx`. Conclude with `metricAt_change x' s s' u u' N Gr Y a ha t hc hs h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isMetric_frChg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (y y' : FrPt Xo c (CAt σ)) (N : ℝ) (Gr Y : (∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) ℂ)) (a : ℂ), a ≠ 0 → FrChg (S := CAt σ) (fun b => (Y b).transpose) a y y' → IsMetric y N Gr → IsMetric y' (‖a‖ ^ 2 * N) (fun b => (Y b).conjTranspose * Gr b * Y b) := by
   intro E _ _ _ H Dw l Xo c σ y y' N Gr Y a ha ⟨hx, hc, hs⟩ h

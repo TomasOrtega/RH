@@ -10,7 +10,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbLaw
 
 /- English proof (translation)
-Introduce `K _ _ P` and use `le_antisymm (GlobalTheory.T.finrank_principalPolarisation_sectionModule_le_one K P) (GlobalTheory.T.one_le_finrank_secM_one_of_isAlgClosed K P)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finrank_sections_principal_polarisation_eq_one :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))),

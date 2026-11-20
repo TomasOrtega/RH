@@ -11,11 +11,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `q _ k B _ _ _ _ _ _ hq i x`. Establish `hqB : IsUnit (q : B)` using `by simpa using hq.map (algebraMap k B)`. Distinguish the cases in `hB : IsField B`. Establish `hSH : SH B` using `GlobalTheory.T.sH_of_isField_finiteType_of_isAlgClosed k B hB haveI : Subsingleton (Ht q (sp B) 2 i) := GlobalTheory.T.strictlyHenselianLocalRing_acyclic_every_sheaf (ZMod q) B hSH (tw q i) 2 (by norm_num)`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subsingleton.elim x 0, map_zero]`. Take `⟨inst, halg⟩` from `GlobalTheory.T.exists_isAlgebraic_ratFunc_fractionRing_dedekind k B hB`. Use `letI := inst`. Use `haveI := halg`. Establish `hqK : IsUnit (q : FractionRing B)` using `by simpa using hqB.map (algebraMap B (FractionRing B))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Subsingleton (Ht q (sp (FractionRing B)) 2 i) := GlobalTheory.T.etale_cohomology_vanishing_algebraic_over_ratFunc q k (FractionRing B) hqK 2 i le_rfl`. Take `⟨f, hf, -, hx⟩` from `GlobalTheory.T.class_vanishes_away_nonzero_nonunit_domain q B hB hqB 2 i x (Subsingleton.elim _ _)`. Conclude with `⟨f, hf, hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smoothAffineCurve_degreeTwo_class_dies_on_principalOpen : ∀ (q : ℕ) [NeZero q] (k B : Type) [Field k] [IsAlgClosed k]
     [CommRing B] [IsDedekindDomain B] [Algebra k B] [Algebra.FiniteType k B], IsUnit (q : k) →

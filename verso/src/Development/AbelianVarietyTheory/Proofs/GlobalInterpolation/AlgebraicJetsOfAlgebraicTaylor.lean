@@ -11,9 +11,7 @@ namespace GlobalTheory.AlgJetsRat
 variable {D : D7} {N N' : ℕ}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.JetTransport.mlin_expand]`. Use `IntermediateField.sum_mem _ fun f _ => IntermediateField.mul_mem _ ?_ ?_` and prove the remaining obligations. Conclude with `IntermediateField.prod_mem _ fun j _ => GlobalTheory.JetTransport.embT_mem _ _`. Rewrite using `[GlobalTheory.JetTransport.iFD_coord F hF f]`. Use `IntermediateField.mul_mem _ (IntermediateField.prod_mem _ fun i _ => ?_) (hT _)` and prove the remaining obligations.
-
-Conclude with `IntermediateField.natCast_mem _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jet_embV_mem (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (F : VC D N N' → ℂ) (hF : ContDiff ℂ ⊤ F)
     (hT : ∀ α, taylor D F α ∈ Qbar) {m : ℕ} (A : Fin m → Matrix (Fin N') (Fin N) D.host.E) :
@@ -29,13 +27,13 @@ end GlobalTheory.AlgJetsRat
 
 open GlobalTheory.AlgJetsRat in
 /- English proof (translation)
-Introduce `D cc δ δ₀ B N N' L L' F hδ hδ₀ hF hT g S e he hLa k ys hys`. Establish `hc : ∀ j, ∃ (c : ℂ) (A : Matrix (Fin N') (Fin N) D.host.E), c ∈ Qbar ∧ e.symm (δ₀⁻¹ • ys j) = c • embV D B.tor A`. Introduce `j`. Take `⟨s, hs, hsy⟩` from `hys j`. Establish `hx : e.symm ((s : ℂ) • ys j) ∈ La D B.tor L L'` using `(he _).1 (by simpa using hsy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, A, -, hA, -⟩` from `hLa _ hx`. Establish `hs0 : (s : ℂ) ≠ 0` using `by exact_mod_cast hs.ne'`. Use `⟨δ / δ₀ * (s : ℂ)⁻¹, A, IntermediateField.mul_mem _ hδ (IntermediateField.inv_mem _ (IntermediateField.natCast_mem _ s)), ?_⟩` and prove the remaining obligations. Establish `h1 : e.symm (ys j) = (s : ℂ)⁻¹ • (δ • embV D B.tor A)`. Rewrite using `[← hA, map_smul, smul_smul, inv_mul_cancel₀ hs0, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, h1, smul_smul, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Use `choose c A hcQ hcA using hc`. Use `show iteratedFDeriv ℂ k (F ∘ ((e.symm : (Fin g → ℂ) ≃L[ℂ] VC D N N') : (Fin g → ℂ) →L[ℂ] VC D N N')) 0 (fun j => δ₀⁻¹ • ys j) ∈ Qbar`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ContinuousLinearMap.iteratedFDeriv_comp_right _ hF _ le_top, ContinuousMultilinearMap.compContinuousLinearMap_apply]`. Simplify using `only [ContinuousLinearEquiv.coe_coe, map_zero, hcA]`. Rewrite using `[ContinuousMultilinearMap.map_smul_univ, smul_eq_mul]`. Conclude with `IntermediateField.mul_mem _ (IntermediateField.prod_mem _ fun j _ => hcQ j) (jet_embV_mem cc δ F hF hT A)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.algJets_of_taylor : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ δ₀ : ℂ) (B : Base D cc δ) (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (F : VC D N N' → ℂ), δ / δ₀ ∈ Qbar → δ₀ ≠ 0 → ContDiff ℂ ⊤ F → (∀ α, taylor D F α ∈ Qbar) → ∀ (g : ℕ) (S : JMB.Setup g) (e : VC D N N' ≃L[ℂ] (Fin g → ℂ)), (∀ x, e x ∈ S.La ↔ x ∈ La D B.tor L L') → (∀ x ∈ La D B.tor L L', ∃ (n : ℕ) (A : Matrix (Fin N') (Fin N) D.host.E), 0 < n ∧ x = δ • embV D B.tor A ∧ (n : D.host.E) • A ∈ YYl D L L') → S.AlgJets δ₀ (fun z => F (e.symm z)) := by
   intro D cc δ δ₀ B N N' L L' F hδ hδ₀ hF hT g S e he hLa k ys hys

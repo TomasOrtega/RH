@@ -11,7 +11,7 @@ noncomputable section
 variable {Ω Φ : Type*} [Field Ω] [Field Φ] [Algebra Ω Φ]
 
 /- English proof (translation)
-Establish `hle : (IntermediateField.adjoin ℚ S).map (algebraMap Ω Φ).toRatAlgHom ≤ L`. Rewrite using `[IntermediateField.adjoin_map, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `hS w hw`. Conclude with `hle ((IntermediateField.mem_map _).mpr ⟨z, hz, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem RatioField.map_mem [CharZero Ω] [CharZero Φ] {S : Set Ω} {L : IntermediateField ℚ Φ}
     (hS : ∀ w ∈ S, algebraMap Ω Φ w ∈ L) {z : Ω} (hz : z ∈ IntermediateField.adjoin ℚ S) :
@@ -23,11 +23,11 @@ theorem RatioField.map_mem [CharZero Ω] [CharZero Φ] {S : Set Ω} {L : Interme
   exact hle ((IntermediateField.mem_map _).mpr ⟨z, hz, rfl⟩)
 
 /- English proof (translation)
-Set `ψ` to `(algebraMap Ω Φ).toRatAlgHom`. Establish `ht' : AlgebraicIndependent ℚ (ψ ∘ t)` using `ht.map' (algebraMap Ω Φ).injective`. Establish `h4 : IsAlgebraic (Algebra.adjoin ℚ (Set.range (ψ ∘ t))) (ψ z)`. Assume the negation of the conclusion as `h`. Establish `h3 : AlgebraicIndependent ℚ (fun o : Option (Fin d) => o.elim z t)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `AlgebraicIndependent.of_comp ψ ?_` and prove the remaining obligations. Use `(ht'.option_iff_transcendental (ψ z)).mpr h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `o`. Apply the tactic sequence `cases o <;> rfl`. Conclude with `(ht.option_iff_transcendental z).mp h3 (IntermediateField.isAlgebraic_adjoin_iff.mp hz)`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hsub : Set.range (ψ ∘ t) ⊆ s`. Introduce and unpack `_ ⟨n, rfl⟩`. Conclude with `hs n`. Conclude with `IntermediateField.isAlgebraic_adjoin_iff.mpr (h4.tower_top_of_subalgebra_le (Algebra.adjoin_mono hsub))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem RatioField.isAlgebraic_map [CharZero Ω] [CharZero Φ] {d : ℕ} {t : Fin d → Ω}
     (ht : AlgebraicIndependent ℚ t) {z : Ω} (hz : IsAlgebraic (IntermediateField.adjoin ℚ (Set.range t)) z)
@@ -49,7 +49,7 @@ theorem RatioField.isAlgebraic_map [CharZero Ω] [CharZero Φ] {d : ℕ} {t : Fi
   exact IntermediateField.isAlgebraic_adjoin_iff.mpr (h4.tower_top_of_subalgebra_le (Algebra.adjoin_mono hsub))
 
 /- English proof (translation)
-Establish `h` using `RatioField.map_mem (L := (algebraicClosure (IntermediateField.adjoin ℚ s) Φ).restrictScalars ℚ) (fun w hw => (IntermediateField.mem_restrictScalars ℚ).mpr (mem_algebraicClosure_iff.mpr (RatioField.isAlgebraic_map ht (hS w hw) hs))) hz`. Conclude with `mem_algebraicClosure_iff.mp ((IntermediateField.mem_restrictScalars ℚ).mp h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem RatioField.isAlgebraic_map_adjoin [CharZero Ω] [CharZero Φ] {d : ℕ} {t : Fin d → Ω}
     (ht : AlgebraicIndependent ℚ t) {S : Set Ω}
@@ -64,9 +64,9 @@ theorem RatioField.isAlgebraic_map_adjoin [CharZero Ω] [CharZero Φ] {d : ℕ} 
 variable {E κ : Type*} [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-Establish `hlin : φ k = ((g k 0 * g k₁ 1 - g k 1 * g k₁ 0) / (g k₀ 0 * g k₁ 1 - g k₀ 1 * g k₁ 0)) • φ k₀ + ((g k₀ 0 * g k 1 - g k₀ 1 * g k 0) / (g k₀ 0 * g k₁ 1 - g k₀ 1 * g k₁ 0)) • φ k₁`. Use `b.ext fun q => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, hφ, smul_eq_mul]`. Rewrite using `[div_mul_eq_mul_div, div_mul_eq_mul_div, ← add_div, eq_div_iff hg]`. Apply the tactic sequence `fin_cases q <;> simp <;> ring`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hlin]`. Simplify using `only [T.lineVal, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem RatioField.lineVal_cramer (e b : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω) (g : κ → Fin 2 → Ω)
     (X : Ω) (k₀ k₁ k : κ) (hφ : ∀ k q, φ k (b q) = X * g k q)
@@ -87,11 +87,11 @@ theorem RatioField.lineVal_cramer (e b : Module.Basis (Fin 2) Ω E) (φ : κ →
   ring
 
 /- English proof (translation)
-Establish `hval : ∀ k q, φ k (b q) = e.repr (b q) 0 * φ k (e 0) + e.repr (b q) 1 * φ k (e 1)`. Introduce `k q`. Use `conv_lhs => rw [← e.sum_repr (b q)]`. Simplify using `only [Fin.sum_univ_two, map_add, map_smul, smul_eq_mul]`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hg` to reduce the goal to its premises. Establish `hX2 : X * X ≠ 0` using `mul_ne_zero hX hX`. Apply `(mul_right_injective₀ hX2).eq_iff.mp` to reduce the goal to its premises. Establish `h00` using `hval k₀ 0`. Establish `h01` using `hval k₀ 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10` using `hval k₁ 0`. Establish `h11` using `hval k₁ 1`. Rewrite `h00`, `h01`, `h10`, `h11` using `[hφ]`. Take the linear combination `(X * g k₀ 0) * h11 + (e.repr (b 1) 1 * φ k₁ (e 1) + e.repr (b 1) 0 * φ k₁ (e 0)) * h00 - (X * g k₀ 1) * h10 - (e.repr (b 0) 1 * φ k₁ (e 1) + e.repr (b 0) 0 * φ k₁ (e 0)) * h01 + -(e.repr (b 0) 0 * e.repr (b 1) 1 - e.repr (b 0) 1 * e.repr (b 1) 0) * h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem RatioField.det_ne_zero (e b : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω) (g : κ → Fin 2 → Ω)
     (X : Ω) (hX : X ≠ 0) (k₀ k₁ : κ) (hφ : ∀ k q, φ k (b q) = X * g k q)

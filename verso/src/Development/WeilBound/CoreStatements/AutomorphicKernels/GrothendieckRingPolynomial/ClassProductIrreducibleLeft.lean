@@ -22,12 +22,12 @@ variable {ι M : Type*} [AddCommGroup M] (f : ι → ι → M)
 def bil (a b : ι →₀ ℤ) : M := a.sum fun x m => b.sum fun y n => (m * n) • f x y
 
 /- English proof (translation)
-The claim follows from `Finsupp.sum_zero_index`.
+A detailed English derivation is pending.
 -/
 theorem bil_zero_left (b : ι →₀ ℤ) : bil f 0 b = 0 := Finsupp.sum_zero_index
 
 /- English proof (translation)
-Unfold `bil`. Simplify using `only [Finsupp.sum_zero_index]`. Conclude with `Finset.sum_const_zero`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bil_zero_right (a : ι →₀ ℤ) : bil f a 0 = 0 := by
   unfold bil
@@ -35,9 +35,9 @@ theorem bil_zero_right (a : ι →₀ ℤ) : bil f a 0 = 0 := by
   exact Finset.sum_const_zero
 
 /- English proof (translation)
-Unfold `bil`. Rewrite using `[Finsupp.sum_add_index']`. Introduce `x`. Simplify using `only [zero_mul, zero_smul]`. Conclude with `Finset.sum_const_zero`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x m₁ m₂`. Simplify using `only [add_mul, add_smul, Finsupp.sum_add]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bil_add_left (a a' b : ι →₀ ℤ) : bil f (a + a') b = bil f a b + bil f a' b := by
   unfold bil
@@ -49,9 +49,9 @@ theorem bil_add_left (a a' b : ι →₀ ℤ) : bil f (a + a') b = bil f a b + b
     simp only [add_mul, add_smul, Finsupp.sum_add]
 
 /- English proof (translation)
-Unfold `bil`. Rewrite using `[← Finsupp.sum_add]`. Use `Finsupp.sum_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_add_index']`. Introduce `y`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mul_zero, zero_smul]`. Introduce `y n₁ n₂`. Rewrite using `[mul_add, add_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem bil_add_right (a b b' : ι →₀ ℤ) : bil f a (b + b') = bil f a b + bil f a b' := by
   unfold bil
@@ -64,7 +64,7 @@ theorem bil_add_right (a b b' : ι →₀ ℤ) : bil f a (b + b') = bil f a b + 
     rw [mul_add, add_smul]
 
 /- English proof (translation)
-Unfold `bil`. Rewrite using `[Finsupp.sum_single_index, Finsupp.sum_single_index, mul_one, one_smul]`. Rewrite using `[mul_zero, zero_smul]`. Simplify using `only [zero_mul, zero_smul]`. Conclude with `Finset.sum_const_zero`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bil_single (x y : ι) : bil f (Finsupp.single x 1) (Finsupp.single y 1) = f x y := by
   unfold bil
@@ -82,33 +82,33 @@ theorem mulR_eq_bil (a b : GrothGL k) :
     mulR a b = bil (fun x y : IrrGL k => cl0 (prod₂ (IrrGL.rep x) (IrrGL.rep y))) a b := rfl
 
 /- English proof (translation)
-The claim follows from `(mulR_eq_bil _ _).trans (bil_zero_left _ b)`.
+A detailed English derivation is pending.
 -/
 theorem mulR_zero_left (b : GrothGL k) : mulR 0 b = 0 :=
   (mulR_eq_bil _ _).trans (bil_zero_left _ b)
 
 /- English proof (translation)
-The claim follows from `(mulR_eq_bil _ _).trans (bil_zero_right _ a)`.
+A detailed English derivation is pending.
 -/
 theorem mulR_zero_right (a : GrothGL k) : mulR a 0 = 0 :=
   (mulR_eq_bil _ _).trans (bil_zero_right _ a)
 
 /- English proof (translation)
-The claim follows from `(mulR_eq_bil _ _).trans ((bil_add_left _ a a' b).trans (congrArg₂ (· + ·) (mulR_eq_bil a b).symm (mulR_eq_bil a' b).symm))`.
+A detailed English derivation is pending.
 -/
 theorem mulR_add_left (a a' b : GrothGL k) : mulR (a + a') b = mulR a b + mulR a' b :=
   (mulR_eq_bil _ _).trans ((bil_add_left _ a a' b).trans
     (congrArg₂ (· + ·) (mulR_eq_bil a b).symm (mulR_eq_bil a' b).symm))
 
 /- English proof (translation)
-The claim follows from `(mulR_eq_bil _ _).trans ((bil_add_right _ a b b').trans (congrArg₂ (· + ·) (mulR_eq_bil a b).symm (mulR_eq_bil a b').symm))`.
+A detailed English derivation is pending.
 -/
 theorem mulR_add_right (a b b' : GrothGL k) : mulR a (b + b') = mulR a b + mulR a b' :=
   (mulR_eq_bil _ _).trans ((bil_add_right _ a b b').trans
     (congrArg₂ (· + ·) (mulR_eq_bil a b).symm (mulR_eq_bil a b').symm))
 
 /- English proof (translation)
-The claim follows from `(mulR_eq_bil _ _).trans (bil_single _ x y)`.
+A detailed English derivation is pending.
 -/
 theorem mulR_sg_sg (x y : IrrGL k) : mulR (sg x) (sg y) = cl0 (prod₂ (IrrGL.rep x) (IrrGL.rep y)) :=
   (mulR_eq_bil _ _).trans (bil_single _ x y)
@@ -119,14 +119,14 @@ variable {N : ℕ} {U V W : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup 
   [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Unfold `cl0`. Conclude with `dif_pos h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem class_eq_finite_length_class (π : Representation ℂ (GL (Fin N) k) V) (h : HasFiniteLength π) : cl0 π = clsGL π h := by
   unfold cl0
   exact dif_pos h
 
 /- English proof (translation)
-Establish `h` using `(⟨V, π, hs, hi⟩ : IrrRep (GL (Fin N) k)).hasFiniteLength`. Rewrite using `[class_eq_finite_length_class π h]`. Conclude with `clsGL_irr ⟨V, π, hs, hi⟩ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem class_irreducible_basis (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible) :
     cl0 π = sg (IrrGL.of π hs hi) := by
@@ -135,7 +135,7 @@ theorem class_irreducible_basis (π : Representation ℂ (GL (Fin N) k) V) (hs :
   exact clsGL_irr ⟨V, π, hs, hi⟩ h
 
 /- English proof (translation)
-Distinguish the cases in `h : HasFiniteLength π`. Rewrite using `[class_eq_finite_length_class π h, class_eq_finite_length_class τ (h.of_equiv φ), clsGL_congr φ]`. Establish `h' : ¬ HasFiniteLength τ` using `fun h' => h (h'.of_equiv φ.symm)`. Unfold `cl0`. Rewrite using `[dif_neg h, dif_neg h']`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem class_congr_equiv {π : Representation ℂ (GL (Fin N) k) V} {τ : Representation ℂ (GL (Fin N) k) W}
     (φ : π.Equiv τ) : cl0 π = cl0 τ := by
@@ -146,9 +146,9 @@ theorem class_congr_equiv {π : Representation ℂ (GL (Fin N) k) V} {τ : Repre
     rw [dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Rewrite using `[class_eq_finite_length_class π (GlobalTheory.ProdLength.hasFiniteLength_of_subsingleton π), clsGL]`. Establish `: cls π (GlobalTheory.ProdLength.hasFiniteLength_of_subsingleton π) = 0`. Use extensionality with `c`. Rewrite using `[cls_apply, jhMult_of_subsingleton c.rep.irr]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Finsupp.mapDomain_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem class_subsingleton [Subsingleton V] (π : Representation ℂ (GL (Fin N) k) V) : cl0 π = 0 := by
   rw [class_eq_finite_length_class π (GlobalTheory.ProdLength.hasFiniteLength_of_subsingleton π), clsGL]
@@ -159,14 +159,14 @@ theorem class_subsingleton [Subsingleton V] (π : Representation ℂ (GL (Fin N)
   rw [this, Finsupp.mapDomain_zero]
 
 /- English proof (translation)
-Establish `: Subsingleton V` using `⟨fun a b => (h a).trans (h b).symm⟩`. Conclude with `class_subsingleton π`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem class_eq_zero_of_trivial_space {π : Representation ℂ (GL (Fin N) k) V} (h : ∀ v : V, v = 0) : cl0 π = 0 := by
   have : Subsingleton V := ⟨fun a b => (h a).trans (h b).symm⟩
   exact class_subsingleton π
 
 /- English proof (translation)
-Establish `hα : HasFiniteLength α` using `GlobalTheory.ProdLength.hasFiniteLength_of_injective i hi h`. Establish `hγ : HasFiniteLength γ` using `GlobalTheory.JacquetBlocks.hasFiniteLength_of_surjective q hq h`. Rewrite using `[class_eq_finite_length_class β h, class_eq_finite_length_class α hα, class_eq_finite_length_class γ hγ, clsGL, clsGL, clsGL, cls_exact i q hi hq he h hα hγ, Finsupp.mapDomain_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem class_additive_exact {α : Representation ℂ (GL (Fin N) k) U} {β : Representation ℂ (GL (Fin N) k) V}
     {γ : Representation ℂ (GL (Fin N) k) W} (i : α.IntertwiningMap β) (q : β.IntertwiningMap γ)
@@ -188,15 +188,15 @@ def subIncl {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ 
   ⟨S.toSubmodule.subtype, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(hasFiniteLength_iff_wellFounded ρ).1 hf`. Establish `hsub : ∀ S : Subrepresentation ρ, IsSmooth S.toRepresentation ∧ HasFiniteLength S.toRepresentation` using `fun S => ⟨(IsSubquotient.of_injective (subIncl S) Subtype.val_injective).isSmooth hs, GlobalTheory.ProdLength.hasFiniteLength_of_injective (subIncl S) Subtype.val_injective hf⟩`. Establish `key : ∀ S : Subrepresentation ρ, P _ S.toRepresentation`. Introduce `S`. Proceed by induction on `S using WellFoundedLT.induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `ind S ih`. Break down `eq_or_ne S ⊥ with rfl | hS` into its components or cases. Establish `: Subsingleton (⊥ : Subrepresentation ρ).toSubmodule` using `inferInstanceAs (Subsingleton (⊥ : Submodule ℂ V))`. Conclude with `hzero _ _`. Take `⟨T, -, hT⟩` from `exists_le_covBy_of_lt (bot_lt_iff_ne_bot.2 hS)`.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `i : T.toRepresentation.IntertwiningMap S.toRepresentation` to `⟨Submodule.inclusion hT.le, fun _ => rfl⟩`. Set `q : S.toRepresentation.IntertwiningMap (subQuot S T)` to `⟨Submodule.mkQ _, fun _ => rfl⟩`. Establish `hq : Function.Surjective q` using `Submodule.Quotient.mk_surjective _`. Establish `hex : Function.Exact i q`. Introduce `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun hy => ⟨⟨y.1, (Submodule.Quotient.mk_eq_zero (T.toSubmodule.comap S.toSubmodule.subtype)).1 hy⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, rfl⟩`. Conclude with `(Submodule.Quotient.mk_eq_zero (T.toSubmodule.comap S.toSubmodule.subtype)).2 x.2`. Establish `hsq : IsSmooth (subQuot S T)` using `((IsSubquotient.of_surjective q hq).trans (IsSubquotient.of_injective (subIncl S) Subtype.val_injective)).isSmooth hs`. Conclude with `hses _ _ _ _ _ _ i q (Submodule.inclusion_injective hT.le) hq hex (hsub S).1 (hsub S).2 (ih T hT.lt) (hirr _ _ hsq (isIrreducible_subQuot hT))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `z : Representation.IntertwiningMap ρ (Representation.trivial ℂ G PUnit)` to `{ toLinearMap := 0, isIntertwining' := fun _ => by ext }`. Use `hses _ _ _ _ ρ _ (topEquiv ρ).toIntertwiningMap z (topEquiv ρ).injective (fun _ => ⟨0, Subsingleton.elim _ _⟩) ?_ hs hf (key ⊤) (hzero _ _)` and prove the remaining obligations. Introduce `y`. Conclude with `⟨fun _ => (topEquiv ρ).surjective y, fun _ => Subsingleton.elim _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem induction_length (P : ∀ (Y : Type) [AddCommGroup Y] [Module ℂ Y], Representation ℂ G Y → Prop)
     (hzero : ∀ (Y : Type) [AddCommGroup Y] [Module ℂ Y] [Subsingleton Y] (σ : Representation ℂ G Y), P Y σ)
@@ -266,16 +266,16 @@ def extR {G H A B X : Type} [Group G] [Group H] [AddCommGroup A] [Module ℂ A] 
     simp [i.isIntertwining]
 
 /- English proof (translation)
-The claim follows from `(continuous_apply false).prodMk (continuous_apply true)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_levi_pair :
     Continuous fun h : Levi k (Two (Fin r) (Fin t)) => (h false, h true) :=
   (continuous_apply false).prodMk (continuous_apply true)
 
 /- English proof (translation)
-Use `⟨GlobalTheory.ParIndExact.parIndMap_injective e i hi, GlobalTheory.CompanionTheory.SegQuotTwo.parIndMap_surjective e q hη hq, fun φ => ⟨fun hφ => ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ParIndExact.parIndMap_exact e i q hi (fun v hv => (he v).1 hv) φ hφ`. Introduce and unpack `⟨ψ, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Conclude with `he.apply_apply_eq_zero (ψ.1.1 g)`.
+A detailed English derivation is pending.
 -/
 theorem parInd_ses {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) {A B C : Type}
@@ -295,9 +295,9 @@ theorem parInd_ses {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α]
     exact he.apply_apply_eq_zero (ψ.1.1 g)
 
 /- English proof (translation)
-Set `s` to `(leviTwo k (Fin r) (Fin t)).symm.toMonoidHom`. Establish `hi' : Function.Injective (compMap (extL i ρ) s)` using `Module.Flat.rTensor_preserves_injective_linearMap _ hi`. Establish `hq' : Function.Surjective (compMap (extL q ρ) s)` using `LinearMap.rTensor_surjective W hq`. Establish `he' : Function.Exact (compMap (extL i ρ) s) (compMap (extL q ρ) s)` using `rTensor_exact W (f := i.toLinearMap) (g := q.toLinearMap) he hq`. Take `⟨h1, h2, h3⟩` from `parInd_ses (two (stdSum (rfl : r + t = r + t))) _ _ hi' hq' he' (isSmooth_comp (isSmooth_extTensor hβ hρ) _ continuous_levi_pair)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, _, h1, h2, h3⟩`.
+Supply the required witnesses or components.
 -/
 theorem prod₂_ses_left {A B C W : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B]
     [AddCommGroup C] [Module ℂ C] [AddCommGroup W] [Module ℂ W]
@@ -318,9 +318,9 @@ theorem prod₂_ses_left {A B C W : Type} [AddCommGroup A] [Module ℂ A] [AddCo
   exact ⟨_, _, h1, h2, h3⟩
 
 /- English proof (translation)
-Set `s` to `(leviTwo k (Fin r) (Fin t)).symm.toMonoidHom`. Establish `hi' : Function.Injective (compMap (extR ρ i) s)` using `Module.Flat.lTensor_preserves_injective_linearMap _ hi`. Establish `hq' : Function.Surjective (compMap (extR ρ q) s)` using `LinearMap.lTensor_surjective X hq`. Establish `he' : Function.Exact (compMap (extR ρ i) s) (compMap (extR ρ q) s)` using `lTensor_exact X (f := i.toLinearMap) (g := q.toLinearMap) he hq`. Take `⟨h1, h2, h3⟩` from `parInd_ses (two (stdSum (rfl : r + t = r + t))) _ _ hi' hq' he' (isSmooth_comp (isSmooth_extTensor hρ hβ) _ continuous_levi_pair)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, _, h1, h2, h3⟩`.
+Supply the required witnesses or components.
 -/
 theorem prod₂_ses_right {X A B C : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup A] [Module ℂ A]
     [AddCommGroup B] [Module ℂ B] [AddCommGroup C] [Module ℂ C] (ρ : Representation ℂ (GL (Fin r) k) X)
@@ -341,7 +341,7 @@ theorem prod₂_ses_right {X A B C : Type} [AddCommGroup X] [Module ℂ X] [AddC
   exact ⟨_, _, h1, h2, h3⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Subtype.ext (funext fun _ => Subsingleton.elim _ _))`.
+A detailed English derivation is pending.
 -/
 theorem indSp_eq_zero {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) {B : Type} [AddCommGroup B]
@@ -349,7 +349,7 @@ theorem indSp_eq_zero {α n : Type} {m : α → Type} [Fintype α] [LinearOrder 
   Subtype.ext (Subtype.ext (funext fun _ => Subsingleton.elim _ _))
 
 /- English proof (translation)
-The claim follows from `class_eq_zero_of_trivial_space (indSp_eq_zero (two (stdSum (rfl : r + t = r + t))) ((extTensor π₁ π₂).comp (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom))`.
+A detailed English derivation is pending.
 -/
 theorem class_product_zero_left {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [Subsingleton V] (π₁ : Representation ℂ (GL (Fin r) k) V) (π₂ : Representation ℂ (GL (Fin t) k) W) :
@@ -358,7 +358,7 @@ theorem class_product_zero_left {V W : Type} [AddCommGroup V] [Module ℂ V] [Ad
     ((extTensor π₁ π₂).comp (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom))
 
 /- English proof (translation)
-The claim follows from `class_eq_zero_of_trivial_space (indSp_eq_zero (two (stdSum (rfl : r + t = r + t))) ((extTensor π₁ π₂).comp (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom))`.
+A detailed English derivation is pending.
 -/
 theorem class_product_zero_right {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [Subsingleton W] (π₁ : Representation ℂ (GL (Fin r) k) V) (π₂ : Representation ℂ (GL (Fin t) k) W) :
@@ -373,7 +373,7 @@ section Main
 variable {r t : ℕ}
 
 /- English proof (translation)
-Rewrite using `[class_irreducible_basis π₁ s₁ i₁, class_irreducible_basis π₂ s₂ i₂, mulR_sg_sg]`. Conclude with `class_congr_equiv (prod₂Equiv (IrrGL.equivOf π₁ s₁ i₁) (IrrGL.equivOf π₂ s₂ i₂))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem class_product_irreducibles {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (π₁ : Representation ℂ (GL (Fin r) k) V) (π₂ : Representation ℂ (GL (Fin t) k) W)
@@ -383,11 +383,11 @@ theorem class_product_irreducibles {V W : Type} [AddCommGroup V] [Module ℂ V] 
   exact class_congr_equiv (prod₂Equiv (IrrGL.equivOf π₁ s₁ i₁) (IrrGL.equivOf π₂ s₂ i₂))
 
 /- English proof (translation)
-Establish `hBZ` using `GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness`. Establish `hf₁ : HasFiniteLength π₁` using `(⟨V, π₁, s₁, i₁⟩ : IrrRep (GL (Fin r) k)).hasFiniteLength`. Use `induction_length (fun Y _ _ τ => IsSmooth τ → HasFiniteLength τ → cl0 (prod₂ π₁ τ) = mulR (cl0 π₁) (cl0 τ)) ?_ ?_ ?_ π₂ s₂ h₂ s₂ h₂` and prove the remaining obligations. Introduce `Y _ _ _ τ _ _`. Rewrite using `[class_product_zero_right, class_subsingleton τ, mulR_zero_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `Y _ _ τ hs hi _ _`. Conclude with `class_product_irreducibles π₁ τ s₁ i₁ hs hi`. Introduce `A B C _ _ _ _ _ _ α β γ i q hi hq he hsβ hfβ hα hγ _ _`. Establish `hsα : IsSmooth α` using `(IsSubquotient.of_injective i hi).isSmooth hsβ`. Establish `hsγ : IsSmooth γ` using `(IsSubquotient.of_surjective q hq).isSmooth hsβ`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfα : HasFiniteLength α` using `GlobalTheory.ProdLength.hasFiniteLength_of_injective i hi hfβ`. Establish `hfγ : HasFiniteLength γ` using `GlobalTheory.JacquetBlocks.hasFiniteLength_of_surjective q hq hfβ`. Take `⟨I, Q, hI, hQ, hE⟩` from `prod₂_ses_right π₁ i q hi hq he s₁ hsβ`. Rewrite using `[class_additive_exact I Q hI hQ hE (GlobalTheory.ProdLength.prod₂_hasFiniteLength hBZ k r t V B π₁ β hf₁ hfβ s₁ hsβ), hα hsα hfα, hγ hsγ hfγ, ← mulR_add_right, ← class_additive_exact i q hi hq he hfβ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem class_product_irreducible_left {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (π₁ : Representation ℂ (GL (Fin r) k) V) (s₁ : IsSmooth π₁) (i₁ : π₁.IsIrreducible)
@@ -411,11 +411,11 @@ theorem class_product_irreducible_left {V W : Type} [AddCommGroup V] [Module ℂ
       hα hsα hfα, hγ hsγ hfγ, ← mulR_add_right, ← class_additive_exact i q hi hq he hfβ]
 
 /- English proof (translation)
-Establish `hBZ` using `GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness`. Use `induction_length (fun Y _ _ ρ => IsSmooth ρ → HasFiniteLength ρ → cl0 (prod₂ ρ π₂) = mulR (cl0 ρ) (cl0 π₂)) ?_ ?_ ?_ π₁ s₁ h₁ s₁ h₁` and prove the remaining obligations. Introduce `Y _ _ _ ρ _ _`. Rewrite using `[class_product_zero_left, class_subsingleton ρ, mulR_zero_left]`. Introduce `Y _ _ ρ hs hi _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `class_product_irreducible_left ρ hs hi π₂ s₂ h₂`. Introduce `A B C _ _ _ _ _ _ α β γ i q hi hq he hsβ hfβ hα hγ _ _`. Establish `hsα : IsSmooth α` using `(IsSubquotient.of_injective i hi).isSmooth hsβ`. Establish `hsγ : IsSmooth γ` using `(IsSubquotient.of_surjective q hq).isSmooth hsβ`. Establish `hfα : HasFiniteLength α` using `GlobalTheory.ProdLength.hasFiniteLength_of_injective i hi hfβ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfγ : HasFiniteLength γ` using `GlobalTheory.JacquetBlocks.hasFiniteLength_of_surjective q hq hfβ`. Take `⟨I, Q, hI, hQ, hE⟩` from `prod₂_ses_left π₂ i q hi hq he hsβ s₂`. Rewrite using `[class_additive_exact I Q hI hQ hE (GlobalTheory.ProdLength.prod₂_hasFiniteLength hBZ k r t B W β π₂ hfβ h₂ hsβ s₂), hα hsα hfα, hγ hsγ hfγ, ← mulR_add_left, ← class_additive_exact i q hi hq he hfβ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem class_parabolic_product {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (π₁ : Representation ℂ (GL (Fin r) k) V) (π₂ : Representation ℂ (GL (Fin t) k) W)
@@ -442,7 +442,7 @@ end Main
 variable (k) in
 
 /- English proof (translation)
-Introduce `r t V W _ _ _ _ π₁ π₂ h₁ h₂ s₁ s₂`. Conclude with `⟨GlobalTheory.ProdLength.prod₂_hasFiniteLength GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k r t V W π₁ π₂ h₁ h₂ s₁ s₂, class_parabolic_product π₁ π₂ h₁ h₂ s₁ s₂⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mulCls : MulCls k := by
   intro r t V W _ _ _ _ π₁ π₂ h₁ h₂ s₁ s₂

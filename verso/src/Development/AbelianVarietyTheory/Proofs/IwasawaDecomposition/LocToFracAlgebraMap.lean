@@ -11,7 +11,7 @@ def locToFrac (P : Ideal R) [P.IsPrime] : Localization.AtPrime P →+* FractionR
     (Ideal.primeCompl_le_nonZeroDivisors P)).toRingHom
 
 /- English proof (translation)
-The claim follows from `AlgHom.commutes _ r`.
+A detailed English derivation is pending.
 -/
 theorem locToFrac_algebraMap (P : Ideal R) [P.IsPrime] (r : R) :
     locToFrac P (algebraMap R (Localization.AtPrime P) r) = algebraMap R (FractionRing R) r :=

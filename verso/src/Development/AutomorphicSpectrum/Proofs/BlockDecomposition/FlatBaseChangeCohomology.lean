@@ -26,9 +26,9 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C : Type u}
   {hτ : ∀ i n {T T' : C'} (φ : T ⟶ T') x, τ i n T' (((F i).map (G.map φ)).hom x) = (F'.map φ).hom (τ i n T x)}
 
 /- English proof (translation)
-Establish `: Subsingleton ((cw F W).X j)` using `⟨fun _ _ => funext fun s => (h _ (s.obj 0).property).elim⟩`. Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `CrystallineSemistableComparison.CechClassBoundaries.clsSurj x`. Use `(CrystallineSemistableComparison.CechClassBoundaries.cls_eq_zero a ha).2 ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim a 0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_H {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R)
     {W : ObjectProperty C} (h : ∀ T, ¬ W T) (j : ℕ) : Subsingleton ((cw F W).H j) := by
@@ -40,7 +40,7 @@ theorem subsingleton_H {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F 
   exact zero_mem _
 
 /- English proof (translation)
-Take `rfl : W = W₂` from `funext fun T => propext (e T)`. Take `rfl : W' = W₂'` from `funext fun T => propext (e' T)`. Conclude with `t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bc_congr [DecidableEq ι] {W W₂ : ObjectProperty C} {W' W₂' : ObjectProperty C'} (e : ∀ T, W T ↔ W₂ T)
     (e' : ∀ T, W' T ↔ W₂' T) (h : ∀ T, W' T → W (G.obj T)) (h₂ : ∀ T, W₂' T → W₂ (G.obj T))
@@ -50,11 +50,9 @@ theorem bc_congr [DecidableEq ι] {W W₂ : ObjectProperty C} {W' W₂' : Object
   exact t
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨⟨b, hb, hT⟩, hS⟩ | h)`. Conclude with `⟨⟨b, Finset.mem_insert_of_mem hb, hT⟩, hS⟩`. Conclude with `⟨⟨a, Finset.mem_insert_self _ _, h a (Finset.mem_insert_self _ _)⟩, fun b hb => h b (Finset.mem_insert_of_mem hb)⟩`. Introduce and unpack `⟨⟨b, hb, hT⟩, hS⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Break down `Finset.mem_insert.1 hb with rfl | h` into its components or cases. Use `Or.inr fun c hc => ?_` and prove the remaining obligations. Break down `Finset.mem_insert.1 hc with rfl | h'` into its components or cases. Conclude with `hT`. Conclude with `hS c h'`.
-
-Conclude with `Or.inl ⟨⟨b, h, hT⟩, hS⟩`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem Wc_insert {α : Type} [DecidableEq α] {D : Type u} [Category.{v} D] (U : α → ObjectProperty D) (a : α)
     (A S : Finset α) (T : D) : supP (Wc U A S) (capS U (insert a S)) T ↔ Wc U (insert a A) S T := by
@@ -72,14 +70,14 @@ theorem Wc_insert {α : Type} [DecidableEq α] {D : Type u} [Category.{v} D] (U 
     · exact Or.inl ⟨⟨b, h, hT⟩, hS⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.1, fun b hb => h.2 b (Finset.mem_insert_of_mem hb)⟩, h.2⟩, fun h => ⟨h.1.1, h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem Wc_inf {α : Type} [DecidableEq α] {D : Type u} [Category.{v} D] (U : α → ObjectProperty D) (a : α)
     (A S : Finset α) (T : D) : Wc U A (insert a S) T ↔ infP (Wc U A S) (capS U (insert a S)) T :=
   ⟨fun h => ⟨⟨h.1, fun b hb => h.2 b (Finset.mem_insert_of_mem hb)⟩, h.2⟩, fun h => ⟨h.1.1, h.2⟩⟩
 
 /- English proof (translation)
-Take `⟨⟨a, ha, hT⟩, hS⟩` from `hT`. Conclude with `⟨⟨a, ha, h a T hT⟩, fun b hb => h b T (hS b hb)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem wc_le {α : Type} {U : α → ObjectProperty C} {U' : α → ObjectProperty C'}
     (h : ∀ a T, U' a T → U a (G.obj T)) (A S : Finset α) (T : C') (hT : Wc U' A S T) : Wc U A S (G.obj T) := by
@@ -87,20 +85,18 @@ theorem wc_le {α : Type} {U : α → ObjectProperty C} {U' : α → ObjectPrope
   exact ⟨⟨a, ha, h a T hT⟩, fun b hb => h b T (hS b hb)⟩
 
 /- English proof (translation)
-Introduce `b hb` and use `h b T (hT b hb)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cap_le {α : Type} {U : α → ObjectProperty C} {U' : α → ObjectProperty C'}
     (h : ∀ a T, U' a T → U a (G.obj T)) (S : Finset α) (T : C') (hT : capS U' S T) : capS U S (G.obj T) :=
   fun b hb => h b T (hT b hb)
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty`. Introduce `S j`. Establish `e : ∀ {D : Type u} [Category.{v} D] (P : α → ObjectProperty D) (T : D), ¬ Wc P ∅ S T`. Introduce `D _ P T hT`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hT.1`. Establish `e' : ∀ {D : Type u'} [Category.{v'} D] (P : α → ObjectProperty D) (T : D), ¬ Wc P ∅ S T`. Introduce `D _ P T hT`. Simplify using `using hT.1`. Establish `s1` using `fun i => subsingleton_H (F i) (e U) j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `s2` using `subsingleton_H F' (e' U') j`. Conclude with `tens_subsingleton _`. Consider the case `insert a A ha ih`. Introduce `S`. Establish `key` using `bc_sup (G := G) (F := F) (F' := F') (τ := τ) (hτ := hτ) hadd hsm (cosieve_Wc hU A S) (cosieve_capS hU (insert a S)) (cosieve_Wc hU' A S) (cosieve_capS hU' (insert a S)) (wc_le h A S) (cap_le h (insert a S)) (ih S) (hcap _ (Finset.insert_nonempty _ _)) (bc_congr (Wc_inf U a A S) ( …`.
-
-Conclude with `bc_congr (Wc_insert U a A S) (Wc_insert U' a A S) _ _ key`.
+Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bc_Wc [Fintype ι] [DecidableEq ι] [∀ i, Module.Flat R (N i)] {α : Type} [DecidableEq α]
     (hadd : ∀ i n n' T x, τ i (n + n') T x = τ i n T x + τ i n' T x)
@@ -130,7 +126,7 @@ theorem bc_Wc [Fintype ι] [DecidableEq ι] [∀ i, Module.Flat R (N i)] {α : T
     exact bc_congr (Wc_insert U a A S) (Wc_insert U' a A S) _ _ key
 
 /- English proof (translation)
-Establish `hW : Cosieve W` using `fun _ _ _ _ => hall _`. Use `⟨fun x y hxy => funext fun s => congrFun hxy (liftCh hW s (hall _)), fun y => ⟨extZ hW y, pull_extZ hW y⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem restrict_bij {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R)
     {W : ObjectProperty C} (hall : ∀ T, W T) (n : ℕ) :
@@ -143,7 +139,7 @@ def resEquiv {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ Mo
   LinearEquiv.ofBijective ((CH.Mor.restrict F W.ι).hom.mapH j) (CrystallineSemistableComparison.P.mapH_bij _ (restrict_bij F hall) j)
 
 /- English proof (translation)
-Establish `lq : Lin (K` using `fun i => CH.cx (F i)) (K' := CH.cx F') (σ := σ) fun i n => (⟨G, τ i n, hτ i n⟩ : CH.Mor (F i) F' σ).hom := ⟨fun i n n' k x => funext fun s => hadd i n n' _ _, fun i r n k x => funext fun s => hsm i r n _ _⟩`. Use `tens_of_bij (bal_mapH (phi_lin hadd hsm h) j) (bal_mapH lq j) (fun i => resEquiv (F i) hall j) (resEquiv F' hall' j).toAddEquiv (fun i n x => ?_) (t j)` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `CrystallineSemistableComparison.CechClassBoundaries.clsSurj x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem tens_top [Fintype ι] [DecidableEq ι]
     (hadd : ∀ i n n' T x, τ i (n + n') T x = τ i n T x + τ i n' T x)
@@ -163,9 +159,9 @@ theorem tens_top [Fintype ι] [DecidableEq ι]
 end Cover
 
 /- English proof (translation)
-Introduce `R R' _ _ σ C C' _ _ G ι _ _ N _ _ _ F F' τ hτ hadd hsm A _ U U' hU hU' hc hc' h H j`. Establish `key` using `bc_Wc (G := G) (F := F) (F' := F') (τ := τ) (hτ := hτ) hadd hsm hU hU' h (fun S hS j => H S hS j) Finset.univ ∅`. Use `tens_top hadd hsm (W := Wc U Finset.univ ∅) (W' := Wc U' Finset.univ ∅) (fun T => ?_) (fun T => ?_) _ key j` and prove the remaining obligations. Take `⟨a, ha⟩` from `hc T`. Conclude with `⟨⟨a, Finset.mem_univ _, ha⟩, fun b hb => by simp at hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `hc' T`. Conclude with `⟨⟨a, Finset.mem_univ _, ha⟩, fun b hb => by simp at hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem base_change_of_cover : ∀ {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C C' : Type 1} [Category.{0} C] [Category.{0} C']
     (G : C' ⥤ C) {ι : Type} [Fintype ι] [DecidableEq ι] (N : ι → Type) [∀ i, AddCommGroup (N i)] [∀ i, Module R (N i)]

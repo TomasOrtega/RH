@@ -17,21 +17,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.JetOneTan
 
 /- English proof (translation)
-Introduce `S _ ρ _ _`. Use `⟨fun r => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Use `show Ideal.Quotient.mk _ (MvPolynomial.X r) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, pow_one]`. Conclude with `Ideal.subset_span ⟨r, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : p ∈ Formalism.MainNotions.ModuliIntegralCharts.H1.ExpUniqJet.Ij S ρ (0 + 1)`. Use `Formalism.MainNotions.ModuliIntegralCharts.H1.ExpUniqJet.mem_pow_of_trunc_eq_zero p hp` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Establish `hfst : ∀ r, ((Formalism.L2.Pj.jetTan r : Formalism.L2.Pj.Jet S ρ (0 + 1) →ₐ[S] DualNumber S) p).fst = 0`. Introduce `r`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `(Ideal.mem_span_range_iff_exists_fun (R := Formalism.L2.Pj.Jet S ρ (0 + 1))).1 hI`. Rewrite using `[← hc, map_sum, TrivSqZeroExt.fst_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Formalism.MainNotions.ModuliIntegralCharts.H1.ExpUniqTan.jetTan_alt, TrivSqZeroExt.fst_mul]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[DualNumber.fst_eps, mul_zero]`. Rewrite using `[TrivSqZeroExt.fst_zero, mul_zero]`. Use `⟨hfst, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `Formalism.MainNotions.ModuliIntegralCharts.H1.ExpUniqTan.eq_zero_of_tan _ ?_ fun l => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.sub_mem _ hI (Ideal.sum_mem _ fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨r, rfl⟩)`. Rewrite using `[map_sub, map_sum]`. Establish `e : ∀ r ∈ (Finset.univ : Finset ρ), (Formalism.L2.Pj.jetTan l : Formalism.L2.Pj.Jet S ρ (0 + 1) →ₐ[S] DualNumber S) (((Formalism.L2.Pj.jetTan r : Formalism.L2.Pj.Jet S ρ (0 + 1) →ₐ[S] DualNumber S) p).snd • (Ideal.Quotient.mk _ (MvPolynomial.X r) : Formalism.L2.Pj.Jet S ρ (0 + 1) …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Introduce `r _`. Rewrite using `[map_smul]`. Use `Formalism.MainNotions.ModuliIntegralCharts.H1.ExpUniqTan.jetTan_alt (R := S) l r` as an intermediate fact. Use `erw [this]`. Use `split_ifs with h1 h2 h2`.
-
-Both sides reduce to the same expression. Conclude with `absurd h1.symm h2`. Conclude with `absurd h2.symm h1`. Conclude with `smul_zero _`. Rewrite using `[Finset.sum_congr rfl e, Finset.sum_ite_eq, if_pos (Finset.mem_univ l)]`.
-
-Use `ext`. Rewrite using `[TrivSqZeroExt.fst_sub, hfst, TrivSqZeroExt.fst_smul, DualNumber.fst_eps, smul_zero, sub_zero, TrivSqZeroExt.fst_zero]`. Rewrite using `[TrivSqZeroExt.snd_sub, TrivSqZeroExt.snd_smul, DualNumber.snd_eps, smul_eq_mul, _root_.mul_one, sub_self, TrivSqZeroExt.snd_zero]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetOne_tan_span : ∀ {S : Type} [CommRing S] {ρ : Type} [Fintype ρ] [DecidableEq ρ],
     (∀ r : ρ, (jetTrunc : Jet S ρ (0 + 1) →ₐ[S] Jet S ρ 0) (Ideal.Quotient.mk _ (MvPolynomial.X r)) = 0) ∧

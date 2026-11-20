@@ -31,7 +31,7 @@ structure TiedDataSK (ex : Extra D L hT Gi Gl K Y cX) extends toTiedDataS : Link
 def LinkedFamilyKernelCondition (ex : Extra D L hT Gi Gl K Y cX) : Prop := Nonempty (TiedDataSK ex)
 
 /- English proof (translation)
-Rewrite using `[T.ker_frm]`. Use `congr 2`. Simplify using `only [Forms.twYS, Equiv.trans_apply]`. Rewrite using `[T.tw.chM.eY u i hi, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem TiedDataSK.kernel_frame_at_infinity {ex : Extra D L hT Gi Gl K Y cX} (T : TiedDataSK ex) (u : D.what₂.Word) (i : ℕ) (hi : i ≤ D.R.m)
     (y : (D.mem u).C.Y i) (τ : D.what₂.Tau) :
@@ -43,7 +43,7 @@ theorem TiedDataSK.kernel_frame_at_infinity {ex : Extra D L hT Gi Gl K Y cX} (T 
   rw [T.tw.chM.eY u i hi, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[(T.ker.O u μ).frm_de i hi y τ, T.ker_frm u μ i hi y τ, Matrix.det_mul]`. Use `congr 1`. Simplify using `only [Forms.atInf]`. Conclude with `(RingHom.map_det _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TiedDataSK.ker_de {ex : Extra D L hT Gi Gl K Y cX} (T : TiedDataSK ex) (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ)
     (hi : i ≤ D.R.m) (y : (D.chTw u μ).Y i) (τ : D.what₂.Tau) :
@@ -59,7 +59,7 @@ def LinkedFamiliesKernelFrame : FamClass := fun {_} Fm =>
   ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, LinkedFamilyKernelCondition (Fm.ex x hx i)
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx hx0 i => let ⟨T⟩ := h x hx hx0 i; ⟨T.toTiedDataS⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LinkedFamiliesKernelFrame.c2s {eps : ℝ} {Fm : FamP eps} (h : LinkedFamiliesKernelFrame Fm) : LinkedFamiliesLevelClass Fm := by
   obtain ⟨x0, h⟩ := h

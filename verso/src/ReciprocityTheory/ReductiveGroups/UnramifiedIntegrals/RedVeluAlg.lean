@@ -10,14 +10,14 @@ namespace ReciprocityTheory.ChartRestriction.L1
 variable {K : Type} [Field K] [CharZero K] [DecidableEq K] (g2 g3 : K) (xs : Finset K)
 
 /- English proof (translation)
-Unfold `rootPoly`. Conclude with `monic_prod_of_monic _ _ (fun x _ => monic_X_sub_C x)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rootPoly_monic : (rootPoly xs).Monic := by
   unfold rootPoly
   exact monic_prod_of_monic _ _ (fun x _ => monic_X_sub_C x)
 
 /- English proof (translation)
-Unfold `rootPoly`. Rewrite using `[natDegree_prod_of_monic _ _ (fun x _ => monic_X_sub_C x)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rootPoly_natDegree : (rootPoly xs).natDegree = xs.card := by
   unfold rootPoly
@@ -25,7 +25,7 @@ theorem rootPoly_natDegree : (rootPoly xs).natDegree = xs.card := by
   simp
 
 /- English proof (translation)
-Unfold `rootPoly`. Rewrite using `[eval_prod]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rootPoly_eval (t : K) : (rootPoly xs).eval t = ∏ x ∈ xs, (t - x) := by
   unfold rootPoly
@@ -33,7 +33,7 @@ theorem rootPoly_eval (t : K) : (rootPoly xs).eval t = ∏ x ∈ xs, (t - x) := 
   simp
 
 /- English proof (translation)
-Rewrite using `[rootPoly_eval, Finset.prod_ne_zero_iff]`. Introduce `x hx h`. Rewrite `h` using `[sub_eq_zero]`. Conclude with `ht (h ▸ hx)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootPoly_eval_ne {t : K} (ht : t ∉ xs) : (rootPoly xs).eval t ≠ 0 := by
   rw [rootPoly_eval, Finset.prod_ne_zero_iff]
@@ -42,14 +42,14 @@ theorem rootPoly_eval_ne {t : K} (ht : t ∉ xs) : (rootPoly xs).eval t ≠ 0 :=
   exact ht (h ▸ hx)
 
 /- English proof (translation)
-Rewrite using `[rootPoly_eval]`. Conclude with `Finset.prod_eq_zero ht (sub_self t)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootPoly_eval_mem {t : K} (ht : t ∈ xs) : (rootPoly xs).eval t = 0 := by
   rw [rootPoly_eval]
   exact Finset.prod_eq_zero ht (sub_self t)
 
 /- English proof (translation)
-Unfold `rootPoly`. Conclude with `(Finset.mul_prod_erase xs (fun y => (X - C y : K[X])) hx).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rootPoly_erase {x : K} (hx : x ∈ xs) :
     rootPoly xs = (X - C x) * rootPoly (xs.erase x) := by
@@ -57,7 +57,7 @@ theorem rootPoly_erase {x : K} (hx : x ∈ xs) :
   exact (Finset.mul_prod_erase xs (fun y => (X - C y : K[X])) hx).symm
 
 /- English proof (translation)
-Unfold `veluNum`. Simplify using `[eval_finsetSum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem veluNum_eval' (t : K) :
     (veluNum g2 g3 xs).eval t = t * (rootPoly xs).eval t ^ 2
@@ -66,11 +66,11 @@ theorem veluNum_eval' (t : K) :
   simp [eval_finsetSum]
 
 /- English proof (translation)
-Rewrite using `[veluNum_eval']`. Unfold `veluFun`. Rewrite using `[add_mul, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun x hx => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : t - x ≠ 0`. Introduce `h`. Rewrite `h` using `[sub_eq_zero]`. Conclude with `ht (h ▸ hx)`. Rewrite using `[rootPoly_erase xs hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [eval_mul, eval_sub, eval_X, eval_C]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem veluNum_eval {t : K} (ht : t ∉ xs) :
     (veluNum g2 g3 xs).eval t = veluFun g2 g3 xs t * (rootPoly xs).eval t ^ 2 := by
@@ -88,11 +88,11 @@ theorem veluNum_eval {t : K} (ht : t ∉ xs) :
   field_simp
 
 /- English proof (translation)
-Unfold `veluNum`. Use `natDegree_add_le_of_degree_le ?_ ?_` and prove the remaining obligations. Use `natDegree_mul_le.trans ?_` and prove the remaining obligations. Establish `h1` using `natDegree_pow_le (p := rootPoly xs) (n := 2)`. Rewrite `h1` using `[rootPoly_natDegree]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[natDegree_X]`. Use linear arithmetic over natural numbers and integers. Use `natDegree_sum_le_of_forall_le _ _ (fun x hx => ?_)` and prove the remaining obligations. Use `natDegree_mul_le.trans ?_` and prove the remaining obligations. Establish `h1` using `natDegree_pow_le (p := rootPoly (xs.erase x)) (n := 2)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[rootPoly_natDegree]`. Establish `h2 : (xs.erase x).card ≤ xs.card` using `Finset.card_erase_le`. Establish `h3 : (C (fW g2 g3 x) + C (fW' g2 x / 2) * (X - C x) : K[X]).natDegree ≤ 1`. Use `natDegree_add_le_of_degree_le (by simp) ?_` and prove the remaining obligations. Use `natDegree_mul_le.trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
 Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
@@ -116,7 +116,7 @@ theorem veluNum_natDegree_le : (veluNum g2 g3 xs).natDegree ≤ 2 * xs.card + 1 
     omega
 
 /- English proof (translation)
-Rewrite using `[veluNum_eval', rootPoly_eval_mem xs hx, Finset.sum_eq_single_of_mem x hx]`. Simplify using the standard rewrite rules. Introduce `y _ hy`. Rewrite using `[rootPoly_eval_mem (xs.erase y) (Finset.mem_erase.2 ⟨hy.symm, hx⟩)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem veluNum_eval_mem {x : K} (hx : x ∈ xs) :
     (veluNum g2 g3 xs).eval x = fW g2 g3 x * (rootPoly (xs.erase x)).eval x ^ 2 := by
@@ -127,9 +127,9 @@ theorem veluNum_eval_mem {x : K} (hx : x ∈ xs) :
     simp
 
 /- English proof (translation)
-Use `IsCoprime.pow_right ?_` and prove the remaining obligations. Unfold `rootPoly`. Use `IsCoprime.prod_right (fun x hx => ?_)` and prove the remaining obligations. Use `IsCoprime.symm ?_` and prove the remaining obligations. Rewrite using `[(irreducible_X_sub_C x).coprime_iff_not_dvd, dvd_iff_isRoot, IsRoot.def, veluNum_eval_mem g2 g3 xs hx]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (h x hx) (pow_ne_zero 2 (rootPoly_eval_ne _ (Finset.notMem_erase x xs)))`.
+A detailed English derivation is pending.
 -/
 theorem veluNum_coprime (h : ∀ x ∈ xs, fW g2 g3 x ≠ 0) :
     IsCoprime (veluNum g2 g3 xs) (rootPoly xs ^ 2) := by

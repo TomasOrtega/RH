@@ -5,35 +5,31 @@ namespace PositivityTheory.RgUd.T.Nil.Orb.BStep
 open scoped Pointwise
 
 /- English proof (translation)
-Use `set P : Set X := (fun a : G => a • y) '' (A : Set G) with hP`. Use `set S := MulAction.stabilizer G y with hS`. Establish `hsmul : ∀ u : J, u • P = (u : G) • P` using `fun u => rfl`. Establish `himg : ((fun j : G => j • P) '' (J : Set G)) = MulAction.orbit J P`. Use extensionality with `Q`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨⟨j, hj⟩, rfl⟩`. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨j, j.2, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAP : ∀ u ∈ A, u • P = P`. Introduce `u hu`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨u * a, A.mul_mem hu ha, mul_smul u a y⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Use `⟨(u⁻¹ * a) • y, ⟨u⁻¹ * a, A.mul_mem (A.inv_mem hu) ha, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mul_smul]`. Establish `hSP : ∀ s ∈ J, s ∈ S → s • P = P`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s hsJ hsS`. Establish `hsy : s • y = y` using `hsS`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨s * a * s⁻¹, hn s hsJ a ha, ?_⟩` and prove the remaining obligations. Use `show (s * a * s⁻¹) • y = s • a • y`. Use `conv_lhs => rw [← hsy]`. Simplify using `[mul_smul]`. Introduce and unpack `⟨a, ha, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : s⁻¹ * a * s⁻¹⁻¹ ∈ A` using `hn s⁻¹ (J.inv_mem hsJ) a ha`. Rewrite `h1` using `[inv_inv]`. Use `⟨(s⁻¹ * a * s) • y, ⟨_, h1, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show s • (s⁻¹ * a * s) • y = a • y`. Rewrite using `[mul_smul, mul_smul, hsy, smul_inv_smul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstab : MulAction.stabilizer J P = A.subgroupOf J ⊔ S.subgroupOf J`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `u hu`. Establish `hu' : (u : G) • P = P` using `hu`. Establish `hy : (u : G) • y ∈ P`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hu']`. Conclude with `Set.smul_mem_smul_set ⟨1, A.one_mem, one_smul G y⟩`. Take `⟨a, ha, hay⟩` from `hy`. Establish `hay' : a • y = (u : G) • y` using `hay`. Establish `haJ : a ∈ J` using `hAJ ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : a⁻¹ * (u : G) ∈ S` using `by show (a⁻¹ * (u : G)) • y = y`. Rewrite using `[mul_smul, ← hay', inv_smul_smul]`. Establish `e : u = (⟨a, haJ⟩ : J) * ⟨a⁻¹ * u, J.mul_mem (J.inv_mem haJ) u.2⟩`. Use `ext`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Subgroup.mul_mem_sup (show (⟨a, haJ⟩ : J) ∈ A.subgroupOf J from ha) (show (⟨a⁻¹ * u, J.mul_mem (J.inv_mem haJ) u.2⟩ : J) ∈ S.subgroupOf J from hs)`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `u hu show u • P = P`. Rewrite using `[hsmul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hAP u hu`. Introduce `u hu show u • P = P`. Rewrite using `[hsmul]`. Conclude with `hSP u u.2 hu`. Establish `hnorm : (A.subgroupOf J).Normal` using `⟨fun a ha g => by show ((g * a * g⁻¹ : J) : G) ∈ A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hn g g.2 a ha⟩`. Establish `hcard : Nat.card ((fun j : G => j • P) '' (J : Set G)) = (A.subgroupOf J ⊔ S.subgroupOf J).index`. Rewrite using `[himg, ← hstab, MulAction.index_stabilizer]`. Both sides reduce to the same expression. Establish `hb : (A ⊓ S).relIndex (J ⊓ S) = (A.subgroupOf J).relIndex (S.subgroupOf J)`.
-
-Rewrite using `[← Subgroup.inf_subgroupOf_right S J, Subgroup.relIndex_subgroupOf inf_le_right]`. Establish `h1` using `Subgroup.relIndex_inf_mul_relIndex A S (J ⊓ S)`. Rewrite `h1` using `[(Subgroup.relIndex_eq_one).2 inf_le_right, mul_one]`. Rewrite using `[← h1, show S ⊓ (J ⊓ S) = J ⊓ S from inf_of_le_right inf_le_right, inf_comm J S]`. Establish `hm` using `Subgroup.relIndex_mul_index (le_sup_left : A.subgroupOf J ≤ A.subgroupOf J ⊔ S.subgroupOf J)`.
-
-Rewrite `hm` using `[Subgroup.relIndex_sup_left]`. Rewrite using `[hcard, hb, mul_comm, hm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem count {G X : Type*} [Group G] [MulAction G X] (J A : Subgroup G) (hAJ : A ≤ J)
     (hn : ∀ j ∈ J, ∀ a ∈ A, j * a * j⁻¹ ∈ A) (y : X) :

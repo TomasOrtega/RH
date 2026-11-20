@@ -6,7 +6,7 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.GaugeEx.AbsProd
 
 /- English proof (translation)
-Rewrite using `[ProbabilityTheory.lintegral_prod_eq_prod_lintegral_of_indepFun S (fun i (Y : ∀ i, V i) => f i (Y i)) (ProbabilityTheory.iIndepFun_infinitePi (P := P) hf) (fun i => (hf i).comp (measurable_pi_apply i))]`. Conclude with `Finset.prod_congr rfl fun i _ => (measurePreserving_eval_infinitePi P i).lintegral_comp (hf i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_prod_infinitePi {ι : Type} {V : ι → Type} [∀ i, MeasurableSpace (V i)]
     (P : ∀ i, Measure (V i)) [∀ i, IsProbabilityMeasure (P i)] (S : Finset ι)
@@ -19,13 +19,13 @@ theorem lintegral_prod_infinitePi {ι : Type} {V : ι → Type} [∀ i, Measurab
     (measurePreserving_eval_infinitePi P i).lintegral_comp (hf i)
 
 /- English proof (translation)
-Establish `key : ∀ U : Finset ι, ∏' i : {i : ι // i ∉ U}, c i.1 = ∏' i, (if i ∈ U then 1 else c i)`. Introduce `U`. Use `tprod_subtype {i | i ∉ U} c` as an intermediate fact. Use `this.trans (tprod_congr fun i => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hi : i ∈ U <;> simp [Set.mulIndicator, hi]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hm : Multipliable fun i => (if i ∈ S then 1 else c i)`. Establish `h1 : Summable fun i => (if i ∈ S then (0 : ℝ) else c i - 1)`. Use `Summable.of_norm_bounded hs fun i => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hi : i ∈ S <;> simp [hi]`. Use `(Real.multipliable_one_add_of_summable h1).congr fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases hi : i ∈ S <;> simp [hi]`. Establish `hf : HasProd (fun i => if i ∈ S \ T then c i else 1) (∏ i ∈ S \ T, c i)`. Use `hasProd_prod_of_ne_finset_one (f := fun i => if i ∈ S \ T then c i else 1) (s := S \ T) (L := SummationFilter.unconditional ι) (fun b hb => if_neg hb)` as an intermediate fact. Rewrite `this` using `[Finset.prod_congr rfl (fun i hi => if_pos hi)]`. Then use the resulting hypothesis. Rewrite using `[key, key, ← hf.tprod_eq, ← hf.multipliable.tprod_mul hm]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `tprod_congr fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hT : i ∈ T`. Simplify using `[hT, h hT]`. Apply the tactic sequence `by_cases hS : i ∈ S <;> simp [hT, hS]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tail_split {ι : Type} [DecidableEq ι] (c : ι → ℝ) (hs : Summable fun i => |c i - 1|)
     {T S : Finset ι} (h : T ⊆ S) :
@@ -52,23 +52,19 @@ theorem tail_split {ι : Type} [DecidableEq ι] (c : ι → ℝ) (hs : Summable 
   · by_cases hS : i ∈ S <;> simp [hT, hS]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : ∃ i, a i = 0`. Take `⟨i, hi⟩` from `h0`. Use `⟨0, inferInstance, fun S hS f _ => ?_⟩` and prove the remaining obligations. Rewrite using `[lintegral_zero_measure]`. Distinguish the cases in `hiS : i ∈ S`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.prod_eq_zero hiS (by simp [hi]), zero_mul]`. Establish `h1` using `ha i (fun h => hiS (hS h))`. Establish `h2 : c i = 0`. Rewrite `h1` using `[hi]`. Conclude with `le_antisymm (ENNReal.ofReal_eq_zero.1 h1.symm) (hc0 i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tail_split c hs (Finset.subset_insert i S), Finset.prod_eq_zero (s := insert i S \ S) (i := i) (by simp [hiS]) h2]`. Simplify using the standard rewrite rules. Use `push Not at h0`. Establish `hP : ∀ i, ∃ (P : Measure (V i)) (g : V i → ℝ≥0∞), IsProbabilityMeasure P ∧ Measurable g ∧ (i ∉ T → ∀ y, g y = 1) ∧ ∀ f : V i → ℝ≥0∞, Measurable f → ∫⁻ y, f y ∂(a i) = (if i ∈ T then 1 else ENNReal.ofReal (c i)) * ∫⁻ y, g y * f y ∂P`. Introduce `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : NeZero (a i) := ⟨h0 i⟩`. Distinguish the cases in `hi : i ∈ T`. Use `⟨(a i).toFinite, (a i).rnDeriv (a i).toFinite, inferInstance, Measure.measurable_rnDeriv _ _, fun h => (h hi).elim, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos hi, one_mul]`. Use `conv_lhs => rw [← Measure.withDensity_rnDeriv_eq (a i) (a i).toFinite (absolutelyContinuous_toFinite _)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ (Measure.measurable_rnDeriv _ _) hf]`. Both sides reduce to the same expression. Use `haveI : IsFiniteMeasure (a i) := ⟨by rw [ha i hi]; exact ENNReal.ofReal_lt_top⟩`. Use `⟨(a i Set.univ)⁻¹ • a i, fun _ => 1, inferInstance, measurable_const, fun _ _ => rfl, fun f _ => ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg hi, ← ha i hi, lintegral_smul_measure, smul_eq_mul, ← mul_assoc, ENNReal.mul_inv_cancel (by simpa using h0 i) (measure_ne_top _ _)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `choose P g hP hg hg1 hint using hP`. Establish `hG : Measurable fun Y : ∀ i, V i => ENNReal.ofReal (∏' i : {i : ι // i ∉ T}, c i.1) * ∏ i ∈ T, g i (Y i)` using `(Finset.measurable_prod _ fun i _ => (hg i).comp (measurable_pi_apply i)).const_mul _`. Use `⟨(Measure.infinitePi P).withDensity (fun Y => ENNReal.ofReal (∏' i : {i : ι // i ∉ T}, c i.1) * ∏ i ∈ T, g i (Y i)), inferInstance, fun S hS f hf => ?_⟩` and prove the remaining obligations. Establish `hF : Measurable fun Y : ∀ i, V i => ∏ i ∈ S, f i (Y i)` using `Finset.measurable_prod _ fun i _ => (hf i).comp (measurable_pi_apply i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ hG hF]`. Establish `h1 : ∀ Y : ∀ i, V i, ((fun Y : ∀ i, V i => ENNReal.ofReal (∏' i : {i : ι // i ∉ T}, c i.1) * ∏ i ∈ T, g i (Y i)) * fun Y : ∀ i, V i => ∏ i ∈ S, f i (Y i)) Y = ENNReal.ofReal (∏' i : {i : ι // i ∉ T}, c i.1) * ∏ i ∈ S, (g i (Y i) * f i (Y i))`. Introduce `Y`. Rewrite using `[Pi.mul_apply, Finset.prod_mul_distrib, mul_assoc, Finset.prod_subset hS (fun i _ hi => hg1 i hi (Y i))]`. Repeatedly rewrite using `[h1]`.
-
-Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_prod_infinitePi P S (fun i y => g i y * f i y) (fun i => (hg i).mul (hf i)), Finset.prod_congr rfl (fun i _ => hint i (f i) (hf i)), Finset.prod_mul_distrib, tail_split c hs hS, ENNReal.ofReal_mul (Finset.prod_nonneg fun …`. Establish `h2 : ∏ i ∈ S, (if i ∈ T then 1 else ENNReal.ofReal (c i)) = ∏ i ∈ S \ T, ENNReal.ofReal (c i)`. Rewrite using `[← Finset.prod_subset (Finset.sdiff_subset (s := S) (t := T)) (fun i hi hi' => if_pos (by simpa [hi] using hi'))]`. Conclude with `Finset.prod_congr rfl fun i hi => if_neg (Finset.mem_sdiff.1 hi).2`. Rewrite using `[h2]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_piece {ι : Type} {V : ι → Type} [∀ i, MeasurableSpace (V i)]
     (a : ∀ i, Measure (V i)) (hσ : ∀ i, SigmaFinite (a i)) (T : Finset ι) (c : ι → ℝ)
@@ -143,29 +139,27 @@ theorem exists_piece {ι : Type} {V : ι → Type} [∀ i, MeasurableSpace (V i)
   ring
 
 /- English proof (translation)
-Introduce `ι _ V₀ _ V _ L m₀ m h₀ hm hL hfin hs`. Set `a : Finset ι → ∀ i, Measure (V i)` to `fun T i => (m i).restrict (if i ∈ T then (L i)ᶜ else L i)`. Establish `hex` using `fun T : Finset ι => exists_piece (a T) (fun i => by dsimp only [a]; infer_instance) T (fun i => (m i (L i)).toReal) (fun i => ENNReal.toReal_nonneg) hs (fun i hi => by simp [a, hi, ENNReal.ofReal_toReal (hfin i)])`. Use `choose ν hν hint using hex`. Establish `hnull : ∀ (T : Finset ι) (i : ι) (N : Set (V i)), MeasurableSet N → a T i N = 0 → ν T {Y | Y i ∈ N} = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T i N hN h`. Establish `hm' : ∀ j, Measurable (Function.update (fun j (_ : V j) => (1 : ℝ≥0∞)) i (N.indicator 1) j)`. Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self]`. Conclude with `measurable_const.indicator hN`. Rewrite using `[Function.update_of_ne hj]`. Conclude with `measurable_const`. Establish `h1` using `hint T (insert i T) (Finset.subset_insert i T) _ hm'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Finset.prod_eq_zero (Finset.mem_insert_self i T) (by rw [Function.update_self, lintegral_indicator_one hN, h]), zero_mul]`. Establish `hN' : MeasurableSet {Y : ∀ i, V i | Y i ∈ N}` using `measurable_pi_apply i hN`. Rewrite using `[← lintegral_indicator_one hN', ← h1]`. Use `lintegral_congr fun Y => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single i (fun j _ hj => by rw [Function.update_of_ne hj]) (fun h => (h (Finset.mem_insert_self i T)).elim), Function.update_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Set `B : Finset ι → Set (∀ i, V i)` to `fun S => {Y | ∀ i ∉ S, Y i ∈ L i}`. Establish `hB : ∀ S, MeasurableSet (B S)`. Introduce `S`. Establish `: B S = ⋂ i, ⋂ (_ : i ∉ S), {Y | Y i ∈ L i}` using `by ext; simp [B]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `MeasurableSet.iInter fun i => MeasurableSet.iInter fun _ => measurable_pi_apply i (hL i)`. Establish `hin : ∀ T S : Finset ι, T ⊆ S → ν T (B S)ᶜ = 0`. Introduce `T S h`. Establish `: (B S)ᶜ = ⋃ i, ⋃ (_ : i ∉ S), {Y | Y i ∈ (L i)ᶜ}` using `by ext; simp [B]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Use `measure_iUnion_null fun i => measure_iUnion_null fun hi => hnull T i _ (hL i).compl ?_` and prove the remaining obligations. Establish `hT : i ∉ T` using `fun h' => hi (h h')`. Simplify using `[a, hT, Measure.restrict_apply (hL i).compl]`. Establish `hout : ∀ T S : Finset ι, ¬ T ⊆ S → ν T (B S) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `T S h`. Take `⟨i, hT, hS⟩` from `Finset.not_subset.1 h`. Use `measure_mono_null (t := {Y | Y i ∈ L i}) (fun Y hY => hY i hS) (hnull T i _ (hL i) ?_)` and prove the remaining obligations. Simplify using `[a, hT, Measure.restrict_apply (hL i)]`. Use `⟨m₀.prod (Measure.sum ν), ?_, fun S f₀ f hf₀ hf => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `measure_mono_null (t := Set.univ ×ˢ ⋂ S, (B S)ᶜ) (fun Y hY => ?_) ?_` and prove the remaining obligations. Use `⟨trivial, Set.mem_iInter.2 fun S hS => hY ?_⟩` and prove the remaining obligations. Conclude with `S.eventually_cofinite_notMem.mono fun i hi => hS i hi`. Rewrite using `[Measure.prod_prod, Measure.sum_apply_eq_zero.2 (fun T => measure_mono_null (Set.iInter_subset _ T) (hin T T subset_rfl)), mul_zero]`. Establish `hF : Measurable fun Y : ∀ i, V i => ∏ i ∈ S, f i (Y i)` using `Finset.measurable_prod _ fun i _ => (hf i).comp (measurable_pi_apply i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : {Y : V₀ × ∀ i, V i | ∀ i ∉ S, Y.2 i ∈ L i} = Set.univ ×ˢ B S` using `by ext; simp [B]`. Rewrite using `[e, ← Measure.prod_restrict, Measure.restrict_univ, lintegral_prod_mul hf₀.aemeasurable hF.aemeasurable, mul_assoc]`. Use `congr 1`. Rewrite using `[Measure.restrict_sum _ (hB S), lintegral_sum_measure, tsum_eq_sum (s := S.powerset) (fun T hT => by`. Rewrite using `[Measure.restrict_eq_zero.2 (hout T S (by simpa using hT)), lintegral_zero_measure])]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ∀ i ∈ S, ∫⁻ y, f i y ∂(m i) = ∫⁻ y in (L i)ᶜ, f i y ∂(m i) + ∫⁻ y in L i, f i y ∂(m i)` using `fun i _ => by`. Rewrite using `[add_comm, lintegral_add_compl _ (hL i)]`. Rewrite using `[Finset.prod_congr rfl h1, Finset.prod_add, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun T hT => ?_` and prove the remaining obligations. Establish `hTS : T ⊆ S` using `Finset.mem_powerset.1 hT`.
-
-Rewrite using `[Measure.restrict_eq_self_of_ae_mem (s := B S) (hin T S hTS), hint T S hTS f hf, ← Finset.prod_sdiff hTS, mul_comm (∏ i ∈ S \ T, _)]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun i hi => by simp [a, hi]`. Conclude with `Finset.prod_congr rfl fun i hi => by simp [a, (Finset.mem_sdiff.1 hi).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_restricted_product : ∀ (ι : Type) [Countable ι] (V₀ : Type) [MeasurableSpace V₀] (V : ι → Type) [∀ i, MeasurableSpace (V i)] (L : ∀ i, Set (V i)) (m₀ : Measure V₀) (m : ∀ i, Measure (V i)), SigmaFinite m₀ → (∀ i, SigmaFinite (m i)) → (∀ i, MeasurableSet (L i)) → (∀ i, m i (L i) ≠ ∞) → (Summable fun i => |(m i (L i)).toReal - 1|) → ∃ ν : Measure (V₀ × ∀ i, V i), ν {Y | ¬ ∀ᶠ i in Filter.cofinite, Y.2 i ∈ L i} = 0 ∧ ∀ (S : Finset ι) (f₀ : V₀ → ℝ≥0∞) (f : ∀ i, V i → ℝ≥0∞), Measurable f₀ → (∀ i, Measurable (f i)) → ∫⁻ Y in {Y | ∀ i ∉ S, Y.2 i ∈ L i}, f₀ Y.1 * ∏ i ∈ S, f i (Y.2 i) ∂ν = (∫⁻ y, f₀ y ∂m₀) * (∏ i ∈ S, ∫⁻ y, f i y ∂(m i)) * ENNReal.ofReal (∏' i : {i : ι // i ∉ S}, (m i.1 (L i.1)).toReal) := by
   intro ι _ V₀ _ V _ L m₀ m h₀ hm hL hfin hs

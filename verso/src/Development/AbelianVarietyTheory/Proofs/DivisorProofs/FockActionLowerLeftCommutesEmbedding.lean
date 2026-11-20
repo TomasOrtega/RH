@@ -11,9 +11,9 @@ namespace GlobalTheory.CharPair.Down
 variable {P Q R : ℕ}
 
 /- English proof (translation)
-Establish `h0 : ⁅(pderiv i : Derivation ℂ (MvPolynomial σ ℂ) (MvPolynomial σ ℂ)), (pderiv j : Derivation ℂ (MvPolynomial σ ℂ) (MvPolynomial σ ℂ))⁆ = 0`. Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce `k`. Rewrite using `[Derivation.commutator_apply, pderiv_X, pderiv_X]`. Simplify using `only [Pi.single_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Use `congrArg (fun D : Derivation ℂ (MvPolynomial σ ℂ) (MvPolynomial σ ℂ) => D f) h0` as an intermediate fact. Simplify `this` using `[Derivation.commutator_apply, sub_eq_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pderiv_pderiv_comm {σ : Type} (i j : σ) (f : MvPolynomial σ ℂ) :
     pderiv i (pderiv j f) = pderiv j (pderiv i f) := by
@@ -29,7 +29,7 @@ theorem pderiv_pderiv_comm {σ : Type} (i j : σ) (f : MvPolynomial σ ℂ) :
   simpa [Derivation.commutator_apply, sub_eq_zero] using this
 
 /- English proof (translation)
-Simplify using `[mR, map_sum, Derivation.leibniz, pderiv_X, Pi.single_apply]`. Break down `eq_or_ne a' a with rfl | ha` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[ha, Ne.symm ha]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_s_mR (a' a : Fin P) (b : Fin Q) (c : Fin R) :
     pderiv (Sum.inl a', Sum.inl c) (mR P Q R a b) =
@@ -41,7 +41,7 @@ theorem pderiv_s_mR (a' a : Fin P) (b : Fin Q) (c : Fin R) :
   · simp [ha, Ne.symm ha]
 
 /- English proof (translation)
-Simplify using `[mR, map_sum, Derivation.leibniz, pderiv_X, Pi.single_apply]`. Break down `eq_or_ne b' b with rfl | hb` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[hb, Ne.symm hb]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_w_mR (b' : Fin Q) (a : Fin P) (b : Fin Q) (c : Fin R) :
     pderiv (Sum.inr b', Sum.inl c) (mR P Q R a b) =
@@ -53,16 +53,16 @@ theorem pderiv_w_mR (b' : Fin Q) (a : Fin P) (b : Fin Q) (c : Fin R) :
   · simp [hb, Ne.symm hb]
 
 /- English proof (translation)
-Simplify using `[embR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embR_eq (h : P ≤ R) (k : ℕ) (G : Mdl P Q) :
     embR P Q R h k G = aeval (fun ab : Fin P × Fin Q => mR P Q R ab.1 ab.2) G * detR P Q R h ^ k := by
   simp [embR]
 
 /- English proof (translation)
-Establish `e : M.det = aeval (fun ij : Fin n × Fin n => M ij.1 ij.2) (Matrix.det (Matrix.mvPolynomialX (Fin n) (Fin n) ℂ))`. Rewrite using `[← AlgHom.coe_toRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.mvPolynomialX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ReciprocityTheory.MultiplicativeHeights.DerivationAlgebraicIndependence.derivation_aeval_eq]`. Simplify using `[hM]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem derivation_det_eq_zero {σ : Type} {n : ℕ} (d : Derivation ℂ (MvPolynomial σ ℂ) (MvPolynomial σ ℂ))
     (M : Matrix (Fin n) (Fin n) (MvPolynomial σ ℂ)) (hM : ∀ i j, d (M i j) = 0) : d M.det = 0 := by
@@ -81,7 +81,7 @@ Both sides reduce to the same expression.
 theorem detR_eq (h : P ≤ R) : detR P Q R h = (blockR (Q := Q) h).det := rfl
 
 /- English proof (translation)
-Rewrite using `[detR_eq]`. Apply `derivation_det_eq_zero` to reduce the goal to its premises. Introduce `i j`. Simplify using `[blockR, pderiv_X, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_w_detR (h : P ≤ R) (b : Fin Q) (c : Fin R) :
     pderiv (Sum.inr b, Sum.inl c) (detR P Q R h) = 0 := by
@@ -92,11 +92,11 @@ theorem pderiv_w_detR (h : P ≤ R) (b : Fin Q) (c : Fin R) :
   simp [blockR, pderiv_X, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[detR_eq, Matrix.det_eq_sum_mul_adjugate_row _ a, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hadj : pderiv (Sum.inl a, Sum.inl c) ((blockR (Q` using `Q) h).adjugate j a) = 0 := by`. Rewrite using `[Matrix.adjugate_apply]`. Apply `derivation_det_eq_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i j'`. Rewrite using `[Matrix.updateRow_apply]`. Use `split_ifs with hi`. Apply the tactic sequence `simp [Pi.single_apply]; split_ifs <;> simp`. Simplify using `[blockR, pderiv_X, Pi.single_apply, hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Derivation.leibniz, hadj]`. Simplify using `[blockR, pderiv_X, Pi.single_apply, eq_comm]`. Use `done`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pderiv_s_detR (h : P ≤ R) (a : Fin P) (c : Fin R) :
     pderiv (Sum.inl a, Sum.inl c) (detR P Q R h) =
@@ -117,11 +117,11 @@ theorem pderiv_s_detR (h : P ≤ R) (a : Fin P) (c : Fin R) :
   done
 
 /- English proof (translation)
-Establish `e : ∀ c : Fin R, X (Sum.inl a', Sum.inl c) * pderiv (Sum.inl a, Sum.inl c) (detR P Q R h) = ∑ j : Fin P, if Fin.castLE h j = c then blockR (Q` using `Q) h a' j * (blockR (Q := Q) h).adjugate j a else 0 := by`. Introduce `c`. Rewrite using `[pderiv_s_detR, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[blockR, hj]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl fun c _ => e c, Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← Matrix.mul_apply, Matrix.mul_adjugate, detR_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply]`.
+A detailed English derivation is pending.
 -/
 theorem sum_s_pderiv_detR (h : P ≤ R) (a' a : Fin P) :
     ∑ c : Fin R, X (Sum.inl a', Sum.inl c) * pderiv (Sum.inl a, Sum.inl c) (detR P Q R h) =
@@ -144,7 +144,7 @@ theorem sum_s_pderiv_detR (h : P ≤ R) (a' a : Fin P) :
 abbrev phiR (P Q R : ℕ) : Mdl P Q →ₐ[ℂ] Pol P Q R 0 := aeval fun ab : Fin P × Fin Q => mR P Q R ab.1 ab.2
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.MultiplicativeHeights.DerivationAlgebraicIndependence.derivation_aeval_eq, Fintype.sum_prod_type]`. Simplify using `only [pderiv_s_mR, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_comm]`. Simplify using `[Finset.sum_ite_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_s_phiR (a : Fin P) (c : Fin R) (H : Mdl P Q) :
     pderiv (Sum.inl a, Sum.inl c) (phiR P Q R H) =
@@ -156,7 +156,7 @@ theorem pderiv_s_phiR (a : Fin P) (c : Fin R) (H : Mdl P Q) :
   simp [Finset.sum_ite_eq]
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.MultiplicativeHeights.DerivationAlgebraicIndependence.derivation_aeval_eq, Fintype.sum_prod_type]`. Simplify using `only [pderiv_w_mR, mul_ite, mul_zero]`. Simplify using `[Finset.sum_ite_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_w_phiR (b : Fin Q) (c : Fin R) (H : Mdl P Q) :
     pderiv (Sum.inr b, Sum.inl c) (phiR P Q R H) =
@@ -167,23 +167,23 @@ theorem pderiv_w_phiR (b : Fin Q) (c : Fin R) (H : Mdl P Q) :
   simp [Finset.sum_ite_eq]
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz_pow, pderiv_w_detR]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_w_detR_pow (h : P ≤ R) (k : ℕ) (b : Fin Q) (c : Fin R) :
     pderiv (Sum.inr b, Sum.inl c) (detR P Q R h ^ k) = 0 := by
   rw [Derivation.leibniz_pow, pderiv_w_detR]; simp
 
 /- English proof (translation)
-Rewrite using `[pderiv_pderiv_comm, pderiv_w_detR_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_w_s_detR_pow (h : P ≤ R) (k : ℕ) (a : Fin P) (b : Fin Q) (c : Fin R) :
     pderiv (Sum.inr b, Sum.inl c) (pderiv (Sum.inl a, Sum.inl c) (detR P Q R h ^ k)) = 0 := by
   rw [pderiv_pderiv_comm, pderiv_w_detR_pow]; simp
 
 /- English proof (translation)
-Simplify using `only [Derivation.leibniz_pow, smul_eq_mul, nsmul_eq_mul]`. Establish `e : ∀ c : Fin R, X (Sum.inl a', Sum.inl c) * ((k : Pol P Q R 0) * (detR P Q R h ^ (k - 1) * pderiv (Sum.inl a, Sum.inl c) (detR P Q R h))) = (k : Pol P Q R 0) * detR P Q R h ^ (k - 1) * (X (Sum.inl a', Sum.inl c) * pderiv (Sum.inl a, Sum.inl c) (detR P Q R h))` using `fun c => by ring`. Rewrite using `[Finset.sum_congr rfl fun c _ => e c, ← Finset.mul_sum, sum_s_pderiv_detR]`. Use `split_ifs`. Break down `k with _ | k` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_s_pderiv_detR_pow (h : P ≤ R) (k : ℕ) (a' a : Fin P) :
     ∑ c : Fin R, X (Sum.inl a', Sum.inl c) * pderiv (Sum.inl a, Sum.inl c) (detR P Q R h ^ k) =
@@ -202,7 +202,7 @@ theorem sum_s_pderiv_detR_pow (h : P ≤ R) (k : ℕ) (a' a : Fin P) :
   · simp
 
 /- English proof (translation)
-Simplify using `[omE, raiB, lowB, linePos]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omE_down (a : Fin P) (b : Fin Q) (c : Fin R) (f : Pol P Q R 0) :
     omE ((Sum.inr b, Sum.inl c) : Ln P Q R 0) (Sum.inl a, Sum.inl c) f =
@@ -210,11 +210,11 @@ theorem omE_down (a : Fin P) (b : Fin Q) (c : Fin R) (f : Pol P Q R 0) :
   simp [omE, raiB, lowB, linePos]
 
 /- English proof (translation)
-Establish `hw : pderiv (Sum.inr b, Sum.inl c) (∑ b' : Fin Q, phiR P Q R (pderiv (a, b') G) * X (Sum.inr b', Sum.inl c)) = (∑ b' : Fin Q, (∑ a' : Fin P, phiR P Q R (pderiv (a', b) (pderiv (a, b') G)) * X (Sum.inl a', Sum.inl c)) * X (Sum.inr b', Sum.inl c)) + phiR P Q R (pderiv (a, b) G)`. Simplify using `only [map_sum, Derivation.leibniz, pderiv_w_phiR, pderiv_X, smul_eq_mul, Finset.sum_add_distrib]`. Rewrite using `[add_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun b' _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.single_apply, Prod.mk.injEq, Sum.inr.injEq, and_true, mul_ite, mul_one, mul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[Derivation.leibniz, map_add, smul_eq_mul, smul_eq_mul, Derivation.leibniz, Derivation.leibniz, pderiv_s_phiR, hw, pderiv_w_phiR, pderiv_w_s_detR_pow, pderiv_w_detR_pow]`. Simplify using `only [smul_eq_mul, mul_zero, add_zero]`. Rewrite using `[Finset.mul_sum, Finset.sum_congr rfl fun a' _ => (by ring : pderiv (Sum.inl a, Sum.inl c) (detR P Q R h ^ k) * (phiR P Q R (pderiv (a', b) G) * X (Sum.inl a', Sum.inl c)) = phiR P Q R (pderiv (a', b) G) * (X (Sum.inl a', Sum.inl c) * pderiv (Sum.inl a, Sum.inl c) (detR P Q R h ^ …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem partial_derivative_weight_space_formula (h : P ≤ R) (k : ℕ) (a : Fin P) (b : Fin Q) (c : Fin R) (G : Mdl P Q) :
     pderiv (Sum.inr b, Sum.inl c) (pderiv (Sum.inl a, Sum.inl c) (phiR P Q R G * detR P Q R h ^ k)) =
@@ -242,7 +242,7 @@ theorem partial_derivative_weight_space_formula (h : P ≤ R) (k : ℕ) (a : Fin
   ring
 
 /- English proof (translation)
-Simplify using `[opR, LinearMap.sum_apply, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opR_down (k : ℕ) (a : Fin P) (b : Fin Q) (G : Mdl P Q) :
     opR P Q R k (Sum.inr b) (Sum.inl a) G =
@@ -251,9 +251,9 @@ theorem opR_down (k : ℕ) (a : Fin P) (b : Fin Q) (G : Mdl P Q) :
   simp [opR, LinearMap.sum_apply, Module.End.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_mul]`. Use `congr 1`. Simplify using `only [mR, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => arg 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `b'`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a' _ => Finset.sum_congr rfl fun b' _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_A (h : P ≤ R) (k : ℕ) (a : Fin P) (b : Fin Q) (G : Mdl P Q) :
     ∑ c : Fin R, (∑ b' : Fin Q, (∑ a' : Fin P, phiR P Q R (pderiv (a', b) (pderiv (a, b') G)) *
@@ -270,7 +270,7 @@ theorem sum_A (h : P ≤ R) (k : ℕ) (a : Fin P) (b : Fin Q) (G : Mdl P Q) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.mul_sum, sum_s_pderiv_detR_pow, mul_ite, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_C (h : P ≤ R) (k : ℕ) (a : Fin P) (b : Fin Q) (G : Mdl P Q) :
     ∑ c : Fin R, ∑ a' : Fin P, phiR P Q R (pderiv (a', b) G) *
@@ -282,7 +282,7 @@ theorem sum_C (h : P ≤ R) (k : ℕ) (a : Fin P) (b : Fin Q) (G : Mdl P Q) :
   simp
 
 /- English proof (translation)
-The claim follows from `embR_eq h k G`.
+A detailed English derivation is pending.
 -/
 theorem embR_eq' (h : P ≤ R) (k : ℕ) (G : Mdl P Q) :
     embR P Q R h k G = phiR P Q R G * detR P Q R h ^ k := embR_eq h k G
@@ -294,9 +294,9 @@ namespace GlobalTheory.CharPair
 open GlobalTheory.CharPair.Down in
 
 /- English proof (translation)
-Rewrite using `[fockAct1_Eab, LinearMap.sum_apply, Fintype.sum_sum_type]`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, add_zero]`. Rewrite using `[embR_eq', embR_eq', opR_down]`. Simplify using `only [omE_down, partial_derivative_weight_space_formula, Finset.sum_neg_distrib, Finset.sum_add_distrib, sum_A, sum_C, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Simplify using `only [map_neg, map_add, map_sum, map_mul, map_smul, phiR, aeval_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[nsmul_eq_mul, Algebra.smul_def, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockAct1_embR_inr_inl (P Q R : ℕ) (h : P ≤ R) (k : ℕ) (a : Fin P) (b : Fin Q) (G : Mdl P Q) :
     fockAct1 P Q R 0 (Eab (Sum.inr b) (Sum.inl a)) (embR P Q R h k G) =

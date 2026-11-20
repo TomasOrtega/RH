@@ -41,14 +41,14 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f 
   {x : St P} (l : LC hL x)
 
 /- English proof (translation)
-Use `show MtInput (Dof x) l.mt.M (fun μ j => (cfOf x).mu0 j * l.c.tp.xi μ) l.c.ch.Q`. Rewrite using `[l.c.xi_eq, l.c.Q_eq]`. Conclude with `l.mt.mt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mtIn : MtInput (Dof x) l.mt.M l.c.tp.tup l.c.ch.Q := by
   show MtInput (Dof x) l.mt.M (fun μ j => (cfOf x).mu0 j * l.c.tp.xi μ) l.c.ch.Q
   rw [l.c.xi_eq, l.c.Q_eq]; exact l.mt.mt
 
 /- English proof (translation)
-Introduce `big` and use `GlobalTheory.T.side_rational_hecke_data hP.what₂.art (Dof x) (cfOf x) l.a.jE l.a.A (lowAll (Dof x)) l.Pq l.rat.S l.rat.In.hL l.rat.In.eig l.rat.In.θ l.b.Bs l.mt.M l.c.ch l.c.tp l.c.side (mtIn l) l.a.elem.star l.a.elem.int l.a.elem.split (GlobalTheory.ChebSplitDense.chebSplit_nd h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem builtEx (hP : PrN) : GlobalTheory.CoefDuty.BuiltEx l.a.A l.mt.M l.c.ch l.c.tp.tup := fun big =>
   GlobalTheory.T.side_rational_hecke_data hP.what₂.art (Dof x) (cfOf x) l.a.jE l.a.A (lowAll (Dof x)) l.Pq l.rat.S l.rat.In.hL l.rat.In.eig l.rat.In.θ l.b.Bs l.mt.M
@@ -80,7 +80,7 @@ structure AllL : Type 1 where
 include Au ss in
 
 /- English proof (translation)
-Take `⟨a, h1, h2, h3, h4, ⟨h5⟩, h6, h7⟩` from `GlobalTheory.HeightCounting.FitAll.nAllC_withLoc hL hA.lp hA.cg _ (ntW l Sp Au ss).toNBuilt l.a.fr l.a.fr_jE l.a.pht l.a.elem (GlobalTheory.ChebSplitDense.chebSplit_nd hP.what₂.cheb _) Finset.subset_union_left`. Conclude with `⟨⟨a, h1, h2, h3, h4, h5, h6, h7⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem allL_nonempty (hP : PrN) (hA : ArchCmp hL) : Nonempty (AllL l L) := by
   obtain ⟨a, h1, h2, h3, h4, ⟨h5⟩, h6, h7⟩ := GlobalTheory.HeightCounting.FitAll.nAllC_withLoc hL hA.lp hA.cg _ (ntW l Sp Au ss).toNBuilt l.a.fr l.a.fr_jE
@@ -88,7 +88,7 @@ theorem allL_nonempty (hP : PrN) (hA : ArchCmp hL) : Nonempty (AllL l L) := by
   exact ⟨⟨a, h1, h2, h3, h4, h5, h6, h7⟩⟩
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨by simp [lowAll, Formalism.L2.lowPr], by simp [lowAll, Formalism.L2.lowPr], fun p hp => ?_, fun p hp => ?_⟩ <;>`. Apply the tactic sequence `simp only [lowAll, Formalism.L2.lowPr, Finset.mem_union, Finset.mem_insert] <;> tauto`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem low_ok (D : D7) : 2 ∈ lowAll D ∧ AbsolutelyIrreducibleSpan.q0 D ∈ lowAll D ∧ (NumberField.discr D.host.E).natAbs.primeFactors ⊆ lowAll D ∧
     (Ideal.absNorm D.host.ccK).primeFactors ⊆ lowAll D := by
@@ -98,7 +98,7 @@ theorem low_ok (D : D7) : 2 ∈ lowAll D ∧ AbsolutelyIrreducibleSpan.q0 D ∈ 
 variable (al : AllL l L) (hLg : GlobalTheory.CoefDuty.Large (withLoc L))
 
 /- English proof (translation)
-The claim follows from `(al.exp.pl i j b k Q ψ h1 h2 hadm).trans (Prod.ext (l.b.Bs.pq i j b k Q ψ h1 h2 hadm).1 (l.b.Bs.pq i j b k Q ψ h1 h2 hadm).2)`.
+A detailed English derivation is pending.
 -/
 theorem pqW (i j b k Q ψ) (h1 : 1 ≤ j) (h2 : j ≤ (withLoc L).R.m) (hadm : Formalism.L2.NX.AdmTw (withLoc L) i k Q ψ) :
     plsOf al.a.exp i j b k Q ψ h1 h2 hadm = (qpOf (Dof x) l.Pq Q, qpOf (Dof x) l.Pq ((Dof x).ntw.pD i)) :=
@@ -133,7 +133,7 @@ include l in
 variable (L) in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(by with_unfolding_all exact ((GlobalTheory.T.group_tie_of_local_coefficient l).card :)), (by with_unfolding_all exact ((GlobalTheory.T.group_tie_of_local_coefficient l).e0 :)), (by with_unfolding_all exact ((GlobalTheory.T.group_tie_of_local_coefficient l).lvl0 :)), (by with_un …`.
+Supply the required witnesses or components.
 -/
 theorem grpD : Formalism.L2.DIV.GrpTie (DL x L) (famR (w.st (oL x L).Z) w.I P.hX (usedOf w.I T P.Wt) (datL x L).Xg (datL x L).tr).A
     (datL x L).F.P0 (datL x L).F.ψ0 (datL x L).F.P1 (datL x L).F.ψ1 ((datL x L).R.eG.trans (datL x L).cG) :=
@@ -156,9 +156,9 @@ def rowD : NRow (D := DL x L) (natD l Sp Au ss al hLg) (datL x L).R (datL x L).F
   rep_eq := (by with_unfolding_all exact (hY.rep.symm :))
 
 /- English proof (translation)
-Take `⟨ad, had⟩` from `GlobalTheory.T.exists_motive_adjoint_with_levels L l Y hY`. Take `⟨ser⟩` from `GlobalTheory.T.series_at_of_exp_relation L l al.a.exp al.exp`. Establish `e : (natD l Sp Au ss al hLg).all.gal.mt = mtD L l` using `(by with_unfolding_all exact (al.mt :))`. Establish `H : ∃ ad' : MtAd Y (natD l Sp Au ss al hLg).all.gal.mt, ad'.PV = pvL L l`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨ad, had⟩`. Take `⟨ad', had'⟩` from `H`. Establish `ser' : SerAt (ysL L l) (datL x L).geo.v₀ (expD L al.a.exp) ad'.PV (cfD x L) (pqD L l)` using `had'.symm ▸ ser`. Conclude with `⟨{ ad := ad' fi := ysL_fi L l hecke := GlobalTheory.T.hecke_row_of_local_all L l cHk := (by with_unfolding_all exact ((fun i b Q => (⟨l.b.Bs.cHk i b Q, pow_one _⟩ : ∃ u : ((Dof x).ntw.O i)ˣ, (hkH l).cHk i b 1 Q = algebraMap ((Dof x).ntw.O i) (FractionRing ((Dof x).ntw.O i)) u)) : …`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem moreD {xd : ThData (Dof x)} (hxd : XdAll xd) : Nonempty (NMore (rowD l Sp Au ss al hLg Y hY) (datL x L).geo (xdD L xd)) := by
   obtain ⟨ad, had⟩ := GlobalTheory.T.exists_motive_adjoint_with_levels L l Y hY
@@ -197,9 +197,9 @@ def nchD : NchT w (oL x L).Z P.Wt (chD L l) where
 include hY in
 
 /- English proof (translation)
-Take `⟨hX, ⟨z, intersectionNumber_baseChange, Y', Zr, tix⟩, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12⟩` from `t`. Establish `e : z = datL x L` using `eq_of_heq hz`. Substitute `e` using the available equality. Establish `e' : Y' = Y` using `eq_of_heq ht`. Substitute `e'` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨mo⟩` from `moreD l Sp Au ss al hLg Y' hY hxd`. Conclude with `⟨⟨natD l Sp Au ss al hLg, rowD l Sp Au ss al hLg Y' hY, (by with_unfolding_all exact (l.sel :))⟩, ⟨(mo, ⟨bkL L⟩)⟩, fun cDep h => GlobalTheory.T.toricCharacterGridList_kept_localizedStage x L cDep h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem core_at {xd : ThData (Dof x)} (hxd : XdAll xd) (t : RowsT K w (oL x L).Z P.Wt p0) (hz : HEq t.r.z (datL x L))
     (ht : HEq t.r.Y Y) : ∃ c : NCore hL t (nchD l Sp Au ss al hLg),
@@ -215,7 +215,7 @@ theorem core_at {xd : ThData (Dof x)} (hxd : XdAll xd) (t : RowsT K w (oL x L).Z
 
 omit l in
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨Y₀, HEq.rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem read_cast {Z : w.Lt} {z z' : Dat (w.st Z) w.I P.hX T P.Wt} (e : z = z') {p : BaseLevelRowSide (w.D Z)}
     (Y₀ : Read z.R.toRealDat z.F.lv2 p) : ∃ Y₁ : Read z'.R.toRealDat z'.F.lv2 p, HEq Y₁ Y₀ := by
@@ -229,7 +229,7 @@ omit l in
 variable (x L) in
 
 /- English proof (translation)
-Take `⟨m, hm, hc, hco⟩` from `GlobalTheory.T.exists_movedData_state_localisations x L`. Take `⟨s, r, hpin⟩` from `GlobalTheory.T.exists_reading_of_rowLiftFamily_movedData B f T w P.Z₀ P.hX P.Wt P.z P.q (oL x L) (GlobalTheory.LinksInputs.inputs_of_hypotheses hW hD hP.hc hP.decay (w.D (oL x L).Z)) (fitsL L) m`. Take `⟨t, rx, -, hz, hy, -⟩` from `hR ⟨oL x L, fitsL L, x.G_eq, x.etaF, bkL L, m, hc, hco, s, r, hpin⟩ he`. Take `⟨Y₁, h1⟩` from `read_cast hm r.Y`. Conclude with `⟨s.p0, t, rx, Y₁, GlobalTheory.T.normalisedReadings_related_localizedAdelicData x L m hm hco s r hpin Y₁ h1, hz.trans (heq_of_eq hm), hy.trans h1.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rows_ex (hW : GlobalTheory.Published.WeilRepresentationUnitaryPair) (hD : GlobalTheory.Published.DiscreteSeriesExists) (hP : PrN) (hR : RowsAt P)
     (he : ∀ j v, 1 ≤ j → j ≤ B.R.m → etaL x L j v = P.q.eta j v) :
@@ -243,11 +243,11 @@ theorem rows_ex (hW : GlobalTheory.Published.WeilRepresentationUnitaryPair) (hD 
   exact ⟨s.p0, t, rx, Y₁, GlobalTheory.T.normalisedReadings_related_localizedAdelicData x L m hm hco s r hpin Y₁ h1, hz.trans (heq_of_eq hm), hy.trans h1.symm⟩
 
 /- English proof (translation)
-Establish `hB` using `builtEx l hP`. Take `⟨big, hbig⟩` from `hE hB`. Take `⟨L, hL'⟩` from `hB big`. Take `⟨hLg, he⟩` from `hbig L hL'`. Take `⟨Sp, ⟨Au⟩, ss⟩` from `hL'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨al⟩` from `allL_nonempty l Sp Au ss hP hA`. Take `⟨xd, hxd⟩` from `hX`. Take `⟨p, t, ⟨rx⟩, Y₁, hY₁, hz, ht⟩` from `rows_ex x L hW hD hP hR fun j v h1 h2 => he j v h1 h2 v HEq.rfl`. Take `⟨c, ⟨ne⟩, hp⟩` from `core_at l Sp Au ss al hLg Y₁ hY₁ hxd t hz ht`. Take `⟨nn⟩` from `hN _ p t _ _ _ c ne hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg : GIs2 K w x.o.G` using `x.G_eq ▸ P.g`. Conclude with `⟨(oL x L).Z, { g := hg, coh := P.coh, Wt := P.Wt, p0 := p, what₂ := t, rx := rx, nch := chD L l, n := nchD l Sp Au ss al hLg, xd := xdD L xd chiT := fun k v => TypesTrue.chiT_gen (fitsL L).grp k v, nx := ⟨c, nn⟩ }, rfl, keptL L l⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem lv3_of_third (hW : GlobalTheory.Published.WeilRepresentationUnitaryPair) (hD : GlobalTheory.Published.DiscreteSeriesExists) (hP : PrN) (hA : ArchCmp hL)
     (hR : RowsAt P)
@@ -276,7 +276,7 @@ theorem lv3_of_third (hW : GlobalTheory.Published.WeilRepresentationUnitaryPair)
 omit l in
 
 /- English proof (translation)
-The claim follows from `Step.trans GlobalTheory.Mem.R3.Rw.St.exists_rowsT (Step.of_all fun _ _ _ _ _ _ _ H w hs P => H w ⟨hs.1, ⟨P⟩⟩ P)`.
+A detailed English derivation is pending.
 -/
 theorem rowsAt_start : StepW Start fun K _ _ _ w => ∀ P : Pre2 K w, RowsAt P :=
   Step.trans GlobalTheory.Mem.R3.Rw.St.exists_rowsT (Step.of_all fun _ _ _ _ _ _ _ H w hs P => H w ⟨hs.1, ⟨P⟩⟩ P)
@@ -284,9 +284,9 @@ theorem rowsAt_start : StepW Start fun K _ _ _ w => ∀ P : Pre2 K w, RowsAt P :
 omit l in
 
 /- English proof (translation)
-Introduce `hW hD hP hL hA hE hX`. Establish `h` using `rowsAt_start.and (StepW.and hE hX)`. Use `⟨h.trans (StepW.of_all ?_), fun cDep => h.trans (StepW.of_all ?_)⟩` and prove the remaining obligations. Introduce `K B f T w _ _ H P x l S Γ`. Conclude with `lv3_of_third l hW hD hP hA (H.1 P) (H.2.1 P x l) (H.2.2 P x ⟨l.toStrictHenselianAcyclic.toLI, l.b.toSeriesState⟩) S Γ (NEb hL) fun _ _ _ _ _ _ _ a _ => ⟨a⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `K B f T w _ _ H P x l S Γ hp`. Conclude with `lv3_of_third l hW hD hP hA (H.1 P) (H.2.1 P x l) (H.2.2 P x ⟨l.toStrictHenselianAcyclic.toLI, l.b.toSeriesState⟩) S Γ (NEl hL cDep) fun _ _ _ _ _ _ _ a b => ⟨(a, ⟨b cDep hp⟩)⟩`.
+A detailed English derivation is pending.
 -/
 theorem sFin : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → PrN →
     ∀ hL : GlobalTheory.Published.LocalLanglandsGL, ArchCmp hL → SEta hL → SXd hL → SFin hL ∧ ∀ cDep : ℝ, SFinl hL cDep := by

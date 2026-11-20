@@ -16,9 +16,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Top
 def lieRank {Ψ : Type} (N j : ℕ) (s : Ψ ⊕ Ψ) : ℝ := if s.isLeft then (j : ℝ) else ((N - j : ℕ) : ℝ)
 
 /- English proof (translation)
-Establish `h : (Finset.univ.filter (fun i : Fin N => (i : ℕ) < j)).map Fin.valEmbedding = Finset.range j`. Use extensionality with `a`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `hi`. Introduce `ha`. Conclude with `⟨⟨a, lt_of_lt_of_le ha hj⟩, ha, rfl⟩`. Rewrite using `[← Finset.card_map Fin.valEmbedding, h, Finset.card_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delta_card_filter_lt {N j : ℕ} (hj : j ≤ N) :
     (Finset.univ.filter (fun i : Fin N => (i : ℕ) < j)).card = j := by
@@ -33,7 +33,7 @@ theorem delta_card_filter_lt {N j : ℕ} (hj : j ≤ N) :
   rw [← Finset.card_map Fin.valEmbedding, h, Finset.card_range]
 
 /- English proof (translation)
-Establish `h` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin N))) (fun i : Fin N => (i : ℕ) < j)`. Simplify using `only [not_lt, Finset.card_univ, Fintype.card_fin] at h`. Rewrite `h` using `[delta_card_filter_lt hj]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem delta_card_filter_ge {N j : ℕ} (hj : j ≤ N) :
     (Finset.univ.filter (fun i : Fin N => j ≤ (i : ℕ))).card = N - j := by
@@ -43,7 +43,7 @@ theorem delta_card_filter_ge {N j : ℕ} (hj : j ≤ N) :
   omega
 
 /- English proof (translation)
-Consider the cases of `s with`. Consider the case `inl τ`. Simplify using `only [pLie, pkLow, pow_zero, Finset.sum_const, delta_card_filter_lt hj, lieRank, Sum.isLeft_inl, if_true, nsmul_eq_mul, mul_one, map_natCast]`. Consider the case `inr τ`. Simplify using `only [pLie, pow_zero, Finset.sum_const, delta_card_filter_ge hj, lieRank, Sum.isLeft_inr, Bool.false_eq_true, if_false, nsmul_eq_mul, mul_one, map_natCast]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem pLie_zero {Ψ : Type} {N j : ℕ} (hj : j ≤ N) (s : Ψ ⊕ Ψ) :
     (pLie j 0 s : RP Ψ N) = C (lieRank N j s) := by
@@ -56,9 +56,9 @@ theorem pLie_zero {Ψ : Type} {N j : ℕ} (hj : j ≤ N) (s : Ψ ⊕ Ψ) :
       Bool.false_eq_true, if_false, nsmul_eq_mul, mul_one, map_natCast]
 
 /- English proof (translation)
-Simplify using `only [degFl, coeff_C_mul]`. Establish `h : ∀ f g : (Ψ → Equiv.Perm (Fin N)) → ℝ, ∑ σ, f σ * (c * g σ) = c * ∑ σ, f σ * g σ`. Introduce `f g`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun _ _ => by ring)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem degFl_C_mul {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (c : ℝ) (Q : RP Ψ N) :
     degFl (C c * Q) = c * degFl Q := by
@@ -71,17 +71,17 @@ theorem degFl_C_mul {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (c : ℝ
   ring
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j frob hj hN hF`. Break down `isEmpty_or_nonempty Ψ with hE | ⟨⟨τ₀⟩⟩` into its components or cases. Conclude with `⟨0, fun _ τ => isEmptyElim τ⟩`. Use `⟨fun p => Real.log p / N * ∑' n : ℕ, ((p : ℝ) ^ 1)⁻¹ ^ (n + 1) * lieRank N j (frob p τ₀ n), ?_⟩` and prove the remaining obligations. Introduce `p τ k Q hp hk`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN' : (N : ℝ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hSh : ∑ σ, Sh j σ (pk τ k * Q) = k * degFl (pkLow j τ (k - 1) * Q)`. Rewrite using `[Finset.sum_congr rfl (fun σ _ => (GlobalTheory.T.flag_shift_total_power_sum Ψ N j τ σ k Q hk).1)]`. Simplify using the standard rewrite rules. Establish `hTot : ∑ σ, Tot σ (pk τ k * Q) = if k = 1 then N * degFl Q else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl (fun σ _ => (GlobalTheory.T.flag_shift_total_power_sum Ψ N j τ σ k Q hk).2)]`. Apply the tactic sequence `by_cases h1 : k = 1 <;> simp [h1]`. Rewrite using `[hSh, hTot]`. Distinguish the cases in `h1 : k = 1`. Substitute `h1` using the available equality.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hrank : ∀ n, degFl (pLie j (1 - 1) (frob p τ n) * Q) = lieRank N j (frob p τ₀ n) * degFl Q`. Introduce `n`. Establish `: lieRank N j (frob p τ n) = lieRank N j (frob p τ₀ n)`. Simplify using `only [lieRank, hF p n τ τ₀]`. Rewrite using `[Nat.sub_self, pLie_zero hj, degFl_C_mul, this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : (∑' n : ℕ, ((p : ℝ) ^ 1)⁻¹ ^ (n + 1) * degFl (pLie j (1 - 1) (frob p τ n) * Q)) = (∑' n : ℕ, ((p : ℝ) ^ 1)⁻¹ ^ (n + 1) * lieRank N j (frob p τ₀ n)) * degFl Q`. Rewrite using `[← tsum_mul_right]`. Conclude with `tsum_congr (fun n => by rw [hrank]; ring)`. Simplify using `only [deltaTerm, restTerm, hsum]`. Simplify using `only [if_true, Nat.one_lt_ofNat, Nat.not_ofNat_le_one, if_false]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : 2 ≤ k` using `by omega`. Simplify using `only [deltaTerm, restTerm, h1, if_false, h2, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deltaTerm_eq : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ) (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ), j ≤ N → 0 < N → FrobShape frob → ∃ κ : ℕ → ℝ, ∀ (p : ℕ) (τ : Ψ) (k : ℕ) (Q : RP Ψ N), 2 ≤ p → 1 ≤ k → deltaTerm j p τ (frob p τ) k Q = -(Real.log p / ((p : ℝ) - 1)) * ∑ σ, Sh j σ (pk τ k * Q) + κ p * ∑ σ, Tot σ (pk τ k * Q) + restTerm j p (frob p τ) k Q := by
   intro Ψ _ _ N j frob hj hN hF

@@ -24,9 +24,9 @@ namespace PositivityTheory.MatrixIdentityOffBase
 variable {D : D7}
 
 /- English proof (translation)
-Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1` as an intermediate fact. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Take `⟨𝓕, h⟩` from `GlobalTheory.FundDomDiscrete.exists_fundDom D V Measure.haar inferInstance`. Conclude with `⟨Measure.haar, 𝓕, inferInstance, h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_meas (V : HSp D) : ∃ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), μ.IsHaarMeasure ∧ IsFundamentalDomain (GQ V) 𝓕 μ := by
   have := (GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1

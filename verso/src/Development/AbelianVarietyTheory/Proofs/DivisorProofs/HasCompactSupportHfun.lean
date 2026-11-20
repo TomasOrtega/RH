@@ -25,7 +25,7 @@ def conjInter (K' : Subgroup G) (s : Finset G) : Subgroup G where
     group
 
 /- English proof (translation)
-Establish `: (conjInter K' s : Set G) = (K' : Set G) ∩ ⋂ g ∈ s, (fun u => g⁻¹ * u * g) ⁻¹' (K' : Set G)`. Use extensionality with `u`. Simplify using `[conjInter]`. Rewrite using `[this]`. Conclude with `hK'.inter (isOpen_biInter_finset fun g _ => hK'.preimage (by fun_prop))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_conjInter [TopologicalSpace G] [IsTopologicalGroup G] (K' : Subgroup G)
     (hK' : IsOpen (K' : Set G)) (s : Finset G) : IsOpen (conjInter K' s : Set G) := by
@@ -36,7 +36,7 @@ theorem isOpen_conjInter [TopologicalSpace G] [IsTopologicalGroup G] (K' : Subgr
   exact hK'.inter (isOpen_biInter_finset fun g _ => hK'.preimage (by fun_prop))
 
 /- English proof (translation)
-Use `(show ∀ h : H, ρ h v = ((1 : H →* ℂˣ) h : ℂ) • v from hv) h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fixed_apply {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} {H : Subgroup G}
     {v : V} (hv : v ∈ fixed ρ H) (h : H) : ρ h v = v := by
@@ -50,7 +50,7 @@ def hfun (K' U : Subgroup G) [Fintype (K' ⧸ U.subgroupOf K')] (s : Finset G) (
 variable (K' U : Subgroup G) [Fintype (K' ⧸ U.subgroupOf K')] (s : Finset G) (a : G → ℂ)
 
 /- English proof (translation)
-Establish `: (QuotientGroup.mk (y * k) : G ⧸ K') = QuotientGroup.mk y` using `QuotientGroup.eq.2 (by simp [mul_assoc, K'.inv_mem hk])`. Simplify using `only [hfun, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem hfun_mul_right {k : G} (hk : k ∈ K') (y : G) : hfun K' U s a (y * k) = hfun K' U s a y := by
   have : (QuotientGroup.mk (y * k) : G ⧸ K') = QuotientGroup.mk y :=
@@ -58,15 +58,15 @@ theorem hfun_mul_right {k : G} (hk : k ∈ K') (y : G) : hfun K' U s a (y * k) =
   simp only [hfun, this]
 
 /- English proof (translation)
-Unfold `hfun`. Set `kk : K'` to `⟨k, hk⟩`. Use `(Fintype.sum_equiv (MulAction.toPerm kk) _ _ fun q => ?_).symm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : U.subgroupOf K', ((MulAction.toPerm kk q : K' ⧸ U.subgroupOf K').out : K') = kk * q.out * u := by`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: (MulAction.toPerm kk q : K' ⧸ U.subgroupOf K') = QuotientGroup.mk (kk * q.out)`. Rewrite using `[MulAction.toPerm_apply]`. Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `QuotientGroup.mk_out_eq_mul _ _`. Establish `hug : g⁻¹ * ((u : K') : G) * g ∈ K'` using `hU _ (Subgroup.mem_subgroupOf.1 u.2) g hg`. Establish `hiff : (QuotientGroup.mk (((q.out : K') : G) * g) : G ⧸ K') = QuotientGroup.mk y ↔ (QuotientGroup.mk ((((MulAction.toPerm kk q : K' ⧸ U.subgroupOf K').out : K') : G) * g) : G ⧸ K') = QuotientGroup.mk (k * y)`. Rewrite using `[hu, QuotientGroup.eq, QuotientGroup.eq]`. Simplify using `only [Subgroup.coe_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `K'.mul_mem (K'.inv_mem hug) h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [kk]`. Use `group`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use `K'.mul_mem hug h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [kk]`. Use `group`. Simplify using `only [hiff]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hfun_mul_left (hU : ∀ u ∈ U, ∀ g ∈ s, g⁻¹ * u * g ∈ K') {k : G} (hk : k ∈ K') (y : G) :
     hfun K' U s a (k * y) = hfun K' U s a y := by
@@ -99,7 +99,7 @@ theorem hfun_mul_left (hU : ∀ u ∈ U, ∀ g ∈ s, g⁻¹ * u * g ∈ K') {k 
   simp only [hiff]
 
 /- English proof (translation)
-Unfold `hfun`. Use `Finset.sum_eq_zero fun q _ => Finset.sum_eq_zero fun g hg => ?_` and prove the remaining obligations. Rewrite using `[if_neg (fun h => hy q g hg (QuotientGroup.eq.1 h)), mul_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hfun_eq_zero (y : G) (hy : ∀ q : K' ⧸ U.subgroupOf K', ∀ g ∈ s, (((q.out : K') : G) * g)⁻¹ * y ∉ K') :
     hfun K' U s a y = 0 := by
@@ -108,9 +108,7 @@ theorem hfun_eq_zero (y : G) (hy : ∀ q : K' ⧸ U.subgroupOf K', ∀ g ∈ s, 
   rw [if_neg (fun h => hy q g hg (QuotientGroup.eq.1 h)), mul_zero]
 
 /- English proof (translation)
-Use `haveI : Finite (K' ⧸ U.subgroupOf K') := inferInstance`. Use `HasCompactSupport.intro' (K := ⋃ q : K' ⧸ U.subgroupOf K', ⋃ g ∈ s, (Homeomorph.mulLeft (((q.out : K') : G) * g)⁻¹) ⁻¹' (K' : Set G)) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `isCompact_iUnion fun q => s.isCompact_biUnion fun g _ => (Homeomorph.isCompact_preimage _).2 hK'c`. Conclude with `isClosed_iUnion_of_finite fun q => isClosed_biUnion_finset fun g _ => (Subgroup.isClosed_of_isOpen _ hK'o).preimage (Homeomorph.continuous _)`. Introduce `y hy`.
-
-Use `hfun_eq_zero K' U s a y fun q g hg hmem => hy ?_` and prove the remaining obligations. Conclude with `Set.mem_iUnion.2 ⟨q, Set.mem_iUnion₂.2 ⟨g, hg, hmem⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_hfun [TopologicalSpace G] [IsTopologicalGroup G] (hK'c : IsCompact (K' : Set G))
     (hK'o : IsOpen (K' : Set G)) : HasCompactSupport (hfun K' U s a) := by
@@ -125,17 +123,15 @@ theorem hasCompactSupport_hfun [TopologicalSpace G] [IsTopologicalGroup G] (hK'c
     exact Set.mem_iUnion.2 ⟨q, Set.mem_iUnion₂.2 ⟨g, hg, hmem⟩⟩
 
 /- English proof (translation)
-Use `set T : Finset (G ⧸ K') := Finset.univ.biUnion fun q : K' ⧸ U.subgroupOf K' => s.image fun g => (QuotientGroup.mk (((q.out : K') : G) * g) : G ⧸ K') with hT`. Establish `hmemT : ∀ (q : K' ⧸ U.subgroupOf K'), ∀ g ∈ s, (QuotientGroup.mk (((q.out : K') : G) * g) : G ⧸ K') ∈ T` using `fun q g hg => Finset.mem_biUnion.2 ⟨q, Finset.mem_univ _, Finset.mem_image.2 ⟨g, hg, rfl⟩⟩`. Establish `hsupp : (Function.support fun Q : G ⧸ K' => hfun K' U s a Q.out • (ρ Q.out ∘ₗ LinearMap.id)) ⊆ T`. Introduce `Q hQ`. Assume the negation of the conclusion as `hQT`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hQ` to reduce the goal to its premises. Establish `: hfun K' U s a Q.out = 0`. Use `hfun_eq_zero K' U s a _ fun q g hg hmem => hQT ?_` and prove the remaining obligations. Establish `: (QuotientGroup.mk (((q.out : K') : G) * g) : G ⧸ K') = Q`. Rewrite using `[← QuotientGroup.out_eq' Q]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `QuotientGroup.eq.2 hmem`. Rewrite using `[← this]`. Conclude with `hmemT q g hg`. Simplify using `[this]`. Establish `hout : ∀ z : G, ρ ((QuotientGroup.mk z : G ⧸ K').out) v = ρ z v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K' z`. Rewrite using `[hh, map_mul, Module.End.mul_apply, fixed_apply hv h]`. Unfold `levOp`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, LinearMap.smul_apply, LinearMap.sum_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [hfun, Finset.sum_smul, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.id_apply, mul_ite, mul_one, mul_zero, ite_smul, zero_smul, QuotientGroup.out_eq']`. Rewrite using `[Finset.sum_comm (s := T)]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (s := T)]`.
-
-Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.sum_apply, Finset.sum_ite_eq, if_pos (hmemT q g hg), LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.id_apply, hout]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levOp_hfun {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (K : Subgroup G)
     (v : V) (hv : v ∈ fixed ρ K') :
@@ -178,37 +174,29 @@ end GlobalTheory.HeckeTraceIndep
 namespace GlobalTheory.HeckeTraceIndep
 
 /- English proof (translation)
-Introduce `G _ _ _ K hKo hKc K' hL ι _ σ hfix hne c hc i₀`. Take `⟨hK'o, hK'K, -⟩` from `hL`. Establish `hK'c : IsCompact (K' : Set G)` using `hKc.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hK'o) hK'K`. Use `haveI : ∀ i, IsSimpleModule (MonoidAlgebra ℂ G) (σ i).ρ.asModule := fun i => (Representation.irreducible_iff_isSimpleModule_asModule _).mp (σ i).irred`. Establish `hzero : ∀ i j, i ≠ j → ∀ f : (σ i).ρ.asModule →ₗ[MonoidAlgebra ℂ G] (σ j).ρ.asModule, f = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij f`. Use `haveI := (σ i).irred`. Use `haveI := (σ j).irred`. Use `haveI : IsEmpty ((σ i).ρ.Equiv (σ j).ρ) := ⟨fun e => hij (hne i j ⟨e⟩)⟩`. Use `haveI := (Representation.IntertwiningMap.equivLinearMapAsModule (σ i).ρ (σ j).ρ).toEquiv.symm.subsingleton`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Conclude with `Subsingleton.elim _ _`. Use `haveI : ∀ i, FiniteDimensional ℂ (fixed (σ i).ρ K') := fun i => (hfix i).1`. Set `b : ∀ i, Module.Basis (Fin (Module.finrank ℂ (fixed (σ i).ρ K'))) ℂ (fixed (σ i).ρ K')` to `fun i => Module.finBasis ℂ _`. Take `⟨x, hx⟩` from `GlobalTheory.SimpleCharIndep.exists_smul_eq_ite (R := MonoidAlgebra ℂ G) (fun i => (σ i).ρ.asModule) hzero i₀ (fun i => Finset.univ.image fun k => (((b i k : fixed (σ i).ρ K') : (σ i).V) : (σ i).ρ.asModule))`. Use `set s : Finset G := x.coeff.support`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set U : Subgroup G := conjInter K' s`. Establish `hUo : IsOpen (U : Set G)` using `isOpen_conjInter K' hK'o s`. Use `haveI : CompactSpace K' := isCompact_iff_compactSpace.mp hK'c`. Use `haveI : Finite (K' ⧸ U.subgroupOf K') := Subgroup.quotient_finite_of_isOpen _ (by`. Rewrite using `[Subgroup.coe_subgroupOf]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hUo.preimage continuous_subtype_val)`. Use `letI : Fintype (K' ⧸ U.subgroupOf K') := Fintype.ofFinite _`. Establish `hU : ∀ u ∈ U, ∀ g ∈ s, g⁻¹ * u * g ∈ K'` using `fun u hu => hu.2`. Use `set f : G → ℂ := hfun K' U s (fun g => x.coeff g) with hf`. Establish `hHecke : IsHecke K' f` using `⟨hasCompactSupport_hfun K' U s _ hK'c hK'o, fun k hk y => ⟨hfun_mul_left K' U s _ hU hk y, hfun_mul_right K' U s _ hk y⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `set r : ℂ := ((K'.relIndex K : ℕ) : ℂ) with hr_def`. Use `set N : ℕ := Fintype.card (K' ⧸ U.subgroupOf K') with hN_def`. Establish `hact : ∀ i (v : (σ i).V), v ∈ fixed (σ i).ρ K' → levOp (σ i).ρ K K' f LinearMap.id v = r⁻¹ • ∑ q : K' ⧸ U.subgroupOf K', (σ i).ρ ((q.out : K') : G) ((σ i).ρ.asAlgebraHom x v)`. Introduce `i v hv`. Rewrite using `[hf, levOp_hfun K' U s _ (σ i).ρ K v hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Representation.asAlgebraHom_def, MonoidAlgebra.lift_apply, Finsupp.sum, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `[map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbasis : ∀ i k, levOp (σ i).ρ K K' f LinearMap.id (b i k : (σ i).V) = (if i = i₀ then r⁻¹ * N else 0) • (b i k : (σ i).V)`. Introduce `i k`. Establish `hxk` using `hx i _ (Finset.mem_image_of_mem _ (Finset.mem_univ k))`. Rewrite using `[hact i _ (b i k).2]`. Distinguish the cases in `hi : i = i₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (σ i).ρ.asAlgebraHom x (b i k : (σ i).V) = b i k`. Conclude with `hxk.trans (if_pos hi)`. Rewrite using `[if_pos hi, e]`. Establish `h2 : ∀ q : K' ⧸ U.subgroupOf K', (σ i).ρ ((q.out : K') : G) (b i k : (σ i).V) = b i k` using `fun q => fixed_apply (b i k).2 q.out`. Simplify using `only [h2, Finset.sum_const, Finset.card_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Establish `e : (σ i).ρ.asAlgebraHom x (b i k : (σ i).V) = 0` using `hxk.trans (if_neg hi)`. Rewrite using `[if_neg hi, e]`. Simplify using the standard rewrite rules. Establish `hfixedEq : ∀ i, ∀ v ∈ fixed (σ i).ρ K', levOp (σ i).ρ K K' f LinearMap.id v = (if i = i₀ then r⁻¹ * N else 0) • v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `i v hv`. Use `LinearMap.congr_fun ((b i).ext (f₁ := (levOp (σ i).ρ K K' f LinearMap.id).comp (fixed (σ i).ρ K').subtype) (f₂ := (if i = i₀ then r⁻¹ * N else 0) • (fixed (σ i).ρ K').subtype) (fun k => by` as an intermediate fact. Rewrite using `[LinearMap.comp_apply, LinearMap.smul_apply, Submodule.subtype_apply]`. Conclude with `hbasis i k)) ⟨v, hv⟩`. Rewrite `this` using `[LinearMap.comp_apply, LinearMap.smul_apply, Submodule.subtype_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `htr : ∀ i, twTr (σ i).ρ K K' f LinearMap.id = (if i = i₀ then r⁻¹ * N else 0) * Module.finrank ℂ (fixed (σ i).ρ K')`. Introduce `i`. Establish `hmem : ∀ v ∈ fixed (σ i).ρ K', levOp (σ i).ρ K K' f LinearMap.id v ∈ fixed (σ i).ρ K'` using `fun v hv => by`. Rewrite using `[hfixedEq i v hv]`.
-
-Conclude with `Submodule.smul_mem _ _ hv`. Unfold `twTr`. Rewrite using `[dif_pos hmem]`. Establish `: (levOp (σ i).ρ K K' f LinearMap.id).restrict hmem = (if i = i₀ then r⁻¹ * N else 0) • LinearMap.id`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.coe_restrict_apply, hfixedEq i v v.2, LinearMap.smul_apply, LinearMap.id_apply, Submodule.coe_smul]`. Rewrite using `[this, map_smul, LinearMap.trace_id, smul_eq_mul]`. Establish `hsum` using `hc f hHecke`. Simplify using `only [htr] at hsum`. Rewrite `hsum` using `[Finset.sum_eq_single i₀ (fun i _ hi => by simp [hi]) (by simp), if_pos rfl]`.
-
-Establish `hr : r ≠ 0` using `by haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc haveI : Finite (K ⧸ K'.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ (by`. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `hK'o.preimage continuous_subtype_val)`. Rewrite using `[hr_def, Nat.cast_ne_zero]`. Conclude with `Subgroup.index_ne_zero_of_finite`.
-
-Establish `hN : (N : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `hd : (Module.finrank ℂ (fixed (σ i₀).ρ K') : ℂ) ≠ 0` using `by haveI : Nontrivial (fixed (σ i₀).ρ K') := Submodule.nontrivial_iff_ne_bot.2 (hfix i₀).2`. Conclude with `Module.finrank_pos.ne'` after adjusting the coercions. Conclude with `(mul_eq_zero.1 hsum).resolve_right (mul_ne_zero (mul_ne_zero (inv_ne_zero hr) hN) hd)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twTr_linearIndependent : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G), IsOpen (K : Set G) → IsCompact (K : Set G) → ∀ K' : Subgroup G, IsLevel (MonoidHom.id G) K K' → ∀ (ι : Type) [Fintype ι] (σ : ι → SmIrr G), (∀ i, FiniteDimensional ℂ (fixed (σ i).ρ K') ∧ fixed (σ i).ρ K' ≠ ⊥) → (∀ i j, Nonempty ((σ i).ρ.Equiv (σ j).ρ) → i = j) → ∀ c : ι → ℂ, (∀ f, IsHecke K' f → ∑ i, c i * twTr (σ i).ρ K K' f LinearMap.id = 0) → ∀ i, c i = 0 := by
   intro G _ _ _ K hKo hKc K' hL ι _ σ hfix hne c hc i₀

@@ -7,9 +7,9 @@ namespace GlobalTheory
 open scoped MatrixOrder in
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.1 hP.posSemidef.nonneg`. Establish `hd : IsUnit R.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h`. Establish `h1` using `hP.det_pos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[hR, Matrix.det_mul, h]`. Simplify using `at h1`. Conclude with `⟨R, R⁻¹, Matrix.mul_nonsing_inv R hd, Matrix.nonsing_inv_mul R hd, hR⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem posDef_exists_invertible_conjTranspose_mul_self {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ)
     (hP : P.PosDef) :
@@ -24,23 +24,21 @@ theorem posDef_exists_invertible_conjTranspose_mul_self {n : ℕ} (P : Matrix (F
   exact ⟨R, R⁻¹, Matrix.mul_nonsing_inv R hd, Matrix.nonsing_inv_mul R hd, hR⟩
 
 /- English proof (translation)
-Establish `hH' : t.IsHermitian` using `hH`. Use `set U : Matrix (Fin n) (Fin n) ℂ := (hH'.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Use `set d : Fin n → ℂ := fun i => ((hH'.eigenvalues i : ℝ) : ℂ) with hd`. Establish `hspec : t = U * diagonal d * Uᴴ`. Use `hH'.spectral_theorem` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Unitary.conjStarAlgAut_apply, star_eq_conjTranspose, Function.comp_def]`. Establish `hUU : U * Uᴴ = 1`. Use `hH'.eigenvectorUnitary.2.2` as an intermediate fact. Simplify `this` using `[star_eq_conjTranspose]`. Establish `hUU' : Uᴴ * U = 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hH'.eigenvectorUnitary.2.1` as an intermediate fact. Simplify `this` using `[star_eq_conjTranspose]`. Establish `hD : Uᴴ * t * U = diagonal d`. Rewrite using `[hspec]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = diagonal d := by rw [hUU']; simp`. Establish `hDD : diagonal d * diagonal d = 1`. Rewrite using `[← hD]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hUU, Matrix.mul_one, ht, Matrix.mul_one, hUU']`. Establish `hsq : ∀ i, d i * d i = 1`. Introduce `i`. Use `congrFun (congrFun hDD i) i` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[diagonal_mul_diagonal]`. Set `e : Fin (Fintype.card {i // d i = 1}) ⊕ Fin (Fintype.card {i // ¬ d i = 1}) ≃ Fin n` to `(Equiv.sumCongr (Fintype.equivFin _).symm (Fintype.equivFin _).symm).trans (Equiv.sumCompl (fun i => d i = 1))`. Establish `he1 : ∀ a, d (e (Sum.inl a)) = 1` using `fun a => ((Fintype.equivFin {i // d i = 1}).symm a).2`. Establish `he2 : ∀ a, d (e (Sum.inr a)) = -1` using `fun a => (mul_self_eq_one_iff.1 (hsq _)).resolve_left ((Fintype.equivFin {i // ¬ d i = 1}).symm a).2`. Use `⟨_, _, U.submatrix id e, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[conjTranspose_submatrix, submatrix_mul_equiv, hUU, submatrix_id_id]`. Rewrite using `[conjTranspose_submatrix]`. Use `Matrix.submatrix_mul_equiv Uᴴ U e (Equiv.refl _) e` as an intermediate fact. Simplify using `only [Equiv.coe_refl] at this`. Rewrite using `[this, hUU', submatrix_one_equiv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (U.submatrix id e)ᴴ * t * U.submatrix id e = (Uᴴ * t * U).submatrix e e`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[h1, hD, submatrix_diagonal_equiv]`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [diagonal_apply, he1, he2, one_apply]`.
-
-Apply the tactic sequence `all_goals (split_ifs <;> simp)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hermitian_involution_unitary_blocks {n : ℕ} (t : Matrix (Fin n) (Fin n) ℂ)
     (hH : tᴴ = t) (ht : t * t = 1) :
@@ -94,19 +92,17 @@ theorem hermitian_involution_unitary_blocks {n : ℕ} (t : Matrix (Fin n) (Fin n
     all_goals (split_ifs <;> simp)
 
 /- English proof (translation)
-Introduce `n G s hs hG hP`. Take `⟨R, Ri, h1, h2, hR⟩` from `posDef_exists_invertible_conjTranspose_mul_self _ hP`. Establish `hG1 : G = Rᴴ * R * s` using `by rw [← hR, Matrix.mul_assoc, hs, Matrix.mul_one]`. Establish `hG2 : G = sᴴ * (Rᴴ * R)` using `by rw [← hR, ← Matrix.mul_assoc, hG]`. Establish `h3 : Riᴴ * Rᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGt : Riᴴ * G * Ri = R * s * Ri`. Rewrite using `[hG1]`. Combine the equalities or inequalities in the displayed calculation. Establish `hherm : (R * s * Ri)ᴴ = R * s * Ri`. Rewrite using `[← hGt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [hG2]`. Rewrite using `[hGt]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = _ := by simp only [Matrix.mul_assoc]`. Establish `hinv : (R * s * Ri) * (R * s * Ri) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h2, Matrix.mul_one, hs, Matrix.mul_one, h1]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Take `⟨p, q, V, hV1, hV2, hV3⟩` from `hermitian_involution_unitary_blocks _ hherm hinv`. Use `⟨p, q, Ri * V, Vᴴ * R, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hV3, ← hGt]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← hV3]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = _ := by rw [hV1, Matrix.mul_one, h2, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_basis_adapted_to_cartan_involution :
     ∀ (n : ℕ) (G s : Matrix (Fin n) (Fin n) ℂ), s * s = 1 → sᴴ * G * s = G → (G * s).PosDef →

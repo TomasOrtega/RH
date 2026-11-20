@@ -19,13 +19,13 @@ section Smooth
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show FiniteDimensional ℂ ↥(⊥ : Submodule ℂ H) infer_instance`. Introduce `g _ v hv`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sup_empty, Submodule.mem_bot] at hv`. Simplify using `[hv]`. Consider the case `insert a s ha ih`. Establish `hA` using `hs a (Finset.mem_insert_self a s)`. Establish `hS` using `ih (fun S hS' => hs S (Finset.mem_insert_of_mem hS'))`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sup_insert]`. Use `hA.1` as an intermediate fact. Use `hS.1` as an intermediate fact. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [id] infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg v hv`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hv`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hA.2 g hg x hx) (hS.2 g hg y hy)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finset_sup_kstable {n : ℕ} (ε : Fin n → Bool) (τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (s : Finset (Submodule ℂ H)) (hs : ∀ S ∈ s, FiniteDimensional ℂ S ∧ IsKStableOn ε τ S) :
@@ -55,7 +55,7 @@ theorem finset_sup_kstable {n : ℕ} (ε : Fin n → Bool) (τ : Matrix (Fin n) 
       exact Submodule.add_mem_sup (hA.2 g hg x hx) (hS.2 g hg y hy)
 
 /- English proof (translation)
-Take `⟨s, hsS, hws⟩` from `Submodule.mem_sSup_iff_exists_finset.1 hw`. Establish `h` using `finset_sup_kstable ε τ s (fun S hS => ⟨(hsS hS).1, (hsS hS).2.1⟩)`. Use `⟨s.sup (id : Submodule ℂ H → Submodule ℂ H), h.1, ?_, h.2⟩` and prove the remaining obligations. Rewrite using `[Finset.sup_eq_iSup]`. Conclude with `hws`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kfin_of_mem_lowKSub {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ}
     {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {w : H} (hw : w ∈ lowKSub ε lam τ) :
@@ -67,7 +67,7 @@ theorem kfin_of_mem_lowKSub {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ
   exact hws
 
 /- English proof (translation)
-Take `⟨P, hP, -, hmem⟩` from `hw`. Take `⟨S, hfd, hwS, hst⟩` from `kfin_of_mem_lowKSub hmem`. Conclude with `⟨S, hfd, hwS, Formalism.MainNotions.LowestKTypeMultiplicity.kstable_Hpk hP hst⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem kfinHpk_of_lowUnitH {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Mx k r → (H →L[ℂ] H)} {w : H} (hw : IsLowUnitH k r ε lam σ w) : IsKFinHpk (k := k) (r := r) σ w := by
@@ -76,7 +76,7 @@ theorem kfinHpk_of_lowUnitH {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * 
   exact ⟨S, hfd, hwS, Formalism.MainNotions.LowestKTypeMultiplicity.kstable_Hpk hP hst⟩
 
 /- English proof (translation)
-Introduce `g₀ _`. Use `⟨Set.univ, fun _ => (0 : H), isOpen_univ, Set.mem_univ _, contDiffOn_const, fun g _ _ => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem zero_mem_smoothVecs (σ : Mx k r → (H →L[ℂ] H)) : (0 : H) ∈ smoothVecs (k := k) (r := r) σ := by
   intro g₀ _
@@ -90,9 +90,9 @@ def smoothSub (σ : Mx k r → (H →L[ℂ] H)) : Submodule ℂ H where
   smul_mem' := fun c _ h => Formalism.MainNotions.LeviCoordinates.smooth_vectors_smul c h
 
 /- English proof (translation)
-Establish `hw : w0 ∈ smoothVecs (k` using `k) (r := r) σ := hKS k r ε lam H σ hσ w0 (kfinHpk_of_lowUnitH hw0)`. Establish `hle : DDsp σ w0 ≤ smoothSub σ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `Formalism.MainNotions.LeviCoordinates.smooth_vectors_translate_unitary (fun _ ha _ hb => Formalism.MainNotions.LeviCoordinates.discrete_series_map_mul hσ ha hb) hw hg`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Conclude with `hle hu`.
+A detailed English derivation is pending.
 -/
 theorem ddSmooth_of [CompleteSpace H] (hKS : Formalism.MainNotions.DiscreteSeriesInnerProducts.KFinSmooth) {ε : Fin (2 * r + k + 1) → Bool}
     {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)} {w0 : H} (hσ : IsDSHpk k r ε lam σ)

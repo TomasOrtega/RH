@@ -25,27 +25,27 @@ private theorem eOf_apply {ι κ : Type} (M : GL (Fin a) (Cinf E) → Matrix ι 
     eOf M τ i j k l = eF (fun y => M y k l) τ i j := rfl
 
 /- English proof (translation)
-The claim follows from `(differentiableAt_extGL hf (x := oneL E a) isUnit_one).hasFDerivAt`.
+A detailed English derivation is pending.
 -/
 private theorem has_dF {f : GL (Fin a) (Cinf E) → ℂ} (hf : f ∈ regFun E a) : HasFDerivAt (extGL f) (dF f) (oneL E a) :=
   (differentiableAt_extGL hf (x := oneL E a) isUnit_one).hasFDerivAt
 
 /- English proof (translation)
-The claim follows from `(hD.congr_of_eventuallyEq (extGL_eventuallyEq h (x := oneL E a) isUnit_one)).fderiv`.
+A detailed English derivation is pending.
 -/
 private theorem dF_eq {f : GL (Fin a) (Cinf E) → ℂ} {F : Lie E a → ℂ} {D : Lie E a →L[ℝ] ℂ} (h : ∀ y, f y = F (toL y.val))
     (hD : HasFDerivAt F D (oneL E a)) : dF f = D :=
   (hD.congr_of_eventuallyEq (extGL_eventuallyEq h (x := oneL E a) isUnit_one)).fderiv
 
 /- English proof (translation)
-Rewrite using `[eF, dF_eq (F := fun _ => c) (fun _ => rfl) (hasFDerivAt_const c _)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem eF_const (c : ℂ) (τ : E →+* ℂ) (i j : Fin a) : eF (fun _ : GL (Fin a) (Cinf E) => c) τ i j = 0 := by
   rw [eF, dF_eq (F := fun _ => c) (fun _ => rfl) (hasFDerivAt_const c _)]
   simp
 
 /- English proof (translation)
-Rewrite using `[eF, dF_eq (fun y => by simp [extGL_val]) ((has_dF hf).add (has_dF hg))]`. Simplify using `only [eF, ContinuousLinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem eF_add {f g : GL (Fin a) (Cinf E) → ℂ} (hf : f ∈ regFun E a) (hg : g ∈ regFun E a) (τ : E →+* ℂ) (i j : Fin a) :
     eF (f + g) τ i j = eF f τ i j + eF g τ i j := by
@@ -54,7 +54,7 @@ private theorem eF_add {f g : GL (Fin a) (Cinf E) → ℂ} (hf : f ∈ regFun E 
   ring
 
 /- English proof (translation)
-Rewrite using `[eF, dF_eq (fun y => by simp [extGL_val]) ((has_dF hf).mul (has_dF hg))]`. Simplify using `only [eF, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, extGL_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem eF_mul {f g : GL (Fin a) (Cinf E) → ℂ} (hf : f ∈ regFun E a) (hg : g ∈ regFun E a) (τ : E →+* ℂ) (i j : Fin a) :
     eF (f * g) τ i j = f 1 * eF g τ i j + g 1 * eF f τ i j := by
@@ -66,9 +66,9 @@ variable [IsTotallyComplex E]
 
 open Classical in
 /- English proof (translation)
-Establish `h` using `dF_eq (f := fun y : GL (Fin a) (Cinf E) => coord t (y.val k l)) (fun _ => rfl) ((coordL t).comp ((ContinuousLinearMap.proj l).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin a => Fin a → Cinf E) k))).hasFDerivAt`. Establish `h2 : ∀ x : Cinf E, dF (fun y : GL (Fin a) (Cinf E) => coord t (y.val k l)) (toL (Matrix.single i j x)) = if i = k ∧ j = l then coord t x else 0` using `fun x => by`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `coord t (Matrix.single i j x k l) = _`. Rewrite using `[Matrix.single_apply, apply_ite (coord t), map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eF, h2, h2]`. Distinguish the cases in `h3 : i = k ∧ j = l`. Simplify using `only [h3, and_self, and_true, if_true]`. Conclude with `coord_hol τ t`. Simplify using `[h3]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem eF_coord (t τ : E →+* ℂ) (k l i j : Fin a) :
     eF (fun y : GL (Fin a) (Cinf E) => coord t (y.val k l)) τ i j = if t = τ ∧ i = k ∧ j = l then 1 else 0 := by
@@ -88,13 +88,13 @@ private theorem eF_coord (t τ : E →+* ℂ) (k l i j : Fin a) :
 
 open Classical in
 /- English proof (translation)
-Establish `h0` using `(coordL t).hasFDerivAt.comp (oneL E a) (contDiff_det.differentiable (by simp) (oneL E a)).hasFDerivAt`. Establish `hd : (Matrix.of (oneL E a)).det = 1` using `Matrix.det_one`. Establish `h1` using `(hasDerivAt_inv (x := coordL t (Matrix.of (oneL E a)).det) (by simp [hd])).hasFDerivAt.restrictScalars ℝ`. Establish `h` using `dF_eq (f := fun y : GL (Fin a) (Cinf E) => (coord t y.val.det)⁻¹) (fun _ => rfl) (h1.comp (oneL E a) h0)`. Establish `h2 : ∀ x : Cinf E, dF (fun y : GL (Fin a) (Cinf E) => (coord t y.val.det)⁻¹) (toL (Matrix.single i j x)) = if i = j then -coord t x else 0` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : Matrix.of (toL (Matrix.single i j x)) = Matrix.single i j x` using `rfl`. Rewrite using `[h, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, fderiv_det_one, e0]`. Use `split_ifs with h3`. Substitute `h3` using the available equality. Simplify using `[hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hd, h3]`. Rewrite using `[eF, h2, h2]`. Distinguish the cases in `h3 : i = j`. Establish `h4` using `coord_hol τ t`. Simplify using `only [h3, and_true, if_true]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs at h4 ⊢ <;> linear_combination -h4`. Simplify using `[h3]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem eF_det (t τ : E →+* ℂ) (i j : Fin a) :
     eF (fun y : GL (Fin a) (Cinf E) => (coord t y.val.det)⁻¹) τ i j = if t = τ ∧ i = j then -1 else 0 := by
@@ -123,38 +123,34 @@ private def tw (σ : ℂ ≃+* ℂ) : ((E →+* ℂ) → ℂ) →+* ((E →+* �
 private def tE (σ : ℂ ≃+* ℂ) : Cinf E →+* ((E →+* ℂ) → ℂ) := (tw σ).comp (emb E)
 
 /- English proof (translation)
-The claim follows from `σ.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 private theorem tE_apply (σ : ℂ ≃+* ℂ) (x : Cinf E) (τ : E →+* ℂ) : σ (tE σ x τ) = coord (σ.toRingHom.comp τ) x :=
   σ.apply_symm_apply _
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => RingHom.ext fun x => σ.injective (RingHom.congr_fun h x), fun h => h ▸ rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem comp_inj (σ : ℂ ≃+* ℂ) (t τ : E →+* ℂ) : σ.toRingHom.comp t = σ.toRingHom.comp τ ↔ t = τ :=
   ⟨fun h => RingHom.ext fun x => σ.injective (RingHom.congr_fun h x), fun h => h ▸ rfl⟩
 
 /- English proof (translation)
-Establish `one : ∀ i j, tE σ ((1 : GL (Fin a) (Cinf E)).val i j) = emb E ((1 : GL (Fin a) (Cinf E)).val i j)` using `fun i j => by`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem f hf`. Break down `hf with ⟨t, k, l, rfl⟩ | ⟨t, rfl⟩` into its components or cases.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨fun x => x k l t, by fun_prop, fun _ => rfl, ?_, fun τ i j => ?_⟩` and prove the remaining obligations. Simplify using `only [tE_apply]`. Conclude with `Algebra.subset_adjoin (Or.inl ⟨_, k, l, rfl⟩)`. Simplify using `only [tE_apply, eF_coord]`. Rewrite using `[if_congr (and_congr_left' (comp_inj σ t τ)) rfl rfl]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `e : ∀ y : GL (Fin a) (Cinf E), σ ((Matrix.of fun i j => tE σ (y.val i j)).det t)⁻¹ = (coord (σ.toRingHom.comp t) y.val.det)⁻¹` using `fun y => by`. Rewrite using `[map_inv₀, ← tE_apply, (tE σ).map_det]`. Both sides reduce to the same expression. Use `⟨fun x => ((Matrix.of x).det t)⁻¹, DifferentiableOn.inv ?_ fun x hx => ?_, fun y => ?_, ?_, fun τ i j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.det_apply', Finset.sum_apply, Pi.mul_apply, Finset.prod_apply, Matrix.of_apply]`. Conclude with `Differentiable.differentiableOn (Differentiable.fun_sum fun σ _ => (differentiable_const _).mul (by fun_prop))`. Conclude with `(((Matrix.isUnit_iff_isUnit_det _).1 hx).map (Pi.evalRingHom (fun _ : E →+* ℂ => ℂ) t)).ne_zero`. Conclude with `congrArg (fun z : (E →+* ℂ) → ℂ => (z t)⁻¹) ((emb E).map_det y.val).symm`. Simplify using `only [e]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Conclude with `Algebra.subset_adjoin (Or.inr ⟨_, rfl⟩)`. Simplify using `only [e, eF_det]`. Rewrite using `[if_congr (and_congr_left' (comp_inj σ t τ)) rfl rfl]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `algebraMap c`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun _ => c, differentiableOn_const c, fun _ => rfl, (regFun E a).algebraMap_mem (σ c), fun τ i j => ?_⟩` and prove the remaining obligations. Conclude with `(eF_const _ _ _ _).trans ((congrArg σ (eF_const c τ i j)).trans (map_zero σ)).symm`. Consider the case `add f g hf hg h1 h2`. Take `⟨Φ, hΦ, e1, r1, d1⟩` from `h1`. Take `⟨Ψ, hΨ, e2, r2, d2⟩` from `h2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨Φ + Ψ, hΦ.add hΨ, fun y => by rw [Pi.add_apply, Pi.add_apply, e1, e2], ?_, fun τ i j => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add]`. Conclude with `(regFun E a).add_mem r1 r2`. Simplify using `only [Pi.add_apply, map_add]`. Rewrite using `[eF_add hf hg, map_add, ← d1, ← d2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eF_add r1 r2 _ i j`. Consider the case `mul f g hf hg h1 h2`. Take `⟨Φ, hΦ, e1, r1, d1⟩` from `h1`. Take `⟨Ψ, hΨ, e2, r2, d2⟩` from `h2`. Use `⟨Φ * Ψ, hΦ.mul hΨ, fun y => by rw [Pi.mul_apply, Pi.mul_apply, e1, e2], ?_, fun τ i j => ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [Pi.mul_apply, map_mul]`. Conclude with `(regFun E a).mul_mem r1 r2`. Simplify using `only [Pi.mul_apply, map_mul]`. Rewrite using `[eF_mul hf hg, map_add, map_mul, map_mul, ← d1, ← d2, ← e1, ← e2]`. Simplify using `only [← one]`.
-
-Conclude with `eF_mul r1 r2 _ i j`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conj_fun (σ : ℂ ≃+* ℂ) {f : GL (Fin a) (Cinf E) → ℂ} (hf : f ∈ regFun E a) :
     ∃ Φ : (Fin a → Fin a → (E →+* ℂ) → ℂ) → ℂ, DifferentiableOn ℂ Φ {x | IsUnit (Matrix.of x)} ∧
@@ -213,11 +209,11 @@ private theorem conj_fun (σ : ℂ ≃+* ℂ) {f : GL (Fin a) (Cinf E) → ℂ} 
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use `(Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff W _).1 fun φ hφ => ?_` and prove the remaining obligations. Set `B : Matrix Unit (Fin d) ℂ` to `Matrix.of fun _ k => φ (Pi.single k 1)`. Set `A : Matrix (Fin d) Unit ℂ` to `Matrix.of fun k _ => v k`. Establish `key : ∀ P : Matrix (Fin d) (Fin d) ℂ, (B * P * A) () () = φ (P *ᵥ v)` using `fun P => by`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply, LinearMap.pi_apply_eq_sum_univ]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm]`. Use `congr 1`. Conclude with `congrArg φ (funext fun l => by simp [Pi.single_apply, eq_comm])`. Rewrite using `[← key, ← eOf_conj hM, eOf_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [key, fun y => (Submodule.mem_dualAnnihilator φ).1 hφ _ (hW y v hv)]`. Conclude with `eF_const 0 τ i j`.
+A detailed English derivation is pending.
 -/
 private theorem stab_eOf {d : ℕ} {M : GL (Fin a) (Cinf E) → Matrix (Fin d) (Fin d) ℂ} (hM : IsReg M)
     (W : Submodule ℂ (Fin d → ℂ)) (hW : ∀ y, ∀ v ∈ W, M y *ᵥ v ∈ W) (τ : E →+* ℂ) (i j : Fin a) {v : Fin d → ℂ} (hv : v ∈ W) :
@@ -237,9 +233,9 @@ private theorem stab_eOf {d : ℕ} {M : GL (Fin a) (Cinf E) → Matrix (Fin d) (
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Set `f : Matrix (Fin d) (Fin d) ℂ →+* Matrix (Fin d) (Fin d) ℂ` to `σ.toRingHom.mapMatrix`. Establish `hf : ∀ c : ℂ, f (algebraMap ℂ _ c) = algebraMap ℂ _ (σ c)` using `fun c => by`. Use extensionality with `k l`. Simplify using `[f, Matrix.algebraMap_matrix_apply, apply_ite σ]`. Express the relevant statement in the definitionally equal form `Formalism.REAL.qdet (fun i j => f (X i j)) (σ u) = f _`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Formalism.REAL.qdet, Formalism.REAL.qminor, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, Formalism.REAL.Tm, map_add, apply_ite f, hf, map_zero, map_sub, map_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem qdet_map (σ : ℂ ≃+* ℂ) {d : ℕ} (X : Fin a → Fin a → Matrix (Fin d) (Fin d) ℂ) (u : ℂ) :
     Formalism.REAL.qdet (fun i j => (X i j).map σ) (σ u) = (Formalism.REAL.qdet X u).map σ := by
@@ -252,9 +248,9 @@ private theorem qdet_map (σ : ℂ ≃+* ℂ) {d : ℕ} (X : Fin a → Fin a →
     Function.comp_def, Formalism.REAL.Tm, map_add, apply_ite f, hf, map_zero, map_sub, map_natCast]
 
 /- English proof (translation)
-Take `⟨m', e1, -, e3⟩` from `GlobalTheory.AlgInfChar.exists_dualInfChar E a Ξ τ`. Establish `e2` using `(AlgRepEndIrreducible.dualIff E a Ξ τ m').2 e1`. Establish `e : m = m'.map Neg.neg` using `AlgRepEndIrreducible.msetSep _ _ fun u => by haveI : Nonempty (Fin Ξ.d) := ⟨⟨0, Ξ.pos⟩⟩`. Conclude with `smul_left_injective ℂ one_ne_zero ((h.2 u).symm.trans (e2.2 u))`. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[e]`. Take `⟨w, hw, rfl⟩` from `Multiset.mem_map.1 hz`. Take `⟨n, rfl⟩` from `e3 w hw`. Simplify using `[map_ofNat]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem map_infChar (σ : ℂ ≃+* ℂ) (Ξ : AlgRep E a) {τ : E →+* ℂ} {m : Multiset ℂ} (h : AlgInfChar Ξ τ m) :
     ∀ z ∈ m, σ z = z := by
@@ -270,25 +266,23 @@ private theorem map_infChar (σ : ℂ ≃+* ℂ) (Ξ : AlgRep E a) {τ : E →+*
   simp [map_ofNat]
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ σ`. Take `⟨R, Φ₀, hd, hR, hy⟩` from `cxGrp E a Ξ`. Use `choose Φ h1 h2 h3 h4 using fun k l => conj_fun σ (Ξ.reg k l)`. Establish `hRΦ : ∀ g k l, R g k l = Φ k l (fun i j => g.val i j)` using `fun g k l => by`. Rewrite using `[hR, ← sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `holId E a (fun x => Φ₀ k l x - Φ k l x) ((hd k l).sub (h1 k l)) (fun y => ?_) g` and prove the remaining obligations. Rewrite using `[h2, ← hy, hR, sub_eq_zero]`. Both sides reduce to the same expression. Set `M : GL (Fin a) (Cinf E) →* Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ` to `(σ.toRingHom.mapMatrix.toMonoidHom.comp R).comp (GeneralLinearGroup.map (tE σ))`. Establish `hM : ∀ k l, (fun y => M y k l) = fun y => σ (Φ k l fun i j => tE σ (y.val i j))` using `fun k l =>`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun y => congrArg σ (hRΦ _ k l)`. Establish `hr : IsReg M` using `fun k l => by rw [hM]; exact h3 k l`. Establish `hE : ∀ τ i j, eOf M (σ.toRingHom.comp τ) i j = (eOf Ξ.mat τ i j).map σ` using `fun τ i j => by`. Use extensionality with `k l`. Rewrite using `[eOf_apply, hM, h4]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨M, hr, fun W hW => ?_, fun γ => ?_, fun τ m hm => ⟨hm.1, fun u => ?_⟩⟩` and prove the remaining obligations. Set `W' : Submodule ℂ (Fin Ξ.d → ℂ)` to `{ carrier := {v | σ ∘ v ∈ W} add_mem' := fun {v w} hv hw => (congrArg (· ∈ W) (funext fun k => map_add σ (v k) (w k))).mpr (W.add_mem hv hw) zero_mem' := (congrArg (· ∈ W) (funext fun _ => map_zero σ)).mpr W.zero_mem smul_mem' := fun c v hv => (congrArg (· ∈ W) (funext fun k => m …`. Establish `back : ∀ v : Fin Ξ.d → ℂ, σ ∘ (σ.symm ∘ v) = v` using `fun v => funext fun k => σ.apply_symm_apply _`. Break down `(AlgRepEndIrreducible.algIrr E a Ξ).2 W' (fun τ i j w hw => by` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h5` using `stab_eOf hr W hW (σ.toRingHom.comp τ) i j hw`. Rewrite `h5` using `[hE]`. Express the relevant statement in the definitionally equal form `σ ∘ (eOf Ξ.mat τ i j *ᵥ w) ∈ W`. Use `h5 using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun k => RingHom.map_mulVec σ.toRingHom _ _ k) with h | h`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Or.inl ((Submodule.eq_bot_iff _).2 fun v hv => ?_)` and prove the remaining obligations. Establish `h6 : σ.symm ∘ v = 0` using `(Submodule.eq_bot_iff _).1 h _ (show σ ∘ (σ.symm ∘ v) ∈ W by rwa [back])`. Rewrite using `[← back v, h6]`. Conclude with `funext fun k => map_zero σ`. Use `Or.inr (eq_top_iff.2 fun v _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h6 : σ.symm ∘ v ∈ W'` using `h ▸ Submodule.mem_top`. Rewrite using `[← back v]`. Conclude with `h6`. Express the relevant statement in the definitionally equal form `(R _).map σ = (Ξ.mat _).map σ`. Rewrite using `[← hy]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Use `congr 2`. Use extensionality with `i j τ`. Apply `σ.injective` to reduce the goal to its premises. Conclude with `(tE_apply σ _ τ).trans ((coord_algebraMap _ _).trans (congrArg σ (coord_algebraMap τ _).symm))`. Take `⟨w, rfl⟩` from `σ.surjective u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e1 : σ w + ((a : ℂ) - 1) / 2 = σ (w + ((a : ℂ) - 1) / 2)` using `by simp [map_ofNat]`. Establish `e2 : eOf M (σ.toRingHom.comp τ) = fun i j => (eOf Ξ.mat τ i j).map σ` using `funext fun i => funext fun j => hE τ i j`. Establish `e3 : (m.map (σ w + ·)).prod = σ (m.map (w + ·)).prod`. Rewrite using `[map_multiset_prod, Multiset.map_map]`. Conclude with `congrArg _ (Multiset.map_congr rfl fun z hz => by simp [map_infChar σ Ξ hm z hz])`.
-
-Express the relevant statement in the definitionally equal form `Formalism.REAL.qdet (eOf M (σ.toRingHom.comp τ)) _ = _`. Rewrite using `[e1, e2, qdet_map, ((algInfChar_iff _ _ _).1 hm).2 w, e3]`. Use extensionality with `k l`. Simplify using `[Matrix.one_apply, apply_ite σ]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjAlgMat : ConjAlgMat := by
   intro E _ _ _ a Ξ σ
@@ -349,7 +343,7 @@ theorem conjAlgMat : ConjAlgMat := by
     simp [Matrix.one_apply, apply_ite σ]
 
 /- English proof (translation)
-The claim follows from `conjAlgRep_of conjAlgMat`.
+A detailed English derivation is pending.
 -/
 theorem conjAlgRep : ConjAlgRep := conjAlgRep_of conjAlgMat
 

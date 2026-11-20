@@ -17,7 +17,7 @@ section Gen
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_map_equiv]`. Simplify using `[MulAut.conj_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_map_conj {K : Subgroup G} {a z : G} :
     z ∈ K.map (MulAut.conj a).toMonoidHom ↔ a⁻¹ * z * a ∈ K := by
@@ -25,7 +25,7 @@ theorem mem_map_conj {K : Subgroup G} {a z : G} :
   simp [MulAut.conj_symm_apply]
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [mem_map_conj, mul_inv_rev, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_conj_map_conj (K : Subgroup G) (a b : G) :
     (K.map (MulAut.conj a).toMonoidHom).map (MulAut.conj b).toMonoidHom =
@@ -34,9 +34,9 @@ theorem map_conj_map_conj (K : Subgroup G) (a b : G) :
   simp only [mem_map_conj, mul_inv_rev, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [mem_map_conj, Subgroup.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `T.mul_mem (T.mul_mem ht h1) (T.inv_mem ht)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨T.mul_mem (T.mul_mem (T.inv_mem ht) h1) ht, h2⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem map_conj_inf_of_mem {T : Subgroup G} {t : G} (ht : t ∈ T) (K : Subgroup G) :
     (T ⊓ K).map (MulAut.conj t).toMonoidHom = T ⊓ K.map (MulAut.conj t).toMonoidHom := by
@@ -51,7 +51,7 @@ theorem map_conj_inf_of_mem {T : Subgroup G} {t : G} (ht : t ∈ T) (K : Subgrou
     exact ⟨T.mul_mem (T.mul_mem (T.inv_mem ht) h1) ht, h2⟩
 
 /- English proof (translation)
-Use `Subgroup.relIndex_inter_ne_zero h H` as an intermediate fact. Rewrite `this` using `[inf_comm U H, inf_comm K H]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem relIndex_inf_inf_ne_zero (H : Subgroup G) {U K : Subgroup G} (h : U.relIndex K ≠ 0) :
     (H ⊓ U).relIndex (H ⊓ K) ≠ 0 := by
@@ -64,7 +64,7 @@ section Prod
 variable {G₁ G₂ : Type} [Group G₁] [Group G₂]
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [mem_map_conj, Subgroup.mem_prod, Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prod_map_conj (A : Subgroup G₁) (B : Subgroup G₂) (x : G₁ × G₂) :
     (A.prod B).map (MulAut.conj x).toMonoidHom =
@@ -73,7 +73,7 @@ theorem prod_map_conj (A : Subgroup G₁) (B : Subgroup G₂) (x : G₁ × G₂)
   simp only [mem_map_conj, Subgroup.mem_prod, Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv]
 
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[Subgroup.mem_prod]`. Use `show z * (a, b) = (a, b) * (θ₁.prodMap θ₂) z ↔ z.1 * a = a * θ₁ z.1 ∧ z.2 * b = b * θ₂ z.2`. Rewrite using `[Prod.ext_iff]`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem twCent_prod (θ₁ : G₁ →* G₁) (θ₂ : G₂ →* G₂) (a : G₁) (b : G₂) :
     GlobalTheory.BCT.twCent (θ₁.prodMap θ₂) (a, b) = (GlobalTheory.BCT.twCent θ₁ a).prod (GlobalTheory.BCT.twCent θ₂ b) := by
@@ -84,7 +84,7 @@ theorem twCent_prod (θ₁ : G₁ →* G₁) (θ₂ : G₂ →* G₂) (a : G₁)
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `e : (A.prod B).subgroupOf (C.prod D) = ((A.subgroupOf C).prod (B.subgroupOf D)).comap (Subgroup.prodEquiv C D).toMonoidHom`. Use extensionality with `z`. Conclude with `Iff.rfl`. Rewrite using `[Subgroup.relIndex, e, Subgroup.index_comap_of_surjective _ (Subgroup.prodEquiv C D).surjective, Subgroup.index_prod]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem relIndex_prod (A C : Subgroup G₁) (B D : Subgroup G₂) :
     (A.prod B).relIndex (C.prod D) = A.relIndex C * B.relIndex D := by
@@ -97,7 +97,7 @@ theorem relIndex_prod (A C : Subgroup G₁) (B D : Subgroup G₂) :
   rfl
 
 /- English proof (translation)
-Unfold `vol`. Rewrite using `[relIndex_prod, relIndex_prod]`. Use `push_cast`. Rewrite using `[div_mul_div_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem vol_prod (C₁ H₁ : Subgroup G₁) (C₂ H₂ : Subgroup G₂) :
     vol (C₁.prod C₂) (H₁.prod H₂) = vol C₁ H₁ * vol C₂ H₂ := by
@@ -107,7 +107,7 @@ theorem vol_prod (C₁ H₁ : Subgroup G₁) (C₂ H₂ : Subgroup G₂) :
   rw [div_mul_div_comm]
 
 /- English proof (translation)
-Rewrite using `[prod_map_conj]`. Use extensionality with `g`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem stab_eq {Γ : Type} [Group Γ] (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂)
     (x : G₁ × G₂) :
@@ -117,7 +117,7 @@ theorem stab_eq {Γ : Type} [Group Γ] (ι₁ : Γ →* G₁) (ι₂ : Γ →* G
   exact Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[stab_eq, ← Subgroup.map_comap_eq]`. Conclude with `Nat.card_congr (Subgroup.equivMapOfInjective _ _ hι).toEquiv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_stab {Γ : Type} [Group Γ] (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂)
     (hι : Function.Injective (ι₁.prod ι₂)) (x : G₁ × G₂) :
@@ -127,7 +127,7 @@ theorem card_stab {Γ : Type} [Group Γ] (ι₁ : Γ →* G₁) (ι₂ : Γ →*
   exact Nat.card_congr (Subgroup.equivMapOfInjective _ _ hι).toEquiv
 
 /- English proof (translation)
-Rewrite using `[← Subgroup.map_comap_eq, ← stab_eq, Subgroup.coe_map]`. Conclude with `Set.Finite.image _ (Set.toFinite _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_inter {Γ : Type} [Group Γ] (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂)
     (x : G₁ × G₂) (h : Finite (stab ι₁ ι₂ K₁ K₂ x)) :
@@ -142,20 +142,20 @@ section Core
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `[mem_map_conj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_conj_one (A : Subgroup G) : A.map (MulAut.conj (1 : G)).toMonoidHom = A := by
   ext z
   simp [mem_map_conj]
 
 /- English proof (translation)
-Simplify using `[vol, Subgroup.relIndex_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vol_self (A : Subgroup G) : vol A A = 1 := by
   simp [vol, Subgroup.relIndex_self]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finsum_doubleCoset_fold_intermediate_subgroup Γ' T K F hΓT hF hfin hsupp`.
+A detailed English derivation is pending.
 -/
 theorem fold_sum (Γ' T K : Subgroup G) (F : G → ℂ) (hΓT : Γ' ≤ T)
     (hF : ∀ t ∈ T, ∀ x, ∀ k ∈ K, F (t * x * k) = F x)
@@ -169,7 +169,7 @@ theorem fold_sum (Γ' T K : Subgroup G) (F : G → ℂ) (hΓT : Γ' ≤ T)
   GlobalTheory.T.finsum_doubleCoset_fold_intermediate_subgroup Γ' T K F hΓT hF hfin hsupp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.twistedCentralizerMass_ne_zero_of_mem_support Γ' T K F hΓT hF hfin hsupp y hy`.
+A detailed English derivation is pending.
 -/
 theorem massC_ne_zero_of_ne (Γ' T K : Subgroup G) (F : G → ℂ) (hΓT : Γ' ≤ T)
     (hF : ∀ t ∈ T, ∀ x, ∀ k ∈ K, F (t * x * k) = F x)

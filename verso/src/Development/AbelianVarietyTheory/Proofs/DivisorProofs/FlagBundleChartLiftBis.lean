@@ -27,17 +27,17 @@ namespace GlobalTheory.FlagCellDim
 open MvPolynomial in
 
 /- English proof (translation)
-Set `ι : MvPolynomial J k →+* MvPolynomial N (MvPolynomial M k)` to `eval₂Hom (C.comp C) (fun j => Sum.elim (fun a => C (X a)) X (e j))`. Set `κ : MvPolynomial N (MvPolynomial M k) →+* MvPolynomial J k` to `eval₂Hom (eval₂Hom C (fun a => X (e.symm (.inl a)))) (fun i => X (e.symm (.inr i)))`. Establish `h1 : κ.comp ι = RingHom.id _`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ι, κ]`. Introduce `j`. Take `⟨o, rfl⟩` from `e.symm.surjective j`. Apply the tactic sequence `cases o <;> simp [ι, κ]`. Establish `h2 : ι.comp κ = RingHom.id _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply `MvPolynomial.ringHom_ext'` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[ι, κ]`. Introduce `j`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ι, κ]`. Introduce `j`. Simplify using `[ι, κ]`. Establish `hι : Function.Bijective ι` using `Function.bijective_iff_has_inverse.2 ⟨κ, fun x => DFunLike.congr_fun h1 x, fun x => DFunLike.congr_fun h2 x⟩`. Establish `key : eval₂Hom (f.comp α) (fun j => Sum.elim (fun a => f (t a)) n (e j)) = (eval₂Hom f n).comp ((MvPolynomial.map (eval₂Hom α t)).comp ι)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[ι]`. Introduce `j`. Take `⟨o, rfl⟩` from `e.symm.surjective j`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `cases o <;> simp [ι]`. Rewrite using `[key]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective hι) (GlobalTheory.etale_mvPolynomial_map_of_etale _ hg)) (RingHom.Etale.of_bijective hΦ)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_eval₂Hom_sum {k A R M N J : Type} [CommRing k] [CommRing A] [CommRing R] (α : k →+* A) (t : M → A)
     (f : A →+* R) (n : N → R) (e : J ≃ M ⊕ N) (hg : (eval₂Hom α t).Etale)
@@ -76,11 +76,11 @@ theorem etale_eval₂Hom_sum {k A R M N J : Type} [CommRing k] [CommRing A] [Com
     (RingHom.Etale.of_bijective hΦ)
 
 /- English proof (translation)
-Establish `hy0 : y ∈ ptsIn q σ c₀.U` using `c₀.source_subset hy`. Take `⟨f, hfV, hf⟩` from `c₀.affine.exists_basicOpen_le (V := U) ⟨_, mem_ptsIn.1 hV⟩ (mem_ptsIn.1 hy0)`. Establish `hle : B.basicOpen f ≤ c₀.U` using `B.basicOpen_le f`. Establish `hE : (MvPolynomial.eval₂Hom (algX q (B.basicOpen f)) (fun a => resG B hle (c₀.x a))).Etale`. Establish `e : MvPolynomial.eval₂Hom (algX q (B.basicOpen f)) (fun a => resG B hle (c₀.x a)) = (resG B hle).comp (MvPolynomial.eval₂Hom (algX q c₀.U) c₀.x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.comp_eval₂Hom, GlobalTheory.TopForm.resG_comp_algX]`. Rewrite using `[e]`. Establish `hR : (resG B hle).Etale`. Use `letI : Algebra Γ(B, c₀.U) Γ(B, B.basicOpen f) := (resG B hle).toAlgebra`. Use `haveI : IsLocalization.Away f Γ(B, B.basicOpen f) := c₀.affine.isLocalization_basicOpen f`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Conclude with `RingHom.etale_algebraMap.2 (Algebra.Etale.of_isLocalizationAway f)`. Conclude with `RingHom.Etale.stableUnderComposition _ _ c₀.etale hR`. Take `⟨c, hc, hU, -⟩` from `AlgChart.exists_of_etale (c₀.affine.basicOpen f) _ hE (mem_ptsIn.2 hf)`. Conclude with `⟨c, hc, hU ▸ hfV⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chart_le {k : Type} [CommRing k] {B : Scheme.{0}} {q : B ⟶ Sp k} {σ : k →+* ℂ} {n : ℕ}
     (c₀ : AlgChart q σ n) {y : CxPts q σ} (hy : y ∈ c₀.e.source) (U : B.Opens) (hV : y ∈ ptsIn q σ U) :
@@ -107,7 +107,7 @@ variable {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ 
   {σ : k →+* ℂ} {m r D : ℕ} (e : Fin D ≃ Fin m ⊕ Low r)
 
 /- English proof (translation)
-Use `differentiable_euclidean.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [base]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_base : Differentiable ℂ (base e) := by
   refine differentiable_euclidean.2 fun i => ?_
@@ -126,44 +126,44 @@ def inv (v : V D) : CxPts p σ :=
 variable {e c hW hWa n hΦ}
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem inv_eq {v : V D} (h : base e v ∈ c.e.target) : inv π w e c hW hWa n hΦ y₀ v =
     cellPt π w hW hWa n hΦ (c.source_subset (c.e.map_target h)) (fib e v) := dif_pos h
 
 /- English proof (translation)
-Rewrite using `[inv_eq _ _ _ h]`. Conclude with `cellPt_mem ..`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem {v : V D} (h : base e v ∈ c.e.target) : inv π w e c hW hWa n hΦ y₀ v ∈ ptsIn p σ W := by
   rw [inv_eq _ _ _ h]; exact cellPt_mem ..
 
 /- English proof (translation)
-Rewrite using `[inv_eq _ _ _ h]`. Conclude with `map_cellPt _ _ _ _ _ _ c.affine _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inv {v : V D} (h : base e v ∈ c.e.target) :
     PtsOver.map π w (spMap σ) (inv π w e c hW hWa n hΦ y₀ v) = c.e.symm (base e v) := by
   rw [inv_eq _ _ _ h]; exact map_cellPt _ _ _ _ _ _ c.affine _ _
 
 /- English proof (translation)
-Rewrite using `[inv_eq _ _ _ h]`. Conclude with `ev_n_cellPt ..`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_n_inv {v : V D} (h : base e v ∈ c.e.target) (s : Low r) :
     ev p σ W (n s) (inv π w e c hW hWa n hΦ y₀ v) = fib e v s := by
   rw [inv_eq _ _ _ h]; exact ev_n_cellPt ..
 
 /- English proof (translation)
-Rewrite using `[ev_appLE π w hW (inv_mem π w y₀ h), map_inv π w y₀ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_appLE_inv {v : V D} (h : base e v ∈ c.e.target) (g : Γ(B, c.U)) :
     ev p σ W ((π.appLE c.U W hW).hom g) (inv π w e c hW hWa n hΦ y₀ v) = ev q σ c.U g (c.e.symm (base e v)) := by
   rw [ev_appLE π w hW (inv_mem π w y₀ h), map_inv π w y₀ h]
 
 /- English proof (translation)
-Take `⟨P, rfl⟩` from `hΦ.2 g`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `hd : DifferentiableOn ℂ (fun v => ev q σ c.U a (c.e.symm (base e v))) {v | base e v ∈ c.e.target}` using `(c.holo c.U a).comp (differentiable_base e).differentiableOn fun v hv => ⟨hv, c.source_subset (c.e.map_target hv)⟩`. Use `hd.congr fun v hv => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [MvPolynomial.eval₂Hom_C]`. Conclude with `ev_appLE_inv π w y₀ hv a`. Consider the case `add P Q hP hQ`. Simplify using `only [map_add, ev_add]`. Conclude with `hP.add hQ`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mul_X P s hP`. Establish `hd : DifferentiableOn ℂ (fun v : V D => v (e.symm (.inr s))) {v | base e v ∈ c.e.target}` using `by fun_prop`. Simplify using `only [map_mul, ev_mul, MvPolynomial.eval₂Hom_X']`. Conclude with `hP.mul (hd.congr fun v hv => ev_n_inv π w y₀ hv s)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holo_inv (g : Γ(Y, W)) :
     DifferentiableOn ℂ (fun v => ev p σ W g (inv π w e c hW hWa n hΦ y₀ v)) {v | base e v ∈ c.e.target} := by
@@ -253,7 +253,7 @@ def cellChart : AlgChart p σ D where
 include hWa hΦ in
 
 /- English proof (translation)
-Take `⟨b₀, hb₀⟩` from `hne`. Use `⟨cellChart π w e c hW hWa n hΦ (cellPt π w hW hWa n hΦ (c.source_subset hb₀) 0), ⟨rfl, rfl, fun y _ => ?_⟩, Set.inter_subset_right, fun y _ s => ?_⟩` and prove the remaining obligations. Conclude with `base_pt e (c.e (PtsOver.map π w (spMap σ) y)) fun s => ev p σ W (n s) y`. Conclude with `congrFun (fib_pt e (c.e (PtsOver.map π w (spMap σ) y)) fun s => ev p σ W (n s) y) s`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_cell (hne : c.e.source.Nonempty) : ∃ c' : AlgChart p σ D, IsCell e π w c c' ∧
     c'.e.source ⊆ ptsIn p σ W ∧ ∀ y ∈ c'.e.source, ∀ s, fib e (c'.e y) s = ev p σ W (n s) y := by
@@ -268,11 +268,11 @@ end Chart
 open GlobalTheory.FlagCell in
 
 /- English proof (translation)
-Take `⟨s, t, h₁, h₂, h₃⟩` from `H.exists_adaptedChart i`. Use `⟨⟨W, s, t, h₁, h₂⟩, fun y hy => ⟨hy, ?_⟩⟩` and prove the remaining obligations. Establish `hM : (uni fun s => ev p σ W (n s) y) = Matrix.of fun j l => ev p σ W (uniR n j l) y`. Use extensionality with `j l`. Rewrite using `[← uniR_eq_uni, of_apply, uniR_apply, uniR_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[ev_eq hy]`. Conclude with `(map_one _).symm`. Rewrite using `[ev_eq hy]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_zero _).symm`. Use extensionality with `j l`. Rewrite using `[submatrix_apply, hM, ← form_pullCol π w (h.met σ) cE hW (uniR n) hy, ← h₃, ← h₃]`. Conclude with `Met.form_restrict _ (fl.isSubbundle i.succ) (fl.isVB i.succ) _ _ hy`.
+A detailed English derivation is pending.
 -/
 theorem exists_adapted_gram {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ Sp k} (π : Y ⟶ B)
     (w : π ≫ q = p) {r : ℕ} (σ : k →+* ℂ) {E : B.Modules} (h : VMetric q E r)
@@ -296,19 +296,17 @@ theorem exists_adapted_gram {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B �
   exact Met.form_restrict _ (fl.isSubbundle i.succ) (fl.isVB i.succ) _ _ hy
 
 /- English proof (translation)
-Introduce `k _ B Y q p π w m r D ε σ E h H fl hfl c₀ y hy`. Take `⟨U, f, hxU, hf⟩ : ∃ (U : B.Opens) (f : Fin r → Γ(E, U)), y.1 (IsLocalRing.closedPoint ℂ) ∈ U ∧ IsFrame f` from `h.isVB _`. Take `⟨c, hyc, hcV⟩` from `exists_chart_le c₀ hy U (mem_ptsIn.2 hxU)`. Set `cE : Chart E r` to `⟨c.U, fun l => GlobalTheory.Twist.resM E hcV (f l), hf.res hcV⟩`. Take `⟨W, hW, hWa, n, hb, hs⟩` from `GlobalTheory.CellScheme.cell_affine B Y π Unit (fun _ => r) (fun _ => E) (fun _ => fl) hfl (fun _ => h.isVB) c.U c.affine (fun _ => cE.e) fun _ => cE.isFrame`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hb' : Function.Bijective (MvPolynomial.eval₂Hom (π.appLE c.U W hW).hom fun s : Low r => n ⟨(), s⟩)`. Establish `e₁ : (MvPolynomial.eval₂Hom (π.appLE c.U W hW).hom fun s : Low r => n ⟨(), s⟩) = (MvPolynomial.eval₂Hom (π.appLE c.U W hW).hom n).comp (MvPolynomial.renameEquiv _ (Equiv.uniqueSigma fun _ : Unit => Low r).symm).toRingEquiv.toRingHom` using `MvPolynomial.ringHom_ext (fun a => by simp) fun s => by simp [Equiv.uniqueSigma]`. Rewrite using `[e₁, RingHom.coe_comp]`. Conclude with `hb.comp (MvPolynomial.renameEquiv _ (Equiv.uniqueSigma fun _ : Unit => Low r).symm).bijective`. Take `⟨c', hc, hsrc, hfib⟩` from `exists_cell π w ε c hW hWa _ hb' ⟨y, hyc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, cE, c', hyc, c.source_subset, hc, fun y' hy' i => ?_⟩` and prove the remaining obligations. Take `⟨ac, hac⟩` from `exists_adapted_gram π w σ h fl cE hW _ (hs ()) i`. Establish `hU` using `(hac y' (hsrc hy')).1`. Rewrite using `[chernMat, c'.hess_eq (((VMetric.grLB fl i (H.pull π w))).cInf σ) hy' (i := ac.quot) hU (mem_pick _ y')]`. Unfold `AlgChart.hess`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_` and prove the remaining obligations. Use `filter_upwards [c'.e.open_target.mem_nhds (c'.e.map_source hy')] with v hv`. Establish `hz` using `c'.e.map_target hv`. Establish `hbv : c.e.symm (base ε v) = PtsOver.map π w (spMap σ) (c'.e.symm v)`. Establish `h1` using `hc.2.2 _ hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[c'.e.right_inv hv]`. Establish `h2` using `hz`. Rewrite `h2` using `[hc.1]`. Rewrite using `[h1, c.e.left_inv h2.1]`. Establish `hfv : fib ε v = fun s => ev p σ W (n ⟨(), s⟩) (c'.e.symm v)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `funext (hfib _ hz)`. Rewrite `h1` using `[c'.e.right_inv hv]`. Then use the resulting hypothesis. Use `congr 1`. Use `show -Real.log _ = -Real.log _`. Use `beta_reduce`.
-
-Rewrite using `[hbv, hfv, ← (hac _ (hsrc hz)).2]`. Conclude with `congrArg (fun M : Matrix (Fin 1) (Fin 1) ℂ => -Real.log M.det.re) (Met.quot_G _ (VMetric.stepSeq_shortExact _ _) (fl.isVB i.castSucc) (fl.isVB_gr i) ac (hac _ (hsrc hz)).1)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cell_chart : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (n r D : ℕ) (ε : Fin D ≃ Fin n ⊕ Low r) (σ : k →+* ℂ) (E : B.Modules) (h : VMetric q E r) (H : h.IsCInf) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) r), IsFlagBundle π (fun _ : Unit => E) (fun _ => r) (fun _ => fl) → ∀ (c₀ : AlgChart q σ n), ∀ y ∈ c₀.e.source, ∃ (c : AlgChart q σ n) (cE : Chart E r) (c' : AlgChart p σ D), y ∈ c.e.source ∧ c.e.source ⊆ ptsIn q σ cE.U ∧ IsCell ε π w c c' ∧ ∀ y' ∈ c'.e.source, ∀ i : Fin r, chernMat ((VMetric.grLB fl i (H.pull π w)).φ σ) c' y' = cHess D (fun v => (rootWt ε (fun u => (h.met σ).G cE (c.e.symm u)) i v : ℂ)) (c'.e y') := by
   intro k _ B Y q p π w m r D ε σ E h H fl hfl c₀ y hy

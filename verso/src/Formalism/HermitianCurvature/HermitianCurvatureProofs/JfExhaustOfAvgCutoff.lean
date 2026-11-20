@@ -45,14 +45,14 @@ def AdjCommutes : Prop :=
 variable {k r : ℕ}
 
 /- English proof (translation)
-Conclude with `fun g₀ hg => h g₀ (hUV hg)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ckOn_sub {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : ℕ∞} {U V : Set (Mat k r)}
     (hUV : U ⊆ V) {f : Mat k r → E} (h : CkOn m V f) : CkOn m U f := by
   exact fun g₀ hg => h g₀ (hUV hg)
 
 /- English proof (translation)
-Conclude with `Set.inter_subset_left`.
+A detailed English derivation is pending.
 -/
 theorem om_sub_gv (z z' : Fin (2 * r + k + 1) → ℂ) : Om k r z z' ⊆ GV k r := by
   exact Set.inter_subset_left

@@ -6,15 +6,13 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Introduce `F _ _ S e h`. Establish `hdvd : ∀ v ∈ S, v.asIdeal ^ e v ∣ Ideal.span {(2 : 𝓞 F)}`. Introduce `v hv`. Rewrite using `[← HeightOneSpectrum.intValuation_le_pow_iff_dvd]`. Establish `h2 : v.valuation F (algebraMap (𝓞 F) F 2) = v.intValuation 2` using `HeightOneSpectrum.valuation_of_algebraMap v 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_ofNat, h v hv]`. Conclude with `h2.ge`. Establish `hprod : ∏ v ∈ S, v.asIdeal ^ e v ∣ Ideal.span {(2 : 𝓞 F)}`. Use `Finset.prod_dvd_of_coprime ?_ hdvd` and prove the remaining obligations. Introduce `v _ w _ hvw`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsCoprime.pow ?_` and prove the remaining obligations. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `Ideal.IsMaximal.coprime_of_ne v.isMaximal w.isMaximal (fun hh => hvw (HeightOneSpectrum.ext hh))`. Establish `hn : Ideal.absNorm (Ideal.span {(2 : 𝓞 F)}) = 2 ^ Module.finrank ℚ F`. Rewrite using `[Ideal.absNorm_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (2 : 𝓞 F) = algebraMap ℤ (𝓞 F) 2` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, RingOfIntegers.rank]`. Simplify using `[Int.natAbs_pow]`. Establish `h3` using `map_dvd Ideal.absNorm hprod`. Rewrite `h3` using `[hn, map_prod]`.
-
-Simplify using `only [map_pow] at h3`. Conclude with `Nat.le_of_dvd (by positivity) h3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_absNorm_pow_le_two_pow :
     ∀ (F : Type) [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F))) (e : HeightOneSpectrum (𝓞 F) → ℕ), (∀ v ∈ S, v.valuation F 2 = WithZero.exp (-(e v : ℤ))) → ∏ v ∈ S, Ideal.absNorm v.asIdeal ^ e v ≤ 2 ^ Module.finrank ℚ F := by

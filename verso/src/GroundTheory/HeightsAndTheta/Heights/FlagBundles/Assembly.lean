@@ -33,158 +33,158 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.FlagBundles
 
 /- English proof (translation)
-The claim follows from `UnipotentLeadingMinor.proof`.
+A detailed English derivation is pending.
 -/
 theorem UnipotentLeadingMinor.full : UnipotentLeadingMinor.Statement :=
   UnipotentLeadingMinor.proof
 
 /- English proof (translation)
-The claim follows from `PluckerFrameChange.proof`.
+A detailed English derivation is pending.
 -/
 theorem PluckerFrameChange.full : PluckerFrameChange.Statement :=
   PluckerFrameChange.proof
 
 /- English proof (translation)
-The claim follows from `GramSumOfMinors.proof PluckerFrameChange.full`.
+A detailed English derivation is pending.
 -/
 theorem GramSumOfMinors.full : GramSumOfMinors.Statement :=
   GramSumOfMinors.proof PluckerFrameChange.full
 
 /- English proof (translation)
-The claim follows from `OmitStepPolynomial.proof`.
+A detailed English derivation is pending.
 -/
 theorem OmitStepPolynomial.full : OmitStepPolynomial.Statement :=
   OmitStepPolynomial.proof
 
 /- English proof (translation)
-The claim follows from `LineQuotientDeterminant.proof`.
+A detailed English derivation is pending.
 -/
 theorem LineQuotientDeterminant.full : LineQuotientDeterminant.Statement :=
   LineQuotientDeterminant.proof
 
 /- English proof (translation)
-The claim follows from `SectionLocalEquation.proof`.
+A detailed English derivation is pending.
 -/
 theorem SectionLocalEquation.full : SectionLocalEquation.Statement :=
   SectionLocalEquation.proof
 
 /- English proof (translation)
-The claim follows from `DiagonalQuotient.proof`.
+A detailed English derivation is pending.
 -/
 theorem DiagonalQuotient.full : DiagonalQuotient.Statement :=
   DiagonalQuotient.proof
 
 /- English proof (translation)
-The claim follows from `DiagonalLocalDVR.proof DiagonalQuotient.full`.
+A detailed English derivation is pending.
 -/
 theorem DiagonalLocalDVR.full : DiagonalLocalDVR.Statement :=
   DiagonalLocalDVR.proof DiagonalQuotient.full
 
 /- English proof (translation)
-The claim follows from `BlochOverlap.proof`.
+A detailed English derivation is pending.
 -/
 theorem BlochOverlap.full : BlochOverlap.Statement :=
   BlochOverlap.proof
 
 /- English proof (translation)
-The claim follows from `SectionNormLog.proof BlochOverlap.full`.
+A detailed English derivation is pending.
 -/
 theorem SectionNormLog.full : SectionNormLog.Statement :=
   SectionNormLog.proof BlochOverlap.full
 
 /- English proof (translation)
-The claim follows from `GKernelIdentity.proof`.
+A detailed English derivation is pending.
 -/
 theorem GKernelIdentity.full : GKernelIdentity.Statement :=
   GKernelIdentity.proof
 
 /- English proof (translation)
-The claim follows from `MixedCoefficient.proof`.
+A detailed English derivation is pending.
 -/
 theorem MixedCoefficient.full : MixedCoefficient.Statement :=
   MixedCoefficient.proof
 
 /- English proof (translation)
-The claim follows from `ZonalKernel.proof`.
+A detailed English derivation is pending.
 -/
 theorem ZonalKernel.full : ZonalKernel.Statement :=
   ZonalKernel.proof
 
 /- English proof (translation)
-The claim follows from `SphereLongitudeCoordinates.proof`.
+A detailed English derivation is pending.
 -/
 theorem SphereLongitudeCoordinates.full : SphereLongitudeCoordinates.Statement :=
   SphereLongitudeCoordinates.proof
 
 /- English proof (translation)
-The claim follows from `ZonalHeightReduction.proof SphereLongitudeCoordinates.full ZonalKernel.full`.
+A detailed English derivation is pending.
 -/
 theorem ZonalHeightReduction.full : ZonalHeightReduction.Statement :=
   ZonalHeightReduction.proof SphereLongitudeCoordinates.full ZonalKernel.full
 
 /- English proof (translation)
-The claim follows from `ZonalKernelPairing.proof`.
+A detailed English derivation is pending.
 -/
 theorem ZonalKernelPairing.full : ZonalKernelPairing.Statement :=
   ZonalKernelPairing.proof
 
 /- English proof (translation)
-The claim follows from `ZonalBilinearFormula.proof ZonalHeightReduction.full ZonalKernelPairing.full`.
+A detailed English derivation is pending.
 -/
 theorem ZonalBilinearFormula.full : ZonalBilinearFormula.Statement :=
   ZonalBilinearFormula.proof ZonalHeightReduction.full ZonalKernelPairing.full
 
 /- English proof (translation)
-The claim follows from `GHatIdentity.proof GKernelIdentity.full`.
+A detailed English derivation is pending.
 -/
 theorem GHatIdentity.full : GHatIdentity.Statement :=
   GHatIdentity.proof GKernelIdentity.full
 
 /- English proof (translation)
-The claim follows from `FibreConstantClosedForm.proof ZonalBilinearFormula.full GHatIdentity.full`.
+A detailed English derivation is pending.
 -/
 theorem FibreConstantClosedForm.full : FibreConstantClosedForm.Statement :=
   FibreConstantClosedForm.proof ZonalBilinearFormula.full GHatIdentity.full
 
 /- English proof (translation)
-The claim follows from `FibreConstantClosedForm.full.1 k`.
+A detailed English derivation is pending.
 -/
 theorem fibreConstant_eq (k : ℕ) :
     fibreConstant k = -(1 / 2) * ∑ j ∈ Finset.range k, (1 : ℝ) / (2 * j + 1) :=
   FibreConstantClosedForm.full.1 k
 
 /- English proof (translation)
-The claim follows from `FibreIntegralInvariant.proof FibreConstantClosedForm.full`.
+A detailed English derivation is pending.
 -/
 theorem FibreIntegralInvariant.full : FibreIntegralInvariant.Statement :=
   FibreIntegralInvariant.proof FibreConstantClosedForm.full
 
 /- English proof (translation)
-The claim follows from `CompactPairCurveForm.proof`.
+A detailed English derivation is pending.
 -/
 theorem CompactPairCurveForm.full : CompactPairCurveForm.Statement :=
   CompactPairCurveForm.proof
 
 /- English proof (translation)
-The claim follows from `BarCurveForm.proof`.
+A detailed English derivation is pending.
 -/
 theorem BarCurveForm.full : BarCurveForm.Statement :=
   BarCurveForm.proof
 
 /- English proof (translation)
-The claim follows from `TorusInvariantDiagonal.proof`.
+A detailed English derivation is pending.
 -/
 theorem TorusInvariantDiagonal.full : TorusInvariantDiagonal.Statement :=
   TorusInvariantDiagonal.proof
 
 /- English proof (translation)
-The claim follows from `TopPowerDiagonal.proof`.
+A detailed English derivation is pending.
 -/
 theorem TopPowerDiagonal.full : TopPowerDiagonal.Statement :=
   TopPowerDiagonal.proof
 
 /- English proof (translation)
-The claim follows from `PolarisationDegreeD.proof`.
+A detailed English derivation is pending.
 -/
 theorem PolarisationDegreeD.full : PolarisationDegreeD.Statement :=
   PolarisationDegreeD.proof

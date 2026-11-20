@@ -43,13 +43,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `key : ∀ b : AF F, u * b = 0 → ∀ e : E, u • (b ⊗ₜ[F] e : AF F ⊗[F] E) = 0` using `fun b hb e => by`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, hb, TensorProduct.zero_tmul]`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a e`. Set `b : AF F` to `LinearMap.inr F (Ainf F) (Af F) (singleFin v a)`. Establish `hb : u * b = 0`. Use `Prod.ext (mul_zero _) ?_` and prove the remaining obligations. Use `show u.2 * singleFin v a = 0`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `af_ext fun t => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `ht : t = v`. Substitute `ht` using the available equality. Establish `: Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F t u.2 = 0` using `hu`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zero_mul]`. Rewrite using `[evalV_singleFin_ne ht, mul_zero]`. Conclude with `key b hb e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_tens_single (v : HeightOneSpectrum (𝓞 F)) {u : AF F} (hu : evFin F v u = 0)
     (h1 : ∀ a b : Af F, (LinearMap.inr F (Ainf F) (Af F) (a * b) : AF F) =
@@ -79,13 +79,13 @@ theorem smul_tens_single (v : HeightOneSpectrum (𝓞 F)) {u : AF F} (hu : evFin
 omit [NumberField E] in
 
 /- English proof (translation)
-Use extensionality with `r s`. Rewrite using `[Matrix.smul_apply, Matrix.sub_apply, Matrix.zero_apply]`. Establish `h1 : ∀ a b : Af F, (LinearMap.inr F (Ainf F) (Af F) (a * b) : AF F) = LinearMap.inr F (Ainf F) (Af F) a * LinearMap.inr F (Ainf F) (Af F) b` using `fun _ _ => Prod.ext (mul_zero _).symm rfl`. Establish `hm` using `GlobalTheory.AutFunCompare.mat_extH σ J (R' := AF F) (LinearMap.inr F (Ainf F) (Af F)) h1 (embLocFin σ J v x) r s`. Establish `hm2` using `GlobalTheory.AutFunCompare.mat_extH σ J (singleFin v) (singleFin_mul v) x r s`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (HA.mat (AF F) σ J (emb σ J v x)).1 r s = _` using `hm`. Establish `e2 : (HA.mat (Af F) σ J (embLocFin σ J v x)).1 r s = _` using `hm2`. Rewrite using `[e1, e2]`. Use `set T1 := GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (E := E) (R' := AF F) (LinearMap.inr F (Ainf F) (Af F)) h1`. Use `set T2 := GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (E := E) (singleFin v) (singleFin_mul v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ z, u • T1 (T2 z) = 0` using `smul_tens_single v hu h1`. Establish `: (1 - T1 1) * (1 : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) r s + T1 ((1 - T2 1) * (1 : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) r s + T2 ((HA.mat _ σ J x).1 r s)) - (1 : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) r s = T1 (T2 ((HA.mat _ σ J x).1 r s - (1 : Matrix (Fin n) (Fin n) (Fv F v ⊗ …`. Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, Matrix.one_apply_eq, mul_one, mul_one, map_add, map_sub, map_sub, map_sub]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Simplify using `only [Matrix.one_apply_ne h, mul_zero, zero_add, sub_zero, map_zero]`. Rewrite using `[this]`. Conclude with `key _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mat_emb_sub_one (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
     (x : GLoc σ J v) {u : AF F} (hu : evFin F v u = 0) :
@@ -118,7 +118,7 @@ theorem smul_mat_emb_sub_one (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) 
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy]`. Consider the case `tmul b e`. Rewrite using `[TensorProduct.smul_tmul', Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, smul_eq_mul, map_mul, ha, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_of_eq_one {R : Type} [CommRing R] [Algebra F R] (ψ : AF F →ₐ[F] R) {a : AF F} (ha : ψ a = 1)
     (y : AF F ⊗[F] E) :
@@ -132,9 +132,9 @@ theorem map_smul_of_eq_one {R : Type} [CommRing R] [Algebra F R] (ψ : AF F →�
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `GlobalTheory.AutFunCompare.HA_ext σ J fun r s => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.AutFunCompare.mat_mapH]`. Establish `h` using `congrArg (Algebra.TensorProduct.map ψ (AlgHom.id F E)) (congrFun (congrFun hg r) s)`. Rewrite `h` using `[Matrix.smul_apply, Matrix.sub_apply, map_smul_of_eq_one ψ ha, map_sub, Matrix.zero_apply, map_zero, sub_eq_zero]`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (1 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) r s`. Distinguish the cases in `e : r = s`. Substitute `e` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, map_one]`. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne e, map_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapH_eq_one_of_smul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {R : Type} [CommRing R]
     [Algebra F R] (ψ : AF F →ₐ[F] R) {a : AF F} (ha : ψ a = 1) {g : GAd σ J}
@@ -152,13 +152,11 @@ theorem mapH_eq_one_of_smul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `GAd_ext σ J (fun w => ?_) (fun u => ?_)` and prove the remaining obligations. Rewrite using `[projArch_emb]`. Set `a : AF F` to `((1 : Ainf F), (0 : Af F))`. Establish `h1 : evInf F w a = 1` using `by show (GlobalTheory.AutFunCompare.evW w) (1 : Ainf F) = 1`. Conclude with `map_one _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : evFin F v a = 0` using `by show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (0 : Af F) = 0`. Conclude with `map_zero _`. Conclude with `mapH_eq_one_of_smul σ J (evInf F w) h1 (hg a h0)`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[proj_emb_self]`. Rewrite using `[proj_emb_ne σ J h]`. Set `a : AF F` to `((0 : Ainf F), singleFin u 1)`. Establish `h1 : evFin F u a = 1` using `evalV_singleFin_self u 1`. Establish `h0 : evFin F v a = 0` using `evalV_singleFin_ne (Ne.symm h) 1`.
-
-Conclude with `mapH_eq_one_of_smul σ J (evFin F u) h1 (hg a h0)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_emb_proj_of_smul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
     {g : GAd σ J} (hg : ∀ u : AF F, evFin F v u = 0 → u • ((HA.mat (AF F) σ J g).1 - 1) = 0) :
@@ -182,21 +180,17 @@ theorem eq_emb_proj_of_smul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (
       exact mapH_eq_one_of_smul σ J (evFin F u) h1 (hg a h0)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n X v U hU`. Establish `heq : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) = HR (AF F) σ (X.J.map σ)`. Establish `h` using `GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := X.J) hσ one_ne_zero`. Rewrite `h` using `[one_smul]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ X.J ≃* GAd σ (X.J.map σ)` to `MulEquiv.subgroupCongr heq`. Establish `he : Continuous e` using `continuous_subtype_val.subtype_mk _`. Establish `he' : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Set `f : GLoc σ (X.J.map σ) v →* GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ X.J` to `e.symm.toMonoidHom.comp (emb σ (X.J.map σ) v)`. Establish `hf : Continuous f` using `he'.comp (continuous_emb σ (X.J.map σ) v)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : f ⁻¹' U ∈ 𝓝 (1 : GLoc σ (X.J.map σ) v)` using `hf.continuousAt.preimage_mem_nhds (by rw [map_one]; exact hU)`. Use `haveI := GlobalTheory.Doubling.nonarchimedeanGroup_GLoc σ (X.J.map σ) v`. Take `⟨V₀, hV₀⟩` from `NonarchimedeanGroup.is_nonarchimedean _ hW`. Use `haveI := isLattice_stdLattice (E := E) (n := n)`. Set `V₁ : Subgroup (GLoc σ (X.J.map σ) v)` to `(V₀ : Subgroup _) ⊓ stabLoc σ (X.J.map σ) (stdLattice E n) v`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV₁o : IsOpen (V₁ : Set (GLoc σ (X.J.map σ) v))` using `V₀.isOpen.inter (isOpen_stabLoc σ (X.J.map σ) (stdLattice E n) v)`. Establish `hV₁c : IsCompact (V₁ : Set (GLoc σ (X.J.map σ) v))` using `(isCompact_stabLoc σ (X.J.map σ) (stdLattice E n) v).inter_left V₀.isClosed`. Establish `hmat : ∀ g, (HA.mat (AF F) σ (X.J.map σ) (e g)).1 = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat g` using `fun g => rfl`. Use `⟨V₁.map f, ?_, ?_, ⟨(proj σ (X.J.map σ) v ∘ e) ⁻¹' (V₁ : Set _), hV₁o.preimage ((continuous_proj σ (X.J.map σ) v).comp he), ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, -, rfl⟩ u hu`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `smul_mat_emb_sub_one σ (X.J.map σ) v x hu`. Establish `h2 : (HA.mat (AF F) σ (X.J.map σ) (e (f x))).1 = (HA.mat (AF F) σ (X.J.map σ) (emb σ (X.J.map σ) v x)).1`. Simplify using `[f]`. Rewrite using `[← hmat, h2]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subgroup.coe_map]`. Conclude with `hV₁c.image hf`. Use `show proj σ (X.J.map σ) v (e 1) ∈ V₁`. Rewrite using `[map_one, map_one]`. Conclude with `one_mem _`.
-
-Introduce `g hg hgv`. Use `⟨proj σ (X.J.map σ) v (e g), hg, ?_⟩` and prove the remaining obligations. Establish `h : e g = emb σ (X.J.map σ) v (proj σ (X.J.map σ) v (e g))` using `eq_emb_proj_of_smul σ (X.J.map σ) v fun u hu => by rw [hmat]; exact hgv u hu`. Use `show e.symm (emb σ (X.J.map σ) v (proj σ (X.J.map σ) v (e g))) = g`. Rewrite using `[← h, MulEquiv.symm_apply_apply]`.
-
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hV₀ hx.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_compact_subgroup_at_place : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E},
     (∀ x, σ (σ x) = x) → ∀ {n : ℕ} (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)

@@ -27,13 +27,13 @@ theorem conjSch_apply {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f :
     conjSch f x = star (f x) := rfl
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨conjSch f, fun y => star (g y), ⟨hg.1.comp _, hg.2.comp_left (g := star) (star_zero _)⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [pureA, conjSch_apply, star_mul', mul_comm]`. Consider the case `zero`. Simplify using `only [Pi.zero_apply, star_zero]`. Conclude with `(schA F κ).zero_mem`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Use `(schA F κ).add_mem hx hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Use `(schA F κ).smul_mem (star c) hx` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using `[star_mul', mul_comm]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem star_mem_schA {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     ∀ Φ ∈ schA F κ, (fun x => star (Φ x)) ∈ schA F κ := by
@@ -60,7 +60,7 @@ theorem star_mem_schA {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype 
 end GlobalTheory.ConjSch
 
 /- English proof (translation)
-Introduce `κ _` and use `GlobalTheory.ConjSch.star_mem_schA κ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.star_mem_schA_main : ∀ {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype κ], ∀ Φ ∈ schA F κ, (fun x => star (Φ x)) ∈ schA F κ :=
   fun κ _ => GlobalTheory.ConjSch.star_mem_schA κ

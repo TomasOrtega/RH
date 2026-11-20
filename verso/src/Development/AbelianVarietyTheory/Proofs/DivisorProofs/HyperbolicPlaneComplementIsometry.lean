@@ -21,21 +21,19 @@ namespace GlobalTheory.LeviRatPlane
 open Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm hσ n n₁ W W₁ H hskew hn hxx hyy hxy horth hgram c₀ hc₀ hND₁ hND M hM γ hγ t m h₁ hm hγe`. Establish `hdet : W₁.J.det ≠ 0`. Introduce `h0`. Apply `hND₁.2` to reduce the goal to its premises. Rewrite using `[det_smul, show (W₁.J.map σ).det = σ W₁.J.det from (RingHom.map_det (σ : E →+* E) _).symm, h0, map_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Substitute `hn` using the available equality. Take `⟨L, hL, -, -, -, -, -⟩` from `GlobalTheory.LeviSplit.exists_proj hσ W W₁ H hskew hxx hyy hxy horth hgram hdet`. Establish `hl : IsLevi (W₁` using `W₁) H t h₁ (m * M h₁) := by`. Simplify using `using GlobalTheory.LeviHom.isLevi_mul H hm (hM h₁)`. Establish `hr : m * M h₁ ∈ ratU σ W.J`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.ThK.GLTwo.toGAd_mem_ratPts hσ W.J hc₀, map_mul, ← hγe]`. Conclude with `hγ`. Use `⟨?_, GlobalTheory.LeviSplit.rat_of_isLevi hL hl hr⟩` and prove the remaining obligations. Take `⟨G, hG⟩` from `Subgroup.mem_subgroupOf.1 hr`. Establish `hmat : mat (m * M h₁) = incM F G.1` using `(congrArg Units.val hG).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `hl.1`. Rewrite `hx` using `[hmat, GlobalTheory.LeviSplit.incM_mulVec]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, H.x k ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : H.x = 0` using `funext hc`. Rewrite `hxy` using `[h0]`. Simplify using `[form] at hxy`. Use `set f : E →+* AE F E := inclR (F := F) (E := E) (AF F) with hf`. Establish `hinj : Function.Injective f` using `GlobalTheory.AutFunCompare.inclA_injective`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a : E := (G.1 *ᵥ H.x) k / H.x k with ha`. Establish `hk' : f ((G.1 *ᵥ H.x) k) = t.1 * f (H.x k)` using `congrFun hx k`. Establish `hxa : (G.1 *ᵥ H.x) k = a * H.x k` using `by rw [ha, div_mul_cancel₀ _ hk]`. Establish `hu : IsUnit (f (H.x k))` using `(IsUnit.mk0 _ hk).map f`. Establish `ht : t.1 = f a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk'` using `[hxa, map_mul]`. Conclude with `hu.mul_left_inj.1 hk'.symm`. Establish `ha0 : a ≠ 0`. Introduce `h0`. Rewrite `ht` using `[h0, map_zero]`.
-
-Establish `: (1 : AE F E) = 0`. Rewrite using `[← Units.mul_inv t, ht, zero_mul]`. Conclude with `one_ne_zero (hinj (by rw [map_one, map_zero]; exact this))`. Conclude with `⟨Units.mk0 a ha0, Units.ext (by simpa using ht)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levi_rat_of_mul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →

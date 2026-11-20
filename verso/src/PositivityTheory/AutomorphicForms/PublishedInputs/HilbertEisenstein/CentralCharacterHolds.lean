@@ -14,11 +14,11 @@ namespace EisensteinCentralCharacter
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Unfold `thetaS`. Set `e : {ξ : Fin 2 → F // ξ ≠ 0} ≃ {ξ : Fin 2 → F // ξ ≠ 0}` to `{ toFun := fun ξ => ⟨(k : F) • ξ.1, smul_ne_zero k.ne_zero ξ.2⟩ invFun := fun ξ => ⟨((k⁻¹ : Fˣ) : F) • ξ.1, smul_ne_zero (k⁻¹).ne_zero ξ.2⟩ left_inv := fun ξ => Subtype.ext (by simp [smul_smul]) right_inv := fun ξ => Subtype.ext (by simp [smul_smul]) }`. Establish `key : ∀ ξ : Fin 2 → F, rowA ξ ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) (diagonal F k : Ideles F) * h : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) = rowA ((k : F) • ξ) ᵥ* (h : Matrix (Fin 2) (Fin 2) (Ad F))`. Introduce `ξ`. Rewrite using `[Units.val_mul, ← Matrix.vecMul_vecMul, Matrix.GeneralLinearGroup.coe_scalar, Matrix.scalar_apply]`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.vecMul_diagonal]`. Simplify using `[rowA, coe_diagonal, mul_comm]`. Use `Eq.trans ?_ (e.tsum_eq fun ξ => Ψ (rowA ξ.1 ᵥ* (h : Matrix (Fin 2) (Fin 2) (Ad F))))` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `tsum_congr fun ξ => by rw [key]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem thetaS_scalar_diagonal (Ψ : (Fin 2 → Ad F) → ℂ) (k : Fˣ) (h : GA F 2) :
     thetaS Ψ (Matrix.GeneralLinearGroup.scalar (Fin 2) (diagonal F k : Ideles F) * h) = thetaS Ψ h := by
@@ -41,17 +41,17 @@ theorem thetaS_scalar_diagonal (Ψ : (Fin 2 → Ad F) → ℂ) (k : Fˣ) (h : GA
   exact tsum_congr fun ξ => by rw [key]; rfl
 
 /- English proof (translation)
-The claim follows from `ω.2.2 k`.
+A detailed English derivation is pending.
 -/
 theorem hchar_diagonal (ω : HChar F) (k : Fˣ) : ω.1 (diagonal F k) = 1 := ω.2.2 k
 
 /- English proof (translation)
-The claim follows from `(IdeleGroup.ideleModule F _).2.le`.
+A detailed English derivation is pending.
 -/
 theorem absD_nonneg (g : GA F 2) : 0 ≤ absD g := (IdeleGroup.ideleModule F _).2.le
 
 /- English proof (translation)
-Unfold `absD`. Rewrite using `[map_mul, Matrix.GeneralLinearGroup.det_scalar, Fintype.card_fin, map_mul, map_pow]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absD_scalar_mul (z : Ideles F) (g : GA F 2) :
     absD (Matrix.GeneralLinearGroup.scalar (Fin 2) z * g) =
@@ -61,7 +61,7 @@ theorem absD_scalar_mul (z : Ideles F) (g : GA F 2) :
   rfl
 
 /- English proof (translation)
-Unfold `eisInt`. Establish `h : moduleSection (w0 F) t * ((u * diagonalToNormOne F k : normOneSubgroup F) : Ideles F) = diagonal F k * (moduleSection (w0 F) t * (u : Ideles F))`. Rewrite using `[Subgroup.coe_mul, coe_diagonalToNormOne]`. The two sides agree by associativity and commutativity. Rewrite using `[h, map_mul (Matrix.GeneralLinearGroup.scalar (Fin 2)), mul_assoc (Matrix.GeneralLinearGroup.scalar (Fin 2) (diagonal F k)), thetaS_scalar_diagonal, map_mul ω.1, hchar_diagonal, one_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. Rewrite the conclusion using the stated equalities.
 -/
 theorem eisInt_mul_diag [IsTotallyReal F] (ω : HChar F) (Ψ : (Fin 2 → Ad F) → ℂ) (g : GA F 2) (t : {r : ℝ // 0 < r})
     (u : normOneSubgroup F) (k : Fˣ) :
@@ -76,17 +76,17 @@ theorem eisInt_mul_diag [IsTotallyReal F] (ω : HChar F) (Ψ : (Fin 2 → Ad F) 
     map_mul ω.1, hchar_diagonal, one_mul]
 
 /- English proof (translation)
-Use `set p := normOneSplitting (w0 F) z with hp`. Establish `hz : z = (p.1 : Ideles F) * moduleSection (w0 F) p.2`. Rewrite using `[← normOneSplitting_symm_apply, hp, ContinuousMulEquiv.symm_apply_apply]`. Establish `ht0 : (p.2 : ℝ) = (IdeleGroup.ideleModule F z : ℝ)` using `rfl`. Establish `hmul : moduleSection (w0 F) (t * p.2) * ((u * p.1 : normOneSubgroup F) : Ideles F) = (moduleSection (w0 F) t * (u : Ideles F)) * z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, map_mul, Subgroup.coe_mul]`. The two sides agree by associativity and commutativity. Establish `hsc : Matrix.GeneralLinearGroup.scalar (Fin 2) ((moduleSection (w0 F) t * (u : Ideles F)) * z) * g = Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) t * (u : Ideles F)) * (Matrix.GeneralLinearGroup.scalar (Fin 2) z * g)`. Rewrite using `[map_mul, mul_assoc]`. Establish `hω : ((ω.1 ((moduleSection (w0 F) t * (u : Ideles F)) * z) : ℂˣ) : ℂ) = ((ω.1 (moduleSection (w0 F) t * (u : Ideles F)) : ℂˣ) : ℂ) * ((ω.1 z : ℂˣ) : ℂ)`.
+The two sides agree by associativity and commutativity. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul ω.1, Units.val_mul]`. Establish `habs : ((IdeleGroup.ideleModule F z : ℝ) ^ 2 * absD g) ^ ((1 : ℝ) / 2) = (IdeleGroup.ideleModule F z : ℝ) * absD g ^ ((1 : ℝ) / 2)`. Establish `h0 : 0 ≤ (IdeleGroup.ideleModule F z : ℝ)` using `(IdeleGroup.ideleModule F z).2.le`. Rewrite using `[Real.mul_rpow (by positivity) (absD_nonneg g), ← Real.rpow_natCast, ← Real.rpow_mul h0]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hc : (((t * p.2 : {r : ℝ // 0 < r}) : ℝ) : ℂ) = ((t : ℝ) : ℂ) * ((IdeleGroup.ideleModule F z : ℝ) : ℂ)`. Rewrite using `[← ht0, ← Complex.ofReal_mul]`. Both sides reduce to the same expression. Unfold `eisInt`. Rewrite using `[hmul, hsc, absD_scalar_mul, habs, hω, hc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hωz : ((ω.1 z : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hωA : ((ω.1 (moduleSection (w0 F) t * (u : Ideles F)) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Generalize the expression as in `thetaS Ψ (Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) t * (u : Ideles F)) * (Matrix.GeneralLinearGroup.scalar (Fin 2) z * g)) = T`. Generalize the expression as in `((ω.1 z : ℂˣ) : ℂ) = a at hωz ⊢`. Generalize the expression as in `((ω.1 (moduleSection (w0 F) t * (u : Ideles F)) : ℂˣ) : ℂ) = b at hωA ⊢`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem eisInt_scalar [IsTotallyReal F] (ω : HChar F) (Ψ : (Fin 2 → Ad F) → ℂ) (z : Ideles F) (g : GA F 2)
     (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) :
@@ -130,15 +130,13 @@ theorem eisInt_scalar [IsTotallyReal F] (ω : HChar F) (Ψ : (Fin 2 → Ad F) �
   field_simp
 
 /- English proof (translation)
-Establish `hE` using `isFundamentalDomain_normOneFundamentalDomain F (normOneMeasure F)`. Establish `hE' : IsFundamentalDomain (diagonalNormOne F).op ((fun u => u * u0⁻¹) ⁻¹' normOneFundamentalDomain F) (normOneMeasure F)`. Use `hE.preimage_of_equiv (e := id) (measurePreserving_mul_right (normOneMeasure F) u0⁻¹).quasiMeasurePreserving Function.bijective_id ?_` and prove the remaining obligations. Introduce `γ x`. Use `show (γ • x) * u0⁻¹ = γ • (x * u0⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.smul_def, MulOpposite.smul_eq_mul_unop]`. Conclude with `mul_right_comm _ _ _`. Establish `h1 : ∫ u in normOneFundamentalDomain F, f (u * u0) ∂normOneMeasure F = ∫ v in (fun u => u * u0⁻¹) ⁻¹' normOneFundamentalDomain F, f v ∂normOneMeasure F`. Use `(measurePreserving_mul_right (normOneMeasure F) u0).setIntegral_preimage_emb (measurableEmbedding_mulRight u0) f ((fun u => u * u0⁻¹) ⁻¹' normOneFundamentalDomain F)` as an intermediate fact. Rewrite using `[← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 2`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Use `hE'.setIntegral_eq hE ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ x`. Rewrite using `[Subgroup.smul_def, MulOpposite.smul_eq_mul_unop]`. Establish `hm : ((γ : (normOneSubgroup F)ᵐᵒᵖ)).unop ∈ diagonalNormOne F` using `Subgroup.mem_op.1 γ.2`. Take `⟨k, hk⟩` from `Subgroup.mem_subgroupOf.1 hm`. Establish `he : ((γ : (normOneSubgroup F)ᵐᵒᵖ)).unop = diagonalToNormOne F k` using `Subtype.ext hk.symm`.
-
-Rewrite using `[he, hf]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_fd_mul (f : normOneSubgroup F → ℂ)
     (hf : ∀ (k : Fˣ) (u : normOneSubgroup F), f (u * diagonalToNormOne F k) = f u) (u0 : normOneSubgroup F) :
@@ -174,9 +172,9 @@ end EisensteinCentralCharacter
 
 open EisensteinCentralCharacter in
 /- English proof (translation)
-Introduce `_ _ _ F _ _ _ ω c _ z g`. Establish `h1 : ∀ t : {r : ℝ // 0 < r}, ∫ u in normOneFundamentalDomain F, eisInt ω (Phi c) (Matrix.GeneralLinearGroup.scalar (Fin 2) z * g) t u ∂normOneMeasure F = ((ω.1 z : ℂˣ) : ℂ) * ∫ u in normOneFundamentalDomain F, eisInt ω (Phi c) g (t * (normOneSplitting (w0 F) z).2) u ∂normOneMeasu …`. Introduce `t`. Simplify using `only [eisInt_scalar ω (Phi c) z g t]`. Rewrite using `[integral_const_mul, setIntegral_fd_mul _ (fun k u => eisInt_mul_diag ω (Phi c) g _ u k)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `Eis`. Simplify using `only [h1]`. Rewrite using `[integral_const_mul]`. Conclude with `congrArg (((ω.1 z : ℂˣ) : ℂ) * ·) (integral_mul_right_eq_self (fun t => ∫ u in normOneFundamentalDomain F, eisInt ω (Phi c) g t u ∂normOneMeasure F) (normOneSplitting (w0 F) z).2)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem central_character_holds : SPois → SInt → SSmooth → SCent := by
   intro _ _ _ F _ _ _ ω c _ z g

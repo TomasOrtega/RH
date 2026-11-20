@@ -15,9 +15,9 @@ namespace GlobalTheory.DivisibleLinear
 variable {S S' : Scheme.{0}}
 
 /- English proof (translation)
-Establish `hu : (toUnit T).left = T.hom` using `by simpa using Over.w (toUnit T)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Rewrite using `[Hom.one_def, Over.comp_left, hu]`. Introduce `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[h, Hom.one_def, Over.comp_left, hu]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_one_iff {G T : Over S} [GrpObj G] (z : T ⟶ G) : z = 1 ↔ z.left = T.hom ≫ η[G].left := by
   have hu : (toUnit T).left = T.hom := by simpa using Over.w (toUnit T)
@@ -33,7 +33,7 @@ section BaseChange
 variable {f : S' ⟶ S} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {g : G'.left ⟶ G.left}
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hg.hom_ext` to reduce the goal to its premises. Simplify `congrArg (·.left) h` using `[Out.toBase]`. Rewrite using `[Over.w x, Over.w y]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem toBase_injective (hg : IsPullback g G'.hom G.hom f) {T : Over S'} {x y : T ⟶ G'}
     (h : Out.toBase hg.w x = Out.toBase hg.w y) : x = y := by
@@ -47,7 +47,7 @@ variable (hg : IsPullback g G'.hom G.hom f)
 include hm
 
 /- English proof (translation)
-Establish `h` using `hm T 1 1`. Rewrite `h` using `[_root_.mul_one]`. Conclude with `mul_eq_left.mp h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toBase_one (T : Over S') : Out.toBase hg.w (1 : T ⟶ G') = 1 := by
   have h := hm T 1 1
@@ -55,7 +55,7 @@ theorem toBase_one (T : Over S') : Out.toBase hg.w (1 : T ⟶ G') = 1 := by
   exact mul_eq_left.mp h.symm
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using toBase_one hg hm T`. Consider the case `succ k ih => rw [pow_succ, hm, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem toBase_pow {T : Over S'} (x : T ⟶ G') (n : ℕ) : Out.toBase hg.w (x ^ n) = Out.toBase hg.w x ^ n := by
   induction n with
@@ -69,31 +69,31 @@ end GlobalTheory.DivisibleLinear
 namespace GlobalTheory.DivisibleLinear
 
 /- English proof (translation)
-Use `set gc : 𝓞 K →+* ℂ := σ.comp (algebraMap (𝓞 K) K) with hgc`. Use `set t : Sp ℂ ⟶ Sp (𝓞 K) := spMap gc with ht`. Establish `hgci : Function.Injective gc` using `σ.injective.comp (IsFractionRing.injective (𝓞 K) K)`. Establish `hL` using `GlobalTheory.abelianSchemeLaws_all.1`. Take `⟨P', gA, hgA, -, hmA, -⟩` from `hL.polBaseChange (Sp (𝓞 K)) (Sp ℂ) t P`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Q', gB, hgB, -, hmB, -⟩` from `hL.polBaseChange (Sp (𝓞 K)) (Sp ℂ) t Q`. Use `Q.isAb.proper` as an intermediate fact. Use `Q'.isAb.proper` as an intermediate fact. Set `ψ' : P'.A ⟶ Q'.A` to `Over.homMk (hgB.lift (gA ≫ ψ.left) P'.A.hom (by rw [Category.assoc, Over.w ψ, hgA.w])) (hgB.lift_snd _ _ _)`. Establish `tb : ∀ (T' : Over (Sp ℂ)) (y : T' ⟶ P'.A), Out.toBase hgB.w (y ≫ ψ') = Out.toBase hgA.w y ≫ ψ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `T' y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[Out.toBase, ψ']`. Establish `: IsMonHom ψ'` using `GlobalTheory.DivisibleHom.isMonHom_of_mul_points ψ' fun T' y₁ y₂ => toBase_injective hgB (by rw [tb, hmA, MonObj.mul_comp, hmB, tb, tb])`. Establish `hC : ∀ y : 𝟙_ (Over (Sp ℂ)) ⟶ P'.A, y ^ n = 1 → y ≫ ψ' = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `y hy`. Set `e : Over.mk t ⟶ Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ t)` to `Over.homMk (𝟙 _) (by simp)`. Establish `h1 : (e ≫ Out.toBase hgA.w y) ^ n = 1`. Rewrite using `[← MonObj.comp_pow, ← toBase_pow hgA hmA, hy, toBase_one hgA hmA, MonObj.comp_one]`. Establish `h2` using `h _ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `toBase_injective hgB` to reduce the goal to its premises. Rewrite using `[tb, toBase_one hgB hmB, eq_one_iff]`. Establish `h3` using `(eq_one_iff _).1 h2`. Simplify `h3` using `[e]`. Take `⟨α, hα, hfac⟩` from `GlobalTheory.HolUnifEnd.exists_factor_pow P'.A Q'.A P'.isAb n hn ψ' hC`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `kill' : ∀ (T' : Over (Sp ℂ)) (y : T' ⟶ P'.A), y ^ n = 1 → y ≫ ψ' = 1`. Introduce `T' y hy`. Rewrite using `[← hfac, ← Category.assoc, MonObj.comp_pow, Category.comp_id, hy, MonObj.one_comp]`. Take `⟨_, hfl, _, _, -⟩` from `hL.mulN (Sp (𝓞 K)) P n hn`. Set `Z` to `pullback (Out.mulA P.A n) η[P.A]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `inc : Z ⟶ P.A` to `pullback.fst (Out.mulA P.A n) η[P.A]`. Establish `hinc : inc ^ n = 1`. Rewrite using `[← GlobalTheory.DivisibleHom.comp_mulA, pullback.condition, Hom.one_def, toUnit_unique (pullback.snd (Out.mulA P.A n) η[P.A]) (toUnit Z)]`. Establish `hp` using `(IsPullback.of_hasPullback (Out.mulA P.A n) η[P.A]).map (Over.forget (Sp (𝓞 K)))`. Establish `hf : Flat (pullback.snd (Out.mulA P.A n) η[P.A]).left` using `MorphismProperty.of_isPullback (P := @Flat) hp hfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hw : (pullback.snd (Out.mulA P.A n) η[P.A]).left = Z.hom`. Simplify using `using Over.w (pullback.snd (Out.mulA P.A n) η[P.A])`. Rewrite `hf` using `[hw]`. Establish `hx' : x ≫ Out.mulA P.A n = toUnit T ≫ η[P.A]`. Rewrite using `[GlobalTheory.DivisibleHom.comp_mulA, hx, Hom.one_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-It suffices to establish `hZ : inc ≫ ψ = 1 by`. Rewrite using `[← pullback.lift_fst x (toUnit T) hx', Category.assoc]`. Express the relevant statement in the definitionally equal form `_ ≫ inc ≫ ψ = 1`. Rewrite using `[hZ, MonObj.comp_one]`. Rewrite using `[eq_one_iff]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.ArcDataDescent.ext_of_injective hgci (IsPullback.of_hasPullback Z.hom t) Q.A.hom ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Set `π` to `pullback.fst Z.hom t`. Set `p'` to `pullback.snd Z.hom t`. Set `w` to `hgA.lift (π ≫ inc.left) p' (by rw [Category.assoc, Over.w inc, pullback.condition])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x' : Over.mk p' ⟶ P'.A` to `Over.homMk w (hgA.lift_snd _ _ _)`. Set `πZ : Over.mk (p' ≫ t) ⟶ Z` to `Over.homMk π pullback.condition`. Establish `hb : Out.toBase hgA.w x' = πZ ≫ inc`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[Out.toBase, x', w, πZ]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hx'n : x' ^ n = 1`. Apply `toBase_injective hgA` to reduce the goal to its premises. Rewrite using `[toBase_pow hgA hmA, hb, ← MonObj.comp_pow, hinc, MonObj.comp_one, toBase_one hgA hmA]`. Establish `k2` using `congrArg (Out.toBase hgB.w) (kill' _ x' hx'n)`. Rewrite `k2` using `[tb, toBase_one hgB hmB, hb, eq_one_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Over.comp_left] at k2 ⊢`. Rewrite using `[pullback.condition_assoc]`. Simplify `k2` using `[πZ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem torsion_comp_eq_one {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ)
     (P Q : Out.PolAV (Sp (𝓞 K))) (ψ : P.A ⟶ Q.A) [IsMonHom ψ] (n : ℕ) (hn : 0 < n)
@@ -177,11 +177,11 @@ end GlobalTheory.DivisibleLinear
 namespace GlobalTheory.DivisibleLinear
 
 /- English proof (translation)
-Introduce `E _ _ _ H K _ _ σ A B ψ hψ n hn hk`. Use `hψ.isMonHom` as an intermediate fact. Establish `hker` using `torsion_comp_eq_one σ A.pol B.pol ψ n hn hk`. Take `⟨⟨χ, hχ, hχψ⟩, -⟩` from `GlobalTheory.DivisibleHom.exists_eq_pow_of_torsion_comp_eq_one (fun S _ P m hm => by`. Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.abelianSchemeLaws_all.1.mulN S P m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, h2, h3, h4⟩)`. Use the proof step `(Sp (𝓞 K)) A.pol B.t.G n hn ψ hψ.isMonHom hker`. Use `⟨χ, ⟨hχ, fun c => ?_⟩, hχψ.symm⟩` and prove the remaining obligations. Use `B.t.act.hom c` as an intermediate fact. Use `A.t.act.hom c` as an intermediate fact.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, hfl, hsu, -⟩` from `GlobalTheory.abelianSchemeLaws_all.1.mulN (Sp (𝓞 K)) A.pol n hn`. Establish `: Flat (Out.mulA A.t.G n).left` using `hfl`. Establish `: Surjective (Out.mulA A.t.G n).left` using `hsu`. Apply `GlobalTheory.DivisibleHom.cancel_of_flat_surjective (Out.mulA A.t.G n)` to reduce the goal to its premises. Rewrite using `[GlobalTheory.DivisibleHom.mulA_comp, GlobalTheory.DivisibleHom.mulA_comp, ← MonObj.comp_pow, ← hχψ, hψ.comm c, hχψ, MonObj.pow_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linear_pow_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (A B : GlobalTheory.CM.PAT H (Sp (𝓞 K)))

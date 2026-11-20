@@ -12,11 +12,9 @@ open GlobalTheory GlobalTheory.Ex GlobalTheory.Ex.Trait
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K C _ _ _ _ X Y hX hY f hf H`. Establish `: IsReduced (pullback X.hom (spMap (algebraMap K C)))` using `isReduced_of_smooth_of_isReduced (pullback.snd X.hom (spMap (algebraMap K C)))`. Take `⟨ψ, hψ⟩` from `ArcDataDescent.exists_desc_of_points (algebraMap K C) (IsPullback.of_hasPullback X.hom (spMap (algebraMap K C))) Y.hom f X.hom hf H`. Establish `f₁ : Flat (spMap (algebraMap K C))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.Flat.of_isField (Field.toIsField K) _`. Establish `f₂ : Surjective (spMap (algebraMap K C))` using `⟨fun y => ⟨(default : PrimeSpectrum C), Subsingleton.elim (α := PrimeSpectrum K) _ _⟩⟩`. Establish `: Epi (pullback.fst X.hom (spMap (algebraMap K C)))` using `Flat.epi_of_flat_of_surjective _`. Use `⟨Over.homMk ψ ?_, hψ⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi (pullback.fst X.hom (spMap (algebraMap K C))), ← Category.assoc, hψ]`.
-
-Conclude with `hf`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_desc_of_smooth_of_geometricPoints :
     ∀ (K C : Type) [Field K] [CharZero K] [Field C] [Algebra K C] (X Y : Over (Sp K)), Smooth X.hom → IsSeparated Y.hom → ∀ f : pullback X.hom (spMap (algebraMap K C)) ⟶ Y.left, f ≫ Y.hom = pullback.fst X.hom (spMap (algebraMap K C)) ≫ X.hom → (∀ (F : Type) [Field F] [IsAlgClosed F] (x x' : Sp F ⟶ pullback X.hom (spMap (algebraMap K C))), x ≫ pullback.fst _ _ = x' ≫ pullback.fst _ _ → x ≫ f = x' ≫ f) → ∃ f₀ : X ⟶ Y, pullback.fst X.hom (spMap (algebraMap K C)) ≫ f₀.left = f := by

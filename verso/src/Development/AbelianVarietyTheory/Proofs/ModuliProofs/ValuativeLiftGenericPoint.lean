@@ -13,7 +13,7 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ValuativeGeneric
 
 /- English proof (translation)
-Introduce `O _ _ X Y f sY hq hs hl h`. Establish `: IsLocallyNoetherian Y` using `LocallyOfFiniteType.isLocallyNoetherian sY`. Conclude with `isProper_of_lift_generic O X Y f sY hs hq fun V K _ _ _ _ _ _ _ x y hx hy => h V K x y hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProper_of_lift_generic_of_finiteType : ∀ (O : Type) [CommRing O] [IsNoetherianRing O] (X Y : Scheme.{0}) (f : X ⟶ Y) (sY : Y ⟶ Sp O), IsQProjOver (f ≫ sY) → IsSeparated sY → LocallyOfFiniteType sY → (∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (x : Sp K ⟶ X) (y : Sp V ⟶ Y), Set.range x ⊆ genericPoints X → x ≫ f = spMap (algebraMap V K) ≫ y → ∃ x' : Sp V ⟶ X, spMap (algebraMap V K) ≫ x' = x) → IsProper f := by
   intro O _ _ X Y f sY hq hs hl h

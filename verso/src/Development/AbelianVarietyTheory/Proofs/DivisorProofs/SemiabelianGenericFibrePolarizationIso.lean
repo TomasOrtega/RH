@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.SectionUnif
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ClosingLemmaSecond.main`. Consider the case `exact _root_.GlobalTheory.ClosingLemmaSecond.main`. Consider the case `(apply _root_.GlobalTheory.ClosingLemmaSecond.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ClosingLemmaSecond.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ClosingLemmaSecond.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ClosingLemmaSecond.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_shift {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] (I : Ideal R) {q : R} (hq : q ≠ 0) :
     ∃ c : ℕ, ∀ (n : ℕ) (a : R), q * a ∈ I ^ (n + c) → a ∈ I ^ n := by
@@ -41,21 +41,19 @@ variable {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {I : I
   [IsCommMonObj G']
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Use `push Not at h0`. Use `U.semi.smooth` as an intermediate fact. Use `U.semi.geomConnected` as an intermediate fact. Establish `hL` using `U.P.L.isLB`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lam : (snd (𝟙_ _) G).left ≫ (λ_ G).inv.left = 𝟙 _`. Rewrite using `[← Over.comp_left, ← leftUnitor_hom, Iso.hom_inv_id, Over.id_left]`. Take `⟨s, hs⟩` from `BaseExpansionExists.exists_pull (λ_ G).inv.left (fun _ => rfl) σ`. Establish `h₀` using `(sec_eq_zero_and_hom_eq_of_thickenings R I hI G).1 _ (DVR.linComb_isLB _ hL _ _) s fun e j => fn_ext fun z hz => by`. Establish `hz' : (𝟙 (thickObj R I e G).left : _ ⟶ _) z ∈ (fstG I e G).left ⁻¹ᵁ _` using `hz`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gs_pull (𝟙 _) (fstG I e G).left z _ hz' _).trans (Eq.trans ?_ ((gs_eq (𝟙 _) z _ hz' _).trans ((congrArg _ (map_zero _)).trans (map_zero _))).symm)` and prove the remaining obligations. Use `ExpUniq.gs_eq_zero_of_sval hL s _ z (fun JG hJG => (hs _ _ z JG hJG).trans ?_) j hz'` and prove the remaining obligations. Set `T : Over (Spec (CommRingCat.of R))` to `(Over.map (thick R I e)).obj (thickObj R I e G)`. Set `b : T ⟶ D.P.A` to `(U.gt e).pG`. Set `x : T ⟶ G` to `fstG I e G`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hG : (lift (toUnit T) x).left ≫ (snd _ G).left = x.left` using `by rw [← Over.comp_left, lift_snd]`. Establish `hB : (lift (toUnit T) b).left ≫ (snd _ D.P.A).left = b.left` using `by rw [← Over.comp_left, lift_snd]`. Establish `hF : (lift (toUnit T) b).left ≫ (fst _ D.P.A).left = (lift (toUnit T) x).left ≫ (fst _ G).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst]`. Apply the tactic sequence `have hi : lift (toUnit T) x = x ≫ (λ_ G).inv := by ext1 <;> simp [toUnit_unique]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hi' : (lift (toUnit T) x).left = (𝟙 _ ≫ (fstG I e G).left) ≫ (λ_ G).inv.left`. Rewrite using `[hi, Category.id_comp]`. Both sides reduce to the same expression. Take `⟨J, hJ⟩` from `exists_good_pt (Z := T.left) D.P.isLB z`. Take `⟨t, ht⟩` from `hf e`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hsum⟩` from `ht T.left (𝟙 _) _ _ (hG.trans (Category.id_comp _).symm) (hB.trans (Category.id_comp _).symm) hF z JG J hJG hJ`. Rewrite using `[Finset.sum_eq_zero fun α _ => by`. Rewrite `hsum` using `[ThetaScalar.sval_eq_zero _ (h0 α) _ z hJ, MulZeroClass.zero_mul]]`. Rewrite using `[← hi']`. Conclude with `(((Units.isUnit _).pow k).mul_right_eq_zero).1 hsum`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨J, hJ⟩` from `exists_good_pt hL y`. Establish `E` using `(hs _ (snd (𝟙_ _) G).left y J hJ).symm.trans (ThetaScalar.sval_eq_zero _ h₀ _ y hJ)`. Rewrite `E` using `[lam]`. Establish `u` using `(MulPullSec.mem_nonzeroLocus_iff σ (𝟙 _) y hJ).1 hy`. Rewrite `u` using `[E]`.
-
-Conclude with `not_isUnit_zero u`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_term_ne_zero [IsNoetherianRing R] (hI : I ≤ Ideal.jacobson ⊥) (U : PreU I D A G) (k : ℕ)
     (σ : U.SecGT (𝟙_ _) k) (f : ∀ α, SecBT D (𝟙_ _) k α) (hf : U.ExpT (𝟙_ _) k σ f) (y : (𝟙_ _ ⊗ G).left)
@@ -100,9 +98,9 @@ theorem exists_term_ne_zero [IsNoetherianRing R] (hI : I ≤ Ideal.jacobson ⊥)
   exact not_isUnit_zero u
 
 /- English proof (translation)
-Use `U.semi.smooth` as an intermediate fact. Establish `: IsReduced G.left` using `isReduced_of_smooth_of_isReduced G.hom`. Use `FibreNonzero.isIso_snd_left G` as an intermediate fact. Establish `h : G.left.basicOpen (θ.f k) ≠ ⊥` using `fun h => hθ ((basicOpen_eq_bot_iff _).1 h)`. Take `⟨g, hg⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `(snd (𝟙_ _) G).left.surjective g`. Conclude with `⟨FibreNonzero.pullOne θ _, z, FibreNonzero.mem_nonzeroLocus_pullOne θ _ z k hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sec_point (U : PreU I D A G) (θ : LB.Sec U.P.L.L) (k : U.P.L.L.ι) (hθ : θ.f k ≠ 0) :
     ∃ (σ : U.SecGT (𝟙_ _) 1) (y : (𝟙_ _ ⊗ G).left), y ∈ nonzeroLocus σ := by
@@ -115,11 +113,11 @@ theorem exists_sec_point (U : PreU I D A G) (θ : LB.Sec U.P.L.L) (k : U.P.L.L.�
   exact ⟨FibreNonzero.pullOne θ _, z, FibreNonzero.mem_nonzeroLocus_pullOne θ _ z k hg⟩
 
 /- English proof (translation)
-Use `U.semi.smooth` as an intermediate fact. Use `FibreNonzero.isIso_snd_left G` as an intermediate fact. Use `FibreNonzero.isIso_snd_left G'` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (spMap φ)` using `schDom_spec_map φ hφ`. Establish `: IsSchemeTheoreticallyDominant F` using `.of_isPullback C.pb.1.flip`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact F` using `MorphismProperty.of_isPullback C.pb.1.flip inferInstance`. Set `r : (𝟙_ _ ⊗ G').left ⟶ (𝟙_ _ ⊗ G).left` to `(snd (𝟙_ _) G').left ≫ F ≫ inv (snd (𝟙_ _) G).left`. Establish `hr : r ≫ (snd _ G).left = 𝟙 _ ≫ (snd _ G').left ≫ F` using `by simp [r]`. Establish `: IsDominant r` using `by unfold r; infer_instance`. Take `⟨z', hz'⟩` from `r.denseRange.exists_mem_open (nonzeroLocus σ).isOpen ⟨y, hy⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ⟩` from `exists_good_pt U.P.L.isLB z'`. Take `⟨J', hJ'⟩` from `exists_good_pt U'.P.L.isLB z'`. Establish `u` using `(MulPullSec.mem_nonzeroLocus_iff σ r z' hJ).1 hz'`. Rewrite `u` using `[h _ (𝟙 _) r hr z' J J' hJ hJ']`. Conclude with `⟨z', (MulPullSec.mem_nonzeroLocus_iff σ' (𝟙 _) z' hJ').2 (isUnit_of_mul_isUnit_right u)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_point_of_cmp {φ : R →+* V} (hφ : Function.Injective φ) {U : PreU I D A G} {U' : PreU I' D' A' G'}
     {F : G'.left ⟶ G.left} (C : Cmp φ U U' F) (k : ℕ) (σ : U.SecGT (𝟙_ _) k) (σ' : U'.SecGT (𝟙_ _) k)
@@ -146,11 +144,11 @@ theorem exists_point_of_cmp {φ : R →+* V} (hφ : Function.Injective φ) {U : 
 end
 
 /- English proof (translation)
-Use `hV.1` as an intermediate fact. Establish `hV' : AdmBase V (IsLocalRing.maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hV.2.1⟩`. Establish `hm : IsLocalRing.maximalIdeal V ≠ ⊤` using `(IsLocalRing.maximalIdeal.isMaximal V).ne_top`. Take `⟨σ', f', hf', hσσ, hff⟩` from `ExpCmp.expT_cmp R V I _ φ C.map_le D D'.toPre A A' G G' U U' F C 1 σ f hf`. Establish `hcmp : SecCmp D D'.toPre C.β C.v C.xe f f'` using `hff`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrel'` using `GlobalTheory.T.psiRel_of_expT' h₁ h₂ V _ hV' D' A' G' U' U₀ hU σ' f' hf'`. Take `⟨y', hy'⟩` from `exists_point_of_cmp hφ C 1 σ σ' hσσ y hy`. Establish `hne' : ∀ α, ∃ j, (f' α).f j ≠ 0` using `GlobalTheory.T.forall_term_ne_zero_of_psiRelation V D'.toPre f' hrel' (exists_term_ne_zero (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge U' 1 σ' f' hf' y' hy')`. Use `⟨ne_zero_of_secCmp C.pbB.1.w hcmp hne', fun psi h hrel => ?_⟩` and prove the remaining obligations. Establish `hrig : RigCmp φ (withPsi D psi h) D'.toPre C.β C.v` using `GlobalTheory.T.rigidification_comparison_uniformisation R V I _ φ hm C.map_le D D'.toPre A G A' G' U U' F C`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨gam, hgam⟩` from `exists_generic_map hφ`. Conclude with `⟨hrig, gam, hgam, GlobalTheory.T.psiCmp_of_secCmp' R V φ (withPsi D psi h) D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig f f' hcmp hrel hrel' (hne' 0) gam hgam⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ne_zero_and_psiCmp (h₁ : Laws) (h₂ : Laws2) {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V]
     [IsLocalRing V] {I : Ideal R} (hV : CDvr V) {φ : R →+* V} (hφ : Function.Injective φ) {D : DegPre R}
@@ -182,11 +180,11 @@ theorem ne_zero_and_psiCmp (h₁ : Laws) (h₂ : Laws2) {R V : Type} [CommRing R
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨hL, hL2, hL3, -⟩` from `GlobalTheory.allSixLaws`. Use `hV.1` as an intermediate fact. Use `U.gen_hom` as an intermediate fact. Establish `hB : AdmBase V (IsLocalRing.maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hV.2.1⟩`. Establish `hle : I.map φ ≤ IsLocalRing.maximalIdeal V` using `Ideal.map_le_iff_le_comap.2 hc.ge`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨A', s, w, hw⟩` from `PrimeUnif.exists_setting hL hL2 hL3 U.P U.semi hW hsp A U.gen hA hV φ hφ hc.ge`. Take `⟨D', U₀, hLG, -, -⟩` from `GlobalTheory.uniformisation_dvr_unconditional V A' _ s`. Take `⟨U', hU'⟩` from `(GlobalTheory.LN.PreForm.under_exists_and_expands hL hL2 V _ D' A' _ s.semi).1 U₀.toUnifPre`. Use `s.semi.smooth` as an intermediate fact. Take `⟨w', hw'⟩` from `PrimeUnif.isCPMap_of_eq hL.globalFns s.gen s.P U'.P (hU'.2.1.trans hLG) hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, -⟩` from `GlobalTheory.T.exists_compare_uniformisationData_pullback hL hL2 ega_holds R V I _ hR hB (IsLocalRing.maximalIdeal.isMaximal V).ne_top φ hle D _ A A' G _ U U' _ (isGrpPullback_pullback G _) w' hw'`. Conclude with `⟨D', A', _, _, _, _, U₀, U', hU', ⟨C⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cmp {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R} (hR : AdmBase R I)
     {D : DegPre R} {A : PolAV (Sp (FractionRing R))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
@@ -215,29 +213,27 @@ theorem exists_cmp {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ide
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `R _ _ _ hR G _ _ P hS hW hsp A gen hgen hA ⟨θ, k, hθ⟩`. Take `⟨h₁, h₂, h₃, -⟩` from `GlobalTheory.allSixLaws`. Use `hR.1.1` as an intermediate fact. Use `hR.1.2.2.1` as an intermediate fact. Use `hR.2.2.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : IsLocalRing.maximalIdeal R ≠ ⊤` using `(IsLocalRing.maximalIdeal.isMaximal R).ne_top`. Establish `hpi : IsPrincipalIdealRing (R ⧸ IsLocalRing.maximalIdeal R)`. Use `letI := Ideal.Quotient.field (IsLocalRing.maximalIdeal R)`. Use `infer_instance`. Take `⟨D, U, rfl, rfl⟩` from `GlobalTheory.T.exists_uniformization_data_complete_local_prime h₁ h₂ h₃ ega_holds GlobalTheory.uniformisation_dvr_unconditional R _ hR hpi G P hS hW hsp A gen hgen hA`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, y, hy⟩` from `exists_sec_point U θ k hθ`. Take `⟨f, hf, -⟩` from `CompleteBaseExpansion.main h₁ h₂ ega_holds R _ hR.1 hI D A G U 1 σ`. Take `⟨V, _, _, _, φ, hV, hφ, hc⟩` from `PrimeUnif.exists_cdvr R (IsLocalRing.maximalIdeal R)`. Take `⟨D', A', G', _, _, F, U₀, U', hU', ⟨C⟩⟩` from `exists_cmp hR.1 U hW hsp hA V φ hV hφ hc`. Take `⟨hne, hps⟩` from `ne_zero_and_psiCmp h₁ h₂ hV hφ C hU' σ f hf y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨psi, h, hrel⟩` from `exists_psi_psiRel h₁ h₂ R D f hne`. Set `E : DegPre R` to `withPsi D psi h`. Establish `hrelE : PsiRel E (𝟙_ _) f` using `hrel`. Take `⟨hrig, gam, hgam, hpsi⟩` from `hps psi h hrel`. Establish `hev : E.PsiEven` using `GlobalTheory.T.psiEven_descend_baseChange h₁.globalFns R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr gam hgam hpsi D'.psi_even`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbi : E.TauBimult` using `GlobalTheory.T.tauBimult_of_baseChange' h₁.globalFns R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi D'.tau_bimult`. Take `⟨hD, hD₁, hD₂, hD₃⟩` from `GlobalTheory.T.exists_isPullDeg_of_comparison R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi hbi`. Take `⟨ga, a, hSc⟩` from `exists_psiScal R E`. Take `⟨th, hth, hmul⟩` from `GlobalTheory.T.exists_thetaSection_nonzeroFibres_localRing h₂.secTwist R D`. Take `⟨q, hq⟩` from `hmul (f 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose b hb using fun χ : D.X => GlobalTheory.T.exists_twistedSection_thetaTranslate_coef R D th hmul χ (ga χ) (hSc χ).1 (f χ)`. Establish `hab : ∀ χ, algebraMap R (FractionRing R) q * (a χ).val = algebraMap R (FractionRing R) (b χ)` using `fun χ => GlobalTheory.T.psiScalar_eq_expansionCoef_ratio R E ga a f th hSc hrelE hth χ q (b χ) hq (hb χ)`. Establish `hq0 : q ≠ 0`. Introduce and unpack `rfl`. Take `⟨j, hj⟩` from `hne 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hj (ThetaScalar.eq_zero_of_sval D.P.isLB _ (fun z J hJ => ?_) j)` and prove the remaining obligations. Rewrite using `[hq _ _ z J hJ, Geo.Tor.cst, map_zero, gs_eq _ _ ⊤ trivial, map_zero, map_zero, MulZeroClass.zero_mul]`. Establish `hW' : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (g : R →+* W), CDvr W → Function.Injective g → (IsLocalRing.maximalIdeal W).comap g = IsLocalRing.maximalIdeal R → ∀ χ : D.X, χ ≠ 0 → ∃ m ∈ IsLocalRing.maximalIdeal W, g (b χ) = g q * m` using `fun W _ _ _ g hW₁ hg hgc χ hχ => by`. Take `⟨D₁, A₁, G₁, _, _, F₁, U₁, U₂, hU₁, ⟨C₁⟩⟩` from `exists_cmp hR.1 U hW hsp hA W g hW₁ hg hgc`. Take `⟨-, gam₁, hgam₁, hpsi₁⟩` from `(ne_zero_and_psiCmp h₁ h₂ hW₁ hg C₁ hU₁ σ f hf y hy).2 psi h hrel`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `C₁.xe.surjective χ`. Conclude with `GlobalTheory.T.psiScalar_mem_of_psi_mem_ideal R W g E D₁.toPre C₁.β C₁.v C₁.xe C₁.pbB C₁.v_gen C₁.c_pr gam₁ hgam₁ hpsi₁ ga a hSc x _ (D₁.psi_pos x fun h0 => hχ (by rw [h0, map_zero])) _ q (hab _)`. Establish `hdiv : ∀ χ : D.X, χ ≠ 0 → ∃ r ∈ IsLocalRing.maximalIdeal R, b χ = q * r` using `fun χ hχ => by`. Take `⟨r, hr⟩` from `ValCrit.dvd_of_forall_cdvr R (b χ) q hq0 fun W _ _ _ g hW₁ hg hgc => (hW' W g hW₁ hg hgc χ hχ).elim fun m hm => ⟨m, hm.2⟩`. Take `⟨m, hm₁, hm₂⟩` from `hW' V φ hV hφ hc χ hχ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite `hm₂` using `[hr, map_mul]`. Use `⟨r, hc.le (Ideal.mem_comap.2 ?_), hr⟩` and prove the remaining obligations. Rewrite using `[mul_left_cancel₀ ((map_ne_zero_iff φ hφ).2 hq0) hm₂]` and apply the resulting hypothesis. Establish `hin : ∀ (χ : D.X) (J : Ideal R) (r : R), r ∈ J → b χ = q * r → E.PsiIn χ J` using `fun χ J r hJ e => (PsiScalIn.main_local E ga a hSc χ J).2 ⟨r, hJ, mul_left_cancel₀ ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hq0) (((map_mul _ q r).symm.trans (congrArg _ e.symm)).trans (hab χ).symm)⟩`. Take `⟨c, hcs⟩` from `exists_shift (IsLocalRing.maximalIdeal R) hq0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `Dd : DegData R (IsLocalRing.maximalIdeal R)` to `⟨E, hev, hbi, fun χ hχ => (hdiv χ hχ).elim fun r hr => hin χ _ r hr.1 hr.2, fun n => by classical`. Take `⟨s, hs⟩` from `GlobalTheory.T.expansionCoef_mem_adic_pow R _ hI D A G U σ f th hf hth (n + c)`. Use `(insert 0 s).finite_toSet.subset fun χ hχ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[Finset.mem_coe, Finset.mem_insert, not_or]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, -, hr⟩` from `hdiv χ hn.1`. Conclude with `hχ (hin χ _ r (hcs n r (hr ▸ Ideal.pow_le_pow_right (Nat.le_succ _) (hs χ hn.2 _ _ (hb χ)))) hr)⟩`. Use `hV.1` as an intermediate fact. Establish `hB : AdmBase V (IsLocalRing.maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hV.2.1⟩`. Take `⟨U₂, C₂, hD₄, eP, eg, k₁, k₂, k₃⟩` from `PrimeUnif.exists_move psi h C hD Dd.toPre rfl hD₁ hD₂ hD₃`.
-
-Take `⟨U₁, -, hU₁, -⟩` from `GlobalTheory.UnifDescent.exists_unif_of_cmp h₁ h₂ ega_holds R V _ _ hR.1 hB hI φ hφ C.map_le Dd D' A A' G _ U₂ U' U₀ _ C₂ hD₄ hU' k₁ k₂ k₃`. Conclude with `⟨Dd, U₁, hU₁.2.1.symm.trans (congrArg CP.L eP), hU₁.1.symm.trans eg⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unif_of_ne_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.LN.admitted R (IsLocalRing.maximalIdeal R) → ∀ (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (P : CP G), IsSemiAbelian G → HypW G P.L.L → GlobalTheory.LN.SplitOver G (IsLocalRing.maximalIdeal R) → ∀ (A : PolAV (Sp (FractionRing R))) (gen : (Over.pullback (jK R)).obj G ≅ A.A), IsMonHom gen.hom → LBIso (A.L.pull gen.hom.left) (P.L.L.pull (pullback.fst G.hom (jK R))) → (∃ (σ : LB.Sec P.L.L) (k : P.L.L.ι), σ.f k ≠ 0) → ∃ (D : DegData R (IsLocalRing.maximalIdeal R)) (U : Unif (IsLocalRing.maximalIdeal R) D A G), U.LG = P.L ∧ U.gen = gen := by
   intro R _ _ _ hR G _ _ P hS hW hsp A gen hgen hA ⟨θ, k, hθ⟩

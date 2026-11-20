@@ -20,7 +20,7 @@ private def tensorPolyAlgEquiv (R A : Type*) [CommRing R] [CommRing A] [Algebra 
     ((algebraTensorAlgEquiv R A).restrictScalars R)
 
 /- English proof (translation)
-Simplify using `[tensorPolyAlgEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tensorPolyAlgEquiv_tmul (p : MvPolynomial (Fin n) R) (a : A) :
     tensorPolyAlgEquiv R A n (p ⊗ₜ a) = a • MvPolynomial.map (algebraMap R A) p := by
@@ -49,11 +49,11 @@ private def tensorPolyBasis {ι : Type*} (b : Module.Basis ι R A) (n : ℕ) :
 end DvdBasis
 
 /- English proof (translation)
-Introduce `R A _ _ _ _ _ n x p hdvd`. Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Take `⟨h, hh⟩` from `hdvd`. Set `b` to `Module.Free.chooseBasis R A`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `bP` to `tensorPolyBasis b n`. Establish `hmap : (p.map (algebraMap R A) : MvPolynomial (Fin n) A) = algebraMap (MvPolynomial (Fin n) R) (MvPolynomial (Fin n) A) p`. Rewrite using `[MvPolynomial.algebraMap_def]`. Establish `hnorm : Algebra.norm (MvPolynomial (Fin n) R) (algebraMap (MvPolynomial (Fin n) R) (MvPolynomial (Fin n) A) p) = p ^ Module.finrank R A`. Rewrite using `[Algebra.norm_algebraMap_of_basis bP, Module.finrank_eq_card_basis b]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Algebra.norm (MvPolynomial (Fin n) R) h, ?_⟩` and prove the remaining obligations. Rewrite using `[← hnorm, ← hmap, hh, map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem NormFormDvd.proof : NormFormDvd.Statement := by
   intro R A _ _ _ _ _ n x p hdvd

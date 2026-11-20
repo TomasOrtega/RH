@@ -8,17 +8,15 @@ open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.CuspRep Glob
 namespace GlobalTheory.CuspGeneric
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ Γ hΓ X _ F hF hper`. Use `letI : MeasurableSpace G := borel G`. Use `haveI : BorelSpace G := ⟨rfl⟩`. Take `⟨μ, D, hμ, hD, hD1⟩` from `GlobalTheory.T.exists_fundamentalDomain_mass_one_cocompactLattice G Γ hΓ`. Establish `hsec : ∀ x : X, Continuous fun y : G => F (x, y)` using `fun x => hF.comp (continuous_const.prodMk continuous_id)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfacts : ∀ x : X, μ D ≠ 0 ∧ μ D ≠ ⊤ ∧ IntegrableOn (fun y => F (x, y)) D μ ∧ ∫ y in D, F (x, y) ∂μ = ((μ D).toReal : ℂ) * avg Γ (fun y => F (x, y))` using `fun x => GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average G Γ hΓ μ D hμ hD (fun y => F (x, y)) ⟨hsec x, fun γ hγ y => hper x γ hγ y⟩`. Establish `hrepr : (fun x => avg Γ (fun y => F (x, y))) = fun x => ∫ y in D, F (x, y) ∂μ`. Use function extensionality and compare the values at `x`. Rewrite using `[(hfacts x).2.2.2, hD1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrepr]`. Take `⟨-, K, hK, hcov⟩` from `hΓ`. Rewrite using `[Metric.continuous_iff']`. Introduce `x₀ ε hε`. Establish `hnear : ∀ᶠ x in nhds x₀, ∀ k ∈ K, dist (F (x, k)) (F (x₀, k)) < ε / 2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hK.eventually_forall_of_forall_eventually fun k _ => ?_` and prove the remaining obligations. Establish `h1 : ∀ᶠ z : X × G in nhds (x₀, k), dist (F z) (F (x₀, k)) < ε / 4` using `Metric.tendsto_nhds.mp (hF.tendsto (x₀, k)) _ (by positivity)`. Establish `h2 : ∀ᶠ z : X × G in nhds (x₀, k), dist (F (x₀, z.2)) (F (x₀, k)) < ε / 4` using `Metric.tendsto_nhds.mp (((hsec x₀).comp continuous_snd).tendsto (x₀, k)) _ (by positivity)`. Use `filter_upwards [h1, h2] with z hz1 hz2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [hnear] with x hx`. Establish `hall : ∀ y : G, ‖F (x, y) - F (x₀, y)‖ ≤ ε / 2`. Introduce `y`. Take `⟨γ, hγ, hγK⟩` from `hcov y`. Rewrite using `[← hper x γ hγ y, ← hper x₀ γ hγ y, ← dist_eq_norm]`.
-
-Conclude with `(hx _ hγK).le`. Rewrite using `[dist_eq_norm, ← integral_sub (hfacts x).2.2.1 (hfacts x₀).2.2.1]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem continuous_avg_of_periodic : ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] (Γ : AddSubgroup G), IsCoLat Γ →

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineEqDeRham
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h₁ h₂` and use `⟨h₁, GlobalTheory.T.crystalline_eq_deRham_of_smoothLift_comparison h₂⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem abelianDualCrystal_of_dual_of_smoothLift :
     GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.CrystallineSmoothLift → GlobalTheory.Published.AbelianDualCrystal :=

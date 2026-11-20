@@ -16,19 +16,19 @@ namespace GlobalTheory.ArcExt
 open GlobalTheory.TorusExt
 
 /- English proof (translation)
-Introduce `hL hGt hWp E _ _ _ H D R _ _ F F' _ _ _ _ _ _ _ f hf₀ A`. Establish `hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F'` using `RingHom.ext hf₀`. Take `⟨J', hg, hJ₀⟩` from `exists_gauge f A.D₀.P.isLB A.ν.good`. Take `⟨N', ν', e₁, hth⟩` from `GlobalTheory.GaugeValues.exists_numOf hL R A.D₀ A.even A.bimult F' J' hg A.ν.th A.ν.th_gen`. Establish `hJ : ∀ ψ, ν'.J (spMap f ≫ ψ) = A.ν.J ψ` using `e₁ ▸ hJ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `G` using `(hGt R A.D₀ A.even A.bimult F A.N A.ν).2.2.2.2`. Establish `G'` using `(hGt R A.D₀ A.even A.bimult F' N' ν').2.2.2.2`. Set `I` to `numHom f hf A.ν ν' hJ hth`. Establish `hw : ∀ k, 1 ≤ k → ∀ (p p' : QkPt A.D₀ F k) (z : F), WeilQkIs A.D₀ F k p p' z → WeilQkIs A.D₀ F' k (qkExt A.bimult f hf p) (qkExt A.bimult f hf p') (f z)` using `fun k hk p p' z h => by`. Take `⟨q, hq, -⟩` from `(G k).1 p`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q', hq', -⟩` from `(G k).1 p'`. Take `⟨r, hr, -⟩` from `(G' k).1 (qkExt A.bimult f hf p)`. Take `⟨r', hr', -⟩` from `(G' k).1 (qkExt A.bimult f hf p')`. Establish `a` using `numHom_qPt f hf A.bimult A.ν ν' hJ hth hq hr`. Establish `a'` using `numHom_qPt f hf A.bimult A.ν ν' hJ hth hq' hr'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hWp R A.D₀ A.even A.bimult F' N' ν' k hk _ _ _ _ _ hr hr', (GlobalTheory.T.hom_transport_alt F F' f A.N N' I).2.2.2.1 k q q' r r' a.1 a.2 a'.1 a'.2, (hWp R A.D₀ A.even A.bimult F A.N A.ν k hk _ _ _ _ _ hq hq').1 h]`. Both sides reduce to the same expression. Use `choose q' hq' using fun (n : ℕ) (a : D.La) => ((G' n).1 (qkExt A.bimult f hf (A.I.ev n a))).exists`. Use `⟨{ D₀ := A.D₀, oa := A.oa, even := A.even, bimult := A.bimult, w0 := A.w0, ρ := f A.ρ ρ_sq := by rw [← map_pow, A.ρ_sq, map_neg]; simp det := fun σ => ?_ I := tateExt f hf A.bimult hL A.I hw, N := N', ν := ν', q := q', hq := hq', closed := inferInstance }, rfl, I, rfl, fun _ _ => …` and prove the remaining obligations. Take `⟨τ, rfl⟩` from `DetExtend.exists_factor f σ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, h₁, h₂⟩` from `A.det τ`. Use `A.D₀.P.isAb.smooth` as an intermediate fact. Use `⟨n, ?_, h₂.trans (by` and prove the remaining obligations. Distinguish the cases in `h : τ H.rt = A.ρ`. Rewrite using `[if_pos h, if_pos (show f.comp τ H.rt = f A.ρ from congrArg f h)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg (show ¬ f.comp τ H.rt = f A.ρ from fun e => h (f.injective e))])⟩`. Establish `e : spMap ((algebraMap (FractionRing R) F').comp (algebraMap R _)) = spMap f ≫ spMap ((algebraMap (FractionRing R) F).comp (algebraMap R _))`. Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← RingHom.comp_assoc, hf]`. Rewrite using `[e]`. Conclude with `(DetExtend.lieMult_extend f _ _ τ n).2 h₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ν'.eX.injective ((eX_numHom f hf A.ν ν' hJ hth _).trans ?_) show A.ν.eX (A.ν.eX.symm _) = ν'.eX (ν'.eX.symm (a • ν'.eX (I.e y)))` and prove the remaining obligations. Rewrite using `[AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, eX_numHom]`. Establish `h` using `numHom_qPt f hf A.bimult A.ν ν' hJ hth (A.hq n a) (hq' n a)`. Conclude with `⟨q' n a, h.1, h.2, (N'.qEq_equivalence n).refl _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_arcF_over : Laws → BrGtSt → BrWpSt → AllD fun D => ∀ (R : Type) [CommRing R] [IsDomain R] (F F' : Type) [Field F] [IsAlgClosed F] [CharZero F] [Field F'] [IsAlgClosed F'] [Algebra (FractionRing R) F] [Algebra (FractionRing R) F'] (f : F →+* F'), (∀ x, f (algebraMap (FractionRing R) F x) = algebraMap (FractionRing R) F' x) → ∀ A : ArcF D R F, ∃ A' : ArcF D R F', A'.D₀ = A.D₀ ∧ A.Over f A' := by
   intro hL hGt hWp E _ _ _ H D R _ _ F F' _ _ _ _ _ _ _ f hf₀ A

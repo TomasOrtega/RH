@@ -21,31 +21,31 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FibreFramesOnModels GlobalTheory.Ke
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨φ'', he'', w'', hg'', F'', hc'', hw'', hr'', hs'', hF'', hFe'', hv''⟩` from `hx`. Take `⟨w, hw, hr, -⟩` from `m.lin`. Establish `g` using `(isGen_iff w).1 hw`. Establish `g''` using `(isGen_iff w'').1 hw''`. Take `⟨θ', hs⟩` from `sec_pull_down g t.PP.isLB t'.PP.isLB θ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v', hv', hvv⟩` from `GlobalTheory.exists_isLieBasis_baseChange _ _ f t.G t'.G m.φ m.cart t.semi.smooth n v hv`. Establish `he : eSec t'.G ≫ m.φ = spMap f ≫ eSec t.G` using `m.cm.e_comm.trans (congrArg (· ≫ eSec t.G) m.base)`. Establish `hrig : m.cm.rigPull t.PP.L t.PP.rig = rigPullOf m.φ (spMap f) he t.PP.L t.PP.rig`. Establish `key : ∀ (a b : Sp R' ⟶ Sp R) (_ : a = b) ha hb, rigPullOf (G'` using `t'.G) m.φ a ha t.PP.L t.PP.rig = rigPullOf m.φ b hb t.PP.L t.PP.rig := by`. Introduce and unpack `a b rfl _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Conclude with `key _ _ m.base _ _`. Rewrite `hr` using `[hrig]`. Use `⟨θ', v', ?_, hv', ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hz'⟩` from `hθ (spMap f (closedPoint R'))`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl, hy⟩` from `Scheme.exists_preimage_of_isPullback m.cart.1 z (closedPoint R') hz`. Take `⟨k, hb⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz'`. Establish `hk : m.φ y ∈ t.PP.L.U k` using `t.G.left.basicOpen_le _ hb`. Take `⟨l, hl⟩` from `exists_chart t'.PP.isLB y`. Establish `u : IsUnit (gs (𝟙 _) (m.φ y) _ (θ.f k))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gs_eq (𝟙 _) (m.φ y) _ hk]`. Conclude with `(t.G.left.mem_basicOpen _ _ hk).1 hb`. Establish `u₁ : IsUnit (gs m.φ y _ (θ.f k))` using `by rw [gs_stalkMap m.φ y _ hk]; exact u.map _`. Establish `e` using `hs _ (𝟙 _) y k l hk hl`. Rewrite `e` using `[Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `u₂` using `isUnit_of_mul_isUnit_right (e ▸ u₁)`. Rewrite `u₂` using `[gs_eq (𝟙 _) y _ hl]`. Conclude with `⟨y, hy, TopologicalSpace.Opens.mem_iSup.2 ⟨l, (t'.G.left.mem_basicOpen _ _ hl).2 u₂⟩⟩`. Establish `hsp : spMap (f'.comp f) = spMap f' ≫ spMap f` using `spMap_comp _ _`. Establish `hc` using `m.cart`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp` using `hc.1`. Take `⟨φ', hφ, hw0⟩ : ∃ φ' : x.P.A.left ⟶ t'.G.left, φ' ≫ m.φ = φ'' ∧ φ' ≫ t'.G.hom = x.P.A.hom ≫ spMap f'` from `⟨hp.lift φ'' (x.P.A.hom ≫ spMap f') (by rw [hc''.1.w, Category.assoc, hsp]), hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`. Substitute `hφ` using the available equality. Establish `he' : eSec x.P.A ≫ φ' = spMap f' ≫ eSec t'.G`. Apply `hp.hom_ext` to reduce the goal to its premises.
+Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, he'', hsp, Category.assoc, Category.assoc, he]`. Establish `a₁ : eSec x.P.A ≫ x.P.A.hom = 𝟙 _` using `Over.w η[x.P.A]`. Establish `a₂ : eSec t'.G ≫ t'.G.hom = 𝟙 _` using `Over.w η[t'.G]`. Rewrite using `[Category.assoc, hw0, ← Category.assoc, a₁, Category.assoc, a₂]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w', T⟩` from `exists_cancel t.PP.isLB w w'' g g'' t'.PP.isLB x.P.isLB`. Establish `r` using `(maps_iff w _ (fun _ => eSec t.G) _ t'.PP.rig t.PP.rig (spMap f) _ (rigPull_le m.φ (spMap f) he t.PP.L) (fun _ => rfl)).1 hr`. Establish `r''` using `(maps_iff w'' _ (fun _ => eSec t.G) _ x.rig t.PP.rig (spMap (f'.comp f)) _ (rigPull_le (φ' ≫ m.φ) (spMap (f'.comp f)) he'' t.PP.L) (fun _ => rfl)).1 hr''`. Rewrite `r''` using `[hsp]`. Establish `hFF : (Chart.dualMapR f').comp (Chart.dualMapR f) = F''` using `dualNumber_ringHom_ext (fun a => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[RingHom.comp_apply, hF'']`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl])`. Use the proof step `(by`. Rewrite using `[RingHom.comp_apply, hFe'']`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR])`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨φ', he', w', hg'', Chart.dualMapR f', hc.cancel (hc''.congr hsp rfl) hw0, (isGen_iff w').2 (T.pgen_cancel t.PP.isLB g g''), (maps_iff w' _ (fun _ => eSec t'.G) _ x.rig t'.PP.rig (spMap f') _ (rigPull_le φ' (spMap f') he' t'.PP.L) (fun _ => rfl)).2 (T.pmaps_cancel t.PP.isLB (fun …` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart t.PP.isLB (m.φ (φ' (q z)))`. Establish `a` using `hs Z (q ≫ φ') z j i hj hi`. Establish `b` using `(appLE_eq_iff_stalk w'' θ x.th).1 hs'' Z q z j k hj hk`. Rewrite `b` using `[T Z q z j i k hj hi hk, ← Category.assoc, a, Units.val_mul, _root_.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(Units.mul_right_inj _).1 b`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hv'', Category.assoc, hvv, ← hFF, ← Category.assoc, spMap_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Category.assoc, hw0, ← Category.assoc, Over.w, Category.assoc, Over.w] show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isFibreOf_pull_local {R R' R'' : Type} [CommRing R] [CommRing R'] [IsLocalRing R'] [CommRing R'']
     {f : R →+* R'} {f' : R' →+* R''} {t : SAB H (Sp R)} {t' : SAB H (Sp R')} (m : SABMap t' t (spMap f))
@@ -129,7 +129,7 @@ theorem exists_isFibreOf_pull_local {R R' R'' : Type} [CommRing R] [CommRing R']
       ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Take `⟨t', ⟨m⟩⟩` from `Kftwo.exists_pull (spMap f) t`. Take `⟨θ', w', h₁, h₂, h₃⟩` from `exists_isFibreOf_pull_local m hθ hw hx`. Conclude with `Kftwo.key_isUnit hκ hpow t' θ' w' x h₃ h₂ h₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem key_mem_of_dvr {κ : KeyRule} (hκ : IsKeyRule κ) (hpow : ∀ (K : Type) [Field K] [CharZero K] (x y : KeyIn K) (j : ℕ),
       GlobalTheory.KeyPow.IsKeyPow y x j → κ K y = κ K x ^ j)
@@ -145,7 +145,7 @@ theorem key_mem_of_dvr {κ : KeyRule} (hκ : IsKeyRule κ) (hpow : ∀ (K : Type
 end Pull
 
 /- English proof (translation)
-Establish `hb : a ∈ (⊥ : Subalgebra (𝓞 L) L)`. Rewrite using `[← IsDedekindDomain.HeightOneSpectrum.iInf_localization_eq_bot (𝓞 L) L, Algebra.mem_iInf]`. Conclude with `h`. Take `⟨b, rfl⟩` from `Algebra.mem_bot.1 hb`. Conclude with `b.isIntegral_coe`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_forall_mem {L : Type} [Field L] [NumberField L] (a : L)
     (h : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 L),
@@ -161,13 +161,11 @@ section Main
 open MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights TensorProduct GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
 /- English proof (translation)
-Introduce `κ k₁ k₂ k₃ k₄ k₅ E _ _ _ H L _ _ t th x v ⟨φ, he, w, h1, h2, h3, h4, h5⟩ hv hθ`. Establish `hκ : GlobalTheory.IndefiniteRowSideFullHecke.FibreFramesOnModels.IsKeyRule κ`. Use `⟨?_, k₂, k₃, k₄, ?_⟩` and prove the remaining obligations. Simplify `k₁` using `only [GlobalTheory.KeyCl.Homog, _root_.mul_one]`. Simplify `k₅` using `only [GlobalTheory.KeyCl.ArchNorm, _root_.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Apply the tactic sequence `have hx : GlobalTheory.IndefiniteRowSideFullHecke.FibreFramesOnModels.IsFibreOf x t.G t.PP.L t.PP.rig th v (algebraMap (𝓞 L) L) := ⟨φ, he, w, rfl, dualMap (algebraMap (𝓞 L) L), h1, h2, h3, h4, fun a => by ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl], by ext <;> simp [d …`. Use `isIntegral_of_forall_mem _ fun p => ?_` and prove the remaining obligations. Take `⟨V, hV⟩ : ∃ V : Subalgebra (𝓞 L) L, V = Localization.subalgebra.ofField L _ p.asIdeal.primeCompl_le_nonZeroDivisors` from `⟨_, rfl⟩`. Establish `hl : IsLocalization.AtPrime V p.asIdeal`. Rewrite using `[hV]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Localization.subalgebra.isLocalization_ofField L _ _`. Establish `hd : IsDiscreteValuationRing V` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 L) p.ne_bot V`. Rewrite `hx` using `[IsScalarTower.algebraMap_eq (𝓞 L) V L]`. Take `⟨u, hu⟩` from `key_mem_of_dvr hκ (GlobalTheory.KeyCl.rule_pow κ k₁ k₂ k₄) (algebraMap (𝓞 L) V) t th v x hx hv hθ`. Rewrite using `[← hV, hu]`.
-
-Conclude with `(u : V).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_isIntegral : ∀ κ : GlobalTheory.KeyCl.Rule, GlobalTheory.KeyCl.Homog (fun _ => 1) κ → GlobalTheory.KeyCl.Funct κ → GlobalTheory.KeyCl.UnitSp κ → GlobalTheory.KeyCl.ThetaOne κ → GlobalTheory.KeyCl.ArchNorm (fun _ => 1) κ → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (t : SAB H (Sp (𝓞 L))) (th : t.PP.L.Sec) (x : KeyIn L) (v : Fin x.P.g → (epsR (𝓞 L) ⟶ t.G)), KeyOver (algebraMap (𝓞 L) L) t th x v → IsLieBasis v → KeyDeg.NonVan t.G.hom th → IsIntegral ℤ (κ L x : L) := by
   intro κ k₁ k₂ k₃ k₄ k₅ E _ _ _ H L _ _ t th x v ⟨φ, he, w, h1, h2, h3, h4, h5⟩ hv hθ
@@ -191,7 +189,7 @@ theorem key_isIntegral : ∀ κ : GlobalTheory.KeyCl.Rule, GlobalTheory.KeyCl.Ho
   exact (u : V).2
 
 /- English proof (translation)
-Introduce `_` and use `key_isIntegral`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem keydeg_integral : KeyBadSt → ∀ κ : GlobalTheory.KeyCl.Rule, GlobalTheory.KeyCl.Homog (fun _ => 1) κ → GlobalTheory.KeyCl.Funct κ → GlobalTheory.KeyCl.UnitSp κ → GlobalTheory.KeyCl.ThetaOne κ → GlobalTheory.KeyCl.ArchNorm (fun _ => 1) κ → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (t : SAB H (Sp (𝓞 L))) (th : t.PP.L.Sec) (x : KeyIn L) (v : Fin x.P.g → (epsR (𝓞 L) ⟶ t.G)), KeyOver (algebraMap (𝓞 L) L) t th x v → IsLieBasis v → KeyDeg.NonVan t.G.hom th → IsIntegral ℤ (κ L x : L) :=
   fun _ => key_isIntegral

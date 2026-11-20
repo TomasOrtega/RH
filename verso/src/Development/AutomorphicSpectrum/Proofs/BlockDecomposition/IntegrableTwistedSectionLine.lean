@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WS
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ χ hχ Ψ hΨ u`. Establish `hcΨ : Continuous Ψ` using `hΨ.1.continuous`. Establish `hcχ : Continuous (fun y : F => ((χ (-y) : Circle) : ℂ))` using `(continuous_induced_dom : Continuous ((↑) : Circle → ℂ)).comp (hχ.1.comp continuous_neg)`. Establish `hcg : Continuous (fun y : F => Ψ ((u : F), (u : F) * y))` using `hcΨ.comp (continuous_const.prodMk (continuous_const.mul continuous_id))`. Establish `hK : IsCompact ((fun p : F × F => ((u⁻¹ : Fˣ) : F) * p.2) '' tsupport Ψ)` using `hΨ.2.isCompact.image (continuous_const.mul continuous_snd)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : HasCompactSupport (fun y : F => Ψ ((u : F), (u : F) * y))`. Use `HasCompactSupport.intro hK (fun y hy => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hy ⟨((u : F), (u : F) * y), subset_tsupport _ hne, by simp⟩`. Conclude with `(hcg.mul hcχ).integrable_of_hasCompactSupport hs.mul_right`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem inner_integrable : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (χ : AddChar F Circle), IsStd χ → ∀ Ψ : F × F → ℂ, GlobalTheory.CompanionTheory.WS.IsSB Ψ → ∀ u : Fˣ, Integrable (fun y : F => Ψ ((u : F), (u : F) * y) * (χ (-y) : ℂ)) (selfDualMeasure χ) := by
   intro F _ _ _ _ _ _ χ hχ Ψ hΨ u

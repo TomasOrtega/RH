@@ -81,13 +81,13 @@ instance Inst.neZero (X : Inst) : NeZero X.L.m := ⟨X.hm⟩
 instance Inst.neZeroLA (X : Inst) (aT' : Fin X.L.n' → ℕ) : NeZero (X.LA aT').m := ⟨X.hm⟩
 
 /- English proof (translation)
-Use `⟨h.1.prime, h.1.five_le, h.1.two_le, h.1.even, ?_⟩` and prove the remaining obligations. Establish `hmax : (Ideal.span {(p : W)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible h.1.p_unif`. Set `_ : Field (W ⧸ Ideal.span {(p : W)})` to `Ideal.Quotient.field _`. Establish `hp : (p : O) ∈ IsLocalRing.maximalIdeal O` using `(dvrOfStd h).p_mem`. Set `f : W →+* FF O` to `(IsLocalRing.residue O).comp j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf : ∀ a ∈ Ideal.span {(p : W)}, f a = 0`. Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Establish `: f (p : W) = 0`. Simplify using `only [f, map_natCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(IsLocalRing.residue_eq_zero_iff (p : O)).2 hp` as an intermediate fact. Simplify using `using this`. Rewrite using `[map_mul, this, mul_zero]`. Set `g : (W ⧸ Ideal.span {(p : W)}) →+* FF O` to `Ideal.Quotient.lift _ f hf`. Use `⟨g.fieldRange, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h.1.res_card]`. Conclude with `(Nat.card_congr (Equiv.ofInjective g g.injective)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_dvr_of_unramified_quadratic_setting {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
     [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
@@ -112,7 +112,7 @@ theorem admissible_dvr_of_unramified_quadratic_setting {p n' : ℕ} {W Qq O Kf :
   exact (Nat.card_congr (Equiv.ofInjective g g.injective)).symm
 
 /- English proof (translation)
-The claim follows from `admissible_dvr_of_unramified_quadratic_setting X.std`.
+A detailed English derivation is pending.
 -/
 theorem Inst.instance_ring_standard (X : Inst) : AdmissibleDVR X.L.p X.L.n' X.O := admissible_dvr_of_unramified_quadratic_setting X.std
 

@@ -11,9 +11,9 @@ namespace GlobalTheory.TraceTower
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Establish `hm : h'⁻¹ * h ∈ Hfix T r`. Use `⟨(Hinf T).mul_mem ((Hinf T).inv_mem hh') hh, ?_⟩` and prove the remaining obligations. Use `MulAction.mem_stabilizer_iff.2 ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.smul_def, AlgEquiv.mul_apply, e]`. Conclude with `h'.symm_apply_apply r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : h'.symm (h x) = x` using `hx.2 _ hm`. Conclude with `h'.symm_apply_eq.1 h1`.
+A detailed English derivation is pending.
 -/
 theorem eq_on_fix {T : Tower p Ω} {r : Ω} {h h' : Gal p Ω} (hh : h ∈ Hinf T) (hh' : h' ∈ Hinf T)
     (e : h r = h' r) {x : Ω} (hx : x ∈ FixI (Hfix T r)) : h x = h' x := by
@@ -29,39 +29,33 @@ end GlobalTheory.TraceTower
 
 open GlobalTheory.TraceTower in
 /- English proof (translation)
-Introduce `p _ Ω _ _ T n r _ hor ι _ u v hu hv huv hz`. Establish `hfin : {ρ : Ω | ∃ h ∈ Hinf T, h r = ρ}.Finite`. Use `((Finset.range (p ^ n)).image (fun i => T.ζ n ^ i * r)).finite_toSet.subset ?_` and prove the remaining obligations. Introduce and unpack `ρ ⟨h, hh, rfl⟩`. Take `⟨i, hi⟩` from `hor h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finset.coe_image, Finset.coe_range, Set.mem_image, Set.mem_Iio]`. Use `⟨i % p ^ n, Nat.mod_lt _ (ppow_pos n), ?_⟩` and prove the remaining obligations. Rewrite using `[hi]`. Use `congr 1`. Use `conv_rhs => rw [← Nat.div_add_mod i (p ^ n)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add, pow_mul, (T.prim n).pow_eq_one, one_pow, one_mul]`. Use `set O := hfin.toFinset with hOdef`. Establish `hO : ∀ ρ, ρ ∈ O ↔ ∃ h ∈ Hinf T, h r = ρ` using `fun ρ => hfin.mem_toFinset`. Establish `hg0 : ∀ ρ, ∃ f : Gal p Ω, ρ ∈ O → f ∈ Hinf T ∧ f r = ρ`. Introduce `ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hρ : ρ ∈ O`. Take `⟨h, hh, e⟩` from `(hO ρ).1 hρ`. Conclude with `⟨h, fun _ => ⟨hh, e⟩⟩`. Conclude with `⟨1, fun h => absurd h hρ⟩`. Use `choose g hg using hg0`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrO : r ∈ O` using `(hO r).2 ⟨1, (Hinf T).one_mem, rfl⟩`. Establish `fixr : ∀ x ∈ FixI (Hfix T r), g r x = x` using `fun x hx => hx.2 _ ⟨(hg r hrO).1, MulAction.mem_stabilizer_iff.2 (by rw [AlgEquiv.smul_def]; exact (hg r hrO).2)⟩`. Establish `kk : ∀ f ∈ Hinf T, ∀ ρ ∈ O, ∀ x ∈ FixI (Hfix T r), f (g ρ x) = g (f ρ) x ∧ f ρ ∈ O`. Introduce `f hf ρ hρ x hx`. Establish `hm : f * g ρ ∈ Hinf T` using `(Hinf T).mul_mem hf (hg ρ hρ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr' : (f * g ρ) r = f ρ` using `by rw [AlgEquiv.mul_apply, (hg ρ hρ).2]`. Establish `hfO : f ρ ∈ O` using `(hO _).2 ⟨_, hm, hr'⟩`. Use `⟨?_, hfO⟩` and prove the remaining obligations. Use `eq_on_fix hm (hg _ hfO).1 (by rw [hr', (hg _ hfO).2]) hx` as an intermediate fact. Rewrite `this` using `[AlgEquiv.mul_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `zero_inv : ∀ ρ ∈ O, ρ ≠ r → ∑ k, v k * g ρ (u k) = 0`. Introduce `ρ hρ hne`. Use `set f := g ρ`. Establish `hf : f ∈ Hinf T` using `(hg ρ hρ).1`. Establish `hne' : f⁻¹ r ≠ r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `e`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← (hg ρ hρ).2]`. Establish `e' : f.symm r = r` using `e`. Use `conv_lhs => rw [← e']`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `f.apply_symm_apply r`. Establish `h0` using `hz _ ((Hinf T).inv_mem hf) hne'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Establish `: f (f⁻¹ (v k)) = v k` using `f.apply_symm_apply (v k)`. Rewrite using `[this, mul_comm]`. Use `_ = 0 := by rw [h0, map_zero]`. Use `⟨fun x => ∑ ρ ∈ O, g ρ x, fun x hx => ⟨hx.1, fun f hf => hx.2 f hf.1⟩, fun x hx => hx.1, hu, hv, ?_, ?_, ?_, ?_, ?_, huv⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Use `⟨int_sum _ _ fun ρ _ => int_gal _ hx.1, fun f hf => ?_⟩` and prove the remaining obligations. Use `show f (∑ ρ ∈ O, g ρ x) = ∑ ρ ∈ O, g ρ x`. Rewrite using `[map_sum]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_nbij' (fun ρ => f ρ) (fun ρ => f.symm ρ) (fun ρ hρ => (kk f hf ρ hρ x hx).2) (fun ρ hρ => (kk f⁻¹ ((Hinf T).inv_mem hf) ρ hρ x hx).2) (fun ρ _ => f.symm_apply_apply ρ) (fun ρ _ => f.apply_symm_apply ρ) (fun ρ _ => rfl)` and prove the remaining obligations. Introduce `x _ y _`. Simplify using `only [map_add, Finset.sum_add_distrib]`. Introduce `b hb x _`. Simplify using `only [Finset.mul_sum]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun ρ hρ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hb.2 _ (hg ρ hρ).1]`. Introduce `y hy`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun ρ _ => Finset.sum_congr rfl fun k _ => by ring`. Use `_ = g r y * ∑ k, u k * g r (v k) := by`. Use `Finset.sum_eq_single r (fun ρ hρ hne => ?_) (fun h => absurd hrO h)` and prove the remaining obligations. Rewrite using `[hz _ (hg ρ hρ).1 (by rw [(hg ρ hρ).2]; exact hne), mul_zero]`.
-
-Use `_ = p * y := by`. Rewrite using `[fixr y hy, Finset.sum_congr rfl fun k _ => by rw [fixr (v k) (hv k)], huv, mul_comm]`. Introduce `y hy`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, Finset.mul_sum]`.
-
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun ρ _ => Finset.sum_congr rfl fun k _ => by ring`. Use `_ = g r y * ∑ k, v k * g r (u k) := by`. Use `Finset.sum_eq_single r (fun ρ hρ hne => ?_) (fun h => absurd hrO h)` and prove the remaining obligations. Rewrite using `[zero_inv ρ hρ hne, mul_zero]`.
-
-Use `_ = p * y := by`. Rewrite using `[fixr y hy, Finset.sum_congr rfl fun k _ => by rw [fixr (u k) (hu k)], ← huv, mul_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.traceTower_dualData : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], ∀ (T : Tower p Ω) (n : ℕ) (r : Ω), IsInt p r → (∀ h ∈ Hinf T, ∃ i : ℕ, h r = T.ζ n ^ i * r) →
   ∀ (ι : Type) [Fintype ι] (u v : ι → Ω), (∀ k, u k ∈ FixI (Hfix T r)) → (∀ k, v k ∈ FixI (Hfix T r)) →

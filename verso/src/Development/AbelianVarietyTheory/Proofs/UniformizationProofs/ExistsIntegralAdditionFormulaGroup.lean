@@ -22,13 +22,13 @@ noncomputable section
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Introduce `V _ _ _ _ D A G _ _ U θ`. Use `U.semi.smooth` as an intermediate fact. Use `U.semi.separated` as an intermediate fact. Use `U.semi.quasiCompact` as an intermediate fact. Take `⟨v, hv⟩` from `exists_addSec _ G U.P (𝟙_ _) θ (toUnit _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v', hv'⟩` from `exists_sec U.P.L.isLB (K' := Fin 1 ⊕ Fin 1) (φ' := Sum.elim (fun _ => (fst G G).left ≫ 𝟙 G.left) (fun _ => (snd G G).left ≫ 𝟙 G.left)) (ε' := Sum.elim (fun _ => ((2 : ℕ) : ℤ)) (fun _ => ((2 : ℕ) : ℤ))) (fun U _ h => by simp only [Category.comp_id]) v`. Take `⟨r, hr, n, a, b, hab⟩` from `GlobalTheory.exists_smul_eq_sum_mul_of_isDomain V G.left U.P.L.L U.P.L.isLB G G (Fin 1) (Fin 1) (fun _ => 𝟙 G.left) (fun _ => ((2 : ℕ) : ℤ)) (fun _ => 𝟙 G.left) (fun _ => ((2 : ℕ) : ℤ)) v'`. Establish `mv : ∀ s : LB.Sec (LB.LinComb U.P.L.L (K` using `Fin 1) (fun _ => 𝟙 G.left) (fun _ => ((2 : ℕ) : ℤ))), ∃ σ : U.SecGT (𝟙_ _) 2, ∀ (T : Over (Spec (CommRingCat.of V))) (x : T ⟶ G) (z : T.left) (J), Good U.P.L.L z J → sval σ (lift (toUnit T) x).left z J = sval s x.left z J := fun s => by`. Take `⟨σ, hσ⟩` from `exists_sec U.P.L.isLB (K' := Fin 1) (φ' := fun _ => (snd (𝟙_ _) G).left) (ε' := fun _ => ((2 : ℕ) : ℤ)) (fun U _ h => by simp only [Category.comp_id]) (H1.SectionArithmetic.pullSec s (snd (𝟙_ _) G).left)`. Use `⟨σ, fun T x z J hJ => (hσ _ _ z J hJ).trans ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[H1.SectionArithmetic.sval_pullSec _ _ _ z hJ, ← Over.comp_left, lift_snd]`. Use `choose mv hmv using mv`. Use `⟨r, n, fun i => mv (a i), fun i => mv (b i), hr, fun T x y z J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `hab T.left (lift x y).left z J hJ`. Rewrite `e` using `[← Over.comp_left, ← Over.comp_left, lift_fst, lift_snd, hv' _ _ z J hJ, hv T x y z J hJ, toUnit_unique (lift x y ≫ toUnit _) (toUnit T)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `g : gs (lift x y).left z ⊤ (scal (G ⊗ G).hom r) = gs (𝟙 _) z ⊤ (scal T.hom r)`. Establish `p : ∀ {Z Y : Scheme.{0}} (f : Z ⟶ Y) (q : Y ⟶ Spec (CommRingCat.of V)) (w : Z), gs f w ⊤ (scal q r) = gs (f ≫ q) w ⊤ ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom r)` using `fun f q w => gs_pull f q w ⊤ trivial _`. Rewrite using `[p, p, Over.w, Category.id_comp]`. Simplify using `only [hmv _ T _ z J hJ]`. Rewrite using `[e, g, _root_.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_addG : (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ θ : U.SecGT (𝟙_ _) 1, ∃ (r : V) (n : ℕ) (σ σ' : Fin n → U.SecGT (𝟙_ _) 2), r ≠ 0 ∧ U.AddG θ r σ σ') := by
   intro V _ _ _ _ D A G _ _ U θ

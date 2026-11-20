@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia.Abs
 
 /- English proof (translation)
-Introduce `O _ _ σ hσ wt`. Establish `hinj : Function.Injective (algebraMap O (FractionRing O))` using `IsFractionRing.injective O _`. Set `φ : FA O wt →ₐ[O] MvPowerSeries σ (FractionRing O)` to `(MvPowerSeries.mapAlgHom (Algebra.ofId O (FractionRing O))).comp (WPres.free O wt).A.val`. Establish `hφ : ∀ (f : FA O wt) (d : σ →₀ ℕ), coeff d (φ f) = algebraMap O (FractionRing O) (coeff d (ser f))` using `fun f d => rfl`. Use `⟨σ, hσ, wt, φ, ⟨?_, ?_, ?_, ?_⟩, fun j => rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j f hf d hd`. Rewrite using `[hφ, mem_Fgr.1 hf d hd, map_zero]`. Introduce `f`. Rewrite using `[weightedSeriesOrigin_apply]`. Conclude with `hφ f 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `hz : ser ((WPres.free O wt).zA i) = MvPowerSeries.X i` using `rfl`. Use `⟨(WPres.free O wt).zA i, ?_, fun i' hi => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hz, coeff_index_single_self_X, map_one]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφ, hz, coeff_index_single_X, if_neg hi, map_zero]`. Introduce `f h0 h1`. Use `(UpperTheory.mem_satSq_iff_constantCoeff_and_linearCoeff_eq_zero O σ wt f).2 ⟨by rw [← weightedSeriesOrigin_apply, h0], fun i => hinj ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, h1, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.smoothPt_weightedGradedAlgebra_basePoint :
     ∀ (O : Type) [CommRing O] [IsDomain O] (σ : Type) [Fintype σ] (wt : σ → ℤ),

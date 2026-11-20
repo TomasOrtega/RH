@@ -11,15 +11,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Introduce `hDg hCp hTr hEig hSplit hSS Γ k _ _ _ _ m m' t t' r r' a a' hr hr' hne hcp`. Use `set c := a (Fin.last t) with hc`. Establish `hR1 : IsSSRep (sumRep r (dg a'))` using `GlobalTheory.BCGal.ss_sumRep _ _ hr (hDg Γ k t' a').1`. Establish `hR2 : IsSSRep (sumRep r' (dg a))` using `GlobalTheory.BCGal.ss_sumRep _ _ hr' (hDg Γ k (t + 1) a).1`. Establish `hcpR : ∀ g, cp (sumRep r (dg a')) g = cp (sumRep r' (dg a)) g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[(hCp Γ k (m + 1) t').1, (hCp Γ k m' (t + 1)).1, (hDg Γ k t' a').2, (hDg Γ k (t + 1) a).2]`. Conclude with `hcp g`. Establish `hv2` using `(hEig Γ k m' (t + 1) r' a c).1 ⟨Fin.last t, rfl⟩`. Establish `hv1` using `hTr Γ k _ _ (sumRep r (dg a')) (sumRep r' (dg a)) hR1 hR2 hcpR c hv2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hv` using `(hEig Γ k (m + 1) t' r a' c).2 (fun j h => hne (Fin.last t) j h.symm) hv1`. Take `⟨s, hs⟩` from `hSplit Γ k m r hr c hv`. Establish `hsum : IsSSRep (sumRep s (rk1 c))` using `(hSS Γ k (m + 1) 0).2.1 r _ hs hr`. Use `⟨s, (hSS Γ k m 1).1 s (rk1 c) hsum, hs, ?_⟩` and prove the remaining obligations. Introduce `g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : cp r g = cp s g * (X - C ((c g : kˣ) : k))`. Rewrite using `[← (hCp Γ k (m + 1) 0).2.2 r _ hs g, (hCp Γ k m 1).1, (hCp Γ k m 1).2.1]`. Establish `h2 : lin a g = lin (fun i => a i.castSucc) g * (X - C ((c g : kˣ) : k))`. Simplify using `only [lin]`. Rewrite using `[Fin.prod_univ_castSucc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : (X - C ((c g : kˣ) : k) : k[X]) ≠ 0` using `Polynomial.X_sub_C_ne_zero _`. Establish `key` using `hcp g`. Rewrite `key` using `[h1, h2]`. Apply `mul_right_cancel₀ hX` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Sub.peelOne_holds :
     DgFacts → CpFacts → EigTransfer → EigSum → SplitLine → SSLeft → PeelOne := by

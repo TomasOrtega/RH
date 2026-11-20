@@ -22,15 +22,15 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Rewrite using `[Scheme.preimage_eq_top_of_closedPoint_mem ξ (q.2.mem_open U.isOpen hq)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem le_preimage_of_cpt (ξ : Sp Ω ⟶ X) (q : Cpt ξ) {U : X.Opens} (hq : q.1 ∈ U) : ⊤ ≤ ξ ⁻¹ᵁ U := by
   rw [Scheme.preimage_eq_top_of_closedPoint_mem ξ (q.2.mem_open U.isOpen hq)]
 
 /- English proof (translation)
-Establish `hU : ξ (IsLocalRing.closedPoint Ω) ∈ U` using `q.2.mem_open U.isOpen hq`. Establish `hle` using `le_preimage_of_cpt ξ q hq`. Establish `e1 : X.presheaf.germ U q.1 hq ≫ X.presheaf.stalkSpecializes q.2 = X.presheaf.germ U _ hU` using `TopCat.Presheaf.germ_stalkSpecializes _ _ _`. Establish `e5 : (X.presheaf.germ U q.1 hq ≫ X.presheaf.stalkSpecializes q.2) ≫ Scheme.stalkClosedPointTo ξ = X.presheaf.germ U _ hU ≫ Scheme.stalkClosedPointTo ξ` using `congrArg (· ≫ Scheme.stalkClosedPointTo ξ) e1`. Establish `e6 : X.presheaf.germ U _ hU ≫ Scheme.stalkClosedPointTo ξ = Scheme.Hom.appLE ξ U ⊤ hle ≫ (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.germ_stalkClosedPointTo, Iso.trans_hom, ← Category.assoc]`. Use `congr 1`. Establish `e4` using `congrArg (fun φ => φ.hom s) (e5.trans e6)`. Simplify using `only [valR, dif_pos hle]`. Conclude with `e4`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genMap_germ_eq (ξ : Sp Ω ⟶ X) (q : Cpt ξ) {U : X.Opens} (hq : q.1 ∈ U) (s : Γ(X, U)) :
     genMap ξ q ((X.presheaf.germ U q.1 hq).hom s) = valR ξ U s := by
@@ -50,9 +50,9 @@ theorem genMap_germ_eq (ξ : Sp Ω ⟶ X) (q : Cpt ξ) {U : X.Opens} (hq : q.1 �
   exact e4
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `GlobalTheory.ProjSpace.exists_mem_chart o n (y (IsLocalRing.closedPoint Ω))`. Establish `hle : ⊤ ≤ y ⁻¹ᵁ chart o n i` using `(Scheme.preimage_eq_top_of_closedPoint_mem y hi).ge`. Set `t : Fin (n + 1) → Ω` to `fun j => valR y (chart o n i) (ratio o n i j)`. Establish `hti : t i = 1`. Simplify using `only [t, ratio, GlobalTheory.ProjSpace.ratioOn_self, valR, dif_pos hle, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ht : t ≠ 0` using `fun h0 => one_ne_zero (hti.symm.trans (congrFun h0 i))`. Use `⟨t, ht, GlobalTheory.TuplePoint.eq_point hy (i := i) (by rw [hti]; exact one_ne_zero) hle (fun j => ?_)⟩` and prove the remaining obligations. Rewrite using `[hti, div_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_point {o : Type} [CommRing o] [Algebra o Ω] {n : ℕ} (y : Sp Ω ⟶ PSpace o n)
     (hy : y ≫ PSpace.str o n = spMap (algebraMap o Ω)) :
@@ -72,17 +72,17 @@ variable {o : Type} [CommRing o] [Algebra o Ω] {n : ℕ} {t : Fin (n + 1) → �
   {ξ : Sp Ω ⟶ X} {i : X ⟶ PSpace o n}
 
 /- English proof (translation)
-Establish `key : ∀ (d : Fin (n + 1)) (hd : q.1 ∈ i ⁻¹ᵁ chart o n d) (c' : Fin (n + 1)), genMap ξ q ((X.presheaf.germ _ q.1 hd).hom (pullRatio i (i ⁻¹ᵁ chart o n d) d le_rfl c')) = t c' / t d`. Introduce `d hd c'`. Rewrite using `[genMap_germ_eq ξ q hd]`. Conclude with `valR_pullRatio hi (le_preimage_of_cpt ξ q hd) le_rfl c'`. Establish `hne : ∀ d : Fin (n + 1), q.1 ∈ i ⁻¹ᵁ chart o n d → t d ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd h0`. Establish `h1` using `key d hd d`. Rewrite `h1` using `[pullRatio_self, map_one, map_one, h0, div_zero]`. Conclude with `one_ne_zero h1`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨hc, hreg⟩`. Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : ∃ d, q.1 ∈ i ⁻¹ᵁ chart o n d := by`. Establish `hmem : i q.1 ∈ (⨆ d, chart o n d)`. Rewrite using `[iSup_chart]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨d, hd⟩` from `TopologicalSpace.Opens.mem_iSup.mp hmem`. Conclude with `⟨d, hd⟩`. Establish `htd` using `hne d hd`. Establish `hunit : IsUnit ((X.presheaf.germ _ q.1 hd).hom (pullRatio i (i ⁻¹ᵁ chart o n d) d le_rfl c))`. Take `⟨y, hy⟩` from `RingHom.mem_range.mp (hreg d)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsUnit.of_mul_eq_one y (hξ.inj q ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_one, key d hd c, hy]`. Clear the denominators using the available nonvanishing facts. Establish `hmem` using `(X.mem_basicOpen _ q.1 hd).mpr hunit`. Rewrite `hmem` using `[basicOpen_pullRatio]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `(TopologicalSpace.Opens.mem_inf.mp hmem).2`. Introduce `hq`. Conclude with `⟨hne c hq, fun c' => ⟨_, key c hq c'⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem inChart_iff (hξ : IsCptGen ξ) (hi : ξ ≫ i = point o t ht) (c : Fin (n + 1)) (q : Cpt ξ) :
     InChart ξ t c q ↔ q.1 ∈ i ⁻¹ᵁ chart o n c := by
@@ -117,11 +117,11 @@ theorem inChart_iff (hξ : IsCptGen ξ) (hi : ξ ≫ i = point o t ht) (c : Fin 
     exact ⟨hne c hq, fun c' => ⟨_, key c hq c'⟩⟩
 
 /- English proof (translation)
-Establish `htop : ⊤ ≤ point o t ht ⁻¹ᵁ chart o n c`. Establish `h1` using `valR_point_ratio (L := Ω) (o := o) (t := t) (ht := ht) hc c`. Assume the negation of the conclusion as `hne`. Simplify using `only [valR, dif_neg hne] at h1`. Rewrite `h1` using `[div_self hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h1`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C r`. Rewrite using `[MvPolynomial.aeval_C, MvPolynomial.aeval_C, algebraMap_sections_eq, CommRingCat.hom_comp, RingHom.comp_apply]`. Use `(valR_appLE (point o t ht) (PSpace.str o n) _ htop _).trans ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[point_str, ← preimage_apply, Spec.preimage_map, CommRingCat.hom_ofHom]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, valR_add _ _ htop, hp, hq]`. Consider the case `mul_X p j hp`. Rewrite using `[map_mul, map_mul, valR_mul _ _ htop, hp, MvPolynomial.aeval_X, MvPolynomial.aeval_X, valR_point_ratio hc j]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valR_point_chart_aeval_ratio {o : Type} [CommRing o] [Algebra o Ω] {n : ℕ} {t : Fin (n + 1) → Ω}
     {ht : t ≠ 0} {c : Fin (n + 1)} (hc : t c ≠ 0) (P : MvPolynomial (Fin (n + 1)) o) :
@@ -146,11 +146,11 @@ private theorem valR_point_chart_aeval_ratio {o : Type} [CommRing o] [Algebra o 
       valR_point_ratio hc j]
 
 /- English proof (translation)
-Establish `key : ∀ g : Γ(PSpace o n, chart o n c), valR ξ (i ⁻¹ᵁ chart o n c) ((i.app (chart o n c)).hom g) = valR (point o t ht) (chart o n c) g`. Introduce `g`. Rewrite using `[← valR_comp, hi]`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval, AlgHom.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨f, rfl⟩`. Take `⟨g, rfl⟩` from `i.app_surjective (chart o n c) (isAffineOpen_chart o n c) f`. Take `⟨P, rfl⟩` from `aeval_ratio_surjective o n c g`. Conclude with `⟨P, by rw [key, valR_point_chart_aeval_ratio hc]⟩`. Introduce and unpack `⟨P, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(i.app _).hom (MvPolynomial.aeval (ratio o n c) P), by rw [key, valR_point_chart_aeval_ratio hc]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_valR_eq_iff_mem_adjoin_ratio [IsClosedImmersion i] (hi : ξ ≫ i = point o t ht) {c : Fin (n + 1)}
     (hc : t c ≠ 0) (a : Ω) :
@@ -170,33 +170,31 @@ private theorem exists_valR_eq_iff_mem_adjoin_ratio [IsClosedImmersion i] (hi : 
     exact ⟨(i.app _).hom (MvPolynomial.aeval (ratio o n c) P), by rw [key, valR_point_chart_aeval_ratio hc]⟩
 
 /- English proof (translation)
-Establish `hinU : ∀ p : Cpt ξ, InChart ξ t c p ↔ p.1 ∈ i ⁻¹ᵁ chart o n c` using `fun p => inChart_iff hξ hi c p`. Establish `hgU : GlobalTheory.CompanionTheory.Ar.genPt ξ ∈ i ⁻¹ᵁ chart o n c`. Establish `h0 : ∀ b : Ω, b ∈ regAt ξ ⟨GlobalTheory.CompanionTheory.Ar.genPt ξ, specializes_refl _⟩`. Introduce `b`. Take `⟨g, hg⟩` from `hξ.bij.2 b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨g, ?_⟩` and prove the remaining obligations. Establish `e : X.presheaf.stalkSpecializes (specializes_refl (GlobalTheory.CompanionTheory.Ar.genPt ξ)) = 𝟙 _` using `TopCat.Presheaf.stalkSpecializes_refl _ _`. Establish `h3` using `congrArg (fun φ => (φ ≫ Scheme.stalkClosedPointTo ξ).hom g) e`. Simplify using `only [Category.id_comp] at h3`. Conclude with `h3.trans hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `(hinU ⟨_, specializes_refl _⟩).mp ⟨hc, fun j => h0 _⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, rfl⟩ p hp`. Conclude with `⟨_, genMap_germ_eq ξ p ((hinU p).mp hp) f⟩`. Introduce `hreg haveI hint : AlgebraicGeometry.IsIntegral X := (PositivityTheory.HtPt.Mf.xr_normal X Ω ξ hξ hall).1`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU : IsAffineOpen (i ⁻¹ᵁ chart o n c)` using `(isAffineOpen_chart o n c).preimage i`. Use `haveI : Nonempty (i ⁻¹ᵁ chart o n c) := ⟨⟨_, hgU⟩⟩`. Use `haveI := functionField_isFractionRing_of_isAffineOpen X _ hU`. Set `ψ : X.functionField →+* Ω` to `(X.presheaf.stalkSpecializes (hall (genericPoint X)) ≫ Scheme.stalkClosedPointTo ξ).hom`. Establish `hgpU : genericPoint X ∈ i ⁻¹ᵁ chart o n c` using `(genericPoint_specializes (GlobalTheory.CompanionTheory.Ar.genPt ξ)).mem_open (i ⁻¹ᵁ chart o n c).isOpen hgU`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcompat : ∀ (x : X) (hx : x ∈ i ⁻¹ᵁ chart o n c) (f : Γ(X, i ⁻¹ᵁ chart o n c)), genMap ξ ⟨x, hall x⟩ ((X.presheaf.germ _ x hx).hom f) = ψ (algebraMap Γ(X, i ⁻¹ᵁ chart o n c) X.functionField f)`. Introduce `x hx f`. Establish `e1 : X.presheaf.germ _ x hx ≫ X.presheaf.stalkSpecializes (hall x) = X.presheaf.germ _ (GlobalTheory.CompanionTheory.Ar.genPt ξ) hgU` using `TopCat.Presheaf.germ_stalkSpecializes _ _ _`. Establish `e2 : X.presheaf.germ _ (genericPoint X) hgpU ≫ X.presheaf.stalkSpecializes (hall (genericPoint X)) = X.presheaf.germ _ (GlobalTheory.CompanionTheory.Ar.genPt ξ) hgU` using `TopCat.Presheaf.germ_stalkSpecializes _ _ _`. Establish `h1 : algebraMap Γ(X, i ⁻¹ᵁ chart o n c) X.functionField f = (X.presheaf.germ _ (genericPoint X) hgpU).hom f` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `congrArg (fun φ => (φ ≫ Scheme.stalkClosedPointTo ξ).hom f) e1`. Establish `h4` using `congrArg (fun φ => (φ ≫ Scheme.stalkClosedPointTo ξ).hom f) e2`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at h3 h4`. Rewrite using `[h1]`. Simplify using `only [ψ, CommRingCat.hom_comp, RingHom.comp_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h3.trans h4.symm`. Establish `hsurj : Function.Surjective ψ`. Introduce `a'`. Take `⟨g, rfl⟩` from `hξ.bij.2 a'`. Use `⟨(X.presheaf.stalkSpecializes (genericPoint_specializes (GlobalTheory.CompanionTheory.Ar.genPt ξ))).hom g, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hc2 : X.presheaf.stalkSpecializes (genericPoint_specializes (GlobalTheory.CompanionTheory.Ar.genPt ξ)) ≫ X.presheaf.stalkSpecializes (hall (genericPoint X)) = 𝟙 _` using `(TopCat.Presheaf.stalkSpecializes_comp _ _ _).trans (TopCat.Presheaf.stalkSpecializes_refl _ _)`. Establish `h3` using `congrArg (fun φ => (φ ≫ Scheme.stalkClosedPointTo ξ).hom g) hc2`. Simplify using `only [Category.id_comp, CommRingCat.hom_comp, RingHom.comp_apply] at h3`. Simplify using `only [ψ, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, rfl⟩` from `hsurj a`. Establish `hb : b ∈ (⊥ : Subalgebra Γ(X, i ⁻¹ᵁ chart o n c) X.functionField)`. Rewrite using `[← PrimeSpectrum.iInf_localization_eq_bot Γ(X, i ⁻¹ᵁ chart o n c) X.functionField, Algebra.mem_iInf]`. Introduce `v`. Establish `hyU : hU.fromSpec v ∈ i ⁻¹ᵁ chart o n c`.
+Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hr` using `hU.range_fromSpec`. Rewrite `hr` using `[Set.ext_iff]`. Conclude with `(hr _).mp ⟨v, rfl⟩`. Use `letI : Algebra Γ(X, i ⁻¹ᵁ chart o n c) (X.presheaf.stalk (hU.fromSpec v)) := TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨hU.fromSpec v, hyU⟩`. Use `haveI hloc : IsLocalization v.asIdeal.primeCompl (X.presheaf.stalk (hU.fromSpec v)) := hU.isLocalization_stalk' v hyU`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : InChart ξ t c ⟨hU.fromSpec v, hall _⟩` using `(hinU _).mpr hyU`. Take `⟨g, hg⟩ : ∃ g : X.presheaf.stalk (hU.fromSpec v), genMap ξ ⟨hU.fromSpec v, hall _⟩ g = ψ b` from `RingHom.mem_range.mp (hreg _ hp)`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective v.asIdeal.primeCompl g`. Establish `hspec` using `IsLocalization.mk'_spec (X.presheaf.stalk (hU.fromSpec v)) r s`. Establish `hm` using `congrArg (genMap ξ ⟨hU.fromSpec v, hall _⟩) hspec`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hm` using `[map_mul, hg]`. Establish `hr : algebraMap Γ(X, i ⁻¹ᵁ chart o n c) (X.presheaf.stalk (hU.fromSpec v)) r = (X.presheaf.germ _ _ hyU).hom r` using `rfl`. Establish `hs' : algebraMap Γ(X, i ⁻¹ᵁ chart o n c) (X.presheaf.stalk (hU.fromSpec v)) s = (X.presheaf.germ _ _ hyU).hom s` using `rfl`. Rewrite `hm` using `[hr, hs', hcompat _ hyU, hcompat _ hyU, ← map_mul]`. Establish `hb'` using `ψ.injective hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs0 : algebraMap Γ(X, i ⁻¹ᵁ chart o n c) X.functionField (s : Γ(X, i ⁻¹ᵁ chart o n c)) ≠ 0`. Rewrite using `[map_ne_zero_iff _ (IsFractionRing.injective Γ(X, i ⁻¹ᵁ chart o n c) X.functionField)]`. Introduce `h0`. Conclude with `s.2 (by rw [h0]; exact v.asIdeal.zero_mem)`. Use `⟨r, s, s.2, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[eq_mul_inv_iff_mul_eq₀ hs0, hb']`. Take `⟨f, hf⟩` from `Algebra.mem_bot.mp hb`. Use `⟨f, ?_⟩` and prove the remaining obligations. Establish `e` using `genMap_germ_eq ξ ⟨_, hall (GlobalTheory.CompanionTheory.Ar.genPt ξ)⟩ hgU f`. Conclude with `(e.symm.trans (hcompat _ hgU f)).trans (congrArg ψ hf)`.
+A detailed English derivation is pending.
 -/
 private theorem exists_valR_eq_iff_forall_inChart_mem_regAt [IsClosedImmersion i] (hξ : IsCptGen ξ)
     (hall : ∀ q : X, GlobalTheory.CompanionTheory.Ar.genPt ξ ⤳ q) (hi : ξ ≫ i = point o t ht) {c : Fin (n + 1)}
@@ -292,9 +290,9 @@ private theorem exists_valR_eq_iff_forall_inChart_mem_regAt [IsClosedImmersion i
     exact (e.symm.trans (hcompat _ hgU f)).trans (congrArg ψ hf)
 
 /- English proof (translation)
-Use `⟨hξ, fun p => ?_, fun c hc => ?_, fun c hc a => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : ∃ d, p.1 ∈ i ⁻¹ᵁ chart o n d := by`. Establish `hmem : i p.1 ∈ (⨆ d, chart o n d)`. Rewrite using `[iSup_chart]`. Discharge the goal by the elementary cases of `trivial`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Take `⟨d, hd⟩` from `TopologicalSpace.Opens.mem_iSup.mp hmem`. Conclude with `⟨d, hd⟩`. Conclude with `⟨d, (inChart_iff hξ hi d p).mpr hd⟩`. Use `⟨i ⁻¹ᵁ chart o n c, (isAffineOpen_chart o n c).preimage i, fun q => ⟨fun hq => ⟨hall q, (inChart_iff hξ hi c ⟨q, hall q⟩).mpr hq⟩, fun ⟨h, hin⟩ => (inChart_iff hξ hi c ⟨q, h⟩).mp hin⟩⟩` and prove the remaining obligations. Conclude with `(exists_valR_eq_iff_mem_adjoin_ratio hi hc a).symm.trans (exists_valR_eq_iff_forall_inChart_mem_regAt hξ hall hi hc a)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coordTie_of_all [IsClosedImmersion i] (hξ : IsCptGen ξ) (hall : ∀ q : X, GlobalTheory.CompanionTheory.Ar.genPt ξ ⤳ q)
     (hi : ξ ≫ i = point o t ht) : CoordTie o ξ t := by
@@ -313,7 +311,7 @@ theorem coordTie_of_all [IsClosedImmersion i] (hξ : IsCptGen ξ) (hall : ∀ q 
 end
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.Ar.InChart`. Rewrite using `[regAt_push]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inChart_push_iff {W : Scheme.{0}} (ξ : Sp Ω ⟶ W) (f : W ⟶ X) [SurjectiveOnStalks f]
     {κ : Type} (x : κ → Ω) (c : κ) (p : Cpt ξ) :
@@ -322,17 +320,17 @@ private theorem inChart_push_iff {W : Scheme.{0}} (ξ : Sp Ω ⟶ W) (f : W ⟶ 
   rw [regAt_push]
 
 /- English proof (translation)
-Use `haveI : SurjectiveOnStalks f := inferInstance`. Use `⟨hξ, fun q => ?_, fun c hc => ?_, fun c hc a => ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `hr q`. Take `⟨c, hc⟩` from `h.cover p`. Conclude with `⟨c, (inChart_push_iff ξ f x c p).mpr hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, hVmem⟩` from `h.affine c hc`. Use `⟨f ''ᵁ V, hV.image_of_isOpenImmersion f, fun q => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q', hq'V, rfl⟩`. Take `⟨h', hin⟩` from `(hVmem q').mp hq'V`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(push ξ f ⟨q', h'⟩).2, (inChart_push_iff ξ f x c ⟨q', h'⟩).mpr hin⟩`. Introduce and unpack `⟨hq, hin⟩`. Take `⟨p, hp⟩` from `hr ⟨q, hq⟩`. Establish `hin' : InChart (ξ ≫ f) x c (push ξ f p)`. Rewrite using `[hp]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hin`. Establish `hpV : p.1 ∈ V` using `(hVmem p.1).mpr ⟨p.2, (inChart_push_iff ξ f x c p).mp hin'⟩`. Establish `hq' : f p.1 = q` using `congrArg Subtype.val hp`. Conclude with `⟨p.1, hpV, hq'⟩`. Rewrite using `[h.ring c hc a]`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H q hq`. Take `⟨p, rfl⟩` from `hr q`. Rewrite using `[regAt_push]`. Conclude with `H p ((inChart_push_iff ξ f x c p).mp hq)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `H p hp`. Establish `hm` using `H (push ξ f p) ((inChart_push_iff ξ f x c p).mpr hp)`. Rewrite `hm` using `[regAt_push]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem coordTie_comp {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ → Ω} {W : Scheme.{0}}
     {ξ : Sp Ω ⟶ W} (f : W ⟶ X) [IsOpenImmersion f] (hξ : IsCptGen (ξ ≫ f))
@@ -367,23 +365,21 @@ theorem coordTie_comp {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ
       rwa [regAt_push] at hm
 
 /- English proof (translation)
-Introduce `o _ _ X s hs Ω _ _ ξ hgen hover`. Take `⟨N, i, hi, his⟩` from `hs`. Use `haveI := hi`. Use `haveI hLN : IsLocallyNoetherian X := by`. Use `isLocallyNoetherian_of_affine_cover (S := fun c : Fin (N + 1) => ⟨i ⁻¹ᵁ chart o N c, (isAffineOpen_chart o N c).preimage i⟩) ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Scheme.Hom.preimage_iSup, iSup_chart, Scheme.Hom.preimage_top]`. Introduce `c haveI : IsNoetherianRing Γ(PSpace o N, chart o N c) := isNoetherianRing_of_ringEquiv _ (chartAlgEquiv o N c).toRingEquiv`. Conclude with `isNoetherianRing_of_surjective _ _ (i.app (chart o N c)).hom (i.app_surjective _ (isAffineOpen_chart o N c))`. Establish `hW` using `isClopen_setOf_genPt_specializes X Ω ξ hgen`. Set `W : X.Opens` to `⟨{q | GlobalTheory.CompanionTheory.Ar.genPt ξ ⤳ q}, hW.isOpen⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hrange : Set.range ξ ⊆ Set.range W.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `show GlobalTheory.CompanionTheory.Ar.genPt ξ ⤳ ξ x`. Rewrite using `[Subsingleton.elim x (IsLocalRing.closedPoint Ω)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Set `ξ' : Sp Ω ⟶ W.toScheme` to `IsOpenImmersion.lift W.ι ξ hrange`. Establish `hfac : ξ' ≫ W.ι = ξ` using `IsOpenImmersion.lift_fac _ _ _`. Use `haveI : IsClosedImmersion W.ι := IsClosedImmersion.of_isPreimmersion _ (by rw [Scheme.Opens.range_ι]; exact hW.isClosed)`. Establish `hy : (ξ' ≫ W.ι ≫ i) ≫ PSpace.str o N = spMap (algebraMap o Ω)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Category.assoc, his, ← Category.assoc, hfac, hover]`. Take `⟨t, ht, hpt⟩` from `exists_point (ξ' ≫ W.ι ≫ i) hy`. Establish `hgen' : IsCptGen (ξ' ≫ W.ι)`. Rewrite using `[hfac]`. Conclude with `hgen`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcg : IsCptGen ξ'` using `isCptGen_of_comp ξ' W.ι hgen'`. Establish `hgp : W.ι (GlobalTheory.CompanionTheory.Ar.genPt ξ') = GlobalTheory.CompanionTheory.Ar.genPt ξ` using `by show (ξ' ≫ W.ι) (IsLocalRing.closedPoint Ω) = ξ (IsLocalRing.closedPoint Ω)`. Rewrite using `[hfac]`. Establish `hall' : ∀ q : W.toScheme, GlobalTheory.CompanionTheory.Ar.genPt ξ' ⤳ q`. Introduce `q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← W.ι.isOpenEmbedding.toIsInducing.specializes_iff, hgp]`. Conclude with `q.2`. Establish `hct : CoordTie o ξ' t` using `coordTie_of_all (i := W.ι ≫ i) hcg hall' hpt`. Establish `hr : ∀ q : Cpt (ξ' ≫ W.ι), ∃ p, push ξ' W.ι p = q`. Introduce `q`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `hq : GlobalTheory.CompanionTheory.Ar.genPt ξ ⤳ q.1`. Establish `h2` using `q.2`. Rewrite using `[← hgp]`. Conclude with `h2`. Conclude with `⟨⟨⟨q.1, hq⟩, hall' ⟨q.1, hq⟩⟩, rfl⟩`.
-
-Establish `hfin` using `coordTie_comp W.ι hgen' hr hct`. Rewrite `hfin` using `[hfac]`. Conclude with `⟨N + 1, t, hfin⟩`.
+A detailed English derivation is pending.
 -/
 theorem xr_coords : ∀ (o : Type) [CommRing o] [IsNoetherianRing o] (X : Scheme.{0}) (s : X ⟶ Sp o), IsProjOver s → ∀ (Ω : Type) [Field Ω] [Algebra o Ω] (ξ : Sp Ω ⟶ X), IsCptGen ξ → ξ ≫ s = spMap (algebraMap o Ω) → ∃ (n : ℕ) (x : Fin n → Ω), CoordTie o ξ x := by
   intro o _ _ X s hs Ω _ _ ξ hgen hover
@@ -437,11 +433,11 @@ theorem xr_coords : ∀ (o : Type) [CommRing o] [IsNoetherianRing o] (X : Scheme
   exact ⟨N + 1, t, hfin⟩
 
 /- English proof (translation)
-Rewrite using `[specializes_iff_mem_closure]`. Establish `hr : Set.range ξ.base = {GlobalTheory.CompanionTheory.Ar.genPt ξ}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Set.mem_singleton_iff, Subsingleton.elim x (IsLocalRing.closedPoint Ω)]`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨_, rfl⟩`. Rewrite using `[← hr, (Scheme.Hom.denseRange ξ).closure_range]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`.
+Check the elementary cases of the proposition.
 -/
 theorem all_of_isDominant (ξ : Sp Ω ⟶ X) [IsDominant ξ] (q : X) : GlobalTheory.CompanionTheory.Ar.genPt ξ ⤳ q := by
   rw [specializes_iff_mem_closure]
@@ -457,13 +453,13 @@ theorem all_of_isDominant (ξ : Sp Ω ⟶ X) [IsDominant ξ] (q : X) : GlobalThe
   trivial
 
 /- English proof (translation)
-Establish `hall` using `all_of_isDominant ξ`. Use `haveI : IrreducibleSpace X := by`. Rewrite using `[irreducibleSpace_def]`. Establish `hcl : closure {GlobalTheory.CompanionTheory.Ar.genPt ξ} = (Set.univ : Set X)` using `Set.eq_univ_of_forall fun q => specializes_iff_mem_closure.mp (hall q)`. Rewrite using `[Set.top_eq_univ, ← hcl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isIrreducible_singleton.closure`. Use `haveI : AlgebraicGeometry.IsIntegral X := isIntegral_of_irreducibleSpace_of_isReduced X`. Use `⟨h, fun p => ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (X.presheaf.stalkSpecializes p.2).hom`. Establish `hc : X.presheaf.stalkSpecializes p.2 ≫ X.presheaf.stalkSpecializes (genericPoint_specializes (GlobalTheory.CompanionTheory.Ar.genPt ξ)) = X.presheaf.stalkSpecializes (genericPoint_specializes p.1)` using `TopCat.Presheaf.stalkSpecializes_comp _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hi : Function.Injective (algebraMap (X.presheaf.stalk p.1) X.functionField)` using `IsFractionRing.injective _ _`. Introduce `a b hab`. Apply `hi` to reduce the goal to its premises. Establish `ea` using `congrArg (fun φ => φ.hom a) hc`. Establish `eb` using `congrArg (fun φ => φ.hom b) hc`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at ea eb`. Use `show (X.presheaf.stalkSpecializes (genericPoint_specializes p.1)).hom a = (X.presheaf.stalkSpecializes (genericPoint_specializes p.1)).hom b`. Rewrite using `[← ea, ← eb, hab]`. Introduce `a b hab`. Conclude with `hinj (h.1 hab)`.
+A detailed English derivation is pending.
 -/
 theorem isCptGen_of_isDominant (ξ : Sp Ω ⟶ X) [IsDominant ξ] [IsReduced X]
     (h : Function.Bijective (Scheme.stalkClosedPointTo ξ).hom) : IsCptGen ξ := by
@@ -495,15 +491,15 @@ theorem isCptGen_of_isDominant (ξ : Sp Ω ⟶ X) [IsDominant ξ] [IsReduced X]
   exact hinj (h.1 hab)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `GlobalTheory.ProjSpace.exists_mem_chart o n q.1`. Establish `hg : point o t ht (IsLocalRing.closedPoint Ω) ∈ chart o n i` using `q.2.mem_open (chart o n i).isOpen hi`. Establish `hle : ⊤ ≤ point o t ht ⁻¹ᵁ chart o n i` using `(Scheme.preimage_eq_top_of_closedPoint_mem _ hg).ge`. Establish `hti : t i ≠ 0` using `(GlobalTheory.TuplePoint.le_point_preimage_iff i).mp hle`. Rewrite using `[GlobalTheory.TupleNorm.ratioField_eq o hti]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : IsAffineOpen (chart o n i)` using `GlobalTheory.ProjSpace.isAffineOpen_chart o n i`. Set `xU : (chart o n i : (PSpace o n).Opens)` to `⟨q.1, hi⟩`. Use `letI := TopCat.Presheaf.algebra_section_stalk (PSpace o n).presheaf xU`. Use `haveI := hU.isLocalization_stalk xU`. Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.surj (hU.primeIdealOf xU).asIdeal.primeCompl g`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ b : Γ(PSpace o n, chart o n i), genMap (point o t ht) q ((PSpace o n).presheaf.germ _ q.1 hi b) ∈ GlobalTheory.TupleCone.ratioRing o t i`. Introduce `b`. Rewrite using `[genMap_germ_eq _ q hi b]`. Establish `hb : valR (point o t ht) (chart o n i) b ∈ Set.range (valMap (point o t ht) (chart o n i) hle).hom` using `⟨b, by simp [valR, dif_pos hle, valMap]⟩`. Rewrite `hb` using `[GlobalTheory.TuplePoint.range_valMap_point hle]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hb`. Establish `hunit : IsUnit (algebraMap Γ(PSpace o n, chart o n i) ((PSpace o n).presheaf.stalk q.1) s)` using `IsLocalization.map_units _ s`. Establish `hs'` using `congrArg (genMap (point o t ht) q) hs`. Rewrite `hs'` using `[map_mul]`. Establish `hne : genMap (point o t ht) q (algebraMap Γ(PSpace o n, chart o n i) ((PSpace o n).presheaf.stalk q.1) s) ≠ 0` using `(hunit.map _).ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : genMap (point o t ht) q g = genMap (point o t ht) q (algebraMap Γ(PSpace o n, chart o n i) ((PSpace o n).presheaf.stalk q.1) a) / genMap (point o t ht) q (algebraMap Γ(PSpace o n, chart o n i) ((PSpace o n).presheaf.stalk q.1) s)`. Rewrite using `[← hs', mul_div_cancel_right₀ _ hne]`. Rewrite using `[heq]`. Conclude with `div_mem (Subfield.subset_closure (hmem a)) (Subfield.subset_closure (hmem s))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genMap_point_mem {o : Type} [CommRing o] [Algebra o Ω] {n : ℕ} {t : Fin (n + 1) → Ω} {ht : t ≠ 0}
     (q : Cpt (point o t ht)) (g : (PSpace o n).presheaf.stalk q.1) :
@@ -541,29 +537,23 @@ theorem genMap_point_mem {o : Type} [CommRing o] [Algebra o Ω] {n : ℕ} {t : F
   exact div_mem (Subfield.subset_closure (hmem a)) (Subfield.subset_closure (hmem s))
 
 /- English proof (translation)
-Introduce `X s hproj Ω _ _ ξ hfin`. Take `⟨N, i, hi_ci, hstr⟩` from `hproj`. Establish `hy : (ξ ≫ i) ≫ PSpace.str ℤ N = spMap (algebraMap ℤ Ω)` using `specZIsTerminal.hom_ext _ _`. Take `⟨t, ht, hpt⟩` from `exists_point (ξ ≫ i) hy`. Establish `hrange : ∀ k, (Scheme.descResidueField (Scheme.stalkClosedPointTo ξ)).hom k ∈ GlobalTheory.TupleNorm.ratioField ℤ t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k`. Take `⟨g, rfl⟩` from `X.residue_surjective _ k`. Establish `e1 : (Scheme.descResidueField (Scheme.stalkClosedPointTo ξ)).hom ((X.residue _).hom g) = (Scheme.stalkClosedPointTo ξ).hom g`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.residue_descResidueField]`. Rewrite using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g', rfl⟩` from `i.stalkMap_surjective _ g`. Establish `e2 : (Scheme.stalkClosedPointTo ξ).hom ((i.stalkMap _).hom g') = (Scheme.stalkClosedPointTo (ξ ≫ i)).hom g'`. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Both sides reduce to the same expression. Rewrite using `[e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (g₁ g₂ : Sp Ω ⟶ PSpace ℤ N) (_ : g₁ = g₂) (b : (PSpace ℤ N).presheaf.stalk (g₁ (IsLocalRing.closedPoint Ω))), ∃ b', (Scheme.stalkClosedPointTo g₂).hom b' = (Scheme.stalkClosedPointTo g₁).hom b`. Introduce and unpack `g₁ g₂ rfl b`. Conclude with `⟨b, rfl⟩`. Take `⟨b', hb'⟩` from `key _ _ hpt g'`. Rewrite using `[← hb']`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hq` using `genMap_point_mem (⟨GlobalTheory.CompanionTheory.Ar.genPt (point ℤ t ht), specializes_refl _⟩ : Cpt (point ℤ t ht)) b'`. Establish `e3 : genMap (point ℤ t ht) ⟨GlobalTheory.CompanionTheory.Ar.genPt (point ℤ t ht), specializes_refl _⟩ b' = (Scheme.stalkClosedPointTo (point ℤ t ht)).hom b'`. Establish `h4` using `congrArg (fun φ => (φ ≫ Scheme.stalkClosedPointTo (point ℤ t ht)).hom b') (TopCat.Presheaf.stalkSpecializes_refl (PSpace ℤ N).presheaf (GlobalTheory.CompanionTheory.Ar.genPt (point ℤ t ht)))`. Simplify using `only [Category.id_comp] at h4`. Conclude with `h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hq` using `[e3]`. Then use the resulting hypothesis. Use `haveI hFD : FiniteDimensional (GlobalTheory.TupleNorm.ratioField ℤ t) Ω := by`. Set `d'` to `(Scheme.descResidueField (Scheme.stalkClosedPointTo ξ)).hom.codRestrict (GlobalTheory.TupleNorm.ratioField ℤ t) hrange`. Establish `hcomp : (algebraMap (GlobalTheory.TupleNorm.ratioField ℤ t) Ω).comp d' = (Scheme.descResidueField (Scheme.stalkClosedPointTo ξ)).hom` using `rfl`. Rewrite `hfin` using `[← hcomp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `RingHom.finite_algebraMap.mp (RingHom.Finite.of_comp_finite hfin)`. Use `haveI : Algebra.EssFiniteType ℤ Ω := GlobalTheory.TupleNorm.essFiniteType_of_finiteDimensional ℤ t ht`. Set `ν` to `GlobalTheory.TupleNorm.nmPoint ℤ t ht`. Use `haveI : AlgebraicGeometry.IsIntegral (GlobalTheory.TupleNorm.Nm ℤ t ht) := GlobalTheory.TupleNorm.isIntegral_Nm ℤ t ht`. Establish `hsupp` using `Scheme.Hom.support_ker ν`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsupp` using `[Scheme.Hom.ker_toNormalization, Scheme.IdealSheafData.support_bot]`. Use `haveI hdom : IsDominant ν := ⟨by`. Rewrite using `[DenseRange, dense_iff_closure_eq, ← hsupp]`. Use the proof step `simp⟩`. Establish `hall` using `all_of_isDominant ν`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hbij` using `(bijective_iff_isIso_stalkMap ν (IsLocalRing.closedPoint Ω)).mpr (GlobalTheory.TupleNorm.isIso_stalkMap_nmPoint ℤ t ht _)`. Establish `hgen : IsCptGen ν` using `isCptGen_of_isDominant ν hbij`. Take `⟨n, x, htie⟩` from `xr_coords ℤ _ (GlobalTheory.TupleNorm.str ℤ t ht) (GlobalTheory.TupleNorm.isProjOver_str ℤ t ht) Ω ν hgen (GlobalTheory.TupleNorm.nmPoint_str ℤ t ht)`. Establish `hnorm : Flat.NormalCpt ν` using `((xr_normal _ Ω ν hgen hall).2).mpr (GlobalTheory.TupleNorm.isNormalScheme_Nm ℤ t ht)`. Establish `hker : i.ker ≤ (GlobalTheory.TupleNorm.clι ℤ t ht).ker`.
-
-Rewrite using `[GlobalTheory.TupleNorm.clι, Scheme.Hom.imageι, Scheme.IdealSheafData.ker_subschemeι, ← hpt]`. Conclude with `Scheme.Hom.le_ker_comp ξ i`. Set `l` to `IsClosedImmersion.lift i (GlobalTheory.TupleNorm.clι ℤ t ht) hker`. Establish `hl : l ≫ i = GlobalTheory.TupleNorm.clι ℤ t ht` using `IsClosedImmersion.lift_fac _ _ _`. Use `haveI : IsClosedImmersion l := by haveI : IsClosedImmersion (l ≫ i) := by`.
-
-Rewrite using `[hl]`. Use `infer_instance`. Conclude with `IsClosedImmersion.of_comp_isClosedImmersion l i`. Use `haveI : IsFinite (GlobalTheory.TupleNorm.toCl ℤ t ht) := GlobalTheory.TupleNorm.isFinite_toCl ℤ t ht`. Use `⟨n, x, ⟨_, ν, GlobalTheory.TupleNorm.str ℤ t ht, GlobalTheory.TupleNorm.nmPoint_str ℤ t ht, hall, htie⟩, GlobalTheory.TupleNorm.toCl ℤ t ht ≫ l, hnorm, inferInstance, ?_⟩` and prove the remaining obligations.
-
-Use `show ν ≫ GlobalTheory.TupleNorm.toCl ℤ t ht ≫ l = ξ`. Rewrite using `[← cancel_mono i, Category.assoc, Category.assoc, hl, hpt]`. Conclude with `GlobalTheory.TupleNorm.nmPoint_toProj ℤ t ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xr_norm : ∀ (X : Scheme.{0}) (s : X ⟶ Sp ℤ), IsProjOver s → ∀ (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Sp Ω ⟶ X), (Scheme.descResidueField (Scheme.stalkClosedPointTo ξ)).hom.Finite → ∃ (n : ℕ) (x : Fin n → Ω) (M : PModel ℤ x) (π : M.X ⟶ X), Flat.NormalCpt M.ξ ∧ IsFinite π ∧ M.ξ ≫ π = ξ := by
   intro X s hproj Ω _ _ ξ hfin

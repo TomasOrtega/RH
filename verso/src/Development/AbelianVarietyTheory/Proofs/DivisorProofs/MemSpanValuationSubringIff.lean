@@ -25,15 +25,15 @@ def modelLattice {S : Type} {h N : ℕ} (Φ : (Fin h → C) ≃ₗ[C] (S → Fin
   Submodule.span v.valuationSubring ((fun t => Φ (incl C h t)) '' (L : Set (Fin h → O)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span hx`. Consider the case `zero => exact zero_mem _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul c x _ hx`. Take `⟨o, ho⟩` from `hv.exists_of_le_one ((Valuation.mem_valuationSubring_iff _ _).1 c.2)`. Establish `: c • x = o • x`. Rewrite using `[← algebraMap_smul C c x, ← algebraMap_smul C o x, ho]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => exact Submodule.subset_span hx`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul o x _ hx`. Set `c : v.valuationSubring` to `⟨algebraMap O C o, (Valuation.mem_valuationSubring_iff _ _).2 (hv.map_le_one _)⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: o • x = c • x`. Rewrite using `[← algebraMap_smul C c x, ← algebraMap_smul C o x]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_valuationSubring_iff (hv : v.Integers O) {W : Type} [AddCommGroup W] [Module C W]
     [Module O W] [IsScalarTower O C W] [Module v.valuationSubring W]
@@ -65,9 +65,9 @@ theorem mem_span_valuationSubring_iff (hv : v.Integers O) {W : Type} [AddCommGro
       exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Unfold `modelLattice`. Rewrite using `[mem_span_valuationSubring_iff v hv]`. Establish `: (fun t => Φ (incl C h t)) '' (L : Set (Fin h → O)) = (L.map ((Φ.toLinearMap.restrictScalars O) ∘ₗ incl C h) : Set (S → Fin N → C))`. Rewrite using `[Submodule.map_coe]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this, Submodule.span_eq, Submodule.mem_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_modelLattice (hv : v.Integers O) {S : Type} {h N : ℕ}
     (Φ : (Fin h → C) ≃ₗ[C] (S → Fin N → C)) (L : Submodule O (Fin h → O)) (w : S → Fin N → C) :
@@ -81,7 +81,7 @@ theorem mem_modelLattice (hv : v.Integers O) {S : Type} {h N : ℕ}
   rfl
 
 /- English proof (translation)
-Simplify using `only [eig, Submodule.mem_iInf, Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eig_iff {Λ : Type} [CommRing Λ] {h : ℕ} (ρ : Λ → Matrix (Fin h) (Fin h) O)
     (τ : Λ →+* O) (x : Fin h → C) :
@@ -89,13 +89,13 @@ theorem mem_eig_iff {Λ : Type} [CommRing Λ] {h : ℕ} (ρ : Λ → Matrix (Fin
   simp only [eig, Submodule.mem_iInf, Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]
 
 /- English proof (translation)
-Rewrite using `[mem_eig_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx σ hσ`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, σ l ≠ τ l := by`. Assume the negation of the conclusion as `hc`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hc`. Conclude with `hσ (RingHom.ext hc)`. Establish `e` using `hΦ l x σ`. Rewrite `e` using `[hx l, map_smul, Pi.smul_apply, ← sub_eq_zero, ← sub_smul, smul_eq_zero]`. Break down `e with e | e` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `absurd (hv.hom_inj (sub_eq_zero.1 e)).symm hl`. Conclude with `e`. Introduce `hx l`. Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ, map_smul, Pi.smul_apply]`. Distinguish the cases in `hσ : σ = τ`. Rewrite using `[hσ]`. Rewrite using `[hx σ hσ, smul_zero, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem mem_eig_iff_support (hv : v.Integers O) {Λ : Type} [CommRing Λ] {h N : ℕ}
     (ρ : Λ → Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C))
@@ -122,15 +122,15 @@ theorem mem_eig_iff_support (hv : v.Integers O) {Λ : Type} [CommRing Λ] {h N :
     · rw [hx σ hσ, smul_zero, smul_zero]
 
 /- English proof (translation)
-Set `j : O →+* v.valuationSubring` to `(algebraMap O C).codRestrict v.valuationSubring fun o => (Valuation.mem_valuationSubring_iff _ _).2 (hv.map_le_one _)`. Establish `hj : Function.Surjective j` using `fun c => by`. Take `⟨o, ho⟩` from `hv.exists_of_le_one ((Valuation.mem_valuationSubring_iff _ _).1 c.2)`. Conclude with `⟨o, Subtype.ext ho⟩`. Establish `key : ∀ (f : Polynomial O) (σ : Λ →+* O), (((f.map j).eval (embVal v hv α σ) : v.valuationSubring) : C) = algebraMap O C (f.eval (σ α))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `f σ`. Establish `: embVal v hv α σ = j (σ α)` using `rfl`. Rewrite using `[this, Polynomial.eval_map, Polynomial.eval₂_at_apply]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hw`. Establish `: ∀ i, Φ.symm w i ∈ (algebraMap O C).range`. Rewrite using `[hΦ]`. Introduce `i`. Take `⟨f, hf⟩` from `hw i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `Polynomial.map_surjective j hj f`. Conclude with `⟨g, fun σ => by rw [Φ.apply_symm_apply, hf, key]⟩`. Use `choose t ht using this`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `: incl C h t = Φ.symm w` using `funext ht`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Φ.apply_symm_apply]`. Introduce and unpack `⟨t, rfl⟩ i`. Take `⟨f, hf⟩` from `(hΦ (incl C h t)).1 (fun i => ⟨t i, rfl⟩) i`. Conclude with `⟨f.map j, fun σ => by rw [hf, key]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_freeLattice_iff (hv : v.Integers O) {Λ : Type} [CommRing Λ] (α : Λ) {h N : ℕ}
     (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C))
@@ -168,7 +168,7 @@ theorem mem_freeLattice_iff (hv : v.Integers O) {Λ : Type} [CommRing Λ] (α : 
     exact ⟨f.map j, fun σ => by rw [hf, key]⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show _ = algebraMap O C ((X *ᵥ t) i)`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mulVec_incl {h k : ℕ} (X : Matrix (Fin k) (Fin h) O) (t : Fin h → O) :
     X.map (algebraMap O C) *ᵥ incl C h t = incl C k (X *ᵥ t) := by
@@ -178,7 +178,7 @@ theorem mulVec_incl {h k : ℕ} (X : Matrix (Fin k) (Fin h) O) (t : Fin h → O)
   rfl
 
 /- English proof (translation)
-Introduce `u u' e`. Use function extensionality and compare the values at `i`. Conclude with `hv.hom_inj (congrFun e i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem incl_injective (hv : v.Integers O) (h : ℕ) :
     Function.Injective (incl C h : (Fin h → O) → (Fin h → C)) := by
@@ -187,9 +187,7 @@ theorem incl_injective (hv : v.Integers O) (h : ℕ) :
   exact hv.hom_inj (congrFun e i)
 
 /- English proof (translation)
-Use `haveI : IsDomain O := hv.hom_inj.isDomain`. Use `haveI : IsFractionRing O C := hv.isFractionRing`. Take `⟨o, ho⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) y`. Use `choose t ht using ho`. Use `⟨o, t, fun e => nonZeroDivisors.coe_ne_zero o (hv.hom_inj (by rw [e, map_zero])), ?_⟩` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `i`. Use `show algebraMap O C (t i) = _`. Rewrite using `[ht i, Pi.smul_apply, algebraMap_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_incl (hv : v.Integers O) {h : ℕ} (y : Fin h → C) :
     ∃ (o : O) (t : Fin h → O), algebraMap O C o ≠ 0 ∧ incl C h t = algebraMap O C o • y := by
@@ -203,13 +201,13 @@ theorem exists_smul_eq_incl (hv : v.Integers O) {h : ℕ} (y : Fin h → C) :
   rw [ht i, Pi.smul_apply, algebraMap_smul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.iSup_induction' with`. Consider the case `mem σ x hx => exact (mem_eig_iff_support v hv ρ Φ hΦ σ.1 x).1 hx τ σ.2.symm`. Consider the case `zero => simp`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, Pi.add_apply, hx, hy, add_zero]`. Introduce `hx`. Use `letI := Fintype.ofFinite (Λ →+* O)`. Establish `e : x = ∑ σ, Φ.symm (Pi.single σ (Φ x σ))`. Rewrite using `[← map_sum, Finset.univ_sum_single, Φ.symm_apply_apply]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `sum_mem fun σ _ => ?_` and prove the remaining obligations. Distinguish the cases in `hσ : σ = τ`. Rewrite using `[hσ, hx, Pi.single_zero, map_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_iSup_of_mem (⟨σ, hσ⟩ : {σ : Λ →+* O // σ ≠ τ}) ?_` and prove the remaining obligations. Rewrite using `[mem_eig_iff_support v hv ρ Φ hΦ]`. Introduce `s hs`. Rewrite using `[Φ.apply_symm_apply, Pi.single_eq_of_ne hs]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iSup_eig_iff (hv : v.Integers O) {Λ : Type} [CommRing Λ] [Finite (Λ →+* O)] {h N : ℕ}
     (ρ : Λ → Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C))
@@ -238,7 +236,7 @@ theorem mem_iSup_eig_iff (hv : v.Integers O) {Λ : Type} [CommRing Λ] [Finite (
       rw [Φ.apply_symm_apply, Pi.single_eq_of_ne hs]
 
 /- English proof (translation)
-Use `⟨Φ.symm (Pi.single τ w), ?_, by rw [Φ.apply_symm_apply, Pi.single_eq_same]⟩` and prove the remaining obligations. Rewrite using `[mem_eig_iff_support v hv ρ Φ hΦ]`. Introduce `s hs`. Rewrite using `[Φ.apply_symm_apply, Pi.single_eq_of_ne hs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eig_apply_eq (hv : v.Integers O) {Λ : Type} [CommRing Λ] {h N : ℕ}
     (ρ : Λ → Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C))
@@ -251,9 +249,9 @@ theorem exists_eig_apply_eq (hv : v.Integers O) {Λ : Type} [CommRing Λ] {h N :
   rw [Φ.apply_symm_apply, Pi.single_eq_of_ne hs]
 
 /- English proof (translation)
-Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Rewrite using `[map_zero, Pi.zero_apply]`. Distinguish the cases in `hσ : σ = τ`. Rewrite using `[hσ, h0]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_eig_iff_support v hv ρ Φ hΦ τ x).1 hx σ hσ`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_apply_eq_zero (hv : v.Integers O) {Λ : Type} [CommRing Λ] {h N : ℕ}
     (ρ : Λ → Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C))
@@ -267,9 +265,9 @@ theorem eq_zero_of_apply_eq_zero (hv : v.Integers O) {Λ : Type} [CommRing Λ] {
   · exact (mem_eig_iff_support v hv ρ Φ hΦ τ x).1 hx σ hσ
 
 /- English proof (translation)
-Unfold `eigPart`. Rewrite using `[Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.mem_sup]`. Use `and_congr Iff.rfl ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, ⟨t, ht, rfl⟩, r, hr, rfl⟩`. Rewrite `hr` using `[Submodule.restrictScalars_mem, mem_iSup_eig_iff v hv ρ Φ hΦ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨t, ht, by rw [map_add, Pi.add_apply, hr, add_zero]⟩`. Introduce and unpack `⟨t, ht, e⟩`. Use `⟨_, ⟨t, ht, rfl⟩, x - incl C h t, ?_, by abel⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, mem_iSup_eig_iff v hv ρ Φ hΦ, map_sub, Pi.sub_apply, e, sub_self]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_eigPart_iff (hv : v.Integers O) {Λ : Type} [CommRing Λ] [Finite (Λ →+* O)] {h N : ℕ}
     (ρ : Λ → Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C))

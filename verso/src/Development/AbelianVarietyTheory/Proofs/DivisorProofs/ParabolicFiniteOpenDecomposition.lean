@@ -19,9 +19,9 @@ namespace GlobalTheory.DoubleCosetFinite
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α n _ _ m _ _ _ _ e K hK`. Establish `hKO : IsCompact (KO k n : Set (GL n k))` using `GlobalTheory.SplitFlip.isCompact_KO`. Take `⟨t, ht⟩` from `hKO.elim_finite_subcover (fun w : (KO k n : Set (GL n k)) => (w : GL n k) • (K : Set (GL n k))) (fun w => hK.smul _) (fun w hw => Set.mem_iUnion.2 ⟨⟨w, hw⟩, ⟨1, K.one_mem, by simp⟩⟩)`. Use `⟨t.map ⟨Subtype.val, Subtype.val_injective⟩, fun x => ?_⟩` and prove the remaining obligations. Take `⟨p, w, hw, rfl⟩` from `GlobalTheory.SmGL.MultiIrr.exists_parab_mul e x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, hwi⟩` from `Set.mem_iUnion₂.1 (ht hw)`. Take `⟨κ, hκ, hκw⟩` from `Set.mem_smul_set.1 hwi`. Use `⟨p, p.2, i, Finset.mem_map_of_mem _ hi, κ, hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hκw, smul_eq_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_finset_parab_mul_mul : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {α n : Type} [Fintype α] [LinearOrder α] {m : α → Type} [∀ a, Fintype (m a)]

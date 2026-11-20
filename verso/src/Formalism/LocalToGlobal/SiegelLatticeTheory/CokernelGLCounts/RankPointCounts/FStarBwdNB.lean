@@ -10,7 +10,7 @@ namespace Formalism.L2.SG.Pf.FrameGlobalPatching.FStar.BwdNA
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (algebraMap_smul E o w).symm`. Consider the case `rfl`. Consider the case `simp [Algebra.smul_def]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem oSmulW {W : Type*} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
     (o : 𝓞 E) (w : W) : o • w = (o : E) • w := by
@@ -20,9 +20,9 @@ theorem oSmulW {W : Type*} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [Is
   | simp [Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `h'`. Apply `h` to reduce the goal to its premises. Use `first`. Consider the case `exact_mod_cast h'`. Consider the case `exact RingOfIntegers.ext h'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using h'`.
+A detailed English derivation is pending.
 -/
 private theorem coe_ne_zero_of_ne_zero (o : 𝓞 E) (h : o ≠ 0) : (o : E) ≠ 0 := by
   intro h'
@@ -33,11 +33,9 @@ private theorem coe_ne_zero_of_ne_zero (o : 𝓞 E) (h : o ≠ 0) : (o : E) ≠ 
   | simpa using h'
 
 /- English proof (translation)
-Establish `ha'` using `coe_ne_zero_of_ne_zero a ha`. Establish `hb'` using `coe_ne_zero_of_ne_zero b hb`. Establish `h1 : (b : E) • f ⟨a • u, hau⟩ = (a : E) • f ⟨b • u, hbu⟩`. Rewrite using `[← oSmulW, ← oSmulW, ← map_smul, ← map_smul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `smul_comm b a u`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, mul_assoc, inv_mul_cancel₀ hb', mul_one]`. Use `_ = (((a : E))⁻¹ * ((b : E))⁻¹) • ((a : E) • f ⟨b • u, hbu⟩) := by rw [h1]`.
-
-Use `_ = ((b : E))⁻¹ • f ⟨b • u, hbu⟩ := by`. Rewrite using `[smul_smul, mul_comm ((a : E))⁻¹, mul_assoc, inv_mul_cancel₀ ha', mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_smul_apply_smul_eq_of_smul_mem {W : Type*} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
     (P : Submodule (𝓞 E) S.V) (f : P →ₗ[𝓞 E] W) (u : S.V) (a b : 𝓞 E) (ha : a ≠ 0) (hb : b ≠ 0)
@@ -57,27 +55,25 @@ private theorem inv_smul_apply_smul_eq_of_smul_mem {W : Type*} [AddCommGroup W] 
         rw [smul_smul, mul_comm ((a : E))⁻¹, mul_assoc, inv_mul_cancel₀ ha', mul_one]
 
 /- English proof (translation)
-Use `choose d hd0 hdP using hfull`. Establish `hmul : ∀ (u : S.V) (a b : 𝓞 E), a • u ∈ P → (b * a) • u ∈ P`. Introduce `u a b h`. Rewrite using `[mul_smul]`. Conclude with `P.smul_mem b h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `have hal : ∀ o : 𝓞 E, algebraMap (𝓞 E) E o = (o : E) := fun o => by first | rfl | simp`. Use `⟨{ toFun := fun x => ((d x.1 x.2 : E))⁻¹ • f ⟨d x.1 x.2 • x.1, hdP x.1 x.2⟩, map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `x y`. Establish `e0 : d y.1 y.2 * d x.1 x.2 ≠ 0` using `mul_ne_zero (hd0 _ _) (hd0 _ _)`. Establish `hex : (d y.1 y.2 * d x.1 x.2) • x.1 ∈ P` using `hmul _ _ _ (hdP x.1 x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hey : (d y.1 y.2 * d x.1 x.2) • y.1 ∈ P`. Rewrite using `[mul_comm]`. Conclude with `hmul _ _ _ (hdP y.1 y.2)`. Establish `hexy : (d y.1 y.2 * d x.1 x.2) • (x + y).1 ∈ P`. Rewrite using `[Submodule.coe_add, smul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `P.add_mem hex hey`. Rewrite using `[inv_smul_apply_smul_eq_of_smul_mem S P f (x + y).1 _ _ (hd0 _ _) e0 (hdP _ _) hexy, inv_smul_apply_smul_eq_of_smul_mem S P f x.1 _ _ (hd0 _ _) e0 (hdP _ _) hex, inv_smul_apply_smul_eq_of_smul_mem S P f y.1 _ _ (hd0 _ _) e0 (hdP _ _) hey, ← smul_add, ← map_add]`. Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add, Submodule.coe_add, smul_add]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `c x`. Simplify using `only [RingHom.id_apply]`. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) c`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hq'` using `coe_ne_zero_of_ne_zero q hq0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha'` using `coe_ne_zero_of_ne_zero _ (hd0 x.1 x.2)`. Establish `e0 : q * d x.1 x.2 ≠ 0` using `mul_ne_zero hq0 (hd0 _ _)`. Establish `hcq : (q * d x.1 x.2) • ((algebraMap (𝓞 E) E p / algebraMap (𝓞 E) E q) • x.1) = p • (d x.1 x.2 • x.1)`. Rewrite using `[oSmulW, oSmulW, oSmulW (o := d x.1 x.2), smul_smul, smul_smul, hal, hal]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hmem : (q * d x.1 x.2) • (((algebraMap (𝓞 E) E p / algebraMap (𝓞 E) E q) • x : U) : S.V) ∈ P`. Rewrite using `[Submodule.coe_smul, hcq]`. Conclude with `P.smul_mem p (hdP x.1 x.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_smul_apply_smul_eq_of_smul_mem S P f _ _ _ (hd0 _ _) e0 (hdP _ _) hmem]`. Establish `hsub : (⟨(q * d x.1 x.2) • (((algebraMap (𝓞 E) E p / algebraMap (𝓞 E) E q) • x : U) : S.V), hmem⟩ : P) = p • ⟨d x.1 x.2 • x.1, hdP x.1 x.2⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul]`. Conclude with `hcq`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hsub, map_smul, oSmulW (o := p), smul_smul, smul_smul, hal, hal]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : (1 : 𝓞 E) • x ∈ P`. Rewrite using `[one_smul]`. Conclude with `hx`. Use `(inv_smul_apply_smul_eq_of_smul_mem S P f x _ 1 (hd0 _ _) one_ne_zero (hdP _ _) h1).trans ?_` and prove the remaining obligations. Establish `h2 : (⟨(1 : 𝓞 E) • x, h1⟩ : P) = ⟨x, hx⟩` using `Subtype.ext (one_smul _ x)`.
-
-Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem ext_lat {W : Type*} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
     (U : Submodule E S.V) (P : Submodule (𝓞 E) S.V) (hPU : ∀ x ∈ P, x ∈ U)
@@ -143,7 +139,7 @@ theorem ext_lat {W : Type*} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [I
     simp
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `ext_lat S ⊤ P (fun _ _ => Submodule.mem_top) (fun u _ => hfull u) f`. Use `⟨G.comp (LinearMap.codRestrict ⊤ LinearMap.id (fun _ => Submodule.mem_top)), fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `hG x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ext_top {W : Type*} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
     (P : Submodule (𝓞 E) S.V) (hfull : ∀ u : S.V, ∃ d : 𝓞 E, d ≠ 0 ∧ d • u ∈ P) (f : P →ₗ[𝓞 E] W) :
@@ -153,13 +149,13 @@ theorem ext_top {W : Type*} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [I
   exact hG x hx
 
 /- English proof (translation)
-Take `⟨π, hπ, hπU⟩` from `retract S Λ hΛ.fg U`. Set `g : Λ →ₗ[𝓞 E] E` to `((S.hT v).restrictScalars (𝓞 E)) ∘ₗ π`. Take `⟨G, hG⟩` from `ext_top S (W := E) Λ (fun u => PI.UnitaryGroupMassFormula.BetaLUniq.exists_smul_mem S Λ hΛ u) g`. Take `⟨w, hw⟩` from `riesz S G`. Establish `hgw : ∀ (m : S.V) (hm : m ∈ Λ), S.hT m w = star (S.hT v (π ⟨m, hm⟩))` using `fun m hm => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hsw S w m, hw, hG m hm]`. Both sides reduce to the same expression. Use `⟨w, (hSD w).2 fun y hy => ?_, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).2 fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hgw y hy, hsw S (π ⟨y, hy⟩) v, star_star]`. Conclude with `hv _ (hπ ⟨y, hy⟩).1 (hπ ⟨y, hy⟩).2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ∀ m ∈ Λ, m ∈ U → S.hT m (v - w) = 0` using `fun m hmΛ hmU => by`. Rewrite using `[map_sub, hgw m hmΛ, hπU ⟨m, hmΛ⟩ hmU, hsw S m v, star_star]`. Simplify using the standard rewrite rules. Take `⟨d, hd, hdu⟩` from `PI.UnitaryGroupMassFormula.BetaLUniq.exists_smul_mem S Λ hΛ u`. Establish `h1` using `hm _ hdu (by rw [oSmul]; exact U.smul_mem _ hu)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[oSmul, hT_smulL]`. Establish `hd' : star ((d : E)) ≠ 0`. Rewrite using `[star_ne_zero]`. Conclude with `coe_ne_zero hd`. Conclude with `(mul_eq_zero.1 h1).resolve_left hd'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_sum (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ) (hSD : SD S Λ) (U : Submodule E S.V)
     (v : S.V) (hv : ∀ m ∈ Λ, m ∈ U → IsIntegral ℤ (S.hT m v)) : ∃ w ∈ Λ, v - w ∈ orth S U := by

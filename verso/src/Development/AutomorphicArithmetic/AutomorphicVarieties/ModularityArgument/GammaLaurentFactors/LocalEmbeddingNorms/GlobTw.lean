@@ -18,15 +18,15 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨p, -, hp⟩` from `exists_unit_pow k 1`. Set `r : kˣ →* kˣ` to `{ toFun := fun x => x * p ^ (-ord k x) map_one' := by rw [ord_eq_zero (by simp)]; simp map_mul' := fun x y => by rw [ord_mul, neg_add, zpow_add, mul_mul_mul_comm] }`. Establish `hr : ∀ x : kˣ, valuation k (x : k) = 1 → r x = x` using `fun x hx => by`. Express the relevant statement in the definitionally equal form `x * p ^ (-ord k x) = x`. Rewrite using `[ord_eq_zero hx]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hrp : r p = 1`. Express the relevant statement in the definitionally equal form `p * p ^ (-ord k p) = 1`. Rewrite using `[hp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨r, hr, fun H hH => ?_⟩` and prove the remaining obligations. Establish `ho : IsOpen (H.comap r : Set kˣ)` using `Subgroup.isOpen_mono (H₁ := H ⊓ filtSub k 0) (fun x hx => by rw [Subgroup.mem_comap, hr x hx.2.1]; exact hx.1) (hH.inter (isOpen_filtSub k 0))`. Use `⟨ho, ?_⟩` and prove the remaining obligations. Use `haveI : DiscreteTopology (kˣ ⧸ H.comap r) := QuotientGroup.discreteTopology ho`. Establish `hf` using `((GroundTheory.LocalField.isCompact_unitFiltrationUnits (K := k) 0).image (QuotientGroup.continuous_mk (N := H.comap r))).finite_of_discrete`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.finite_univ_iff.1 (hf.subset ?_)` and prove the remaining obligations. Introduce `g _`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective g`. Use `⟨g * p ^ (-ord k g), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, GroundTheory.LocalField.mem_unitFiltrationUnits_zero_iff, ← ord_eq_zero_iff, ord_mul, ord_zpow, hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[eq_comm, QuotientGroup.eq, inv_mul_cancel_left, Subgroup.mem_comap, map_zpow, hrp, one_zpow]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_retr : ∃ r : kˣ →* kˣ, (∀ x : kˣ, valuation k (x : k) = 1 → r x = x) ∧
     ∀ H : Subgroup kˣ, IsOpen (H : Set kˣ) → IsOpen (H.comap r : Set kˣ) ∧ Finite (kˣ ⧸ H.comap r) := by
@@ -59,9 +59,9 @@ private theorem exists_retr : ∃ r : kˣ →* kˣ, (∀ x : kˣ, valuation k (x
     exact one_mem _
 
 /- English proof (translation)
-Take `⟨r, hr, hH⟩` from `exists_retr (k := k)`. Take `⟨ho, hf⟩` from `hH θ.ker hθ`. Use `⟨θ.comp r, ho, ⟨Nat.card (kˣ ⧸ θ.ker.comap r), Nat.card_pos, MonoidHom.ext fun x => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, ← map_pow]`. Conclude with `Subgroup.pow_index_mem (θ.ker.comap r) x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.comp_apply, hr x hx, mul_inv_cancel]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_fin (θ : kˣ →* ℂˣ) (hθ : IsSmoothChar θ) :
     ∃ χ : kˣ →* ℂˣ, IsSmoothChar χ ∧ (∃ N : ℕ, 0 < N ∧ χ ^ N = 1) ∧ IsUnram (χ * θ⁻¹) := by
@@ -73,11 +73,11 @@ private theorem exists_fin (θ : kˣ →* ℂˣ) (hθ : IsSmoothChar θ) :
   · rw [MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.comp_apply, hr x hx, mul_inv_cancel]
 
 /- English proof (translation)
-Take `⟨r, hr, hH⟩` from `exists_retr (k := k)`. Establish `h0 : valuation k ((y : k) - 1) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff, sub_ne_zero]`. Conclude with `fun h => h1 (Units.ext h)`. Take `⟨a, ha⟩ : ∃ a : ℕ, uniformizer k ^ a < valuation k ((y : k) - 1)` from `exists_pow_lt₀ uniformizer_lt_one (Units.mk0 _ h0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Take `⟨ho, hf⟩` from `hH _ (isOpen_filtSub k a)`. Use `set H := (filtSub k a).comap r`. Establish `hyH : (QuotientGroup.mk y : kˣ ⧸ H) ≠ 1`. Rewrite using `[Ne, QuotientGroup.eq_one_iff, Subgroup.mem_comap, hr y hy]`. Conclude with `fun h => absurd h.2 (not_le.2 ha)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, hθ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity (kˣ ⧸ H) ℂ hyH`. Use `⟨θ.comp (QuotientGroup.mk' H), Subgroup.isOpen_mono (fun z hz => ?_) ho, ⟨Nat.card (kˣ ⧸ H), Nat.card_pos, MonoidHom.ext fun z => ?_⟩, hθ⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff z).2 hz, map_one]`. Rewrite using `[MonoidHom.pow_apply, MonoidHom.comp_apply, ← map_pow, pow_card_eq_one', map_one, MonoidHom.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_sep (y : kˣ) (hy : valuation k (y : k) = 1) (h1 : y ≠ 1) :
     ∃ χ : kˣ →* ℂˣ, IsSmoothChar χ ∧ (∃ N : ℕ, 0 < N ∧ χ ^ N = 1) ∧ χ y ≠ 1 := by
@@ -99,11 +99,11 @@ private theorem exists_sep (y : kˣ) (hy : valuation k (y : k) = 1) (h1 : y ≠ 
   · rw [MonoidHom.pow_apply, MonoidHom.comp_apply, ← map_pow, pow_card_eq_one', map_one, MonoidHom.one_apply]
 
 /- English proof (translation)
-Establish `hM : 0 < ∏ p ∈ F, p.1 * max (orderOf p.2) 1` using `Finset.prod_pos fun p hp => Nat.mul_pos (hF p hp) (by omega)`. Take `⟨χ, h1, ⟨N, hN, h2⟩, h3⟩` from `exists_sep _ (by rw [Units.val_pow_eq_pow_val, map_pow, hx, one_pow]) (hi _ hM)`. Use `⟨χ, h1, ⟨N, hN, h2⟩, fun p hp h => h3 ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem (fun p : ℕ × ℂˣ => p.1 * max (orderOf p.2) 1) hp`. Establish `hN1 : χ x ^ N = 1` using `by rw [← MonoidHom.pow_apply, h2, MonoidHom.one_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : χ x ^ p.1 = p.2⁻¹` using `eq_inv_of_mul_eq_one_right h`. Establish `hfin : IsOfFinOrder p.2`. Rewrite using `[← isOfFinOrder_inv_iff, ← e]`. Conclude with `(isOfFinOrder_iff_pow_eq_one.2 ⟨N, hN, hN1⟩).pow`. Establish `hpos` using `hfin.orderOf_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, map_pow, max_eq_left (by omega), pow_mul, pow_mul, e, inv_pow, pow_orderOf_eq_one, inv_one, one_pow]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_avoid (x : kˣ) (hx : valuation k (x : k) = 1) (hi : ∀ n : ℕ, 0 < n → x ^ n ≠ 1)
     (F : Finset (ℕ × ℂˣ)) (hF : ∀ p ∈ F, 0 < p.1) :
@@ -124,7 +124,7 @@ private theorem exists_avoid (x : kˣ) (hx : valuation k (x : k) = 1) (hi : ∀ 
 end Loc
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (u.adicCompletion K) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (valuation (u.adicCompletion K)) Valued.v).eq_one_iff_eq_one`.
+A detailed English derivation is pending.
 -/
 private theorem val_one_iff {K : Type} [Field K] [NumberField K] (u : HeightOneSpectrum (𝓞 K)) (x : u.adicCompletion K) :
     valuation (u.adicCompletion K) x = 1 ↔ Valued.v x = 1 := by
@@ -133,19 +133,15 @@ private theorem val_one_iff {K : Type} [Field K] [NumberField K] (u : HeightOneS
   exact (ValuativeRel.isEquiv (valuation (u.adicCompletion K)) Valued.v).eq_one_iff_eq_one
 
 /- English proof (translation)
-Use `haveI : CharZero (u.adicCompletion K) := charZero_of_injective_ringHom (algebraMap K (u.adicCompletion K)).injective`. Take `⟨m, hm, hmu⟩ : ∃ m : ℕ, 0 < m ∧ ((m : ℕ) : 𝓞 K) ∈ u.asIdeal` from `⟨_, (GlobalTheory.LocalData.resChar_prime u).pos, GlobalTheory.LocalData.resChar_mem u⟩`. Establish `hv : Valued.v (((1 + m : ℕ) : u.adicCompletion K)) = 1`. Use `(valued_algebraMap_int_lt_one_iff u _).2 hmu` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_add, Nat.cast_one]`. Conclude with `Valuation.map_one_add_of_lt _ this`. Set `x : (u.adicCompletion K)ˣ` to `Units.mk0 ((1 + m : ℕ) : u.adicCompletion K) (Nat.cast_ne_zero.2 (by omega))`. Set `ι : ∀ w : PlacesOver L u, (w.1.adicCompletion L)ˣ` to `fun w => Units.map (algebraMap (u.adicCompletion K) (w.1.adicCompletion L) : u.adicCompletion K →* w.1.adicCompletion L) x`. Set `d : PlacesOver L u → ℕ` to `fun w => Module.finrank (u.adicCompletion K) (w.1.adicCompletion L)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ w, 0 < d w` using `fun w => lt_of_lt_of_le (Nat.mul_pos (Ideal.ramificationIdx_pos _ _) (Ideal.inertiaDeg_pos _ _)) (ramificationIdx_mul_inertiaDeg_le_finrank u w.1)`. Establish `hι : ∀ w, valuation _ (ι w : w.1.adicCompletion L) = 1` using `fun w => by`. Rewrite using `[val_one_iff]`. Express the relevant statement in the definitionally equal form `Valued.v (completionMap u w.1 ((1 + m : ℕ) : u.adicCompletion K)) = 1`. Rewrite using `[valued_completionMap, hv, one_pow]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ w, nm w (ι w) = x ^ d w` using `fun w => Units.ext (Algebra.norm_algebraMap _)`. Establish `hx : valuation _ (x : u.adicCompletion K) = 1` using `(val_one_iff u _).2 hv`. Take `⟨χ, h1, h2, h3⟩` from `exists_avoid x hx (fun n hn h => by`. Establish `h' : ((1 + m : ℕ) : u.adicCompletion K) ^ n = 1` using `congrArg Units.val h`. Establish `h'' : (1 + m) ^ n = 1` using `by exact_mod_cast h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h'' (Nat.one_lt_pow hn.ne' (by omega)).ne')`. Use the proof step `(bad.image (fun ξ => (1, ξ x)) ∪ Finset.univ.biUnion fun w : PlacesOver L u => (bad' w.1).image fun ζ => (d w, ζ (ι w)))`. Use the proof step `(fun p hp => by`. Simplify using `only [Finset.mem_union, Finset.mem_image, Finset.mem_biUnion] at hp`. Break down `hp with ⟨_, -, rfl⟩ | ⟨w, -, _, -, rfl⟩` into its components or cases.
-
-Conclude with `one_pos`. Conclude with `hd w)`. Use `⟨χ, h1, h2, fun ξ hξ h => h3 (1, ξ x) (Finset.mem_union_left _ (Finset.mem_image_of_mem _ hξ)) ?_, fun w ζ hζ h => h3 (d w, ζ (ι w)) (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨w, Finset.mem_univ _, Finset.mem_image_of_mem _ hζ⟩)) ?_⟩` and prove the remaining obligations. Simplify using `using h x hx`. Use `h (ι w) (hι w)` as an intermediate fact.
-
-Rewrite `this` using `[MonoidHom.mul_apply, MonoidHom.comp_apply, hn, map_pow]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem exists_at {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (u : HeightOneSpectrum (𝓞 K)) (bad : Finset ((u.adicCompletion K)ˣ →* ℂˣ))
@@ -192,13 +188,11 @@ private theorem exists_at {K L : Type} [Field K] [NumberField K] [Field L] [Numb
     rwa [MonoidHom.mul_apply, MonoidHom.comp_apply, hn, map_pow] at this
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ v θ hθ S bad bad'`. Take `⟨θ', a1, a2, a3⟩` from `exists_fin θ hθ`. Use `choose c c1 c2 c3 using fun u : HeightOneSpectrum (𝓞 K) => exists_at u (bad u) bad'`. Take `⟨η, -, -, h⟩` from `exists_hchar_prescribed K (insert v S) (Function.update c v θ') (fun w _ => by`. Distinguish the cases in `e : w = v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`. Conclude with `c1 w)`. Use the proof step `(fun w _ => by`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Distinguish the cases in `e : w = v`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`. Conclude with `c2 w)`.
-
-Use `⟨η, by rwa [h v (Finset.mem_insert_self _ _), Function.update_self], fun u hu e => ?_⟩` and prove the remaining obligations. Rewrite using `[h u (Finset.mem_insert_of_mem hu), Function.update_of_ne e]`. Conclude with `c3 u`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem globTw : GlobTw := by
   intro K L _ _ _ _ _ v θ hθ S bad bad'

@@ -26,17 +26,15 @@ noncomputable def hoEquiv : HeightOneSpectrum (integralClosure O L) ≃
 include F in
 
 /- English proof (translation)
-Use `haveI : Module.Finite O (integralClosure O L) := IsIntegralClosure.finite O F L (integralClosure O L)`. Establish `hinj : Function.Injective (algebraMap O L)`. Rewrite using `[IsScalarTower.algebraMap_eq O F L]`. Conclude with `(algebraMap F L).injective.comp (IsFractionRing.injective O F)`. Establish `hinjB : Function.Injective (algebraMap O (integralClosure O L))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x y hxy`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[IsScalarTower.algebraMap_apply O (integralClosure O L) L x, IsScalarTower.algebraMap_apply O (integralClosure O L) L y, hxy]`. Use `haveI : NoZeroSMulDivisors O (integralClosure O L) := by`. Use `⟨fun {c x} h => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Algebra.smul_def, mul_eq_zero]`. Conclude with `h.imp_left (fun h' => hinjB (h'.trans (map_zero _).symm))`. Establish `hN` using `ReciprocityTheory.MultiplicativeHeights.Closed.normOrd O (integralClosure O L) b hb`. Establish `hne : Algebra.norm O b ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hN` using `[h0, IsDiscreteValuationRing.addVal_zero]`. Conclude with `ENat.top_ne_coe _ hN`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hne hϖ`. Establish `hn` using `IsDiscreteValuationRing.addVal_def _ u hϖ n hu`. Rewrite `hN` using `[hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hnN : n = ∑ᶠ Q : {Q : Ideal (integralClosure O L) // Q.IsMaximal}, Q.1.inertiaDeg O * Multiset.count Q.1 (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b}))`. Conclude with `hN` after adjusting the coercions. Establish `hsum : (∑ᶠ v : HeightOneSpectrum (integralClosure O L), v.asIdeal.inertiaDeg O * Multiset.count v.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b}))) = n`. Rewrite using `[hnN]`. Conclude with `finsum_comp_equiv (hoEquiv O F L) (f := fun Q : {Q : Ideal (integralClosure O L) // Q.IsMaximal} => Q.1.inertiaDeg O * Multiset.count Q.1 (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b})))`.
-
-Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid (integralClosure O L) (nonZeroDivisors O)) L := IsIntegralClosure.isLocalization O F L (integralClosure O L)`. Use `⟨u, u.isUnit, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.norm_localization O (nonZeroDivisors O) b, hu, hsum, mul_comm (u : O)]`.
+A detailed English derivation is pending.
 -/
 theorem norm_integral (b : integralClosure O L) (hb : b ≠ 0) {ϖ : O} (hϖ : Irreducible ϖ) :
     ∃ u : O, IsUnit u ∧
@@ -81,37 +79,31 @@ theorem norm_integral (b : integralClosure O L) (hb : b ≠ 0) {ϖ : O} (hϖ : I
   rw [Algebra.norm_localization O (nonZeroDivisors O) b, hu, hsum, mul_comm (u : O)]
 
 /- English proof (translation)
-Use `haveI : Finite (HeightOneSpectrum (integralClosure O L)) := by`. Establish `hinj : Function.Injective (algebraMap O L)`. Rewrite using `[IsScalarTower.algebraMap_eq O F L]`. Conclude with `(algebraMap F L).injective.comp (IsFractionRing.injective O F)`. Take `⟨b, hbdef⟩ : ∃ b : (integralClosure O L), b = algebraMap O (integralClosure O L) ϖ` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbL : algebraMap (integralClosure O L) L b = algebraMap O L ϖ`. Rewrite using `[hbdef]`. Conclude with `(IsScalarTower.algebraMap_apply O (integralClosure O L) L ϖ).symm`. Establish `hb : b ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h00 : algebraMap O L ϖ = 0` using `by rw [← hbL, h0, map_zero]`. Conclude with `hϖ.ne_zero (hinj (h00.trans (map_zero _).symm))`. Establish `hmem : ϖ ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal ϖ).2 hϖ.not_isUnit`. Establish `hdvd : ∀ v : HeightOneSpectrum (integralClosure O L), v.asIdeal ∣ Ideal.span {b}`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1` using `((addv_mem_placesOver (O := O) (L := L) v).2 ϖ).2.2 hmem`. Rewrite `h1` using `[← hbL, addv_count v b hb]`. Establish `h2 : 0 < Multiset.count v.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b}))`. Break down `Nat.eq_zero_or_pos (Multiset.count v.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b}))) with h | h` into its components or cases. Rewrite `h1` using `[h, Nat.cast_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd h1 (lt_irrefl 0)`. Conclude with `h`. Conclude with `UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors (Multiset.count_pos.1 h2)`. Establish `hspan : Ideal.span {b} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hb`. Establish `hfin` using `Ideal.finite_factors hspan`. Establish `huniv : {v : HeightOneSpectrum (integralClosure O L) | v.asIdeal ∣ Ideal.span {b}} = Set.univ` using `Set.eq_univ_of_forall hdvd`. Rewrite `hfin` using `[huniv]`. Conclude with `Set.finite_univ_iff.1 hfin`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := Fintype.ofFinite (HeightOneSpectrum (integralClosure O L))`. Take `⟨b1, b2, hb2m, hyb⟩` from `IsFractionRing.div_surjective (A := (integralClosure O L)) y`. Establish `hb2 : b2 ≠ 0` using `nonZeroDivisors.ne_zero hb2m`. Establish `hb1 : b1 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hy` to reduce the goal to its premises. Rewrite using `[← hyb, h, map_zero, zero_div]`. Establish `hb2L : algebraMap (integralClosure O L) L b2 ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (integralClosure O L) L)).2 hb2`. Establish `hyb2 : y * algebraMap (integralClosure O L) L b2 = algebraMap (integralClosure O L) L b1`. Rewrite using `[← hyb, div_mul_cancel₀ _ hb2L]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ha : algebraMap O F ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O F)).2 hϖ.ne_zero`. Take `⟨u1, hu1, h1⟩` from `norm_integral (F := F) b1 hb1 hϖ`. Take `⟨u2, hu2, h2⟩` from `norm_integral (F := F) b2 hb2 hϖ`. Establish `hmul : Algebra.norm F y * Algebra.norm F (algebraMap (integralClosure O L) L b2) = Algebra.norm F (algebraMap (integralClosure O L) L b1)`. Rewrite using `[← map_mul, hyb2]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hmul` using `[h1, h2]`. Simplify using `only [map_mul, map_pow] at hmul`. Establish `hk : ∀ v : HeightOneSpectrum (integralClosure O L), WithTop.untopD 0 (addv L v y) = ((Multiset.count v.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b1})) : ℕ) : ℤ) - ((Multiset.count v.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b2})) : …`. Introduce `v`. Establish `hm` using `(addv L v).map_mul y (algebraMap (integralClosure O L) L b2)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `hm` using `[hyb2, addv_count v b1 hb1, addv_count v b2 hb2]`. Take `⟨k, hk⟩` from `WithTop.ne_top_iff_exists.1 (mt (addv L v).top_iff.1 hy)`. Rewrite `hm`, the goal using `[← hk]`. Establish `hm' : ((Multiset.count v.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b1})) : ℕ) : ℤ) = k + ((Multiset.count v.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b2})) : ℕ) : ℤ)`. Conclude with `hm` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[WithTop.untopD_coe]`. Use linear arithmetic over natural numbers and integers. Establish `hz : (∑ᶠ v : HeightOneSpectrum (integralClosure O L), (v.asIdeal.inertiaDeg O : ℤ) * WithTop.untopD 0 (addv L v y)) = (((∑ᶠ v : HeightOneSpectrum (integralClosure O L), v.asIdeal.inertiaDeg O * Multiset.count v.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b1} …`. Simplify using `only [hk]`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `push_cast`. Rewrite using `[← Finset.sum_sub_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `v _`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `⟨u1 * ((hu2.unit⁻¹ : Oˣ) : O), hu1.mul (hu2.unit⁻¹).isUnit, ?_⟩` and prove the remaining obligations. Establish `hU : algebraMap O F u2 * algebraMap O F ((hu2.unit⁻¹ : Oˣ) : O) = 1`. Rewrite using `[← map_mul, hu2.mul_val_inv, map_one]`. Establish `haS : (algebraMap O F ϖ) ^ (∑ᶠ v : HeightOneSpectrum (integralClosure O L), v.asIdeal.inertiaDeg O * Multiset.count v.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b2}))) ≠ 0` using `pow_ne_zero _ ha`. Rewrite using `[hz, zpow_sub₀ ha, zpow_natCast, zpow_natCast, map_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_mul_mul_comm, mul_inv_cancel₀ haS, hU, one_mul, mul_one]`. Use `_ = (algebraMap O F ϖ) ^ (∑ᶠ v : HeightOneSpectrum (integralClosure O L), v.asIdeal.inertiaDeg O * Multiset.count v.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b1}))) * algebraMap O F u1 * (((algebraMap O F ϖ) ^ (∑ᶠ v : HeightOneSpectrum (integralClosure O L …`. Rewrite using `[hmul]`. Use `_ = _ := by`.
-
-Rewrite using `[div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_eq_heightOne (y : L) (hy : y ≠ 0) {ϖ : O} (hϖ : Irreducible ϖ) :
     ∃ u : O, IsUnit u ∧
@@ -210,11 +202,11 @@ theorem norm_eq_heightOne (y : L) (hy : y ≠ 0) {ϖ : O} (hϖ : Irreducible ϖ)
         ring
 
 /- English proof (translation)
-Take `⟨u, hu, h⟩` from `norm_eq_heightOne (F := F) y hy hϖ`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Use `congr 2`. Take `⟨e, he⟩` from `placesOver_bij (O := O) (F := F) (L := L)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← finsum_set_coe_eq_finsum_mem, ← finsum_comp_equiv e]`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `v`. Rewrite using `[he v]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `congrArg (fun n : ℕ => (n : ℤ)) (resDeg_addv (F := F) v).symm`.
+A detailed English derivation is pending.
 -/
 theorem norm_eq_places (y : L) (hy : y ≠ 0) {ϖ : O} (hϖ : Irreducible ϖ) :
     ∃ u : O, IsUnit u ∧
@@ -239,19 +231,15 @@ variable (O L) in
 include F in
 
 /- English proof (translation)
-Take `⟨e, -⟩` from `placesOver_bij (O := O) (F := F) (L := L)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hinj : Function.Injective (algebraMap O L)`. Rewrite using `[IsScalarTower.algebraMap_eq O F L]`. Conclude with `(algebraMap F L).injective.comp (IsFractionRing.injective O F)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hbdef⟩ : ∃ b : integralClosure O L, b = algebraMap O (integralClosure O L) ϖ` from `⟨_, rfl⟩`. Establish `hbL : algebraMap (integralClosure O L) L b = algebraMap O L ϖ`. Rewrite using `[hbdef]`. Conclude with `(IsScalarTower.algebraMap_apply O (integralClosure O L) L ϖ).symm`. Establish `hb : b ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h00 : algebraMap O L ϖ = 0` using `by rw [← hbL, h0, map_zero]`. Conclude with `hϖ.ne_zero (hinj (h00.trans (map_zero _).symm))`. Establish `hmem : ϖ ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal ϖ).2 hϖ.not_isUnit`. Establish `hdvd : ∀ v : HeightOneSpectrum (integralClosure O L), v.asIdeal ∣ Ideal.span {b}`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v`. Establish `h1` using `((addv_mem_placesOver (O := O) (L := L) v).2 ϖ).2.2 hmem`. Rewrite `h1` using `[← hbL, addv_count v b hb]`. Establish `h2 : 0 < Multiset.count v.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b}))`. Break down `Nat.eq_zero_or_pos (Multiset.count v.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {b}))) with h | h` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h, Nat.cast_zero]`. Conclude with `absurd h1 (lt_irrefl 0)`. Conclude with `h`. Conclude with `UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors (Multiset.count_pos.1 h2)`. Establish `hspan : Ideal.span {b} ≠ 0`.
-
-Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hb`. Establish `hfin` using `Ideal.finite_factors hspan`. Establish `hfin' : Finite (HeightOneSpectrum (integralClosure O L))`. Establish `huniv : {v : HeightOneSpectrum (integralClosure O L) | v.asIdeal ∣ Ideal.span {b}} = Set.univ` using `Set.eq_univ_of_forall hdvd`.
-
-Rewrite `hfin` using `[huniv]`. Conclude with `Set.finite_univ_iff.1 hfin`. Conclude with `Set.finite_coe_iff.1 (Finite.of_equiv _ e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placesOver_finite : (PlacesOver O L).Finite := by
   obtain ⟨e, -⟩ := placesOver_bij (O := O) (F := F) (L := L)

@@ -7,9 +7,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.LimV
 
 /- English proof (translation)
-Introduce `A B U₁ U₂ h₁ h₂`. Set `φ : U₁ →ₗ[ℂ] U₂ →ₗ[ℂ] (A × B → ℂ)` to `LinearMap.mk₂ ℂ (fun a b x => a.1 x.1 * b.1 x.2) (fun a a' b => by ext x; simp [add_mul]) (fun c a b => by ext x; simp [mul_assoc]) (fun a b b' => by ext x; simp [mul_add]) (fun c a b => by ext x; simp [mul_left_comm])`. Set `T : U₁ ⊗[ℂ] U₂ →ₗ[ℂ] (A × B → ℂ)` to `TensorProduct.lift φ`. Establish `hle : prodSpan U₁ U₂ ≤ LinearMap.range T`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `F ⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨(⟨a, ha⟩ : U₁) ⊗ₜ[ℂ] (⟨b, hb⟩ : U₂), by simp [T, φ]⟩`. Use `haveI : FiniteDimensional ℂ (LinearMap.range T) := LinearMap.finiteDimensional_range T`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_prodSpan_of_fd : ∀ {A B : Type} (U₁ : Submodule ℂ (A → ℂ)) (U₂ : Submodule ℂ (B → ℂ)),
     FiniteDimensional ℂ U₁ → FiniteDimensional ℂ U₂ → FiniteDimensional ℂ (prodSpan U₁ U₂) := by

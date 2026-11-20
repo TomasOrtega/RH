@@ -8,9 +8,9 @@ def orb (A : Subalgebra ℂ (Module.End ℂ M)) (x : M) : Submodule ℂ M :=
   Submodule.span ℂ {y | ∃ a ∈ A, y = (a : M → M) x}
 
 /- English proof (translation)
-Unfold `orb`. Rewrite using `[Submodule.span_le]`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Conclude with `h ⟨a, ha, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `h y ⟨a, ha, rfl⟩`. Conclude with `h a ha`.
+A detailed English derivation is pending.
 -/
 lemma orb_le {A : Subalgebra ℂ (Module.End ℂ M)} {x : M} {U : Submodule ℂ M} :
     orb A x ≤ U ↔ ∀ a ∈ A, (a : M → M) x ∈ U := by
@@ -21,7 +21,7 @@ lemma orb_le {A : Subalgebra ℂ (Module.End ℂ M)} {x : M} {U : Submodule ℂ 
   · rintro h y ⟨a, ha, rfl⟩; exact h a ha
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, ha, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma mem_orb {A : Subalgebra ℂ (Module.End ℂ M)} {x : M} {a : Module.End ℂ M} (ha : a ∈ A) :
     (a : M → M) x ∈ orb A x := Submodule.subset_span ⟨a, ha, rfl⟩
@@ -56,7 +56,7 @@ def good (A : Subalgebra ℂ (Module.End ℂ M)) : Submodule ℂ M where
     exact Submodule.finiteDimensional_of_le this
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_good {A : Subalgebra ℂ (Module.End ℂ M)} {x : M} :
     x ∈ good A ↔ FiniteDimensional ℂ (orb A x) := Iff.rfl
@@ -65,9 +65,9 @@ def grow (A : Subalgebra ℂ (Module.End ℂ M)) (W : Submodule ℂ M) : Submodu
   Submodule.span ℂ {y | ∃ a ∈ A, ∃ x ∈ W, y = (a : M → M) x}
 
 /- English proof (translation)
-Unfold `grow`. Rewrite using `[Submodule.span_le]`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha x hx`. Conclude with `h ⟨a, ha, x, hx, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `h y ⟨a, ha, x, hx, rfl⟩`. Conclude with `h a ha x hx`.
+A detailed English derivation is pending.
 -/
 lemma grow_le {A : Subalgebra ℂ (Module.End ℂ M)} {W U : Submodule ℂ M} :
     grow A W ≤ U ↔ ∀ a ∈ A, ∀ x ∈ W, (a : M → M) x ∈ U := by
@@ -78,14 +78,14 @@ lemma grow_le {A : Subalgebra ℂ (Module.End ℂ M)} {W U : Submodule ℂ M} :
   · rintro h y ⟨a, ha, x, hx, rfl⟩; exact h a ha x hx
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, ha, x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma mem_grow {A : Subalgebra ℂ (Module.End ℂ M)} {W : Submodule ℂ M} {a : Module.End ℂ M}
     (ha : a ∈ A) {x : M} (hx : x ∈ W) : (a : M → M) x ∈ grow A W :=
   Submodule.subset_span ⟨a, ha, x, hx, rfl⟩
 
 /- English proof (translation)
-Introduce `x hx`. Use `mem_grow A.one_mem hx` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma le_grow (A : Subalgebra ℂ (Module.End ℂ M)) (W : Submodule ℂ M) : W ≤ grow A W := by
   intro x hx
@@ -93,7 +93,7 @@ lemma le_grow (A : Subalgebra ℂ (Module.End ℂ M)) (W : Submodule ℂ M) : W 
   simpa using this
 
 /- English proof (translation)
-Establish `h : grow A W ≤ (grow A W).comap a` using `grow_le.mpr (fun b hb y hy => by show a (b y) ∈ grow A W`. Rewrite using `[← mul_apply']`. Conclude with `mem_grow (A.mul_mem ha hb) hy)`. Conclude with `h hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma grow_inv {A : Subalgebra ℂ (Module.End ℂ M)} {W : Submodule ℂ M} {a : Module.End ℂ M}
     (ha : a ∈ A) {x : M} (hx : x ∈ grow A W) : (a : M → M) x ∈ grow A W := by
@@ -104,7 +104,7 @@ lemma grow_inv {A : Subalgebra ℂ (Module.End ℂ M)} {W : Submodule ℂ M} {a 
   exact h hx
 
 /- English proof (translation)
-Establish `h : grow A W ≤ (grow A W).comap c` using `grow_le.mpr (fun b hb y hy => by show c (b y) ∈ grow A W`. Rewrite using `[← mul_apply', hcomm b hb, mul_apply']`. Conclude with `mem_grow hb (hc y hy))`. Conclude with `h hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma grow_inv' {A : Subalgebra ℂ (Module.End ℂ M)} {W : Submodule ℂ M} {c : Module.End ℂ M}
     (hc : ∀ x ∈ W, c x ∈ W) (hcomm : ∀ a ∈ A, c * a = a * c) {x : M} (hx : x ∈ grow A W) :
@@ -116,11 +116,9 @@ lemma grow_inv' {A : Subalgebra ℂ (Module.End ℂ M)} {W : Submodule ℂ M} {c
   exact h hx
 
 /- English proof (translation)
-Take `⟨s, hs⟩ : W.FG` from `(Submodule.fg_iff_finiteDimensional W).mpr inferInstance`. Use `haveI : ∀ y : s, FiniteDimensional ℂ (orb A (y : M)) := fun y => by`. Establish `hy : (y : M) ∈ W` using `by rw [← hs]; exact Submodule.subset_span y.2`. Conclude with `mem_good.mp (hW hy)`. Establish `hle : grow A W ≤ ⨆ y : s, orb A (y : M)` using `grow_le.mpr (fun a ha x hx => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : W ≤ (⨆ y : s, orb A (y : M)).comap a`. Rewrite using `[← hs, Submodule.span_le]`. Introduce `y hy`. Conclude with `Submodule.mem_iSup_of_mem (⟨y, hy⟩ : s) (mem_orb ha)`. Conclude with `h2 hx)`.
-
-Conclude with `Submodule.finiteDimensional_of_le hle`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma grow_fd {A : Subalgebra ℂ (Module.End ℂ M)} {W : Submodule ℂ M} [FiniteDimensional ℂ W]
     (hW : W ≤ good A) : FiniteDimensional ℂ (grow A W) := by
@@ -137,7 +135,7 @@ lemma grow_fd {A : Subalgebra ℂ (Module.End ℂ M)} {W : Submodule ℂ M} [Fin
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-The claim follows from `grow_le.mpr (fun a ha x hx => by haveI : FiniteDimensional ℂ (orb B x) := mem_good.mp (hW hx) have hle : orb B (a x) ≤ (orb B x).map a := orb_le.mpr (fun b hb => by have e : b (a x) = a (b x) := by rw [← mul_apply', ← mul_apply', hcomm a ha b hb] rw [e] exact Submodule.mem_map_of …`.
+A detailed English derivation is pending.
 -/
 lemma grow_good {A B : Subalgebra ℂ (Module.End ℂ M)} {W : Submodule ℂ M} (hW : W ≤ good B)
     (hcomm : ∀ a ∈ A, ∀ b ∈ B, a * b = b * a) : grow A W ≤ good B :=
@@ -151,15 +149,13 @@ lemma grow_good {A B : Subalgebra ℂ (Module.End ℂ M)} {W : Submodule ℂ M} 
     exact mem_good.mpr (Submodule.finiteDimensional_of_le hle))
 
 /- English proof (translation)
-Introduce `M _ _ ι _ A hcomm m hfin`. Use `haveI := Fintype.ofFinite ι`. Establish `key : ∀ S : Finset ι, ∃ W : Submodule ℂ M, FiniteDimensional ℂ W ∧ m ∈ W ∧ (∀ i ∈ S, ∀ a ∈ A i, ∀ x ∈ W, a x ∈ W) ∧ (∀ j, j ∉ S → W ≤ good (A j))`. Introduce `S`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Submodule.span ℂ {m}, inferInstance, Submodule.mem_span_singleton_self m, by simp, ?_⟩` and prove the remaining obligations. Introduce `j _`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `mem_good.mpr (hfin j)`. Introduce `j S hj ih`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨W, hWfd, hmW, hinv, hgood⟩` from `ih`. Use `⟨grow (A j) W, grow_fd (hgood j hj), le_grow _ _ hmW, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi a ha x hx`. Break down `Finset.mem_insert.mp hi with rfl | hiS` into its components or cases. Conclude with `grow_inv ha hx`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hij : i ≠ j` using `fun h => hj (h ▸ hiS)`. Conclude with `grow_inv' (hinv i hiS a ha) (fun b hb => hcomm i j hij a ha b hb) hx`. Introduce `k hk`. Establish `hkj : k ≠ j` using `fun h => hk (h ▸ Finset.mem_insert_self j S)`. Establish `hkS : k ∉ S` using `fun h => hk (Finset.mem_insert_of_mem h)`.
-
-Conclude with `grow_good (hgood k hkS) (fun a ha b hb => (hcomm k j hkj b hb a ha).symm)`. Take `⟨W, h1, h2, h3, -⟩` from `key Finset.univ`. Conclude with `⟨W, h1, h2, fun i a ha x hx => h3 i (Finset.mem_univ i) a ha x hx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (M : Type) [inst : AddCommGroup M] [inst_1 : Module ℂ M] (ι : Type) [Finite ι]
     (A : ι → Subalgebra ℂ (Module.End ℂ M)),

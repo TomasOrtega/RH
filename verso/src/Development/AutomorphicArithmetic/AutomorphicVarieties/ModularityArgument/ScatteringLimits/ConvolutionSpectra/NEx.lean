@@ -13,49 +13,43 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M hs`. Take `⟨c0, cadd, csmul, -, csh, -, -, -⟩` from `cobLaws M.F`. Take `⟨-, -, -, -, hP, -, -, hL⟩` from `projLaws M`. Establish `hP'` using `(projLaws M.swap).2.2.2.2.1`. Take `⟨o1, o2, l0, -, -, l1, l2, l3, l4⟩` from `hL M.T₀ M.T₀ (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set T := M.T₀ with hT`. Use `set Λ := M.abelian₂ T T with hΛ`. Establish `mI : ∀ x : ℝ, MeasurableSet (Ioi x)` using `fun _ => measurableSet_Ioi`. Establish `carry : ∀ p : L V, Tail p → M.F.Cob (M.J p - M.J (one V (∫ x, p x)))` using `fun p hp => by`. Use `(cobLaws (shF V)).2.2.2.2.2.2.2 M.F (M.J.toContinuousLinearEquiv : L V →L[ℂ] H) (fun t h => (M.hJ t h).symm) _ ((cobTail p).2 hp).2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub]`. Then use the resulting hypothesis. Establish `ex : ∀ w, ∃ n, M.F.Cob (M.J' (one W w) - M.J (one V n))`. Introduce `w`. Use `set h := M.F.U (T - 1) (M.J' (one W w)) with hh`. Establish `s0 : M.P' (Ioc 0 1) (M.J' (one W w)) = M.J' (one W w)` using `by show M.J' (cut W _ (M.J'.symm (M.J' _))) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[M.J'.symm_apply_apply, ((cutLaws (Ioc 0 1) univ measurableSet_Ioc .univ).2.2.2.2.2.2.2.1 _).2]`. Conclude with `((svSpec (V := W)).2 w).1.mono fun x hx hn => by rw [hx, indicator_of_notMem hn]`. Establish `s1 : M.P' (Ioc (T - 1) T) h = h`. Use `DFunLike.congr_fun ((hP _ _ (measurableSet_Ioc (a := (0 : ℝ)) (b := 1)) .univ).2.2.2.2 (T - 1)).2 (M.J' (one W w))` as an intermediate fact. Establish `y : (fun x : ℝ => x - (T - 1)) ⁻¹' Ioc 0 1 = Ioc (T - 1) T`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `ext x; simp only [mem_preimage, mem_Ioc]; constructor <;> rintro ⟨a, b⟩ <;> constructor <;> linarith`. Rewrite `this` using `[y]`. Simplify using `only [ContinuousLinearMap.comp_apply, s0] at this`. Conclude with `this.symm`. Establish `s2 : M.P' (Ioi T) h = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a : M.P' (Ioi T) ∘L M.P' (Ioc (T - 1) T) = M.P' (Ioi T ∩ Ioc (T - 1) T)` using `(hP' _ _ (mI T) measurableSet_Ioc).1`. Establish `b : Ioi T ∩ Ioc (T - 1) T = ∅` using `eq_empty_of_forall_notMem fun x hx => absurd hx.1 (not_lt.2 hx.2.2)`. Rewrite `a` using `[b, show M.P' ∅ = 0 from (projLaws M.swap).2.2.2.2.2.1]`. Rewrite using `[← s1]`. Conclude with `DFunLike.congr_fun a h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `s3 : M.P (Ioi (T + 1)) h = 0`. Establish `a : M.P' (Ioi (T - 1)) ∘L M.P' (Ioc (T - 1) T) = M.P' (Ioi (T - 1) ∩ Ioc (T - 1) T)` using `(hP' _ _ (mI _) measurableSet_Ioc).1`. Rewrite `a` using `[inter_eq_right.2 Ioc_subset_Ioi_self]`. Rewrite using `[← s1, ← a]`. Conclude with `DFunLike.congr_fun (hL (T + 1) (T - 1) (by linarith)).1 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, hk⟩` from `hs (Λ h)`. Use `set R := M.F.av wR with hR`. Establish `hk' : k - Λ (R (Λ k)) = Λ h` using `hk`. Establish `ΛΛ : ∀ x, Λ (Λ x) = Λ x` using `fun x => DFunLike.congr_fun l0 x`. Establish `kΛ : Λ k = k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Λ hk'` as an intermediate fact. Rewrite `this` using `[map_sub, ΛΛ, ΛΛ, ← hk']`. Conclude with `sub_left_injective this`. Rewrite `hk'` using `[kΛ]`. Establish `k1 : M.P (Ioi T) k = 0` using `by rw [← kΛ]; exact DFunLike.congr_fun l2 k`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2 : M.P' (Ioi T) k = 0` using `by rw [← kΛ]; exact DFunLike.congr_fun l4 k`. Establish `r2 : M.P' (Ioi T) (R k) = 0`. Take `⟨i, e⟩` from `((avSpec M.F).2.2.2 _ (avSpec M.F).2.1).1 k`. Rewrite using `[hR, e, ← (M.P' (Ioi T)).integral_comp_comm i]`. Use `integral_eq_zero_of_ae (Eventually.of_forall fun r => ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hr : r ≤ 0`. Establish `a` using `DFunLike.congr_fun ((hP _ _ (mI (T - r)) .univ).2.2.2.2 r).2 k`. Establish `y : (fun x : ℝ => x - r) ⁻¹' Ioi (T - r) = Ioi T` using `by ext x; simp`. Establish `b : M.P' (Ioi (T - r)) ∘L M.P' (Ioi T) = M.P' (Ioi (T - r) ∩ Ioi T)` using `(hP' _ _ (mI _) (mI _)).1`. Rewrite `b` using `[inter_eq_left.2 (Ioi_subset_Ioi (by linarith))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `a` using `[y, ← b]`. Simplify using `only [ContinuousLinearMap.comp_apply, k2, map_zero] at a`. Simplify using `[← a]`. Simplify using `[wR, hr]`. Establish `dec : h = (k - R k) + M.P (Ioi T) (R k) + M.P (Ioi T) h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a : Λ h = h - M.P (Ioi T) h - M.P' (Ioi T) h` using `rfl`. Establish `b : Λ (R k) = R k - M.P (Ioi T) (R k) - M.P' (Ioi T) (R k)` using `rfl`. Rewrite `hk'` using `[a, b, s2, r2, sub_zero, sub_zero]`. Take the linear combination `(norm := module) -hk'`. Establish `cl` using `fun s t hs ht => cutLaws (V := V) s t hs ht`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u := M.J.symm k with hu`. Establish `u1 : cut V (Iic T) u = u`. Establish `a` using `(cl (Iic T) (Ioi T) measurableSet_Iic (mI T)).2.2.1 (Iic_disjoint_Ioi le_rfl)`. Rewrite `a` using `[Iic_union_Ioi, (cl _ _ .univ .univ).2.2.2.1]`. Establish `b : u = cut V (Iic T) u + cut V (Ioi T) u` using `DFunLike.congr_fun a u`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c : cut V (Ioi T) u = 0` using `M.J.injective (by rw [map_zero]; exact k1)`. Rewrite `b` using `[c, add_zero]`. Conclude with `b.symm`. Establish `e1 : M.P (Ioi T) (R k) = M.J (cut V (Ioi T) ((shF V).av wR u))`. Use `DFunLike.congr_fun (((avSpec (shF V)).2.2.2 _ (avSpec M.F).2.1).2.2.2.2 M.F (M.J.toContinuousLinearEquiv : L V →L[ℂ] H) fun t h => (M.hJ t h).symm) u` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a : M.J ((shF V).av wR u) = R (M.J u)` using `this`. Rewrite `a` using `[hu, M.J.apply_symm_apply]`. Use `show M.J (cut V _ (M.J.symm (R k))) = _`. Rewrite using `[← a, M.J.symm_apply_apply]`. Use `set v := cut V (Ioi T) (M.J.symm h) with hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : M.P (Ioi T) h = M.J v` using `rfl`. Establish `bv : Bdd v`. Use `⟨|T| + 1, ?_⟩` and prove the remaining obligations. Establish `a` using `(cl (Ioc T (T + 1)) (Ioi (T + 1)) measurableSet_Ioc (mI _)).2.2.1 (Ioc_disjoint_Ioi le_rfl)`. Rewrite `a` using `[Ioc_union_Ioi_eq_Ioi (by linarith)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `c : cut V (Ioi (T + 1)) (M.J.symm h) = 0` using `M.J.injective (by rw [map_zero]; exact s3)`. Establish `b : v = cut V (Ioc T (T + 1)) (M.J.symm h)` using `by rw [hv, a, ContinuousLinearMap.add_apply, c, add_zero]`. Establish `d` using `(cl (Icc (-(|T| + 1)) (|T| + 1)) (Ioc T (T + 1)) measurableSet_Icc measurableSet_Ioc).1`. Establish `sub : Ioc T (T + 1) ⊆ Icc (-(|T| + 1)) (|T| + 1)` using `fun x hx => ⟨by linarith [hx.1, neg_abs_le T], by linarith [hx.2, le_abs_self T]⟩`. Rewrite `d` using `[inter_eq_right.2 sub]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[b]`. Conclude with `DFunLike.congr_fun d _`. Establish `f1` using `carry _ (resTail u T u1)`. Establish `f2` using `carry _ ((cobTail v).1 bv)`. Establish `f3` using `(cadd _ _ (cadd _ _ (cadd _ _ (csh (T - 1) (M.J' (one W w))) (resCob M.F k).1).1 f1).1 f2).1`.
-
-Use `⟨(∫ x, cut V (Ioi T) ((shF V).av wR u) x) + ∫ x, v x, ?_⟩` and prove the remaining obligations. Use `f3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← e1, ← e2, map_add, map_add, ← hh, ← hR]`. Take the linear combination `(norm := module) dec`. Use `choose n hn using ex`.
-
-Set `b` to `Module.finBasis ℂ W`. Use `⟨b.constr ℂ fun i => n (b i), fun w => ?_⟩` and prove the remaining obligations. Establish `e : M.J' (one W w) - M.J (one V (b.constr ℂ (fun i => n (b i)) w)) = ∑ i, b.repr w i • (M.J' (one W (b i)) - M.J (one V (n (b i))))` using `by conv_lhs => rw [← b.sum_repr w]`. Simplify using `only [map_sum, map_smul, Module.Basis.constr_basis, smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[e]`.
-
-Conclude with `Finset.sum_induction _ _ (fun x y hx hy => (cadd x y hx hy).1) c0 fun i _ => csmul _ _ (hn _)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.nEx :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W), Function.Surjective (1 - M.abelian₂ M.T₀ M.T₀ ∘L M.F.av wR ∘L M.abelian₂ M.T₀ M.T₀ : H →L[ℂ] H) → ∃ N : W →ₗ[ℂ] V, M.IsN N := by

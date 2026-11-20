@@ -20,15 +20,15 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Establish `hsec` using `D.sec.2 q.2 hζ`. Establish `hmin` using `big_cell_minors_holds k r D.z D.z' q.1 (D.μsec q.2) D.z_mem D.z'_mem`. Establish `hz` using `hmin.2.2 hc`. Rewrite `hz` using `[Formalism.FourierDecayAlt.P.BigCellHermitian.herm_bigCell _ _ D.z_mem D.z'_mem, hsec.2]`. Establish `hr` using `hmin.1 (Fin.last r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set P := Dmin k r D.z D.z' (bigCell k r q.1 (D.μsec q.2)) ⟨r, by omega⟩ with hP`. Establish `hPe : P = ∏ a : Fin r, q.1 a`. Establish `: P = ∏ a : Fin r with a.val < (Fin.last r).val, q.1 a` using `hr`. Rewrite using `[this]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `hP0 : P ≠ 0`. Rewrite using `[hPe]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => hc a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hlast : Dmin k r D.z D.z' (bigCell k r q.1 (D.μsec q.2)) (Fin.last (r + 1)) = q.2 * P`. Unfold `zeta at hz`. Rewrite `hz` using `[← hP]`. Establish `h2` using `div_mul_cancel₀ (Dmin k r D.z D.z' (bigCell k r q.1 (D.μsec q.2)) (Fin.last (r + 1))) hP0`. Rewrite `h2` using `[hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.symm`. Use `show Formalism.QuantumDeterminants.Gf k r D.z D.z' (bigCell k r q.1 (D.μsec q.2)) = _`. Unfold `Formalism.QuantumDeterminants.Gf`. Rewrite using `[hlast, ← hP, Complex.normSq_mul, hPe, map_prod]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cutTr_Gf_gq (D : B.RealPlaceData k r Wp Wq) {q : (Fin r → ℂ) × ℂ} (hc : ∀ a, q.1 a ≠ 0)
     (hζ : Tz k r D.z * Tz k r D.z' < Complex.normSq q.2) :
@@ -60,7 +60,7 @@ theorem cutTr_Gf_gq (D : B.RealPlaceData k r Wp Wq) {q : (Fin r → ℂ) × ℂ}
   ring
 
 /- English proof (translation)
-Establish `h : (B.hsVec : (Wq →L[ℂ] Wp) → PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)) = ⇑((LinearMap.toContinuousLinearMap (Formalism.FourierDecayAlt.P.JFxI.hsVecL (Wp` using `Wp) (Wq := Wq))).restrictScalars ℝ) := rfl`. Rewrite using `[h]`. Conclude with `ContinuousLinearMap.contDiff _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutTr_hsVec_contDiff [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] :
     ContDiff ℝ ∞ (B.hsVec : (Wq →L[ℂ] Wp) → PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)) := by
@@ -70,9 +70,9 @@ theorem cutTr_hsVec_contDiff [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ W
   exact ContinuousLinearMap.contDiff _
 
 /- English proof (translation)
-Establish `hg : ContDiffOn ℝ ∞ (fun q => B.gq D q) (JF.QDom k r D.z D.z')` using `contDiffOn_infty.2 fun n => Formalism.FourierDecayAlt.P.BigCellOpenDomain.gq_contDiffOn D n`. Use `contDiffOn_of_locally_contDiffOn fun q hq => ?_` and prove the remaining obligations. Establish `hG` using `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom D hq`. Take `⟨U, F', hU, hgU, hc, he⟩` from `hJ (B.gq D q) ⟨Formalism.FourierDecayAlt.P.WordKeyIdentity.glev0 hG.1, hOm q hq⟩`. Use `⟨JF.QDom k r D.z D.z' ∩ (fun q => B.gq D q) ⁻¹' U, hg.continuousOn.isOpen_inter_preimage (Formalism.FourierDecayAlt.P.BigCellOpenDomain.qdom_open D.z D.z') hU, ⟨hq, hgU⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcomp : ContDiffOn ℝ ∞ (F' ∘ fun q => B.gq D q) (JF.QDom k r D.z D.z' ∩ (JF.QDom k r D.z D.z' ∩ (fun q => B.gq D q) ⁻¹' U))` using `hc.comp (hg.mono Set.inter_subset_left) fun x hx => hx.2.2`. Use `hcomp.congr fun x hx => ?_` and prove the remaining obligations. Conclude with `he _ hx.2.2 (Formalism.FourierDecayAlt.P.WordKeyIdentity.glev0 (Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom D hx.1).1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cutTr_jgq_smooth (D : B.RealPlaceData k r Wp Wq) (J : B.Mat k r → (Wq →L[ℂ] Wp)) (Om : Set (B.Mat k r))
     (hJ : Q.SmoothLev k r 0 Om J) (hOm : ∀ q ∈ JF.QDom k r D.z D.z', B.gq D q ∈ Om) :
@@ -93,7 +93,7 @@ theorem cutTr_jgq_smooth (D : B.RealPlaceData k r Wp Wq) (J : B.Mat k r → (Wq 
 end helpers
 
 /- English proof (translation)
-Establish `: (fun z : ℂ => Complex.normSq z) = fun z => ‖z‖ ^ 2`. Use function extensionality and compare the values at `z`. Conclude with `Complex.normSq_eq_norm_sq z`. Rewrite using `[this]`. Conclude with `contDiff_norm_sq ℝ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutTr_normSq_contDiff : ContDiff ℝ ∞ (fun z : ℂ => Complex.normSq z) := by
   have : (fun z : ℂ => Complex.normSq z) = fun z => ‖z‖ ^ 2 := by
@@ -102,23 +102,21 @@ theorem cutTr_normSq_contDiff : ContDiff ℝ ∞ (fun z : ℂ => Complex.normSq 
   exact contDiff_norm_sq ℝ
 
 /- English proof (translation)
-Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e he hJ c hc ε hε`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hQ : ∀ x ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT, x ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'` using `fun x hx => ⟨hx.1, hTT ▸ hx.2⟩`. Establish `hOm : ∀ q ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z', B.gq (T v).base q ∈ OmP S T v`. Introduce `q hq`. Establish `h` using `(Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base hq).2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨h.2, fun a => h.1 _ (by simp)⟩`. Use function extensionality and compare the values at `ρ`. Use `set u : MA.Qp (D.parOf S v).r (D.parOf S v).TT → ℂ := fun q => ((Real.sqrt (MA.wq S.G.k q.1 (D.parOf S v).TT) : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ q.1.2)) (B.hsVec (B.JF (T v).base (f v) (B.gq (T v).base q.1))) with hu_def`. Establish `hu : u ∈ MA.smSub (D.parOf S v).r (D.parOf S v).TT` using `by show ContDiffOn ℝ MA.sm (MA.ext u) (MA.Qset _ _)`. Establish `hg : ContDiffOn ℝ ∞ (fun x : MA.E (D.parOf S v).r => B.JF (T v).base (f v) (B.gq (T v).base x)) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)` using `(cutTr_jgq_smooth (T v).base _ _ hJ.1 hOm).mono hQ`.
+Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : ContDiffOn ℝ ∞ (fun x : MA.E (D.parOf S v).r => e ρ x.2) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)` using `(he.1 ρ).comp contDiff_snd.contDiffOn fun x hx => hx.2`. Establish `hwc : ContDiff ℝ ∞ (fun x : MA.E (D.parOf S v).r => MA.wq S.G.k x (D.parOf S v).TT)`. Establish `hn` using `cutTr_normSq_contDiff`. Unfold `MA.wq`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwp : ∀ x ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT, MA.wq S.G.k x (D.parOf S v).TT ≠ 0`. Introduce `x hx`. Unfold `MA.wq`. Conclude with `(mul_pos (Finset.prod_pos fun l _ => pow_pos (Complex.normSq_pos.2 (hx.1 l)) _) (pow_pos (sub_pos.2 hx.2) _)).ne'`. Establish `hw : ContDiffOn ℝ ∞ (fun x : MA.E (D.parOf S v).r => ((Real.sqrt (MA.wq S.G.k x (D.parOf S v).TT) : ℝ) : ℂ)) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (hwc.contDiffOn.sqrt hwp)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `(hw.mul ((cutTr_hsVec_contDiff.comp_contDiffOn he').inner ℂ (cutTr_hsVec_contDiff.comp_contDiffOn hg))).congr ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `[MA.ext, hx, hu_def]`. Establish `hL : trJ S T v e (B.JF (T v).base (D.cutF (T v).base χ (f v) ε)) ρ = MA.toSm (D.parOf S v) (fun q => ((c.sc ε 1 (MA.Gq (D.parOf S v) q) : ℝ) : ℂ) * u q)`. Unfold `trJ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx2.JF_cutF, Formalism.FourierDecayAlt.P.JCTx2.hsVec_smul', inner_smul_right, cutTr_Gf_gq (T v).base q.2.1 (hTT ▸ q.2.2)]`. Simplify using `only [hu_def, LE.Cut.sc, hc, pow_one, MA.Gq, hTT]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : (trJ S T v e (B.JF (T v).base (f v)) ρ) = ⟨u, hu⟩`. Unfold `trJ MA.toSm`. Rewrite using `[dif_pos hu]`. Rewrite using `[hL]`. Use `show _ = MA.toSm (D.parOf S v) (fun q => ((c.sc ε 1 (MA.Gq (D.parOf S v) q) : ℝ) : ℂ) * (trJ S T v e (B.JF (T v).base (f v)) ρ).1 q)`.
-
-Rewrite using `[hR]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutoff_transport_to_model : CutTr := by
   refine ⟨0, ?_⟩

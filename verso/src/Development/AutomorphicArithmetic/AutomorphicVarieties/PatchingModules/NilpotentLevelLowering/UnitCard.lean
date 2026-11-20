@@ -14,13 +14,11 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Rewrite using `[resCard_eq_normV]`. Assume the negation of the conclusion as `hn`. Establish `h1 : residue O (normV w : O) = 0` using `(residue_eq_zero_iff _).2 hn`. Rewrite `h1` using `[map_natCast, CharP.cast_eq_zero_iff (ResidueField O) l]`. Establish `hmax` using `w.isMaximal`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `letI : Field (𝓞 L ⧸ w.asIdeal) := Ideal.Quotient.field _`. Establish `hfin : Finite (𝓞 L ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Use `letI := Fintype.ofFinite (𝓞 L ⧸ w.asIdeal)`. Establish `h2 : l ∣ Fintype.card (𝓞 L ⧸ w.asIdeal)`. Rewrite using `[← Nat.card_eq_fintype_card]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Establish `h3` using `(prime_dvd_char_iff_dvd_card (R := 𝓞 L ⧸ w.asIdeal) l).2 h2`. Establish `h4 : ringChar (𝓞 L ⧸ w.asIdeal) = l` using `((Nat.prime_dvd_prime_iff_eq hl.out (CharP.char_is_prime (𝓞 L ⧸ w.asIdeal) _)).1 h3).symm`. Apply `hw` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ← h4]`.
-
-Conclude with `ringChar.Nat.cast_ringChar`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unit_card (l : ℕ) [hl : Fact l.Prime] (L : Type) [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L))
     (hw : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (O : Type) [CommRing O] [IsLocalRing O] [CharP (ResidueField O) l] :
@@ -43,7 +41,7 @@ private theorem unit_card (l : ℕ) [hl : Fact l.Prime] (L : Type) [Field L] [Nu
   exact ringChar.Nat.cast_ringChar
 
 /- English proof (translation)
-Take `⟨h0, -, -, -, h1, h2, -⟩` from `UpperTheory.V.CA.d_chi D.toDet y`. Rewrite `h0` using `[Det.lam, pow_zero, one_mul, Nat.sub_zero]`. Rewrite `h0`, `h1`, `h2` using `[(UpperTheory.V.CA.d_toDet D y).1]`. Conclude with `⟨h1, le_antisymm h2 (Polynomial.le_natDegree_of_ne_zero (by rw [h0]; exact one_ne_zero))⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem chi_monic {n : ℕ} {A G : Type} [CommRing A] [Nontrivial A] [Group G] (D : GDet n A G) (y : MonoidAlgebra A G) :
     (D.chi y).Monic ∧ (D.chi y).natDegree = n := by
@@ -53,9 +51,9 @@ private theorem chi_monic {n : ℕ} {A G : Type} [CommRing A] [Nontrivial A] [Gr
   exact ⟨h1, le_antisymm h2 (Polynomial.le_natDegree_of_ne_zero (by rw [h0]; exact one_ne_zero))⟩
 
 /- English proof (translation)
-Establish `: (D.comap φ).chi (MonoidAlgebra.single g 1) = D.chi (MonoidAlgebra.single (φ g) 1)`. Express the relevant statement in the definitionally equal form `D.D _ (MonoidAlgebra.mapDomainRingHom _ φ _) = D.D _ _`. Use `congr 1`. Rewrite using `[map_sub]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GDet.lam, GDet.lam, this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem lam_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : GDet n A G) (φ : H →* G)
     (i : ℕ) (g : H) : (D.comap φ).lam i (MonoidAlgebra.single g 1) = D.lam i (MonoidAlgebra.single (φ g) 1) := by
@@ -67,7 +65,7 @@ private theorem lam_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group
   rw [GDet.lam, GDet.lam, this]
 
 /- English proof (translation)
-Use `((UpperTheory.V.CA.d_gmap D).2.2.1 f (MonoidAlgebra.single g 1)).2 i` as an intermediate fact. Rewrite `this` using `[MonoidAlgebra.mapRingHom_single, map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem lam_map {n : ℕ} {A A' G : Type} [CommRing A] [CommRing A'] [Group G] (D : GDet n A G) (f : A →+* A')
     (i : ℕ) (g : G) : (D.map f).lam i (MonoidAlgebra.single g 1) = f (D.lam i (MonoidAlgebra.single g 1)) := by
@@ -75,9 +73,7 @@ private theorem lam_map {n : ℕ} {A A' G : Type} [CommRing A] [CommRing A'] [Gr
   rwa [MonoidAlgebra.mapRingHom_single, map_one] at this
 
 /- English proof (translation)
-Introduce `m hm u hu`. Use `hm u fun j _ => ?_` and prove the remaining obligations. Establish `h1 : iwC ((w j).adicCompletion L) n ⊤ ≤ KO _ (Fin n)`. Rewrite using `[(memIwC _ n ⊤).2.1]`. Conclude with `iwahori_le_KO _ (Fin n)`.
-
-Conclude with `h1 (hu j trivial)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fix_le {L : Type} [Field L] [NumberField L] {n q : ℕ} {w : Fin q → Plc L} {A M : Type} [CommRing A]
     [AddCommGroup M] [Module A M] (ρ : Representation A (GV n w) M) :
@@ -90,9 +86,9 @@ private theorem fix_le {L : Type} [Field L] [NumberField L] {n q : ℕ} {w : Fin
   exact h1 (hu j trivial)
 
 /- English proof (translation)
-Introduce `m hm u hu`. Use `hm (atJ n w j u) fun j' _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : j' = j`. Substitute `e` using the available equality. Simplify `hu` using `[atJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[atJ, Pi.mulSingle_eq_of_ne e]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem fix_at {L : Type} [Field L] [NumberField L] {n q : ℕ} {w : Fin q → Plc L} {A M : Type} [CommRing A]
     [AddCommGroup M] [Module A M] (ρ : Representation A (GV n w) M) (j : Fin q) :
@@ -105,11 +101,11 @@ private theorem fix_at {L : Type} [Field L] [NumberField L] {n q : ℕ} {w : Fin
   · simp [atJ, Pi.mulSingle_eq_of_ne e]
 
 /- English proof (translation)
-Set `inc : N →+ fixd ρ (UC n w fun _ => ⊤)` to `(Submodule.inclusion (fix_le ρ)).toAddMonoidHom.comp eM.symm.toAddMonoidHom`. Establish `hinc : ∀ m, (inc m : M) = eM.symm m` using `fun _ => rfl`. Set `t0 : fixd ρ (UC n w fun _ => ⊤) →ₗ[A] fixd ρ (UK n w)` to `((fixd ρ (UC n w fun _ => ⊤)).subtype.comp (List.ofFn e).prod).codRestrict _ he`. Set `tr : fixd ρ (UC n w fun _ => ⊤) →+ N` to `eM.toAddMonoidHom.comp t0.toAddMonoidHom`. Establish `hβ : ∀ (t : A) m, inc (β t • m) = t • inc m` using `fun t m => Subtype.ext (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨m, rfl⟩` from `eM.surjective m`. Rewrite using `[← hM, Submodule.coe_smul, hinc, hinc, eM.symm_apply_apply, eM.symm_apply_apply, Submodule.coe_smul])`. Use `twoMul O A B N _ q n β P act (qj w) (multiTwo O A B N _ q n (qj w) β P act e _ inc tr H (fun j => (hP j).1) (fun j => (hP j).2) ?_ hβ (fun v => Subtype.ext ?_) (fun j m => fix_at ρ j (eM.symm m).2) fun j k hk m => ?_)` and prove the remaining obligations. Introduce `a b hab`. Establish `h1` using `congrArg Subtype.val hab`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[hinc, hinc]`. Conclude with `eM.symm.injective (Subtype.ext h1)`. Rewrite using `[hinc]`. Conclude with `congrArg Subtype.val (eM.symm_apply_apply (t0 v))`. Rewrite using `[hs j k hk (inc m) (eM.symm m).2, ← hc, hβ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem two_gen (L : Type) [Field L] [NumberField L] (n q : ℕ) (w : Fin q → Plc L) (O A B M N : Type)
     [CommRing O] [IsDomain O] [CommRing A] [Algebra O A] [CommRing B] [AddCommGroup M] [Module A M] [AddCommGroup N] [Module B N]
@@ -145,9 +141,9 @@ private theorem two_gen (L : Type) [Field L] [NumberField L] (n q : ℕ) (w : Fi
   · rw [hs j k hk (inc m) (eM.symm m).2, ← hc, hβ]
 
 /- English proof (translation)
-Introduce `hP l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ _ _ n r B J D b V h q w A x δ hl hx hδ T ph ta hok`. Establish `hs` using `symOf hP l L Ω s V0 O n r B J D b V h q w A x δ hl hx hδ T ph ta hok`. Establish `hch : CharP (ResidueField O) l` using `UpperTheory.V.Pa.IsCoef.char`. Take `⟨ι, hι, -⟩` from `hok`. Take `⟨e, H, he⟩` from `hkHypOf L n q w l O A.R A.P A.ρ x δ T hx (fun j => unit_card l L (w j) (hl j) O) (fun k m hk hm => hι m fun y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `congrArg y.sp hm`. Rewrite `h1` using `[map_nsmul, map_zero, ← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `(smul_eq_zero.1 h1).resolve_left (Nat.cast_ne_zero.2 hk))`. Use `two_gen L n q w O A.R B.B A.P b.M A.ρ A.β.toRingHom _ T.actw e H he A.eM A.eM_smul (fun j => chi_monic _ _) (fun j k => A.p.D.lam k (MonoidAlgebra.single (ph j) 1)) (fun j k => ?_) hs` and prove the remaining obligations. Conclude with `(lam_map A.p.D A.β.toRingHom k (ph j)).symm.trans ((congrArg (fun D' => GDet.lam D' k (MonoidAlgebra.single (ph j) 1)) A.β_pair.1).trans (lam_comap _ _ k _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.twoOf :
     LocP → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V0 : s.Lev) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V0.frame O n) (B : UniversalOrdinaryDeterminantRing r) (J : Ideal B.B) (D : ℕ) (b : TWBase (pairOf B.u) J Empty D) (V : s.Lev) (h : (globOf r V).Hom (globOf r V0)) (q : ℕ) (w : Fin q → Plc L) (A : LevMod b h w) (x δ : ∀ j, ((w j).adicCompletion L)ˣ), (∀ j, ((l : ℕ) : 𝓞 L) ∉ (w j).asIdeal) → (∀ j, IsUnif (x j)) → (∀ j, IsGenMod _ (ellC l _) (δ j)) → ∀ (T : ThData l A.ρ x δ) (ph ta : Fin q → (globOf r V).G₀), LocOk A x δ ph ta → TwoMaps (M := b.M) A.β.toRingHom (fun j => (pairOf B.u).D.chi (MonoidAlgebra.single (h.p₀ (ph j)) 1)) T.actw (fEl (qj w) fun j i => MvPolynomial.X (j, i)) := by

@@ -82,12 +82,12 @@ def NAllC.ofAll (A : NormalizedTwistCompatibility D C I) : NAllC D C :=
     choice := ⟨A.choice.twI_conj, A.choice.sd_place, A.choice.emb_side, A.choice.sd_conj, A.choice.one, A.choice.conj⟩ }
 
 /- English proof (translation)
-The claim follows from `A.choice.good`.
+A detailed English derivation is pending.
 -/
 theorem goodCl_of_all (A : NormalizedTwistCompatibility D C I) : GoodCl D C I := A.choice.good
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨A⟩ => ⟨⟨NAllC.ofAll A⟩, goodCl_of_all A⟩, fun ⟨⟨A⟩, h⟩ => ⟨A.toAll h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_all_iff : Nonempty (NormalizedTwistCompatibility D C I) ↔ Nonempty (NAllC D C) ∧ GoodCl D C I :=
   ⟨fun ⟨A⟩ => ⟨⟨NAllC.ofAll A⟩, goodCl_of_all A⟩, fun ⟨⟨A⟩, h⟩ => ⟨A.toAll h⟩⟩

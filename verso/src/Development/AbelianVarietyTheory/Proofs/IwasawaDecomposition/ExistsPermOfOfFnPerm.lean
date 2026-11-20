@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.FiberCardPermutation
 
 /- English proof (translation)
-Rewrite using `[← Fin.univ_val_map, Multiset.count_map, Fintype.card_subtype]`. Simplify using `only [Finset.card, Finset.filter_val]`. Use `congr 1`. Conclude with `Multiset.filter_congr (fun _ _ => eq_comm)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem card_fiber_eq_count {α : Type} [DecidableEq α] {n : ℕ} (v : Fin n → α) (c : α) :
     Fintype.card {i : Fin n // v i = c} = Multiset.count c (List.ofFn v : Multiset α) := by
@@ -13,9 +13,9 @@ theorem card_fiber_eq_count {α : Type} [DecidableEq α] {n : ℕ} (v : Fin n �
   exact Multiset.filter_congr (fun _ _ => eq_comm)
 
 /- English proof (translation)
-Establish `hm : (List.ofFn v : Multiset α) = (List.ofFn w : Multiset α)` using `Multiset.coe_eq_coe.mpr h`. Establish `hc : ∀ c : α, Fintype.card {i : Fin n // v i = c} = Fintype.card {i : Fin n // w i = c}`. Introduce `c`. Establish `h1` using `card_fiber_eq_count v c`. Establish `h2` using `card_fiber_eq_count w c`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hm, ← h2]`. Use `h1` and compare the differences between its conclusion and the goal. Use `⟨Equiv.ofFiberEquiv (f := v) (g := w) (fun c => Fintype.equivOfCardEq (hc c)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `(Equiv.ofFiberEquiv_map (f := v) (g := w) _ i).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_perm_of_ofFn_perm {α : Type} {n : ℕ} (v w : Fin n → α)
     (h : List.Perm (List.ofFn v) (List.ofFn w)) :

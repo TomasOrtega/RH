@@ -14,7 +14,7 @@ variable {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteVa
     {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O}
 
 /- English proof (translation)
-Use `h.frac_alt` as an intermediate fact. Establish `h1 : algebraMap W Qq (p : W) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective W Qq)).2 h.p_unif.ne_zero`. Simplify using `using h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem p_ne (h : HidaSetting p n' W Qq O Kf ι σ j w) : (p : Qq) ≠ 0 := by
   have := h.frac_alt
@@ -23,15 +23,15 @@ theorem p_ne (h : HidaSetting p n' W Qq O Kf ι σ j w) : (p : Qq) ≠ 0 := by
   simpa using h1
 
 /- English proof (translation)
-Use `h.frac_alt` as an intermediate fact. Establish `hp` using `p_ne h`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := W) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at hx`. Take `⟨i, u1, ha⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 h.p_unif`. Take `⟨k, u2, hb'⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 h.p_unif`. Use `⟨(i : ℤ) - k, u1 * u2⁻¹, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu2 : algebraMap W Qq (u2 : W) * algebraMap W Qq ((u2⁻¹ : Wˣ) : W) = 1`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Establish `hu20 : algebraMap W Qq (u2 : W) ≠ 0` using `left_ne_zero_of_mul_eq_one hu2`. Rewrite using `[ha, hb', zpow_sub₀ hp, div_eq_iff (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, map_natCast]`. Conclude with `mul_ne_zero hu20 (pow_ne_zero _ hp))]`. Simplify using `only [map_mul, map_pow, map_natCast, Units.val_mul, zpow_natCast]`. Establish `hk : (p : Qq) ^ k ≠ 0` using `pow_ne_zero _ hp`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu2, mul_one, div_mul_cancel₀ _ hk]`. Use `_ = _ := by ring`.
+A detailed English derivation is pending.
 -/
 theorem decomp (h : HidaSetting p n' W Qq O Kf ι σ j w) (x : Qq) (hx : x ≠ 0) :
     ∃ (n : ℤ) (u : Wˣ), x = algebraMap W Qq u * (p : Qq) ^ n := by
@@ -62,11 +62,11 @@ def line (W : Type) {Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq] (p : ℕ)
   Submodule.span W {fun _ => (p : Qq) ^ n}
 
 /- English proof (translation)
-Unfold `colSpan`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Set.mem_singleton_iff]`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim c 0]`. Introduce `hv`. Rewrite `hv` using `[Set.mem_singleton_iff]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem colSpan_one (g : Matrix (Fin 1) (Fin 1) Qq) : colSpan W g = Submodule.span W {fun _ => g 0 0} := by
   unfold colSpan
@@ -85,9 +85,9 @@ theorem colSpan_one (g : Matrix (Fin 1) (Fin 1) Qq) : colSpan W g = Submodule.sp
     rw [Subsingleton.elim i 0]
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hL`. Rewrite `hg` using `[Matrix.det_fin_one]`. Take `⟨n, u, hx⟩` from `decomp h (g 0 0) hg.ne_zero`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[colSpan_one, hx, line]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fun _ : Fin 1 => algebraMap W Qq (u : W) * (p : Qq) ^ n) = (u : W) • (fun _ : Fin 1 => (p : Qq) ^ n)`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Rewrite using `[this]`. Conclude with `Submodule.span_singleton_smul_eq u.isUnit _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat1 (h : HidaSetting p n' W Qq O Kf ι σ j w) (L : Submodule W (Fin 1 → Qq)) (hL : IsLattice W L) :
     ∃ n : ℤ, L = line W p n := by
@@ -103,7 +103,7 @@ theorem lat1 (h : HidaSetting p n' W Qq O Kf ι σ j w) (L : Submodule W (Fin 1 
   exact Submodule.span_singleton_smul_eq u.isUnit _
 
 /- English proof (translation)
-Use `⟨Matrix.of fun _ _ => (p : Qq) ^ n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_one]`. Conclude with `(zpow_ne_zero _ (p_ne h)).isUnit`. Rewrite using `[colSpan_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem line_isLattice (h : HidaSetting p n' W Qq O Kf ι σ j w) (n : ℤ) : IsLattice W (line W (Qq := Qq) p n) := by
   refine ⟨Matrix.of fun _ _ => (p : Qq) ^ n, ?_, ?_⟩
@@ -112,13 +112,13 @@ theorem line_isLattice (h : HidaSetting p n' W Qq O Kf ι σ j w) (n : ℤ) : Is
   · rw [colSpan_one]; rfl
 
 /- English proof (translation)
-Use `h.frac_alt` as an intermediate fact. Establish `hp` using `p_ne h`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc0 : algebraMap W Qq c * (p : Qq) ^ b = (p : Qq) ^ a`. Use `congrFun hc 0` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, Algebra.smul_def]`. Then use the resulting hypothesis. Take `⟨k, hk⟩ : ∃ k : ℕ, b = a + (k + 1 : ℕ)` from `⟨(b - a - 1).toNat, by push_cast; omega⟩`. Establish `h1 : algebraMap W Qq (c * (p : W) ^ (k + 1)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_pow, map_natCast]`. Rewrite `hc0` using `[hk, zpow_add₀ hp, zpow_natCast]`. Establish `ha : (p : Qq) ^ a ≠ 0` using `zpow_ne_zero _ hp`. Apply `mul_left_cancel₀ ha` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : c * (p : W) ^ (k + 1) = 1` using `IsFractionRing.injective W Qq (by rw [h1, map_one])`. Establish `h3 : IsUnit ((p : W) ^ (k + 1))` using `IsUnit.of_mul_eq_one c (by rw [mul_comm]; exact h2)`. Conclude with `h.p_unif.not_isUnit ((isUnit_pow_iff (Nat.succ_ne_zero k)).1 h3)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_of_mem (h : HidaSetting p n' W Qq O Kf ι σ j w) {a b : ℤ}
     (hm : (fun _ : Fin 1 => (p : Qq) ^ a) ∈ line W (Qq := Qq) p b) : b ≤ a := by
@@ -145,7 +145,7 @@ theorem le_of_mem (h : HidaSetting p n' W Qq O Kf ι σ j w) {a b : ℤ}
   exact h.p_unif.not_isUnit ((isUnit_pow_iff (Nat.succ_ne_zero k)).1 h3)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_of_mem h (by rw [hab]; exact Submodule.mem_span_singleton_self _)`. Conclude with `le_of_mem h (by rw [← hab]; exact Submodule.mem_span_singleton_self _)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem line_inj (h : HidaSetting p n' W Qq O Kf ι σ j w) {a b : ℤ}
     (hab : line W (Qq := Qq) p a = line W p b) : a = b := by
@@ -154,7 +154,7 @@ theorem line_inj (h : HidaSetting p n' W Qq O Kf ι σ j w) {a b : ℤ}
   · exact le_of_mem h (by rw [← hab]; exact Submodule.mem_span_singleton_self _)
 
 /- English proof (translation)
-Unfold `line`. Rewrite using `[Submodule.map_span, Set.image_singleton]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal, zpow_add₀ (p_ne h)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem map_line (h : HidaSetting p n' W Qq O Kf ι σ j w) (a n : ℤ) :
     (line W (Qq := Qq) p n).map
@@ -185,7 +185,7 @@ def homoth (h : HidaSetting p n' W Qq O Kf ι σ j w) : Multiplicative ℤ →* 
     (zpowersHom Qqˣ (Units.mk0 (p : Qq) (p_ne h)))
 
 /- English proof (translation)
-Use `show (Matrix.scalar (Fin 1)) ((((zpowersHom Qqˣ (Units.mk0 (p : Qq) (p_ne h))) γ : Qqˣ)) : Qq) = _`. Rewrite using `[zpowersHom_apply, Units.val_zpow_eq_zpow_val, Units.val_mk0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homoth_val (h : HidaSetting p n' W Qq O Kf ι σ j w) (γ : Multiplicative ℤ) :
     ((homoth h γ : GL (Fin 1) Qq) : Matrix (Fin 1) (Fin 1) Qq) =
@@ -199,7 +199,7 @@ def level1 (h : HidaSetting p n' W Qq O Kf ι σ j w) : Level (places1 h) where
   χ := 1
 
 /- English proof (translation)
-Use `show Submodule.map ((Matrix.mulVecLin ((homoth h γ : GL (Fin 1) Qq) : Matrix (Fin 1) (Fin 1) Qq)).restrictScalars W) (L (0 : Fin 1)) = _`. Rewrite using `[homoth_val, hL]`. Conclude with `map_line h _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul1 (h : HidaSetting p n' W Qq O Kf ι σ j w) (γ : Multiplicative ℤ) (L : (places1 h).Tup) (n : ℤ)
     (hL : L (0 : Fin 1) = line W p n) :
@@ -210,9 +210,9 @@ theorem smul1 (h : HidaSetting p n' W Qq O Kf ι σ j w) (γ : Multiplicative �
   exact map_line h _ _
 
 /- English proof (translation)
-Introduce `γ' L hL hγ`. Take `⟨γ, rfl⟩ : ∃ γ : Multiplicative ℤ, γ = γ'` from `⟨γ', rfl⟩`. Take `⟨n, hn⟩` from `lat1 h (L (0 : Fin 1)) (hL (0 : Fin 1))`. Establish `h1` using `smul1 h γ L n hn`. Establish `h1' : line W (Qq` using `Qq) p n = line W p (Multiplicative.toAdd γ + n) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1, ← hn]`. Conclude with `(congrFun hγ (0 : Fin 1)).symm`. Establish `h2 : n = Multiplicative.toAdd γ + n` using `line_inj h h1'`. Establish `h3 : Multiplicative.toAdd γ = 0` using `by omega`. Conclude with `(Multiplicative.toAdd.injective h3 : γ = 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem level1_trivStab (h : HidaSetting p n' W Qq O Kf ι σ j w) : (level1 h).TrivStab := by
   intro γ' L hL hγ
@@ -226,11 +226,11 @@ theorem level1_trivStab (h : HidaSetting p n' W Qq O Kf ι σ j w) : (level1 h).
   exact (Multiplicative.toAdd.injective h3 : γ = 1)
 
 /- English proof (translation)
-Set `L0 : (places1 h).Tup` to `fun _ => line W p 0`. Use `⟨{L0}, ?_, ?_⟩` and prove the remaining obligations. Introduce `L hL v`. Rewrite `hL` using `[Finset.mem_singleton]`. Rewrite using `[hL]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `line_isLattice h 0`. Introduce `L hL`. Take `⟨n, hn⟩` from `lat1 h (L (0 : Fin 1)) (hL (0 : Fin 1))`. Use `⟨L0, Finset.mem_singleton_self _, Multiplicative.ofAdd n, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hv : v = (0 : Fin 1)` using `Subsingleton.elim (α := Fin 1) v 0`. Substitute `hv` using the available equality. Establish `h1` using `smul1 h (Multiplicative.ofAdd n) L0 0 rfl`. Use `hn.trans (Eq.trans ?_ h1.symm)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem level1_finClasses (h : HidaSetting p n' W Qq O Kf ι σ j w) : (level1 h).FinClasses := by
   classical
@@ -259,14 +259,14 @@ def gat1 (h : HidaSetting p n' W Qq O Kf ι σ j w) : GAtP p where
   e := 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨gat1 h, le_rfl, ⟨()⟩, fun _ => level1_trivStab h, fun _ => level1_finClasses h⟩`.
+Supply the required witnesses or components.
 -/
 theorem gat_of_setting (h : HidaSetting p n' W Qq O Kf ι σ j w) :
     ∃ G : GAtP p, 1 ≤ G.P.nV ∧ Nonempty G.comp ∧ G.TrivStab ∧ G.FinClasses :=
   ⟨gat1 h, le_rfl, ⟨()⟩, fun _ => level1_trivStab h, fun _ => level1_finClasses h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨places1 h, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem places_of_setting (h : HidaSetting p n' W Qq O Kf ι σ j w) : ∃ P : Places p O Kf, 1 ≤ P.nV :=
   ⟨places1 h, le_rfl⟩
@@ -274,7 +274,7 @@ theorem places_of_setting (h : HidaSetting p n' W Qq O Kf ι σ j w) : ∃ P : P
 end Loc
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ w := 0, nV := 0, n' := fun v => v.elim0, W := fun v => v.elim0, Qq := fun v => v.elim0, ringW := fun v => v.elim0, domW := fun v => v.elim0, dvrW := fun v => v.elim0, fieldQ := fun v => v.elim0, algWQ := fun v => v.elim0, ι := fun v => v.elim0, σ := fun v => v.elim0, j := fun …`.
+Supply the required witnesses or components.
 -/
 theorem places_nonempty (p : ℕ) (O Kf : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf]
     [Algebra O Kf] : Nonempty (Places p O Kf) :=
@@ -290,13 +290,13 @@ def levTriv {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuati
   χ := 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨levTriv P⟩`.
+Supply the required witnesses or components.
 -/
 theorem level_nonempty {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf]
     [Algebra O Kf] (P : Places p O Kf) : Nonempty (Level P) := ⟨levTriv P⟩
 
 /- English proof (translation)
-The claim follows from `haveI : Fact p.Prime := ⟨hp⟩ gat_of_setting (Formalism.BasicNotions.Examples₂.LevelValuationRings.hidaSettingOfEven p 2 h5 le_rfl even_two)`.
+A detailed English derivation is pending.
 -/
 theorem gat_nonempty (p : ℕ) (hp : p.Prime) (h5 : 5 ≤ p) :
     ∃ G : GAtP p, 1 ≤ G.P.nV ∧ Nonempty G.comp ∧ G.TrivStab ∧ G.FinClasses :=
@@ -304,7 +304,7 @@ theorem gat_nonempty (p : ℕ) (hp : p.Prime) (h5 : 5 ≤ p) :
   gat_of_setting (Formalism.BasicNotions.Examples₂.LevelValuationRings.hidaSettingOfEven p 2 h5 le_rfl even_two)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hc, fun _ _ => ⟨0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, 0, by simp, ⟨0, 0, fun _ i => i.elim0⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem lpprime_one {W Qq O Kf : Type} [CommRing W] [Field Qq] [Algebra W Qq] [CommRing O] [Field Kf] [Algebra O Kf]
     (p n' : ℕ) (ι : Qq →+* Kf) (σ : Qq ≃+* Qq) (w : O) {m : ℕ} (r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ)
@@ -319,7 +319,7 @@ variable {p : ℕ} (G : GAtP p)
 def cBound : ℕ := ∑ v, ∑ s, ∑ i, (G.P.lam0 v s i).natAbs
 
 /- English proof (translation)
-The claim follows from `|G.P.lam0 v s i| ≤ (cBound G : ℤ) := by have h1 : (G.P.lam0 v s i).natAbs ≤ ∑ i, (G.P.lam0 v s i).natAbs := Finset.single_le_sum (f := fun i => (G.P.lam0 v s i).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i) have h2 : ∑ i, (G.P.lam0 v s i).natAbs ≤ ∑ s, ∑ i, (G.P.lam0 v s …`.
+A detailed English derivation is pending.
 -/
 theorem abs_le_cBound (v : Fin G.P.nV) (s : Fin (G.P.n' v)) (i : Fin (G.P.m + 1)) :
     |G.P.lam0 v s i| ≤ (cBound G : ℤ) := by
@@ -334,9 +334,9 @@ theorem abs_le_cBound (v : Fin G.P.nV) (s : Fin (G.P.n' v)) (i : Fin (G.P.m + 1)
   exact_mod_cast h1.trans (h2.trans h3)
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `hab' : a.val ≤ b.val` using `hab`. Unfold `liftWt`. Use `split_ifs with h1 h2 h2`. Conclude with `hl (show (⟨a.val, h2⟩ : Fin (m + 1)) ≤ ⟨b.val, h1⟩ from hab')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `hl (Fin.le_last (⟨a.val, h2⟩ : Fin (m + 1))) show -c ≤ _` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `le_rfl`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem liftWt_anti (t m : ℕ) (lam : Fin (m + 1) → ℤ) (hl : Antitone lam) (c : ℤ) (hc : -lam (Fin.last m) ≤ c)
     (j : ℕ) : Antitone (liftWt t m lam (fun _ => c) j) := by
@@ -366,7 +366,7 @@ def fillsOf (TT : ∀ v : Fin G.P.nV, Finset (Fin (G.P.n' v))) (t mm : ℕ) : Fi
   domJ := fun j v s => liftWt_anti t G.P.m (G.P.lam0 v s) (G.P.dom v s) _ (le_max_right _ _) j
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fillsOf G TT t mm, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem fills_nonempty (TT : ∀ v : Fin G.P.nV, Finset (Fin (G.P.n' v))) (t mm : ℕ) :
     ∃ Fl : Fills G, Fl.TT = TT ∧ Fl.t = t ∧ Fl.mm = mm := ⟨fillsOf G TT t mm, rfl, rfl, rfl⟩
@@ -378,7 +378,7 @@ def levelsOf (Fl : Fills G) : Levels Fl where
   levS := fun _ _ => levTriv _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨levelsOf Fl⟩`.
+Supply the required witnesses or components.
 -/
 theorem levels_nonempty (Fl : Fills G) : Nonempty (Levels Fl) := ⟨levelsOf Fl⟩
 
@@ -386,7 +386,7 @@ def chainOf {Fl : Fills G} (Lv : Levels Fl) : Chain Lv where
   Kz := fun _ => 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨chainOf Lv⟩`.
+Supply the required witnesses or components.
 -/
 theorem chain_nonempty {Fl : Fills G} (Lv : Levels Fl) : Nonempty (Chain Lv) := ⟨chainOf Lv⟩
 

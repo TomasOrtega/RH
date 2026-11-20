@@ -7,15 +7,15 @@ open scoped ContDiff Topology
 namespace GlobalTheory.SmoothForms
 
 /- English proof (translation)
-Establish `key : ∀ (A : Matrix ι ι ℂ) (i j a b : ι), ((Matrix.of fun a b => p (Matrix.single b i 1) a j) * A) a b = p (A * Matrix.single b i 1) a j`. Introduce `A i j a b`. Establish `: A * Matrix.single b i 1 = ∑ c, A c b • Matrix.single c i (1 : ℂ)`. Use extensionality with `x y`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.mul_apply, Matrix.single_apply, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases h : i = y <;> simp [h]`. Rewrite using `[this, map_sum]`. Simplify using `only [Matrix.mul_apply, Matrix.sum_apply, map_smul, Matrix.smul_apply, smul_eq_mul, Matrix.of_apply, mul_comm]`. Establish `key2 : ∀ (A : Matrix ι ι ℂ) (i j a b : ι), (A * (Matrix.of fun a b => p (Matrix.single b i 1) a j)) a b = (A * p (Matrix.single b i 1)) a j`. Introduce `A i j a b`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.mul_apply]`. Establish `h1 : ∀ b i, p (M * Matrix.single b i 1) = M * p (Matrix.single b i 1)`. Introduce `b i`. Use extensionality with `a j`. Rewrite using `[← key, ← key2, hM]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Use extensionality with `a b`. Rewrite using `[key, key2, hp]`. Establish `h2 : X = ∑ b, ∑ i, X b i • Matrix.single b i (1 : ℂ)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single X]`. Simplify using `[Matrix.smul_single]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Simplify using `only [Matrix.mul_sum, map_sum, Matrix.mul_smul, map_smul, h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bicomm_left_mul {ι G : Type} [Fintype ι] [DecidableEq ι] (ρ : G → Matrix ι ι ℂ)
     (p : Matrix ι ι ℂ →ₗ[ℂ] Matrix ι ι ℂ) (hp : ∀ g X, p (ρ g * X) = ρ g * p X) (M : Matrix ι ι ℂ)
@@ -48,23 +48,21 @@ theorem bicomm_left_mul {ι G : Type} [Fintype ι] [DecidableEq ι] (ρ : G → 
   simp only [Matrix.mul_sum, map_sum, Matrix.mul_smul, map_smul, h1]
 
 /- English proof (translation)
-Use `set B := Submodule.span ℂ (Set.range ρ) with hB`. Establish `hst : ∀ g, ∀ X ∈ B, ρ g * X ∈ B`. Introduce `g X hX`. Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨h, rfl⟩` from `hx`. Rewrite using `[hmul]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mul_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `B.add_mem hx hy`. Consider the case `smul c x _ hx => rw [Matrix.mul_smul]`. Conclude with `B.smul_mem c hx`. Take `⟨q, hq⟩` from `LinearMap.exists_extend (LinearMap.id : B →ₗ[ℂ] B)`. Establish `hq' : ∀ X ∈ B, (q X : Matrix ι ι ℂ) = X` using `fun X hX => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `LinearMap.congr_fun hq ⟨X, hX⟩` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Set `p : Matrix ι ι ℂ →ₗ[ℂ] Matrix ι ι ℂ` to `∑ g : G, LinearMap.mulLeft ℂ (ρ g⁻¹) ∘ₗ B.subtype ∘ₗ q ∘ₗ LinearMap.mulLeft ℂ (ρ g)`. Establish `hp : ∀ X, p X = ∑ g : G, ρ g⁻¹ * (q (ρ g * X) : Matrix ι ι ℂ)` using `fun X => by`. Simplify using `[p, LinearMap.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpB : ∀ X, p X ∈ B` using `fun X => by`. Rewrite using `[hp]`. Conclude with `B.sum_mem fun g _ => hst _ _ (q _).2`. Establish `hone : (1 : Matrix ι ι ℂ) ∈ B` using `Submodule.subset_span ⟨1, h1⟩`. Establish `hp1 : p 1 = (Fintype.card G : ℂ) • (1 : Matrix ι ι ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hp]`. Establish `: ∀ g : G, ρ g⁻¹ * (q (ρ g * 1) : Matrix ι ι ℂ) = 1` using `fun g => by`. Rewrite using `[hq' _ (hst _ _ hone), mul_one, hmul, mul_inv_cancel, h1]`. Simplify using `only [this]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hpρ : ∀ h X, p (ρ h * X) = ρ h * p X` using `fun h X => by`. Rewrite using `[hp, hp, Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft h) _ _ fun g => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft]`. Rewrite using `[← mul_assoc, hmul, ← mul_assoc, hmul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using the standard rewrite rules. Use `bicomm_left_mul ρ p hpρ M hM 1` as an intermediate fact. Rewrite `this` using `[hp1, mul_one, Matrix.mul_smul, mul_one]`. Establish `hc : (Fintype.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `h3` using `B.smul_mem (Fintype.card G : ℂ)⁻¹ (hpB M)`.
-
-Rewrite `h3` using `[this, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem bicomm_mem_span {ι G : Type} [Fintype ι] [DecidableEq ι] [Group G] [Fintype G] (ρ : G → Matrix ι ι ℂ)
     (h1 : ρ 1 = 1) (hmul : ∀ g h, ρ g * ρ h = ρ (h * g)) (M : Matrix ι ι ℂ)
@@ -112,11 +110,11 @@ theorem bicomm_mem_span {ι G : Type} [Fintype ι] [DecidableEq ι] [Group G] [F
   rwa [this, smul_smul, inv_mul_cancel₀ hc, one_smul] at h3
 
 /- English proof (translation)
-Introduce `n d M hM`. Use `bicomm_mem_span (permMat n d) ?_ ?_ M hM` and prove the remaining obligations. Use extensionality with `I K`. Simplify using `[permMat, Matrix.one_apply]`. Introduce `g h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `I K`. Simplify using `only [permMat, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single (K ∘ h)]`. Rewrite using `[if_pos rfl, mul_one]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `J _ hJ`. Simplify using `[hJ]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bicomm_permMat : ∀ (n d : ℕ) (M : Matrix (Fin d → Fin n) (Fin d → Fin n) ℂ), (∀ T : Matrix (Fin d → Fin n) (Fin d → Fin n) ℂ, (∀ π, T * permMat n d π = permMat n d π * T) → M * T = T * M) → M ∈ Submodule.span ℂ (Set.range (permMat n d)) := by
   intro n d M hM

@@ -6,12 +6,12 @@ namespace PositivityTheory.Rg.BcB.E1
 open D1
 
 /- English proof (translation)
-The claim follows from `mahlerC_of_deg degBasis degAdelic degBdd degRat`.
+A detailed English derivation is pending.
 -/
 theorem mahlerC_holds : MahlerC := mahlerC_of_deg degBasis degAdelic degBdd degRat
 
 /- English proof (translation)
-The claim follows from `mahler_of_c mahlerC_holds`.
+A detailed English derivation is pending.
 -/
 theorem mahler_holds : Mahler := mahler_of_c mahlerC_holds
 

@@ -18,7 +18,7 @@ section Translate
 variable {F : Type u} [Field F] [DecidableEq F] (E : WeierstrassCurve F) [E.IsElliptic]
 
 /- English proof (translation)
-Establish `hG : TransOver E F (genericPoint E)` using `transcendental_genX E`. Use `hG.add_left (M := E.toAffine.FunctionField) R` as an intermediate fact. Rewrite using `[add_comm]`. Conclude with `this.isGenPt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenPt_genericPoint_add_constMap (R : E.toAffine.Point) :
     IsGenPt E (genericPoint E + constMap E E.toAffine.FunctionField R) := by
@@ -37,13 +37,11 @@ variable {F : Type u} [Field F] [DecidableEq F] {E E' : WeierstrassCurve F} [E.I
 omit [DecidableEq F] in
 
 /- English proof (translation)
-Establish `hg : ((genEval (E.baseChange Ω) X hX).restrictScalars F).comp (bcEmb (F'` using `Ω) E) = genEval E (X : (E.baseChange (E.baseChange Ω).toAffine.FunctionField).toAffine.Point) hX' := by`. Use `eq_genEval E _ ?_ _` and prove the remaining obligations. Consider the cases of `X with`. Consider the case `zero => exact hX.elim`. Consider the case `some u v hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Simplify using `only [GroundTheory.Arith.Abelian.genericPoint, Point.map_some]`. Use `congr 1`. Use `show genEval (E.baseChange Ω) _ hX (bcEmb (F' := Ω) E (genX E)) = u`. Rewrite using `[bcEmb_genX]`. Conclude with `genEval_genX (E.baseChange Ω) _ hX`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `show genEval (E.baseChange Ω) _ hX (bcEmb (F' := Ω) E (genY E)) = v`. Rewrite using `[bcEmb_genY]`. Conclude with `genEval_genY (E.baseChange Ω) _ hX`. Unfold `Isogeny.app`. Rewrite using `[isogBaseChange_val, ← hg, ← Point.map_map]`.
-
-Generalize the expression as in `Point.map (W' := E') (bcEmb (F' := Ω) E) φ.1 = Y`. Apply the tactic sequence `cases Y <;> rfl`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isogBaseChange_app (φ : Isogeny E E')
     (X : ((E.baseChange Ω).baseChange (E.baseChange Ω).toAffine.FunctionField).toAffine.Point)
@@ -72,7 +70,7 @@ theorem isogBaseChange_app (φ : Isogeny E E')
 omit [DecidableEq F] [E.IsElliptic] [DecidableEq Ω] in
 
 /- English proof (translation)
-Consider the cases of `X with`. Consider the case `zero => exact h.elim`. Consider the case `some x y _ => exact Transcendental.restrictScalars (algebraMap F Ω).injective h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem isGenPt_of_isGenPt_baseChange
     (X : ((E.baseChange Ω).baseChange (E.baseChange Ω).toAffine.FunctionField).toAffine.Point)
@@ -85,7 +83,7 @@ theorem isGenPt_of_isGenPt_baseChange
 omit [E.IsElliptic] in
 
 /- English proof (translation)
-Apply the tactic sequence `cases R <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem constMap_constMap_baseChange (V : WeierstrassCurve F) (R : V.toAffine.Point) :
     (constMap (V.baseChange Ω) (E.baseChange Ω).toAffine.FunctionField (constMap V Ω R) :
@@ -94,15 +92,13 @@ theorem constMap_constMap_baseChange (V : WeierstrassCurve F) (R : V.toAffine.Po
   cases R <;> rfl
 
 /- English proof (translation)
-Use `set K' := (E.baseChange Ω).toAffine.FunctionField`. Use `set ι := bcEmb (F' := Ω) E`. Use `set Rω := constMap E Ω R`. Use `set φΩ := isogBaseChange (F' := Ω) φ`. Establish `hGΩ : IsGenPt (E.baseChange Ω) (genericPoint (E.baseChange Ω))` using `transcendental_genX (E.baseChange Ω)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hX` using `isGenPt_genericPoint_add_constMap (E.baseChange Ω) Rω`. Establish `h1` using `φΩ.app_add_constMap hGΩ Rω hX`. Rewrite `h1` using `[φΩ.app_genericPoint hGΩ, ← constMap_pointHomOver]`. Establish `app_eq : ∀ {P P' : (E.baseChange K').toAffine.Point} (h : P = P') (hP : IsGenPt E P) (hP' : IsGenPt E P'), φ.app P hP = φ.app P' hP'`. Introduce `P P' h hP hP'`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Both sides reduce to the same expression. Establish `e1 : Point.map ι (genericPoint E + constMap E E.toAffine.FunctionField R) = ((genericPoint (E.baseChange Ω) + constMap (E.baseChange Ω) K' Rω : ((E.baseChange Ω).baseChange K').toAffine.Point) : (E.baseChange K').toAffine.Point)`. Rewrite using `[map_add, map_bcEmb_genericPoint, map_constMap, ← constMap_constMap_baseChange Ω E R]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hX'` using `isGenPt_of_isGenPt_baseChange Ω _ hX`. Apply `Point.map_injective (W' := E') ι` to reduce the goal to its premises. Rewrite using `[Isogeny.map_app]`. Use `(app_eq e1 _ hX').trans ?_` and prove the remaining obligations. Rewrite using `[← isogBaseChange_app Ω φ _ hX hX', h1, map_add, map_constMap, ← constMap_constMap_baseChange Ω (E := E) E' (pointHomOver Ω φ R)]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem app_genericPoint_add_constMap [PerfectField F] [IsAlgClosed Ω] (φ : Isogeny E E')
     (R : E.toAffine.Point) :
@@ -143,17 +139,17 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing
   [DecidableEq K] [DecidableEq (ResidueField 𝒪)]
 
 /- English proof (translation)
-Establish `hσ : (algebraMap K (W.baseChange K).toAffine.FunctionField).comp (algebraMap 𝒪 K) = (algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField).comp (algebraMap 𝒪 (gaussRing W))`. Rewrite using `[← IsScalarTower.algebraMap_eq, ← IsScalarTower.algebraMap_eq]`. Consider the cases of `c with`. Consider the case `zero => exact (map_zero _).trans (map_zero _).symm`. Consider the case `some X Y h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Distinguish the cases in `hX : X ∈ Set.range (algebraMap 𝒪 K)`. Take `⟨x, rfl⟩` from `hX`. Take `⟨y, rfl⟩` from `exists_y_of_equation K V h.1`. Take `⟨h₁, e₁⟩ : ∃ h₁, constMap (V.baseChange K) (W.baseChange K).toAffine.FunctionField (Point.some _ _ h) = Point.some (algebraMap K (W.baseChange K).toAffine.FunctionField (algebraMap 𝒪 K x)) (algebraMap K (W.baseChange K).toAffine.FunctionField (algebraMap 𝒪 K y)) h₁` from `⟨_, rfl⟩`. Establish `hx` using `RingHom.congr_fun hσ x`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy` using `RingHom.congr_fun hσ y`. Simplify using `only [RingHom.comp_apply] at hx hy`. Take `⟨h₂, e₂⟩` from `exists_some_eq h₁ hx hy`. Take `⟨h₃, e₃⟩` from `reduceFF_some K W V h₂`. Rewrite using `[e₁, e₂, e₃]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e₄` using `reducePoint_some_integral K V h (nonsingular_residue_of_isElliptic K V h.1)`. Use `Eq.trans ?_ (congrArg (constMap (V.map (residue 𝒪)) (W.map (residue 𝒪)).toAffine.FunctionField) e₄).symm` and prove the remaining obligations. Use `show _ = Point.some _ _ _`. Simplify using `only [Point.some.injEq, gaussResidue_residue_algebraMap]`. Conclude with `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hX'` using `map_notMem_range K (W.baseChange K).toAffine.FunctionField (f := algebraMap 𝒪 (gaussRing W)) hσ hX`. Establish `e₄` using `reducePoint_some_notMem K V h hX`. Use `Eq.trans ?_ (congrArg (constMap (V.map (residue 𝒪)) (W.map (residue 𝒪)).toAffine.FunctionField) e₄).symm` and prove the remaining obligations. Take `⟨h₁, e₁⟩ : ∃ h₁, constMap (V.baseChange K) (W.baseChange K).toAffine.FunctionField (Point.some X Y h) = Point.some (algebraMap K (W.baseChange K).toAffine.FunctionField X) (algebraMap K (W.baseChange K).toAffine.FunctionField Y) h₁` from `⟨_, rfl⟩`. Rewrite using `[e₁, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [reduceFF, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, reductionHom_apply]`. Rewrite using `[pointCongr_some, reducePoint_some_notMem _ (gaussCurve W V) _ hX', map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduceFF_constMap (V : WeierstrassCurve 𝒪) [V.IsElliptic]
     (c : (V.baseChange K).toAffine.Point) :
@@ -202,7 +198,7 @@ theorem reduceFF_constMap (V : WeierstrassCurve 𝒪) [V.IsElliptic]
 variable [W.IsElliptic] [W'.IsElliptic]
 
 /- English proof (translation)
-Rewrite using `[map_add, reduceFF_genericPoint, reduceFF_constMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reduceFF_genericPoint_add_constMap (R : (W.baseChange K).toAffine.Point) :
     reduceFF K W W (genericPoint (W.baseChange K) +
@@ -215,9 +211,9 @@ theorem reduceFF_genericPoint_add_constMap (R : (W.baseChange K).toAffine.Point)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hR' : IsGenPt (W.map (residue 𝒪)) (reduceFF K W W (genericPoint (W.baseChange K) + constMap (W.baseChange K) (W.baseChange K).toAffine.FunctionField R))`. Rewrite using `[reduceFF_genericPoint_add_constMap]`. Conclude with `isGenPt_genericPoint_add_constMap _ _`. Establish `key` using `reduceFF_map_genEval K W W W' (isGenPt_genericPoint_add_constMap _ R) hR' φ.1`. Establish `h2` using `congrArg (reduceFF K W W') h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_add, reduceFF_constMap]`. Rewrite using `[reduceIsogeny_val, ← h2]`. Unfold `Isogeny.app at key ⊢`. Rewrite using `[key, reduceIsogeny_val, genEval_congr _ (reduceFF_genericPoint_add_constMap K W R) hR']`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduceIsogeny_app_add_constMap (φ : Isogeny (W.baseChange K) (W'.baseChange K))
     (R : (W.baseChange K).toAffine.Point) (S : (W'.baseChange K).toAffine.Point)
@@ -255,7 +251,7 @@ variable {𝒪 : Type w} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRin
   (Ωk : Type w) [Field Ωk] [Algebra (ResidueField 𝒪) Ωk] [IsAlgClosed Ωk] [DecidableEq Ωk]
 
 /- English proof (translation)
-Establish `h` using `reduceIsogeny_app_add_constMap K W W' φ R _ (app_genericPoint_add_constMap Ω φ R)`. Rewrite `h` using `[app_genericPoint_add_constMap Ωk (reduceIsogeny K W W' φ) (reducePoint K W R), add_right_inj]`. Conclude with `(constMap_injective _ _ h).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reducePoint_pointHomOver (φ : Isogeny (W.baseChange K) (W'.baseChange K))
     (R : (W.baseChange K).toAffine.Point) :

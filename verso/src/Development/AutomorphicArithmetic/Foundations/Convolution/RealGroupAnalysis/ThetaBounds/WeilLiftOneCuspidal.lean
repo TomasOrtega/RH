@@ -15,25 +15,23 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ x`. Establish `hL` using `(UpperTheory.ConvolutionTheory.R2.Pp.cuspZero F π f hf).1`. Establish `hW` using `UpperTheory.ConvolutionTheory.R2.Pp.wfBasic F f.1 hL`. Establish `hWc : Continuous fun g : G1 F => Wf f.1 (gl g * x)` using `hW.1.comp (UpperTheory.ConvolutionTheory.R2.continuous_gl.mul continuous_const)`. Establish `hm : ∀ φ : S4 F, Measurable fun g => Wf f.1 (gl g * x) * hat (W.Om g φ).1 ![0, 1, 1, 0]` using `fun φ => hWc.measurable.mul ((thMeas F E D W φ).2.2.2.2 _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hm φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `b g`. Establish `h1 : Wf f.1 (gl (nU b * g) * x) = ψ (-b) * Wf f.1 (gl g * x)`. Rewrite using `[UpperTheory.ConvolutionTheory.R2.gl_mul, mul_assoc]`. Conclude with `hW.2.1 b _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : hat (W.Om (nU b * g) φ).1 ![0, 1, 1, 0] = ψ b * hat (W.Om g φ).1 ![0, 1, 1, 0]`. Rewrite using `[map_mul, Module.End.mul_apply, (hatSt F E D W).n b (W.Om g φ) ![0, 1, 1, 0]]`. Establish `e : Function.update ![(0 : A F), 1, 1, 0] 1 (![(0 : A F), 1, 1, 0] 1 + b * ![(0 : A F), 1, 1, 0] 0) = ![0, 1, 1, 0]`. Apply the tactic sequence `ext i; fin_cases i <;> simp`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, h2]`. Establish `h3 : ψ (-b) * ψ b = 1`. Rewrite using `[UpperTheory.ConvolutionTheory.R2.ψ_neg]`. Conclude with `inv_mul_cancel₀ (UpperTheory.ConvolutionTheory.R2.ψ_ne_zero b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `hφ y hy`. Take `⟨N, hN⟩` from `wtId F`. Take `⟨K, hK, hB'⟩` from `hatMaj F E D W φ hφ y hy`. Take `⟨B', hB'⟩` from `hB' N`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B, hB⟩` from `UpperTheory.ConvolutionTheory.R2.Pp.bdd F π f hf {x} isCompact_singleton`. Use `M.prob` as an intermediate fact. Establish `hI` using `(hN K hK).comp_fst M.κ`. Establish `hmaj : Integrable (fun p : IdeleGroup F × G1 F => (B * B') * ((ab p.1)⁻¹ * wt K N ![0, ((p.1⁻¹ : (A F)ˣ) : A F), (p.1 : A F), 0])) M.ν` using `hI.const_mul _`. Use `hmaj.mono' ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun p : IdeleGroup F × G1 F => mD p.1 * p.2` using `(UpperTheory.ConvolutionTheory.R2.continuous_mD.comp continuous_fst).mul continuous_snd`. Establish `hab : Continuous fun p : IdeleGroup F × G1 F => ab p.1` using `UpperTheory.ConvolutionTheory.R2.continuous_ab.comp continuous_fst`. Establish `hmm : Measurable (iw fun g => Wf f.1 (gl g * x) * hat (W.Om g (W.L (infGL E 2 y) φ)).1 ![0, 1, 1, 0])` using `(Complex.continuous_ofReal.comp ((hab.inv₀ fun p => UpperTheory.ConvolutionTheory.R2.ab_ne_zero _).pow 2)).measurable.mul ((hm (W.L (infGL E 2 y) φ)).comp hc.measurable)`. Conclude with `hmm.aestronglyMeasurable`. Establish `hk : ∀ᵐ p ∂M.ν, p.2 ∈ KK F` using `Measure.quasiMeasurePreserving_snd.ae (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `M.supp` as an intermediate fact. Conclude with `measure_eq_zero_iff_ae_notMem.1 (by simpa using this) |>.mono (fun k hk => by simpa using hk))`. Use `filter_upwards [hk] with p hp`. Take `⟨a, k⟩` from `p`. Establish `hk' : k ∈ KK F` using `hp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hB (mD a * k) x rfl).2`. Establish `h2` using `hB' 0 a k hk' 1 1 0`. Rewrite `h2` using `[UpperTheory.ConvolutionTheory.R2.nU_zero, one_mul, mul_one, mul_one, mul_zero]`. Establish `hpos : 0 < ab a` using `UpperTheory.ConvolutionTheory.R2.ab_pos a`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans h1`.
-
-Simplify using `only [iw, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Rewrite using `[abs_of_pos (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.weilLift_one_cuspidal :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), UnfoldedThetaIntegralConvergesSimilitudeOne W M π := by

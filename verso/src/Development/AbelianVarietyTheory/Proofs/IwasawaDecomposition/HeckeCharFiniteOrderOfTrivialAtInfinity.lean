@@ -18,15 +18,15 @@ namespace GlobalTheory.Mem.FinOrder
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `hu : Valued.v ((atFin v (unif v) : (v.adicCompletion L)ˣ) : v.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec v`. Establish `hc : Valued.v (((atFin v (unif v) : (v.adicCompletion L)ˣ) : v.adicCompletion L) ^ n) = WithZero.exp (-(n : ℤ))`. Rewrite using `[map_pow, hu, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules. Establish `hc1 : ((atFin v (unif v) : (v.adicCompletion L)ˣ) : v.adicCompletion L) ^ n ∈ v.adicCompletionIntegers L`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hc, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Set `c : v.adicCompletionIntegers L` to `⟨_, hc1⟩`. Establish `hc0 : c ≠ 0` using `fun h => pow_ne_zero n (Units.ne_zero _) (congrArg Subtype.val h)`. Establish `: Finite (v.adicCompletionIntegers L ⧸ Ideal.span {c})` using `Formalism.UG.P.glint_finite_quotient_of_dvr (Formalism.UG.P.glint_finite_residueField v) _ (by rwa [Ne, Ideal.span_singleton_eq_bot])`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Nat.card (v.adicCompletionIntegers L ⧸ Ideal.span {c})ˣ, Nat.card_pos, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx : Valued.v (x : v.adicCompletion L) = 1` using `hx`. Establish `hx' : Valued.v ((x⁻¹ : (v.adicCompletion L)ˣ) : v.adicCompletion L) = 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hx, inv_one]`. Set `y : (v.adicCompletionIntegers L)ˣ` to `⟨⟨x, hx.le⟩, ⟨(x⁻¹ : (v.adicCompletion L)ˣ), hx'.le⟩, Subtype.ext x.mul_inv, Subtype.ext x.inv_mul⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h1` using `pow_card_eq_one' (x := Units.map (Ideal.Quotient.mk (Ideal.span {c})).toMonoidHom y)`. Establish `h2 : Ideal.Quotient.mk (Ideal.span {c}) ((y : v.adicCompletionIntegers L) ^ Nat.card (v.adicCompletionIntegers L ⧸ Ideal.span {c})ˣ) = Ideal.Quotient.mk (Ideal.span {c}) 1`. Rewrite using `[map_pow, map_one]`. Conclude with `congrArg Units.val h1`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : (a : v.adicCompletion L) * ((atFin v (unif v) : (v.adicCompletion L)ˣ) : v.adicCompletion L) ^ n = (x : v.adicCompletion L) ^ Nat.card (v.adicCompletionIntegers L ⧸ Ideal.span {c})ˣ - 1` using `congrArg Subtype.val ha`. Rewrite using `[Units.val_pow_eq_pow_val, ← h3, map_mul, hc]`. Conclude with `mul_le_of_le_one_left' a.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_congr (v : HeightOneSpectrum (𝓞 L)) (n : ℕ) :
     ∃ m : ℕ, 0 < m ∧ ∀ x : (v.adicCompletion L)ˣ, IsUnitAt v x →
@@ -63,9 +63,9 @@ theorem exists_pow_congr (v : HeightOneSpectrum (𝓞 L)) (n : ℕ) :
   exact mul_le_of_le_one_left' a.2
 
 /- English proof (translation)
-Establish `key : (fun u : ∀ w : InfinitePlace L, (w.Completion)ˣ => χ.1 (∏ w, infIdele L w (u w))) = fun _ => 1`. Use `(GlobalTheory.InfTypeLocal.denseRange_atInf L).equalizer ?_ continuous_const ?_` and prove the remaining obligations. Conclude with `χ.2.1.comp (continuous_finsetProd _ fun w _ => (GlobalTheory.InfTypeLocal.continuous_infIdele L w).comp (continuous_apply w))`. Use function extensionality and compare the values at `k`. Establish `h1 : χ.1 (infDiag k) = 1` using `h k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `infDiag at h1`. Rewrite `h1` using `[MonoidHom.finsetProd_apply]`. Conclude with `h1`. Conclude with `congrFun key u`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_inf (χ : HChar L) (h : ∀ k, χ.inf k = 1) (u : ∀ w : InfinitePlace L, (w.Completion)ˣ) :
     χ.1 (∏ w, infIdele L w (u w)) = 1 := by
@@ -81,11 +81,11 @@ theorem triv_inf (χ : HChar L) (h : ∀ k, χ.inf k = 1) (u : ∀ w : InfiniteP
   exact congrFun key u
 
 /- English proof (translation)
-Set `p : ∀ w : InfinitePlace L, AdeleRing (𝓞 L) L →* w.Completion` to `fun w => (Pi.evalMonoidHom (fun w : InfinitePlace L => w.Completion) w).comp (MonoidHom.fst (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L))`. Set `q : AdeleRing (𝓞 L) L →* FiniteAdeleRing (𝓞 L) L` to `MonoidHom.snd (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)`. Use `⟨fun w => Units.map (p w) a, Units.ext (Prod.ext (funext fun w => ?_) ?_)⟩` and prove the remaining obligations. Use `show p w a = p w ((∏ w, infIdele L w (Units.map (p w) a)) * finPartI L a : Ideles L)`. Rewrite using `[Units.val_mul, map_mul, Units.coe_prod, map_prod, Finset.prod_eq_single w]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show p w a = Pi.mulSingle (M := fun w : InfinitePlace L => w.Completion) w (p w a) w * 1`. Simplify using the standard rewrite rules. Introduce `w' _ hw show Pi.mulSingle (M := fun w : InfinitePlace L => w.Completion) w' (p w' a) w = 1`. Conclude with `Pi.mulSingle_eq_of_ne hw.symm _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 
-Use `show q a = q ((∏ w, infIdele L w (Units.map (p w) a)) * finPartI L a : Ideles L)`. Rewrite using `[Units.val_mul, map_mul, Units.coe_prod, map_prod, Finset.prod_eq_one, one_mul]`. Both sides reduce to the same expression. Conclude with `fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem exists_decomp (a : Ideles L) :
     ∃ u : ∀ w : InfinitePlace L, (w.Completion)ˣ, a = (∏ w, infIdele L w (u w)) * finPartI L a := by
@@ -112,23 +112,21 @@ theorem exists_decomp (a : Ideles L) :
 open Classical in
 
 /- English proof (translation)
-Introduce `L _ _ χ h`. Take `⟨hfin, hlev⟩` from `GlobalTheory.T.heckeCharacter_unramified_ae_and_exists_level L χ`. Establish `hm : ∀ v, ∃ m : ℕ, 0 < m ∧ ∀ x, IsUnitAt v x → χ.loc v x ^ m = 1`. Introduce `v`. Take `⟨n, hn⟩` from `hlev v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hx⟩` from `exists_pow_congr v n`. Use `⟨m, hm, fun x hu => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Use `hn _ ?_ (hx x hu)` and prove the remaining obligations. Use `show Valued.v (((x ^ m : (v.adicCompletion L)ˣ) : v.adicCompletion L)) = 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_pow_eq_pow_val, map_pow, show Valued.v (x : v.adicCompletion L) = 1 from hu, one_pow]`. Use `choose m hm0 hm using hm`. Use `set M := ∏ v ∈ hfin.toFinset, m v with hM`. Establish `hM0 : 0 < M` using `Finset.prod_pos fun v _ => hm0 v`. Establish `hloc : ∀ v x, IsUnitAt v x → χ.loc v x ^ M = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `v x hx`. Distinguish the cases in `hv : χ.UnrAt v`. Rewrite using `[hv x hx, one_pow]`. Take `⟨d, hd⟩ : m v ∣ M` from `Finset.dvd_prod_of_mem _ (hfin.mem_toFinset.2 hv)`. Rewrite using `[hd, pow_mul, hm v x hx, one_pow]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hunit : ∀ a ∈ unitIdl L, (χ ^ M).1 a = 1`. Introduce `a ha`. Take `⟨u, hu⟩` from `exists_decomp a`. Establish `h1 : (χ ^ M).1 (finPartI L a) = 1`. Use `GlobalTheory.Mem.LocTriv.eq_one_of_local L _ (χ ^ M).2.1 _ (finPartI_mem_unitIdl.2 ha) (fun _ => rfl) fun v x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hloc v x ?_` and prove the remaining obligations. Use `show Valued.v (x : v.adicCompletion L) = 1`. Rewrite using `[hx]`. Conclude with `ha v`. Establish `h2 : (χ ^ M).1 (∏ w, infIdele L w (u w)) = 1` using `by show χ.1 _ ^ M = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[triv_inf χ h, one_pow]`. Rewrite using `[hu, map_mul, h1, h2, one_mul]`. Establish `hle : unitIdl L ⊔ (diagUnits L).range ≤ (χ ^ M).1.ker`. Use `sup_le hunit ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(χ ^ M).2.2 k`. Establish `hfi` using `GlobalTheory.Mem.UnitIndex.finiteIndex_unitIdl_sup L`. Use `⟨M * (unitIdl L ⊔ (diagUnits L).range).index, Nat.mul_pos hM0 (Nat.pos_of_ne_zero hfi.index_ne_zero), ?_⟩` and prove the remaining obligations. Unfold `HChar.OrderDvd`. Rewrite using `[pow_mul]`.
-
-Use `Subtype.ext (MonoidHom.ext fun a => ?_)` and prove the remaining obligations. Use `show (χ ^ M).1 a ^ _ = 1`. Rewrite using `[← map_pow]`. Conclude with `hle (Subgroup.pow_index_mem _ a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_order_of_inf_eq_one : ∀ (L : Type) [Field L] [NumberField L] (χ : HChar L),
     (∀ k, χ.inf k = 1) → ∃ n : ℕ, 0 < n ∧ χ.OrderDvd n := by

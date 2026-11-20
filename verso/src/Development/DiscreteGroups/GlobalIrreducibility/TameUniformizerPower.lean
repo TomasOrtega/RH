@@ -12,17 +12,15 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Use `haveI : IsLocalHom (PadicInt.toZMod (p := g)) := IsLocalHom.of_surjective _ (ZMod.ringHom_surjective _)`. Set `u₀ : (ZMod g)ˣ` to `ZMod.unitOfCoprime n hn`. Establish `hu₀ : IsUnit ((n : ℕ) : ℤ_[g])` using `isUnit_of_map_unit (PadicInt.toZMod (p := g)) _ (by`. Rewrite using `[map_natCast]`. Conclude with `u₀.isUnit)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, hθ⟩` from `exists_red i hi hw μ htm`. Take `⟨P, hP, e⟩` from `GlobalTheory.Published.DepthZeroModel.exists_label L θ u₀ (by rw [ZMod.coe_unitOfCoprime]; exact hgen)`. Establish `h1` using `H E Ω g A w h rc ⟨a, ha, ε, hε, hl⟩ i hi κ L t ht hT 1 (Or.inl rfl) (GlobalTheory.SmGL.IrrRep.det (Fin 1) μ hμ) (IrrGL.isCusp_ofChar μ hμ) _ P hP (inflates_units i θ μ hμ hθ)`. Establish `h2 : rc (cls (GlobalTheory.SmGL.IrrRep.det (Fin 1) μ hμ)) = _` using `hl.one μ hμ`. Rewrite `h1` using `[h2, e, WD.inePol_of_mem_Ine _ ht, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun p => p.coeff 0) h1`. Establish `h4 : μ (a (ineIncl h ⟨t, ht⟩)) = θ u₀` using `Units.ext (by simpa using h3)`. Establish `h5 : u₀ = Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom hu₀.unit := Units.ext (by simp [u₀])`. Rewrite using `[h4, h5, hθ]`. Use `set y : (w.adicCompletion E)ˣ := Units.map i.toRingHom.toMonoidHom (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom hu₀.unit) with hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyn : (y : w.adicCompletion E) = n` using `by simp [hy]`. Establish `hyi : valuation (w.adicCompletion E) ((y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) ≤ 1`. Establish `e4 : ((y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) = i (((hu₀.unit⁻¹ : ℤ_[g]ˣ) : ℤ_[g]) : ℚ_[g])`. Rewrite using `[hy, ← map_inv, ← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e4]`. Conclude with `val_int_le i hi _`. Establish `h6 : μ (x * y⁻¹) = 1` using `htm _ (by`. Establish `e3 : ((x * y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) - 1 = ((x : w.adicCompletion E) - n) * ((y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E)`. Rewrite using `[← hyn, sub_mul, Units.mul_inv]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[e3, map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le hx hyi)`. Rewrite `h6` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h6.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_at_gen [IsTotallyComplex E] (H : DiscreteGroups.sglob.DzType.DepthZeroInertiaBig) {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {ε : EpsFamily A} (hε : IsDeligneEps ε) {rc : IrrGL (w.adicCompletion E) → WD h} (hl : Laws a ha ε rc)
@@ -68,15 +66,13 @@ theorem value_at_gen [IsTotallyComplex E] (H : DiscreteGroups.sglob.DzType.Depth
 open GlobalTheory.WeilDeligne in
 
 /- English proof (translation)
-Introduce `hDZ hL D Γ k v μ hμ hT u hu hex c hc`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Use `haveI : IsTotallyComplex D.host.E := D.sp.cm.cmUnram.1`. Take `⟨a, ha, ε, hε, hl⟩` from `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 (D.naut.plGw k v))`. Establish `hSet : GlobalTheory.WeilDeligne.TeichmullerInertiaLabelCondition (D.nd.plOm.1 (D.naut.plGw k v)) (D.naut.plGw k v) (D.ntypes.teichC k) (D.ntypes.tg k v)` using `.of_tameGenAt (GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) (D.naut.plGw_over k v)) (D.ntypes.tg_gen k v) (D.ntypes.teichC_inj k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : rcAt hL D (D.naut.plGw k v) 1 (Irr.ofDet 1 μ hμ) = GlobalTheory.WeilDeligne.WD.lpOfChar _ (μ.comp a) (ha.smooth hμ)` using `hl.one μ hμ`. Establish `hwild : ∀ σ : GlobalTheory.WeilDeligne.Weil (D.nd.plOm.2 (D.naut.plGw k v)), (σ : G D.host.E D.nd.Om) ∈ GlobalTheory.WeilDeligne.Wild D.host.E (D.nd.plOm.1 (D.naut.plGw k v)) → (μ.comp a) σ = 1` using `GlobalTheory.DepthZeroRankOneLabel.wild_trivial D k v μ hμ hT a ha ε _ hl`. Establish `hval : μ (a ⟨D.ntypes.tg k v, GlobalTheory.WeilDeligne.Ine_le_Weil _ hSet.2.1⟩) = μ (Units.map (algebraMap D.host.E ((D.naut.plGw k v).adicCompletion D.host.E)).toMonoidHom (Units.mk0 (u : D.host.E) hu))`. Take `⟨I⟩` from `GlobalTheory.TypeRec.Model.nonempty_ident D`. Establish `hw` using `D.naut.plGw_over k v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) hw`. Establish `hw2 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ (D.naut.plGw k v).asIdeal ^ 2` using `fun h2 => by`. Establish `h0 : Ideal.span {((D.host.g k : ℕ) : 𝓞 D.host.E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(D.host.g_prime k).ne_zero` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs` using `(UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors h0).2 (Formalism.MainNotions.ModuliIntegralCharts.H1.GSplit.split_of_ncard (D.host.g_prime k) (D.nd.g_split k)).2`. Use `hs (D.naut.plGw k v).asIdeal (by rw [← sq, Ideal.dvd_span_singleton]; exact h2)` as an intermediate fact. Conclude with `(D.naut.plGw k v).isPrime.ne_top (Ideal.isUnit_iff.1 this)`. Take `⟨ϖ, π, hϖ, hϖ2, hπ, hv⟩` from `hex`. Take `⟨n, hn, hun, hgen⟩` from `GlobalTheory.DepthZeroRankOneLabel.residue_of_cong _ _ _ (D.nd.plOm.2 _) hN hw hw2 (Γ.kv k v) _ (Γ.ζ k) (D.ntypes.tg_mem k v) (Γ.ζ_gen k) (Γ.tg_tame k v) u ϖ π hϖ hϖ2 hπ hv`.
-
-Establish `hx` using `GlobalTheory.DepthZeroRankOneLabel.val_lt_of_mem hun`. Conclude with `DiscreteGroups.sglob.DzType.Rt.value_at_gen hDZ hε hl (I.i k v) (I.cont k v) hw (Γ.kv k v) (GlobalTheory.DepthZeroRankOneLabel.labDatum (D.ntypes.teichC k) (D.ntypes.teichC_inj k) (Γ.ζ k) (Γ.ζ_gen k)) _ (D.ntypes.tg_mem k v) (Γ.tg_tame k v) μ hμ hT n hn hgen _ (by simpa using hx)`. Unfold `labAt`. Rewrite using `[e1, GlobalTheory.WeilDeligne.WD.lab_lpOfChar_eq_iff hSet _ hwild c, hc, MonoidHom.comp_apply, hval]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lab_eq_of_tameRep : DiscreteGroups.sglob.DzType.DepthZeroInertiaBig → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (Γ : GrpSide D) (k : Fin 2) (v : D.nd.PlG k) (μ : ((D.naut.plGw k v).adicCompletion D.host.E)ˣ →* ℂˣ) (hμ : GlobalTheory.SmGL.IsSmoothChar μ), GlobalTheory.SplitWeil.IsTame μ → ∀ (u : 𝓞 D.host.E) (hu : (u : D.host.E) ≠ 0), (∃ (ϖ : 𝓞 D.host.E) (π : D.nd.Om), ϖ ∈ (D.naut.plGw k v).asIdeal ∧ ϖ ∉ (D.naut.plGw k v).asIdeal ^ 2 ∧ π ^ (normV (D.naut.plGw k v) - 1) = algebraMap D.host.E D.nd.Om (ϖ : D.host.E) ∧ (D.nd.plOm.1 (D.naut.plGw k v)).valuation (D.ntypes.tg k v π / π - algebraMap D.host.E D.nd.Om (u : D.host.E)) < 1) → ∀ c : ZMod (D.host.g k), D.ntypes.teichC k (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) c) = ((μ (Units.map (algebraMap D.host.E ((D.naut.plGw k v).adicCompletion D.host.E)).toMonoidHom (Units.mk0 (u : D.host.E) hu)) : ℂˣ) : ℂ) → labAt hL D k v (Irr.ofDet 1 μ hμ) = X - C c := by
   intro hDZ hL D Γ k v μ hμ hT u hu hex c hc
@@ -117,7 +113,7 @@ theorem lab_eq_of_tameRep : DiscreteGroups.sglob.DzType.DepthZeroInertiaBig → 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-The claim follows from `DiscreteGroups.sglob.DzType.Rt.lab_eq_of_tameRep`.
+A detailed English derivation is pending.
 -/
 theorem tame_uniformizer_power : DiscreteGroups.sglob.DzType.DepthZeroInertiaBig → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (Γ : GrpSide D) (k : Fin 2) (v : D.nd.PlG k) (μ : ((D.naut.plGw k v).adicCompletion D.host.E)ˣ →* ℂˣ) (hμ : GlobalTheory.SmGL.IsSmoothChar μ), GlobalTheory.SplitWeil.IsTame μ → ∀ (u : 𝓞 D.host.E) (hu : (u : D.host.E) ≠ 0), (∃ (ϖ : 𝓞 D.host.E) (π : D.nd.Om), ϖ ∈ (D.naut.plGw k v).asIdeal ∧ ϖ ∉ (D.naut.plGw k v).asIdeal ^ 2 ∧ π ^ (normV (D.naut.plGw k v) - 1) = algebraMap D.host.E D.nd.Om (ϖ : D.host.E) ∧ (D.nd.plOm.1 (D.naut.plGw k v)).valuation (D.ntypes.tg k v π / π - algebraMap D.host.E D.nd.Om (u : D.host.E)) < 1) → ∀ c : ZMod (D.host.g k), D.ntypes.teichC k (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) c) = ((μ (Units.map (algebraMap D.host.E ((D.naut.plGw k v).adicCompletion D.host.E)).toMonoidHom (Units.mk0 (u : D.host.E) hu)) : ℂˣ) : ℂ) → labAt hL D k v (Irr.ofDet 1 μ hμ) = X - C c :=
   DiscreteGroups.sglob.DzType.Rt.lab_eq_of_tameRep

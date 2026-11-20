@@ -35,19 +35,17 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
 variable {η κ χS χT : (AEF F E)ˣ →* Circle} {ε : AEF F E} {of oi : GAF σ JS × GAF σ JT →* Module.End ℂ (WOF F E nS nT → ℂ)}
 open GlobalTheory.FinLatSplitF in
 /- English proof (translation)
-Establish `hB` using `C.good`. Establish `hS` using `C.hS`. Establish `hT` using `C.hT`. Establish `hξ` using `C.hξ`. Establish `hσ : ∀ x, σ (σ x) = x` using `conj_conj_of_cm hB.cm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : IsSplitIdemF σ (cAF σ e)` using `isSplitIdemF_conj he`. Establish `hm : ∀ (a b : AEF F E) (x : XFF F E nS nT), mulFF a (mulFF b x) = (a * b) • x` using `fun a b x => smul_smul a b x`. Establish `hcm : ∀ (a : AEF F E) (x : XFF F E nS nT), rhoFF σ JS JT (g, k) (mulFF a x) = mulFF a (rhoFF σ JS JT (g, k) x)` using `fun a x => XFF.ext (actOF_smul _ _ _ _)`. Take `⟨n, hn, hℓ⟩` from `GlobalTheory.T.invariantForm_normalizedHeisenbergIntertwiner_eq (isHeis_opFF hσ hS hT hξ hc hL.hw) lam _ hL.sd hL.span (rhoFF σ JS JT (g, k)) (gamFF_rhoFF hS ξ₀ B.ψ _) (hL.sd' _) (hL.fin _) (Om (g, k)) (hL.op _) (hL.vac _) (mulFF e) (mulFF (cAF σ e)) (fun x => by rw [hm, he.1]; r …`. Use `off_smul_actOF hg hk (x : WOF F E nS nT)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_smul, sub_smul, add_smul, add_smul, one_smul, one_smul, ← sub_sub, ← sub_sub]`. Conclude with `this))`. Establish `hi` using `hL.fin (g, k)`. Establish `hl` using `hI F E σ hB.cm nS nT JS JT hS hT ξ₀ hξ B.ψ hc w hL.hw Λ hG hL.sd' hL.fin lam hL.good κ hκ e he g k hg hk x y hx hy`. Use `⟨(Real.sqrt (idx (latF F E nS nT Λ) ((latF F E nS nT Λ).map (rhoFF σ JS JT (g, k))) : ℕ))⁻¹ * n, mul_pos (inv_pos.2 (Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero hi)))) (Nat.cast_pos.2 hn), fun ℓ h1 f => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hℓ (ℓ ∘ₗ (GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ).subtype) (fun u m => by` as an intermediate fact. Establish `hu : ((mulFF (cAF σ e) u : XFF F E nS nT) : WOF F E nS nT) ∈ GlobalTheory.SplitInvFormF.conjHalf σ e nS nT` using `fun i j => by show cAF σ e * (cAF σ e * (u : WOF F E nS nT) i j) = cAF σ e * (u : WOF F E nS nT) i j`. Rewrite using `[← mul_assoc, he'.1]`. Establish `hwu : (intAF F w • ((mulFF (cAF σ e) u : XFF F E nS nT) : WOF F E nS nT)) ∈ GlobalTheory.SplitInvFormF.conjHalf σ e nS nT` using `fun i j => by show cAF σ e * (intAF F w * (cAF σ e * (u : WOF F E nS nT) i j)) = intAF F w * (cAF σ e * (u : WOF F E nS nT) i j)`. Rewrite using `[mul_left_comm, ← mul_assoc (cAF σ e), he'.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ℓ (opFF hc w (mulFF (cAF σ e) u) m : WOF F E nS nT → ℂ) = ℓ m`. Rewrite using `[coe_opFF, phaseF, GlobalTheory.SplitInvFormF.symplOHF_half he hwu hu, neg_zero, AddChar.map_zero_eq_one, one_smul]`. Conclude with `h1 _ hu _ m.2) f`. Establish `hz : ∀ z : Circle, z * z = 1 → ((z : ℂ))⁻¹ = z` using `fun z hz => by`. Rewrite using `[← Circle.coe_inv, inv_eq_of_mul_eq_one_right hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Rewrite `this` using `[hl, mul_inv, hz _ (by rw [mul_mul_mul_comm, ← mul_pow, ← mul_pow, hκ.sq, hκ.sq, one_pow, one_pow, one_mul])]`. Use `this.trans ?_` and prove the remaining obligations. Generalize the expression as in `((κ x ^ nT * κ y ^ nS : Circle) : ℂ) = c`. Use `push_cast`. Use `show _ * (ℓ (f : WOF F E nS nT → ℂ)) = _`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem splitK_k (hI : IdxSign) (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hL : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (hκ : IsKap σ lam κ) {e : AEF F E} (he : IsSplitIdemF σ e) {g k} (hg : SuppAtF σ e JS g) (hk : SuppAtF σ e JT k) {x y}
@@ -102,21 +100,19 @@ theorem splitK_k (hI : IdxSign) (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS 
   show _ * (ℓ (f : WOF F E nS nT → ℂ)) = _
   ring
 /- English proof (translation)
-Establish `hcn : ∀ n : ℕ, Continuous ((η * κ) ^ n : (AEF F E)ˣ →* Circle)` using `fun n => ((h1.1.mul hκ.cont).pow n).congr fun x => by simp`. Establish `h2'` using `resEta_mul h2 hκ`. Establish `hB` using `C.good`. Establish `hreal` using `_root_.GlobalTheory.T.finite_lattice_theta_invariant F E σ B hB nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ hc Λ w lam Om hO`. Establish `hheis` using `_root_.GlobalTheory.T.finite_lattice_theta_support F E σ B hB nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ hc Λ w lam Om hO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont` using `_root_.GlobalTheory.T.finite_lattice_theta_level F E σ B hB nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ hc Λ w lam Om hO`. Establish `hunit` using `_root_.GlobalTheory.T.lintegral_enorm_sq_latRep_apply_eq F E σ B hB nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ hc Λ w lam Om hO`. Set `z : GAF σ JS × GAF σ JT → Circle` to `zF σ JS JT (η * κ) ε hε.idem`. Establish `z1 : z 1 = 1` using `by simp [z, zF]`. Establish `z2 : ∀ p q, z (p * q) = z p * z q` using `fun p q => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [z, zF, Prod.fst_mul, Prod.snd_mul, map_mul, _root_.mul_inv]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Establish `z3 : Continuous z` using `by show Continuous fun p : GAF σ JS × GAF σ JT => (((η * κ) ^ nT) (GlobalTheory.SplitDetCharF.cutDet σ JS ε hε.idem p.1))⁻¹ * ((η * κ) ^ nS) (GlobalTheory.SplitDetCharF.cutDet σ JT ε hε.idem p.2)`. Conclude with `((hcn nT).comp ((GlobalTheory.SplitDetCharF.continuous_cutDet ε hε.idem).comp continuous_fst)).inv.mul ((hcn nS).comp ((GlobalTheory.SplitDetCharF.continuous_cutDet ε hε.idem).comp continuous_snd))`. Take `⟨om, hom⟩` from `exists_extend (thetaSubF σ JS JT ξ₀ B.ψ) ({ toFun := fun p => (z p : ℂ) • Om p map_one' := by rw [z1, Circle.coe_one, one_smul, map_one] map_mul' := fun p q => by rw [z2, map_mul, Circle.coe_mul, smul_mul_smul_comm] } : GAF σ JS × GAF σ JT →* Module.End ℂ (thetaSubF σ JS JT ξ₀ B. …`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ho : ∀ p f (hf : IsThetaFunOF σ JS JT ξ₀ B.ψ f), om p f = (z p : ℂ) • (Om p ⟨f, hf⟩ : WOF F E nS nT → ℂ)` using `fun p f hf => hom p ⟨f, hf⟩`. Use `⟨om, ⟨⟨fun p f hf => ?_, fun f hf u => ?_, fun μ 𝓕 hμ h𝓕 p f hf => ?_⟩, fun g hg k hk f hf => ?_, fun g hg k hk u f hf => ?_, fun e he g k hg hk x y hx hy => ?_⟩, fun p f => hom p f⟩` and prove the remaining obligations. Rewrite using `[ho p f hf]`. Conclude with `(thetaSubF σ JS JT ξ₀ B.ψ).smul_mem _ (Om p ⟨f, hf⟩).2`. Simplify using `only [ho _ f hf, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(continuous_subtype_val.comp z3).mul (hcont ⟨f, hf⟩ u)`. Rewrite using `[← hunit μ 𝓕 hμ h𝓕 p ⟨f, hf⟩, ho p f hf]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, enorm_smul, ← ofReal_norm_eq_enorm (z p : ℂ), Circle.norm_coe, ENNReal.ofReal_one, one_mul]`. Rewrite using `[ho _ f hf, hreal g hg k hk, show z (g, k) = 1 by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `[z, zF, GlobalTheory.SplitDetCharF.cutDet_real ε hε.idem hε.fin g hg, GlobalTheory.SplitDetCharF.cutDet_real ε hε.idem hε.fin k hk],`. Use the proof step `Circle.coe_one, one_smul]`. Establish `hf'` using `GlobalTheory.T.heisenbergOperatorF_preserves_isThetaFunction F E σ nS nT JS JT ξ₀ B.ψ hB.std.1 u f hf`. Rewrite using `[ho _ f hf, ho _ _ hf', heisOF_smul, hheis g hg k hk u ⟨f, hf⟩ ⟨_, hf'⟩ rfl]`. Take `⟨r, hr, h1⟩` from `_root_.UpperTheory.TP.W.splitK_k hI C hG hO hκ he hg hk hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨r, hr, fun ℓ hℓ f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[ho _ f hf, map_smul, h1 ℓ hℓ, smul_eq_mul, show z (g, k) = splitFacOF (η ^ nS) (η ^ nT) x y * (κ x ^ nT * κ y ^ nS)⁻¹ by`. Simplify using `only [z, zF, splitFacOF, _root_.PositivityTheory.ThKW.cut_char_k hB C.hS (resEtaF_pow h2' nT) hε he hg hx, _root_.PositivityTheory.ThKW.cut_char_k hB C.hT (resEtaF_pow h2' nS) hε he hk hy]`. Establish `e1 : (κ y ^ nS)⁻¹ = κ y ^ nS` using `inv_eq_of_mul_eq_one_right (by rw [← mul_pow, hκ.sq, one_pow])`. Simplify using `only [MonoidHom.pow_apply, MonoidHom.mul_apply, mul_pow, _root_.mul_inv, e1]`.
-
-Conclude with `mul_mul_mul_comm _ _ _ _, Circle.coe_mul, Circle.coe_inv, mul_assoc,`. Use `inv_mul_cancel_left₀ (Circle.coe_ne_zero _)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem existsFinK_k (hI : IdxSign) (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (h1 : IsHeckeCharF η) (h2 : ResEtaF η 1) (hκ : IsKap σ lam κ) (hε : IsHalfF σ ε) :
@@ -188,7 +184,7 @@ structure PartsK_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ �
       s * mMF σ JS JT θ p = mMF σ JS JT θ p * s → ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → IsVacF σ JS JT ξ₀ B.ψ ι s f →
         oi p f = GlobalTheory.RealWeil.dP s (mMF σ JS JT θ p) • f
 /- English proof (translation)
-Take `⟨r, p, e⟩` from `P.prod _ _ (mul_ne_zero hN hx) h (cutRat _ (_root_.PositivityTheory.ThKW.half_add_k C.good P.half) (Units.mk0 _ hN * Units.mk0 _ hx)) (by rw [cutRat_val, add_comm, Units.val_mul, Units.val_mk0, Units.val_mk0])`. Use `⟨r, p, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, map_mul lam, ← Finset.prod_mul_distrib]`. Simplify using `only [map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem PartsK_k.prod' {C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι} (P : _root_.UpperTheory.TP.W.PartsK_k C hc lam Om η χS χT ε of oi) {N x : E} (hN : N ≠ 0) (hx : x ≠ 0)
     {c n : ℕ} (h : ((c * n : ℕ) : ℚ) = |Algebra.norm ℚ (N * x)|) : ∃ r : ℝ, 0 < r ∧
@@ -200,7 +196,7 @@ theorem PartsK_k.prod' {C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ 
   rw [← e, map_mul lam, ← Finset.prod_mul_distrib]
   simp only [map_mul]
 /- English proof (translation)
-Establish `e1` using `congrFun (H f f.2) x`. Rewrite `e1` using `[P.vac s hs.sq hs.pos (g, h) hcm f f.2 f2, map_smul, P.hof, hO.vac _ f f1, normOp, Submodule.coe_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, substF_apply] at e1`. Rewrite using `[← one_mul (f.1 _), ← inv_mul_cancel₀ hc0, mul_assoc, ← e1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem PartsK_k.kappa {C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι} (P : _root_.UpperTheory.TP.W.PartsK_k C hc lam Om η χS χT ε of oi)
     (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om) (hs : CartF σ JS JT ξ₀ B θ s) {g : GAF σ JS} {h : GAF σ JT}
@@ -218,11 +214,11 @@ theorem PartsK_k.kappa {C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ 
   rw [← one_mul (f.1 _), ← inv_mul_cancel₀ hc0, mul_assoc, ← e1]
   ring
 /- English proof (translation)
-Use `⟨(-s).det, η (cutRat ε P.half.idem ((-1) ^ Fintype.card (Fin nT × Fin nS))), Circle.coe_ne_zero _, fun g h a b ha hb hcm hd c hc0 H => ?_⟩` and prove the remaining obligations. Take `⟨d1, d2⟩` from `_root_.PositivityTheory.ThKW.det_kron_k C ha hb`. Establish `hΔ` using `left_ne_zero_of_mul_eq_one d1`. Take `⟨hbij, n, t, c₀, N, M, hn, hc₀, hN, t1, t2, g1, g2, i1, i2⟩` from `_root_.PositivityTheory.ThKW.finite_data_k C hG hR hO ha hb hΔ hd`. Take `⟨hI, hδ0, r₂, p₂, h2⟩` from `_root_.PositivityTheory.ThKW.real_data_k C hs ha hb hcm hd`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r₁, p₁, h1⟩` from `_root_.PositivityTheory.ThKW.gauss_mul_integral_k C hG hR hO hs ha hb hbij hI _ (P.kappa hO hs hcm hc0 H) n t t1 t2`. Rewrite `h1` using `[g1]`. Establish `hN' : (N : E) ^ M ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hN)`. Take `⟨r₃, p₃, h3⟩` from `P.prod' hN' hd i1`. Take `⟨r₄, p₄, h4⟩` from `P.prod' hN' hΔ i2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.RatAut.final_algebra p₁ p₂ p₃ p₄ hn hc0 hδ0 (Circle.coe_ne_zero _) h1 h2 h3 h4 g2 (_root_.PositivityTheory.ThKW.phase_rat_k C P.res P.half hΔ hd hN' d1 d2 (_root_.PositivityTheory.ThKW.zF_rat_k C P.half.idem ha hb hΔ))`.
+A detailed English derivation is pending.
 -/
 theorem scalar_constK_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om) (P : _root_.UpperTheory.TP.W.PartsK_k C hc lam Om η χS χT ε of oi) (hs : CartF σ JS JT ξ₀ B θ s) :
@@ -244,21 +240,19 @@ theorem scalar_constK_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀
     (_root_.PositivityTheory.ThKW.phase_rat_k C P.res P.half hΔ hd hN' d1 d2 (_root_.PositivityTheory.ThKW.zF_rat_k C P.half.idem ha hb hΔ))
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_isRatF hg`. Take `⟨b, hb⟩` from `exists_isRatF (inv_mem hh)`. Take `⟨e, s₀, hs₀, H⟩` from `_root_.UpperTheory.TP.W.scalar_constK_k C hG hR hO P hs`. Take `⟨t, ht, ht'⟩` from `(_root_.PositivityTheory.ThKW.infinite_norm_one_k C).exists_notMem_finite ((GlobalTheory.RatAut.finite_det_smul_sub_one (b ⊗ₖ aᵀ)).union (GlobalTheory.RatAut.finite_det_smul_sub_one ((1 : Matrix (Fin nT) (Fin nT) E) ⊗ₖ (1 : Matrix (Fin nS) (Fin nS) E)ᵀ)))`. Rewrite `ht'` using `[Set.mem_union, not_or]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, rk⟩` from `exists_of_unitary (σ := σ) C.hT (a := t • 1) (by`. Establish `e : ((t • (1 : Matrix (Fin nT) (Fin nT) E)).map σ)ᵀ = σ t • 1`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]`. Rewrite using `[e, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, show t * σ t = 1 from ht, one_smul])`. Establish `hk` using `rk.mem`. Establish `hcomm` using `_root_.PositivityTheory.ThKW.fin_inf_comm_k C hO (fun p => ⟨_, P.hof p⟩) P.hi`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ck : s * mMF σ JS JT θ (1, k⁻¹) = mMF σ JS JT θ (1, k⁻¹) * s`. Use `comm_inv (mMF σ JS JT θ) (hs.cen k t rk)` as an intermediate fact. Rewrite `this` using `[Prod.inv_mk, inv_one]`. Then use the resulting hypothesis. Take `⟨c, hc1, sc⟩` from `_root_.PositivityTheory.ThKW.exists_isScalarF_k (p := (g, h)) C P.hf P.hi hg hh`. Take `⟨c', hc', sc'⟩` from `_root_.PositivityTheory.ThKW.exists_isScalarF_k (p := (1, k⁻¹)) C P.hf P.hi (one_mem _) (inv_mem hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc0 : c ≠ 0` using `norm_ne_zero_iff.1 (hc1 ▸ one_ne_zero)`. Establish `hc0' : c' ≠ 0` using `norm_ne_zero_iff.1 (hc' ▸ one_ne_zero)`. Take `⟨r', p', e'⟩` from `H 1 k⁻¹ 1 (t • 1) (isRatF_one JS) (by rwa [inv_inv]) ck (by rw [Matrix.smul_kronecker]; exact ht'.2) c' hc0' sc'`. Take `⟨r, p, e''⟩` from `H (g * 1) (h * k⁻¹) a (t • b) (by rwa [mul_one]) (by`. Use `rk.mul hb` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_mul, Matrix.one_mul, ← inv_inv k, ← _root_.mul_inv_rev] at this)` and apply the resulting hypothesis. Use the proof step `(by rw [← Prod.mk_mul_mk, map_mul, ← mul_assoc, hcm, mul_assoc, ck, mul_assoc])`. Use the proof step `(by rw [Matrix.smul_kronecker]; exact ht'.1) (c * c') (mul_ne_zero hc0 hc0')`. Use the proof step `(sc.mul_k C P.hi hcomm sc' (one_mem _) (inv_mem hk))`. Establish `q' : (r' : ℂ) ≠ 0` using `by exact_mod_cast p'.ne'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : c = ((r / r' : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_div, eq_div_iff q']`. Use `mul_right_cancel₀ hs₀ ?_` and prove the remaining obligations. Rewrite using `[← e'', mul_assoc, ← e', mul_assoc]`. Establish `e2 : r / r' = 1`.
-
-Rewrite `hc1` using `[e1, Complex.norm_real, Real.norm_of_nonneg (div_pos p p').le]`. Conclude with `hc1`. Rewrite `sc` using `[e1, e2, Complex.ofReal_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isScalar_one_of_commK_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om) (P : _root_.UpperTheory.TP.W.PartsK_k C hc lam Om η χS χT ε of oi) (hs : CartF σ JS JT ξ₀ B θ s)
@@ -306,11 +300,11 @@ theorem isScalar_one_of_commK_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS 
     exact hc1
   rwa [e1, e2, Complex.ofReal_one] at sc
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ h0 hξ Λ hG hR hc w lam Om hO η h1 h2 h3 h4`. Take `⟨θ, hθ⟩` from `(_root_.GlobalTheory.T.standard_additive_character_sign F E σ B hB).2.1`. Take `⟨ι, hι⟩` from `_root_.GlobalTheory.T.exists_chart_archimedean_family F E σ B hB θ hθ`. Establish `C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι` using `⟨hB, hS, hT, h0, hξ, hθ, hι⟩`. Take `⟨κ, hκ⟩` from `hK F E σ hB.cm lam hO.good`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, hprod⟩` from `hE F E σ B hB.cm hB.unram η h1 h2 h3 h4 lam hO.good κ hκ`. Take `⟨of, hf, hof⟩` from `_root_.UpperTheory.TP.W.existsFinK_k hI C hG hO h1 h2 hκ hε`. Take `⟨oi, hi, hvac⟩` from `_root_.PositivityTheory.ThKW.exists_inf_k C`. Establish `P : _root_.UpperTheory.TP.W.PartsK_k C hc lam Om (η * κ) (η ^ nS) (η ^ nT) ε of oi` using `⟨resEta_mul h2 hκ, hε, hprod, hf, hof, hi, hvac⟩`. Establish `hcomm` using `_root_.PositivityTheory.ThKW.fin_inf_comm_k C hO (fun p => ⟨_, hof p⟩) hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_root_.PositivityTheory.ThKW.datum_of_aut_k C hG hO h1 h2 hf (fun p => ⟨_, hof p⟩) hi fun γ hγ γ' hγ' f hf' => ?_` and prove the remaining obligations. Use `_root_.PositivityTheory.ThKW.rat_gen_k C (fun p => IsScalarF B ξ₀ of oi p 1) (fun p q _ _ q1 q2 a b => mul_one (1 : ℂ) ▸ a.mul_k C hi hcomm b q1 q2) (fun p s p1 p2 hs hcm => _root_.UpperTheory.TP.W.isScalar_one_of_commK_k C hG hR hO P hs p1 p2 hcm) (γ, γ') hγ hγ' f hf'` as an intermediate fact. Rewrite using `[this, one_smul]`. Use `show f (actOF σ JS JT γ⁻¹ γ'⁻¹ 0) = f 0`. Rewrite using `[actOF, Matrix.mul_zero, Matrix.zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datumK_of_k (hK : KapEx) (hE : EtaProdK) (hI : IdxSign) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

@@ -8,7 +8,7 @@ open scoped ComplexOrder MatrixOrder
 namespace GlobalTheory.SubReal
 
 /- English proof (translation)
-Rewrite using `[Complex.ofReal_sum, dotProduct]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem cnorm_sq_eq {ι : Type} [Fintype ι] (u : ι → ℂ) :
     ((∑ i, ‖u i‖ ^ 2 : ℝ) : ℂ) = star u ⬝ᵥ u := by
@@ -19,7 +19,7 @@ theorem cnorm_sq_eq {ι : Type} [Fintype ι] (u : ι → ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `hsum : (∑ i, ‖(P *ᵥ u) i‖ ^ 2 : ℝ) = ∑ i, ‖u i‖ ^ 2`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[cnorm_sq_eq, cnorm_sq_eq, Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, h, Matrix.vecMul_one]`. Unfold `cnorm`. Rewrite using `[hsum]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cnorm_mulVec_isometry {m k : Type} [Fintype m] [Fintype k] [DecidableEq k]
     (P : Matrix m k ℂ) (h : Pᴴ * P = 1) (u : k → ℂ) :
@@ -32,15 +32,13 @@ theorem cnorm_mulVec_isometry {m k : Type} [Fintype m] [Fintype k] [DecidableEq 
   rw [hsum]
 
 /- English proof (translation)
-Establish `hG0 : (0 : Matrix (Fin j) (Fin j) ℂ) ≤ Yᴴ * Y` using `(Matrix.posSemidef_conjTranspose_mul_self Y).nonneg`. Take `⟨S, hSS, hSh⟩ : ∃ S : Matrix (Fin j) (Fin j) ℂ, S * S = Yᴴ * Y ∧ Sᴴ = S` from `⟨CFC.sqrt (Yᴴ * Y), CFC.sqrt_mul_sqrt_self _ hG0, (CFC.sqrt_nonneg (Yᴴ * Y)).isSelfAdjoint⟩`. Establish `hker : ∀ x : Fin j → ℂ, (Yᴴ * Y) *ᵥ x = 0 → x = 0`. Introduce `x hx`. Establish `hYx : Y *ᵥ x = 0` using `(Matrix.conjTranspose_mul_self_mulVec_eq_zero Y x).mp hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hback : L *ᵥ (Y *ᵥ x) = x` using `by rw [Matrix.mulVec_mulVec, hL, Matrix.one_mulVec]`. Rewrite using `[← hback, hYx, Matrix.mulVec_zero]`. Establish `hGu : IsUnit (Yᴴ * Y).det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv, hv0⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Conclude with `hv (hker v hv0)`. Establish `hSu : IsUnit S.det`. Establish `h2 : IsUnit (S * S).det` using `by rw [hSS]; exact hGu`. Rewrite `h2` using `[Matrix.det_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isUnit_of_mul_isUnit_left h2`. Use `⟨S⁻¹, Y * S⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_nonsing_inv]`. Conclude with `hSu.ringInverse`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, hSh, Matrix.mul_assoc, ← Matrix.mul_assoc Yᴴ, ← hSS, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hSu, Matrix.one_mul, Matrix.mul_nonsing_inv _ hSu]`.
-
-Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hSu, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hSu, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isometry_factor {n j : ℕ} (Y : Matrix (Fin n) (Fin j) ℂ)
     (L : Matrix (Fin j) (Fin n) ℂ) (hL : L * Y = 1) :
@@ -74,7 +72,7 @@ theorem exists_isometry_factor {n j : ℕ} (Y : Matrix (Fin n) (Fin j) ℂ)
       Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `fcoord vecAt`. Simplify using `only [Pi.basisFun_repr]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem fcoord_std {K : Type} [Field K] [NumberField K] [StarRing K] {d : ℕ}
     (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (v : InfinitePlace K) (x : Fin d → K) :
@@ -87,25 +85,25 @@ end GlobalTheory.SubReal
 open GlobalTheory.SubReal in
 
 /- English proof (translation)
-Introduce `K _ _ _ _ n X R hX hR`. Set `bS` to `Module.finBasis K (Submodule.span K (R : Set (Fin n → K)))`. Set `ψ : (Fin (Module.finrank K (Submodule.span K (R : Set (Fin n → K)))) → K) →ₗ[K] (Fin n → K)` to `(Submodule.span K (R : Set (Fin n → K))).subtype ∘ₗ bS.equivFun.symm.toLinearMap`. Establish `hinj : Function.Injective ψ` using `(Submodule.injective_subtype _).comp bS.equivFun.symm.injective`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective ψ (LinearMap.ker_eq_bot.mpr hinj)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgψ : ∀ y, g (ψ y) = y` using `fun y => LinearMap.congr_fun hg y`. Establish `hψS : ∀ y, ψ y ∈ Submodule.span K (R : Set (Fin n → K))` using `fun y => Submodule.coe_mem _`. Establish `hψg : ∀ r ∈ Submodule.span K (R : Set (Fin n → K)), ψ (g r) = r`. Introduce `r hr`. Take `⟨y, rfl⟩ : ∃ y, ψ y = r` from `⟨bS.equivFun ⟨r, hr⟩, by simp [ψ]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hgψ]`. Establish `hψR : ∀ r ∈ R, ψ (g r) = r` using `fun r hr => hψg r (Submodule.subset_span hr)`. Establish `hi : ∀ y, LinearMap.toMatrix' ψ *ᵥ y = ψ y` using `fun y => LinearMap.toMatrix'_mulVec ψ y`. Establish `hLi : LinearMap.toMatrix' g * LinearMap.toMatrix' ψ = 1`. Rewrite using `[← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hLY : ∀ w : InfinitePlace K, ((LinearMap.toMatrix' g).map w.embedding * X w) * ((X w)⁻¹ * (LinearMap.toMatrix' ψ).map w.embedding) = 1`. Introduce `w`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (X w), Matrix.mul_nonsing_inv _ (hX w), Matrix.one_mul, ← Matrix.map_mul, hLi, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `choose Z P hZ hP hY using fun w => exists_isometry_factor _ _ (hLY w)`. Establish `hmap : (R.map (g.restrictScalars (𝓞 K))).map (ψ.restrictScalars (𝓞 K)) = R`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨r', hr', rfl⟩, rfl⟩`. Simplify `hr'` using `[hψR r' hr']`. Introduce `hr`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨g r, ⟨r, hr, rfl⟩, hψR r hr⟩`. Establish `hnorm : ∀ (v : InfinitePlace K) (x : Fin (Module.finrank K (Submodule.span K (R : Set (Fin n → K)))) → K), normAt (Pi.basisFun K (Fin n)) X v (ψ x) = normAt (Pi.basisFun K _) Z v x`. Introduce `v x`. Unfold `normAt`. Rewrite using `[fcoord_std, fcoord_std]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp : (fun k => v.embedding (ψ x k)) = (LinearMap.toMatrix' ψ).map v.embedding *ᵥ fun k => v.embedding (x k)`. Use function extensionality and compare the values at `k`. Rewrite using `[← hi x, RingHom.map_mulVec]`. Both sides reduce to the same expression. Apply the tactic sequence `rw [hcomp, Matrix.mulVec_mulVec, hY v, ← Matrix.mulVec_mulVec, cnorm_mulVec_isometry _ (hP v)]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hRR` using `(Formalism.HN.rerealize K _ _ (Fin n → K) (Fin n) (Pi.basisFun K _) Z (Pi.basisFun K (Fin n)) X ψ hZ hX hinj hnorm (R.map (g.restrictScalars (𝓞 K))) (hR.map _)).2.2.2.2.2.2`. Use `⟨Module.finrank K (Submodule.span K (R : Set (Fin n → K))), LinearMap.toMatrix' ψ, Z, P, R.map (g.restrictScalars (𝓞 K)), rfl, hZ, hP, hY, hR.map _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, eq_top_iff]`. Introduce `y _`. Conclude with `⟨ψ y, hψS y, hgψ y⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y ⟨r, hr, rfl⟩`. Rewrite using `[hi]`. Simplify `hr` using `[hψR r hr]`. Introduce `r hr`. Conclude with `⟨g r, ⟨r, hr, rfl⟩, by rw [hi]; exact hψR r hr⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hRR, hmap]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_isometric_realisation_of_sublattice : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (n : ℕ) (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (R : Submodule (𝓞 K) (Fin n → K)), (∀ w, IsUnit (X w).det) → R.FG → ∃ (j : ℕ) (i : Matrix (Fin n) (Fin j) K) (X' : InfinitePlace K → Matrix (Fin j) (Fin j) ℂ) (P : InfinitePlace K → Matrix (Fin n) (Fin j) ℂ) (B : Submodule (𝓞 K) (Fin j → K)), j = rkK R ∧ (∀ w, IsUnit (X' w).det) ∧ (∀ w, (P w)ᴴ * P w = 1) ∧ (∀ w, (X w)⁻¹ * i.map w.embedding = P w * (X' w)⁻¹) ∧ B.FG ∧ Submodule.span K (B : Set (Fin j → K)) = ⊤ ∧ (∀ y ∈ B, i *ᵥ y ∈ R) ∧ (∀ r ∈ R, ∃ y ∈ B, i *ᵥ y = r) ∧ largestSize (Pi.basisFun K (Fin j)) X' B = largestSize (Pi.basisFun K (Fin n)) X R := by
   intro K _ _ _ _ n X R hX hR

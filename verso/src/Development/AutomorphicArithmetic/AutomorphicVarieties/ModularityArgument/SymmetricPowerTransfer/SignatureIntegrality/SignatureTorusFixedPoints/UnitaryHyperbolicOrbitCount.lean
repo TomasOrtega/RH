@@ -12,13 +12,13 @@ namespace UpperTheory.V.Z.Sym.Sig
 open MulAction
 
 /- English proof (translation)
-Establish `hs : {o : orbitRel.Quotient T Y | f o.out ≠ 0} = Set.range Ψ` using `Set.ext fun o => hr o`. Establish `: Fintype A` using `Fintype.ofFinite A`. Use `⟨hs ▸ Set.finite_range Ψ, ?_⟩` and prove the remaining obligations. Unfold `wcount`. Rewrite using `[finsum_eq_sum_of_support_subset (s := Finset.univ.image Ψ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_image (fun a _ b _ h => inj h)]`. Establish `key : ∀ a, ((stabilizer T (Ψ a).out).relIndex C : ℂ) * f (Ψ a).out = n`. Introduce `a`. Establish `ha : f (Ψ a).out ≠ 0` using `(hr _).2 ⟨a, rfl⟩`. Take `⟨h1a, h2a⟩` from `h1 _ ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1a, h2a, mul_one]`. Simplify using `only [key, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`. Expand and normalize the polynomial expressions, which then agree. Introduce `o ho`. Establish `hne : f o.out ≠ 0` using `fun h => ho (by simp [h])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `(hr o).1 hne`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 private theorem wcount_of {T Y A : Type} [Group T] [MulAction T Y] [Finite A] (C : Subgroup T) (f : Y → ℂ) (n : ℕ)
     (Ψ : A → orbitRel.Quotient T Y) (inj : Function.Injective Ψ)
@@ -49,7 +49,7 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `⟨fun h i => ?_, V.dg_mem⟩` and prove the remaining obligations. Take `⟨u, hu, he⟩` from `((memJ k V 3 (dg w)).1 h).2.2 i`. Establish `hu' : u = w i` using `Units.ext (by rw [he]; simp [dg, val_diagT])`. Conclude with `hu' ▸ hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem dg_mem (V : Lev k) (w : Fin 3 → kˣ) : dg w ∈ V.J 3 ↔ ∀ i, w i ∈ V.H := by
   refine ⟨fun h i => ?_, V.dg_mem⟩
@@ -58,7 +58,7 @@ private theorem dg_mem (V : Lev k) (w : Fin 3 → kˣ) : dg w ∈ V.J 3 ↔ ∀ 
   exact hu' ▸ hu
 
 /- English proof (translation)
-Rewrite using `[QuotientGroup.eq, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel_left, ← map_inv, ← map_mul]`. Conclude with `(dg_mem V _).trans (by simp [Pi.mul_apply, Pi.inv_apply])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mk_eq (V : Lev k) (g₀ : GL (Fin 3) k) (u u' : Fin 3 → kˣ) :
     ((g₀ * dg u : GL (Fin 3) k) : GL (Fin 3) k ⧸ V.J 3) = ((g₀ * dg u' : GL (Fin 3) k) : GL (Fin 3) k ⧸ V.J 3) ↔
@@ -70,15 +70,15 @@ private def Cd (V : Lev k) (d : Fin 3 → kˣ) (x y z : kˣ) (u : Fin 3 → kˣ)
   x / (u 0 * u 2) / d 0 ∈ V.H ∧ y / u 1 ^ 2 / d 1 ∈ V.H ∧ z / (u 0 * u 2) / d 2 ∈ V.H
 
 /- English proof (translation)
-Establish `hf : ∀ g, V.unitaryDoubleCosetIndicator d g ≠ 0 ↔ g * (Phi k)⁻¹ ∈ V.DC d`. Introduce `g`. Unfold `Lev.unitaryDoubleCosetIndicator`. Apply the tactic sequence `split_ifs <;> simp_all`. Establish `hM : w⁻¹ * (g₀ * dg ![x, y, z] * Phi k * (th k 3 g₀)⁻¹) * th k 3 w = (g₀⁻¹ * w)⁻¹ * (dg ![x, y, z] * Phi k) * th k 3 (g₀⁻¹ * w)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_inv, _root_.mul_inv_rev, inv_inv, mul_assoc]`. Rewrite using `[hf, hM, fixG k V d hd x y z hv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, j, hj, he, h1, h2, h3⟩`. Use `⟨u, ?_, h1, h2, h3⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj' : (g₀ * dg u)⁻¹ * w = j`. Rewrite using `[_root_.mul_inv_rev, mul_assoc, he, inv_mul_cancel_left]`. Rewrite using `[QuotientGroup.eq]`. Rewrite `hj` using `[← hj']`. Use `inv_mem hj` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[_root_.mul_inv_rev, inv_inv]`. Conclude with `this`. Introduce and unpack `⟨u, hq, h1, h2, h3⟩`. Rewrite `hq` using `[QuotientGroup.eq]`. Use `⟨u, (g₀ * dg u)⁻¹ * w, ?_, ?_, h1, h2, h3⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `inv_mem hq` as an intermediate fact. Rewrite `this` using `[_root_.mul_inv_rev, inv_inv]`. Conclude with `this`. Rewrite using `[_root_.mul_inv_rev, mul_assoc, mul_inv_cancel_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem supp_iff (V : Lev k) (d : Fin 3 → kˣ) (hd : SDom d) (x y z : kˣ) (hv : valuation k ((x / z : kˣ) : k) < 1)
     (g₀ w : GL (Fin 3) k) :
@@ -117,7 +117,7 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Unfold `Lev.unitaryDoubleCosetIndicator at h ⊢`. Use `split_ifs at h ⊢ with h'`. Both sides reduce to the same expression. Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem gl3_spherical_value_one (V : Lev k) (d : Fin 3 → kˣ) (g : GL (Fin 3) k) (h : V.unitaryDoubleCosetIndicator d g ≠ 0) : V.unitaryDoubleCosetIndicator d g = 1 := by
   classical
@@ -127,9 +127,9 @@ private theorem gl3_spherical_value_one (V : Lev k) (d : Fin 3 → kˣ) (g : GL 
   · exact absurd rfl h
 
 /- English proof (translation)
-Establish `e0 : (![a, 1, a⁻¹] * u) 0 * (![a, 1, a⁻¹] * u) 2 = u 0 * u 2`. Simplify using `[Pi.mul_apply, mul_mul_mul_comm]`. Establish `e1 : (![a, 1, a⁻¹] * u) 1 = u 1` using `by simp [Pi.mul_apply]`. Unfold `Cd`. Rewrite using `[e0, e1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem cd_act (V : Lev k) (d : Fin 3 → kˣ) (x y z a : kˣ) (u : Fin 3 → kˣ) (h : Cd V d x y z u) :
     Cd V d x y z (![a, 1, a⁻¹] * u) := by
@@ -143,63 +143,61 @@ private theorem cd_act (V : Lev k) (d : Fin 3 → kˣ) (x y z a : kˣ) (u : Fin 
 end
 
 /- English proof (translation)
-Introduce `k _ _ _ _ V T _ r hr g₀ ι hι d hd x₁ y₁ z₁ hv`. Use `letI : MulAction T (GL (Fin 3) k ⧸ V.J 3) := MulAction.compHom _ ι`. Use `set δ := g₀ * dg ![x₁, y₁, z₁] * Phi k * (th k 3 g₀)⁻¹ with hδ`. Establish `hF : ∀ q : GL (Fin 3) k ⧸ V.J 3, V.unitaryDoubleCosetIndicator d (q.out⁻¹ * δ * th k 3 q.out) ≠ 0 ↔ ∃ u, q = ((g₀ * dg u : GL (Fin 3) k) : GL (Fin 3) k ⧸ V.J 3) ∧ Cd V d x₁ y₁ z₁ u`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `supp_iff V d hd x₁ y₁ z₁ hv g₀ q.out`. Rewrite `h` using `[QuotientGroup.out_eq']`. Conclude with `h`. Establish `hact : ∀ (s : T) (u : Fin 3 → kˣ), s • ((g₀ * dg u : GL (Fin 3) k) : GL (Fin 3) k ⧸ V.J 3) = ((g₀ * dg (![r s, 1, (r s)⁻¹] * u) : GL (Fin 3) k) : GL (Fin 3) k ⧸ V.J 3)`. Introduce `s u`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show ((ι s * (g₀ * dg u) : GL (Fin 3) k) : GL (Fin 3) k ⧸ V.J 3) = _`. Rewrite using `[hι, show dg (![r s, 1, (r s)⁻¹] * u) = dg ![r s, 1, (r s)⁻¹] * dg u from map_mul _ _ _]`. Simplify using `only [mul_assoc, inv_mul_cancel_left]`. Establish `hstab : ∀ u : Fin 3 → kˣ, stabilizer T ((g₀ * dg u : GL (Fin 3) k) : GL (Fin 3) k ⧸ V.J 3) = Subgroup.comap r V.H`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `s`. Rewrite using `[mem_stabilizer_iff, hact, mk_eq, Subgroup.mem_comap]`. Establish `e : ∀ i, ((![r s, 1, (r s)⁻¹] * u) i)⁻¹ * u i = (![r s, 1, (r s)⁻¹] i)⁻¹`. Introduce `i`. Simplify using `only [Pi.mul_apply, mul_inv, inv_mul_cancel_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `h 2`. Rewrite `h2` using `[e]`. Simplify using `using h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `h i`. Rewrite using `[e]`. Apply the tactic sequence `rcases (by decide : ∀ j : Fin 3, j = 0 ∨ j = 1 ∨ j = 2) i with rfl | rfl | rfl <;> simp [h]`. Establish `FF` using `finFacts k V`. Establish `hne : V.H.relIndex V.H2 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `FF.1` to reduce the goal to its premises. Rewrite using `[← Subgroup.relIndex_mul_relIndex _ _ _ FF.2.2.1 FF.2.1, h0, zero_mul]`. Unfold `orb`. Distinguish the cases in `hc : x₁ / z₁ / (d 0 / d 2) ∈ V.H ∧ ∃ s, y₁ / (d 1 * s ^ 2) ∈ V.H`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[if_pos hc]`. Take `⟨hxz, s0, hs0⟩` from `hc`. Use `haveI : (V.H.subgroupOf V.H2).FiniteIndex := ⟨hne⟩`. Set `U : ↥V.H2 → Fin 3 → kˣ` to `fun v => ![x₁ / d 0, s0 * (v : kˣ), 1]`. Set `q : ↥V.H2 → GL (Fin 3) k ⧸ V.J 3` to `fun v => ((g₀ * dg (U v) : GL (Fin 3) k) : GL (Fin 3) k ⧸ V.J 3)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `Ψ : ↥V.H2 ⧸ V.H.subgroupOf V.H2 → orbitRel.Quotient T (GL (Fin 3) k ⧸ V.J 3)` to `Quotient.lift (s := QuotientGroup.leftRel (V.H.subgroupOf V.H2)) (fun v => (Quotient.mk'' (q v) : orbitRel.Quotient T (GL (Fin 3) k ⧸ V.J 3))) (by`. Introduce `a b hab`. Establish `hab' : a⁻¹ * b ∈ V.H.subgroupOf V.H2` using `QuotientGroup.leftRel_apply.mp hab`. Rewrite `hab'` using `[Subgroup.mem_subgroupOf]`. Apply `congrArg` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [q]`. Rewrite using `[mk_eq]`. Introduce `i`. Break down `(by decide : ∀ j : Fin 3, j = 0 ∨ j = 1 ∨ j = 2) i with rfl | rfl | rfl` into its components or cases. Use `one_mem V.H using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `ext`. Apply the tactic sequence `simp [U] <;> field_simp`. Use `hab' using 1` and compare the differences between its conclusion and the goal. Use `ext`. Apply the tactic sequence `simp [U] <;> field_simp`.
+Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `one_mem V.H using 1` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `[U])`. Establish `hΨ : ∀ v : ↥V.H2, Ψ (v : ↥V.H2 ⧸ V.H.subgroupOf V.H2) = (Quotient.mk'' (q v) : orbitRel.Quotient T (GL (Fin 3) k ⧸ V.J 3))` using `fun v => rfl`. Establish `hinj : Function.Injective Ψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a b hab`. Take `⟨v, rfl⟩` from `QuotientGroup.mk_surjective a`. Take `⟨w, rfl⟩` from `QuotientGroup.mk_surjective b`. Rewrite `hab` using `[hΨ, hΨ]`. Establish `hab'` using `Quotient.exact' hab`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hab'` using `[MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`. Take `⟨s, hs⟩` from `hab'`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `only [q] at hs`. Rewrite `hs` using `[hact, mk_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1` using `inv_mem (hs 1)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use `ext`. Apply the tactic sequence `simp [U, Pi.mul_apply] <;> field_simp`. Establish `hrng : ∀ o : orbitRel.Quotient T (GL (Fin 3) k ⧸ V.J 3), V.unitaryDoubleCosetIndicator d (o.out.out⁻¹ * δ * th k 3 o.out.out) ≠ 0 ↔ o ∈ Set.range Ψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce `o`. Rewrite using `[hF]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, h1, h2, h3⟩`. Establish `hv2 : u 1 * s0⁻¹ ∈ V.H2` using `by show (u 1 * s0⁻¹) ^ 2 ∈ V.H`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (u 1 * s0⁻¹) ^ 2 = y₁ / (d 1 * s0 ^ 2) / (y₁ / u 1 ^ 2 / d 1)`. Use `ext`. Apply the tactic sequence `simp <;> field_simp`. Rewrite using `[e]`. Conclude with `div_mem hs0 h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `hr (u 2)`. Use `⟨((⟨u 1 * s0⁻¹, hv2⟩ : ↥V.H2) : ↥V.H2 ⧸ V.H.subgroupOf V.H2), ?_⟩` and prove the remaining obligations. Rewrite using `[hΨ]`. Use `(Quotient.sound' ?_).trans (Quotient.out_eq' o)` and prove the remaining obligations. Rewrite using `[MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, hact, hs]`. Simplify using `only [q]`. Rewrite using `[mk_eq]`. Introduce `i`.
+Separate the alternatives or extract the components of the hypothesis. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Break down `(by decide : ∀ j : Fin 3, j = 0 ∨ j = 1 ∨ j = 2) i with rfl | rfl | rfl` into its components or cases. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use `ext`. Apply the tactic sequence `simp [U, Pi.mul_apply] <;> field_simp`. Use `one_mem V.H using 1` and compare the differences between its conclusion and the goal.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Apply the tactic sequence `simp [U, Pi.mul_apply] <;> field_simp`. Use `one_mem V.H using 1` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `[U, Pi.mul_apply]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨a, rfl⟩`. Take `⟨v, rfl⟩` from `QuotientGroup.mk_surjective a`. Rewrite using `[hΨ]`. Establish `hm` using `Quotient.mk_out' (s₁ := orbitRel T (GL (Fin 3) k ⧸ V.J 3)) (q v)`. Rewrite `hm` using `[MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take `⟨s, hs⟩` from `hm`. Use `⟨![r s, 1, (r s)⁻¹] * U v, hs.symm.trans (hact s (U v)), cd_act V d x₁ y₁ z₁ (r s) (U v) ?_⟩` and prove the remaining obligations. Establish `hv2 : (v : kˣ) ^ 2 ∈ V.H` using `v.2`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `one_mem V.H using 1` and compare the differences between its conclusion and the goal.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `ext`. Apply the tactic sequence `simp [U] <;> field_simp`. Use `mul_mem hs0 (inv_mem hv2) using 1` and compare the differences between its conclusion and the goal. Use `ext`. Apply the tactic sequence `simp [U] <;> field_simp`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `inv_mem hxz using 1` and compare the differences between its conclusion and the goal. Use `ext`. Apply the tactic sequence `simp [U] <;> field_simp`. Establish `hone : ∀ o : orbitRel.Quotient T (GL (Fin 3) k ⧸ V.J 3), V.unitaryDoubleCosetIndicator d (o.out.out⁻¹ * δ * th k 3 o.out.out) ≠ 0 → V.unitaryDoubleCosetIndicator d (o.out.out⁻¹ * δ * th k 3 o.out.out) = 1 ∧ (stabilizer T o.out).relIndex (Subgroup.comap r (Uo k)) = V.H.relIndex (U …`. Introduce `o h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨gl3_spherical_value_one V d _ h, ?_⟩` and prove the remaining obligations. Take `⟨u, hu, -⟩` from `(hF _).1 h`. Rewrite using `[hu, hstab, Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective hr]`. Take `⟨hfin, hsum⟩` from `wcount_of (C := Subgroup.comap r (Uo k)) (f := fun q : GL (Fin 3) k ⧸ V.J 3 => V.unitaryDoubleCosetIndicator d (q.out⁻¹ * δ * th k 3 q.out)) (n := V.H.relIndex (Uo k)) Ψ hinj hrng hone`. Conclude with `⟨hfin, hsum.trans rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_neg hc]`. Establish `hzero : ∀ q : GL (Fin 3) k ⧸ V.J 3, V.unitaryDoubleCosetIndicator d (q.out⁻¹ * δ * th k 3 q.out) = 0`. Introduce `q`. Assume the negation of the conclusion as `h`. Take `⟨u, -, h1, h2, h3⟩` from `(hF q).1 h`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hc ⟨?_, u 1, ?_⟩` and prove the remaining obligations. Use `div_mem h1 h3 using 1` and compare the differences between its conclusion and the goal. Use `ext`. Apply the tactic sequence `simp <;> field_simp`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
-
-Use `ext`. Apply the tactic sequence `simp <;> field_simp`. Take `⟨hfin, hsum⟩` from `wcount_of (A := Empty) (C := Subgroup.comap r (Uo k)) (f := fun q : GL (Fin 3) k ⧸ V.J 3 => V.unitaryDoubleCosetIndicator d (q.out⁻¹ * δ * th k 3 q.out)) (n := 0) (fun e => e.elim) (fun e => e.elim) (fun o => by simp [hzero]) (fun o h => absurd (hzero _) h)`. Conclude with `⟨hfin, hsum.trans (by simp)⟩`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem orbital_integral_over_base_group : UnitaryHyperbolicOrbitCount := by
   intro k _ _ _ _ V T _ r hr g₀ ι hι d hd x₁ y₁ z₁ hv

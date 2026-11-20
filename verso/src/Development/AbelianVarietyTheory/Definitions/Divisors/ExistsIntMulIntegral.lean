@@ -19,7 +19,7 @@ def Datum.skew (x y : D.La) : D.F :=
   ((Algebra.traceForm ℚ D.F).toDual (traceForm_nondegenerate ℚ D.F)).symm (D.skewFun x y)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (RingOfIntegers.basis D.F).sum_repr c]`. Simplify using `only [Datum.smulF, map_sum, Finset.sum_smul, LinearMap.sum_apply, map_zsmul, smul_assoc, LinearMap.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Datum.EF_smulF_eq_sum (c : 𝓞 D.F) (x y : D.La) :
     D.EF (D.smulF c x) y = ∑ k, (RingOfIntegers.basis D.F).repr c k *
@@ -29,9 +29,9 @@ theorem Datum.EF_smulF_eq_sum (c : 𝓞 D.F) (x y : D.La) :
     LinearMap.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hc : algebraMap (𝓞 D.F) D.F c = ∑ k, ((RingOfIntegers.basis D.F).repr c k : ℚ) • integralBasis D.F k` using `by conv_lhs => rw [← (RingOfIntegers.basis D.F).sum_repr c]`. Simplify using `only [map_sum, integralBasis_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`. Rewrite using `[hc, map_sum, D.EF_smulF_eq_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Datum.skewFun, Module.Basis.constr_basis, smul_eq_mul]`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Datum.skewFun_apply (x y : D.La) (c : 𝓞 D.F) :
     D.skewFun x y (algebraMap (𝓞 D.F) D.F c) = (D.EF (D.smulF c x) y : ℚ) := by
@@ -47,7 +47,7 @@ theorem Datum.skewFun_apply (x y : D.La) (c : 𝓞 D.F) :
   rw [map_smul, Datum.skewFun, Module.Basis.constr_basis, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← Algebra.traceForm_apply, ← LinearMap.BilinForm.toDual_def (traceForm_nondegenerate ℚ D.F), Datum.skew, LinearEquiv.apply_symm_apply, Datum.skewFun_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Datum.trace_skew_mul (x y : D.La) (c : 𝓞 D.F) :
     Algebra.trace ℚ D.F (D.skew x y * algebraMap (𝓞 D.F) D.F c) = (D.EF (D.smulF c x) y : ℚ) := by
@@ -55,9 +55,9 @@ theorem Datum.trace_skew_mul (x y : D.La) (c : 𝓞 D.F) :
     LinearEquiv.apply_symm_apply, Datum.skewFun_apply]
 
 /- English proof (translation)
-Establish `key : ∀ z : F, Algebra.traceForm ℚ F (s - t) z = 0`. Introduce `z`. Rewrite using `[← (integralBasis F).sum_repr z, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.traceForm_apply, integralBasis_apply, sub_mul, map_sub, h, sub_self, smul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 ((traceForm_nondegenerate ℚ F).1 _ key)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_trace_mul {F : Type} [Field F] [NumberField F] {s t : F}
     (h : ∀ c : 𝓞 F, Algebra.trace ℚ F (s * algebraMap (𝓞 F) F c) = Algebra.trace ℚ F (t * algebraMap (𝓞 F) F c)) :
@@ -70,20 +70,20 @@ theorem eq_of_trace_mul {F : Type} [Field F] [NumberField F] {s t : F}
   exact sub_eq_zero.1 ((traceForm_nondegenerate ℚ F).1 _ key)
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[D.bar_eq, D.bar_eq, IsCMField.complexConj_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Datum.bar_bar (c : 𝓞 D.F) : D.bar (D.bar c) = c := by
   apply RingOfIntegers.ext
   rw [D.bar_eq, D.bar_eq, IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[Datum.smulF, Datum.smulF, D.adj, D.star_F, MulOpposite.unop_op, D.bar_bar]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Datum.EF_smulF_right (c : 𝓞 D.F) (x y : D.La) : D.EF x (D.smulF c y) = D.EF (D.smulF (D.bar c) x) y := by
   rw [Datum.smulF, Datum.smulF, D.adj, D.star_F, MulOpposite.unop_op, D.bar_bar]
 
 /- English proof (translation)
-Establish `h` using `D.alt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, D.alt, zero_add, add_zero] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem Datum.EF_swap (x y : D.La) : D.EF y x = - D.EF x y := by
   have h := D.alt (x + y)
@@ -91,11 +91,11 @@ theorem Datum.EF_swap (x y : D.La) : D.EF y x = - D.EF x y := by
   linarith
 
 /- English proof (translation)
-Apply `eq_of_trace_mul` to reduce the goal to its premises. Introduce `c`. Rewrite using `[D.trace_skew_mul, neg_mul, map_neg]`. Establish `hc : IsCMField.complexConj D.F (algebraMap (𝓞 D.F) D.F (D.bar c)) = algebraMap (𝓞 D.F) D.F c`. Use `D.bar_eq (D.bar c)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[D.bar_bar]`. Conclude with `this.symm`. Establish `h1 : IsCMField.complexConj D.F (D.skew x y) * algebraMap (𝓞 D.F) D.F c = IsCMField.complexConj D.F (D.skew x y * algebraMap (𝓞 D.F) D.F (D.bar c))`. Rewrite using `[map_mul, hc]`. Establish `htr : Algebra.trace ℚ D.F (IsCMField.complexConj D.F (D.skew x y * algebraMap (𝓞 D.F) D.F (D.bar c))) = Algebra.trace ℚ D.F (D.skew x y * algebraMap (𝓞 D.F) D.F (D.bar c))` using `Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj D.F).restrictScalars ℚ) _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, htr, D.trace_skew_mul, D.EF_swap, D.EF_smulF_right]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Datum.skew_swap (x y : D.La) : D.skew y x = - IsCMField.complexConj D.F (D.skew x y) := by
   apply eq_of_trace_mul
@@ -115,7 +115,7 @@ theorem Datum.skew_swap (x y : D.La) : D.skew y x = - IsCMField.complexConj D.F 
   push_cast; ring
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun z : 𝓞 D.F => (z : D.F)) D.tr_eq`. Simplify using `only [map_add, map_intCast] at h`. Rewrite using `[← D.bar_eq]`. Move the coercions through the operations in `at h ⊢`. Take the linear combination `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Datum.conj_ω : IsCMField.complexConj D.F (D.ω : D.F) = D.tr - D.ω := by
   have h := congrArg (fun z : 𝓞 D.F => (z : D.F)) D.tr_eq
@@ -125,9 +125,9 @@ theorem Datum.conj_ω : IsCMField.complexConj D.F (D.ω : D.F) = D.tr - D.ω := 
   linear_combination h
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun z : 𝓞 D.F => (z : D.F)) D.nm_eq`. Establish `h2` using `D.conj_ω`. Rewrite `h2` using `[← D.bar_eq]`. Establish `h3 : (D.ω : D.F) * ((D.bar D.ω : 𝓞 D.F) : D.F) = D.nm`. Simplify `h` using `only [map_mul, map_intCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h3` using `[h2]`. Take the linear combination `-h3`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Datum.ω_sq : (D.ω : D.F) ^ 2 = D.tr * D.ω - D.nm := by
   have h := congrArg (fun z : 𝓞 D.F => (z : D.F)) D.nm_eq
@@ -141,14 +141,14 @@ theorem Datum.ω_sq : (D.ω : D.F) ^ 2 = D.tr * D.ω - D.nm := by
 def Datum.del : D.F := if 0 < D.ρc.im then (D.tr : D.F) - 2 * D.ω else 2 * D.ω - D.tr
 
 /- English proof (translation)
-Unfold `Datum.del`. Apply the tactic sequence `split_ifs <;> simp only [map_sub, map_mul, map_intCast, map_ofNat, D.conj_ω] <;> ring`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Datum.conj_del : IsCMField.complexConj D.F D.del = - D.del := by
   unfold Datum.del
   split_ifs <;> simp only [map_sub, map_mul, map_intCast, map_ofNat, D.conj_ω] <;> ring
 
 /- English proof (translation)
-Unfold `Datum.del`. Use `push_cast`. Apply the tactic sequence `split_ifs <;> linear_combination 4 * D.ω_sq`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Datum.del_sq : D.del ^ 2 = ((D.tr ^ 2 - 4 * D.nm : ℤ) : D.F) := by
   unfold Datum.del
@@ -158,7 +158,7 @@ theorem Datum.del_sq : D.del ^ 2 = ((D.tr ^ 2 - 4 * D.nm : ℤ) : D.F) := by
 def Datum.hermF (x y : D.La) : D.F := D.skew x y / D.del
 
 /- English proof (translation)
-Rewrite using `[Datum.hermF, Datum.hermF, map_div₀, D.conj_del, D.skew_swap x y]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Datum.conj_hermF (x y : D.La) : IsCMField.complexConj D.F (D.hermF x y) = D.hermF y x := by
   rw [Datum.hermF, Datum.hermF, map_div₀, D.conj_del, D.skew_swap x y]
@@ -171,7 +171,7 @@ def Datum.IsFBasis (e : Fin D.n → D.La) : Prop :=
 def Datum.gram (e : Fin D.n → D.La) : Matrix (Fin D.n) (Fin D.n) D.F := Matrix.of fun i j => D.hermF (e i) (e j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Datum.gram, D.conj_hermF]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Datum.gram_herm (e : Fin D.n → D.La) :
     ((D.gram e).map (IsCMField.complexConj D.F : D.F →+* D.F))ᵀ = D.gram e := by
@@ -181,35 +181,35 @@ theorem Datum.gram_herm (e : Fin D.n → D.La) :
 def Datum.Kq : Subfield D.F := (IntermediateField.adjoin ℚ {(D.ω : D.F)}).toSubfield
 
 /- English proof (translation)
-The claim follows from `Algebra.IsIntegral.isIntegral _`.
+A detailed English derivation is pending.
 -/
 theorem Datum.isIntegral_ω : IsIntegral ℚ (D.ω : D.F) := Algebra.IsIntegral.isIntegral _
 
 def Datum.quadQ : ℚ[X] := X ^ 2 - C (D.tr : ℚ) * X + C (D.nm : ℚ)
 
 /- English proof (translation)
-Unfold `Datum.quadQ`. Use `compute_degree!`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Datum.quadQ_natDegree : D.quadQ.natDegree = 2 := by
   unfold Datum.quadQ; compute_degree!
 
 /- English proof (translation)
-Unfold `Datum.quadQ`. Use `monicity!`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Datum.quadQ_monic : D.quadQ.Monic := by
   unfold Datum.quadQ; monicity!
 
 /- English proof (translation)
-Simplify using `only [Datum.quadQ, map_add, map_sub, map_mul, map_pow, aeval_X, aeval_C, map_intCast, D.ω_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Datum.aeval_quadQ : aeval (D.ω : D.F) D.quadQ = 0 := by
   simp only [Datum.quadQ, map_add, map_sub, map_mul, map_pow, aeval_X, aeval_C, map_intCast, D.ω_sq]
   ring
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `D.ω_sq`. Rewrite `h1` using `[h]`. Establish `h2 : q ^ 2 = D.tr * q - D.nm` using `(algebraMap ℚ D.F).injective (by simpa using h1)`. Establish `h3 : ((D.tr : ℚ)) ^ 2 - 4 * D.nm < 0` using `by exact_mod_cast D.disc_neg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg (2 * q - D.tr)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem Datum.ω_ne_rat (q : ℚ) : (D.ω : D.F) ≠ algebraMap ℚ D.F q := by
   intro h
@@ -220,9 +220,9 @@ theorem Datum.ω_ne_rat (q : ℚ) : (D.ω : D.F) ≠ algebraMap ℚ D.F q := by
   nlinarith [sq_nonneg (2 * q - D.tr)]
 
 /- English proof (translation)
-Establish `hdvd` using `minpoly.dvd ℚ _ D.aeval_quadQ`. Establish `hdeg : 2 ≤ (minpoly ℚ (D.ω : D.F)).natDegree`. Assume the negation of the conclusion as `h`. Establish `h1 : (minpoly ℚ (D.ω : D.F)).natDegree = 1`. Use `minpoly.natDegree_pos D.isIntegral_ω` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨q, hq⟩` from `minpoly.natDegree_eq_one_iff.1 h1`. Conclude with `D.ω_ne_rat q hq.symm`. Conclude with `(Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic D.isIntegral_ω) D.quadQ_monic hdvd (by rw [D.quadQ_natDegree]; exact hdeg)).symm`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Datum.minpoly_ω : minpoly ℚ (D.ω : D.F) = D.quadQ := by
   have hdvd := minpoly.dvd ℚ _ D.aeval_quadQ
@@ -236,11 +236,11 @@ theorem Datum.minpoly_ω : minpoly ℚ (D.ω : D.F) = D.quadQ := by
     (by rw [D.quadQ_natDegree]; exact hdeg)).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h1 : Module.finrank ℚ (IntermediateField.adjoin ℚ {(D.ω : D.F)}) = 2`. Rewrite using `[IntermediateField.adjoin.finrank D.isIntegral_ω, D.minpoly_ω, D.quadQ_natDegree]`. Rewrite using `[← h1]`. Conclude with `LinearEquiv.finrank_eq { toFun := fun x => ⟨x.1, x.2⟩, invFun := fun x => ⟨x.1, x.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl, map_add' := fun _ _ => rfl, map_smul' := fun q x => Subtype.ext (by simp [Rat.smul_def]) }`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Use `⟨D.ω, IntermediateField.mem_adjoin_simple_self ℚ _, fun him => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun z => (τ z).re) D.ω_sq`. Simplify using `only [map_pow, map_sub, map_mul, map_intCast, pow_two, Complex.mul_re, him, mul_zero, sub_zero, Complex.sub_re, Complex.intCast_re, Complex.intCast_im, zero_mul] at h`. Establish `h3 : ((D.tr : ℝ)) ^ 2 - 4 * D.nm < 0` using `by exact_mod_cast D.disc_neg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[sq_nonneg (2 * (τ D.ω).re - D.tr)]`.
+A detailed English derivation is pending.
 -/
 theorem Datum.hKq : Module.finrank ℚ D.Kq = 2 ∧ ∀ τ : D.F →+* ℂ, ∃ x ∈ D.Kq, (τ x).im ≠ 0 := by
   constructor
@@ -273,7 +273,7 @@ def Datum.uOf (r : ℚ_[p]) (hr : r ^ 2 - D.tr * r + D.nm = 0) : D.Kq →+* ℚ_
       linear_combination hr)).toRingHom.comp D.kqEquiv
 
 /- English proof (translation)
-Rewrite using `[Datum.uOf, RingHom.comp_apply]`. Conclude with `PowerBasis.lift_gen _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Datum.uOf_ω (r : ℚ_[p]) (hr : r ^ 2 - D.tr * r + D.nm = 0) :
     D.uOf r hr ⟨D.ω, IntermediateField.mem_adjoin_simple_self ℚ _⟩ = r := by
@@ -324,22 +324,22 @@ section Examples
 variable {p : ℕ} [Fact p.Prime] (D : Datum p)
 
 /- English proof (translation)
-The claim follows from `D.conj_hermF x y`.
+A detailed English derivation is pending.
 -/
 example (x y : D.La) : IsCMField.complexConj D.F (D.hermF x y) = D.hermF y x := D.conj_hermF x y
 
 /- English proof (translation)
-The claim follows from `D.skew_swap x x`.
+A detailed English derivation is pending.
 -/
 example (x : D.La) : D.skew x x = - IsCMField.complexConj D.F (D.skew x x) := D.skew_swap x x
 
 /- English proof (translation)
-The claim follows from `D.del_sq`.
+A detailed English derivation is pending.
 -/
 example : D.del ^ 2 = ((D.tr ^ 2 - 4 * D.nm : ℤ) : D.F) := D.del_sq
 
 /- English proof (translation)
-The claim follows from `D.hKq.1`.
+A detailed English derivation is pending.
 -/
 example : Module.finrank ℚ D.Kq = 2 := D.hKq.1
 

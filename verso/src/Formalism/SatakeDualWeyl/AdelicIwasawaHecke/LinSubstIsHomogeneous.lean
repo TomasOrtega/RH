@@ -9,7 +9,7 @@ namespace Formalism.UG.P
 variable {O : Type} [CommRing O] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `h` using `hP.aeval (fun i => ∑ j, C (M i j) * X j) (n := 1) (fun i => IsHomogeneous.sum _ _ _ (fun j _ => isHomogeneous_C_mul_X _ _))`. Simplify `h` using `[linSubst]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem linSubst_isHomogeneous (M : Matrix n n O) {k : ℕ} {P : MvPolynomial n O}
     (hP : P.IsHomogeneous k) : (linSubst O n M P).IsHomogeneous k := by
@@ -18,7 +18,7 @@ theorem linSubst_isHomogeneous (M : Matrix n n O) {k : ℕ} {P : MvPolynomial n 
   simpa [linSubst] using h
 
 /- English proof (translation)
-Introduce `O _ n _ _ k g P hP`. Rewrite `hP`, the goal using `[nabla, mem_homogeneousSubmodule]`. Conclude with `linSubst_isHomogeneous _ hP`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabla_subspace_stable : Formalism.UG.NablaStable := by
   intro O _ n _ _ k g P hP
@@ -26,7 +26,7 @@ theorem nabla_subspace_stable : Formalism.UG.NablaStable := by
   exact linSubst_isHomogeneous _ hP
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_pow_eq_sum_piAntidiag]`. Use `Finset.sum_congr rfl (fun β _ => ?_)` and prove the remaining obligations. Simplify using `only [mul_pow, Finset.prod_mul_distrib, map_prod, map_pow, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pow_sum_expand (a b : n → MvPolynomial n O) (K : ℕ) :
     (∑ j, C (a j) * map C (b j) : MvPolynomial n (MvPolynomial n O)) ^ K
@@ -39,7 +39,7 @@ theorem pow_sum_expand (a b : n → MvPolynomial n O) (K : ℕ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[pow_sum_expand, coeff_sum]`. Use `Finset.sum_congr rfl (fun β _ => ?_)` and prove the remaining obligations. Rewrite using `[coeff_C_mul, coeff_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_pow_sum_expand (a b : n → MvPolynomial n O) (K : ℕ) (α : n →₀ ℕ) :
     coeff α ((∑ j, C (a j) * map C (b j) : MvPolynomial n (MvPolynomial n O)) ^ K)
@@ -51,7 +51,7 @@ theorem coeff_pow_sum_expand (a b : n → MvPolynomial n O) (K : ℕ) (α : n �
   rw [coeff_C_mul, coeff_map]
 
 /- English proof (translation)
-Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_fintype]`. Both sides reduce to the same expression. Introduce `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem prod_X_pow_fun (β : n → ℕ) :
     (∏ j, X j ^ β j : MvPolynomial n O) = monomial (Finsupp.equivFunOnFinite.symm β) 1 := by
@@ -60,11 +60,11 @@ theorem prod_X_pow_fun (β : n → ℕ) :
   · intro i; simp
 
 /- English proof (translation)
-Rewrite using `[coeff_pow_sum_expand, Finset.sum_eq_single (⇑α)]`. Establish `hs : Finsupp.equivFunOnFinite.symm ⇑α = α` using `Finsupp.equivFunOnFinite.symm_apply_apply α`. Rewrite using `[prod_X_pow_fun, hs, coeff_monomial, if_pos rfl, C_1, mul_one, Finsupp.multinomial_of_support_subset (Finset.subset_univ _), ← map_natCast (C : O →+* MvPolynomial n O), C_mul_monomial, mul_one]`. Introduce `β _ hβ`. Rewrite using `[prod_X_pow_fun, coeff_monomial, if_neg, C_0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hβ` to reduce the goal to its premises. Rewrite using `[← h]`. Both sides reduce to the same expression. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Rewrite using `[Finset.mem_piAntidiag]`. Use `⟨?_, fun i _ => Finset.mem_univ i⟩` and prove the remaining obligations. Rewrite using `[← hα, Finsupp.degree_eq_sum]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem weyl_gen_eq (α : n →₀ ℕ) (K : ℕ) (hα : α.degree = K) :
     monomial α (α.multinomial : O) =
@@ -88,7 +88,7 @@ theorem weyl_gen_eq (α : n →₀ ℕ) (K : ℕ) (hα : α.degree = K) :
     rw [← hα, Finsupp.degree_eq_sum]
 
 /- English proof (translation)
-Rewrite using `[map_pow]`. Use `congr 1`. Simplify using `only [map_sum, map_mul, map_C, map_X, polyAct, linSubst, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -107,11 +107,11 @@ theorem map_polyAct_pow (g : GL n O) (K : ℕ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[weyl_gen_eq α K hα]`. Establish `h1 : polyAct O n g (coeff α ((∑ j, C (X j) * map C (X j) : MvPolynomial n (MvPolynomial n O)) ^ K)) = coeff α (map (polyAct O n g).toRingHom ((∑ j, C (X j) * map C (X j) : MvPolynomial n (MvPolynomial n O)) ^ K))` using `(coeff_map _ _ _).symm`. Rewrite using `[h1, map_polyAct_pow, coeff_pow_sum_expand]`. Use `Submodule.sum_mem _ (fun β hβ => ?_)` and prove the remaining obligations. Establish `hdeg : (Finsupp.equivFunOnFinite.symm β).degree = K`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.degree_eq_sum]`. Conclude with `(Finset.mem_piAntidiag.mp hβ).1`. Establish `hm : Nat.multinomial Finset.univ β = (Finsupp.equivFunOnFinite.symm β).multinomial` using `Finsupp.multinomial_of_support_subset (s := Finset.univ) (d := Finsupp.equivFunOnFinite.symm β) (Finset.subset_univ _)`. Rewrite using `[prod_X_pow_fun, hm]`. Generalize the expression as in `coeff (R := O) (σ := n) α _ = c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `he : ((Finsupp.equivFunOnFinite.symm β).multinomial : MvPolynomial n O) * monomial (Finsupp.equivFunOnFinite.symm β) 1 * C c = c • monomial (Finsupp.equivFunOnFinite.symm β) ((Finsupp.equivFunOnFinite.symm β).multinomial : O)`. Rewrite using `[smul_eq_C_mul, ← map_natCast (C : O →+* MvPolynomial n O), C_mul_monomial, mul_one, mul_comm]`. Rewrite using `[he]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hdeg, rfl⟩)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyAct_weyl_gen (g : GL n O) (K : ℕ) (α : n →₀ ℕ) (hα : α.degree = K) :
     polyAct O n g (monomial α (α.multinomial : O)) ∈ weylSub O n K := by
@@ -141,9 +141,7 @@ theorem polyAct_weyl_gen (g : GL n O) (K : ℕ) (α : n →₀ ℕ) (hα : α.de
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hdeg, rfl⟩)
 
 /- English proof (translation)
-Introduce `O _ n _ _ k g P hP`. Establish `hle : weylSub O n k ≤ (weylSub O n k).comap (polyAct O n g).toLinearMap`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `p ⟨α, hα, rfl⟩`. Conclude with `polyAct_weyl_gen g k α hα`.
-
-Conclude with `hle hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem weyl_module_stable : Formalism.UG.WeylStable := by
   intro O _ n _ _ k g P hP

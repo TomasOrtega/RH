@@ -14,13 +14,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff
 
 /- English proof (translation)
-Introduce `p _ R K _ _ _ _ _ _ _ _ G _ _ hG GG θ hθ f hf`. Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `lev` using `fun n m (h : n ≤ m) => GlobalTheory.T.level_structure_divisibility_map R K G hG (p ^ n) (p ^ m) (pow_ne_zero n hp) (pow_dvd_pow p h) (GG.A n) (GG.A m) (θ.level n) (θ.level m) (hθ n) (hθ m) f hf`. Use `choose g hg hu using fun n => lev n n le_rfl`. Use `⟨⟨g, fun n => ?_⟩, fun n B _ _ z z' h => hg n B z z' h, fun g' hg' => PDivGroup.hom_ext fun n => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(lev n (n + 1) n.le_succ).unique (fun B _ _ z z' h => ?_) (fun B _ _ z z' h => ?_)` and prove the remaining obligations. Establish `h1` using `hg (n + 1) B (torsIncl (pow_dvd_pow p n.le_succ) z) z' h`. Establish `h2` using `θ.res n B z (torsIncl (pow_dvd_pow p n.le_succ) z) rfl`. Express the relevant statement in the definitionally equal form `θ.pt (n + 1) B z' = (θ.pt (n + 1) B _).comp _ at h1`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `hz : (z.1 ≫ f) ^ (p ^ n) = 1`. Rewrite using `[← MonObj.pow_comp, z.2, MonObj.one_comp]`. Establish `h1` using `hg n B z ⟨z.1 ≫ f, hz⟩ rfl`. Establish `h2` using `θ.res n B ⟨z.1 ≫ f, hz⟩ z' h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `θ.pt n B _ = (θ.pt n B z).comp _ at h1`. Rewrite `h2` using `[h1]`. Conclude with `h2`. Conclude with `hu n (g'.app n) fun B _ _ z z' h => hg' n B z z' h`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_intertwines : ∀ (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (GG : PDivGroup p R) (θ : TorsionMap G GG), IsModel K θ → ∀ f : G ⟶ G, IsMonHom f → ∃! g : GG ⟶ GG, θ.Intertwines f g := by
   intro p _ R K _ _ _ _ _ _ _ _ G _ _ hG GG θ hθ f hf

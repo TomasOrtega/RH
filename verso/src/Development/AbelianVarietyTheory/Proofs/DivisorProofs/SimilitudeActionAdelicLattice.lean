@@ -28,7 +28,7 @@ abbrev formAf (D : Datum p) : LinearMap.BilinForm (AfP p) (AfP p ⊗[ℚ] VQ D) 
   (D.EF.baseChange ℚ).baseChange (AfP p)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_integralAdeleLimit_compatibleIntSystem p a ha`.
+A detailed English derivation is pending.
 -/
 theorem lim (p : ℕ) [Fact p.Prime] (a : ℕ → ℤ)
     (ha : ∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → (n : ℤ) ∣ a (n * m) - a n) :
@@ -36,26 +36,26 @@ theorem lim (p : ℕ) [Fact p.Prime] (a : ℕ → ℤ)
       ∃ β : AfP p, IsIntAf β ∧ α = (a n : AfP p) + n • β := GlobalTheory.T.exists_integralAdeleLimit_compatibleIntSystem p a ha
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finiteAdeleAwayFromP_eq_zero_of_divisible_coprime p α h`.
+A detailed English derivation is pending.
 -/
 theorem zero (p : ℕ) [Fact p.Prime] (α : AfP p)
     (h : ∀ n : ℕ, 0 < n → n.Coprime p → ∃ β : AfP p, IsIntAf β ∧ α = n • β) : α = 0 := GlobalTheory.T.finiteAdeleAwayFromP_eq_zero_of_divisible_coprime p α h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_inverse_adeleAwayFromP_of_unitCongruences p c u h`.
+A detailed English derivation is pending.
 -/
 theorem unit (p : ℕ) [Fact p.Prime] (c : AfP p) (u : ℕ → ℕ)
     (h : ∀ n : ℕ, 0 < n → n.Coprime p → (u n).Coprime n ∧ ∃ β : AfP p, IsIntAf β ∧ c = (u n : AfP p) + n • β) :
     ∃ c' : AfP p, c * c' = 1 := GlobalTheory.T.exists_inverse_adeleAwayFromP_of_unitCongruences p c u h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.eq_zero_of_divisible_in_lattice p D z h`.
+A detailed English derivation is pending.
 -/
 theorem modZero (D : Datum p) (z : AfP p ⊗[ℚ] VQ D)
     (h : ∀ n : ℕ, 0 < n → n.Coprime p → ∃ w ∈ LaHat D, z = n • w) : z = 0 := GlobalTheory.T.eq_zero_of_divisible_in_lattice p D z h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_adelic_endomorphism_lattice p D g hg`.
+A detailed English derivation is pending.
 -/
 theorem modLim (D : Datum p) (g : ℕ → D.La →+ D.La)
     (hg : ∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → ∀ x, ∃ z, g (n * m) x = g n x + n • z) :
@@ -63,7 +63,7 @@ theorem modLim (D : Datum p) (g : ℕ → D.La →+ D.La)
       ∀ n : ℕ, 0 < n → n.Coprime p → ∀ x, ∃ w ∈ LaHat D, h₀ (inAf D x) = inAf D (g n x) + n • w := GlobalTheory.T.exists_adelic_endomorphism_lattice p D g hg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_compatible_inverseSystem_latticeMaps p D g hg hsurj hinj`.
+A detailed English derivation is pending.
 -/
 theorem invSys (D : Datum p) (g : ℕ → D.La →+ D.La)
     (hg : ∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → ∀ x, ∃ z, g (n * m) x = g n x + n • z)
@@ -75,42 +75,42 @@ theorem invSys (D : Datum p) (g : ℕ → D.La →+ D.La)
       (∀ n, 0 < n → n.Coprime p → ∀ x, ∃ z, g' n (g n x) = x + n • z) := GlobalTheory.T.exists_compatible_inverseSystem_latticeMaps p D g hg hsurj hinj
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_groupAlgebra_action_of_commute_order p D G L A hA`.
+A detailed English derivation is pending.
 -/
 theorem comm {D : Datum p} {G : HTGroup p} (L : Link D G) (A : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D))
     (hA : ∀ b : D.O, A * (actQ D b).baseChange (AfP p) = (actQ D b).baseChange (AfP p) * A) :
     ∃ y, actOn L.rep (AfP p) y = A := GlobalTheory.T.exists_groupAlgebra_action_of_commute_order p D G L A hA
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.adelicGroupAlgebraAction_injective p D G L`.
+A detailed English derivation is pending.
 -/
 theorem inj {D : Datum p} {G : HTGroup p} (L : Link D G) : Function.Injective (actOn L.rep (AfP p)) := GlobalTheory.T.adelicGroupAlgebraAction_injective p D G L
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.eq_zero_of_pairing_vanishes p D z h`.
+A detailed English derivation is pending.
 -/
 theorem nondeg (D : Datum p) (z : AfP p ⊗[ℚ] VQ D) (h : ∀ v, formAf D v z = 0) : z = 0 := GlobalTheory.T.eq_zero_of_pairing_vanishes p D z h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.pairing_adjoint_involution p D G L x v w`.
+A detailed English derivation is pending.
 -/
 theorem adjAf {D : Datum p} {G : HTGroup p} (L : Link D G) (x : AfP p ⊗[ℚ] G.C) (v w : AfP p ⊗[ℚ] VQ D) :
     formAf D (actOn L.rep (AfP p) x v) w =
       formAf D v (actOn L.rep (AfP p) (starT G.star (AfP p) x).unop w) := GlobalTheory.T.pairing_adjoint_involution p D G L x v w
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.lattice_pairing_integral p D _ _ hv hw`.
+A detailed English derivation is pending.
 -/
 theorem formInt (D : Datum p) {v w : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaHat D) (hw : w ∈ LaHat D) :
     IsIntAf (formAf D v w) := GlobalTheory.T.lattice_pairing_integral p D _ _ hv hw
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_one]; exact one_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_one : IsIntAf (1 : AfP p) := fun v => by rw [map_one]; exact one_mem _
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_mul]; exact mul_mem (ha v) (hb v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_mul {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf b) : IsIntAf (a * b) := fun v => by
   rw [map_mul]; exact mul_mem (ha v) (hb v)
@@ -124,29 +124,27 @@ Both sides reduce to the same expression.
 theorem inAf_eq (D : Datum p) (x : D.La) : inAf D x = inAfHom D x := rfl
 
 /- English proof (translation)
-Simplify using `only [inAf_eq, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inAf_add (D : Datum p) (x y : D.La) : inAf D (x + y) = inAf D x + inAf D y := by
   simp only [inAf_eq, map_add]
 
 /- English proof (translation)
-Simplify using `only [inAf_eq, map_nsmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inAf_nsmul (D : Datum p) (n : ℕ) (x : D.La) : inAf D (n • x) = n • inAf D x := by
   simp only [inAf_eq, map_nsmul]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, x, isInt_one, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem inAf_mem (D : Datum p) (x : D.La) : inAf D x ∈ LaHat D :=
   AddSubgroup.subset_closure ⟨1, x, isInt_one, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a', x, ha', rfl⟩` from `hz`. Rewrite using `[TensorProduct.smul_tmul']`. Conclude with `AddSubgroup.subset_closure ⟨a • a', x, isInt_mul ha ha', rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_laHat (D : Datum p) {a : AfP p} (ha : IsIntAf a) {v : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaHat D) :
     a • v ∈ LaHat D := by
@@ -160,13 +158,13 @@ theorem smul_mem_laHat (D : Datum p) {a : AfP p} (ha : IsIntAf a) {v : AfP p ⊗
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx hy => exact add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a m`. Establish `: (1 : AfP p) ⊗ₜ[ℚ] m ∈ Submodule.span (AfP p) (Set.range (inAf D))`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => rw [TensorProduct.tmul_zero]`. Conclude with `zero_mem _`.
+Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [TensorProduct.tmul_add]`. Conclude with `add_mem hx hy`. Consider the case `tmul q x`. Establish `e : (1 : AfP p) ⊗ₜ[ℚ] (q ⊗ₜ[ℤ] x : VQ D) = q • inAf D x`. Rewrite using `[inAf, ← TensorProduct.tmul_smul, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_of_tower_mem _ q (Submodule.subset_span ⟨x, rfl⟩)`. Establish `e : a ⊗ₜ[ℚ] m = a • ((1 : AfP p) ⊗ₜ[ℚ] m)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ a this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_inAf (D : Datum p) : Submodule.span (AfP p) (Set.range (inAf D)) = ⊤ := by
   rw [eq_top_iff]
@@ -188,14 +186,14 @@ theorem span_inAf (D : Datum p) : Submodule.span (AfP p) (Set.range (inAf D)) = 
     rw [e]; exact Submodule.smul_mem _ a this
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext_on (span_inAf D) (by rintro _ ⟨x, rfl⟩; exact h x)`.
+A detailed English derivation is pending.
 -/
 theorem ext_inAf (D : Datum p) {f g : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)}
     (h : ∀ x, f (inAf D x) = g (inAf D x)) : f = g :=
   LinearMap.ext_on (span_inAf D) (by rintro _ ⟨x, rfl⟩; exact h x)
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext_on (span_inAf D) (by rintro _ ⟨x, rfl⟩ exact LinearMap.ext_on (span_inAf D) (by rintro _ ⟨y, rfl⟩; exact h x y))`.
+A detailed English derivation is pending.
 -/
 theorem bilinear_ext_adelic_inclusion (D : Datum p) {f g : AfP p ⊗[ℚ] VQ D →ₗ[AfP p] AfP p ⊗[ℚ] VQ D →ₗ[AfP p] AfP p}
     (h : ∀ x y, f (inAf D x) (inAf D y) = g (inAf D x) (inAf D y)) : f = g :=
@@ -204,18 +202,16 @@ theorem bilinear_ext_adelic_inclusion (D : Datum p) {f g : AfP p ⊗[ℚ] VQ D �
     exact LinearMap.ext_on (span_inAf D) (by rintro _ ⟨y, rfl⟩; exact h x y))
 
 /- English proof (translation)
-Simplify using `only [inAf, actQ, LinearMap.baseChange_tmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem bc_inAf (D : Datum p) (b : D.O) (x : D.La) :
     (actQ D b).baseChange (AfP p) (inAf D x) = inAf D (b • x) := by
   simp only [inAf, actQ, LinearMap.baseChange_tmul]; rfl
 
 /- English proof (translation)
-Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, x, ha, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, b • x, ha, ?_⟩` and prove the remaining obligations. Simplify using `only [actQ, LinearMap.baseChange_tmul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
-
-Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bc_mem (D : Datum p) (b : D.O) {v : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaHat D) :
     (actQ D b).baseChange (AfP p) v ∈ LaHat D := by
@@ -229,19 +225,19 @@ theorem bc_mem (D : Datum p) (b : D.O) {v : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaH
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Simplify using `[formAf, inAf, LinearMap.BilinForm.baseChange_tmul, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_inAf (D : Datum p) (x y : D.La) : formAf D (inAf D x) (inAf D y) = (D.EF x y : AfP p) := by
   simp [formAf, inAf, LinearMap.BilinForm.baseChange_tmul, Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `v hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, x, ha, rfl⟩` from `hz`. Take `⟨w, hw, e⟩` from `h x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ez : a ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] x : VQ D) = a • inAf D x`. Rewrite using `[inAf, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Use `⟨a • w, smul_mem_laHat D ha hw, ?_⟩` and prove the remaining obligations. Rewrite using `[ez, map_smul, e, smul_add, smul_comm]`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨w, hw, e⟩` from `hx`. Take `⟨w', hw', e'⟩` from `hy`. Conclude with `⟨w + w', add_mem hw hw', by rw [map_add, e, e', smul_add]; abel⟩`. Consider the case `neg x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨w, hw, e⟩` from `hx`. Conclude with `⟨-w, neg_mem hw, by rw [map_neg, e, smul_neg, neg_add]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem congOne_of (D : Datum p) (f : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)) (N : ℕ)
     (h : ∀ x, ∃ w ∈ LaHat D, f (inAf D x) = inAf D x + N • w) :
@@ -265,68 +261,66 @@ theorem congOne_of (D : Datum p) (f : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)) 
     exact ⟨-w, neg_mem hw, by rw [map_neg, e, smul_neg, neg_add]⟩
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_add]; exact add_mem (ha v) (hb v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_add {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf b) : IsIntAf (a + b) := fun v => by
   rw [map_add]; exact add_mem (ha v) (hb v)
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_sub]; exact sub_mem (ha v) (hb v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_sub {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf b) : IsIntAf (a - b) := fun v => by
   rw [map_sub]; exact sub_mem (ha v) (hb v)
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_intCast]; exact intCast_mem _ k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_intCast (k : ℤ) : IsIntAf (k : AfP p) := fun v => by rw [map_intCast]; exact intCast_mem _ k
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_nsmul]; exact nsmul_mem (ha v) n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_nsmul {a : AfP p} (ha : IsIntAf a) (n : ℕ) : IsIntAf (n • a) := fun v => by
   rw [map_nsmul]; exact nsmul_mem (ha v) n
 
 /- English proof (translation)
-Take `⟨g', htw', hgg', hg'g⟩` from `invSys D t.g t.tower t.surj t.inj`. Take `⟨h₀, h₀L, h₀c⟩` from `modLim D t.g t.tower`. Take `⟨h₁, h₁L, h₁c⟩` from `modLim D g' htw'`. Establish `inv_of : ∀ (f₀ f₁ : ℕ → D.La →+ D.La) (k₀ k₁ : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)), (∀ v ∈ LaHat D, k₀ v ∈ LaHat D) → (∀ n : ℕ, 0 < n → n.Coprime p → ∀ x, ∃ w ∈ LaHat D, k₀ (inAf D x) = inAf D (f₀ n x) + n • w) → (∀ n : ℕ, 0 < n → n.Coprime p → ∀ x, ∃ w ∈ LaHat D, k₁ (inAf D x) …`. Introduce `f₀ f₁ k₀ k₁ hk₀L hk₀ hk₁ hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ext_inAf D fun x => ?_` and prove the remaining obligations. Use `modZero D ((k₀ * k₁) (inAf D x) - inAf D x) fun n hn hc => by` as an intermediate fact. Take `⟨w, hw, e⟩` from `hk₁ n hn hc x`. Take `⟨w', hw', e'⟩` from `hk₀ n hn hc (f₁ n x)`. Take `⟨z, hz⟩` from `hf n hn hc x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨inAf D z + w' + k₀ w, add_mem (add_mem (inAf_mem D z) hw') (hk₀L w hw), ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, e, map_add, e', hz, inAf_add, inAf_nsmul, map_nsmul]`. Simplify using `only [smul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[Module.End.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 this`. Establish `e01 : h₀ * h₁ = 1` using `inv_of t.g g' h₀ h₁ h₀L h₀c h₁c hgg'`. Establish `e10 : h₁ * h₀ = 1` using `inv_of g' t.g h₁ h₀ h₁L h₁c h₀c hg'g`. Establish `c0 : ∀ b : D.O, h₀ * (actQ D b).baseChange (AfP p) = (actQ D b).baseChange (AfP p) * h₀`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_inAf D fun x => ?_` and prove the remaining obligations. Use `modZero D ((h₀ * (actQ D b).baseChange (AfP p)) (inAf D x) - ((actQ D b).baseChange (AfP p) * h₀) (inAf D x)) fun n hn hc => by` as an intermediate fact. Take `⟨w, hw, e⟩` from `h₀c n hn hc (b • x)`. Take `⟨w', hw', e'⟩` from `h₀c n hn hc x`. Take `⟨z, hz⟩` from `t.lin n hn hc b x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨inAf D z + w - (actQ D b).baseChange (AfP p) w', sub_mem (add_mem (inAf_mem D z) hw) (bc_mem D b hw'), ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, bc_inAf, e, hz, e', map_add, bc_inAf, map_nsmul, inAf_add, inAf_nsmul]`. Simplify using `only [smul_add, smul_sub]`. Normalize the expressions using the abelian group laws. Conclude with `sub_eq_zero.1 this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `c1 : ∀ b : D.O, h₁ * (actQ D b).baseChange (AfP p) = (actQ D b).baseChange (AfP p) * h₁`. Introduce `b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[_root_.mul_assoc h₁, _root_.mul_assoc ((actQ D b).baseChange (AfP p)), e01, _root_.mul_one]`. Use `_ = h₁ * (h₀ * (actQ D b).baseChange (AfP p)) * h₁ := by rw [c0]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `_ = _ := by rw [← _root_.mul_assoc h₁ h₀, e10, _root_.one_mul]`. Take `⟨y, hy⟩` from `comm L h₀ c0`. Take `⟨y', hy'⟩` from `comm L h₁ c1`. Establish `yy' : y * y' = 1` using `inj L (by rw [map_mul, hy, hy', e01, map_one])`. Establish `y'y : y' * y = 1` using `inj L (by rw [map_mul, hy, hy', e10, map_one])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, hcI, hc⟩` from `lim p (fun n => (t.u n : ℤ)) fun n m hn hm hnm => (t.u_tower n m hn hm hnm).symm.dvd`. Take `⟨c', hcc'⟩` from `unit p c t.u fun n hn hnp => ⟨t.u_cop n hn hnp, by`. Take `⟨β, hβ, e⟩` from `hc n hn hnp`. Conclude with `⟨β, hβ, by rw [e, Int.cast_natCast]⟩⟩`. Establish `key : ∀ x x', formAf D (h₀ (inAf D x)) (h₀ (inAf D x')) = c * formAf D (inAf D x) (inAf D x')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x x'`. Use `zero p (formAf D (h₀ (inAf D x)) (h₀ (inAf D x')) - c * formAf D (inAf D x) (inAf D x')) fun n hn hnp => by` as an intermediate fact. Take `⟨w, hw, e⟩` from `h₀c n hn hnp x`. Take `⟨w', hw', e'⟩` from `h₀c n hn hnp x'`. Take `⟨β, hβ, eβ⟩` from `hc n hn hnp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take `⟨k, hk⟩` from `t.sim n hn hnp x x'`. Use `⟨(k : AfP p) + formAf D (inAf D (t.g n x)) w' + formAf D w (inAf D (t.g n x')) + n • formAf D w w' - β * (D.EF x x' : AfP p), ?_, ?_⟩` and prove the remaining obligations. Conclude with `isInt_sub (isInt_add (isInt_add (isInt_add (isInt_intCast k) (formInt D (inAf_mem D _) hw')) (formInt D hw (inAf_mem D _))) (isInt_nsmul (formInt D hw hw') n)) (isInt_mul hβ (isInt_intCast _))`. Establish `hk'` using `congrArg (Int.cast : ℤ → AfP p) hk`. Move the coercions through the operations in `at hk'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[e, e', eβ]`. Simplify using `only [map_add, LinearMap.add_apply, map_nsmul, LinearMap.smul_apply, form_inAf, nsmul_eq_mul]`. Use `push_cast`. Take the linear combination `hk'`. Conclude with `sub_eq_zero.1 this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsim : ∀ v w, formAf D (h₀ v) (h₀ w) = c * formAf D v w`. Establish `e2` using `bilinear_ext_adelic_inclusion D (f := (formAf D).compl₁₂ h₀ h₀) (g := c • formAf D) fun x x' => by`. Simplify using `only [LinearMap.compl₁₂_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `key x x'`. Introduce `v w`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun₂ e2 v w` as an intermediate fact. Simplify using `using this`. Use `set s := (starT G.star (AfP p) y).unop with hsdef`. Establish `hs : s * y = algebraMap (AfP p) _ c`. Apply `inj L` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `LinearMap.ext fun w => sub_eq_zero.1 (nondeg D _ fun v => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, Module.End.mul_apply, hy, AlgHom.commutes, Module.algebraMap_end_apply, hsdef, ← adjAf L y v (h₀ w), hy, hsim, map_smul, smul_eq_mul, sub_self]`. Establish `hys : y * s = algebraMap (AfP p) _ c`. Combine the equalities or inequalities in the displayed calculation. Set `yU : (AfP p ⊗[ℚ] G.C)ˣ` to `⟨y, y', yy', y'y⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `cU : (AfP p)ˣ` to `⟨c, c', hcc', by rw [mul_comm]; exact hcc'⟩`. Establish `hmem : (yU, cU) ∈ UPts G.star (AfP p)` using `mem_uGroup.2 hys`. Set `h : G.GAf` to `⟨(yU, cU), hmem⟩`. Establish `ha0 : L.actG h = h₀` using `hy`. Establish `ha1 : L.actG h⁻¹ = h₁` using `hy'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨h, ⟨?_, ?_⟩, fun n hn hnp x => ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[ha0]`. Use `congOne_of D h₀ N (fun x => ?_) v hv` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `h₀c N hN hNp x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `t.one x`. Conclude with `⟨inAf D z + w, add_mem (inAf_mem D z) hw, by rw [e, hz, inAf_add, inAf_nsmul, smul_add, add_assoc]⟩`. Introduce `v hv`. Rewrite using `[ha1]`. Use `congOne_of D h₁ N (fun x => ?_) v hv` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw, e⟩` from `h₁c N hN hNp x`. Take `⟨z₁, hz₁⟩` from `hgg' N hN hNp x`. Take `⟨z₂, hz₂⟩` from `t.one (g' N x)`. Establish `hx : g' N x = x + N • (z₁ - z₂)`. Rewrite `hz₁` using `[hz₂]`.
-
-Rewrite using `[smul_sub, ← add_sub_assoc, ← hz₁, add_sub_cancel_right]`. Conclude with `⟨inAf D (z₁ - z₂) + w, add_mem (inAf_mem D _) hw, by rw [e, hx, inAf_add, inAf_nsmul, smul_add, add_assoc]⟩`. Rewrite using `[ha0]`. Conclude with `h₀c n hn hnp x`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_KN (p : ℕ) [Fact p.Prime] (D : Datum p) (G : HTGroup p) (L : Link D G) (N : ℕ)
     (hN : 0 < N) (hNp : N.Coprime p) (t : SimSys D N N) :

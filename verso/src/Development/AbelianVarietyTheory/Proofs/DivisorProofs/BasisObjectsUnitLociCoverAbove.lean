@@ -13,27 +13,23 @@ namespace GlobalTheory.CatCoh.Desc.VandermondeTwoBasis
 set_option autoImplicit false in
 open CategoryTheory AlgebraicGeometry KaehlerDifferential in
 /- English proof (translation)
-Establish `hL` using `fun j => hLoc T (c j)`. Use `choose L l hlu hsurj hker huniv using hL`. Establish `hcov` using `fun j => h j (L j) (l j) (hlu j) (huniv j)`. Unfold `_root_.GlobalTheory.CatCoh.Desc.VandermondeTwoBasis.CovBy at hcov`. Use `choose m e he hP using hcov`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose N x hx using fun j k => hsurj j (e j k)`. Set `b' : (Σ j : Fin n, Fin (m j)) → F.obj T` to `fun p => x p.1 p.2 * c p.1`. Establish `hspan' : Ideal.span (Set.range b') = ⊤`. Rewrite using `[← Ideal.radical_eq_top, eq_top_iff, ← hc, Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (1 : F.obj (L j)) ∈ Ideal.span (Set.range (e j))`. Rewrite using `[he j]`. Conclude with `Submodule.mem_top`. Take `⟨r, hr⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 h1`. Use `choose N' s hs using fun k => hsurj j (r k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hq : ∀ k, ∃ q, (∑ k', (N' k' + N j k')) = N' k + N j k + q` using `fun k => Nat.exists_eq_add_of_le (Finset.single_le_sum (f := fun k' => N' k' + N j k') (fun _ _ => Nat.zero_le _) (Finset.mem_univ k))`. Use `choose q hq using hq`. Establish `hterm : ∀ k, _root_.GlobalTheory.CatCoh.mp F (l j) (s k * x j k * c j ^ q k) = (r k • e j k) * _root_.GlobalTheory.CatCoh.mp F (l j) (c j) ^ (∑ k', (N' k' + N j k'))`. Introduce `k`. Rewrite using `[map_mul, map_mul, map_pow, ← hs k, ← hx j k, hq k, pow_add, pow_add, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hz : _root_.GlobalTheory.CatCoh.mp F (l j) (c j ^ (∑ k', (N' k' + N j k')) - ∑ k, s k * x j k * c j ^ q k) = 0`. Rewrite using `[map_sub, map_sum, Finset.sum_congr rfl (fun k _ => hterm k), ← Finset.sum_mul, hr, one_mul, map_pow, sub_self]`. Take `⟨M, hM⟩` from `hker j _ hz`. Use `⟨M + (∑ k', (N' k' + N j k')) + 1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h2 : c j ^ M * c j ^ (∑ k', (N' k' + N j k')) = c j ^ M * ∑ k, s k * x j k * c j ^ q k`. Rewrite using `[← sub_eq_zero, ← mul_sub]`. Conclude with `hM`. Establish `h3 : c j ^ (M + (∑ k', (N' k' + N j k')) + 1) = ∑ k, (c j ^ M * s k * c j ^ q k) * b' ⟨j, k⟩`. Rewrite using `[pow_succ, pow_add, h2, Finset.mul_sum, Finset.sum_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [b']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨⟨j, k⟩, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Unfold `_root_.GlobalTheory.CatCoh.Desc.VandermondeTwoBasis.CovBy`. Set `eqv` to `Fintype.equivFin (Σ j : Fin n, Fin (m j))`. Use `⟨Fintype.card (Σ j : Fin n, Fin (m j)), b' ∘ eqv.symm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_comp, eqv.symm.range_eq_univ, Set.image_univ]`. Conclude with `hspan'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `i S w hw`. Express the relevant statement in the definitionally equal form `IsUnit (_root_.GlobalTheory.CatCoh.mp F w (x (eqv.symm i).1 (eqv.symm i).2 * c (eqv.symm i).1)) at hw`. Generalize the expression as in `eqv.symm i = p at hw`. Take `⟨j, k⟩` from `p`. Rewrite `hw` using `[map_mul, IsUnit.mul_iff]`.
-
-Take `⟨hxw, hcw⟩` from `hw`. Take `⟨v, hv, -⟩` from `huniv j S w hcw`. Apply `hP j k S v` to reduce the goal to its premises. Establish `hfac : _root_.GlobalTheory.CatCoh.mp F w (x j k) = _root_.GlobalTheory.CatCoh.mp F v (e j k) * (_root_.GlobalTheory.CatCoh.mp F v (_root_.GlobalTheory.CatCoh.mp F (l j) (c j))) ^ (N j k)`. Rewrite using `[← hv, _root_.GlobalTheory.CatCoh.mp_comp, ← hx j k, map_mul, map_pow]`.
-
-Rewrite `hxw` using `[hfac, IsUnit.mul_iff]`. Conclude with `hxw.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma covBy_of_covBy_localizations {R : Type} [CommRing R] {C : Type} [Category.{0} C]
     (F : C ⥤ CommAlgCat.{0} R) (P : C → Prop) (hLoc : _root_.GlobalTheory.CatCoh.Desc.HasLoc F) (T : C)
@@ -106,13 +102,13 @@ set_option autoImplicit false in
 open CategoryTheory AlgebraicGeometry KaehlerDifferential in
 
 /- English proof (translation)
-Introduce `R _ C _ C' _ F G _ _ hLoc hbasis hB T n d hd t u`. Apply `covBy_of_covBy_localizations F _ hLoc (G.obj t) (fun j => _root_.GlobalTheory.CatCoh.mp F u (d j)) (_root_.GlobalTheory.CatCoh.Desc.Basis.span_map_eq_top F u hd)` to reduce the goal to its premises. Introduce `j L l hl _`. Take `⟨m, e, he, hfac⟩` from `hbasis L`. Apply `covBy_of_covBy_localizations F _ hLoc L e he` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k L' l' hl' _`. Take `⟨t'', v₁, v₂, -⟩` from `hfac k L' l' hl'`. Take `⟨p, f, hf, hP⟩` from `hB t t'' L' (l ≫ l') v₂`. Unfold `_root_.GlobalTheory.CatCoh.Desc.VandermondeTwoBasis.CovBy`. Use `⟨p, f, hf, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i S'' z hz`. Take `⟨t₃, ⟨c₁⟩, ⟨c₂⟩, ⟨w⟩⟩` from `hP i S'' z hz`. Use `⟨t₃, c₁, ⟨j, ?_⟩, ⟨w⟩⟩` and prove the remaining obligations. Establish `hunit : IsUnit (_root_.GlobalTheory.CatCoh.mp F (u ≫ l ≫ v₁ ≫ G.map c₂) (d j))`. Rewrite using `[_root_.GlobalTheory.CatCoh.mp_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `_root_.GlobalTheory.CatCoh.Desc.isUnit_comp (v₁ ≫ G.map c₂) hl`. Rewrite using `[show u ≫ G.map c₁ = u ≫ l ≫ v₁ ≫ G.map c₂ from Subsingleton.elim _ _]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CatCoh.Desc.VandermondeTwoBasis.covBy_unit_above : ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] {C' : Type} [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C), [Quiver.IsThin C] → [Quiver.IsThin C'] → _root_.GlobalTheory.CatCoh.Desc.HasLoc F → (∀ T : C, ∃ (n : ℕ) (b : Fin n → F.obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : C) (u : T ⟶ S), IsUnit (_root_.GlobalTheory.CatCoh.mp F u (b i)) → ∃ (t : C') (v : T ⟶ G.obj t) (w : G.obj t ⟶ S), v ≫ w = u) → (∀ (t₁ t₂ : C') (S : C), (G.obj t₁ ⟶ S) → (G.obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → F.obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : C) (u : S ⟶ S'), IsUnit (_root_.GlobalTheory.CatCoh.mp F u (b i)) → ∃ t₃, Nonempty (t₁ ⟶ t₃) ∧ Nonempty (t₂ ⟶ t₃) ∧ Nonempty (G.obj t₃ ⟶ S')) → ∀ (T : C) (n : ℕ) (d : Fin n → F.obj T), Ideal.span (Set.range d) = ⊤ → ∀ (t : C') (u : T ⟶ G.obj t), _root_.GlobalTheory.CatCoh.Desc.VandermondeTwoBasis.CovBy F (fun S ↦ ∃ (t' : C') (a : t ⟶ t'), (∃ i, IsUnit (_root_.GlobalTheory.CatCoh.mp F (u ≫ G.map a) (d i))) ∧ Nonempty (G.obj t' ⟶ S)) (G.obj t) := by
   intro R _ C _ C' _ F G _ _ hLoc hbasis hB T n d hd t u

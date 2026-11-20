@@ -10,11 +10,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a i hi bad Ch chOf K0 hK hfin`. Take `⟨K', hK', hprop⟩` from `TC.charts_funKilled I hI hP l Z u a i hi bad Ch chOf K0 hK`. Take `⟨k, hk⟩` from `GlobalTheory.T.chartsReadingStep_moveBasePoints_one_offLevelPrime I hI hP l Z u a i hi bad Ch chOf K' hK'`. Use `⟨fun β => moveChart (K' β) (k β), hk, fun β => ⟨(hprop β).1, ?_⟩⟩` and prove the remaining obligations. Take `⟨hF, -, -, hU, hchi, -, -⟩` from `hprop β`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, hn'⟩` from `hfin β`. Use `⟨n, hn, fun κ => ?_⟩` and prove the remaining obligations. Establish `hm : (k β).1 * κ.1 * (k β).1⁻¹ ∈ (K0 β).lev.U` using `hU ▸ κ.2`. Use `show ((K' β).lev.chi ⟨(k β).1 * κ.1 * (k β).1⁻¹, κ.2⟩) ^ n = 1`. Establish `e` using `hchi ⟨(k β).1 * κ.1 * (k β).1⁻¹, κ.2⟩ ⟨_, hm⟩ rfl`.
-
-Conclude with `e.symm ▸ hn' _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwU.AtTrue.charts_funKilled_one : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 B.host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K0 : Fam I l Z u a i hi bad chOf), I.ReadsK l Z u a i hi chOf K0 → (∀ β, ∃ n : ℕ, 0 < n ∧ ∀ κ, (K0 β).lev.chi κ ^ n = 1) → ∃ Kc : Fam I l Z u a i hi bad chOf, ReadsOne I l Z u a i hi chOf Kc ∧ ∀ β, FunKilled (Kc β).lev (X.piT u) ∧ ∃ n : ℕ, 0 < n ∧ ∀ κ, (Kc β).lev.chi κ ^ n = 1 := by
   intro B X I hI hP l Z u a i hi bad Ch chOf K0 hK hfin

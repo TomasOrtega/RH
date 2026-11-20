@@ -10,27 +10,23 @@ open GlobalTheory.ShFam.Hor GlobalTheory.HermFrame GlobalTheory.Toroidal
 open GlobalTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Cartier GlobalTheory.ProjVar in
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `(Y.Y.an σ).cover y₀`. Use `set ch := (Y.Y.an σ).chart i₀ with hch`. Establish `hP` using `TrueCx.TorHolo.isHolTo_symm ch`. Take `⟨U, t, V, φV, Fr, hU, φU, fr, A, hyU, hφV, hUV, -, hfr⟩` from `CurvFrames.exists_frames_nhds_spread E H Dw l Xo c O β Z F e Y σ (Var.base y₀)`. Establish `h0U : y₀ ∈ ptsIn Y.Y.str σ U` using `CxPts.mem_ptsIn.2 hyU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdc : Continuous (Y.down (σ` using `σ)) := CxPts.continuous_of_comp (m := Y.down (σ := σ)) (f := Y.π) (fun _ => rfl)`. Establish `himg : ∀ T : Set (GlobalTheory.CxPts Y.Y.str σ), ch.e '' (ch.e.source ∩ T) = ch.e.target ∩ ch.e.symm ⁻¹' T` using `fun T => ch.e.image_source_inter_eq' T`. Establish `hΩ : IsOpen (ch.e.target ∩ ch.e.symm ⁻¹' ptsIn Y.Y.str σ U)` using `ch.e.isOpen_inter_preimage_symm (isOpen_ptsIn _)`. Use `choose hv gsel fsel hgad hgfr hfFr hco using hfr`. Set `g : ∀ p : GlobalTheory.CxPts Y.Y.str σ, Y.FrameAt p` to `fun p => if h : p ∈ ptsIn Y.Y.str σ U then gsel _ h else (Y.exists_adapted _).choose.2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg : ∀ p (h : p ∈ ptsIn Y.Y.str σ U), g p = gsel _ h` using `fun p h => dif_pos h`. Set `ev' : ReciprocityTheory.L2DbarEstimates.V Y.Y.dim → (Γ(Y.Y.X, U) →+* ℂ)` to `fun z => if h : ch.e.symm z ∈ ptsIn Y.Y.str σ U then evHom h else evHom h0U`. Establish `hev' : ∀ z (h : ch.e.symm z ∈ ptsIn Y.Y.str σ U), ev' z = evHom h` using `fun z h => dif_pos h`. Establish `hPΩ` using `LocLift.isHolTo_mono hP hΩ Set.inter_subset_left`. Establish `hdev : ∀ r : Γ(Y.Y.X, U), DifferentiableOn ℂ (fun z => ev' z r) (ch.e.target ∩ ch.e.symm ⁻¹' ptsIn Y.Y.str σ U)` using `fun r z hz => (HolLieFrame.differentiableAt_ev hPΩ (show Sp Γ(Y.Y.X, U) ⟶ Y.Y.X from hU.fromSpec) ev' (fun b hb => by rw [hev' b hb.2]; exact (Points.specMap_valMap_fromSpec hU _ hb.2).symm) hz r).differentiableWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ch, ch.e.source ∩ ptsIn Y.Y.str σ U, g, ⟨hi₀, h0U⟩, ch.e.open_source.inter (isOpen_ptsIn _), Set.inter_subset_left, fun p hp => ⟨t, 1, ?_⟩, ?_, fun G S hS hG τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hg p hp.2]`. Conclude with `hgad _ _`. Rewrite using `[himg]`. Use `⟨LocLift.isHolTo_comp_hom hPΩ Y.π, fun τ i => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `HolFrames.holTan_dualMap hΩ (fr.v τ i) (fun z hz => evHom hz.2) (fun r => ⟨fun z => ev' z r, hdev r, fun z hz => by show _ = ev' z r; rw [hev' z hz.2]⟩) (fun z hz => ?_)` and prove the remaining obligations. Use `show (g (ch.e.symm z)).v τ i = _`. Rewrite using `[hg _ hz.2]`. Conclude with `hgfr _ _ τ i`. Rewrite using `[Set.inter_assoc, himg]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : IsOpen (ptsIn Y.Y.str σ U ∩ {p | Y.down p ∈ S})` using `(isOpen_ptsIn _).inter (hS.preimage hdc)`. Use `choose gf hre him hgf using fun (k k' : Fin (Dw.mult τ)) => hG V φV Fr τ k k' hφV`. Set `Mf : Y.Y.pts σ → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ` to `fun q => Matrix.of fun k k' => gf k k' (Y.down q)`. Set `Af : Y.Y.pts σ → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ` to `fun q => Matrix.of fun k k' => ev Y.Y.str σ U (A τ k k') q`. Establish `hM : ∀ k k', (Y.Y.an σ).SmoothOn (ptsIn Y.Y.str σ U ∩ {p | Y.down p ∈ S}) (fun q => (Mf q k k').re) ∧ (Y.Y.an σ).SmoothOn (ptsIn Y.Y.str σ U ∩ {p | Y.down p ∈ S}) (fun q => (Mf q k k').im)` using `fun k k' => ⟨((hre k k').comp_map (hS.inter (isOpen_ptsIn _)) (m := Y.down) (f := Y.π) (fun _ => rfl) (Y.Y.an σ)).mono fun q hq => ⟨hq.2, hUV q hq.1⟩, ((him k k').comp_map (hS.inter (isOpen_ptsIn _)) (m := Y.down) (f := Y.π) (fun _ => rfl) (Y.Y.an σ)).mono fun q hq => ⟨hq.2, hUV …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ k k', (Y.Y.an σ).HoloOn (ptsIn Y.Y.str σ U ∩ {p | Y.down p ∈ S}) (fun q => Af q k k')` using `fun k k' => AnRead.holoOn_ev_of_subset _ (fun _ hq => hq.1)`. Establish `hsm` using `AnRead.smoothOn_conjTranspose_mul_mul (Y.Y.an σ) _ hT Af Mf hA hM`. Establish `hgram : ∀ q ∈ ptsIn Y.Y.str σ U ∩ {p | Y.down p ∈ S}, G.gram (Y.down q) (g q) τ = (Af q)ᴴ * Mf q * Af q`. Introduce `q hq'`. Establish `hq` using `hq'.1`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e1 : (fsel _ hq).co (gsel _ hq) τ = Af q`. Rewrite using `[hco _ hq τ]`. Use extensionality with `k k'`. Simplify using `[Af, ev_eq hq]`. Establish `e2 : G.gram (Y.down q) (fsel _ hq) τ = Mf q`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `k k'`. Conclude with `hgf k k' _ hq'.2 (hv _ hq) (fsel _ hq) (hfFr _ hq)`. Rewrite using `[hg q hq, G.change _ (fsel _ hq) (gsel _ hq) τ, e1, e2]`. Use `⟨ch.e.isOpen_inter_preimage_symm hT, fun k k' => ?_, fun z hz => (G.pos _ _ τ).transpose⟩` and prove the remaining obligations. Establish `h1` using `(hsm k' k).1 i₀`.
-
-Establish `h2` using `(hsm k' k).2 i₀`. Establish `h3` using `(Complex.ofRealCLM.contDiff.comp_contDiffOn h1).add ((Complex.ofRealCLM.contDiff.comp_contDiffOn h2).mul (contDiffOn_const (c := Complex.I)))`. Use `h3.congr fun z hz => ?_` and prove the remaining obligations. Rewrite using `[Matrix.transpose_apply, hgram _ hz.2]`. Simplify using `only [Function.comp_apply, Complex.ofRealCLM_apply]`.
-
-Conclude with `(Complex.re_add_im _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_chart_frames (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) [SmoothOfRelativeDimension Dw.dim (genStr Z)] (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (Y : FlagCpt Z e) (σ : F →+* ℂ) (y₀ : GlobalTheory.CxPts Y.Y.str σ) :
     ∃ (ch : GlobalTheory.AlgChart Y.Y.str σ Y.Y.dim) (U : Set (GlobalTheory.CxPts Y.Y.str σ)) (g : ∀ p : GlobalTheory.CxPts Y.Y.str σ, Y.FrameAt p),
@@ -109,9 +105,9 @@ private theorem exists_chart_frames (E : Type) [Field E] [NumberField E] [IsCMFi
     exact (Complex.re_add_im _).symm
 
 /- English proof (translation)
-Establish `key : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (y₀ : GlobalTheory.CxPts (O.var c).str σ), ∃ (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (U : Set (GlobalTheory.CxPts (O.var c).str σ)) (g : ∀ p : GlobalTheory.CxPts (O.var c).str σ, (O.Φ.C c).Fra …`. Introduce `D O c σ y₀`. Take `⟨ch, U, g, h0, h1, h2, h3, h4, h5⟩` from `exists_chart_frames _ _ _ _ _ _ _ _ _ _ _ (O.Φ.C c) σ y₀`. Use `⟨ch, U, g, h0, h1, h2, h1.inter ?_, h3, h4, h5⟩` and prove the remaining obligations. Conclude with `(isOpen_not_liesIn (genBd O.s.T.Z)).preimage (GlobalTheory.CxPts.continuous_of_comp (m := (O.Φ.C c).down (σ := σ)) (f := (O.Φ.C c).π) (fun _ => rfl))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `OnCore`. Use `intros`. Apply `key` to reduce the goal to its premises.
+Fix the arbitrary inputs and assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_holomorphic_adapted_chart :
     OnCore fun D O x P => ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (y₀ : GlobalTheory.CxPts (O.var c).str σ),

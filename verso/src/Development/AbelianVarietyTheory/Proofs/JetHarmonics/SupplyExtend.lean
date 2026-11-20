@@ -11,19 +11,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.RowAt
 
 /- English proof (translation)
-Introduce `C _ V d _ Pl _ Z n m big rk ga nW ν hZ h`. Take `⟨I, J, fI, fJ, X, F, h1, h2, h3⟩` from `h`. Take `⟨z0, hz0⟩` from `hZ`. Take `⟨q, hq⟩ : ∃ q : Pl → Z, ∀ o : Z, q o.1 = o` from `⟨fun o => if h : o ∈ Z then ⟨o, h⟩ else ⟨z0, hz0⟩, fun o => by simp [o.2]⟩`. Use `⟨fun o => I (q o), fun o => J (q o), fun o => fI (q o), fun o => fJ (q o), fun o => X (q o), fun o => F (q o), fun o => h1 (q o), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `o ho g s`. Establish `e` using `h2 (q o) (Finset.mem_univ _) g s`. Establish `e' : (q o).1 = o` using `congrArg Subtype.val (hq ⟨o, ho⟩)`. Simplify using `only [e'] at e`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `L hA hR hW`. Establish `key` using `h3 (fun o => L o.1) ?_ ?_ ?_`. Rewrite using `[← Finset.sum_coe_sort Z]`. Conclude with `key`. Introduce `o _ p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `hA o.1 o.2 p hp`. Establish `gen : ∀ o' : Z, o' = o → p.1.Attains (X o') (F o') p.2 → p.1.Attains (X o) (F o) p.2`. Introduce `o' ho' h'`. Substitute `ho'` using the available equality. Conclude with `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `gen _ (hq o) e`. Rewrite `hR` using `[← Finset.sum_coe_sort Z]`. Use `le_trans (le_of_eq ?_) hR` and prove the remaining obligations. Use `Finset.sum_congr rfl fun o _ => ?_` and prove the remaining obligations. Simplify using `only [(h1 _).1]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `o _ g a k`. Establish `e` using `hW o.1 o.2 g a k`. Establish `gen : ∀ o' : Z, o' = o → ((L o.1).map fun p => p.1.wt (X o') g a k).sum = ga o.1 g a k → ((L o.1).map fun p => p.1.wt (X o) g a k).sum = ga o.1 g a k`. Introduce `o' ho' h'`. Substitute `ho'` using the available equality.
-
-Conclude with `h'`. Conclude with `gen _ (hq o) e`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem supply_extend :
     ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (Pl : Type) [Fintype Pl] (Z : Finset Pl) (n m : ℕ) (big : Pl → Fin 2 → ZMod d → Prop) (rk : Pl → Fin 2 → ZMod d → ℕ) (ga : Pl → Fin 2 → ZMod d → ℕ → ℕ) (nW : ℕ) (ν : ℝ), Z.Nonempty → Supply V d Z Finset.univ n m (fun o => big o.1) (fun o => rk o.1) (fun o => ga o.1) nW ν → Supply V d Pl Z n m big rk ga nW ν := by

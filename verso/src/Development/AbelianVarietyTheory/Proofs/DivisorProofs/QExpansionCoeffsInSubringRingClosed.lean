@@ -11,9 +11,9 @@ variable {R : Subring ℂ} {N : ℕ}
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 variable {R : Subring ℂ} {N : ℕ} in
 /- English proof (translation)
-Use `⟨fun n => if n = 0 then c else 0, ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.QFam.hasQ_iff]`. Introduce `τ`. Establish `h` using `hasSum_single (f := fun n : ℕ => (if n = 0 then c else 0) * Complex.exp (2 * ↑Real.pi * Complex.I * ↑τ / ↑N) ^ n) 0 (fun m hm => by simp [hm])`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show (if n = 0 then c else 0) ∈ R split_ifs`. Conclude with `hc`. Conclude with `R.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QFam.QAllSubring.const {c : ℂ} (hc : c ∈ R) :
     _root_.GlobalTheory.QFam.QAll (· ∈ R) N fun _ => c := by
@@ -32,9 +32,9 @@ theorem _root_.GlobalTheory.QFam.QAllSubring.const {c : ℂ} (hc : c ∈ R) :
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 variable {R : Subring ℂ} {N : ℕ} in
 /- English proof (translation)
-Take `⟨a, ha, haR⟩` from `hf`. Take `⟨b, hb, hbR⟩` from `hg`. Use `⟨fun n => a n + b n, ?_, fun n => R.add_mem (haR n) (hbR n)⟩` and prove the remaining obligations. Rewrite `ha`, `hb`, the goal using `[_root_.GlobalTheory.QFam.hasQ_iff]`. Introduce `τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `(ha τ).add (hb τ)` using `[add_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.QFam.QAllSubring.add {f g : ℍ → ℂ} (hf : _root_.GlobalTheory.QFam.QAll (· ∈ R) N f)
     (hg : _root_.GlobalTheory.QFam.QAll (· ∈ R) N g) :
@@ -49,9 +49,9 @@ theorem _root_.GlobalTheory.QFam.QAllSubring.add {f g : ℍ → ℂ} (hf : _root
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 variable {R : Subring ℂ} {N : ℕ} in
 /- English proof (translation)
-Take `⟨a, ha, haR⟩` from `hf`. Take `⟨b, hb, hbR⟩` from `hg`. Use `⟨fun n => a n - b n, ?_, fun n => R.sub_mem (haR n) (hbR n)⟩` and prove the remaining obligations. Rewrite `ha`, `hb`, the goal using `[_root_.GlobalTheory.QFam.hasQ_iff]`. Introduce `τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `(ha τ).sub (hb τ)` using `[sub_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.QFam.QAllSubring.sub {f g : ℍ → ℂ} (hf : _root_.GlobalTheory.QFam.QAll (· ∈ R) N f)
     (hg : _root_.GlobalTheory.QFam.QAll (· ∈ R) N g) :
@@ -66,13 +66,13 @@ theorem _root_.GlobalTheory.QFam.QAllSubring.sub {f g : ℍ → ℂ} (hf : _root
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 variable {R : Subring ℂ} {N : ℕ} in
 /- English proof (translation)
-Take `⟨a, ha, haR⟩` from `hf`. Take `⟨b, hb, hbR⟩` from `hg`. Use `⟨fun n => ∑ kl ∈ Finset.HasAntidiagonal.antidiagonal n, a kl.1 * b kl.2, ?_, fun n => R.sum_mem fun kl _ => R.mul_mem (haR kl.1) (hbR kl.2)⟩` and prove the remaining obligations. Rewrite `ha`, `hb`, the goal using `[_root_.GlobalTheory.QFam.hasQ_iff]`. Introduce `τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set q := Complex.exp (2 * ↑Real.pi * Complex.I * ↑τ / ↑N)`. Establish `hsa : Summable fun n => ‖a n * q ^ n‖` using `summable_norm_iff.mpr (ha τ).summable`. Establish `hsb : Summable fun n => ‖b n * q ^ n‖` using `summable_norm_iff.mpr (hb τ).summable`. Establish `hterm : ∀ n, ∑ kl ∈ Finset.HasAntidiagonal.antidiagonal n, a kl.1 * q ^ kl.1 * (b kl.2 * q ^ kl.2) = (∑ kl ∈ Finset.HasAntidiagonal.antidiagonal n, a kl.1 * b kl.2) * q ^ n`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun kl hkl => ?_` and prove the remaining obligations. Rewrite using `[← Finset.HasAntidiagonal.mem_antidiagonal.mp hkl, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs` using `summable_norm_sum_mul_antidiagonal_of_summable_norm hsa hsb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq` using `tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm hsa hsb`. Rewrite `heq` using `[(ha τ).tsum_eq, (hb τ).tsum_eq]`. Rewrite using `[heq]`. Simplify using `only [hterm] at hs ⊢`. Conclude with `(summable_norm_iff.mp hs).hasSum`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QFam.QAllSubring.mul {f g : ℍ → ℂ} (hf : _root_.GlobalTheory.QFam.QAll (· ∈ R) N f)
     (hg : _root_.GlobalTheory.QFam.QAll (· ∈ R) N g) :
@@ -104,7 +104,7 @@ theorem _root_.GlobalTheory.QFam.QAllSubring.mul {f g : ℍ → ℂ} (hf : _root
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 variable {R : Subring ℂ} {N : ℕ} in
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using _root_.GlobalTheory.QFam.QAllSubring.const (N := N) R.one_mem`. Consider the case `succ k ih => simpa [pow_succ] using _root_.GlobalTheory.QFam.QAllSubring.mul ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem _root_.GlobalTheory.QFam.QAllSubring.pow {f : ℍ → ℂ} (k : ℕ)
     (hf : _root_.GlobalTheory.QFam.QAll (· ∈ R) N f) :
@@ -116,7 +116,7 @@ theorem _root_.GlobalTheory.QFam.QAllSubring.pow {f : ℍ → ℂ} (k : ℕ)
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 variable {R : Subring ℂ} {N : ℕ} in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using _root_.GlobalTheory.QFam.QAllSubring.const (N := N) R.zero_mem`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.sum_insert hi]`. Conclude with `_root_.GlobalTheory.QFam.QAllSubring.add (hf i (Finset.mem_insert_self i s)) (ih fun k hk => hf k (Finset.mem_insert_of_mem hk))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QFam.QAllSubring.sum {κ : Type} (s : Finset κ) {f : κ → ℍ → ℂ}
     (hf : ∀ k ∈ s, _root_.GlobalTheory.QFam.QAll (· ∈ R) N (f k)) :
@@ -132,7 +132,7 @@ theorem _root_.GlobalTheory.QFam.QAllSubring.sum {κ : Type} (s : Finset κ) {f 
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 variable {R : Subring ℂ} {N : ℕ} in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using _root_.GlobalTheory.QFam.QAllSubring.const (N := N) R.one_mem`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.prod_insert hi]`. Conclude with `_root_.GlobalTheory.QFam.QAllSubring.mul (hf i (Finset.mem_insert_self i s)) (ih fun k hk => hf k (Finset.mem_insert_of_mem hk))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QFam.QAllSubring.prod {κ : Type} (s : Finset κ) {f : κ → ℍ → ℂ}
     (hf : ∀ k ∈ s, _root_.GlobalTheory.QFam.QAll (· ∈ R) N (f k)) :
@@ -149,7 +149,7 @@ open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 variable {R : Subring ℂ} {N : ℕ} in
 
 /- English proof (translation)
-Introduce `R N _`. Conclude with `⟨fun c hc => _root_.GlobalTheory.QFam.QAllSubring.const hc, fun f g hf hg => _root_.GlobalTheory.QFam.QAllSubring.add hf hg, fun f g hf hg => _root_.GlobalTheory.QFam.QAllSubring.sub hf hg, fun f g hf hg => _root_.GlobalTheory.QFam.QAllSubring.mul hf hg, fun f k hf => _root_.Glob …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.QFam.QAllSubring.ring_closed : ∀ (R : Subring ℂ) (N : ℕ), 0 < N →
     (∀ c ∈ R, _root_.GlobalTheory.QFam.QAll (· ∈ R) N fun _ => c) ∧

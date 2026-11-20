@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.FlatModel.GenPt
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l' Xo' c' W Y p hp hW _ A _ _ ξ hξ K _ ψ hψ`. Use `haveI : IsOpenImmersion Y.j := GlobalTheory.LocM.BaseMdl.isOpenImmersion_j hp hW Y`. Establish `hr : Set.range (spMap ψ ≫ ξ) ⊆ Set.range Y.j`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : x = (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K)` using `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hx` using the available equality. Rewrite using `[bot_map hψ]`. Conclude with `hξ`. Conclude with `⟨IsOpenImmersion.lift Y.j (spMap ψ ≫ ξ) hr, IsOpenImmersion.lift_fac _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift_genericFibre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l' : Level H) (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (p : ℕ), p.Prime → (p : ℂ) ∈ W.nonunits → (p : c'.F) ∈ (c'.V W).nonunits → ∀ (A : Type) [CommRing A] [IsDomain A] (ξ : Sp A ⟶ Y.X), ξ (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum A) ∈ Set.range Y.j → ∀ (K : Type) [Field K] (ψ : A →+* K), Function.Injective ψ → ∃ yy : Sp K ⟶ Xo'.XF c', yy ≫ Y.j = spMap ψ ≫ ξ := by
   intro E _ _ _ H Dw l' Xo' c' W Y p hp hW _ A _ _ ξ hξ K _ ψ hψ

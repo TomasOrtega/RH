@@ -1,23 +1,23 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `k inst n Q h0 hmono hunion hprime`. Establish `key : ∀ I : Ideal (MvPolynomial (Fin n) k), Q {c : Fin n → k | ∀ p ∈ I, MvPolynomial.eval c p = 0}`. Introduce `I`. Proceed by induction on `I using IsNoetherian.induction with`. Consider the case `_ I ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `step : ∀ g : MvPolynomial (Fin n) k, g ∉ I → Q {c : Fin n → k | (∀ p ∈ I, MvPolynomial.eval c p = 0) ∧ MvPolynomial.eval c g = 0}`. Introduce `g hg`. Establish `hlt : I < I ⊔ Ideal.span {g}`. Use `lt_of_le_of_ne le_sup_left ?_` and prove the remaining obligations. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hg` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self g)`. Use `hmono _ _ ?_ (ih _ hlt)` and prove the remaining obligations. Introduce and unpack `c ⟨hc, hcg⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hle : I ⊔ Ideal.span {g} ≤ RingHom.ker (MvPolynomial.eval c)`. Use `sup_le (fun p hp => (RingHom.mem_ker).2 (hc p hp)) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `(RingHom.mem_ker).2 hcg`. Conclude with `fun p hp => (RingHom.mem_ker).1 (hle hp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hP : Ideal.IsPrime I`. Take `⟨g, hg, hQ⟩` from `hprime I hP`. Use `hmono _ _ ?_ (hunion _ _ hQ (step g hg))` and prove the remaining obligations. Introduce `c hc`. Distinguish the cases in `hcg : MvPolynomial.eval c g = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative.
 
-Conclude with `Or.inr ⟨hc, hcg⟩`. Conclude with `Or.inl ⟨hc, hcg⟩`. Break down `Ideal.not_isPrime_iff.1 hP with htop | ⟨x, hx, y, hy, hxy⟩` into its components or cases. Use `hmono _ _ ?_ h0` and prove the remaining obligations. Introduce `c hc`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hc 1 (htop ▸ Submodule.mem_top)`. Simplify using `at h1`. Use `hmono _ _ ?_ (hunion _ _ (step x hx) (step y hy))` and prove the remaining obligations. Introduce `c hc`. Establish `h1` using `hc _ hxy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h1` using `[map_mul]`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `Or.inl ⟨hc, h⟩`. Conclude with `Or.inr ⟨hc, h⟩`. Use `hmono _ _ ?_ (key ⊥)` and prove the remaining obligations.
+Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c _ p hp`. Rewrite using `[(Ideal.mem_bot).1 hp, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ZariskiNoetherianInduction.noetherian_induction_zariski :
     ∀ (k : Type) [inst : Field k] (n : ℕ) (Q : Set (Fin n → k) → Prop),

@@ -18,13 +18,13 @@ namespace GlobalTheory.ScalW
 open Formalism.L2.SG.Pf.unitaryCongruence in
 
 /- English proof (translation)
-Introduce `D X u x y`. Establish `hT : (D.mem u).A.T ≠ 0` using `(D.mem u).A.T_prime.ne_zero`. Establish `hsum : ∀ (w : VA X.B.I) (g : Fin D.R.rS → VA X.B.I), hA X.B.I w (∑ a, g a) = ∑ a, hA X.B.I w (g a)` using `fun w g => map_sum (hL X.B.I w) g Finset.univ`. Establish `hd : ∀ c, divN X.B.I (D.mem u).A.T c = divN X.B.I (D.mem u).A.T 1 * c`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `divN`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : sigA X.B.I (divN X.B.I (D.mem u).A.T 1) = divN X.B.I (D.mem u).A.T 1`. Establish `h2` using `congrArg (sigA X.B.I) (gmul_divN X.B.I _ hT 1)`. Rewrite `h2` using `[map_mul, map_natCast, map_one]`.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← divN_gmul X.B.I _ hT (sigA X.B.I _), h2]`. Rewrite using `[hA_symm X.B.I y]`. Simplify using `only [prj, hA_sub_right, hA_add_right, hA_smul_right, hsum, map_sub, map_add, map_sum, map_mul]`. Rewrite using `[hd (hA X.B.I (zV X u) x), hd (hA X.B.I (zV X u) y), map_mul, hs]`. Simplify using `only [← hA_symm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_comm (∑ a, _ * hA X.B.I x (eV X a))]`. Simplify using `only [mul_comm (hA X.B.I x _)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prj_selfAdjoint : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (x y : VA X.B.I),
     hA X.B.I (GlobalTheory.ScalW.prj X u x) y = hA X.B.I x (GlobalTheory.ScalW.prj X u y) := by

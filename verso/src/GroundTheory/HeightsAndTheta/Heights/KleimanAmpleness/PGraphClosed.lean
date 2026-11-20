@@ -17,7 +17,7 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Rewrite `hz` using `[SubSystem.secs, Submodule.mem_iInf]`. Conclude with `hz I`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sub_of_mem_secs' {F : SubSystem S x Ω} {z : Ω} (hz : z ∈ F.secs) (I : Chart x) :
     z ∈ F.sub I := by
@@ -25,27 +25,21 @@ theorem mem_sub_of_mem_secs' {F : SubSystem S x Ω} {z : Ω} (hz : z ∈ F.secs)
   exact hz I
 
 /- English proof (translation)
-Establish `hloc : ∀ I : Chart x, ∃ F : Finset Ω, (F : Set Ω) ⊆ G.toSubSystem.secs ∧ G.sub I ≤ Submodule.span (chartRing S x I) (F : Set Ω)`. Introduce `I`. Take `⟨t, ht⟩` from `G.fg I`. Establish `hy : ∀ y : Ω, ∃ T : Finset Ω, (T : Set Ω) ⊆ G.toSubSystem.secs ∧ (y ∈ G.sub I → y ∈ Submodule.span (chartRing S x I) (T : Set Ω))`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hyI : y ∈ G.sub I`. Establish `: y ∈ Submodule.span (chartRing S x I) (G.toSubSystem.secs : Set Ω)`. Rewrite using `[hG I]`. Conclude with `hyI`. Take `⟨T, hT, hyT⟩` from `Submodule.mem_span_finite_of_mem_span this`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨T, hT, fun _ => hyT⟩`. Conclude with `⟨∅, by simp, fun h => absurd h hyI⟩`. Use `choose T hT hTy using hy`. Use `⟨t.biUnion T, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, -, hzy⟩` from `Finset.mem_biUnion.mp hz`. Conclude with `hT y hzy`. Rewrite using `[← ht, Submodule.span_le]`. Introduce `y hyt`. Establish `hyI : y ∈ G.sub I` using `by rw [← ht]; exact Submodule.subset_span hyt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Submodule.span_mono (by`. Introduce `z hz`. Conclude with `Finset.mem_coe.mpr (Finset.mem_biUnion.mpr ⟨y, hyt, hz⟩)) (hTy y hyI)`. Use `choose F hF hFI using hloc`. Use `set A := Finset.univ.biUnion F`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Set `g : Fin (A.card + 1) → Ω` to `Fin.cons 0 fun i => (A.equivFin.symm i : Ω)`. Establish `hrange : Set.range g = insert 0 (A : Set Ω)`. Simplify using `only [g, Fin.range_cons]`. Use `congr 1`. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(A.equivFin.symm i).2`. Introduce `hy; exact ⟨A.equivFin ⟨y, hy⟩, by simp⟩`. Establish `hA : (A : Set Ω) ⊆ G.toSubSystem.secs`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `z hz`. Take `⟨I, -, hzI⟩` from `Finset.mem_biUnion.mp hz`. Conclude with `hF I hzI`. Use `⟨A.card, g, fun a => ?_, fun I => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Establish `: g a ∈ insert 0 (A : Set Ω)` using `hrange ▸ Set.mem_range_self a`.
-
-Break down `this with h0 | hA'` into its components or cases. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Conclude with `hA hA'`. Rewrite using `[Submodule.span_le, hrange]`.
-
-Introduce and unpack `z (rfl | hz)`. Conclude with `Submodule.zero_mem _`. Conclude with `mem_sub_of_mem_secs' (hA hz) I`. Use `(hFI I).trans (Submodule.span_mono ?_)` and prove the remaining obligations. Rewrite using `[hrange]`.
-
-Introduce `z hz`. Conclude with `Set.mem_insert_of_mem _ (Finset.mem_coe.mpr (Finset.mem_biUnion.mpr ⟨I, Finset.mem_univ I, Finset.mem_coe.mp hz⟩))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_fin_generators (G : LineBundle S x) (hG : G.toSubSystem.Generated) :
     ∃ (r : ℕ) (g : Fin (r + 1) → Ω), (∀ a, g a ∈ G.toSubSystem.secs) ∧
@@ -105,16 +99,16 @@ theorem exists_fin_generators (G : LineBundle S x) (hG : G.toSubSystem.Generated
       (Finset.mem_biUnion.mpr ⟨I, Finset.mem_univ I, Finset.mem_coe.mp hz⟩))
 
 /- English proof (translation)
-Rewrite using `[SubSystem.pow_sub, SubSystem.twist_sub_eq_mul_of_line]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_pow_sub (G H : SubSystem S x Ω) (n : ℕ) (I : Chart x) :
     ((G.twist H).pow n).sub I = (H.sub I * G.sub I) ^ n := by
   rw [SubSystem.pow_sub, SubSystem.twist_sub_eq_mul_of_line]
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hu`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite `hn`, the goal using `[one_mul]`. Rewrite `hn` using `[SubSystem.pow_sub]`. Rewrite using `[twist_pow_sub, mul_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: u * (h * g) ^ n = (u * h ^ n) * g ^ n` using `by ring`. Rewrite using `[this]`. Conclude with `Submodule.mul_mem_mul hn (Submodule.pow_mem_pow _ hg n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ampleChart_twist (G H : SubSystem S x Ω) {h g : Ω} (I : Chart x) (hg : g ∈ G.sub I) {u : Ω}
     (hu : u ∈ ampleChart H 1 h I) : u ∈ ampleChart (G.twist H) 1 (h * g) I := by
@@ -128,7 +122,7 @@ theorem ampleChart_twist (G H : SubSystem S x Ω) {h g : Ω} (I : Chart x) (hg :
   exact Submodule.mul_mem_mul hn (Submodule.pow_mem_pow _ hg n)
 
 /- English proof (translation)
-The claim follows from `Set.mem_iInter.mpr fun I => ampleChart_twist G H I (mem_sub_of_mem_secs' hg I) (Set.mem_iInter.mp hu I)`.
+A detailed English derivation is pending.
 -/
 theorem ampleRing_twist (G H : SubSystem S x Ω) {h g : Ω} (hg : g ∈ G.secs) {u : Ω}
     (hu : u ∈ ampleRing H 1 h) : u ∈ ampleRing (G.twist H) 1 (h * g) :=
@@ -136,45 +130,39 @@ theorem ampleRing_twist (G H : SubSystem S x Ω) {h g : Ω} (hg : g ∈ G.secs) 
     ampleChart_twist G H I (mem_sub_of_mem_secs' hg I) (Set.mem_iInter.mp hu I)
 
 /- English proof (translation)
-Use `set p := h l₀ * g b₀ with hp`. Establish `hl₀ : h l₀ ≠ 0` using `left_ne_zero_of_mul hne`. Establish `hb₀ : g b₀ ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hB : ampleRing H 1 (h l₀) ⊆ T`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy'` using `hh.closed l₀ hl₀ hy`. Use `(Algebra.adjoin_le ?_ : ampleBase (S := S) h l₀ ≤ T) hy'` and prove the remaining obligations. Introduce and unpack `_ ⟨m, rfl⟩`. Establish `: h m / h l₀ = h m * g b₀ / p` using `by rw [hp, mul_div_mul_right _ _ hb₀]`. Use `show h m / h l₀ ∈ T`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hT b₀ m`. Establish `hPn : ∀ n : ℕ, ∀ t ∈ (Set.range h * Set.range g) ^ n, t / p ^ n ∈ T`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `zero`. Introduce `t ht`. Rewrite `ht` using `[pow_zero, Set.mem_one]`. Rewrite using `[ht, pow_zero, div_one]`. Conclude with `one_mem T`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Consider the case `succ n ih`. Introduce `t ht`. Rewrite `ht` using `[pow_succ, Set.mem_mul]`. Take `⟨t₁, ht₁, t₂, ht₂, rfl⟩` from `ht`. Take `⟨_, ⟨m, rfl⟩, _, ⟨b, rfl⟩, rfl⟩` from `Set.mem_mul.mp ht₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: t₁ * (h m * g b) / p ^ (n + 1) = (t₁ / p ^ n) * (h m * g b / p)`. Rewrite using `[pow_succ, mul_div_mul_comm]`. Rewrite using `[this]`. Conclude with `mul_mem (ih t₁ ht₁) (hT b m)`. Take `⟨n, a, b, J, ha, hb, hsum, hJ⟩` from `hh.affine l₀ hl₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Establish `hloc : ∀ k, ∃ e : ℕ, b k ^ e * y ∈ T`. Introduce `k`. Take `⟨n', hn'⟩` from `Set.mem_iInter.mp hy (J k)`. Rewrite `hn'` using `[one_mul, twist_pow_sub, ← hgI (J k), ← hh.generates (J k), Submodule.span_mul_span, Submodule.span_pow]`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `hbT : b k ∈ T` using `hB (hb k)`. It suffices to establish `hQ : ∀ z ∈ Submodule.span (chartRing S x (J k)) ((Set.range h * Set.range g) ^ n'), ∃ e : ℕ, b k ^ e * (z / p ^ n') ∈ T by`. Take `⟨e, he⟩` from `hQ _ hn'`. Rewrite `he` using `[mul_div_cancel_right₀ _ (pow_ne_zero _ hne)]`. Conclude with `⟨e, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem t ht => exact ⟨0, by rw [pow_zero, one_mul]; exact hPn n' t ht⟩`. Consider the case `zero => exact ⟨0, by rw [zero_div, mul_zero]; exact zero_mem T⟩`. Consider the case `add z₁ z₂ _ _ h₁ h₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e₁, he₁⟩` from `h₁`. Take `⟨e₂, he₂⟩` from `h₂`. Use `⟨e₁ + e₂, ?_⟩` and prove the remaining obligations. Establish `: b k ^ (e₁ + e₂) * ((z₁ + z₂) / p ^ n') = b k ^ e₂ * (b k ^ e₁ * (z₁ / p ^ n')) + b k ^ e₁ * (b k ^ e₂ * (z₂ / p ^ n'))`. Rewrite using `[pow_add, add_div]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `add_mem (mul_mem (pow_mem hbT _) he₁) (mul_mem (pow_mem hbT _) he₂)`. Consider the case `smul c z _ hz`. Take `⟨e₂, he₂⟩` from `hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e₁, he₁⟩` from `exists_pow_mul_mem_ampleRing H (h l₀) (b k) (J k) (hb k) (hJ k) c.2`. Use `⟨e₁ + e₂, ?_⟩` and prove the remaining obligations. Establish `: b k ^ (e₁ + e₂) * (c • z / p ^ n') = (b k ^ e₁ * c) * (b k ^ e₂ * (z / p ^ n'))`. Rewrite using `[chartRing_smul_def, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[this]`. Conclude with `mul_mem (hB he₁) he₂`. Use `choose e he using hloc`. Set `bT : Fin n → T` to `fun k => ⟨b k, hB (hb k)⟩`. Establish `htop : Ideal.span (Set.range bT) = ⊤`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (1 : T) = ∑ k, (⟨a k, hB (ha k)⟩ : T) * bT k`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [bT]`. Use `push_cast`.
+Check the elementary cases of the proposition. Reduce the argument to an intermediate assertion. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `hsum.symm`. Rewrite using `[h1]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨k, rfl⟩)`. Use `set E := ∑ k, e k`. Establish `h1 : (1 : T) ∈ Ideal.span ((fun z : T => z ^ E) '' Set.range bT)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ideal.span_pow_eq_top _ htop E]`. Discharge the goal by the elementary cases of `trivial`. It suffices to establish `hP : ∀ t ∈ Ideal.span ((fun z : T => z ^ E) '' Set.range bT), (t : Ω) * y ∈ T by`. Simplify using `using hP 1 h1`. Introduce `t ht`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨_, ⟨k, rfl⟩, rfl⟩` from `hz`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (Finset.single_le_sum (fun k _ => Nat.zero_le (e k)) (Finset.mem_univ k))`. Establish `: ((bT k ^ E : T) : Ω) * y = b k ^ d * (b k ^ e k * y)`.
-
-Simplify using `only [SubmonoidClass.coe_pow, bT]`. Rewrite using `[show E = e k + d from hd, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `mul_mem (pow_mem (hB (hb k)) _) (he k)`.
-
-Consider the case `zero => simp`. Consider the case `add t₁ t₂ _ _ h₁ h₂`. Rewrite using `[Subalgebra.coe_add, add_mul]`. Conclude with `add_mem h₁ h₂`. Consider the case `smul c t _ ht`.
-
-Rewrite using `[smul_eq_mul, Subalgebra.coe_mul, mul_assoc]`. Conclude with `mul_mem c.2 ht`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ampleRing_twist_subset (G H : SubSystem S x Ω) {r₁ r₂ : ℕ} (g : Fin (r₁ + 1) → Ω)
     (h : Fin (r₂ + 1) → Ω)
@@ -282,21 +270,21 @@ end GraphClosedAlt
 open GraphClosedAlt in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x G H hG hH`. Take `⟨r₁, g, hg, hgI⟩` from `exists_fin_generators G hG`. Take `⟨r₂, h, hh⟩` from `hH`. Establish `hr : (r₁ + 1) * (r₂ + 1) = (r₁ * r₂ + r₁ + r₂) + 1` using `by ring`. Set `E : Fin (r₁ + 1) × Fin (r₂ + 1) ≃ Fin (r₁ * r₂ + r₁ + r₂ + 1)` to `finProdFinEquiv.trans (finCongr hr)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `pr : Fin (r₁ + 1) × Fin (r₂ + 1) → Ω` to `fun q => h q.2 * g q.1`. Set `s : Fin (r₁ * r₂ + r₁ + r₂ + 1) → Ω` to `fun j => pr (E.symm j)`. Establish `hs : ∀ j, s j = h (E.symm j).2 * g (E.symm j).1` using `fun j => rfl`. Establish `hsE : ∀ b m, s (E (b, m)) = h m * g b` using `fun b m => by simp [s, pr]`. Establish `hrange : Set.range s = Set.range h * Set.range g`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Conclude with `Set.mem_mul.mpr ⟨_, ⟨(E.symm j).2, rfl⟩, _, ⟨(E.symm j).1, rfl⟩, (hs j).symm⟩`. Introduce `hz`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨m, rfl⟩, _, ⟨b, rfl⟩, rfl⟩` from `Set.mem_mul.mp hz`. Conclude with `⟨E (b, m), hsE b m⟩`. Use `⟨r₁ * r₂ + r₁ + r₂, s, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Rewrite using `[hs, SubSystem.secs, Submodule.mem_iInf]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `I`. Conclude with `Submodule.subset_span ⟨h (E.symm j).2, mem_sub_of_mem_secs' (hh.mem_secs _) I, g (E.symm j).1, mem_sub_of_mem_secs' (hg _) I, (smul_eq_mul _ _).symm⟩`. Introduce `I`. Rewrite using `[hrange, ← Submodule.span_mul_span, hh.generates I, hgI I, SubSystem.twist_sub_eq_mul_of_line]`. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hj`, the goal using `[hs]`. Use `ampleRing_twist_subset G.toSubSystem H.toSubSystem g h hgI hh hj _ fun b m => ?_` and prove the remaining obligations. Establish `: h m * g b / (h (E.symm j).2 * g (E.symm j).1) = s (E (b, m)) / s j`. Rewrite using `[hsE, hs]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Algebra.subset_adjoin ⟨E (b, m), rfl⟩`. Introduce `j hj`. Rewrite `hj`, the goal using `[hs]`. Establish `hl : h (E.symm j).2 ≠ 0` using `left_ne_zero_of_mul hj`. Take `⟨n, a, b, J, ha, hb, hsum, hJ⟩` from `hh.affine _ hl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨n, a, b, J, fun q => ampleRing_twist _ _ (hg _) (ha q), fun q => ampleRing_twist _ _ (hg _) (hb q), hsum, fun q I => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `hJ q I`. Conclude with `⟨e, ampleChart_twist _ _ I (mem_sub_of_mem_secs' (hg _) I) he⟩`.
+A detailed English derivation is pending.
 -/
 theorem GraphClosed.proof : GraphClosed.Statement.{u, w} := by
   intro k _ Ω _ _ N x G H hG hH

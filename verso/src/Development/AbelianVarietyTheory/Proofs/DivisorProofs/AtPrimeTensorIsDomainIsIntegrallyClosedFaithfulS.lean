@@ -4,19 +4,17 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R A _ _ _ _ _ _ _ p _`. Use `set Rp := Localization.AtPrime p`. Use `set B := TensorProduct R Rp A`. Use `letI : Algebra A B := Algebra.TensorProduct.rightAlgebra`. Establish `hpush : Algebra.IsPushout R A Rp B` using `TensorProduct.isPushout'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hloc : IsLocalization (Algebra.algebraMapSubmonoid A p.primeCompl) B := (Algebra.isLocalization_iff_isPushout p.primeCompl Rp).mpr hpush`. Establish `hinj : Function.Injective (algebraMap R A)` using `FaithfulSMul.algebraMap_injective R A`. Establish `hle : Algebra.algebraMapSubmonoid A p.primeCompl ≤ nonZeroDivisors A`. Introduce and unpack `_ ⟨r, hr, rfl⟩`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hr` to reduce the goal to its premises. Establish `: r = 0` using `hinj (by simpa using h0)`. Rewrite using `[this]`. Conclude with `p.zero_mem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hdom : IsDomain B := IsLocalization.isDomain_of_le_nonZeroDivisors B hle`. Use `⟨hdom, isIntegrallyClosed_of_isLocalization B _ hle, ?_⟩` and prove the remaining obligations. Establish `hAB : Function.Injective (algebraMap A B)` using `IsLocalization.injective B hle`. Use `(faithfulSMul_iff_algebraMap_injective Rp B).mpr ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective p.primeCompl x`. Establish `hcomp : ∀ r : R, algebraMap Rp B (algebraMap R Rp r) = algebraMap A B (algebraMap R A r)`. Introduce `r`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : algebraMap Rp B (algebraMap R Rp r) = 0`. Use `congrArg (algebraMap Rp B) (IsLocalization.mk'_spec Rp r s)` as an intermediate fact. Rewrite `this` using `[map_mul, hx, zero_mul]`. Conclude with `this.symm`. Rewrite `h1` using `[hcomp]`.
-
-Establish `hr : r = 0` using `hinj ((hAB (h1.trans (map_zero _).symm)).trans (map_zero _).symm)`. Simplify using `[hr]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem atPrime_tensor_isDomain_isIntegrallyClosed_faithfulSMul : ∀ (R A : Type) [CommRing R] [IsDomain R] [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Algebra R A] [FaithfulSMul R A] (p : Ideal R) [p.IsPrime], IsDomain (TensorProduct R (Localization.AtPrime p) A) ∧ IsIntegrallyClosed (TensorProduct R (Localization.AtPrime p) A) ∧ FaithfulSMul (Localization.AtPrime p) (TensorProduct R (Localization.AtPrime p) A) := by
   intro R A _ _ _ _ _ _ _ p _

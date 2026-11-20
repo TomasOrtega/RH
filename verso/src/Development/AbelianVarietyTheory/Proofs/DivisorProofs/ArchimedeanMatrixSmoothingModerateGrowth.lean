@@ -8,7 +8,7 @@ open scoped FourierTransform ContDiff
 namespace GlobalTheory.JSW.MirCinf
 
 /- English proof (translation)
-The claim follows from `isModGrowthInf_smoothMatInf`.
+A detailed English derivation is pending.
 -/
 theorem smoothMatInf_keeps_modGrowth : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ)
     (α : (Fin n → Fin n → Cinf E) → ℂ), Continuous α → HasCompactSupport α →

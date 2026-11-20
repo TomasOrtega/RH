@@ -9,11 +9,11 @@ noncomputable section
 namespace PositivityTheory.Xgp.c_sqsys
 
 /- English proof (translation)
-Establish `hle : ¬ J.map (rename inrV : MRing ι' →ₐ[ℤ] MRing (Sum.elim ι ι')).toRingHom ≤ Pt`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `h`. Conclude with `hn (h2 ▸ h)`. Take `⟨g, a, hg, hgP, hv⟩` from `GroundTheory.Heights₂.Heights.Inter.PullbackEliminationOfVariable.proof K ι (K ⊕ K') (Sum.elim ι ι') Sum.inl inlV Pt (J.map (rename inrV : MRing ι' →ₐ[ℤ] MRing (Sum.elim ι ι')).toRingHom) n isBlockMap_inl hPt (by rw [h1]; exact hP) (isMultiHomogIdeal_map isBlockMap_inr hJ) hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, a, hg, h1 ▸ hgP, fun z w hzJ hzt => ?_⟩` and prove the remaining obligations. Use `hv (pairV w z) hzt (mem_mcPts_map hzt.1 fun f hf => by` as an intermediate fact. Establish `e : (fun p => pairV w z (inrV p)) = z` using `funext fun p => pairV_inr w z p`. Rewrite using `[e]`. Conclude with `hzJ.2 f hf)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : (fun p => pairV w z (inlV p)) = w` using `funext fun p => pairV_inl w z p`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem elim_gen {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' : K' → Type} [∀ k, Fintype (ι k)]
     [∀ k, Fintype (ι' k)] {P : Ideal (MRing ι)} {P' : Ideal (MRing ι')} {n : ℕ} (Pt : Ideal (MRing (Sum.elim ι ι')))
@@ -37,11 +37,11 @@ theorem elim_gen {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' :
   rwa [e] at this
 
 /- English proof (translation)
-Establish `hJ : IsMultiHomogIdeal (Ideal.span {G})` using `⟨{G}, fun f hf => ⟨a, (Set.mem_singleton_iff.mp hf) ▸ hG⟩, rfl⟩`. Establish `hle : ¬ (Ideal.span {G}).map (rename inlV : MRing ι →ₐ[ℤ] MRing (Sum.elim ι ι')).toRingHom ≤ Pt`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `h`. Conclude with `hn (h1 ▸ h (Ideal.subset_span rfl))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, a', hg, hgP, hv⟩` from `GroundTheory.Heights₂.Heights.Inter.PullbackEliminationOfVariable.proof K' ι' (K ⊕ K') (Sum.elim ι ι') Sum.inr inrV Pt ((Ideal.span {G}).map (rename inlV : MRing ι →ₐ[ℤ] MRing (Sum.elim ι ι')).toRingHom) n isBlockMap_inr hPt (by rw [h2]; exact hP') (isMultiHomogIdeal_map isBlockM …`. Use `⟨g, a', hg, h2 ▸ hgP, fun z w hzt h0 => ?_⟩` and prove the remaining obligations. Use `hv (pairV w z) hzt (mem_mcPts_map hzt.1 fun f hf => by` as an intermediate fact. Establish `e : (fun p => pairV w z (inlV p)) = w` using `funext fun p => pairV_inl w z p`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, rfl⟩` from `Ideal.mem_span_singleton'.mp hf`. Rewrite using `[map_mul, map_mul, h0, mul_zero])`. Establish `e : (fun p => pairV w z (inrV p)) = z` using `funext fun p => pairV_inr w z p`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pull_gen {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' : K' → Type} [∀ k, Fintype (ι k)]
     [∀ k, Fintype (ι' k)] {P : Ideal (MRing ι)} {P' : Ideal (MRing ι')} {n : ℕ} (Pt : Ideal (MRing (Sum.elim ι ι')))
@@ -76,7 +76,7 @@ variable {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} {τ : Ψ} {a b : Fi
   {d : ℕ}
 
 /- English proof (translation)
-Take `⟨Pt, hPt, h1, h2, h3⟩` from `graph_alt Cv S S' hy hy'`. Take `⟨g, dg, hg, hgP, hv⟩` from `elim_gen Pt hPt (S.arith hy) h1 h2 J hJ hn`. Conclude with `⟨g, dg, hg, hgP, fun z hz hzJ w hw hi => hv z w hzJ (h3 z hz w hw hi)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_homog_eval_eq_zero_of_relW (Cv : FlagCover M' M) (S : Sw M τ a b k₀ ca cb) (S' : Sw M' τ a b k₀' ca cb)
     (hy : IsArithVar (mCoordIdeal y) (d + 2)) (hy' : IsArithVar (mCoordIdeal y') (d + 2))
@@ -92,7 +92,7 @@ theorem exists_homog_eval_eq_zero_of_relW (Cv : FlagCover M' M) (S : Sw M τ a b
   exact ⟨g, dg, hg, hgP, fun z hz hzJ w hw hi => hv z w hzJ (h3 z hz w hw hi)⟩
 
 /- English proof (translation)
-Take `⟨Pt, hPt, h1, h2, h3⟩` from `graph_alt Cv S S' hy hy'`. Take `⟨g, dg, hg, hgP, hv⟩` from `pull_gen Pt hPt (S'.arith hy') h1 h2 G dG hG hn`. Conclude with `⟨g, dg, hg, hgP, fun z hz w hw hi h0 => hv z w (h3 z hz w hw hi) h0⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pull_alt (Cv : FlagCover M' M) (S : Sw M τ a b k₀ ca cb) (S' : Sw M' τ a b k₀' ca cb)
     (hy : IsArithVar (mCoordIdeal y) (d + 2)) (hy' : IsArithVar (mCoordIdeal y') (d + 2))
@@ -108,7 +108,7 @@ theorem pull_alt (Cv : FlagCover M' M) (S : Sw M τ a b k₀ ca cb) (S' : Sw M' 
   exact ⟨g, dg, hg, hgP, fun z hz w hw hi h0 => hv z w (h3 z hz w hw hi) h0⟩
 
 /- English proof (translation)
-The claim follows from `sameOrbit_of_sameOrbit_fstPt_sndPt (GlobalTheory.T.flag_cover_arithmetic_second K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (fst_mem hz) _ _ h.1 h'.1) (GlobalTheory.T.flag_cover_arithmetic_second K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (S'.snd_mem hy' hz) _ _ h.2 h'.2)`.
+A detailed English derivation is pending.
 -/
 theorem sameOrbit_of_relW_relW (Cv : FlagCover M' M) (S' : Sw M' τ a b k₀' ca cb)
     (hy : IsArithVar (mCoordIdeal y) (d + 2)) (hy' : IsArithVar (mCoordIdeal y') (d + 2))
@@ -119,7 +119,7 @@ theorem sameOrbit_of_relW_relW (Cv : FlagCover M' M) (S' : Sw M' τ a b k₀' ca
     (GlobalTheory.T.flag_cover_arithmetic_second K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (S'.snd_mem hy' hz) _ _ h.2 h'.2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rename (v₀ k₀) G, _, CPts.isMultiHomog_rename_block (Pts.isBlockMap_v₀ k₀) hG, fun h => hn (by rw [← S.im₀ hy]; exact h), fun w => CPts.eval_rename_block _ w G⟩`.
+Supply the required witnesses or components.
 -/
 theorem pull_form (S : Sw M τ a b k₀ ca cb) (hy : IsArithVar (mCoordIdeal y) (d + 2)) {G : MRing ι} {dG : K → ℕ}
     (hG : IsMultiHomog G dG) (hn : G ∉ mCoordIdeal y) :
@@ -130,39 +130,35 @@ theorem pull_form (S : Sw M τ a b k₀ ca cb) (hy : IsArithVar (mCoordIdeal y) 
     fun h => hn (by rw [← S.im₀ hy]; exact h), fun w => CPts.eval_rename_block _ w G⟩
 
 /- English proof (translation)
-Establish `hP` using `S.arith hy`. Establish `hP'` using `S'.arith hy'`. Establish `heinj : Function.Injective e`. Introduce `u v huv`. Take `⟨c, hc⟩` from `Set.ncard_eq_one.1 (hdeg.2.2.2.2.1 (e u) (by simp))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hu : u ∈ e ⁻¹' {e u}` using `rfl`. Establish `hv : v ∈ e ⁻¹' {e u}` using `huv.symm`. Rewrite `hu`, `hv` using `[hc]`. Conclude with `hu.trans hv.symm`. Establish `hnot : ∀ z : (Σ o : Option K, ι (o.getD k₀)) → ℂ, z ∉ mcPts ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z h`. Use `h.2 1 trivial` as an intermediate fact. Simplify using `at this`. Establish `htop : IsMultiHomogIdeal (⊤ : Ideal (MRing fun o : Option K' => ι' (o.getD k₀')))`. Use `⟨{1}, fun f hf => ⟨0, ?_⟩, by simp⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_singleton_iff.mp hf]`. Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Simplify using `[hm]`. Take `⟨J', -, hJ'h, hJ'n, ⟨R'⟩⟩` from `hRes _ _ _ ⊤ (d + 2) hP' htop fun h => hP'.2.1.1.ne_top (top_le_iff.mp h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem' : ∀ x, R'.lift x x ∈ mcPts _` using `fun x => R'.mem x x (R'.mem_U x)`. Establish `hmem : ∀ x, RW.lift x x ∈ mcPts _` using `fun x => RW.mem x x (RW.mem_U x)`. Establish `himg : ∀ x, ∃ x₀, RelW Cv k₀ k₀' (R'.lift x x) (RW.lift x₀ x₀)`. Introduce `x`. Take `⟨V, f, -, hzV, -, hf⟩` from `local_analytic_section_coords Cv S S' hy' (hmem' x)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hf _ ⟨hzV, hmem' x⟩`. Take `⟨x₀, hx⟩` from `RW.surj _ h1 (hnot _)`. Conclude with `⟨x₀, h2.orbit (Cj.sameOrbit_refl _) hx⟩`. Use `choose g hg using himg`. Establish `hgholo : HoloMap R'.A RW.A g`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.log_resolution_map_locally_analytic _ _ _ _ _ ⊤ _ J' (d + 2) (d + 2) RW R' g rfl fun x => ?_` and prove the remaining obligations. Take `⟨V, f, hV, hzV, hf, hff⟩` from `local_analytic_section_coords Cv S S' hy' (hmem' x)`. Use `⟨V, f, hV, hzV, hf, fun z' hz' x' hx' => ?_⟩` and prove the remaining obligations. Conclude with `sameOrbit_of_relW_relW Cv S' hy hy' hz'.2 (hff z' hz').2 ((hg x').orbit hx' (Cj.sameOrbit_refl _))`. Establish `hholo : HoloMap R'.A A (e ∘ g)` using `holoMap_comp hgholo he`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hbase` using `GlobalTheory.T.flag_cover_arithmetic_third K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy'`. Take `⟨D₁, a₁, hD₁, hD₁n, hcount⟩` from `GlobalTheory.T.flag_cover_arithmetic_fourth K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy'`. Take `⟨E₁, b₁, hE₁, hE₁n, hE₁e⟩` from `GlobalTheory.T.flag_cover_arithmetic_sixth K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' D₁ a₁ hD₁ hD₁n`. Take `⟨G₁, c₁, hG₁, hG₁n, hG₁e⟩` from `pull_form S hy hE₁ hE₁n`. Take `⟨D₂, a₂, hD₂, hD₂n, het⟩` from `GlobalTheory.T.flag_cover_arithmetic_seventh K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E₂, b₂, hE₂, hE₂n, hE₂e⟩` from `GlobalTheory.T.flag_cover_arithmetic_sixth K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' D₂ a₂ hD₂ hD₂n`. Take `⟨G₂, c₂, hG₂, hG₂n, hG₂e⟩` from `pull_form S hy hE₂ hE₂n`. Take `⟨G₃, c₃, hG₃, hG₃n, hG₃e⟩` from `exists_homog_eval_eq_zero_of_relW Cv S S' hy hy' J' hJ'h hJ'n`. Establish `hprime` using `hP.2.1.1`. Establish `hGn : G₁ * G₂ * G₃ ∉ mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)` using `fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `hprime.mem_or_mem h with h | h` into its components or cases. Break down `hprime.mem_or_mem h with h | h` into its components or cases. Conclude with `hG₁n h`. Conclude with `hG₂n h`. Conclude with `hG₃n h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hGh : IsMultiHomog (G₁ * G₂ * G₃) (c₁ + c₂ + c₃)` using `CovMap.isMultiHomog_mul (CovMap.isMultiHomog_mul hG₁ hG₂) hG₃`. Take `⟨G₄, c₄, hG₄, hG₄n, hG₄e⟩` from `pull_alt Cv S S' hy hy' _ _ hGh hGn`. Establish `hev : ∀ w : (Σ o : Option K, ι (o.getD k₀)) → ℂ, eval w (map (Int.castRingHom ℂ) (G₁ * G₂ * G₃)) ≠ 0 → eval w (map (Int.castRingHom ℂ) G₁) ≠ 0 ∧ eval w (map (Int.castRingHom ℂ) G₂) ≠ 0`. Introduce `w hw`. Simplify using `only [map_mul] at hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => hw (by rw [h]; simp), fun h => hw (by rw [h]; simp)⟩`. Use `⟨J', R', g, _, hgholo, GlobalTheory.T.log_resolution_compatible_pullback _ _ _ _ _ ⊤ _ J' (d + 2) X A RW e R' _ (RelW Cv k₀ k₀') (G₁ * G₂ * G₃) G₄ _ c₄ Cv.deg rfl hP hP' he hdeg hholo hGh hGn hG₄ hG₄n (fun z z₁ w w₁ h h1 h2 => h.orbit h1 h2) ?_ ?_ ?_ ?_ (fun z hz w hw hi h0 => hG …` and prove the remaining obligations. Introduce `x x₀ h`. Rewrite using `[heinj h]`. Conclude with `hg x`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x x₀ h`. Rewrite using `[RW.inj x₀ (g x) (hnot _) (sameOrbit_of_relW_relW Cv S' hy hy' (hmem' x) h (hg x))]`. Both sides reduce to the same expression. Introduce `w hw h0`. Rewrite using `[ncard_orbits_relW_eq_ncard_orbits_isImg Cv S S' hy hy' hw, GlobalTheory.T.flag_cover_arithmetic_fifth K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (fst_mem hw)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hcount _ (CPts.base_mem M (fst_mem hw)) ?_` and prove the remaining obligations. Rewrite using `[← hE₁e, ← hG₁e]`. Conclude with `(hev w h0).1`. Introduce `z hz hzJ w hw hi`. Use `hG₃e z hz hzJ w hw hi` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_mul, this, mul_zero]`. Introduce `z hz w₀ hw₀ hi h0`. Establish `hs` using `hbase _ (fst_mem hz) _ hi.1`. Establish `h2 : eval (basePart M.blk (fstPt k₀ w₀)) (map (Int.castRingHom ℂ) D₂) ≠ 0`. Rewrite using `[← hE₂e, ← hG₂e]`.
-
-Conclude with `(hev w₀ h0).2`. Take `⟨V, V', s, hV, hwV, hV', hbV, hs1, hs2⟩` from `het _ (CPts.base_mem M' (fst_mem hz)) _ hs h2`. Take `⟨U₀, U₀', f₀, hU₀, hw0, hU₀', hz0, hf₀, r₀⟩` from `GlobalTheory.T.flag_cover_arithmetic_eighth K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (fst_mem hz) _ (fst_mem hw₀) hi.1 V V' s hV hwV hV' hbV hs1 hs2`. Take `⟨U₁, U₁', f₁, hU₁, hw1, hU₁', hz1, hf₁, r₁⟩` from `GlobalTheory.T.flag_cover_arithmetic_eighth K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (S'.snd_mem hy' hz) _ (S.snd_mem hy hw₀) hi.2 V V' s hV (by rw [Pts.basePart_snd M S.hk]; exact hwV) hV' (by rw [Pts.basePart_snd M' S'.hk]; exact hbV) hs1 hs2`. Use `⟨fstPt k₀ ⁻¹' U₀ ∩ sndPt k₀ ⁻¹' U₁, fstPt k₀' ⁻¹' U₀' ∩ sndPt k₀' ⁻¹' U₁', fun u => joinPt k₀' (f₀ (fstPt k₀ u)) (f₁ (sndPt k₀ u)), (hU₀.preimage (continuous_comp_idx _)).inter (hU₁.preimage (continuous_comp_idx _)), ⟨hw0, hw1⟩, (hU₀'.preimage (continuous_comp_idx _)).inter (hU₁' …` and prove the remaining obligations.
-
-Conclude with `join_orbit (r₀ _ ⟨hz''.1.1, fst_mem hz''.2⟩ _ ⟨hw.1.1, fst_mem hw.2⟩ hr.1) (r₁ _ ⟨hz''.1.2, S'.snd_mem hy' hz''.2⟩ _ ⟨hw.1.2, S.snd_mem hy hw.2⟩ hr.2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mapsTo_twoFlagFramesOrthogonal_of_isometry (hRes : ResExistsStatement) (Cv : FlagCover M' M) (S : Sw M τ a b k₀ ca cb) (S' : Sw M' τ a b k₀' ca cb)
     (hy : IsArithVar (mCoordIdeal y) (d + 2)) (hy' : IsArithVar (mCoordIdeal y') (d + 2))

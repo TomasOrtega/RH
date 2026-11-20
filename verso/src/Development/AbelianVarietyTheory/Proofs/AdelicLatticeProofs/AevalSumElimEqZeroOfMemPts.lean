@@ -8,9 +8,9 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CoefficientContraction.eq_zero_of_contractions`. Consider the case `exact _root_.GlobalTheory.CoefficientContraction.eq_zero_of_contractions`. Consider the case `(apply _root_.GlobalTheory.CoefficientContraction.eq_zero_of_contractions <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CoefficientContraction.eq_zero_of_contractions <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CoefficientContraction.eq_zero_of_contractions <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CoefficientContraction.eq_zero_of_contractions ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tensor_eq_zero_of_forall_contract {V W : Type} [AddCommGroup V] [Module ℚ V] [AddCommGroup W]
     [Module ℚ W] (t : V ⊗[ℚ] W)
@@ -24,27 +24,25 @@ theorem tensor_eq_zero_of_forall_contract {V W : Type} [AddCommGroup V] [Module 
   | (intros; exact _root_.GlobalTheory.CoefficientContraction.eq_zero_of_contractions ..)
 
 /- English proof (translation)
-Use `set ex : MvPolynomial (ι × ι) ℚ →ₐ[ℚ] R := MvPolynomial.aeval (fun ij : ι × ι => x ij.1 ij.2) with hex`. Use `set ey : MvPolynomial (ι × ι) ℚ →ₐ[ℚ] R := MvPolynomial.aeval (fun ij : ι × ι => y ij.1 ij.2) with hey`. Establish `key : TensorProduct.map ex.toLinearMap ey.toLinearMap t = 0`. Apply `tensor_eq_zero_of_forall_contract` to reduce the goal to its premises. Introduce `m`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : TensorProduct.rid ℚ _ (LinearMap.lTensor _ (m ∘ₗ ey.toLinearMap) t) ∈ vanI Γ`. Introduce `g hg`. Use `set eg : MvPolynomial (ι × ι) ℚ →ₐ[ℚ] ℂ := MvPolynomial.aeval (fun ij : ι × ι => g ij.1 ij.2) with heg`. Use `(Module.forall_dual_apply_eq_zero_iff ℚ _).1 fun l => ?_` and prove the remaining obligations. Set `φ : MvPolynomial (ι × ι) ℚ ⊗[ℚ] MvPolynomial (ι × ι) ℚ →ₐ[ℚ] MvPolynomial (ι × ι) ℂ` to `Algebra.TensorProduct.productMap (((Algebra.ofId ℂ (MvPolynomial (ι × ι) ℂ)).restrictScalars ℚ).comp eg) (MvPolynomial.mapAlgHom (Algebra.ofId ℚ ℂ))`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : TensorProduct.lid ℚ _ (LinearMap.rTensor _ (l ∘ₗ eg.toLinearMap) t) ∈ vanI Γ`. Use `GlobalTheory.T.rat_component_mem_ratPolysVanishingOnMatrixSet ι Γ hΓ (φ t) ?_ l _ ?_` and prove the remaining obligations. Introduce `h hh`. Rewrite using `[← ht g hg h hh]`. Use `clear ht`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp [evC]`. Consider the case `tmul a b`. Simplify using `[evC, φ, ← heg, MvPolynomial.eval_map, MvPolynomial.aeval_def, Algebra.ofId_apply]`. Consider the case `add s t hs ht`.
+Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Simplify using `only [evC] at hs ht`. Simplify using `only [evC, map_add, hs, ht]`. Introduce `k clear ht`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `tmul a b`. Simplify using `[φ, MvPolynomial.coeff_map, Algebra.ofId_apply]`. Rewrite using `[mul_comm (eg a), ← eq_ratCast (algebraMap ℚ ℂ), ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`. Consider the case `add s t hs ht => simp only [map_add, MvPolynomial.coeff_add, hs, ht]`. Establish `h3 : ey _ = 0` using `hy _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h4` using `congrArg m h3`. Rewrite `h4` using `[map_zero]`. Rewrite using `[← h4]`. Express the relevant statement in the definitionally equal form `l (eg _) = _`. Use `clear ht h2 h3 h4`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [mul_comm]`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Establish `h5 : ex _ = 0` using `hx _ h1`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← h5]`. Use `clear ht h1 h5`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Establish `h6` using `congrArg (LinearMap.mul' ℚ R) key`. Rewrite `h6` using `[map_zero]`. Rewrite using `[← h6]`. Use `clear ht key h6`.
-
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem aeval_sum_elim_eq_zero_of_tensor {ι : Type} [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ))
     (hΓ : ∀ σ : ℂ ≃+* ℂ, ∀ g ∈ Γ, g.map σ ∈ Γ)
@@ -117,11 +115,9 @@ theorem aeval_sum_elim_eq_zero_of_tensor {ι : Type} [Fintype ι] [DecidableEq �
   | add s t hs ht => simp only [map_add, hs, ht]
 
 /- English proof (translation)
-Introduce `ι _ _ Γ hΓ F hF R _ _ x hx y hy`. Set `T : MvPolynomial ((ι × ι) ⊕ (ι × ι)) ℚ →ₐ[ℚ] MvPolynomial (ι × ι) ℚ ⊗[ℚ] MvPolynomial (ι × ι) ℚ` to `MvPolynomial.aeval (Sum.elim (fun ij => MvPolynomial.X ij ⊗ₜ 1) (fun ij => 1 ⊗ₜ MvPolynomial.X ij))`. Establish `hT : ∀ (S : Type) [CommRing S] [Algebra ℚ S] (a b : ι × ι → S), Algebra.TensorProduct.productMap (MvPolynomial.aeval a) (MvPolynomial.aeval b) (T F) = MvPolynomial.aeval (Sum.elim a b) F`. Introduce `S _ _ a b`. Establish `: (Algebra.TensorProduct.productMap (MvPolynomial.aeval a) (MvPolynomial.aeval b)).comp T = MvPolynomial.aeval (Sum.elim a b)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `ext (i | i) <;> simp [T]`. Conclude with `DFunLike.congr_fun this F`. Rewrite using `[← hT]`. Use `aeval_sum_elim_eq_zero_of_tensor Γ hΓ _ (fun g hg h hh => ?_) R x hx y hy` and prove the remaining obligations. Rewrite using `[hT]`.
-
-Conclude with `hF g hg h hh`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_sum_elim_eq_zero_of_mem_pts : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), (∀ σ : ℂ ≃+* ℂ, ∀ g ∈ Γ, g.map σ ∈ Γ) → ∀ F : MvPolynomial ((ι × ι) ⊕ (ι × ι)) ℚ, (∀ g ∈ Γ, ∀ h ∈ Γ, MvPolynomial.aeval (Sum.elim (fun ij : ι × ι => g ij.1 ij.2) (fun ij : ι × ι => h ij.1 ij.2)) F = (0 : ℂ)) → ∀ (R : Type) [CommRing R] [Algebra ℚ R], ∀ x ∈ pts Γ R, ∀ y ∈ pts Γ R, MvPolynomial.aeval (Sum.elim (fun ij : ι × ι => x ij.1 ij.2) (fun ij : ι × ι => y ij.1 ij.2)) F = (0 : R) := by
   intro ι _ _ Γ hΓ F hF R _ _ x hx y hy

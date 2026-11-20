@@ -10,11 +10,11 @@ namespace Formalism.FN.SuccessiveMinima
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
 
 /- English proof (translation)
-Establish `hK : K ∈ nhds (0 : E)` using `mem_interior_iff_mem_nhds.mp hK0`. Establish `hKabs : Absorbent ℝ K` using `absorbent_nhds_zero hK`. Break down `ht.eq_or_lt with rfl | htpos` into its components or cases. Establish `hne : K.Nonempty` using `⟨0, interior_subset hK0⟩`. Rewrite using `[Set.zero_smul_set hne, Set.mem_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Introduce `hg`. Assume the negation of the conclusion as `hu`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(gauge_pos hKabs ((NormedSpace.isVonNBounded_iff ℝ).mpr hKc.isBounded)).mpr hu` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : t⁻¹ • u ∈ K ↔ gauge K (t⁻¹ • u) ≤ 1`. Rewrite using `[gauge_le_one_iff_mem_closure hKv hK, hKc.isClosed.closure_eq]`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem₀ htpos.ne', h1, gauge_smul_of_nonneg (inv_nonneg.mpr htpos.le), smul_eq_mul, inv_mul_le_iff₀ htpos, mul_one]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_smul_iff_gauge {K : Set E} (hKc : IsCompact K) (hKv : Convex ℝ K)
     (hK0 : (0 : E) ∈ interior K) {t : ℝ} (ht : 0 ≤ t) (u : E) :
@@ -38,9 +38,9 @@ theorem mem_smul_iff_gauge {K : Set E} (hKc : IsCompact K) (hKv : Convex ℝ K)
       gauge_smul_of_nonneg (inv_nonneg.mpr htpos.le), smul_eq_mul, inv_mul_le_iff₀ htpos, mul_one]
 
 /- English proof (translation)
-Use `haveI : ProperSpace E := FiniteDimensional.proper_real E`. Establish `hcl : IsClosed (L : Set E)` using `L.toAddSubgroup.isClosed_of_discrete`. Establish `hd : IsDiscrete (L : Set E)` using `by first`. Consider the case `exact ⟨‹DiscreteTopology L›⟩`. Consider the case `exact isDiscrete_iff_discreteTopology.mpr ‹DiscreteTopology L›`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.inter_comm]`. Conclude with `Metric.finite_isBounded_inter_isClosed hd hs hcl`.
+A detailed English derivation is pending.
 -/
 theorem finite_lat_inter (L : Submodule ℤ E) [DiscreteTopology L] {s : Set E}
     (hs : Bornology.IsBounded s) : ((L : Set E) ∩ s).Finite := by
@@ -54,7 +54,7 @@ theorem finite_lat_inter (L : Submodule ℤ E) [DiscreteTopology L] {s : Set E}
   exact Metric.finite_isBounded_inter_isClosed hd hs hcl
 
 /- English proof (translation)
-Take `⟨m, hmS, hmin⟩` from `Set.exists_min_image (insert T (f '' B)) id ((hB.image f).insert T) ⟨T, Set.mem_insert _ _⟩`. Use `⟨m, ?_, hmin T (Set.mem_insert _ _), fun u hu => hmin (f u) (Set.mem_insert_of_mem _ ⟨u, hu, rfl⟩)⟩` and prove the remaining obligations. Break down `hmS with rfl | ⟨u, hu, rfl⟩` into its components or cases. Conclude with `hcT`. Conclude with `h u hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_gap {α : Type*} (f : α → ℝ) {B : Set α} (hB : B.Finite) {c T : ℝ} (hcT : c < T)
     (h : ∀ u ∈ B, c < f u) : ∃ m, c < m ∧ m ≤ T ∧ ∀ u ∈ B, m ≤ f u := by
@@ -68,15 +68,13 @@ theorem exists_gap {α : Type*} (f : α → ℝ) {B : Set α} (hB : B.Finite) {c
 variable (L : Submodule ℤ E) [DiscreteTopology L] {K : Set E}
 
 /- English proof (translation)
-Use `set S : Set ℝ := {t : ℝ | 0 ≤ t ∧ i ≤ finrank ℝ (Submodule.span ℝ ((L : Set E) ∩ t • K))} with hS`. Establish `hSne : S.Nonempty` using `⟨T, hT⟩`. Establish `hSbdd : BddBelow S` using `⟨0, fun t ht => ht.1⟩`. Establish `hs0 : 0 ≤ sInf S` using `le_csInf hSne fun t ht => ht.1`. Establish `hsT : sInf S ≤ T` using `csInf_le hSbdd hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show 0 ≤ sInf S ∧ i ≤ finrank ℝ (Submodule.span ℝ ((L : Set E) ∩ sInf S • K))`. Use `⟨hs0, ?_⟩` and prove the remaining obligations. Break down `hsT.eq_or_lt with hsT | hsT` into its components or cases. Rewrite using `[hsT]`. Conclude with `hT.2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set B : Set E := {u | u ∈ (L : Set E) ∩ T • K ∧ sInf S < gauge K u} with hB`. Establish `hBfin : B.Finite` using `(finite_lat_inter L ((hKc.smul T).isBounded)).subset fun u hu => hu.1`. Take `⟨m, hsm, hmT, hmB⟩` from `exists_gap (gauge K) hBfin hsT fun u hu => hu.2`. Take `⟨t, htS, htm⟩` from `exists_lt_of_csInf_lt hSne hsm`. Establish `hst : sInf S ≤ t` using `csInf_le hSbdd htS`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `htS.2.trans (Submodule.finrank_mono (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `u ⟨huL, hut⟩`. Establish `hgt : gauge K u ≤ t` using `(mem_smul_iff_gauge hKc hKv hK0 htS.1 u).mp hut`. Use `⟨huL, (mem_smul_iff_gauge hKc hKv hK0 hs0 u).mpr ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
-
-Use `push_neg at hlt`. Establish `huT : u ∈ T • K` using `(mem_smul_iff_gauge hKc hKv hK0 (hs0.trans hsT.le) u).mpr (by linarith)`. Use `hmB u ⟨⟨huL, huT⟩, hlt⟩` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem succMin_mem (hKc : IsCompact K) (hKv : Convex ℝ K) (hK0 : (0 : E) ∈ interior K)
     {i : ℕ} {T : ℝ}
@@ -112,11 +110,11 @@ theorem succMin_mem (hKc : IsCompact K) (hKv : Convex ℝ K) (hK0 : (0 : E) ∈ 
   linarith
 
 /- English proof (translation)
-Establish `hK : K ∈ nhds (0 : E)` using `mem_interior_iff_mem_nhds.mp hK0`. Establish `hKabs : Absorbent ℝ K` using `absorbent_nhds_zero hK`. Use `set B : Set E := {u | u ∈ (L : Set E) ∩ K ∧ u ≠ 0} with hB`. Establish `hBfin : B.Finite` using `(finite_lat_inter L hKc.isBounded).subset fun u hu => hu.1`. Take `⟨m, hm0, hm1, hmB⟩` from `exists_gap (gauge K) hBfin zero_lt_one fun u hu => (gauge_pos hKabs ((NormedSpace.isVonNBounded_iff ℝ).mpr hKc.isBounded)).mpr hu.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, hm0, fun t ht htm => Submodule.span_eq_bot.mpr ?_⟩` and prove the remaining obligations. Introduce and unpack `u ⟨huL, hut⟩`. Establish `hgt : gauge K u ≤ t` using `(mem_smul_iff_gauge hKc hKv hK0 ht u).mp hut`. Assume the negation of the conclusion as `hu`. Establish `huK : u ∈ K`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(mem_smul_iff_gauge hKc hKv hK0 zero_le_one u).mpr (by linarith)` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Use `hmB u ⟨⟨huL, huK⟩, hu⟩` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_pos_bot (hKc : IsCompact K) (hKv : Convex ℝ K) (hK0 : (0 : E) ∈ interior K) :
     ∃ m : ℝ, 0 < m ∧ ∀ t, 0 ≤ t → t < m →
@@ -138,9 +136,9 @@ theorem exists_pos_bot (hKc : IsCompact K) (hKv : Convex ℝ K) (hK0 : (0 : E) �
   linarith
 
 /- English proof (translation)
-Take `⟨b, hbL, hbspan, hbli⟩` from `exists_linearIndependent ℝ (L : Set E)`. Establish `hbfin : b.Finite` using `hbli.setFinite`. Take `⟨M, hM⟩` from `(hbfin.image (gauge K)).bddAbove`. Use `⟨max M 0, le_max_right _ _, eq_top_iff.mpr ?_⟩` and prove the remaining obligations. Establish `hLtop : Submodule.span ℝ (L : Set E) = ⊤` using `IsZLattice.span_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hLtop, ← hbspan]`. Use `Submodule.span_mono fun x hx => ⟨hbL hx, ?_⟩` and prove the remaining obligations. Use `(mem_smul_iff_gauge hKc hKv hK0 (le_max_right _ _) x).mpr ?_` and prove the remaining obligations. Conclude with `(hM ⟨x, hx, rfl⟩).trans (le_max_left _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_span_top [IsZLattice ℝ L] (hKc : IsCompact K) (hKv : Convex ℝ K)
     (hK0 : (0 : E) ∈ interior K) :
@@ -160,39 +158,35 @@ end Formalism.FN.SuccessiveMinima
 
 open Formalism.FN.SuccessiveMinima in
 /- English proof (translation)
-Introduce `E _ _ _ L _ _ K hKc hKv _ hK0`. Establish `hmemK : ∀ {t : ℝ}, 0 ≤ t → ∀ u, u ∈ t • K ↔ gauge K u ≤ t` using `fun ht u => mem_smul_iff_gauge hKc hKv hK0 ht u`. Take `⟨T, hT0, hTtop⟩` from `exists_span_top L hKc hKv hK0`. Establish `hTfin : finrank ℝ (Submodule.span ℝ ((L : Set E) ∩ T • K)) = finrank ℝ E`. Rewrite using `[hTtop, finrank_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ j, j ≤ finrank ℝ E → 0 ≤ succMin L K j ∧ j ≤ finrank ℝ (Submodule.span ℝ ((L : Set E) ∩ succMin L K j • K))` using `fun j hj => succMin_mem L hKc hKv hK0 ⟨hT0, by rw [hTfin]; exact hj⟩`. Establish `hsub : ∀ {s t : ℝ}, 0 ≤ s → s ≤ t → (L : Set E) ∩ s • K ⊆ (L : Set E) ∩ t • K` using `fun hs hst u hu => ⟨hu.1, (hmemK (hs.trans hst) u).mpr (((hmemK hs u).mp hu.2).trans hst)⟩`. Establish `hle : ∀ {j : ℕ} {t : ℝ}, 0 ≤ t → j ≤ finrank ℝ (Submodule.span ℝ ((L : Set E) ∩ t • K)) → succMin L K j ≤ t` using `fun ht h => csInf_le ⟨0, fun x hx => hx.1⟩ ⟨ht, h⟩`. Take `⟨m, hm0, hmbot⟩` from `exists_pos_bot L hKc hKv hK0`. Establish `hpos : ∀ j, 1 ≤ j → j ≤ finrank ℝ E → 0 < succMin L K j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `j hj1 hjn`. Take `⟨h0, hj⟩` from `hmem j hjn`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Rewrite `hj` using `[hmbot _ h0 (lt_of_le_of_lt hneg hm0), finrank_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `build : ∀ k, k ≤ finrank ℝ E → ∃ w : Fin k → E, LinearIndependent ℝ w ∧ ∀ j : Fin k, w j ∈ L ∧ w j ∈ succMin L K ((j : ℕ) + 1) • K`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 
-Conclude with `⟨Fin.elim0, linearIndependent_empty_type, fun j => j.elim0⟩`. Consider the case `succ k ih`. Introduce `hk`. Take `⟨w, hw, hwm⟩` from `ih (Nat.le_of_succ_le hk)`. Take `⟨_, hdim⟩` from `hmem (k + 1) hk`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hex : ∃ x ∈ (L : Set E) ∩ succMin L K (k + 1) • K, x ∉ Submodule.span ℝ (Set.range w)`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `h1` using `Submodule.finrank_mono (Submodule.span_le.mpr hno)`. Rewrite `h1` using `[finrank_span_eq_card hw, Fintype.card_fin]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨x, ⟨hxL, hxK⟩, hxw⟩` from `hex`. Use `⟨Fin.snoc w x, linearIndependent_fin_snoc.mpr ⟨hw, hxw⟩, fun j => ?_⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `only [Fin.snoc_last, Fin.val_last]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hxL, hxK⟩`. Simplify using `only [Fin.snoc_castSucc, Fin.coe_castSucc]`. Conclude with `hwm i`. Take `⟨v, hv, hvm⟩` from `build (finrank ℝ E) le_rfl`. Use `⟨v, hv, fun i => (hvm i).1, fun i => (hvm i).2, fun i => hpos _ (by omega) (Nat.succ_le_of_lt i.isLt), ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `i j hij`. Establish `hij' : (i : ℕ) ≤ j` using `hij`. Take `⟨h0, hj⟩` from `hmem ((j : ℕ) + 1) (Nat.succ_le_of_lt j.isLt)`. Conclude with `hle h0 (le_trans (by omega) hj)`. Introduce `i u huL huint`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hlam : 0 < succMin L K ((i : ℕ) + 1)` using `hpos _ (by omega) (Nat.succ_le_of_lt i.isLt)`. Establish `hg : gauge K u < succMin L K ((i : ℕ) + 1)`. Take `⟨y, hy, rfl⟩` from `Set.mem_smul_set.mp huint`. Rewrite using `[gauge_smul_of_nonneg hlam.le, smul_eq_mul]`. Conclude with `mul_lt_of_lt_one_right hlam (interior_subset_gauge_lt_one K hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hg0 : 0 ≤ gauge K u` using `gauge_nonneg u`. Use `set W := Submodule.span ℝ ((L : Set E) ∩ gauge K u • K) with hW`. Establish `huW : u ∈ W` using `Submodule.subset_span ⟨huL, (hmemK hg0 u).mpr le_rfl⟩`. Establish `hdn : finrank ℝ W ≤ finrank ℝ E` using `Submodule.finrank_le W`. Establish `hdi : finrank ℝ W ≤ (i : ℕ)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `hle hg0 (show (i : ℕ) + 1 ≤ finrank ℝ W by omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdW : succMin L K (finrank ℝ W) ≤ gauge K u` using `hle hg0 le_rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hvW : ∀ k : Fin (finrank ℝ E), (k : ℕ) < finrank ℝ W → v k ∈ W`. Introduce `k hk`. Take `⟨hd0, hd⟩` from `hmem (finrank ℝ W) hdn`. Establish `hk1 : succMin L K ((k : ℕ) + 1) ≤ gauge K u` using `(hle hd0 (le_trans (by omega) hd)).trans hdW`. Conclude with `Submodule.subset_span (hsub (hmem _ (Nat.succ_le_of_lt k.isLt)).1 hk1 ⟨(hvm k).1, (hvm k).2⟩)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `himg : v '' {k | (k : ℕ) < finrank ℝ W} = Set.range (fun j : Fin (finrank ℝ W) => v (Fin.castLE hdn j))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨⟨k, hk⟩, congrArg v (Fin.ext rfl)⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨Fin.castLE hdn j, by simp, rfl⟩`. Establish `hUW : Submodule.span ℝ (v '' {k | (k : ℕ) < finrank ℝ W}) = W`. Use `Submodule.eq_of_le_of_finrank_eq (Submodule.span_le.mpr ?_) ?_` and prove the remaining obligations. Introduce and unpack `x ⟨k, hk, rfl⟩`.
-
-Conclude with `hvW k hk`. Rewrite using `[himg]`. Conclude with `(finrank_span_eq_card (hv.comp _ (Fin.castLE_injective hdn))).trans (Fintype.card_fin _)`. Rewrite `huW` using `[← hUW]`. Use `Submodule.span_mono (Set.image_mono fun k hk => ?_) huW` and prove the remaining obligations.
-
-Use `show k < i`. Conclude with `Fin.lt_iff_val_lt_val.mpr (lt_of_lt_of_le hk hdi)`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FN.existsSuccessiveMinimaVectors : Formalism.FN.SuccMinFacts := by
   classical

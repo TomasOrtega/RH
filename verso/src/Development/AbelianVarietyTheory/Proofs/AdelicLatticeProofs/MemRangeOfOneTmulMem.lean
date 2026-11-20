@@ -13,9 +13,9 @@ section
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hy : IsAlgebraic ℤ y` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic y)`. Take `⟨m, hm, h⟩` from `hy.exists_integral_multiple`. Use `⟨(m * m).toNat, ?_, ?_⟩` and prove the remaining obligations. Use `mul_self_pos.2 hm` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2 : (((m * m).toNat : ℕ) : E) = (m : E) * m`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (mul_self_nonneg m), Int.cast_mul]`. Establish `h3 : IsIntegral ℤ ((m : E) * (m • y))` using `IsIntegral.mul (by simpa using isIntegral_algebraMap (R := ℤ) (A := E) (x := m)) h`. Use `⟨⟨_, h3⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, mul_assoc, ← zsmul_eq_mul y m]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -37,7 +37,7 @@ theorem exists_nat_mul_integral (y : E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `mul_mem_adelicCompletionOfElementSet_of_mul_mem F ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Conclude with `⟨a * b, map_mul _ _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mul_mem_hat {x y : RA F E} (hx : x ∈ hat1 F (Set.range (algebraMap (𝓞 E) E)))
     (hy : y ∈ hat1 F (Set.range (algebraMap (𝓞 E) E))) :
@@ -47,11 +47,11 @@ theorem mul_mem_hat {x y : RA F E} (hx : x ∈ hat1 F (Set.range (algebraMap (�
   exact ⟨a * b, map_mul _ _ _⟩
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, zero_mem _, by simp⟩`. Consider the case `tmul a y`. Take `⟨d, hd, hy⟩` from `exists_nat_mul_integral E y`. Take `⟨x, b, hb, rfl⟩` from `exists_eq_algebraMap_add_nsmul F d hd a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x • y, b ⊗ₜ[F] ((d : E) * y), tmul_mem_adelicCompletion_of_integral F hb hy, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.add_tmul, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← nsmul_eq_mul, ← Nat.cast_smul_eq_nsmul F, ← Nat.cast_smul_eq_nsmul F, TensorProduct.smul_tmul]`. Consider the case `add u v hu hv`. Take `⟨x, h, hh, rfl⟩` from `hu`. Take `⟨x', h', hh', rfl⟩` from `hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x + x', h + h', add_mem hh hh', ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem exists_eq_one_tmul_add (z : RA F E) :
     ∃ (x : E), ∃ h ∈ hat1 F (Set.range (algebraMap (𝓞 E) E)),
@@ -73,7 +73,7 @@ theorem exists_eq_one_tmul_add (z : RA F E) :
     abel
 
 /- English proof (translation)
-Establish `h : ((1 : FractionalIdeal (𝓞 E)⁰ E) : Set E) = Set.range (algebraMap (𝓞 E) E)`. Use extensionality with `y`. Conclude with `FractionalIdeal.mem_one_iff _`. Rewrite `hx`, the goal using `[← h]`. Conclude with `(one_tmul_mem_adelicCompletion_fractionalIdeal_iff F 1 x).1 hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_of_one_tmul_mem {x : E}
     (hx : (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x ∈ hat1 F (Set.range (algebraMap (𝓞 E) E))) :
@@ -85,19 +85,17 @@ theorem mem_range_of_one_tmul_mem {x : E}
   exact (one_tmul_mem_adelicCompletion_fractionalIdeal_iff F 1 x).1 hx
 
 /- English proof (translation)
-Take `⟨x, h, hh, hx⟩` from `exists_eq_one_tmul_add F E z`. Take `⟨N, hN, hNx⟩` from `exists_nat_mul_integral E x`. Establish `h1 : (1 : RA F E) ∈ hat1 F (Set.range (algebraMap (𝓞 E) E))` using `one_tmul_mem_adelicCompletionOfElementSet F ⟨1, map_one _⟩`. Establish `hc : ∀ y : E, (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] ((N : E) * y) = N • ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] y : RA F E)`. Introduce `y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← nsmul_eq_mul, ← Nat.cast_smul_eq_nsmul F, TensorProduct.tmul_smul, Nat.cast_smul_eq_nsmul]`. Establish `hNz : N • z ∈ hat1 F (Set.range (algebraMap (𝓞 E) E))`. Rewrite using `[hx, nsmul_add, ← hc]`. Conclude with `add_mem (one_tmul_mem_adelicCompletionOfElementSet F hNx) (nsmul_mem hh N)`. Establish `hpow : ∀ n : ℕ, ∃ a ∈ hat1 F (Set.range (algebraMap (𝓞 E) E)), ∃ b ∈ hat1 F (Set.range (algebraMap (𝓞 E) E)), (z - h) ^ n = a + z * b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨1, h1, 0, zero_mem _, by simp⟩`. Consider the case `succ n ih`. Take `⟨a, ha, b, hb, e⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨-(a * h), neg_mem (mul_mem_hat F E ha hh), a + b - b * h, sub_mem (add_mem ha hb) (mul_mem_hat F E hb hh), ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, e]`. Take the linear combination `b * hz`. Establish `hzh : z - h = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x` using `by rw [hx]; abel`. Establish `hint : ∀ n : ℕ, (N : E) * x ^ n ∈ Set.range (algebraMap (𝓞 E) E)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Apply `mem_range_of_one_tmul_mem F E` to reduce the goal to its premises. Take `⟨a, ha, b, hb, e⟩` from `hpow n`. Rewrite `e` using `[hzh, Algebra.TensorProduct.tmul_pow, one_pow]`. Rewrite using `[hc, e, nsmul_add, ← smul_mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `add_mem (nsmul_mem ha N) (mul_mem_hat F E hNz hb)`. Establish `hai : IsAlmostIntegral (𝓞 E) x`. Use `⟨(N : 𝓞 E), mem_nonZeroDivisors_of_ne_zero (Nat.cast_ne_zero.2 hN.ne'), fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_natCast]`. Conclude with `hint n`.
-
-Take `⟨r, hr⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hai.isIntegral`. Rewrite using `[hx]`. Conclude with `add_mem (one_tmul_mem_adelicCompletionOfElementSet F ⟨r, hr⟩) hh`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hat_of_idempotent (z : RA F E) (hz : z * z = z) :
     z ∈ hat1 F (Set.range (algebraMap (𝓞 E) E)) := by
@@ -149,11 +147,11 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D z hz`. Establish `h : intAE D = GlobalTheory.AdLat.hat1 D.host.F (Set.range (algebraMap (𝓞 D.host.E) D.host.E))`. Unfold `intAE GlobalTheory.AdLat.hat1`. Use `congr 1`. Use extensionality with `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, rfl⟩`. Conclude with `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[h]`. Conclude with `mem_hat_of_idempotent D.host.F D.host.E z hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotent_mem_intAE : ∀ (D : D7) (z : Af D.host.F ⊗[D.host.F] D.host.E), z * z = z → z ∈ intAE D := by
   intro D z hz

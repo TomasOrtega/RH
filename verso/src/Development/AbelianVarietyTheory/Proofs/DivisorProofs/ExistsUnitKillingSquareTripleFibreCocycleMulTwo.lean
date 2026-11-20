@@ -17,21 +17,21 @@ open GlobalTheory.LBDescent GlobalTheory.DescNorm
 namespace GlobalTheory.TwoTors
 
 /- English proof (translation)
-Set `a : G → G → Additive M` to `fun x y => Additive.ofMul (c x y)`. Establish `hca : ∀ x y z, a x y + a (x * y) z = a y z + a x (y * z)` using `fun x y z => by`. Simplify using `only [a, ← ofMul_mul, hc]`. Set `e : G → G → Additive M` to `fun x y => a x y - a y x`. Establish `emul : ∀ x y z, e (x * y) z = e x z + e y z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x y z`. Establish `h₁` using `hca x y z`. Establish `h₂` using `hca z x y`. Establish `h₃` using `hca x z y`. Rewrite `h₂` using `[mul_comm z x]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₃` using `[mul_comm z y]`. Establish `e₁ : a (x * y) z = a y z + a x (y * z) - a x y` using `by rw [← h₁]; abel`. Establish `e₂ : a z (x * y) = a z x + a (x * z) y - a x y` using `by rw [h₂]; abel`. Establish `e₃ : a x z = a z y + a x (y * z) - a (x * z) y` using `by rw [← h₃]; abel`. Simplify using `only [e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e₁, e₂, e₃]`. Normalize the expressions using the abelian group laws. Establish `hone : ∀ y, e 1 y = 0`. Introduce `y`. Establish `h₁` using `hca 1 1 y`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h₂` using `hca y 1 1`. Simplify using `only [_root_.one_mul, _root_.mul_one] at h₁ h₂`. Establish `: a 1 1 = a 1 y`. Use `congrArg (· - a 1 y) h₁` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: a y 1 = a 1 1`. Use `congrArg (· - a y 1) h₂` as an intermediate fact. Simplify using `using this`. Simplify using `only [e]`. Rewrite using `[sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ‹a 1 1 = a 1 y›, ‹a y 1 = a 1 1›]`. Establish `key : e x y + e x y = 0`. Rewrite using `[← emul, ← pow_two, h2, hone]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Rewrite using `[ofMul_pow, ofMul_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `2 • a x y = 2 • a y x`. Rewrite using `[← sub_eq_zero, ← smul_sub, two_nsmul]`. Conclude with `key`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_symm_of_cocycle {G M : Type} [CommGroup G] [CommGroup M] (c : G → G → M)
     (hc : ∀ x y z, c x y * c (x * y) z = c y z * c x (y * z)) (h2 : ∀ x : G, x ^ 2 = 1) (x y : G) :
@@ -74,7 +74,7 @@ theorem sq_symm_of_cocycle {G M : Type} [CommGroup G] [CommGroup M] (c : G → G
   exact key
 
 /- English proof (translation)
-Establish `h` using `(IsPullback.of_hasPullback (sq A) η[A]).map (Over.forget S)`. Establish `h₂ : IsFinite (pullback.snd (sq A) η[A]).left` using `MorphismProperty.of_isPullback (P := @IsFinite) h hf`. Rewrite using `[← Over.w (pullback.snd (sq A) η[A])]`. Conclude with `MorphismProperty.comp_mem @IsFinite _ _ h₂ (inferInstanceAs (IsFinite (𝟙 S)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_two {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (hf : IsFinite (sq A).left) :
     IsFinite (Two A).hom := by
@@ -89,7 +89,7 @@ end GlobalTheory.TwoTors
 namespace GlobalTheory.TwoTors
 
 /- English proof (translation)
-Use `ext`. Simplify using `[GlobalTheory.CharKer.pullTop]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pullTop_pullTop {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (u : Γ(Z, ⊤)ˣ) :
     GlobalTheory.CharKer.pullTop f (GlobalTheory.CharKer.pullTop g u) = GlobalTheory.CharKer.pullTop (f ≫ g) u := by
@@ -100,14 +100,14 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
 def inclHom (T : Over S) : (T ⟶ Two A) →* (T ⟶ A) := MonoidHom.mk' (· ≫ incl A) mul_incl
 
 /- English proof (translation)
-The claim follows from `two_ext (by rw [Category.assoc, dif_incl, dif_incl, MonObj.comp_mul, GrpObj.comp_inv])`.
+A detailed English derivation is pending.
 -/
 theorem comp_dif {T T' : Over S} (g : T' ⟶ T) (a b : T ⟶ A) (h : a ≫ sq A = b ≫ sq A) :
     g ≫ dif a b h = dif (g ≫ a) (g ≫ b) (by rw [Category.assoc, h, Category.assoc]) :=
   two_ext (by rw [Category.assoc, dif_incl, dif_incl, MonObj.comp_mul, GrpObj.comp_inv])
 
 /- English proof (translation)
-The claim follows from `two_ext (by rw [dif_incl] change (inclHom T u)⁻¹ * inclHom T v = inclHom T (u⁻¹ * v) rw [map_mul, map_inv])`.
+A detailed English derivation is pending.
 -/
 theorem dif_incl_incl {T : Over S} (u v : T ⟶ Two A) (h : (u ≫ incl A) ≫ sq A = (v ≫ incl A) ≫ sq A) :
     dif (u ≫ incl A) (v ≫ incl A) h = u⁻¹ * v :=
@@ -117,13 +117,13 @@ theorem dif_incl_incl {T : Over S} (u v : T ⟶ Two A) (h : (u ≫ incl A) ≫ s
     rw [map_mul, map_inv])
 
 /- English proof (translation)
-Rewrite using `[comp_sq, comp_sq, incl_sq, incl_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem incl_sq_eq {T : Over S} (u v : T ⟶ Two A) : (u ≫ incl A) ≫ sq A = (v ≫ incl A) ≫ sq A := by
   rw [comp_sq, comp_sq, incl_sq, incl_sq]
 
 /- English proof (translation)
-Establish `h : inclHom T (x ^ 2) = inclHom T 1` using `by rw [map_pow, map_one]; exact incl_sq x`. Conclude with `two_ext h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sq_eq_one {T : Over S} (x : T ⟶ Two A) : x ^ 2 = 1 := by
   have h : inclHom T (x ^ 2) = inclHom T 1 := by rw [map_pow, map_one]; exact incl_sq x
@@ -137,9 +137,9 @@ def tpt {T : Over S} (a b c : T ⟶ A) (h₁ : a ≫ sq A = b ≫ sq A) (h₂ : 
       exact Over.w a)
 
 /- English proof (translation)
-Establish `e₁ : tpt a b c h₁ h₂ ≫ t₁ A = a` using `Over.OverMorphism.ext (by show GlobalTheory.PolRoot.tri _ _ _ _ _ _ ≫ pullback.fst _ _ ≫ pullback.fst _ _ = a.left`. Rewrite using `[GlobalTheory.PolRoot.tri, pullback.lift_fst_assoc, pullback.lift_fst])`. Establish `e₂ : tpt a b c h₁ h₂ ≫ t₂ A = b` using `Over.OverMorphism.ext (by show GlobalTheory.PolRoot.tri _ _ _ _ _ _ ≫ pullback.fst _ _ ≫ pullback.snd _ _ = b.left`. Rewrite using `[GlobalTheory.PolRoot.tri, pullback.lift_fst_assoc, pullback.lift_snd])`. Establish `e₃ : tpt a b c h₁ h₂ ≫ t₃ A = c` using `Over.OverMorphism.ext (by show GlobalTheory.PolRoot.tri _ _ _ _ _ _ ≫ pullback.snd _ _ ≫ pullback.snd _ _ = c.left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.PolRoot.tri, pullback.lift_snd_assoc, pullback.lift_snd])`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Apply the tactic sequence `rw [Category.assoc, ψ, lift_fst, lift_fst, comp_dif]; congr 1 <;> assumption`. Apply the tactic sequence `rw [Category.assoc, ψ, lift_snd, lift_snd, comp_dif]; congr 1 <;> assumption`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tpt_ψ {T : Over S} (a b c : T ⟶ A) (h₁ : a ≫ sq A = b ≫ sq A) (h₂ : b ≫ sq A = c ≫ sq A) :
     tpt a b c h₁ h₂ ≫ ψ A = lift (dif a b h₁) (dif b c h₂) := by
@@ -159,7 +159,7 @@ theorem tpt_ψ {T : Over S} (a b c : T ⟶ A) (h₁ : a ≫ sq A = b ≫ sq A) (
 variable (A)
 
 /- English proof (translation)
-Establish `: (Over.homMk (pullback.fst _ _) rfl : tripO A ⟶ pairO A) ≫ δ A = dif (t₁ A) (t₂ A) (t₁₂_sq A)`. Apply the tactic sequence `rw [δ, comp_dif]; congr 1 <;> exact Over.OverMorphism.ext rfl`. Conclude with `congrArg CommaMorphism.left this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fst_δ : (pullback.fst _ _ : Triple (sq A).left ⟶ _) ≫ (δ A).left = (dif (t₁ A) (t₂ A) (t₁₂_sq A)).left := by
   have : (Over.homMk (pullback.fst _ _) rfl : tripO A ⟶ pairO A) ≫ δ A = dif (t₁ A) (t₂ A) (t₁₂_sq A) := by
@@ -167,9 +167,9 @@ theorem fst_δ : (pullback.fst _ _ : Triple (sq A).left ⟶ _) ≫ (δ A).left =
   exact congrArg CommaMorphism.left this
 
 /- English proof (translation)
-Establish `w₂ : (pullback.snd _ _ : Triple (sq A).left ⟶ _) ≫ (pairO A).hom = (tripO A).hom` using `by show pullback.snd _ _ ≫ pullback.fst _ _ ≫ A.hom = pullback.fst _ _ ≫ pullback.fst _ _ ≫ A.hom`. Rewrite using `[← pullback.condition_assoc, snd_w]`. Establish `: (Over.homMk (pullback.snd _ _) w₂ : tripO A ⟶ pairO A) ≫ δ A = dif (t₂ A) (t₃ A) (t₂₃_sq A)`. Rewrite using `[δ, comp_dif]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `all_goals first`. Consider the case `exact Over.OverMorphism.ext rfl`. Consider the case `exact Over.OverMorphism.ext (pullback.condition (f := pullback.snd (sq A).left (sq A).left)).symm`. Conclude with `congrArg CommaMorphism.left this`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem snd_δ : (pullback.snd _ _ : Triple (sq A).left ⟶ _) ≫ (δ A).left = (dif (t₂ A) (t₃ A) (t₂₃_sq A)).left := by
   have w₂ : (pullback.snd _ _ : Triple (sq A).left ⟶ _) ≫ (pairO A).hom = (tripO A).hom := by
@@ -183,9 +183,9 @@ theorem snd_δ : (pullback.snd _ _ : Triple (sq A).left ⟶ _) ≫ (δ A).left =
   exact congrArg CommaMorphism.left this
 
 /- English proof (translation)
-Establish `w₃ : pr13 (sq A).left ≫ (pairO A).hom = (tripO A).hom` using `by show pr13 _ ≫ pullback.fst _ _ ≫ A.hom = pullback.fst _ _ ≫ pullback.fst _ _ ≫ A.hom`. Rewrite using `[pr13, pullback.lift_fst_assoc, Category.assoc]`. Establish `a₁ : (Over.homMk (pr13 (sq A).left) w₃ : tripO A ⟶ pairO A) ≫ s₁ A = t₁ A` using `Over.OverMorphism.ext (by show pr13 _ ≫ pullback.fst _ _ = _; rw [pr13, pullback.lift_fst]; rfl)`. Establish `a₃ : (Over.homMk (pr13 (sq A).left) w₃ : tripO A ⟶ pairO A) ≫ s₂ A = t₃ A` using `Over.OverMorphism.ext (by show pr13 _ ≫ pullback.snd _ _ = _; rw [pr13, pullback.lift_snd]; rfl)`. Establish `: (Over.homMk (pr13 (sq A).left) w₃ : tripO A ⟶ pairO A) ≫ δ A = dif (t₁ A) (t₂ A) (t₁₂_sq A) * dif (t₂ A) (t₃ A) (t₂₃_sq A)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[δ, comp_dif]`. Apply `two_ext` to reduce the goal to its premises. Rewrite using `[dif_incl, mul_incl, dif_incl, dif_incl, a₁, a₃]`. Use `group`. Conclude with `congrArg CommaMorphism.left this`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tripleFibreProjOneThree_comp_fiberProductMulTwoToTwoTorsion : pr13 (sq A).left ≫ (δ A).left =
     (dif (t₁ A) (t₂ A) (t₁₂_sq A) * dif (t₂ A) (t₃ A) (t₂₃_sq A)).left := by
@@ -205,9 +205,9 @@ theorem tripleFibreProjOneThree_comp_fiberProductMulTwoToTwoTorsion : pr13 (sq A
   exact congrArg CommaMorphism.left this
 
 /- English proof (translation)
-Unfold `KillsSq`. Rewrite using `[pullTop_pullTop, pullTop_pullTop, pullTop_pullTop, fst_δ, snd_δ, tripleFibreProjOneThree_comp_fiberProductMulTwoToTwoTorsion, ← hc, map_inv, map_inv, map_inv]`. Establish `H` using `hw (tripO A) (dif (t₁ A) (t₂ A) (t₁₂_sq A)) (dif (t₂ A) (t₃ A) (t₂₃_sq A))`. Rewrite `H` using `[map_pow]`. Establish `hψ : (ψ A).left = (lift (dif (t₁ A) (t₂ A) (t₁₂_sq A)) (dif (t₂ A) (t₃ A) (t₂₃_sq A))).left` using `rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hψ, _root_.mul_assoc, ← _root_.mul_inv, ← H, _root_.mul_inv, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem killsSq_of (c : Γ((Two A ⊗ Two A).left, ⊤)ˣ) (w : Γ((Two A).left, ⊤)ˣ) (D : Γ(Triple (sq A).left, ⊤)ˣ)
     (hc : GlobalTheory.CharKer.pullTop (ψ A).left c = D)
@@ -226,17 +226,17 @@ end GlobalTheory.TwoTors
 open GlobalTheory.TwoTors in
 
 /- English proof (translation)
-Introduce `K _ _ A _ _ hA hf D hD`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_base_globalUnit_abelianScheme_baseChange A (Two A ⊗ Two A) hA (t₁ A).left (ψ A).left (GlobalTheory.T.tripleFiberProductOverMulTwo_isPullback A) D`. Establish `key : ∀ {T : Over (Sp K)} (a b d : T ⟶ A) (h₁ : a ≫ sq A = b ≫ sq A) (h₂ : b ≫ sq A = d ≫ sq A) p₁ p₂, GlobalTheory.CharKer.pullTop (tri (sq A).left a.left b.left d.left p₁ p₂) D = GlobalTheory.CharKer.pullTop (lift (dif a b h₁) (dif b d h₂)).left c`. Introduce `T a b d h₁ h₂ p₁ p₂`. Rewrite using `[← hc, pullTop_pullTop, ← tpt_ψ a b d h₁ h₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hcoc : ∀ (T : Over (Sp K)) (x y z : T ⟶ Two A), GlobalTheory.CharKer.pullTop (lift x y).left c * GlobalTheory.CharKer.pullTop (lift (x * y) z).left c = GlobalTheory.CharKer.pullTop (lift y z).left c * GlobalTheory.CharKer.pullTop (lift x (y * z)).left c`. Introduce `T x y z`. Establish `H` using `hD T.left ((1 : T ⟶ Two A) ≫ incl A).left (x ≫ incl A).left ((x * y) ≫ incl A).left ((x * y * z) ≫ incl A).left (by rw [← Over.comp_left, incl_sq_eq, Over.comp_left]) (by rw [← Over.comp_left, incl_sq_eq, Over.comp_left]) (by rw [← Over.comp_left, incl_sq_eq, Over.comp_left])`. Rewrite `H` using `[key _ _ _ (incl_sq_eq _ _) (incl_sq_eq _ _), key _ _ _ (incl_sq_eq _ _) (incl_sq_eq _ _), key _ _ _ (incl_sq_eq _ _) (incl_sq_eq _ _), key _ _ _ (incl_sq_eq _ _) (incl_sq_eq _ _)]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [dif_incl_incl] at H`. Establish `e₁ : (1 : T ⟶ Two A)⁻¹ * x = x` using `by group`. Establish `e₂ : x⁻¹ * (x * y) = y` using `by group`. Establish `e₃ : (1 : T ⟶ Two A)⁻¹ * (x * y) = x * y` using `by group`. Establish `e₄ : (x * y)⁻¹ * (x * y * z) = z` using `by group`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₅ : x⁻¹ * (x * y * z) = y * z` using `by group`. Rewrite `H` using `[e₁, e₂, e₃, e₄, e₅]`. Conclude with `H`. Establish `hsym : ∀ (T : Over (Sp K)) (x y : T ⟶ Two A), GlobalTheory.CharKer.pullTop (lift x y).left (c ^ 2) = GlobalTheory.CharKer.pullTop (lift y x).left (c ^ 2)`. Introduce `T x y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_pow]`. Conclude with `sq_symm_of_cocycle (fun x y : T ⟶ Two A => GlobalTheory.CharKer.pullTop (lift x y).left c) (hcoc T) sq_eq_one x y`. Establish `hcoc2 : ∀ (T : Over (Sp K)) (x y z : T ⟶ Two A), GlobalTheory.CharKer.pullTop (lift x y).left (c ^ 2) * GlobalTheory.CharKer.pullTop (lift (x * y) z).left (c ^ 2) = GlobalTheory.CharKer.pullTop (lift y z).left (c ^ 2) * GlobalTheory.CharKer.pullTop (lift x (y * z)).left (c ^ 2)`. Introduce `T x y z`. Simplify using `only [map_pow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← mul_pow, ← mul_pow, hcoc]`. Take `⟨w, hw⟩` from `GlobalTheory.T.symmetricTwoCocycle_finiteCommGroupScheme_coboundary K (Two A) (isFinite_two A hf) (c ^ 2) hcoc2 hsym`. Use `⟨GlobalTheory.CharKer.pullTop (δ A).left w⁻¹, ?_⟩` and prove the remaining obligations. Conclude with `killsSq_of A c w D hc hw`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwoTors.killsSq_of_triCocycle : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A],
     IsAbelianScheme A → IsFinite ((𝟙 A) ^ 2 : A ⟶ A).left → ∀ D : Γ(Triple ((𝟙 A) ^ 2 : A ⟶ A).left, ⊤)ˣ,

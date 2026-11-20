@@ -29,14 +29,14 @@ def formsIn (W : Ideal (MvPolynomial (Fin n) ℂ)) : Submodule ℝ (Fin n → �
     exact W.mul_mem_left _ hu
 
 /- English proof (translation)
-Simplify using `[linForm, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linForm_single (j : Fin n) :
     linForm (Pi.single j (1 : ℂ)) = (X j : MvPolynomial (Fin n) ℂ) := by
   simp [linForm, Pi.single_apply]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hW`. Introduce `htop`. Establish `hmem : Pi.single j (1 : ℂ) ∈ formsIn W` using `htop ▸ Submodule.mem_top`. Conclude with `hj (linForm_single j ▸ hmem)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formsIn_ne_top {W : Ideal (MvPolynomial (Fin n) ℂ)} (hW : IsRelevant W) : formsIn W ≠ ⊤ := by
   obtain ⟨j, hj⟩ := hW
@@ -49,9 +49,9 @@ end AdmissibleAE
 open AdmissibleAE in
 
 /- English proof (translation)
-Introduce `n Z hrel`. Unfold `IsAdmissible`. Use `(Filter.eventually_all_finset _).2 fun W hW => ?_` and prove the remaining obligations. Rewrite using `[ae_iff]`. Establish `hnull : volume (formsIn W : Set (Fin n → ℂ)) = 0` using `Measure.addHaar_submodule volume _ (formsIn_ne_top (hrel W hW))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [not_not]`. Conclude with `hnull`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem AdmissibleAE.proof : AdmissibleAE.Statement := by
   intro n Z hrel

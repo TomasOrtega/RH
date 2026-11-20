@@ -19,9 +19,9 @@ variable (ψ : AddChar k Circle) (σ : k → V →ₗ[ℂ] V) {c : kˣ} (hc : Ha
 
 include hc in
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Apply `hxW` to reduce the goal to its premises. Establish `hsum` using `sum_avg ψ σ hc (t := t) hx`. Establish `hm : ((Fintype.card (Q (c * t⁻¹) (c * s⁻¹)) : ℕ) : ℂ) • x ∈ W`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsum]`. Conclude with `W.sum_mem fun f _ => hall _ (out_mem f)`. Conclude with `(W.smul_mem_iff (card_ne_zero _ _)).1 hm`.
+A detailed English derivation is pending.
 -/
 theorem exists_avg_notMem (W : Submodule ℂ V) {s t : kˣ} {x : V} (hx : ∀ h ∈ ball s, σ h x = x)
     (hxW : x ∉ W) : ∃ ξ ∈ ball (c * s⁻¹), avg ψ σ s t ξ x ∉ W := by
@@ -36,7 +36,7 @@ theorem exists_avg_notMem (W : Submodule ℂ V) {s t : kˣ} {x : V} (hx : ∀ h 
 
 include hc in
 /- English proof (translation)
-Simplify using `only [avg]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[add_mul, neg_add, ch_add ψ, psi_neg_triv hc hh (out_mem q), Circle.coe_one, mul_one]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_shift {s t : kˣ} {ξ h : k} (hh : h ∈ ball (c * t⁻¹)) : avg ψ σ s t (ξ + h) = avg ψ σ s t ξ := by
   simp only [avg]
@@ -45,9 +45,9 @@ theorem avg_shift {s t : kˣ} {ξ h : k} (hh : h ∈ ball (c * t⁻¹)) : avg ψ
 
 include hc in
 /- English proof (translation)
-Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `ξ hξ`. Establish `hU : (fun η => η - ξ) ⁻¹' ((ball (c * t⁻¹) : AddSubgroup k) : Set k) ∈ nhds ξ` using `((isOpen_ball _).preimage (continuous_sub_right ξ)).mem_nhds (by simp [(ball _).zero_mem])`. Use `Filter.mem_of_superset hU fun η hη => ?_` and prove the remaining obligations. Establish `: η = ξ + (η - ξ)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq, not_not] at hξ ⊢`. Rewrite using `[this, avg_shift ψ σ hc hη]`. Conclude with `hξ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_notMem (W : Submodule ℂ V) (s t : kˣ) (x : V) :
     IsClosed {ξ : k | avg ψ σ s t ξ x ∉ W} := by
@@ -65,21 +65,19 @@ variable (hadd : ∀ a b, σ (a + b) = σ a * σ b)
 
 include hadd in
 /- English proof (translation)
-Set `P : V → Prop` to `fun z => ∃ s' t' : kˣ, valuation k (s' : k) ≤ valuation k (s : k) ∧ valuation k (s : k) ≤ valuation k (t' : k) ∧ ∀ s'' t'' : kˣ, valuation k (s'' : k) ≤ valuation k (s' : k) → valuation k (t' : k) ≤ valuation k (t'' : k) → avg ψ σ s'' t'' ξ z ∈ W`. Establish `Padd : ∀ z1 z2, P z1 → P z2 → P (z1 + z2)`. Introduce and unpack `z1 z2 ⟨s1, t1, hs1, ht1, h1⟩ ⟨s2, t2, hs2, ht2, h2⟩`. Take `⟨s', a1, a2⟩` from `exists_min s1 s2`. Take `⟨t', b1, b2⟩` from `exists_max t1 t2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s', t', a1.trans hs1, ht1.trans b1, fun s'' t'' h1' h2' => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `W.add_mem (h1 _ _ (h1'.trans a1) (b1.trans h2')) (h2 _ _ (h1'.trans a2) (b2.trans h2'))`. Establish `PW : ∀ w ∈ W, P w` using `fun w hw => ⟨s, s, le_rfl, le_rfl, fun _ _ _ _ => avg_mem ψ σ W hW _ _ _ hw⟩`. Establish `Pspan : ∀ z ∈ Submodule.span ℂ {z | ∃ (a : k) (y : V), z = σ a y - ((ψ (ξ * a) : Circle) : ℂ) • y}, P z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨a, y, rfl⟩` from `hz`. Take `⟨sy, hsy⟩` from `hsm y`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ta, hta⟩` from `exists_ball_mem a`. Take `⟨s', a1, a2⟩` from `exists_min s sy`. Take `⟨t', b1, b2⟩` from `exists_max s ta`. Use `⟨s', t', a1, b1, fun s'' t'' h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hy'' : ∀ h ∈ ball s'', σ h y = y` using `fun h hh => hsy h (ball_mono (h1.trans a2) hh)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hξ'' : ∀ h ∈ ball s'', ψ (ξ * h) = 1` using `fun h hh => hξs h (ball_mono (h1.trans a1) hh)`. Establish `ha : a ∈ ball t''` using `ball_mono (b2.trans h2) hta`. Rewrite using `[map_sub, map_smul, ← Module.End.mul_apply, avg_comm ψ σ hadd, Module.End.mul_apply, avg_eigen ψ σ hadd hξ'' hy'' ha, sub_self]`. Conclude with `W.zero_mem`. Consider the case `zero => exact PW 0 W.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add z1 z2 _ _ h1 h2 => exact Padd z1 z2 h1 h2`. Consider the case `smul r z _ h`. Take `⟨s', t', a1, b1, hz⟩` from `h`. Conclude with `⟨s', t', a1, b1, fun s'' t'' h1 h2 => by rw [map_smul]; exact W.smul_mem r (hz _ _ h1 h2)⟩`. Take `⟨w, hw, y, hy, rfl⟩` from `Submodule.mem_sup.1 hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s', t', hs', ht', h⟩` from `Padd w y (PW w hw) (Pspan y hy)`. Use `⟨t', ht', ?_⟩` and prove the remaining obligations. Establish `h1` using `h s' t' le_rfl le_rfl`. Establish `e` using `avg_level ψ σ hadd (t := t') hs' hξs hs`. Establish `hm : ((Fintype.card (Q s' t') : ℕ) : ℂ) • avg ψ σ s t' ξ (w + y) ∈ W`.
-
-Rewrite using `[← e]`. Conclude with `W.smul_mem _ h1`. Conclude with `(W.smul_mem_iff (card_ne_zero _ _)).1 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_step (W : Submodule ℂ V) (hW : ∀ a, ∀ w ∈ W, σ a w ∈ W)
     (hsm : ∀ v : V, ∃ s : kˣ, ∀ h ∈ ball s, σ h v = v) {s : kˣ} {x : V} (hs : ∀ h ∈ ball s, σ h x = x) {ξ : k}
@@ -131,15 +129,15 @@ theorem key_step (W : Submodule ℂ V) (hW : ∀ a, ∀ w ∈ W, σ a w ∈ W)
 include hc hadd in
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hxW⟩ : ∃ x, x ∉ W := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (eq_top_iff.2 fun x _ => h x)`. Take `⟨s, hs⟩` from `hsm x`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ι` to `{t : kˣ // valuation k (s : k) ≤ valuation k (t : k)}`. Use `haveI : Nonempty ι := ⟨⟨s, le_rfl⟩⟩`. Set `C : ι → Set k` to `fun t => ((ball (c * s⁻¹) : AddSubgroup k) : Set k) ∩ {ξ | avg ψ σ s t.1 ξ x ∉ W}`. Establish `hdir : Directed (· ⊇ ·) C`. Introduce `t1 t2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Break down `le_total (valuation k (t1.1 : k)) (valuation k (t2.1 : k)) with h | h` into its components or cases. Conclude with `⟨t2, fun ξ hξ => ⟨hξ.1, fun hm => hξ.2 (avg_mono_mem ψ σ hadd W hW h (psi_triv hc hξ.1) hs hm)⟩, le_rfl⟩`. Conclude with `⟨t1, le_rfl, fun ξ hξ => ⟨hξ.1, fun hm => hξ.2 (avg_mono_mem ψ σ hadd W hW h (psi_triv hc hξ.1) hs hm)⟩⟩`. Establish `hnon : ∀ t, (C t).Nonempty` using `fun t => by`. Take `⟨ξ, h1, h2⟩` from `exists_avg_notMem ψ σ hc W (t := t.1) hs hxW`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨ξ, h1, h2⟩`. Establish `hcl : ∀ t, IsClosed (C t)` using `fun t => ((ball _).isClosed_of_isOpen (isOpen_ball _)).inter (isClosed_notMem ψ σ hc W s t.1 x)`. Establish `hcpt : ∀ t, IsCompact (C t)` using `fun t => (isCompact_cball _).inter_right (isClosed_notMem ψ σ hc W s t.1 x)`. Take `⟨ξ, hξ⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed C hdir hnon hcpt hcl`. Rewrite `hξ` using `[Set.mem_iInter]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hξs` using `psi_triv hc (hξ ⟨s, le_rfl⟩).1`. Use `⟨ξ, fun htop => ?_⟩` and prove the remaining obligations. Take `⟨t', ht', hm⟩` from `key_step ψ σ hadd W hW hsm hs hξs (x := x) (by rw [htop]; exact Submodule.mem_top)`. Conclude with `(hξ ⟨t', ht'⟩).2 hm`.
+A detailed English derivation is pending.
 -/
 theorem exists_character_sup_ne_top (W : Submodule ℂ V) (hW : ∀ a, ∀ w ∈ W, σ a w ∈ W)
     (hsm : ∀ v : V, ∃ s : kˣ, ∀ h ∈ ball s, σ h v = v) (hne : W ≠ ⊤) :

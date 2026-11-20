@@ -22,11 +22,11 @@ instance (p : Seminorm ℂ E) : NormedSpace ℂ (WithSemi p) where
   norm_smul_le a x := (map_smul_eq_mul p a x).le
 
 /- English proof (translation)
-Set `j₀ : E →ₗ[ℂ] WithSemi p` to `LinearMap.id`. Establish `hj : Continuous j₀`. Use `continuous_of_continuousAt_zero j₀ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, tendsto_zero_iff_norm_tendsto_zero]`. Use `hp.tendsto 0` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[map_zero]`. Conclude with `this`. Set `j : E →L[ℂ] WithSemi p` to `⟨j₀, hj⟩`. Take `⟨C, hC⟩` from `banach_steinhaus (g := fun t => NormedSpace.inclusionInDoubleDual ℂ (WithSemi p) (j (f t))) (fun φ => h (φ.comp j))`. Use `⟨C, fun t => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hC t` as an intermediate fact. Rewrite `this` using `[show NormedSpace.inclusionInDoubleDual ℂ (WithSemi p) (j (f t)) = NormedSpace.inclusionInDoubleDualLi ℂ (j (f t)) from rfl, LinearIsometry.norm_map]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bounded_of_weak [TopologicalSpace E] [IsTopologicalAddGroup E] {T : Type} (f : T → E)
     (h : ∀ l : E →L[ℂ] ℂ, ∃ C : ℝ, ∀ t, ‖l (f t)‖ ≤ C) (p : Seminorm ℂ E) (hp : Continuous p) :
@@ -58,18 +58,18 @@ def Tame (R : W → E →ₗ[ℂ] E) : Prop :=
     ∀ w f, p (R w f - f) ≤ ‖w‖ * (1 + ‖w‖) ^ M * q f
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(‖c‖₊ : NNReal) • q, (continuous_const.mul hq : Continuous fun f => |c| * q f), fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem continuous_smul_semi (c : ℝ) (q : Seminorm ℂ E) (hq : Continuous q) :
     ∃ q' : Seminorm ℂ E, Continuous q' ∧ ∀ f, q' f = |c| * q f :=
   ⟨(‖c‖₊ : NNReal) • q, (continuous_const.mul hq : Continuous fun f => |c| * q f), fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨q, M, hq, hb⟩` from `h p hp`. Use `⟨p + q, M + 1, (hp.add hq : Continuous fun f => p f + q f), fun w f => ?_⟩` and prove the remaining obligations. Establish `h1 : p (R w f) ≤ p (R w f - f) + p f`. Simplify using `using map_add_le_add p (R w f - f) f`. Establish `h2` using `hb w f`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3 : 1 ≤ (1 + ‖w‖) ^ M` using `one_le_pow₀ (by linarith [norm_nonneg w])`. Establish `hp0` using `apply_nonneg p f`. Establish `hq0` using `apply_nonneg q f`. Establish `hw` using `norm_nonneg w`. Rewrite using `[Seminorm.add_apply, pow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_nonneg hw hp0, mul_nonneg (mul_nonneg hw hp0) (sub_nonneg.2 h3), mul_nonneg hp0 (sub_nonneg.2 h3), mul_nonneg hq0 (sub_nonneg.2 h3)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem Tame.growth {R : W → E →ₗ[ℂ] E} (h : Tame R) (p : Seminorm ℂ E) (hp : Continuous p) :
     ∃ (q : Seminorm ℂ E) (M : ℕ), Continuous q ∧ ∀ w f, p (R w f) ≤ (1 + ‖w‖) ^ M * q f := by
@@ -87,11 +87,11 @@ theorem Tame.growth {R : W → E →ₗ[ℂ] E} (h : Tame R) (p : Seminorm ℂ E
     mul_nonneg hq0 (sub_nonneg.2 h3)]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact ⟨p, hp, fun u _ f => by simp⟩`. Consider the case `succ j ih`. Take `⟨q, hq, hb⟩` from `ih`. Take `⟨q₁, M, hq₁, hb₁⟩` from `h q hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q₂, hq₂, e₂⟩` from `continuous_smul_semi (2 ^ M) q₁ hq₁`. Use `⟨q₂, hq₂, fun u hu f => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, Module.End.mul_apply]`. Use `(hb u hu _).trans ?_` and prove the remaining obligations. Rewrite using `[pow_succ, mul_assoc, e₂, abs_of_nonneg (by positivity)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Rewrite using `[LinearMap.sub_apply, Module.End.one_apply, ← mul_assoc]`. Use `(hb₁ u f).trans ?_` and prove the remaining obligations. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Tame.iter {R : W → E →ₗ[ℂ] E} (h : Tame R) (j : ℕ) (p : Seminorm ℂ E) (hp : Continuous p) :
     ∃ q : Seminorm ℂ E, Continuous q ∧ ∀ u, ‖u‖ ≤ 1 → ∀ f, p (((R u - 1) ^ j) f) ≤ ‖u‖ ^ j * q f := by
@@ -112,25 +112,23 @@ theorem Tame.iter {R : W → E →ₗ[ℂ] E} (h : Tame R) (j : ℕ) (p : Semino
     linarith
 
 /- English proof (translation)
-Take `⟨q₁, M, hq₁, hb₁⟩` from `h.growth p hp`. Take `⟨q₂, hq₂, hb₂⟩` from `h.iter (M + N) q₁ hq₁`. Use `set r₀ := max C 1 with hr₀`. Take `⟨q₃, hq₃, e₃⟩` from `continuous_smul_semi ((1 + |A|) ^ M * (1 + r₀) ^ (M + N)) q₁ hq₁`. Take `⟨q₄, hq₄, e₄⟩` from `continuous_smul_semi ((1 + |A|) ^ M * (2 * r₀) ^ (M + N)) q₂ hq₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr1 : 1 ≤ r₀` using `le_max_right _ _`. Use `⟨q₃ + q₄, (hq₃.add hq₄ : Continuous fun f => q₃ f + q₄ f), fun s r hr hs hu f => ?_⟩` and prove the remaining obligations. Establish `hs' : 1 + ‖s‖ ≤ (1 + |A|) * (1 + r)`. Use polynomial arithmetic with `[le_abs_self A, abs_nonneg A, mul_le_mul_of_nonneg_right (le_abs_self A) hr]`. Establish `hpow : (1 + ‖s‖) ^ M ≤ (1 + |A|) ^ M * (1 + r) ^ M`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_pow]`. Use `gcongr`. Rewrite using `[Real.rpow_neg (by linarith), Real.rpow_natCast, ← div_eq_mul_inv, le_div_iff₀ (by positivity), Seminorm.add_apply]`. Establish `h3` using `apply_nonneg q₃ f`. Establish `h4` using `apply_nonneg q₄ f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Break down `le_or_gt r r₀ with hrr | hrr` into its components or cases. Use `le_trans ?_ (le_add_of_nonneg_right h4)` and prove the remaining obligations. Rewrite using `[e₃, abs_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Use `le_trans ?_ (le_add_of_nonneg_left h3)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, huC, hu0⟩` from `hu (by linarith)`. Establish `hC : C ≤ r₀` using `le_max_left _ _`. Establish `hu1 : ‖u‖ ≤ 1`. Assume the negation of the conclusion as `hcon`. Use polynomial arithmetic with `[not_le.1 hcon]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstep : ∀ g, p (R s g) ≤ p (R s ((R u - 1) g))` using `fun g => by`. Establish `e1 : (2 : ℂ) • R s g = R s (R u g + g) - R s ((R u - 1) g)`. Rewrite using `[← map_sub, ← map_smul, LinearMap.sub_apply, Module.End.one_apply, two_smul]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `map_sub_le_add p (R s (R u g + g)) (R s ((R u - 1) g))`. Rewrite `e2` using `[← e1, map_smul_eq_mul, hu0]`. Use `apply_nonneg p (R s g)` as an intermediate fact. Simplify using `only [Complex.norm_ofNat] at e2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Proceed by induction.
 
-Establish `hit : ∀ j : ℕ, p (R s f) ≤ p (R s (((R u - 1) ^ j) f))` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', Module.End.mul_apply]`. Conclude with `ih.trans (hstep _)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hur : ‖u‖ * (1 + r) ≤ 2 * r₀` using `by nlinarith`. Rewrite using `[e₄, abs_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Use `(hit (M + N)).trans ((hb₁ s _).trans ?_)` and prove the remaining obligations. Use `gcongr`.
-
-Conclude with `hb₂ u hu1 f`. Use `_ = (1 + |A|) ^ M * (‖u‖ * (1 + r)) ^ (M + N) * q₂ f := by rw [mul_pow ‖u‖]; ring`. Use `_ ≤ _ := by gcongr`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Tame.decay {R : W → E →ₗ[ℂ] E} (h : Tame R) (p : Seminorm ℂ E) (hp : Continuous p) (A C : ℝ) (N : ℕ) :
     ∃ q : Seminorm ℂ E, Continuous q ∧ ∀ (s : W) (r : ℝ), 0 ≤ r → ‖s‖ ≤ A * r →
@@ -194,15 +192,15 @@ def heisOp (L : V →L[ℝ] ℝ) (k : ℝ) (a : V) : SchwartzMap V ℂ →L[ℂ]
   (SchwartzMap.smulLeftCLM ℂ (fun y => eChar (L y + k))).comp (SchwartzMap.compSubConstCLM ℂ (-a))
 
 /- English proof (translation)
-Introduce `p hp`. Take `⟨q₁, M₁, hq₁, hb₁⟩` from `hP p hp`. Take `⟨q₂, M₂, hq₂, hb₂⟩` from `hT p hp`. Establish `hTt : Tame fun a : V => (SchwartzMap.compSubConstCLM ℂ (-a) : SchwartzMap V ℂ →L[ℂ] _).toLinearMap` using `hT`. Take `⟨q₃, M₃, hq₃, hb₃⟩` from `hTt.growth q₁ hq₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q₄, hq₄, e₄⟩` from `continuous_smul_semi (c ^ (M₁ + 1)) q₃ hq₃`. Use `⟨q₂ + q₄, M₁ + M₂ + M₃ + 1, (hq₂.add hq₄ : Continuous fun f => q₂ f + q₄ f), fun w f => ?_⟩` and prove the remaining obligations. Use `set g := SchwartzMap.compSubConstCLM ℂ (-(a w)) f with hg`. Establish `h1` using `map_add_le_add p (SchwartzMap.smulLeftCLM ℂ (fun y => eChar (L w y + k w)) g - g) (g - f)`. Rewrite `h1` using `[sub_add_sub_cancel]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans h1 ?_` and prove the remaining obligations. Establish `hw` using `norm_nonneg w`. Establish `h1w : 1 ≤ 1 + ‖w‖` using `by linarith`. Establish `hc0 : 0 < c` using `by linarith`. Rewrite using `[Seminorm.add_apply, mul_add, add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_le_add ((hb₂ _ f).trans ?_) ((hb₁ _ _ g).trans ?_)` and prove the remaining obligations. Use `ha w` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : q₁ g ≤ (1 + ‖w‖) ^ M₃ * q₃ f` using `(hb₃ (a w) f).trans (by have := ha w; gcongr)`. Establish `h3 : ‖L w‖ + |k w| ≤ c * (‖w‖ * (1 + ‖w‖))` using `by nlinarith [hL w, hk w]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 1 + ‖L w‖ ≤ c * (1 + ‖w‖)` using `by nlinarith [hL w]`. Rewrite using `[e₄, abs_of_nonneg (pow_nonneg hc0.le _)]`. Establish `h5` using `apply_nonneg q₃ f`. Establish `h6` using `apply_nonneg q₁ g`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tame_heisOp
     (hT : ∀ p : Seminorm ℂ (SchwartzMap V ℂ), Continuous p →

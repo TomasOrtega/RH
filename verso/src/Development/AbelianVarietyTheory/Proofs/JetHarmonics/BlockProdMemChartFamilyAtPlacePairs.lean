@@ -17,11 +17,11 @@ open scoped BigOperators
 open Classical Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.L2.Pj GlobalTheory.RowAt
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_eq_single g, Finset.prod_eq_single a, Finset.prod_eq_single n]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[hk]`. Introduce `hn`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: e = 0`. Assume the negation of the conclusion as `he`. Conclude with `hn (Finset.mem_range.2 (Nat.lt_succ_of_le (h he)))`. Simplify using `[this]`. Introduce `a' _ ha`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[ha]`. Simplify using the standard rewrite rules. Introduce `g' _ hg`. Simplify using `[hg]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_pow_single {R : Type} [CommMonoid R] {d : ℕ} [NeZero d] (f : Fin 2 → ZMod d → ℕ → R)
     (M : Fin 2 → ZMod d → ℕ) (g : Fin 2) (a : ZMod d) (n e : ℕ) (h : e ≠ 0 → n ≤ M g a) :
@@ -47,23 +47,23 @@ variable {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → T
   [∀ g, Fintype (I g)] [∀ g, Fintype (J g)] (X : RowData C V d I J) (F : RF.Flag X)
 
 /- English proof (translation)
-Consider the cases of `b with`. Consider the case `bi g a i y`. Simplify using `only [RF.GlobalTheory.wt, pow_add, Finset.prod_mul_distrib]`. Rewrite using `[prod_pow_single (fun g' a' k => MvPolynomial.rename (F.letter g' a') (minorK C ((RF.GlobalTheory.bi g a i y).what₂ X.n) (X.rkF g' a') k)) M g a X.n, prod_pow_single (fun g' a' k => MvPolynomial.rename (F.letter g' a') (minorK C ((RF.GlobalTheory.bi g a i y).what₂ X.n) (X.rkF g' …`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `he`. Use `h _ _ _ ?_` and prove the remaining obligations. Simplify using `[RF.GlobalTheory.wt, he]`. Introduce `he`. Use `h _ _ _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [RF.GlobalTheory.wt, and_self, if_true]`. Use linear arithmetic over natural numbers and integers. Consider the case `ch g a u`. Simplify using `only [RF.GlobalTheory.wt]`. Rewrite using `[prod_pow_single (fun g' a' k => MvPolynomial.rename (F.letter g' a') (minorK C ((RF.GlobalTheory.ch g a u).what₂ X.n) (X.rkF g' a') k)) M g a X.n]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `he`. Use `h _ _ _ ?_` and prove the remaining obligations. Simplify using `[RF.GlobalTheory.wt, he]`. Consider the case `mon g e N`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[Finset.prod_eq_single g]`. Use `show (∏ a : ZMod d, MvPolynomial.rename (F.letter g a) (monP C N (X.rkF g a) (e a))) = ∏ a : ZMod d, ∏ k ∈ Finset.range (M g a + 1), MvPolynomial.rename (F.letter g a) (minorK C N (X.rkF g a) k) ^ (RF.GlobalTheory.mon g e N).wt X g a k`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[monP, map_prod]`. Establish `h1 : ∀ k ∈ Finset.Icc 1 (min N (X.rkF g a)), (RF.GlobalTheory.mon g e N).wt X g a k = e a k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Rewrite `hk` using `[Finset.mem_Icc]`. Simplify using `only [RF.GlobalTheory.wt]`. Rewrite using `[if_pos ⟨trivial, hk⟩]`. Use `Finset.prod_congr_of_eq_on_inter ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk hk'`. Establish `: e a k = 0`. Assume the negation of the conclusion as `he`. Conclude with `hk' (Finset.mem_range.2 (Nat.lt_succ_of_le (h g a k (by rwa [h1 k hk]))))`. Rewrite using `[this, pow_zero, map_one]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k _ hk`. Rewrite `hk` using `[Finset.mem_Icc]`. Simplify using `only [RF.GlobalTheory.wt]`. Rewrite using `[if_neg (fun h => hk h.2), pow_zero]`. Introduce `k hk _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1 k hk, map_pow]`. Introduce `g' _ hg`. Simplify using `[RF.GlobalTheory.wt, hg]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem poly_eq (b : RF.GlobalTheory d) (M : Fin 2 → ZMod d → ℕ) (h : ∀ g a k, b.wt X g a k ≠ 0 → k ≤ M g a) :
     b.poly X F = ∏ g, ∏ a, ∏ k ∈ Finset.range (M g a + 1),
@@ -120,13 +120,13 @@ theorem poly_eq (b : RF.GlobalTheory d) (M : Fin 2 → ZMod d → ℕ) (h : ∀ 
     · simp
 
 /- English proof (translation)
-Consider the cases of `b with`. Consider the case `bi g' a' i y`. Simplify using `only [RF.GlobalTheory.wt] at h`. Assume the negation of the conclusion as `hk`. Establish `: k ≠ X.n` using `fun e => hk (le_of_eq e)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `[this] at h`. Consider the case `ch g' a' u`. Simplify using `only [RF.GlobalTheory.wt] at h`. Assume the negation of the conclusion as `hk`. Establish `: k ≠ X.n` using `fun e => hk (le_of_eq e)`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `[this] at h`. Consider the case `mon g' e N`. Simplify using `only [RF.GlobalTheory.wt] at h`. Assume the negation of the conclusion as `hk`. Rewrite `h` using `[if_neg]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h rfl`. Introduce and unpack `⟨-, -, h3⟩`. Conclude with `hk (h3.trans (min_le_left _ _))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem le_rows (b : RF.GlobalTheory d) (g : Fin 2) (a : ZMod d) (k : ℕ) (h : b.wt X g a k ≠ 0) : k ≤ b.what₂ X.n := by
   cases b with
@@ -149,15 +149,15 @@ theorem le_rows (b : RF.GlobalTheory d) (g : Fin 2) (a : ZMod d) (k : ℕ) (h : 
       exact hk (h3.trans (min_le_left _ _))
 
 /- English proof (translation)
-Establish `hg : ∀ g : Fin 2, 1 - g ≠ g` using `by decide`. Consider the cases of `b with`. Consider the case `bi g' a'' i y`. Simplify using `only [RF.GlobalTheory.wt] at h h'`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Assume the negation of the conclusion as `hk`. Simplify using `[hk] at h`. Assume the negation of the conclusion as `hk`. Simplify using `[hk] at h'`. Consider the case `ch g' a'' u`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [RF.GlobalTheory.wt] at h h'`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hk`. Simplify using `[hk] at h`. Assume the negation of the conclusion as `hk`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `[hk] at h'`. Consider the case `mon g' e N`. Simplify using `only [RF.GlobalTheory.wt] at h h'`. Establish `h1 : g = g'`. Assume the negation of the conclusion as `hk`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `[hk] at h`. Establish `h2 : 1 - g = g'`. Assume the negation of the conclusion as `hk`. Simplify using `[hk] at h'`. Conclude with `absurd (h2.trans h1.symm) (hg g)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem both_groups (b : RF.GlobalTheory d) (g : Fin 2) (a a' : ZMod d) (k k' : ℕ) (h : b.wt X g a k ≠ 0)
     (h' : b.wt X (1 - g) a' k' ≠ 0) : k = X.n ∧ k' = X.n := by
@@ -204,9 +204,9 @@ def toLet {n : ℕ} (x : Fin n × WVO (Ix r tau)) : Formalism.L2.Pj.Letter Ty r 
   ⟨tau x.2.1 x.2.2.1 x.2.2.2.1, x.2.2.2.2, x.1⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨o, g, a, i⟩ ⟨o', g', a', i'⟩ h`. Establish `h1 : ((o, g, a) : Orb × Fin 2 × ZMod d) = (o', g', a')` using `inj (congrArg Sigma.fst h)`. Simplify using `only [Prod.mk.injEq] at h1`. Take `⟨rfl, rfl, rfl⟩` from `h1`. Establish `h2 : i = i'` using `eq_of_heq (Sigma.mk.inj h).2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toRow_inj (inj : Function.Injective fun x : Orb × Fin 2 × ZMod d => tau x.1 x.2.1 x.2.2) :
     Function.Injective (toRow r tau) := by
@@ -218,7 +218,7 @@ theorem toRow_inj (inj : Function.Injective fun x : Orb × Fin 2 × ZMod d => ta
   rw [h2]
 
 /- English proof (translation)
-Take `⟨s, i⟩` from `x`. Substitute `h1` using the available equality. Conclude with `congrArg _ (Fin.ext h2)`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sigma_eq {A : Type} {m : A → ℕ} (x : Σ s, Fin (m s)) (a : A) (c : Fin (m a)) (h1 : x.1 = a)
     (h2 : (x.2 : ℕ) = c) : x = ⟨a, c⟩ := by
@@ -229,15 +229,15 @@ theorem sigma_eq {A : Type} {m : A → ℕ} (x : Σ s, Fin (m s)) (a : A) (c : F
 variable {C : Type} [Field C] {V : VF C} [NeZero d] [Fintype Orb]
 
 /- English proof (translation)
-Establish `hi` using `toRow_inj r tau inj`. Establish `hx : ∀ x : Fin n × WVO (Ix r tau), (⟨(toLet r tau x).1, (toLet r tau x).2.1⟩ : Σ τ : Ty, Fin (r τ)) = toRow r tau x.2` using `fun _ => rfl`. Use `⟨fun ℓ w => if toRow r tau w = ⟨ℓ.1, ℓ.2.1⟩ then 1 else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `ℓ hℓ`. Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 (MvPolynomial.vars_rename _ _ hℓ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `beta_reduce`. Rewrite using `[hx, Finset.sum_eq_single x.2]`. Rewrite using `[hU, if_pos rfl, one_smul]`. Introduce `w _ hw`. Rewrite using `[if_neg (fun h => hw (hi h)), zero_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[MvPolynomial.aeval_rename]`. Establish `: ((fun ℓ : Formalism.L2.Pj.Letter Ty r n => ∑ w : WVO (Ix r tau), MvPolynomial.C (if toRow r tau w = ⟨ℓ.1, ℓ.2.1⟩ then (1 : C) else 0) * MvPolynomial.X (ℓ.2.2, w)) ∘ toLet r tau) = (MvPolynomial.X : _ → MvPolynomial (Fin n × WVO (Ix r tau)) C)`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, Finset.sum_eq_single x.2]`. Rewrite using `[if_pos rfl, map_one, one_mul]`. Both sides reduce to the same expression. Introduce `w _ hw`. Rewrite using `[if_neg (fun h => hw (hi h)), map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, MvPolynomial.aeval_X_left_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isImgO {dd n : ℕ} (inj : Function.Injective fun x : Orb × Fin 2 × ZMod d => tau x.1 x.2.1 x.2.2)
     (X : ∀ o, RawChart C d (Ix r tau o) (Fin dd)) (U : (Σ τ : Ty, Fin (r τ)) → Fin dd → C)
@@ -275,11 +275,11 @@ def ind (C : Type) [Field C] {N n : ℕ} (col : Fin N → Fin n) (k : ℕ) (ρ :
   if h : ρ.val < N then (if b = col ⟨ρ.val, h⟩ then 1 else 0) else 0
 
 /- English proof (translation)
-Rewrite using `[minorK, dif_pos ⟨hN, hr⟩, toAll, MvPolynomial.rename_rename, MvPolynomial.rename_rename, MvPolynomial.rename_rename, AlgHom.map_det]`. Use `congr 1`. Use extensionality with `ρ i : 2`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, MvPolynomial.rename_X, GlobalTheory.CombMinor.cMat]`. Establish `hρ : ρ.val < N` using `lt_of_lt_of_le ρ.2 hN`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_eq_single (col ⟨ρ.val, hρ⟩)]`. Rewrite using `[ind, dif_pos hρ, if_pos rfl, map_one, one_mul]`. Use `congr 1`. Simplify using `only [Function.comp, RF.Flag.letter]`. Rewrite using `[sigma_eq _ a (Fin.castLE hk i) (h1 g a (Fin.castLE hr i)) (h2 g a (Fin.castLE hr i))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `b _ hb`. Rewrite using `[ind, dif_pos hρ, if_neg hb, map_zero, zero_mul]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rename_minor {J : Fin 2 → Type} [∀ g, Fintype (J g)] (o : Orb) (X : RowData C V d (Ix r tau o) J)
     (F : RF.Flag X) (h1 : ∀ g a c, (F.en g a c).1 = a) (h2 : ∀ g a c, ((F.en g a c).2 : ℕ) = c)
@@ -307,7 +307,7 @@ theorem rename_minor {J : Fin 2 → Type} [∀ g, Fintype (J g)] (o : Orb) (X : 
   · simp
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun k => if i < k then f k else 0) (m + 1), ← Finset.sum_filter]`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_fin_gap (m i : ℕ) (f : ℕ → ℕ) :
     ∑ k : Fin (m + 1), (if i < k.val then f k.val else 0) = ∑ k ∈ Finset.Icc (i + 1) m, f k := by
@@ -318,41 +318,37 @@ theorem sum_fin_gap (m i : ℕ) (f : ℕ → ℕ) :
   omega
 
 /- English proof (translation)
-Establish `hg1 : ∀ g : Fin 2, 1 - g ≠ g` using `by decide`. Establish `hL' : ∀ o g s k, ∑ i : Fin (L o).length, (RF.blkAt L o i).wt (X o) g s k = gap (r (tau o g s)) (a (tau o g s)) k`. Introduce `o g s k`. Rewrite using `[← hL]`. Conclude with `RF.sum_get (L o) fun q => q.1.wt (X o) g s k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : ∀ o i g s k, (RF.blkAt L o i).wt (X o) g s k ≠ 0 → k ≤ r (tau o g s)`. Introduce `o i g s k h`. Use `((gap_sums _ _ (hdom (tau o g s))).1 k ?_).2` and prove the remaining obligations. Rewrite using `[← hL']`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h ((Finset.sum_eq_zero_iff.1 h0) i (Finset.mem_univ _))`. Establish `key` using `GlobalTheory.CombMinor.prod_det_mem_HaO Ty r n C O cc isX a (Σ o, Σ _i : Fin (L o).length, Σ g : Fin 2, Σ s : ZMod d, Fin (r (tau o g s) + 1)) (fun α => tau α.1 α.2.2.1 α.2.2.2.1) (fun α => α.2.2.2.2.val) (fun α => Nat.le_of_lt_succ α.2.2.2.2.2) (fun α => ind C (fun ρ => pl ⟨α.1, …`. Use `key using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_prod, Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun o _ => ?_` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : ∀ (P : Fin (L o).length → MvPolynomial (Fin n × WV (Ix r tau o)) C), toAll o (∏ i, P i) = ∏ i, toAll (I` using `Ix r tau) o (P i) := fun P => by unfold toAll; rw [map_prod]`. Rewrite using `[prodAll, ht, map_prod, Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[poly_eq (X o) (F o) _ (fun g s => r (tau o g s)) (hle o i), toAll, Fintype.prod_sigma]`. Simplify using `only [map_prod, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← Fin.prod_univ_eq_prod_range]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `he : (RF.blkAt L o i).wt (X o) g s k.val = 0`. Simplify using `only [he, pow_zero]`. Use `congr 1`. Conclude with `rename_minor r tau o (X o) (F o) (h1 o) (h2 o) (fun ρ => pl ⟨o, i, ρ⟩) g s k.val (Nat.le_of_lt_succ k.2) (le_rows _ _ _ _ _ he) (by rw [hrk]; exact Nat.le_of_lt_succ k.2)`. Introduce `α ρ b`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Unfold `ind`. Use `split_ifs`. Conclude with `O.one_mem`. Conclude with `O.zero_mem`. Conclude with `O.zero_mem`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `τ h`. Take `⟨⟨o, g, s⟩, rfl⟩` from `surj τ`. Establish `h3 : ((o, 1 - g, s) : Orb × Fin 2 × ZMod d) = (o, g, s)` using `inj ((hcc o g s).symm.trans h)`. Simplify using `only [Prod.mk.injEq] at h3`. Conclude with `hg1 g h3.2.1`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨o, i, g, s, k⟩ ⟨o', i', g', s', k'⟩ he he' hσ ρ ρ' b`. Establish `h3 : ((o', g', s') : Orb × Fin 2 × ZMod d) = (o, 1 - g, s)` using `inj (hσ.trans (hcc o g s))`. Simplify using `only [Prod.mk.injEq] at h3`. Take `⟨rfl, rfl, rfl⟩` from `h3`. Assume the negation of the conclusion as `hc`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Rewrite `hc` using `[not_or]`. Take `⟨hc, hc'⟩` from `hc`. Simplify using `only [ind] at hc hc'`. Apply the tactic sequence `split_ifs at hc hc' with a1 a2 a3 a4 <;> try contradiction`. Establish `h4` using `hpl (a2.symm.trans a4)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h5 : i = i'` using `congrArg Sigma.fst (eq_of_heq (Sigma.mk.inj h4).2)`. Substitute `h5` using the available equality. Take `⟨e1, e2⟩` from `both_groups _ _ _ _ _ _ _ he he'`. Establish `b1` using `k.2`. Establish `b2` using `k'.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hsm o' g s' with h | h <;> simp only at e1 e2 <;> omega`. Introduce `τ i`. Take `⟨⟨o, g, s⟩, rfl⟩` from `surj τ`. Simplify using `only at i ⊢`. Rewrite using `[← (((gap_sums _ _ (hdom (tau o g s))).2 _ le_rfl).1 i.val i.2), ← sum_fin_gap, Finset.sum_filter, Fintype.sum_sigma, Finset.sum_eq_single o]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.sum_sigma]`. Simplify using `only [← hL']`. Establish `: ∀ k : Fin (r (tau o g s) + 1), (if i.val < k.val then ∑ j : Fin (L o).length, (RF.blkAt L o j).wt (X o) g s k.val else 0) = ∑ j : Fin (L o).length, if i.val < k.val then (RF.blkAt L o j).wt (X o) g s k.val else 0`. Introduce `k`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_congr rfl fun k _ => this k]`. Use `Eq.trans ?_ Finset.sum_comm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single g]`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single s]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Introduce `s' _ hs`. Use `Finset.sum_eq_zero fun k _ => if_neg fun h => hs ?_` and prove the remaining obligations. Establish `h3 : ((o, g, s') : Orb × Fin 2 × ZMod d) = (o, g, s)` using `inj h.1`. Simplify using `using h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Introduce `g' _ hs`. Use `Finset.sum_eq_zero fun k _ => if_neg fun h => hs ?_` and prove the remaining obligations. Establish `h3 : ((o, g', k.1) : Orb × Fin 2 × ZMod d) = (o, g, s)` using `inj h.1`. Simplify using `only [Prod.mk.injEq] at h3`.
-
-Conclude with `h3.2.1`. Simplify using the standard rewrite rules. Introduce `o' _ hs`. Use `Finset.sum_eq_zero fun k _ => if_neg fun h => hs ?_` and prove the remaining obligations. Establish `h3 : ((o', k.2.1, k.2.2.1) : Orb × Fin 2 × ZMod d) = (o, g, s)` using `inj h.1`.
-
-Simplify using `only [Prod.mk.injEq] at h3`. Conclude with `h3.1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_mem [Fintype Ty] (O : Subring C) (cc : Ty → Ty) (isX : Ty → Prop) (a : Ty → ℕ → ℕ)
     (inj : Function.Injective fun x : Orb × Fin 2 × ZMod d => tau x.1 x.2.1 x.2.2)
@@ -476,13 +472,11 @@ open Classical NumberField IsDedekindDomain Formalism.L2.FormalSeriesBounds Form
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw lv Xo c _ _ T io y C3 C _ _ V ι _ k Y _ Orb _ d _ lab ha hg surj hrk hj Hy F hF a hdom n L _ hL pl hpl`. Use `⟨_, ?_, isImgO Dw.mult lab.tau ha.inj (fun o => Y.raw (pairOfLab ha hg o)) (fun w i => ι (chartUnitVectors C3 w i)) (fun w => rfl) _⟩` and prove the remaining obligations. Use `prod_mem Dw.mult lab.tau V.RR _ _ (fun τ i => a (τ, i)) ha.inj surj ?_ (fun o => RF.rd Y (pairOfLab ha hg) Hy o) F (fun o g s q => (F o).en_ty g s q) hF ?_ ?_ ?_ L (fun o => hL o (Finset.mem_univ o)) pl hpl` and prove the remaining obligations. Introduce `o g s fin_cases g`. Conclude with `(ha.conj o s).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show ComplexEmbedding.conjugate (lab.tau o 1 s) = lab.tau o 0 s`. Rewrite using `[ha.conj]`. Conclude with `star_star _`. Introduce `o g s`. Conclude with `(GlobalTheory.flag_of_numbering C V d (fun _ => ZMod d) (fun g s => Dw.mult (lab.tau o g s)) (fun _ => Equiv.refl _) _ (RF.rd Y (pairOfLab ha hg) Hy o) (fun _ _ => rfl)).1 g s`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `o g s show _ < lab.n ∨ _ < lab.n`. Distinguish the cases in `hb : lab.big o g s`. Use `right`. Rewrite using `[(hrk o).2.2 (1 - g) s (fun h => ((hrk o).1 g s).1 h hb)]`. Conclude with `hj`.
-
-Use `left`. Rewrite using `[(hrk o).2.2 g s hb]`. Conclude with `hj`. Introduce `τ i j hij hj'`. Conclude with `hdom τ ⟨i, lt_of_le_of_lt hij hj'⟩ ⟨j, hj'⟩ hij`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem blkMemSt_pair : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (lv : Level H) (Xo : Moduli Dw lv) (c : Coeff lv) [StarRing (𝓞 E)], (∀ x : 𝓞 E, star x = H.bar x) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C3 : IntChart T io y) (C : Type) [Field C] [CharZero C] (V : VF C) (ι : T.Fr →+* C), EmbOK T V ι → ∀ (k : ℕ) (Y : FBChart C V (𝓞 E) (chD C3.ch)), IsBC C3 ι k Y → ∀ (Orb : Type) [Fintype Orb] (d : ℕ) [NeZero d] (lab : Lab E Orb d) (ha : LabArith V io ι lab) (hg : LabGeo C3 ι Y lab), Function.Surjective (fun x : Orb × Fin 2 × ZMod d => lab.tau x.1 x.2.1 x.2.2) → lab.RankOK Dw → lab.j' < lab.n → ∀ (Hy : ∀ o, (Y.raw (pairOfLab ha hg o)).Hyps V) (F : ∀ o, RF.Flag (RF.rd Y (pairOfLab ha hg) Hy o)), (∀ o g s q, (((F o).en g s q).2 : ℕ) = q) → ∀ (a : (E →+* ℂ) × ℕ → ℕ), DomW Dw a → ∀ n : ℕ, RF.BlockMembershipChart Y (pairOfLab ha hg) Hy (chartLetterSystem C3 V ι a) n F Finset.univ (fun o g s => gap (Dw.mult (lab.tau o g s)) fun i => a (lab.tau o g s, i)) := by
   intro E _ _ _ H Dw lv Xo c _ _ T io y C3 C _ _ V ι _ k Y _ Orb _ d _ lab ha hg surj hrk hj Hy F hF a hdom n L _ hL pl hpl

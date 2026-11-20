@@ -21,9 +21,9 @@ section General
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Establish `e : ((f + f') • A + (1 - (f + f')) • (1 : Matrix (Fin n) (Fin n) R)) i j = f * A i j + f' * A i j + (1 - (f + f')) * (1 : Matrix (Fin n) (Fin n) R) i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_mul]`. Rewrite using `[e]`. Use `O.add_mem (O.add_mem (h i j) (h' i j)) (O.mul_mem (O.sub_mem O.one_mem (O.add_mem hf hf')) ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `O.one_mem`. Conclude with `O.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem cut_mem (O : Subring R) {f f' : R} (hf : f ∈ O) (hf' : f' ∈ O) (A : Matrix (Fin n) (Fin n) R)
     (h : ∀ i j, f * A i j ∈ O) (h' : ∀ i j, f' * A i j ∈ O) (i j : Fin n) :
@@ -39,21 +39,19 @@ theorem cut_mem (O : Subring R) {f f' : R} (hf : f ∈ O) (hf' : f' ∈ O) (A : 
   · exact O.zero_mem
 
 /- English proof (translation)
-Establish `hφ : (f + f') * (f + f') = f + f'`. Establish `h0' : f' * f = 0` using `by rw [mul_comm, h0]`. Simplify using `only [add_mul, mul_add, hff, hff', h0, h0', add_zero, zero_add]`. Set `Ym : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨_, cut_mem O hf hf' A hA hA' i j⟩`. Set `Ym' : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨_, cut_mem O hf hf' B hB hB' i j⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hm : Ym.map O.subtype = (f + f') • A + (1 - (f + f')) • (1 : Matrix (Fin n) (Fin n) R)` using `rfl`. Establish `hm' : Ym'.map O.subtype = (f + f') • B + (1 - (f + f')) • (1 : Matrix (Fin n) (Fin n) R)` using `rfl`. Establish `inj : Function.Injective (fun M : Matrix (Fin n) (Fin n) O => M.map O.subtype)`. Introduce `M N h`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `congrFun (congrFun h i) j`. Establish `e1 : Ym * Ym' = 1` using `inj (by show (Ym * Ym').map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype`. Rewrite using `[Matrix.map_mul, hm, hm', GlobalTheory.CompStab.idem_mul _ hφ A B hAB, Matrix.map_one _ (map_zero _) (map_one _)])`. Establish `e2 : Ym' * Ym = 1` using `inj (by show (Ym' * Ym).map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype`. Rewrite using `[Matrix.map_mul, hm, hm', GlobalTheory.CompStab.idem_mul _ hφ B A hBA, Matrix.map_one _ (map_zero _) (map_one _)])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨Ym, Ym', e1, e2⟩, hm, ?_⟩` and prove the remaining obligations. Introduce `k _ ρ hρ i j`. Establish `hz : ρ ⟨f', hf'⟩ = 0`. Establish `: (⟨f, hf⟩ : O) * ⟨f', hf'⟩ = 0` using `Subtype.ext h0`. Establish `h2` using `congrArg ρ this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[map_mul, hρ, one_mul, map_zero]`. Then use the resulting hypothesis. Establish `hz' : ρ ⟨f' * A i j, hA' i j⟩ = 0`. Establish `: (⟨f, hf⟩ : O) * ⟨f' * A i j, hA' i j⟩ = 0` using `Subtype.ext (show f * (f' * A i j) = 0 by rw [← mul_assoc, h0, zero_mul])`. Establish `h2` using `congrArg ρ this`. Rewrite `h2` using `[map_mul, hρ, one_mul, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hd : ρ ((1 : Matrix (Fin n) (Fin n) O) i j) * 0 = 0` using `mul_zero _`. Establish `split : Ym i j = ⟨f * A i j, hA i j⟩ + ⟨f' * A i j, hA' i j⟩ + (1 - (⟨f, hf⟩ + ⟨f', hf'⟩)) * (1 : Matrix (Fin n) (Fin n) O) i j`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((f + f') • A + (1 - (f + f')) • (1 : Matrix (Fin n) (Fin n) R)) i j = _`. Establish `: (((1 : Matrix (Fin n) (Fin n) O) i j : O) : R) = (1 : Matrix (Fin n) (Fin n) R) i j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_mul, Subring.coe_add, Subring.coe_mul, this]`. Both sides reduce to the same expression. Use `show ρ (Ym i j) = _`.
-
-Rewrite using `[split, map_add, map_add, map_mul, map_sub, map_add, hρ, hz, hz', map_one]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cut (O : Subring R) {f f' : R} (hf : f ∈ O) (hf' : f' ∈ O) (hff : f * f = f) (hff' : f' * f' = f')
     (h0 : f * f' = 0) (A B : Matrix (Fin n) (Fin n) R) (hAB : A * B = 1) (hBA : B * A = 1)
@@ -117,13 +115,13 @@ theorem frGL_val {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D n β γ y Z e he h1 h2 h3 h4 hy`. Take `⟨hf, hres⟩` from `GlobalTheory.InnerSteps.resS_idemSum he`. Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `hcc : cA D e * cA D e = cA D e` using `by rw [← map_mul, hee]`. Establish `hfc : toEAf D e * toEAf D (cA D e) = 0` using `by rw [← map_mul, he.2, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : toEAf D (cA D e) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `GlobalTheory.IdemRes.toEAf_mem_of_finPart (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, hcc]))`. Take `⟨Y, hY, hred⟩` from `exists_cut (Formalism.L2.Herm.intAf D.host.F D.host.E) hf hf' (by rw [← map_mul, hee]) (by rw [← map_mul, hcc]) hfc γ.1 (γ⁻¹ : GL (Fin n) (EAf D)).1 γ.mul_inv γ.inv_mul h1 h3 h2 h4`. Establish `hyY : y = frGL β Y`. Establish `hs : toEAf D (e + cA D e) = toEAf D e + toEAf D (cA D e)` using `(toEAf D).map_add _ _`. Use `Units.ext (hy.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[frGL_val, hY, hs]`. Substitute `hyY` using the available equality. Use `⟨⟨Y, rfl⟩, fun PP hP => ?_⟩` and prove the remaining obligations. Rewrite using `[redFn_frGL]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `hred (resS D.host.F PP) (hres PP hP) i j` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Unfold `redM`. Rewrite using `[dif_pos (h1 i j)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cut_mem_St_red : ∀ {D : D7} (n : ℕ) (β γ y : GL (Fin n) (EAf D)) (Z : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e Z → IsIntM (toEAf D e • γ.1) → IsIntM (toEAf D e • (γ⁻¹ : GL (Fin n) (EAf D)).1) → IsIntM (toEAf D (cA D e) • γ.1) → IsIntM (toEAf D (cA D e) • (γ⁻¹ : GL (Fin n) (EAf D)).1) → y.1 = β.1 * (toEAf D (e + cA D e) • γ.1 + (1 - toEAf D (e + cA D e)) • (1 : Matrix (Fin n) (Fin n) (EAf D))) * (β⁻¹ : GL (Fin n) (EAf D)).1 → y ∈ St β ∧ ∀ PP ∈ Z, ((redFn β PP y : GL (Fin n) (kP PP)) : Matrix (Fin n) (Fin n) (kP PP)) = redM PP (toEAf D e • γ.1) := by
   intro D n β γ y Z e he h1 h2 h3 h4 hy

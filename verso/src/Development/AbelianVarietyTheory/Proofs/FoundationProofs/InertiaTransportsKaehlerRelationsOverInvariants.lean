@@ -28,13 +28,13 @@ instance {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω) (τ :
   Module.compHom (KaehlerDifferential (fixA A) A) τ
 
 /- English proof (translation)
-Introduce `Ω _ _ A s hs a b a' b' c d c' d' hc hd hc' hd' h`. Use `set τ := decRingHom A s (Ine_le_Dec A hs) with hτ`. Establish `hτc : τ a = c` using `Subtype.ext hc.symm`. Establish `hτd : τ b = d` using `Subtype.ext hd.symm`. Establish `hτc' : τ a' = c'` using `Subtype.ext hc'.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτd' : τ b' = d'` using `Subtype.ext hd'.symm`. Take `⟨T, hT⟩` from `kaehler_rel_local (fixA A) A 2 ![a, -a'] ![b, b'] (by simp [Fin.sum_univ_two, h])`. Set `D : A → TwDiff A τ` to `fun x => (dA A (τ x) : KaehlerDifferential (fixA A) A)`. Establish `hD : IsDerOn (⊤ : Subalgebra (fixA A) A) D` using `{ add := fun x _ y _ => by show dA A (τ (x + y)) = dA A (τ x) + dA A (τ y)`. Rewrite using `[map_add, map_add]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `mul := fun x _ y _ => by show dA A (τ (x * y)) = τ x • dA A (τ y) + τ y • dA A (τ x)`. Rewrite using `[map_mul, Derivation.leibniz]`. Use `alg := fun r => by show dA A (τ (algebraMap (fixA A) A r)) = 0`. Establish `e : τ (algebraMap (fixA A) A r) = algebraMap (fixA A) A r` using `Subtype.ext (r.2 s hs)`. Rewrite using `[e, Derivation.map_algebraMap] }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `key` using `hT ⊤ (by simp) (by simp) (TwDiff A τ) D hD`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at key`. Express the relevant statement in the definitionally equal form `τ a • dA A (τ b) + τ (-a') • dA A (τ b') = (0 : KaehlerDifferential (fixA A) A) at key`. Rewrite `key` using `[map_neg, hτc, hτd, hτc', hτd', neg_smul, ← sub_eq_add_neg, sub_eq_zero]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transp_rel : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω) (s : G ℚ Ω),
     s ∈ Ine (F := ℚ) A → ∀ a b a' b' c d c' d' : A, (c : Ω) = s a → (d : Ω) = s b →

@@ -34,9 +34,9 @@ section Frame
 open ReciprocityTheory.ChartRestriction.G.FD
 
 /- English proof (translation)
-Introduce `c c' h`. Establish `h1` using `congrArg Fin.val h`. Establish `h2` using `c.2`. Establish `h3` using `c'.2`. Unfold `arr at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply `Fin.ext` to reduce the goal to its premises. Apply the tactic sequence `split_ifs at h1 <;> simp only at h1 <;> omega`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem arr_inj {n q : ℕ} (_hq : q ≤ n) : Function.Injective (arr (n := n) q) := by
   intro c c' h
@@ -95,7 +95,7 @@ variable {LL Ks : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] 
 def IsRootU (ζ : LLˣ) : Prop := ∃ n : ℕ, 0 < n ∧ ζ ^ n = 1
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `h`. Establish `h1 : (ζ : LL) ^ n = 1` using `by rw [← Units.val_pow_eq_pow_val, h, Units.val_one]`. Conclude with `⟨⟨ζ, IsIntegral.of_pow hn (h1 ▸ isIntegral_one)⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem IsRootU.int {ζ : LLˣ} (h : IsRootU ζ) : ∃ a : 𝓞 LL, (a : LL) = ζ := by
   obtain ⟨n, hn, h⟩ := h
@@ -103,7 +103,7 @@ theorem IsRootU.int {ζ : LLˣ} (h : IsRootU ζ) : ∃ a : 𝓞 LL, (a : LL) = �
   exact ⟨⟨ζ, IsIntegral.of_pow hn (h1 ▸ isIntegral_one)⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `h`. Use `Complex.norm_eq_one_of_pow_eq_one ?_ hn.ne'` and prove the remaining obligations. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, h, Units.val_one, map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsRootU.norm {ζ : LLˣ} (h : IsRootU ζ) (σ : LL →+* ℂ) : ‖σ ζ‖ = 1 := by
   obtain ⟨n, hn, h⟩ := h
@@ -118,14 +118,14 @@ Both sides reduce to the same expression.
 theorem cen_apply (ζ : LLˣ) (z : G0) (x : WL) : cen A ζ z x = (ζ : LL) • A.ρ z x := rfl
 
 /- English proof (translation)
-Rewrite using `[cen_apply, cen_apply, cen_apply, LinearMap.map_smul, smul_smul, map_mul, Units.val_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cen_cen (ζ ζ' : LLˣ) (z z' : G0) (x : WL) : cen A ζ z (cen A ζ' z' x) = cen A (ζ * ζ') (z * z') x := by
   rw [cen_apply, cen_apply, cen_apply, LinearMap.map_smul, smul_smul, map_mul, Units.val_mul]
   rfl
 
 /- English proof (translation)
-Rewrite using `[cen_apply, map_one, Units.val_one, one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cen_one (x : WL) : cen A 1 1 x = x := by
   rw [cen_apply, map_one, Units.val_one, one_smul]
@@ -149,9 +149,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamI
   (i : Fin D.R.m)
 
 /- English proof (translation)
-Establish `hnP : ((Real.sqrt (RealDat.nP F.lv2 b) : ℝ) : ℂ) ≠ 0`. Establish `: 0 < RealDat.nP F.lv2 b` using `by unfold RealDat.nP; exact_mod_cast Nat.card_pos`. Conclude with `(Real.sqrt_pos.2 this).ne'` after adjusting the coercions. Use `show ((Real.sqrt (RealDat.nP F.lv2 b) : ℝ) : ℂ) • (R.toRealDat.WS F.lv2 b i (sg0 D A3.A)).subtype (∑ l, cj (twAt D.what₂.embLL A3.A.v0) (c l) • (⟨R.toRealDat.bC F.lv2 b i _ l, Submodule.subset_span ⟨l, rfl⟩⟩ : R.toRealDat.WS F.lv2 b i (sg0 D A3.A))) = _`. Rewrite using `[map_sum, Finset.smul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, smul_comm]`. Use `congr 1`. Use `show ((Real.sqrt (RealDat.nP F.lv2 b) : ℝ) : ℂ) • (((Real.sqrt (RealDat.nP F.lv2 b))⁻¹ : ℝ) : ℂ) • (R.FW i).j (sg0 D A3.A) (R.toRealDat.bL F.lv2 b i l) = _`. Rewrite using `[smul_smul, Complex.ofReal_inv, mul_inv_cancel₀ hnP, one_smul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem principal_form_tensor_expansion (c : Fin (finrank D.what₂.LL (R.toRealDat.WL F.lv2 b i)) → ℂ) :
     Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H) ((R.toCx3 F).w0C b i c) =
@@ -192,7 +192,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 def RootC (ζ : ℂ) : Prop := ∃ m : ℕ, 0 < m ∧ ζ ^ m = 1
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `hx`. Take `⟨k, hk, h'⟩` from `hy`. Conclude with `⟨m * k, Nat.mul_pos hm hk, by rw [mul_pow, pow_mul, h, one_pow, mul_comm m, pow_mul, h', one_pow, one_mul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RootC.mul {x y : ℂ} (hx : RootC x) (hy : RootC y) : RootC (x * y) := by
   obtain ⟨m, hm, h⟩ := hx
@@ -200,7 +200,7 @@ theorem RootC.mul {x y : ℂ} (hx : RootC x) (hy : RootC y) : RootC (x * y) := b
   exact ⟨m * k, Nat.mul_pos hm hk, by rw [mul_pow, pow_mul, h, one_pow, mul_comm m, pow_mul, h', one_pow, one_mul]⟩
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `hx`. Introduce and unpack `rfl`. Rewrite `h` using `[zero_pow hm.ne']`. Conclude with `zero_ne_one h`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RootC.ne_zero {x : ℂ} (hx : RootC x) : x ≠ 0 := by
   obtain ⟨m, hm, h⟩ := hx
@@ -267,7 +267,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 
 omit [Algebra T.Q.c.F D.what₂.LL] in
 /- English proof (translation)
-Substitute `hV` using the available equality. Use `show T.phiJ j σ a 0 = 0`. Rewrite using `[CoreJ.phiJ, map_zero, map_zero, smul_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiC_zero {j : ℕ} {σ : T.Q.c.F →+* ℂ} {W : HSp D} (hV : T.V j σ = W) (a : (D.host.E →+* ℂ) × ℕ → ℕ) :
     phiC T hV a 0 = 0 := by
@@ -277,7 +277,7 @@ theorem phiC_zero {j : ℕ} {σ : T.Q.c.F →+* ℂ} {W : HSp D} (hV : T.V j σ 
 
 omit [Algebra T.Q.c.F D.what₂.LL] in
 /- English proof (translation)
-Substitute `h` using the available equality. Substitute `hV` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem phiC_apply {j : ℕ} {σ σ' : T.Q.c.F →+* ℂ} (h : σ = σ') {W : HSp D} (hV : T.V j σ = W) (hV' : T.V j σ' = W)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R j) (g : GA D W) :
@@ -288,9 +288,9 @@ theorem phiC_apply {j : ℕ} {σ σ' : T.Q.c.F →+* ℂ} (h : σ = σ') {W : HS
   rfl
 
 /- English proof (translation)
-Introduce `i σ hσ hV`. Use `t.ev i σ hσ hV (Classical.byContradiction fun hn => hn ⟨0, fun f => ?_⟩)` and prove the remaining obligations. Establish `h0` using `t.ev0 i σ hσ hV hn`. Establish `h1` using `(hU i σ).1 _ _ (Pi.basisFun D.what₂.LL (Fin (R.nW i))).linearIndependent`. Establish `h2 : ((t.e i f : (R.FW i).WK) : Fin (R.nW i) → D.what₂.LL) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun k => absurd (by rw [h0]; rfl) (h1.ne_zero k)`. Establish `h3 : f = 0` using `(t.e i).map_eq_zero_iff.1 (Subtype.ext h2)`. Substitute `h3` using the available equality. Conclude with `(congrArg (fun F : MMap (R.MW i σ) => F (v₀ i σ)) (R.HW i σ).e.map_zero).trans (phiC_zero hV _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem FWTie.evaluates_of_lUnif (t : FWTie T R κ v₀) (hU : R.LUnif) : t.Evaluates := by
   intro i σ hσ hV
@@ -304,7 +304,7 @@ theorem FWTie.evaluates_of_lUnif (t : FWTie T R κ v₀) (hU : R.LUnif) : t.Eval
   exact (congrArg (fun F : MMap (R.MW i σ) => F (v₀ i σ)) (R.HW i σ).e.map_zero).trans (phiC_zero hV _).symm
 
 /- English proof (translation)
-Use `⟨∑ k, a k • ((t.e i (f k) : (R.FW i).WK) : Fin (R.nW i) → D.what₂.LL), hinj (funext fun g => ?_)⟩` and prove the remaining obligations. Rewrite using `[h g, evAt, map_sum, map_sum, _root_.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, map_smul, ← ht i σ hσ hV (f k)]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem FWTie.rat_of_val (t : FWTie T R κ v₀) (ht : t.Evaluates) {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} (hσ : GoodEmb T.Q.c (res T σ))
     (hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i) (hinj : Function.Injective (evAt R i σ (v₀ i σ))) {w : (R.HW i σ).H} {n : ℕ}
@@ -318,14 +318,14 @@ theorem FWTie.rat_of_val (t : FWTie T R κ v₀) (ht : t.Evaluates) {i : Fin D.R
   rfl
 
 /- English proof (translation)
-The claim follows from `(congrArg (res T) (sgAt_mk _ R.hv0)).trans ((res_embLL T t.alg_eq t.laws.pins.2.2.1).trans (sOv_eq T.toCore O.c' O.hle).symm)`.
+A detailed English derivation is pending.
 -/
 theorem baseEmbedding_restriction_eq_coefficientInclusion (t : FWTie T R κ v₀) {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0} (O : OMDat T.toCore R i Tp tup) :
     res T (sg0 D A) = O.s0 :=
   (congrArg (res T) (sgAt_mk _ R.hv0)).trans ((res_embLL T t.alg_eq t.laws.pins.2.2.1).trans (sOv_eq T.toCore O.c' O.hle).symm)
 
 /- English proof (translation)
-The claim follows from `(phiC_apply hs hV O.hV a f g).symm`.
+A detailed English derivation is pending.
 -/
 theorem phi_eq_phiC {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0} (O : OMDat T.toCore R i Tp tup) {σ : T.Q.c.F →+* ℂ} (hs : σ = O.s0)
     (hV : T.V ((i : ℕ) + 1) σ = Wc D i) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R ((i : ℕ) + 1)) (g : GA D (Wc D i)) :
@@ -333,7 +333,7 @@ theorem phi_eq_phiC {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0} (O : OMDat T.t
   (phiC_apply hs hV O.hV a f g).symm
 
 /- English proof (translation)
-Rewrite using `[evAt, map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evAt_smul (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (v : (R.MW i σ).Vec) (c : ℂ) (w : (R.HW i σ).H) (g : GA D (Wc D i)) :
     evAt R i σ v (c • w) g = c * (R.HW i σ).e w v g := by
@@ -341,7 +341,7 @@ theorem evAt_smul (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (v : (R.MW i σ)
   rfl
 
 /- English proof (translation)
-The claim follows from `have hV : T.V ((i : ℕ) + 1) (res T (sg0 D A)) = Wc D i := (congrArg (T.V ((i : ℕ) + 1)) (baseEmbedding_restriction_eq_coefficientInclusion t O)).trans O.hV have hg : ∀ y, D.what₂.embLL y = sg0 D A y := fun y => (DFunLike.congr_fun (sgAt_mk _ R.hv0) y).symm (h x).elim fun _ h1 => …`.
+A detailed English derivation is pending.
 -/
 theorem phase_of_phRat (t : FWTie T R κ v₀) (hU : R.LUnif) {i : Fin D.R.m}
     (hinj : Function.Injective (evAt R i (sg0 D A) (v₀ i (sg0 D A)))) {Tp : Type} {tup : Tp → T0}
@@ -355,7 +355,7 @@ theorem phase_of_phRat (t : FWTie T R κ v₀) (hU : R.LUnif) {i : Fin D.R.m}
         congrArg₂ (· * ·) (hg _) (phi_eq_phiC O (baseEmbedding_restriction_eq_coefficientInclusion t O) hV _ _ g)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.2.1.2.2.2.2.1, phase_of_phRat t hU hinj O h.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem phase_of_oneMap (t : FWTie T R κ v₀) (hU : R.LUnif) {i : Fin D.R.m}
     (hinj : Function.Injective (evAt R i (sg0 D A) (v₀ i (sg0 D A)))) {Tp : Type} {tup : Tp → T0}

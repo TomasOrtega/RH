@@ -16,7 +16,7 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 namespace GlobalTheory.KeyCancel
 
 /- English proof (translation)
-Introduce `R K _ _ f x x₁ x₂ h₁ h₂` and use `keyPB_cancel R K K x x₂ x₁ f (RingHom.id K) h₂ (by rwa [RingHom.id_comp])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem keyPB_id_of_keyPB : ∀ (R K : Type) [CommRing R] [Field K] (f : R →+* K) (x : KeyIn R) (x₁ x₂ : KeyIn K), KeyPB x₁ x f → KeyPB x₂ x f → KeyPB x₁ x₂ (RingHom.id K) :=
   fun R K _ _ f x x₁ x₂ h₁ h₂ =>

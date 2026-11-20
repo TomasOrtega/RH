@@ -8,39 +8,37 @@ open GlobalTheory.Cyc GlobalTheory.Cyc.TwistLift
 namespace GlobalTheory.Cyc.CocycleCount
 
 /- English proof (translation)
-Introduce `l _ G _ _ _ _ ψ C n hC z hz hcoc`. Establish `hl : l.Prime` using `Fact.out`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨B, hB⟩` from `(isCompact_range (continuous_pi hz : Continuous fun g i => z i g)).isBounded.exists_norm_le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha0, ha⟩` from `NormedField.exists_norm_lt ℚ_[l] (r := (max B 1)⁻¹) (by positivity)`. Establish `ha1 : ∀ i g, ‖a * z i g‖ ≤ 1` using `fun i g => by`. Rewrite using `[norm_mul]`. Establish `h1 : ‖z i g‖ ≤ max B 1` using `((norm_le_pi_norm (fun i => z i g) i).trans (hB _ ⟨g, rfl⟩)).trans (le_max_left _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `ha' : a ≠ 0` using `norm_pos_iff.1 ha0`. Set `w : Fin (n + 1) → G → ℤ_[l]` to `fun i g => ⟨a * z i g, ha1 i g⟩`. Establish `hw : ∀ i, Continuous (w i)` using `fun i => (continuous_const.mul (hz i)).subtype_mk _`. Establish `hwc : ∀ i g h, w i (g * h) = w i g + (ψ g : ℤ_[l]) * w i h` using `fun i g h => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `a * z i (g * h) = a * z i g + ((ψ g : ℤ_[l]) : ℚ_[l]) * (a * z i h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoc]`. Use the proof step `ring)`. Set `W : Fin (n + 1) → C(G, ℚ_[l])` to `fun i => ⟨fun g => a * z i g, continuous_const.mul (hz i)⟩`. Set `L : (Fin (n + 1) → ℚ_[l]) →ₗ[ℚ_[l]] C(G, ℚ_[l])` to `Fintype.linearCombination ℚ_[l] W`. Establish `hL : ∀ c g, L c g = ∑ i, c i * (a * z i g)` using `fun c g => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[L, W, Fintype.linearCombination_apply, ContinuousMap.sum_apply]`. Establish `hker : LinearMap.ker L = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `c hc`. Assume the negation of the conclusion as `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨g, hg⟩` from `hne c h0`. Apply `hg` to reduce the goal to its premises. Establish `h1` using `hL c g`. Rewrite `h1` using `[hc, ContinuousMap.zero_apply]`. Apply `mul_left_cancel₀ ha'` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_zero, h1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Take `⟨K, -, hK⟩` from `L.exists_antilipschitzWith hker`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.one_lt`. Take `⟨v, hv⟩` from `pow_unbounded_of_one_lt (K : ℝ) hl1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ r : ℕ, 0 < r → l ^ r ≤ C * l ^ (v * n)`. Introduce `r hr`. Take `⟨hfin, hcard⟩` from `hC (r + v) (by omega)`. Set `F : (Fin (n + 1) → Fin (l ^ r)) → ReciprocityTheory.Gal.Z1 (ReciprocityTheory.Gal.charRep (redChar ψ (r + v)))` to `fun c => ⟨fun g => PadicInt.toZModPow (r + v) (∑ i, ((c i : ℕ) : ℤ_[l]) * w i g), (continuous_toZModPow _).comp (continuous_finset_sum _ fun i _ => continuous_const.mul (hw i)), fun g h => by`. Rewrite using `[ReciprocityTheory.Gal.charRep_apply, redChar_apply, ← map_mul, ← map_add, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (PadicInt.toZModPow (r + v)) ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hwc]; ring⟩`. Establish `hF : Function.Injective F`. Introduce `c c' h`. Set `d : Fin (n + 1) → ℚ_[l]` to `fun i => ((((c i : ℕ) : ℤ) - ((c' i : ℕ) : ℤ) : ℤ) : ℚ_[l])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ‖L d‖ ≤ (l : ℝ) ^ (-((r + v : ℕ) : ℤ))`. Rewrite using `[ContinuousMap.norm_le _ (by positivity)]`. Introduce `g`. Establish `h2 : PadicInt.toZModPow (r + v) (∑ i, ((c i : ℕ) : ℤ_[l]) * w i g) = PadicInt.toZModPow (r + v) (∑ i, ((c' i : ℕ) : ℤ_[l]) * w i g)` using `congrFun (congrArg Subtype.val h) g`. Rewrite `h2` using `[← sub_eq_zero, ← map_sub, ← RingHom.mem_ker, PadicInt.ker_toZModPow, ← PadicInt.norm_le_pow_iff_mem_span_pow, PadicInt.norm_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_eq_of_le (congrArg norm ?_) h2` and prove the remaining obligations. Rewrite using `[hL, ← Finset.sum_sub_distrib]`. Use `Eq.trans ?_ (map_sum (PadicInt.Coe.ringHom (p := l)) _ _).symm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ((((c i : ℕ) : ℤ_[l]) * w i g - ((c' i : ℕ) : ℤ_[l]) * w i g : ℤ_[l]) : ℚ_[l])`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hwv : ((w i g : ℤ_[l]) : ℚ_[l]) = a * z i g` using `rfl`. Rewrite using `[PadicInt.coe_sub, PadicInt.coe_mul, PadicInt.coe_mul, PadicInt.coe_natCast, PadicInt.coe_natCast, hwv]`. Simplify using `only [d, Int.cast_sub, Int.cast_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ‖d‖ ≤ (l : ℝ) ^ (-(r : ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h4` using `ZeroHomClass.bound_of_antilipschitz L hK d`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← zpow_natCast, ← zpow_add₀ (by positivity)]`. Use `congr 1`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `i`. Establish `h5` using `(Padic.norm_int_le_pow_iff_dvd (p := l) _ r).1 ((norm_le_pi_norm d i).trans h3)`. Apply `Fin.ext` to reduce the goal to its premises. Establish `h6 : ((c i : ℕ) : ℤ) - ((c' i : ℕ) : ℤ) = 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Int.eq_zero_of_abs_lt_dvd h5` to reduce the goal to its premises. Establish `e1 : ((c i : ℕ) : ℤ) < (l : ℤ) ^ r` using `by exact_mod_cast (c i).2`. Establish `e2 : ((c' i : ℕ) : ℤ) < (l : ℤ) ^ r` using `by exact_mod_cast (c' i).2`. Rewrite using `[abs_lt]`. Apply the tactic sequence `constructor <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h7` using `(Nat.card_le_card_of_injective F hF).trans hcard`. Rewrite `h7` using `[Nat.card_fun, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Fintype.card_fin, Fintype.card_fin]`. Establish `h8 : l ^ r * l ^ (r * n) ≤ (C * l ^ (v * n)) * l ^ (r * n)`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `Nat.le_of_mul_le_mul_right h8 (pow_pos hl.pos _)`. Establish `h9` using `key (C * l ^ (v * n) + 1) (Nat.succ_pos _)`. Establish `h10 : C * l ^ (v * n) + 1 < l ^ (C * l ^ (v * n) + 1)` using `Nat.lt_pow_self hl.one_lt`. Use linear arithmetic over natural numbers and integers.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dependent_of_card_le : ∀ (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] (ψ : G →* ℤ_[l]ˣ) (C n : ℕ), (∀ r : ℕ, 0 < r → Finite (ReciprocityTheory.Gal.Z1 (ReciprocityTheory.Gal.charRep (redChar ψ r))) ∧ Nat.card (ReciprocityTheory.Gal.Z1 (ReciprocityTheory.Gal.charRep (redChar ψ r))) ≤ C * l ^ (r * n)) → ∀ z : Fin (n + 1) → G → ℚ_[l], (∀ i, Continuous (z i)) → (∀ i g h, z i (g * h) = z i g + ((ψ g : ℤ_[l]) : ℚ_[l]) * z i h) → ∃ c : Fin (n + 1) → ℚ_[l], c ≠ 0 ∧ ∀ g, ∑ i, c i * z i g = 0 := by
   intro l _ G _ _ _ _ ψ C n hC z hz hcoc

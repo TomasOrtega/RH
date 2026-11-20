@@ -16,7 +16,7 @@ namespace GlobalTheory.QLogStep
 variable {O E : Type} [CommRing O] [CommRing E] [Algebra O E] {d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[up, ← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hμ, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_up_eq_zero {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O}
     (hμ : ∀ i, constantCoeff (μ i) = 0) (i : Fin d) : constantCoeff (up E μ i) = 0 := by
@@ -24,11 +24,11 @@ theorem constantCoeff_up_eq_zero {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d)
     map_zero]
 
 /- English proof (translation)
-Take `⟨f0, f1, f2⟩` from `hf`. Take `⟨g0, g1, g2⟩` from `hg`. Use `⟨by rw [map_add, f0, g0, add_zero], fun i => ?_, fun α => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, ha'⟩` from `f1 i`. Take `⟨b, hb, hb'⟩` from `g1 i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a + b, N.add_mem ha hb, ?_⟩` and prove the remaining obligations. Simplify using `only [lin, map_add] at ha' hb' ⊢`. Rewrite using `[ha', hb']`. Take `⟨a, ha, ha'⟩` from `f2 α`. Take `⟨b, hb, hb'⟩` from `g2 α`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a + b, N.add_mem ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[formalCoboundary_add (constantCoeff_up_eq_zero hμ), map_add, ha', hb', map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ql_add {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} (hμ : ∀ i, constantCoeff (μ i) = 0)
     {N : Ideal O} {f g : MvPowerSeries (Fin d) E} (hf : QL μ N f) (hg : QL μ N g) :
@@ -47,9 +47,9 @@ theorem ql_add {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} (hμ : ∀ i, 
     rw [formalCoboundary_add (constantCoeff_up_eq_zero hμ), map_add, ha', hb', map_add]
 
 /- English proof (translation)
-Take `⟨f0, f1, f2⟩` from `hf`. Use `⟨?_, fun i => ?_, fun α => ?_⟩` and prove the remaining obligations. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_smul, coeff_zero_eq_constantCoeff_apply, f0, mul_zero]`. Take `⟨b, hb, hb'⟩` from `f1 i`. Use `⟨a * b, N.mul_mem_left a hb, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [lin, coeff_smul] at hb' ⊢`. Rewrite using `[hb', map_mul]`. Take `⟨b, hb, hb'⟩` from `f2 α`. Use `⟨a * b, N.mul_mem_left a hb, ?_⟩` and prove the remaining obligations. Rewrite using `[formalCoboundary_smul (constantCoeff_up_eq_zero hμ), coeff_smul, hb', map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ql_smul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} (hμ : ∀ i, constantCoeff (μ i) = 0)
     {N : Ideal O} (a : O) {f : MvPowerSeries (Fin d) E} (hf : QL μ N f) :
@@ -67,7 +67,7 @@ theorem ql_smul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} (hμ : ∀ i,
     rw [formalCoboundary_smul (constantCoeff_up_eq_zero hμ), coeff_smul, hb', map_mul]
 
 /- English proof (translation)
-Use `⟨map_zero _, fun i => ⟨0, N.zero_mem, by simp [lin]⟩, fun α => ⟨0, N.zero_mem, ?_⟩⟩` and prove the remaining obligations. Use `formalCoboundary_smul (constantCoeff_up_eq_zero (E := E) hμ) 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Rewrite using `[this, map_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ql_zero {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} (hμ : ∀ i, constantCoeff (μ i) = 0)
     (N : Ideal O) : QL μ N (0 : MvPowerSeries (Fin d) E) := by
@@ -77,16 +77,14 @@ theorem ql_zero {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} (hμ : ∀ i,
   rw [this, map_zero, map_zero]
 
 /- English proof (translation)
-Simplify using `only [comb, Pi.add_apply, map_add, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comb_add {ι : Type} [Fintype ι] (b b' : ι → O) (e : ι → MvPowerSeries (Fin d) E) :
     comb (b + b') e = comb b e + comb b' e := by
   simp only [comb, Pi.add_apply, map_add, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `comb`. Proceed by induction on `(Finset.univ : Finset ι) using Finset.cons_induction with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `ql_zero hμ _`. Consider the case `cons i s hi ih => rw [Finset.sum_cons]`.
-
-Conclude with `ql_add hμ (ql_smul hμ _ (he i)) ih`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ql_comb {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} (hμ : ∀ i, constantCoeff (μ i) = 0)
     {ι : Type} [Fintype ι] (b : ι → O) (e : ι → MvPowerSeries (Fin d) E)
@@ -97,37 +95,35 @@ theorem ql_comb {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} (hμ : ∀ i,
   | cons i s hi ih => rw [Finset.sum_cons]; exact ql_add hμ (ql_smul hμ _ (he i)) ih
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv G d c E _ _ hF k e lb hQe hcob hlin hLie f hf`. Establish `hμ` using `c.isLaw.const`. Establish `hinj : Function.Injective (algebraMap O E)` using `hF.inj`. Establish `hc0` using `constantCoeff_up_eq_zero (E := E) hμ`. Set `t : Fin d ⊕ Fin k → G.dual.Lie` to `Sum.elim (fun _ => 0) fun j => lb j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ht : ∀ i, c.IsLie (e i) (t i)`. Introduce and unpack `(i | j)`. Take `⟨l, hl, -⟩` from `GlobalTheory.T.pDivGroup_dual_tangent_of_quasiLogarithm p C v O hv G d c E hF _ (hQe (Sum.inl i))`. Use `((GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E hF _ _ l l 0 hl hl).2.2 (hcob i))` as an intermediate fact. Substitute `this` using the available equality.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `hl`. Conclude with `hLie j`. Establish `hcombS : ∀ (b : Fin d ⊕ Fin k → O) (S : Finset (Fin d ⊕ Fin k)), c.IsLie (∑ i ∈ S, algebraMap O E (b i) • e i) (∑ i ∈ S, b i • t i) ∧ QL c.μ ⊤ (∑ i ∈ S, algebraMap O E (b i) • e i)`. Introduce `b S`. Proceed by induction on `S using Finset.cons_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Conclude with `⟨c.isLie_zero hinj, ql_zero hμ _⟩`. Consider the case `cons i s hi ih`. Rewrite using `[Finset.sum_cons, Finset.sum_cons, add_comm, add_comm (b i • t i)]`. Conclude with `⟨(GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E hF _ _ _ _ (b i) ih.1 (ht i)).1 ih.2 (hQe i), ql_add hμ ih.2 (ql_smul hμ _ (hQe i))⟩`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcombLie : ∀ b : Fin d ⊕ Fin k → O, c.IsLie (comb b e) (∑ i, b i • t i)` using `fun b => (hcombS b Finset.univ).1`. Take `⟨l, hl, -⟩` from `GlobalTheory.T.pDivGroup_dual_tangent_of_quasiLogarithm p C v O hv G d c E hF f hf`. Set `b0 : Fin d ⊕ Fin k → O` to `Sum.elim (0 : Fin d → O) fun j => lb.repr l j`. Establish `hb0 : ∑ i, b0 i • t i = l`. Rewrite using `[Fintype.sum_sum_type]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [b0, t, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zero_smul, Finset.sum_const_zero, zero_add]`. Conclude with `lb.sum_repr l`. Use `set f' := f + algebraMap O E (-1) • comb b0 e with hf'`. Establish `hQf' : QL c.μ ⊤ f'` using `ql_add hμ hf (ql_smul hμ _ (ql_comb hμ b0 e hQe))`. Establish `hLf' : c.IsLie f' ((p : O) • 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E hF f (comb b0 e) l _ (-1) hl (hcombLie b0)).1 hf (ql_comb hμ b0 e hQe)` as an intermediate fact. Rewrite `this` using `[hb0, neg_one_smul, add_neg_cancel, ← smul_zero (p : O)]`. Then use the resulting hypothesis. Take `⟨s, g, hg, hh⟩` from `GlobalTheory.T.quasiLogarithm_decomposition_of_tangent_divisible_by_p p C v O hv G d c E hF f' 0 hQf' hLf'`. Use `set h := f' - map (algebraMap O E) s - g with hhdef`. Establish `hw : ∀ i, ∃ w : O, lin g i = algebraMap O E w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `i`. Take `⟨b1, -, hb1⟩` from `hQf'.2.1 i`. Take `⟨b3, -, hb3⟩` from `hh.2.1 i`. Use `⟨b1 - coeff (Finsupp.single i 1) s - b3, ?_⟩` and prove the remaining obligations. Establish `: g = f' - map (algebraMap O E) s - h` using `by rw [hhdef]; ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [lin] at hb1 hb3 ⊢`. Rewrite using `[this, map_sub, map_sub, hb1, hb3, coeff_map, map_sub, map_sub]`. Use `choose w hw using hw`. Set `bw : Fin d ⊕ Fin k → O` to `Sum.elim w 0`. Establish `hcw : comb bw e = ∑ i, algebraMap O E (w i) • e (Sum.inl i)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[comb, bw, Fintype.sum_sum_type]`. Establish `hgw : g = comb bw e`. Establish `key` using `GlobalTheory.T.eq_zero_of_lin_zero_cob1_zero p O E hF d c.μ c.isLaw (g - comb bw e) ?_ ?_`. Conclude with `sub_eq_zero.1 key`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [lin, hcw, map_sub, map_sum, coeff_smul, Pi.zero_apply] at hw ⊢`. Establish `hl' : ∀ j, coeff (Finsupp.single i 1) (e (Sum.inl j)) = (Pi.single j (1 : E) : Fin d → E) i` using `fun j => congrFun (hlin j) i`. Simplify using `only [hl', hw]`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_apply, Ne.symm hj]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `L : MvPowerSeries (Fin d) E →+ MvPowerSeries (Fin d ⊕ Fin d) E` to `AddMonoidHom.mk' (cob1 (up E c.μ)) (formalCoboundary_add hc0)`. Establish `hL : ∀ x, L x = cob1 (up E c.μ) x` using `fun _ => rfl`. Rewrite using `[← hL, map_sub, hcw, map_sum]`. Simplify using `only [hL, formalCoboundary_smul hc0, hcob, smul_zero, Finset.sum_const_zero, sub_zero]`. Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu⟩` from `hF.unit_p`. Use `⟨bw + b0, s, (↑u⁻¹ : E) • h, ?_, ?_⟩` and prove the remaining obligations. Take `⟨h0, h1, h2⟩` from `hh`. Use `⟨?_, fun i => ?_, fun α => ?_⟩` and prove the remaining obligations. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_smul, coeff_zero_eq_constantCoeff_apply, h0, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb, hb'⟩` from `h1 i`. Take `⟨b', rfl⟩` from `Ideal.mem_span_singleton.1 hb`. Use `⟨b', trivial, ?_⟩` and prove the remaining obligations. Simplify using `only [lin, coeff_smul] at hb' ⊢`. Rewrite using `[hb', map_mul, map_natCast, ← hu, ← mul_assoc, Units.inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨b, hb, hb'⟩` from `h2 α`. Take `⟨b', rfl⟩` from `Ideal.mem_span_singleton.1 hb`. Use `⟨b', trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[formalCoboundary_smul hc0, coeff_smul, hb', map_mul, map_natCast, ← hu, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[smul_smul, ← hu, Units.mul_inv, one_smul, comb_add, ← hgw]`.
-
-Rewrite `hf'` using `[map_neg, map_one, neg_one_smul]`. Rewrite using `[hhdef, hf']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ (E : Type) [CommRing E] [Algebra O E], IsFrame p E (RingHom.id O) → ∀ (k : ℕ) (e : Fin d ⊕ Fin k → MvPowerSeries (Fin d) E) (lb : Module.Basis (Fin k) O G.dual.Lie), (∀ i, QL c.μ ⊤ (e i)) → (∀ i, cob1 (up E c.μ) (e (Sum.inl i)) = 0) → (∀ i, lin (e (Sum.inl i)) = Pi.single i 1) → (∀ j, c.IsLie (e (Sum.inr j)) (lb j)) → ∀ f, QL c.μ ⊤ f → ∃ (b : Fin d ⊕ Fin k → O) (s : MvPowerSeries (Fin d) O) (f₁ : MvPowerSeries (Fin d) E), QL c.μ ⊤ f₁ ∧ f = comb b e + map (algebraMap O E) s + (p : E) • f₁ := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv G d c E _ _ hF k e lb hQe hcob hlin hLie f hf

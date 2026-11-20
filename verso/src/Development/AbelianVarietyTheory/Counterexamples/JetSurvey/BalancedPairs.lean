@@ -10,7 +10,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem emb_bar (H : Host E) (τ : E →+* ℂ) (a : 𝓞 E) :
     τ ((H.bar a : 𝓞 E) : E) = ComplexEmbedding.conjugate τ (a : E) := by
@@ -18,11 +18,11 @@ theorem emb_bar (H : Host E) (τ : E →+* ℂ) (a : 𝓞 E) :
   rfl
 
 /- English proof (translation)
-Establish `: ∃ a : 𝓞 E, embK c τ a ≠ embK c τ' (H.bar a)`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E))` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Use `congrArg (fun z : c.F => (z : ℂ)) (hcon a)` as an intermediate fact. Simplify using `only [embK_coe] at this`. Rewrite `this` using `[emb_bar]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `this`. Establish `hu : IsUnit (algebraMap c.F S (embK c τ a - embK c τ' (H.bar a)))` using `(IsUnit.mk0 _ (sub_ne_zero.2 ha)).map _`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[map_sub, sub_mul, hv a, sub_self, mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem balanced_pairs (H : Host E) {l : Level H} (c : Coeff l) {S : Type} [CommRing S] [Algebra c.F S]
     (τ τ' : E →+* ℂ) (v : S)

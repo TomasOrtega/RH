@@ -12,9 +12,9 @@ section Alg
 variable {R V : Type} [CommRing R] [AddCommGroup V] [Module R V]
 
 /- English proof (translation)
-Establish `e1 : (u * a) • y = (a * b * u) • y₂`. Rewrite using `[hb, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (w * b) • y = (a * b * w) • y₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[ha, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hl, add_smul, e1, e2, smul_add, smul_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem combine_two (a b l u w : R) (k : ℕ) (hl : u * a + w * b = l ^ k) (y y₁ y₂ : V)
     (ha : y = a • y₁) (hb : y = b • y₂) :
@@ -30,9 +30,9 @@ theorem combine_two (a b l u w : R) (k : ℕ) (hl : u * a + w * b = l ^ k) (y y�
   rw [← hl, add_smul, e1, e2, smul_add, smul_smul, smul_smul]
 
 /- English proof (translation)
-Take `⟨u, w, huw⟩` from `Ideal.mem_span_pair.1 hl`. Rewrite using `[← huw]`. Use `Ideal.add_pow_mem_of_pow_mem_of_le (m := a) (n := b) (k := a + b) _ ?_ ?_ (by omega)` and prove the remaining obligations. Rewrite using `[mul_pow]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem combine_pow (l x y : R) (hl : l ∈ Ideal.span ({x, y} : Set R)) (a b : ℕ) :
     l ^ (a + b) ∈ Ideal.span ({x ^ a, y ^ b} : Set R) := by
@@ -45,11 +45,11 @@ theorem combine_pow (l x y : R) (hl : l ∈ Ideal.span ({x, y} : Set R)) (a b : 
     exact Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp))
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Use `⟨0, Ideal.subset_span ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨j₁, h₁⟩` from `ih (fun s hs => h s (by omega))`. Take `⟨j₂, h₂⟩` from `h m (by omega)`. Take `⟨u₁, w₁, e₁⟩` from `Ideal.mem_span_pair.1 h₁`. Take `⟨u₂, w₂, e₂⟩` from `Ideal.mem_span_pair.1 h₂`. Use `⟨j₁ + j₂, Ideal.mem_span_pair.2 ⟨u₁ * u₂, u₁ * (∏ s ∈ Finset.range m, a s) * w₂ + w₁ * u₂ * a m + w₁ * w₂ * q, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_range_succ, pow_add, ← e₁, ← e₂]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem combine_prod (l q : R) (a : ℕ → R) (m : ℕ)
     (h : ∀ s < m, ∃ j : ℕ, l ^ j ∈ Ideal.span ({a s, q} : Set R)) :
@@ -69,9 +69,9 @@ theorem combine_prod (l q : R) (a : ℕ → R) (m : ℕ)
     ring
 
 /- English proof (translation)
-Proceed by induction on `ell with`. Consider the case `zero => exact ⟨0, y, hy, by simp⟩`. Consider the case `succ m ih`. Take `⟨K, z, hz, hK⟩` from `ih (fun s hs => h s (by omega))`. Take `⟨y₂, hy₂, e₂⟩` from `h m (by omega)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `combine_prod l (p m ^ E m) (fun s => p s ^ E s) m (fun s hs => ⟨E s + E m, combine_pow l (p s) (p m) (hcop s m (by omega)) (E s) (E m)⟩)`. Take `⟨u, w, huw⟩` from `Ideal.mem_span_pair.1 hj`. Establish `e` using `combine_two (∏ s ∈ Finset.range m, p s ^ E s) (p m ^ E m) l u w j huw (l ^ K • y) z (l ^ K • y₂) hK (by rw [e₂, smul_comm])`. Use `⟨j + K, u • l ^ K • y₂ + w • z, N.add_mem (N.smul_mem _ (N.smul_mem _ hy₂)) (N.smul_mem _ hz), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_range_succ, pow_add, mul_smul, e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem combine_mod (N : Submodule R V) (l : R) (p : ℕ → R)
     (hcop : ∀ s s' : ℕ, s ≠ s' → l ∈ Ideal.span ({p s, p s'} : Set R)) (E : ℕ → ℕ) (y : V)
@@ -105,11 +105,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n}
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `frobenius_uniformizer_identity hR`. Establish `h2` using `PD.hp.two_le`. Establish `hℓ : (baseIdOf hR).Bs.ℓ = PD.p` using `rfl`. Establish `hdvd : (PowerSeries.X * (PowerSeries.X + PowerSeries.C (((baseIdOf hR).Bs.ℓ : ℕ) : O)) : PowerSeries O) ∣ (baseIdOf hR).Bs.φ PowerSeries.X`. Use `⟨(u : PowerSeries O) * (baseIdOf hR).Bs.q ^ ((baseIdOf hR).Bs.ℓ - 2), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hu]`. Establish `e : (baseIdOf hR).Bs.ℓ - 1 = ((baseIdOf hR).Bs.ℓ - 2) + 1` using `by rw [hℓ]; omega`. Rewrite using `[e, pow_succ]`. Express the relevant statement in the definitionally equal form `_ = PowerSeries.X * (baseIdOf hR).Bs.q * _`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(LevelStatements.Lv.psCoprime O (baseIdOf hR).Bs.ℓ (baseIdOf hR).Bs.φ hdvd).2 s s' hss`.
+A detailed English derivation is pending.
 -/
 theorem combine_cop [IsDomain O] (hR : Ring9 W) (s s' : ℕ) (hss : s ≠ s') :
     PowerSeries.C (((PD.p : ℕ) : O)) ∈
@@ -128,17 +128,15 @@ theorem combine_cop [IsDomain O] (hR : Ring9 W) (s s' : ℕ) (hss : s ≠ s') :
   exact (LevelStatements.Lv.psCoprime O (baseIdOf hR).Bs.ℓ (baseIdOf hR).Bs.φ hdvd).2 s s' hss
 
 /- English proof (translation)
-Use `set κ : PowerSeries O := ∏ s ∈ Finset.range ell, (baseIdOf hR).Bs.p s ^ E s with hκ`. Take `⟨K, z, hz, hK⟩` from `combine_mod ((latOf C).N c) (PowerSeries.C (((PD.p : ℕ) : O))) (fun s => (baseIdOf hR).Bs.p s) (combine_cop hR) E y hy ell h`. Establish `hd : (baseIdOf hR).d κ = ∏ s ∈ Finset.range ell, pS W s ^ E s`. Rewrite using `[hκ, map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, BaseId.d_p]`. Establish `hdl : (baseIdOf hR).d (PowerSeries.C (((PD.p : ℕ) : O)) ^ K) = ((PD.p : ℕ) : LetA O n) ^ K`. Rewrite using `[map_pow, BaseId.d_C, map_natCast]`. Establish `hNΔ : ∀ x : W.DD T, x ∈ W.N T → (∀ δ ∈ W.DelF, W.γD T δ x = x) → x ∈ W.NΔ T` using `fun x h1 h2 => ⟨h1, h2⟩`. Establish `hx : C.t c y ∈ mulSet W T ((baseIdOf hR).d κ) (W.NΔ T)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hSat T ((baseIdOf hR).d κ) 1 hcrys ⟨0, (baseIdOf hR).d κ, ⟨E, ell, hd⟩, by simp⟩ ⟨0, 1, ⟨fun _ => 0, 0, by simp⟩, by simp⟩ (C.t c y) (fun δ hδ => C.t_Δ c y δ hδ) ?_ ?_` and prove the remaining obligations. Rewrite using `[one_smul]`. Conclude with `hNΔ _ hy (fun δ hδ => C.t_Δ c y δ hδ)`. Use `⟨K, C.t c z, hNΔ _ hz (fun δ hδ => C.t_Δ c z δ hδ), ?_⟩` and prove the remaining obligations. Rewrite using `[← hdl, ← Coord.t_smul, hK, Coord.t_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z', hz', hxz⟩` from `hx`. Establish `hlet : (letE c : LetA O n) • ((letE c : LetA O n) • z') = (letE c : LetA O n) • z'`. Rewrite using `[smul_smul, letE_mul_self]`. Establish `hΔ : ∀ δ ∈ W.DelF, W.γD T δ ((letE c : LetA O n) • z') = (letE c : LetA O n) • z'`. Introduce `δ hδ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[γD_smulA, γA_letE, hz'.2 δ hδ]`. Take `⟨y'', hy''⟩` from `C.t_surj c _ hlet hΔ`. Use `⟨y'', ?_, ?_⟩` and prove the remaining obligations. Use `show C.t c y'' ∈ W.N T`. Rewrite using `[hy'']`.
-
-Conclude with `(W.N T).smul_mem _ hz'.1`. Apply `C.t_inj c` to reduce the goal to its premises. Rewrite using `[Coord.t_smul, hy'', smul_smul, mul_comm, ← smul_smul, ← hxz, C.t_letter]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem combine [IsDomain O] (hSat : Sat W) (hcrys : IsCrys PD T.ρ) (ell : ℕ) (E : ℕ → ℕ) (y : C.V)
     (hy : y ∈ (latOf C).N c)

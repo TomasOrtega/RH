@@ -28,11 +28,11 @@ section Conn
 open GlobalTheory GlobalTheory.ShFam.Hor GlobalTheory.HermFrame GlobalTheory.Toroidal GlobalTheory.CurvInterp ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Filter Topology
 
 /- English proof (translation)
-Establish `key : ∀ (f : ReciprocityTheory.L2DbarEstimates.V d → ℂ) (η : Fin d → ℂ), fderiv ℝ (fun z => f (w₀ + (EuclideanSpace.equiv (Fin d) ℂ).symm z)) z η = fderiv ℝ f (w₀ + (EuclideanSpace.equiv (Fin d) ℂ).symm z) ((EuclideanSpace.equiv (Fin d) ℂ).symm η)`. Introduce `f η`. Set `L : (Fin d → ℂ) ≃L[ℝ] ReciprocityTheory.L2DbarEstimates.V d` to `{ (EuclideanSpace.equiv (Fin d) ℂ).symm.toLinearEquiv.restrictScalars ℝ with continuous_toFun := (EuclideanSpace.equiv (Fin d) ℂ).symm.continuous continuous_invFun := (EuclideanSpace.equiv (Fin d) ℂ).continuous }`. Establish `h` using `L.comp_right_fderiv (f := fun u => f (w₀ + u)) (x := z)`. Rewrite `h` using `[fderiv_comp_add_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg (fun T => T η) h`. Rewrite using `[conn, transpose_transpose]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [transpose_apply, mdel_apply, del_apply, wirt, dMat, Matrix.smul_apply, Matrix.sub_apply, of_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key (fun w => H w a b), key (fun w => H w a b), map_smul]`.
+A detailed English derivation is pending.
 -/
 private theorem conn_affine {d m : ℕ} (H : ReciprocityTheory.L2DbarEstimates.V d → Matrix (Fin m) (Fin m) ℂ) (w₀ : ReciprocityTheory.L2DbarEstimates.V d)
     (z ξ : Fin d → ℂ) :
@@ -57,7 +57,7 @@ private theorem conn_affine {d m : ℕ} (H : ReciprocityTheory.L2DbarEstimates.V
   rw [key (fun w => H w a b), key (fun w => H w a b), map_smul]
 
 /- English proof (translation)
-Distinguish the cases in `h : Formalism.L2.PjFree.GoodEmb κ.c σ`. Conclude with `GlobalTheory.T.hodge_local_of_good_embedding D A N j S κ s x σ h`. Use `GlobalTheory.T.hodge_local_conj_of_not_good D A N j S κ s x σ h (GlobalTheory.T.hodge_local_of_good_embedding D A N j S κ s x _ ?_)` and prove the remaining obligations. Simplify `Formalism.L2.PjFree.goodEmb_goodOf κ.c σ` using `only [Formalism.L2.PjFree.goodOf, if_neg h]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem hodgeLocal' {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s)
     (σ : κ.c.F →+* ℂ) : HodgeLocal x σ := by
@@ -67,17 +67,17 @@ private theorem hodgeLocal' {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ
     simpa only [Formalism.L2.PjFree.goodOf, if_neg h] using Formalism.L2.PjFree.goodEmb_goodOf κ.c σ
 
 /- English proof (translation)
-Set `L` to `(EuclideanSpace.equiv (Fin d) ℂ).symm`. Set `β : (Fin d → ℂ) → ReciprocityTheory.L2DbarEstimates.V d` to `fun z => w₀ + L z`. Establish `hβ : Differentiable ℂ β` using `(differentiable_const _).add L.differentiable`. Establish `hB' : IsOpen (β ⁻¹' B)` using `hB.preimage hβ.continuous`. Establish `h0 : (0 : Fin d → ℂ) ∈ β ⁻¹' B` using `by simpa [β] using hw₀`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsHolTo (β ⁻¹' B) fun z => (a (β z)).1.1` using `LocLift.isHolTo_comp (y := fun w => (a w).1.1) ha.1 hB' hβ.differentiableOn fun _ hz => hz`. Establish `h2 : HolFam (β ⁻¹' B) fun z => a (β z)` using `⟨h1, fun ρ i U f => (ha.2 ρ i U f).comp hβ.differentiableOn fun _ hz => hz⟩`. Establish `h3 : ContinuousOn (fun z => (a (β z)).1) (β ⁻¹' B)` using `hc.comp hβ.continuous.continuousOn fun _ hz => hz`. Take `⟨ρ, hρ, -, hblk⟩` from `hodgeLocal' x σ d _ _ hB' h0 h2 h3`. Take `⟨c, hc0, hc1, hd⟩` from `UpperTheory.holomorphic_ball_inner_region D A N j S κ s x σ d _ (fun z => (a (β z)).1) hB' h0 h1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, hb⟩` from `UpperTheory.curvature_connection_bound d _ _ ρ _ _ (fun z => c * Real.exp (-(x.r σ (a (β z)).1) / 2)) hρ hblk (hd.mono fun z hz hi => ⟨by positivity, mul_le_one₀ hc1 (Real.exp_pos _).le (Real.exp_le_one_iff.2 (by`. Combine the linear relations using `[x.exp_le_r σ (a (β z)).1, Real.exp_pos 1])), hz hi⟩)`. Use `⟨C / c, by positivity, ?_⟩` and prove the remaining obligations. Establish `ht : Tendsto (fun w => L.symm (w - w₀)) (𝓝 w₀) (𝓝 0)`. Establish `: Continuous fun w => L.symm (w - w₀)` using `L.symm.continuous.comp (continuous_id.sub continuous_const)`.
+Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this.tendsto w₀`. Use `filter_upwards [ht.eventually hb] with w hw hi τ ξ v`. Take `⟨z, rfl⟩ : ∃ z, w = β z` from `⟨L.symm (w - w₀), by simp [β]⟩`. Take `⟨η, rfl⟩` from `L.surjective ξ`. Establish `e : L.symm (β z - w₀) = z` using `by simp [β]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[e]`. Establish `h4` using `hw hi τ η v`. Rewrite `h4` using `[conn_affine (fun w => (x.hodge σ).gram (a w).1 (a w).2 τ) w₀ z η]`. Use `h4.trans ?_` and prove the remaining obligations. Establish `h5 : ‖η‖ ≤ ‖L η‖` using `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => PiLp.norm_apply_le (L η) i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : C / (c * Real.exp (-(x.r σ (a (β z)).1) / 2)) = C / c * Real.exp (x.r σ (a (β z)).1 / 2)`. Rewrite using `[neg_div, Real.exp_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h6]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hodge_conn_le {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s)
     {σ : κ.c.F →+* ℂ} {d : ℕ} {B : Set (ReciprocityTheory.L2DbarEstimates.V d)} {a : ReciprocityTheory.L2DbarEstimates.V d → CxFr s.T.Z σ} (hB : IsOpen B)
@@ -126,19 +126,17 @@ section Flag
 open GlobalTheory GlobalTheory.ShFam.Hor GlobalTheory.HermFrame GlobalTheory.Toroidal Filter Topology
 
 /- English proof (translation)
-Introduce `D O x P hc hf hr c σ ch U g hA y₀ hy₀U _`. Take `⟨V3, c₃, C₃, hV3o, hV3, hV3U, hc₃, h3⟩` from `UpperTheory.local_metric_lower_bound D O x P hc hf hr c σ ch U g hA y₀ hy₀U`. Take `⟨V4, c₄, hV4o, hV4, -, hc₄, h4⟩` from `UpperTheory.chart_metric_lower_bound D O x P hc hf hr c σ ch y₀ (hA.2.1 hy₀U)`. Establish `hBo : IsOpen (ch.e '' U)` using `ch.e.isOpen_image_of_subset_source hA.1 hA.2.1`. Establish `hcont : ContinuousOn (fun w => (O.Φ.C c).down (ch.e.symm w)) (ch.e '' U)` using `(CxPts.continuous_of_comp (m := (O.Φ.C c).down (σ := σ)) (f := (O.Φ.C c).π) (fun _ => rfl)).comp_continuousOn (ch.e.continuousOn_symm.mono (by rintro _ ⟨y, hy, rfl⟩; exact ch.e.map_source (hA.2.1 hy)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K, hK, hev⟩` from `hodge_conn_le x hBo hA.2.2.2.2.1 hcont (w₀ := ch.e y₀) ⟨y₀, hy₀U, rfl⟩`. Take `⟨GroupRetwisting, hV5, hV5o, hy5⟩` from `mem_nhds_iff.1 ((ch.e.continuousAt (hA.2.1 hy₀U)).eventually hev)`. Use `⟨V3 ∩ V4 ∩ GroupRetwisting, (K + |C₃|) / c₄, 0, (hV3o.inter hV4o).inter hV5o, ⟨⟨hV3, hV4⟩, hy5⟩, fun y hy => hV3U hy.1.1, le_rfl, fun y hy hb τ ξ v => ?_⟩` and prove the remaining obligations. Establish `hys : y ∈ ch.e.source` using `hA.2.1 (hV3U hy.1.1)`. Establish `e : ch.e.symm (ch.e y) = y` using `ch.e.left_inv hys`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `hV5 hy.2 (by show Inner ((O.Φ.C c).down (ch.e.symm (ch.e y)))`. Rewrite using `[e]`. Conclude with `hb) τ ξ v`. Establish `er : x.r (embOf O.κ.e σ) ((O.Φ.C c).down (ch.e.symm (ch.e y))) = O.met.r c σ y` using `by rw [e, hc.r_eq]; rfl`. Establish `h5' : ‖((GlobalTheory.BdGram.gramIn O (x.hodge (embOf O.κ.e σ)) ch g τ (ch.e y))⁻¹ * wirt (GlobalTheory.BdGram.gramIn O (x.hodge (embOf O.κ.e σ)) ch g τ) (ch.e y) ξ) *ᵥ v‖ ≤ K * Real.exp (O.met.r c σ y / 2) * ‖ξ‖ * ‖v‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← er]`. Conclude with `h5`. Establish `h6` using `((h3 y hy.1.1 τ).2 v).2.2 ξ`. Establish `h7` using `h4 y hy.1.2 ξ`. Establish `hr0 : 0 ≤ O.met.r c σ y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc.r_eq]`. Conclude with `(Real.exp_pos 1).le.trans exp_le_rFlag`. Establish `hE : 1 ≤ Real.exp (O.met.r c σ y / 2)` using `Real.one_le_exp (by positivity)`. Rewrite using `[sub_mulVec, Real.rpow_zero, mul_one]`. Use `(norm_sub_le _ _).trans ((add_le_add h5' h6).trans ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `Real.exp (O.met.r c σ y / 2) = E at hE ⊢`. Generalize the expression as in `√(P.om c σ ch y ξ.ofLp) = s at h7 ⊢`. Establish `h8 : ‖ξ‖ ≤ s / c₄` using `(le_div_iff₀' hc₄).2 h7`. Establish `hE0 : 0 ≤ E` using `zero_le_one.trans hE`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `(le_abs_self _).trans (le_mul_of_one_le_right (abs_nonneg _) hE)`. Use `_ = (K + |C₃|) * E * ‖ξ‖ * ‖v‖ := by ring`. Use `_ ≤ (K + |C₃|) * E * (s / c₄) * ‖v‖ := by gcongr`. Use `_ = (K + |C₃|) / c₄ * E * s * ‖v‖ := by ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem conn_bound : OnCore fun D O x P => ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (U : Set (GlobalTheory.CxPts (O.var c).str σ)) (g : ∀ p : GlobalTheory.CxPts (O.var c).str σ, (O.Φ.C c).FrameAt p), GlobalTheory.BdGram.IsHolAdapted O ch U g →
   ∀ y₀ ∈ U, y₀ ∉ offBd O.Φ c σ → ∃ (V : Set (GlobalTheory.CxPts (O.var c).str σ)) (K μ : ℝ), IsOpen V ∧ y₀ ∈ V ∧ V ⊆ U ∧ 0 ≤ μ ∧
@@ -189,27 +187,25 @@ end Flag
 
 open GlobalTheory.Toroidal in
 /- English proof (translation)
-Introduce `_ _ D O x P hc hf hr c σ y₀ hy₀`. Take `⟨ch, U, g, hy₀U, hA⟩` from `UpperTheory.exists_holomorphic_adapted_chart D O x P hc hf hr c σ y₀`. Take `⟨V3, c₃, C₃, hV3o, hV3, hV3U, hc₃, h3⟩` from `UpperTheory.local_metric_lower_bound D O x P hc hf hr c σ ch U g hA y₀ hy₀U`. Take `⟨V4, c₄, hV4o, hV4, -, hc₄, h4⟩` from `UpperTheory.chart_metric_lower_bound D O x P hc hf hr c σ ch y₀ (hA.2.1 hy₀U)`. Take `⟨GlobalBoundRefinements, K, μ₆, hV6o, hV6, -, hμ₆, h6⟩` from `conn_bound D O x P hc hf hr c σ ch U g hA y₀ hy₀U hy₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨μ₁, hμ₁⟩` from `ToroidalCompactificationData.exists_isMuExp x`. Establish `hsm` using `hA.2.2.2.2.2 (x.hodge (embOf O.κ.e σ)) _ (isOpen_not_liesIn (genBd O.s.T.Z)) (ToroidalCompactificationData.hodge_smoothOn _ _ _ _ _ _ _ x _)`. Use `⟨ch, V3 ∩ V4 ∩ GlobalBoundRefinements, GlobalTheory.BdGram.gramIn O (x.hodge _) ch g, GlobalTheory.BdGram.gramIn O (x.eigMet _) ch g, max μ₁ μ₆, max K 0, min c₃ c₄, C₃, (hV3o.inter hV4o).inter hV6o, ⟨⟨hV3, hV4⟩, hV6⟩, fun y hy => hA.2.1 (hV3U hy.1.1), ?_, lt_min hc₃ hc₄, le_max_o …` and prove the remaining obligations. Establish `e : V3 ∩ V4 ∩ GlobalBoundRefinements ∩ offBd O.Φ c σ = (V3 ∩ V4 ∩ GlobalBoundRefinements) ∩ (U ∩ offBd O.Φ c σ)`. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hb⟩`. Conclude with `⟨hy, hV3U hy.1.1, hb⟩`. Introduce and unpack `⟨hy, -, hb⟩`. Conclude with `⟨hy, hb⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[e]`. Conclude with `((hV3o.inter hV4o).inter hV6o).inter hA.2.2.1`. Introduce `y hy hb`. Establish `hyU : y ∈ U` using `hV3U hy.1.1`. Establish `hys : y ∈ ch.e.source` using `hA.2.1 hyU`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : ¬ LiesIn ((O.Φ.C c).down y) (genBd O.s.T.Z)` using `hb`. Establish `hr1 : 1 ≤ O.met.r c σ y`. Rewrite using `[hc.r_eq]`. Conclude with `(Real.one_lt_exp_iff.2 one_pos).le.trans exp_le_rFlag`. Establish `hr0 : 0 < O.met.r c σ y` using `one_pos.trans_le hr1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun n => UpperTheory.log_ratio_metrics_adapted D O x P hc hf hr c σ ch U g hA y hyU n, fun τ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ G : EigMet O.s.T.Z (embOf O.κ.e σ), GlobalTheory.BdGram.gramIn O G ch g τ (ch.e y) = G.gram _ (g y) τ`. Introduce `G`. Unfold `GlobalTheory.BdGram.gramIn`. Rewrite using `[ch.e.left_inv hys]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ch.e y ∈ ch.e '' (U ∩ {p | (O.Φ.C c).down p ∈ {y' | ¬ LiesIn y' (genBd O.s.T.Z)}})` using `⟨y, ⟨hyU, hb'⟩, rfl⟩`. Use `⟨(x.hodge _).pos _ _ _, (x.eigMet _).pos _ _ _, fun a b => ⟨?_, (h3 y hy.1.1 τ).1 a b⟩, fun v => ?_, fun ξ => ⟨?_, fun v => ⟨((h3 y hy.1.1 τ).2 v).2.2 ξ, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `(((hsm τ).smooth b a).contDiffAt ((hsm τ).isOpen.mem_nhds hmem)).differentiableAt (by simp)`. Take `⟨l3, u3, -⟩` from `(h3 y hy.1.1 τ).2 v`. Establish `hn : 0 ≤ (star v ⬝ᵥ GlobalTheory.BdGram.gramIn O (x.eigMet _) ch g τ (ch.e y) *ᵥ v).re` using `le_trans (mul_nonneg hc₃.le (sq_nonneg _)) l3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m1, m2⟩` from `hμ₁.2 (embOf O.κ.e σ) ((O.Φ.C c).down y) hb' (g y) τ v`. Establish `er : x.r (embOf O.κ.e σ) ((O.Φ.C c).down y) = O.met.r c σ y` using `by rw [hc.r_eq]; rfl`. Rewrite `m1`, `m2` using `[er]`. Simplify using `only [key] at hn l3 u3 ⊢`. Use `⟨le_trans (mul_le_mul_of_nonneg_right (min_le_left _ _) (sq_nonneg _)) l3, u3, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le hr1 (neg_le_neg (le_max_left _ _))) hn) ?_` and prove the remaining obligations. Conclude with `m1`. Use `m2.trans (mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le hr1 (le_max_left _ _)) hn)` and prove the remaining obligations. Conclude with `le_trans (mul_le_mul_of_nonneg_right (min_le_right _ _) (norm_nonneg _)) (h4 y hy.1.2 ξ)`. Use `(h6 y hy.2 hb τ ξ v).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : O.met.r c σ y ^ μ₆ ≤ O.met.r c σ y ^ max μ₁ μ₆` using `Real.rpow_le_rpow_of_exponent_le hr1 (le_max_right _ _)`. Establish `h0 : 0 ≤ O.met.r c σ y ^ μ₆` using `(Real.rpow_pos_of_pos hr0 _).le`. Establish `hR : 0 ≤ Real.exp (O.met.r c σ y / 2) * √(P.om c σ ch y ξ.ofLp) * ‖v‖` using `mul_nonneg (mul_nonneg (Real.exp_pos _).le (Real.sqrt_nonneg _)) (norm_nonneg _)`. Establish `e1 : ∀ k m : ℝ, k * m * Real.exp (O.met.r c σ y / 2) * √(P.om c σ ch y ξ.ofLp) * ‖v‖ = k * m * (Real.exp (O.met.r c σ y / 2) * √(P.om c σ ch y ξ.ofLp) * ‖v‖)` using `fun k m => by ring`. Rewrite using `[e1, e1]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul (le_max_left _ _) h1 h0 (le_max_right _ _)) hR`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.l2_dbar_local_chart_estimate : Hypotheses2 → HypothesesH → OnCore fun D O x P => ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (y₀ : GlobalTheory.CxPts (O.var c).str σ), y₀ ∉ offBd O.Φ c σ →
   ∃ (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (U : Set (GlobalTheory.CxPts (O.var c).str σ))

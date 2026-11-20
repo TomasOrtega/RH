@@ -237,14 +237,14 @@ def trivBundle {ι' : Type*} (x : ι' → Ω) (N : ℕ) : ChartBundle o x N (Fin
 variable {o}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_trivBundle {ι' : Type*} {x : ι' → Ω} {N : ℕ} {i : ι'} {e : Fin N → Ω} :
     e ∈ (trivBundle o x N).lat i ↔ ∀ q, e q ∈ chartRing o x i :=
   Iff.rfl
 
 /- English proof (translation)
-Use `mem_trivBundle.2 fun q => ?_` and prove the remaining obligations. Distinguish the cases in `h : q = l`. Substitute `h` using the available equality. Simplify using `using hr`. Simplify using `[h, zero_mem]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem single_mem_trivBundle {ι' : Type*} {x : ι' → Ω} {N : ℕ} {i : ι'} (l : Fin N) {r : Ω}
     (hr : r ∈ chartRing o x i) : Pi.single l r ∈ (trivBundle o x N).lat i := by
@@ -256,7 +256,7 @@ theorem single_mem_trivBundle {ι' : Type*} {x : ι' → Ω} {N : ℕ} {i : ι'}
 
 omit [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Simplify using `[chartMono]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartMono_zero (pt : MRingOver o ι →ₐ[o] Ω) (i : (k : K) → ι k) : chartMono pt i 0 = 1 := by
   simp [chartMono]
@@ -264,9 +264,9 @@ theorem chartMono_zero (pt : MRingOver o ι →ₐ[o] Ω) (i : (k : K) → ι k)
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `⟨fun _ => one_ne_zero, fun i _ l => ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using `only [gradedLat, degLine, Pi.basisFun_repr, Pi.zero_apply, chartMono_zero, mul_one, Pi.one_apply, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he, -, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨e l, mem_trivBundle.1 he l, rfl⟩`. Introduce and unpack `⟨r, hr, hra⟩`. Use `⟨Pi.single l r, single_mem_trivBundle l hr, fun j hj => ?_, by simp [hra]⟩` and prove the remaining obligations. Simplify using `[ne_of_gt hj]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem trivBundle_isFlagGrading (pt : MRingOver o ι →ₐ[o] Ω) (N : ℕ) :
     IsFlagGrading pt (trivBundle o (segreVec pt) N) (Pi.basisFun Ω (Fin N)) 0 1 := by
@@ -284,11 +284,11 @@ theorem trivBundle_isFlagGrading (pt : MRingOver o ι →ₐ[o] Ω) (N : ℕ) :
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `i _`. Use `⟨fun t e he => ⟨e t, mem_trivBundle.1 he t, by simp [chartMono_zero]⟩, fun ψ hψ => ?_⟩` and prove the remaining obligations. Use `⟨fun t => ψ (Pi.single t 1), fun t => hψ _ (single_mem_trivBundle t (one_mem _)), ?_⟩` and prove the remaining obligations. Apply `LinearMap.pi_ext` to reduce the goal to its premises. Introduce `s y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : (Pi.single s y : Fin N → Ω) = y • Pi.single s (1 : Ω)`. Use extensionality with `q`. Distinguish the cases in `h : q = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Rewrite using `[hs, map_smul]`. Simplify using `[chartMono_zero, LinearMap.sum_apply, Pi.single_apply, smul_eq_mul, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trivBundle_isTwistedForms (pt : MRingOver o ι →ₐ[o] Ω) (N : ℕ) :
     IsTwistedForms pt (trivBundle o (segreVec pt) N)
@@ -314,14 +314,14 @@ def genPt (R : Type*) [CommRing R] [IsDomain R] (ι : K → Type*) [∀ k, Finty
 
 omit [Fintype K] in
 /- English proof (translation)
-The claim follows from `(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective _ _)`.
+A detailed English derivation is pending.
 -/
 theorem ker_genPt (R : Type*) [CommRing R] [IsDomain R] :
     RingHom.ker (genPt R ι) = ⊥ :=
   (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective _ _)
 
 /- English proof (translation)
-Use `⟨⟨Ideal.isPrime_bot, ⟨∅, by simp, by simp⟩, fun k => ⟨0, by simp [X_ne_zero]⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isProjVarF_line (F : Type*) [Field F] :
     IsProjVarF (⊥ : Ideal (MRingOver F (fun _ : Unit => Fin 2))) 1 := by
@@ -331,7 +331,7 @@ theorem isProjVarF_line (F : Type*) [Field F] :
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjVarF_line F, ker_genPt F, by norm_num, trivBundle_isFlagGrading _ 2, trivBundle_isTwistedForms _ 2, by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 theorem ProjectiveBundleNumbers.hyp_inhabited (F : Type*) [Field F] :
     IsProjVarF (⊥ : Ideal (MRingOver F (fun _ : Unit => Fin 2))) 1 ∧
@@ -349,7 +349,7 @@ section DVR
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Use `⟨trivBundle_isFlagGrading _ N, trivBundle_isFlagGrading _ N, fun l => ⟨?_, ?_, rfl⟩⟩` and prove the remaining obligations. Conclude with `⟨0, 0, by simpa using isMultiHomog_C (ι := ι) (1 : O), by simpa using isMultiHomog_C (ι := ι) (1 : O), by simp⟩`. Conclude with `Ideal.isPrime_bot.one_notMem`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem trivBundle_isFlagPair (N : ℕ) :
     IsFlagPair (genPt O ι) ⊥ (trivBundle O (segreVec (genPt O ι)) N)
@@ -364,7 +364,7 @@ def unifPair (ϖ : O) : VPair K O ι := ⟨0, 0, C ϖ, 1⟩
 end DVR
 
 /- English proof (translation)
-Unfold `esymm`. Use `IsHomogeneous.sum _ _ _ fun t ht => ?_` and prove the remaining obligations. Use `IsHomogeneous.prod t (fun i => (X i : MvPolynomial σ ℤ)) (fun _ => 1) fun i _ => isHomogeneous_X ℤ i` as an intermediate fact. Simplify `this` using `[(Finset.mem_powersetCard.1 ht).2]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHomogeneous_esymm_int (σ : Type*) [Fintype σ] (n : ℕ) :
     (esymm σ ℤ n).IsHomogeneous n := by
@@ -375,7 +375,7 @@ theorem isHomogeneous_esymm_int (σ : Type*) [Fintype σ] (n : ℕ) :
   simpa [(Finset.mem_powersetCard.1 ht).2] using this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PadicInt.irreducible_p, isModelOver_line ℤ_[2], ker_genPt ℤ_[2], fun _ _ _ => Iff.rfl, trivBundle_isFlagPair 2, esymm_isSymmetric _ _ _, isHomogeneous_esymm_int _ 2⟩`.
+Supply the required witnesses or components.
 -/
 theorem TwoExpansionsAgree.hyp_inhabited :
     Irreducible ((2 : ℕ) : ℤ_[2]) ∧
@@ -394,7 +394,7 @@ theorem TwoExpansionsAgree.hyp_inhabited :
     isHomogeneous_esymm_int _ 2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isVerticalDiv_unif _ Ideal.isPrime_bot, by norm_num, esymm_isSymmetric _ _ _, isHomogeneous_esymm_int _ 1⟩`.
+Supply the required witnesses or components.
 -/
 theorem TwoExpansionsAgree.withPairs_hyp_inhabited :
     IsVerticalDiv ((2 : ℕ) : ℤ_[2]) (⊥ : Ideal (MRingOver ℤ_[2] (fun _ : Unit => Fin 2)))

@@ -24,7 +24,7 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 namespace GlobalTheory.JetRoad
 
 /- English proof (translation)
-Introduce `S G _ _ h2 h3 Lr c O _ _ act u hu T z J hJ`. Establish `a` using `GlobalTheory.RosatiCube.rosati_cubical_additive S G h2 h3 Lr c O act u hu T z J hJ`. Establish `b` using `GlobalTheory.rosatiGen_one_mul_star S G h2 h3 Lr c O act u hu T z J hJ`. Conclude with `⟨a.1, a.2.1, b.1, b.2.1, a.2.2, b.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem rosIdSt : RosIdSt := by
   intro S G _ _ h2 h3 Lr c O _ _ act u hu T z J hJ
@@ -33,9 +33,9 @@ theorem rosIdSt : RosIdSt := by
   exact ⟨a.1, a.2.1, b.1, b.2.1, a.2.2, b.2.2⟩
 
 /- English proof (translation)
-Establish `hJ : JetAlgSt` using `jetAlg`. Establish `hR : RepSt` using `repSt_of_jetAlgSt hJ`. Establish `hL : LawSt` using `lawSt_of hJ hR`. Establish `hM : MapSt` using `(GlobalTheory.JetMap.mapSt_and_dLinSt hJ hR).1`. Establish `hD : DLinSt` using `(GlobalTheory.JetMap.mapSt_and_dLinSt hJ hR).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ActSt` using `GlobalTheory.ChartAction.actSt_of hJ hR hM`. Establish `hT : TwoChartSt` using `twoChart_of_rep_map hJ hR hM`. Establish `hS : SerSt` using `serSt_of_jetAlgSt hJ`. Establish `hE : SerExSt` using `serEx hJ hR hS`. Conclude with `⟨hJ, hR, hL, hM, hD, hA, hT, hS, hE, FBOf.fbOf hJ hR hL hM hA hS hE valSer rosIdSt, FrameChange.hMul hJ hR hT hS hE, GlobalTheory.GermExist.germ_exists_unique hJ hR hS hE, IntTrans.intTrans GlobalTheory.canonGauge_independence_all.2.2.2 GlobalTheory.exists_formalBiext_map, Global …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem jetRoad : JetAlgSt ∧ RepSt ∧ LawSt ∧ MapSt ∧ DLinSt ∧ ActSt ∧ TwoChartSt ∧ SerSt ∧
     SerExSt ∧ FBOfSt ∧ HMulSt ∧ GermExSt ∧ IntTransSt ∧ ChartBCSt := by

@@ -12,19 +12,17 @@ section Inv
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Establish `hone : τ 1 = 1`. Establish `h` using `hmul 1 1`. Rewrite `h` using `[mul_one]`. Conclude with `(mul_eq_left.mp h.symm)`. Establish `hτinv : ∀ a, τ a⁻¹ = (τ a)⁻¹` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hmul a a⁻¹`. Rewrite `h` using `[mul_inv_cancel, hone]`. Conclude with `eq_inv_of_mul_eq_one_left h.symm`. Set `σ : G → G` to `fun x => τ x⁻¹`. Establish `hσmul : ∀ a b, σ (a * b) = σ a * σ b`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a b`. Simplify using `only [σ, mul_inv_rev, hmul]`. Establish `hσσ : ∀ a, σ (σ a) = a`. Introduce `a`. Simplify using `only [σ, hτinv, inv_inv, hinv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσK : ∀ k ∈ K, σ k ∈ K` using `fun k hk => hK _ (K.inv_mem hk)`. Establish `hFτ : ∀ x, F (τ x) = F x` using `fun x => by`. Take `⟨k₁, h₁, k₂, h₂, e⟩` from `hdc x`. Rewrite using `[e, hF _ h₁ _ h₂]`. Establish `hFr : ∀ x, ∀ k ∈ K, F (x * k) = F x` using `fun x k hk => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify using `using hF 1 K.one_mem k hk x`. Set `s : G ⧸ K → G ⧸ K` to `fun q => ((σ q.out : G) : G ⧸ K)`. Establish `hs : ∀ q, s (s q) = q`. Introduce `q`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K (σ q.out)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `show ((σ ((σ q.out : G) : G ⧸ K).out : G) : G ⧸ K) = q`. Rewrite using `[hk, hσmul, hσσ, QuotientGroup.mk_mul_of_mem _ (hσK _ k.2), QuotientGroup.out_eq']`. Set `e : G ⧸ K ≃ G ⧸ K` to `⟨s, s, hs, hs⟩`. Use `conv_rhs => rw [← finsum_comp_equiv e]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
-
-Use `show F (q.out)⁻¹ = F ((σ q.out : G) : G ⧸ K).out`. Rewrite using `[out_mk_inv K F hFr]`. Use `show F (q.out)⁻¹ = F (τ (q.out)⁻¹)`. Rewrite using `[hFτ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_inv_eq {K : Subgroup G} (τ : G → G) (hmul : ∀ a b, τ (a * b) = τ b * τ a) (hinv : ∀ a, τ (τ a) = a)
     (hdc : ∀ g : G, ∃ k₁ ∈ K, ∃ k₂ ∈ K, τ g = k₁ * g * k₂) (hK : ∀ k ∈ K, τ k ∈ K)
@@ -72,11 +70,9 @@ section Top
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hf.isCompact.elim_finite_subcover (fun x : tsupport f => (x : G) • (K : Set G)) (fun x => hK.smul _) (fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, ⟨1, K.one_mem, mul_one x⟩⟩)`. Use `(s.finite_toSet.image (fun i : tsupport f => ((i : G) : G ⧸ K))).subset ?_` and prove the remaining obligations. Introduce `q hq`. Establish `hx : q.out ∈ tsupport f` using `subset_tsupport _ hq`. Establish `h2` using `hs hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_iUnion] at h2`. Take `⟨i, hi, k, hk, hik⟩` from `h2`. Use `⟨i, hi, ?_⟩` and prove the remaining obligations. Use `show ((i : G) : G ⧸ K) = q`. Use `conv_rhs => rw [← QuotientGroup.out_eq' q]`.
-
-Rewrite using `[← hik]`. Conclude with `(QuotientGroup.mk_mul_of_mem (i : G) hk).symm`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_support_quot (K : Subgroup G) (hK : IsOpen (K : Set G)) {M : Type} [Zero M] [TopologicalSpace M]
     (f : G → M) (hf : HasCompactSupport f) : {q : G ⧸ K | f q.out ≠ 0}.Finite := by
@@ -101,9 +97,9 @@ section Line
 variable {M : Type} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ M := Module.finite_of_finrank_eq_succ h`. Set `b : Module.Basis (Fin 1) ℂ M` to `Module.finBasisOfFinrankEq ℂ M h`. Apply `b.ext` to reduce the goal to its premises. Introduce `i`. Establish `hi : i = 0` using `Subsingleton.elim _ _`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ b f, Matrix.trace_fin_one, LinearMap.toMatrix_apply, LinearMap.smul_apply, Module.End.one_apply]`. Use `conv_lhs => rw [← b.sum_repr (f (b 0))]`. Rewrite using `[Fin.sum_univ_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem end_eq_trace_smul (h : Module.finrank ℂ M = 1) (f : Module.End ℂ M) : f = LinearMap.trace ℂ M f • 1 := by
   haveI : FiniteDimensional ℂ M := Module.finite_of_finrank_eq_succ h
@@ -118,9 +114,9 @@ theorem end_eq_trace_smul (h : Module.finrank ℂ M = 1) (f : Module.End ℂ M) 
   rw [Fin.sum_univ_one]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ M := Module.finite_of_finrank_eq_succ h`. Establish `hf` using `end_eq_trace_smul h f`. Establish `hg` using `end_eq_trace_smul h g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hf, ← hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = LinearMap.trace ℂ M f * LinearMap.trace ℂ M g := by`. Rewrite using `[smul_mul_smul_comm, one_mul, map_smul, LinearMap.trace_one, h, smul_eq_mul, Nat.cast_one, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem trace_mul_of_finrank_one (h : Module.finrank ℂ M = 1) (f g : Module.End ℂ M) :
     LinearMap.trace ℂ M (f * g) = LinearMap.trace ℂ M f * LinearMap.trace ℂ M g := by

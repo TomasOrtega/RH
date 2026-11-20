@@ -7,7 +7,7 @@ open PositivityTheory.LowerBoundConstant GlobalTheory GlobalTheory.Published Glo
 namespace GlobalTheory.CompanionTheory.MoyPrasad
 
 /- English proof (translation)
-Unfold `PositivityTheory.LowerBoundConstant.Gx`. Conclude with `Subgroup.isOpen_mono le_sup_left GlobalTheory.StepData.isOpen_KOne`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isOpen_Gx (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n) :

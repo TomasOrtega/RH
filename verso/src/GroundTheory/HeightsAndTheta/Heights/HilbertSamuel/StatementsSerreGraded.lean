@@ -15,7 +15,7 @@ def SerreGraded.Statement : Prop :=
       (∀ j, w j ≠ 0 → ∃ D : ℕ, s * w j ^ D ∈ gradedSpan w d t (n + D)) → s ∈ gradedSpan w d t n
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨l, μ, rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem gradedSpan_gen_mem {Ω : Type*} [CommRing Ω] {q r : ℕ} (w : Fin q → Ω) (d : Fin r → ℕ) (t : Fin r → Ω)
     (l : Fin r) (μ : Fin q → ℕ) : t l * ∏ j, w j ^ μ j ∈ gradedSpan w d t (d l + ∑ j, μ j) :=

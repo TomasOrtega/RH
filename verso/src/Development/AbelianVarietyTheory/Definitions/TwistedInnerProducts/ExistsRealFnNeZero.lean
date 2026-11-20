@@ -26,20 +26,20 @@ def realFr : GA D V →* (D.what₂.Tau → GL (Fin V.rank) ℂ) := (MulAut.conj
 def rhoFr : GA D V →* Module.End ℂ (VV ℂ lam) := (rhoK lam).comp (invTrK.comp (realFr θ V B))
 
 /- English proof (translation)
-Simplify using `[realFr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem realFr_apply (g : GA D V) : realFr θ V B g = B⁻¹ * realGL θ V g * B := by
   simp [realFr]
 
 /- English proof (translation)
-Rewrite using `[realFr_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem realFr_coe (g : GA D V) (τ : D.what₂.Tau) : (realFr θ V B g τ : Matrix (Fin V.rank) (Fin V.rank) ℂ) =
     ((B τ)⁻¹ : GL (Fin V.rank) ℂ).1 * Formalism.L2.Pj.archM V (θ τ) g * (B τ).1 := by
   rw [realFr_apply]; rfl
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun g => by simp [realFr_apply]`.
+A detailed English derivation is pending.
 -/
 theorem realFr_one : realFr θ V 1 = realGL θ V := MonoidHom.ext fun g => by simp [realFr_apply]
 
@@ -49,13 +49,13 @@ Both sides reduce to the same expression.
 theorem rhoFr_apply (g : GA D V) : rhoFr θ V lam B g = rhoK lam (invTrK (realFr θ V B g)) := rfl
 
 /- English proof (translation)
-Rewrite using `[rhoFr_apply, realFr_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoFr_one (g : GA D V) : rhoFr θ V lam 1 g = rhoK lam (invTrK (realGL θ V g)) := by
   rw [rhoFr_apply, realFr_one]
 
 /- English proof (translation)
-Rewrite using `[rhoFr_apply, rhoFr_one, realFr_apply, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, ← map_mul, ← map_mul, ← mul_assoc, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoK_rhoFr (g : GA D V) (v : VV ℂ lam) :
     rhoK lam (invTrK B) (rhoFr θ V lam B g v) = rhoFr θ V lam 1 g (rhoK lam (invTrK B) v) := by
@@ -65,7 +65,7 @@ theorem rhoK_rhoFr (g : GA D V) (v : VV ℂ lam) :
 variable {V}
 
 /- English proof (translation)
-Establish `: realGL θ V g = 1` using `funext fun τ => by show Formalism.UG.bc (θ τ) (infHom V g) = 1`. Rewrite using `[show infHom V g = 1 from hg, map_one]`. Rewrite using `[realFr_apply, this, mul_one, inv_mul_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem realFr_fin {g : GA D V} (hg : g ∈ GfC V) : realFr θ V B g = 1 := by
   have : realGL θ V g = 1 := funext fun τ => by
@@ -74,13 +74,13 @@ theorem realFr_fin {g : GA D V} (hg : g ∈ GfC V) : realFr θ V B g = 1 := by
   rw [realFr_apply, this, mul_one, inv_mul_cancel]
 
 /- English proof (translation)
-Rewrite using `[rhoFr_apply, realFr_fin θ B hg, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoFr_fin {g : GA D V} (hg : g ∈ GfC V) : rhoFr θ V lam B g = 1 := by
   rw [rhoFr_apply, realFr_fin θ B hg, map_one, map_one]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← GlobalTheory.AutMult.toInf_mul_toFin g, map_mul, realFr_fin θ B (toFin V g).2, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem realFr_toInf (g : GA D V) : realFr θ V B (toInf V g) = realFr θ V B g := by
   conv_rhs => rw [← GlobalTheory.AutMult.toInf_mul_toFin g, map_mul, realFr_fin θ B (toFin V g).2, mul_one]
@@ -91,7 +91,7 @@ include hθ
 variable {B}
 
 /- English proof (translation)
-Take `⟨h, e⟩` from `(GlobalTheory.CoefModel.realGL_laws hθ V).2 (B * u * B⁻¹) fun τ => GlobalTheory.CoefModel.conj_unitary (hB τ) (hu τ)`. Conclude with `⟨toInf V h, by rw [realFr_toInf, realFr_apply, e]; group⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_realFr_eq (hB : ∀ τ, (B τ).1ᴴ * V.gram.map (tauE D τ) * (B τ).1 = 1) (u : D.what₂.Tau → GL (Fin V.rank) ℂ)
     (hu : ∀ τ, (u τ).1 ∈ Matrix.unitaryGroup (Fin V.rank) ℂ) : ∃ k : GinfC V, realFr θ V B k = u := by
@@ -101,16 +101,14 @@ theorem exists_realFr_eq (hB : ∀ τ, (B τ).1ᴴ * V.gram.map (tauE D τ) * (B
 variable (B)
 
 /- English proof (translation)
-Simplify using `only [realFr_coe]`. Conclude with `(continuous_const.matrix_mul ((GlobalTheory.CoefModel.realGL_laws hθ V).1 τ)).matrix_mul continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_realFr (τ : D.what₂.Tau) : Continuous fun g => (realFr θ V B g τ : Matrix (Fin V.rank) (Fin V.rank) ℂ) := by
   simp only [realFr_coe]
   exact (continuous_const.matrix_mul ((GlobalTheory.CoefModel.realGL_laws hθ V).1 τ)).matrix_mul continuous_const
 
 /- English proof (translation)
-Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Establish `h1 : ∀ τ : D.what₂.Tau, ((fun _ => 1 : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) τ).PosDef` using `fun _ => Matrix.PosDef.one`. Establish `h` using `GlobalTheory.CoefModel.continuous_rhoH lam h1 (fun g => invTrK (realFr θ V B g)) (fun τ => by`. Use `((continuous_realFr B hθ τ).comp continuous_inv).matrix_transpose.congr fun g => ?_` and prove the remaining obligations. Use `show (realFr θ V B g⁻¹ τ : Matrix (Fin V.rank) (Fin V.rank) ℂ)ᵀ = _`.
-
-Rewrite using `[map_inv]`. Use the proof step `rfl) (GlobalTheory.CoefModel.toHilb lam h1 v)`. Conclude with `(Λ ∘ₗ (GlobalTheory.CoefModel.toHilb lam h1).symm.toLinearMap).continuous_of_finiteDimensional.comp h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_rhoFr (Λ : Module.Dual ℂ (VV ℂ lam)) (v : VV ℂ lam) : Continuous fun g => Λ (rhoFr θ V lam B g v) := by
   haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram
@@ -141,7 +139,7 @@ Both sides reduce to the same expression.
 theorem rhoAt_apply (g : GA D (G.V X)) : rhoAt θ N X g = rhoK (wt G X) (invTrK (realAt θ N X g)) := rfl
 
 /- English proof (translation)
-The claim follows from `rhoK_rhoFr θ _ _ _ g v`.
+A detailed English derivation is pending.
 -/
 theorem rhoVr_rhoAt (g : GA D (G.V X)) (v : VV ℂ (wt G X)) : rhoVr (tauE D) (wt G X) (N.fr X) (rhoAt θ N X g v) =
     rhoFr θ _ (wt G X) 1 g (rhoVr (tauE D) (wt G X) (N.fr X) v) := rhoK_rhoFr θ _ _ _ g v
@@ -149,14 +147,14 @@ theorem rhoVr_rhoAt (g : GA D (G.V X)) (v : VV ℂ (wt G X)) : rhoVr (tauE D) (w
 variable {X}
 
 /- English proof (translation)
-The claim follows from `rhoFr_fin θ _ _ y.2`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem rhoAt_fin (y : FinPt G X) : rhoAt θ N X y = 1 := rhoFr_fin θ _ _ y.2
 
 /- English proof (translation)
-Establish `h` using `congrArg (·.map (tauE D τ)) (N.fr_on X hX)`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at h`. Rewrite using `[← h, Std.frC]`. Use `congr 2`. Use extensionality with `a b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `(D.sp.cm.cmUnram.2.1 (tauE D τ) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem frC_on (hX : DefNode D.R.m X) (τ : D.what₂.Tau) :
     (N.frC X τ)ᴴ * (G.V X).gram.map (tauE D τ) * N.frC X τ = 1 := by
@@ -175,25 +173,25 @@ Both sides reduce to the same expression.
 theorem realFn_apply (g : GA D (G.V X)) : realFn θ N X Λ V g = Λ (rhoAt θ N X g⁻¹ (V (toFin _ g))) := rfl
 
 /- English proof (translation)
-Rewrite using `[realFn_apply, ← Subgroup.coe_inv, rhoAt_fin, GlobalTheory.AutMult.toFin_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 @[simp] theorem realFn_fin (y : FinPt G X) : realFn θ N X Λ V y = Λ (V y) := by
   rw [realFn_apply, ← Subgroup.coe_inv, rhoAt_fin, GlobalTheory.AutMult.toFin_coe]; rfl
 
 /- English proof (translation)
-The claim follows from `realFn_fin θ N Λ V 1`.
+A detailed English derivation is pending.
 -/
 theorem realFn_one : realFn θ N X Λ V 1 = Λ (V 1) := realFn_fin θ N Λ V 1
 
 /- English proof (translation)
-Rewrite using `[realFn_apply, mul_inv_rev, map_mul, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem realFn_mul (g h : GA D (G.V X)) :
     realFn θ N X Λ V (g * h) = realFn θ N X (Λ ∘ₗ rhoAt θ N X h⁻¹) (fun y => V (y * toFin _ h)) g := by
   rw [realFn_apply, mul_inv_rev, map_mul, map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[realFn_mul, ← Subgroup.coe_inv, rhoAt_fin, GlobalTheory.AutMult.toFin_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem realFn_mul_fin (g : GA D (G.V X)) (k : FinPt G X) :
     realFn θ N X Λ V (g * k) = realFn θ N X Λ (fun y => V (y * k)) g := by
@@ -202,7 +200,7 @@ theorem realFn_mul_fin (g : GA D (G.V X)) (k : FinPt G X) :
 variable (X) in
 
 /- English proof (translation)
-Use `haveI : Nontrivial (VV ℂ (wt G X)) := GlobalTheory.CoefModel.nontrivial_Hilb (wt G X) (G := fun _ => 1) fun _ => Matrix.PosDef.one`. Take `⟨v, hv⟩` from `exists_ne (0 : VV ℂ (wt G X))`. Take `⟨Λ, h⟩` from `not_forall.1 (mt (Module.forall_dual_apply_eq_zero_iff ℂ v).1 hv)`. Conclude with `⟨Λ, v, by rwa [realFn_one]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_realFn_ne_zero : ∃ (Λ : Module.Dual ℂ (VV ℂ (wt G X))) (v : VV ℂ (wt G X)),
     realFn θ N X Λ (fun _ => v) 1 ≠ 0 := by
@@ -216,14 +214,14 @@ variable {θ} (hθ : IsInfFam θ)
 include hθ
 
 /- English proof (translation)
-The claim follows from `exists_realFr_eq (B := embGL (tauE D) (N.fr X)) hθ (frC_on N hX) u hu`.
+A detailed English derivation is pending.
 -/
 theorem exists_realAt_eq (hX : DefNode D.R.m X) (u : D.what₂.Tau → GL (Fin (G.V X).rank) ℂ)
     (hu : ∀ τ, (u τ).1 ∈ Matrix.unitaryGroup (Fin (G.V X).rank) ℂ) : ∃ k : GinfC (G.V X), realAt θ N X k = u :=
   exists_realFr_eq (B := embGL (tauE D) (N.fr X)) hθ (frC_on N hX) u hu
 
 /- English proof (translation)
-The claim follows from `continuous_rhoFr _ _ hθ Λ v`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rhoAt (v : VV ℂ (wt G X)) : Continuous fun g => Λ (rhoAt θ N X g v) := continuous_rhoFr _ _ hθ Λ v
 
@@ -234,7 +232,7 @@ section SlopeTestRemainingChoices
 variable {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε)
 
 /- English proof (translation)
-Take `⟨a1, a2⟩` from `(embRel_iff d h _).2 rfl`. Take `⟨b1, b2⟩` from `(embRel_iff d h' _).2 rfl`. Use `((embRel_iff d _ _).1 ⟨?_, fun x hx => ?_⟩).symm` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul, Matrix.mul_assoc, b1, ← Matrix.mul_assoc, a1, Matrix.mul_assoc]`. Rewrite using `[map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, b2 x hx, a2 x hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitaryEmbedding_mul (h h' : GA D A) : stabilizerEmbedding d (h * h') = stabilizerEmbedding d h * stabilizerEmbedding d h' := by
   obtain ⟨a1, a2⟩ := (embRel_iff d h _).2 rfl
@@ -244,13 +242,11 @@ theorem unitaryEmbedding_mul (h h' : GA D A) : stabilizerEmbedding d (h * h') = 
   · rw [map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, b2 x hx, a2 x hx]
 
 /- English proof (translation)
-Establish `hg` using `(embRel_iff d h _).2 rfl`. Generalize the expression as in `stabilizerEmbedding d h = g at hg`. Use `set P := frameMat B A d.ι`. Use `set C := Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) P * B.gram`. Establish `hG : C * P = A.gram` using `GlobalTheory.AutFunCounterexample.gram_pull B A d.ι d.isom`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set N : Matrix (Fin B.rank) (Fin B.rank) D.host.E := 1 - P * (A.gram⁻¹ * C) with hN`. Establish `hC : C * N = 0`. Rewrite using `[hN, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hG, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (GlobalTheory.AutFunCounterexample.gram_det_ne A).isUnit, Matrix.one_mul, sub_self]`. Establish `h1 : (matHom B g).1 * N.map (incA D) = N.map (incA D)`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `congr_fun (hg.2 (fun k => N k j) (by funext k; exact congr_fun (congr_fun hC k) j)) i`. Use `GlobalTheory.AutFunCounterexample.split_gen (π.comp (incA D)) P (A.gram⁻¹ * C) ((matHom B g).1.map π) 1 ?_ ?_` and prove the remaining obligations. Use `congrArg (·.map π) h1` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Conclude with `this.trans (Matrix.one_mul _).symm`.
-
-Use `congrArg (·.map π) hg.1` as an intermediate fact. Simplify using `only [Matrix.map_mul, hy, Matrix.mul_one] at this`. Conclude with `this.trans (Matrix.one_mul _).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Emb_map_eq_one {R : Type} [CommRing R] (π : AE D →+* R) {h : GA D A} (hy : (matHom A h).1.map π = 1) :
     (matHom B (stabilizerEmbedding d h)).1.map π = 1 := by
@@ -275,14 +271,14 @@ theorem Emb_map_eq_one {R : Type} [CommRing R] (π : AE D →+* R) {h : GA D A} 
     exact this.trans (Matrix.one_mul _).symm
 
 /- English proof (translation)
-The claim follows from `Units.ext (Emb_map_eq_one d (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom (congrArg Units.val hk))`.
+A detailed English derivation is pending.
 -/
 theorem Emb_mem_inf {k : GA D A} (hk : k ∈ GinfC A) : stabilizerEmbedding d k ∈ GinfC B :=
   Units.ext (Emb_map_eq_one d
     (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom (congrArg Units.val hk))
 
 /- English proof (translation)
-The claim follows from `((embRel_iff d _ _).1 (finEmb_rel d y)).symm`.
+A detailed English derivation is pending.
 -/
 theorem Emb_fin (y : GfC A) : stabilizerEmbedding d y = finEmb d y := ((embRel_iff d _ _).1 (finEmb_rel d y)).symm
 
@@ -290,11 +286,11 @@ variable {θ : InfFam D} (hθ : IsInfFam θ)
 include hθ
 
 /- English proof (translation)
-Take `⟨a1, a2⟩` from `(embRel_iff d h _).2 rfl`. Set `π : AE D →+* ℂ` to `(θ τ).comp (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `e : ∀ {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E), (M.map (incA D)).map π = M.map (tauE D τ)` using `fun M => by`. Use extensionality with `i j`. Conclude with `(hθ τ).1 _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `a3 : HMul.hMul (matHom B (stabilizerEmbedding d h)).1 (d.a.map (incA D)) = d.a.map (incA D)`. Use extensionality with `i j`. Conclude with `congr_fun (a2 (fun k => d.a k j) (by funext k; exact congr_fun (congr_fun d.perp k) j)) i`. Establish `b1` using `congrArg (·.map π) a1`. Establish `b3` using `congrArg (·.map π) a3`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [Matrix.map_mul, e] at b1 b3`. Conclude with `⟨b1, b3⟩`.
+A detailed English derivation is pending.
 -/
 theorem archM_Emb (h : GA D A) (τ : D.what₂.Tau) :
     Formalism.L2.Pj.archM B (θ τ) (stabilizerEmbedding d h) * (frameMat B A d.ι).map (tauE D τ) =
@@ -316,17 +312,15 @@ theorem archM_Emb (h : GA D A) (τ : D.what₂.Tau) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Establish `col : ∀ {r : Type} (f : r → Fin N) (M : Matrix (Fin N) (Fin N) K), M * (1 : Matrix (Fin N) (Fin N) K).submatrix id f = M.submatrix id f` using `fun f M => by`. Use extensionality with `i k`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `e1 : b'.1 * (1 : Matrix (Fin N) (Fin N) K).submatrix id (Formalism.L2.Col.Br.iC hN) = P * b.1`. Rewrite using `[col]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i k`. Conclude with `h1 i k`. Establish `e2 : b'.1 * (1 : Matrix (Fin N) (Fin N) K).submatrix id (fun _ : Fin 1 => Formalism.L2.Col.Br.iL hN) = z`. Rewrite using `[col]`. Use extensionality with `i k`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim k 0]`. Conclude with `h2 i`. Establish `c1 : ((b'⁻¹).1 * g' * b'.1).submatrix id (Formalism.L2.Col.Br.iC hN) = (1 : Matrix (Fin N) (Fin N) K).submatrix id (Formalism.L2.Col.Br.iC hN) * ((b⁻¹).1 * g * b.1)`. Establish `e : P * g * b.1 = P * b.1 * ((b⁻¹).1 * g * b.1)`. Rewrite using `[Matrix.mul_assoc P b.1, ← Matrix.mul_assoc b.1, ← Matrix.mul_assoc b.1, Units.mul_inv, Matrix.one_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← col, Matrix.mul_assoc, e1, Matrix.mul_assoc, ← Matrix.mul_assoc g', hP, e, ← e1, ← Matrix.mul_assoc (b'⁻¹).1, ← Matrix.mul_assoc (b'⁻¹).1, Units.inv_mul, Matrix.one_mul]`. Establish `c2 : ((b'⁻¹).1 * g' * b'.1).submatrix id (fun _ : Fin 1 => Formalism.L2.Col.Br.iL hN) = (1 : Matrix (Fin N) (Fin N) K).submatrix id (fun _ : Fin 1 => Formalism.L2.Col.Br.iL hN)`. Rewrite using `[← col, Matrix.mul_assoc, e2, Matrix.mul_assoc, hz, ← e2, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `hne : ∀ a : Fin n, Formalism.L2.Col.Br.iC hN a ≠ Formalism.L2.Col.Br.iL hN` using `fun a h => absurd (congrArg Fin.val h) a.2.ne`. Establish `hinj : Function.Injective (Formalism.L2.Col.Br.iC hN)` using `fun a b h => Fin.ext (congrArg Fin.val h :)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(b'⁻¹).1 * g' * b'.1 = M at c1 c2`. Generalize the expression as in `(b⁻¹).1 * g * b.1 = m at c1`. Use `⟨fun a k => ?_, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify `congr_fun (congr_fun c1 (Formalism.L2.Col.Br.iC hN a)) k` using `[Matrix.mul_apply, Matrix.one_apply, hinj.eq_iff]`. Simplify `congr_fun (congr_fun c2 (Formalism.L2.Col.Br.iC hN a)) 0` using `[Matrix.one_apply, hne]`.
-
-Simplify `congr_fun (congr_fun c1 (Formalism.L2.Col.Br.iL hN)) a` using `[Matrix.mul_apply, Matrix.one_apply, (hne _).symm]`. Conclude with `(congr_fun (congr_fun c2 (Formalism.L2.Col.Br.iL hN)) 0).trans (Matrix.one_apply_eq _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isBlock_conj {K : Type} [Field K] {N n : ℕ} (hN : N = n + 1) (b' : GL (Fin N) K) (b : GL (Fin n) K)
     {g' : Matrix (Fin N) (Fin N) K} {g : Matrix (Fin n) (Fin n) K} {P : Matrix (Fin N) (Fin n) K} {z : Matrix (Fin N) (Fin 1) K}
@@ -366,9 +360,7 @@ variable {L : LevCh D T} {sc : Consts} {G : GridData L sc} {U : Set T} {θ : Inf
 include hθ
 
 /- English proof (translation)
-Take `⟨a1, a2⟩` from `archM_Emb G.sp.topDec hθ h τ`. Rewrite using `[realAt, realAt, realFr_coe, realFr_coe]`. Use `isBlock_conj _ _ _ (fun i k => ?_) (fun i => ?_) a1 a2` and prove the remaining obligations. Use `swap`. Conclude with `congrArg (tauE D τ) (N.fr_last i)`.
-
-Use `(congrArg (tauE D τ) (N.fr_top i k)).trans ?_` and prove the remaining obligations. Conclude with `congr_fun (congr_fun (Matrix.map_mul (f := tauE D τ)) i) k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isBlock_realAt (h : GA D (G.V (.grid D.R.m D.R.m))) (τ : D.what₂.Tau) :
     GlobalTheory.BranchFormula.IsBlock G.sp.topDec.rank.symm (realAt θ N (.top D.R.m) (stabilizerEmbedding G.sp.topDec h) τ).1
@@ -382,9 +374,9 @@ theorem isBlock_realAt (h : GA D (G.V (.grid D.R.m D.R.m))) (τ : D.what₂.Tau)
   exact congr_fun (congr_fun (Matrix.map_mul (f := tauE D τ)) i) k
 
 /- English proof (translation)
-Establish `e : stabilizerEmbedding G.sp.topDec h⁻¹ = (stabilizerEmbedding G.sp.topDec h)⁻¹`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← unitaryEmbedding_mul, inv_mul_cancel]`. Conclude with `mul_left_cancel (a := stabilizerEmbedding G.sp.topDec 1) (by rw [← unitaryEmbedding_mul, mul_one, mul_one])`. Use `(isBlock_realAt hθ N h⁻¹ τ).transpose` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e, map_inv, map_inv]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem isBlock_invTrK_realAt (h : GA D (G.V (.grid D.R.m D.R.m))) (τ : D.what₂.Tau) :
     GlobalTheory.BranchFormula.IsBlock G.sp.topDec.rank.symm (invTrK (realAt θ N (.top D.R.m) (stabilizerEmbedding G.sp.topDec h)) τ).1
@@ -404,21 +396,21 @@ section Examples
 variable {L : LevCh D T} {sc : Consts} {G : GridData L sc} {U : Set T} (θ : InfFam D) (N : Std G U) (X : Node)
 
 /- English proof (translation)
-The claim follows from `let ⟨Λ, v, h⟩ := exists_realFn_ne_zero θ N X ⟨Λ, fun _ => v, fun e => h (congrFun e 1)⟩`.
+A detailed English derivation is pending.
 -/
 example : ∃ Λ V, realFn θ N X Λ V ≠ 0 :=
   let ⟨Λ, v, h⟩ := exists_realFn_ne_zero θ N X
   ⟨Λ, fun _ => v, fun e => h (congrFun e 1)⟩
 
 /- English proof (translation)
-Simplify using `only [realFn_mul_fin, h]`.
+Simplify using the standard rewrite rules.
 -/
 example (Λ) (V : FinPt G X → VV ℂ (wt G X)) (k : FinPt G X) (h : ∀ y, V (y * k) = V y) (g : GA D (G.V X)) :
     realFn θ N X Λ V (g * k) = realFn θ N X Λ V g := by
   simp only [realFn_mul_fin, h]
 
 /- English proof (translation)
-Simplify using `[trAct, Formalism.GradedWeylDivisibility.blockAct, invTrK_coe, h, ← map_inv, Matrix.diagonal_apply, apply_ite]`.
+Simplify using the standard rewrite rules.
 -/
 example (k : GA D (G.V X)) (c : D.what₂.Tau → ℂˣ) (h : ∀ τ, realAt θ N X k τ = Matrix.GeneralLinearGroup.scalar _ (c τ))
     (v : D.what₂.Tau × Fin (G.V X).rank × Fin (G.V X).rank) :

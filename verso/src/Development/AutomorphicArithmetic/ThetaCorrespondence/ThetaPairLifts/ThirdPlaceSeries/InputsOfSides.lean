@@ -13,9 +13,9 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwInputs
 /- English proof (translation)
-Introduce `hCh hArt hTor D X E Y G hRat hBdd hSup hHodge hRoots`. Take `⟨a1, a2, a8, good, sig, ⟨N0, a9⟩, a10, hyp⟩` from `_root_.GlobalTheory.TwGalInputs.galois_inputs_alt hCh hArt hTor D G hHodge`. Establish `hL : Laws Y.Z.good Y.Z.rd` using `laws_of_serSide D X E Y hRat`. Establish `hXi : XiType Y.Z.rd` using `GlobalTheory.XiTypeProof.xiType D Y.Z.ρ Y.Z.good Y.Z.rd hL.faithful hL.act (levelOf_of_serSide Y)`. Take `⟨supG, supFull, supHk, commG, comm⟩` from `supLaws_of_sides D X E Y hSup`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N0, { a1 := a1 a2 := a2 a8 := a8 good := good sig := sig a9 := a9 a10 := a10 univChar := Y.Z.univ off := Y.off rel := GlobalTheory.T.universalTwistedSeriesDistribution_of_compatibility D Y.Z.ρ Y.Z.good Y.Z.rd Y.Z.full hL l3 := GlobalTheory.SeriesTie.thetaLatticeCondition_of_full …`.
+Supply the required witnesses or components.
 -/
 theorem exists_inputs_of_hkSup_galHodge : GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator →
     ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), ∀ G : _root_.GlobalTheory.TwInputs.GalSideAlt D,

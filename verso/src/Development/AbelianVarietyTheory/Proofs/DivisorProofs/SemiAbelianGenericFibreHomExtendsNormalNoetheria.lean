@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ _ G _ hG φ hφ`. Take `⟨F, ⟨hF, hF'⟩, -⟩` from `GlobalTheory.semiAbelianHomExtension_holds.of_isGenericPointHom (GlobalTheory.Published.SemiAbelianHomExtension.isNormalScheme_spec R) (GlobalTheory.IsGenericPointHom.fractionField R (FractionRing R)) hG hG φ`. Conclude with `⟨F, hF, hF'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Mum.semiAbelian_end_generic_extends : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → ∀ φ : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G, IsMonHom φ → ∃ g : G ⟶ G, IsMonHom g ∧ (Over.pullback (jK R)).map g = φ := by
   intro R _ _ _ _ G _ hG φ hφ

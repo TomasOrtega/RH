@@ -20,7 +20,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicGenera
 namespace PositivityTheory.RgEis.MG
 
 /- English proof (translation)
-Introduce `hS hG hB hC hM hT hSph` and use `have hO := GlobalTheory.T.side_term_identity hG hB have hZ := GlobalTheory.T.zeta_integral_of_epstein_conv hC GlobalTheory.T.mirabolic_generation hS hSph GlobalTheory.T.average_membership (GlobalTheory.T.average_invariance GlobalTheory.T.average_membership) hO (GlobalTheory.T.tes …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mirGen : SecLaw → StdGood → BdetLaw → EpConv → EpMain → TestFun → TestSph → MirGen :=
   fun hS hG hB hC hM hT hSph =>

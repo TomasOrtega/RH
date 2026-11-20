@@ -17,11 +17,11 @@ namespace GlobalTheory.GraphLocal
 variable {K κ' : Type} [Field K] [Field κ'] [Algebra ℂ K] [Algebra ℂ κ']
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_mem _, one_ne_zero, by simpa using zero_mem _⟩`. Consider the case `tmul x y`. Take `⟨a, ha, b, hb, hb0, e⟩` from `E.isLocModel.frac x`. Use `⟨b, hb, hb0, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_comm, e]`. Conclude with `tmul_mem ha y`. Consider the case `add u v hu hv`. Take `⟨d₁, hd₁, hd₁0, h₁⟩` from `hu`. Take `⟨d₂, hd₂, hd₂0, h₂⟩` from `hv`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d₁ * d₂, mul_mem hd₁ hd₂, mul_ne_zero hd₁0 hd₂0, ?_⟩` and prove the remaining obligations. Establish `e : ((d₁ * d₂) ⊗ₜ[ℂ] (1 : κ')) * (u + v) = (d₂ ⊗ₜ[ℂ] (1 : κ')) * ((d₁ ⊗ₜ[ℂ] (1 : κ')) * u) + (d₁ ⊗ₜ[ℂ] (1 : κ')) * ((d₂ ⊗ₜ[ℂ] (1 : κ')) * v)`. Rewrite using `[← mul_assoc, ← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_comm d₂ d₁, mul_add]`. Rewrite using `[e]`. Conclude with `add_mem (mul_mem (tmul_mem hd₂ 1) h₁) (mul_mem (tmul_mem hd₁ 1) h₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_tens (E : Place (algebraMap ℂ K)) (w : K ⊗[ℂ] κ') :
     ∃ d ∈ E.ring, d ≠ 0 ∧ (d ⊗ₜ[ℂ] (1 : κ')) * w ∈ tens (κ' := κ') (placeAlg E) := by
@@ -45,33 +45,25 @@ theorem exists_mul_mem_tens (E : Place (algebraMap ℂ K)) (w : K ⊗[ℂ] κ') 
     exact add_mem (mul_mem (tmul_mem hd₂ 1) h₁) (mul_mem (tmul_mem hd₁ 1) h₂)
 
 /- English proof (translation)
-Introduce `K κ' L _ _ _ _ _ _ _ _ _ E 𝔭 _ hO`. Take `⟨O', hO'⟩` from `hO`. Establish `hinj : Function.Injective (algebraMap (K ⊗[ℂ] κ') L)` using `IsFractionRing.injective _ L`. Establish `hc : ∀ a : ℂ, algebraMap ℂ L a ∈ locAt (L` using `L) 𝔭 := fun a => by`. Rewrite using `[IsScalarTower.algebraMap_apply ℂ (K ⊗[ℂ] κ') L]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(toQ (L := L) 𝔭 (algebraMap ℂ (tens (κ' := κ') (placeAlg E)) a)).2`. Use `{ const_mem := hc isLocalRing := isLocalRing_locAt 𝔭 hinj essFiniteType := ?_ frac := ?_ }` and prove the remaining obligations. Establish `e : (algebraMap ℂ L).codRestrict (locAt (L` using `L) 𝔭) hc = (toQ (L := L) 𝔭).comp (algebraMap ℂ (tens (κ' := κ') (placeAlg E))) := by`. Use extensionality with `a`. Simplify using `only [RingHom.codRestrict_apply, RingHom.comp_apply, coe_toQ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsScalarTower.algebraMap_apply ℂ (K ⊗[ℂ] κ') L a`. Rewrite using `[e]`. Use `letI : Algebra ℂ O' := ((algebraMap ℂ κ').codRestrict O' hO'.const_mem).toAlgebra`. Use `haveI : IsScalarTower ℂ O' κ' := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.EssFiniteType ℂ O' := hO'.essFiniteType`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsFractionRing O' κ' := IsFractionRing.of_field O' κ' fun f => by`. Take `⟨a, ha, b, hb, hb0, e⟩` from `hO'.frac f`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, (eq_div_iff hb0).2 e⟩`. Use `haveI : Algebra.EssFiniteType O' κ' := Algebra.EssFiniteType.of_isLocalization κ' (nonZeroDivisors O')`. Use `haveI : Algebra.EssFiniteType ℂ κ' := Algebra.EssFiniteType.comp ℂ O' κ'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.EssFiniteType ℂ (placeAlg E) := by`. Set `φ : E.ring →+* placeAlg E` to `{ toFun := fun x => ⟨x.1, x.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hφ : φ.FiniteType` using `RingHom.FiniteType.of_surjective φ fun y => ⟨⟨y.1, y.2⟩, rfl⟩`. Establish `e : φ.comp ((algebraMap ℂ K).codRestrict E.ring E.const_mem) = algebraMap ℂ (placeAlg E)` using `RingHom.ext fun _ => rfl`. Establish `h` using `RingHom.EssFiniteType.comp E.essFiniteType hφ.essFiniteType`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[e]`. Conclude with `RingHom.essFiniteType_algebraMap.1 h`. Use `haveI : Algebra.EssFiniteType (placeAlg E) (placeAlg E ⊗[ℂ] κ') := Algebra.EssFiniteType.baseChange ℂ κ' (placeAlg E)`. Use `haveI : Algebra.EssFiniteType ℂ (placeAlg E ⊗[ℂ] κ') := Algebra.EssFiniteType.comp ℂ (placeAlg E) (placeAlg E ⊗[ℂ] κ')`. Use `haveI : Algebra.EssFiniteType ℂ (tens (κ' := κ') (placeAlg E)) := Algebra.EssFiniteType.of_surjective (tensEquiv (κ' := κ') (placeAlg E)).toAlgHom (tensEquiv (κ' := κ') (placeAlg E)).surjective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (algebraMap ℂ (tens (κ'` using `κ') (placeAlg E))).EssFiniteType := RingHom.essFiniteType_algebraMap.2 inferInstance`. Use `letI : Algebra (tens (κ' := κ') (placeAlg E)) (locAt (L := L) 𝔭) := (toQ (L := L) 𝔭).toAlgebra`. Use `haveI : IsLocalization 𝔭.primeCompl (locAt (L := L) 𝔭) := { map_units := fun s => isUnit_toQ 𝔭 hinj s.2 surj := fun x => by`. Take `⟨a, s, hs, hx⟩` from `exists_mul_toQ 𝔭 x`. Conclude with `⟨(a, ⟨s, hs⟩), hx⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exists_of_eq := fun {x y} h => ⟨1, by`. Simplify using `only [OneMemClass.coe_one, one_mul]`. Conclude with `Subtype.ext (hinj (congrArg Subtype.val h))⟩ }`. Use `haveI : Algebra.EssFiniteType (tens (κ' := κ') (placeAlg E)) (locAt (L := L) 𝔭) := Algebra.EssFiniteType.of_isLocalization (locAt (L := L) 𝔭) 𝔭.primeCompl`. Establish `h2 : (toQ (L` using `L) 𝔭).EssFiniteType := RingHom.essFiniteType_algebraMap.2 this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.EssFiniteType.comp h1 h2`. Introduce `f`. Take `⟨u, v, hv, rfl⟩` from `IsFractionRing.div_surjective (A := K ⊗[ℂ] κ') f`. Establish `hv0 : algebraMap (K ⊗[ℂ] κ') L v ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hv`. Take `⟨d₁, hd₁, hd₁0, h₁⟩` from `exists_mul_mem_tens (κ' := κ') E u`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d₂, hd₂, hd₂0, h₂⟩` from `exists_mul_mem_tens (κ' := κ') E v`. Use `set D : K ⊗[ℂ] κ' := (d₁ * d₂) ⊗ₜ[ℂ] (1 : κ') with hD`. Establish `hD1 : D = (d₂ ⊗ₜ[ℂ] (1 : κ')) * (d₁ ⊗ₜ[ℂ] (1 : κ'))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_comm d₂ d₁]`. Establish `hD2 : D = (d₁ ⊗ₜ[ℂ] (1 : κ')) * (d₂ ⊗ₜ[ℂ] (1 : κ'))`.
-
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Establish `hu : D * u ∈ tens (κ'` using `κ') (placeAlg E) := by`. Rewrite using `[hD1, mul_assoc]`. Conclude with `mul_mem (tmul_mem hd₂ 1) h₁`. Establish `hv' : D * v ∈ tens (κ'` using `κ') (placeAlg E) := by`.
-
-Rewrite using `[hD2, mul_assoc]`. Conclude with `mul_mem (tmul_mem hd₁ 1) h₂`. Establish `hDu : IsUnit D`. Use `IsUnit.of_mul_eq_one ((d₁ * d₂)⁻¹ ⊗ₜ[ℂ] (1 : κ')) ?_` and prove the remaining obligations. Rewrite using `[hD, Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_inv_cancel₀ (mul_ne_zero hd₁0 hd₂0)]`.
-
-Both sides reduce to the same expression. Establish `hD0 : algebraMap (K ⊗[ℂ] κ') L D ≠ 0` using `(hDu.map _).ne_zero`. Use `⟨_, (toQ (L := L) 𝔭 ⟨D * u, hu⟩).2, _, (toQ (L := L) 𝔭 ⟨D * v, hv'⟩).2, ?_, ?_⟩` and prove the remaining obligations. Use `show algebraMap (K ⊗[ℂ] κ') L (D * v) ≠ 0`. Rewrite using `[map_mul]`.
-
-Conclude with `mul_ne_zero hD0 hv0`. Use `show _ * algebraMap (K ⊗[ℂ] κ') L (D * v) = algebraMap (K ⊗[ℂ] κ') L (D * u)`. Rewrite using `[map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem isLocModel_locAt : ∀ {K κ' L : Type} [Field K] [Field κ'] [Field L] [Algebra ℂ K] [Algebra ℂ κ'] [Algebra ℂ L]
     [Algebra (K ⊗[ℂ] κ') L] [IsScalarTower ℂ (K ⊗[ℂ] κ') L] [IsFractionRing (K ⊗[ℂ] κ') L]

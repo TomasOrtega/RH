@@ -3,33 +3,31 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g K ρ hsep T hT j`. Set `P : (Fin g → ℝ) → Prop` to `fun c => ∃ q : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ v, T (fun m ↦ (c m : ℂ) * v m) = q (T v)`. Establish `hconst : ∀ r : ℝ, P (fun _ => r)`. Introduce `r`. Use `⟨(r : ℂ) • LinearMap.id, fun v => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : (fun m ↦ ((r : ℝ) : ℂ) * v m) = r • v`. Use function extensionality and compare the values at `m`. Simplify using `[Complex.real_smul]`. Rewrite using `[h, map_smul]`. Use function extensionality and compare the values at `m`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Complex.real_smul]`. Establish `hadd : ∀ c d, P c → P d → P (c + d)`. Introduce and unpack `c d ⟨q1, h1⟩ ⟨q2, h2⟩`. Use `⟨q1 + q2, fun v => ?_⟩` and prove the remaining obligations. Establish `h : (fun m ↦ (((c + d) m : ℝ) : ℂ) * v m) = (fun m ↦ (c m : ℂ) * v m) + (fun m ↦ (d m : ℂ) * v m)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `m`. Simplify using `[add_mul]`. Rewrite using `[h, map_add, h1, h2, LinearMap.add_apply]`. Establish `hmul : ∀ c d, P c → P d → P (c * d)`. Introduce and unpack `c d ⟨q1, h1⟩ ⟨q2, h2⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨q1 ∘ₗ q2, fun v => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `m`. Simplify using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `_ = q1 (T (fun m ↦ (d m : ℂ) * v m)) := h1 _`. Use `_ = (q1 ∘ₗ q2) (T v) := by rw [h2]; rfl`. Establish `hρ : ∀ a, P (ρ a)` using `fun a => by`. Take `⟨M, hM⟩` from `hT a`. Conclude with `⟨M, hM⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `haff : ∀ c s t, P c → P (fun m => (c m - s) * t)`. Introduce `c s t hc`. Establish `h : (fun m => (c m - s) * t) = (c + (fun _ => -s)) * (fun _ => t)`. Use function extensionality and compare the values at `m`. Simplify using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[h]`. Conclude with `hmul _ _ (hadd _ _ hc (hconst _)) (hconst _)`. Set `f : Fin g → (Fin g → ℝ)` to `fun k => if h : j ≠ k then (fun m => (ρ (Classical.choose (hsep j k h)) m - ρ (Classical.choose (hsep j k h)) k) * (ρ (Classical.choose (hsep j k h)) j - ρ (Classical.choose (hsep j k h)) k)⁻¹) else 1`. Establish `hf : ∀ k, P (f k)`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : j ≠ k`. Simplify using `only [f, dif_pos h]`. Conclude with `haff _ _ _ (hρ _)`. Simplify using `only [f, dif_neg h]`. Conclude with `hconst 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Set `δ : Fin g → ℝ` to `∏ k ∈ Finset.univ.erase j, f k`. Establish `hδ : P δ` using `Finset.prod_induction _ P hmul (hconst 1) (fun k _ => hf k)`. Establish `hδj : δ j = 1`. Simplify using `only [δ, Finset.prod_apply]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Establish `hjk : j ≠ k` using `(Finset.ne_of_mem_erase hk).symm`. Simplify using `only [f, dif_pos hjk]`. Conclude with `mul_inv_cancel₀ (sub_ne_zero.mpr (Classical.choose_spec (hsep j k hjk)))`. Establish `hδm : ∀ m, m ≠ j → δ m = 0`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `m hm`. Simplify using `only [δ, Finset.prod_apply]`. Apply `Finset.prod_eq_zero (i := m) (Finset.mem_erase.mpr ⟨hm, Finset.mem_univ _⟩)` to reduce the goal to its premises. Establish `hjm : j ≠ m` using `fun h => hm h.symm`. Simplify using `only [f, dif_pos hjm, sub_self, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Take `⟨q, hq⟩` from `hδ`. Use `⟨q, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← hq]`. Use `congr 1`. Use function extensionality and compare the values at `m`.
-
-Distinguish the cases in `hm : m = j`. Substitute `hm` using the available equality. Simplify using `[hδj]`. Simplify using `[hδm m hm, Pi.single_apply, hm]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem realDiag_conj_coordProj : ∀ (g : ℕ) (K : Type) (ρ : K → Fin g → ℝ), (∀ j k, j ≠ k → ∃ a, ρ a j ≠ ρ a k) →
     ∀ (T : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)),

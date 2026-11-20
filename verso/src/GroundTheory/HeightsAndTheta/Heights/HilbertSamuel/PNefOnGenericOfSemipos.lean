@@ -16,7 +16,7 @@ noncomputable section
 namespace NefOnGenericOfSemipos
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.FrechetDerivEvaluation.hasFDerivAt_eval g z`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_eval {σ : Type*} [Fintype σ] (g : MvPolynomial σ ℂ) (z : σ → ℂ) :
     HasFDerivAt (fun x : σ → ℂ => eval x g)
@@ -26,15 +26,15 @@ theorem hasFDerivAt_eval {σ : Type*} [Fintype σ] (g : MvPolynomial σ ℂ) (z 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `hA : AnalyticAt ℂ γ y` using `sheet_analyticAt osgood h`. Establish `hz : γ y ∈ mcPts W` using `h.2.self_of_nhds.2.1`. Establish `hne : ∀ k, ∃ i, γ y ⟨k, i⟩ ≠ 0` using `hz.1`. Establish `hzP : γ y ∈ mcPts P` using `⟨hz.1, fun f hf => hz.2 f (hPW hf)⟩`. Establish `hφ : ContDiffAt ℝ 2 (fun z => Real.log (A.h z)) (γ y)` using `((hs.1.contDiffAt (isOpen_blockNonzero.mem_nhds hne)).of_le (WithTop.coe_le_coe.mpr le_top)).log (A.pos _ hne).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htan : IsConeTangent (Int.castRingHom ℂ) P0 (γ y) (fderiv ℂ γ y (Pi.single 0 1))`. Introduce `f hf`. Establish `h0 : (fun y' => eval (γ y') (map (Int.castRingHom ℂ) f)) =ᶠ[𝓝 y] fun _ => (0 : ℂ)` using `by filter_upwards [h.2] with y' hy'`. Conclude with `hy'.2.1.2 f (hPW (hP0 hf))`. Establish `hd` using `(hasFDerivAt_eval (map (Int.castRingHom ℂ) f) (γ y)).comp y hA.differentiableAt.hasFDerivAt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h00` using `(hasFDerivAt_const (𝕜 := ℂ) (0 : ℂ) y).congr_of_eventuallyEq h0`. Use `congrArg (fun L => L (Pi.single 0 1)) (hd.unique h00)` as an intermediate fact. Simplify using `using this`. Establish `hlevi : 0 ≤ ReciprocityTheory.AnForm.levi (fun z => Real.log (A.h z)) (γ y) (fderiv ℂ γ y (Pi.single 0 1))` using `hs.2 (γ y) hzP _ htan`. Establish `key` using `ReciprocityTheory.AnForm.levi_comp (Pi.single 0 1) hA hφ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hlevi` using `[← key]`. Unfold `ReciprocityTheory.AnForm.levi at hlevi`. Simplify using `only [Function.comp_def] at hlevi`. Rewrite using `[maDensity_one]`. Apply `div_nonneg _ (by positivity)` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem maDensity_nonneg {P P0 W : Ideal (MRing ι)} {A : HermLine ι} (hP0 : P0 ≤ P) (hPW : P ≤ W)
     (hs : IsSemipositiveRel P0 P A) {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (1 + 1) → ℂ)}
@@ -69,9 +69,9 @@ theorem maDensity_nonneg {P P0 W : Ideal (MRing ι)} {A : HermLine ι} (hP0 : P0
   linarith
 
 /- English proof (translation)
-Unfold `geomDeg ptsIntegral`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Use `MeasureTheory.integral_nonneg fun y => ?_` and prove the remaining obligations. Use `finsum_nonneg fun w => finsum_nonneg fun _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `sheetDensity`. Use `split_ifs with hγ`. Simplify `maDensity_nonneg hP0 hPW hs hγ.choose_spec` using `only [one_mul]`. Conclude with `le_rfl`. Conclude with `le_rfl`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem geomDeg_one_nonneg {P P0 W : Ideal (MRing ι)} {A : HermLine ι} (hP0 : P0 ≤ P)
     (hs : IsSemipositiveRel P0 P A) (hPW : P ≤ W) : 0 ≤ geomDeg W A 1 := by
@@ -90,13 +90,13 @@ theorem geomDeg_one_nonneg {P P0 W : Ideal (MRing ι)} {A : HermLine ι} (hP0 : 
 end NefOnGenericOfSemipos
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ hP0 hs _ _ hPW` and use `NefOnGenericOfSemipos.geomDeg_one_nonneg hP0 hs hPW`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NefOnGenericOfSemipos.proof : NefOnGenericOfSemipos.Statement :=
   fun _ _ _ _ _ _ _ hP0 hs _ _ hPW => NefOnGenericOfSemipos.geomDeg_one_nonneg hP0 hs hPW
 
 /- English proof (translation)
-The claim follows from `ArithmeticVolumeBig.of_moriwakiBig NefOnGenericOfSemipos.proof hM`.
+A detailed English derivation is pending.
 -/
 theorem ArithmeticVolumeBig.of_moriwakiBig_only (hM : MoriwakiBigStatement) : ArithmeticVolumeBig.Statement :=
   ArithmeticVolumeBig.of_moriwakiBig NefOnGenericOfSemipos.proof hM

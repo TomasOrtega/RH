@@ -14,7 +14,7 @@ private def F (u : K → K → A) (v : K → A) : (n : ℕ) → (Fin n → K) �
   | n + 2, g => u (g 0) (g 1) * F u v n fun i => g i.succ.succ
 
 /- English proof (translation)
-The claim follows from `| 0, g => by simp [F] | 1, g => by simp [F, Fin.sum_univ_two, Fin.contractNth, hv] | n + 2, g => by have ih := F_coc u v hu hv n fun i => g i.succ.succ rw [Fin.sum_univ_succ, Fin.sum_univ_succ] have h2 : ∀ j : Fin (n + 1), F u v (n + 2) (Fin.contractNth j.succ.succ (· * ·) g) = u …`.
+A detailed English derivation is pending.
 -/
 private theorem F_coc (u : K → K → A) (v : K → A) (hu : ∀ a b c, u b c - u (a * b) c + u a (b * c) - u a b = 0)
     (hv : ∀ a b, v (a * b) = v a + v b) : ∀ (n : ℕ) (g : Fin (n + 1) → K),
@@ -50,7 +50,7 @@ private theorem F_coc (u : K → K → A) (v : K → A) (hu : ∀ a b c, u b c -
     linear_combination (F u v n fun i => g i.succ.succ.succ) * hu (g 0) (g 1) (g 2)
 
 /- English proof (translation)
-The claim follows from `| 0, g => by simp [F] | E + 1, g => by obtain ⟨a, g, rfl⟩ : ∃ (a : K) (g' : Fin (2 * E + 1) → K), g = (Fin.cons a g' : Fin (2 * E + 1 + 1) → K) := ⟨_, _, (Fin.cons_self_tail (n := 2 * E + 1) g).symm⟩ obtain ⟨b, g, rfl⟩ : ∃ (b : K) (g' : Fin (2 * E) → K), g = (Fin.cons b g' : Fin …`.
+A detailed English derivation is pending.
 -/
 private theorem F_ins (u : K → K → A) (v : K → A) (hs : ∀ a b, u a b = u b a) (x : K) : ∀ (E : ℕ) (g : Fin (2 * E) → K),
     ∑ i : Fin (2 * E + 1), (-1 : A) ^ (i : ℕ) * F u v (2 * E + 1) (Fin.insertNth (α := fun _ => K) i x g) =
@@ -69,7 +69,7 @@ private theorem F_ins (u : K → K → A) (v : K → A) (hs : ∀ a b, u a b = u
     refine (congrArg₂ (· + ·) (by ring : _ = (0 : A)) (Finset.sum_congr rfl fun j _ => by ring)).trans (zero_add _)
 
 /- English proof (translation)
-The claim follows from `| 0, g => by simp [F] | E + 1, g => by rw [Fin.prod_univ_succ] exact congrArg (u _ _ * ·) (F_prod u v E fun i => g i.succ.succ)`.
+A detailed English derivation is pending.
 -/
 private theorem F_prod (u : K → K → A) (v : K → A) : ∀ (E : ℕ) (g : Fin (2 * E) → K),
     F u v (2 * E) g = ∏ s : Fin E, u (g ⟨2 * s, by omega⟩) (g ⟨2 * s + 1, by omega⟩)
@@ -79,15 +79,15 @@ private theorem F_prod (u : K → K → A) (v : K → A) : ∀ (E : ℕ) (g : Fi
     exact congrArg (u _ _ * ·) (F_prod u v E fun i => g i.succ.succ)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `IsCyclic.exists_monoid_generator (α := K)`. Use `choose y hy using hg`. Simplify using `only at hy`. Establish `hN : 0 < orderOf g` using `orderOf_pos g`. Establish `hd : ∀ m n : ℕ, g ^ m = g ^ n → (orderOf g : ℤ) ∣ (m : ℤ) - n` using `fun m n h => (pow_eq_pow_iff_modEq.1 h).symm.dvd`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r := (orderOf g).gcd (y ζ) with hr`. Establish `hr0 : 0 < r` using `Nat.gcd_pos_of_pos_left _ hN`. Establish `hq : q * r = orderOf g`. Rewrite using `[← hζ, ← congrArg orderOf (hy ζ), orderOf_pow, hr, Nat.div_mul_cancel (Nat.gcd_dvd_left _ _)]`. Establish `hb` using `Nat.gcd_eq_gcd_ab (orderOf g) (y ζ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨r, fun a => (orderOf g).gcdB (y ζ) * y a, hr0, fun a b => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hq]`. Use `hd (y a + y b) (y (a * b)) (by rw [pow_add, hy, hy, hy])` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify `this.mul_left ((orderOf g).gcdB (y ζ))` using `[mul_sub, mul_add]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hq]`. Use `hd (y (ζ ^ x)) (y ζ * x) (by rw [pow_mul, hy, hy])` as an intermediate fact. Move the coercions through the operations in `at this`. Establish `h2` using `(this.mul_left ((orderOf g).gcdB (y ζ))).sub (dvd_mul_right (orderOf g : ℤ) ((orderOf g).gcdA (y ζ) * x))`. Use `h2.trans (dvd_of_eq ?_)` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hr, hb]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem ex_log [Finite K] [IsCyclic K] (q : ℕ) (ζ : K) (hζ : orderOf ζ = q) :
     ∃ (r : ℕ) (lg : K → ℤ), 0 < r ∧ (∀ a b, ((q * r : ℕ) : ℤ) ∣ lg a + lg b - lg (a * b)) ∧
@@ -119,23 +119,23 @@ end UpperTheory.V.ZK.Coc
 
 open UpperTheory.V.ZK.Coc in
 /- English proof (translation)
-Introduce `k _ _ q _ e ζ hζ v`. Take `⟨r, lg, hr, h1, h2⟩` from `ex_log q ζ hζ.eq_orderOf.symm`. Establish `hN : ((q * r : ℕ) : ℤ) ≠ 0` using `by exact_mod_cast (Nat.mul_pos (NeZero.pos q) hr).ne'`. Use `choose U hU using h1`. Establish `hs : ∀ a b, U a b = U b a` using `fun a b => mul_left_cancel₀ hN (by rw [← hU, ← hU, mul_comm a b]; ring)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ a b c, U b c - U (a * b) c + U a (b * c) - U a b = 0` using `fun a b c => mul_left_cancel₀ hN (by simp only [mul_sub, mul_add, ← hU, mul_assoc a b c]; ring)`. Use `set u : kˣ → kˣ → ZMod q := fun a b => (U a b : ZMod q) with hu`. Use `set w : kˣ → ZMod q := fun a => Multiplicative.toAdd (v a) with hw`. Use `⟨Finsupp.linearCombination _ (F u w _), ?_, fun x g => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_zero]`. Consider the case `single g c`. Use `F_coc u w (fun a b c => by simp only [hu]; exact_mod_cast congrArg (Int.cast : ℤ → ZMod q) (hc a b c)) (fun a b => by simp [hw]) _ g` as an intermediate fact.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [bd, Finsupp.linearCombination_single, map_smul, map_add, map_sum, one_smul, smul_eq_mul, one_mul]`. Conclude with `mul_eq_zero_of_right _ this`. Establish `key : ∑ j : ZMod q, u (chi q ζ hζ.pow_eq_one x (Multiplicative.ofAdd j)) (chi q ζ hζ.pow_eq_one x (Multiplicative.ofAdd 1)) = x` using `by set χ := chi q ζ hζ.pow_eq_one x with hχ`. Establish `e1 : ((q * r : ℕ) : ℤ) * ∑ j : ZMod q, U (χ (Multiplicative.ofAdd j)) (χ (Multiplicative.ofAdd 1)) = q * lg (χ (Multiplicative.ofAdd 1))`. Simplify using `only [Finset.mul_sum, ← hU, ← map_mul, ← ofAdd_add, Finset.sum_sub_distrib, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Equiv.sum_comp (Equiv.addRight (1 : ZMod q)) fun j => lg (χ (Multiplicative.ofAdd j))` as an intermediate fact. Simplify using `only [Equiv.coe_addRight] at this`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Take `⟨m, hm⟩` from `h2 (x * (1 : ZMod q).val)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `e2 : lg (χ (Multiplicative.ofAdd 1)) = r * ((x * (1 : ZMod q).val : ℕ) + q * m)`. Establish `: χ (Multiplicative.ofAdd 1) = ζ ^ (x * (1 : ZMod q).val)` using `rfl`. Rewrite using `[this]`. Move the coercions through the operations in `at hm ⊢`. Take the linear combination `hm`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e3 : ∑ j : ZMod q, U (χ (Multiplicative.ofAdd j)) (χ (Multiplicative.ofAdd 1)) = (x * (1 : ZMod q).val : ℕ) + q * m` using `mul_left_cancel₀ hN (by rw [e1, e2]; push_cast; ring)`. Use `congrArg (Int.cast : ℤ → ZMod q) e3` as an intermediate fact. Simplify `this` using `[hu]`. Establish `hp : ∀ h : Fin (2 * e + 1 + 1) → kˣ, Finsupp.linearCombination (ZMod q) (F u w _) (prism (ZMod q) g _ (Finsupp.single h 1)) = F u w (2 * (e + 1)) h * w g` using `fun h => by`. Rewrite using `[← F_ins u w (fun a b => by simp only [hu, hs a b]) g (e + 1) h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [prism, Finsupp.linearCombination_single, one_smul, map_sum, map_smul, smul_eq_mul, mul_one, one_mul, inv_mul_cancel_comm, ite_self]`. Both sides reduce to the same expression. Simplify using `only [zc, map_sum, cm, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, hp, F_prod]`. Rewrite using `[← Finset.sum_mul, ← key, ← Fin.prod_const, Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `congrArg (· * w g) (Finset.sum_congr rfl fun j _ => Finset.prod_congr rfl fun s _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `a1 : 2 * (s : ℕ) % 2 = 0` using `by omega`. Establish `a2 : ¬(2 * (s : ℕ) + 1) % 2 = 0` using `by omega`. Establish `a3 : 2 * (s : ℕ) / 2 = s` using `by omega`. Simplify using `only [a1, a2, a3, if_true, if_false, Fin.eta]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.sCoc : UpperTheory.V.ZK.SCoc := by
   intro k _ _ q _ e ζ hζ v

@@ -24,23 +24,21 @@ noncomputable section
 namespace GlobalTheory.KReg
 
 /- English proof (translation)
-Establish `hWU : W.1 ≤ U.1` using `hW.le.trans inf_le_left`. Take `⟨ρ, hρ⟩ : ∃ ρ, ρ = (X.presheaf.map (homOfLE hWU).op).hom` from `⟨_, rfl⟩`. Establish `hres : ∀ {A B C : X.Opens} (h1 : B ≤ A) (h2 : C ≤ B) (h3 : C ≤ A) (z : Γ(X, A)), (X.presheaf.map (homOfLE h2).op).hom ((X.presheaf.map (homOfLE h1).op).hom z) = (X.presheaf.map (homOfLE h3).op).hom z` using `fun h1 h2 h3 z => by`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `J : Ideal Γ(X, U.1)` to `{ carrier := {g | ∃ s : Γ(X, U.1), ρ s = ρ g * θ} zero_mem' := ⟨0, by simp⟩ add_mem' := fun {g g'} ⟨s, hs⟩ ⟨s', hs'⟩ => ⟨s + s', by rw [map_add, map_add, hs, hs', add_mul]⟩ smul_mem' := fun r g ⟨s, hs⟩ => ⟨r * s, by rw [smul_eq_mul, map_mul, map_mul, hs, _root_.mul_assoc]⟩ }`. Establish `hJ : J = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hJm⟩` from `Ideal.exists_le_maximal J hne`. Set `p : PrimeSpectrum Γ(X, U.1)` to `⟨m, hm.isPrime⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hxU : U.2.fromSpec p ∈ U.1`. Establish `: U.2.fromSpec p ∈ Set.range U.2.fromSpec` using `⟨p, rfl⟩`. Rewrite `this` using `[U.2.range_fromSpec]`. Then use the resulting hypothesis. Establish `hxf : ∀ f, U.2.fromSpec p ∈ X.basicOpen f ↔ f ∉ m` using `fun f => by`. Express the relevant statement in the definitionally equal form `p ∈ U.2.fromSpec ⁻¹ᵁ X.basicOpen f ↔ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[U.2.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression. Distinguish the cases in `hxV : U.2.fromSpec p ∈ V`. Take `⟨g, hgW, hxg⟩` from `U.2.exists_basicOpen_le (V := W.1) ⟨U.2.fromSpec p, hW ▸ ⟨hxU, hxV⟩⟩ hxU`. Establish `hgm : g ∉ m` using `(hxf g).1 hxg`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hgm` to reduce the goal to its premises. Use `haveI := U.2.isLocalization_basicOpen g`. Take `⟨⟨s, ⟨_, N, rfl⟩⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers g) ((X.presheaf.map (homOfLE hgW).op).hom θ)`. Establish `hbo : X.basicOpen (ρ g) ≤ X.basicOpen g`. Rewrite using `[hρ, Scheme.basicOpen_res]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inf_le_right`. Establish `e3 : ∀ z, (X.presheaf.map (homOfLE hgW).op).hom (ρ z) = algebraMap Γ(X, U.1) Γ(X, X.basicOpen g) z` using `fun z => by`. Rewrite using `[hρ]`. Conclude with `hres hWU hgW (hgW.trans hWU) z`. Establish `hz : (X.presheaf.map (homOfLE hgW).op).hom (ρ g ^ N * θ - ρ s) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_mul, map_pow, e3, e3, ← map_pow, mul_comm, hs, sub_self]`. Establish `hz' : (X.presheaf.map (homOfLE (X.basicOpen_le (ρ g))).op).hom (ρ g ^ N * θ - ρ s) = 0`. Use `congrArg (X.presheaf.map (homOfLE hbo).op).hom hz` as an intermediate fact. Rewrite `this` using `[map_zero, hres hgW hbo (X.basicOpen_le (ρ g))]`. Then use the resulting hypothesis. Take `⟨M, hM⟩` from `AlgebraicGeometry.exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isCompact X W.2.isCompact (ρ g ^ N * θ - ρ s) (ρ g) hz'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `hm.isPrime.mem_of_pow_mem (M + N) (hJm ⟨g ^ M * s, ?_⟩)` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_pow, pow_add]`. Take the linear combination `(-1 : Γ(X, W.1)) * hM`. Take `⟨g, hgm, s, hs⟩` from `h m hm ⟨_, hxU, fun f hf hx => (hxf f).1 hx hf, hxV⟩`. Conclude with `hgm (hJm ⟨s, hρ ▸ hs⟩)`.
-
-Take `⟨s, hs⟩ : (1 : Γ(X, U.1)) ∈ J` from `hJ ▸ Submodule.mem_top`. Conclude with `⟨s, by rw [← hρ, hs, map_one, _root_.one_mul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_res_eq {X : Scheme.{0}} (U W : X.affineOpens) (V : X.Opens) (hW : W.1 = U.1 ⊓ V) (θ : Γ(X, W.1))
     (h : ∀ m : Ideal Γ(X, U.1), m.IsMaximal → (∃ x ∈ U.1, (∀ f ∈ m, x ∉ X.basicOpen f) ∧ x ∉ V) →
@@ -96,19 +94,19 @@ theorem exists_res_eq {X : Scheme.{0}} (U W : X.affineOpens) (V : X.Opens) (hW :
   exact ⟨s, by rw [← hρ, hs, map_one, _root_.one_mul]⟩
 
 /- English proof (translation)
-Use `set ρ := (X.presheaf.map (homOfLE hW).op).hom with hρ`. Use `letI : Algebra Γ(X, U.1) Γ(X, W.1) := ρ.toAlgebra`. Establish `h1 : IsOpenImmersion (chart W)` using `W.2.isOpenImmersion_fromSpec`. Establish `e : Spec.map (CommRingCat.ofHom (algebraMap Γ(X, U.1) Γ(X, W.1))) ≫ chart U = chart W` using `GlobalTheory.LogKSDiv.GenChange.chart_res U W hW`. Establish `: IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap Γ(X, U.1) Γ(X, W.1))) ≫ chart U)` using `e ▸ h1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion (chart U)` using `U.2.isOpenImmersion_fromSpec`. Establish `: IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap Γ(X, U.1) Γ(X, W.1))))` using `IsOpenImmersion.of_comp _ (chart U)`. Establish `hs : Smooth (Spec.map (CommRingCat.ofHom (algebraMap Γ(X, U.1) Γ(X, W.1))))` using `inferInstance`. Rewrite `hs` using `[HasRingHomProperty.Spec_iff (P := @Smooth)]`. Establish `: Algebra.Smooth Γ(X, U.1) Γ(X, W.1)` using `RingHom.smooth_algebraMap.1 hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `let g : Γ(X, U.1) →+* DualNumber Γ(X, W.1) := { toFun := fun r => TrivSqZeroExt.inl (ρ r) + TrivSqZeroExt.inr (ρ (D r)) map_one' := by ext <;> simp map_zero' := by ext <;> simp map_add' := fun a b => by ext <;> simp <;> ring map_mul' := fun a b => by ext <;> simp [Derivation.leib …`. Use `letI : Algebra Γ(X, U.1) (DualNumber Γ(X, W.1)) := g.toAlgebra`. Set `π : DualNumber Γ(X, W.1) →ₐ[Γ(X, U.1)] Γ(X, W.1)` to `{ (TrivSqZeroExt.fstHom Γ(X, W.1) Γ(X, W.1) Γ(X, W.1)).toRingHom with commutes' := fun r => by simp [g, RingHom.algebraMap_toAlgebra] }`. Establish `hsur : Function.Surjective π` using `fun s => ⟨TrivSqZeroExt.inl s, rfl⟩`. Establish `hk : IsNilpotent (RingHom.ker (π : DualNumber Γ(X, W.1) →+* Γ(X, W.1)))`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.zero_eq_bot, eq_bot_iff, pow_two]`. Use `Submodule.mul_le.2 fun a ha b hb => ?_` and prove the remaining obligations. Establish `ha' : a.fst = 0` using `ha`. Establish `hb' : b.fst = 0` using `hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot]`. Apply the tactic sequence `ext <;> simp [ha', hb']`. Set `l` to `Algebra.FormallySmooth.liftOfSurjective (AlgHom.id Γ(X, U.1) Γ(X, W.1)) π hsur hk`. Establish `hl1 : ∀ s, (l s).fst = s` using `fun s => AlgHom.congr_fun (Algebra.FormallySmooth.comp_liftOfSurjective (AlgHom.id Γ(X, U.1) Γ(X, W.1)) π hsur hk) s`. Establish `hl2 : ∀ r, l (ρ r) = g r` using `fun r => l.commutes r`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Derivation.mk' (AddMonoidHom.toIntLinearMap { toFun := fun s => (l s).snd, map_zero' := by simp, map_add' := fun x y => by rw [map_add]; rfl }) fun a b => ?_, fun r => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(l (a * b)).snd = a • (l b).snd + b • (l a).snd`. Rewrite using `[map_mul, TrivSqZeroExt.snd_mul, hl1, hl1]`. Simplify using `[smul_eq_mul, mul_comm]`. Express the relevant statement in the definitionally equal form `(l (ρ r)).snd = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl2]`. Simplify using `[g]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_der_res {X : Scheme.{0}} (U W : X.affineOpens) (hW : W.1 ≤ U.1) (D : Derivation ℤ Γ(X, U.1) Γ(X, U.1)) :
     ∃ DW : Derivation ℤ Γ(X, W.1) Γ(X, W.1), ∀ r, DW ((X.presheaf.map (homOfLE hW).op).hom r) =
@@ -159,11 +157,11 @@ theorem exists_der_res {X : Scheme.{0}} (U W : X.affineOpens) (hW : W.1 ≤ U.1)
     simp [g]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y hpq hsm hsnc hrig U n v A hv hb hA D`. Take `⟨W, hW⟩ : ∃ W : Y.X.affineOpens, W.1 = U.1 ⊓ interior Y` from `⟨⟨_, GlobalTheory.AffOff.isAffineOpen_inf_interior E H Dw l Xo c Y hsnc U⟩, rfl⟩`. Establish `hWU : W.1 ≤ U.1` using `hW.le.trans inf_le_left`. Take `⟨DW, hDW⟩` from `exists_der_res U W hWU D.1`. Take `⟨hv', hb'⟩` from `GlobalTheory.LocM.FrameBase.tanBasis_baseChange Y.t (Y.X.presheaf.map (homOfLE hWU).op).hom (chart U) n v hv hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hv'`, `hb'` using `[GlobalTheory.LogKSDiv.GenChange.chart_res U W hWU]`. Take `⟨ΘW, hΘW⟩` from `GlobalTheory.T.exists_kodairaSpencer_interior_affine_open E H Dw l Xo c Y W (hW.le.trans inf_le_right) n _ hv' hb' DW`. Establish `key` using `fun (m : Ideal Γ(Y.X, U.1)) (hm : m.IsMaximal) hx => GlobalTheory.T.kodairaSpencer_regular_near_rigid_boundary_point E H Dw l Xo c Y hpq hsm hsnc hrig U W hW n v hv hb D DW ΘW hDW hΘW m hm hx`. Use `choose Θ hΘ using fun a b => exists_res_eq U W (interior Y) hW (ΘW a b) fun m hm hx => (key m hm hx).imp fun g hg => ⟨hg.1, hg.2 a b⟩`. Use `⟨Θ, GlobalTheory.LogKSUp.isKS_of_inf E H Y.X Y.t (interior Y) U W hW n v D.1 DW Θ hDW ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hΘW using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Conclude with `hΘ a b`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_isKS_regular : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), 1 ≤ Dw.p + Dw.q → SmoothOfRelativeDimension Dw.dim (genStr Y) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Y) → (∀ x ∈ genBd Y, IsClosed ({x} : Set (gen Y)) → HasRigidChart Y x) → ∀ (U : Y.X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Y.X, U.1)) ⟶ Y.t.G.left)) (A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), (∀ i, IsTanAtG Y.t (chart U) (v i)) → (∀ w, IsTanAtG Y.t (chart U) w → ∃! cf : Fin n → Γ(Y.X, U.1), IsCombAtG Y.t (chart U) v cf w) → (∀ a i, IsCombAtG Y.t (chart U) v (A a i) (v i ≫ (Y.t.act.act a).left)) → ∀ D : logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U, ∃ Θ, IsKS Y.t (interior Y) U v D.1 Θ := by
   intro E _ _ _ H Dw l Xo c Y hpq hsm hsnc hrig U n v A hv hb hA D

@@ -3,11 +3,9 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Use `((Ideal.finite_minimalPrimes_of_isNoetherianRing A (Ideal.span {a})).preimage (f := PrimeSpectrum.asIdeal) (fun _ _ _ _ h => PrimeSpectrum.ext h)).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨P, hP⟩ ⟨haP, h1⟩`. Simplify using `only at haP h1`. Use `⟨⟨hP, (Ideal.span_singleton_le_iff_mem _).mpr haP⟩, fun Q hQ hQP => ?_⟩` and prove the remaining obligations. Use `hQ.1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `haQ : a ∈ Q` using `(Ideal.span_singleton_le_iff_mem _).mp hQ.2`. Establish `hQ0 : Q ≠ ⊥` using `fun h => ha (by rw [h] at haQ; exact haQ)`. Establish `hQ1 : P.height ≤ Q.height`. Rewrite using `[h1]`. Conclude with `Order.one_le_iff_ne_zero.mpr (fun h => hQ0 (Ideal.height_eq_zero_iff_eq_bot.mp h))`.
-
-Conclude with `(Ideal.eq_of_le_of_height_le (I := Q) hQP hQ1).ge`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_primeSpectrum_height_one {A : Type*} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     {a : A} (ha : a ≠ 0) :
@@ -26,7 +24,7 @@ theorem finite_primeSpectrum_height_one {A : Type*} [CommRing A] [IsDomain A] [I
   exact (Ideal.eq_of_le_of_height_le (I := Q) hQP hQ1).ge
 
 /- English proof (translation)
-Take `⟨Q, hQ, hQP⟩` from `Ideal.exists_minimalPrimes_le (I := Ideal.span {a}) (J := P.asIdeal) ((Ideal.span_singleton_le_iff_mem _).mpr hP)`. Establish `hQp : Q.IsPrime` using `hQ.1.1`. Establish `haQ : a ∈ Q` using `(Ideal.span_singleton_le_iff_mem _).mp hQ.1.2`. Establish `hQ0 : Q ≠ ⊥` using `fun h => ha (by rw [h] at haQ; exact haQ)`. Use `⟨⟨Q, hQp⟩, haQ, le_antisymm (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ Q hQ) (Order.one_le_iff_ne_zero.mpr (fun h => hQ0 (Ideal.height_eq_zero_iff_eq_bot.mp h))), hQP⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_primeSpectrum_height_one_le {A : Type*} [CommRing A] [IsDomain A]
     [IsNoetherianRing A] {a : A} (ha : a ≠ 0) (P : PrimeSpectrum A) (hP : a ∈ P.asIdeal) :
@@ -41,9 +39,9 @@ theorem exists_primeSpectrum_height_one_le {A : Type*} [CommRing A] [IsDomain A]
     (Order.one_le_iff_ne_zero.mpr (fun h => hQ0 (Ideal.height_eq_zero_iff_eq_bot.mp h))), hQP⟩
 
 /- English proof (translation)
-Establish `hmem : hU.fromSpec P ∈ U`. Establish `: hU.fromSpec P ∈ Set.range hU.fromSpec` using `⟨P, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Use `letI := TopCat.Presheaf.algebra_section_stalk Z.presheaf (U := U) ⟨hU.fromSpec P, hmem⟩`. Use `hU.isLocalization_stalk' P hmem` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `@IsLocalization.AtPrime.ringKrullDim_eq_height _ _ P.asIdeal _ _ _ _ this`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_stalk_fromSpec {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffineOpen U)
     (P : PrimeSpectrum Γ(Z, U)) :
@@ -56,9 +54,9 @@ theorem ringKrullDim_stalk_fromSpec {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffin
   exact @IsLocalization.AtPrime.ringKrullDim_eq_height _ _ P.asIdeal _ _ _ _ this
 
 /- English proof (translation)
-Establish `hmem : hU.fromSpec P ∈ U`. Establish `: hU.fromSpec P ∈ Set.range hU.fromSpec` using `⟨P, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Establish `h` using `hU.fromSpec_preimage_basicOpen (Z.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op f)`. Establish `h2 : hU.fromSpec P ∈ Z.basicOpen (Z.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op f) ↔ Z.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op f ∉ P.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← PrimeSpectrum.mem_basicOpen, ← h]`. Both sides reduce to the same expression. Rewrite `h2` using `[Scheme.basicOpen_res]`. Establish `h3 : hU.fromSpec P ∈ U ⊓ Z.basicOpen f ↔ hU.fromSpec P ∈ Z.basicOpen f` using `⟨fun h => h.2, fun h => ⟨hmem, h⟩⟩`. Rewrite using `[← h3, h2, not_not]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fromSpec_notMem_basicOpen_iff {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffineOpen U)
     (f : Γ(Z, ⊤)) (P : PrimeSpectrum Γ(Z, U)) :
@@ -78,19 +76,17 @@ theorem fromSpec_notMem_basicOpen_iff {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAff
   rw [← h3, h2, not_not]
 
 /- English proof (translation)
-Introduce `Z _ _ ϖ hϖ`. Establish `hex : ∀ y : Z, ∃ U : Z.Opens, IsAffineOpen U ∧ y ∈ U` using `fun y => by`. Take `⟨_, ⟨U, hU, rfl⟩, hy, -⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Conclude with `⟨U, hU, hy⟩`. Use `choose U hU hyU using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hne : ∀ y, Nonempty (U y)` using `fun y => ⟨⟨y, hyU y⟩⟩`. Establish `hnoeth : ∀ y, IsNoetherianRing Γ(Z, U y)` using `fun y => IsLocallyNoetherian.component_noetherian ⟨U y, hU y⟩`. Establish `hres : ∀ y, Z.presheaf.map (homOfLE (le_top : U y ≤ ⊤)).op ϖ ≠ 0` using `fun y h => hϖ (map_injective_of_isIntegral Z (homOfLE (le_top : U y ≤ ⊤)) (h.trans (map_zero _).symm))`. Prove the components needed by the constructor for the conclusion. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun y : Z => (U y : Set Z)) (fun y => (U y).isOpen) (fun y _ => Set.mem_iUnion.mpr ⟨y, hyU y⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(t.finite_toSet.biUnion (fun y _ => (finite_primeSpectrum_height_one (hres y)).image (hU y).fromSpec)).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hx1⟩`. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.mp (ht (Set.mem_univ x))`. Use `Set.mem_iUnion₂.mpr ⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite `hxy` using `[← (hU y).range_fromSpec]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨P, rfl⟩` from `hxy`. Use `⟨P, ⟨(fromSpec_notMem_basicOpen_iff (hU y) ϖ P).mp hx, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite `hx1` using `[ringKrullDim_stalk_fromSpec (hU y) P]`. Conclude with `hx1` after adjusting the coercions. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : y ∈ Set.range (hU y).fromSpec`. Rewrite using `[(hU y).range_fromSpec]`. Conclude with `hyU y`. Take `⟨P, hP⟩` from `hy'`. Take `⟨Q, hQ, hQ1, hQP⟩` from `exists_primeSpectrum_height_one_le (hres y) P ((fromSpec_notMem_basicOpen_iff (hU y) ϖ P).mp (by rw [hP]; exact hy))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨(hU y).fromSpec Q, (fromSpec_notMem_basicOpen_iff (hU y) ϖ Q).mpr hQ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ringKrullDim_stalk_fromSpec (hU y) Q, hQ1]`. Both sides reduce to the same expression. Use `((PrimeSpectrum.le_iff_specializes Q P).mp hQP).map (hU y).fromSpec.continuous` as an intermediate fact. Rewrite `this` using `[hP]`.
-
-Conclude with `specializes_iff_mem_closure.mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_codim_one_zero_set_and_exists :
     ∀ (Z : Scheme.{0}) [IsIntegral Z] [IsNoetherian Z] (ϖ : Γ(Z, ⊤)), ϖ ≠ 0 →

@@ -35,7 +35,7 @@ noncomputable def UpperTheory.Reformulated.B.SmoothTensorFactor.intersection_upd
       MonoidHom.comp (UpperTheory.Reformulated.B.SmoothTensorFactor.piTensor σ) (MonoidHom.mulSingle G a)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `PiTensorProduct.map _ (PiTensorProduct.tprod ℂ f) = _`. Rewrite using `[PiTensorProduct.map_tprod]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma UpperTheory.Reformulated.B.SmoothTensorFactor.position_tprod {s : ℕ} {G V : Fin s → Type} [(a : Fin s) → Group (G a)]
     [(a : Fin s) → AddCommGroup (V a)] [(a : Fin s) → _root_.Module ℂ (V a)]
@@ -47,15 +47,15 @@ private lemma UpperTheory.Reformulated.B.SmoothTensorFactor.position_tprod {s : 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Establish `hopen : {g : G a | σ a g (f a) = f a} ∈ nhds (1 : G a)` using `(h a (f a)).mem_nhds (by simp)`. Use `Filter.mem_of_superset hopen ?_` and prove the remaining obligations. Introduce `g hg`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg' : σ a g (f a) = f a` using `hg`. Establish `key : (fun i => σ i ((Pi.mulSingle a g : (i : Fin s) → G i) i) (f i)) = f`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hg'`. Simplify using `[Pi.mulSingle_eq_of_ne hi]`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.SmoothTensorFactor.intersection_update_fsHerm_neg_one σ a g (r • PiTensorProduct.tprod ℂ f) = _`. Rewrite using `[map_smul, UpperTheory.Reformulated.B.SmoothTensorFactor.position_tprod, key]`. Consider the case `add x y hx hy`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `Filter.mem_of_superset (Filter.inter_mem hx hy) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨h1, h2⟩`. Establish `h1' : UpperTheory.Reformulated.B.SmoothTensorFactor.intersection_update_fsHerm_neg_one σ a g x = x` using `h1`. Establish `h2' : UpperTheory.Reformulated.B.SmoothTensorFactor.intersection_update_fsHerm_neg_one σ a g y = y` using `h2`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.SmoothTensorFactor.intersection_update_fsHerm_neg_one σ a g (x + y) = x + y`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_add, h1', h2']`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma UpperTheory.Reformulated.B.SmoothTensorFactor.stab_mem_nhds {s : ℕ} {G V : Fin s → Type} [(a : Fin s) → Group (G a)]
     [(a : Fin s) → AddCommGroup (V a)] [(a : Fin s) → _root_.Module ℂ (V a)]
@@ -87,13 +87,11 @@ private lemma UpperTheory.Reformulated.B.SmoothTensorFactor.stab_mem_nhds {s : �
     rw [map_add, h1', h2']
 
 /- English proof (translation)
-Introduce `s G V _ _ _ _ _ σ h a v`. Set `H : Subgroup (G a)` to `{ carrier := {g | UpperTheory.Reformulated.B.SmoothTensorFactor.intersection_update_fsHerm_neg_one σ a g v = v} mul_mem' := by`. Introduce `x y hx hy`. Establish `hx' : UpperTheory.Reformulated.B.SmoothTensorFactor.intersection_update_fsHerm_neg_one σ a x v = v` using `hx`. Establish `hy' : UpperTheory.Reformulated.B.SmoothTensorFactor.intersection_update_fsHerm_neg_one σ a y v = v` using `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.SmoothTensorFactor.intersection_update_fsHerm_neg_one σ a (x * y) v = v`. Rewrite using `[map_mul, Module.End.mul_apply, hy', hx']`. Use the proof step `one_mem' := by`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.SmoothTensorFactor.intersection_update_fsHerm_neg_one σ a 1 v = v`. Rewrite using `[map_one, Module.End.one_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `inv_mem' := by`. Introduce `x hx`. Establish `hx' : UpperTheory.Reformulated.B.SmoothTensorFactor.intersection_update_fsHerm_neg_one σ a x v = v` using `hx`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.SmoothTensorFactor.intersection_update_fsHerm_neg_one σ a x⁻¹ v = v`. Use `conv_lhs => rw [← hx']`.
-
-Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Conclude with `Subgroup.isOpen_of_mem_nhds H (g := 1) (UpperTheory.Reformulated.B.SmoothTensorFactor.stab_mem_nhds σ h a v)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SmoothTensorFactor.position_smooth :
     ∀ {s : ℕ} {G V : Fin s → Type} [inst : (a : Fin s) → Group (G a)] [inst_1 : (a : Fin s) → AddCommGroup (V a)]

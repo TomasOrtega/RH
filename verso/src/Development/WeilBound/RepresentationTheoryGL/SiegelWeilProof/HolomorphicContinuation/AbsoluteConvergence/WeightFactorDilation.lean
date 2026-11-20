@@ -12,14 +12,14 @@ open PositivityTheory.Rg.Sw
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [nU, fromBlocks_multiply]`. Apply the tactic sequence `congr 1 <;> simp [add_comm]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nU_mul_nU (b b' : Matrix (Fin n) (Fin n) ℂ) : nU b * nU b' = nU (b + b') := by
   simp only [nU, fromBlocks_multiply]
   congr 1 <;> simp [add_comm]
 
 /- English proof (translation)
-Simplify using `[nU, fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nU_zero : nU (0 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   simp [nU, fromBlocks_one]
@@ -37,7 +37,7 @@ def wU (b : Matrix (Fin n) (Fin n) ℂ) : GL (Fin n ⊕ Fin n) ℂ where
           rw [JJ_mul_self, Matrix.mul_neg, Matrix.mul_one, Matrix.neg_mul, neg_neg, nU_mul_nU, neg_add_cancel, nU_zero]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `InG (JJ n * nU b)`. Establish `hb' : bᴴ = b` using `hb`. Simplify using `only [InG, JJ, nU, Matrix.conjTranspose_mul, fromBlocks_conjTranspose, fromBlocks_multiply, hb']`. Apply the tactic sequence `congr 1 <;> simp [hb']`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wU_mem (b : Matrix (Fin n) (Fin n) ℂ) (hb : b.IsHermitian) : wU b ∈ GR n := by
   change InG (JJ n * nU b)
@@ -46,23 +46,19 @@ theorem wU_mem (b : Matrix (Fin n) (Fin n) ℂ) (hb : b.IsHermitian) : wU b ∈ 
   congr 1 <;> simp [hb']
 
 /- English proof (translation)
-Establish `hy : (mR y)ᴴ * JJ n * mR y = JJ n` using `y.2`. Establish `hinv : mR y * mR y⁻¹ = 1` using `congrArg mR (mul_inv_cancel y)`. Establish `hJ : mR y * JJ n * (mR y)ᴴ = JJ n`. Establish `e1 : mR y * JJ n * (mR y)ᴴ * JJ n * mR y = - mR y`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e2 : mR y * JJ n * (mR y)ᴴ * JJ n = -1`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_neg, JJ_mul_self, neg_neg, Matrix.mul_one]`. Use `_ = JJ n := by rw [← Matrix.mul_assoc, e2, Matrix.neg_mul, Matrix.one_mul, neg_neg]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrel : (mR y).toBlocks₂₁ * ((mR y).toBlocks₂₂)ᴴ = (mR y).toBlocks₂₂ * ((mR y).toBlocks₂₁)ᴴ`. Establish `h22` using `congrArg toBlocks₂₂ hJ`. Rewrite `h22` using `[← fromBlocks_toBlocks (mR y)]`. Simplify using `only [JJ, fromBlocks_conjTranspose, fromBlocks_multiply, toBlocks_fromBlocks₂₂] at h22`. Simplify using `at h22`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h22` using `[neg_add_eq_zero]`. Conclude with `h22.symm`. Establish `hblk : toBlocks₂₁ (mR y * fromBlocks (-((mR y).toBlocks₂₁⁻¹ * (mR y).toBlocks₂₂)) (-1) 1 0) = -((mR y).toBlocks₂₁ * ((mR y).toBlocks₂₁⁻¹ * (mR y).toBlocks₂₂)) + (mR y).toBlocks₂₂` using `by conv_lhs => rw [← fromBlocks_toBlocks (mR y)]`. Rewrite using `[fromBlocks_multiply, toBlocks_fromBlocks₂₁]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C := (mR y).toBlocks₂₁ with hCdef`. Use `set D := (mR y).toBlocks₂₂ with hDdef`. Establish `hC : IsUnit C.det` using `isUnit_iff_ne_zero.mpr hc`. Establish `hCH : IsUnit Cᴴ.det`. Rewrite using `[det_conjTranspose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hC.star`. Establish `hb : (C⁻¹ * D).IsHermitian`. Unfold `Matrix.IsHermitian`. Rewrite using `[conjTranspose_mul, conjTranspose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc C⁻¹, nonsing_inv_mul _ hC, Matrix.one_mul]`. Use `_ = C⁻¹ * (D * Cᴴ) * (Cᴴ)⁻¹ := by rw [hrel]`. Use `_ = C⁻¹ * D := by rw [Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ hCH, Matrix.mul_one]`. Set `g : GR n` to `⟨wU (C⁻¹ * D), wU_mem _ hb⟩`. Use `⟨y * g⁻¹, g, C⁻¹ * D, ?_, hb, rfl, (inv_mul_cancel_right y g).symm⟩` and prove the remaining obligations.
-
-Establish `hk : nU (-(C⁻¹ * D)) * -JJ n = fromBlocks (-(C⁻¹ * D)) (-1) 1 0`. Simplify using `only [nU, JJ, fromBlocks_neg, fromBlocks_multiply]`. Apply the tactic sequence `congr 1 <;> simp`. Establish `hm : mR (y * g⁻¹) = mR y * (nU (-(C⁻¹ * D)) * -JJ n)` using `rfl`. Use `show toBlocks₂₁ (mR (y * g⁻¹)) = 0`.
-
-Rewrite using `[hm, hk, hblk, ← Matrix.mul_assoc, mul_nonsing_inv _ hC, Matrix.one_mul, neg_add_cancel]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_dec (y : GR n) (hc : (mR y).toBlocks₂₁.det ≠ 0) :
     ∃ (y₁ g : GR n) (b : Matrix (Fin n) (Fin n) ℂ), IsUp y₁ ∧ b.IsHermitian ∧ mR g = JJ n * nU b ∧ y = y₁ * g := by
@@ -113,9 +109,9 @@ theorem cell_dec (y : GR n) (hc : (mR y).toBlocks₂₁.det ≠ 0) :
   rw [hm, hk, hblk, ← Matrix.mul_assoc, mul_nonsing_inv _ hC, Matrix.one_mul, neg_add_cancel]
 
 /- English proof (translation)
-Establish `h1` using `ha h`. Unfold `IsDil at h1`. Establish `hm : mR (a h * g * a h) = mR (a h) * mR g * mR (a h)` using `rfl`. Rewrite using `[hm, h1, hg]`. Simplify using `only [JJ, nU, bS, fromBlocks_multiply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `congr 1 <;> simp [diagonal_mul_diagonal, ← Complex.ofReal_mul, ← Real.exp_add, Matrix.mul_assoc, ← Complex.exp_add]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.diagonal_apply, Matrix.one_apply, hij]`.
+Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_cell {X : Fin n → ℝ} {a : ℝ → GR n} (ha : ∀ s, IsDil X s (a s)) (g : GR n)
     (b : Matrix (Fin n) (Fin n) ℂ) (hg : mR g = JJ n * nU b) (h : ℝ) :
@@ -130,9 +126,9 @@ theorem conj_cell {X : Fin n → ℝ} {a : ℝ → GR n} (ha : ∀ s, IsDil X s 
   by_cases hij : i = j <;> simp [Matrix.diagonal_apply, Matrix.one_apply, hij]
 
 /- English proof (translation)
-Establish `h1` using `ha s`. Unfold `IsDil at h1`. Establish `hm : mR (y * a s) = mR y * mR (a s)` using `rfl`. Rewrite using `[hm, h1, ← fromBlocks_toBlocks (mR y), fromBlocks_multiply]`. Simplify using `only [toBlocks_fromBlocks₂₁, Matrix.mul_zero, add_zero, det_mul, det_diagonal]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `mul_ne_zero hc (Finset.prod_ne_zero_iff.mpr fun j _ => ?_)` and prove the remaining obligations. Conclude with `Complex.ofReal_ne_zero.mpr (Real.exp_pos _).ne'`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cell_mul {X : Fin n → ℝ} {a : ℝ → GR n} (ha : ∀ s, IsDil X s (a s)) (y : GR n)
     (hc : (mR y).toBlocks₂₁.det ≠ 0) (s : ℝ) : (mR (y * a s)).toBlocks₂₁.det ≠ 0 := by
@@ -145,9 +141,9 @@ theorem cell_mul {X : Fin n → ℝ} {a : ℝ → GR n} (ha : ∀ s, IsDil X s (
   exact Complex.ofReal_ne_zero.mpr (Real.exp_pos _).ne'
 
 /- English proof (translation)
-Establish `hm` using `ha (-h)`. Unfold `IsDil at hm`. Simplify using `only [F0, f0, u1, u2, hm, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, smul_zero, neg_zero, zero_add, det_fromBlocks_zero₂₁, det_diagonal, Complex.ofReal_exp]`. Rewrite using `[← Complex.exp_sum, ← Complex.exp_sum, ← Complex.exp_add, ← Complex.exp_int_mul, ← Complex.exp_int_mul, ← Complex.exp_int_mul, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Simplify using `only [Finset.sum_neg_distrib, ← Finset.mul_sum, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weight_factor_dilation {X : Fin n → ℝ} {a : ℝ → GR n} (ha : ∀ s, IsDil X s (a s)) (p q : ℕ) (e : ℤ) (h : ℝ) :
     F0 p q e (a (-h)) = Complex.exp (-((h * ((p + q : ℕ) * ∑ j, X j) : ℝ) : ℂ)) := by

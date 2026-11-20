@@ -10,7 +10,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.Pf.NcReal.JX.NOf
 
 /- English proof (translation)
-Apply the tactic sequence `have hR : NOratC := by first | exact @noratC_holds | exact @noratC_proved | exact @noratC | exact @nOratC_holds | exact @noratC_of | exact @NOratC_holds`. Apply the tactic sequence `have hG : DictGram := by first | exact @dictGram_holds | exact @dictGram_proved | exact @dictGram | exact @DictGram_holds | exact @dictGram_of`. Apply the tactic sequence `have hP : DictPlace := by first | exact @dictionary_place_holds | exact @dictPlace_holds | exact @dictPlace_proved | exact @dictPlace | exact @DictPlace_holds | exact @dictPlace_of`. Conclude with `@nofibLat_of hR hG hL hE hP hF hO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nofibLat_of_rest (hL : DictLat) (hE : DictEx) (hF : FibQ) (hO : FibOnto) : NOfibLat := by
   have hR : NOratC := by first | exact @noratC_holds | exact @noratC_proved | exact @noratC | exact @nOratC_holds | exact @noratC_of | exact @NOratC_holds
@@ -19,12 +19,12 @@ theorem nofibLat_of_rest (hL : DictLat) (hE : DictEx) (hF : FibQ) (hO : FibOnto)
   exact @nofibLat_of hR hG hL hE hP hF hO
 
 /- English proof (translation)
-The claim follows from `@Formalism.L2.SG.Pf.NcReal.JX.nofib_of (@nofibLat_of_rest hL hE hF hO)`.
+A detailed English derivation is pending.
 -/
 theorem nofib_of_rest (hL : DictLat) (hE : DictEx) (hF : FibQ) (hO : FibOnto) : NOfib := @Formalism.L2.SG.Pf.NcReal.JX.nofib_of (@nofibLat_of_rest hL hE hF hO)
 
 /- English proof (translation)
-Apply the tactic sequence `have hLF : DictLatF := by first | exact @dictLatF_proof | exact @dictLatF_holds | exact @dictLatF_proved | exact @dictLatF | exact @DictLatF_holds | exact @dictLatF_of`. Establish `hL : DictLat` using `@dictLat_of hLF hB`. Establish `hE : DictEx` using `@Ex.dictEx_holds`. Conclude with `@nofib_of_rest hL hE hF hO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nOfib_of_dict_fib (hB : DictLatB) (hF : FibQ) (hO : FibOnto) : NOfib := by
   have hLF : DictLatF := by first | exact @dictLatF_proof | exact @dictLatF_holds | exact @dictLatF_proved | exact @dictLatF | exact @DictLatF_holds | exact @dictLatF_of
@@ -33,14 +33,14 @@ theorem nOfib_of_dict_fib (hB : DictLatB) (hF : FibQ) (hO : FibOnto) : NOfib := 
   exact @nofib_of_rest hL hE hF hO
 
 /- English proof (translation)
-Apply the tactic sequence `have hB : DictLatB := by first | exact @dictLatB_proof | exact @dictLatB_holds | exact @dictLatB_proved | exact @dictLatB | exact @DictLatB_holds | exact @dictLatB_of`. Conclude with `@nOfib_of_dict_fib hB hF hO`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nofib_of_fib (hF : FibQ) (hO : FibOnto) : NOfib := by
   have hB : DictLatB := by first | exact @dictLatB_proof | exact @dictLatB_holds | exact @dictLatB_proved | exact @dictLatB | exact @DictLatB_holds | exact @dictLatB_of
   exact @nOfib_of_dict_fib hB hF hO
 
 /- English proof (translation)
-Apply the tactic sequence `have hO : FibOnto := by first | exact @fibOnto_proof | exact @fibOnto_holds | exact @fibOnto_proved | exact @fibOnto | exact @FibOnto_holds | exact @fibOnto_of`. Conclude with `@nofib_of_fib hF hO`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nofib_of_fibQ (hF : FibQ) : NOfib := by
   have hO : FibOnto := by first | exact @fibOnto_proof | exact @fibOnto_holds | exact @fibOnto_proved | exact @fibOnto | exact @FibOnto_holds | exact @fibOnto_of

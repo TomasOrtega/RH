@@ -16,27 +16,21 @@ namespace UpperTheory.HilbertEisensteinWeightOne.EisensteinIntegrability
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Use `set f' : α → ℝ := fun x => if x = 0 then 0 else f x with hf'def`. Establish `hf'0 : ∀ x, 0 ≤ f' x` using `fun x => by`. Simplify using `only [f']`. Use `split_ifs`. Conclude with `le_rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hf0 x`. Establish `hf'le : ∀ x, f' x ≤ f x` using `fun x => by`. Simplify using `only [f']`. Use `split_ifs`. Conclude with `hf0 x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_rfl`. Establish `hf' : Summable f'` using `hf.of_nonneg_of_le hf'0 hf'le`. Establish `hP1 : Summable (fun p : α × α => f' p.1 * f p.2)` using `hf'.mul_of_nonneg hf hf'0 hf0`. Establish `hP2 : Summable (fun p : α × α => f p.1 * f' p.2)` using `hf.mul_of_nonneg hf' hf0 hf'0`. Use `set g : α × α → ℝ := fun p => f' p.1 * f p.2 + f p.1 * f' p.2 with hgdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : Summable g` using `hP1.add hP2`. Use `set e : (Fin 2 → α) ≃ α × α := finTwoArrowEquiv α`. Establish `hge : ∀ ξ : Fin 2 → α, g (e ξ) = f' (ξ 0) * f (ξ 1) + f (ξ 0) * f' (ξ 1)` using `fun ξ => rfl`. Establish `hQ : Summable (fun ξ : Fin 2 → α => g (e ξ))` using `(e.summable_iff (f := g)).2 hg`. Establish `hQ0 : ∀ ξ : Fin 2 → α, 0 ≤ g (e ξ)` using `fun ξ => by`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hge]`. Conclude with `add_nonneg (mul_nonneg (hf'0 _) (hf0 _)) (mul_nonneg (hf0 _) (hf'0 _))`. Establish `hle : ∀ ξ : {ξ : Fin 2 → α // ξ ≠ 0}, f (ξ.1 0) * f (ξ.1 1) ≤ g (e ξ.1)`. Introduce `ξ`. Rewrite using `[hge]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : ξ.1 0 = 0`. Establish `h1 : ξ.1 1 ≠ 0`. Introduce `h1`. Apply `ξ.2` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `fin_cases i`. Conclude with `h0`. Conclude with `h1`. Establish `: f' (ξ.1 1) = f (ξ.1 1)` using `by simp only [f', if_neg h1]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear relations using `[mul_nonneg (hf'0 (ξ.1 0)) (hf0 (ξ.1 1))]`. Establish `: f' (ξ.1 0) = f (ξ.1 0)` using `by simp only [f', if_neg h0]`. Rewrite using `[this]`. Combine the linear relations using `[mul_nonneg (hf0 (ξ.1 0)) (hf'0 (ξ.1 1))]`. Establish `hQs : Summable (fun ξ : {ξ : Fin 2 → α // ξ ≠ 0} => g (e ξ.1))` using `hQ.subtype _`.
-
-Establish `hS : Summable (fun ξ : {ξ : Fin 2 → α // ξ ≠ 0} => f (ξ.1 0) * f (ξ.1 1))` using `hQs.of_nonneg_of_le (fun ξ => mul_nonneg (hf0 _) (hf0 _)) hle`. Use `⟨hS, ?_⟩` and prove the remaining obligations. Establish `h1 : ∑' ξ : {ξ : Fin 2 → α // ξ ≠ 0}, f (ξ.1 0) * f (ξ.1 1) ≤ ∑' ξ : {ξ : Fin 2 → α // ξ ≠ 0}, g (e ξ.1)` using `hS.tsum_le_tsum hle hQs`. Establish `h2 : ∑' ξ : {ξ : Fin 2 → α // ξ ≠ 0}, g (e ξ.1) ≤ ∑' ξ : Fin 2 → α, g (e ξ)` using `hQ.tsum_subtype_le _ {ξ | ξ ≠ 0} hQ0`. Establish `h3 : ∑' ξ : Fin 2 → α, g (e ξ) = ∑' p : α × α, g p` using `e.tsum_eq g`.
-
-Establish `h4 : ∑' p : α × α, g p = (∑' x, f' x) * (∑' x, f x) + (∑' x, f x) * (∑' x, f' x)`. Rewrite using `[hgdef, hP1.tsum_add hP2, hf'.tsum_mul_tsum hf hP1, hf.tsum_mul_tsum hf' hP2]`. Establish `h5 : (∑' x, f' x) * (∑' x, f x) + (∑' x, f x) * (∑' x, f' x) = 2 * (∑' x, f x) * ∑' x, f' x`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← h5, ← h4, ← h3]`. Conclude with `h1.trans h2`. Use `_ = 2 * (∑' x, f x) * ∑' x, (if x = 0 then 0 else f x) := rfl`.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_sum {α : Type*} [Zero α] {f : α → ℝ} (hf0 : ∀ x, 0 ≤ f x) (hf : Summable f) :
     Summable (fun ξ : {ξ : Fin 2 → α // ξ ≠ 0} => f (ξ.1 0) * f (ξ.1 1)) ∧
@@ -97,13 +91,11 @@ theorem pair_sum {α : Type*} [Zero α] {f : α → ℝ} (hf0 : ∀ x, 0 ≤ f x
     _ = 2 * (∑' x, f x) * ∑' x, (if x = 0 then 0 else f x) := rfl
 
 /- English proof (translation)
-Take `⟨u, hu, hFu⟩` from `exists_decay_bound w hG hC 3`. Use `⟨∑' ξ, |u ξ|, tsum_nonneg fun _ => abs_nonneg _, fun a ha T hT => ?_⟩` and prove the remaining obligations. Establish `hs : Summable (fun x : F => ‖G ((moduleSection w T * a) • algebraMap F (Ad F) x)‖)` using `summable_norm_smul_algebraMap _ hG`. Establish `hT0 : 0 < ((T : ℝ) ^ 3)⁻¹` using `inv_pos.2 (pow_pos T.2 3)`. Establish `hT1 : ((T : ℝ) ^ 3)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ hT)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hs' : Summable (fun x : F => if x = 0 then (0 : ℝ) else ‖G ((moduleSection w T * a) • algebraMap F (Ad F) x)‖) := hs.of_nonneg_of_le (fun x => by split_ifs <;> positivity) (fun x => by split_ifs <;> simp)`. Establish `h2 : ∑' x : F, (if x = 0 then 0 else ‖G ((moduleSection w T * a) • algebraMap F (Ad F) x)‖) ≤ ((T : ℝ) ^ 3)⁻¹ * ∑' ξ, |u ξ|`. Rewrite using `[← tsum_mul_left]`. Use `hs'.tsum_le_tsum (fun ξ => ?_) (hu.abs.mul_left _)` and prove the remaining obligations. Use `split_ifs with h`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_nonneg hT0.le (abs_nonneg _)`. Conclude with `(hFu a ha T hT ξ h).trans (mul_le_mul_of_nonneg_left (le_abs_self _) hT0.le)`. Use `⟨hs, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[hs.tsum_eq_add_tsum_ite 0, smul_algebraMap_zero]`. Establish `h3 : ((T : ℝ) ^ 3)⁻¹ * ∑' ξ, |u ξ| ≤ ∑' ξ, |u ξ|` using `mul_le_of_le_one_left (tsum_nonneg fun _ => abs_nonneg _) hT1`.
-
-Establish `h4` using `h2.trans h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem decay1D {G : Ad F → ℂ} (hG : G ∈ schwartzBruhat F) {C : Set (IdeleGroup F)} (hC : IsCompact C)
     (w : InfinitePlace F) :
@@ -135,7 +127,7 @@ theorem decay1D {G : Ad F → ℂ} (hG : G ∈ schwartzBruhat F) {C : Set (Idele
   linarith
 
 /- English proof (translation)
-Unfold `absD`. Rewrite using `[map_mul, Matrix.GeneralLinearGroup.det_scalar, Fintype.card_fin, map_mul, map_pow, Positive.val_mul, Positive.val_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem absD_scalar_mul (z : Ideles F) (g : GA F 2) :
     absD (Matrix.GeneralLinearGroup.scalar (Fin 2) z * g) = (ideleModule F z : ℝ) ^ 2 * absD g := by
@@ -144,7 +136,7 @@ theorem absD_scalar_mul (z : Ideles F) (g : GA F 2) :
     Positive.val_mul, Positive.val_pow]
 
 /- English proof (translation)
-Establish `hu : ideleModule F (u : IdeleGroup F) = 1` using `u.2`. Express the relevant statement in the definitionally equal form `(ideleModule F (moduleSection (w0 F) t * (u : IdeleGroup F)) : ℝ) = t`. Rewrite using `[map_mul, ideleModule_moduleSection, hu, mul_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ideleModule_section_mul (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) :
     (ideleModule F (moduleSection (w0 F) t * (u : Ideles F)) : ℝ) = t := by
@@ -153,9 +145,9 @@ theorem ideleModule_section_mul (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F)
   rw [map_mul, ideleModule_moduleSection, hu, mul_one]
 
 /- English proof (translation)
-Rewrite using `[posRealMeasure_eq_map_expPos]`. Express the relevant statement in the definitionally equal form `Integrable _ (Measure.map expPosHomeomorph.toMeasurableEquiv volume)`. Use `(integrable_map_equiv expPosHomeomorph.toMeasurableEquiv _).2 ?_` and prove the remaining obligations. Use `integrable_inv_one_add_sq.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show (1 + x ^ 2)⁻¹ = (1 + Real.log (Real.exp x) ^ 2)⁻¹`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.log_exp]`.
+A detailed English derivation is pending.
 -/
 theorem integrable_bound : Integrable (fun t : {r : ℝ // 0 < r} => (1 + Real.log t ^ 2)⁻¹) posRealMeasure := by
   rw [posRealMeasure_eq_map_expPos]

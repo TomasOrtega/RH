@@ -8,13 +8,13 @@ open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryB
 namespace GlobalTheory.ContentValue
 
 /- English proof (translation)
-Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hS : 0 ≤ ∑ a, D a` using `Finset.sum_nonneg fun a _ => hD a`. Establish `hq : (0 : ℝ) < (l : ℝ) ^ 2 - 1` using `by nlinarith`. Establish `hg : 0 ≤ (l : ℝ) / ((l : ℝ) ^ 2 - 1) * ∑ a, D a` using `by positivity`. Unfold `lpF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[sub_nonneg]`. Use `Real.sSup_le ?_ hg` and prove the remaining obligations. Introduce and unpack `t ⟨x, h0, h1, h2, rfl⟩`. Use `(GlobalTheory.FlowProgramme.duality l d D hl x ⟨h0, fun a i h => ?_, h2⟩).1` as an intermediate fact. Establish `ht : 0 ≤ ∑ s, ∑ i ∈ Finset.range d, x s i` using `Finset.sum_nonneg fun s _ => Finset.sum_nonneg fun i _ => h0 s i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hq]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left this (show (0 : ℝ) ≤ l - 1 by linarith)]`. Assume the negation of the conclusion as `hc`. Use `h (h1 a i ?_)` and prove the remaining obligations. Distinguish the cases in `ho : Odd i`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inr (not_lt.1 fun hh => hc ⟨ho, hh⟩)`. Conclude with `Or.inl ho`.
+Prove the second alternative. Prove the first alternative.
 -/
 lemma lpF_nonneg (l d : ℕ) [NeZero d] (D : ZMod d → ℝ) (hl : 2 ≤ l) (hD : ∀ a, 0 ≤ D a) : 0 ≤ lpF l d D := by
   have hl' : (2 : ℝ) ≤ l := by exact_mod_cast hl
@@ -37,9 +37,9 @@ lemma lpF_nonneg (l d : ℕ) [NeZero d] (D : ZMod d → ℝ) (hl : 2 ≤ l) (hD 
     · exact Or.inl ho
 
 /- English proof (translation)
-Unfold `NumDatum.ordP`. Use `split`. Use `addOrderOf_pos (2 • N.hP l)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Name the introduced variables `hs`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : N.hP l ≠ 0` using `fun h => hn ⟨Or.resolve_right hc hs, h⟩`. Establish `h1 : addOrderOf (N.hP l) ≠ 1` using `fun h => h0 (AddMonoid.addOrderOf_eq_one_iff.1 h)`. Use `addOrderOf_pos (N.hP l)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma two_le_ordP (N : NumDatum) (l : ℕ) (hc : Inert N l) (hn : ¬ PhiC N l) : 2 ≤ N.ordP l := by
   unfold NumDatum.ordP
@@ -53,13 +53,13 @@ lemma two_le_ordP (N : NumDatum) (l : ℕ) (hc : Inert N l) (hn : ¬ PhiC N l) :
     omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨two_le_ordP N l hc fun h => hn h.conjIn, even_ordP_of_not_conjIn hc hn⟩`.
+Supply the required witnesses or components.
 -/
 lemma two_le_ordP_and_even (N : NumDatum) (l : ℕ) (hc : Inert N l) (hn : ¬ ConjIn N l) : 2 ≤ N.ordP l ∧ Even (N.ordP l) :=
   ⟨two_le_ordP N l hc fun h => hn h.conjIn, even_ordP_of_not_conjIn hc hn⟩
 
 /- English proof (translation)
-Establish `h4 : 4 ≤ l ^ 2` using `by nlinarith`. Rewrite using `[← mul_div_assoc, div_le_div_iff₀ (by linarith) (by linarith)]`. Establish `h1 : 0 ≤ k * w` using `by positivity`. Use polynomial arithmetic with `[mul_nonneg h1 (show 0 ≤ l ^ 2 - 2 by linarith), mul_nonneg hw (show 0 ≤ l ^ 2 by linarith)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma rho_bound (k w l : ℝ) (hk : 1 ≤ k) (hw : 0 ≤ w) (hl : 2 ≤ l) :
     (k - 1) * w / (l ^ 2 - 1) ≤ 2 * (k * w / l ^ 2) := by
@@ -69,35 +69,31 @@ lemma rho_bound (k w l : ℝ) (hk : 1 ≤ k) (hw : 0 ≤ w) (hl : 2 ≤ l) :
   nlinarith [mul_nonneg h1 (show 0 ≤ l ^ 2 - 2 by linarith), mul_nonneg hw (show 0 ≤ l ^ 2 by linarith)]
 
 /- English proof (translation)
-Introduce `N j l hp h2 hq hd hg0 hg1 hw hr`. Establish `hl : 2 ≤ l` using `hp.two_le`. Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hk : (1 : ℝ) ≤ N.R.k`. Use `N.R.m_add_three_le_k` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(by omega : 1 ≤ N.R.k)` after adjusting the coercions. Establish `hq2 : (0 : ℝ) < (l : ℝ) ^ 2 - 1` using `by nlinarith`. Establish `hS : 0 ≤ ∑ z, N.w j z` using `Finset.sum_nonneg fun z _ => hw z`. Establish `hcls : Inert N l ∨ N.cls l = PrimeClass.splitK`. Unfold `Inert NumDatum.cls primeClass`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h2, if_neg hq, if_neg hd]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hnd : N.cls l ≠ PrimeClass.ramD`. Apply the tactic sequence `rcases hcls with (h | h) | h <;> rw [h] <;> simp`. Establish `hF : N.FjP j l = if Inert N l ∧ (l : ℝ) ≤ N.sc.X'' N.R.n then N.FInert j l else 0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `NumDatum.FjP`. Rewrite using `[if_neg (by tauto), if_neg hnd]`. Distinguish the cases in `h : Inert N l ∧ (l : ℝ) ≤ N.sc.X'' N.R.n`. Rewrite using `[if_pos h]`. Conclude with `if_pos h`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg h]`. Conclude with `if_neg h`. Establish `hD : ∀ z, 0 ≤ ((N.R.k : ℝ) - 1) * N.w j z` using `fun z => mul_nonneg (by linarith) (hw z)`. Establish `hI : 0 ≤ N.FInert j l`. Unfold `NumDatum.FInert`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `Finset.sum_nonneg fun z _ => div_nonneg (hD z) hq2.le`. Conclude with `div_nonneg (Finset.sum_nonneg fun z _ => lpF_nonneg _ _ _ hl fun a => hD _) (Nat.cast_nonneg _)`. Establish `hb` using `rho_bound N.R.k _ l hk hS hl'`. Use `⟨?_, hcls, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hF] split_ifs`. Conclude with `hI`. Conclude with `le_rfl`. Establish `h3` using `N.R.m_add_three_le_k`. Establish `h4` using `N.R.two_le_m`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Use `⟨?_, ?_, h3, ?_, ?_⟩` and prove the remaining obligations. Use `show Fintype.card (RPl N.R) = N.R.f`. Use `Formalism.HC.Frame.card_A N.R.toFrame` as an intermediate fact. Simplify `this` using `[Ranks.f, Ranks.n]`. Use `show 1 ≤ N.R.m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Use `show N.R.r = N.R.k - 1 + N.R.m`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Use `show 0 ≤ N.Sc + N.eta`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Unfold `NumDatum.Sc NumDatum.eta`. Check the signs of the components of the expression. Introduce `hc`. Establish `hi : Inert N l` using `Or.inl hc.1`. Distinguish the cases in `hX : (l : ℝ) ≤ N.sc.X'' N.R.n`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hF, if_pos ⟨hi, hX⟩, if_neg (not_lt.2 hX), add_zero]`. Unfold `NumDatum.FInert`. Rewrite using `[if_pos (show N.cls l = PrimeClass.inertClass ∧ N.hP l = 0 from hc), ← Finset.sum_div, ← Finset.mul_sum]`. Rewrite using `[hF, if_neg (fun h => hX h.2), if_pos (not_le.1 hX), zero_add]`. Conclude with `hb`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hi hc Z hZ`. Establish `hZ' : Formalism.L2.FormalSeriesBounds.IsReps N l Z` using `hZ`. Distinguish the cases in `hX : (l : ℝ) ≤ N.sc.X'' N.R.n`. Rewrite using `[hF, if_pos ⟨hi, hX⟩, if_neg (not_lt.2 hX), add_zero]`. Conclude with `(GlobalTheory.LevelsOrbits.fInertReps N j l Z hZ' hi hc).1.ge`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hF, if_neg (fun h => hX h.2), if_pos (not_le.1 hX), zero_add]`. Use `le_trans (le_of_eq ?_) hb` and prove the remaining obligations. Establish `ho2` using `two_le_ordP N l hi hc`. Establish `hl3 : 3 ≤ l`. Use `ne_two_of_not_small h2` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Establish `hbal : ∀ z z', N.w j z' ≤ l * N.w j z` using `fun z z' => (hr z z').trans (mul_le_mul_of_nonneg_right (not_le.1 hX).le (hw z))`. Rewrite using `[GlobalTheory.LevelsOrbits.sum_reps N l Z hZ' (N.w j), Finset.mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[UpperTheory.fnum_eq_rho_mul_sum_of_demand_ratio_le l (N.ordP l) hl3 ho2 _ (fun a => hD _) (fun a a' => ?_), ← Finset.mul_sum]`.
-
-Unfold `Formalism.IncomingBounds.rho`. Expand and normalize the polynomial expressions, which then agree. Use `mul_le_mul_of_nonneg_left (hbal (N.pos l z a.val) (N.pos l z a'.val)) (show (0 : ℝ) ≤ N.R.k - 1 by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (N : NumDatum) (j l : ℕ), l.Prime → l ∉ N.H.small → l ≠ N.q → l ≠ N.d → l ≠ N.g 0 → l ≠ N.g 1 → (∀ z, 0 ≤ N.w j z) → (∀ z z', N.w j z' ≤ N.sc.X'' N.R.n * N.w j z) →
   0 ≤ N.FjP j l ∧ (Inert N l ∨ N.cls l = PrimeClass.splitK) ∧ ParOK (parOf N j l) ∧

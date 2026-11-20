@@ -19,9 +19,9 @@ namespace GlobalTheory.DblCos
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [LocNG.img, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, LinearEquiv.mul_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨b y, ⟨y, hy, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem img_mul (p : PlF D) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (a b : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (Λ : Submodule (M p).L.O (Vp D p)) :
@@ -36,7 +36,7 @@ theorem img_mul (p : PlF D) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.at
     exact ⟨y, hy, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[LocNG.img]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem img_one (p : PlF D) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (Λ : Submodule (M p).L.O (Vp D p)) : LocNG.img (1 : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) Λ = Λ := by
@@ -44,11 +44,9 @@ theorem img_one (p : PlF D) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.at
   simp [LocNG.img]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Set `K : Subgroup (Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)` to `{ carrier := {a | LocNG.img a Λ = Λ} mul_mem' := fun {a b} ha hb => by`. Establish `ha' : LocNG.img a Λ = Λ` using `ha`. Establish `hb' : LocNG.img b Λ = Λ` using `hb`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show LocNG.img (a * b) Λ = Λ`. Rewrite using `[img_mul p M, hb', ha']`. Use the proof step `one_mem' := img_one p M Λ`. Use the proof step `inv_mem' := fun {a} ha => by`. Establish `ha' : LocNG.img a Λ = Λ` using `ha`.
-
-Use `show LocNG.img a⁻¹ Λ = Λ`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(Subgroup.closure_le K).2 (fun a ha => ha) hg`. Introduce `h`. Conclude with `Subgroup.subset_closure h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_Aut_iff (p : PlF D) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (Λ : Submodule (M p).L.O (Vp D p)) :
@@ -74,7 +72,7 @@ theorem mem_Aut_iff (p : PlF D) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.
     exact Subgroup.subset_closure h
 
 /- English proof (translation)
-Establish `himg : (LocNG.img g Λ : Set (Vp D p)) = (g : Vp D p →ₗ[(D.s.atP p).Ep] Vp D p) '' (Λ : Set (Vp D p))`. Use extensionality with `x`. Simplify using `[LocNG.img]`. Rewrite using `[himg, Submodule.span_image, h, Submodule.map_top]`. Conclude with `LinearEquiv.range g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_img (p : PlF D) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (Λ : Submodule (M p).L.O (Vp D p))
@@ -87,7 +85,7 @@ theorem span_img (p : PlF D) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.a
   exact LinearEquiv.range g
 
 /- English proof (translation)
-Rewrite using `[img_mul p M, ← h2, h1, ← img_mul p M, inv_mul_cancel, img_one p M]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem img_key (p : PlF D) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (c g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (A B C : Submodule (M p).L.O (Vp D p))
@@ -95,7 +93,7 @@ theorem img_key (p : PlF D) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.at
   rw [img_mul p M, ← h2, h1, ← img_mul p M, inv_mul_cancel, img_one p M]
 
 /- English proof (translation)
-Rewrite using `[mul_inv_rev, mul_assoc, img_mul p M, img_key p M c g A B C h1 h2, ← h3, ← img_mul p M, inv_mul_cancel, img_one p M]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem img_key' (p : PlF D) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (c s g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (A B C : Submodule (M p).L.O (Vp D p))
@@ -105,7 +103,7 @@ theorem img_key' (p : PlF D) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.a
     inv_mul_cancel, img_one p M]
 
 /- English proof (translation)
-Establish `hc : Submodule.IsLattice D.host.E (GlobalTheory.Unfold.LatLoc.cL Λ)` using `GlobalTheory.Unfold.LatLoc.isLattice_map (GlobalTheory.Unfold.LatLoc.cE D) Λ hΛ`. Establish `h` using `(GlobalTheory.T.numberField_lattice_determined_by_local_lattices (GlobalTheory.HL.placesOf Z) (nV D) (GlobalTheory.Unfold.LatLoc.cL Λ) hc).2.1 p`. Rewrite using `[GlobalTheory.Unfold.LatLoc.localLattice_eq]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem latP_fg_and_span_eq_top (Z : LocDat D) (Λ : LV D) (hΛ : Submodule.IsLattice D.host.E Λ)
     (p : PlF D) :
@@ -117,9 +115,9 @@ private theorem latP_fg_and_span_eq_top (Z : LocDat D) (Λ : LV D) (hΛ : Submod
   exact h
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨z, hz, rfl⟩, rfl⟩`. Establish `hz' : (γ⁻¹ : GV D) (γ z) = z` using `γ.symm_apply_apply z`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[hz']`. Conclude with `hz`. Introduce `hx`. Use `⟨γ x, ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `γ.symm_apply_apply x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem gmap_inv_gmap_flag_measures (γ : GV D) (L : LV D) :
     Formalism.HermitianLatticesTheory.gmap γ⁻¹ (Formalism.HermitianLatticesTheory.gmap γ L) = L := by
@@ -140,27 +138,25 @@ open GlobalTheory.DblCos in
 set_option maxHeartbeats 5000000 in
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' w hw hG Z FP hB hR φ hφ Λ₀ hΛ₀`. Take `⟨-, -, hLat, -⟩` from `GlobalTheory.T.rationalAutomorphism_local_extension_moves_lattices D X Y u u' F F' w hw hG Z FP hB hR`. Take `⟨-, Slat, hSlat⟩` from `GlobalTheory.T.rationalLatticeClasses_finite_localOrbits D X Y u u' F F' w hw hG Z FP hB hR Λ₀ hΛ₀`. Take `⟨hcmp, hglue⟩` from `GlobalTheory.T.hermitianLattice_local_global_principle D Z`. Set `fam : LV D → ∀ p, ↥(FP p).UW0` to `fun Λs p => if hc : (∃ h ∈ (FP p).UW0, LocNG.img h (lattice₂ D Z.M p Λ₀) = lattice₂ D Z.M p Λs) ∧ lattice₂ D Z.M p Λs ≠ lattice₂ D Z.M p Λ₀ then ⟨hc.1.choose, hc.1.choose_spec.1⟩ else 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `fam_one : ∀ Λs p, lattice₂ D Z.M p Λs = lattice₂ D Z.M p Λ₀ → fam Λs p = 1`. Introduce `Λs p he`. Simplify using `only [fam]`. Rewrite using `[dif_neg]`. Conclude with `fun hc => hc.2 he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `fam_spec : ∀ Λs p, (∃ h ∈ (FP p).UW0, LocNG.img h (lattice₂ D Z.M p Λ₀) = lattice₂ D Z.M p Λs) → LocNG.img ((fam Λs p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (lattice₂ D Z.M p Λ₀) = lattice₂ D Z.M p Λs`. Introduce `Λs p hex`. Distinguish the cases in `he : lattice₂ D Z.M p Λs = lattice₂ D Z.M p Λ₀`. Rewrite using `[fam_one Λs p he, he]`. Conclude with `img_one p Z.M _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (∃ h ∈ (FP p).UW0, LocNG.img h (lattice₂ D Z.M p Λ₀) = lattice₂ D Z.M p Λs) ∧ lattice₂ D Z.M p Λs ≠ lattice₂ D Z.M p Λ₀` using `⟨hex, he⟩`. Simplify using `only [fam, dif_pos hc]`. Conclude with `hc.1.choose_spec.2`. Use `⟨(Slat.filter (fun Λs => Submodule.IsLattice D.host.E Λs)).image fam, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Λs, hmem, rfl⟩` from `Finset.mem_image.1 hs`. Establish `hL : Submodule.IsLattice D.host.E Λs` using `(Finset.mem_filter.1 hmem).2`. Apply `(hcmp Λs Λ₀ hL hΛ₀).1.subset` to reduce the goal to its premises. Introduce `p hp`. Assume the negation of the conclusion as `he`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hp` to reduce the goal to its premises. Rewrite using `[fam_one Λs p (not_not.1 he)]`. Conclude with `(mem_Aut_iff p Z.M _ _).2 (img_one p Z.M _)`. Introduce `g hg`. Take `⟨Λ, hΛ, hΛp⟩` from `hglue Λ₀ hΛ₀ (fun p => LocNG.img ((g p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (lattice₂ D Z.M p Λ₀)) (fun p => ⟨(latP_fg_and_span_eq_top Z Λ₀ hΛ₀ p).1.map _, span_img p Z.M _ _ (latP_fg_and_span_eq_top Z Λ₀ hΛ₀ p).2⟩) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `hg.subset` to reduce the goal to its premises. Introduce `p hp hmem`. Conclude with `hp ((mem_Aut_iff p Z.M _ _).1 hmem))`. Take `⟨Λs, hΛsS, γ, hγ, hγΛ⟩` from `hSlat Λ hΛ (fun p => ⟨_, (g p).2, (hΛp p).symm⟩)`. Establish `hΛsL : Submodule.IsLattice D.host.E Λs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `GlobalTheory.RatLocMove.isLattice_gmap' γ⁻¹ Λ hΛ` as an intermediate fact. Rewrite `this` using `[← hγΛ, gmap_inv_gmap_flag_measures]`. Then use the resulting hypothesis. Set `hh : ↥(FlagPairStabilizer F F')` to `⟨γ, (mem_H0sub F F' γ).2 hγ⟩`. Set `s` to `fam Λs`. Use `⟨s, Finset.mem_image.2 ⟨Λs, Finset.mem_filter.2 ⟨hΛsS, hΛsL⟩, rfl⟩, hh, s⁻¹ * (φ hh)⁻¹ * g, ?_, by group⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p`. Establish `hC1 : lattice₂ D Z.M p Λ = LocNG.img ((φ hh p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (lattice₂ D Z.M p Λs)`. Rewrite using `[← hγΛ]`. Conclude with `hLat γ p _ Λs (hφ hh p)`. Establish `hC2` using `hΛp p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hex : ∃ h ∈ (FP p).UW0, LocNG.img h (lattice₂ D Z.M p Λ₀) = lattice₂ D Z.M p Λs` using `⟨(((φ hh p)⁻¹ * g p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p), ((φ hh p)⁻¹ * g p).2, by`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, img_mul p Z.M, ← hC2, hC1, ← img_mul p Z.M, inv_mul_cancel, img_one p Z.M]⟩`. Establish `hs` using `fam_spec Λs p hex`. Rewrite using `[mem_Aut_iff p Z.M]`. Establish `key` using `img_key' p Z.M _ _ _ _ _ _ hC1 hC2 hs`.
-
-Simplify `key` using `[Pi.mul_apply, Pi.inv_apply, mul_inv_rev, mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DblCos.finite_double_cosets : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → ∀ (φ : ↥(FlagPairStabilizer F F') →* (∀ p, ↥(FP p).UW0)), (∀ (h : ↥(FlagPairStabilizer F F')) p, Ext p (h : GV D) ((φ h p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)) → ∀ Λ₀ : LV D, Submodule.IsLattice D.host.E Λ₀ → ∃ S : Finset (∀ p, ↥(FP p).UW0), (∀ s ∈ S, {p | ((s p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) ∉ LocNG.Aut (lattice₂ D Z.M p Λ₀)}.Finite) ∧ ∀ g : ∀ p, ↥(FP p).UW0, {p | ((g p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) ∉ LocNG.Aut (lattice₂ D Z.M p Λ₀)}.Finite → ∃ s ∈ S, ∃ h : ↥(FlagPairStabilizer F F'), ∃ k : ∀ p, ↥(FP p).UW0, (∀ p, ((k p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) ∈ LocNG.Aut (lattice₂ D Z.M p Λ₀)) ∧ g = φ h * s * k := by
   intro D X Y u u' F F' w hw hG Z FP hB hR φ hφ Λ₀ hΛ₀

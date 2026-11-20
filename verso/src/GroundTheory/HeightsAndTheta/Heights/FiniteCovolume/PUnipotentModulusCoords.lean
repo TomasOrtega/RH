@@ -16,7 +16,7 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Complex.real_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem real_smul_vec (c : ℝ) (z : ι → ℂ) : c • z = (c : ℂ) • z := by
   ext i
@@ -29,7 +29,7 @@ Both sides reduce to the same expression.
 theorem map_conj_transpose (M : Matrix ι ι ℂ) : (M.map (starRingEnd ℂ))ᵀ = Mᴴ := rfl
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hp`. Use `⟨(GramAtData.proof h v w).1, (GramAtData.proof h v w).2, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hForm, ← HermAtPlace.proof h v w, h1, map_zero]`. Rewrite using `[hForm, ← HermAtPlace.proof h v w, h2, map_zero]`. Rewrite using `[hForm, ← HermAtPlace.proof h v w, h3, map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hyperbolic_at_place (h : HermitianForm F E W) (v : Basis ι E W) {x₀ w₀ : W}
     (hp : IsHyperbolicPair h x₀ w₀) (w : InfinitePlace E) :
@@ -46,7 +46,7 @@ theorem hyperbolic_at_place (h : HermitianForm F E W) (v : Basis ι E W) {x₀ w
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Rewrite using `[← map_conj_transpose]`. Conclude with `mem_archUnitary.1 g.2 w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archUnitary_at_place {h : HermitianForm F E W} {v : Basis ι E W} (g : archUnitary h v)
     (w : InfinitePlace E) :
@@ -69,7 +69,7 @@ def heisY (h : HermitianForm F E W) (v : Basis ι E W) (x₀ w₀ : W) :
 
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] [DecidableEq ι] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_heisY {h : HermitianForm F E W} {v : Basis ι E W} {x₀ w₀ : W}
     {y : InfinitePlace E → ι → ℂ} : y ∈ heisY h v x₀ w₀ ↔
@@ -86,9 +86,9 @@ def heisMatAt (h : HermitianForm F E W) (v : Basis ι E W) (x₀ : W)
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Establish `hs : (heisS H y₁ t₁ + heisS H y₂ t₂ - hForm H y₁ y₂) + starRingEnd ℂ (heisS H y₁ t₁ + heisS H y₂ t₂ - hForm H y₁ y₂) + hForm H (y₁ + y₂) (y₁ + y₂) = 0`. Establish `e1` using `heisS_spec hH y₁ t₁`. Establish `e2` using `heisS_spec hH y₂ t₂`. Establish `e3` using `hForm_conj hH y₁ y₂`. Simplify using `only [map_add, map_sub, hForm_add_left, hForm_add_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `e1 + e2 - e3`. Rewrite using `[eq_heisS hs]`. Use `congr 1`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem heisS_add {H : Matrix ι ι ℂ} (hH : H.IsHermitian) (y₁ y₂ : ι → ℂ) (t₁ t₂ : ℝ) :
     heisS H y₁ t₁ + heisS H y₂ t₂ - hForm H y₁ y₂ =
@@ -109,7 +109,7 @@ section Coords
 variable {h : HermitianForm F E W} {v : Basis ι E W} {x₀ w₀ : W}
 
 /- English proof (translation)
-Take `⟨hH, -, ha, -, -⟩` from `hyperbolic_at_place h v hp w`. Rewrite using `[heisMatAt, heisMatAt, heisMat_mul hH ha (hy₁ w).1 (hy₂ w).1, heisS_add hH, heisMatAt]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem heisMatAt_mul (hp : IsHyperbolicPair h x₀ w₀) {y₁ y₂ : InfinitePlace E → ι → ℂ}
     (hy₁ : y₁ ∈ heisY h v x₀ w₀) (hy₂ : y₂ ∈ heisY h v x₀ w₀) (t₁ t₂ : InfinitePlace E → ℝ)
@@ -163,7 +163,7 @@ theorem heisPoint_val (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord h v x�
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨archUnitary_at_place _ w, (mem_unipRadical.1 n.2 w).1, (mem_unipRadical.1 n.2 w).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem unipRadical_at_place (n : unipRadical h v x₀) (w : InfinitePlace E) :
     (((n : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)ᴴ * gramAt h v w *
@@ -183,7 +183,7 @@ def heisYOf (n : unipRadical h v x₀) : InfinitePlace E → ι → ℂ := fun w
   heisU (w₀ := w₀) n w - hForm (gramAt h v w) (vecAt v w₀ w) (heisU (w₀ := w₀) n w) • vecAt v x₀ w
 
 /- English proof (translation)
-Take `⟨hH, -, ha, hb, hab⟩` from `hyperbolic_at_place h v hp w`. Take `⟨hn, hna, hn'⟩` from `unipRadical_at_place n w`. Conclude with `eq_heisMat hH ha hb hab hn hna hn'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem heisYOf_spec (hp : IsHyperbolicPair h x₀ w₀) (n : unipRadical h v x₀)
     (w : InfinitePlace E) :

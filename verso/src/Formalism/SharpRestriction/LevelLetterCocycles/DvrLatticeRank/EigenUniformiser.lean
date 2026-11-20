@@ -25,37 +25,37 @@ section Lemmas
 variable (D : Data O Δ)
 
 /- English proof (translation)
-Rewrite using `[D.hv, map_mul, constantCoeff_X, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_rho_X (δ : Δ) : constantCoeff (D.ρ δ X) = 0 := by
   rw [D.hv, map_mul, constantCoeff_X, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[map_mul, AlgEquiv.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_rho_X (δ ε : Δ) : D.ρ δ (D.ρ ε X) = D.ρ (δ * ε) X := by
   rw [map_mul, AlgEquiv.mul_apply]
 
 /- English proof (translation)
-The claim follows from `algHom_subst (D.ρ δ).toAlgHom (constantCoeff_rho_X D δ) hp g`.
+A detailed English derivation is pending.
 -/
 theorem rho_subst (δ : Δ) {p : PowerSeries O} (hp : constantCoeff p = 0) (g : PowerSeries O) :
     D.ρ δ (PowerSeries.subst p g) = PowerSeries.subst (D.ρ δ p) g :=
   algHom_subst (D.ρ δ).toAlgHom (constantCoeff_rho_X D δ) hp g
 
 /- English proof (translation)
-Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem omega_pow_card (δ : Δ) : ((D.ω δ : Oˣ) : O) ^ Fintype.card Δ = 1 := by
   rw [← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one, map_one, Units.val_one]
 
 /- English proof (translation)
-The claim follows from `Fintype.card_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem card_ne_zero : Fintype.card Δ ≠ 0 := Fintype.card_ne_zero
 
 /- English proof (translation)
-Unfold `piPrime`. Rewrite using `[map_prod]`. Repeatedly rewrite using `[rho_rho_X]`. Conclude with `Equiv.prod_comp (Equiv.mulLeft δ) (fun ε => D.ρ ε X)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piPrime_invariant (δ : Δ) : D.ρ δ (piPrime D) = piPrime D := by
   unfold piPrime
@@ -66,23 +66,23 @@ theorem piPrime_invariant (δ : Δ) : D.ρ δ (piPrime D) = piPrime D := by
 variable (hs : IsUnit (Fintype.card Δ : O))
 
 /- English proof (translation)
-Simplify using `[pi1, map_sum, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_eigen_uniformiser (n : ℕ) : coeff n (pi1 D hs) =
     ((hs.unit⁻¹ : Oˣ) : O) * ∑ δ, (((D.ω δ)⁻¹ : Oˣ) : O) * coeff n (D.ρ δ X) := by
   simp [pi1, map_sum, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[coeff_eigen_uniformiser]`. Simplify using `[D.hv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_zero_eigen_uniformiser : coeff 0 (pi1 D hs) = 0 := by
   rw [coeff_eigen_uniformiser]
   simp [D.hv]
 
 /- English proof (translation)
-Rewrite using `[coeff_eigen_uniformiser]`. Establish `h1 : ∀ δ, coeff 1 (D.ρ δ X) = (D.ω δ : O)`. Introduce `δ`. Rewrite using `[D.hv, show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply, D.hv0]`. Repeatedly rewrite using `[h1, Units.inv_mul, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `hs.val_inv_mul`.
+A detailed English derivation is pending.
 -/
 theorem coeff_one_eigen_uniformiser : coeff 1 (pi1 D hs) = 1 := by
   rw [coeff_eigen_uniformiser]
@@ -94,23 +94,23 @@ theorem coeff_one_eigen_uniformiser : coeff 1 (pi1 D hs) = 1 := by
   exact hs.val_inv_mul
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_zero_eigen_uniformiser]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_eigen_uniformiser : constantCoeff (pi1 D hs) = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_zero_eigen_uniformiser]
 
 /- English proof (translation)
-Rewrite using `[coeff_one_eigen_uniformiser]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_coeff_one_eigen_uniformiser : IsUnit (coeff 1 (pi1 D hs)) := by
   rw [coeff_one_eigen_uniformiser]; exact isUnit_one
 
 /- English proof (translation)
-Unfold `pi1`. Rewrite using `[map_smul, map_sum]`. Repeatedly rewrite using `[map_smul, rho_rho_X]`. Establish `key : ∑ ε, (((D.ω ε)⁻¹ : Oˣ) : O) • D.ρ (δ * ε) X = (D.ω δ : O) • ∑ η, (((D.ω η)⁻¹ : Oˣ) : O) • D.ρ η X` using `by conv_rhs => rw [Finset.smul_sum, ← Equiv.sum_comp (Equiv.mulLeft δ)]`. Use `Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.coe_mulLeft]`. Rewrite using `[smul_smul]`. Use `congr 1`. Establish `hu : (D.ω ε)⁻¹ = D.ω δ * (D.ω (δ * ε))⁻¹`. Rewrite using `[map_mul, mul_inv, mul_inv_cancel_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, Units.val_mul]`. Rewrite using `[key]`. Conclude with `smul_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_eigen_uniformiser (δ : Δ) : D.ρ δ (pi1 D hs) = (D.ω δ : O) • pi1 D hs := by
   unfold pi1
@@ -130,7 +130,7 @@ theorem rho_eigen_uniformiser (δ : Δ) : D.ρ δ (pi1 D hs) = (D.ω δ : O) •
   exact smul_comm _ _ _
 
 /- English proof (translation)
-Establish `hp` using `HasSubst.of_constantCoeff_zero' (constantCoeff_eigen_uniformiser D hs)`. Rewrite using `[subst_comp_subst_apply (HasSubst.X_pow (card_ne_zero (Δ := Δ))) hp, subst_pow hp, subst_X hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem uniformiser_pow_card_subst (g : PowerSeries O) :
     PowerSeries.subst (pi1 D hs) (PowerSeries.subst (X ^ Fintype.card Δ : PowerSeries O) g) =
@@ -140,7 +140,7 @@ theorem uniformiser_pow_card_subst (g : PowerSeries O) :
     subst_X hp]
 
 /- English proof (translation)
-Establish `hp` using `HasSubst.of_constantCoeff_zero' (constantCoeff_eigen_uniformiser D hs)`. Rewrite using `[rho_subst D δ (constantCoeff_eigen_uniformiser D hs), rho_eigen_uniformiser, rescale_eq_subst, subst_comp_subst_apply (HasSubst.smul_X' _) hp, subst_smul hp, subst_X hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_subst_uniformiser (δ : Δ) (g : PowerSeries O) :
     D.ρ δ (PowerSeries.subst (pi1 D hs) g) =
@@ -150,17 +150,17 @@ theorem rho_subst_uniformiser (δ : Δ) (g : PowerSeries O) :
     subst_comp_subst_apply (HasSubst.smul_X' _) hp, subst_smul hp, subst_X hp]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H k hk`. Take `⟨δ₀, hδ₀⟩` from `IsCyclic.exists_generator (α := Δ)`. Establish `h` using `H δ₀`. Rewrite `h` using `[rho_subst_uniformiser]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg (coeff k) (subst_injective (constantCoeff_eigen_uniformiser D hs) (isUnit_coeff_one_eigen_uniformiser D hs) h)`. Rewrite `h2` using `[coeff_rescale]`. Establish `h3 : (((D.ω δ₀ : Oˣ) : O) ^ k - 1) * coeff k g = 0`. Rewrite using `[sub_mul, h2, one_mul, sub_self]`. Establish `h4 : ((D.ω δ₀ : Oˣ) : O) ^ k = 1` using `sub_eq_zero.mp ((mul_eq_zero.mp h3).resolve_right hk)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : δ₀ ^ k = 1`. Apply `D.hω` to reduce the goal to its premises. Rewrite using `[map_pow, map_one]`. Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, h4, Units.val_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `h6` using `orderOf_dvd_of_pow_eq_one h5`. Rewrite `h6` using `[orderOf_eq_card_of_forall_mem_zpowers hδ₀]`. Simplify `h6` using `[Nat.card_eq_fintype_card]`. Introduce `H δ`. Rewrite using `[rho_subst_uniformiser]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `k`. Rewrite using `[coeff_rescale]`. Distinguish the cases in `hk : coeff k g = 0`. Rewrite using `[hk, mul_zero]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, rfl⟩` from `H k hk`. Rewrite using `[pow_mul, omega_pow_card, one_pow, one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem invariant_subst_iff_card_dvd (g : PowerSeries O) :
     (∀ δ, D.ρ δ (PowerSeries.subst (pi1 D hs) g) = PowerSeries.subst (pi1 D hs) g) ↔
@@ -198,9 +198,9 @@ theorem invariant_subst_iff_card_dvd (g : PowerSeries O) :
 end Lemmas
 
 /- English proof (translation)
-Use `⟨∏ δ, D.v δ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_constantCoeff, map_prod]`. Repeatedly rewrite using `[D.hv0]`. Rewrite using `[← Units.coe_prod]`. Conclude with `Units.isUnit _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `piPrime`. Repeatedly rewrite using `[D.hv]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Rewrite using `[map_prod]`. Repeatedly rewrite using `[D.hv0]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piPrime_eq (D : Data O Δ) :
     ∃ v' : PowerSeries O, IsUnit v' ∧ piPrime D = X ^ Fintype.card Δ * v' ∧
@@ -217,9 +217,9 @@ theorem piPrime_eq (D : Data O Δ) :
     simp_rw [D.hv0]
 
 /- English proof (translation)
-Use `⟨?_, rho_eigen_uniformiser D hs, subst_surjective (constantCoeff_eigen_uniformiser D hs) (isUnit_coeff_one_eigen_uniformiser D hs)⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_span_singleton, X_pow_dvd_iff]`. Introduce `m hm`. Use `interval_cases m`. Rewrite using `[map_sub, coeff_zero_eigen_uniformiser, coeff_zero_X, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, coeff_one_eigen_uniformiser, coeff_one_X, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem eigen_uniformiser_props (D : Data O Δ) (hs : IsUnit (Fintype.card Δ : O)) :
     pi1 D hs - X ∈ (Ideal.span {X ^ 2} : Ideal (PowerSeries O)) ∧
@@ -233,35 +233,35 @@ theorem eigen_uniformiser_props (D : Data O Δ) (hs : IsUnit (Fintype.card Δ : 
   · rw [map_sub, coeff_one_eigen_uniformiser, coeff_one_X, sub_self]
 
 /- English proof (translation)
-Establish `hs0 : Fintype.card Δ ≠ 0` using `card_ne_zero`. Establish `hp0` using `constantCoeff_eigen_uniformiser D hs`. Establish `hp1` using `isUnit_coeff_one_eigen_uniformiser D hs`. Establish `hps0 : constantCoeff (pi1 D hs ^ Fintype.card Δ) = 0`. Rewrite using `[map_pow, hp0, zero_pow hs0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hps` using `HasSubst.of_constantCoeff_zero' hps0`. Establish `part1 : ∀ f : PowerSeries O, (∀ δ, D.ρ δ f = f) ↔ ∃ g : PowerSeries O, f = PowerSeries.subst (pi1 D hs ^ Fintype.card Δ) g`. Introduce `f`. Take `⟨g, rfl⟩` from `subst_surjective hp0 hp1 f`. Rewrite using `[invariant_subst_iff_card_dvd D hs g]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Conclude with `⟨_, by rw [← uniformiser_pow_card_subst D hs, ← subst_X_pow_of_dvd hs0 g H]⟩`. Introduce and unpack `⟨h, hh⟩ k hk`. Rewrite `hh` using `[← uniformiser_pow_card_subst D hs]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[subst_injective hp0 hp1 hh]`. Conclude with `dvd_of_coeff_subst_X_pow_ne_zero hs0 h k hk`. Establish `hpp0 : constantCoeff (piPrime D) = 0`. Take `⟨v', -, hv', -⟩` from `piPrime_eq D`. Rewrite using `[hv', map_mul, map_pow, constantCoeff_X, zero_pow hs0, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨P0, hP0⟩` from `(part1 (piPrime D)).mp (piPrime_invariant D)`. Establish `hP0c : constantCoeff P0 = 0`. Establish `e` using `congrArg constantCoeff hP0`. Rewrite `e` using `[subst_eq_C_add hps0, map_add, map_mul, hps0, zero_mul, add_zero, constantCoeff_C, hpp0]`. Conclude with `e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hP0u : IsUnit (coeff 1 P0)`. Take `⟨v', -, hv', hv'0⟩` from `piPrime_eq D`. Take `⟨w, hw⟩ : X ∣ pi1 D hs` from `X_dvd_iff.mpr hp0`. Establish `hw0 : constantCoeff w = 1`. Establish `e` using `coeff_one_eigen_uniformiser D hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `e` using `[hw, show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]`. Then use the resulting hypothesis. Establish `e` using `hP0`. Rewrite `e` using `[subst_eq_C_add hps0, hP0c, map_zero, zero_add, subst_eq_C_add hps0, hv', hw]`. Establish `e2` using `congrArg (coeff (Fintype.card Δ)) e`. Rewrite `e2` using `[mul_pow, mul_assoc (X ^ Fintype.card Δ)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [coeff_X_pow_mul', le_refl, ite_true, Nat.sub_self, coeff_zero_eq_constantCoeff_apply, map_mul, map_add, map_pow, hv'0, hw0, constantCoeff_X, zero_pow hs0, one_pow, one_mul, zero_mul, add_zero, constantCoeff_C] at e2`. Establish `e3 : constantCoeff (mk fun n => coeff (n + 1) P0) = coeff 1 P0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_mk]`. Rewrite using `[← e3, ← e2, ← Units.coe_prod]`. Conclude with `Units.isUnit _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP0s : HasSubst P0` using `HasSubst.of_constantCoeff_zero' hP0c`. Establish `part2 : ∀ f : PowerSeries O, (∀ δ, D.ρ δ f = f) ↔ ∃ g : PowerSeries O, f = PowerSeries.subst (piPrime D) g`. Introduce `f`. Rewrite using `[part1 f]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨g, rfl⟩`. Use `⟨PowerSeries.subst (substInvOfIsUnit P0 hP0u) g, ?_⟩` and prove the remaining obligations. Rewrite using `[hP0, ← subst_comp_subst_apply hP0s hps, subst_subst_substInv hP0c hP0u]`. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨PowerSeries.subst P0 g, by rw [hP0, subst_comp_subst_apply hP0s hps]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `part3 : ∀ f : PowerSeries O, ∃! a : Fin (Fintype.card Δ) → PowerSeries O, f = ∑ j : Fin (Fintype.card Δ), pi1 D hs ^ (j : ℕ) * PowerSeries.subst (pi1 D hs ^ Fintype.card Δ) (a j)`. Introduce `f`. Establish `hp` using `HasSubst.of_constantCoeff_zero' hp0`. Establish `hE : ∀ a : Fin (Fintype.card Δ) → PowerSeries O, ∑ j : Fin (Fintype.card Δ), pi1 D hs ^ (j : ℕ) * PowerSeries.subst (pi1 D hs ^ Fintype.card Δ) (a j) = PowerSeries.subst (pi1 D hs) (∑ j : Fin (Fintype.card Δ), X ^ (j : ℕ) * PowerSeries.subst (X ^ Fintype.card Δ : PowerSeries O) ( …`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coe_substAlgHom hp, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, coe_substAlgHom, subst_X hp, uniformiser_pow_card_subst]`. Take `⟨g, rfl⟩` from `subst_surjective hp0 hp1 f`. Take `⟨a, ha, hu⟩` from `existsUnique_sum_X_pow_mul_subst hs0 g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, ?_, fun b hb => hu b ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hE, ← ha]`. Simplify using `only at hb ⊢`. Rewrite `hb` using `[hE]`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `subst_injective hp0 hp1 hb`. Establish `part4 : ∀ f : PowerSeries O, (∀ δ, D.ρ δ f = f) → constantCoeff f = 0 → ∃ g : PowerSeries O, (∀ δ, D.ρ δ g = g) ∧ f = piPrime D * g`. Introduce `f hf hf0`. Take `⟨h, rfl⟩` from `(part2 f).mp hf`. Use `⟨PowerSeries.subst (piPrime D) (mk fun n => coeff (n + 1) h), (part2 _).mpr ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `subst_eq_C_add hpp0 h`. Establish `e0` using `congrArg constantCoeff e`. Rewrite `e0` using `[hf0, map_add, map_mul, hpp0, zero_mul, add_zero, constantCoeff_C]`. Rewrite using `[e, ← e0, map_zero, zero_add]`. Conclude with `⟨part1, part2, part3, part4⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem invariants (D : Data O Δ) (hs : IsUnit (Fintype.card Δ : O)) :
     (∀ f : PowerSeries O, (∀ δ, D.ρ δ f = f) ↔

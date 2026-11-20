@@ -17,13 +17,11 @@ open scoped Classical
 namespace GlobalTheory.GLq.Opp
 
 /- English proof (translation)
-Use `haveI : Module.Finite ℂ (MonoidAlgebra ℂ G) := Module.Finite.of_basis (MonoidAlgebra.basis G ℂ)`. Use `haveI : Module.Free ℂ (MonoidAlgebra ℂ G) := Module.Free.of_basis (MonoidAlgebra.basis G ℂ)`. Establish `hi : IsIdempotentElem (LinearMap.mulLeft ℂ E)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[← mul_assoc, h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : LinearMap.trace ℂ _ (LinearMap.mulLeft ℂ E) = 0`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (MonoidAlgebra.basis G ℂ), Matrix.trace]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, LinearMap.toMatrix_apply]`. Establish `: (MonoidAlgebra.basis G ℂ) x = MonoidAlgebra.single x 1` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `show (E * MonoidAlgebra.single x 1).coeff x = 0`. Rewrite using `[MonoidAlgebra.coeff_mul_single_apply]`. Simplify using `[h1]`. Establish `h0` using `LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero hi ht`.
-
-Simplify using `using LinearMap.congr_fun h0 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_idem {G : Type} [Group G] [Fintype G] (E : MonoidAlgebra ℂ G) (h : E * E = E)
     (h1 : E.coeff 1 = 0) : E = 0 := by
@@ -45,14 +43,14 @@ theorem eq_zero_of_idem {G : Type} [Group G] [Fintype G] (E : MonoidAlgebra ℂ 
   simpa using LinearMap.congr_fun h0 1
 
 /- English proof (translation)
-Simplify using `[tr, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tr_single {G : Type} [Group G] [Fintype G] (x : G) (c : ℂ) (χ : G → ℂ) :
     tr (MonoidAlgebra.single x c) χ = c * χ x := by
   simp [tr, Finsupp.single_apply]
 
 /- English proof (translation)
-Simplify using `only [tr]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tr_sum {G ι : Type} [Group G] [Fintype G] (s : Finset ι) (a : ι → MonoidAlgebra ℂ G) (χ : G → ℂ) :
     tr (∑ i ∈ s, a i) χ = ∑ i ∈ s, tr (a i) χ := by
@@ -82,7 +80,7 @@ theorem par_val (σ : Fin k ⊕ Fin l ≃ Fin n) (x : Gn g k) (B : Matrix (Fin k
     ((par σ x B y : Gn g n) : Mt g n) = Matrix.reindex σ σ (Matrix.fromBlocks (x : Mt g k) B 0 (y : Mt g l)) := rfl
 
 /- English proof (translation)
-Simplify using `[par_val]`.
+Simplify using the standard rewrite rules.
 -/
 theorem par_apply (σ : Fin k ⊕ Fin l ≃ Fin n) (x : Gn g k) (B : Matrix (Fin k) (Fin l) (ZMod g)) (y : Gn g l)
     (i j : Fin k ⊕ Fin l) : ((par σ x B y : Gn g n) : Mt g n) (σ i) (σ j) =
@@ -90,7 +88,7 @@ theorem par_apply (σ : Fin k ⊕ Fin l ≃ Fin n) (x : Gn g k) (B : Matrix (Fin
   simp [par_val]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, par_val, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem par_mul (σ : Fin k ⊕ Fin l ≃ Fin n) (x x' : Gn g k) (B B' : Matrix (Fin k) (Fin l) (ZMod g))
     (y y' : Gn g l) : par σ x B y * par σ x' B' y' =
@@ -100,7 +98,7 @@ theorem par_mul (σ : Fin k ⊕ Fin l ≃ Fin n) (x x' : Gn g k) (B B' : Matrix 
   simp
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `[par_val]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem par_one (σ : Fin k ⊕ Fin l ≃ Fin n) : par σ (1 : Gn g k) 0 1 = 1 := by
   apply Units.ext
@@ -117,7 +115,7 @@ def inB (σ : Fin k ⊕ Fin l ≃ Fin n) : Gn g l →* Gn g n where
   map_mul' x x' := by simp [par_mul]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `σ.surjective i`. Take `⟨j, rfl⟩` from `σ.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [par_val]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem par_swap (σ : Fin k ⊕ Fin l ≃ Fin n) (x : Gn g k) (y : Gn g l) :
     par ((Equiv.sumComm _ _).trans σ) y 0 x = par σ x 0 y := by
@@ -128,19 +126,19 @@ theorem par_swap (σ : Fin k ⊕ Fin l ≃ Fin n) (x : Gn g k) (y : Gn g l) :
   rcases i with i | i <;> rcases j with j | j <;> simp [par_val]
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun _ => par_swap σ _ _`.
+A detailed English derivation is pending.
 -/
 theorem inA_swap (σ : Fin k ⊕ Fin l ≃ Fin n) : inA (g := g) ((Equiv.sumComm _ _).trans σ) = inB σ :=
   MonoidHom.ext fun _ => par_swap σ _ _
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun _ => par_swap σ _ _`.
+A detailed English derivation is pending.
 -/
 theorem inB_swap (σ : Fin k ⊕ Fin l ≃ Fin n) : inB (g := g) ((Equiv.sumComm _ _).trans σ) = inA σ :=
   MonoidHom.ext fun _ => par_swap σ _ _
 
 /- English proof (translation)
-Use `Fintype.sum_bijective (fun B : Matrix (Fin k) (Fin l) (ZMod g) => (x : Mt g k) * B) ?_ _ _ fun _ => rfl` and prove the remaining obligations. Use `Finite.injective_iff_bijective.1 fun B B' h => ?_` and prove the remaining obligations. Use `congrArg (fun C : Matrix (Fin k) (Fin l) (ZMod g) => ((x⁻¹ : Gn g k) : Mt g k) * C) h` as an intermediate fact. Simplify `this` using `[← Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_mul_left {A : Type} [AddCommMonoid A] (x : Gn g k) (F : Matrix (Fin k) (Fin l) (ZMod g) → A) :
     ∑ B : Matrix (Fin k) (Fin l) (ZMod g), F ((x : Mt g k) * B) = ∑ B, F B := by
@@ -150,7 +148,7 @@ theorem sum_mul_left {A : Type} [AddCommMonoid A] (x : Gn g k) (F : Matrix (Fin 
   simpa [← Matrix.mul_assoc] using this
 
 /- English proof (translation)
-Use `Fintype.sum_bijective (fun B : Matrix (Fin k) (Fin l) (ZMod g) => B * (y : Mt g l)) ?_ _ _ fun _ => rfl` and prove the remaining obligations. Use `Finite.injective_iff_bijective.1 fun B B' h => ?_` and prove the remaining obligations. Use `congrArg (fun C : Matrix (Fin k) (Fin l) (ZMod g) => C * ((y⁻¹ : Gn g l) : Mt g l)) h` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_mul_right {A : Type} [AddCommMonoid A] (y : Gn g l) (F : Matrix (Fin k) (Fin l) (ZMod g) → A) :
     ∑ B : Matrix (Fin k) (Fin l) (ZMod g), F (B * (y : Mt g l)) = ∑ B, F B := by
@@ -163,21 +161,21 @@ def eN (g : ℕ) [Fact g.Prime] (σ : Fin k ⊕ Fin l ≃ Fin n) : MonoidAlgebra
   ∑ B : Matrix (Fin k) (Fin l) (ZMod g), MonoidAlgebra.single (par σ 1 B 1) ((g : ℂ) ^ (k * l))⁻¹
 
 /- English proof (translation)
-Rewrite using `[← Fintype.card_congr (Matrix.of : (Fin k → Fin l → ZMod g) ≃ _), Fintype.card_fun, Fintype.card_fun]`. Simplify using `[← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_mat : (Fintype.card (Matrix (Fin k) (Fin l) (ZMod g)) : ℂ) = (g : ℂ) ^ (k * l) := by
   rw [← Fintype.card_congr (Matrix.of : (Fin k → Fin l → ZMod g) ≃ _), Fintype.card_fun, Fintype.card_fun]
   simp [← pow_mul, mul_comm]
 
 /- English proof (translation)
-The claim follows from `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : g.Prime).ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem gpow_ne : (g : ℂ) ^ (k * l) ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : g.Prime).ne_zero)
 
 /- English proof (translation)
-Unfold `eN`. Rewrite using `[Finset.sum_mul_sum]`. Simplify using `only [MonoidAlgebra.single_mul_single, par_mul, Units.val_one, Matrix.one_mul, Matrix.mul_one, mul_one]`. Establish `: ∀ B : Matrix (Fin k) (Fin l) (ZMod g), ∑ B', MonoidAlgebra.single (par σ 1 (B' + B) 1) (((g : ℂ) ^ (k * l))⁻¹ * ((g : ℂ) ^ (k * l))⁻¹) = ∑ B', MonoidAlgebra.single (par σ (1 : Gn g k) B' 1) (((g : ℂ) ^ (k * l))⁻¹ * ((g : ℂ) ^ (k * l))⁻¹)` using `fun B => Fintype.sum_equiv (Equiv.addRight B) _ _ fun _ => rfl`. Simplify using `only [this]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, card_mat, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun B _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidAlgebra.smul_single, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ gpow_ne, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eN_idem (σ : Fin k ⊕ Fin l ≃ Fin n) : eN g σ * eN g σ = eN g σ := by
   unfold eN
@@ -193,7 +191,7 @@ theorem eN_idem (σ : Fin k ⊕ Fin l ≃ Fin n) : eN g σ * eN g σ = eN g σ :
   rw [MonoidAlgebra.smul_single, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ gpow_ne, one_mul]
 
 /- English proof (translation)
-Unfold `eN Commute SemiconjBy`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Simplify using `only [MonoidAlgebra.single_mul_single, par_mul, Units.val_one, Matrix.mul_zero, Matrix.zero_mul, mul_one, one_mul, zero_add, add_zero]`. Rewrite using `[sum_mul_right y (fun B => MonoidAlgebra.single (par σ x B y) (((g : ℂ) ^ (k * l))⁻¹ * c)), sum_mul_left x (fun B => MonoidAlgebra.single (par σ x B y) (c * ((g : ℂ) ^ (k * l))⁻¹)), mul_comm c]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem eN_comm (σ : Fin k ⊕ Fin l ≃ Fin n) (x : Gn g k) (y : Gn g l) (c : ℂ) :
     Commute (eN g σ) (MonoidAlgebra.single (par σ x 0 y) c) := by
@@ -205,11 +203,11 @@ theorem eN_comm (σ : Fin k ⊕ Fin l ≃ Fin n) (x : Gn g k) (y : Gn g l) (c : 
     sum_mul_left x (fun B => MonoidAlgebra.single (par σ x B y) (c * ((g : ℂ) ^ (k * l))⁻¹)), mul_comm c]
 
 /- English proof (translation)
-Set `τ : Fin n ≃ Fin n` to `σ'.symm.trans σ`. Use `⟨⟨τ.symm.toPEquiv.toMatrix, τ.toPEquiv.toMatrix, ?_, ?_⟩, fun x B y => ?_⟩` and prove the remaining obligations. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans]`. Simplify using the standard rewrite rules. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.inv_mk, par_val]`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[τ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem par_conj (σ σ' : Fin k ⊕ Fin l ≃ Fin n) : ∃ p : Gn g n, ∀ x B y, par σ x B y = p * par σ' x B y * p⁻¹ := by
   let τ : Fin n ≃ Fin n := σ'.symm.trans σ
@@ -223,27 +221,27 @@ theorem par_conj (σ σ' : Fin k ⊕ Fin l ≃ Fin n) : ∃ p : Gn g n, ∀ x B 
     simp [τ]
 
 /- English proof (translation)
-Unfold `res`. Use `congr 1`. Rewrite using `[← Finset.sum_filter]`. Use `symm`. Establish `e1 : ∀ (M : Mt g (k + l)) (i j : Fin k), tl k M i j = M (finSumFinEquiv (.inl i)) (finSumFinEquiv (.inl j))`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Establish an intermediate fact.
 
-Introduce `M i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Rewrite using `[tl, entN, dif_pos ⟨by omega, by omega⟩]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : ∀ (M : Mt g (k + l)) (i j : Fin l), br k l M i j = M (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inr j))`. Introduce `M i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Rewrite using `[br, entN, dif_pos ⟨by omega, by omega⟩]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `Finset.sum_bij (fun B _ => par finSumFinEquiv x B y) (fun B _ => ?_) (fun B _ B' _ h => ?_) (fun z hz => ?_) (fun _ _ => rfl)` and prove the remaining obligations. Rewrite using `[Finset.mem_filter]`. Use `⟨Finset.mem_univ _, fun i j hj hi => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Rewrite using `[par_apply]`. Break down `i with i | i` into its components or cases. Use `i.2` as an intermediate fact. Simplify using `at hi`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Break down `j with j | j` into its components or cases. Simplify using the standard rewrite rules. Simplify using `at hj`. Use extensionality with `i j`.
+Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Rewrite using `[e1, par_apply]`. Simplify using the standard rewrite rules. Use extensionality with `i j`. Rewrite using `[e2, par_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Use `congrArg (fun z : Gn g (k + l) => (z : Mt g (k + l)) (finSumFinEquiv (.inl i)) (finSumFinEquiv (.inr j))) h` as an intermediate fact. Simplify `this` using `only [par_apply, Matrix.fromBlocks_apply₁₂]`. Rewrite `hz` using `[Finset.mem_filter]`. Take `⟨-, h0, h1, h2⟩` from `hz`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨Matrix.of fun i j => (z : Mt g (k + l)) (finSumFinEquiv (.inl i)) (finSumFinEquiv (.inr j)), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[par_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Rewrite using `[← e1 (z : Mt g (k + l)) i j, h1]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0 _ _ (by simp) (by simp)]; simp`. Rewrite using `[← e2 (z : Mt g (k + l)) i j, h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem res_std (χ : Gn g (k + l) → ℂ) (x : Gn g k) (y : Gn g l) :
     res k l χ x y = ((g : ℂ) ^ (k * l))⁻¹ * ∑ B, χ (par finSumFinEquiv x B y) := by
@@ -300,7 +298,7 @@ theorem res_std (χ : Gn g (k + l) → ℂ) (x : Gn g k) (y : Gn g l) :
     · rw [← e2 (z : Mt g (k + l)) i j, h2]; simp
 
 /- English proof (translation)
-Establish `hn : n = k + l` using `by simpa using (Fintype.card_congr σ).symm`. Substitute `hn` using the available equality. Take `⟨p, hp⟩` from `par_conj (g := g) σ finSumFinEquiv`. Rewrite using `[res_std]`. Simplify using `only [hp, hχ _ p]`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem res_eq (σ : Fin k ⊕ Fin l ≃ Fin n) (χ : Gn g n → ℂ) (hχ : IsClass χ) (x : Gn g k) (y : Gn g l) :
     res k l χ x y = ((g : ℂ) ^ (k * l))⁻¹ * ∑ B, χ (par σ x B y) := by
@@ -312,7 +310,7 @@ theorem res_eq (σ : Fin k ⊕ Fin l ≃ Fin n) (χ : Gn g n → ℂ) (hχ : IsC
 
 open MonoidAlgebra in
 /- English proof (translation)
-Simplify using `[zOf, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_zOf {G H : Type} [Group G] [Fintype G] [Group H] (i : G →* H) (α : G → ℂ) :
     mapDomainAlgHom ℂ ℂ i (zOf α) = ∑ x, single (i x) (α 1 / (Fintype.card G : ℂ) * α x⁻¹) := by
@@ -320,9 +318,7 @@ theorem map_zOf {G H : Type} [Group G] [Fintype G] [Group H] (i : G →* H) (α 
 
 open MonoidAlgebra in
 /- English proof (translation)
-Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of m => simpa using h m 1`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `hx.add_right hy`. Consider the case `smul r x hx => rw [map_smul]`.
-
-Conclude with `hx.smul_right r`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem commute_map {G H : Type} [Group G] [Group H] (i : G →* H) (e : MonoidAlgebra ℂ H)
     (h : ∀ x c, Commute e (single (i x) c)) (a : MonoidAlgebra ℂ G) : Commute e (mapDomainAlgHom ℂ ℂ i a) := by
@@ -333,7 +329,7 @@ theorem commute_map {G H : Type} [Group G] [Group H] (i : G →* H) (e : MonoidA
 
 open MonoidAlgebra in
 /- English proof (translation)
-Use `commute_map _ _ (fun y c => ?_) b` and prove the remaining obligations. Use `(commute_map _ _ (fun x d => ?_) a).symm` and prove the remaining obligations. Unfold `Commute SemiconjBy`. Simplify using `[single_mul_single, inA, inB, par_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem commute_AB (σ : Fin k ⊕ Fin l ≃ Fin n) (a : MonoidAlgebra ℂ (Gn g k)) (b : MonoidAlgebra ℂ (Gn g l)) :
     Commute (mapDomainAlgHom ℂ ℂ (inA σ) a) (mapDomainAlgHom ℂ ℂ (inB σ) b) := by
@@ -343,7 +339,7 @@ theorem commute_AB (σ : Fin k ⊕ Fin l ≃ Fin n) (a : MonoidAlgebra ℂ (Gn g
   simp [single_mul_single, inA, inB, par_mul, mul_comm]
 
 /- English proof (translation)
-Take `⟨V, -, hV⟩` from `h`. Introduce `x y`. Rewrite using `[← hV, ← hV, FDRep.char_conj]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isClass_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsClass χ := by
   obtain ⟨V, -, hV⟩ := h
@@ -352,19 +348,19 @@ theorem isClass_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : 
 
 open MonoidAlgebra in
 /- English proof (translation)
-Establish `hn : n = k + l` using `by simpa using (Fintype.card_congr σ).symm`. Establish `cA : Commute (eN g σ) (mapDomainAlgHom ℂ ℂ (inA σ) (zOf α))` using `commute_map (inA σ) (eN g σ) (fun x c => eN_comm σ x 1 c) _`. Establish `cB : Commute (eN g σ) (mapDomainAlgHom ℂ ℂ (inB σ) (zOf β))` using `commute_map (inB σ) (eN g σ) (fun x c => eN_comm σ 1 x c) _`. Establish `iz : ∀ {G : Type} [Group G] [Fintype G] (χ : G → ℂ), IsIrr χ → IsIdempotentElem (zOf χ)`. Introduce `G _ _ χ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G χ χ h h).1` using `[IsIdempotentElem]`. Establish `hi : IsIdempotentElem (eN g σ * mapDomainAlgHom ℂ ℂ (inA σ) (zOf α) * mapDomainAlgHom ℂ ℂ (inB σ) (zOf β) * zOf χ)`. Use `IsIdempotentElem.mul_of_commute (((GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ χ χ hχ hχ).2.1 _).symm) ?_ (iz χ hχ)` and prove the remaining obligations. Use `IsIdempotentElem.mul_of_commute (cB.mul_left (commute_AB σ _ _)) ?_ ((iz β hβ).map _)` and prove the remaining obligations. Conclude with `IsIdempotentElem.mul_of_commute cA (eN_idem σ) ((iz α hα).map _)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_zero_of_idem _ hi ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree _ _ χ).2.2]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Rewrite `h` using `[hc, GlobalTheory.T.harishChandra_frobenius_reciprocity g k l n hn χ _ (isClass_of_isIrr hχ), ip, mul_eq_zero]`. Establish `h'` using `h.resolve_left (inv_ne_zero (Nat.cast_ne_zero.2 Fintype.card_ne_zero))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[Fintype.sum_prod_type]`. Rewrite using `[map_zOf, map_zOf, mul_assoc, Finset.sum_mul_sum, Finset.mul_sum, tr_sum]`. Simplify using `only [Finset.mul_sum, tr_sum]`. Establish `key : ∀ x y c d, tr (eN g σ * (single (inA σ x) c * single (inB σ y) d)) χ = c * d * res k l χ x y`. Introduce `x y c d`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[res_eq σ χ (isClass_of_isIrr hχ), eN, Finset.sum_mul, tr_sum, ← sum_mul_right y (fun B => χ (par σ x B y)), Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun B _ => ?_` and prove the remaining obligations. Simplify using `only [single_mul_single, tr_single, inA, inB, MonoidHom.coe_mk, OneHom.coe_mk, par_mul]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [key]`. Use `congrArg (fun t => α 1 / (Fintype.card (Gn g k) : ℂ) * (β 1 / (Fintype.card (Gn g l) : ℂ)) * t) h'` as an intermediate fact. Simplify using `only [Finset.mul_sum, mul_zero] at this`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.fst_inv, Prod.snd_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem irr_vanish (σ : Fin k ⊕ Fin l ≃ Fin n) (χ : Gn g n → ℂ) (α : Gn g k → ℂ) (β : Gn g l → ℂ)
     (hχ : IsIrr χ) (hα : IsIrr α) (hβ : IsIrr β) (h : ip χ (hc k l α β n) = 0) :
@@ -408,13 +404,13 @@ theorem irr_vanish (σ : Fin k ⊕ Fin l ≃ Fin n) (χ : Gn g n → ℂ) (α : 
 
 open MonoidAlgebra in
 /- English proof (translation)
-Establish `hn : n = k + l` using `by simpa using (Fintype.card_congr σ).symm`. Use `finsum_mem_induction (fun a => eN g σ * mapDomainAlgHom ℂ ℂ (inA σ) a * mapDomainAlgHom ℂ ℂ (inB σ) (eSerC L l f₂) * eSerC L n f = 0) (by simp) ?_ ?_` and prove the remaining obligations. Introduce `x y hx hy`. Simplify using `only [map_add, mul_add, add_mul, hx, hy, add_zero]`. Introduce and unpack `α ⟨hα, hα'⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `finsum_mem_induction (fun b => eN g σ * mapDomainAlgHom ℂ ℂ (inA σ) (zOf α) * mapDomainAlgHom ℂ ℂ (inB σ) b * eSerC L n f = 0) (by simp) ?_ ?_` and prove the remaining obligations. Introduce `x y hx hy`. Simplify using `only [map_add, mul_add, add_mul, hx, hy, add_zero]`. Introduce and unpack `β ⟨hβ, hβ'⟩`. Use `finsum_mem_induction (fun c => eN g σ * mapDomainAlgHom ℂ ℂ (inA σ) (zOf α) * mapDomainAlgHom ℂ ℂ (inB σ) (zOf β) * c = 0) (by simp) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y hx hy`. Simplify using `only [mul_add, hx, hy, add_zero]`. Introduce and unpack `χ ⟨hχ, hχ'⟩`. Use `irr_vanish σ χ α β hχ hα hβ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hf (((GlobalTheory.T.harishChandraSeriesLabel_exists_unique_GLn g L h5 hG n).1 χ hχ).unique hχ' (GlobalTheory.T.harishChandraSeriesLabel_mul_of_constituent g L k l n χ α β f₁ f₂ hn hχ hα hβ hα' hβ' hne))`.
+A detailed English derivation is pending.
 -/
 theorem ser_vanish (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) (σ : Fin k ⊕ Fin l ≃ Fin n)
     (f f₁ f₂ : (ZMod g)[X]) (hf : f ≠ f₁ * f₂) :
@@ -443,7 +439,7 @@ theorem ser_vanish (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) (σ : Fin k �
 
 open MonoidAlgebra in
 /- English proof (translation)
-Establish `cA : Commute (eN g σ) (mapDomainAlgHom ℂ ℂ (inA σ) (eSerC L k f₁))` using `commute_map (inA σ) (eN g σ) (fun x c => eN_comm σ x 1 c) _`. Establish `cB : Commute (eN g σ) (mapDomainAlgHom ℂ ℂ (inB σ) (eSerC L l f₂))` using `commute_map (inB σ) (eN g σ) (fun x c => eN_comm σ 1 x c) _`. Rewrite using `[mul_assoc, mul_assoc, (GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG n).2.1, ← mul_assoc, ← (commute_AB σ _ _).eq, ← (cA.mul_right cB).eq, ← mul_assoc]`. Conclude with `ser_vanish L h5 hG σ f f₁ f₂ hf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ser_vanish' (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) (σ : Fin k ⊕ Fin l ≃ Fin n)
     (f f₁ f₂ : (ZMod g)[X]) (hf : f ≠ f₁ * f₂) :
@@ -459,7 +455,7 @@ theorem ser_vanish' (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) (σ : Fin k �
 
 open MonoidAlgebra in
 /- English proof (translation)
-Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of m => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `smul r x hx => simp only [map_smul, hx]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem comp_alg {G H W : Type} [Group G] [Group H] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ H W)
     (i : G →* H) (a : MonoidAlgebra ℂ G) :
@@ -470,7 +466,7 @@ theorem comp_alg {G H W : Type} [Group G] [Group H] [AddCommGroup W] [Module ℂ
   | smul r x hx => simp only [map_smul, hx]
 
 /- English proof (translation)
-Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of m => simpa using LinearMap.congr_fun (h m) w`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `smul r x hx => simp only [map_smul, LinearMap.smul_apply, hx]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem equiv_alg {G W W' : Type} [Group G] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     (ρ : Representation ℂ G W) (ρ' : Representation ℂ G W') (T : W →ₗ[ℂ] W') (h : ∀ m, T ∘ₗ ρ m = ρ' m ∘ₗ T)
@@ -481,7 +477,7 @@ theorem equiv_alg {G W W' : Type} [Group G] [AddCommGroup W] [Module ℂ W] [Add
   | smul r x hx => simp only [map_smul, LinearMap.smul_apply, hx]
 
 /- English proof (translation)
-Establish `h' : ∀ B, T (ρ (par σ 1 B 1) w) = T w` using `fun B => LinearMap.congr_fun (h B) w`. Simplify using `only [eN, map_sum, Representation.asAlgebraHom_single, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, h']`. Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, card_mat, smul_smul, mul_inv_cancel₀ gpow_ne, one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eN_left {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     (σ : Fin k ⊕ Fin l ≃ Fin n) (ρ : Representation ℂ (Gn g n) W) (T : W →ₗ[ℂ] W')
@@ -492,7 +488,7 @@ theorem eN_left {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] 
     one_smul]
 
 /- English proof (translation)
-Simplify using `only [eN, map_sum, Representation.asAlgebraHom_single, LinearMap.sum_apply, LinearMap.smul_apply, h]`. Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, card_mat, smul_smul, mul_inv_cancel₀ gpow_ne, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eN_right {W : Type} [AddCommGroup W] [Module ℂ W]
     (σ : Fin k ⊕ Fin l ≃ Fin n) (ρ : Representation ℂ (Gn g n) W) (w : W)
@@ -502,7 +498,7 @@ theorem eN_right {W : Type} [AddCommGroup W] [Module ℂ W]
     one_smul]
 
 /- English proof (translation)
-Take `⟨i₀, -, hi₀⟩` from `Finset.exists_max_image Finset.univ a ⟨⟨0, hn⟩, Finset.mem_univ _⟩`. Use `⟨_, _, (Equiv.sumCongr (Fintype.equivFin _).symm (Fintype.equivFin _).symm).trans (Equiv.sumCompl fun i => a i < a i₀), a i₀, ?_, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using `using Fintype.card_subtype_lt (p := fun i => a i < a i₀) (x := i₀) (lt_irrefl _)`. Conclude with `((Fintype.equivFin {i // a i < a i₀}).symm i).2`. Conclude with `le_antisymm (hi₀ _ (Finset.mem_univ _)) (not_lt.1 ((Fintype.equivFin {i // ¬ a i < a i₀}).symm j).2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_split (a : Fin n → ℤ) (hn : 0 < n) : ∃ (k l : ℕ) (σ : Fin k ⊕ Fin l ≃ Fin n) (M : ℤ), k < n ∧
     (∀ i, a (σ (.inl i)) < M) ∧ ∀ j, a (σ (.inr j)) = M := by
@@ -515,19 +511,19 @@ theorem exists_split (a : Fin n → ℤ) (hn : 0 < n) : ∃ (k l : ℕ) (σ : Fi
 
 open MonoidAlgebra in
 /- English proof (translation)
-Take `⟨S₁, -, h₁⟩` from `(GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG k).2.2.2.2`. Take `⟨S₂, -, h₂⟩` from `(GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG l).2.2.2.2`. Establish `e₁ : ∀ v : W, v = ∑ f₁ ∈ S₁, ρ.asAlgebraHom (mapDomainAlgHom ℂ ℂ (inA σ) (eSerC L k f₁)) v`. Introduce `v`. Rewrite using `[← LinearMap.sum_apply, ← map_sum, ← map_sum, h₁, map_one, map_one, Module.End.one_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : ∀ v : W, v = ∑ f₂ ∈ S₂, ρ.asAlgebraHom (mapDomainAlgHom ℂ ℂ (inB σ) (eSerC L l f₂)) v`. Introduce `v`. Rewrite using `[← LinearMap.sum_apply, ← map_sum, ← map_sum, h₂, map_one, map_one, Module.End.one_apply]`. Establish `e₃ : ∀ v : W', v = ∑ f₁ ∈ S₁, ρ'.asAlgebraHom (mapDomainAlgHom ℂ ℂ (inA σ) (eSerC L k f₁)) v`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.sum_apply, ← map_sum, ← map_sum, h₁, map_one, map_one, Module.End.one_apply]`. Rewrite using `[e₂ (ρ.asAlgebraHom (eSerC L n f) w), map_sum, map_sum]`. Use `Finset.sum_eq_zero fun f₂ _ => ?_` and prove the remaining obligations. Rewrite using `[e₁ (ρ.asAlgebraHom (mapDomainAlgHom ℂ ℂ (inB σ) (eSerC L l f₂)) _), map_sum, map_sum]`. Use `Finset.sum_eq_zero fun f₁ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h12 : f = f₁ * f₂`. Use `swap`. Rewrite using `[← hN, ← Module.End.mul_apply, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, ← map_mul, ser_vanish L h5 hG σ f f₁ f₂ h12]`. Simplify using the standard rewrite rules. Rewrite using `[e₃ (T _), map_sum]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun f₃ _ => ?_` and prove the remaining obligations. Distinguish the cases in `h13 : f₁ = f₃`. Use `swap`. Rewrite using `[hA f₁ f₃ h13, map_zero]`. Substitute `h13` using the available equality.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ v, ρ.asAlgebraHom (mapDomainAlgHom ℂ ℂ (inA σ) (eSerC L k f₁)) (ρ.asAlgebraHom (mapDomainAlgHom ℂ ℂ (inB σ) (eSerC L l f₂)) v) = ρ.asAlgebraHom (mapDomainAlgHom ℂ ℂ (inB σ) (eSerC L l f₂)) (ρ.asAlgebraHom (mapDomainAlgHom ℂ ℂ (inA σ) (eSerC L k f₁)) v)`. Introduce `v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, (commute_AB σ _ _).eq, map_mul, Module.End.mul_apply]`. Establish `hv` using `ser_vanish' L h5 hG ((Equiv.sumComm _ _).trans σ) f' f₂ f₁ (by rw [mul_comm, ← h12]; exact hf.symm)`. Rewrite `hv` using `[inA_swap, inB_swap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, hB, ← hN', ← Module.End.mul_apply, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, ← map_mul, hv]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem step (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) (σ : Fin k ⊕ Fin l ≃ Fin n) {W W' : Type}
     [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (ρ : Representation ℂ (Gn g n) W)
@@ -579,29 +575,27 @@ theorem step (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) (σ : Fin k ⊕ Fin 
   simp
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `ρ ρ' a hU hU' hM f f' hf w`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[equiv_alg ρ ρ' T (fun m => hM m fun i => i.elim0), ← Module.End.mul_apply, ← map_mul, (GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG 0).2.2.1 f' f hf.symm]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨k, l, σ, M, hk, h₁, h₂⟩` from `exists_split a hn`. Establish `one : ∀ i j, (1 : Mt g n) (σ i) (σ j) = Matrix.fromBlocks (1 : Mt g k) 0 0 (1 : Mt g l) i j`. Introduce `i j`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `step L h5 hG σ ρ ρ' T (eN_left σ ρ T fun B => hU _ fun i j hij => ?_) (fun w => eN_right _ ρ' _ fun B => LinearMap.congr_fun (hU' _ fun i j hij => ?_) w) (fun b w => ?_) (fun f f' hf w => ?_) f f' hf w` and prove the remaining obligations. Take `⟨i, rfl⟩` from `σ.surjective i`. Take `⟨j, rfl⟩` from `σ.surjective j`. Rewrite using `[par_apply, one]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using the standard rewrite rules. Conclude with `absurd (h₂ j ▸ h₁ i) hij`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take `⟨i, rfl⟩` from `σ.surjective i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `σ.surjective j`. Rewrite using `[one]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `[par_val]`. Simplify using `[par_val]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `absurd (h₂ i ▸ h₁ j) hij`. Simplify using `[par_val]`. Rewrite using `[← comp_alg, ← comp_alg]`. Use `equiv_alg _ _ T (fun m => hM (par σ 1 0 m) fun i j hij => ?_) b w` and prove the remaining obligations. Take `⟨i, rfl⟩` from `σ.surjective i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, rfl⟩` from `σ.surjective j`. Rewrite using `[par_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Establish `: i ≠ j` using `fun h => hij (by rw [h])`. Simplify using `[Matrix.one_apply_ne this]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Conclude with `absurd ((h₂ i).trans (h₂ j).symm) hij`. Rewrite using `[← comp_alg, ← comp_alg]`. Use `ih k hk _ _ (fun i => a (σ (.inl i))) (fun u hu => hU (par σ u 0 1) fun i j hij => ?_) (fun u hu => hU' (par σ u 0 1) fun i j hij => ?_) (fun u hu => hM (par σ u 0 1) fun i j hij => ?_) f f' hf w` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, rfl⟩` from `σ.surjective i`. Take `⟨j, rfl⟩` from `σ.surjective j`. Rewrite using `[par_apply, one]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `using hu i j hij`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `all_goals simp`. Take `⟨i, rfl⟩` from `σ.surjective i`. Take `⟨j, rfl⟩` from `σ.surjective j`. Rewrite using `[par_apply, one]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hu i j hij`. Apply the tactic sequence `all_goals simp`. Take `⟨i, rfl⟩` from `σ.surjective i`. Take `⟨j, rfl⟩` from `σ.surjective j`. Rewrite using `[par_apply]`.
-
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `using hu i j hij`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Conclude with `absurd ((h₂ i).trans (h₂ j).symm) hij`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vanish (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) {W W' : Type}
     [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (T : W →ₗ[ℂ] W') (n : ℕ) :
@@ -676,7 +670,7 @@ theorem vanish (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) {W W' : Type}
       · exact absurd ((h₂ i).trans (h₂ j).symm) hij
 
 /- English proof (translation)
-Introduce `g _ L h5 hG n W W' _ _ _ _ ρ ρ' T a f f' hU hU' hM h h' hT`. Assume the negation of the conclusion as `hf`. Use `hT (LinearMap.ext fun w => ?_)` and prove the remaining obligations. Use `vanish L h5 hG T n ρ ρ' a hU hU' hM f f' hf w` as an intermediate fact. Rewrite `this` using `[h, h']`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem label_eq_of_opposite : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g), 5 ≤ g → Green → ∀ (n : ℕ) (W W' : Type) [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (ρ : Representation ℂ (Gn g n) W) (ρ' : Representation ℂ (Gn g n) W') (T : W →ₗ[ℂ] W') (a : Fin n → ℤ) (f f' : (ZMod g)[X]), (∀ u : Gn g n, (∀ i j, ¬ a i < a j → (u : Mt g n) i j = (1 : Mt g n) i j) → T ∘ₗ ρ u = T) → (∀ u : Gn g n, (∀ i j, ¬ a j < a i → (u : Mt g n) i j = (1 : Mt g n) i j) → ρ' u ∘ₗ T = T) → (∀ m : Gn g n, (∀ i j, a i ≠ a j → (m : Mt g n) i j = 0) → T ∘ₗ ρ m = ρ' m ∘ₗ T) → (∀ w, ρ.asAlgebraHom (eSerC L n f) w = w) → (∀ w', ρ'.asAlgebraHom (eSerC L n f') w' = w') → T ≠ 0 → f = f' := by
   intro g _ L h5 hG n W W' _ _ _ _ ρ ρ' T a f f' hU hU' hM h h' hT

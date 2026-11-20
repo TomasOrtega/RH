@@ -12,11 +12,11 @@ namespace GlobalTheory.PMon.Gauss
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `h : ∀ n : ℕ, ‖((((Formalism.Per.tm y : Formalism.Per.Ainf l).coeff n).untilt : Formalism.Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ n) * ρ ^ n = if n = 0 then ‖((y.untilt : Formalism.Per.OC l) : ℂ_[l])‖ else 0`. Introduce `n`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[WittVector.teichmuller_coeff_pos l y n (Nat.pos_of_ne_zero h), GlobalTheory.GaussSlope.untilt_zero]`. Establish `: (1 : ℝ) / (l : ℝ) ^ n ≠ 0` using `by positivity`. Simplify using `only [ZeroMemClass.coe_zero, norm_zero, Real.zero_rpow this, zero_mul]`. Unfold `gA`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [h]`. Apply the tactic sequence `have hall : ∀ n : ℕ, (if n = 0 then ‖((y.untilt : Formalism.Per.OC l) : ℂ_[l])‖ else 0) ≤ ‖((y.untilt : Formalism.Per.OC l) : ℂ_[l])‖ := fun n => by split_ifs <;> simp`. Conclude with `le_antisymm (ciSup_le hall) (le_ciSup_of_le (f := fun n : ℕ => if n = 0 then ‖((y.untilt : Formalism.Per.OC l) : ℂ_[l])‖ else 0) ⟨_, Set.forall_mem_range.2 hall⟩ 0 (by simp))`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem gA_teichmuller (ρ : ℝ) (y : Formalism.Per.Fl l) :
     gA l ρ (Formalism.Per.tm y) = ‖((y.untilt : Formalism.Per.OC l) : ℂ_[l])‖ := by
@@ -39,11 +39,11 @@ theorem gA_teichmuller (ρ : ℝ) (y : Formalism.Per.Fl l) :
       ⟨_, Set.forall_mem_range.2 hall⟩ 0 (by simp))
 
 /- English proof (translation)
-Take `⟨h01, -, -, hmul, halg⟩` from `hN`. Establish `hl : N (l : Formalism.Per.Acris l) = ρ`. Rewrite using `[← map_natCast (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris l)) l, halg]`. Conclude with `GlobalTheory.GaussSlope.gauss_l l hρ.le`. Establish `h1 : N 1 = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hmul (l : Formalism.Per.Acris l) 1` as an intermediate fact. Rewrite `this` using `[mul_one, hl]`. Conclude with `(mul_left_cancel₀ hρ.ne' (this.symm.trans (mul_one ρ).symm))`. Take `⟨y, hy⟩` from `hx.exists_right_inv`. Establish `h2` using `hmul x y`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[hy, h1]`. Use `le_antisymm (h01 x).2 ?_` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `mul_le_of_le_one_right (h01 x).1 (h01 y).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGauss_unit_eq_one {ρ : ℝ} (hρ : 0 < ρ) {N : Formalism.Per.Acris l → ℝ} (hN : IsGauss l ρ N)
     {x : Formalism.Per.Acris l} (hx : IsUnit x) : N x = 1 := by
@@ -63,11 +63,11 @@ theorem isGauss_unit_eq_one {ρ : ℝ} (hρ : 0 < ρ) {N : Formalism.Per.Acris l
   exact mul_le_of_le_one_right (h01 x).1 (h01 y).2
 
 /- English proof (translation)
-Introduce `l _ ρ h0 h1`. Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `hρ : 0 < ρ` using `(inv_pos.2 hl0).trans_le h0`. Establish `hN` using `isGauss_gC_of_le l ρ h0 h1`. Establish `hl : gC l ρ (l : Formalism.Per.Acris l) = ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris l)) l, hN.2.2.2.2]`. Conclude with `GlobalTheory.GaussSlope.gauss_l l hρ.le`. Use `⟨isGauss_unit_eq_one hρ hN isUnit_one, hl, fun c hc => ?_, fun y => ?_, fun a ha => isGauss_unit_eq_one hρ hN (ha.map _)⟩` and prove the remaining obligations. Establish `e : zc l c = (l : Formalism.Per.Acris l) ^ c.valuation * zc l (PadicInt.unitCoeff hc : ℤ_[l])` using `by conv_lhs => rw [PadicInt.unitCoeff_spec hc]`. Rewrite using `[map_mul, map_pow, map_natCast, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, GlobalTheory.GaussSlope.map_pow_mul _ hN.2.2.2.1, hl, isGauss_unit_eq_one hρ hN ((PadicInt.unitCoeff hc).isUnit.map (zc l)), mul_one]`. Rewrite using `[tc, hN.2.2.2.2, gA_teichmuller]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gC_basic_values : ∀ (l : ℕ) [Fact l.Prime] (ρ : ℝ), (l : ℝ)⁻¹ ≤ ρ → ρ < 1 → gC l ρ 1 = 1 ∧ gC l ρ (l : Formalism.Per.Acris l) = ρ ∧ (∀ c : ℤ_[l], c ≠ 0 → gC l ρ (zc l c) = ρ ^ c.valuation) ∧ (∀ y : Formalism.Per.Fl l, gC l ρ (tc l y) = ‖(((y).untilt : Formalism.Per.OC l) : ℂ_[l])‖) ∧ ∀ a : Formalism.Per.Ainf l, IsUnit a → gC l ρ (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris l) a) = 1 := by
   intro l _ ρ h0 h1

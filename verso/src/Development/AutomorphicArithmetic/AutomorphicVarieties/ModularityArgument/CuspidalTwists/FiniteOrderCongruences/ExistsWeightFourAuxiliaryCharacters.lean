@@ -17,9 +17,9 @@ open scoped Matrix
 namespace UpperTheory.V.Cu2
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`. Establish `h` using `UpperTheory.V.Chr.cls_spec N s ζ hζ.pow_eq_one`. Rewrite `h` using `[hs ζ hζ.pow_eq_one]`. Establish `h2 : ζ ^ ((UpperTheory.V.Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N).val = ζ ^ (1 : ZMod N).val`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hζ.pow_eq_one, pow_one]`. Conclude with `Units.ext (ZMod.val_injective N (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h2))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cls_one {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] (s : G ℚ Ω)
     (hs : ∀ ζ : Ω, ζ ^ N = 1 → s ζ = ζ) : UpperTheory.V.Chr.cls ℚ Ω N s = 1 := by
@@ -32,7 +32,7 @@ private theorem cls_one {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
   exact Units.ext (ZMod.val_injective N (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h2))
 
 /- English proof (translation)
-Rewrite using `[commutator_def, Subgroup.commutator_le]`. Introduce `a _ b _`. Rewrite using `[MonoidHom.mem_ker, commutatorElement_def, map_mul, map_mul, map_mul, h a b, mul_assoc (f b), ← map_mul, mul_inv_cancel, map_one, mul_one, ← map_mul, mul_inv_cancel, map_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comm_le {Γ M : Type} [Group Γ] [Monoid M] (f : Γ →* M) (h : ∀ a b, f a * f b = f b * f a) :
     commutator Γ ≤ f.ker := by
@@ -42,7 +42,7 @@ private theorem comm_le {Γ M : Type} [Group Γ] [Monoid M] (f : Γ →* M) (h :
     map_one, mul_one, ← map_mul, mul_inv_cancel, map_one]
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `hm`. Rewrite `hm1` using `[pow_succ, pow_mul, h2, one_pow, one_mul]`. Conclude with `hm1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem odd_one {M : Type} [Monoid M] (x : M) {m : ℕ} (hm : Odd m) (h2 : x ^ 2 = 1) (hm1 : x ^ m = 1) : x = 1 := by
   obtain ⟨j, rfl⟩ := hm
@@ -54,9 +54,9 @@ section
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
 
 /- English proof (translation)
-Take `⟨hG, h, t, e, ψ, hB, he0, het, hX, ⟨c1, c2, c3, c4⟩, he, hψ, -⟩` from `h3`. Establish `hlp : l.Prime` using `Fact.out`. Take `⟨-, -, -, -, hb⟩` from `bchiFacts h t hB`. Take `⟨-, -, -, -, -, -, -, n3⟩` from `hb l hlp hG.l_odd c1`. Take `⟨-, -, n4⟩` from `n3 e he0 het c2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨h.N, h.N_pos, n4, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, UpperTheory.V.Chr.dirG, MonoidHom.comp_apply, cls_one h.N s hs, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem psi_level (D : Raw Ω c) (h3 : Ctx3 D) : ∃ N : ℕ, 0 < N ∧ ¬ l ∣ N ∧ KillsMu N D.ψ := by
   obtain ⟨hG, h, t, e, ψ, hB, he0, het, hX, ⟨c1, c2, c3, c4⟩, he, hψ, -⟩ := h3
@@ -68,13 +68,13 @@ private theorem psi_level (D : Raw Ω c) (h3 : Ctx3 D) : ∃ N : ℕ, 0 < N ∧ 
   rw [hψ, UpperTheory.V.Chr.dirG, MonoidHom.comp_apply, cls_one h.N s hs, map_one]
 
 /- English proof (translation)
-Take `⟨-, h, t, e, ψ, -, -, -, hX, ⟨-, -, c3, -⟩, he, -⟩` from `h3`. Establish `hev : ψ (-1) = (-1) ^ e` using `(h.mem_X.1 hX).2`. Establish `h1 : ψ (-1) = 1`. Use `odd_one _ c3 ?_ ?_` and prove the remaining obligations. Rewrite using `[sq, ← map_mul, neg_one_mul, neg_neg, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MulChar.pow_apply' ψ c3.pos.ne', pow_orderOf_eq_one, MulChar.one_apply isUnit_one.neg]`. Rewrite `hev` using `[h1]`. Establish `hne : (-1 : c.O) ≠ 1`. Introduce `h0`. Establish `h' : ((-1 : c.O) : PadicAlgCl l) = ((1 : c.O) : PadicAlgCl l)` using `congrArg _ h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'' : (algebraMap ℚ_[l] (PadicAlgCl l)) (-1) = (algebraMap ℚ_[l] (PadicAlgCl l)) 1`. Rewrite using `[map_neg, map_one]`. Simplify using `using h'`. Establish `h4` using `(algebraMap ℚ_[l] (PadicAlgCl l)).injective h''`. Evaluate the numerical expressions using `at h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Rewrite using `[he]`. Conclude with `(neg_one_pow_eq_one_iff_even hne).1 hev.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem e_even (D : Raw Ω c) (h3 : Ctx3 D) : Even D.e := by
   obtain ⟨-, h, t, e, ψ, -, -, -, hX, ⟨-, -, c3, -⟩, he, -⟩ := h3
@@ -96,7 +96,7 @@ private theorem e_even (D : Raw Ω c) (h3 : Ctx3 D) : Even D.e := by
   exact (neg_one_pow_eq_one_iff_even hne).1 hev.symm
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `h`. Use extensionality with `x`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.mul_apply, hj, hj, Complex.conj_conj, AlgEquiv.one_apply]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cc_sq {cc : G ℚ Ω} (h : ReciprocityTheory.Gal.IsCC cc) : cc * cc = 1 := by
   obtain ⟨j, hj⟩ := h
@@ -105,44 +105,44 @@ private theorem cc_sq {cc : G ℚ Ω} (h : ReciprocityTheory.Gal.IsCC cc) : cc *
   rw [AlgEquiv.mul_apply, hj, hj, Complex.conj_conj, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Simplify using `only [Raw.bar, MonoidHom.mul_apply, Units.val_mul, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem bar_mul (γ δ : G ℚ Ω →* c.Oˣ) (g : G ℚ Ω) : Raw.bar (γ * δ) g = Raw.bar γ g * Raw.bar δ g := by
   simp only [Raw.bar, MonoidHom.mul_apply, Units.val_mul, map_mul]
 
 /- English proof (translation)
-Simplify using `only [Raw.bar, MonoidHom.inv_apply]`. Conclude with `map_units_inv (residue c.O) (γ g)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bar_inv (γ : G ℚ Ω →* c.Oˣ) (g : G ℚ Ω) : Raw.bar γ⁻¹ g = (Raw.bar γ g)⁻¹ := by
   simp only [Raw.bar, MonoidHom.inv_apply]
   exact map_units_inv (residue c.O) (γ g)
 
 /- English proof (translation)
-Simplify using `only [Raw.bar, MonoidHom.pow_apply, Units.val_pow_eq_pow_val, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem bar_pow (γ : G ℚ Ω →* c.Oˣ) (n : ℕ) (g : G ℚ Ω) : Raw.bar (γ ^ n) g = Raw.bar γ g ^ n := by
   simp only [Raw.bar, MonoidHom.pow_apply, Units.val_pow_eq_pow_val, map_pow]
 
 /- English proof (translation)
-Rewrite using `[zpow_natCast, bar_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem bar_zpow (γ : G ℚ Ω →* c.Oˣ) (n : ℕ) (g : G ℚ Ω) : Raw.bar (γ ^ (n : ℤ)) g = Raw.bar γ g ^ n := by
   rw [zpow_natCast, bar_pow]
 
 /- English proof (translation)
-Simplify using `only [Raw.bar, MonoidHom.one_apply, Units.val_one, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem bar_one (g : G ℚ Ω) : Raw.bar (1 : G ℚ Ω →* c.Oˣ) g = 1 := by
   simp only [Raw.bar, MonoidHom.one_apply, Units.val_one, map_one]
 
 /- English proof (translation)
-The claim follows from `((γ g).isUnit.map (residue c.O)).ne_zero`.
+A detailed English derivation is pending.
 -/
 private theorem bar_ne (γ : G ℚ Ω →* c.Oˣ) (g : G ℚ Ω) : Raw.bar γ g ≠ 0 :=
   ((γ g).isUnit.map (residue c.O)).ne_zero
 
 /- English proof (translation)
-Establish `h : γ (u⁻¹ * s * u) = γ s`. Rewrite using `[map_mul, map_mul, map_inv, mul_right_comm, inv_mul_cancel, one_mul]`. Simplify using `only [Raw.bar, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem bar_conj (γ : G ℚ Ω →* c.Oˣ) (u s : G ℚ Ω) : Raw.bar γ (u⁻¹ * s * u) = Raw.bar γ s := by
   have h : γ (u⁻¹ * s * u) = γ s := by
@@ -150,19 +150,19 @@ private theorem bar_conj (γ : G ℚ Ω →* c.Oˣ) (u s : G ℚ Ω) : Raw.bar �
   simp only [Raw.bar, h]
 
 /- English proof (translation)
-Establish `key : ∀ g, Raw.bar (chiO ℚ Ω l c.O) g = Raw.bar D.om g ∧ Raw.bar D.om g ^ (k - 1) = Raw.bar D.om g ^ D.e ∧ Raw.bar D.om g ^ D.e * Raw.bar D.om g ^ D.e = 1 ∧ Raw.bar D.om g ≠ 0`. Introduce `g`. Establish `hu : Raw.bar D.om g ^ (l - 1) = 1` using `by rw [← bar_pow, hG.om_pow, bar_one]`. Use `⟨(hG.om_bar g).symm, ?_, ?_, bar_ne _ _⟩` and prove the remaining obligations. Rewrite using `[pow_eq_pow_mod (k - 1) hu, show (k - 1) % (l - 1) = D.e % (l - 1) from hk, ← pow_eq_pow_mod D.e hu]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, hq⟩` from `hd`. Rewrite using `[← pow_add, ← two_mul, hq, pow_mul, hu, one_pow]`. Establish `eP : D.Psi = chiO ℚ Ω l c.O ^ (D.e : ℤ) * D.ψ` using `rfl`. Consider the cases of `pr`. Use `⟨1, fun g => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hcu, hue, -, hu0⟩` from `key g`. Establish `e0 : chi D false 0 = chiO ℚ Ω l c.O * D.om⁻¹ * D.ξ * D.Psi` using `rfl`. Establish `e3 : chi D false 3 = 1` using `rfl`. Establish `ep : Phi D false k = chiO ℚ Ω l c.O ^ (k - 1) * (D.ξ * D.ψ)` using `rfl`. Rewrite using `[ep, e0, e3, zpow_one, eP]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [bar_mul, bar_inv, bar_pow, bar_zpow, bar_one, hcu, hue]`. Prove the components needed by the constructor for the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_inv_cancel₀ hu0, one_mul, inv_one, mul_one]`. Use `⟨-1, fun g => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hcu, hue, hu2, hu0⟩` from `key g`. Establish `hinv : (Raw.bar D.om g ^ D.e)⁻¹ = Raw.bar D.om g ^ D.e` using `inv_eq_of_mul_eq_one_right hu2`. Establish `e0 : chi D true 0 = chiO ℚ Ω l c.O * D.om⁻¹ * D.ξ` using `rfl`. Establish `e3 : chi D true 3 = D.Psi` using `rfl`. Establish `ep : Phi D true k = chiO ℚ Ω l c.O ^ (k - 1) * (D.ξ * D.ψ⁻¹)` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ep, e0, e3, zpow_neg_one, eP]`. Simplify using `only [bar_mul, bar_inv, bar_pow, bar_zpow, bar_one, hcu, hue]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[mul_inv, hinv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_inv_cancel₀ hu0, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem bar_Phi (D : Raw Ω c) (hG : D.Good) (hd : l - 1 ∣ 2 * D.e) (pr : Bool) (k : ℕ)
     (hk : k - 1 ≡ D.e [MOD l - 1]) : ∃ i : ℤ, ∀ g, Raw.bar (Phi D pr k) g = Raw.bar (D.ξ * D.Psi ^ i) g ∧
@@ -203,17 +203,17 @@ private theorem bar_Phi (D : Raw Ω c) (hG : D.Good) (hd : l - 1 ∣ 2 * D.e) (p
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D T h3 _`. Establish `hG` using `h3.1`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN, hlN, hKB⟩ : ∃ N : ℕ, 0 < N ∧ ¬ l ∣ N ∧ KillsMu N (toB (phi D T.pr)) := by`. Take `⟨N₁, hN₁, hlN₁, hK₁⟩` from `UpperTheory.cyclotomicChar_pow_N_trivial Ω l c D h3`. Take `⟨N₂, hN₂, hlN₂, hK₂⟩` from `psi_level D h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨N₁ * N₂, Nat.mul_pos hN₁ hN₂, fun hd => (hl.out.dvd_mul.1 hd).elim hlN₁ hlN₂, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h1 : D.ξ s = 1` using `hK₁ s fun ζ hζ => hs ζ (by rw [pow_mul, hζ, one_pow])`. Establish `h2 : D.ψ s = 1` using `hK₂ s fun ζ hζ => hs ζ (by rw [mul_comm, pow_mul, hζ, one_pow])`. Unfold `phi`. Apply the tactic sequence `split <;> simp [toB, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, ho1, ho2, -⟩` from `UpperTheory.V.GradeZeroInterpolatingElement.facts D hG`. Establish `ho0 : IsOpen (T.F.fixingSubgroup : Set (G ℚ Ω))` using `IntermediateField.fixingSubgroup_isOpen T.F`. Establish `hc0 : commutator (G ℚ Ω) ≤ T.F.fixingSubgroup`. Establish `hn` using `T.abF.toIsGalois.to_normal`. Rewrite using `[← @IntermediateField.restrictNormalHom_ker ℚ Ω _ _ _ T.F hn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `comm_le _ fun a b => T.abF.toIsMulCommutative.is_comm.comm _ _`. Establish `hc1 : commutator (G ℚ Ω) ≤ D.rbar.ker` using `comm_le _ fun a b => by`. Rewrite using `[← map_mul, ← map_mul]`. Use extensionality with `i j`. Simplify using `[Raw.rbar, Raw.r0, diagRep, GradeZeroInterpolatingElement.mapRep, Matrix.diagonal_apply, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc2 : commutator (G ℚ Ω) ≤ D.om.ker` using `comm_le _ fun a b => mul_comm _ _`. Take `⟨w, hw, hlt, hmod, hs⟩` from `UpperTheory.exists_splitPrime_cmDatum Ω (T.F.fixingSubgroup ⊓ D.rbar.ker ⊓ D.om.ker) ((ho0.inter ho1).inter ho2) (le_inf (le_inf hc0 hc1) hc2) (N * l) (Nat.mul_pos hN hl.out.pos)`. Take `⟨θ, t1, t2, t3⟩` from `UpperTheory.exists_theta_character_cmDatum Ω l w hw (hmod.of_mul_left N)`. Use `⟨N, w, θ, ⟨hG.l_odd, hN, hlN, hw, fun hd => ?_, t1, t2, t3⟩, ⟨hKB, fun s hs => hKB s fun ζ hζ => ?_⟩, hs⟩` and prove the remaining obligations. Establish `h1` using `Nat.le_of_dvd hN hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Nat.le_mul_of_pos_right N hl.out.pos`. Use linear arithmetic over natural numbers and integers. Establish `h1 : w % N = 1 % N` using `hmod.of_mul_right l`. Rewrite using `[hs ζ hζ, pow_eq_pow_mod w hζ, h1, ← pow_eq_pow_mod 1 hζ, pow_one]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weight_four_auxiliary_characters : ExistsSplittingAuxiliaryCharacterForTower := by
   intro Ω _ _ _ l hl c D T h3 _
@@ -248,21 +248,19 @@ theorem exists_weight_four_auxiliary_characters : ExistsSplittingAuxiliaryCharac
     rw [hs ζ hζ, pow_eq_pow_mod w hζ, h1, ← pow_eq_pow_mod 1 hζ, pow_one]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D T h3 hok h4`. Establish `hG` using `h3.1`. Take `⟨-, hd, -, ⟨m, hm, -, hψm⟩, -⟩` from `large₂.host3 D h3`. Use `⟨?_, e_even D h3, fun k hk1 hk => ?_⟩` and prove the remaining obligations. Establish `hcc : D.cc * D.cc = 1` using `cc_sq hG.isCC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hψ : D.ψ D.cc = 1` using `odd_one (D.ψ D.cc) hm (by rw [sq, ← map_mul, hcc, map_one]) (by rw [← MonoidHom.pow_apply, hψm, MonoidHom.one_apply])`. Unfold `phi`. Apply the tactic sequence `split <;> simp [hG.xi_odd, hψ]`. Take `⟨i, hi⟩` from `bar_Phi D hG hd T.pr k hk`. Use `⟨?_, fun A hA => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hsq`. Establish `hq` using `(hi (resQ T.F T.g0)).1.trans (hi (resQ T.F T.g0)).2.symm`. Take `⟨K', _, hQ⟩` from `h4.quad`. Establish `hη : T.rb wAl T.g0 = Raw.bar (chi D T.pr 0) (resQ T.F T.g0) * (Raw.bar (chi D T.pr 1) (resQ T.F T.g0))⁻¹`. Establish `h0 : (T.fr ∅).rt wAl T.g0 = chi D T.pr 0 (resQ T.F T.g0) * (chi D T.pr 1 (resQ T.F T.g0))⁻¹` using `by show (chi D T.pr 0 (resQ T.F T.g0) * (chi D T.pr 1 (resQ T.F T.g0))⁻¹) ^ (1 : ℤ) * (chi D T.pr 0 (resQ T.F T.g0) * (chi D T.pr 2 (resQ T.F T.g0))⁻¹) ^ (0 : ℤ) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zpow_one, zpow_zero, mul_one]`. Use `show residue c.O (((T.fr ∅).rt wAl T.g0 : c.Oˣ) : c.O) = _`. Rewrite using `[h0, Units.val_mul, map_mul, map_units_inv]`. Establish `hη2 : T.rb wAl T.g0 = 1 ∨ T.rb wAl T.g0 = -1`. Distinguish the cases in `hmem : resQ T.F T.g0 ∈ K'.fixingSubgroup`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl (hQ.on _ hmem)`. Conclude with `Or.inr (hQ.off _ hmem)`. Establish `h1` using `bar_ne (chi D T.pr 1) (resQ T.F T.g0)`. Establish `h3'` using `bar_ne (chi D T.pr 3) (resQ T.F T.g0)`. Rewrite `hsq` using `[hq]`.
+Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hη2` using `[hη]`. Break down `mul_self_eq_one_iff.1 ((sq _).symm.trans hsq) with ha | ha` into its components or cases. Conclude with `hok.dist 0 3 (by decide) ((mul_inv_eq_one₀ h3').1 ha)`. Break down `hη2 with hb | hb` into its components or cases. Conclude with `hok.dist 0 1 (by decide) ((mul_inv_eq_one₀ h1).1 hb)`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hok.dist 1 3 (by decide)` to reduce the goal to its premises. Rewrite `ha` using `[mul_inv_eq_iff_eq_mul₀ h3']`. Rewrite `hb` using `[mul_inv_eq_iff_eq_mul₀ h1]`. Take the linear combination `hb - ha`. Establish `hT : l ∈ D.T` using `Finset.mem_insert_self _ _`.
-
-Take `⟨u, hu, -⟩` from `(UpperTheory.V.Chr.placesQ Ω).2.2 l _ A hl.out (hG.pl_over l hl.out) hA`. Conclude with `⟨_, hu _ (hG.sg_frob l hT).1, fun e => hG.condD l hT i (((hi _).1).symm.trans ((bar_conj _ u _).symm.trans e))⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem phiFacts : PhiFacts := by
   intro Ω _ _ _ l hl c D T h3 hok h4

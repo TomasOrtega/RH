@@ -16,11 +16,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.WaveMult
 
 /- English proof (translation)
-Establish `hdx : x.det ≠ 0` using `hx`. Establish `hdy : y.det ≠ 0` using `hy`. Establish `hxy : x * y ∈ GLs n`. Express the relevant statement in the definitionally equal form `(x * y).det ≠ 0`. Rewrite using `[Matrix.det_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hdx hdy`. Establish `hu : IsUnit y.det` using `isUnit_iff_ne_zero.mpr hdy`. Establish `h1` using `(hL n).1 (x * y) hxy y⁻¹ (inv_mem_GLs hy)`. Establish `h2` using `(hL n).2.1 y hy`. Rewrite `h1` using `[Matrix.mul_nonsing_inv_cancel_right _ _ hu, h2]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lg_le_lg_mul_add (hL : LgFacts) {n : ℕ} {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) :
     lg x ≤ lg (x * y) + lg y := by
@@ -37,11 +35,11 @@ theorem lg_le_lg_mul_add (hL : LgFacts) {n : ℕ} {x y : Mat n} (hx : x ∈ GLs 
   exact h1
 
 /- English proof (translation)
-Introduce `hL hS n E u hu hc T`. Take `⟨c, hc'⟩` from `hS n`. Take `⟨R₀, hR₀⟩` from `hc`. Use `⟨R₀ + |c| * (1 + |T|), fun t ht x hx hlg => hc' E u hu t x hx fun y hy hly => ?_⟩` and prove the remaining obligations. Establish `hxy : x * y ∈ GLs n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(x * y).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hx hy`. Use `hR₀ (x * y) hxy ?_` and prove the remaining obligations. Establish `h1` using `lg_le_lg_mul_add hL hx hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : |t| ≤ |T|` using `ht.trans (le_abs_self T)`. Establish `h3 : c * (1 + |t|) ≤ |c| * (1 + |T|)`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wave_cpt_bounded_time : LgFacts → WaveSpeed → ∀ (n : ℕ) (E : KMod n) (u : ℝ → Mat n → E.V),
     IsWave E u → Cpt (u 0) → ∀ T : ℝ, ∃ R : ℝ, ∀ t, |t| ≤ T → ∀ y ∈ GLs n, R < lg y → u t y = 0 := by

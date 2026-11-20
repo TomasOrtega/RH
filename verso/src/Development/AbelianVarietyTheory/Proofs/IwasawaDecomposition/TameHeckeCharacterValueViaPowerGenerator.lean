@@ -13,7 +13,7 @@ namespace GlobalTheory.Mem.ValPow
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe L w (by simpa using ha), HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_if_neg _ ha]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem count_span_int (w : HeightOneSpectrum (𝓞 L)) (a : 𝓞 L) (ha : a ≠ 0) :
     FractionalIdeal.count L w (FractionalIdeal.spanSingleton (𝓞 L)⁰ (algebraMap (𝓞 L) L a)) =
@@ -24,9 +24,9 @@ theorem count_span_int (w : HeightOneSpectrum (𝓞 L)) (a : 𝓞 L) (ha : a ≠
   simp
 
 /- English proof (translation)
-Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := 𝓞 L) (k : L)`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `k.ne_zero (by rw [← hab]; simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `ha' : algebraMap (𝓞 L) L a ≠ 0` using `by simpa using ha0`. Establish `hb' : algebraMap (𝓞 L) L b ≠ 0` using `by simpa using hb0`. Unfold `ordF`. Rewrite using `[← hab, div_eq_mul_inv, ← FractionalIdeal.spanSingleton_mul_spanSingleton, ← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_mul L w (FractionalIdeal.spanSingleton_ne_zero_iff.2 ha') (inv_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 hb')), FractionalIdeal.count_i …`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ordF_eq_count (w : HeightOneSpectrum (𝓞 L)) (k : Lˣ) :
     ordF w k = FractionalIdeal.count L w (FractionalIdeal.spanSingleton (𝓞 L)⁰ (k : L)) := by
@@ -46,13 +46,13 @@ theorem ordF_eq_count (w : HeightOneSpectrum (𝓞 L)) (k : Lˣ) :
   ring
 
 /- English proof (translation)
-Use `h _ ?_ ?_` and prove the remaining obligations. Unfold `IsUnitAt`. Establish `h1 : Valued.v ((atFin w k : (w.adicCompletion L)ˣ) : w.adicCompletion L) = w.valuation L (k : L)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w (k : L)`. Rewrite using `[h1]`. Use `(w.valuation L).map_one_add_of_lt hk` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `h1 : ((atFin w k : (w.adicCompletion L)ˣ) : w.adicCompletion L) - 1 = algebraMap L (w.adicCompletion L) ((k : L) - 1)`. Rewrite using `[map_sub, map_one]`. Both sides reduce to the same expression. Establish `h2 : Valued.v (algebraMap L (w.adicCompletion L) ((k : L) - 1)) = w.valuation L ((k : L) - 1)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Break down `eq_or_ne (w.valuation L ((k : L) - 1)) 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Conclude with `zero_le`. Rewrite `hk` using `[← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem locK_eq_one {χ : HChar L} {w : HeightOneSpectrum (𝓞 L)} (h : χ.TameAt w) (k : Lˣ)
     (hk : w.valuation L ((k : L) - 1) < 1) : χ.locK w k = 1 := by
@@ -78,9 +78,9 @@ theorem locK_eq_one {χ : HChar L} {w : HeightOneSpectrum (𝓞 L)} (h : χ.Tame
       omega
 
 /- English proof (translation)
-Introduce `L _ _ χ S hS hT v hv h k hk h1`. Rewrite using `[← GlobalTheory.HeckeProduct.hchar_productRule L χ S hS k, Finset.prod_eq_one (fun w hw => locK_eq_one (hT w hw) k (h1 w hw)), mul_one]`. Use `congr 1`. Rewrite using `[finprod_eq_single _ v]`. Rewrite using `[finprod_eq_if, if_pos hv, ordF_eq_count, hk, FractionalIdeal.count_pow, FractionalIdeal.count_self, mul_one, zpow_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Rewrite using `[ordF_eq_count, hk, FractionalIdeal.count_pow, FractionalIdeal.count_maximal_coprime L w (Ne.symm hw), mul_zero, zpow_zero, finprod_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem inf_mul_val_pow : ∀ (L : Type) [Field L] [NumberField L] (χ : HChar L) (S : Finset (HeightOneSpectrum (𝓞 L))), (∀ w, w ∉ S → χ.UnrAt w) → (∀ w ∈ S, χ.TameAt w) → ∀ (v : HeightOneSpectrum (𝓞 L)), v ∉ S → ∀ (h : ℕ) (k : Lˣ), FractionalIdeal.spanSingleton (𝓞 L)⁰ (k : L) = (v.asIdeal : FractionalIdeal (𝓞 L)⁰ L) ^ h → (∀ w ∈ S, w.valuation L ((k : L) - 1) < 1) → χ.inf k * χ.val v ^ h = 1 := by
   classical

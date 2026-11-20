@@ -6,25 +6,23 @@ open GlobalTheory.PolFan GlobalTheory.LocM
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Establish `hdec : ∀ x : Y, ∃ y : Y, x = μ (fun i => (eb x i : ZMod N)) + (N : ℤ) • y`. Introduce `x`. Establish `hd : ∀ i, (N : ℤ) ∣ eb x i - eb (μ (fun i => (eb x i : ZMod N))) i`. Introduce `i`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[hμ _ i, sub_self]`. Use `choose z hz using hd`. Use `⟨eb.symm z, ?_⟩` and prove the remaining obligations. Apply `eb.injective` to reduce the goal to its premises.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[map_add, map_smul, LinearEquiv.apply_symm_apply]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Combine the linear relations using `[hz i]`. Establish `hdiag : ∀ k, (∀ x y, (N : ℤ) ^ k ∣ B x y) → ∀ x, (N : ℤ) ^ (k + 1) ∣ B x x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk x`. Take `⟨y, hy⟩` from `hdec x`. Establish `hm` using `h0 (fun i => (eb x i : ZMod N))`. Generalize the expression as in `μ (fun i => (eb x i : ZMod N)) = m at hy hm`. Substitute `hy` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hm]`. Rewrite using `[hB y m]`. Take `⟨a, ha⟩` from `hk m y`. Take `⟨b, hb⟩` from `hk y y`. Rewrite using `[ha, hb]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨2 * a + N * b, by ring⟩`. Establish `hcop : IsCoprime (N : ℤ) 2`. Use `Nat.isCoprime_iff_coprime.mpr (Nat.coprime_two_right.mpr hodd)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `k with`. Consider the case `zero => intro x y`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `x y`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (N : ℤ) ^ (k + 1) ∣ 2 * B x y`. Establish `hxy` using `hdiag k ih (x + y)`. Establish `hx` using `hdiag k ih x`. Establish `hy` using `hdiag k ih y`. Establish `e : 2 * B x y = B (x + y) (x + y) - B x x - B y y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[hB y x]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `dvd_sub (dvd_sub hxy hx) hy`.
-
-Conclude with `(hcop.pow_left).dvd_of_dvd_mul_left h2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_bilin_pow_dvd_of_lifts {Y : Type} [AddCommGroup Y] (n N : ℕ) (hodd : Odd N)
     (eb : Y ≃ₗ[ℤ] (Fin n → ℤ)) (μ : (Fin n → ZMod N) → Y)
@@ -78,7 +76,7 @@ theorem symm_bilin_pow_dvd_of_lifts {Y : Type} [AddCommGroup Y] (n N : ℕ) (hod
     exact (hcop.pow_left).dvd_of_dvd_mul_left h2
 
 /- English proof (translation)
-Use extensionality with `x y`. Establish `h` using `symm_bilin_pow_dvd_of_lifts n N hodd eb μ hμ B hB h0 (B x y).natAbs x y`. Use `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs h ?_` and prove the remaining obligations. Rewrite using `[Int.natAbs_pow, Int.natAbs_natCast]`. Conclude with `Nat.lt_pow_self (by omega)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_bilin_eq_zero_of_lifts {Y : Type} [AddCommGroup Y] (n N : ℕ) (hN : 3 ≤ N) (hodd : Odd N)
     (eb : Y ≃ₗ[ℤ] (Fin n → ℤ)) (μ : (Fin n → ZMod N) → Y)
@@ -92,13 +90,13 @@ theorem symm_bilin_eq_zero_of_lifts {Y : Type} [AddCommGroup Y] (n N : ℕ) (hN 
   exact Nat.lt_pow_self (by omega)
 
 /- English proof (translation)
-Introduce `Y _ n N _ hN hodd eb μ hμ ℓ`. Use `haveI : Module.Free ℤ Y := Module.Free.of_equiv eb.symm`. Use `haveI : Module.Finite ℤ Y := Module.Finite.equiv eb.symm`. Set `S : Submodule ℤ (LinearMap.BilinForm ℤ Y)` to `{ carrier := {b | ∀ x y, b x y = b y x} add_mem' := by intro a b ha hb x y; simp [ha x y, hb x y] zero_mem' := by intro x y; simp smul_mem' := by intro c b hb x y; simp [hb x y] }`. Set `Φ : LinearMap.BilinForm ℤ Y →ₗ[ℤ] ((Fin n → ZMod N) → ℤ)` to `{ toFun := fun b c => b (μ c) (μ c) map_add' := by intro a b; funext c; simp map_smul' := by intro k b; funext c; simp }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective (Φ ∘ₗ S.subtype)`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `sub_eq_zero.mp` to reduce the goal to its premises. Use `symm_bilin_eq_zero_of_lifts n N hN hodd eb μ hμ _ ?_ ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `u v`. Simplify using `[x.2 u v, y.2 u v]`. Introduce `c`. Use `congrFun hxy c` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.coe_mk, AddHom.coe_mk, Φ] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[this]`. Take `⟨D, hD, ν, hν⟩` from `exists_nat_mul_eq_sum_of_injective (Φ ∘ₗ S.subtype) hinj (ℓ ∘ₗ S.subtype)`. Conclude with `⟨D, ν, hD, fun b hb => hν ⟨b, hb⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem linForm_eq_sum_lifts : ∀ (Y : Type) [AddCommGroup Y] (n N : ℕ) [NeZero N], 3 ≤ N → Odd N →
     ∀ (eb : Y ≃ₗ[ℤ] (Fin n → ℤ)) (μ : (Fin n → ZMod N) → Y), (∀ cl i, ((eb (μ cl) i : ℤ) : ZMod N) = cl i) →

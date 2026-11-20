@@ -8,9 +8,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.ActSum
 
 /- English proof (translation)
-Introduce `S A _ _ O _ act h r e c`. Set `f : Multiplicative O →* (A ⟶ A)` to `MonoidHom.mk' (fun a => act (Multiplicative.toAdd a)) (fun a b => h.2.2.2 _ _)`. Establish `key : ∀ x : O, act x = f (Multiplicative.ofAdd x)` using `fun x => rfl`. Rewrite using `[key, ofAdd_sum, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ofAdd_zsmul, map_zpow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem act_sum_zsmul : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (O : Type) [Ring O] (act : O → (A ⟶ A)), IsRAct A act → ∀ (r : ℕ) (e : Fin r → O) (c : Fin r → ℤ), act (∑ k, c k • e k) = ∏ k, act (e k) ^ c k := by
   intro S A _ _ O _ act h r e c

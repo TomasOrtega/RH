@@ -4,11 +4,11 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set S := Submonoid.powers f`. Set `πf` to `LocalizedModule.map S π`. Establish `hsurj : Function.Surjective πf` using `LocalizedModule.map_surjective S π hπ`. Establish `: Module.Finite (Localization.Away f) (LocalizedModule S M)` using `Module.Finite.of_surjective πf hsurj`. Establish `: Module.FinitePresentation (Localization.Away f) (LocalizedModule S M)` using `Module.finitePresentation_of_projective _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfg : (LinearMap.ker πf).FG` using `Module.FinitePresentation.fg_ker πf hsurj`. Establish `: Module.Finite (Localization.Away f) (LinearMap.ker πf)` using `Module.Finite.iff_fg.mpr hfg`. Set `ι` to `LocalizedModule.map S (LinearMap.ker π).subtype`. Establish `hinj : Function.Injective ι` using `LocalizedModule.map_injective S _ (LinearMap.ker π).injective_subtype`. Establish `hex : Function.Exact ι πf` using `LocalizedModule.map_exact S _ π (LinearMap.exact_subtype_ker_map π)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : LinearMap.range ι = LinearMap.ker πf` using `LinearMap.exact_iff.mp hex |>.symm`. Set `e : LocalizedModule S (LinearMap.ker π) ≃ₗ[Localization.Away f] LinearMap.ker πf` to `(LinearEquiv.ofInjective ι hinj).trans (LinearEquiv.ofEq _ _ hr)`. Conclude with `Module.Finite.equiv e.symm`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem finite_localized_ker_of_projective_away (A : Type) [CommRing A] (f : A) (M : Type) [AddCommGroup M] [Module A M]
   (hP : Module.Projective (Localization.Away f) (LocalizedModule (Submonoid.powers f) M))

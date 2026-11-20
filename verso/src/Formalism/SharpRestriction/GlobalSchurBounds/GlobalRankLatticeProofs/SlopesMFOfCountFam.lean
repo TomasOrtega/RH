@@ -8,7 +8,7 @@ namespace Formalism.MainNotions.flipTwoThree
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory
 
 /- English proof (translation)
-Take `⟨C, x0, -, hx⟩` from `hC`. Conclude with `nums_wts_of_fam Fm ⟨C, x0, fun x hx' i u => (hx x hx' i u).2.1⟩ hDl`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem numsL_of_fam_thr {eps : ℝ} (Fm : FamP eps) (hC : Lnk.CountF Fm)
     (hDl : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) :
@@ -18,7 +18,7 @@ theorem numsL_of_fam_thr {eps : ℝ} (Fm : FamP eps) (hC : Lnk.CountF Fm)
   exact nums_wts_of_fam Fm ⟨C, x0, fun x hx' i u => (hx x hx' i u).2.1⟩ hDl
 
 /- English proof (translation)
-Take `⟨Cn₀, h⟩` from `numsL_of_fam_thr Fm hC hDl`. Take `⟨x0, hx⟩` from `h Cn₀ le_rfl 3 le_rfl`. Conclude with `⟨Cn₀, 3, x0, by norm_num, hx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem numsL_of_fam {eps : ℝ} (Fm : FamP eps) (hC : Lnk.CountF Fm)
     (hDl : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) :
@@ -29,7 +29,7 @@ theorem numsL_of_fam {eps : ℝ} (Fm : FamP eps) (hC : Lnk.CountF Fm)
   exact ⟨Cn₀, 3, x0, by norm_num, hx⟩
 
 /- English proof (translation)
-Take `⟨Cn, cL, x0, hcL, hx⟩` from `numsL_of_fam Fm hC hDl`. Take `⟨x1, hx1⟩` from `hCV`. Use `slopesMF_of_count Fm Cn cL hcL h5 h6 ⟨max x0 x1, fun x hx' i => ?_⟩ hC` and prove the remaining obligations. Establish `h0` using `hx x (le_of_max_le_left hx') i`. Conclude with `⟨h0.1, h0.2, hx1 x (le_of_max_le_right hx') i⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem slopesMF_of_count_fam {eps : ℝ} (Fm : FamP eps) (h5 : ConclusionF5 Fm) (h6 : ConclusionF6 Fm) (hC : Lnk.CountF Fm)
     (hDl : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps)

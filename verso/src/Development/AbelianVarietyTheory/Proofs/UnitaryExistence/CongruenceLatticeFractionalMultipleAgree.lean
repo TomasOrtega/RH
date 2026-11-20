@@ -25,7 +25,7 @@ noncomputable def mulHat (A : FractionalIdeal (𝓞 E)⁰ E) (H : AddSubgroup (F
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_tmul_mul (a b : E) : ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (a * b) : RA F E) =
     ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] a : RA F E) * (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] b := by
@@ -33,7 +33,7 @@ theorem one_tmul_mul (a b : E) : ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (a 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `one_tmul_mul a (v i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fv_smul (a : E) (v : Fin n → E) :
     fv F (a • v) = ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] a : RA F E) • fv F v := by
@@ -42,7 +42,7 @@ theorem fv_smul (a : E) (v : Fin n → E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `TensorProduct.tmul_add _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fv_add (v w : Fin n → E) : fv F (v + w) = fv F v + fv F w := by
   funext i
@@ -50,7 +50,7 @@ theorem fv_add (v w : Fin n → E) : fv F (v + w) = fv F v + fv F w := by
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `TensorProduct.tmul_zero _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fv_zero : fv F (0 : Fin n → E) = 0 := by
   funext i
@@ -58,18 +58,18 @@ theorem fv_zero : fv F (0 : Fin n → E) = 0 := by
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, fun _ => one_mem _, x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem fv_mem_hat (L : Set (Fin n → E)) {x : Fin n → E} (hx : x ∈ L) : fv F x ∈ hat F L :=
   AddSubgroup.subset_closure ⟨1, fun _ => one_mem _, x, hx, rfl⟩
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, b • x, L.smul_mem b hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (b : E) : RA F E) * a ⊗ₜ x i = a ⊗ₜ ((b : E) * x i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem hat_smul_int (L : Submodule (𝓞 E) (Fin n → E)) (b : 𝓞 E) {z : Fin n → RA F E}
     (hz : z ∈ hat F (L : Set (Fin n → E))) :
@@ -87,11 +87,11 @@ theorem hat_smul_int (L : Submodule (𝓞 E) (Fin n → E)) (b : 𝓞 E) {z : Fi
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨c * a, fun v => mul_mem (hc v) (ha v), x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `(c ⊗ₜ[F] (1 : E) : RA F E) * a ⊗ₜ x i = (c * a) ⊗ₜ x i`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem hat_smul_adele (L : Set (Fin n → E)) (c : FiniteAdeleRing (𝓞 F) F)
     (hc : ∀ v, c v ∈ v.adicCompletionIntegers F) {z : Fin n → RA F E} (hz : z ∈ hat F L) :
@@ -108,11 +108,11 @@ theorem hat_smul_adele (L : Set (Fin n → E)) (c : FiniteAdeleRing (𝓞 F) F)
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, z, hz, rfl⟩` from `hz`. Establish `h1` using `FractionalIdeal.mul_mem_mul ha' ha`. Rewrite `h1` using `[inv_mul_cancel₀ hA]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, hb⟩` from `(FractionalIdeal.mem_one_iff _).1 h1`. Rewrite using `[smul_smul, ← one_tmul_mul, ← hb]`. Conclude with `hat_smul_int L b hz`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem inv_smul_mulHat (L : Submodule (𝓞 E) (Fin n → E)) {A : FractionalIdeal (𝓞 E)⁰ E} (hA : A ≠ 0)
     {a' : E} (ha' : a' ∈ A⁻¹) {w : Fin n → RA F E} (hw : w ∈ mulHat A (hat F (L : Set (Fin n → E)))) :
@@ -131,11 +131,9 @@ theorem inv_smul_mulHat (L : Submodule (𝓞 E) (Fin n → E)) {A : FractionalId
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, z, hz, rfl⟩` from `hz`. Rewrite using `[smul_comm]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, _, hat_smul_int L b hz, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mulHat_smul_int (L : Submodule (𝓞 E) (Fin n → E)) (A : FractionalIdeal (𝓞 E)⁰ E) (b : 𝓞 E)
     {w : Fin n → RA F E} (hw : w ∈ mulHat A (hat F (L : Set (Fin n → E)))) :
@@ -150,11 +148,9 @@ theorem mulHat_smul_int (L : Submodule (𝓞 E) (Fin n → E)) (A : FractionalId
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Establish `h1 : (1 : E) ∈ A⁻¹ * A`. Rewrite using `[inv_mul_cancel₀ hA]`. Conclude with `FractionalIdeal.one_mem_one _`. Establish `h2 : ∀ c ∈ A⁻¹ * A, ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] c : RA F E) • u ∈ S`. Introduce `c hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `FractionalIdeal.mul_induction_on hc (fun a' ha' a ha => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[one_tmul_mul, ← smul_smul]`. Conclude with `h a' ha' a ha`. Rewrite using `[TensorProduct.tmul_add, add_smul]`. Conclude with `add_mem hx hy`.
-
-Establish `h3` using `h2 1 h1`. Rewrite `h3` using `[← Algebra.TensorProduct.one_def, one_smul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_mul {A : FractionalIdeal (𝓞 E)⁰ E} (hA : A ≠ 0) (S : AddSubgroup (Fin n → RA F E))
     (u : Fin n → RA F E)
@@ -171,13 +167,13 @@ theorem mem_of_forall_mul {A : FractionalIdeal (𝓞 E)⁰ E} (hA : A ≠ 0) (S 
   rwa [← Algebra.TensorProduct.one_def, one_smul] at h3
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h z hz`. Use `⟨k z - z, sub_mem ?_ hz, (one_smul _ _).symm⟩` and prove the remaining obligations. Use `mem_of_forall_mul hA _ _ fun a' ha' a ha => inv_smul_mulHat L hA ha' ?_` and prove the remaining obligations. Rewrite using `[← map_smul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ (AddSubgroup.subset_closure ⟨a, ha, z, hz, rfl⟩)`. Introduce `h w hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, z, hz, rfl⟩` from `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, e⟩` from `h z hz`. Rewrite `e` using `[one_smul, sub_eq_iff_eq_add]`. Rewrite using `[map_smul, e]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, _, add_mem hy hz, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem stab_iff (L : Submodule (𝓞 E) (Fin n → E)) {A : FractionalIdeal (𝓞 E)⁰ E} (hA : A ≠ 0)
     (k : (Fin n → RA F E) →ₗ[RA F E] (Fin n → RA F E)) :
@@ -202,31 +198,31 @@ theorem stab_iff (L : Submodule (𝓞 E) (Fin n → E)) {A : FractionalIdeal (�
     | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Use `Submodule.smul_induction_on ha (fun b hb x hx => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Establish `hx' : fv F x ∈ mulHat A (hat F (L : Set (Fin n → E)))`. Proceed by induction on `hx using Submodule.span_induction with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨a, ha, v, hv, rfl⟩` from `hx`. Rewrite using `[fv_smul]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, _, hv, rfl⟩`. Consider the case `zero => rw [fv_zero]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [fv_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Express the relevant statement in the definitionally equal form `fv F ((c : E) • x) ∈ _`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fv_smul]`. Conclude with `mulHat_smul_int L A c hx`. Express the relevant statement in the definitionally equal form `∃ w ∈ _, T (fv F ((b : E) • x)) = M • w`. Rewrite using `[fv_smul]`. Generalize the expression as in `fv F x = w at hx'`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hx' using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, z, hz, rfl⟩` from `hz`. Take `⟨y, hy, e⟩` from `h b hb z hz`. Use `⟨_, AddSubgroup.subset_closure ⟨a, ha, y, hy, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_comm, map_smul, e, smul_comm]`. Consider the case `zero => exact ⟨0, zero_mem _, by rw [smul_zero, map_zero, smul_zero]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x', hx', e⟩` from `hx`. Take `⟨y', hy', e'⟩` from `hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x' + y', add_mem hx' hy', by rw [smul_add, map_add, e, e', smul_add]⟩`. Consider the case `neg x _ hx`. Take `⟨x', hx', e⟩` from `hx`. Conclude with `⟨-x', neg_mem hx', by rw [smul_neg, map_neg, e, smul_neg]⟩`. Take `⟨x', hx', e⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Take `⟨y', hy', e'⟩` from `hy`. Conclude with `⟨x' + y', add_mem hx' hy', by rw [fv_add, map_add, e, e', smul_add]⟩`. Introduce `h b hb z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, x, hx, rfl⟩` from `hz`. Establish `h1 : T (fv F ((b : E) • x)) ∈ (hat F (L : Set (Fin n → E))).map (nsmulAddMonoidHom M)`. Use `mem_of_forall_mul hA _ _ fun a' ha' a ha => ?_` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `h (b • (a • x)) (Submodule.smul_mem_smul hb (Submodule.subset_span ⟨a, ha, x, fv_mem_hat _ hx, rfl⟩))`. Use `⟨_, inv_smul_mulHat L hA ha' hw, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : (b • (a • x) : Fin n → E) = a • ((b : E) • x)` using `smul_comm (b : E) a x`. Rewrite `e` using `[e2, fv_smul, map_smul]`. Rewrite using `[e, smul_comm]`. Both sides reduce to the same expression. Take `⟨y, hy, e⟩` from `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨_, hat_smul_adele _ c hc hy, ?_⟩` and prove the remaining obligations. Establish `e3 : (fun i => c ⊗ₜ[F] x i : Fin n → RA F E) = (c ⊗ₜ[F] (1 : E) : RA F E) • fv F x`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `_ = (c ⊗ₜ[F] (1 : E) : RA F E) * (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ x i`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Rewrite using `[e3, smul_comm, map_smul, ← fv_smul, ← e, smul_comm M]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, zero_mem _, by rw [smul_zero, map_zero, smul_zero]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x', hx', e⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy', e'⟩` from `hy`. Conclude with `⟨x' + y', add_mem hx' hy', by rw [smul_add, map_add, e, e', smul_add]⟩`. Consider the case `neg x _ hx`. Take `⟨x', hx', e⟩` from `hx`. Conclude with `⟨-x', neg_mem hx', by rw [smul_neg, map_neg, e, smul_neg]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cong_iff (L : Submodule (𝓞 E) (Fin n → E)) {A : FractionalIdeal (𝓞 E)⁰ E} (hA : A ≠ 0)
     (T : (Fin n → RA F E) →ₗ[RA F E] (Fin n → RA F E)) (M : ℕ) (I : Ideal (𝓞 E)) :
@@ -302,9 +298,9 @@ theorem cong_iff (L : Submodule (𝓞 E) (Fin n → E)) {A : FractionalIdeal (�
 end General
 
 /- English proof (translation)
-Use `mul_ne_zero ?_ (inv_ne_zero ?_)` and prove the remaining obligations. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`. Introduce `h`. Conclude with `D.host.ccK_ne_bot ((Ideal.map_eq_bot_iff_of_injective (RingOfIntegers.algebraMap.injective _ _)).1 h)`. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1` using `D.host.𝔟_spec.1`. Rewrite `h1` using `[h, Ideal.bot_mul]`. Conclude with `differentIdeal_ne_bot h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem host_AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   refine mul_ne_zero ?_ (inv_ne_zero ?_)
@@ -318,9 +314,9 @@ theorem host_AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
     exact differentIdeal_ne_bot h1
 
 /- English proof (translation)
-Unfold `latHat hat`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, hx, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latHat_eq (D : D7) (V : HSp D) :
     latHat V = hat D.host.F (latC V : Set (Fin V.rank → D.host.E)) := by
@@ -334,7 +330,7 @@ theorem latHat_eq (D : D7) (V : HSp D) :
     exact ⟨a, ha, x, hx, rfl⟩
 
 /- English proof (translation)
-Unfold `gLat`. Rewrite using `[map_one, Units.val_one, latHat_eq]`. Use extensionality with `z`. Simplify using `only [Set.mem_image, Matrix.one_mulVec, exists_eq_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gLat_one (D : D7) (V : HSp D) :
     gLat V 1 = hat D.host.F (latC V : Set (Fin V.rank → D.host.E)) := by
@@ -344,11 +340,11 @@ theorem gLat_one (D : D7) (V : HSp D) :
   simp only [Set.mem_image, Matrix.one_mulVec, exists_eq_right]
 
 /- English proof (translation)
-Introduce `D V k`. Establish `hG : latGHat V 1 = mulHat D.host.AA (hat D.host.F (latC V : Set (Fin V.rank → D.host.E)))`. Unfold `latGHat`. Rewrite using `[gLat_one]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hL : latG V 1 = Submodule.span (𝓞 D.host.E) {w | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ v, fv D.host.F v ∈ hat D.host.F (latC V : Set (Fin V.rank → D.host.E)) ∧ w = a • v}`. Unfold `latG`. Rewrite using `[gLat_one]`. Both sides reduce to the same expression. Use `⟨?_, fun M I => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `FinCong`. Rewrite using `[hG, latHat_eq]`. Conclude with `stab_iff (latC V) (host_AA_ne_zero D) (Matrix.mulVecLin (finHom V k).1)`. Rewrite using `[hG, hL, latHat_eq]`. Conclude with `cong_iff (latC V) (host_AA_ne_zero D) (Matrix.mulVecLin (finHom V k).1 - LinearMap.id) M I`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congruences_agree : ∀ (D : D7) (V : HSp D), ∀ k : GA D V, ((∀ z ∈ latGHat V 1, (finHom V k).1 *ᵥ z ∈ latGHat V 1) ↔ FinCong V 1 k) ∧ ∀ (M : ℕ) (I : Ideal (𝓞 D.host.E)), (∀ b ∈ I, ∀ z ∈ latHat V, ∃ y ∈ latHat V, (finHom V k).1 *ᵥ halfVec V b z - halfVec V b z = M • y) ↔ ∀ a ∈ I • latG V 1, ∃ w ∈ latGHat V 1, (finHom V k).1 *ᵥ finVec V a - finVec V a = M • w := by
   intro D V k

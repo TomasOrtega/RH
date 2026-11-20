@@ -23,7 +23,7 @@ variable {D : D7}
 section Gen
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_mul, Matrix.map_mul, Matrix.map_map, Matrix.map_map, Matrix.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_aff {E R S : Type} [CommRing E] [CommRing R] [CommRing S] (i : E →+* R) (f : R →+* S) {m n : ℕ}
     (M : Matrix (Fin m) (Fin n) E) (P : Matrix (Fin n) (Fin m) E) (Q : Matrix (Fin m) (Fin m) E) (x : Matrix (Fin n) (Fin n) R) :
@@ -33,7 +33,7 @@ theorem map_aff {E R S : Type} [CommRing E] [CommRing R] [CommRing S] (i : E →
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_aff, hx, Matrix.mul_one]`. Establish `e : (M * P + Q).map (f.comp i) = 1`. Rewrite using `[h, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← e, Matrix.map_add _ (map_add _), Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_aff_one {E R S : Type} [CommRing E] [CommRing R] [CommRing S] (i : E →+* R) (f : R →+* S) {m n : ℕ}
     (M : Matrix (Fin m) (Fin n) E) (P : Matrix (Fin n) (Fin m) E) (Q : Matrix (Fin m) (Fin m) E) (h : M * P + Q = 1)
@@ -53,7 +53,7 @@ variable {A B : HSp D} {ι : B.V →ₗ[D.host.E] A.V} (hι : HSpace.IsIsomEmb B
 include hι hs
 
 /- English proof (translation)
-The claim follows from `emb_gen (incA D) _ _ _ (add_sub_cancel _ _) (mt A (s h)) (mt B h) (hs h).1 fun j => (hs h).2 (fun k => coM A B ι k j) (funext fun i => congrFun (congrFun (perp_rel hι) i) j)`.
+A detailed English derivation is pending.
 -/
 theorem emb_mat (h : GA D B) : mt A (s h) =
     HMul.hMul (HMul.hMul ((frameMat A B ι).map (incA D)) (mt B h)) ((prM A B ι).map (incA D)) + (coM A B ι).map (incA D) :=
@@ -61,7 +61,7 @@ theorem emb_mat (h : GA D B) : mt A (s h) =
     (hs h).2 (fun k => coM A B ι k j) (funext fun i => congrFun (congrFun (perp_rel hι) i) j)
 
 /- English proof (translation)
-Establish `a : infHom B k = 1` using `hk`. Use `Units.ext (?_ : (mt A (s k)).map (infPart D) = 1)` and prove the remaining obligations. Rewrite using `[emb_mat hι hs]`. Conclude with `map_aff_one _ _ _ _ _ (add_sub_cancel _ _) _ (congrArg Units.val a)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_fin {k : GA D B} (hk : k ∈ GfC B) : s k ∈ GfC A := by
   have a : infHom B k = 1 := hk

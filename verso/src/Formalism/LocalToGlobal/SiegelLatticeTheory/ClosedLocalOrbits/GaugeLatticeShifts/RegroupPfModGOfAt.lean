@@ -11,23 +11,19 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D X g1 Λ hΛ v hv`. Take `⟨c, hcop, hcv⟩` from `hv`. Establish `hg0 : X.B.g ≠ 0`. Rewrite using `[X.g_eq]`. Conclude with `Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgE : (X.B.g : X.B.I.E) ≠ 0` using `Nat.cast_ne_zero.mpr hg0`. Use `set q : X.B.I.E := ((X.B.g : X.B.I.E))⁻¹ with hqdef`. Use `set ι : X.B.I.E →+* X.B.I.E ⊗[X.B.I.F] Af X.B.I.F := Formalism.UG.inclE (F := X.B.I.F) (E := X.B.I.E) (Af X.B.I.F) with hι`. Establish `hq : ι q * (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) = 1`. Rewrite using `[← map_natCast ι, ← map_mul, hqdef, inv_mul_cancel₀ hgE, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `key : ∀ z ∈ mL X.B.I X.B.g, ι q • z ∈ X.B.I.Lf`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨x, hx, rfl⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[smul_smul, hq, one_smul]`. Conclude with `hx`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [smul_add]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `add_mem ha hb`. Consider the case `smul t a _ ha => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ t ha`. Use `set w : (VS D).V := (X.ιE (q * c)) • v with hwdef`. Establish `hwΛ : w ∈ Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΛ, hwdef, Formalism.L2.SG.NormCut.crd_smul' X, Formalism.L2.SG.NormCut.incl_smul' X, mulVec_smul, RingEquiv.symm_apply_apply, map_mul, map_natCast, mul_smul]`. Conclude with `key _ hcv`. Introduce `P hgP`. Establish `hcP : ((c : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Introduce `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : IsCoprime ((c : ℤ)) ((X.B.g : ℤ))` using `Nat.isCoprime_iff_coprime.mpr hcop`. Take `⟨a, b, hab⟩` from `h1.map (Int.castRingHom (𝓞 D.host.E))`. Establish `hg' : (((X.B.g : ℕ) : ℤ) : 𝓞 D.host.E) ∈ P.asIdeal`. Rewrite using `[Int.cast_natCast, X.g_eq]`. Conclude with `hgP`.
-
-Establish `hc' : (((c : ℕ) : ℤ) : 𝓞 D.host.E) ∈ P.asIdeal` using `by rw [Int.cast_natCast]; exact hc`. Establish `h1P : (1 : 𝓞 D.host.E) ∈ P.asIdeal`. Rewrite using `[← hab]`. Conclude with `P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ hc') (P.asIdeal.mul_mem_left _ hg')`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1P)`.
-
-Establish `hcv' : ((c : ℕ) : 𝓞 D.host.E) • v = ((gS D : ℕ) : 𝓞 D.host.E) • w`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, hwdef, ← Nat.cast_smul_eq_nsmul D.host.E, ← Nat.cast_smul_eq_nsmul D.host.E, smul_smul]`. Use `congr 1`. Rewrite using `[← map_natCast X.ιE (gS D), ← map_mul, ← mul_assoc, hqdef, show gS D = X.B.g from X.g_eq.symm, mul_inv_cancel₀ hgE, one_mul, map_natCast]`. Conclude with `⟨_, hcP, by rw [hcv']; exact Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hwΛ⟩`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem reduction_mod_g_holds : ModGOfAtC := by
   intro D X g1 Λ hΛ v hv

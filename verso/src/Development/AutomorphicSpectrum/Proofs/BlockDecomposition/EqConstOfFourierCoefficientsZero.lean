@@ -16,9 +16,7 @@ variable {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup
 open scoped Pointwise in
 
 /- English proof (translation)
-Establish `hFD : IsAddFundamentalDomain Γ (t +ᵥ s) μ` using `hs.vadd_of_comm t`. Establish `h1 : ∫ y in (t +ᵥ s), f y ∂μ = ∫ y in s, f (t + y) ∂μ`. Establish `hemb : MeasurableEmbedding (fun y : G => t + y)` using `(Homeomorph.addLeft t).measurableEmbedding`. Conclude with `(measurePreserving_add_left μ t).setIntegral_image_emb hemb f s`. Rewrite using `[← h1]`.
-
-Conclude with `hFD.setIntegral_eq hs (fun g x => hf g.1 g.2 x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mean_add_left (Γ : AddSubgroup G) [Countable Γ] (μ : Measure G) [μ.IsAddHaarMeasure] {s : Set G}
     (hs : IsAddFundamentalDomain Γ s μ) (f : G → ℂ) (hf : ∀ γ ∈ Γ, ∀ x, f (γ + x) = f x) (t : G) :
@@ -31,7 +29,7 @@ theorem mean_add_left (Γ : AddSubgroup G) [Countable Γ] (μ : Measure G) [μ.I
   exact hFD.setIntegral_eq hs (fun g x => hf g.1 g.2 x)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hc.continuousOn`. Use `⟨C, fun x => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hcov x`. Rewrite using `[← hf γ hγ x]`. Conclude with `hC _ hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_of_periodic (Γ : AddSubgroup G) {K : Set G} (hK : IsCompact K) (hcov : ∀ x, ∃ γ ∈ Γ, γ + x ∈ K)
     (f : G → ℂ) (hc : Continuous f) (hf : ∀ γ ∈ Γ, ∀ x, f (γ + x) = f x) : ∃ C, ∀ x, ‖f x‖ ≤ C := by
@@ -42,19 +40,17 @@ theorem exists_bound_of_periodic (Γ : AddSubgroup G) {K : Set G} (hK : IsCompac
   exact hC _ hk
 
 /- English proof (translation)
-Establish `: Countable Γ` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨C, hC⟩` from `exists_bound_of_periodic Γ hK hcov φ hφ hper`. Establish `hint : ∀ (a : A) (f : G → ℂ), Continuous f → (∀ x, ‖f x‖ ≤ C) → IntegrableOn (fun x => χ a x * f x) 𝓕 μ`. Introduce `a f hf hb`. Use `Measure.integrableOn_of_bounded (M := C) hfin ((hc a).mul hf).aestronglyMeasurable (.of_forall fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, hn, one_mul]`. Conclude with `hb x`. Establish `hshift : ∀ a, ∫ x in 𝓕, χ a x * φ (y + x) ∂μ = ∫ x in 𝓕, χ a x * φ x ∂μ`. Introduce `a`. Distinguish the cases in `h : a = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `only [h0, one_mul]`. Conclude with `mean_add_left Γ μ h𝓕 φ hper y`. Establish `hp : ∀ γ ∈ Γ, ∀ x, χ a (γ + x) * φ (γ + x) = χ a x * φ x` using `fun γ hγ x => by`. Rewrite using `[hper γ hγ, hx, (hker γ).2 hγ a, one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1` using `mean_add_left Γ μ h𝓕 (fun x => χ a x * φ x) hp y`. Rewrite `h1`, the goal using `[hco a h]`. Establish `h2 : ∫ x in 𝓕, χ a (y + x) * φ (y + x) ∂μ = χ a y * ∫ x in 𝓕, χ a x * φ (y + x) ∂μ`. Rewrite using `[← integral_const_mul]`. Conclude with `integral_congr_ae (.of_forall fun x => by simp only [hx, mul_assoc])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Establish `hne : χ a y ≠ 0` using `fun e => by simpa [e] using hn a y`. Conclude with `(mul_eq_zero.1 h1).resolve_left hne`. Establish `hφy : Continuous fun x => φ (y + x)` using `hφ.comp (continuous_const.add continuous_id)`. Establish `key` using `GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero G Γ K hK hcov A χ hc hx ha h0 hn hker μ 𝓕 hμ h𝓕 (fun x => φ (y + x) - φ x) (hφy.sub hφ) (fun γ hγ x => by show φ (y + (γ + x)) - φ (γ + x) = φ (y + x) - φ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_left_comm, hper γ hγ, hper γ hγ])`. Use the proof step `(fun a => by`. Establish `e : ∀ x, χ a x * (φ (y + x) - φ x) = χ a x * φ (y + x) - χ a x * φ x` using `fun x => mul_sub _ _ _`. Simplify using `only [e]`. Rewrite using `[integral_sub (hint a _ hφy fun x => hC _) (hint a _ hφ hC), hshift a, sub_self])`.
-
-Establish `h` using `congrFun key 0`. Simplify using `only [add_zero, Pi.zero_apply] at h`. Conclude with `sub_eq_zero.1 h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem const_of_coefficients (Γ : AddSubgroup G) [DiscreteTopology Γ] (K : Set G) (hK : IsCompact K)
     (hcov : ∀ x, ∃ γ ∈ Γ, γ + x ∈ K) (A : Type) [AddCommGroup A] (χ : A → G → ℂ) (hc : ∀ a, Continuous (χ a))
@@ -104,13 +100,9 @@ end Abstract
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D p lp 𝓖p hC ψ hψ φ hφ hper hco y`. Take `⟨hlam, hFD, h1⟩` from `hC`. Take `⟨i1, i2, i3, i4, -, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D p p`. Use `haveI : BorelSpace (Mx D p p) := ⟨rfl⟩`. Use `haveI : BorelSpace (hermA D p) := Subtype.borelSpace _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : SecondCountableTopology (hermA D p) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : LocallyCompactSpace (hermA D p) := GlobalTheory.CompanionTheory.FourierN.isClosed_hermA.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : DiscreteTopology (ratHerm D p) := GlobalTheory.CompanionTheory.FourierN.discrete_ratHerm`. Take `⟨K, hK, hcov⟩` from `GlobalTheory.CompanionTheory.FourierN.exists_compact_cover (D := D) (n := p)`. Use `const_of_coefficients (ratHerm D p) K hK hcov (GlobalTheory.CompanionTheory.FourierN.hermSub D p) (fun a x => ψ (-GlobalTheory.CompanionTheory.FourierN.pr a.1 x.1)) (fun a => hψ.1.comp ((GlobalTheory.CompanionTheory.FourierN.continuous_pr a.1).neg.comp continuous_subtype_val)) (f …` and prove the remaining obligations.
-
-Rewrite using `[GlobalTheory.CompanionTheory.FourierN.pr_add_right, neg_add, AddChar.map_add_eq_mul])`. Use the proof step `(fun a b x => by show ψ (-GlobalTheory.CompanionTheory.FourierN.pr (a.1 + b.1) x.1) = _`. Rewrite using `[GlobalTheory.CompanionTheory.FourierN.pr_add_left, neg_add, AddChar.map_add_eq_mul])`. Use the proof step `(fun x => by show ψ (-GlobalTheory.CompanionTheory.FourierN.pr 0 x.1) = 1`. Rewrite using `[GlobalTheory.CompanionTheory.FourierN.pr_zero_left, neg_zero, AddChar.map_zero_eq_one])`.
-
-Use the proof step `(fun a x => hψ.2.1 _)`. Use the proof step `(fun x => ⟨fun h => GlobalTheory.CompanionTheory.FourierN.rat_ker hψ x (fun a ha => h ⟨a, ha⟩), fun hx a => GlobalTheory.CompanionTheory.FourierN.ker_of_rat hψ x hx a.1⟩)`. Use `lp 𝓖p hlam hFD (by rw [h1]; exact ENNReal.one_ne_top) φ hφ hper`. Use the proof step `(fun a ha => (integral_congr_ae (.of_forall fun x => mul_comm _ _)).trans (hco ⟨a.1, a.2⟩ (fun e => ha (Subtype.ext e)))) y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_of_coeff : ∀ {D : D7} {p : ℕ} {lp : Measure (hermA D p)} {𝓖p : Set (hermA D p)}, IsCovolOneH lp 𝓖p →
     ∀ {ψ : AddChar (AF D.host.F) ℂ}, IsCharAF D.host.F ψ → ∀ φ : hermA D p → ℂ, Continuous φ → IsPer φ →

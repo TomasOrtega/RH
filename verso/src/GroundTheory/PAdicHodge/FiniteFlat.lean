@@ -76,7 +76,7 @@ theorem order_apply (G : FiniteFlatGroupScheme.{u, v} R) (p : PrimeSpectrum R) :
     G.order p = Module.rankAtStalk G.H p := rfl
 
 /- English proof (translation)
-The claim follows from `haveI := Module.finitePresentation_of_projective R G.H Module.isLocallyConstant_rankAtStalk`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_order (G : FiniteFlatGroupScheme.{u, v} R) :
     IsLocallyConstant G.order :=
@@ -84,7 +84,7 @@ theorem isLocallyConstant_order (G : FiniteFlatGroupScheme.{u, v} R) :
   Module.isLocallyConstant_rankAtStalk
 
 /- English proof (translation)
-Simplify using `[order]`. Use the proof step `@[ext]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem order_eq_finrank (G : FiniteFlatGroupScheme.{u, v} R) [Module.Free R G.H]
     (p : PrimeSpectrum R) : G.order p = Module.finrank R G.H := by
@@ -116,7 +116,7 @@ Both sides reduce to the same expression.
     (g : G' ⟶ G'') : (f ≫ g).comap = f.comap.comp g.comap := rfl
 
 /- English proof (translation)
-The claim follows from `Hom.ext h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem hom_ext {G G' : FiniteFlatGroupScheme.{u, v} R} {f g : G ⟶ G'}
     (h : f.comap = g.comap) : f = g := Hom.ext h
@@ -140,7 +140,7 @@ abbrev Points (G : FiniteFlatGroupScheme.{u, v} R) (A : Type w) [CommRing A] [Al
   WithConv (G.H →ₐ[R] A)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (G : FiniteFlatGroupScheme.{u, v} R) (A : Type w) [CommRing A] [Algebra R A] :
     CommGroup (G.Points A) := inferInstance

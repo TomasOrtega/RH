@@ -6,19 +6,17 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := R) (M := integralClosure R L)`. Set `f : integralClosure R L → integralClosure S L` to `fun z => ⟨z, IsIntegral.tower_top z.2⟩`. Use `⟨⟨s.image f, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨m, hm⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization M (Rₘ := S) (y : L) y.2`. Establish `key : ∀ z ∈ Submodule.span R (s : Set (integralClosure R L)), f z ∈ Submodule.span S (↑(s.image f) : Set (integralClosure S L))`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (Finset.mem_coe.mpr (Finset.mem_image_of_mem f hx))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Establish `: f 0 = 0` using `rfl`. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `: f (x + y) = f x + f y` using `rfl`. Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `: f (a • x) = algebraMap R S a • f x`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `a • (x : L) = algebraMap R S a • (x : L)`. Rewrite using `[algebraMap_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz : (⟨m • (y : L), hm⟩ : integralClosure R L) ∈ Submodule.span R (s : Set _)` using `hs ▸ Submodule.mem_top`. Establish `e : y = IsLocalization.mk' S (1 : R) m • f ⟨m • (y : L), hm⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(y : L) = IsLocalization.mk' S (1 : R) m • ((m : R) • (y : L))`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, IsScalarTower.algebraMap_apply R S L, ← mul_assoc, ← map_mul, IsLocalization.mk'_spec, map_one, map_one, one_mul]`.
-
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (key _ hz)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_integralClosure_of_isLocalization {R S L : Type*} [CommRing R] [CommRing S]
     [CommRing L] [Algebra R S] [Algebra R L] [Algebra S L] [IsScalarTower R S L]
@@ -59,15 +57,11 @@ theorem finite_integralClosure_of_isLocalization {R S L : Type*} [CommRing R] [C
   exact Submodule.smul_mem _ _ (key _ hz)
 
 /- English proof (translation)
-Introduce `D _ _ _`. Take `⟨S₀, M, hft, hloc⟩` from `(Algebra.essFiniteType_iff_exists_subalgebra ℤ D).mp inferInstance`. Set `K` to `FractionRing D`. Establish `hinj : Function.Injective (algebraMap S₀ D)` using `Subtype.val_injective`. Use `haveI hfr : IsFractionRing S₀ K := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `IsLocalization.localization_localization_isLocalization_of_has_all_units M (nonZeroDivisors D) K (fun x hx => hx.mem_nonZeroDivisors)`. Establish `e : (nonZeroDivisors D).comap (algebraMap S₀ D) = nonZeroDivisors S₀`. Use extensionality with `x`. Simplify using `only [Submonoid.mem_comap, mem_nonZeroDivisors_iff_ne_zero, ne_eq]`. Conclude with `(map_eq_zero_iff _ hinj).not`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the argument to an intermediate assertion.
 
-Rewrite `h` using `[e]`. Conclude with `h`. It suffices to establish `h : Module.Finite S₀ (integralClosure S₀ K) from finite_integralClosure_of_isLocalization M`. Break down `CharP.char_is_prime_or_zero D (ringChar D) with hp | h0` into its components or cases. Use `haveI : Fact (ringChar D).Prime := ⟨hp⟩ haveI : CharP D (ringChar D) := ringChar.charP D haveI : CharP S₀ (ringChar D) := ⟨fun n => by`.
-
-Rewrite using `[← map_eq_zero_iff _ hinj, map_natCast, CharP.cast_eq_zero_iff D]⟩`. Use `letI : Algebra (ZMod (ringChar D)) S₀ := (ZMod.castHom dvd_rfl S₀).toAlgebra`. Use `haveI : Algebra.FiniteType (ZMod (ringChar D)) S₀ := .of_restrictScalars_finiteType ℤ (ZMod (ringChar D)) S₀`. Conclude with `NormFin.finite_integralClosure_of_perfectField (ZMod (ringChar D)) S₀ K K`. Use `haveI : CharZero D := (CharP.ringChar_zero_iff_CharZero D).mp h0 haveI : CharZero K := charZero_of_injective_algebraMap (IsFractionRing.injective D K) haveI : Algebra.EssFiniteType S₀ D := .of_isLocalization D M haveI : Algebra.EssFiniteType D K := .of_isLocalization K (nonZeroDi …`.
-
-Conclude with `finite_integralClosure_of_essFiniteType_field ℤ S₀ K`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem finite_integralClosure_of_essFiniteType_int :
     ∀ (D : Type) [CommRing D] [IsDomain D] [Algebra.EssFiniteType ℤ D],
@@ -104,7 +98,7 @@ theorem finite_integralClosure_of_essFiniteType_int :
     exact finite_integralClosure_of_essFiniteType_field ℤ S₀ K
 
 /- English proof (translation)
-The claim follows from `finite_integralClosure_of_essFiniteType_int`.
+A detailed English derivation is pending.
 -/
 example : ∀ (D : Type) [CommRing D] [IsDomain D] [Algebra.EssFiniteType ℤ D],
     Module.Finite D (integralClosure D (FractionRing D)) := finite_integralClosure_of_essFiniteType_int

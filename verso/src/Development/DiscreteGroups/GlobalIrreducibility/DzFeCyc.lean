@@ -11,19 +11,19 @@ namespace DiscreteGroups.sglob.DzFe
 variable {g : ℕ}
 
 /- English proof (translation)
-The claim follows from `Equiv.apply_symm_apply σ x`.
+A detailed English derivation is pending.
 -/
 theorem perm_apply_inv {α : Type*} (σ : Equiv.Perm α) (x : α) : σ (σ⁻¹ x) = x := Equiv.apply_symm_apply σ x
 
 /- English proof (translation)
-The claim follows from `Equiv.symm_apply_apply σ x`.
+A detailed English derivation is pending.
 -/
 theorem perm_inv_apply {α : Type*} (σ : Equiv.Perm α) (x : α) : σ⁻¹ (σ x) = x := Equiv.symm_apply_apply σ x
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single ((finRotate n)⁻¹ i)]`. Use `show (if i = finRotate n ((finRotate n)⁻¹ i) then (1 : ZMod g) else 0) * _ = _`. Rewrite using `[perm_apply_inv, if_pos rfl, one_mul]`. Introduce `a _ ha show (if i = finRotate n a then (1 : ZMod g) else 0) * _ = 0`. Rewrite using `[if_neg, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `ha` to reduce the goal to its premises. Rewrite using `[h, perm_inv_apply]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cyc_mul_apply_rot {n : ℕ} (M : Matrix (Fin n) (Fin n) (ZMod g)) (i l : Fin n) :
     ((cyc g n : Matrix (Fin n) (Fin n) (ZMod g)) * M) i l = M ((finRotate n)⁻¹ i) l := by
@@ -37,9 +37,9 @@ theorem cyc_mul_apply_rot {n : ℕ} (M : Matrix (Fin n) (Fin n) (ZMod g)) (i l :
   · simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single ((finRotate n)⁻¹ l)]`. Use `show _ * (if finRotate n ((finRotate n)⁻¹ l) = l then (1 : ZMod g) else 0) = _`. Rewrite using `[perm_apply_inv, if_pos rfl, mul_one]`. Introduce `a _ ha show _ * (if finRotate n a = l then (1 : ZMod g) else 0) = 0`. Rewrite using `[if_neg, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `ha` to reduce the goal to its premises. Rewrite using `[← h, perm_inv_apply]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_cycInv_apply {n : ℕ} (M : Matrix (Fin n) (Fin n) (ZMod g)) (i l : Fin n) :
     (M * (((cyc g n)⁻¹ : GL (Fin n) (ZMod g)) : Matrix (Fin n) (Fin n) (ZMod g))) i l =
@@ -54,9 +54,9 @@ theorem mul_cycInv_apply {n : ℕ} (M : Matrix (Fin n) (Fin n) (ZMod g)) (i l : 
   · simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (finRotate n l)]`. Use `show _ * (if finRotate n l = finRotate n l then (1 : ZMod g) else 0) = _`. Rewrite using `[if_pos rfl, mul_one]`. Introduce `a _ ha show _ * (if a = finRotate n l then (1 : ZMod g) else 0) = 0`. Rewrite using `[if_neg ha, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem mul_cyc_apply {n : ℕ} (M : Matrix (Fin n) (Fin n) (ZMod g)) (i l : Fin n) :
     (M * (cyc g n : Matrix (Fin n) (Fin n) (ZMod g))) i l = M i (finRotate n l) := by
@@ -69,7 +69,7 @@ theorem mul_cyc_apply {n : ℕ} (M : Matrix (Fin n) (Fin n) (ZMod g)) (i l : Fin
   · simp
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, mul_cycInv_apply, cyc_mul_apply_rot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cyc_conj_apply {n : ℕ} (M : GL (Fin n) (ZMod g)) (i l : Fin n) :
     ((cyc g n * M * (cyc g n)⁻¹ : GL (Fin n) (ZMod g)) : Matrix (Fin n) (Fin n) (ZMod g)) i l =
@@ -77,9 +77,9 @@ theorem cyc_conj_apply {n : ℕ} (M : GL (Fin n) (ZMod g)) (i l : Fin n) :
   rw [Units.val_mul, Units.val_mul, mul_cycInv_apply, cyc_mul_apply_rot]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing M with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `e : cyc g n ^ (k + 1) * M * (cyc g n ^ (k + 1))⁻¹ = cyc g n ^ k * (cyc g n * M * (cyc g n)⁻¹) * (cyc g n ^ k)⁻¹`. Simplify using `only [pow_succ, _root_.mul_inv_rev, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ih, cyc_conj_apply, pow_succ, _root_.mul_inv_rev, Equiv.Perm.mul_apply, Equiv.Perm.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_apply {n : ℕ} (k : ℕ) (M : GL (Fin n) (ZMod g)) (i l : Fin n) :
     ((cyc g n ^ k * M * (cyc g n ^ k)⁻¹ : GL (Fin n) (ZMod g)) : Matrix (Fin n) (Fin n) (ZMod g)) i l =
@@ -93,7 +93,7 @@ theorem conj_apply {n : ℕ} (k : ℕ) (M : GL (Fin n) (ZMod g)) (i l : Fin n) :
     rw [e, ih, cyc_conj_apply, pow_succ, _root_.mul_inv_rev, Equiv.Perm.mul_apply, Equiv.Perm.mul_apply]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing l with`. Consider the case `zero => simp [Matrix.one_apply]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Units.val_mul, mul_cyc_apply, ih, pow_succ, Equiv.Perm.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem cyc_pow_apply {n : ℕ} (k : ℕ) (i l : Fin n) :
     ((cyc g n ^ k : GL (Fin n) (ZMod g)) : Matrix (Fin n) (Fin n) (ZMod g)) i l =
@@ -104,11 +104,11 @@ theorem cyc_pow_apply {n : ℕ} (k : ℕ) (i l : Fin n) :
     rw [pow_succ, Units.val_mul, mul_cyc_apply, ih, pow_succ, Equiv.Perm.mul_apply]
 
 /- English proof (translation)
-Introduce `k hk`. Proceed by induction on `k with`. Consider the case `zero => left`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `ih` using `ih (by omega)`. Establish `ha` using `a.isLt`. Rewrite using `[pow_succ', Equiv.Perm.mul_apply, finRotate_succ_apply, Fin.val_add_one]`. Use `split_ifs with h`. Rewrite `ih` using `[h, Fin.val_last]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `right`. Use linear arithmetic over natural numbers and integers. Use `Fin.val_lt_last h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rot_val {m : ℕ} (a : Fin (m + 1)) : ∀ k ≤ m,
     ((finRotate (m + 1) ^ k) a : ℕ) = (a : ℕ) + k ∨ ((finRotate (m + 1) ^ k) a : ℕ) + (m + 1) = (a : ℕ) + k := by
@@ -125,7 +125,7 @@ theorem rot_val {m : ℕ} (a : Fin (m + 1)) : ∀ k ≤ m,
       omega
 
 /- English proof (translation)
-Use `rot_val ((finRotate (m + 1) ^ k)⁻¹ i) k hk` as an intermediate fact. Rewrite `this` using `[perm_apply_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rot_inv_val {m k : ℕ} (hk : k ≤ m) (i : Fin (m + 1)) :
     (i : ℕ) = (((finRotate (m + 1) ^ k)⁻¹ i : Fin (m + 1)) : ℕ) + k ∨
@@ -134,11 +134,11 @@ theorem rot_inv_val {m k : ℕ} (hk : k ≤ m) (i : Fin (m + 1)) :
   rwa [perm_apply_inv] at this
 
 /- English proof (translation)
-Establish `hr : ∀ l : Fin (m + 1), (finRotate (m + 1) ^ (m + 1)) l = l`. Introduce `l`. Establish `hv` using `rot_val l m le_rfl`. Establish `hl` using `l.isLt`. Rewrite using `[pow_succ', Equiv.Perm.mul_apply, finRotate_succ_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Rewrite using `[Fin.val_add_one]`. Use `split_ifs with h`. Rewrite `hv` using `[h, Fin.val_last]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `Fin.val_lt_last h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i l`. Rewrite using `[cyc_pow_apply, hr, Units.val_one, Matrix.one_apply]`.
+Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyc_pow_eq_one (m : ℕ) : cyc g (m + 1) ^ (m + 1) = 1 := by
   have hr : ∀ l : Fin (m + 1), (finRotate (m + 1) ^ (m + 1)) l = l := by

@@ -18,11 +18,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CellColumn
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α β _ _ _ _ _ m' _ _ c _ _ g W _ _ τ ψ hτ j₀ ν W' Vy _ _ _ _ Q Y hQ F hF`. Take `⟨S, q, hq⟩` from `hQ`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, F w ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hF (Representation.IntertwiningMap.ext (LinearMap.ext h))`. Take `⟨s, rfl⟩` from `hq w`. Take `⟨ι, _, y, l, R, hsR, hR⟩` from `GlobalTheory.T.block_induced_rep_intertwining k g τ ψ hτ j₀ ν (s : _)`. Use `choose E hE using fun i => GlobalTheory.T.block_induced_rep_decomposition k g τ ψ hτ j₀ ν (y i) (l i)`. Take `⟨S', φ', hφ'⟩` from `GlobalTheory.T.intertwiner_nonzero_restriction _ _ Y E R S (F.comp q) s hsR hw (fun v hv h0 => hR v hv fun i x => by rw [← hE i v x, h0 i]; rfl)`.
-
-Conclude with `⟨_, _, _, S'.toRepresentation, ⟨S', .id _, Function.surjective_id⟩, φ', hφ'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_subquotient_column : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {α β : Type} [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β] [DecidableEq β]

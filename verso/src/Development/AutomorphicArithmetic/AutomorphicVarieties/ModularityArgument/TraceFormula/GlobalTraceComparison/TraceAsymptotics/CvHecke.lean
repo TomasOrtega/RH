@@ -6,7 +6,7 @@ open GlobalTheory.BCT
 open scoped Pointwise
 
 /- English proof (translation)
-Use `hintSph G K (fun z => f z * g (z⁻¹ * y)) ?_` and prove the remaining obligations. Introduce `k hk x`. Establish `e : (x * k)⁻¹ * y = k⁻¹ * (x⁻¹ * y)` using `by group`. Simplify using `only [e, hf k hk x, hg k⁻¹ (K.inv_mem hk)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem cv_eq_sum {G : Type} [Group G] (K : Subgroup G) (f g : G → ℂ)
     (hf : ∀ k ∈ K, ∀ x, f (x * k) = f x) (hg : ∀ k ∈ K, ∀ x, g (k * x) = g x) (y : G) :
@@ -17,21 +17,21 @@ private theorem cv_eq_sum {G : Type} [Group G] (K : Subgroup G) (f g : G → ℂ
   simp only [e, hf k hk x, hg k⁻¹ (K.inv_mem hk)]
 
 /- English proof (translation)
-Introduce `G _ _ _ K _ _ f g hf hg`. Establish `hfl : ∀ k ∈ K, ∀ x, f (k * x) = f x` using `fun k hk x => (hf.2 k hk x).1`. Establish `hfr : ∀ k ∈ K, ∀ x, f (x * k) = f x` using `fun k hk x => (hf.2 k hk x).2`. Establish `hgl : ∀ k ∈ K, ∀ x, g (k * x) = g x` using `fun k hk x => (hg.2 k hk x).1`. Establish `hgr : ∀ k ∈ K, ∀ x, g (x * k) = g x` using `fun k hk x => (hg.2 k hk x).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcv` using `cv_eq_sum K f g hfr hgl`. Use `⟨?_, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hS : IsCompact (tsupport f * tsupport g)` using `hf.1.isCompact.mul hg.1.isCompact`. Use `hS.closure_of_subset ?_` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[Function.mem_support]`. Assume the negation of the conclusion as `hyS`. Apply `hy` to reduce the goal to its premises. Rewrite using `[hcv]`. Establish `h0 : ∀ q : G ⧸ K, f q.out * g (q.out⁻¹ * y) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `q`. Assume the negation of the conclusion as `h`. Establish `h1 : f q.out ≠ 0` using `left_ne_zero_of_mul h`. Establish `h2 : g (q.out⁻¹ * y) ≠ 0` using `right_ne_zero_of_mul h`. Conclude with `hyS ⟨q.out, subset_tsupport _ h1, q.out⁻¹ * y, subset_tsupport _ h2, by group⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Rewrite using `[hcv, hcv]`. Establish `hF : ∀ z : G, f (z : G ⧸ K).out * g ((z : G ⧸ K).out⁻¹ * x) = f z * g (z⁻¹ * x)`. Introduce `z`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (z * (h : G))⁻¹ * x = (h : G)⁻¹ * (z⁻¹ * x)` using `by group`. Rewrite using `[hh, hfr _ h.2, e, hgl _ (K.inv_mem h.2)]`. Establish `hterm : ∀ q : G ⧸ K, f q.out * g (q.out⁻¹ * (k * x)) = (fun p : G ⧸ K => f p.out * g (p.out⁻¹ * x)) (MulAction.toPerm (k⁻¹ : G) q)`. Introduce `q`. Establish `e1 : MulAction.toPerm (k⁻¹ : G) q = ((k⁻¹ * q.out : G) : G ⧸ K)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e2 : (k⁻¹ * q.out)⁻¹ * x = q.out⁻¹ * (k * x)` using `by group`. Simplify using `only [e1]`. Rewrite using `[hF, hfl _ (K.inv_mem hk), e2]`. Rewrite using `[finsum_congr hterm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finsum_comp_equiv (f := fun p : G ⧸ K => f p.out * g (p.out⁻¹ * x)) (MulAction.toPerm (k⁻¹ : G) : Equiv.Perm (G ⧸ K))`. Rewrite using `[hcv, hcv]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hgr k hk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cvHecke : CvHecke := by
   intro G _ _ _ K _ _ f g hf hg

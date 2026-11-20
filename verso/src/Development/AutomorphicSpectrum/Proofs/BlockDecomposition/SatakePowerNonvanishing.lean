@@ -18,15 +18,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SatPow
 
 /- English proof (translation)
-Introduce `g i hi`. Establish `key : ∀ r, r ∈ R → ∃ r', r' ∈ R ∧ t⁻¹ * (r'⁻¹ * (i * r)) * t ∈ I` using `fun r hr => by`. Take `⟨r', h, -⟩` from `hR (i * r) (I.mul_mem hi (hRI r hr))`. Conclude with `⟨r', h⟩`. Use `choose! f hfR hf using key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `he : ∀ r ∈ R, φ (g * i * r * t) = φ (g * f r * t)` using `fun r hr => by`. Establish `e : g * i * r * t = (g * f r * t) * (t⁻¹ * ((f r)⁻¹ * (i * r)) * t)` using `by group`. Rewrite using `[e, hφ _ _ (hf r hr)]`. Establish `hinj : Set.InjOn f (R : Set G)` using `fun r₁ h₁ r₂ h₂ e => by`. Establish `h3 : t⁻¹ * (r₁⁻¹ * r₂) * t ∈ I`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `I.mul_mem (I.inv_mem (hf r₁ h₁)) (hf r₂ h₂)` as an intermediate fact. Rewrite `this` using `[← e]`. Establish `e2 : (t⁻¹ * ((f r₁)⁻¹ * (i * r₁)) * t)⁻¹ * (t⁻¹ * ((f r₁)⁻¹ * (i * r₂)) * t) = t⁻¹ * (r₁⁻¹ * r₂) * t` using `by group`. Rewrite `this` using `[e2]`. Then use the resulting hypothesis. Conclude with `(hR r₂ (hRI r₂ h₂)).unique ⟨h₁, h3⟩ ⟨h₂, by simp [I.one_mem]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `himg : R.image f = R` using `Finset.eq_of_subset_of_card_le (fun x hx => by`. Take `⟨r, hr, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hfR r hr) (by rw [Finset.card_image_of_injOn hinj])`. Unfold `aOp`. Rewrite using `[Finset.sum_congr rfl he]`.
-
-Use `conv_rhs => rw [← himg]`. Rewrite using `[Finset.sum_image hinj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aOp_rightInv {G : Type} [Group G] (I : Subgroup G) (t : G) (R : Finset G) (hRI : ∀ r ∈ R, r ∈ I)
     (hR : ∀ i ∈ I, ∃! r, r ∈ R ∧ t⁻¹ * (r⁻¹ * i) * t ∈ I) (φ : G → ℂ) (hφ : ∀ g, ∀ i ∈ I, φ (g * i) = φ g) :
@@ -58,21 +56,17 @@ theorem aOp_rightInv {G : Type} [Group G] (I : Subgroup G) (t : G) (R : Finset G
   rw [Finset.sum_image hinj]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `haveI := Fintype.ofFinite (K ⧸ I.subgroupOf K)`. Set `A : Wsp →ₗ[ℂ] Wsp` to `{ toFun := fun φ => ⟨aOp R t φ, hWA φ φ.2⟩ map_add' := fun a b => Subtype.ext (by`. Use function extensionality and compare the values at `g`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[aOp, Finset.sum_add_distrib])`. Use the proof step `map_smul' := fun c a => Subtype.ext (by`. Use function extensionality and compare the values at `g`. Simplify using `[aOp, Finset.mul_sum]) }`. Set `l : Wsp →ₗ[ℂ] ℂ` to `{ toFun := fun φ => ∑ c : K ⧸ I.subgroupOf K, (φ : G → ℂ) ((c.out : K) : G) map_add' := fun a b => by simp [Finset.sum_add_distrib] map_smul' := fun c a => by simp [Finset.mul_sum] }`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction.
 
-Set `v : Wsp` to `⟨φ₀, hφ₀⟩`. Establish `hAj : ∀ j, (((A ^ j) v : Wsp) : G → ℂ) = (aOp R t)^[j] φ₀` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_succ', Module.End.mul_apply, Function.iterate_succ_apply']`. Use `show aOp R t (((A ^ j) v : Wsp) : G → ℂ) = _`. Rewrite using `[ih]`. Establish `hAinj : Function.Injective A`. Rewrite using `[injective_iff_map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `a ha`. Conclude with `Subtype.ext (hinj a a.2 (congrArg Subtype.val ha))`. Establish `hl0 : l v = 0`. Use `GlobalTheory.T.functional_zero_of_injective_power _ A hAinj l v j₀ fun j hj => ?_` and prove the remaining obligations. Take `⟨m, -, hm⟩` from `GlobalTheory.T.hecke_power_coset_formula G K I hIK hfin t R h1R hRI hRt hR j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hm φ₀ hK` as an intermediate fact. Rewrite `this` using `[hlam, hcon j hj, mul_zero, finsum_eq_sum_of_fintype]`. Use `show ∑ c : K ⧸ I.subgroupOf K, (((A ^ j) v : Wsp) : G → ℂ) ((c.out : K) : G) = 0`. Rewrite using `[hAj, this]`. Establish `hl1 : l v = (Fintype.card (K ⧸ I.subgroupOf K) : ℂ)` using `by show ∑ c : K ⧸ I.subgroupOf K, φ₀ ((c.out : K) : G) = _`.
-
-Establish `: ∀ c : K ⧸ I.subgroupOf K, φ₀ ((c.out : K) : G) = 1` using `fun c => by`. Use `hK 1 _ (c.out : K).2` as an intermediate fact. Rewrite `this` using `[one_mul, h1]`. Then use the resulting hypothesis. Simplify using `[this]`. Rewrite `hl0` using `[hl1]`.
-
-Conclude with `Fintype.card_ne_zero (Nat.cast_eq_zero.1 hl0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_main {G : Type} [Group G] (K I : Subgroup G) (hIK : I ≤ K) (hfin : Finite (K ⧸ I.subgroupOf K)) (t : G)
     (R : Finset G) (h1R : (1 : G) ∈ R) (hRI : ∀ r ∈ R, r ∈ I) (hRt : ∀ r ∈ R, ∀ k : ℕ, t ^ k * r * (t ^ k)⁻¹ ∈ K)
@@ -128,13 +122,13 @@ section U
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext (Matrix.ext fun a c => by rw [h a c, h' a c]))`.
+A detailed English derivation is pending.
 -/
 theorem isPermW_unique {w w' : GU σ n} {π : Equiv.Perm (Fin n)} (h : IsPermW w π) (h' : IsPermW w' π) : w = w' :=
   Subtype.ext (Units.ext (Matrix.ext fun a c => by rw [h a c, h' a c]))
 
 /- English proof (translation)
-Unfold `chiDeltaU`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hi`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chiDeltaU_congr {m : ℕ} (q : ℕ) (α : Fin m → ℂ) {b b' : GU σ n}
     (h : ∀ a : Fin n, ordL (((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a) =
@@ -146,7 +140,7 @@ theorem chiDeltaU_congr {m : ℕ} (q : ℕ) (α : Fin m → ℂ) {b b' : GU σ n
   · rfl
 
 /- English proof (translation)
-Unfold `chiDeltaU`. Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hi`. Conclude with `mul_ne_zero (zpow_ne_zero _ (hα i)) (zpow_ne_zero _ hq)`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chiDeltaU_ne_zero {m : ℕ} {q : ℕ} (hq : (q : ℂ) ≠ 0) {α : Fin m → ℂ} (hα : ∀ i, α i ≠ 0) (b : GU σ n) :
     chiDeltaU q α b ≠ 0 := by
@@ -157,11 +151,9 @@ theorem chiDeltaU_ne_zero {m : ℕ} {q : ℕ} (hq : (q : ℂ) ≠ 0) {α : Fin m
   · exact one_ne_zero
 
 /- English proof (translation)
-Use `set s := w * t * w⁻¹ with hs`. Establish `hsw : (((s * w : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = (((w * t : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Rewrite using `[hs]`. Use `congr 2`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ a e : Fin n, ((s : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a e = ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (π a) (π e)` using `fun a e => by`. Use `congrFun (congrFun hsw a) (π e)` as an intermediate fact. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.mul_apply] at this`. Simplify `this` using `[hw _ _]`. Use `⟨fun i j hij => ?_, fun a => key a a⟩` and prove the remaining obligations.
-
-Rewrite using `[key]`. Conclude with `ht _ _ fun h => (ne_of_gt hij) (π.injective h)`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_diag {t w : GU σ n} {π : Equiv.Perm (Fin n)} (ht : IsDiagM (t : GL (Fin n) L)) (hw : IsPermW w π) :
     IsBorelU (w * t * w⁻¹) ∧ ∀ a : Fin n, (((w * t * w⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a =
@@ -180,19 +172,17 @@ theorem conj_diag {t w : GU σ n} {π : Equiv.Perm (Fin n)} (ht : IsDiagM (t : G
   exact ht _ _ fun h => (ne_of_gt hij) (π.injective h)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, φ g ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (funext h)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdec : ∀ b w i : GU σ n, IsBorelU b → i ∈ IwU σ n → φ (b * w * i) = chiDeltaU q α b * φ w` using `fun b w i hb hi => by rw [hI _ _ hi, hB _ _ hb]`. Use `set S : Finset (Equiv.Perm (Fin n)) := Finset.univ.filter fun π => ∃ w : GU σ n, IsPermW w π ∧ φ w ≠ 0 with hS`. Establish `hSne : S.Nonempty`. Take `⟨b, w, i, π, hb, hw, hi, e⟩` from `GlobalTheory.T.unitary_iwasawa_bruhat_decomposition L σ n hσ hσv g`. Use `⟨π, Finset.mem_filter.2 ⟨Finset.mem_univ _, w, hw, fun h => hg ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, hdec _ _ _ hb hi, h, mul_zero]`. Take `⟨π, hπS, hmin⟩` from `Finset.exists_min_image S (permWt t) hSne`. Take `⟨w, hw, hφw⟩` from `(Finset.mem_filter.1 hπS).2`. Take `⟨hsB, hsd⟩` from `conj_diag (w := w) htD hw`. Use `set x := chiDeltaU q α (w * t * w⁻¹) * φ w with hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hx0 : x ≠ 0` using `mul_ne_zero (chiDeltaU_ne_zero hq hα _) hφw`. Establish `hterm : ∀ r ∈ R, φ (w * r * t) = if φ (w * r * t) = x then x else 0` using `fun r hr => by split_ifs with h`. Conclude with `h`. Take `⟨b, w', i, π', hb, hw', hi, e⟩` from `GlobalTheory.T.unitary_iwasawa_bruhat_decomposition L σ n hσ hσv (w * r * t)`. Break down `GlobalTheory.T.bruhat_weight_decreases L σ n t w w' b r i π π' htD htS hw hw' hb (hRI r hr) hi e with hlt | ⟨rfl, hord⟩` into its components or cases.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz : φ w' = 0`. Assume the negation of the conclusion as `hz`. Conclude with `absurd (hmin π' (Finset.mem_filter.2 ⟨Finset.mem_univ _, w', hw', hz⟩)) (not_le.2 hlt)`. Rewrite using `[e, hdec _ _ _ hb hi, hz, mul_zero]`. It suffices to derive a contradiction.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[e, hdec _ _ _ hb hi, isPermW_unique hw' hw, hx, chiDeltaU_congr q α (b' := w * t * w⁻¹) fun a => by rw [hord, hsd]]`. Establish `h1 : φ (w * 1 * t) = x`. Establish `e : w * 1 * t = (w * t * w⁻¹) * w` using `by group`. Rewrite using `[e, hB _ _ hsB]`.
-
-Establish `hsum` using `congrFun h0 w`. Simplify using `only [aOp, Pi.zero_apply] at hsum`. Rewrite `hsum` using `[Finset.sum_congr rfl hterm, ← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Establish `hc : (R.filter fun r => φ (w * r * t) = x).card ≠ 0` using `Finset.card_ne_zero_of_mem (Finset.mem_filter.2 ⟨h1R, h1⟩)`. Conclude with `(mul_ne_zero (Nat.cast_ne_zero.2 hc) hx0) hsum`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aOp_inj (q : ℕ) (hq : (q : ℂ) ≠ 0) {m : ℕ} (α : Fin m → ℂ) (hα : ∀ i, α i ≠ 0)
     (hσ : ∀ x, σ (σ x) = x) (hσv : ∀ x, Valued.v (σ x) = Valued.v x)
@@ -248,13 +238,13 @@ def iwFix (σ : L →+* L) (n : ℕ) (q : ℕ) (α : Fin (n / 2) → ℂˣ) : Su
   smul_mem' c _ h := ⟨Submodule.smul_mem _ c h.1, fun g i hi => by simp [h.2 g i hi]⟩
 
 /- English proof (translation)
-Set `wOf : Equiv.Perm (Fin n) → GU σ n` to `fun π => if h : ∃ w : GU σ n, IsPermW w π then h.choose else 1`. Establish `hwOf : ∀ (w : GU σ n) π, IsPermW w π → wOf π = w` using `fun w π hw => by`. Establish `h : ∃ w : GU σ n, IsPermW w π` using `⟨w, hw⟩`. Simplify using `only [wOf, dif_pos h]`. Conclude with `isPermW_unique h.choose_spec hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `F : iwFix σ n q α →ₗ[ℂ] (Equiv.Perm (Fin n) → ℂ)` to `{ toFun := fun φ π => (φ : GU σ n → ℂ) (wOf π) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `FiniteDimensional.of_injective F ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `φ hφ`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨b, w, i, π, hb, hw, hi, rfl⟩` from `GlobalTheory.T.unitary_iwasawa_bruhat_decomposition L σ n hσ hσv g`. Establish `h1 : (φ : GU σ n → ℂ) w = 0`. Use `congrFun hφ π` as an intermediate fact. Rewrite `this` using `[show F φ π = (φ : GU σ n → ℂ) (wOf π) from rfl, hwOf w π hw]`. Then use the resulting hypothesis. Establish `h2` using `φ.2.2 (b * w) i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `φ.2.1 b w hb`. Use `show (φ : GU σ n → ℂ) (b * w * i) = 0`. Rewrite using `[h2, h3, h1, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_iwFix (hσ : ∀ x, σ (σ x) = x) (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (q : ℕ)
     (α : Fin (n / 2) → ℂˣ) : FiniteDimensional ℂ (iwFix σ n q α) := by
@@ -284,17 +274,15 @@ theorem finiteDimensional_iwFix (hσ : ∀ x, σ (σ x) = x) (hσv : ∀ x, Valu
 end U
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n hU α t htD htS j₀`. Establish `hσ` using `hU.1`. Establish `hσv` using `hU.2.1`. Establish `hq2 : 2 ≤ q` using `hU.2.2.2.2.2.1`. Establish `hq : (q : ℂ) ≠ 0` using `by exact_mod_cast (show q ≠ 0 by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hα : ∀ i, (fun i => (α i : ℂ)) i ≠ 0` using `fun i => (α i).ne_zero`. Take `⟨hKI, hYI⟩` from `GlobalTheory.T.unitary_iwahori_index_finite L ϖ σ q n hU`. Take `⟨R, h1R, hRP, hR⟩` from `GlobalTheory.T.coset_reps_of_factorization (GU σ n) (IwU σ n) t (fun u => u ∈ IwU σ n ∧ IsUnipU u) ⟨one_mem _, isBorelU_one, fun i => by simp⟩ (hYI t) (fun i hi => by`. Take `⟨u, hu, hu', y, hy, hy', e⟩` from `GlobalTheory.T.unitary_iwahori_factorization L σ n hσ hσv t htD htS i hi`. Conclude with `⟨u, hu, ⟨hu, hu'⟩, y, hy, hy', e⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hRI : ∀ r ∈ R, r ∈ IwU σ n` using `fun r hr => (hRP r hr).1`. Establish `hRt : ∀ r ∈ R, ∀ k : ℕ, t ^ k * r * (t ^ k)⁻¹ ∈ KU σ n` using `fun r hr k => GlobalTheory.T.dominant_conjugate_unipotent_mem L σ n t r htD htS (hRP r hr).1 (hRP r hr).2.2 k`. Take `⟨φ₀, hsph, h1, -⟩` from `Final.SphericalExistsU L ϖ σ q n (n / 2) hU (by omega) (by omega) (fun i => (α i : ℂ)) hα`. Establish `hIK` using `GlobalTheory.CompanionTheory.KUFactsU.iwU_le_KU σ n`. Establish `hK : ∀ g, ∀ k ∈ KU σ n, φ₀ (g * k) = φ₀ g` using `fun g k hk => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hsph 1 g k isBorelU_one hk` using `[chiDeltaU_one]`. Establish `hφ₀ : φ₀ ∈ iwFix σ n q α` using `⟨fun b g hb => by simpa using hsph b g 1 hb (one_mem _), fun g i hi => hK g i (hIK hi)⟩`. Use `haveI := finiteDimensional_iwFix hσ hσv q α`. Conclude with `abs_main (KU σ n) (IwU σ n) hIK hKI t R h1R hRI hRt hR (iwFix σ n q α) (fun φ hφ => ⟨fun b g hb => by show aOp R t φ (b * g) = _ * aOp R t φ g`. Simplify using `only [aOp, Finset.mul_sum]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc b, mul_assoc b, hφ.1 b _ hb], aOp_rightInv _ t R hRI hR φ hφ.2⟩)`. Use the proof step `(fun φ hφ h0 => aOp_inj q hq _ hα hσ hσv t htD htS R h1R hRI φ hφ.1 hφ.2 h0)`. Use `φ₀ hφ₀ hK h1 (fun j => SatU ϖ q (dosetInd ℂ (KU σ n) (t ^ j)) (fun i => (α i : ℂ)))`. Use the proof step `(fun j => by`.
-
-Establish `e` using `Final.SatakeInert L ϖ σ q n (n / 2) hU (by omega) (by omega) _ hα (dosetInd ℂ (KU σ n) (t ^ j)) (Final.DosetIndMem _ (KU σ n) ℂ _) φ₀ hsph`. Use `congrFun e 1` as an intermediate fact. Simplify `this) j₀` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem satPowNonvan : PositivityTheory.SphericalProduct.SatPowNonvan := by
   intro L _ _ _ ϖ σ q n hU α t htD htS j₀

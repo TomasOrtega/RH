@@ -37,7 +37,7 @@ Both sides reduce to the same expression.
 theorem eMjN_apply (x : M.V) : eMjN D C I E M w j eI x = vE D C I E w j (crd D C I E M w j eI x) := rfl
 
 /- English proof (translation)
-Establish `: crd D C I E M w j eI (a • x) = r • crd D C I E M w j eI x` using `funext fun c => by show E.embW w (M.b.repr (a • x) (eI c)) = r • E.embW w (M.b.repr x (eI c))`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, h, Algebra.smul_def]`. Rewrite using `[eMjN_apply, this, map_smul, eMjN_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eMjN_smul (a : D.what₂.LL) (r : C.Ok (E.twI w) 1) (x : M.V)
     (h : E.embW w a = algebraMap (C.Ok (E.twI w) 1) (FractionRing (C.Ok (E.twI w) 1)) r) :
@@ -48,7 +48,7 @@ theorem eMjN_smul (a : D.what₂.LL) (r : C.Ok (E.twI w) 1) (x : M.V)
   rw [eMjN_apply, this, map_smul, eMjN_apply]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `(E.embW_w w (c : D.what₂.LL)).mp ((val_nonneg_iff D w _).mpr ((D.plEq w).valuation_le_one c))`. Conclude with `⟨r, hr.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int (c : 𝓞 D.what₂.LL) : ∃ r : C.Ok (E.twI w) 1,
     E.embW w (c : D.what₂.LL) = algebraMap (C.Ok (E.twI w) 1) (FractionRing (C.Ok (E.twI w) 1)) r := by
@@ -60,9 +60,9 @@ variable (hb : Function.Bijective eI)
 
 include hb in
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Use `show E.embW w (M.b.repr (M.b (eI a)) (eI c)) = _`. Rewrite using `[M.b.repr_self, Finsupp.single_apply, Pi.single_apply]`. Distinguish the cases in `h : c = a`. Substitute `h` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl, if_pos rfl, map_one]`. Rewrite using `[if_neg (fun h' => h (hb.1 h').symm), if_neg h, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_b (a : I.ix j) : crd D C I E M w j eI (M.b (eI a)) = Pi.single a 1 := by
   funext c
@@ -77,22 +77,20 @@ def sv (a : I.ix j) : (C.Ok (E.twI w) 1) ⊗[C.O (E.twI w)] (I.ix j → Fraction
 
 include hb in
 /- English proof (translation)
-Rewrite using `[eMjN_apply, crd_b D C I E M w j eI hb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eMjN_b (a : I.ix j) : eMjN D C I E M w j eI (M.b (eI a)) = sv D C I E w j a := by
   rw [eMjN_apply, crd_b D C I E M w j eI hb]; rfl
 
 /- English proof (translation)
-The claim follows from `(single_li (C.Ok (E.twI w) 1) (I.ix j) (IsFractionRing.injective _ _)).map' _ (vE D C I E w j).ker`.
+A detailed English derivation is pending.
 -/
 theorem sv_li : LinearIndependent (C.Ok (E.twI w) 1) (sv D C I E w j) :=
   (single_li (C.Ok (E.twI w) 1) (I.ix j) (IsFractionRing.injective _ _)).map' _ (vE D C I E w j).ker
 
 include hb in
 /- English proof (translation)
-Set `e` to `Equiv.ofBijective eI hb`. Establish `h : (fun a => eMjN D C I E M w j eI (M.b a)) = sv D C I E w j ∘ e.symm` using `funext fun a => by`. Establish `: a = eI (e.symm a)` using `(e.apply_symm_apply a).symm`. Use `conv_lhs => rw [this]`. Conclude with `eMjN_b D C I E M w j eI hb _`.
-
-Rewrite using `[h]`. Conclude with `(sv_li D C I E w j).comp _ e.symm.injective`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eMjN_li : LinearIndependent (C.Ok (E.twI w) 1) (fun a => eMjN D C I E M w j eI (M.b a)) := by
   let e := Equiv.ofBijective eI hb
@@ -105,15 +103,15 @@ theorem eMjN_li : LinearIndependent (C.Ok (E.twI w) 1) (fun a => eMjN D C I E M 
 
 include hb in
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite `hx` using `[SetLike.mem_coe, hM]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Take `⟨a', rfl⟩` from `hb.2 a`. Rewrite using `[eMjN_b D C I E M w j eI hb]`. Conclude with `Submodule.subset_span ⟨a', rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr⟩` from `exists_int D C E w c`. Rewrite using `[← algebraMap_smul D.what₂.LL c x]`. Rewrite using `[eMjN_smul D C I E M w j eI _ r x hr]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[← eMjN_b D C I E M w j eI hb]`. Use `Submodule.subset_span ⟨_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, hM]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem eMjN_span (hM : M.L = Submodule.span (𝓞 D.what₂.LL) (Set.range M.b)) :
     Submodule.span (C.Ok (E.twI w) 1) (eMjN D C I E M w j eI '' (M.L : Set M.V)) =
@@ -143,9 +141,9 @@ theorem eMjN_span (hM : M.L = Submodule.span (𝓞 D.what₂.LL) (Set.range M.b)
     exact Submodule.subset_span ⟨_, rfl⟩
 
 /- English proof (translation)
-Use `⟨Submodule.fg_span (Set.finite_range _), le_top, fun x _ => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(vE D C I E w j).surjective x`. Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (C.Ok (E.twI w) 1)) Finset.univ z`. Use `⟨c, nonZeroDivisors.ne_zero c.2, ?_⟩` and prove the remaining obligations. Establish `h1 : (c : C.Ok (E.twI w) 1) • z ∈ LinearMap.range (TwCore.incl (C.Ok (E.twI w) 1) (FractionRing (C.Ok (E.twI w) 1)) (I.ix j))` using `(TwCore.mem_range_incl _).mpr fun y => hc y (Finset.mem_univ y)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[TwCore.range_incl_eq_span]`. Rewrite using `[← map_smul]`. Establish `h2` using `Submodule.mem_map_of_mem (f := (vE D C I E w j).toLinearMap) h1`. Rewrite `h2` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sv_lat : NForms.IsLatIn (Submodule.span (C.Ok (E.twI w) 1) (Set.range (sv D C I E w j))) ⊤ := by
   refine ⟨Submodule.fg_span (Set.finite_range _), le_top, fun x _ => ?_⟩

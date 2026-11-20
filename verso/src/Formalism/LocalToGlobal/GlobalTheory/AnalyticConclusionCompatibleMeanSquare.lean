@@ -46,24 +46,24 @@ def Chain6AtPNT : Prop :=
         Formalism.Gz x ≤ x ^ ((1 : ℝ) / 2 + (eD + eL + 6) * ε)))
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `BoxCountUnconditional.boxCountAll_statement`. Conclude with `⟨max C 1, lt_of_lt_of_le one_pos (le_max_right _ _), boxCount_mono (le_max_left _ _) hC⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem boxCount_pos : ∃ C : ℝ, 0 < C ∧ ZeroFreeRegionGL2.BoxCountHyp C := by
   obtain ⟨C, hC⟩ := BoxCountUnconditional.boxCountAll_statement
   exact ⟨max C 1, lt_of_lt_of_le one_pos (le_max_right _ _), boxCount_mono (le_max_left _ _) hC⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem boxCountAll_iff : BoxCountUnconditional.BoxCountAll ↔ ∃ C : ℝ, ZeroFreeRegionGL2.BoxCountHyp C := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Ext.PrimitiveCharacterCasts.ZD.zero_density_box`.
+A detailed English derivation is pending.
 -/
 theorem zeroDensityBox : ZeroDensityInBoxes.ZeroDensityBox := Ext.PrimitiveCharacterCasts.ZD.zero_density_box
 
 /- English proof (translation)
-Take `⟨c', hc', h⟩` from `analyticEndSel`. Use `⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ hM => ?_⟩` and prove the remaining obligations. Take `⟨C₂, hC₂, h1⟩` from `boxCount_pos`. Take `⟨x₂, h2⟩` from `boxTail_CVal0 ε hε hε1`. Conclude with `h ε A C₂ CVal0 x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 hM`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem analyticEndFinal : AnalyticEndFinal := by
   obtain ⟨c', hc', h⟩ := analyticEndSel
@@ -73,7 +73,7 @@ theorem analyticEndFinal : AnalyticEndFinal := by
   exact h ε A C₂ CVal0 x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 hM
 
 /- English proof (translation)
-Take `⟨c', hc', h⟩` from `analyticEndTied`. Use `⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ hM => ?_⟩` and prove the remaining obligations. Take `⟨C₂, hC₂, h1⟩` from `boxCount_pos`. Take `⟨x₂, h2⟩` from `boxTail_CVal0 ε hε hε1`. Conclude with `h ε A C₂ CVal0 x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 hM`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem analyticEndFinalTied : AnalyticConclusionCompatible := by
   obtain ⟨c', hc', h⟩ := analyticEndTied
@@ -83,9 +83,9 @@ theorem analyticEndFinalTied : AnalyticConclusionCompatible := by
   exact h ε A C₂ CVal0 x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 hM
 
 /- English proof (translation)
-Take `⟨Cord, hC, h⟩` from `chain6At`. Take `⟨c', _, hE⟩` from `analyticEndFinal`. Use `⟨Cord, hC, fun eD eL A K cHH eK eW KW ε C₄ x₄ hε hε4 hA hC₄ hM => ?_⟩` and prove the remaining obligations. Take `⟨xa, hxa⟩` from `h eD eL A K cHH eK CVal0 eW KW ε hε hε4 hA`. Take `⟨xb, hxb⟩` from `hE ε A C₄ x₄ hε (by linarith) hA hC₄ hM`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max xa xb, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨_, iq, id, hEnd⟩` from `hxb x (le_trans (le_max_right _ _) hx)`. Conclude with `⟨iq, id, fun hc => hxa x (le_trans (le_max_left _ _) hx) (core_of_coreAt _ _ A Cord eD eL K cHH eK CVal0 eW KW ε x hEnd.1 hc)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem chain6AtFinal : Chain6AtFinal := by
   obtain ⟨Cord, hC, h⟩ := chain6At
@@ -99,7 +99,7 @@ theorem chain6AtFinal : Chain6AtFinal := by
     (core_of_coreAt _ _ A Cord eD eL K cHH eK CVal0 eW KW ε x hEnd.1 hc)⟩
 
 /- English proof (translation)
-Take `⟨c', hc', h⟩` from `analyticEndFinal`. Use `⟨c', hc', fun hP ε A hε hε1 hA => ?_⟩` and prove the remaining obligations. Take `⟨C₄, x₄, hC₄, hM⟩` from `WeakMeanSquareEstimates.mean_square_weak_of_prime_number_theorem hP ε hε hε1`. Conclude with `h ε A C₄ x₄ hε hε1 hA hC₄ hM`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem analyticEndPNT : AnalyticEndPNT := by
   obtain ⟨c', hc', h⟩ := analyticEndFinal
@@ -108,7 +108,7 @@ theorem analyticEndPNT : AnalyticEndPNT := by
   exact h ε A C₄ x₄ hε hε1 hA hC₄ hM
 
 /- English proof (translation)
-Take `⟨c', hc', h⟩` from `analyticEndFinalTied`. Use `⟨c', hc', fun hP ε A hε hε1 hA => ?_⟩` and prove the remaining obligations. Take `⟨C₄, x₄, hC₄, hM⟩` from `WeakMeanSquareEstimates.mean_square_weak_of_prime_number_theorem hP ε hε hε1`. Conclude with `h ε A C₄ x₄ hε hε1 hA hC₄ hM`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem analyticEndPNTTied : AnalyticPrimeNumberTheoremCompatible := by
   obtain ⟨c', hc', h⟩ := analyticEndFinalTied
@@ -117,7 +117,7 @@ theorem analyticEndPNTTied : AnalyticPrimeNumberTheoremCompatible := by
   exact h ε A C₄ x₄ hε hε1 hA hC₄ hM
 
 /- English proof (translation)
-Take `⟨Cord, hC, h⟩` from `chain6AtFinal`. Use `⟨Cord, hC, fun hP eD eL A K cHH eK eW KW ε hε hε4 hA => ?_⟩` and prove the remaining obligations. Take `⟨C₄, x₄, hC₄, hM⟩` from `WeakMeanSquareEstimates.mean_square_weak_of_prime_number_theorem hP ε hε (by linarith)`. Conclude with `h eD eL A K cHH eK eW KW ε C₄ x₄ hε hε4 hA hC₄ hM`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chain6AtPNT : Chain6AtPNT := by
   obtain ⟨Cord, hC, h⟩ := chain6AtFinal
@@ -126,21 +126,21 @@ theorem chain6AtPNT : Chain6AtPNT := by
   exact h eD eL A K cHH eK eW KW ε C₄ x₄ hε hε4 hA hC₄ hM
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨c', hc', h⟩ => ⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ _ hM => h ε A C₄ x₄ hε hε1 hA hC₄ hM⟩, fun ⟨c', hc', h⟩ => ⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ hM => h ε A C₄ x₄ hε hε1 hA hC₄ zeroDensityBox hM⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem final_iff_closed : AnalyticEndFinal ↔ AnalyticEndClosed :=
   ⟨fun ⟨c', hc', h⟩ => ⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ _ hM => h ε A C₄ x₄ hε hε1 hA hC₄ hM⟩,
    fun ⟨c', hc', h⟩ => ⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ hM => h ε A C₄ x₄ hε hε1 hA hC₄ zeroDensityBox hM⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨c', hc', h⟩ => ⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ _ hM => h ε A C₄ x₄ hε hε1 hA hC₄ hM⟩, fun ⟨c', hc', h⟩ => ⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ hM => h ε A C₄ x₄ hε hε1 hA hC₄ zeroDensityBox hM⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem finalTied_iff_closedTied : AnalyticConclusionCompatible ↔ AnalyticEndClosedTied :=
   ⟨fun ⟨c', hc', h⟩ => ⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ _ hM => h ε A C₄ x₄ hε hε1 hA hC₄ hM⟩,
    fun ⟨c', hc', h⟩ => ⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ hM => h ε A C₄ x₄ hε hε1 hA hC₄ zeroDensityBox hM⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨Cord, hC, h⟩ => ⟨Cord, hC, fun eD eL A K cHH eK eW KW ε C₄ x₄ hε hε4 hA hC₄ _ hM => h eD eL A K cHH eK eW KW ε C₄ x₄ hε hε4 hA hC₄ hM⟩, fun ⟨Cord, hC, h⟩ => ⟨Cord, hC, fun eD eL A K cHH eK eW KW ε C₄ x₄ hε hε4 hA hC₄ hM => h eD eL A K cHH eK eW KW ε C₄ x₄ hε hε4 hA hC₄ zero …`.
+Supply the required witnesses or components.
 -/
 theorem chain6AtFinal_iff_closed : Chain6AtFinal ↔ Chain6AtClosed :=
   ⟨fun ⟨Cord, hC, h⟩ => ⟨Cord, hC, fun eD eL A K cHH eK eW KW ε C₄ x₄ hε hε4 hA hC₄ _ hM =>
@@ -149,20 +149,20 @@ theorem chain6AtFinal_iff_closed : Chain6AtFinal ↔ Chain6AtClosed :=
       h eD eL A K cHH eK eW KW ε C₄ x₄ hε hε4 hA hC₄ zeroDensityBox hM⟩⟩
 
 /- English proof (translation)
-The claim follows from `final_iff_closed.2 analyticEndClosed`.
+A detailed English derivation is pending.
 -/
 example : AnalyticEndFinal := final_iff_closed.2 analyticEndClosed
 /- English proof (translation)
-The claim follows from `finalTied_iff_closedTied.2 analyticEndClosedTied`.
+A detailed English derivation is pending.
 -/
 example : AnalyticConclusionCompatible := finalTied_iff_closedTied.2 analyticEndClosedTied
 /- English proof (translation)
-The claim follows from `chain6AtFinal_iff_closed.2 chain6AtClosed`.
+A detailed English derivation is pending.
 -/
 example : Chain6AtFinal := chain6AtFinal_iff_closed.2 chain6AtClosed
 
 /- English proof (translation)
-Take `⟨c', hc', h⟩` from `analyticEndFinal`. Conclude with `⟨c', hc', fun ε A x₄ hε hε1 hA hM => h ε A 36 x₄ hε hε1 hA (by norm_num) hM⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem analytic_conclusion_mean_square :
     ∃ c' : ℝ, 0 < c' ∧ ∀ ε A x₄ : ℝ, 0 < ε → ε ≤ 1 → 0 < A → WeakMeanSquareEstimates.MeanSquareHypW ε 36 x₄ →
@@ -172,7 +172,7 @@ theorem analytic_conclusion_mean_square :
   exact ⟨c', hc', fun ε A x₄ hε hε1 hA hM => h ε A 36 x₄ hε hε1 hA (by norm_num) hM⟩
 
 /- English proof (translation)
-Take `⟨c', hc', h⟩` from `analyticEndFinalTied`. Conclude with `⟨c', hc', fun ε A x₄ hε hε1 hA hM => h ε A 36 x₄ hε hε1 hA (by norm_num) hM⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem analytic_conclusion_compatible_mean_square :
     ∃ c' : ℝ, 0 < c' ∧ ∀ ε A x₄ : ℝ, 0 < ε → ε ≤ 1 → 0 < A → WeakMeanSquareEstimates.MeanSquareHypW ε 36 x₄ →
@@ -182,7 +182,7 @@ theorem analytic_conclusion_compatible_mean_square :
   exact ⟨c', hc', fun ε A x₄ hε hε1 hA hM => h ε A 36 x₄ hε hε1 hA (by norm_num) hM⟩
 
 /- English proof (translation)
-Take `⟨Cord, hC, h⟩` from `chain6AtFinal`. Conclude with `⟨Cord, hC, fun eD eL A K cHH eK eW KW ε x₄ hε hε4 hA hM => h eD eL A K cHH eK eW KW ε 36 x₄ hε hε4 hA (by norm_num) hM⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem prime_gap_chain_mean_square :
     ∃ Cord : ℝ, 0 ≤ Cord ∧ ∀ eD eL A K cHH eK eW KW ε x₄ : ℝ, 0 < ε → ε < 1 / 4 → 0 < A →

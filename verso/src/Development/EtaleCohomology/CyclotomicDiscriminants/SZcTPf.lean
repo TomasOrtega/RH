@@ -16,7 +16,7 @@ theorem zc_eq (q : ℕ) [NeZero q] (e : ℕ) :
     zc q e = ∑ j : Fin (e + 1) → ZMod q, Finsupp.single (wd e j) 1 := rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[show 2 * (n + 1) = 2 * n + 1 + 1 by ring, Finset.sum_range_succ, Finset.sum_range_succ, ih fun a ha => h a (by omega), ← h n (by omega), pow_succ (-1 : A) (2 * n + 1)]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem alt_range {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (T : ℕ → M) (n : ℕ)
     (h : ∀ a, a < n → T (2 * a) = T (2 * a + 1)) :
@@ -29,9 +29,9 @@ theorem alt_range {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (T : �
     simp
 
 /- English proof (translation)
-Establish `key` using `alt_range (A := A) (fun p => if hp : p < 2 * e + 1 + 1 then S ⟨p, hp⟩ else 0) (e + 1) (by`. Introduce `a ha`. Rewrite using `[dif_pos (by omega), dif_pos (by omega)]`. Conclude with `h a ha)`. Rewrite `key` using `[show 2 * (e + 1) = 2 * e + 1 + 1 by ring, ← Fin.sum_univ_eq_sum_range (fun p => ((-1 : A) ^ (p + 1)) • (if hp : p < 2 * e + 1 + 1 then S ⟨p, hp⟩ else 0))]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos p.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alt_fin {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (e : ℕ) (S : Fin (2 * e + 1 + 1) → M)
     (h : ∀ (a : ℕ) (ha : a < e + 1), S ⟨2 * a, by omega⟩ = S ⟨2 * a + 1, by omega⟩) :
@@ -47,9 +47,9 @@ theorem alt_fin {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (e : ℕ
   rw [dif_pos p.2]
 
 /- English proof (translation)
-Unfold `wd`. Rewrite using `[if_pos (by omega)]`. Use `congr 2`. Use `ext`. Use `show (i : ℕ) / 2 = k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem wd_even {q : ℕ} (e : ℕ) (j : Fin (e + 1) → ZMod q) (i : Fin (2 * e + 1 + 1)) (k : Fin (e + 1))
     (h : (i : ℕ) = 2 * k) : wd e j i = Multiplicative.ofAdd (j k) := by
@@ -61,7 +61,7 @@ theorem wd_even {q : ℕ} (e : ℕ) (j : Fin (e + 1) → ZMod q) (i : Fin (2 * e
   omega
 
 /- English proof (translation)
-Unfold `wd`. Rewrite using `[if_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wd_odd {q : ℕ} (e : ℕ) (j : Fin (e + 1) → ZMod q) (i : Fin (2 * e + 1 + 1))
     (h : (i : ℕ) % 2 = 1) : wd e j i = Multiplicative.ofAdd 1 := by
@@ -69,7 +69,7 @@ theorem wd_odd {q : ℕ} (e : ℕ) (j : Fin (e + 1) → ZMod q) (i : Fin (2 * e 
   rw [if_neg (by omega)]
 
 /- English proof (translation)
-Break down `Nat.mod_two_eq_zero_or_one i with hi | hi` into its components or cases. Establish `hk : (i : ℕ) = 2 * ((⟨i / 2, by omega⟩ : Fin (e + 1)) : ℕ)` using `by show (i : ℕ) = 2 * (i / 2)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[wd_even e j i _ hk, wd_even e j' i _ hk, h _ hk]`. Rewrite using `[wd_odd e j i hi, wd_odd e j' i hi]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem wd_congr {q : ℕ} (e : ℕ) (j j' : Fin (e + 1) → ZMod q) (i : Fin (2 * e + 1 + 1))
     (h : ∀ k : Fin (e + 1), (i : ℕ) = 2 * k → j k = j' k) : wd e j i = wd e j' i := by
@@ -81,11 +81,11 @@ theorem wd_congr {q : ℕ} (e : ℕ) (j j' : Fin (e + 1) → ZMod q) (i : Fin (2
   · rw [wd_odd e j i hi, wd_odd e j' i hi]
 
 /- English proof (translation)
-Rewrite using `[← (Fin.consEquiv fun _ : Fin (e + 1) => ZMod q).sum_comp, Fintype.sum_prod_type, Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `h : ∀ x : ZMod q, (fun i : Fin (2 * e + 1) => wd e (Fin.consEquiv (fun _ => ZMod q) (x, j)) i.succ) = fun i : Fin (2 * e + 1) => wd e (Fin.consEquiv (fun _ => ZMod q) (0, j)) i.succ`. Introduce `x`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `wd_congr e _ _ _ fun k hk => ?_` and prove the remaining obligations. Proceed by induction on `k using Fin.cases with`. Consider the case `zero => simp at hk`. Consider the case `succ k => simp [Fin.consEquiv]`. Simplify using `only [h]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, ZMod.card, Finsupp.smul_single]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tail_sum (q : ℕ) [NeZero q] (e : ℕ) :
     (∑ j : Fin (e + 1) → ZMod q, Finsupp.single (fun i : Fin (2 * e + 1) => wd e j i.succ) 1 :
@@ -107,15 +107,15 @@ theorem tail_sum (q : ℕ) [NeZero q] (e : ℕ) :
 def sh (q e a : ℕ) : Fin (e + 1) → ZMod q := fun k => if (k : ℕ) = a then 1 else if (k : ℕ) = a + 1 then -1 else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hi` using `i.2`. Break down `lt_trichotomy (i : ℕ) (2 * a) with h | h | h` into its components or cases. Rewrite using `[Fin.contractNth_apply_of_lt _ _ _ _ h, Fin.contractNth_apply_of_lt _ _ _ _ (by show (i : ℕ) < 2 * a + 1; omega)]`. Use `wd_congr e _ _ _ fun k hk => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hk` using `[Fin.val_castSucc]`. Rewrite using `[Pi.add_apply, sh, if_neg (by omega), if_neg (by omega), add_zero]`. Rewrite using `[Fin.contractNth_apply_of_eq _ _ _ _ h, Fin.contractNth_apply_of_lt _ _ _ _ (by show (i : ℕ) < 2 * a + 1; omega), wd_even e j i.castSucc ⟨a, ha⟩ h, wd_even e _ i.castSucc ⟨a, ha⟩ h, wd_odd e j i.succ (by rw [Fin.val_succ]; omega), Pi.add_apply, sh, if_pos rfl, ofAdd_add]`. Rewrite using `[Fin.contractNth_apply_of_gt _ _ _ _ h]`. Break down `(show (i : ℕ) = 2 * a + 1 ∨ 2 * a + 1 < i by omega) with h' | h'` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hk : ((i.succ : Fin (2 * e + 1 + 1)) : ℕ) = 2 * ((⟨a + 1, by omega⟩ : Fin (e + 1)) : ℕ)`. Rewrite using `[Fin.val_succ]`. Use `show (i : ℕ) + 1 = 2 * (a + 1)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.contractNth_apply_of_eq _ _ _ _ h', wd_even e j _ _ hk, wd_even e _ _ _ hk, wd_odd e _ i.castSucc (by rw [Fin.val_castSucc]; omega), Pi.add_apply, sh, if_neg (by simp), if_pos rfl, ← ofAdd_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Fin.contractNth_apply_of_gt _ _ _ _ h']`. Use `wd_congr e _ _ _ fun k hk => ?_` and prove the remaining obligations. Rewrite `hk` using `[Fin.val_succ]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.add_apply, sh, if_neg (by omega), if_neg (by omega), add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem contract_eq {q : ℕ} (e a : ℕ) (ha : a < e + 1) (j : Fin (e + 1) → ZMod q) :
     Fin.contractNth (⟨2 * a, by omega⟩ : Fin (2 * e + 1 + 1)) (· * ·) (wd e j) =
@@ -147,9 +147,9 @@ theorem contract_eq {q : ℕ} (e a : ℕ) (ha : a < e + 1) (j : Fin (e + 1) → 
       rw [Pi.add_apply, sh, if_neg (by omega), if_neg (by omega), add_zero]
 
 /- English proof (translation)
-Introduce `q _ e`. Unfold `Cyc`. Rewrite using `[zc_eq, map_sum]`. Simplify using `only [bd, Finsupp.linearCombination_single, one_smul]`. Rewrite using `[Finset.sum_add_distrib, tail_sum, zero_add, Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Finset.smul_sum]`. Use `alt_fin (A := ZMod q) e (fun p => ∑ j : Fin (e + 1) → ZMod q, (Finsupp.single (Fin.contractNth p (· * ·) (wd e j)) 1 : Ch (ZMod q) (Cq q) (2 * e + 1))) fun a ha => ?_` and prove the remaining obligations. Use `Fintype.sum_equiv (Equiv.addRight (sh q e a)) _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[contract_eq e a ha j]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem SZc_of : SZc := by
   intro q _ e

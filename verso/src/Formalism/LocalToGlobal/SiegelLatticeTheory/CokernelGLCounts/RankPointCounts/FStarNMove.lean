@@ -15,20 +15,20 @@ namespace NMoveP
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E)
 
 /- English proof (translation)
-The claim follows from `PI.ScalarPairDr.W.hT_swap S x y`.
+A detailed English derivation is pending.
 -/
 theorem hsw (x y : S.V) : S.hT y x = star (S.hT x y) := PI.ScalarPairDr.W.hT_swap S x y
 
 /- English proof (translation)
-Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_smulL (a : E) (x v : S.V) : S.hT (a • x) v = star a * S.hT x v := by
   rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]
 
 /- English proof (translation)
-Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨i, rfl⟩` from `hv`. Conclude with `h i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, LinearMap.add_apply, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [hT_smulL, ha, mul_zero]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem spanL {ι : Type*} (x : ι → S.V) (y : S.V) (h : ∀ i, S.hT (x i) y = 0) :
     ∀ u ∈ Submodule.span E (Set.range x), S.hT u y = 0 := by
@@ -42,9 +42,7 @@ theorem spanL {ι : Type*} (x : ι → S.V) (y : S.V) (h : ∀ i, S.hT (x i) y =
   | smul c a _ ha => rw [hT_smulL, ha, mul_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `: Submodule.span E (Set.range x) ≤ LinearMap.ker (S.hT y)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `h i`.
-
-Conclude with `this hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem spanR {ι : Type*} (x : ι → S.V) (y : S.V) (h : ∀ i, S.hT y (x i) = 0) :
     ∀ u ∈ Submodule.span E (Set.range x), S.hT y u = 0 := by
@@ -58,19 +56,19 @@ theorem spanR {ι : Type*} (x : ι → S.V) (y : S.V) (h : ∀ i, S.hT y (x i) =
 variable {S} {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_castSucc F i`.
+A detailed English derivation is pending.
 -/
 theorem fvecC {T : E} (F : FlagG S r T) (i : Fin r) : F.fvec i.castSucc = F.e i :=
   PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_castSucc F i
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_last F`.
+A detailed English derivation is pending.
 -/
 theorem fvecL {T : E} (F : FlagG S r T) : F.fvec (Fin.last r) = F.z :=
   PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_last F
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Rewrite using `[fvecL]`. Conclude with `PI.UnitaryGroupMassFormula.BetaLUniq.GN.hT_z_e F c`. Rewrite using `[fvecC]`. Conclude with `F.e_iso i c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hT_f_e {T : E} (F : FlagG S r T) (a : Fin (r + 1)) (c : Fin r) : S.hT (F.fvec a) (F.e c) = 0 := by
   refine Fin.lastCases ?_ (fun i => ?_) a
@@ -78,21 +76,21 @@ theorem hT_f_e {T : E} (F : FlagG S r T) (a : Fin (r + 1)) (c : Fin r) : S.hT (F
   · rw [fvecC]; exact F.e_iso i c
 
 /- English proof (translation)
-The claim follows from `spanR S F.e _ (fun c => hT_f_e F a c) x hx`.
+A detailed English derivation is pending.
 -/
 theorem hT_f_X {T : E} (F : FlagG S r T) (a : Fin (r + 1)) {x : S.V} (hx : x ∈ F.X) : S.hT (F.fvec a) x = 0 :=
   spanR S F.e _ (fun c => hT_f_e F a c) x hx
 
 /- English proof (translation)
-The claim follows from `spanL S F.e y (fun c => by rw [← fvecC F c]; exact hT_f_X F _ hy) x hx`.
+A detailed English derivation is pending.
 -/
 theorem hT_X_X {T : E} (F : FlagG S r T) {x y : S.V} (hx : x ∈ F.X) (hy : y ∈ F.X) : S.hT x y = 0 :=
   spanL S F.e y (fun c => by rw [← fvecC F c]; exact hT_f_X F _ hy) x hx
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) c` and prove the remaining obligations. Rewrite using `[fvecL, fvecL, Q.z_norm, P.z_norm]`. Rewrite using `[fvecL, fvecL, fvecC, fvecC, PI.UnitaryGroupMassFormula.BetaLUniq.GN.hT_z_e, PI.UnitaryGroupMassFormula.BetaLUniq.GN.hT_z_e]`. Use `Fin.lastCases ?_ (fun j => ?_) c` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fvecL, fvecL, fvecC, fvecC, Q.z_orth, P.z_orth]`. Rewrite using `[fvecC, fvecC, fvecC, fvecC, Q.e_iso, P.e_iso]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_flag {T : E} (P Q : FlagG S r T) (a c : Fin (r + 1)) :
     S.hT (Q.fvec a) (Q.fvec c) = S.hT (P.fvec a) (P.fvec c) := by
@@ -105,7 +103,7 @@ theorem gram_flag {T : E} (P Q : FlagG S r T) (a c : Fin (r + 1)) :
     · rw [fvecC, fvecC, fvecC, fvecC, Q.e_iso, P.e_iso]
 
 /- English proof (translation)
-Simplify using `only [map_sum, LinearMap.sum_apply, hT_smulL, map_smul, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitian_double_sum_expand {ι : Type*} [Fintype ι] (x : ι → S.V) (g g' : ι → E) :
     S.hT (∑ i, g i • x i) (∑ j, g' j • x j) = ∑ i, ∑ j, star (g i) * (g' j * S.hT (x i) (x j)) := by
@@ -116,85 +114,75 @@ theorem hermitian_double_sum_expand {ι : Type*} [Fintype ι] (x : ι → S.V) (
 variable (S)
 
 /- English proof (translation)
-Establish `hGP : Gflag F P ≠ 0`. Establish `: Gflag F P = Gflag F Q` using `by unfold Gflag Dl; rw [hZ]`. Rewrite using `[this]` and apply the resulting hypothesis. Set `b₂ : Fin (r + 1) ⊕ Fin (r + 1) → S.V` to `Sum.elim F.fvec P.fvec`. Set `tg : Fin (r + 1) ⊕ Fin (r + 1) → S.V` to `Sum.elim F.fvec Q.fvec`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `U : Submodule E S.V` to `Submodule.span E (Set.range b₂)`. Set `W : Submodule E S.V` to `orth S U`. Establish `hfU : ∀ a, F.fvec a ∈ U` using `fun a => Submodule.subset_span ⟨Sum.inl a, rfl⟩`. Establish `hpU : ∀ b, P.fvec b ∈ U` using `fun b => Submodule.subset_span ⟨Sum.inr b, rfl⟩`. Establish `hXU : F.X ≤ U`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `FlagG.X`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[← fvecC F i]`. Conclude with `hfU _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : ∀ w ∈ W, ∀ u ∈ U, S.hT u w = 0` using `fun w hw u hu => (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).1 hw u hu`. Establish `hW' : ∀ w ∈ W, ∀ u ∈ U, S.hT w u = 0` using `fun w hw u hu => by`. Rewrite using `[hsw, hW w hw u hu, star_zero]`. Establish `hgram : ∀ i j, S.hT (tg i) (tg j) = S.hT (b₂ i) (b₂ j)`. Establish `hz : ∀ a c, S.hT (F.fvec a) (Q.fvec c) = S.hT (F.fvec a) (P.fvec c)` using `fun a c => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrFun (congrFun hZ a) c`. Simplify using `only [Zhat, brS] at h`. Conclude with `h.symm`. Introduce and unpack `(a | a) (c | c)`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hz a c`. Use `show S.hT (Q.fvec a) (F.fvec c) = S.hT (P.fvec a) (F.fvec c)`. Rewrite using `[hsw S (F.fvec c), hsw S (F.fvec c), hz]`. Conclude with `gram_flag P Q a c`. Establish `hsplit : ∀ (g : Fin (r + 1) ⊕ Fin (r + 1) → E), ∑ i, g i • b₂ i = ∑ a, g (Sum.inl a) • F.fvec a + ∑ b, g (Sum.inr b) • P.fvec b` using `fun g => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Fintype.sum_sum_type]`. Both sides reduce to the same expression. Establish `hLI : LinearIndependent E b₂`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `PI.UnitaryGroupMassFormula.BetaLUniq.GN.coeffs_zero F P (fun a => g (Sum.inl a)) (fun b => g (Sum.inr b)) 0 (by rw [← hsplit, hg]) (fun _ => by simp) (fun _ => by simp) hGP`. Break down `i with a | b` into its components or cases. Conclude with `congrFun h.1 a`. Conclude with `congrFun h.2 b`. Establish `hdisj : Disjoint U W`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.disjoint_def]`. Introduce `v hv hvW`. Take `⟨g, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hv`. Establish `h` using `PI.UnitaryGroupMassFormula.BetaLUniq.GN.coeffs_zero F P (fun a => g (Sum.inl a)) (fun b => g (Sum.inr b)) (∑ i, g i • b₂ i) (hsplit g) (fun a => hW _ hvW _ (hfU a)) (fun b => hW _ hvW _ (hpU b)) hGP`. Establish `h1 : ∀ a, g (Sum.inl a) = 0` using `fun a => congrFun h.1 a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2 : ∀ b, g (Sum.inr b) = 0` using `fun b => congrFun h.2 b`. Rewrite using `[hsplit]`. Simplify using `[h1, h2]`. Establish `hcompl : IsCompl U W`. Use `(Submodule.isCompl_iff_disjoint U W ?_).2 hdisj` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h : finrank E W + finrank E U = finrank E S.V` using `PI.UnitaryGroupMassFormula.BetaLUniq.finrank_orth_add S U`. Use linear arithmetic over natural numbers and integers. Establish `hdec : ∀ v : S.V, ∃ g : Fin (r + 1) ⊕ Fin (r + 1) → E, ∃ w ∈ W, v = ∑ i, g i • b₂ i + w`. Introduce `v`. Establish `hv : v ∈ U ⊔ W` using `by rw [hcompl.sup_eq_top]; trivial`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Take `⟨y, hy, w, hw, rfl⟩` from `Submodule.mem_sup.1 hv`. Take `⟨g, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hy`. Conclude with `⟨g, w, hw, rfl⟩`. Set `K : (Fin (r + 1) → E) →ₗ[E] (Fin r → E)` to `{ toFun := fun c a => S.hT (F.e a) (∑ b, c b • P.fvec b) map_add' := by`. Introduce `c c'`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib, map_add]`. Use the proof step `map_smul' := by`. Introduce `m c`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul, ← Finset.smul_sum, map_smul, RingHom.id_apply] }`. Take `⟨k, hkK, hk0⟩` from `Submodule.ne_bot_iff _ |>.1 (LinearMap.ker_ne_bot_of_finrank_lt (f := K) (by simp))`. Establish `hk : ∀ a, S.hT (F.e a) (∑ b, k b • P.fvec b) = 0` using `fun a => congrFun (LinearMap.mem_ker.1 hkK) a`. Establish `hx0` using `hom k hk`. Set `A : F.X →ₗ[E] (Fin (r + 1) → E)` to `LinearMap.pi fun b => (S.hT (Q.fvec b)).comp F.X.subtype`.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hAinj : Function.Injective A`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `PI.ScalarPairDr.W.eq_zero_of_orth F Q hG x.2 (fun b => congrFun hx b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Set `ℓ : (Fin (r + 1) → E) →ₗ[E] E` to `∑ b, star (k b) • LinearMap.proj b`. Establish `hℓ : ∀ t, ℓ t = ∑ b, star (k b) * t b` using `fun t => by`. Simplify using `[ℓ, LinearMap.sum_apply]`. Establish `hℓcomb : ∀ (x : Fin (r + 1) → S.V) (y : S.V), ℓ (fun b => S.hT (x b) y) = S.hT (∑ b, k b • x b) y` using `fun x y => by`. Rewrite using `[hℓ, map_sum, LinearMap.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun b _ => (hT_smulL S _ _ _).symm`. Establish `hrange : LinearMap.range A = LinearMap.ker ℓ`. Establish `hle : LinearMap.range A ≤ LinearMap.ker ℓ`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (A x) = fun b => S.hT (Q.fvec b) x` using `rfl`. Rewrite using `[e1, hℓcomb]`. Establish `e2 : ∑ b, k b • Q.fvec b = ∑ b, k b • P.fvec b + ∑ b, k b • (Q.fvec b - P.fvec b)`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [smul_sub]; abel`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e2, map_add, LinearMap.add_apply, hT_X_X F hx0 x.2, add_zero, hsw, spanL S F.e _ hk _ x.2, star_zero]`. Use `Submodule.eq_of_le_of_finrank_le hle ?_` and prove the remaining obligations. Establish `h1 : finrank E (LinearMap.range A) = r`. Rewrite using `[LinearMap.finrank_range_of_inj hAinj]`. Unfold `FlagG.X`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Rewrite using `[finrank_span_eq_card F.e_indep, Fintype.card_fin]`. Establish `h2 : LinearMap.ker ℓ ≠ ⊤`. Take `⟨b, hb⟩` from `Function.ne_iff.1 hk0`. Introduce `htop`. Establish `: Pi.single b (1 : E) ∈ LinearMap.ker ℓ` using `by rw [htop]; trivial`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[LinearMap.mem_ker, hℓ]`. Simplify using `only [Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Conclude with `hb (by simpa using this)`. Establish `h3` using `Submodule.finrank_lt h2`. Simplify using `only [Module.finrank_fin_fun] at h3`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Set `tw : S.V →ₗ[E] (Fin (r + 1) → E)` to `LinearMap.pi fun b => S.hT (Q.fvec b - P.fvec b)`. Establish `ht : ∀ w : W, tw w ∈ LinearMap.range A`. Introduce `w`. Rewrite using `[hrange, LinearMap.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e1 : tw w = fun b => S.hT (Q.fvec b - P.fvec b) (w : S.V)` using `rfl`. Rewrite using `[e1, hℓcomb]`. Conclude with `hW _ w.2 _ (hXU hx0)`. Set `codR : W →ₗ[E] LinearMap.range A` to `(tw ∘ₗ W.subtype).codRestrict (LinearMap.range A) ht`. Set `xm : W →ₗ[E] F.X` to `(LinearEquiv.ofInjective A hAinj).symm.toLinearMap ∘ₗ codR`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxm : ∀ (w : W) b, S.hT (Q.fvec b) (xm w : S.V) = S.hT (Q.fvec b - P.fvec b) (w : S.V)`. Introduce `w b`. Establish `h` using `(LinearEquiv.ofInjective A hAinj).apply_symm_apply (codR w)`. Establish `h2 : A (xm w) = tw w`. Use `congrArg Subtype.val h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[LinearEquiv.ofInjective_apply]`. Conclude with `this`. Conclude with `congrFun h2 b`. Set `bs` to `Basis.span hLI`. Set `Bm : U →ₗ[E] S.V` to `bs.constr E tg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `ψ : W →ₗ[E] S.V` to `W.subtype - F.X.subtype ∘ₗ xm`. Set `n₀ : S.V →ₗ[E] S.V` to `LinearMap.ofIsCompl hcompl Bm ψ`. Establish `hn₀b : ∀ i, n₀ (b₂ i) = tg i`. Introduce `i`. Establish `e : bs i = ⟨b₂ i, Submodule.subset_span ⟨i, rfl⟩⟩` using `Basis.span_apply hLI i`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `LinearMap.ofIsCompl_apply_left hcompl (φ := Bm) (ψ := ψ) (bs i)` as an intermediate fact. Rewrite `this` using `[e]`. Rewrite using `[show b₂ i = ((⟨b₂ i, Submodule.subset_span ⟨i, rfl⟩⟩ : U) : S.V) from rfl, this, ← e]`. Conclude with `bs.constr_basis E tg i`. Establish `hn₀w : ∀ (w : S.V) (hw : w ∈ W), n₀ w = w - (xm ⟨w, hw⟩ : S.V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w hw`. Use `LinearMap.ofIsCompl_apply_right hcompl (φ := Bm) (ψ := ψ) ⟨w, hw⟩` as an intermediate fact. Conclude with `this`. Establish `hn₀sum : ∀ g : Fin (r + 1) ⊕ Fin (r + 1) → E, n₀ (∑ i, g i • b₂ i) = ∑ i, g i • tg i`. Introduce `g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, hn₀b]`. Establish `hperp : ∀ (w : W) i, S.hT (tg i) ((w : S.V) - xm w) = 0`. Introduce `w i`. Break down `i with a | b` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show S.hT (F.fvec a) ((w : S.V) - xm w) = 0`. Rewrite using `[map_sub, hW _ w.2 _ (hfU a), hT_f_X F a (xm w).2, sub_zero]`. Use `show S.hT (Q.fvec b) ((w : S.V) - xm w) = 0`. Rewrite using `[map_sub, hxm, map_sub, LinearMap.sub_apply, hW _ w.2 _ (hpU b)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hperpS : ∀ (w : W) (g : Fin (r + 1) ⊕ Fin (r + 1) → E), S.hT (∑ i, g i • tg i) ((w : S.V) - xm w) = 0` using `fun w g => spanL S tg _ (hperp w) _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`. Establish `hsumU : ∀ g : Fin (r + 1) ⊕ Fin (r + 1) → E, ∑ i, g i • b₂ i ∈ U` using `fun g => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hiso : ∀ x y, S.hT (n₀ x) (n₀ y) = S.hT x y`. Introduce `v v'`. Take `⟨g, w, hw, rfl⟩` from `hdec v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g', w', hw', rfl⟩` from `hdec v'`. Rewrite using `[map_add n₀, map_add n₀, hn₀sum, hn₀sum, hn₀w w hw, hn₀w w' hw']`. Use `set x := (xm ⟨w, hw⟩ : S.V)`. Use `set x' := (xm ⟨w', hw'⟩ : S.V)`. Establish `hx : x ∈ F.X` using `(xm ⟨w, hw⟩).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx' : x' ∈ F.X` using `(xm ⟨w', hw'⟩).2`. Establish `e1 : S.hT (∑ i, g i • tg i) (w' - x') = 0` using `hperpS ⟨w', hw'⟩ g`. Establish `e2 : S.hT (w - x) (∑ i, g' i • tg i) = 0` using `by rw [hsw, hperpS ⟨w, hw⟩ g', star_zero]`. Establish `e3 : S.hT (w - x) (w' - x') = S.hT w w'`. Establish `a1` using `hW' w hw x' (hXU hx')`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a2` using `hW w' hw' x (hXU hx)`. Establish `a3` using `hT_X_X F hx hx'`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Rewrite using `[a1, a2, a3]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e4 : S.hT (∑ i, g i • b₂ i) w' = 0` using `hW w' hw' _ (hsumU g)`. Establish `e5 : S.hT w (∑ i, g' i • b₂ i) = 0` using `hW' w hw _ (hsumU g')`. Establish `e6 : S.hT (∑ i, g i • tg i) (∑ i, g' i • tg i) = S.hT (∑ i, g i • b₂ i) (∑ i, g' i • b₂ i)`. Rewrite using `[hermitian_double_sum_expand, hermitian_double_sum_expand]`. Simplify using `only [hgram]`.
-
-Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[e1, e2, e3, e4, e5, e6]`. Establish `hinj : Function.Injective n₀`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `v hv`.
-
-Conclude with `S.nondeg.1 v (fun y => by rw [← hiso v y, hv, map_zero, LinearMap.zero_apply])`. Set `n : S.V ≃ₗ[E] S.V` to `LinearEquiv.ofInjectiveEndo n₀ hinj`. Establish `hn : ∀ x, n x = n₀ x` using `fun x => rfl`. Use `⟨n, fun x y => by rw [hn, hn, hiso], fun i => by rw [hn]; exact hn₀b (Sum.inl i), fun b => by rw [hn]; exact hn₀b (Sum.inr b), ?_⟩` and prove the remaining obligations. Introduce `v hv`.
-
-Take `⟨g, w, hw, rfl⟩` from `hdec v`. Establish `key : n (∑ i, g i • b₂ i + w) - (∑ i, g i • b₂ i + w) = ∑ b, g (Sum.inr b) • (Q.fvec b - P.fvec b) - (xm ⟨w, hw⟩ : S.V)`. Rewrite using `[hn, map_add, hn₀sum, hn₀w w hw, hsplit]`. Simplify using `only [tg, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[key]`. Use `Submodule.sub_mem _ (hom _ fun a => ?_) (xm ⟨w, hw⟩).2` and prove the remaining obligations. Establish `heX : F.e a ∈ F.X` using `Submodule.subset_span ⟨a, rfl⟩`. Establish `h1` using `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).1 hv (F.e a) heX`. Establish `hw0 : S.hT (F.e a) w = 0` using `hW w hw (F.e a) (hXU heX)`.
-
-Establish `h2 : S.hT (F.e a) (∑ a', g (Sum.inl a') • F.fvec a') = 0` using `spanR S F.fvec (F.e a) (fun c => by rw [hsw, hT_f_e, star_zero]) _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`. Rewrite `h1` using `[map_add, hw0, add_zero, hsplit, map_add, h2, zero_add]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_move {T T' : E} (F : FlagG S r T) (P Q : FlagG S r T')
     (hZ : Zhat F P = Zhat F Q) (hG : Gflag F Q ≠ 0)
@@ -430,11 +418,11 @@ end NMoveP
 open NMoveP in
 
 /- English proof (translation)
-Introduce `T T' F0 F'₂ F' hZ hG hO`. Take `⟨n, hiso, hf, hp, horth⟩` from `exists_move (VS D) F0 F'₂.fl F'.fl hZ hG hO`. Establish `hfe : ∀ a, n (F0.e a) = F0.e a` using `fun a => by rw [← fvecC F0 a]; exact hf _`. Use `⟨n, ⟨hiso, ?_, horth, hfe, by rw [← fvecL F0]; exact hf _⟩, fun a => by rw [← fvecC F'₂.fl a, ← fvecC F'.fl a]; exact hp _, by rw [← fvecL F'₂.fl, ← fvecL F'.fl]; exact hp _⟩` and prove the remaining obligations. Introduce `j x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : Xflag (lf D F0) (j + 1) ≤ LinearMap.ker ((n : (VS D).V →ₗ[D.host.E] (VS D).V) - LinearMap.id)` using `by show Submodule.span _ _ ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, _, rfl⟩`. Simplify using `[hfe]`. Establish `h` using `hle hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply]`. Rewrite using `[show n x - x = 0 from h]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem n_move_holds (D : Formalism.BasicNotions.D7) : NMove D := by
   intro T T' F0 F'₂ F' hZ hG hO

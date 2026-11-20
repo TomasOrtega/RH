@@ -8,7 +8,7 @@ namespace GlobalTheory.Mem.Col2.DilFv
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Forms GlobalTheory.Mem.Col2 Matrix
 
 /- English proof (translation)
-Establish `h : (I • (⊤ : Submodule R M)).map (u : M →ₗ[R] M') = I • (⊤ : Submodule R M')`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, LinearEquiv.range]`. Use `⟨(Submodule.Quotient.equiv _ _ u h).extendScalarsOfSurjective Ideal.Quotient.mk_surjective, fun x => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_red_equiv {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M']
     (I : Ideal R) (u : M ≃ₗ[R] M') :
@@ -19,7 +19,7 @@ theorem exists_red_equiv {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R
   refine ⟨(Submodule.Quotient.equiv _ _ u h).extendScalarsOfSurjective Ideal.Quotient.mk_surjective, fun x => rfl⟩
 
 /- English proof (translation)
-Establish `h : (I • (⊤ : Submodule R M)) ≤ LinearMap.ker u`. Use `Submodule.smul_le.2 fun r hr x _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_smul, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 hr, zero_mul]`. Conclude with `⟨(Submodule.liftQ _ u h).extendScalarsOfSurjective Ideal.Quotient.mk_surjective, fun x => rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_red_dual {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (I : Ideal R) (u : M →ₗ[R] R ⧸ I) :
     ∃ φ : (M ⧸ (I • (⊤ : Submodule R M))) →ₗ[R ⧸ I] (R ⧸ I), ∀ x, φ (Submodule.Quotient.mk x) = u x := by
@@ -33,7 +33,7 @@ variable {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {S : GStep E
   {ST : Finset (HeightOneSpectrum (𝓞 E))} (A : TDat S ST) {T : ℕ}
 
 /- English proof (translation)
-Establish `hex : ∃ φ : Module.Dual (Res P.1) (A.lv P c), ∀ x : A.N c.1 (S.rep c), φ (Submodule.Quotient.mk x) = A.f c.1 (S.rep c) P x` using `exists_red_dual P.1.asIdeal { toFun := fun x : A.N c.1 (S.rep c) => A.f c.1 (S.rep c) P x map_add' := fun x y => h.f_add _ _ P x x.2 y y.2 map_smul' := fun a x => h.f_smul _ _ P a x x.2 }`. Unfold `TDat.fv`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fv_mk (h : A.Ok T) (P : ST) (c : S.Cl) (x : A.N c.1 (S.rep c)) :
     A.fv P c (Submodule.Quotient.mk x) = A.f c.1 (S.rep c) P x := by
@@ -48,9 +48,9 @@ theorem fv_mk (h : A.Ok T) (P : ST) (c : S.Cl) (x : A.N c.1 (S.rep c)) :
   exact hex.choose_spec x
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Establish `h1 : ∀ x : Fin n → E, (S.gam b g : Matrix (Fin n) (Fin n) E) *ᵥ ((S.gam b g⁻¹ : Matrix (Fin n) (Fin n) E) *ᵥ x) = x` using `fun x => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Establish `h2 : ∀ x : Fin n → E, (S.gam b g⁻¹ : Matrix (Fin n) (Fin n) E) *ᵥ ((S.gam b g : Matrix (Fin n) (Fin n) E) *ᵥ x) = x` using `fun x => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨{ toFun := fun x => ⟨(S.gam b g : Matrix (Fin n) (Fin n) E) *ᵥ x.1, (h.N_act b g d x.1).2 x.2⟩ invFun := fun y => ⟨(S.gam b g⁻¹ : Matrix (Fin n) (Fin n) E) *ᵥ y.1, (h.N_act b g d _).1 (by rw [h1]; exact y.2)⟩ map_add' := fun x y => Subtype.ext (Matrix.mulVec_add _ x.1 y.1) map_s …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_act_equiv (h : A.Ok T) (b : S.β) (g : S.G b) (d : S.D b) (M : Submodule (𝓞 E) (Fin n → E))
     (hM : A.N b (g • d) = M) :
@@ -71,11 +71,11 @@ theorem exists_act_equiv (h : A.Ok T) (b : S.β) (g : S.G b) (d : S.D b) (M : Su
             right_inv := fun y => Subtype.ext (h1 _) }, fun x => rfl⟩
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ n S ST A T _ h P a c`. Take `⟨g, hmv⟩ : ∃ g : S.G c.1, g • S.rep (S.cl c.1 (A.diaPt P a c)) = A.diaPt P a c` from `(MulAction.orbitRel (S.G c.1) (S.D c.1)).symm (Quotient.exact (S.rp_spec c.1 (Quotient.mk _ (A.diaPt P a c))))`. Take `⟨u, hu⟩` from `exists_act_equiv A h c.1 g (S.rep (S.cl c.1 (A.diaPt P a c))) (A.N c.1 (S.rep c)) (by rw [hmv]; exact h.dia_N _ _ _ _)`. Take `⟨e, he⟩` from `exists_red_equiv P.1.asIdeal u`. Use `⟨e, fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `e1` using `fv_mk A h P (S.cl c.1 (A.diaPt P a c)) x`. Establish `e2` using `fv_mk A h P c (u x)`. Establish `e3` using `h.f_act c.1 g (S.rep (S.cl c.1 (A.diaPt P a c))) P x`. Rewrite `e3` using `[hmv, ← hu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e4` using `h.dia_f c.1 P a (S.rep c) (u x)`. Use `e1.trans (e3.symm.trans (e4.trans ?_))` and prove the remaining obligations. Conclude with `congrArg _ (e2.symm.trans (congrArg _ (he x).symm))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dil_fv : ∀ {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ} {S : GStep E K n}
     {ST : Finset (HeightOneSpectrum (𝓞 E))} (A : TDat S ST) (T : ℕ), S.Ok → A.Ok T → ∀ P a c,

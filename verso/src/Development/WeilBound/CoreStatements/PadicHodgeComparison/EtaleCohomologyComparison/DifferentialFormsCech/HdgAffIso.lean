@@ -11,7 +11,7 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers GlobalT
 namespace CrystallineSemistableComparison.Om
 
 /- English proof (translation)
-The claim follows from `@h`.
+A detailed English derivation is pending.
 -/
 theorem hdg_iso (h : ∀ (K : Type) [Field K] [CharZero K],
     ∃ e : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] [IsProper q] (a j : ℕ),

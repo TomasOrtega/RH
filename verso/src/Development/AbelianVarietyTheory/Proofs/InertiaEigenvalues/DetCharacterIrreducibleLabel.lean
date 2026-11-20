@@ -19,9 +19,9 @@ open scoped Classical ComplexOrder in
 variable {g : ℕ} [hg : Fact g.Prime] in
 
 /- English proof (translation)
-Establish `hchar : ∀ x : G, (FDRep.of (_root_.GlobalTheory.GLp.Model.chRep φ)).character x = φ x`. Introduce `x`. Establish `: _root_.GlobalTheory.GLp.Model.chRep φ x = (φ x : ℂ) • LinearMap.id` using `by ext; simp [_root_.GlobalTheory.GLp.Model.chRep_apply]`. Simplify using `[FDRep.character, FDRep.of_ρ, this]`. Use `⟨FDRep.of (_root_.GlobalTheory.GLp.Model.chRep φ), ?_, hchar⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[FDRep.simple_iff_char_is_norm_one]`. Simplify using `[hchar, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.GLq.LabelDet.isIrr_hom {G : Type} [Group G] [Fintype G] (φ : G →* ℂˣ) :
     _root_.GlobalTheory.GLq.IsIrr (fun x : G => ((φ x : ℂˣ) : ℂ)) := by
@@ -35,7 +35,7 @@ theorem _root_.GlobalTheory.GLq.LabelDet.isIrr_hom {G : Type} [Group G] [Fintype
   simp [hchar, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-The claim follows from `Nat.sub_pos_of_lt (Nat.one_lt_pow one_ne_zero hg.out.one_lt)`.
+A detailed English derivation is pending.
 -/
 theorem level_pos : 0 < g ^ 1 - 1 :=
   Nat.sub_pos_of_lt (Nat.one_lt_pow one_ne_zero hg.out.one_lt)
@@ -44,7 +44,7 @@ open Polynomial in
 open scoped Classical ComplexOrder in
 variable {g : ℕ} [hg : Fact g.Prime] in
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.GLq.Model.thetaOf_gen_pow L one_pos hx n`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GLq.LabelDet.theta_gen_pow (L : _root_.GlobalTheory.GLq.LabelDatum g) {x : _root_.Formalism.CyclotomicNorms.Fbar g}
     (hx : x ^ (g ^ 1 - 1) = 1) (n : ℕ) :
@@ -57,7 +57,7 @@ open scoped Classical ComplexOrder in
 variable {g : ℕ} [hg : Fact g.Prime] in
 
 /- English proof (translation)
-Take `⟨u, hu, -⟩` from `_root_.GlobalTheory.GLp.Model.exists_gen L`. Conclude with `⟨u, hu⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.GLq.LabelDet.gen_one_mem (L : _root_.GlobalTheory.GLq.LabelDatum g) :
     ∃ u : (ZMod g)ˣ, algebraMap (ZMod g) (_root_.Formalism.CyclotomicNorms.Fbar g) u = L.gen 1 := by
@@ -69,11 +69,11 @@ open scoped Classical ComplexOrder in
 variable {g : ℕ} [hg : Fact g.Prime] in
 
 /- English proof (translation)
-Establish `key : M.submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks (_root_.GlobalTheory.GLq.tl a M) (M.submatrix (Fin.castAdd b) (Fin.natAdd a)) 0 (_root_.GlobalTheory.GLq.br a b M)`. Use extensionality with `(i | i) (j | j)`. Use `show M (Fin.castAdd b i) (Fin.castAdd b j) = _root_.Formalism.MainNotions.ArithmeticCylinders.entN M i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `_root_.Formalism.MainNotions.ArithmeticCylinders.entN`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Conclude with `h _ _ (by simp) (by simp)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[_root_.GlobalTheory.GLq.br, _root_.Formalism.MainNotions.ArithmeticCylinders.entN, Fin.natAdd]`. Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv M, key, Matrix.det_fromBlocks_zero₂₁]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GLq.LabelDet.det_inPar (a b : ℕ) (M : _root_.GlobalTheory.GLq.Mt g (a + b))
     (h : _root_.GlobalTheory.GLq.InPar a M) :
@@ -96,7 +96,7 @@ open Polynomial in
 open scoped Classical ComplexOrder in
 variable {g : ℕ} [hg : Fact g.Prime] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GLq.toG`. Rewrite using `[dif_pos ((Matrix.isUnit_iff_isUnit_det M).mpr (isUnit_iff_ne_zero.mpr h))]`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.GLq.LabelDet.det_toG {n : ℕ} (M : _root_.GlobalTheory.GLq.Mt g n) (h : M.det ≠ 0) :
     ((Matrix.GeneralLinearGroup.det (_root_.GlobalTheory.GLq.toG M) : (ZMod g)ˣ) : ZMod g) = M.det := by
@@ -108,9 +108,9 @@ open Polynomial in
 open scoped Classical ComplexOrder in
 variable {g : ℕ} [hg : Fact g.Prime] in
 /- English proof (translation)
-Establish `hdet` using `_root_.GlobalTheory.GLq.LabelDet.det_inPar a b _ h`. Establish `hp` using `(Matrix.GeneralLinearGroup.det p).ne_zero`. Rewrite `hp` using `[Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite `hp` using `[hdet]`. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.mp hp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, _root_.GlobalTheory.GLq.LabelDet.det_toG _ h1, _root_.GlobalTheory.GLq.LabelDet.det_toG _ h2, Matrix.GeneralLinearGroup.val_det_apply, ← hdet]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.GLq.LabelDet.det_par (a b : ℕ) (p : _root_.GlobalTheory.GLq.Gn g (a + b))
     (h : _root_.GlobalTheory.GLq.InPar a (p : _root_.GlobalTheory.GLq.Mt g (a + b))) :
@@ -132,7 +132,7 @@ open Polynomial in
 open scoped Classical ComplexOrder in
 variable {g : ℕ} [hg : Fact g.Prime] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GLq.toG`. Rewrite using `[dif_pos isUnit_one]`. Conclude with `Units.ext (by simp)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GLq.LabelDet.toG_one {n : ℕ} : _root_.GlobalTheory.GLq.toG (1 : _root_.GlobalTheory.GLq.Mt g n) = 1 := by
   unfold _root_.GlobalTheory.GLq.toG
@@ -140,20 +140,20 @@ theorem _root_.GlobalTheory.GLq.LabelDet.toG_one {n : ℕ} : _root_.GlobalTheory
   exact Units.ext (by simp)
 
 /- English proof (translation)
-Introduce `i j h1 h2` and use `Matrix.one_apply_ne (by rintro rfl; omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inPar_one (a n : ℕ) : InPar a (1 : Mt g n) := fun i j h1 h2 =>
   Matrix.one_apply_ne (by rintro rfl; omega)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[br, entN, Matrix.one_apply, Fin.ext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem br_one (a b : ℕ) : br a b (1 : Mt g (a + b)) = 1 := by
   ext i j
   simp [br, entN, Matrix.one_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi : (i : ℕ) < a + b` using `by omega`. Establish `hj : (j : ℕ) < a + b` using `by omega`. Simplify using `[tl, entN, Matrix.one_apply, Fin.ext_iff, hi, hj]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem tl_one (a b : ℕ) : tl a (1 : Mt g (a + b)) = 1 := by
   ext i j

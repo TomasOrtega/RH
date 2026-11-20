@@ -11,11 +11,9 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.HCF GlobalTheory.CuspQuot Mea
 namespace GlobalTheory.HCFGL
 
 /- English proof (translation)
-Take `⟨n, T, hT⟩` from `GlobalTheory.T.finiteDimensional_forms_span_level E a ih L hL W hW χ N`. Take `⟨α, hα, hrep⟩` from `GlobalTheory.T.harishChandra_uniform_smoothing_test_function E a L hL W hW χ N (MeasureTheory.Measure.addHaar) inferInstance`. Establish `hQ` using `GlobalTheory.T.finiteDimensional_cuspForms_fixedLevel_Ktypes E a L hL W hW χ N MeasureTheory.Measure.addHaar inferInstance α hα hrep`. Use `set P := Submodule.span ℂ (formsGL E a L W {χ} N)`. Use `set Q := Submodule.span ℂ {φ | φ ∈ formsGL E a L W {χ} N ∧ IsCuspidal φ.1}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (P.map T).FG` using `IsNoetherian.noetherian _`. Establish `h2 : (P ⊓ LinearMap.ker T).FG`. Establish `hle : P ⊓ LinearMap.ker T ≤ Q`. Introduce `φ hφ`. Establish `hS` using `GlobalTheory.T.harishChandraFiniteFormsGL_single_char_span_mem E a L W χ N φ hφ.1`.
-
-Conclude with `Submodule.subset_span ⟨hS, hT φ hS hφ.2⟩`. Use `haveI := Submodule.finiteDimensional_of_le hle`. Conclude with `(Submodule.fg_iff_finiteDimensional _).2 inferInstance`. Conclude with `Module.Finite.iff_fg.2 (Submodule.fg_of_fg_map_of_fg_inf_ker T h1 h2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_single (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (ih : ∀ b < a, ∀ L : Subgroup (GL (Fin b) (Af E)), IsOpen (L : Set (GL (Fin b) (Af E))) →
@@ -40,11 +38,9 @@ theorem finiteDimensional_single (E : Type) [Field E] [NumberField E] [IsTotally
   exact Module.Finite.iff_fg.2 (Submodule.fg_of_fg_map_of_fg_inf_ker T h1 h2)
 
 /- English proof (translation)
-Introduce `E _ _ _ a`. Proceed by induction on `a using Nat.strong_induction_on with`. Consider the case `_ a ih`. Introduce `L hL W hW X hX N`. Establish `hle : Submodule.span ℂ (formsGL E a L W X N) ≤ hX.toFinset.sup fun χ => Submodule.span ℂ (formsGL E a L W {χ} N)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `φ ⟨h1, h2, h3, χ, hχ, h4⟩`. Establish `hmem : Submodule.span ℂ (formsGL E a L W {χ} N) ≤ hX.toFinset.sup fun χ => Submodule.span ℂ (formsGL E a L W {χ} N)` using `Finset.le_sup (f := fun χ => Submodule.span ℂ (formsGL E a L W {χ} N)) (hX.mem_toFinset.2 hχ)`. Conclude with `hmem (Submodule.subset_span ⟨h1, h2, h3, χ, rfl, h4⟩)`. Establish `hs : ∀ χ, FiniteDimensional ℂ (Submodule.span ℂ (formsGL E a L W {χ} N))` using `fun χ => finiteDimensional_single E a (fun b hb => ih b hb) L hL W hW χ N`.
-
-Conclude with `Submodule.finiteDimensional_of_le hle`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coreFiniteGL : CoreFiniteGL := by
   intro E _ _ _ a

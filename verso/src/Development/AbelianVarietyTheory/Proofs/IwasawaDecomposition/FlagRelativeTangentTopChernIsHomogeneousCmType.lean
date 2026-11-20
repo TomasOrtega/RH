@@ -6,9 +6,9 @@ open Classical
 namespace GlobalTheory.GrassTop
 
 /- English proof (translation)
-Establish `h : (rootDiscr m).IsHomogeneous (∑ τ, ∑ j : Fin (m τ), ∑ _i ∈ Finset.Iio j, 1)`. Unfold `GlobalTheory.GoodMetric.rootDiscr`. Use `IsHomogeneous.prod _ _ _ fun τ _ => ?_` and prove the remaining obligations. Use `IsHomogeneous.prod _ _ _ fun j _ => ?_` and prove the remaining obligations. Use `IsHomogeneous.prod _ _ _ fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isHomogeneous_X _ _).sub (isHomogeneous_X _ _)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_const, smul_eq_mul, mul_one, Fin.card_Iio]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => j) (m τ), Finset.sum_range_id]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootDiscr_isHomogeneous_sum {ι : Type} [Fintype ι] (m : ι → ℕ) :
     (rootDiscr m).IsHomogeneous (∑ τ, m τ * (m τ - 1) / 2) := by
@@ -24,9 +24,9 @@ theorem rootDiscr_isHomogeneous_sum {ι : Type} [Fintype ι] (m : ι → ℕ) :
   rw [Fin.sum_univ_eq_sum_range (fun j => j) (m τ), Finset.sum_range_id]
 
 /- English proof (translation)
-Use `rootDiscr_isHomogeneous_sum Dw.mult using 1` and compare the differences between its conclusion and the goal. Establish `hc : Fintype.card {τ : E →+* ℂ // ¬ τ (H.rt : E) = H.rt0} = Fintype.card (GlobalTheory.AllWt.Psi H)` using `Fintype.card_congr { toFun := fun τ => ⟨conjEmb τ.1, GlobalTheory.AllWt.conj_mem τ.2⟩ invFun := fun τ => ⟨conjEmb τ.1, GlobalTheory.AllWt.conj_not_mem τ⟩ left_inv := fun τ => Subtype.ext (GlobalTheory.AllWt.conjEmb_conjEmb _) right_inv := fun τ => Subtype.ext (GlobalTheory.AllWt. …`. Establish `hp : Fintype.card (GlobalTheory.AllWt.Psi H) = (Finset.univ.filter fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0).card`. Rewrite using `[Fintype.card_subtype]`. Establish `hq : Fintype.card (GlobalTheory.AllWt.Psi H) = (Finset.univ.filter fun τ : E →+* ℂ => ¬ τ (H.rt : E) = H.rt0).card`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hc, Fintype.card_subtype]`. Establish `e : ∀ τ : E →+* ℂ, Dw.mult τ * (Dw.mult τ - 1) / 2 = if τ (H.rt : E) = H.rt0 then Dw.p * (Dw.p - 1) / 2 else Dw.q * (Dw.q - 1) / 2`. Apply the tactic sequence `intro τ; unfold Datum.mult; split_ifs <;> rfl`. Simplify using `only [e]`. Rewrite using `[Finset.sum_ite, Finset.sum_const, Finset.sum_const, smul_eq_mul, smul_eq_mul, ← hp, ← hq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

@@ -4,7 +4,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WEMulNUMulTD
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PrinTwo.coord_eq_of_far` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPrincipalSeriesCoordinateNearInfinity.lean&line=41#L41)
 -/

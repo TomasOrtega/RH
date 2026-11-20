@@ -7,7 +7,7 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Matrix NumberField ComplexConjugate
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.MultiplicativeHeights.HermForm.h`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem approxB_h_add_right {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (x y z : Fin r → K) : S.h x (y + z) = S.h x y + S.h x z := by
@@ -15,9 +15,9 @@ theorem approxB_h_add_right {K : Type} [Field K] [NumberField K] {r : ℕ} (S : 
   simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.MultiplicativeHeights.HermForm.h`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem approxB_h_smul_right {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (x y : Fin r → K) (a : K) : S.h x (a • y) = a * S.h x y := by
@@ -30,7 +30,7 @@ theorem approxB_h_smul_right {K : Type} [Field K] [NumberField K] {r : ℕ} (S :
   ring
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.MultiplicativeHeights.HermForm.h`. Simplify using `only [Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem approxB_h_sub_right {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (x y z : Fin r → K) : S.h x (y - z) = S.h x y - S.h x z := by
@@ -38,14 +38,14 @@ theorem approxB_h_sub_right {K : Type} [Field K] [NumberField K] {r : ℕ} (S : 
   simp only [Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[ReciprocityTheory.MultiplicativeHeights.HermForm.h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem approxB_h_zero_right {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (x : Fin r → K) : S.h x 0 = 0 := by
   simp [ReciprocityTheory.MultiplicativeHeights.HermForm.h]
 
 /- English proof (translation)
-Conclude with `map_sum (AddMonoidHom.mk' (S.h x) ((approxB_h_add_right S) x)) f s`.
+A detailed English derivation is pending.
 -/
 theorem approxB_h_sum_right {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     {α : Type*} (s : Finset α) (x : Fin r → K) (f : α → Fin r → K) :
@@ -53,9 +53,9 @@ theorem approxB_h_sum_right {K : Type} [Field K] [NumberField K] {r : ℕ} (S : 
   exact map_sum (AddMonoidHom.mk' (S.h x) ((approxB_h_add_right S) x)) f s
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.MultiplicativeHeights.HermForm.h`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem approxB_h_smul_left {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (x y : Fin r → K) (a : K) : S.h (a • x) y = S.c a * S.h x y := by
@@ -68,7 +68,7 @@ theorem approxB_h_smul_left {K : Type} [Field K] [NumberField K] {r : ℕ} (S : 
   ring
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.MultiplicativeHeights.HermForm.h`. Simplify using `only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem hermForm_h_add_left {K : Type} [Field K] [NumberField K] {r : ℕ}
     (S : HermForm K r) (x y z : Fin r → K) : S.h (x + y) z = S.h x z + S.h y z := by
@@ -76,7 +76,7 @@ private theorem hermForm_h_add_left {K : Type} [Field K] [NumberField K] {r : �
   simp only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Conclude with `map_sum (AddMonoidHom.mk' (fun z => S.h z y) (fun a b => (hermForm_h_add_left S) a b y)) f s`.
+A detailed English derivation is pending.
 -/
 theorem approxB_h_sum_left {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     {α : Type*} (s : Finset α) (y : Fin r → K) (f : α → Fin r → K) :
@@ -84,7 +84,7 @@ theorem approxB_h_sum_left {K : Type} [Field K] [NumberField K] {r : ℕ} (S : H
   exact map_sum (AddMonoidHom.mk' (fun z => S.h z y) (fun a b => (hermForm_h_add_left S) a b y)) f s
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[embVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem approxB_embVec_add {K : Type} [Field K] [NumberField K] {r : ℕ} (σ : K →+* ℂ)
     (x y : Fin r → K) : embVec σ (x + y) = embVec σ x + embVec σ y := by
@@ -92,7 +92,7 @@ theorem approxB_embVec_add {K : Type} [Field K] [NumberField K] {r : ℕ} (σ : 
   simp [embVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[embVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem approxB_embVec_sub {K : Type} [Field K] [NumberField K] {r : ℕ} (σ : K →+* ℂ)
     (x y : Fin r → K) : embVec σ (x - y) = embVec σ x - embVec σ y := by
@@ -100,7 +100,7 @@ theorem approxB_embVec_sub {K : Type} [Field K] [NumberField K] {r : ℕ} (σ : 
   simp [embVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[embVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem approxB_embVec_smul {K : Type} [Field K] [NumberField K] {r : ℕ} (σ : K →+* ℂ)
     (a : K) (x : Fin r → K) : embVec σ (a • x) = σ a • embVec σ x := by
@@ -108,7 +108,7 @@ theorem approxB_embVec_smul {K : Type} [Field K] [NumberField K] {r : ℕ} (σ :
   simp [embVec]
 
 /- English proof (translation)
-Conclude with `map_sum (AddMonoidHom.mk' (embVec σ) (approxB_embVec_add σ)) f s`.
+A detailed English derivation is pending.
 -/
 theorem approxB_embVec_sum {K : Type} [Field K] [NumberField K] {r : ℕ} (σ : K →+* ℂ)
     {α : Type*} (s : Finset α) (f : α → Fin r → K) :
@@ -116,47 +116,41 @@ theorem approxB_embVec_sum {K : Type} [Field K] [NumberField K] {r : ℕ} (σ : 
   exact map_sum (AddMonoidHom.mk' (embVec σ) (approxB_embVec_add σ)) f s
 
 /- English proof (translation)
-Use `set M : Matrix (ApproxPosIdx r p) (ApproxPosIdx r p) K := Matrix.of fun k j => S.h (l k.1) (l j.1) with hM`. Use `set Δ := M.det with hΔdef`. Set `bv : (Fin r → K) → ApproxPosIdx r p → K` to `fun x k => S.h (l k.1) x`. Set `coef : (Fin r → K) → ApproxPosIdx r p → K` to `fun x => M.adjugate *ᵥ bv x`. Set `T : (Fin r → K) → (Fin r → K)` to `fun x => Δ • x - ∑ k', coef x k' • l k'.1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hMinj : ∀ g, M *ᵥ g = 0 → g = 0`. Introduce `g hg`. Apply `hinj g` to reduce the goal to its premises. Introduce `k`. Use `congrFun hg k` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mulVec, dotProduct, hM, Matrix.of_apply, Pi.zero_apply] at this`. Rewrite using `[approxB_h_sum_right]`. Simplify `this` using `[approxB_h_smul_right, mul_comm]`. Establish `hΔ : Δ ≠ 0`. Introduce `h0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg0, hg⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Conclude with `hg0 (hMinj g hg)`. Establish `horth : ∀ x (k : ApproxPosIdx r p), S.h (l k.1) (T x) = 0`. Introduce `x k`. Establish `hMc : M *ᵥ coef x = Δ • bv x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [coef, mulVec_mulVec, mul_adjugate, smul_mulVec, one_mulVec, hΔdef]`. Establish `hk` using `congrFun hMc k`. Simplify using `only [mulVec, dotProduct, hM, Matrix.of_apply, Pi.smul_apply, smul_eq_mul] at hk`. Simplify using `only [T, approxB_h_sub_right, approxB_h_smul_right, approxB_h_sum_right]`. Rewrite using `[← hk]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[bv, mul_comm]`. Establish `hint : ∀ x ∈ L, T x ∈ L`. Introduce `x hx`. Set `f` to `algebraMap (𝓞 K) K`. Establish `hMi : ∀ k j, ∃ z : 𝓞 K, f z = M k j` using `fun k j => hL _ (hl _) _ (hl _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose Mz hMz using hMi`. Establish `hbi : ∀ k, ∃ z : 𝓞 K, f z = bv x k` using `fun k => hL _ (hl _) _ hx`. Use `choose bz hbz using hbi`. Establish `hMmap : f.mapMatrix (Matrix.of Mz) = M` using `by ext k j; simp [hMz]`. Establish `hΔz : f (Matrix.of Mz).det = Δ` using `by rw [RingHom.map_det, hMmap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcz : ∀ k, f (((Matrix.of Mz).adjugate *ᵥ bz) k) = coef x k`. Introduce `k`. Rewrite using `[show coef x = M.adjugate *ᵥ bv x from rfl, ← hMmap, ← RingHom.map_adjugate]`. Simplify using `only [mulVec, dotProduct, RingHom.mapMatrix_apply, Matrix.map_apply, map_sum, map_mul, hbz]`. Establish `hT : T x = (Matrix.of Mz).det • x - ∑ k', ((Matrix.of Mz).adjugate *ᵥ bz) k' • l k'.1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [T, ← hΔz, ← hcz]`. Simplify using `only [f, algebraMap_smul]`. Rewrite using `[hT]`. Conclude with `L.sub_mem (L.smul_mem _ hx) (L.sum_mem fun k _ => L.smul_mem _ (hl _))`. Establish `hbadd : ∀ x y, bv (x + y) = bv x + bv y` using `fun x y => funext fun k => approxB_h_add_right S _ x y`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hbsmul : ∀ (c : K) x, bv (c • x) = c • bv x` using `fun c x => funext fun k => by simp [bv, approxB_h_smul_right]`. Set `Tl : (Fin r → K) →ₗ[K] (Fin r → K)` to `{ toFun := T map_add' := fun x y => by`. Simplify using `only [T, coef, hbadd, mulVec_add, Pi.add_apply, add_smul, Finset.sum_add_distrib, smul_add]`. Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := fun c x => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [T, coef, hbsmul, mulVec_smul, Pi.smul_apply, smul_eq_mul, mul_smul, ← Finset.smul_sum, RingHom.id_apply, smul_sub]`. Rewrite using `[smul_comm Δ c x] }`. Establish `hker : LinearMap.ker Tl ≤ Submodule.span K (Set.range fun k : ApproxPosIdx r p => l k.1)`. Introduce `x hx`. Establish `h0 : T x = 0` using `LinearMap.mem_ker.mp hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hx' : x = Δ⁻¹ • ∑ k', coef x k' • l k'.1`. Establish `h1 : Δ • x = ∑ k', coef x k' • l k'.1` using `sub_eq_zero.mp h0`. Rewrite using `[← h1, smul_smul, inv_mul_cancel₀ hΔ, one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfk : Module.finrank K (LinearMap.ker Tl) ≤ p`. Combine the equalities or inequalities in the displayed calculation. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker Tl`. Rewrite `hrn` using `[Module.finrank_fin_fun]`. Establish `hfr : r - p ≤ Module.finrank K (LinearMap.range Tl)` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hspan_v : Submodule.span K (Set.range v) = ⊤` using `hvi.span_eq_top_of_card_eq_finrank' (by simp)`. Establish `hrange : Submodule.span K (Set.range (Tl ∘ v)) = LinearMap.range Tl`. Rewrite using `[Set.range_comp, ← Submodule.map_span, hspan_v, Submodule.map_top]`. Take `⟨κ, a0, ha0, hsp, hli⟩` from `exists_linearIndependent' K (Tl ∘ v)`. Establish `: Finite κ` using `Finite.of_injective a0 ha0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Fintype κ` using `Fintype.ofFinite κ`. Establish `hcard : Fintype.card κ = Module.finrank K (LinearMap.range Tl)`. Rewrite using `[← hrange, ← hsp, finrank_span_eq_card hli]`. Establish `hle : Fintype.card {j : Fin r // ¬ (j : ℕ) < p} ≤ Fintype.card κ`. Rewrite using `[approxB_card_neg hp, hcard]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hfr`. Take `⟨e⟩` from `Function.Embedding.nonempty_of_card_le hle`. Establish `hlia : LinearIndependent K (fun k => T (v (a0 (e k))))` using `hli.comp e e.injective`. Use `⟨Δ, coef, fun k => a0 (e k), hΔ, rfl, horth, hint, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Establish `hsplit : ∑ k : ApproxPosIdx r p, g k.1 • l k.1 + ∑ k : {j : Fin r // ¬ (j : ℕ) < p}, g k.1 • T (v (a0 (e k))) = 0`. Rewrite using `[← hg, ← Fintype.sum_subtype_add_sum_subtype (fun j : Fin r => (j : ℕ) < p)]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => by simp only [dif_pos k.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by simp only [dif_neg k.2]; rfl`. Establish `hBorth : ∀ k' : ApproxPosIdx r p, S.h (l k'.1) (∑ k : {j : Fin r // ¬ (j : ℕ) < p}, g k.1 • T (v (a0 (e k)))) = 0`. Introduce `k'`. Rewrite using `[approxB_h_sum_right]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [approxB_h_smul_right, horth, mul_zero]`.
-
-Establish `hApos : ∀ k' : ApproxPosIdx r p, S.h (l k'.1) (∑ k : ApproxPosIdx r p, g k.1 • l k.1) = 0`. Introduce `k'`. Use `congrArg (S.h (l k'.1)) hsplit` as an intermediate fact. Rewrite `this` using `[approxB_h_add_right, hBorth, add_zero, approxB_h_zero_right]`. Conclude with `this`.
-
-Establish `hg1` using `hinj (fun k => g k.1) hApos`. Establish `hA0 : ∑ k : ApproxPosIdx r p, g k.1 • l k.1 = 0` using `Finset.sum_eq_zero fun k _ => by rw [show g k.1 = 0 from congrFun hg1 k, zero_smul]`. Rewrite `hsplit` using `[hA0, zero_add]`. Establish `hg2` using `(Fintype.linearIndependent_iff.mp hlia) (fun k => g k.1) hsplit`. Introduce `j`.
-
-Distinguish the cases in `hj : (j : ℕ) < p`. Conclude with `congrFun hg1 ⟨j, hj⟩`. Conclude with `hg2 ⟨j, hj⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem approxB_split {K : Type} [Field K] [NumberField K] {r p : ℕ} (hp : p ≤ r) (S : HermForm K r)
     (L : Submodule (𝓞 K) (Fin r → K)) (hL : IsIntegralOn S L) (l v : Fin r → Fin r → K)

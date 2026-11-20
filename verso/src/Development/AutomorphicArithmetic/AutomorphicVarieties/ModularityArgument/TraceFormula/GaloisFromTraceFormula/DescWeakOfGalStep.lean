@@ -53,14 +53,14 @@ open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComp
 namespace UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
 /- English proof (translation)
-The claim follows from `cuspReadI_of levShrink (cuspCaseJ cuspMem cuspFin normTw normUniq satComb absInf mtoLaws) (ctCaseJ (stepT (iwaT levShrink typeSat) sliceT stabT) splitLim satComb cdAddG absInf mtoLaws)`.
+A detailed English derivation is pending.
 -/
 theorem cuspReadI : CuspReadI :=
   cuspReadI_of levShrink (cuspCaseJ cuspMem cuspFin normTw normUniq satComb absInf mtoLaws)
     (ctCaseJ (stepT (iwaT levShrink typeSat) sliceT stabT) splitLim satComb cdAddG absInf mtoLaws)
 
 /- English proof (translation)
-The claim follows from `asmTh_of (rChoice places levelFn regFn) (fun h => rUEval h places exAct splitLine inertLine uConj) (fun h1 h3 => rFamMatch h1 h3 places exAct exHecke2 ctEx muConj) ends (twDataT cdAddG muInf mwAt dualWt) (regOf mwAt dualWt) unStable muInf (csdInert GOne.csdSat) (rSep places) regC …`.
+A detailed English derivation is pending.
 -/
 theorem asmTh : AsmTh :=
   asmTh_of (rChoice places levelFn regFn) (fun h => rUEval h places exAct splitLine inertLine uConj)
@@ -68,7 +68,7 @@ theorem asmTh : AsmTh :=
     unStable muInf (csdInert GOne.csdSat) (rSep places) regCt trAvg places
 
 /- English proof (translation)
-The claim follows from `asmTh hU hG hM h1 h3 (endoS (enlarge hS hecke_eigenvalues_unitary_one_factor unitary_one_characters_separated_by_eigenvalues places) places hE) (stableS (enlarge hS hecke_eigenvalues_unitary_one_factor unitary_one_characters_separated_by_eigenvalues places) places hB)`.
+A detailed English derivation is pending.
 -/
 theorem runTh_of (hU : GlobalTheory.BCT.USide) (hG : G2s) (hM : MuEx) (h1 : MatchUnit) (h3 : MatchSplit) (hS : StUnit) (hE : EndoBlockG)
     (hB : StableBlockG) : RunTh :=

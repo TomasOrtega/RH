@@ -25,13 +25,13 @@ def infHom (lam : InfinitePlace E → DomWeight n) : Submodule ℂ (Wsp lam →�
     simp only [LinearMap.smul_apply, hT x hx, map_smul]
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem RU_mul (a b : UA E n) (φ : UA E n → ℂ) : RU E n (a * b) φ = RU E n a (RU E n b φ) := by
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Introduce `x hx w`. Simplify using `only [LinearMap.comp_apply, hT x hx, ← RU_mul, GlobalTheory.DefU.fin_mul_inf k.2 hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem comp_mem_infHom (lam : InfinitePlace E → DomWeight n) {T : Wsp lam →ₗ[ℂ] (UA E n → ℂ)} (hT : T ∈ infHom lam)
     (k : finU E n) : RU E n k.1 ∘ₗ T ∈ infHom lam := by
@@ -39,11 +39,11 @@ theorem comp_mem_infHom (lam : InfinitePlace E → DomWeight n) {T : Wsp lam →
   simp only [LinearMap.comp_apply, hT x hx, ← RU_mul, GlobalTheory.DefU.fin_mul_inf k.2 hx]
 
 /- English proof (translation)
-Establish `hA : A ∈ Submodule.span ℂ (Set.range fun x : infU E n => wInf lam (x : UA E n))`. Rewrite using `[GlobalTheory.T.span_infinitePlacesWeightRepresentation_eq_top E n lam]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `h`. Conclude with `⟨RU E n x.1, fun T hT w => hT x.1 x.2 w⟩`. Consider the case `zero => exact ⟨0, fun T _ w => by simp⟩`. Consider the case `add A B _ _ hA hB`. Take `⟨P, hP⟩` from `hA`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ⟩` from `hB`. Conclude with `⟨P + Q, fun T hT w => by simp [hP T hT, hQ T hT]⟩`. Consider the case `smul c A _ hA`. Take `⟨P, hP⟩` from `hA`. Conclude with `⟨c • P, fun T hT w => by simp [hP T hT]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_op (lam : InfinitePlace E → DomWeight n) (A : Module.End ℂ (Wsp lam)) :
     ∃ P : Module.End ℂ (UA E n → ℂ), ∀ T ∈ infHom lam, ∀ w, T (A w) = P (T w) := by
@@ -63,11 +63,11 @@ theorem exists_op (lam : InfinitePlace E → DomWeight n) (A : Module.End ℂ (W
     exact ⟨c • P, fun T hT w => by simp [hP T hT]⟩
 
 /- English proof (translation)
-Use `b.ext fun m => ?_` and prove the remaining obligations. Take `⟨P, hP⟩` from `exists_op lam ((b.coord k).smulRight (b m))`. Use `congrArg P h` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Rewrite using `[LinearMap.zero_apply, ← this]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single k]`. Rewrite using `[← hP _ (hT k)]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[← hP _ (hT j)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply, hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eq_zero_of_sum (lam : InfinitePlace E → DomWeight n) {ι : Type} [Fintype ι] (b : Module.Basis ι ℂ (Wsp lam))
     (T : ι → Wsp lam →ₗ[ℂ] (UA E n → ℂ)) (hT : ∀ j, T j ∈ infHom lam) (h : ∑ j, T j (b j) = 0) (k : ι) :
@@ -91,15 +91,13 @@ namespace GlobalTheory.BCT.TrKer
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Use `set Sv := Submodule.span ℂ {ψ | ∃ T ∈ infHom lam, (∀ w, T w ∈ π) ∧ ∃ w, T w = ψ}`. Establish `hle : Sv ≤ π` using `Submodule.span_le.2 (by rintro _ ⟨T, -, hT, w, rfl⟩; exact hT w)`. Establish `hst : ∀ g, ∀ ψ ∈ Sv, RU E n g ψ ∈ Sv`. Introduce `g ψ hψ`. Proceed by induction on `hψ using Submodule.span_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem ψ h`. Take `⟨T, hT, hTπ, w, rfl⟩` from `h`. Rewrite using `[eq_splitFin_mul_splitInf g, RU_mul, ← hT _ (splitInf E n g).2]`. Conclude with `Submodule.subset_span ⟨_, comp_mem_infHom lam hT (splitFin E n g), fun w' => hπ.stable _ _ (hTπ w'), _, rfl⟩`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a c _ _ ha hc => rw [map_add]`. Conclude with `add_mem ha hc`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c ha`. Take `⟨T, hT0, hTπ, hT⟩` from `GlobalTheory.T.exists_ne_zero_weightTensor_intertwining_autRep E n lam π hπ hW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw⟩` from `DFunLike.ne_iff.1 hT0`. Break down `hπ.irred Sv hle hst with h | h` into its components or cases. Establish `hm : T w ∈ Sv` using `Submodule.subset_span ⟨T, hT, hTπ, w, rfl⟩`. Rewrite `hm` using `[h, Submodule.mem_bot]`. Conclude with `absurd hm hw`.
-
-Rewrite using `[h]`. Conclude with `hφ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_values (lam : InfinitePlace E → DomWeight n) (π : Submodule ℂ (UA E n → ℂ)) (hπ : IsAutRepU π)
     (hW : ∀ v : InfinitePlace E, HasWeightAt π v.embedding (lam v)) {φ : UA E n → ℂ} (hφ : φ ∈ π) :
@@ -126,31 +124,31 @@ theorem mem_span_values (lam : InfinitePlace E → DomWeight n) (π : Submodule 
   · rw [h]; exact hφ
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ (Wsp lam)`. Establish `hdec : ∀ ψ ∈ Submodule.span ℂ {ψ | ∃ T ∈ infHom lam, (∀ w, T w ∈ π) ∧ ∃ w, T w = ψ}, ∃ T : Fin (Module.finrank ℂ (Wsp lam)) → (Wsp lam →ₗ[ℂ] (UA E n → ℂ)), (∀ j, T j ∈ infHom lam) ∧ (∀ j w, T j w ∈ π) ∧ ψ = ∑ j, T j (b j)`. Introduce `ψ hψ`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem ψ h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨T, hT, hTπ, w, rfl⟩` from `h`. Use `⟨fun j => b.repr w j • T, fun j => Submodule.smul_mem _ _ hT, fun j w' => π.smul_mem _ (hTπ w'), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Consider the case `zero => exact ⟨0, fun _ => zero_mem _, fun _ _ => π.zero_mem, by simp⟩`. Consider the case `add a c _ _ ha hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 
-Take `⟨A, hA, hAπ, rfl⟩` from `ha`. Take `⟨C, hC, hCπ, rfl⟩` from `hc`. Conclude with `⟨A + C, fun j => add_mem (hA j) (hC j), fun j w => π.add_mem (hAπ j w) (hCπ j w), by simp [Finset.sum_add_distrib]⟩`. Consider the case `smul c a _ ha`. Take `⟨A, hA, hAπ, rfl⟩` from `ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c • A, fun j => Submodule.smul_mem _ c (hA j), fun j w => π.smul_mem c (hAπ j w), by simp [Finset.smul_sum]⟩`. Take `⟨T, hT, hTπ, rfl⟩` from `hdec φ (mem_span_values lam π hπ hW hφ)`. Establish `hfixT : ∀ k ∈ globLev S K', ∀ j, RU E n k.1 ∘ₗ T j = T j`. Introduce `k hk j`. Establish `h1 : RU E n k.1 (∑ j, T j (b j)) = ∑ j, T j (b j)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hfix ⟨k, hk⟩` as an intermediate fact. Simplify `this` using `[RF]`. Establish `h2 : ∑ i, (RU E n k.1 ∘ₗ T i - T i) (b i) = 0`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, Finset.sum_sub_distrib, ← map_sum, h1, sub_self]`. Conclude with `sub_eq_zero.1 (eq_zero_of_sum lam b _ (fun i => sub_mem (comp_mem_infHom lam (hT i) k) (hT i)) h2 j)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hFa⟩ : ∃ F : Fin (Module.finrank ℂ (Wsp lam)) → finU E n → Module.Dual ℂ (Wsp lam), ∀ j x w, F j x w = T j w x.1` from `⟨fun j x => LinearMap.proj (R := ℂ) (φ := fun _ : UA E n => ℂ) x.1 ∘ₗ T j, fun _ _ _ => rfl⟩`. Establish `hphi : ∀ j, phiFun lam (F j) = T j`. Introduce `j`. Use `LinearMap.ext fun w => funext fun g => ?_` and prove the remaining obligations. Rewrite using `[phiFun_apply, hFa]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg` using `eq_splitFin_mul_splitInf g`. Establish `hw : wInf lam g = wInf lam (splitInf E n g).1` using `by conv_lhs => rw [hg]`. Rewrite using `[map_mul, wInf_fin, one_mul]`. Rewrite using `[hw, hT j _ (splitInf E n g).2]`. Express the relevant statement in the definitionally equal form `T j w ((splitFin E n g).1 * (splitInf E n g).1) = T j w g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg]`. Establish `hF : ∀ j, F j ∈ vecM S lam K'`. Introduce `j`. Use `⟨fun γ x => ?_, fun k hk x => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.dualMap_apply, hFa, hFa]`. Take `⟨r, hr, hrf, hrc⟩` from `GlobalTheory.T.exists_definiteUnitaryRationalPoint_finite_and_infinite_parts E n γ`. Use `set i := splitInf E n r`. Establish `hri : r = (finPt γ).1 * i.1` using `by rw [← hrf]; exact eq_splitFin_mul_splitInf r`. Establish `hc : ∀ v : InfinitePlace E, cEmb v.embedding (i.1⁻¹) = GeneralLinearGroup.map v.embedding (γ⁻¹).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v`. Establish `: i.1⁻¹ = r⁻¹ * (finPt γ).1` using `by rw [hri]; group`. Rewrite using `[this, map_mul, map_inv, hrc v, cEmb_fin, mul_one, Subgroup.coe_inv, map_inv]`. Establish `hwi : wInf lam i.1⁻¹ = wAt lam γ⁻¹`. Express the relevant statement in the definitionally equal form `PiTensorProduct.map (fun v => GlobalTheory.Branching.sqRep ℂ n (lam v) (cEmb v.embedding i.1⁻¹)) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `wAt`. Simplify using `only [hc]`. Establish `hl` using `(hπ.aut _ (hTπ j w)).left r hr (i.1⁻¹ * x.1)`. Rewrite using `[← hwi, hT j _ (inv_mem i.2)]`. Express the relevant statement in the definitionally equal form `T j w ((finPt γ).1 * x.1) = T j w (x.1 * i.1⁻¹)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[GlobalTheory.DefU.fin_mul_inf x.2 (inv_mem i.2), ← hl, hri]`. Use `congr 1`. Use `group`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[hFa, hFa]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `T j w (x.1 * k.1) = T j w x.1`. Conclude with `congrFun (LinearMap.congr_fun (hfixT k hk j) w) x.1`. Use `⟨∑ j, ⟨F j, hF j⟩ ⊗ₜ b j, ?_⟩` and prove the remaining obligations. Simplify using `[map_sum, Phi_tmul, hphi]`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_of_mem (S : Set (Pl E)) (K' : ∀ w : Pl E, Subgroup (UL n w)) (lam : InfinitePlace E → DomWeight n)
     (π : Submodule ℂ (UA E n → ℂ)) (hπ : IsAutRepU π) (hW : ∀ v : InfinitePlace E, HasWeightAt π v.embedding (lam v))
@@ -231,7 +229,7 @@ theorem mem_range_of_mem (S : Set (Pl E)) (K' : ∀ w : Pl E, Subgroup (UL n w))
   simp [map_sum, Phi_tmul, hphi]
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n _ S _ lam K' _`. Use `iSup_le fun π => iSup_le fun hπ => ?_` and prove the remaining obligations. Introduce and unpack `φ ⟨hφ, hfix⟩`. Conclude with `mem_range_of_mem S K' lam π hπ.1 hπ.2 hφ hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem forms_le_range : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → forms S lam K' ≤ LinearMap.range (Phi S lam K') := by
   intro E _ _ _ _ n _ S _ lam K' _

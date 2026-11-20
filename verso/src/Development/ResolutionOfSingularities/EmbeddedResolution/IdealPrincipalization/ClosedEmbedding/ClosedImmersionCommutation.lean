@@ -51,7 +51,7 @@ def AdmissibilityStableUnderSmoothPullback : Prop :=
       h ≫ T.structMap = q → (T.pullbackAlong Y q h).IsAdmissible
 
 /- English proof (translation)
-Introduce `T hV Y q h hs hqc hq`. Use `hs` as an intermediate fact. Use `hqc` as an intermediate fact. Conclude with `MarkedIdealWithBoundary.isAdmissible_pullbackAlong_of_smooth T hV Y q h hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAdmissible_pullbackAlong_of_smooth : AdmissibilityStableUnderSmoothPullback.{u} := by
   intro T hV Y q h hs hqc hq
@@ -60,7 +60,7 @@ theorem isAdmissible_pullbackAlong_of_smooth : AdmissibilityStableUnderSmoothPul
   exact MarkedIdealWithBoundary.isAdmissible_pullbackAlong_of_smooth T hV Y q h hq
 
 /- English proof (translation)
-The claim follows from `rules.outputLevelData_maxOrderReduction_eq_at_dim (markedTripleOrderOne k X p I E) h`.
+A detailed English derivation is pending.
 -/
 private theorem maxOrderReduction_outputLevelData_eq_markedBlowupSeq (rules : PrincipalizationRules.{u}) (k : Type u) [Field k]
     (X : Scheme.{u}) (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
@@ -69,9 +69,7 @@ private theorem maxOrderReduction_outputLevelData_eq_markedBlowupSeq (rules : Pr
   rules.outputLevelData_maxOrderReduction_eq_at_dim (markedTripleOrderOne k X p I E) h
 
 /- English proof (translation)
-Use `⟨rfl, fun i _ => Iso.refl _, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Category.id_comp _`. Introduce `i hi`. Simplify using `only [BlowupSequenceData.toSequenceOfBlowups_blowupMorphism, BlowupSequenceData.ofSequenceOfBlowups_blowupMorphism, Iso.refl_hom]`. Conclude with `(Category.id_comp (s.transitionMapSucc i)).trans (Category.comp_id (s.transitionMapSucc i)).symm`.
-
-Introduce `i hi`. Conclude with `Scheme.IdealSheafData.comap_id _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.Isomorphic s := by
@@ -84,7 +82,7 @@ private theorem ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic {X : Scheme.{
     exact Scheme.IdealSheafData.comap_id _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hp`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isPushforwardSequenceOfBlowups_congr_hom {S X : Scheme.{u}} {f g : S ⟶ X}
     [AlgebraicGeometry.IsClosedImmersion f] [AlgebraicGeometry.IsClosedImmersion g]
@@ -94,7 +92,7 @@ private theorem isPushforwardSequenceOfBlowups_congr_hom {S X : Scheme.{u}} {f g
   exact hp
 
 /- English proof (translation)
-Use `isNoetherian_schemeAt s i hi` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isLocallyNoetherian_schemeAt {X : Scheme.{u}} (s : SequenceOfBlowups X)
     [AlgebraicGeometry.IsNoetherian X] (i : ℕ) (hi : i ≤ s.length) :
@@ -103,11 +101,11 @@ private theorem isLocallyNoetherian_schemeAt {X : Scheme.{u}} (s : SequenceOfBlo
   infer_instance
 
 /- English proof (translation)
-Use `nonzeroOnComponents_of_locally_eq_coordIdeal p (Scheme.Hom.ker τ) TopologicalSpace.NoetherianSpace.finite_irreducibleComponents ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hsupp` using `Scheme.Hom.support_ker τ`. Establish `hy' : y ∈ closure (Set.range (⇑τ))`. Rewrite using `[← hsupp]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Establish `hcl : IsClosed (Set.range (⇑τ))` using `(AlgebraicGeometry.Scheme.Hom.isClosedEmbedding τ).isClosed_range`. Rewrite `hy'` using `[hcl.closure_eq]`. Take `⟨x, rfl⟩` from `hy'`. Take `⟨U, hxU, mm, ch, S, hcard, heq⟩` from `hcod x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U, hxU, mm, ch, S, Finset.card_pos.mp (by omega), heq⟩`.
+A detailed English derivation is pending.
 -/
 private theorem nonzeroOnComponents_ker_of_hasEtaleCoordCodim {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) (τ : X ⟶ X')
@@ -134,7 +132,7 @@ variable {X X' : Scheme.{u}} {k : Type u} [Field k] {p : X' ⟶ Spec (CommRingCa
   {τ : X ⟶ X'} {I : X.IdealSheafData} {c : ℕ}
 
 /- English proof (translation)
-The claim follows from `isNoetherian_of_locallyOfFiniteType (C.projection ≫ p)`.
+A detailed English derivation is pending.
 -/
 theorem isNoetherian_disjointUnion [AlgebraicGeometry.LocallyOfFiniteType p]
     (C : MaximalContactCover p τ I c) :
@@ -147,7 +145,7 @@ instance instIsNoetherianTotal [AlgebraicGeometry.LocallyOfFiniteType p]
   isNoetherian_disjointUnion C
 
 /- English proof (translation)
-Use `isNoetherian_disjointUnion C` as an intermediate fact. Conclude with `isNoetherian_of_locallyOfFiniteType C.toCoverData.iInfImageIdeal.subschemeι`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isNoetherian_subscheme_iInfImageIdeal [AlgebraicGeometry.LocallyOfFiniteType p]
     (C : MaximalContactCover p τ I c) :
@@ -175,65 +173,59 @@ private def IsClosedEmbeddingCompatibleInCodim (rules : PrincipalizationRules.{u
         (rules.markedBlowupSeq k X' p' (imageIdealSheaf j I) []).toSequenceOfBlowups
 
 /- English proof (translation)
-Introduce `c`. Proceed by induction on `c with`. Consider the case `zero`. Introduce `k _ _ X X' p p' j _ _ _ _ _ _ _ _ hc`. Conclude with `absurd hc (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ c' ih`. Introduce `k _ hcz X X' p p' j hji hsm hft hqc hsm' hft' hqc' hjp hc hcod I hI hIim`. Use `hcz` as an intermediate fact. Use `hsm` as an intermediate fact. Use `hft` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hqc` as an intermediate fact. Use `hsm'` as an intermediate fact. Use `hft'` as an intermediate fact. Use `hqc'` as an intermediate fact. Establish `hNX : AlgebraicGeometry.IsNoetherian X` using `isNoetherian_of_locallyOfFiniteType p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNX' : AlgebraicGeometry.IsNoetherian X'` using `isNoetherian_of_locallyOfFiniteType p'`. Establish `hvX : (markedTripleOrderOne k X p I []).IsAdmissible` using `markedTripleOrderOne_isAdmissible k X p I hI [] (inStrictNormalCrossingPosition_nil p)`. Establish `hvX' : (markedTripleOrderOne k X' p' (imageIdealSheaf j I) []).IsAdmissible` using `markedTripleOrderOne_isAdmissible k X' p' (imageIdealSheaf j I) hIim [] (inStrictNormalCrossingPosition_nil p')`. Break down `isEmpty_or_nonempty ↥X with hXe | hXne` into its components or cases. Use `hXe` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIsub : IsEmpty ↥I.subscheme` using `Function.isEmpty (fun y => I.subschemeι y)`. Establish `himg : imageIdealSheaf j I = ⊤`. Rewrite using `[Scheme.IdealSheafData.eq_top_iff_support_eq_empty, imageIdealSheaf_eq_ker j I, Scheme.Hom.support_ker (I.subschemeι ≫ j), Set.range_eq_empty, closure_empty]`. Establish `hcs1 : orderAtLeastLocus I 1 = (∅ : Set ↥X)` using `Set.eq_empty_of_isEmpty _`. Establish `hcs2 : orderAtLeastLocus (imageIdealSheaf j I) 1 = (∅ : Set ↥X')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[himg]`. Conclude with `orderAtLeastLocus_top_eq_empty 1 le_rfl`. Establish `hspec` using `rules.isMaxOrderReduction_outputLevelData hB (krullDimSucc X + krullDimSucc X')`. Establish `h1` using `hspec.trivial_of_coSupport_empty (markedTripleOrderOne k X p I []) hvX (show krullDimSucc X ≤ krullDimSucc X + krullDimSucc X' by omega) hcs1`. Establish `h2` using `hspec.trivial_of_coSupport_empty (markedTripleOrderOne k X' p' (imageIdealSheaf j I) []) hvX' (show krullDimSucc X' ≤ krullDimSucc X + krullDimSucc X' by omega) hcs2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[maxOrderReduction_outputLevelData_eq_markedBlowupSeq rules k X p I [] (krullDimSucc X + krullDimSucc X') (show krullDimSucc X ≤ krullDimSucc X + krullDimSucc X' by omega)]`. Rewrite `h2` using `[maxOrderReduction_outputLevelData_eq_markedBlowupSeq rules k X' p' (imageIdealSheaf j I) [] (krullDimSucc X + krullDimSucc X') (show krullDimSucc X' ≤ krullDimSucc X + krullDimSucc X' by omega)]`. Conclude with `IsPushforwardBlowupSeq.of_length_eq_zero j _ _ h1 h2`. Establish `hch : HasLocalEtaleCharts p'`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨U, mm, hyU, haff, hne⟩` from `exists_etaleChart p' y`. Conclude with `⟨U, hyU, mm, hne⟩`. Take `⟨C⟩` from `nonempty_maximalContactCover p' j I (c' + 1) hc hcod hch`. Establish `hNW : AlgebraicGeometry.IsNoetherian C.toCoverData.disjointUnion` using `MaximalContactCover.isNoetherian_disjointUnion C`. Establish `hnoeth : AlgebraicGeometry.IsNoetherian C.toCoverData.iInfImageIdeal.subscheme` using `MaximalContactCover.isNoetherian_subscheme_iInfImageIdeal C`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNSW : TopologicalSpace.NoetherianSpace ↥C.toCoverData.disjointUnion` using `inferInstance`. Establish `hNSH : TopologicalSpace.NoetherianSpace ↥C.hypersurfaceScheme` using `inferInstance`. Establish `hsmH : AlgebraicGeometry.Smooth C.hypersurfaceStructureMap` using `C.smooth_hypersurfaceStructureMap`. Establish `hsmP : AlgebraicGeometry.Smooth C.projection`. Rewrite using `[C.projection_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `C.toCoverData.smooth_disjointUnionMap`. Establish `hsuP : AlgebraicGeometry.Surjective C.projection` using `C.surjective_projection`. Establish `hsmSB : AlgebraicGeometry.Smooth C.pullbackFiberToBase` using `C.smooth_pullbackFiberToBase`. Establish `hsuSB : AlgebraicGeometry.Surjective C.pullbackFiberToBase` using `C.surjective_pullbackFiberToBase`. Establish `hqcH : AlgebraicGeometry.QuasiCompact C.hypersurfaceStructureMap` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqcWp : AlgebraicGeometry.QuasiCompact (C.projection ≫ p')` using `C.quasiCompact_projection_comp`. Establish `hCI : AlgebraicGeometry.IsClosedImmersion C.toCoverData.iInfImageIdeal.subschemeι` using `inferInstance`. Establish `hstarw : C.pullbackFiberToBase ≫ j = C.pullbackFiberToTotal ≫ C.projection` using `C.isPullback_pullbackFiber.w`. Establish `hcompeq : C.pullbackFiberToBase ≫ p = C.pullbackFiberToTotal ≫ (C.projection ≫ p')`. Rewrite using `[← hjp, ← Category.assoc, hstarw, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hqcS : AlgebraicGeometry.QuasiCompact (C.pullbackFiberToBase ≫ p)`. Rewrite using `[hcompeq]`. Use `infer_instance`. Take `⟨x0⟩` from `hXne`. Establish `hNEs : Nonempty ↥C.pullbackFiber`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, -⟩` from `AlgebraicGeometry.Surjective.surj (f := C.pullbackFiberToBase) x0`. Conclude with `⟨y⟩`. Establish `hNEH : Nonempty ↥C.hypersurfaceScheme`. Take `⟨y⟩` from `hNEs`. Conclude with `⟨C.pullbackFiberToHypersurface.base y⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hHW : krullDimSucc C.hypersurfaceScheme < krullDimSucc C.toCoverData.disjointUnion` using `C.krullDimSucc_hypersurfaceScheme_lt`. Take `⟨m, hm⟩ : ∃ m : ℕ, m = krullDimSucc X + krullDimSucc X' + krullDimSucc C.toCoverData.disjointUnion + krullDimSucc C.pullbackFiber + krullDimSucc C.hypersurfaceScheme` from `⟨_, rfl⟩`. Establish `hsmjp : AlgebraicGeometry.Smooth (j ≫ p')`. Rewrite using `[hjp]`. Use `infer_instance`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkerNZ : NonzeroOnComponents (Scheme.Hom.ker j)` using `nonzeroOnComponents_ker_of_hasEtaleCoordCodim p' j hc hcod`. Establish `horder : ∀ x : ↥X', orderAt (imageIdealSheaf j I) x ≤ 1`. Introduce `x`. Conclude with `orderAt_map_le_one_of_isClosedImmersion p' j hkerNZ I x`. Establish `hfacH : C.pullbackFiberToHypersurface ≫ C.hypersurfaceStructureMap = C.pullbackFiberToBase ≫ p` using `by show C.pullbackFiberToHypersurface ≫ (C.toCoverData.iInfImageIdeal.subschemeι ≫ C.projection ≫ p') = C.pullbackFiberToBase ≫ p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[C.pullbackFiberToHypersurface_comp_subschemeι_assoc (C.projection ≫ p'), ← Category.assoc, ← hstarw, Category.assoc, hjp]`. Establish `hWideal : (imageIdealSheaf j I).comap C.projection = imageIdealSheaf C.toCoverData.iInfImageIdeal.subschemeι C.idealOnHypersurface`. Rewrite using `[← C.comapImageIdealSheaf_eq]`. Conclude with `C.comapImageIdealSheaf_eq_imageIdealSheaf_idealOnHypersurface`. Establish `hHideal : C.idealOnHypersurface = imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase)` using `C.idealOnHypersurface_eq_imageIdealSheaf`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvW : (markedTripleOrderOne k C.toCoverData.disjointUnion (C.projection ≫ p') ((imageIdealSheaf j I).comap C.projection) []).IsAdmissible` using `@hpv (markedTripleOrderOne k X' p' (imageIdealSheaf j I) []) hvX' C.toCoverData.disjointUnion (C.projection ≫ p') C.projection hsmP hqcWp rfl`. Establish `hvS : (markedTripleOrderOne k C.pullbackFiber (C.pullbackFiberToBase ≫ p) (I.comap C.pullbackFiberToBase) []).IsAdmissible` using `@hpv (markedTripleOrderOne k X p I []) hvX C.pullbackFiber (C.pullbackFiberToBase ≫ p) C.pullbackFiberToBase hsmSB hqcS rfl`. Establish `hNZS : NonzeroOnComponents (I.comap C.pullbackFiberToBase)` using `hvS.nonzeroOnComponents`. Establish `hcontactNZ : NonzeroOnComponents C.idealOnHypersurface`. Break down `Nat.eq_zero_or_pos c' with hc0 | hc1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hiso : IsIso C.pullbackFiberToHypersurface` using `C.isIso_pullbackFiberToHypersurface_of_eq_one (by omega)`. Establish `hinv : imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase) = (I.comap C.pullbackFiberToBase).comap (CategoryTheory.inv C.pullbackFiberToHypersurface)` using `imageIdealSheaf_eq_comap_inv C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase)`. Establish `h2 : NonzeroOnComponents ((I.comap C.pullbackFiberToBase).comap (asIso C.pullbackFiberToHypersurface).symm.hom)` using `nonzeroOnComponents_comap_iso_hom (asIso C.pullbackFiberToHypersurface).symm (I.comap C.pullbackFiberToBase) hNZS`. Rewrite using `[hHideal, hinv]`. Conclude with `h2`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc0 : HasEtaleCoordCodim C.hypersurfaceStructureMap C.pullbackFiberToHypersurface c'` using `C.hasEtaleCoordCodim_pullbackFiberToHypersurface`. Use `C.nonzeroOnComponents_idealOnHypersurface ?_` and prove the remaining obligations. Introduce `x`. Take `⟨U, hxU, mm, ch, S, hcard, heq⟩` from `hcc0 x`. Conclude with `⟨U, hxU, mm, ch, S, Finset.card_pos.mp (by omega), heq⟩`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvH : (markedTripleOrderOne k C.hypersurfaceScheme C.hypersurfaceStructureMap C.idealOnHypersurface []).IsAdmissible` using `markedTripleOrderOne_isAdmissible k C.hypersurfaceScheme C.hypersurfaceStructureMap C.idealOnHypersurface hcontactNZ [] (inStrictNormalCrossingPosition_nil C.hypersurfaceStructureMap)`. Establish `hspec` using `rules.isMaxOrderReduction_outputLevelData hB (m + 1)`. Establish `hordspec` using `rules.isOrderReduction_outputLevelData hB (m + 1)`. Establish `hpushFiber : IsPushforwardBlowupSeq C.pullbackFiberToHypersurface (rules.markedBlowupSeq k C.pullbackFiber (C.pullbackFiberToBase ≫ p) (I.comap C.pullbackFiberToBase) []).toSequenceOfBlowups (rules.markedBlowupSeq k C.hypersurfaceScheme C.hypersurfaceStructureMap C.idealOnHypersu …`. Break down `Nat.eq_zero_or_pos c' with hc0 | hc1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hiso : IsIso C.pullbackFiberToHypersurface` using `C.isIso_pullbackFiberToHypersurface_of_eq_one (by omega)`. Establish `hsmooth : AlgebraicGeometry.Smooth C.pullbackFiberToHypersurface` using `inferInstance`. Establish `hsurj : AlgebraicGeometry.Surjective C.pullbackFiberToHypersurface` using `inferInstance`. Establish `hcomap : C.idealOnHypersurface.comap C.pullbackFiberToHypersurface = I.comap C.pullbackFiberToBase`. Rewrite using `[hHideal]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `comap_imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase)`. Establish `hvS' : (markedTripleOrderOne k C.pullbackFiber (C.pullbackFiberToBase ≫ p) (C.idealOnHypersurface.comap C.pullbackFiberToHypersurface) []).IsAdmissible`. Rewrite using `[hcomap]`. Conclude with `hvS`. Establish `hsp : IsStrictPullbackBlowupSeq C.pullbackFiberToHypersurface ((rules.outputLevelData (m + 1)).maxOrderRed (markedTripleOrderOne k C.pullbackFiber (C.pullbackFiberToBase ≫ p) (C.idealOnHypersurface.comap C.pullbackFiberToHypersurface) [])).toSequenceOfBlowups ((rules.outputLevelD …` using `@IsMaxOrderReduction.isStrictPullbackBlowupSeq_of_smooth_surjective _ _ _ hspec (markedTripleOrderOne k C.hypersurfaceScheme C.hypersurfaceStructureMap C.idealOnHypersurface []) hvH (show krullDimSucc C.hypersurfaceScheme ≤ m + 1 by omega) C.pullbackFiber (C.pullbackFiberToBase ≫ …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hsp` using `[hcomap]`. Rewrite `hsp` using `[maxOrderReduction_outputLevelData_eq_markedBlowupSeq rules k C.pullbackFiber (C.pullbackFiberToBase ≫ p) (I.comap C.pullbackFiberToBase) [] (m + 1) (by omega), maxOrderReduction_outputLevelData_eq_markedBlowupSeq rules k C.hypersurfaceScheme C.hypersurfaceStructureMap C.idealOnH …`. Conclude with `IsPushforwardBlowupSeq.of_isStrictPullback_of_isIso C.pullbackFiberToHypersurface hsp`. Establish `hcc0 : HasEtaleCoordCodim C.hypersurfaceStructureMap C.pullbackFiberToHypersurface c'` using `C.hasEtaleCoordCodim_pullbackFiberToHypersurface`. Rewrite using `[hHideal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ih k hcz C.pullbackFiber C.hypersurfaceScheme (C.pullbackFiberToBase ≫ p) C.hypersurfaceStructureMap C.pullbackFiberToHypersurface inferInstance inferInstance hqcS hsmH inferInstance hqcH hfacH hc1 hcc0 (I.comap C.pullbackFiberToBase) hNZS (by rw [← hHideal]; exact hcontactNZ)`. Establish `hOBW : (markedTripleOrderOne k C.toCoverData.disjointUnion (C.projection ≫ p') ((imageIdealSheaf j I).comap C.projection) []).IsOrderBoundedByMult`. Rewrite using `[MarkedIdealWithBoundary.isOrderBoundedByMult_iff]`. Introduce `x`. Establish `h1 : orderAt ((imageIdealSheaf j I).comap C.projection) x ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[orderAt_comap k p' C.projection (imageIdealSheaf j I) x]`. Conclude with `horder (C.projection.base x)`. Use `le_trans h1 (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Nat.cast_one.symm`. Establish `hdiv : IsSmoothDivisor (C.projection ≫ p') (Scheme.Hom.ker C.toCoverData.iInfImageIdeal.subschemeι)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]`. Conclude with `C.isSmoothDivisor_iInfImageIdeal`. Establish `hpushHW : IsPushforwardBlowupSeq C.toCoverData.iInfImageIdeal.subschemeι ((rules.inputLevelData (m + 1)).maxOrderRed (markedTripleOrderOne k C.hypersurfaceScheme C.hypersurfaceStructureMap C.idealOnHypersurface [])).toSequenceOfBlowups ((rules.outputLevelData (m + 1)).orderRed (m …` using `@IsOrderReduction.pushforward _ _ _ hordspec (markedTripleOrderOne k C.toCoverData.disjointUnion (C.projection ≫ p') ((imageIdealSheaf j I).comap C.projection) []) hvW (show krullDimSucc C.toCoverData.disjointUnion ≤ m + 1 by omega) hOBW rfl rfl C.hypersurfaceScheme C.hypersurfac …`. Rewrite `hpushHW` using `[rules.inputLevelData_succ m, maxOrderReduction_outputLevelData_eq_markedBlowupSeq rules k C.hypersurfaceScheme C.hypersurfaceStructureMap C.idealOnHypersurface [] m (by omega)]`. Establish `hequivW : ((rules.outputLevelData (m + 1)).maxOrderRed (markedTripleOrderOne k C.toCoverData.disjointUnion (C.projection ≫ p') ((imageIdealSheaf j I).comap C.projection) [])).Isomorphic ((rules.outputLevelData (m + 1)).orderRed (markedTripleOrderOne k C.toCoverData.disjointUnion …` using `hspec.orderRed_equiv (markedTripleOrderOne k C.toCoverData.disjointUnion (C.projection ≫ p') ((imageIdealSheaf j I).comap C.projection) []) hvW (show krullDimSucc C.toCoverData.disjointUnion ≤ m + 1 by omega) rfl hOBW`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hequivW` using `[maxOrderReduction_outputLevelData_eq_markedBlowupSeq rules k C.toCoverData.disjointUnion (C.projection ≫ p') ((imageIdealSheaf j I).comap C.projection) [] (m + 1) (by omega)]`. Establish `hpushSubscheme` using `IsPushforwardBlowupSeq.of_isomorphic C.toCoverData.iInfImageIdeal.subschemeι hpushHW (SequenceOfBlowups.Isomorphic.symm hequivW)`. Establish `hNtH : ∀ i : ℕ, i ≤ (rules.markedBlowupSeq k C.hypersurfaceScheme C.hypersurfaceStructureMap C.idealOnHypersurface []).toSequenceOfBlowups.length → AlgebraicGeometry.IsNoetherian ((rules.markedBlowupSeq k C.hypersurfaceScheme C.hypersurfaceStructureMap C.idealOnHypersurface []).t …` using `fun i hi => isNoetherian_schemeAt _ i hi`. Establish `hNtW : ∀ i : ℕ, i ≤ (rules.markedBlowupSeq k C.toCoverData.disjointUnion (C.projection ≫ p') ((imageIdealSheaf j I).comap C.projection) []).toSequenceOfBlowups.length → AlgebraicGeometry.IsNoetherian ((rules.markedBlowupSeq k C.toCoverData.disjointUnion (C.projection ≫ p') ((imag …` using `fun i hi => isNoetherian_schemeAt _ i hi`. Establish `hcomp` using `IsPushforwardBlowupSeq.comp C.pullbackFiberToHypersurface C.toCoverData.iInfImageIdeal.subschemeι hNtH hNtW hpushFiber hpushSubscheme`.
-
-Establish `hcomp' : IsPushforwardBlowupSeq C.pullbackFiberToTotal (rules.markedBlowupSeq k C.pullbackFiber (C.pullbackFiberToBase ≫ p) (I.comap C.pullbackFiberToBase) []).toSequenceOfBlowups (rules.markedBlowupSeq k C.toCoverData.disjointUnion (C.projection ≫ p') ((imageIdealSheaf j I).coma …` using `isPushforwardSequenceOfBlowups_congr_hom C.pullbackFiberToHypersurface_comp_subschemeι hcomp`. Establish `hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}` using `strictTransformIsBlowupOfClosedSubscheme`. Establish `hcart : EffectiveCartierSupportContainsNoComponent.{u}` using `effectiveCartierSupportContainsNoComponent`. Establish `hproper` using `MarkedSequenceOfBlowups.centersContainNoComponent_ofMarkedSequence hcart hvX (rules.markedBlowupSeq k X p I [])`. Establish `htower` using `isPushforwardBlowupSeq_ambientBlowupSequence j (BlowupSequenceData.ofSequenceOfBlowups (rules.markedBlowupSeq k X p I []).toSequenceOfBlowups) hres blowupPreservesNoetherian hproper`.
-
-Take `⟨u0, hpf0⟩ : ∃ u0 : SequenceOfBlowups X', IsPushforwardBlowupSeq j (rules.markedBlowupSeq k X p I []).toSequenceOfBlowups u0` from `⟨_, IsPushforwardBlowupSeq.of_isomorphic_source j (ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic _) htower⟩`. Establish `ht' : IsStrictPullbackBlowupSeq C.projection (u0.baseChange C.projection) u0` using `isStrictPullbackSequenceOfBlowups_baseChange u0 C.projection`. Establish `hsS : IsStrictPullbackBlowupSeq C.pullbackFiberToBase ((rules.outputLevelData (m + 1)).maxOrderRed (markedTripleOrderOne k C.pullbackFiber (C.pullbackFiberToBase ≫ p) (I.comap C.pullbackFiberToBase) [])).toSequenceOfBlowups ((rules.outputLevelData (m + 1)).maxOrderRed (markedTrip …` using `@IsMaxOrderReduction.isStrictPullbackBlowupSeq_of_smooth_surjective _ _ _ hspec (markedTripleOrderOne k X p I []) hvX (show krullDimSucc X ≤ m + 1 by omega) C.pullbackFiber (C.pullbackFiberToBase ≫ p) C.pullbackFiberToBase hsmSB hsuSB rfl hvS (show krullDimSucc C.pullbackFiber ≤ …`. Rewrite `hsS` using `[maxOrderReduction_outputLevelData_eq_markedBlowupSeq rules k C.pullbackFiber (C.pullbackFiberToBase ≫ p) (I.comap C.pullbackFiberToBase) [] (m + 1) (by omega), maxOrderReduction_outputLevelData_eq_markedBlowupSeq rules k X p I [] (m + 1) (by omega)]`. Establish `hSW : IsStrictPullbackBlowupSeq C.projection ((rules.outputLevelData (m + 1)).maxOrderRed (markedTripleOrderOne k C.toCoverData.disjointUnion (C.projection ≫ p') ((imageIdealSheaf j I).comap C.projection) [])).toSequenceOfBlowups ((rules.outputLevelData (m + 1)).maxOrderRed (mark …` using `@IsMaxOrderReduction.isStrictPullbackBlowupSeq_of_smooth_surjective _ _ _ hspec (markedTripleOrderOne k X' p' (imageIdealSheaf j I) []) hvX' (show krullDimSucc X' ≤ m + 1 by omega) C.toCoverData.disjointUnion (C.projection ≫ p') C.projection hsmP hsuP rfl hvW (show krullDimSucc C …`.
-
-Rewrite `hSW` using `[maxOrderReduction_outputLevelData_eq_markedBlowupSeq rules k C.toCoverData.disjointUnion (C.projection ≫ p') ((imageIdealSheaf j I).comap C.projection) [] (m + 1) (by omega), maxOrderReduction_outputLevelData_eq_markedBlowupSeq rules k X' p' (imageIdealSheaf j I) [] (m + 1) (by …`. Establish `hup` using `IsPushforwardBlowupSeq.of_flat_isPullback j C.pullbackFiberToTotal C.projection C.pullbackFiberToBase C.isPullback_pullbackFiber.flip (rules.markedBlowupSeq k X p I []).toSequenceOfBlowups u0 (rules.markedBlowupSeq k C.pullbackFiber (C.pullbackFiberToBase ≫ p) (I.comap C.pullback …`. Establish `huniq` using `IsPushforwardBlowupSeq.isomorphic C.pullbackFiberToTotal hup hcomp'`. Establish `hdesc` using `IsStrictPullbackBlowupSeq.isomorphic_of_isomorphic ht' hSW huniq`. Conclude with `IsPushforwardBlowupSeq.of_isomorphic j hpf0 hdesc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem commutesWithClosedImmersion_forall_codim (rules : PrincipalizationRules.{u}) (hB : rules.ReducesInductivelyOnDimension)
     (hpv : AdmissibilityStableUnderSmoothPullback.{u}) : ∀ c : ℕ, IsClosedEmbeddingCompatibleInCodim rules c := by
@@ -508,7 +500,7 @@ private theorem commutesWithClosedImmersion_forall_codim (rules : Principalizati
         exact IsPushforwardBlowupSeq.of_isomorphic j hpf0 hdesc
 
 /- English proof (translation)
-Introduce `k ik icz X X' p ism ift iqc p' ism' ift' iqc' j ij hjp c hc hcod I hI hIim _ _`. Conclude with `commutesWithClosedImmersion_forall_codim B hB hpv c k icz X X' p p' j ism ift iqc ism' ift' iqc' hjp hc hcod I hI hIim`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem commutesWithClosedImmersion_of_isCorrect_of_smoothPullback (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (hpv : AdmissibilityStableUnderSmoothPullback.{u}) : CommutesWithClosedImmersion.{u} B := by
@@ -516,7 +508,7 @@ theorem commutesWithClosedImmersion_of_isCorrect_of_smoothPullback (B : Principa
   exact commutesWithClosedImmersion_forall_codim B hB hpv c k icz X X' p p' j ism ift iqc ism' ift' iqc' hjp hc hcod I hI hIim
 
 /- English proof (translation)
-The claim follows from `commutesWithClosedImmersion_of_isCorrect_of_smoothPullback B hB isAdmissible_pullbackAlong_of_smooth`.
+A detailed English derivation is pending.
 -/
 theorem commutesWithClosedImmersion_of_isCorrect (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension) :
     CommutesWithClosedImmersion.{u} B :=

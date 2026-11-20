@@ -18,14 +18,14 @@ section Morphisms
 variable {X Y S : Scheme.{u}}
 
 /- English proof (translation)
-The claim follows from `(isNormalScheme_iff X).mpr (forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth f ((isNormalScheme_iff S).mp ‹_›))`.
+A detailed English derivation is pending.
 -/
 theorem isNormalScheme_of_smooth (f : X ⟶ S) [Smooth f] [IsNormalScheme S] : IsNormalScheme X :=
   (isNormalScheme_iff X).mpr
     (forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth f ((isNormalScheme_iff S).mp ‹_›))
 
 /- English proof (translation)
-The claim follows from `have := isNormalScheme_of_smooth f have := LocallyOfFiniteType.isLocallyNoetherian f IsNormalScheme.isIntegral_of_connectedSpace X`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_smooth_of_connectedSpace (f : X ⟶ S) [Smooth f] [IsNormalScheme S]
     [IsLocallyNoetherian S] [ConnectedSpace X] : IsIntegral X :=
@@ -34,14 +34,14 @@ theorem isIntegral_of_smooth_of_connectedSpace (f : X ⟶ S) [Smooth f] [IsNorma
   IsNormalScheme.isIntegral_of_connectedSpace X
 
 /- English proof (translation)
-The claim follows from `isIntegral_of_smooth_of_connectedSpace f`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_smooth_field {K : Type u} [Field K] (f : X ⟶ Spec (.of K)) [Smooth f]
     [ConnectedSpace X] : IsIntegral X :=
   isIntegral_of_smooth_of_connectedSpace f
 
 /- English proof (translation)
-Use `⟨fun K _ y Z fst snd h ↦ ?_⟩` and prove the remaining obligations. Establish `: Smooth snd` using `MorphismProperty.of_isPullback h ‹_›`. Use `isNormalScheme_of_smooth snd` as an intermediate fact. Conclude with `IsNormalScheme.isReduced`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyReduced_of_smooth (f : X ⟶ S) [Smooth f] : GeometricallyReduced f := by
   refine ⟨fun K _ y Z fst snd h ↦ ?_⟩
@@ -50,7 +50,7 @@ theorem geometricallyReduced_of_smooth (f : X ⟶ S) [Smooth f] : GeometricallyR
   exact IsNormalScheme.isReduced
 
 /- English proof (translation)
-Use `⟨fun K _ y Z fst snd h ↦ ?_⟩` and prove the remaining obligations. Establish `: Smooth snd` using `MorphismProperty.of_isPullback h ‹_›`. Establish `: ConnectedSpace Z` using `GeometricallyConnected.geometrically_connectedSpace y fst snd h`. Conclude with `isIntegral_of_smooth_field snd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyIntegral_of_smooth (f : X ⟶ S) [Smooth f] [GeometricallyConnected f] :
     GeometricallyIntegral f := by
@@ -60,7 +60,7 @@ theorem geometricallyIntegral_of_smooth (f : X ⟶ S) [Smooth f] [GeometricallyC
   exact isIntegral_of_smooth_field snd
 
 /- English proof (translation)
-Use `⟨fun K _ y Z fst snd h ↦ ?_⟩` and prove the remaining obligations. Establish `: IsIntegral Z` using `GeometricallyIntegral.geometrically_isIntegral y fst snd h`. Conclude with `inferInstanceAs (ConnectedSpace Z)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_of_geometricallyIntegral (f : X ⟶ S) [GeometricallyIntegral f] :
     GeometricallyConnected f := by
@@ -69,7 +69,7 @@ theorem geometricallyConnected_of_geometricallyIntegral (f : X ⟶ S) [Geometric
   exact inferInstanceAs (ConnectedSpace Z)
 
 /- English proof (translation)
-Establish `: Finite (irreducibleComponents S)`. Rewrite using `[irreducibleComponents_eq_singleton]`. Use `infer_instance`. Rewrite using `[isIntegral_iff_irreducibleSpace_and_isReduced]`. Conclude with `⟨GeometricallyIrreducible.irreducibleSpace f f.isOpenMap, GeometricallyReduced.isReduced_of_flat_of_finite_irreducibleComponents f⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_geometricallyIntegral (f : X ⟶ S) [GeometricallyIntegral f] [Flat f]
     [UniversallyOpen f] [IsIntegral S] : IsIntegral X := by
@@ -81,7 +81,7 @@ theorem isIntegral_of_geometricallyIntegral (f : X ⟶ S) [GeometricallyIntegral
     GeometricallyReduced.isReduced_of_flat_of_finite_irreducibleComponents f⟩
 
 /- English proof (translation)
-The claim follows from `have := geometricallyIntegral_of_smooth f isIntegral_of_geometricallyIntegral f`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_smooth_of_geometricallyConnected (f : X ⟶ S) [Smooth f]
     [GeometricallyConnected f] [IsIntegral S] : IsIntegral X :=
@@ -89,7 +89,7 @@ theorem isIntegral_of_smooth_of_geometricallyConnected (f : X ⟶ S) [Smooth f]
   isIntegral_of_geometricallyIntegral f
 
 /- English proof (translation)
-The claim follows from `have : Smooth snd := MorphismProperty.of_isPullback h ‹_› have : GeometricallyConnected snd := MorphismProperty.of_isPullback h ‹_› isIntegral_of_smooth_of_geometricallyConnected snd`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_isPullback_of_smooth {Z : Scheme.{u}} {fst : Z ⟶ X} {snd : Z ⟶ Y}
     {f : X ⟶ S} {g : Y ⟶ S} (h : IsPullback fst snd f g) [Smooth f] [GeometricallyConnected f]
@@ -99,14 +99,14 @@ theorem isIntegral_of_isPullback_of_smooth {Z : Scheme.{u}} {fst : Z ⟶ X} {snd
   isIntegral_of_smooth_of_geometricallyConnected snd
 
 /- English proof (translation)
-The claim follows from `isIntegral_of_isPullback_of_smooth (.of_hasPullback f g)`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_pullback_of_smooth (f : X ⟶ S) (g : Y ⟶ S) [Smooth f]
     [GeometricallyConnected f] [IsIntegral Y] : IsIntegral (pullback f g) :=
   isIntegral_of_isPullback_of_smooth (.of_hasPullback f g)
 
 /- English proof (translation)
-The claim follows from `have := geometricallyIntegral_of_smooth f inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_fiber_of_smooth (f : X ⟶ S) [Smooth f] [GeometricallyConnected f] (s : S) :
     IsIntegral (f.fiber s) :=
@@ -114,7 +114,7 @@ theorem isIntegral_fiber_of_smooth (f : X ⟶ S) [Smooth f] [GeometricallyConnec
   inferInstance
 
 /- English proof (translation)
-Use `⟨fun K _ y Z fst snd h ↦ ?_⟩` and prove the remaining obligations. Establish `: IsIso snd` using `h.isIso_snd_of_isIso`. Conclude with `snd.homeomorph.symm.surjective.connectedSpace snd.homeomorph.symm.continuous`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_of_isIso (f : X ⟶ S) [IsIso f] : GeometricallyConnected f := by
   refine ⟨fun K _ y Z fst snd h ↦ ?_⟩
@@ -130,7 +130,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {S : Scheme.{u}}
 
 /- English proof (translation)
-Rewrite using `[Over.tensorObj_hom]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_tensorObj_hom (G H : Over S) [Smooth G.hom] [Smooth H.hom] :
     Smooth (G ⊗ H).hom := by
@@ -138,7 +138,7 @@ theorem smooth_tensorObj_hom (G H : Over S) [Smooth G.hom] [Smooth H.hom] :
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[Over.tensorObj_hom]`. Conclude with `GeometricallyConnected.comp _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_tensorObj_hom (G H : Over S) [Smooth G.hom] [Smooth H.hom]
     [GeometricallyConnected G.hom] [GeometricallyConnected H.hom] :
@@ -147,7 +147,7 @@ theorem geometricallyConnected_tensorObj_hom (G H : Over S) [Smooth G.hom] [Smoo
   exact GeometricallyConnected.comp _ _
 
 /- English proof (translation)
-The claim follows from `have := smooth_tensorObj_hom G H have := geometricallyConnected_tensorObj_hom G H geometricallyIntegral_of_smooth _`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyIntegral_tensorObj_hom (G H : Over S) [Smooth G.hom] [Smooth H.hom]
     [GeometricallyConnected G.hom] [GeometricallyConnected H.hom] :
@@ -161,19 +161,19 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 variable (G : Over S) [Smooth G.hom]
 
 /- English proof (translation)
-The claim follows from `smooth_tensorObj_hom G G`.
+A detailed English derivation is pending.
 -/
 theorem smooth_square_hom : Smooth (G2 G).hom := smooth_tensorObj_hom G G
 
 /- English proof (translation)
-The claim follows from `have := smooth_square_hom G smooth_tensorObj_hom G (G2 G)`.
+A detailed English derivation is pending.
 -/
 theorem smooth_cube_hom : Smooth (G3 G).hom :=
   have := smooth_square_hom G
   smooth_tensorObj_hom G (G2 G)
 
 /- English proof (translation)
-The claim follows from `have := smooth_cube_hom G smooth_tensorObj_hom G (G3 G)`.
+A detailed English derivation is pending.
 -/
 theorem smooth_fourthPower_hom : Smooth (G4 G).hom :=
   have := smooth_cube_hom G
@@ -182,13 +182,13 @@ theorem smooth_fourthPower_hom : Smooth (G4 G).hom :=
 variable [GeometricallyConnected G.hom]
 
 /- English proof (translation)
-The claim follows from `geometricallyConnected_tensorObj_hom G G`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_square_hom : GeometricallyConnected (G2 G).hom :=
   geometricallyConnected_tensorObj_hom G G
 
 /- English proof (translation)
-The claim follows from `have := smooth_square_hom G have := geometricallyConnected_square_hom G geometricallyConnected_tensorObj_hom G (G2 G)`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_cube_hom : GeometricallyConnected (G3 G).hom :=
   have := smooth_square_hom G
@@ -196,7 +196,7 @@ theorem geometricallyConnected_cube_hom : GeometricallyConnected (G3 G).hom :=
   geometricallyConnected_tensorObj_hom G (G2 G)
 
 /- English proof (translation)
-The claim follows from `have := smooth_cube_hom G have := geometricallyConnected_cube_hom G geometricallyConnected_tensorObj_hom G (G3 G)`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_fourthPower_hom : GeometricallyConnected (G4 G).hom :=
   have := smooth_cube_hom G
@@ -204,7 +204,7 @@ theorem geometricallyConnected_fourthPower_hom : GeometricallyConnected (G4 G).h
   geometricallyConnected_tensorObj_hom G (G3 G)
 
 /- English proof (translation)
-The claim follows from `have := smooth_square_hom G have := geometricallyConnected_square_hom G geometricallyIntegral_of_smooth _`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyIntegral_square_hom : GeometricallyIntegral (G2 G).hom :=
   have := smooth_square_hom G
@@ -212,7 +212,7 @@ theorem geometricallyIntegral_square_hom : GeometricallyIntegral (G2 G).hom :=
   geometricallyIntegral_of_smooth _
 
 /- English proof (translation)
-The claim follows from `have := smooth_cube_hom G have := geometricallyConnected_cube_hom G geometricallyIntegral_of_smooth _`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyIntegral_cube_hom : GeometricallyIntegral (G3 G).hom :=
   have := smooth_cube_hom G
@@ -220,7 +220,7 @@ theorem geometricallyIntegral_cube_hom : GeometricallyIntegral (G3 G).hom :=
   geometricallyIntegral_of_smooth _
 
 /- English proof (translation)
-The claim follows from `have := smooth_fourthPower_hom G have := geometricallyConnected_fourthPower_hom G geometricallyIntegral_of_smooth _`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyIntegral_fourthPower_hom : GeometricallyIntegral (G4 G).hom :=
   have := smooth_fourthPower_hom G
@@ -228,7 +228,7 @@ theorem geometricallyIntegral_fourthPower_hom : GeometricallyIntegral (G4 G).hom
   geometricallyIntegral_of_smooth _
 
 /- English proof (translation)
-The claim follows from `have := smooth_square_hom G have := geometricallyConnected_square_hom G isIntegral_of_smooth_of_geometricallyConnected (G2 G).hom`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_square_left [IsIntegral S] : IsIntegral (G2 G).left :=
   have := smooth_square_hom G
@@ -236,7 +236,7 @@ theorem isIntegral_square_left [IsIntegral S] : IsIntegral (G2 G).left :=
   isIntegral_of_smooth_of_geometricallyConnected (G2 G).hom
 
 /- English proof (translation)
-The claim follows from `have := smooth_cube_hom G have := geometricallyConnected_cube_hom G isIntegral_of_smooth_of_geometricallyConnected (G3 G).hom`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_cube_left [IsIntegral S] : IsIntegral (G3 G).left :=
   have := smooth_cube_hom G
@@ -244,7 +244,7 @@ theorem isIntegral_cube_left [IsIntegral S] : IsIntegral (G3 G).left :=
   isIntegral_of_smooth_of_geometricallyConnected (G3 G).hom
 
 /- English proof (translation)
-The claim follows from `have := smooth_fourthPower_hom G have := geometricallyConnected_fourthPower_hom G isIntegral_of_smooth_of_geometricallyConnected (G4 G).hom`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_fourthPower_left [IsIntegral S] : IsIntegral (G4 G).left :=
   have := smooth_fourthPower_hom G
@@ -262,7 +262,7 @@ open ReciprocityTheory.ChartRestriction.G.Out
 variable {S : Scheme.{0}} (G : Over S) [Smooth G.hom]
 
 /- English proof (translation)
-The claim follows from `| 0 => inferInstanceAs (Smooth (𝟙 S)) | n + 1 => have := smooth_powObj_hom n smooth_tensorObj_hom G (powObj G n)`.
+A detailed English derivation is pending.
 -/
 theorem smooth_powObj_hom : ∀ n : ℕ, Smooth (powObj G n).hom
   | 0 => inferInstanceAs (Smooth (𝟙 S))
@@ -279,7 +279,7 @@ section Local
 variable {X : Scheme.{u}} {V : Type u} [CommRing V]
 
 /- English proof (translation)
-The claim follows from `isIntegral_pullback_of_smooth _ _`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_specialFibre_of_smooth [IsLocalRing V] (f : X ⟶ Spec (.of V)) [Smooth f]
     [GeometricallyConnected f] :
@@ -287,7 +287,7 @@ theorem isIntegral_specialFibre_of_smooth [IsLocalRing V] (f : X ⟶ Spec (.of V
   isIntegral_pullback_of_smooth _ _
 
 /- English proof (translation)
-The claim follows from `isIntegral_pullback_of_smooth _ _`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_genericFibre_of_smooth [IsDomain V] (K : Type u) [Field K] [Algebra V K]
     [IsFractionRing V K] (f : X ⟶ Spec (.of V)) [Smooth f] [GeometricallyConnected f] :
@@ -305,7 +305,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 variable {S : Scheme.{u}}
 
 /- English proof (translation)
-The claim follows from `have := h.smooth have := h.geomConnected geometricallyIntegral_of_smooth _`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyIntegral_of_isAbelianScheme (A : Over S) [GrpObj A] [h : IsAbelianScheme A] :
     GeometricallyIntegral A.hom :=
@@ -314,7 +314,7 @@ theorem geometricallyIntegral_of_isAbelianScheme (A : Over S) [GrpObj A] [h : Is
   geometricallyIntegral_of_smooth _
 
 /- English proof (translation)
-The claim follows from `have := h.smooth have := h.geomConnected geometricallyIntegral_of_smooth _`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyIntegral_of_isSemiAbelian (G : Over S) [GrpObj G] [h : IsSemiAbelian G] :
     GeometricallyIntegral G.hom :=
@@ -323,7 +323,7 @@ theorem geometricallyIntegral_of_isSemiAbelian (G : Over S) [GrpObj G] [h : IsSe
   geometricallyIntegral_of_smooth _
 
 /- English proof (translation)
-The claim follows from `have := h.smooth have := h.geomConnected isIntegral_of_smooth_of_geometricallyConnected A.hom`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_left_of_isAbelianScheme (A : Over S) [GrpObj A] [h : IsAbelianScheme A]
     [IsIntegral S] : IsIntegral A.left :=
@@ -332,7 +332,7 @@ theorem isIntegral_left_of_isAbelianScheme (A : Over S) [GrpObj A] [h : IsAbelia
   isIntegral_of_smooth_of_geometricallyConnected A.hom
 
 /- English proof (translation)
-The claim follows from `have := h.smooth have := h.geomConnected isIntegral_of_smooth_of_geometricallyConnected G.hom`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_left_of_isSemiAbelian (G : Over S) [GrpObj G] [h : IsSemiAbelian G]
     [IsIntegral S] : IsIntegral G.left :=
@@ -349,15 +349,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Establish `key : ∀ {S : Scheme.{u}} (G : Over S) [Smooth G.hom] [GeometricallyConnected G.hom], ∀ T ∈ [G, G2 G, G3 G, G4 G], GeometricallyIntegral T.hom ∧ (IsIntegral S → IsIntegral T.left)`. Introduce `S G _ _ T hT`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hT`. Break down `hT with rfl | rfl | rfl | rfl` into its components or cases. Conclude with `⟨geometricallyIntegral_of_smooth _, fun _ ↦ isIntegral_of_smooth_of_geometricallyConnected T.hom⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨geometricallyIntegral_square_hom G, fun _ ↦ isIntegral_square_left G⟩`. Conclude with `⟨geometricallyIntegral_cube_hom G, fun _ ↦ isIntegral_cube_left G⟩`. Conclude with `⟨geometricallyIntegral_fourthPower_hom G, fun _ ↦ isIntegral_fourthPower_left G⟩`. Use `⟨fun f _ _ ↦ ⟨geometricallyIntegral_of_smooth f, fun _ ↦ isIntegral_of_smooth_of_geometricallyConnected f⟩, ?_, key, ?_⟩` and prove the remaining obligations. Introduce and unpack `S A _ (h | h) all_goals`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `h.smooth` as an intermediate fact. Use `h.geomConnected` as an intermediate fact. Conclude with `key A`. Introduce `V _ _ _ G _ _ T hT`. Choose the witnesses or unpack the hypotheses as in `⟨_, _⟩ : Smooth T.hom ∧ GeometricallyConnected T.hom := by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hT`. Break down `hT with rfl | rfl | rfl | rfl` into its components or cases. Conclude with `⟨‹_›, ‹_›⟩`. Conclude with `⟨smooth_square_hom G, geometricallyConnected_square_hom G⟩`. Conclude with `⟨smooth_cube_hom G, geometricallyConnected_cube_hom G⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨smooth_fourthPower_hom G, geometricallyConnected_fourthPower_hom G⟩`. Conclude with `⟨isIntegral_of_smooth_of_geometricallyConnected T.hom, LocallyOfFiniteType.isLocallyNoetherian T.hom, isIntegral_specialFibre_of_smooth T.hom, isIntegral_genericFibre_of_smooth (FractionRing V) T.hom⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem geometricallyIntegral_of_smooth_of_geometricallyConnected :
     (∀ {X S : Scheme.{u}} (f : X ⟶ S) [Smooth f] [GeometricallyConnected f],

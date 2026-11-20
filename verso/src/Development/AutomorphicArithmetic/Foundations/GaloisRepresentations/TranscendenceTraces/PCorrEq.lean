@@ -4,19 +4,17 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hIF hTR hTP hWP q _ n i S Y B bS bY _ _ ι _ c m hc hq D hD hcyc y`. Take `⟨G, pG, fG, h, hpG, hh, hp, hf, hmono⟩` from `hIF bS bY ι (fun a => (c a).Z) (fun a => (c a).p) (fun a => (c a).f) (fun a => (c a).fin) hc`. Use `haveI := hpG`. Establish `hwt : ∀ a, IsWt (h a ≫ pG) (c a).w`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp a]`. Conclude with `(c a).wt`. Establish `key : ∀ a, (c a).op q n i y = tr pG (Wt.push (h a) (c a).w) q n i (pull (ZMod q) (sch.map fG) (tw q i) n y)`. Introduce `a`. Use `haveI := hh a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hTP q n i (h a) pG (c a).w (hwt a) hq, ← pull_comp, ← Functor.map_comp, hf a]`. Simplify using `only [Corr.op, AddMonoidHom.comp_apply]`. Rewrite using `[hp a]`. Simplify using `only [key]`. Use `hTR q n i pG ι (fun a => Wt.push (h a) (c a).w) m (fun a => by haveI := hh a; exact hWP (h a) pG (c a).w (hwt a)) hq D hD ?_ _` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Ω _ _ z hz`. Rewrite using `[← hcyc Ω (z ≫ pG) (z ≫ fG) hz]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hs : fib (h a) z = {z' | z' ≫ (c a).p = z ≫ pG ∧ z' ≫ (c a).f = z ≫ fG}`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `z'`. Simplify using `only [fib, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨by rw [Category.assoc, hp a], by rw [Category.assoc, hf a]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩`. Apply `hmono` to reduce the goal to its premises. Rewrite using `[Category.assoc, hp a, h1]`. Rewrite using `[Category.assoc, hf a, h2]`. Simplify using `only [Wt.push, Corr.cyc]`.
-
-Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.corrEq_of :
     ImageFin → TrRel → TrPush → WtPush → CorrEq := by

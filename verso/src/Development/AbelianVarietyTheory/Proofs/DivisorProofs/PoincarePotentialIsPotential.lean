@@ -7,7 +7,7 @@ open scoped ContDiff
 namespace GlobalTheory.PoincarePotOn
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ normSec (L i) (s i) y` using `by unfold normSec; positivity`. Establish `h1 : normSec (L i) (s i) y ≤ 1` using `(hB i).2.2.2 y`. Establish `h2 : Real.log (normSec (L i) (s i) y ^ 2) ≤ 0` using `Real.log_nonpos (by positivity) (pow_le_one₀ h0 h1)`. Unfold `rComp`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exp_one_le_rComp {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {m : ℕ}
     (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (D : Fin m → Set X)
@@ -20,13 +20,13 @@ theorem exp_one_le_rComp {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAt
   linarith
 
 /- English proof (translation)
-Introduce `e X _ A K m L s D c hK hB`. Use `⟨fun x j => ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Establish `hcompat : IsCompatChart A (A.chart j)` using `fun k => ⟨A.holo k j, A.holo j k⟩`. Establish `hKs : ContDiffOn ℝ ∞ (K.φ x ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' ((poincarePot K L s c).U x ∩ (⋃ i, D i)ᶜ))` using `(hK.1 x j).mono (fun z hz => ⟨hz.1, hz.2.1.1⟩)`. Establish `hu : ContDiffOn ℝ ∞ ((fun y => -(c / 2) * ∑ i, Real.log (rComp L s i y)) ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' ((poincarePot K L s c).U x ∩ (⋃ i, D i)ᶜ))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Establish `hnot : ∀ i, (A.chart j).symm z ∉ D i` using `fun i hi => hz.2.2 (Set.mem_iUnion.2 ⟨i, hi⟩)`. Establish `hsum : ContDiffAt ℝ ∞ (fun z => ∑ i, Real.log (rComp L s i ((A.chart j).symm z))) z`. Apply `ContDiffAt.sum` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _`. Conclude with `(GlobalTheory.T.boundary_potential_smooth_off_divisor A L s D hB i (A.chart j) hcompat z hz.1 (hnot i)).log (ne_of_gt (lt_of_lt_of_le (Real.exp_pos 1) (exp_one_le_rComp A L s D hB i _)))`. Conclude with `contDiffAt_const.mul hsum`. Conclude with `hKs.add hu`. Take `⟨W, hW, hyW, G, hG, hGe⟩` from `hK.2 x x' y ⟨hy.1.1.1, hy.1.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨W, hW, hyW, G, hG, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz'` using `hGe z ⟨⟨hz.1.1.1, hz.1.1.2.1⟩, hz.1.2.1⟩`. Express the relevant statement in the definitionally equal form `K.φ x z + (-(c / 2) * ∑ i, Real.log (rComp L s i z)) - (K.φ x' z + (-(c / 2) * ∑ i, Real.log (rComp L s i z))) = _`. Rewrite using `[← hz']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem poincarePot_isPotentialOn : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (K : LocPot X) {m : ℕ} (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (D : Fin m → Set X)

@@ -12,23 +12,21 @@ open GlobalTheory.CharDepth TensorProduct
 namespace GlobalTheory.CharDepth
 
 /- English proof (translation)
-Introduce `T p hp hu`. Establish `hp0 : (p : T.V) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hr0 : (0 : ℝ) < (p : ℝ)⁻¹` using `by positivity`. Establish `hr1 : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hp1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, _, _, _, _, _, hC, hCp⟩` from `exists_complete_isAlgClosed_of_isDiscreteValuationRing T.V T.Fr hp0 ((IsLocalRing.mem_maximalIdeal _).2 hu) hr0 hr1`. Rewrite `hCp` using `[map_natCast]`. Establish `: CharZero T.Fr` using `charZero_of_injective_ringHom (IsFractionRing.injective T.V T.Fr)`. Establish `: CharZero C` using `charZero_of_injective_ringHom (algebraMap T.Fr C).injective`. Establish `hCp' : ‖(p : C)‖ = (p : ℝ)⁻¹` using `by rwa [map_natCast] at hCp`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `v : Valuation C NNReal` to `NormedField.valuation`. Establish `hO : v.Integers v.integer` using `Valuation.integer.integers v`. Establish `hmem : ∀ x : C, ‖x‖ ≤ 1 → x ∈ v.integer` using `fun x hx => by`. Express the relevant statement in the definitionally equal form `‖x‖₊ ≤ 1`. Conclude with `hx` after adjusting the coercions.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hpO : ‖algebraMap v.integer C (p : v.integer)‖ < 1`. Rewrite using `[map_natCast, hCp']`. Conclude with `hr1`. Use `haveI : Fact (¬ IsUnit (p : v.integer)) := ⟨fun h => hpO.ne ((NormIntegers.isUnit_iff_norm_eq_one hO).1 h)⟩`. Use `haveI := NormIntegers.isAdicComplete_span_singleton hO hpO`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI := NormIntegers.isLocalRing hO`. Apply the tactic sequence `obtain ⟨j, hj⟩ := exists_padic_isometry (C := C) p hCp'`. Use `letI : Algebra ℤ_[p] v.integer := ((j.comp PadicInt.Coe.ringHom).codRestrict v.integer fun x => hmem _ ((hj _).trans_le x.2)).toAlgebra`. Establish `hf : ∀ a : T.V, ‖algebraMap T.Fr C (algebraMap T.V T.Fr a)‖ ≤ 1` using `fun a => (hC _).2 ⟨a, rfl⟩`. Set `ι : T.V →+* v.integer` to `((algebraMap T.Fr C).comp (algebraMap T.V T.Fr)).codRestrict v.integer fun a => hmem _ (hf a)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hι : IsLocalHom ι`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖algebraMap T.Fr C (algebraMap T.V T.Fr a)‖ = 1` using `(NormIntegers.isUnit_iff_norm_eq_one hO).1 ha`. Establish `ha0 : algebraMap T.V T.Fr a ≠ 0` using `fun h => by simp [h] at h1`. Take `⟨b, hb⟩` from `(hC (algebraMap T.V T.Fr a)⁻¹).1 (by rw [map_inv₀, norm_inv, h1, inv_one])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsUnit.of_mul_eq_one b (IsFractionRing.injective T.V T.Fr ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hb, mul_inv_cancel₀ ha0, map_one]`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`. Establish `hpF : (p : T.Fr) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Establish `hzp` using `ArcQ.norm_map_eq_zpow_vV (algebraMap T.Fr C) hf hπ hpF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : (vV T.V (p : T.Fr) : ℝ) ≠ 0`. Introduce `h`. Establish `h' : vV T.V (p : T.Fr) = 0` using `by exact_mod_cast h`. Rewrite `hzp` using `[h', zpow_zero, hCp]`. Conclude with `hr1.ne hzp`.
-
-Use `⟨{ C := C, v := v, O := v.integer, ints := hO, ι := ι, ι_local := hι, ιF := algebraMap T.Fr C, comp := fun _ => rfl, val := fun x hx => ?_ }⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖algebraMap T.Fr C x‖ = ‖(p : C)‖ ^ _`. Rewrite using `[← map_natCast (algebraMap T.Fr C) p, hzp, ArcQ.norm_map_eq_zpow_vV (algebraMap T.Fr C) hf hπ hx, ← Real.rpow_intCast, ← Real.rpow_intCast, ← Real.rpow_mul (norm_nonneg _), mul_div_cancel₀ _ he]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_valExt :
     ∀ (T : CDVR) (p : ℕ) [Fact p.Prime], ¬ IsUnit (p : T.V) → Nonempty (ValExt T p) := by

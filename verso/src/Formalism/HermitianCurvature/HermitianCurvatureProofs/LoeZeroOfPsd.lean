@@ -14,7 +14,7 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {α : Type}
 def gramH (h : α → H) : α → α → ℂ := fun P Q => ⟪h Q, h P⟫_ℂ
 
 /- English proof (translation)
-Unfold `PBA.qf gramH`. Rewrite using `[sum_inner]`. Simplify using `only [inner_sum, inner_smul_left, inner_smul_right, Complex.conj_conj]`. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun P _ => Finset.sum_congr rfl fun Q _ => by ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qf_gramH (Y : Finset α) (h : α → H) (c : α → ℂ) :
     PBA.qf Y (gramH h) c = ⟪∑ P ∈ Y, conj (c P) • h P, ∑ P ∈ Y, conj (c P) • h P⟫_ℂ := by
@@ -25,7 +25,7 @@ theorem qf_gramH (Y : Finset α) (h : α → H) (c : α → ℂ) :
   exact Finset.sum_congr rfl fun P _ => Finset.sum_congr rfl fun Q _ => by ring
 
 /- English proof (translation)
-Rewrite using `[PBA.psd_iff_qf]`. Use `⟨fun P _ Q _ => (inner_conj_symm (𝕜 := ℂ) (h P) (h Q)).symm, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[qf_gramH]`. Conclude with `inner_self_nonneg (𝕜 := ℂ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psd_gramH (Y : Finset α) (h : α → H) : TB.PSDOn Y (gramH h) := by
   rw [PBA.psd_iff_qf]
@@ -36,9 +36,9 @@ theorem psd_gramH (Y : Finset α) (h : α → H) : TB.PSDOn Y (gramH h) := by
 def Loe (Y : Finset α) (A B : α → α → ℂ) : Prop := TB.PSDOn Y fun P Q => B P Q - A P Q
 
 /- English proof (translation)
-Unfold `Loe`. Rewrite using `[PBA.psd_iff_qf]`. Establish `e : ∀ c, PBA.qf Y (fun P Q => B P Q - A P Q) c = PBA.qf Y B c - PBA.qf Y A c`. Introduce `c`. Unfold `PBA.qf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using `only [← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun P _ => Finset.sum_congr rfl fun Q _ => by ring` and prove the remaining obligations. Simplify using `only [e, Complex.sub_re, sub_nonneg]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem loe_iff (Y : Finset α) (A B : α → α → ℂ) :
     Loe Y A B ↔ (∀ x ∈ Y, ∀ y ∈ Y, B y x - A y x = conj (B x y - A x y)) ∧
@@ -51,9 +51,9 @@ theorem loe_iff (Y : Finset α) (A B : α → α → ℂ) :
   simp only [e, Complex.sub_re, sub_nonneg]
 
 /- English proof (translation)
-Rewrite `h1`, `h2`, the goal using `[loe_iff]`. Use `⟨fun x hx y hy => ?_, fun c => (h1.2 c).trans (h2.2 c)⟩` and prove the remaining obligations. Establish `a` using `h1.1 x hx y hy`. Establish `b` using `h2.1 x hx y hy`. Establish `: C y x - A y x = (C y x - B y x) + (B y x - A y x)` using `by ring`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, a, b, ← map_add]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 theorem loe_trans {Y : Finset α} {A B C : α → α → ℂ} (h1 : Loe Y A B) (h2 : Loe Y B C) : Loe Y A C := by
   rw [loe_iff] at h1 h2 ⊢
@@ -64,23 +64,23 @@ theorem loe_trans {Y : Finset α} {A B C : α → α → ℂ} (h1 : Loe Y A B) (
   rw [this, a, b, ← map_add]; ring_nf
 
 /- English proof (translation)
-Unfold `Loe`. Simplify using `using h`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem loe_zero_of_psd {Y : Finset α} {B : α → α → ℂ} (h : TB.PSDOn Y B) : Loe Y (fun _ _ => 0) B := by
   unfold Loe; simpa using h
 
 /- English proof (translation)
-Unfold `Loe at h`. Simplify using `using h`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem psd_of_loe_zero {Y : Finset α} {B : α → α → ℂ} (h : Loe Y (fun _ _ => 0) B) : TB.PSDOn Y B := by
   unfold Loe at h; simpa using h
 
 /- English proof (translation)
-Unfold `PBA.qf`. Establish `e' : ∀ x y, conj (c x) * ((M : ℂ) * ∑ n, (θ n : ℂ) * A n x y) * c y = ∑ n, (M : ℂ) * ((θ n : ℂ) * (conj (c x) * A n x y * c y))`. Introduce `x y`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun n _ => by ring`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[e']`. Rewrite using `[swap3, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+A detailed English derivation is pending.
 -/
 theorem qf_mix {N : Type} [Fintype N] (Y : Finset α) (A : N → α → α → ℂ) (θ : N → ℝ) (M : ℝ) (c : α → ℂ) :
     PBA.qf Y (fun p q => (M : ℂ) * ∑ n, (θ n : ℂ) * A n p q) c = (M : ℂ) * ∑ n, (θ n : ℂ) * PBA.qf Y (A n) c := by
@@ -98,11 +98,9 @@ theorem qf_mix {N : Type} [Fintype N] (Y : Finset α) (A : N → α → α → �
   rw [Finset.mul_sum, Finset.mul_sum]
 
 /- English proof (translation)
-Establish `h1 : ‖∑ n, lam n • W n‖ ≤ ∑ n, ‖lam n‖ * ‖W n‖` using `(norm_sum_le _ _).trans (Finset.sum_le_sum fun n _ => (norm_smul _ _).le)`. Establish `h2 : (∑ n, ‖lam n‖ * ‖W n‖) ^ 2 ≤ (∑ n, ‖lam n‖) * ∑ n, ‖lam n‖ * ‖W n‖ ^ 2`. Use `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun n => Real.sqrt ‖lam n‖) (fun n => Real.sqrt ‖lam n‖ * ‖W n‖)` as an intermediate fact. Establish `e1 : ∀ n, Real.sqrt ‖lam n‖ * (Real.sqrt ‖lam n‖ * ‖W n‖) = ‖lam n‖ * ‖W n‖` using `fun n => by`. Rewrite using `[← mul_assoc, Real.mul_self_sqrt (norm_nonneg _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ n, Real.sqrt ‖lam n‖ ^ 2 = ‖lam n‖` using `fun n => Real.sq_sqrt (norm_nonneg _)`. Establish `e3 : ∀ n, (Real.sqrt ‖lam n‖ * ‖W n‖) ^ 2 = ‖lam n‖ * ‖W n‖ ^ 2` using `fun n => by`. Rewrite using `[mul_pow, e2]`. Simplify using `only [e1, e2, e3] at this`. Conclude with `this`.
-
-Conclude with `(pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_mix_sq {N : Type} [Fintype N] (lam : N → ℂ) (W : N → H) :
     ‖∑ n, lam n • W n‖ ^ 2 ≤ (∑ n, ‖lam n‖) * ∑ n, ‖lam n‖ * ‖W n‖ ^ 2 := by
@@ -121,13 +119,13 @@ theorem norm_mix_sq {N : Type} [Fintype N] (lam : N → ℂ) (W : N → H) :
   exact (pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2
 
 /- English proof (translation)
-Rewrite using `[loe_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `x _ y _`. Simplify using `only [gramH, map_sub, map_mul, map_sum, Complex.conj_ofReal, inner_conj_symm]`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `eW : ∑ P ∈ Y, conj (c P) • ∑ n, lam n • h n P = ∑ n, lam n • ∑ P ∈ Y, conj (c P) • h n P`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun P _ => by rw [mul_comm]`. Rewrite using `[qf_gramH, eW, qf_mix]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [qf_gramH]`. Establish `hre : ∀ x : H, (⟪x, x⟫_ℂ).re = ‖x‖ ^ 2` using `fun x => by`. Use `inner_self_eq_norm_sq (𝕜 := ℂ) x` as an intermediate fact. Simplify using `using this`. Rewrite using `[Complex.re_ofReal_mul, Complex.re_sum, hre]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.re_ofReal_mul, hre]`. Conclude with `norm_mix_sq lam _`.
+A detailed English derivation is pending.
 -/
 theorem loe_convex {N : Type} [Fintype N] (Y : Finset α) (lam : N → ℂ) (h : N → α → H) :
     Loe Y (gramH fun P => ∑ n, lam n • h n P)
@@ -150,14 +148,14 @@ theorem loe_convex {N : Type} [Fintype N] (Y : Finset α) (lam : N → ℂ) (h :
     exact norm_mix_sq lam _
 
 /- English proof (translation)
-The claim follows from `psd_congr (fun x hx y hy => by rw [hA x hx y hy, hB x hx y hy]) h`.
+A detailed English derivation is pending.
 -/
 theorem loe_congr {Y : Finset α} {A A' B B' : α → α → ℂ} (hA : ∀ x ∈ Y, ∀ y ∈ Y, A x y = A' x y)
     (hB : ∀ x ∈ Y, ∀ y ∈ Y, B x y = B' x y) (h : Loe Y A B) : Loe Y A' B' :=
   psd_congr (fun x hx y hy => by rw [hA x hx y hy, hB x hx y hy]) h
 
 /- English proof (translation)
-Unfold `Loe`. Use `psd_congr (k := fun _ _ => (0 : ℂ)) (fun x _ y _ => by ring) ?_` and prove the remaining obligations. Rewrite using `[PBA.psd_iff_qf]; exact ⟨fun _ _ _ _ => by simp, fun c => by simp [PBA.qf]⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem loe_refl (Y : Finset α) (A : α → α → ℂ) : Loe Y A A := by
   unfold Loe
@@ -165,11 +163,11 @@ theorem loe_refl (Y : Finset α) (A : α → α → ℂ) : Loe Y A A := by
   rw [PBA.psd_iff_qf]; exact ⟨fun _ _ _ _ => by simp, fun c => by simp [PBA.qf]⟩
 
 /- English proof (translation)
-Rewrite `h`, `h'`, the goal using `[loe_iff]`. Use `⟨fun x hx y hy => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `a` using `h.1 x hx y hy`. Establish `b` using `h'.1 x hx y hy`. Establish `: B y x + B' y x - (A y x + A' y x) = (B y x - A y x) + (B' y x - A' y x)` using `by ring`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, a, b, ← map_add]`. Put the polynomial expressions in normal form. Establish `e : ∀ K K' : α → α → ℂ, PBA.qf Y (fun x y => K x y + K' x y) c = PBA.qf Y K c + PBA.qf Y K' c`. Introduce `K K'`. Unfold `PBA.qf`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using `only [← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by ring`. Rewrite using `[e, e, Complex.add_re, Complex.add_re]`. Combine the linear relations using `[h.2 c, h'.2 c]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem loe_add {Y : Finset α} {A B A' B' : α → α → ℂ} (h : Loe Y A B) (h' : Loe Y A' B') :
     Loe Y (fun x y => A x y + A' x y) (fun x y => B x y + B' x y) := by
@@ -185,11 +183,9 @@ theorem loe_add {Y : Finset α} {A B A' B' : α → α → ℂ} (h : Loe Y A B) 
     linarith [h.2 c, h'.2 c]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[loe_iff]`. Use `⟨fun x hx y hy => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `a` using `h.1 x hx y hy`. Rewrite using `[← mul_sub, ← mul_sub, a, map_mul, Complex.conj_ofReal]`. Establish `e : ∀ K : α → α → ℂ, PBA.qf Y (fun x y => (r : ℂ) * K x y) c = (r : ℂ) * PBA.qf Y K c`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `K`. Unfold `PBA.qf`. Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by ring`. Rewrite using `[e, e, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (h.2 c) hr`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loe_smul {Y : Finset α} {A B : α → α → ℂ} (r : ℝ) (hr : 0 ≤ r) (h : Loe Y A B) :
     Loe Y (fun x y => (r : ℂ) * A x y) (fun x y => (r : ℂ) * B x y) := by
@@ -204,9 +200,9 @@ theorem loe_smul {Y : Finset α} {A B : α → α → ℂ} (r : ℝ) (hr : 0 ≤
     exact mul_le_mul_of_nonneg_left (h.2 c) hr
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using loe_refl Y (fun _ _ => (0 : ℂ))`. Consider the case `insert b t hb ih`. Establish `h1` using `loe_add (h b (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`. Use `loe_congr (fun x _ y _ => ?_) (fun x _ y _ => ?_) h1` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_insert hb]`. Rewrite using `[Finset.sum_insert hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem loe_sum {ι : Type} (s : Finset ι) {Y : Finset α} {A B : ι → α → α → ℂ} (h : ∀ i ∈ s, Loe Y (A i) (B i)) :
     Loe Y (fun x y => ∑ i ∈ s, A i x y) (fun x y => ∑ i ∈ s, B i x y) := by
@@ -220,13 +216,11 @@ theorem loe_sum {ι : Type} (s : Finset ι) {Y : Finset α} {A B : ι → α →
     · rw [Finset.sum_insert hb]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[loe_iff]`. Use `⟨fun x hx y hy => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `a` using `h.1 x hx y hy`. Establish `: (ω y : ℂ) * (ω x : ℂ) * B y x - (ω y : ℂ) * (ω x : ℂ) * A y x = (ω y : ℂ) * (ω x : ℂ) * (B y x - A y x)`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, a]`. Simplify using `only [map_mul, map_sub, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : ∀ K : α → α → ℂ, PBA.qf Y (fun x y => (ω x : ℂ) * (ω y : ℂ) * K x y) c = PBA.qf Y K (fun x => (ω x : ℂ) * c x)`. Introduce `K`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `PBA.qf`. Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by`. Simplify using `only [map_mul, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, e]`.
-
-Conclude with `h.2 _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loe_diag {Y : Finset α} {A B : α → α → ℂ} (ω : α → ℝ) (h : Loe Y A B) :
     Loe Y (fun x y => (ω x : ℂ) * (ω y : ℂ) * A x y) (fun x y => (ω x : ℂ) * (ω y : ℂ) * B x y) := by
@@ -245,7 +239,7 @@ theorem loe_diag {Y : Finset α} {A B : α → α → ℂ} (ω : α → ℝ) (h 
     exact h.2 _
 
 /- English proof (translation)
-Establish `h` using `loe_smul (r' - r) hr (loe_zero_of_psd hK)`. Unfold `Loe at h ⊢`. Use `psd_congr (fun x _ y _ => ?_) h` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem loe_scale {Y : Finset α} {K : α → α → ℂ} (hK : TB.PSDOn Y K) {r r' : ℝ} (hr : 0 ≤ r' - r) :
     Loe Y (fun x y => (r : ℂ) * K x y) (fun x y => (r' : ℂ) * K x y) := by
@@ -255,7 +249,7 @@ theorem loe_scale {Y : Finset α} {K : α → α → ℂ} (hK : TB.PSDOn Y K) {r
   push_cast; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `P Q`. Unfold `gramH`. Rewrite using `[inner_smul_left, inner_smul_right, ← mul_assoc, mul_comm (conj c) c, Complex.mul_conj']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gramH_smul (c : ℂ) (h : α → H) :
     gramH (fun P => c • h P) = fun P Q => ((‖c‖ ^ 2 : ℝ) : ℂ) * gramH h P Q := by

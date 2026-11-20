@@ -25,7 +25,7 @@ def KeepsMat {D : D7} (p : ∀ i : Fin D.R.m, GAf D.host.E D.R.nV → GA D (Vc D
       ((κ.1 : Matrix (Fin D.R.nV) (Fin D.R.nV) (ReciprocityTheory.Aut.AL D.host.E)) (Fin.cast hn a) (Fin.cast hn b))
 
 /- English proof (translation)
-Introduce and unpack `p p' ⟨hF, hp⟩ ⟨hF', hp'⟩ j j' hj`. Consider the cases of `Fin.ext hj`. Take `⟨hn, hp⟩` from `hp j`. Take `⟨hn', hp'⟩` from `hp' j`. Conclude with `heq_of_eq (funext fun g => Subtype.ext (Units.ext (Matrix.ext fun a b => (hp g a b).trans (hp' g a b).symm)))`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem keepsMat_heq_refl (D : D7) : ∀ (p : ∀ i : Fin D.R.m, GAf D.host.E D.R.nV → GA D (Vc D i)) (p' : ∀ i : Fin D.R.m, GAf D.host.E D.R.nV → GA D (Vc D i)),
     KeepsMat p → KeepsMat p' → ∀ (j : Fin D.R.m) (j' : Fin D.R.m), (j : ℕ) = j' →
@@ -37,7 +37,7 @@ theorem keepsMat_heq_refl (D : D7) : ∀ (p : ∀ i : Fin D.R.m, GAf D.host.E D.
   exact heq_of_eq (funext fun g => Subtype.ext (Units.ext (Matrix.ext fun a b => (hp g a b).trans (hp' g a b).symm)))
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `h.exists_rest`. Conclude with `(by with_unfolding_all exact ((keepsMat_heq_refl D) :))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem keepsMat_heq (h : CopyTw D D' ι e) : ∀ (p : ∀ i : Fin D.R.m, GAf D.host.E D.R.nV → GA D (Vc D i)) (p' : ∀ i : Fin D'.R.m, GAf D'.host.E D'.R.nV → GA D' (Vc D' i)),
     KeepsMat p → KeepsMat p' → ∀ (j : Fin D.R.m) (j' : Fin D'.R.m), (j : ℕ) = j' →
@@ -46,7 +46,7 @@ theorem keepsMat_heq (h : CopyTw D D' ι e) : ∀ (p : ∀ i : Fin D.R.m, GAf D.
   exact (by with_unfolding_all exact ((keepsMat_heq_refl D) :))
 
 /- English proof (translation)
-Use `⟨id, fun _ _ hb H => ?_, id⟩` and prove the remaining obligations. Substitute `hb` using the available equality. Conclude with `H`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem low_copy_refl (D : D7) : (LowIn D → LowIn D) ∧
     (∀ (bad : D.ntw.Tw → ℕ) (bad' : D.ntw.Tw → ℕ), HEq bad bad' → (∀ i, bad i = normProd (D.ntw.S0 i)) →
@@ -57,7 +57,7 @@ theorem low_copy_refl (D : D7) : (LowIn D → LowIn D) ∧
   subst hb; exact H
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `h.exists_rest`. Conclude with `(by with_unfolding_all exact ((low_copy_refl D) :))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem low_copy (h : CopyTw D D' ι e) : (LowIn D → LowIn D') ∧
     (∀ (bad : D.ntw.Tw → ℕ) (bad' : D'.ntw.Tw → ℕ), HEq bad bad' → (∀ i, bad i = normProd (D.ntw.S0 i)) →
@@ -68,9 +68,9 @@ theorem low_copy (h : CopyTw D D' ι e) : (LowIn D → LowIn D') ∧
   exact (by with_unfolding_all exact ((low_copy_refl D) :))
 
 /- English proof (translation)
-Use `fun Pq Pq' hPq => ⟨fun _ _ hc H => ?_, fun i k Q ψ => ?_⟩` and prove the remaining obligations. Substitute `hPq` using the available equality. Substitute `hc` using the available equality. Conclude with `H`. Substitute `hPq` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨i, Q, ψ, .rfl, .rfl, .rfl, .rfl, .rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem pq_copy_refl (D : D7) : ∀ (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host)
       (Pq' : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host), HEq Pq Pq' →
@@ -84,7 +84,7 @@ theorem pq_copy_refl (D : D7) : ∀ (Pq : HeightOneSpectrum (𝓞 (maximalRealSu
   · subst hPq; exact ⟨i, Q, ψ, .rfl, .rfl, .rfl, .rfl, .rfl⟩
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `h.exists_rest`. Conclude with `(by with_unfolding_all exact ((pq_copy_refl D) :))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pq_copy (h : CopyTw D D' ι e) : ∀ (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host)
       (Pq' : HeightOneSpectrum (𝓞 (maximalRealSubfield D'.host.E)) → PlE D'.host), HEq Pq Pq' →
@@ -97,9 +97,9 @@ theorem pq_copy (h : CopyTw D D' ι e) : ∀ (Pq : HeightOneSpectrum (𝓞 (maxi
   exact (by with_unfolding_all exact ((pq_copy_refl D) :))
 
 /- English proof (translation)
-Introduce `i j j' hj b k Q ψ hT`. Consider the cases of `Fin.ext hj`. Use `⟨i, Q, ψ, .rfl, .rfl, .rfl, hT, rfl, .rfl, .rfl, fun _ _ hek => ?_⟩` and prove the remaining obligations. Substitute `hek` using the available equality. Use `⟨.rfl, fun _ _ hr _ _ hp => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hr` using the available equality. Substitute `hp` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem join_copy_refl (D : D7) : ∀ (i' : D.ntw.Tw) (j : Fin D.R.m) (j' : Fin D.R.m), (j : ℕ) = j' → ∀ (b : Bool) (k : ℕ)
     (Q' : Finset (PlE D.host)) (ψ' : G D.host.E D.nd.Om →* (D.ntw.Ok i' k)ˣ), TwOK i' k Q' ψ' →
@@ -125,7 +125,7 @@ theorem join_copy_refl (D : D7) : ∀ (i' : D.ntw.Tw) (j : Fin D.R.m) (j' : Fin 
   rfl
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `h.exists_rest`. Conclude with `(by with_unfolding_all exact ((join_copy_refl D) :))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem join_copy (h : CopyTw D D' ι e) : ∀ (i' : D'.ntw.Tw) (j : Fin D.R.m) (j' : Fin D'.R.m), (j : ℕ) = j' → ∀ (b : Bool) (k : ℕ)
     (Q' : Finset (PlE D'.host)) (ψ' : G D'.host.E D'.nd.Om →* (D'.ntw.Ok i' k)ˣ), TwOK i' k Q' ψ' →
@@ -161,9 +161,9 @@ def PqLaw (X : NExpTied D) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.
     (X.mtV i j b k Q ψ h1 h2 hadm).QP = NX.qpOf D Pq Q ∧ (X.mtV i j b k Q ψ h1 h2 hadm).DP = NX.qpOf D Pq (D.ntw.pD i)
 
 /- English proof (translation)
-Introduce `i' j b k Q' ψ' h1 h2' hA'`. Establish `h2 : j ≤ D.R.m` using `by rw [h.gal.R]; exact h2'`. Take `⟨i, Q, ψ, hi, hQ, hψ, e1, e2⟩` from `(pq_copy h Pq Pq' hPq).2 i' k Q' ψ'`. Take `⟨hA, q1, q2, -⟩` from `hX i i' hi j b k Q Q' hQ ψ ψ' hψ h1 h2 h2' hA'`. Take `⟨l1, l2⟩` from `L i j b k Q ψ h1 h2 hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨eq_of_heq (q1.symm.trans ((heq_of_eq l1).trans e1)), eq_of_heq (q2.symm.trans ((heq_of_eq l2).trans e2))⟩`.
+Supply the required witnesses or components.
 -/
 theorem pqLaw_move (h : CopyTw D D' ι e) {X : NExpTied D} {X' : NExpTied D'} (hX : ExpMove X X') {Pq Pq'} (hPq : HEq Pq Pq')
     (L : PqLaw X Pq) : PqLaw X' Pq' := by

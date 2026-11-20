@@ -15,9 +15,9 @@ section UBIntLemmas
 variable {C : Type} [Field C] {σ : Type}
 
 /- English proof (translation)
-Use extensionality with `m`. Express the relevant statement in the definitionally equal form `∑ k ∈ Finset.range (m.degree + 1), coeff m ((0 : MvPowerSeries σ C) ^ k) / (k.factorial : C) = coeff m 1`. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[zero_pow hk]`. Introduce `h`. Simplify using `at h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ubint_mvExp_zero : mvExp (0 : MvPowerSeries σ C) = 1 := by
   ext m
@@ -31,9 +31,9 @@ theorem ubint_mvExp_zero : mvExp (0 : MvPowerSeries σ C) = 1 := by
     simp at h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ubint_mvExp_zero]`. Consider the case `@insert a s ha ih`. Establish `hs : ∀ i ∈ s, constantCoeff (f i) = 0` using `fun i hi => hf i (Finset.mem_insert_of_mem hi)`. Establish `h0 : constantCoeff (∑ i ∈ s, f i) = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero hs`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, expSeriesAdd C σ (f a) _ (hf a (Finset.mem_insert_self a s)) h0, ih hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ubint_mvExp_sum [CharZero C] {ι : Type} (s : Finset ι) (f : ι → MvPowerSeries σ C)
     (hf : ∀ i ∈ s, constantCoeff (f i) = 0) :

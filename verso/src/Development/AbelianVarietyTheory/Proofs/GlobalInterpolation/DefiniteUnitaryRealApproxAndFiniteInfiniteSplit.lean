@@ -37,7 +37,7 @@ Both sides reduce to the same expression.
 theorem infPart_val (g : UA E n) : (infPart g).1.1 = infGL E n (GeneralLinearGroup.map (pInf E) g.1) := rfl
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _` and prove the remaining obligations. Conclude with `GlobalTheory.DefU.ClassFin.continuous_finGL.comp ((Continuous.units_map _ (continuous_id.matrix_map (continuous_snd : Continuous (pFin E)))).comp continuous_subtype_val)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_finPart : Continuous (finPart (E := E) (n := n)) := by
   refine Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _
@@ -46,38 +46,38 @@ theorem continuous_finPart : Continuous (finPart (E := E) (n := n)) := by
       continuous_subtype_val)
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _` and prove the remaining obligations. Conclude with `GlobalTheory.DefU.continuous_infGL.comp GlobalTheory.DefU.continuous_cInf`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_infPart : Continuous (infPart (E := E) (n := n)) := by
   refine Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _
   exact GlobalTheory.DefU.continuous_infGL.comp GlobalTheory.DefU.continuous_cInf
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.DefU.fin_mul_inf (finPart g).2 (infPart g).2]`. Conclude with `Subtype.ext (infGL_mul_finGL g.1).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_mul_infPart (g : UA E n) : g = (finPart g).1 * (infPart g).1 := by
   rw [GlobalTheory.DefU.fin_mul_inf (finPart g).2 (infPart g).2]
   exact Subtype.ext (infGL_mul_finGL g.1).symm
 
 /- English proof (translation)
-The claim follows from `pInf_infGL _`.
+A detailed English derivation is pending.
 -/
 theorem cInf_infPart (g : UA E n) : cInf (infPart g).1 = cInf g := pInf_infGL _
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Subtype.ext (GlobalTheory.CuspRep.ga_ext ((pInf_finGL _).trans g.2.symm) (pFin_finGL _)))`.
+A detailed English derivation is pending.
 -/
 theorem finPart_fin (g : finU E n) : finPart g.1 = g :=
   Subtype.ext (Subtype.ext (GlobalTheory.CuspRep.ga_ext ((pInf_finGL _).trans g.2.symm) (pFin_finGL _)))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Subtype.ext (GlobalTheory.CuspRep.ga_ext (pInf_infGL _) ((pFin_infGL _).trans k.2.symm)))`.
+A detailed English derivation is pending.
 -/
 theorem infPart_inf (k : infU E n) : infPart k.1 = k :=
   Subtype.ext (Subtype.ext (GlobalTheory.CuspRep.ga_ext (pInf_infGL _) ((pFin_infGL _).trans k.2.symm)))
 
 /- English proof (translation)
-Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Establish `h : GeneralLinearGroup.map (pFin E) k.1.1 = 1` using `k.2`. Rewrite using `[finPart_val, h, map_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finPart_inf (k : infU E n) : finPart k.1 = 1 := by
   refine Subtype.ext (Subtype.ext ?_)
@@ -86,7 +86,7 @@ theorem finPart_inf (k : infU E n) : finPart k.1 = 1 := by
   rfl
 
 /- English proof (translation)
-Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Establish `h : GeneralLinearGroup.map (pInf E) g.1.1 = 1` using `g.2`. Rewrite using `[infPart_val, h, map_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infPart_fin (g : finU E n) : infPart g.1 = 1 := by
   refine Subtype.ext (Subtype.ext ?_)
@@ -95,9 +95,9 @@ theorem infPart_fin (g : finU E n) : infPart g.1 = 1 := by
   rfl
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[← infPart_inf k]`. Use `closure_mono ?_ (image_closure_subset_closure_image continuous_infPart ⟨k.1, GlobalTheory.WeightRealExt.dense_rat_fin k.1, rfl⟩)` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨γ, hγ, g, hg, rfl⟩, rfl⟩`. Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg' : cInf g = 1` using `hg`. Rewrite using `[cInf_infPart, map_mul, hg', mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dense_rat_inf : Dense {k : infU E n | ∃ γ ∈ ratU E n, cInf k.1 = cInf γ} := by
   intro k
@@ -110,7 +110,7 @@ theorem dense_rat_inf : Dense {k : infU E n | ∃ γ ∈ ratU E n, cInf k.1 = cI
   rw [cInf_infPart, map_mul, hg', mul_one]
 
 /- English proof (translation)
-Introduce `E _ _ _ n`. Use `⟨GlobalTheory.WeightRealExt.dense_rat_fin, dense_rat_inf, fun k g hg => (GlobalTheory.DefU.fin_mul_inf hg k.2).symm, finPart, infPart, continuous_finPart, continuous_infPart, finPart_mul_infPart, fun g k => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_mul, finPart_fin, finPart_inf, mul_one]`. Rewrite using `[map_mul, infPart_fin, infPart_inf, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dense_and_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), Dense ((ratU E n : Set (UA E n)) * (finU E n : Set (UA E n))) ∧ Dense {k : infU E n | ∃ γ ∈ ratU E n, cInf k.1 = cInf γ} ∧ (∀ k : infU E n, ∀ g ∈ finU E n, k.1 * g = g * k.1) ∧ ∃ (a : UA E n →* finU E n) (b : UA E n →* infU E n), Continuous a ∧ Continuous b ∧ (∀ x, x = (a x).1 * (b x).1) ∧ ∀ (g : finU E n) (k : infU E n), a (g.1 * k.1) = g ∧ b (g.1 * k.1) = k := by
   intro E _ _ _ n

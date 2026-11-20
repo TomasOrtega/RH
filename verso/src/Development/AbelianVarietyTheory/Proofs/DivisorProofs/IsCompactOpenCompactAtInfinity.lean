@@ -14,9 +14,9 @@ open GlobalTheory.IwasawaKAvgInt
 namespace GlobalTheory.IwasawaKAvgInt.KInfCompact
 
 /- English proof (translation)
-Take `⟨C, hC, hsub⟩` from `GlobalTheory.T.relatively_compact_stabilizer F E σ B n X r s hB hX`. Establish `e : K = GlobalTheory.StabHaar.stabK B X`. Use extensionality with `g`. Rewrite using `[hK g, GlobalTheory.StabHaar.isStab_stabK B X g]`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Conclude with `hC.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B X (GlobalTheory.T.isClosed_adelic_lattice_closure F E n X hX.lat)) hsub`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_of_isStab {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {B : Base F E} {n : ℕ} {X : Spc F E n} {r s : ℕ} (hB : B.IsGood σ) (hX : X.IsHerm σ B r s)
@@ -29,7 +29,7 @@ theorem isCompact_of_isStab {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   exact hC.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B X (GlobalTheory.T.isClosed_adelic_lattice_closure F E n X hX.lat)) hsub
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hB hX K hK`. Conclude with `isCompact_KAt (isCompact_of_isStab hB hX hK) _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCompact_kAt_inf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n : ℕ) (X : Spc F E n) (r s : ℕ), B.IsGood σ → X.IsHerm σ B r s →

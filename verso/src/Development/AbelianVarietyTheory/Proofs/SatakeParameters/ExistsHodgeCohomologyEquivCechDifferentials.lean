@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.OmegaPullOmeg
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.KaehlerOneFormsToExtensionDeRhamMulSelf
 open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory GlobalTheory.PD GlobalTheory.CechDR GlobalTheory.HodgeCoh ReciprocityTheory.ChartRestriction.G.Geo.Tor
 /- English proof (citation)
-Apply `UpperTheory.Cb.exists_hodge_cohomology_equiv_cech_differentials` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FEtaleClopenDescent%2FExistsHodgeCohomologyEquivCechDifferentials.lean&line=10#L10)
 -/

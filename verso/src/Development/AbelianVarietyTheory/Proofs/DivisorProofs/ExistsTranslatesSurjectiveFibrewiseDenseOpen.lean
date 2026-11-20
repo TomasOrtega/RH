@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TranslateSurj
 
 /- English proof (translation)
-Use `⟨fun y => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hq.surj y`. Use `⟨⟨g z, hO z⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem surjective_of_factor {X Y Z : Scheme.{0}} (p : X ⟶ Y) (O : X.Opens) (g : Z ⟶ X) (q : Z ⟶ Y)
     (hg : g ≫ p = q) (hq : Surjective q) (hO : ∀ z, g z ∈ O) : Surjective (O.ι ≫ p) := by
@@ -28,19 +28,15 @@ end GlobalTheory.TranslateSurj
 namespace GlobalTheory.TranslateSurj
 
 /- English proof (translation)
-Introduce `S A _ hA V B j hjV hBs hBg`. Use `haveI := hA.smooth`. Use `haveI := hA.geomConnected`. Use `haveI := hBs`. Use `haveI := hBg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : GeometricallyConnected B.hom := GlobalTheory.geometricallyConnected_of_geometricallyIntegral _`. Use `haveI : Smooth (fst (A ⊗ A) B ≫ fst A A).left := by show Smooth (pullback.fst (A ⊗ A).hom B.hom ≫ pullback.fst A.hom A.hom); infer_instance`. Use `haveI : GeometricallyConnected (fst (A ⊗ A) B ≫ fst A A).left := by show GeometricallyConnected (pullback.fst (A ⊗ A).hom B.hom ≫ pullback.fst A.hom A.hom)`. Conclude with `GeometricallyConnected.comp _ _`. Use `haveI : GeometricallyIntegral (fst (A ⊗ A) B ≫ fst A A).left := GlobalTheory.geometricallyIntegral_of_smooth _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq : Surjective (fst A B).left` using `by show Surjective (pullback.fst A.hom B.hom); infer_instance`. Establish `key : ∀ (a₀ : A ⊗ B ⟶ A) (w : (A ⊗ A) ⊗ B ⟶ A), lift (lift (fst A B) a₀) (snd A B) ≫ w = snd A B ≫ j → Surjective ((w.left ⁻¹ᵁ V).ι ≫ (fst (A ⊗ A) B ≫ fst A A).left)`. Introduce `a₀ w hw`. Use `surjective_of_factor _ _ (lift (lift (fst A B) a₀) (snd A B)).left (fst A B).left ?_ hq ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Introduce `z show w.left ((lift (lift (fst A B) a₀) (snd A B)).left z) ∈ V`. Establish `e : w.left ((lift (lift (fst A B) a₀) (snd A B)).left z) = j.left ((snd A B).left z)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, hw, Over.comp_left, Scheme.Hom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `hjV _`. Use `GlobalTheory.T.surjective_inf_comp_of_geometricallyIntegral _ _ _ _ _ (GlobalTheory.T.surjective_inf_comp_of_geometricallyIntegral _ _ _ _ _ (GlobalTheory.T.surjective_inf_comp_of_geometricallyIntegral _ _ _ _ _ ?_ ?_) ?_) ?_` and prove the remaining obligations. Use `key ((fst A B)⁻¹ * (snd A B ≫ j)) _ ?_` and prove the remaining obligations. Simplify using `[MonObj.comp_mul, GrpObj.comp_inv]`.
-
-Use `key ((snd A B ≫ j)⁻¹ * fst A B) _ ?_` and prove the remaining obligations. Simplify using `[MonObj.comp_mul, GrpObj.comp_inv]`. Use `key 1 _ ?_` and prove the remaining obligations. Simplify using `[MonObj.comp_mul, GrpObj.comp_inv]`. Use `key 1 _ ?_` and prove the remaining obligations.
-
-Simplify using `[MonObj.comp_mul, GrpObj.comp_inv]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_translates_surjective : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (V : A.left.Opens) (B : Over S) (j : B ⟶ A), (∀ b, j.left b ∈ V) → Smooth B.hom → GeometricallyIntegral B.hom → Surjective ((((fst (A ⊗ A) B ≫ fst A A) * (fst (A ⊗ A) B ≫ snd A A)).left ⁻¹ᵁ V ⊓ ((fst (A ⊗ A) B ≫ fst A A) * (fst (A ⊗ A) B ≫ snd A A)⁻¹).left ⁻¹ᵁ V ⊓ ((snd (A ⊗ A) B ≫ j) * (fst (A ⊗ A) B ≫ snd A A)).left ⁻¹ᵁ V ⊓ ((snd (A ⊗ A) B ≫ j) * (fst (A ⊗ A) B ≫ snd A A)⁻¹).left ⁻¹ᵁ V).ι ≫ (fst (A ⊗ A) B ≫ fst A A).left) := by
   intro S A _ hA V B j hjV hBs hBg

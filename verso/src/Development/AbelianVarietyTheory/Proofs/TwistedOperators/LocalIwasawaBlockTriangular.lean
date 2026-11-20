@@ -30,11 +30,9 @@ def HasIw (R : Type) [CommRing R] (O : Subring R) : Prop :=
     (∀ i j, (α⁻¹).1 i j ∈ O) ∧ β = b * α
 
 /- English proof (translation)
-Introduce `r β`. Take `⟨k, b, hb, h⟩` from `GlobalTheory.ValIwasawa.iwasawa V K r β⁻¹`. Use `⟨b⁻¹, (Matrix.GeneralLinearGroup.map (algebraMap V K) k)⁻¹, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : Invertible b.1 := Units.invertible b`. Rewrite using `[Matrix.coe_units_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hb`. Introduce `i j`. Rewrite using `[← map_inv]`. Conclude with `(k⁻¹.1 i j).2`. Introduce `i j`.
-
-Rewrite using `[inv_inv]`. Conclude with `(k.1 i j).2`. Rewrite using `[← mul_inv_rev, ← h, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasIw_valuationSubring {K : Type} [Field K] (V : ValuationSubring K) : HasIw K V.toSubring := by
   intro r β
@@ -52,11 +50,11 @@ theorem hasIw_valuationSubring {K : Type} [Field K] (V : ValuationSubring K) : H
   · rw [← mul_inv_rev, ← h, inv_inv]
 
 /- English proof (translation)
-Introduce `r β`. Take `⟨b, α, hb, h1, h2, e⟩` from `h r (Matrix.GeneralLinearGroup.map (φ : R →+* S) β)`. Establish `hinv : ∀ g : GL (Fin r) R, Matrix.GeneralLinearGroup.map (φ.symm : S →+* R) (Matrix.GeneralLinearGroup.map (φ : R →+* S) g) = g` using `fun g => by ext i j; simp`. Use `⟨Matrix.GeneralLinearGroup.map (φ.symm : S →+* R) b, Matrix.GeneralLinearGroup.map (φ.symm : S →+* R) α, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hb hij]`. Introduce `i j`. Rewrite using `[hφ]`. Simplify using `using h1 i j`. Introduce `i j`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show (Matrix.GeneralLinearGroup.map (φ.symm : S →+* R) α)⁻¹ = Matrix.GeneralLinearGroup.map (φ.symm : S →+* R) α⁻¹ from (map_inv _ _).symm, hφ]`. Use `show φ (φ.symm ((α⁻¹).1 i j)) ∈ O'`. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `h2 i j`. Rewrite using `[← map_mul, ← e, hinv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasIw_of_equiv {R S : Type} [CommRing R] [CommRing S] {O : Subring R} {O' : Subring S} (φ : R ≃+* S)
     (hφ : ∀ y, y ∈ O ↔ φ y ∈ O') (h : HasIw S O') : HasIw R O := by
@@ -83,7 +81,7 @@ def pairM {R₁ R₂ : Type} {r : ℕ} (x : Matrix (Fin r) (Fin r) R₁) (y : Ma
     Matrix (Fin r) (Fin r) (R₁ × R₂) := Matrix.of fun i j => (x i j, y i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[pairM, Matrix.mul_apply, Prod.fst_sum]`. Simplify using `[pairM, Matrix.mul_apply, Prod.snd_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pairM_mul {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] {r : ℕ} (x x' : Matrix (Fin r) (Fin r) R₁)
     (y y' : Matrix (Fin r) (Fin r) R₂) : pairM (x * x') (y * y') = pairM x y * pairM x' y' := by
@@ -92,7 +90,7 @@ theorem pairM_mul {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] {r : ℕ} (
   · simp [pairM, Matrix.mul_apply, Prod.snd_sum]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j <;> by_cases h : i = j <;> simp [pairM, Matrix.one_apply, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairM_one {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] {r : ℕ} :
     pairM (1 : Matrix (Fin r) (Fin r) R₁) (1 : Matrix (Fin r) (Fin r) R₂) = 1 := by
@@ -104,11 +102,11 @@ def pairGL {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] {r : ℕ} (g₁ : 
     by rw [← pairM_mul, Units.inv_mul, Units.inv_mul, pairM_one]⟩
 
 /- English proof (translation)
-Introduce `r β`. Take `⟨b₁, α₁, hb₁, h1₁, h2₁, e₁⟩` from `h₁ r (Matrix.GeneralLinearGroup.map (RingHom.fst R₁ R₂) β)`. Take `⟨b₂, α₂, hb₂, h1₂, h2₂, e₂⟩` from `h₂ r (Matrix.GeneralLinearGroup.map (RingHom.snd R₁ R₂) β)`. Use `⟨pairGL b₁ b₂, pairGL α₁ α₂, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Prod.ext (hb₁ hij) (hb₂ hij)`. Introduce `i j`. Conclude with `Subring.mem_prod.2 ⟨h1₁ i j, h1₂ i j⟩`. Introduce `i j`. Conclude with `Subring.mem_prod.2 ⟨h2₁ i j, h2₂ i j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul]`. Express the relevant statement in the definitionally equal form `β.1 = pairM b₁.1 b₂.1 * pairM α₁.1 α₂.1`. Rewrite using `[← pairM_mul, ← Units.val_mul, ← Units.val_mul, ← e₁, ← e₂]`. Apply the tactic sequence `ext i j <;> simp [pairM]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hasIw_prod {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] {O₁ : Subring R₁} {O₂ : Subring R₂}
     (h₁ : HasIw R₁ O₁) (h₂ : HasIw R₂ O₂) : HasIw (R₁ × R₂) (O₁.prod O₂) := by
@@ -136,11 +134,11 @@ open scoped TensorProduct Matrix
 open GlobalTheory.AdelicU GlobalTheory.LFun
 
 /- English proof (translation)
-Introduce `D v r β`. It suffices to establish `hI : HasIw (TensorProduct D.host.F (Fv D.host.F v) D.host.E) (intLoc D.host.F D.host.E v) from hI r β`. Use `v.isMaximal` as an intermediate fact. Take `⟨P, hP, hPv⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal`. Set `w : HeightOneSpectrum (𝓞 D.host.E)` to `⟨P, hP.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `h : w.under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext hPv.over.symm`. Establish `hi` using `GlobalTheory.LPositivity.split_or_inert D w`. Rewrite `hi` using `[h]`. Break down `hi with ⟨P₁, Q₁, hne, h₁, h₂⟩ | hw` into its components or cases. Take `⟨τ, -⟩` from `existsUnique_splitPrime_eq (isCMExt_host D) hne (HeightOneSpectrum.ext h₁) (HeightOneSpectrum.ext h₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `hasIw_of_equiv (splitAlgEquiv (isCMExt_host D) τ).toRingEquiv (fun y => ?_) (hasIw_prod (hasIw_valuationSubring (v.adicCompletionIntegers D.host.F)) (hasIw_valuationSubring (v.adicCompletionIntegers D.host.F)))` and prove the remaining obligations. Rewrite using `[mem_intLoc_iff_split (isCMExt_host D) τ, Subring.mem_prod]`. Both sides reduce to the same expression. Conclude with `hasIw_of_equiv (InertChart.complEquiv hw h) (fun y => InertChart.mem_intLoc_iff hw h y) (hasIw_valuationSubring (w.adicCompletionIntegers D.host.E))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem iwasawa_intLoc : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (r : ℕ)
     (β : GL (Fin r) (TensorProduct D.host.F (Fv D.host.F v) D.host.E)),

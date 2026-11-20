@@ -49,13 +49,11 @@ def FrameConcl (Q : D.toPre.X → ℤ) (v : AddValuation F (WithTop ℚ)) (N : �
 open QForm in
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Use `ιD.onB.hom a` as an intermediate fact. Use `ιD.onB.hom (star a)` as an intermediate fact. Take `⟨u, hu, hnorm⟩` from `exists_ros GlobalTheory.globalFns_holds D.toPre.P.isAb D.toPre.P.isLB _ _ (ιD.onB.rosati a)`. Establish `hc` using `ιD.tau_bal a u hu hnorm χ χ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, _, hsA, hA⟩` from `tau_val hϖ D hQ (a • χ) χ'`. Take `⟨_, _, hsB, hB⟩` from `tau_val hϖ D hQ χ (star a • χ')`. Establish `hu0` using `genHasVal_pullGen_of (ϖ := ϖ) D.toPre.P.L _ _ u hu (lift (D.toPre.c χ) (D.toPre.c χ')).left (D.toPre.pt2 χ χ') (by simp [DegPre.pt2, ← CartesianMonoidalCategory.comp_lift])`. Establish `h1` using `genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ hA hu0`. Use `genHasVal_unique hϖ D.toPre.P.L hL _ _ _ _ _ (genHasVal_corr hϖ D.toPre.P.L hL D.toPre.P.A.hom _ _ _ _ _ _ _ _ (sumElim_sec hsA (fun k => by` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `rosatiφ_over D.toPre.P.A (ιD.onB.act a) (ιD.onB.act (star a)) k`. Use `show (_ ≫ rosatiφ D.toPre.P.A (ιD.onB.act a) (ιD.onB.act (star a)) k) ≫ _ = _`. Rewrite using `[hq]`. Conclude with `over_sec _ _)) hsB _ _`. Use the proof step `(genHasVal_isGen D.toPre.P.L _ _ _ _ _ hB) hc h1) hB`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bOf_balance {ϖ : V} (hϖ : Irreducible ϖ) {Q : D.toPre.X → ℤ} {O : Type} [Ring O] [StarRing O]
     [Module O D.toPre.X] (ιD : D.toPre.OAct O) (hQ : IsQ D.toPre ϖ Q) (a : O) (χ χ' : D.toPre.X) :

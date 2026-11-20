@@ -24,15 +24,15 @@ section Flat
 variable {Y X : HSp D} {ι : X.V →ₗ[D.host.E] Y.V} {z : Y.V} {u : D.what₂.Word}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Formalism.L2.Herm.crd V).symm x, funext fun i => by simp [vA]⟩`.
+Supply the required witnesses or components.
 -/
 theorem vA_surj (V : HSp D) (x : Fin V.rank → D.host.E) : ∃ y : V.V, vA V y = fun i => inc D (x i) :=
   ⟨(Formalism.L2.Herm.crd V).symm x, funext fun i => by simp [vA]⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Establish `: ∀ i, vA X (X.frame i) k = if i = k then 1 else 0` using `fun i => by`. Express the relevant statement in the definitionally equal form `inc D (X.frame.repr (X.frame i) k) = _`. Rewrite using `[Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `map_one _`. Conclude with `map_zero _`. Simplify using `[Finset.sum_apply, this]`.
+A detailed English derivation is pending.
 -/
 theorem eq_sum_vA_frame (x : Fin X.rank → EAf D) : x = ∑ i, x i • vA X (X.frame i) := by
   funext k
@@ -45,7 +45,7 @@ theorem eq_sum_vA_frame (x : Fin X.rank → EAf D) : x = ∑ i, x i • vA X (X.
   simp [Finset.sum_apply, this]
 
 /- English proof (translation)
-Rewrite using `[eq_sum_vA_frame x]`. Conclude with `Finset.sum_induction _ p hadd h0 fun i _ => hsm _ _ (h1 _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelic_induction {p : (Fin X.rank → EAf D) → Prop} (h1 : ∀ x : X.V, p (vA X x)) (h0 : p 0)
     (hadd : ∀ x y, p x → p y → p (x + y)) (hsm : ∀ (a : EAf D) x, p x → p (a • x)) (x : Fin X.rank → EAf D) : p x := by
@@ -53,19 +53,19 @@ theorem adelic_induction {p : (Fin X.rank → EAf D) → Prop} (h1 : ∀ x : X.V
   exact Finset.sum_induction _ p hadd h0 fun i _ => hsm _ _ (h1 _)
 
 /- English proof (translation)
-Simplify using `[hA, Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_zero_left (V : HSp D) (y : Fin V.rank → EAf D) : hA V 0 y = 0 := by simp [hA, Formalism.UG.hform]
 
 /- English proof (translation)
-Simplify using `[hA, Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_zero_right (V : HSp D) (y : Fin V.rank → EAf D) : hA V y 0 = 0 := by simp [hA, Formalism.UG.hform]
 
 /- English proof (translation)
-Proceed by induction on `x using adelic_induction with`. Consider the case `h1 x`. Proceed by induction on `x' using adelic_induction with`. Consider the case `h1 x' => rw [mA_mulVec_vA, mA_mulVec_vA, hA_vA, hA_vA, HSpace.hD, HSpace.hD, h]`. Consider the case `h0 => rw [mulVec_zero, hA_zero_right, hA_zero_right]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `hadd a b ha hb => rw [mulVec_add, hA_add_right, hA_add_right, ha, hb]`. Consider the case `hsm c a ha => rw [mulVec_smul, hA_smul_right, hA_smul_right, ha]`. Consider the case `h0 => rw [mulVec_zero, hA_zero_left, hA_zero_left]`. Consider the case `hadd a b ha hb => rw [mulVec_add, hA_add_left, hA_add_left, ha, hb]`. Consider the case `hsm c a ha => rw [mulVec_smul, hA_smul_left, hA_smul_left, ha]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem hA_mA_mA (h : HSpace.IsIsomEmb X Y ι) (x x' : Fin X.rank → EAf D) :
     hA Y (mA Y X ι *ᵥ x) (mA Y X ι *ᵥ x') = hA X x x' := by
@@ -81,7 +81,7 @@ theorem hA_mA_mA (h : HSpace.IsIsomEmb X Y ι) (x x' : Fin X.rank → EAf D) :
   | hsm c a ha => rw [mulVec_smul, hA_smul_left, hA_smul_left, ha]
 
 /- English proof (translation)
-Proceed by induction on `x using adelic_induction with`. Consider the case `h1 x => rw [mA_mulVec_vA, hA_vA, h.2.1, RingHom.map_zero]`. Consider the case `h0 => rw [mulVec_zero, hA_zero_left]`. Consider the case `hadd a b ha hb => rw [mulVec_add, hA_add_left, ha, hb, add_zero]`. Consider the case `hsm c a ha => rw [mulVec_smul, hA_smul_left, ha, mul_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem hA_mA_vA (h : IsLine Y X ι z u) (x : Fin X.rank → EAf D) : hA Y (mA Y X ι *ᵥ x) (vA Y z) = 0 := by
   induction x using adelic_induction with
@@ -91,7 +91,7 @@ theorem hA_mA_vA (h : IsLine Y X ι z u) (x : Fin X.rank → EAf D) : hA Y (mA Y
   | hsm c a ha => rw [mulVec_smul, hA_smul_left, ha, mul_zero]
 
 /- English proof (translation)
-Establish `h1 : hA Y (vA Y z) (mA Y X ι *ᵥ x') = 0` using `by rw [← cjA_hA, hA_mA_vA h, RingHom.map_zero]`. Rewrite using `[hA_add_left, hA_add_right, hA_add_right, hA_smul_left, hA_smul_left, hA_smul_right, hA_smul_right, hA_mA_mA h.1, hA_mA_vA h, h1, hA_vA, h.2.2, RingHom.map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hA_flat (h : IsLine Y X ι z u) (x x' : Fin X.rank → EAf D) (a a' : EAf D) :
     hA Y (mA Y X ι *ᵥ x + a • vA Y z) (mA Y X ι *ᵥ x' + a' • vA Y z) = hA X x x' - a * cjA D a' * inc D (Tu D u) := by
@@ -101,30 +101,30 @@ theorem hA_flat (h : IsLine Y X ι z u) (x x' : Fin X.rank → EAf D) (a a' : EA
   ring
 
 /- English proof (translation)
-Rewrite using `[← RingHom.map_mul, inv_mul_cancel₀ (Tu_ne_zero u), RingHom.map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inc_inv_mul (u : D.what₂.Word) : inc D (Tu D u)⁻¹ * inc D (Tu D u) = 1 := by
   rw [← RingHom.map_mul, inv_mul_cancel₀ (Tu_ne_zero u), RingHom.map_one]
 
 /- English proof (translation)
-Rewrite using `[cjA_inc, star_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cjA_inc_Tu (u : D.what₂.Word) : cjA D (inc D (Tu D u)) = inc D (Tu D u) := by rw [cjA_inc, star_natCast]
 
 /- English proof (translation)
-Rewrite using `[cjA_inc, star_inv₀, star_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cjA_inc_inv (u : D.what₂.Word) : cjA D (inc D (Tu D u)⁻¹) = inc D (Tu D u)⁻¹ := by
   rw [cjA_inc, star_inv₀, star_natCast]
 
 /- English proof (translation)
-Rewrite using `[map_natCast]`. Conclude with `natCast_mem _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inc_Tu_mem (u : D.what₂.Word) : inc D (Tu D u) ∈ OA D := by
   rw [map_natCast]; exact natCast_mem _ _
 
 /- English proof (translation)
-Establish `h1 : V.gram.map (inc D) *ᵥ x = 0` using `funext fun i => by`. Rewrite using `[← Formalism.UG.P.sf_single (cjA D)]`. Conclude with `h _`. Conclude with `Matrix.mulVec_injective_of_isUnit (isUnit_gram V) (h1.trans (mulVec_zero _).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_hA {V : HSp D} {x : Fin V.rank → EAf D} (h : ∀ y, hA V x y = 0) : x = 0 := by
   have h1 : V.gram.map (inc D) *ᵥ x = 0 := funext fun i => by
@@ -132,11 +132,11 @@ theorem eq_zero_of_hA {V : HSp D} {x : Fin V.rank → EAf D} (h : ∀ y, hA V x 
   exact Matrix.mulVec_injective_of_isUnit (isUnit_gram V) (h1.trans (mulVec_zero _).symm)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_hA fun y => ?_` and prove the remaining obligations. Establish `h1` using `hA_flat h x y a 0`. Rewrite `h1` using `[e, hA_flat h]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hA_sub_left]`. Simplify using `only [RingHom.map_zero, mul_zero, zero_mul, sub_zero] at h1`. Rewrite using `[h1, sub_self]`. Establish `h1` using `hA_flat h x 0 a (inc D (Tu D u)⁻¹)`. Rewrite `h1` using `[e, hA_flat h, hA_zero_right, hA_zero_right, cjA_inc_inv, mul_assoc, mul_assoc, inc_inv_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `h1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem flat_inj (h : IsLine Y X ι z u) {x x' : Fin X.rank → EAf D} {a a' : EAf D}
     (e : mA Y X ι *ᵥ x + a • vA Y z = mA Y X ι *ᵥ x' + a' • vA Y z) : x = x' ∧ a = a' := by
@@ -153,9 +153,9 @@ theorem flat_inj (h : IsLine Y X ι z u) {x x' : Fin X.rank → EAf D} {a a' : E
     linear_combination h1
 
 /- English proof (translation)
-Rewrite using `[glueLat, Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, b, hb, rfl⟩`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hb`. Conclude with `⟨x, hx, a, by rw [← algebraMap_smul D.host.E a]; rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx, a, rfl⟩`. Conclude with `⟨_, ⟨x, hx, rfl⟩, _, Submodule.mem_span_singleton.2 ⟨a, rfl⟩, by rw [← algebraMap_smul D.host.E a]; rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_glueLat {L₀ : Lat X} {x₀ : X.V} (y : Y.V) : y ∈ glueLat Y X ι z u L₀ x₀ ↔
     ∃ x : X.V, Formalism.L2.Herm.crd X x ∈ L₀ ∧ ∃ a : 𝓞 D.host.E, y = ι x + (a : D.host.E) • ((Tu D u)⁻¹ • z + ι x₀) := by
@@ -170,21 +170,19 @@ theorem mem_glueLat {L₀ : Lat X} {x₀ : X.V} (y : Y.V) : y ∈ glueLat Y X ι
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `hat_induction (p := fun y => ∃ x ∈ hat L₀, ∃ a ∈ OA D, y = mA Y X ι *ᵥ (x + a • vA X x₀) + (a * inc D (Tu D u)⁻¹) • vA Y z) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨x, hx, a, rfl⟩` from `(mem_glueLat y).1 hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨vA X x, inc_mem_hat hx, inc D a, (inc_mem_iff _).2 ⟨a, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `vA Y _ = _`. Rewrite using `[vA_add, vA_smul, vA_add, vA_smul, mulVec_add, mulVec_smul, mA_mulVec_vA, mA_mulVec_vA, smul_add, smul_smul]`. Normalize the expressions using the abelian group laws. Conclude with `⟨0, zero_mem_hat, 0, zero_mem _, by rw [zero_smul, add_zero, mulVec_zero, zero_mul, zero_smul, add_zero]⟩`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Supply the required witnesses or components.
 
-Introduce and unpack `_ _ ⟨x, hx, a, ha, rfl⟩ ⟨x', hx', a', ha', rfl⟩`. Use `⟨x + x', add_mem_hat hx hx', a + a', add_mem ha ha', ?_⟩` and prove the remaining obligations. Rewrite using `[add_smul, add_mul, add_smul, add_add_add_comm x, mulVec_add _ (x + _)]`. Normalize the expressions using the abelian group laws. Introduce and unpack `c hc _ ⟨x, hx, a, ha, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components.
 
-Use `⟨c • x, smul_mem_hat hc hx, c * a, mul_mem hc ha, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← mulVec_smul, smul_add, smul_smul, smul_smul, mul_assoc]`. Introduce and unpack `⟨x, hx, a, ha, rfl⟩`. Establish `h1 : mA Y X ι *ᵥ x ∈ hat (Formalism.L2.Herm.crdLat Y (glueLat Y X ι z u L₀ x₀))`. Use `hat_induction (p := fun x => mA Y X ι *ᵥ x ∈ hat (Formalism.L2.Herm.crdLat Y (glueLat Y X ι z u L₀ x₀))) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Take `⟨x, rfl⟩` from `(Formalism.L2.Herm.crd X).surjective x`. Express the relevant statement in the definitionally equal form `mA Y X ι *ᵥ vA X x ∈ _`. Rewrite using `[mA_mulVec_vA]`. Conclude with `vA_mem_hat Y ((mem_glueLat _).2 ⟨x, hx, 0, by simp⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_zero]`. Conclude with `zero_mem_hat`. Introduce `a b ha hb`. Rewrite using `[mulVec_add]`. Conclude with `add_mem_hat ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c hc a ha`. Rewrite using `[mulVec_smul]`. Conclude with `smul_mem_hat hc ha`. Establish `h2` using `smul_mem_hat ha (vA_mem_hat Y ((mem_glueLat (ι := ι) (z := z) (u := u) (L₀ := L₀) (x₀ := x₀) ((Tu D u)⁻¹ • z + ι x₀)).2 ⟨0, by simp, 1, by simp⟩))`. Use `add_mem_hat h1 h2 using 1` and compare the differences between its conclusion and the goal.
-
-Rewrite using `[vA_add, vA_smul, mulVec_add, mulVec_smul, mA_mulVec_vA, smul_add, smul_smul]`. Normalize the expressions using the abelian group laws.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mem_hat_glueLat {L₀ : Lat X} {x₀ : X.V} (y : Fin Y.rank → EAf D) :
     y ∈ hat (Formalism.L2.Herm.crdLat Y (glueLat Y X ι z u L₀ x₀)) ↔ ∃ x ∈ hat L₀, ∃ a ∈ OA D,
@@ -226,13 +224,13 @@ theorem mem_hat_glueLat {L₀ : Lat X} {x₀ : X.V} (y : Fin Y.rank → EAf D) :
     abel
 
 /- English proof (translation)
-Take `⟨d, rfl⟩ : ∃ d, f' = f - d` from `⟨f - f', (sub_sub_cancel _ _).symm⟩`. Rewrite `hf` using `[sub_sub_cancel]`. Use `⟨?_, h.int, fun y hy => ?_, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub]`. Conclude with `sub_mem_hat h.mul_mem (smul_mem_hat (inc_Tu_mem u) hf)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA_sub_left]`. Conclude with `sub_mem (h.pair y hy) (h.int d hf y hy)`. Establish `h1 : hA X d f ∈ OA D` using `by rw [← cjA_hA]; exact cjA_mem (h.pair d hf)`. Use `sub_mem (sub_mem h.norm (h.pair d hf)) (sub_mem h1 (h.int d hf d hf))` as an intermediate fact. Rewrite using `[hA_sub_left, hA_sub_right, hA_sub_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ha, H⟩` from `h.dual y hy`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Use `add_mem_hat H (smul_mem_hat ha hf) using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem IsGlueVec.congr {L₀ : Lat X} {f f' : Fin X.rank → EAf D} (h : IsGlueVec X u L₀ f) (hf : f - f' ∈ hat L₀) :
     IsGlueVec X u L₀ f' := by
@@ -254,19 +252,19 @@ theorem IsGlueVec.congr {L₀ : Lat X} {f f' : Fin X.rank → EAf D} (h : IsGlue
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Simplify using `only [mem_hat_glueLat]`. Generalize the expression as in `vA X x₀ = f at hg`. Establish `t` using `inc_inv_mul u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x₁, hx₁, a₁, ha₁, e⟩ _ ⟨x₂, hx₂, a₂, ha₂, rfl⟩`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h1 : hA X x₂ f ∈ OA D` using `by rw [← cjA_hA]; exact cjA_mem (hg.pair _ hx₂)`. Use `add_mem (add_mem (hg.int _ hx₂ _ hx₁) (mul_mem (cjA_mem ha₁) h1)) (add_mem (mul_mem ha₂ (hg.pair _ hx₁)) (mul_mem (mul_mem ha₂ (cjA_mem ha₁)) hg.norm))` as an intermediate fact. Rewrite using `[e, hA_flat h, hA_add_left, hA_add_right, hA_add_right, hA_smul_left, hA_smul_left, hA_smul_right, hA_smul_right, RingHom.map_mul, cjA_inc_inv]`. Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-(a₂ * cjA D a₁ * inc D (Tu D u)⁻¹)) * t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `H`. Take `⟨b, hb, hx⟩` from `hg.dual x fun x' hx' => by`. Use `H _ ⟨x', hx', 0, zero_mem _, rfl⟩` as an intermediate fact. Rewrite `this` using `[hA_flat h, zero_smul, add_zero, zero_mul, zero_mul, zero_mul, sub_zero]`. Then use the resulting hypothesis. Establish `h1` using `H _ ⟨0, zero_mem_hat, 1, one_mem _, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[hA_flat h, zero_add, one_smul, one_mul]`. Establish `h2` using `hg.pair _ hx`. Rewrite `h2` using `[hA_sub_right, hA_smul_right]`. Establish `h3 : cjA D (a - b * inc D (Tu D u)⁻¹) ∈ OA D`. Use `sub_mem (add_mem h2 (mul_mem (cjA_mem hb) hg.norm)) h1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_sub, RingHom.map_mul, cjA_inc_inv]`. Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-(cjA D a)) * t`. Rewrite `h3` using `[cjA_mem_iff]`. Use `⟨x - b • f - (a - b * inc D (Tu D u)⁻¹) • inc D (Tu D u) • f, sub_mem_hat hx (smul_mem_hat h3 hg.mul_mem), a * inc D (Tu D u), ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem (mul_mem h3 (inc_Tu_mem u)) hb using 1` and compare the differences between its conclusion and the goal. Take the linear combination `b * t`. Use `congr 2`. Rewrite using `[smul_smul, sub_mul, mul_assoc b, t, mul_one, sub_smul]`. Normalize the expressions using the abelian group laws.
+Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Take the linear combination `(-a) * t`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mem_hat_glueLat_iff_dual (h : IsLine Y X ι z u) {L₀ : Lat X} {x₀ : X.V} (hg : IsGlueVec X u L₀ (vA X x₀))
     (x : Fin X.rank → EAf D) (a : EAf D) :

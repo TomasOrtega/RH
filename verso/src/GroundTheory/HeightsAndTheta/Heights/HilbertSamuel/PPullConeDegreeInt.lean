@@ -16,7 +16,7 @@ section Lemmas
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Introduce `m hm`. Use function extensionality and compare the values at `k`. Rewrite using `[weight_blockWeight_apply]`. Conclude with `hf m (mem_support_iff.mpr hm) k`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_of_isMultiHomog {f : MRing ι} {a : K → ℕ}
     (hf : IsMultiHomog f a) : IsWeightedHomogeneous (NumbersDVR.blockWeight ι) f a := by
@@ -26,7 +26,7 @@ theorem isWeightedHomogeneous_of_isMultiHomog {f : MRing ι} {a : K → ℕ}
   exact hf m (mem_support_iff.mpr hm) k
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite using `[← weight_blockWeight_apply, hf (mem_support_iff.mp hm)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMultiHomog_of_isWeightedHomogeneous {f : MRing ι} {a : K → ℕ}
     (hf : IsWeightedHomogeneous (NumbersDVR.blockWeight ι) f a) : IsMultiHomog f a := by
@@ -34,11 +34,11 @@ theorem isMultiHomog_of_isWeightedHomogeneous {f : MRing ι} {a : K → ℕ}
   rw [← weight_blockWeight_apply, hf (mem_support_iff.mp hm)]
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `hX : ∏ p : (Σ k, ι k), (MvPolynomial.X p.1 : MvPolynomial K Ω) ^ μ p = ∏ k, MvPolynomial.X k ^ a k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, (MvPolynomial.X k : MvPolynomial K Ω) ^ μ ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, ← weight_blockWeight_apply, hf (mem_support_iff.mp hμ)]`. Simplify using `only [mConeMap, aeval_monomial]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finsupp.prod_fintype _ _ (fun i => by simp), Finsupp.prod_fintype _ _ (fun i => by simp)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hX, map_mul, map_prod, map_pow, MvPolynomial.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mConeMap_eq (y : (Σ k, ι k) → Ω) {f : MRing ι} {a : K → ℕ}
     (hf : IsWeightedHomogeneous (NumbersDVR.blockWeight ι) f a) :
@@ -58,9 +58,9 @@ theorem mConeMap_eq (y : (Σ k, ι k) → Ω) {f : MRing ι} {a : K → ℕ}
   ring
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial m r`. Establish `hm` using `isWeightedHomogeneous_monomial (NumbersDVR.blockWeight ι) m r rfl`. Rewrite using `[mConeMap_eq y hm, PullConeDegree.prod_X_pow_eq_monomial, C_mul_monomial, mul_one, coeff_monomial, weightedHomogeneousComponent_of_mem (n := Finsupp.weight (NumbersDVR.blockWeight ι) m) hm]`. Distinguish the cases in `h : n = Finsupp.weight (NumbersDVR.blockWeight ι) m`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos (by rw [h])]`. Rewrite using `[if_neg h, if_neg (fun h' => h (Finsupp.equivFunOnFinite.symm.injective h').symm), map_zero]`. Consider the case `add p q hp hq => rw [map_add, coeff_add, hp, hq, map_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem coeff_mConeMap (y : (Σ k, ι k) → Ω) (f : MRing ι) (n : K → ℕ) :
     coeff (Finsupp.equivFunOnFinite.symm n) (mConeMap y f) =
@@ -78,11 +78,9 @@ theorem coeff_mConeMap (y : (Σ k, ι k) → Ω) (f : MRing ι) (n : K → ℕ) 
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Establish `hc : ∀ k, ∃ i, N ≤ μ ⟨k, i⟩`. Introduce `k`. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_le] at h`. Establish `hlt` using `Finset.sum_lt_sum_of_nonempty (Finset.univ_nonempty (α := ι k)) (fun i _ => h i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hlt` using `[Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.mul_comm]`. Conclude with `absurd (hμ k) (not_le.mpr hlt)`. Use `choose c hc using hc`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (fun i => by simp), Fintype.prod_sigma, ← Finset.prod_pow]`.
-
-Use `Dvd.dvd.mul_left (Finset.prod_dvd_prod_of_dvd _ _ fun k _ => ?_) _` and prove the remaining obligations. Conclude with `(pow_dvd_pow _ (hc k)).trans (Finset.dvd_prod_of_mem (fun i => (X ⟨k, i⟩ : MRing ι) ^ μ ⟨k, i⟩) (Finset.mem_univ (c k)))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_dvd_monomial (N : ℕ) (hne : ∀ k, Nonempty (ι k)) (μ : (Σ k, ι k) →₀ ℕ)
     (hμ : ∀ k, N * Fintype.card (ι k) ≤ ∑ i, μ ⟨k, i⟩) (r : ℤ) :
@@ -104,19 +102,19 @@ theorem exists_dvd_monomial (N : ℕ) (hne : ∀ k, Nonempty (ι k)) (μ : (Σ k
 end Lemmas
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D e L N M hy hL hN d g hg hd`. Establish `hne : ∀ k, Nonempty (ι k)` using `fun k => (hy k).elim fun i _ => ⟨i⟩`. Establish `hg'` using `isWeightedHomogeneous_of_isMultiHomog hg`. Establish `hgI : (M : MRing ι) * g ∈ coneNullIdealZ y L`. Rewrite using `[g.as_sum, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.sum_mem _ fun μ hμ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_dvd_monomial N hne μ (fun k => by rw [hg μ hμ k]; have := hd k; omega) (coeff μ g)`. Conclude with `Ideal.mem_of_dvd _ (mul_dvd_mul_left _ hc) (hN c)`. Establish `hI : coneNullIdealZ y L = RingHom.ker (mConeMap y) ⊔ Ideal.span (Set.range L)`. Rewrite using `[coneNullIdealZ, Ideal.span_union, Ideal.span_eq]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `hgI` using `[hI, Submodule.mem_sup]`. Take `⟨u, hu, v, hv, huv⟩` from `hgI`. Take `⟨b, hb⟩` from `Ideal.mem_span_range_iff_exists_fun.mp hv`. Establish `hmapL : ∀ j, mConeMap y (L j) = monomial (Finsupp.equivFunOnFinite.symm e) (aeval y (L j))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[mConeMap_eq y (isWeightedHomogeneous_of_isMultiHomog (hL j)), PullConeDegree.prod_X_pow_eq_monomial, C_mul_monomial, mul_one]`. Establish `hMg : IsWeightedHomogeneous (NumbersDVR.blockWeight ι) ((M : MRing ι) * g) d`. Establish `h` using `(isWeightedHomogeneous_C (NumbersDVR.blockWeight ι) (M : ℤ)).mul hg'`. Rewrite `h` using `[zero_add, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hψg : mConeMap y ((M : MRing ι) * g) = ∑ j, mConeMap y (b j) * monomial (Finsupp.equivFunOnFinite.symm e) (aeval y (L j))`. Rewrite using `[← huv, map_add, RingHom.mem_ker.mp hu, zero_add, ← hb, map_sum]`. Simplify using `only [map_mul, hmapL]`. Use `⟨fun j => weightedHomogeneousComponent (NumbersDVR.blockWeight ι) (d - e) (b j), fun j => isMultiHomog_of_isWeightedHomogeneous (weightedHomogeneousComponent_isWeightedHomogeneous _ _), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `congrArg (coeff (Finsupp.equivFunOnFinite.symm d)) hψg`. Rewrite `hc` using `[mConeMap_eq y hMg, PullConeDegree.prod_X_pow_eq_monomial, C_mul_monomial, mul_one, coeff_monomial, if_pos rfl, coeff_sum, map_mul, map_natCast]`. Rewrite using `[hc]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hle : Finsupp.equivFunOnFinite.symm e ≤ Finsupp.equivFunOnFinite.symm d` using `Finsupp.le_def.mpr fun k => by simp only [Finsupp.coe_equivFunOnFinite_symm]; have := hd k; omega`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hsub : Finsupp.equivFunOnFinite.symm d - Finsupp.equivFunOnFinite.symm e = Finsupp.equivFunOnFinite.symm (d - e)`. Use extensionality with `k`. Simplify using the standard rewrite rules. Rewrite using `[coeff_mul_monomial', if_pos hle, hsub, coeff_mConeMap]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : PullConeDegreeInt.Statement := by
   classical

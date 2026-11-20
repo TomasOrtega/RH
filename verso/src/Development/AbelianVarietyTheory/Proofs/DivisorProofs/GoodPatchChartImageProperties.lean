@@ -9,9 +9,9 @@ set_option autoImplicit false
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Introduce `F _ σ X m E O H e S A W c h`. Use `⟨e.isOpen_image_of_subset_source h.isOpen h.sub, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, ⟨hO, hW⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨z, hW, rfl⟩, (h.mem z hW).1 hO⟩`. Introduce and unpack `⟨⟨z, hW, rfl⟩, hv⟩`. Conclude with `⟨z, ⟨(h.mem z hW).2 hv, hW⟩, rfl⟩`. Introduce `K hK hKW haveI : CompactSpace (CxPts X.str σ) := CxPts.compactSpace σ X.isProjOver`. Conclude with `hK.isCompact.image_of_continuousOn (e.continuousOn.mono (hKW.trans h.sub))`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goodPatch_image : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ} (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens) (H : Mat (fun _ : Unit => m) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => m) ℂ) {e : OpenPartialHomeomorph (CxPts X.str σ) (V X.dim)} {S : Finset (Fin X.dim)} {A : Mat (fun _ : Unit => m) X.Fn} {W : Set (CxPts X.str σ)} {c : ℝ}, GoodPatch E O H e S A W c → IsOpen (e '' W) ∧ e '' (ptsIn X.str σ O ∩ W) = offHyp S (e '' W) ∧ ∀ K : Set (CxPts X.str σ), IsClosed K → K ⊆ W → IsCompact (e '' K) := by
   intro F _ σ X m E O H e S A W c h

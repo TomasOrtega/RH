@@ -20,7 +20,7 @@ namespace GlobalTheory.ThK.ZFinSmallStab
 open GlobalTheory.ThetaFacInf GlobalTheory.ThetaFacInf.Fib
 
 /- English proof (translation)
-Simplify using `only [Model.I, theta]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem I_mul_right {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W) (om : Rep σ Y W)
@@ -31,23 +31,21 @@ theorem I_mul_right {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hcc φ hSB hev h1`. Establish `hp` using `GlobalTheory.KDecayProof.isPair_small hT`. Establish `hs : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hev.and hT.geo.hM'.std).mono fun v hv => hv.1.trans hv.2`. Establish `hD : ∀ f ∈ G.M'.Pol B.ψ B.emb, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁` using `fun f hf => GlobalTheory.SoPure.pure_mem_polSo B G.M' hT.geo.hM'.std f hf φ hSB hev (Submodule.subset_span h1)`. Take `⟨L, hL⟩` from `GlobalTheory.T.pol_data_theta_linear F E σ B a a' G X om om' hKP hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `P : G.M'.Pol B.ψ B.emb →ₗ[ℂ] ↥(PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)` to `((pureL φ).domRestrict _).codRestrict _ (fun g => hD g.1 g.2)`. Set `T : G.M'.Pol B.ψ B.emb →ₗ[ℂ] (GAd σ (c • G.W.J.map σ) → ℂ)` to `LinearMap.funLeft ℂ ℂ (toGAd hσ G.W.J hc).symm ∘ₗ L ∘ₗ P`. Establish `eT : ∀ g : G.M'.Pol B.ψ B.emb, T g = fun x => G.M'.I om' (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g.1 φ) ((toGAd hσ G.W.J hc).symm x)` using `fun g => by`. Use function extensionality and compare the values at `x`. Use `show L (P g) _ = _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL]`. Both sides reduce to the same expression. Establish `eS : Submodule.span ℂ {ψ : GAd σ (c • G.W.J.map σ) → ℂ | ∃ f ∈ G.M'.Pol B.ψ B.emb, ψ = fun x => G.M'.I om' (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) ((toGAd hσ G.W.J hc).symm x)} = LinearMap.range T`. Use `le_antisymm (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨f, hf⟩, eT _⟩`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `Submodule.subset_span ⟨g.1, g.2, eT g⟩`. Take `⟨-, -, hP3, hP4⟩` from `GlobalTheory.T.polynomial_datum_action_of_pair hKP.base F E σ B _ _ _ _ _ _ _ om' _ _ _ _ hp`. Rewrite using `[eS]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Rewrite using `[eT]`. Conclude with `GlobalTheory.T.polynomial_theta_kernel_smooth F E σ hσ B a a' G X om om' hKP hT c hc hcc _ (hD _ g.2)`. Introduce and unpack `β hβ _ ⟨g, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ₀, hγ₀, hb⟩` from `GlobalTheory.ThK.ZFinDerPol.line_back hσ hT.base.cm G.W hc β hβ`. Take `⟨D, hD1, hD2⟩` from `hP3 γ₀ hγ₀`. Use `⟨⟨D g.1, hD1 _ g.2⟩, ?_⟩` and prove the remaining obligations. Establish `hder` using `GlobalTheory.T.theta_derivative_line_W F E σ B a a' G X om om' hKP hT γ₀ hγ₀ _ (hD _ g.2) _ (hD _ (hD1 _ g.2)) (hasDerivAt_pure φ hSB hs ((hD2 _ g.2 _).2 rfl))`. Rewrite using `[eT, eT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Establish `hb' : ∀ t, (toGAd hσ G.W.J hc).symm (β t) = γ₀ (Multiplicative.ofAdd t)` using `hb`. Simplify using `only [lineDer, map_mul, hb']`. Conclude with `(hder _).deriv.symm`. Introduce and unpack `k hk _ ⟨g, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨D, hD1, hD2⟩` from `hP4 k hk`. Use `⟨⟨D g.1, hD1 _ g.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[eT, eT]`. Use function extensionality and compare the values at `x`. Establish `e` using `acts_pure φ hSB hs ((hD2 _ g.2 _).2 rfl)`.
-
-Simplify using `only [map_mul, MulEquiv.symm_apply_apply]`. Rewrite using `[← I_mul_right, e]`. Use `le_trans ?_ (GlobalTheory.T.polynomial_data_countable_rank hKP.base F E σ B _ _ _ _ _ _ _ om' _ _ _ _ hp)` and prove the remaining obligations. Conclude with `rank_range_le T`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem span_theta_stable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

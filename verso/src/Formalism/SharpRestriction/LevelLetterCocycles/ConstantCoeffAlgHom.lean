@@ -12,7 +12,7 @@ namespace Formalism.MainNotions.N.WachTwistedLattices.PowerSeriesTruncation
 variable {O : Type*} [CommRing O]
 
 /- English proof (translation)
-Use `first`. Consider the case `rw [PowerSeries.coeff_X_pow_mul', if_neg (not_le.mpr h)]`. Consider the case `(rw [mul_comm, PowerSeries.coeff_mul_X_pow', if_neg (not_le.mpr h)])`. Consider the case `simp [PowerSeries.coeff_X_pow_mul', not_le.mpr h]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeff_X_pow_mul_lt {n d : ℕ} (h : d < n) (p : PowerSeries O) :
     coeff d (X ^ n * p) = 0 := by
@@ -22,7 +22,7 @@ theorem coeff_X_pow_mul_lt {n d : ℕ} (h : d < n) (p : PowerSeries O) :
   | simp [PowerSeries.coeff_X_pow_mul', not_le.mpr h]
 
 /- English proof (translation)
-Take `⟨Z, rfl⟩` from `PowerSeries.X_dvd_iff.mpr hY`. Rewrite using `[mul_pow, mul_assoc]`. Conclude with `coeff_X_pow_mul_lt h _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_pow_mul_lt {Y : PowerSeries O} (hY : constantCoeff Y = 0) {n d : ℕ} (h : d < n)
     (p : PowerSeries O) : coeff d (Y ^ n * p) = 0 := by
@@ -31,9 +31,9 @@ theorem coeff_pow_mul_lt {Y : PowerSeries O} (hY : constantCoeff Y = 0) {n d : �
   exact coeff_X_pow_mul_lt h _
 
 /- English proof (translation)
-Establish `hd : (X : PowerSeries O) ^ k ∣ a - (trunc k a : PowerSeries O)`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Rewrite using `[map_sub, Polynomial.coeff_coe, PowerSeries.coeff_trunc, if_pos hm, sub_self]`. Take `⟨b, hb⟩` from `hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, by rw [← hb]; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem trunc_decomp (a : PowerSeries O) (k : ℕ) :
     ∃ b, a = (trunc k a : PowerSeries O) + X ^ k * b := by
@@ -45,9 +45,9 @@ theorem trunc_decomp (a : PowerSeries O) (k : ℕ) :
   exact ⟨b, by rw [← hb]; ring⟩
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [Polynomial.coe_add, map_add, hp, hq, map_add]`. Consider the case `monomial n c`. Rewrite using `[← Polynomial.C_mul_X_pow_eq_monomial]`. Simplify using `only [Polynomial.coe_mul, Polynomial.coe_pow, Polynomial.coe_C, Polynomial.coe_X, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `first`. Consider the case `exact ψ.commutes c`. Consider the case `(rw [← ψ.commutes c]; rfl)`. Consider the case `simp [PowerSeries.algebraMap_eq]`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem algHom_coe (ψ : PowerSeries O →ₐ[O] PowerSeries O) (p : Polynomial O) :
     ψ (p : PowerSeries O) = Polynomial.aeval (ψ X) p := by
@@ -64,7 +64,7 @@ theorem algHom_coe (ψ : PowerSeries O →ₐ[O] PowerSeries O) (p : Polynomial 
     | simp [PowerSeries.algebraMap_eq]
 
 /- English proof (translation)
-Take `⟨N', rfl⟩ : ∃ N', N = N' + 1` from `⟨N - 1, by omega⟩`. Use `first`. Consider the case `exact PowerSeries.natDegree_trunc_lt a N'`. Consider the case `exact Nat.lt_succ_of_le (Polynomial.natDegree_le_iff_coeff_eq_zero.mpr fun i hi => by`. Rewrite using `[PowerSeries.coeff_trunc, if_neg (by omega)])`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem natDegree_trunc_lt_of_pos (a : PowerSeries O) {N : ℕ} (hN : 0 < N) :
     (trunc N a).natDegree < N := by
@@ -75,9 +75,9 @@ private theorem natDegree_trunc_lt_of_pos (a : PowerSeries O) {N : ℕ} (hN : 0 
       rw [PowerSeries.coeff_trunc, if_neg (by omega)])
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `trunc_decomp a N`. Establish `hdeg` using `natDegree_trunc_lt_of_pos a (lt_of_le_of_lt (Nat.zero_le m) hN)`. Rewrite using `[show σ a = σ ((trunc N a : PowerSeries O) + X ^ N * b) from congrArg σ hb, map_add, map_mul, map_pow, algHom_coe, map_add, coeff_pow_mul_lt hσ hN, add_zero, Polynomial.aeval_eq_sum_range' hdeg, map_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `first`. Consider the case `rw [map_smul, smul_eq_mul, PowerSeries.coeff_trunc, if_pos hi]`. Consider the case `rw [PowerSeries.coeff_smul, smul_eq_mul, PowerSeries.coeff_trunc, if_pos hi]`. Consider the case `simp [PowerSeries.coeff_trunc, hi]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem coeff_algHom_eq_sum_range_of_lt (σ : PowerSeries O →ₐ[O] PowerSeries O)
     (hσ : constantCoeff (σ X) = 0) (a : PowerSeries O) {m N : ℕ} (hN : m < N) :
@@ -96,7 +96,7 @@ private theorem coeff_algHom_eq_sum_range_of_lt (σ : PowerSeries O →ₐ[O] Po
   | simp [PowerSeries.coeff_trunc, hi]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero' hY`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero hY`. Consider the case `exact ⟨1, by rw [pow_one]; exact hY⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem hasSubst_of_constantCoeff_eq_zero_level_letter_cocycles {Y : PowerSeries O}
     (hY : constantCoeff Y = 0) : PowerSeries.HasSubst Y := by
@@ -106,11 +106,11 @@ private theorem hasSubst_of_constantCoeff_eq_zero_level_letter_cocycles {Y : Pow
   | exact ⟨1, by rw [pow_one]; exact hY⟩
 
 /- English proof (translation)
-Establish `hs` using `hasSubst_of_constantCoeff_eq_zero_level_letter_cocycles hY`. Set `σ : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom hs`. Establish `h1 : ∀ f : PowerSeries O, σ f = f.subst Y` using `fun f => by first`. Consider the case `rfl`. Consider the case `simp [σ, PowerSeries.coe_substAlgHom]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `h2 : σ X = Y`. Rewrite using `[h1]`. Use `first`. Consider the case `exact PowerSeries.subst_X hs`. Consider the case `simp [hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h3` using `coeff_algHom_eq_sum_range_of_lt σ (by rw [h2]; exact hY) a hN`. Rewrite `h3` using `[h2, h1]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_subst_eq_sum_range_of_lt {Y : PowerSeries O} (hY : constantCoeff Y = 0)
     (a : PowerSeries O) {m N : ℕ} (hN : m < N) :
@@ -131,7 +131,7 @@ private theorem coeff_subst_eq_sum_range_of_lt {Y : PowerSeries O} (hY : constan
   exact h3
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_algHom_eq_sum_range_of_lt ψ hψ a (Nat.lt_succ_self m), coeff_subst_eq_sum_range_of_lt hψ a (Nat.lt_succ_self m)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem algHom_eq_subst (ψ : PowerSeries O →ₐ[O] PowerSeries O)
     (hψ : constantCoeff (ψ X) = 0) (a : PowerSeries O) : ψ a = a.subst (ψ X) := by
@@ -143,11 +143,11 @@ def qn (Y Z : PowerSeries O) (n : ℕ) : PowerSeries O :=
   ∑ i ∈ Finset.range n, Y ^ i * Z ^ (n - 1 - i)
 
 /- English proof (translation)
-Take `⟨Y', rfl⟩` from `PowerSeries.X_dvd_iff.mpr hY`. Take `⟨Z', rfl⟩` from `PowerSeries.X_dvd_iff.mpr hZ`. Unfold `qn`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hi` using `[Finset.mem_range]`. Establish `e : n - 1 = i + (n - 1 - i)` using `by omega`. Establish `hprod : (X * Y') ^ i * (X * Z') ^ (n - 1 - i) = X ^ (n - 1) * (Y' ^ i * Z' ^ (n - 1 - i))`. Generalize the expression as in `n - 1 - i = k at e ⊢`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hprod]`. Conclude with `coeff_X_pow_mul_lt (by omega) _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_qn {Y Z : PowerSeries O} (hY : constantCoeff Y = 0) (hZ : constantCoeff Z = 0)
     {n j : ℕ} (h : j + 1 < n) : coeff j (qn Y Z n) = 0 := by
@@ -166,17 +166,15 @@ theorem coeff_qn {Y Z : PowerSeries O} (hY : constantCoeff Y = 0) (hZ : constant
   exact coeff_X_pow_mul_lt (by omega) _
 
 /- English proof (translation)
-Establish `hYZ : ∀ n, (Y - Z) * qn Y Z n = Y ^ n - Z ^ n` using `fun n => by`. Unfold `qn`. Rewrite using `[mul_comm]`. Use `first`. Consider the case `exact geom_sum₂_mul Y Z n`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Commute.all Y Z).geom_sum₂_mul n`. Establish `stab : ∀ q M, q + 2 ≤ M → ∑ n ∈ Finset.range M, coeff n a * coeff q (qn Y Z n) = ∑ n ∈ Finset.range (q + 2), coeff n a * coeff q (qn Y Z n)`. Introduce `q M hM`. Use `symm`. Use `Finset.sum_subset (fun x hx => by rw [Finset.mem_range] at hx ⊢; omega) fun n _ hn => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[Finset.mem_range, not_lt]`. Rewrite using `[coeff_qn hY hZ (by omega), mul_zero]`. Use `⟨PowerSeries.mk fun q => ∑ n ∈ Finset.range (q + 2), coeff n a * coeff q (qn Y Z n), ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Use symmetry to reverse the relation. Establish an intermediate fact.
 
-Establish `hm : m < m + 2` using `by omega`. Rewrite using `[map_sub, PowerSeries.coeff_mul, coeff_subst_eq_sum_range_of_lt hY a hm, coeff_subst_eq_sum_range_of_lt hZ a hm, ← Finset.sum_sub_distrib]`. Establish `h1 : ∀ n, coeff n a * coeff m (Y ^ n) - coeff n a * coeff m (Z ^ n) = ∑ p ∈ Finset.antidiagonal m, coeff p.1 (Y - Z) * (coeff n a * coeff p.2 (qn Y Z n))`. Introduce `n`. Establish `e` using `congrArg (coeff m) (hYZ n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[map_sub, PowerSeries.coeff_mul]`. Rewrite using `[← mul_sub, ← e, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => by ring`. Rewrite using `[Finset.sum_congr rfl fun n _ => h1 n]`. Use `conv_rhs => rw [Finset.sum_comm]`.
-
-Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_mk, ← Finset.mul_sum, stab p.2 (m + 2) (by rw [Finset.mem_antidiagonal] at hp; omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_sub_subst_dvd {Y Z : PowerSeries O} (hY : constantCoeff Y = 0)
     (hZ : constantCoeff Z = 0) (a : PowerSeries O) : (Y - Z) ∣ a.subst Y - a.subst Z := by

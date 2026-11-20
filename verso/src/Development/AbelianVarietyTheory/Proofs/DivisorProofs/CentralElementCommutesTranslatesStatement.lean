@@ -9,7 +9,7 @@ open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LeviHC.RightTr.comm_rtr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCentralElementCommutesTranslates.lean&line=89#L89)
 -/

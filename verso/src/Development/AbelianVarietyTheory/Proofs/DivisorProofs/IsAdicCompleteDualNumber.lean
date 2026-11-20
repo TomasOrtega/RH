@@ -17,16 +17,16 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.HTLat.OmegaRank
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_pow_iff {R : Type} [CommRing R] (a : R) (n : ℕ) (x : R) :
     x ∈ (Ideal.span {a} ^ n • ⊤ : Submodule R R) ↔ a ^ n ∣ x := by
   rw [Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Establish `e : (p : DualNumber O) ^ n = TrivSqZeroExt.inl ((p : O) ^ n)`. Rewrite using `[← TrivSqZeroExt.inl_pow, TrivSqZeroExt.inl_natCast]`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨y.fst, by simp⟩, ⟨y.snd, by simp⟩⟩`. Introduce and unpack `⟨⟨a, ha⟩, b, hb⟩`. Apply the tactic sequence `exact ⟨TrivSqZeroExt.inl a + TrivSqZeroExt.inr b, by ext <;> simp [ha, hb]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dual_dvd_iff {O : Type} [CommRing O] (p n : ℕ) (x : DualNumber O) :
     (p : DualNumber O) ^ n ∣ x ↔ (p : O) ^ n ∣ x.fst ∧ (p : O) ^ n ∣ x.snd := by
@@ -40,13 +40,11 @@ theorem dual_dvd_iff {O : Type} [CommRing O] (p n : ℕ) (x : DualNumber O) :
     exact ⟨TrivSqZeroExt.inl a + TrivSqZeroExt.inr b, by ext <;> simp [ha, hb]⟩
 
 /- English proof (translation)
-Simplify using `only [SModEq.zero, mem_pow_iff, dual_dvd_iff] at hx`. Use `TrivSqZeroExt.ext (h.haus' x.fst fun n => ?_) (h.haus' x.snd fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.zero, mem_pow_iff]`. Conclude with `(hx n).1`. Rewrite using `[SModEq.zero, mem_pow_iff]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(hx n).2`. Use the proof step `prec' f hf := by`. Simplify using `only [SModEq.sub_mem, mem_pow_iff, dual_dvd_iff] at hf ⊢`. Take `⟨a, ha⟩` from `h.prec' (fun n => (f n).fst) fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, mem_pow_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(hf hmn).1`. Take `⟨b, hb⟩` from `h.prec' (fun n => (f n).snd) fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, mem_pow_iff]`. Conclude with `(hf hmn).2`. Simplify using `only [SModEq.sub_mem, mem_pow_iff] at ha hb`.
-
-Conclude with `⟨TrivSqZeroExt.inl a + TrivSqZeroExt.inr b, fun n => ⟨by simpa using ha n, by simpa using hb n⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_dualNumber {O : Type} [CommRing O] (p : ℕ)
     [h : IsAdicComplete (Ideal.span {(p : O)}) O] :
@@ -66,11 +64,9 @@ theorem isAdicComplete_dualNumber {O : Type} [CommRing O] (p : ℕ)
     exact ⟨TrivSqZeroExt.inl a + TrivSqZeroExt.inr b, fun n => ⟨by simpa using ha n, by simpa using hb n⟩⟩
 
 /- English proof (translation)
-Set `F : omega H ≃ₗ[O] Module.Dual O (Fin n → O)` to `{ toFun := fun f => { toFun := fun c => f.1 (e c) map_add' := fun c d => (congrArg f.1 (Subtype.ext (hadd c d))).trans (omega_lieAdd f (e c) (e d)) map_smul' := fun a c => (congrArg f.1 (Subtype.ext (hsmul a c))).trans (omega_lieScale f a (e c)) } map_add' := fun _ _ => rfl map_s …`. Take `⟨c, rfl⟩` from `e.surjective x`. Take `⟨d, rfl⟩` from `e.surjective y`. Rewrite using `[show (⟨_, h⟩ : LieG H) = e (c + d) from Subtype.ext (hadd c d).symm]`. Use the proof step `simp, fun a x h => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `e.surjective x`. Rewrite using `[show (⟨_, h⟩ : LieG H) = e (a • c) from Subtype.ext (hsmul a c).symm]`. Use the proof step `simp⟩`. Use `left_inv := fun f => Subtype.ext (funext fun x => congrArg f.1 (e.apply_symm_apply x))`. Use `right_inv := fun l => LinearMap.ext fun c => congrArg l (e.symm_apply_apply c) }`.
-
-Rewrite using `[F.finrank_eq, ← (Pi.basisFun O (Fin n)).toDualEquiv.finrank_eq, Module.finrank_fin_fun]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_omega_of_param {O : Type} [CommRing O] [Nontrivial O] {H : Over (Sp O)} [GrpObj H] {n : ℕ}
     (e : (Fin n → O) ≃ LieG H) (hadd : ∀ c d, (e (c + d)).1 = (e c).1 * (e d).1)
@@ -98,7 +94,7 @@ theorem finrank_omega_of_param {O : Type} [CommRing O] [Nontrivial O] {H : Over 
   rw [F.finrank_eq, ← (Pi.basisFun O (Fin n)).toDualEquiv.finrank_eq, Module.finrank_fin_fun]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `KeyPow.exists_isUnivChart H hH`. Use `⟨⟨fun c => ⟨Chart.tvec (x := x) c, Chart.isTan_tvec hx c⟩, fun w => Chart.tcoord hx w.1 w.2, fun c => Chart.tcoord_tvec hx c, fun w => Subtype.ext (Chart.tcoord_spec hx w.1 w.2).symm⟩, fun c d => Chart.tvec_add hx c d, fun a c => Chart.tvec_smul hx a c⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_param {O : Type} [CommRing O] [IsLocalRing O] (H : Over (Sp O)) [GrpObj H] {n : ℕ}
     (hH : SmoothOfRelativeDimension n H.hom) :
@@ -113,9 +109,9 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0}
   [Algebra O C] {Λ : Type} [CommRing Λ] [StarRing Λ] (P : Point p v O Λ)
 
 /- English proof (translation)
-Use `haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)`. Use `P.semi.smooth` as an intermediate fact. Use `P.semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace P.G.left` using `GeometricallyConnected.connectedSpace P.G.hom P.G.hom.isOpenMap`. Take `⟨n, hn⟩` from `exists_dim_of_preconnected P.G.hom (Classical.arbitrary _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₁ : SmoothOfRelativeDimension n P.A.A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange n).of_isPullback P.gen_pull.1 hn`. Rewrite using `[← H1.dim_unique _ h₁ P.A.smoothDim (η[P.A.A].left (IsLocalRing.closedPoint C))]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem smoothDim_model : SmoothOfRelativeDimension P.A.g P.G.hom := by
   haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)
@@ -137,7 +133,7 @@ abbrev redR (m : ℕ) : R →ₐ[O] R ⧸ Ideal.span {(p : R) ^ m} := Ideal.Quot
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨m, by rw [← map_natCast (Ideal.Quotient.mk _), ← map_pow, Ideal.Quotient.eq_zero_iff_mem] exact Ideal.mem_span_singleton_self _⟩`.
+Supply the required witnesses or components.
 -/
 theorem nilpR (m : ℕ) : IsNilpotent (p : R ⧸ Ideal.span {(p : R) ^ m}) := ⟨m, by
   rw [← map_natCast (Ideal.Quotient.mk _), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]
@@ -145,7 +141,7 @@ theorem nilpR (m : ℕ) : IsNilpotent (p : R ⧸ Ideal.span {(p : R) ^ m}) := �
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Rewrite using `[TangentPow.ptMap_comp_ptMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem factor_redR (m : ℕ) : ptMap (Ideal.Quotient.factorₐ O (Ideal.span_singleton_le_span_singleton.mpr
     (pow_dvd_pow (p : R) (Nat.le_succ m)))) ≫ ptMap (redR p O R (m + 1)) = ptMap (redR p O R m) := by
@@ -158,20 +154,20 @@ def Corr (x : specO O R ⟶ P.Gt) (y : specO O R ⟶ P.G) : Prop :=
 variable {P}
 
 /- English proof (translation)
-Introduce `m` and use `by rw [MonObj.comp_mul, MonObj.comp_mul, map_mul, h, h']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Corr.mul {x x' : specO O R ⟶ P.Gt} {y y' : specO O R ⟶ P.G} (h : Corr P x y) (h' : Corr P x' y') :
     Corr P (x * x') (y * y') := fun m => by
   rw [MonObj.comp_mul, MonObj.comp_mul, map_mul, h, h']
 
 /- English proof (translation)
-Introduce `m` and use `by rw [MonObj.comp_one, MonObj.comp_one, map_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Corr.one : Corr P (1 : specO O R ⟶ P.Gt) 1 := fun m => by
   rw [MonObj.comp_one, MonObj.comp_one, map_one]
 
 /- English proof (translation)
-Introduce `m` and use `by let ψ : (R ⧸ Ideal.span {(p : R) ^ m}) →ₐ[O] R' ⧸ Ideal.span {(p : R') ^ m} := Ideal.quotientMapₐ _ φ (by rw [Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_pow, map_natCast] exact Ideal.mem_span_singleton_self _) have e : ptMap (redR p O R' m) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Corr.comp {R' : Type} [CommRing R'] [Algebra O R'] (φ : R →ₐ[O] R') {x : specO O R ⟶ P.Gt}
     {y : specO O R ⟶ P.G} (h : Corr P x y) : Corr P (ptMap φ ≫ x) (ptMap φ ≫ y) := fun m => by
@@ -189,14 +185,14 @@ variable [IsLocalRing R] (hp : ¬ IsUnit (p : R)) (hc : IsAdicComplete (Ideal.sp
 include hp hc
 
 /- English proof (translation)
-The claim follows from `AdicPt.existsUnique_lim O R (p : R) hp hc P.G _ fun m => by rw [← P.cmp_nat _ _ (nilpR (m + 1)) (nilpR m), ← Category.assoc, factor_redR]`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_right (x : specO O R ⟶ P.Gt) : ∃! y, Corr P x y :=
   AdicPt.existsUnique_lim O R (p : R) hp hc P.G _
     fun m => by rw [← P.cmp_nat _ _ (nilpR (m + 1)) (nilpR m), ← Category.assoc, factor_redR]
 
 /- English proof (translation)
-Establish `h` using `AdicPt.existsUnique_lim O R (p : R) hp hc P.Gt (fun m => (P.cmp _ (nilpR m)).symm (ptMap (redR p O R m) ≫ y)) fun m => (P.cmp _ (nilpR m)).injective (by`. Rewrite using `[P.cmp_nat _ _ (nilpR (m + 1)) (nilpR m), MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply, ← Category.assoc, factor_redR])`. Take `⟨x, hx, hu⟩` from `h`. Use `⟨x, fun m => by rw [hx, MulEquiv.apply_symm_apply], fun x' hx' => hu x' fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[hx' m, MulEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_left (y : specO O R ⟶ P.G) : ∃! x, Corr P x y := by
   have h := AdicPt.existsUnique_lim O R (p : R) hp hc P.Gt
@@ -211,15 +207,13 @@ theorem existsUnique_left (y : specO O R ⟶ P.G) : ∃! x, Corr P x y := by
 end Lim
 
 /- English proof (translation)
-Use `haveI := P.isLocalRing`. Use `haveI := HodgeTateCompare.isLocalRing_dualNumber (O := O)`. Establish `hp₀ : ¬ IsUnit (p : O)` using `Fact.out`. Establish `hp : ¬ IsUnit (p : DualNumber O)` using `fun h => hp₀ (by`. Simplify using `using h.map (TrivSqZeroExt.fstHom O O O))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `isAdicComplete_dualNumber (O := O) p`. Establish `hl` using `existsUnique_left (P := P) hp hc`. Establish `hr` using `existsUnique_right (P := P) hp hc`. Set `f : LieG P.G → LieG P.Gt` to `fun y => ⟨(hl y.1).choose, (existsUnique_left (P := P) hp₀ inferInstance 1).unique (by`. Establish `h` using `(hl y.1).choose_spec.1.comp (TrivSqZeroExt.fstHom O O O)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `h` using `[y.2]`. Conclude with `h) Corr.one⟩`. Set `g : LieG P.Gt → LieG P.G` to `fun x => ⟨(hr x.1).choose, (existsUnique_right (P := P) hp₀ inferInstance 1).unique (by`. Establish `h` using `(hr x.1).choose_spec.1.comp (TrivSqZeroExt.fstHom O O O)`. Rewrite `h` using `[x.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h) Corr.one⟩`. Establish `hf : ∀ y, Corr P (f y).1 y.1` using `fun y => (hl y.1).choose_spec.1`. Establish `hg : ∀ x, Corr P x.1 (g x).1` using `fun x => (hr x.1).choose_spec.1`. Use `⟨⟨f, g, fun y => Subtype.ext ((hr _).unique (hg _) (hf y)), fun x => Subtype.ext ((hl _).unique (hf _) (hg x))⟩, fun x y z h => ?_, fun a x z h => ?_⟩` and prove the remaining obligations. Conclude with `(hl _).unique (hf z) (h ▸ (hf x).mul (hf y))`.
-
-Conclude with `(hl _).unique (hf z) (h ▸ (hf x).comp (dualScale a))`.
+A detailed English derivation is pending.
 -/
 theorem exists_lieEquiv [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] :
     ∃ e : LieG P.G ≃ LieG P.Gt, (∀ x y z : LieG P.G, z.1 = x.1 * y.1 → (e z).1 = (e x).1 * (e y).1) ∧
@@ -253,7 +247,7 @@ theorem exists_lieEquiv [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p 
   · exact (hl _).unique (hf z) (h ▸ (hf x).comp (dualScale a))
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P`. Use `haveI := P.isLocalRing`. Take `⟨e, h₁, h₂⟩` from `exists_param P.G (smoothDim_model P)`. Take `⟨e', h₃, h₄⟩` from `exists_lieEquiv P`. Conclude with `finrank_omega_of_param (e.trans e') (fun c d => h₃ _ _ _ (h₁ c d)) fun a c => h₄ a _ _ (h₂ a c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finrank_omega_Gt : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (Λ : Type) [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), Module.finrank O (omega P.Gt) = P.A.g := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P

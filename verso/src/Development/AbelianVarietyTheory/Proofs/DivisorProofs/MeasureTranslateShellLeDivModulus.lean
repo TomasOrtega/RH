@@ -8,17 +8,17 @@ open scoped ENNReal
 namespace GlobalTheory.ResLine
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ N M Λ _ ν π DN DM hL μ D hμ hD C hC`. Take `⟨U, c, hU, hμU, hc, hlow⟩` from `GlobalTheory.T.semidirectAverage_indicator_lower_bound G N M Λ ν π DN DM hL μ hμ C hC`. Establish `hX : ν DN * π DM * μ U ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top hL.finN hL.finM) hμU`. Use `⟨ν DN * π DM * μ U / c, ENNReal.div_ne_top hX hc, ?_⟩` and prove the remaining obligations. Introduce `b κ hb hκ S hS hSx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ENNReal.le_div_iff_mul_le (Or.inl hc) (Or.inr hX)]`. Establish `hφ : Measurable (U.indicator (1 : G → ℝ≥0∞))` using `measurable_one.indicator hU.measurableSet`. Establish `hw` using `GlobalTheory.T.lintegral_two_step_unfolding_semidirect_lattice G N M Λ ν π DN DM hL μ D hμ hD (fun x => U.indicator (1 : G → ℝ≥0∞) (b * x)) (hφ.comp (measurable_const_mul b))`. Rewrite `hw` using `[lintegral_mul_left_eq_self (U.indicator (1 : G → ℝ≥0∞)) b, lintegral_indicator_one hU.measurableSet]`. Rewrite using `[← hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : κ * μ (S ∩ D) * c = ∫⁻ x in D, S.indicator (fun _ => κ * c) x ∂μ`. Rewrite using `[lintegral_indicator_const hS, Measure.restrict_apply hS]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hx : x ∈ S`. Rewrite using `[Set.indicator_of_mem hx]`. Take `⟨u₀, hu₀, m₀, hm₀, y, hy, hxy⟩` from `hSx x hx`. Establish `h2` using `hlow u₀ hu₀ m₀ hm₀ y hy`. Rewrite `h2` using `[← hxy]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `le_trans (mul_le_mul_right h2 κ) (le_trans (lintegral_const_mul_le _ _) (le_of_eq ?_))` and prove the remaining obligations. Use `lintegral_congr fun m => ?_` and prove the remaining obligations. Establish `h3` using `hκ (fun g => U.indicator (1 : G → ℝ≥0∞) (g * m * (b * x))) (hφ.comp ((measurable_id.mul_const _).mul_const _))`. Rewrite using `[← h3]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Establish `h4` using `hb m m.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.indicator_of_notMem hx]`. Conclude with `zero_le`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modulus_mul_measure_shell_le : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (N M Λ : Subgroup G) [Countable Λ] (ν : Measure N) (π : Measure M) (DN : Set N) (DM : Set M), SemiLat N M Λ ν π DN DM → ∀ (μ : Measure G) (D : Set G), μ.IsHaarMeasure → IsFundamentalDomain Λ D μ → ∀ C : Set G, IsCompact C → ∃ B : ℝ≥0∞, B ≠ ⊤ ∧ ∀ (b : G) (κ : ℝ≥0∞), (∀ m ∈ M, b * m = m * b) → (∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ u : N, f (b * u * b⁻¹) ∂ν = κ * ∫⁻ u : N, f u ∂ν) → ∀ S : Set G, MeasurableSet S → (∀ x ∈ S, ∃ u ∈ N, ∃ m ∈ M, ∃ y ∈ C, b * x = u * m * y) → κ * μ (S ∩ D) ≤ B := by
   intro G _ _ _ _ _ _ _ _ N M Λ _ ν π DN DM hL μ D hμ hD C hC

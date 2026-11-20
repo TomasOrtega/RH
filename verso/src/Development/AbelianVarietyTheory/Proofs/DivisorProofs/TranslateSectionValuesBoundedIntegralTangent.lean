@@ -19,13 +19,13 @@ noncomputable section
 namespace GlobalTheory.MBLow
 
 /- English proof (translation)
-Introduce `V _ _ _ D C _ _ _ _ _ hC N ν hν k hk s gm₀ gm _ hpull α`. Take `⟨S, hS, hint⟩` from `hν`. Take `⟨n, a, σ, σF, hsc, hsum⟩` from `GlobalTheory.T.familySection_span_pullbacks_unitBall V D C hC S hS k hk (ν.eX α) (s.s (ν.eX α))`. Use `⟨∑ i, ‖a i‖, fun mu => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.translatedDualPoint_of_integralTorusExtPoint V D.toPre C gm₀ gm hpull (ν.eX mu)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e` using `GlobalTheory.T.dualNumberSectionValue_linearCombination V D.toPre C k (ν.eX α) (s.s (ν.eX α)) n a σF hsum _ ν.J ν.good h3`. Establish `hb` using `fun i => GlobalTheory.T.pulledBackSection_integralValue_dualPoint V D C hC N ν ⟨S, hS, hint⟩ k _ (σ i) (σF i) (hsc i) _ h2 _ h1`. Establish `hv : trVal ν s gm α mu = ∑ i, TrivSqZeroExt.inl (a i) * sE (σF i) ((lift (Over.homMk (spMap (algebraMap C (DualNumber C))) rfl : TE V C ⟶ TF (R` using `V) C) gm.b).left ≫ (DegPre.trF D.toPre C (ν.eX mu)).left) ν.J := e`. Rewrite using `[hv]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[TrivSqZeroExt.fst_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_inl, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hb i).1`. Rewrite using `[TrivSqZeroExt.snd_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, smul_zero, add_zero, smul_eq_mul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hb i).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trVal_bounded : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (IsLocalRing.maximalIdeal V)) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [IsAlgClosed C] [CharZero C] [Algebra (FractionRing V) C], CExt V (IsLocalRing.maximalIdeal V) C → ∀ (N : NumD C) (ν : NumOf D.toPre C N), ν.IntN → ∀ (k : ℕ), 1 ≤ k → ∀ (s : Fam D.toPre C k) (gm₀ : GtPt D.toPre (epsR V)) (gm : GtPt D.toPre (TE V C)), GtTan gm₀ → GtPt.IsPull (spMap (dualMap (toF V C))) gm₀ gm → ∀ α : N.X, ∃ b : ℝ, ∀ mu : N.X, ‖(trVal ν s gm α mu).fst‖ ≤ b ∧ ‖(trVal ν s gm α mu).snd‖ ≤ b := by
   intro V _ _ _ D C _ _ _ _ _ hC N ν hν k hk s gm₀ gm _ hpull α

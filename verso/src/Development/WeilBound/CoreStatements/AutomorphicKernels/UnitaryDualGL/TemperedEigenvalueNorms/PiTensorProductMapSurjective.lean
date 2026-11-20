@@ -12,9 +12,9 @@ namespace PositivityTheory.UdReth2
 section SpehAux
 
 /- English proof (translation)
-Introduce `z`. Proceed by induction on `z using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x => choose w hw using fun a => hf a (x a)`. Use `⟨r • PiTensorProduct.tprod ℂ w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, PiTensorProduct.map_tprod]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hw]`. Consider the case `add x y hx hy`. Take `⟨u, rfl⟩` from `hx`. Take `⟨v, rfl⟩` from `hy`. Conclude with `⟨u + v, map_add _ _ _⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem piTensorProduct_map_surjective {α : Type} {Y Z : α → Type} [∀ a, AddCommGroup (Y a)]
     [∀ a, Module ℂ (Y a)] [∀ a, AddCommGroup (Z a)] [∀ a, Module ℂ (Z a)] (f : ∀ a, Y a →ₗ[ℂ] Z a)
@@ -43,7 +43,7 @@ def piTensorInt {α : Type} {Γ Y Z : α → Type} [∀ a, Group (Γ a)] [∀ a,
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨parIndMap e (piTensorInt f), GlobalTheory.CompanionTheory.AdjQuot.parIndMap_surjective e (isSmooth_piTensor hπ) _ (piTensorProduct_map_surjective (fun a => (f a).toLinearMap) hf)⟩`.
+Supply the required witnesses or components.
 -/
 theorem multiProd_map_surjective {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) {X Y : α → Type}
@@ -55,11 +55,11 @@ theorem multiProd_map_surjective {α n : Type} {m : α → Type} [Fintype α] [L
     (piTensorProduct_map_surjective (fun a => (f a).toLinearMap) hf)⟩
 
 /- English proof (translation)
-Rewrite using `[Fin.univ_val_map]`. Use `congr 1`. Rewrite using `[List.ofFn_mul, List.flatMap_def, ← List.map_coe_finRange_eq_range, List.map_map, ← List.ofFn_eq_map]`. Use `congr 1`. Use `List.ofFn_inj.2 (funext fun i => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.comp_apply, List.map_ofFn]`. Use `List.ofFn_inj.2 (funext fun j => ?_)` and prove the remaining obligations. Establish `: ∀ h, finProdFinEquiv.symm (⟨i * m + j, h⟩ : Fin (d * m)) = (i, j)` using `fun h => by`. Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[finProdFinEquiv_apply_val]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Function.comp, this]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem univ_map_speh_segments_centred (d m : ℕ) (Δ : Fin m → Segment k) :
     Finset.univ.val.map (fun p : Fin (d * m) => (Δ (finProdFinEquiv.symm p).2).nu
@@ -79,23 +79,23 @@ theorem univ_map_speh_segments_centred (d m : ℕ) (Δ : Fin m → Segment k) :
 end SpehAux
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ hLM hstage a V _ _ σ m δ Δ hΔ hc hd hσ d n hdn W _ _ σ' hirr hf`. Take `⟨g, hgs⟩` from `hσ`. Take `⟨f, hfs⟩` from `hf`. Set `y : Fin d → Fin m → IrrGL k` to `fun i j => (δ j).nu (((d : ℂ) - 1) / 2 - (i : ℕ))`. Establish `hN : ∀ i, ∑ j, (y i j).1 = a` using `fun _ => hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Y : Fin (d * m) → IrrGL k` to `fun p => y (finProdFinEquiv.symm p).1 (finProdFinEquiv.symm p).2`. Establish `hM' : ∑ p, (Y p).1 = n`. Rewrite using `[← hdn, ← finProdFinEquiv.sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Y, Equiv.symm_apply_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hN i`. Set `e1 : ∀ i : Fin d, (twist (prodIrr δ hd) (detChar (Fin a) (absPow k (((d : ℂ) - 1) / 2 - (i : ℕ))))).Equiv (prodIrr (y i) (hN i))` to `fun i => prodIrrTwistEquiv _ hd _ (isSmoothChar_absPow _)`. Set `g1 : ∀ i : Fin d, (prodIrr (y i) (hN i)).IntertwiningMap (twist σ (detChar (Fin a) (absPow k (((d : ℂ) - 1) / 2 - (i : ℕ)))))` to `fun i => (twistMap g _).comp (e1 i).symm.toIntertwiningMap`. Establish `hg1 : ∀ i, Function.Surjective (g1 i)` using `fun i => hgs.comp (e1 i).symm.toLinearEquiv.surjective`. Take `⟨G, hG⟩` from `multiProd_map_surjective (stdBlocks (fun _ : Fin d => a) hdn) (fun i => isSmooth_prodIrr (y i) (hN i)) g1 hg1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e2⟩` from `hstage d m y (fun _ => a) n hN hdn hM'`. Set `Γs : Fin (d * m) → Segment k` to `fun p => (Δ (finProdFinEquiv.symm p).2).nu ((((d : ℝ) - 1) / 2 - ((finProdFinEquiv.symm p).1 : ℕ) : ℝ) : ℂ)`. Establish `hcast : ∀ i : ℕ, (((((d : ℝ) - 1) / 2 - i : ℝ)) : ℂ) = ((d : ℂ) - 1) / 2 - (i : ℕ)` using `fun i => by push_cast; ring`. Establish `hL : ∀ p, IsLSeg (Γs p) (Y p).rep` using `fun p => by`. Simplify using `only [Γs, Y, y, hcast]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.isLSeg_nu (hΔ _) _`. Establish `hord : ∀ p p' : Fin (d * m), p < p' → ¬ (Γs p).Precedes (Γs p')`. Introduce `p p' hpp' hP`. Take `⟨⟨i, j⟩, rfl⟩` from `finProdFinEquiv.surjective p`. Take `⟨⟨i', j'⟩, rfl⟩` from `finProdFinEquiv.surjective p'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hii : (i : ℕ) ≤ i'`. Assume the negation of the conclusion as `hlt`. Establish `h1 : (i' : ℕ) + 1 ≤ i` using `by omega`. Establish `h2` using `Nat.mul_le_mul_left m h1`. Establish `h3` using `Fin.lt_def.1 hpp'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [finProdFinEquiv_apply_val] at h3`. Use `j.2` as an intermediate fact. Use `j'.2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [Γs, Equiv.symm_apply_apply] at hP`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `add_one_le_of_precedes (Δ j) (Δ j') (hc j) (hc j') (((d : ℝ) - 1) / 2 - (i : ℕ)) (((d : ℝ) - 1) / 2 - (i' : ℕ)) hP`. Establish `hi : ((i : ℕ) : ℝ) ≤ (i' : ℕ)` using `by exact_mod_cast hii`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLF : LFactors (↑((List.range d).flatMap fun i : ℕ => (List.ofFn Δ).map fun Γ => Γ.nu ((((d : ℝ) - 1) / 2 - i : ℝ) : ℂ))) Y` using `⟨Γs, ⟨univ_map_speh_segments_centred d m Δ, hord⟩, hL⟩`. Take `⟨π, hπ⟩` from `hLM k _ (d * m) n Y hM' hLF`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ψ⟩` from `hπ.equiv_of_surjective hirr (f.comp (G.comp e2.symm.toIntertwiningMap)) (hfs.comp (hG.comp e2.symm.toLinearEquiv.surjective))`. Conclude with `⟨d * m, Y, hM', hLF, hπ.of_equiv ψ.symm (.refl _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem speh_quotient_isL_centred : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [CharZero k],

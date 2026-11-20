@@ -11,17 +11,17 @@ noncomputable section
 namespace GlobalTheory.PtLocalEig
 
 /- English proof (translation)
-Set `R : Matrix (↥s × ι) ι K` to `Matrix.of fun p b => Mg p.1.1 p.2 b`. Establish `stack : ∀ {F : Type} [Field F] (N : G → Matrix ι ι F), (⨅ g ∈ s, LinearMap.ker (Matrix.mulVecLin (N g))) = LinearMap.ker (Matrix.mulVecLin (Matrix.of fun (p : ↥s × ι) b => N p.1.1 p.2 b))`. Introduce `F _ N`. Use extensionality with `c`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, Matrix.mulVecLin_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `p`. Use `congrFun (h p.1.1 p.1.2) p.2` as an intermediate fact. Simplify `this` using `[Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Matrix.of_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h g hg`. Use function extensionality and compare the values at `a`. Use `congrFun h (⟨g, hg⟩, a)` as an intermediate fact. Simplify `this` using `[Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Matrix.of_apply]`. Establish `rn : ∀ {F : Type} [Field F] (N : Matrix (↥s × ι) ι F), N.rank + Module.finrank F (LinearMap.ker N.mulVecLin) = Fintype.card ι`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `F _ N`. Use `LinearMap.finrank_range_add_finrank_ker N.mulVecLin` as an intermediate fact. Rewrite `this` using `[Module.finrank_fintype_fun_eq_card]`. Conclude with `this`. Establish `h1` using `rn R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `rn (R.map φ)`. Rewrite `h2` using `[GlobalTheory.Core.Rk.rank_map_field]`. Rewrite using `[stack Mg, stack (fun g => (Mg g).map φ)]`. Establish `e : (Matrix.of fun (p : ↥s × ι) b => ((Mg p.1.1).map φ) p.2 b) = R.map φ`. Use extensionality with `p b`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `Module.finrank K ↥(LinearMap.ker (Matrix.mulVecLin R)) = _`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem jointKer_fin_finrank {K C : Type} [Field K] [Field C] (φ : K →+* C) {ι : Type} [Fintype ι] {G : Type}
     (Mg : G → Matrix ι ι K) (s : Finset G) :
@@ -62,19 +62,17 @@ theorem jointKer_fin_finrank {K C : Type} [Field K] [Field C] (φ : K →+* C) {
   omega
 
 /- English proof (translation)
-Set `kK : Finset G → Submodule K (ι → K)` to `fun s => ⨅ g ∈ s, LinearMap.ker (Matrix.mulVecLin (Mg g))`. Set `kC : Finset G → Submodule C (ι → C)` to `fun s => ⨅ g ∈ s, LinearMap.ker (Matrix.mulVecLin ((Mg g).map φ))`. Establish `heq : ∀ s, Module.finrank K (kK s) = Module.finrank C (kC s)` using `fun s => jointKer_fin_finrank φ Mg s`. Establish `hex : ∃ m, ∃ s : Finset G, Module.finrank K (kK s) = m` using `⟨_, ∅, rfl⟩`. Take `⟨s, hs⟩` from `Nat.find_spec hex`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmin : ∀ s' : Finset G, Module.finrank K (kK s) ≤ Module.finrank K (kK s')` using `fun s' => hs ▸ Nat.find_min' hex ⟨s', rfl⟩`. Establish `hminC : ∀ s' : Finset G, Module.finrank C (kC s) ≤ Module.finrank C (kC s')` using `fun s' => by`. Rewrite using `[← heq, ← heq]`. Conclude with `hmin s'`. Establish `hK : (⨅ g, LinearMap.ker (Matrix.mulVecLin (Mg g))) = kK s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_iInf₂ fun g _ => iInf_le _ g`. Use `le_iInf fun g => ?_` and prove the remaining obligations. Establish `hins : kK (insert g s) = LinearMap.ker (Matrix.mulVecLin (Mg g)) ⊓ kK s`. Simplify using `only [kK, Finset.iInf_insert]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : kK (insert g s) ≤ kK s` using `by rw [hins]; exact inf_le_right`. Establish `h` using `Submodule.eq_of_le_of_finrank_le hle (hmin _)`. Rewrite using `[← h, hins]`. Conclude with `inf_le_left`. Establish `hC : (⨅ g, LinearMap.ker (Matrix.mulVecLin ((Mg g).map φ))) = kC s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_iInf₂ fun g _ => iInf_le _ g`. Use `le_iInf fun g => ?_` and prove the remaining obligations. Establish `hins : kC (insert g s) = LinearMap.ker (Matrix.mulVecLin ((Mg g).map φ)) ⊓ kC s`. Simplify using `only [kC, Finset.iInf_insert]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : kC (insert g s) ≤ kC s` using `by rw [hins]; exact inf_le_right`. Establish `h` using `Submodule.eq_of_le_of_finrank_le hle (hminC _)`. Rewrite using `[← h, hins]`. Conclude with `inf_le_left`. Rewrite using `[hK, hC]`.
-
-Conclude with `heq s`.
+A detailed English derivation is pending.
 -/
 theorem jointKer_finrank {K C : Type} [Field K] [Field C] (φ : K →+* C) {ι : Type} [Fintype ι] {G : Type}
     (Mg : G → Matrix ι ι K) :
@@ -118,47 +116,41 @@ end GlobalTheory.PtLocalEig
 namespace GlobalTheory.PtLocalEig
 
 /- English proof (translation)
-Introduce `D M B j w μ h1 h2 hμ φ hφ κ E hex hadd hE`. Substitute `hμ` using the available equality. Use `haveI := Formalism.L2.finite_chooseBasisIndex (D := D) j w`. Use `haveI := Fintype.ofFinite (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j))`. Set `b` to `Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hjb` using `D.what₂.jMt_basis (D.what₂.muTw w) j b`. Set `bC` to `Module.Basis.mk hjb.1 hjb.2.ge`. Establish `hb` using `B.iV_basis j w b`. Set `bV` to `Module.Basis.mk hb.1 hb.2.ge`. Establish `hbC : ∀ a, bC a = D.what₂.jMt (D.what₂.muTw w) j (b a)` using `fun a => by simp [bC]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbV : ∀ a, bV a = B.iV j w (b a)` using `fun a => by simp [bV]`. Establish `rC : ∀ x r, bC.repr (D.what₂.jMt (D.what₂.muTw w) j x) r = D.what₂.embLL (b.repr x r)` using `fun x r => Formalism.L2.NCov.repr_transport D.what₂.embLL (D.what₂.jMt (D.what₂.muTw w) j) b hjb.1 hjb.2 x r`. Establish `rV : ∀ x r, bV.repr (B.iV j w x) r = B.ec j w (b.repr x r)` using `fun x r => Formalism.L2.NCov.repr_transport (B.ec j w) (B.iV j w) b hb.1 hb.2 x r`. Set `A : PlE D.host → ℕ → Matrix (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j)) (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j)) D.what₂.LL` to `fun v k => LinearMap.toMatrix b b (B.hL j w v k)`. Set `G` to `{p : PlE D.host × ℕ // Formalism.L2.GenAt D (D.what₂.places.resChar w) (B.Qc j w) p.1 p.2}`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Mg : G → Matrix (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j)) (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j)) (FractionRing (B.Oc j w))` to `fun g => (A g.1.1 g.1.2).map (B.ec j w) - κ g.1.1 g.1.2 • 1`. Use `set Mw := M (D.what₂.muTw w) j h1 h2 with hMw`. Establish `hV : ∀ v k (hvk : Formalism.L2.GenAt D (D.what₂.places.resChar w) (B.Qc j w) v k) c, B.hK j w v k (bV.equivFun.symm c) = κ v k • bV.equivFun.symm c ↔ Matrix.mulVec (Mg ⟨(v, k), hvk⟩) c = 0`. Introduce `v k hvk c`. Establish `hmat : LinearMap.toMatrix bV bV (B.hK j w v k) = (A v k).map (B.ec j w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `r c'`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.map_apply, hbV, B.hK_def, rV]`. Simplify using `only [A, LinearMap.toMatrix_apply]`. Establish `hr` using `LinearMap.toMatrix_mulVec_repr bV bV (B.hK j w v k) (bV.equivFun.symm c)`. Rewrite `hr` using `[hmat]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : ⇑(bV.repr (bV.equivFun.symm c)) = c`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Rewrite `hr` using `[hc]`. Rewrite using `[← bV.equivFun.injective.eq_iff, map_smul, LinearEquiv.apply_symm_apply, Module.Basis.equivFun_apply, ← hr]`. Simplify using `only [Mg, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hPV : (⨅ (v : PlE D.host) (k : ℕ) (_ : Formalism.L2.GenAt D (D.what₂.places.resChar w) (B.Qc j w) v k), Module.End.eigenspace (B.hK j w v k) (κ v k)).map (bV.equivFun : B.V j w →ₗ[FractionRing (B.Oc j w)] _) = ⨅ g : G, LinearMap.ker (Matrix.mulVecLin (Mg g))`. Use extensionality with `c`. Rewrite using `[Submodule.mem_map_equiv]`. Simplify using `only [Submodule.mem_iInf, Module.End.mem_eigenspace_iff, LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `h ⟨⟨v, k⟩, hvk⟩`. Conclude with `(hV v k hvk c).1 (h v k hvk)`. Introduce `h v k hvk`. Conclude with `(hV v k hvk c).2 (h ⟨⟨v, k⟩, hvk⟩)`. Establish `hCk : ∀ v k (hvk : Formalism.L2.GenAt D (D.what₂.places.resChar w) (B.Qc j w) v k) (y : D.what₂.Mt (D.what₂.muTw w) j), (∀ (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host v s.w → Formalism.AUTREP.IsUnif D.ho …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v k hvk y`. Take `⟨s0, ϖ0, hc0, hu0⟩` from `hex v k hvk`. Set `tC : Module.End ℂ (D.what₂.Mt (D.what₂.muTw w) j)` to `bC.constr ℂ fun a => D.what₂.jMt (D.what₂.muTw w) j (B.hL j w v k (b a))`. Establish `hagree : ∀ (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host v s.w → Formalism.AUTREP.IsUnif D.host.E s.v ϖ → ∀ x, Formalism.L2.NG.tN Mw.J s ϖ k (Mw.real x) = Mw.real (tC x)`. Introduce `s ϖ hc hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hadd'` using `hadd v k s ϖ hvk hc hu`. Establish `htN0 : Formalism.L2.NG.tN Mw.J s ϖ k (0 : Formalism.AUTREP.GAf D.host.E D.R.nV → Mw.wt.W) = 0`. Use `hadd' 1 0 0` as an intermediate fact. Rewrite `this` using `[one_smul, add_zero, one_smul]`. Simplify using `using this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `Lt : D.what₂.Mt (D.what₂.muTw w) j →ₗ[ℂ] (Formalism.AUTREP.GAf D.host.E D.R.nV → Mw.wt.W)` to `{ toFun := fun y => Formalism.L2.NG.tN Mw.J s ϖ k (Mw.real y) map_add' := fun y y' => by`. Use `hadd' 1 (Mw.real y) (Mw.real y')` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul]`. Simplify using `only [map_add]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_smul' := fun c y => by`. Use `hadd' c (Mw.real y) 0` as an intermediate fact. Rewrite `this` using `[add_zero, htN0, add_zero]`. Simplify using `only [map_smul, RingHom.id_apply]`. Conclude with `this }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLt : Lt = Mw.real.comp tC` using `bC.ext fun a => by`. Establish `e` using `bC.constr_basis ℂ (fun a => D.what₂.jMt (D.what₂.muTw w) j (B.hL j w v k (b a))) a`. Use `show Formalism.L2.NG.tN Mw.J s ϖ k (Mw.real (bC a)) = Mw.real ((bC.constr ℂ fun a => D.what₂.jMt (D.what₂.muTw w) j (B.hL j w v k (b a))) (bC a))`. Rewrite using `[e, hbC a]`. Conclude with `(B.hL_def j w h1 h2 v k s ϖ hvk hc hu (b a)).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `x`. Conclude with `LinearMap.congr_fun hLt x`. Establish `hmat : LinearMap.toMatrix bC bC tC = (A v k).map D.what₂.embLL`. Use extensionality with `r c`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.map_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Establish `e` using `bC.constr_basis ℂ (fun a => D.what₂.jMt (D.what₂.muTw w) j (B.hL j w v k (b a))) c`. Use `show bC.repr ((bC.constr ℂ fun a => D.what₂.jMt (D.what₂.muTw w) j (B.hL j w v k (b a))) (bC c)) r = _`. Rewrite using `[e, rC]`. Simplify using `only [A, LinearMap.toMatrix_apply]`. Establish `hMg : (Mg ⟨(v, k), hvk⟩).map φ = (A v k).map D.what₂.embLL - φ (κ v k) • 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `r c`. Simplify using `only [Mg, Matrix.map_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [hφ]`. Establish `hvec : tC y = φ (κ v k) • y ↔ Matrix.mulVec ((Mg ⟨(v, k), hvk⟩).map φ) (bC.equivFun y) = 0`. Rewrite using `[hMg, Matrix.sub_mulVec, ← hmat, Matrix.smul_mulVec, Matrix.one_mulVec, sub_eq_zero, Module.Basis.equivFun_apply, LinearMap.toMatrix_mulVec_repr, ← Finsupp.coe_smul, ← map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h => by rw [h], fun h => bC.repr.injective (DFunLike.coe_injective h)⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `hvec.1` to reduce the goal to its premises. Apply `Mw.real_inj` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hagree s0 ϖ0 hc0 hu0, h s0 ϖ0 hc0 hu0, map_smul]`. Introduce `h s ϖ hc hu`. Rewrite using `[hagree s ϖ hc hu, hvec.2 h, map_smul]`. Establish `hPC : E.map (bC.equivFun : D.what₂.Mt (D.what₂.muTw w) j →ₗ[ℂ] _) = ⨅ g : G, LinearMap.ker (Matrix.mulVecLin ((Mg g).map φ))`. Use extensionality with `d`.
-
-Rewrite using `[Submodule.mem_map_equiv, hE]`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨⟨v, k⟩, hvk⟩`. Use `(hCk v k hvk (bC.equivFun.symm d)).1 (fun s ϖ hc hu => h v k s ϖ hvk hc hu)` as an intermediate fact.
-
-Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `h v k s ϖ hvk hc hu`. Use `(hCk v k hvk _).2 ?_ s ϖ hc hu` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `h ⟨⟨v, k⟩, hvk⟩`.
-
-Rewrite using `[← LinearEquiv.finrank_map_eq bV.equivFun, hPV, ← LinearEquiv.finrank_map_eq bC.equivFun E, hPC]`. Conclude with `jointKer_finrank φ Mg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_dim : ∀ (D : D7) (M : MtFam D) (B : NLocBase D M) (j : ℕ) (w : D.what₂.places.Pl) (μ : D.what₂.Tup) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m), μ = D.what₂.muTw w → ∀ (φ : FractionRing (B.Oc j w) →+* ℂ), (∀ x, φ (B.ec j w x) = D.what₂.embLL x) → ∀ (κ : PlE D.host → ℕ → FractionRing (B.Oc j w)) (E : Submodule ℂ (D.what₂.Mt μ j)), (∀ v k, GenAt D (D.what₂.places.resChar w) (B.Qc j w) v k → ∃ (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host v s.w ∧ IsUnif D.host.E s.v ϖ) → (∀ v k (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), GenAt D (D.what₂.places.resChar w) (B.Qc j w) v k → IsConjPl D.host v s.w → IsUnif D.host.E s.v ϖ → ∀ (c : ℂ) (f f' : GAf D.host.E D.R.nV → (M μ j h1 h2).wt.W), NG.tN (M μ j h1 h2).J s ϖ k (c • f + f') = c • NG.tN (M μ j h1 h2).J s ϖ k f + NG.tN (M μ j h1 h2).J s ϖ k f') → (∀ y, y ∈ E ↔ ∀ v k (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), GenAt D (D.what₂.places.resChar w) (B.Qc j w) v k → IsConjPl D.host v s.w → IsUnif D.host.E s.v ϖ → NG.tN (M μ j h1 h2).J s ϖ k ((M μ j h1 h2).real y) = φ (κ v k) • (M μ j h1 h2).real y) → Module.finrank (FractionRing (B.Oc j w)) ↥(⨅ (v : PlE D.host) (k : ℕ) (_ : GenAt D (D.what₂.places.resChar w) (B.Qc j w) v k), Module.End.eigenspace (B.hK j w v k) (κ v k)) = Module.finrank ℂ E := by
   intro D M B j w μ h1 h2 hμ φ hφ κ E hex hadd hE

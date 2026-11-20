@@ -21,7 +21,7 @@ Both sides reduce to the same expression.
 theorem phiT_tmul (a : Ainf p O) (l : Λ) : phiT (a ⊗ₜ l) = WittVector.frobenius a ⊗ₜ l := rfl
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a l => rw [hψ, phiT_tmul, PsiPhi.frobenius_phiInv']`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem phiT_psi {ψ : RL p O Λ →+* RL p O Λ} (hψ : IsPsi ψ) (r : RL p O Λ) : phiT (ψ r) = r := by
   induction r using TensorProduct.induction_on with
@@ -30,16 +30,16 @@ theorem phiT_psi {ψ : RL p O Λ →+* RL p O Λ} (hψ : IsPsi ψ) (r : RL p O �
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Use `show phiT (a ⊗ₜ 1) = WittVector.frobenius a ⊗ₜ 1`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem phiT_inA (a : Ainf p O) : phiT (inA a : RL p O Λ) = inA (WittVector.frobenius a) := by
   show phiT (a ⊗ₜ 1) = WittVector.frobenius a ⊗ₜ 1
   rfl
 
 /- English proof (translation)
-Establish `hc : ∀ c : ℤ_[p], WittVector.frobenius (algebraMap ℤ_[p] (Ainf p O) c) = algebraMap ℤ_[p] (Ainf p O) c` using `PsiPhi.frobenius_ofPadic`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a l`. Rewrite using `[phiT_tmul, Algebra.TensorProduct.basis_repr_tmul, Algebra.TensorProduct.basis_repr_tmul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, map_mul, hc]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem repr_phiT {ι : Type} (b : Module.Basis ι ℤ_[p] Λ) (r : RL p O Λ) (i : ι) :
     (Algebra.TensorProduct.basis (Ainf p O) b).repr (phiT r) i =
@@ -58,17 +58,13 @@ end GlobalTheory.LemYR
 open GlobalTheory.LemYR in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv Λ _ _ _ _ _ _ ψ hψ m hm z w hzw`. Take `⟨hD, hV⟩` from `GlobalTheory.TiltValuation.tilt_isDomain_valuationRing p C v O hv`. Use `haveI : Module.IsTorsionFree ℤ_[p] Λ := Module.isTorsionFree_iff_algebraMap_injective.mpr (FaithfulSMul.algebraMap_injective ℤ_[p] Λ)`. Use `haveI : Module.Free ℤ_[p] Λ := Module.free_of_finite_type_torsion_free'`. Use `set b := Module.finBasis ℤ_[p] Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set B := Algebra.TensorProduct.basis (Ainf p O) b`. Establish `h1 : phiT z * inA m = inA (WittVector.frobenius m) * phiT w * z`. Use `congrArg phiT hzw` as an intermediate fact. Simplify `this` using `only [map_mul, phiT_psi hψ, phiT_inA]`. Establish `hA : ∀ (a : Ainf p O) (r : RL p O Λ) i, B.repr (inA a * r) i = a * B.repr r i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a r i`. Rewrite using `[← Algebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Establish `key : ∀ i, m * WittVector.frobenius (B.repr z i) = WittVector.frobenius m * (Algebra.leftMulMatrix B (phiT w) *ᵥ fun j => B.repr z j) i`. Introduce `i`. Use `congrArg (fun r => B.repr r i) h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_comm, hA, repr_phiT, mul_assoc, hA]`. Rewrite using `[this]`. Use `congr 1`. Conclude with `congrFun (Algebra.leftMulMatrix_mulVec_repr B (phiT w) z) i |>.symm`. Establish `hdiv` using `GlobalTheory.T.frobenius_twisted_divisibility p (PreTilt O p) (Module.finrank ℤ_[p] Λ) m (Algebra.leftMulMatrix B (phiT w)) (fun j => B.repr z j) hm key`.
-
-Use `choose c hc using hdiv`. Use `⟨∑ i, c i • B i, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← B.sum_repr z]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hc i, mul_smul, Algebra.smul_def (m : Ainf p O) (c i • B i)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LemYR.lemY_tensor : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ (ψ : RL p O Λ →+* RL p O Λ), IsPsi ψ → ∀ m : Ainf p O, m.coeff 0 ≠ 0 → ∀ z w : RL p O Λ, z * ψ (inA m) = inA m * w * ψ z → (inA m : RL p O Λ) ∣ z := by
   intro p _ C _ _ _ v O _ _ _ _ hv Λ _ _ _ _ _ _ ψ hψ m hm z w hzw

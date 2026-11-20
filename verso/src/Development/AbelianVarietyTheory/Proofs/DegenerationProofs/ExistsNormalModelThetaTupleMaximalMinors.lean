@@ -32,7 +32,7 @@ namespace GlobalTheory.ZH.MinorModel
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Use `letI : Algebra K L := (Subfield.inclusion h).toAlgebra`. Use `haveI : IsScalarTower K L Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Conclude with `Module.Finite.of_restrictScalars_finite K L Ω`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem finite_of_subfield_le {K L : Subfield Ω} (h : K ≤ L) (hK : Module.Finite K Ω) : Module.Finite L Ω := by
   letI : Algebra K L := (Subfield.inclusion h).toAlgebra
@@ -40,7 +40,7 @@ theorem finite_of_subfield_le {K L : Subfield Ω} (h : K ≤ L) (hK : Module.Fin
   exact Module.Finite.of_restrictScalars_finite K L Ω
 
 /- English proof (translation)
-Use `finite_of_subfield_le (Subfield.closure_mono (Set.union_subset_union_right _ ?_)) h` and prove the remaining obligations. Take `⟨k, hk⟩` from `h'`. Introduce and unpack `_ ⟨i, j, rfl⟩`. Conclude with `⟨(i, k), (j, k), (mul_div_mul_right _ _ hk).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_closure_prod {J J' : Type} (t : J → Ω) (t' : J' → Ω) (h' : ∃ i, t' i ≠ 0)
     (h : Module.Finite (Subfield.closure (Set.range (algebraMap o Ω) ∪ {x | ∃ i j, x = t j / t i})) Ω) :
@@ -54,29 +54,27 @@ theorem finite_closure_prod {J J' : Type} (t : J → Ω) (t' : J' → Ω) (h' : 
 variable (S : ThetaSys o Ω)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by have := S.N_ge; omega⟩`.
+Supply the required witnesses or components.
 -/
 theorem neZero_N : NeZero S.N := ⟨by have := S.N_ge; omega⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Nat.mul_ne_zero (by have := S.r_pos; omega) (by have := S.N_ge; omega)⟩`.
+Supply the required witnesses or components.
 -/
 theorem neZero_level : NeZero (S.r * S.N) :=
   ⟨Nat.mul_ne_zero (by have := S.r_pos; omega) (by have := S.N_ge; omega)⟩
 
 /- English proof (translation)
-Use `haveI := neZero_level S`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem finite_Gam : Finite S.Gam := by
   haveI := neZero_level S
   infer_instance
 
 /- English proof (translation)
-Use `haveI := neZero_N S`. Use `haveI := neZero_level S`. Use `haveI := finite_Gam S`. Take `⟨s, rfl⟩` from `hR'`. Use `haveI : ∀ T : AddSubgroup S.Gam, Finite (T →+ ZMod S.N) := fun T => Finite.of_injective _ DFunLike.coe_injective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Finite (AddSubgroup S.Gam) := Finite.of_injective _ SetLike.coe_injective`. Establish `hA : ((s : Set Ω) ∪ (Set.range (fun x => (S.th x)⁻¹) ∪ ⋃ (T : AddSubgroup S.Gam) (c : T →+ ZMod S.N), Set.range fun k => (S.FF T c k)⁻¹)).Finite` using `s.finite_toSet.union ((Set.finite_range _).union (Set.finite_iUnion fun _ => Set.finite_iUnion fun _ => Set.finite_range _))`. Take `⟨U₀, a, -, hne, -, -, -, hring, hsub⟩` from `exists_affineOpen_ringOn_eq_adjoin_inv o Ω M S.R _ S.fg S.frac hA ⊤ ⟨genericPoint M.Z, trivial⟩`. Use `⟨U₀, ⟨hn, hp, hd, hne, fun x hx => ?_, fun x _ => hsub (.inr (.inl ⟨x, rfl⟩)), fun T c k _ _ => hsub (.inr (.inr (Set.mem_iUnion.2 ⟨T, Set.mem_iUnion.2 ⟨c, k, rfl⟩⟩)))⟩, Algebra.adjoin_le fun x hx => hsub (.inl hx)⟩` and prove the remaining obligations. Rewrite using `[hring]`.
-
-Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ hx)`.
+A detailed English derivation is pending.
 -/
 theorem exists_over (M : RatModel o Ω) (hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z) (hp : IsProjOver M.s) (hd : M.HasDiv S.th)
     (R' : Subalgebra o Ω) (hR' : R'.FG) : ∃ U₀ : M.Z.Opens, S.Over₀ M U₀ ∧ R' ≤ M.ringOn U₀ := by
@@ -100,7 +98,7 @@ theorem exists_over (M : RatModel o Ω) (hn : ReciprocityTheory.ChartRestriction
   exact Algebra.subset_adjoin (Set.mem_insert_of_mem _ hx)
 
 /- English proof (translation)
-Use `haveI := finite_Gam S`. Use `isOpen_iff_forall_mem_open.2 fun x hx => ⟨⋂ i ∈ S.supI M x, {z | M.Div S.th i z}, fun z hz => ?_, (Set.toFinite _).isOpen_biInter fun i _ => M.isOpen_setOf_div S.th i, Set.mem_iInter₂.2 fun i hi => hi⟩` and prove the remaining obligations. Establish `hle : S.HH M x ≤ S.HH M z` using `AddSubgroup.closure_mono fun i hi => Set.mem_iInter₂.1 hz i hi`. Establish `hx' : S.TT M x = ⊥` using `hx`. Conclude with `eq_bot_iff.2 fun a ha => hx' ▸ fun h hh => ha h (hle hh)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_TT_eq_bot (M : RatModel o Ω) : IsOpen {x | S.TT M x = ⊥} := by
   haveI := finite_Gam S
@@ -111,13 +109,11 @@ theorem isOpen_setOf_TT_eq_bot (M : RatModel o Ω) : IsOpen {x | S.TT M x = ⊥}
   exact eq_bot_iff.2 fun a ha => hx' ▸ fun h hh => ha h (hle hh)
 
 /- English proof (translation)
-Use `haveI := ArithBase.ft (o := o) (Ω := Ω)`. Use `haveI := ArithBase.char (o := o) (Ω := Ω)`. Take `⟨M, U, hadm, haff, -⟩` from `GlobalTheory.T.exists_admissible_affine_model_dividing_tuple' o Ω S Unit (fun _ => 1) ⟨(), one_ne_zero⟩ (finite_closure_prod (o := o) S.th (fun _ : Unit => 1) ⟨(), one_ne_zero⟩ hfin)`. Establish `ll` using `classical_points_regular o Ω M U hadm.1.normal`. Establish `te` using `exists_at_test_of_cen o Ω S M U hT hadm.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s0a` using `ThetaSys.mem_supI_iff_and_HH_eq_ker o Ω S M U hadm.1`. Establish `s0b` using `GlobalTheory.T.isoFree_orthogonal_support_and_supI_specializes o Ω S M U hadm.1 ll te s0a`. Establish `wt` using `test_weights o Ω S`. Establish `s11` using `GlobalTheory.T.thetaSystem_norm_weightSum_le_exp_of_test o Ω S wt`. Establish `s12` using `GlobalTheory.T.norm_dividing_weightSum_eq_of_model_point o Ω S M U hadm.1 s0a s11 te`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `sne` using `FF_TT_ne_zero o Ω S M U hadm.1 ll te s0a s0b wt`. Take `⟨EE, hEE, hcl⟩` from `GlobalTheory.T.exists_bundle_on_admissible_model o Ω S M U hT hadm`. Establish `sec` using `GlobalTheory.T.weightSum_div_thetaConst_dotProduct_mem o Ω S M U EE hadm ll te s0a s0b wt s11 s12 sne hcl`. Take `⟨n, a, GG₀, hG⟩` from `GlobalGen.exists_global_generators o Ω S M U EE hadm ll.2 s0b sne hcl sec`. Take `⟨R', hR, GG, hfg, -, h⟩` from `GlobalTheory.T.exists_dualBundle_generators_all_thetaTests o Ω S M U EE n a GG₀ hadm.1 haff s0a hEE hG`.
-
-Conclude with `⟨n, a, R', hR, GG, hfg, h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_generators [ArithBase o Ω] (hT : S.HasTests)
     (hfin : Module.Finite (Subfield.closure (Set.range (algebraMap o Ω) ∪ {x | ∃ i j, x = S.th j / S.th i})) Ω) :
@@ -152,9 +148,9 @@ open MinorModel
 open CategoryTheory Limits AlgebraicGeometry in
 open Classical in
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hA`. Establish `hT : ((s : Set Ω) ∪ F).Finite` using `s.finite_toSet.union hF`. Set `U : M.Z.Opens` to `⟨⋂ x ∈ (s : Set Ω) ∪ F, {z | x ∈ M.O z}, hT.isOpen_biInter fun x _ => M.isOpen_setOf_mem_O x⟩`. Establish `hU : ∀ x ∈ (s : Set Ω) ∪ F, x ∈ M.ringOn (U : Set M.Z)` using `fun x hx => _root_.GlobalTheory.ZH.RatModel.mem_ringOn.2 fun z hz => Set.mem_iInter₂.1 hz x hx`. Use `⟨U, ⟨genericPoint M.Z, ?_⟩, ?_, fun x hx => hU x (Or.inr hx)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show genericPoint M.Z ∈ ⋂ x ∈ (s : Set Ω) ∪ F, {z | x ∈ M.O z}`. Simplify using `[M.O_genericPoint]`. Conclude with `Algebra.adjoin_le fun x hx => hU x (Or.inl hx)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_open_ringOn_contains_of_fg_of_finite {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
     (M : _root_.GlobalTheory.ZH.RatModel o Ω) (A : Subalgebra o Ω) (hA : A.FG) (F : Set Ω)
@@ -175,7 +171,7 @@ private theorem exists_open_ringOn_contains_of_fg_of_finite {o Ω : Type} [CommR
 open CategoryTheory Limits AlgebraicGeometry in
 open Classical in
 /- English proof (translation)
-Take `⟨U, hUne, hAU, hFU⟩` from `exists_open_ringOn_contains_of_fg_of_finite M R' hfg (Set.range (fun x => (S.th x)⁻¹) ∪ Set.range (fun q : Σ T : AddSubgroup S.Gam, (T →+ ZMod S.N) × (S.J × (T → ZMod ((S.r * S.N) ^ 2))) => (S.FF q.1 q.2.1 q.2.2)⁻¹)) ((Set.finite_range _).union (Set.finite_range _))`. Conclude with `⟨U, ⟨hn, hp, hd, hUne, hR.trans hAU, fun x _ => hFU _ (Or.inl ⟨x, rfl⟩), fun T c k _ _ => hFU _ (Or.inr ⟨⟨T, c, k⟩, rfl⟩)⟩, hAU⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_open_over0_ringOn_of_fg {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
     (S : _root_.GlobalTheory.ZH.ThetaSys o Ω) (M : _root_.GlobalTheory.ZH.RatModel o Ω) (R' : Subalgebra o Ω)
@@ -191,7 +187,7 @@ private theorem exists_open_over0_ringOn_of_fg {o Ω : Type} [CommRing o] [Field
 open CategoryTheory Limits AlgebraicGeometry in
 open Classical in
 /- English proof (translation)
-Use `letI : Algebra K K' := (Subfield.inclusion h).toAlgebra`. Use `haveI : IsScalarTower K K' Ω := IsScalarTower.of_algebraMap_eq fun x => rfl`. Conclude with `Module.Finite.of_restrictScalars_finite K K' Ω`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem module_finite_of_subfield_le {Ω : Type} [Field Ω] {K K' : Subfield Ω} (h : K ≤ K')
     [Module.Finite K Ω] : Module.Finite K' Ω := by
@@ -202,7 +198,7 @@ private theorem module_finite_of_subfield_le {Ω : Type} [Field Ω] {K K' : Subf
 open CategoryTheory Limits AlgebraicGeometry in
 open Classical in
 /- English proof (translation)
-Take `⟨N, i, hi, e⟩` from `h`. Use `haveI := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str o N`. Rewrite using `[← e]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isProper_of_isProjOver_degeneration {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
     (M : _root_.GlobalTheory.ZH.RatModel o Ω) (h : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver M.s) : IsProper M.s := by
@@ -215,35 +211,33 @@ open CategoryTheory Limits AlgebraicGeometry in
 open Classical in
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S hT hfin`. Use `haveI : Algebra.FiniteType ℤ o := _root_.GlobalTheory.ZH.ArithBase.ft (o := o) Ω`. Use `haveI : CharZero Ω := _root_.GlobalTheory.ZH.ArithBase.char o (Ω := Ω)`. Use `haveI : IsDedekindDomain o := _root_.GlobalTheory.ZH.ArithBase.ded (o := o) Ω`. Establish `hwt` using `_root_.GlobalTheory.ZH.test_weights o Ω S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨M₁, U₁, hAdm₁, hAff₁, -⟩` from `_root_.GlobalTheory.ZH.exists_admissible_affine_model_dividing_tuple o Ω S Unit (fun _ => 1) ⟨(), one_ne_zero⟩ (by`. Rewrite using `[show {x | ∃ i j : S.Gam × Unit, x = S.th j.1 * (fun _ => (1:Ω)) j.2 / (S.th i.1 * (fun _ => (1:Ω)) i.2)} = {x | ∃ i j, x = S.th j / S.th i} by ext x; simp]`. Conclude with `hfin)`. Establish `hO₁` using `hAdm₁.1`. Establish `hreg₁` using `_root_.GlobalTheory.ZH.classical_points_and_local_regularity o Ω M₁ U₁ hO₁.normal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htst₁` using `_root_.GlobalTheory.ZH.exists_at_test_of_cen o Ω S M₁ U₁ hT hO₁`. Establish `hsup₁` using `_root_.GlobalTheory.ZH.ThetaSys.mem_supI_iff_and_HH_eq_ker o Ω S M₁ U₁ hO₁`. Establish `hiso₁` using `_root_.GlobalTheory.ZH.isoFree_TT_and_supI_specializes o Ω S M₁ U₁ hO₁ hreg₁ htst₁ hsup₁`. Take `⟨EE₁, hEE₁, hspan₁⟩` from `_root_.GlobalTheory.ZH.exists_isEE_of_adm o Ω S M₁ U₁ hT hAdm₁`. Establish `hFF₁` using `_root_.GlobalTheory.ZH.FF_TT_ne_zero o Ω S M₁ U₁ hO₁ hreg₁ htst₁ hsup₁ hiso₁ hwt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdot₁` using `_root_.GlobalTheory.ZH.DualSection.ff_div_th_mul_dotProduct_mem o Ω S M₁ U₁ EE₁ hAdm₁ hreg₁ htst₁ hsup₁ hiso₁ hwt`. Establish `hnorm` using `_root_.GlobalTheory.thetaSys_norm_FF_le_exp o Ω S hwt`. Establish `hnd₁` using `_root_.GlobalTheory.norm_val_FF_eq_of_div o Ω S M₁ U₁ hO₁ hsup₁ hnorm htst₁`. Establish `hdot₁'` using `hdot₁ hnorm hnd₁ hFF₁ hspan₁`. Take `⟨n, a, GG₀, hGG₀⟩` from `_root_.GlobalTheory.ZH.GlobalGen.exists_global_generators o Ω S M₁ U₁ EE₁ hAdm₁ hreg₁.2 hiso₁ hFF₁ hspan₁ hdot₁'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨R', hR, GG, hfg, hGGeq, htests⟩` from `_root_.GlobalTheory.ZH.exists_generators_at_all_tests o Ω S M₁ U₁ EE₁ n a GG₀ hO₁ hAff₁ hsup₁ hEE₁ hGG₀`. Establish `hinj : Function.Injective (algebraMap o Ω)` using `(inferInstance : _root_.GlobalTheory.ZH.ArithBase o Ω).4`. Take `⟨X, hXn, hXp⟩` from `_root_.GlobalTheory.ZH.exists_isNm_isProjOver o Ω hinj S.Gam S.th S.th_ne hfin`. Establish `hXnorm` using `hXn.isNormalScheme`. Take `⟨UX, hOX, hRX⟩` from `exists_open_over0_ringOn_of_fg S X R' hfg hR hXnorm hXp hXn.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hregX` using `_root_.GlobalTheory.ZH.classical_points_and_local_regularity o Ω X UX hXnorm`. Establish `htstX` using `_root_.GlobalTheory.ZH.exists_at_test_of_cen o Ω S X UX hT hOX`. Establish `hsupX` using `_root_.GlobalTheory.ZH.ThetaSys.mem_supI_iff_and_HH_eq_ker o Ω S X UX hOX`. Establish `hisoX` using `_root_.GlobalTheory.ZH.isoFree_TT_and_supI_specializes o Ω S X UX hOX hregX htstX hsupX`. Establish `hminX` using `_root_.GlobalTheory.ZH.minors_regular_and_unit_iff o Ω S X UX R' hR n a GG hOX hRX hregX htstX hsupX hisoX hwt htests`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ξ, hξ⟩` from `hOX.ne`. Take `⟨x₀, hx₀⟩` from `hXn.1 ξ`. Take `⟨k₀, hk₀, -⟩` from `((hminX ξ x₀ hx₀).2).1 (hisoX.2.2.1 ξ hξ)`. Take `⟨Z, hZn, hZp⟩` from `_root_.GlobalTheory.ZH.exists_isNm_isProjOver o Ω hinj (S.Gam × (S.J → Fin n)) (fun q => S.th q.1 * Matrix.det (Matrix.of fun i j => (GG (q.2 i) j : Ω))) ⟨(x₀, k₀), mul_ne_zero hx₀.1 hk₀⟩ (by haveI := hfin`. Use `module_finite_of_subfield_le (K := Subfield.closure (Set.range (algebraMap o Ω) ∪ {x | ∃ i j, x = S.th j / S.th i})) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Subfield.closure_le.2 (Set.union_subset (fun x hx => Subfield.subset_closure (Or.inl hx)) ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨i, j, rfl⟩`. Conclude with `Subfield.subset_closure (Or.inr ⟨(i, k₀), (j, k₀), (mul_div_mul_right _ _ hk₀).symm⟩))`. Establish `hZdiv` using `(_root_.GlobalTheory.ZH.isNm_normal_and_div_prod o Ω Z S.Gam S.th).2.1 (S.J → Fin n) (fun k : S.J → Fin n => Matrix.det (Matrix.of fun i j => (GG (k i) j : Ω)))`. Establish `hZth : Z.HasDiv S.th` using `fun z => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨⟨i, k⟩, h⟩` from `hZn.1 z`. Conclude with `⟨i, ((hZdiv i k z).1 h).1⟩`. Establish `hZd : Z.HasDiv (fun k : S.J → Fin n => Matrix.det (Matrix.of fun i j => (GG (k i) j : Ω)))` using `fun z => by`. Take `⟨⟨i, k⟩, h⟩` from `hZn.1 z`. Conclude with `⟨k, ((hZdiv i k z).1 h).2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZnorm` using `hZn.isNormalScheme`. Take `⟨UZ, hOZ, hRZ⟩` from `exists_open_over0_ringOn_of_fg S Z R' hfg hR hZnorm hZp hZth`. Establish `hregZ` using `_root_.GlobalTheory.ZH.classical_points_and_local_regularity o Ω Z UZ hZnorm`. Establish `htstZ` using `_root_.GlobalTheory.ZH.exists_at_test_of_cen o Ω S Z UZ hT hOZ`. Establish `hsupZ` using `_root_.GlobalTheory.ZH.ThetaSys.mem_supI_iff_and_HH_eq_ker o Ω S Z UZ hOZ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hisoZ` using `_root_.GlobalTheory.ZH.isoFree_TT_and_supI_specializes o Ω S Z UZ hOZ hregZ htstZ hsupZ`. Take `⟨EE, hEE, hspanZ⟩` from `_root_.GlobalTheory.ZH.exists_isEE_of_hasDiv_minors o Ω S Z UZ R' hR n a GG hOZ hRZ hregZ htstZ hsupZ htests hZd`. Establish `hminZ` using `_root_.GlobalTheory.ZH.minors_regular_and_unit_iff o Ω S Z UZ R' hR n a GG hOZ hRZ hregZ htstZ hsupZ hisoZ hwt htests`. Take `⟨f, hf⟩` from `hXn.exists_isHom (φ := AlgHom.id o Ω) (show Z.HasDiv (fun j => (AlgHom.id o Ω) (S.th j)) from hZth) (fun z => _root_.GlobalTheory.ZH.RatModel.isIntegrallyClosed_O hZnorm z)`. Set `Xab : X.Z.Opens` to `⟨{x | S.TT X x = ⊥}, by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `x hx`. Take `⟨y₀, hy₀⟩` from `hXn.1 x`. Take `⟨k, hk, hmem⟩` from `((hminX x y₀ hy₀).2).1 hx`. Use `⟨{y | X.Div S.th y₀ y} ∩ {y | S.th y₀ ^ (a * Fintype.card S.J) / Matrix.det (Matrix.of fun i j => (GG (k i) j : Ω)) ∈ X.O y}, ?_, (X.isOpen_setOf_div S.th y₀).inter (X.isOpen_setOf_mem_O _), hy₀, hmem⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `y ⟨hy1, hy2⟩`. Conclude with `((hminX y y₀ hy1).2).2 ⟨k, hk, hy2⟩⟩`. Establish `hiso` using `_root_.GlobalTheory.ZH.isIso_morphismRestrict_of_isNm_prod o Ω X Z S.Gam (S.J → Fin n) S.th (fun k : S.J → Fin n => Matrix.det (Matrix.of fun i j => (GG (k i) j : Ω))) f hXn hZn (isProper_of_isProjOver_degeneration Z hZp) hf Xab (by`. Introduce `z hz`. Take `⟨y₀, hy₀⟩` from `hXn.1 z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨k, hk, hmem⟩` from `((hminX z y₀ hy₀).2).1 hz`. Use `⟨k, hk, fun j => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hminX z y₀ hy₀).1 j`. Establish `ht : S.th y₀ ^ (a * Fintype.card S.J) ≠ 0` using `pow_ne_zero _ hy₀.1`. Establish `h2` using `(X.O z).mul_mem h1 hmem`.
-
-Use `beta_reduce at h1 hmem h2 ⊢`. Rewrite using `[div_mul_div_cancel₀ ht] at h2)` and apply the resulting hypothesis. Conclude with `⟨n, a, fun k j => (GG k j : Ω), X, Z, UZ, EE, f, Xab, hXn, hXp, hZn, hOZ, hEE, hf, rfl, hiso, hspanZ, hminZ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZH.exists_minor_model : ∀ (o Ω : Type) [CommRing o] [Field Ω]
     [Algebra o Ω] [_root_.GlobalTheory.ZH.ArithBase o Ω] (S : _root_.GlobalTheory.ZH.ThetaSys o Ω), S.HasTests →

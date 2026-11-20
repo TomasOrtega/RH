@@ -21,7 +21,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {Kk : Type} [Fintype Kk] {ιk : Kk → Type} [∀ k, Fintype (ιk k)]
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `hb.2.2.2 ⟨κ k₀, m⟩ ⟨k₀, rfl⟩`. Establish `hk : q.1 = k₀` using `hb.1 (by rw [← hb.2.2.1 q, hq])`. Rewrite using `[← hq, upV_apply hb.2.1, upV_apply hb.2.1, hk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem upV_scale {κ : Kk → K} {v : (Σ k, ιk k) → (Σ k, ι k)} (hb : IsBlockMap κ v) (z : (Σ k, ιk k) → ℂ) (c : Kk → ℂ)
     (k₀ : Kk) (m : ι (κ k₀)) :
@@ -33,9 +33,9 @@ theorem upV_scale {κ : Kk → K} {v : (Σ k, ιk k) → (Σ k, ι k)} (hb : IsB
 variable {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ}
 
 /- English proof (translation)
-Unfold `pRead`. Choose the witnesses or unpack the hypotheses as in `hk | ⟨k, hk⟩ : M.blk (τ, pStep j keep τ b) = none ∨ ∃ k, M.blk (τ, pStep j keep τ b) = some k := by`. Apply the tactic sequence `cases M.blk (τ, pStep j keep τ b) <;> simp`. Simplify using `only [hk, Option.elim_none]`. Take `⟨t, ht, hu⟩` from `hu k hk`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hk, Option.elim_some]`. Rewrite using `[WMan.Orb.twMinor_scale M F hv _ k _ hu, WMan.Orb.twMinor_scale M F hv _ k _ hu, mul_left_comm (pSgn _ _ _) t, mul_div_mul_left _ _ ht]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pRead_scale (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (keep : Ψ × Fin N → Prop)
     {zb zb' : (Σ k, baseIdx ι M.blk k) → ℂ} (hv : ∀ s, valAt M.x s zb' = valAt M.x s zb)
@@ -54,19 +54,17 @@ theorem pRead_scale (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) 
 end
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε ctx z hz z' hz' ho`. Take `⟨hbm, hrange, -, -, hr, -, -⟩` from `ctx`. Take `⟨hzP, hs, hV, hm⟩` from `hz`. Establish `hI` using `GlobalTheory.T.blockMap_frame_restriction K ι Φ y Ψ N j M keep Kk ιk κ v hbm hrange`. Establish `hb` using `hI.1 z hzP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb'` using `hI.1 z' hz'`. Establish `hob : SameOrbit (pBase M v z') (pBase M v z)` using `hI.2 z' z ho`. Establish `hnot : ∀ x : Rb.X, Rb.lift x x ∉ mcPts (⊤ : Ideal (MRing (baseIdx ι M.blk)))` using `fun x hx => by`. Use `hx.2 1 Submodule.mem_top` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrr : r (pBase M v z') = r (pBase M v z)` using `Rb.inj _ _ (hnot _) (orbit_trans (hr _ hb') (orbit_trans hob (orbit_symm (hr _ hb))))`. Establish `hv : ∀ s, valAt M.x s (pBase M v z') = valAt M.x s (pBase M v z)` using `fun s => by`. Take `⟨t, ht, et⟩` from `hob`. Use `StepW.TorusAct.valAt_torus (x := M.x) t ht hb (et ▸ hb') s` as an intermediate fact. Rewrite using `[et]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Take `⟨c, hc, rfl⟩` from `ho`. Establish `hkept : ∀ {p : Ψ × Fin N} {k : K}, keep p → M.blk p = some k → ∃ t : ℂ, t ≠ 0 ∧ ∀ m : ι k, upV v (fun p => c p.1 * z p) ⟨k, m⟩ = t * upV v z ⟨k, m⟩`. Introduce `p k hp hk`. Take `⟨k₀, rfl⟩` from `(hrange k).2 (Or.inr ⟨p, hp, hk⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c k₀, hc k₀, upV_scale hbm z c k₀⟩`. Use `⟨⟨hz', ?_, ?_, fun p k hp hk => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hrr]`. Conclude with `hs`. Rewrite using `[hrr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hV`. Take `⟨t, ht, hu⟩` from `hkept hp hk`. Rewrite using `[WMan.Orb.twMinor_scale M F hv _ k _ hu]`. Conclude with `mul_ne_zero ht (hm p k hp hk)`. Use function extensionality and compare the values at `i`.
-
-Unfold `pRho`. Break down `ε.symm i with l | q` into its components or cases. Use `show Rb.A.chart kb (r (pBase M v _)) l = Rb.A.chart kb (r (pBase M v z)) l`. Rewrite using `[hrr]`. Conclude with `pRead_scale M F keep hv h _ _ _ fun k hk => hkept (SmallStep.pStep_reads Ψ N j keep q M.j_le).1 hk`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n e : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ PIdx j keep ≃ Fin e), IsPCtx M Rb keep κ v F kb V bl r h → ∀ z ∈ pO M Rb keep v F kb V r h, ∀ z' ∈ mcPts (mCoordIdeal (y ∘ v)), SameOrbit z' z → z' ∈ pO M Rb keep v F kb V r h ∧ pRho M Rb keep v F kb r h ε z' = pRho M Rb keep v F kb r h ε z := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε ctx z hz z' hz' ho

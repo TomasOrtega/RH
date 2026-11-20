@@ -25,7 +25,7 @@ def stdPairB : StdV K lam →ₗ[K] StdV K lam →ₗ[K] K := pairBK (oneW lam)
 instance bzd_finite : Module.Finite K (StdV K lam) := Module.Finite.of_basis (bVV K (oneW lam))
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Conclude with `(pairingBNondegenerate_holds K Unit n (oneW lam)).1 x fun y => by`. Use `congrArg (fun f : Module.Dual K (StdV K lam) => f y) hx` as an intermediate fact. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stdPairB_injective : Function.Injective (stdPairB K lam) := by
   rw [injective_iff_map_eq_zero]
@@ -43,9 +43,9 @@ def stdGramAt (v : InfinitePlace K) : Matrix (VVIdx (oneW lam)) (VVIdx (oneW lam
 end Std
 
 /- English proof (translation)
-Establish `hX'' : ∀ v, IsUnit (A.dualX v).det` using `fun v => by show IsUnit (((A.X v).transpose)⁻¹).det`. Rewrite using `[Matrix.det_nonsing_inv, Matrix.det_transpose]`. Conclude with `(hG.1 v).ringInverse`. Take `⟨-, -, h3, -, -, -, -⟩` from `Formalism.HN.rerealize K A.V A.ι (Module.Dual K A.V) A.ι A.b A.X A.dualB A.dualX ψ hG.1 hX'' hψ hnorm L' hL'`. Rewrite `h3` using `[hmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `(dual_numbers K A hG hr).1`. Rewrite using `[← hd]`. Use `show Formalism.HN.muDef A.b A.X L' = Formalism.HN.muDef A.dualB A.dualX A.dualL`. Unfold `Formalism.HN.muDef`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hlat_mu_of_dual {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (A : HLat K) (hG : A.Good)
     (hr : 0 < A.rank) (L' : Submodule (𝓞 K) A.V) (hL' : L'.FG) (ψ : A.V →ₗ[K] Module.Dual K A.V) (hψ : Function.Injective ψ)

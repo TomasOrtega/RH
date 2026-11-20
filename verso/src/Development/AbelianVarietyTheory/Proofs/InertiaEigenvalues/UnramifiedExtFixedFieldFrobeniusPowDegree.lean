@@ -11,17 +11,17 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon.UnrDeg
 
 /- English proof (translation)
-Introduce `h`. Take `⟨u, hu0, hu⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Set `L : F →ₗ[k] F` to `{ toFun := fun x => ∑ j : Fin n, u j * (τ ^ (j : ℕ)) x map_add' := by intro x y; simp [mul_add, Finset.sum_add_distrib] map_smul' := by`. Introduce `r x`. Rewrite using `[RingHom.id_apply, Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_smul_comm]`. Use `congr 1`. Conclude with `(τ ^ (j : ℕ)).toLinearEquiv.map_smul r x }`. Establish `hL : L = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `bas.ext fun i => ?_` and prove the remaining obligations. Use `congrFun hu i` as an intermediate fact. Simplify `this` using `[L, Matrix.mulVec, dotProduct, mul_comm]`. Set `f : Fin n → (F →* F)` to `fun j => ((τ ^ (j : ℕ)).toRingEquiv : F ≃+* F).toMonoidHom`. Establish `hf : Function.Injective f`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Establish `h1 : τ ^ (i : ℕ) = τ ^ (j : ℕ)` using `AlgEquiv.ext fun x => DFunLike.congr_fun hij x`. Establish `hi : (i : ℕ) ∈ Set.Iio (orderOf τ)` using `by rw [hord]; exact i.2`. Establish `hj : (j : ℕ) ∈ Set.Iio (orderOf τ)` using `by rw [hord]; exact j.2`. Conclude with `Fin.ext (pow_injOn_Iio_orderOf hi hj h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `li` using `(linearIndependent_monoidHom F F).comp f hf`. Rewrite `li` using `[Fintype.linearIndependent_iff]`. Apply `hu0` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Use `li u ?_ j` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Use `LinearMap.congr_fun hL x` as an intermediate fact. Simplify `this` using `[L, f, Finset.sum_apply, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem det_pow_ne_zero {k F : Type} [Field k] [Field F] [Algebra k F] (τ : F ≃ₐ[k] F) {n : ℕ}
     (hord : orderOf τ = n) (bas : Module.Basis (Fin n) k F) :
@@ -69,7 +69,7 @@ Both sides reduce to the same expression.
 theorem fr_apply (k : ℕ) (c : ↥(MaximalUnramifiedExtension l)) : fr l k c = (frobUr l ^ k) c := rfl
 
 /- English proof (translation)
-Rewrite using `[fr_apply]`. Proceed by induction on `k generalizing c with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [pow_succ, pow_succ, AlgEquiv.mul_apply, AlgHom.mul_apply, ih]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem sig_pow (k : ℕ) (c : ↥(MaximalUnramifiedExtension l)) : (sig l ^ k) c = fr l k c := by
   rw [fr_apply]
@@ -82,15 +82,15 @@ end GlobalTheory.PMon.UnrDeg
 namespace GlobalTheory.PMon.UnrDeg
 
 /- English proof (translation)
-Establish `h2` using `hl.out.two_le`. Take `⟨s, rfl⟩ : ∃ s, r = s + 1` from `⟨r - 1, by omega⟩`. Establish `hls : l ^ k ≤ l ^ s` using `Nat.pow_le_pow_right (by omega) (by omega)`. Establish `hl1 : l ^ 1 ≤ l ^ k` using `Nat.pow_le_pow_right (by omega) hk0`. Rewrite `hl1` using `[pow_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : l ^ s * 2 ≤ l ^ s * l` using `Nat.mul_le_mul_left _ h2`. Establish `hps : l ^ (s + 1) = l ^ s * l` using `pow_succ _ _`. Establish `hN0 : 0 < l ^ (s + 1) - 1` using `by omega`. Establish `hkN : l ^ k < l ^ (s + 1) - 1` using `by omega`. Establish `h1N : 1 < l ^ (s + 1) - 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ¬ l ∣ l ^ (s + 1) - 1` using `fun h => hl.out.one_lt.ne' (Nat.dvd_one.mp ((Nat.dvd_sub_iff_right (by omega) (dvd_pow_self l (by omega))).mp h))`. Use `haveI : NeZero (l ^ (s + 1) - 1) := ⟨hN0.ne'⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Om l) (l ^ (s + 1) - 1)`. Establish `hmem : z ∈ MaximalUnramifiedExtension l` using `IntermediateField.subset_adjoin _ _ ⟨_, hN0, hd, hz.pow_eq_one⟩`. Establish `h1 : (⟨z, hmem⟩ : ↥(MaximalUnramifiedExtension l)) ^ (l ^ (s + 1) - 1) = 1` using `Subtype.ext hz.pow_eq_one`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨z, hmem⟩, ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[fr_apply, frobUr_pow_root _ _ _ hN0 hd h1, show l ^ (s + 1) = (l ^ (s + 1) - 1) + 1 by omega, pow_succ, h1, one_mul]`. Rewrite `h` using `[fr_apply, frobUr_pow_root _ _ _ hN0 hd h1]`. Establish `h6 : z ^ l ^ k = z ^ 1` using `by rw [pow_one]; exact congrArg Subtype.val h`. Use `hz.pow_inj hkN h1N h6` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_moved (l : ℕ) [hl : Fact l.Prime] {r k : ℕ} (hk0 : 0 < k) (hkr : k < r) :
     ∃ c : ↥(MaximalUnramifiedExtension l), fr l r c = c ∧ fr l k c ≠ c := by
@@ -119,35 +119,29 @@ theorem exists_moved (l : ℕ) [hl : Fact l.Prime] {r k : ℕ} (hk0 : 0 < k) (hk
     omega
 
 /- English proof (translation)
-Introduce `l _ r hr`. Set `σ` to `sig l`. Set `F : IntermediateField ℚ_[l] ↥(MaximalUnramifiedExtension l)` to `IntermediateField.fixedField (Subgroup.zpowers (σ ^ r))`. Establish `hF : ∀ c, c ∈ F ↔ fr l r c = c` using `fun c => by`. Rewrite using `[IntermediateField.mem_fixedField_iff, ← sig_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h => h _ (Subgroup.mem_zpowers _), fun h f hf => ?_⟩` and prove the remaining obligations. Conclude with `(Subgroup.zpowers_le (H := MulAction.stabilizer _ c)).2 h hf`. Establish `hst : ∀ c ∈ F, σ c ∈ F` using `fun c hc => by`. Rewrite `hc`, the goal using `[hF, ← sig_pow]`. Rewrite using `[← AlgEquiv.mul_apply, ← pow_succ, pow_succ', AlgEquiv.mul_apply, hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `τ₀ : ↥F →ₐ[ℚ_[l]] ↥F` to `((σ : ↥(MaximalUnramifiedExtension l) →ₐ[ℚ_[l]] ↥(MaximalUnramifiedExtension l)).comp F.val).codRestrict F.toSubalgebra fun c => hst c c.2`. Set `τ : ↥F ≃ₐ[ℚ_[l]] ↥F` to `AlgEquiv.ofBijective τ₀ (Algebra.IsAlgebraic.algHom_bijective _)`. Establish `hτ : ∀ (k : ℕ) (c : ↥F), (((τ ^ k) c : ↥F) : ↥(MaximalUnramifiedExtension l)) = fr l k c` using `fun k c => by`. Rewrite using `[← sig_pow]`. Proceed by induction on `k with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rfl`. Consider the case `succ k ih => rw [pow_succ', pow_succ', AlgEquiv.mul_apply, AlgEquiv.mul_apply, ← ih]`. Both sides reduce to the same expression. Establish `hrτ : τ ^ r = 1` using `AlgEquiv.ext fun c => Subtype.ext ((hτ r c).trans ((hF c).1 c.2))`. Establish `hord : orderOf τ = r`.
+Treat this case separately. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[orderOf_eq_iff hr]`. Use `⟨hrτ, fun k hkr hk0 hk => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hm⟩` from `exists_moved l hk0 hkr`. Use `hτ k ⟨c, (hF c).2 hc⟩` as an intermediate fact. Rewrite `this` using `[hk, AlgEquiv.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hm this.symm`. Establish `hfin : IsOfFinOrder τ` using `isOfFinOrder_iff_pow_eq_one.2 ⟨r, hr, hrτ⟩`. Use `haveI : Finite ↥(Subgroup.zpowers τ) := hfin.finite_zpowers`. Establish `hbot : IntermediateField.fixedField (Subgroup.zpowers τ) = ⊥`. Rewrite using `[eq_bot_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `c hc`. Rewrite `hc` using `[IntermediateField.mem_fixedField_iff]`. Establish `h1` using `congrArg Subtype.val (hc τ (Subgroup.mem_zpowers _))`. Establish `h2` using `hτ 1 c`. Rewrite `h2` using `[pow_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `(GlobalTheory.MemLoc.frob_laws l (frobUr l) frobUr_root).2.2 c (h2.symm.trans h1)`. Conclude with `⟨x, Subtype.ext hx⟩`. Use `haveI h1 : FiniteDimensional ↥(IntermediateField.fixedField (Subgroup.zpowers τ)) ↥F := inferInstanceAs (FiniteDimensional ↥(FixedPoints.subfield (Subgroup.zpowers τ) ↥F) ↥F)`. Use `haveI h2 : FiniteDimensional ℚ_[l] ↥(IntermediateField.fixedField (Subgroup.zpowers τ)) := by`. Rewrite using `[hbot]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `infer_instance`. Use `haveI h3 : FiniteDimensional ℚ_[l] ↥F := Module.Finite.trans ↥(IntermediateField.fixedField (Subgroup.zpowers τ)) ↥F`. Establish `hdeg : Module.finrank ℚ_[l] ↥F = r`. Establish `h` using `IntermediateField.finrank_fixedField_eq_card (Subgroup.zpowers τ)`. Rewrite `h` using `[hbot, IntermediateField.finrank_bot', Nat.card_zpowers]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h.trans hord`. Set `bas : Module.Basis (Fin r) ℚ_[l] ↥F` to `Module.finBasisOfFinrankEq ℚ_[l] ↥F hdeg`. Use `⟨⟨F.map (MaximalUnramifiedExtension l).val, (F.equivMap (MaximalUnramifiedExtension l).val).toLinearEquiv.finiteDimensional⟩, fun k => (bas k : ↥(MaximalUnramifiedExtension l)), ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨y, -, rfl⟩`. Conclude with `y.2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Module.finrank ℚ_[l] ↥(F.map (MaximalUnramifiedExtension l).val) = r`. Rewrite using `[← (F.equivMap (MaximalUnramifiedExtension l).val).toLinearEquiv.finrank_eq]`. Conclude with `hdeg`. Introduce `c show _ ↔ (c : Om l) ∈ F.map (MaximalUnramifiedExtension l).val`. Rewrite using `[IntermediateField.mem_map, ← hF]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `⟨fun h => ⟨c, h, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, hyc⟩`. Rewrite using `[← Subtype.ext hyc]` and apply the resulting hypothesis. Introduce `k`. Conclude with `(hF _).1 (bas k).2`.
-
-Conclude with `bas.linearIndependent.map' F.val.toLinearMap (LinearMap.ker_eq_bot.2 Subtype.val_injective)`. Introduce `c hc`. Use `⟨bas.repr ⟨c, (hF c).2 hc⟩, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (F.val.toLinearMap) (bas.sum_repr ⟨c, (hF c).2 hc⟩)`. Rewrite `e` using `[map_sum]`.
-
-Simplify using `using e.symm`. Introduce `h0`. Set `M : Matrix (Fin r) (Fin r) ↥F` to `Matrix.of fun i j : Fin r => (τ ^ (j : ℕ)) (bas i)`. Establish `e : (Matrix.of fun m k : Fin r => fr l m (bas k : ↥(MaximalUnramifiedExtension l))) = (F.val.mapMatrix M).transpose`. Use `Matrix.ext fun m k => ?_` and prove the remaining obligations.
-
-Simplify using `only [M, Matrix.of_apply, Matrix.transpose_apply, AlgHom.mapMatrix_apply, Matrix.map_apply]`. Conclude with `(hτ m (bas k)).symm`. Rewrite `h0` using `[e, Matrix.det_transpose, ← AlgHom.map_det]`. Conclude with `det_pow_ne_zero τ hord bas (Subtype.ext h0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_field_deg : ∀ (l : ℕ) [Fact l.Prime] (r : ℕ), 0 < r → ∃ (E : FinExt l) (ω : Fin r → ↥(MaximalUnramifiedExtension l)),
     E.1 ≤ MaximalUnramifiedExtension l ∧ Module.finrank ℚ_[l] ↥E.1 = r ∧ (∀ c : ↥(MaximalUnramifiedExtension l), fr l r c = c ↔ (c : Om l) ∈ E.1) ∧

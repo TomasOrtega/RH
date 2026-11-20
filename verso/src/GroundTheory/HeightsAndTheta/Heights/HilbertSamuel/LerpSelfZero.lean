@@ -10,7 +10,7 @@ open MeasureTheory Set Filter Topology ReciprocityTheory.AnForm ReciprocityTheor
 noncomputable section
 
 /- English proof (translation)
-Consider the cases of `W`. Simplify using `only [Weight.lerp, zero_mul, add_zero]`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 -/
 theorem Weight.lerp_self_zero {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X}
     {L : HolLineBundle A} (W : Weight L) : W.lerp W 0 = W := by
@@ -18,21 +18,19 @@ theorem Weight.lerp_self_zero {D : ℕ} {X : Type} [TopologicalSpace X] {A : Fin
   simp only [Weight.lerp, zero_mul, add_zero]
 
 /- English proof (translation)
-Introduce `D X _ _ _ _ _ A L W dV hW`. Take `⟨C, hC⟩` from `h A L W W dV hW hW`. Use `⟨⟨Real.sqrt C, fun n hn s hs x => ?_⟩, fun n s hs M hM => ?_⟩` and prove the remaining obligations. Use `set V : Submodule ℂ (Fin A.n → X → ℂ) := ℂ ∙ s`. Establish `hV : V ≤ L.sections n` using `(Submodule.span_singleton_le_iff_mem _ _).2 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `hC n hn 0 ⟨le_rfl, zero_le_one⟩ V hV x`. Rewrite `hB` using `[Weight.lerp_self_zero]`. Use `set r := ptNormSq W n s x / sectionL2NormSq W dV n s`. Establish `hr0 : 0 ≤ r` using `div_nonneg (ptNormSq_nonneg W n s x) (sectionL2NormSq_nonneg W dV n s)`. Establish `hbdd : BddAbove (range fun v : V => ptNormSq W n (v : Fin A.n → X → ℂ) x / sectionL2NormSq W dV n v)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨v, hv⟩, rfl⟩`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hv`. Simplify using `only [ptNormSq_smul, sectionL2NormSq_smul]`. Break down `eq_or_ne c 0 with rfl | hc` into its components or cases.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hr0`. Rewrite using `[mul_div_mul_left _ _ (by positivity)]`. Establish `hle : r ≤ bergman W dV V n x` using `le_ciSup hbdd (⟨s, Submodule.mem_span_singleton_self s⟩ : V)`. Establish `hrC : r ≤ C * (n : ℝ) ^ D` using `hle.trans hB`. Break down `(sectionL2NormSq_nonneg W dV n s).eq_or_lt with h0 | hpos` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Rewrite using `[ptNormSq_eq_zero_of_l2NormSq_eq_zero W dV hs h0.symm x, Real.sqrt_zero]`. Check the signs of the components of the expression. Establish `hpt : ptNormSq W n s x ≤ C * ((n : ℝ) ^ D * sectionL2NormSq W dV n s)`. Rewrite using `[← mul_assoc, ← div_le_iff₀ hpos]`. Conclude with `hrC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_mul' _ (by positivity), Real.sqrt_mul (by positivity), mul_assoc]`. Use `dV.isProb` as an intermediate fact. Take `⟨x₀⟩` from `nonempty_of_isProbabilityMeasure dV.μ`. Establish `hM0 : 0 ≤ M` using `(Real.sqrt_nonneg _).trans (hM x₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ y, ptNormSq W n s y ≤ M ^ 2` using `fun y => by`. Establish `h1` using `Real.sq_sqrt (ptNormSq_nonneg W n s y)`. Establish `h2` using `hM y`. Use polynomial arithmetic with `[Real.sqrt_nonneg (ptNormSq W n s y)]`. Establish `hl2 : sectionL2NormSq W dV n s ≤ M ^ 2`.
-
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem SupNormAgainstL2.proof (h : UniformBergmanBound.Statement) : SupNormAgainstL2.Statement := by
   intro D X _ _ _ _ _ A L W dV hW

@@ -11,7 +11,7 @@ open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison Crys
 namespace GlobalTheory.CompanionTheory.Untilt
 
 /- English proof (translation)
-Establish `key : ∀ x y : A.U, (Ideal.Quotient.mk (Ideal.span {(l : A.U) ^ 1}) x = Ideal.Quotient.mk (Ideal.span {(l : A.U) ^ 1}) y) ↔ x - y ∈ Ideal.span {(l : A.U)}`. Introduce `x y`. Rewrite using `[Ideal.Quotient.mk_eq_mk_iff_sub_mem, pow_one]`. Rewrite using `[← (GlobalTheory.CompanionTheory.Untilt.sharp_map_surjective_ker A).2, RingHom.mem_ker, map_sub, sub_eq_zero, CrystallineSemistableComparison.PAlg.sharpMap_eq, CrystallineSemistableComparison.PAlg.sharpMap_eq]`. Conclude with `(key _ _).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharp_sub_mem_span_l_iff {l : ℕ} [Fact l.Prime] (A : PAlg l) (a b : A.A) :
     A.sharp a - A.sharp b ∈ Ideal.span {(l : A.U)} ↔ a - b ∈ Ideal.span {A.pi} := by
@@ -24,9 +24,9 @@ theorem sharp_sub_mem_span_l_iff {l : ℕ} [Fact l.Prime] (A : PAlg l) (a b : A.
   exact (key _ _).symm
 
 /- English proof (translation)
-Consider the cases of `k with`. Consider the case `zero => exact absurd rfl hk`. Consider the case `succ n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih => rw [pow_succ, ih (Nat.succ_ne_zero _), h.eq]`.
+Treat this case separately.
 -/
 theorem idem_pow {R : Type*} [CommRing R] {x : R} (h : IsIdempotentElem x) {k : ℕ} (hk : k ≠ 0) :
     x ^ k = x := by
@@ -38,9 +38,9 @@ theorem idem_pow {R : Type*} [CommRing R] {x : R} (h : IsIdempotentElem x) {k : 
     | succ m ih => rw [pow_succ, ih (Nat.succ_ne_zero _), h.eq]
 
 /- English proof (translation)
-Apply `IsHausdorff.haus (GlobalTheory.CompanionTheory.Untilt.isAdicComplete_U A).toIsHausdorff w` to reduce the goal to its premises. Introduce `n`. Rewrite using `[SModEq.zero, Ideal.smul_eq_mul, Ideal.mul_top]`. Consider the cases of `n with`. Consider the case `zero => simp`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ m`. Establish `hp` using `Ideal.pow_mem_pow hl (m + 1)`. Rewrite `hp` using `[idem_pow hw (Nat.succ_ne_zero m)]`. Then use the resulting hypothesis.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem eq_zero_of_isIdempotentElem_of_mem_span_prime {l : ℕ} [Fact l.Prime] (A : PAlg l) {w : A.U}
     (hw : IsIdempotentElem w) (hl : w ∈ Ideal.span {(l : A.U)}) : w = 0 := by
@@ -54,17 +54,15 @@ private theorem eq_zero_of_isIdempotentElem_of_mem_span_prime {l : ℕ} [Fact l.
     rwa [idem_pow hw (Nat.succ_ne_zero m)] at hp
 
 /- English proof (translation)
-Establish `h0 : A.sharp 0 = 0`. Apply `eq_zero_of_isIdempotentElem_of_mem_span_prime A` to reduce the goal to its premises. Use `show A.sharp 0 * A.sharp 0 = A.sharp 0`. Rewrite using `[← map_mul, mul_zero]`. Rewrite using `[Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A.sharp 0, ?_⟩` and prove the remaining obligations. Rewrite using `[← CrystallineSemistableComparison.PAlg.sharp_pi A, ← map_mul A.sharp, mul_zero]`. Establish `hu : IsIdempotentElem (A.sharp e)` using `by show A.sharp e * A.sharp e = A.sharp e`. Rewrite using `[← map_mul, he.eq]`. Establish `hv : IsIdempotentElem (A.sharp (1 - e))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1e : (1 - e) * (1 - e) = 1 - e` using `by linear_combination he.eq`. Use `show A.sharp (1 - e) * A.sharp (1 - e) = A.sharp (1 - e)`. Rewrite using `[← map_mul, h1e]`. Establish `huv : A.sharp e * A.sharp (1 - e) = 0`. Rewrite using `[← map_mul, mul_sub, mul_one, he.eq, sub_self, h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hw : IsIdempotentElem (1 - A.sharp e - A.sharp (1 - e))` using `by show (1 - A.sharp e - A.sharp (1 - e)) * (1 - A.sharp e - A.sharp (1 - e)) = 1 - A.sharp e - A.sharp (1 - e)`. Take the linear combination `hu.eq + hv.eq + 2 * huv`. Establish `hl : 1 - A.sharp e - A.sharp (1 - e) ∈ Ideal.span {(l : A.U)}`. Establish `h1 : A.aToU1 1 - A.aToU1 e - A.aToU1 (1 - e) = 0`. Rewrite using `[← map_sub, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[CrystallineSemistableComparison.PAlg.sharpMap_eq, CrystallineSemistableComparison.PAlg.sharpMap_eq, CrystallineSemistableComparison.PAlg.sharpMap_eq, map_one]`. Establish `h2 : Ideal.Quotient.mk (Ideal.span {(l : A.U) ^ 1}) (1 - A.sharp e - A.sharp (1 - e)) = 0`. Rewrite using `[map_sub, map_sub]`. Conclude with `h1`. Rewrite `h2` using `[Ideal.Quotient.eq_zero_iff_mem, pow_one]`.
-
-Conclude with `h2`. Establish `hw0` using `eq_zero_of_isIdempotentElem_of_mem_span_prime A hw hl`. Take the linear combination `-hw0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sharp_one_sub {l : ℕ} [Fact l.Prime] (A : PAlg l) (e : A.A) (he : IsIdempotentElem e) :
     A.sharp (1 - e) = 1 - A.sharp e := by
@@ -101,9 +99,9 @@ theorem sharp_one_sub {l : ℕ} [Fact l.Prime] (A : PAlg l) (e : A.A) (he : IsId
   linear_combination -hw0
 
 /- English proof (translation)
-Introduce `l _ A`. Use `⟨?_, fun a b => sharp_sub_mem_span_l_iff A a b, fun e he => sharp_one_sub A e he⟩` and prove the remaining obligations. Introduce `a b n hab`. Establish `h1 : A.sharp a - A.sharp b ∈ Ideal.span {(l : A.U)}` using `(sharp_sub_mem_span_l_iff A a b).mpr hab`. Rewrite `h1`, the goal using `[Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_pow]`. Conclude with `dvd_sub_pow_of_dvd_sub h1 n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharp_congruences : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l),
     (∀ (a b : A.A) (n : ℕ), a - b ∈ Ideal.span {A.pi} →

@@ -27,57 +27,57 @@ noncomputable section
 namespace GlobalTheory.WinLift.Top
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_unit_matrix_lift_mod_tau_ainf`.
+A detailed English derivation is pending.
 -/
 theorem c_lift : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (U : Matrix ι ι F.B), IsUnit U → ∃ V : Matrix ι ι (Ainf p O), IsUnit V ∧ ∀ i j, F.τ ∣ U i j - F.a (V i j) := GlobalTheory.T.exists_unit_matrix_lift_mod_tau_ainf
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isNilpotent_invTranspose_blockFrobenius_ainf_of_frameNil`.
+A detailed English derivation is pending.
 -/
 theorem c_nilF : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (d k : ℕ) (U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) (V : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O)), IsUnit U → IsUnit V → (∀ i j, F.τ ∣ U i j - F.a (V i j)) → IsNil F.θ F.σ (U.transpose⁻¹ * blk d k 1 (p : F.B)) → IsNil (WittVector.fontaineTheta O p) WittVector.frobenius (V.transpose⁻¹ * blk d k 1 (WittVector.frobenius (xi ε))) := GlobalTheory.T.isNilpotent_invTranspose_blockFrobenius_ainf_of_frameNil
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isNilpotent_blockFrobeniusXi_ainf_of_frameBlockP`.
+A detailed English derivation is pending.
 -/
 theorem c_nilG : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (d k : ℕ) (U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) (V : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O)), (∀ i j, F.τ ∣ U i j - F.a (V i j)) → IsNil F.θ F.σ (U * blk d k (p : F.B) 1) → IsNil (WittVector.fontaineTheta O p) WittVector.frobenius (V * blk d k (WittVector.frobenius (xi ε)) 1) := GlobalTheory.T.isNilpotent_blockFrobeniusXi_ainf_of_frameBlockP
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_ainf_solution_of_approx_mod_phi_xi_mu`.
+A detailed English derivation is pending.
 -/
 theorem c_solve : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ (ι : Type) [Fintype ι] (N : Matrix ι ι (Ainf p O)) (v0 : ι → Ainf p O), IsNil (WittVector.fontaineTheta O p) WittVector.frobenius N → (∀ i, WittVector.frobenius (xi ε) * Sandwich.mu ε ∣ N.mulVec (fun j => WittVector.frobenius (v0 j)) i - WittVector.frobenius (xi ε) * v0 i) → ∃ w : ι → Ainf p O, (∀ i, Sandwich.mu ε ∣ w i - v0 i) ∧ ∀ i, WittVector.frobenius (xi ε) * w i = N.mulVec (fun j => WittVector.frobenius (w j)) i := GlobalTheory.T.exists_ainf_solution_of_approx_mod_phi_xi_mu
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mu_dvd_lift_of_frame_matrix_equation`.
+A detailed English derivation is pending.
 -/
 theorem c_modtau : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (ι κ : Type) [Fintype ι] (R S : Matrix ι ι F.B) (R0 S0 : Matrix ι ι (Ainf p O)) (Y : Matrix ι κ F.B) (F0 : Matrix ι κ (Ainf p O)), (∀ i j, F.τ ∣ R i j - F.a (R0 i j)) → (∀ i j, F.τ ∣ S i j - F.a (S0 i j)) → (∀ i m, F.τ ∣ Y i m - F.a (F0 i m)) → R * Y.map F.σ = S * Y → ∀ i m, Sandwich.mu ε ∣ (R0 * F0.map WittVector.frobenius - S0 * F0) i m := GlobalTheory.T.mu_dvd_lift_of_frame_matrix_equation
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.frobenius_lift_solves_mod_frobXi_mu`.
+A detailed English derivation is pending.
 -/
 theorem c_divF : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (d k h : ℕ) (V : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O)) (F0 : Matrix (Fin d ⊕ Fin k) (Fin h) (Ainf p O)), IsUnit V → (∀ i m, Sandwich.mu ε ∣ (F0.map WittVector.frobenius - blk d k (p : Ainf p O) 1 * V.transpose * F0) i m) → (∀ i m, WittVector.fontaineTheta O p (F0 (Sum.inl i) m) = 0) → ∀ i m, WittVector.frobenius (xi ε) * Sandwich.mu ε ∣ (V.transpose⁻¹ * blk d k 1 (WittVector.frobenius (xi ε)) * F0.map WittVector.frobenius) i m - WittVector.frobenius (xi ε) * F0 i m := GlobalTheory.T.frobenius_lift_solves_mod_frobXi_mu
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.transpose_lift_solves_mod_frobXi_mu`.
+A detailed English derivation is pending.
 -/
 theorem c_divG : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (d k h : ℕ) (V : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O)) (G0 : Matrix (Fin d ⊕ Fin k) (Fin h) (Ainf p O)), (∀ i m, Sandwich.mu ε ∣ (V * blk d k (p : Ainf p O) 1 * G0.map WittVector.frobenius - (p : Ainf p O) • G0) i m) → (∀ j m, WittVector.fontaineTheta O p (G0 (Sum.inr j) m) = 0) → ∀ i m, WittVector.frobenius (xi ε) * Sandwich.mu ε ∣ (V * blk d k (WittVector.frobenius (xi ε)) 1 * G0.map WittVector.frobenius) i m - WittVector.frobenius (xi ε) * G0 i m := GlobalTheory.T.transpose_lift_solves_mod_frobXi_mu
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.frobXi_eigenvector_eq_of_frame_image_eq`.
+A detailed English derivation is pending.
 -/
 theorem c_eig : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ x y : Ainf p O, WittVector.frobenius x = WittVector.frobenius (xi ε) * x → WittVector.frobenius y = WittVector.frobenius (xi ε) * y → F.a x = F.a y → x = y := GlobalTheory.T.frobXi_eigenvector_eq_of_frame_image_eq
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.ainfFrame_solution_congr_eq_transpose_mul`.
+A detailed English derivation is pending.
 -/
 theorem c_cmpF : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (d k h : ℕ) (U U' X : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) (Y Z : Matrix (Fin d ⊕ Fin k) (Fin h) F.B), IsUnit U' → IsNil F.θ F.σ (U'.transpose⁻¹ * blk d k 1 (p : F.B)) → IsNil F.θ F.σ (U' * blk d k (p : F.B) 1) → X * (U' * blk d k (p : F.B) 1) = U * blk d k (p : F.B) 1 * X.map F.σ → (∀ i j, F.τ ∣ X i j - (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) i j) → Y.map F.σ = blk d k (p : F.B) 1 * U.transpose * Y → Z.map F.σ = blk d k (p : F.B) 1 * U'.transpose * Z → (∀ i m, F.τ ∣ Z i m - Y i m) → Z = X.transpose * Y := GlobalTheory.T.ainfFrame_solution_congr_eq_transpose_mul
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.ainfFrame_solution_mul_congr_Gm_transpose`.
+A detailed English derivation is pending.
 -/
 theorem c_cmpG : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (d k h : ℕ) (U U' X : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) (u l : F.B) (Gm : Matrix (Fin h) (Fin d ⊕ Fin k) F.B) (W : Matrix (Fin d ⊕ Fin k) (Fin h) F.B), IsUnit U → IsNil F.θ F.σ (U.transpose⁻¹ * blk d k 1 (p : F.B)) → IsNil F.θ F.σ (U * blk d k (p : F.B) 1) → F.τ ∣ u - 1 → X * (U' * blk d k (p : F.B) 1) = U * blk d k (p : F.B) 1 * X.map F.σ → (∀ i j, F.τ ∣ X i j - (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) i j) → F.σ l = u * l → F.τ ∣ l - 1 → U * blk d k (p : F.B) 1 * Gm.transpose.map F.σ = (p : F.B) • Gm.transpose → U' * blk d k (p : F.B) 1 * W.map F.σ = ((p : F.B) * u) • W → (∀ i m, F.τ ∣ W i m - Gm m i) → X * W = l • Gm.transpose := GlobalTheory.T.ainfFrame_solution_mul_congr_Gm_transpose
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[WittVector.coeff_frobenius_charP, phiInv, WittVector.map_coeff]`. Conclude with `frobeniusEquiv_symm_pow_p _ p _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_phiInv {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (a : Ainf p O) :
@@ -87,7 +87,7 @@ theorem frob_phiInv {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsU
   exact frobeniusEquiv_symm_pow_p _ p _
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[phiInv, WittVector.map_coeff, WittVector.coeff_frobenius_charP]`. Conclude with `(_root_.frobeniusEquiv (PreTilt O p) p).symm_apply_apply _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiInv_frob {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (a : Ainf p O) :
@@ -97,7 +97,7 @@ theorem phiInv_frob {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsU
   exact (_root_.frobeniusEquiv (PreTilt O p) p).symm_apply_apply _
 
 /- English proof (translation)
-Rewrite using `[blk, blk, blk, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_mul_blk {R : Type} [CommRing R] (d k : ℕ) (a b c e : R) :
     blk d k a b * blk d k c e = blk d k (a * c) (b * e) := by
@@ -107,7 +107,7 @@ theorem blk_mul_blk {R : Type} [CommRing R] (d k : ℕ) (a b c e : R) :
   rcases i with i | i <;> rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blk, Matrix.diagonal_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Use `split_ifs with hij`. Apply the tactic sequence `subst hij; rcases i with i | i <;> simp`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blk_same {R : Type} [CommRing R] (d k : ℕ) (a : R) :
     blk d k a a = a • (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) R) := by
@@ -118,13 +118,13 @@ theorem blk_same {R : Type} [CommRing R] (d k : ℕ) (a : R) :
   · simp
 
 /- English proof (translation)
-The claim follows from `Matrix.diagonal_transpose _`.
+A detailed English derivation is pending.
 -/
 theorem blk_transpose {R : Type} [CommRing R] (d k : ℕ) (a b : R) :
     (blk d k a b).transpose = blk d k a b := Matrix.diagonal_transpose _
 
 /- English proof (translation)
-Rewrite using `[blk, blk, Matrix.diagonal_map (map_zero f)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (d k : ℕ) (a b : R) :
     (blk d k a b).map f = blk d k (f a) (f b) := by
@@ -134,13 +134,13 @@ theorem blk_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (d k : �
   rcases i with i | i <;> rfl
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F d k U U' hU hU' hUU' h1 h2`. Use `haveI : IsLocalRing O := ReciprocityTheory.PGsh.Ainf.O_local O hv`. Establish `hθτ` using `theta_tau F hv hε`. Establish `hθ : ∀ i j, F.θ (U i j) = F.θ (U' i j)`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hUU' i j`. Rewrite using `[← sub_eq_zero, ← map_sub, hc, map_mul, hθτ, zero_mul]`. Establish `hp : ¬IsUnit (p : O)` using `Fact.out`. Establish `hmap : U.map F.θ = U'.map F.θ` using `Matrix.ext hθ`. Establish `htu : ∀ M : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B, IsUnit M → IsUnit M.transpose` using `fun M hM => (Matrix.isUnit_iff_isUnit_det _).2 (by rw [Matrix.det_transpose]; exact (Matrix.isUnit_iff_isUnit_det _).1 hM)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ M : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B, IsUnit M → ∀ i j, F.θ ((M.transpose⁻¹ * blk d k 1 (p : F.B)) i j) = (((M.map F.θ).transpose)⁻¹ * blk d k 1 (p : O)) i j`. Introduce `M hM i j`. Use `congr_fun (congr_fun (Matrix.map_mul (f := F.θ) (L := M.transpose⁻¹) (M := blk d k 1 (p : F.B))) i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`. Rewrite using `[this, ← map_inv_of_isUnit F.θ _ (htu M hM), Matrix.transpose_map, blk_map, map_one, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨isNil_of_theta_eq p F.θ F.σ hp F.σ_pow _ _ (fun i j => ?_) h1, isNil_of_theta_eq p F.θ F.σ hp F.σ_pow _ _ (fun i j => ?_) h2⟩` and prove the remaining obligations. Rewrite using `[e U hU, e U' hU', hmap]`. Simplify using `only [blk, Matrix.mul_diagonal, map_mul, hθ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem c_nilCong : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (d k : ℕ) (U U' : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B), IsUnit U → IsUnit U' → (∀ i j, F.τ ∣ U i j - U' i j) → IsNil F.θ F.σ (U.transpose⁻¹ * blk d k 1 (p : F.B)) → IsNil F.θ F.σ (U * blk d k (p : F.B) 1) → IsNil F.θ F.σ (U'.transpose⁻¹ * blk d k 1 (p : F.B)) ∧ IsNil F.θ F.σ (U' * blk d k (p : F.B) 1) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F d k U U' hU hU' hUU' h1 h2
@@ -170,75 +170,67 @@ theorem c_nilCong : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClos
   · simp only [blk, Matrix.mul_diagonal, map_mul, hθ]
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F d k h U Y Gm hyp`. Take `⟨hU, hY, hG, hGY, hYθ, hGθ, hN1, hN2⟩` from `hyp`. Use `haveI : IsDomain (Ainf p O) := GlobalTheory.AinfXi.isDomain_ainf hv`. Establish `hθτ : F.θ F.τ = 0` using `theta_tau F hv hε`. Establish `hξ0 : WittVector.frobenius (xi ε) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `h1` using `theta_frob_xi hv hε`. Rewrite `h1` using `[h0, map_zero]`. Establish `h2` using `congrArg (algebraMap O C) h1`. Rewrite `h2` using `[map_zero, map_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) h2.symm`. Take `⟨V, hV, hUV⟩` from `c_lift p C v O hv ε hε F _ U hU`. Take `⟨F0, F1, hF0⟩ : ∃ F0 F1 : Matrix (Fin d ⊕ Fin k) (Fin h) (Ainf p O), ∀ i m, Y i m = F.a (F0 i m) + F.τ * F.a (F1 i m)` from `by choose F0 F1 hF0 using fun i m => F.gen (Y i m)`. Conclude with `⟨F0, F1, hF0⟩`. Take `⟨G0, G1, hG0⟩ : ∃ G0 G1 : Matrix (Fin d ⊕ Fin k) (Fin h) (Ainf p O), ∀ i m, Gm m i = F.a (G0 i m) + F.τ * F.a (G1 i m)` from `by choose G0 G1 hG0 using fun (i : Fin d ⊕ Fin k) (m : Fin h) => F.gen (Gm m i)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨G0, G1, hG0⟩`. Establish `hYF : ∀ i m, F.τ ∣ Y i m - F.a (F0 i m)` using `fun i m => ⟨F.a (F1 i m), by rw [hF0 i m]; ring⟩`. Establish `hGG : ∀ i m, F.τ ∣ Gm m i - F.a (G0 i m)` using `fun i m => ⟨F.a (G1 i m), by rw [hG0 i m]; ring⟩`. Establish `hθY : ∀ i m, WittVector.fontaineTheta O p (F0 i m) = F.θ (Y i m)`. Introduce `i m`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hF0 i m, map_add, map_mul, hθτ, zero_mul, add_zero, F.θ_a]`. Establish `hθG : ∀ i m, WittVector.fontaineTheta O p (G0 i m) = F.θ (Gm m i)`. Introduce `i m`. Rewrite using `[hG0 i m, map_add, map_mul, hθτ, zero_mul, add_zero, F.θ_a]`. Establish `hdvdμ : ∀ x : Ainf p O, Sandwich.mu ε ∣ x → F.τ ∣ F.a x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `x ⟨c, rfl⟩; rw [map_mul, ← F.p_τ]; exact ⟨p * F.a c, by ring⟩`. Establish `hone : ∀ i j, F.τ ∣ (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) i j - F.a ((1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O)) i j)`. Apply the tactic sequence `intro i j; simp only [Matrix.one_apply]; split_ifs <;> simp`. Establish `hpone : ∀ i j, F.τ ∣ ((p : F.B) • (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B)) i j - F.a (((p : Ainf p O) • (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O))) i j)`. Apply the tactic sequence `intro i j; simp only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hel : ∀ (x : F.B) (y : Ainf p O), F.a y = x → ∀ i : Fin d ⊕ Fin k, F.a (Sum.elim (fun _ => y) (fun _ => (1 : Ainf p O)) i) = Sum.elim (fun _ => x) (fun _ => 1) i`. Apply the tactic sequence `intro x y hxy i; rcases i with i | i <;> simp [hxy]`. Establish `hL : ∀ i j, F.τ ∣ (blk d k (p : F.B) 1 * U.transpose) i j - F.a ((blk d k (p : Ainf p O) 1 * V.transpose) i j)`. Introduce `i j`. Simplify using `only [blk, Matrix.diagonal_mul, Matrix.transpose_apply, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hel (p : F.B) (p : Ainf p O) (map_natCast _ _) i, ← mul_sub]`. Conclude with `dvd_mul_of_dvd_right (hUV j i) _`. Establish `hR : ∀ i j, F.τ ∣ (U * blk d k (p : F.B) 1) i j - F.a ((V * blk d k (p : Ainf p O) 1) i j)`. Introduce `i j`. Simplify using `only [blk, Matrix.mul_diagonal, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hel (p : F.B) (p : Ainf p O) (map_natCast _ _) j, ← sub_mul]`. Conclude with `dvd_mul_of_dvd_left (hUV i j) _`. Establish `hF0μ : ∀ i m, Sandwich.mu ε ∣ (F0.map WittVector.frobenius - blk d k (p : Ainf p O) 1 * V.transpose * F0) i m`. Use `c_modtau p C v O hv ε hε F _ (Fin h) 1 (blk d k (p : F.B) 1 * U.transpose) 1 (blk d k (p : Ainf p O) 1 * V.transpose) Y F0 hone hL hYF (by rw [Matrix.one_mul, hY])` as an intermediate fact. Simplify `this` using `only [Matrix.one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdivF` using `c_divF p C v O hv ε hε F d k h V F0 hV hF0μ (fun i m => by rw [hθY]; exact hYθ i m)`. Establish `hnilF` using `c_nilF p C v O hv ε hε F d k U V hU hV hUV hN2`. Use `choose Fw hFw1 hFw2 using fun m : Fin h => c_solve p C v O hv ε hε _ (V.transpose⁻¹ * blk d k 1 (WittVector.frobenius (xi ε))) (fun i => F0 i m) hnilF (fun i => hdivF i m)`. Use `set ξ' := WittVector.frobenius (xi ε) with hξ'`. Set `Fa : Matrix (Fin d ⊕ Fin k) (Fin h) (Ainf p O)` to `Matrix.of fun i m => Fw m i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFaeq : ξ' • Fa = (V.transpose⁻¹ * blk d k 1 ξ') * Fa.map WittVector.frobenius`. Conclude with `Matrix.ext fun i m => hFw2 m i`. Establish `hdetV : IsUnit V.transpose.det`. Rewrite using `[Matrix.det_transpose]`. Conclude with `(Matrix.isUnit_iff_isUnit_det V).1 hV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hφFa : Fa.map WittVector.frobenius = blk d k ξ' 1 * V.transpose * Fa`. Establish `e1 : V.transpose * (ξ' • Fa) = blk d k 1 ξ' * Fa.map WittVector.frobenius`. Rewrite using `[hFaeq, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdetV, Matrix.one_mul]`. Establish `e2 : ξ' • (blk d k ξ' 1 * V.transpose * Fa) = ξ' • Fa.map WittVector.frobenius`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_smul, ← Matrix.mul_smul, e1, ← Matrix.mul_assoc, blk_mul_blk, mul_one, one_mul, blk_same, Matrix.smul_mul, Matrix.one_mul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Matrix.ext fun i m => ?_` and prove the remaining obligations. Use `congr_fun (congr_fun e2 i) m` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `(mul_left_cancel₀ hξ0 this).symm`. Set `Ψ` to `(blk d k ξ' 1 * V.transpose).map (phiInv p O)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `Ψ'` to `(V.transpose⁻¹ * blk d k 1 ξ').map (phiInv p O)`. Establish `hfinj : ∀ x y : Ainf p O, WittVector.frobenius x = WittVector.frobenius y → x = y` using `fun x y hxy => by rw [← phiInv_frob x, hxy, phiInv_frob]`. Establish `hFaΨ : Fa = Ψ * Fa.map (phiInv p O)`. Establish `: (Ψ * Fa.map (phiInv p O)).map WittVector.frobenius = Fa.map WittVector.frobenius`. Rewrite using `[Matrix.map_mul, hφFa, Matrix.map_map, Matrix.map_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1 : (WittVector.frobenius ∘ phiInv p O) = id` using `funext frob_phiInv`. Rewrite using `[h1, Matrix.map_id, Matrix.map_id]`. Use `Matrix.ext fun i m => ?_` and prove the remaining obligations. Conclude with `(hfinj _ _ (congr_fun (congr_fun this i) m)).symm`. Establish `hΨΨ' : Ψ * Ψ' = xi ε • (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e : blk d k ξ' 1 * V.transpose * (V.transpose⁻¹ * blk d k 1 ξ') = ξ' • (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O))`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc V.transpose, Matrix.mul_nonsing_inv _ hdetV, Matrix.one_mul, blk_mul_blk, mul_one, one_mul, blk_same]`. Rewrite using `[← Matrix.map_mul, e]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp [hξ', phiInv_frob]`. Establish `hG0μ : ∀ i m, Sandwich.mu ε ∣ (V * blk d k (p : Ainf p O) 1 * G0.map WittVector.frobenius - (p : Ainf p O) • G0) i m`. Use `c_modtau p C v O hv ε hε F _ (Fin h) (U * blk d k (p : F.B) 1) ((p : F.B) • (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B)) (V * blk d k (p : Ainf p O) 1) ((p : Ainf p O) • (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O))) Gm.transpose G0 hR hpone (fun i m => hGG i m) (b …` as an intermediate fact. Simplify `this` using `only [Matrix.smul_mul, Matrix.one_mul]`. Establish `hdivG` using `c_divG p C v O hv ε hε F d k h V G0 hG0μ (fun j m => by rw [hθG]; exact hGθ m j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hnilG` using `c_nilG p C v O hv ε hε F d k U V hUV hN1`. Use `choose Gw hGw1 hGw2 using fun m : Fin h => c_solve p C v O hv ε hε _ (V * blk d k ξ' 1) (fun i => G0 i m) hnilG (fun i => hdivG i m)`. Set `Ga : Matrix (Fin h) (Fin d ⊕ Fin k) (Ainf p O)` to `Matrix.of fun m i => Gw m i`. Establish `hGaeq : ξ' • Ga.transpose = V * blk d k ξ' 1 * Ga.transpose.map WittVector.frobenius` using `Matrix.ext fun i m => hGw2 m i`. Establish `hφP : (Ga * Fa).map WittVector.frobenius = ξ' • (Ga * Fa)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e : ξ' • Ga = Ga.map WittVector.frobenius * blk d k ξ' 1 * V.transpose`. Use `congrArg Matrix.transpose hGaeq` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.transpose_mul, Matrix.transpose_mul, blk_transpose, Matrix.transpose_map, Matrix.transpose_transpose, ← Matrix.mul_assoc]`. Conclude with `this`. Rewrite using `[Matrix.map_mul, hφFa, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← e, Matrix.smul_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Take `⟨u, hu, hτu, hau⟩` from `GlobalTheory.T.frobenius_xi_eq_p_mul_unit p C v O hv ε hε F`. Take `⟨l, hτl, hσl⟩` from `GlobalTheory.T.exists_ainf_frame_lift_twisted_frobenius p C v O hv ε hε F u hτu`. Set `U'` to `V.map F.a * blk d k u 1`. Establish `hU' : IsUnit U'`. Use `IsUnit.mul ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hV.map (RingHom.mapMatrix F.a)`. Use `Matrix.isUnit_diagonal.2 (Pi.isUnit_iff.2 fun i => ?_)` and prove the remaining obligations. Break down `i with i | i` into its components or cases. Conclude with `hu`. Conclude with `isUnit_one`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hUU' : ∀ i j, F.τ ∣ U i j - U' i j`. Introduce `i j`. Simplify using `only [U', blk, Matrix.mul_diagonal, Matrix.map_apply]`. Break down `j with j | j` into its components or cases. Establish `: U i (Sum.inl j) - F.a (V i (Sum.inl j)) * u = (U i (Sum.inl j) - F.a (V i (Sum.inl j))) - F.a (V i (Sum.inl j)) * (u - 1)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inl]`. Rewrite using `[this]`. Conclude with `dvd_sub (hUV _ _) (dvd_mul_of_dvd_right hτu _)`. Simplify using `only [Sum.elim_inr, mul_one]`. Conclude with `hUV _ _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨X, hX1, hX2⟩` from `GlobalTheory.T.isIso_windows_of_matrix_congr_mod_tau p C v O hv ε hε F d k U U' hU hU' hUU' hN1`. Take `⟨hn1', hn2'⟩` from `c_nilCong p C v O hv ε hε F d k U U' hU hU' hUU' hN2 hN1`. Establish `haξ : F.a ξ' = (p : F.B) * u` using `hau`. Set `Z` to `Fa.map F.a`. Establish `hZσ : Z.map F.σ = blk d k (p : F.B) 1 * U'.transpose * Z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : Z.map F.σ = (Fa.map WittVector.frobenius).map F.a` using `Matrix.ext fun i m => F.σ_a _`. Rewrite using `[e1, hφFa, Matrix.map_mul, Matrix.map_mul, blk_map, haξ, map_one, Matrix.transpose_map]`. Use `show _ = blk d k (p : F.B) 1 * (V.map F.a * blk d k u 1).transpose * Fa.map F.a`. Rewrite using `[Matrix.transpose_mul, blk_transpose, ← Matrix.mul_assoc (blk d k (p : F.B) 1), blk_mul_blk, mul_one]`. Establish `hZY : ∀ i m, F.τ ∣ Z i m - Y i m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i m`. Establish `e : Z i m - Y i m = F.a (Fw m i - F0 i m) - (Y i m - F.a (F0 i m))`. Simplify using `only [Z, Fa, Matrix.map_apply, Matrix.of_apply, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `dvd_sub (hdvdμ _ (hFw1 m i)) (hYF i m)`. Establish `hZ` using `c_cmpF p C v O hv ε hε F d k h U U' X Y Z hU' hn1' hn2' hX2 hX1 hY hZσ hZY`. Set `W` to `Ga.transpose.map F.a`. Establish `hWσ : U' * blk d k (p : F.B) 1 * W.map F.σ = ((p : F.B) * u) • W`. Establish `e1 : W.map F.σ = (Ga.transpose.map WittVector.frobenius).map F.a` using `Matrix.ext fun i m => F.σ_a _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hGaeq' : blk d k ξ' ξ' * Ga.transpose = V * blk d k ξ' 1 * Ga.transpose.map WittVector.frobenius`. Rewrite using `[blk_same, Matrix.smul_mul, Matrix.one_mul]`. Conclude with `hGaeq`. Establish `e2` using `congrArg (fun M => M.map F.a) hGaeq'`. Simplify using `only [Matrix.map_mul, blk_map, haξ, map_one] at e2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e3 : U' * blk d k (p : F.B) 1 = V.map F.a * blk d k ((p : F.B) * u) 1` using `by show V.map F.a * blk d k u 1 * blk d k (p : F.B) 1 = _`. Rewrite using `[Matrix.mul_assoc, blk_mul_blk, mul_comm u, mul_one]`. Rewrite using `[e1, e3, ← e2, blk_same, Matrix.smul_mul, Matrix.one_mul]`. Establish `hWG : ∀ i m, F.τ ∣ W i m - Gm m i`. Introduce `i m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e : W i m - Gm m i = F.a (Gw m i - G0 i m) - (Gm m i - F.a (G0 i m))`. Simplify using `only [W, Ga, Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `dvd_sub (hdvdμ _ (hGw1 m i)) (hGG i m)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hXW` using `c_cmpG p C v O hv ε hε F d k h U U' X u l Gm W hU hN2 hN1 hτu hX2 hX1 hσl hτl hG hWσ hWG`. Establish `hlμ : l * F.a (Sandwich.mu ε) = F.a (Sandwich.mu ε)`. Take `⟨c, hc⟩` from `hτl`. Rewrite using `[← F.p_τ, sub_eq_iff_eq_add.1 hc]`. Take the linear combination `(p * c) * F.τ_sq`.
-
-Establish `hprod : (Ga * Fa).map F.a = F.a (Sandwich.mu ε) • (1 : Matrix (Fin h) (Fin h) F.B)`. Establish `eW : Ga.map F.a = W.transpose`. Simplify using `only [W, Matrix.transpose_map, Matrix.transpose_transpose]`. Rewrite using `[Matrix.map_mul, eW, show Fa.map F.a = Z from rfl, hZ, ← Matrix.mul_assoc, ← Matrix.transpose_mul, hXW, Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.smul_mul, hGY, smul_smul, hlμ]`. Establish `hGaFa : Ga * Fa = Sandwich.mu ε • (1 : Matrix (Fin h) (Fin h) (Ainf p O))`.
-
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `c_eig p C v O hv ε hε F _ _ ?_ ?_ ?_` and prove the remaining obligations. Use `congr_fun (congr_fun hφP i) j` as an intermediate fact. Simplify `this` using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `simp only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] split_ifs <;> simp only [mul_one, mul_zero, map_zero, frob_mu]`.
-
-Use `congr_fun (congr_fun hprod i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] at this ⊢`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨Fa, Ga, Ψ, Ψ', hGaFa, hFaΨ, hΨΨ', fun i m => ?_, fun m i => ?_⟩` and prove the remaining obligations.
-
-Take `⟨c, hc⟩` from `hFw1 m i show WittVector.fontaineTheta O p (Fw m i) = _`. Rewrite using `[sub_eq_iff_eq_add.1 hc, map_add, map_mul, theta_mu hv hε, zero_mul, zero_add, hθY]`. Take `⟨c, hc⟩` from `hGw1 m i show WittVector.fontaineTheta O p (Gw m i) = _`. Rewrite using `[sub_eq_iff_eq_add.1 hc, map_add, map_mul, theta_mu hv hε, zero_mul, zero_add, hθG]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem window_lift : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (d k h : ℕ) (U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) (Y : Matrix (Fin d ⊕ Fin k) (Fin h) F.B) (Gm : Matrix (Fin h) (Fin d ⊕ Fin k) F.B), IsUnit U ∧ Y.map F.σ = blk d k (p : F.B) 1 * U.transpose * Y ∧ U * blk d k (p : F.B) 1 * (Gm.transpose.map F.σ) = (p : F.B) • Gm.transpose ∧ Gm * Y = F.a (Sandwich.mu ε) • (1 : Matrix (Fin h) (Fin h) F.B) ∧ (∀ i m, F.θ (Y (Sum.inl i) m) = 0) ∧ (∀ m j, F.θ (Gm m (Sum.inr j)) = 0) ∧ IsNil F.θ F.σ (U * blk d k (p : F.B) 1) ∧ IsNil F.θ F.σ (U.transpose⁻¹ * blk d k 1 (p : F.B)) → ∃ (Fa : Matrix (Fin d ⊕ Fin k) (Fin h) (Ainf p O)) (Ga : Matrix (Fin h) (Fin d ⊕ Fin k) (Ainf p O)) (Ψ Ψ' : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O)), Ga * Fa = Sandwich.mu ε • (1 : Matrix (Fin h) (Fin h) (Ainf p O)) ∧ Fa = Ψ * Fa.map (phiInv p O) ∧ Ψ * Ψ' = xi ε • (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O)) ∧ (∀ i m, WittVector.fontaineTheta O p (Fa i m) = F.θ (Y i m)) ∧ ∀ m i, WittVector.fontaineTheta O p (Ga m i) = F.θ (Gm m i) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F d k h U Y Gm hyp

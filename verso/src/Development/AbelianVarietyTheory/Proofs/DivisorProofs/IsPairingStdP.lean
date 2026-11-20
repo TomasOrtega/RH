@@ -50,19 +50,17 @@ def LStd (k : ℕ) : Set ((V₁ × (Fin k → ℝ)) × (V₁ × (Fin k → ℝ))
   {l | ∃ b : Fin k → ℝ, l = ((0, 0), (0, b))}
 
 /- English proof (translation)
-Simplify using `only [stdP, Prod.fst_add, Prod.snd_add, h.addL, Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use `addR x y y' := by`. Simplify using `only [stdP, Prod.fst_add, Prod.snd_add, h.addR, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `smulL c x y := by`. Simplify using `only [stdP, Prod.smul_fst, Prod.smul_snd, h.smulL, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Use `smulR c x y := by`. Simplify using `only [stdP, Prod.smul_fst, Prod.smul_snd, h.smulR, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, ← Finset.mul_sum]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `nondegL x hx := by`. Establish `h1 : x.1 = 0` using `h.nondegL _ fun y => by simpa [stdP] using hx (y, 0)`. Establish `h2 : ∑ i, x.2 i * x.2 i = 0`. Use `hx (0, x.2)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [stdP] at this`. Rewrite `this` using `[show P₁ x.1 0 = 0 by simpa using h.smulR 0 x.1 0, zero_add]`. Then use the resulting hypothesis. Establish `h3 : x.2 = 0`. Use function extensionality and compare the values at `i`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => mul_self_nonneg (x.2 i))).1 h2 i (Finset.mem_univ _)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `Prod.ext h1 h3`. Use `nondegR y hy := by`. Establish `h1 : y.1 = 0` using `h.nondegR _ fun x => by simpa [stdP] using hy (x, 0)`. Establish `h2 : ∑ i, y.2 i * y.2 i = 0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `hy (0, y.2)` as an intermediate fact. Simplify using `only [stdP] at this`. Rewrite `this` using `[show P₁ 0 y.1 = 0 by simpa using h.smulL 0 0 y.1, zero_add]`. Then use the resulting hypothesis. Establish `h3 : y.2 = 0`. Use function extensionality and compare the values at `i`.
-
-Use `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => mul_self_nonneg (y.2 i))).1 h2 i (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`. Conclude with `Prod.ext h1 h3`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPairing_stdP {P₁ : V₁ → V₁ → ℝ} (h : IsPairing P₁) (k : ℕ) : IsPairing (stdP P₁ k) where
   addL x x' y := by
@@ -100,19 +98,19 @@ theorem isPairing_stdP {P₁ : V₁ → V₁ → ℝ} (h : IsPairing P₁) (k : 
     exact Prod.ext h1 h3
 
 /- English proof (translation)
-Simplify using `using h.smulL 0 0 y`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsPairing.zero_left {P : V → V → ℝ} (h : IsPairing P) (y : V) : P 0 y = 0 := by
   simpa using h.smulL 0 0 y
 
 /- English proof (translation)
-Simplify using `using h.smulR 0 x 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsPairing.zero_right {P : V → V → ℝ} (h : IsPairing P) (x : V) : P x 0 = 0 := by
   simpa using h.smulR 0 x 0
 
 /- English proof (translation)
-The claim follows from `isPairing_stdP h k pair₁ := h add w w' := by simp [jStd] smul c w := by simp [jStd] symp w w' := by simp [omega, stdP, jStd] iso := by rintro _ ⟨b, rfl⟩ _ ⟨b', rfl⟩ simp [omega, stdP, h.zero_left] orth := by rintro _ ⟨b, rfl⟩ w simp [omega, stdP, jStd, h.zero_left, h.zero_right] …`.
+A detailed English derivation is pending.
 -/
 theorem setup_std {P₁ : V₁ → V₁ → ℝ} (h : IsPairing P₁) (k : ℕ) : Setup (stdP P₁ k) P₁ (jStd k) (LStd V₁ k) where
   pair := isPairing_stdP h k
@@ -144,7 +142,7 @@ theorem setup_std {P₁ : V₁ → V₁ → ℝ} (h : IsPairing P₁) (k : ℕ) 
     exact ⟨b₂, by simp [e1, e2, e3]⟩
 
 /- English proof (translation)
-The claim follows from `add_mul x x' y addR x y y' := mul_add x y y' smulL c x y := by simp [mul_assoc] smulR c x y := by simp only [smul_eq_mul]; ring nondegL x hx := by simpa using hx 1 nondegR y hy := by simpa using hy 1`.
+A detailed English derivation is pending.
 -/
 theorem isPairing_mul : IsPairing (fun x y : ℝ => x * y) where
   addL x x' y := add_mul x x' y
@@ -155,7 +153,7 @@ theorem isPairing_mul : IsPairing (fun x y : ℝ => x * y) where
   nondegR y hy := by simpa using hy 1
 
 /- English proof (translation)
-The claim follows from `setup_std isPairing_mul 1`.
+A detailed English derivation is pending.
 -/
 example : Setup (stdP (fun x y : ℝ => x * y) 1) (fun x y : ℝ => x * y) (jStd 1) (LStd ℝ 1) :=
   setup_std isPairing_mul 1

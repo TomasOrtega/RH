@@ -7,19 +7,17 @@ set_option autoImplicit false
 namespace GlobalTheory.ShFam.GalCarry
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z T F _ _ e C C' φ ψ t₀ n n' hTri hLoc hdim hn`. Take `⟨h1, h2, h3⟩` from `hLoc`. Establish `hsum : ∀ {Y : Var F} (D : Letter Dw → Y.Dv) (m : Letter Dw → ℤ) (y : Y.X) (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Fnˣ), (∀ z : Letter Dw, (D z).IsEqn y (t z.1 z.2)) → (∑ z, m z • D z).IsEqn y (prodPow t m)`. Introduce `Y D m y t h`. Establish `key : ∀ s : Finset (Letter Dw), (∑ z ∈ s, m z • D z).IsEqn y (∏ z ∈ s, t z.1 z.2 ^ m z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero y`. Consider the case `insert z s hz ih => rw [Finset.sum_insert hz, Finset.prod_insert hz]`. Conclude with `((h z).zsmul _).add ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `key Finset.univ`. Use `⟨?_, h2, hdim, fun y g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← C'.π_str, ← C.π_str, ← Category.assoc, h1, Category.assoc, reassoc_of% T.g_str]`. Take `⟨χ', f', t', htri', heq'⟩` from `C'.gr_spec (φ.hom y)`. Take `⟨a, χ, f, t, -, -, -, htri, ht, -⟩` from `h3 y (φ.hom y) χ' f' t' rfl htri'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `hTri y χ f t htri`. Establish `hP : (divOf C n').IsEqn y (prodPow t n')` using `hsum _ n' y t fun z => hE z.1 z.2`. Establish `hP' : (divOf C' n).IsEqn (φ.hom y) (prodPow t' n)` using `hsum _ n (φ.hom y) t' fun z => heq' z.1 z.2`. Establish `hprod : prodPow t n' = Units.map (ψ : C'.Y.Fn →* C.Y.Fn) (prodPow t' n) * prodPow t₀ n`. Simplify using `only [prodPow]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← T.letter.prod_comp]`. Simplify using `only [map_prod, map_zpow, ← Finset.prod_mul_distrib, ← mul_zpow]`. Use `Finset.prod_congr rfl fun z _ => ?_` and prove the remaining obligations. Take `⟨τ, i⟩` from `z`. Rewrite using `[hn]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (· ^ n ⟨τ, i⟩) (ht τ i)`. Establish `hU` using `unitAt_map h2 (hP'.iff_unitAt.1 hg)`. Use `hP.iff_unitAt.2 ?_` and prove the remaining obligations. Use `hU using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hprod]`.
-
-Simplify using `only [Units.val_mul, Units.coe_map, MonoidHom.coe_coe, map_div₀]`. Conclude with `mul_div_mul_right _ _ (Units.ne_zero _)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem divIso_divOf_of_locRel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (T : Tw Z) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (C C' : FlagCpt Z e) (φ : C.Y.X ≅ C'.Y.X) (ψ : C'.Y.Fn →+* C.Y.Fn) (t₀ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C.Y.Fnˣ) (n n' : Letter Dw → ℤ), TriEqn C → T.LocRel C C' φ ψ t₀ → C.Y.dim = C'.Y.dim → (∀ z, n' (T.letter z) = n z) → DivIso (divOf C n') (divOf C' n) φ ψ (prodPow t₀ n) := by
   intro E _ _ _ H Dw l Xo c O _ β Z T F _ _ e C C' φ ψ t₀ n n' hTri hLoc hdim hn

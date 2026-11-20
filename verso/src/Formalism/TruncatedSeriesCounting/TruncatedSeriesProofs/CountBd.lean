@@ -9,7 +9,7 @@ namespace Formalism.TruncatedSeriesCounting.tableLineDegreeTwo
 open Formalism.WachCohomologyFacts
 
 /- English proof (authored)
-For the false orientation, membership in the window requires h−η ≤ u ≤ h−1. The strict inequality u < h−η excludes u from the window. Since u belongs to U, it belongs to the filtered complement ClN.
+For the false orientation, membership in the window requires h−η ≤ u ≤ h−1. The strict inequality u < h−η excludes u from the window. Since u belongs to U, it belongs to the filtered complement for the false orientation.
 -/
 private lemma mem_cl {h η : ℕ} {U : Multiset ℤ} {u : ℤ} (hu : u ∈ U) (hc : u < (h : ℤ) - η) :
     u ∈ V2.ClN false h η U := by
@@ -20,7 +20,7 @@ private lemma mem_cl {h η : ℕ} {U : Multiset ℤ} {u : ℤ} (hu : u ∈ U) (h
   omega
 
 /- English proof (authored)
-The element u lies in the false-orientation complement by mem_cl. Apply residue avoidance to u and k with the given lower and upper bounds on k. In this orientation the residue being tested is h−u.
+The element u lies in the false-orientation complement by the preceding window comparison. Apply residue avoidance to u and k with the given lower and upper bounds on k. In this orientation the residue being tested is h−u.
 -/
 private lemma t3 {ℓ h η : ℕ} {σ : ℤ} {U : Multiset ℤ} (hT3 : V2.ResidueAvoidance ℓ false h η σ U) {u : ℤ}
     (hu : u ∈ U) (hc : u < (h : ℤ) - η) (k : ℤ) (hk1 : -2 * σ - 2 ≤ k)

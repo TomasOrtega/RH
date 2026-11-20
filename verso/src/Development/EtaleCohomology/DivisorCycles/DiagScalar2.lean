@@ -7,7 +7,7 @@ open LateralTheory.DivDb
 variable {C : Type} [Field C] {N n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul, Finset.sum_eq_single j]`. Rewrite using `[smul_mul_assoc, (hp.1.idem j).eq]`. Introduce `b _ hb`. Rewrite using `[smul_mul_assoc, hp.1.ortho hb, smul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_p (p : Fin n → Mat C N) (hp : Sys p) (e : Fin n → C) (j : Fin n) :
     (∑ i, e i • p i) * p j = e j • p j := by
@@ -17,7 +17,7 @@ theorem mul_p (p : Fin n → Mat C N) (hp : Sys p) (e : Fin n → C) (j : Fin n)
   · simp
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum, Finset.sum_eq_single j]`. Rewrite using `[mul_smul_comm, (hp.1.idem j).eq]`. Introduce `b _ hb`. Rewrite using `[mul_smul_comm, hp.1.ortho (Ne.symm hb), smul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem p_mul (p : Fin n → Mat C N) (hp : Sys p) (e : Fin n → C) (j : Fin n) :
     p j * (∑ i, e i • p i) = e j • p j := by
@@ -27,9 +27,7 @@ theorem p_mul (p : Fin n → Mat C N) (hp : Sys p) (e : Fin n → C) (j : Fin n)
   · simp
 
 /- English proof (translation)
-Establish `h1 : (∑ k, p k) *ᵥ v = v` using `by rw [hp.1.complete]; simp`. Rewrite `h1` using `[Matrix.sum_mulVec, Finset.sum_eq_single i]`. Conclude with `h1`. Introduce `b _ hb`. Conclude with `hv b hb`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vec_of (p : Fin n → Mat C N) (hp : Sys p) (i : Fin n) (v : Fin N → C)
     (hv : ∀ k, k ≠ i → p k *ᵥ v = 0) : p i *ᵥ v = v := by
@@ -40,7 +38,7 @@ theorem vec_of (p : Fin n → Mat C N) (hp : Sys p) (i : Fin n) (v : Fin N → C
   · simp
 
 /- English proof (translation)
-Establish `h` using `vec_of p hp i v hv`. Use `conv_lhs => rw [← h]`. Rewrite using `[Matrix.mulVec_mulVec, mul_p p hp e i, Matrix.smul_mulVec, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_vec (p : Fin n → Mat C N) (hp : Sys p) (e : Fin n → C) (i : Fin n) (v : Fin N → C)
     (hv : ∀ k, k ≠ i → p k *ᵥ v = 0) : (∑ k, e k • p k) *ᵥ v = e i • v := by
@@ -49,7 +47,7 @@ theorem X_vec (p : Fin n → Mat C N) (hp : Sys p) (e : Fin n → C) (i : Fin n)
   rw [Matrix.mulVec_mulVec, mul_p p hp e i, Matrix.smul_mulVec, h]
 
 /- English proof (translation)
-Rewrite using `[Polynomial.IsRoot, Matrix.eval_charpoly, ← Matrix.exists_mulVec_eq_zero_iff]`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, h, Matrix.scalar_apply]`. Use extensionality with `k`. Simplify using `[Matrix.mulVec_diagonal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem root_of_eig (Y : Mat C N) (μ : C) (v : Fin N → C) (hv : v ≠ 0) (h : Y *ᵥ v = μ • v) :
     Y.charpoly.IsRoot μ := by
@@ -59,9 +57,9 @@ theorem root_of_eig (Y : Mat C N) (μ : C) (v : Fin N → C) (hv : v ≠ 0) (h :
   ext k; simp [Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Take `⟨q, hq, hd, ha⟩` from `h`. Use `⟨Polynomial.taylor (-c) q, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Polynomial.taylor_eq_zero]` and apply the resulting hypothesis. Rewrite using `[Polynomial.natDegree_taylor]` and apply the resulting hypothesis. Rewrite using `[Polynomial.taylor_apply, Polynomial.aeval_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ha]`.
+Simplify using the standard rewrite rules.
 -/
 theorem deg_shift (x : Mat C N) (c : C) (h : Deg n x) : Deg n (x + algebraMap C (Mat C N) c) := by
   obtain ⟨q, hq, hd, ha⟩ := h
@@ -72,7 +70,7 @@ theorem deg_shift (x : Mat C N) (c : C) (h : Deg n x) : Deg n (x + algebraMap C 
     simp [ha]
 
 /- English proof (translation)
-Rewrite using `[Matrix.algebraMap_eq_diagonal]`. Use extensionality with `k`. Simplify using `[Matrix.mulVec_diagonal]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem alg_vec (c : C) (v : Fin N → C) : (algebraMap C (Mat C N) c) *ᵥ v = c • v := by
   rw [Matrix.algebraMap_eq_diagonal]; ext k; simp [Matrix.mulVec_diagonal]
@@ -82,29 +80,27 @@ end LateralTheory.DivDb.DiagScalar₂
 namespace LateralTheory.DivDb
 open DiagScalar₂ in
 /- English proof (translation)
-Introduce `C _ _ _ N n p e Y hp he hY hD i`. Establish `: Infinite C` using `Infinite.of_injective _ Nat.cast_injective`. Use `set X := ∑ i, e i • p i with hX`. Use `set R := Y.charpoly.roots.toFinset with hR`. Use `set B : Finset C := insert 0 ((R ×ˢ R ×ˢ (Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).image (fun t => (e t.2.2.2 - e t.2.2.1) / (t.1 - t.2.1))) with hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `Infinite.exists_notMem_finset B`. Establish `hs0 : s ≠ 0` using `fun h => hs (h ▸ Finset.mem_insert_self _ _)`. Use `set M := s • Y + X with hM`. Take `⟨c', hc'⟩` from `Infinite.exists_notMem_finset ((-M).charpoly.roots.toFinset)`. Use `set y := M + algebraMap C (Mat C N) c' with hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hunit : IsUnit y`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Introduce `h0`. Apply `hc'` to reduce the goal to its premises. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots (Matrix.charpoly_monic _).ne_zero, Polynomial.IsRoot, Matrix.eval_charpoly]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h0 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hy, Matrix.algebraMap_eq_diagonal, Matrix.scalar_apply, sub_neg_eq_add, add_comm]`. Both sides reduce to the same expression. Establish `hcomm : ∀ j, y * p j = p ((1 : Equiv.Perm (Fin n)) j) * y`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Equiv.Perm.one_apply, hy, hM, add_mul, add_mul, mul_add, mul_add, smul_mul_assoc, mul_smul_comm, hY j, hX, mul_p p hp e j, p_mul p hp e j, Algebra.commutes]`. Establish `hdeg : Deg n y` using `deg_shift _ c' (hD s)`. Establish `key : ∀ (i : Fin n) (l : C) (v : Fin N → C), v ≠ 0 → y *ᵥ v = l • v → (∀ k, ¬ i = k → p k *ᵥ v = 0) → ∃ μ ∈ R, s * μ + e i = l - c'`. Introduce `i l v hv hyv hpv`. Establish `hXv` using `X_vec p hp e i v (fun k hk => hpv k (Ne.symm hk))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : y *ᵥ v = s • (Y *ᵥ v) + e i • v + c' • v`. Rewrite using `[hy, hM, Matrix.add_mulVec, Matrix.add_mulVec, Matrix.smul_mulVec, hX, hXv, alg_vec]`. Rewrite `hyv` using `[h1]`. Establish `h2 : s • (Y *ᵥ v) = (l - c' - e i) • v` using `by rw [sub_smul, sub_smul, ← hyv]; abel`. Use `⟨s⁻¹ * (l - c' - e i), ?_, by field_simp; ring⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hR, Multiset.mem_toFinset, Polynomial.mem_roots (Matrix.charpoly_monic _).ne_zero]`. Apply `root_of_eig Y _ v hv` to reduce the goal to its premises. Rewrite using `[mul_smul, ← h2, smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Establish `hdisj : Disj y 1 p`. Introduce `i j hij l v w hv hw hyv hyw hpv hpw`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Equiv.Perm.sameCycle_one] at hij hpv hpw`. Take `⟨μ, hμ, h1⟩` from `key i l v hv hyv hpv`. Take `⟨μ', hμ', h2⟩` from `key j l w hw hyw hpw`. Establish `hne : e i ≠ e j` using `he.ne hij`. Establish `hμμ : μ - μ' ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `h`. Apply `hne` to reduce the goal to its premises. Establish `: μ = μ'` using `sub_eq_zero.mp h`. Substitute `this` using the available equality. Take the linear combination `h1 - h2`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hs` to reduce the goal to its premises. Apply `Finset.mem_insert_of_mem` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`. Use `⟨(μ, μ', i, j), by simp [hμ, hμ'], ?_⟩` and prove the remaining obligations. Use `show (e j - e i) / (μ - μ') = s`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[div_eq_iff hμμ]`. Take the linear combination `h2 - h1`. Take `⟨_, hfix⟩` from `hC C N n p y 1 hp hunit hcomm hdeg hdisj`. Take `⟨c, hc⟩` from `hfix i rfl`. Use `⟨s⁻¹ * (c - e i - c'), ?_⟩` and prove the remaining obligations.
-
-Establish `h4 : y * p i = s • (Y * p i) + e i • p i + c' • p i`. Rewrite using `[hy, hM, add_mul, add_mul, smul_mul_assoc, hX, mul_p p hp e i, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`. Rewrite `hc` using `[h4]`. Establish `h3 : s • (Y * p i) = (c - e i - c') • p i` using `by rw [sub_smul, sub_smul, ← hc]; abel`. Rewrite using `[mul_smul, ← h3, smul_smul, inv_mul_cancel₀ hs0, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DiagScalar_of (hC : CycleCount) : DiagScalar := by
   intro C _ _ _ N n p e Y hp he hY hD i

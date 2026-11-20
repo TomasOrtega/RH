@@ -17,7 +17,7 @@ def kMat (B : HSp D) (v y : Fin B.rank → AE D) : Matrix (Fin B.rank) (Fin B.ra
     vecMulVec y ((fun i => cA D (v i)) ᵥ* B.gram.map (incA D))
 
 /- English proof (translation)
-Rewrite using `[kMat, Matrix.sub_mulVec, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.vecMulVec_mulVec, Matrix.vecMulVec_mulVec, hA_eq, hA_eq, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec]`. Simplify using `only [op_smul_eq_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kMat_mulVec (v y x : Fin B.rank → AE D) :
     (kMat B v y).mulVec x = x + hA B x y • v - hA B x v • y := by
@@ -26,9 +26,9 @@ theorem kMat_mulVec (v y x : Fin B.rank → AE D) :
   simp only [op_smul_eq_smul]
 
 /- English proof (translation)
-Establish `hc' : Continuous fun y : Fin n → R => fun i => c (y i)` using `continuous_pi fun i => hc.comp (continuous_apply i)`. Establish `h1` using `continuous_const (y := v).matrix_vecMulVec (hc'.matrix_vecMul (continuous_const (y := J)))`. Establish `h2` using `(continuous_id (X := Fin n → R)).matrix_vecMulVec (continuous_const (y := w))`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(continuous_const.add (h1.matrix_elem i j)).sub (h2.matrix_elem i j)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rankTwo {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {n : ℕ}
     {c : R → R} (hc : Continuous c) (J : Matrix (Fin n) (Fin n) R) (v w : Fin n → R) :
@@ -42,7 +42,7 @@ theorem continuous_rankTwo {R : Type} [CommRing R] [TopologicalSpace R] [IsTopol
   exact (continuous_const.add (h1.matrix_elem i j)).sub (h2.matrix_elem i j)
 
 /- English proof (translation)
-The claim follows from `have : IsTopologicalRing (AE D) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing continuous_rankTwo GlobalTheory.FockCompare.ThetaCont.continuous_conj _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_kMat (v : Fin B.rank → AE D) : Continuous (kMat B v) :=
   have : IsTopologicalRing (AE D) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing
@@ -54,7 +54,7 @@ variable {η : AE D} (hη : η * cA D η = 0) {v y : Fin B.rank → AE D} (hy : 
 
 include hη hy in
 /- English proof (translation)
-Establish `e : hA B x y = cA D η * hA B x y` using `by rw [← hA_smul_right, hy]`. Rewrite using `[e, ← hy, smul_smul, hy, mul_assoc, mul_comm (hA B x y), ← mul_assoc, mul_comm (cA D η), hη, zero_mul, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_smul_self (x : Fin B.rank → AE D) : hA B x y • y = 0 := by
   have e : hA B x y = cA D η * hA B x y := by rw [← hA_smul_right, hy]
@@ -63,14 +63,14 @@ theorem hA_smul_self (x : Fin B.rank → AE D) : hA B x y • y = 0 := by
 
 include hη hy in
 /- English proof (translation)
-Rewrite using `[← hA_smul, hA_smul_self hη hy, hA_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_mul_hA (x x' : Fin B.rank → AE D) : hA B x y * hA B y x' = 0 := by
   rw [← hA_smul, hA_smul_self hη hy, hA_zero]
 
 include hη hy in
 /- English proof (translation)
-Establish `e : hA B y y = η * (cA D η * hA B y y)` using `by rw [← hA_smul_right, ← hA_smul, hy]`. Rewrite using `[e, ← mul_assoc, hη, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_self : hA B y y = 0 := by
   have e : hA B y y = η * (cA D η * hA B y y) := by rw [← hA_smul_right, ← hA_smul, hy]
@@ -78,15 +78,15 @@ theorem hA_self : hA B y y = 0 := by
 
 include hv in
 /- English proof (translation)
-Rewrite using `[← hA_herm, hv, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_yv : hA B y v = 0 := by rw [← hA_herm, hv, map_zero]
 
 include hη hy hv in
 /- English proof (translation)
-Use `Matrix.mulVec_injective (funext fun x => ?_)` and prove the remaining obligations. Use `show (kMat B v (-y) * kMat B v y).mulVec x = (1 : Matrix _ _ _).mulVec x`. Rewrite using `[← Matrix.mulVec_mulVec, kMat_mulVec, kMat_mulVec, Matrix.one_mulVec, hA_neg_right]`. Simplify using `only [hA_sub, hA_add, hA_smul, hv, hA_yv hv, hA_self hη hy, mul_zero, add_zero, sub_zero]`. Establish `h0 : (hA B x y * hA B v v) • y = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, mul_smul, hA_smul_self hη hy, smul_zero]`. Rewrite using `[smul_neg, add_smul, h0, neg_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem kMat_neg_mul : kMat B v (-y) * kMat B v y = 1 := by
   refine Matrix.mulVec_injective (funext fun x => ?_)
@@ -100,7 +100,7 @@ theorem kMat_neg_mul : kMat B v (-y) * kMat B v y = 1 := by
 
 include hη hy hv in
 /- English proof (translation)
-Use `kMat_neg_mul (y := -y) (v := v) hη (by rw [smul_neg, hy]) (by rw [hA_neg_right, hv, neg_zero])` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem kMat_mul_neg : kMat B v y * kMat B v (-y) = 1 := by
   have := kMat_neg_mul (y := -y) (v := v) hη (by rw [smul_neg, hy]) (by rw [hA_neg_right, hv, neg_zero])
@@ -108,7 +108,7 @@ theorem kMat_mul_neg : kMat B v y * kMat B v (-y) = 1 := by
 
 include hη hy hv in
 /- English proof (translation)
-Rewrite using `[kMat_mulVec, kMat_mulVec]`. Simplify using `only [hA_sub, hA_add, hA_smul, hA_sub_right, hA_add_right, hA_smul_right, hA_herm, hv, hA_yv hv, hA_self hη hy]`. Take the linear combination `hA B v v * hA_mul_hA hη hy x x'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hA_kMat (x x' : Fin B.rank → AE D) :
     hA B ((kMat B v y).mulVec x) ((kMat B v y).mulVec x') = hA B x x' := by
@@ -120,9 +120,9 @@ theorem hA_kMat (x x' : Fin B.rank → AE D) :
 end
 
 /- English proof (translation)
-Establish `key : ∀ x y : Fin B.rank → AE D, (fun i => cA D (y i)) ⬝ᵥ ((M.map (cA D))ᵀ * B.gram.map (incA D) * M).mulVec x = (fun i => cA D (y i)) ⬝ᵥ (B.gram.map (incA D)).mulVec x` using `fun x y => by`. Establish `e : (fun i => cA D (M.mulVec y i)) = (M.map (cA D)).mulVec fun i => cA D (y i)`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (cA D) _ y i`. Use `h x y` as an intermediate fact. Rewrite `this` using `[hA_eq, hA_eq, e, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Matrix.mulVec_injective (funext fun x => funext fun i => ?_)` and prove the remaining obligations. Use `key x (Pi.single i 1)` as an intermediate fact. Rewrite using `[show (fun j => cA D ((Pi.single i 1 : Fin B.rank → AE D) j)) = Pi.single i 1 from` and apply the resulting hypothesis. Apply the tactic sequence `funext fun j => by by_cases e : j = i <;> simp [e], single_one_dotProduct, single_one_dotProduct] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unitary_of_hA {M : Matrix (Fin B.rank) (Fin B.rank) (AE D)}
     (h : ∀ x y, hA B (M.mulVec x) (M.mulVec y) = hA B x y) :
@@ -141,7 +141,7 @@ theorem unitary_of_hA {M : Matrix (Fin B.rank) (Fin B.rank) (AE D)}
     funext fun j => by by_cases e : j = i <;> simp [e], single_one_dotProduct, single_one_dotProduct] at this
 
 /- English proof (translation)
-Use `⟨fun y => ⟨⟨kMat B v y.1, kMat B v (-y.1), kMat_mul_neg hη y.2.1 y.2.2, kMat_neg_mul hη y.2.1 y.2.2⟩, unitary_of_hA (hA_kMat hη y.2.1 y.2.2)⟩, ?_, fun y x => kMat_mulVec v y.1 x⟩` and prove the remaining obligations. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `(continuous_kMat v).comp continuous_subtype_val`. Conclude with `(continuous_kMat v).comp continuous_subtype_val.neg`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_continuous_isK (D : D7) (B : HSp D) (η : AE D) (hη : η * cA D η = 0) (v : Fin B.rank → AE D) :
     ∃ K : {y : Fin B.rank → AE D // η • y = y ∧ hA B v y = 0} → GA D B,

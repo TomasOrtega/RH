@@ -9,11 +9,11 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.PolarCompare
 
 /- English proof (translation)
-Break down `le_or_gt (1 - x) 0 with h | h` into its components or cases. Rewrite using `[Real.sqrt_eq_zero_of_nonpos h]`. Establish `: |(0:ℝ) - 1| = 1` using `by norm_num`. Rewrite using `[this]`. Conclude with `le_trans (by linarith) (le_abs_self x)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Real.sq_sqrt h.le`. Establish `h2` using `Real.sqrt_nonneg (1 - x)`. Use `set a := Real.sqrt (1 - x)`. Establish `h3 : x = (1 - a) * (1 + a)` using `by linarith`. Rewrite using `[h3, abs_mul, abs_sub_comm, abs_of_nonneg (by linarith : 0 ≤ 1 + a)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `abs_nonneg (1 - a)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem abs_sqrt_sub_one_le (x : ℝ) : |Real.sqrt (1 - x) - 1| ≤ |x| := by
   rcases le_or_gt (1 - x) 0 with h | h
@@ -30,9 +30,9 @@ theorem abs_sqrt_sub_one_le (x : ℝ) : |Real.sqrt (1 - x) - 1| ≤ |x| := by
     nlinarith
 
 /- English proof (translation)
-Rewrite using `[qf_eq_sum]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (Finset.sum_sq_le_sq_sum_of_nonneg (fun i _ => norm_nonneg (z i)))` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[abs_mul, Complex.normSq_eq_norm_sq, abs_of_nonneg (sq_nonneg ‖z i‖)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases sg_eq i with h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_qf_le {P Q : ℕ} (z : Sp P Q) : |qf z| ≤ (∑ i, ‖z i‖) ^ 2 := by
   rw [qf_eq_sum]
@@ -43,7 +43,7 @@ theorem abs_qf_le {P Q : ℕ} (z : Sp P Q) : |qf z| ≤ (∑ i, ‖z i‖) ^ 2 :
   rcases sg_eq i with h | h <;> simp [h]
 
 /- English proof (translation)
-Rewrite using `[mul_comm, Complex.norm_exp_I_mul_ofReal_sub_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_exp_eq (θ : ℝ) :
     ‖Complex.exp ((θ : ℂ) * Complex.I) - 1‖ = 2 * |Real.sin (θ / 2)| := by
@@ -51,9 +51,7 @@ theorem norm_exp_eq (θ : ℝ) :
   simp
 
 /- English proof (translation)
-Break down `le_total 0 x with h0 | h0` into its components or cases. Rewrite `h`, the goal using `[abs_of_nonneg h0]`. Conclude with `abs_of_nonneg (Real.sin_nonneg_of_nonneg_of_le_pi h0 h)`. Rewrite `h`, the goal using `[abs_of_nonpos h0]`. Rewrite using `[← abs_neg, ← Real.sin_neg]`.
-
-Conclude with `abs_of_nonneg (Real.sin_nonneg_of_nonneg_of_le_pi (by linarith) h)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_sin_eq (x : ℝ) (h : |x| ≤ Real.pi) : |Real.sin x| = Real.sin |x| := by
   rcases le_total 0 x with h0 | h0
@@ -64,7 +62,7 @@ theorem abs_sin_eq (x : ℝ) (h : |x| ≤ Real.pi) : |Real.sin x| = Real.sin |x|
     exact abs_of_nonneg (Real.sin_nonneg_of_nonneg_of_le_pi (by linarith) h)
 
 /- English proof (translation)
-The claim follows from `|θ| ≤ 2 * ‖Complex.exp ((θ : ℂ) * Complex.I) - 1‖ ∧ (|θ| ≤ 2 → |θ| - |θ| ^ 3 / 16 ≤ ‖Complex.exp ((θ : ℂ) * Complex.I) - 1‖) := by have hp := Real.pi_pos have h0 := abs_nonneg θ have e1 : |θ / 2| = |θ| / 2 := by rw [abs_div]; norm_num rw [norm_exp_eq, abs_sin_eq _ (by rw [e1]; li …`.
+A detailed English derivation is pending.
 -/
 theorem exp_bounds (θ : ℝ) (h : |θ| ≤ Real.pi) :
     ‖Complex.exp ((θ : ℂ) * Complex.I) - 1‖ ≤ |θ| ∧
@@ -90,25 +88,23 @@ theorem exp_bounds (θ : ℝ) (h : |θ| ≤ Real.pi) :
       nlinarith [pow_nonneg h0 3]
 
 /- English proof (translation)
-Establish `hti : t⁻¹ < 1` using `inv_lt_one_of_one_lt₀ ht`. Establish `hti0 : 0 < t⁻¹` using `inv_pos.2 (by linarith)`. Establish `hd : (0 : ℝ) < min (1 / 2) (min ((t - 1) / 3) (1 - t⁻¹))`. Apply the tactic sequence `refine lt_min (by norm_num) (lt_min ?_ ?_) <;> linarith`. Use `filter_upwards [Ioo_mem_nhdsGT hd] with r hr u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨hr0, hr1⟩` from `hr`. Rewrite `hr1` using `[lt_min_iff, lt_min_iff]`. Take `⟨hr1, hr2, hr3⟩` from `hr1`. Take `⟨b1, b2, b3⟩` from `exp_bounds u.1 (abs_le.2 ⟨hu.1.le, hu.2.le⟩)`. Establish `hq` using `abs_qf_le u.2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : |Real.sqrt (1 - sg (e none) * qf u.2) - 1| ≤ (∑ i, ‖u.2 i‖) ^ 2`. Use `(abs_sqrt_sub_one_le _).trans (le_trans (le_of_eq ?_) hq)` and prove the remaining obligations. Rewrite using `[abs_mul]`. Apply the tactic sequence `rcases sg_eq (e none) with h | h <;> simp [h]`. Establish `hN : |‖polarPt e u (e none) - 1‖ - ‖Complex.exp ((u.1 : ℂ) * Complex.I) - 1‖| ≤ (∑ i, ‖u.2 i‖) ^ 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(abs_norm_sub_norm_le _ _).trans (le_trans (le_of_eq ?_) ha)` and prove the remaining obligations. Rewrite using `[polarPt_none]`. Use `set a := Real.sqrt (1 - sg (e none) * qf u.2)`. Establish `: (a : ℂ) * Complex.exp ((u.1 : ℂ) * Complex.I) - 1 - (Complex.exp ((u.1 : ℂ) * Complex.I) - 1) = ((a - 1 : ℝ) : ℂ) * Complex.exp ((u.1 : ℂ) * Complex.I)` using `by push_cast; ring`. Rewrite using `[this, norm_mul, Complex.norm_exp_ofReal_mul_I, mul_one, Complex.norm_real, Real.norm_eq_abs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : 0 ≤ ∑ i, ‖u.2 i‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hN0` using `norm_nonneg (polarPt e u (e none) - 1)`. Establish `hT` using `abs_nonneg u.1`. Unfold `tanGauge ptGauge`. Simplify using `only [polarPt_some]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨n1, n2⟩` from `abs_le.1 hN`. Generalize the expression as in `‖polarPt e u (e none) - 1‖ = N at *`. Generalize the expression as in `‖Complex.exp ((u.1 : ℂ) * Complex.I) - 1‖ = E at *`. Generalize the expression as in `∑ i, ‖u.2 i‖ = S at *`. Generalize the expression as in `|u.1| = T at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : t⁻¹ * r < r` using `by nlinarith`. Establish `h2 : S ≤ r` using `by linarith`. Establish `h3 : S ^ 2 ≤ r ^ 2` using `pow_le_pow_left₀ hS h2 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `h`. Establish `h2 : S ≤ r` using `by linarith`. Establish `h3 : S ^ 2 ≤ r ^ 2` using `pow_le_pow_left₀ hS h2 2`. Establish `h4 : r ^ 2 ≤ r` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : T ≤ 4 * r` using `by linarith`. Establish `h6` using `b3 (by linarith)`. Establish `h7 : T ^ 3 ≤ (4 * r) ^ 3` using `pow_le_pow_left₀ hT h5 3`. Establish `h8 : r ^ 3 ≤ r ^ 2 / 2` using `by nlinarith [sq_nonneg r]`. Establish `h9 : 3 * r ^ 2 ≤ (t - 1) * r` using `by nlinarith`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem polar_compare (P Q P' Q' : ℕ) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (t : ℝ)
     (ht : 1 < t) : ∀ᶠ r in 𝓝[>] (0 : ℝ), ∀ u : ℝ × Sp P' Q',

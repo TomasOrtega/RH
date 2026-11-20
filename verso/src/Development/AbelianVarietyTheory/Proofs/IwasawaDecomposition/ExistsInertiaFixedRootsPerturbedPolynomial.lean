@@ -9,19 +9,19 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hne' : z - y ≠ 0` using `sub_ne_zero.mpr hne`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : z - y ∣ Polynomial.aeval z h - Polynomial.aeval y h := by`. Use `Polynomial.sub_dvd_eval_sub z y (h.map (algebraMap ℤ R))` as an intermediate fact. Simplify `this` using `only [Polynomial.eval_map_algebraMap]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hS` using `Commute.geom_sum₂_mul (Commute.all z y) m`. Establish `hS' : (∑ i ∈ Finset.range m, z ^ i * y ^ (m - 1 - i)) = u * k`. Apply `mul_right_cancel₀ hne'` to reduce the goal to its premises. Rewrite using `[hS]`. Take the linear combination `hz - hy + u * hk`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hu0 : IsLocalRing.residue R u = 0` using `(IsLocalRing.residue_eq_zero_iff _).mpr hu`. Establish `hzy0 : IsLocalRing.residue R z = IsLocalRing.residue R y`. Use `(IsLocalRing.residue_eq_zero_iff _).mpr hzy` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hm0 : (m : IsLocalRing.ResidueField R) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hm` to reduce the goal to its premises. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_natCast, h0]`. Establish `hmpos : m ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at hm0`. Establish `hy1 : (IsLocalRing.residue R y) ^ m = 1`. Use `congrArg (IsLocalRing.residue R) hy` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, hu0, zero_mul, map_pow, map_one, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hy0 : IsLocalRing.residue R y ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hy1` using `[h0, zero_pow hmpos]`. Conclude with `zero_ne_one hy1`. Use `congrArg (IsLocalRing.residue R) hS'` as an intermediate fact. Simplify using `only [map_sum, map_mul, map_pow, hu0, zero_mul, hzy0] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[geom_sum₂_self]`. Conclude with `mul_ne_zero hm0 (pow_ne_zero _ hy0) this`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_perturbed_pow_sub_one {R : Type*} [CommRing R] [IsDomain R] [IsLocalRing R]
     (y z u : R) (m : ℕ) (h : Polynomial ℤ)
@@ -62,33 +62,31 @@ theorem eq_of_perturbed_pow_sub_one {R : Type*} [CommRing R] [IsDomain R] [IsLoc
   exact mul_ne_zero hm0 (pow_ne_zero _ hy0) this
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hm`. Use `set h : Polynomial ℤ := X ^ m - C 1 - f with hh`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : h.degree < (m : WithBot ℕ)`. Establish `h1 : (X ^ m - C 1 : Polynomial ℤ).Monic` using `Polynomial.monic_X_pow_sub_C 1 hm0`. Establish `h2 : (X ^ m - C 1 : Polynomial ℤ).degree = m` using `Polynomial.degree_X_pow_sub_C (Nat.pos_of_ne_zero hm0) 1`. Establish `h3 : f.degree = m` using `by rw [Polynomial.degree_eq_natDegree hf.ne_zero, hfm]`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `Polynomial.degree_sub_lt (h2.trans h3.symm) h1.ne_zero (by rw [h1.leadingCoeff, hf.leadingCoeff])`. Set `R` to `integralClosure ℤ Ω`. Set `e0 : R` to `⟨e, he⟩`. Set `g0 : Polynomial R` to `f.map (algebraMap ℤ R) + C e0 * h.map (algebraMap ℤ R)`. Establish `hf0 : (f.map (algebraMap ℤ R)).Monic` using `hf.map _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf0d : (f.map (algebraMap ℤ R)).degree = m`. Rewrite using `[hf.degree_map, Polynomial.degree_eq_natDegree hf.ne_zero, hfm]`. Establish `hlt : (C e0 * h.map (algebraMap ℤ R)).degree < (f.map (algebraMap ℤ R)).degree`. Rewrite using `[hf0d, ← Polynomial.smul_eq_C_mul]`. Conclude with `lt_of_le_of_lt ((Polynomial.degree_smul_le _ _).trans Polynomial.degree_map_le) hdeg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg0 : g0.Monic` using `hf0.add_of_left hlt`. Establish `hg0d : g0.degree = m`. Rewrite using `[← hf0d]`. Conclude with `Polynomial.degree_add_eq_left_of_degree_lt hlt`. Establish `hev : ∀ y : Ω, Polynomial.aeval y g0 = Polynomial.aeval y f + e * Polynomial.aeval y h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Simplify using `only [g0, map_add, map_mul, Polynomial.aeval_map_algebraMap, Polynomial.aeval_C]`. Both sides reduce to the same expression. Establish `hhev : ∀ y : Ω, Polynomial.aeval y h = y ^ m - 1 - Polynomial.aeval y f`. Introduce `y`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hh]`. Set `g : Polynomial Ω` to `g0.map (algebraMap R Ω)`. Establish `hg : g.Monic` using `hg0.map _`. Establish `hgd : g.natDegree = m`. Rewrite using `[hg0.natDegree_map, Polynomial.natDegree_eq_of_degree_eq_some hg0d]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Multiset.card g.roots = g.natDegree` using `IsAlgClosed.card_roots_eq_natDegree`. Use `⟨g.roots, hcard.trans hgd, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hy0 : Polynomial.aeval y g0 = 0`. Use `(Polynomial.mem_roots hg.ne_zero).mp hy` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Polynomial.IsRoot, Polynomial.eval_map_algebraMap]`. Then use the resulting hypothesis. Establish `hyint : IsIntegral ℤ y`. Establish `: IsIntegral R y` using `⟨g0, hg0, hy0⟩`. Conclude with `isIntegral_trans y this`. Use `⟨hyint, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hyA : y ∈ A'` using `mem_of_isIntegral_int A' hyint`. Establish `hσ'` using `mem_Ine.mp hσ`. Establish `hzA : σ y ∈ A'` using `(apply_mem_iff_of_mem_Dec hσ'.1 y).mpr hyA`. Establish `huA : 1 - e ∈ A'` using `(A'.valuation_le_one_iff _).mp hv.le`. Establish `e1 : y ^ m - 1 = (1 - e) * Polynomial.aeval y h`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy0` using `[hev]`. Take the linear combination `hy0 - hhev y`. Establish `e2 : (σ y) ^ m - 1 = (1 - e) * Polynomial.aeval (σ y) h`. Use `congrArg σ e1` as an intermediate fact. Rewrite `this` using `[map_sub, map_pow, map_one, map_mul, map_sub, map_one, hσe]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Use `congr 1`. Conclude with `(Polynomial.aeval_algHom_apply (σ : Ω →+* Ω).toIntAlgHom y h).symm`. Establish `hae : ∀ x : A', ((Polynomial.aeval x h : A') : Ω) = Polynomial.aeval (x : Ω) h` using `fun x => (Polynomial.aeval_algHom_apply A'.subtype.toIntAlgHom x h).symm`. Use `eq_of_perturbed_pow_sub_one (R := A') ⟨y, hyA⟩ ⟨σ y, hzA⟩ ⟨1 - e, huA⟩ m h (Subtype.ext (by simpa [hae] using e1)) (Subtype.ext (by simpa [hae] using e2)) ((A'.valuation_lt_one_iff _).mpr hv) ((A'.valuation_lt_one_iff _).mpr (hσ'.2 y ((A'.valuation_le_one_iff _).mpr hyA))) (fun h …` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `(A'.valuation_lt_one_iff _).mp hh'` as an intermediate fact. Rewrite `this` using `[show ((m : A') : Ω) = m from by simp, hm]`. Conclude with `lt_irrefl _ this)`. Conclude with `congrArg Subtype.val this`. Use `congrArg (Polynomial.eval b) (Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq hg hcard)` as an intermediate fact.
-
-Rewrite `this` using `[Polynomial.eval_multiset_prod, Multiset.map_map, Polynomial.eval_map_algebraMap, hev, hhev, hb]`. Simplify using `only [Function.comp_def, eval_sub, eval_X, eval_C] at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_roots_fixed_of_mem_Ine (E Ω : Type) [Field E] [NumberField E] [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω] (A' : ValuationSubring Ω) (σ : G E Ω)

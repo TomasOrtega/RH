@@ -25,14 +25,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {c : Coeff l}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.toLinearEquiv' (h.invertibleOfIsUnitDet hd), fun z => Matrix.toLin'_apply h z⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_equiv_of_det {g : ℕ} (h : Matrix (Fin g) (Fin g) ℂ) (hd : IsUnit h.det) :
     ∃ e : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), ∀ z, e z = h *ᵥ z :=
   ⟨h.toLinearEquiv' (h.invertibleOfIsUnitDet hd), fun z => Matrix.toLin'_apply h z⟩
 
 /- English proof (translation)
-The claim follows from `(FU.fibre i P P' hP hP').2 ⟨LinearEquiv.refl _ _, e.symm.trans e', fun _ _ => rfl, fun a _ => ⟨0, by simp⟩, fun a => ⟨0, by simp⟩, fun a => by simp [he, he']⟩`.
+A detailed English derivation is pending.
 -/
 theorem u_eq_of_equiv {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σ ty) (i : Fin FU.n)
     {P P' Q : (FU.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (FU.Di i) ty P) (hP' : IsPeriod (FU.Di i) ty P')
@@ -42,7 +42,7 @@ theorem u_eq_of_equiv {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* �
     fun a => ⟨0, by simp⟩, fun a => by simp [he, he']⟩
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Model.j, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, hx, spMap_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem j_over (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (κ : c.F →+* ℂ) (x : Sp ℂ ⟶ Xo.XF c)
     (hx : x ≫ pullback.snd _ _ = spMap κ) : (x ≫ Y.j) ≫ Y.s = spMap (κ.comp (algebraMap (𝓞 c.F) c.F)) := by
@@ -50,7 +50,7 @@ theorem j_over (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (κ : c.F →+* ℂ)
     spMap_comp]
 
 /- English proof (translation)
-Use `Y.jQ_open` as an intermediate fact. Rewrite using `[← cancel_mono Y.jQ]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify `h` using `[Model.j]`. Rewrite using `[Category.assoc, Category.assoc, Y.jQ_over, hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem j_inj (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) {x x' : Sp ℂ ⟶ Xo.XF c}
     (hx : x ≫ pullback.snd _ _ = x' ≫ pullback.snd _ _) (h : x ≫ Y.j = x' ≫ Y.j) : x = x' := by
@@ -61,7 +61,7 @@ theorem j_inj (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) {x x' : Sp ℂ ⟶ Xo
   · rw [Category.assoc, Category.assoc, Y.jQ_over, hx]
 
 /- English proof (translation)
-Establish `h : Y.jQ (centre x) ∈ pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F)) ⁻¹' abLocus Y.t.G`. Rewrite using `[Y.ab_gen]`. Conclude with `⟨_, rfl⟩`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem j_interior (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (x : Sp ℂ ⟶ Xo.XF c) :
     centre (x ≫ Y.j) ∈ abLocus Y.t.G := by
@@ -71,11 +71,11 @@ theorem j_interior (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (x : Sp ℂ ⟶ 
   exact h
 
 /- English proof (translation)
-Establish `hc : p ≫ Y.s = spMap κ ≫ spMap (algebraMap (𝓞 c.F) c.F)` using `by rw [hs, spMap_comp]`. Set `w : Sp ℂ ⟶ pullback Y.s (spMap (algebraMap (𝓞 c.F) c.F))` to `pullback.lift p (spMap κ) hc`. Establish `hw₁ : w ≫ pullback.fst _ _ = p` using `pullback.lift_fst _ _ _`. Establish `hw₂ : w ≫ pullback.snd _ _ = spMap κ` using `pullback.lift_snd _ _ _`. Use `Y.jQ_open` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : Set.range w ⊆ Set.range Y.jQ`. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[← Y.ab_gen, Set.mem_preimage, ← Scheme.Hom.comp_apply, hw₁]`. Establish `hu : u = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim _ _`. Substitute `hu` using the available equality.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `hp`. Establish `hx : IsOpenImmersion.lift Y.jQ w hr ≫ Y.jQ = w` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨IsOpenImmersion.lift Y.jQ w hr, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Model.j, ← Category.assoc, hx, hw₁]`. Rewrite using `[← Y.jQ_over, ← Category.assoc, hx, hw₂]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_j (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (κ : c.F →+* ℂ) (p : Sp ℂ ⟶ Y.X)
     (hp : centre p ∈ abLocus Y.t.G) (hs : p ≫ Y.s = spMap (κ.comp (algebraMap (𝓞 c.F) c.F))) :
@@ -97,11 +97,11 @@ theorem exists_j (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (κ : c.F →+* �
   · rw [← Y.jQ_over, ← Category.assoc, hx, hw₂]
 
 /- English proof (translation)
-Use `Y.jQ_open` as an intermediate fact. Establish `he : ∀ b, (x b ≫ Y.j) ≫ Y.s = spMap κ ≫ spMap (algebraMap (𝓞 c.F) c.F)` using `fun b => by`. Rewrite using `[j_over Y κ _ (hs b), spMap_comp]`. Establish `hq : ∀ b, x b ≫ Y.jQ = pullback.lift (x b ≫ Y.j) (spMap κ) (he b)` using `fun b => by`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[pullback.lift_fst, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[pullback.lift_snd, Category.assoc, Y.jQ_over, hs]`. Establish `h₃ : IsHolTo T fun b => x b ≫ Y.jQ`. Use `PullbackSections.holPair _ _ _ Y.s (spMap (algebraMap (𝓞 c.F) c.F)) m T (fun b => x b ≫ Y.j) (fun _ => spMap κ) he hT h (PullbackSections.isHolTo_spMap hT (Ψ := fun _ => κ) fun a => differentiableOn_const _)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [hq]`. Conclude with `Flat.isHolTo_of_comp_openImmersion Y.jQ h₃`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isHolTo_of_j (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (κ : c.F →+* ℂ) {m : ℕ} {T : Set (Fin m → ℂ)}
     {x : (Fin m → ℂ) → (Sp ℂ ⟶ Xo.XF c)} (hT : IsOpen T) (hs : ∀ b, x b ≫ pullback.snd _ _ = spMap κ)
@@ -122,51 +122,47 @@ theorem isHolTo_of_j (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (κ : c.F →+
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Set `ι : Type` to `{i : Fin FU.n // ∃ P, IsPeriod (FU.Di i) ty P}`. Establish `htyi : ∀ i, IsTypeFn H (FU.Di i).p (FU.Di i).q ty` using `fun i => by`. Rewrite using `[(FU.sig i).1, (FU.sig i).2]`. Conclude with `hty`. Establish `hsig : ∀ {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] (R : RiemLat E g Λ), R.HasSig (fun τ => κ.comp (labelEmb c (sm τ))) j j' ↔ HasRk H D.p D.q R` using `fun R => hasSig_iff κ ρ hρ hκ D.p D.q sm j j' hs R`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hriem : ∀ i P, IsPeriod (FU.Di i) ty P → ∃ R : RiemLat E g (FU.Di i).La, R.P = P ∧ R.form = (FU.Di i).EF ∧ R.HasSig (fun τ => κ.comp (labelEmb c (sm τ))) j j'` using `fun i P hP => by`. Take `⟨R, h₁, h₂, -, h₄⟩` from `GlobalTheory.T.exists_riemann_lattice_of_period E H (FU.Di i) g ty P (htyi i) hP`. Rewrite `h₄` using `[(FU.sig i).1, (FU.sig i).2]`. Conclude with `⟨R, h₁, h₂, (hsig R).2 h₄⟩`. Establish `hF : ∀ k : ι, ∃ F : UnivFam E (CMType H) j j' n g (FU.Di k.1).La, F.q = q ∧ F.σ = (fun τ => κ.comp (labelEmb c (sm τ))) ∧ F.form = (FU.Di k.1).EF` using `fun k => by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP⟩` from `k.2`. Take `⟨R, -, h₂, h₃⟩` from `hriem _ P hP`. Take `⟨F, a₁, a₂, a₃⟩` from `univExists E (CMType H) j j' n g _ R _ q (side_cm κ sm (hs.imp (·.1) (·.1))) h₃`. Conclude with `⟨F, a₁, a₂, a₃.trans h₂⟩`. Use `choose F hq hσ hform using hF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hΓ : ∀ k : ι, ∃ Γ : Subgroup ((FU.Di k.1).La ≃ₗ[𝓞 E] (FU.Di k.1).La), (F k).IsArith Γ ∧ ∀ γ, γ ∈ Γ ↔ InLevel l (FU.Di k.1) γ` using `fun k => by haveI := ((F k).R 0).fin`. Take `⟨Γ, a₁, a₂, a₃⟩` from `GlobalTheory.T.congruence_subgroup_of_form_automorphisms E (FU.Di k.1).La (FU.Di k.1).EF (l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) l.M l.A (by have := l.three_le; omega) l.A_pos`. Use `⟨Γ, ?_, a₃⟩` and prove the remaining obligations. Unfold `UnivFam.IsArith`. Rewrite using `[hform]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨a₁, a₂⟩`. Use `choose Γ hΓa hΓm using hΓ`. Establish `hO : IsOpen (ballDom q)` using `(GlobalTheory.T.ball_domain_open_convex_zero _ j j' n q).1`. Establish `hRf : ∀ k t, ((F k).R t).form = (FU.Di k.1).EF` using `fun k t => ((F k).form_eq t).trans (hform k)`. Establish `hloc : ∀ k : ι, ∀ t₀ ∈ ballDom q, ∃ (V' : Set (Fin n → ℂ)) (P : (Fin n → ℂ) → ((FU.Di k.1).La →+ (Fin g → ℂ))) (h : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ), IsOpen V' ∧ t₀ ∈ V' ∧ V' ⊆ ballDom q ∧ IsHolPeriods (FU.Di k.1) ty V' P ∧ (∀ a b, DifferentiableOn ℂ (fun t => h t a b) V') …` using `fun k => GlobalTheory.T.local_holomorphic_period_family E H (FU.Di k.1) g n ty (ballDom q) (F k).R (htyi _) hO (hq k ▸ (F k).hol) fun t ht => ⟨hRf k t, by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(FU.sig _).1, (FU.sig _).2]`. Use `(hsig _).1 ?_` and prove the remaining obligations. Rewrite using `[← hσ k]`. Conclude with `(F k).sig t (by rw [hq]; exact ht)⟩`. Establish `hPt : ∀ (k : ι) (t : Fin n → ℂ), ∃ P, IsPeriod (FU.Di k.1) ty P ∧ (t ∈ ballDom q → ∃ e : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), ∀ x, P x = e (((F k).R t).P x))` using `fun k t => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `ht : t ∈ ballDom q`. Take `⟨V', P, h, -, hm, -, hP, -, hh⟩` from `hloc k t ht`. Take `⟨e, he⟩` from `exists_equiv_of_det (h t) (hh t hm).1`. Conclude with `⟨P t, hP.1 t hm, fun _ => ⟨e, fun x => by rw [he, (hh t hm).2]⟩⟩`. Take `⟨P, hP⟩` from `k.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨P, hP, fun h => absurd h ht⟩`. Use `choose Pt hPt hPe using hPt`. Establish `hu : ∀ (k : ι), ∀ t ∈ ballDom q, ∀ P, IsPeriod (FU.Di k.1) ty P → ∀ e : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), (∀ x, P x = e (((F k).R t).P x)) → FU.u k.1 (Pt k t) = FU.u k.1 P` using `fun k t ht P hP e he => by`. Take `⟨e₀, he₀⟩` from `hPe k t ht`. Conclude with `u_eq_of_equiv FU k.1 (hPt k t) hP e₀ e he₀ he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hum : ∀ (k : ι), ∀ t ∈ ballDom q, ∀ P, IsPeriod (FU.Di k.1) ty P → ∀ h : Matrix (Fin g) (Fin g) ℂ, IsUnit h.det → (∀ x, P x = h *ᵥ ((F k).R t).P x) → FU.u k.1 (Pt k t) = FU.u k.1 P` using `fun k t ht P hP h hd hh => by`. Take `⟨e, he⟩` from `exists_equiv_of_det h hd`. Conclude with `hu k t ht P hP e fun x => by rw [he, hh]`. Establish `hc : ∀ (k : ι) t, FU.u k.1 (Pt k t) ≫ Xo.s = spMap κ ≫ spMap (IntermediateField.inclusion c.le).toRingHom` using `fun k t => by rw [FU.over_σ _ _ (hPt k t), spMap_comp]`. Set `xF : ι → (Fin n → ℂ) → (Sp ℂ ⟶ Xo.XF c)` to `fun k t => pullback.lift _ _ (hc k t)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hx₁ : ∀ k t, xF k t ≫ pullback.fst _ _ = FU.u k.1 (Pt k t)` using `fun k t => pullback.lift_fst _ _ _`. Establish `hx₂ : ∀ k t, xF k t ≫ pullback.snd _ _ = spMap κ` using `fun k t => pullback.lift_snd _ _ _`. Establish `hxhol : ∀ k, IsHolTo (ballDom q) (xF k)` using `fun k => by`. Use `PullbackSections.holPair _ _ _ _ _ n _ _ _ (hc k) hO ?_ (PullbackSections.isHolTo_spMap hO (Ψ := fun _ => κ) fun a => differentiableOn_const _)` and prove the remaining obligations. Use `GlobalTheory.HolPeriods.isHolTo_of_local fun t₀ ht₀ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨V', P, h, hVo, hm, hsub, hP, -, hh⟩` from `hloc k t₀ ht₀`. Conclude with `⟨V', hm, hsub, GlobalTheory.HolPeriods.isHolTo_congr (FU.hol _ n V' P hVo hP).1 fun t ht => hum k t (hsub ht) _ (hP.1 t ht) _ (hh t ht).1 (hh t ht).2⟩`. Establish `hpt : ∀ k k' t t', xF k t ≫ Y.j = xF k' t' ≫ Y.j ↔ FU.u k.1 (Pt k t) = FU.u k'.1 (Pt k' t')` using `fun k k' t t' => by`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hx₁, ← hx₁, j_inj Y ((hx₂ k t).trans (hx₂ k' t').symm) h]`. Introduce `h`. Use `congr 1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[hx₁, hx₁, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hx₂, hx₂]`. Establish `hmono : ∀ {X : Scheme.{0}} {B B' : Set (Fin n → ℂ)} {y : (Fin n → ℂ) → (Sp ℂ ⟶ X)}, IsHolTo B y → IsOpen B' → B' ⊆ B → IsHolTo B' y` using `fun h hB hsub => GlobalTheory.HolPeriods.isHolTo_comp (φ := id) h hB differentiableOn_id hsub`. Use `⟨{ ι := ι fin := inferInstance Di := fun k => FU.Di k.1 sig := fun k => FU.sig k.1 F := F q_eq := hq form_eq := fun k => Or.inl (hform k) σ_eq := fun k τ => by rw [hσ] Γ := Γ mem_Γ := hΓm arith := hΓa pt := fun k t => xF k t ≫ Y.j hol := fun k => PullbackSections.isHolTo_comp (hx …` and prove the remaining obligations. Rewrite using `[hpt, FU.fibre _ _ _ (hPt k t) (hPt k t')]`. Take `⟨e, he⟩` from `hPe k t ht`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨e', he'⟩` from `hPe k t' ht'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, h, a₁, a₂, a₃, a₄⟩`. Use `⟨γ, (hΓm k γ).2 ⟨a₁, a₂, a₃⟩, (e.trans h).trans e'.symm, fun x => ?_⟩` and prove the remaining obligations. Use `a₄ x` as an intermediate fact.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[he', he]`. Simplify using `[← this]`. Introduce and unpack `⟨γ, hγ, h, hh⟩`. Take `⟨a₁, a₂, a₃⟩` from `(hΓm k γ).1 hγ`. Use `⟨γ, (e.symm.trans h).trans e', a₁, a₂, a₃, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[he', he, hh]`. Simplify using the standard rewrite rules. Take `⟨x, hx, hxs⟩` from `exists_j Y κ p hp hps`. Take `⟨i, P, hP, hui⟩` from `FU.onto (x ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hxs, spMap_comp])`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨R, h₁, h₂, h₃⟩` from `hriem i P hP`. Set `k : ι` to `⟨i, P, hP⟩`. Take `⟨t, ⟨ht, e, he⟩, -⟩` from `(F k).univ R (h₂.trans (hform k).symm) (by rw [hσ]; exact h₃)`. Rewrite `ht` using `[hq]`. Use `⟨k, t, ht, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hx]`. Use `congr 1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[hx₁, ← hui]`. Conclude with `hu k t ht P hP e fun a => by rw [← h₁]; exact he a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx₂, hxs]`. Take `⟨V', P, h, -, hm, -, hP, -, hh⟩` from `hloc k t ht`. Establish `h₁ : FibreLat Xo.univ.t (FU.u k.1 (P t)) ((F k).R t)` using `GlobalTheory.T.family_period_riemann_lattice E H D l Xo _ g ty FU k.1 ((F k).R t) (P t) (h t) (hP.1 t hm) (hRf k t) (hh t hm).1 (hh t hm).2 Empty _ _ fun a => a.elim`. Rewrite `h₁` using `[← hum k t ht _ (hP.1 t hm) _ (hh t hm).1 (hh t hm).2, ← hx₁]`. Establish `h₂` using `((GlobalTheory.T.fibre_lattice_base_change_conj E H _ _ Xo.univ.t Y.oF.t _ g _ ((F k).R t) ((F k).R t) (xF k t)).1 ⟨Y.m0.toSABMap⟩).2 h₁`.
+Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `((GlobalTheory.T.fibre_lattice_base_change_conj E H _ _ Y.t Y.oF.t _ g _ ((F k).R t) ((F k).R t) (xF k t)).1 ⟨Y.m⟩).1 h₂`. Take `⟨V', P, h, hVo', hm, hsub, hP, hd, hh⟩` from `hloc k t₀ (hVs ht₀)`. Establish `hW : IsOpen (V ∩ V')` using `hVo.inter hVo'`. Use `hV E H D l Xo c Y S Ω K J y 𝔐 κ _ g ty FU k.1 n (V ∩ V') z (xF k) (F k).R P h hW (hmono hz hW Set.inter_subset_left) (hmono (hxhol k) hW fun t ht => hsub ht.2) ⟨fun t ht => hP.1 t ht.2, fun x => (hP.2 x).mono Set.inter_subset_right⟩ (fun a b => (hd a b).mono Set.inter_subset_righ …` and prove the remaining obligations. Conclude with `⟨hRf k t, (hh t ht.2).1, (hh t ht.2).2, (hzf t ht.1).symm, (hx₁ k t).trans (hum k t (hsub ht.2) _ (hP.1 t ht.2) _ (hh t ht.2).1 (hh t ht.2).2), hx₂ k t⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx : ∀ a, ∃ x : Sp ℂ ⟶ Xo.XF c, x ≫ pullback.snd _ _ = spMap κ ∧ (a ∈ T → x ≫ Y.j = y a)` using `fun a => by`. Distinguish the cases in `ha : a ∈ T`. Take `⟨x, h₁, h₂⟩` from `exists_j Y κ _ (hyi a ha) (hys a ha)`. Conclude with `⟨x, h₂, fun _ => h₁⟩`. Conclude with `⟨xF k t, hx₂ k t, fun h => absurd h ha⟩`.
-
-Use `choose x hxs hxj using hx`. Establish `hol` using `isHolTo_of_j Y κ hT hxs (GlobalTheory.HolPeriods.isHolTo_congr hy hxj)`. Take `⟨i, hi⟩` from `Flat.exists_index_of_isPreconnected E H D l Xo _ g ty FU m T (fun a => x a ≫ pullback.fst _ _) hT hTc ⟨b, hb⟩ (fun a _ => by rw [Category.assoc, pullback.condition, ← Category.assoc, hxs, spMap_comp]) (PullbackSections.isHolTo_comp hol _)`. Establish `key : ∀ a ∈ T, ∀ (k : ι) (t : Fin n → ℂ), y a = xF k t ≫ Y.j → k.1 = i` using `fun a ha k t e => by`. Take `⟨B', P, -, haB, -, hP, hu'⟩` from `hi a ha`.
-
-Use `FU.disj _ _ _ _ (hPt k t) (hP.1 a haB) ?_` and prove the remaining obligations. Rewrite using `[hu' a haB, ← hx₁, j_inj Y ((hxs a).trans (hx₂ k t).symm) ((hxj a ha).trans e)]`. Conclude with `Subtype.ext ((key b hb k t e).trans (key b' hb' k' t' e').symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kUnif_good (hV : VecOfPeriods) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (sm : CMType H → CMType H ⊕ CMType H)
     (j j' n g : ℕ) (q : CMType H × Fin j × Fin j' ≃ Fin n) (κ : c.F →+* ℂ) (ty : Fin g → (E →+* ℂ))

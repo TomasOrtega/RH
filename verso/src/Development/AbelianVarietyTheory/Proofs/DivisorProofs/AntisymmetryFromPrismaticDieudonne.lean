@@ -18,9 +18,9 @@ open scoped Classical
 namespace GlobalTheory.AntiFinite
 
 /- English proof (translation)
-Introduce `hP2 hPH hRA hSW hPD`. Establish `hAr : ArCalc` using `hP2.p4`. Take `⟨G, hG, hG2⟩` from `GlobalTheory.T.exists_homog_swap_symmetric hAr hRA`. Establish `hFl : SwapFl G` using `GlobalTheory.T.swap_symmetric_implies_swap_flag hAr G hG hG2`. Apply the tactic sequence `have hBun : BunSt := by apply GlobalTheory.T.bundle_statement_of_prismatic <;> assumption`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hX` using `GlobalTheory.T.swap_flag_arith_degree_chern hP2 hPH hRA hBun G hG hFl`. Establish `hMu` using `GlobalTheory.T.weights_sum_to_volume_proportional hP2 hPH`. Introduce `D O hCore hf A T H hR hh hIs Φ hΦ`. Conclude with `GlobalTheory.CovTest.antisym_of_swapEq D O.Y Φ hh G hΦ (hMu D O hCore hf A T H hR).2.2 (GlobalTheory.T.swap_flag_degree_identity hP2 hPH.deg G hG hFl D O.Y hh hIs) (hX D O hCore hf A T H hR)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → PrismaticDieudonnePerfd → AntiSt := by
   intro hP2 hPH hRA hSW hPD

@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.OneMapBridge
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F hC hE`. Establish `h` using `RealDat3.characterisation_of_weak hC hE`. Conclude with `⟨⟨h.lev, h.grp, h.fam, h.models, h.chain, h.thP⟩, h.tup.mu_off, h.tup.mu_used⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem heckeChoiceClauses_of_weakCharacterisation_at_face : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T0 : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → R.toRealDat.ExAt → GlobalTheory.Hk3.Core R.toRealDat F.lv2 ∧ R.toRealDat.tup_mu_off ∧ R.toRealDat.tup_mu_used := by
   intro D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F hC hE

@@ -18,13 +18,13 @@ variable {k G : Type u} [CommRing k] [Group G] [Fintype G] (M : Rep.{u} k G)
   (u : groupCohomology M 2)
 
 /- English proof (translation)
-The claim follows from `((tateAcyclic_coindSES_X₂ M) 2).of_iso (tateIsoH _ 2 2 rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_coind_two : IsZero (groupCohomology (coindSES.obj M).X₂ 2) :=
   ((tateAcyclic_coindSES_X₂ M) 2).of_iso (tateIsoH _ 2 2 rfl).symm
 
 /- English proof (translation)
-Establish `: Epi (δ (coindSES_shortExact M) 1 2 rfl)` using `epi_δ_of_isZero (coindSES_shortExact M) 1 (isZero_groupCohomology_coind_two M)`. Take `⟨v, hv⟩` from `(ModuleCat.epi_iff_surjective _).1 this u`. Take `⟨f, rfl⟩` from `(ModuleCat.epi_iff_surjective (H1π _)).1 inferInstance v`. Conclude with `⟨f, hv⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cocycle_δ_eq : ∃ f : cocycles₁ (coindSES.obj M).X₃,
     δ (coindSES_shortExact M) 1 2 rfl (H1π _ f) = u := by
@@ -38,7 +38,7 @@ noncomputable def splittingCocycle : cocycles₁ (coindSES.obj M).X₃ :=
   (exists_cocycle_δ_eq M u).choose
 
 /- English proof (translation)
-The claim follows from `(exists_cocycle_δ_eq M u).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem δ_splittingCocycle :
     δ (coindSES_shortExact M) 1 2 rfl (H1π _ (splittingCocycle M u)) = u :=
@@ -48,7 +48,7 @@ noncomputable def splittingSES : ShortComplex (Rep.{u} k G) :=
   pullbackSES (coindSES.obj M) (cocycleHom (splittingCocycle M u))
 
 /- English proof (translation)
-The claim follows from `pullbackSES_shortExact _ (coindSES_shortExact M)`.
+A detailed English derivation is pending.
 -/
 theorem splittingSES_shortExact : (splittingSES M u).ShortExact :=
   pullbackSES_shortExact _ (coindSES_shortExact M)
@@ -58,7 +58,7 @@ noncomputable abbrev splittingModule : Rep.{u} k G := (splittingSES M u).X₂
 omit [Fintype G] in
 
 /- English proof (translation)
-Rewrite using `[H1π_comp_map_apply, H1π_comp_map_apply]`. Use `congr 1`. Apply `cocycles₁_ext` to reduce the goal to its premises. Introduce `h`. Conclude with `cocycleHom_augIdealSubOne f (φ h)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_H1π_augCocycle {H : Type u} [Group H] (φ : H →* G) {A : Rep.{u} k G}
     (f : cocycles₁ A) :
@@ -84,11 +84,11 @@ noncomputable def splittingSESResHom {H : Type u} [Group H] (φ : H →* G) :
     exact mem_pullbackSubmodule.1 p.2
 
 /- English proof (translation)
-Rewrite using `[δ₀_augTrivSES_res]`. Establish `hN` using `groupCohomology.δ_naturality ((shortExact_res φ).2 (splittingSES_shortExact M u)) ((shortExact_res φ).2 (coindSES_shortExact M)) (splittingSESResHom M u φ) 1 2 rfl`. Establish `e : (map (MonoidHom.id H) (𝟙 (res φ M)) 2).hom (δ ((shortExact_res φ).2 (splittingSES_shortExact M u)) 1 2 rfl (H1π (res φ (augIdeal k G)) (augCocycle k φ))) = (δ ((shortExact_res φ).2 (coindSES_shortExact M)) 1 2 rfl).hom ((map (A` using `res φ (augIdeal k G)) (B := res φ (coindSES.obj M).X₃) (MonoidHom.id H) ((resFunctor φ).map (cocycleHom (splittingCocycle M u))) 1).hom (H1π _ (augCocycle k φ))) := congr(($hN).hom (H1π _ (augCocycle k φ)))`. Establish `hid : ∀ y, (map (A` using `res φ M) (B := res φ M) (MonoidHom.id H) (𝟙 (res φ M)) 2).hom y = y := fun y => by`. Rewrite using `[groupCohomology.map_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hR` using `congr(($(δ_comp_map_res φ (coindSES_shortExact M) 1 2 rfl)).hom (H1π _ (splittingCocycle M u)))`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at hR`. Establish `hR' : (map φ (𝟙 (res φ M)) 2).hom u = (δ ((shortExact_res φ).2 (coindSES_shortExact M)) 1 2 rfl).hom ((map φ (𝟙 (res φ (coindSES.obj M).X₃)) 1).hom (H1π _ (splittingCocycle M u)))` using `by conv_lhs => rw [← δ_splittingCocycle M u]`. Conclude with `hR`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hid _).symm.trans (e.trans ?_)` and prove the remaining obligations. Rewrite using `[map_H1π_augCocycle φ (splittingCocycle M u)]`. Conclude with `hR'.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem δ_splittingSES_res_δ₀ {H : Type u} [Group H] (φ : H →* G) :
     δ ((shortExact_res φ).2 (splittingSES_shortExact M u)) 1 2 rfl

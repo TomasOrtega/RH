@@ -8,9 +8,9 @@ namespace GlobalTheory.PMonE
 open Finset
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_prod]`. Establish `hs : ‖((Equiv.Perm.sign σ : ℤ) : F)‖ = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hs, one_mul]`. Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun i _ => hA _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_le_one_of_entries {F : Type} [NormedField F] [IsUltrametricDist F] {m : Type} [Fintype m]
     [DecidableEq m] (A : Matrix m m F) (hA : ∀ i j, ‖A i j‖ ≤ 1) : ‖A.det‖ ≤ 1 := by
@@ -23,11 +23,11 @@ theorem norm_det_le_one_of_entries {F : Type} [NormedField F] [IsUltrametricDist
   exact Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun i _ => hA _ _)
 
 /- English proof (translation)
-Rewrite using `[Matrix.adjugate_apply]`. Use `norm_det_le_one_of_entries _ fun a b => ?_` and prove the remaining obligations. Distinguish the cases in `h : a = j`. Substitute `h` using the available equality. Rewrite using `[Matrix.updateRow_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : b = i`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hb]`. Rewrite using `[Matrix.updateRow_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA a b`.
+A detailed English derivation is pending.
 -/
 theorem norm_adjugate_le_one {F : Type} [NormedField F] [IsUltrametricDist F] {m : Type} [Fintype m]
     [DecidableEq m] (A : Matrix m m F) (hA : ∀ i j, ‖A i j‖ ≤ 1) (i j : m) : ‖A.adjugate i j‖ ≤ 1 := by
@@ -42,7 +42,7 @@ theorem norm_adjugate_le_one {F : Type} [NormedField F] [IsUltrametricDist F] {m
   · rw [Matrix.updateRow_ne h]; exact hA a b
 
 /- English proof (translation)
-Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, norm_mul, norm_inv, hd, inv_one, one_mul]`. Conclude with `norm_adjugate_le_one A hA i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_inv_le_one_of_det {F : Type} [NormedField F] [IsUltrametricDist F] {m : Type} [Fintype m]
     [DecidableEq m] (A : Matrix m m F) (hA : ∀ i j, ‖A i j‖ ≤ 1) (hd : ‖A.det‖ = 1) (i j : m) :
@@ -51,7 +51,7 @@ theorem norm_inv_le_one_of_det {F : Type} [NormedField F] [IsUltrametricDist F] 
   exact norm_adjugate_le_one A hA i j
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hA i k) (norm_nonneg _) (hB k j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mul_apply_le_one {F : Type} [NormedField F] [IsUltrametricDist F] {m : Type} [Fintype m]
     (A B : Matrix m m F) (hA : ∀ i j, ‖A i j‖ ≤ 1) (hB : ∀ i j, ‖B i j‖ ≤ 1) (i j : m) :
@@ -62,9 +62,9 @@ theorem norm_mul_apply_le_one {F : Type} [NormedField F] [IsUltrametricDist F] {
   exact mul_le_one₀ (hA i k) (norm_nonneg _) (hB k j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Break down `isEmpty_or_nonempty m with hm | hm` into its components or cases. Simplify using the standard rewrite rules. Take `⟨k₀, -, hk₀⟩` from `Finset.exists_max_image (univ : Finset m) (fun k => ‖A i k * B k j‖) univ_nonempty`. Establish `hlt : ‖A i k₀ * B k₀ j‖ < 1`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun k hk => hk₀ k hk) hlt`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_mul_apply_lt_one {F : Type} [NormedField F] [IsUltrametricDist F] {m : Type} [Fintype m]
     (A B : Matrix m m F) (hA : ∀ i j, ‖A i j‖ ≤ 1) (hB : ∀ i j, ‖B i j‖ < 1) (i j : m) :
@@ -82,9 +82,9 @@ theorem norm_mul_apply_lt_one {F : Type} [NormedField F] [IsUltrametricDist F] {
     (IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun k hk => hk₀ k hk) hlt
 
 /- English proof (translation)
-Introduce `F _ _ m _ _ N B hint hsmall hd`. Establish `hinv : ∀ i j, ‖(B N)⁻¹ i j‖ ≤ 1` using `norm_inv_le_one_of_det (B N) (hint N) hd`. Establish `hunit : IsUnit (B N).det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hd` using `[h0, norm_zero]`. Conclude with `zero_ne_one hd`. Use `⟨⟨fun n i j => norm_mul_apply_le_one _ _ hinv (hint n) i j, ?_, fun n hn i j => norm_mul_apply_lt_one _ _ hinv (hsmall n hn) i j⟩, hinv⟩` and prove the remaining obligations. Conclude with `Matrix.nonsing_inv_mul _ hunit`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem normal_of_inv_mul : ∀ (F : Type) [NormedField F] [IsUltrametricDist F] (m : Type) [Fintype m]
     [DecidableEq m] (N : ℕ) (B : ℕ → Matrix m m F), (∀ n i j, ‖B n i j‖ ≤ 1) →

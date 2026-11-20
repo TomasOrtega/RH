@@ -6,33 +6,25 @@ namespace GlobalTheory
 namespace FracAlgEtale
 
 /- English proof (translation)
-Set `ι : R →+* Q` to `algebraMap R Q`. Use `letI : Algebra B R := ((algebraMap A' R).comp (algebraMap B A')).toAlgebra`. Use `haveI : IsScalarTower B A' R := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `letI : Algebra A' K := (π.comp (ι.comp (algebraMap A' R))).toAlgebra`. Use `letI : Algebra B K := ((algebraMap A' K).comp (algebraMap B A')).toAlgebra`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : IsScalarTower B A' K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `F` to `FractionRing B`. Use `haveI : Module.Flat A' R := IsLocalization.flat R (Submonoid.powers (algebraMap B A' f))`. Use `haveI : Module.Flat B R := Module.Flat.trans B A' R`. Establish `hreg : ∀ b ∈ nonZeroDivisors B, algebraMap B R b ∈ nonZeroDivisors R`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `b hb`. Establish `hs` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := R) hb`. Rewrite using `[mem_nonZeroDivisors_iff]`. Use `⟨fun x hx => hs ?_, fun x hx => hs ?_⟩` and prove the remaining obligations. Use `show b • x = b • (0 : R)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_zero, Algebra.smul_def]`. Apply the tactic sequence `first | exact hx | (rw [mul_comm]; exact hx)`. Use `show b • x = b • (0 : R)`. Rewrite using `[smul_zero, Algebra.smul_def]`. Apply the tactic sequence `first | exact hx | (rw [mul_comm]; exact hx)`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunitR : ∀ s ∈ nonZeroDivisors R, IsUnit (π (ι s))` using `fun s hs => (IsLocalization.map_units Q (⟨s, hs⟩ : nonZeroDivisors R)).map π`. Establish `hBK : ∀ b : B, algebraMap B K b = π (ι (algebraMap B R b))` using `fun b => rfl`. Establish `hunit : ∀ y : nonZeroDivisors B, IsUnit (algebraMap B K y)` using `fun y => by`. Rewrite using `[hBK]`. Conclude with `hunitR _ (hreg _ y.2)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI : Algebra F K := (IsLocalization.lift (M := nonZeroDivisors B) (S := F) hunit).toAlgebra`. Use `haveI : IsScalarTower B F K := IsScalarTower.of_algebraMap_eq fun b => (IsLocalization.lift_eq (M := nonZeroDivisors B) (S := F) hunit b).symm`. Use `haveI : Module.Finite F (TensorProduct B F A') := Algebra.FormallyUnramified.finite_of_free F _`. Set `ψ : TensorProduct B F A' →ₐ[F] K` to `Algebra.TensorProduct.lift (Algebra.ofId F K) (IsScalarTower.toAlgHom B A' K) (fun _ _ => Commute.all _ _)`. Establish `hA : ∀ a : A', IsIntegral F (algebraMap A' K a)` using `fun a => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(Algebra.IsIntegral.isIntegral (R := F) ((1 : F) ⊗ₜ[B] a)).map ψ`. Simplify `h1` using `[ψ]`. Establish `hAR : ∀ a : A', π (ι (algebraMap A' R a)) = algebraMap A' K a` using `fun a => rfl`. Establish `hf' : f ∈ nonZeroDivisors B` using `mem_nonZeroDivisors_of_ne_zero hf`. Establish `hR : ∀ x : R, IsIntegral F (π (ι x))`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨⟨a, ⟨_, n, rfl⟩⟩, hx⟩` from `IsLocalization.surj (Submonoid.powers (algebraMap B A' f)) x`. Establish `hx'` using `congrArg (fun y => π (ι y)) hx`. Simplify using `only [map_mul, map_pow] at hx'`. Establish `hfK : π (ι (algebraMap A' R (algebraMap B A' f))) = algebraMap F K (algebraMap B F f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply B F K]`. Both sides reduce to the same expression. Rewrite `hx'` using `[hfK, hAR]`. Establish `hu : IsUnit (algebraMap F K (algebraMap B F f))`. Rewrite using `[← IsScalarTower.algebraMap_apply B F K]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hunit ⟨f, hf'⟩`. Establish `hne : (algebraMap F K (algebraMap B F f)) ^ n ≠ 0` using `pow_ne_zero _ hu.ne_zero`. Establish `: π (ι x) = algebraMap A' K a * ((algebraMap F K (algebraMap B F f)) ^ n)⁻¹` using `(eq_mul_inv_iff_mul_eq₀ hne).2 hx'`. Rewrite using `[this]`. Conclude with `(hA a).mul ((isIntegral_algebraMap (R := F) (A := K) (x := algebraMap B F f)).pow n).inv`.
-
-Establish `hall : ∀ z : K, IsIntegral F z`. Introduce `z`. Take `⟨q, rfl⟩` from `hπ z`. Take `⟨⟨x, s⟩, hq⟩` from `IsLocalization.surj (nonZeroDivisors R) q`. Establish `hq' : π q * π (ι s) = π (ι x)`.
-
-Rewrite using `[← map_mul]`. Conclude with `congrArg π hq`. Establish `: π q = π (ι x) * (π (ι s))⁻¹` using `(eq_mul_inv_iff_mul_eq₀ (hunitR _ s.2).ne_zero).2 hq'`. Rewrite using `[this]`. Conclude with `(hR x).mul (hR s).inv`.
-
-Use `haveI : Algebra.IsIntegral F K := ⟨hall⟩`. Use `haveI : Algebra.IsAlgebraic F K := inferInstance`. Take `⟨algRF, hRF⟩` from `GlobalTheory.FracAlgDedekind.exists_isAlgebraic_ratFunc k B hB`. Use `letI algK : Algebra (RatFunc k) K := ((algebraMap F K).comp (algebraMap (RatFunc k) F)).toAlgebra`. Use `haveI : IsScalarTower (RatFunc k) F K := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
-
-Conclude with `⟨algK, Algebra.IsAlgebraic.trans (RatFunc k) F K⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isAlgebraic_ratFunc_of_ringHom (k B : Type) [Field k] [CommRing B]
     [IsDedekindDomain B] [Algebra k B] [Algebra.FiniteType k B] (hB : ¬ IsField B) (f : B)
@@ -113,7 +105,7 @@ theorem exists_isAlgebraic_ratFunc_of_ringHom (k B : Type) [Field k] [CommRing B
   exact ⟨algK, Algebra.IsAlgebraic.trans (RatFunc k) F K⟩
 
 /- English proof (translation)
-Introduce `k B _ _ _ _ _ _ hB f hf A' _ _ _ M`. Use `haveI : M.asIdeal.IsMaximal := M.isMaximal`. Use `letI : Field (FractionRing (Localization.Away (algebraMap B A' f)) ⧸ M.asIdeal) := Ideal.Quotient.field M.asIdeal`. Conclude with `exists_isAlgebraic_ratFunc_of_ringHom k B hB f hf A' (Localization.Away (algebraMap B A' f)) (FractionRing (Localization.Away (algebraMap B A' f))) (FractionRing (Localization.Away (algebraMap B A' f)) ⧸ M.asIdeal) (Ideal.Quotient.mk M.asIdeal) (Ideal.Quotient.mk_surjective (I := …`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem exists_isAlgebraic_ratFunc_residue : ∀ (k B : Type) [Field k] [IsAlgClosed k] [CommRing B] [IsDedekindDomain B] [Algebra k B] [Algebra.FiniteType k B], ¬ IsField B → ∀ (f : B), f ≠ 0 → ∀ (A' : Type) [CommRing A'] [Algebra B A'] [Algebra.Etale B A'] (M : MaximalSpectrum (FractionRing (Localization.Away (algebraMap B A' f)))), ∃ _ : Algebra (RatFunc k) (FractionRing (Localization.Away (algebraMap B A' f)) ⧸ M.asIdeal), Algebra.IsAlgebraic (RatFunc k) (FractionRing (Localization.Away (algebraMap B A' f)) ⧸ M.asIdeal) := by
   intro k B _ _ _ _ _ _ hB f hf A' _ _ _ M

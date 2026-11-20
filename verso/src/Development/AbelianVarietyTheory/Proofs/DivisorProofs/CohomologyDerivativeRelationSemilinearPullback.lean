@@ -13,31 +13,27 @@ namespace GlobalTheory
 set_option maxHeartbeats 600000 in
 
 /- English proof (translation)
-Introduce `R R' _ _ X X' s s' σ φ h x n y w hx`. Take `⟨f, g, ω, hf, hg, hD⟩` from `hx`. Take `⟨f', hf'⟩` from `H1.mk_surjective (OAff s') (pullHO1 h x)`. Use `choose g' hg' using fun k ↦ H1.mk_surjective (OAff s') (pullHO1 h (y k))`. Establish `ef` using `(isPullO_pullHO1 h x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ef` using `[← hf', ← hf, CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class, H1.mk_eq_mk]`. Take `⟨A, hA⟩` from `ef`. Establish `eg : ∀ k, ∃ B : C0 (OPair φ s'), d0 (OPair φ s') B = ((pairRes φ s').pullbackOneCocycle (g' k)).1 - ((pairPull h).pullbackOneCocycle (g k)).1`. Introduce `k`. Establish `e` using `(isPullO_pullHO1 h (y k)).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[← hg' k, ← hg k, CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class, H1.mk_eq_mk]`. Conclude with `e`. Use `choose B hB using eg`. Establish `hA' : ∀ ⦃t t' : (Pair φ)ᵒᵖ⦄ (a : t ⟶ t'), ((pairRes φ s').pullbackOneCocycle f').1 t t' a = ((pairPull h).pullbackOneCocycle f).1 t t' a + (A t' - mp (OPair φ s') a (A t))`. Introduce `t t' a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `congrFun (congrFun (congrFun hA t) t') a`. Rewrite `e` using `[amitsur_d0_apply, Pi.sub_apply, Pi.sub_apply]`. Conclude with `sub_eq_iff_eq_add'.1 e.symm`. Establish `hB' : ∀ k ⦃t t' : (Pair φ)ᵒᵖ⦄ (a : t ⟶ t'), ((pairRes φ s').pullbackOneCocycle (g' k)).1 t t' a = ((pairPull h).pullbackOneCocycle (g k)).1 t t' a + (B k t' - mp (OPair φ s') a (B k t))`. Introduce `k t t' a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e` using `congrFun (congrFun (congrFun (hB k) t) t') a`. Rewrite `e` using `[amitsur_d0_apply, Pi.sub_apply, Pi.sub_apply]`. Conclude with `sub_eq_iff_eq_add'.1 e.symm`. Use `set w' : Fin n → GlobForm s' := fun k ↦ pullForm h (w k) with hw'def`. Set `Wm : Fin n → Glob1 (OPair φ s')` to `fun k ↦ pullGlob1 (pairPull h) (w k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hWm : ∀ k t, (Wm k).1 t = (w' k).1 ((pairFst φ).obj t)` using `fun k t ↦ (congrArg (fun z : Glob1 (OPair φ s') ↦ z.1 t) (isPullForm_pullForm h (w k))).trans (cechDeRhamCoefMapOneForms_restrictAlongFunctor (OAff s') (pairFst φ) t _)`. Set `κ : A1 (OAff s')` to `fun T T' a ↦ D R' _ (f'.1 T T' a) - ∑ k, (g' k).1 T T' a • (w' k).1 T'`. Establish `hκ : ∀ ⦃T T' T'' : AffOp X'⦄ (a : T ⟶ T') (b : T' ⟶ T''), κ T T'' (a ≫ b) = p1 (OAff s') b (κ T T' a) + κ T' T'' b`. Introduce `T T' T'' a b`. Establish `e1 : D R' _ (f'.1 T T'' (a ≫ b)) = p1 (OAff s') b (D R' _ (f'.1 T T' a)) + D R' _ (f'.1 T' T'' b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Z1.comp, Derivation.map_add, p1_D]`. Establish `e2 : ∀ k, (g' k).1 T T'' (a ≫ b) • (w' k).1 T'' = p1 (OAff s') b ((g' k).1 T T' a • (w' k).1 T') + (g' k).1 T' T'' b • (w' k).1 T''`. Introduce `k`. Rewrite using `[Z1.comp, add_smul, oneFormsMapOfFunctorMorphism_smul, ← (w' k).2 b]`. Simplify using `only [κ]`.
+Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e1, Finset.sum_congr rfl fun k _ ↦ e2 k, Finset.sum_add_distrib, map_sub, map_sum]`. Normalize the expressions using the abelian group laws. Set `θP : A0 (OPair φ s')` to `fun t ↦ q1 (pairPull h) t (ω ((pairPull h).G.obj t)) + D R' _ (A t) - ∑ k, B k t • (Wm k).1 t`. Establish `key : ∀ ⦃t t' : (Pair φ)ᵒᵖ⦄ (a : t ⟶ t'), D R' _ (((pairRes φ s').pullbackOneCocycle f').1 t t' a) - ∑ k, ((pairRes φ s').pullbackOneCocycle (g' k)).1 t t' a • (Wm k).1 t' = θP t' - p1 (OPair φ s') a (θP t)`. Introduce `t t' a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW : ∀ k, (Wm k).1 t' = p1 (OPair φ s') a ((Wm k).1 t)` using `fun k ↦ (Wm k).2 a`. Establish `e1 : D R' _ (((pairPull h).pullbackOneCocycle f).1 t t' a) = ∑ k, ((pairPull h).pullbackOneCocycle (g k)).1 t t' a • (Wm k).1 t' + (q1 (pairPull h) t' (ω ((pairPull h).G.obj t')) - p1 (OPair φ s') a (q1 (pairPull h) t (ω ((pairPull h).G.obj t))))`. Rewrite using `[CoefMap.pullCocycleOne_apply, ← cechDeRhamCoefMapOneForms_D, hD, map_add, map_sum, map_sub, cechDeRhamCoefMapOneForms_naturality]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ ↦ prodFirstProjection_smul _ _ _`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∀ k, ((pairRes φ s').pullbackOneCocycle (g' k)).1 t t' a • (Wm k).1 t' = ((pairPull h).pullbackOneCocycle (g k)).1 t t' a • (Wm k).1 t' + B k t' • (Wm k).1 t' - p1 (OPair φ s') a (B k t • (Wm k).1 t)`. Introduce `k`. Rewrite using `[hB', oneFormsMapOfFunctorMorphism_smul, ← hW k, add_smul, sub_smul]`. Normalize the expressions using the abelian group laws. Simplify using `only [θP]`.
+Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hA', Derivation.map_add, Derivation.map_sub, ← p1_D, e1, Finset.sum_congr rfl fun k _ ↦ e2 k]`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_add_distrib, map_sub, map_add, map_sum]`. Normalize the expressions using the abelian group laws. Set `θ' : ∀ t : (Pair φ)ᵒᵖ, Ω[(OAff s').obj ((pairFst φ).obj t)⁄R']` to `θP`. Establish `hθ' : ∀ ⦃t t' : (Pair φ)ᵒᵖ⦄ (a : t ⟶ t'), κ _ _ ((pairFst φ).map a) = θ' t' - p1 (OAff s') ((pairFst φ).map a) (θ' t)`.
-
-Introduce `t t' a`. Establish `k` using `key a`. Simplify using `only [hWm] at k`. Conclude with `k`. Take `⟨θ, hθ⟩` from `GlobalTheory.cocycle_one_forms_coboundary_of_restrict (OAff s') (pairFst φ) (_root_.GlobalTheory.CechDR.form_eq_zero_of_basis_cover s' (pairFst φ) (_root_.GlobalTheory.CechDR.pair_cover_affine φ s')) (_root_.GlobalTheory.CechDR.FormExt.glue_one_forms s' (pairFst φ) (_root_.Global …`.
-
-Use `⟨f', g', θ, hf', hg', fun T T' a ↦ ?_⟩` and prove the remaining obligations. Conclude with `sub_eq_iff_eq_add'.1 (hθ a)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dRel_pull : ∀ (R R' : Type) [CommRing R] [CommRing R'] (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (σ : R →+* R') (φ : X' ⟶ X) (h : φ ≫ s = s' ≫ spMap σ) (x : HO1 s) (n : ℕ) (y : Fin n → HO1 s) (w : Fin n → GlobForm s), DRel (OAff s) x y w → DRel (OAff s') (pullHO1 h x) (fun k ↦ pullHO1 h (y k)) (fun k ↦ GlobalTheory.CechDR.pullForm h (w k)) := by
   intro R R' _ _ X X' s s' σ φ h x n y w hx

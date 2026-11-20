@@ -16,9 +16,9 @@ section General
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {Ω : Type} [Field Ω] {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simpa using analyticOnNhd_const`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p i hp`. Simplify using `only [map_mul, map_X, eval_X]`. Conclude with `hp.mul (hG i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analytic_eval {G : (Fin n → ℂ) → (Σ k, J k) → ℂ} {T : Set (Fin n → ℂ)}
     (hG : ∀ q, AnalyticOnNhd ℂ (fun w => G w q) T) (f : MRing J) :
@@ -33,9 +33,9 @@ theorem analytic_eval {G : (Fin n → ℂ) → (Σ k, J k) → ℂ} {T : Set (Fi
     exact hp.mul (hG i)
 
 /- English proof (translation)
-Establish `e : {w | w ∈ T ∧ ∀ a, f a w ≠ 0} = T ∩ ⋂ a, (T ∩ f a ⁻¹' {0}ᶜ)`. Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, Set.mem_compl_iff, Set.mem_singleton_iff]`. Conclude with `⟨fun h => ⟨h.1, fun a => ⟨h.1, h.2 a⟩⟩, fun h => ⟨h.1, fun a => (h.2 a).2⟩⟩`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT.inter (isOpen_iInter_of_finite fun a => (hf a).continuousOn.isOpen_inter_preimage hT isOpen_compl_singleton)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_forall_ne {A : Type} [Finite A] {T : Set (Fin n → ℂ)} (hT : IsOpen T)
     {f : A → (Fin n → ℂ) → ℂ} (hf : ∀ a, AnalyticOnNhd ℂ (f a) T) :
@@ -50,22 +50,20 @@ theorem isOpen_forall_ne {A : Type} [Finite A] {T : Set (Fin n → ℂ)} (hT : I
     (hf a).continuousOn.isOpen_inter_preimage hT isOpen_compl_singleton)
 
 /- English proof (translation)
-Rewrite using `[Ne, form_mem_mCoordIdeal_iff z hg, aeval_def, algebraMap_int_eq, eval₂_eq_eval_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_notMem_iff (z : (Σ k, J k) → ℂ) {g : MRing J} {d : K → ℕ} (hg : IsMultiHomog g d) :
     g ∉ mCoordIdeal z ↔ eval z (map (Int.castRingHom ℂ) g) ≠ 0 := by
   rw [Ne, form_mem_mCoordIdeal_iff z hg, aeval_def, algebraMap_int_eq, eval₂_eq_eval_map]
 
 /- English proof (translation)
-Use `choose d g h hg hh hnot heq using hreg`. Establish `hX : ∀ (k : K) (i : J k), IsMultiHomog (X ⟨k, i⟩ : MRing J) (fun k' => if k' = k then 1 else 0)` using `fun k i => GroundTheory.Heights₂.Heights.LowerBoundFree.isMultiHomog_X_single ⟨k, i⟩`. Establish `hx : ∀ a, aeval x (h a) ≠ 0` using `fun a e0 => by`. Establish `h1` using `(hmem w₀ hw₀).2 _ (mem_mCoordIdeal_of_aeval_eq_zero x (hh a) e0)`. Conclude with `(form_notMem_iff _ (hh a)).1 (hnot a) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set bl : (Fin n → ℂ) → (Σ k, J k) → ℂ := fun w p => G w p / G w ⟨p.1, c p.1⟩ with hbl`. Use `set T₁ : Set (Fin n → ℂ) := {w | w ∈ T ∧ ∀ k, G w ⟨k, c k⟩ ≠ 0} with hT₁`. Establish `hT₁o : IsOpen T₁` using `isOpen_forall_ne hT fun k => hG ⟨k, c k⟩`. Establish `hT₁T : T₁ ⊆ T` using `fun w hw => hw.1`. Establish `hblq : ∀ q, AnalyticOnNhd ℂ (fun w => bl w q) T₁` using `fun q => ((hG q).mono hT₁T).div ((hG ⟨q.1, c q.1⟩).mono hT₁T) fun w hw => hw.2 q.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hevh : ∀ a, AnalyticOnNhd ℂ (fun w => eval (bl w) (map (Int.castRingHom ℂ) (h a))) T₁` using `fun a => analytic_eval hblq (h a)`. Establish `horb : ∀ w ∈ T₁, SameOrbit (G w) (bl w)` using `fun w hw => ⟨fun k => G w ⟨k, c k⟩, hw.2, funext fun p => by`. Use `hw.2 p.1` as an intermediate fact. Simplify using `only [hbl]`. Use the proof step `field_simp⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw₁ : w₀ ∈ T₁` using `⟨hw₀, fun k e0 => (form_notMem_iff _ (hX k (c k))).1 (hc k) (by simpa using e0)⟩`. Use `⟨{w | w ∈ T₁ ∧ ∀ a, eval (bl w) (map (Int.castRingHom ℂ) (h a)) ≠ 0}, bl, fun w hw => hw.1.1, isOpen_forall_ne hT₁o hevh, ⟨hw₁, fun a => ?_⟩, fun q => (hblq q).mono fun w hw => hw.1, fun a => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← form_notMem_iff _ (hh a), ← GlobalTheory.CompanionTheory.Ar.PB.CovMap.mCoordIdeal_eq_of_sameOrbit (horb w₀ hw₁)]`. Conclude with `hnot a`. Establish `hV : IsOpen {w | w ∈ T₁ ∧ ∀ a, eval (bl w) (map (Int.castRingHom ℂ) (h a)) ≠ 0}` using `isOpen_forall_ne hT₁o hevh`.
-
-Use `AnalyticOnNhd.congr hV (((analytic_eval hblq (g a)).mono fun w hw => hw.1).div ((hevh a).mono fun w hw => hw.1) fun w hw => hw.2 a) fun w hw => ?_` and prove the remaining obligations. Establish `hz : bl w ∈ mcPts (mCoordIdeal x)` using `mem_mcPts_of_sameOrbit (GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal x) (orbit_symm (horb w hw.1)) (hmem w hw.1.1)`. Conclude with `(valAt_eq hz ⟨d a, g a, h a, hg a, hh a, hx a, heq a, hw.2 a, rfl⟩).symm`. Establish `hz : bl w ∈ mcPts (mCoordIdeal x)` using `mem_mcPts_of_sameOrbit (GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal x) (orbit_symm (horb w hw.1)) (hmem w hw.1.1)`. Conclude with `⟨hz, fun k => div_self (hw.1.2 k), horb w hw.1, fun a => ⟨d a, g a, h a, hg a, hh a, (form_notMem_iff _ (hh a)).2 (hw.2 a), heq a⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_normalised {A : Type} [Finite A] (x : (Σ k, J k) → Ω) (c : ∀ k, J k) (s : A → Ω)
     (G : (Fin n → ℂ) → (Σ k, J k) → ℂ) {T : Set (Fin n → ℂ)} (hT : IsOpen T)
@@ -117,15 +115,13 @@ theorem exists_normalised {A : Type} [Finite A] (x : (Σ k, J k) → Ω) (c : �
 end General
 
 /- English proof (translation)
-Take `⟨kb, hkb⟩` from `Rb.A.cover x₀`. Establish `hT : IsOpen ((Rb.A.chart kb).target ∩ (Rb.A.chart kb).symm ⁻¹' Rb.U x₀)` using `(Rb.A.chart kb).isOpen_inter_preimage_symm (Rb.isOpen_U x₀)`. Establish `hlw : Rb.lift x₀ ((Rb.A.chart kb).symm (Rb.A.chart kb x₀)) = Rb.lift x₀ x₀`. Rewrite using `[(Rb.A.chart kb).left_inv hkb]`. Establish `hw₀ : Rb.A.chart kb x₀ ∈ (Rb.A.chart kb).target ∩ (Rb.A.chart kb).symm ⁻¹' Rb.U x₀` using `⟨(Rb.A.chart kb).map_source hkb, by show (Rb.A.chart kb).symm (Rb.A.chart kb x₀) ∈ Rb.U x₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(Rb.A.chart kb).left_inv hkb]`. Conclude with `Rb.mem_U x₀⟩`. Set `s : (((Σ k, ι k) × Finset (Fin N)) ⊕ ((Σ k, ι k) × Finset (Fin N))) ⊕ ({p : Ψ × Fin N // M.blk p = none} ⊕ {p : Ψ × Fin N // M.blk p = none}) → M.Ω` to `Sum.elim (Sum.elim (fun a => F.u a.1 a.2) (fun a => F.u' a.2 a.1)) (Sum.elim (fun p => F.υ p.1) (fun p => (F.υ p.1)⁻¹))`. Take `⟨V, bl, hVT, hVo, hV₀, hq, hval, hpt⟩` from `exists_normalised M.x F.c s (fun w => Rb.lift x₀ ((Rb.A.chart kb).symm w)) hT (fun q => Rb.holo x₀ q kb) (fun w hw => Rb.mem x₀ _ hw.2) hw₀ (by simpa only [hlw] using hgood.1) (by`. Simplify using `only [hlw]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `((⟨q, I⟩ | ⟨q, I⟩) | (⟨p, hp⟩ | ⟨p, hp⟩))`. Conclude with `(hgood.2.1 q I).1`. Conclude with `(hgood.2.1 q I).2`. Conclude with `(hgood.2.2 p hp).2.1`. Conclude with `(hgood.2.2 p hp).2.2)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨kb, V, bl, hkb, hV₀, hVo, fun w hw => (hVT hw).1, hq, fun q I => hval (Sum.inl (Sum.inl (q, I))), fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨hz, h1, hor, hr⟩` from `hpt w hw`. Use `⟨hz, h1, ⟨fun k e0 => ?_, fun q I => ⟨hr (Sum.inl (Sum.inl (q, I))), hr (Sum.inl (Sum.inr (q, I)))⟩, fun p hp => ⟨(hgood.2.2 p hp).1, hr (Sum.inr (Sum.inl ⟨p, hp⟩)), hr (Sum.inr (Sum.inr ⟨p, hp⟩))⟩⟩, orbit_trans (Rb.compat _ x₀ _ ⟨Rb.mem_U _, (hVT hw).2⟩) hor⟩` and prove the remaining obligations. Use `(form_mem_mCoordIdeal_iff (bl w) (GroundTheory.Heights₂.Heights.LowerBoundFree.isMultiHomog_X_single (⟨k, F.c k⟩ : Σ k, baseIdx ι M.blk k))).1 e0` as an intermediate fact. Rewrite `this` using `[aeval_X, h1 k]`.
-
-Conclude with `one_ne_zero this`.
+A detailed English derivation is pending.
 -/
 theorem exists_baseChart (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ]
     (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ)

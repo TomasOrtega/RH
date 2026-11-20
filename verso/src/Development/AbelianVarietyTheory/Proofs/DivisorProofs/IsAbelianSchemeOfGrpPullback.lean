@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GrpPullAb
 
 /- English proof (translation)
-Introduce `_ h hG` and use `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hG h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_of_grpPullback :
     ∀ {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G']

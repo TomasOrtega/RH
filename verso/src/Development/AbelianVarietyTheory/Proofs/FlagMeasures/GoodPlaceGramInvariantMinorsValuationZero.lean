@@ -30,13 +30,13 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Take `⟨hadd, -, hint, -⟩` from `GlobalTheory.UnramVal.vE_valuation L ϖ hϖ`. Take `⟨y, hy, hcy⟩` from `hu`. Establish `hE : Nontrivial E` using `Module.nontrivial_of_finrank_pos (R := F) (by rw [L.rank]; omega)`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hcy` using `[map_zero, zero_mul]`. Conclude with `zero_ne_one hcy`. Establish `hyc : y = algebraMap F E c⁻¹`. Establish `h1 : algebraMap F E c * algebraMap F E c⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hc0, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hci : c⁻¹ ∈ 𝒪[F]` using `(GlobalTheory.UnramOrder.algebraMap_mem_iff L _).1 (hyc ▸ hy)`. Establish `hcO : c ∈ 𝒪[F]` using `(GlobalTheory.UnramOrder.algebraMap_mem_iff L _).1 hc`. Establish `h1` using `(hint c hc0).2 hcO`. Establish `h2` using `(hint c⁻¹ (inv_ne_zero hc0)).2 hci`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h11` using `hadd 1 1 one_ne_zero one_ne_zero`. Rewrite `h11` using `[one_mul]`. Establish `h3` using `hadd c c⁻¹ hc0 (inv_ne_zero hc0)`. Rewrite `h3` using `[mul_inv_cancel₀ hc0]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem vE_eq_zero_of_unit (L : LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {c : F}
     (hc : algebraMap F E c ∈ L.O) (hu : ∃ y ∈ L.O, algebraMap F E c * y = 1) :
@@ -69,11 +69,11 @@ end GlobalTheory.HL.StdPlace.UnitVal
 open GlobalTheory.HL.StdPlace.UnitVal in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S hS`. Take `⟨-, -, ⟨c, -, hGc⟩, -⟩` from `GlobalTheory.FrameBasic.main L r k S`. Use `⟨?_, fun l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[hGc]`. Take `⟨hG, y, hy, hGy⟩` from `hS.G_unit`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `vE_eq_zero_of_unit L S.ϖ_irr (hGc ▸ hG) ⟨y, hy, hGc ▸ hGy⟩`. Take `⟨hD, y, hy, hDy⟩` from `hS.D_unit l hl`. Take `⟨c, hc⟩` from `GlobalTheory.UnramOrder.exists_norm L hD`. Rewrite using `[hc]`. Use `vE_eq_zero_of_unit L S.ϖ_irr (hc ▸ L.O.mul_mem hD (GlobalTheory.UnramOrder.cj_mem L hD)) ⟨y * L.cj y, L.O.mul_mem hy (GlobalTheory.UnramOrder.cj_mem L hy), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HL.StdPlace.vE_G_D_eq_zero : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), Good S → vE L S.ϖ S.G = 0 ∧ ∀ l, S.D l ≠ 0 → vE L S.ϖ (S.D l * L.cj (S.D l)) = 0 := by
   intro F _ _ _ _ _ E _ _ _ L r k S hS

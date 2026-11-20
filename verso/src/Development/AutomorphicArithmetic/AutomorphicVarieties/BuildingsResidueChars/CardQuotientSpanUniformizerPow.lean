@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Loc.PK
 
 /- English proof (translation)
-Establish `hrange : (AddMonoidHom.mulLeft (π ^ n)).range = (Ideal.span {π ^ n}).toAddSubgroup`. Use extensionality with `r`. Simplify using `[Ideal.mem_span_singleton', mul_comm]`. Establish `hcomap : (Ideal.span {π ^ (n + 1)}).toAddSubgroup.comap (AddMonoidHom.mulLeft (π ^ n)) = (Ideal.span {π}).toAddSubgroup`. Use extensionality with `r`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [AddSubgroup.mem_comap, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton]`. Use `show π ^ (n + 1) ∣ π ^ n * r ↔ π ∣ r`. Rewrite using `[pow_succ, mul_dvd_mul_iff_left (pow_ne_zero n h0)]`. Establish `hle : (Ideal.span {π ^ (n + 1)}).toAddSubgroup ≤ (Ideal.span {π ^ n}).toAddSubgroup`. Introduce `r hr`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton] at hr ⊢`. Conclude with `(pow_dvd_pow π (Nat.le_succ n)).trans hr`. Use `show (Ideal.span {π ^ (n + 1)}).toAddSubgroup.index = (Ideal.span {π ^ n}).toAddSubgroup.index * (Ideal.span {π}).toAddSubgroup.index`. Rewrite using `[← AddSubgroup.relIndex_mul_index hle, ← hcomap, AddSubgroup.index_comap, hrange, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_step {O : Type} [CommRing O] [IsDomain O] (π : O) (h0 : π ≠ 0) (n : ℕ) :
     Nat.card (O ⧸ Ideal.span {π ^ (n + 1)}) =
@@ -30,11 +30,11 @@ private theorem card_step {O : Type} [CommRing O] [IsDomain O] (π : O) (h0 : π
   rw [← AddSubgroup.relIndex_mul_index hle, ← hcomap, AddSubgroup.index_comap, hrange, mul_comm]
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ hL π hπ n`. Establish `hres : Nat.card (IsLocalRing.ResidueField O) = Nat.card (O ⧸ Ideal.span {π})`. Rewrite using `[← hπ.maximalIdeal_eq]`. Both sides reduce to the same expression. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Proceed by induction.
 
-Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, Ideal.span_singleton_one]`. Use `show (⊤ : Ideal O).toAddSubgroup.index = 1`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[card_step π hπ.ne_zero k, ih, hres, pow_succ]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.card_quotient_span_uniformizer_pow :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ → ∀ π : O, Irreducible π → ∀ n : ℕ, Nat.card (O ⧸ Ideal.span {π ^ n}) = Nat.card (IsLocalRing.ResidueField O) ^ n := by

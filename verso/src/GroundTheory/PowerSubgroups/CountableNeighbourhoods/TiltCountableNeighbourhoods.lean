@@ -10,16 +10,16 @@ section
 variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `NormedField.valuation x ≤ 1 ↔ _`. Rewrite using `[NormedField.valuation_apply, ← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private lemma mem_integers_iff (x : K) : x ∈ (normInteger K) ↔ ‖x‖ ≤ 1 := by
   change NormedField.valuation x ≤ 1 ↔ _
   rw [NormedField.valuation_apply, ← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one]
 
 /- English proof (translation)
-Establish `h1 : ‖u‖ ≤ max ‖u - z‖ ‖z‖`. Simplify using `using IsUltrametricDist.norm_add_le_max (u - z) z`. Establish `h2 : ‖z‖ ≤ max ‖z - u‖ ‖u‖`. Simplify using `using IsUltrametricDist.norm_add_le_max (z - u) u`. Rewrite `h2` using `[norm_sub_rev]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `h1.trans (max_le h.le le_rfl)`. Break down `le_max_iff.mp h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 (not_le.mpr h)`. Conclude with `h3`.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private lemma norm_eq_of_norm_sub_lt {u z : K} (h : ‖u - z‖ < ‖z‖) : ‖u‖ = ‖z‖ := by
   have h1 : ‖u‖ ≤ max ‖u - z‖ ‖z‖ := by
@@ -34,7 +34,7 @@ private lemma norm_eq_of_norm_sub_lt {u z : K} (h : ‖u - z‖ < ‖z‖) : ‖
     · exact h3
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Establish `hc : ‖(c : K)‖ ≤ 1` using `(mem_integers_iff (c : K)).mp c.2`. Simplify using `only [Subring.coe_mul, Subring.coe_natCast, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma norm_le_of_mem_span {x : (normInteger K)} {p : ℕ}
     (hx : x ∈ Ideal.span {((p : (normInteger K)))}) : ‖(x : K)‖ ≤ ‖(p : K)‖ := by
@@ -46,11 +46,11 @@ private lemma norm_le_of_mem_span {x : (normInteger K)} {p : ℕ}
 variable {p : ℕ} [Fact (Nat.Prime p)] [Fact ¬IsUnit (p : (normInteger K))] [IsAdicComplete (Ideal.span {(p : (normInteger K))}) (normInteger K)]
 
 /- English proof (translation)
-Set `x' : (normInteger K)` to `⟨x, (mem_integers_iff x).mpr hx1⟩`. Set `s : ℕ → ModP (normInteger K) p` to `fun n => Nat.rec (Ideal.Quotient.mk _ x') (fun _ t => Classical.choose (hsurj t)) n`. Establish `hs : ∀ n, s (n + 1) ^ p = s n` using `fun n => Classical.choose_spec (hsurj (s n))`. Set `a : PreTilt (normInteger K) p` to `⟨s, hs⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : Ideal.Quotient.mk _ (PreTilt.untilt a) = Ideal.Quotient.mk (Ideal.span {(p : (normInteger K))}) x'`. Rewrite using `[PreTilt.mk_untilt_eq_coeff_zero]`. Both sides reduce to the same expression. Establish `hdiff : ‖((PreTilt.untilt a : (normInteger K)) : K) - x‖ ≤ ‖(p : K)‖`. Establish `hmem` using `Ideal.Quotient.eq.mp h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `norm_le_of_mem_span hmem` using `[x']`. Conclude with `norm_eq_of_norm_sub_lt (lt_of_le_of_lt hdiff hpx)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma exists_untilt_norm_of_lt
     (hsurj : Function.Surjective fun x : ModP (normInteger K) p => x ^ p)
@@ -71,11 +71,11 @@ private lemma exists_untilt_norm_of_lt
   exact norm_eq_of_norm_sub_lt (lt_of_le_of_lt hdiff hpx)
 
 /- English proof (translation)
-Take `⟨at', hat⟩` from `exists_untilt_norm_of_lt hsurj hpt ht1.le`. Establish `ht0 : 0 < ‖t‖` using `lt_of_le_of_lt (norm_nonneg _) hpt`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (norm_pos_iff.mpr hy) ht1`. Proceed by induction on `n generalizing y with`. Consider the case `zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Conclude with `absurd hy1 (not_le.mpr (by simpa using hn))`. Consider the case `succ n ih`. Distinguish the cases in `hyt : ‖t‖ < ‖y‖`. Conclude with `exists_untilt_norm_of_lt hsurj (hpt.trans hyt) hy1`. Rewrite `hyt` using `[not_lt]`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htne : t ≠ 0` using `norm_pos_iff.mp ht0`. Establish `hv : ‖y / t‖ = ‖y‖ / ‖t‖` using `norm_div y t`. Take `⟨b, hb⟩` from `ih (y := y / t) (div_ne_zero hy htne) (by rw [hv]; exact (div_le_one ht0).mpr hyt) (by rw [hv, lt_div_iff₀ ht0, ← pow_succ]; exact hn)`. Use `⟨at' * b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Subring.coe_mul, norm_mul, hat, hb, hv, mul_div_cancel₀ _ ht0.ne']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_untilt_norm
     (hsurj : Function.Surjective fun x : ModP (normInteger K) p => x ^ p)
@@ -104,7 +104,7 @@ private lemma exists_untilt_norm
 end
 
 /- English proof (translation)
-Take `⟨t, hpt, ht1⟩` from `IsPerfectoidField.exists_norm_mem_Ioo (K := K) p ‖(p : K)‖ IsPerfectoidField.norm_natCast_lt_one`. Conclude with `exists_untilt_norm IsPerfectoidField.surjective_pow hpt ht1 hy hy1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_norm_untilt_eq_norm_of_norm_le_one {K : Type*} [NontriviallyNormedField K]
     [IsUltrametricDist K] {p : ℕ} [Fact (Nat.Prime p)] [IsPerfectoidField K p] {y : K}

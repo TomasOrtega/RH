@@ -3,7 +3,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `𝒮 K p`. Establish `hC : Fr.at (p.w.st p.Z) p.w.I.C = Fr.at (p.w.st p.Z) p.f` using `congrArg (Fr.at (p.w.st p.Z)) p.w.C_eq`. Use `⟨?_, ?_, ⟨_, p.x.what₂.r.z.lev.is⟩⟩` and prove the remaining obligations. Conclude with `p.x.what₂.r.z.lev.C.trans hC`. Conclude with `(rfl : GlobalTheory.Mem.Col2.TC.cf p.w.I p.w.l p.Z = Fr.at (p.w.st p.Z) p.w.I.C).trans hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Plug.wPt_frame : ∀ (𝒮 : Slots) (K : Ctx) (p : WPt 𝒮 K), p.x.what₂.r.z.R.C = Fr.at (p.w.st p.Z) p.f ∧ GlobalTheory.Mem.Col2.TC.cf p.w.I p.w.l p.Z = Fr.at (p.w.st p.Z) p.f ∧ ∃ μ0, p.x.what₂.r.z.R.toRealDat.toLevCh.Is μ0 := by
   intro 𝒮 K p

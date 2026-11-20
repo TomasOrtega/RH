@@ -21,7 +21,7 @@ namespace GlobalTheory.ModifCanon
 open GlobalTheory.Vanishing.H0 GlobalTheory.TangentOrigin
 
 /- English proof (translation)
-Introduce `Y X σ U h x hx`. Establish `e` using `morphismRestrictStalkMap σ U ⟨x, hx⟩`. Establish `h1 : IsIso ((σ ∣_ U).stalkMap ⟨x, hx⟩)` using `((isIso_iff_isIso_stalkMap (σ ∣_ U)).1 h).2 _`. Establish `h2 : IsIso (σ.stalkMap x)` using `((MorphismProperty.isomorphisms _).arrow_mk_iso_iff e).1 h1`. Conclude with `ConcreteCategory.bijective_of_isIso _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stalkMap_bijective_of_isIso_restrict : ∀ (Y X : Scheme.{0}) (σ : X ⟶ Y) (U : Y.Opens), IsIso (σ ∣_ U) →
     ∀ x : X, x ∈ σ ⁻¹ᵁ U → Function.Bijective (σ.stalkMap x).hom := by
@@ -32,7 +32,7 @@ theorem stalkMap_bijective_of_isIso_restrict : ∀ (Y X : Scheme.{0}) (σ : X �
   exact ConcreteCategory.bijective_of_isIso _
 
 /- English proof (translation)
-Introduce `k _ Y p B O x i hO hi f e hy hiy hu`. Establish `hb : x e ∈ Y.basicOpen (f.loc i)` using `(Y.mem_basicOpen _ _ (Vanishing.memInf hy hiy)).2 hu`. Establish `hV : ⊤ ≤ x ⁻¹ᵁ Y.basicOpen (f.loc i)` using `fun y _ => by rw [Subsingleton.elim y e]; exact hb`. Rewrite using `[H0.val_apply, ← evalPt_res x (Y.basicOpen_le (f.loc i)) _ hV]`. Conclude with `(RingedSpace.isUnit_res_basicOpen Y.toLocallyRingedSpace.toRingedSpace (f.loc i)).map _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_val_of_isUnit_germ : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (B : LB Y) (O : Y.Opens)
     (x : Sp ℂ ⟶ Y) (i : B.ι) (hO : ⊤ ≤ x ⁻¹ᵁ O) (hi : ⊤ ≤ x ⁻¹ᵁ B.U i) (f : H0 p B O) (e : Sp ℂ)
@@ -72,7 +72,7 @@ abbrev jacChart {K' : LB X} {K B : LB Y} (σ : X ⟶ Y) (hK' : K'.IsLB) (hK : K.
     exact congrArg (tr K' x t.1 t'.1 * ·) (inv_mul_cancel_left _ _).symm
 
 /- English proof (translation)
-The claim follows from `evalPt_res x (inf_le_inf_right _ h) _ _ (f.loc i)`.
+A detailed English derivation is pending.
 -/
 theorem val_restr {k : Type} [CommRing k] {p : Y ⟶ Sp k} {B : LB Y} {O O' : Y.Opens} (x : Sp ℂ ⟶ Y) (i : B.ι)
     (h : O' ≤ O) (hO' : ⊤ ≤ x ⁻¹ᵁ O') (hO : ⊤ ≤ x ⁻¹ᵁ O) (hi : ⊤ ≤ x ⁻¹ᵁ B.U i) (f : H0 p B O) :
@@ -80,29 +80,27 @@ theorem val_restr {k : Type} [CommRing k] {p : Y ⟶ Sp k} {B : LB Y} {O O' : Y.
   evalPt_res x (inf_le_inf_right _ h) _ _ (f.loc i)
 
 /- English proof (translation)
-Introduce `F _ _ Y _ p d _ U M K K' B hproj hU hB`. Establish `: Smooth p` using `SmoothOfRelativeDimension.smooth d p`. Establish `: IsLocallyNoetherian Y` using `LocallyOfFiniteType.isLocallyNoetherian p`. Establish `: GlobalTheory.IsNormalScheme Y` using `isNormalScheme_of_smooth p`. Establish `: Nonempty U` using `hU.to_subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `M.iso` as an intermediate fact. Establish `hXi : IsIntegral M.X` using `GlobalTheory.T.isIntegral_smoothProjectiveModification_of_nonempty F Y p U d M hU`. Take `⟨J, hJ⟩` from `GlobalTheory.T.exists_jacobian_section_isUnit_germ_of_localIso F Y M.X p M.σ d K K'`. Establish `hL : (tens K.bundle B).IsLB` using `isLB_tens K.isLB hB`. Set `C` to `jacChart M.σ K'.isLB K.isLB hB`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hopn : ∀ x ∈ M.opn, Function.Bijective (M.σ.stalkMap x).hom` using `stalkMap_bijective_of_isIso_restrict Y M.X M.σ U M.iso`. Establish `hJU : NowhereZero (H0.restr (le_top : M.opn ≤ ⊤) J)` using `fun x hx a ha => by`. Rewrite using `[germ_restr]`. Conclude with `hJ x (hopn x hx) a ha`. Establish `hT : M.opn ≤ M.σ ⁻¹ᵁ (⊤ : Y.Opens)` using `fun x _ => memTop (M.σ x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ext : ∀ g : H0 M.str (tens K'.bundle (B.pull M.σ)) ⊤, ∃ s : H0 p (tens K.bundle B) ⊤, C.mul (H0.restr le_top J) (H0.pull M.σ hT s) = H0.restr le_top g`. Introduce `g`. Take `⟨s₀, hs₀⟩` from `(M.bijective_pull hL).2 ((C.mulEquiv hJU).symm (H0.restr le_top g))`. Establish `rel : C.mul (H0.restr le_top J) (H0.pull M.σ le_rfl s₀) = H0.restr le_top g`. Rewrite using `[hs₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(C.mulEquiv hJU).apply_symm_apply _`. Take `⟨t, ht⟩` from `(exists_sec_res_eq_iff hL (W := U) (LB.coord_mem s₀)).2 (fun x hx1 _ => by`. Use `IsNormalScheme.isDiscreteValuationRing_stalk hx1` as an intermediate fact. Take `⟨x', rfl, hb⟩` from `GlobalTheory.T.exists_bijective_stalkMap_over_dvrPoint F Y p U d M hproj hU x this`. Take `⟨i, hi⟩` from `exists_chart hL (M.σ x')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty ((tens K.bundle B).U i)` using `⟨⟨_, hi⟩⟩`. Establish `hne` using `nonempty_inf_of_isIntegral U ((tens K.bundle B).U i)`. Conclude with `⟨i, hne, hi, GlobalTheory.T.germ_mem_range_stalk_of_pullback_mul_localIso F Y M.X p M.σ U _ _ _ C J g s₀ rel x' hb (hJ x' hb) i hi⟩)`. Use `⟨H0.ofSec p ⊤ t, ?_⟩` and prove the remaining obligations. Establish `e : H0.restr (le_top : U ≤ ⊤) (H0.ofSec p ⊤ t) = s₀`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[restr_ofSec]`. Conclude with `LB.sec_ext fun i => ht i`. Rewrite using `[← rel, ← e, pull_restr]`. Use `choose Ψ hΨ using ext`. Use `⟨Ψ, fun z hz k' hk' k hk => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨e⟩ : Nonempty (Sp ℂ)` from `inferInstance`. Establish `all : ∀ (V : M.X.Opens), z e ∈ V → ⊤ ≤ z ⁻¹ᵁ V` using `fun V hV y _ => by`. Rewrite using `[Subsingleton.elim y e]`. Conclude with `hV`. Establish `he : z e ∈ M.opn` using `hz trivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ha, hb, hc⟩` from `C.cover (z e)`. Establish `ha'` using `all _ ha`. Establish `hb'` using `all _ hb`. Establish `hc'` using `all _ hc`. Establish `hb'' : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ (tens K.bundle B).U ((C.b t) PUnit.unit)` using `fun y _ => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subsingleton.elim y e]`. Conclude with `mem_pull.1 hb`. Establish `hJv` using `isUnit_val_of_isUnit_germ F M.X M.str _ M.opn z (C.a t) hz ha' (H0.restr le_top J) e he ha (hJU _ he _ ha)`. Take `⟨T1, hT1, e2⟩ : ∃ T1 : ℂ, T1 ≠ 0 ∧ ∀ g, H0.val z k' le_top hk' g = T1 * H0.val z (C.c t) le_top hc' g` from `⟨_, ((Units.isUnit _).map _).ne_zero, fun g => val_change (p := M.str) (O := ⊤) z k' (C.c t) le_top hk' hc' g⟩`. Take `⟨T2, hT2, e1⟩ : ∃ T2 : ℂ, T2 ≠ 0 ∧ ∀ g, H0.val (z ≫ M.σ) k le_top hk (Ψ g) = T2 * H0.val (z ≫ M.σ) ((C.b t) PUnit.unit) le_top hb'' (Ψ g)` from `⟨_, ((Units.isUnit _).map _).ne_zero, fun g => val_change (p := p) (O := ⊤) (z ≫ M.σ) k ((C.b t) PUnit.unit) le_top hk hb'' (Ψ g)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Units.mk0 (T2 / (H0.val z (C.a t) hz ha' (H0.restr le_top J) * T1)) (div_ne_zero hT2 (mul_ne_zero hJv.ne_zero hT1)), fun g => ?_⟩` and prove the remaining obligations. Establish `e3` using `C.val_mul (H0.restr le_top J) (H0.pull M.σ hT (Ψ g)) t z hz ha' hb' hc'`. Rewrite `e3` using `[hΨ g, val_restr z _ le_top hz le_top]`. Establish `e4` using `val_pull M.σ hT z (C.b t) hz hb' le_top hb'' (Ψ g)`. Rewrite using `[e1, e2, e3, ← e4, Units.val_mk0]`.
-
-Rewrite using `[div_mul_eq_mul_div, eq_div_iff (mul_ne_zero hJv.ne_zero hT1)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_push_sections : ∀ (F : Type) [Field F] [CharZero F] (Y : Scheme.{0}) [IsIntegral Y] (p : Y ⟶ Sp F) (d : ℕ) [SmoothOfRelativeDimension d p] (U : Y.Opens) (M : Modif p U d) (K : CanonLB p d) (K' : CanonLB M.str d) (B : LB Y), IsProjOver p → (U : Set Y).Nonempty → B.IsLB → ∃ Ψ : H0 M.str (tens K'.bundle (B.pull M.σ)) ⊤ → H0 p (tens K.bundle B) ⊤, ∀ (z : Sp ℂ ⟶ M.X), ⊤ ≤ z ⁻¹ᵁ M.opn → ∀ (k' : (tens K'.bundle (B.pull M.σ)).ι) (hk' : ⊤ ≤ z ⁻¹ᵁ (tens K'.bundle (B.pull M.σ)).U k') (k : (tens K.bundle B).ι) (hk : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ (tens K.bundle B).U k), ∃ lam : ℂˣ, ∀ g, H0.val (z ≫ M.σ) k le_top hk (Ψ g) = lam * H0.val z k' le_top hk' g := by
   intro F _ _ Y _ p d _ U M K K' B hproj hU hB

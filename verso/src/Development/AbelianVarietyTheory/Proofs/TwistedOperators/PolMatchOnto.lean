@@ -16,27 +16,23 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 namespace GlobalTheory.SquareAgree
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ a a' B G X om om' R Rf hM Φ hΦ`. Take `⟨n, c, g, rfl⟩` from `(Submodule.mem_span_set').1 hΦ`. Use `choose f φ hf hφ hfin hg using fun i => (g i).2`. Establish `hfin' : ∀ i, {v | ¬ φ i v = G.M.vac v}.Finite` using `fun i => Filter.eventually_cofinite.1 (hfin i)`. Use `set T : Finset (Pl F) := X.T ∪ Finset.univ.biUnion (fun i => (hfin' i).toFinset) with hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hout : ∀ i, ∀ v ∉ T, φ i v = G.M.vac v`. Introduce `i v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, (hfin' i).mem_toFinset.2 h⟩))`. Establish `hreal : ∀ i, ∃ f' ∈ G.M'.Pol B.ψ B.emb, R.p' f' = R.p (c i • f i)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Establish `: R.p (c i • f i) ∈ (G.M'.Pol B.ψ B.emb).map R.p'` using `by rw [hM.real.quot'.onto]; trivial`. Take `⟨y, hy, e⟩` from `Submodule.mem_map.1 this`. Conclude with `⟨y, hy, e⟩`. Use `choose f' hf' hf'eq using hreal`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hloc : ∀ i v, ∃ y ∈ GlobalTheory.WeilM.SB _, Rf.p' v y = Rf.p v (φ i v)`. Introduce `i v`. Establish `: Rf.p v (φ i v) ∈ (GlobalTheory.WeilM.SB _).map (Rf.p' v)` using `by rw [hM.fin.onto' v]; trivial`. Take `⟨y, hy, e⟩` from `Submodule.mem_map.1 this`. Conclude with `⟨y, hy, e⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose φ₀ hφ₀ hφ₀eq using hloc`. Set `φ' : Fin n → ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ` to `fun i v => if v ∈ T then φ₀ i v else G.M'.vac v`. Establish `hvac' : ∀ v, G.M'.vac v ∈ GlobalTheory.WeilM.SB _` using `fun v => (hM.triple.geo.hM'.vac v).1`. Establish `hφ'SB : ∀ i v, φ' i v ∈ GlobalTheory.WeilM.SB _`. Introduce `i v`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hv : v ∈ T`. Simplify using `only [φ', if_pos hv]`. Conclude with `hφ₀ i v`. Simplify using `only [φ', if_neg hv]`. Conclude with `hvac' v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hφ'out : ∀ i, ∀ v ∉ T, φ' i v = G.M'.vac v`. Introduce `i v hv`. Simplify using `only [φ', if_neg hv]`. Establish `hpure : ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c i • f i) (φ i) = c i • (g i : (Fin a × Fin (a + a') → AF F) → ℂ)`. Introduce `i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[hg i]`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`. Use `⟨∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f' i) (φ' i), ?_, T, Finset.subset_union_left, n, n, fun i => c i • f i, φ, f', φ', ?_, ?_, ?_, rfl, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f' i, φ' i, hf' i, hφ'SB i, ?_, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hφ'out i v h))`. Conclude with `fun i => ⟨Submodule.smul_mem _ _ (hf i), hφ i, hout i⟩`. Conclude with `fun i => ⟨hf' i, hφ'SB i, hφ'out i⟩`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => (hpure i).symm`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hf'eq i]`. Use `congr 2`. Use function extensionality and compare the values at `v`.
-
-Simplify using `only [φ', if_pos v.2]`. Conclude with `(hφ₀eq i v).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polMatch_onto : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ} (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ Φ ∈ algD G.M B.ψ B.emb, ∃ Φ' ∈ algD G.M' B.ψ B.emb, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch B G X R Rf Φ Φ' := by
   intro F E _ _ _ _ _ σ a a' B G X om om' R Rf hM Φ hΦ

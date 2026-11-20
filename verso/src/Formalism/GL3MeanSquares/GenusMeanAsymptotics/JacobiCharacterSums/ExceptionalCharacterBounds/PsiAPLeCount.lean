@@ -10,15 +10,15 @@ def primesAP (m a : ℕ) (x : ℝ) : Finset ℕ :=
   (Finset.Icc 1 ⌊x⌋₊).filter (fun p => p.Prime ∧ p ≡ a [MOD m])
 
 /- English proof (translation)
-Unfold `psiAP`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not _ (fun n : ℕ => n.Prime)]`. Use `add_le_add ?_ ?_` and prove the remaining obligations. Establish `hset : ((Finset.Icc 1 ⌊x⌋₊).filter (fun n => n ≡ a [MOD m])).filter (fun n : ℕ => n.Prime) = primesAP m a x`. Use extensionality with `n`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [primesAP, Finset.mem_filter]`. The claim follows by propositional logic. Rewrite using `[hset]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun n hn => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [primesAP, Finset.mem_filter, Finset.mem_Icc] at hn`. Rewrite using `[ArithmeticFunction.vonMangoldt_apply_prime hn.2.1]`. Establish `h1 : (n : ℝ) ≤ x` using `(Nat.le_floor_iff (by linarith)).1 hn.1.2`. Establish `h0 : (0 : ℝ) < n` using `by exact_mod_cast hn.1.1`. Conclude with `Real.log_le_log h0 h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Real.log x * ((primesAP m a x).card : ℝ) := by`. Rewrite using `[Finset.sum_const, nsmul_eq_mul, mul_comm]`. Use `le_trans ?_ (Chebyshev.psi_sub_theta_le hx)` and prove the remaining obligations. Rewrite using `[Chebyshev.psi_sub_theta_eq_sum_not_prime]`. Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ (fun _ _ _ => ArithmeticFunction.vonMangoldt_nonneg)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `n hn`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_Ioc] at hn ⊢`. Conclude with `⟨⟨hn.1.1.1, hn.1.1.2⟩, hn.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem psiAP_le_count (m a : ℕ) (x : ℝ) (hx : 1 ≤ x) :
     psiAP m a x ≤ Real.log x * ((primesAP m a x).card : ℝ) + 2 * Real.sqrt x * Real.log x := by

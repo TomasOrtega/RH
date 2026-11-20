@@ -12,16 +12,16 @@ noncomputable section
 namespace MCInvEntryBound
 
 /- English proof (translation)
-Simplify using `[mulVec_single, single_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem single_dot_mulVec_single {ι : Type*} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι ℝ)
     (j l : ι) : Pi.single j (1 : ℝ) ⬝ᵥ (A *ᵥ Pi.single l 1) = A j l := by
   simp [mulVec_single, single_dotProduct]
 
 /- English proof (translation)
-Establish `hinv : (Y⁻¹).PosSemidef` using `(MCBounds.posDef_of_ge hc h).inv.posSemidef`. Establish `hle` using `MCBounds.quad_nonneg (MCBounds.inv_le_of_ge hc h) (Pi.single j 1)`. Establish `hge` using `MCBounds.quad_nonneg hinv (Pi.single j 1)`. Rewrite `hle`, `hge` using `[single_dot_mulVec_single]`. Use `⟨hge, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hle` using `[Matrix.sub_apply, Matrix.smul_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_diag_bounds {ι : Type*} [Fintype ι] [DecidableEq ι] {Y : Matrix ι ι ℝ} {c : ℝ}
     (hc : 0 < c) (h : (Y - c • (1 : Matrix ι ι ℝ)).PosSemidef) (j : ι) :
@@ -36,9 +36,9 @@ theorem inv_diag_bounds {ι : Type*} [Fintype ι] [DecidableEq ι] {Y : Matrix �
 end MCInvEntryBound
 
 /- English proof (translation)
-Introduce `g Y c hc h j l`. Establish `hinv : (Y⁻¹).PosSemidef` using `(MCBounds.posDef_of_ge hc h).inv.posSemidef`. Establish `hcs` using `MCBounds.quad_cs hinv (Pi.single j 1) (Pi.single l 1)`. Simplify using `only [MCInvEntryBound.single_dot_mulVec_single] at hcs`. Take `⟨hj0, hj⟩` from `MCInvEntryBound.inv_diag_bounds hc h j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hl0, hl⟩` from `MCInvEntryBound.inv_diag_bounds hc h l`. Establish `hci : 0 ≤ c⁻¹` using `inv_nonneg.mpr hc.le`. Establish `hsq : (Y⁻¹ j l) ^ 2 ≤ c⁻¹ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `abs_le_of_sq_le_sq' hsq hci |> fun h => abs_le.mpr h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem InvEntryBound.proof : InvEntryBound.Statement := by
   intro g Y c hc h j l

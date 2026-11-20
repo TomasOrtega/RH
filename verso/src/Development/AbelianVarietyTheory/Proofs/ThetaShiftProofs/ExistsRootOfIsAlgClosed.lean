@@ -12,13 +12,13 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open NumberField
 
 /- English proof (translation)
-Use `letI : DivisibleBy (Additive Fˣ) ℕ := divisibleByOfSMulRightSurj _ _ fun {n} hn u => by`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (u.toMul : F) (Nat.pos_of_ne_zero hn)`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hn]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Units.ne_zero _ hz.symm`. Conclude with `⟨Additive.ofMul (Units.mk0 z hz0), Units.ext hz⟩`. Use `letI : DivisibleBy (Additive Fˣ) ℤ := AddGroup.divisibleByIntOfDivisibleByNat _`. Take `⟨T, hT, h⟩` from `Forms.exists_balForms_lift hw (AddMonoidHom.eval (1 : ℚ) : (ℚ →+ Additive Fˣ) →+ Additive Fˣ) (fun u => by`. Take `⟨ρ, hρ⟩` from `(Module.Baer.of_divisible (Additive Fˣ)).extension_property_addMonoidHom (Int.castAddHom ℚ) Int.cast_injective (zmultiplesHom _ u)`.
+Supply the required witnesses or components. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨ρ, by simpa using DFunLike.congr_fun hρ 1⟩) hs.mem_balForms`. Use `⟨fun n y x => (T y x (n : ℚ)⁻¹).toMul, fun n => ⟨fun y x x' => by beta_reduce; rw [map_add]; rfl, fun y x => by beta_reduce; rw [hT.1 y x], fun a y x => by beta_reduce; rw [hT.2 a y x]⟩, fun n hn y x => ?_, fun n m hn hm y x => ?_⟩` and prove the remaining obligations. Establish `: (n : ℚ) ≠ 0` using `by exact_mod_cast hn.ne' show (n • T y x (n : ℚ)⁻¹).toMul = _`. Rewrite using `[← map_nsmul, nsmul_eq_mul, mul_inv_cancel₀ this]`. Conclude with `h y x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne' show (m • T y x ((n * m : ℕ) : ℚ)⁻¹).toMul = (T y x (n : ℚ)⁻¹).toMul`. Rewrite using `[← map_nsmul, nsmul_eq_mul, Nat.cast_mul, mul_inv, mul_left_comm, mul_inv_cancel₀ this, _root_.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_compatible_roots {O X F : Type} [CommRing O] [StarRing O] [AddCommGroup X] [Module O X] [Module.Finite O X]
     [Module.Projective O X] [Module.Free ℤ O] [Field F] [IsAlgClosed F] {w : O} (hw : w + star w = 1) {s : X → X → Fˣ}
@@ -48,7 +48,7 @@ theorem exists_compatible_roots {O X F : Type} [CommRing O] [StarRing O] [AddCom
     rw [← map_nsmul, nsmul_eq_mul, Nat.cast_mul, mul_inv, mul_left_comm, mul_inv_cancel₀ this, _root_.mul_one]
 
 /- English proof (translation)
-The claim follows from `QkRel.qkExt (D := withPsi D ψ hψ) (fun y x => by rw [map_inv, hr]) hp.symm hq.symm h`.
+A detailed English derivation is pending.
 -/
 theorem QkRel.qkExt_of {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {ψ : PsiFam D} {hψ : ∀ χ, (ψ χ).IsGen}
     {F F' : Type} [Field F] [Algebra (FractionRing R) F] [Field F'] [Algebra (FractionRing R) F'] {k : ℕ} {f : F →+* F'}
@@ -60,7 +60,7 @@ theorem QkRel.qkExt_of {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {ψ :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
 
 /- English proof (translation)
-Use `show H.w0 + H.bar H.w0 = 1`. Rewrite using `[HostModel.cmHost_bar_halfIntegerGenerator, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halfUnit_add_star (H : Host E) : letI := H.starRing; H.w0 + star H.w0 = 1 := by
   show H.w0 + H.bar H.w0 = 1
@@ -72,13 +72,13 @@ variable {R : Type} [CommRing R] [IsDomain R] {D₀ : DegPre R} [Module (𝓞 E)
   {t : D₀.X → D₀.X → (FractionRing R)ˣ} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `hw ht oa r hr hc I`. Establish `hq` using `psiRel_rescale D₀ fun y => t y (w • y)`. Establish `ex : ∀ n a, ∃ p : QkPt (twist D₀ w t) F n, 0 < n → QkRel (r n) (I.ev n a) p` using `fun n a => by`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨qkZero (tauBimult_twist hw ht hB) F 0, fun h => absurd h (lt_irrefl 0)⟩`. Conclude with `⟨_, fun _ => qkRel_qkScale hw ht hq (hr n hn) _⟩`. Use `choose ev hev using ex`. Conclude with `⟨{ ζ := I.ζ ζ_prim := I.ζ_prim ζ_pow := I.ζ_pow ev := ev add := fun n hn a b => (hev n a hn).qkAdd hw ht hq (hr n hn) (hev n b hn) (hev n _ hn) (I.add n hn a b) lin := fun n hn x a => (hev n a hn).qkAct hw ht hq (hr n hn) rfl (hev n _ hn) (I.lin n hn x a) ker := fun n hn a b => ( …`. Take `⟨p, rfl⟩` from `(qkScaleEquiv hw ht hq (hr n hn) _).surjective p'`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `I.onto n hn p`. Conclude with `⟨a, (hev n a hn).equiv hw ht hq (hr n hn) (qkRel_qkScaleEquiv hw ht hq (hr n hn) p) ha⟩`. Use `tower := fun n m hn hm a => by`. Take `⟨q, h₁, h₂, h₃⟩` from `I.tower n m hn hm a`. Establish `e` using `qkRel_qkScale (D := D₀) (hψ := (twist D₀ w t).psi_gen) hw ht hq (hr n hn) q`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `e'` using `hev (n * m) a (Nat.mul_pos hn hm)`. Conclude with `⟨_, h₁.trans e'.1.symm, e'.2.isNsmul e.2 (fun χ => by rw [h₁, hc n m hn hm]) h₂, e.equiv hw ht hq (hr n hn) (hev n a hn) h₃⟩`. Use `isom := fun n hn a b => ((hev n a hn).weilQkIs_iff hw ht hq (hr n hn) (hev n b hn) _).2 (I.isom n hn a b) },`. Use the proof step `rfl, fun n hn a => hev n a hn⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_tateIsoQ_of_roots (hB : D₀.TauBimult) : letI := H.starRing
     ∀ (hw : w + star w = 1) (ht : IsScalarForm (𝓞 E) t) (oa : D₀.OAct (𝓞 E)) (r : ℕ → D₀.X → D₀.X → Fˣ),
@@ -114,11 +114,11 @@ theorem exists_tateIsoQ_of_roots (hB : D₀.TauBimult) : letI := H.starRing
     rfl, fun n hn a => hev n a hn⟩
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `hw ht oa N s hs I`. Use `Forms.projective_of_int (𝓞 E) D₀.X` as an intermediate fact. Establish `: Module.Finite (𝓞 E) D₀.X` using `Module.Finite.of_restrictScalars_finite ℤ _ _`. Take `⟨r, h₁, h₂, h₃⟩` from `exists_compatible_roots hw hs.1`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `a₁ : ∀ n, 0 < n → IsRootForm (𝓞 E) n t fun y x => r n y x ^ N` using `fun n hn => ⟨(h₁ n).pow N, fun y x => by rw [pow_right_comm, h₂ n hn, hs.2]⟩`. Establish `a₂ : ∀ n m, 0 < n → 0 < m → ∀ y x, (r (n * m) y x ^ N) ^ m = r n y x ^ N` using `fun n m hn hm y x => by`. Rewrite using `[pow_right_comm, h₃ n m hn hm]`. Take `⟨I', hI⟩` from `exists_tateIsoQ_of_roots hB hw ht oa (fun n y x => r n y x ^ N) a₁ a₂ I`. Use `⟨_, I', a₁, a₂, fun n hn hN y x => ?_, hI⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h₂ n hn, ← pow_mul, Nat.mul_div_cancel' hN]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_tateIsoQ_twist [IsAlgClosed F] (hB : D₀.TauBimult) : letI := H.starRing
     ∀ (hw : w + star w = 1) (ht : IsScalarForm (𝓞 E) t) (oa : D₀.OAct (𝓞 E)) (N : ℕ) (s : D₀.X → D₀.X → Fˣ),
@@ -153,7 +153,7 @@ def fracPow {X : Type} (ρ : X → X → O'ˣ) (n : ℕ) (y x : X) : (FractionRi
 variable {ρ : a.D₀.X → a.D₀.X → O'ˣ}
 
 /- English proof (translation)
-The claim follows from `letI := H.starRing (hρ.pow n).map _`.
+A detailed English derivation is pending.
 -/
 theorem isScalarForm_fracPow (hρ : letI := H.starRing; IsScalarForm (𝓞 E) ρ) (n : ℕ) :
     letI := H.starRing; IsScalarForm (𝓞 E) (fracPow ρ n) :=
@@ -161,7 +161,7 @@ theorem isScalarForm_fracPow (hρ : letI := H.starRing; IsScalarForm (𝓞 E) ρ
   (hρ.pow n).map _
 
 /- English proof (translation)
-The claim follows from `letI := H.starRing ⟨isScalarForm_fracPow a hρ _, fun y x => by rw [fracPow, ← map_pow, ← pow_mul, Nat.div_mul_cancel h] exact Units.ext rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isRootForm_fracPow (hρ : letI := H.starRing; IsScalarForm (𝓞 E) ρ) {n N : ℕ} (h : n ∣ N) :
     letI := H.starRing; IsRootForm (𝓞 E) n (fracPow ρ N) (fracPow ρ (N / n)) :=

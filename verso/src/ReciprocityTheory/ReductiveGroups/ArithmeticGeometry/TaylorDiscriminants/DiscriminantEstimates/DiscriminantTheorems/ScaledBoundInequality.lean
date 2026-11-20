@@ -7,22 +7,22 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.DiscriminantEstimates.DiscriminantLemmas.SchwarzBallNumerics.ArithmeticFourInequalityNum
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.TBNum.netHerm`.
+A detailed English derivation is pending.
 -/
 theorem net_supremum_bound_alt : ReciprocityTheory.ChartRestriction.G.TB.NetHermSt := PI.UnitaryGroupMassFormula.TBNum.netHerm
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.TBNum.netSup`.
+A detailed English derivation is pending.
 -/
 theorem net_supremum_bound : ReciprocityTheory.ChartRestriction.G.TB.NetSupSt := PI.UnitaryGroupMassFormula.TBNum.netSup
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.TBNum.schwarzBall`.
+A detailed English derivation is pending.
 -/
 theorem schwarz_ball_bound : ReciprocityTheory.ChartRestriction.G.TB.SchwarzBallSt := PI.UnitaryGroupMassFormula.TBNum.schwarzBall
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.TBNum.eBasis`.
+A detailed English derivation is pending.
 -/
 theorem euclidean_basis_exists : ReciprocityTheory.ChartRestriction.G.TB.EBasisSt := PI.UnitaryGroupMassFormula.TBNum.eBasis
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.TBNum.arithmetic_four_inequality_num`.
+A detailed English derivation is pending.
 -/
 theorem scaled_bound_inequality : ReciprocityTheory.ChartRestriction.G.TB.ScaledBoundInequality := PI.UnitaryGroupMassFormula.TBNum.arithmetic_four_inequality_num

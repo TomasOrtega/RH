@@ -35,7 +35,7 @@ def LatExt : Prop :=
 def GenEqOf : Prop := ThetaA → ThetaDerivNe → GenEq
 
 /- English proof (translation)
-Simplify using `only [Complex.div_im, Complex.mul_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma im_div_eq (v₁ v₂ : ℂ) :
     (v₂ / v₁).im = ((starRingEnd ℂ) v₁ * v₂).im / Complex.normSq v₁ := by
@@ -43,13 +43,13 @@ lemma im_div_eq (v₁ v₂ : ℂ) :
   ring
 
 /- English proof (translation)
-Introduce `w₁ w₂ hw`. Take `⟨v₁, v₂, hv₁, hlat, him, hbig⟩` from `hR w₁ w₂ hw`. Take `⟨G, hGd, hG0, hGodd, hG1, hG2⟩` from `hG v₁ v₂ hv₁ him hbig`. Establish `hApos : 0 < ((starRingEnd ℂ) v₁ * v₂).im`. Rewrite `him` using `[im_div_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(div_pos_iff_of_pos_right (Complex.normSq_pos.2 hv₁)).1 him`. Use `⟨G, hGd, hG0, hGodd, fun ω hω z => ?_⟩` and prove the remaining obligations. Rewrite `hω`, the goal using `[← hlat]`. Establish `hext` using `hL v₁ v₂ hApos G hG1 hG2 ω hω z`. Establish `harea` using `(hA v₁ v₂ hApos.ne').1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `harea` using `[abs_of_pos hApos]`. Establish `hAc : ((((starRingEnd ℂ) v₁ * v₂).im : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hApos.ne'`. Establish `key : ∀ (ψ g X Y : ℂ), X + Y = 0 → ψ * (cexp X * g) * cexp Y = ψ * g`. Introduce `ψ g X Y h`. Rewrite using `[show ψ * (cexp X * g) * cexp Y = ψ * g * cexp (X + Y) by rw [Complex.exp_add]; ring, h, Complex.exp_zero, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [PI.U1, hext, harea, qf]`. Apply `key` to reduce the goal to its premises. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sigmaStarEx_of (hR : ReduceBasis) (hG : GenEq) (hL : LatExt) (hA : PI.AreaLat) :
     PI.SigmaStarEx := by
@@ -75,7 +75,7 @@ theorem sigmaStarEx_of (hR : ReduceBasis) (hG : GenEq) (hL : LatExt) (hA : PI.Ar
   ring
 
 /- English proof (translation)
-The claim follows from `sigmaStarEx_of hr (hn ha hb) hl area_lattice_formula`.
+A detailed English derivation is pending.
 -/
 theorem sigmaStarEx_of_parts (ha : ThetaA) (hb : ThetaDerivNe) (hr : ReduceBasis)
     (hn : GenEqOf) (hl : LatExt) : PI.SigmaStarEx :=

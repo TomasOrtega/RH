@@ -31,39 +31,39 @@ Both sides reduce to the same expression.
 theorem coe_apply (g : G) : π g = π.toHom g := rfl
 
 /- English proof (translation)
-The claim follows from `π.continuous_orbit' v`.
+A detailed English derivation is pending.
 -/
 theorem continuous_orbit (v : E) : Continuous fun g => π g v := π.continuous_orbit' v
 
 /- English proof (translation)
-The claim follows from `π.toHom.map_one`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_one : π 1 = 1 := π.toHom.map_one
 
 /- English proof (translation)
-The claim follows from `π.toHom.map_mul g g'`.
+A detailed English derivation is pending.
 -/
 theorem map_mul (g g' : G) : π (g * g') = π g * π g' := π.toHom.map_mul g g'
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_mul_apply (g g' : G) (v : E) : π (g * g') v = π g (π g' v) := by
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 @[simp] theorem map_one_apply (v : E) : π 1 v = v := by rw [map_one]; rfl
 
 /- English proof (translation)
-Rewrite using `[← map_mul_apply, inv_mul_cancel, map_one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem map_inv_apply_map (g : G) (v : E) : π g⁻¹ (π g v) = v := by
   rw [← map_mul_apply, inv_mul_cancel, map_one_apply]
 
 /- English proof (translation)
-Rewrite using `[← map_mul_apply, mul_inv_cancel, map_one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem map_apply_map_inv (g : G) (v : E) : π g (π g⁻¹ v) = v := by
   rw [← map_mul_apply, mul_inv_cancel, map_one_apply]
@@ -87,7 +87,7 @@ variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
 variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
 
 /- English proof (translation)
-Establish `hl : HasDerivAt (fun s : ℝ => x + s • a) a 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const a).const_add x`. Establish `hf' : HasFDerivAt f (fderiv ℝ f x) (x + (0 : ℝ) • a)` using `by simpa using hf.hasFDerivAt`. Conclude with `hf'.comp_hasDerivAt (0 : ℝ) hl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_comp_line {f : V → F} {x : V} (hf : DifferentiableAt ℝ f x) (a : V) :
     HasDerivAt (fun s : ℝ => f (x + s • a)) (fderiv ℝ f x a) 0 := by
@@ -97,7 +97,7 @@ theorem hasDerivAt_comp_line {f : V → F} {x : V} (hf : DifferentiableAt ℝ f 
   exact hf'.comp_hasDerivAt (0 : ℝ) hl
 
 /- English proof (translation)
-Establish `h1 : ContDiff ℝ ∞ (fderiv ℝ f)` using `hf.fderiv_right (by simp)`. Establish `h2` using `hasDerivAt_comp_line ((h1.differentiable (by simp)) x) a`. Conclude with `(ContinuousLinearMap.apply ℝ F b).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_fderiv_line {f : V → F} (hf : ContDiff ℝ ∞ f) (x a b : V) :
     HasDerivAt (fun s : ℝ => fderiv ℝ f (x + s • a) b) (fderiv ℝ (fderiv ℝ f) x a b) 0 := by
@@ -115,13 +115,13 @@ namespace IsExpLieAlgebra
 variable (h : IsExpLieAlgebra G 𝔤)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem expG_zero : h.expG 0 = 1 := by
   apply Subtype.ext; apply Units.ext; simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show exp (-(X : 𝔸)) = ↑((expUnit ℝ 𝔸 (X : 𝔸))⁻¹)`. Rewrite using `[coe_expUnit_inv]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expG_neg (X : 𝔤) : h.expG (-X) = (h.expG X)⁻¹ := by
   apply Subtype.ext; apply Units.ext
@@ -129,13 +129,13 @@ theorem expG_neg (X : 𝔤) : h.expG (-X) = (h.expG X)⁻¹ := by
   rw [coe_expUnit_inv]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.comp_apply, ← Ad_mul, inv_mul_cancel, Ad_one, LinearMap.id_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Ad_inv_Ad (g : G) (X : 𝔤) : h.Ad g⁻¹ (h.Ad g X) = X := by
   rw [← LinearMap.comp_apply, ← Ad_mul, inv_mul_cancel, Ad_one, LinearMap.id_apply]
 
 /- English proof (translation)
-Use `letI := h.chartedSpace`. Introduce `X`. Conclude with `h.contMDiffAt_of_val (f := h.expG) (((contDiff_exp ℝ 𝔸).comp 𝔤.subtypeL.contDiff).contMDiff X)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem contMDiff_expG : letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, 𝔤) ∞ h.expG := by
   letI := h.chartedSpace
@@ -144,7 +144,7 @@ theorem contMDiff_expG : letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(
     (((contDiff_exp ℝ 𝔸).comp 𝔤.subtypeL.contDiff).contMDiff X)
 
 /- English proof (translation)
-Use `letI := h.chartedSpace`. Conclude with `h.contMDiff_expG.comp hφ.contMDiff`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem contMDiff_expG_comp {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] {φ : V → 𝔤}
     (hφ : ContDiff ℝ ∞ φ) : letI := h.chartedSpace;
@@ -153,11 +153,9 @@ theorem contMDiff_expG_comp {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ 
   exact h.contMDiff_expG.comp hφ.contMDiff
 
 /- English proof (translation)
-Use `letI := h.chartedSpace`. Use `haveI := h.lieGroup ∞`. Prove the components needed by the constructor for the conclusion. Introduce `hf g`. Establish `: ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, 𝔤) ∞ (fun Y : 𝔤 => g * h.expG Y)` using `contMDiff_const.mul h.contMDiff_expG`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hf.comp this).contDiff`. Introduce `hf x`. Rewrite using `[contMDiffAt_iff_source]`. Establish `: f ∘ (extChartAt 𝓘(ℝ, 𝔤) x).symm = fun Y : 𝔤 => f (x * h.expG Y)` using `rfl`. Rewrite using `[this]`.
-
-Conclude with `(hf x).contMDiff.contMDiffAt.contMDiffWithinAt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contMDiff_iff_expG {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] (f : G → F) :
     (letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, F) ∞ f) ↔
@@ -188,11 +186,11 @@ Both sides reduce to the same expression.
 theorem expOrbit_apply (v : E) (Y : 𝔤) : h.expOrbit π v Y = π (h.expG Y) v := rfl
 
 /- English proof (translation)
-Unfold `IsSmoothVector`. Rewrite using `[h.contMDiff_iff_expG]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `h1` using `hv 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [one_mul] at h1`. Conclude with `h1`. Introduce `hv g`. Establish `: (fun Y : 𝔤 => π (g * h.expG Y) v) = ((π g).restrictScalars ℝ) ∘ h.expOrbit π v`. Use function extensionality and compare the values at `Y`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[expOrbit, BanachRep.map_mul_apply]`. Rewrite using `[this]`. Conclude with `((π g).restrictScalars ℝ).contDiff.comp hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothVector_iff {v : E} : h.IsSmoothVector π v ↔ ContDiff ℝ ∞ (h.expOrbit π v) := by
   unfold IsSmoothVector
@@ -209,13 +207,13 @@ theorem isSmoothVector_iff {v : E} : h.IsSmoothVector π v ↔ ContDiff ℝ ∞ 
     exact ((π g).restrictScalars ℝ).contDiff.comp hv
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Simplify using `[expOrbit]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem expOrbit_add (v w : E) : h.expOrbit π (v + w) = h.expOrbit π v + h.expOrbit π w := by
   funext Y; simp [expOrbit]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Simplify using `[expOrbit]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem expOrbit_smul (c : ℂ) (v : E) : h.expOrbit π (c • v) = c • h.expOrbit π v := by
   funext Y; simp [expOrbit]
@@ -240,12 +238,12 @@ def smoothVectors : Submodule ℂ E where
     rw [expOrbit_smul]; exact hv.const_smul c
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_smoothVectors {v : E} : v ∈ h.smoothVectors π ↔ h.IsSmoothVector π v := Iff.rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Simplify using `only [expOrbit, ← BanachRep.map_mul_apply, expG_Ad, inv_inv]`. Use `congr 1`. Use `group`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem expOrbit_map (g : G) (v : E) :
     h.expOrbit π (π g v) = fun Y => π g (h.expOrbit π v (h.Ad g⁻¹ Y)) := by
@@ -255,7 +253,7 @@ theorem expOrbit_map (g : G) (v : E) :
   group
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[isSmoothVector_iff]`. Rewrite using `[expOrbit_map]`. Conclude with `((π g).restrictScalars ℝ).contDiff.comp (hv.comp (h.AdL g⁻¹).contDiff)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothVector_map {v : E} (hv : h.IsSmoothVector π v) (g : G) :
     h.IsSmoothVector π (π g v) := by
@@ -266,14 +264,14 @@ theorem isSmoothVector_map {v : E} (hv : h.IsSmoothVector π v) (g : G) :
 noncomputable def derivOp (X : 𝔤) (v : E) : E := fderiv ℝ (h.expOrbit π v) 0 X
 
 /- English proof (translation)
-The claim follows from `((h.isSmoothVector_iff π).1 hv).differentiable (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_expOrbit {v : E} (hv : h.IsSmoothVector π v) :
     Differentiable ℝ (h.expOrbit π v) :=
   ((h.isSmoothVector_iff π).1 hv).differentiable (by simp)
 
 /- English proof (translation)
-Establish `h1` using `hasDerivAt_comp_line (h.differentiable_expOrbit π hv 0) X`. Simplify using `only [zero_add] at h1`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_derivOp {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) :
     HasDerivAt (fun t : ℝ => π (h.expG (t • X)) v) (h.derivOp π X v) 0 := by
@@ -282,27 +280,27 @@ theorem hasDerivAt_derivOp {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) :
   exact h1
 
 /- English proof (translation)
-Simplify using `[derivOp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem derivOp_add_left (X Y : 𝔤) (v : E) :
     h.derivOp π (X + Y) v = h.derivOp π X v + h.derivOp π Y v := by
   simp [derivOp]
 
 /- English proof (translation)
-Simplify using `[derivOp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem derivOp_smul_left (r : ℝ) (X : 𝔤) (v : E) :
     h.derivOp π (r • X) v = r • h.derivOp π X v := by
   simp [derivOp]
 
 /- English proof (translation)
-Simplify using `[derivOp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem derivOp_neg_left (X : 𝔤) (v : E) : h.derivOp π (-X) v = -h.derivOp π X v := by
   simp [derivOp]
 
 /- English proof (translation)
-Simplify using `only [derivOp, expOrbit_add]`. Rewrite using `[fderiv_add (h.differentiable_expOrbit π hv 0) (h.differentiable_expOrbit π hw 0)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem derivOp_add {v w : E} (hv : h.IsSmoothVector π v) (hw : h.IsSmoothVector π w) (X : 𝔤) :
     h.derivOp π X (v + w) = h.derivOp π X v + h.derivOp π X w := by
@@ -311,7 +309,7 @@ theorem derivOp_add {v w : E} (hv : h.IsSmoothVector π v) (hw : h.IsSmoothVecto
   rfl
 
 /- English proof (translation)
-Simplify using `only [derivOp, expOrbit_smul]`. Rewrite using `[fderiv_const_smul (h.differentiable_expOrbit π hv 0) c]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem derivOp_smul {v : E} (hv : h.IsSmoothVector π v) (c : ℂ) (X : 𝔤) :
     h.derivOp π X (c • v) = c • h.derivOp π X v := by
@@ -320,9 +318,9 @@ theorem derivOp_smul {v : E} (hv : h.IsSmoothVector π v) (c : ℂ) (X : 𝔤) :
   rfl
 
 /- English proof (translation)
-Establish `hF : HasFDerivAt (h.expOrbit π v) (fderiv ℝ (h.expOrbit π v) 0) (h.AdL g⁻¹ 0)`. Simplify using `using (h.differentiable_expOrbit π hv 0).hasFDerivAt`. Establish `hc` using `((π g).restrictScalars ℝ).hasFDerivAt.comp (0 : 𝔤) (hF.comp (0 : 𝔤) (h.AdL g⁻¹).hasFDerivAt)`. Unfold `derivOp`. Rewrite using `[expOrbit_map]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun Y => π g (h.expOrbit π v (h.Ad g⁻¹ Y))) = ((π g).restrictScalars ℝ) ∘ (h.expOrbit π v ∘ h.AdL g⁻¹)` using `rfl`. Rewrite using `[e, hc.fderiv]`. Simplify using `[Ad_inv_Ad]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem derivOp_map {v : E} (hv : h.IsSmoothVector π v) (g : G) (X : 𝔤) :
     h.derivOp π (h.Ad g X) (π g v) = π g (h.derivOp π X v) := by
@@ -338,7 +336,7 @@ theorem derivOp_map {v : E} (hv : h.IsSmoothVector π v) (g : G) (X : 𝔤) :
   simp [Ad_inv_Ad]
 
 /- English proof (translation)
-Use `letI := h.chartedSpace`. Use `haveI := h.lieGroup ∞`. Establish `hm : ContMDiff 𝓘(ℝ, V) 𝓘(ℝ, 𝔤) ∞ (fun p => h.expG (φ₁ p) * h.expG (φ₂ p) * h.expG (φ₃ p))` using `((h.contMDiff_expG_comp h₁).mul (h.contMDiff_expG_comp h₂)).mul (h.contMDiff_expG_comp h₃)`. Conclude with `(ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hv hm).contDiff`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_orbit_expG_mul {v : E} (hv : h.IsSmoothVector π v) {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] {φ₁ φ₂ φ₃ : V → 𝔤} (h₁ : ContDiff ℝ ∞ φ₁)
@@ -352,11 +350,11 @@ theorem contDiff_orbit_expG_mul {v : E} (hv : h.IsSmoothVector π v) {V : Type*}
   exact (ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hv hm).contDiff
 
 /- English proof (translation)
-Rewrite using `[isSmoothVector_iff]`. Establish `hΨ : ContDiff ℝ ∞ (fun p : 𝔤 × 𝔤 => π (h.expG p.1 * h.expG p.2 * h.expG 0) v)` using `h.contDiff_orbit_expG_mul π hv contDiff_fst contDiff_snd contDiff_const`. Establish `hΨ' : ContDiff ℝ ∞ (Function.uncurry fun Z Y : 𝔤 => π (h.expG Z) (π (h.expG Y) v))`. Use `hΨ using 2 with p` and compare the differences between its conclusion and the goal. Simplify using `[BanachRep.map_mul_apply, Function.uncurry]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Establish `hd : ContDiff ℝ ∞ (fun Z : 𝔤 => fderiv ℝ (fun Y : 𝔤 => π (h.expG Z) (π (h.expG Y) v)) 0)` using `ContDiff.fderiv hΨ' contDiff_const (by simp)`. Establish `key : h.expOrbit π (h.derivOp π X v) = fun Z => fderiv ℝ (fun Y : 𝔤 => π (h.expG Z) (π (h.expG Y) v)) 0 X`. Use function extensionality and compare the values at `Z`. Establish `hc` using `((π (h.expG Z)).restrictScalars ℝ).hasFDerivAt.comp (0 : 𝔤) (h.differentiable_expOrbit π hv 0).hasFDerivAt`. Establish `e : (fun Y : 𝔤 => π (h.expG Z) (π (h.expG Y) v)) = ((π (h.expG Z)).restrictScalars ℝ) ∘ h.expOrbit π v` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, hc.fderiv]`. Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `hd.clm_apply contDiff_const`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothVector_derivOp {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) :
     h.IsSmoothVector π (h.derivOp π X v) := by
@@ -382,27 +380,25 @@ theorem isSmoothVector_derivOp {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) :
   exact hd.clm_apply contDiff_const
 
 /- English proof (translation)
-Use `set A : ℝ × ℝ × ℝ → E := fun p => π (h.expG (p.1 • X) * h.expG (p.2.1 • Y) * h.expG (p.2.2 • (-X))) v with hAdef`. Establish `hA : ContDiff ℝ ∞ A` using `h.contDiff_orbit_expG_mul π hv (contDiff_fst.smul contDiff_const) ((contDiff_fst.comp contDiff_snd).smul contDiff_const) ((contDiff_snd.comp contDiff_snd).smul contDiff_const)`. Establish `hAd : Differentiable ℝ A` using `hA.differentiable (by simp)`. Use `set D2 := fderiv ℝ (fderiv ℝ A) 0`. Use `set er : ℝ × ℝ × ℝ := (1, 0, 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set et : ℝ × ℝ × ℝ := (0, 1, 0)`. Use `set eu : ℝ × ℝ × ℝ := (0, 0, 1)`. Establish `hY` using `h.isSmoothVector_derivOp π hv Y`. Establish `hX` using `h.isSmoothVector_derivOp π hv X`. Establish `da : ∀ r : ℝ, fderiv ℝ A (r • er) et = π (h.expG (r • X)) (h.derivOp π Y v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `r`. Establish `h1` using `hasDerivAt_comp_line (hAd (r • er)) et`. Establish `h2` using `((π (h.expG (r • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (h.hasDerivAt_derivOp π hv Y)`. Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_))` and prove the remaining obligations. Simplify using `[A, er, et, BanachRep.map_mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `dc : ∀ t : ℝ, fderiv ℝ A (t • et) eu = -π (h.expG (t • Y)) (h.derivOp π X v)`. Introduce `t`. Establish `h1` using `hasDerivAt_comp_line (hAd (t • et)) eu`. Establish `h2` using `((π (h.expG (t • Y))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (h.hasDerivAt_derivOp π hv (-X))`. Rewrite `h2` using `[derivOp_neg_left]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `h1.unique ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', map_neg] at h2`. Use `h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `[A, et, eu, BanachRep.map_mul_apply]`. Establish `db : D2 er et = h.derivOp π X (h.derivOp π Y v)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hasDerivAt_fderiv_line hA 0 er et`. Establish `h2` using `h.hasDerivAt_derivOp π hY X`. Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_))` and prove the remaining obligations. Simplify using `only [zero_add]`. Rewrite using `[da]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `dd : D2 et eu = -h.derivOp π Y (h.derivOp π X v)`. Establish `h1` using `hasDerivAt_fderiv_line hA 0 et eu`. Establish `h2` using `(h.hasDerivAt_derivOp π hX Y).neg`. Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_))` and prove the remaining obligations. Simplify using `only [zero_add]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[dc]`. Both sides reduce to the same expression. Establish `hsymm : D2 eu et = D2 et eu` using `(hA.contDiffAt.isSymmSndFDerivAt (by`. Simplify using `only [minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 le_top)) eu et`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `diag : ∀ s : ℝ, fderiv ℝ A (s • (er + eu)) et = h.derivOp π (h.Ad (h.expG (s • X)) Y) v`. Introduce `s`. Establish `h1` using `hasDerivAt_comp_line (hAd (s • (er + eu))) et`. Establish `h2` using `h.hasDerivAt_derivOp π hv (h.Ad (h.expG (s • X)) Y)`. Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [A, er, eu, et, Prod.smul_mk, Prod.mk_add_mk, smul_zero, smul_eq_mul, mul_one, mul_zero, add_zero, zero_add]`. Rewrite using `[← map_smul, expG_Ad, smul_neg, expG_neg]`. Establish `hg` using `hasDerivAt_fderiv_line hA 0 (er + eu) et`. Establish `hg'` using `(fderiv ℝ (h.expOrbit π v) 0).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (h.hasDerivAt_Ad_expG X Y)`. Establish `e` using `hg.unique (hg'.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_))`.
-
-Express the relevant statement in the definitionally equal form `D2 (er + eu) et = h.derivOp π (h.bracket X Y) v at e`. Rewrite using `[← e, map_add, ContinuousLinearMap.add_apply, db, hsymm, dd, sub_eq_add_neg]`. Simplify using `only [zero_add, Function.comp_apply]`. Rewrite using `[diag]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem derivOp_bracket {v : E} (hv : h.IsSmoothVector π v) (X Y : 𝔤) :
     h.derivOp π (h.bracket X Y) v =
@@ -512,7 +508,7 @@ Both sides reduce to the same expression.
     ((h.derivEnd π X v : h.smoothVectors π) : E) = h.derivOp π X v := rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Conclude with `h.derivOp_map π v.2 g X`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem derivEnd_smoothOp (g : G) (X : 𝔤) :
     h.derivEnd π (h.Ad g X) ∘ₗ h.smoothOp π g = h.smoothOp π g ∘ₗ h.derivEnd π X := by
@@ -541,7 +537,7 @@ noncomputable def uAction :
   UniversalEnvelopingAlgebra.lift ℝ (h.derivLie π)
 
 /- English proof (translation)
-The claim follows from `UniversalEnvelopingAlgebra.lift_ι_apply ℝ (h.derivLie π) X`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem uAction_ι (X : h.lieSubalgebra) :
     h.uAction π (UniversalEnvelopingAlgebra.ι ℝ X) = h.derivEnd π (h.ofLie X) :=

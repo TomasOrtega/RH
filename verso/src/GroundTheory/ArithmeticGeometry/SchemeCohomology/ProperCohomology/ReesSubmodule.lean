@@ -33,7 +33,7 @@ def reesSubmodule : Submodule (reesAlgebra I) (PolynomialModule A M) where
 variable {I M}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_reesSubmodule_iff {p : PolynomialModule A M} :
     p ∈ reesSubmodule I M ↔ ∀ n, p.coeff n ∈ I ^ n • (⊤ : Submodule A M) := Iff.rfl
@@ -41,9 +41,7 @@ lemma mem_reesSubmodule_iff {p : PolynomialModule A M} :
 variable (I M)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PolynomialModule.coeff_single, Finsupp.single_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma single_zero_mem_reesSubmodule (m : M) :
     PolynomialModule.single A 0 m ∈ reesSubmodule I M := by
@@ -55,17 +53,15 @@ lemma single_zero_mem_reesSubmodule (m : M) :
   · exact zero_mem _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `p hp`. Establish `key : ∀ n, ∀ x ∈ I ^ n • (⊤ : Submodule A M), PolynomialModule.single A n x ∈ Submodule.span (reesAlgebra I) (Set.range (PolynomialModule.single A 0 : M → _))`. Introduce `n x hx`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha m _`. Establish `hmem : monomial n a ∈ reesAlgebra I` using `reesAlgebra.monomial_mem.2 ha`. Establish `: PolynomialModule.single A n (a • m) = (⟨monomial n a, hmem⟩ : reesAlgebra I) • PolynomialModule.single A 0 m`. Express the relevant statement in the definitionally equal form `_ = monomial n a • PolynomialModule.single A 0 m`. Rewrite using `[PolynomialModule.monomial_smul_single, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, rfl⟩)`. Introduce `x y hx hy`. Rewrite using `[PolynomialModule.single_add]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hp' : p = ∑ n ∈ p.coeff.support, PolynomialModule.single A n (p.coeff n)`. Apply `PolynomialModule.coeff_injective` to reduce the goal to its premises. Use extensionality with `k`. Rewrite using `[PolynomialModule.coeff_sum, Finsupp.finsetSum_apply]`. Simplify using `only [PolynomialModule.coeff_single, Finsupp.single_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `Finsupp.notMem_support_iff.1 h`. Rewrite using `[hp']`.
-
-Conclude with `Submodule.sum_mem _ fun n _ => key n _ (hp n)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `single_zero_mem_reesSubmodule I M m`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem reesSubmodule_eq_span :
     reesSubmodule I M =

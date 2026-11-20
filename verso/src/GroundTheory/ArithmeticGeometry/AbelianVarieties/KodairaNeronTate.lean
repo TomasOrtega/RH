@@ -26,13 +26,13 @@ def phiT (P : (curveK K W).Point) : ZMod (v W.a₆).toNat :=
   if P ∈ E0Set K W then 0 else iotaPt K W P
 
 /- English proof (translation)
-Simplify using `[phiT, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiT_of_mem {P : (curveK K W).Point} (h : P ∈ E0Set K W) : phiT K W P = 0 := by
   simp [phiT, h]
 
 /- English proof (translation)
-Simplify using `only [phiT, hP, if_false, iotaPt, intPart_algebraMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiT_some {x y : 𝒪} (h : (curveK K W).Nonsingular (ι x) (ι y))
     (hP : Point.some _ _ h ∉ E0Set K W) :
@@ -45,14 +45,14 @@ omit [IsFractionRing 𝒪 K] [DecidableEq K] [DecidableEq (ResidueField 𝒪)]
   [IsAdicComplete (maximalIdeal 𝒪) 𝒪] [(W.map (algebraMap 𝒪 K)).IsElliptic] in
 include hπ in
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton, ← hπ.maximalIdeal_eq, mem_maximalIdeal, mem_nonunits_iff, not_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_iff_not_dvd {a : 𝒪} : IsUnit a ↔ ¬π ∣ a := by
   rw [← Ideal.mem_span_singleton, ← hπ.maximalIdeal_eq, mem_maximalIdeal, mem_nonunits_iff,
     not_not]
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[← Int.cast_natCast, ZMod.intCast_zmod_eq_zero_iff_dvd, Int.natCast_dvd_natCast]`. Conclude with `absurd (Nat.le_of_dvd (by omega) h) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero_of_lt {n b : ℕ} (h1 : 1 ≤ b) (h2 : b < n) : ((b : ℕ) : ZMod n) ≠ 0 := by
   intro h
@@ -64,21 +64,19 @@ section Hensel
 include hπ
 
 /- English proof (translation)
-Use `open Polynomial in`. Establish `hm : ∀ {a : 𝒪}, π ∣ a → a ∈ IsLocalRing.maximalIdeal 𝒪` using `fun {a} h => by`. Rewrite using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Conclude with `h`. Establish `hu : ∀ {a : 𝒪}, IsUnit a → ∀ {b : 𝒪}, π ∣ b → IsUnit (a + b)` using `fun {a} ha {b} hb => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha`, the goal using `[isUnit_iff_not_dvd hπ]`. Introduce `h; exact ha (by have := dvd_sub h hb; rwa [add_sub_cancel_right] at this)`. Take `⟨c1, hc1⟩ : ∃ c, c = β * δ` from `⟨_, rfl⟩`. Take `⟨c0, hc0⟩ : ∃ c, c = α * δ ^ 2` from `⟨_, rfl⟩`. Use `set f : Polynomial 𝒪 := X ^ 3 + C γ * X ^ 2 + C c1 * X + C c0 with hfdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hf : f.Monic` using `by rw [hfdef]; monicity!`. Establish `hev : ∀ V : 𝒪, f.eval V = V ^ 3 + γ * V ^ 2 + β * δ * V + α * δ ^ 2` using `fun V => by`. Simplify using `[hfdef, hc0, hc1]`. Establish `hder : ∀ V : 𝒪, f.derivative.eval V = 3 * V ^ 2 + 2 * γ * V + β * δ` using `fun V => by`. Simplify using `[hfdef, hc1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨V, hV, hVm⟩` from `HenselianRing.is_henselian (I := IsLocalRing.maximalIdeal 𝒪) f hf (-γ) (by`. Rewrite using `[hev]`. Apply `hm` to reduce the goal to its premises. Rewrite using `[show (-γ) ^ 3 + γ * (-γ) ^ 2 + β * δ * -γ + α * δ ^ 2 = δ * (-β * γ + α * δ) by ring]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `dvd_mul_of_dvd_left hδ _)`. Use the proof step `(by`. Rewrite using `[hder]`. Apply `IsUnit.map` to reduce the goal to its premises. Rewrite using `[show 3 * (-γ) ^ 2 + 2 * γ * -γ + β * δ = γ ^ 2 + β * δ by ring]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `hu (hγ.pow 2) (dvd_mul_of_dvd_right hδ β))`. Establish `hV' : V ^ 3 + γ * V ^ 2 + β * δ * V + α * δ ^ 2 = 0` using `by rw [← hev]; exact hV`. Establish `hVu : IsUnit V`. Establish `h1 : π ∣ V - -γ`. Rewrite `hVm` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Then use the resulting hypothesis.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `hu (hγ.neg) h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨Wv, hWv⟩ : ∃ Wv, V * Wv = 1` from `⟨_, hVu.mul_val_inv⟩`. Use `⟨δ * Wv, dvd_mul_of_dvd_left hδ _, ?_⟩` and prove the remaining obligations.
-
-Take the linear combination `(δ * Wv ^ 3) * hV' - (β * δ ^ 2 * Wv ^ 2 + γ * δ * Wv * (V * Wv + 1) + δ * ((V * Wv) ^ 2 + V * Wv + 1)) * hWv`.
+A detailed English derivation is pending.
 -/
 theorem exists_root_cubic {α β γ δ : 𝒪} (hγ : IsUnit γ) (hδ : π ∣ δ) :
     ∃ Z, π ∣ Z ∧ α * Z ^ 3 + β * Z ^ 2 + γ * Z + δ = 0 := by
@@ -121,7 +119,7 @@ theorem exists_root_cubic {α β γ δ : 𝒪} (hγ : IsUnit γ) (hδ : π ∣ �
 end Hensel
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use `fin_cases z`. Conclude with `absurd rfl hz`. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zmod_two_eq_one {N : ℕ} (hN : N = 2) {z : ZMod N} (hz : z ≠ 0) : z = 1 := by
   subst hN
@@ -138,7 +136,7 @@ include h2 h3 h4
 omit [DecidableEq K] [DecidableEq (ResidueField 𝒪)] [IsAdicComplete (maximalIdeal 𝒪) 𝒪]
   [(W.map (algebraMap 𝒪 K)).IsElliptic] in
 /- English proof (translation)
-Rewrite `h` using `[equation_iff, h2, h3, h4]`. Take the linear combination `h`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tate_eq {x y : 𝒪} (h : W.toAffine.Equation x y) :
     y * (y + W.a₁ * x) = x ^ 3 + W.a₆ := by
@@ -149,7 +147,7 @@ omit [IsFractionRing 𝒪 K] [DecidableEq K] [DecidableEq (ResidueField 𝒪)]
   [IsAdicComplete (maximalIdeal 𝒪) 𝒪] in
 include K in
 /- English proof (translation)
-Introduce `h0`. Apply `Δ_ne_zero_of_isElliptic K W` to reduce the goal to its premises. Simplify using `only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈, h2, h3, h4, h0]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem a₆_ne_zero : W.a₆ ≠ 0 := by
   intro h0
@@ -161,9 +159,9 @@ theorem a₆_ne_zero : W.a₆ ≠ 0 := by
 include hπ hq he
 
 /- English proof (translation)
-Distinguish the cases in `hP : P ∈ E0Set K W`. Rewrite using `[phiT_of_mem K W hP, phiT_of_mem K W (show -P ∈ E0 K W from (E0 K W).neg_mem hP), neg_zero]`. Take `⟨x, y, h, rfl, e, dx, dy⟩` from `exists_of_notMem_E0Set K W hπ (by rw [h3]; exact dvd_zero _) (by rw [h4]; exact dvd_zero _) hq hP`. Take `⟨hn, hneg⟩` from `neg_some_integral K W h`. Establish `hP'` using `neg_notMem_E0Set K W hP`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hP'`, the goal using `[hneg]`. Rewrite using `[phiT_some K W h hP, phiT_some K W hn hP', h3, sub_zero, show -y - W.a₁ * x + W.a₁ * x = -y by ring, AddValuation.map_neg, show -y - W.a₁ * x = -(y + W.a₁ * x) by ring, AddValuation.map_neg]`. Conclude with `iotaN_swap fun ht => by`. Rewrite using `[tie_two hπ he (a₆_ne_zero K h2 h3 h4) (tate_eq h2 h3 h4 e) dy ht, ENat.natCast_toNat (v_ne_top (a₆_ne_zero K h2 h3 h4))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiT_neg (P : (curveK K W).Point) : phiT K W (-P) = -phiT K W P := by
   by_cases hP : P ∈ E0Set K W
@@ -184,7 +182,7 @@ theorem phiT_neg (P : (curveK K W).Point) : phiT K W (-P) = -phiT K W P := by
 include K in
 
 /- English proof (translation)
-Rewrite using `[AddValuation.map_neg, show -(y + W.a₁ * x) + W.a₁ * x = -y by ring, AddValuation.map_neg]`. Conclude with `iotaN_swap fun ht => by`. Rewrite using `[tie_two hπ he (a₆_ne_zero K h2 h3 h4) (tate_eq h2 h3 h4 e') dy ht, ENat.natCast_toNat (v_ne_top (a₆_ne_zero K h2 h3 h4))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_neg_data {x y : 𝒪} (e' : W.toAffine.Equation x y) (dy : π ∣ y) :
     iotaN (v W.a₆).toNat (v (-(y + W.a₁ * x))) (v (-(y + W.a₁ * x) + W.a₁ * x)) =
@@ -195,21 +193,19 @@ theorem iota_neg_data {x y : 𝒪} (e' : W.toAffine.Equation x y) (dy : π ∣ y
       ENat.natCast_toNat (v_ne_top (a₆_ne_zero K h2 h3 h4))]
 
 /- English proof (translation)
-Establish `d3 : π ∣ W.a₃` using `by rw [h3]; exact dvd_zero _`. Establish `d4 : π ∣ W.a₄` using `by rw [h4]; exact dvd_zero _`. Take `⟨x₁, y₁, x₂, y₂, x₃, y₃, ℓ, ν, ⟨g₁, rfl⟩, ⟨g₂, rfl⟩, ⟨g₃, rfl⟩, e₁, e₂, e₃, dx₁, dy₁, dx₂, dy₂, dx₃, dy₃, l1, l2, l3, v1, v2, v3⟩` from `triple_origin K W hπ d3 d4 hq hP hQ hR hs`. Rewrite using `[phiT_some K W g₁ hP, phiT_some K W g₂ hQ, phiT_some K W g₃ hR]`. Establish `hq0` using `a₆_ne_zero K h2 h3 h4`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `v1` using `[h2]`. Rewrite `v2` using `[h3, h4]`. Rewrite `v3` using `[h3]`. Establish `E₁` using `tate_eq h2 h3 h4 e₁`. Establish `E₂` using `tate_eq h2 h3 h4 e₂`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E₃` using `tate_eq h2 h3 h4 e₃`. Establish `hv3 : x₁ * x₂ * x₃ = ν ^ 2 - W.a₆` using `by linear_combination v3`. Establish `hσ : π ∣ ℓ * (ℓ + W.a₁)`. Rewrite using `[show ℓ * (ℓ + W.a₁) = x₁ + x₂ + x₃ by linear_combination -v1]`. Conclude with `dvd_add (dvd_add dx₁ dx₂) dx₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ¬π ∣ W.a₁` using `(isUnit_iff_not_dvd hπ).1 he`. Break down `hπ.prime.dvd_or_dvd hσ with hℓ | hℓe` into its components or cases. Establish `hu : IsUnit (ℓ + W.a₁)` using `(isUnit_iff_not_dvd hπ).2 fun h => hne (by`. Use `dvd_sub h hℓ` as an intermediate fact. Rewrite using `[add_sub_cancel_left] at this)` and apply the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hvw : (y₁ + W.a₁ * x₁) * (y₂ + W.a₁ * x₂) * (y₃ + W.a₁ * x₃) = ν ^ 3 - (ℓ + W.a₁) ^ 3 * W.a₆`. Rewrite using `[l1, l2, l3]`. Take the linear combination `(ℓ + W.a₁) ^ 3 * v3 + (ℓ + W.a₁) ^ 2 * ν * v2 + (ℓ + W.a₁) * ν ^ 2 * v1`. Conclude with `iota_triple hπ hq0 hℓ hu E₁ E₂ E₃ dx₁ dx₂ dx₃ dy₁ l1 l2 l3 hv3 hvw`. Establish `hℓu : IsUnit (-ℓ)` using `(isUnit_iff_not_dvd hπ).2 fun h => hne (by`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `dvd_add hℓe h; rwa [show ℓ + W.a₁ + -ℓ = W.a₁ by ring] at this)` as an intermediate fact. Establish `neg_eq : ∀ {x y : 𝒪}, y * (y + W.a₁ * x) = x ^ 3 + W.a₆ → -(y + W.a₁ * x) * (-(y + W.a₁ * x) + W.a₁ * x) = x ^ 3 + W.a₆`. Introduce `x y h`. Take the linear combination `h`. Establish `hvw : (-(y₁ + W.a₁ * x₁) + W.a₁ * x₁) * (-(y₂ + W.a₁ * x₂) + W.a₁ * x₂) * (-(y₃ + W.a₁ * x₃) + W.a₁ * x₃) = (-ν) ^ 3 - (-(ℓ + W.a₁) + W.a₁) ^ 3 * W.a₆`.
+Fix the arbitrary inputs or assume the hypotheses. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[l1, l2, l3]`. Take the linear combination `(-ℓ ^ 3) * v3 - ℓ ^ 2 * ν * v2 - ℓ * ν ^ 2 * v1`. Use `iota_triple hπ hq0 (ℓ := -(ℓ + W.a₁)) (ν := -ν) (dvd_neg.2 hℓe) (by rwa [show -(ℓ + W.a₁) + W.a₁ = -ℓ by ring]) (neg_eq E₁) (neg_eq E₂) (neg_eq E₃) dx₁ dx₂ dx₃ (dvd_neg.2 (dvd_add dy₁ (dvd_mul_of_dvd_right dx₁ _))) (by rw [l1]; ring) (by rw [l2]; ring) (by rw [l3]; ring) (by rw [ …` as an intermediate fact. Rewrite `this` using `[iota_neg_data K hπ h2 h3 h4 he hq (equation_of_map K W g₁.1) dy₁, iota_neg_data K hπ h2 h3 h4 he hq (equation_of_map K W g₂.1) dy₂, iota_neg_data K hπ h2 h3 h4 he hq (equation_of_map K W g₃.1) dy₃]`. Rewrite using `[← neg_eq_zero, neg_add, neg_add]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiT_three {P Q R : (curveK K W).Point} (hP : P ∉ E0Set K W) (hQ : Q ∉ E0Set K W)
     (hR : R ∉ E0Set K W) (hs : P + Q + R = 0) : phiT K W P + phiT K W Q + phiT K W R = 0 := by
@@ -258,23 +254,21 @@ theorem phiT_three {P Q R : (curveK K W).Point} (hP : P ∉ E0Set K W) (hQ : Q �
     exact this
 
 /- English proof (translation)
-Establish `d3 : π ∣ W.a₃` using `by rw [h3]; exact dvd_zero _`. Establish `d4 : π ∣ W.a₄` using `by rw [h4]; exact dvd_zero _`. Take `⟨xP, yP, gP, rfl, eP, dxP, dyP⟩` from `exists_of_notMem_E0Set K W hπ d3 d4 hq hP`. Take `⟨xQ, yQ, gQ, rfl, eQ, dxQ, dyQ⟩` from `exists_of_notMem_E0Set K W hπ d3 d4 hq hQ`. Take `⟨ℓ, ν, l1, l2, l3, v1, v2, v3⟩` from `exists_integral_line K W gP gQ hT hs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[phiT_some K W gP hP, phiT_some K W gQ hQ]`. Rewrite `v1` using `[h2]`. Rewrite `v2` using `[h3, h4]`. Rewrite `v3` using `[h3]`. Establish `hq0` using `a₆_ne_zero K h2 h3 h4`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hTn : (curveRed W).Nonsingular (residue 𝒪 xT) (residue 𝒪 yT)` using `hTm xT yT hT rfl`. Establish `hν : π ∣ ν`. Rewrite using `[show ν = yP - ℓ * xP by rw [l1]; ring]`. Conclude with `dvd_sub dyP (dvd_mul_of_dvd_right dxP _)`. Establish `hxT : ¬π ∣ xT`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Establish `hy : π ∣ yT` using `by rw [l3]; exact dvd_add (dvd_mul_of_dvd_right hx _) hν`. Conclude with `singular_of_dvd_origin W hπ d3 d4 hx hy hTn`. Establish `hprod : ¬π ∣ ℓ * (ℓ + W.a₁)`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply `hxT` to reduce the goal to its premises. Rewrite using `[show xT = ℓ * (ℓ + W.a₁) - xP - xQ by linear_combination v1]`. Conclude with `dvd_sub (dvd_sub h dxP) dxQ`. Establish `hℓ : IsUnit ℓ` using `(isUnit_iff_not_dvd hπ).2 fun h => hprod (dvd_mul_of_dvd_left h _)`. Establish `hℓe : IsUnit (ℓ + W.a₁)` using `(isUnit_iff_not_dvd hπ).2 fun h => hprod (dvd_mul_of_dvd_right h _)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ρ, hρdef⟩ : ∃ ρ, ρ = ν * ↑hℓ.unit⁻¹` from `⟨_, rfl⟩`. Take `⟨ρ', hρ'def⟩ : ∃ ρ', ρ' = ν * ↑hℓe.unit⁻¹` from `⟨_, rfl⟩`. Establish `hρ : ℓ * ρ = ν`. Rewrite using `[hρdef, mul_left_comm, IsUnit.mul_val_inv, mul_one]`. Establish `hρ' : (ℓ + W.a₁) * ρ' = ν`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hρ'def, mul_left_comm, IsUnit.mul_val_inv, mul_one]`. Establish `dρ : π ∣ ρ` using `hρdef ▸ dvd_mul_of_dvd_left hν _`. Establish `dρ' : π ∣ ρ'` using `hρ'def ▸ dvd_mul_of_dvd_left hν _`. Establish `unitU : ∀ {r : 𝒪}, π ∣ r → IsUnit (-(xT + r))` using `fun {r} hr => (isUnit_iff_not_dvd hπ).2 fun h => hxT (by`. Use `dvd_sub (dvd_neg.1 h) hr` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_sub_cancel_right] at this)` and apply the resulting hypothesis. Use `iota_pair (μ := 1) (l := ℓ) (l' := ℓ + W.a₁) (ρ := ρ) (ρ' := ρ') (U := -(xT + ρ)) (U' := -(xT + ρ')) (xP := xP) (yP := yP) (xR := xQ) (yR := yQ) hπ he hq0 hℓ hℓe (unitU dρ) (unitU dρ') one_ne_zero (tate_eq h2 h3 h4 eP) (tate_eq h2 h3 h4 eQ) dxP dyP dyQ (by rw [l1]; linear_combina …` and prove the remaining obligations. Rewrite using `[l1]; linear_combination -hρ') (by rw [l2]; linear_combination -hρ)`. Use the proof step `(by rw [l2]; linear_combination -hρ') ?_ ?_ (by ring) (by rw [hρ, hρ'])`. Take the linear combination `ρ ^ 2 * v1 + ρ * v2 + v3 + (ℓ * ρ - ν + W.a₁ * ρ) * hρ`.
-
-Take the linear combination `ρ' ^ 2 * v1 + ρ' * v2 + v3 + (ℓ * ρ' - ν) * hρ'`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem phiT_pair_int {P Q : (curveK K W).Point} {xT yT : 𝒪}
     {hT : (curveK K W).Nonsingular (ι xT) (ι yT)} (hP : P ∉ E0Set K W) (hQ : Q ∉ E0Set K W)
@@ -326,29 +320,29 @@ theorem phiT_pair_int {P Q : (curveK K W).Point} {xT yT : 𝒪}
   · linear_combination ρ' ^ 2 * v1 + ρ' * v2 + v3 + (ℓ * ρ' - ν) * hρ'
 
 /- English proof (translation)
-Establish `d3 : π ∣ W.a₃` using `by rw [h3]; exact dvd_zero _`. Establish `d4 : π ∣ W.a₄` using `by rw [h4]; exact dvd_zero _`. Take `⟨xP, yP, gP, rfl, eP, dxP, dyP⟩` from `exists_of_notMem_E0Set K W hπ d3 d4 hq hP`. Take `⟨xQ, yQ, gQ, rfl, eQ, dxQ, dyQ⟩` from `exists_of_notMem_E0Set K W hπ d3 d4 hq hQ`. Take `⟨L, N, l1, l2, -, v1, v2, v3⟩` from `exists_line_of_add_eq_zero gP gQ hT hs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆, h2, h3, h4, map_zero] at v1 v2 v3`. Rewrite using `[phiT_some K W gP hP, phiT_some K W gQ hQ]`. Establish `hq0` using `a₆_ne_zero K h2 h3 h4`. Establish `hinj` using `IsFractionRing.injective 𝒪 K`. Establish `hL : L ∉ Set.range ι`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨ℓ, rfl⟩`. Apply `hX` to reduce the goal to its premises. Conclude with `⟨ℓ ^ 2 + W.a₁ * ℓ - xP - xQ, by`. Simplify using `only [map_sub, map_add, map_mul, map_pow]`. Take the linear combination `-v1⟩`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨μ, hμm, hμ⟩` from `exists_inv_mem_of_notMem_range K hL`. Establish `hL0 : L ≠ 0` using `by rintro rfl; exact hL ⟨0, map_zero _⟩`. Establish `hμL : ι μ * L = 1` using `by rw [hμ, inv_mul_cancel₀ hL0]`. Establish `hμ0 : μ ≠ 0` using `by rintro rfl; rw [map_zero, zero_mul] at hμL; exact zero_ne_one hμL`. Establish `dμ : π ∣ μ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hμm` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Then use the resulting hypothesis. Take `⟨ν', hν'def⟩ : ∃ ν', ν' = μ * yP - xP` from `⟨_, rfl⟩`. Establish `hνK : ι ν' = ι μ * N`. Rewrite using `[hν'def, map_sub, map_mul]`. Take the linear combination `(ι μ) * l1 + (ι xP) * hμL`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `lQ : μ * yQ = 1 * (xQ + ν')`. Apply `hinj` to reduce the goal to its premises. Simplify using `only [map_mul, map_add, one_mul]`. Rewrite using `[hνK]`. Take the linear combination `(ι μ) * l2 + (ι xQ) * hμL`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨T', hTdef⟩ : ∃ T', T' = 1 + W.a₁ * μ - μ ^ 2 * (xP + xQ)` from `⟨_, rfl⟩`. Establish `hTK : ι T' = (ι μ) ^ 2 * X`. Rewrite using `[hTdef]`. Simplify using `only [map_sub, map_add, map_mul, map_pow, map_one]`. Take the linear combination `(-(ι μ * L + 1) - ι W.a₁ * ι μ) * hμL - (ι μ) ^ 2 * v1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `S2 : μ ^ 2 * (xP * xQ) + T' * (xP + xQ) = -(2 + W.a₁ * μ) * ν'`. Apply `hinj` to reduce the goal to its premises. Simplify using `only [map_mul, map_add, map_neg, map_pow, map_ofNat]`. Rewrite using `[hTK, hνK]`. Take the linear combination `(ι μ) ^ 2 * v2 - 2 * ι μ * N * hμL`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `S3 : xP * xQ * T' = ν' ^ 2 - μ ^ 2 * W.a₆`. Apply `hinj` to reduce the goal to its premises. Simplify using `only [map_mul, map_sub, map_pow]`. Rewrite using `[hTK, hνK]`. Take the linear combination `(ι μ) ^ 2 * v3`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hl' : IsUnit (1 + W.a₁ * μ)` using `(isUnit_iff_not_dvd hπ).2 fun h => hπ.not_isUnit (isUnit_of_dvd_one (by have := dvd_sub h (dvd_mul_of_dvd_right dμ W.a₁); rwa [add_sub_cancel_right] at this))`. Establish `dT : π ∣ T' - 1`. Rewrite using `[hTdef, show 1 + W.a₁ * μ - μ ^ 2 * (xP + xQ) - 1 = μ * (W.a₁ - μ * (xP + xQ)) by ring]`. Conclude with `dvd_mul_of_dvd_left dμ _`. Establish `unitU : ∀ {r : 𝒪}, IsUnit (-(μ ^ 2 * r + T'))` using `fun {r} => (isUnit_iff_not_dvd hπ).2 fun h => hπ.not_isUnit (isUnit_of_dvd_one (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `dvd_add (dvd_add (dvd_neg.1 h) (dvd_neg.2 dT)) (dvd_neg.2 (dvd_mul_of_dvd_left (dvd_pow dμ two_ne_zero) r))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring))`. Take `⟨ρ', hρ'def⟩ : ∃ ρ', ρ' = ν' * ↑hl'.unit⁻¹` from `⟨_, rfl⟩`. Establish `hρ' : (1 + W.a₁ * μ) * ρ' = ν'`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hρ'def, mul_left_comm, IsUnit.mul_val_inv, mul_one]`. Use `iota_pair (μ := μ) (l := 1) (l' := 1 + W.a₁ * μ) (ρ := ν') (ρ' := ρ') (U := -(μ ^ 2 * ν' + T')) (U' := -(μ ^ 2 * ρ' + T')) (xP := xP) (yP := yP) (xR := xQ) (yR := yQ) hπ he hq0 isUnit_one hl' unitU unitU hμ0 (tate_eq h2 h3 h4 eP) (tate_eq h2 h3 h4 eQ) dxP dyP dyQ (by rw [hν'def]; …` and prove the remaining obligations. Take the linear combination `ν' * S2 + S3 + ν' ^ 2 * hTdef`. Take the linear combination `ρ' * S2 + S3 + ρ' ^ 2 * hTdef + (ρ' - ν') * hρ'`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem componentIndex_pair_nonintegral {P Q : (curveK K W).Point} {X Y : K} {hT : (curveK K W).Nonsingular X Y}
     (hP : P ∉ E0Set K W) (hQ : Q ∉ E0Set K W) (hX : X ∉ Set.range ι)
@@ -420,11 +414,9 @@ theorem componentIndex_pair_nonintegral {P Q : (curveK K W).Point} {X Y : K} {hT
   · linear_combination ρ' * S2 + S3 + ρ' ^ 2 * hTdef + (ρ' - ν') * hρ'
 
 /- English proof (translation)
-Break down `T with _ | ⟨X, Y, hT'⟩` into its components or cases. Establish `hQP : Q = -P`. Express the relevant statement in the definitionally equal form `P + Q + 0 = 0 at hs`. Rewrite `hs` using `[add_zero]`. Conclude with `(neg_eq_of_add_eq_zero_right hs).symm`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQP, phiT_neg K hπ h2 h3 h4 he hq, add_neg_cancel]`. Distinguish the cases in `hX : X ∈ Set.range ι`. Take `⟨xT, rfl⟩` from `hX`. Take `⟨yT, rfl⟩` from `exists_y_of_equation K W hT'.1`. Conclude with `phiT_pair_int K hπ h2 h3 h4 he hq hP hQ hT hs`.
-
-Conclude with `componentIndex_pair_nonintegral K hπ h2 h3 h4 he hq hP hQ hX hs`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem phiT_pair {P Q T : (curveK K W).Point} (hP : P ∉ E0Set K W) (hQ : Q ∉ E0Set K W)
     (hT : T ∈ E0Set K W) (hs : P + Q + T = 0) : phiT K W P + phiT K W Q = 0 := by
@@ -441,13 +433,11 @@ theorem phiT_pair {P Q T : (curveK K W).Point} (hP : P ∉ E0Set K W) (hQ : Q �
     · exact componentIndex_pair_nonintegral K hπ h2 h3 h4 he hq hP hQ hX hs
 
 /- English proof (translation)
-Establish `mem : ∀ {A B C : (curveK K W).Point}, A + B + C = 0 → B ∈ E0Set K W → C ∈ E0Set K W → A ∈ E0Set K W`. Introduce `A B C h hB hC`. Establish `: A = -(B + C)` using `by rw [← sub_eq_zero, sub_neg_eq_add, ← add_assoc]; exact h`. Rewrite using `[this]`. Conclude with `(E0 K W).neg_mem ((E0 K W).add_mem hB hC)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs₁ : Q + R + P = 0` using `by rw [← hs]; abel`. Establish `hs₂ : R + P + Q = 0` using `by rw [← hs]; abel`. Establish `hs₃ : P + R + Q = 0` using `by rw [← hs]; abel`. Apply the tactic sequence `by_cases hP : P ∈ E0Set K W <;> by_cases hQ : Q ∈ E0Set K W <;> by_cases hR : R ∈ E0Set K W`. Simplify using `[phiT_of_mem K W hP, phiT_of_mem K W hQ, phiT_of_mem K W hR]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (mem hs₂ hP hQ) hR`. Conclude with `absurd (mem hs₁ hR hP) hQ`. Rewrite using `[phiT_of_mem K W hP, zero_add]`. Conclude with `phiT_pair K hπ h2 h3 h4 he hq hQ hR hP hs₁`. Conclude with `absurd (mem hs hQ hR) hP`.
-
-Rewrite using `[phiT_of_mem K W hQ, add_zero]`. Conclude with `phiT_pair K hπ h2 h3 h4 he hq hP hR hQ hs₃`. Rewrite using `[phiT_of_mem K W hR, add_zero]`. Conclude with `phiT_pair K hπ h2 h3 h4 he hq hP hQ hR hs`. Conclude with `phiT_three K hπ h2 h3 h4 he hq hP hQ hR hs`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem componentIndex_sum_three {P Q R : (curveK K W).Point} (hs : P + Q + R = 0) :
     phiT K W P + phiT K W Q + phiT K W R = 0 := by
@@ -474,7 +464,7 @@ theorem componentIndex_sum_three {P Q R : (curveK K W).Point} (hs : P + Q + R = 
   · exact phiT_three K hπ h2 h3 h4 he hq hP hQ hR hs
 
 /- English proof (translation)
-Establish `h` using `componentIndex_sum_three K hπ h2 h3 h4 he hq (show P + Q + -(P + Q) = 0 by abel)`. Rewrite `h` using `[phiT_neg K hπ h2 h3 h4 he hq]`. Take the linear combination `-h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem phiT_add (P Q : (curveK K W).Point) : phiT K W (P + Q) = phiT K W P + phiT K W Q := by
   have h := componentIndex_sum_three K hπ h2 h3 h4 he hq (show P + Q + -(P + Q) = 0 by abel)
@@ -486,7 +476,7 @@ def phiTHom : (curveK K W).Point →+ ZMod (v W.a₆).toNat :=
 
 include K in
 /- English proof (translation)
-Establish `h1` using `(one_le_v_iff hπ).2 hq`. Establish `ht` using `v_ne_top (a₆_ne_zero K h2 h3 h4)`. Use `lift v W.a₆ to ℕ using ht with n hn`. Simplify using `only [ENat.toNat_natCast]`. Conclude with `h1` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_le_n : 1 ≤ (v W.a₆).toNat := by
   have h1 := (one_le_v_iff hπ).2 hq
@@ -496,35 +486,29 @@ theorem one_le_n : 1 ≤ (v W.a₆).toNat := by
   exact_mod_cast h1
 
 /- English proof (translation)
-Use `⟨fun h => ?_, phiT_of_mem K W⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hP`. Establish `d3 : π ∣ W.a₃` using `by rw [h3]; exact dvd_zero _`. Establish `d4 : π ∣ W.a₄` using `by rw [h4]; exact dvd_zero _`. Take `⟨x, y, g, rfl, e', dx, dy⟩` from `exists_of_notMem_E0Set K W hπ d3 d4 hq hP`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[phiT_some K W g hP]`. Establish `E` using `tate_eq h2 h3 h4 e'`. Establish `hq0` using `a₆_ne_zero K h2 h3 h4`. Establish `hn : v W.a₆ = ((v W.a₆).toNat : ℕ∞)` using `(ENat.natCast_toNat (v_ne_top hq0)).symm`. Establish `hn1` using `one_le_n K hπ h2 h3 h4 he hq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set n := (v W.a₆).toNat`. Establish `ha1 : 1 ≤ v y` using `(one_le_v_iff hπ).2 dy`. Establish `hb1 : 1 ≤ v (y + W.a₁ * x)` using `(one_le_v_iff hπ).2 (dvd_add dy (dvd_mul_of_dvd_right dx _))`. Establish `hsum` using `v_sum_eq E`. Take `⟨hmin, -⟩` from `v_x_of (x := x) (y := y) he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, c2, -⟩` from `v_cube_add x W.a₆`. Rewrite `c2` using `[hn]`. Establish `key : ∀ {c : ℕ∞}, c = min (v y) (v (y + W.a₁ * x)) → (n : ℕ∞) ≤ c → v y + v (y + W.a₁ * x) = n`. Introduce `c hc hcn`. Rewrite using `[hsum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `c2` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `: (n : ℕ∞) < 3 * (n : ℕ∞)`. Establish `: n < 3 * n` using `by have := hn1; omega`. Conclude with `this` after adjusting the coercions.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Use `_ ≤ 3 * c := by gcongr`. Use `_ ≤ 3 * v x := by gcongr; exact hc ▸ hmin`. Establish `fin : v y + v (y + W.a₁ * x) = n → v y ≠ ⊤ ∧ v (y + W.a₁ * x) ≠ ⊤`. Introduce `hs'`.
+Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `constructor <;> intro ht <;> rw [ht] at hs' <;> simp at hs'`. Break down `le_or_gt (v (y + W.a₁ * x)) (v y) with hba | hab` into its components or cases. Rewrite `h` using `[iotaN_of_le hba]`. Establish `hbt : v (y + W.a₁ * x) ≠ ⊤`. Introduce `ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hat : v y = ⊤` using `top_le_iff.1 (ht ▸ hba)`. Establish `hxt : v x = ⊤` using `top_le_iff.1 (by rw [ht, hat, min_self] at hmin; exact hmin)`. Establish `hx0` using `addVal_eq_top_iff.1 hxt`. Establish `hy0` using `addVal_eq_top_iff.1 hat`. Apply `hq0` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `E` using `[hx0, hy0]`. Take the linear combination `-E`. Establish `hlt : v (y + W.a₁ * x) < n`. Assume the negation of the conclusion as `hge`. Use `push Not at hge`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h'` using `key (by rw [min_eq_right hba]) hge`. Take `⟨hat, -⟩` from `fin h'`. Use `lift v y to ℕ using hat with a ha`. Use `lift v (y + W.a₁ * x) to ℕ using hbt with b hb`. Establish `e1 : a + b = n` using `by exact_mod_cast h'`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `e2 : n ≤ b` using `by exact_mod_cast hge`. Establish `e3 : b ≤ a` using `by exact_mod_cast hba`. Use linear arithmetic over natural numbers and integers. Use `lift v (y + W.a₁ * x) to ℕ using hbt with b hb`. Simplify using `only [ENat.toNat_natCast] at h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `natCast_ne_zero_of_lt (by exact_mod_cast hb1) (by exact_mod_cast hlt) h`. Rewrite `h` using `[iotaN_of_lt hab, neg_eq_zero]`. Establish `hat : v y ≠ ⊤` using `hab.ne_top`. Establish `hlt : v y < n`. Assume the negation of the conclusion as `hge`.
-
-Use `push Not at hge`. Establish `h'` using `key (by rw [min_eq_left hab.le]) hge`. Take `⟨-, hbt⟩` from `fin h'`. Use `lift v y to ℕ using hat with a ha`. Use `lift v (y + W.a₁ * x) to ℕ using hbt with b hb`.
-
-Establish `e1 : a + b = n` using `by exact_mod_cast h'`. Establish `e2 : n ≤ a` using `by exact_mod_cast hge`. Establish `e3 : a < b` using `by exact_mod_cast hab`. Use linear arithmetic over natural numbers and integers. Use `lift v y to ℕ using hat with a ha`.
-
-Simplify using `only [ENat.toNat_natCast] at h`. Conclude with `natCast_ne_zero_of_lt (by exact_mod_cast ha1) (by exact_mod_cast hlt) h`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiT_eq_zero_iff (P : (curveK K W).Point) : phiT K W P = 0 ↔ P ∈ E0Set K W := by
   refine ⟨fun h => ?_, phiT_of_mem K W⟩
@@ -603,7 +587,7 @@ theorem phiT_eq_zero_iff (P : (curveK K W).Point) : phiT K W P = 0 ↔ P ∈ E0S
     exact natCast_ne_zero_of_lt (by exact_mod_cast ha1) (by exact_mod_cast hlt) h
 
 /- English proof (translation)
-Use extensionality with `P`. Rewrite using `[AddMonoidHom.mem_ker, mem_E0_iff]`. Conclude with `phiT_eq_zero_iff K hπ h2 h3 h4 he hq P`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_phiTHom : (phiTHom K hπ h2 h3 h4 he hq).ker = E0 K W := by
   ext P
@@ -614,9 +598,9 @@ omit [IsFractionRing 𝒪 K] [DecidableEq K] [DecidableEq (ResidueField 𝒪)]
   [IsAdicComplete (maximalIdeal 𝒪) 𝒪] in
 
 /- English proof (translation)
-Apply `(equation_iff_nonsingular (W := W.map (algebraMap 𝒪 K))).1` to reduce the goal to its premises. Rewrite using `[equation_iff]`. Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆, h2, h3, h4, map_zero]`. Use `congrArg (algebraMap 𝒪 K) h` as an intermediate fact. Simplify using `only [map_mul, map_add, map_pow] at this`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `this`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem nonsingular_of_tate {x y : 𝒪} (h : y * (y + W.a₁ * x) = x ^ 3 + W.a₆) :
     (curveK K W).Nonsingular (ι x) (ι y) := by
@@ -629,23 +613,23 @@ theorem nonsingular_of_tate {x y : 𝒪} (h : y * (y + W.a₁ * x) = x ^ 3 + W.a
   linear_combination this
 
 /- English proof (translation)
-Establish `hq0` using `a₆_ne_zero K h2 h3 h4`. Establish `hn : v W.a₆ = ((v W.a₆).toNat : ℕ∞)` using `(ENat.natCast_toNat (v_ne_top hq0)).symm`. Establish `d3 : π ∣ W.a₃` using `by rw [h3]; exact dvd_zero _`. Establish `d4 : π ∣ W.a₄` using `by rw [h4]; exact dvd_zero _`. Establish `hpow : ∀ k : ℕ, k ≤ (v W.a₆).toNat → π ^ k ∣ W.a₆` using `fun k hk => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← addVal_le_iff_dvd, hπ.addVal_pow, hn]`. Conclude with `hk` after adjusting the coercions. Break down `Nat.lt_or_ge (v W.a₆).toNat 3 with h3n | h3n` into its components or cases. Take `⟨q₂, hq₂⟩` from `hpow 2 hn2`. Take `⟨X₀, hX₀⟩ : ∃ X₀, W.a₁ * X₀ = q₂ - 1` from `⟨(q₂ - 1) * ↑he.unit⁻¹, by`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, mul_assoc, IsUnit.val_inv_mul, mul_one]⟩`. Establish `hγ : IsUnit (3 * π * X₀ ^ 2 - W.a₁)`. Rewrite using `[isUnit_iff_not_dvd hπ]`. Introduce `h`. Apply `(isUnit_iff_not_dvd hπ).1 he` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `dvd_sub (dvd_mul_of_dvd_left (dvd_mul_of_dvd_right (dvd_refl π) 3) (X₀ ^ 2)) h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨Z, -, hZ⟩` from `exists_root_cubic hπ (α := π) (β := 3 * π * X₀) hγ (δ := π * X₀ ^ 3 - W.a₁ * X₀ + q₂ - 1) ⟨X₀ ^ 3, by linear_combination -hX₀⟩`. Establish `heq : π * (π + W.a₁ * (π * (X₀ + Z))) = (π * (X₀ + Z)) ^ 3 + W.a₆`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq₂]`. Take the linear combination `(-π ^ 2) * hZ`. Establish `hpt` using `nonsingular_of_tate K hπ h2 h3 h4 he hq heq`. Establish `hP` using `notMem_E0Set_of_dvd K W hπ d3 d4 hpt (dvd_mul_right π _) (dvd_refl π)`. Use `⟨Point.some _ _ hpt, zmod_two_eq_one (by omega) ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, phiT_eq_zero_iff K hπ h2 h3 h4 he hq]`. Conclude with `hP`. Take `⟨q₃, hq₃⟩` from `hpow 3 h3n`. Take `⟨Y, dY, hY⟩` from `exists_root_cubic hπ (α := 0) (β := 1) he (δ := -(π * (1 + q₃))) (dvd_neg.2 (dvd_mul_right π _))`. Establish `heq : π * Y * (π * Y + W.a₁ * π) = π ^ 3 + W.a₆`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hq₃]`. Take the linear combination `π ^ 2 * hY`. Establish `hpt` using `nonsingular_of_tate K hπ h2 h3 h4 he hq heq`. Establish `hP` using `notMem_E0Set_of_dvd K W hπ d3 d4 hpt (dvd_refl π) (dvd_mul_right π _)`. Use `⟨Point.some _ _ hpt, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[phiT_some K W hpt hP]`. Establish `hw : v (π * Y + W.a₁ * π) = 1`. Rewrite using `[show π * Y + W.a₁ * π = π * (Y + W.a₁) by ring, addVal_mul, addVal_uniformizer hπ, v_unit ((isUnit_iff_not_dvd hπ).2 fun h => (isUnit_iff_not_dvd hπ).1 he (by`. Use `dvd_sub h dY` as an intermediate fact. Rewrite using `[add_sub_cancel_left] at this)), add_zero]` and apply the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : 1 ≤ v (π * Y)`. Rewrite using `[addVal_mul, addVal_uniformizer hπ]`. Conclude with `le_self_add`. Rewrite using `[iotaN_of_le (hw ▸ hy), hw]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_phiT_eq_one (hn2 : 2 ≤ (v W.a₆).toNat) : ∃ P, phiT K W P = 1 := by
   have hq0 := a₆_ne_zero K h2 h3 h4
@@ -694,11 +678,11 @@ theorem exists_phiT_eq_one (hn2 : 2 ≤ (v W.a₆).toNat) : ∃ P, phiT K W P = 
     simp
 
 /- English proof (translation)
-Introduce `k`. Break down `Nat.lt_or_ge (v W.a₆).toNat 2 with h1 | h2n` into its components or cases. Establish `hn1` using `one_le_n K hπ h2 h3 h4 he hq`. Establish `: (v W.a₆).toNat = 1` using `by omega`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : Subsingleton (ZMod (v W.a₆).toNat)` using `by rw [this]; infer_instance`. Conclude with `Subsingleton.elim _ _`. Take `⟨P, hP⟩` from `exists_phiT_eq_one K hπ h2 h3 h4 he hq h2n`. Establish `: NeZero (v W.a₆).toNat` using `⟨by omega⟩`. Use `⟨k.val • P, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_nsmul]`. Express the relevant statement in the definitionally equal form `k.val • phiT K W P = k`. Rewrite using `[hP, nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiTHom_surjective : Function.Surjective (phiTHom K hπ h2 h3 h4 he hq) := by
   intro k

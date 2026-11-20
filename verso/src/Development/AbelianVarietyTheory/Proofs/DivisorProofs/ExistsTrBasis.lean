@@ -23,9 +23,9 @@ variable {K L F W : Type} [Field K] [Field L] [Field F] [Field W] [Algebra K L] 
 omit [Algebra K W] [IsScalarTower K L W] in
 
 /- English proof (translation)
-Rewrite using `[algebraicIndependent_iff_injective_aeval]`. Establish `h1 : Function.Injective (Algebra.TensorProduct.map (AlgHom.id L L) (MvPolynomial.aeval (R` using `K) x)) := Module.Flat.lTensor_preserves_injective_linearMap (M := L) (MvPolynomial.aeval (R := K) x).toLinearMap (algebraicIndependent_iff_injective_aeval.1 hx)`. Establish `e : (MvPolynomial.aeval (R` using `L) fun i => ψ (1 ⊗ₜ x i)) = (ψ.comp (Algebra.TensorProduct.map (AlgHom.id L L) (MvPolynomial.aeval (R := K) x))).comp (MvPolynomial.algebraTensorAlgEquiv (σ := ι) K L).symm.toAlgHom := by`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `(hψ.comp h1).comp (MvPolynomial.algebraTensorAlgEquiv (σ := ι) K L).symm.injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indep_of_lift {ι : Type} (ψ : L ⊗[K] F →ₐ[L] W) (hψ : Function.Injective ψ) {x : ι → F}
     (hx : AlgebraicIndependent K x) : AlgebraicIndependent L fun i => ψ (1 ⊗ₜ x i) := by
@@ -42,21 +42,19 @@ theorem indep_of_lift {ι : Type} (ψ : L ⊗[K] F →ₐ[L] W) (hψ : Function.
   exact (hψ.comp h1).comp (MvPolynomial.algebraTensorAlgEquiv (σ := ι) K L).symm.injective
 
 /- English proof (translation)
-Take `⟨ι, x, hx⟩` from `exists_isTranscendenceBasis' K F`. Establish `hy` using `indep_of_lift ψ hψ hx.1`. Rewrite using `[← hx.cardinalMk_eq_trdeg]`. Apply `le_antisymm` to reduce the goal to its premises. Set `E` to `IntermediateField.adjoin L (Set.range fun i => ψ (1 ⊗ₜ x i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Set `A` to `(algebraicClosure E W).restrictScalars L`. Establish `hA : M ≤ A`. Use `h2.trans (IntermediateField.adjoin_le_iff.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Use `show ψ (1 ⊗ₜ f) ∈ algebraicClosure E W`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_algebraicClosure_iff]`. Set `φ : F →ₐ[K] W` to `(ψ.restrictScalars K).comp Algebra.TensorProduct.includeRight`. Establish `hf : IsAlgebraic (Algebra.adjoin K (Set.range x)) f` using `hx.isAlgebraic.isAlgebraic f`. Establish `hm : ∀ a ∈ Algebra.adjoin K (Set.range x), φ a ∈ E`. Introduce `a ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: Algebra.adjoin K (Set.range x) ≤ ((E.restrictScalars K).toSubalgebra).comap φ`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩`. Conclude with `this ha`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : Algebra.adjoin K (Set.range x) →+* E` to `(φ.toRingHom.comp (Algebra.adjoin K (Set.range x)).val.toRingHom).codRestrict E fun a => hm a a.2`. Establish `hg : Function.Injective g` using `fun a b h => Subtype.ext (φ.toRingHom.injective (congrArg Subtype.val h))`. Conclude with `hf.ringHom_of_comp_eq g φ.toRingHom hg rfl`. Establish `hE : Algebra.trdeg L E ≤ Cardinal.mk ι`. Establish `: Algebra.IsAlgebraic (Algebra.adjoin L (Set.range fun i => (⟨ψ (1 ⊗ₜ x i), IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩⟩ : E))) E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IntermediateField.isAlgebraic_adjoin_iff_top]`. Establish `htop : IntermediateField.adjoin L (Set.range fun i => (⟨ψ (1 ⊗ₜ x i), IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩⟩ : E)) = ⊤`. Apply `IntermediateField.lift_injective` to reduce the goal to its premises. Rewrite using `[IntermediateField.lift_adjoin, IntermediateField.lift_top, ← Set.range_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[htop]`. Use `infer_instance`. Conclude with `(Algebra.IsAlgebraic.trdeg_le_cardinalMk L _ (alg := this)).trans Cardinal.mk_range_le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← trdeg_add_eq L E (A := algebraicClosure E W), trdeg_eq_zero (R := E) (A := algebraicClosure E W), add_zero]`.
-
-Use `_ ≤ _ := hE`. Establish `: AlgebraicIndependent L fun i => (⟨ψ (1 ⊗ₜ x i), h1 _⟩ : M)` using `AlgebraicIndependent.of_comp M.val hy`. Conclude with `this.cardinalMk_le_trdeg`.
+A detailed English derivation is pending.
 -/
 theorem trdeg_of_lift (ψ : L ⊗[K] F →ₐ[L] W) (hψ : Function.Injective ψ) (M : IntermediateField L W)
     (h1 : ∀ f, ψ (1 ⊗ₜ f) ∈ M) (h2 : M ≤ IntermediateField.adjoin L (Set.range fun f => ψ (1 ⊗ₜ f))) :
@@ -113,21 +111,19 @@ theorem trdeg_of_lift (ψ : L ⊗[K] F →ₐ[L] W) (hψ : Function.Injective ψ
 end Gen
 
 /- English proof (translation)
-Establish `e1 : (algebraMap ℂ K).toAlgebra = (inferInstance : Algebra ℂ K)` using `Algebra.algebra_ext _ _ fun _ => rfl`. Establish `e2 : (algebraMap ℂ κ').toAlgebra = (inferInstance : Algebra ℂ κ')` using `Algebra.algebra_ext _ _ fun _ => rfl`. Establish `e3 : (algebraMap ℂ L).toAlgebra = (inferInstance : Algebra ℂ L)` using `Algebra.algebra_ext _ _ fun _ => rfl`. Unfold `TrBasis at *`. Rewrite `hx` using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hτ` using `[e2]`. Rewrite using `[e3]`. Use `letI : Algebra K L := ((algebraMap (K ⊗[ℂ] κ') L).comp (algebraMap K (K ⊗[ℂ] κ'))).toAlgebra`. Use `haveI : IsScalarTower K (K ⊗[ℂ] κ') L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower ℂ K L := IsScalarTower.of_algebraMap_eq fun a => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[IsScalarTower.algebraMap_apply ℂ (K ⊗[ℂ] κ') L, IsScalarTower.algebraMap_apply ℂ K (K ⊗[ℂ] κ')]`. Both sides reduce to the same expression. Establish `h1 : Algebra.trdeg K L = Algebra.trdeg ℂ κ'`. Set `ψ` to `IsScalarTower.toAlgHom K (K ⊗[ℂ] κ') L`. Rewrite using `[← trdeg_of_lift ψ (IsFractionRing.injective _ _) ⊤ (fun _ => trivial) ?_]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(IntermediateField.topEquiv (F := K) (E := L)).trdeg_eq.symm`. Introduce `z _`. Establish `hm : ∀ a, ψ a ∈ IntermediateField.adjoin K (Set.range fun f => ψ (1 ⊗ₜ f))`. Introduce `a`. Proceed by induction on `a using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `tmul l f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: l ⊗ₜ[ℂ] f = l • ((1 : K) ⊗ₜ[ℂ] f)` using `by simp [TensorProduct.smul_tmul']`. Rewrite using `[this, map_smul]`. Conclude with `IntermediateField.smul_mem _ (IntermediateField.subset_adjoin K _ (Set.mem_range_self f))`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := K ⊗[ℂ] κ') z`. Conclude with `div_mem (hm a) (hm b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `haveI : FaithfulSMul K L := (faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap K L).injective`. Establish `h2` using `trdeg_add_eq ℂ K (A := L)`. Rewrite `h2` using `[h1, ← hx.cardinalMk_eq_trdeg, ← hτ.cardinalMk_eq_trdeg]`. Take `⟨ι, w, hw⟩` from `exists_isTranscendenceBasis' ℂ L`. Establish `h3 : Cardinal.mk (Fin (k' + n)) = Cardinal.mk ι`.
-
-Rewrite using `[hw.cardinalMk_eq_trdeg, ← h2]`. Simplify using `[add_comm]`. Take `⟨e⟩` from `Cardinal.eq.1 h3`. Conclude with `⟨w ∘ e, hw.comp_equiv e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_trBasis {K κ' L : Type} [Field K] [Field κ'] [Field L] [Algebra ℂ K] [Algebra ℂ κ']
     [Algebra ℂ L] [Algebra (K ⊗[ℂ] κ') L] [IsScalarTower ℂ (K ⊗[ℂ] κ') L]
@@ -178,17 +174,15 @@ theorem exists_trBasis {K κ' L : Type} [Field K] [Field κ'] [Field L] [Algebra
   exact ⟨w ∘ e, hw.comp_equiv e⟩
 
 /- English proof (translation)
-Introduce `K κ κ' L _ _ _ _ _ _ _ _ _ _ _ n k k' x τ' R π ρ hx hτ hO hz hc hπ hR hinj hfr M hk _`. Take `⟨Q, hQ, z, hm, hdim, hg, hb, hu, hJ, y, q, hy, hq, hform⟩` from `GlobalTheory.T.localRing_graph_generic_point_of_injective (L := L) n k k' x τ' R π ρ hx hτ hz hc hπ hinj hfr hR hO hk`. Take `⟨r, rfl⟩ : ∃ r, k = r + 1` from `⟨k - 1, by omega⟩`. Take `⟨w, hw⟩` from `exists_trBasis (L := L) hx hτ`. Take `⟨V, hV, hunit, -, hpow, hfo⟩` from `GlobalTheory.T.exists_weighted_monomial_valuation_of_parameters (algebraMap ℂ L) Q hQ r (k' + n) z (fun _ => 1) hm (by rw [hdim]; push_cast; rfl) rfl (fun _ => le_rfl) ⟨w, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hne : ∀ q : Q, IsUnit q → (q : L) ≠ 0` using `fun q hq => (hq.map Q.subtype).ne_zero`. Use `⟨V, fun g => ?_, fun b h => ?_, fun g h => ?_, fun l a b h => ?_, fun l a b h0 h => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : g = 0`. Substitute `h` using the available equality. Rewrite using `[TensorProduct.zero_tmul, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Take `⟨q, -, e⟩` from `hg g h`. Conclude with `e ▸ hV _ q.2`. Take `⟨q, hq, e⟩` from `hb b h`. Conclude with `e ▸ hunit q hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, e⟩` from `hg g h`. Conclude with `e ▸ hunit q hq`. Take `⟨q, hq, e⟩` from `hu l a b h`. Conclude with `e ▸ ⟨hne q hq, hunit q hq⟩`. Take `⟨q, e, hq⟩` from `hJ M l a b h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0`, the goal using `[← e]`. Conclude with `hpow M q h0 hq`. Establish `h` using `hfo y hy`. Establish `hs : V.formOrd ((q : L) • dForm (algebraMap ℂ L) (fun i => (y i : L))) = V.formOrd (dForm (algebraMap ℂ L) (fun i => (y i : L)))`. Distinguish the cases in `h0 : dForm (algebraMap ℂ L) (fun i => (y i : L)) = 0`.
-
-Rewrite using `[h0, smul_zero]`. Rewrite using `[V.formOrd_smul hw h0 (hne q hq), hunit q hq, zero_add]`. Rewrite using `[hform, hs]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_place : ∀ {K κ κ' L : Type} [Field K] [Field κ] [Field κ'] [Field L] [Algebra ℂ K] [Algebra ℂ κ] [Algebra ℂ κ'] [Algebra ℂ L]
     [Algebra (K ⊗[ℂ] κ') L] [IsScalarTower ℂ (K ⊗[ℂ] κ') L] [IsFractionRing (K ⊗[ℂ] κ') L]

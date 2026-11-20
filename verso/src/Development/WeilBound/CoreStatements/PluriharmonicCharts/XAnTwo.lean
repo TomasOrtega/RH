@@ -11,15 +11,13 @@ open scoped ComplexOrder
 namespace PositivityTheory.Xgp.an_two
 
 /- English proof (translation)
-Introduce `u hu x hx`. Take `⟨j, hj⟩` from `A.cover x`. Use `set c := A.chart j with hc`. Establish `hO' : IsOpen (c.target ∩ c.symm ⁻¹' (bdry s)ᶜ)` using `c.isOpen_inter_preimage_symm hO`. Establish `hz : c x ∈ c.target ∩ c.symm ⁻¹' (bdry s)ᶜ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c.map_source hj, ?_⟩` and prove the remaining obligations. Use `show c.symm (c x) ∈ (bdry s)ᶜ`. Rewrite using `[c.left_inv hj]`. Conclude with `hx`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hO' (c x) hz`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : Metric.closedBall (c x) (r / 2) ⊆ c.target ∩ c.symm ⁻¹' (bdry s)ᶜ` using `(Metric.closedBall_subset_ball (half_lt_self hr)).trans hball`. Establish `hunif` using `(h j (Metric.closedBall (c x) (r / 2)) hsub (isCompact_closedBall _ _)).1`. Use `⟨c.source ∩ c ⁻¹' Metric.ball (c x) (r / 2), ?_, ?_⟩` and prove the remaining obligations. Apply `nhdsWithin_le_nhds` to reduce the goal to its premises. Conclude with `Filter.inter_mem (c.open_source.mem_nhds hj) ((c.continuousAt hj).preimage_mem_nhds (Metric.ball_mem_nhds _ (half_pos hr)))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `filter_upwards [hunif u hu] with t ht y hy`. Establish `e : c.symm (c y) = y` using `c.left_inv hy.1`. Use `ht (c y) (Metric.ball_subset_closedBall hy.2)` as an intermediate fact. Simplify using `only [Function.comp] at this`. Rewrite `this` using `[← hc, e]`.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem locUnif {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (s : X → X → ℂ)
     (hO : IsOpen (bdry s)ᶜ) (ph : X → ℝ) (phT : ℝ → X → ℝ) (h : IsRegFamilyC2 A s ph phT) :
@@ -49,7 +47,7 @@ theorem locUnif {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) 
     exact this
 
 /- English proof (translation)
-Unfold `mInt`. Use `split_ifs`. Simplify using `[integralWith]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mInt_zero {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) :
     mInt A Φ (fun _ => 0) = 0 := by
@@ -61,49 +59,43 @@ theorem mInt_zero {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X
 end PositivityTheory.Xgp.an_two
 
 /- English proof (translation)
-Introduce `hC e σ S d hd hdiff a w`. Use `letI : MeasurableSpace S.X := borel S.X`. Use `haveI : BorelSpace S.X := ⟨rfl⟩`. Establish `ht0 : 0 < S.t₀` using `(S.reg (Sum.inl a)).1`. Set `f : ℝ → S.X → ℝ` to `fun t x => S.phT (Sum.inl a) t x - S.phT (Sum.inr a) t x - d a x`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `gT : ℝ → S.X → ℝ` to `fun t => if 0 < t ∧ t ≤ S.t₀ then f t else 0`. Take `⟨M, hM⟩` from `(isCompact_univ (X := S.X)).exists_bound_of_continuousOn (projLine_continuous_of_smooth S.A (hd a)).continuousOn`. Use `set L : S.X → ℝ := fun y => Real.log (rW S.L S.s y) with hL`. Establish `hL1 : ∀ y, 1 ≤ L y`. Introduce `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Real.exp 1 ≤ rW S.L S.s y`. Use `S.norm_le y` as an intermediate fact. Simplify using `only [rW]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(Real.le_log_iff_exp_le ((Real.exp_pos 1).trans_le h1)).mpr h1`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hphT : ∀ b, ∀ t, 0 < t → t ≤ S.t₀ → ∀ y ∉ bdry S.s, |S.phT b t y| ≤ |S.C| + |S.C₅| * L y`. Introduce `b t ht ht' y hy`. Take `⟨-, -, hr⟩` from `S.reg b`. Take `⟨-, hup, hlow, -⟩` from `hr t ht ht'`. Take `⟨-, -, -, hsw⟩` from `S.sing b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hsw y hy).1`. Establish `h2` using `hlow y hy`. Establish `h3` using `hup y`. Establish `hL0 : 0 ≤ L y` using `zero_le_one.trans (hL1 y)`. Establish `h4 : -(|S.C₅| * L y) ≤ -S.C₅ * L y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[neg_mul]`. Conclude with `neg_le_neg (mul_le_mul_of_nonneg_right (le_abs_self _) hL0)`. Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Use `abs_nonneg S.C show -(|S.C| + |S.C₅| * L y) ≤ S.phT b t y` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `le_abs_self S.C` as an intermediate fact. Use `mul_nonneg (abs_nonneg S.C₅) hL0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set C₆ := 2 * |S.C| + 2 * |S.C₅| + |M| with hC₆`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcont : ∀ t, ContinuousOn (gT t) (bdry S.s)ᶜ`. Introduce `t`. Distinguish the cases in `hp : 0 < t ∧ t ≤ S.t₀`. Establish `e1 : gT t = f t` using `if_pos hp`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c1` using `projLine_continuous_of_smooth S.A ((S.reg (Sum.inl a)).2.2 t hp.1 hp.2).1`. Establish `c2` using `projLine_continuous_of_smooth S.A ((S.reg (Sum.inr a)).2.2 t hp.1 hp.2).1`. Establish `c3` using `projLine_continuous_of_smooth S.A (hd a)`. Conclude with `((c1.sub c2).sub c3).continuousOn`. Establish `e1 : gT t = 0` using `if_neg hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[e1]`. Conclude with `continuousOn_const`. Establish `hbound : ∀ t, ∀ y ∉ bdry S.s, |gT t y| ≤ C₆ * Real.log (rW S.L S.s y)`. Introduce `t y hy`. Establish `hLy` using `hL1 y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC6 : 0 ≤ C₆` using `by positivity`. Use `show |gT t y| ≤ C₆ * L y`. Distinguish the cases in `hp : 0 < t ∧ t ≤ S.t₀`. Establish `e1 : gT t = f t` using `if_pos hp`. Rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l1, u1⟩` from `abs_le.mp (hphT (Sum.inl a) t hp.1 hp.2 y hy)`. Take `⟨l2, u2⟩` from `abs_le.mp (hphT (Sum.inr a) t hp.1 hp.2 y hy)`. Establish `a3 : |d a y| ≤ |M|`. Use `hM y trivial` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `this.trans (le_abs_self M)`. Take `⟨l3, u3⟩` from `abs_le.mp a3`. Establish `m1 : |S.C| ≤ |S.C| * L y` using `le_mul_of_one_le_right (abs_nonneg _) hLy`. Establish `m2 : |M| ≤ |M| * L y` using `le_mul_of_one_le_right (abs_nonneg _) hLy`. Establish `hexp : C₆ * L y = 2 * (|S.C| * L y) + 2 * (|S.C₅| * L y) + |M| * L y`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hC₆]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp, abs_le]`. Prove the components needed by the constructor for the conclusion. Use `show -(2 * (|S.C| * L y) + 2 * (|S.C₅| * L y) + |M| * L y) ≤ S.phT (Sum.inl a) t y - S.phT (Sum.inr a) t y - d a y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `show S.phT (Sum.inl a) t y - S.phT (Sum.inr a) t y - d a y ≤ 2 * (|S.C| * L y) + 2 * (|S.C₅| * L y) + |M| * L y`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : gT t = 0` using `if_neg hp`. Rewrite using `[e1, Pi.zero_apply, abs_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_nonneg hC6 (zero_le_one.trans hLy)`. Establish `hO : IsOpen (bdry S.s)ᶜ` using `(ReciprocityTheory.AnForm.P.LeviFormBoundaryTopology.isClosed_bdry S.sec).isOpen_compl`. Establish `hlim : TendstoLocallyUniformlyOn gT 0 (𝓝[>] 0) (bdry S.s)ᶜ`. Rewrite using `[Metric.tendstoLocallyUniformlyOn_iff]`. Introduce `ε hε x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t1, ht1, ev1⟩` from `Metric.tendstoLocallyUniformlyOn_iff.mp (PositivityTheory.Xgp.an_two.locUnif S.A S.s hO _ _ (S.c2 (Sum.inl a))) (ε / 2) (half_pos hε) x hx`. Take `⟨t2, ht2, ev2⟩` from `Metric.tendstoLocallyUniformlyOn_iff.mp (PositivityTheory.Xgp.an_two.locUnif S.A S.s hO _ _ (S.c2 (Sum.inr a))) (ε / 2) (half_pos hε) x hx`. Use `⟨t1 ∩ t2 ∩ (bdry S.s)ᶜ, Filter.inter_mem (Filter.inter_mem ht1 ht2) self_mem_nhdsWithin, ?_⟩` and prove the remaining obligations. Use `filter_upwards [ev1, ev2, Ioo_mem_nhdsGT ht0] with t e1 e2 htt y hy`. Establish `e3 : gT t = f t` using `if_pos ⟨htt.1, htt.2.le⟩`.
+Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdy` using `hdiff a y hy.2`. Establish `d1` using `e1 y hy.1.1`. Establish `d2` using `e2 y hy.1.2`. Rewrite `d1`, `d2` using `[Real.dist_eq]`. Rewrite using `[e3, Pi.zero_apply, Real.dist_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨p1, q1⟩` from `abs_lt.mp d1`. Take `⟨p2, q2⟩` from `abs_lt.mp d2`. Rewrite using `[abs_lt]`. Prove the components needed by the constructor for the conclusion. Use `show -ε < 0 - (S.phT (Sum.inl a) t y - S.phT (Sum.inr a) t y - d a y)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `show 0 - (S.phT (Sum.inl a) t y - S.phT (Sum.inr a) t y - d a y) < ε`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `(hC S.A S.Θ S.L S.s S.m S.W S.potΘ S.posΘ S.potL S.sec S.snc S.norm_le (fun i => S.th (w i)) (fun i => S.ph (w i)) (fun i => S.phT (w i)) S.C₅ S.C S.t₀ (fun i => S.sing (w i)) (fun i => S.reg (w i)) (fun i => S.c2 (w i)) 0 gT C₆ hcont hbound hlim).2`. Establish `hz : mInt S.A (fun i => S.th (w i) + LocPot.ofFun (S.ph (w i))) 0 = 0` using `PositivityTheory.Xgp.an_two.mInt_zero _ _`.
-
-Rewrite `key` using `[hz]`. Use `key.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT ht0] with t ht`. Establish `e1 : gT t = f t` using `if_pos ⟨ht.1, ht.2.le⟩`. Rewrite using `[e1]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_an_two : ConvergenceSignedStatement → ∀ (e : ℕ) (σ : Type) (S : AnSys e (σ ⊕ σ)) (d : σ → S.X → ℝ), (∀ a, S.A.Smooth (d a)) → (∀ a, ∀ y ∈ S.open', S.ph (Sum.inl a) y = S.ph (Sum.inr a) y + d a y) → ∀ (a : σ) (w : Fin e → σ ⊕ σ), Tendsto (fun t => mInt S.A (fun i => S.potT (w i) t) (fun x => S.phT (Sum.inl a) t x - S.phT (Sum.inr a) t x - d a x)) (𝓝[>] 0) (𝓝 0) := by
   intro hC e σ S d hd hdiff a w

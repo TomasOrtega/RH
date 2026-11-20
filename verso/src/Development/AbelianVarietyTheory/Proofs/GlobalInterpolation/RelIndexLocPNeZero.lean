@@ -13,11 +13,9 @@ section Index
 variable {E : Type} [Field E] [NumberField E] {W : Type} [AddCommGroup W] [Module (𝓞 E) W]
 
 /- English proof (translation)
-Use `haveI : Module.Finite (𝓞 E) M := Module.Finite.iff_fg.2 hM`. Use `haveI : Module.Finite ℤ M := Module.Finite.trans (𝓞 E) M`. Use `haveI : AddGroup.FG M.toAddSubgroup := Module.Finite.iff_addGroup_fg.1 ‹Module.Finite ℤ M›`. Establish `: Finite (M.toAddSubgroup ⧸ M₀.toAddSubgroup.addSubgroupOf M.toAddSubgroup)`. Apply `AddCommGroup.finite_of_fg_torsion` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `q`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨n, hn, hx⟩` from `h₀ x`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`.
-
-Rewrite `hx` using `[Nat.cast_smul_eq_nsmul]`. Conclude with `hx`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero {M₀ M : Submodule (𝓞 E) W} (h₀ : Full M₀) (hM : M.FG) :
     M₀.toAddSubgroup.relIndex M.toAddSubgroup ≠ 0 := by
@@ -36,13 +34,11 @@ theorem relIndex_ne_zero {M₀ M : Submodule (𝓞 E) W} (h₀ : Full M₀) (hM 
   exact AddSubgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Introduce `h0`. Establish `hle : (localization₂ P.asIdeal M).toAddSubgroup ≤ M.toAddSubgroup ⊔ (localization₂ P.asIdeal M₀).toAddSubgroup`. Introduce `x hx`. Take `⟨t, h1, h2⟩` from `(h.inf h₀).approx {P} x`. Establish `h3` using `h1 P (Finset.mem_singleton_self P)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht : t ∈ M` using `mem_of_locP fun Q => by`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Use `(localization₂ Q.asIdeal M).add_mem (localization_mono Q inf_le_left h3) hx` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `localization_mono Q inf_le_left (h2 Q (by simpa using hQ))`. Establish `: x = t - (t - x)` using `by abel`. Rewrite using `[this]`. Conclude with `sub_mem (AddSubgroup.mem_sup_left ht) (AddSubgroup.mem_sup_right (localization_mono P inf_le_right h3))`. Establish `h4` using `AddSubgroup.relIndex_eq_zero_of_le_right hle h0`.
-
-Rewrite `h4` using `[AddSubgroup.relIndex_sup_right]`. Conclude with `relIndex_ne_zero h₀ hM (AddSubgroup.relIndex_eq_zero_of_le_left (fun x hx => mem_localization_of_mem P hx) h4)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_localized_ne_zero (P : HeightOneSpectrum (𝓞 E)) {M₀ M : Submodule (𝓞 E) W} (h₀ : Full M₀) (h : Full M) (hM : M.FG) :
     (localization₂ P.asIdeal M₀).toAddSubgroup.relIndex (localization₂ P.asIdeal M).toAddSubgroup ≠ 0 := by
@@ -70,9 +66,9 @@ end Index
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
 
 /- English proof (translation)
-Take `⟨T, rfl⟩` from `hN`. Set `φ : HomE E a b →ₗ[𝓞 E] (T → Sp E b)` to `{ toFun := fun x y => x y.1 map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hφ : Function.Injective φ`. Introduce `x y hxy`. Rewrite `hs` using `[Submodule.span_span_of_tower]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `LinearMap.ext_on hs fun v hv => congrFun hxy ⟨v, hv⟩`. Use `Submodule.fg_of_fg_map_injective φ hφ ?_` and prove the remaining obligations. Use `Submodule.FG.of_le (Submodule.fg_pi (p := fun _ : T => N') fun _ => hN') ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ y _`. Conclude with `hx _ (Submodule.subset_span y.2)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem homO_fg {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)} (hN : N.FG) (hN' : N'.FG)
     (hs : Submodule.span E (N : Set (Sp E a)) = ⊤) : (homO N N').FG := by
@@ -91,7 +87,7 @@ theorem homO_fg {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E
   exact hx _ (Submodule.subset_span y.2)
 
 /- English proof (translation)
-Set `B : E →ₗ[𝓞 E] HomE E a b →ₗ[𝓞 E] HomE E a b` to `LinearMap.mk₂ (𝓞 E) (fun r x => r • x) (fun _ _ _ => add_smul _ _ _) (fun _ _ _ => smul_assoc _ _ _) (fun _ _ _ => smul_add _ _ _) (fun _ _ _ => smul_comm _ _ _)`. Use `Submodule.FG.of_le (Submodule.FG.map₂ B hA hH) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨r, hr, x, hx, rfl⟩`. Conclude with `Submodule.apply_mem_map₂ B hr hx`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem perO_fg {AA : Submodule (𝓞 E) E} {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)} (hA : AA.FG)
     (hH : (homO N N').FG) : (perO AA N N').FG := by
@@ -103,9 +99,9 @@ theorem perO_fg {AA : Submodule (𝓞 E) E} {N : Submodule (𝓞 E) (Sp E a)} {N
   exact Submodule.apply_mem_map₂ B hr hx
 
 /- English proof (translation)
-Introduce `E _ _ _ a b AA S N N' hN hN' hs hs' hA hA0`. Establish `la : Submodule.IsLattice E (Formalism.L2.Col.stdLat E a)` using `Formalism.L2.Col.stdLat_lattice`. Establish `lb : Submodule.IsLattice E (Formalism.L2.Col.stdLat E b)` using `Formalism.L2.Col.stdLat_lattice`. Establish `f₀` using `PeriodComp.full AA _ _ la.fg lb hA0`. Establish `f₁` using `PeriodComp.full AA N N' hN ⟨hN', hs'⟩ hA0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g₀` using `perO_fg hA (homO_fg la.fg lb.fg la.span_eq_top)`. Establish `g₁` using `perO_fg hA (homO_fg hN hN' hs)`. Use `Finset.prod_pos fun P _ => div_pos ?_ ?_` and prove the remaining obligations. Conclude with `Nat.cast_pos.2 (Nat.pos_of_ne_zero (relIndex_localized_ne_zero P f₀ f₁ g₁))`. Conclude with `Nat.cast_pos.2 (Nat.pos_of_ne_zero (relIndex_localized_ne_zero P f₁ f₀ g₀))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem volC_pos : Formalism.L2.Ker.VolCPos := by
   intro E _ _ _ a b AA S N N' hN hN' hs hs' hA hA0

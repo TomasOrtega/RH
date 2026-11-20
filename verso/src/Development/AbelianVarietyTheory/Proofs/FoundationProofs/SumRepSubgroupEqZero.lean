@@ -7,9 +7,9 @@ noncomputable section
 namespace GlobalTheory.NoFixedCharSum
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [LinearMap.sum_apply, LinearMap.zero_apply]`. Apply `h` to reduce the goal to its premises. Introduce `m hm`. Rewrite using `[map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv (Equiv.mulLeft (⟨m, hm⟩ : N)) _ _ ?_` and prove the remaining obligations. Introduce `n`. Simplify using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem sum_rep_subgroup_eq_zero {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (τ : Representation ℂ G V) (N : Subgroup G) [Fintype N]
@@ -24,7 +24,7 @@ theorem sum_rep_subgroup_eq_zero {G V : Type} [Group G] [AddCommGroup V] [Module
   simp [map_mul]
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ τ N _ h x y`. Establish `h0` using `sum_rep_subgroup_eq_zero τ N h`. Establish `: ∑ n : N, τ (x * (n : G) * y) = τ x * (∑ n : N, τ (n : G)) * τ y`. Simplify using `[Finset.mul_sum, Finset.sum_mul, map_mul]`. Rewrite using `[← map_sum, this, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

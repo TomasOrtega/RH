@@ -17,7 +17,7 @@ def betaL (β : (VS D).V →ₗ[D.host.E] (VS D).V) : Vp D p →ₗ[(D.s.atP p).
   (Pi.basisFun (D.s.atP p).Ep (Fin (nV D))).constr (D.s.atP p).Ep fun i => baseChange₂ D p (β ((VS D).frame i))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `hj : baseChange₂ D p x j = (D.s.atP p).ιE ((VS D).frame.repr x j)` using `rfl`. Simplify using `[hj, Finset.sum_apply, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem baseChangeAt_eq_sum (x : (VS D).V) :
     baseChange₂ D p x = ∑ i, (D.s.atP p).ιE ((VS D).frame.repr x i) • Pi.basisFun (D.s.atP p).Ep (Fin (nV D)) i := by
@@ -26,9 +26,9 @@ theorem baseChangeAt_eq_sum (x : (VS D).V) :
   simp [hj, Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Establish `hx : x = ∑ i, (VS D).frame.repr x i • (VS D).frame i` using `((VS D).frame.sum_repr x).symm`. Rewrite using `[baseChangeAt_eq_sum p x, map_sum]`. Use `conv_rhs => rw [hx, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, baseChange_smul₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [betaL, Module.Basis.constr_basis]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem betaL_bc (β : (VS D).V →ₗ[D.host.E] (VS D).V) (x : (VS D).V) :
     betaL p β (baseChange₂ D p x) = baseChange₂ D p (β x) := by
@@ -41,7 +41,7 @@ theorem betaL_bc (β : (VS D).V →ₗ[D.host.E] (VS D).V) (x : (VS D).V) :
   simp only [betaL, Module.Basis.constr_basis]
 
 /- English proof (translation)
-Simplify using `only [betaL, Module.Basis.constr_basis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem betaL_basis (β : (VS D).V →ₗ[D.host.E] (VS D).V) (i : Fin (nV D)) :
     betaL p β (Pi.basisFun (D.s.atP p).Ep (Fin (nV D)) i) = baseChange₂ D p (β ((VS D).frame i)) := by
@@ -60,7 +60,7 @@ def betaP (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) : Vp D p ≃ₗ[(D.s.atP p).
         baseChangeAt_frame, Pi.basisFun_apply])
 
 /- English proof (translation)
-Use `show betaL p (β : (VS D).V →ₗ[D.host.E] (VS D).V) (baseChange₂ D p x) = _`. Rewrite using `[betaL_bc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem betaP_bc (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (x : (VS D).V) :
     betaP p β (baseChange₂ D p x) = baseChange₂ D p (β x) := by
@@ -69,7 +69,7 @@ theorem betaP_bc (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (x : (VS D).V) :
   rfl
 
 /- English proof (translation)
-Use `show betaL p (β.symm : (VS D).V →ₗ[D.host.E] (VS D).V) (baseChange₂ D p x) = _`. Rewrite using `[betaL_bc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem betaP_symm_bc (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (x : (VS D).V) :
     (betaP p β).symm (baseChange₂ D p x) = baseChange₂ D p (β.symm x) := by
@@ -78,16 +78,16 @@ theorem betaP_symm_bc (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (x : (VS D).V) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[baseChangeAt_frame, Finset.sum_apply, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vp_eq_sum (v : Vp D p) : v = ∑ i, v i • baseChange₂ D p ((VS D).frame i) := by
   funext j
   simp [baseChangeAt_frame, Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Establish `hb : ∀ (v : (VS D).V) (k : Fin (nV D)), baseChange₂ D p v k = (D.s.atP p).ιE ((VS D).frame.repr v k)` using `fun _ _ => rfl`. Establish `hu : u = ∑ k, (VS D).frame.repr u k • (VS D).frame k` using `((VS D).frame.sum_repr u).symm`. Establish `hw : w = ∑ l, (VS D).frame.repr w l • (VS D).frame l` using `((VS D).frame.sum_repr w).symm`. Use `show LocFacts₂ Z.M p (baseChange₂ D p u) (baseChange₂ D p w) = _`. Simplify using `only [LocFacts₂, hb, cj_iota (Z.hcj p), gramV, brS]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [hw, hu]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem h_bc_lemma (u w : (VS D).V) :
     (locH Z p).h (baseChange₂ D p u) (baseChange₂ D p w) = (D.s.atP p).ιE (brS (VS D) u w) := by
@@ -104,11 +104,11 @@ private theorem h_bc_lemma (u w : (VS D).V) :
   ring
 
 /- English proof (translation)
-Establish `hL : ∀ (f : ι → Vp D p) (w : Vp D p), (locH Z p).h (∑ i, f i) w = ∑ i, (locH Z p).h (f i) w` using `fun f w => map_sum (AddMonoidHom.mk' (fun v => (locH Z p).h v w) fun v v' => (locH Z p).h_add_left v v' w) f Finset.univ`. Establish `hR : ∀ (v : Vp D p) (g : ι → Vp D p), (locH Z p).h v (∑ j, g j) = ∑ j, (locH Z p).h v (g j)`. Introduce `v g`. Rewrite using `[(locH Z p).h_herm (∑ j, g j) v, hL, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => ((locH Z p).h_herm (g j) v).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : ∀ (v : Vp D p) (c : (D.s.atP p).Ep) (w : Vp D p), (locH Z p).h v (c • w) = (Z.M p).L.cj c * (locH Z p).h v w`. Introduce `v c w`. Rewrite using `[(locH Z p).h_herm (c • w) v, (locH Z p).h_smul_left, map_mul, ← (locH Z p).h_herm w v]`. Rewrite using `[hL]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(locH Z p).h_smul_left, hR, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hS, h_bc_lemma]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem h_sum_bc {ι : Type} [Fintype ι] (a b : ι → (D.s.atP p).Ep) (x y : ι → (VS D).V) :
     (locH Z p).h (∑ i, a i • baseChange₂ D p (x i)) (∑ j, b j • baseChange₂ D p (y j)) =
@@ -134,7 +134,7 @@ theorem h_sum_bc {ι : Type} [Fintype ι] (a b : ι → (D.s.atP p).Ep) (x y : �
   ring
 
 /- English proof (translation)
-Rewrite using `[vp_eq_sum p v, vp_eq_sum p w]`. Simplify using `only [map_sum, map_smul, betaP_bc]`. Rewrite using `[h_sum_bc, h_sum_bc]`. Simplify using `only [brS, hiso]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem betaP_iso (β : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hiso : ∀ x y, (VS D).hT (β x) (β y) = (VS D).hT x y) (v w : Vp D p) :
@@ -145,11 +145,11 @@ theorem betaP_iso (β : (VS D).V ≃ₗ[D.host.E] (VS D).V)
   simp only [brS, hiso]
 
 /- English proof (translation)
-Unfold `lattice₂ at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨v, hv, rfl⟩` from `hy`. Rewrite using `[betaP_bc]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨β v, hβ v hv, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c y _ hy`. Establish `e : betaP p β (c • y) = c • betaP p β y` using `LinearMapClass.map_smul_of_tower _ c y`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c hy`.
+A detailed English derivation is pending.
 -/
 theorem betaP_lat (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hβ : ∀ v ∈ Λ, β v ∈ Λ) {x : Vp D p} (hx : x ∈ lattice₂ D Z.M p Λ) : betaP p β x ∈ lattice₂ D Z.M p Λ := by
@@ -167,11 +167,11 @@ theorem betaP_lat (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule (�
     exact Submodule.smul_mem _ c hy
 
 /- English proof (translation)
-Unfold `lattice₂ at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨v, hv, rfl⟩` from `hy`. Rewrite using `[betaP_symm_bc]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨β.symm v, hβ v hv, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c y _ hy`. Establish `e : (betaP p β).symm (c • y) = c • (betaP p β).symm y` using `LinearMapClass.map_smul_of_tower _ c y`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c hy`.
+A detailed English derivation is pending.
 -/
 theorem betaP_symm_lat (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hβ : ∀ v ∈ Λ, β.symm v ∈ Λ) {x : Vp D p} (hx : x ∈ lattice₂ D Z.M p Λ) :
@@ -190,11 +190,9 @@ theorem betaP_symm_lat (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule
     exact Submodule.smul_mem _ c hy
 
 /- English proof (translation)
-Use `show baseChange₂ D p x ∈ Submodule.span (D.s.atP p).Ep (Set.range fun a : Fin D.R.rS => c a.castSucc • baseChange₂ D p (u a.castSucc))`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Use `show baseChange₂ D p (u a.castSucc) ∈ _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : baseChange₂ D p (u a.castSucc) = (((hc a.castSucc).unit⁻¹ : ((D.s.atP p).Ep)ˣ) : (D.s.atP p).Ep) • (c a.castSucc • baseChange₂ D p (u a.castSucc))`. Rewrite using `[smul_smul, IsUnit.val_inv_mul, one_smul]`. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Consider the case `zero => rw [map_zero]`.
-
-Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul e y _ hy => rw [baseChange_smul₂]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bcP_mem_X (u : Fin (D.R.rS + 1) → (VS D).V) (c : Fin (D.R.rS + 1) → (D.s.atP p).Ep)
     (hc : ∀ a, IsUnit (c a)) {x : (VS D).V}
@@ -216,11 +214,9 @@ theorem bcP_mem_X (u : Fin (D.R.rS + 1) → (VS D).V) (c : Fin (D.R.rS + 1) → 
   | smul e y _ hy => rw [baseChange_smul₂]; exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Use `show betaP p β x ∈ Submodule.span (D.s.atP p).Ep (Set.range fun a : Fin D.R.rS => c a.castSucc • baseChange₂ D p (v a.castSucc))`. Use `replace hx : x ∈ Submodule.span (D.s.atP p).Ep (Set.range fun a : Fin D.R.rS => c a.castSucc • baseChange₂ D p (u a.castSucc)) := hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `show betaP p β (c a.castSucc • baseChange₂ D p (u a.castSucc)) ∈ _`. Rewrite using `[map_smul, betaP_bc]`. Conclude with `Submodule.smul_mem _ _ (bcP_mem_X Z p v c hc (hmap a))`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
-
-Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul e y _ hy => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem betaP_mem_X (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (u v : Fin (D.R.rS + 1) → (VS D).V)
     (c : Fin (D.R.rS + 1) → (D.s.atP p).Ep) (hc : ∀ a, IsUnit (c a))
@@ -243,11 +239,9 @@ theorem betaP_mem_X (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (u v : Fin (D.R.rS
   | smul e y _ hy => rw [map_smul]; exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Use `show (betaP p β).symm x ∈ Submodule.span (D.s.atP p).Ep (Set.range fun a : Fin D.R.rS => c a.castSucc • baseChange₂ D p (u a.castSucc))`. Use `replace hx : x ∈ Submodule.span (D.s.atP p).Ep (Set.range fun a : Fin D.R.rS => c a.castSucc • baseChange₂ D p (v a.castSucc)) := hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `show (betaP p β).symm (c a.castSucc • baseChange₂ D p (v a.castSucc)) ∈ _`. Rewrite using `[map_smul, betaP_symm_bc]`. Conclude with `Submodule.smul_mem _ _ (bcP_mem_X Z p u c hc (hmap a))`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
-
-Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul e y _ hy => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem betaP_symm_mem_X (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (u v : Fin (D.R.rS + 1) → (VS D).V)
     (c : Fin (D.R.rS + 1) → (D.s.atP p).Ep) (hc : ∀ a, IsUnit (c a))

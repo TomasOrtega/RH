@@ -22,7 +22,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Frames
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Conclude with `GlobalTheory.T.semiAbelian_dvr_extensions_iso_compatible E H Dw l Xo T.V T.Fr x' G G₂ t t₂ m₁ m₂ n₁ n₂`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_sabMap_of_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} (T : CDVR) {x x' : Sp T.Fr ⟶ Xo.X} (hx : x' = x) (G G₂ : SAB H (Sp T.V))
@@ -33,11 +33,11 @@ theorem exists_sabMap_of_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {
   exact GlobalTheory.T.semiAbelian_dvr_extensions_iso_compatible E H Dw l Xo T.V T.Fr x' G G₂ t t₂ m₁ m₂ n₁ n₂
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T io y y'`. Set `` to `io.toAlgebra`. Introduce `hx`. Take `⟨G, t, m₁, m₂, ⟨ub, hub⟩, θ, hθ⟩` from `y.2.2`. Take `⟨G₂, t₂, n₁, n₂, ⟨ub₂, hub₂⟩, θ₂, hθ₂⟩` from `y'.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, n, hk, hn⟩` from `exists_sabMap_of_eq T hx G G₂ t t₂ m₁ m₂ n₁ n₂`. Use `⟨GlobalTheory.T.integral_frames_differ_by_unit' E H Dw l Xo c T io y.1 y'.1 G G₂ t t₂ m₁ m₂ n₁ n₂ k n hx hk hn ub ub₂ hub hub₂, ?_⟩` and prove the remaining obligations. Introduce `a pm h1 h2 h3`. Use `GlobalTheory.T.valV_eq_one_integral_generators E H Dw l Xo c T io y.1 y'.1 G G₂ t t₂ m₁ m₂ n₁ n₂ k n hx hk hn θ θ₂ hθ hθ₂ a ⟨pm, h1, ?_, h3⟩` and prove the remaining obligations. Establish `hid : spMap (RingHom.id T.Fr) = 𝟙 (Sp T.Fr)` using `Spec.map_id _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h2, hid]`. Conclude with `(Category.comp_id _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intLatU_holds : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), IntLatU Xo c := by

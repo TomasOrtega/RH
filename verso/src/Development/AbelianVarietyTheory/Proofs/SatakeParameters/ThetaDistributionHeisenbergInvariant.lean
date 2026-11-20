@@ -10,9 +10,9 @@ open Module
 attribute [local instance] LieRing.ofAssociativeRing LieAlgebra.ofAssociativeAlgebra
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NilpotentOfTracePowers.isNilpotent_of_trace_pow`. Consider the case `exact _root_.GlobalTheory.NilpotentOfTracePowers.isNilpotent_of_trace_pow`. Consider the case `(apply _root_.GlobalTheory.NilpotentOfTracePowers.isNilpotent_of_trace_pow <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NilpotentOfTracePowers.isNilpotent_of_trace_pow <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NilpotentOfTracePowers.isNilpotent_of_trace_pow <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NilpotentOfTracePowers.isNilpotent_of_trace_pow ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isNilpotent_of_trace_pow_eq_zero {K : Type} [Field K] [CharZero K] {V : Type}
     [AddCommGroup V] [Module K V] [FiniteDimensional K V] (f : Module.End K V)

@@ -5,9 +5,9 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `B R _ T L _ _ Z Y p q s tr h W r c hc J _ σ hσ hs x`. Express the relevant statement in the definitionally equal form `LinearMap.baseChange L (T.pull c hc) (LinearMap.baseChange L tr x) = ∑ j, LinearMap.baseChange L (T.pull (σ j) (hσ j)) x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [LinearMap.baseChange_tmul]`. Rewrite using `[h W r c hc J σ hσ hs y, TensorProduct.tmul_sum]`. Consider the case `add x y hx hy`. Simplify using `only [map_add, hx, hy, ← Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Gal.G3.pExtTr :
     ∀ {B : Scheme.{0}} {R : Type} [Field R] (T : Th.{u} B R) (L : Type) [Field L] [Algebra R L] {Z Y : Scheme.{0}} (p : Z ⟶ B) (q : Y ⟶ B) (s : Y ⟶ Z) (tr : T.H q →ₗ[R] T.H p), T.IsTr p q s tr → (T.ext L).IsTr p q s (tr.baseChange L) := by

@@ -4,25 +4,23 @@ open scoped Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hT : Tq.Finite`. Set `e : Q → ∀ p : s, O p` to `fun c p => Φ c p`. Establish `hfin : (Set.pi Set.univ (fun p : s => U p)).Finite` using `Set.Finite.pi (fun p => hU p p.2)`. Use `Set.Finite.of_finite_image (f := e) (hfin.subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩ p _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hmem c hc p p.2`. Introduce `c hc c' hc' h`. Conclude with `hinj c hc c' hc' (fun p hp => congrFun h ⟨p, hp⟩)`. Use `⟨hT, ?_⟩` and prove the remaining obligations. Set `t : ∀ p, Finset (O p)` to `fun p => if h : p ∈ s then (hU p h).toFinset else ∅`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht : ∀ p ∈ s, ∀ o, o ∈ t p ↔ o ∈ U p`. Introduce `p hp o`. Simplify using `[t, hp]`. Rewrite using `[tsum_eq_sum (s := hT.toFinset) (fun c hc => by`. Rewrite `hc` using `[Set.Finite.mem_toFinset]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hc])]`. Establish `hR : ∀ p ∈ s, (∑' o : O p, if o ∈ U p then g p o else 0) = ∑ o ∈ t p, g p o`. Introduce `p hp`. Rewrite using `[tsum_eq_sum (s := t p) (fun o ho => by rw [ht p hp] at ho; simp [ho])]`. Use `Finset.sum_congr rfl (fun o ho => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `ho` using `[ht p hp]`. Simplify using `[ho]`. Rewrite using `[Finset.prod_congr rfl hR, Finset.prod_sum]`. Establish `hL : (∑ c ∈ hT.toFinset, if c ∈ Tq then ∏ p ∈ s, g p (Φ c p) else 0) = ∑ c ∈ hT.toFinset, ∏ p ∈ s, g p (Φ c p)` using `Finset.sum_congr rfl (fun c hc => by rw [Set.Finite.mem_toFinset] at hc; simp [hc])`. Rewrite using `[hL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_bij (fun c _ => fun p _ => Φ c p) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `c hc`. Rewrite `hc` using `[Set.Finite.mem_toFinset]`. Rewrite using `[Finset.mem_pi]`. Introduce `p hp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(ht p hp _).2 (hmem c hc p hp)`. Introduce `c hc c' hc' h`. Rewrite `hc`, `hc'` using `[Set.Finite.mem_toFinset]`. Conclude with `hinj c hc c' hc' (fun p hp => congrFun (congrFun h p) hp)`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `hx` using `[Finset.mem_pi]`. Set `y : ∀ p, O p` to `fun p => if h : p ∈ s then x p h else Classical.arbitrary (O p)`. Take `⟨c, hc, hcy⟩` from `hsurj y (fun p hp => by`. Simplify using `only [y, dif_pos hp]`. Conclude with `(ht p hp _).1 (hx p hp))`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨c, (Set.Finite.mem_toFinset hT).2 hc, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p hp`. Rewrite using `[hcy p hp]`. Simplify using `[y, hp]`. Introduce `c _`.
-
-Conclude with `(Finset.prod_attach s (fun p => g p (Φ c p))).symm`.
+A detailed English derivation is pending.
 -/
 theorem prod_sum_of_local_choices {ι Q R : Type} {O : ι → Type} [CommSemiring R] [TopologicalSpace R] [∀ p, Nonempty (O p)]
     (s : Finset ι) (Φ : Q → ∀ p, O p) (Tq : Set Q) (U : ∀ p, Set (O p))

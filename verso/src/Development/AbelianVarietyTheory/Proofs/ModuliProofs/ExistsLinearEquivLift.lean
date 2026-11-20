@@ -21,7 +21,7 @@ variable {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommG
   {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Introduce `U f`. Use `h (φ ⁻¹ᵁ U) ((φ.app U).hom f)` as an intermediate fact. Simplify `this` using `only [valAt'_comp, ← top_le_preimage_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHolTo_comp_hom {B : Set V} {y : V → (Sp ℂ ⟶ X)} (h : IsHolTo B y) (φ : X ⟶ Y) :
     IsHolTo B (fun b => y b ≫ φ) := by
@@ -30,9 +30,9 @@ theorem isHolTo_comp_hom {B : Set V} {y : V → (Sp ℂ ⟶ X)} (h : IsHolTo B y
   simpa only [valAt'_comp, ← top_le_preimage_comp] using this
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h1, h2⟩` from `h U f`. Use `⟨?_, h2.comp (hβ.mono fun w hw => hw.1) fun w hw => ⟨hm hw.1, hw.2⟩⟩` and prove the remaining obligations. Use `hβ.continuousOn.isOpen_inter_preimage hC h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `w`. Conclude with `⟨fun hw => ⟨hw.1, hm hw.1, hw.2⟩, fun hw => ⟨hw.1, hw.2.2⟩⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem isHolTo_comp {B : Set V} {y : V → (Sp ℂ ⟶ X)} (h : IsHolTo B y) {C : Set W} (hC : IsOpen C) {β : W → V}
     (hβ : DifferentiableOn ℂ β C) (hm : Set.MapsTo β C B) : IsHolTo C (fun w => y (β w)) := by
@@ -45,9 +45,9 @@ theorem isHolTo_comp {B : Set V} {y : V → (Sp ℂ ⟶ X)} (h : IsHolTo B y) {C
   exact ⟨fun hw => ⟨hw.1, hm hw.1, hw.2⟩, fun hw => ⟨hw.1, hw.2.2⟩⟩
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h1, h2⟩` from `h U f`. Establish `: {b ∈ B | ⊤ ≤ y' b ⁻¹ᵁ U} = {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U}`. Use extensionality with `b`. Conclude with `and_congr_right fun hb => by rw [e b hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `⟨h1, h2.congr fun b hb => by rw [e b hb.1]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isHolTo_congr {B : Set V} {y y' : V → (Sp ℂ ⟶ X)} (h : IsHolTo B y) (e : ∀ b ∈ B, y' b = y b) :
     IsHolTo B y' := by
@@ -60,7 +60,7 @@ theorem isHolTo_congr {B : Set V} {y y' : V → (Sp ℂ ⟶ X)} (h : IsHolTo B y
   exact ⟨h1, h2.congr fun b hb => by rw [e b hb.1]⟩
 
 /- English proof (translation)
-The claim follows from `isHolTo_comp (β := id) h hC differentiableOn_id hCB`.
+A detailed English derivation is pending.
 -/
 theorem isHolTo_mono {B C : Set V} {y : V → (Sp ℂ ⟶ X)} (h : IsHolTo B y) (hC : IsOpen C) (hCB : C ⊆ B) :
     IsHolTo C y :=
@@ -74,7 +74,7 @@ variable {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommG
   {Q : Type} [Group Q]
 
 /- English proof (translation)
-Use `h 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_zero {A : Type} [AddGroup A] {e : A → Q} (h : ∀ z w, e (z + w) = e z * e w) : e 0 = 1 := by
   have := h 0 0
@@ -82,7 +82,7 @@ theorem hom_zero {A : Type} [AddGroup A] {e : A → Q} (h : ∀ z w, e (z + w) =
   exact left_eq_mul.1 this
 
 /- English proof (translation)
-Use `h (z - w) w` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, mul_eq_right]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_sub_eq_one {A : Type} [AddGroup A] {e : A → Q} (h : ∀ z w, e (z + w) = e z * e w) {z w : A} :
     e (z - w) = 1 ↔ e z = e w := by
@@ -91,7 +91,7 @@ theorem hom_sub_eq_one {A : Type} [AddGroup A] {e : A → Q} (h : ∀ z w, e (z 
   rw [this, mul_eq_right]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul, pow_zero, hom_zero h]`. Consider the case `succ n ih => rw [succ_nsmul, h, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hom_nsmul {A : Type} [AddGroup A] {e : A → Q} (h : ∀ z w, e (z + w) = e z * e w) (z : A) (n : ℕ) :
     e (n • z) = e z ^ n := by
@@ -103,13 +103,13 @@ def homKer {A : Type} [AddGroup A] {e : A → Q} (h : ∀ z w, e (z + w) = e z *
   (AddMonoidHom.mk' (G := Additive Q) (fun z => Additive.ofMul (e z)) fun z w => congrArg _ (h z w)).ker
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_homKer {A : Type} [AddGroup A] {e : A → Q} (h : ∀ z w, e (z + w) = e z * e w) {z : A} :
     z ∈ homKer h ↔ e z = 1 := Iff.rfl
 
 /- English proof (translation)
-Establish `: DiscreteTopology K` using `DiscreteTopology.of_forall_le_norm (E := K) hr fun x hx => not_lt.1 fun h' => hx (Subtype.ext (h x x.2 h'))`. Conclude with `DiscreteTopology.isDiscrete`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDiscrete_of_norm {K : AddSubgroup W} {r : ℝ} (hr : 0 < r) (h : ∀ z ∈ K, ‖z‖ < r → z = 0) :
     IsDiscrete (K : Set W) := by
@@ -118,7 +118,7 @@ theorem isDiscrete_of_norm {K : AddSubgroup W} {r : ℝ} (hr : 0 < r) (h : ∀ z
   exact DiscreteTopology.isDiscrete
 
 /- English proof (translation)
-Use `realLinear_eq_of_sub_mem_discrete (Γ := homKer h) (isDiscrete_of_norm hr fun z hz hn => hk z hn hz) (L := L.restrictScalars ℝ) (L' := L'.restrictScalars ℝ) fun x => (hom_sub_eq_one h).2 (hL x)` as an intermediate fact. Use extensionality with `z`. Conclude with `DFunLike.congr_fun this z`.
+Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem linear_lift_unique {e : W → Q} (h : ∀ z w, e (z + w) = e z * e w) {r : ℝ} (hr : 0 < r)
     (hk : ∀ z, ‖z‖ < r → e z = 1 → z = 0) {L L' : V →ₗ[ℂ] W} (hL : ∀ z, e (L z) = e (L' z)) : L = L' := by
@@ -128,7 +128,7 @@ theorem linear_lift_unique {e : W → Q} (h : ∀ z w, e (z + w) = e z * e w) {r
   exact DFunLike.congr_fun this z
 
 /- English proof (translation)
-Use `letI : CommGroup Q := { (inferInstance : Group Q) with mul_comm := fun a b => by`. Take `⟨a, rfl⟩` from `hs a`. Take `⟨b, rfl⟩` from `hs b`. Rewrite using `[← h, ← h, add_comm] }`. Conclude with `apply_fderiv_eq_of_germ (𝕜 := ℂ) (A := Additive Q) (ex := AddMonoidHom.mk' (fun z => Additive.ofMul (x z)) fun z w => congrArg _ (hx z w)) (ex' := AddMonoidHom.mk' (fun z => Additive.ofMul (e z)) fun z w => congrArg _ (h z w)) (isDiscrete_of_norm hr fun z hz hn => hk z hn hz) hd …`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_lift {x : V → Q} {e : W → Q} (hx : ∀ z w, x (z + w) = x z * x w) (h : ∀ z w, e (z + w) = e z * e w)
     (hs : Function.Surjective e) {r : ℝ} (hr : 0 < r) (hk : ∀ z, ‖z‖ < r → e z = 1 → z = 0) {ζ : V → W}
@@ -144,9 +144,9 @@ theorem fderiv_lift {x : V → Q} {e : W → Q} (hx : ∀ z w, x (z + w) = x z *
     (isDiscrete_of_norm hr fun z hz hn => hk z hn hz) hd hζ z
 
 /- English proof (translation)
-Use `letI : CommGroup Q := { (inferInstance : Group Q) with mul_comm := fun a b => by`. Take `⟨a, rfl⟩` from `hs a`. Take `⟨b, rfl⟩` from `hs b`. Rewrite using `[← h, ← h, add_comm] }`. Take `⟨L, hL, -⟩` from `existsUnique_linearEquiv_of_uniformisations (𝕜 := ℂ) (A := Additive Q) (ex := AddMonoidHom.mk' (fun z => Additive.ofMul (x z)) fun z w => congrArg _ (hx z w)) (ex' := AddMonoidHom.mk' (fun z => Additive.ofMul (e z)) fun z w => congrArg _ (h z w)) hkx (isDiscrete_of_norm hr fun z …`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨L, hL.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_linearEquiv_lift [FiniteDimensional ℂ V] [FiniteDimensional ℂ W] {x : V → Q} {e : W → Q}
     (hx : ∀ z w, x (z + w) = x z * x w) (h : ∀ z w, e (z + w) = e z * e w) (hsx : Function.Surjective x)
@@ -165,9 +165,9 @@ theorem exists_linearEquiv_lift [FiniteDimensional ℂ V] [FiniteDimensional ℂ
   exact ⟨L, hL.1⟩
 
 /- English proof (translation)
-Introduce `b hb`. Use `h b hb (not_le.1 fun hle => ?_)` and prove the remaining obligations. Take `⟨c, hc, hc'⟩` from `hB.intermediate_value hb₀ hb hd.norm (show r / 2 ∈ Set.Icc ‖d b₀‖ ‖d b‖ from ⟨by rw [h0, norm_zero]; positivity, by linarith⟩)`. Establish `hc'' : ‖d c‖ = r / 2` using `hc'`. Use `h c hc (by linarith)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc''` using `[this, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eq_zero_of_small {T : Type} [TopologicalSpace T] {B : Set T} (hB : IsPreconnected B) {d : T → W}
     (hd : ContinuousOn d B) {r : ℝ} (hr : 0 < r) (h : ∀ b ∈ B, ‖d b‖ < r → d b = 0) {b₀ : T} (hb₀ : b₀ ∈ B)
@@ -202,9 +202,9 @@ def HasLifts (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X))
 
 omit [GrpObj G] in
 /- English proof (translation)
-Set `φ : V ≃L[ℂ] (Fin (Module.finrank ℂ V) → ℂ)` to `ContinuousLinearEquiv.ofFinrankEq (by simp)`. Take `⟨u₀, rfl⟩` from `φ.symm.surjective w₀`. Establish `hW' : IsOpen (φ.symm ⁻¹' W)` using `hW.preimage φ.symm.continuous`. Take `⟨ζ, h1, h2, h3⟩` from `h _ (φ.symm ⁻¹' W) (fun u => β (φ.symm u)) (fun u => x (φ.symm u)) u₀ z₀ hW' hw₀ (hβ.comp φ.symm.differentiableOn fun _ hu => hu) (fun _ hu => hm hu) (isHolTo_comp hx hW' φ.symm.differentiableOn fun _ hu => hu) h0`. Use `⟨fun w => ζ (φ w), by simpa using h1, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `AnalyticAt.comp_of_eq h2 (φ.toContinuousLinearMap.analyticAt (φ.symm u₀)) (by simp)`. Establish `ht : map φ.symm (𝓝 u₀) = 𝓝 (φ.symm u₀)` using `φ.symm.toHomeomorph.map_nhds_eq u₀`. Rewrite using `[← ht, eventually_map]`. Simplify `h3` using `only [φ.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem HasLifts.lift {B : Set (Fin m → ℂ)} {y : (Fin m → ℂ) → (Sp ℂ ⟶ X)}
     {e : ∀ b, (Fin g → ℂ) → (Over.mk (y b) ⟶ G)} (h : HasLifts B y e) {V : Type} [NormedAddCommGroup V]
@@ -225,7 +225,7 @@ theorem HasLifts.lift {B : Set (Fin m → ℂ)} {y : (Fin m → ℂ) → (Sp ℂ
     simpa only [φ.apply_symm_apply] using h3
 
 /- English proof (translation)
-Establish `key : ∀ (U : X.Opens) (f : Γ(X, U)), fderiv ℂ (fun z => valAt' (e (h z)) U f) 0 w = fderiv ℂ (fun z => valAt' (e z) U f) 0 (h w)` using `fun U f => by`. Use `h.comp_right_fderiv (f := fun z => valAt' (e z) U f) (x := 0)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `DFunLike.congr_fun this w`. Simplify using `only [IsDerivAt0, key, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDerivAt0_comp {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} (h : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ)) (w : Fin g → ℂ)
     (v : Sp (DualNumber ℂ) ⟶ X) : IsDerivAt0 (fun z => e (h z)) w v ↔ IsDerivAt0 e (h w) v := by
@@ -237,9 +237,9 @@ theorem isDerivAt0_comp {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} (h : (Fin g →
   simp only [IsDerivAt0, key, map_zero]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `he`. Use `⟨fun z w => by simp only [map_add, h1], h2.comp h.surjective, isHolTo_comp h3 isOpen_univ h.differentiableOn (Set.mapsTo_univ _ _), fun w => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Simplify `h4 (h w)` using `only [isDerivAt0_comp (e := fun z => (e z).left)]`. Simplify using `only [isDerivAt0_comp (e := fun z => (e z).left)]`. Take `⟨w, hw, hu⟩` from `h5 v (by simpa only [map_zero] using hv)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h.symm w, by simpa using hw, fun w' hw' => by rw [← hu _ hw', h.symm_apply_apply]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsExp.comp {y : Sp ℂ ⟶ X} {e : (Fin g → ℂ) → (Over.mk y ⟶ G)} (he : IsExp y e)
     (h : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ)) : IsExp y (fun z => e (h z)) := by
@@ -252,20 +252,18 @@ theorem IsExp.comp {y : Sp ℂ ⟶ X} {e : (Fin g → ℂ) → (Over.mk y ⟶ G)
     exact ⟨h.symm w, by simpa using hw, fun w' hw' => by rw [← hu _ hw', h.symm_apply_apply]⟩
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem one_left (y : Sp ℂ ⟶ X) : (1 : Over.mk y ⟶ G).left = y ≫ η[G].left := by
   rw [Hom.one_def, Over.comp_left, Over.toUnit_left]
   rfl
 
 /- English proof (translation)
-Establish `hw : η[G].left ≫ G.hom = 𝟙 _` using `Over.w η[G]`. Use `haveI : IsClosedImmersion (η[G].left ≫ G.hom) := hw ▸ inferInstance`. Use `haveI : IsClosedImmersion η[G].left := IsClosedImmersion.of_comp _ G.hom`. Use `haveI : IsReduced (Over.mk y).left := inferInstanceAs (IsReduced (Sp ℂ))`. Use `haveI : Surjective (pullback.fst x.left η[G].left) := ⟨fun p => by`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: p = (default : PrimeSpectrum ℂ)` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Substitute `this` using the available equality. Express the relevant statement in the definitionally equal form `_ ∈ Set.range _`. Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `hx⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := isIso_of_isClosedImmersion_of_surjective (pullback.fst x.left η[G].left)`. Establish `e : x.left = (inv (pullback.fst x.left η[G].left) ≫ pullback.snd _ _) ≫ η[G].left`. Rewrite using `[Category.assoc, ← pullback.condition, IsIso.inv_hom_id_assoc]`. Establish `e' : inv (pullback.fst x.left η[G].left) ≫ pullback.snd _ _ = y`. Use `Over.w x` as an intermediate fact.
-
-Rewrite `this` using `[e, Category.assoc, hw]`. Conclude with `(Category.comp_id _).symm.trans this`. Rewrite `e` using `[e']`. Conclude with `Over.OverMorphism.ext (e.trans (one_left y).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_mem_range [IsSeparated G.hom] {y : Sp ℂ ⟶ X} (x : Over.mk y ⟶ G)
     (hx : x.left (default : PrimeSpectrum ℂ) ∈ Set.range η[G].left) : x = 1 := by
@@ -290,11 +288,9 @@ theorem eq_one_of_mem_range [IsSeparated G.hom] {y : Sp ℂ ⟶ X} (x : Over.mk 
   exact Over.OverMorphism.ext (e.trans (one_left y).symm)
 
 /- English proof (translation)
-Establish `hw : η[G].left ≫ G.hom = 𝟙 _` using `Over.w η[G]`. Use `haveI : IsClosedImmersion (η[G].left ≫ G.hom) := hw ▸ inferInstance`. Use `haveI : IsClosedImmersion η[G].left := IsClosedImmersion.of_comp _ G.hom`. Set `U : G.left.Opens` to `⟨(Set.range η[G].left)ᶜ, η[G].left.isClosedEmbedding.isClosed_range.isOpen_compl⟩`. Use `(hx U 0).1 using 3 with b` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Introduce a local definition for the expression. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[top_le_preimage_iff_mem]`. Use `not_congr ⟨fun h => ?_, eq_one_of_mem_range _⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[h, one_left]`.
-
-Conclude with `⟨y b (default : PrimeSpectrum ℂ), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isOpen_ne_one [IsSeparated G.hom] {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {B : Set V}
     {y : V → (Sp ℂ ⟶ X)} {x : ∀ b, Over.mk (y b) ⟶ G} (hx : IsHolTo B (fun b => (x b).left)) :

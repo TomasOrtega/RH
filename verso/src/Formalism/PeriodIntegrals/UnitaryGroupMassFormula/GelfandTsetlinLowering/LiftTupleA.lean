@@ -14,7 +14,7 @@ def gmin {r c m : ℕ} (ρ : Fin m → Fin r) (κ : Fin m → Fin c) : MvPolynom
   (Matrix.of fun p q : Fin m => (X (ρ p, κ q) : MvPolynomial (Fin r × Fin c) ℤ)).det
 
 /- English proof (translation)
-Unfold `rowGen`. Rewrite using `[aeval_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowGen_Xz {r c : ℕ} (a b : Fin r) (v : Fin r × Fin c) :
     rowGen ℤ a b (X v) = Polynomial.C (X v) +
@@ -23,23 +23,21 @@ theorem rowGen_Xz {r c : ℕ} (a b : Fin r) (v : Fin r × Fin c) :
   rw [aeval_X]
 
 /- English proof (translation)
-Use `set A : Equiv.Perm (Fin m) → Fin m → Polynomial (MvPolynomial (Fin r × Fin c) ℤ) := fun σ i => Polynomial.C (X (ρ i, κ (σ i))) with hA`. Use `set B : Equiv.Perm (Fin m) → Fin m → Polynomial (MvPolynomial (Fin r × Fin c) ℤ) := fun σ i => if ρ i = b then Polynomial.X * Polynomial.C (X (a, κ (σ i))) else 0 with hB`. Establish `h1 : rowGen ℤ a b (gmin ρ κ) = ∑ σ : Equiv.Perm (Fin m), Equiv.Perm.sign σ • ∏ i, (B σ i + A σ i)`. Unfold `gmin`. Rewrite using `[AlgHom.map_det, ← Matrix.det_transpose, Matrix.det_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply, AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, rowGen_Xz, hA, hB]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ∀ S : Finset (Fin m), gmin (upd ρ S a) κ = ∑ σ : Equiv.Perm (Fin m), Equiv.Perm.sign σ • ∏ i, (X (upd ρ S a i, κ (σ i)) : MvPolynomial (Fin r × Fin c) ℤ)`. Introduce `S`. Unfold `gmin`. Rewrite using `[← Matrix.det_transpose, Matrix.det_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Simplify using `only [Finset.prod_add, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm, Finset.powerset_univ]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Use `split_ifs with hS`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h2, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hBS : ∏ i ∈ S, B σ i = Polynomial.X ^ S.card * Polynomial.C (∏ i ∈ S, (X (a, κ (σ i)) : MvPolynomial (Fin r × Fin c) ℤ))`. Rewrite using `[Finset.prod_congr rfl (fun i hi => show B σ i = Polynomial.X * Polynomial.C (X (a, κ (σ i))) by`. Simplify using `[hB, hS i hi])]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, map_prod]`. Establish `hAS : ∏ i ∈ Finset.univ \ S, A σ i = Polynomial.C (∏ i ∈ Finset.univ \ S, (X (ρ i, κ (σ i)) : MvPolynomial (Fin r × Fin c) ℤ))`. Rewrite using `[map_prod]`. Establish `hprod : (∏ i ∈ Finset.univ \ S, (X (ρ i, κ (σ i)) : MvPolynomial (Fin r × Fin c) ℤ)) * (∏ i ∈ S, (X (a, κ (σ i)) : MvPolynomial (Fin r × Fin c) ℤ)) = ∏ i, (X (upd ρ S a i, κ (σ i)) : MvPolynomial (Fin r × Fin c) ℤ)`. Rewrite using `[← Finset.prod_sdiff (Finset.subset_univ S)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `[upd, (Finset.mem_sdiff.mp hi).2]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `[upd, hi]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hBS, hAS, ← hprod, Units.smul_def, Units.smul_def, map_zsmul, map_mul]`. Simplify using `only [zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `push_neg at hS`. Take `⟨p, hp, hpb⟩` from `hS`.
-
-Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_zero hp (by simp [hB, hpb]), zero_mul, smul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowGen_gmin {r c m : ℕ} (a b : Fin r) (ρ : Fin m → Fin r) (κ : Fin m → Fin c) :
     rowGen ℤ a b (gmin ρ κ) =
@@ -105,11 +103,11 @@ def Exp {r c n m : ℕ} (e : Fin n → Fin r) (G : (Fin m → Fin n) → MvPolyn
       Polynomial.X ^ S.card * Polynomial.C (G (upd ρ S a)) else 0
 
 /- English proof (translation)
-Introduce `a b ρ`. Use `beta_reduce`. Rewrite using `[rowGen_gmin]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Establish `h1 : (∀ p ∈ S, (e ∘ ρ) p = e b) ↔ (∀ p ∈ S, ρ p = b)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, he.eq_iff]`. Establish `h2 : upd (e ∘ ρ) S (e a) = e ∘ upd ρ S a`. Use function extensionality and compare the values at `p`. Simplify using `only [upd, Function.comp_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : ∀ p ∈ S, ρ p = b`. Rewrite using `[if_pos hc, if_pos (h1.mpr hc), h2]`. Rewrite using `[if_neg hc, if_neg (fun h => hc (h1.mp h))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_gmin {r c n m : ℕ} (e : Fin n → Fin r) (he : Function.Injective e) (κ : Fin m → Fin c) :
     Exp e (fun ρ : Fin m → Fin n => gmin (e ∘ ρ) κ) := by
@@ -128,13 +126,13 @@ theorem exp_gmin {r c n m : ℕ} (e : Fin n → Fin r) (he : Function.Injective 
   · rw [if_neg hc, if_neg (fun h => hc (h1.mp h))]
 
 /- English proof (translation)
-Establish `hm : ∑ S : Finset (Fin m), f (S.map Fin.castSuccEmb) = ∑ S ∈ (Finset.univ : Finset (Finset (Fin m))).map (Finset.mapEmbedding Fin.castSuccEmb).toEmbedding, f S`. Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression. Rewrite using `[hm]`. Use `symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `Finset.sum_subset (Finset.subset_univ _) ?_` and prove the remaining obligations. Introduce `S _ hS`. Apply `hf` to reduce the goal to its premises. Assume the negation of the conclusion as `hl`. Apply `hS` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Finset.mem_map]`. Use `⟨S.preimage Fin.castSucc (Fin.castSucc_injective m).injOn, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [RelEmbedding.coe_toEmbedding, Finset.mapEmbedding_apply, Finset.mem_map, Finset.mem_preimage, Fin.coe_castSuccEmb]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`. Establish `hxl : x ≠ Fin.last m` using `fun h => hl (h ▸ hx)`. Conclude with `⟨x.castPred hxl, by simpa using hx, by simp⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sum_finset_castSucc {M : Type*} [AddCommMonoid M] {m : ℕ} (f : Finset (Fin (m + 1)) → M)
     (hf : ∀ S, Fin.last m ∈ S → f S = 0) :
@@ -167,31 +165,29 @@ def liftR {r n m : ℕ} (e : Fin n → Fin r) (z : Fin r) (ρ : Fin m → Fin n)
   fun p => if hp : p.1 < m then e (ρ ⟨p.1, hp⟩) else z
 
 /- English proof (translation)
-Simplify using `[liftR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftR_castSucc {r n m : ℕ} (e : Fin n → Fin r) (z : Fin r) (ρ : Fin m → Fin n) (q : Fin m) :
     liftR e z ρ (Fin.castSucc q) = e (ρ q) := by
   simp [liftR]
 
 /- English proof (translation)
-Simplify using `[liftR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftR_last {r n m : ℕ} (e : Fin n → Fin r) (z : Fin r) (ρ : Fin m → Fin n) :
     liftR e z ρ (Fin.last m) = z := by
   simp [liftR]
 
 /- English proof (translation)
-Introduce `a b ρ`. Use `beta_reduce`. Rewrite using `[rowGen_gmin, sum_finset_castSucc]`. Use `Finset.sum_congr rfl fun S _ => ?_ beta_reduce` and prove the remaining obligations. Establish `h1 : (∀ p ∈ S.map Fin.castSuccEmb, liftR e z ρ p = e b) ↔ (∀ p ∈ S, ρ p = b)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[liftR_castSucc, he.eq_iff]`. Establish `h2 : upd (liftR e z ρ) (S.map Fin.castSuccEmb) (e a) = liftR e z (upd ρ S a)`. Use function extensionality and compare the values at `p`. Proceed by induction on `p using Fin.lastCases with`. Consider the case `last`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Establish `hl : Fin.last m ∉ S.map Fin.castSuccEmb`. Simplify using `only [Finset.mem_map, Fin.coe_castSuccEmb, not_exists, not_and]`. Introduce `q _ hq`. Conclude with `(Fin.castSucc_lt_last q).ne hq`. Simplify using `[upd, hl, liftR_last]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `cast q`. Establish `hm : Fin.castSucc q ∈ S.map Fin.castSuccEmb ↔ q ∈ S` using `Finset.mem_map' Fin.castSuccEmb`. Simplify using `only [upd, liftR_castSucc, hm]`. Apply the tactic sequence `split_ifs <;> rfl`. Distinguish the cases in `hc : ∀ p ∈ S, ρ p = b`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (h1.mpr hc), if_pos hc, h2, Finset.card_map]`. Rewrite using `[if_neg (fun h => hc (h1.mp h)), if_neg hc]`. Introduce `S hS beta_reduce`. Rewrite using `[if_neg]`. Introduce `hall`.
-
-Conclude with `hz b ((liftR_last e z ρ).symm.trans (hall _ hS)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exp_lift {r c n m : ℕ} (e : Fin n → Fin r) (he : Function.Injective e) (z : Fin r)
     (hz : ∀ b, e b ≠ z) (κ : Fin (m + 1) → Fin c) :
@@ -226,13 +222,13 @@ theorem exp_lift {r c n m : ℕ} (e : Fin n → Fin r) (he : Function.Injective 
     exact hz b ((liftR_last e z ρ).symm.trans (hall _ hS)).symm
 
 /- English proof (translation)
-Unfold `rowDiv`. Rewrite using `[map_mul, hC, map_prod, Finset.prod_congr rfl (fun k _ => hG k a b (I k)), Fintype.prod_sum, Finset.mul_sum, Polynomial.finset_sum_coeff]`. Use `Finset.sum_congr rfl fun F _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ite_zero]`. Distinguish the cases in `hA : ∀ k ∈ (Finset.univ : Finset (Fin K)), ∀ p ∈ F k, I k p = b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hA, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, ← map_prod Polynomial.C]`. Rewrite using `[show Polynomial.C C0 * (Polynomial.X ^ (∑ k, (F k).card) * Polynomial.C (∏ k, G k (upd (I k) (F k) a))) = Polynomial.monomial (∑ k, (F k).card) (C0 * ∏ k, G k (upd (I k) (F k) a)) by`. Rewrite using `[← Polynomial.C_mul_X_pow_eq_monomial, map_mul]`. Use the proof step `ring]`. Rewrite using `[Polynomial.coeff_monomial]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA' : ∀ k, ∀ p ∈ F k, I k p = b` using `fun k => hA k (Finset.mem_univ k)`. Distinguish the cases in `hs : ∑ k, (F k).card = t`. Rewrite using `[if_pos hs, if_pos ⟨hA', hs⟩]`. Rewrite using `[if_neg hs, if_neg (fun h => hs h.2)]`. Rewrite using `[if_neg hA, mul_zero, Polynomial.coeff_zero, if_neg]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hA (fun k _ => h.1 k)`.
+A detailed English derivation is pending.
 -/
 theorem rowDiv_prod {r c n K : ℕ} (e : Fin n → Fin r) (sz : Fin K → ℕ)
     (G : ∀ k, (Fin (sz k) → Fin n) → MvPolynomial (Fin r × Fin c) ℤ) (hG : ∀ k, Exp e (G k))
@@ -273,15 +269,15 @@ def tlin {n K : ℕ} (sz : Fin K → ℕ) (a b : Fin n) (t : ℕ) :
   Finsupp.linearCombination ℤ (tmat sz a b t)
 
 /- English proof (translation)
-Establish `hsm : ∀ (z : ℤ) (x : MvPolynomial (Fin r × Fin c) ℤ), rowDiv ℤ (e a) (e b) t (z • x) = z • rowDiv ℤ (e a) (e b) t x`. Introduce `z x`. Unfold `rowDiv`. Rewrite using `[map_smul, Polynomial.coeff_smul]`. Use `Finsupp.induction_linear d ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `rowDiv`. Simplify using the standard rewrite rules. Introduce `f g hf hg`. Rewrite using `[map_add, map_add, map_add]`. Unfold `rowDiv at hf hg ⊢`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_add, Polynomial.coeff_add, hf, hg]`. Introduce `J c`. Unfold `tlin`. Rewrite using `[Finsupp.linearCombination_single, Finsupp.linearCombination_single, map_smul, hsm, rowDiv_prod e sz G hG C0 a b hC t J]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `tmat`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun F _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[Finsupp.linearCombination_single, one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem rowDiv_comb {r c n K : ℕ} (e : Fin n → Fin r) (sz : Fin K → ℕ)
     (G : ∀ k, (Fin (sz k) → Fin n) → MvPolynomial (Fin r × Fin c) ℤ) (hG : ∀ k, Exp e (G k))
@@ -320,7 +316,7 @@ def twd {n K : ℕ} (sz : Fin K → ℕ) : List (Fin n × Fin n × ℕ) →
   | x :: w => (tlin sz x.1 x.2.1 x.2.2).comp (twd sz w)
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => rfl | x :: w, hw, d => by have hx : x.1 ≠ x.2.1 := hw x List.mem_cons_self have hw' : OffDiag w := fun y hy => hw y (List.mem_cons_of_mem _ hy) show rowDiv ℤ (e x.1) (e x.2.1) x.2.2 (applyWord ℤ (w.map fun x => (e x.1, e x.2.1, x.2.2)) (Finsupp.linearCombination ℤ ( …`.
+A detailed English derivation is pending.
 -/
 theorem applyWord_comb {r c n K : ℕ} (e : Fin n → Fin r) (sz : Fin K → ℕ)
     (G : ∀ k, (Fin (sz k) → Fin n) → MvPolynomial (Fin r × Fin c) ℤ) (hG : ∀ k, Exp e (G k))

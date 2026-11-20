@@ -14,9 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.IntByParts
 
 /- English proof (translation)
-Establish `hm : MeasurePreserving (fun g : G => g * a) μ μ` using `measurePreserving_mul_right μ a`. Establish `h' : IsFundamentalDomain Γ ((fun g : G => g * a) ⁻¹' 𝓕) μ` using `h.preimage_of_equiv hm.quasiMeasurePreserving Function.bijective_id fun γ g => mul_assoc _ _ _`. Rewrite using `[← hm.setIntegral_preimage_emb (measurableEmbedding_mulRight a) Φ 𝓕]`. Conclude with `h.setIntegral_eq h' (f := fun g => Φ (g * a)) fun γ g => by`. Express the relevant statement in the definitionally equal form `Φ ((γ : G) * g * a) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, hΦ _ γ.2]`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_mul_right {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (Γ : Subgroup G) [Countable Γ]
     (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] {𝓕 : Set G} (h : IsFundamentalDomain Γ 𝓕 μ)
@@ -31,7 +31,7 @@ theorem setIntegral_mul_right {G : Type} [Group G] [MeasurableSpace G] [Measurab
     rw [mul_assoc, hΦ _ γ.2]
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 hfin`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ.restrict 𝓕) (𝕜 := ℝ) (x₀ := 0) (F := fun t g => Φ (g * a t)) (F' := fun t g => Φ' (g * a t)) (s := Set.univ) (bound := fun _ => B') Filter.univ_mem (.of_forall fun t => (hc.comp (continuous_mul_right _)).measurable.aestrong …`. Establish `h2` using `key.2`. Simplify using `only [setIntegral_mul_right Γ μ h hΦ, h0, mul_one] at h2`. Conclude with `h2.unique (hasDerivAt_const _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setIntegral_deriv_eq_zero {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] (Γ : Subgroup G) [Countable Γ]
@@ -55,7 +55,7 @@ theorem setIntegral_deriv_eq_zero {G : Type} [Group G] [TopologicalSpace G] [IsT
 variable {D : D7} {θ : InfF D} {V : HSp D}
 
 /- English proof (translation)
-Take `⟨c1, N, C, hC⟩` from `hφ.2.2 [] (by simp)`. Take `⟨c2, hr⟩` from `hF.2.2 [] (by simp)`. Take `⟨B, hB⟩` from `IsRapidDecay.mul_bounded (φ := F) (ψ := φ) hr hφ.2.1 hC`. Conclude with `⟨Continuous.mul c1 c2, B, fun g => by rw [norm_mul]; exact hB g⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mul_cont_bounded {φ F : GA D V → ℂ} (hφ : IsMod θ V φ) (hF : F ∈ Decay θ V) :
     Continuous (fun g => φ g * F g) ∧ ∃ B : ℝ, ∀ g, ‖φ g * F g‖ ≤ B := by
@@ -65,13 +65,11 @@ theorem mul_cont_bounded {φ F : GA D V → ℂ} (hφ : IsMod θ V φ) (hF : F �
   exact ⟨Continuous.mul c1 c2, B, fun g => by rw [norm_mul]; exact hB g⟩
 
 /- English proof (translation)
-Introduce `D θ hθ V μ 𝓕 hq τ X hX φ F hφ hF`. Take `⟨-, -, -, _, _, -, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `hfin` using `(GlobalTheory.Mem.QuotVol.quot_volume_ne_zero_ne_top D V μ 𝓕 hq).2`. Use `haveI := hq.1`. Use `haveI := (GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D V μ hq.1).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `int : ∀ {φ F : GA D V → ℂ}, IsMod θ V φ → F ∈ Decay θ V → IntegrableOn (fun g => φ g * F g) 𝓕 μ`. Introduce `φ F hφ hF`. Take `⟨c, B, hB⟩` from `mul_cont_bounded hφ hF`. Conclude with `Measure.integrableOn_of_bounded (M := B) hfin c.measurable.aestronglyMeasurable (.of_forall hB)`. Use `⟨int hφ hF, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, B0, hB0⟩` from `mul_cont_bounded hφ hF`. Take `⟨c1, B1, hB1⟩` from `mul_cont_bounded (hφ.rder hX) hF`. Take `⟨c2, B2, hB2⟩` from `mul_cont_bounded hφ (Rder_mem_Decay hF hX)`. Establish `key` using `setIntegral_deriv_eq_zero (GQ V) μ hq.2 hfin (Φ := fun g => φ g * F g) (Φ' := fun g => Rder θ V τ X φ g * F g + φ g * Rder θ V τ X F g) (fun γ hγ g => by simp only [hφ.2.1 γ hγ, hF.2.1 γ hγ]) c0 (c1.add c2) hB0 (fun g => (norm_add_le _ _).trans (add_le_add (hB1 g) (hB2 g))) (oneP …`. Rewrite `key` using `[integral_add (int (hφ.rder hX) hF) (int hφ (Rder_mem_Decay hF hX))]`.
-
-Conclude with `eq_neg_of_add_eq_zero_left key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_Rder_mul : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D), ∀ μ 𝓕, IsQuot V μ 𝓕 → ∀ τ, ∀ X ∈ lieAt V τ, ∀ φ F, IsMod θ V φ → F ∈ Decay θ V → IntegrableOn (fun g => φ g * F g) 𝓕 μ ∧ ∫ g in 𝓕, Rder θ V τ X φ g * F g ∂μ = -∫ g in 𝓕, φ g * Rder θ V τ X F g ∂μ := by
   intro D θ hθ V μ 𝓕 hq τ X hX φ F hφ hF

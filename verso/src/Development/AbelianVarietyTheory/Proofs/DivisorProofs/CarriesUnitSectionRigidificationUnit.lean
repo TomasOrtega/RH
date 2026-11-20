@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `e : stalkOf (cpt W) = (stalkClosedPointIso (.of W)).inv.hom`. Establish `h` using `ΓSpecIso_hom_stalkClosedPointIso_inv (CommRingCat.of W)`. Establish `h' : (stalkClosedPointIso (.of W)).inv = (Scheme.ΓSpecIso (CommRingCat.of W)).inv ≫ (Sp W).presheaf.germ ⊤ (cpt W) trivial`. Rewrite using `[Iso.eq_inv_comp]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h']`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(stalkClosedPointIso (.of W)).symm.commRingCatIsoToRingEquiv.bijective`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkOf_cpt_bijective (W : Type) [CommRing W] [IsLocalRing W] : Function.Bijective (stalkOf (cpt W)) := by
   have e : stalkOf (cpt W) = (stalkClosedPointIso (.of W)).inv.hom := by
@@ -31,7 +31,7 @@ theorem stalkOf_cpt_bijective (W : Type) [CommRing W] [IsLocalRing W] : Function
   exact (stalkClosedPointIso (.of W)).symm.commRingCatIsoToRingEquiv.bijective
 
 /- English proof (translation)
-Set `e` to `RingEquiv.ofBijective _ (stalkOf_cpt_bijective W)`. Conclude with `⟨Units.map e.symm.toMonoidHom x, e.apply_symm_apply x.val⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_unit_stalkOf (W : Type) [CommRing W] [IsLocalRing W] (x : ((Sp W).presheaf.stalk (cpt W))ˣ) :
     ∃ ε : Wˣ, stalkOf (cpt W) (ε : W) = x.val := by
@@ -39,7 +39,7 @@ theorem exists_unit_stalkOf (W : Type) [CommRing W] [IsLocalRing W] (x : ((Sp W)
   exact ⟨Units.map e.symm.toMonoidHom x, e.apply_symm_apply x.val⟩
 
 /- English proof (translation)
-Establish `h` using `gs_pull e p z ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of W)).inv.hom u)`. Rewrite `h` using `[he]`. Conclude with `h.trans (gs_eq (𝟙 _) z ⊤ trivial _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_scal_section {W : Type} [CommRing W] {Y : Scheme.{0}} (p : Y ⟶ Sp W) (e : Sp W ⟶ Y) (he : e ≫ p = 𝟙 _)
     (z : Sp W) (u : W) : gs e z ⊤ (scal p u) = stalkOf z u := by
@@ -48,11 +48,11 @@ theorem gs_scal_section {W : Type} [CommRing W] {Y : Scheme.{0}} (p : Y ⟶ Sp W
   exact h.trans (gs_eq (𝟙 _) z ⊤ trivial _)
 
 /- English proof (translation)
-Establish `a` using `(isGen_iff w).1 hw Z e z (J (e ≫ F)) (I (e ≫ F)) (J' e) (I' e) (hJ (e ≫ F)) (hI (e ≫ F)) (hJ' e) (hI' e)`. Establish `b : val t r z J = _ * val t r z I` using `gen_trans ht r z (hJ.mem _ r) (hI.mem _ r)`. Establish `c : val t' r' z J' = _ * val t' r' z I'` using `gen_trans ht' r' z (hJ'.mem _ r') (hI'.mem _ r')`. Rewrite `b`, `c` using `[trF, Fintype.prod_unique, zpow_one]`. Substitute `he'` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `b` using `[he]`. Rewrite using `[a, b, c]`. Generalize the expression as in `gm ((r' ≫ s') ≫ F) z _ _ = A`. Generalize the expression as in `gm (r' ≫ s') z _ _ = B`. Rewrite using `[mul_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `gw w _ _ _ _ = C`. Generalize the expression as in `val t' r' z I' = D`. Generalize the expression as in `(val t r z I)⁻¹ = E`. Establish `: A * B⁻¹ * C * (B * D) * (A⁻¹ * E) = (A * A⁻¹) * (B * B⁻¹) * (C * D * E)` using `by ac_rfl`. Rewrite using `[this]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -80,13 +80,13 @@ theorem gw_val_indep {X X' Y Y' Z : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' 
   rw [this]; simp
 
 /- English proof (translation)
-Introduce `R _ _ _ D C W _ _ _ T k u σ' σ h`. Take `⟨I, hI, -⟩` from `exists_good C.P.L.L C.P.L.isLB (cpt W) (K := PEmpty.{1}) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Take `⟨I', hI', -⟩` from `exists_good T.U.LG.L T.U.LG.isLB (cpt W) (K := PEmpty.{1}) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Establish `he : T.ξ ≫ eSec C.G = unitW T.G ≫ T.β` using `(PullGtPf.IsGrpPullback.one_left T.cart).symm`. Take `⟨ε, hε⟩` from `exists_unit_stalkOf W ((gw T.ℓ (unitW T.G) (cpt W) (I (unitW T.G ≫ T.β)) (I' (unitW T.G)) * val T.U.LG.rig (idW W) (cpt W) I' * (val C.P.L.rig T.ξ (cpt W) I)⁻¹) ^ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨ε, fun J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `key` using `gw_val_indep T.ℓ T.ℓ_gen C.P.L.rig C.P.L.rigGen T.U.LG.rig T.U.LG.rigGen T.ξ (idW W) (unitW T.G) (Category.id_comp _) he (cpt W) hI hJ hI' hJ'`. Rewrite `hε` using `[← key]`. Rewrite using `[h _ (unitW T.G) (cpt W) J J' hJ hJ', gs_scal_section T.G.hom (unitW T.G) (Over.w η[T.G]), map_mul, hε]`. Generalize the expression as in `gw T.ℓ _ _ _ _ = A`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `val T.U.LG.rig _ _ _ = B`. Generalize the expression as in `val C.P.L.rig _ _ _ = E`. Establish `: (A * B * E⁻¹) ^ k * E ^ k = A ^ k * B ^ k` using `by rw [← mul_pow, ← mul_pow, inv_mul_cancel_right]`. Use `congrArg Units.val this` as an intermediate fact. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val] at this ⊢`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(stalkOf (cpt W) u * sval σ' (unitW T.G) (cpt W) J')) * this`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Trait.carries_unit : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R)) (C : LabCover D) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (k : ℕ) (u : W) (σ' : H0 T.U.LG.L k) (σ : SecK C.P.L.L T.β k), T.Carries u σ' σ → ∃ ε : Wˣ, ∀ J J', Good C.P.L.L (cpt W) J → Good T.U.LG.L (cpt W) J' → sval σ (unitW T.G) (cpt W) J * (val T.U.LG.rig (idW W) (cpt W) J').val ^ k = stalkOf (cpt W) (u * ε) * sval σ' (unitW T.G) (cpt W) J' * (val C.P.L.rig T.ξ (cpt W) J).val ^ k := by
   intro R _ _ _ D C W _ _ _ T k u σ' σ h

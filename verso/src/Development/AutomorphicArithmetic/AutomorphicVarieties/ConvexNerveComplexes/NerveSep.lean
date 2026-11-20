@@ -4,25 +4,23 @@ import Mathlib.Analysis.LocallyConvex.Separation
 open Set UpperTheory.V.ConeExtensionAcyclic
 
 /- English proof (translation)
-Introduce `I F _ _ X A hXk hXc hXn hAc hAv hfin hno`. Set `P : Finset I → Prop` to `fun σ => ∃ x ∈ X, ∀ j ∈ σ, x ∈ A j`. Set `cands` to `hfin.toFinset.powerset.filter P`. Establish `hne : cands.Nonempty`. Use `⟨∅, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [cands, Finset.mem_filter, Finset.mem_powerset, Finset.empty_subset, true_and]`. Take `⟨x, hx⟩` from `hXn`. Conclude with `⟨x, hx, fun j hj => absurd hj (Finset.notMem_empty j)⟩`. Take `⟨σ, hσ, hmax⟩` from `cands.exists_max_image Finset.card hne`. Simplify using `only [cands, Finset.mem_filter, Finset.mem_powerset] at hσ hmax`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨hσS, x0, hx0X, hx0σ⟩` from `hσ`. Establish `hex : ∃ i, (X ∩ A i).Nonempty ∧ x0 ∉ A i`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hno ⟨x0, hx0X, hc⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hiX, hix0⟩` from `hex`. Establish `hiσ : i ∉ σ` using `fun h => hix0 (hx0σ i h)`. Establish `hempty : ¬ P (insert i σ)`. Introduce `hP`. Establish `hsub : insert i σ ⊆ hfin.toFinset`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `j hj`. Break down `Finset.mem_insert.mp hj with rfl | hj` into its components or cases. Simplify using `using hiX`. Conclude with `hσS hj`. Use `hmax (insert i σ) ⟨hsub, hP⟩` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Rewrite `this` using `[Finset.card_insert_of_notMem hiσ]`. Use linear arithmetic over natural numbers and integers. Set `C : Set F` to `X ∩ ⋂ j ∈ σ, A j`. Establish `hCmem : ∀ x, x ∈ C ↔ x ∈ X ∧ ∀ j ∈ σ, x ∈ A j`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[C, Set.mem_iInter₂]`. Establish `hCk : IsCompact C` using `hXk.inter_right (isClosed_biInter fun j _ => hAc j)`. Establish `hCv : Convex ℝ C` using `hXc.inter (convex_iInter₂ fun j _ => hAv j)`. Establish `hDk : IsCompact (X ∩ A i)` using `hXk.inter_right (hAc i)`. Establish `hDv : Convex ℝ (X ∩ A i)` using `hXc.inter (hAv i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdis : Disjoint (X ∩ A i) C`. Rewrite using `[Set.disjoint_left]`. Introduce `x hx hxC`. Rewrite `hxC` using `[hCmem]`. Apply `hempty` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨x, hx.1, fun j hj => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hj with rfl | hj` into its components or cases. Conclude with `hx.2`. Conclude with `hxC.2 j hj`. Take `⟨f, u, v, hfu, huv, hfv⟩` from `geometric_hahn_banach_compact_closed hDv hDk hCv hCk.isClosed hdis`.
-
-Use `⟨f, u, i, σ, hiX, hfu, ⟨x0, hx0X, hx0σ⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx hxσ`. Conclude with `huv.trans (hfv x ((hCmem x).mpr ⟨hx, hxσ⟩))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ConeExtensionAcyclic.nerve_sep :
     ∀ {I F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (X : Set F) (A : I → Set F), IsCompact X → Convex ℝ X → X.Nonempty → (∀ i, IsClosed (A i)) → (∀ i, Convex ℝ (A i)) → {i | (X ∩ A i).Nonempty}.Finite → (¬ ∃ x ∈ X, ∀ i, (X ∩ A i).Nonempty → x ∈ A i) → ∃ (f : F →L[ℝ] ℝ) (u : ℝ) (i : I) (σ : Finset I), (X ∩ A i).Nonempty ∧ (∀ x ∈ X ∩ A i, f x < u) ∧ (∃ x ∈ X, ∀ j ∈ σ, x ∈ A j) ∧ (∀ x ∈ X, (∀ j ∈ σ, x ∈ A j) → u < f x) := by

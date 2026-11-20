@@ -19,39 +19,39 @@ def IsRestrictionOfAlt (W : Submodule K V) (u : Module.End K W) (u' : Module.End
   ∀ z : W, (u z : V) = u' z
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem restriction_compat_operator (E : GLOps n K V) (W : Submodule K V) (hW : ∀ a b, ∀ z ∈ W, E a b z ∈ W) (a b : Fin n) :
     IsRestrictionOfAlt W (restrictOperators E W hW a b) (E a b) := fun _ => rfl
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem restriction_compat_one (W : Submodule K V) : IsRestrictionOfAlt W 1 1 := fun _ => rfl
 
 /- English proof (translation)
-Introduce `z` and use `by rw [Module.End.mul_apply, Module.End.mul_apply, h1, h2]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem restriction_compat_mul {W : Submodule K V} {u v : Module.End K W} {u' v' : Module.End K V}
     (h1 : IsRestrictionOfAlt W u u') (h2 : IsRestrictionOfAlt W v v') : IsRestrictionOfAlt W (u * v) (u' * v') := fun z => by
   rw [Module.End.mul_apply, Module.End.mul_apply, h1, h2]
 
 /- English proof (translation)
-Introduce `z` and use `by rw [LinearMap.smul_apply, LinearMap.smul_apply, Submodule.coe_smul, h1]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem restriction_compat_smul {W : Submodule K V} {u : Module.End K W} {u' : Module.End K V} (c : K)
     (h1 : IsRestrictionOfAlt W u u') : IsRestrictionOfAlt W (c • u) (c • u') := fun z => by
   rw [LinearMap.smul_apply, LinearMap.smul_apply, Submodule.coe_smul, h1]
 
 /- English proof (translation)
-Introduce `z` and use `by rw [LinearMap.sub_apply, LinearMap.sub_apply, Submodule.coe_sub, h1, h2]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem restriction_compat_sub {W : Submodule K V} {u v : Module.End K W} {u' v' : Module.End K V}
     (h1 : IsRestrictionOfAlt W u u') (h2 : IsRestrictionOfAlt W v v') : IsRestrictionOfAlt W (u - v) (u' - v') := fun z => by
   rw [LinearMap.sub_apply, LinearMap.sub_apply, Submodule.coe_sub, h1, h2]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using restriction_compat_one W`. Consider the case `succ k ih => rw [pow_succ, pow_succ]`. Conclude with `restriction_compat_mul ih h1`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem restriction_compat_pow {W : Submodule K V} {u : Module.End K W} {u' : Module.End K V}
     (h1 : IsRestrictionOfAlt W u u') (k : ℕ) : IsRestrictionOfAlt W (u ^ k) (u' ^ k) := by
@@ -60,7 +60,7 @@ theorem restriction_compat_pow {W : Submodule K V} {u : Module.End K W} {u' : Mo
   | succ k ih => rw [pow_succ, pow_succ]; exact restriction_compat_mul ih h1
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using restriction_compat_one W`. Consider the case `cons a l ih => rw [List.map_cons, List.map_cons, List.prod_cons, List.prod_cons]`. Conclude with `restriction_compat_mul (h a) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem restriction_compat_list_prod {W : Submodule K V} (l : List ℕ) (f : ℕ → Module.End K W) (f' : ℕ → Module.End K V)
     (h : ∀ j, IsRestrictionOfAlt W (f j) (f' j)) : IsRestrictionOfAlt W (l.map f).prod (l.map f').prod := by
@@ -69,9 +69,9 @@ theorem restriction_compat_list_prod {W : Submodule K V} (l : List ℕ) (f : ℕ
   | cons a l ih => rw [List.map_cons, List.map_cons, List.prod_cons, List.prod_cons]; exact restriction_compat_mul (h a) ih
 
 /- English proof (translation)
-Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨a, b, k, hab, rfl⟩ | ⟨a, k, rfl⟩` into its components or cases. Conclude with `⟨divPowE E a b k, Submonoid.subset_closure (Or.inl ⟨a, b, k, hab, rfl⟩), restriction_compat_smul _ (restriction_compat_pow (restriction_compat_operator E W hW a b) k)⟩`. Conclude with `⟨binomE E a k, Submonoid.subset_closure (Or.inr ⟨a, k, rfl⟩), restriction_compat_smul _ (restriction_compat_list_prod _ _ _ fun j => restriction_compat_sub (restriction_compat_operator E W hW a a) (restriction_compat_smul _ (restriction_compat_one W)))⟩`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Consider the case `one => exact ⟨1, Submonoid.one_mem _, restriction_compat_one W⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨x', hx', hxc⟩` from `hx`. Take `⟨y', hy', hyc⟩` from `hy`. Conclude with `⟨x' * y', Submonoid.mul_mem _ hx' hy', restriction_compat_mul hxc hyc⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem integral_enveloping_lifts (E : GLOps n K V) (W : Submodule K V) (hW : ∀ a b, ∀ z ∈ W, E a b z ∈ W)
     (u : Module.End K W) (hu : u ∈ UZmon (restrictOperators E W hW)) : ∃ u' ∈ UZmon E, IsRestrictionOfAlt W u u' := by
@@ -90,9 +90,9 @@ theorem integral_enveloping_lifts (E : GLOps n K V) (W : Submodule K V) (hW : �
     exact ⟨x' * y', Submonoid.mul_mem _ hx' hy', restriction_compat_mul hxc hyc⟩
 
 /- English proof (translation)
-Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨ab, rfl⟩` from `hx`. Conclude with `⟨restrictOperators E W hW ab.1 ab.2, Submonoid.subset_closure ⟨ab, rfl⟩, restriction_compat_operator E W hW ab.1 ab.2⟩`. Consider the case `one => exact ⟨1, Submonoid.one_mem _, restriction_compat_one W⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨x', hx', hxc⟩` from `hx`. Take `⟨y', hy', hyc⟩` from `hy`. Conclude with `⟨x' * y', Submonoid.mul_mem _ hx' hy', restriction_compat_mul hxc hyc⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem enveloping_monoid_restricts (E : GLOps n K V) (W : Submodule K V) (hW : ∀ a b, ∀ z ∈ W, E a b z ∈ W)
     (u' : Module.End K V) (hu : u' ∈ Umon E) : ∃ u ∈ Umon (restrictOperators E W hW), IsRestrictionOfAlt W u u' := by
@@ -107,7 +107,7 @@ theorem enveloping_monoid_restricts (E : GLOps n K V) (W : Submodule K V) (hW : 
     exact ⟨x' * y', Submonoid.mul_mem _ hx' hy', restriction_compat_mul hxc hyc⟩
 
 /- English proof (translation)
-Rewrite using `[mem_weightSpace_iff_diag_action, mem_weightSpace_iff_diag_action]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[Subtype.ext_iff, Submodule.coe_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restricted_weightSpace_iff (E : GLOps n K V) (W : Submodule K V) (hW : ∀ a b, ∀ z ∈ W, E a b z ∈ W)
     (mu : Fin n → ℤ) (z : W) : z ∈ weightSp (restrictOperators E W hW) mu ↔ (z : V) ∈ weightSp E mu := by
@@ -117,11 +117,9 @@ theorem restricted_weightSpace_iff (E : GLOps n K V) (W : Submodule K V) (hW : �
   rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `z`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `LinearMap.congr_fun (hrel a b c d) (z : V)`. Establish `hl : (((restrictOperators E W hW a b * restrictOperators E W hW c d - restrictOperators E W hW c d * restrictOperators E W hW a b) z : W) : V) = (E a b * E c d - E c d * E a b) (z : V)` using `restriction_compat_sub (restriction_compat_mul (restriction_compat_operator E W hW a b) (restriction_compat_operator E W hW c d)) (restriction_compat_mul (restriction_compat_operator E W hW c d) (restriction_compat_operator E W hW a b)) z`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hl, h]`. Establish `h0 : IsRestrictionOfAlt W 0 0` using `fun _ => rfl`. Use `(restriction_compat_sub (u := if b = c then restrictOperators E W hW a d else 0) (v := if d = a then restrictOperators E W hW c b else 0) ?_ ?_ z).symm` and prove the remaining obligations. Use `split_ifs`. Conclude with `restriction_compat_operator E W hW a d`.
-
-Conclude with `h0`. Use `split_ifs`. Conclude with `restriction_compat_operator E W hW c b`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem restricted_operators_gl_relation {E : GLOps n K V}
     (hrel : ∀ a b c d, E a b * E c d - E c d * E a b = (if b = c then E a d else 0) - (if d = a then E c b else 0))
@@ -148,9 +146,9 @@ theorem restricted_operators_gl_relation {E : GLOps n K V}
     · exact h0
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨E a b * u, Submonoid.mul_mem _ (Submonoid.subset_closure ⟨(a, b), rfl⟩) hu, rfl⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem generated_subrep_stable (E : GLOps n K V) (h : V) (a b : Fin n) (z : V) (hz : z ∈ generatedSubrep E h) :
     E a b z ∈ generatedSubrep E h := by
@@ -163,17 +161,17 @@ theorem generated_subrep_stable (E : GLOps n K V) (h : V) (a b : Fin n) (z : V) 
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨1, Submonoid.one_mem _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_generated_subrep_self (E : GLOps n K V) (h : V) : h ∈ generatedSubrep E h :=
   Submodule.subset_span ⟨1, Submonoid.one_mem _, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨ab, rfl⟩` from `hx`. Introduce `mu z hz`. Conclude with `⟨_, operator_shifts_weight_by_root hrel ab.1 ab.2 mu z hz⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `one => intro mu z hz; exact ⟨mu, by simpa using hz⟩`. Consider the case `mul x y _ _ hx hy`. Introduce `mu z hz`. Take `⟨mu1, h1⟩` from `hy mu z hz`. Take `⟨mu2, h2⟩` from `hx mu1 _ h1`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨mu2, by rw [Module.End.mul_apply]; exact h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem enveloping_word_maps_weight {E : GLOps n K V}
     (hrel : ∀ a b c d, E a b * E c d - E c d * E a b = (if b = c then E a d else 0) - (if d = a then E c b else 0))
@@ -192,11 +190,11 @@ theorem enveloping_word_maps_weight {E : GLOps n K V}
     exact ⟨mu2, by rw [Module.End.mul_apply]; exact h2⟩
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨z, hz⟩ _`. Establish `key : ∀ (x : V) (hx : x ∈ generatedSubrep E h), (⟨x, hx⟩ : generatedSubrep E h) ∈ Submodule.span K {x : generatedSubrep E h | ∃ u ∈ Umon (restrictOperators E (generatedSubrep E h) (generated_subrep_stable E h)), x = u ⟨h, mem_generated_subrep_self E h⟩}`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨u', hu', rfl⟩` from `hx`. Take `⟨u, hu, hc⟩` from `enveloping_monoid_restricts E _ (generated_subrep_stable E h) u' hu'`. Conclude with `Submodule.subset_span ⟨u, hu, Subtype.ext (hc ⟨h, mem_generated_subrep_self E h⟩).symm⟩`. Consider the case `zero => exact Submodule.zero_mem _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy ihx ihy => exact Submodule.add_mem _ ihx ihy`. Consider the case `smul c x hx ihx => exact Submodule.smul_mem _ c ihx`. Conclude with `key z hz`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem restricted_generated_by_hwv (E : GLOps n K V) (h : V) :
     Submodule.span K {x : generatedSubrep E h | ∃ u ∈ Umon (restrictOperators E (generatedSubrep E h) (generated_subrep_stable E h)),
@@ -218,9 +216,9 @@ theorem restricted_generated_by_hwv (E : GLOps n K V) (h : V) :
   exact key z hz
 
 /- English proof (translation)
-Establish `hh'` using `(mem_highestWeight_iff E lam h).1 hh`. Establish `hrel` using `restricted_operators_gl_relation hE.1 (generatedSubrep E h) (generated_subrep_stable E h)`. Establish `hw : (⟨h, mem_generated_subrep_self E h⟩ : generatedSubrep E h) ∈ weightSp (restrictOperators E (generatedSubrep E h) (generated_subrep_stable E h)) lam` using `(restricted_weightSpace_iff E _ _ lam _).2 hh'.1`. Use `⟨⟨hrel, fun x => ⟨⊤, inferInstance, Submodule.mem_top, fun _ _ _ _ => Submodule.mem_top⟩, ?_⟩, hlam, ⟨fun hc => h0 (congrArg Subtype.val hc), hw, fun a b hab => Subtype.ext (hh'.2 a b hab)⟩, restricted_generated_by_hwv E h⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← restricted_generated_by_hwv E h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨u, hu, rfl⟩`. Take `⟨mu', hmu'⟩` from `enveloping_word_maps_weight hrel u hu lam _ hw`. Conclude with `Submodule.mem_iSup_of_mem mu' hmu'`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem generated_restriction_irreducible [FiniteDimensional K V] {E : GLOps n K V} (hE : IsGLRep E) (lam : Fin n → ℤ)
     (hlam : Dominant lam) (h : V) (hh : h ∈ highestWeightVectors E lam) (h0 : h ≠ 0) :
@@ -242,9 +240,9 @@ theorem generated_restriction_irreducible [FiniteDimensional K V] {E : GLOps n K
 end
 
 /- English proof (translation)
-Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem x hx => exact hM x hx`. Consider the case `one => intro z hz`. Simplify using `using hz`. Consider the case `mul x y _ _ hx hy => intro z hz`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite using `[Module.End.mul_apply]`. Conclude with `hx _ (hy z hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_enveloping_preserves_lattice {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {n : ℕ}
     {V : Type} [AddCommGroup V] [Module (KK O) V] [Module O V] [IsScalarTower O (KK O) V]
@@ -256,27 +254,25 @@ theorem integral_enveloping_preserves_lattice {O : Type} [CommRing O] [IsDomain 
   | mul x y _ _ hx hy => intro z hz; rw [Module.End.mul_apply]; exact hx _ (hy z hz)
 
 /- English proof (translation)
-Introduce `p n' O _ _ _ S hG n _ V _ _ _ _ _ E hE M hM lam hlam π hπ h hhM hhHW hh0 c y hy hyp`. Establish `hIrr` using `generated_restriction_irreducible hE lam hlam h hhHW hh0`. Establish `hT` using `(h12 p n' O S hG n lam (generatedSubrep E h) (restrictOperators E (generatedSubrep E h) (generated_subrep_stable E h)) ⟨h, mem_generated_subrep_self E h⟩ hIrr).1`. Establish `hp0 : (p : KK O) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `S.p_ne` to reduce the goal to its premises. Apply `IsFractionRing.injective O (KK O)` to reduce the goal to its premises. Rewrite using `[map_natCast, map_zero]`. Conclude with `h0`. Establish `hpc : (p : KK O) ^ c ≠ 0` using `zpow_ne_zero _ hp0`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : (((p : KK O) ^ c)⁻¹ • (⟨y, hy⟩ : generatedSubrep E h)) ∈ Nabla (O` using `O) (restrictOperators E (generatedSubrep E h) (generated_subrep_stable E h)) lam ⟨h, mem_generated_subrep_self E h⟩ := by`. Introduce `u hu`. Take `⟨u', hu', hc⟩` from `integral_enveloping_lifts E _ _ u hu`. Take `⟨o, ho⟩` from `hyp u' hu'`. Use `⟨o, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmem : u' y ∈ generatedSubrep E h`. Use `(u ⟨y, hy⟩).2` as an intermediate fact. Rewrite `this` using `[hc ⟨y, hy⟩]`. Then use the resulting hypothesis. Take `⟨a', ha', r, hr, hsum⟩` from `Submodule.mem_sup.1 (hB (KK O) V n E hE lam h hhHW hmem)`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 ha'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hker : (⨆ mu ∈ {mu : Fin n → ℤ | mu ≠ lam}, (weightSp E mu ⊓ generatedSubrep E h)) ≤ LinearMap.ker π` using `iSup₂_le fun mu hmu z hz => LinearMap.mem_ker.2 (hπ.2 mu hmu z hz.1)`. Establish `hπr : π r = 0` using `LinearMap.mem_ker.1 (hker hr)`. Establish `hπh : π h = h` using `hπ.1 h ((mem_highestWeight_iff E lam h).1 hhHW).1`. Establish `hπu : π (u' y) = a • h` using `by rw [← hsum, map_add, map_smul, hπh, hπr, add_zero]`. Establish `hr' : r = u' y - ((p : KK O) ^ c * algebraMap O (KK O) o) • h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ho, hπu, ← hsum]`. Normalize the expressions using the abelian group laws. Establish `hle : (⨆ mu ∈ {mu : Fin n → ℤ | mu ≠ lam}, (weightSp E mu ⊓ generatedSubrep E h)) ≤ (otherWts (restrictOperators E (generatedSubrep E h) (generated_subrep_stable E h)) lam).map (generatedSubrep E h).subtype` using `iSup₂_le fun mu hmu z hz => ⟨⟨z, hz.2⟩, Submodule.mem_iSup_of_mem mu (Submodule.mem_iSup_of_mem hmu ((restricted_weightSpace_iff E _ _ mu _).2 hz.1)), rfl⟩`. Take `⟨w, hw, hwr⟩` from `hle hr`. Establish `hwr' : (w : V) = r` using `hwr`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : u (((p : KK O) ^ c)⁻¹ • (⟨y, hy⟩ : generatedSubrep E h)) - (algebraMap O (KK O) o) • (⟨h, mem_generated_subrep_self E h⟩ : generatedSubrep E h) = ((p : KK O) ^ c)⁻¹ • w`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[map_smul, Submodule.coe_sub, Submodule.coe_smul, Submodule.coe_smul, Submodule.coe_smul, hc, hwr', hr', smul_sub, smul_smul, ← mul_assoc, inv_mul_cancel₀ hpc, one_mul]`. Rewrite using `[hfin]`. Conclude with `Submodule.smul_mem _ _ hw`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDel` using `hT _ hx`. Establish `hDM : ∀ w ∈ Delta (O` using `O) (restrictOperators E (generatedSubrep E h) (generated_subrep_stable E h)) (⟨h, mem_generated_subrep_self E h⟩ : generatedSubrep E h), (w : V) ∈ M := by`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, rfl⟩` from `hz`. Take `⟨u', hu', hc⟩` from `integral_enveloping_lifts E _ _ u hu`. Rewrite using `[hc]`. Conclude with `integral_enveloping_preserves_lattice E M hM.1 u' hu' h hhM`. Consider the case `zero => exact M.zero_mem`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `add z1 z2 _ _ h1 h2 => rw [Submodule.coe_add]`. Conclude with `M.add_mem h1 h2`. Consider the case `smul o z _ hz => rw [Submodule.coe_smul_of_tower]`. Conclude with `M.smul_mem o hz`. Use `⟨_, hDM _ hDel, ?_⟩` and prove the remaining obligations.
-
-Establish `hcoef : (p : KK O) ^ (c - ((N0 n * deF p n (ellWt lam) : ℕ) : ℤ)) * ((p : KK O) ^ (N0 n * deF p n (ellWt lam)) * ((p : KK O) ^ c)⁻¹) = 1`. Rewrite using `[zpow_sub₀ hp0, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Submodule.coe_smul_of_tower, Submodule.coe_smul, ← algebraMap_smul (KK O) ((p : O) ^ (N0 n * deF p n (ellWt lam))), smul_smul, smul_smul, map_pow, map_natCast, mul_assoc, hcoef, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generated_lattice_corollary_of_thm (D : Formalism.BasicNotions.D7) (h12 : NablaDeltaComparisonField D) (hB : GeneratedMultipleOfHWV) : GeneratedLatticeCorollary := by
   intro p n' O _ _ _ S hG n _ V _ _ _ _ _ E hE M hM lam hlam π hπ h hhM hhHW hh0 c y hy hyp

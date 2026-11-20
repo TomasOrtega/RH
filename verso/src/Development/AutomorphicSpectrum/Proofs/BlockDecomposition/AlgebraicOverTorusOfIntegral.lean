@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GeoTorus
 
 /- English proof (translation)
-Use `⟨Polynomial.C (⟨u, hu⟩ : A) * Polynomial.X - 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h1` using `congrArg (fun p => Polynomial.coeff p 0) h`. Simplify using `at h1`. Simplify using `[Polynomial.aeval_def, Polynomial.eval₂_sub, Polynomial.eval₂_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isAlgebraic_unit_inv {K R : Type} [Field K] [CommRing R] [IsDomain R] [Algebra K R]
     (A : Subalgebra K R) (u : Rˣ) (hu : (u : R) ∈ A) : IsAlgebraic A ((u⁻¹ : Rˣ) : R) := by
@@ -24,7 +24,7 @@ theorem isAlgebraic_unit_inv {K R : Type} [Field K] [CommRing R] [IsDomain R] [A
   · simp [Polynomial.aeval_def, Polynomial.eval₂_sub, Polynomial.eval₂_mul]
 
 /- English proof (translation)
-Take `⟨n, rfl | rfl⟩` from `m.eq_nat_or_neg`. Establish `h : IsAlgebraic A (u : R)` using `isAlgebraic_algebraMap (⟨u, hu⟩ : A)`. Simplify using `using h.pow n`. Simplify using `using (isAlgebraic_unit_inv A u hu).pow n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isAlgebraic_unit_zpow {K R : Type} [Field K] [CommRing R] [IsDomain R] [Algebra K R]
     (A : Subalgebra K R) (u : Rˣ) (hu : (u : R) ∈ A) (m : ℤ) : IsAlgebraic A ((u ^ m : Rˣ) : R) := by
@@ -34,9 +34,9 @@ theorem isAlgebraic_unit_zpow {K R : Type} [Field K] [CommRing R] [IsDomain R] [
   · simpa using (isAlgebraic_unit_inv A u hu).pow n
 
 /- English proof (translation)
-Use `set A := Algebra.adjoin K (Set.range fun k => (t k : R))`. Establish `hmem : ∀ k, (t k : R) ∈ A` using `fun k => Algebra.subset_adjoin ⟨k, rfl⟩`. Establish `key : ∀ s : Finset (Fin d), IsAlgebraic A (((∏ k ∈ s, t k ^ m k : Rˣ)) : R)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `empty => simpa using (isAlgebraic_one : IsAlgebraic A (1 : R))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Units.val_mul]`. Conclude with `(isAlgebraic_unit_zpow A (t a) (hmem a) (m a)).mul ih`. Conclude with `key Finset.univ`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_tpow {K R : Type} [Field K] [CommRing R] [IsDomain R] [Algebra K R] {d : ℕ}
     (t : Fin d → Rˣ) (m : Fin d → ℤ) :
@@ -53,13 +53,11 @@ theorem isAlgebraic_tpow {K R : Type} [Field K] [CommRing R] [IsDomain R] [Algeb
   exact key Finset.univ
 
 /- English proof (translation)
-Introduce `K R _ _ _ _ d t hint`. Use `set A := Algebra.adjoin K (Set.range fun k => (t k : R)) with hA`. Set `S : Subalgebra A R` to `Subalgebra.algebraicClosure A R`. Establish `hle : ∀ b : torusS K t Finset.univ, (b : R) ∈ S`. Introduce and unpack `⟨b, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: torusS K t Finset.univ ≤ S.restrictScalars K`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, -, rfl⟩`. Conclude with `(Subalgebra.mem_algebraicClosure A R).2 (isAlgebraic_tpow t m)`. Conclude with `this hb`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `φ : torusS K t Finset.univ →+* S` to `{ toFun := fun b => ⟨b, hle b⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Use `⟨fun r => ?_⟩` and prove the remaining obligations. Take `⟨p, hm, hp⟩` from `hint r`. Establish `hS : IsIntegral S r`. Use `⟨p.map φ, hm.map φ, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hp`. Conclude with `hS.isAlgebraic.restrictScalars A`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_integral_torusS : ∀ {K R : Type} [Field K] [CommRing R] [IsDomain R] [Algebra K R] {d : ℕ} (t : Fin d → Rˣ), (∀ r : R, IsIntegral (torusS K t Finset.univ) r) → Algebra.IsAlgebraic (Algebra.adjoin K (Set.range fun k => (t k : R))) R := by
   intro K R _ _ _ _ d t hint

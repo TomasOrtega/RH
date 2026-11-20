@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Crys
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RTwist
 
 /- English proof (translation)
-Establish `h : (Finset.univ : Finset (Equiv.Perm (Fin 2))) = {1, Equiv.swap 0 1}` using `by decide`. Rewrite using `[Formalism.REAL.qdet, Formalism.REAL.qminor, h, Finset.sum_pair (by decide)]`. Simplify using `[Formalism.REAL.Tm, List.ofFn_succ, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem qdet2 {A : Type} [Ring A] [Algebra ℂ A] (E : Fin 2 → Fin 2 → A) (u : ℂ) :
     Formalism.REAL.qdet E u = (algebraMap ℂ A u + E 0 0) * (algebraMap ℂ A (u - 1) + E 1 1) - E 1 0 * E 0 1 := by
@@ -11,11 +11,11 @@ private theorem qdet2 {A : Type} [Ring A] [Algebra ℂ A] (E : Fin 2 → Fin 2 �
   simp [Formalism.REAL.Tm, List.ofFn_succ, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `h0` using `h 0`. Establish `h1` using `h 1`. Rewrite `h0`, `h1` using `[qdet2]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.add_apply, Module.algebraMap_end_apply, map_add, map_smul] at h0 h1`. Establish `hs : E 0 0 φ + E 1 1 φ = (a + b) • φ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take the linear combination `(norm := module) h1 - h0`. Establish `r1 : E 0 0 (E 1 1 φ) - E 1 1 (E 0 0 φ) = 0`. Simplify using `using LinearMap.congr_fun (hE 0 0 1 1) φ`. Establish `r2 : E 0 1 (E 1 0 φ) - E 1 0 (E 0 1 φ) = E 0 0 φ - E 1 1 φ`. Simplify using `using LinearMap.congr_fun (hE 0 1 1 0) φ`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `s0` using `congrArg (E 0 0) hs`. Establish `s1` using `congrArg (E 1 1) hs`. Simplify using `only [map_add, map_smul] at s0 s1`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Take the linear combination `(norm := module) s0 + s1 + (a + b) • hs + r1 + r2 - (2 : ℂ) • h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem cap2 {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin 2 → Fin 2 → Module.End ℂ V)
     (hE : Formalism.REAL.GlRel E) (a b : ℂ) (φ : V)
@@ -40,9 +40,9 @@ private theorem cap2 {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin 2 → F
   linear_combination (norm := module) s0 + s1 + (a + b) • hs + r1 + r2 - (2 : ℂ) • h0
 
 /- English proof (translation)
-Introduce `F _ _ _ π v a b h φ hφ`. Use `cap2 _ (UpperTheory.V.TR.glRel_Eop v) a b φ fun u => ?_` and prove the remaining obligations. Use `h.2 u φ hφ` as an intermediate fact. Rewrite `this` using `[UpperTheory.V.TR.cap]`. Evaluate the numerical expressions using `at this ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.capTwo :
     UpperTheory.V.Br.CapTwo := by

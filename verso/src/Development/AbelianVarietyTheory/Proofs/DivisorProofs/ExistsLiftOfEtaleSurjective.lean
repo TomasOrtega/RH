@@ -10,11 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ X Y π hE hS x`. Use `haveI := hE`. Use `haveI := hS`. Establish `: LocallyOfFiniteType π` using `inferInstance`. Set `t : Sp K` to `IsLocalRing.closedPoint K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `π.surjective (x t)`. Take `⟨y, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback w t hw`. Establish `: JacobsonSpace ↥(pullback π x)` using `LocallyOfFiniteType.jacobsonSpace (pullback.snd π x)`. Take `⟨y', -, hy'⟩` from `nonempty_inter_closedPoints (Z := (Set.univ : Set ↥(pullback π x))) ⟨y, trivial⟩ isOpen_univ.isLocallyClosed`. Establish `hc : IsClosed {y'}` using `hy'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨pointOfClosedPoint (pullback.snd π x) y' hc ≫ pullback.fst π x, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_of_etale_surjective : ∀ (K : Type) [Field K] [IsAlgClosed K] (X Y : Scheme.{0}) (π : Y ⟶ X), Etale π → Surjective π → ∀ x : Sp K ⟶ X, ∃ y : Sp K ⟶ Y, y ≫ π = x := by
   intro K _ _ X Y π hE hS x

@@ -19,19 +19,17 @@ variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpac
   [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩ : ∃ t, UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra t = u` from `RingCon.mkₐ_surjective (α := ℝ) (UniversalEnvelopingAlgebra.ringCon ℝ h.lieSubalgebra) u`. Proceed by induction on `t using TensorAlgebra.induction generalizing κ with`. Consider the case `algebraMap r`. Simplify using `only [AlgHom.commutes, Module.algebraMap_end_apply]`. Use `⟨hκ.const_mul (r : ℂ), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `g`. Conclude with `(IsExpLieAlgebra.integral_mul_const_mul μ Θ (fun y => (κ : G → ℂ) y⁻¹) (r : ℂ) g).symm`. Consider the case `ι x`. Establish `e : UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra (TensorAlgebra.ι ℝ x) = UniversalEnvelopingAlgebra.ι ℝ x` using `rfl`. Establish `e2 : (fun y => h.rightDeriv (h.ofLie x) (κ : G → ℂ) y⁻¹) = h.convDeriv (h.ofLie x) (fun y => (κ : G → ℂ) y⁻¹)`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Simplify using `[IsExpLieAlgebra.convDeriv]`. Simplify using `only [e, IsExpLieAlgebra.rightUAction_ι, IsExpLieAlgebra.coe_rightDerivEnd]`. Use `⟨e2 ▸ hκ.convDeriv _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.rightDeriv_integral_mul μ hΘ hκ, ← e2]`. Consider the case `mul a b ha hb`. Take `⟨hb1, hb2⟩` from `hb κ hκ`. Take `⟨ha1, ha2⟩` from `ha _ hb1`. Simplify using `only [map_mul, Module.End.mul_apply]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ha1, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha2]`. Use `congr 2`. Conclude with `Subtype.ext hb2`. Consider the case `add a b ha hb`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ha1, ha2⟩` from `ha κ hκ`. Take `⟨hb1, hb2⟩` from `hb κ hκ`. Simplify using `only [map_add, LinearMap.add_apply, Submodule.coe_add]`. Use `⟨ha1.add hb1, ?_⟩` and prove the remaining obligations. Rewrite using `[ha2, hb2]`.
-
-Use function extensionality and compare the values at `g`. Conclude with `(h.integral_mul_add μ hΘ ha1 hb1 g).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.rightAction_integral_derivative {Θ : G → ℂ} (hΘ : Continuous Θ)
     (u : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra) (κ : h.smoothFuns (F := ℂ))
@@ -77,7 +75,7 @@ private theorem UpperTheory.ConvolutionTheory.Tf.rightAction_integral_derivative
     exact (h.integral_mul_add μ hΘ ha1 hb1 g).symm
 
 /- English proof (translation)
-Rewrite using `[← integral_mul_left_eq_self (μ := μ) (fun a => κ (a⁻¹ * x) * Θ a) x]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `[mul_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.derivInt_shift (κ Θ : G → ℂ) (x : G) :
     ∫ a, κ (a⁻¹ * x) * Θ a ∂μ = ∫ y, Θ (x * y) * κ y⁻¹ ∂μ := by
@@ -89,9 +87,9 @@ private theorem UpperTheory.ConvolutionTheory.Tf.derivInt_shift (κ Θ : G → �
 end
 
 /- English proof (translation)
-Introduce `K _ _ n ν _ κ hκ hc Θ hΘ`. Establish `ht : (isExpLieAlgebra K n).IsTestFunction (fun y => κ y⁻¹)` using `⟨IsExpLieAlgebra.isSmoothFun_comp_inv hκ, hc.comp_homeomorph (Homeomorph.inv _)⟩`. Establish `e : (fun x => ∫ a, κ (a⁻¹ * x) * Θ a ∂ν) = fun x => ∫ y, Θ (x * y) * κ y⁻¹ ∂ν`. Use function extensionality and compare the values at `fun x => UpperTheory.ConvolutionTheory.Tf.derivInt_shift ν κ Θ x`. Establish `hs` using `(isExpLieAlgebra K n).isSmoothFun_integral_mul ν hΘ ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `⟨e ▸ hs, fun u x => ?_⟩` and prove the remaining obligations. Establish `key` using `(UpperTheory.ConvolutionTheory.Tf.rightAction_integral_derivative (isExpLieAlgebra K n) ν hΘ u ⟨κ, hκ⟩ ht).2`. Rewrite using `[UpperTheory.ConvolutionTheory.Tf.derivInt_shift ν _ Θ x, ← congrFun key x]`. Conclude with `congrArg (fun f => (((isExpLieAlgebra K n).rightUAction u f : (isExpLieAlgebra K n).smoothFuns (F := ℂ)) : archGroup K n → ℂ) x) (Subtype.ext e)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.derivInt :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (κ : archGroup K n → ℂ) (hκ : κ ∈ (isExpLieAlgebra K n).smoothFuns (F := ℂ)), HasCompactSupport κ →

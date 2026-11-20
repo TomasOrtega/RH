@@ -27,9 +27,9 @@ def idMap (τ : K ≃+* K') : (Ideal (𝓞 K))⁰ →* (Ideal (𝓞 K'))⁰ wher
   map_mul' I J := Subtype.ext (Ideal.map_mul _ _ _)
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[ClassGroup.mk0_eq_mk0_iff]`. Take `⟨x, y, hx, hy, h⟩` from `h`. Use `⟨RingOfIntegers.mapRingEquiv τ x, RingOfIntegers.mapRingEquiv τ y, by simpa using hx, by simpa using hy, ?_⟩` and prove the remaining obligations. Use `congrArg (Ideal.map (RingOfIntegers.mapRingEquiv τ)) h` as an intermediate fact. Rewrite `this` using `[Ideal.map_mul, Ideal.map_mul, Ideal.map_span, Ideal.map_span, Set.image_singleton, Set.image_singleton]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem mk0_idMap_congr (τ : K ≃+* K') {I J : (Ideal (𝓞 K))⁰} (h : ClassGroup.mk0 I = ClassGroup.mk0 J) :
     ClassGroup.mk0 (idMap τ I) = ClassGroup.mk0 (idMap τ J) := by
@@ -44,7 +44,7 @@ private def clFun (τ : K ≃+* K') (c : ClassGroup (𝓞 K)) : ClassGroup (𝓞
   ClassGroup.mk0 (idMap τ (ClassGroup.mk0_surjective c).choose)
 
 /- English proof (translation)
-The claim follows from `mk0_idMap_congr τ (ClassGroup.mk0_surjective _).choose_spec`.
+A detailed English derivation is pending.
 -/
 private theorem class_fun_mk0 (τ : K ≃+* K') (I : (Ideal (𝓞 K))⁰) :
     clFun τ (ClassGroup.mk0 I) = ClassGroup.mk0 (idMap τ I) :=
@@ -57,7 +57,7 @@ def clMap (τ : K ≃+* K') : ClassGroup (𝓞 K) →* ClassGroup (𝓞 K') :=
     rw [← map_mul, class_fun_mk0, class_fun_mk0, class_fun_mk0, map_mul, map_mul]
 
 /- English proof (translation)
-The claim follows from `class_fun_mk0 τ I`.
+A detailed English derivation is pending.
 -/
 theorem class_map_mk0 (τ : K ≃+* K') (I : (Ideal (𝓞 K))⁰) : clMap τ (ClassGroup.mk0 I) = ClassGroup.mk0 (idMap τ I) :=
   class_fun_mk0 τ I
@@ -74,18 +74,18 @@ def ClDual (N : ℕ) (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] : S
 def ordv (v : HeightOneSpectrum (𝓞 K)) (a : Kˣ) : ℤ := -Multiplicative.toAdd (v.valuationOfNeZero a)
 
 /- English proof (translation)
-Simplify using `[ordv, add_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ordv_mul (v : HeightOneSpectrum (𝓞 K)) (a b : Kˣ) : ordv v (a * b) = ordv v a + ordv v b := by
   simp [ordv, add_comm]
 
 /- English proof (translation)
-Simplify using `[ordv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ordv_one (v : HeightOneSpectrum (𝓞 K)) : ordv v (1 : Kˣ) = 0 := by simp [ordv]
 
 /- English proof (translation)
-Simplify using `[ordv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ordv_inv (v : HeightOneSpectrum (𝓞 K)) (a : Kˣ) : ordv v a⁻¹ = -ordv v a := by simp [ordv]
 

@@ -14,7 +14,7 @@ namespace GlobalTheory.FockDegreeGap
 variable {D : D7} {L : SizeData₂ D}
 
 /- English proof (translation)
-The claim follows from `|(∑ r ∈ Finset.range M, g r) - M * y| ≤ M * c := by have e : (∑ r ∈ Finset.range M, g r) - M * y = ∑ r ∈ Finset.range M, (g r - y) := by rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul] rw [e] refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ have := F …`.
+A detailed English derivation is pending.
 -/
 theorem abs_sum_range_sub (g : ℕ → ℝ) (M : ℕ) (y c : ℝ) (h : ∀ r < M, |g r - y| ≤ c) :
     |(∑ r ∈ Finset.range M, g r) - M * y| ≤ M * c := by
@@ -30,13 +30,13 @@ noncomputable def topWt (L : SizeData₂ D) (τ : D.what₂.Tau) : ℝ :=
   ∑ t : D.host.TT, if (D.eTau τ : D.R.GG) = D.R.tau1 t then (L.aT t : ℝ) else 0
 
 /- English proof (translation)
-The claim follows from `φ.iota_bijective.1 (congrArg Prod.snd h)`.
+A detailed English derivation is pending.
 -/
 theorem tau1_injective {φ : Formalism.HC.Frame} {t t' : φ.A} (h : φ.tau1 t = φ.tau1 t') : t = t' :=
   φ.iota_bijective.1 (congrArg Prod.snd h)
 
 /- English proof (translation)
-Unfold `topWt`. Rewrite using `[Finset.sum_eq_single t, if_pos h]`. Introduce `s _ hs`. Conclude with `if_neg fun h' => hs (Subtype.ext (tau1_injective (h'.symm.trans h)))`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem topWt_top (L : SizeData₂ D) {τ : D.what₂.Tau} {t : D.host.TT}
     (h : (D.eTau τ : D.R.GG) = D.R.tau1 t) : topWt L τ = L.aT t := by
@@ -47,7 +47,7 @@ theorem topWt_top (L : SizeData₂ D) {τ : D.what₂.Tau} {t : D.host.TT}
   · simp
 
 /- English proof (translation)
-Unfold `topWt`. Use `Finset.sum_eq_zero fun t _ => if_neg fun h' => h ?_` and prove the remaining obligations. Unfold `Host.topPlaces`. Conclude with `Finset.mem_image.2 ⟨t, t.2, h'.symm⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem topWt_off (L : SizeData₂ D) {τ : D.what₂.Tau}
     (h : (D.eTau τ : D.R.GG) ∉ D.host.topPlaces) : topWt L τ = 0 := by
@@ -57,9 +57,9 @@ theorem topWt_off (L : SizeData₂ D) {τ : D.what₂.Tau}
   exact Finset.mem_image.2 ⟨t, t.2, h'.symm⟩
 
 /- English proof (translation)
-Unfold `topWt`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (D.eTau.symm ⟨D.R.tau1 t, (Formalism.HC.Frame.mem_Psi_iff _).2 rfl⟩)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `τ _ hτ`. Use `if_neg fun h' => hτ ?_` and prove the remaining obligations. Rewrite using `[Equiv.eq_symm_apply]`. Conclude with `Subtype.ext h'`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_topWt (L : SizeData₂ D) : ∑ τ, topWt L τ = ∑ t : D.host.TT, (L.aT t : ℝ) := by
   unfold topWt
@@ -74,7 +74,7 @@ theorem sum_topWt (L : SizeData₂ D) : ∑ τ, topWt L τ = ∑ t : D.host.TT, 
   · simp
 
 /- English proof (translation)
-Unfold `wj`. Rewrite using `[dif_pos (by simpa using hi)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem wj_succ (D : D7) (i : ℕ) (hi : i < D.R.m) (τ : D.what₂.Tau) :
     wj D (i + 1) τ = (((D.hc τ).e ⟨i, hi⟩ : ℚ) : ℝ) := by
@@ -83,11 +83,11 @@ theorem wj_succ (D : D7) (i : ℕ) (hi : i < D.R.m) (τ : D.what₂.Tau) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[RowWeightLemmas.nuRow_head D u i hi τ r hr, wj_succ D i hi, D.hcW_e]`. Establish `h1 : r ≤ D.R.N i` using `by unfold Ranks.N; omega`. Establish `h2 : D.R.N i + D.R.t ≤ D.R.N D.R.m`. Unfold `Ranks.N`. Use `Nat.mul_le_mul_right (D.R.t + 1) (show i + 1 ≤ D.R.m from hi)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite `this` using `[Nat.add_mul]`. Use linear arithmetic over natural numbers and integers. Establish `h1' : (r : ℝ) ≤ D.R.N i` using `by exact_mod_cast h1`. Establish `h2' : (D.R.N i : ℝ) + D.R.t ≤ D.R.N D.R.m` using `by exact_mod_cast h2`. Establish `h3 : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (0 : ℝ) ≤ r` using `Nat.cast_nonneg _`. Use `push_cast`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem head_row (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) (τ : D.what₂.Tau) (r : ℕ) (hr : r < D.R.k) :
     nuRow D u (i + 1) τ r ≤ (((D.hcW u τ).u ⟨r, hr⟩ : ℚ) : ℝ) + wj D (i + 1) τ ∧
@@ -107,9 +107,9 @@ theorem head_row (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) (τ : D.what₂
   constructor <;> linarith
 
 /- English proof (translation)
-Establish `h0` using `RowWeightLemmas.nuRow_pos D u i hi τ r hr`. Rewrite using `[sub_zero, abs_of_pos h0]`. Take `⟨q, s, hq, hs, rfl⟩` from `RowWeightLemmas.block_decomp D.R i r hk hr`. Rewrite using `[RowWeightLemmas.nuRow_block D u i hi τ q s hq hs, D.hcW_e]`. Establish `a1` using `abs_le.1 (L.be_close τ ⟨i, hi⟩ ⟨i, hi⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2` using `abs_le.1 (L.be_close τ ⟨i, hi⟩ ⟨q, by omega⟩)`. Establish `a3 : (q : ℝ) ≤ i` using `by exact_mod_cast hq.le`. Establish `a4 : (0 : ℝ) ≤ ((i : ℝ) - q) * ((D.R.t : ℝ) + 1)` using `mul_nonneg (by linarith) (by positivity)`. Move the coercions through the operations in `at a1 a2 ⊢`. Combine the linear relations using `[a1.1, a2.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem block_row (L : SizeData₂ D) (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) (τ : D.what₂.Tau) (r : ℕ)
     (hk : D.R.k ≤ r) (hr : r < D.R.N i) : |nuRow D u (i + 1) τ r - 0| ≤ 2 * L.etaSz := by
@@ -125,7 +125,7 @@ theorem block_row (L : SizeData₂ D) (u : D.what₂.Word) (i : ℕ) (hi : i < D
   linarith [a1.1, a2.2]
 
 /- English proof (translation)
-The claim follows from `|nuAbs D u (i + 1) τ - topWt L τ - ((D.R.k : ℝ) - 2) * wj D (i + 1) τ| ≤ 2 * wj D (i + 1) τ + 3 * D.R.k * (L.Sc + D.R.N D.R.m) + D.R.m * ((D.R.t : ℝ) + 1) * (2 * L.etaSz) := by obtain ⟨n, hn⟩ : ∃ n, D.R.k = n + 2 := ⟨D.R.k - 2, by have := D.R.m_add_three_le_k; omega⟩ have hn3 : 3 …`.
+A detailed English derivation is pending.
 -/
 theorem nuAbs_place (P : ParameterChoice' D L) (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) (τ : D.what₂.Tau)
     (hw : 0 ≤ wj D (i + 1) τ) :
@@ -182,7 +182,7 @@ theorem nuAbs_place (P : ParameterChoice' D L) (u : D.what₂.Word) (i : ℕ) (h
   constructor <;> nlinarith [s1.1, s1.2, s2.1, s2.2, s7.1, s7.2]
 
 /- English proof (translation)
-Unfold `eQ`. Rewrite using `[dif_pos ⟨by omega, hi⟩]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eQ_succ (D : D7) (i : ℕ) (hi : i < D.R.m) (τ : D.what₂.Tau) : eQ D (i + 1) τ = (D.hc τ).e ⟨i, hi⟩ := by
   unfold eQ
@@ -190,9 +190,9 @@ theorem eQ_succ (D : D7) (i : ℕ) (hi : i < D.R.m) (τ : D.what₂.Tau) : eQ D 
   rfl
 
 /- English proof (translation)
-Establish `h1 : D.R.k + D.R.m ≤ D.R.N D.R.m`. Unfold `Ranks.N`. Establish `: D.R.m ≤ D.R.m * (D.R.t + 1)` using `Nat.le_mul_of_pos_right _ (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `h2 : D.R.t + 1 ≤ D.R.N D.R.m`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Unfold `Ranks.N`. Establish `: D.R.t + 1 ≤ D.R.m * (D.R.t + 1)` using `Nat.le_mul_of_pos_left _ (by have := D.R.two_le_m; omega)`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨by exact_mod_cast h1, by exact_mod_cast h2⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components.
 -/
 theorem ranks_le (D : D7) : (D.R.k : ℝ) + D.R.m ≤ D.R.N D.R.m ∧ (D.R.t : ℝ) + 1 ≤ D.R.N D.R.m := by
   have h1 : D.R.k + D.R.m ≤ D.R.N D.R.m := by
@@ -206,7 +206,7 @@ theorem ranks_le (D : D7) : (D.R.k : ℝ) + D.R.m ≤ D.R.N D.R.m ∧ (D.R.t : �
   exact ⟨by exact_mod_cast h1, by exact_mod_cast h2⟩
 
 /- English proof (translation)
-The claim follows from `|((((∑ a, |D.what₂.kaBig (i + 1) τ a|) + ∑ a, |D.what₂.kaSmall (i + 1) τ a| : ℤ)) : ℝ) - ((D.R.k : ℝ) - 1) * wj D (i + 1) τ| ≤ D.R.k * (L.Sc + 2 * D.R.N D.R.m) + 2 * D.R.m * (L.etaSz + 2 * D.R.N D.R.m) := by obtain ⟨k1, k2⟩ := hK (i + 1) (by omega) hi τ obtain ⟨n, hn⟩ : ∃ n, D.R. …`.
+A detailed English derivation is pending.
 -/
 theorem letters_place (L : SizeData₂ D) (hK : KapDef D) (i : ℕ) (hi : i < D.R.m) (τ : D.what₂.Tau)
     (hw : 0 ≤ wj D (i + 1) τ) :
@@ -289,11 +289,11 @@ theorem letters_place (L : SizeData₂ D) (hK : KapDef D) (i : ℕ) (hi : i < D.
   constructor <;> nlinarith [s1.1, s1.2, s2.1, s2.2, s3.1, s3.2]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, hE, -, hS, -⟩` from `h`. Establish `hb'` using `GlobalTheory.HCEntries.b'_pos L`. Establish `hbb : L.sc.b' ≤ L.sc.b` using `by linarith [GlobalTheory.HCEntries.b'_Sc_le hS, L.Sc_pos]`. Establish `a6 : L.sc.w'' D.R.n ≤ L.sc.b'` using `div_le_self hb'.le (one_le_mul_of_one_le_of_one_le L.sc.one_lt_alt.le (GlobalTheory.HCEntries.one_le_n D))`. Use `⟨by linarith [P.kS_le], by linarith [P.mteta], ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he` using `(GlobalTheory.HCEntries.eta_k_le hE).1`. Establish `h1` using `P.h0_ge.2.2.2.2.1`. Establish `hm : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (by have := D.R.two_le_m; omega : 1 ≤ D.R.m)`. Establish `h2 : LevelStarExponents.h0 L ≤ L.etaSz` using `div_le_self L.etaSz_pos.le hm`. Take `⟨r1, r2⟩` from `ranks_le D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `hN : (1 : ℝ) ≤ D.R.N D.R.m` using `by linarith`. Establish `h3 : (D.R.k : ℝ) * D.R.N D.R.m ≤ (D.R.N D.R.m : ℝ) ^ 2` using `by nlinarith`. Establish `h4 : (D.R.N D.R.m : ℝ) ^ 2 ≤ (D.R.N D.R.m : ℝ) ^ 3` using `pow_le_pow_right₀ hN (by norm_num)`. Establish `h5 : (0 : ℝ) ≤ (D.R.N D.R.m : ℝ) ^ 3` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

@@ -14,13 +14,13 @@ open GlobalTheory.RealLift GlobalTheory.RealLift.Main Formalism.BasicNotions.TH 
 open scoped Classical
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hl`. Take `⟨μ, hμ, hmap⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hl inferInstance`. Establish `hg : ∀ j, μ (g j) = 0` using `fun j => by`. Establish `: μ (g j) ∈ (Submodule.span ℂ (Set.range g)).map μ` using `⟨g j, Submodule.subset_span ⟨j, rfl⟩, rfl⟩`. Rewrite `this` using `[hmap]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hfun : ∀ x, ∑ l, u l x • G l = ∑ j, h j x • g j` using `fun x => by`. Use function extensionality and compare the values at `y`. Take `⟨y', rfl, hG, hg'⟩` from `hsplit x y`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [← hG, ← hg']`. Conclude with `hsum y'`. Establish `hzero : ∑ l, μ (G l) • u l = 0`. Use function extensionality and compare the values at `x`. Use `congrArg μ (hfun x)` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [map_sum, map_smul, smul_eq_mul, hg, mul_zero, Finset.sum_const_zero] at this`. Simplify `this` using `[Finset.sum_apply, mul_comm]`. Conclude with `hμ (Fintype.linearIndependent_iff.1 hu _ hzero l)`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_of_sum_eq {X Y : Type} {m k : ℕ} (u : Fin m → X → ℂ) (hu : LinearIndependent ℂ u)
     (G : Fin m → Y → ℂ) (h : Fin k → X → ℂ) (g : Fin k → Y → ℂ) (π : Y → X)
@@ -47,7 +47,7 @@ theorem mem_span_of_sum_eq {X Y : Type} {m k : ℕ} (u : Fin m → X → ℂ) (h
   exact hμ (Fintype.linearIndependent_iff.1 hu _ hzero l)
 
 /- English proof (translation)
-Establish `hl : (LinearMap.proj x : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ` using `fun g' _ => ⟨g' (fun i => (x i).2) • ((BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)), fun f' => by`. Simplify using `[pureA, mul_comm]⟩`. Conclude with `h g hg _ hl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_pureA {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     {T : ℝ → ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {f f₁ : SInf F κ} (h : SD T f f₁)
@@ -61,7 +61,7 @@ theorem hasDerivAt_pureA {F : Type} [Field F] [NumberField F] {κ : Type} [Finty
   exact h g hg _ hl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_smul {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (c : ℂ) (f : SInf F κ)
     (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) : c • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c • f) φ := by
@@ -71,15 +71,15 @@ theorem pure_smul {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨hb, hg, hc, hw, hw'⟩` from `hT`. Use `choose A' hA' hAθ' using fun w => i_frameex _ _ _ _ _ (hg.hV'.sig w) (hg.hV'.cartan w)`. Use `choose C hC hCθ using fun w => i_frameex _ _ _ _ _ (hg.hW.sig w) (hg.hW.cartan w)`. Establish `hA1' : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V'.J).map (piInf (B.emb w))) (A' w)` using `fun w => by`. Rewrite using `[incM_map_piInf, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA' w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F G.W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[incM_map_piInf]`. Conclude with `hC w`. Establish `fr' : Framed B.emb (incM F G.V'.J) (incM F G.W.J) 1 Complex.I A' C` using `⟨one_mul _, hA1', hC1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hvl` using `i_vacline i_derex`. Establish `hfe` using `i_fockex i_derex`. Establish `hsec` using `i_liesecond hP i_derex hfe hvl (i_liescalar hP i_derex hvl)`. Take `⟨Φ', hΦ'⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M'.co 1 Complex.I A' C hb.cm hb.std fr'`. Establish `hr'` using `i_polrange i_actslaws i_derex hvl F E σ _ _ _ _ _ _ G.V' G.W G.M' B.ψ B.emb A' C Φ' hb.cm hb.std fr' hAθ' hCθ hΦ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hwp' : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V'.J) (incM F G.W.J) G.M'.co X.α (X.α / X.β) om'` using `hw'`. Establish `hW2'` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M'.co 1 Complex.I A' C Φ' _ X.α B.mα hb.cm hb.std fr' hΦ' hwp'.1 hc.expα`. Take `⟨Yg, -, hY⟩` from `i_genex F E σ (Fin (a + a')) _ _ B.emb (incM F G.W.J) Complex.I C hb.cm hC1 γ hγ`. Take `⟨Ψ', hΨ'⟩` from `LinearMap.exists_leftInverse_of_injective Φ' (LinearMap.ker_eq_bot.2 hΦ'.1)`. Use `⟨Φ' ∘ₗ sumPl (fun w => fockAct2 _ _ _ _ (Yg w) + (((B.mα w : ℂ) / 2) * (Yg w).trace) • 1) ∘ₗ Ψ', fun f hf => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Take `⟨T, rfl⟩` from `pol_eq B G.M' Φ' hr' hf`. Establish `e : Ψ' (Φ' T) = T` using `by rw [← LinearMap.comp_apply, hΨ', LinearMap.id_apply]`. Simplify using `only [LinearMap.comp_apply, e]`. Conclude with `⟨hr' ▸ LinearMap.mem_range_self _ _, hW2' γ hγ Yg hY T⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_der (hP : GlobalTheory.FunPr.Hypotheses₂) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') (γ : Multiplicative ℝ →* UA σ G.W.J)
@@ -119,37 +119,33 @@ open GlobalTheory.RealLift GlobalTheory.RealLift.Main Formalism.BasicNotions.TH 
 open scoped Classical
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hm γ hγ Φ hΦ`. Establish `hM'` using `hm.triple.geo.hM'`. Take `⟨D, hD⟩` from `exists_der hK.base hm.triple γ hγ`. Take `⟨n, c, g, hgΦ⟩` from `Submodule.mem_span_set'.1 hΦ.1`. Use `choose f hf φ hφ hφv hgf using fun i => (g i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf' : ∀ i, c i • f i ∈ G.M'.Pol B.ψ B.emb` using `fun i => Submodule.smul_mem _ _ (hf i)`. Establish `hΦe : Φ = ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c i • f i) (φ i)`. Rewrite using `[← hgΦ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hgf i, pure_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, c', g', hg'Φ⟩` from `Submodule.mem_span_set'.1 hΦ.2`. Use `choose h φ' hφ' hφ'v hφ'1 hg'h using fun j => (g' j).2`. Establish `hΦe' : Φ = ∑ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c' j • h j) (φ' j)`. Rewrite using `[← hg'Φ]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg'h j, pure_smul]`. Use `⟨∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (D (c i • f i)) (φ i), ⟨?_, ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨D (c i • f i), (hD _ (hf' i)).1, φ i, hφ i, hφv i, rfl⟩`. Set `Wsp` to `Submodule.span ℂ (Set.range fun i => c i • f i) haveI : FiniteDimensional ℂ Wsp := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Set `b` to `Module.finBasis ℂ Wsp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `coeL : SInf F (Fin a' × Fin (a + a')) →ₗ[ℂ] ((Fin a' × Fin (a + a') → mixedEmbedding.mixedSpace F) → ℂ)` to `{ toFun := fun s => ⇑s, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `coeL_inj : Function.Injective coeL` using `fun s s' e => DFunLike.coe_injective e`. Set `aC : Fin n → Fin (Module.finrank ℂ Wsp) → ℂ` to `fun i l => b.repr ⟨c i • f i, Submodule.subset_span ⟨i, rfl⟩⟩ l`. Establish `hexp : ∀ i, c i • f i = ∑ l, aC i l • (b l : SInf F (Fin a' × Fin (a + a')))` using `fun i => by`. Establish `e` using `congrArg Wsp.subtype (b.sum_repr ⟨c i • f i, Submodule.subset_span ⟨i, rfl⟩⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `only [map_sum, map_smul, Submodule.subtype_apply] at e`. Conclude with `e.symm`. Set `π : (Fin a' × Fin (a + a') → AF F) → (Fin a' × Fin (a + a') → mixedEmbedding.mixedSpace F)` to `fun y i => evI F (y i)`. Set `r : Fin n → (Fin a' × Fin (a + a') → AF F) → ℂ` to `fun i y => ∏ᶠ v, φ i v fun j => evFin F v (y j)`. Set `r' : Fin k → (Fin a' × Fin (a + a') → AF F) → ℂ` to `fun j y => ∏ᶠ v, φ' j v fun i => evFin F v (y i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Gf : Fin (Module.finrank ℂ Wsp) → (Fin a' × Fin (a + a') → AF F) → ℂ` to `fun l y => ∑ i, aC i l * r i y`. Establish `hpure : ∀ (s : SInf F (Fin a' × Fin (a + a'))) i y, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure s (φ i) y = s (π y) * r i y` using `fun _ _ _ => rfl`. Establish `hpure' : ∀ (s : SInf F (Fin a' × Fin (a + a'))) j y, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure s (φ' j) y = s (π y) * r' j y` using `fun _ _ _ => rfl`. Establish `hev : ∀ (s : Fin (Module.finrank ℂ Wsp) → SInf F (Fin a' × Fin (a + a'))) (cs : Fin (Module.finrank ℂ Wsp) → ℂ) z, (∑ l, cs l • s l) z = ∑ l, cs l * s l z`. Introduce `s cs z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun (map_sum coeL (fun l => cs l • s l) Finset.univ) z` as an intermediate fact. Simplify `this` using `[coeL, Finset.sum_apply]`. Establish `key : ∀ L' : SInf F (Fin a' × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a' × Fin (a + a')), ∀ y, ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (L' (c i • f i)) (φ i) y = ∑ l, L' (b l) (π y) * Gf l y`. Introduce `L' y`. Simplify using `only [hpure, hexp, map_sum, map_smul, hev, Gf, Finset.mul_sum, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => by ring`. Establish `hu : LinearIndependent ℂ (fun l => ((b l : SInf F (Fin a' × Fin (a + a'))) : (Fin a' × Fin (a + a') → mixedEmbedding.mixedSpace F) → ℂ))` using `b.linearIndependent.map' (coeL ∘ₗ Wsp.subtype) (LinearMap.ker_eq_bot.2 (coeL_inj.comp Subtype.val_injective))`. Establish `hsplit : ∀ x y, ∃ y', π y' = x ∧ (∀ l, Gf l y' = Gf l y) ∧ ∀ j, r' j y' = r' j y`. Introduce `x y`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i), (y i).2), ?_, fun l => rfl, fun j => rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (x i)`. Establish `hsum : ∀ y, ∑ l, (b l : SInf F (Fin a' × Fin (a + a'))) (π y) * Gf l y = ∑ j, (c' j • h j) (π y) * r' j y`. Introduce `y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `key LinearMap.id y`. Simplify using `only [LinearMap.id_apply] at e1`. Establish `e2 : Φ y = ∑ l, (b l : SInf F (Fin a' × Fin (a + a'))) (π y) * Gf l y`. Rewrite using `[hΦe, Finset.sum_apply]`. Conclude with `e1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e3 : Φ y = ∑ j, (c' j • h j) (π y) * r' j y`. Rewrite using `[hΦe', Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[← e2, e3]`. Establish `hsep` using `mem_span_of_sum_eq _ hu Gf (fun j => ⇑(c' j • h j)) r' π hsplit hsum`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΦ1 : (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (D (c i • f i)) (φ i)) = ∑ l, (fun y => D (b l) (π y) * Gf l y)`. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, key D y]`. Rewrite using `[hΦ1]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `Ms : ((Fin a' × Fin (a + a') → AF F) → ℂ) →ₗ[ℂ] ((Fin a' × Fin (a + a') → AF F) → ℂ)` to `{ toFun := fun Gx y => D (b l) (π y) * Gx y map_add' := fun _ _ => by funext y; simp [mul_add] map_smul' := fun _ _ => by funext y; simp; ring }`. Establish `hle : Submodule.span ℂ (Set.range r') ≤ (G.M'.So B.ψ B.τ₁).comap Ms` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `Submodule.subset_span ⟨D (b l), φ' j, hφ' j, hφ'v j, hφ'1 j, rfl⟩)`. Conclude with `hle (hsep l)`.
-
-Establish `e : (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) Φ x) = fun t => ∑ i, om' (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c i • f i) (φ i)) x`. Use function extensionality and compare the values at `t`. Rewrite using `[hΦe, map_sum, Finset.sum_apply]`. Rewrite using `[e, Finset.sum_apply]`. Use `HasDerivAt.fun_sum fun i _ => ?_` and prove the remaining obligations.
-
-Establish `hsb` using `GlobalTheory.BigNZ.Fam.sb hM' (And.intro (hφ i) (hφv i))`. Conclude with `hasDerivAt_pureA (T := fun t => om' (1, γ (Multiplicative.ofAdd t))) (hD _ (hf' i)).2 hsb x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lieClosed : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines σ G.W, ∀ Φ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∃ Φ₁ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ x, HasDerivAt (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) Φ x) (Φ₁ x) 0 := by
   intro hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hm γ hγ Φ hΦ

@@ -15,7 +15,7 @@ def XgESet (σ : K →+* ℂ) (e : MonoidAlgebra ℂ G) : Set (G → K) :=
   {χ | IsAbsIrrChar χ ∧ ∑ g : G, e.coeff g * σ (χ g) = σ (χ 1)}
 
 /- English proof (translation)
-The claim follows from `(absIrrChar_finite (G := G) (K := K)).subset fun _ h => h.1`.
+A detailed English derivation is pending.
 -/
 theorem XgESet_finite (σ : K →+* ℂ) (e : MonoidAlgebra ℂ G) : (XgESet σ e).Finite :=
   (absIrrChar_finite (G := G) (K := K)).subset fun _ h => h.1
@@ -23,14 +23,14 @@ theorem XgESet_finite (σ : K →+* ℂ) (e : MonoidAlgebra ℂ G) : (XgESet σ 
 def XgE (σ : K →+* ℂ) (e : MonoidAlgebra ℂ G) : Finset (G → K) := (XgESet_finite σ e).toFinset
 
 /- English proof (translation)
-The claim follows from `Set.Finite.mem_toFinset _`.
+A detailed English derivation is pending.
 -/
 theorem mem_XgE {σ : K →+* ℂ} {e : MonoidAlgebra ℂ G} {χ : G → K} :
     χ ∈ XgE σ e ↔ IsAbsIrrChar χ ∧ ∑ g : G, e.coeff g * σ (χ g) = σ (χ 1) :=
   Set.Finite.mem_toFinset _
 
 /- English proof (translation)
-Introduce `_ h` and use `(mem_XgE.1 h).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem XgE_irr {σ : K →+* ℂ} {e : MonoidAlgebra ℂ G} : ∀ χ ∈ XgE σ e, IsAbsIrrChar χ :=
   fun _ h => (mem_XgE.1 h).1

@@ -12,9 +12,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.FlagMod.LowRank (ECh Proj str)
 
 /- English proof (translation)
-Set `e` to `IsOpenImmersion.isoOfRangeEq (isAffineOpen_opensRange κ).fromSpec κ (isAffineOpen_opensRange κ).range_fromSpec`. Set `e' : CommRingCat.of A ≅ Γ(Z, κ.opensRange)` to `(Scheme.Spec.preimageIso (X := .op _) (Y := .op _) e).unop`. Use `⟨e'.commRingCatIsoToRingEquiv, ?_⟩` and prove the remaining obligations. Establish `: spMap e'.commRingCatIsoToRingEquiv.toRingHom = e.hom` using `Scheme.Spec.map_preimage e.hom`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_ringEquiv {A : Type} [CommRing A] {Z : Scheme.{0}} (κ : Sp A ⟶ Z) [IsOpenImmersion κ] :
     ∃ θ : A ≃+* Γ(Z, κ.opensRange), spMap θ.toRingHom ≫ κ = (isAffineOpen_opensRange κ).fromSpec := by
@@ -74,9 +74,9 @@ def cellMat (U : Y.X.affineOpens) (σ : E →+* ℂ) : Matrix (Fin (Dw.mult σ))
   Matrix.of (cell MvPolynomial.X σ)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `[cellMat, cell]`. Introduce `i j hij`. Establish `h1 : ¬ j < i` using `not_lt.2 (le_of_lt hij)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : i ≠ j` using `ne_of_lt hij`. Simplify using `[cellMat, cell, h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem det_cellMat (U : Y.X.affineOpens) (σ : E →+* ℂ) : (cellMat (Dw := Dw) U σ).det = 1 := by
   rw [Matrix.det_of_lowerTriangular]
@@ -104,9 +104,9 @@ def wC (b : A.B) (w : Pm Dw.mult) (σ : E →+* ℂ) :
   (cellMat (A.V b) σ)⁻¹ * (((A.k b).w σ).map (cC A b)).submatrix (w σ) id
 
 /- English proof (translation)
-Establish `h1 : (((A.k b).w σ).map (cC A b)).submatrix (w σ) id * (((A.k b).u σ).map (cC A b)).submatrix id (w σ) = 1`. Rewrite using `[← Matrix.submatrix_mul _ _ _ id _ Function.bijective_id, ← Matrix.map_mul, (A.k b).wu, Matrix.map_one _ (map_zero _) (map_one _), Matrix.submatrix_one_equiv]`. Establish `h2 : IsUnit (cellMat (Dw` using `Dw) (A.V b) σ).det := by rw [det_cellMat]; exact isUnit_one`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [wC, uC, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = 1 := by rw [h1, Matrix.mul_one, Matrix.nonsing_inv_mul _ h2]`.
+A detailed English derivation is pending.
 -/
 theorem wC_mul_uC (b : A.B) (w : Pm Dw.mult) (σ : E →+* ℂ) : wC A b w σ * uC A b w σ = 1 := by
   have h1 : (((A.k b).w σ).map (cC A b)).submatrix (w σ) id * (((A.k b).u σ).map (cC A b)).submatrix id (w σ) = 1 := by
@@ -128,7 +128,7 @@ def cellθ (k : A.B × Pm Dw.mult) : CR Dw.mult (A.V k.1) ≃+* Γ(Z, (κ k.1 k.
   (exists_ringEquiv (κ k.1 k.2)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_ringEquiv (κ k.1 k.2)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem spMap_cellθ (k : A.B × Pm Dw.mult) :
     spMap (cellθ κ k).toRingHom ≫ κ k.1 k.2 = (isAffineOpen_opensRange (κ k.1 k.2)).fromSpec :=
@@ -136,9 +136,7 @@ theorem spMap_cellθ (k : A.B × Pm Dw.mult) :
 
 include hZ in
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Establish `e : κ k.1 k.2 ≫ π = cbase Dw.mult (A.V k.1)` using `hZ.plk.base _ _`. Establish `h : (κ k.1 k.2 ≫ π) y ∈ ((A.V k.1).1 : Set Y.X)`. Rewrite using `[e, cbase, Scheme.Hom.comp_apply]`. Conclude with `(A.V k.1).2.range_fromSpec.le ⟨_, rfl⟩`.
-
-Conclude with `(A.k k.1).le (by rw [Scheme.Hom.comp_apply] at h; exact h)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_le (k : A.B × Pm Dw.mult) : (κ k.1 k.2).opensRange ≤ π ⁻¹ᵁ (A.k k.1).M.U := by
   rintro _ ⟨y, rfl⟩

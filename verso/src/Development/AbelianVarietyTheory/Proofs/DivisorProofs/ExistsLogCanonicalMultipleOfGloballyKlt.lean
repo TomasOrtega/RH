@@ -22,7 +22,7 @@ variable {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {
   {Δ : X → ℚ} {η : RatForms p n} {x y : X} {m : ℕ} {g h : X.functionFieldˣ}
 
 /- English proof (translation)
-Take `⟨N, i, hi, rfl⟩` from `hf`. Use `isProper_str R N` as an intermediate fact. Establish `: IsProper (i ≫ PSpace.str R N)` using `inferInstance`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str R N)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compactSpace_of_isProjOver' {R : Type} [CommRing R] {Y : Scheme.{0}} {f : Y ⟶ Sp R}
     (hf : IsProjOver f) : CompactSpace Y := by
@@ -32,14 +32,14 @@ theorem compactSpace_of_isProjOver' {R : Type} [CommRing R] {Y : Scheme.{0}} {f 
   exact QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str R N)
 
 /- English proof (translation)
-The claim follows from `(unitAt_iff hf.ne_zero).2 ⟨regAt_of_specializes hz hf.regAt, regAt_of_specializes hz hf.inv.regAt⟩`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_of_specializes' {z : X} {f : X.functionField} (hz : z ⤳ y) (hf : UnitAt y f) :
     UnitAt z f :=
   (unitAt_iff hf.ne_zero).2 ⟨regAt_of_specializes hz hf.regAt, regAt_of_specializes hz hf.inv.regAt⟩
 
 /- English proof (translation)
-Establish `h1` using `(E.ord_nonneg_iff u).2 ((hE _).2 hu.regAt)`. Establish `h2` using `(E.ord_nonneg_iff u⁻¹).2 ((hE _).2 (by rw [Units.val_inv_eq_inv_val]; exact hu.inv.regAt))`. Rewrite `h2` using `[E.ord_inv]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_eq_zero_of_unitAt' {E : DivOver p} {z : X} (hE : E.IsAt z) {u : X.functionFieldˣ}
     (hu : UnitAt z (u : X.functionField)) : E.ord u = 0 := by
@@ -49,7 +49,7 @@ theorem ord_eq_zero_of_unitAt' {E : DivOver p} {z : X} (hE : E.IsAt z) {u : X.fu
   omega
 
 /- English proof (translation)
-Introduce `z hz E hE`. Rewrite using `[E.ord_pow]`. Use `push_cast`. Rewrite using `[← hg z hz E hE]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isLogEqn_pow' (hg : IsLogEqn p Δ η x m g) (r : ℕ) : IsLogEqn p Δ η x (m * r) (g ^ r) := by
   intro z hz E hE
@@ -59,9 +59,9 @@ theorem isLogEqn_pow' (hg : IsLogEqn p Δ η x m g) (r : ℕ) : IsLogEqn p Δ η
   ring
 
 /- English proof (translation)
-Introduce `z hz E hE`. Establish `h0 : E.ord (h * g⁻¹) = 0` using `ord_eq_zero_of_unitAt' hE (by`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, ← div_eq_mul_inv]`. Conclude with `unitAt_of_specializes' hz hu)`. Establish `e : E.ord h = E.ord g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `E.ord_mul (h * g⁻¹) g` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right, h0, zero_add]`. Then use the resulting hypothesis. Rewrite using `[hg z hz E hE, e]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLogEqn_of_unitAt' (hg : IsLogEqn p Δ η y m g)
     (hu : UnitAt y ((h : X.functionField) / g)) : IsLogEqn p Δ η y m h := by
@@ -75,13 +75,13 @@ theorem isLogEqn_of_unitAt' (hg : IsLogEqn p Δ η y m g)
   rw [hg z hz E hE, e]
 
 /- English proof (translation)
-Establish `h0 : ∀ z, z ⤳ y → ∀ F : DivOver p, F.IsAt z → F.ord (h * g⁻¹) = 0`. Introduce `z hz F hF`. Establish `a` using `hg z hz F hF`. Establish `b` using `hh z hz F hF`. Rewrite using `[F.ord_mul, F.ord_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (F.ord g : ℚ) = F.ord h` using `a.symm.trans b`. Establish `: F.ord g = F.ord h` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers. Establish `reg : ∀ v : X.functionFieldˣ, (∀ z, z ⤳ y → ∀ F : DivOver p, F.IsAt z → F.ord v = 0) → RegAt y (v : X.functionField)` using `fun v hv => regAt_of_forall_coheight_eq_one fun z hz h1 =>`. Establish `⟨F, hF⟩` using `DivOver.exists_isAt_of_coheight_eq_one (p := p) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(hF _).1 ((F.ord_nonneg_iff v).1 (hv z hz F hF).ge)`. Establish `hne : (h : X.functionField) / g ≠ 0` using `div_ne_zero h.ne_zero g.ne_zero`. Establish `e1 : ((h * g⁻¹ : X.functionFieldˣ) : X.functionField) = h / g`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, div_eq_mul_inv]`. Establish `e2 : (((h * g⁻¹)⁻¹ : X.functionFieldˣ) : X.functionField) = ((h : X.functionField) / g)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_inv_eq_inv_val, e1]`. Use `(unitAt_iff hne).2 ⟨e1 ▸ reg _ h0, e2 ▸ reg _ fun z hz F hF => ?_⟩` and prove the remaining obligations. Rewrite using `[F.ord_inv, h0 z hz F hF, neg_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_of_isLogEqn' [LocallyOfFiniteType p] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (hg : IsLogEqn p Δ η y m g) (hh : IsLogEqn p Δ η y m h) :
@@ -108,11 +108,11 @@ theorem unitAt_of_isLogEqn' [LocallyOfFiniteType p] [IsLocallyNoetherian X] [Glo
   rw [F.ord_inv, h0 z hz F hF, neg_zero]
 
 /- English proof (translation)
-Distinguish the cases in `hE : Nonempty (DivOver p)`. Take `⟨E⟩` from `hE`. Take `⟨ω, hω, f₀, e₀, -⟩` from `E.isFormOrd_formOrd hn hη₀`. Take `⟨f, e⟩` from `(E.isFreeGen_toRat hω).2 η`. Establish `hf : f ≠ 0` using `fun h0 => hη (by rw [← e, h0]; exact zero_smul _ _)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩ : ∃ c : X.functionFieldˣ, η = (c : X.functionField) • η₀` from `⟨Units.mk0 f hf * f₀⁻¹, by rw [e₀, smul_smul, ← e]; simp⟩`. Use `⟨g * (c ^ m)⁻¹, fun z hz F hF => ?_⟩` and prove the remaining obligations. Establish `a` using `hg z hz F hF`. Rewrite `a` using `[hc, F.formOrd_smul hn hη₀]`. Rewrite using `[F.ord_mul, F.ord_inv, F.ord_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at a ⊢`. Take the linear combination `a`. Conclude with `⟨1, fun z _ F _ => (hE ⟨F⟩).elim⟩`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components.
 -/
 theorem exists_isLogEqn_of_form' [PerfectField k] [LocallyOfFiniteType p]
     (hn : topologicalKrullDim X = n) {η₀ : RatForms p n} (hη₀ : η₀ ≠ 0) (hη : η ≠ 0)
@@ -133,17 +133,15 @@ theorem exists_isLogEqn_of_form' [PerfectField k] [LocallyOfFiniteType p]
   · exact ⟨1, fun z _ F _ => (hE ⟨F⟩).elim⟩
 
 /- English proof (translation)
-Use `set B : Set X := {z | ∃ E : DivOver p, E.IsAt z ∧ (m : ℚ) * (E.formOrd η + Δ z) ≠ E.ord g} with hB`. Establish `hBf : B.Finite`. Use `((hfin.union hΔ).union (CartierDiv.principal g).finite_support_mult).subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨E, hE, hne⟩`. Distinguish the cases in `h1 : E.formOrd η = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : Δ z = 0`. Use `right show (CartierDiv.principal g).mult z ≠ 0`. Rewrite using `[(CartierDiv.isEqn_principal g z).mult_eq, ← hE.ord_eq]`. Introduce `h3`. Apply `hne` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2, h3]`. Simplify using the standard rewrite rules. Conclude with `Or.inl (Or.inr h2)`. Conclude with `Or.inl (Or.inl ⟨E, hE, h1⟩)`. Establish `key : ∀ y, y ∈ closure B → ∃ z ∈ B, z ⤳ y`.
+Prove the first alternative. Prove the first alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hc : closure B = ⋃ z ∈ B, closure {z}` using `by conv_lhs => rw [← Set.biUnion_of_singleton B]`. Conclude with `hBf.closure_biUnion _`. Rewrite `hy` using `[hc]`. Simplify using `only [Set.mem_iUnion] at hy`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz, hy⟩` from `hy`. Conclude with `⟨z, hz, specializes_iff_mem_closure.2 hy⟩`. Use `⟨⟨(closure B)ᶜ, isClosed_closure.isOpen_compl⟩, show x ∉ closure B from fun hx => ?_, fun y hy z hz E hE => ?_⟩` and prove the remaining obligations. Take `⟨z, ⟨E, hE, hne⟩, hzx⟩` from `key x hx`. Conclude with `hne (hg z hzx E hE)`.
-
-Establish `hy' : y ∉ closure B` using `hy`. Assume the negation of the conclusion as `hne`. Conclude with `hy' (closure_mono (Set.singleton_subset_iff.2 (show z ∈ B from ⟨E, hE, hne⟩)) (specializes_iff_mem_closure.1 hz))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_nhds_isLogEqn' [IsLocallyNoetherian X] [CompactSpace X]
     (hfin : {z : X | ∃ E : DivOver p, E.IsAt z ∧ E.formOrd η ≠ 0}.Finite)
@@ -190,17 +188,15 @@ namespace GlobalTheory.Discrepancy
 open GlobalTheory.KltGlobal
 
 /- English proof (translation)
-Introduce `X _ _ _ p n hP hn Δ hΔ hklt`. Use `haveI : CompactSpace X := compactSpace_of_isProjOver' hP`. Use `haveI : LocallyOfFiniteType p := isProjOver_locallyOfFiniteType ℂ X p hP`. Take `⟨η₀, -, -, hη₀, -, -, -⟩` from `hklt (genericPoint X)`. Establish `hfin` using `GlobalTheory.FormOrdFinite.finite_setOf_formOrd_ne_zero ℂ X p n hP hn η₀ hη₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ x, ∃ (m : ℕ) (g : X.functionFieldˣ) (U : X.Opens), 0 < m ∧ x ∈ U ∧ ∀ y ∈ U, IsLogEqn p Δ η₀ y m g`. Introduce `x`. Take `⟨η, m, g, hη, hm, hg, -⟩` from `hklt x`. Take `⟨g', hg'⟩` from `exists_isLogEqn_of_form' hn hη₀ hη hg`. Take `⟨U, hU, hy⟩` from `exists_nhds_isLogEqn' hfin hΔ.finite hg'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, g', U, hm, hU, hy⟩`. Use `choose mm gg UU hm hU hy using h1`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x => (UU x : Set X)) (fun x => (UU x).isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hU x⟩)`. Use `set M := ∏ i ∈ t, mm i with hM`. Establish `hM0 : 0 < M` using `Finset.prod_pos fun i _ => hm i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hMd : ∀ i ∈ t, mm i * (M / mm i) = M` using `fun i hi => Nat.mul_div_cancel' (Finset.dvd_prod_of_mem _ hi)`. Establish `sel : ∀ y : X, ∃ i ∈ t, y ∈ UU i` using `fun y => by`. Use `ht (Set.mem_univ y)` as an intermediate fact. Simplify using `using this`. Use `choose s hs hsy using sel`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `e : X → X.functionFieldˣ` to `fun y => gg (s y) ^ (M / mm (s y))`. Establish `he : ∀ y, ∀ w ∈ UU (s y), IsLogEqn p Δ η₀ w M (e y)` using `fun y w hw => by`. Use `isLogEqn_pow' (hy (s y) w hw) (M / mm (s y))` as an intermediate fact. Rewrite `this` using `[hMd _ (hs y)]`. Then use the resulting hypothesis. Set `G : CartierDiv X` to `show cartierGroup X from ⟨fun y => germOf y (e y), fun x => ⟨UU (s x), hsy x, e x, fun y hy' => germOf_eq_iff.2 (unitAt_of_isLogEqn' (he y y (hsy y)) (he x y hy'))⟩⟩`.
-
-Use `⟨M, G, hM0, η₀, hη₀, fun x g hg => ?_⟩` and prove the remaining obligations. Establish `h0 : G.IsEqn x (e x)` using `rfl`. Conclude with `isLogEqn_of_unitAt' (he x x (hsy x)) (h0.iff_unitAt.1 hg)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isLogCanonicalMultiple_of_kltAt :
     ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
@@ -245,7 +241,7 @@ theorem exists_isLogCanonicalMultiple_of_kltAt :
 end GlobalTheory.Discrepancy
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Discrepancy.exists_isLogCanonicalMultiple_of_kltAt`.
+A detailed English derivation is pending.
 -/
 example : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p →
   topologicalKrullDim X = n → ∀ Δ : X → ℚ, IsEffQDiv Δ → (∀ y, KltAt p n Δ y) →

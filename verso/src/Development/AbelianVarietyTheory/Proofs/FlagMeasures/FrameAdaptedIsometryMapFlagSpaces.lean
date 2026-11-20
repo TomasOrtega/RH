@@ -10,23 +10,21 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hmono : ∀ (H : LFlag (VS D) D.R.rS T) {a b : ℕ}, a ≤ b → Xflag H a ≤ Xflag H b`. Introduce `H a b hab`. Conclude with `Submodule.span_mono (Set.image_mono fun i (hi : i.1 < a) => (lt_of_lt_of_le hi hab : i.1 < b))`. Establish `hmem : ∀ (H : LFlag (VS D) D.R.rS T) (i : Fin D.R.rS) {j : ℕ}, i.1 < j → H.fl.e i ∈ Xflag H j`. Introduce `H i j hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨i, hij, rfl⟩`. Establish `hX : ∀ H : LFlag (VS D) D.R.rS T, Xsp H = Xflag H D.R.rS`. Introduce `H`. Use `show Submodule.span _ (Set.range H.fl.e) = Submodule.span _ (H.fl.e '' {i | i.1 < D.R.rS})`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hstep : ∀ i : Fin D.R.rS, g (F.fl.e i) - G.fl.e i ∈ Xflag G i.1`. Introduce `i`. Use `hg.2 i.castSucc` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[frame, Formalism.MainNotions.S.FlagG.fvec]`. Establish `hle : ∀ j, (Xflag F j).map (g : (VS D).V →ₗ[D.host.E] (VS D).V) ≤ Xflag G j`. Introduce `j`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨i, hi, rfl⟩`. Use `show g (F.fl.e i) ∈ Xflag G j`. Establish `h1` using `hmono G (le_of_lt hi) (hstep i)`. Establish `h2` using `hmem G i hi`. Simplify using `using add_mem h1 h2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hge : ∀ j, Xflag G j ≤ (Xflag F j).map (g : (VS D).V →ₗ[D.host.E] (VS D).V)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `absurd hi (Nat.not_lt_zero _)`. Consider the case `succ j ih`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : i.1 ≤ j` using `Nat.lt_succ_iff.mp hi`. Establish `hmap : (Xflag F j).map (g : (VS D).V →ₗ[D.host.E] (VS D).V) ≤ (Xflag F (j + 1)).map (g : (VS D).V →ₗ[D.host.E] (VS D).V)` using `Submodule.map_mono (hmono F (Nat.le_succ j))`. Establish `h1 : g (F.fl.e i) - G.fl.e i ∈ (Xflag F (j + 1)).map (g : (VS D).V →ₗ[D.host.E] (VS D).V)` using `hmap (ih (hmono G hi' (hstep i)))`. Establish `h2 : (g : (VS D).V →ₗ[D.host.E] (VS D).V) (F.fl.e i) ∈ (Xflag F (j + 1)).map (g : (VS D).V →ₗ[D.host.E] (VS D).V)` using `Submodule.mem_map_of_mem (hmem F i hi)`. Establish `h3` using `sub_mem h2 h1`.
-
-Simplify using `only [LinearEquiv.coe_coe, sub_sub_cancel] at h3`. Conclude with `h3`. Use `⟨fun j => le_antisymm (hle j) (hge j), ?_⟩` and prove the remaining obligations. Rewrite using `[hX F, hX G]`. Conclude with `le_antisymm (hle _) (hge _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adapt_map_flag (D : D7) (T : D.host.E) (F G : LFlag (VS D) D.R.rS T) (g : GV D) (hg : Adapt g F G) :
     (∀ j : ℕ, (Xflag F j).map (g : (VS D).V →ₗ[D.host.E] (VS D).V) = Xflag G j) ∧

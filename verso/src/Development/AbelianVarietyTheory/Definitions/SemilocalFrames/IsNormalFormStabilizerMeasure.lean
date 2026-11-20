@@ -80,7 +80,7 @@ def degBd (k r j q : ℕ) (H₁ De D sg : ℝ) : ℝ :=
     sg ^ (-(((q : ℝ) - 16 * r ^ 3 - 4 * r - 1) / r))
 
 /- English proof (translation)
-Unfold `Sg2`. Conclude with `(Finset.le_fold_max _).2 (Or.inl le_rfl)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 example (k : ℕ) (z : Fin (2 * 0 + k + 1) → ℂ) (x : Mat k 0) : 1 ≤ Sg2 k 0 z x := by
   unfold Sg2; exact (Finset.le_fold_max _).2 (Or.inl le_rfl)

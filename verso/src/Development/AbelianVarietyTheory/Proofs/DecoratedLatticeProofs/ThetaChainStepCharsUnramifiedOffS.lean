@@ -16,9 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Introduce `D c hc k hk v hv w hw`. Establish `hμ : UnrAt (c.μ (k + 1)) w`. Use `hc.unr ⟨k, hk⟩ w` as an intermediate fact. Conclude with `this (by rw [GlobalTheory.LFun.above, Set.mem_setOf_eq, hw]; exact hv)`. Establish `hη : UnrAt c.η⁻¹ w` using `(GlobalTheory.LFun.unrAt_of_unramEverywhere hc.chars.2.1 w).inv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμη : UnrAt (c.μ (k + 1) * c.η⁻¹) w` using `hμ.mul hη`. Unfold `Com.chS Com.chT Lift.chrStep`. Apply the tactic sequence `split_ifs <;> exact ⟨by assumption, by assumption⟩`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem step_chars_unrAt : ∀ (D : D7) (c : Com D), c.Is → ∀ k < D.R.m, ∀ v ∉ c.S, ∀ w : HeightOneSpectrum (𝓞 D.host.E),
     w.under (𝓞 D.host.F) = v → UnrAt (c.chS (k + 1)) w ∧ UnrAt (c.chT (k + 1)) w := by

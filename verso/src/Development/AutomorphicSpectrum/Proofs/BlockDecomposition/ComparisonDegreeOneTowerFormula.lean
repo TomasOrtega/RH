@@ -10,9 +10,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 namespace GlobalTheory.CompanionTheory.PerfVB
 
 /- English proof (translation)
-Establish `hcomp : ∀ f : GlobalTheory.CatCoh.C1 F, GlobalTheory.CompanionTheory.PerfVB.c1 l f = GlobalTheory.CompanionTheory.PerfVB.c1 n (GlobalTheory.CompanionTheory.PerfVB.c1 m f)`. Introduce `f`. Simplify using `only [GlobalTheory.CompanionTheory.PerfVB.c1, LinearMap.coe_mk, AddHom.coe_mk, h]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul s f`. Simplify using `only [GlobalTheory.CompanionTheory.PerfVB.th1, LinearMap.rTensor_tmul, AlgHom.toLinearMap_apply, IsScalarTower.coe_toAlgHom', GlobalTheory.CompanionTheory.PerfVB.liftSemi_tmul, LinearMap.map_smulₛₗ, hcomp]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem comparison_degree_one_tower (R S S' C : Type) [CommRing R] [CommRing S] [CommRing S'] [Algebra R S]
     [Algebra S S'] [Algebra R S'] [IsScalarTower R S S'] [Category.{0} C]

@@ -27,7 +27,7 @@ open GlobalTheory.TorusExt
 attribute [local instance] gtGroup
 
 /- English proof (translation)
-Set `_` to `(r.stalkMap z).hom.toAlgebra`. Establish `: Module.Flat (Y.presheaf.stalk (r z)) (Z.presheaf.stalk z)` using `Flat.stalkMap r z`. Establish `: IsLocalHom (algebraMap (Y.presheaf.stalk (r z)) (Z.presheaf.stalk z))` using `inferInstanceAs (IsLocalHom (r.stalkMap z).hom)`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := Y.presheaf.stalk (r z)) (B := Z.presheaf.stalk z)` as an intermediate fact. Conclude with `FaithfulSMul.algebraMap_injective _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stalkMap_inj {Y Z : Scheme.{0}} (r : Z ⟶ Y) [Flat r] (z : Z) : Function.Injective (r.stalkMap z).hom := by
   let _ := (r.stalkMap z).hom.toAlgebra
@@ -37,13 +37,13 @@ theorem stalkMap_inj {Y Z : Scheme.{0}} (r : Z ⟶ Y) [Flat r] (z : Z) : Functio
   exact FaithfulSMul.algebraMap_injective _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => ⟨default, Subsingleton.elim _ _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem surjective_spMap {K k : Type} [Field K] [Field k] (β : K →+* k) : Surjective (spMap β) :=
   ⟨fun _ => ⟨default, Subsingleton.elim _ _⟩⟩
 
 /- English proof (translation)
-Establish `: Flat (spMap β)` using `inferInstance`. Use `surjective_spMap β` as an intermediate fact. Conclude with `Flat.epi_of_flat_of_surjective _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem epi_spMap {K k : Type} [Field K] [Field k] (β : K →+* k) : Epi (spMap β) := by
   have : Flat (spMap β) := inferInstance
@@ -51,11 +51,9 @@ theorem epi_spMap {K k : Type} [Field K] [Field k] (β : K →+* k) : Epi (spMap
   exact Flat.epi_of_flat_of_surjective _
 
 /- English proof (translation)
-Establish `: Epi r` using `Flat.epi_of_flat_of_surjective r`. Take `⟨z, rfl⟩` from `r.surjective y`. Take `⟨J', hJ', e⟩` from `exists_good L hL z (fun ψ : Y ⟶ X => r ≫ ψ) J (fun a b e => congrArg J ((cancel_epi r).1 e)) (fun ψ => hJ ψ)`. Use `h z J' hJ'` as an intermediate fact. Rewrite `this` using `[val_of t r z J' (fun k => J (𝟙 Y ≫ φ k)) (fun k => by rw [Category.id_comp]; exact e _), val_of t' r z J' (fun k => J (𝟙 Y ≫ φ' k)) (fun k => by rw [Category.id_comp]; exact e _)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₁` using `hJ.mem φ (𝟙 Y)`. Establish `h₂` using `hJ.mem φ' (𝟙 Y)`. Establish `k : ∀ (U : Y.Opens) (_ : r z ∈ U) (a : Γ(Y, U)ˣ), (gm r z U a).val = (r.stalkMap z).hom (gm (𝟙 Y) (r z) U a).val` using `fun U hU a => by`. Rewrite using `[gm_val r z U hU, gm_val _ (r z) U hU]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply r U z hU _).symm`.
-
-Conclude with `Units.ext (stalkMap_inj r z ((k _ h₁ _).symm.trans ((congrArg Units.val this).trans (k _ h₂ _))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_descend {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (t : LB.Gen (LB.LinComb L φ ε))
@@ -83,7 +81,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {F F' : Type} [Field F] [Algebra (
   (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F')
 
 /- English proof (translation)
-Introduce `g g' h` and use `by have := epi_spMap f have := surjective_spMap f have : Flat (spMap f) := inferInstance refine gt_ext_val (Over.OverMorphism.ext ((cancel_epi (spMap f)).1 ?_)) fun χ y J hJ => ?_ · exact ((eq_gtExt_iff f hf g _).1 rfl).1.symm.trans (((eq_gtExt_iff f hf g' _).1 h).1) · refine val …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gtExt_injective (D : DegPre R) : Function.Injective (gtExt D f hf) := fun g g' h => by
   have := epi_spMap f
@@ -98,13 +96,13 @@ variable {I : Ideal R} {D : DegData R I} {A : PolAV (Spec (CommRingCat.of (Fract
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] {U : UnifPre I D A G} (E : EndU U)
 
 /- English proof (translation)
-The claim follows from `gt_ext_val (h₁.1.trans h₂.1.symm) fun χ y J hJ => (h₁.2 χ y J hJ).trans (h₂.2 χ y J hJ).symm`.
+A detailed English derivation is pending.
 -/
 theorem act_unique {g g₁ g₂ : GtPtF D.toPre F} (h₁ : E.Act g g₁) (h₂ : E.Act g g₂) : g₁ = g₂ :=
   gt_ext_val (h₁.1.trans h₂.1.symm) fun χ y J hJ => (h₁.2 χ y J hJ).trans (h₂.2 χ y J hJ).symm
 
 /- English proof (translation)
-Use `⟨by rw [gtExt_b, gtExt_b, h.1, Category.assoc], fun χ z J hJ => ?_⟩` and prove the remaining obligations. Establish `c : LB.Gen.Corr D.toPre.P.L _ _ _ _ (g'.s χ) (LB.mulGen D.toPre.P.L _ _ _ _ (g.s (E.h χ)) (LB.pullGen D.toPre.P.L _ _ (E.u χ) g.b.left))` using `corr_of_val D.toPre.P.isLB fun y J hJ => (h.2 χ y J hJ).trans (Eq.trans (congrArg₂ (· * ·) rfl (by`. Rewrite using `[val_pull hJ, Category.id_comp])) (val_mul hJ _ _ _).symm)`. Use `(gtExt_val f hf g' χ hJ).trans ((val_corr hJ c _).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (gtExt_val f hf g _ hJ).symm ((val_pull hJ _ _ _).trans ?_))))` and prove the remaining obligations. Rewrite using `[gtExt_b]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -123,9 +121,9 @@ end Ext
 section Adjoint
 
 /- English proof (translation)
-Establish `hc` using `PrimNorm.diff₃_ptCls (T := G ⊗ G) L.isLB ⟨c.t, c.isGen⟩`. Establish `p : ∀ (x y : G ⊗ G ⟶ G) (m : ℕ), PrimNorm.diff₂ (PrimNorm.ptCls L.L (G ⊗ G)) (x ^ m) y = PrimNorm.diff₂ (PrimNorm.ptCls L.L (G ⊗ G)) x y ^ m` using `fun x y m => map_pow (MonoidHom.mk' (fun x => PrimNorm.diff₂ (PrimNorm.ptCls L.L (G ⊗ G)) x y) fun u v => PrimNorm.diff₂_mul_left hc u v y) x m`. Establish `q : ∀ (x : G ⊗ G ⟶ G) (b : G ⟶ G), x ≫ (b * 𝟙 G ^ m) = (x ≫ b) * x ^ m` using `fun x b => (map_mul (preHom x) _ _).trans (congrArg _ ((map_pow (preHom x) _ _).trans (congrArg (· ^ m) (Category.comp_id x))))`. Use `(PrimNorm.lbIso_iff L.isLB _ _ _ _).2 ((PrimNorm.prod_square_id _ _ (PrimNorm.cls L.L)).trans (Eq.trans ?_ (PrimNorm.prod_square_id _ _ (PrimNorm.cls L.L)).symm))` and prove the remaining obligations. Use `show PrimNorm.diff₂ (PrimNorm.ptCls L.L (G ⊗ G)) _ _ = PrimNorm.diff₂ (PrimNorm.ptCls L.L (G ⊗ G)) _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[q, q, PrimNorm.diff₂_mul_left hc, PrimNorm.diff₂_mul_right hc, PrimNorm.diff₂_ptCls_adj L.isLB h, p, PrimNorm.diff₂_comm (fst G G) (snd G G ^ m), p, PrimNorm.diff₂_comm (snd G G)]`.
+A detailed English derivation is pending.
 -/
 theorem adj_add {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (L : RigLB G) (c : CubicalStr G L)
     (a a' : G ⟶ G) (h : LBIso (cubeLB G ![fst G G ≫ a, snd G G] L.L) (cubeLB G ![fst G G, snd G G ≫ a'] L.L)) (m : ℕ) :
@@ -145,13 +143,11 @@ theorem adj_add {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (L : R
     PrimNorm.diff₂_comm (fst G G) (snd G G ^ m), p, PrimNorm.diff₂_comm (snd G G)]
 
 /- English proof (translation)
-Establish `h` using `isGrpPullback_pullback G f`. Set `G'` to `(Over.pullback f).obj G`. Set `φ : G'.left ⟶ G.left` to `pullback.fst G.hom f`. Establish `pa : ∀ (w : G ⟶ G) {T : Over B'} (x : T ⟶ G'), pushPt h.1.w (x ≫ (Over.pullback f).map w) = pushPt h.1.w x ≫ w` using `fun w T x => Over.OverMorphism.ext (by`. Establish `hw : ((Over.pullback f).map w).left ≫ φ = φ ≫ w.left` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hw, Category.assoc])`. Establish `hB : (L.pull φ).IsLB` using `pull_isLB hL φ`. Establish `h₁ : LBIso (cubeLB G' ![fst G' G' ≫ (Over.pullback f).map a, snd G' G'] (L.pull φ)) (cubeLB G' ![fst G' G', snd G' G' ≫ (Over.pullback f).map a'] (L.pull φ))`. Set `U` to `lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `LBIso.chartPull (chartPullLinComb L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) (chartPullLinComb L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) ha` and prove the remaining obligations. Use `fin_cases i`. Conclude with `(pa _ _).trans (by simp [U])`. Simplify using `[U]`. Use `fin_cases i`.
-
-Simplify using `[U]`. Conclude with `(pa _ _).trans (by simp [U])`. Conclude with `LBIso.trans (DVR.linComb_isLB L' hL' _ _) (DVR.linComb_isLB _ hB _ _) (DVR.linComb_isLB L' hL' _ _) (GlobalTheory.PowPrimitive.lbIso_linComb hb _ _) (LBIso.trans (DVR.linComb_isLB _ hB _ _) (DVR.linComb_isLB _ hB _ _) (DVR.linComb_isLB L' hL' _ _) h₁ (GlobalTheory.PowPrimitive.lb …`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adj_pull {B B' : Scheme.{0}} (f : B' ⟶ B) (G : Over B) [GrpObj G] [IsCommMonObj G] {L : LB G.left}
     {L' : LB ((Over.pullback f).obj G).left} (hL : L.IsLB) (hL' : L'.IsLB)
@@ -188,13 +184,13 @@ theorem adj_pull {B B' : Scheme.{0}} (f : B' ⟶ B) (G : Over B) [GrpObj G] [IsC
 end Adjoint
 
 /- English proof (translation)
-Establish `key : ∀ h : X →+ X, {m : ℕ | ¬ Function.Injective fun x => h x + m • x}.Finite` using `fun h => by`. Set `f : Module.End ℤ X` to `h.toIntLinearMap`. Establish `fin : (f.charpoly.rootSet ℤ).Finite` using `Polynomial.rootSet_finite _ _`. Use `Set.Finite.subset (fin.preimage (f := fun m : ℕ => -(m : ℤ)) (fun a _ b _ e => by simpa using e)) ?_` and prove the remaining obligations. Introduce `m hm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.Injective, Set.mem_setOf_eq, not_forall] at hm`. Take `⟨x, y, e, hxy⟩` from `hm`. Establish `ev : f.HasEigenvector (-(m : ℤ)) (x - y)`. Use `⟨Module.End.mem_eigenspace_iff.2 ?_, sub_ne_zero.2 hxy⟩` and prove the remaining obligations. Use `show h (x - y) = _`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, neg_smul, natCast_zsmul, smul_sub]`. Take the linear combination `(norm := abel) e`. Use `Module.End.aeval_apply_of_hasEigenvector (p := f.charpoly) ev` as an intermediate fact. Rewrite `this` using `[LinearMap.aeval_self_charpoly, LinearMap.zero_apply]`. Use `(Polynomial.mem_rootSet).2 ⟨f.charpoly_monic.ne_zero, ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this.symm` using `[sub_ne_zero.2 hxy]`. Take `⟨m, hm⟩` from `((key h).union (key h')).exists_notMem`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hm`. Conclude with `⟨m, hm⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_add_injective {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (h h' : X →+ X) :
     ∃ m : ℕ, (Function.Injective fun x => h x + m • x) ∧ Function.Injective fun x => h' x + m • x := by

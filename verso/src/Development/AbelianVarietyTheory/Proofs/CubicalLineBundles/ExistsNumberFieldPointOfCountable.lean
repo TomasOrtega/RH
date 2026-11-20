@@ -9,17 +9,13 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory.CM
 
 /- English proof (translation)
-Use `letI := α.toAlgebra`. Take `⟨t, ht⟩` from `Algebra.FiniteType.out (self := hα)`. Use `haveI : Finite (ψ '' (t : Set A)) := (t.finite_toSet.image _).to_subtype`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ (ψ '' (t : Set A))) := by`. Use `IntermediateField.finiteDimensional_adjoin ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `((halg x).restrictScalars ℚ).isIntegral`. Set `K₁ : IntermediateField ℚ ℂ` to `k ⊔ IntermediateField.adjoin ℚ (ψ '' (t : Set A))`. Establish `hk : k ≤ K₁` using `le_sup_left`. Establish `hmem : ∀ x, ψ x ∈ K₁`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Introduce `x`. Establish `hx : x ∈ Algebra.adjoin k₀ (t : Set A)` using `ht ▸ Algebra.mem_top`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Conclude with `(le_sup_right : _ ≤ K₁) (IntermediateField.subset_adjoin ℚ _ ⟨x, hx, rfl⟩)`.
+Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `algebraMap r`. Express the relevant statement in the definitionally equal form `ψ (α r) ∈ K₁`. Rewrite using `[hψ]`. Conclude with `hk (j r).2`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`. Use `⟨K₁, hk, ψ.codRestrict K₁ hmem, IntermediateField.finiteDimensional_sup _ _, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
-
-Conclude with `hψ a`. Both sides reduce to the same expression.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_numberField_factor (k : IntermediateField ℚ ℂ) [FiniteDimensional ℚ k]
     {k₀ A : Type} [Field k₀] [CommRing A] (j : k₀ →+* k) (α : k₀ →+* A) (hα : α.FiniteType)
@@ -53,13 +49,13 @@ theorem exists_numberField_factor (k : IntermediateField ℚ ℂ) [FiniteDimensi
   · rfl
 
 /- English proof (translation)
-Set `p : PrimeSpectrum R` to `PrimeSpectrum.comap R.val.toRingHom (IsLocalRing.closedPoint ℂ)`. Establish `hp : p ∈ ((y ⁻¹ᵁ U : (Sp R).Opens) : Set (Sp R))` using `hU`. Take `⟨_, ⟨r, rfl⟩, hr, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := p) (u := ((y ⁻¹ᵁ U : (Sp R).Opens) : Set (Sp R))) hp (y ⁻¹ᵁ U).2`. Establish `hr0 : (r : ℂ) ≠ 0`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: r = 0` using `Subtype.ext h`. Substitute `this` using the available equality. Conclude with `hr (Ideal.zero_mem _)`. Take `⟨t, ht⟩` from `hR`. Establish `hle : R ≤ Algebra.adjoin k (↑(insert (r : ℂ)⁻¹ t) : Set ℂ)` using `by conv_lhs => rw [← ht]`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Algebra.adjoin_mono (by simp)`. Use `⟨_, hle, ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hq : PrimeSpectrum.comap (Subalgebra.inclusion hle).toRingHom q ∈ (PrimeSpectrum.basicOpen r : Set (PrimeSpectrum R))`. Introduce `h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : Subalgebra.inclusion hle r ∈ q.asIdeal` using `h`. Establish `hu : (r : ℂ)⁻¹ ∈ Algebra.adjoin k (↑(insert (r : ℂ)⁻¹ t) : Set ℂ)` using `Algebra.subset_adjoin (by simp)`. Establish `h1 : Subalgebra.inclusion hle r * ⟨_, hu⟩ = 1` using `Subtype.ext (mul_inv_cancel₀ hr0)`. Conclude with `q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (h1 ▸ Ideal.mul_mem_right _ _ h'))`. Conclude with `hsub hq`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_fg_le_range_subset {k : Type} [Field k] [Algebra k ℂ] (R : Subalgebra k ℂ) (hR : R.FG)
     {X : Scheme.{0}} (y : Sp R ⟶ X) (U : X.Opens)
@@ -92,19 +88,19 @@ theorem exists_fg_le_range_subset {k : Type} [Field k] [Algebra k ℂ] (R : Suba
   exact hsub hq
 
 /- English proof (translation)
-Introduce `k _ R hR k₀ _ j X s _ y hy hc`. Establish `hcomp : ∀ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C), spMap g ≫ spMap f = spMap (g.comp f)` using `fun f g => (Spec.map_comp _ _).symm`. Establish `hinj : ∀ {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B}, spMap f = spMap g → f = g` using `fun h => congrArg CommRingCat.Hom.hom (Spec.map_injective h)`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ ((spMap R.val.toRingHom ≫ y) (IsLocalRing.closedPoint ℂ))) isOpen_univ`. Take `⟨R', hle, hR', hsub⟩` from `exists_fg_le_range_subset R hR y U hxU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hU' : IsAffineOpen U` using `hU`. Set `A : Type` to `Γ(X, U)`. Set `i : Sp A ⟶ X` to `hU'.fromSpec`. Use `haveI : IsOpenImmersion i := hU'.isOpenImmersion_fromSpec`. Establish `hsub' : Set.range (spMap (Subalgebra.inclusion hle).toRingHom ≫ y) ⊆ Set.range i` using `hsub.trans hU'.range_fromSpec.ge`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : A →+* R', spMap φ ≫ i = spMap (Subalgebra.inclusion hle).toRingHom ≫ y := by`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (IsOpenImmersion.lift i _ hsub')`. Conclude with `⟨φ.hom, (congrArg (· ≫ i) hφ).trans (IsOpenImmersion.lift_fac _ _ _)⟩`. Choose the witnesses or unpack the hypotheses as in `⟨α, hα⟩ : ∃ α : k₀ →+* A, spMap α = i ≫ s := by`. Take `⟨α, hα⟩` from `Spec.map_surjective (i ≫ s)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨α.hom, hα⟩`. Establish `hft : α.FiniteType`. Establish `: LocallyOfFiniteType (spMap α)` using `by rw [hα]; infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 this`. Establish `hφα : φ.comp α = (Subalgebra.inclusion hle).toRingHom.comp ((algebraMap k R).comp j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hcomp, hα, ← Category.assoc, hφ, Category.assoc, hy, hcomp]`. Establish `hcnt : Set.Countable ((fun ψ : A →+* ℂ => spMap ψ ≫ i) ⁻¹' (Set.range fun ρ : R →ₐ[k] ℂ => spMap ρ.toRingHom ≫ y))` using `hc.preimage_of_injOn fun a _ b _ h => hinj ((cancel_mono i).1 h)`. Establish `halg : ∀ c, IsAlgebraic k ((R'.val.toRingHom.comp φ) c)`. Introduce `c`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsAlgebraic.algHom R'.val (a := φ c) ?_` and prove the remaining obligations. Use `(specialisation_numberField_and_countable_values k R' hR' (φ c) 1 one_ne_zero).2 _ (hcnt.image fun ψ => ψ c) fun ρ => ⟨ρ.toRingHom.comp φ, ⟨ρ.comp (Subalgebra.inclusion hle), ?_⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap (ρ.toRingHom.comp (Subalgebra.inclusion hle).toRingHom) ≫ y = spMap (ρ.toRingHom.comp φ) ≫ i`. Rewrite using `[← hcomp, ← hcomp, Category.assoc, Category.assoc, hφ]`. Take `⟨K₁, hk, ψ₁, hfd, h1, h2⟩` from `exists_numberField_factor k j α hft (R'.val.toRingHom.comp φ) (fun a => congrArg Subtype.val (RingHom.congr_fun hφα a)) halg`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨K₁, hk, spMap ψ₁ ≫ i, hfd, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hα, hcomp, h1]`. Rewrite using `[← Category.assoc, hcomp, h2, ← hcomp, Category.assoc, hφ, ← Category.assoc, hcomp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_numberField_point_of_countable :
     ∀ (k : IntermediateField ℚ ℂ) [FiniteDimensional ℚ k] (R : Subalgebra k ℂ), R.FG → ∀ (k₀ : Type) [Field k₀] (j : k₀ →+* k) (X : Scheme.{0}) (s : X ⟶ Sp k₀) [LocallyOfFiniteType s] (y : Sp R ⟶ X), y ≫ s = spMap ((algebraMap k R).comp j) → Set.Countable (Set.range fun ρ : R →ₐ[k] ℂ => spMap ρ.toRingHom ≫ y) →

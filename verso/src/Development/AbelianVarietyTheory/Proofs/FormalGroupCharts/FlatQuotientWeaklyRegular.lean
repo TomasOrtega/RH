@@ -5,7 +5,7 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← Submodule.range_mkQ J, LinearMap.range_eq_map, ← Submodule.map_smul'', ← Submodule.mem_comap, Submodule.comap_map_mkQ, smul_eq_mul, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mkQ_mem_smul_top_iff_mem_sup {A : Type} [CommRing A] (J I : Ideal A) (a : A) :
     Submodule.mkQ J a ∈ (I • ⊤ : Submodule A (A ⧸ J)) ↔ a ∈ J ⊔ I := by
@@ -13,13 +13,13 @@ theorem mkQ_mem_smul_top_iff_mem_sup {A : Type} [CommRing A] (J I : Ideal A) (a 
     ← Submodule.mem_comap, Submodule.comap_map_mkQ, smul_eq_mul, Ideal.mul_top]
 
 /- English proof (translation)
-Set `u : (A ⧸ J) →ₗ[A] (A ⧸ J)` to `LinearMap.lsmul A (A ⧸ J) r`. Establish `h` using `flat_coker_of_injective_mod_maximalIdeal V A (A ⧸ J) (A ⧸ J) u (by`. Introduce `x hx`. Take `⟨a, rfl⟩` from `Submodule.mkQ_surjective J x`. Rewrite using `[mkQ_mem_smul_top_iff_mem_sup]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply `hr` to reduce the goal to its premises. Rewrite using `[← mkQ_mem_smul_top_iff_mem_sup]`. Conclude with `hx)`. Establish `hu : LinearMap.range u = Submodule.map (Submodule.mkQ J) (Ideal.span {r})`. Use extensionality with `x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Take `⟨a, rfl⟩` from `Submodule.mkQ_surjective J y`. Conclude with `⟨r * a, Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self r), rfl⟩`. Introduce and unpack `⟨b, hb, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton.1 hb`. Conclude with `⟨Submodule.mkQ J a, rfl⟩`. Set `e : ((A ⧸ J) ⧸ LinearMap.range u) ≃ₗ[A] (A ⧸ (J ⊔ Ideal.span {r}))` to `(Submodule.quotEquivOfEq _ _ hu).trans (Submodule.quotientQuotientEquivQuotientSup J (Ideal.span {r}))`. Conclude with `Module.Flat.of_linearEquiv (e.restrictScalars V).symm`.
+Supply the required witnesses or components. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem flat_quotient_sup_span_singleton (V A : Type) [CommRing V] [IsNoetherianRing V]
     [IsLocalRing V] [CommRing A] [IsNoetherianRing A] [IsLocalRing A] [Algebra V A]
@@ -50,7 +50,7 @@ theorem flat_quotient_sup_span_singleton (V A : Type) [CommRing V] [IsNoetherian
   exact Module.Flat.of_linearEquiv (e.restrictScalars V).symm
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[sup_comm, ← mkQ_mem_smul_top_iff_mem_sup, ← Submodule.Quotient.mk_eq_zero]`. Apply `h` to reduce the goal to its premises. Simplify using `only [smul_zero]`. Conclude with `ha`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_sup_of_isSMulRegular_quotient_quotient {A : Type} [CommRing A] (I J : Ideal A) (r : A)
     (h : IsSMulRegular ((A ⧸ I) ⧸ (J • ⊤ : Submodule A (A ⧸ I))) r) (a : A)
@@ -61,13 +61,11 @@ theorem mem_sup_of_isSMulRegular_quotient_quotient {A : Type} [CommRing A] (I J 
   exact ha
 
 /- English proof (translation)
-Introduce `V A _ _ _ _ _ _ _ _ _ rs _ hreg`. Establish `key : ∀ i, i ≤ rs.length → Module.Flat V (A ⧸ Ideal.ofList (rs.take i))`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Rewrite using `[List.take_zero, Ideal.ofList_nil]`. Conclude with `Module.Flat.of_linearEquiv ((Submodule.quotEquivOfEqBot (⊥ : Ideal A) rfl).restrictScalars V)`. Consider the case `succ i ih`. Introduce `hi`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi' : i < rs.length` using `hi`. Use `haveI := ih hi'.le`. Rewrite using `[List.take_succ_eq_append_getElem hi', Ideal.ofList_append, Ideal.ofList_singleton]`. Conclude with `flat_quotient_sup_span_singleton V A _ _ (mem_sup_of_isSMulRegular_quotient_quotient _ _ _ (hreg.regular_mod_prev i hi'))`. Establish `h` using `key rs.length le_rfl`.
-
-Rewrite `h` using `[List.take_length]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem flat_quotient_ofList_of_isWeaklyRegular_closedFibre : ∀ (V A : Type) [CommRing V] [IsNoetherianRing V] [IsLocalRing V] [CommRing A] [IsNoetherianRing A] [IsLocalRing A] [Algebra V A] [IsLocalHom (algebraMap V A)] [Module.Flat V A] (rs : List A), (∀ r ∈ rs, r ∈ maximalIdeal A) → RingTheory.Sequence.IsWeaklyRegular (A ⧸ (maximalIdeal V).map (algebraMap V A)) rs → Module.Flat V (A ⧸ Ideal.ofList rs) := by
   intro V A _ _ _ _ _ _ _ _ _ rs _ hreg

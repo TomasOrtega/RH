@@ -10,7 +10,7 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Take `⟨a, b, hab⟩` from `hn`. Use `⟨a * s / x, b * s / x, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `x * hs + s ^ 2 * hab`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem norm_of_isSquare_mul {L : Type} [Field L] {x y δ : L} (hx : x ≠ 0)
     (h : IsSquare (x * y)) (hn : ∃ a b : L, x = a ^ 2 - δ * b ^ 2) :
@@ -22,14 +22,14 @@ theorem norm_of_isSquare_mul {L : Type} [Field L] {x y δ : L} (hx : x ≠ 0)
   linear_combination x * hs + s ^ 2 * hab
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Real.sqrt (σ (x : F)), 0, by rw [Real.sq_sqrt h.le]; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_normSub_real_of_pos {F : Type} [Field F] (σ : F →+* ℝ) (δ : F) (x : Fˣ)
     (h : 0 < σ (x : F)) : x ∈ normSub σ δ :=
   ⟨Real.sqrt (σ (x : F)), 0, by rw [Real.sq_sqrt h.le]; ring⟩
 
 /- English proof (translation)
-Unfold `locSq locNorm finSq`. Conclude with `inf_le_inf (iInf_mono fun v => iInf_mono fun _ => sqSub_le_normSub _ _) (iInf_mono fun σ => sqSub_le_normSub _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem locSq_le_locNorm_of_delta (F : Type) [Field F] [NumberField F] (δ : F)
     (S : Finset (HeightOneSpectrum (𝓞 F))) : locSq F S ≤ locNorm F δ S := by
@@ -38,29 +38,25 @@ theorem locSq_le_locNorm_of_delta (F : Type) [Field F] [NumberField F] (δ : F)
     (iInf_mono fun σ => sqSub_le_normSub _ _)
 
 /- English proof (translation)
-Introduce `F _ _ δ S hδ`. Establish `h0 : (locNorm F δ S).index ≠ 0` using `ne_zero_of_dvd_ne_zero (GlobalTheory.T.index_unitsLocalSquaresFiniteRealPlaces_le F S).1 (Subgroup.index_dvd_of_le (locSq_le_locNorm_of_delta F δ S))`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Use `set A : Set (HeightOneSpectrum (𝓞 F)) := {v | v ∈ S ∧ ¬ IsSquare (algebraMap F (v.adicCompletion F) δ)} with hA`. Use `set B : Set (F →+* ℝ) := {σ | σ δ < 0} with hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAf : A.Finite` using `S.finite_toSet.subset fun v hv => hv.1`. Establish `hBf : B.Finite` using `Set.toFinite _`. Use `letI : Fintype A := hAf.fintype`. Use `letI : Fintype B := hBf.fintype`. Set `K : A ⊕ B → Subgroup Fˣ` to `Sum.elim (fun v => normSub (algebraMap F (v.1.adicCompletion F)) δ) (fun σ => normSub σ.1 δ)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : locNorm F δ S ≤ ⨅ i, K i`. Use `le_iInf ?_` and prove the remaining obligations. Introduce and unpack `(v | σ)`. Conclude with `inf_le_left.trans (iInf₂_le v.1 v.2.1)`. Conclude with `inf_le_right.trans (iInf_le _ σ.1)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hdvd` using `Subgroup.index_dvd_of_le hle`. Establish `hcard : Fintype.card (A ⊕ B) = tFin F δ S + tReal F δ`. Rewrite using `[Fintype.card_sum, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Rewrite using `[← hcard]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `le_trans (GlobalTheory.T.two_pow_card_le_index_iInf_of_independent Fˣ (A ⊕ B) K ?_ (ne_zero_of_dvd_ne_zero h0 hdvd)) (Nat.le_of_dvd (Nat.pos_of_ne_zero h0) hdvd)` and prove the remaining obligations. Introduce and unpack `(v | σ)`. Take `⟨y, hy0, hy⟩` from `GlobalTheory.T.exists_local_nonnorm_of_nonsquare_adicCompletion F v.1 (algebraMap F _ δ) (by simpa using hδ) v.2.2`. Take `⟨x, hx0, hxv, hxσ⟩` from `GlobalTheory.T.exists_approx_mod_local_squares F S (Function.update (fun w : HeightOneSpectrum (𝓞 F) => (1 : w.adicCompletion F)) v.1 y) (fun _ => 1) (by`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hw : w = v.1`. Substitute `hw` using the available equality. Simplify using `using hy0`. Simplify using `[Function.update_of_ne hw]) (by simp)`. Use `⟨Units.mk0 x hx0, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `hm`. Establish `h1` using `hxv v.1 v.2.1`. Rewrite `h1` using `[Function.update_self]`. Conclude with `hy (norm_of_isSquare_mul (by simpa using hx0) h1 hm)`. Introduce and unpack `(w | τ) hj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : w.1 ≠ v.1` using `fun h => hj (congrArg Sum.inl (Subtype.ext h))`. Establish `h1` using `hxv w.1 w.2.1`. Rewrite `h1` using `[Function.update_of_ne hw, mul_one]`. Conclude with `sqSub_le_normSub _ _ h1`. Conclude with `mem_normSub_real_of_pos _ _ _ (by simpa using hxσ τ.1)`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx0, hxv, hxσ⟩` from `GlobalTheory.T.exists_approx_mod_local_squares F S (fun _ => 1) (fun τ => if τ = σ.1 then -1 else 1) (by simp) (by`. Introduce `τ`. Apply the tactic sequence `split_ifs <;> simp)`. Use `⟨Units.mk0 x hx0, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, b, hab⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1` using `hxσ σ.1`. Establish `h2 : σ.1 δ < 0` using `σ.2`. Simplify using `only [if_true] at h1`. Establish `h3 : σ.1 x = a ^ 2 - σ.1 δ * b ^ 2` using `hab`. Use polynomial arithmetic with `[sq_nonneg a, mul_nonneg (neg_nonneg.2 h2.le) (sq_nonneg b)]`.
-
-Introduce and unpack `(w | τ) hj`. Establish `h1` using `hxv w.1 w.2.1`. Rewrite `h1` using `[mul_one]`. Conclude with `sqSub_le_normSub _ _ h1`. Establish `hw : τ.1 ≠ σ.1` using `fun h => hj (congrArg Sum.inr (Subtype.ext h))`.
-
-Conclude with `mem_normSub_real_of_pos _ _ _ (by simpa [hw] using hxσ τ.1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem two_pow_le_index_locNorm :
     ∀ (F : Type) [Field F] [NumberField F] (δ : F) (S : Finset (HeightOneSpectrum (𝓞 F))),

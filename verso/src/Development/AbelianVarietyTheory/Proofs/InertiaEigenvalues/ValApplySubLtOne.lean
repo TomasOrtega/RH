@@ -20,20 +20,20 @@ def intBar : ValuationSubring (AlgebraicClosure (FractionRing O)) :=
 variable {O}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intBar {x : AlgebraicClosure (FractionRing O)} : x ∈ intBar O ↔ IsIntegral O x := Iff.rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hz : z ∈ B` using `(B.valuation_le_one_iff z).1 h.le`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : z = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl h0`. Use `right`. Introduce `hi`. Establish `h3` using `(B.valuation_le_one_iff _).2 hi`. Rewrite `h3` using `[map_inv₀]`.
+Prove the first alternative. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : B.valuation z ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`. Establish `h4 : 1 ≤ B.valuation z`. Assume the negation of the conclusion as `h5`. Use `push_neg at h5`. Establish `h6` using `one_lt_inv₀ (zero_lt_iff.2 hne) |>.2 h5`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `absurd h3 (not_le.2 h6)`. Conclude with `absurd h (not_lt.2 h4)`. Introduce and unpack `⟨hz, h0 | hi⟩`. Simplify using `[h0]`. Establish `hv` using `(B.valuation_le_one_iff z).2 hz`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_eq_of_le hv with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Apply `hi` to reduce the goal to its premises. Rewrite using `[← B.valuation_le_one_iff, map_inv₀, h, inv_one]`.
+A detailed English derivation is pending.
 -/
 private theorem valuation_lt_one_iff_mem_and_inv_not_mem {L : Type} [Field L] (B : ValuationSubring L) (z : L) :
     B.valuation z < 1 ↔ z ∈ B ∧ (z = 0 ∨ z⁻¹ ∉ B) := by
@@ -64,11 +64,11 @@ private theorem valuation_lt_one_iff_mem_and_inv_not_mem {L : Type} [Field L] (B
         rw [← B.valuation_le_one_iff, map_inv₀, h, inv_one]
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff_mem_and_inv_not_mem]`. Use `⟨mem_intBar.2 isIntegral_algebraMap, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : a = 0`. Use `left`. Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `right`. Introduce `hi`. Rewrite `hi` using `[mem_intBar, IsScalarTower.algebraMap_apply O (FractionRing O) (AlgebraicClosure (FractionRing O)), ← map_inv₀]`. Establish `hi' : IsIntegral O (algebraMap O (FractionRing O) a)⁻¹` using `IsIntegral.tower_bot (algebraMap (FractionRing O) (AlgebraicClosure (FractionRing O))).injective hi`. Take `⟨b, hb⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hab : a * b = 1`. Apply `IsFractionRing.injective O (FractionRing O)` to reduce the goal to its premises. Rewrite using `[map_mul, hb, map_one, mul_inv_cancel₀]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).2 h0`. Conclude with `((IsLocalRing.mem_maximalIdeal a).1 ha) (isUnit_iff_exists_inv.2 ⟨b, hab⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_lt_one {a : O} (ha : a ∈ maximalIdeal O) :
     (intBar O).valuation (algebraMap O (AlgebraicClosure (FractionRing O)) a) < 1 := by
@@ -90,17 +90,15 @@ theorem val_lt_one {a : O} (ha : a ∈ maximalIdeal O) :
   exact ((IsLocalRing.mem_maximalIdeal a).1 ha) (isUnit_iff_exists_inv.2 ⟨b, hab⟩)
 
 /- English proof (translation)
-Take `⟨p, hpm, hp⟩` from `mem_intBar.1 hx`. Use `set π := IsLocalRing.residue O`. Establish `hcard : (p.map π).roots.card = (p.map π).natDegree` using `IsAlgClosed.card_roots_eq_natDegree`. Use `set lift := Function.surjInv (IsLocalRing.residue_surjective (R := O))`. Use `set Q : Polynomial O := (((p.map π).roots.map lift).map (fun a => Polynomial.X - Polynomial.C a)).prod`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ : Q.map π = p.map π`. Simplify using `only [Q, Polynomial.map_multiset_prod, Multiset.map_map, Function.comp_def, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, lift, π, Function.surjInv_eq IsLocalRing.residue_surjective]`. Conclude with `Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq (hpm.map _) hcard`. Establish `hcoef : ∀ i, (p - Q).coeff i ∈ IsLocalRing.maximalIdeal O`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsLocalRing.residue_eq_zero_iff, ← Polynomial.coeff_map, Polynomial.map_sub, hQ, sub_self, Polynomial.coeff_zero]`. Establish `hx1 : (intBar O).valuation x ≤ 1` using `((intBar O).valuation_le_one_iff x).2 hx`. Establish `hval : (intBar O).valuation (Polynomial.aeval x (p - Q)) < 1`. Rewrite using `[Polynomial.aeval_eq_sum_range]`. Apply `Valuation.map_sum_lt _ one_ne_zero` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i _`. Rewrite using `[Algebra.smul_def, map_mul, map_pow]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (pow_le_one' hx1 i)) (val_lt_one (hcoef i))`. Establish `hpx : Polynomial.aeval x p = 0` using `by rw [Polynomial.aeval_def]; exact hp`. Rewrite `hval` using `[map_sub, hpx, zero_sub, Valuation.map_neg]`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Q, map_multiset_prod, Multiset.map_map, Function.comp_def, map_sub, Polynomial.aeval_X, Polynomial.aeval_C] at hval`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `absurd hval (not_lt.2 ?_)` and prove the remaining obligations. Apply `Multiset.one_le_prod_of_one_le` to reduce the goal to its premises.
-
-Introduce `t ht`. Take `⟨a, -, rfl⟩` from `Multiset.mem_map.1 ht`. Conclude with `hne _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_sub_lt_one (hk : IsAlgClosed (ResidueField O)) {x : AlgebraicClosure (FractionRing O)} (hx : x ∈ intBar O) :
     ∃ a : O, (intBar O).valuation (x - algebraMap O _ a) < 1 := by
@@ -138,9 +136,9 @@ theorem exists_sub_lt_one (hk : IsAlgClosed (ResidueField O)) {x : AlgebraicClos
   exact hne _
 
 /- English proof (translation)
-Rewrite using `[mem_intBar, mem_intBar]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `h.map (τ.symm.toAlgHom.restrictScalars O)`. Simplify using `using h2`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Conclude with `h.map (τ.toAlgHom.restrictScalars O)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem apply_mem_intBar (τ : AlgebraicClosure (FractionRing O) ≃ₐ[FractionRing O] AlgebraicClosure (FractionRing O))
     (x : AlgebraicClosure (FractionRing O)) : τ x ∈ intBar O ↔ x ∈ intBar O := by
@@ -153,13 +151,11 @@ theorem apply_mem_intBar (τ : AlgebraicClosure (FractionRing O) ≃ₐ[Fraction
     exact h.map (τ.toAlgHom.restrictScalars O)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_sub_lt_one hk hx`. Use `set y := x - algebraMap O (AlgebraicClosure (FractionRing O)) a with hy`. Establish `hτa : τ (algebraMap O (AlgebraicClosure (FractionRing O)) a) = algebraMap O (AlgebraicClosure (FractionRing O)) a`. Rewrite using `[IsScalarTower.algebraMap_apply O (FractionRing O) (AlgebraicClosure (FractionRing O)), τ.commutes]`. Establish `e : τ x - x = τ y - y` using `by rw [hy, map_sub, hτa]; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `hτy : (intBar O).valuation (τ y) < 1`. Establish `ha'` using `ha`. Rewrite `ha'`, the goal using `[valuation_lt_one_iff_mem_and_inv_not_mem]`. Take `⟨h1, h2⟩` from `ha'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(apply_mem_intBar τ y).2 h1, ?_⟩` and prove the remaining obligations. Break down `h2 with h | h` into its components or cases. Use `left`. Simplify using `[h]`. Use `right`.
-
-Rewrite using `[← map_inv₀ τ y, apply_mem_intBar]` and apply the resulting hypothesis. Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt hτy ha)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem val_apply_sub_lt_one (hk : IsAlgClosed (ResidueField O))
     (τ : AlgebraicClosure (FractionRing O) ≃ₐ[FractionRing O] AlgebraicClosure (FractionRing O))
@@ -181,7 +177,7 @@ theorem val_apply_sub_lt_one (hk : IsAlgClosed (ResidueField O))
   exact lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt hτy ha)
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff_mem_and_inv_not_mem, valuation_lt_one_iff_mem_and_inv_not_mem, ValuationSubring.mem_comap, ValuationSubring.mem_comap, map_inv₀, map_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_valuation_lt_one_iff' {K L : Type} [Field K] [Field L] (B : ValuationSubring L) (f : K →+* L)
     (z : K) : (B.comap f).valuation z < 1 ↔ B.valuation (f z) < 1 := by
@@ -189,37 +185,29 @@ private theorem comap_valuation_lt_one_iff' {K L : Type} [Field K] [Field L] (B 
     map_eq_zero]
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K`. Use `haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`. Use `set A : ValuationSubring Ω := (intBar O).comap J with hA`. Establish `hint : ∀ x : 𝓞 K, algebraMap K Ω (x : K) ∈ A`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ValuationSubring.mem_comap, mem_intBar]`. Take `⟨p, hpm, hp⟩` from `NumberField.RingOfIntegers.isIntegral_coe x`. Use `⟨p.map (Int.castRingHom O), hpm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, RingHom.ext_int ((algebraMap O (AlgebraicClosure (FractionRing O))).comp (Int.castRingHom O)) ((J.comp (algebraMap K Ω)).comp (algebraMap ℤ K))]`. Establish `h2` using `Polynomial.hom_eval₂ p (algebraMap ℤ K) (J.comp (algebraMap K Ω)) (algebraMap (𝓞 K) K x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[hp, map_zero]`. Conclude with `h2.symm`. Use `set f : 𝓞 K →+* A := ((algebraMap K Ω).comp (algebraMap (𝓞 K) K)).codRestrict A hint with hf`. Use `set P : Ideal (𝓞 K) := Ideal.comap f (IsLocalRing.maximalIdeal A) with hP`. Establish `hPmem : ∀ x : 𝓞 K, x ∈ P ↔ A.valuation (algebraMap K Ω (x : K)) < 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `x`. Rewrite using `[hP, Ideal.mem_comap]`. Conclude with `ValuationSubring.valuation_lt_one_iff A (f x)`. Establish `hlP : (l : 𝓞 K) ∈ P`. Rewrite using `[hPmem, hA, comap_valuation_lt_one_iff']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : J (algebraMap K Ω ((l : 𝓞 K) : K)) = algebraMap O (AlgebraicClosure (FractionRing O)) (l : O)`. Simplify using `only [map_natCast]`. Rewrite using `[e]`. Conclude with `val_lt_one hO`. Establish `hl0 : (l : 𝓞 K) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Establish `h2` using `congrArg (algebraMap (𝓞 K) K) h`. Rewrite `h2` using `[map_natCast, map_zero, Nat.cast_eq_zero]`. Conclude with `hl h2`. Establish `hP0 : P ≠ ⊥`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hlP` using `[h]`. Conclude with `hl0 ((Submodule.mem_bot _).1 hlP)`. Use `haveI : P.IsPrime := Ideal.comap_isPrime f _`. Set `v : HeightOneSpectrum (𝓞 K)` to `⟨P, inferInstance, hP0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨v, A, hlP, fun x => (hPmem x).symm, fun τ => ?_⟩` and prove the remaining obligations. Establish `hfix : τ.toAlgHom.toRingHom.comp (J.comp (algebraMap K Ω)) = J.comp (algebraMap K Ω)`. Use extensionality with `c`. Take `⟨w, hw⟩` from `hJ c`. Use `show τ (J (algebraMap K Ω c)) = J (algebraMap K Ω c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw]`. Conclude with `τ.commutes w`. Establish `hrange : ∀ x : Ω, ∃ y : Ω, J y = τ (J x)`. Introduce `x`. Use `set p := minpoly K x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hxi : IsIntegral K x` using `Algebra.IsIntegral.isIntegral x`. Establish `hp0 : p ≠ 0` using `minpoly.ne_zero hxi`. Establish `key` using `Polynomial.hom_eval₂ p (J.comp (algebraMap K Ω)) τ.toAlgHom.toRingHom (J x)`. Rewrite `key` using `[hfix]`. Establish `h0 : p.eval₂ (J.comp (algebraMap K Ω)) (J x) = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Polynomial.hom_eval₂, ← Polynomial.aeval_def, minpoly.aeval, map_zero]`. Rewrite `key` using `[h0, map_zero]`. Establish `hroot : ((p.map (algebraMap K Ω)).map J).IsRoot (τ (J x))`. Rewrite using `[Polynomial.IsRoot, Polynomial.map_map, Polynomial.eval_map]`. Conclude with `key.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hspl : (p.map (algebraMap K Ω)).Splits` using `Polynomial.splits_iff_card_roots.2 IsAlgClosed.card_roots_eq_natDegree`. Take `⟨y, hy⟩` from `hspl.mem_range_of_isRoot (Polynomial.map_ne_zero hp0) hroot`. Conclude with `⟨y, hy⟩`. Use `choose σ hσ using hrange`. Set `gh : Ω →ₐ[K] Ω` to `{ toFun := σ map_one' := J.injective (by simp only [hσ, map_one]) map_mul' := fun a b => J.injective (by simp only [hσ, map_mul]) map_zero' := J.injective (by simp only [hσ, map_zero]) map_add' := fun a b => J.injective (by simp only [hσ, map_add]) commutes' := fun c => J.injecti …`.
-
-Rewrite using `[hσ]`. Take `⟨w, hw⟩` from `hJ c`. Rewrite using `[← hw]`. Conclude with `τ.commutes w) }`. Establish `hbij : Function.Bijective gh` using `Algebra.IsAlgebraic.algHom_bijective gh`.
-
-Set `g : G K Ω` to `AlgEquiv.ofBijective gh hbij`. Establish `hg : ∀ x, J (g x) = τ (J x)` using `fun x => hσ x`. Use `⟨g, ?_, hg⟩` and prove the remaining obligations. Use `show g ∈ Formalism.ConjugateSelfDual.Inertia (F := K) A`. Use `And.intro ?_ (fun x hx => ?_)` and prove the remaining obligations.
-
-Use `open Pointwise in`. Rewrite using `[ValuationSubring.decompositionSubgroup, MulAction.mem_stabilizer_iff]`. Use extensionality with `z`. Establish `e : J (g (g⁻¹ • z)) = J z`. Rewrite using `[AlgEquiv.smul_def, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`.
-
-Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_comap, ValuationSubring.mem_comap, ← apply_mem_intBar τ, ← hg, e]`. Establish `hxA : x ∈ A` using `(A.valuation_le_one_iff x).1 hx`. Rewrite using `[hA, comap_valuation_lt_one_iff', map_sub, hg]`. Conclude with `val_apply_sub_lt_one hk τ (ValuationSubring.mem_comap.1 hxA)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inertia (hk : IsAlgClosed (ResidueField O)) {l : ℕ} (hl : l ≠ 0) (hO : (l : O) ∈ maximalIdeal O)
     {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
@@ -323,7 +311,7 @@ end Inertia
 section Fourier
 
 /- English proof (translation)
-Use `haveI : NeZero ((Monoid.exponent Δ : ℕ) : Ω) := ⟨Nat.cast_ne_zero.2 Monoid.exponent_ne_zero_of_finite⟩`. Assume the negation of the conclusion as `ha`. Take `⟨r, hr⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity Δ Ω ha`. Conclude with `hr (h r)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_one_of_chars {Δ Ω : Type} [CommGroup Δ] [Finite Δ] [Field Ω] [IsAlgClosed Ω] [CharZero Ω] {a : Δ}
     (h : ∀ r : Δ →* Ωˣ, r a = 1) : a = 1 := by
@@ -333,23 +321,21 @@ theorem eq_one_of_chars {Δ Ω : Type} [CommGroup Δ] [Finite Δ] [Field Ω] [Is
   exact hr (h r)
 
 /- English proof (translation)
-Use `haveI : NeZero ((Monoid.exponent Δ : ℕ) : Ω) := ⟨Nat.cast_ne_zero.2 Monoid.exponent_ne_zero_of_finite⟩`. Use `haveI : Fintype (Δ →* Ωˣ) := Fintype.ofFinite _`. Use `set N : ℕ := Fintype.card (Δ →* Ωˣ) with hNdef`. Establish `hN : (N : Ω) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `hNC : (N : C) ≠ 0` using `by rw [← map_natCast j]; exact (map_ne_zero j).2 hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `orth : ∀ d : Δ, ∑ r : Δ →* Ωˣ, ((r d : Ωˣ) : Ω) = if d = 1 then (N : Ω) else 0`. Introduce `d`. Use `split_ifs with hd`. Simplify using `[hd, hNdef]`. Establish `hnot : ¬ ∀ r : Δ →* Ωˣ, r d = 1` using `fun h' => hd (eq_one_of_chars (Ω := Ω) h')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨r0, hr0⟩` from `not_forall.1 hnot`. Establish `hs : ∑ r : Δ →* Ωˣ, ((r0 d : Ωˣ) : Ω) * ((r d : Ωˣ) : Ω) = ∑ r : Δ →* Ωˣ, ((r d : Ωˣ) : Ω)` using `Fintype.sum_equiv (Equiv.mulLeft r0) _ _ (fun r => by simp)`. Rewrite `hs` using `[← Finset.mul_sum]`. Establish `h1 : ((r0 d : Ωˣ) : Ω) ≠ 1` using `fun h' => hr0 (Units.ext h')`. Establish `h2 : (1 - ((r0 d : Ωˣ) : Ω)) * ∑ r : Δ →* Ωˣ, ((r d : Ωˣ) : Ω) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[sub_mul, one_mul, hs, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 (Ne.symm h1))`. Use `⟨(N : Ω)⁻¹ * ∑ r : Δ →* Ωˣ, (((r δ)⁻¹ : Ωˣ) : Ω) * ρ r, ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ r : Δ →* Ωˣ, j (((r δ)⁻¹ : Ωˣ) : Ω) * j (ρ r) = ∑ d, j (((r (δ⁻¹ * d)) : Ωˣ) : Ω) * P d`. Introduce `r`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[h r, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul r, map_inv r, Units.val_mul, map_mul j, mul_assoc]`. Simplify using `only [map_mul, map_inv₀, map_natCast, map_sum]`. Repeatedly rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_mul, ← map_sum, orth]`. Rewrite using `[Finset.sum_eq_single δ]`. Simplify using `[hNC]`. Introduce `d _ hd`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `: δ⁻¹ * d ≠ 1` using `fun h' => hd (by rw [inv_mul_eq_one] at h'; exact h'.symm)`. Simplify using `[this]`. Introduce `hδ`. Conclude with `absurd (Finset.mem_univ δ) hδ`. Introduce `g hg`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `e : (Δ →* Ωˣ) ≃ (Δ →* Ωˣ)` to `{ toFun := fun r => (Units.map g.toMonoidHom).comp r invFun := fun r => (Units.map g.symm.toMonoidHom).comp r left_inv := fun r => by ext d; simp right_inv := fun r => by ext d; simp }`. Simplify using `only [map_mul, map_inv₀, map_natCast, map_sum]`. Use `congr 1`. Use `Fintype.sum_equiv e _ _ (fun r => ?_)` and prove the remaining obligations. Rewrite using `[hg r]`.
-
-Simplify using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem exists_fixed {Δ Ω C : Type} [CommGroup Δ] [Fintype Δ] [Field Ω] [IsAlgClosed Ω] [CharZero Ω] [Field C] (j : Ω →+* C)
     (P : Δ → C) (ρ : (Δ →* Ωˣ) → Ω) (h : ∀ r, j (ρ r) = ∑ δ, j (r δ) * P δ) (δ : Δ) :
@@ -409,9 +395,9 @@ section Values
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hq : ((modF y : ℝ)) = ((∏ᶠ v : HeightOneSpectrum (𝓞 E), ((Ideal.absNorm v.asIdeal : ℕ) : ℚ) ^ (WithZero.log (Valued.v ((y : Af E) v))) : ℚ) : ℝ)`. Rewrite using `[modF]`. Establish `h` using `(Rat.castHom ℝ).toMonoidHom.map_finprod_of_injective Rat.cast_injective (fun v : HeightOneSpectrum (𝓞 E) => ((Ideal.absNorm v.asIdeal : ℕ) : ℚ) ^ (WithZero.log (Valued.v ((y : Af E) v))))`. Simplify using `using h.symm`. Rewrite using `[hq, Complex.ofReal_ratCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SubfieldClass.ratCast_mem M _`.
+A detailed English derivation is pending.
 -/
 theorem modF_mem (M : Subfield ℂ) (y : (Af E)ˣ) : ((modF y : ℝ) : ℂ) ∈ M := by
   have hq : ((modF y : ℝ)) = ((∏ᶠ v : HeightOneSpectrum (𝓞 E),
@@ -424,29 +410,23 @@ theorem modF_mem (M : Subfield ℂ) (y : (Af E)ˣ) : ((modF y : ℝ) : ℂ) ∈ 
   exact SubfieldClass.ratCast_mem M _
 
 /- English proof (translation)
-Set `H : Subgroup ℂˣ` to `{ carrier := {z | (z : ℂ) ∈ M} mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, Units.val_mul] at ha hb ⊢`. Conclude with `M.mul_mem ha hb`. Use the proof step `one_mem' := by`. Simplify using `only [Set.mem_setOf_eq, Units.val_one]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `M.one_mem`. Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq, Units.val_inv_eq_inv_val] at ha ⊢`. Conclude with `M.inv_mem ha }`. Establish `hH : ∀ z : ℂˣ, z ∈ H ↔ (z : ℂ) ∈ M` using `fun z => Iff.rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `ψ : (Af E)ˣ →* ℂˣ ⧸ H` to `(QuotientGroup.mk' H).comp (finPart χ)`. Establish `hψ : ∀ z, ψ z = 1 ↔ (finPart χ z : ℂ) ∈ M`. Introduce `z`. Rewrite using `[← hH]`. Conclude with `QuotientGroup.eq_one_iff (finPart χ z)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : princ ⊔ hatOUnits c ≤ ψ.ker`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `z hz`. Establish `hz' : z ∈ (Units.map (algebraMap E (Af E)).toMonoidHom).range` using `hz`. Take `⟨k, rfl⟩` from `MonoidHom.mem_range.1 hz'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[MonoidHom.mem_ker, hψ]`. Establish `h2 : finPart χ ((Units.map (algebraMap E (Af E)).toMonoidHom) k) = (χ.inf k)⁻¹` using `eq_inv_of_mul_eq_one_left (finPart_mul_inf χ k)`. Rewrite using `[h2, Units.val_inv_eq_inv_val]`. Apply `M.inv_mem` to reduce the goal to its premises. Rewrite using `[(hasInfRatio_iff χ φ m).1 hm k]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Apply `M.prod_mem` to reduce the goal to its premises. Introduce `i _`. Apply `M.zpow_mem` to reduce the goal to its premises. Conclude with `M.div_mem (hE (φ i) (k : E)) (hE ((starRingEnd ℂ).comp (φ i)) (k : E))`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.mem_ker, hψ, hu z hz, Units.val_one]`. Conclude with `M.one_mem`. Set `ψb : PicO c →* ℂˣ ⧸ H` to `QuotientGroup.lift _ ψ hker`. Establish `hψb : ∀ z, ψb (QuotientGroup.mk z) = ψ z` using `fun z => QuotientGroup.lift_mk' _ hker z`. Use `haveI : Finite ψb.range := Finite.of_surjective ψb.rangeRestrict ψb.rangeRestrict_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ψ y ∈ ψb.range` using `⟨QuotientGroup.mk y, hψb y⟩`. Establish `key : ∀ r : ψb.range →* ℂˣ, r ⟨ψ y, hmem⟩ = 1`. Introduce `r`. Establish `hrr : ∀ z, ψb.rangeRestrict (QuotientGroup.mk z) = ⟨ψ z, ⟨QuotientGroup.mk z, hψb z⟩⟩` using `fun z => Subtype.ext (by rw [MonoidHom.coe_rangeRestrict, hψb])`. Establish `h` using `GlobalTheory.ToricDistribution.pic_char_eq_finPart hc (r.comp ψb.rangeRestrict) 1 S ?_ y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : finPart (1 : HChar E) y = 1` using `by simp [finPart]`. Rewrite `h` using `[h1, MonoidHom.comp_apply, hrr]`. Conclude with `h`. Introduce `P hP`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `x _`. Simplify using `[Formalism.L2.Host.HChar.loc]`. Establish `hv : ψ (unifAt P) = 1`. Rewrite using `[hψ, finPart_unifAt]`. Conclude with `hS P hP`.
-
-Establish `hr1 : ψb.rangeRestrict (QuotientGroup.mk (unifAt P)) = 1`. Rewrite using `[hrr]`. Conclude with `Subtype.ext hv`. Rewrite using `[MonoidHom.comp_apply, hr1, map_one]`. Simplify using `[Formalism.L2.Host.HChar.val, Formalism.L2.Host.HChar.locK, Formalism.L2.Host.HChar.loc]`.
-
-Establish `hone : (⟨ψ y, hmem⟩ : ψb.range) = 1` using `eq_one_of_chars (Ω := ℂ) key`. Conclude with `(hψ y).1 (congrArg Subtype.val hone)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finPart_mem {I : Type} [Fintype I] {φ : I → E →+* ℂ} {m : I → ℤ} {χ : HChar E} (hm : HasInf χ φ m) {c : Ideal (OF E)}
     (hc : c ≠ ⊥) [Finite (PicO c)] (hu : ∀ y ∈ hatOUnits c, finPart χ y = 1) (M : Subfield ℂ)

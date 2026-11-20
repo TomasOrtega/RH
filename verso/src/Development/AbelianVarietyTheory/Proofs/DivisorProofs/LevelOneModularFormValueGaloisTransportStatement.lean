@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF IsTauOf)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.QFam.levelOne_value_transport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLevelOneModularFormValueGaloisTransport.lean&line=18#L18)
 -/

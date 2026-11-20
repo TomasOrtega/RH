@@ -16,9 +16,7 @@ section Inf
 variable (E : Type) [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `continuous_pi fun v => ?_` and prove the remaining obligations. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]`. Conclude with `((continuous_apply _).comp continuous_fst).congr fun y => (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace E).apply_symm_apply y)) ⟨v, hv⟩).symm`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]`.
-
-Conclude with `((continuous_apply _).comp continuous_snd).congr fun y => (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace E).apply_symm_apply y)) ⟨v, hv⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_mixedSymm : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace E).symm := by
   refine continuous_pi fun v => ?_
@@ -31,7 +29,7 @@ theorem continuous_mixedSymm : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpac
       (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace E).apply_symm_apply y)) ⟨v, hv⟩).symm
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infIdele : Continuous (infIdele E) :=
   Continuous.units_map _ (continuous_id.prodMk continuous_const)
@@ -49,7 +47,7 @@ def infUnit : ({w : InfinitePlace E // w.IsComplex} → ℂˣ) →* (InfiniteAde
   (Units.map (InfiniteAdeleRing.ringEquiv_mixedSpace E).symm.toRingHom.toMonoidHom).comp (cplxUnit E)
 
 /- English proof (translation)
-Use `(Continuous.units_map ((InfiniteAdeleRing.ringEquiv_mixedSpace E).symm.toRingHom.toMonoidHom) (continuous_mixedSymm E)).comp (f := cplxUnit E) ?_` and prove the remaining obligations. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.prodMk (continuous_pi fun w => Units.continuous_val.comp (continuous_apply w))`. Conclude with `continuous_const.prodMk (continuous_pi fun w => Units.continuous_coe_inv.comp (continuous_apply w))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_infUnit : Continuous (infUnit E) := by
   refine (Continuous.units_map ((InfiniteAdeleRing.ringEquiv_mixedSpace E).symm.toRingHom.toMonoidHom) (continuous_mixedSymm E)).comp (f := cplxUnit E) ?_
@@ -58,13 +56,13 @@ theorem continuous_infUnit : Continuous (infUnit E) := by
   · exact continuous_const.prodMk (continuous_pi fun w => Units.continuous_coe_inv.comp (continuous_apply w))
 
 /- English proof (translation)
-The claim follows from `funext fun w => absurd w.2 (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1))`.
+A detailed English derivation is pending.
 -/
 theorem real_eq (f g : {w : InfinitePlace E // w.IsReal} → ℝ) : f = g :=
   funext fun w => absurd w.2 (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1))
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(InfiniteAdeleRing.ringEquiv_mixedSpace E).symm ((fun _ => 1), fun w => w.1.embedding (k : E)) = algebraMap E (InfiniteAdeleRing E) (k : E)`. Rewrite using `[RingEquiv.symm_apply_eq, ← InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Conclude with `Prod.ext (real_eq E _ _) (funext fun w => (mixedEmbedding_apply_isComplex E (k : E) w).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infUnit_emb (k : Eˣ) :
     infUnit E (fun w => Units.map w.1.embedding.toMonoidHom k) = infPart E (diagUnits E k) := by
@@ -75,7 +73,7 @@ theorem infUnit_emb (k : Eˣ) :
   exact Prod.ext (real_eq E _ _) (funext fun w => (mixedEmbedding_apply_isComplex E (k : E) w).symm)
 
 /- English proof (translation)
-Use `⟨fun w => Units.map (((Pi.evalRingHom _ w).comp (RingHom.snd _ _)).comp (InfiniteAdeleRing.ringEquiv_mixedSpace E).toRingHom).toMonoidHom u, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(InfiniteAdeleRing.ringEquiv_mixedSpace E).symm ((fun _ => 1), fun w => (InfiniteAdeleRing.ringEquiv_mixedSpace E (u : InfiniteAdeleRing E)).2 w) = u`. Rewrite using `[RingEquiv.symm_apply_eq]`. Conclude with `Prod.ext (real_eq E _ _) rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infUnit_surj (u : (InfiniteAdeleRing E)ˣ) : ∃ z, infUnit E z = u := by
   refine ⟨fun w => Units.map (((Pi.evalRingHom _ w).comp (RingHom.snd _ _)).comp
@@ -99,14 +97,14 @@ theorem finPart_diag_val (v : HeightOneSpectrum (𝓞 E)) (k : Eˣ) :
       algebraMap E (v.adicCompletion E) (k : E) := rfl
 
 /- English proof (translation)
-The claim follows from `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (y : E)).trans (v.valuation_of_algebraMap y)`.
+A detailed English derivation is pending.
 -/
 theorem val_coe (v : HeightOneSpectrum (𝓞 E)) (y : 𝓞 E) :
     Valued.v (algebraMap E (v.adicCompletion E) (y : E)) = v.intValuation y :=
   (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (y : E)).trans (v.valuation_of_algebraMap y)
 
 /- English proof (translation)
-Apply `hu` to reduce the goal to its premises. Rewrite using `[finPart_diag_val, hk, val_coe]`. Conclude with `v.intValuation_eq_one_iff.2 hy`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_unit (χ : Ideles E →* ℂˣ) (v : HeightOneSpectrum (𝓞 E)) (k : Eˣ) (y : 𝓞 E) (hk : (k : E) = y)
     (hy : y ∉ v.asIdeal) (hu : UnrAt χ v) : χ (localIdele E v (finPart E v (diagUnits E k))) = 1 := by
@@ -123,51 +121,43 @@ theorem coe_algebraMap (F : Type) [Field F] [NumberField F] [Algebra F E] (a : �
 end Loc
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ χ hχ hdeg`. Take `⟨hunr, hcond, hfact⟩` from `GlobalTheory.T.continuous_ideleChar_local_factorization E χ hχ.1`. Take `⟨θ, hθF, D, hD0, hDspan⟩` from `GlobalTheory.T.exists_integral_generator_common_denom_of_isQuadratic F E`. Establish `hθ0 : (θ : E) ≠ 0` using `fun h => hθF ⟨0, by rw [h, map_zero]⟩`. Establish `hθ0' : θ ≠ 0` using `fun h => hθ0 (by rw [h]; rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD0' : algebraMap (𝓞 F) (𝓞 E) D ≠ 0`. Introduce `h`. Apply `hD0` to reduce the goal to its premises. Establish `h1 : algebraMap F E (D : F) = 0` using `by rw [← coe_algebraMap, h]; rfl`. Conclude with `(map_eq_zero_iff _ (algebraMap F E).injective).1 h1` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e0 : 𝓞 E := algebraMap (𝓞 F) (𝓞 E) D * θ with he0`. Establish `he0ne : e0 ≠ 0` using `mul_ne_zero hD0' hθ0'`. Establish `hfin : Set.Finite ({v | ¬ UnrAt χ v} ∪ {v | ¬ (DegOne F v → TrivAt χ v)} ∪ {v : HeightOneSpectrum (𝓞 E) | e0 ∈ v.asIdeal})`. Use `((Filter.eventually_cofinite.1 hunr).union (Filter.eventually_cofinite.1 hdeg)).union ?_` and prove the remaining obligations. Use `(Ideal.finite_factors (I := Ideal.span {e0}) ?_).subset fun v hv => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[ne_eq, Submodule.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Conclude with `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hv)`. Use `set S := hfin.toFinset with hS`. Establish `hnotS : ∀ v, v ∉ S → UnrAt χ v ∧ (DegOne F v → TrivAt χ v) ∧ e0 ∉ v.asIdeal`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hS, Set.Finite.mem_toFinset, Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hv`. Conclude with `⟨hv.1.1, hv.1.2, hv.2⟩`. Use `choose n hn using hcond`. Establish `hπ : ∀ v : HeightOneSpectrum (𝓞 E), ∃ π : 𝓞 E, π ∈ v.asIdeal ∧ π ≠ 0` using `fun v => Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Use `choose π hπv hπ0 using hπ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set P : 𝓞 E := ∏ v ∈ S, π v ^ n v with hP`. Establish `hP0 : P ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (hπ0 v)`. Use `set m : Ideal (𝓞 F) := (Ideal.span {θ * P}).comap (algebraMap (𝓞 F) (𝓞 E)) with hm`. Establish `hm0 : m ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem (mul_ne_zero hθ0' hP0) (Ideal.mem_span_singleton_self _) (Algebra.IsIntegral.isIntegral _)`. Take `⟨C, hC⟩` from `GlobalTheory.T.exists_residueClass_near_real_embeddings F m 0 hm0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `set t : Eˣ := Units.mk0 (θ : E) hθ0 with ht`. Establish `hxb : ∀ b : 𝓞 F, ((algebraMap (𝓞 F) (𝓞 E) b + θ : 𝓞 E) : E) ≠ 0`. Introduce `b h`. Apply `hθF` to reduce the goal to its premises. Use `⟨-(b : F), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : ((algebraMap (𝓞 F) (𝓞 E) b : 𝓞 E) : E) + (θ : E) = 0` using `by exact_mod_cast h`. Rewrite `h1` using `[coe_algebraMap]`. Rewrite using `[map_neg]`. Take the linear combination `-h1`. Use `set xb : 𝓞 F → Eˣ := fun b => Units.mk0 _ (hxb b) with hxbdef`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ b ∈ m, χ (infIdele E (infPart E (diagUnits E (xb b)))) = χ (infIdele E (infPart E (diagUnits E t)))`. Introduce `b hb`. Establish `hloc : ∀ v, χ (localIdele E v (finPart E v (diagUnits E (xb b * t⁻¹)))) = 1`. Introduce `v`. Distinguish the cases in `hvS : v ∈ S`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hn v` to reduce the goal to its premises. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 (Ideal.mem_comap.1 hb)`. Establish `h2 : algebraMap (𝓞 F) (𝓞 E) b + θ = (r * P + 1) * θ` using `by rw [← hr]; ring`. Establish `h3 : ((algebraMap (𝓞 F) (𝓞 E) b + θ : 𝓞 E) : E) = ((r * P : 𝓞 E) : E) * (θ : E) + (θ : E)`. Rewrite using `[h2]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hq1 : ((xb b * t⁻¹ : Eˣ) : E) - 1 = ((r * P : 𝓞 E) : E)`. Simplify using `only [hxbdef, ht, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0]`. Rewrite using `[h3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[finPart_diag_val, ← map_one (algebraMap E (v.adicCompletion E)), ← map_sub, hq1, val_coe, v.intValuation_le_pow_iff_mem]`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem (fun w => π w ^ n w) hvS`. Conclude with `Ideal.mul_mem_left _ _ (by rw [hP, hc]; exact Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (hπv v) _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hu, hd, he0v⟩` from `hnotS v hvS`. Simplify using `only [map_mul, map_inv]`. Establish `htv : χ (localIdele E v (finPart E v (diagUnits E t))) = 1` using `loc_unit χ v t θ rfl (fun h => he0v (Ideal.mul_mem_left _ _ h)) hu`. Rewrite using `[htv, inv_one, mul_one]`. Distinguish the cases in `hmem : algebraMap (𝓞 F) (𝓞 E) b + θ ∈ v.asIdeal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `haveI := v.isPrime haveI := v.isMaximal`. Establish `hdeg1 : DegOne F v` using `GlobalTheory.T.residue_degree_one_of_linear_mem' (𝓞 F) (𝓞 E) v.asIdeal θ D b 1 (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal v.asIdeal) hDspan (fun h => he0v (Ideal.mul_mem_right _ _ h)) (by rw [map_one]; exact fun h => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)) (by rwa …`. Conclude with `hd hdeg1 _`. Conclude with `loc_unit χ v (xb b) _ rfl hmem hu`. Establish `hdq` using `hfact (diagUnits E (xb b * t⁻¹)) S (fun v _ => hloc v)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hdq` using `[hχ.2, Finset.prod_eq_one (fun v _ => hloc v), mul_one]`. Simplify using `only [map_mul, map_inv] at hdq`. Conclude with `mul_inv_eq_one.1 hdq.symm`. Establish `hreal : ∀ i : {w : InfinitePlace E // w.IsComplex}, ComplexEmbedding.IsReal (i.1.embedding.comp (algebraMap F E))` using `fun i => InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal _)`. Use `set τ : {w : InfinitePlace E // w.IsComplex} → (F →+* ℝ) := fun i => (hreal i).embedding with hτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hτapp : ∀ i (a : F), ((τ i a : ℝ) : ℂ) = i.1.embedding (algebraMap F E a)` using `fun i a => (hreal i).coe_embedding_apply a`. Establish `hτinj : ∀ {j i : {w : InfinitePlace E // w.IsComplex}}, τ j = τ i → j = i`. Introduce `j i h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `GlobalTheory.T.infinitePlace_eq_of_embedding_comp_algebraMap_eq' F E` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← hτapp, ← hτapp, h]`. Use `set ψ : ({w : InfinitePlace E // w.IsComplex} → ℂˣ) →* ℂˣ := (χ.comp (infIdele E)).comp (infUnit E) with hψ`. Establish `hψc : Continuous ψ` using `hχ.1.comp ((continuous_infIdele E).comp (continuous_infUnit E))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `set T : Set ({w : InfinitePlace E // w.IsComplex} → ℝ) := {y | ∃ b ∈ m, y = fun i => τ i (b : F)} with hT`. Establish `hψ1` using `GlobalTheory.T.eq_one_of_continuous_char_const_on_translates {w : InfinitePlace E // w.IsComplex} ψ (fun i => i.1.embedding (θ : E)) T (max C 0) (χ (infIdele E (infPart E (diagUnits E t)))) hψc (fun i => GlobalTheory.T.im_embedding_ne_zero_of_not_mem_range_algebraMap F E i.1 θ hθ …`. Introduce `x`. Take `⟨z, rfl⟩` from `infUnit_surj E x`. Use `DFunLike.congr_fun hψ1 z` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[hψ]`. Introduce `y`. Set `y' : (F →+* ℝ) → ℝ` to `fun τ' => if h : ∃ i, τ i = τ' then y h.choose else 0`. Take `⟨b, hb, hbC⟩` from `hC y'`. Use `⟨fun i => τ i (b : F), ⟨b, by simpa using hb, rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Use `(pi_norm_le_iff_of_nonneg (le_max_right _ _)).2 fun i => ?_` and prove the remaining obligations. Establish `hy' : y' (τ i) = y i`. Establish `h : ∃ j, τ j = τ i` using `⟨i, rfl⟩`. Simplify using `only [y', dif_pos h]`. Rewrite using `[hτinj h.choose_spec]`.
-
-Rewrite using `[Pi.sub_apply, Real.norm_eq_abs, ← hy']`. Conclude with `(hbC (τ i)).trans (le_max_left _ _)`. Introduce and unpack `_ ⟨b, hb, rfl⟩ z hz`. Establish `hzb : z = fun w => Units.map w.1.embedding.toMonoidHom (xb b)` using `funext fun i => Units.ext (by`. Rewrite using `[hz i, Units.coe_map, hτapp]`.
-
-Simplify using `only [hxbdef, Units.val_mk0, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Rewrite using `[← map_add, ← coe_algebraMap]`. Use the proof step `rfl)`. Rewrite using `[hzb]`. Use `show χ (infIdele E (infUnit E _)) = _`.
-
-Rewrite using `[infUnit_emb]`. Conclude with `key b hb`.
+A detailed English derivation is pending.
 -/
 theorem inf_trivial_of_trivAt_degOne : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] [Algebra.IsQuadraticExtension F E] (χ : Ideles E →* ℂˣ), IsHeckeChar E χ → (∀ᶠ w in Filter.cofinite, DegOne F w → TrivAt χ w) → ∀ x : (InfiniteAdeleRing E)ˣ, χ (infIdele E x) = 1 := by
   intro F E _ _ _ _ _ _ _ _ χ hχ hdeg

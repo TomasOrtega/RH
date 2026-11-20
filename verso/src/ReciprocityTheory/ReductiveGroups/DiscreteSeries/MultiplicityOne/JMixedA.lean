@@ -15,15 +15,15 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [gN, Matrix.map_apply, Complex.normSq_conj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gN_map_conj (M : Mat k r) : gN (M.map (starRingEnd ℂ)) = gN M := by
   simp only [gN, Matrix.map_apply, Complex.normSq_conj]
 
 /- English proof (translation)
-Take `⟨y', hy'⟩ : ∃ y', y' = gbar k r γ y` from `⟨_, rfl⟩`. Establish `h1 : gN y = gN (gbar k r γ y')` using `by rw [hy', InvGrp.gbar_gbar hE]`. Rewrite using `[h1, ← hy']`. Unfold `gbar`. Use `set E := embWb k r γ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hE0` using `gN_nonneg E`. Establish `hEi0` using `gN_nonneg E⁻¹`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(gN_mul_le _ _).trans (mul_le_mul_of_nonneg_right (gN_mul_le _ _) hE0)`. Use `_ = (gN E * gN E⁻¹) ^ 2 * gN y' := by ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gN_le_gbar {γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hE : IsUnit (embWb k r γ).det) (y : Mat k r) :
     gN y ≤ (gN (embWb k r γ) * gN (embWb k r γ)⁻¹) ^ 2 * gN (gbar k r γ y) := by
@@ -44,7 +44,7 @@ theorem gN_le_gbar {γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hE : IsUnit (e
     _ = (gN E * gN E⁻¹) ^ 2 * gN y' := by ring
 
 /- English proof (translation)
-Establish `hB : A / K ≤ B` using `by rw [div_le_iff₀ hK, mul_comm]; exact h`. Establish `hAK : 0 < A / K` using `div_pos hA hK`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow hA.le hK.le, Real.rpow_neg hK.le, div_eq_mul_inv, inv_inv, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem rpow_bound {A B K a : ℝ} (hA : 0 < A) (hK : 0 < K) (ha : 0 ≤ a) (h : A ≤ K * B) :
     B ^ (-a) ≤ K ^ a * A ^ (-a) := by
@@ -55,15 +55,15 @@ theorem rpow_bound {A B K a : ℝ} (hA : 0 < A) (hK : 0 < K) (ha : 0 ≤ a) (h :
       rw [Real.div_rpow hA.le hK.le, Real.rpow_neg hK.le, div_eq_mul_inv, inv_inv, mul_comm]
 
 /- English proof (translation)
-The claim follows from `(⟨(X.σ h).toLinearMap, X.rep.2.1 h hh⟩ : X.Hs →ₗᵢ[ℂ] X.Hs).inner_map_map a b`.
+A detailed English derivation is pending.
 -/
 theorem inner_sig_sig (X : SigData k r) {h : Mat k r} (hh : h ∈ GV k r) (a b : X.Hs) :
     ⟪X.σ h a, X.σ h b⟫_ℂ = ⟪a, b⟫_ℂ := (⟨(X.σ h).toLinearMap, X.rep.2.1 h hh⟩ : X.Hs →ₗᵢ[ℂ] X.Hs).inner_map_map a b
 
 /- English proof (translation)
-Establish `hi : h⁻¹ ∈ GV k r` using `hG.inv_mem h hh`. Establish `hb : X.σ h (X.σ h⁻¹ b) = b`. Establish `e` using `X.rep.1.2 h hh h⁻¹ hi`. Rewrite `e` using `[Matrix.mul_nonsing_inv _ (hG.unit h hh), X.rep.1.1]`. Establish `e2` using `congrArg (fun T : X.Hs →L[ℂ] X.Hs => T b) e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using e2.symm`. Use `conv_lhs => rw [← hb]`. Conclude with `inner_sig_sig X hh a _`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inner_sig_left (X : SigData k r) (hG : IsClosedSubgroup (GV k r)) {h : Mat k r} (hh : h ∈ GV k r)
     (a b : X.Hs) : ⟪X.σ h a, b⟫_ℂ = ⟪a, X.σ h⁻¹ b⟫_ℂ := by
@@ -77,21 +77,17 @@ theorem inner_sig_left (X : SigData k r) (hG : IsClosedSubgroup (GV k r)) {h : M
   exact inner_sig_sig X hh a _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Set `S : Submodule ℂ X.Hs` to `{ carrier := {u | ∀ g ∈ GV k r, ⟪v, X.σ g u⟫_ℂ = 0} add_mem' := by`. Introduce `a b ha hb g hg`. Rewrite using `[map_add, inner_add_right, ha g hg, hb g hg, add_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `zero_mem' := by`. Introduce `g hg`. Rewrite using `[map_zero, inner_zero_right]`. Use the proof step `smul_mem' := by`. Introduce `c a ha g hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_smul, inner_smul_right, ha g hg, mul_zero] }`. Establish `hSc : IsClosed (S : Set X.Hs)`. Establish `e : (S : Set X.Hs) = ⋂ g ∈ GV k r, (fun u => ⟪v, X.σ g u⟫_ℂ) ⁻¹' {0}`. Use extensionality with `u`. Use `show (∀ g ∈ GV k r, ⟪v, X.σ g u⟫_ℂ = 0) ↔ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_iInter, Set.mem_preimage, Set.mem_singleton_iff]`. Rewrite using `[e]`. Conclude with `isClosed_biInter fun g _ => isClosed_singleton.preimage (continuous_const.inner (X.σ g).continuous)`. Establish `hSi : ∀ g ∈ GV k r, ∀ u ∈ S, X.σ g u ∈ S`. Introduce `g hg u hu g' hg'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e` using `X.rep.1.2 g' hg' g hg`. Establish `e2 : X.σ g' (X.σ g u) = X.σ (g' * g) u` using `by rw [e]; rfl`. Use `show ⟪v, X.σ g' (X.σ g u)⟫_ℂ = 0`. Rewrite using `[e2]`. Conclude with `hu _ (hG.mul_mem g' hg' g hg)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : X.w ∈ S` using `fun g hg => hcon g hg`. Break down `X.irr S hSc hSi with h | h` into its components or cases. Establish `h0 : X.w = 0`. Rewrite `hw` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).mp hw`.
-
-Establish `h1` using `X.w_norm`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`. Establish `hv' : v ∈ S` using `by rw [h]; exact Submodule.mem_top`. Establish `h0` using `hv' 1 hG.one_mem`.
-
-Rewrite `h0` using `[X.rep.1.1, ContinuousLinearMap.one_apply, inner_self_eq_zero]`. Conclude with `hv h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inner_ne (X : SigData k r) (hG : IsClosedSubgroup (GV k r)) (v : X.Hs) (hv : v ≠ 0) :
     ∃ g ∈ GV k r, ⟪v, X.σ g X.w⟫_ℂ ≠ 0 := by

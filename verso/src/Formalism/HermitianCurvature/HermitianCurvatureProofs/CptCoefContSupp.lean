@@ -13,7 +13,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.FourierDecayAlt.P.B5.ckOn_continuousOn hF.1, hF.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem cptCoef_cont_supp (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (hF : KB.CptCoef Bs F) :
     ContinuousOn F (B.GV k r) ∧ ∃ R : ℝ, ∀ g ∈ B.GV k r, F g ≠ 0 → B.gN g ≤ R :=
@@ -24,35 +24,35 @@ end coef
 section point
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_perm_val {m n : ℕ} (e : m = n) (σ : Equiv.Perm (Fin m)) (x : Fin n) :
     ((e ▸ σ) x).val = (σ (Fin.cast e.symm x)).val := by
   subst e; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_diag_apply {m n : ℕ} (e : m = n) (d : Fin m → ℂ) (x : Fin n) :
     (e ▸ d) x = d (Fin.cast e.symm x) := by
   subst e; rfl
 
 /- English proof (translation)
-Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.SL.ptSize_append, hh.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptSize_app (h : C.LPt) (n : ℕ) (hh : D.IsLocPt h n) (ζ : ℂ) : D.ptSize (h ++ [(1, ζ)]) = n + 1 := by
   rw [Formalism.FourierDecayAlt.P.Dx2.SL.ptSize_append, hh.2]
 
 /- English proof (translation)
-Establish `hq : D.IsLocPt (h ++ [(1, ζ)]) (n + 1)` using `Formalism.FourierDecayAlt.P.PBI.isLocPt_app h n hh ζ hζ`. Take `⟨h1, h2⟩` from `Formalism.FourierDecayAlt.P.Dx2.VV.ptMatN_monoP' h n hh.2 hh.1`. Take `⟨h3, h4⟩` from `Formalism.FourierDecayAlt.P.Dx2.VV.ptMatN_monoP' (h ++ [(1, ζ)]) (n + 1) (ptSize_app h n hh ζ) hq.1`. Use `⟨?_, h2, h3, h4, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Formalism.FourierDecayAlt.P.Dx1.monomialMatrix_eq_hMat _ _ ?_).symm` and prove the remaining obligations. Introduce `a`. Apply `Fin.ext` to reduce the goal to its premises. Establish `e : Fin.cast hh.2.symm ((hh.2 ▸ D.ptPerm h) a) = D.ptPerm h (Fin.cast hh.2.symm a)` using `Fin.ext (by rw [Fin.val_cast, cast_perm_val])`. Rewrite using `[cast_perm_val, e, Formalism.FourierDecayAlt.P.Dx1.ptPerm_invol, Fin.val_cast]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Rewrite using `[Equiv.symm_apply_eq]`. Apply `Fin.ext` to reduce the goal to its premises. Establish `hs` using `hh.2`. Establish `hb` using `((hh.2 ▸ D.ptPerm h) a).isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[cast_perm_val, Formalism.FourierDecayAlt.P.Dx1.ptPerm_val, Formalism.FourierDecayAlt.P.Dx2.SL.partner_append 1 ζ h _ (by`. Simplify using `only [Fin.val_cast, Fin.val_castSucc]`. Use the proof step `omega)]`. Rewrite using `[if_pos (by simp only [Fin.val_cast, Fin.val_castSucc]; omega)]`. Simplify using `only [Fin.val_cast, Fin.val_castSucc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cast_perm_val]`. Establish `e1` using `Formalism.FourierDecayAlt.P.Dx1.ptPerm_val h (D.ptPerm h (Fin.cast hh.2.symm a))`. Rewrite `e1` using `[Formalism.FourierDecayAlt.P.Dx1.ptPerm_invol]`. Rewrite using `[← e1, Fin.val_cast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perm_app (h : C.LPt) (n : ℕ) (hh : D.IsLocPt h n) (ζ : ℂ) (hζ : ζ ≠ 0) :
     U.hMat (hh.2 ▸ D.ptPerm h) (hh.2 ▸ D.ptDiag h) = D.ptMatN h n ∧ (∀ a, (hh.2 ▸ D.ptDiag h) a ≠ 0) ∧
@@ -94,11 +94,11 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `h : P.r + (P.r - P.r) = P.r` using `by omega`. Establish `e1 : ν'r = Formalism.FourierDecayAlt.P.PBI.nuR p`. Rewrite using `[Formalism.FourierDecayAlt.P.PBI.nuR, ← hν, Formalism.FourierDecayAlt.P.PBI.zL_lift]`. Establish `e2 : m₀r = Formalism.FourierDecayAlt.P.PBI.m0R p`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.PBI.m0R, ← hm]`. Simplify using `only [D.castM, Matrix.reindex_apply, Matrix.submatrix_apply, ιLev]`. Rewrite using `[dif_pos (by simp; omega), dif_pos (by simp; omega)]`. Apply the tactic sequence `congr 1 <;> ext <;> simp`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Formalism.FourierDecayAlt.P.PBI.levFrame_nuR p).2.2`.
+A detailed English derivation is pending.
 -/
 theorem baseFrame_last (p : KB.Pl P Wp Wq) (ν'r : Fin (2 * (P.r - P.r) + P.k + 1) → ℂ) (m₀r : B.Mat P.k (P.r - P.r))
     (hν : D.castV (by omega) (liftVec P.k P.r (P.r - P.r) ν'r) = p.ν')

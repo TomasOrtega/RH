@@ -4,27 +4,23 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixOneAddPo
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l hl n _ _ X k h1 h2 i j`. Establish `hL : (2:ℝ) ≤ l` using `by exact_mod_cast hl.out.two_le`. Establish `hLpos : (0:ℝ) < l` using `by linarith`. Use `set u : ℝ := (l:ℝ)⁻¹ with hu`. Establish `u0 : 0 < u` using `inv_pos.mpr hLpos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `uhalf : u ≤ 1 / 2`. Rewrite using `[hu, one_div]; exact inv_anti₀ (by norm_num) hL`. Establish `hz : ∀ m : ℕ, (l:ℝ) ^ (-(m:ℤ)) = u ^ m` using `fun m => by`. Rewrite using `[zpow_neg, zpow_natCast, inv_pow]`. Establish `e2 : (l:ℝ) ^ (-2:ℤ) = u ^ 2` using `hz 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (l:ℝ) ^ (-(((k + 1 : ℕ) : ℤ) + 2)) = u ^ (k + 3)`. Rewrite using `[← hz]`. Use `congr 1`. Establish `e4 : (l:ℝ) ^ (-((k : ℤ) + 2)) = u ^ (k + 2)`. Rewrite using `[← hz]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[e4]`. Use `set Y := X - 1 with hY`. Use `haveI : Nonempty (n × n) := ⟨(i, j)⟩`. Take `⟨⟨i0, j0⟩, hmax⟩` from `Finite.exists_max (fun p : n × n => ‖Y p.1 p.2‖)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Establish an intermediate fact.
 
-Use `set t := ‖Y i0 j0‖ with ht`. Establish `hall : ∀ a b, ‖Y a b‖ ≤ t` using `fun a b => hmax (a, b)`. It suffices to establish `hs : t ≤ u ^ (k + 2) from (hall i j).trans hs`. Establish `t0 : 0 ≤ t` using `norm_nonneg _`. Establish `tsmall : t ≤ u ^ 2` using `e2 ▸ h1 i0 j0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u1 : u ≤ 1` using `by linarith`. Establish `t1 : t ≤ 1` using `tsmall.trans (pow_le_one₀ u0.le u1)`. Establish `hR` using `GlobalTheory.T.norm_one_add_pow_sub_one_sub_smul_le_sq ℚ_[l] n Y t t0 t1 hall l i0 j0`. Establish `hX : (1 + Y) = X` using `by rw [hY]; abel`. Rewrite `hR` using `[hX]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ‖((l:ℚ_[l]) • Y) i0 j0‖ ≤ max (‖(X ^ l - 1) i0 j0‖) (t ^ 2)`. Establish `: ((l:ℚ_[l]) • Y) i0 j0 = (X ^ l - 1) i0 j0 - (X ^ l - 1 - (l:ℚ_[l]) • Y) i0 j0`. Simplify using `[Matrix.sub_apply]`. Rewrite using `[this]`. Establish `hu' : ∀ a b : ℚ_[l], ‖a - b‖ ≤ max ‖a‖ ‖b‖` using `fun a b => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[sub_eq_add_neg, ← norm_neg b]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`. Conclude with `(hu' _ _).trans (max_le_max le_rfl hR)`. Establish `hnorm : ‖((l:ℚ_[l]) • Y) i0 j0‖ = u * t`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul, Padic.norm_p]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[hnorm]`. Break down `le_max_iff.mp key with h | h` into its components or cases. Establish `h' : u * t ≤ u * u ^ (k + 2)`. Rewrite using `[← pow_succ', ← e3]`. Conclude with `h.trans (h2 i0 j0)`.
-
-Conclude with `le_of_mul_le_mul_left h' u0`. Break down `t0.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Check the signs of the components of the expression. It suffices to derive a contradiction.
-
-Establish `: u ≤ t` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Check the signs of the components of the expression. It suffices to derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem matrix_near_one_pow_prime_deep : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [DecidableEq n]
     (X : Matrix n n ℚ_[l]) (k : ℕ), (∀ i j, ‖(X - 1) i j‖ ≤ (l : ℝ) ^ (-2 : ℤ)) →

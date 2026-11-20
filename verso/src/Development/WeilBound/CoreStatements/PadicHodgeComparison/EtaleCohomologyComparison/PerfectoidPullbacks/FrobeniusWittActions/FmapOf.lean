@@ -16,7 +16,7 @@ variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 def cA (r : Res l K) {C₀ : Type} [CommRing C₀] (c : Acris l →+* C₀) : AW r →+* C₀ := c
 
 /- English proof (translation)
-The claim follows from `hk`.
+A detailed English derivation is pending.
 -/
 theorem hkA (r : Res l K) {C₀ : Type} [CommRing C₀] (c : Acris l →+* C₀) (k : Wc.K₀ l r.k →+* C₀)
     (hk : ∀ w, k (algebraMap (WittVector l r.k) (Wc.K₀ l r.k) w) = c (r.w w)) :
@@ -25,12 +25,12 @@ theorem hkA (r : Res l K) {C₀ : Type} [CommRing C₀] (c : Acris l →+* C₀)
 def vinv {C₀ : Type} [CommRing C₀] (c : Acris l →+* C₀) (hl : IsUnit (c l)) : C₀ := ↑(hl.unit⁻¹)
 
 /- English proof (translation)
-The claim follows from `hl.val_inv_mul`.
+A detailed English derivation is pending.
 -/
 theorem vinv_mul {C₀ : Type} [CommRing C₀] (c : Acris l →+* C₀) (hl : IsUnit (c l)) : vinv c hl * c l = 1 := hl.val_inv_mul
 
 /- English proof (translation)
-Establish `h1 : c l * g (vinv c hl) = 1` using `by rw [← hg, ← map_mul, mul_comm, vinv_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem map_vinv {C₀ : Type} [CommRing C₀] (c : Acris l →+* C₀) (hl : IsUnit (c l)) (g : C₀ →+* C₀) (hg : g (c l) = c l) :
     g (vinv c hl) = vinv c hl := by
@@ -52,9 +52,9 @@ theorem psiF_apply (r : Res l K) {N : ℕ} (F : Fac r N) {C₀ : Type} [CommRing
     psiF r F c k hk hl M j x f = vinv c hl ^ F.e M j * Psi.T (cA r c) k (hkA r c k hk) f (F.α M j x) := rfl
 
 /- English proof (translation)
-Establish `hv : ∀ n, v ^ n * L ^ n = 1` using `fun n => by rw [← mul_pow, h, one_pow]`. Establish `e1 : L ^ a * X = L ^ b * Y`. Use `congrArg (v ^ m * ·) e` as an intermediate fact. Simplify using `only [mul_zero] at this`. Rewrite `this` using `[← mul_assoc, hv, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 this`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem alg_cancel {R : Type} [CommRing R] {v L X Y : R} (h : v * L = 1) (m a b : ℕ)
     (e : L ^ m * (L ^ a * X - L ^ b * Y) = 0) : v ^ b * X = v ^ a * Y := by
@@ -71,7 +71,7 @@ theorem alg_cancel {R : Type} [CommRing R] {v L X Y : R} (h : v * L = 1) (m a b 
     _ = v ^ a * Y := by rw [hv, one_mul]
 
 /- English proof (translation)
-Rewrite using `[psiF_apply, psiF_apply, F.lin M hM j a x]`. Establish `e : ((per l K).φ^[N] a • F.α M j x : AL r M j) = ((show AW r from (per l K).φ^[N] a) • F.α M j x)` using `rfl`. Rewrite using `[e, Psi.T_smul, show cA r c ((⇑(per l K).φ)^[N] a) = c ((⇑(per l K).φ)^[N] a) from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psiF_lin (r : Res l K) {N : ℕ} (F : Fac r N) {C₀ : Type} [CommRing C₀] (c : Acris l →+* C₀) (k : Wc.K₀ l r.k →+* C₀)
     (hk : ∀ w, k (algebraMap (WittVector l r.k) (Wc.K₀ l r.k) w) = c (r.w w)) (hl : IsUnit (c l)) (M : Model l K) (hM : M.Sm) (j : ℕ) (a : (per l K).A) (x : HL M j)
@@ -83,7 +83,7 @@ theorem psiF_lin (r : Res l K) {N : ℕ} (F : Fac r N) {C₀ : Type} [CommRing C
   ring
 
 /- English proof (translation)
-Rewrite using `[psiF_apply, psiF_apply]`. Rewrite using `[show Psi.T (cA r c) k (hkA r c k hk) (z • f) (F.α M j x) = k z * Psi.T (cA r c) k (hkA r c k hk) f (F.α M j x) from Psi.T_ksmul (cA r c) k (hkA r c k hk) z f (F.α M j x)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psiF_lin' (r : Res l K) {N : ℕ} (F : Fac r N) {C₀ : Type} [CommRing C₀] (c : Acris l →+* C₀) (k : Wc.K₀ l r.k →+* C₀)
     (hk : ∀ w, k (algebraMap (WittVector l r.k) (Wc.K₀ l r.k) w) = c (r.w w)) (hl : IsUnit (c l)) (M : Model l K) (j : ℕ) (z : Wc.K₀ l r.k) (x : HL M j)
@@ -95,7 +95,7 @@ theorem psiF_lin' (r : Res l K) {N : ℕ} (F : Fac r N) {C₀ : Type} [CommRing 
   ring
 
 /- English proof (translation)
-Rewrite using `[psiF_apply, psiF_apply, F.gal M hM j g x, Psi.T_gal (cA r c) k (hkA r c k hk) ((per l K).σA g : AW r →+* AW r) (σC g) (F.galT M j g) (fun a y => F.galT_tmul M hM j g a y) (fun a => hσc g a) (hσk g), map_mul, map_pow, map_vinv c hl (σC g) (by rw [hσc, map_natCast])]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem psiF_act (r : Res l K) {N : ℕ} (F : Fac r N) {C₀ : Type} [CommRing C₀] (c : Acris l →+* C₀) (k : Wc.K₀ l r.k →+* C₀)
     (hk : ∀ w, k (algebraMap (WittVector l r.k) (Wc.K₀ l r.k) w) = c (r.w w)) (hl : IsUnit (c l)) (σC : K.fixingSubgroup → C₀ →+* C₀)
@@ -109,7 +109,7 @@ theorem psiF_act (r : Res l K) {N : ℕ} (F : Fac r N) {C₀ : Type} [CommRing C
     map_mul, map_pow, map_vinv c hl (σC g) (by rw [hσc, map_natCast])]
 
 /- English proof (translation)
-Rewrite using `[psiF_apply, F.phi M hM j x, Psi.T_phi (cA r c) k (hkA r c k hk) ((per l K).φ : AW r →+* AW r) φC (Wc.phiS l (B.schFn M.p) r.ρ j).lim (WittVector.FractionRing.frobeniusRingHom l r.k) (Wc.phiD l (B.schFn M.p) r.ρ j) (fun x y => TensorProduct.map_tmul _ _ x y) (F.phiT M j) (fun a y …`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[psiF_apply, map_mul, map_pow, map_vinv c hl φC (by rw [hφc, map_natCast])]`. Conclude with `(mul_assoc _ _ _).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiF_phi (r : Res l K) {N : ℕ} (F : Fac r N) {C₀ : Type} [CommRing C₀] (c : Acris l →+* C₀) (k : Wc.K₀ l r.k →+* C₀)
     (hk : ∀ w, k (algebraMap (WittVector l r.k) (Wc.K₀ l r.k) w) = c (r.w w)) (hl : IsUnit (c l)) (φC : C₀ →+* C₀) (hφc : ∀ a, φC (c a) = c ((per l K).φ a))
@@ -128,11 +128,11 @@ theorem psiF_phi (r : Res l K) {N : ℕ} (F : Fac r N) {C₀ : Type} [CommRing C
   exact (mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `F.nat M M' u hu hM hM' j x`. Establish `h0` using `congrArg (Psi.T (cA r c) k (hkA r c k hk) f) hm`. Rewrite `h0` using `[map_zero]`. Establish `e1 : ∀ (a : (per l K).A) (z : AL r M j), (a • z : AL r M j) = ((show AW r from a) • z)` using `fun _ _ => rfl`. Rewrite `h0` using `[e1, Psi.T_smul, map_sub, e1, e1, Psi.T_smul, Psi.T_smul, Psi.T_lTensor]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : ∀ n : ℕ, cA r c (show AW r from ((l : (per l K).A) ^ n)) = c l ^ n` using `fun n => by`. Express the relevant statement in the definitionally equal form `c ((l : Acris l) ^ n) = _`. Rewrite using `[map_pow]`. Rewrite `h0` using `[hc, hc, hc]`. Rewrite using `[psiF_apply, psiF_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `alg_cancel (vinv_mul c hl) m (F.e M' j) (F.e M j) h0`.
+A detailed English derivation is pending.
 -/
 theorem psiF_nat (r : Res l K) {N : ℕ} (F : Fac r N) {C₀ : Type} [CommRing C₀] (c : Acris l →+* C₀) (k : Wc.K₀ l r.k →+* C₀)
     (hk : ∀ w, k (algebraMap (WittVector l r.k) (Wc.K₀ l r.k) w) = c (r.w w)) (hl : IsUnit (c l)) (M M' : Model l K) (u : M.X ⟶ M'.X) (hu : u ≫ M'.p = M.p) (hM : M.Sm) (hM' : M'.Sm) (j : ℕ)
@@ -156,7 +156,7 @@ def hF (r : Res l K) {N : ℕ} (F : Fac r N) (M : Model l K) (j : ℕ) (f : HL M
   map_add' y y' := by rw [tmul_add, map_add, map_add]
 
 /- English proof (translation)
-Rewrite using `[← TensorProduct.smul_tmul, TensorProduct.smul_tmul']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem one_tmul_smul (r : Res l K) (M : Model l K) (j : ℕ) (w : WittVector l r.k) (y : LW r M j) :
     ((1 : AW r) ⊗ₜ[WittVector l r.k] (w • y) : AL r M j) = ((show (per l K).A from r.w w) • ((1 : AW r) ⊗ₜ[WittVector l r.k] y) : AL r M j) := by
@@ -164,7 +164,7 @@ theorem one_tmul_smul (r : Res l K) (M : Model l K) (j : ℕ) (w : WittVector l 
   rfl
 
 /- English proof (translation)
-Rewrite using `[TensorProduct.smul_tmul']`. Conclude with `congrArg (· ⊗ₜ[WittVector l r.k] y) (mul_one (show Acris l from a)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_eq_smul (r : Res l K) (M : Model l K) (j : ℕ) (a : AW r) (y : LW r M j) :
     (a ⊗ₜ[WittVector l r.k] y : AL r M j) = ((show (per l K).A from a) • ((1 : AW r) ⊗ₜ[WittVector l r.k] y) : AL r M j) := by
@@ -172,24 +172,24 @@ theorem tmul_eq_smul (r : Res l K) (M : Model l K) (j : ℕ) (a : AW r) (y : LW 
   exact congrArg (· ⊗ₜ[WittVector l r.k] y) (mul_one (show Acris l from a)).symm
 
 /- English proof (translation)
-Rewrite using `[h1, ← mul_assoc, ← mul_pow, hv, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_aux {R : Type} [CommRing R] {v L X Y : R} (hv : v * L = 1) (e : ℕ) (h1 : Y = L ^ e * X) : X = v ^ e * Y := by
   rw [h1, ← mul_assoc, ← mul_pow, hv, one_pow, one_mul]
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `hh : ∀ f, GMod.Fn (per l K) (M.HA true).toGMod j f → ∀ (w : WittVector l r.k) (y : LW r M j), hF r F M j f (w • y) = ((per l K).i : AW r →+* (per l K).B) (algebraMap (WittVector l r.k) (AW r) w) * hF r F M j f y`. Introduce `f hf w y`. Express the relevant statement in the definitionally equal form `f (F.β M j ((1 : AW r) ⊗ₜ (w • y))) = _ * f (F.β M j ((1 : AW r) ⊗ₜ y))`. Rewrite using `[one_tmul_smul, LinearMap.map_smul, hf.1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hE : ∀ f (hf : GMod.Fn (per l K) (M.HA true).toGMod j f), ∃ E : Wc.K₀ l r.k ⊗[WittVector l r.k] LW r M j →+ (per l K).B, (∀ x y, E (x ⊗ₜ y) = ι (k x) * hF r F M j f y) ∧ ∀ G : AL r M j →+ (per l K).B, (∀ a y, G (a ⊗ₜ y) = ((per l K).i : AW r →+* (per l K).B) a * hF r F M j f y) → …` using `fun f hf => Psi.T_fac (cA r c) k (hkA r c k hk) ι ((per l K).i : AW r →+* (per l K).B) hιc (hF r F M j f) (hh f hf) b`. Use `⟨fun s f => if hf : GMod.Fn (per l K) (M.HA true).toGMod j f then (hE f hf).choose (b s) else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf s σ dsimp only`. Rewrite using `[dif_pos hf]`. Use `Psi.E_fix k ι ((per l K).σ σ) (hF r F M j f) _ (hE f hf).choose_spec.1 (fun w => ?_) (fun y => ?_) (b s)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, hιc, ← hR.i_σ, hσw]`. Express the relevant statement in the definitionally equal form `(per l K).σ σ (f (F.β M j ((1 : AW r) ⊗ₜ y))) = f (F.β M j ((1 : AW r) ⊗ₜ y))`. Rewrite using `[← hf.2]`. Conclude with `congrArg f (F.galβ M hM j σ y)`. Introduce `x f hf dsimp only`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `G : AL r M j →+ (per l K).B` to `{ toFun := fun z => f (F.β M j z) map_zero' := by rw [map_zero, map_zero] map_add' := fun z z' => by rw [map_add, map_add] }`. Establish `hG` using `(hE f hf).choose_spec.2 G (fun a y => by`. Express the relevant statement in the definitionally equal form `f (F.β M j (a ⊗ₜ y)) = _`. Rewrite using `[tmul_eq_smul, LinearMap.map_smul, hf.1]`. Use the proof step `rfl) (F.α M j x)`.
+Simplify by unfolding definitions. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : f (F.β M j (F.α M j x)) = (per l K).i ((l : (per l K).A) ^ F.e M j) * f ((phiL M j)^[N] x)`. Rewrite using `[F.fac M hM j x, hf.1]`. Establish `hv : ι (vinv c hl) * (per l K).i (l : (per l K).A) = 1`. Rewrite using `[← hιc, ← map_mul, vinv_mul, map_one]`. Establish `h2 : f ((phiL M j)^[N] x) = ι (vinv c hl) ^ F.e M j * f (F.β M j (F.α M j x))` using `inv_aux hv (F.e M j) (h1.trans (congrArg (· * f ((phiL M j)^[N] x)) (map_pow _ _ _)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hG' : f (F.β M j (F.α M j x)) = _` using `hG`. Rewrite using `[h2, hG', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos hf, psiF_apply, map_mul, map_pow]`. Conclude with `(mul_assoc _ _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiF_fac (r : Res l K) {N : ℕ} (F : Fac r N) {C₀ : Type} [CommRing C₀] (c : Acris l →+* C₀) (k : Wc.K₀ l r.k →+* C₀)
     (hk : ∀ w, k (algebraMap (WittVector l r.k) (Wc.K₀ l r.k) w) = c (r.w w)) (hl : IsUnit (c l)) (ι : C₀ →+* (per l K).B) (hιc : ∀ a, ι (c a) = (per l K).i a) (hR : (per l K).Facts)
@@ -243,9 +243,7 @@ theorem psiF_fac (r : Res l K) {N : ℕ} (F : Fac r N) {C₀ : Type} [CommRing C
     exact (mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Use `⟨{ k := N ψ := fun {M} _ j => psiF r F c k hk hl M j fin := fun M hM j => by` and prove the remaining obligations. Use `hfin M hM j` as an intermediate fact. Conclude with `(inferInstance : Module.Finite (Wc.K₀ l r.k) (Wc.K₀ l r.k ⊗[WittVector l r.k] LW r M j))`. Use `pull_id := hid`. Use `lin := fun {M} _ hM j a x f => psiF_lin r F c k hk hl M hM j a x f`.
-
-Use the proof step `lin' := fun {M} _ _ j z x f => psiF_lin' r F c k hk hl M j z x f`. Use `act := fun {M} _ hM j g x f => psiF_act r F c k hk hl σ hC.σ_c hσk M hM j g x f`. Use `phi := fun {M} _ hM j _ b x f => psiF_phi r F c k hk hl φ hC.φ_c hφk M hM j b x f`. Use `nat := fun {M M'} {u hu} {_ _} _ hM hM' j x f => psiF_nat r F c k hk hl M M' u hu hM hM' j x f`. Use `fac := fun {M} _ hM j _ b => psiF_fac r F c k hk hl ι hC.ι_c hR hσw M hM j b }⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fmap_of (r : Res l K) (Amp : ∀ M : Model l K, E.LineData M.X → Prop) (N : ℕ) (F : Fac r N)
     (C₀ : Type) [CommRing C₀] (c : Acris l →+* C₀) (ι : C₀ →+* (per l K).B) (φ : C₀ →+* C₀)

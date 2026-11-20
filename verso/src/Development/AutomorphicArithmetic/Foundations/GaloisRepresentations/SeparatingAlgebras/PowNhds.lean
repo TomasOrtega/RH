@@ -10,7 +10,7 @@ section
 variable {𝕜 R : Type*} [NontriviallyNormedField 𝕜] [NormedRing R] [NormedAlgebra 𝕜 R]
 
 /- English proof (translation)
-Use `(hasStrictFDerivAt_pow' (𝕜 := 𝕜) N (x := (1 : R))).congr_fderiv ?_` and prove the remaining obligations. Simplify using `only [one_pow, MulOpposite.op_one, one_smul, Finset.sum_const, Finset.card_range]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma strict_pow (N : ℕ) :
     HasStrictFDerivAt (fun x : R => x ^ N) ((N : 𝕜) • ContinuousLinearMap.id 𝕜 R) (1 : R) := by
@@ -19,7 +19,7 @@ private lemma strict_pow (N : ℕ) :
   rw [Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Establish `hN' : (N : 𝕜) ≠ 0` using `Nat.cast_ne_zero.mpr hN`. Set `e : R ≃L[𝕜] R` to `ContinuousLinearEquiv.equivOfInverse ((N : 𝕜) • ContinuousLinearMap.id 𝕜 R) ((N : 𝕜)⁻¹ • ContinuousLinearMap.id 𝕜 R) (fun x => by simp [smul_smul, hN']) (fun x => by simp [smul_smul, hN'])`. Establish `hf : HasStrictFDerivAt (fun x : R => x ^ N) (e : R →L[𝕜] R) 1` using `strict_pow (𝕜 := 𝕜) N`. Simplify using `using hf.map_nhds_eq_of_equiv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma map_pow_nhds [CharZero 𝕜] [CompleteSpace 𝕜] [CompleteSpace R] {N : ℕ} (hN : N ≠ 0) :
     map (fun x : R => x ^ N) (𝓝 1) = 𝓝 1 := by
@@ -31,9 +31,9 @@ private lemma map_pow_nhds [CharZero 𝕜] [CompleteSpace 𝕜] [CompleteSpace R
   simpa using hf.map_nhds_eq_of_equiv
 
 /- English proof (translation)
-Establish `he` using `Units.isOpenEmbedding_val (R := R)`. Establish `h1 : ((↑) : Rˣ → R) '' V ∈ 𝓝 (1 : R)`. Simplify using `using he.image_mem_nhds.mpr hV`. Establish `h2 : (fun x : R => x ^ N) '' (((↑) : Rˣ → R) '' V) ∈ 𝓝 (1 : R)`. Rewrite using `[← map_pow_nhds (𝕜 := 𝕜) hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `image_mem_map h1`. Rewrite using `[← he.image_mem_nhds]`. Rewrite using `[Set.image_image, Units.val_one]`. Rewrite `h2` using `[Set.image_image]`. Simplify using `using h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma units_pow_nhds [CharZero 𝕜] [CompleteSpace 𝕜] [CompleteSpace R] {N : ℕ} (hN : N ≠ 0)
     {V : Set Rˣ} (hV : V ∈ 𝓝 (1 : Rˣ)) : (fun x => x ^ N) '' V ∈ 𝓝 (1 : Rˣ) := by
@@ -50,9 +50,7 @@ private lemma units_pow_nhds [CharZero 𝕜] [CompleteSpace 𝕜] [CompleteSpace
 end
 
 /- English proof (translation)
-Introduce `E _ _ w a N hN V hV`. Use `letI : NontriviallyNormedField (w.adicCompletion E) := Valued.toNontriviallyNormedField _ (WithZero (Multiplicative ℤ))`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective`. Use `letI : NormedRing (Matrix (Fin a) (Fin a) (w.adicCompletion E)) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra (w.adicCompletion E) (Matrix (Fin a) (Fin a) (w.adicCompletion E)) := Matrix.linftyOpNormedAlgebra`.
-
-Use `haveI : @CompleteSpace (Matrix (Fin a) (Fin a) (w.adicCompletion E)) (@Matrix.linftyOpNormedRing (Fin a) (w.adicCompletion E) _ _ _).toUniformSpace := inferInstanceAs (CompleteSpace (Fin a → Fin a → w.adicCompletion E))`. Conclude with `units_pow_nhds (𝕜 := w.adicCompletion E) hN hV`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.powNhds_pf :
     UpperTheory.Gal.Gen.PowNhds := by

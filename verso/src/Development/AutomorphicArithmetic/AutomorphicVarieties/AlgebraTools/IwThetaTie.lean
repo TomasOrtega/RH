@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HkDef
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Establish `h'` using `congrArg ev h`. Rewrite `h'` using `[map_mul, map_smul, hy, hz, hw, Units.val_mul, ← smul_mul_assoc]`. Conclude with `(Units.mul_left_inj _).1 h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.evaluation_unit_factor {A H E : Type} [CommRing A] [Semiring H] [Algebra A H] [Semiring E] [Algebra A E]
     (ev : H →ₐ[A] E) (a y z : H) (c : A) (u v w : Eˣ) (h : a * y = c • z) (hy : ev y = v) (hz : ev z = w)
@@ -13,19 +13,17 @@ private theorem UpperTheory.V.AlgebraTools.evaluation_unit_factor {A H E : Type}
   exact (Units.mul_left_inj _).1 h'
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n A M _ _ _ ρ x hx _ b ev θ hev hθ hb i`. Establish `hx1 : valuation k (x : k) ≤ 1`. Take `⟨p, -, hp⟩` from `hx`. Rewrite using `[← hp]`. Conclude with `p.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdom : ∀ m : ℕ, Dom (fun j : Fin n => x ^ fund n m j)`. Introduce `m j l hjl`. Establish `hjl' : (j : ℕ) ≤ (l : ℕ)` using `hjl`. Simplify using `only [fund]`. Distinguish the cases in `h1 : (l : ℕ) < m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2 : (j : ℕ) < m` using `lt_of_le_of_lt hjl' h1`. Simplify using `[h1, h2]`. Distinguish the cases in `h2 : (j : ℕ) < m`. Simplify `hx1` using `[h1, h2]`. Simplify using `[h1, h2]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsplit : (fun j : Fin n => x ^ fund n ((i : ℕ) + 1) j) = Pi.mulSingle i x * (fun j : Fin n => x ^ fund n (i : ℕ) j)`. Use function extensionality and compare the values at `j`. Simplify using `only [fund, Pi.mul_apply]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hne : (j : ℕ) ≠ (i : ℕ)` using `fun h => hj (Fin.ext h)`. Rewrite using `[Pi.mulSingle_eq_of_ne hj, one_mul]`. Distinguish the cases in `h : (j : ℕ) < (i : ℕ)`. Establish `h' : (j : ℕ) < (i : ℕ) + 1` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h, h']`. Establish `h' : ¬ (j : ℕ) < (i : ℕ) + 1` using `by omega`. Simplify using `[h, h']`. Use `UpperTheory.V.AlgebraTools.evaluation_unit_factor ev _ _ _ _ _ (θ fun j : Fin n => x ^ fund n (i : ℕ) j) (θ fun j : Fin n => x ^ fund n ((i : ℕ) + 1) j) (hb i) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(hev _).trans (hθ _ (hdom _)).symm`.
-
-Conclude with `(hev _).trans (hθ _ (hdom _)).symm`. Rewrite using `[hsplit]`. Conclude with `map_mul θ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.thetaTie :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A (GL (Fin n) k) M) (x : kˣ), IsUnif x → IsUnit (resCard k : A) → ∀ (b : UpperTheory.V.AlgebraTools.Hk.Bern n (resCard k : A) (HkAlg A (iwC k n ⊤))) (ev : HkAlg A (iwC k n ⊤) →ₐ[A] Module.End A (fixd ρ (iwC k n ⊤))) (θ : (Fin n → kˣ) →* (Module.End A (fixd ρ (iwC k n ⊤)))ˣ), (∀ g, ev (hT A (iwC k n ⊤) g) = hk ρ (iwC k n ⊤) g) → (∀ t, Dom t → (θ t : Module.End A (fixd ρ (iwC k n ⊤))) = hk ρ (iwC k n ⊤) (diagT k (Fin n) t)) → (∀ i : Fin n, b.th (MvPolynomial.X i) * hT A (iwC k n ⊤) (pw x (fund n i)) = ((resCard k : A) ^ (i : ℕ)) • hT A (iwC k n ⊤) (pw x (fund n ((i : ℕ) + 1)))) → ∀ i : Fin n, ev (b.th (MvPolynomial.X i)) = ((resCard k : A) ^ (i : ℕ)) • (θ (Pi.mulSingle i x) : Module.End A (fixd ρ (iwC k n ⊤))) := by

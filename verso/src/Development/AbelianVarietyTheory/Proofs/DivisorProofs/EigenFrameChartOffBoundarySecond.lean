@@ -24,9 +24,7 @@ open scoped ComplexOrder Topology
 namespace GlobalTheory.HodgeFlagModelConj
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ w in 𝓝 v, DifferentiableAt ℂ (fun w => starRingEnd ℂ (h (star w))) w` using `by filter_upwards [(continuous_star.tendsto v).eventually hh.eventually_analyticAt] with w hw`. Establish `h2` using `hw.differentiableAt.star_star`. Rewrite `h2` using `[star_star]`. Conclude with `h2`. Take `⟨S, hS, hSo, hv⟩` from `eventually_nhds_iff.1 h1`.
-
-Conclude with `(SCV.analyticOnNhd_iff_differentiableOn hSo).2 (fun w hw => (hS w hw).differentiableWithinAt) v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem analyticAt_conj_comp {d : ℕ} {h : (Fin d → ℂ) → ℂ} {v : Fin d → ℂ} (hh : AnalyticAt ℂ h (star v)) :
     AnalyticAt ℂ (fun w => starRingEnd ℂ (h (star w))) v := by
@@ -39,7 +37,7 @@ private theorem analyticAt_conj_comp {d : ℕ} {h : (Fin d → ℂ) → ℂ} {v 
   exact (SCV.analyticOnNhd_iff_differentiableOn hSo).2 (fun w hw => (hS w hw).differentiableWithinAt) v hv
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ShFam.ConjMet.map_conj_eq, GlobalTheory.ShFam.ConjMet.map_conj_eq, ← transpose_nonsing_inv, ← conjTranspose_nonsing_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem inv_map_conj {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) :
     (M.map (starRingEnd ℂ))⁻¹ = M⁻¹.map (starRingEnd ℂ) := by
@@ -49,9 +47,9 @@ private theorem inv_map_conj {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Introduce `τ`. Establish `h` using `(hz τ).transpose`. Establish `e : (1 - (z τ)ᴴ * z τ)ᵀ = 1 - ((z τ).map (starRingEnd ℂ))ᴴ * (z τ).map (starRingEnd ℂ)`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, mul_comm, eq_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `e ▸ h`.
+A detailed English derivation is pending.
 -/
 private theorem inDom_conj {z : GlobalTheory.AllWt.Psi H → Matrix (Fin Dw.p) (Fin Dw.q) ℂ} (hz : GlobalTheory.PointChern.InDom z) :
     GlobalTheory.PointChern.InDom fun τ => (z τ).map (starRingEnd ℂ) := by
@@ -63,11 +61,11 @@ private theorem inDom_conj {z : GlobalTheory.AllWt.Psi H → Matrix (Fin Dw.p) (
   exact e ▸ h
 
 /- English proof (translation)
-Unfold `GlobalTheory.PointChern.modelGram`. Use `split_ifs with h h'`. Establish `e : 1 - ((z ⟨τ, h⟩).map (starRingEnd ℂ)).map (starRingEnd ℂ) * ((z ⟨τ, h⟩).map (starRingEnd ℂ))ᵀ = (1 - (z ⟨τ, h⟩).map (starRingEnd ℂ) * (z ⟨τ, h⟩)ᵀ).map (starRingEnd ℂ)`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, apply_ite]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, inv_map_conj]`. Both sides reduce to the same expression. Establish `e : 1 - ((z ⟨_, h'⟩).map (starRingEnd ℂ))ᴴ * (z ⟨_, h'⟩).map (starRingEnd ℂ) = (1 - (z ⟨_, h'⟩)ᴴ * z ⟨_, h'⟩).map (starRingEnd ℂ)`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, apply_ite]`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, inv_map_conj]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem modelGram_conj (z : GlobalTheory.AllWt.Psi H → Matrix (Fin Dw.p) (Fin Dw.q) ℂ) (τ : E →+* ℂ) :
     GlobalTheory.PointChern.modelGram H Dw (fun τ => (z τ).map (starRingEnd ℂ)) τ =
@@ -89,7 +87,7 @@ private theorem modelGram_conj (z : GlobalTheory.AllWt.Psi H → Matrix (Fin Dw.
   · simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Use `congrArg (starRingEnd ℂ) (congrFun (congrFun h a) b)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, map_sum]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem conj_rel {m : ℕ} {M G N : Matrix (Fin m) (Fin m) ℂ} {c : ℝ}
     (h : (M.map (starRingEnd ℂ))ᵀ = (c : ℂ) • (G * N * Gᴴ)) :
@@ -101,7 +99,7 @@ private theorem conj_rel {m : ℕ} {M G N : Matrix (Fin m) (Fin m) ℂ} {c : ℝ
 open AlgebraicGeometry CategoryTheory Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam in
 
 /- English proof (translation)
-Introduce `τ i` and use `by rw [h' τ i, h τ i, e, GlobalTheory.GradedPieces.dual_comp]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isMap_trans {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     {Z : Model Xo c β} {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {φ : c.F →+* R} {φ' : c.F →+* R'}
@@ -113,7 +111,7 @@ private theorem isMap_trans {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CxPts in
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun t => by rw [RingHom.comp_apply, ← ev_eq h, ← ev_eq h'] exact CxPts.ev_conj e h t`.
+A detailed English derivation is pending.
 -/
 private theorem evHom_conj {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ σ' : k →+* ℂ} {y : CxPts p σ}
     {y' : CxPts p σ'} (e : y'.1 = spMap (starRingEnd ℂ) ≫ y.1) {U : Y.Opens} (h : y ∈ ptsIn p σ U)
@@ -135,23 +133,21 @@ open GlobalTheory.HodgeLocGeo
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Mean4O GlobalTheory.Mean4 ReciprocityTheory.AnForm GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ProjVar GlobalTheory GlobalTheory.CxPts
 
 /- English proof (translation)
-Introduce `D A N j S κ s x Φ k σ hσ d c' p0 hp0 hb W φ Fr hW h0`. Set `σ' : D.what₂.LL →+* ℂ` to `(starRingEnd ℂ).comp σ`. Set `J` to `GlobalTheory.ConjChart.conjPts (Φ.C k).Y.str (σ := σ') (σ' := σ) rfl`. Set `c'' : AlgChart (Φ.C k).Y.str σ' d` to `GlobalTheory.ConjChart.conjChart rfl c'`. Establish `hJ : ∀ y, (J y).1 = spMap (starRingEnd ℂ) ≫ y.1` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hemb : embOf κ.e σ' = (starRingEnd ℂ).comp (embOf κ.e σ)` using `rfl`. Establish `hσ' : Formalism.L2.PjFree.GoodEmb κ.c (embOf κ.e σ')`. Use `Formalism.L2.PjFree.goodEmb_goodOf κ.c (embOf κ.e σ)` as an intermediate fact. Unfold `Formalism.L2.PjFree.goodOf at this`. Rewrite `this` using `[if_neg hσ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hp0' : J p0 ∈ c''.finChart.source`. Express the relevant statement in the definitionally equal form `J.symm (J p0) ∈ c'.e.source`. Rewrite using `[Homeomorph.symm_apply_apply]`. Conclude with `hp0`. Establish `hb' : (Φ.C k).π (under (J p0)) ∉ genBd s.T.Z`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : under (J p0) = under p0` using `GlobalTheory.ShFam.ConjMet.base_conj (Y := Φ.C k) (hJ p0)`. Rewrite using `[e]`. Conclude with `hb`. Establish `h0' : (Φ.C k).down (J p0) ∈ ptsIn (genStr s.T.Z) (embOf κ.e σ') W.1` using `GlobalTheory.ConjChart.mem_ptsIn_of_conj (GlobalTheory.ShFam.ConjMet.down_conj (Y := Φ.C k) (hJ p0)) h0`. Take `⟨G, z, cc, hcc, h⟩` from `GlobalTheory.T.eigen_frame_chart_off_boundary D A N j S κ s x Φ k σ' hσ' d c'' (J p0) hp0' hb' W φ Fr hW h0'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hc0 : c''.finChart (J p0) = star (c'.finChart p0)`. Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (c'.e (J.symm (J p0)) a) = _`. Rewrite using `[Homeomorph.symm_apply_apply]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[hc0]`. Use `⟨fun v τ => (G (star v) τ).map (starRingEnd ℂ), fun v τ => (z (star v) τ).map (starRingEnd ℂ), cc, hcc, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(continuous_star.tendsto _).eventually h] with v ⟨h1, h2, h3, h4, hv', h5⟩`. Establish `e' : (c''.finChart.symm (star v)).1 = spMap (starRingEnd ℂ) ≫ (c'.finChart.symm v).1`. Express the relevant statement in the definitionally equal form `(J (c'.finChart.symm (star (star v)))).1 = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[star_star, hJ]`. Establish `ed` using `GlobalTheory.ShFam.ConjMet.down_conj (Y := Φ.C k) e'`. Establish `hv : (Φ.C k).down (c'.finChart.symm v) ∈ ptsIn (genStr s.T.Z) (embOf κ.e σ) W.1` using `GlobalTheory.ConjChart.mem_ptsIn_of_conj (by`. Rewrite using `[ed, ← Category.assoc, GlobalTheory.ShFam.ConjMet.spMap_conj_conj, Category.id_comp]) hv'`. Use `⟨fun τ a b => GlobalTheory.HodgeFlagModelConj.analyticAt_conj_comp (h1 τ a b), fun τ a b => GlobalTheory.HodgeFlagModelConj.analyticAt_conj_comp (h2 τ a b), fun τ => ?_, GlobalTheory.HodgeFlagModelConj.inDom_conj h4, hv, fun f hf τ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `(h3 τ).map (starRingEnd ℂ)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Take `⟨f', hf'⟩` from `f.exists_isMap (starRingEnd ℂ) hemb (GlobalTheory.ShFam.ConjMet.gen_eq ed)`. Establish `hev` using `GlobalTheory.HodgeFlagModelConj.evHom_conj ed hv hv'`. Establish `h6` using `h5 f' (GlobalTheory.HodgeFlagModelConj.isMap_trans hf hf' hev) τ`.
-
-Rewrite `h6` using `[GlobalTheory.ShFam.ConjMet.hodge_conj x hemb ed hf' τ]`. Rewrite using `[GlobalTheory.HodgeFlagModelConj.modelGram_conj]`. Conclude with `GlobalTheory.HodgeFlagModelConj.conj_rel h6`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.eigen_frame_chart_off_boundary_second : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (Φ : s.Flag) (k : s.Comp) (σ : D.what₂.LL →+* ℂ), ¬ Formalism.L2.PjFree.GoodEmb κ.c (embOf κ.e σ) → ∀ (d : ℕ) (c' : AlgChart (Φ.C k).Y.str σ d) (p0 : (Φ.C k).Y.pts σ), p0 ∈ c'.finChart.source → (Φ.C k).π (under p0) ∉ genBd s.T.Z →
     ∀ (V : (gen s.T.Z).affineOpens) (φ : κ.c.F →+* Γ(gen s.T.Z, V.1)) (Fr : EigFrame s.T.Z φ (LogKS.chart V ≫ genι s.T.Z)),

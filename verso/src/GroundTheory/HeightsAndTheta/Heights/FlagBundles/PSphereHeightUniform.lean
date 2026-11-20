@@ -21,11 +21,11 @@ instance SphereHeightUniform.isFiniteMeasure_sphereMeasure : IsFiniteMeasure sph
   exact ENNReal.mul_lt_top (ENNReal.inv_lt_top.mpr (pos_iff_ne_zero.mpr h0)) (measure_lt_top _ _)
 
 /- English proof (translation)
-Introduce `u hu`. Establish `hc : Continuous fun n : Sphere2 => ⟪u, (n : E3)⟫_ℝ` using `continuous_const.inner continuous_subtype_val`. Establish `hfin : IsFiniteMeasure ((2⁻¹ : ENNReal) • (volume : Measure ℝ).restrict (Set.Icc (-1) 1))` using `⟨by simp [ENNReal.mul_lt_top]⟩`. Use `hM _ _ inferInstance hfin ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hc.measurable measurableSet_Icc.compl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `measure_empty (μ := sphereMeasure)` and compare the differences between its conclusion and the goal. Use extensionality with `n`. Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, Set.mem_Icc, Set.mem_empty_iff_false, iff_false, not_not]`. Establish `h1` using `abs_real_inner_le_norm u (n : E3)`. Rewrite `h1` using `[hu, one_mul, show ‖(n : E3)‖ = 1 from by simp]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `abs_le.mp h1`. Simplify using `[Measure.restrict_apply measurableSet_Icc.compl]`. Introduce `k`. Rewrite using `[integral_map hc.measurable.aemeasurable (continuous_pow k).aestronglyMeasurable, hP u hu k, integral_smul_measure, integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le (by norm_num)]`. Simplify using `[smul_eq_mul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SphereHeightUniform.proof (hM : IntervalMomentsDetermine.Statement)
     (hP : SpherePowerMean.Statement) : SphereHeightUniform.Statement := by

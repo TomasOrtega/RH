@@ -19,13 +19,13 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ X _ hp d L hL ih F _ hF i hi`. Take `⟨H, hH⟩ : ∃ H : LB X, IsAmpleLB H` from `(isProper_and_exists_isAmpleLB_of_isProjOver hp).2`. Establish `: IsLocallyNoetherian X` using `(isNoetherian_of_isProjOver hp).toIsLocallyNoetherian`. Take `⟨A, B, hA, hB, s, t, hs, ht, e⟩` from `hH.exists_sub_of_mono_cutHom F (cls L hL)`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C₁, h₁⟩` from `ih (cut F hA s) (suppDim_cut_le F hA s hF) (j + 1) (by omega)`. Take `⟨C₂, h₂⟩` from `ih (cut F hB t) (suppDim_cut_le F hB t hF) j (by omega)`. Use `sum_bound_of_step_diff (fun m => hdim k (twist F (lbPow L m)) (j + 1)) d 1 (C₁ + C₂) le_rfl fun m => ?_` and prove the remaining obligations. Take `⟨M, hM, eM⟩` from `cls_surj (m • cls L hL - cls B hB)`. Establish `a₁` using `(T.sheafCohomologyDim_twist_cut_inequalities k X hp F A (lbPow L (m + 1)) M hA (isLB_lbPow hL _) hM s hs (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[cls_lbPow hL, eM, succ_nsmul]`. Use `nth_rewrite 2 [e]`. Use the proof step `abel)).1 (j + 1)`. Establish `a₂` using `(T.sheafCohomologyDim_twist_cut_inequalities k X hp F B (lbPow L m) M hB (isLB_lbPow hL _) hM t ht (by`. Rewrite using `[cls_lbPow hL, eM, sub_add_cancel])).2.1 j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₃` using `h₁ (m + 1)`. Establish `a₄ : hdim k (twist (cut F hB t) (lbPow L m)) j ≤ C₂ * (d * (m + 1 + 1) ^ (d - 1))` using `(h₂ m).trans (by gcongr; omega)`. Rewrite using `[add_mul]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem hdim_twist_lbPow_le_of_two_le : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ (d : ℕ) (L : LB X), L.IsLB → (∀ (E : X.Modules) [IsFiniteQC E], suppDim E ≤ (d : ℕ) → ∀ j, 0 < j → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist E (lbPow L m)) j ≤ C * (d * (m + 1) ^ (d - 1)))) → ∀ (F : X.Modules) [IsFiniteQC F], suppDim F ≤ (d + 1 : ℕ) → ∀ i, 2 ≤ i → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist F (lbPow L m)) i ≤ C * ((d + 1) * (m + 1) ^ d)) := by
   intro k _ _ X _ hp d L hL ih F _ hF i hi

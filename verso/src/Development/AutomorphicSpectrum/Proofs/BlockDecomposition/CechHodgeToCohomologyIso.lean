@@ -39,9 +39,9 @@ def colHMap {K L : DCx.{1} R} (φ : DCx.Hom K L (RingHom.id R)) (q : ℕ) :
 variable {C : Type 1} [Category.{0} C]
 
 /- English proof (translation)
-Set `E : C ⥤ Type` to `(Functor.const C).obj PUnit.{1}`. Set `G : C ⥤ E.Elements` to `{ obj := fun T => ⟨T, PUnit.unit⟩ map := fun φ => ⟨φ, rfl⟩ }`. Use `P.mapH_bij _ (fun k => ⟨fun x y h => ?_, fun y => ?_⟩) n` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Conclude with `congrFun h (c ⋙ G)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components.
 
-Conclude with `⟨fun c => y (c ⋙ G), funext fun s => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem restr_bij (F : C ⥤ ModuleCat.{0} R) (n : ℕ) :
     Function.Bijective ((CH.Mor.restrict F (CategoryOfElements.π ((Functor.const C).obj PUnit.{1}))).hom.mapH n) := by
@@ -72,7 +72,7 @@ theorem eTot_apply (F : C ⥤ ModuleCat.{0} R) (U : ι → ObjectProperty C) (hU
       ((CH.Mor.restrict F (CategoryOfElements.π ((Functor.const C).obj PUnit.{1}))).hom.mapH n x) := rfl
 
 /- English proof (translation)
-Use `fun i => hv p i q hq` as an intermediate fact. Conclude with `(colCmp_bij U hU F p q).1.subsingleton`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem col_sub (F : C ⥤ ModuleCat.{0} R) (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α)) (a : ℕ)
     (hv : ∀ n (i : Fin (n + 1) → ι) r, r ≠ a → Subsingleton (HU F (capT U i) r)) (p q : ℕ) (hq : q ≠ a) :
@@ -86,7 +86,7 @@ def eRow (F : C ⥤ ModuleCat.{0} R) (U : ι → ObjectProperty C) (hU : ∀ α,
   Classical.choose (GlobalTheory.T.double_complex_degenerate_column_iso (dbl U hU F) a (fun p q hq => col_sub F U hU a hv p q hq) j)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (GlobalTheory.T.double_complex_degenerate_column_iso (dbl U hU F) a (fun p q hq => col_sub F U hU a hv p q hq) j) z`.
+A detailed English derivation is pending.
 -/
 theorem eRow_clsZ (F : C ⥤ ModuleCat.{0} R) (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α)) (a : ℕ)
     (hv : ∀ n (i : Fin (n + 1) → ι) r, r ≠ a → Subsingleton (HU F (capT U i) r)) (j : ℕ)
@@ -99,7 +99,7 @@ def eCol (F : C ⥤ ModuleCat.{0} R) (U : ι → ObjectProperty C) (hU : ∀ α,
   LinearEquiv.ofBijective _ (P.mapH_bij (colCmp U hU F a) (fun p => colCmp_bij U hU F p a) j)
 
 /- English proof (translation)
-The claim follows from `P.mapH_cls _ j x hx h`.
+A detailed English derivation is pending.
 -/
 theorem eCol_cls (F : C ⥤ ModuleCat.{0} R) (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α)) (a j : ℕ)
     (x : (colH (dbl U hU F) a).X j) (hx : (colH (dbl U hU F) a).d j x = 0)
@@ -122,21 +122,19 @@ theorem eDeg_apply (F : C ⥤ ModuleCat.{0} R) (U : ι → ObjectProperty C) (hU
     eDeg F U hU hc a hv j x = eCol F U hU a j (eRow F U hU a hv j (eTot F U hU hc (a + j) x)) := rfl
 
 /- English proof (translation)
-Introduce `R _`. Use `⟨fun F _ U hU hc a hv j => eDeg F U hU hc a hv j, ?_⟩` and prove the remaining obligations. Introduce `C C' _ _ F F' ι ι' U U' hU hc hU' hc' a hv hv' m τ hτ j c h0 h1`. Take `⟨φ, hφ1, hφ2⟩` from `GlobalTheory.T.cech_double_complex_map F F' U U' hU hU' m τ hτ`. Take `⟨c₁, rfl⟩` from `(colCmp_bij U hU F j a).2 c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hd₁ : (colH (dbl U hU F) a).d j c₁ = 0`. Use `(colCmp_bij U hU F (j + 1) a).1 ?_` and prove the remaining obligations. Rewrite using `[← (colCmp U hU F a).comm, h0, map_zero]`. Take `⟨z, hz⟩` from `GlobalTheory.T.double_complex_lead_surjective (dbl U hU F) a j (fun p q hq => col_sub F U hU a hv p q hq.ne) ((colH (dbl U hU F) a).cls c₁ hd₁)`. Establish `hy : (eDeg F U hU hc a hv j).symm ((CrystallineSemistableComparison.Pb.cechH F U a).cx.cls _ h0) = (eTot F U hU hc (a + j)).symm (clsZ (dbl U hU F) (a + j) j z)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.symm_apply_eq, eDeg_apply, LinearEquiv.apply_symm_apply, eRow_clsZ, hz, eCol_cls F U hU a j c₁ hd₁ h0]`. Take `⟨z', hz'1, y', hy', y₀, hy₀, e1, e2, e3⟩` from `GlobalTheory.T.double_complex_map_lead_compat (dbl U hU F) (dbl U' hU' F') φ a j z`. Use `show m.pull (a + j) ((eDeg F U hU hc a hv j).symm _) = (eDeg F' U' hU' hc' a hv' j).symm _`. Rewrite using `[hy, LinearEquiv.eq_symm_apply, eDeg_apply]`. Establish `h2 : eTot F' U' hU' hc' (a + j) (m.pull (a + j) ((eTot F U hU hc (a + j)).symm (clsZ (dbl U hU F) (a + j) j z))) = clsZ (dbl U' hU' F') (a + j) j z'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz'1, ← LinearEquiv.apply_symm_apply (eTot F U hU hc (a + j)) (clsZ (dbl U hU F) (a + j) j z)]`. Simplify using `only [LinearEquiv.symm_apply_apply]`. Conclude with `(hφ1 _ _).symm`. Rewrite using `[h2, eRow_clsZ, e2]`. Establish `h3 : (colH (dbl U hU F) a).cls y₀ hy₀ = (colH (dbl U hU F) a).cls c₁ hd₁` using `e1.symm.trans hz`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd₂ : (colH (dbl U' hU' F') a).d j ((colHMap φ a).f j c₁) = 0`. Rewrite using `[(colHMap φ a).comm, hd₁, map_zero]`. Establish `h4 : (colH (dbl U' hU' F') a).cls y' hy' = (colH (dbl U' hU' F') a).cls _ hd₂`. Establish `hd₃ : (colH (dbl U' hU' F') a).d j ((colHMap φ a).f j y₀) = 0`. Rewrite using `[(colHMap φ a).comm, hy₀, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5` using `congrArg ((colHMap φ a).mapH j) h3`. Rewrite `h5` using `[P.mapH_cls _ j _ hy₀ hd₃, P.mapH_cls _ j _ hd₁ hd₂]`. Substitute `e3` using the available equality. Conclude with `h5`. Establish `h6 : (colCmp U' hU' F' a).f j ((colHMap φ a).f j c₁) = fun i => (morU m (U` using `capT U (τ ∘ i)) (U' := capT U' i) fun T hT k => hτ (i k) T (hT k)).pull a ((colCmp U hU F a).f j c₁ (τ ∘ i)) := by`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Conclude with `hφ2 j a c₁ i`. Establish `h7 : (CrystallineSemistableComparison.Pb.cechH F' U' a).cx.d j ((colCmp U' hU' F' a).f j ((colHMap φ a).f j c₁)) = 0`. Rewrite using `[(colCmp U' hU' F' a).comm, hd₂, map_zero]`. Rewrite using `[h4, eCol_cls F' U' hU' a j _ hd₂ h7]`.
-
-Conclude with `((P.cls_surj (CrystallineSemistableComparison.Pb.cechH F' U' a).cx j).2.2.1 _ _ h7 h1).2 (by rw [h6, sub_self]; exact Submodule.zero_mem _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cech_deg : ∀ (R : Type) [CommRing R], ∃ e : ∀ {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) {ι : Type}
     (U : ι → ObjectProperty C), (∀ α, Cosieve (U α)) → (∀ T, ∃ α, U α T) → ∀ a : ℕ,

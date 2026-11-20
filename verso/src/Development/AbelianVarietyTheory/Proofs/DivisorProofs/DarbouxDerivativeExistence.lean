@@ -16,16 +16,14 @@ def liftI {κ : Type} (x : κ → mixedEmbedding.mixedSpace F) : κ → AF F :=
   fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i), 0)
 
 /- English proof (translation)
-Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i)) = x i`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem evI_liftI {κ : Type} (x : κ → mixedEmbedding.mixedSpace F) (i : κ) : evI F (liftI x i) = x i := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i)) = x i
   exact RingEquiv.apply_symm_apply _ _
 
 /- English proof (translation)
-Establish `h1 : t.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact ht)`. Use function extensionality and compare the values at `i`. Use `show t * liftI x i = 0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show t.1 * _ = 0`.
-
-Rewrite using `[h1, zero_mul]`. Use `show t.2 * 0 = 0`. Conclude with `mul_zero _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_liftI {κ : Type} (t : AF F) (ht : evI F t = 0) (x : κ → mixedEmbedding.mixedSpace F) : t • liftI x = 0 := by
   have h1 : t.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact ht)
@@ -38,15 +36,15 @@ theorem smul_liftI {κ : Type} (t : AF F) (ht : evI F t = 0) (x : κ → mixedEm
     exact mul_zero _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ ψ JA JB co hψ hD hA`. Take `⟨D, hDu⟩` from `hD F E σ α β κ ψ JA JB co hψ`. Establish `hDf : ∀ u, At (evI F) u → ∀ f : SInf F κ, ⇑(D u f) = dH (cw co u).1 (cw co u).2 ⇑f` using `fun u hu f => funext fun x => (hDu u hu f).2 x`. Establish `real : ∀ a b : κ → mixedEmbedding.mixedSpace F, ∃ u : Matrix α β (AE F E), At (evI F) u ∧ cw co u = (a, b)`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨co.e.symm (liftI a, liftI b), fun t ht => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, Prod.smul_mk, smul_liftI t ht, smul_liftI t ht, Prod.mk_zero_zero, map_zero]`. Simplify using `only [cw, LinearEquiv.apply_symm_apply, evI_liftI]`. Use `⟨fun a b f => ?_, fun u hu f f₁ => ?_, real⟩` and prove the remaining obligations. Take `⟨u, hu, hc⟩` from `real a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨D u f, by rw [hDf u hu f, hc]⟩`. Establish `h0 : ∀ t, (fun t => co.rho ψ (realAd F t • u)) t 0 = 0` using `fun t => by`. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`. Establish `h1 : ActsD (evI F) (fun t => co.rho ψ (realAd F t • u)) f (D u f)` using `(hA F κ f (D u f) (D u f)).1 _ h0 (hDu u hu f).1`.
+Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hDf u hu f]`. Prove the components needed by the constructor for the conclusion. Introduce `h2`. Rewrite using `[(hA F κ f f₁ (D u f)).2.2.1 _ h2 h1]`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[DFunLike.coe_injective e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem derivLines : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type) [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (ψ : AddChar (AF F) ℂ) (JA : Matrix α α (AE F E))

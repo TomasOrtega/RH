@@ -8,13 +8,13 @@ open NumberField GroundTheory.Automorphic Module
 noncomputable section
 
 /- English proof (translation)
-Use `set b := integralBasis E`. Use `set bd := (Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate ℚ E) b`. Take `⟨δ, hδ, hint⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image bd)`. Use `⟨δ, hδ, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hsum` using `bd.sum_repr z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (δ : E) * z = ∑ i, (bd.repr z i) • ((δ : E) * bd i)` using `by conv_lhs => rw [← hsum]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key]`. Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `hz (RingOfIntegers.basis E i)`. Establish `hr : bd.repr z i = (n : ℚ)`. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply, integralBasis_apply, mul_comm, hn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, show ((n : ℚ) • ((δ : E) * bd i)) = (n : ℤ) • ((δ : E) * bd i) by`. Rewrite using `[← Int.cast_smul_eq_zsmul ℚ]]`. Use `IsIntegral.smul _ ?_` and prove the remaining obligations. Use `hint (bd i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))` as an intermediate fact. Rewrite `this` using `[zsmul_eq_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem inverseDifferent_multiple (E : Type*) [Field E] [NumberField E] :
     ∃ δ : ℤ, δ ≠ 0 ∧ ∀ z : E, (∀ a : 𝓞 E, ∃ n : ℤ, Algebra.trace ℚ E ((a : E) * z) = n) →
@@ -47,13 +47,13 @@ variable {F E : Type*} [Field F] [Field E] [NumberField E] [Algebra F E]
 variable {W : Type*} [AddCommGroup W] [Module E W]
 
 /- English proof (translation)
-Introduce `D`. Take `⟨δ, hδ, hdiff⟩` from `inverseDifferent_multiple E`. Use `⟨δ * (D.factorial : ℤ), mul_ne_zero hδ (by exact_mod_cast D.factorial_ne_zero), fun La hLa => ⟨fun x hx y hy => ?_, fun y hy => ?_⟩⟩` and prove the remaining obligations. Establish `hi : IsIntegral ℤ (Algebra.trace ℚ E (h.toSesq x y))` using `Algebra.isIntegral_trace ((mem_integralClosure_iff ℤ E).mp (hLa.integral x hx y hy))`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, by rw [← hn]; simp⟩`. Establish `hdual : δ • y ∈ dualLattice h La`. Introduce `x hx`. Rewrite using `[map_zsmul, LinearMap.smul_apply, zsmul_eq_mul]`. Use `(mem_integralClosure_iff ℤ E).mpr (hdiff _ fun a => ?_)` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `hy _ (hLa.isLattice.smul_mem a x hx)`. Conclude with `⟨n, by rw [← hn, LinearMap.map_smul, smul_eq_mul]⟩`. Establish `hm` using `AddSubgroup.nsmul_relIndex_mem La hdual`. Take `⟨c, hc⟩` from `Nat.dvd_factorial (Nat.pos_of_ne_zero hLa.index_ne_zero) hLa.index_le`. Establish `: (D.factorial : ℤ) • (δ • y) ∈ La`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hc, natCast_zsmul, mul_comm, mul_nsmul]`. Rewrite using `[smul_comm]`. Conclude with `AddSubgroup.nsmul_mem _ hm _`. Rewrite `this` using `[smul_smul, mul_comm]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem DualLatticeMultiple.proof (h : HermitianForm F E W) : DualLatticeMultiple.Statement h := by
   intro D

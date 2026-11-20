@@ -6,9 +6,9 @@ open Matrix
 namespace GlobalTheory.MonomialDiag
 
 /- English proof (translation)
-Establish `hst : star ((Real.sqrt |x| : ℝ) : ℂ) = ((Real.sqrt |x| : ℝ) : ℂ)` using `Complex.conj_ofReal _`. Establish `hs : Real.sqrt |x| * Real.sqrt |x| = |x|` using `Real.mul_self_sqrt (abs_nonneg x)`. Rewrite using `[star_inv₀, hst, show ((Real.sqrt |x| : ℝ) : ℂ)⁻¹ * (x : ℂ) * ((Real.sqrt |x| : ℝ) : ℂ)⁻¹ = ((x / (Real.sqrt |x| * Real.sqrt |x|) : ℝ) : ℂ) by push_cast; ring, hs]`. Use `split_ifs with h`. Rewrite using `[abs_of_pos h, div_self hx, Complex.ofReal_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_of_neg (lt_of_le_of_ne (not_lt.mp h) hx), div_neg_self hx]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem star_inv_sqrt_abs_mul_mul_inv_sqrt_abs_eq_sign (x : ℝ) (hx : x ≠ 0) :
     star ((Real.sqrt |x| : ℝ) : ℂ)⁻¹ * (x : ℂ) * ((Real.sqrt |x| : ℝ) : ℂ)⁻¹ =
@@ -25,9 +25,9 @@ private theorem star_inv_sqrt_abs_mul_mul_inv_sqrt_abs_eq_sign (x : ℝ) (hx : x
     ring
 
 /- English proof (translation)
-Establish `hst : star ((Real.sqrt |x| : ℝ) : ℂ) = ((Real.sqrt |x| : ℝ) : ℂ)` using `Complex.conj_ofReal _`. Establish `hs : Real.sqrt |x| * Real.sqrt |x| = |x|` using `Real.mul_self_sqrt (abs_nonneg x)`. Rewrite using `[hst]`. Use `split_ifs with h`. Rewrite using `[mul_one, ← Complex.ofReal_mul, hs, abs_of_pos h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_neg_one, neg_mul, ← Complex.ofReal_mul, hs, abs_of_neg (lt_of_le_of_ne (not_lt.mp h) hx)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem star_sqrt_abs_mul_sign_mul_sqrt_abs_eq (x : ℝ) (hx : x ≠ 0) :
     star ((Real.sqrt |x| : ℝ) : ℂ) * (if 0 < x then (1 : ℂ) else -1) * ((Real.sqrt |x| : ℝ) : ℂ) =
@@ -42,11 +42,11 @@ private theorem star_sqrt_abs_mul_sign_mul_sqrt_abs_eq (x : ℝ) (hx : x ≠ 0) 
     ring
 
 /- English proof (translation)
-Unfold `Formalism.UG.Jpq`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl]`. Establish `hi` using `he i`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `revert hi`. Generalize the expression as in `e i = x`. Apply the tactic sequence `rcases x with a | a <;> intro hi <;> simp_all`. Establish `hne : e i ≠ e j` using `fun h => hij (e.injective h)`. Rewrite using `[if_neg hij]`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use `revert hne`. Generalize the expression as in `e i = x`. Generalize the expression as in `e j = y`. Apply the tactic sequence `rcases x with a | a <;> rcases y with b | b <;> intro hne <;> simp_all`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem Jpq_equiv_apply_eq_ite_sign {n p q : ℕ} (d : Fin n → ℝ) (e : Fin n ≃ Fin p ⊕ Fin q)
     (he : ∀ i, 0 < d i ↔ (e i).isLeft = true) (i j : Fin n) :
@@ -67,11 +67,11 @@ private theorem Jpq_equiv_apply_eq_ite_sign {n p q : ℕ} (d : Fin n → ℝ) (e
     rcases x with a | a <;> rcases y with b | b <;> intro hne <;> simp_all
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `key` using `Jpq_equiv_apply_eq_ite_sign d e he (e.symm a) (e.symm b)`. Rewrite `key` using `[e.apply_symm_apply, e.apply_symm_apply]`. Rewrite using `[key, Matrix.mul_apply, Finset.sum_eq_single (e.symm b)]`. Rewrite using `[Matrix.mul_diagonal, Matrix.conjTranspose_apply, hC, hC]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [↓reduceIte]`. Distinguish the cases in `hab : e.symm a = e.symm b`. Rewrite using `[if_pos hab.symm, if_pos hab, hab]`. Conclude with `star_inv_sqrt_abs_mul_mul_inv_sqrt_abs_eq_sign _ (hd _)`. Rewrite using `[if_neg (Ne.symm hab), if_neg hab, star_zero, zero_mul, zero_mul]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _ hi`. Rewrite using `[hC i b, if_neg hi, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem conjTranspose_mul_diagonal_mul_inv_sqrt_eq_Jpq {n p q : ℕ} (d : Fin n → ℝ) (hd : ∀ i, d i ≠ 0)
     (e : Fin n ≃ Fin p ⊕ Fin q) (he : ∀ i, 0 < d i ↔ (e i).isLeft = true)
@@ -94,13 +94,13 @@ private theorem conjTranspose_mul_diagonal_mul_inv_sqrt_eq_Jpq {n p q : ℕ} (d 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (e j)]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (e i)]`. Rewrite using `[Matrix.conjTranspose_apply, hB, hB]`. Simplify using `only [↓reduceIte]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Jpq_equiv_apply_eq_ite_sign d e he, Matrix.diagonal_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [↓reduceIte]`. Conclude with `star_sqrt_abs_mul_sign_mul_sqrt_abs_eq _ (hd _)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hij, if_neg hij, mul_zero, zero_mul]`. Introduce `b _ hb`. Rewrite using `[Matrix.conjTranspose_apply, hB, if_neg hb, star_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a _ ha`. Rewrite using `[hB a j, if_neg ha, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem conjTranspose_mul_Jpq_mul_sqrt_eq_diagonal {n p q : ℕ} (d : Fin n → ℝ) (hd : ∀ i, d i ≠ 0)
     (e : Fin n ≃ Fin p ⊕ Fin q) (he : ∀ i, 0 < d i ↔ (e i).isLeft = true)
@@ -128,27 +128,25 @@ private theorem conjTranspose_mul_Jpq_mul_sqrt_eq_diagonal {n p q : ℕ} (d : Fi
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Introduce `n p q G Q d hG hQ hd hQG`. Take `⟨hcard, Q₁, hQ₁⟩` from `Formalism.UG.P.sig_data G p q hG`. Rewrite `hcard` using `[Fintype.card_fin]`. Set `e₀ : Fin n ≃ Fin (Fintype.card {i // 0 < d i}) ⊕ Fin (Fintype.card {i // ¬ 0 < d i})` to `(Equiv.sumCompl (fun i => 0 < d i)).symm.trans (Equiv.sumCongr (Fintype.equivFin _) (Fintype.equivFin _))`. Establish `he₀ : ∀ i, 0 < d i ↔ (e₀ i).isLeft = true`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i`. Distinguish the cases in `h : 0 < d i`. Simplify using `[e₀, h]`. Simplify using `[e₀, h]`. Establish `hn₀ : n = Fintype.card {i // 0 < d i} + Fintype.card {i // ¬ 0 < d i}`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `using Fintype.card_congr e₀`. Establish `h₂ : (Q * Matrix.of (fun i a => if i = e₀.symm a then ((Real.sqrt |d i| : ℝ) : ℂ)⁻¹ else 0))ᴴ * G * (Q * Matrix.of (fun i a => if i = e₀.symm a then ((Real.sqrt |d i| : ℝ) : ℂ)⁻¹ else 0)) = Formalism.UG.Jpq _ _`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by`. Rewrite using `[hQG]`. Conclude with `conjTranspose_mul_diagonal_mul_inv_sqrt_eq_Jpq d hd e₀ he₀ _ (fun i a => rfl)`. Establish `i1` using `Formalism.UG.P.sig_dim G Q₁ hQ₁ _ h₂`. Establish `i2` using `Formalism.UG.P.sig_dim G _ h₂ Q₁ hQ₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `i1`, `i2` using `[Fintype.card_fin]`. Establish `hp : Fintype.card {i // 0 < d i} = p` using `by omega`. Establish `hq : Fintype.card {i // ¬ 0 < d i} = q` using `by omega`. Set `e : Fin n ≃ Fin p ⊕ Fin q` to `e₀.trans (Equiv.sumCongr (finCongr hp) (finCongr hq))`. Establish `he : ∀ i, 0 < d i ↔ (e i).isLeft = true`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[he₀ i]`. Simplify using `only [e, Equiv.trans_apply]`. Apply the tactic sequence `cases e₀ i <;> rfl`. Set `B : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ` to `Matrix.of (fun a i => if a = e i then ((Real.sqrt |d i| : ℝ) : ℂ) else 0)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : Bᴴ * Formalism.UG.Jpq p q * B = Matrix.diagonal (fun i => (d i : ℂ))` using `conjTranspose_mul_Jpq_mul_sqrt_eq_diagonal d hd e he B (fun a i => rfl)`. Establish `hQu : IsUnit Q.det` using `isUnit_iff_ne_zero.mpr hQ`. Establish `hQQ : Q * Q⁻¹ = 1` using `Q.mul_nonsing_inv hQu`. Establish `hQQ' : (Q⁻¹)ᴴ * Qᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hQQ, Matrix.conjTranspose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `⟨B * Q⁻¹, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Q⁻¹)ᴴ * (Qᴴ * G * Q) * Q⁻¹ := by rw [hB, hQG]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ((Q⁻¹)ᴴ * Qᴴ) * G * (Q * Q⁻¹) := by simp only [Matrix.mul_assoc]`. Use `_ = G := by rw [hQQ', hQQ, Matrix.one_mul, Matrix.mul_one]`. Introduce `a i j hi hj`. Establish `hBQ : B * Q⁻¹ * Q = B`. Rewrite using `[Matrix.mul_assoc, Q.nonsing_inv_mul hQu, Matrix.mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hi`, `hj` using `[hBQ]`. Establish `hai : a = e i`. Assume the negation of the conclusion as `h`. Conclude with `hi (by simp [B, h])`. Establish `haj : a = e j`.
-
-Assume the negation of the conclusion as `h`. Conclude with `hj (by simp [B, h])`. Conclude with `e.injective (hai.symm.trans haj)`.
+A detailed English derivation is pending.
 -/
 theorem exists_monomial : ∀ (n p q : ℕ) (G Q : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℝ), Formalism.UG.HasSignature G p q → Q.det ≠ 0 → (∀ i, d i ≠ 0) → Qᴴ * G * Q = Matrix.diagonal (fun i => (d i : ℂ)) → ∃ A : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ, Aᴴ * Formalism.UG.Jpq p q * A = G ∧ ∀ a i j, (A * Q) a i ≠ 0 → (A * Q) a j ≠ 0 → i = j := by
   intro n p q G Q d hG hQ hd hQG

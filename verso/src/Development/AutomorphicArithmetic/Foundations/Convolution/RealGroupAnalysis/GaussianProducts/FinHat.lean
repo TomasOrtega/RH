@@ -11,9 +11,9 @@ namespace UpperTheory.ConvolutionTheory.R2.G.FiniteFourierHat
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨hl, hc⟩` from `hg`. Establish `hcont : Continuous fun s : FiniteAdeleRing (𝓞 F) F => Function.update v 1 s` using `continuous_const.update 1 continuous_id`. Use `⟨hl.comp_continuous hcont, ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (hc.isCompact.image (continuous_apply 1)) fun s hs => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hs ⟨Function.update v 1 s, subset_tsupport _ h, by simp⟩`.
+A detailed English derivation is pending.
 -/
 private theorem slice_mem {g : (Fin 4 → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ finiteSchwartzBruhatPi F (ι := Fin 4)) (v : Fin 4 → FiniteAdeleRing (𝓞 F) F) :
@@ -31,9 +31,9 @@ private noncomputable def T (g : (Fin 4 → FiniteAdeleRing (𝓞 F) F) → ℂ)
   finiteFourier F (fun s => g (Function.update v 1 s)) (-(v 1))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Establish `hs : ∀ s, finiteTensor h (Function.update v 1 s) * (finiteAdelicChar F (s * -(v 1)) : ℂ) = (h 0 (v 0) * h 2 (v 2) * h 3 (v 3)) * (h 1 s * (finiteAdelicChar F (s * -(v 1)) : ℂ))`. Introduce `s`. Simplify using `[finiteTensor, Fin.prod_univ_four, Function.update_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [T, finiteFourier]`. Repeatedly rewrite using `[hs]`. Rewrite using `[integral_const_mul]`. Simplify using `[finiteTensor, Fin.prod_univ_four, finiteFourier]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem T_tensor (h : Fin 4 → FiniteAdeleRing (𝓞 F) F → ℂ) :
     T (finiteTensor h) =
@@ -51,26 +51,22 @@ private theorem T_tensor (h : Fin 4 → FiniteAdeleRing (𝓞 F) F → ℂ) :
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous continuous_neg, hf.2.comp_homeomorph (Homeomorph.neg _)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem neg_mem {f : FiniteAdeleRing (𝓞 F) F → ℂ} (hf : f ∈ finiteSchwartzBruhat F) :
     (fun x => f (-x)) ∈ finiteSchwartzBruhat F :=
   ⟨hf.1.comp_continuous continuous_neg, hf.2.comp_homeomorph (Homeomorph.neg _)⟩
 
 /- English proof (translation)
-Establish `hsub` using `(finiteSchwartzBruhatPi_eq_span (K := F) (ι := Fin 4)).ge`. Rewrite `hg` using `[finiteSchwartzBruhatPi_eq_span]`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨⟨J, a⟩, rfl⟩` from `hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[T_tensor]`. Use `finiteTensor_mem fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Conclude with `cosetIndicator_mem_finiteSchwartzBruhat J _`. Conclude with `neg_mem (finiteFourier_mem_finiteSchwartzBruhat (cosetIndicator_mem_finiteSchwartzBruhat J _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `cosetIndicator_mem_finiteSchwartzBruhat J _`. Conclude with `cosetIndicator_mem_finiteSchwartzBruhat J _`. Consider the case `zero`. Establish `: T (0 : (Fin 4 → FiniteAdeleRing (𝓞 F) F) → ℂ) = 0`. Use function extensionality and compare the values at `v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[T, finiteFourier]`. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add f₁ f₂ h₁ h₂ ih₁ ih₂`. Establish `: T (f₁ + f₂) = T f₁ + T f₂`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `v`. Conclude with `congrFun (finiteFourier_add (integrable_of_mem_finiteSchwartzBruhat (slice_mem (hsub h₁) v)) (integrable_of_mem_finiteSchwartzBruhat (slice_mem (hsub h₂) v))) _`. Rewrite using `[this]`. Conclude with `add_mem ih₁ ih₂`. Consider the case `smul c f _ ih`.
-
-Establish `: T (c • f) = c • T f`. Use function extensionality and compare the values at `v`. Simplify using `only [T, finiteFourier, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul _ _`. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ c ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem T_mem {g : (Fin 4 → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ finiteSchwartzBruhatPi F (ι := Fin 4)) :
@@ -113,9 +109,9 @@ private theorem T_mem {g : (Fin 4 → FiniteAdeleRing (𝓞 F) F) → ℂ}
 end UpperTheory.ConvolutionTheory.R2.G.FiniteFourierHat
 
 /- English proof (translation)
-Introduce `F _ _ g hg`. Use `⟨fun v => integrable_of_mem_finiteSchwartzBruhat (FiniteFourierHat.slice_mem hg v), ?_⟩` and prove the remaining obligations. Establish `he : (fun v => ∫ s, g (Function.update v 1 s) * ((finiteAdelicChar F (-(s * v 1)) : Circle) : ℂ) ∂(finiteAdeleMeasure F)) = FiniteFourierHat.T g`. Use function extensionality and compare the values at `v`. Simplify using `only [FiniteFourierHat.T, finiteFourier, mul_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[he]`. Conclude with `FiniteFourierHat.T_mem hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.finHat :
     ∀ (F : Type) [Field F] [NumberField F], ∀ g ∈ finiteSchwartzBruhatPi F (ι := Fin 4), (∀ v, Integrable (fun s => g (Function.update v 1 s)) (finiteAdeleMeasure F)) ∧

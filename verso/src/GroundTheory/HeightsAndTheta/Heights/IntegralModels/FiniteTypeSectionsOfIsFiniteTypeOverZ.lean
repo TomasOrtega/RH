@@ -10,7 +10,7 @@ open CategoryTheory Opposite AlgebraicGeometry
 noncomputable section
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h A K L _ _ _ _ _ _ _ _ _ _ _ => h A K L, fun h A _ _ _ K _ _ _ L _ _ _ _ _ => h A K L⟩`.
+Supply the required witnesses or components.
 -/
 theorem FiniteIntegralClosure.alg_iff :
     (∀ (A : Type) [CommRing A] [IsDomain A] [Algebra.FiniteType ℤ A]
@@ -23,9 +23,9 @@ theorem FiniteIntegralClosure.alg_iff :
   ⟨fun h A K L _ _ _ _ _ _ _ _ _ _ _ => h A K L, fun h A _ _ _ K _ _ _ L _ _ _ _ _ => h A K L⟩
 
 /- English proof (translation)
-Use `hX.1` as an intermediate fact. Establish `h1` using `(toSpecZ X).finiteType_appLE (isAffineOpen_top (Spec (.of ℤ))) hU le_top`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv.hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv).2`. Establish `h3` using `h1.comp h2`. Rewrite `h3` using `[show ((toSpecZ X).appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv.hom = algebraMap ℤ Γ(X, U) from RingHom.ext_int _ _]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `RingHom.finiteType_algebraMap.mp h3`.
+A detailed English derivation is pending.
 -/
 theorem finiteType_sections_of_isFiniteTypeOverZ {X : Scheme.{0}} (hX : IsFiniteTypeOverZ X)
     {U : X.Opens} (hU : IsAffineOpen U) : Algebra.FiniteType ℤ Γ(X, U) := by
@@ -40,9 +40,9 @@ theorem finiteType_sections_of_isFiniteTypeOverZ {X : Scheme.{0}} (hX : IsFinite
   exact RingHom.finiteType_algebraMap.mp h3
 
 /- English proof (translation)
-Introduce `X _ hX L _ _ _ U hUa hU`. Use `hU` as an intermediate fact. Use `finiteType_sections_of_isFiniteTypeOverZ hX hUa` as an intermediate fact. Use `functionField_isFractionRing_of_isAffineOpen X U hUa` as an intermediate fact. Set `: Algebra Γ(X, U) L` to `((algebraMap X.functionField L).comp (algebraMap Γ(X, U) X.functionField)).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower Γ(X, U) X.functionField L` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Conclude with `h Γ(X, U) X.functionField L`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FiniteIntegralClosure.scheme_of_alg
     (h : ∀ (A K L : Type) [CommRing A] [IsDomain A] [Algebra.FiniteType ℤ A] [Field K]
@@ -65,7 +65,7 @@ theorem FiniteIntegralClosure.scheme_of_alg
   exact h Γ(X, U) X.functionField L
 
 /- English proof (translation)
-Establish `h : (Spec.map (CommRingCat.ofHom (algebraMap Z.functionField L))) (IsLocalRing.closedPoint (CommRingCat.of L)) = IsLocalRing.closedPoint Z.functionField` using `Spec_closedPoint`. Conclude with `(Scheme.Hom.comp_apply (Spec.map (CommRingCat.ofHom (algebraMap Z.functionField L))) (Z.fromSpecStalk (genericPoint Z)) (IsLocalRing.closedPoint (CommRingCat.of L))).trans (h ▸ Scheme.fromSpecStalk_closedPoint)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genericSpecMap_closedPoint (Z : Scheme.{0}) [IsIntegral Z] (L : Type) [Field L]
     [Algebra Z.functionField L] :
@@ -79,7 +79,7 @@ theorem genericSpecMap_closedPoint (Z : Scheme.{0}) [IsIntegral Z] (L : Type) [F
     (h ▸ Scheme.fromSpecStalk_closedPoint)
 
 /- English proof (translation)
-Establish `h` using `Scheme.germ_stalkClosedPointTo_Spec_fromSpecStalk (CommRingCat.ofHom (algebraMap Z.functionField L)) U hmem`. Conclude with `(Scheme.germ_stalkClosedPointTo _ U hmem).symm.trans h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genericSpecMap_app_iso (Z : Scheme.{0}) [IsIntegral Z] (L : Type) [Field L]
     [Algebra Z.functionField L] (U : Z.Opens) (hη : genericPoint Z ∈ U)
@@ -94,15 +94,15 @@ theorem genericSpecMap_app_iso (Z : Scheme.{0}) [IsIntegral Z] (L : Type) [Field
   exact (Scheme.germ_stalkClosedPointTo _ U hmem).symm.trans h
 
 /- English proof (translation)
-Introduce `Z _ f _ _ L _ _ _`. Establish `e : f = toSpecZ Z` using `specZ_hom_ext _ _`. Establish `hX : IsFiniteTypeOverZ Z` using `⟨e ▸ ‹LocallyOfFiniteType f›, e ▸ ‹QuasiCompact f›⟩`. Use `set g := _root_.GroundTheory.Heights₂.Heights.Model.genericSpecMap Z L with hg`. Use `{ finite_app := fun U hU => ?_ }` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `` to `(g.app U).hom.toAlgebra`. Rewrite using `[g.fromNormalization_app hU, CommRingCat.hom_comp]`. Use `RingHom.Finite.comp ?_ ?_` and prove the remaining obligations. Conclude with `RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (g.normalizationObjIso hU).inv).2`. Use `RingHom.finite_algebraMap.2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `isEmpty_or_nonempty U with hU0 | hU0` into its components or cases. Establish `hb : U = ⊥` using `SetLike.coe_injective (by simpa using Set.isEmpty_coe_sort.mp hU0)`. Substitute `hb` using the available equality. Establish `: Subsingleton (integralClosure Γ(Z, ⊥) Γ(Spec (CommRingCat.of L), g ⁻¹ᵁ ⊥))` using `Module.subsingleton Γ(Z, ⊥) _`. Conclude with `⟨⟨∅, Subsingleton.elim _ _⟩⟩`.
+Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη : genericPoint Z ∈ U` using `((genericPoint_spec Z).mem_open_set_iff U.isOpen).mpr (by simpa using hU0)`. Establish `hmem : g (IsLocalRing.closedPoint L) ∈ U`. Rewrite using `[hg, genericSpecMap_closedPoint]`. Conclude with `hη`. Establish `key` using `genericSpecMap_app_iso Z L U hη hmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `: Algebra Γ(Z, U) L` to `((algebraMap Z.functionField L).comp (algebraMap Γ(Z, U) Z.functionField)).toAlgebra`. Set `eR` to `((Spec (CommRingCat.of L)).presheaf.mapIso (eqToIso (Scheme.preimage_eq_top_of_closedPoint_mem _ hmem).symm).op ≪≫ Scheme.ΓSpecIso (CommRingCat.of L)).commRingCatIsoToRingEquiv`. Set `eA : Γ(Spec (CommRingCat.of L), g ⁻¹ᵁ U) ≃ₐ[Γ(Z, U)] L` to `AlgEquiv.ofRingEquiv (f := eR) fun x => congrArg (fun φ => φ.hom x) key`. Establish `hfin` using `h Z hX L U hU hU0`. Conclude with `Module.Finite.equiv eA.mapIntegralClosure.symm.toLinearEquiv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FiniteIntegralClosure.normalization_of_scheme
     (h : ∀ (X : Scheme.{0}) [IsIntegral X], IsFiniteTypeOverZ X →
@@ -146,9 +146,9 @@ theorem FiniteIntegralClosure.normalization_of_scheme
   exact Module.Finite.equiv eA.mapIntegralClosure.symm.toLinearEquiv
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, -⟩`. Establish `hb` using `FiniteIntegralClosure.alg_iff.mp ha`. Conclude with `⟨hb, FiniteIntegralClosure.scheme_of_alg hb⟩`. Introduce and unpack `⟨hb, hs⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨FiniteIntegralClosure.alg_iff.mpr hb, FiniteIntegralClosure.normalization_of_scheme hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem FiniteIntegralClosure.equiv :
     (_root_.GroundTheory.Heights₂.Heights.Model.FiniteIntegralClosure.Statement ∧

@@ -8,9 +8,9 @@ open Finset MvPolynomial
 namespace UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Unfold `vdm`. Use `Finset.prod_ne_zero_iff.2 fun i _ => Finset.prod_ne_zero_iff.2 fun j hj => ?_` and prove the remaining obligations. Use `sub_ne_zero.2 fun h => ?_` and prove the remaining obligations. Use `hg h` as an intermediate fact. Substitute `this` using the available equality.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `at hj`.
+Simplify using the standard rewrite rules.
 -/
 private theorem vdm_ne {K : Type} [Field K] {n : ℕ} (g : Fin n → K)
     (hg : Function.Injective g) : vdm g ≠ 0 := by
@@ -22,9 +22,9 @@ private theorem vdm_ne {K : Type} [Field K] {n : ℕ} (g : Fin n → K)
   simp at hj
 
 /- English proof (translation)
-Unfold `altnZ altn shift`. Rewrite using `[← Finset.prod_pow, ← Matrix.det_mul_row (fun k => g k ^ m)]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← zpow_natCast (g j) m, ← zpow_natCast (g j) (lam i + (n - 1 - (i : ℕ))), ← zpow_add₀ (h0 j)]`. Use `congr 1`. Establish `h1` using `hl i`. Establish `h2` using `i.isLt`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -44,7 +44,7 @@ private theorem num_eq {K : Type} [Field K] {n : ℕ} (l : Fin n → ℤ) (m : �
   omega
 
 /- English proof (translation)
-Introduce `hT K _ _ n l m lam g hl hg h0`. Establish `hv` using `vdm_ne g hg`. Establish `hp : (∏ k, g k) ^ m ≠ 0` using `pow_ne_zero _ (prod_ne_zero_iff.mpr fun k _ => h0 k)`. Rewrite using `[div_eq_div_iff hv hp, hT K n lam g, ← num_eq l m lam g hl h0]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weylTie_of : Comparison₂ → WeylTie := by
   intro hT K _ _ n l m lam g hl hg h0

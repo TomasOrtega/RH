@@ -15,22 +15,22 @@ def sg (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if r ≤ i.val ∧ i.val ≤ r + k then i else ⟨2 * r + k - i.val, by omega⟩
 
 /- English proof (translation)
-Simplify using `[sg, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sg_val_in {i : Fin (2 * r + k + 1)} (h : r ≤ i.val ∧ i.val ≤ r + k) : sg k r i = i := by
   simp [sg, h]
 
 /- English proof (translation)
-Simplify using `[sg, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sg_val_out {i : Fin (2 * r + k + 1)} (h : ¬ (r ≤ i.val ∧ i.val ≤ r + k)) :
     (sg k r i).val = 2 * r + k - i.val := by
   simp [sg, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : r ≤ i.val ∧ i.val ≤ r + k`. Rewrite using `[sg_val_in h, sg_val_in h]`. Establish `h1` using `sg_val_out h`. Establish `h2 : ¬ (r ≤ (sg k r i).val ∧ (sg k r i).val ≤ r + k)`. Use `i.isLt` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[sg_val_out h2, h1]`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sg_sg (i : Fin (2 * r + k + 1)) : sg k r (sg k r i) = i := by
   by_cases h : r ≤ i.val ∧ i.val ≤ r + k
@@ -41,7 +41,7 @@ theorem sg_sg (i : Fin (2 * r + k + 1)) : sg k r (sg k r i) = i := by
     apply Fin.ext; rw [sg_val_out h2, h1]; have := i.isLt; omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Rewrite using `[sg_sg]`. Introduce and unpack `rfl`. Rewrite using `[sg_sg]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_sg_iff {i j : Fin (2 * r + k + 1)} : i = sg k r j ↔ j = sg k r i := by
   constructor
@@ -52,7 +52,7 @@ def mono {n : ℕ} (s : Fin n → Fin n) (a : Fin n → ℂ) : Matrix (Fin n) (F
   Matrix.of fun l j => if l = s j then a j else 0
 
 /- English proof (translation)
-Rewrite using `[mul_apply]`. Simplify using `only [mono, of_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_mono {n : ℕ} (s : Fin n → Fin n) (a : Fin n → ℂ) (M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     (M * mono s a) i j = M i (s j) * a j := by
@@ -60,7 +60,7 @@ theorem mul_mono {n : ℕ} (s : Fin n → Fin n) (a : Fin n → ℂ) (M : Matrix
   simp only [mono, of_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Rewrite using `[mul_apply]`. Simplify using `only [mono, of_apply, conjTranspose_apply, apply_ite, star_zero, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conjT_mono_mul {n : ℕ} (s : Fin n → Fin n) (a : Fin n → ℂ) (M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     ((mono s a)ᴴ * M) i j = star (a i) * M (s i) j := by
@@ -73,25 +73,25 @@ def bt (k r : ℕ) (c : Fin r → ℂ) (j : Fin (2 * r + k + 1)) : ℂ :=
   else (star (c ⟨2 * r + k - j.val, by have := j.isLt; omega⟩))⁻¹
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Unfold `bigCell bt mono`. Rewrite using `[of_apply]`. Distinguish the cases in `hj : j.val < r`. Establish `hs` using `sg_val_out (k := k) (r := r) (i := j) (by omega)`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [dif_pos hj]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[hs]`. Simplify using `[esI]`. Introduce and unpack `rfl`. Apply `Fin.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hs]`. Simplify using `[esI]`. Simplify using `only [dif_neg hj]`. Distinguish the cases in `hj2 : j.val ≤ r + k`. Establish `hs` using `sg_val_in (k := k) (r := r) (i := j) ⟨by omega, hj2⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [dif_pos hj2, hs]`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Rewrite using `[dif_pos hi, one_apply]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce and unpack `rfl`. Both sides reduce to the same expression. Rewrite using `[dif_neg hi, if_neg]`. Introduce and unpack `rfl; exact hi ⟨by omega, hj2⟩`.
+Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hs` using `sg_val_out (k := k) (r := r) (i := j) (by omega)`. Simplify using `only [dif_neg hj2]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[hs]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bigCell_one_mono (c : Fin r → ℂ) :
     bigCell k r c 1 = mono (sg k r) (bt k r c) := by
@@ -127,15 +127,15 @@ def et (k r : ℕ) (j : Fin (2 * r + k + 1)) : ℂ :=
   if r ≤ j.val ∧ j.val ≤ r + k then (if j.val = r + k then -1 else 1) else 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Unfold `Hpk et mono`. Rewrite using `[of_apply]`. Use `beta_reduce`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hs` using `sg_val_in (k := k) (r := r) (i := j) hj`. Rewrite using `[hs, if_pos hj]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_neg (by omega), if_neg (by omega), if_pos ⟨hj.1, hj.2, rfl⟩, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by intro h; apply hij; apply Fin.ext; omega), if_neg (by intro h; apply hij; apply Fin.ext; omega), if_neg (by intro h; exact hij h.2.2), if_neg hij]`. Establish `hs` using `sg_val_out (k := k) (r := r) (i := j) hj`. Rewrite using `[if_neg hj]`. Distinguish the cases in `hij : i = sg k r j`. Establish `hv : i.val = 2 * r + k - j.val` using `by rw [hij, hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hij]`. Distinguish the cases in `hir : i.val < r`. Rewrite using `[if_pos ⟨hir, by have := j.isLt; omega⟩]`. Rewrite using `[if_neg (by omega), if_pos ⟨by omega, by have := j.isLt; omega⟩]`. Establish `hv : i.val ≠ 2 * r + k - j.val` using `by intro h; apply hij; apply Fin.ext; rw [hs, h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hij, if_neg (by omega), if_neg (by omega), if_neg (by intro h; apply hj; omega)]`.
+A detailed English derivation is pending.
 -/
 theorem Hpk_mono : Hpk k r = mono (sg k r) (et k r) := by
   funext i j
@@ -160,9 +160,9 @@ theorem Hpk_mono : Hpk k r = mono (sg k r) (et k r) := by
       rw [if_neg hij, if_neg (by omega), if_neg (by omega), if_neg (by intro h; apply hj; omega)]
 
 /- English proof (translation)
-Establish `hs` using `sg_val_out (k := k) (r := r) (i := j) (by omega)`. Unfold `bt`. Rewrite using `[dif_neg (by omega), dif_neg (by omega)]`. Use `congr 3`. Apply `Fin.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [hs]`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem bt_sg_lt (c : Fin r → ℂ) {j : Fin (2 * r + k + 1)} (hj : j.val < r) :
     bt k r c (sg k r j) = (star (c ⟨j.val, hj⟩))⁻¹ := by
@@ -172,9 +172,9 @@ theorem bt_sg_lt (c : Fin r → ℂ) {j : Fin (2 * r + k + 1)} (hj : j.val < r) 
   congr 3; apply Fin.ext; simp only [hs]; have := j.isLt; omega
 
 /- English proof (translation)
-Establish `hs` using `sg_val_out (k := k) (r := r) (i := j) (by omega)`. Unfold `bt`. Rewrite using `[dif_pos (by omega)]`. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bt_sg_gt (c : Fin r → ℂ) {j : Fin (2 * r + k + 1)} (hj : r + k < j.val) :
     bt k r c (sg k r j) = c ⟨2 * r + k - j.val, by have := j.isLt; omega⟩ := by
@@ -184,47 +184,47 @@ theorem bt_sg_gt (c : Fin r → ℂ) {j : Fin (2 * r + k + 1)} (hj : r + k < j.v
   congr 1; apply Fin.ext; simp only [hs]
 
 /- English proof (translation)
-Unfold `bt; rw [dif_neg (by omega), dif_neg (by omega)]`.
+Replace the relevant objects with their definitions.
 -/
 theorem bt_gt (c : Fin r → ℂ) {j : Fin (2 * r + k + 1)} (hj : r + k < j.val) :
     bt k r c j = (star (c ⟨2 * r + k - j.val, by have := j.isLt; omega⟩))⁻¹ := by
   unfold bt; rw [dif_neg (by omega), dif_neg (by omega)]
 
 /- English proof (translation)
-Unfold `bt`. Rewrite using `[dif_pos hj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bt_lt (c : Fin r → ℂ) {j : Fin (2 * r + k + 1)} (hj : j.val < r) :
     bt k r c j = c ⟨j.val, hj⟩ := by
   unfold bt; rw [dif_pos hj]
 
 /- English proof (translation)
-Unfold `bt; rw [dif_neg (by omega), dif_pos hj.2]`.
+Replace the relevant objects with their definitions.
 -/
 theorem bt_in (c : Fin r → ℂ) {j : Fin (2 * r + k + 1)} (hj : r ≤ j.val ∧ j.val ≤ r + k) :
     bt k r c j = 1 := by
   unfold bt; rw [dif_neg (by omega), dif_pos hj.2]
 
 /- English proof (translation)
-Unfold `et`. Rewrite using `[if_neg hj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem et_out {j : Fin (2 * r + k + 1)} (hj : ¬ (r ≤ j.val ∧ j.val ≤ r + k)) : et k r j = 1 := by
   unfold et; rw [if_neg hj]
 
 /- English proof (translation)
-Rewrite using `[sg_val_out hj]`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sg_out {j : Fin (2 * r + k + 1)} (hj : ¬ (r ≤ j.val ∧ j.val ≤ r + k)) :
     ¬ (r ≤ (sg k r j).val ∧ (sg k r j).val ≤ r + k) := by
   rw [sg_val_out hj]; have := j.isLt; omega
 
 /- English proof (translation)
-Rewrite using `[bigCell_one_mono]`. Use extensionality with `i j`. Rewrite using `[mul_mono, conjT_mono_mul, Hpk_mono]`. Simplify using `only [mono, of_apply]`. Distinguish the cases in `hij : i = sg k r j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Rewrite using `[sg_sg, if_pos rfl, if_pos rfl]`. Distinguish the cases in `hj : j.val < r`. Rewrite using `[bt_sg_lt c hj, bt_lt c hj, et_out (sg_out (by omega)), et_out (by omega)]`. Rewrite using `[star_inv₀, star_star, mul_one]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_mul_cancel₀ (hc _)`. Distinguish the cases in `hj2 : j.val ≤ r + k`. Rewrite using `[sg_val_in ⟨by omega, hj2⟩, bt_in c ⟨by omega, hj2⟩]; simp`. Rewrite using `[bt_sg_gt c (by omega), bt_gt c (by omega), et_out (sg_out (by omega)), et_out (by omega), mul_one]`. Conclude with `mul_inv_cancel₀ (by rw [Ne, star_eq_zero]; exact hc _)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg hij, if_neg, mul_zero, zero_mul]`. Introduce `h`. Apply `hij` to reduce the goal to its premises. Simplify `congrArg (sg k r) h` using `only [sg_sg]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem bigCell_one_unitary (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) :
     (bigCell k r c 1)ᴴ * Hpk k r * bigCell k r c 1 = Hpk k r := by
@@ -246,13 +246,11 @@ theorem bigCell_one_unitary (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) :
     intro h; apply hij; simpa only [sg_sg] using congrArg (sg k r) h
 
 /- English proof (translation)
-Rewrite using `[bigCell_one_mono, bigCell_one_mono]`. Use extensionality with `i j`. Rewrite using `[mul_mono]`. Simplify using `only [mono, of_apply, sg_sg, one_apply]`. Distinguish the cases in `hij : i = j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Distinguish the cases in `hj : i.val < r`. Rewrite using `[bt_sg_lt _ hj, bt_lt c hj]`. Simplify using `only [Pi.star_apply, star_star]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `inv_mul_cancel₀ (hc _)`. Distinguish the cases in `hj2 : i.val ≤ r + k`. Rewrite using `[sg_val_in ⟨by omega, hj2⟩, bt_in _ ⟨by omega, hj2⟩, bt_in _ ⟨by omega, hj2⟩, mul_one]`. Rewrite using `[bt_sg_gt _ (by omega), bt_gt c (by omega)]; simp only [Pi.star_apply]`. Conclude with `mul_inv_cancel₀ (by rw [Ne, star_eq_zero]; exact hc _)`.
-
-Rewrite using `[if_neg hij, if_neg hij, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bigCell_star_mul (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) :
     bigCell k r (star c) 1 * bigCell k r c 1 = 1 := by
@@ -272,7 +270,7 @@ theorem bigCell_star_mul (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) :
   · rw [if_neg hij, if_neg hij, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [map_apply, bigCell, Pi.star_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bigCell_map_conj (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     (bigCell k r c μ).map (starRingEnd ℂ) = bigCell k r (star c) (μ.map (starRingEnd ℂ)) := by
@@ -289,31 +287,31 @@ Both sides reduce to the same expression.
 theorem wI_val' (j : Fin (k + 1)) : (wI k r j).val = r + j.val := rfl
 
 /- English proof (translation)
-Rewrite using `[wI_val']`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem wI_in (j : Fin (k + 1)) : r ≤ (wI k r j).val ∧ (wI k r j).val ≤ r + k := by
   rw [wI_val']; have := j.isLt; omega
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[wI_val']`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem wI_sub (j : Fin (k + 1)) : (⟨(wI k r j).val - r, by rw [wI_val']; omega⟩ : Fin (k + 1)) = j := by
   apply Fin.ext; simp [wI_val']
 
 /- English proof (translation)
-Unfold `wbE`. Rewrite using `[dif_pos (wI_in j)]`. Use `congr 1`. Conclude with `wI_sub j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem wbE_wI (v : Fin (k + 1) → ℂ) (j : Fin (k + 1)) : wbE k r v (wI k r j) = v j := by
   unfold wbE; rw [dif_pos (wI_in j)]; congr 1; exact wI_sub j
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (wI k r)`. Introduce `a b h`. Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[wI_val', wI_val']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[show (∑ j : Fin (k + 1), f (wI k r j)) = ∑ i ∈ Finset.univ.map ⟨wI k r, hinj⟩, f i from (Finset.sum_map Finset.univ ⟨wI k r, hinj⟩ f).symm]`. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `i _ hi`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hf` to reduce the goal to its premises. Introduce `h`. Apply `hi` to reduce the goal to its premises. Use `Finset.mem_map.2 ⟨⟨i.val - r, by omega⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Function.Embedding.coeFn_mk, wI_val']`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_wb {f : Fin (2 * r + k + 1) → ℂ} (hf : ∀ i : Fin (2 * r + k + 1), ¬ (r ≤ i.val ∧ i.val ≤ r + k) → f i = 0) :
     ∑ i, f i = ∑ j : Fin (k + 1), f (wI k r j) := by
@@ -330,7 +328,7 @@ theorem sum_wb {f : Fin (2 * r + k + 1) → ℂ} (hf : ∀ i : Fin (2 * r + k + 
   apply Fin.ext; simp only [Function.Embedding.coeFn_mk, wI_val']; omega
 
 /- English proof (translation)
-Unfold `embWb`. Rewrite using `[dif_pos ⟨hi, hj⟩]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem embWb_in (X : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {i j : Fin (2 * r + k + 1)}
     (hi : r ≤ i.val ∧ i.val ≤ r + k) (hj : r ≤ j.val ∧ j.val ≤ r + k) :
@@ -338,7 +336,7 @@ theorem embWb_in (X : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {i j : Fin (2 * r 
   unfold embWb; rw [dif_pos ⟨hi, hj⟩]
 
 /- English proof (translation)
-Unfold `embWb`. Rewrite using `[dif_neg (fun h => hi h.1)]`. Distinguish the cases in `h : i = j`. Rewrite using `[if_pos ⟨h, hi⟩, if_pos h]`. Rewrite using `[if_neg (fun h' => h h'.1), if_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem embWb_out_left (X : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {i j : Fin (2 * r + k + 1)}
     (hi : ¬ (r ≤ i.val ∧ i.val ≤ r + k)) : embWb k r X i j = if i = j then 1 else 0 := by
@@ -348,9 +346,9 @@ theorem embWb_out_left (X : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {i j : Fin (
   · rw [if_neg (fun h' => h h'.1), if_neg h]
 
 /- English proof (translation)
-Unfold `embWb`. Rewrite using `[dif_neg (fun h => hj h.2)]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[if_pos ⟨rfl, hj⟩, if_pos rfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h' => h h'.1), if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem embWb_out_right (X : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {i j : Fin (2 * r + k + 1)}
     (hj : ¬ (r ≤ j.val ∧ j.val ≤ r + k)) : embWb k r X i j = if i = j then 1 else 0 := by
@@ -360,11 +358,11 @@ theorem embWb_out_right (X : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {i j : Fin 
   · rw [if_neg (fun h' => h h'.1), if_neg h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct]`. Rewrite using `[sum_wb (f := fun l => embWb k r X i l * wbE k r v l) (by intro l hl; simp [wbE, hl])]`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Simplify using `only [wbE_wI, embWb_in X hi (wI_in _), wI_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Unfold `wbE`. Rewrite using `[dif_pos hi]`. Both sides reduce to the same expression. Simplify using `only [embWb_out_left X hi]`. Unfold `wbE`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_neg hi]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[if_neg (fun h : i = wI k r j => hi (h ▸ wI_in j)), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem embWb_mulVec (X : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (v : Fin (k + 1) → ℂ) :
     embWb k r X *ᵥ wbE k r v = wbE k r (X *ᵥ v) := by
@@ -380,9 +378,9 @@ theorem embWb_mulVec (X : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (v : Fin (k + 
     rw [if_neg (fun h : i = wI k r j => hi (h ▸ wI_in j)), zero_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[mul_apply]`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Rewrite using `[sum_wb (f := fun l => embWb k r X i l * embWb k r Y l j) (by intro l hl; show embWb k r X i l * embWb k r Y l j = 0; rw [embWb_out_right X hl, if_neg (fun h : i = l => hl (h ▸ hi)), zero_mul])]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [embWb_in _ hi hj, embWb_in _ hi (wI_in _), embWb_in _ (wI_in _) hj, wI_sub, mul_apply]`. Simplify using `only [embWb_out_right _ hj, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `only [embWb_out_left _ hi, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem embWb_mul (X Y : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     embWb k r (X * Y) = embWb k r X * embWb k r Y := by
@@ -397,13 +395,13 @@ theorem embWb_mul (X Y : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
   · simp only [embWb_out_left _ hi, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[one_apply]`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Rewrite using `[embWb_in _ hi hj, one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Fin.ext` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `rfl`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Rewrite using `[embWb_out_right _ hj]`. Rewrite using `[embWb_out_left _ hi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem embWb_one : embWb k r (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) = 1 := by
   ext i j
@@ -418,15 +416,15 @@ theorem embWb_one : embWb k r (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) = 1 :
   · rw [embWb_out_left _ hi]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Hpk_mono]`. Simplify using `only [mulVec, dotProduct, mono, of_apply, ite_mul, zero_mul]`. Simplify using `only [eq_sg_iff (i := i), Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[sg_val_in hi]`. Unfold `wbE et Hb`. Rewrite using `[dif_pos hi, dif_pos hi, if_pos hi, mulVec_diagonal]`. Use `congr 1`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2` using `sg_out (k := k) (r := r) hi`. Unfold `wbE`. Rewrite using `[dif_neg h2, dif_neg hi, mul_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hpk_mulVec_wbE (u : Fin (k + 1) → ℂ) : Hpk k r *ᵥ wbE k r u = wbE k r (Hb k *ᵥ u) := by
   funext i
@@ -443,7 +441,7 @@ theorem Hpk_mulVec_wbE (u : Fin (k + 1) → ℂ) : Hpk k r *ᵥ wbE k r u = wbE 
     unfold wbE; rw [dif_neg h2, dif_neg hi, mul_zero]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Hpk_mulVec_wbE]`. Simplify using `only [dotProduct, Pi.star_apply]`. Rewrite using `[sum_wb (f := fun l => star (wbE k r v l) * wbE k r (Hb k *ᵥ u) l) (by intro l hl; simp [wbE, hl])]`. Simplify using `only [wbE_wI]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_wbE (u v : Fin (k + 1) → ℂ) : herm (Hpk k r) (wbE k r u) (wbE k r v) = herm (Hb k) u v := by
   unfold herm

@@ -6,13 +6,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ μ χ hR hμ a`. Rewrite using `[hR]`. Establish `h3 : ∀ {σ : E →ₐ[↥(maximalRealSubfield E)] E} (h : HeckeCharacterZeroLocus.ThmBIn.IsCMExt (↥(maximalRealSubfield E)) E σ), Units.map ((GlobalTheory.UnitaryHeckeBaseChange.adeleEquiv h).toRingHom : AE (↥(maximalRealSubfield E)) E →* AdeleRing (𝓞 E) E) (Units.map (algebraMap (AF ↥( …` using `fun _ => Units.ext (GlobalTheory.UnitaryHeckeBaseChange.toAdele_algebraMap (a : AF ↥(maximalRealSubfield E)))`. Use `erw [h3 (GlobalTheory.GalOfCusp.isCMExt_real E), hμ a]`. Simplify using `only [GlobalTheory.GalOfCusp.quadChar, MonoidHom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `split_ifs with hm`. Take `⟨y, ⟨t, rfl⟩, z, hz, hyz⟩` from `Subgroup.mem_sup.1 hm`. Establish `hn : GlobalTheory.IdeleNormChar.normSign E a = 1`. Use `(GlobalTheory.IdeleNormChar.normSign_eq_one_iff E a).2 ⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← hyz]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify `hz` using `[GlobalTheory.QuadSymbol.toUnits, GlobalTheory.QuadSymbol.normGroup]`. Simplify using `[hn]`. Break down `Int.units_eq_one_or (GlobalTheory.IdeleNormChar.normSign E a) with hn | hn` into its components or cases. It suffices to derive a contradiction. Take `⟨t, ht⟩` from `(GlobalTheory.IdeleNormChar.normSign_eq_one_iff E a).1 hn`.
-
-Conclude with `hm (Subgroup.mem_sup.2 ⟨_, ⟨t, rfl⟩, _, ht, mul_div_cancel _ _⟩)`. Simplify using `[hn]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Chr.readRes :
     UpperTheory.Gal.TP.Chr.ReadRes := by

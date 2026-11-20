@@ -10,15 +10,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.HTLat.AnnKer
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P`. Use `set L := Submodule.span C (Set.range P.bLie) with hL`. Establish `hWL : P.W = P.pairV.orthogonal L`. Use extensionality with `x`. Rewrite using `[KerPerp.mem_W_iff p C v O Λ P x, LinearMap.BilinForm.mem_orthogonal_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h n hn`. Establish `: L ≤ LinearMap.ker (P.pairV.flip x)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `h z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this hn`. Introduce `h y`. Conclude with `h _ (Submodule.subset_span ⟨y, rfl⟩)`. Establish `hl : ∀ w : P.V, (∀ y, P.pairV w y = 0) → w = 0` using `fun w hw => P.eq_of_pairV fun t => by rw [hw, map_zero, LinearMap.zero_apply]`. Establish `hnd : P.pairV.Nondegenerate` using `⟨hl, fun w hw => hl w fun y => by rw [P.pairV_swap, hw, neg_zero]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrefl : P.pairV.IsRefl` using `fun x y h => by rw [P.pairV_swap, h, neg_zero]`. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.BilinForm.orthogonal_orthogonal hnd hrefl L, ← hWL, LinearMap.BilinForm.mem_orthogonal_iff]`. Use `⟨fun h n hn => ?_, fun h y hy => ?_⟩` and prove the remaining obligations. Conclude with `hrefl _ _ (h n hn)`.
-
-Conclude with `hrefl _ _ (h y hy)`. Establish `ho` using `LinearMap.BilinForm.finrank_orthogonal hnd L`. Rewrite `ho` using `[← hWL, P.finrank_V]`. Establish `hle : Module.finrank C L ≤ 2 * P.A.g` using `P.finrank_V ▸ Submodule.finrank_le L`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem annW_eq_span_bLie : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (Λ : Type) [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), (∀ x : P.V, (∀ y ∈ P.W, P.pairV x y = 0) ↔ x ∈ Submodule.span C (Set.range P.bLie)) ∧ Module.finrank C (Submodule.span C (Set.range P.bLie)) + Module.finrank C P.W = 2 * P.A.g := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P

@@ -7,7 +7,7 @@ open Formalism.FourierDecayAlt.Sz Finset
 namespace Sz6
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[prod_insert ha, prod_insert ha, Real.sqrt_mul (h a (mem_insert_self a s)), ih (fun i hi => h i (mem_insert_of_mem hi))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqrt_prod_nonneg {α : Type} (s : Finset α) (f : α → ℝ) (h : ∀ i ∈ s, 0 ≤ f i) :
     Real.sqrt (∏ i ∈ s, f i) = ∏ i ∈ s, Real.sqrt (f i) := by
@@ -19,21 +19,21 @@ theorem sqrt_prod_nonneg {α : Type} (s : Finset α) (f : α → ℝ) (h : ∀ i
       ih (fun i hi => h i (mem_insert_of_mem hi))]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_Icc, mem_Ico]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Icc_one_eq (n : ℕ) : Icc 1 n = Ico 1 (n + 1) := by
   ext x; simp only [mem_Icc, mem_Ico]; omega
 
 /- English proof (translation)
-Establish `e1 : Icc 1 (c.k + c.m - 1) = Ico 1 (c.k + c.m)`. Use extensionality with `x`. Simplify using `only [mem_Icc, mem_Ico]`. Use linear arithmetic over natural numbers and integers. Establish `e2 : Icc 1 (c.k - 1) = Ico 1 c.k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [mem_Icc, mem_Ico]`. Use linear arithmetic over natural numbers and integers. Unfold `Cfg.P`. Rewrite using `[e1, e2, Icc_one_eq, ← prod_Ico_consecutive _ hk (Nat.le_add_right c.k c.m)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `prod_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[mem_Ico]`. Simplify using `only [Cfg.lam, if_pos hi.2]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[prod_Ico_eq_prod_range, prod_Ico_eq_prod_range]`. Establish `a1 : c.k + c.m - c.k = c.m` using `by omega`. Establish `a2 : c.m + 1 - 1 = c.m` using `by omega`. Rewrite using `[a1, a2]`. Apply `prod_congr rfl` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _`. Establish `n1 : ¬ (c.k + i < c.k)` using `by omega`. Establish `n2 : c.k + i + 1 - c.k = 1 + i` using `by omega`. Simplify using `only [Cfg.lam, if_neg n1, n2]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prob_and_eq_mul_of_disjoint (c : Cfg) (hk : 1 ≤ c.k) (Y : ℝ) :
     c.P Y = (∏ i ∈ Icc 1 (c.k - 1), (Y + c.v i)) * ∏ j ∈ Icc 1 c.m, (Y - c.b j) := by
@@ -60,7 +60,7 @@ theorem prob_and_eq_mul_of_disjoint (c : Cfg) (hk : 1 ≤ c.k) (Y : ℝ) :
     ring
 
 /- English proof (translation)
-Establish `e2 : Icc 1 (k - 1) = Ico 1 k`. Use extensionality with `x`. Simplify using `only [mem_Icc, mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Icc_one_eq, e2, prod_eq_prod_Ico_succ_bot (by omega), prod_Ico_add' F 1 k 1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_split_first (k : ℕ) (hk : 1 ≤ k) (F : ℕ → ℝ) :
     ∏ i ∈ Icc 1 k, F i = F 1 * ∏ i ∈ Icc 1 (k - 1), F (i + 1) := by
@@ -69,11 +69,11 @@ theorem prod_split_first (k : ℕ) (hk : 1 ≤ k) (F : ℕ → ℝ) :
   rw [Icc_one_eq, e2, prod_eq_prod_Ico_succ_bot (by omega), prod_Ico_add' F 1 k 1]
 
 /- English proof (translation)
-Establish `n1 : ¬ (i + 1 = 1)` using `by omega`. Distinguish the cases in `hk : i + 1 = c.k`. Establish `ht : ¬ (c.top = true)` using `fun ht => hnt ⟨ht, hk⟩`. Establish `hik : i = c.k - 1` using `by omega`. Establish `hiR : (i : ℝ) = (c.k : ℝ) - 1`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((i + 1 : ℕ) : ℝ) = (c.k : ℝ)` using `by rw [hk]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : de i = 0` using `by rw [hik]; exact hw.2`. Simplify using `only [Cfg.u, if_neg n1, if_pos hk, Cfg.ulast, if_neg ht, Cfg.v, hiR, hd]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Cfg.u, if_neg n1, if_neg hk, Nat.add_sub_cancel]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem u_succ (c : Cfg) (de : ℕ → ℝ) (hw : IsWord c.k de) (i : ℕ) (hi : 1 ≤ i)
     (hnt : ¬ (c.top = true ∧ i + 1 = c.k)) :
@@ -91,7 +91,7 @@ theorem u_succ (c : Cfg) (de : ℕ → ℝ) (hw : IsWord c.k de) (i : ℕ) (hi :
   · simp only [Cfg.u, if_neg n1, if_neg hk, Nat.add_sub_cancel]
 
 /- English proof (translation)
-Establish `n1 : ¬ (i + 1 = 1)` using `by omega`. Simplify using `only [Cfg.u, if_neg n1, if_pos hk, Cfg.ulast, if_pos ht]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem u_top (c : Cfg) (de : ℕ → ℝ) (i : ℕ) (hi : 1 ≤ i) (ht : c.top = true)
     (hk : i + 1 = c.k) : c.u de (i + 1) = -c.bp := by
@@ -101,65 +101,65 @@ theorem u_top (c : Cfg) (de : ℕ → ℝ) (i : ℕ) (hi : 1 ≤ i) (ht : c.top 
 end Sz6
 
 /- English proof (translation)
-Introduce `c de de' ka T T' Y l h hw hw' hT hT' hl hlk hne hY`. Take `⟨hY1, hY2⟩` from `hY`. Establish `hD` using `h.hDel`. Establish `hk` using `h.hk`. Establish `hk1 : 1 ≤ c.k` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlR : (l : ℝ) + 2 ≤ c.k` using `by exact_mod_cast hlk`. Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hvl' : c.v l = c.vlast + 4 * c.Del * ((c.k : ℝ) - 1 - l)` using `rfl`. Establish `m1 : 4 * c.Del * 1 ≤ 4 * c.Del * ((c.k : ℝ) - 1 - l)` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `hv0` using `h.hv0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYneg : Y ≤ -(7 / 2 * c.Del)` using `by linarith`. Establish `hvl1 : c.v l ≤ c.v 1` using `by simp only [Cfg.v]; push_cast; nlinarith`. Establish `hkD : 0 < 4 * (c.k : ℝ) * c.Del`. Establish `: (0 : ℝ) < c.k` using `by linarith`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `ha : 0 < Y + 1 / 2 + c.a` using `by have := h.ha; linarith`. Establish `hbj : ∀ j : ℕ, 1 ≤ j → j ≤ c.m → 1 ≤ c.b j`. Introduce `j hj`. Proceed by induction on `j, hj using Nat.le_induction with`. Consider the case `base => intro _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `h.hb1`. Consider the case `succ n hn ih`. Introduce `hm`. Establish `i1` using `ih (by omega)`. Establish `i2` using `h.hgap n hn (by omega)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hvi : ∀ i : ℕ, c.v i + Y = (c.v l + Y) + 4 * c.Del * ((l : ℝ) - i)`. Introduce `i`. Simplify using `only [Cfg.v]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hle : ∀ i : ℕ, i < l → c.v l + Y + 4 * c.Del ≤ c.v i + Y`. Introduce `i hi`. Establish `: (i : ℝ) + 1 ≤ l` using `by exact_mod_cast hi`. Establish `: 4 * c.Del * 1 ≤ 4 * c.Del * ((l : ℝ) - i)` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Rewrite using `[hvi i]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hge : ∀ i : ℕ, l < i → c.v i + Y ≤ c.v l + Y - 4 * c.Del`. Introduce `i hi`. Establish `: (l : ℝ) + 1 ≤ i` using `by exact_mod_cast hi`. Establish `: 4 * c.Del * 1 ≤ 4 * c.Del * ((i : ℝ) - l)` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvi i]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA0 : ∀ i : ℕ, Y + c.v i ≠ 0 ∧ Y + 1 + c.v i ≠ 0`. Introduce `i`. Break down `lt_trichotomy i l with hi | hi | hi` into its components or cases.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `hle i hi` as an intermediate fact. Apply the tactic sequence `constructor <;> apply ne_of_gt <;> linarith`. Substitute `hi` using the available equality. Apply the tactic sequence `constructor <;> apply ne_of_gt <;> linarith`. Use `hge i hi` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> apply ne_of_lt <;> linarith`. Establish `hW : ∀ (e : ℕ → ℝ), IsWord c.k e → ∀ i : ℕ, c.v i - e i * c.Del - -Y ≠ 0`. Introduce `e he i`. Break down `lt_trichotomy i l with hi | hi | hi` into its components or cases. Use `hle i hi` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ne_of_gt` to reduce the goal to its premises. Apply the tactic sequence `rcases he.1 i with a | a <;> rw [a] <;> linarith`. Substitute `hi` using the available equality. Apply the tactic sequence `rcases he.1 i with a | a <;> rw [a]`. Apply `ne_of_gt` to reduce the goal to its premises.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Apply `ne_of_lt` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Use `hge i hi` as an intermediate fact. Apply `ne_of_lt` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases he.1 i with a | a <;> rw [a] <;> linarith`. Establish `hbp : c.top = true → 0 < c.bp + -Y - 1 / 2`. Introduce `ht`. Take `⟨hb1, _⟩` from `h.htop ht`. Use `h.hb1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨A, hAdef⟩ : ∃ A : ℕ → ℝ, A = fun i => (c.v i - -Y) * (c.v i + 1 - -Y)` from `⟨_, rfl⟩`. Take `⟨B, hBdef⟩ : ∃ B : ℕ → ℝ, B = fun i => (Y + 1 / 2 + c.u de (i + 1)) * (Y + 1 / 2 + c.u de' (i + 1))` from `⟨_, rfl⟩`. Take `⟨Nn, hNdef⟩ : ∃ Nn : ℕ → ℝ, Nn = fun j => (c.b j + -Y) * (c.b j + -Y - 1)` from `⟨_, rfl⟩`. Establish `hB : ∀ i ∈ Icc 1 (c.k - 1), B i ≠ 0 ∧ c.rho de de' (-Y) i = Real.sqrt |A i| / Real.sqrt |B i|`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Rewrite `hi` using `[mem_Icc]`. Distinguish the cases in `hc : c.top = true ∧ i + 1 = c.k`. Establish `p` using `hbp hc.1`. Establish `eB : B i = (c.bp + -Y - 1 / 2) ^ 2`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBdef]`. Simplify using `only [Sz6.u_top c de i hi.1 hc.1 hc.2, Sz6.u_top c de' i hi.1 hc.1 hc.2]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨by rw [eB]; positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[eB, abs_of_nonneg (sq_nonneg (c.bp + -Y - 1 / 2)), Real.sqrt_sq p.le, hAdef]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Cfg.rho, if_pos hc]`. Establish `eB : B i = (c.v i - de i * c.Del - -Y) * (c.v i - de' i * c.Del - -Y)`. Rewrite using `[hBdef]`. Simplify using `only [Sz6.u_succ c de hw i hi.1 hc, Sz6.u_succ c de' hw' i hi.1 hc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by rw [eB]; exact mul_ne_zero (hW de hw i) (hW de' hw' i), ?_⟩` and prove the remaining obligations. Rewrite using `[eB, hAdef]`. Simplify using `only [Cfg.rho, if_neg hc]`. Establish `hN : ∀ j ∈ Icc 1 c.m, 0 < Nn j`. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[mem_Icc]`. Use `hbj j hj.1 hj.2` as an intermediate fact. Rewrite using `[hNdef]`. Apply the tactic sequence `apply mul_pos <;> linarith`. Establish `hq : c.q de de' T T' Y = -(T * T') * ((Y + 1 / 2 + c.a) ^ 2 * ∏ i ∈ Icc 1 (c.k - 1), B i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Cfg.q`. Rewrite using `[Sz6.prod_split_first c.k hk1, hBdef]`. Establish `u1 : ∀ e : ℕ → ℝ, c.u e 1 = c.a` using `by intro e; simp only [Cfg.u, if_true]`. Rewrite using `[u1, u1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hPP : c.P Y * c.P (Y + 1) = (∏ j ∈ Icc 1 c.m, Nn j) * ∏ i ∈ Icc 1 (c.k - 1), A i`. Rewrite using `[Sz6.prob_and_eq_mul_of_disjoint c hk1, Sz6.prob_and_eq_mul_of_disjoint c hk1, hNdef, hAdef]`. Establish `x1 : (∏ j ∈ Icc 1 c.m, (c.b j + -Y) * (c.b j + -Y - 1)) = (∏ j ∈ Icc 1 c.m, (Y - c.b j)) * ∏ j ∈ Icc 1 c.m, (Y + 1 - c.b j)`. Rewrite using `[← prod_mul_distrib]`. Apply `prod_congr rfl` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _`. Expand and normalize the polynomial expressions, which then agree. Establish `x2 : (∏ i ∈ Icc 1 (c.k - 1), (c.v i - -Y) * (c.v i + 1 - -Y)) = (∏ i ∈ Icc 1 (c.k - 1), (Y + c.v i)) * ∏ i ∈ Icc 1 (c.k - 1), (Y + 1 + c.v i)`. Rewrite using `[← prod_mul_distrib]`. Apply `prod_congr rfl` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[x1, x2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbne : ∀ j ∈ Icc 1 c.m, Y - c.b j ≠ 0 ∧ Y + 1 - c.b j ≠ 0`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Rewrite `hj` using `[mem_Icc]`. Use `hbj j hj.1 hj.2` as an intermediate fact. Apply the tactic sequence `constructor <;> apply ne_of_lt <;> linarith`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq]`. Use `mul_ne_zero (neg_ne_zero.mpr (mul_pos hT hT').ne') (mul_ne_zero (by positivity) ?_)` and prove the remaining obligations. Conclude with `prod_ne_zero_iff.mpr (fun i hi => (hB i hi).1)`. Rewrite using `[Sz6.prob_and_eq_mul_of_disjoint c hk1]`. Conclude with `mul_ne_zero (prod_ne_zero_iff.mpr (fun i _ => (hA0 i).1)) (prod_ne_zero_iff.mpr (fun j hj => (hbne j hj).1))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Sz6.prob_and_eq_mul_of_disjoint c hk1]`. Conclude with `mul_ne_zero (prod_ne_zero_iff.mpr (fun i _ => (hA0 i).2)) (prod_ne_zero_iff.mpr (fun j hj => (hbne j hj).2))`. Establish `hTT : 0 < T * T'` using `mul_pos hT hT'`. Establish `hNpos : 0 ≤ ∏ j ∈ Icc 1 c.m, Nn j` using `prod_nonneg (fun j hj => (hN j hj).le)`. Establish `habs : |c.P Y * c.P (Y + 1) / c.q de de' T T' Y| = ((∏ j ∈ Icc 1 c.m, Nn j) * ∏ i ∈ Icc 1 (c.k - 1), |A i|) / (T * T' * ((Y + 1 / 2 + c.a) ^ 2 * ∏ i ∈ Icc 1 (c.k - 1), |B i|))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hPP, hq, abs_div, abs_mul, abs_mul, abs_mul, abs_neg, abs_of_pos hTT, abs_of_nonneg hNpos, abs_of_nonneg (by positivity : (0 : ℝ) ≤ (Y + 1 / 2 + c.a) ^ 2), Finset.abs_prod, Finset.abs_prod]`. Establish `hrho : ∏ i ∈ Icc 1 (c.k - 1), c.rho de de' (-Y) i = (∏ i ∈ Icc 1 (c.k - 1), Real.sqrt |A i|) / ∏ i ∈ Icc 1 (c.k - 1), Real.sqrt |B i|`. Rewrite using `[← prod_div_distrib]`. Conclude with `prod_congr rfl (fun i hi => (hB i hi).2)`. Establish `hNd : c.Nd (-Y) = ∏ j ∈ Icc 1 c.m, Real.sqrt (Nn j)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hNdef]`. Both sides reduce to the same expression. Establish `hU : c.U1 (-Y) = (Y + 1 / 2 + c.a)⁻¹`. Simplify using `only [Cfg.U1, one_div]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Cfg.be, Cfg.core]`. Rewrite using `[habs, hrho, hNd, hU, Real.sqrt_div (mul_nonneg hNpos (prod_nonneg (fun i _ => abs_nonneg _))), Real.sqrt_mul hNpos, Real.sqrt_mul hTT.le, Real.sqrt_mul (sq_nonneg (Y + 1 / 2 + c.a)), Real.sqrt_sq ha.le, Sz6.sqrt_prod_nonneg _ _ (fun j hj => (hN j hj).le), Sz6.sqrt_prod_nonneg _ …`. Generalize the expression as in `Y + 1 / 2 + c.a = W`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem betaFactorisation : Factorisation := by
   intro c de de' ka T T' Y l h hw hw' hT hT' hl hlk hne hY
@@ -319,27 +319,27 @@ theorem betaFactorisation : Factorisation := by
     ring
 
 /- English proof (translation)
-Introduce `c Y l h hl hlk hY`. Take `⟨hY1, hY2⟩` from `hY`. Establish `hD` using `h.hDel`. Establish `hD0 : 0 < c.Del` using `by linarith`. Establish `hb1` using `h.hb1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbj : ∀ j : ℕ, 1 ≤ j → j ≤ c.m → c.b 1 ≤ c.b j`. Introduce `j hj`. Proceed by induction on `j, hj using Nat.le_induction with`. Consider the case `base => intro _`. Conclude with `le_rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n hn ih`. Introduce `hm`. Establish `i1` using `ih (by omega)`. Establish `i2` using `h.hgap n hn (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hl1 : (1:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hlR : (l:ℝ) + 2 ≤ c.k` using `by exact_mod_cast hlk`. Establish `hvl : c.v l ≤ c.v 1` using `by simp only [Cfg.v]; push_cast; nlinarith`. Establish `hvl' : c.v l = c.vlast + 4 * c.Del * ((c.k:ℝ) - 1 - l)` using `rfl`. Establish `m1 : 4 * c.Del * 1 ≤ 4 * c.Del * ((c.k:ℝ) - 1 - l)` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv0` using `h.hv0`. Establish `hv1` using `h.hv1`. Take `⟨y, hy⟩ : ∃ y : ℝ, y = -Y` from `⟨_, rfl⟩`. Rewrite using `[← hy]`. Establish `hy1 : 1 ≤ y` using `by rw [hy]; linarith`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy2 : y ≤ 4 * c.k * c.Del` using `by rw [hy]; linarith`. Take `⟨E, hE⟩ : ∃ E : ℝ, E = Real.exp (4 * c.k * c.Del / c.b 1)` from `⟨_, rfl⟩`. Establish `hterm : ∀ j ∈ Icc 1 c.m, Real.sqrt ((c.b j + y) * (c.b j + y - 1)) ≤ c.b j * E`. Introduce `j hj`. Rewrite `hj` using `[mem_Icc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `hbj j hj.1 hj.2`. Establish `hbpos : 0 < c.b j` using `by linarith`. Establish `s1 : Real.sqrt ((c.b j + y) * (c.b j + y - 1)) ≤ c.b j + y`. Rewrite using `[Real.sqrt_le_iff]; exact ⟨by linarith, by nlinarith⟩`. Establish `s2 : c.b j + y ≤ c.b j * E`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : 1 + 4 * c.k * c.Del / c.b 1 ≤ E`. Use `Real.add_one_le_exp (4 * c.k * c.Del / c.b 1)` as an intermediate fact. Rewrite using `[hE]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `t2 : y / c.b j ≤ 4 * c.k * c.Del / c.b 1` using `div_le_div₀ (by positivity) hy2 (by linarith) hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `s1.trans s2`. Simplify using `only [Cfg.Nd, Cfg.prodb]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[prod_mul_distrib, prod_const, Nat.card_Icc]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `_ = Real.exp c.vth * ∏ j ∈ Icc 1 c.m, c.b j := by`. Rewrite using `[mul_comm]`. Use `congr 1`. Rewrite using `[hE, ← Real.exp_nat_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Simplify using `only [Cfg.vth]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem nodeBound : NodeBound := by
   intro c Y l h hl hlk hY
@@ -394,17 +394,17 @@ theorem nodeBound : NodeBound := by
         rw [hE, ← Real.exp_nat_mul]; congr 1; simp only [Cfg.vth]; ring
 
 /- English proof (translation)
-Introduce `c Y l h hl hlk hY`. Take `⟨hY1, hY2⟩` from `hY`. Establish `hk4 : (4 : ℝ) ≤ c.k` using `by exact_mod_cast h.hk`. Establish `hlR : (1 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hD` using `h.hDel`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvl : c.v l ≤ c.v 1`. Simplify using `only [Cfg.v]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `hpos : 0 < 4 * (c.k : ℝ) * c.Del` using `by positivity`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `ha` using `h.ha`. Establish `hv1` using `h.hv1`. Establish `h1 : 0 < c.a - c.v 1` using `by linarith`. Establish `h2 : c.a - c.v 1 ≤ c.a + 1 / 2 - -Y` using `by linarith`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Cfg.U1]`. Apply `one_div_pos.mpr` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Cfg.U1]`. Conclude with `one_div_le_one_div_of_le h1 h2`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ha0 : 0 < c.a`. Establish `: 0 ≤ c.v 1`. Simplify using `only [Cfg.v]`. Use `h.hv0` as an intermediate fact. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_div_iff₀ h1 ha0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem edgeFactorBound : FirstBound := by
   intro c Y l h hl hlk hY
@@ -429,21 +429,21 @@ theorem edgeFactorBound : FirstBound := by
     rw [div_le_div_iff₀ h1 ha0]; linarith
 
 /- English proof (translation)
-Introduce `c de de' Y l i h hw hw' hi hil hlk hY`. Take `⟨hY1, hY2⟩` from `hY`. Establish `hD` using `h.hDel`. Establish `hnt : ¬ (c.top = true ∧ i + 1 = c.k)` using `by rintro ⟨_, h2⟩; omega`. Take `⟨p, hp⟩ : ∃ p : ℝ, p = (l:ℝ) - i` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp1 : 1 ≤ p`. Establish `: (i:ℝ) + 1 ≤ l` using `by exact_mod_cast hil`. Rewrite using `[hp]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨d, hd⟩ : ∃ d : ℝ, d = c.v l + Y` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Rewrite `hY1`, `hY2` using `[← hd]`. Take `⟨X, hX⟩ : ∃ X : ℝ, X = 4 * c.Del * p + d` from `⟨_, rfl⟩`. Establish `hXv : c.v i + Y = X` using `by rw [hX, hd, hp]; simp only [Cfg.v]; ring`. Simplify using `only [Cfg.rho, if_neg hnt]`. Rewrite using `[← hp]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (c.v i - -Y) * (c.v i + 1 - -Y) = X * (X + 1)` using `by rw [← hXv]; ring`. Establish `e2 : (c.v i - de i * c.Del - -Y) * (c.v i - de' i * c.Del - -Y) = (X - de i * c.Del) * (X - de' i * c.Del)` using `by rw [← hXv]; ring`. Rewrite using `[e1, e2]`. Establish `mp : 4 * c.Del * 1 ≤ 4 * c.Del * p` using `mul_le_mul_of_nonneg_left hp1 (by linarith)`. Establish `hXD : 0 < X - c.Del` using `by rw [hX]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX0 : 0 < X` using `by linarith`. Establish `ha : X - c.Del ≤ X - de i * c.Del`. Apply the tactic sequence `rcases hw.1 i with a | a <;> rw [a] <;> linarith`. Establish `hb : X - c.Del ≤ X - de' i * c.Del`. Apply the tactic sequence `rcases hw'.1 i with a | a <;> rw [a] <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hnum : Real.sqrt |X * (X + 1)| ≤ X + 1`. Rewrite using `[abs_of_pos (by positivity), Real.sqrt_le_iff]; exact ⟨by linarith, by nlinarith⟩`. Establish `hden : X - c.Del ≤ Real.sqrt |(X - de i * c.Del) * (X - de' i * c.Del)|`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Rewrite using `[abs_of_pos (mul_pos (by linarith) (by linarith)), sq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul ha hb hXD.le (by linarith)`. Establish `h4p : 0 < 4 * p - 1` using `by linarith`. Establish `e3 : 1 + 2 / (4 * p - 1) = (4 * p + 1) / (4 * p - 1)` using `by field_simp; ring`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e3, div_le_div_iff₀ hXD h4p, hX]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ p - 1) (by linarith : (0:ℝ) ≤ c.Del - 1)]`.
+A detailed English derivation is pending.
 -/
 theorem positionBefore : PositionBefore := by
   intro c de de' Y l i h hw hw' hi hil hlk hY
@@ -485,17 +485,17 @@ theorem positionBefore : PositionBefore := by
       nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ p - 1) (by linarith : (0:ℝ) ≤ c.Del - 1)]
 
 /- English proof (translation)
-Introduce `c de de' Y l i h hw hw' hl hli hik hor hY`. Take `⟨hY1, hY2⟩` from `hY`. Establish `hD` using `h.hDel`. Establish `hnt : ¬ (c.top = true ∧ i + 1 = c.k)`. Introduce and unpack `⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Break down `hor with h3 | h3` into its components or cases. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1] at h3; exact absurd h3 (by decide)`. Establish `hliR : (l:ℝ) + 1 ≤ i` using `by exact_mod_cast hli`. Take `⟨X, hX⟩ : ∃ X : ℝ, X = -(c.v i + Y)` from `⟨_, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hXge : 7 / 2 * c.Del ≤ X`. Establish `e : c.v i = c.v l - 4 * c.Del * ((i:ℝ) - l)` using `by simp only [Cfg.v]; ring`. Establish `: 4 * c.Del * 1 ≤ 4 * c.Del * ((i:ℝ) - l)` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Rewrite using `[hX, e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [Cfg.rho, if_neg hnt]`. Establish `e1 : (c.v i - -Y) * (c.v i + 1 - -Y) = X * (X - 1)` using `by rw [hX]; ring`. Establish `e2 : (c.v i - de i * c.Del - -Y) * (c.v i - de' i * c.Del - -Y) = (X + de i * c.Del) * (X + de' i * c.Del)` using `by rw [hX]; ring`. Rewrite using `[e1, e2]`. Establish `hX1 : 1 ≤ X` using `by linarith`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : 0 ≤ de i * c.Del`. Apply the tactic sequence `rcases hw.1 i with a | a <;> rw [a] <;> linarith`. Establish `hb : 0 ≤ de' i * c.Del`. Apply the tactic sequence `rcases hw'.1 i with a | a <;> rw [a] <;> linarith`. Establish `hden : 0 < (X + de i * c.Del) * (X + de' i * c.Del)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `apply mul_pos <;> linarith`. Rewrite using `[div_le_one (Real.sqrt_pos.mpr (abs_pos.mpr hden.ne'))]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[abs_of_nonneg (mul_nonneg (by linarith) (by linarith)), abs_of_pos hden]`. Use polynomial arithmetic with `[mul_nonneg ha hb, mul_nonneg (by linarith : (0:ℝ) ≤ X) ha, mul_nonneg (by linarith : (0:ℝ) ≤ X) hb]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem positionAfter : PositionAfter := by
   intro c de de' Y l i h hw hw' hl hli hik hor hY
@@ -532,17 +532,17 @@ theorem positionAfter : PositionAfter := by
     mul_nonneg (by linarith : (0:ℝ) ≤ X) hb]
 
 /- English proof (translation)
-Introduce `c de de' Y l h hw hw' hl hlk hne hY`. Take `⟨hY1, hY2⟩` from `hY`. Establish `hD` using `h.hDel`. Use `set d := c.v l + Y with hd`. Establish `hnt : ¬ (c.top = true ∧ l + 1 = c.k)` using `by rintro ⟨_, h2⟩; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : 0 < d` using `by linarith`. Establish `hDd : 0 < c.Del - d` using `by linarith`. Establish `e1 : c.v l - -Y = d` using `by rw [hd]; ring`. Establish `e2 : c.v l + 1 - -Y = d + 1` using `by rw [hd]; ring`. Establish `hden : |(c.v l - de l * c.Del - -Y) * (c.v l - de' l * c.Del - -Y)| = d * (c.Del - d)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases hw.1 l with a | a <;> rcases hw'.1 l with b | b`. Conclude with `absurd (a.trans b.symm) hne`. Rewrite using `[a, b]`. Establish `: (c.v l - 0 * c.Del - -Y) * (c.v l - 1 * c.Del - -Y) = -(d * (c.Del - d))` using `by rw [hd]; ring`. Rewrite using `[this, abs_neg, abs_of_pos (mul_pos hd0 hDd)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[a, b]`. Establish `: (c.v l - 1 * c.Del - -Y) * (c.v l - 0 * c.Del - -Y) = -(d * (c.Del - d))` using `by rw [hd]; ring`. Rewrite using `[this, abs_neg, abs_of_pos (mul_pos hd0 hDd)]`. Conclude with `absurd (a.trans b.symm) hne`. Establish `hrho : c.rho de de' (-Y) l = Real.sqrt ((d + 1) / (c.Del - d))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Cfg.rho, if_neg hnt, hden, e1, e2]`. Rewrite using `[abs_of_pos (by positivity), ← Real.sqrt_div (by positivity)]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Use `⟨hrho, ?_⟩` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrho]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[div_le_div_iff₀ hDd (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem slotAt_true : PositionAt := by
   intro c de de' Y l h hw hw' hl hlk hne hY
@@ -576,17 +576,17 @@ theorem slotAt_true : PositionAt := by
   nlinarith
 
 /- English proof (translation)
-Introduce `c de de' Y l h ht hl hlk hY`. Take `⟨hY1, hY2⟩` from `hY`. Establish `hD` using `h.hDel`. Establish `hk` using `h.hk`. Establish `hc : c.top = true ∧ c.k - 1 + 1 = c.k` using `⟨ht, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Cfg.rho, if_pos hc]`. Take `⟨hb1, hb2⟩` from `h.htop ht`. Establish `hbp : 0 < c.bp` using `by have := h.hb1; linarith`. Establish `hkc : ((c.k - 1 : ℕ) : ℝ) = (c.k:ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega : 1 ≤ c.k)]; norm_num`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvk : c.v (c.k - 1) = c.vlast` using `by simp only [Cfg.v, hkc]; ring`. Take `⟨X, hX⟩ : ∃ X : ℝ, X = -(c.vlast + Y)` from `⟨_, rfl⟩`. Establish `hlR : (l:ℝ) + 2 ≤ c.k` using `by exact_mod_cast hlk`. Establish `hl1 : (1:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hvl : c.v l = c.vlast + 4 * c.Del * ((c.k:ℝ) - 1 - l)` using `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1 : 4 * c.Del * 1 ≤ 4 * c.Del * ((c.k:ℝ) - 1 - l)` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `m2 : 4 * c.Del * ((c.k:ℝ) - 1 - l) ≤ 4 * c.Del * (c.k:ℝ)` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `hX1 : 7 / 2 * c.Del ≤ X` using `by rw [hX]; linarith`. Establish `hX2 : X ≤ 4 * c.k * c.Del` using `by rw [hX]; linarith`. Establish `hv0` using `h.hv0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hvk]`. Establish `e1 : (c.vlast - -Y) * (c.vlast + 1 - -Y) = X * (X - 1)` using `by rw [hX]; ring`. Establish `hX0 : 0 ≤ X` using `by linarith`. Rewrite using `[e1, abs_of_nonneg (mul_nonneg hX0 (by linarith))]`. Establish `hs : Real.sqrt (X * (X - 1)) ≤ X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Real.sqrt_le_iff]; exact ⟨hX0, by nlinarith⟩`. Establish `hden : c.bp ≤ c.bp + -Y - 1 / 2`. Establish `: -Y = X + c.vlast` using `by rw [hX]; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 -/
 theorem positionTop : PositionTop := by
   intro c de de' Y l h ht hl hlk hY
@@ -624,17 +624,17 @@ theorem positionTop : PositionTop := by
     _ ≤ 4 * c.k * c.Del / c.bp := div_le_div_of_nonneg_right hX2 hbp.le
 
 /- English proof (translation)
-Establish `key : ∀ p : ℕ, 1 ≤ p → 0 ≤ ∏ j ∈ Icc 1 p, (1 + 2 / (4 * (j : ℝ) - 1)) ∧ (∏ j ∈ Icc 1 p, (1 + 2 / (4 * (j : ℝ) - 1))) ^ 2 ≤ 50 / 27 * ((p:ℝ) + 1 / 2)`. Introduce `p hp`. Proceed by induction on `p, hp using Nat.le_induction with`. Consider the case `base => simp`. Evaluate the numerical expressions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Evaluate the numerical expressions.
 
-Consider the case `succ n hn ih`. Take `⟨ih0, ih1⟩` from `ih`. Rewrite using `[Finset.prod_Icc_succ_top (by omega)]`. Establish `hn1 : (1:ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `e : 1 + 2 / (4 * ((n + 1 : ℕ) : ℝ) - 1) = (4 * (n:ℝ) + 5) / (4 * (n:ℝ) + 3)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 4 * ((n:ℝ) + 1) - 1 ≠ 0` using `by nlinarith`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `⟨mul_nonneg ih0 (by positivity), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, div_pow]`. Establish `h3 : 0 < (4 * (n:ℝ) + 3) ^ 2` using `by positivity`. Rewrite using `[mul_div_assoc', div_le_iff₀ h3]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `mul_le_mul_of_nonneg_right ih1 (by positivity : (0:ℝ) ≤ (4 * (n:ℝ) + 5) ^ 2)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Introduce `p hp`. Take `⟨h0, h1⟩` from `key p hp`. Establish `hp1 : (1:ℝ) ≤ p` using `by exact_mod_cast hp`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : 0 ≤ 3.3 * Real.sqrt p` using `by positivity`. Use `(pow_le_pow_iff_left₀ h0 hs (two_ne_zero)).mp ?_` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt (by linarith)]`. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem positionProduct : ProdOneAddTwoDivLeSqrt := by
   have key : ∀ p : ℕ, 1 ≤ p → 0 ≤ ∏ j ∈ Icc 1 p, (1 + 2 / (4 * (j : ℝ) - 1)) ∧
@@ -667,19 +667,17 @@ theorem positionProduct : ProdOneAddTwoDivLeSqrt := by
   linarith
 
 /- English proof (translation)
-Introduce `c de de' Y l h hw hw' hl hlk hY`. Establish `hk4 : (4:ℝ) ≤ c.k` using `by exact_mod_cast h.hk`. Establish `step1 : ∏ i ∈ Ico 1 l, c.rho de de' (-Y) i ≤ ∏ i ∈ Ico 1 l, (fun j : ℕ => (1 + 2 / (4 * (j : ℝ) - 1))) (l - i)`. Apply `prod_le_prod` to reduce the goal to its premises. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi` using `[mem_Ico]`. Establish `hnt : ¬ (c.top = true ∧ i + 1 = c.k)` using `by rintro ⟨_, h2⟩; omega`. Simplify using `only [Cfg.rho, if_neg hnt]`. Check the signs of the components of the expression. Introduce `i hi`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi` using `[mem_Ico]`. Use `H1 c de de' Y l i h hw hw' hi.1 hi.2 hlk hY` as an intermediate fact. Simplify using `only [Nat.cast_sub hi.2.le]`. Conclude with `this`. Establish `step2` using `Finset.prod_Ico_reflect (fun j : ℕ => (1 + 2 / (4 * (j : ℝ) - 1))) 1 (m := l) (n := l) (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `step1` using `[step2]`. Establish `a1 : l + 1 - l = 1` using `by omega`. Establish `a2 : l + 1 - 1 = l` using `by omega`. Rewrite `step1` using `[a1, a2]`. Use `step1.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨p, rfl⟩ : ∃ p, l = p + 1` from `⟨l - 1, by omega⟩`. Break down `Nat.eq_zero_or_pos p with rfl | hp` into its components or cases. Simplify using the standard rewrite rules. Establish `: (1:ℝ) ≤ Real.sqrt c.k` using `by rw [Real.one_le_sqrt]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e : Ico 1 (p + 1) = Icc 1 p` using `by ext x; simp only [mem_Ico, mem_Icc]; omega`. Rewrite using `[e]`. Use `(H2 p hp).trans ?_` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_left _ (by norm_num)` to reduce the goal to its premises. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises.
-
-Conclude with `(by omega : p ≤ c.k)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem Sz6.positionsBefore_of (H1 : PositionBefore) (H2 : ProdOneAddTwoDivLeSqrt) : PositionsBefore := by
   intro c de de' Y l h hw hw' hl hlk hY
@@ -714,7 +712,7 @@ theorem Sz6.positionsBefore_of (H1 : PositionBefore) (H2 : ProdOneAddTwoDivLeSqr
     exact_mod_cast (by omega : p ≤ c.k)
 
 /- English proof (translation)
-The claim follows from `Sz6.positionsBefore_of positionBefore positionProduct`.
+A detailed English derivation is pending.
 -/
 theorem positionsBefore : PositionsBefore :=
   Sz6.positionsBefore_of positionBefore positionProduct

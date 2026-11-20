@@ -23,19 +23,19 @@ abbrev RayClassGroup : Type _ :=
   IdeleGroup K ⧸ 𝔪.rayGroup
 
 /- English proof (translation)
-The claim follows from `le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem diagonal_range_le_rayGroup : (diagonal K).range ≤ 𝔪.rayGroup :=
   le_sup_left
 
 /- English proof (translation)
-The claim follows from `le_sup_right`.
+A detailed English derivation is pending.
 -/
 theorem congruenceSubgroup_le_rayGroup : 𝔪.congruenceSubgroup ≤ 𝔪.rayGroup :=
   le_sup_right
 
 /- English proof (translation)
-Rewrite using `[rayGroup, Subgroup.map_sup, QuotientGroup.map_mk'_self, bot_sup_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_rayGroup :
     𝔪.rayGroup.map (QuotientGroup.mk' (diagonal K).range) =
@@ -61,13 +61,11 @@ theorem quotientMapCongruenceEquiv_mk (x : IdeleGroup K) :
   rfl
 
 /- English proof (translation)
-Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `𝔪.mem_congruenceSubgroup.2 ⟨fun v ↦ ?_, fun w _ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← finiteComponent_toFinite, toFinite_ofFinite]`. Conclude with `mem_finiteLevel.1 hy v`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal w.2 ((toInfinite K (ofFinite y) : InfiniteAdeleRing K) w.1)`. Rewrite using `[toInfinite_ofFinite]`. Express the relevant statement in the definitionally equal form `0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal w.2 (1 : w.1.Completion)`. Rewrite using `[map_one]`. Conclude with `one_pos`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `𝔪.mem_congruenceSubgroup.2 ⟨fun v ↦ ?_, fun w _ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← finiteComponent_toFinite, toFinite_ofInfinite, map_one]`. Conclude with `one_mem _`. Establish `h : ((infiniteProj w.1 (ofInfinite z) : (w.1.Completion)ˣ) : w.1.Completion) = (toInfinite K (ofInfinite z) : InfiniteAdeleRing K) w.1` using `rfl`.
-
-Rewrite using `[h, toInfinite_ofInfinite]`. Conclude with `hz w.1 w.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_idealLevel_sup_le :
     (idealLevel 𝔪.ideal).map ofFinite ⊔ (infinitePositive K).map ofInfinite ≤
@@ -93,9 +91,9 @@ theorem map_idealLevel_sup_le :
       exact hz w.1 w.2
 
 /- English proof (translation)
-Use `le_antisymm (fun x hx ↦ ?_) 𝔪.map_idealLevel_sup_le` and prove the remaining obligations. Take `⟨hf, hi⟩` from `𝔪.mem_congruenceSubgroup.1 hx`. Rewrite using `[← ofFinite_mul_ofInfinite x]`. Use `mul_mem (Subgroup.mem_sup_left ⟨_, mem_finiteLevel.2 fun v ↦ ?_, rfl⟩) (Subgroup.mem_sup_right ⟨_, fun w hw ↦ hi ⟨w, hw⟩ (h ▸ Set.mem_univ _), rfl⟩)` and prove the remaining obligations. Rewrite using `[finiteComponent_toFinite]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf v`.
+A detailed English derivation is pending.
 -/
 theorem congruenceSubgroup_eq_sup (h : 𝔪.real = Set.univ) :
     𝔪.congruenceSubgroup =
@@ -109,14 +107,14 @@ theorem congruenceSubgroup_eq_sup (h : 𝔪.real = Set.univ) :
   exact hf v
 
 /- English proof (translation)
-Rewrite using `[IdeleGroup.rayGroup, sup_assoc]`. Conclude with `sup_le_sup_left 𝔪.map_idealLevel_sup_le _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rayGroup_ideal_le : IdeleGroup.rayGroup K 𝔪.ideal ≤ 𝔪.rayGroup := by
   rw [IdeleGroup.rayGroup, sup_assoc]
   exact sup_le_sup_left 𝔪.map_idealLevel_sup_le _
 
 /- English proof (translation)
-Rewrite using `[IdeleGroup.rayGroup, sup_assoc, rayGroup, 𝔪.congruenceSubgroup_eq_sup h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rayGroup_eq (h : 𝔪.real = Set.univ) : 𝔪.rayGroup = IdeleGroup.rayGroup K 𝔪.ideal := by
   rw [IdeleGroup.rayGroup, sup_assoc, rayGroup, 𝔪.congruenceSubgroup_eq_sup h]
@@ -135,7 +133,7 @@ theorem rayClassGroupEquiv_of_real_eq_univ_mk (h : 𝔪.real = Set.univ) (x : Id
   rfl
 
 /- English proof (translation)
-Establish `: Finite (_root_.GroundTheory.Global.RayClassGroup K 𝔪.ideal)` using `_root_.GroundTheory.Global.RayClassGroup.finite 𝔪.ideal_ne_bot`. Establish `: (IdeleGroup.rayGroup K 𝔪.ideal).FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Establish `: 𝔪.rayGroup.FiniteIndex` using `Subgroup.finiteIndex_of_le 𝔪.rayGroup_ideal_le`. Conclude with `Subgroup.finite_quotient_of_finiteIndex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem RayClassGroup.finite : Finite 𝔪.RayClassGroup := by
   have : Finite (_root_.GroundTheory.Global.RayClassGroup K 𝔪.ideal) :=
@@ -148,7 +146,7 @@ instance : Finite 𝔪.RayClassGroup :=
   RayClassGroup.finite 𝔪
 
 /- English proof (translation)
-Establish `: Finite (IdeleClassGroup K ⧸ 𝔪.congruenceSubgroup.map (IdeleClassGroup.mk K))` using `Finite.of_equiv _ 𝔪.quotientMapCongruenceEquiv.symm.toEquiv`. Conclude with `Subgroup.finiteIndex_of_finite_quotient`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteIndex_map_congruenceSubgroup :
     (𝔪.congruenceSubgroup.map (IdeleClassGroup.mk K)).FiniteIndex := by

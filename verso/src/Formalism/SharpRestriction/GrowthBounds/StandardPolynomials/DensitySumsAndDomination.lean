@@ -14,9 +14,9 @@ section PolLem
 variable {K : Type} [CommRing K] {ι : Type} {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Pol, MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_coe, ← MvPolynomial.C_1, MvPolynomial.C_apply]`. Establish `hm0` using `MvPolynomial.support_monomial_subset hm`. Rewrite `hm0` using `[Finset.mem_singleton]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hm0` using the available equality. Introduce `i`. Simplify using `[multideg]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem pol_one' : (1 : MvPolynomial (ι × Fin n) K) ∈ Pol K n (0 : ι → ℕ) := by
   rw [Pol, MvPolynomial.mem_restrictSupport_iff]
@@ -29,7 +29,7 @@ theorem pol_one' : (1 : MvPolynomial (ι × Fin n) K) ∈ Pol K n (0 : ι → �
   simp [multideg]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using pol_one' (K := K) (ι := ι) (n := n)`. Consider the case `succ k ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `hom_Pol_mul K ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pol_pow' {d : ι → ℕ} {P : MvPolynomial (ι × Fin n) K} (h : P ∈ Pol K n d) (k : ℕ) : P ^ k ∈ Pol K n (k • d) := by
   induction k with
@@ -39,7 +39,7 @@ theorem pol_pow' {d : ι → ℕ} {P : MvPolynomial (ι × Fin n) K} (h : P ∈ 
     exact hom_Pol_mul K ih h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using pol_one' (K := K) (ι := ι) (n := n)`. Consider the case `@insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `hom_Pol_mul K (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pol_prod' {κ : Type} (s : Finset κ) (d : κ → ι → ℕ) (f : κ → MvPolynomial (ι × Fin n) K)
     (h : ∀ i ∈ s, f i ∈ Pol K n (d i)) : ∏ i ∈ s, f i ∈ Pol K n (∑ i ∈ s, d i) := by
@@ -51,7 +51,7 @@ theorem pol_prod' {κ : Type} (s : Finset κ) (d : κ → ι → ℕ) (f : κ �
     exact hom_Pol_mul K (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Unfold `multideg`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using `[Finsupp.single_apply]`. Simplify using `[Finsupp.single_apply, Ne.symm h, h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem multideg_single' [DecidableEq ι] (a : ι) (c : Fin n) (k : ℕ) (i : ι) :
     multideg (Finsupp.single (a, c) k) i = if i = a then k else 0 := by
@@ -62,9 +62,9 @@ theorem multideg_single' [DecidableEq ι] (a : ι) (c : Fin n) (k : ℕ) (i : ι
   · simp [Finsupp.single_apply, Ne.symm h, h]
 
 /- English proof (translation)
-Rewrite using `[Pol, MvPolynomial.mem_restrictSupport_iff, MvPolynomial.support_X]`. Introduce `m hm`. Rewrite `hm` using `[Finset.coe_singleton, Set.mem_singleton_iff]`. Substitute `hm` using the available equality. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `multideg_single' a c 1 i`.
+A detailed English derivation is pending.
 -/
 theorem pol_X' [DecidableEq ι] [Nontrivial K] (a : ι) (c : Fin n) :
     (X (a, c) : MvPolynomial (ι × Fin n) K) ∈ Pol K n (fun i => if i = a then 1 else 0) := by
@@ -85,9 +85,9 @@ def pairU (K : Type) [CommRing K] (r : ℕ) (S : SegData s) (l : Fin S.t) : MvPo
   tcPairP K (chW (uTop S l)) (chE (uTop S l))
 
 /- English proof (translation)
-Establish `hd : (fun a : Fin (2 * s + 1) => if a.val = 2 * (S.sigma + l.val) ∨ a.val = 2 * (S.sigma + l.val) + 1 then 1 else 0) = (fun a => if a = chW (uTop S l) then 1 else 0) + (fun a => if a = chE (uTop S l) then 1 else 0)`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, Fin.ext_iff, chW, chE, uTop, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[hd]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Unfold `pairU tcPairP`. Conclude with `Submodule.sum_mem _ fun c _ => hom_Pol_mul K (pol_X' _ c) (pol_X' _ c)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pairU_pol (K : Type) [CommRing K] [Nontrivial K] (S : SegData s) (l : Fin S.t) :
     pairU K r S l ∈ Pol K r (fun a : Fin (2 * s + 1) =>
@@ -103,9 +103,9 @@ theorem pairU_pol (K : Type) [CommRing K] [Nontrivial K] (S : SegData s) (l : Fi
   exact Submodule.sum_mem _ fun c _ => hom_Pol_mul K (pol_X' _ c) (pol_X' _ c)
 
 /- English proof (translation)
-Establish `key : (fun a : Fin (2 * s + 1) => jE S k (a.val / 2)) = ∑ l, k l • (fun a : Fin (2 * s + 1) => if a.val = 2 * (S.sigma + l.val) ∨ a.val = 2 * (S.sigma + l.val) + 1 then 1 else 0)`. Use function extensionality and compare the values at `a`. Rewrite using `[Finset.sum_apply, ← tieSum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[key]`. Conclude with `pol_prod' Finset.univ _ _ fun l _ => pol_pow' (pairU_pol K S l) (k l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairProd_pol (K : Type) [CommRing K] [Nontrivial K] (S : SegData s) (k : Fin S.t → ℕ) :
     ∏ l, pairU K r S l ^ k l ∈ Pol K r (fun a : Fin (2 * s + 1) => jE S k (a.val / 2)) := by
@@ -120,7 +120,7 @@ theorem pairProd_pol (K : Type) [CommRing K] [Nontrivial K] (S : SegData s) (k :
   exact pol_prod' Finset.univ _ _ fun l _ => pol_pow' (pairU_pol K S l) (k l)
 
 /- English proof (translation)
-Rewrite using `[IntPol, LinearMap.mem_range]`. Use `⟨pairU O r S l, ?_⟩` and prove the remaining obligations. Simplify using `[pairU, tcPairP, MvPolynomial.mapAlgHom_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem pairU_int (S : SegData s) (l : Fin S.t) : pairU (KK O) r S l ∈ IntPol O (Fin (2 * s + 1) × Fin r) := by
   rw [IntPol, LinearMap.mem_range]
@@ -128,7 +128,7 @@ theorem pairU_int (S : SegData s) (l : Fin S.t) : pairU (KK O) r S l ∈ IntPol 
   simp [pairU, tcPairP, MvPolynomial.mapAlgHom_apply]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[IntPol, LinearMap.mem_range]`. Take `⟨a, rfl⟩` from `hx`. Conclude with `⟨a ^ k, by simp⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem intPol_pow' {σ : Type} {x : MvPolynomial σ (KK O)} (hx : x ∈ IntPol O σ) (k : ℕ) : x ^ k ∈ IntPol O σ := by
   rw [IntPol, LinearMap.mem_range] at hx ⊢
@@ -136,14 +136,14 @@ theorem intPol_pow' {σ : Type} {x : MvPolynomial σ (KK O)} (hx : x ∈ IntPol 
   exact ⟨a ^ k, by simp⟩
 
 /- English proof (translation)
-Conclude with `zsmul_mem hx z`.
+A detailed English derivation is pending.
 -/
 theorem zsmul_mem_sub {σ : Type} (M : Submodule O (MvPolynomial σ (KK O))) {x : MvPolynomial σ (KK O)} (hx : x ∈ M) (z : ℤ) :
     z • x ∈ M := by
   exact zsmul_mem hx z
 
 /- English proof (translation)
-Rewrite `hx`, `hy`, the goal using `[IntPol, LinearMap.mem_range]`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a * b, by simp⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem intPol_mul' {σ : Type} {x y : MvPolynomial σ (KK O)} (hx : x ∈ IntPol O σ) (hy : y ∈ IntPol O σ) :
     x * y ∈ IntPol O σ := by
@@ -153,9 +153,9 @@ theorem intPol_mul' {σ : Type} {x y : MvPolynomial σ (KK O)} (hx : x ∈ IntPo
   exact ⟨a * b, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, IntPol, LinearMap.mem_range]`. Conclude with `⟨1, by simp⟩`. Consider the case `@insert a t ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert ha]`. Conclude with `intPol_mul' (h a (Finset.mem_insert_self a t)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intPol_prod' {σ κ : Type} (t : Finset κ) (f : κ → MvPolynomial σ (KK O)) (h : ∀ i ∈ t, f i ∈ IntPol O σ) :
     ∏ i ∈ t, f i ∈ IntPol O σ := by
@@ -169,15 +169,15 @@ theorem intPol_prod' {σ κ : Type} (t : Finset κ) (f : κ → MvPolynomial σ 
     exact intPol_mul' (h a (Finset.mem_insert_self a t)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Use `set m : BVar N r t →₀ ℕ := ∑ c, Finsupp.single (xiVar N r t c) (γ c) with hm`. Establish `hmono : (∏ c, X (xiVar N r t c) ^ γ c : MvPolynomial (BVar N r t) (KK O)) = monomial m 1`. Rewrite using `[hm, MvPolynomial.monomial_sum_one]`. Conclude with `Finset.prod_congr rfl fun c _ => MvPolynomial.X_pow_eq_monomial`. Establish `hinj : Function.Injective (xiVar N r t)` using `fun c c' h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h` using `[xiVar]`. Establish `hval : ∀ c', m (xiVar N r t c') = γ c'`. Introduce `c'`. Rewrite using `[hm, Finsupp.finset_sum_apply]`. Simplify using `[Finsupp.single_apply, hinj.eq_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmono]`. Use `Submodule.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, MvPolynomial.mem_restrictSupport_iff]`. Introduce `m' hm'`. Establish `hm''` using `MvPolynomial.support_monomial_subset (Finset.mem_coe.mp hm')`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hm''` using `[Finset.mem_singleton]`. Substitute `hm''` using the available equality. Use `⟨fun v hv => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[hm]`. Take `⟨c, -, hc⟩` from `Finset.mem_biUnion.mp (Finsupp.support_finset_sum hv)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨c, Finset.mem_singleton.mp (Finsupp.support_single_subset hc)⟩`. Simplify using `only [hval]`. Conclude with `hb`. Rewrite using `[IntPol, LinearMap.mem_range]`. Conclude with `⟨monomial m 1, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem xi_mono_mem (N t b : ℕ) (γ : Fin r → ℕ) (hb : ∑ c, γ c = b) :
     (∏ c, X (xiVar N r t c) ^ γ c : MvPolynomial (BVar N r t) (KK O)) ∈ XiPolZ O N r t b := by
@@ -229,11 +229,11 @@ Both sides reduce to the same expression.
 theorem Eplus_rfl : (blockData p S aTop aPlus mu b').Eplus O (r := r) = EpS O r S := rfl
 
 /- English proof (translation)
-Establish `hl` using `l.2`. Unfold `SegData.t at hl`. Establish `h1 : finPos (2 * s + 1) (2 * (uTop S l : ℕ)) = Fin.castSucc (chW (uTop S l))`. Use `ext`. Simplify using `only [finPos, chW, uTop, Fin.val_castSucc, Fin.val_mk]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : finPos (2 * s + 1) (2 * (uTop S l : ℕ) + 1) = Fin.castSucc (chE (uTop S l))`. Use `ext`. Simplify using `only [finPos, chE, uTop, Fin.val_castSucc, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [EhS, pairU, tcPairP, map_sum, map_mul, rename_X, chainEmb, h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem EhS_eq (l : Fin S.t) :
     EhS O r S l =
@@ -260,9 +260,9 @@ def uTot (r : ℕ) (S : SegData s) (ju : Fin S.t → ℕ) (jp : ℕ) (G : MvPoly
 variable {O p S aTop aPlus mu b'}
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Establish `hi` using `i.2`. Unfold `SegData.t at hi`. Unfold `jE`. Rewrite using `[dif_pos (show S.sigma ≤ S.sigma + i.val ∧ S.sigma + i.val < s from ⟨by omega, by omega⟩)]`.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem jE_apply_sigma_add (S : SegData s) (f : Fin S.t → ℕ) (i : Fin S.t) (x : ℕ) (hx : x = S.sigma + i.val) :
     jE S f x = f i := by
@@ -276,7 +276,7 @@ private theorem jE_apply_sigma_add (S : SegData s) (f : Fin S.t → ℕ) (i : Fi
   simp
 
 /- English proof (translation)
-Unfold `jE`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem jE_add' (S : SegData s) (f g : Fin S.t → ℕ) (x : ℕ) :
     jE S (fun l => f l + g l) x = jE S f x + jE S g x := by
@@ -284,7 +284,7 @@ private theorem jE_add' (S : SegData s) (f g : Fin S.t → ℕ) (x : ℕ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `jE`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem jE_sub_eq_sub_jE (S : SegData s) (f g : Fin S.t → ℕ) (x : ℕ) :
     jE S (fun l => f l - g l) x = jE S f x - jE S g x := by
@@ -292,7 +292,7 @@ private theorem jE_sub_eq_sub_jE (S : SegData s) (f g : Fin S.t → ℕ) (x : �
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `jE`. Use `split_ifs`. Conclude with `h _`. Conclude with `le_refl 0`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem jE_mono' (S : SegData s) (f g : Fin S.t → ℕ) (h : ∀ l, g l ≤ f l) (x : ℕ) :
     jE S g x ≤ jE S f x := by
@@ -302,39 +302,33 @@ private theorem jE_mono' (S : SegData s) (f g : Fin S.t → ℕ) (h : ∀ l, g l
   · exact le_refl 0
 
 /- English proof (translation)
-Use `set E : Fin S.t → MvPolynomial (BVar (2 * s + 1) r S.t) (KK O) := fun l => EhS O r S l with hE`. Use `set R : Fin S.t → MvPolynomial (BVar (2 * s + 1) r S.t) (KK O) := fun l => rename (chainEmb (2 * s + 1) r S.t) (pairU (KK O) r S l) with hR`. Use `set Zv : Fin S.t → MvPolynomial (BVar (2 * s + 1) r S.t) (KK O) := fun l => X (scalZ (2 * s + 1) r S.t (Fin.castSucc l)) with hZv`. Use `set Sv : Fin S.t → MvPolynomial (BVar (2 * s + 1) r S.t) (KK O) := fun l => X (scalS (2 * s + 1) r S.t (Fin.castSucc l)) with hSv`. Establish `hZS : ∀ l, Zv l ^ zU l * Sv l ^ sU l = Zv l ^ (zU l - sU l) * ∑ m ∈ Finset.range (sU l + 1), E l ^ m * (-R l) ^ (sU l - m) * ((sU l).choose m : MvPolynomial _ (KK O))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `l`. Rewrite using `[← add_pow]`. Establish `e1 : E l + -R l = Zv l * Sv l`. Simplify using `only [hE, hR, hZv, hSv]`. Rewrite using `[EhS_eq]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, mul_pow, ← mul_assoc, ← pow_add, Nat.sub_add_cancel (hs l)]`. Establish `hexp : ∏ l, (Zv l ^ zU l * Sv l ^ sU l) = (∏ l, Zv l ^ (zU l - sU l)) * ∑ m ∈ Fintype.piFinset (fun l => Finset.range (sU l + 1)), ∏ l, (E l ^ m l * (-R l) ^ (sU l - m l) * ((sU l).choose (m l) : MvPolynomial _ (KK O)))`. Rewrite using `[Finset.prod_congr rfl fun l _ => hZS l, Finset.prod_mul_distrib, Finset.prod_univ_sum]`. Unfold `uTot`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hexp]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hm' : ∀ l, m l ≤ sU l` using `fun l => Nat.lt_succ_iff.1 (Finset.mem_range.1 (Fintype.mem_piFinset.1 hm l))`. Use `set cf : ℤ := ∏ l, ((-1) ^ (sU l - m l) * ((sU l).choose (m l) : ℤ)) with hcf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set y := G * ∏ l, pairU (KK O) r S l ^ (sU l - m l) with hy`. Establish `eterm : (∏ l, E l ^ ju l) * EpS O r S ^ jp * rename (chainEmb (2 * s + 1) r S.t) G * ((∏ l, Zv l ^ (zU l - sU l)) * ∏ l, (E l ^ m l * (-R l) ^ (sU l - m l) * ((sU l).choose (m l) : MvPolynomial _ (KK O)))) * X (scalZ (2 * s + 1) r S.t (Fin.last S.t)) ^ xf * ∏ c, X (xiVar (2 * s + …`. Rewrite using `[zsmul_eq_mul, hcf, hy]`. Simplify using `only [pow_add, Finset.prod_mul_distrib, map_mul, map_prod, map_pow, Int.cast_prod, Int.cast_mul, Int.cast_pow, Int.cast_neg, Int.cast_one, Int.cast_natCast]`. Establish `e2 : ∏ l, (-R l) ^ (sU l - m l) = (∏ l, (-1 : MvPolynomial (BVar (2 * s + 1) r S.t) (KK O)) ^ (sU l - m l)) * ∏ l, R l ^ (sU l - m l)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun l _ => neg_pow _ _`. Rewrite using `[e2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eterm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `zsmul_mem_sub _ (Submodule.subset_span ?_) cf` and prove the remaining obligations. Use `Set.mem_iUnion.2 ⟨fun l => ju l + m l, Set.mem_iUnion.2 ⟨jp, Set.mem_iUnion.2 ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Establish `hLv : ∀ l : Fin S.t, ju l + m l ≤ (segChain p S aTop b').deg ((blockData p S aTop aPlus mu b').letterAt (2 * (uTop S l : ℕ))) ∧ ju l + m l ≤ (segChain p S aTop b').deg ((blockData p S aTop aPlus mu b').letterAt (2 * (uTop S l : ℕ) + 1))`. Introduce `l`. Establish `hl : l.val < s - S.sigma` using `l.2`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `a1 : (blockData p S aTop aPlus mu b').letterAt (2 * (uTop S l : ℕ)) = chW (uTop S l)`. Apply `Fin.ext` to reduce the goal to its premises. Use `show min (2 * (S.sigma + l.val)) (2 * s + 1 - 1) = 2 * (S.sigma + l.val)`. Use linear arithmetic over natural numbers and integers. Establish `a2 : (blockData p S aTop aPlus mu b').letterAt (2 * (uTop S l : ℕ) + 1) = chE (uTop S l)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use `show min (2 * (S.sigma + l.val) + 1) (2 * s + 1 - 1) = 2 * (S.sigma + l.val) + 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[a1, a2]`. Establish `d1` using `hdeg (chW (uTop S l))`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `d2` using `hdeg (chE (uTop S l))`. Establish `q1 : (chW (uTop S l)).val / 2 = S.sigma + l.val` using `by show 2 * (S.sigma + l.val) / 2 = _`. Use linear arithmetic over natural numbers and integers. Establish `q2 : (chE (uTop S l)).val / 2 = S.sigma + l.val` using `by show (2 * (S.sigma + l.val) + 1) / 2 = _`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `d1` using `[q1, jE_at]`. Rewrite `d2` using `[q2, jE_at]`. Use `hm' l` as an intermediate fact. Apply the tactic sequence `constructor <;> omega`. Use `⟨fun l => hLv l, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `d1` using `hdeg (chU s)`. Rewrite `d1` using `[if_pos (show (chU s).val = 2 * s from rfl)]`. Use `show jp ≤ min ((segChain p S aTop b').deg (chU s)) S.bPlus`. Conclude with `le_min (by omega) (by omega)`. Use `⟨y, ⟨⟨?_, ?_⟩, ?_⟩, ∏ c, X (xiVar (2 * s + 1) r S.t c) ^ γ c, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1` using `hom_Pol_mul (KK O) hGP (pairProd_pol (r := r) (KK O) S (fun l => sU l - m l))`. Establish `hd : ((blockData p S aTop aPlus mu b').lettersAt (fun l => ju l + m l) jp).deg = dG + fun a : Fin (2 * s + 1) => jE S (fun l => sU l - m l) (a.val / 2)`. Use function extensionality and compare the values at `a`. Use `(lev_deg p S aTop aPlus mu b' (fun l => ju l + m l) jp a).trans ?_` and prove the remaining obligations. Rewrite using `[hdeg a]`.
+Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply]`. Establish `hj : jE S (fun l => ju l + sU l) (a.val / 2) = jE S (fun l => ju l + m l) (a.val / 2) + jE S (fun l => sU l - m l) (a.val / 2)`. Unfold `jE`. Use `split_ifs with h`. Use `hm' ⟨a.val / 2 - S.sigma, by unfold SegData.t; omega⟩ dsimp only` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Use `show y ∈ Pol (KK O) r ((blockData p S aTop aPlus mu b').lettersAt (fun l => ju l + m l) jp).deg`. Rewrite using `[hd]`.
-
-Conclude with `h1`. Conclude with `(Submodule.mem_iInf _).2 fun k => hY m hm' k`. Conclude with `intPol_mul' hGI (intPol_prod' _ _ fun l _ => intPol_pow' (pairU_int S l) _)`. Use `show _ ∈ XiPolZ O (2 * s + 1) r S.t (S.bPlus - jp)`. Conclude with `xi_mono_mem _ _ _ γ (by omega)`.
-
-Establish `hfin : (∏ l, E l ^ (ju l + m l)) * EpS O r S ^ jp * (∏ l, Zv l ^ (zU l - sU l)) * X (scalZ (2 * s + 1) r S.t (Fin.last S.t)) ^ xf * rename (chainEmb (2 * s + 1) r S.t) y * ∏ c, X (xiVar (2 * s + 1) r S.t c) ^ γ c = (∏ l, E l ^ (ju l + m l)) * EpS O r S ^ jp * (∏ l : Fin S.t, Zv l …`. Simplify using `only [hz, hx]`. Conclude with `hfin`.
+A detailed English derivation is pending.
 -/
 theorem uTot_mem {ju : Fin S.t → ℕ} {jp : ℕ} {G : MvPolynomial (Fin (2 * s + 1) × Fin r) (KK O)} {zU sU : Fin S.t → ℕ}
     {xf : ℕ} {γ : Fin r → ℕ} (hs : ∀ l, sU l ≤ zU l)

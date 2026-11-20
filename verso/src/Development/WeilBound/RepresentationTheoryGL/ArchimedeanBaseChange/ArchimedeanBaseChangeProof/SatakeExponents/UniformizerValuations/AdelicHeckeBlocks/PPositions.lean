@@ -26,15 +26,13 @@ abbrev loc (n : ℕ) (w : Pl E) : GL (Fin n) (Af E) →* GLw n w := GeneralLinea
 abbrev cP (w : Pl E) : Pl E := GlobalTheory.EulerTw.cPl E w
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (Continuous.matrix_map continuous_id (RestrictedProduct.continuous_eval w))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_loc (n : ℕ) (w : Pl E) : Continuous (loc (E := E) n w) :=
   Continuous.units_map _ (Continuous.matrix_map continuous_id (RestrictedProduct.continuous_eval w))
 
 /- English proof (translation)
-Establish `hi : loc n (cP u) g⁻¹ = loc n (cP u) h⁻¹` using `by rw [map_inv, map_inv, H]`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `e : pLoc E (cP u) ((g⁻¹ : GL (Fin n) (Af E)).val j.rev i.rev) = pLoc E (cP u) ((h⁻¹ : GL (Fin n) (Af E)).val j.rev i.rev)` using `congrArg (fun k : GLw n (cP u) => k.val j.rev i.rev) hi`. Use `show pLoc E u ((GlobalTheory.CuspRep.thetaGL n (conjFin (IsCMField.complexConj E).toRingEquiv) g).val i j) = pLoc E u ((GlobalTheory.CuspRep.thetaGL n (conjFin (IsCMField.complexConj E).toRingEquiv) h).val i j)`. Rewrite using `[GlobalTheory.ThetaPull.thetaGL_apply, GlobalTheory.ThetaPull.thetaGL_apply, map_mul, map_mul, pLoc_conjFin, pLoc_conjFin]`.
-
-Conclude with `congrArg _ (congrArg _ e)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_thF_congr {n : ℕ} {g h : GL (Fin n) (Af E)} (u : Pl E) (H : loc n (cP u) g = loc n (cP u) h) :
     loc n u (thF E n g) = loc n u (thF E n h) := by
@@ -49,9 +47,9 @@ theorem loc_thF_congr {n : ℕ} {g h : GL (Fin n) (Af E)} (u : Pl E) (H : loc n 
   exact congrArg _ (congrArg _ e)
 
 /- English proof (translation)
-Establish `hs` using `(GlobalTheory.EulerTwKU.mem_KGL_iff_val _).1 hg`. Rewrite using `[GlobalTheory.EulerTwKU.mem_KGL_iff_val]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.EulerTwKU.val_pLoc_thF, map_inv]`. Conclude with `hs.2 _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv, ← map_inv, GlobalTheory.EulerTwKU.val_pLoc_thF, inv_inv]`. Conclude with `hs.1 _ _`.
+A detailed English derivation is pending.
 -/
 theorem loc_thF_mem {n : ℕ} {g : GL (Fin n) (Af E)} (u : Pl E)
     (hg : loc n (cP u) g ∈ GlobalTheory.LFun.KGL (cP u) n) : loc n u (thF E n g) ∈ GlobalTheory.LFun.KGL u n := by
@@ -64,9 +62,9 @@ theorem loc_thF_mem {n : ℕ} {g : GL (Fin n) (Af E)} (u : Pl E)
     exact hs.1 _ _
 
 /- English proof (translation)
-Set `M : Matrix (Fin n) (Fin n) (Af E)` to `Matrix.of fun i j => ⟨fun w => (Y w).1 i j, hc.mono fun w h => (GlobalTheory.EulerTwRestr.mem_KGL_iff.1 h).1 i j⟩`. Set `M' : Matrix (Fin n) (Fin n) (Af E)` to `Matrix.of fun i j => ⟨fun w => ((Y w)⁻¹).1 i j, hc.mono fun w h => (GlobalTheory.EulerTwRestr.mem_KGL_iff.1 h).2 i j⟩`. Establish `hloc : ∀ P Q : Matrix (Fin n) (Fin n) (Af E), (∀ w : Pl E, P.map (pLoc E w) = Q.map (pLoc E w)) → P = Q` using `fun P Q h => Matrix.ext fun i j => Subtype.ext (funext fun w => congrFun (congrFun (h w) i) j)`. Establish `hMM' : M * M' = 1` using `hloc _ _ fun w => by`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Y w).mul_inv`. Establish `hM'M : M' * M = 1` using `hloc _ _ fun w => by`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `(Y w).inv_mul`. Conclude with `⟨⟨M, M', hMM', hM'M⟩, fun u => Units.ext (Matrix.ext fun i j => rfl)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift {n : ℕ} (Y : ∀ u : Pl E, GLw n u) (hc : ∀ᶠ u in cofinite, Y u ∈ GlobalTheory.LFun.KGL u n) :
     ∃ g : GL (Fin n) (Af E), ∀ u, loc n u g = Y u := by
@@ -85,7 +83,7 @@ theorem exists_lift {n : ℕ} (Y : ∀ u : Pl E, GLw n u) (hc : ∀ᶠ u in cofi
   exact ⟨⟨M, M', hMM', hM'M⟩, fun u => Units.ext (Matrix.ext fun i j => rfl)⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ w : Pl E in cofinite, ∀ i j, pLoc E w (g.1 i j) ∈ w.adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => (g.1 i j).2`. Establish `h2 : ∀ᶠ w : Pl E in cofinite, ∀ i j, pLoc E w ((g⁻¹).1 i j) ∈ w.adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => ((g⁻¹).1 i j).2`. Use `filter_upwards [h1, h2] with w h1 h2`. Conclude with `GlobalTheory.EulerTwRestr.mem_KGL_iff.2 ⟨fun i j => h1 i j, fun i j => h2 i j⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_loc_mem {n : ℕ} (g : GL (Fin n) (Af E)) :
     ∀ᶠ w : Pl E in cofinite, loc n w g ∈ GlobalTheory.LFun.KGL w n := by
@@ -97,7 +95,7 @@ theorem eventually_loc_mem {n : ℕ} (g : GL (Fin n) (Af E)) :
   exact GlobalTheory.EulerTwRestr.mem_KGL_iff.2 ⟨fun i j => h1 i j, fun i j => h2 i j⟩
 
 /- English proof (translation)
-Rewrite `h1`, `h2`, the goal using `[eventually_cofinite]`. Use `((h1.image Sum.inl).union (h2.image Sum.inr)).subset ?_` and prove the remaining obligations. Introduce and unpack `(a | b) h`. Conclude with `Or.inl ⟨a, h, rfl⟩`. Conclude with `Or.inr ⟨b, h, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative.
 -/
 theorem ev_sum {α β : Type} {P : α ⊕ β → Prop} (h1 : ∀ᶠ a in cofinite, P (Sum.inl a))
     (h2 : ∀ᶠ b in cofinite, P (Sum.inr b)) : ∀ᶠ i in cofinite, P i := by
@@ -108,9 +106,9 @@ theorem ev_sum {α β : Type} {P : α ⊕ β → Prop} (h1 : ∀ᶠ a in cofinit
   · exact Or.inr ⟨b, h, rfl⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[eventually_cofinite]`. Use `(h.image Subtype.val).subset fun u hu => ?_` and prove the remaining obligations. Distinguish the cases in `hp : p u`. Use `⟨⟨u, hp⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `hu' : ¬ (if hu : p u then y ⟨u, hu⟩ else 1) ∈ GlobalTheory.LFun.KGL u n` using `hu`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hu'` using `[dif_pos hp]`. Conclude with `hu'`. Conclude with `absurd (by rw [dif_neg hp]; exact one_mem _) hu`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_dite {n : ℕ} {p : Pl E → Prop} (y : ∀ w : {w // p w}, GLw n w.1)
     (h : ∀ᶠ w in cofinite, y w ∈ GlobalTheory.LFun.KGL w.1 n) :
@@ -125,12 +123,12 @@ theorem ev_dite {n : ℕ} {p : Pl E → Prop} (y : ∀ w : {w // p w}, GLw n w.1
   · exact absurd (by rw [dif_neg hp]; exact one_mem _) hu
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SuppFinTw.cPl_cPl v`.
+A detailed English derivation is pending.
 -/
 theorem cP_cP (v : Pl E) : cP (cP v) = v := GlobalTheory.CompanionTheory.SuppFinTw.cPl_cPl v
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Conclude with `h (GlobalTheory.CompanionTheory.SuppFinTw.split_of_conj_ne hne)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem cP_eq_of_not_split {v : Pl E} (h : ¬ IsSplitAt v) : cP v = v := by
   by_contra hne
@@ -144,13 +142,13 @@ def cpH (a b : ℕ) {S : Set (Pl E)} (i : Slot S) : Gf E a b →* GLw a i.pl × 
   (cpn a i).prodMap (cpn b i)
 
 /- English proof (translation)
-Apply the tactic sequence `cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cp_eq {a b : ℕ} {S : Set (Pl E)} (i : Slot S) (x : Gf E a b) : i.cp a b x = cpH a b i x := by
   cases i <;> rfl
 
 /- English proof (translation)
-Break down `i with w | w` into its components or cases. Use `show Continuous (loc n w.1)`. Conclude with `continuous_loc n w.1`. Use `show Continuous ((loc n w.1).comp (thF E n))`. Conclude with `(continuous_loc n w.1).comp (PositivityTheory.Rg.BcB.G8.topo_holds E n).2.2.2.2.1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_cpn (n : ℕ) {S : Set (Pl E)} (i : Slot S) : Continuous (cpn (E := E) n i) := by
   rcases i with w | w
@@ -160,23 +158,21 @@ theorem continuous_cpn (n : ℕ) {S : Set (Pl E)} (i : Slot S) : Continuous (cpn
     exact (continuous_loc n w.1).comp (PositivityTheory.Rg.BcB.G8.topo_holds E n).2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `((continuous_cpn a i).comp continuous_fst).prodMk ((continuous_cpn b i).comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cpH (a b : ℕ) {S : Set (Pl E)} (i : Slot S) : Continuous (cpH (E := E) a b i) :=
   ((continuous_cpn a i).comp continuous_fst).prodMk ((continuous_cpn b i).comp continuous_snd)
 
 /- English proof (translation)
-Establish `hy1 : ∀ᶠ w : {w // w ∈ S} in cofinite, y (.inl w) ∈ GlobalTheory.LFun.KGL w.1 n` using `Sum.inl_injective.tendsto_cofinite.eventually hy`. Establish `hy2 : ∀ᶠ w : {w // w ∈ S ∧ IsSplitAt w} in cofinite, y (.inr w) ∈ GlobalTheory.LFun.KGL w.1 n` using `Sum.inr_injective.tendsto_cofinite.eventually hy`. Take `⟨g₁, h₁⟩` from `exists_lift (n := n) _ (ev_dite (fun w => y (.inl w)) hy1)`. Take `⟨g₂, h₂⟩` from `exists_lift (n := n) _ (ev_dite (fun w => y (.inr w)) hy2)`. Establish `hS1 : ∀ w : Pl E, w ∈ S → loc n w (thF E n g₂) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hn : ¬ (cP w ∈ S ∧ IsSplitAt (cP w))`. Introduce and unpack `⟨hc, hsp⟩`. Distinguish the cases in `hw' : IsSplitAt w`. Conclude with `GlobalTheory.CompanionTheory.SuppFinTw.conj_not_mem hS hw hw' hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsp` using `[cP_eq_of_not_split hw']`. Conclude with `hw' hsp`. Establish `h0 : loc n (cP w) g₂ = loc n (cP w) 1`. Rewrite using `[h₂, map_one]`. Conclude with `dif_neg hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[loc_thF_congr w h0, map_one, map_one]`. Establish `hS2 : ∀ w : Pl E, w ∈ S → IsSplitAt w → loc n w (thF E n g₁) = 1`. Introduce `w hw hsp`. Establish `h0 : loc n (cP w) g₁ = loc n (cP w) 1`. Rewrite using `[h₁, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `dif_neg (GlobalTheory.CompanionTheory.SuppFinTw.conj_not_mem hS hw hsp)`. Rewrite using `[loc_thF_congr w h0, map_one, map_one]`. Use `⟨g₁ * thF E n g₂, fun i => ?_⟩` and prove the remaining obligations. Break down `i with w | w` into its components or cases. Use `show loc n w.1 (g₁ * thF E n g₂) = y (.inl w)`.
-
-Rewrite using `[map_mul, hS1 w.1 w.2, mul_one, h₁]`. Conclude with `dif_pos w.2`. Use `show loc n w.1 (thF E n (g₁ * thF E n g₂)) = y (.inr w)`. Rewrite using `[map_mul, map_mul, GlobalTheory.EulerTw.Comm.thF_thF, hS2 w.1 w.2.1 w.2.2, one_mul, h₂]`. Conclude with `dif_pos w.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem F_exists {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) (y : ∀ i : Slot S, GLw n i.pl)
     (hy : ∀ᶠ i in cofinite, y i ∈ GlobalTheory.LFun.KGL i.pl n) : ∃ g : GL (Fin n) (Af E), ∀ i, cpn n i g = y i := by
@@ -214,11 +210,9 @@ theorem F_exists {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) (y : ∀ i : Slot
     exact dif_pos w.2
 
 /- English proof (translation)
-Use `GlobalTheory.EulerTwRestr.gl_ext fun u => ?_` and prove the remaining obligations. Break down `GlobalTheory.CompanionTheory.SuppFinTw.mem_or_conj hS u with hu | ⟨v, hv, rfl⟩` into its components or cases. Conclude with `H (.inl ⟨u, hu⟩)`. Distinguish the cases in `hsp : IsSplitAt v`. Establish `H2 : loc n (cP (cP v)) (thF E n g) = loc n (cP (cP v)) (thF E n h)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cP_cP]`. Conclude with `H (.inr ⟨v, hv, hsp⟩)`. Use `loc_thF_congr (cP v) H2` as an intermediate fact. Rewrite `this` using `[GlobalTheory.EulerTw.Comm.thF_thF, GlobalTheory.EulerTw.Comm.thF_thF]`. Then use the resulting hypothesis. Use `show loc n (cP v) g = loc n (cP v) h`.
-
-Rewrite using `[cP_eq_of_not_split hsp]`. Conclude with `H (.inl ⟨v, hv⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem F_ext {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) {g h : GL (Fin n) (Af E)}
     (H : ∀ i : Slot S, cpn n i g = cpn n i h) : g = h := by
@@ -236,7 +230,7 @@ theorem F_ext {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) {g h : GL (Fin n) (A
       exact H (.inl ⟨v, hv⟩)
 
 /- English proof (translation)
-The claim follows from `ev_sum (Subtype.val_injective.tendsto_cofinite.eventually (eventually_loc_mem g)) (Subtype.val_injective.tendsto_cofinite.eventually (eventually_loc_mem (thF E n g)))`.
+A detailed English derivation is pending.
 -/
 theorem F_ev {n : ℕ} {S : Set (Pl E)} (g : GL (Fin n) (Af E)) :
     ∀ᶠ i : Slot S in cofinite, cpn n i g ∈ GlobalTheory.LFun.KGL i.pl n :=
@@ -244,13 +238,11 @@ theorem F_ev {n : ℕ} {S : Set (Pl E)} (g : GL (Fin n) (Af E)) :
     (Subtype.val_injective.tendsto_cofinite.eventually (eventually_loc_mem (thF E n g)))
 
 /- English proof (translation)
-Establish `hK : g ∈ Kf E n ↔ ∀ u, loc n u g ∈ GlobalTheory.LFun.KGL u n`. Rewrite using `[Kf, Subgroup.mem_iInf]`. Both sides reduce to the same expression. Rewrite using `[hK]`. Use `⟨fun H i => ?_, fun H u => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `i with w | w` into its components or cases. Conclude with `H w.1`. Conclude with `loc_thF_mem w.1 (H _)`. Break down `GlobalTheory.CompanionTheory.SuppFinTw.mem_or_conj hS u with hu | ⟨v, hv, rfl⟩` into its components or cases. Conclude with `H (.inl ⟨u, hu⟩)`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hsp : IsSplitAt v`. Establish `H2 : loc n (cP (cP v)) (thF E n g) ∈ GlobalTheory.LFun.KGL (cP (cP v)) n`. Rewrite using `[cP_cP]`. Conclude with `H (.inr ⟨v, hv, hsp⟩)`. Use `loc_thF_mem (cP v) H2` as an intermediate fact.
-
-Rewrite `this` using `[GlobalTheory.EulerTw.Comm.thF_thF]`. Then use the resulting hypothesis. Use `show loc n (cP v) g ∈ GlobalTheory.LFun.KGL (cP v) n`. Rewrite using `[cP_eq_of_not_split hsp]`. Conclude with `H (.inl ⟨v, hv⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem F_mem {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) (g : GL (Fin n) (Af E)) :
     g ∈ Kf E n ↔ ∀ i : Slot S, cpn n i g ∈ GlobalTheory.LFun.KGL i.pl n := by
@@ -275,7 +267,7 @@ theorem F_mem {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) (g : GL (Fin n) (Af 
         exact H (.inl ⟨v, hv⟩)
 
 /- English proof (translation)
-Take `⟨g₁, h₁⟩` from `F_exists hS (fun i => (y i).1) (hy.mono fun i h => (Subgroup.mem_prod.1 h).1)`. Take `⟨g₂, h₂⟩` from `F_exists hS (fun i => (y i).2) (hy.mono fun i h => (Subgroup.mem_prod.1 h).2)`. Conclude with `⟨(g₁, g₂), fun i => Prod.ext (h₁ i) (h₂ i)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pair_exists {a b : ℕ} {S : Set (Pl E)} (hS : IsSection S) (y : ∀ i : Slot S, GLw a i.pl × GLw b i.pl)
     (hy : ∀ᶠ i in cofinite, y i ∈ K2 a b i.pl) : ∃ x : Gf E a b, ∀ i, cpH a b i x = y i := by
@@ -284,9 +276,9 @@ theorem pair_exists {a b : ℕ} {S : Set (Pl E)} (hS : IsSection S) (y : ∀ i :
   exact ⟨(g₁, g₂), fun i => Prod.ext (h₁ i) (h₂ i)⟩
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_prod, F_mem hS, F_mem hS]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i`. Conclude with `Subgroup.mem_prod.2 ⟨h1 i, h2 i⟩`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨fun i => (Subgroup.mem_prod.1 (h i)).1, fun i => (Subgroup.mem_prod.1 (h i)).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem pair_mem {a b : ℕ} {S : Set (Pl E)} (hS : IsSection S) (x : Gf E a b) :
     x ∈ (Kf E a).prod (Kf E b) ↔ ∀ i : Slot S, cpH a b i x ∈ K2 a b i.pl := by
@@ -298,27 +290,21 @@ theorem pair_mem {a b : ℕ} {S : Set (Pl E)} (hS : IsSection S) (x : Gf E a b) 
     exact ⟨fun i => (Subgroup.mem_prod.1 (h i)).1, fun i => (Subgroup.mem_prod.1 (h i)).2⟩
 
 /- English proof (translation)
-Take `⟨T, hT⟩ : ∃ T : Set (Slot S), T = {i | ¬ C i = K2 a b i.pl}` from `⟨_, rfl⟩`. Establish `hTf : T.Finite`. Rewrite using `[hT]`. Conclude with `eventually_cofinite.1 hCK`. Establish `hopen : ∀ i : Slot S, IsOpen (K2 a b i.pl : Set (GLw a i.pl × GLw b i.pl))` using `fun i => by show IsOpen (((GlobalTheory.LFun.KGL i.pl a).prod (GlobalTheory.LFun.KGL i.pl b) : Subgroup _) : Set (GLw a i.pl × GLw b i.pl))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_prod]`. Conclude with `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL i.pl a).1.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL i.pl b).1`. Establish `hcov : ∀ i : Slot S, ∃ t : Finset (GLw a i.pl × GLw b i.pl), C i ⊆ ⋃ c ∈ t, {z | c⁻¹ * z ∈ K2 a b i.pl}` using `fun i => by`. Take `⟨t, -, ht⟩` from `(hC i).elim_nhds_subcover (fun c => {z | c⁻¹ * z ∈ K2 a b i.pl}) fun c _ => ((hopen i).preimage (continuous_const.mul continuous_id)).mem_nhds (by show c⁻¹ * c ∈ K2 a b i.pl`. Rewrite using `[inv_mul_cancel]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `one_mem _)`. Conclude with `⟨t, ht⟩`. Use `choose t ht using hcov`. Establish `: Finite T` using `hTf.to_subtype`. Establish `hlift : ∀ c : (∀ i : T, {d // d ∈ t i.1}), ∃ x : Gf E a b, ∀ i, cpH a b i x = if h : i ∈ T then ((c ⟨i, h⟩).1 : GLw a i.pl × GLw b i.pl) else 1` using `fun c => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `pair_exists hS _ ?_` and prove the remaining obligations. Rewrite using `[eventually_cofinite]`. Use `hTf.subset fun i hi => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hi (by show (if h : i ∈ T then ((c ⟨i, h⟩).1 : GLw a i.pl × GLw b i.pl) else 1) ∈ K2 a b i.pl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg hn]`. Conclude with `one_mem _)`. Use `choose xc hxc using hlift`. Establish `hcl : IsClosed {x : Gf E a b | ∀ i : Slot S, cpH a b i x ∈ C i}`. Establish `e : {x : Gf E a b | ∀ i : Slot S, cpH a b i x ∈ C i} = ⋂ i, cpH a b i ⁻¹' C i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun i => (hC i).isClosed.preimage (continuous_cpH a b i)`. Use `(isCompact_iUnion fun c : (∀ i : T, {d // d ∈ t i.1}) => ((GlobalTheory.CompanionTheory.EulerV.isCompact_Kf (E := E) (n := a)).prod (GlobalTheory.CompanionTheory.EulerV.isCompact_Kf (E := E) (n := b))).image (continuous_const.mul continuous_id (f := fun _ : Gf E a b => xc c))).of …` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hd : ∀ i : T, ∃ d : {d // d ∈ t i.1}, (d.1)⁻¹ * cpH a b i.1 x ∈ K2 a b i.1.pl` using `fun i => by`. Establish `h` using `ht i.1 (hx i.1)`. Simplify using `only [Set.mem_iUnion, Set.mem_ofPred_eq] at h`. Take `⟨d, hd, h⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨d, hd⟩, h⟩`. Use `choose c hc using hd`. Use `Set.mem_iUnion.2 ⟨c, (xc c)⁻¹ * x, ?_, mul_inv_cancel_left _ _⟩` and prove the remaining obligations. Establish `hk : (xc c)⁻¹ * x ∈ (Kf E a).prod (Kf E b)`. Use `(pair_mem hS _).2 fun i => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_mul, map_inv, hxc]`. Distinguish the cases in `hi : i ∈ T`. Rewrite using `[dif_pos hi]`. Conclude with `hc ⟨i, hi⟩`. Rewrite using `[dif_neg hi, inv_one, one_mul]`.
-
-Establish `hi' : ¬ ¬ C i = K2 a b i.pl`. Rewrite `hi` using `[hT]`. Conclude with `hi`. Use `hx i` as an intermediate fact. Rewrite `this` using `[not_not.1 hi']`. Then use the resulting hypothesis.
-
-Conclude with `Subgroup.mem_prod.1 hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pair_compact {a b : ℕ} {S : Set (Pl E)} (hS : IsSection S) (C : ∀ i : Slot S, Set (GLw a i.pl × GLw b i.pl))
     (hC : ∀ i, IsCompact (C i)) (hCK : ∀ᶠ i in cofinite, C i = K2 a b i.pl) :
@@ -388,13 +374,13 @@ end Slots
 open Slots in
 
 /- English proof (translation)
-Introduce `E _ _ _ a b S hS`. Use `⟨fun i x y => ?_, fun i => ?_, fun x y H => ?_, fun y hy => ?_, fun x => ?_, fun x => ?_, fun C hC hCK => ?_⟩` and prove the remaining obligations. Rewrite using `[cp_eq, cp_eq, cp_eq, map_mul]`. Establish `e : i.cp a b = cpH a b i` using `funext (cp_eq i)`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_cpH a b i`. Establish `H' : ∀ i : Slot S, cpH a b i x = cpH a b i y` using `fun i => (cp_eq i x).symm.trans ((H i).trans (cp_eq i y))`. Conclude with `Prod.ext (F_ext hS fun i => congrArg Prod.fst (H' i)) (F_ext hS fun i => congrArg Prod.snd (H' i))`. Take `⟨x, hx⟩` from `pair_exists hS y hy`. Conclude with `⟨x, fun i => (cp_eq i x).trans (hx i)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [F_ev (S := S) x.1, F_ev (S := S) x.2] with i h1 h2`. Rewrite using `[cp_eq]`. Conclude with `Subgroup.mem_prod.2 ⟨h1, h2⟩`. Rewrite using `[pair_mem hS]`. Simplify using `only [cp_eq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : {x : Gf E a b | ∀ i : Slot S, i.cp a b x ∈ C i} = {x | ∀ i : Slot S, cpH a b i x ∈ C i}`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, cp_eq]`. Rewrite using `[e]`. Conclude with `pair_compact hS C hC hCK`.
+A detailed English derivation is pending.
 -/
 theorem slots : Slots := by
   intro E _ _ _ a b S hS

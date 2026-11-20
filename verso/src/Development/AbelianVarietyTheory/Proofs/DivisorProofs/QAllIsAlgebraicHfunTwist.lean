@@ -19,7 +19,7 @@ open GlobalTheory.WpFam
 namespace GlobalTheory.HilbFam
 
 /- English proof (translation)
-Introduce `hE F _ _ _ hF s N _ L hs hL z hz κ y hy α`. Establish `hy' : vmul y α ≠ 0` using `fun h => hy (((GlobalTheory.T.modularGroup_rowVec_and_conj_rightActions N).2.2.2.2.1 y α).1 h)`. Conclude with `GlobalTheory.T.hilbert_eisenstein_jet_algebraic_q_coefficients hE F hF s N _ hs (Nat.pos_of_ne_zero (NeZero.ne N)) (GlobalTheory.T.hilbertLatticeTwist_hasLevel F N L _ hL) z hz κ _ ((GlobalTheory.T.qExpansion_isAlgebraic_weierstrassTorsion N (vmul y α)).2.2 hy')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qAll_isAlgebraic_hfun_twist : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (s N : ℕ) [NeZero N] (L : Lat F), 1 ≤ s → HasLevel N L → ∀ (z : ClassGroup (𝓞 F) → ℚ), ZetaVals (2 * s) z → ∀ (κ : Emb F → ℕ) (y : Fin 2 → ZMod N), y ≠ 0 → ∀ α : GL (Fin 2) (ZMod N), QAll (IsAlgebraic ℚ) N (hfun (2 * s) (twist N L ((α : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N))) κ (wB N (vmul y (α)))) := by
   intro hE F _ _ _ hF s N _ L hs hL z hz κ y hy α

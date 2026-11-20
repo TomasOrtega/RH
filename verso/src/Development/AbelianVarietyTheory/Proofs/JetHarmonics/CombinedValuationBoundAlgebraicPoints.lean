@@ -20,15 +20,15 @@ open GlobalTheory.PtTie
 namespace GlobalTheory.PtTie
 
 /- English proof (translation)
-Introduce `la y`. Establish `hφ` using `Formalism.MainNotions.Gaps.T0.phiC_nonneg X la y`. Establish `hd` using `hH1 la y`. Use `⟨fun hj => ?_, fun hj => ?_⟩` and prove the remaining obligations. Take `⟨hi, h⟩` from `hEt hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hi' : (0 : ℝ) < 2 * (G.iet : ℝ)` using `by positivity`. Establish `h1` using `h la y`. Establish `h0 : (0 : ℝ) ≤ 2 * G.iet * X.phiC la y` using `mul_nonneg hi'.le hφ`. Use `⟨le_trans (by exact_mod_cast h0) h1, fun hfin => hd.trans ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[← EReal.coe_toReal hfin (X.vAt_ne_bot la y _), EReal.coe_le_coe_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[EReal.coe_le_coe_iff]`. Establish `h2 : X.phiC la y ≤ (X.vAt la y (X.inc _ G.et)).toReal / (2 * (G.iet : ℝ))`. Rewrite using `[le_div_iff₀ hi']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : c * X.phiC la y ≤ c * ((X.vAt la y (X.inc _ G.et)).toReal / (2 * (G.iet : ℝ)))` using `mul_le_mul_of_nonneg_left h2 hc0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h5 : c / (2 * (G.iet : ℝ)) * (X.vAt la y (X.inc _ G.et)).toReal = c * ((X.vAt la y (X.inc _ G.et)).toReal / (2 * (G.iet : ℝ)))` using `by ring`. Rewrite using `[h5]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : X.phiC la y = 0`. Unfold `WeightAlgebra.PJ.phiC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg (not_lt.2 hj)]`. Rewrite `hd` using `[h0, mul_zero, add_zero]`. Conclude with `hd`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem combBound_of_depth_le {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : WeightAlgebra.PJ D B P j}
     {ka wL wF : WeightFamilies.Wt D j} {S : WeightAlgebra.Scal B} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
@@ -63,7 +63,7 @@ theorem combBound_of_depth_le {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIn
     exact hd
 
 /- English proof (translation)
-Introduce `hH D T h j hj hinj EX w c hO hR ka wF S G hS hEt`. Use `combBound_of_depth_le G c hR.2.2.2.1 (fun la y => ?_) hEt` and prove the remaining obligations. Rewrite using `[hS]`. Conclude with `GlobalTheory.T.thetaLattice_depth_le_unscaled_add_boundary hH D T h j hj hinj EX w c hO hR la y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem combBound_alg : (∀ (p : ℕ) [Fact p.Prime], Pdiv.ChartF.HTFSt p) → ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (w : WeightFamilies.Wt D j) (c : ℝ), Oriented T EX → RunNum D w c → ∀ (ka wF : WeightFamilies.Wt D j) (S : WeightAlgebra.Scal (recB h.toLawsCore)) (G : GlobalFamilyData (recPJ h j hj) ka w wF), S.sW = sWt (recB h.toLawsCore) hinj EX w → (j < D.R.m → 0 < G.iet ∧ EtVal h j hj G.iet G.et) → CombBound G S c (nusOf (recB h.toLawsCore) w (nuWt T w)) := by
   intro hH D T h j hj hinj EX w c hO hR ka wF S G hS hEt

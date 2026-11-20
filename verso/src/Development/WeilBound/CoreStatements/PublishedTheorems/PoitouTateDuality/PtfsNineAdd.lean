@@ -25,7 +25,7 @@ def NineAdd {N : ℕ} {A0 A1 A2 A3 A4 A5 A6 A7 A8 : Type} [AddCommGroup A0] [Mod
     Function.Exact g6 g7 ∧ Function.Surjective g7
 
 /- English proof (translation)
-Take `⟨B0, B1, B2, B3, B4, B5, B6, B7, BetaSesquilinearity, g0, g1, g2, g3, g4, g5, g6, g7, e0, e1, e2, e3, e4, e5, e6, e7, e8, ε, h0, h1, h3, h4, h6, h7, hx⟩` from `h`. Take `⟨δ₁, δ₂, x⟩` from `nine_of_addTransfer f0 f1 f3 f4 f6 f7 g0 g1 g2 g3 g4 g5 g6 g7 e0 e1 e2 e3 e4 e5 e6 e7 e8 ε h0 h1 h3 h4 h6 h7 hx`. Conclude with `⟨ModuleCat.of (ZMod N) A0, ModuleCat.of (ZMod N) A1, ModuleCat.of (ZMod N) A2, ModuleCat.of (ZMod N) A3, ModuleCat.of (ZMod N) A4, ModuleCat.of (ZMod N) A5, ModuleCat.of (ZMod N) A6, ModuleCat.of (ZMod N) A7, ModuleCat.of (ZMod N) A8, f0, f1, δ₁, f3, f4, δ₂, f6, f7, LinearEquiv.r …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nineCmp_of_nineAdd {N : ℕ} {A0 A1 A2 A3 A4 A5 A6 A7 A8 : Type} [AddCommGroup A0] [Module (ZMod N) A0] [AddCommGroup A1] [Module (ZMod N) A1] [AddCommGroup A2] [Module (ZMod N) A2] [AddCommGroup A3] [Module (ZMod N) A3] [AddCommGroup A4] [Module (ZMod N) A4] [AddCommGroup A5] [Module (ZMod N) A5] [AddCommGroup A6] [Module (ZMod N) A6] [AddCommGroup A7] [Module (ZMod N) A7] [AddCommGroup A8] [Module (ZMod N) A8]
     {f0 : A0 →ₗ[ZMod N] A1} {f1 : A1 →ₗ[ZMod N] A2} {f3 : A3 →ₗ[ZMod N] A4}
@@ -62,7 +62,7 @@ def NineAddFS : Prop :=
       (tr1 S Av μ (invAt S Av μ hμ inv) ρ hρ) (loc2 S Av ρ) (tr2 S Av μ (invAt S Av μ hμ inv) ρ)
 
 /- English proof (translation)
-Introduce `K _ _ l _ r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ`. Conclude with `nineCmp_of_nineAdd (h K l r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M ρ hρ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nineCmpFS_of_nineAddFS (h : NineAddFS) : NineCmpFS := by
   intro K _ _ l _ r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ

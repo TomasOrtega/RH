@@ -20,18 +20,18 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[adW, List.map_map, Function.comp_def, Matrix.mul_neg, Matrix.neg_mul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma tt_adW_neg (ε : Fin n → Bool) (k : KG ε) (D : List (Matrix (Fin n) (Fin n) ℂ)) :
     adW ε k (D.map Neg.neg) = (adW ε k D).map Neg.neg := by
   simp [adW, List.map_map, Function.comp_def, Matrix.mul_neg, Matrix.neg_mul]
 
 /- English proof (translation)
-Proceed by induction on `D with`. Consider the case `nil => exact hloc`. Consider the case `cons Z D ih`. Introduce `g hg hgu`. Establish `hGd : HasFDerivAt (lWord (D.map Neg.neg) (psM T μ)) (fderiv ℂ (lWord (D.map Neg.neg) (psM T μ)) (g⁻¹ * toMK k₀)) (g⁻¹ * toMK k₀)` using `((hdiff _).differentiableAt (hU.mem_nhds (hWU g hg).2)).hasFDerivAt`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : HasFDerivAt (fun y => T.op k₀ * lWord (D.map Neg.neg) (psM T μ) y) ((ContinuousLinearMap.mul ℂ (T.V →L[ℂ] T.V) (T.op k₀)).comp (fderiv ℂ (lWord (D.map Neg.neg) (psM T μ)) (g⁻¹ * toMK k₀))) (g⁻¹ * toMK k₀)` using `(ContinuousLinearMap.mul ℂ (T.V →L[ℂ] T.V) (T.op k₀)).hasFDerivAt.comp _ hGd`. Use `show EcV ε Z (rWord ε D (PsiM T μ)) g = T.op k₀ * Lhol (-Z) (lWord (D.map Neg.neg) (psM T μ)) (g⁻¹ * toMK k₀)`. Rewrite using `[ta_ecV_local ε (F := fun y => T.op k₀ * lWord (D.map Neg.neg) (psM T μ) y) hW hg hgu hc.differentiableAt ih Z]`. Unfold `Lhol`. Rewrite using `[hc.fderiv]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma tt_rWord_local {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (μ : Fin n → ℤ)
     {U W : Set (Matrix (Fin n) (Fin n) ℂ)} {k₀ : KG ε} (hU : IsOpen U) (hW : IsOpen W)
@@ -61,23 +61,21 @@ lemma tt_rWord_local {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ
     rfl
 
 /- English proof (translation)
-Introduce `ε lam T μ _hlam hμ N D v hyp g₀ hg₀`. Take `⟨U, hU, hpos, hconj, hword⟩` from `psM_word n ε (lowK ε lam) T μ`. Take `⟨W, k₀, hW, hg₀W, hWU, hloc⟩` from `psiM_local T μ hμ U hU hpos hg₀`. Establish `hcpt : CompactSpace (KG ε)` using `compactSpace_KG ε`. Use `set x₀ := g₀⁻¹ * toMK k₀ with hx₀def`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx₀ : x₀ ∈ U` using `(hWU g₀ hg₀W).2`. Establish `hA : ∀ i, rWord ε (D i) (PsiM T μ) g₀ (v i) = T.op k₀ (lWord ((D i).map Neg.neg) (psM T μ) x₀ (v i))` using `fun i => by`. Rewrite using `[tt_rWord_local T μ hU hW (fun D => (hword D).1) hWU hloc (D i) g₀ hg₀W hg₀]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun i _ => hA i, ← map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `h : ∑ i, lWord ((D i).map Neg.neg) (psM T μ) x₀ (v i) = 0 by rw [h, map_zero]`. Establish `hopc : Continuous fun k : KG ε => T.op k` using `continuous_subtype_val.comp T.cont`. Establish `hAc : Continuous fun k : KG ε => T.op k * projW T * T.op k⁻¹` using `(hopc.mul continuous_const).mul (hopc.comp continuous_inv)`. Establish `hint : ∀ i, Integrable (fun k : KG ε => lWord (adW ε k ((D i).map Neg.neg)) (PhiM μ) (toMK k⁻¹ * x₀ * toMK k) • (T.op k * projW T * T.op k⁻¹)) (muK ε)` using `fun i => integrableOn_univ.mp ((((hword _).2.1 x₀ hx₀).smul hAc).continuousOn.integrableOn_compact isCompact_univ)`. Establish `hint' : ∀ i ∈ (univ : Finset (Fin N)), Integrable (fun k : KG ε => lWord (adW ε k ((D i).map Neg.neg)) (PhiM μ) (toMK k⁻¹ * x₀ * toMK k) • (T.op k * projW T * T.op k⁻¹) (v i)) (muK ε)` using `fun i _ => integrableOn_univ.mp ((((hword _).2.1 x₀ hx₀).smul (hAc.clm_apply continuous_const)).continuousOn.integrableOn_compact isCompact_univ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ∀ i, lWord ((D i).map Neg.neg) (psM T μ) x₀ (v i) = ((Module.finrank ℂ T.V : ℂ) / ((muK ε Set.univ).toReal : ℂ)) • ∫ k, lWord (adW ε k ((D i).map Neg.neg)) (PhiM μ) (toMK k⁻¹ * x₀ * toMK k) • (T.op k * projW T * T.op k⁻¹) (v i) ∂(muK ε)`. Introduce `i`. Rewrite using `[(hword _).2.2 x₀ hx₀, ContinuousLinearMap.smul_apply, ContinuousLinearMap.integral_apply (hint i)]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun i _ => hterm i, ← Finset.smul_sum, ← integral_finset_sum _ hint']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAv : ∀ (k : KG ε) (u : T.V), (T.op k * projW T * T.op k⁻¹) u = ⟪T.op k T.w, u⟫_ℂ • T.op k T.w`. Introduce `k u`. Simplify using `only [ContinuousLinearMap.mul_apply, projW, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, map_smul, op_inv_eq_adjoint, ContinuousLinearMap.adjoint_inner_right]`. Establish `hzero : ∀ k : KG ε, ∑ i, lWord (adW ε k ((D i).map Neg.neg)) (PhiM μ) (toMK k⁻¹ * x₀ * toMK k) • (T.op k * projW T * T.op k⁻¹) (v i) = 0`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy : toMK k⁻¹ * x₀ * toMK k ∈ OmegaSet n` using `hconj x₀ hx₀ k`. Establish `hyd : IsUnit (toMK k⁻¹ * x₀ * toMK k).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (tb_isUnit_of_omega hy)`. Establish `hinv : (toMK k⁻¹ * x₀ * toMK k)⁻¹⁻¹ = toMK k⁻¹ * x₀ * toMK k` using `Matrix.nonsing_inv_nonsing_inv _ hyd`. Establish `hz : (toMK k⁻¹ * x₀ * toMK k)⁻¹ ∈ OmegaP n` using `by show (toMK k⁻¹ * x₀ * toMK k)⁻¹⁻¹ ∈ OmegaSet n`. Rewrite using `[hinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy`. Establish `e : ∀ i, hWord (adW ε k (D i)) (PhiP μ) (toMK k⁻¹ * x₀ * toMK k)⁻¹ = lWord (adW ε k ((D i).map Neg.neg)) (PhiM μ) (toMK k⁻¹ * x₀ * toMK k)` using `fun i => by`. Rewrite using `[tb_hWord_phiP μ _ _ hz, ← tt_adW_neg, hinv]`. Establish `h` using `hyp k _ hz`. Simplify using `only [e] at h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hAv, smul_smul, mul_comm]`. Use `_ = 0 := by rw [h, zero_smul]`.
-
-Simplify using `only [hzero, integral_zero, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transfer (n : ℕ) : TransferStatement n := by
   intro ε lam T μ _hlam hμ N D v hyp g₀ hg₀

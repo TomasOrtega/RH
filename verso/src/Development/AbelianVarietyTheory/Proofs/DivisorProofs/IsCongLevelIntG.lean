@@ -87,19 +87,19 @@ structure IsExact (P : Pair D cc δ t0 Q) (X : Data P) (r : D.host.E) : Prop whe
   const : X.c₁ = ∏ τ, period D δ r τ ^ (P.a * P.n τ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.weil.std, h.inf, h.std.frame.gramA, h.std.frame.gramB, P.crv, h.scale⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsExact.setup {P : Pair D cc δ t0 Q} {X : Data P} {r : D.host.E} (h : IsExact P X r) :
     Setup X.ψ X.θ X.A X.B cc δ r :=
   ⟨h.weil.std, h.inf, h.std.frame.gramA, h.std.frame.gramB, P.crv, h.scale⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun _ hk _ => hk⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCongLevel_intG (N : ℕ) : IsCongLevel (intG D N) := ⟨1, one_pos, fun _ hk _ => hk⟩
 
 /- English proof (translation)
-Simplify using `[IsScale]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isScale_one (D : D7) : IsScale D D.host.ccK 1 := by simp [IsScale]
 

@@ -18,11 +18,9 @@ def restrictAut (Ω : IntermediateField F E) (τ : Ω ≃ₐ[F] Ω) (N : Interme
       (IntermediateField.restrictAlgEquiv hN).symm)
 
 /- English proof (translation)
-Establish `: Normal F (IntermediateField.restrict hN)` using `Normal.of_algEquiv (IntermediateField.restrictAlgEquiv hN)`. Use `set e := IntermediateField.restrictAlgEquiv hN`. Establish `he : ∀ w : N, ((e w : IntermediateField.restrict hN) : Ω) = ⟨w, hN w.2⟩` using `fun w => rfl`. Use `set z := τ.restrictNormal (IntermediateField.restrict hN) (e y)`. Establish `h1 : ((z : IntermediateField.restrict hN) : Ω) = τ ⟨y, hN y.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `AlgEquiv.restrictNormal_commutes τ (IntermediateField.restrict hN) (e y)` as an intermediate fact. Rewrite using `[← he y]`. Conclude with `this`. Express the relevant statement in the definitionally equal form `((e.symm z : N) : E) = _`. Establish `h2 : ((e (e.symm z) : IntermediateField.restrict hN) : Ω) = ⟨(e.symm z : E), hN (e.symm z).2⟩` using `he _`.
-
-Rewrite `h2` using `[AlgEquiv.apply_symm_apply, h1]`. Conclude with `(congrArg Subtype.val h2).symm`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_restrictAut (Ω : IntermediateField F E) (τ : Ω ≃ₐ[F] Ω) (N : IntermediateField F E)
     (hN : N ≤ Ω) [Normal F N] (y : N) :
@@ -43,7 +41,7 @@ theorem coe_restrictAut (Ω : IntermediateField F E) (τ : Ω ≃ₐ[F] Ω) (N :
   exact (congrArg Subtype.val h2).symm
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[AlgEquiv.mul_apply, coe_restrictAut, coe_restrictAut]`. Establish `: (⟨((restrictAut Ω τ₂ N hN y : N) : E), hN (restrictAut Ω τ₂ N hN y).2⟩ : Ω) = τ₂ ⟨y, hN y.2⟩` using `Subtype.ext (coe_restrictAut Ω τ₂ N hN y)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restrictAut_mul (Ω : IntermediateField F E) (τ₁ τ₂ : Ω ≃ₐ[F] Ω) (N : IntermediateField F E)
     (hN : N ≤ Ω) [Normal F N] :
@@ -69,7 +67,7 @@ def glueFun (x : Ω) : E :=
 
 include hdir hf in
 /- English proof (translation)
-Take `⟨j, hj1, hj2⟩` from `hdir (hcov x x.2).choose i`. Unfold `glueFun`. Rewrite using `[← hf _ j hj1, ← hf i j hj2]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem glueFun_eq (i : ι) (x : Ω) (hx : (x : E) ∈ N i) :
     glueFun Ω N hcov f x = ((f i ⟨x, hx⟩ : N i) : E) := by
@@ -79,7 +77,7 @@ theorem glueFun_eq (i : ι) (x : Ω) (hx : (x : E) ∈ N i) :
 
 include hN in
 /- English proof (translation)
-The claim follows from `hN _ (f _ _).2`.
+A detailed English derivation is pending.
 -/
 theorem glueFun_mem (x : Ω) : glueFun Ω N hcov f x ∈ Ω :=
   hN _ (f _ _).2
@@ -131,7 +129,7 @@ def glueHom : Ω →ₐ[F] Ω where
     rw [this, AlgHom.commutes]; rfl
 
 /- English proof (translation)
-The claim follows from `glueFun_eq Ω N hdir hcov f hf i x hx`.
+A detailed English derivation is pending.
 -/
 theorem coe_glueHom (i : ι) (x : Ω) (hx : (x : E) ∈ N i) :
     ((glueHom Ω N hN hdir hcov f hf x : Ω) : E) = ((f i ⟨x, hx⟩ : N i) : E) :=
@@ -141,7 +139,7 @@ def glueAut [Algebra.IsAlgebraic F Ω] : Ω ≃ₐ[F] Ω :=
   (Algebra.IsAlgebraic.algEquivEquivAlgHom F Ω).symm (glueHom Ω N hN hdir hcov f hf)
 
 /- English proof (translation)
-The claim follows from `coe_glueHom Ω N hN hdir hcov f hf i x hx`.
+A detailed English derivation is pending.
 -/
 theorem coe_glueAut [Algebra.IsAlgebraic F Ω] (i : ι) (x : Ω) (hx : (x : E) ∈ N i) :
     ((glueAut Ω N hN hdir hcov f hf x : Ω) : E) = ((f i ⟨x, hx⟩ : N i) : E) :=
@@ -154,11 +152,11 @@ section AutCongr
 variable {F A B : Type*} [Field F] [Field A] [Field B] [Algebra F A] [Algebra F B]
 
 /- English proof (translation)
-Apply `continuous_of_continuousAt_one e.autCongr (continuousAt_def.mpr _)` to reduce the goal to its premises. Introduce `U hU`. Rewrite `hU` using `[map_one, krullTopology_mem_nhds_one_iff]`. Take `⟨E, hE, hsub⟩` from `hU`. Rewrite using `[krullTopology_mem_nhds_one_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨E.map e.symm.toAlgHom, ?_, ?_⟩` and prove the remaining obligations. Conclude with `LinearEquiv.finiteDimensional (IntermediateField.equivMap E e.symm.toAlgHom).toLinearEquiv`. Introduce `σ hσ`. Apply `hsub` to reduce the goal to its premises. Rewrite `hσ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Express the relevant statement in the definitionally equal form `e (σ (e.symm x)) = x`. Rewrite using `[hσ (e.symm x) ⟨x, hx, rfl⟩, AlgEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_autCongr (e : A ≃ₐ[F] B) : Continuous (e.autCongr : Gal(A/F) → Gal(B/F)) := by
   apply continuous_of_continuousAt_one e.autCongr (continuousAt_def.mpr _)

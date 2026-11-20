@@ -19,41 +19,35 @@ open scoped Classical
 namespace GlobalTheory.WeilContF
 open Formalism.IndefR.DatumF
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hJS hJT ξ₀ hξ0 hσξ χS χT hS hT rS rT ω hω JA JB ξ hJA hJB κ _ co hco om htr Φ hΦ z`. Establish `hstd` using `hω.std`. Establish `hψ` using `hstd.1`. Establish `hth : ∀ w, Continuous fun p => GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ (om p Φ) w`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose g h hh hg using fun p : UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB) => _root_.GlobalTheory.T.doubled_lagrangian_intertwiner F E σ B hB hstd nS nT JS JT hJS hJT ξ₀ hξ0 hσξ JA JB ξ hJA hJB p.1 p.2`. Establish `hθ : IsThetaFunOF σ JS JT ξ₀ B.ψ (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ)` using `⟨_root_.GlobalTheory.T.doubled_lagrangian_continuous F E σ B hB hstd nS nT JS JT hJS hJT ξ₀ hξ0 hσξ JA JB ξ hJA hJB κ co hco Φ hΦ, _root_.GlobalTheory.T.doubled_lagrangian_unitary F E σ B hB hstd nS nT JS JT hJS hJT ξ₀ hξ0 hσξ JA JB ξ hJA hJB κ co hco Φ hΦ, _root_.GlobalTheory.T. …`. Establish `hhU : ∀ p, matHomF σ JT (h p) = p.1.1` using `fun p => Units.ext (hh p)`. Establish `hgU : ∀ p, (matHomF σ JS (g p))⁻¹.1 = p.2.1.1ᵀ`. Introduce `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `mtF σ JS (g p) * _ = 1`. Rewrite using `[hg p, ← Matrix.transpose_mul, Subgroup.coe_inv, Units.mul_inv, Matrix.transpose_one]`. Establish `hcH' : Continuous fun p => matHomF σ JT (h p)`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (Units.val ∘ fun p => matHomF σ JT (h p)) = fun p => p.1.1.1` using `funext fun p => hh p`. Rewrite using `[e]`. Conclude with `Units.continuous_val.comp (continuous_subtype_val.comp continuous_fst)`. Establish `e : (fun p => (matHomF σ JT (h p))⁻¹.1) = fun p => (p.1.1)⁻¹.1` using `funext fun p => by rw [hhU p]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_fst)`. Establish `hcG' : Continuous fun p => matHomF σ JS (g p)`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (Units.val ∘ fun p => matHomF σ JS (g p)) = fun p => ((p.2.1)⁻¹).1ᵀ` using `funext fun p => hg p`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_snd)).matrix_transpose`. Establish `e : (fun p => (matHomF σ JS (g p))⁻¹.1) = fun p => p.2.1.1ᵀ` using `funext hgU`. Rewrite using `[e]`. Conclude with `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_snd)).matrix_transpose`. Establish `hcH : Continuous h` using `continuous_induced_rng.2 hcH'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hcG : Continuous g` using `continuous_induced_rng.2 hcG'`. Establish `heq : ∀ p, GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ (om p Φ) w = ω (g p, h p) (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ) w` using `fun p => congrFun (htr p.1 p.2 (g p) (h p) (hh p) (hg p) Φ hΦ).2 w`. Conclude with `((hω.om_cont _ hθ w).comp (hcG.prodMk hcH)).congr fun p => (heq p).symm`. Use `continuous_iff_continuousAt.2 fun p0 => ?_` and prove the remaining obligations. Take `⟨N, hN, m, g, y, hg, hy, hf⟩` from `_root_.GlobalTheory.T.weil_pair_commuting_actions F E σ B hB nS nT JS JT hJS hJT ξ₀ hξ0 hσξ χS χT hS hT rS rT ω hω JA JB ξ hJA hJB κ co hco om htr Φ hΦ p0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `f : _ → Fin m → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ` to `fun p => if h : p ∈ N then Classical.choose (hf p h) else 0`. Establish `hfe : ∀ p ∈ N, om p Φ = ∑ i, pureA F (f p i) (g i)` using `fun p hp => by`. Simplify using `only [f, dif_pos hp]`. Conclude with `Classical.choose_spec (hf p hp)`. Establish `hslice : ∀ p ∈ N, ∀ i v, f p i v = om p Φ (GlobalTheory.WeilCont.adeleJoin F v (y i))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p hp i v`. Rewrite using `[hfe p hp, Finset.sum_apply, Finset.sum_eq_single i]`. Rewrite using `[GlobalTheory.WeilCont.pureA_adeleJoin, hy, if_pos rfl, mul_one]`. Introduce `j _ hji`. Rewrite using `[GlobalTheory.WeilCont.pureA_adeleJoin, hy, if_neg hji, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `hbd : ∀ k : ℕ, ∃ C : ℝ, ∀ᶠ p in nhds p0, ∀ i v, ‖v‖ ^ k * ‖f p i v‖ ≤ C`. Introduce `k`. Use `choose C hC using fun i => _root_.GlobalTheory.T.weil_pair_rational_invariance F E σ B hB nS nT JS JT hJS hJT ξ₀ hξ0 hσξ χS χT hS hT rS rT ω hω JA JB ξ hJA hJB κ co hco om htr Φ hΦ (y i) p0 k 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∑ i, |C i|, ?_⟩` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_all.2 hC, hN] with p hp hpN i v`. Establish `h1` using `hp i v`. Rewrite `h1` using `[norm_iteratedFDeriv_zero]`. Rewrite using `[hslice p hpN i v]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `h1.trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun i => |C i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)))`. Take `⟨M, hM, hMb⟩` from `GlobalTheory.SchwartzMajorant.exists_summable_majorant F κ (fun p => om p Φ) p0 m g f hg (Filter.eventually_of_mem hN fun p hp => hfe p hp) hbd z`. Set `e : (κ → F) → AddChar (κ → AF F) ℂ` to `fun a => B.ψ.compAddMonoidHom (AddMonoidHom.mk' (fun y => (fun i => algebraMap F (AF F) (a i)) ⬝ᵥ y) (fun y y' => dotProduct_add _ y y'))`. Establish `he : ∀ a y, e a y = B.ψ ((fun i => algebraMap F (AF F) (a i)) ⬝ᵥ y)` using `fun a y => rfl`. Establish `hform : ∀ p y', GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ (om p Φ) (co.e.symm (z, y')) = B.ψ (⅟(2 : AF F) * (z ⬝ᵥ y')) * ∑' a, e a y' * om p Φ (fun j => algebraMap F (AF F) (a j) + z j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p y'`. Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, LinearEquiv.apply_symm_apply, he]`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun a => ?_` and prove the remaining obligations. Simplify using `only [AddChar.map_add_eq_mul, Pi.add_def]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : ∀ y, e 0 y = 1` using `fun y => by`. Rewrite using `[he]`. Simplify using the standard rewrite rules. Establish `hne : ∀ a : κ → F, a ≠ 0 → ∃ y, e a y ≠ 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Take `⟨i, hi⟩` from `Function.ne_iff.1 ha`. Take `⟨x0, hx0⟩` from `hψ.2.2.2`. Use `⟨Pi.single i (algebraMap F (AF F) (a i)⁻¹ * x0), ?_⟩` and prove the remaining obligations. Rewrite using `[he, dotProduct_single, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hi, map_one, one_mul]`.
-
-Conclude with `hx0`. Establish `hψinv : ∀ t : AF F, B.ψ (-t) * B.ψ t = 1` using `fun t => by`. Simplify using `using (AddChar.map_add_eq_mul B.ψ (-t) t).symm`. Establish `hc : ∀ y', ContinuousAt (fun p => ∑' a, e a y' * om p Φ (fun j => algebraMap F (AF F) (a j) + z j)) p0`. Introduce `y'`.
-
-Establish `h2 : ∀ p, B.ψ (-(⅟(2 : AF F) * (z ⬝ᵥ y'))) * GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ (om p Φ) (co.e.symm (z, y')) = ∑' a, e a y' * om p Φ (fun j => algebraMap F (AF F) (a j) + z j)`. Introduce `p`. Simplify using `only [hform, ← mul_assoc, hψinv, one_mul]`. Conclude with `((continuous_const.mul (hth _)).continuousAt).congr (Filter.Eventually.of_forall h2)`. Establish `hL` using `GlobalTheory.continuousAt_charSeries_coef_zero e (fun a y => hψ.2.1 _) h0 hne _ p0 M hM hMb hc`.
-
-Simplify using `using hL`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_transportF_apply_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

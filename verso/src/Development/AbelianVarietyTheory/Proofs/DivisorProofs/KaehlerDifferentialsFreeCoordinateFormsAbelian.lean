@@ -14,21 +14,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CechPer
 
 /- English proof (translation)
-Introduce `A _ g L u hA U`. Take `⟨d, hcomm, hval⟩` from `GlobalTheory.T.exists_commuting_coordinate_derivations_regular_functions A g L u hA U.1`. Establish `hsm` using `GlobalTheory.AHPos.smoothOfRelativeDimension_of_holUnif hA u`. Take `⟨hfin, hproj, hrk⟩` from `GlobalTheory.T.kaehler_affineOpen_finite_projective_rank A g hsm U`. Establish `hsurj` using `GlobalTheory.T.surjective_pi_liftKaehler_coordinateDerivations A g L u hA U d hval`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set Φ : Ω[Sec (str A) U.1⁄ℂ] →ₗ[Sec (str A) U.1] (Fin g → Sec (str A) U.1) := LinearMap.pi fun a => (d a).liftKaehlerDifferential with hΦ`. Establish `hinj : Function.Injective Φ` using `GlobalTheory.T.injective_of_surjective_projective_constRank _ _ g Φ hfin hproj hrk hsurj`. Set `e` to `LinearEquiv.ofBijective Φ ⟨hinj, hsurj⟩`. Establish `hΦa : ∀ ξ a, Φ ξ a = (d a).liftKaehlerDifferential ξ` using `fun ξ a => rfl`. Use `⟨d, fun b => e.symm (Pi.single b 1), hcomm, hval, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Rewrite using `[← hΦa]`. Establish `: Φ (e.symm (Pi.single b 1)) = Pi.single b 1` using `e.apply_symm_apply _`. Rewrite using `[this, Pi.single_apply]`. Introduce `ξ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Rewrite using `[map_sum, Finset.sum_apply]`. Simplify using `only [map_smul, Pi.smul_apply]`. Establish `h1 : ∀ b, Φ (e.symm (Pi.single b 1)) = Pi.single b 1` using `fun b => e.apply_symm_apply _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1]`. Rewrite using `[Finset.sum_eq_single c (fun b _ hb => by rw [Pi.single_eq_of_ne (Ne.symm hb), smul_zero]) (fun h => absurd (Finset.mem_univ c) h), Pi.single_eq_same, hΦa]`. Conclude with `(_root_.mul_one _).symm`. Introduce `a ξ z hz`. Take `⟨ev, hev⟩` from `(GlobalTheory.T.uniformisation_preimage_value_rules A g L u).2.2.2.2.2.2.2.2.2.1 U.1 z hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, hsm', hD⟩` from `GlobalTheory.T.uniformisedOneFormEvaluation_rules A g L u U.1 z hz`. Establish `hmem : ξ ∈ Submodule.span (Sec (str A) U.1) (Set.range (KaehlerDifferential.D ℂ (Sec (str A) U.1)))`. Rewrite using `[KaehlerDifferential.span_range_derivation]`. Discharge the goal by the elementary cases of `trivial`. Establish `hev' : ∀ b : Sec (str A) U.1, val u.ex U.1 b z = ev b` using `hev`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Proceed by induction.
 
-It suffices to establish `h : evForm u.ex U.1 z ξ (Pi.single a 1) = ev ((d a).liftKaehlerDifferential ξ) from h.trans (hev' _).symm`. Proceed by induction on `hmem using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[hD, Derivation.liftKaehlerDifferential_comp_D]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `(hval a y z hz).symm.trans (hev' _)`. Consider the case `zero => simp only [map_zero, ContinuousLinearMap.zero_apply]`. Consider the case `add x y _ _ hx hy => simp only [map_add, ContinuousLinearMap.add_apply, hx, hy]`. Consider the case `smul r x _ hx`. Rewrite using `[hsm', ContinuousLinearMap.smul_apply, hx, map_smul, smul_eq_mul, smul_eq_mul, map_mul, hev' r]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kaehler_frame : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ (U : A.left.affineOpens), ∃ (d : Fin g → Derivation ℂ (Sec (str A) U.1) (Sec (str A) U.1)) (ω : Fin g → Ω[Sec (str A) U.1⁄ℂ]), (∀ a b x, d a (d b x) = d b (d a x)) ∧ (∀ a x, ∀ z ∈ pre u.ex U.1, val u.ex U.1 (d a x) z = fderiv ℂ (val u.ex U.1 x) z (Pi.single a 1)) ∧ (∀ a b, (d a).liftKaehlerDifferential (ω b) = if a = b then 1 else 0) ∧ (∀ ξ, ξ = ∑ a, (d a).liftKaehlerDifferential ξ • ω a) ∧ ∀ a ξ, ∀ z ∈ pre u.ex U.1, evForm u.ex U.1 z ξ (Pi.single a 1) = val u.ex U.1 ((d a).liftKaehlerDifferential ξ) z := by
   intro A _ g L u hA U

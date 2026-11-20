@@ -17,11 +17,11 @@ def compoundRep {G : Type} [Group G] {n : ℕ} (j : ℕ) (ρ : G →* GL (Fin n)
 
 open Polynomial in
 /- English proof (translation)
-Establish `hmem : ∀ i, _root_.GlobalTheory.subsetEnum S i ∈ S.1` using `fun i => by`. Establish `: _root_.GlobalTheory.subsetEnum S i ∈ Set.range (_root_.GlobalTheory.subsetEnum S)` using `⟨i, rfl⟩`. Rewrite `this` using `[_root_.GlobalTheory.range_subsetEnum]`. Conclude with `this` after adjusting the coercions. Set `σ : Fin j ≃ {x // x ∈ S.1}` to `Equiv.ofBijective (fun i => ⟨_root_.GlobalTheory.subsetEnum S i, hmem i⟩) ⟨fun a b hab => _root_.GlobalTheory.subsetEnum_injective S (congrArg Subtype.val hab), fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx : x.1 ∈ ((S.1 : Finset (Fin n)) : Set (Fin n))` using `x.2`. Rewrite `hx` using `[← _root_.GlobalTheory.range_subsetEnum]`. Take `⟨i, hi⟩` from `hx`. Conclude with `⟨i, Subtype.ext hi⟩⟩`. Establish `hsub : A.submatrix (_root_.GlobalTheory.subsetEnum S) (_root_.GlobalTheory.subsetEnum S) = (A.submatrix (Subtype.val : {x // x ∈ S.1} → Fin n) Subtype.val).submatrix σ σ` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsub, Matrix.det_submatrix_equiv_self]`.
+A detailed English derivation is pending.
 -/
 private lemma det_submatrix_subsetEnum_eq_det_submatrix_val {n j : ℕ} (A : Matrix (Fin n) (Fin n) ℂ)
     (S : Set.powersetCard (Fin n) j) :
@@ -46,7 +46,7 @@ private lemma det_submatrix_subsetEnum_eq_det_submatrix_val {n j : ℕ} (A : Mat
 
 open Polynomial in
 /- English proof (translation)
-Rewrite using `[Finset.sum_subtype (p := fun s : Finset (Fin n) => s ∈ Set.powersetCard (Fin n) j) _ (fun s => by simp [Finset.mem_powersetCard, Set.powersetCard])]`. Unfold `_root_.GlobalTheory.compoundMatrix`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun S _ => det_submatrix_subsetEnum_eq_det_submatrix_val A S`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma trace_compoundMatrix_eq_sum_principal_minors {n : ℕ} (j : ℕ) (A : Matrix (Fin n) (Fin n) ℂ) :
     (_root_.GlobalTheory.compoundMatrix j A).trace = ∑ s ∈ Finset.powersetCard j Finset.univ,
@@ -59,11 +59,11 @@ private lemma trace_compoundMatrix_eq_sum_principal_minors {n : ℕ} (j : ℕ) (
 
 open Polynomial in
 /- English proof (translation)
-Establish `hdeg : M.charpoly.natDegree = n`. Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hcard : M.charpoly.roots.card = M.charpoly.natDegree` using `splits_iff_card_roots.mp (IsAlgClosed.splits _)`. Break down `le_or_gt j n with hj | hj` into its components or cases. Establish `h1` using `coeff_eq_esymm_roots_of_card hcard (k := n - j) (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2` using `M.charpoly_coeff_eq_sum_minors j (by simp [hj])`. Rewrite `h1` using `[hdeg, Nat.sub_sub_self hj, M.charpoly_monic.leadingCoeff, one_mul]`. Rewrite `h2` using `[Fintype.card_fin, h1]`. Conclude with `mul_left_cancel₀ (pow_ne_zero _ (by norm_num)) h2`. Rewrite using `[Finset.powersetCard_eq_empty.mpr (by simp [hj]), Finset.sum_empty, Multiset.esymm, Multiset.powersetCard_eq_empty _ (by omega)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private lemma esymm_roots_charpoly_eq_sum_principal_minors {n : ℕ} (j : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) :
     M.charpoly.roots.esymm j = ∑ s ∈ Finset.powersetCard j Finset.univ,
@@ -85,9 +85,9 @@ private lemma esymm_roots_charpoly_eq_sum_principal_minors {n : ℕ} (j : ℕ) (
 open Polynomial in
 
 /- English proof (translation)
-Introduce `G _ n j ρ`. Establish `h` using `(_root_.GlobalTheory.BI.isChar_and_isIrrChar_of_rep ℂ ℂ G _ (_root_.GlobalTheory.BI.compoundRep j ρ)).1`. Establish `heq : (fun g => (Matrix.charpoly (ρ g : Matrix (Fin n) (Fin n) ℂ)).roots.esymm j) = fun g => algebraMap ℂ ℂ ((_root_.GlobalTheory.BI.compoundRep j ρ).character g)`. Use function extensionality and compare the values at `g`. Rewrite using `[Algebra.algebraMap_self, RingHom.id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = LinearMap.trace ℂ _ (Matrix.toLin' (_root_.GlobalTheory.compoundMatrix j (ρ g : Matrix (Fin n) (Fin n) ℂ)))`. Rewrite using `[Matrix.trace_toLin'_eq, trace_compoundMatrix_eq_sum_principal_minors, esymm_roots_charpoly_eq_sum_principal_minors]`. Rewrite using `[heq]`. Conclude with `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BI.isChar_esymm_roots_charpoly :
     ∀ (G : Type) [Group G] (n j : ℕ) (ρ : G →* GL (Fin n) ℂ), _root_.GlobalTheory.BI.IsChar ℂ ℂ

@@ -7,11 +7,9 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.OrdTransport
 
 /- English proof (translation)
-Introduce `A F _ _ _ _ _ τ σ hc v w hvw x hx`. Establish `h : v.asIdeal = w.asIdeal.comap τ` using `Ideal.ext fun a => by`. Rewrite using `[Ideal.mem_comap]`. Conclude with `hvw a`. Establish `hv : v.valuation F x = w.valuation F (σ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := A) x`. Rewrite using `[map_div₀ σ, hc, hc, map_div₀, map_div₀]`. Simplify using `only [HeightOneSpectrum.valuation_of_algebraMap, GlobalTheory.QNorm.intValuation_of_eq_comap τ w v h]`. Establish `hσx : σ x ≠ 0` using `(map_ne_zero σ).2 hx`. Rewrite `hv` using `[GlobalTheory.Idele.valuation_eq_exp_neg_count v hx, GlobalTheory.Idele.valuation_eq_exp_neg_count w hσx, WithZero.exp_inj, neg_inj]`.
-
-Conclude with `hv.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_spanSingleton_ringEquiv : ∀ (A F : Type) [CommRing A] [IsDedekindDomain A] [Field F]
     [Algebra A F] [IsFractionRing A F] (τ : A ≃+* A) (σ : F ≃+* F),

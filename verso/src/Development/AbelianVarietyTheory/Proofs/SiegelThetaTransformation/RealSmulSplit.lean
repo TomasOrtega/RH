@@ -20,7 +20,7 @@ namespace GlobalTheory.Ker.ColChange
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Establish `key : a • z = ((a.re : ℝ) : ℂ) • z + ((a.im : ℝ) : ℂ) • (I • z)`. Rewrite using `[smul_smul, ← add_smul, Complex.re_add_im]`. Rewrite using `[key, ha, hs, hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem real_smul_split {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (d : V → W)
     (ha : ∀ x y, d (x + y) = d x + d y) (hs : ∀ (t : ℝ) x, d ((t : ℂ) • x) = (t : ℂ) • d x) (a : ℂ) (z : V) :
@@ -30,23 +30,23 @@ theorem real_smul_split {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGro
   rw [key, ha, hs, hs]
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.Ker.HeisDeriv.dRho_laws D S T C f hf τ`. Establish `hc : ∀ x : Matrix (Fin T.rank) (Fin S.rank) ℂ, cplxO 1 s x = I • (s * x)`. Introduce `x`. Simplify using `only [cplxO, Matrix.mul_one]`. Establish `hneg : ∀ x : Matrix (Fin T.rank) (Fin S.rank) ℂ, Formalism.IndefR.Datum.dRho (heisO C.ψ S T) C.θ τ (-x) f = -Formalism.IndefR.Datum.dRho (heisO C.ψ S T) C.θ τ x f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x`. Establish `h1` using `(hL x).2.2.2.2.2.1 (-1)`. Simplify using `using h1`. Establish `hadd : ∀ x y : Matrix (Fin T.rank) (Fin S.rank) ℂ, crea (heisO C.ψ S T) C.θ τ (cplxO 1 s) (x + y) f = crea (heisO C.ψ S T) C.θ τ (cplxO 1 s) x f + crea (heisO C.ψ S T) C.θ τ (cplxO 1 s) y f`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : cplxO 1 s (x + y) = cplxO 1 s x + cplxO 1 s y`. Simplify using `only [cplxO, Matrix.mul_add, Matrix.add_mul, smul_add]`. Unfold `crea`. Rewrite using `[hc, (hL x).2.2.2.2.1 y, (hL (cplxO 1 s x)).2.2.2.2.1 (cplxO 1 s y)]`. Simplify using `only [smul_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `hreal : ∀ (t : ℝ) (x : Matrix (Fin T.rank) (Fin S.rank) ℂ), crea (heisO C.ψ S T) C.θ τ (cplxO 1 s) ((t : ℂ) • x) f = (t : ℂ) • crea (heisO C.ψ S T) C.θ τ (cplxO 1 s) x f`. Introduce `t x`. Establish `hc' : cplxO 1 s ((t : ℂ) • x) = (t : ℂ) • cplxO 1 s x`. Rewrite using `[hc, hc, Matrix.mul_smul, smul_comm]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `crea`. Rewrite using `[hc', (hL x).2.2.2.2.2.1 t, (hL (cplxO 1 s x)).2.2.2.2.2.1 t, smul_sub, smul_comm I (t : ℂ)]`. Establish `key` using `real_smul_split (fun x => crea (heisO C.ψ S T) C.θ τ (cplxO 1 s) x f) hadd hreal a z`. Establish `e1 : cplxO 1 s (I • z) = (if p then -z else z)`. Rewrite using `[hc, Matrix.mul_smul, hz]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [smul_smul]`. Establish `e2 : cplxO 1 s z = (if p then I • z else -(I • z))`. Rewrite using `[hc, hz]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hI : crea (heisO C.ψ S T) C.θ τ (cplxO 1 s) (I • z) f = (if p then I else -I) • crea (heisO C.ψ S T) C.θ τ (cplxO 1 s) z f`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Unfold `crea`. Rewrite using `[e1, e2]`. Use `split_ifs`. Rewrite using `[hneg]`. Simplify using `only [smul_sub, smul_neg, smul_smul, Complex.I_mul_I, neg_smul, one_smul, sub_neg_eq_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hneg]`. Simplify using `only [smul_neg, smul_add, smul_smul, neg_mul, Complex.I_mul_I, neg_neg, neg_smul, one_smul, sub_neg_eq_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[key, hI]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[smul_smul, ← add_smul, Complex.re_add_im]`. Rewrite using `[smul_smul, ← add_smul]`. Use `congr 1`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem crea_smul (C : Ctx S T) {f : WO S T → ℂ} (hf : C.IsTh f) (τ : D.what₂.Tau)
     (s : Matrix (Fin T.rank) (Fin T.rank) ℂ) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (p : Prop) [Decidable p]
@@ -104,11 +104,11 @@ theorem crea_smul (C : Ctx S T) {f : WO S T → ℂ} (hf : C.IsTh f) (τ : D.wha
     apply Complex.ext <;> simp
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.Ker.HeisDeriv.dRho_laws D S T C f hf τ`. Establish `hadd : ∀ x y : Matrix (Fin T.rank) (Fin S.rank) ℂ, crea (heisO C.ψ S T) C.θ τ (cplxO 1 s) (x + y) f = crea (heisO C.ψ S T) C.θ τ (cplxO 1 s) x f + crea (heisO C.ψ S T) C.θ τ (cplxO 1 s) y f`. Introduce `x y`. Establish `hc : cplxO 1 s (x + y) = cplxO 1 s x + cplxO 1 s y`. Simplify using `only [cplxO, Matrix.mul_add, Matrix.add_mul, smul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `crea`. Rewrite using `[hc, (hL x).2.2.2.2.1 y, (hL (cplxO 1 s x)).2.2.2.2.1 (cplxO 1 s y)]`. Simplify using `only [smul_add]`. Normalize the expressions using the abelian group laws. Set `F : Matrix (Fin T.rank) (Fin S.rank) ℂ →+ (WO S T → ℂ)` to `AddMonoidHom.mk' (fun x => crea (heisO C.ψ S T) C.θ τ (cplxO 1 s) x f) hadd`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression.
 
-Conclude with `map_sum F z t`.
+A detailed English derivation is pending.
 -/
 theorem crea_sum (C : Ctx S T) {f : WO S T → ℂ} (hf : C.IsTh f) (τ : D.what₂.Tau)
     (s : Matrix (Fin T.rank) (Fin T.rank) ℂ) {ι : Type} (t : Finset ι) (z : ι → Matrix (Fin T.rank) (Fin S.rank) ℂ) :
@@ -129,9 +129,9 @@ theorem crea_sum (C : Ctx S T) {f : WO S T → ℂ} (hf : C.IsTh f) (τ : D.what
   exact map_sum F z t
 
 /- English proof (translation)
-Unfold `unitMap`. Repeatedly rewrite using `[inv_one, Matrix.mul_one]`. Establish `hrow : Matrix.single i j (1 : ℂ) * H⁻¹ = ∑ l, H⁻¹ j l • Matrix.single i l (1 : ℂ)`. Use extensionality with `a b`. Apply the tactic sequence `by_cases ha : i = a <;> simp [ha, Matrix.mul_apply, Matrix.single_apply, Matrix.sum_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Matrix.mul_assoc, hrow, Matrix.mul_sum]`. Repeatedly rewrite using `[Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem unitMap_expand {m n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (B : Matrix (Fin m) (Fin m) ℂ) (i : Fin m) (j : Fin n) :
     unitMap H B i j = ∑ l, H⁻¹ j l • unitMap 1 B i l := by
@@ -144,15 +144,15 @@ theorem unitMap_expand {m n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (B : Matrix 
   simp_rw [Matrix.mul_smul]
 
 /- English proof (translation)
-Establish `hdet : IsUnit (B τ).det`. Establish `h` using `congrArg Matrix.det (hB τ)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul]`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[h0, mul_zero]`. Unfold `sgnM at h`. Rewrite `h` using `[Matrix.det_diagonal]`. Apply the tactic sequence `exact (Finset.prod_ne_zero_iff.mpr (fun a _ => by unfold sgn; split_ifs <;> norm_num)) h.symm`. Unfold `Ctx.sB unitMap`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[inv_one, Matrix.mul_one, Matrix.mul_assoc, ← Matrix.mul_assoc (B τ)⁻¹, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.mul_smul]`. Use `congr 1`. Unfold `sgnM`. Use extensionality with `a b`. Simplify using `only [Matrix.diagonal_mul, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : i = a ∧ l = b`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `only [and_self, if_true, mul_one]`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sB_unitMap (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (τ : D.what₂.Tau) (i : Fin T.rank) (l : Fin S.rank) :
     C.sB B τ * unitMap 1 (B τ) i l = (if (i : ℕ) < C.X.p0 then (1 : ℂ) else -1) • unitMap 1 (B τ) i l := by
@@ -180,13 +180,13 @@ theorem sB_unitMap (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (τ : D.what₂.Tau)
   · simp [h]
 
 /- English proof (translation)
-Establish `hm` using `h.2`. Simplify using `only [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR, Formalism.UG.UJ, Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_ofPred_eq] at hm`. Establish `hJ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (F` using `D.host.F) (AF D.host.F) S.gram = 1 := by`. Rewrite using `[C.m.gS]`. Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hJ, Matrix.mul_one] at hm`. Establish `hc : ∀ x : AE D, C.θ τ (infPart D (sigR (AF D.host.F) D.sp.cm.sig x)) = starRingEnd ℂ (C.θ τ (infPart D x))` using `fun x => GlobalTheory.FockCompare.comp_cA C.inf τ x`. Unfold `compAt`. Use extensionality with `i j`. Establish `e` using `congrArg (fun A => C.θ τ (infPart D (A i j))) hm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, hc] at e`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Complex.star_def]`. Use `e.trans ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem compAt_unitary (C : Ctx S T) (h : GA D S) (τ : D.what₂.Tau) :
     (compAt C.θ τ (mt S h))ᴴ * compAt C.θ τ (mt S h) = 1 := by
@@ -226,17 +226,17 @@ def sub (C : Ctx S T) (h : GA D S) :
     else compAt C.θ v.1 (mt S h) l v.2.2) • MvPolynomial.X (v.1, v.2.1, l)
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Take `⟨σ, i, k⟩` from `v`. Simplify using `only [AlgHom.comp_apply, sub, MvPolynomial.aeval_X, Ctx.toH, map_sum, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.aeval_C]`. Establish `hσ : C.m.e.symm (C.m.e σ) = σ` using `C.m.e.symm_apply_apply σ`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `hi : (rowIdx C.hr).symm i with a | b` into its components or cases. Establish `hlt : ¬ ((i : ℕ) < C.X.p0)`. Establish `hi' : i = rowIdx C.hr (Sum.inl a)` using `by rw [← hi, Equiv.apply_symm_apply]`. Establish `h1` using `rowIdx_inl C.hr a`. Rewrite `h1` using `[← hi']`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [Harm.colActHom, Harm.colSubst_X_xVar, Harm.xForm_apply]`. Simplify using `only [MvPolynomial.algHom_C, MvPolynomial.algebraMap_eq, hlt, ↓reduceIte, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `x _`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [colU, Units.inv_mk, Matrix.transpose_apply, hσ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlt : ((i : ℕ) < C.X.p0)`. Establish `hi' : i = rowIdx C.hr (Sum.inr b)` using `by rw [← hi, Equiv.apply_symm_apply]`. Establish `h1` using `rowIdx_inr C.hr b`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hi']`. Establish `h2` using `b.2`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Harm.colActHom, Harm.colSubst_X_yVar, Harm.yForm_apply]`. Simplify using `only [MvPolynomial.algHom_C, MvPolynomial.algebraMap_eq, hlt, ↓reduceIte, Finset.mul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `x _`. Simplify using `only [colU, Units.val_mk, Matrix.map_apply, hσ]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem toH_sub (C : Ctx S T) (h : GA D S) : C.toH.comp (sub C h) = (Harm.colActHom (colU C h)).comp C.toH := by
   apply MvPolynomial.algHom_ext
@@ -271,27 +271,27 @@ theorem toH_sub (C : Ctx S T) (h : GA D S) : C.toH.comp (sub C h) = (Harm.colAct
     ring
 
 /- English proof (translation)
-Introduce `D S T C h`. Use `⟨colU C h, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ`. Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Establish `hst : star ((colU C h σ : Matrix (Fin S.rank) (Fin S.rank) ℂ)) = (((colU C h σ)⁻¹ : GL (Fin S.rank) ℂ) : Matrix (Fin S.rank) (Fin S.rank) ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `[colU, Matrix.star_apply]`. Rewrite using `[hst]`. Conclude with `(colU C h σ).mul_inv`. Introduce `hh`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.L2.Theta.GfC, MonoidHom.mem_ker, Formalism.L2.Theta.infHom] at hh`. Establish `hinf : (Formalism.L2.Theta.mt S h).map (infPart D) = 1`. Establish `e` using `congrArg (fun g : GL (Fin S.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E) => (g : Matrix (Fin S.rank) (Fin S.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E))) hh`. Conclude with `e`. Use function extensionality and compare the values at `σ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `a b`. Establish `e` using `congrFun (congrFun hinf a) b`. Simplify using `only [Matrix.map_apply] at e`. Simplify using `only [colU, compAt, Matrix.map_apply, e]`. Distinguish the cases in `hab : a = b`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hab]`. Introduce `Q Q' hQ B hB f hf`. Establish `hL` using `GlobalTheory.T.fockPolynomialVector_laws D S T C B hB`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hQ' : Q' = sub C h Q`. Apply `(GlobalTheory.T.fockPolynomialVector_testTheta_zero_eq_thetaSeries D S T C).1.1` to reduce the goal to its premises. Establish `e` using `congrArg (fun F => F Q) (toH_sub C h)`. Simplify using `only [AlgHom.comp_apply] at e`. Rewrite using `[hQ, ← e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Replace the relevant objects with their definitions.
 
-Substitute `hQ'` using the available equality. Use `clear hQ`. Unfold `Ctx.fvec`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hCa : (MvPolynomial.C a : MvPolynomial (FVar D T.rank S.rank) ℂ) = a • 1`. Rewrite using `[MvPolynomial.smul_eq_C_mul, mul_one]`. Rewrite using `[hCa, map_smul, map_smul, (hL (fun τ => compAt C.θ τ (Formalism.L2.Theta.mt S h)) f hf 1).2.2.1, map_one (sub C h), map_smul, (hL (fun _ => 1) f hf 1).2.2.1]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `(hL (fun _ => 1) f hf (sub C h p)).1`. Establish `hH : (compAt C.θ v.1 (Formalism.L2.Theta.mt S h))⁻¹ = (compAt C.θ v.1 (Formalism.L2.Theta.mt S h))ᴴ` using `Matrix.inv_eq_left_inv (compAt_unitary C h v.1)`. Establish `hsX : sub C h (MvPolynomial.X v) = ∑ l, (if (v.2.1 : ℕ) < C.X.p0 then conj (compAt C.θ v.1 (Formalism.L2.Theta.mt S h) l v.2.2) else compAt C.θ v.1 (Formalism.L2.Theta.mt S h) l v.2.2) • MvPolynomial.X (v.1, v.2.1, l)`. Unfold `sub`. Rewrite using `[MvPolynomial.aeval_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_comm, (hL (fun τ => compAt C.θ τ (Formalism.L2.Theta.mt S h)) f hf p).2.1 v, hp, map_mul, hsX, Finset.sum_mul, map_sum]`. Simplify using `only [smul_mul_assoc, map_smul, (hL (fun _ => 1) f hf (sub C h p)).2.1]`. Unfold `aPlusAll aPlus`. Simplify using `only`. Rewrite using `[unitMap_expand (compAt C.θ v.1 (Formalism.L2.Theta.mt S h)), hH, crea_sum C hg, Finset.smul_sum]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[crea_smul C hg v.1 (C.sB B v.1) (unitMap 1 (B v.1) v.2.1 l) ((v.2.1 : ℕ) < C.X.p0) (sB_unitMap C hB v.1 v.2.1 l), Matrix.conjTranspose_apply, smul_smul, smul_smul]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem col_change : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ h : GA D S, ∃ u : C.X.Ψ → GL (Fin S.rank) ℂ, (∀ σ, (u σ : Matrix (Fin S.rank) (Fin S.rank) ℂ) ∈ Matrix.unitaryGroup (Fin S.rank) ℂ) ∧ (h ∈ GfC S → u = 1) ∧ ∀ Q Q' : MvPolynomial (FVar D T.rank S.rank) ℂ, C.toH Q' = Harm.colActHom u (C.toH Q) → ∀ B, C.IsB B → ∀ f, C.IsTh f → pureTensorO C.ψ C.θ S T (fun _ => 1) (C.sB B) (fun τ => compAt C.θ τ (mt S h)) B f Q = C.fvec B f Q' := by
   intro D S T C h

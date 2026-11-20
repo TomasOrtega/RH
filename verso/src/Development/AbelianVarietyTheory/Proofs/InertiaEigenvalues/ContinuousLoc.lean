@@ -31,9 +31,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {LL : Type} [Field LL] [Algebra Qp LL]
 
 /- English proof (translation)
-Use `⟨fun g x y => ?_, fun x hx => ?_, fun y hy => ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(M g).mulVec x ⬝ᵥ ((U g).mulVec y) = ((cycLL PD LL g : LLˣ) : LL) * (x ⬝ᵥ y)`. Rewrite using `[hU, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec, dotProduct_comm]`. Use function extensionality and compare the values at `i`. Use `hx (Pi.single i 1)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `using this`. Use function extensionality and compare the values at `i`. Use `hy (Pi.single i 1)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isDual1_of_eq {k : ℕ} (M U : G →* Matrix (Fin k) (Fin k) LL)
     (hU : ∀ g, U g = ((cycLL PD LL g : LLˣ) : LL) • (M g⁻¹).transpose) :
@@ -58,7 +58,7 @@ variable (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
   (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
 /- English proof (translation)
-Establish `hfc : Continuous (D.nbr i w hw).toLL` using `continuous_subtype_val.comp (D.nbr i w hw).eO_cont`. Establish `hι : Continuous fun g : Br.G D.nbr i w hw => ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd)` using `continuous_subtype_val.comp (Br.iota_cont D.nbr i w hw)`. Conclude with `(hM.comp hι).matrix_map hfc`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_loc {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i))
     (hM : Continuous fun g => M g) : Continuous (Br.loc D.nbr i w hw M) := by
@@ -69,9 +69,9 @@ theorem continuous_loc {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.
   exact (hM.comp hι).matrix_map hfc
 
 /- English proof (translation)
-Use `isDual1_of_eq _ _ _ fun g => ?_` and prove the remaining obligations. Set `ι : Br.G D.nbr i w hw →* GE D.nd` to `(decS D.nd w).comp (Br.iota D.nbr i w hw)`. Set `f` to `(D.nbr i w hw).toLL`. Establish `e : f (epsU D.nd i (ι g) : (D.nd.O i)ˣ) = ((cycLL ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw) ↥(D.nbr i w hw).LL.1 g : (↥(D.nbr i w hw).LL.1)ˣ) : ↥(D.nbr i w hw).LL.1)` using `congrArg Units.val (GlobalTheory.CycBridge.locChi_epsU D i w hw g)`. Rewrite using `[← e]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Use `congr 1`. Express the relevant statement in the definitionally equal form `f ((((D.nd.chi i 1 (ι g)) * epsU D.nd i (ι g) : (D.nd.O i)ˣ) : D.nd.O i) * rO D.nd i r x ((ι g)⁻¹ : GE D.nd) b a) = f (epsU D.nd i (ι g) : (D.nd.O i)ˣ) * f ((((D.nd.chi i 1 (ι g⁻¹))⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) * rO D.nd i r x (ι g⁻¹) b a)`. Rewrite using `[← map_mul, map_inv ι g, map_inv (D.nd.chi i 1), inv_inv, Units.val_mul]`. Use `congr 1`.
+By extensionality, compare the relevant components. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -100,11 +100,11 @@ end
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D hT i r hr Xs w hw n ⟨K', h, hN, hF, hS, Sig, Fr, hFr, hst, h1, hc, hx⟩`. Use `⟨K', h, hN, hF, hS, Sig.image (fun a => a⁻¹), Fr, hFr, ?_, ?_, le_trans Finset.card_image_le hc, fun x => ?_⟩` and prove the remaining obligations. Introduce `a ha`. Take `⟨a, ha', rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨b, hb, hab⟩` from `hst a ha'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨b⁻¹, Finset.mem_image.2 ⟨b, hb, rfl⟩, fun g g' hg => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, MonoidHom.inv_apply, hab g g' hg]`. Conclude with `Finset.mem_image.2 ⟨1, h1, inv_one⟩`. Establish `hcont` using `GlobalTheory.Pass.FamCont.stepCont D i r hr x`. Conclude with `(hT (D.nd.l i) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL h hN hF hS (bundle _ _ (Br.loc D.nbr i w hw (rTwO D.nd i r x)) (continuous_loc D i w hw _ hcont.1)) (bundle _ _ (Br.loc D.nbr i w hw (rDuO D.nd i r x)) (continuous_loc D i w hw _ hcont.2)) Sig (Sig.image (fun a => a⁻¹)) (hx x) …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Finset.mem_image]`. Conclude with `⟨fun ⟨a, ha, e⟩ => ⟨a, ha, e.symm⟩, fun ⟨a, ha, e⟩ => ⟨a, ha, e.symm⟩⟩)`.
+A detailed English derivation is pending.
 -/
 theorem stepPotDual : StepPotDual := by
   classical

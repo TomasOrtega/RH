@@ -8,21 +8,21 @@ open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k G _ _ i C d hdd hsurj hex M e s hiso hcomm hinj hsur`. Establish `hE : Function.Exact (hMap (d 1) i).hom (hMap (d 0) i).hom`. Use `T.exact_hMap_one_zero_of_staircase k G i C d hdd hsurj hex ?_` and prove the remaining obligations. Introduce `p q hp hpq`. Use `T.homology_row_exact_of_stabilisation_pattern k G C d hdd M e s (i + 3) hiso hcomm p q (by omega) ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hev`. Conclude with `hinj p q hev hp hpq`. Introduce `hodd`. Establish `h3 : 3 ≤ p`. Take `⟨m, rfl⟩` from `hodd`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `hsur (p + 1) q (by simpa using hodd.add_one) (by omega) (by omega)`. Establish `h0` using `hcomm 0 i (by omega)`. Establish `h1` using `hcomm 1 i (by omega)`. Simplify using `only [Even.zero, if_true] at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1' : e 2 i ≫ hMap (d 1) i = 0`. Simplify using `using h1`. Use `haveI := hiso 1 i (by omega)`. Use `haveI := hiso 2 i (by omega)`. Rewrite using `[injective_iff_map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Establish `hx1 : (hMap (d 0) i).hom ((e 1 i).hom x) = 0`. Use `congrArg (fun f => f.hom x) h0` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at this`. Rewrite using `[this, hx, map_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨y, hy⟩` from `(hE _).mp hx1`. Establish `hy2 : y = (e 2 i).hom ((inv (e 2 i)).hom y)`. Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, IsIso.inv_hom_id]`. Both sides reduce to the same expression. Establish `hzero : (e 1 i).hom x = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy, hy2]`. Use `congrArg (fun f => f.hom ((inv (e 2 i)).hom y)) h1'` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at this`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `: x = (inv (e 1 i)).hom ((e 1 i).hom x)`. Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, IsIso.hom_inv_id]`. Both sides reduce to the same expression. Rewrite using `[this, hzero, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem injective_stabilisation_bottom_of_rows_exact : ∀ (k G : Type) [CommRing k] [Group G] (i : ℕ) (C : ℕ → Rep k G) (d : ∀ p, C (p + 1) ⟶ C p), (∀ p, d (p + 1) ≫ d p = 0) → Function.Surjective (d 0).hom → (∀ p, p + 1 ≤ i + 1 → Function.Exact (d (p + 1)).hom (d p).hom) → ∀ (M : ℕ → ℕ → ModuleCat.{0} k) (e : ∀ p q, M p q ⟶ groupHomology (C p) q) (s : ∀ p q, M (p + 1) q ⟶ M p q), (∀ p q, p ≤ i + 3 → IsIso (e p q)) → (∀ p q, p + 1 ≤ i + 3 → e (p + 1) q ≫ hMap (d p) q = if Even p then s p q ≫ e p q else 0) → (∀ p q, Even p → 2 ≤ p → p + q = i + 1 → Function.Injective (s p q).hom) → (∀ p q, Even p → 4 ≤ p → p + q = i + 2 → Function.Surjective (s p q).hom) → Function.Injective (s 0 i).hom := by
   intro k G _ _ i C d hdd hsurj hex M e s hiso hcomm hinj hsur
@@ -70,7 +70,7 @@ end GlobalTheory
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.injective_stabilisation_bottom_of_rows_exact`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.quillen_stabilisation_injective_bottom : ∀ (k G : Type) [CommRing k] [Group G] (i : ℕ) (C : ℕ → Rep k G) (d : ∀ p, C (p + 1) ⟶ C p), (∀ p, d (p + 1) ≫ d p = 0) → Function.Surjective (d 0).hom → (∀ p, p + 1 ≤ i + 1 → Function.Exact (d (p + 1)).hom (d p).hom) → ∀ (M : ℕ → ℕ → ModuleCat.{0} k) (e : ∀ p q, M p q ⟶ groupHomology (C p) q) (s : ∀ p q, M (p + 1) q ⟶ M p q), (∀ p q, p ≤ i + 3 → IsIso (e p q)) → (∀ p q, p + 1 ≤ i + 3 → e (p + 1) q ≫ hMap (d p) q = if Even p then s p q ≫ e p q else 0) → (∀ p q, Even p → 2 ≤ p → p + q = i + 1 → Function.Injective (s p q).hom) → (∀ p q, Even p → 4 ≤ p → p + q = i + 2 → Function.Surjective (s p q).hom) → Function.Injective (s 0 i).hom := by
   first

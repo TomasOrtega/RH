@@ -17,15 +17,13 @@ noncomputable section
 namespace GlobalTheory.CharZeroPts
 
 /- English proof (translation)
-Set `ξ : Sp o` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum o)`. Establish `hξ : ξ ⤳ s p` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`. Take `⟨q, hq, hq'⟩` from `Flat.generalizingMap s hξ`. Take `⟨K, _, _, x, hx⟩` from `FinEt.exists_algClosed_point S q`. Establish `hx' : ∀ u, x u = q` using `fun u => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: x u ∈ Set.range x` using `⟨u, rfl⟩`. Rewrite `this` using `[hx]`. Then use the resulting hypothesis. Set `β : o →+* K` to `(Spec.preimage (x ≫ s)).hom`. Establish `hβ : x ≫ s = spMap β` using `(Spec.map_preimage (x ≫ s)).symm`. Establish `hinj : Function.Injective β`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `e : spMap β (default : PrimeSpectrum K) = ξ`. Rewrite using `[← hβ]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg s (hx' _)).trans hq')`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e' : a ∈ (spMap β (default : PrimeSpectrum K)).asIdeal` using `by show β a ∈ (default : PrimeSpectrum K).asIdeal`. Rewrite using `[ha]`. Conclude with `zero_mem _`. Rewrite `e'` using `[e]`. Conclude with `e'`.
-
-Conclude with `⟨K, inferInstance, inferInstance, charZero_of_injective_ringHom hinj, x, β, hβ, fun u => (hx' u).symm ▸ hq⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_generization {o : Type} [CommRing o] [IsDomain o] [CharZero o] {S : Scheme.{0}} (s : S ⟶ Sp o) [Flat s]
     (p : S) : ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (_ : CharZero K) (x : Sp K ⟶ S) (β : o →+* K),
@@ -57,11 +55,11 @@ variable {S : Scheme.{0}}
 abbrev toB {T : Scheme.{0}} (x : T ⟶ S) : Over.mk x ⟶ Out.baseOver S := Over.homMk x (by simp)
 
 /- English proof (translation)
-Use `choose n W hW hd using H1.exists_dim f`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension g)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension g) W (top_le_iff.1 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hW y⟩) fun y => ?_` and prove the remaining obligations. Take `⟨k, _, z, hz, hg⟩` from `h y`. Establish `: ConnectedSpace ↥(pullback f (z ≫ f))` using `GeometricallyConnected.geometrically_connectedSpace (f := f) (z ≫ f) _ _ (IsPullback.of_hasPullback _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `z' : Sp k ⟶ pullback f (z ≫ f)` to `pullback.lift z (𝟙 _) (Category.id_comp _).symm`. Take `⟨m, hm⟩` from `exists_dim_of_preconnected (pullback.snd f (z ≫ f)) (z' (default : PrimeSpectrum k))`. Establish `e₁ : n y = m` using `H1.dim_base (IsPullback.of_hasPullback _ _) (hd y) hm (z' (default : PrimeSpectrum k)) (by`. Establish `e : z' ≫ pullback.fst f (z ≫ f) = z` using `pullback.lift_fst _ _ _`. Establish `e'` using `congrArg (fun q : Sp k ⟶ X => q (default : PrimeSpectrum k)) e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (fun u => u ∈ W y) e').mpr ((hz _).mem_open (W y).isOpen (hW y)))`. Rewrite using `[← hg m hm, ← e₁]`. Conclude with `hd y`.
+A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_generization {X : Scheme.{0}} (f : X ⟶ S) [Smooth f] [GeometricallyConnected f]
     (g : ℕ) (h : ∀ y : X, ∃ (K : Type) (_ : Field K) (z : Sp K ⟶ X), (∀ u, z u ⤳ y) ∧
@@ -83,9 +81,9 @@ theorem smoothOfRelativeDimension_of_generization {X : Scheme.{0}} (f : X ⟶ S)
   exact hd y
 
 /- English proof (translation)
-Take `⟨U, hU, H⟩` from `exists_clopen_weilIs_iff hL S P n (Out.baseOver S) x y c hn hu hx hy hc`. Use `(H _ (𝟙 _)).2 (by` as an intermediate fact. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨K, _, z, hz, hw⟩` from `h p`. Conclude with `(hz (default : PrimeSpectrum K)).mem_closed hU ((H _ (toB z)).1 hw ⟨_, rfl⟩))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Category.id_comp, Category.id_comp]`. Use `this` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using the standard rewrite rules.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weilIs_of_generization (hL : Out.Laws) (P : Out.PolAV S) (n : ℕ) (x y : Out.baseOver S ⟶ P.A) (c : Γ(S, ⊤)ˣ)
     (hn : 0 < n) (hu : IsUnit (n : Γ(S, ⊤))) (hx : x ^ n = 1) (hy : y ^ n = 1) (hc : c ^ n = 1)
@@ -103,7 +101,7 @@ theorem weilIs_of_generization (hL : Out.Laws) (P : Out.PolAV S) (n : ℕ) (x y 
   simp
 
 /- English proof (translation)
-Use `torsion_basis_of_dense S A k r pt _ hA hk hu hpt ?_ (fun p hp => hp) K x y hy` and prove the remaining obligations. Introduce `p`. Take `⟨K, _, _, z, hz, H⟩` from `h p`. Conclude with `(hz (default : PrimeSpectrum K)).mem_closed isClosed_closure (subset_closure ⟨K, inferInstance, inferInstance, z, ⟨_, rfl⟩, H⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem torsion_basis_of_generization (A : Over S) [GrpObj A] (k r : ℕ) (pt : Fin r → (Out.baseOver S ⟶ A))
     (hA : IsAbelianScheme A) (hk : 0 < k) (hu : IsUnit (k : Γ(S, ⊤))) (hpt : ∀ i, pt i ^ k = 1)

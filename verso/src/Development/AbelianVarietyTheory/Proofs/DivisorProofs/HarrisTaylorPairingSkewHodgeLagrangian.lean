@@ -16,17 +16,17 @@ namespace GlobalTheory.UPel.HT.FormFacts
 open GlobalTheory.AbDual
 
 /- English proof (translation)
-Introduce `p _ D R _ b N _ _ k _ _ t o₀ β _ φ hφ`. Establish `H` using `GlobalTheory.abelianDeRham`. Take `⟨g, hg⟩` from `GlobalTheory.AbVarRelDim.exists_relDim k o₀.A o₀.ab`. Take `⟨hfd, hdimH, hdimF⟩` from `GlobalTheory.finrank_HdR_Fil_of_field H.1 H.2.1 k o₀.A g o₀.ab hg`. Establish `hAB` using `AbelianSchemeGerms.isAbelianScheme_tensor o₀.A o₀.A o₀.ab o₀.ab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `gAB` using `smooth_prod hg hg`. Establish `C` using `cupSquare_of_free H.1 hAB gAB`. Use `⟨hfd, by rw [hdimH, hdimF], GlobalTheory.SymmPoincare.skew_of_symm C o₀.isLB (LBIso.symm o₀.symm) hφ, ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ, e⟩` from `hφ.isPolForm`. Take `⟨iso, -⟩` from `H.2.2.2.2 k _ _ hAB gAB o₀.P o₀.isLB ψ hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x hx y hy`. Establish `a₁ : push (dp0 k) (𝟙 _) (fst o₀.A o₀.A) (push (dp0 k) (𝟙 _) (inl o₀.A o₀.A) x) = x`. Rewrite using `[push_push _ _ _ (lift_fst _ _), push_id]`. Both sides reduce to the same expression. Establish `a₂ : push (dp0 k) (𝟙 _) (snd o₀.A o₀.A) (push (dp0 k) (𝟙 _) (inl o₀.A o₀.A) x) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[push_push _ _ _ (lift_snd _ _), push_one]`. Both sides reduce to the same expression. Establish `b₁ : push (dp0 k) (𝟙 _) (fst o₀.A o₀.A) (push (dp0 k) (𝟙 _) (inr o₀.A o₀.A) y) = 0`. Rewrite using `[push_push _ _ _ (lift_fst _ _), push_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `b₂ : push (dp0 k) (𝟙 _) (snd o₀.A o₀.A) (push (dp0 k) (𝟙 _) (inr o₀.A o₀.A) y) = y`. Rewrite using `[push_push _ _ _ (lift_snd _ _), push_id]`. Both sides reduce to the same expression. Establish `key : φ x y = ψ (push (dp0 k) (𝟙 _) (inl o₀.A o₀.A) x) (push (dp0 k) (𝟙 _) (inr o₀.A o₀.A) y)`. Rewrite using `[e, a₁, a₂, b₁, b₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[key]`. Conclude with `iso _ (push_mem_Fil _ hx) _ (push_mem_Fil _ hy)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formFacts : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → ∀ φ : LinearMap.BilinForm k (HdR o₀.A), GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) o₀.A o₀.A o₀.P φ → FiniteDimensional k (HdR o₀.A) ∧ 2 * Module.finrank k (Fil o₀.A) = Module.finrank k (HdR o₀.A) ∧ (∀ x y, φ x y = -φ y x) ∧ ∀ x ∈ Fil o₀.A, ∀ y ∈ Fil o₀.A, φ x y = 0 := by
   intro p _ D R _ b N _ _ k _ _ t o₀ β _ φ hφ

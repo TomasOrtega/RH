@@ -17,7 +17,7 @@ variable (K F M : Type) [Field K] [NumberField K] [Field F] [NumberField F] [Fie
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `ideleClassEquiv_ideleClassMap_of_comm (AlgEquiv.restrictNormalHom F σ : F ≃+* F) (σ : M ≃+* M) (fun l => (AlgEquiv.restrictNormal_commutes σ F l).symm) c`.
+A detailed English derivation is pending.
 -/
 theorem smul_ideleClassMap_restrictNormal [Normal K F] (σ : Gal(M/K)) (c : IdeleClassGroup F) :
     σ • ideleClassMap F M c = ideleClassMap F M (AlgEquiv.restrictNormalHom F σ • c) :=
@@ -35,7 +35,7 @@ noncomputable def classFixingCohomologyIso (n : ℕ) :
 omit [NumberField K] [NumberField F] [IsGalois K M] in
 
 /- English proof (translation)
-The claim follows from `h.of_iso (classFixingCohomologyIso K F M 1).symm`.
+A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_one_classFixing
     (h : IsZero (groupCohomology (ideleClassRep F M) 1)) :
@@ -45,7 +45,7 @@ theorem isZero_groupCohomology_one_classFixing
 omit [NumberField K] [IsGalois K M] in
 
 /- English proof (translation)
-Rewrite using `[smul_ideleClassMap_restrictNormal, MonoidHom.mem_ker.1 g.2, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_ideleClassMap_of_mem_galFixing (g : galFixing K F M) (c : IdeleClassGroup F) :
     (g : Gal(M/K)) • ideleClassMap F M c = ideleClassMap F M c := by
@@ -63,11 +63,11 @@ noncomputable def classToInvariants :
 omit [NumberField K] in
 
 /- English proof (translation)
-Establish `: IsGalois F M` using `IsGalois.tower_top_of_isGalois K F M`. Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Establish `h' : ideleClassMap F M (Additive.toMul (α` using `IdeleClassGroup F) x) = ideleClassMap F M (Additive.toMul (α := IdeleClassGroup F) y) := congrArg (fun v => Additive.toMul (α := IdeleClassGroup M) v.1) h`. Conclude with `Additive.toMul.injective (ideleClassMap_injective h')`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Establish `hfix : ∀ τ : Gal(M/F), τ • Additive.toMul (α` using `IdeleClassGroup M) v.1 = Additive.toMul (α := IdeleClassGroup M) v.1 := by`. Introduce `τ`. Use `v.2 ⟨galRestrictScalars K F M τ, (range_galRestrictScalars K F M) ▸ ⟨τ, rfl⟩⟩` as an intermediate fact. Conclude with `congrArg (Additive.toMul (α := IdeleClassGroup M)) this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, hc⟩` from `(forall_smul_eq_iff_mem_range_ideleClassMap (Additive.toMul (α := IdeleClassGroup M) v.1)).1 hfix`. Conclude with `⟨Additive.ofMul c, Subtype.ext (congrArg Additive.ofMul hc)⟩`.
+A detailed English derivation is pending.
 -/
 theorem classToInvariants_bijective : Function.Bijective (classToInvariants K F M) := by
   have : IsGalois F M := IsGalois.tower_top_of_isGalois K F M
@@ -112,11 +112,11 @@ variable {K F M}
 omit [NumberField K] in
 
 /- English proof (translation)
-Establish `hS` using `isZero_groupCohomology_one_classFixing K F M hM`. Establish `hQ : IsZero (groupCohomology ((ideleClassRep K M).quotientToInvariants (galFixing K F M)) 1)` using `hF.of_iso (classQuotientCohomologyIso K F M 1).symm`. Establish `hex` using `GroundTheory.GroupCoh.range_inflation_eq_ker_restriction (A := ideleClassRep K M) (S := galFixing K F M) one_ne_zero fun i hi hi1 => absurd hi1 (by omega)`. Rewrite `hS`, `hQ`, the goal using `[ModuleCat.isZero_iff_subsingleton]`. Establish `hzero : ∀ x : groupCohomology (ideleClassRep K M) 1, x = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Establish `hx : x ∈ LinearMap.ker (GroundTheory.GroupCoh.restriction (ideleClassRep K M) (galFixing K F M) 1).hom`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `Subsingleton.elim _ _`. Rewrite `hx` using `[← hex]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hx`. Rewrite using `[Subsingleton.elim y 0, map_zero]`. Conclude with `⟨fun x y => by rw [hzero x, hzero y]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_one_ideleClassRep_of_tower
     (hF : IsZero (groupCohomology (ideleClassRep K F) 1))
@@ -140,11 +140,11 @@ theorem isZero_groupCohomology_one_ideleClassRep_of_tower
   exact ⟨fun x y => by rw [hzero x, hzero y]⟩
 
 /- English proof (translation)
-Establish `h1` using `isZero_groupCohomology_one_classFixing K F M hM1`. Establish `hinj` using `GroundTheory.GroupCoh.inflation_two_injective (A := ideleClassRep K M) (S := galFixing K F M) h1`. Establish `hex` using `GroundTheory.GroupCoh.range_inflation_two_eq_ker_restriction (A := ideleClassRep K M) (S := galFixing K F M) h1`. Use `set res := (GroundTheory.GroupCoh.restriction (ideleClassRep K M) (galFixing K F M) 2).hom`. Use `set infl := (GroundTheory.GroupCoh.inflation (ideleClassRep K M) (galFixing K F M) 2).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Nat.card (groupCohomology (ideleClassRep K M) 2) = Nat.card (LinearMap.range res) * Nat.card (LinearMap.ker res)`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.ker res), Nat.card_congr (LinearMap.quotKerEquivRange res).toEquiv, mul_comm]`. Establish `hker : Nat.card (LinearMap.ker res) = Nat.card (groupCohomology (ideleClassRep K F) 2)`. Rewrite using `[← hex, ← Nat.card_congr (LinearEquiv.ofInjective infl hinj).toEquiv]`. Conclude with `(Nat.card_congr (classQuotientCohomologyIso K F M 2).toLinearEquiv.toEquiv).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hrange : Nat.card (LinearMap.range res) ∣ Nat.card (groupCohomology (ideleClassRep F M) 2)`. Rewrite using `[Nat.card_congr (classFixingCohomologyIso K F M 2).toLinearEquiv.toEquiv]`. Conclude with `AddSubgroup.card_addSubgroup_dvd_card (LinearMap.range res).toAddSubgroup`. Rewrite using `[hcard, hker, ← Module.finrank_mul_finrank K F M, mul_comm (finrank K F)]`. Conclude with `Nat.mul_dvd_mul (hrange.trans hM2) hF2`.
+A detailed English derivation is pending.
 -/
 theorem natCard_groupCohomology_two_ideleClassRep_dvd_of_tower
     (hM1 : IsZero (groupCohomology (ideleClassRep F M) 1))
@@ -181,15 +181,15 @@ end Tower
 section PGroup
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `K L _ _ _ _ _ _ hp hn`. Substitute `hn` using the available equality. Distinguish the cases in `hcyc : IsCyclic Gal(L/K)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨isZero_groupCohomology_one_ideleClassRep_of_isCyclic, natCard_groupCohomology_two_ideleClassRep_of_isCyclic.dvd⟩`. Establish `: Group.IsNilpotent Gal(L/K)` using `hp.isNilpotent`. Take `⟨N, hN, hbot, htop⟩` from `exists_normal_ne_bot_ne_top_of_not_isCyclic hcyc`. Establish `hpos : 0 < finrank K (fixedField N)` using `Module.finrank_pos`. Establish `hLE : finrank (fixedField N) L = Nat.card N` using `finrank_fixedField_eq_card N`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul` using `Module.finrank_mul_finrank K (fixedField N) L`. Establish `hcardG : Nat.card Gal(L/K) = finrank K L` using `IsGalois.card_aut_eq_finrank K L`. Establish `hNlt : Nat.card N < finrank K L`. Rewrite using `[← hcardG]`. Conclude with `lt_of_le_of_ne (Subgroup.card_le_card_group N) fun h => htop ((Subgroup.card_eq_iff_eq_top N).1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN1 : 1 < Nat.card N` using `(Subgroup.one_lt_card_iff_ne_bot N).2 hbot`. Establish `hpL : IsPGroup p Gal(L/fixedField N)` using `(hp.to_subgroup N).of_equiv (subgroupEquivGalFixedField N)`. Establish `hpE : IsPGroup p Gal(fixedField N/K)` using `hp.of_surjective (AlgEquiv.restrictNormalHom (fixedField N)) (AlgEquiv.restrictNormalHom_surjective L)`. Take `⟨hL1, hL2⟩` from `ih _ (by rw [hLE]; exact hNlt) (fixedField N) L hpL rfl`. Take `⟨hE1, hE2⟩` from `ih _ (by rw [← hmul, hLE]; exact lt_mul_right hpos hN1) K (fixedField N) hpE rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨isZero_groupCohomology_one_ideleClassRep_of_tower hE1 hL1, natCard_groupCohomology_two_ideleClassRep_dvd_of_tower hL1 hL2 hE2⟩`.
+A detailed English derivation is pending.
 -/
 theorem ideleClassRep_of_isPGroup_of_finrank (p : ℕ) [Fact p.Prime] (n : ℕ) :
     ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
@@ -229,14 +229,14 @@ variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algeb
   [IsGalois K L]
 
 /- English proof (translation)
-The claim follows from `(ideleClassRep_of_isPGroup_of_finrank p _ K L hp rfl).1`.
+A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_one_ideleClassRep_of_isPGroup {p : ℕ} [Fact p.Prime]
     (hp : IsPGroup p Gal(L/K)) : IsZero (groupCohomology (ideleClassRep K L) 1) :=
   (ideleClassRep_of_isPGroup_of_finrank p _ K L hp rfl).1
 
 /- English proof (translation)
-The claim follows from `(ideleClassRep_of_isPGroup_of_finrank p _ K L hp rfl).2`.
+A detailed English derivation is pending.
 -/
 theorem natCard_groupCohomology_two_ideleClassRep_dvd_of_isPGroup {p : ℕ} [Fact p.Prime]
     (hp : IsPGroup p Gal(L/K)) :

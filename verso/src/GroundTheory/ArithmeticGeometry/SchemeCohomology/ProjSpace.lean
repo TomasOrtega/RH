@@ -36,7 +36,7 @@ def stdOpen (A : Type u) [CommRing A] (n : ℕ) (j : Fin (n + 1)) : (projectiveS
 def xprod {p : ℕ} (i : Fin p → Fin (n + 1)) : MvPolynomial (Fin (n + 1)) A := ∏ a, X (i a)
 
 /- English proof (translation)
-Use `IsHomogeneous.prod (Finset.univ : Finset (Fin p)) (fun a => (X (i a) : MvPolynomial _ A)) (fun _ => 1) (fun a _ => isHomogeneous_X A (i a))` as an intermediate fact. Simplify `this` using `[xprod]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma xprod_mem {p : ℕ} (i : Fin p → Fin (n + 1)) : xprod (A := A) i ∈ grading A n p := by
   have := IsHomogeneous.prod (Finset.univ : Finset (Fin p)) (fun a => (X (i a) : MvPolynomial _ A))
@@ -44,22 +44,22 @@ lemma xprod_mem {p : ℕ} (i : Fin p → Fin (n + 1)) : xprod (A := A) i ∈ gra
   simpa [xprod] using this
 
 /- English proof (translation)
-The claim follows from `isHomogeneous_X A j`.
+A detailed English derivation is pending.
 -/
 lemma X_mem (j : Fin (n + 1)) : (X j : MvPolynomial (Fin (n + 1)) A) ∈ grading A n 1 :=
   isHomogeneous_X A j
 
 /- English proof (translation)
-Simplify using `[xprod, Fin.prod_univ_succ]`.
+Simplify using the standard rewrite rules.
 -/
 lemma xprod_succ {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) :
     xprod (A := A) i = X (i 0) * xprod (A := A) (i ∘ Fin.succ) := by
   simp [xprod, Fin.prod_univ_succ]
 
 /- English proof (translation)
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ inter (X := (projectiveSpace A n).toTopCat) (stdOpen A n) i ↔ _`. Rewrite using `[mem_inter_iff]`. Express the relevant statement in the definitionally equal form `(∀ a, x ∈ stdOpen A n (i a)) ↔ x ∈ Proj.basicOpen (grading A n) (xprod i)`. Express the relevant statement in the definitionally equal form `(∀ a, X (i a) ∉ x.asHomogeneousIdeal.toIdeal) ↔ (∏ a, X (i a)) ∉ x.asHomogeneousIdeal.toIdeal`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Use `x.isPrime` as an intermediate fact. Rewrite using `[Ideal.IsPrime.prod_mem_iff]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma inter_stdOpen {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) :
     inter (X := (projectiveSpace A n).toTopCat) (stdOpen A n) i =
@@ -75,7 +75,7 @@ lemma inter_stdOpen {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) :
   simp
 
 /- English proof (translation)
-Rewrite using `[inter_stdOpen]`. Conclude with `Proj.isAffineOpen_basicOpen (grading A n) (xprod i) (xprod_mem i) (Nat.succ_pos p)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isAffineOpen_inter {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) :
     IsAffineOpen (inter (X := (projectiveSpace A n).toTopCat) (stdOpen A n) i) := by
@@ -83,17 +83,17 @@ lemma isAffineOpen_inter {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) :
   exact Proj.isAffineOpen_basicOpen (grading A n) (xprod i) (xprod_mem i) (Nat.succ_pos p)
 
 /- English proof (translation)
-The claim follows from `Proj.isAffineOpen_basicOpen (grading A n) (X j) (X_mem j) Nat.one_pos`.
+A detailed English derivation is pending.
 -/
 lemma isAffineOpen_stdOpen (j : Fin (n + 1)) : IsAffineOpen (stdOpen A n j) :=
   Proj.isAffineOpen_basicOpen (grading A n) (X j) (X_mem j) Nat.one_pos
 
 /- English proof (translation)
-Apply `Proj.iSup_basicOpen_eq_top` to reduce the goal to its premises. Introduce `p hp`. Rewrite using `[← Set.image_univ, MvPolynomial.mem_ideal_span_X_image]`. Introduce `m hm`. Use `by_contra! h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm0 : m = 0` using `Finsupp.ext fun i => h i (Set.mem_univ i)`. Substitute `hm0` using the available equality. Establish `h0 : GradedRing.proj (grading A n) 0 p = 0` using `hp`. Rewrite `h0` using `[GradedRing.proj_apply]`. Express the relevant statement in the definitionally equal form `((MvPolynomial.decomposition.decompose' p 0 : homogeneousSubmodule (Fin (n + 1)) A 0) : MvPolynomial (Fin (n + 1)) A) = 0 at h0`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[MvPolynomial.decomposition.decompose'_apply, homogeneousComponent_zero, C_eq_zero]`. Conclude with `(MvPolynomial.mem_support_iff.mp hm) h0`.
+A detailed English derivation is pending.
 -/
 lemma iSup_stdOpen : ⨆ j, stdOpen A n j = ⊤ := by
   apply Proj.iSup_basicOpen_eq_top

@@ -9,7 +9,7 @@ open GlobalTheory.SplitWeil (SB nabs)
 namespace GlobalTheory.KSp
 
 /- English proof (translation)
-Take `⟨p, hp, q, hq, rfl⟩` from `hg`. Conclude with `U.mul_mem (U.mul_mem (hP hp) hw) (hP hq)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_inCell {F : Type} [Field F] {E : Type} [Field E] [Algebra F E] (c : E →ₐ[F] E)
     {ν : Type} [Fintype ν] [DecidableEq ν] (U : Subgroup (UG c (stdJ ν E)))
@@ -18,9 +18,9 @@ theorem mem_of_inCell {F : Type} [Field F] {E : Type} [Field E] [Algebra F E] (c
   exact U.mul_mem (U.mul_mem (hP hp) hw) (hP hq)
 
 /- English proof (translation)
-Introduce `F _ _ E _ _ c δ hE ν _ _ U hP hw`. Use `eq_top_iff.mpr fun g _ => ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_translate_inCell' F E c δ hE ν {1, g}`. Establish `h1 : u ∈ U`. Simplify using `using mem_of_inCell c U hP hw (hu 1 (by simp))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : g * u ∈ U` using `mem_of_inCell c U hP hw (hu g (by simp))`. Simplify using `using U.mul_mem h2 (U.inv_mem h1)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sieg_weyl_generate : ∀ (F : Type) [Field F] [CharZero F] (E : Type) [Field E] [Algebra F E] (c : E →ₐ[F] E)
     (δ : E) (hE : IsQuad c δ) (ν : Type) [Fintype ν] [DecidableEq ν] (U : Subgroup (UG c (stdJ ν E))),

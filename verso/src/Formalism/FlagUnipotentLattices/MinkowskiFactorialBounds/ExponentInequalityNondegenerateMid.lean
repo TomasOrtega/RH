@@ -6,27 +6,27 @@ open scoped BigOperators ComplexConjugate
 namespace Formalism.HermitianLatticeCounting.P
 
 /- English proof (translation)
-Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hM1 : 1 ≤ M` using `by linarith`. Establish `hF0 : 0 ≤ F` using `by linarith`. Establish `hK0 : 0 ≤ K` using `by linarith`. Establish `hL0 : 0 ≤ L` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlk0 : 0 ≤ lk` using `by linarith`. Establish `hlg0 : 0 ≤ lg` using `by linarith`. Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `hC32 : C ≤ C ^ 32` using `le_self_pow₀ hC (by norm_num)`. Establish `hC2 : C ^ 2 ≤ C ^ 32` using `pow_le_pow_right₀ hC (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC3 : C ^ 3 ≤ C ^ 32` using `pow_le_pow_right₀ hC (by norm_num)`. Establish `hY0 : 0 ≤ M ^ 5 * F * L` using `mul_nonneg (mul_nonneg (pow_nonneg hM0 5) hF0) hL0`. Establish `hZ0 : 0 ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_nonneg (pow_nonneg hC0 32) hY0`. Establish `hM5 : 1024 ≤ M ^ 5`. Establish `h` using `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 4) h4M 5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF4 : 4 ≤ F` using `by linarith`. Establish `hM5F : 1024 * 4 ≤ M ^ 5 * F` using `mul_le_mul hM5 hF4 (by norm_num) (by linarith)`. Establish `hY : 1024 * 4 * 0.69 ≤ M ^ 5 * F * L` using `mul_le_mul hM5F hL (by norm_num) (by linarith)`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYC : M ^ 5 * F * L ≤ C ^ 32 * (M ^ 5 * F * L)` using `le_mul_of_one_le_left hY0 (one_le_pow₀ hC)`. Establish `hC1Y : C * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC32 hY0`. Establish `hC2Y : C ^ 2 * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC2 hY0`. Establish `hC3Y : C ^ 3 * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC3 hY0`. Establish `hKbig : 40000 ≤ K` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFlk : 4 * 1 ≤ F * lk` using `mul_le_mul hF4 hlk (by norm_num) hF0`. Establish `hKP : K * (4 * 1) ≤ K * (F * lk)` using `mul_le_mul_of_nonneg_left hFlk hK0`. Establish `hKF0 : 0 ≤ K * F` using `mul_nonneg hK0 hF0`. Establish `hKF1000 : 40000 * 4 ≤ K * F` using `mul_le_mul hKbig hF4 (by norm_num) hK0`. Establish `hFKP : K * F * 1 ≤ K * F * lk` using `mul_le_mul_of_nonneg_left hlk hKF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPlk : (40000 * 4) * lk ≤ K * F * lk` using `mul_le_mul_of_nonneg_right hKF1000 hlk0`. Establish `hlg8 : 8 ≤ lg` using `by linarith`. Establish `hFlg : 4 * 8 ≤ F * lg` using `mul_le_mul hF4 hlg8 (by norm_num) hF0`. Establish `h32' : K * (4 * 8) ≤ K * (F * lg)` using `mul_le_mul_of_nonneg_left hFlg hK0`. Establish `h32 : 32 * K ≤ K * F * lg` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW0 : 0 ≤ K * F * lg` using `mul_nonneg hKF0 hlg0`. Establish `hlgW : 1 * lg ≤ K * F * lg` using `mul_le_mul_of_nonneg_right (by linarith) hlg0`. Establish `hMY : ∀ j : ℕ, j ≤ 5 → M ^ j * F * L ≤ M ^ 5 * F * L` using `fun j hj => mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hM1 hj) hF0) hL0`. Establish `hM1Y : M * F * L ≤ M ^ 5 * F * L` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_self_pow₀ hM1 (by norm_num)) hF0) hL0`. Establish `hlClk : lC ≤ lk / 32` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlklg : lk ≤ lg / 8` using `by linarith`. Establish `hLlg : L ≤ lg / 8` using `by linarith`. Establish `hlClg : lC ≤ lg / 256` using `by linarith`. Establish `hG1 : lGam ≤ C * (M ^ 5 * F * L)` using `by linarith`. Establish `f1 : F * lC ≤ F * (lk / 32)` using `mul_le_mul_of_nonneg_left hlClk hF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1b : 1 * (F * lk) ≤ K * (F * lk)` using `mul_le_mul_of_nonneg_right (by linarith : (1 : ℝ) ≤ K) (mul_nonneg hF0 hlk0)`. Establish `f4a : M * (C * (M ^ 5 * F * L)) ≤ M * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_left hC1Y hM0`. Establish `f4b : M * (C ^ 32 * (M ^ 5 * F * L)) ≤ F * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_right hMF hZ0`. Establish `f4c : F * (16 * C ^ 32 * (M ^ 5 * F * L)) ≤ F * K` using `mul_le_mul_of_nonneg_left hX hF0`. Establish `hR1 : 0 ≤ (R - 1) * lg` using `mul_nonneg (by linarith) hlg0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR2 : 0 ≤ (R - 1) * lk` using `mul_nonneg (by linarith) hlk0`. Establish `hD : lC - (2 * R + 1) * lg - R * lk ≤ -23 * lk` using `by linarith`. Establish `f5 : K * F * (lC - (2 * R + 1) * lg - R * lk) ≤ K * F * (-23 * lk)` using `mul_le_mul_of_nonneg_left hD hKF0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma exponent_inequality_single (C K F M L lk lg lC l2 : ℝ) (hC : 1 ≤ C) (h4M : 4 ≤ M) (hMF : M ≤ F) (hFK : F ≤ K)
     (hL : 0.69 ≤ L) (hlk : 1 ≤ lk) (hlC0 : 0 ≤ lC) (hlC : 32 * lC ≤ lk) (hlg : 8 * (lk + L) ≤ lg)
@@ -93,29 +93,29 @@ lemma exponent_inequality_single (C K F M L lk lg lC l2 : ℝ) (hC : 1 ≤ C) (h
   linarith
 
 /- English proof (translation)
-Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hM1 : 1 ≤ M` using `by linarith`. Establish `hF0 : 0 ≤ F` using `by linarith`. Establish `hK0 : 0 ≤ K` using `by linarith`. Establish `hL0 : 0 ≤ L` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlk0 : 0 ≤ lk` using `by linarith`. Establish `hlg0 : 0 ≤ lg` using `by linarith`. Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `hC32 : C ≤ C ^ 32` using `le_self_pow₀ hC (by norm_num)`. Establish `hC2 : C ^ 2 ≤ C ^ 32` using `pow_le_pow_right₀ hC (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC3 : C ^ 3 ≤ C ^ 32` using `pow_le_pow_right₀ hC (by norm_num)`. Establish `hY0 : 0 ≤ M ^ 5 * F * L` using `mul_nonneg (mul_nonneg (pow_nonneg hM0 5) hF0) hL0`. Establish `hZ0 : 0 ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_nonneg (pow_nonneg hC0 32) hY0`. Establish `hM5 : 1024 ≤ M ^ 5`. Establish `h` using `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 4) h4M 5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF4 : 4 ≤ F` using `by linarith`. Establish `hM5F : 1024 * 4 ≤ M ^ 5 * F` using `mul_le_mul hM5 hF4 (by norm_num) (by linarith)`. Establish `hY : 1024 * 4 * 0.69 ≤ M ^ 5 * F * L` using `mul_le_mul hM5F hL (by norm_num) (by linarith)`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYC : M ^ 5 * F * L ≤ C ^ 32 * (M ^ 5 * F * L)` using `le_mul_of_one_le_left hY0 (one_le_pow₀ hC)`. Establish `hC1Y : C * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC32 hY0`. Establish `hC2Y : C ^ 2 * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC2 hY0`. Establish `hC3Y : C ^ 3 * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC3 hY0`. Establish `hKbig : 40000 ≤ K` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFlk : 4 * 1 ≤ F * lk` using `mul_le_mul hF4 hlk (by norm_num) hF0`. Establish `hKP : K * (4 * 1) ≤ K * (F * lk)` using `mul_le_mul_of_nonneg_left hFlk hK0`. Establish `hKF0 : 0 ≤ K * F` using `mul_nonneg hK0 hF0`. Establish `hKF1000 : 40000 * 4 ≤ K * F` using `mul_le_mul hKbig hF4 (by norm_num) hK0`. Establish `hFKP : K * F * 1 ≤ K * F * lk` using `mul_le_mul_of_nonneg_left hlk hKF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPlk : (40000 * 4) * lk ≤ K * F * lk` using `mul_le_mul_of_nonneg_right hKF1000 hlk0`. Establish `hlg8 : 8 ≤ lg` using `by linarith`. Establish `hFlg : 4 * 8 ≤ F * lg` using `mul_le_mul hF4 hlg8 (by norm_num) hF0`. Establish `h32' : K * (4 * 8) ≤ K * (F * lg)` using `mul_le_mul_of_nonneg_left hFlg hK0`. Establish `h32 : 32 * K ≤ K * F * lg` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW0 : 0 ≤ K * F * lg` using `mul_nonneg hKF0 hlg0`. Establish `hlgW : 1 * lg ≤ K * F * lg` using `mul_le_mul_of_nonneg_right (by linarith) hlg0`. Establish `hMY : ∀ j : ℕ, j ≤ 5 → M ^ j * F * L ≤ M ^ 5 * F * L` using `fun j hj => mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hM1 hj) hF0) hL0`. Establish `hM1Y : M * F * L ≤ M ^ 5 * F * L` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_self_pow₀ hM1 (by norm_num)) hF0) hL0`. Establish `hlClk : lC ≤ lk / 32` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlklg : lk ≤ lg / 8` using `by linarith`. Establish `hLlg : L ≤ lg / 8` using `by linarith`. Establish `hlClg : lC ≤ lg / 256` using `by linarith`. Establish `hG1 : lGam ≤ C * (M ^ 5 * F * L)` using `by linarith`. Establish `hS0 : 0 ≤ S` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g2 : C ^ 2 * (M ^ 2 * F * L) ≤ C ^ 2 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_left (hMY 2 (by norm_num)) (pow_nonneg hC0 2)`. Establish `g5a : C ^ 2 * (M ^ 4 * F * L) ≤ C ^ 2 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_left (hMY 4 (by norm_num)) (pow_nonneg hC0 2)`. Establish `g5b : S * (C ^ 2 * (M ^ 4 * F * L)) ≤ S * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_left (g5a.trans hC2Y) hS0`. Establish `g5c : S * (16 * C ^ 32 * (M ^ 5 * F * L)) ≤ S * K` using `mul_le_mul_of_nonneg_left hX hS0`. Establish `g5d : S * (32 * K) ≤ S * (K * F * lg)` using `mul_le_mul_of_nonneg_left h32 hS0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSF0 : 0 ≤ S * F` using `mul_nonneg hS0 hF0`. Establish `g6a : 6 * S * F * (lC + 2 * lk) ≤ 6 * S * F * (3 * lk)` using `mul_le_mul_of_nonneg_left (by linarith) (mul_nonneg (mul_nonneg (by norm_num) hS0) hF0)`. Establish `g6b : S * F * lk ≤ S * F * (lg / 8)` using `mul_le_mul_of_nonneg_left hlklg hSF0`. Establish `g6c : 36 * (S * F * lg) ≤ K * (S * F * lg)` using `mul_le_mul_of_nonneg_right (by linarith) (mul_nonneg hSF0 hlg0)`. Establish `g4 : K * F * lC ≤ K * F * (lg / 256)` using `mul_le_mul_of_nonneg_left hlClg hKF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS1K : 0 ≤ (S - 1) * K * F` using `mul_nonneg (mul_nonneg (by linarith) hK0) hF0`. Establish `g1 : ((S - 1) * K * F) * (l2 - lg) ≤ ((S - 1) * K * F) * (-(7 / 8) * lg)` using `mul_le_mul_of_nonneg_left (by linarith) hS1K`. Establish `g3 : S * K * F * lC ≤ S * K * F * (lg / 256)` using `mul_le_mul_of_nonneg_left hlClg (mul_nonneg (mul_nonneg hS0 hK0) hF0)`. Establish `g8a : 1 * (K * F * lg) ≤ (S - 1) * (K * F * lg)` using `mul_le_mul_of_nonneg_right (by linarith) hW0`. Establish `g8b : 0 ≤ (S - 2) * (K * F * lg)` using `mul_nonneg (by linarith) hW0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -198,33 +198,33 @@ lemma exponent_inequality_nondegenerate_mid (C K F M L lk lg lC l2 : ℝ) (hC : 
   linarith
 
 /- English proof (translation)
-Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hM1 : 1 ≤ M` using `by linarith`. Establish `hF0 : 0 ≤ F` using `by linarith`. Establish `hK0 : 0 ≤ K` using `by linarith`. Establish `hL0 : 0 ≤ L` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlk0 : 0 ≤ lk` using `by linarith`. Establish `hlg0 : 0 ≤ lg` using `by linarith`. Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `hC32 : C ≤ C ^ 32` using `le_self_pow₀ hC (by norm_num)`. Establish `hC2 : C ^ 2 ≤ C ^ 32` using `pow_le_pow_right₀ hC (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC3 : C ^ 3 ≤ C ^ 32` using `pow_le_pow_right₀ hC (by norm_num)`. Establish `hY0 : 0 ≤ M ^ 5 * F * L` using `mul_nonneg (mul_nonneg (pow_nonneg hM0 5) hF0) hL0`. Establish `hZ0 : 0 ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_nonneg (pow_nonneg hC0 32) hY0`. Establish `hM5 : 1024 ≤ M ^ 5`. Establish `h` using `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 4) h4M 5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF4 : 4 ≤ F` using `by linarith`. Establish `hM5F : 1024 * 4 ≤ M ^ 5 * F` using `mul_le_mul hM5 hF4 (by norm_num) (by linarith)`. Establish `hY : 1024 * 4 * 0.69 ≤ M ^ 5 * F * L` using `mul_le_mul hM5F hL (by norm_num) (by linarith)`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYC : M ^ 5 * F * L ≤ C ^ 32 * (M ^ 5 * F * L)` using `le_mul_of_one_le_left hY0 (one_le_pow₀ hC)`. Establish `hC1Y : C * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC32 hY0`. Establish `hC2Y : C ^ 2 * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC2 hY0`. Establish `hC3Y : C ^ 3 * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC3 hY0`. Establish `hKbig : 40000 ≤ K` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFlk : 4 * 1 ≤ F * lk` using `mul_le_mul hF4 hlk (by norm_num) hF0`. Establish `hKP : K * (4 * 1) ≤ K * (F * lk)` using `mul_le_mul_of_nonneg_left hFlk hK0`. Establish `hKF0 : 0 ≤ K * F` using `mul_nonneg hK0 hF0`. Establish `hKF1000 : 40000 * 4 ≤ K * F` using `mul_le_mul hKbig hF4 (by norm_num) hK0`. Establish `hFKP : K * F * 1 ≤ K * F * lk` using `mul_le_mul_of_nonneg_left hlk hKF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPlk : (40000 * 4) * lk ≤ K * F * lk` using `mul_le_mul_of_nonneg_right hKF1000 hlk0`. Establish `hlg8 : 8 ≤ lg` using `by linarith`. Establish `hFlg : 4 * 8 ≤ F * lg` using `mul_le_mul hF4 hlg8 (by norm_num) hF0`. Establish `h32' : K * (4 * 8) ≤ K * (F * lg)` using `mul_le_mul_of_nonneg_left hFlg hK0`. Establish `h32 : 32 * K ≤ K * F * lg` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW0 : 0 ≤ K * F * lg` using `mul_nonneg hKF0 hlg0`. Establish `hlgW : 1 * lg ≤ K * F * lg` using `mul_le_mul_of_nonneg_right (by linarith) hlg0`. Establish `hMY : ∀ j : ℕ, j ≤ 5 → M ^ j * F * L ≤ M ^ 5 * F * L` using `fun j hj => mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hM1 hj) hF0) hL0`. Establish `hM1Y : M * F * L ≤ M ^ 5 * F * L` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_self_pow₀ hM1 (by norm_num)) hF0) hL0`. Establish `hlClk : lC ≤ lk / 32` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlklg : lk ≤ lg / 8` using `by linarith`. Establish `hLlg : L ≤ lg / 8` using `by linarith`. Establish `hlClg : lC ≤ lg / 256` using `by linarith`. Establish `hG1 : lGam ≤ C * (M ^ 5 * F * L)` using `by linarith`. Establish `hS0 : 0 ≤ S` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g2 : C ^ 2 * (M ^ 2 * F * L) ≤ C ^ 2 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_left (hMY 2 (by norm_num)) (pow_nonneg hC0 2)`. Establish `g5a : C ^ 2 * (M ^ 4 * F * L) ≤ C ^ 2 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_left (hMY 4 (by norm_num)) (pow_nonneg hC0 2)`. Establish `g5b : S * (C ^ 2 * (M ^ 4 * F * L)) ≤ S * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_left (g5a.trans hC2Y) hS0`. Establish `g5c : S * (16 * C ^ 32 * (M ^ 5 * F * L)) ≤ S * K` using `mul_le_mul_of_nonneg_left hX hS0`. Establish `g5d : S * (32 * K) ≤ S * (K * F * lg)` using `mul_le_mul_of_nonneg_left h32 hS0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSF0 : 0 ≤ S * F` using `mul_nonneg hS0 hF0`. Establish `g6a : 6 * S * F * (lC + 2 * lk) ≤ 6 * S * F * (3 * lk)` using `mul_le_mul_of_nonneg_left (by linarith) (mul_nonneg (mul_nonneg (by norm_num) hS0) hF0)`. Establish `g6b : S * F * lk ≤ S * F * (lg / 8)` using `mul_le_mul_of_nonneg_left hlklg hSF0`. Establish `g6c : 36 * (S * F * lg) ≤ K * (S * F * lg)` using `mul_le_mul_of_nonneg_right (by linarith) (mul_nonneg hSF0 hlg0)`. Establish `g4 : K * F * lC ≤ K * F * (lg / 256)` using `mul_le_mul_of_nonneg_left hlClg hKF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : K * F * lk ≤ K * F * (lg / 8)` using `mul_le_mul_of_nonneg_left hlklg hKF0`. Establish `t1b : K * F * L ≤ K * F * (lg / 8)` using `mul_le_mul_of_nonneg_left hLlg hKF0`. Establish `t2a : C ^ 3 * (M ^ 3 * F * L) ≤ C ^ 3 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_left (hMY 3 (by norm_num)) (pow_nonneg hC0 3)`. Establish `t2b : K * (C ^ 3 * (M ^ 3 * F * L)) ≤ K * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_left (t2a.trans hC3Y) hK0`. Establish `t2c : C ^ 2 * (M * F * L) ≤ C ^ 2 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_left hM1Y (pow_nonneg hC0 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t2d : K * (C ^ 2 * (M * F * L)) ≤ K * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_left (t2c.trans hC2Y) hK0`. Establish `t2e : K * (16 * C ^ 32 * (M ^ 5 * F * L)) ≤ K * K` using `mul_le_mul_of_nonneg_left hX hK0`. Establish `hS1K : 0 ≤ (S - 1) * K * F` using `mul_nonneg (mul_nonneg (by linarith) hK0) hF0`. Establish `g1 : ((S - 1) * K * F) * (l2 - lg) ≤ ((S - 1) * K * F) * (-(7 / 8) * lg)` using `mul_le_mul_of_nonneg_left (by linarith) hS1K`. Establish `g8b : 0 ≤ (S - 2) * (K * F * lg)` using `mul_nonneg (by linarith) hW0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t3 : (K / 2) * (32 * K) ≤ (S - 1) * (K * F * lg)` using `mul_le_mul (by linarith) h32 (by linarith) (by linarith)`. Establish `t4 : 100 * (K * F * lg) ≤ (S - 1) * (K * F * lg)` using `mul_le_mul_of_nonneg_right (by linarith) hW0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma exponent_inequality_nondegenerate_top (C K F M L lk lg lC l2 : ℝ) (hC : 1 ≤ C) (h4M : 4 ≤ M) (hMF : M ≤ F) (hFK : F ≤ K)
     (hL : 0.69 ≤ L) (hlk : 1 ≤ lk) (hlC0 : 0 ≤ lC) (hlC : 32 * lC ≤ lk) (hlg : 8 * (lk + L) ≤ lg)
@@ -315,37 +315,37 @@ lemma exponent_inequality_nondegenerate_top (C K F M L lk lg lC l2 : ℝ) (hC : 
   linarith
 
 /- English proof (translation)
-Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hM1 : 1 ≤ M` using `by linarith`. Establish `hF0 : 0 ≤ F` using `by linarith`. Establish `hK0 : 0 ≤ K` using `by linarith`. Establish `hL0 : 0 ≤ L` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlk0 : 0 ≤ lk` using `by linarith`. Establish `hlg0 : 0 ≤ lg` using `by linarith`. Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `hC32 : C ≤ C ^ 32` using `le_self_pow₀ hC (by norm_num)`. Establish `hC2 : C ^ 2 ≤ C ^ 32` using `pow_le_pow_right₀ hC (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC3 : C ^ 3 ≤ C ^ 32` using `pow_le_pow_right₀ hC (by norm_num)`. Establish `hY0 : 0 ≤ M ^ 5 * F * L` using `mul_nonneg (mul_nonneg (pow_nonneg hM0 5) hF0) hL0`. Establish `hZ0 : 0 ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_nonneg (pow_nonneg hC0 32) hY0`. Establish `hM5 : 1024 ≤ M ^ 5`. Establish `h` using `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 4) h4M 5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF4 : 4 ≤ F` using `by linarith`. Establish `hM5F : 1024 * 4 ≤ M ^ 5 * F` using `mul_le_mul hM5 hF4 (by norm_num) (by linarith)`. Establish `hY : 1024 * 4 * 0.69 ≤ M ^ 5 * F * L` using `mul_le_mul hM5F hL (by norm_num) (by linarith)`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYC : M ^ 5 * F * L ≤ C ^ 32 * (M ^ 5 * F * L)` using `le_mul_of_one_le_left hY0 (one_le_pow₀ hC)`. Establish `hC1Y : C * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC32 hY0`. Establish `hC2Y : C ^ 2 * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC2 hY0`. Establish `hC3Y : C ^ 3 * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC3 hY0`. Establish `hKbig : 40000 ≤ K` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFlk : 4 * 1 ≤ F * lk` using `mul_le_mul hF4 hlk (by norm_num) hF0`. Establish `hKP : K * (4 * 1) ≤ K * (F * lk)` using `mul_le_mul_of_nonneg_left hFlk hK0`. Establish `hKF0 : 0 ≤ K * F` using `mul_nonneg hK0 hF0`. Establish `hKF1000 : 40000 * 4 ≤ K * F` using `mul_le_mul hKbig hF4 (by norm_num) hK0`. Establish `hFKP : K * F * 1 ≤ K * F * lk` using `mul_le_mul_of_nonneg_left hlk hKF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPlk : (40000 * 4) * lk ≤ K * F * lk` using `mul_le_mul_of_nonneg_right hKF1000 hlk0`. Establish `hlg8 : 8 ≤ lg` using `by linarith`. Establish `hFlg : 4 * 8 ≤ F * lg` using `mul_le_mul hF4 hlg8 (by norm_num) hF0`. Establish `h32' : K * (4 * 8) ≤ K * (F * lg)` using `mul_le_mul_of_nonneg_left hFlg hK0`. Establish `h32 : 32 * K ≤ K * F * lg` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW0 : 0 ≤ K * F * lg` using `mul_nonneg hKF0 hlg0`. Establish `hlgW : 1 * lg ≤ K * F * lg` using `mul_le_mul_of_nonneg_right (by linarith) hlg0`. Establish `hMY : ∀ j : ℕ, j ≤ 5 → M ^ j * F * L ≤ M ^ 5 * F * L` using `fun j hj => mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hM1 hj) hF0) hL0`. Establish `hM1Y : M * F * L ≤ M ^ 5 * F * L` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_self_pow₀ hM1 (by norm_num)) hF0) hL0`. Establish `hlClk : lC ≤ lk / 32` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlklg : lk ≤ lg / 8` using `by linarith`. Establish `hLlg : L ≤ lg / 8` using `by linarith`. Establish `hlClg : lC ≤ lg / 256` using `by linarith`. Establish `hG1 : lGam ≤ C * (M ^ 5 * F * L)` using `by linarith`. Establish `hS0 : 0 ≤ S` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g2 : C ^ 2 * (M ^ 2 * F * L) ≤ C ^ 2 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_left (hMY 2 (by norm_num)) (pow_nonneg hC0 2)`. Establish `g5a : C ^ 2 * (M ^ 4 * F * L) ≤ C ^ 2 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_left (hMY 4 (by norm_num)) (pow_nonneg hC0 2)`. Establish `g5b : S * (C ^ 2 * (M ^ 4 * F * L)) ≤ S * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_left (g5a.trans hC2Y) hS0`. Establish `g5c : S * (16 * C ^ 32 * (M ^ 5 * F * L)) ≤ S * K` using `mul_le_mul_of_nonneg_left hX hS0`. Establish `g5d : S * (32 * K) ≤ S * (K * F * lg)` using `mul_le_mul_of_nonneg_left h32 hS0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSF0 : 0 ≤ S * F` using `mul_nonneg hS0 hF0`. Establish `g6a : 6 * S * F * (lC + 2 * lk) ≤ 6 * S * F * (3 * lk)` using `mul_le_mul_of_nonneg_left (by linarith) (mul_nonneg (mul_nonneg (by norm_num) hS0) hF0)`. Establish `g6b : S * F * lk ≤ S * F * (lg / 8)` using `mul_le_mul_of_nonneg_left hlklg hSF0`. Establish `g6c : 36 * (S * F * lg) ≤ K * (S * F * lg)` using `mul_le_mul_of_nonneg_right (by linarith) (mul_nonneg hSF0 hlg0)`. Establish `g4 : K * F * lC ≤ K * F * (lg / 256)` using `mul_le_mul_of_nonneg_left hlClg hKF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS2K : 0 ≤ (S - 2) * K * F` using `mul_nonneg (mul_nonneg (by linarith) hK0) hF0`. Establish `d1 : ((S - 2) * K * F) * (l2 - lg) ≤ ((S - 2) * K * F) * (-(7 / 8) * lg)` using `mul_le_mul_of_nonneg_left (by linarith) hS2K`. Establish `d4 : K * F * lC ≤ K * F * (lk / 32)` using `mul_le_mul_of_nonneg_left hlClk hKF0`. Establish `d5d : (S - 2) * (32 * K) ≤ (S - 2) * (K * F * lg)` using `mul_le_mul_of_nonneg_left h32 (by linarith)`. Establish `hS2F : 0 ≤ (S - 2) * F` using `mul_nonneg (by linarith) hF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d6b : (S - 2) * F * lk ≤ (S - 2) * F * (lg / 8)` using `mul_le_mul_of_nonneg_left hlklg hS2F`. Establish `d6c : 36 * ((S - 2) * F * lg) ≤ K * ((S - 2) * F * lg)` using `mul_le_mul_of_nonneg_right (by linarith) (mul_nonneg hS2F hlg0)`. Establish `d6d : 36000 * (F * lk) ≤ K * (F * lk)` using `mul_le_mul_of_nonneg_right (by linarith) (mul_nonneg hF0 hlk0)`. Establish `f4a : M * (C * (M ^ 5 * F * L)) ≤ M * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_left hC1Y hM0`. Establish `f4b : M * (C ^ 32 * (M ^ 5 * F * L)) ≤ F * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_right hMF hZ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f4c : F * (16 * C ^ 32 * (M ^ 5 * F * L)) ≤ F * K` using `mul_le_mul_of_nonneg_left hX hF0`. Establish `d9 : K * F * (lC - lk) ≤ K * F * (lk / 32 - lk)` using `mul_le_mul_of_nonneg_left (by linarith) hKF0`. Establish `d3a : S * K * F * lC ≤ S * K * F * (lk / 32)` using `mul_le_mul_of_nonneg_left hlClk (mul_nonneg (mul_nonneg hS0 hK0) hF0)`. Establish `d3b : (S - 2) * K * F * lk ≤ (S - 2) * K * F * (lg / 8)` using `mul_le_mul_of_nonneg_left hlklg hS2K`. Establish `B3 : S * K * F * lC ≤ (S - 2) * K * F * lg / 256 + K * F * lk / 16` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : 0 ≤ (S - 2) * K * F * lg` using `mul_nonneg hS2K hlg0`. Establish `B2 : C * M ^ 2 * F * L * C ≤ K * F * lk / 64` using `by linarith`. Establish `B4 : K * F * lC ≤ K * F * lk / 32` using `by linarith`. Establish `B5 : C * M ^ 2 * F * L * (C * (S + M) * M ^ 2) ≤ (S - 2) * K * F * lg / 512 + K * F * lk / 32 + K * F * lk / 64` using `by linarith`. Establish `B6 : 6 * S * F * (lC + 2 * lk) ≤ (S - 2) * K * F * lg / 16 + K * F * lk / 1000` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `B7 : 3 * lGam ≤ 3 * (K * F * lk) / 64` using `by linarith`. Establish `BetaSesquilinearity : C * M ^ 6 * F * L ≤ K * F * lk / 16` using `by linarith`. Establish `B9 : lk ≤ K * F * lk / 1000` using `by linarith`. Establish `lowerOffDiagonalCoeff : K * F * (lC - lk) ≤ K * F * lk / 32 - K * F * lk` using `by linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma exponent_inequality_degenerate_mid (C K F M L lk lg lC l2 : ℝ) (hC : 1 ≤ C) (h4M : 4 ≤ M) (hMF : M ≤ F) (hFK : F ≤ K)
     (hL : 0.69 ≤ L) (hlk : 1 ≤ lk) (hlC0 : 0 ≤ lC) (hlC : 32 * lC ≤ lk) (hlg : 8 * (lk + L) ≤ lg)
@@ -447,41 +447,41 @@ lemma exponent_inequality_degenerate_mid (C K F M L lk lg lC l2 : ℝ) (hC : 1 �
   linarith
 
 /- English proof (translation)
-Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hM1 : 1 ≤ M` using `by linarith`. Establish `hF0 : 0 ≤ F` using `by linarith`. Establish `hK0 : 0 ≤ K` using `by linarith`. Establish `hL0 : 0 ≤ L` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlk0 : 0 ≤ lk` using `by linarith`. Establish `hlg0 : 0 ≤ lg` using `by linarith`. Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `hC32 : C ≤ C ^ 32` using `le_self_pow₀ hC (by norm_num)`. Establish `hC2 : C ^ 2 ≤ C ^ 32` using `pow_le_pow_right₀ hC (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC3 : C ^ 3 ≤ C ^ 32` using `pow_le_pow_right₀ hC (by norm_num)`. Establish `hY0 : 0 ≤ M ^ 5 * F * L` using `mul_nonneg (mul_nonneg (pow_nonneg hM0 5) hF0) hL0`. Establish `hZ0 : 0 ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_nonneg (pow_nonneg hC0 32) hY0`. Establish `hM5 : 1024 ≤ M ^ 5`. Establish `h` using `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 4) h4M 5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF4 : 4 ≤ F` using `by linarith`. Establish `hM5F : 1024 * 4 ≤ M ^ 5 * F` using `mul_le_mul hM5 hF4 (by norm_num) (by linarith)`. Establish `hY : 1024 * 4 * 0.69 ≤ M ^ 5 * F * L` using `mul_le_mul hM5F hL (by norm_num) (by linarith)`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYC : M ^ 5 * F * L ≤ C ^ 32 * (M ^ 5 * F * L)` using `le_mul_of_one_le_left hY0 (one_le_pow₀ hC)`. Establish `hC1Y : C * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC32 hY0`. Establish `hC2Y : C ^ 2 * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC2 hY0`. Establish `hC3Y : C ^ 3 * (M ^ 5 * F * L) ≤ C ^ 32 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_right hC3 hY0`. Establish `hKbig : 40000 ≤ K` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFlk : 4 * 1 ≤ F * lk` using `mul_le_mul hF4 hlk (by norm_num) hF0`. Establish `hKP : K * (4 * 1) ≤ K * (F * lk)` using `mul_le_mul_of_nonneg_left hFlk hK0`. Establish `hKF0 : 0 ≤ K * F` using `mul_nonneg hK0 hF0`. Establish `hKF1000 : 40000 * 4 ≤ K * F` using `mul_le_mul hKbig hF4 (by norm_num) hK0`. Establish `hFKP : K * F * 1 ≤ K * F * lk` using `mul_le_mul_of_nonneg_left hlk hKF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPlk : (40000 * 4) * lk ≤ K * F * lk` using `mul_le_mul_of_nonneg_right hKF1000 hlk0`. Establish `hlg8 : 8 ≤ lg` using `by linarith`. Establish `hFlg : 4 * 8 ≤ F * lg` using `mul_le_mul hF4 hlg8 (by norm_num) hF0`. Establish `h32' : K * (4 * 8) ≤ K * (F * lg)` using `mul_le_mul_of_nonneg_left hFlg hK0`. Establish `h32 : 32 * K ≤ K * F * lg` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW0 : 0 ≤ K * F * lg` using `mul_nonneg hKF0 hlg0`. Establish `hlgW : 1 * lg ≤ K * F * lg` using `mul_le_mul_of_nonneg_right (by linarith) hlg0`. Establish `hMY : ∀ j : ℕ, j ≤ 5 → M ^ j * F * L ≤ M ^ 5 * F * L` using `fun j hj => mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hM1 hj) hF0) hL0`. Establish `hM1Y : M * F * L ≤ M ^ 5 * F * L` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_self_pow₀ hM1 (by norm_num)) hF0) hL0`. Establish `hlClk : lC ≤ lk / 32` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlklg : lk ≤ lg / 8` using `by linarith`. Establish `hLlg : L ≤ lg / 8` using `by linarith`. Establish `hlClg : lC ≤ lg / 256` using `by linarith`. Establish `hG1 : lGam ≤ C * (M ^ 5 * F * L)` using `by linarith`. Establish `hS0 : 0 ≤ S` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g2 : C ^ 2 * (M ^ 2 * F * L) ≤ C ^ 2 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_left (hMY 2 (by norm_num)) (pow_nonneg hC0 2)`. Establish `g5a : C ^ 2 * (M ^ 4 * F * L) ≤ C ^ 2 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_left (hMY 4 (by norm_num)) (pow_nonneg hC0 2)`. Establish `g5b : S * (C ^ 2 * (M ^ 4 * F * L)) ≤ S * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_left (g5a.trans hC2Y) hS0`. Establish `g5c : S * (16 * C ^ 32 * (M ^ 5 * F * L)) ≤ S * K` using `mul_le_mul_of_nonneg_left hX hS0`. Establish `g5d : S * (32 * K) ≤ S * (K * F * lg)` using `mul_le_mul_of_nonneg_left h32 hS0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSF0 : 0 ≤ S * F` using `mul_nonneg hS0 hF0`. Establish `g6a : 6 * S * F * (lC + 2 * lk) ≤ 6 * S * F * (3 * lk)` using `mul_le_mul_of_nonneg_left (by linarith) (mul_nonneg (mul_nonneg (by norm_num) hS0) hF0)`. Establish `g6b : S * F * lk ≤ S * F * (lg / 8)` using `mul_le_mul_of_nonneg_left hlklg hSF0`. Establish `g6c : 36 * (S * F * lg) ≤ K * (S * F * lg)` using `mul_le_mul_of_nonneg_right (by linarith) (mul_nonneg hSF0 hlg0)`. Establish `g4 : K * F * lC ≤ K * F * (lg / 256)` using `mul_le_mul_of_nonneg_left hlClg hKF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : K * F * lk ≤ K * F * (lg / 8)` using `mul_le_mul_of_nonneg_left hlklg hKF0`. Establish `t1b : K * F * L ≤ K * F * (lg / 8)` using `mul_le_mul_of_nonneg_left hLlg hKF0`. Establish `t2a : C ^ 3 * (M ^ 3 * F * L) ≤ C ^ 3 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_left (hMY 3 (by norm_num)) (pow_nonneg hC0 3)`. Establish `t2b : K * (C ^ 3 * (M ^ 3 * F * L)) ≤ K * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_left (t2a.trans hC3Y) hK0`. Establish `t2c : C ^ 2 * (M * F * L) ≤ C ^ 2 * (M ^ 5 * F * L)` using `mul_le_mul_of_nonneg_left hM1Y (pow_nonneg hC0 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t2d : K * (C ^ 2 * (M * F * L)) ≤ K * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_left (t2c.trans hC2Y) hK0`. Establish `t2e : K * (16 * C ^ 32 * (M ^ 5 * F * L)) ≤ K * K` using `mul_le_mul_of_nonneg_left hX hK0`. Establish `hS2K : 0 ≤ (S - 2) * K * F` using `mul_nonneg (mul_nonneg (by linarith) hK0) hF0`. Establish `d1 : ((S - 2) * K * F) * (l2 - lg) ≤ ((S - 2) * K * F) * (-(7 / 8) * lg)` using `mul_le_mul_of_nonneg_left (by linarith) hS2K`. Establish `d4 : K * F * lC ≤ K * F * (lk / 32)` using `mul_le_mul_of_nonneg_left hlClk hKF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d5d : (S - 2) * (32 * K) ≤ (S - 2) * (K * F * lg)` using `mul_le_mul_of_nonneg_left h32 (by linarith)`. Establish `hS2F : 0 ≤ (S - 2) * F` using `mul_nonneg (by linarith) hF0`. Establish `d6b : (S - 2) * F * lk ≤ (S - 2) * F * (lg / 8)` using `mul_le_mul_of_nonneg_left hlklg hS2F`. Establish `d6c : 36 * ((S - 2) * F * lg) ≤ K * ((S - 2) * F * lg)` using `mul_le_mul_of_nonneg_right (by linarith) (mul_nonneg hS2F hlg0)`. Establish `d6d : 36000 * (F * lk) ≤ K * (F * lk)` using `mul_le_mul_of_nonneg_right (by linarith) (mul_nonneg hF0 hlk0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f4a : M * (C * (M ^ 5 * F * L)) ≤ M * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_left hC1Y hM0`. Establish `f4b : M * (C ^ 32 * (M ^ 5 * F * L)) ≤ F * (C ^ 32 * (M ^ 5 * F * L))` using `mul_le_mul_of_nonneg_right hMF hZ0`. Establish `f4c : F * (16 * C ^ 32 * (M ^ 5 * F * L)) ≤ F * K` using `mul_le_mul_of_nonneg_left hX hF0`. Establish `d9 : K * F * (lC - lk) ≤ K * F * (lk / 32 - lk)` using `mul_le_mul_of_nonneg_left (by linarith) hKF0`. Establish `u3 : (K / 2) * (32 * K) ≤ (S - 2) * (K * F * lg)` using `mul_le_mul (by linarith) h32 (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u4 : 100 * (K * F * lg) ≤ (S - 2) * (K * F * lg)` using `mul_le_mul_of_nonneg_right (by linarith) hW0`. Establish `B1 : K * F * (lk + L) + (K * F * (lC + lk) + ((C * M ^ 2 * F * L) * (C * M) + C * M * F * L) * (C * K)) ≤ (S - 2) * K * F * lg / 100 + (S - 2) * K * F * lg / 64` using `by linarith`. Establish `hU : 0 ≤ (S - 2) * K * F * lg` using `mul_nonneg hS2K hlg0`. Establish `B2 : C * M ^ 2 * F * L * C ≤ K * F * lk / 64` using `by linarith`. Establish `B4 : K * F * lC ≤ K * F * lk / 32` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `B5 : C * M ^ 2 * F * L * (C * (S + M) * M ^ 2) ≤ (S - 2) * K * F * lg / 512 + K * F * lk / 32 + K * F * lk / 64` using `by linarith`. Establish `B6 : 6 * S * F * (lC + 2 * lk) ≤ (S - 2) * K * F * lg / 16 + K * F * lk / 1000` using `by linarith`. Establish `B7 : 3 * lGam ≤ 3 * (K * F * lk) / 64` using `by linarith`. Establish `BetaSesquilinearity : C * M ^ 6 * F * L ≤ K * F * lk / 16` using `by linarith`. Establish `B9 : lk ≤ K * F * lk / 1000` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lowerOffDiagonalCoeff : K * F * (lC - lk) ≤ K * F * lk / 32 - K * F * lk` using `by linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma exponent_inequality_degenerate_top (C K F M L lk lg lC l2 : ℝ) (hC : 1 ≤ C) (h4M : 4 ≤ M) (hMF : M ≤ F) (hFK : F ≤ K)
     (hL : 0.69 ≤ L) (hlk : 1 ≤ lk) (hlC0 : 0 ≤ lC) (hlC : 32 * lC ≤ lk) (hlg : 8 * (lk + L) ≤ lg)
@@ -594,13 +594,13 @@ lemma exponent_inequality_degenerate_top (C K F M L lk lg lC l2 : ℝ) (hC : 1 �
   linarith
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_natCast, Real.rpow_def_of_pos hx, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma pow_eq_exp_mul_log (x : ℝ) (hx : 0 < x) (n : ℕ) : x ^ n = Real.exp ((n:ℝ) * Real.log x) := by
   rw [← Real.rpow_natCast, Real.rpow_def_of_pos hx, mul_comm]
 
 /- English proof (translation)
-Unfold `bigH`. Rewrite using `[← Real.rpow_mul hb.le, Real.rpow_def_of_pos hb]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma heightParameter_rpow (C : ℝ) (m f : ℕ) (b y : ℝ) (hb : 0 < b) :
     bigH C m f b ^ y = Real.exp ((C * (m:ℝ) ^ 2 * f * Real.log b) * y) := by
@@ -610,23 +610,23 @@ lemma heightParameter_rpow (C : ℝ) (m f : ℕ) (b y : ℝ) (hb : 0 < b) :
   ring
 
 /- English proof (translation)
-Unfold `Params at h`. Take `⟨hm, hmf, hfk, hb, hkbg, hK, hv1, hvb, hNT1, hNTb, hG1, hGe⟩` from `h`. Establish `hm' : (4 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hmf' : (m : ℝ) ≤ f` using `by exact_mod_cast hmf`. Establish `hfk' : (f : ℝ) ≤ k` using `by exact_mod_cast hfk`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : 0 < b` using `by linarith`. Establish `hl2b : Real.log 2 ≤ Real.log b` using `Real.log_le_log (by norm_num) hb`. Establish `hlb : 0.69 ≤ Real.log b`. Use `Real.log_two_gt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hC0 : 0 < C` using `by linarith`. Establish `a1 : (1 : ℝ) ≤ C ^ 32` using `one_le_pow₀ hC`. Establish `a2 : (1 : ℝ) ≤ (m : ℝ) ^ 5` using `one_le_pow₀ (by linarith)`. Establish `a3 : (1 : ℝ) ≤ (m : ℝ) ^ 5 * f` using `one_le_mul_of_one_le_of_one_le a2 (by linarith)`. Establish `a4 : 1 * 0.69 ≤ (m : ℝ) ^ 5 * f * Real.log b` using `mul_le_mul a3 hlb (by norm_num) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a5 : (m : ℝ) ^ 5 * f * Real.log b ≤ C ^ 32 * ((m : ℝ) ^ 5 * f * Real.log b)` using `le_mul_of_one_le_left (by linarith) a1`. Establish `hKk : 16 * C ^ 32 * ((m : ℝ) ^ 5 * f * Real.log b) ≤ k` using `by linarith`. Establish `hk0 : (0 : ℝ) < k` using `by linarith`. Establish `hlk : 1 ≤ Real.log k`. Establish `he` using `Real.exp_one_lt_d9`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `a6 : C ^ 32 * 1 ≤ C ^ 32 * (16 * ((m : ℝ) ^ 5 * f * Real.log b))` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Establish `hC32k : C ^ 32 ≤ (k : ℝ)` using `by linarith`. Establish `hlCk : 32 * Real.log C ≤ Real.log k`. Establish `h1` using `Real.log_le_log (by positivity) hC32k`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Real.log_pow]`. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkb0 : (0 : ℝ) < ((k : ℝ) * b) ^ 8` using `by positivity`. Establish `hg0 : 0 < g` using `lt_of_lt_of_le hkb0 hkbg`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlg : 8 * (Real.log k + Real.log b) ≤ Real.log g`. Establish `h1` using `Real.log_le_log hkb0 hkbg`. Rewrite `h1` using `[Real.log_pow, Real.log_mul hk0.ne' hb0.ne']`. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hv0 : 0 < v` using `by linarith`. Establish `hNT0 : 0 < NT` using `by linarith`. Establish `hGam0 : 0 < Gam` using `by linarith`. Establish `hlNT : Real.log NT ≤ C * m * f * Real.log b`. Establish `h1` using `Real.log_le_log hNT0 hNTb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Real.log_rpow hb0]`. Then use the resulting hypothesis. Establish `hlG : Real.log Gam ≤ C * (m : ℝ) ^ 5 * f * Real.log b`. Establish `h1` using `Real.log_le_log hGam0 hGe`. Rewrite `h1` using `[Real.log_exp]`. Then use the resulting hypothesis. Conclude with `⟨hm', hmf', hfk', hlb, hlk, Real.log_nonneg hC, hlCk, hlg, Real.log_nonneg (by norm_num), hl2b, hKk, hg0, hb0, hv0, Real.log_le_log hv0 hvb, hNT0, hlNT, hGam0, Real.log_nonneg hG1, hlG⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 -/
 lemma parameterRange_bounds (C : ℝ) (hC : 1 ≤ C) (k m f : ℕ) (b g v NT Gam : ℝ)
     (h : Params C (16 * C ^ 32) k m f b g v NT Gam) :
@@ -690,15 +690,15 @@ noncomputable def commonLatticeBound (C : ℝ) (k m f s : ℕ) (b v Gam : ℝ) (
     bigH C m f b ^ (C * ((s : ℝ) + m) * (m : ℝ) ^ 2) * (C * s * f) ^ (6 * s * f) * Gam
 
 /- English proof (translation)
-Establish `hC0 : 0 < C` using `by linarith`. Establish `hk0 : (0 : ℝ) < k` using `by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one (hs1.trans hsk))`. Establish `hs0 : (0 : ℝ) < s` using `by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hs1)`. Establish `hf0 : (0 : ℝ) < f` using `by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hf1)`. Establish `hCsf : 0 < C * s * f` using `mul_pos (mul_pos hC0 hs0) hf0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX0 : 0 ≤ ((k : ℝ) * v) ^ (k * f) * Xi s` using `mul_nonneg (pow_nonneg (mul_pos hk0 hv).le _) hXi0`. Establish `e1 : C ^ (k * f) = Real.exp ((k : ℝ) * f * Real.log C)`. Rewrite using `[pow_eq_exp_mul_log C hC0, Nat.cast_mul]`. Establish `e2 : bigH C m f b ^ (C * ((s : ℝ) + m) * (m : ℝ) ^ 2) = Real.exp ((C * (m : ℝ) ^ 2 * f * Real.log b) * (C * ((s : ℝ) + m) * (m : ℝ) ^ 2))` using `heightParameter_rpow C m f b _ hb`. Establish `e3 : (C * s * f) ^ (6 * s * f) ≤ Real.exp (6 * (s : ℝ) * f * (Real.log C + 2 * Real.log k))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_eq_exp_mul_log _ hCsf]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `hl : Real.log (C * s * f) ≤ Real.log C + 2 * Real.log k`. Rewrite using `[Real.log_mul (mul_pos hC0 hs0).ne' hf0.ne', Real.log_mul hC0.ne' hs0.ne']`. Establish `h1` using `Real.log_le_log hs0 (show (s : ℝ) ≤ k by exact_mod_cast hsk)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Real.log_le_log hf0 (show (f : ℝ) ≤ k by exact_mod_cast hfk)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6 : (0 : ℝ) ≤ ((6 * s * f : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Unfold `commonLatticeBound`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Rewrite using `[e1, e2]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hX0 (Real.exp_pos _).le) (Real.exp_pos _).le) (pow_nonneg hCsf.le _)) hGam.le`. Rewrite using `[Real.exp_add, Real.exp_add, Real.exp_add, Real.exp_add, Real.exp_log hGam]`. Use `mul_le_mul (mul_le_mul (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hA (Real.exp_pos _).le) (Real.exp_pos _).le) e3 (pow_nonneg hCsf.le _) (by positivity)) le_rfl hGam.le (by positivity)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma commonFactor_nonneg_and_le (C : ℝ) (hC : 1 ≤ C) (k m f s : ℕ) (b v Gam : ℝ) (Xi : ℕ → ℝ) (A : ℝ)
     (hb : 0 < b) (hv : 0 < v) (hGam : 0 < Gam) (hs1 : 1 ≤ s) (hsk : s ≤ k) (hf1 : 1 ≤ f)
@@ -741,7 +741,7 @@ lemma commonFactor_nonneg_and_le (C : ℝ) (hC : 1 ≤ C) (k m f s : ℕ) (b v G
       (by positivity)
 
 /- English proof (translation)
-Unfold `XiHyp at hXi`. Take `⟨h0, h1⟩` from `hXi.1 s hs2 hsk`. Use `⟨h0, h1.trans (le_of_eq ?_)⟩` and prove the remaining obligations. Rewrite using `[heightParameter_rpow C m f b C hb, pow_eq_exp_mul_log C (by linarith) (s * k * f), ← Real.exp_add, Nat.cast_mul, Nat.cast_mul]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma massRatio_bound_of_mid (C : ℝ) (hC : 1 ≤ C) (k m f s : ℕ) (b v NT : ℝ) (Xi : ℕ → ℝ) (hb : 0 < b)
     (hXi : XiHyp C k m f b v NT Xi) (hs2 : 2 ≤ s) (hsk : s + 2 ≤ k) :
@@ -754,15 +754,13 @@ lemma massRatio_bound_of_mid (C : ℝ) (hC : 1 ≤ C) (k m f s : ℕ) (b v NT : 
     Nat.cast_mul, Nat.cast_mul]
 
 /- English proof (translation)
-Unfold `XiHyp at hXi`. Take `⟨h0, h1⟩` from `hXi.2 s hs`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Establish `hk0 : (0 : ℝ) < k` using `by exact_mod_cast hk`. Establish `hC0 : 0 < C` using `by linarith`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : 0 < bigH C m f b ^ (C * m)`. Rewrite using `[heightParameter_rpow C m f b _ hb]`. Conclude with `Real.exp_pos _`. Establish `hkv : ((k : ℝ) * v) ^ (k * f) ≤ Real.exp ((k : ℝ) * f * (Real.log k + Real.log b))`. Rewrite using `[pow_eq_exp_mul_log _ (mul_pos hk0 hv), Real.log_mul hk0.ne' hv.ne', Nat.cast_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Establish `hCk : (C * k) ^ (k * f) = Real.exp ((k : ℝ) * f * (Real.log C + Real.log k))`. Rewrite using `[pow_eq_exp_mul_log _ (mul_pos hC0 hk0), Real.log_mul hC0.ne' hk0.ne', Nat.cast_mul]`. Establish `hB : (bigH C m f b ^ (C * m) * NT) ^ (C * k) ≤ Real.exp (((C * (m : ℝ) ^ 2 * f * Real.log b) * (C * m) + C * m * f * Real.log b) * (C * k))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Real.rpow_def_of_pos (mul_pos hH hNT), Real.log_mul hH.ne' hNT.ne', heightParameter_rpow C m f b _ hb, Real.log_exp]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (mul_pos hC0 hk0).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hCk]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hB (Real.exp_pos _).le) (Real.exp_pos _).le`. Use `_ = _ := by rw [← Real.exp_add, ← Real.exp_add]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma massRatio_bound_of_top (C : ℝ) (hC : 1 ≤ C) (k m f s : ℕ) (b v NT : ℝ) (Xi : ℕ → ℝ) (hb : 0 < b)
     (hv : 0 < v) (hNT : 0 < NT) (hk : 1 ≤ k) (hlv : Real.log v ≤ Real.log b)
@@ -802,34 +800,32 @@ lemma massRatio_bound_of_top (C : ℝ) (hC : 1 ≤ C) (k m f s : ℕ) (b v NT : 
     _ = _ := by rw [← Real.exp_add, ← Real.exp_add]
 
 /- English proof (translation)
-Rewrite using `[pow_eq_exp_mul_log _ (div_pos two_pos hg) n, Real.log_div (by norm_num) hg.ne']`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma two_div_pow_eq_exp (g : ℝ) (hg : 0 < g) (n : ℕ) :
     (2 / g) ^ n = Real.exp ((n:ℝ) * (Real.log 2 - Real.log g)) := by
   rw [pow_eq_exp_mul_log _ (div_pos two_pos hg) n, Real.log_div (by norm_num) hg.ne']
 
 /- English proof (translation)
-Unfold `NonDegSum`. Introduce `C hC`. Use `⟨16 * C ^ 32, ?_⟩` and prove the remaining obligations. Introduce `k m f b g v NT Gam Xi hPar hXi`. Take `⟨hm4, hmf, hfk, hlb, hlk, hlC0, hlC, hlg, hl20, hl2, hX, hg0, hb0, hv0, hlv, hNT0, hlNT, hGam0, hlG0, hlG⟩` from `parameterRange_bounds C hC k m f b g v NT Gam hPar`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hk0 : (0 : ℝ) < k` using `by linarith`. Establish `hk0' : (k : ℝ) ≠ 0` using `hk0.ne'`. Establish `hC0 : 0 < C` using `by linarith`. Establish `hf1 : 1 ≤ f` using `by exact_mod_cast (show (1 : ℝ) ≤ f by linarith)`. Establish `hfkN : f ≤ k` using `by exact_mod_cast hfk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : 1 ≤ k` using `by exact_mod_cast (show (1 : ℝ) ≤ k by linarith)`. Establish `hkexp : ∀ X : ℝ, (k : ℝ) * Real.exp (X - Real.log k) = Real.exp X` using `fun X => by`. Rewrite using `[Real.exp_sub, Real.exp_log hk0]`. Clear the denominators using the available nonvanishing facts. Establish `hrow : ∀ s ∈ Finset.Icc 2 k, ndRow C k m f s b g v Gam Xi ≤ Real.exp (-((k : ℝ) * f * Real.log g) / 2 - Real.log k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Introduce `s hs`. Rewrite `hs` using `[Finset.mem_Icc]`. Take `⟨hs2, hsk⟩` from `hs`. Establish `hrowEq : ndRow C k m f s b g v Gam Xi = (2 / g) ^ ((s - 1) * k * f) * commonLatticeBound C k m f s b v Gam Xi`. Unfold `ndRow commonLatticeBound`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcast : (((s - 1) * k * f : ℕ) : ℝ) = ((s : ℝ) - 1) * k * f`. Rewrite using `[Nat.cast_mul, Nat.cast_mul, Nat.cast_sub (by omega : 1 ≤ s), Nat.cast_one]`. Establish `hs2R : (2 : ℝ) ≤ s` using `by exact_mod_cast hs2`. Establish `hskR : (s : ℝ) ≤ k` using `by exact_mod_cast hsk`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hrowEq, two_div_pow_eq_exp g hg0, hcast]`. Break down `(show s + 2 ≤ k ∨ (s + 1 = k ∨ s = k) by omega) with hmid | htop` into its components or cases. Take `⟨hXi0, hA⟩` from `massRatio_bound_of_mid C hC k m f s b v NT Xi hb0 hXi hs2 hmid`. Take `⟨-, hc⟩` from `commonFactor_nonneg_and_le C hC k m f s b v Gam Xi _ hb0 hv0 hGam0 (by omega) hsk hf1 hfkN hXi0 hA`. Establish `hcore` using `exponent_inequality_nondegenerate_mid C k f m (Real.log b) (Real.log k) (Real.log g) (Real.log C) (Real.log 2) hC hm4 hmf hfk hlb hlk hlC0 hlC hlg hl20 hl2 hX s (Real.log Gam) hs2R hskR hlG`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `le_trans (mul_le_mul_of_nonneg_left hc (Real.exp_pos _).le) ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by linarith)`. Establish `hKS : (k : ℝ) - 1 ≤ s`. Establish `h1 : k ≤ s + 1` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (k : ℝ) ≤ s + 1` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hXi0, hA⟩` from `massRatio_bound_of_top C hC k m f s b v NT Xi hb0 hv0 hNT0 hk1 hlv hlNT hXi htop`. Take `⟨-, hc⟩` from `commonFactor_nonneg_and_le C hC k m f s b v Gam Xi _ hb0 hv0 hGam0 (by omega) hsk hf1 hfkN hXi0 hA`. Establish `hcore` using `exponent_inequality_nondegenerate_top C k f m (Real.log b) (Real.log k) (Real.log g) (Real.log C) (Real.log 2) hC hm4 hmf hfk hlb hlk hlC0 hlC hlg hl20 hl2 hX s (Real.log Gam) hs2R hskR hKS hlG`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (mul_le_mul_of_nonneg_left hc (Real.exp_pos _).le) ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ (k : ℝ) * Real.exp (-((k : ℝ) * f * Real.log g) / 2 - Real.log k) := by`. Apply `mul_le_mul_of_nonneg_right _ (Real.exp_pos _).le` to reduce the goal to its premises. Rewrite using `[Nat.card_Icc]`. Conclude with `(by omega : k + 1 - 2 ≤ k)` after adjusting the coercions. Use `_ = Real.exp (-((k : ℝ) * f * Real.log g) / 2) := hkexp _`.
-
-Use `_ = (Real.sqrt g)⁻¹ ^ (k * f) := by`. Rewrite using `[pow_eq_exp_mul_log _ (inv_pos.2 (Real.sqrt_pos.2 hg0)) (k * f), Real.log_inv, Real.log_sqrt hg0.le, Nat.cast_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sumNondegenerateRowsLe : NonDegSum := by
   unfold NonDegSum
@@ -894,27 +890,25 @@ theorem sumNondegenerateRowsLe : NonDegSum := by
         ring
 
 /- English proof (translation)
-Unfold `DegSum`. Introduce `C hC`. Use `⟨16 * C ^ 32, ?_⟩` and prove the remaining obligations. Introduce `k m f b g v NT Gam Xi hPar hXi`. Take `⟨hm4, hmf, hfk, hlb, hlk, hlC0, hlC, hlg, hl20, hl2, hX, hg0, hb0, hv0, hlv, hNT0, hlNT, hGam0, hlG0, hlG⟩` from `parameterRange_bounds C hC k m f b g v NT Gam hPar`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hk0 : (0 : ℝ) < k` using `by linarith`. Establish `hk0' : (k : ℝ) ≠ 0` using `hk0.ne'`. Establish `hC0 : 0 < C` using `by linarith`. Establish `hf1 : 1 ≤ f` using `by exact_mod_cast (show (1 : ℝ) ≤ f by linarith)`. Establish `hfkN : f ≤ k` using `by exact_mod_cast hfk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : 1 ≤ k` using `by exact_mod_cast (show (1 : ℝ) ≤ k by linarith)`. Establish `hkexp : ∀ X : ℝ, (k : ℝ) * Real.exp (X - Real.log k) = Real.exp X` using `fun X => by`. Rewrite using `[Real.exp_sub, Real.exp_log hk0]`. Clear the denominators using the available nonvanishing facts. Establish `hrow : ∀ s ∈ Finset.Icc 2 k, degRow C k m f s b g v Gam Xi ≤ Real.exp (-((k : ℝ) * f * Real.log k) / 2 - 2 * Real.log Gam - Real.log k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Introduce `s hs`. Rewrite `hs` using `[Finset.mem_Icc]`. Take `⟨hs2, hsk⟩` from `hs`. Establish `hrowEq : degRow C k m f s b g v Gam Xi = (2 / g) ^ ((s - 2) * k * f) * commonLatticeBound C k m f s b v Gam Xi * Real.exp (C * (m : ℝ) ^ 6 * f * Real.log b) * (C / k) ^ (k * f)`. Unfold `degRow commonLatticeBound`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcast : (((s - 2) * k * f : ℕ) : ℝ) = ((s : ℝ) - 2) * k * f`. Rewrite using `[Nat.cast_mul, Nat.cast_mul, Nat.cast_sub (by omega : 2 ≤ s), Nat.cast_ofNat]`. Establish `hCk : (C / k) ^ (k * f) = Real.exp ((k : ℝ) * f * (Real.log C - Real.log k))`. Rewrite using `[pow_eq_exp_mul_log _ (div_pos hC0 hk0), Real.log_div hC0.ne' hk0', Nat.cast_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs2R : (2 : ℝ) ≤ s` using `by exact_mod_cast hs2`. Establish `hskR : (s : ℝ) ≤ k` using `by exact_mod_cast hsk`. Rewrite using `[hrowEq, two_div_pow_eq_exp g hg0, hcast, hCk]`. Break down `(show s + 2 ≤ k ∨ (s + 1 = k ∨ s = k) by omega) with hmid | htop` into its components or cases. Take `⟨hXi0, hA⟩` from `massRatio_bound_of_mid C hC k m f s b v NT Xi hb0 hXi hs2 hmid`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hc⟩` from `commonFactor_nonneg_and_le C hC k m f s b v Gam Xi _ hb0 hv0 hGam0 (by omega) hsk hf1 hfkN hXi0 hA`. Establish `hcore` using `exponent_inequality_degenerate_mid C k f m (Real.log b) (Real.log k) (Real.log g) (Real.log C) (Real.log 2) hC hm4 hmf hfk hlb hlk hlC0 hlC hlg hl20 hl2 hX s (Real.log Gam) hs2R hskR hlG0 hlG`. Use `le_trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hc (Real.exp_pos _).le) (Real.exp_pos _).le) (Real.exp_pos _).le) ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by linarith)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hKS : (k : ℝ) - 1 ≤ s`. Establish `h1 : k ≤ s + 1` using `by omega`. Establish `h2 : (k : ℝ) ≤ s + 1` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hXi0, hA⟩` from `massRatio_bound_of_top C hC k m f s b v NT Xi hb0 hv0 hNT0 hk1 hlv hlNT hXi htop`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hc⟩` from `commonFactor_nonneg_and_le C hC k m f s b v Gam Xi _ hb0 hv0 hGam0 (by omega) hsk hf1 hfkN hXi0 hA`. Establish `hcore` using `exponent_inequality_degenerate_top C k f m (Real.log b) (Real.log k) (Real.log g) (Real.log C) (Real.log 2) hC hm4 hmf hfk hlb hlk hlC0 hlC hlg hl20 hl2 hX s (Real.log Gam) hs2R hskR hKS hlG0 hlG`. Use `le_trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hc (Real.exp_pos _).le) (Real.exp_pos _).le) (Real.exp_pos _).le) ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by linarith)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ (k : ℝ) * Real.exp (-((k : ℝ) * f * Real.log k) / 2 - 2 * Real.log Gam - Real.log k) := by`. Apply `mul_le_mul_of_nonneg_right _ (Real.exp_pos _).le` to reduce the goal to its premises. Rewrite using `[Nat.card_Icc]`.
-
-Conclude with `(by omega : k + 1 - 2 ≤ k)` after adjusting the coercions. Use `_ = Real.exp (-((k : ℝ) * f * Real.log k) / 2 - 2 * Real.log Gam) := hkexp _`. Use `_ = Real.exp (-((k : ℝ) * f * Real.log k) / 2) * (Gam ^ 2)⁻¹ := by`. Rewrite using `[Real.exp_sub, pow_eq_exp_mul_log Gam hGam0 2, div_eq_mul_inv, Nat.cast_ofNat]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumDegenerateRowsLe : DegSum := by
   unfold DegSum
@@ -981,15 +975,15 @@ theorem sumDegenerateRowsLe : DegSum := by
         rw [Real.exp_sub, pow_eq_exp_mul_log Gam hGam0 2, div_eq_mul_inv, Nat.cast_ofNat]
 
 /- English proof (translation)
-Unfold `SingleRowBound`. Introduce `C hC`. Use `⟨16 * C ^ 32, ?_⟩` and prove the remaining obligations. Introduce `k r f b g v NT Gam hPar`. Take `⟨hm4, hmf, hfk, hlb, hlk, hlC0, hlC, hlg, hl20, hl2, hX, hg0, hb0, hv0, hlv, hNT0, hlNT, hGam0, hlG0, hlG⟩` from `parameterRange_bounds C hC k (2 * r + 2) f b g v NT Gam hPar`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hC0 : 0 < C` using `by linarith`. Establish `hk0 : (0 : ℝ) < k` using `by linarith`. Establish `hR : (1 : ℝ) ≤ r`. Establish `h` using `hm4`. Move the coercions through the operations in `at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hMR : ((2 * r + 2 : ℕ) : ℝ) = 2 * (r : ℝ) + 2` using `by push_cast; ring`. Establish `hcore` using `exponent_inequality_single C k f ((2 * r + 2 : ℕ) : ℝ) (Real.log b) (Real.log k) (Real.log g) (Real.log C) (Real.log 2) hC hm4 hmf hfk hlb hlk hlC0 hlC hlg hl20 hl2 hX r (Real.log Gam) hR hMR hlG`. Establish `hg1 : 0 < g⁻¹ ^ (2 * r + 1)` using `pow_pos (inv_pos.2 hg0) _`. Establish `hk1 : 0 < ((k : ℝ) ^ r)⁻¹` using `inv_pos.2 (pow_pos hk0 _)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hin : 0 < C * g⁻¹ ^ (2 * r + 1) * ((k : ℝ) ^ r)⁻¹` using `mul_pos (mul_pos hC0 hg1) hk1`. Establish `e4 : Real.sqrt ((C * g⁻¹ ^ (2 * r + 1) * ((k : ℝ) ^ r)⁻¹) ^ (k * f)) = Real.exp (((k : ℝ) * f) * (Real.log C - (2 * r + 1) * Real.log g - r * Real.log k) / 2)`. Rewrite using `[Real.sqrt_eq_rpow, Real.rpow_def_of_pos (pow_pos hin _), Real.log_pow, Real.log_mul (mul_pos hC0 hg1).ne' hk1.ne', Real.log_mul hC0.ne' hg1.ne', Real.log_pow, Real.log_inv, Real.log_inv, Real.log_pow]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[pow_eq_exp_mul_log C hC0 f, heightParameter_rpow C (2 * r + 2) f b _ hb0, ← Real.exp_log hGam0, e4]`. Simplify using `only [← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by linarith)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem singleRowBound : SingleRowBound := by
   unfold SingleRowBound

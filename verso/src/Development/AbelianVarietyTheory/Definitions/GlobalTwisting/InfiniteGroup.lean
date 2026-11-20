@@ -8,7 +8,7 @@ open Formalism.BasicNotions Classical
 def ratInt (q : ℕ) [Fact q.Prime] : Subring ℚ := (PadicInt.subring q).comap (Rat.castHom ℚ_[q])
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_ratInt {q : ℕ} [Fact q.Prime] (x : ℚ) : x ∈ ratInt q ↔ ‖(x : ℚ_[q])‖ ≤ 1 := by
   exact Iff.rfl
@@ -77,7 +77,7 @@ section Pairs
 variable {q : ℕ} {F : Type} [Field F] {Lc : LocF q F} {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [LocF.std, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]`. Use `forall_congr' fun a => ⟨?_, fun h => ⟨⟨x a, h⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_std (x : Fin n → Lc.K) : x ∈ Lc.std n ↔ ∀ a, x a ∈ Lc.O := by
   simp only [LocF.std, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]
@@ -107,7 +107,7 @@ def mvO (g : GL (Fin n) Lc.K) : (Fin n → Lc.K) →ₗ[Lc.O] (Fin n → Lc.K) :
   (Matrix.mulVecLin (g : Matrix (Fin n) (Fin n) Lc.K)).restrictScalars Lc.O
 
 /- English proof (translation)
-Use `show Matrix.mulVec ((g⁻¹ : GL (Fin n) Lc.K) : Matrix (Fin n) (Fin n) Lc.K) (Matrix.mulVec (g : Matrix (Fin n) (Fin n) Lc.K) x) = x`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inv_mv (g : GL (Fin n) Lc.K) (x : Fin n → Lc.K) :
     mvO g⁻¹ (Matrix.mulVec (g : Matrix (Fin n) (Fin n) Lc.K) x) = x := by
@@ -137,9 +137,7 @@ def actPP (g : GL (Fin n) Lc.K) (p : LocF.PP Lc n) : LocF.PP Lc n :=
        rwa [inv_mv] }⟩
 
 /- English proof (translation)
-Introduce `x`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show mvO g⁻¹ _ ∈ p.1.L ↔ _`. Rewrite using `[inv_mv]`. Use `show p.1.f (mvO g⁻¹ _) = _`.
-
-Rewrite using `[inv_mv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAct_actPP (g : GL (Fin n) Lc.K) (p : LocF.PP Lc n) : LocF.PP.IsAct g p (actPP g p) := by
   intro x
@@ -150,7 +148,7 @@ theorem isAct_actPP (g : GL (Fin n) Lc.K) (p : LocF.PP Lc n) : LocF.PP.IsAct g p
     rw [inv_mv]
 
 /- English proof (translation)
-Use `show Matrix.mulVec (g : Matrix (Fin n) (Fin n) Lc.K) (Matrix.mulVec ((g⁻¹ : GL (Fin n) Lc.K) : Matrix (Fin n) (Fin n) Lc.K) y) = y`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mulVec_mvO_inv (g : GL (Fin n) Lc.K) (y : Fin n → Lc.K) :
     Matrix.mulVec (g : Matrix (Fin n) (Fin n) Lc.K) (mvO g⁻¹ y) = y := by
@@ -159,9 +157,9 @@ private lemma mulVec_mvO_inv (g : GL (Fin n) Lc.K) (y : Fin n → Lc.K) :
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `LocF.Raw.ext` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[← mulVec_mvO_inv g y, (h₁ _).1, (h₂ _).1]`. Use function extensionality and compare the values at `y`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← mulVec_mvO_inv g y, (h₁ _).2, (h₂ _).2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isAct_unique {g : GL (Fin n) Lc.K} {p p₁ p₂ : LocF.PP Lc n} (h₁ : LocF.PP.IsAct g p p₁)
     (h₂ : LocF.PP.IsAct g p p₂) : p₁ = p₂ := by
@@ -173,9 +171,9 @@ theorem isAct_unique {g : GL (Fin n) Lc.K} {p p₁ p₂ : LocF.PP Lc n} (h₁ : 
     rw [← mulVec_mvO_inv g y, (h₁ _).2, (h₂ _).2]
 
 /- English proof (translation)
-Use `⟨⟨⟨p.1.L, fun x => (a : F) * p.1.f x⟩, { lat := p.2.lat add := fun x hx y hy => by show (a : F) * p.1.f (x + y) = (a : F) * p.1.f x + (a : F) * p.1.f y` and prove the remaining obligations. Rewrite using `[p.2.add x hx y hy, mul_add]`. Use `smul := fun c x hx => by show (a : F) * p.1.f (c • x) = Lc.res c * ((a : F) * p.1.f x)`. Rewrite using `[p.2.smul c x hx, mul_left_comm]`. Use `off := fun x hx => by show (a : F) * p.1.f x = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[p.2.off x hx, mul_zero]`. Use `ne := by`. Take `⟨x, hx⟩` from `p.2.ne`. Conclude with `⟨x, mul_ne_zero a.ne_zero hx⟩ }⟩, rfl, fun x => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dil (a : Fˣ) (p : LocF.PP Lc n) : ∃ p', LocF.PP.IsDil (a : F) p p' := by
   refine ⟨⟨⟨p.1.L, fun x => (a : F) * p.1.f x⟩,
@@ -194,7 +192,7 @@ theorem exists_dil (a : Fˣ) (p : LocF.PP Lc n) : ∃ p', LocF.PP.IsDil (a : F) 
         exact ⟨x, mul_ne_zero a.ne_zero hx⟩ }⟩, rfl, fun x => rfl⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : Lc.res 1 = 0` using `(Lc.res_ker 1).2 ⟨⟨_, h⟩, by show (1 : Lc.K) = (q : Lc.K) * (q : Lc.K)⁻¹`. Rewrite using `[mul_inv_cancel₀ Lc.q_ne]⟩`. Rewrite `h1` using `[map_one]`. Conclude with `one_ne_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma q_inv_not_mem (Lc : LocF q F) : ((q : Lc.K))⁻¹ ∉ Lc.O := by
   intro h
@@ -208,7 +206,7 @@ def dq (Lc : LocF q F) (a : Fin n) : GL (Fin n) Lc.K :=
   diagGL Lc.K n fun b => if b = a then (Units.mk0 (q : Lc.K) Lc.q_ne)⁻¹ else 1
 
 /- English proof (translation)
-Use `show Matrix.mulVec (Matrix.diagonal fun c => (((if c = a then (Units.mk0 (q : Lc.K) Lc.q_ne)⁻¹ else 1 : Lc.Kˣ)⁻¹ : Lc.Kˣ) : Lc.K)) x b = _`. Rewrite using `[Matrix.mulVec_diagonal]`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma dq_inv_mv (a : Fin n) (x : Fin n → Lc.K) (b : Fin n) :
     mvO (dq Lc a)⁻¹ x b = if b = a then (q : Lc.K) * x b else x b := by
@@ -220,7 +218,7 @@ lemma dq_inv_mv (a : Fin n) (x : Fin n → Lc.K) (b : Fin n) :
   · simp
 
 /- English proof (translation)
-Unfold `stdPair`. Conclude with `dif_pos h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma stdPair_f_apply (a : Fin n) {x : Fin n → Lc.K} (h : x ∈ Lc.std n) :
     (stdPair Lc a).1.f x = Lc.res ⟨x a, (mem_std x).1 h a⟩ := by
@@ -228,27 +226,23 @@ private lemma stdPair_f_apply (a : Fin n) {x : Fin n → Lc.K} (h : x ∈ Lc.std
   exact dif_pos h
 
 /- English proof (translation)
-Establish `hq : (q : Lc.K) ≠ 0` using `Lc.q_ne`. Establish `hqO : (q : Lc.K) ∈ Lc.O` using `natCast_mem Lc.O q`. Establish `he : (Pi.single a 1 : Fin n → Lc.K) ∈ Lc.std n` using `(mem_std _).2 fun b => by`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Pi.single_eq_same]`. Conclude with `Lc.O.one_mem`. Rewrite using `[Pi.single_eq_of_ne hb]`. Conclude with `Lc.O.zero_mem`. Establish `hfe : (stdPair Lc a).1.f (Pi.single a 1) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[stdPair_f_apply a he]`. Establish `h1 : (⟨(Pi.single a (1 : Lc.K) : Fin n → Lc.K) a, (mem_std _).1 he a⟩ : Lc.O) = 1` using `Subtype.ext (by simp)`. Rewrite using `[h1, map_one]`. Use `⟨Pi.single a 1, hfe, he, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hz : ∀ b, mvO (dq Lc a)⁻¹ y b = if b = a then (q : Lc.K) * y b else y b` using `fun b => dq_inv_mv a y b`. Express the relevant statement in the definitionally equal form `mvO (dq Lc a)⁻¹ y ∈ Lc.std n ∧ (stdPair Lc a).1.f (mvO (dq Lc a)⁻¹ y) = 0 ↔ y ∈ Lc.std n`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hL, hf⟩`. Rewrite `hf` using `[stdPair_f_apply a hL]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw⟩` from `(Lc.res_ker _).1 hf`. Use `(mem_std y).2 fun b => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b = a`. Rewrite using `[hb]`. Establish `h0 : mvO (dq Lc a)⁻¹ y a = (q : Lc.K) * w` using `hw`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[hz, if_pos rfl]`. Rewrite using `[mul_left_cancel₀ hq h0]`. Conclude with `w.2`. Establish `h2` using `(mem_std _).1 hL b`. Rewrite `h2` using `[hz, if_neg hb]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hy`. Establish `hy'` using `(mem_std y).1 hy`. Establish `hL : mvO (dq Lc a)⁻¹ y ∈ Lc.std n` using `(mem_std _).2 fun b => by`. Rewrite using `[hz]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Lc.O.mul_mem hqO (hy' b)`. Conclude with `hy' b`. Use `⟨hL, ?_⟩` and prove the remaining obligations. Rewrite using `[stdPair_f_apply a hL]`. Conclude with `(Lc.res_ker _).2 ⟨⟨y a, hy' a⟩, by show mvO (dq Lc a)⁻¹ y a = (q : Lc.K) * y a`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz, if_pos rfl]⟩`. Establish `hz2 : mvO (dq Lc a)⁻¹ (((q : Lc.K))⁻¹ • (Pi.single a 1 : Fin n → Lc.K)) = Pi.single a 1`. Use function extensionality and compare the values at `b`. Rewrite using `[dq_inv_mv]`. Distinguish the cases in `hb : b = a`.
-
-Substitute `hb` using the available equality. Simplify using `[hq]`. Simplify using `[hb]`. Use `show (stdPair Lc a).1.f (mvO (dq Lc a)⁻¹ (((q : Lc.K))⁻¹ • (Pi.single a 1 : Fin n → Lc.K))) = 1`. Rewrite using `[hz2]`.
-
-Conclude with `hfe`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inc_std (a : Fin n) : (stdPair Lc a).Inc (actPP (dq Lc a) (stdPair Lc a)) := by
   have hq : (q : Lc.K) ≠ 0 := Lc.q_ne
@@ -307,7 +301,7 @@ theorem inc_std (a : Fin n) : (stdPair Lc a).Inc (actPP (dq Lc a) (stdPair Lc a)
     exact hfe
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', dq_inv_mv, ih]`. Apply the tactic sequence `split_ifs <;> ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma iter_mvO_dq_inv_apply (a : Fin n) (k : ℕ) (y : Fin n → Lc.K) (b : Fin n) :
     (⇑(mvO (dq Lc a)⁻¹))^[k] y b = if b = a then (q : Lc.K) ^ k * y b else y b := by
@@ -318,7 +312,7 @@ private lemma iter_mvO_dq_inv_apply (a : Fin n) (k : ℕ) (y : Fin n → Lc.K) (
     split_ifs <;> ring
 
 /- English proof (translation)
-Proceed by induction on `k generalizing y with`. Consider the case `zero => exact Iff.rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply' (actPP (dq Lc a)), Function.iterate_succ_apply]`. Conclude with `ih _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mem_iter_actPP_stdPair_iff (a : Fin n) (k : ℕ) (y : Fin n → Lc.K) :
     y ∈ ((actPP (dq Lc a))^[k] (stdPair Lc a)).1.L ↔ (⇑(mvO (dq Lc a)⁻¹))^[k] y ∈ Lc.std n := by
@@ -329,21 +323,19 @@ private lemma mem_iter_actPP_stdPair_iff (a : Fin n) (k : ℕ) (y : Fin n → Lc
     exact ih _
 
 /- English proof (translation)
-Establish `hq : (q : Lc.K) ≠ 0` using `Lc.q_ne`. Establish `hqO : (q : Lc.K) ∈ Lc.O` using `natCast_mem Lc.O q`. Establish `key : ∀ j k, (((q : Lc.K))⁻¹ ^ k • (Pi.single a 1 : Fin n → Lc.K)) ∈ ((actPP (dq Lc a))^[j] (stdPair Lc a)).1.L ↔ (q : Lc.K) ^ j * ((q : Lc.K))⁻¹ ^ k ∈ Lc.O`. Introduce `j k`. Rewrite using `[mem_iter_actPP_stdPair_iff, mem_std]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [iter_mvO_dq_inv_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using h a`. Introduce `h b`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `using h`. Simplify using `[hb]`. Establish `hA : ∀ k, (((q : Lc.K))⁻¹ ^ k • (Pi.single a 1 : Fin n → Lc.K)) ∈ ((actPP (dq Lc a))^[k] (stdPair Lc a)).1.L` using `fun k => by`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[key, ← mul_pow, mul_inv_cancel₀ hq, one_pow]`. Conclude with `Lc.O.one_mem`. Establish `hpow : ∀ m, ((q : Lc.K))⁻¹ ^ (m + 1) ∉ Lc.O` using `fun m hm => q_inv_not_mem Lc (by`. Establish `h2 : ((q : Lc.K))⁻¹ ^ (m + 1) * (q : Lc.K) ^ m = ((q : Lc.K))⁻¹`. Rewrite using `[pow_succ, mul_comm (((q : Lc.K))⁻¹ ^ m), mul_assoc, ← mul_pow, inv_mul_cancel₀ hq, one_pow, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Conclude with `Lc.O.mul_mem hm (Lc.O.pow_mem hqO m))`. Establish `hB : ∀ j m, (((q : Lc.K))⁻¹ ^ (j + m + 1) • (Pi.single a 1 : Fin n → Lc.K)) ∉ ((actPP (dq Lc a))^[j] (stdPair Lc a)).1.L` using `fun j m h => by`. Rewrite `h` using `[key, show j + m + 1 = j + (m + 1) by omega, pow_add, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ hq, one_pow, one_mul]`. Conclude with `hpow m h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Infinite.of_injective (fun k : ℕ => (actPP (dq Lc a))^[k] (stdPair Lc a)) ?_` and prove the remaining obligations. Introduce `j k hjk`. Establish `hjk' : (actPP (dq Lc a))^[j] (stdPair Lc a) = (actPP (dq Lc a))^[k] (stdPair Lc a)` using `hjk`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_lt hlt`. Establish `h3` using `hA (j + m + 1)`. Rewrite `h3` using `[← hjk']`. Conclude with `hB j m h3`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_lt hlt`.
-
-Establish `h3` using `hA (k + m + 1)`. Rewrite `h3` using `[hjk']`. Conclude with `hB k m h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infinite_PP (Lc : LocF q F) (a : Fin n) : Infinite (LocF.PP Lc n) := by
   have hq : (q : Lc.K) ≠ 0 := Lc.q_ne
@@ -395,11 +387,11 @@ end Pairs
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Establish `: Infinite (LocF.PP (M.Lc v) (D.R.N i))` using `infinite_PP (M.Lc v) ⟨0, lt_of_lt_of_le (by have := D.R.m_add_three_le_k; omega : 0 < D.R.k) (Nat.le_add_right _ _)⟩`. Establish `: Infinite M.Pt` using `Infinite.of_injective (fun x : LocF.PP (M.Lc v) (D.R.N i) => ((M.rep c).1, Function.update (M.rep c).2 v x)) (by`. Introduce `x y hxy`. Establish `h2` using `congrArg (fun p : M.Pt => p.2 v) hxy`. Simplify using `using h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Assume the negation of the conclusion as `hfin`. Rewrite `hfin` using `[not_infinite_iff_finite]`. Establish `: Finite M.Pt` using `Finite.of_surjective (fun cg : X.C.cls i × M.G => cg.2 • M.rep cg.1) (by`. Introduce `p`. Take `⟨c', g, h⟩` from `M.rep_surj p`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(c', g), h⟩)`. Conclude with `not_finite M.Pt`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem infinite_group {X : Ch D u} {i : ℕ} (M : PtModel X i) (c : X.C.cls i) (v : X.A.vT) : Infinite M.G := by
   have : Infinite (LocF.PP (M.Lc v) (D.R.N i)) := infinite_PP (M.Lc v)
@@ -453,9 +445,9 @@ def emptyModel (X : Ch D u) (i : ℕ) [IsEmpty (X.C.cls i)] : PtModel X i :=
     dil_eq := fun _ c => isEmptyElim c }
 
 /- English proof (translation)
-Use `⟨fun i _ => emptyModel X i, fun i h => { k := fun _ _ => 0 src := fun _ _ _ _ => rfl Kmap_eq := fun c _ _ => isEmptyElim c }, fun i h => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `g' p p' y`. Conclude with `(p.1 : PEmpty).elim`. Introduce `v a p q' p' q'' _ _`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v p p' y`. Conclude with `(p.1 : PEmpty).elim`.
+A detailed English derivation is pending.
 -/
 theorem empty_kernels (X : Ch D u) [∀ i, IsEmpty (X.C.cls i)] :
     ∃ (Lv : LevTie X) (Kt : KerTie Lv), ∀ i h, (Kt i h).TgtEq ∧ (Kt i h).DilLaw ∧ (Kt i h).UKLaw := by

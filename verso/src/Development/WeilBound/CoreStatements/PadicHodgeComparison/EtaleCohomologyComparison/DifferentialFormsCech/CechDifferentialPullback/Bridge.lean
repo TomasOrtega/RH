@@ -21,14 +21,14 @@ def toOm (W : X.Opens) : GlobalTheory.CechDR.OmU q W a →+ (modulesAb (GlobalTh
   map_add' x y := map_add _ x y
 
 /- English proof (translation)
-The claim follows from `PresheafOfModules.naturality_apply (GlobalTheory.HodgeCoh.toOmega q a) (homOfLE h).op x`.
+A detailed English derivation is pending.
 -/
 theorem toOm_formRes {W W' : X.Opens} (h : W' ≤ W) (x : GlobalTheory.CechDR.OmU q W a) :
     toOm q a W' (GlobalTheory.HodgeCoh.formRes q h a x) = res (modulesAb (GlobalTheory.HodgeCoh.Omega q a)).obj h (toOm q a W x) :=
   PresheafOfModules.naturality_apply (GlobalTheory.HodgeCoh.toOmega q a) (homOfLE h).op x
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[mem_inter_iff]`. Unfold `Pb.capO`. Rewrite using `[← SetLike.mem_coe, Opens.coe_iInf, Set.mem_iInter]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_le_capO {n : ℕ} (i : Fin n → ι) : inter U i ≤ Pb.capO U i := by
   intro x hx
@@ -49,9 +49,9 @@ def formCoch (n : ℕ) : (Glob.formCos q U a).X n →+ Cochain (modulesAb (Globa
     rfl
 
 /- English proof (translation)
-Rewrite using `[CrystallineSemistableComparison.Cos.d_apply, map_sum]`. Use function extensionality and compare the values at `i`. Rewrite using `[GroundTheory.Arith.SchemeCoh.d_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Pi.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `res _ (inter_le_capO U i) (toOm q a (Pb.capO U i) (GlobalTheory.HodgeCoh.formRes q (Pb.capO_comp U i k.succAbove) a (c (i ∘ k.succAbove)))) = res _ (inter_le_comp U i k.succAbove) (res _ (inter_le_capO U (i ∘ k.succAbove)) (toOm q a (Pb.capO U (i ∘ k.succAbove)) (c (i ∘ k.succAbo …`. Rewrite using `[toOm_formRes, res_res, res_res]`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem formCoch_d (n : ℕ) (c : (Glob.formCos q U a).X n) :
     formCoch q U a (n + 1) (CrystallineSemistableComparison.Cos.d (Glob.formCos q U a) n c) =

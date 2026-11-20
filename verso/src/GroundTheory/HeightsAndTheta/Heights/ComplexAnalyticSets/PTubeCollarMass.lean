@@ -13,13 +13,13 @@ open MvPolynomial MeasureTheory Filter Matrix ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Introduce `n d J A P R hJ hdim hA hP`. Take `⟨C, hCle⟩` from `hC n d J A P R hJ hdim hA hP`. Establish `hψ : ∀ k : Fin (d + 1), SmoothNear (zeroSet J) ((fun _ => euclPot) k)` using `fun _ => smoothNear_of_contDiff (contDiff_euclPot n)`. Establish `hI : Integrable (chartAbsDens J A ((Metric.closedBall (0 : Fin n → ℂ) R).indicator fun _ => (1 : ℝ)) (fun _ : Fin (d + 1) => euclPot))`. Take `⟨K, hK, hle⟩` from `hM n (d + 1) J A (fun _ => euclPot) R hJ hdim hA hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmeas` using `(SheetSumMeasurable.proof n (d + 1) J A ((Metric.closedBall (0 : Fin n → ℂ) R).indicator fun _ => (1 : ℝ)) (fun _ => euclPot) hJ hdim hA (measurable_const.indicator Metric.isClosed_closedBall.measurableSet) hψ).2`. Use `⟨hmeas.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hbd : Bornology.IsBounded (WithLp.ofLp ⁻¹' Metric.closedBall (0 : Fin n → ℂ) R : Set (EuclideanSpace ℂ (Fin n)))` using `(PiLp.antilipschitzWith_ofLp 2 fun _ : Fin n => ℂ).isBounded_preimage Metric.isBounded_closedBall`. Take `⟨R', hR'⟩` from `(Metric.isBounded_iff_subset_ball 0).1 hbd`. Establish `h1` using `hle (fun _ => 1) measurable_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [enorm_one, setLIntegral_one] at h1`. Use `h1.trans_lt (ENNReal.mul_lt_top hK ?_)` and prove the remaining obligations. Conclude with `(measure_mono (Set.inter_subset_inter_right _ hR')).trans_lt (hF n (d + 1) J hJ hdim R')`. Establish `hl : Measurable (logAbsSq P)` using `Real.measurable_log.comp ((MvPolynomial.continuous_eval P).norm.pow 2).measurable`. Use `(hI.const_mul C).mono' (((measurable_tubeDens hA P R _).indicator (measurableSet_le measurable_const hl)).aestronglyMeasurable) (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.norm_of_nonneg (Set.indicator_nonneg (fun y _ => tubeDens_nonneg J A P R _ y) y)]`. Conclude with `hCle y`.
+A detailed English derivation is pending.
 -/
 theorem TubeCollarMass.proof (hC : TubeCollarCompare.Statement) (hM : ChartMassCompare.Statement)
     (hF : MassFinite.Statement) : TubeCollarMass.Statement := by

@@ -29,9 +29,9 @@ def yv (e : Fin n → Bool) (p : Fin n × Fin n × Bool) : Matrix (Fin n) (Fin n
   if e p.1 = e p.2.1 then gv e p else 0
 
 /- English proof (translation)
-Establish `h : (1 / (2 * Complex.I) : ℂ) * (1 / (2 * Complex.I)) = -(1 / 4)`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Break down `hs with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [smul_mul_smul_comm, h, mul_add, add_mul, mul_sub, sub_mul, one_smul] module`. Simplify using `only [smul_mul_smul_comm, h, mul_add, add_mul, mul_sub, sub_mul, neg_smul, one_smul, mul_neg, neg_mul, neg_neg] module`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pair_sq {A : Type} [Ring A] [Algebra ℂ A] (F G : A) {s : ℂ} (hs : s = 1 ∨ s = -1) :
     ((1 / 2 : ℂ) • (F - s • G)) * ((1 / 2 : ℂ) • (F - s • G)) +
@@ -49,13 +49,13 @@ theorem pair_sq {A : Type} [Ring A] [Algebra ℂ A] (F G : A) {s : ℂ} (hs : s 
     module
 
 /- English proof (translation)
-Establish `hT : ∀ a b, (L (xv e (a, b, true)) * L (xv e (a, b, true)) + L (xv e (a, b, false)) * L (xv e (a, b, false))) - (L (yv e (a, b, true)) * L (yv e (a, b, true)) + L (yv e (a, b, false)) * L (yv e (a, b, false))) = (1 / 2 : ℂ) • (L (single a b 1) * L (single b a 1) + L (single b a 1 …`. Introduce `a b`. Distinguish the cases in `c : e a = e b`. Use `pair_sq (L (single a b 1)) (L (single b a 1)) (s := 1) (Or.inl rfl)` as an intermediate fact. Simplify using `only [xv, yv, gv, c, sg, if_true, if_false, map_zero, mul_zero, map_smul, map_sub, map_add, Bool.false_eq_true]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_zero, zero_sub, this]`. Use `module`. Use `pair_sq (L (single a b 1)) (L (single b a 1)) (s := -1) (Or.inr rfl)` as an intermediate fact. Simplify using `only [xv, yv, gv, c, sg, if_true, if_false, map_zero, mul_zero, map_smul, map_sub, map_add, Bool.false_eq_true]`. Rewrite using `[add_zero, sub_zero, this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `module`. Rewrite using `[← Finset.sum_sub_distrib, Fintype.sum_prod_type]`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool]`. Establish `hT' : ∀ a b, L (xv e (a, b, true)) * L (xv e (a, b, true)) - L (yv e (a, b, true)) * L (yv e (a, b, true)) + (L (xv e (a, b, false)) * L (xv e (a, b, false)) - L (yv e (a, b, false)) * L (yv e (a, b, false))) = (1 / 2 : ℂ) • (L (single a b 1) * L (single b a 1) + L (single b a 1) …`. Introduce `a b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← hT]`. Normalize the expressions using the abelian group laws. Simplify using `only [hT', Finset.sum_add_distrib, ← Finset.smul_sum]`. Rewrite using `[Finset.sum_comm (f := fun a b => L (single b a 1) * L (single a b 1))]`. Use `module`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_frame {A : Type} [Ring A] [Algebra ℂ A] (L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A) (e : Fin n → Bool) :
     ∑ a, ∑ b, L (single a b 1) * L (single b a 1) =
@@ -86,7 +86,7 @@ theorem sum_frame {A : Type} [Ring A] [Algebra ℂ A] (L : Matrix (Fin n) (Fin n
   module
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : e a <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_herm (e : Fin n → Bool) : (Formalism.REAL.Jm e)ᴴ = Formalism.REAL.Jm e := by
   unfold Formalism.REAL.Jm
@@ -96,7 +96,7 @@ theorem Jm_herm (e : Fin n → Bool) : (Formalism.REAL.Jm e)ᴴ = Formalism.REAL
   by_cases h : e a <;> simp [h]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : e a <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_sq (e : Fin n → Bool) : Formalism.REAL.Jm e * Formalism.REAL.Jm e = 1 := by
   unfold Formalism.REAL.Jm
@@ -106,14 +106,14 @@ theorem Jm_sq (e : Fin n → Bool) : Formalism.REAL.Jm e * Formalism.REAL.Jm e =
   by_cases h : e a <;> simp [h]
 
 /- English proof (translation)
-The claim follows from `isUnit_det_of_right_inverse (Jm_sq e)`.
+A detailed English derivation is pending.
 -/
 theorem Jm_unit (e : Fin n → Bool) : IsUnit (Formalism.REAL.Jm e).det := isUnit_det_of_right_inverse (Jm_sq e)
 
 /- English proof (translation)
-Unfold `GlobalTheory.UnitaryLieComplexification.cj`. Rewrite using `[inv_eq_right_inv (Jm_sq e), conjTranspose_single, star_one]`. Use `congr 1`. Use extensionality with `i j`. Unfold `Formalism.REAL.Jm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_diagonal, diagonal_mul, Matrix.smul_apply, single_apply]`. Distinguish the cases in `h : b = i ∧ a = j`. Take `⟨rfl, rfl⟩` from `h`. Apply the tactic sequence `by_cases h1 : e a <;> by_cases h2 : e b <;> simp [sg, h1, h2]`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem cj_single (e : Fin n → Bool) (a b : Fin n) :
     cj (Formalism.REAL.Jm e) (single a b 1) = -(sg e a b • single b a 1) := by
@@ -129,23 +129,21 @@ theorem cj_single (e : Fin n → Bool) (a b : Fin n) :
   · simp [h]
 
 /- English proof (translation)
-Rewrite using `[cj_single, gv, if_pos rfl, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gv_true (e : Fin n → Bool) (a b : Fin n) :
     gv e (a, b, true) = (1 / 2 : ℂ) • (single a b 1 + cj (Formalism.REAL.Jm e) (single a b 1)) := by
   rw [cj_single, gv, if_pos rfl, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[cj_single, gv, if_neg (by simp), sub_neg_eq_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gv_false (e : Fin n → Bool) (a b : Fin n) :
     gv e (a, b, false) = (1 / (2 * Complex.I) : ℂ) • (single a b 1 - cj (Formalism.REAL.Jm e) (single a b 1)) := by
   rw [cj_single, gv, if_neg (by simp), sub_neg_eq_add]
 
 /- English proof (translation)
-Take `⟨a, b, c⟩` from `p`. Consider the cases of `c`. Rewrite using `[gv_false]`. Conclude with `(imPart (Jm_herm e) (Jm_unit e) (single a b 1)).2`. Rewrite using `[gv_true]`.
-
-Conclude with `(rePart (Jm_herm e) (Jm_unit e) (single a b 1)).2`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gv_skew (e : Fin n → Bool) (p : Fin n × Fin n × Bool) :
     (gv e p)ᴴ * Formalism.REAL.Jm e + Formalism.REAL.Jm e * gv e p = 0 := by
@@ -157,21 +155,21 @@ theorem gv_skew (e : Fin n → Bool) (p : Fin n × Fin n × Bool) :
     exact (rePart (Jm_herm e) (Jm_unit e) (single a b 1)).2
 
 /- English proof (translation)
-Set `S` to `Submodule.span ℝ (Set.range (gv e))`. Establish `key : ∀ W : Matrix (Fin n) (Fin n) ℂ, (1 / 2 : ℂ) • (W + cj (Formalism.REAL.Jm e) W) ∈ S`. Introduce `W`. Proceed by induction on `W using Matrix.induction_on' with`. Consider the case `h_zero => simp [GlobalTheory.UnitaryLieComplexification.cj]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `h_add p q hp hq`. Establish `: (1 / 2 : ℂ) • (p + q + cj (Formalism.REAL.Jm e) (p + q)) = (1 / 2 : ℂ) • (p + cj (Formalism.REAL.Jm e) p) + (1 / 2 : ℂ) • (q + cj (Formalism.REAL.Jm e) q)`. Rewrite using `[cj_add]`. Use `module`. Rewrite using `[this]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `S.add_mem hp hq`. Consider the case `h_std_basis a b c`. Establish `h1 : gv e (a, b, true) ∈ S` using `Submodule.subset_span ⟨_, rfl⟩`. Establish `h2 : gv e (a, b, false) ∈ S` using `Submodule.subset_span ⟨_, rfl⟩`. Establish `e0 : single a b c = c • (single a b 1 : Matrix (Fin n) (Fin n) ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `hI : (1 / (2 * Complex.I) : ℂ) = -Complex.I / 2`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish `hc : c = c.re + c.im * Complex.I` using `(Complex.re_add_im c).symm`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hs : star c = c.re - c.im * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Establish `e1 : (1 / 2 : ℂ) • (single a b c + cj (Formalism.REAL.Jm e) (single a b c)) = c.re • gv e (a, b, true) + (-c.im) • gv e (a, b, false)`. Rewrite using `[e0, cj_smul, gv_true, gv_false]`. Generalize the expression as in `cj (Formalism.REAL.Jm e) (single a b 1) = C`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `(single a b 1 : Matrix (Fin n) (Fin n) ℂ) = E`. Rewrite using `[hs, hI]`. Generalize the expression as in `c.re = x at *`. Generalize the expression as in `c.im = y at *`. Substitute `hc` using the available equality.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [← Complex.coe_smul]`. Use `push_cast`. Apply the tactic sequence `match_scalars <;> ring`. Rewrite using `[e1]`. Conclude with `S.add_mem (S.smul_mem _ h1) (S.smul_mem _ h2)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : cj (Formalism.REAL.Jm e) Z = Z` using `(mem_iff_cj (Jm_unit e) Z).1 hZ`. Use `key Z` as an intermediate fact. Rewrite `this` using `[hz]`. Establish `e2 : (1 / 2 : ℂ) • (Z + Z) = Z` using `by module`. Rewrite `this` using `[e2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_span_gv (e : Fin n → Bool) {Z : Matrix (Fin n) (Fin n) ℂ}
     (hZ : Zᴴ * Formalism.REAL.Jm e + Formalism.REAL.Jm e * Z = 0) : Z ∈ Submodule.span ℝ (Set.range (gv e)) := by
@@ -219,9 +217,9 @@ theorem mem_span_gv (e : Fin n → Bool) {Z : Matrix (Fin n) (Fin n) ℂ}
   rwa [e2] at this
 
 /- English proof (translation)
-Establish `h3 : Qᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, hPQ, conjTranspose_one]`. Establish `e1 : (Q * Z * P)ᴴ * (Pᴴ * J * P) = Pᴴ * (Zᴴ * J) * P`. Rewrite using `[conjTranspose_mul, conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (Pᴴ * J * P) * (Q * Z * P) = Pᴴ * (J * Z) * P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, e2, ← Matrix.add_mul, ← Matrix.mul_add, hZ, Matrix.mul_zero, Matrix.zero_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_skew {J P Q Z : Matrix (Fin n) (Fin n) ℂ} (hPQ : P * Q = 1) (hZ : Zᴴ * J + J * Z = 0) :
     (Q * Z * P)ᴴ * (Pᴴ * J * P) + (Pᴴ * J * P) * (Q * Z * P) = 0 := by
@@ -236,13 +234,13 @@ theorem conj_skew {J P Q Z : Matrix (Fin n) (Fin n) ℂ} (hPQ : P * Q = 1) (hZ :
   rw [e1, e2, ← Matrix.add_mul, ← Matrix.mul_add, hZ, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Distinguish the cases in `c : e p.1 = e p.2.1`. Establish `hs : (yv e p)ᴴ = -yv e p`. Take `⟨a, b, d⟩` from `p`. Establish `c' : e a = e b` using `c`. Establish `hst : star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I))`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Complex.conj_I]`. Consider the cases of `d`. Simplify using `only [yv, gv, c', sg, if_true, Bool.false_eq_true, if_false, one_smul, conjTranspose_smul, hst, conjTranspose_add, conjTranspose_single, star_one]`. Rewrite using `[add_comm, neg_smul]`. Simplify using `only [yv, gv, c', sg, if_true, one_smul, conjTranspose_smul, conjTranspose_sub, conjTranspose_single, star_one]`.
+Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [star_div₀, star_one, star_ofNat]`. Use `module`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Establish `h` using `gv_skew e p`. Establish `hy : yv e p = gv e p` using `by simp [yv, c]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← hy, hs, neg_mul]`. Conclude with `(neg_add_eq_zero.1 h)`. Establish `hy : yv e p = 0` using `by simp [yv, c]`. Rewrite using `[hy]`. Simplify using `[IsKLie]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem yv_kLie (e : Fin n → Bool) (p : Fin n × Fin n × Bool) : IsKLie e (yv e p) := by
   by_cases c : e p.1 = e p.2.1
@@ -277,31 +275,29 @@ namespace GlobalTheory.CompanionTheory.HCCusp
 open QuadGelf
 
 /- English proof (translation)
-Introduce `D θ hθ V τ e P hP hJ`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`. Establish `h2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Set `q` to `Fintype.equivFin (Fin V.rank × Fin V.rank × Bool)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hconj : ∀ {Y : Matrix (Fin V.rank) (Fin V.rank) ℂ}, Yᴴ * Formalism.REAL.Jm e + Formalism.REAL.Jm e * Y = 0 → P⁻¹ * Y * P ∈ lieAt V τ` using `fun {Y} hY => by`. Use `conj_skew h1 hY` as an intermediate fact. Rewrite `this` using `[hJ]`. Conclude with `this`. Establish `hxl : ∀ p, P⁻¹ * xv e p * P ∈ lieAt V τ` using `fun p => hconj (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `c : e p.1 = e p.2.1`. Simplify using `[xv, c]`. Simplify `gv_skew e p)` using `[xv, c]`. Establish `hyl : ∀ p, P⁻¹ * yv e p * P ∈ lieAt V τ` using `fun p => hconj (by`. Distinguish the cases in `c : e p.1 = e p.2.1`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `gv_skew e p` using `[yv, c]`. Simplify using `[yv, c])`. Use `⟨_, _, fun i => P⁻¹ * xv e (q.symm i) * P, fun i => yv e (q.symm i), fun a => hxl _, fun b => yv_kLie e _, ?_, ?_⟩` and prove the remaining obligations. Introduce `Z hZ`. Establish `hZ' : Zᴴ * (Pᴴ * Formalism.REAL.Jm e * P) + (Pᴴ * Formalism.REAL.Jm e * P) * Z = 0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ]`. Conclude with `hZ`. Establish `hb : (P⁻¹)ᴴ * (Pᴴ * Formalism.REAL.Jm e * P) * P⁻¹ = Formalism.REAL.Jm e`. Establish `h3 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hW` using `conj_skew h2 hZ'`. Rewrite `hW` using `[hb]`. Establish `hs` using `mem_span_gv e hW`. Establish `hZe : Z = P⁻¹ * (P * Z * P⁻¹) * P`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[hZe]`. Generalize the expression as in `P * Z * P⁻¹ = W at hs`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `Submodule.subset_span ?_` and prove the remaining obligations. Distinguish the cases in `c : e p.1 = e p.2.1`. Conclude with `Or.inr ⟨q p, by simp [yv, c]⟩`. Conclude with `Or.inl ⟨q p, by simp [xv, c]⟩`. Consider the case `zero => simp`.
+Prove the second alternative. Prove the first alternative. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Introduce `f hf`. Set `φ : GlobalTheory.Mem.AutSpace.SmFun θ V` to `⟨f, hf⟩`. Set `R` to `GlobalTheory.Mem.RealTranslate.derEnd (V := V) hθ τ`. Set `L : Matrix (Fin V.rank) (Fin V.rank) ℂ →ₗ[ℂ] Module.End ℂ (GlobalTheory.Mem.AutSpace.SmFun θ V)` to `R ∘ₗ (LinearMap.mulRight ℂ P) ∘ₗ (LinearMap.mulLeft ℂ P⁻¹)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hL : ∀ Z, L Z = R (P⁻¹ * Z * P)` using `fun _ => rfl`. Establish `hg : gelf θ V τ 1 f = ((∑ a, ∑ b, R (Matrix.single a b 1) * R (Matrix.single b a 1)) φ).1`. Rewrite using `[gelf, ← (finTwoArrowEquiv _).symm.sum_comp, Fintype.sum_prod_type]`. Simplify using `only [LinearMap.sum_apply, Submodule.coe_sum, Module.End.mul_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∑ a, ∑ b, R (Matrix.single a b 1) * R (Matrix.single b a 1) = ∑ p, L (xv e p) * L (xv e p) - ∑ p, L (yv e p) * L (yv e p)`. Rewrite using `[GlobalTheory.DefiniteUnitaryCasimir.casimir_conj R P hdet]`. Conclude with `sum_frame L e`. Establish `hsq : ∀ {Y : Matrix (Fin V.rank) (Fin V.rank) ℂ}, P⁻¹ * Y * P ∈ lieAt V τ → ((L Y * L Y) φ).1 = Rder θ V τ (P⁻¹ * Y * P) (Rder θ V τ (P⁻¹ * Y * P) f)` using `fun {Y} hY => by`. Rewrite using `[Module.End.mul_apply, hL, GlobalTheory.CuspLie.derEnd_coe hθ hY, GlobalTheory.CuspLie.derEnd_coe hθ hY]`.
-
-Rewrite using `[hg, key, LinearMap.sub_apply, Submodule.coe_sub, LinearMap.sum_apply, LinearMap.sum_apply, Submodule.coe_sum, Submodule.coe_sum, ← q.symm.sum_comp, ← q.symm.sum_comp (fun p => ((L (yv e p) * L (yv e p)) φ).1)]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => hsq (hxl _)`. Conclude with `Finset.sum_congr rfl fun i _ => hsq (hyl _)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem quadGelf_frame : ∀ (D : D7) (θ : GlobalTheory.Mem.Th.InfF D), IsInfFam θ → ∀ (V : HSp D) (τ : D.what₂.Tau) (e : Fin V.rank → Bool) (P : Matrix (Fin V.rank) (Fin V.rank) ℂ), IsUnit P → Pᴴ * Formalism.REAL.Jm e * P = gramAt D V τ → ∃ (n₁ n₂ : ℕ) (X : Fin n₁ → Matrix (Fin V.rank) (Fin V.rank) ℂ) (y : Fin n₂ → Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ a, X a ∈ lieAt V τ) ∧ (∀ b, GlobalTheory.CompanionTheory.HCCusp.IsKLie e (y b)) ∧ (∀ Z ∈ lieAt V τ, Z ∈ Submodule.span ℝ (Set.range X ∪ Set.range fun b => P⁻¹ * y b * P)) ∧ ∀ f ∈ GlobalTheory.Mem.AutSpace.SmFun θ V, gelf θ V τ 1 f = ∑ a, Rder θ V τ (X a) (Rder θ V τ (X a) f) - ∑ b, Rder θ V τ (P⁻¹ * y b * P) (Rder θ V τ (P⁻¹ * y b * P) f) := by
   intro D θ hθ V τ e P hP hJ

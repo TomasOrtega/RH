@@ -13,7 +13,7 @@ open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.ParamInert.paramBoundOn_nonsplit | exact GlobalTheory.Core.Rk.ParamInert.paramBoundOn_nonsplit | (intros; apply GlobalTheory.Core.Rk.ParamInert.paramBoundOn_nonsplit <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.sphericalParameterBound_nonsplit_places : GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.UnramDoublingInert → ∀ D : D7, ParamBoundOn D fun v => ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v := by
   first | exact @GlobalTheory.Core.Rk.ParamInert.paramBoundOn_nonsplit | exact GlobalTheory.Core.Rk.ParamInert.paramBoundOn_nonsplit | (intros; apply GlobalTheory.Core.Rk.ParamInert.paramBoundOn_nonsplit <;> assumption)

@@ -18,7 +18,7 @@ def tailIncl (K : Type) [Field K] (r : ℕ) : (Fin r → 𝓞 K) →ₗ[𝓞 K] 
 
 omit [NumberField K] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z f => simp [standardCoord, tailIncl]`. Consider the case `add a b ha hb => simp only [map_add, PiLp.add_apply] at ha hb ⊢`. Rewrite using `[ha, hb, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_tail_zero (σ : K →+* ℂ) (r : ℕ) (x : Fibre σ (Fin r → 𝓞 K)) :
     standardCoord K σ (Fin (r + 1)) ((tailIncl K r).lTensor (ComplexAt σ) x) 0 = 0 := by
@@ -29,7 +29,7 @@ theorem coord_tail_zero (σ : K →+* ℂ) (r : ℕ) (x : Fibre σ (Fin r → �
 
 omit [NumberField K] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z f => simp [standardCoord, tailIncl]`. Consider the case `add a b ha hb => simp only [map_add, PiLp.add_apply] at ha hb ⊢`. Rewrite using `[ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_tail_succ (σ : K →+* ℂ) (r : ℕ) (x : Fibre σ (Fin r → 𝓞 K)) (j : Fin r) :
     standardCoord K σ (Fin (r + 1)) ((tailIncl K r).lTensor (ComplexAt σ) x) j.succ =
@@ -41,7 +41,7 @@ theorem coord_tail_succ (σ : K →+* ℂ) (r : ℕ) (x : Fibre σ (Fin r → �
 
 omit [NumberField K] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z f => simp [standardCoord, integersCoord]`. Consider the case `add a b ha hb => simp only [map_add] at ha hb ⊢`. Rewrite using `[ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -54,7 +54,7 @@ theorem coord_head (σ : K →+* ℂ) (r : ℕ) (x : Fibre σ (Fin (r + 1) → �
   | add a b ha hb => simp only [map_add] at ha hb ⊢; rw [ha, hb]; rfl
 
 /- English proof (translation)
-Establish `h` using `hv (1 ⊗ₜ Pi.single j 1)`. Express the relevant statement in the definitionally equal form `inner ℂ (standardCoord K σ (Fin (r + 1)) ((tailIncl K r).lTensor (ComplexAt σ) (1 ⊗ₜ Pi.single j 1))) (standardCoord K σ (Fin (r + 1)) v) = 0 at h`. Rewrite `h` using `[PiLp.inner_apply, Fin.sum_univ_succ]`. Simplify using `only [coord_tail_zero, coord_tail_succ, inner_zero_left, zero_add] at h`. Simplify `h` using `[standardCoord, Pi.single_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coord_zero_of_orth (σ : K →+* ℂ) (r : ℕ) (v : Fibre σ (Fin (r + 1) → 𝓞 K))
     (hv : ∀ w : Fibre σ (Fin r → 𝓞 K), ((HermitianMetric.standard K (Fin (r + 1))).form σ).inner
@@ -68,7 +68,7 @@ theorem coord_zero_of_orth (σ : K →+* ℂ) (r : ℕ) (v : Fibre σ (Fin (r + 
   simpa [standardCoord, Pi.single_apply] using h
 
 /- English proof (translation)
-Use `show inner ℂ (standardCoord K σ (Fin (r + 1)) ((tailIncl K r).lTensor (ComplexAt σ) x)) (standardCoord K σ (Fin (r + 1)) ((tailIncl K r).lTensor (ComplexAt σ) y)) = inner ℂ (standardCoord K σ (Fin r) x) (standardCoord K σ (Fin r) y)`. Rewrite using `[PiLp.inner_apply, PiLp.inner_apply, Fin.sum_univ_succ]`. Simplify using `only [coord_tail_zero, coord_tail_succ, inner_zero_left, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tail_iso (σ : K →+* ℂ) (r : ℕ) (x y : Fibre σ (Fin r → 𝓞 K)) :
     ((HermitianMetric.standard K (Fin (r + 1))).form σ).inner
@@ -81,7 +81,7 @@ theorem tail_iso (σ : K →+* ℂ) (r : ℕ) (x y : Fibre σ (Fin r → 𝓞 K)
   simp only [coord_tail_zero, coord_tail_succ, inner_zero_left, zero_add]
 
 /- English proof (translation)
-Use `show inner ℂ (integersCoord K σ ((LinearMap.proj 0 : (Fin (r + 1) → 𝓞 K) →ₗ[𝓞 K] 𝓞 K).lTensor (ComplexAt σ) x)) (integersCoord K σ ((LinearMap.proj 0 : (Fin (r + 1) → 𝓞 K) →ₗ[𝓞 K] 𝓞 K).lTensor (ComplexAt σ) y)) = inner ℂ (standardCoord K σ (Fin (r + 1)) x) (standardCoord K σ (Fin …`. Rewrite using `[coord_head, coord_head, PiLp.inner_apply, Fin.sum_univ_succ]`. Simplify using `only [coord_zero_of_orth σ r y hy, inner_zero_right, Finset.sum_const_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem head_coiso (σ : K →+* ℂ) (r : ℕ) (x y : Fibre σ (Fin (r + 1) → 𝓞 K))
     (hy : ∀ w : Fibre σ (Fin r → 𝓞 K), ((HermitianMetric.standard K (Fin (r + 1))).form σ).inner
@@ -117,11 +117,11 @@ def stdExt (K : Type) [Field K] [NumberField K] (r : ℕ) :
   proj_coisometric σ x y _ hy := head_coiso σ r x y hy
 
 /- English proof (translation)
-Establish `h : Submodule.span (𝓞 K) {m} ≤ (Submodule.span (𝓞 K) {φ m}).comap φ`. Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_comap]`. Conclude with `Submodule.mem_span_singleton_self _`. Use `⟨Submodule.mapQ _ _ φ h, fun x y hxy => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `_ x`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `_ y`. Rewrite `hxy` using `[Submodule.mapQ_apply, Submodule.mapQ_apply, Submodule.Quotient.eq]`. Rewrite using `[Submodule.Quotient.eq]`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 hxy`. Conclude with `Submodule.mem_span_singleton.2 ⟨c, hφ (by rw [map_smul, map_sub]; exact hc)⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_injective_quotient_span_map {M N : Type} [AddCommGroup M] [Module (𝓞 K) M] [AddCommGroup N]
     [Module (𝓞 K) N] (φ : M →ₗ[𝓞 K] N) (hφ : Function.Injective φ) (m : M) :
@@ -141,21 +141,19 @@ private theorem exists_injective_quotient_span_map {M N : Type} [AddCommGroup M]
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Distinguish the cases in `hG : G = ⊥`. Rewrite using `[hG, HermitianBundle.degree_bot]`. Take `⟨a, haG, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hG`. Set `sG : Fin 1 → G` to `fun _ => ⟨a, haG⟩`. Set `sT : Fin 1 → (⊤ : Submodule (𝓞 K) (HermitianBundle.integers K).carrier)` to `fun _ => ⟨a, Submodule.mem_top⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `liG : LinearIndependent (𝓞 K) sG` using `linearIndependent_unique_iff.2 (fun h => ha0 (congrArg Subtype.val h))`. Establish `liT : LinearIndependent (𝓞 K) sT` using `linearIndependent_unique_iff.2 (fun h => ha0 (congrArg Subtype.val h))`. Establish `rT : (HermitianBundle.integers K).rank ⊤ = 1` using `by show Module.finrank (𝓞 K) (⊤ : Submodule (𝓞 K) (𝓞 K)) = 1`. Rewrite using `[finrank_top, Module.finrank_self]`. Establish `rG : (HermitianBundle.integers K).rank G = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `le_antisymm ?_ ?_` and prove the remaining obligations. Use `show Module.finrank (𝓞 K) G ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `liG.fintype_card_le_finrank`. Rewrite `h` using `[Fintype.card_fin]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hGd` using `(HermitianBundle.integers K).degree_eq_of_linearIndependent G liG (by simp [rG])`. Establish `hTd` using `(HermitianBundle.integers K).degree_eq_of_linearIndependent ⊤ liT (by simp [rT])`. Establish `hT0 : (HermitianBundle.integers K).degree ⊤ = 0`. Rewrite using `[HermitianBundle.degree_top_eq_arithDegree, HermitianBundle.arithDegree_integers]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsame : (fun i => (sG i : (HermitianBundle.integers K).carrier)) = fun i => (sT i : (HermitianBundle.integers K).carrier)` using `rfl`. Rewrite `hGd` using `[hsame]`. Rewrite `hGd`, `hTd` using `[Set.range_const]`. Establish `hfin : Finite (𝓞 K ⧸ Ideal.span {(show 𝓞 K from a)})` using `Ring.HasFiniteQuotients.finiteQuotient (by rw [Ne, Ideal.span_singleton_eq_bot]; exact ha0)`. Take `⟨f1, hf1⟩` from `exists_injective_quotient_span_map (⊤ : Submodule (𝓞 K) (HermitianBundle.integers K).carrier).subtype Subtype.val_injective (sT 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f2, hf2⟩` from `exists_injective_quotient_span_map (Submodule.inclusion (le_top : G ≤ ⊤)) (Submodule.inclusion_injective _) (sG 0)`. Establish `hfinT : Finite ((⊤ : Submodule (𝓞 K) (HermitianBundle.integers K).carrier) ⧸ Submodule.span (𝓞 K) {sT 0})`. Establish `: Finite ((HermitianBundle.integers K).carrier ⧸ Submodule.span (𝓞 K) {((⊤ : Submodule (𝓞 K) (HermitianBundle.integers K).carrier).subtype (sT 0))})` using `hfin`. Conclude with `Finite.of_injective f1 hf1`. Establish `hfinT' : Finite ((⊤ : Submodule (𝓞 K) (HermitianBundle.integers K).carrier) ⧸ Submodule.span (𝓞 K) {Submodule.inclusion (le_top : G ≤ ⊤) (sG 0)})` using `hfinT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinG : Finite (G ⧸ Submodule.span (𝓞 K) {sG 0})` using `Finite.of_injective f2 hf2`. Establish `hle : Nat.card (G ⧸ Submodule.span (𝓞 K) {sG 0}) ≤ Nat.card ((⊤ : Submodule (𝓞 K) (HermitianBundle.integers K).carrier) ⧸ Submodule.span (𝓞 K) {sT 0})` using `Nat.card_le_card_of_injective f2 hf2`. Establish `hpos : 0 < Nat.card (G ⧸ Submodule.span (𝓞 K) {sG 0})` using `Nat.card_pos`. Establish `hlog` using `Real.log_le_log (by exact_mod_cast hpos) (Nat.cast_le.2 hle : (Nat.card (G ⧸ Submodule.span (𝓞 K) {sG 0}) : ℝ) ≤ _)`. Establish `e1 : (HermitianBundle.integers K).degree G = Real.log (Nat.card (G ⧸ Submodule.span (𝓞 K) {sG 0})) - 1 / 2 * ∑ σ : K →+* ℂ, Real.log (gramDet (HermitianBundle.integers K).metric σ fun i => (sT i : (HermitianBundle.integers K).carrier))` using `hGd`.
-
-Establish `e2 : (HermitianBundle.integers K).degree ⊤ = Real.log (Nat.card ((⊤ : Submodule (𝓞 K) (HermitianBundle.integers K).carrier) ⧸ Submodule.span (𝓞 K) {sT 0})) - 1 / 2 * ∑ σ : K →+* ℂ, Real.log (gramDet (HermitianBundle.integers K).metric σ fun i => (sT i : (HermitianBundle.integers …` using `hTd`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem integers_deg_le (G : Submodule (𝓞 K) (HermitianBundle.integers K).carrier) :
     (HermitianBundle.integers K).degree G ≤ 0 := by
@@ -221,13 +219,13 @@ theorem integers_deg_le (G : Submodule (𝓞 K) (HermitianBundle.integers K).car
   linarith
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Establish `hs : ∀ F : Submodule (𝓞 K) (HermitianBundle.standard K 0).carrier, F = ⊥`. Introduce `F`. Use `(Submodule.eq_bot_iff F).2 fun x _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (x : Fin 0 → 𝓞 K) = 0`. Use function extensionality and compare the values at `i`. Conclude with `i.elim0`. Use `⟨fun F => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hs F, HermitianBundle.degree_bot]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hs ⊤, HermitianBundle.degree_bot]`. Consider the case `succ r ih`. Use `⟨fun F => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `ih.1 (Submodule.comap (stdExt K r).incl F)`. Establish `h2` using `integers_deg_le (Submodule.map (stdExt K r).proj F)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3` using `(stdExt K r).degree_submodule_le F`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[HermitianBundle.degree_top_eq_arithDegree, (stdExt K r).arithDegree_eq_add, ← HermitianBundle.degree_top_eq_arithDegree, ih.2, HermitianBundle.arithDegree_integers, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_deg (r : ℕ) : (∀ F, (HermitianBundle.standard K r).degree F ≤ 0) ∧
     (HermitianBundle.standard K r).degree ⊤ = 0 := by
@@ -252,9 +250,9 @@ theorem std_deg (r : ℕ) : (∀ F, (HermitianBundle.standard K r).degree F ≤ 
         ← HermitianBundle.degree_top_eq_arithDegree, ih.2, HermitianBundle.arithDegree_integers, add_zero]
 
 /- English proof (translation)
-Introduce `K _ _ r`. Establish `h` using `std_deg (K := K) r`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `iSup_le fun F => iSup_le fun _ => ?_` and prove the remaining obligations. Establish `hF : HermitianBundle.slope _ F ≤ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `HermitianBundle.slope HermitianBundle.normDegree`. Use `div_nonpos_iff.2 (Or.inr ⟨div_nonpos_iff.2 (Or.inr ⟨h.1 F, by positivity⟩), by positivity⟩)` and prove the remaining obligations. Conclude with `hF` after adjusting the coercions. Simplify using `[HermitianBundle.normDegree, h.2]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem standard_hermitian_bundle_semistable : ∀ (K : Type) [Field K] [NumberField K] (r : ℕ), (HermitianBundle.standard K r).slopeMax ≤ 0 ∧ (HermitianBundle.standard K r).normDegree ⊤ = 0 := by
   intro K _ _ r

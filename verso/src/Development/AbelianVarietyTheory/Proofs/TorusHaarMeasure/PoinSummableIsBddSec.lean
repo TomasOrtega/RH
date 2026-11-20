@@ -15,9 +15,9 @@ open scoped ContDiff ENNReal Matrix
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun c => ?_` and prove the remaining obligations. Establish `e : (fun x : Frame X.Ψ r => lact γ x τ a c) = fun x => ∑ d, (γ : Matrix (Fin r) (Fin r) E).map τ.1 a d * x τ d c`. Use function extensionality and compare the values at `z`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Differentiable.fun_sum fun d _ => (differentiable_const _).mul (by fun_prop)`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_lact (X : Data E r) (γ : GL (Fin r) E) :
     Differentiable ℂ fun x : Frame X.Ψ r => lact γ x := by
@@ -33,7 +33,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth at hx ⊢`. Introduce `τ`. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.gram_lact X hγ]`. Conclude with `hx τ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOrth_lact_of_isOrth {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ)
     {x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r} (hx : _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x) : _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ x) := by
@@ -46,11 +46,11 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.bchar at hb ⊢`. Use `tendsto_finset_prod _ fun τ _ => tendsto_finset_prod _ fun i _ => ?_` and prove the remaining obligations. Establish `hne : b τ i i ≠ 0 ∨ 0 ≤ la τ i`. Distinguish the cases in `h0 : la τ i = 0`. Conclude with `Or.inr h0.ge`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Use `left`. Introduce `hz`. Apply `hb` to reduce the goal to its premises. Use `Finset.prod_eq_zero (Finset.mem_univ τ) (Finset.prod_eq_zero (Finset.mem_univ i) ?_)` and prove the remaining obligations. Rewrite using `[hz, zero_zpow _ h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Continuous fun c : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r => c τ i i` using `(continuous_apply i).comp ((continuous_apply i).comp (continuous_apply τ))`. Conclude with `hc.continuousAt.zpow₀ _ hne`.
+A detailed English derivation is pending.
 -/
 private theorem continuousAt_bchar_of_ne_zero (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r)
     {b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r} (hb : _root_.ReciprocityTheory.ChartRestriction.G.FD.bchar la b ≠ 0) :
@@ -73,7 +73,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Introduce `h`. Establish `hmul` using `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.bchar_mul X la hb (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.invF_mem X hb)`. Rewrite `hmul` using `[_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.rmul_invF X hb, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.bchar_oneF X la, h, zero_mul]`. Conclude with `one_ne_zero hmul`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bchar_ne_zero_of_mem_bor_torus_haar_measure (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r)
     {b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r} (hb : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor X.Ψ r) : _root_.ReciprocityTheory.ChartRestriction.G.FD.bchar la b ≠ 0 := by
@@ -86,7 +86,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul _root_.ReciprocityTheory.ChartRestriction.G.FD.lact`. Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map (τ : E →+* ℂ)) (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ) (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ)`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem rmul_lact_comm {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (γ : GL (Fin r) E)
     (x b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) : _root_.ReciprocityTheory.ChartRestriction.G.FD.rmul (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ x) b = _root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b) := by
@@ -99,7 +99,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt`. Conclude with `rmul_lact_comm X γ x _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem cpt_lact_eq_lact_cpt {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (γ : GL (Fin r) E)
     (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) (z : _root_.ReciprocityTheory.L2DbarEstimates.V (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X)) :
@@ -111,7 +111,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `X.χ_fin la`. Establish `hpow : ‖X.χ la γ‖ ^ n = 1` using `by rw [← norm_pow, h γ hγ, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 hpow`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem norm_chi_eq_one_of_mem_gamma {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r)
     {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : ‖X.χ la γ‖ = 1 := by
@@ -123,7 +123,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun i => differentiable_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.lact, _root_.ReciprocityTheory.ChartRestriction.G.FD.mat, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem differentiable_lact' (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (γ : GL (Fin r) E) :
     Differentiable ℂ (fun x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r => _root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ x) := by
@@ -135,7 +135,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.lact`. Use function extensionality and compare the values at `τ`. Use `show ((γ : Matrix (Fin r) (Fin r) E).map (τ : E →+* ℂ)) * (((δ : Matrix (Fin r) (Fin r) E).map (τ : E →+* ℂ)) * _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ) = (((γ * δ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map (τ : E →+* ℂ)) * _root_.ReciprocityTheory.ChartRestri …`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.map_mul, Units.val_mul]`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lact_lact_eq_lact_mul' (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (γ δ : GL (Fin r) E) (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact δ x) = _root_.ReciprocityTheory.ChartRestriction.G.FD.lact (γ * δ) x := by
@@ -150,7 +150,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.lact`. Use function extensionality and compare the values at `τ`. Use `show (((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map (τ : E →+* ℂ)) * _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ = _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lact_one_apply (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.lact (1 : GL (Fin r) E) x = x := by
@@ -165,43 +165,39 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 
 /- English proof (translation)
-Introduce `hWeier hstat r X la κ P hP hκsum hloc`. Establish `hPnorm` using `hstat.2.2`. Take `⟨ρ, C, hρ, hl⟩` from `hloc`. Take `⟨C₁, hC₁, hC₁b⟩` from `hκsum`. Establish `hsq : ∀ x ∈ X.dom, Summable (fun γ : X.Γ => Real.sqrt (κ (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ.1 x))) ∧ ∑' γ : X.Γ, Real.sqrt (κ (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ.1 x)) ≤ C₁.toReal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hne : ∑' γ : X.Γ, ENNReal.ofReal (Real.sqrt (κ (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ.1 x))) ≠ ⊤` using `((hC₁b x hx).trans_lt hC₁).ne`. Establish `hS` using `ENNReal.summable_toReal hne`. Simplify using `only [ENNReal.toReal_ofReal, Real.sqrt_nonneg] at hS`. Use `⟨hS, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ENNReal.ofReal_le_iff_le_toReal hC₁.ne, ENNReal.ofReal_tsum_of_nonneg (fun _ => Real.sqrt_nonneg _) hS]`. Conclude with `hC₁b x hx`. Establish `horth : ∀ x, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x → ∀ γ : X.Γ, ‖P (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ.1 x)‖ ≤ max C 0 * Real.sqrt (κ (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ.1 x))`. Introduce `x hx γ`. Establish `h` using `(hl _ (isOrth_lact_of_isOrth X γ.2 hx) 0 (by rwa [norm_zero])).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IW.cpt_zero]`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.sqrt_nonneg _))`. Establish `hlocal : ∀ x ∈ X.dom, ∃ t : Set (_root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r), IsOpen t ∧ x ∈ t ∧ t ⊆ X.dom ∧ ∃ u : X.Γ → ℝ, Summable u ∧ ∀ γ : X.Γ, ∀ y ∈ t, ‖(X.χ la γ.1)⁻¹ * P (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ.1 y)‖ ≤ u γ`. Introduce `x hx`. Establish `hb : _root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor X.Ψ r` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf_mem X hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx'o : _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x))` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.ortho_bOf X hx`. Establish `hx'd : _root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x) ∈ X.dom` using `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.dom_rmul X hx hb`. Establish `hc : _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.invF X (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x) ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor X.Ψ r` using `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.invF_mem X hb`. Establish `hxc : x = _root_.ReciprocityTheory.ChartRestriction.G.FD.rmul (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x)) 0) (_root_.ReciprocityTheory.C …`. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IW.cpt_zero, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.rmul_assoc, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.rmul_invF X hb, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.rmul_oneF]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨D⟩` from `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.luData_of _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.lu_holds X _ hx'o`. Establish `huniq` using `D.uniq 0 (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IW.zero_mem_OmF X _ hx'o) _ hc`. Rewrite `huniq` using `[← hxc]`. Establish `hcell : x ∈ _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.cell D` using `⟨hx, huniq.1⟩`. Establish `hmem : _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.cell D ∈ 𝓝 x` using `(_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.isOpen_cell D).mem_nhds hcell`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzc : ContinuousAt D.zOf x` using `(D.hz.differentiableAt hmem).continuousAt`. Establish `hbc : ContinuousAt D.bOf x` using `(D.hb.differentiableAt hmem).continuousAt`. Establish `hchar : ContinuousAt (fun y => _root_.ReciprocityTheory.ChartRestriction.G.FD.bchar la (D.bOf y)) x`. Establish `h` using `continuousAt_bchar_of_ne_zero X la (bchar_ne_zero_of_mem_bor_torus_haar_measure X la hc)`. Rewrite `h` using `[← huniq.2.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `h.comp hbc`. Establish `h1 : ∀ᶠ y in 𝓝 x, ‖D.zOf y‖ < ρ` using `by filter_upwards [hzc.eventually (Metric.ball_mem_nhds (D.zOf x) hρ)] with y hy`. Rewrite `hy` using `[huniq.2.1, dist_zero_right]`. Then use the resulting hypothesis. Establish `h2 : ∀ᶠ y in 𝓝 x, ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.bchar la (D.bOf y)‖ < ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.bchar la (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.invF X (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X …` using `by filter_upwards [hchar.eventually (Metric.ball_mem_nhds _ one_pos)] with y hy`. Rewrite `hy` using `[dist_eq_norm, huniq.2.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Use `norm_sub_norm_le (_root_.ReciprocityTheory.ChartRestriction.G.FD.bchar la (D.bOf y)) (_root_.ReciprocityTheory.ChartRestriction.G.FD.bchar la (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.invF X (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x)) …` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨t, ht, hto, hxt⟩` from `eventually_nhds_iff.1 ((Filter.eventually_of_mem hmem fun y hy => hy).and (h1.and h2))`. Use `⟨t, hto, hxt, fun y hy => (ht y hy).1.1, fun γ => (‖_root_.ReciprocityTheory.ChartRestriction.G.FD.bchar la (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.invF X (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x))‖ + 1) * (max C 0 * Real.sqrt (κ ( …` and prove the remaining obligations. Introduce `γ y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨hyd, hyΔ⟩, hyz, hyb⟩` from `ht y hy`. Take `⟨-, hbB, hsplit⟩` from `D.split y hyd hyΔ`. Establish `hl'` using `hl _ (isOrth_lact_of_isOrth X γ.2 hx'o) (D.zOf y) hyz`. Rewrite `hl'` using `[cpt_lact_eq_lact_cpt]`. Rewrite using `[norm_mul, norm_inv, norm_chi_eq_one_of_mem_gamma X la γ.2, inv_one, one_mul, hsplit, ← rmul_lact_comm, hP.2 _ hl'.1 _ hbB, norm_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_le_mul hyb.le (hl'.2.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.sqrt_nonneg _))) (norm_nonneg _) (by positivity)`. Establish `hsumm : ∀ x ∈ X.dom, Summable fun γ : X.Γ => ‖(X.χ la γ.1)⁻¹ * P (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ.1 x)‖`. Introduce `x hx`. Take `⟨t, -, hxt, -, u, hu, hbd⟩` from `hlocal x hx`. Conclude with `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun γ => hbd γ x hxt) hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff : DifferentiableOn ℂ (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.poin X la P) X.dom`. Introduce `x hx`. Take `⟨t, hto, hxt, htd, u, hu, hbd⟩` from `hlocal x hx`. Establish `h` using `hWeier (_root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) X.Γ t (fun γ y => (X.χ la γ.1)⁻¹ * P (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ.1 y)) u hto (fun γ => ((hP.1.comp (differentiable_lact' X γ.1).differentiableOn (fun y hy => _root_.ReciprocityTheory.Ch …`. Conclude with `((h x hxt).differentiableAt (hto.mem_nhds hxt)).differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hrmul : ∀ x ∈ X.dom, ∀ b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor X.Ψ r, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.poin X la P (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b) = _root_.ReciprocityTheory.ChartRestriction.G.FD.bchar la b * _root_.Recipr …`. Introduce `x hx b hb`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.poin`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← rmul_lact_comm, hP.2 _ (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.dom_lact X γ.2 hx) b hb]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlact : ∀ γ ∈ X.Γ, ∀ x ∈ X.dom, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.poin X la P (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ x) = X.χ la γ * _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.poin X la P x`. Introduce `γ0 hγ0 x hx`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.poin`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← tsum_mul_left]`. Use `conv_rhs => rw [← (Equiv.mulRight (⟨γ0, hγ0⟩ : X.Γ)).tsum_eq]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, Subgroup.coe_mul, Subgroup.coe_mk]`. Rewrite using `[lact_lact_eq_lact_mul', X.χ_mul la γ γ.2 γ0 hγ0, mul_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IC.chi_ne_zero X la hγ0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel₀ h0, one_mul]`. Use `_ = _ := by ring`. Establish `hsec : X.IsSec la (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.poin X la P)` using `⟨hdiff, hrmul, hlact⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hsumm, hsec, max C 0 * C₁.toReal, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hb` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf_mem X hx`. Establish `hinv` using `hPnorm r X la (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.poin X la P) hsec 1 X.Γ.one_mem x hx _ hb`. Rewrite `hinv` using `[lact_one_apply]`. Rewrite using `[← hinv, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IC.pnorm_orth X la _ (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.ortho_bOf X hx)]`.
-
-Establish `hx'd : _root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x) ∈ X.dom` using `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.dom_rmul X hx hb`. Take `⟨hS, hSle⟩` from `hsq _ hx'd`. Establish `hle : ∀ γ : X.Γ, ‖(X.χ la γ.1)⁻¹ * P (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ.1 (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x)))‖ ≤ max C 0 * Real.sqrt (κ (_root_.ReciprocityTheory.Char …`. Introduce `γ`. Rewrite using `[norm_mul, norm_inv, norm_chi_eq_one_of_mem_gamma X la γ.2, inv_one, one_mul]`.
-
-Conclude with `horth _ (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.ortho_bOf X hx) γ`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PoinHol.poin_summable_isBddSec :
     (∀ (H : Type) [NormedAddCommGroup H] [NormedSpace ℂ H] (ι : Type) (U : Set H) (f : ι → H → ℂ) (u : ι → ℝ), IsOpen U → (∀ i, DifferentiableOn ℂ (f i) U) → Summable u → (∀ i, ∀ x ∈ U, ‖f i x‖ ≤ u i) → DifferentiableOn ℂ (fun x => ∑' i, f i x) U) → (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacRmulStatement (E := E) ∧ _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacLactStatement (E := E) ∧ _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.PnormInvStatement (E := E)) → (∀ (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (κ : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℝ) (P : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ), _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsBEq X la P → (∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x ∈ X.dom, ∑' γ : X.Γ, ENNReal.ofReal (Real.sqrt (κ (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ.1 x))) ≤ C) → (∃ ρ C : ℝ, 0 < ρ ∧ ∀ x, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x → ∀ z : _root_.ReciprocityTheory.L2DbarEstimates.V (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X), ‖z‖ < ρ → _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z ∈ X.dom ∧ ‖P (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z)‖ ≤ C * Real.sqrt (κ x)) → (∀ x ∈ X.dom, Summable fun γ : X.Γ => ‖(X.χ la γ.1)⁻¹ * P (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ.1 x)‖) ∧ X.IsBddSec la (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.poin X la P)) := by

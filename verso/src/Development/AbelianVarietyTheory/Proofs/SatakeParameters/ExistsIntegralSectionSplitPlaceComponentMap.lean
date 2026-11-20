@@ -21,21 +21,17 @@ namespace GlobalTheory.SplitComp
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Substitute `hF` using the available equality. Establish `hc : ∀ (a : FiniteAdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)) (x : E), Formalism.IndefR.principalLevelFrame.tensCastR (rfl : maximalRealSubfield E = maximalRealSubfield E) (a ⊗ₜ[maximalRealSubfield E] x) = x ⊗ₜ[maximalRealSubfield E] a` using `fun a x => rfl`. Establish `hp : ∀ (a : FiniteAdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)) (x : E), sp.proj (x ⊗ₜ[maximalRealSubfield E] a) = sp.i x * a sp.v` using `fun a x => rfl`. Use `⟨fun t => singleV (maximalRealSubfield E) sp.v t ⊗ₜ[maximalRealSubfield E] (1 : E), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc, hp, map_one, one_mul]`. Conclude with `RestrictedProduct.single_eq_same _ _ _`. Introduce `t ht`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨singleV (maximalRealSubfield E) sp.v t, ?_, 1, by simp⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Use `show (singleV (maximalRealSubfield E) sp.v t) w ∈ _`. Distinguish the cases in `h : w = sp.v`. Substitute `h` using the available equality. Establish `e : (singleV (maximalRealSubfield E) sp.v t) sp.v = t` using `RestrictedProduct.single_eq_same _ _ _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `ht`. Establish `e : (singleV (maximalRealSubfield E) sp.v t) w = 0` using `RestrictedProduct.single_eq_of_ne _ _ h`. Rewrite using `[e]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, z, rfl⟩` from `hy`. Rewrite using `[hc, hp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `mul_mem ?_ (ha sp.v)` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (sp.split_le_one z)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add, map_add]`.
-
-Conclude with `add_mem hy hz`. Consider the case `neg y _ hy`. Rewrite using `[map_neg, map_neg]`. Conclude with `neg_mem hy`. Introduce `x`.
-
-Rewrite using `[hc, hp]`. Use `show sp.i x * 1 = sp.i x`. Conclude with `mul_one _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integralSection_splitPlace_componentMap_cast {E : Type} [Field E] [NumberField E] [IsCMField E] (F1 : Subfield E)
     (hF : F1 = maximalRealSubfield E) (sp : SplitPlace E) :
@@ -90,9 +86,9 @@ theorem exists_integralSection_splitPlace_componentMap_cast {E : Type} [Field E]
     exact mul_one _
 
 /- English proof (translation)
-Introduce `D sp hF`. Take `⟨sec, h1, h2, h3, h4⟩` from `exists_integralSection_splitPlace_componentMap_cast D.host.F hF sp`. Use `⟨sec, h1, h2, h3, fun x => ?_⟩` and prove the remaining obligations. Establish `e : Formalism.L2.Theta.finPart D (Formalism.L2.Theta.incA D x) = (1 : Af D.host.F) ⊗ₜ[D.host.F] x`. Simplify using `[Formalism.L2.Theta.finPart, Formalism.L2.Theta.incA, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR, Algebra.TensorProduct.map_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `h4 x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_tensCast_section : ∀ (D : D7) (sp : SplitPlace D.host.E) (hF : D.host.F = maximalRealSubfield D.host.E),
     ∃ sec : sp.v.adicCompletion (maximalRealSubfield D.host.E) → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E,

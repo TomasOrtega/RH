@@ -12,21 +12,21 @@ namespace GlobalTheory.IsoRes
 variable {XG XT Pb : Scheme.{0}} {LG : LB XG} {LT : LB XT} {c : Pb ⟶ XG} {g : Pb ⟶ XT} {gi : XT ⟶ Pb}
 
 /- English proof (translation)
-Simplify using `only [Scheme.Hom.comp_base, TopCat.hom_comp, ContinuousMap.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comp_pt {A B C : Scheme.{0}} (f : A ⟶ B) (h : B ⟶ C) (x : A) : (f ≫ h) x = h (f x) := by
   simp only [Scheme.Hom.comp_base, TopCat.hom_comp, ContinuousMap.comp_apply]
 
 /- English proof (translation)
-Rewrite using `[← comp_pt, hgi]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sec_apply (hgi : gi ≫ g = 𝟙 XT) (x : XT) : g (gi x) = x := by
   rw [← comp_pt, hgi]; rfl
 
 /- English proof (translation)
-Introduce `x hx`. Use `⟨mem_pull.2 ?_, mem_pull.2 ?_⟩` and prove the remaining obligations. Use `mem_pull.1 hx.1` as an intermediate fact. Rewrite `this` using `[comp_pt]`. Then use the resulting hypothesis. Rewrite using `[sec_apply hgi]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx.2`.
+A detailed English derivation is pending.
 -/
 theorem chart_le (hgi : gi ≫ g = 𝟙 XT) (J : PUnit → LG.ι) (k : LT.ι) :
     (LG.pull (gi ≫ c)).U J ⊓ LT.U k ≤ gi ⁻¹ᵁ ((LG.pull c).U J ⊓ (LT.pull g).U (fun _ => k)) := by
@@ -40,11 +40,11 @@ def resIso (hgi : gi ≫ g = 𝟙 XT) (w₀ : LB.Iso (LT.pull g) (LG.pull c)) : 
   s := fun p => res (chart_le hgi p.1 p.2) (pullU gi _ (w₀.s (p.1, fun _ => p.2)))
 
 /- English proof (translation)
-Distinguish the cases in `h : r z ∈ (LG.pull (gi ≫ c)).U (fun _ => j) ⊓ LT.U k`. Establish `h' : gi (r z) ∈ (LG.pull c).U (fun _ => j) ⊓ (LT.pull g).U (fun _ => k)` using `chart_le hgi _ _ h`. Conclude with `(gm_res r z _ h _).trans (gm_pull r gi z _ h' _)`. Establish `h' : ¬ (r ≫ gi) z ∈ (LG.pull c).U (fun _ => j) ⊓ (LT.pull g).U (fun _ => k)`. Introduce `hm`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Rewrite `hm` using `[comp_pt]`. Use `⟨mem_pull.2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[comp_pt]`. Conclude with `mem_pull.1 hm.1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `mem_pull.1 hm.2` as an intermediate fact. Rewrite `this` using `[sec_apply hgi]`. Then use the resulting hypothesis. Use `show gm r z _ _ = gm (r ≫ gi) z _ _`. Rewrite using `[gm, gm, dif_neg h, dif_neg h']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gw_resIso (hgi : gi ≫ g = 𝟙 XT) (w₀ : LB.Iso (LT.pull g) (LG.pull c)) {Z : Scheme.{0}} (r : Z ⟶ XT) (z : Z)
     (j : LG.ι) (k : LT.ι) : gw (resIso hgi w₀) r z j k = gw w₀ (r ≫ gi) z j (fun _ => k) := by
@@ -63,11 +63,11 @@ theorem gw_resIso (hgi : gi ≫ g = 𝟙 XT) (w₀ : LB.Iso (LT.pull g) (LG.pull
     rw [gm, gm, dif_neg h, dif_neg h']; rfl
 
 /- English proof (translation)
-Introduce `Y f y j j' k k' hj hj' hk hk'`. Rewrite using `[gw_resIso, gw_resIso]`. Rewrite `hj`, `hj'` using `[comp_pt]`. Establish `hj0 : c ((f ≫ gi) y) ∈ LG.U j` using `by rw [comp_pt]; exact hj`. Establish `hj0' : c ((f ≫ gi) y) ∈ LG.U j'` using `by rw [comp_pt]; exact hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0 : (f ≫ gi) y ∈ (LT.pull g).U (fun _ => k)` using `mem_pull.2 (by rw [comp_pt, sec_apply hgi]; exact hk)`. Establish `hk0' : (f ≫ gi) y ∈ (LT.pull g).U (fun _ => k')` using `mem_pull.2 (by rw [comp_pt, sec_apply hgi]; exact hk')`. Establish `e` using `hw₀ Y (f ≫ gi) y j j' (fun _ => k) (fun _ => k') hj0 hj0' hk0 hk0'`. Establish `e2 : gm (f ≫ gi) y ((LT.pull g).U (fun _ => k) ⊓ (LT.pull g).U (fun _ => k')) ((LT.pull g).g (fun _ => k) (fun _ => k')) = gm f y _ (LT.g k k')` using `by show gm (f ≫ gi) y _ (∏ _k : PUnit, (res _ (pullU g _ (LT.g k k'))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(gm_res (f ≫ gi) y _ (show (f ≫ gi) y ∈ (LT.pull g).U (fun _ => k) ⊓ (LT.pull g).U (fun _ => k') from ⟨hk0, hk0'⟩) _).trans ((gm_pull (f ≫ gi) g y (LT.U k ⊓ LT.U k') ⟨mem_pull.1 hk0, mem_pull.1 hk0'⟩ _).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, hgi, Category.comp_id]`. Rewrite using `[e, e2, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem resIso_pgen (hgi : gi ≫ g = 𝟙 XT) (w₀ : LB.Iso (LT.pull g) (LG.pull c)) (hw₀ : PGen w₀) :
     PGen (resIso hgi w₀) := by
@@ -90,7 +90,7 @@ theorem resIso_pgen (hgi : gi ≫ g = 𝟙 XT) (w₀ : LB.Iso (LT.pull g) (LG.pu
   rw [e, e2, Category.assoc]
 
 /- English proof (translation)
-Introduce `XG XT Pb LG LT hG hT c g gi hgi w₀ hw₀`. Conclude with `⟨resIso hgi w₀, (isGen_iff _).2 (resIso_pgen hgi w₀ ((isGen_iff _).1 hw₀)), fun Z r z j k => gw_resIso hgi w₀ r z j k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_iso_restrict : ∀ {XG XT Pb : Scheme.{0}} {LG : LB XG} {LT : LB XT} (hG : LG.IsLB) (hT : LT.IsLB) {c : Pb ⟶ XG} {g : Pb ⟶ XT} {gi : XT ⟶ Pb} (hgi : gi ≫ g = 𝟙 XT) (w₀ : LB.Iso (LT.pull g) (LG.pull c)) (hw₀ : w₀.IsGen), ∃ w : LB.Iso LT (LG.pull (gi ≫ c)), w.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ XT) (z : Z) (j : LG.ι) (k : LT.ι), gw w r z j k = gw w₀ (r ≫ gi) z j (fun _ => k) := by
   intro XG XT Pb LG LT hG hT c g gi hgi w₀ hw₀

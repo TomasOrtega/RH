@@ -7,25 +7,27 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace UpperTheory.V.Z.Kato.Joint
 
 /- English proof (translation)
-Introduce `l _ ι N χ χd hχ`. Establish `hinj : ∀ x y : ℤ_[l], ι (algebraMap ℚ_[l] (Qbar l) (x : ℚ_[l])) = ι (algebraMap ℚ_[l] (Qbar l) (y : ℚ_[l])) → x = y`. Introduce `x y h`. Conclude with `PadicInt.ext ((algebraMap ℚ_[l] (Qbar l)).injective (ι.injective h))`. Establish `hF1 : ι (algebraMap ℚ_[l] (Qbar l) ((1 : ℤ_[l]) : ℚ_[l])) = 1` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFm : ∀ x y : ℤ_[l], ι (algebraMap ℚ_[l] (Qbar l) ((x * y : ℤ_[l]) : ℚ_[l])) = ι (algebraMap ℚ_[l] (Qbar l) (x : ℚ_[l])) * ι (algebraMap ℚ_[l] (Qbar l) (y : ℚ_[l]))`. Introduce `x y`. Simplify using the standard rewrite rules. Establish `hFp : ∀ (x : ℤ_[l]) (k : ℕ), ι (algebraMap ℚ_[l] (Qbar l) ((x ^ k : ℤ_[l]) : ℚ_[l])) = ι (algebraMap ℚ_[l] (Qbar l) (x : ℚ_[l])) ^ k`. Introduce `x k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hcop : ∀ a : ℕ, a.Coprime N ↔ (a % N).Coprime N`. Introduce `a`. Rewrite using `[Nat.Coprime, Nat.Coprime, Nat.gcd_comm a N, Nat.gcd_rec]`. Use `⟨fun d => if d.Coprime N then χd d else 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd dsimp only`. Rewrite using `[if_pos hd]`. Introduce `d hd dsimp only`. Rewrite using `[if_pos hd]`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Substitute `hN` using the available equality. Establish `hd1 : d = 1` using `Nat.coprime_zero_right d |>.1 hd`. Substitute `hd1` using the available equality. Establish `h1 : χd 1 = 1` using `hinj _ _ (by rw [hχ 1 hd, hF1]; simp)`. Rewrite using `[h1]`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `isUnit_one`. Establish `hk : (χd d) ^ Nat.totient N = 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hFp, hχ d hd, hF1, ← map_pow, ← Nat.cast_pow, (ZMod.natCast_eq_natCast_iff _ _ _).2 (Nat.ModEq.pow_totient hd), Nat.cast_one, map_one]`. Conclude with `IsUnit.of_pow_eq_one hk (Nat.totient_pos.2 hN).ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b dsimp only`. Distinguish the cases in `ha : a.Coprime N`. Distinguish the cases in `hb : b.Coprime N`. Establish `hab : (a * b).Coprime N` using `Nat.Coprime.mul ha hb`. Rewrite using `[if_pos hab, if_pos ha, if_pos hb]`.
+Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[hFm, hχ _ hab, hχ _ ha, hχ _ hb, Nat.cast_mul, map_mul]`. Establish `hab : ¬ (a * b).Coprime N` using `fun h => hb (Nat.Coprime.coprime_mul_left h)`. Rewrite using `[if_neg hab, if_neg hb, mul_zero]`. Establish `hab : ¬ (a * b).Coprime N` using `fun h => ha (Nat.Coprime.coprime_mul_right h)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg hab, if_neg ha, zero_mul]`. Introduce `a b hab dsimp only`. Establish `hiff : a.Coprime N ↔ b.Coprime N` using `by rw [hcop a, hcop b, hab]`. Distinguish the cases in `ha : a.Coprime N`. Establish `hb : b.Coprime N` using `hiff.1 ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos ha, if_pos hb]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hχ _ ha, hχ _ hb, (ZMod.natCast_eq_natCast_iff' a b N).2 hab]`. Establish `hb : ¬ b.Coprime N` using `fun h => ha (hiff.2 h)`. Rewrite using `[if_neg ha, if_neg hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
+
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiFix : ChiFix := by
   intro l _ ι N χ χd hχ

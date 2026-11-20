@@ -9,11 +9,11 @@ noncomputable section
 attribute [local instance] Classical.propDecidable
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h1 : ∀ a ∈ range n, ∏ b ∈ range (n + 1), f (min a b) = (∏ b ∈ range n, f (min a b)) * f a`. Introduce `a ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[prod_range_succ, min_eq_left (le_of_lt (mem_range.mp ha))]`. Establish `h2 : ∏ b ∈ range (n + 1), f (min n b) = (∏ b ∈ range n, f b) * f n`. Rewrite using `[prod_range_succ, min_self]`. Use `congr 1`. Conclude with `prod_congr rfl fun b hb => by rw [min_eq_right (le_of_lt (mem_range.mp hb))]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_range_succ (fun a => ∏ b ∈ range (n + 1), f (min a b)) n, prod_congr rfl h1, prod_mul_distrib, ih, h2, prod_range_succ (fun i => (∏ k ∈ range i, f k) ^ 2) n, prod_range_succ f n]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma prod_min_range (f : ℕ → ℝ) (n : ℕ) :
     ∏ a ∈ range n, ∏ b ∈ range n, f (min a b) = (∏ i ∈ range n, (∏ k ∈ range i, f k) ^ 2) * ∏ k ∈ range n, f k := by
@@ -34,7 +34,7 @@ lemma prod_min_range (f : ℕ → ℝ) (n : ℕ) :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single k]`. Introduce `j _ hjk`. Break down `lt_or_gt_of_ne hjk with h | h` into its components or cases. Rewrite using `[hA h, zero_mul]`. Rewrite using `[hB h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -48,9 +48,9 @@ lemma upper_mul_diag {A B : Matrix (Fin r) (Fin r) ℂ} (hA : A.BlockTriangular 
   · simp
 
 /- English proof (translation)
-Establish `h1 : mat (bOf X y) τ k k = uOf X y τ k k * sOf X y τ k` using `by show (uOf X y τ * Matrix.diagonal (sOf X y τ)) k k = _`. Rewrite using `[Matrix.mul_diagonal]`. Rewrite using `[h1]`. Establish `h2 : uOf X y τ k k = 1` using `by show uMat _ k k = 1`. Unfold `uMat`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using the standard rewrite rules. Rewrite using `[h2, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma bOf_diag (y : Frame X.Ψ r) (τ : X.Ψ) (k : Fin r) : mat (bOf X y) τ k k = sOf X y τ k := by
   have h1 : mat (bOf X y) τ k k = uOf X y τ k k * sOf X y τ k := by
@@ -64,9 +64,9 @@ lemma bOf_diag (y : Frame X.Ψ r) (τ : X.Ψ) (k : Fin r) : mat (bOf X y) τ k k
   rw [h2, one_mul]
 
 /- English proof (translation)
-Establish `hinv : β0 X y τ * mat (bOf X y) τ = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (bOf_det X hy τ))`. Establish `h1` using `congrFun (congrFun hinv k) k`. Rewrite `h1` using `[upper_mul_diag (β0_upper X hy τ) (upper_of_bor X (bOf_mem X hy) τ), bOf_diag, Matrix.one_apply_eq]`. Establish `hpos` using `abs_re_pos X hy τ k`. Establish `hs : Complex.normSq (sOf X y τ k) = |(dOf X y τ k).re|⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sOf, Complex.normSq_ofReal, ← pow_two, inv_pow, Real.sq_sqrt (abs_nonneg _)]`. Establish `h2` using `congrArg Complex.normSq h1`. Rewrite `h2` using `[Complex.normSq_mul, hs, map_one]`. Clear denominators, using `at h2` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma normSq_β0_diag {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) (k : Fin r) :
     Complex.normSq (β0 X y τ k k) = |(dOf X y τ k).re| := by
@@ -87,9 +87,9 @@ def δ (y : Frame X.Ψ r) (τ : X.Ψ) (k : Fin r) : ℝ := |(dOf X y τ k).re|
 def fδ (y : Frame X.Ψ r) (τ : X.Ψ) (k : ℕ) : ℝ := if h : k < r then δ X y τ ⟨k, h⟩ else 1
 
 /- English proof (translation)
-Rewrite using `[det_Lβ _ (β0_upper X hy), jacβ, map_prod, map_prod]`. Rewrite using `[← Fintype.prod_subtype_mul_prod_subtype (fun i : Ix X.Ψ r => i.2.2 < i.2.1) (fun i => δ X y i.1 (min i.2.1 i.2.2))]`. Rewrite using `[← Fintype.prod_subtype_mul_prod_subtype (fun i : Ix X.Ψ r => i.2.2 < i.2.1) (fun i => Complex.normSq (if i.2.2 < i.2.1 then β0 X y i.1 i.2.2 i.2.2 else 1))]`. Establish `e1 : ∏ i : UpI X.Ψ r, Complex.normSq (β0 X y i.1.1 i.1.2.1 i.1.2.1) = ∏ i : {i : Ix X.Ψ r // ¬ i.2.2 < i.2.1}, δ X y i.1.1 (min i.1.2.1 i.1.2.2)` using `Finset.prod_congr rfl fun i _ => by rw [normSq_β0_diag X hy, min_eq_left (not_lt.1 i.2)]; rfl`. Establish `e2 : ∏ i : {i : Ix X.Ψ r // ¬ i.2.2 < i.2.1}, Complex.normSq (if i.1.2.2 < i.1.2.1 then β0 X y i.1.1 i.1.2.2 i.1.2.2 else 1) = 1` using `Finset.prod_eq_one fun i _ => by rw [if_neg i.2, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ∏ i : {i : Ix X.Ψ r // i.2.2 < i.2.1}, Complex.normSq (if i.1.2.2 < i.1.2.1 then β0 X y i.1.1 i.1.2.2 i.1.2.2 else 1) = ∏ i : {i : Ix X.Ψ r // i.2.2 < i.2.1}, δ X y i.1.1 (min i.1.2.1 i.1.2.2)` using `Finset.prod_congr rfl fun i _ => by rw [if_pos i.2, normSq_β0_diag X hy, min_eq_right i.2.le]; rfl`. Rewrite using `[e1, e2, e3, mul_one, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma normSq_det_jac {y : Frame X.Ψ r} (hy : y ∈ X.dom) :
     Complex.normSq (LinearMap.det (Lβ (β0 X y))) * Complex.normSq (jacβ (β0 X y)) =
@@ -112,9 +112,9 @@ lemma normSq_det_jac {y : Frame X.Ψ r} (hy : y ∈ X.dom) :
   rw [e1, e2, e3, mul_one, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[dmin_prod X hy τ i, norm_prod, ← Fin.prod_univ_eq_prod_range (fδ X y τ)]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hj : (j : ℕ) < r` using `lt_of_lt_of_le j.isLt (Nat.le_of_lt_succ i.isLt)`. Rewrite using `[fδ, dif_pos hj, δ]`. Establish `hre` using `dOf_real X hy τ (Fin.castLE (Nat.le_of_lt_succ i.isLt) j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Fin.castLE (Nat.le_of_lt_succ i.isLt) j = (⟨j, hj⟩ : Fin r)` using `Fin.ext rfl`. Rewrite `hre`, the goal using `[hc]`. Conclude with `(Complex.abs_re_eq_norm.2 hre).symm`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_dmin {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) (i : Fin (r + 1)) :
     ‖dmin X.Gm y τ i‖ = ∏ k ∈ range i, fδ X y τ k := by
@@ -128,15 +128,15 @@ lemma norm_dmin {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) (i : Fin (r + 
   exact (Complex.abs_re_eq_norm.2 hre).symm
 
 /- English proof (translation)
-Establish `hτ : ∀ τ : X.Ψ, ∏ a : Fin r, ∏ b : Fin r, δ X y τ (min a b) = ∏ i : Fin r, ‖dmin X.Gm y τ i.castSucc‖ ^ 2`. Introduce `τ`. Establish `hp` using `prod_min_range (fδ X y τ) r`. Establish `hl : ∏ k ∈ range r, fδ X y τ k = 1`. Establish `h1` using `norm_dmin X hy τ (Fin.last r)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hlast τ, Fin.val_last]`. Conclude with `h1.symm`. Rewrite `hp` using `[hl, mul_one]`. Establish `hd : ∀ i : Fin r, ‖dmin X.Gm y τ i.castSucc‖ = ∏ k ∈ range (i : ℕ), fδ X y τ k`. Introduce `i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_dmin X hy τ i.castSucc, Fin.coe_castSucc]`. Establish `e1 : ∀ a b : Fin r, δ X y τ (min a b) = fδ X y τ (min (a : ℕ) (b : ℕ))`. Introduce `a b`. Unfold `fδ`. Rewrite using `[dif_pos (min_lt_of_left_lt a.isLt)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [hd, e1]`. Simplify using `only [Finset.prod_range] at hp ⊢`. Conclude with `hp`. Rewrite using `[normSq_det_jac X hy]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `Ix`. Simplify using `only [Fintype.prod_prod_type]`. Conclude with `Finset.prod_congr rfl fun τ _ => hτ τ`.
+A detailed English derivation is pending.
 -/
 theorem exponent_identity {y : Frame X.Ψ r} (hy : y ∈ X.dom) (hlast : ∀ τ, ‖dmin X.Gm y τ (Fin.last r)‖ = 1) :
     Complex.normSq (LinearMap.det (Lβ (β0 X y))) * Complex.normSq (jacβ (β0 X y)) =

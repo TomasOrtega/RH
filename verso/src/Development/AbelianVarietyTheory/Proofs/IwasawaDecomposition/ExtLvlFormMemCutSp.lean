@@ -17,9 +17,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {S : CSD K} {G₀ : T
   {act : Representation K G₀ S.Forms} {P : Subgroup G₀} {ψ : P →* Kˣ}
 
 /- English proof (translation)
-Establish `h1 : (S.lvlE act P ψ).mulVec x ∈ LinearMap.range (imE (S.gaMat act (lvlIdem P ψ))).mulVecLin` using `⟨x, rfl⟩`. Rewrite `h1` using `[(image_idempotent_spec K S.dim (S.gaMat act (lvlIdem P ψ))).2, level_part_spec K S G₀ act P ψ]`. Establish `hz : (S.actMat act (p : G₀)).mulVec ((S.lvlE act P ψ).mulVec x) = ((ψ p : Kˣ) : K) • (S.lvlE act P ψ).mulVec x` using `h1 p`. Establish `h4` using `S.I_actMat act (p : G₀) ((S.lvlE act P ψ).mulVec x)`. Rewrite `h4` using `[hz, map_smul, CSD.I_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((act (p : G₀) (S.basis.equivFun.symm ((S.lvlE act P ψ).mulVec x)) : S.Forms) : S.Cl → S.V) = _`. Rewrite using `[← h4]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lvlForm_eig (x : Fin (S.lvlDim act P ψ) → K) (p : P) :
     act (p : G₀) (lvlForm S act P ψ x) = ((ψ p : Kˣ) : K) • lvlForm S act P ψ x := by
@@ -35,13 +35,13 @@ theorem lvlForm_eig (x : Fin (S.lvlDim act P ψ) → K) (p : P) :
   rfl
 
 /- English proof (translation)
-Establish `hI : Function.Injective S.I`. Introduce `a b h`. Rewrite `h` using `[CSD.I_apply, CSD.I_apply]`. Conclude with `S.basis.equivFun.symm.injective (Subtype.ext h)`. Establish `hzf : S.basis.equivFun.symm (S.basis.equivFun f) = f` using `S.basis.equivFun.symm_apply_apply f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ p : P, (S.actMat act (p : G₀)).mulVec (S.basis.equivFun f) = ((ψ p : Kˣ) : K) • S.basis.equivFun f`. Introduce `p`. Apply `hI` to reduce the goal to its premises. Rewrite using `[S.I_actMat act (p : G₀) _, map_smul, CSD.I_apply, hzf, hf p]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1 : S.basis.equivFun f ∈ LinearMap.range (imE (S.gaMat act (lvlIdem P ψ))).mulVecLin`. Rewrite using `[(image_idempotent_spec K S.dim (S.gaMat act (lvlIdem P ψ))).2, level_part_spec K S G₀ act P ψ]`. Conclude with `hz`. Take `⟨x, hx⟩` from `h1`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : (S.lvlE act P ψ).mulVec x = S.basis.equivFun f` using `hx`. Use `show S.basis.equivFun.symm ((S.lvlE act P ψ).mulVec x) = f`. Rewrite using `[hx', hzf]`.
+A detailed English derivation is pending.
 -/
 theorem exists_lvlForm (f : S.Forms) (hf : ∀ p : P, act (p : G₀) f = ((ψ p : Kˣ) : K) • f) :
     ∃ x, lvlForm S act P ψ x = f := by
@@ -75,7 +75,7 @@ Both sides reduce to the same expression.
 theorem lvlFormL_apply (x : Fin (S.lvlDim act P ψ) → K) : lvlFormL S act P ψ x = lvlForm S act P ψ x := rfl
 
 /- English proof (translation)
-Simplify using `only [lvlForm, Module.Basis.equivFun_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lvlForm_eq_sum (x : Fin (S.lvlDim act P ψ) → K) :
     lvlForm S act P ψ x = ∑ i, ((S.lvlE act P ψ).mulVec x) i • S.basis i := by
@@ -87,9 +87,9 @@ def lvlAvgF (act : Representation K G₀ S.Forms) (P : Subgroup G₀) (ψ : P �
   ∑ p : P, ((Nat.card P : K)⁻¹ * ((ψ p⁻¹ : Kˣ) : K)) • act (p : G₀) f
 
 /- English proof (translation)
-Unfold `lvlAvgF`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft q) _ _ fun p => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← Module.End.mul_apply, ← map_mul, Equiv.coe_mulLeft, smul_smul, Subgroup.coe_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hq : ((ψ q : Kˣ) : K) ≠ 0` using `Units.ne_zero _`. Simplify using `only [mul_inv_rev, map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem lvlAvgF_eig (f : S.Forms) (q : P) :
     act (q : G₀) (lvlAvgF act P ψ f) = ((ψ q : Kˣ) : K) • lvlAvgF act P ψ f := by
@@ -104,7 +104,7 @@ theorem lvlAvgF_eig (f : S.Forms) (q : P) :
   field_simp
 
 /- English proof (translation)
-The claim follows from `exists_lvlForm _ (lvlAvgF_eig f)`.
+A detailed English derivation is pending.
 -/
 theorem exists_lvlForm_avg (f : S.Forms) : ∃ x, lvlForm S act P ψ x = lvlAvgF act P ψ f :=
   exists_lvlForm _ (lvlAvgF_eig f)
@@ -125,7 +125,7 @@ def cutAvgL {Q : Subgroup G} (ch : Q →* ℂˣ) (red : Q →* G₀) (hred : Fun
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [cutAvgL, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, LinearMap.funLeft_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cutAvgL_apply {Q : Subgroup G} (ch : Q →* ℂˣ) (red : Q →* G₀) (hred : Function.Surjective red)
     (σ : K →+* ℂ) (P : Subgroup G₀) (ψ : P →* Kˣ) (F : G → W) (h : G) :
@@ -148,9 +148,9 @@ variable {G Γ W K : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerPro
   {act : Representation K G₀ S.Forms} (tie : Bridge.ActTie ι pres Q ch act) (P : Subgroup G₀) (ψ : P →* Kˣ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Rewrite using `[cutAvgL_apply, ← Bridge.ClassPres.extL_apply pres (lvlAvgF act P ψ f)]`. Unfold `lvlAvgF`. Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smulₛₗ, Bridge.ClassPres.extL_apply, tie.act_eq (p : G₀) _ (tie.red_surj (p : G₀)).choose_spec f, Pi.smul_apply, Bridge.g0Act, mul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cutAvgL_ext (f : S.Forms) :
     cutAvgL ch tie.red tie.red_surj σ P ψ W (pres.ext f.1) = pres.ext (lvlAvgF act P ψ f).1 := by
@@ -164,13 +164,13 @@ theorem cutAvgL_ext (f : S.Forms) :
     tie.act_eq (p : G₀) _ (tie.red_surj (p : G₀)).choose_spec f, Pi.smul_apply, Bridge.g0Act, mul_smul]
 
 /- English proof (translation)
-Establish `hF2` using `(Submodule.mem_inf.1 hF).2`. Establish `hF2' : ∀ (κ : Q) (hκ : tie.red κ ∈ P) (h : G), F (h * κ) = ((ch κ * ((Units.map σ.toMonoidHom).comp ψ) ⟨tie.red κ, hκ⟩ : ℂˣ) : ℂ) • F h` using `hF2`. Use function extensionality and compare the values at `h`. Rewrite using `[cutAvgL_apply]`. Establish `key : ∀ p : P, (σ ((Nat.card P : K)⁻¹ * ((ψ p⁻¹ : Kˣ) : K)) * (((ch (tie.red_surj (p : G₀)).choose)⁻¹ : ℂˣ) : ℂ)) • F (h * ((tie.red_surj (p : G₀)).choose : G)) = ((Nat.card P : ℂ))⁻¹ • F h`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p`. Establish `hs` using `(tie.red_surj (p : G₀)).choose_spec`. Establish `hm : tie.red (tie.red_surj (p : G₀)).choose ∈ P` using `by rw [hs]; exact p.2`. Establish `hp : (⟨tie.red (tie.red_surj (p : G₀)).choose, hm⟩ : P) = p` using `Subtype.ext hs`. Rewrite using `[hF2' _ hm h, hp, smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h1 : ((ch (tie.red_surj (p : G₀)).choose : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `h2 : σ ((ψ p : Kˣ) : K) ≠ 0` using `(map_ne_zero σ).2 (Units.ne_zero _)`. Simplify using `only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, Units.val_mul, map_inv, Units.val_inv_eq_inv_val, map_mul, map_inv₀, map_natCast, RingHom.toMonoidHom_eq_coe]`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[Finset.sum_congr rfl fun p _ => key p, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 Nat.card_pos.ne'), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cutAvgL_of_mem {F : G → W}
     (hF : F ∈ cutSp ι ρ J χ Q ch tie.red P ((Units.map σ.toMonoidHom).comp ψ)) :
@@ -199,9 +199,9 @@ theorem cutAvgL_of_mem {F : G → W}
     ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 Nat.card_pos.ne'), one_smul]
 
 /- English proof (translation)
-Establish `hx : x = ∑ a, x a • (Pi.single a (1 : K) : Fin (S.lvlDim act P ψ) → K)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `e : pres.ext (lvlForm S act P ψ x).1 = ∑ a, σ (x a) • pres.ext (lvlForm S act P ψ (Pi.single a 1)).1`. Rewrite using `[← lvlFormL_apply, ← Bridge.ClassPres.extL_apply, hx, map_sum, map_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smulₛₗ, Bridge.ClassPres.extL_apply, lvlFormL_apply]`. Simplify using `[Pi.single_apply]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_lvlForm_mem_span (x : Fin (S.lvlDim act P ψ) → K) :
     pres.ext (lvlForm S act P ψ x).1 ∈
@@ -219,9 +219,9 @@ theorem ext_lvlForm_mem_span (x : Fin (S.lvlDim act P ψ) → K) :
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Use `Submodule.mem_inf.2 ⟨Bridge.ClassPres.extMem_holds pres _, ?_⟩` and prove the remaining obligations. Introduce `κ hκ h`. Establish `e1` using `tie.act_eq (tie.red κ) κ rfl (lvlForm S act P ψ x)`. Establish `e2 : act (tie.red κ) (lvlForm S act P ψ x) = ((ψ ⟨tie.red κ, hκ⟩ : Kˣ) : K) • lvlForm S act P ψ x` using `lvlForm_eig x ⟨tie.red κ, hκ⟩`. Rewrite `e1` using `[e2, ← Bridge.ClassPres.extL_apply, map_smulₛₗ, Bridge.ClassPres.extL_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3` using `congrFun e1 h`. Simplify using `only [Pi.smul_apply, Bridge.g0Act] at e3`. Establish `h1 : ((ch κ : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Simplify using `only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, Units.val_mul, RingHom.id_apply, RingHom.toMonoidHom_eq_coe]`. Rewrite using `[mul_smul, e3, smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_lvlForm_mem_cutSp (x : Fin (S.lvlDim act P ψ) → K) :
     pres.ext (lvlForm S act P ψ x).1 ∈ cutSp ι ρ J χ Q ch tie.red P ((Units.map σ.toMonoidHom).comp ψ) := by
@@ -252,7 +252,7 @@ variable {G Γ W K : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerPro
   {act : Representation K G₀ S.Forms} (tie : Bridge.ActTie ι pres Q ch act) (P : Subgroup G₀) (ψ : P →* Kˣ)
 
 /- English proof (translation)
-Rewrite using `[← Bridge.ClassPres.extL_apply, lvlForm_eq_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, Bridge.ClassPres.extL_apply]`. Simplify using `[Matrix.mulVec_single_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ext_lvlForm_single (a : Fin (S.lvlDim act P ψ)) :
     pres.ext (lvlForm S act P ψ (Pi.single a 1)).1 = ∑ i, σ (S.lvlE act P ψ i a) • pres.ext (S.basis i).1 := by
@@ -262,17 +262,17 @@ theorem ext_lvlForm_single (a : Fin (S.lvlDim act P ψ)) :
   simp [Matrix.mulVec_single_one]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hb` using `Fintype.linearIndependent_iff.1 (Bridge.ClassPres.linInd pres)`. Establish `hsum : ∑ i, (∑ a, g a * σ (S.lvlE act P ψ i a)) • pres.extL (S.basis i) = 0`. Establish `e : ∑ i, (∑ a, g a * σ (S.lvlE act P ψ i a)) • pres.extL (S.basis i) = ∑ a, g a • pres.ext (lvlForm S act P ψ (Pi.single a 1)).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ext_lvlForm_single, Finset.smul_sum, smul_smul, Bridge.ClassPres.extL_apply, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Rewrite using `[e, hg]`. Establish `hc : ((S.lvlE act P ψ).map σ).mulVec g = 0`. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `hb _ hsum i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Pi.zero_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Establish `hinj : Function.Injective (S.lvlE act P ψ).mulVec` using `(image_idempotent_spec K S.dim (S.gaMat act (lvlIdem P ψ))).1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨gl, hgl⟩` from `LinearMap.exists_leftInverse_of_injective (S.lvlE act P ψ).mulVecLin (LinearMap.ker_eq_bot.2 hinj)`. Establish `hLE : LinearMap.toMatrix' gl * S.lvlE act P ψ = 1`. Use `congrArg LinearMap.toMatrix' hgl` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis. Establish `hLE' : (LinearMap.toMatrix' gl).map σ * (S.lvlE act P ψ).map σ = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, hLE, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Establish `h0 : g = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hLE', Matrix.one_mulVec]`. Use `_ = 0 := by rw [← Matrix.mulVec_mulVec, hc, Matrix.mulVec_zero]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `a`. Rewrite using `[h0]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem lvlForm_linInd : LinearIndependent ℂ fun a => pres.ext (lvlForm S act P ψ (Pi.single a 1)).1 := by
   classical
@@ -309,13 +309,11 @@ theorem lvlForm_linInd : LinearIndependent ℂ fun a => pres.ext (lvlForm S act 
   rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `ext_lvlForm_mem_cutSp pres tie P ψ _`. Introduce `F hF`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hFA : F ∈ Submodule.span ℂ (Set.range pres.extL)`. Rewrite using `[Bridge.ClassPres.span_eq]`. Conclude with `(Submodule.mem_inf.1 hF).1`. Establish `hle : Submodule.span ℂ (Set.range pres.extL) ≤ (Submodule.span ℂ (Set.range fun a => pres.ext (lvlForm S act P ψ (Pi.single a 1)).1)).comap (cutAvgL ch tie.red tie.red_surj σ P ψ W)`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨f, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, Bridge.ClassPres.extL_apply, cutAvgL_ext pres tie P ψ f]`. Take `⟨x, hx⟩` from `exists_lvlForm_avg (act := act) (P := P) (ψ := ψ) f`. Rewrite using `[← hx]`. Conclude with `ext_lvlForm_mem_span pres P ψ x`.
-
-Use `hle hFA` as an intermediate fact. Rewrite `this` using `[Submodule.mem_comap, cutAvgL_of_mem pres tie P ψ hF]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lvlForm_span :
     Submodule.span ℂ (Set.range fun a => pres.ext (lvlForm S act P ψ (Pi.single a 1)).1) =
@@ -341,11 +339,11 @@ theorem lvlForm_span :
     rwa [Submodule.mem_comap, cutAvgL_of_mem pres tie P ψ hF] at this
 
 /- English proof (translation)
-Use `choose f0 hf0 using hv`. Establish `hA` using `(Submodule.mem_inf.1 hF).1`. Establish `hfix : ∀ c (g : S.Gam c), S.ρ c g (f0 c) = f0 c`. Introduce `c g`. Establish `e : pres.coef (S.ρ c g (f0 c) - f0 c) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, pres.coef_act, hf0, Bridge.ClassPres.adForms_fixed pres hA c g, sub_self]`. Conclude with `sub_eq_zero.1 (Bridge.ClassPres.coef_inj pres e)`. Set `f : S.Forms` to `⟨f0, hfix⟩`. Establish `hFf : F = pres.ext f.1`. Use `Bridge.ClassPres.adForms_ext pres hA (Bridge.ClassPres.extMem_holds pres f) fun c => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Bridge.ClassPres.ext_rep]`. Conclude with `(hf0 c).symm`. Take `⟨x, hx⟩` from `exists_lvlForm_avg (act := act) (P := P) (ψ := ψ) f`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, ← cutAvgL_ext pres tie P ψ f, ← hFf, cutAvgL_of_mem pres tie P ψ hF]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lvlForm_of_mem {F : G → W}
     (hF : F ∈ cutSp ι ρ J χ Q ch tie.red P ((Units.map σ.toMonoidHom).comp ψ))
@@ -369,7 +367,7 @@ theorem lvlForm_of_mem {F : G → W}
 end Main
 
 /- English proof (translation)
-Use `show (S.lvlE act P ψ).mulVec x ∈ S.nabLat ↔ _`. Apply the tactic sequence `rw [CSD.nabLat, mem_valLatF] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mem_lvlNab_iff {K : Type} [Field K] [NumberField K] [StarRing K] {S : CSD K} {G₀ : Type} [Group G₀]
     [Fintype G₀] {act : Representation K G₀ S.Forms} {P : Subgroup G₀} {ψ : P →* Kˣ} (x : Fin (S.lvlDim act P ψ) → K) :
@@ -378,7 +376,7 @@ theorem mem_lvlNab_iff {K : Type} [Field K] [NumberField K] [StarRing K] {S : CS
   rw [CSD.nabLat, mem_valLatF] <;> rfl
 
 /- English proof (translation)
-Introduce `G Γ W K _ _ _ _ _ _ _ ι S σ ρ J χ pres Q ch G₀ _ _ act tie P ψ`. Conclude with `⟨lvlForm_linInd pres P ψ, lvlForm_span pres tie P ψ, fun F hF hv => lvlForm_of_mem pres tie P ψ hF hv, fun x => mem_lvlNab_iff x, fun f c => Bridge.ClassPres.ext_rep pres f c, fun a b h => sub_eq_zero.1 (Bridge.ClassPres.coef_inj pres (by rw [map_sub, h, sub_self]))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem lvlForm_adelic_basis : ∀ (G Γ W K : Type) [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] [Field K] [NumberField K] [StarRing K] (ι : Γ →* G) (S : CSD K) (σ : K →+* ℂ) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ) (pres : Bridge.ClassPres ι S σ ρ J χ) (Q : Subgroup G) (ch : Q →* ℂˣ) (G₀ : Type) [Group G₀] [Fintype G₀] (act : Representation K G₀ S.Forms) (tie : Bridge.ActTie ι pres Q ch act) (P : Subgroup G₀) (ψ : P →* Kˣ), (LinearIndependent ℂ fun a => pres.ext (lvlForm S act P ψ (Pi.single a 1)).1) ∧ Submodule.span ℂ (Set.range fun a => pres.ext (lvlForm S act P ψ (Pi.single a 1)).1) = cutSp ι ρ J χ Q ch tie.red P ((Units.map σ.toMonoidHom).comp ψ) ∧ (∀ F ∈ cutSp ι ρ J χ Q ch tie.red P ((Units.map σ.toMonoidHom).comp ψ), (∀ c, F (pres.y c) ∈ Set.range pres.coef) → ∃ x, F = pres.ext (lvlForm S act P ψ x).1) ∧ (∀ x, x ∈ S.lvlNab act P ψ ↔ ∀ c, (lvlForm S act P ψ x).1 c ∈ S.Nab c) ∧ (∀ (f : S.Forms) c, pres.ext f.1 (pres.y c) = pres.coef (f.1 c)) ∧ Function.Injective pres.coef := by
   intro G Γ W K _ _ _ _ _ _ _ ι S σ ρ J χ pres Q ch G₀ _ _ act tie P ψ

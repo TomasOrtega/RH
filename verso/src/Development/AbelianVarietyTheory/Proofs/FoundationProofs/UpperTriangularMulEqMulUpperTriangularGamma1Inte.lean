@@ -8,29 +8,23 @@ open GlobalTheory.HeckeFamilyMatrices
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Introduce `N l q j γ hq _ _ hγ hA`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Take `⟨h1, h0⟩` from `Subgroup.mem_inf.mp hγ`. Rewrite `h1` using `[Gamma1_mem]`. Rewrite `h0` using `[Gamma0_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ha1, hd1, hc0⟩` from `h1`. Establish `hdet : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1`. Use `γ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `set a := γ 0 0 with ha`. Use `set b := γ 0 1 with hb`. Use `set c := γ 1 0 with hc`. Use `set d := γ 1 1 with hd`. Establish `hmat : mat γ = !![a, b; c, d]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i k; fin_cases i <;> fin_cases k <;> rfl`. Rewrite `hA`, the goal using `[hmat]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const] at hA`. Use `set A : ℤ := a + j * c with hAdef`. Use `set B : ℤ := b + j * d with hBdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hAq : ((A : ℤ) : ZMod q) ≠ 0`. Introduce `h`. Conclude with `hA ((ZMod.intCast_zmod_eq_zero_iff_dvd A q).mp h)`. Use `set j' : ℕ := ((B : ZMod q) * (A : ZMod q)⁻¹).val with hj'`. Establish `hj'lt : j' < q` using `ZMod.val_lt _`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hdiv : (q : ℤ) ∣ B - j' * A`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[hj', ZMod.natCast_zmod_val]`. Clear the denominators using the available nonvanishing facts.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨e, he⟩` from `hdiv`. Establish `hdet' : !![A, e; (q : ℤ) * c, d - c * j'].det = 1`. Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `hdet + c * he`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Set `g : SL(2, ℤ)` to `⟨!![A, e; (q : ℤ) * c, d - c * j'], hdet'⟩`. Use `⟨j', hj'lt, g, Subgroup.mem_inf.mpr ⟨(Gamma1_mem N g).mpr ⟨?_, ?_, ?_⟩, Gamma0_mem.mpr ?_⟩, ?_⟩` and prove the remaining obligations. Use `show ((a + j * c : ℤ) : ZMod N) = 1 push_cast`. Rewrite using `[ha1, hc0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ((d - c * j' : ℤ) : ZMod N) = 1 push_cast`. Rewrite using `[hd1, hc0]`. Expand and normalize the polynomial expressions, which then agree. Use `show (((q : ℤ) * c : ℤ) : ZMod N) = 0 push_cast`. Rewrite using `[hc0]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `show (((q : ℤ) * c : ℤ) : ZMod l) = 0 push_cast`. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree. Use `show _ = !![A, e; (q : ℤ) * c, d - c * j'] * _`.
-
-Rewrite using `[Matrix.mul_fin_two, Matrix.mul_fin_two]`. Establish `e00 : 1 * a + (j : ℤ) * c = A * 1 + e * 0` using `by rw [hAdef]; ring`. Establish `e01 : 1 * b + (j : ℤ) * d = A * j' + e * q` using `by linear_combination he - hBdef`. Establish `e10 : 0 * a + (q : ℤ) * c = (q : ℤ) * c * 1 + (d - c * j') * 0` using `by ring`. Establish `e11 : 0 * b + (q : ℤ) * d = (q : ℤ) * c * j' + (d - c * j') * q` using `by ring`.
-
-Rewrite using `[e00, e01, e10, e11]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tinv_fin_fin : ∀ (N l q j : ℕ) (γ : SL(2, ℤ)), q.Prime → ¬ q ∣ N * l → j < q → γ ∈ GlobalTheory.Hk.lev N l →
     ¬ (q : ℤ) ∣ mat γ 0 0 + j * mat γ 1 0 → ∃ j' < q, ∃ γ' ∈ GlobalTheory.Hk.lev N l,

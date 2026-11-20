@@ -8,7 +8,7 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.KapMulE
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((φ.hom.app (op U) ≫ G.obj.map g.op).hom x) = ((F.obj.map g.op ≫ φ.hom.app (op V)).hom x)`. Rewrite using `[φ.hom.naturality]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U)
     (x : Sec F U) : Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
@@ -16,7 +16,7 @@ theorem sec_res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : 
   rw [φ.hom.naturality]
 
 /- English proof (translation)
-Take `⟨h1, -, -⟩` from `hKS q i U ζ f`. Unfold `CrystallineSemistableComparison.E.IsLC at h1`. Rewrite using `[sec_res_map, h1 V k a h]`. Simplify using `only [GlobalTheory.EtC.Sec.map, GlobalTheory.EtC.resGen, map_smul]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem res_kap (hKS : KapSpec) {q : ℕ} (i : ℤ) {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤))
     (f : LocallyConstant U (ZMod q)) {V : Scheme.{0}} (k : V ⟶ U) (a : ZMod q) (h : ∀ v : V, f (k v) = a) :
@@ -28,13 +28,13 @@ theorem res_kap (hKS : KapSpec) {q : ℕ} (i : ℤ) {U : Scheme.{0}} (ζ : Prim 
   simp only [GlobalTheory.EtC.Sec.map, GlobalTheory.EtC.resGen, map_smul]
 
 /- English proof (translation)
-Introduce `hLC _ hKS hIn`. Unfold `CrystallineSemistableComparison.E.InTw at hIn`. Introduce `q _ i j U ζ f g`. Establish `hP` using `hIn q i j`. Set `fg : LocallyConstant U (ZMod q × ZMod q)` to `⟨fun x => (f x, g x), f.isLocallyConstant.prodMk g.isLocallyConstant⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨W, jj, hc, -, -, hglue⟩` from `hLC U (ZMod q × ZMod q) fg`. Establish `hpt : ∀ (a : ZMod q × ZMod q) (v : W a), f (jj a v) = a.1 ∧ g (jj a v) = a.2`. Introduce `a v`. Use `hc a v` as an intermediate fact. Conclude with `⟨congrArg Prod.fst this, congrArg Prod.snd this⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨y, -, hy⟩` from `hglue (ZMod q) ((res (ZMod q) (tw q (i + j))).X 0) (fun a => Sec.res (jj a) (Sec.map (resι (ZMod q) (tw q (i + j))) ((kap (i + j) ζ) (f * g))))`. Use `(hy _ fun a => ?_).trans (hy _ fun a => rfl).symm` and prove the remaining obligations. Rewrite using `[(twPair q i j).nat]`. Rewrite using `[res_kap hKS i ζ f (jj a) a.1 fun v => (hpt a v).1, res_kap hKS j ζ g (jj a) a.2 fun v => (hpt a v).2, res_kap hKS (i + j) ζ (f * g) (jj a) (a.1 * a.2) fun v => by`. Rewrite using `[LocallyConstant.mul_apply, (hpt a v).1, (hpt a v).2]]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.map_smul, LinearMap.map_smul, LinearMap.smul_apply, hP (W a) (primRes (jj a) ζ), smul_smul, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kapMul_of : LcCover → RepRoot → KapSpec → KapMul := by
   intro hLC _ hKS hIn

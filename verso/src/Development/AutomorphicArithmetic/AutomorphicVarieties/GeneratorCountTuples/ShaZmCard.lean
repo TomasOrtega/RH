@@ -8,13 +8,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology GlobalTheory.TateLimit UpperTheory.V UpperTheory.V.Kum UpperTheory.V.K
 
 /- English proof (translation)
-Introduce `l hl L Ω _ _ _ _ _ D hL`. Take `⟨hinj, hmap⟩` from `UpperTheory.V.Kum.shaZm L Ω l D 1 (Or.inr (nrRealPlaces_eq_zero_iff.2 hL))`. Take `⟨ι, hι, -⟩` from `zmodToQZ l 1`. Establish `hc` using `UpperTheory.V.Kum.cardHomQZ l (Additive (ClassGroup (𝓞 L)))`. Establish `hf : Finite (Additive (ClassGroup (𝓞 L)) →+ QZ l)` using `Nat.finite_of_card_ne_zero (by rw [hc]; exact pow_ne_zero _ hl.out.ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : ClDual L l (ZMod (l ^ 1)) (ZMod (l ^ 1)) → (Additive (ClassGroup (𝓞 L)) →+ QZ l)` to `fun θ => AddMonoidHom.mk' (fun c => ι (θ.1 c.toMul)) fun a b => by rw [toMul_add, θ.2.1, map_add]`. Establish `hfi : Function.Injective f` using `fun a b h => Subtype.ext (funext fun c => hι (DFunLike.congr_fun h (Additive.ofMul c)))`. Establish `hfin : Finite (ClDual L l (ZMod (l ^ 1)) (ZMod (l ^ 1)))` using `Finite.of_injective f hfi`. Establish `h1 : Nat.card (ShaZm D 1 0) = Nat.card ((ShaZm D 1 0).map (resZm D 1))` using `Nat.card_congr (Submodule.equivMapOfInjective _ hinj _).toEquiv`. Establish `h2 : Nat.card ((ClDual L l (ZMod (l ^ 1)) (ZMod (l ^ 1))).map (LinearMap.funLeft (ZMod (l ^ 1)) (ZMod (l ^ 1)) (artCl L Ω))) ≤ Nat.card (ClDual L l (ZMod (l ^ 1)) (ZMod (l ^ 1)))` using `Nat.card_le_card_of_surjective _ (LinearMap.submoduleMap_surjective _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Nat.card_le_card_of_injective f hfi`. Establish `h4 : l ^ (Nat.card (Additive (ClassGroup (𝓞 L)))).factorization l ≤ Nat.card (Additive (ClassGroup (𝓞 L)))` using `Nat.ordProj_le l Nat.card_pos.ne'`. Establish `h5 : Nat.card (Additive (ClassGroup (𝓞 L))) = classNumber L`. Rewrite using `[classNumber, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1, hmap]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem UpperTheory.V.K.shaZmCard :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (D : LData L Ω l), IsTotallyComplex L → Nat.card (ShaZm D 1 0) ≤ classNumber L := by

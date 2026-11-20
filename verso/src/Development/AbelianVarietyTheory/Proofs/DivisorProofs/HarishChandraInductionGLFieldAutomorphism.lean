@@ -9,20 +9,20 @@ namespace GlobalTheory.Shin.HcGal
 variable {F F' : Type} [Field F] [Field F']
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gal_coe (t : F →+* F') {n : ℕ} (x : GL (Fin n) F) :
     ((gal t n x : GL (Fin n) F') : Matrix (Fin n) (Fin n) F') = (x : Matrix (Fin n) (Fin n) F).map t := by
   ext i j; simp [gal]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gal_id {n : ℕ} (x : GL (Fin n) F) : gal (RingHom.id F) n x = x := by
   ext i j; simp [gal]
 
 /- English proof (translation)
-Unfold `ent`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ent_map (t : F →+* F') {n : ℕ} (M : Matrix (Fin n) (Fin n) F) (i j : ℕ) :
     ent (M.map t) i j = t (ent M i j) := by
@@ -30,7 +30,7 @@ theorem ent_map (t : F →+* F') {n : ℕ} (M : Matrix (Fin n) (Fin n) F) (i j :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, isUnit_iff_ne_zero]`. Establish `: (M.map t).det = t M.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[this, _root_.map_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_map_iff (t : F →+* F') {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
     IsUnit (M.map t) ↔ IsUnit M := by
@@ -40,9 +40,9 @@ theorem isUnit_map_iff (t : F →+* F') {n : ℕ} (M : Matrix (Fin n) (Fin n) F)
   rw [this, _root_.map_ne_zero]
 
 /- English proof (translation)
-Unfold `toG`. Distinguish the cases in `h : IsUnit M`. Rewrite using `[dif_pos h, dif_pos ((isUnit_map_iff t M).2 h)]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gal_coe, IsUnit.unit_spec, IsUnit.unit_spec]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h, dif_neg (fun h' => h ((isUnit_map_iff t M).1 h')), map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toG_map (t : F →+* F') {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
     toG (M.map t) = gal t n (toG M) := by
@@ -54,7 +54,7 @@ theorem toG_map (t : F →+* F') {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
   · rw [dif_neg h, dif_neg (fun h' => h ((isUnit_map_iff t M).1 h')), map_one]
 
 /- English proof (translation)
-Unfold `tlG`. Rewrite using `[← toG_map, gal_coe]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [tl, Matrix.map_apply, ent_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tlG_gal (t : F →+* F') (a : ℕ) {n : ℕ} (x : GL (Fin n) F) :
     tlG a (gal t n x) = gal t a (tlG a x) := by
@@ -65,7 +65,7 @@ theorem tlG_gal (t : F →+* F') (a : ℕ) {n : ℕ} (x : GL (Fin n) F) :
   simp only [tl, Matrix.map_apply, ent_map]
 
 /- English proof (translation)
-Unfold `brG`. Rewrite using `[← toG_map, gal_coe]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [br, Matrix.map_apply, ent_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem brG_gal (t : F →+* F') (a b : ℕ) {n : ℕ} (x : GL (Fin n) F) :
     brG a b (gal t n x) = gal t b (brG a b x) := by
@@ -76,7 +76,7 @@ theorem brG_gal (t : F →+* F') (a b : ℕ) {n : ℕ} (x : GL (Fin n) F) :
   simp only [br, Matrix.map_apply, ent_map]
 
 /- English proof (translation)
-Unfold `InPar`. Simplify using `only [gal_coe, Matrix.map_apply, map_eq_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem inPar_gal (t : F →+* F') (a : ℕ) {n : ℕ} (x : GL (Fin n) F) :
     InPar a (gal t n x) ↔ InPar a x := by
@@ -84,7 +84,7 @@ theorem inPar_gal (t : F →+* F') (a : ℕ) {n : ℕ} (x : GL (Fin n) F) :
   simp only [gal_coe, Matrix.map_apply, map_eq_zero]
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨gal (t.symm : F' →+* F) n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[gal]`. Use extensionality with `i j`. Simplify using `[gal]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gal_bijective (t : F ≃+* F') (n : ℕ) : Function.Bijective (gal (t : F →+* F') n) := by
   refine Function.bijective_iff_has_inverse.2 ⟨gal (t.symm : F' →+* F) n, fun x => ?_, fun x => ?_⟩
@@ -92,9 +92,9 @@ theorem gal_bijective (t : F ≃+* F') (n : ℕ) : Function.Bijective (gal (t : 
   · ext i j; simp [gal]
 
 /- English proof (translation)
-Introduce `F _ _ t a b n α β x`. Unfold `hc hcTw`. Use `congr 1`. Use `symm`. Use `finsum_eq_of_bijective (gal (t : F →+* F) n) (gal_bijective t n) fun y => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gal_id, gal_id, ← map_inv, ← map_mul, ← map_mul, tlG_gal, brG_gal]`. Simplify using `only [inPar_gal]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hc_gal : ∀ (F : Type) [Field F] [Finite F], ∀ (t : F ≃+* F) (a b n : ℕ) (α : GL (Fin a) F → ℂ)
     (β : GL (Fin b) F → ℂ) (x : GL (Fin n) F), hc a b α β n (gal (t : F →+* F) n x) =

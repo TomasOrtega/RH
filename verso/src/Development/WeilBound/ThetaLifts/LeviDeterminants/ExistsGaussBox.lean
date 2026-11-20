@@ -12,13 +12,13 @@ open PositivityTheory.Mix.Adapt Lib
 variable {A κ κ₀ κ₁ : Type} [NormedAddCommGroup A] [NormedSpace ℝ A] [Fintype κ] [Fintype κ₀] [Fintype κ₁] (ε : κ ≃ κ₀ ⊕ κ₁)
 
 /- English proof (translation)
-Rewrite using `[ha, funext hf]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hcongr {f g : ℝ → ℂ} {a b : ℂ} {x : ℝ} (h : HasDerivAt f a x) (hf : ∀ t, g t = f t) (ha : b = a) : HasDerivAt g b x := by
   rw [ha, funext hf]; exact h
 
 /- English proof (translation)
-Establish `h` using `(f.hasFDerivAt (x + s • v)).comp_hasDerivAt s (((hasDerivAt_id s).smul_const v).const_add x)`. Rewrite `h` using `[one_smul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hd {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : 𝓢(V, ℂ)) (x v : V) (s : ℝ) :
     HasDerivAt (fun t : ℝ => f (x + t • v)) (fderiv ℝ f (x + s • v) v) s := by
@@ -27,16 +27,16 @@ theorem hd {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : 𝓢(V, �
   exact h
 
 /- English proof (translation)
-Simplify using `using hd f x v 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hd0 {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : 𝓢(V, ℂ)) (x v : V) :
     HasDerivAt (fun t : ℝ => f (x + t • v)) (fderiv ℝ f x v) 0 := by
   simpa using hd f x v 0
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `h1` using `op_apply a L (c • f) x`. Establish `h2` using `op_apply a L f x`. Rewrite `h1` using `[LineDeriv.lineDerivOp_smul]`. Express the relevant statement in the definitionally equal form `op a L (c • f) x = c * op a L f x`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, h2]`. Express the relevant statement in the definitionally equal form `c * _ + _ * (_ * (c * _)) = _`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dop_smul {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (a : V) (L : V →L[ℝ] ℝ) (c : ℂ) (f : 𝓢(V, ℂ)) :
     dop a L (c • f) = c • dop a L f := by
@@ -50,7 +50,7 @@ theorem dop_smul {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (a : V) (
   ring
 
 /- English proof (translation)
-Simplify using `only [dop, LineDeriv.lineDerivOp_add, map_add, smul_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem dop_add' {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (a : V) (L : V →L[ℝ] ℝ) (f g : 𝓢(V, ℂ)) :
     dop a L (f + g) = dop a L f + dop a L g := by
@@ -58,7 +58,7 @@ theorem dop_add' {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (a : V) (
   abel
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [SchwartzMap.neg_apply, dop_apply, map_neg, ContinuousLinearMap.neg_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dop_neg {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (a : V) (L : V →L[ℝ] ℝ) (f : 𝓢(V, ℂ)) :
     dop (-a) (-L) f = -dop a L f := by
@@ -69,7 +69,7 @@ theorem dop_neg {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (a : V) (L
 
 omit [Fintype κ₀] in
 /- English proof (translation)
-Rewrite using `[dop_apply, dop_apply, hL, h]`. Use `congr 1`. Use `(hd0 f _ _).unique ?_` and prove the remaining obligations. Use `hcongr (hd0 g y v) (fun t => ?_) rfl` and prove the remaining obligations. Rewrite using `[h, glue_smul, glue_add, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem slice_dop (f : 𝓢(κ → A, ℂ)) (g : 𝓢(κ₁ → A, ℂ)) (a : κ₀ → A) (h : ∀ y, g y = f (glue ε a y)) (L : (κ → A) →L[ℝ] ℝ)
     (L₁ : (κ₁ → A) →L[ℝ] ℝ) (hL : ∀ y, L (glue ε a y) = L₁ y) (v y : κ₁ → A) :
@@ -82,11 +82,11 @@ theorem slice_dop (f : 𝓢(κ → A, ℂ)) (g : 𝓢(κ₁ → A, ℂ)) (a : κ
 
 omit [Fintype κ₀] [Fintype κ₁] in
 /- English proof (translation)
-Establish `e : ∀ y (t : ℝ), glue ε a y + t • glue ε p 0 = glue ε (a + t • p) y` using `fun y t => by`. Rewrite using `[glue_smul, glue_add, smul_zero, add_zero]`. Distinguish the cases in `h0 : h = 0`. Use `⟨0, fun y => (hd0 f _ _).unique ?_⟩` and prove the remaining obligations. Use `hcongr (hasDerivAt_const (0 : ℝ) (0 : ℂ)) (fun t => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `hf (a + t • p)`. Rewrite using `[e, hc, h0]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take `⟨y₀, hy⟩` from `Function.ne_iff.1 h0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨fderiv ℝ f (glue ε a y₀) (glue ε p 0) / h y₀, fun y => (hd0 f _ _).unique ?_⟩` and prove the remaining obligations. Use `hcongr (((hd0 f (glue ε a y₀) (glue ε p 0)).div_const (h y₀)).mul_const (h y)) (fun t => ?_) rfl` and prove the remaining obligations. Take `⟨c, hc⟩` from `hf (a + t • p)`. Rewrite using `[e, e, hc, hc, mul_div_cancel_right₀ _ hy]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem slice_normal (f : 𝓢(κ → A, ℂ)) (h : (κ₁ → A) → ℂ) (hf : ∀ a, ∃ c : ℂ, ∀ y, f (glue ε a y) = c * h y) (p a : κ₀ → A) :
     ∃ c : ℂ, ∀ y, fderiv ℝ f (glue ε a y) (glue ε p 0) = c * h y := by
@@ -106,11 +106,11 @@ theorem slice_normal (f : 𝓢(κ → A, ℂ)) (h : (κ₁ → A) → ℂ) (hf :
 
 omit [Fintype κ₀] [Fintype κ₁] in
 /- English proof (translation)
-Establish `e : ∀ t : ℝ, glue ε 0 y + t • glue ε a 0 = glue ε (t • a) y` using `fun t => by`. Rewrite using `[glue_smul, glue_add, smul_zero, add_zero, zero_add]`. Establish `h1 : ∀ s : ℝ, HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) ^ 2 * l) * f (glue ε 0 y + t • glue ε a 0)) 0 s` using `fun s => by`. Establish `h2 : HasDerivAt (fun t : ℝ => (t : ℂ) ^ 2 * l) (2 * s * l) s`. Simplify using `using (((hasDerivAt_pow 2 (s : ℂ)).comp_ofReal).mul_const (l : ℂ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hcongr (h2.cexp.fun_mul (hd f (glue ε 0 y) (glue ε a 0) s)) (fun _ => rfl) ?_` and prove the remaining obligations. Rewrite using `[e, h]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `is_const_of_deriv_eq_zero (fun s => (h1 s).differentiableAt) (fun s => (h1 s).deriv) 1 0`. Simplify using `only [e] at h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_smul, zero_smul, Complex.ofReal_one, one_pow, one_mul, Complex.ofReal_zero] at h3`. Rewrite using `[Complex.exp_neg, eq_inv_mul_iff_mul_eq₀ (Complex.exp_ne_zero _), h3]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem slice_ode (f : 𝓢(κ → A, ℂ)) (a : κ₀ → A) (l : ℝ)
     (h : ∀ (t : ℝ) y, fderiv ℝ f (glue ε (t • a) y) (glue ε a 0) = -(2 * t * l) * f (glue ε (t • a) y)) (y : κ₁ → A) :
@@ -130,17 +130,15 @@ theorem slice_ode (f : 𝓢(κ → A, ℂ)) (a : κ₀ → A) (l : ℝ)
   simp
 
 /- English proof (translation)
-Set `Qc : (κ₀ → A) →L[ℝ] (κ₀ → A) →L[ℝ] ℝ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : ((κ₀ → A) →ₗ[ℝ] ℝ) ≃ₗ[ℝ] _).toLinearMap ∘ₗ ((-Real.pi) • Q))`. Establish `hQ : ∀ a b, Qc a b = -Real.pi * Q a b` using `fun _ _ => rfl`. Take `⟨G, hG⟩` from `exists_schwartz_exp_diag Qc fun a ha => by`. Rewrite using `[hQ]`. Conclude with `mul_neg_of_neg_of_pos (neg_neg_of_pos Real.pi_pos) (hp a ha)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f` to `schwartzBox G g (ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (ε.symm (.inl i))) (ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (ε.symm (.inr i))) fun x : κ → A => by`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun k => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `ε.symm.surjective k`. Break down `k with k | k` into its components or cases. Conclude with `le_max_of_le_left (norm_le_pi_norm (fun i => x (ε.symm (.inl i))) k)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `le_max_of_le_right (norm_le_pi_norm (fun i => x (ε.symm (.inr i))) k)`. Establish `hf : ∀ a y, f (glue ε a y) = Complex.exp (-Real.pi * Q a a) * g y` using `fun a y => by show G (fun i => glue ε a y _) * g (fun i => glue ε a y _) = _`. Simplify using `only [glue_inl, glue_inr, hG, hQ]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f, fun y => by simp [hf], fun a => ⟨_, hf a⟩, fun a y p => (hd0 f _ _).unique ?_⟩` and prove the remaining obligations. Establish `h2 : HasDerivAt (fun t : ℝ => -(Real.pi : ℂ) * (Q a a + 2 * t * Q a p + (t : ℂ) ^ 2 * Q p p)) (-(Real.pi : ℂ) * (2 * (Q a p : ℂ))) 0` using `hcongr ((((((hasDerivAt_id ((0 : ℝ) : ℂ)).const_mul 2).mul_const (Q a p : ℂ)).const_add (Q a a : ℂ)).fun_add ((hasDerivAt_pow 2 ((0 : ℝ) : ℂ)).mul_const (Q p p : ℂ))).const_mul (-(Real.pi : ℂ))).comp_ofReal (fun _ => rfl) (by simp)`. Use `hcongr (h2.cexp.mul_const (g y)) (fun t => ?_) ?_` and prove the remaining obligations. Rewrite using `[glue_smul, glue_add, smul_zero, add_zero, hf]`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hs p a]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`. Simplify using the standard rewrite rules.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_gauss_box [FiniteDimensional ℝ A] (Q : (κ₀ → A) →ₗ[ℝ] (κ₀ → A) →ₗ[ℝ] ℝ) (hs : ∀ a b, Q a b = Q b a)
     (hp : ∀ a, a ≠ 0 → 0 < Q a a) (g : 𝓢(κ₁ → A, ℂ)) : ∃ f : 𝓢(κ → A, ℂ), (∀ y, f (glue ε 0 y) = g y) ∧

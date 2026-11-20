@@ -18,7 +18,7 @@ namespace GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.PairCoord
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hinv : Function.Involutive σ` using `GlobalTheory.CompanionTheory.SiegelND.Coef.sig_invol h`. Establish `key` using `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofBijective σ hinv.bijective) (σ x * y)`. Rewrite using `[← key]`. Simplify using `[hinv x]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_mul_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x y : E) :
     Algebra.trace F E (σ x * y) = Algebra.trace F E (x * σ y) := by
@@ -28,11 +28,9 @@ theorem trace_mul_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x y : E) :
   simp [hinv x]
 
 /- English proof (translation)
-Use `set C := Algebra.TensorProduct.basis R b with hC`. Establish `hC' : ∀ (r : R) (k : Fin d), r • C k = r ⊗ₜ[F] b k`. Introduce `r k`. Simplify using `[hC, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`. Use `conv_lhs => rw [← C.sum_repr u, ← C.sum_repr w]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hC', map_sum, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `hs : sigR R σ (C.repr u k ⊗ₜ[F] b k) = C.repr u k ⊗ₜ[F] σ (b k)` using `by simp [sigR]`. Rewrite using `[hs, Algebra.TensorProduct.tmul_mul_tmul, GlobalTheory.GaussMean.OneVec.trace_tmul, trace_mul_sig h]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem trace_sigR_mul {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R] {d : ℕ}
     (b : Module.Basis (Fin d) F E) (u w : R ⊗[F] E) :
@@ -52,7 +50,7 @@ theorem trace_sigR_mul {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (R : Type) [Com
   ring
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, coordForm, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_inl (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] {d : ℕ}
     (b : Module.Basis (Fin d) F E) {n : ℕ} (v : Idx n d → R) (i : Fin n) :
@@ -60,9 +58,9 @@ theorem mulVec_inl (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] {d
   simp [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, coordForm, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fintype.sum_prod_type, coordForm, Matrix.map_apply, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, map_zero, zero_mul, Finset.sum_const_zero, zero_add, Matrix.blockDiagonal_apply, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single q]`. Simplify using the standard rewrite rules. Introduce `x _ hx`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hx, Ne.symm hx]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_inr (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] {d : ℕ}
     (b : Module.Basis (Fin d) F E) {n : ℕ} (v : Idx n d → R) (k : Fin d)
@@ -80,9 +78,9 @@ theorem mulVec_inr (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] {d
   · simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h R _ _ d b n S T`. Rewrite using `[GlobalTheory.HermCoordEquiv.pair_eq R h S T]`. Unfold `GlobalTheory.HermSD.coordPair`. Rewrite using `[dotProduct, Fintype.sum_sum_type]`. Simplify using `only [mulVec_inl, Fintype.sum_prod_type, mulVec_inr]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[trace_sigR_mul h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pairHerm_eq_coordForm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] (d : ℕ)

@@ -18,7 +18,7 @@ local notation "𝒪C♭" => PreTilt (normInteger C) p
 section Norm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖σ x‖ = ‖x‖`. Rewrite using `[NormedAlgebra.norm_eq_spectralNorm K♭, NormedAlgebra.norm_eq_spectralNorm K♭, ← spectralNorm_eq_of_equiv σ]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_tiltAlgEquiv_apply (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (σ : N ≃ₐ[K♭] N) (x : N) : ‖((σ x : N) : C♭)‖ = ‖(x : C♭)‖ := by
@@ -27,7 +27,7 @@ theorem norm_tiltAlgEquiv_apply (N : IntermediateField K♭ C♭) [FiniteDimensi
     ← spectralNorm_eq_of_equiv σ]
 
 /- English proof (translation)
-The claim follows from `norm_tiltAlgEquiv_apply N σ x`.
+A detailed English derivation is pending.
 -/
 theorem norm_tiltAlgEquiv_toAlgHom_apply (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (σ : N ≃ₐ[K♭] N) (x : N) : ‖((σ.toAlgHom x : N) : C♭)‖ = ‖(x : C♭)‖ :=
@@ -38,7 +38,7 @@ end Norm
 section IntegerHom
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `norm_le_one_iff_exists_algebraMap.1 hx1`. Conclude with `⟨a, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_algebraMap_eq_of_mem {N : IntermediateField K♭ C♭} {x : C♭} (hx : x ∈ N)
     (hx1 : ‖x‖ ≤ 1) : ∃ a : 𝒪C♭, a ∈ integerTilt K C p N ∧ algebraMap 𝒪C♭ C♭ a = x := by
@@ -88,7 +88,7 @@ def integerTiltHom (N : IntermediateField K♭ C♭) (σ : N →ₐ[K♭] N)
       rw [this, map_add]; rfl }
 
 /- English proof (translation)
-The claim follows from `(Exists.choose_spec (p := fun a' => a' ∈ integerTilt K C p N ∧ algebraMap 𝒪C♭ C♭ a' = ((σ ⟨algebraMap 𝒪C♭ C♭ a, a.2⟩ : N) : C♭)) _).2`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_integerTiltHom (N : IntermediateField K♭ C♭) (σ : N →ₐ[K♭] N)
     (hσ : ∀ x : N, ‖((σ x : N) : C♭)‖ = ‖(x : C♭)‖) (a : integerTilt K C p N) :
@@ -98,7 +98,7 @@ theorem algebraMap_integerTiltHom (N : IntermediateField K♭ C♭) (σ : N →�
       algebraMap 𝒪C♭ C♭ a' = ((σ ⟨algebraMap 𝒪C♭ C♭ a, a.2⟩ : N) : C♭)) _).2
 
 /- English proof (translation)
-Use extensionality with `a`. Apply `IsFractionRing.injective 𝒪C♭ C♭` to reduce the goal to its premises. Rewrite using `[algebraMap_integerTiltHom, RingHom.comp_apply, algebraMap_integerTiltHom]`. Establish `: (⟨algebraMap 𝒪C♭ C♭ (integerTiltHom N τ hτ a : 𝒪C♭), (integerTiltHom N τ hτ a).2⟩ : N) = τ ⟨algebraMap 𝒪C♭ C♭ a, a.2⟩` using `Subtype.ext (algebraMap_integerTiltHom N τ hτ a)`. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -116,7 +116,7 @@ theorem integerTiltHom_comp (N : IntermediateField K♭ C♭) (σ τ : N →ₐ[
   rfl
 
 /- English proof (translation)
-Use extensionality with `a`. Apply `IsFractionRing.injective 𝒪C♭ C♭` to reduce the goal to its premises. Rewrite using `[algebraMap_integerTiltHom]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem integerTiltHom_id (N : IntermediateField K♭ C♭)
     (h : ∀ x : N, ‖(((AlgHom.id K♭ N) x : N) : C♭)‖ = ‖(x : C♭)‖) :
@@ -127,9 +127,9 @@ theorem integerTiltHom_id (N : IntermediateField K♭ C♭)
   rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `IsFractionRing.injective 𝒪C♭ C♭` to reduce the goal to its premises. Rewrite using `[algebraMap_integerTiltHom]`. Establish `h1 : algebraMap 𝒪C♭ C♭ (preTiltMap p (algebraMap K C) (norm_algebraMap' C) β) = algebraMap K♭ C♭ (algebraMap 𝒪K♭ K♭ β)` using `(tiltMap_algebraMap _ _ β).symm`. Establish `h2 : (⟨algebraMap 𝒪C♭ C♭ (preTiltMap p (algebraMap K C) (norm_algebraMap' C) β), hβ⟩ : N) = algebraMap K♭ N (algebraMap 𝒪K♭ K♭ β)` using `Subtype.ext h1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((σ ⟨algebraMap 𝒪C♭ C♭ (preTiltMap p (algebraMap K C) (norm_algebraMap' C) β), hβ⟩ : N) : C♭) = _`. Rewrite using `[h2, AlgHom.commutes]`. Conclude with `h1.symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integerTiltHom_preTiltMap (N : IntermediateField K♭ C♭) (σ : N →ₐ[K♭] N)
     (hσ : ∀ x : N, ‖((σ x : N) : C♭)‖ = ‖(x : C♭)‖) (β : 𝒪K♭)
@@ -156,9 +156,9 @@ abbrev untiltPreTiltMap (N : IntermediateField K♭ C♭) [FiniteDimensional K�
   preTiltMap p ((untiltField K C p N).val : untiltField K C p N →+* C) (norm_val _)
 
 /- English proof (translation)
-Rewrite using `[mem_integerTilt]`. Establish `h` using `tiltIntermediateField_untiltField (K := K) (C := C) (p := p) N`. Rewrite using `[← tiltMap_algebraMap]`. Establish `hm : tiltMap p ((untiltField K C p N).val : untiltField K C p N →+* C) (norm_val _) (algebraMap _ _ b) ∈ tiltIntermediateField p (untiltField K C p N)` using `⟨_, rfl⟩`. Rewrite `hm` using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem untiltPreTiltMap_mem (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (b : PreTilt (normInteger (untiltField K C p N)) p) : untiltPreTiltMap N b ∈ integerTilt K C p N := by
@@ -171,11 +171,11 @@ theorem untiltPreTiltMap_mem (N : IntermediateField K♭ C♭) [FiniteDimensiona
   exact hm
 
 /- English proof (translation)
-Establish `h` using `tiltIntermediateField_untiltField (K := K) (C := C) (p := p) N`. Establish `ha' : algebraMap 𝒪C♭ C♭ a ∈ tiltIntermediateField p (untiltField K C p N)`. Rewrite using `[h]`. Conclude with `ha`. Take `⟨y, hy⟩` from `ha'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy1 : ‖y‖ ≤ 1`. Use `norm_tiltMap (p := p) ((untiltField K C p N).val : untiltField K C p N →+* C) (norm_val _) y` as an intermediate fact. Rewrite using `[← this]`. Express the relevant statement in the definitionally equal form `‖tiltInclusion p (untiltField K C p N) y‖ ≤ 1`. Rewrite using `[hy, norm_algebraMap_preTilt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `preTilt_norm_le_one _`. Take `⟨b, rfl⟩` from `norm_le_one_iff_exists_algebraMap.1 hy1`. Use `⟨b, IsFractionRing.injective 𝒪C♭ C♭ ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Conclude with `(tiltMap_algebraMap _ _ b).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untiltPreTiltMap_surj (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N] {a : 𝒪C♭}
     (ha : a ∈ integerTilt K C p N) :
@@ -214,7 +214,7 @@ theorem coe_preTiltUntiltEquiv (N : IntermediateField K♭ C♭) [FiniteDimensio
 end Identify
 
 /- English proof (translation)
-The claim follows from `WittVector.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem wittVector_map_comp {R S T : Type*} [CommRing R] [CommRing S] [CommRing T]
     (f : R →+* S) (g : S →+* T) (x : WittVector p R) :
@@ -222,7 +222,7 @@ theorem wittVector_map_comp {R S T : Type*} [CommRing R] [CommRing S] [CommRing 
   WittVector.ext fun _ => rfl
 
 /- English proof (translation)
-Substitute `hfg` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem preTiltMap_congr {L M : Type*} [NontriviallyNormedField L] [IsUltrametricDist L]
     [NontriviallyNormedField M] [IsUltrametricDist M] [IsPerfectoidField L p]
@@ -238,7 +238,7 @@ def untiltPreTiltAut (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N
     ((integerTiltHom N σ.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N σ)).comp (preTiltUntiltEquiv N).toRingHom)
 
 /- English proof (translation)
-Simplify using `[untiltPreTiltAut]`.
+Simplify using the standard rewrite rules.
 -/
 theorem preTiltUntiltEquiv_untiltPreTiltAut (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (σ : N ≃ₐ[K♭] N) (b : PreTilt (normInteger (untiltField K C p N)) p) :
@@ -247,9 +247,9 @@ theorem preTiltUntiltEquiv_untiltPreTiltAut (N : IntermediateField K♭ C♭) [F
   simp [untiltPreTiltAut]
 
 /- English proof (translation)
-Use extensionality with `b`. Apply `(preTiltUntiltEquiv N).injective` to reduce the goal to its premises. Rewrite using `[RingHom.comp_apply, preTiltUntiltEquiv_untiltPreTiltAut, preTiltUntiltEquiv_untiltPreTiltAut, preTiltUntiltEquiv_untiltPreTiltAut]`. Use `set x := preTiltUntiltEquiv N b`. Apply `Subtype.ext` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsFractionRing.injective 𝒪C♭ C♭` to reduce the goal to its premises. Rewrite using `[algebraMap_integerTiltHom, algebraMap_integerTiltHom]`. Establish `: (⟨algebraMap 𝒪C♭ C♭ (integerTiltHom N τ.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N τ) x : 𝒪C♭), (integerTiltHom N τ.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N τ) x).2⟩ : N) = τ ⟨algebraMap 𝒪C♭ C♭ x, x.2⟩` using `Subtype.ext (algebraMap_integerTiltHom N _ _ x)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem untiltPreTiltAut_mul (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (σ τ : N ≃ₐ[K♭] N) :
@@ -267,7 +267,7 @@ theorem untiltPreTiltAut_mul (N : IntermediateField K♭ C♭) [FiniteDimensiona
   rw [this]; rfl
 
 /- English proof (translation)
-Use extensionality with `b`. Apply `(preTiltUntiltEquiv N).injective` to reduce the goal to its premises. Rewrite using `[preTiltUntiltEquiv_untiltPreTiltAut]`. Establish `h` using `integerTiltHom_id (K := K) (C := C) (p := p) N (norm_tiltAlgEquiv_toAlgHom_apply N 1)`. Conclude with `congrArg (fun f => f (preTiltUntiltEquiv N b)) h`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem untiltPreTiltAut_one (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N] :
     untiltPreTiltAut (K := K) (C := C) (p := p) N 1 = RingHom.id _ := by
@@ -278,7 +278,7 @@ theorem untiltPreTiltAut_one (N : IntermediateField K♭ C♭) [FiniteDimensiona
   exact congrArg (fun f => f (preTiltUntiltEquiv N b)) h
 
 /- English proof (translation)
-Rewrite using `[untiltPreTiltMap, ← RingHom.comp_apply, ← preTiltMap_comp]`. Conclude with `congrArg (fun f => f β) (preTiltMap_congr (L := K) (M := C) (f := ((untiltField K C p N).val : untiltField K C p N →+* C).comp (algebraMap K (untiltField K C p N))) (g := algebraMap K C) (RingHom.ext fun _ => rfl) _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untiltPreTiltMap_preTiltMap (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (β : 𝒪K♭) :
@@ -290,9 +290,9 @@ theorem untiltPreTiltMap_preTiltMap (N : IntermediateField K♭ C♭) [FiniteDim
       (algebraMap K (untiltField K C p N))) (g := algebraMap K C) (RingHom.ext fun _ => rfl) _ _)
 
 /- English proof (translation)
-Apply `(preTiltUntiltEquiv N).injective` to reduce the goal to its premises. Rewrite using `[preTiltUntiltEquiv_untiltPreTiltAut]`. Establish `hβ : preTiltMap p (algebraMap K C) (norm_algebraMap' C) β ∈ integerTilt K C p N`. Rewrite using `[← untiltPreTiltMap_preTiltMap N β]`. Conclude with `untiltPreTiltMap_mem N _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : preTiltUntiltEquiv N (preTiltMap p (algebraMap K (untiltField K C p N)) (norm_algebraMap' _) β) = ⟨_, hβ⟩` using `Subtype.ext (untiltPreTiltMap_preTiltMap N β)`. Rewrite using `[he]`. Conclude with `integerTiltHom_preTiltMap N σ.toAlgHom _ β hβ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untiltPreTiltAut_preTiltMap (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (σ : N ≃ₐ[K♭] N) (β : 𝒪K♭) :
@@ -313,13 +313,11 @@ end Aut
 section Theta
 
 /- English proof (translation)
-Take `⟨ξK, hξK, hξ1⟩` from `IsPerfectoidField.exists_mem_ker_fontaineTheta_isUnit_coeff_one (K := K) (p := p)`. Use `set φKF := preTiltMap p (algebraMap K (untiltField K C p N)) (norm_algebraMap' _)`. Use `set ξF := WittVector.map φKF ξK`. Establish `hξF : ξF ∈ RingHom.ker (WittVector.fontaineTheta (normInteger (untiltField K C p N)) p)`. Rewrite using `[RingHom.mem_ker, fontaineTheta_map_preTiltMap, RingHom.mem_ker.1 hξK, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hξF1 : IsUnit (ξF.coeff 1)`. Rewrite using `[WittVector.map_coeff]`. Conclude with `hξ1.map _`. Establish `hker` using `IsPerfectoidField.ker_fontaineTheta_eq_span (K := untiltField K C p N) hξF hξF1`. Establish `hfix : WittVector.map (untiltPreTiltAut N σ) ξF = ξF`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use extensionality with `n`. Simplify using `only [ξF, WittVector.map_coeff, φKF, untiltPreTiltAut_preTiltMap]`. Rewrite `hx`, the goal using `[hker]`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Rewrite using `[map_mul, hfix]`.
-
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_untiltPreTiltAut_mem_ker (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (σ : N ≃ₐ[K♭] N) {x : WittVector p (PreTilt (normInteger (untiltField K C p N)) p)}
@@ -353,7 +351,7 @@ def untiltIntegerHom (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N
       (IsPerfectoidField.surjective_fontaineTheta (K := untiltField K C p N) p)).symm.toRingHom
 
 /- English proof (translation)
-Simplify using `only [untiltIntegerHom, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingHom.quotientKerEquivOfSurjective_symm_apply]`. Conclude with `Ideal.Quotient.lift_mk _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem untiltIntegerHom_fontaineTheta (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (σ : N ≃ₐ[K♭] N) (w : WittVector p (PreTilt (normInteger (untiltField K C p N)) p)) :
@@ -365,7 +363,7 @@ theorem untiltIntegerHom_fontaineTheta (N : IntermediateField K♭ C♭) [Finite
   exact Ideal.Quotient.lift_mk _ _ _
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨w, rfl⟩` from `IsPerfectoidField.surjective_fontaineTheta (K := untiltField K C p N) p y`. Rewrite using `[RingHom.comp_apply, untiltIntegerHom_fontaineTheta, untiltIntegerHom_fontaineTheta, untiltIntegerHom_fontaineTheta, untiltPreTiltAut_mul, wittVector_map_comp]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem untiltIntegerHom_mul (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (σ τ : N ≃ₐ[K♭] N) :
@@ -376,7 +374,7 @@ theorem untiltIntegerHom_mul (N : IntermediateField K♭ C♭) [FiniteDimensiona
     untiltIntegerHom_fontaineTheta, untiltPreTiltAut_mul, wittVector_map_comp]
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨w, rfl⟩` from `IsPerfectoidField.surjective_fontaineTheta (K := untiltField K C p N) p y`. Rewrite using `[untiltIntegerHom_fontaineTheta, untiltPreTiltAut_one, WittVector.map_id]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem untiltIntegerHom_one (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N] :
     untiltIntegerHom (K := K) (C := C) (p := p) N 1 = RingHom.id _ := by
@@ -401,7 +399,7 @@ theorem untiltIntegerEquiv_apply (N : IntermediateField K♭ C♭) [FiniteDimens
   rfl
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `IsPerfectoidField.surjective_fontaineTheta (K := K) p k`. Rewrite using `[← fontaineTheta_map_preTiltMap, untiltIntegerHom_fontaineTheta, ← wittVector_map_comp, show (untiltPreTiltAut N σ).comp (preTiltMap p (algebraMap K (untiltField K C p N)) (norm_algebraMap' _)) = preTiltMap p (algebraMap K (untiltField K C p N)) (norm_algebraMap' _) from RingHom. …`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem untiltIntegerHom_integerMap (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (σ : N ≃ₐ[K♭] N) (k : normInteger K) :
@@ -419,9 +417,9 @@ end Theta
 section FieldAut
 
 /- English proof (translation)
-Use `set f := IsFractionRing.ringEquivOfRingEquiv (A := normInteger (untiltField K C p N)) (K := untiltField K C p N) (B := normInteger (untiltField K C p N)) (L := untiltField K C p N) (untiltIntegerEquiv N σ)`. Establish `key : ∀ k : K, ‖k‖ ≤ 1 → f (algebraMap K _ k) = algebraMap K _ k`. Introduce `k hk`. Establish `: algebraMap K (untiltField K C p N) k = algebraMap (normInteger (untiltField K C p N)) (untiltField K C p N) (integerMap (algebraMap K (untiltField K C p N)) (norm_algebraMap' _) ⟨k, mem_normInteger.2 hk⟩)` using `rfl`. Rewrite using `[this, IsFractionRing.ringEquivOfRingEquiv_algebraMap, untiltIntegerEquiv_apply, untiltIntegerHom_integerMap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_or_gt ‖k‖ 1 with h | h` into its components or cases. Conclude with `key k h`. Use `key k⁻¹ (by rw [norm_inv]; exact inv_le_one_of_one_le₀ h.le)` as an intermediate fact. Rewrite `this` using `[map_inv₀, map_inv₀]`. Conclude with `inv_injective this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringEquivOfRingEquiv_untiltIntegerEquiv_algebraMap (N : IntermediateField K♭ C♭)
     [FiniteDimensional K♭ N] (σ : N ≃ₐ[K♭] N) (k : K) :
@@ -454,7 +452,7 @@ def untiltAut (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N] (σ :
     (ringEquivOfRingEquiv_untiltIntegerEquiv_algebraMap N σ)
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.ringEquivOfRingEquiv_algebraMap _ y`.
+A detailed English derivation is pending.
 -/
 theorem untiltAut_coe (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N] (σ : N ≃ₐ[K♭] N)
     (y : normInteger (untiltField K C p N)) :
@@ -462,7 +460,7 @@ theorem untiltAut_coe (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ 
   IsFractionRing.ringEquivOfRingEquiv_algebraMap _ y
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.ringEquivOfRingEquiv_algebraMap _ y`.
+A detailed English derivation is pending.
 -/
 theorem untiltAut_algebraMap (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (σ : N ≃ₐ[K♭] N) (y : normInteger (untiltField K C p N)) :
@@ -471,7 +469,7 @@ theorem untiltAut_algebraMap (N : IntermediateField K♭ C♭) [FiniteDimensiona
   IsFractionRing.ringEquivOfRingEquiv_algebraMap _ y
 
 /- English proof (translation)
-Rewrite using `[untiltAut_coe, ← WittVector.fontaineTheta_teichmuller, untiltIntegerHom_fontaineTheta, WittVector.map_teichmuller, WittVector.fontaineTheta_teichmuller]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem untiltAut_untilt (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N] (σ : N ≃ₐ[K♭] N)
     (b : PreTilt (normInteger (untiltField K C p N)) p) :
@@ -482,9 +480,9 @@ theorem untiltAut_untilt (N : IntermediateField K♭ C♭) [FiniteDimensional K�
     WittVector.map_teichmuller, WittVector.fontaineTheta_teichmuller]
 
 /- English proof (translation)
-Establish `h : (untiltAut N (σ * τ) : untiltField K C p N →+* untiltField K C p N) = ((untiltAut N σ * untiltAut N τ : untiltField K C p N ≃ₐ[K] untiltField K C p N) : untiltField K C p N →+* untiltField K C p N)`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (normInteger (untiltField K C p N))) ?_` and prove the remaining obligations. Use `RingHom.ext fun y => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, AlgEquiv.mul_apply]`. Rewrite using `[untiltAut_algebraMap, untiltAut_algebraMap, untiltAut_algebraMap, untiltIntegerHom_mul, RingHom.comp_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AlgEquiv.ext fun x => congrArg (fun f => f x) h`.
+A detailed English derivation is pending.
 -/
 theorem untiltAut_mul (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N] (σ τ : N ≃ₐ[K♭] N) :
     untiltAut N (σ * τ) = untiltAut N σ * untiltAut N τ := by
@@ -499,9 +497,9 @@ theorem untiltAut_mul (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ 
   exact AlgEquiv.ext fun x => congrArg (fun f => f x) h
 
 /- English proof (translation)
-Establish `h : (untiltAut N 1 : untiltField K C p N →+* untiltField K C p N) = RingHom.id (untiltField K C p N)`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (normInteger (untiltField K C p N))) ?_` and prove the remaining obligations. Use `RingHom.ext fun y => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, RingHom.id_apply]`. Rewrite using `[untiltAut_algebraMap, untiltIntegerHom_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `AlgEquiv.ext fun x => congrArg (fun f => f x) h`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem untiltAut_one (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N] :
     untiltAut (K := K) (C := C) (p := p) N 1 = 1 := by

@@ -14,35 +14,29 @@ open scoped ENNReal NNReal Pointwise
 namespace GlobalTheory.QuadricHaar
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ s : X → G, Measurable s ∧ ∀ y, S y → a (s y) x₀ = y`. Use `swap`. Conclude with `⟨0, fun s hs => (hex ⟨s, hs⟩).elim⟩`. Take `⟨s₀, hs₀, hs₀'⟩` from `hex`. Establish `hjm : Measurable j` using `hj.continuous.measurable`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (f : G → ℝ≥0∞) (b c : G), a b x₀ = a c x₀ → ∫⁻ g', f (b * j g') ∂μ' = ∫⁻ g', f (c * j g') ∂μ'`. Introduce `f b c h`. Establish `: b⁻¹ * c ∈ Set.range j`. Rewrite using `[hr]`. Express the relevant statement in the definitionally equal form `a (b⁻¹ * c) x₀ = x₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a_mul, ← h, ← a_mul, inv_mul_cancel, a_one]`. Take `⟨k, hk⟩` from `this`. Rewrite using `[← lintegral_mul_left_eq_self (fun g' => f (b * j g')) k]`. Use `lintegral_congr fun g' => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hk, ← mul_assoc, mul_inv_cancel_left]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : Measurable fun p : X × H => s₀ p.1 * j p.2` using `(hs₀.comp measurable_fst).mul (hjm.comp measurable_snd)`. Use `set m : Measure G := (ν.prod μ').map fun p : X × H => s₀ p.1 * j p.2 with hm`. Establish `hint : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ g, f g ∂m = ∫⁻ y, (∫⁻ g', f (s₀ y * j g') ∂μ') ∂ν`. Introduce `f hf`. Rewrite using `[hm, lintegral_map hf hp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lintegral_prod _ (hf.comp hp).aemeasurable`. Establish `hmeas : ∀ f : G → ℝ≥0∞, Measurable f → Measurable fun y => ∫⁻ g', f (s₀ y * j g') ∂μ'` using `fun f hf => (hf.comp hp).lintegral_prod_right'`. Use `haveI : m.IsMulLeftInvariant := by`. Use `⟨fun h => ?_⟩` and prove the remaining obligations. Use `Measure.ext_of_lintegral _ fun f hf => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_map hf (measurable_const_mul h), hint (fun g => f (h * g)) (hf.comp (measurable_const_mul h)), hint f hf]`. Establish `e : ∫⁻ y, (∫⁻ g', f (s₀ y * j g') ∂μ') ∂ν = ∫⁻ y, (∫⁻ g', f (s₀ (a h y) * j g') ∂μ') ∂ν` using `by conv_lhs => rw [← hν h]`. Rewrite using `[lintegral_map (hmeas f hf) (a_meas h)]`. Rewrite using `[e]`. Establish `hS' : ∀ᵐ y ∂ν, S (a h y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `ae_of_ae_map (p := S) (a_meas h).aemeasurable ?_` and prove the remaining obligations. Rewrite using `[hν h]`. Conclude with `hS`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hS, hS'] with y h1 h2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← key f (h * s₀ y) _ (by rw [a_mul, hs₀' y h1, hs₀' _ h2])]`. Simplify using `only [mul_assoc]`. Use `haveI : IsFiniteMeasureOnCompacts m := by`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Establish `hKm : MeasurableSet K` using `hK.measurableSet`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hL : IsCompact ((fun g => a g x₀) '' K)` using `hK.image a_cont`. Establish `hC : IsCompact (j ⁻¹' (K⁻¹ * K))` using `hj.isCompact_preimage (hK.inv.mul hK)`. Rewrite using `[← lintegral_indicator_one hKm, hint _ (measurable_one.indicator hKm)]`. Establish `hle : ∀ᵐ y ∂ν, ∫⁻ g', K.indicator (1 : G → ℝ≥0∞) (s₀ y * j g') ∂μ' ≤ ((fun g => a g x₀) '' K).indicator (fun _ => μ' (j ⁻¹' (K⁻¹ * K))) y` using `by filter_upwards [hS] with y hy`. Distinguish the cases in `hyL : y ∈ (fun g => a g x₀) '' K`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.indicator_of_mem hyL]`. Take `⟨b, hb, hby⟩` from `hyL`. Rewrite using `[key _ (s₀ y) b (by rw [hs₀' y hy]; exact hby.symm), ← lintegral_indicator_one hC.measurableSet]`. Use `lintegral_mono fun g' => ?_` and prove the remaining obligations. Distinguish the cases in `hg : b * j g' ∈ K`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: g' ∈ j ⁻¹' (K⁻¹ * K)` using `⟨b⁻¹, by simpa using hb, b * j g', hg, by simp⟩`. Simplify using `[Set.indicator_of_mem hg, Set.indicator_of_mem this]`. Simplify using `[Set.indicator_of_notMem hg]`. Rewrite using `[Set.indicator_of_notMem hyL]`. Use `le_of_eq ((lintegral_congr fun g' => ?_).trans lintegral_zero)` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.indicator_of_notMem (fun hg => hyL ⟨_, hg, ?_⟩) _` and prove the remaining obligations. Establish `: j g' ∈ {g | a g x₀ = x₀}` using `hr ▸ Set.mem_range_self g'`. Express the relevant statement in the definitionally equal form `a (s₀ y * j g') x₀ = y`. Rewrite using `[a_mul, this, hs₀' y hy]`. Use `(lintegral_mono_ae hle).trans_lt ?_` and prove the remaining obligations.
-
-Rewrite using `[lintegral_indicator_const hL.measurableSet]`. Conclude with `ENNReal.mul_lt_top hC.measure_lt_top hL.measure_lt_top`. Use `⟨Measure.haarScalarFactor m μ, fun s hs f hf => ?_⟩` and prove the remaining obligations. Establish `e` using `Measure.isMulLeftInvariant_eq_smul m μ`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hS] with y hy`. Conclude with `key f _ _ (by rw [hs.2 y hy, hs₀' y hy])`. Use `_ = ∫⁻ g, f g ∂m := (hint f hf).symm`. Use `_ = _ := by conv_lhs => rw [e]`.
-
-Rewrite using `[lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_const {G H X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G]
@@ -145,9 +139,7 @@ theorem exists_const {G H X : Type} [Group G] [TopologicalSpace G] [IsTopologica
         rw [lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `P Q P' Q' β x₀ j ν μ μ' hj hr h1 hS hν h2 h3`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P Q`. Take `⟨k1, k2, k3, k4, k5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P' Q'`. Use `exists_const act (fun g h x => ?_) (fun x => Matrix.one_mulVec x) (fun g => ?_) x₀ ?_ (fun y => qf y = β) j ν μ μ' hj hr hS hν` and prove the remaining obligations. Conclude with `(Matrix.mulVec_mulVec x (UpqT.mat g) (UpqT.mat h)).symm`.
-
-Conclude with `(continuous_const.matrix_mulVec continuous_id).measurable`. Conclude with `GlobalTheory.UpqTopology.continuous_mat.matrix_mulVec continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem quadric_haar : ∀ (P Q P' Q' : ℕ) (β : ℝ) (x₀ : Sp P Q) (j : UpqT P' Q' →* UpqT P Q)
     (ν : Measure (Sp P Q)) (μ : Measure (UpqT P Q)) (μ' : Measure (UpqT P' Q')),

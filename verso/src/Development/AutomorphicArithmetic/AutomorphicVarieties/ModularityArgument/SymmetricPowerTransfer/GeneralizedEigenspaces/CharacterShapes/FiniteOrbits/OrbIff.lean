@@ -8,7 +8,7 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul U g`. Conclude with `⟨h, h.2, hh⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem out_mul {G : Type} [Group G] (U : Subgroup G) (g : G) :
     ∃ i ∈ U, ((g : G ⧸ U)).out = g * i := by
@@ -16,11 +16,11 @@ private theorem out_mul {G : Type} [Group G] (U : Subgroup G) (g : G) :
   exact ⟨h, h.2, hh⟩
 
 /- English proof (translation)
-Establish `key : ∀ u : U, u • (a : G ⧸ U) = (((u : G) * a : G) : G ⧸ U)` using `fun u => rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Take `⟨i, hi, h⟩` from `out_mul U ((u : G) * a)`. Use `⟨u, u.2, i, hi, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[key, h]`. Introduce and unpack `⟨u, hu, u', hu', h⟩`. Use `⟨⟨u, hu⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Rewrite using `[key, ← QuotientGroup.out_eq' p, h]`. Use `QuotientGroup.eq.mpr ?_` and prove the remaining obligations. Rewrite using `[inv_mul_cancel_left]`. Conclude with `hu'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orb_iff {G : Type} [Group G] (U : Subgroup G) (a : G) (p : G ⧸ U) :
     p ∈ MulAction.orbit U (a : G ⧸ U) ↔ p.out ∈ DC U a := by
@@ -40,7 +40,7 @@ private theorem orb_iff {G : Type} [Group G] (U : Subgroup G) (a : G) (p : G ⧸
     exact hu'
 
 /- English proof (translation)
-Simplify using `only [dcF, dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply, Finset.sum_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem dcF_sum {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (U : Subgroup G) (a : G)
     [Fintype (MulAction.orbit U (a : G ⧸ U))] (φ : G → V) (g : G) :
@@ -49,7 +49,7 @@ private theorem dcF_sum {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (
   rfl
 
 /- English proof (translation)
-Take `⟨u, hu, u', hu', rfl⟩` from `hx`. Conclude with `⟨u, hu, u' * i, U.mul_mem hu' hi, mul_assoc _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem mul_mem_dc_of_mem_subgroup {G : Type} [Group G] (U : Subgroup G) (c x i : G) (hx : x ∈ DC U c) (hi : i ∈ U) :
     x * i ∈ DC U c := by
@@ -57,9 +57,9 @@ private theorem mul_mem_dc_of_mem_subgroup {G : Type} [Group G] (U : Subgroup G)
   exact ⟨u, hu, u' * i, U.mul_mem hu' hi, mul_assoc _ _ _⟩
 
 /- English proof (translation)
-Take `⟨i, hi, h⟩` from `out_mul U x`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Simplify using `using mul_mem_dc_of_mem_subgroup U c _ i⁻¹ hx (U.inv_mem hi)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hx`. Conclude with `mul_mem_dc_of_mem_subgroup U c x i hx hi`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem quotient_out_mem_dc_iff {G : Type} [Group G] (U : Subgroup G) (c x : G) :
     ((x : G ⧸ U)).out ∈ DC U c ↔ x ∈ DC U c := by
@@ -72,27 +72,23 @@ private theorem quotient_out_mem_dc_iff {G : Type} [Group G] (U : Subgroup G) (c
     exact mul_mem_dc_of_mem_subgroup U c x i hx hi
 
 /- English proof (translation)
-Introduce `G V _ _ _ U a b ha hb hab huf φ hφ`. Use `haveI : Fintype (MulAction.orbit U (a : G ⧸ U)) := Set.Finite.fintype ha`. Use `haveI : Fintype (MulAction.orbit U (b : G ⧸ U)) := Set.Finite.fintype hb`. Use `haveI : Fintype (MulAction.orbit U ((a * b : G) : G ⧸ U)) := Set.Finite.fintype hab`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dcF_sum U a _ g, dcF_sum U (a * b) φ g]`. Simplify using `only [dcF_sum U b φ]`. Rewrite using `[← Fintype.sum_prod_type']`. Establish `hmem : ∀ x : MulAction.orbit U (a : G ⧸ U) × MulAction.orbit U (b : G ⧸ U), (((x.1 : G ⧸ U).out * (x.2 : G ⧸ U).out : G) : G ⧸ U) ∈ MulAction.orbit U ((a * b : G) : G ⧸ U)`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(orb_iff U (a * b) _).mpr ((quotient_out_mem_dc_iff U _ _).mpr ((huf _).2 _ ((orb_iff U a _).mp x.1.2) ?_))` and prove the remaining obligations. Rewrite using `[inv_mul_cancel_left]`. Conclude with `(orb_iff U b _).mp x.2.2`. Use `Fintype.sum_bijective (fun x => ⟨_, hmem x⟩) ⟨?_, ?_⟩ _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨q, r⟩ ⟨q', r'⟩ hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : (((q : G ⧸ U).out * (r : G ⧸ U).out : G) : G ⧸ U) = (((q' : G ⧸ U).out * (r' : G ⧸ U).out : G) : G ⧸ U)` using `congrArg Subtype.val hx`. Take `⟨i, hi, hs⟩` from `out_mul U ((q : G ⧸ U).out * (r : G ⧸ U).out)`. Take `⟨i', hi', hs'⟩` from `out_mul U ((q' : G ⧸ U).out * (r' : G ⧸ U).out)`. Establish `hsab : (q : G ⧸ U).out * (r : G ⧸ U).out * i ∈ DC U (a * b)`. Use `(orb_iff U (a * b) _).mp (hmem (q, r))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hs]`. Then use the resulting hypothesis. Rewrite `hs` using `[hx']`. Establish `he : (q : G ⧸ U).out * (r : G ⧸ U).out * i = (q' : G ⧸ U).out * (r' : G ⧸ U).out * i'` using `hs.symm.trans hs'`. Take `⟨y, -, huniq⟩` from `(huf _).1 hsab`. Establish `h1 : (q : G ⧸ U) = y` using `huniq _ ⟨(orb_iff U a _).mp q.2, by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc, inv_mul_cancel_left]`. Conclude with `mul_mem_dc_of_mem_subgroup U b _ i ((orb_iff U b _).mp r.2) hi⟩`. Establish `h2 : (q' : G ⧸ U) = y` using `huniq _ ⟨(orb_iff U a _).mp q'.2, by`. Rewrite using `[he]`. Simplify using `only [mul_assoc, inv_mul_cancel_left]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_mem_dc_of_mem_subgroup U b _ i' ((orb_iff U b _).mp r'.2) hi'⟩`. Establish `hq : q = q'` using `Subtype.ext (h1.trans h2.symm)`. Substitute `hq` using the available equality. Establish `hr : (r : G ⧸ U).out * i = (r' : G ⧸ U).out * i'`. Rewrite `he` using `[mul_assoc, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_left_cancel he`. Establish `hr' : (r : G ⧸ U) = r'`. Rewrite using `[← QuotientGroup.out_eq' (r : G ⧸ U), ← QuotientGroup.out_eq' (r' : G ⧸ U), ← QuotientGroup.mk_mul_of_mem (r : G ⧸ U).out hi, hr, QuotientGroup.mk_mul_of_mem _ hi']`. Conclude with `Prod.ext rfl (Subtype.ext hr')`. Introduce and unpack `⟨s, hs⟩`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hsd : (s : G ⧸ U).out ∈ DC U (a * b)` using `(orb_iff U (a * b) s).mp hs`. Take `⟨y, ⟨hy1, hy2⟩, -⟩` from `(huf _).1 hsd`. Use `⟨(⟨y, (orb_iff U a y).mpr hy1⟩, ⟨((y.out⁻¹ * s.out : G) : G ⧸ U), (orb_iff U b _).mpr ((quotient_out_mem_dc_iff U _ _).mpr hy2)⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Take `⟨i, hi, h⟩` from `out_mul U (y.out⁻¹ * s.out)`.
-
-Simplify using `only`. Rewrite using `[h, ← mul_assoc, mul_inv_cancel_left, QuotientGroup.mk_mul_of_mem _ hi, QuotientGroup.out_eq']`. Introduce and unpack `⟨q, r⟩`. Take `⟨i, hi, h⟩` from `out_mul U ((q : G ⧸ U).out * (r : G ⧸ U).out)`. Simplify using `only`.
-
-Rewrite using `[h, ← mul_assoc, ← mul_assoc, hφ i hi]`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.uFMul :
     UpperTheory.V.Z.Sym.So.UFMul := by

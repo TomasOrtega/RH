@@ -13,18 +13,18 @@ def Dv (X : Matrix (Fin m) (Fin m) ℂ) : Derivation ℂ (PX m n) (PX m n) :=
   MvPolynomial.mkDerivation ℂ (fun k : Fin m × Fin n × Bool => xyP X k.1 k.2.1 k.2.2)
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.mkDerivation_X _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem Dv_X (X : Matrix (Fin m) (Fin m) ℂ) (k : Fin m × Fin n × Bool) :
     Dv X (MvPolynomial.X k : PX m n) = xyP X k.1 k.2.1 k.2.2 :=
   MvPolynomial.mkDerivation_X _ _ _
 
 /- English proof (translation)
-Set `D₂ : Derivation ℂ (PX m n) (PX m n)` to `∑ k : Fin m × Fin n × Bool, xyP X k.1 k.2.1 k.2.2 • pderiv k`. Establish `hs : ∀ Q : PX m n, D₂ Q = ∑ k : Fin m × Fin n × Bool, xyP X k.1 k.2.1 k.2.2 * pderiv k Q`. Introduce `Q`. Use `show (Derivation.coeFnAddMonoidHom (R := ℂ) (A := PX m n) (M := PX m n) (∑ k : Fin m × Fin n × Bool, xyP X k.1 k.2.1 k.2.2 • (pderiv k : Derivation ℂ (PX m n) (PX m n)))) Q = _`. Rewrite using `[map_sum, Finset.sum_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Derivation.coeFnAddMonoidHom_apply, Derivation.smul_apply, smul_eq_mul]`. Establish `h : Dv X P = D₂ P`. Use `MvPolynomial.derivation_eq_of_forall_mem_vars (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hs, Dv_X]`. Simplify using `[pderiv_X, Pi.single_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, hs]`.
+A detailed English derivation is pending.
 -/
 theorem Dv_eq (X : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) :
     Dv X P = ∑ k : Fin m × Fin n × Bool, xyP X k.1 k.2.1 k.2.2 * pderiv k P := by
@@ -45,16 +45,16 @@ theorem Dv_eq (X : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) :
 def Q2 (m n : ℕ) : PX m n := ∑ a, ∑ i, MvPolynomial.X (a, i, false) * MvPolynomial.X (a, i, true)
 
 /- English proof (translation)
-Simplify using `only [Q2, map_sum, Derivation.leibniz, Dv_X, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem derivation_quadraticForm_eq_sum (X : Matrix (Fin m) (Fin m) ℂ) :
     Dv X (Q2 m n) = ∑ a, ∑ i, (MvPolynomial.X (a, i, false) * xyP X a i true + MvPolynomial.X (a, i, true) * xyP X a i false) := by
   simp only [Q2, map_sum, Derivation.leibniz, Dv_X, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[Dv_eq, derivation_quadraticForm_eq_sum, vfX]`. Simplify using `only [Fintype.sum_prod_type]`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vfX_eq_Dv (c : ℝ) (X : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) :
     vfX c X P = Dv X P - C (c : ℂ) * Dv X (Q2 m n) * P := by
@@ -68,7 +68,7 @@ theorem vfX_eq_Dv (c : ℝ) (X : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) :
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [xyP, GlobalTheory.CompanionTheory.PolyGaussSchwartz.coord, matL_apply, star_sum, star_mul']`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_xyP (X : Matrix (Fin m) (Fin m) ℂ) (u : Fin m → Fin n → ℂ) (a : Fin m) (i : Fin n) (b : Bool) :
     MvPolynomial.eval (fun k => GlobalTheory.CompanionTheory.PolyGaussSchwartz.coord k u) (xyP X a i b) =
@@ -76,7 +76,7 @@ theorem eval_xyP (X : Matrix (Fin m) (Fin m) ℂ) (u : Fin m → Fin n → ℂ) 
   cases b <;> simp [xyP, GlobalTheory.CompanionTheory.PolyGaussSchwartz.coord, matL_apply, star_sum, star_mul']
 
 /- English proof (translation)
-Rewrite using `[gs]`. Use `congr 1`. Simplify using `only [Q2, map_sum, map_mul, MvPolynomial.eval_X, GlobalTheory.CompanionTheory.PolyGaussSchwartz.coord]`. Use `push_cast`. Simplify using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 -/
 theorem gs_eq (c : ℝ) (u : Fin m → Fin n → ℂ) :
     gs c u = Complex.exp (-(c : ℂ) * MvPolynomial.eval (fun k => GlobalTheory.CompanionTheory.PolyGaussSchwartz.coord k u) (Q2 m n)) := by
@@ -87,13 +87,11 @@ theorem gs_eq (c : ℝ) (u : Fin m → Fin n → ℂ) :
   simp [Complex.mul_conj, Complex.normSq_eq_norm_sq, Finset.mul_sum]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on (motive := fun Q => HasDerivAt (fun t => MvPolynomial.eval (g t) Q) (∑ k, g' k * MvPolynomial.eval (g 0) (pderiv k Q)) 0) Q ?_ ?_ ?_` and prove the remaining obligations. Introduce `a`. Simplify using `using hasDerivAt_const (0 : ℝ) a`. Introduce `p q hp hq`. Use `((hp.fun_add hq).congr_deriv ?_).congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[mul_add, Finset.sum_add_distrib]`. Conclude with `Filter.Eventually.of_forall (fun t => by simp)`. Introduce `p k hp`. Use `((hp.fun_mul (hg k)).congr_deriv ?_).congr_of_eventuallyEq ?_` and prove the remaining obligations. Simplify using `[Derivation.leibniz, pderiv_X, Pi.single_apply, mul_add, Finset.sum_add_distrib, apply_ite, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_comm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl (fun _ _ => by ring)`.
-
-Conclude with `Filter.Eventually.of_forall (fun t => by simp)`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasDerivAt_clm_comp_of_tendsto_slope {σ : Type*} [Fintype σ] (g : ℝ → σ → ℂ) (g' : σ → ℂ)
     (hg : ∀ k, HasDerivAt (fun t => g t k) (g' k) 0) (Q : MvPolynomial σ ℂ) :
@@ -121,17 +119,17 @@ private theorem hasDerivAt_clm_comp_of_tendsto_slope {σ : Type*} [Fintype σ] (
     · exact Filter.Eventually.of_forall (fun t => by simp)
 
 /- English proof (translation)
-Use `set u : ℝ → (Fin m → Fin n → ℂ) := fun t => matL (NormedSpace.exp ((t : ℂ) • X)) x with hu`. Establish `hu0 : u 0 = x` using `by simp [hu, matL_one]`. Use `clear_value u`. Rewrite using `[show (fun t : ℝ => fP c P (matL (NormedSpace.exp ((t : ℂ) • X)) x)) = fun t => fP c P (u t) by rw [hu]]`. Set `e : (Fin m → Fin n → ℂ) → Fin m × Fin n × Bool → ℂ` to `fun v k => GlobalTheory.CompanionTheory.PolyGaussSchwartz.coord k v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hg : ∀ k, HasDerivAt (fun t => e (u t) k) (MvPolynomial.eval (e x) (xyP X k.1 k.2.1 k.2.2)) 0`. Introduce and unpack `⟨a, i, b⟩`. Establish `hlin : HasDerivAt (fun t => u t a i) (matL X x a i) 0`. Apply the tactic sequence `have hs := HasDerivAt.fun_sum (u := Finset.univ) (fun c (_ : c ∈ Finset.univ) => (hasDerivAt_entry X a c).mul_const (x c i))`. Simplify `hs` using `only [hu, matL_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[eval_xyP]`. Consider the cases of `b`. Simplify `hlin` using `[e, GlobalTheory.CompanionTheory.PolyGaussSchwartz.coord]`. Simplify `hlin.star` using `[e, GlobalTheory.CompanionTheory.PolyGaussSchwartz.coord]`. Establish `hf : (fun t : ℝ => fP c P (u t)) = fun t => MvPolynomial.eval (e (u t)) P * Complex.exp (-(c : ℂ) * MvPolynomial.eval (e (u t)) (Q2 m n))`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[fP, gs_eq]`. Both sides reduce to the same expression. Establish `hx : fP c (vfX c X P) x = MvPolynomial.eval (e x) (vfX c X P) * Complex.exp (-(c : ℂ) * MvPolynomial.eval (e x) (Q2 m n))`. Rewrite using `[fP, gs_eq]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hf, hx, vfX_eq_Dv, Dv_eq X P, Dv_eq X (Q2 m n)]`. Establish `hP` using `hasDerivAt_clm_comp_of_tendsto_slope (fun t => e (u t)) _ hg P`. Establish `hQ` using `hasDerivAt_clm_comp_of_tendsto_slope (fun t => e (u t)) _ hg (Q2 m n)`. Establish `H` using `hP.fun_mul ((hQ.const_mul (-(c : ℂ))).cexp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `H` using `[hu0]`. Use `H.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [map_sub, map_mul, map_sum, MvPolynomial.eval_C]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_curve (c : ℝ) (X : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) (x : Fin m → Fin n → ℂ) :
     HasDerivAt (fun t : ℝ => fP c P (matL (NormedSpace.exp ((t : ℂ) • X)) x)) (fP c (vfX c X P) x) 0 := by

@@ -5,13 +5,13 @@ open GlobalTheory.K5
 namespace GlobalTheory.K5
 
 /- English proof (translation)
-Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Establish `hzi : (ζ : S) * ((ζ⁻¹ : Sˣ) : S) = 1` using `Units.mul_inv ζ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Derivation.leibniz, Derivation.leibniz_pow, ← Nat.cast_smul_eq_nsmul S]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_add, smul_smul]`. Use `congr 2`. Establish `hw : ((ζ : S) ^ a) ^ (M + 1) = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ, one_pow]`. Rewrite using `[mul_pow]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `r ^ M * hw`. Break down `a with _ | b` into its components or cases. Simplify using the standard rewrite rules. Establish `hw : ((ζ : S) ^ (b + 1)) ^ (M + 1) = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ, one_pow]`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.add_sub_cancel, Nat.cast_add, Nat.cast_one]`. Take the linear combination `((b : S) + 1) * r ^ (M + 1) * (((ζ⁻¹ : Sˣ) : S) * hw - ((ζ : S) ^ (b + 1)) ^ M * (ζ : S) ^ b * hzi)`. Rewrite using `[Derivation.leibniz_pow, ← Nat.cast_smul_eq_nsmul S, Nat.add_sub_cancel]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem kaehlerD_root_twist (R S : Type) [CommRing R] [CommRing S] [Algebra R S] (ζ : Sˣ) (r : S)
     (N a : ℕ) (hN : 1 ≤ N) (hζ : (ζ : S) ^ N = 1) :

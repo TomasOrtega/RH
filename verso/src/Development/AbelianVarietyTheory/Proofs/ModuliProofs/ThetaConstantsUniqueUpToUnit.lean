@@ -22,13 +22,13 @@ namespace GlobalTheory.ThetaUniq
 open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.ThetaCoord GlobalTheory.CommPairing GlobalTheory.GlobalLift GlobalTheory.VVRank
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Finsupp.mem_ideal_span_range_iff_exists_finsupp.1 ((Ideal.eq_top_iff_one _).1 hv)`. Establish `key : ∀ (q : Ideal R) [q.IsMaximal], ∃ u : (Localization.AtPrime q)ˣ, algebraMap R (Localization.AtPrime q) (c.sum fun i a => a * v' i) = u ∧ ∀ a, algebraMap R (Localization.AtPrime q) (v' a) = u * algebraMap R (Localization.AtPrime q) (v a)` using `fun q _ => by`. Take `⟨u, hu⟩` from `h q`. Use `⟨u, ?_, hu⟩` and prove the remaining obligations. Establish `e` using `congrArg (algebraMap R (Localization.AtPrime q)) hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Finsupp.sum, map_sum, map_mul, map_one] at e ⊢`. Simplify using `only [hu, mul_left_comm _ (u : Localization.AtPrime q)]`. Rewrite using `[← Finset.mul_sum, e, _root_.mul_one]`. Establish `hu : IsUnit (c.sum fun i a => a * v' i)`. Assume the negation of the conclusion as `hn`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨q, hq, hm⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hn)`. Take `⟨u, e, -⟩` from `key q`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff (Localization.AtPrime q) q _).1 (e ▸ u.isUnit) hm`. Use `⟨hu.unit, fun a => Module.eq_of_localization_maximal (R := R) (fun q _ => Localization.AtPrime q) (fun q _ => Algebra.linearMap R (Localization.AtPrime q)) _ _ fun q _ => ?_⟩` and prove the remaining obligations. Take `⟨u, e, e'⟩` from `key q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.linearMap_apply, Algebra.linearMap_apply, map_mul, IsUnit.unit_spec, e, e']`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_of_local {R I : Type} [CommRing R] {v v' : I → R} (hv : Ideal.span (Set.range v) = ⊤)
     (h : ∀ (q : Ideal R) [q.IsMaximal], ∃ u : (Localization.AtPrime q)ˣ, ∀ a,
@@ -55,7 +55,7 @@ theorem exists_unit_of_local {R I : Type} [CommRing R] {v v' : I → R} (hv : Id
   rw [Algebra.linearMap_apply, Algebra.linearMap_apply, map_mul, IsUnit.unit_spec, e, e']
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `SymLiftOdd.exists_const hL p e he hp (fun U _ h => (Fintype.prod_sum_type _).trans (by`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel]))`. Use the proof step `(DVR.mulGen_isGen L _ _ _ _ u (LB.invGen L _ _ u') hu (DVR.invGen_isGen _ _ _ _ hu'))`. Use `⟨c, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc Z r z J hJ, val_mul hJ, val_inv, mul_comm, inv_mul_cancel_right]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratio_base {X Y S₀ : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} (p : Y ⟶ S₀) (e : S₀ ⟶ Y) (he : e ≫ p = 𝟙 _) (hp : Function.Surjective p.appTop.hom)
@@ -71,9 +71,9 @@ theorem exists_ratio_base {X Y S₀ : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : 
 variable {S : Scheme.{0}} {T : Over S}
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `H' th`. Take `⟨r', hr'⟩` from `H th'`. Establish `e : SecM.ofSec A th = r • SecM.ofSec A th'` using `Subtype.ext (funext hr)`. Establish `e' : SecM.ofSec A th' = r' • SecM.ofSec A th` using `Subtype.ext (funext hr')`. Distinguish the cases in `hu : IsUnit r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨hu.unit, e⟩`. Establish `h₁ : IsUnit (1 - r * r')` using `(IsLocalRing.isUnit_or_isUnit_one_sub_self _).resolve_left fun h => hu (isUnit_of_mul_isUnit_left h)`. Establish `h₂ : SecM.ofSec A th = 0` using `h₁.smul_eq_zero.1 (by rw [sub_smul, one_smul, mul_smul, ← e', ← e, sub_self])`. Conclude with `⟨1, by rw [e', h₂, smul_zero, smul_zero]⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_unit_of_isGenSec_local {A : Over S} [GrpObj A] {L : LB A.left} {k : ℤ} [IsLocalRing Γ(T.left, ⊤)]
     {th th' : LB.Sec (LPow A L k T)} (H : IsGenSec A L k th) (H' : IsGenSec A L k th') :
@@ -90,19 +90,19 @@ theorem exists_unit_of_isGenSec_local {A : Over S} [GrpObj A] {L : LB A.left} {k
   exact ⟨1, by rw [e', h₂, smul_zero, smul_zero]⟩
 
 /- English proof (translation)
-Establish `hL` using `P.isLB`. Take `⟨th, s₁, α, τ, U, s₂, w, u, hth, hα, hτ, hs₁, hU, hs₂, hw, hv⟩` from `H`. Take `⟨th', s₁', α', τ', U', s₂', w', u', hth', hα', hτ', hs₁', hU', hs₂', hw', hv'⟩` from `H'`. Take `⟨ρ, hρ⟩` from `exists_unit_of_isGenSec_local hth' hth`. Take `⟨c, hc⟩` from `exists_ratio_base hL (fst T P.A).left (lift (𝟙 T) (1 : T ⟶ P.A)).left (by rw [← Over.comp_left, lift_fst]; rfl) (SymLiftOdd.surj_fst hG P.isAb T) hα' hα`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `exists_ratio_base hL (𝟙 T.left) (𝟙 T.left) (Category.comp_id _) (fun a => ⟨a, rfl⟩) hτ hτ'`. Establish `key : ∀ i, w' i = (ρ * c * d : Γ(T.left, ⊤)ˣ) * w i` using `fun i => fn_ext fun z _ => by choose J hJ using fun χ : T.left ⟶ P.A.left => exists_chart hL (χ z) replace hJ : Good P.L z J := hJ`. Establish `a₀ : tval (U' i) (lift (𝟙 T) (1 : T ⟶ P.A)).left z J = tval (U i) (lift (𝟙 T) (1 : T ⟶ P.A)).left z J` using `val_corr hJ (SymLiftOdd.symLift_unique hG P.isAb hL hk.pow _ _ (hU' i) (hU i)) _`. Establish `a₁ : bval (b` using `1) α' (lift (𝟙 T) (x i)).left z J = bval (b := 1) α (lift (𝟙 T) (x i)).left z J * gm (𝟙 T.left) z ⊤ c := by`. Use `hc _ (lift (𝟙 T) (x i)).left z J hJ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[lift_fst_left]`. Conclude with `this`. Establish `a₂` using `hd _ (𝟙 _) z J hJ`. Establish `a₃ : sv P.A th' (lift (𝟙 T) (x i ^ k)).left z J = gs (𝟙 T.left) z ⊤ ρ * sv P.A th (lift (𝟙 T) (x i ^ k)).left z J`. Use `ThetaAct.sv_smul (ρ : Γ(T.left, ⊤)) (SecM.ofSec P.A th) (lift (𝟙 T) (x i ^ k)).left z hJ` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hρ, lift_fst_left]`. Conclude with `this`. Establish `b₁` using `sv_act (hU i).pt_eq (hs₂ i) (𝟙 T) hJ 1`. Establish `b₂` using `sv_mulPull hs₁ (𝟙 T) hJ (x i)`. Establish `b₃` using `sv_of_isValueAt (hw i) (𝟙 T) hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₁` using `sv_act (hU' i).pt_eq (hs₂' i) (𝟙 T) hJ 1`. Establish `c₂` using `sv_mulPull hs₁' (𝟙 T) hJ (x i)`. Establish `c₃` using `sv_of_isValueAt (hw' i) (𝟙 T) hJ`. Rewrite `b₁`, `c₁` using `[Category.id_comp, _root_.mul_one]`. Rewrite `b₃`, `c₃`, `a₂` using `[Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b₁` using `[b₃, b₂]`. Rewrite `c₁` using `[c₃, c₂, a₀, a₁, a₃]`. Simplify using `only [Over.id_left] at b₁ c₁`. Rewrite `b₁` using `[a₂]`. Use `(Units.mul_left_inj (val τ' (𝟙 T.left) z J)).1 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[c₁, gs_mul _ _ ⊤ trivial, gs_unit _ _ ⊤ trivial, gs_unit _ _ ⊤ trivial, map_mul, map_mul]`. Simplify using `only [Units.val_mul] at b₁ ⊢`. Take the linear combination `(-(gm (𝟙 T.left) z ⊤ ρ).val * (gm (𝟙 T.left) z ⊤ c).val) * b₁`. Use `⟨u' * (ρ * c * d) * u⁻¹, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hv', hv, key, Units.val_mul _ u⁻¹, _root_.mul_assoc _ _ (u * w i), Units.inv_mul_cancel_left, Units.val_mul u', _root_.mul_assoc (u' : Γ(T.left, ⊤))]`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_over (hG : GlobalFnsSt) (P : PolAV S) [IsLocalRing Γ(T.left, ⊤)] {k : ℕ} (hk : Odd k) {I : Type}
     {x : I → (T ⟶ P.A)} {v v' : I → Γ(T.left, ⊤)} (H : IsThetaPtOver P k x v) (H' : IsThetaPtOver P k x v') :
@@ -151,11 +151,11 @@ theorem exists_unit_over (hG : GlobalFnsSt) (P : PolAV S) [IsLocalRing Γ(T.left
     _root_.mul_assoc (u' : Γ(T.left, ⊤))]
 
 /- English proof (translation)
-Take `⟨V, hp, H'⟩` from `H.2.2 (IsLocalRing.closedPoint R)`. Take `rfl : V = ⊤` from `(IsLocalRing.closedPoint_mem_iff V).1 hp`. Set `h : Over.mk y ⟶ overRes (T` to `Over.mk y) ⊤ := Over.homMk (Sp R).topIso.inv (by show (Sp R).topIso.inv ≫ (⊤ : (Sp R).Opens).ι ≫ y = y`. Rewrite using `[Scheme.toIso_inv_ι_assoc])`. Establish `hh : h ≫ overResι ⊤ = 𝟙 _` using `Over.OverMorphism.ext (Scheme.toIso_inv_ι (Sp R))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `isThetaPtOver_pull P H' h (overResι ⊤) hh` as an intermediate fact. Use `this using 2 with a a` and compare the differences between its conclusion and the goal. Rewrite using `[← Category.assoc, hh, Category.id_comp]`. Establish `q` using `congrArg (fun q => q.left.appTop.hom (v a)) hh`. Simplify using `only [Over.comp_left, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, Over.id_left, Scheme.Hom.id_appTop, CommRingCat.hom_id, RingHom.id_apply] at q`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `q.symm`.
+A detailed English derivation is pending.
 -/
 theorem isThetaPtOver_of_local (P : PolAV S) {R : Type} [CommRing R] [IsLocalRing R] (y : Sp R ⟶ S) {n : ℕ} {I : Type}
     {x : I → (Over.mk y ⟶ P.A)} {v : I → Γ((Over.mk y).left, ⊤)} (H : IsThetaPt P n x v) : IsThetaPtOver P n x v := by
@@ -174,9 +174,7 @@ theorem isThetaPtOver_of_local (P : PolAV S) {R : Type} [CommRing R] [IsLocalRin
     exact q.symm
 
 /- English proof (translation)
-Set `e : Γ(Sp R, ⊤) ≃+* R` to `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv`. Use `haveI : IsLocalRing Γ((Over.mk x).left, ⊤) := e.symm.isLocalRing`. Take `⟨u, hu⟩` from `exists_unit_over hG t.pol H.1 (isThetaPtOver_of_local _ x H) (isThetaPtOver_of_local _ x H')`. Use `⟨Units.map e.toMonoidHom u, fun a => ?_⟩` and prove the remaining obligations. Establish `q` using `(congrArg e (hu a)).trans (map_mul e _ _)`.
-
-Conclude with `(e.apply_symm_apply (v' a)).symm.trans (q.trans (congrArg (_ * ·) (e.apply_symm_apply (v a))))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_unit_local (hG : GlobalFnsSt) {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBase o (N' ^ 2)}
     {s : S ⟶ Sp o} (t : TObj g (N' ^ 2) J b s) {R : Type} [CommRing R] [IsLocalRing R] (x : Sp R ⟶ S)
@@ -193,7 +191,7 @@ end GlobalTheory.ThetaUniq
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h₁ h₂ o _ g N' J b S s t R _ x v v' H H' hv` and use `ThetaUniq.exists_unit_of_local hv fun q _ => ThetaUniq.exists_unit_local h₁.globalFns t _ (T.hasThetaConstants_ring_baseChange h₂ o g N' J b S s t R _ (algebraMap R (Localization.AtPrime q)) x v H) (T.hasThetaConstants_ring_baseChange h₂ o g N' J b S s t R _ (algebraMap R (Locali …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasTh_unique_unit : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s) (R : Type) [CommRing R] (x : Sp R ⟶ S) (v v' : Ix g (N' ^ 2) → R), t.HasTh x v → t.HasTh x v' → Ideal.span (Set.range v) = ⊤ → ∃ u : Rˣ, ∀ a, v' a = u * v a :=
   fun h₁ h₂ o _ g N' J b S s t R _ x v v' H H' hv => ThetaUniq.exists_unit_of_local hv fun q _ =>

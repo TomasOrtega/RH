@@ -14,15 +14,15 @@ namespace UpperTheory.P2
 variable {q : ℕ} [NeZero q]
 
 /- English proof (translation)
-Introduce `U ⟨y⟩` and use `hE U ⟨y.map f⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem inv_of_map {Y E : Spc} (f : Y ⟶ E) (hE : Inv q E) : Inv q Y :=
   fun U ⟨y⟩ => hE U ⟨y.map f⟩
 
 /- English proof (translation)
-Introduce `n`. Prove the components needed by the constructor for the conclusion. Introduce `a b h`. Use `congrArg (pull R (inv f) F n) h` as an intermediate fact. Rewrite `this` using `[← pull_comp, ← pull_comp, IsIso.inv_hom_id, pull_id, pull_id]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `x`. Use `⟨pull R (inv f) F n x, ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, IsIso.hom_inv_id, pull_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eqv_iso {R : Type} [CommRing R] {A B : Spc} (f : A ⟶ B) [IsIso f] (F : Shv R) : Eqv R f F := by
   intro n
@@ -35,7 +35,7 @@ private theorem eqv_iso {R : Type} [CommRing R] {A B : Spc} (f : A ⟶ B) [IsIso
     rw [← pull_comp, IsIso.hom_inv_id, pull_id]
 
 /- English proof (translation)
-Introduce `n`. Use `(hf n).comp (hg n)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Conclude with `pull_comp R f g F n x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem eqv_comp {R : Type} [CommRing R] {A B C : Spc} {f : A ⟶ B} {g : B ⟶ C} {F : Shv R} (hf : Eqv R f F) (hg : Eqv R g F) :
     Eqv R (f ≫ g) F := by
@@ -46,9 +46,9 @@ private theorem eqv_comp {R : Type} [CommRing R] {A B C : Spc} {f : A ⟶ B} {g 
   exact pull_comp R f g F n x
 
 /- English proof (translation)
-Take `⟨m1, m2, he⟩` from `hc`. Use `⟨mono_comp _ _, mono_comp _ _, fun n => ?_⟩` and prove the remaining obligations. Use `he n` as an intermediate fact. Establish `e : biprod.desc ((free R).map ((f ≫ h).app n)) ((free R).map ((g ≫ h).app n)) = biprod.desc ((free R).map (f.app n)) ((free R).map (g.app n)) ≫ (free R).map (h.app n)`. Establish `e1 : (f ≫ h).app n = f.app n ≫ h.app n` using `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (g ≫ h).app n = g.app n ≫ h.app n` using `rfl`. Rewrite using `[e1, e2, Functor.map_comp, Functor.map_comp]`. Conclude with `biprod.hom_ext' _ _ (by simp) (by simp)`. Rewrite using `[e]`. Conclude with `epi_comp _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cover_comp {R : Type} [CommRing R] {U V E E' : Spc} {f : U ⟶ E} {g : V ⟶ E} (h : E ⟶ E') [IsIso h]
     (hc : Cover2 R f g) : Cover2 R (f ≫ h) (g ≫ h) := by
@@ -65,19 +65,17 @@ private theorem cover_comp {R : Type} [CommRing R] {U V E E' : Spc} {f : U ⟶ E
   exact epi_comp _ _
 
 /- English proof (translation)
-Establish `hP` using `tri_pullback Y 1`. Establish `e : (prod.fst : Y ⨯ Dv 1 ⟶ Y) = hP.isoPullback.hom ≫ pullback.fst (triv Y 1) (PGL.pr 1)`. Rewrite using `[IsPullback.isoPullback_hom_fst]`. Rewrite using `[e]`. Use `eqv_comp (eqv_iso _ _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hX : Inv q (pullback (triv Y 1) (PGL.pr 1))` using `inv_of_map (pullback.fst _ _) hY`. Use `set π := pullback.fst (triv Y 1) (PGL.pr 1)`. Use `set ξ := c1 q (pullback.snd (triv Y 1) (PGL.pr 1) ≫ PGL.line 1)`. Introduce `n`. Establish `h : Function.Bijective _` using `UpperTheory.projectiveBundleFormula_rank_one_of_homotopyInvariant q Y hY n i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∀ j : Fin 1, n - 2 * (((j : ℕ) : ℤ)) = n`. Introduce `j`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify using the standard rewrite rules. Establish `h1 : ∀ j : Fin 1, i - (((j : ℕ) : ℤ)) = i`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify using the standard rewrite rules. Establish `ev : ∀ a : ∀ j : Fin 1, Ht q Y (n - 2 * (((j : ℕ) : ℤ))) (i - (((j : ℕ) : ℤ))), ∑ j : Fin 1, ((cup q (pull _ π _ _ (a j)) (cpow q ξ j)).cast (by ring) (by ring) : Ht q _ n i) = pull _ π _ _ ((a 0).cast (h0 0) (h1 0))`. Introduce `a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Fin.sum_univ_one]`. Conclude with `term0 hX π ξ _ (by simp) (a 0) _ _ _ _`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Use `h.1 (a₁ := fun j => Ht.cast (h0 j).symm (h1 j).symm a) (a₂ := fun j => Ht.cast (h0 j).symm (h1 j).symm b) (by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only`. Rewrite using `[ev, ev, cast_cast, cast_cast]`. Conclude with `hab)`. Conclude with `cast_inj _ _ (congrFun this 0)`. Introduce `y`.
-
-Take `⟨a, ha⟩` from `h.2 y`. Conclude with `⟨_, (ev a).symm.trans ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem eqv_fst {Y : Spc} (hY : Inv q Y) (i : ℤ) : Eqv _ (prod.fst : Y ⨯ Dv 1 ⟶ Y) (tw q i) := by
   have hP := tri_pullback Y 1
@@ -116,7 +114,7 @@ private theorem eqv_fst {Y : Spc} (hY : Inv q Y) (i : ℤ) : Eqv _ (prod.fst : Y
     exact ⟨_, (ev a).symm.trans ha⟩
 
 /- English proof (translation)
-Establish `key : ∀ (n i m j : ℤ) (hm : n - 1 = m) (hj : i - 1 = j) (h : m + 1 = n) (h' : j + 1 = i), Function.Bijective fun p : Ht q E n i × Ht q E m j => pull _ (prod.snd : sch.obj (Gq q) ⨯ E ⟶ E) _ _ p.1 + (cup q (pull _ (prod.snd : sch.obj (Gq q) ⨯ E ⟶ E) _ _ p.2) (pull _ (prod.fst : sch …`. Introduce `n i m j hm hj h h'`. Substitute `hm hj` using the available equality. Conclude with `UpperTheory.bijective_cohomology_gm_product_kummer_cup q E hE n i`. Conclude with `key (m + 1) (j + 1) m j (by ring) (by ring) rfl rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem kun {E : Spc} (hE : Inv q E) (m j : ℤ) :
     Function.Bijective fun p : Ht q E (m + 1) (j + 1) × Ht q E m j =>
@@ -136,31 +134,27 @@ end UpperTheory.P2
 
 open UpperTheory.P2 in
 /- English proof (translation)
-Introduce `q _ E hE`. Establish `hP` using `tri_pullback E 2`. Use `set θ := hP.isoPullback with hθ`. Use `set π := pullback.fst (triv E 2) (PGL.pr 2) with hπ`. Use `set L := pullback.snd (triv E 2) (PGL.pr 2) ≫ PGL.line 2 with hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : Inv q (pullback (triv E 2) (PGL.pr 2))` using `inv_of_map π hE`. Establish `hθπ : θ.hom ≫ π = prod.fst` using `hP.isoPullback_hom_fst`. Establish `hθs : θ.hom ≫ pullback.snd (triv E 2) (PGL.pr 2) = prod.snd ≫ Dv.toPGL 2` using `hP.isoPullback_hom_snd`. Set `f : Fin 2 → (WS E A1 ⟶ pullback (triv E 2) (PGL.pr 2))` to `fun b => gch b ≫ θ.hom`. Establish `hfπ : ∀ b, f b ≫ π = pe`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `b`. Simplify using `only [f, Category.assoc, hθπ]`. Conclude with `prod.lift_fst _ _`. Establish `hfL : ∀ b, f b ≫ L = (gch b ≫ prod.snd) ≫ Dv.line 2`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [f, hL, Category.assoc]`. Rewrite using `[← Category.assoc θ.hom, hθs]`. Simplify using `[Dv.line]`. Establish `hcov : Cover2 (ZMod q) (f 0) (f 1)` using `cover_comp θ.hom (gch_cover (ZMod q))`. Establish `hpb : IsPullback (cA (E` using `E) q) (cB q) (f 0) (f 1) := (over_pullback hE).of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) θ (by simp) (by simp) (by simp [f]) (by simp [f])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set ψ := hpb.isoPullback with hψ`. Establish `hψ1 : ψ.inv ≫ cA q = pullback.fst (f 0) (f 1)`. Rewrite using `[Iso.inv_comp_eq]`. Conclude with `hpb.isoPullback_hom_fst.symm`. Establish `hψ2 : ψ.inv ≫ cB q = pullback.snd (f 0) (f 1)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Iso.inv_comp_eq]`. Conclude with `hpb.isoPullback_hom_snd.symm`. Set `u : pullback (f 0) (f 1) ⟶ sch.obj (Gq q)` to `ψ.inv ≫ ps`. Set `ρ : pullback (f 0) (f 1) ⟶ sch.obj (Gq q) ⨯ E` to `ψ.inv ≫ prod.fst`. Establish `hρ1 : ρ ≫ prod.fst = u` using `by simp only [ρ, u, ps, Category.assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hρ2 : pullback.fst (f 0) (f 1) ≫ f 0 ≫ π = ρ ≫ prod.snd`. Rewrite using `[hfπ 0, ← hψ1, Category.assoc, cA, mkW_pe]`. Simplify using `only [ρ, pe, Category.assoc]`. Establish `hρE : ∀ i, Eqv _ ρ (tw q i)` using `fun i => eqv_comp (eqv_iso _ _) (eqv_fst (inv_of_map prod.snd hE) i)`. Establish `hK : ∀ m j : ℤ, Function.Bijective fun p : Ht q E (m + 1) (j + 1) × Ht q E m j => pull _ (pullback.fst (f 0) (f 1) ≫ f 0 ≫ π) _ _ p.1 + cup q (pull _ (pullback.fst (f 0) (f 1) ≫ f 0 ≫ π) _ _ p.2) (pull _ u _ _ (kappa q))`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m j`. Use `((hρE (j + 1)) (m + 1)).comp (kun hE m j)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Establish `a1 : ∀ {n i : ℤ} (x : Ht q E n i), pull _ (pullback.fst (f 0) (f 1) ≫ f 0 ≫ π) _ _ x = pull _ ρ _ _ (pull _ prod.snd _ _ x)`. Introduce `n i x`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hρ2, pull_comp]`. Establish `a2 : pull _ u _ _ (kappa q) = pull _ ρ _ _ (pull _ prod.fst _ _ (kappa q))`. Rewrite using `[← hρ1, pull_comp]`. Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[a1, a1, a2, map_add, pull_cup]`. Establish `t0 : IsTrivBy (f 0 ≫ L) wc` using `by rw [hfL]; exact gch_triv 0`. Establish `t1 : IsTrivBy (f 1 ≫ L) wc` using `by rw [hfL]; exact gch_triv 1`. Establish `uc : ∀ (T : Scheme.{0}) (y : Sx (pullback (f 0) (f 1)) 0 T), Units.map (show T ⟶ Gq q from y.map u).appTop.hom.toMonoidHom (tq q) = wc T (y.map (pullback.fst (f 0) (f 1))) * (wc T (y.map (pullback.snd (f 0) (f 1))))⁻¹`. Introduce `T y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e1 : y.map (pullback.fst (f 0) (f 1)) = (y.map ψ.inv).map (cA q)` using `by rw [← hψ1]; rfl`. Establish `e2 : y.map (pullback.snd (f 0) (f 1)) = (y.map ψ.inv).map (cB q)` using `by rw [← hψ2]; rfl`. Establish `w1 : wc T ((y.map ψ.inv).map (cA q)) = tv q (y.map ψ.inv) * wc T (y.map ψ.inv)` using `Units.ext (cu_cA (y.map ψ.inv) 0)`. Establish `w2 : wc T ((y.map ψ.inv).map (cB q)) = wc T (y.map ψ.inv)` using `Units.ext (cu_cB (y.map ψ.inv) 0)`. Rewrite using `[e1, e2, w1, w2, mul_inv_cancel_right]`.
-
-Both sides reduce to the same expression. Establish `hd` using `UpperTheory.kummer_cocycle_mayerVietoris_of_cover q (f 0) (f 1) L wc wc u hX hcov t0 t1 uc`. Establish `h₁ : ∀ b i, Eqv _ (f b ≫ π) (tw q i)`. Introduce `b i`. Rewrite using `[hfπ]`.
-
-Conclude with `eqv_comp (eqv_fst (inv_of_map prod.snd hE) i) (UpperTheory.tateTwist_affineLine_projection_equiv q E i hE)`. Conclude with `lh2 hX π (c1 q L) fun m j => core π (f 0) (f 1) hcov _ _ (h₁ 0) (h₁ 1) hK hd m j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.projectiveBundleFormula_rank_two :
     ∀ (q : ℕ) [NeZero q] (E : Spc), Inv q E → PBF q E 2 := by

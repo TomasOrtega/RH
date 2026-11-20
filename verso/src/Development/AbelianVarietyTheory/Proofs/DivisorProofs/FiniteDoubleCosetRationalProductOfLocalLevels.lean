@@ -18,13 +18,13 @@ def finPart : UA E n →* finU E n where
   map_mul' a b := Subtype.ext (Subtype.ext (by simp))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Subtype.ext (GlobalTheory.DefU.ClassFin.finGL_pFin k))`.
+A detailed English derivation is pending.
 -/
 theorem finPart_fin (k : finU E n) : finPart (k : UA E n) = k :=
   Subtype.ext (Subtype.ext (GlobalTheory.DefU.ClassFin.finGL_pFin k))
 
 /- English proof (translation)
-Establish `h : GeneralLinearGroup.map (pFin E) x.1 = 1` using `hx`. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finGL E n (GeneralLinearGroup.map (pFin E) x.1) = 1`. Rewrite using `[h, map_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem finPart_inf {x : UA E n} (hx : x ∈ infU E n) : finPart x = 1 := by
   have h : GeneralLinearGroup.map (pFin E) x.1 = 1 := hx
@@ -33,15 +33,15 @@ theorem finPart_inf {x : UA E n} (hx : x ∈ infU E n) : finPart x = 1 := by
   rw [h, map_one]
 
 /- English proof (translation)
-Take `⟨γ₀, hγ₀'⟩` from `hγ`. Establish `hγ₀ : ratGL E n γ₀ = γ.1` using `hγ₀'`. Establish `hg : cT (conjAd E) γ.1.val * 1 * γ.1.val = 1` using `γ.2`. Rewrite `hg` using `[← hγ₀, mul_one]`. Establish `hv : (ratGL E n γ₀).val = γ₀.val.map (algebraMap E (Ad E))` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hg` using `[hv, GlobalTheory.DefU.ClassFin.cT_map (algebraMap E (Ad E)) (IsCMField.complexConj E).toRingEquiv.toRingHom (conjAd E) (fun y => (conjAd_algebraMap y).symm), ← Matrix.map_mul]`. Establish `hU : γ₀ ∈ UE E n`. Express the relevant statement in the definitionally equal form `cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ₀.val * 1 * γ₀.val = 1`. Rewrite using `[mul_one]`. Use extensionality with `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `congrFun₂ hg i j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply, Matrix.one_apply]`. Rewrite using `[Matrix.one_apply]`. Use `haveI hnt : Nontrivial (Ad E) := show Nontrivial (InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E) from inferInstance`. Apply `(algebraMap E (Ad E)).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨γ₀, hU, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finGL E n (ratF E n γ₀) = finGL E n (GeneralLinearGroup.map (pFin E) γ.1)`. Rewrite using `[← hγ₀]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem finPart_rat {γ : UA E n} (hγ : γ ∈ ratU E n) : finPart γ ∈ ratFinU E n := by
   obtain ⟨γ₀, hγ₀'⟩ := hγ
@@ -68,11 +68,11 @@ theorem finPart_rat {γ : UA E n} (hγ : γ ∈ ratU E n) : finPart γ ∈ ratFi
   rfl
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `GlobalTheory.DefU.ClassFin.classSet_finite E n K hK`. Set `φ : T → DoubleCoset.Quotient (ratFinU E n : Set (finU E n)) (K : Set (finU E n))` to `fun s => DoubleCoset.mk _ _ (finPart (s : UA E n))`. Use `Finite.of_surjective φ fun q => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩ : ∃ g, DoubleCoset.mk _ _ g = q` from `⟨q.out, DoubleCoset.out_eq' _ _ q⟩`. Take `⟨γ, hγ, s, hs, x, hx, k, hk, e⟩` from `hT (g : UA E n)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Establish `hg : g = finPart γ * finPart s * k`. Use `congrArg finPart e` as an intermediate fact. Rewrite `this` using `[finPart_fin, map_mul, map_mul, map_mul, finPart_inf hx, mul_one, finPart_fin]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show DoubleCoset.mk _ _ (finPart (s : UA E n)) = DoubleCoset.mk _ _ g`. Rewrite using `[hg]`. Conclude with `(DoubleCoset.eq _ _ _ _).2 ⟨finPart γ, finPart_rat hγ, k, hk, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem finite_doubleCoset_of_isOpen (K : Subgroup (finU E n)) (hK : IsOpen (K : Set (finU E n))) :
     Finite (DoubleCoset.Quotient (ratFinU E n : Set (finU E n)) (K : Set (finU E n))) := by
@@ -96,7 +96,7 @@ end GlobalTheory.BCT.ClassFinLev
 open GlobalTheory.BCT.ClassFinLev in
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n _ S _ K' hK`. Conclude with `finite_doubleCoset_of_isOpen _ (GlobalTheory.T.isOpen_productOfLocalLevelsUnitary E hE n S K' hK)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BCT.finite_doubleCoset_globLev : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → Finite (DoubleCoset.Quotient (ratFinU E n : Set (finU E n)) (globLev S K' : Set (finU E n))) := by
   intro E _ _ _ hE n _ S _ K' hK

@@ -20,13 +20,13 @@ noncomputable section
 namespace GlobalTheory.ThKTorus.ScaleBound
 
 /- English proof (translation)
-Take `⟨ei, ev, hei, hev, hpure⟩` from `hE.loc`. Establish `hSB : ∀ v : Pl F, ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ev v φ ∈ SB (Fin n × Fin d → Fv F v)`. Introduce `v φ hφ`. Rewrite using `[← (hev v).2]`. Conclude with `Submodule.mem_map_of_mem hφ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.restricted_tensor_schwartz F (Fin n × Fin d) e M.vac M₁.vac ei ev (fun v => (hPair.good.vac v).1) hPair.good.std hM₁.std (fun v => (hev v).1) hSB hpure ?_ (fun v => ?_) μ hμ` and prove the remaining obligations. Use `letI : Invertible (2 : ℝ) := invertibleOfNonzero two_ne_zero`. Use `letI : Invertible (2 : mixedEmbedding.mixedSpace F) := (Invertible.map (algebraMap ℝ (mixedEmbedding.mixedSpace F)) 2).copy 2 (map_ofNat _ 2).symm`. Take `⟨ψ, hψ, A, hA⟩` from `GlobalTheory.T.weil_eigen_continuous_inverse F E σ B n d X W M χX χW om r s r' s' hPair M₁ hM₁ e hE ei ev hei hev hpure`. Conclude with `GlobalTheory.T.schrodinger_intertwiner_l2_constant F (Fin n × Fin d) ψ hψ ei A hA`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : (2 : Fv F v) ≠ 0`. Introduce `h`. Apply `two_ne_zero (α := F)` to reduce the goal to its premises. Apply `(algebraMap F (Fv F v)).injective` to reduce the goal to its premises. Rewrite using `[map_ofNat, h, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI : Invertible (2 : Fv F v) := invertibleOfNonzero h2`. Take `⟨ψv, hc, hne, A, hA⟩` from `GlobalTheory.T.exists_addChar_normalizing_schrodinger_action F E σ B n d X W M χX χW om r s r' s' hPair M₁ hM₁ e hE ei ev hei hev hpure v`. Conclude with `GlobalTheory.T.local_intertwiner_unique_scalar F v (Fin n × Fin d) ψv hc hne (ev v) A (hSB v) hA`.
+A detailed English derivation is pending.
 -/
 theorem exists_l2_const (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
@@ -59,9 +59,7 @@ theorem exists_l2_const (F E : Type) [Field F] [NumberField F] [Field E] [Number
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Unfold `tAd GlobalTheory.TorusTheta.infScale realAd`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (1 : InfiniteAdeleRing F) + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ (s - 1)) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ s)`. Rewrite using `[map_sub, map_sub, map_one, map_one, add_sub_cancel]`. Use `show (1 : FiniteAdeleRing (𝓞 F) F) + 0 = 1`.
-
-Conclude with `add_zero 1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tAd_eq_infScale (s : ℝ) : tAd F s = GlobalTheory.TorusTheta.infScale F s := by
   unfold tAd GlobalTheory.TorusTheta.infScale realAd
@@ -86,9 +84,9 @@ def scaleHom : ℝ →* AF F where
     exact Prod.ext rfl (one_mul (1 : FiniteAdeleRing (𝓞 F) F)).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Unfold `blkScale`. Use `congr 1`. Use `show _ = scaleHom F _`. Rewrite using `[map_prod]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `tAd_eq_infScale _`. Conclude with `(map_one _).symm`.
+A detailed English derivation is pending.
 -/
 theorem blkScale_eq {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} (blk : Fin q → Finset κ) (t : Fin q → ℝ)
     (z : κ → AF F) :
@@ -104,7 +102,7 @@ theorem blkScale_eq {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} (blk : F
   · exact (map_one _).symm
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_pow, Finset.prod_comm, ← Finset.prod_pow, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ite_mem, Finset.univ_inter, Finset.prod_const, ← Real.rpow_natCast (t i ^ _) 2, ← Real.rpow_mul (ht i).le, Nat.cast_ofNat, div_mul_cancel₀ _ two_ne_zero, Real.rpow_natCast, mul_comm, pow_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_scale_pow {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} (blk : Fin q → Finset κ) (t : Fin q → ℝ)
     (ht : ∀ i, 0 < t i) (f : ℕ) :
@@ -115,23 +113,21 @@ theorem prod_scale_pow {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} (blk 
     ← Real.rpow_mul (ht i).le, Nat.cast_ofNat, div_mul_cancel₀ _ two_ne_zero, Real.rpow_natCast, mul_comm, pow_mul]
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP q x y _ M₁ blk e hM₁ _ hE`. Use `⟨fun i => (((Module.finrank ℚ F * (blk i).card : ℕ) : ℝ) / 2), fun t a c ht _ hc => ?_⟩` and prove the remaining obligations. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Use `letI mA : MeasurableSpace (Fin n × Fin d → AF F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → AF F) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `μ : Measure (Fin n × Fin d → AF F)` to `Measure.addHaar`. Establish `hμ : μ.IsAddHaarMeasure` using `inferInstance`. Take `⟨Φ, hΦ, h0⟩` from `GlobalTheory.EvNonzero.exists_mem_schA_ev_ne_zero F E σ B n d n d X W X W M M₁ 1 1 ∅ e hP.good hM₁ hE`. Establish `heΦ` using `hE.maps Φ hΦ`. Establish `hcont : Continuous (e Φ)` using `GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA (F := F) heΦ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI0 : ∫⁻ z, ‖e Φ z‖ₑ ^ 2 ∂μ ≠ 0`. Introduce `h`. Establish `hm : AEMeasurable (fun z => ‖e Φ z‖ₑ ^ 2) μ` using `(hcont.measurable.enorm.pow_const 2).aemeasurable`. Rewrite `h` using `[lintegral_eq_zero_iff' hm]`. Establish `h' : e Φ =ᵐ[μ] 0` using `h.mono fun z hz => by simpa using hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h0 ((hcont.ae_eq_iff_eq μ continuous_const).1 h')`. Establish `hIt : ∫⁻ z, ‖e Φ z‖ₑ ^ 2 ∂μ ≠ ⊤`. Establish `h2` using `(GlobalTheory.WeilM.schA_memLp_two F _ μ hμ _ heΦ).eLpNorm_lt_top`. Rewrite `h2` using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top (by norm_num) (by norm_num)]`. Simplify using `using h2.ne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, hl⟩` from `exists_l2_const F E σ B n d X W M χX χW om r s r' s' hP M₁ hM₁ e hE μ hμ`. Establish `hU : ∫⁻ z, ‖e (om (a, 1) Φ) z‖ₑ ^ 2 ∂μ = ∫⁻ z, ‖e Φ z‖ₑ ^ 2 ∂μ`. Rewrite using `[hl _ (hS.pres (a, 1) Φ hΦ), hl Φ hΦ, hS.unit μ hμ (a, 1) Φ hΦ]`. Use `set u : Fin n × Fin d → ℝ := fun j => ∏ i, if j ∈ blk i then t i else 1 with hu`. Establish `hupos : ∀ j, 0 < u j` using `fun j => Finset.prod_pos fun i _ => by split_ifs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ht i`. Conclude with `one_pos`. Establish `hsc` using `GlobalTheory.T.lintegral_infinite_scaling F (Fin n × Fin d) u hupos μ hμ (fun z => ‖e Φ z‖ₑ ^ 2)`. Simplify using `only [hc Φ hΦ, enorm_mul, mul_pow, blkScale_eq] at hU`. Rewrite `hU` using `[lintegral_const_mul' _ _ (by simp), hsc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set P := ENNReal.ofReal (∏ j, u j ^ Module.finrank ℚ F) with hPdef`. Establish `hPpos : 0 < ∏ j, u j ^ Module.finrank ℚ F` using `Finset.prod_pos fun j _ => pow_pos (hupos j) _`. Establish `hP0 : P ≠ 0` using `by rw [hPdef]; exact (ENNReal.ofReal_pos.2 hPpos).ne'`. Establish `hPt : P ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hk : ‖c‖ₑ ^ 2 * P⁻¹ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hU` using `[← mul_assoc]`. Conclude with `(ENNReal.mul_eq_right hI0 hIt).1 hU`. Establish `hk' : ‖c‖ₑ ^ 2 = P`. Use `congrArg (· * P) hk` as an intermediate fact. Simplify `this` using `[mul_assoc, ENNReal.inv_mul_cancel hP0 hPt]`.
-
-Establish `hk'' : ENNReal.ofReal (‖c‖ ^ 2) = ENNReal.ofReal (∏ j, u j ^ Module.finrank ℚ F)`. Rewrite using `[← hPdef, ← hk', ← ofReal_norm, ENNReal.ofReal_pow (norm_nonneg _)]`. Establish `hsq` using `(ENNReal.ofReal_eq_ofReal_iff (by positivity) hPpos.le).1 hk''`. Rewrite `hsq` using `[hu, prod_scale_pow blk t ht]`. Conclude with `((pow_left_inj₀ (norm_nonneg _) (Finset.prod_nonneg fun i _ => Real.rpow_nonneg (ht i).le _) two_ne_zero).1 hsq).le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_scalar_le : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

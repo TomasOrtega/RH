@@ -34,7 +34,7 @@ namespace GlobalTheory.Mem.R3.Rw.AtDatumEvaluation
 open GlobalTheory.Mem.Top.GroupRetwisting
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun eps _ h0 _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => let ⟨x₀, hx⟩ := h eps h0 ⟨x₀, fun _ _ _ _ hs hx' => ⟨x₀, hx', hs ▸ hx⟩⟩⟩⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ev_scale {p : ℝ → ℝ → Prop} (h : ∀ eps : ℝ, 0 < eps → ∃ x₀ : ℝ, p eps x₀) :
     Ev fun K => ∃ x₀ : ℝ, x₀ ≤ K.s.x ∧ p K.s.eps x₀ :=
@@ -43,9 +43,9 @@ theorem ev_scale {p : ℝ → ℝ → Prop} (h : ∀ eps : ℝ, 0 < eps → ∃ 
     ⟨x₀, fun _ _ _ _ hs hx' => ⟨x₀, hx', hs ▸ hx⟩⟩⟩⟩⟩⟩
 
 /- English proof (translation)
-Introduce `k`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `hζ : Formalism.L2.NT.IsGenSys (GlobalTheory.Mem.TypePl.labDat (D.host.g k)).gen`. Introduce `d hd`. Use `⟨(GlobalTheory.Mem.TypePl.labDat (D.host.g k)).gen_order d hd, fun d' hdd hd' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨e, rfl⟩` from `hdd`. Conclude with `(GlobalTheory.Mem.TypePl.labDat (D.host.g k)).gen_norm d e hd (Nat.pos_of_mul_pos_left hd')`. Take `⟨O, -, -, hO⟩` from `GlobalTheory.CuspTwist.exists_labelMap_twist_cuspLabel (ZMod (D.host.g k)) _ (GlobalTheory.T.cuspParam_of_greenParametrisation hG (D.host.g k) (D.ntypes.teichC k) (D.ntypes.teichC_inj k) (GlobalTheory.Mem.TypePl.labDat (D.host.g k)).gen hζ)`. Establish `hr : 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.two_le_m; omega`. Conclude with `⟨_, O, fun f => (hT.ser k f).trans (GlobalTheory.T.greenSeriesIdempotent_eq_classFunctionIdempotent hG _ _ _ _ _ (hT.teich k) O hO D.R.r f hr)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem serClause_of_typesTrue (hG : GlobalTheory.Published.GreenCuspidal) (D : D7) {P : Formalism.L2.Host.PiBar D.host} {W : Formalism.L2.Host.Omg D.host}
     (hT : TypesTrue D.ntypes P W) : SerClause D := by
@@ -64,15 +64,15 @@ theorem serClause_of_typesTrue (hG : GlobalTheory.Published.GreenCuspidal) (D : 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `e1` using `(evG_of_ev (ev_scale (GlobalTheory.T.rational_data_sized_family hP hS hL))).inter ((evG_of_ev LedRec.ev_exists_sizeData).inter (evG_of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev))`. Establish `s1 : Step KPx (fun _ _ _ _ => True) _` using `Step.of_evLgG (evLgG_of_evLg GlobalTheory.T.valsIn_and_fam3_ok_of_coefficientField)`. Establish `s2 : Step KPx (fun _ _ _ _ => True) _` using `Step.of_evLgG (q := fun _ => CoverAt.WeberLev) (evG_all CoverAt.lg_weberLev)`. Use `(s1.and (s2.and (Step.and (lUnif_atDat hP.q3 hP.q2 hP.q1) (atDat_lIntegral hP.q3 hP.q2 hP.q1)))).trans (Step.of_evG (e1.imp ?_))` and prove the remaining obligations. Introduce and unpack `K - - - - ⟨⟨x₀, hx, hH⟩, hLed, hHost⟩ B f T hO - - ⟨hOk, hW, hU, hI⟩ w hw Z hX Wt z g1 g2 hEx g4 hM hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨Z', g1', hη, hA⟩` from `LedRec.exists_bare hP.q12 (B := B) (C := w.C) Z f (6 * K.s.x ^ (-K.C.P.CF))`. Take `⟨L, hsc, hsz, hpar, hn⟩` from `hLed (w.st Z') hO hη hA`. Take `⟨hhost, -, -, -, -, -, hV, -⟩` from `hHost (w.st Z') hO`. Establish `s : SameGrp Z Z'` using `LedRec.sameGrp g1 g1'`. Use `DatCopy.holds_of_copy Z' s ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hEx'` using `DatCopy.copy_exAt Z' s hEx`. Establish `hU'` using `DatCopy.copy_lUnif Z' s (hU w hw Z hX Wt z g1 g2 hEx g4)`. Establish `hI'` using `DatCopy.copy_lIntegral Z' s (hI w hw Z hX Wt z g1 g2 hEx g4)`. Establish `hM'` using `DatCopy.copy_multEq Z' s hM`. Establish `hR'` using `DatCopy.copy_rowTest Z' s hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `DatCopy.copy Z' s z = y at hEx' hU' hI' hM' hR' ⊢`. Establish `hch` using `y.pins.char`. Establish `hT : TypesTrue (w.st Z').toD7.ntypes y.R.C.P y.R.C.W`. Rewrite using `[y.lev.C, w.C_eq]`. Conclude with `g1'`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hIo : IoExt y.R.toRealDat` using `GlobalTheory.T.ioExt_of_weakCharacterisation_of_orthonormal_frames _ _ _ _ _ _ _ y.R y.F hch hEx' hV`. Establish `hOM : ∀ i, OneMapRowR y.core y.R.toRealDat y.geo.κ y.geo.v₀ y.geo.O (fun _ => 1) i` using `fun i => GlobalTheory.OneMapRow3.oneFormMapRow_threeLevel_of_characterisation _ _ _ _ _ _ y.core y.R y.F y.geo.κ y.geo.v₀ y.geo.O (fun _ => 1) hn hch hEx' ⟨y.geo.fw⟩ hIo i (y.geo.pins i) (y.geo.phase i hU')`. Conclude with `hH (w.st Z') w.px w.I hX T Wt y L (by rw [hsc]) (by rw [hsc]; exact hx) hsz hpar ⟨(hOk w.px w.I hX w.ok w.C_eq w.xi_range).2 _ y.Xg y.tr y.good.irr, hch, hEx', hhost, ⟨L, hpar⟩, B.ccK_top, y.pins.keep.guard, GlobalTheory.LiftRows.Inh.goodTypes_of_typesTrue hch.base.lev hT, serCla …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem atDat_holds (hP : Hypotheses3) (hS : GlobalTheory.Published.RegularisedSiegelWeilFirstTerm) (hL : GlobalTheory.Published.HeckeLPartialContinuation) :
     AtDat fun _ _ _ _ _ _ _ _ z => GlobalTheory.CuspMult.MultEq z.R.toRealDat → Formalism.IndefR.Rat.RowTest (z.R.toCx3 z.F) →
@@ -110,7 +110,7 @@ theorem atDat_holds (hP : Hypotheses3) (hS : GlobalTheory.Published.RegularisedS
     (TiesG.of_dat y hU' hIo hOM (CoverAt.coverField_of_weberLev hW w Z' hX Wt y)) hM' hR' hI'
 
 /- English proof (translation)
-Introduce `hP hS hL H` and use `(StepW.and H ((StepW.of_all fun _ _ _ _ _ _ _ s => s.1 : StepW Start Pinned).trans (atDat_holds hP hS hL))).trans (StepW.of_all fun _ _ _ _ _ _ _ G Z hX Wt z a b k c d e g u v => G.2 Z hX Wt z a b c d (G.1 Z hX Wt z a b k c d e g u v).1 (G.1 Z hX Wt z a b k c d e g u v).2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem holdsW : Hypotheses3 → GlobalTheory.Published.RegularisedSiegelWeilFirstTerm → GlobalTheory.Published.HeckeLPartialContinuation → (StepW Start fun K B f T w => ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : GlobalTheory.Mem.R3.Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GlobalTheory.Mem.R3.GrpAt (w.st Z) w.I → DV.KapDef (w.D Z) → z.R.toRealDat.ExAt → GlobalTheory.RealGeo.InGeo z.geo → CoreP z → GIs2 K w Z.G → Wt = z.W1 (F0K K.s (w.D Z)) → (∀ v ∈ Wt, B.places.resChar v ∈ T.pl) → GlobalTheory.CuspMult.MultEq z.R.toRealDat ∧ Formalism.IndefR.Rat.RowTest (z.R.toCx3 z.F)) → WeightCaseCondition := fun hP hS hL H =>
   (StepW.and H ((StepW.of_all fun _ _ _ _ _ _ _ s => s.1 : StepW Start Pinned).trans (atDat_holds hP hS hL))).trans

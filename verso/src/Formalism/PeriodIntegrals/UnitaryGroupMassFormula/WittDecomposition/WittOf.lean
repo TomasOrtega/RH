@@ -5,13 +5,13 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WittDecomposition.Enlar
 namespace PI.Witt
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ B hB hnd`. Establish `key : ∀ (m : ℕ) (U : Submodule K V), Module.finrank K V - Module.finrank K U = m → ∀ f : U →ₗ[K] V, Function.Injective f → (∀ x y : U, B (f x) (f y) = B x y) → ∃ g : V ≃ₗ[K] V, (∀ x y, B (g x) (g y) = B x y) ∧ ∀ x : U, g x = f x`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `U hm f hinj hf`. Distinguish the cases in `hU : ∀ x ∈ U, (∀ y ∈ U, B x y = 0) → x = 0`. Take `⟨g, hg, hge, -⟩` from `nondeg_extend h1 h2 B hB _ U rfl hU f hf`. Conclude with `⟨g, hg, hge⟩`. Use `push Not at hU`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hrU, hr, hr0⟩` from `hU`. Take `⟨U', hlt, f', hinj', hf', hext⟩` from `enlarge_step B hB hnd U f hinj hf r hrU hr0 hr`. Establish `h3 : Module.finrank K U < Module.finrank K U'` using `Submodule.finrank_lt_finrank_of_lt hlt`. Establish `h4 : Module.finrank K U' ≤ Module.finrank K V` using `Submodule.finrank_le U'`. Take `⟨g, hg, hge⟩` from `ih (Module.finrank K V - Module.finrank K U') (by omega) U' rfl f' hinj' hf'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, hg, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hext x, ← hge]`. Introduce `U f hinj hf`. Conclude with `key _ U rfl f hinj hf`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem witt_of (h1 : OneVector) (h2 : Anisotropic) : PI.WittExtension := by
   intro K V _ _ _ _ _ _ B hB hnd

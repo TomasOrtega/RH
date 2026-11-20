@@ -20,11 +20,11 @@ namespace GlobalTheory.CharXFB
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `D hD T L μ0 hL sc G W M hM F hF σ h h' a' ha'`. Establish `hh` using `(F.dJ (σ + 1) h).hO_ext (G.V (.grid (2 * σ + 2) 0)) (xFB F σ h') 0 0 a' 0 0`. Simplify using `only [map_zero, zero_add, add_zero] at hh`. Rewrite using `[symplO, hh, show hO (G.V (.core (2 * (σ + 1) + 1))) (G.V (.grid (2 * σ + 2) 0)) 0 0 = 0 by simp [hO], show pairS (G.V (.grid (2 * σ + 2) 0)) (0 : Mx D _ (σ + 1)) 0 = 0 by simp [pairS], add_zero, add_zero, pairS_eq_sum, Finset.mul_sum]`. Express the relevant statement in the definitionally equal form `psiE W.ψ _ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Finset.sum_induction _ (fun z => psiE W.ψ z = 1) (fun a b ha hb => by rw [psiE_add, ha, hb, one_mul]) (psiE_zero W.ψ) fun p _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.hermitianPairing_fourierJacobi_step_basePoint_columns D hD T L μ0 hL sc G W M hM F hF σ h h' a' p]`. Use `GlobalTheory.FinPl.PsiUnit.psiE_eq_one_of_local W.ψ W.ψ_std.1.1 (P := fun _ => True) ?_ fun v _ => ?_` and prove the remaining obligations. Establish `hu : MxAt (fun _ => True) ((F.dJ (σ + 1) h).extY (G.V (.grid (2 * σ + 2) 0)) a')` using `mxAt_of_mem_depLat (p := .chi (2 * σ + 2) 0) ha'`. Use `Ideal.mul_mem_left _ _ (Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (GlobalTheory.LastOpPf.cA_mem_idAt ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hu k l)`. Distinguish the cases in `hv : v ∈ G.pl.S0`. Conclude with `GlobalTheory.T.psiE_at_S0_column_pair D hD T L μ0 hL sc G W M hM σ h h' _ ha' p v hv`. Conclude with `GlobalTheory.T.psiE_off_S0_column_pair D hD T L μ0 hL sc G W M hM σ h h' _ ha' p v hv`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem charx_fb : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m)
     (a' : Mx D (G.V (.grid (2 * σ + 2) 0)).rank (σ + 1)),

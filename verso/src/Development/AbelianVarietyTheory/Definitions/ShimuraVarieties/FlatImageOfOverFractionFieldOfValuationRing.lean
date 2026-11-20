@@ -13,25 +13,25 @@ section Dominant
 variable {T' T P : Scheme.{u}}
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.ker_comp, d.ker_eq_bot, Scheme.IdealSheafData.map_bot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_comp_of_schemeDominant (d : T' ⟶ T) (t : T ⟶ P) [IsSchemeTheoreticallyDominant d] :
     (d ≫ t).ker = t.ker := by
   rw [Scheme.Hom.ker_comp, d.ker_eq_bot, Scheme.IdealSheafData.map_bot]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨le_bot_iff.mp ((d.le_ker_comp t).trans (d ≫ t).ker_eq_bot.le)⟩`.
+Supply the required witnesses or components.
 -/
 theorem schemeDominant_of_comp (d : T' ⟶ T) (t : T ⟶ P) [IsSchemeTheoreticallyDominant (d ≫ t)] :
     IsSchemeTheoreticallyDominant t :=
   ⟨le_bot_iff.mp ((d.le_ker_comp t).trans (d ≫ t).ker_eq_bot.le)⟩
 
 /- English proof (translation)
-Establish `e : φ = (Scheme.ΓSpecIso R).inv ≫ (Spec.map φ).appTop ≫ (Scheme.ΓSpecIso R').hom`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso R').hom).1.comp (((Spec.map φ).app_injective ⊤).comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso R).inv).1)`. Introduce `h`. Establish `e' : (Spec.map φ).appTop = (Scheme.ΓSpecIso R).hom ≫ φ ≫ (Scheme.ΓSpecIso R').inv`. Simplify using the standard rewrite rules. Establish `hi : Function.Injective (Spec.map φ).appTop.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e']`. Conclude with `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso R').inv).1.comp (h.comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso R).hom).1)`. Use `⟨Scheme.IdealSheafData.ext_of_isAffine ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.ker_apply]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).mp hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schemeDominant_specMap_iff {R R' : CommRingCat.{u}} (φ : R ⟶ R') :
     IsSchemeTheoreticallyDominant (Spec.map φ) ↔ Function.Injective φ.hom := by
@@ -55,16 +55,16 @@ theorem schemeDominant_specMap_iff {R R' : CommRingCat.{u}} (φ : R ⟶ R') :
     exact (RingHom.injective_iff_ker_eq_bot _).mp hi
 
 /- English proof (translation)
-The claim follows from `IsClosedImmersion.isIso_of_ker_eq i (𝟙 P) i (by simp) (by simp [i.ker_eq_bot])`.
+A detailed English derivation is pending.
 -/
 theorem isIso_of_isClosedImmersion_of_schemeDominant (i : T ⟶ P) [IsClosedImmersion i]
     [IsSchemeTheoreticallyDominant i] : IsIso i :=
   IsClosedImmersion.isIso_of_ker_eq i (𝟙 P) i (by simp) (by simp [i.ker_eq_bot])
 
 /- English proof (translation)
-Establish `: IsReduced T` using `IsSchemeTheoreticallyDominant.isReduced d`. Establish `h : IsIrreducible (closure (Set.range d))`. Rewrite using `[← Set.image_univ]`. Conclude with `((IrreducibleSpace.isIrreducible_univ T').image _ d.continuous.continuousOn).closure`. Rewrite `h` using `[d.denseRange.closure_range]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: IrreducibleSpace T` using `(irreducibleSpace_def T).mpr h`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced T`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_schemeDominant (d : T' ⟶ T) [IsSchemeTheoreticallyDominant d]
     [QuasiCompact d] [IsIntegral T'] : IsIntegral T := by
@@ -79,9 +79,9 @@ theorem isIntegral_of_schemeDominant (d : T' ⟶ T) [IsSchemeTheoreticallyDomina
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Use `T.IsSheaf.section_ext fun x hx ↦ ?_` and prove the remaining obligations. Take `⟨_, ⟨V', hV', rfl⟩, hxV, hVV : V' ≤ V⟩` from `T.isBasis_affineOpens.exists_subset_of_mem_open hx V.isOpen`. Use `⟨V', hVV, hxV, ?_⟩` and prove the remaining obligations. Establish `hf : (s.appLE ⊤ V' le_top).hom.Flat` using `s.flat_appLE (isAffineOpen_top S) hV' le_top`. Use `letI := (s.appLE ⊤ V' le_top).hom.toAlgebra`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `: Module.Flat Γ(S, ⊤) Γ(T, V')` using `hf`. Apply `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := Γ(T, V')) hr` to reduce the goal to its premises. Establish `h'` using `congrArg (T.presheaf.map (homOfLE hVV).op) h`. Rewrite `h'` using `[map_mul, map_zero, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`. Simplify `h'` using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_mul_eq_zero_of_flat {S : Scheme.{u}} [IsAffine S] (s : T ⟶ S) [Flat s]
     (V : T.Opens) (r : Γ(S, ⊤)) (hr : r ∈ nonZeroDivisors Γ(S, ⊤)) (a : Γ(T, V))
@@ -101,13 +101,13 @@ theorem eq_zero_of_mul_eq_zero_of_flat {S : Scheme.{u}} [IsAffine S] (s : T ⟶ 
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Use `HasRingHomProperty.of_iSup_eq_top (P := @Flat) (fun U : T.affineOpens ↦ U) (iSup_affineOpens_eq_top T) fun U ↦ ?_` and prove the remaining obligations. Rewrite using `[← RingHom.Flat.respectsIso.cancel_left_isIso (Scheme.ΓSpecIso O).inv]`. Use `letI := ((s.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso O).inv.hom).toAlgebra`. Use `hO Γ(T, U) ?_` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `a ⟨⟨r, hr⟩, ha⟩`. Establish `hr' : (Scheme.ΓSpecIso O).inv r ∈ nonZeroDivisors Γ(Spec O, ⊤)`. Use `(MulEquivClass.map_nonZeroDivisors (Scheme.ΓSpecIso O).symm.commRingCatIsoToRingEquiv)` as an intermediate fact. Rewrite using `[← this]`. Conclude with `⟨r, hr, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `ha' : s.appLE ⊤ U le_top ((Scheme.ΓSpecIso O).inv r) * a = 0` using `ha`. Establish `h0 : d.app U a = 0`. Use `eq_zero_of_mul_eq_zero_of_flat (d ≫ s) (d ⁻¹ᵁ U) _ hr' _ ?_` and prove the remaining obligations. Use `congrArg (d.app U) ha'` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero, ← CommRingCat.comp_apply, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `this`. Conclude with `(d.app_injective U) (h0.trans (map_zero _).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_schemeDominant_of_torsionFree_flat {O : CommRingCat.{u}}
     (hO : ∀ (M : Type u) [AddCommGroup M] [Module O M],
@@ -137,7 +137,7 @@ theorem flat_of_schemeDominant_of_torsionFree_flat {O : CommRingCat.{u}}
   exact (d.app_injective U) (h0.trans (map_zero _).symm)
 
 /- English proof (translation)
-The claim follows from `flat_of_schemeDominant_of_torsionFree_flat (fun _ _ _ ↦ IsDedekindDomain.flat_iff_torsion_eq_bot.mpr) d s`.
+A detailed English derivation is pending.
 -/
 theorem flat_of_schemeDominant_of_isDedekindDomain {O : CommRingCat.{u}} [IsDedekindDomain O]
     (d : T' ⟶ T) (s : T ⟶ Spec O) [IsSchemeTheoreticallyDominant d] [QuasiCompact d]
@@ -146,7 +146,7 @@ theorem flat_of_schemeDominant_of_isDedekindDomain {O : CommRingCat.{u}} [IsDede
     (fun _ _ _ ↦ IsDedekindDomain.flat_iff_torsion_eq_bot.mpr) d s
 
 /- English proof (translation)
-The claim follows from `flat_of_schemeDominant_of_torsionFree_flat (fun _ _ _ ↦ Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.mpr) d s`.
+A detailed English derivation is pending.
 -/
 theorem flat_of_schemeDominant_of_isBezout {O : CommRingCat.{u}} [IsDomain O] [IsBezout O]
     (d : T' ⟶ T) (s : T ⟶ Spec O) [IsSchemeTheoreticallyDominant d] [QuasiCompact d]
@@ -155,7 +155,7 @@ theorem flat_of_schemeDominant_of_isBezout {O : CommRingCat.{u}} [IsDomain O] [I
     (fun _ _ _ ↦ Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.mpr) d s
 
 /- English proof (translation)
-Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat K M)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_specMap_localization {O : Type u} [CommRing O] (M : Submonoid O) (K : Type u)
     [CommRing K] [Algebra O K] [IsLocalization M K] :
@@ -164,7 +164,7 @@ theorem flat_specMap_localization {O : Type u} [CommRing O] (M : Submonoid O) (K
   exact RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat K M)
 
 /- English proof (translation)
-Use `IsPreimmersion.of_isLocalization (R := O) (S := K) M` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_specMap_localization {O : Type u} [CommRing O] (M : Submonoid O) (K : Type u)
     [CommRing K] [Algebra O K] [IsLocalization M K] :
@@ -173,7 +173,7 @@ theorem mono_specMap_localization {O : Type u} [CommRing O] (M : Submonoid O) (K
   infer_instance
 
 /- English proof (translation)
-Use `flat_specMap_localization (nonZeroDivisors O) K` as an intermediate fact. Rewrite using `[← h]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_over_fractionField {O K : Type u} [CommRing O] [Field K] [Algebra O K]
     [IsFractionRing O K] (s : T ⟶ Spec (.of O)) (s' : T ⟶ Spec (.of K))
@@ -189,7 +189,7 @@ section Closure
 variable {W P T' T Z : Scheme.{u}} (j : W ⟶ P)
 
 /- English proof (translation)
-Rewrite using `[← ker_comp_of_schemeDominant d t, h]`. Conclude with `w.le_ker_comp j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_le_ker_of_schemeDominant (t : T ⟶ P) (d : T' ⟶ T) [IsSchemeTheoreticallyDominant d]
     (w : T' ⟶ W) (h : d ≫ t = w ≫ j) : j.ker ≤ t.ker := by
@@ -203,7 +203,7 @@ def closureLift (t : T ⟶ P) (d : T' ⟶ T) [IsSchemeTheoreticallyDominant d]
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `IsClosedImmersion.lift_fac _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem closureLift_imageι (t : T ⟶ P) (d : T' ⟶ T) [IsSchemeTheoreticallyDominant d]
     (w : T' ⟶ W) (h : d ≫ t = w ≫ j) : closureLift j t d w h ≫ j.imageι = t :=
@@ -211,7 +211,7 @@ theorem closureLift_imageι (t : T ⟶ P) (d : T' ⟶ T) [IsSchemeTheoreticallyD
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[← cancel_mono j.imageι]`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comp_closureLift (t : T ⟶ P) (d : T' ⟶ T) [IsSchemeTheoreticallyDominant d]
     (w : T' ⟶ W) (h : d ≫ t = w ≫ j) : d ≫ closureLift j t d w h = w ≫ j.toImage := by
@@ -219,13 +219,13 @@ theorem comp_closureLift (t : T ⟶ P) (d : T' ⟶ T) [IsSchemeTheoreticallyDomi
   simp [h]
 
 /- English proof (translation)
-The claim follows from `(cancel_mono j.imageι).mp h`.
+A detailed English derivation is pending.
 -/
 theorem closure_hom_ext {a b : T ⟶ j.image} (h : a ≫ j.imageι = b ≫ j.imageι) : a = b :=
   (cancel_mono j.imageι).mp h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨closureLift j t d w h, closureLift_imageι j t d w h, fun _ hl ↦ closure_hom_ext j (hl.trans (closureLift_imageι j t d w h).symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem existsUnique_closureLift (t : T ⟶ P) (d : T' ⟶ T) [IsSchemeTheoreticallyDominant d]
     (w : T' ⟶ W) (h : d ≫ t = w ≫ j) : ∃! l : T ⟶ j.image, l ≫ j.imageι = t :=
@@ -233,7 +233,7 @@ theorem existsUnique_closureLift (t : T ⟶ P) (d : T' ⟶ T) [IsSchemeTheoretic
     fun _ hl ↦ closure_hom_ext j (hl.trans (closureLift_imageι j t d w h).symm)⟩
 
 /- English proof (translation)
-The claim follows from `have := IsSchemeTheoreticallyDominant.of_isDominant d existsUnique_closureLift j t d w h`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_closureLift_of_isReduced (t : T ⟶ P) (d : T' ⟶ T) [IsReduced T]
     [IsDominant d] (w : T' ⟶ W) (h : d ≫ t = w ≫ j) :
@@ -242,7 +242,7 @@ theorem existsUnique_closureLift_of_isReduced (t : T ⟶ P) (d : T' ⟶ T) [IsRe
   existsUnique_closureLift j t d w h
 
 /- English proof (translation)
-The claim follows from `have := (schemeDominant_specMap_iff φ).mpr hφ existsUnique_closureLift j t _ w h`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_closureLift_of_injective {R R' : CommRingCat.{u}} (φ : R ⟶ R')
     (hφ : Function.Injective φ.hom) (t : Spec R ⟶ P) (w : Spec R' ⟶ W)
@@ -251,7 +251,7 @@ theorem existsUnique_closureLift_of_injective {R R' : CommRingCat.{u}} (φ : R �
   existsUnique_closureLift j t _ w h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, rfl⟩`. Simplify using `using l.le_ker_comp j.imageι`. Conclude with `fun h ↦ ⟨IsClosedImmersion.lift j.imageι t (by simpa using h), IsClosedImmersion.lift_fac _ _ _⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_closure_fac_iff (t : T ⟶ P) :
     (∃ l : T ⟶ j.image, l ≫ j.imageι = t) ↔ j.ker ≤ t.ker := by
@@ -267,7 +267,7 @@ def closureToClosed (g : W ⟶ Z) (i : Z ⟶ P) [IsClosedImmersion i] (h : g ≫
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `IsClosedImmersion.lift_fac _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem closureToClosed_comp (g : W ⟶ Z) (i : Z ⟶ P) [IsClosedImmersion i] (h : g ≫ i = j) :
     closureToClosed j g i h ≫ i = j.imageι :=
@@ -275,7 +275,7 @@ theorem closureToClosed_comp (g : W ⟶ Z) (i : Z ⟶ P) [IsClosedImmersion i] (
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[← cancel_mono i]`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toImage_closureToClosed (g : W ⟶ Z) (i : Z ⟶ P) [IsClosedImmersion i] (h : g ≫ i = j) :
     j.toImage ≫ closureToClosed j g i h = g := by
@@ -303,19 +303,19 @@ instance isIso_closureToClosed (g : W ⟶ Z) (i : Z ⟶ P) [IsClosedImmersion i]
     (by simp [← h, ker_comp_of_schemeDominant])
 
 /- English proof (translation)
-Rewrite using `[Scheme.isIso_subschemeι_iff_eq_bot, isSchemeTheoreticallyDominant_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isIso_imageι_iff : IsIso j.imageι ↔ IsSchemeTheoreticallyDominant j := by
   rw [Scheme.isIso_subschemeι_iff_eq_bot, isSchemeTheoreticallyDominant_iff]
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_toImage [IsImmersion j] [QuasiCompact j] : IsOpenImmersion j.toImage :=
   inferInstance
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.range_subschemeι, Scheme.Hom.support_ker]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem range_imageι [QuasiCompact j] : Set.range j.imageι = closure (Set.range j) := by
   rw [Scheme.IdealSheafData.range_subschemeι, Scheme.Hom.support_ker]
@@ -327,7 +327,7 @@ instance isIntegral_image [QuasiCompact j] [IsIntegral W] : IsIntegral j.image :
   isIntegral_of_schemeDominant j.toImage
 
 /- English proof (translation)
-The claim follows from `have : Flat (j.toImage ≫ j.imageι ≫ s) := by simpa flat_of_schemeDominant_of_isDedekindDomain j.toImage _`.
+A detailed English derivation is pending.
 -/
 theorem flat_image_of_isDedekindDomain {O : CommRingCat.{u}} [IsDedekindDomain O]
     (s : P ⟶ Spec O) [QuasiCompact j] [Flat (j ≫ s)] : Flat (j.imageι ≫ s) :=
@@ -335,7 +335,7 @@ theorem flat_image_of_isDedekindDomain {O : CommRingCat.{u}} [IsDedekindDomain O
   flat_of_schemeDominant_of_isDedekindDomain j.toImage _
 
 /- English proof (translation)
-The claim follows from `have : Flat (j.toImage ≫ j.imageι ≫ s) := by simpa flat_of_schemeDominant_of_isBezout j.toImage _`.
+A detailed English derivation is pending.
 -/
 theorem flat_image_of_isBezout {O : CommRingCat.{u}} [IsDomain O] [IsBezout O]
     (s : P ⟶ Spec O) [QuasiCompact j] [Flat (j ≫ s)] : Flat (j.imageι ≫ s) :=
@@ -343,14 +343,14 @@ theorem flat_image_of_isBezout {O : CommRingCat.{u}} [IsDomain O] [IsBezout O]
   flat_of_schemeDominant_of_isBezout j.toImage _
 
 /- English proof (translation)
-The claim follows from `flat_image_of_isBezout j s`.
+A detailed English derivation is pending.
 -/
 theorem flat_image_of_valuationRing {O : CommRingCat.{u}} [IsDomain O] [ValuationRing O]
     (s : P ⟶ Spec O) [QuasiCompact j] [Flat (j ≫ s)] : Flat (j.imageι ≫ s) :=
   flat_image_of_isBezout j s
 
 /- English proof (translation)
-The claim follows from `have := flat_of_over_fractionField (j ≫ s) s' h flat_image_of_isDedekindDomain j s`.
+A detailed English derivation is pending.
 -/
 theorem flat_image_of_over_fractionField {O K : Type u} [CommRing O] [IsDedekindDomain O]
     [Field K] [Algebra O K] [IsFractionRing O K] (s : P ⟶ Spec (.of O)) (s' : W ⟶ Spec (.of K))
@@ -360,7 +360,7 @@ theorem flat_image_of_over_fractionField {O K : Type u} [CommRing O] [IsDedekind
   flat_image_of_isDedekindDomain j s
 
 /- English proof (translation)
-The claim follows from `have := flat_of_over_fractionField (j ≫ s) s' h flat_image_of_valuationRing j s`.
+A detailed English derivation is pending.
 -/
 theorem flat_image_of_over_fractionField_of_valuationRing {O K : Type u} [CommRing O] [IsDomain O]
     [ValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] (s : P ⟶ Spec (.of O))
@@ -376,7 +376,7 @@ def closureMap {W' P' : Scheme.{u}} (j' : W' ⟶ P') (w : W ⟶ W') (g : P ⟶ P
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `closureLift_imageι _ _ _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem closureMap_imageι {W' P' : Scheme.{u}} (j' : W' ⟶ P') (w : W ⟶ W') (g : P ⟶ P')
     (h : j ≫ g = w ≫ j') : closureMap j j' w g h ≫ j'.imageι = j.imageι ≫ g :=
@@ -384,7 +384,7 @@ theorem closureMap_imageι {W' P' : Scheme.{u}} (j' : W' ⟶ P') (w : W ⟶ W') 
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `comp_closureLift _ _ _ _ _ @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem toImage_closureMap {W' P' : Scheme.{u}} (j' : W' ⟶ P') (w : W ⟶ W') (g : P ⟶ P')
     (h : j ≫ g = w ≫ j') : j.toImage ≫ closureMap j j' w g h = w ≫ j'.toImage :=
@@ -392,14 +392,14 @@ theorem toImage_closureMap {W' P' : Scheme.{u}} (j' : W' ⟶ P') (w : W ⟶ W') 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `closure_hom_ext j (by simp) @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem closureMap_id : closureMap j j (𝟙 W) (𝟙 P) (by simp) = 𝟙 _ :=
   closure_hom_ext j (by simp)
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `closure_hom_ext j'' (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem closureMap_comp {W' P' W'' P'' : Scheme.{u}} (j' : W' ⟶ P') (j'' : W'' ⟶ P'')
     (w : W ⟶ W') (g : P ⟶ P') (h : j ≫ g = w ≫ j') (w' : W' ⟶ W'') (g' : P' ⟶ P'')
@@ -409,9 +409,9 @@ theorem closureMap_comp {W' P' W'' P'' : Scheme.{u}} (j' : W' ⟶ P') (j'' : W''
   closure_hom_ext j'' (by simp)
 
 /- English proof (translation)
-Set `e : W' ⟶ pullback g j.imageι` to `pullback.lift j' (w ≫ j.toImage) (by simpa using H.w)`. Establish `he : e ≫ pullback.fst g j.imageι = j'` using `pullback.lift_fst _ _ _`. Establish `He : IsPullback w e j.toImage (pullback.snd g j.imageι)`. Use `(IsPullback.of_right (h₁₂ := pullback.fst g j.imageι) (h₂₂ := j.imageι) (v₁₃ := g) ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback g j.imageι)).flip` and prove the remaining obligations. Rewrite using `[he, j.toImage_imageι]` and apply the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `IsSchemeTheoreticallyDominant.of_isPullback He` as an intermediate fact. Rewrite using `[Scheme.IdealSheafData.comap, ← ker_comp_of_schemeDominant e, he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_eq_comap_of_flat {W' P' : Scheme.{u}} {j' : W' ⟶ P'} {w : W' ⟶ W} {g : P' ⟶ P}
     (H : IsPullback j' w g j) [Flat g] [QuasiCompact j] : j'.ker = j.ker.comap g := by
@@ -425,7 +425,7 @@ theorem ker_eq_comap_of_flat {W' P' : Scheme.{u}} {j' : W' ⟶ P'} {w : W' ⟶ W
   rw [Scheme.IdealSheafData.comap, ← ker_comp_of_schemeDominant e, he]
 
 /- English proof (translation)
-The claim follows from `isPullback_of_isClosedImmersion _ _ _ _ (by simp) (by simp [ker_eq_comap_of_flat j H])`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_closureMap_of_flat {W' P' : Scheme.{u}} {j' : W' ⟶ P'} {w : W' ⟶ W}
     {g : P' ⟶ P} (H : IsPullback j' w g j) [Flat g] [QuasiCompact j] :
@@ -433,7 +433,7 @@ theorem isPullback_closureMap_of_flat {W' P' : Scheme.{u}} {j' : W' ⟶ P'} {w :
   isPullback_of_isClosedImmersion _ _ _ _ (by simp) (by simp [ker_eq_comap_of_flat j H])
 
 /- English proof (translation)
-Establish `H : IsPullback c (𝟙 W) u j`. Use `IsPullback.of_isLimit' ⟨by simpa using h⟩ (PullbackCone.IsLimit.mk _ (fun s ↦ s.snd) (fun s ↦ ?_) (fun s ↦ by simp) (fun s m _ h₂ ↦ by simpa using h₂))` and prove the remaining obligations. Rewrite using `[← cancel_mono u, Category.assoc, h, s.condition]`. Conclude with `isPullback_of_isClosedImmersion _ _ _ _ (by simpa using h) (by simp [ker_eq_comap_of_flat j H])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_toImage_of_isClosedImmersion {P' : Scheme.{u}} (c : W ⟶ P') (u : P' ⟶ P)
     [IsClosedImmersion c] [Flat u] [Mono u] (h : c ≫ u = j) [QuasiCompact j] :
@@ -446,7 +446,7 @@ theorem isPullback_toImage_of_isClosedImmersion {P' : Scheme.{u}} (c : W ⟶ P')
     (by simp [ker_eq_comap_of_flat j H])
 
 /- English proof (translation)
-Establish `H` using `isPullback_toImage_of_isClosedImmersion j c u h`. Rewrite using `[← H.isoPullback_hom_snd, ← Scheme.Pullback.range_snd, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, H.isoPullback.hom.surjective.range_eq, Set.image_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_toImage_of_isClosedImmersion {P' : Scheme.{u}} (c : W ⟶ P') (u : P' ⟶ P)
     [IsClosedImmersion c] [Flat u] [Mono u] (h : c ≫ u = j) [QuasiCompact j] :
@@ -462,7 +462,7 @@ def closureRestrictIso (P' : P.Opens) (c : W ⟶ P') [IsClosedImmersion c] (h : 
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `IsPullback.isoIsPullback_hom_snd _ _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem closureRestrictIso_hom_ι (P' : P.Opens) (c : W ⟶ P') [IsClosedImmersion c]
     (h : c ≫ P'.ι = j) [QuasiCompact j] :
@@ -471,7 +471,7 @@ theorem closureRestrictIso_hom_ι (P' : P.Opens) (c : W ⟶ P') [IsClosedImmersi
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `IsPullback.isoIsPullback_hom_fst _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem closureRestrictIso_hom_restrict (P' : P.Opens) (c : W ⟶ P') [IsClosedImmersion c]
     (h : c ≫ P'.ι = j) [QuasiCompact j] :
@@ -490,7 +490,7 @@ def closureSpecIso {A B : CommRingCat.{u}} (φ : A ⟶ B) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `have := IsClosedImmersion.spec_of_surjective (CommRingCat.ofHom (Ideal.Quotient.mk (RingHom.ker φ.hom))) Ideal.Quotient.mk_surjective closureToClosed_comp (Spec.map φ) (Spec.map (CommRingCat.ofHom φ.hom.kerLift)) _ (by rw [← Spec.map_comp]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem closureSpecIso_hom_comp {A B : CommRingCat.{u}} (φ : A ⟶ B) :
     (closureSpecIso φ).hom ≫
@@ -512,13 +512,13 @@ def graphMap : U ⟶ pullback f₁ f₂ := pullback.lift u φ h
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem graphMap_fst : graphMap f₁ f₂ u φ h ≫ pullback.fst f₁ f₂ = u := pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem graphMap_snd : graphMap f₁ f₂ u φ h ≫ pullback.snd f₁ f₂ = φ := pullback.lift_snd _ _ _
 
@@ -545,40 +545,40 @@ def snd : graphClosure f₁ f₂ u φ h ⟶ Z₂ := ι f₁ f₂ u φ h ≫ pull
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `rfl @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem ι_fst : ι f₁ f₂ u φ h ≫ pullback.fst f₁ f₂ = fst f₁ f₂ u φ h := rfl
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `rfl @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem ι_snd : ι f₁ f₂ u φ h ≫ pullback.snd f₁ f₂ = snd f₁ f₂ u φ h := rfl
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `(graphMap f₁ f₂ u φ h).toImage_imageι @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem incl_ι : incl f₁ f₂ u φ h ≫ ι f₁ f₂ u φ h = graphMap f₁ f₂ u φ h :=
   (graphMap f₁ f₂ u φ h).toImage_imageι
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[← ι_fst, incl_ι_assoc, graphMap_fst]`. Use the proof step `@[reassoc (attr := simp)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incl_fst : incl f₁ f₂ u φ h ≫ fst f₁ f₂ u φ h = u := by
   rw [← ι_fst, incl_ι_assoc, graphMap_fst]
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[← ι_snd, incl_ι_assoc, graphMap_snd]`. Use the proof step `@[reassoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incl_snd : incl f₁ f₂ u φ h ≫ snd f₁ f₂ u φ h = φ := by
   rw [← ι_snd, incl_ι_assoc, graphMap_snd]
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[← ι_fst, ← ι_snd, Category.assoc, Category.assoc, pullback.condition]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem condition : fst f₁ f₂ u φ h ≫ f₁ = snd f₁ f₂ u φ h ≫ f₂ := by
   rw [← ι_fst, ← ι_snd, Category.assoc, Category.assoc, pullback.condition]
@@ -598,7 +598,7 @@ instance isOpenImmersion_incl [IsImmersion u] [QuasiCompact u] [QuasiSeparated f
   isOpenImmersion_toImage (graphMap f₁ f₂ u φ h)
 
 /- English proof (translation)
-The claim follows from `range_imageι (graphMap f₁ f₂ u φ h)`.
+A detailed English derivation is pending.
 -/
 theorem range_ι [QuasiCompact u] [QuasiSeparated f₂] :
     Set.range (ι f₁ f₂ u φ h) = closure (Set.range (graphMap f₁ f₂ u φ h)) :=
@@ -613,7 +613,7 @@ instance isIntegral [QuasiCompact u] [QuasiSeparated f₂] [IsIntegral U] :
   isIntegral_image (graphMap f₁ f₂ u φ h)
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (ι f₁ f₂ u φ h)]`. Apply the tactic sequence `apply pullback.hom_ext <;> simpa`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hom_ext {a b : T ⟶ graphClosure f₁ f₂ u φ h}
     (h₁ : a ≫ fst f₁ f₂ u φ h = b ≫ fst f₁ f₂ u φ h)
@@ -634,28 +634,28 @@ variable (t₁ : T ⟶ Z₁) (t₂ : T ⟶ Z₂) (ht : t₁ ≫ f₁ = t₂ ≫ 
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `closureLift_imageι _ _ _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem lift_ι : lift f₁ f₂ u φ h t₁ t₂ ht d w h₁ h₂ ≫ ι f₁ f₂ u φ h = pullback.lift t₁ t₂ ht :=
   closureLift_imageι _ _ _ _ _
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[← ι_fst, lift_ι_assoc, pullback.lift_fst]`. Use the proof step `@[reassoc (attr := simp)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_fst : lift f₁ f₂ u φ h t₁ t₂ ht d w h₁ h₂ ≫ fst f₁ f₂ u φ h = t₁ := by
   rw [← ι_fst, lift_ι_assoc, pullback.lift_fst]
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[← ι_snd, lift_ι_assoc, pullback.lift_snd]`. Use the proof step `@[reassoc (attr := simp)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_snd : lift f₁ f₂ u φ h t₁ t₂ ht d w h₁ h₂ ≫ snd f₁ f₂ u φ h = t₂ := by
   rw [← ι_snd, lift_ι_assoc, pullback.lift_snd]
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `comp_closureLift _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem comp_lift : d ≫ lift f₁ f₂ u φ h t₁ t₂ ht d w h₁ h₂ = w ≫ incl f₁ f₂ u φ h :=
   comp_closureLift _ _ _ _ _
@@ -663,7 +663,7 @@ theorem comp_lift : d ≫ lift f₁ f₂ u φ h t₁ t₂ ht d w h₁ h₂ = w �
 include ht h₁ h₂ in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨lift f₁ f₂ u φ h t₁ t₂ ht d w h₁ h₂, by simp, fun _ hl ↦ hom_ext f₁ f₂ u φ h (by simp [hl.1]) (by simp [hl.2])⟩`.
+Supply the required witnesses or components.
 -/
 theorem existsUnique_lift : ∃! l : T ⟶ graphClosure f₁ f₂ u φ h,
     l ≫ fst f₁ f₂ u φ h = t₁ ∧ l ≫ snd f₁ f₂ u φ h = t₂ :=
@@ -692,7 +692,7 @@ instance quasiCompact_fst [QuasiCompact f₂] : QuasiCompact (fst f₁ f₂ u φ
   rw [← ι_fst]; infer_instance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isProper_fst_comp [IsProper f₁] [IsProper f₂] : IsProper (fst f₁ f₂ u φ h ≫ f₁) :=
   inferInstance
@@ -710,15 +710,13 @@ instance surjective_fst [IsDominant u] [IsProper f₂] : Surjective (fst f₁ f�
   surjective_of_isDominant_of_isClosed_range _ (fst f₁ f₂ u φ h).isClosedMap.isClosed_range
 
 /- English proof (translation)
-Set `u' : pullback (u ≫ f₁) f₂ ⟶ pullback f₁ f₂` to `pullback.lift (pullback.fst _ _ ≫ u) (pullback.snd _ _) (by simpa using pullback.condition)`. Establish `hu₁ : u' ≫ pullback.fst f₁ f₂ = pullback.fst _ _ ≫ u` using `pullback.lift_fst _ _ _`. Establish `hu₂ : u' ≫ pullback.snd f₁ f₂ = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Establish `Hu : IsPullback (pullback.fst (u ≫ f₁) f₂) u' u (pullback.fst f₁ f₂)`. Use `IsPullback.of_bot (h₃₁ := f₂) (v₂₁ := pullback.snd f₁ f₂) (v₂₂ := f₁) ?_ hu₁.symm (IsPullback.of_hasPullback f₁ f₂)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hu₂]`. Conclude with `IsPullback.of_hasPullback _ _`. Establish `: Flat u'` using `MorphismProperty.of_isPullback Hu ‹_›`. Establish `: Mono u'` using `(MorphismProperty.monomorphisms _).of_isPullback Hu.flip.flip ‹Mono u›`. Set `c : U ⟶ pullback (u ≫ f₁) f₂` to `pullback.lift (𝟙 U) φ (by simpa using h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc₁ : c ≫ pullback.fst _ _ = 𝟙 U` using `pullback.lift_fst _ _ _`. Establish `hc₂ : c ≫ pullback.snd _ _ = φ` using `pullback.lift_snd _ _ _`. Establish `: IsClosedImmersion (c ≫ pullback.fst _ _)` using `by rw [hc₁]; infer_instance`. Establish `: IsClosedImmersion c` using `.of_comp c (pullback.fst _ _)`. Establish `hc : c ≫ u' = graphMap f₁ f₂ u φ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hu₁, reassoc_of% hc₁, graphMap_fst]`. Rewrite using `[Category.assoc, hu₂, hc₂, graphMap_snd]`. Establish `H` using `(isPullback_toImage_of_isClosedImmersion _ c u' hc).paste_horiz Hu`. Rewrite `H` using `[hc₁]`.
-
-Conclude with `H`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_incl [Flat u] [Mono u] [QuasiCompact u] [IsSeparated f₂] :
     IsPullback (𝟙 U) (incl f₁ f₂ u φ h) u (fst f₁ f₂ u φ h) := by
@@ -747,7 +745,7 @@ theorem isPullback_incl [Flat u] [Mono u] [QuasiCompact u] [IsSeparated f₂] :
   exact H
 
 /- English proof (translation)
-Establish `H` using `isPullback_incl f₁ f₂ u φ h`. Rewrite using `[← H.isoPullback_hom_snd, ← Scheme.Pullback.range_snd, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, H.isoPullback.hom.surjective.range_eq, Set.image_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_incl [Flat u] [Mono u] [QuasiCompact u] [IsSeparated f₂] :
     Set.range (incl f₁ f₂ u φ h) = fst f₁ f₂ u φ h ⁻¹' Set.range u := by
@@ -756,16 +754,16 @@ theorem range_incl [Flat u] [Mono u] [QuasiCompact u] [IsSeparated f₂] :
     Set.range_comp, H.isoPullback.hom.surjective.range_eq, Set.image_univ]
 
 /- English proof (translation)
-The claim follows from `Opens.ext (range_incl f₁ f₂ u φ h)`.
+A detailed English derivation is pending.
 -/
 theorem opensRange_incl [IsOpenImmersion u] [QuasiCompact u] [IsSeparated f₂] :
     (incl f₁ f₂ u φ h).opensRange = fst f₁ f₂ u φ h ⁻¹ᵁ u.opensRange :=
   Opens.ext (range_incl f₁ f₂ u φ h)
 
 /- English proof (translation)
-Set `l : (V : Scheme.{u}) ⟶ U` to `IsOpenImmersion.lift u V.ι (by rw [Scheme.Opens.range_ι]; exact hV)`. Establish `hl : l ≫ u = V.ι` using `IsOpenImmersion.lift_fac _ _ _`. Establish `H` using `(IsPullback.id_horiz l).paste_vert (isPullback_incl f₁ f₂ u φ h)`. Rewrite `H` using `[hl]`. Establish `e` using `IsPullback.isoIsPullback_hom_fst _ _ (isPullback_morphismRestrict (fst f₁ f₂ u φ h) V) H`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_fst_restrict_of_le [IsOpenImmersion u] [QuasiCompact u] [IsSeparated f₂]
     (V : Z₁.Opens) (hV : V ≤ u.opensRange) : IsIso (fst f₁ f₂ u φ h ∣_ V) := by
@@ -787,11 +785,11 @@ instance isIso_fst_restrict_opens (V : Z₁.Opens) (ψ : (V : Scheme.{u}) ⟶ Z�
   isIso_fst_restrict_of_le f₁ f₂ V.ι ψ hψ V (by simp)
 
 /- English proof (translation)
-Set `c : Z₁ ⟶ pullback f₁ f₂` to `pullback.lift (𝟙 Z₁) ψ (by simpa using hψ)`. Establish `hc₁ : c ≫ pullback.fst _ _ = 𝟙 Z₁` using `pullback.lift_fst _ _ _`. Establish `hc₂ : c ≫ pullback.snd _ _ = ψ` using `pullback.lift_snd _ _ _`. Establish `: IsClosedImmersion (c ≫ pullback.fst _ _)` using `by rw [hc₁]; infer_instance`. Establish `: IsClosedImmersion c` using `.of_comp c (pullback.fst _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : u ≫ c = graphMap f₁ f₂ u φ h`. Apply the tactic sequence `apply pullback.hom_ext <;> simp [hc₁, hc₂, hu]`. Establish `e : fst f₁ f₂ u φ h = closureToClosed _ u c hc`. Rewrite using `[← Category.comp_id (closureToClosed _ u c hc), ← hc₁, closureToClosed_comp_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `isIso_closureToClosed _ u c hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_fst_of_extension [IsSchemeTheoreticallyDominant u] [IsSeparated f₂]
     (ψ : Z₁ ⟶ Z₂) (hψ : f₁ = ψ ≫ f₂) (hu : u ≫ ψ = φ) : IsIso (fst f₁ f₂ u φ h) := by
@@ -809,7 +807,7 @@ theorem isIso_fst_of_extension [IsSchemeTheoreticallyDominant u] [IsSeparated f�
   exact isIso_closureToClosed _ u c hc
 
 /- English proof (translation)
-Use `⟨inv (fst f₁ f₂ u φ h) ≫ snd f₁ f₂ u φ h, by simp [← condition], ?_⟩` and prove the remaining obligations. Establish `: u ≫ inv (fst f₁ f₂ u φ h) = incl f₁ f₂ u φ h` using `by simp`. Rewrite using `[reassoc_of% this, incl_snd]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_extension_of_isIso_fst [IsIso (fst f₁ f₂ u φ h)] :
     ∃ ψ : Z₁ ⟶ Z₂, f₁ = ψ ≫ f₂ ∧ u ≫ ψ = φ := by
@@ -820,7 +818,7 @@ theorem exists_extension_of_isIso_fst [IsIso (fst f₁ f₂ u φ h)] :
 end graphClosure
 
 /- English proof (translation)
-The claim follows from `have : Flat (graphClosure.incl f₁ f₂ u φ h ≫ graphClosure.fst f₁ f₂ u φ h ≫ f₁) := by simpa flat_of_schemeDominant_of_isDedekindDomain (graphClosure.incl f₁ f₂ u φ h) _`.
+A detailed English derivation is pending.
 -/
 theorem graphClosure.flat_of_isDedekindDomain {O : CommRingCat.{u}} [IsDedekindDomain O]
     (f₁ : Z₁ ⟶ Spec O) (f₂ : Z₂ ⟶ Spec O) (u : U ⟶ Z₁) (φ : U ⟶ Z₂) (h : u ≫ f₁ = φ ≫ f₂)
@@ -830,7 +828,7 @@ theorem graphClosure.flat_of_isDedekindDomain {O : CommRingCat.{u}} [IsDedekindD
   flat_of_schemeDominant_of_isDedekindDomain (graphClosure.incl f₁ f₂ u φ h) _
 
 /- English proof (translation)
-The claim follows from `have : Flat (graphClosure.incl f₁ f₂ u φ h ≫ graphClosure.fst f₁ f₂ u φ h ≫ f₁) := by simpa flat_of_schemeDominant_of_isBezout (graphClosure.incl f₁ f₂ u φ h) _`.
+A detailed English derivation is pending.
 -/
 theorem graphClosure.flat_of_valuationRing {O : CommRingCat.{u}} [IsDomain O] [ValuationRing O]
     (f₁ : Z₁ ⟶ Spec O) (f₂ : Z₂ ⟶ Spec O) (u : U ⟶ Z₁) (φ : U ⟶ Z₂) (h : u ≫ f₁ = φ ≫ f₂)
@@ -844,15 +842,15 @@ end Graph
 section Examples
 
 /- English proof (translation)
-The claim follows from `(isIso_imageι_iff _).mpr ((schemeDominant_specMap_iff _).mpr (algebraMap ℤ ℚ).injective_int)`.
+A detailed English derivation is pending.
 -/
 example : IsIso (Spec.map (CommRingCat.ofHom (algebraMap ℤ ℚ))).imageι :=
   (isIso_imageι_iff _).mpr ((schemeDominant_specMap_iff _).mpr (algebraMap ℤ ℚ).injective_int)
 
 /- English proof (translation)
-Introduce `j`. Use `⟨flat_image_of_over_fractionField (K := ℚ) j _ (𝟙 _) (specZIsTerminal.hom_ext _ _), inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[isIso_imageι_iff, schemeDominant_specMap_iff]`. Introduce `hinj`. Establish `h0 : (2 * Polynomial.X - 1 : Polynomial ℤ) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Simplify using `[map_ofNat]`. Simplify using `using congrArg (Polynomial.eval 0) h0`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 example :
     let j := Spec.map (CommRingCat.ofHom (Polynomial.aeval (R := ℤ) (1 / 2 : ℚ)).toRingHom)
@@ -894,14 +892,14 @@ abbrev partialMap : Spec (.of awayTwo) ⟶ Spec (.of (ℤ√(-1))) :=
   Spec.map (CommRingCat.ofHom halfRoot)
 
 /- English proof (translation)
-The claim follows from `specZIsTerminal.hom_ext _ _`.
+A detailed English derivation is pending.
 -/
 theorem comm : openPart ≫ str (-4) = partialMap ≫ str (-1) := specZIsTerminal.hom_ext _ _
 
 /- English proof (translation)
-Rewrite using `[IsFinite.SpecMap_iff]`. Use `RingHom.finite_algebraMap.mpr ⟨⟨{1, Zsqrtd.sqrtd}, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨a, b⟩ -`. Apply the tactic sequence `have : (⟨a, b⟩ : ℤ√d) = a • 1 + b • Zsqrtd.sqrtd := by ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this]`. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span (by simp))) (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_str (d : ℤ) : IsFinite (str d) := by
   rw [IsFinite.SpecMap_iff]
@@ -914,11 +912,11 @@ theorem isFinite_str (d : ℤ) : IsFinite (str d) := by
     (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))
 
 /- English proof (translation)
-Use `isFinite_str (-1)` as an intermediate fact. Use `⟨inferInstance, inferInstance, fun _ ↦ ?_⟩` and prove the remaining obligations. Take `⟨ψ, -, -⟩` from `graphClosure.exists_extension_of_isIso_fst (str (-4)) (str (-1)) openPart partialMap comm`. Take `⟨g, rfl⟩` from `Spec.map_surjective ψ`. Establish `h` using `congrArg g.hom (Zsqrtd.dmuld (d := -1))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h` using `[map_mul, map_intCast]`. Establish `h'` using `congrArg Zsqrtd.re h`. Generalize the expression as in `g.hom Zsqrtd.sqrtd = z at h'`. Simplify using `only [Zsqrtd.re_mul, Zsqrtd.re_intCast] at h'`. Establish `h4 : z.re * z.re % 4 = 0 ∨ z.re * z.re % 4 = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: z.re % 4 = 0 ∨ z.re % 4 = 1 ∨ z.re % 4 = 2 ∨ z.re % 4 = 3` using `by omega`. Apply the tactic sequence `rcases this with h | h | h | h <;> simp [Int.mul_emod, h]`. Rewrite `h'` using `[mul_assoc]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem isProper_and_not_isIso :
     IsProper (graphClosure.fst (str (-4)) (str (-1)) openPart partialMap comm) ∧
@@ -942,9 +940,9 @@ theorem isProper_and_not_isIso :
   omega
 
 /- English proof (translation)
-Apply `subset_antisymm` to reduce the goal to its premises. Rewrite using `[← Category.comp_id (graphClosure.fst _ _ _ _ _), graphClosure.condition, Scheme.Hom.comp_base, TopCat.coe_comp]`. Conclude with `Set.range_comp_subset_range _ _`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨graphClosure.incl (𝟙 _) openPart openPart (𝟙 _) (by simp) x, by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_apply, graphClosure.incl_fst]⟩`.
+A detailed English derivation is pending.
 -/
 example : Set.range (graphClosure.fst (𝟙 _) openPart openPart (𝟙 _) (by simp)) =
     Set.range openPart := by

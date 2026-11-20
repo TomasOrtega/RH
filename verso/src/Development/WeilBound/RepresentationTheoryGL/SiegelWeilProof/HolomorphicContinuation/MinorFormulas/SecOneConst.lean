@@ -16,21 +16,21 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.WR
 variable {m n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [vM, uM, mul_neg, neg_smul, sub_neg_eq_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vM_eq_uM (s : ℂ) (y : E n) : vM s y = uM (-s) y := by
   simp only [vM, uM, mul_neg, neg_smul, sub_neg_eq_add]
 
 /- English proof (translation)
-Establish `hH : (herm y).IsHermitian` using `PositivityTheory.Rg.Sw.WR.G.GM.herm_isHermitian y`. Establish `hc0 : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Rewrite using `[PositivityTheory.Rg.Sw.WR.G.base m n (fun _ => b) c t hc (herm y) hH]`. Consider the cases of `b with`. Consider the case `true`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Simplify using `only [PositivityTheory.Rg.Sw.WR.G.Amat, PositivityTheory.Rg.Sw.sgn, ↓reduceIte, mul_one]`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← mul_pow]`. Use `congr 1`. Establish `e : (c : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) - (Complex.I * (t : ℂ)) • (herm y)ᵀ = ((c : ℂ) • (1 - (Complex.I * ((t / c : ℝ) : ℂ)) • herm y))ᵀ`. Rewrite using `[Matrix.transpose_smul, Matrix.transpose_sub, Matrix.transpose_one, Matrix.transpose_smul, smul_sub, smul_smul, smul_one_eq_diagonal]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, Matrix.det_transpose, Matrix.det_smul, Fintype.card_fin, uM, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', div_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `false`. Simplify using `only [PositivityTheory.Rg.Sw.WR.G.Amat, PositivityTheory.Rg.Sw.sgn, Bool.false_eq_true, ↓reduceIte, mul_neg, mul_one]`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← mul_pow]`. Use `congr 1`. Establish `e : (c : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) - (-(Complex.I * (t : ℂ))) • (herm y)ᵀ = ((c : ℂ) • (1 + (Complex.I * ((t / c : ℝ) : ℂ)) • herm y))ᵀ`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[Matrix.transpose_smul, Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_smul, smul_add, smul_smul, neg_smul, sub_neg_eq_add]`. Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, Matrix.det_transpose, Matrix.det_smul, Fintype.card_fin, vM, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', div_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -71,7 +71,7 @@ theorem sec_one_const (b : Bool) {c t : ℝ} (hc : 0 < c) (y : E n) :
     ring
 
 /- English proof (translation)
-Unfold `cls evUV`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cls_vac (s z : ℂ) (y : E n) :
     cls s z m 0 1 y = ((dP y : ℝ) : ℂ) ^ (-z) * (uM s y).det ^ m := by
@@ -79,7 +79,7 @@ theorem cls_vac (s z : ℂ) (y : E n) :
   simp
 
 /- English proof (translation)
-Rewrite using `[sec_one_const b hc, cls_vac]`. Consider the cases of `b`. Simplify using `only [Bool.false_eq_true, if_false, vM_eq_uM]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_true]`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -95,13 +95,13 @@ theorem integrand_eq (b : Bool) {c t : ℝ} (hc : 0 < c) (z : ℂ) (y : E n) :
     ring
 
 /- English proof (translation)
-Introduce `m n hmn b c t hc ht β hβ`. Establish `hc0 : c ≠ 0` using `hc.ne'`. Establish `hs1 : (if b then ((t / c : ℝ) : ℂ) else -((t / c : ℝ) : ℂ)) = 1 ∨ (if b then ((t / c : ℝ) : ℂ) else -((t / c : ℝ) : ℂ)) = -1`. Apply the tactic sequence `rcases ht with rfl | rfl <;> cases b <;> simp [hc0, neg_div]`. Establish `ht0 : t ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Break down `ht with rfl | rfl` into its components or cases. Conclude with `hc0`. Conclude with `neg_ne_zero.mpr hc0`. Take `⟨W, hW, ⟨σ₀, hσ⟩, hder⟩` from `hS n m _ hs1 hmn t ht0 β hβ`. Take `⟨g, hg, hWg⟩` from `entire_factor W hW (n - m) hder`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun z => (((Real.pi : ℂ) / c) ^ n) ^ m * g z, (differentiable_const _).mul hg, σ₀, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨hI, hWz⟩` from `hσ z hz`. Establish `hfun : (fun y : E n => ((dP y : ℝ) : ℂ) ^ (-z) * secN (fun _ : Fin m => b) c t 1 (herm y) * chr t β y) = fun y => (((Real.pi : ℂ) / c) ^ n) ^ m * (cls (if b then ((t / c : ℝ) : ℂ) else -((t / c : ℝ) : ℂ)) z m 0 1 y * chr t β y)`. Use function extensionality and compare the values at `y`. Rewrite using `[integrand_eq (m := m) b hc z y]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Use `⟨hI.const_mul _, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_const_mul, ← hWz, hWg z]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wrOrd_of (hS : SPrime) : PositivityTheory.SiegelWeilFormula.Gen.WROrd := by
   intro m n hmn b c t hc ht β hβ

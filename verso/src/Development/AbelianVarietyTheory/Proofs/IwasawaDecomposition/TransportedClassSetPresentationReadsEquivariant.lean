@@ -13,17 +13,15 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.Mem.TransportRead
 
 /- English proof (translation)
-Introduce `K _ _ _ S G Γ G' Γ' _ _ _ _ ι J A h W _ _ σ ρ χ coef hli hspan hpair hK1 hgl ι' ρ' J' χ' eG eΓ hι hρ hJ hχ f g`. Use `set P' := (Bridge.classPresOf A h σ ρ χ coef hli hspan hpair hK1 hgl).transport eG eΓ hι hρ hJ hχ with hP'`. Establish `hJ' : ∀ x, x ∈ J' ↔ eG.symm x ∈ J` using `fun x => by subst hJ; exact Subgroup.mem_map_equiv`. Establish `hspec` using `P'.dec_spec g`. Use `set γ' := P'.decG g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := P'.decC g`. Use `set k' := P'.decK g`. Establish `hy : P'.y c = eG (A.y c)` using `rfl`. Establish `hc : P'.coef = coef` using `rfl`. Set `k'' : J` to `⟨eG.symm (k' : G'), (hJ' _).1 k'.2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : eG.symm g = ι (eΓ.symm γ') * A.y c * (k'' : G)`. Establish `e : ι (eΓ.symm γ') = eG.symm (ι' γ')`. Rewrite using `[MulEquiv.eq_symm_apply, ← hι, MulEquiv.apply_symm_apply]`. Rewrite using `[e, hspec, hy]`. Simplify using `only [map_mul, MulEquiv.symm_apply_apply, k'']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : A.q (eG.symm g) = A.gl (eΓ.symm γ', k''⁻¹) • S.outSec.rep c`. Rewrite using `[hg, A.q_mul, A.q_y]`. Use `set φ := (S.res h).symm f with hφ`. Establish `hφc : ((φ : S.EqFun) : S.D → S.V) (S.outSec.rep c) = (f : S.Cl → S.V) c`. Use `Formalism.L2.Col.GSD.resOf_apply S h S.outSec φ c` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Use `show (((S.res h) φ).1 : S.Cl → S.V) c = (f : S.Cl → S.V) c`. Rewrite using `[hφ, LinearEquiv.apply_symm_apply]`. Establish `hk : k' = ⟨eG (k'' : G), by simp only [k'', MulEquiv.apply_symm_apply]; exact k'.2⟩` using `Subtype.ext (by simp only [k'', MulEquiv.apply_symm_apply])`. Rewrite using `[hq, φ.2, hφc, hgl]`.
-
-Use `show (χ' k' : ℂ) • ρ' γ' (P'.coef ((f : S.Cl → S.V) c)) = _`. Rewrite using `[hc, hk, hχ]`. Establish `hγ : ρ' γ' = ρ (eΓ.symm γ')` using `by rw [← hρ, MulEquiv.apply_symm_apply]`. Rewrite using `[hγ, map_inv, inv_inv, Units.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport_ext_eq : ∀ {K : Type} [Field K] [NumberField K] [StarRing K] {S : Formalism.L2.Col.GSD K} {G Γ G' Γ' : Type}
     [Group G] [Group Γ] [Group G'] [Group Γ'] {ι : Γ →* G} {J : Subgroup G} (A : Bridge.AdPts S ι J) (h : S.Ok)

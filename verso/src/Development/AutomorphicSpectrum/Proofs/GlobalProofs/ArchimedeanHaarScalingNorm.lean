@@ -24,11 +24,9 @@ open scoped TensorProduct ENNReal NNReal
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test
 
 /- English proof (translation)
-Introduce `F _ _ hF laminf lam hinf hlam ψ hψ`. Take `⟨cinf, c, hU, h1, h2⟩` from `GlobalTheory.CompanionTheory.SW.SdCoord.selfDual_coord F hF laminf lam hinf hlam ψ hψ Unit 1 (Matrix.isSymm_one) (by simp)`. Use `⟨cinf, c, hU, ?_, fun v => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2, a3, a4, -, -, -, -⟩` from `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hF haveI := a1`. Use `haveI := a2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := a3`. Use `haveI := a4 haveI : BorelSpace (Ainf F) := ⟨rfl⟩ haveI := hinf.1`. Conclude with `(GlobalTheory.CompanionTheory.SW.SdAny.iff_of_unit (psiInf F ψ) laminf cinf _ (Matrix.map_one _ (map_zero _) (map_one _)) h1 _).2 rfl`. Take `⟨a1, a2, a3, a4, -, -, -, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v haveI := a1`. Use `haveI := a2`.
-
-Use `haveI := a3`. Use `haveI := a4 haveI : BorelSpace (Fv F v) := ⟨rfl⟩ haveI := (hlam v).1`. Conclude with `(GlobalTheory.CompanionTheory.SW.SdAny.iff_of_unit (psiV F ψ v) (lam v) (c v) _ (Matrix.map_one _ (map_zero _) (map_one _)) (h2 v) _).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem sdConst : ∀ (F : Type) [Field F] [NumberField F], NumberField.IsTotallyReal F → ∀ (laminf : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdInf laminf → (∀ v, GlobalTheory.CompanionTheory.SW.IsStdV v (lam v)) → ∀ ψ, IsCharAF F ψ → ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), GlobalTheory.CompanionTheory.SW.IsUnitProd cinf c ∧ SelfDual (cinf • laminf) (fun s t => psiInf F ψ (s * t)) ∧ ∀ v : HeightOneSpectrum (𝓞 F), SelfDual (c v • lam v) (fun s t => psiV F ψ v (s * t)) := by
   intro F _ _ hF laminf lam hinf hlam ψ hψ
@@ -51,31 +49,27 @@ end GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ lam c hlam hsd hc1`. Take `⟨T, hT⟩` from `GlobalTheory.T.adelic_character_trivial_almost_everywhere F ψ hψ`. Use `(T.finite_toSet.union hc1).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Simplify using `only [Set.mem_union, Finset.mem_coe, Set.mem_setOf_eq, not_or, not_not] at hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Take `⟨hvT, hcv⟩` from `hcon`. Apply `hv` to reduce the goal to its premises. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Establish `hloc` using `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI : IsTopologicalRing (Fv F v) := hloc.1`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `haveI : SecondCountableTopology (Fv F v) := hloc.2.2.1`. Use `haveI := (hlam v).1`. Establish `hO : ((GlobalTheory.CompanionTheory.SW.PiV.ball v 0 : AddSubgroup (Fv F v)) : Set (Fv F v)) = (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `Valued.v x ≤ WithZero.exp 0 ↔ Valued.v x ≤ 1`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨-, -, -, hm⟩` from `GlobalTheory.T.local_annihilator_self_dual_volume F ψ hψ v (lam v) (c v) (hlam v) (hsd v) (GlobalTheory.CompanionTheory.SW.PiV.ball v 0) (GlobalTheory.CompanionTheory.SW.PiV.ball_isCompact 0) (GlobalTheory.CompanionTheory.SW.PiV.ball_isOpen 0)`. Rewrite `hm` using `[hO, hcv, (hlam v).2]`. Simplify using `only [NNReal.coe_one, one_pow, ENNReal.toReal_one, mul_one, one_mul] at hm`. Establish `hA1 : lam v (annV ψ v (v.adicCompletionIntegers F : Set (Fv F v))) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hne : lam v (annV ψ v (v.adicCompletionIntegers F : Set (Fv F v))) ≠ ⊤`. Introduce `h`. Rewrite `hm` using `[h]`. Simplify using `at hm`. Rewrite using `[← ENNReal.ofReal_toReal hne, hm, ENNReal.ofReal_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : (v.adicCompletionIntegers F : Set (Fv F v)) ⊆ annV ψ v (v.adicCompletionIntegers F : Set (Fv F v))`. Introduce `t ht s hs`. Establish `hx : s * t ∈ v.adicCompletionIntegers F` using `mul_mem hs ht`. Rewrite using `[← psiF_singleV]`. Establish `hs1 : (singleV F v (s * t)) v = s * t` using `RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hs2 : ∀ w, w ≠ v → (singleV F v (s * t)) w = 0` using `fun w h => RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) _ h`. Use `hT _ (fun w => ?_) (fun w hw => ?_)` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[hs1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hx`. Rewrite using `[hs2 w h]`. Conclude with `zero_mem _`. Conclude with `hs2 w fun h => hvT (h ▸ hw)`. Use `(Set.Subset.antisymm ?_ hsub)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t ht`. Assume the negation of the conclusion as `htO`. Use `set O : Set (Fv F v) := (v.adicCompletionIntegers F : Set (Fv F v)) with hOdef`. Use `set A : Set (Fv F v) := annV ψ v O with hAdef`. Establish `hmO : MeasurableSet O`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← hO]`. Conclude with `(GlobalTheory.CompanionTheory.SW.PiV.ball_isOpen 0).measurableSet`. Establish `hshift : lam v ((fun x => -t + x) ⁻¹' O) = 1`. Rewrite using `[measure_preimage_add]`. Conclude with `(hlam v).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hdisj : Disjoint O ((fun x => -t + x) ⁻¹' O)`. Use `Set.disjoint_left.2 fun x hx hx' => htO ?_` and prove the remaining obligations. Establish `h1 : x - (-t + x) ∈ v.adicCompletionIntegers F` using `sub_mem hx hx'`. Establish `h2 : x - (-t + x) = t` using `by ring`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
-
-Establish `hsub2 : (fun x => -t + x) ⁻¹' O ⊆ A`. Introduce `x hx`. Establish `h1 : t + (-t + x) ∈ annS ψ v O` using `(annS ψ v O).add_mem ht (hsub hx)`. Establish `h2 : t + (-t + x) = x` using `by ring`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
-
-Establish `hle : lam v (O ∪ (fun x => -t + x) ⁻¹' O) ≤ lam v A` using `measure_mono (Set.union_subset hsub hsub2)`. Rewrite `hle` using `[measure_union hdisj (hmO.preimage (measurable_const_add _)), (hlam v).2, hshift, hA1]`. Evaluate the numerical expressions using `at hle`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem condS_of : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), (∀ v, GlobalTheory.CompanionTheory.SW.IsStdV v (lam v)) → (∀ v, SelfDual (c v • lam v) (fun s t => psiV F ψ v (s * t))) → {v | c v ≠ 1}.Finite → {v : HeightOneSpectrum (𝓞 F) | annV ψ v (v.adicCompletionIntegers F : Set (Fv F v)) ≠ (v.adicCompletionIntegers F : Set (Fv F v))}.Finite := by
   intro F _ _ ψ hψ lam c hlam hsd hc1
@@ -154,14 +148,14 @@ end GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test
 
 /- English proof (translation)
-Establish `h : pairA F (0 : Ainf F) 0 = 0` using `rfl`. Rewrite using `[psiInf, h, AddChar.map_zero_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiInf_zero {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) : psiInf F ψ 0 = 1 := by
   have h : pairA F (0 : Ainf F) 0 = 0 := rfl
   rw [psiInf, h, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Simplify using `only [fouInf, mul_zero, psiInf_zero, mul_one]`. Conclude with `integral_ofReal`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fouInf_zero {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (lam : Measure (Ainf F))
     (ρ : Ainf F → ℝ) : fouInf ψ lam ρ 0 = ((∫ y, ρ y ∂lam : ℝ) : ℂ) := by
@@ -169,13 +163,11 @@ theorem fouInf_zero {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) �
   exact integral_ofReal
 
 /- English proof (translation)
-Use `set h : AF F → ℝ := fun y => ρ (fstA F y) * (Coef.boxA S U).indicator (fun _ => (1 : ℝ)) (sndA F y) with hh`. Establish `hT : ∀ y, Coef.testT ρ S U y = ((h y : ℝ) : ℂ)`. Introduce `y`. Simplify using `only [Coef.testT, hh, Set.indicator]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hnn : ∀ y, 0 ≤ h y`. Introduce `y`. Use `mul_nonneg (hρ _) (Set.indicator_nonneg (fun _ _ => zero_le_one) _)` and prove the remaining obligations. Establish `h1 : ∫ y, Coef.testT ρ S U y ∂db = ((∫ y, h y ∂db : ℝ) : ℂ)`. Simplify using `only [hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `integral_ofReal`. Rewrite using `[h1, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg hnn)]`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, hψ.2.1, mul_one, hT, Complex.norm_real]`.
-
-Conclude with `Real.norm_of_nonneg (hnn y)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_fouA_le {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ)
     (db : Measure (AF F)) (ρ : Ainf F → ℝ) (hρ : ∀ y, 0 ≤ ρ y) (S : Finset (HeightOneSpectrum (𝓞 F)))
@@ -199,11 +191,11 @@ theorem norm_fouA_le {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) �
   exact Real.norm_of_nonneg (hnn y)
 
 /- English proof (translation)
-Establish `e1 : ∀ y, ∫ x, (ρ x : ℂ) * psiInf F ψ (x * y) ∂(cinf • laminf) = ((cinf : ℝ) : ℂ) * fouInf ψ laminf ρ y`. Introduce `y`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Both sides reduce to the same expression. Establish `hc' : Continuous fun x => (ρ x : ℂ)` using `Complex.continuous_ofReal.comp hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hs' : HasCompactSupport fun x => (ρ x : ℂ)` using `hs.comp_left (g := Complex.ofReal) (by simp)`. Establish `h` using `hsd.2 (fun x => (ρ x : ℂ)) hc' hs' (by`. Simplify using `only [e1]`. Conclude with `(hI.const_mul _).smul_measure_nnreal) t`. Simplify using `only [e1] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Rewrite using `[← h, pow_two, mul_assoc, ← integral_const_mul]`. Use `congr 1`. Use `congrArg _ (funext fun y => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inf_inversion {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ)
     (laminf : Measure (Ainf F)) (cinf : ℝ≥0) (hsd : SelfDual (cinf • laminf) (fun s t => psiInf F ψ (s * t)))
@@ -228,63 +220,55 @@ theorem inf_inversion {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) 
   ring
 
 /- English proof (translation)
-Introduce `F _ _ hF ψ hψ db hdb laminf lam hinf hlam`. Take `⟨lf, hlfH, hlf1, e, he, hep⟩` from `GlobalTheory.T.adelic_haar_finite_infinite_product F db hdb laminf hinf`. Take `⟨cinf, c, hU, hsdI, hsdV⟩` from `sdConst F hF laminf lam hinf hlam ψ hψ`. Establish `hfin2 : {v | c v ≠ 1}.Finite` using `hU.1`. Establish `hfin1` using `condS_of F ψ hψ lam c hlam hsdV hfin2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hfin1.toFinset ∪ hfin2.toFinset, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hSc : ∀ v, v ∉ S → annV ψ v (v.adicCompletionIntegers F : Set (Fv F v)) = (v.adicCompletionIntegers F : Set (Fv F v))` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hS (Finset.mem_union_left _ (hfin1.mem_toFinset.2 h)))`. Establish `hSc1 : ∀ v, v ∉ S → c v = 1` using `fun v hv => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hv (hS (Finset.mem_union_right _ (hfin2.mem_toFinset.2 h)))`. Take `⟨ρ, hρ, hρt, hρI⟩` from `GlobalTheory.T.number_field_approximate_identity GlobalTheory.T.exists_real_approximate_identity F hF ψ hψ laminf hinf.1`. Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), BorelSpace (Fv F v) := fun v => ⟨rfl⟩`. Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), (lam v).IsAddHaarMeasure := fun v => (hlam v).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc` using `fun v => GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI : ∀ v, IsTopologicalRing (Fv F v) := fun v => (hloc v).1`. Set `Ub : ℕ → ∀ v : HeightOneSpectrum (𝓞 F), AddSubgroup (Fv F v)` to `fun k v => GlobalTheory.CompanionTheory.SW.PiV.ball v (-(k : ℤ))`. Establish `hUc : ∀ k v, IsCompact (Ub k v : Set (Fv F v))` using `fun k v => GlobalTheory.CompanionTheory.SW.PiV.ball_isCompact _`. Establish `hUo : ∀ k v, IsOpen (Ub k v : Set (Fv F v))` using `fun k v => GlobalTheory.CompanionTheory.SW.PiV.ball_isOpen _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdual` using `fun k v => GlobalTheory.T.local_annihilator_self_dual_volume F ψ hψ v (lam v) (c v) (hlam v) (hsdV v) (Ub k v) (hUc k v) (hUo k v)`. Set `Ua : ℕ → ∀ v : HeightOneSpectrum (𝓞 F), AddSubgroup (Fv F v)` to `fun k v => annS ψ v (Ub k v)`. Establish `hUac : ∀ k v, IsCompact (Ua k v : Set (Fv F v))` using `fun k v => (hdual k v).2.1`. Establish `hUao : ∀ k v, IsOpen (Ua k v : Set (Fv F v))` using `fun k v => (hdual k v).2.2.1`. Establish `hmass : ∀ (W : ∀ v : HeightOneSpectrum (𝓞 F), AddSubgroup (Fv F v)), (∀ v, IsCompact (W v : Set (Fv F v))) → (∀ v, IsOpen (W v : Set (Fv F v))) → MeasurableSet (boxS S W : Set (Af F)) ∧ lf (boxS S W : Set (Af F)) ≠ ⊤ ∧ (lf (boxS S W : Set (Af F))).toReal = ∏ v ∈ S, (lam v (W v : …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `W hc ho`. Take `⟨h1, h2⟩` from `GlobalTheory.T.finite_adele_box_measure_product F lam hlam lf hlfH hlf1 S (fun v => (W v : Set (Fv F v))) (fun v => (ho v).measurableSet)`. Establish `hne : ∀ v, lam v (W v : Set (Fv F v)) ≠ ⊤` using `fun v => (hc v).measure_lt_top.ne`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lf (Coef.boxA S fun v => (W v : Set (Fv F v))) ≠ ⊤`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[h2]`. Conclude with `ENNReal.prod_ne_top fun v _ => hne v`. Express the relevant statement in the definitionally equal form `(lf (Coef.boxA S fun v => (W v : Set (Fv F v)))).toReal = _`. Rewrite using `[h2, ENNReal.toReal_prod]`. Set `B : ℕ → AddSubgroup (Af F)` to `fun k => boxS S (Ub k)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Set `B' : ℕ → AddSubgroup (Af F)` to `fun k => boxS S (Ua k)`. Establish `hB : ∀ k, annF ψ (B k : Set (Af F)) = (B' k : Set (Af F))` using `fun k => GlobalTheory.T.adelic_annihilator_box_product F ψ hψ S hSc (fun v => (Ub k v : Set (Fv F v))) (fun v => (Ub k v).zero_mem)`. Establish `hB' : ∀ k, annF ψ (B' k : Set (Af F)) = (B k : Set (Af F))` using `fun k => by`. Use `(GlobalTheory.T.adelic_annihilator_box_product F ψ hψ S hSc (fun v => (Ua k v : Set (Fv F v))) (fun v => (Ua k v).zero_mem)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Coef.boxA S (fun v => annV ψ v (annV ψ v (Ub k v))) = _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [fun v => (hdual k v).1]`. Both sides reduce to the same expression. Establish `hBm` using `fun k => hmass (Ub k) (hUc k) (hUo k)`. Establish `hBm'` using `fun k => hmass (Ua k) (hUac k) (hUao k)`. Establish `hfou : ∀ k b, Coef.fouA ψ db (Coef.testT (ρ k) S (fun v => (Ub k v : Set (Fv F v)))) b = fouInf ψ laminf (ρ k) (fstA F b) * (((lf (B k : Set (Af F))).toReal : ℝ) : ℂ) * (B' k : Set (Af F)).indicator (fun _ => (1 : ℂ)) (sndA F b)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k b`. Establish `h` using `GlobalTheory.T.adelic_integral_product_subgroup F ψ hψ db laminf lf hinf.1 hlfH e he hep (fun x => (ρ k x : ℂ)) (B k) (hBm k).1 (hBm k).2.1 b`. Rewrite `h` using `[hB k]`. Conclude with `h`. Establish `hint : ∀ k, ∫ y, Coef.testT (ρ k) S (fun v => (Ub k v : Set (Fv F v))) y ∂db = ((∫ y, ρ k y ∂laminf : ℝ) : ℂ) * (((lf (B k : Set (Af F))).toReal : ℝ) : ℂ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Establish `h` using `hfou k 0`. Establish `h0 : (0 : Af F) ∈ (B' k : Set (Af F))` using `(B' k).zero_mem`. Simplify using `only [map_zero, fouInf_zero, Set.indicator_of_mem h0, mul_one, Coef.fouA, mul_zero, AddChar.map_zero_eq_one] at h`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hκ : ∀ k, ((lf (B k : Set (Af F))).toReal : ℝ) ≠ 0`. Introduce `k`. Rewrite using `[(hBm k).2.2]`. Use `Finset.prod_ne_zero_iff.2 fun v _ => ?_` and prove the remaining obligations. Use `(ENNReal.toReal_pos ?_ (hUc k v).measure_lt_top.ne).ne'` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((hUo k v).measure_pos (lam v) ⟨0, (Ub k v).zero_mem⟩).ne'`. Establish `hconst : ∀ k, (lf (B k : Set (Af F))).toReal * (lf (B' k : Set (Af F))).toReal = (cinf : ℝ) ^ 2`. Introduce `k`. Establish `hP : (∏ v ∈ S, (c v : ℝ)) ^ 2 * ((lf (B k : Set (Af F))).toReal * (lf (B' k : Set (Af F))).toReal) = 1`. Rewrite using `[(hBm k).2.2, (hBm' k).2.2, ← Finset.prod_pow, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Use `(hdual k v).2.2.2` as an intermediate fact. Rewrite using `[← mul_assoc]`. Conclude with `this`. Establish `hcp : (cinf : ℝ) * ∏ v ∈ S, (c v : ℝ) = 1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ∏ᶠ v, c v = ∏ v ∈ S, c v` using `finprod_eq_prod_of_mulSupport_subset _ (fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hSc1 v h))`. Establish `h3` using `hU.2`. Rewrite `h3` using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h3` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcp]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (cinf : ℝ) ^ 2 * ((∏ v ∈ S, (c v : ℝ)) ^ 2 * ((lf (B k : Set (Af F))).toReal * (lf (B' k : Set (Af F))).toReal)) := by ring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `_ = (cinf : ℝ) ^ 2 := by rw [hP, mul_one]`. Establish `hcinf : (cinf : ℝ) ≠ 0`. Introduce `h0`. Establish `h3` using `hU.2`. Establish `: cinf = 0` using `by exact_mod_cast h0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h3` using `[this, zero_mul]`. Conclude with `zero_ne_one h3`. Use `⟨ρ, fun k v => (Ub k v : Set (Fv F v)), hρ, hρt, fun k v => ⟨hUc k v, hUo k v, (Ub k v).zero_mem⟩, ?_, fun k => ⟨?_, fun z => ?_⟩, fun k => ?_, fun k b => ?_, fun b => ?_⟩` and prove the remaining obligations. Introduce `v`. Use `Filter.tendsto_smallSets_iff.2 fun t ht => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `GlobalTheory.CompanionTheory.SW.PiV.exists_ball_subset t ht`. Use `filter_upwards [Filter.eventually_ge_atTop (-m).toNat] with k hk`. Use `(GlobalTheory.CompanionTheory.SW.PiV.ball_le ?_).trans hm` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Establish `: Coef.fouA ψ db (Coef.testT (ρ k) S (fun v => (Ub k v : Set (Fv F v)))) = fun b => (((lf (B k : Set (Af F))).toReal : ℝ) : ℂ) * (fouInf ψ laminf (ρ k) (fstA F b) * (B' k : Set (Af F)).indicator (fun _ => (1 : ℂ)) (sndA F b))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `b`. Rewrite using `[hfou]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(GlobalTheory.T.adelic_integrable_product_indicator F db laminf lf hinf.1 hlfH e he hep _ _ (hρI k) (hBm' k).1 (hBm' k).2.1).const_mul _`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ b, Coef.fouA ψ db (Coef.testT (ρ k) S (fun v => (Ub k v : Set (Fv F v)))) b * ψ (b * z) = (((lf (B k : Set (Af F))).toReal : ℝ) : ℂ) * ((fouInf ψ laminf (ρ k) (fstA F b) * (B' k : Set (Af F)).indicator (fun _ => (1 : ℂ)) (sndA F b)) * ψ (b * z))`. Introduce `b`. Rewrite using `[hfou]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[integral_const_mul, GlobalTheory.T.adelic_integral_product_subgroup F ψ hψ db laminf lf hinf.1 hlfH e he hep _ (B' k) (hBm' k).1 (hBm' k).2.1 z, hB' k]`. Establish `hinv` using `inf_inversion ψ laminf cinf hsdI (ρ k) (hρ k).1 (hρ k).2.1 (hρI k) (fstA F z)`. Establish `hz : (sndA F (-z) ∈ (B k : Set (Af F))) ↔ sndA F z ∈ (B k : Set (Af F))`. Rewrite using `[map_neg]`. Conclude with `(B k).neg_mem_iff`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hc2 : ((lf (B k : Set (Af F))).toReal : ℂ) * ((lf (B' k : Set (Af F))).toReal : ℂ) = ((cinf : ℝ) : ℂ) ^ 2`. Conclude with `hconst k` after adjusting the coercions. Establish `hT : Coef.testT (ρ k) S (fun v => (Ub k v : Set (Fv F v))) (-z) = (ρ k (-(fstA F z)) : ℂ) * (B k : Set (Af F)).indicator (fun _ => (1 : ℂ)) (sndA F z)`. Simplify using `only [Coef.testT, map_neg]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : sndA F z ∈ (B k : Set (Af F))`. Rewrite using `[Set.indicator_of_mem h]`. Conclude with `Set.indicator_of_mem ((B k).neg_mem h) _`. Rewrite using `[Set.indicator_of_notMem h]`. Conclude with `Set.indicator_of_notMem (fun h' => h (by simpa using (B k).neg_mem h')) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hT, ← hinv, ← hc2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hint k, (hBm k).2.2]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Conclude with `norm_fouA_le ψ hψ db (ρ k) (hρ k).2.2.1 S _ b`. Establish `hr : ∀ k, Coef.fouA ψ db (Coef.testT (ρ k) S (fun v => (Ub k v : Set (Fv F v)))) b / ∫ y, Coef.testT (ρ k) S (fun v => (Ub k v : Set (Fv F v))) y ∂db = fouInf ψ laminf (ρ k) (fstA F b) / ((∫ y, ρ k y ∂laminf : ℝ) : ℂ) * (B' k : Set (Af F)).indicator (fun _ => (1 : ℂ)) (sndA F b)`. Introduce `k`. Establish `hk : (((lf (B k : Set (Af F))).toReal : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hκ k`. Establish `hk2 : ((∫ y, ρ k y ∂laminf : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (hρ k).2.2.2.ne'`.
-
-Rewrite using `[hfou, hint]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [hr]`. Establish `hlim` using `GlobalTheory.T.archimedean_fourier_approximate_identity F ψ hψ laminf hinf.1 ρ hρ hρt (fstA F b)`. Distinguish the cases in `hb : sndA F b ∈ Coef.intF S`.
-
-Rewrite using `[Set.indicator_of_mem hb]`. Use `hlim.congr' ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ k : ℕ in Filter.atTop, ∀ v ∈ S, (sndA F b) v ∈ annV ψ v (Ub k v : Set (Fv F v))` using `(Filter.eventually_all_finset S).2 fun v _ => GlobalTheory.T.mem_annihilator_small_ball_eventually F ψ hψ v _`. Use `filter_upwards [hev] with k hk`. Establish `hm : sndA F b ∈ (B' k : Set (Af F))` using `⟨hk, hb⟩`.
-
-Rewrite using `[Set.indicator_of_mem hm, mul_one]`. Rewrite using `[Set.indicator_of_notMem hb]`. Establish `h0 : ∀ k, sndA F b ∉ (B' k : Set (Af F))` using `fun k hm => hb hm.2`. Simplify using `only [fun k => Set.indicator_of_notMem (h0 k) (fun _ => (1 : ℂ)), mul_zero]`. Conclude with `tendsto_const_nhds`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_test_approx : ∀ (F : Type) [Field F] [NumberField F], NumberField.IsTotallyReal F → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ db : Measure (AF F), IsCovolOne db → ∀ (laminf : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdInf laminf → (∀ v, GlobalTheory.CompanionTheory.SW.IsStdV v (lam v)) → ∃ S₁ : Finset (HeightOneSpectrum (𝓞 F)), ∀ S, S₁ ⊆ S → ∃ (ρ : ℕ → Ainf F → ℝ) (U : ℕ → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)), (∀ k, Continuous (ρ k) ∧ HasCompactSupport (ρ k) ∧ (∀ y, 0 ≤ ρ k y) ∧ 0 < ∫ y, ρ k y ∂laminf) ∧ Filter.Tendsto (fun k => tsupport (ρ k)) Filter.atTop (nhds (0 : Ainf F)).smallSets ∧ (∀ k v, IsCompact (U k v) ∧ IsOpen (U k v) ∧ (0 : Fv F v) ∈ U k v) ∧ (∀ v, Filter.Tendsto (fun k => U k v) Filter.atTop (nhds (0 : Fv F v)).smallSets) ∧ (∀ k, Integrable (Coef.fouA ψ db (Coef.testT (ρ k) S (U k))) db ∧ ∀ z, ∫ b, Coef.fouA ψ db (Coef.testT (ρ k) S (U k)) b * ψ (b * z) ∂db = Coef.testT (ρ k) S (U k) (-z)) ∧ (∀ k, ∫ y, Coef.testT (ρ k) S (U k) y ∂db = ((∫ y, ρ k y ∂laminf : ℝ) : ℂ) * ∏ v ∈ S, (((lam v) (U k v)).toReal : ℂ)) ∧ (∀ k b, ‖Coef.fouA ψ db (Coef.testT (ρ k) S (U k)) b‖ ≤ ‖∫ y, Coef.testT (ρ k) S (U k) y ∂db‖) ∧ ∀ b, Filter.Tendsto (fun k => Coef.fouA ψ db (Coef.testT (ρ k) S (U k)) b / ∫ y, Coef.testT (ρ k) S (U k) y ∂db) Filter.atTop (nhds ((Coef.intF S).indicator (fun _ => (1 : ℂ)) (sndA F b))) := by
   intro F _ _ hF ψ hψ db hdb laminf lam hinf hlam

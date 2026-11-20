@@ -30,13 +30,13 @@ def subring : Subring K where
 variable {K}
 
 /- English proof (translation)
-The claim follows from `(subring K).add_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem add_mem {x y : K} (hx : x ∈ subring K) (hy : y ∈ subring K) : x + y ∈ subring K :=
   (subring K).add_mem hx hy
 
 /- English proof (translation)
-The claim follows from `(subring K).mul_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem {x y : K} (hx : x ∈ subring K) (hy : y ∈ subring K) : x * y ∈ subring K :=
   (subring K).mul_mem hx hy

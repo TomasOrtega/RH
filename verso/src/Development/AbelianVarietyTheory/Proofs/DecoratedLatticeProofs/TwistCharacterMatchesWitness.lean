@@ -12,15 +12,15 @@ namespace GlobalTheory.Fam
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hL p K q c b hw`. Take `⟨x, a, ax, y, recPin, s, pt, sx, eF, cW, d3b, side, colPins⟩` from `hw`. Establish `key : ∀ t : x.T, Formalism.IndefR.Links.ChrEq (x.R.toRealDat.xi t) (q.w.I.xi (x.Y.tup t))`. Establish `hxi : ∀ μ, Formalism.IndefR.RecTie.Used0 (q.w.D q.Z) μ → HEq (x.R.toLevCh.xiH (x.Y.tupT μ)) (q.w.I.xi μ)`. Establish `h` using `eq_of_heq ax`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Conclude with `fun μ hμ => ((GlobalTheory.Mem.R3.twArgs_lev K q.B q.f q.T q.w q.Z _ _ _ _ _ _ _ _ _ _ a).2.2.1 μ hμ).2`. Introduce `t`. Establish `hu : Formalism.IndefR.RecTie.Used0 (q.w.D q.Z) (x.Y.tup t)`. Break down `x.pins.char.tup.mu_used t with h | ⟨w, h⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h]`. Conclude with `Or.inl x.Y.tup0`. Rewrite using `[← h]`. Take `⟨w', rfl⟩` from `(q.w.D q.Z).plEq.surjective w`. Conclude with `Or.inr ⟨w', (x.Y.muAt w').symm⟩`.
+Rewrite the conclusion using the stated equalities. Prove the first alternative. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the second alternative.
 
-Establish `h1` using `hxi _ hu`. Rewrite `h1` using `[x.Y.tupT_tup]`. Establish `h2` using `x.pins.char.base.lev.xi t`. Rewrite `h2` using `[eq_of_heq h1]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (fun k : Bl.RPk b.R b.S => ∀ t : k.P.T, Formalism.IndefR.Links.ChrEq (k.B.Q.Rl.toRealDat.xi t) (q.w.I.xi (k.P.I.tup t))) (Bl.rpkB b)`. Rewrite using `[y.eq]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem xi_chrEq_cols : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → ∀ t, Formalism.IndefR.Links.ChrEq ((pk (packB b)).xi t) (q.w.I.xi (b.P.I.tup t)) := by
   intro hL p K q c b hw

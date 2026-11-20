@@ -7,25 +7,21 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.Dblock
 
 /- English proof (translation)
-Introduce `p _ R _ _ _ r N _ _ K₀ _ _ K₁ _ _ K₂ _ _ K₃ _ _ d₀ d₁ d₂ hr hdd h1 h2 h3 w hw k`. Establish `hp : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hrk : ∀ k, r k = r (k + 1) ^ (p - 2) * (r (k + 1) * r (k + 1))`. Introduce `k`. Rewrite using `[← pow_two, ← pow_add, Nat.sub_add_cancel hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hr k).symm`. Establish `hsat : ∀ (a : R) (x : K₂), a ≠ 0 → a • x ∈ LinearMap.range d₁ → ∀ k, r k • x ∈ LinearMap.range d₁`. Introduce and unpack `a x ha ⟨y, hy⟩ k`. Establish `hax : a • d₂ x = 0`. Rewrite using `[← map_smul, ← hy, hdd]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : d₂ (r (k + 1) • x) = 0`. Rewrite using `[map_smul]`. Conclude with `h3 a _ ha hax (k + 1)`. Establish `h4` using `h2 _ h0 (k + 1)`. Rewrite using `[hrk k, mul_smul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Submodule.smul_mem _ _ h4`. Establish `hsub : (LinearMap.range d₁).subtype ∘ₗ d₁.rangeRestrict = d₁`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `hw' : (LinearMap.range d₁).subtype.lTensor N (d₁.rangeRestrict.lTensor N w) = 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, hsub]`. Conclude with `hw`. Establish `h5` using `smul_eq_zero_of_lTensor_subtype_eq_zero R r N K₂ (LinearMap.range d₁) hsat _ hw' (k + 1)`. Establish `h6 : d₁.rangeRestrict.lTensor N (r (k + 1) • w) = 0`. Rewrite using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h5`. Establish `hex : Function.Exact (LinearMap.ker d₁).subtype d₁.rangeRestrict`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : d₁ x = 0` using `congrArg Subtype.val hx`. Conclude with `⟨⟨x, hx'⟩, rfl⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `Subtype.ext z.2`. Take `⟨u, hu⟩` from `(lTensor_exact N hex d₁.surjective_rangeRestrict _).1 h6`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `h7 : ∀ u : N ⊗[R] LinearMap.ker d₁, r (k + 1) • (LinearMap.ker d₁).subtype.lTensor N u ∈ LinearMap.range (d₀.lTensor N)`. Introduce `u`. Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `tmul n z`.
-
-Take `⟨y, hy⟩` from `h1 z z.2 (k + 1)`. Conclude with `⟨n ⊗ₜ y, by simp [hy, TensorProduct.tmul_smul]⟩`. Consider the case `add a b ha hb`. Rewrite using `[map_add, smul_add]`. Conclude with `Submodule.add_mem _ ha hb`.
-
-Rewrite using `[hrk k, mul_smul, mul_smul, ← hu]`. Conclude with `Submodule.smul_mem _ _ (h7 u)`.
+Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_range_lTensor_of_lTensor_eq_zero :
     ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [ValuationRing R] (r : ℕ → R)

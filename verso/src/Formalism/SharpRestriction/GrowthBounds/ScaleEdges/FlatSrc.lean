@@ -11,11 +11,11 @@ def vecE (n' : ℕ) : Fin n' → Bool := fun s => decide (Even s.val)
 def flW {n' m : ℕ} (d : Fin n' → ℕ) : Fin n' → Fin (m + 1) → ℤ := fun s => Pi.single 0 (d s : ℤ)
 
 /- English proof (translation)
-Introduce `s`. Distinguish the cases in `hs : Even s.val`. Simplify using `[lamAt, vecE, flW, hs]`. Use function extensionality and compare the values at `i`. Simplify using `only [lamAt, vecE, flW, hs, if_false, decide_false, Bool.false_eq_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : i = Fin.last m`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Establish `hr : i.rev ≠ 0`. Introduce `h0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hi` to reduce the goal to its premises. Rewrite using `[← Fin.rev_rev i, h0, Fin.rev_zero]`. Simplify using `[hi, hr]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isFlat_flW {n' m : ℕ} (d : Fin n' → ℕ) : IsFlat (m := m) (vecE n') d (flW d) := by
   intro s
@@ -43,7 +43,7 @@ variable {O Kf X : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X
   [IsScalarTower O Kf X]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_scale]`. Take `⟨y, hy, rfl⟩` from `hx`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, ← zpow_add₀ hc, show -(a : ℤ) + ((a + b : ℕ) : ℤ) = b by push_cast; ring]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_shift (c : Kf) (hc : c ≠ 0) (a b : ℕ) (M : Submodule O X) {x : X}
     (hx : x ∈ scale (c ^ ((a + b : ℕ) : ℤ)) M) : (c ^ (-(a : ℤ))) • x ∈ scale (c ^ (b : ℤ)) M := by
@@ -71,15 +71,13 @@ def IsFlatIdent {p n' : ℕ} [Fact p.Prime] {W Qq O Kf : Type} [CommRing W] [Fie
         Θ F ∈ scale (algebraMap O Kf w ^ (i : ℤ)) (Re p ι σ w r lam0 e)
 
 /- English proof (translation)
-Set `_ : Algebra (WF p n') O` to `algOfIdent j φ`. Introduce `Θ hΘ g hg e he c' o sig Fsig hsig hsub hreal`. Take `⟨F, hFA, hFdeg, hFW, hFo⟩` from `hreal`. Take `⟨F', rfl⟩ : ∃ F' : ↥((Pol (KK O) (ι` from `Fin n') (m + 1) d).restrictScalars O), (F' : MvPolynomial (Fin n' × Fin (m + 1)) (KK O)) = F := ⟨⟨F, hFdeg d hsig⟩, rfl⟩`. Establish `hc0 : algebraMap O Kf w ≠ 0` using `w_ne_zero hS`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hE1, -, hE3⟩` from `hEP p n' W Qq O Kf ι σ j w hS φ hφ m r h hh`. Use `⟨(algebraMap O Kf w ^ (-(o : ℤ))) • Θ F', ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mem_scale.mpr ⟨Θ F', (hΘ.1 F').mp hFA, rfl⟩`. Establish `key : InWjRg p n' O w r (flatLetters (vecE n')) g ((F' - (w ^ o) • Fsig : ↥((Pol (KK O) (ι` using `Fin n') (m + 1) d).restrictScalars O)) : MvPolynomial (Fin n' × Fin (m + 1)) (KK O)) (o + c') := by show InWj w (subst p n' O w n' r g _) (o + c')`. Establish `hx : ((F' - (w ^ o) • Fsig : ↥((Pol (KK O) (ι` using `Fin n') (m + 1) d).restrictScalars O)) : MvPolynomial (Fin n' × Fin (m + 1)) (KK O)) = (F' : MvPolynomial (Fin n' × Fin (m + 1)) (KK O)) - C (algebraMap O (KK O) (w ^ o)) * (Fsig : MvPolynomial (Fin n' × Fin (m + 1)) (KK O)) := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_sub, Submodule.coe_smul_of_tower, ← algebraMap_smul (KK O), smul_eq_C_mul]`. Rewrite using `[hx, map_sub, map_mul, hsub, ← MvPolynomial.algebraMap_eq, AlgHom.commutes, MvPolynomial.algebraMap_eq]`. Conclude with `hFW`. Establish `hmem` using `scale_shift (algebraMap O Kf w) hc0 o c' _ ((hΘ.2 g hg e he _ (o + c')).mp key)`. Establish `heq : (algebraMap O Kf w ^ (-(o : ℤ))) • Θ (F' - (w ^ o) • Fsig) = (algebraMap O Kf w ^ (-(o : ℤ))) • Θ F' - Θ Fsig`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[map_sub, map_smul, ← algebraMap_smul Kf (w ^ o), smul_sub, smul_smul, map_pow, ← zpow_natCast, ← zpow_add₀ hc0, neg_add_cancel, zpow_zero, one_smul]`. Rewrite `hmem` using `[heq]`. Then use the resulting hypothesis. Introduce `e' he' hsrc hne`. Take `⟨g', hg', hb'⟩` from `hE1 e' he' hsrc`. Establish `hrat : ratPlane p n' r g' ≠ ratPlane p n' r g` using `fun hr => hne ((hE3 g' g e' e hg' hg hb' he).mpr hr)`.
-
-Conclude with `scale_shift (algebraMap O Kf w) hc0 o c' _ ((hΘ.2 g' hg' e' hb' F' (o + c')).mp (hFo g' hg' hrat))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flatSrc (hEP : EdgePlane) (p n' : ℕ) [Fact p.Prime] (W Qq O Kf : Type) [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]

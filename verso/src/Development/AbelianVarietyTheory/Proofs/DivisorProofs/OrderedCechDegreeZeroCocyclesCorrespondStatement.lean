@@ -12,7 +12,7 @@ open GlobalTheory.CechPoset
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CechPoset.orderedCech_degreeZero_cocycles_correspond | exact GlobalTheory.CechPoset.orderedCech_degreeZero_cocycles_correspond | (intros; apply GlobalTheory.CechPoset.orderedCech_degreeZero_cocycles_correspond <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.orderedCechDegreeZero_cocycles_correspond : ∀ {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R), (∀ c : CC F 0, δ F 0 c = 0 → e0 F c = 0 → c = 0) ∧ ∀ g : C0 F, d0 F g = 0 → ∃ c : CC F 0, δ F 0 c = 0 ∧ e0 F c = g := by
   first | exact @GlobalTheory.CechPoset.orderedCech_degreeZero_cocycles_correspond | exact GlobalTheory.CechPoset.orderedCech_degreeZero_cocycles_correspond | (intros; apply GlobalTheory.CechPoset.orderedCech_degreeZero_cocycles_correspond <;> assumption)

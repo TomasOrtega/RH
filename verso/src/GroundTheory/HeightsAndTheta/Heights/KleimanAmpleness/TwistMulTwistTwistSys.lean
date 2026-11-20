@@ -14,7 +14,7 @@ namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (secOver)
 
 /- English proof (translation)
-Rewrite using `[twistMul, twistMul, SubSystem.twist_assoc, twistSys_twist_eq_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twistMul_twist_twistSys {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] {N : ℕ}
     {x : Fin (N + 1) → Ω} (M : SubSystem S x Ω) (a : ℕ) (m c : ℤ) :
@@ -22,11 +22,11 @@ theorem twistMul_twist_twistSys {S : Type} [CommRing S] {Ω : Type} [Field Ω] [
   rw [twistMul, twistMul, SubSystem.twist_assoc, twistSys_twist_eq_add]
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e hmod β Q hQ a m _`. Establish `hx : ∃ i, (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) i ≠ 0`. Take `⟨i, hi⟩` from `hmod.1 k₀`. Conclude with `⟨e i, by simpa [IndefiniteRowSideFullHecke.Kleiman2.blockVec] using hi⟩`. Take `⟨L, hL⟩` from `exists_lineBundle_twistMul Q a m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `Generated.full.{0, 0} F Ω N (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) L`. Take `⟨r, g, -, hg⟩` from `GraphClosedAlt.exists_fin_generators (L.tensorProd (twistBundle F (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) n)) (hn n le_rfl)`. Establish `hgen : IsGraphGen L n g` using `hg`. Establish `hmod'` using `GraphModel.full F N Ω _ L n (r + 1) g hx hgen`. Establish `hsec` using `twist_secs_eq_secOver L n g hgen`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : ∀ c : ℤ, (L.twist (twistSys F (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) c)).secs = secOver F y (a • β + m • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀ + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀)`. Introduce `c`. Rewrite using `[hL, twistMul_twist_twistSys, hMS F K ι Ω y k₀ N e hmod β Q hQ a (m + c), add_smul, add_assoc]`. Rewrite using `[← hL, hVA F N Ω _ L n (r + 1) g hgen]`. Conclude with `hCh F Ω N (Unit ⊕ Unit) (graphIdx N (r + 1)) _ baseBlock (Equiv.refl _) K ι y k₀ e hmod' hmod rfl (graphDeg n) (a • β + m • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) (fun c => (hsec c).symm.trans (hH c))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ModelVeryAmpleEq.proof (hVA : VeryAmpleEq.Statement) (hMS : ModelMulSecs.Statement)
     (hCh : ModelChangeVeryAmple.Statement) : ModelVeryAmpleEq.Statement := by

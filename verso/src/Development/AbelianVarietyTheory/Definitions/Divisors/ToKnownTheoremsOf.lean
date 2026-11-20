@@ -85,22 +85,22 @@ structure Hypotheses2 : Prop where
   q18 : GlobalTheory.Published.FormalAlgebraisation
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.finitenessOfHermitianClasses_holds`.
+A detailed English derivation is pending.
 -/
 theorem Hypotheses2.p18 (_h : Hypotheses2) : GlobalTheory.Published.FinitenessOfHermitianClasses := GlobalTheory.Published.finitenessOfHermitianClasses_holds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.canonicalExtensionRankOne_holds`.
+A detailed English derivation is pending.
 -/
 theorem Hypotheses2.q2 (_h : Hypotheses2) : GlobalTheory.Published.CanonicalExtensionRankOne := GlobalTheory.Published.canonicalExtensionRankOne_holds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.ProperIntersectionLength_holds`.
+A detailed English derivation is pending.
 -/
 theorem Hypotheses2.q12 (_h : Hypotheses2) : GlobalTheory.Published.ProperIntersectionLength := GlobalTheory.Published.ProperIntersectionLength_holds
 
 /- English proof (translation)
-Establish `hM'` using `hM h.p16`. Use `⟨h.p1, h.p2, h.p3, h.p4, h.p5, h.p6, h.p8, h.p12, h.p13, h.p14, ?_, h.p18, h.p19, h.p20, h.p22, h.p23, h.p25, h.p26⟩` and prove the remaining obligations. Use `first`. Consider the case `exact h.p16`. Consider the case `exact hM'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Hypotheses2.toClassicalTheoremsOf (h : Hypotheses2) (hM : GlobalTheory.Published.GoodChernWeil → GlobalTheory.Published.MumfordProportionality) : Hypotheses₂ := by
   have hM' := hM h.p16
@@ -111,12 +111,12 @@ theorem Hypotheses2.toClassicalTheoremsOf (h : Hypotheses2) (hM : GlobalTheory.P
     | exact hM'
 
 /- English proof (translation)
-The claim follows from `h.p16`.
+A detailed English derivation is pending.
 -/
 example (h : Hypotheses2) : GlobalTheory.Published.GoodChernNumbers ∧ GlobalTheory.Published.FlagPushForward := h.p16
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.q7, h.q2⟩`.
+Supply the required witnesses or components.
 -/
 example (h : Hypotheses2) : GlobalTheory.Published.NefNumerics ∧ GlobalTheory.Published.CanonicalExtensionRankOne := ⟨h.q7, h.q2⟩
 

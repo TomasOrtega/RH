@@ -7,7 +7,7 @@ open scoped BigOperators ComplexConjugate
 namespace Formalism.L2.Th1.H
 
 /- English proof (translation)
-Introduce `V _ _ H hH Λ₁ Λ₂ α hα F hF x hx y hy hy1 z`. Establish `hF' : ∀ w ∈ Λ₁, ∀ v, α w * opU H w F v = F v` using `hF`. Establish `hfun : (fun v => α y * opU H y F v) = F` using `funext fun v => hF' y hy1 v`. Establish `e` using `h V H hH Λ₂ α hα x hx y hy F z`. Conclude with `e.symm.trans (congrArg (fun G => α x * opU H x G z) hfun)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem InterClass_of (h : SemiHom) : InterClass := by
   intro V _ _ H hH Λ₁ Λ₂ α hα F hF x hx y hy hy1 z
@@ -25,7 +25,7 @@ def repClass {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (hS : IsReps Λ₁ Λ�
   QuotientAddGroup.mk (⟨x.1, hS.1 x.1 x.2⟩ : Λ₂)
 
 /- English proof (translation)
-Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_add, AddSubgroup.coe_neg, neg_add_eq_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem quotient_addSubgroupOf_mk_eq_mk_iff_sub_mem {Λ₁ Λ₂ : AddSubgroup V} (a b : Λ₂) :
     (QuotientAddGroup.mk a : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) = QuotientAddGroup.mk b ↔
@@ -34,9 +34,9 @@ private theorem quotient_addSubgroupOf_mk_eq_mk_iff_sub_mem {Λ₁ Λ₂ : AddSu
     AddSubgroup.coe_neg, neg_add_eq_sub]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩ hab`. Establish `h` using `(quotient_addSubgroupOf_mk_eq_mk_iff_sub_mem (Λ₁ := Λ₁) (⟨a, hS.1 a ha⟩ : Λ₂) ⟨b, hS.1 b hb⟩).1 hab`. Conclude with `Subtype.ext (hS.2.1 b hb a ha h).symm`. Introduce `c`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨y, hy⟩, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Take `⟨x, hxS, hyx⟩` from `hS.2.2 y hy`. Conclude with `⟨⟨x, hxS⟩, (quotient_addSubgroupOf_mk_eq_mk_iff_sub_mem (Λ₁ := Λ₁) (⟨x, hS.1 x hxS⟩ : Λ₂) ⟨y, hy⟩).2 hyx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem repClass_bijective {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (hS : IsReps Λ₁ Λ₂ S) :
     Function.Bijective (repClass hS) := by
@@ -50,14 +50,14 @@ theorem repClass_bijective {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (hS : Is
     exact ⟨⟨x, hxS⟩, (quotient_addSubgroupOf_mk_eq_mk_iff_sub_mem (Λ₁ := Λ₁) (⟨x, hS.1 x hxS⟩ : Λ₂) ⟨y, hy⟩).2 hyx⟩
 
 /- English proof (translation)
-Conclude with `Quotient.out_eq c`.
+A detailed English derivation is pending.
 -/
 private theorem quotient_addSubgroupOf_mk_out {Λ₁ Λ₂ : AddSubgroup V} (c : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) :
     (QuotientAddGroup.mk (Quotient.out c) : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) = c := by
   exact Quotient.out_eq c
 
 /- English proof (translation)
-Establish `h1 : (QuotientAddGroup.mk (Quotient.out c) : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) = QuotientAddGroup.mk y`. Rewrite using `[hc]`. Conclude with `quotient_addSubgroupOf_mk_out c`. Conclude with `(quotient_addSubgroupOf_mk_eq_mk_iff_sub_mem (Λ₁ := Λ₁) (Quotient.out c) y).1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sub_quotient_out_mem_of_mk_eq {Λ₁ Λ₂ : AddSubgroup V} (c : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) (y : Λ₂)
     (hc : (QuotientAddGroup.mk y : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) = c) :
@@ -68,13 +68,13 @@ private theorem sub_quotient_out_mem_of_mk_eq {Λ₁ Λ₂ : AddSubgroup V} (c :
   exact (quotient_addSubgroupOf_mk_eq_mk_iff_sub_mem (Λ₁ := Λ₁) (Quotient.out c) y).1 h1
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `Λ₂.add_mem hy (hS.1 a ha)`. Introduce `x hx x' hx' hxx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 hx'`. Establish `hab : a - b ∈ Λ₁`. Establish `e : (y + a) - (y + b) = a - b` using `by abel`. Establish `hxx' : (y + a) - (y + b) ∈ Λ₁` using `hxx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hxx'` using `[e]`. Conclude with `hxx'`. Conclude with `congrArg (fun t => y + t) (hS.2.1 a ha b hb hab)`. Introduce `w hw`. Take `⟨a, ha, hwa⟩` from `hS.2.2 (w - y) (Λ₂.sub_mem hw hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨y + a, Finset.mem_image.2 ⟨a, ha, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e : w - (y + a) = w - y - a` using `by abel`. Rewrite using `[e]`. Conclude with `hwa`.
+A detailed English derivation is pending.
 -/
 theorem reps_translate {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} [DecidableEq V] (hS : IsReps Λ₁ Λ₂ S)
     {y : V} (hy : y ∈ Λ₂) : IsReps Λ₁ Λ₂ (S.image (fun x => y + x)) := by
@@ -100,15 +100,13 @@ theorem reps_translate {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} [DecidableEq
 end Reps
 
 /- English proof (translation)
-Introduce `V _ _ Λ₁ Λ₂ hne`. Establish `hQ : Finite (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂)` using `Nat.finite_of_card_ne_zero hne`. Use `⟨?_, fun S hS => ?_⟩` and prove the remaining obligations. Use `letI : Fintype (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) := Fintype.ofFinite _`. Use `⟨Finset.univ.image (fun c : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂ => ((Quotient.out c : Λ₂) : V)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `(Quotient.out c).2`. Introduce `x hx y hy hxy`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, -, rfl⟩` from `Finset.mem_image.1 hy`. Establish `h1` using `(quotient_addSubgroupOf_mk_eq_mk_iff_sub_mem (Λ₁ := Λ₁) (Quotient.out d) (Quotient.out c)).2 hxy`. Rewrite `h1` using `[quotient_addSubgroupOf_mk_out, quotient_addSubgroupOf_mk_out]`. Rewrite using `[h1]`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((Quotient.out (QuotientAddGroup.mk ⟨y, hy⟩ : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) : Λ₂) : V), Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `sub_quotient_out_mem_of_mk_eq _ ⟨y, hy⟩ rfl`. Establish `h1` using `Nat.card_eq_of_bijective _ (repClass_bijective hS)`. Establish `h2 : Nat.card S = S.card`. Conclude with `Nat.card_eq_finsetCard S`.
-
-Rewrite `h1` using `[h2]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosetRepsExist : RepsExist := by
   intro V _ _ Λ₁ Λ₂ hne
@@ -138,11 +136,11 @@ theorem cosetRepsExist : RepsExist := by
     exact h1
 
 /- English proof (translation)
-Introduce `V _ _ H hH Λ₁ Λ₂ α hα F hF S hS z`. Establish `hcl` using `InterClass_of h V H hH Λ₁ Λ₂ α hα F hF`. Use `letI : Fintype (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) := Fintype.ofBijective _ (repClass_bijective hS)`. Unfold `inter sumU`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[finsum_eq_sum_of_fintype, ← Finset.sum_coe_sort S]`. Use `symm`. Use `Fintype.sum_bijective (repClass hS) (repClass_bijective hS) _ _ ?_` and prove the remaining obligations. Introduce `s`. Use `show α (s : V) * opU H (s : V) F z = _`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem` using `sub_quotient_out_mem_of_mk_eq (repClass hS s) ⟨s, hS.1 s s.2⟩ rfl`. Establish `h2` using `hcl ((Quotient.out (repClass hS s) : Λ₂) : V) (Quotient.out (repClass hS s)).2 ((s : V) - ((Quotient.out (repClass hS s) : Λ₂) : V)) (Λ₂.sub_mem (hS.1 s s.2) (Quotient.out (repClass hS s)).2) hmem z`. Rewrite `h2` using `[show ∀ a b : V, a + (b - a) = b from fun a b => by abel]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InterReps_of (h : SemiHom) : InterReps := by
   intro V _ _ H hH Λ₁ Λ₂ α hα F hF S hS z
@@ -164,7 +162,7 @@ theorem InterReps_of (h : SemiHom) : InterReps := by
   exact h2
 
 /- English proof (translation)
-Simplify using `only [opU, sumU, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem semiChar_mul_opU_const_mul_sumU {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ)
     (S : Finset V) (F : V → ℂ) (k : ℂ) (y z : V) :
@@ -175,13 +173,11 @@ private theorem semiChar_mul_opU_const_mul_sumU {V : Type} [AddCommGroup V] [Mod
   ring
 
 /- English proof (translation)
-Introduce `V _ _ H hH Λ₁ Λ₂ α hα hne F hF`. Take `⟨S, hS⟩` from `(cosetRepsExist V Λ₁ Λ₂ hne).1`. Establish `hrep` using `InterReps_of h V H hH Λ₁ Λ₂ α hα F hF`. Establish `hG : inter H α Λ₁ Λ₂ F = fun v => ((Real.sqrt (relIdx Λ₁ Λ₂) : ℝ) : ℂ)⁻¹ * sumU H α S F v`. Use function extensionality and compare the values at `(hrep S hS)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show ∀ y ∈ Λ₂, ∀ z, α y * opU H y (inter H α Λ₁ Λ₂ F) z = inter H α Λ₁ Λ₂ F z`. Introduce `y hy z`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hG]`. Conclude with `semiChar_mul_opU_const_mul_sumU H α S F _ y z`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `_ = ((Real.sqrt (relIdx Λ₁ Λ₂) : ℝ) : ℂ)⁻¹ * ∑ x ∈ S, α (y + x) * opU H (y + x) F z := by`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun x hx => h V H hH Λ₂ α hα y hy x (hS.1 x hx) F z`. Use `_ = ((Real.sqrt (relIdx Λ₁ Λ₂) : ℝ) : ℂ)⁻¹ * sumU H α (S.image (fun x => y + x)) F z := by`. Use `congr 1`.
-
-Unfold `sumU`. Rewrite using `[Finset.sum_image]`. Introduce `a _ b _ hab`. Conclude with `add_left_cancel hab`. Use `_ = inter H α Λ₁ Λ₂ F z := (hrep _ (reps_translate hS hy) z).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem InterFixed_of (h : SemiHom) : InterFixed := by
   intro V _ _ H hH Λ₁ Λ₂ α hα hne F hF
@@ -211,13 +207,13 @@ theorem InterFixed_of (h : SemiHom) : InterFixed := by
     _ = inter H α Λ₁ Λ₂ F z := (hrep _ (reps_translate hS hy) z).symm
 
 /- English proof (translation)
-Introduce `V _ _ _ H hH Λ₁ Λ₂ α hα hne F hF`. Establish `hF' : AnalyticOnNhd ℂ F Set.univ ∧ F ∈ fixedBy H α Λ₁` using `hF`. Take `⟨S, hS⟩` from `(cosetRepsExist V Λ₁ Λ₂ hne).1`. Establish `hsum : ∀ T : Finset V, AnalyticOnNhd ℂ (fun v => ∑ x ∈ T, α x * opU H x F v) Set.univ`. Introduce `T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Introduce `w _`. Simplify using `only [Finset.sum_empty]`. Conclude with `analyticAt_const`. Introduce `a T haT ih w hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_insert haT]`. Conclude with `(analyticAt_const.mul (ha V H a F hF'.1 w hw)).add (ih w hw)`. Establish `hrep` using `InterReps_of h V H hH Λ₁ Λ₂ α hα F hF'.2`. Establish `hG : inter H α Λ₁ Λ₂ F = fun v => ((Real.sqrt (relIdx Λ₁ Λ₂) : ℝ) : ℂ)⁻¹ * sumU H α S F v`. Use function extensionality and compare the values at `(hrep S hS)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show AnalyticOnNhd ℂ (inter H α Λ₁ Λ₂ F) Set.univ ∧ inter H α Λ₁ Λ₂ F ∈ fixedBy H α Λ₂`. Use `⟨?_, InterFixed_of h V H hH Λ₁ Λ₂ α hα hne F hF'.2⟩` and prove the remaining obligations. Rewrite using `[hG]`. Introduce `w hw`. Conclude with `analyticAt_const.mul (hsum S w hw)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem InterTh_of (h : SemiHom) (ha : OpUAnalytic) : InterTh := by
   intro V _ _ _ H hH Λ₁ Λ₂ α hα hne F hF
@@ -246,21 +242,19 @@ theorem InterTh_of (h : SemiHom) (ha : OpUAnalytic) : InterTh := by
   exact analyticAt_const.mul (hsum S w hw)
 
 /- English proof (translation)
-Introduce `V W _ _ _ _ _ _ H H' g hiso Λ α' G`. Establish `hgA : ∀ v : V, AnalyticAt ℂ (fun v => g v) v`. Introduce `v`. Use `(LinearMap.toContinuousLinearMap (g : V →ₗ[ℂ] W)).analyticAt v` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgsA : ∀ w : W, AnalyticAt ℂ (fun w => g.symm w) w`. Introduce `w`. Use `(LinearMap.toContinuousLinearMap (g.symm : W →ₗ[ℂ] V)).analyticAt w` as an intermediate fact. Conclude with `this`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hG`. Establish `hG' : AnalyticOnNhd ℂ G Set.univ ∧ G ∈ fixedBy H' α' (imgLat (g : V →ₗ[ℂ] W) Λ)` using `hG`. Establish `hinv : ∀ x ∈ imgLat (g : V →ₗ[ℂ] W) Λ, ∀ z, α' x * opU H' x G z = G z` using `hG'.2`. Use `show AnalyticOnNhd ℂ (fun v => G (g v)) Set.univ ∧ (fun v => G (g v)) ∈ fixedBy H (fun v => α' (g v)) Λ`. Use `⟨fun v _ => (hG'.1 (g v) (Set.mem_univ _)).comp (hgA v), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ∀ x ∈ Λ, ∀ z, α' (g x) * opU H x (fun v => G (g v)) z = G (g z)`. Introduce `x hx z`. Establish `e` using `h V W H H' (g : V →ₗ[ℂ] W) hiso x G z`. Establish `m : (g : V →ₗ[ℂ] W) x ∈ imgLat (g : V →ₗ[ℂ] W) Λ` using `AddSubgroup.mem_map_of_mem (g : V →ₗ[ℂ] W).toAddMonoidHom hx`. Establish `h3` using `hinv _ m (g z)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (fun t => α' (g x) * t) e).trans h3`. Introduce `hG`. Establish `hG' : AnalyticOnNhd ℂ (fun v => G (g v)) Set.univ ∧ (fun v => G (g v)) ∈ fixedBy H (fun v => α' (g v)) Λ` using `hG`. Establish `hinv : ∀ x ∈ Λ, ∀ z, α' (g x) * opU H x (fun v => G (g v)) z = G (g z)` using `hG'.2`. Use `show AnalyticOnNhd ℂ G Set.univ ∧ G ∈ fixedBy H' α' (imgLat (g : V →ₗ[ℂ] W) Λ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨fun w _ => ?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `(hG'.1 (g.symm w) (Set.mem_univ _)).comp (hgsA w)`. Establish `e : ((fun v => G (g v)) ∘ fun w => g.symm w) = G` using `funext fun w => by simp`. Rewrite `h3` using `[e]`. Conclude with `h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show ∀ x ∈ imgLat (g : V →ₗ[ℂ] W) Λ, ∀ z, α' x * opU H' x G z = G z`. Introduce `x hx z`. Establish `hx' : x ∈ Λ.map (g : V →ₗ[ℂ] W).toAddMonoidHom` using `hx`. Take `⟨y, hy, rfl⟩` from `AddSubgroup.mem_map.1 hx'`. Establish `e` using `h V W H H' (g : V →ₗ[ℂ] W) hiso y G (g.symm z)`.
-
-Establish `hz : (g : V →ₗ[ℂ] W) (g.symm z) = z` using `g.apply_symm_apply z`. Rewrite `e` using `[hz]`. Establish `h3` using `hinv y hy (g.symm z)`. Establish `h4 : G (g (g.symm z)) = G z` using `by rw [g.apply_symm_apply]`. Conclude with `(congrArg (fun t => α' (g y) * t) e).symm.trans (h3.trans h4)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ThIsom_of (h : OpUIsom) : ThIsom := by
   intro V W _ _ _ _ _ _ H H' g hiso Λ α' G

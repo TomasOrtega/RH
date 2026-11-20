@@ -15,9 +15,9 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscre
   {F : Frame l (ResidueField O)}
 
 /- English proof (translation)
-Introduce `N`. Establish `h : I ^ N ≤ (J ^ N).comap f`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hIJ N`. Use `(ha N).comp (Ideal.quotientMap (J ^ N) f h)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[Ideal.quotientMap_mk]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem adicCont_comp_ringHom_of_map_le {Γ R R' : Type} [TopologicalSpace Γ] [CommRing R] [CommRing R'] (f : R →+* R')
     {I : Ideal R} {J : Ideal R'} (hIJ : I.map f ≤ J) {a : Γ → R} (ha : AdicCont I a) :
@@ -32,11 +32,11 @@ private theorem adicCont_comp_ringHom_of_map_le {Γ R R' : Type} [TopologicalSpa
   simp [Ideal.quotientMap_mk]
 
 /- English proof (translation)
-Establish `hres : (res O O : O →+* ResidueField O).comp (ξ : S.R →+* O) = (res O S.R : S.R →+* ResidueField O)` using `RingHom.ext fun x => res_map ξ x`. Establish `hm : (maximalIdeal S.R).map (ξ : S.R →+* O) ≤ maximalIdeal O`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, ← res_eq_zero_iff O O]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(res_eq_zero_iff O S.R x).2 hx` as an intermediate fact. Simplify `this` using `[res_map]`. Take `⟨hc, hb, hd⟩` from `S.lift`. Use `⟨⟨fun i j => ?_, fun v i => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `adicCont_comp_ringHom_of_map_le _ hm (hc.1 i j)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `adicCont_comp_ringHom_of_map_le _ hm (hc.2 v i)`. Rewrite using `[NRep.map_map, hres]`. Conclude with `hb`. Rewrite using `[NRep.map_map, hres]`. Conclude with `hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lift_pt (S : Space O F 3) (ξ : S.R →ₐ[O] O) : UpperTheory.V.Fr.IsLift O (S.ρ.map (ξ : S.R →+* O)) := by
   have hres : (res O O : O →+* ResidueField O).comp (ξ : S.R →+* O) = (res O S.R : S.R →+* ResidueField O) :=
@@ -57,9 +57,9 @@ private theorem lift_pt (S : Space O F 3) (ξ : S.R →ₐ[O] O) : UpperTheory.V
     exact hd
 
 /- English proof (translation)
-Establish `e : NRep.map ((ξ : S.R →+* O).comp (S.A.val : S.A →+* S.R)) S.u = S.ρ.map (ξ : S.R →+* O)`. Apply `NRep.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Use function extensionality and compare the values at `v i`. Use extensionality with `g`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Use `pr_box hF O (maximalIdeal O) _ (lift_pt S ξ).1 fun v => ?_` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `flag hF (Or.inr rfl) S O _ v`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem box_pt {C₀ : ℕ} (hF : F.Ok C₀) (S : Space O F 3) (ξ : S.R →ₐ[O] O) :
     ∃ B : Box F 3 O, B.Of (S.ρ.map (ξ : S.R →+* O)) ∧ B.Cont (maximalIdeal O) := by
@@ -74,17 +74,15 @@ private theorem box_pt {C₀ : ℕ} (hF : F.Ok C₀) (S : Space O F 3) (ξ : S.R
   exact flag hF (Or.inr rfl) S O _ v
 
 /- English proof (translation)
-Take `⟨g, t, ht, hup, hdiag, hstep⟩` from `hu`. Establish `hr : ∀ s : F.Gv v, (B₀.r ((F.loc v) s)).mat = ρ.r ((F.loc0 v) s)` using `fun s => h.res ((F.loc0 v) s)`. Set `B : Box F 3 O` to `{ r := B₀.r nu := B₀.nu g := Function.update B₀.g v g tri := by`. Introduce `w s`. Distinguish the cases in `hw : w = v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[Function.update_self, hr s, ← ht s]`. Conclude with `hup s`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `B₀.tri w s }`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBg : B.g v = g` using `by show Function.update B₀.g v g v = g`. Conclude with `Function.update_self _ _ _`. Establish `hBw : ∀ w, w ≠ v → B.g w = B₀.g w` using `fun w hw => by show Function.update B₀.g v g w = B₀.g w`. Conclude with `Function.update_of_ne hw _ _`. Establish `htri : triOf B v = t`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `s : 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show (B.g v : Matrix (Fin 3) (Fin 3) O) * (B₀.r ((F.loc v) s)).mat * ((B.g v)⁻¹ : GL (Fin 3) O) = _`. Rewrite using `[hBg, hr s, ht s]`. Use `⟨B, ⟨h.atc, h.res, fun w j s => ?_⟩, hc, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw show ((B.g w : Matrix (Fin 3) (Fin 3) O) * ρ.r ((F.loc0 w) s) * ((B.g w)⁻¹ : GL (Fin 3) O)) j j = _` using the available equality. Rewrite using `[hBg, ← ht s]`. Conclude with `hdiag s j`. Use `show ((B.g w : Matrix (Fin 3) (Fin 3) O) * ρ.r ((F.loc0 w) s) * ((B.g w)⁻¹ : GL (Fin 3) O)) j j = _`.
-
-Rewrite using `[hBw w hw]`. Conclude with `h.psi w j s`. Rewrite using `[htri]`. Conclude with `hstep`.
+A detailed English derivation is pending.
 -/
 private theorem box_unit [Algebra ℤ_[l] O] {ρ : NRep F 3 O} {B₀ : Box F 3 O} (h : B₀.Of ρ)
     (hc : B₀.Cont (maximalIdeal O)) (v : F.V) (i : Fin 2) (hu : UnitAt ρ v i) :
@@ -129,13 +127,11 @@ private theorem box_unit [Algebra ℤ_[l] O] {ρ : NRep F 3 O} {B₀ : Box F 3 O
     exact hstep
 
 /- English proof (translation)
-Establish `hG : ∀ s : F.G0, z s = z' s`. Introduce `s`. Establish `hu : ((boxK B k).r s).mat * ((((boxK B k).r s).left⁻¹ : GL (Fin 3) (Ok l O k)) : Matrix (Fin 3) (Fin 3) (Ok l O k)) = 1` using `Units.mul_inv _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = z' s * (((boxK B k).r s).mat * ((((boxK B k).r s).left⁻¹ : GL (Fin 3) (Ok l O k)) : Matrix (Fin 3) (Fin 3) (Ok l O k))) := by`. Rewrite using `[← mul_assoc, h s, mul_assoc]`. Use `_ = z' s := by rw [hu, mul_one]`. Use function extensionality and compare the values at `s`. Establish `hc : ∀ y ∈ ZN B k, y (s * F.c) = y s` using `fun y hy => by`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hy.1.1.2 s F.c, hy.2.1, map_zero, add_zero]`. Break down `Int.units_eq_one_or (F.del s) with hs | hs` into its components or cases. Conclude with `hG ⟨s, MonoidHom.mem_ker.mpr hs⟩`. Establish `hsc : F.del (s * F.c) = 1`. Rewrite using `[map_mul, hs, hF.del_c]`.
-
-Both sides reduce to the same expression. Rewrite using `[← hc z hz, ← hc z' hz']`. Conclude with `hG ⟨s * F.c, MonoidHom.mem_ker.mpr hsc⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zn_ext {C₀ : ℕ} (hF : F.Ok C₀) (B : Box F 3 O) (k : ℕ) {z z' : F.Γ → Matrix (Fin 3) (Fin 3) (Ok l O k)}
     (hz : z ∈ ZN B k) (hz' : z' ∈ ZN B k)
@@ -165,17 +161,17 @@ end
 end UpperTheory.V.Z.J
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ F C₀ hF hl cw hcw hGWL hL S ξ v i hu`. Take `⟨B₀, hB₀, hc₀⟩` from `box_pt hF S ξ`. Take `⟨B, hB, hc, hstep⟩` from `box_unit hB₀ hc₀ v i hu`. Take `⟨C, hC⟩` from `selLow l O F C₀ hF hl _ B (lift_pt S ξ) hB hc cw hcw hGWL hL v i hstep`. Set `T : Set S.R` to `{a | ∃ (w : F.V) (j : Fin 3) (s : F.Gv w), s ∈ F.Iv w ∧ a = ((S.ρ.ψ w j s : S.Rˣ) : S.R)}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨δ, δ', hd, hdT, hd', hdT', hli⟩` from `rankTwo l O S.R ξ T C hl (by`. Introduce `k hk X hX hXf`. Use `(hC k hk).2.trans (Nat.mul_le_mul_left C ?_)` and prove the remaining obligations. Establish `hex : ∀ z ∈ ZN B k, ∃ δ ∈ X, ∀ (s : F.G0) (a b : Fin 3), δ (S.ρ.r s a b) = (z s * ((boxK B k).r s).mat) a b`. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨δ, ⟨h1, h2⟩, h3⟩` from `derOf l O F C₀ hF hl S ξ B hB hc k hk z hz`. Use `⟨δ, ?_, h3⟩` and prove the remaining obligations. Rewrite using `[hX]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨w, j, s, hs, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `h2 w j s hs`. Set `f : (F.Γ → Matrix (Fin 3) (Fin 3) (Ok l O k)) → (S.R →ₗ[O] Ok l O k)` to `fun z => if hz : z ∈ ZN B k then (hex z hz).choose else 0`. Use `Set.ncard_le_ncard_of_injOn f (fun z hz => ?_) (fun z hz z' hz' he => ?_) hXf` and prove the remaining obligations. Simplify using `only [f, dif_pos hz]`. Conclude with `(hex z hz).choose_spec.1`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `zn_ext hF B k hz hz'` to reduce the goal to its premises. Introduce `s`. Use extensionality with `a b`. Establish `h1` using `(hex z hz).choose_spec.2 s a b`. Establish `h2` using `(hex z' hz').choose_spec.2 s a b`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [f, dif_pos hz, dif_pos hz'] at he`. Rewrite using `[← h1, ← h2, he])`. Conclude with `⟨δ, ⟨hd, fun w j s hs => hdT _ ⟨w, j, s, hs, rfl⟩⟩, δ', ⟨hd', fun w j s hs => hdT' _ ⟨w, j, s, hs, rfl⟩⟩, hli⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.tan :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (F : Frame l (ResidueField O)) (C₀ : ℕ), F.Ok C₀ → (l : O) ≠ 0 → ∀ cw : F.Inf → F.Γ, (∀ w, cw w * cw w = 1 ∧ F.del (cw w) = -1) → GWL { F with cw := cw } → LocE F → ∀ (S : Space O F 3) (ξ : S.R →ₐ[O] O) (v : F.V) (i : Fin 2), UnitAt (S.ρ.map (ξ : S.R →+* O)) v i → ∃ δ ∈ WDer S.ρ ξ O, ∃ δ' ∈ WDer S.ρ ξ O, LinearIndependent O ![δ, δ'] := by

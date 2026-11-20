@@ -15,15 +15,15 @@ section SigMake
 variable (D : D7) (T : TwR D.LL0 D.nd) {S : RatDat D.ntw} (In : RatIn D S)
 end SigMake
 /- English proof (translation)
-Take `⟨e, he_inj, he_rng, he_tm'⟩ : ∃ e : FractionRing (T.O i) ⊗[T.O i] ↥(BI D T S In i j b) →ₗ[FractionRing (T.O i)] FmT D T S i j b, Function.Injective e ∧ LinearMap.range e = V0T D T S In.rho In.chi In.θ i j b ∧ ∀ (c : FractionRing (T.O i)) (x : ↥(BI D T S In i j b)), e (c ⊗ₜ[T.O i] …` from `GlobalTheory.T.exists_injective_baseChange_inf_restrictScalars_range_eq (BsupT D T S i j b) (hsp i j b) (V0T D T S In.rho In.chi In.θ i j b)`. Establish `hcomm : ∀ k P, sigVal D T i k P → ∀ y : FractionRing (T.O i) ⊗[T.O i] ↥(BI D T S In i j b), e ((hkB D T S In hst i j b k P).baseChange (FractionRing (T.O i)) y) = hkT D T S In i j b k P (e y)`. Introduce `k P hv y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul c x => rw [LinearMap.baseChange_tmul, he_tm', he_tm', map_smul, hkB_coe_of_val D T In hst i j b k P h1 h2 hv]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Establish `key : V0T D T S In.rho In.chi In.θ i j b ≤ Submodule.map e (Submodule.span (FractionRing (T.O i)) {y : FractionRing (T.O i) ⊗[T.O i] ↥(BI D T S In i j b) | ∃ σ : D.what₂.FT, (D.what₂.isot j σ ≠ ⊥ ∧ D.nd.goodRow σ) ∧ ∀ k P, sigVal D T i k P → (hkB D T S In hst i j b k P).baseChang …`. Use `le_trans (_root_.GlobalTheory.T.lattice_in_isotypic_sup_alt D cf jE A S In b0 b1 Sx T Sp hSb hstar i j b h1 h2) ?_` and prove the remaining obligations. Use `iSup₂_le fun σ hσ => ?_` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Take `⟨hx0, hx1⟩` from `Submodule.mem_inf.mp hx`. Rewrite `hx0` using `[← he_rng]`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.mp hx0`. Use `Submodule.mem_map_of_mem (Submodule.subset_span ⟨σ, hσ, fun k P hv => he_inj ?_⟩)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcomm k P hv, map_smul]`. Simplify using `only [Submodule.mem_iInf] at hx1`. Conclude with `Module.End.mem_eigenspace_iff.mp (hx1 k P hv)`. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy : e y ∈ Submodule.map e _` using `key (he_rng ▸ LinearMap.mem_range_self e y)`. Take `⟨z, hz, hze⟩` from `Submodule.mem_map.mp hy`. Rewrite using `[← he_inj hze]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eig_BI_alt (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE) (S : RatDat D.ntw)
     (In : RatIn D S) (b0 b1 : Big D) (Sx : Finset (PlE D.host)) (T : TwR D.LL0 D.nd) (Sp : RingSpec D cf b0 b1 Sx T)
@@ -66,25 +66,21 @@ theorem span_eig_BI_alt (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A 
   rw [← he_inj hze]
   exact hz
 /- English proof (translation)
-Introduce `D cf jE A S In b0 b1 Sx T Sp hst hSb hstar`. Use `⟨sigDataOf D T In, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j b h1 h2 haveI : Module.Finite (T.O i) ↥(BI D T S In i j b) := Module.Finite.iff_fg.mpr (fg_BI D T S In (fun i j b => (hfg D S In T i j b).1) i j b)`. Rewrite using `[eq_top_iff, ← _root_.GlobalTheory.HeightCounting.FormsStep.span_eig_BI_alt D cf jE A S In b0 b1 Sx T Sp hst hSb hstar (fun i j b => (hfg D S In T i j b).2) i j b h1 h2]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `y ⟨σ, hσ, hy⟩`. Distinguish the cases in `hy0 : y = 0`. Rewrite using `[hy0]`. Conclude with `Submodule.zero_mem _`. Establish `hint : ∀ k P, sigVal D T i k P → ∃ a : T.O i, algebraMap (T.O i) (FractionRing (T.O i)) a = sigLam D T In i j b σ k P` using `fun k P hv => eigenvalue_integral_of_baseChange _ y hy0 _ (hy k P hv)`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `x : SigIdx D T In i` to `⟨(⟨j, Nat.lt_succ_of_le h2⟩, b, σ), h1, hσ.1, hσ.2, hint⟩`. Use `Submodule.subset_span ⟨⟨sigSys D T In i x, x, rfl⟩, rfl, rfl, fun k P hk1 hk2 hsp hP => ?_⟩` and prove the remaining obligations. Rewrite using `[hy k P ⟨hk1, hk2, hsp, hP⟩]`. Use `congr 1`. Conclude with `(sigEig_on D T In i x k P ⟨hk1, hk2, hsp, hP⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i s s' h1 h2 h3`. Establish `e1` using `sigDataOf_spec D T In i s`. Establish `e2` using `sigDataOf_spec D T In i s'`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Prod.ext h1 (Prod.ext h2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `k P`. Distinguish the cases in `hv : sigVal D T i k P`. Conclude with `h3 k P hv.1 hv.2.1 hv.2.2.1 hv.2.2.2`. Express the relevant statement in the definitionally equal form `s.1.2.2 k P = s'.1.2.2 k P`. Rewrite using `[← e1, ← e2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `sigEig D T In i _ k P = sigEig D T In i _ k P`. Rewrite using `[sigEig_off D T In i _ k P hv, sigEig_off D T In i _ k P hv]`. Introduce `i s`. Establish `e1` using `sigDataOf_spec D T In i s`. Establish `hj : s.1.1 = (s.2.choose.1.1 : ℕ)` using `(congrArg Prod.fst e1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show D.what₂.isot s.1.1 s.2.choose.1.2.2 ≠ ⊥ ∧ D.nd.goodRow s.2.choose.1.2.2`. Rewrite using `[hj]`. Conclude with `⟨s.2.choose.2.2.1, s.2.choose.2.2.2.1⟩`. Introduce `i s k P hk1 hk2 hsp hP`. Establish `e1` using `sigDataOf_spec D T In i s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : s.1.1 = (s.2.choose.1.1 : ℕ)` using `(congrArg Prod.fst e1).symm`. Establish `hb : s.1.2.1 = s.2.choose.1.2.1` using `(congrArg (fun p => p.2.1) e1).symm`. Establish `hh : s.1.2.2 = sigEig D T In i s.2.choose` using `(congrArg (fun p => p.2.2) e1).symm`. Use `show algebraMap (T.O i) (FractionRing (T.O i)) (s.1.2.2 k P) = algebraMap (T.O i) (FractionRing (T.O i)) (cHkT D T i s.1.2.1 P : T.O i) ^ k * readT D T i s.1.2.1 (In.eig s.1.1 s.2.choose.1.2.2 k P)`. Rewrite using `[hh, hj, hb]`.
-
-Conclude with `sigEig_on D T In i _ k P ⟨hk1, hk2, hsp, hP⟩`. Introduce `i s P`. Establish `e1` using `sigDataOf_spec D T In i s`. Establish `hh : s.1.2.2 = sigEig D T In i s.2.choose` using `(congrArg (fun p => p.2.2) e1).symm`. Use `show s.1.2.2 0 P = 1`.
-
-Rewrite using `[hh]`. Conclude with `sigEig_off D T In i _ 0 P (fun h => absurd h.1 (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_of_fg_alt (hfg : ∀ (D : D7) (S : RatDat D.ntw) (In : RatIn D S) (T : TwR D.LL0 D.nd) (i : T.Tw) (j : ℕ) (b : Bool),
     (BsupT D T S i j b).FG ∧
@@ -160,7 +156,7 @@ theorem sig_of_fg_alt (hfg : ∀ (D : D7) (S : RatDat D.ntw) (In : RatIn D S) (T
     rw [hh]
     exact sigEig_off D T In i _ 0 P (fun h => absurd h.1 (by omega))
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.HeightCounting.FormsStep.sig_of_fg_alt bsupT_fg_span_all`.
+A detailed English derivation is pending.
 -/
 theorem sigData_exists_alt : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE) (S : RatDat D.ntw)
     (In : RatIn D S) (b0 b1 : Big D) (Sx : Finset (PlE D.host)) (T : TwR D.LL0 D.nd) (Sp : RingSpec D cf b0 b1 Sx T)

@@ -11,31 +11,29 @@ namespace PI.UnitaryGroupMassFormula.BetaLUniq
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E)
 
 /- English proof (translation)
-Simplify using `[orth, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_orth {U : Submodule E S.V} {v : S.V} : v ∈ orth S U ↔ ∀ x ∈ U, S.hT x v = 0 := by
   simp [orth, Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Use `set d := finrank E U`. Set `b` to `Module.finBasis E U`. Set `f : Fin d → Module.Dual E S.V` to `fun i => S.hT (b i : S.V)`. Establish `hli : LinearIndependent E f`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg i`. Establish `h0 : S.hT (∑ j, star (g j) • (b j : S.V)) = 0`. Rewrite using `[map_sum]`. Simplify using `only [LinearMap.map_smulₛₗ, starRingEnd_apply, star_star]`. Conclude with `hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∑ j, star (g j) • (b j : S.V) = 0` using `S.nondeg.1 _ (fun y => by rw [h0]; rfl)`. Establish `hli' : LinearIndependent E (fun j => (b j : S.V))` using `b.linearIndependent.map' U.subtype (Submodule.ker_subtype U)`. Use `(Fintype.linearIndependent_iff.mp hli') (fun j => star (g j)) h1 i` as an intermediate fact. Simplify using `using this`. Set `Φ : Submodule E (Module.Dual E S.V)` to `Submodule.span E (Set.range f)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦ : finrank E Φ = d`. Rewrite using `[finrank_span_eq_card hli]`. Simplify using `[d]`. Establish `hco : Φ.dualCoannihilator = orth S U`. Use extensionality with `v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Submodule.mem_dualCoannihilator, mem_orth]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `hx'` using `b.sum_repr ⟨x, hx⟩`. Establish `: x = ∑ i, (b.repr ⟨x, hx⟩ i) • (b i : S.V)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg Subtype.val hx'`. Rewrite `h2` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h2`. Conclude with `h2.symm`. Rewrite using `[this, map_sum, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply]`. Use `h (f i) (Submodule.subset_span ⟨i, rfl⟩)` as an intermediate fact. Simplify using `only [f] at this`. Rewrite using `[this, smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `h φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `h _ (b i).2`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`. Use `Subspace.finrank_add_finrank_dualCoannihilator_eq Φ` as an intermediate fact. Rewrite `this` using `[hco, hΦ]`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_orth_add (U : Submodule E S.V) :
     finrank E (orth S U) + finrank E U = finrank E S.V := by
@@ -88,18 +86,18 @@ theorem finrank_orth_add (U : Submodule E S.V) :
   omega
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_third''''.goal1 .. | (apply Bl.general_b_fact_third''''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third''''.goal1 <;> assumption) | (apply @Bl.general_b_fact_third''''.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_third'' …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_smul_mem (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ) (x : S.V) :
     ∃ a : 𝓞 E, a ≠ 0 ∧ a • x ∈ Λ := by
   first | exact Bl.general_b_fact_third''''.goal1 .. | (apply Bl.general_b_fact_third''''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third''''.goal1 <;> assumption) | (apply @Bl.general_b_fact_third''''.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_third''''.goal1 <;> assumption) | (apply @Bl.general_b_fact_third''''.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_third''''.goal1 E ‹_› ‹_› ‹_› S Λ hΛ x | exact @Bl.general_b_fact_third''''.goal1 E ‹_› ‹_› ‹_› S Λ hΛ | exact @Bl.general_b_fact_third''''.goal1 E ‹_› ‹_› ‹_› S Λ | exact @Bl.general_b_fact_third''''.goal1 E ‹_› ‹_› ‹_› S | exact @Bl.general_b_fact_third''''.goal1 E ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_third''''.goal1 E ‹_› ‹_› | exact @Bl.general_b_fact_third''''.goal1 E ‹_› | exact @Bl.general_b_fact_third''''.goal1 E
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `hx.2`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hax⟩` from `exists_smul_mem S Λ hΛ x`. Establish `hmem : a • x ∈ (Λ ⊓ toO S U : Submodule (𝓞 E) S.V)` using `⟨hax, by simpa [toO] using U.smul_mem (a : E) hx⟩`. Establish `hx' : x = ((a : E)⁻¹) • (a • x)`. Rewrite using `[← algebraMap_smul E a x, smul_smul]`. Establish `: (a : E) ≠ 0` using `by simpa using ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Rewrite using `[hx']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_inf_toO (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ) (U : Submodule E S.V) :
     Submodule.span E ((Λ ⊓ toO S U : Submodule (𝓞 E) S.V) : Set S.V) = U := by
@@ -119,7 +117,7 @@ theorem span_inf_toO (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E 
     exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
 /- English proof (translation)
-Rewrite using `[← span_inf_toO S Λ hΛ (Xsp F)]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [UU]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left hx))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Xsp_le_UUE (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ) {r : ℕ} {T T' : E}
     (F : LFlag S r T) (F' : LFlag S r T') : Xsp F ≤ UUE Λ F F' := by
@@ -130,7 +128,7 @@ theorem Xsp_le_UUE (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ
   exact Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left hx))
 
 /- English proof (translation)
-Rewrite using `[← span_inf_toO S Λ hΛ (Xsp F')]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [UU]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right hx)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Xsp_le_UUE' (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ) {r : ℕ} {T T' : E}
     (F : LFlag S r T) (F' : LFlag S r T') : Xsp F' ≤ UUE Λ F F' := by

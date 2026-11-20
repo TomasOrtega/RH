@@ -21,56 +21,56 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoefficientData
 namespace PositivityTheory.Rg.Rsw
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.jacobi_maps_exist`.
+A detailed English derivation is pending.
 -/
 theorem mapsExist : MapsExist := GlobalTheory.T.jacobi_maps_exist
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.height_functions_exist`.
+A detailed English derivation is pending.
 -/
 theorem htExist : HtExist := GlobalTheory.T.height_functions_exist
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.hecke_character_eta_condition`.
+A detailed English derivation is pending.
 -/
 theorem heckeEta : HeckeEta := GlobalTheory.T.hecke_character_eta_condition
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.fourier_jacobi_eisenstein GlobalTheory.T.fourier_jacobi_unfolding GlobalTheory.T.theta_twist_identity`.
+A detailed English derivation is pending.
 -/
 theorem fjEis : FJEis := GlobalTheory.T.fourier_jacobi_eisenstein GlobalTheory.T.fourier_jacobi_unfolding GlobalTheory.T.theta_twist_identity
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.partial_constant_term_bound`.
+A detailed English derivation is pending.
 -/
 theorem pcBound : PcBound := GlobalTheory.T.partial_constant_term_bound
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.regular_section_of_heights htExist`.
+A detailed English derivation is pending.
 -/
 theorem rSec : RSec := GlobalTheory.T.regular_section_of_heights htExist
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.eisenstein_holomorphy_of_heights htExist`.
+A detailed English derivation is pending.
 -/
 theorem eisHol : EisHol := GlobalTheory.T.eisenstein_holomorphy_of_heights htExist
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.theta_total_of_hecke_eta heckeEta`.
+A detailed English derivation is pending.
 -/
 theorem thTotal : ThTotal := GlobalTheory.T.theta_total_of_hecke_eta heckeEta
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.fourier_jacobi_coefficient_of_bound pcBound`.
+A detailed English derivation is pending.
 -/
 theorem cfFJ : CfFJ := GlobalTheory.T.fourier_jacobi_coefficient_of_bound pcBound
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.partial_constant_fourier_coefficient mapsExist GlobalTheory.T.fourier_zero_holds`.
+A detailed English derivation is pending.
 -/
 theorem pcFc : PcFc := GlobalTheory.T.partial_constant_fourier_coefficient mapsExist GlobalTheory.T.fourier_zero_holds
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.spherical_bound_of_heights htExist`.
+A detailed English derivation is pending.
 -/
 theorem sphBound : SphBound := GlobalTheory.T.spherical_bound_of_heights htExist
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.residue_measure_identity mapsExist htExist heckeEta fjEis pcBound rSec eisHol thTotal pcFc sphBound GlobalTheory.T.fourier_zero_holds GlobalTheory.T.coefficient_data_exists`.
+A detailed English derivation is pending.
 -/
 theorem resMu : ResMu :=
   GlobalTheory.T.residue_measure_identity mapsExist htExist heckeEta fjEis pcBound rSec eisHol thTotal pcFc sphBound GlobalTheory.T.fourier_zero_holds GlobalTheory.T.coefficient_data_exists
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.polar_part_identity mapsExist htExist heckeEta GlobalTheory.T.right_identity_statement GlobalTheory.T.pole_reality fjEis pcBound rSec eisHol thTotal cfFJ pcFc sphBound`.
+A detailed English derivation is pending.
 -/
 theorem polar : Polar :=
   GlobalTheory.T.polar_part_identity mapsExist htExist heckeEta GlobalTheory.T.right_identity_statement GlobalTheory.T.pole_reality fjEis pcBound rSec eisHol thTotal cfFJ pcFc sphBound

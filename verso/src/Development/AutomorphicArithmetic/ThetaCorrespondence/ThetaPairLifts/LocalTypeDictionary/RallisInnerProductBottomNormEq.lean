@@ -24,13 +24,13 @@ end GlobalTheory.BottomRallis
 namespace GlobalTheory.BottomRallis
 variable {D : D7}
 /- English proof (translation)
-Establish `hU19` using `GlobalTheory.T.unramifiedDoublingIntegral_inert_place`. Establish `hPB` using `paramBoundOn_all_of_split_inert D (GlobalTheory.T.sphericalParameterBound_split_place D) (GlobalTheory.T.sphericalParameterBound_nonsplit_places hU19 D)`. Establish `hLZ` using `localZetaOn_all_of_split_inert D (GlobalTheory.T.unramifiedDoublingIntegral_splitPlace_adelic hP.unramifiedDoublingGL D) (GlobalTheory.T.unramified_doubling_integral_inert_adelic hU19 D (GlobalTheory.T.sphericalParameterBound_nonsplit_places hU19 D))`. Establish `hE : EulerRight D` using `GlobalTheory.T.doubling_eulerProduct_farRight hP.cuspRapidDecay D (GlobalTheory.T.doublingSphericalFactorization_of_weilDualPair hP.weilRepresentationUnitaryPair D) hLZ hPB`. Establish `hG : GlobalFormAniso D` using `_root_.GlobalTheory.T.theta_tower_compatibility hP.weilRepresentationUnitaryPair hP.cuspRapidDecay hP.doublingMethod D (_root_.UpperTheory.Lit.Sw47.siegelWeil_fock_anisotropic_unconditional D)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH` using `heckeFormAniso_of_global_euler D hG hE`. Establish `h1 : (fun _ : GA D A => (1 : ℂ)) ∈ A0 θ A cA` using `GlobalTheory.T.one_mem_A0_of_wittIndex_eq_zero hPair.setting hA`. Establish `hpar` using `GlobalTheory.T.constantFunction_has_trivialRep_satakeParameters A LA Sf hU.sdA hU.two`. Establish `hsph : SphFun A LA Sf (fun _ : GA D A => (1 : ℂ))` using `fun _ _ _ _ _ => rfl`. Take `⟨-, -, -, hfin⟩` from `hH ψ θ A B χA χB sA sB t cA a om ν 𝓕 hPair hB LA LB Sf Φ Φ hF hF hU m mH inferInstance inferInstance _ h1 _ h1 (trivPar A.rank) hpar hsph hint`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hL : HolValueAt (fun s => LFun.LSD D Sf (trivPar A.rank) χB (s + 1 / 2)) ((t : ℂ) / 2) (∏ i ∈ Finset.range A.rank, l i)`. Use `HolValueAt.congr (holValueAt_prod (Finset.range A.rank) fun i hi => ?_) (GlobalTheory.T.partial_L_trivial_rep_twist_eq_prod_hecke_L χB Sf A.rank hU.unr)` and prove the remaining obligations. Establish `h2` using `hl i (Finset.mem_range.1 hi)`. Rewrite `h2` using `[show (t : ℂ) / 2 + (A.rank : ℂ) / 2 - i = (t : ℂ) / 2 + ((A.rank : ℂ) / 2 - i) by ring]`. Establish `h3` using `h2.comp_add`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `h3` using `only [add_sub_assoc]`. Rewrite using `[hfin _ hL]`. Simplify using `only [rcoef_one]`. Rewrite using `[integral_mul_const]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rallis_inner_product_bottom_norm_eq (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {A B : HSp D}
     {χA χB : (AE D)ˣ →* Circle} {sA : RealMat A} {sB : RealMat B} {t : ℕ} {cA : CptF A} {a : GL (Fin A.rank) (AE D)}

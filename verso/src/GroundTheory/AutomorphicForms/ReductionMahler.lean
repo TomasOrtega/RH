@@ -16,17 +16,15 @@ namespace Reduction
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨1, one_pos, fun g _ y _ => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, Subsingleton.elim (y ᵥ* (g : Matrix (Fin 0) (Fin 0) 𝔸[K])) y]`. Take `⟨S, hS⟩` from `exists_finite_forall_mem_integralGL hC`. Establish `hinf : ∀ w : InfinitePlace K, ∃ m : ℝ, 1 ≤ m ∧ ∀ g ∈ C, ∀ i j : Fin n, ‖(infAt w g : GL (Fin n) w.Completion) i j‖ ≤ m` using `fun w => by`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm1, hm⟩` from `exists_one_le_bound hC (f := fun g : AdelicGLn.AdelicGL K n => ∑ i, ∑ j, ‖(infAt w g : GL (Fin n) w.Completion) i j‖) (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ((continuous_GL_apply i j).comp (continuous_infAt w)).norm)`. Use `⟨m, hm1, fun g hg i j => le_trans ?_ (hm g hg)⟩` and prove the remaining obligations. Conclude with `(Finset.single_le_sum (f := fun j => ‖(infAt w g : GL (Fin n) w.Completion) i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖(infAt w g : GL (Fin n) w.Completion) i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) ( …`. Establish `hfin : ∀ v : HeightOneSpectrum (𝓞 K), ∃ m : ℝ, 1 ≤ m ∧ ∀ g ∈ C, ∀ i j : Fin n, ‖(finAt v g : GL (Fin n) (v.adicCompletion K)) i j‖ ≤ m` using `fun v => by`. Take `⟨m, hm1, hm⟩` from `exists_one_le_bound hC (f := fun g : AdelicGLn.AdelicGL K n => ∑ i, ∑ j, ‖(finAt v g : GL (Fin n) (v.adicCompletion K)) i j‖) (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ((continuous_GL_apply i j).comp (continuous_finAt v)).norm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, hm1, fun g hg i j => le_trans ?_ (hm g hg)⟩` and prove the remaining obligations. Conclude with `(Finset.single_le_sum (f := fun j => ‖(finAt v g : GL (Fin n) (v.adicCompletion K)) i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖(finAt v g : GL (Fin n) (v.adicCompletion K)) i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => …`. Use `choose a ha1 ha using hinf`. Use `choose b hb1 hb using hfin`. Use `set b' : HeightOneSpectrum (𝓞 K) → ℝ := fun v => if v ∈ S then b v else 1 with hb'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Use `set P : ℝ := (∏ w, (√n * (n * a w)) ^ w.mult) * ∏ v ∈ S, b' v with hP`. Establish `hPpos : 0 < P`. Use `mul_pos (Finset.prod_pos fun w _ => pow_pos ?_ _) (Finset.prod_pos fun v hv => ?_)` and prove the remaining obligations. Establish `: (0 : ℝ) < n` using `Nat.cast_pos.2 hn`. Conclude with `mul_pos (Real.sqrt_pos.2 this) (mul_pos this (lt_of_lt_of_le one_pos (ha1 w)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb'] dsimp only`. Rewrite using `[if_pos hv]`. Conclude with `lt_of_lt_of_le one_pos (hb1 v)`. Use `⟨P, hPpos, fun g hg y hy => ?_⟩` and prove the remaining obligations. Use `(adelicNorm_le_of_local (hy.vecMul g) hy (fun w => √n * (n * a w)) b' S (fun w => ?_) (fun v hv => by rw [hb']; dsimp only; rw [if_neg hv]) (fun v => ?_)).trans (le_of_eq rfl)` and prove the remaining obligations.
-
-Rewrite using `[infComp_vecMul_GL]`. Conclude with `euclidNorm_vecMul_le (zero_le_one.trans (ha1 w)) (ha w g hg) _`. Rewrite using `[finComp_vecMul_GL, hb'] dsimp only split_ifs with hv`. Conclude with `norm_vecMul_le_of_norm_le v (zero_le_one.trans (hb1 v)) (hb v g hg) _`. Rewrite using `[norm_vecMul_integralGL v (hS g hg v hv), one_mul]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adelicNorm_vecMul_le_mul {C : Set (AdelicGLn.AdelicGL K n)} (hC : IsCompact C) :
     ∃ P : ℝ, 0 < P ∧ ∀ g ∈ C, ∀ y : Fin n → 𝔸[K], HasFiniteContent y →
@@ -87,22 +85,22 @@ def normOneGL : Subgroup (AdelicGLn.AdelicGL K n) :=
   (normOneSubgroup K).comap (AdelicGLn.det K n)
 
 /- English proof (translation)
-The claim follows from `mem_normOneSubgroup`.
+A detailed English derivation is pending.
 -/
 theorem mem_normOneGL {g : AdelicGLn.AdelicGL K n} :
     g ∈ normOneGL K n ↔ (ideleModule K (AdelicGLn.det K n g) : ℝ) = 1 :=
   mem_normOneSubgroup
 
 /- English proof (translation)
-The claim follows from `(isClosed_normOneSubgroup K).preimage (AdelicGLn.continuous_det K n)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_normOneGL : IsClosed (normOneGL K n : Set (AdelicGLn.AdelicGL K n)) :=
   (isClosed_normOneSubgroup K).preimage (AdelicGLn.continuous_det K n)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨γ, rfl⟩`. Establish `h : AdelicGLn.det K n (AdelicGLn.diagonal K n γ) = IdeleGroup.diagonal K (Matrix.GeneralLinearGroup.det γ)`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[AdelicGLn.coe_det, IdeleGroup.coe_diagonal]`. Conclude with `(RingHom.map_det (algebraMap K 𝔸[K]) (γ : Matrix (Fin n) (Fin n) K)).symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_normOneGL, h, ideleModule_diagonal, Positive.val_one]`.
+A detailed English derivation is pending.
 -/
 theorem rationalGL_le_normOneGL : AdelicGLn.rationalGL K n ≤ normOneGL K n := by
   rintro _ ⟨γ, rfl⟩
@@ -114,13 +112,13 @@ theorem rationalGL_le_normOneGL : AdelicGLn.rationalGL K n ≤ normOneGL K n := 
   rw [mem_normOneGL, h, ideleModule_diagonal, Positive.val_one]
 
 /- English proof (translation)
-Introduce `k hk`. Use `set f : AdelicGLn.AdelicGL K n →* {r : ℝ // 0 < r} := (ideleModule K).comp (AdelicGLn.det K n) with hf`. Establish `hfc : Continuous fun g => (f g : ℝ)` using `continuous_subtype_val.comp (continuous_ideleModule.comp (AdelicGLn.continuous_det K n))`. Take `⟨M, hM⟩` from `(isCompact_maxCompact (K := K) (n := n)).exists_bound_of_continuousOn hfc.continuousOn`. Establish `hbound : ∀ m : ℕ, (f k : ℝ) ^ m ≤ M ∧ ((f k : ℝ)⁻¹) ^ m ≤ M` using `fun m => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hM (k ^ m) (pow_mem hk m)`. Establish `h2` using `hM ((k⁻¹) ^ m) (pow_mem (inv_mem hk) m)`. Rewrite `h1` using `[map_pow, Positive.val_pow, Real.norm_eq_abs, abs_of_pos (pow_pos (f k).2 m)]`. Rewrite `h2` using `[map_pow, map_inv, Positive.val_pow, Positive.coe_inv, Real.norm_eq_abs, abs_of_pos (pow_pos (inv_pos.2 (f k).2) m)]`. Conclude with `⟨h1, h2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_normOneGL]`. Use `show (f k : ℝ) = 1`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hlt | hgt` into its components or cases. Establish `h1 : 1 < (f k : ℝ)⁻¹` using `(one_lt_inv₀ (f k).2).2 hlt`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `(tendsto_pow_atTop_atTop_of_one_lt h1).eventually_gt_atTop M |>.exists`. Conclude with `absurd (hbound m).2 (not_le.2 hm)`. Take `⟨m, hm⟩` from `(tendsto_pow_atTop_atTop_of_one_lt hgt).eventually_gt_atTop M |>.exists`. Conclude with `absurd (hbound m).1 (not_le.2 hm)`.
+A detailed English derivation is pending.
 -/
 theorem maxCompact_le_normOneGL : maxCompact (K := K) (n := n) ≤ normOneGL K n := by
   intro k hk
@@ -148,9 +146,9 @@ theorem maxCompact_le_normOneGL : maxCompact (K := K) (n := n) ≤ normOneGL K n
     exact absurd (hbound m).1 (not_le.2 hm)
 
 /- English proof (translation)
-Take `⟨ε, hε, h⟩` from `exists_pos_le_height hC`. Use `⟨ε, hε, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨γ, rfl⟩, c, hc, rfl⟩ x hx`. Rewrite using `[height_diagonal_mul]`. Use `h c hc _ fun h0 => hx ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun y => y ᵥ* ((γ⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) h0` as an intermediate fact. Simplify `this` using `[vecMul_vecMul, ← Units.val_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_pos_le_height_of_subset {C : Set (AdelicGLn.AdelicGL K n)} (hC : IsCompact C) :
     ∃ ε : ℝ, 0 < ε ∧ ∀ g ∈ (AdelicGLn.rationalGL K n : Set (AdelicGLn.AdelicGL K n)) * C,
@@ -164,7 +162,7 @@ theorem exists_pos_le_height_of_subset {C : Set (AdelicGLn.AdelicGL K n)} (hC : 
   simpa [vecMul_vecMul, ← Units.val_mul] using this
 
 /- English proof (translation)
-Use extensionality with `l`. Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Simplify using `[ratVec]`. Simplify using `[ratVec, Pi.single_eq_of_ne hl]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ratVec_single_one (j : Fin n) :
     ratVec (Pi.single j (1 : K)) = (Pi.single j (1 : 𝔸[K]) : Fin n → 𝔸[K]) := by
@@ -174,13 +172,13 @@ theorem ratVec_single_one (j : Fin n) :
   · simp [ratVec, Pi.single_eq_of_ne hl]
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, ∀ i : Fin (m + 1), (i : ℕ) + k = m → s ^ k * r (Fin.last m) ≤ r i`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: i = Fin.last m` using `Fin.ext (by simpa using hi)`. Simplify using `[this]`. Consider the case `succ k ih`. Introduce `i hi`. Establish `hj : (i : ℕ) + 1 < m + 1` using `by omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `ih ⟨i + 1, hj⟩ (by simp; omega)`. Establish `h2` using `h i ⟨i + 1, hj⟩ rfl`. Combine the equalities or inequalities in the displayed calculation. Use `key (m - i) i (by have := i.isLt; omega)` as an intermediate fact. Use `le_trans (mul_le_mul_of_nonneg_right ?_ (hr _).le) this` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pow_le_pow_of_le_one hs0 hs1 (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem pow_mul_le_of_chain {m : ℕ} {r : Fin (m + 1) → ℝ} {t s : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1)
     (hst : s ≤ t) (hr : ∀ i, 0 < r i) (h : ∀ i j : Fin (m + 1), (j : ℕ) = i + 1 → t * r j ≤ r i)
@@ -206,7 +204,7 @@ theorem pow_mul_le_of_chain {m : ℕ} {r : Fin (m + 1) → ℝ} {t s : ℝ} (hs0
   exact pow_le_pow_of_le_one hs0 hs1 (by omega)
 
 /- English proof (translation)
-Unfold `posIdele`. Conclude with `continuous_finsetProd _ fun w _ => (continuous_moduleSection w).comp (Continuous.subtype_mk ((continuous_subtype_val).pow _) _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_posIdele_subtype :
     Continuous fun r : {r : ℝ // 0 < r} => (posIdele (K := K) r.1 r.2 : IdeleGroup K) := by
@@ -215,9 +213,9 @@ theorem continuous_posIdele_subtype :
     (Continuous.subtype_mk ((continuous_subtype_val).pow _) _)
 
 /- English proof (translation)
-Use `IsCompact.image (isCompact_univ_pi fun _ => ?_) ((continuous_diagUnits n).comp (continuous_pi fun i => continuous_posIdele_subtype.comp (continuous_apply i)))` and prove the remaining obligations. Rewrite using `[Subtype.isCompact_iff]`. Establish `: Subtype.val '' {r : {r : ℝ // 0 < r} | r.1 ∈ Icc L U} = Icc L U`. Use extensionality with `x`. Conclude with `⟨fun ⟨y, hy, hyx⟩ => hyx ▸ hy, fun hx => ⟨⟨x, lt_of_lt_of_le hL hx.1⟩, hx, rfl⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Rewrite using `[this]`. Conclude with `isCompact_Icc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_torusBox {L U : ℝ} (hL : 0 < L) :
     IsCompact ((fun r : Fin n → {r : ℝ // 0 < r} =>
@@ -233,7 +231,7 @@ theorem isCompact_torusBox {L U : ℝ} (hL : 0 < L) :
   exact isCompact_Icc
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[AdelicGLn.coe_det, coe_diagUnits, det_diagonal, Units.coe_prod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_diagUnits (f : Fin n → IdeleGroup K) :
     AdelicGLn.det K n (diagUnits n f) = ∏ i, f i := by
@@ -241,7 +239,7 @@ theorem det_diagUnits (f : Fin n → IdeleGroup K) :
   rw [AdelicGLn.coe_det, coe_diagUnits, det_diagonal, Units.coe_prod]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Positive.val_one]`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, Positive.val_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem coe_finset_prod_pos {ι : Type*} (s : Finset ι) (f : ι → {r : ℝ // 0 < r}) :
     ((∏ i ∈ s, f i : {r : ℝ // 0 < r}) : ℝ) = ∏ i ∈ s, (f i : ℝ) := by
@@ -251,43 +249,35 @@ theorem coe_finset_prod_pos {ι : Type*} (s : Finset ι) (f : ι → {r : ℝ //
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, Positive.val_mul, ih]
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Use `⟨{1}, isCompact_singleton, fun g _ _ => ⟨1, one_mem _, 1, rfl, ?_⟩⟩` and prove the remaining obligations. Conclude with `Units.ext (Subsingleton.elim _ _)`. Consider the case `succ m`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨ω, hω, hωB, t, ht, hsieg⟩` from `exists_siegelSet (K := K) (m + 1)`. Take `⟨P, hP, hPle⟩` from `exists_adelicNorm_vecMul_le_mul hω`. Choose the witnesses or unpack the hypotheses as in `⟨m₀, hm₀, hm₀le⟩ : ∃ m₀ : ℝ, 0 < m₀ ∧ ∀ b ∈ ω, m₀ ≤ (ideleModule K (AdelicGLn.det K _ b) : ℝ) := by`. Break down `ω.eq_empty_or_nonempty with he | hne` into its components or cases. Conclude with `⟨1, one_pos, fun b hb => by rw [he] at hb; exact hb.elim⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨b₀, -, hmin⟩` from `hω.exists_isMinOn hne (continuous_subtype_val.comp (continuous_ideleModule.comp (AdelicGLn.continuous_det K _))).continuousOn`. Conclude with `⟨_, (ideleModule K (AdelicGLn.det K _ b₀)).2, fun b hb => hmin hb⟩`. Use `set d : ℕ := Module.finrank ℚ K with hd`. Establish `hd0 : 0 < d` using `Module.finrank_pos`. Use `set s : ℝ := min t 1 with hs`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 < s` using `lt_min ht one_pos`. Use `set Lρ : ℝ := (s ^ m) ^ d * (ε / P) with hLρ`. Establish `hLρ0 : 0 < Lρ` using `by positivity`. Use `set Uρ : ℝ := m₀⁻¹ / Lρ ^ m with hUρ`. Use `set Lb : ℝ := min 1 Lρ with hLb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Ub : ℝ := max 1 Uρ with hUb`. Use `set box : Set (AdelicGLn.AdelicGL K (m + 1)) := (fun r : Fin (m + 1) → {r : ℝ // 0 < r} => diagUnits (m + 1) (fun i => posIdele (K := K) (r i).1 (r i).2)) '' (Set.pi univ fun _ => {r : {r : ℝ // 0 < r} | r.1 ∈ Icc Lb Ub}) with hbox`. Establish `hboxc : IsCompact box` using `isCompact_torusBox (lt_min one_pos hLρ0)`. Establish `hC : IsCompact ((ω * box) * (maxCompact (K` using `K) (n := m + 1) : Set (AdelicGLn.AdelicGL K (m + 1)))) := (hω.mul hboxc).mul (isCompact_maxCompact (K := K) (n := m + 1))`. Use `⟨(ω * box) * (maxCompact (K := K) (n := m + 1) : Set (AdelicGLn.AdelicGL K (m + 1))), hC, fun g hg hgε => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨γ, b, hbω, a, ⟨r, hr, hratio, rfl⟩, k, hk, heq⟩` from `hsieg g`. Establish `hb : b ∈ adelicBorel` using `hωB hbω`. Use `set l : Fin (m + 1) := Fin.last m with hl`. Establish `hbl : IsUnit ((b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝔸[K]) l l)` using `isUnit_apply_self_of_mem_adelicBorel hb l`. Establish `hrow : (Pi.single l (1 : 𝔸[K]) : Fin (m + 1) → 𝔸[K]) ᵥ* (b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝔸[K]) = Pi.single l ((b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝔸[K]) l l)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[single_one_vecMul]`. Use extensionality with `j`. Distinguish the cases in `hj : j = l`. Substitute `hj` using the available equality. Simplify using `[Matrix.row]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hjl : j < l` using `lt_of_le_of_ne (Fin.le_last j) hj`. Establish `h0 : (b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝔸[K]) l j = 0` using `hb hjl`. Simplify using `[Matrix.row, Pi.single_eq_of_ne hj, h0]`. Establish `hbP : (ideleModule K hbl.unit : ℝ) ≤ P`. Establish `h1` using `hPle b hbω _ (hasFiniteContent_single_one (K := K) l)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hrow, adelicNorm_single_one, mul_one, ← IsUnit.unit_spec hbl, adelicNorm_single_units]`. Conclude with `h1`. Use `set x₀ : Fin (m + 1) → K := Pi.single l 1 ᵥ* (γ : Matrix (Fin (m + 1)) (Fin (m + 1)) K) with hx₀`. Establish `hx₀0 : x₀ ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : (Pi.single l (1 : K) : Fin (m + 1) → K) = 0`. Establish `h3 : x₀ ᵥ* ((γ⁻¹ : GL (Fin (m + 1)) K) : Matrix (Fin (m + 1)) (Fin (m + 1)) K) = Pi.single l 1`. Rewrite using `[hx₀, vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]`. Rewrite using `[← h3, h0, zero_vecMul]`. Establish `h2` using `congrFun h1 l`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at h2`. Establish `hh` using `hgε x₀ hx₀0`. Rewrite `hh` using `[hx₀, ← height_diagonal_mul, heq, height_mul_maxCompact _ hk, height, Units.val_mul, ← vecMul_vecMul, ratVec_single_one, hrow, coe_diagUnits, single_vecMul_diagonal, ← IsUnit.unit_spec hbl, ← Units.val_mul, adelicNorm_single_units, map_mul, Positive.val_mul, ideleModule_posIdele]`. Establish `hrl : ε / P ≤ r l ^ d`. Rewrite using `[div_le_iff₀ hP]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hlow : ∀ i, Lρ ≤ r i ^ d` using `fun i => by`. Establish `h1` using `pow_mul_le_of_chain hs0.le (min_le_right _ _) (min_le_left _ _) hr hratio i`. Combine the equalities or inequalities in the displayed calculation. Establish `hba : b * diagUnits (m + 1) (fun i => posIdele (r i) (hr i)) ∈ normOneGL K (m + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: b * diagUnits (m + 1) (fun i => posIdele (r i) (hr i)) = AdelicGLn.diagonal K _ γ * g * k⁻¹` using `by rw [heq]; group`. Rewrite using `[this]`. Conclude with `mul_mem (mul_mem (rationalGL_le_normOneGL ⟨γ, rfl⟩) hg) (inv_mem (maxCompact_le_normOneGL hk))`. Rewrite `hba` using `[mem_normOneGL, map_mul, det_diagUnits, map_mul, map_prod, Positive.val_mul, coe_finset_prod_pos]`. Simplify using `only [ideleModule_posIdele] at hba`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod : ∏ i, r i ^ d ≤ m₀⁻¹`. Rewrite `hba` using `[← hd]`. Establish `h1` using `hm₀le b hbω`. Rewrite using `[le_inv_comm₀ (Finset.prod_pos fun i _ => pow_pos (hr i) _) hm₀]`. Combine the equalities or inequalities in the displayed calculation.
+Prove the components needed by the constructor for the conclusion. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Conclude with `eq_inv_of_mul_eq_one_left hba`. Establish `hup : ∀ i, r i ^ d ≤ Uρ` using `fun i => by`. Rewrite using `[hUρ, le_div_iff₀ (pow_pos hLρ0 _)]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ (pow_nonneg (hr i).le _)` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_erase_of_mem (Finset.mem_univ i), Finset.card_univ, Fintype.card_fin, Nat.add_sub_cancel]`. Use `_ ≤ ∏ j ∈ Finset.univ.erase i, r j ^ d := Finset.prod_le_prod (fun _ _ => hLρ0.le) fun j _ => hlow j`. Use `_ = ∏ j, r j ^ d := Finset.mul_prod_erase _ (fun j => r j ^ d) (Finset.mem_univ i)`. Use `_ ≤ m₀⁻¹ := hprod`.
-
-Establish `hbox : ∀ i, r i ∈ Icc Lb Ub` using `fun i => by`. Prove the components needed by the constructor for the conclusion. Break down `le_or_gt 1 (r i) with h | h` into its components or cases. Conclude with `(min_le_left _ _).trans h`. Conclude with `(min_le_right _ _).trans ((hlow i).trans (pow_le_of_le_one (hr i).le h.le hd0.ne'))`.
-
-Break down `le_or_gt (r i) 1 with h | h` into its components or cases. Conclude with `h.trans (le_max_left _ _)`. Conclude with `(le_self_pow₀ h.le hd0.ne').trans ((hup i).trans (le_max_right _ _))`. Use `⟨(AdelicGLn.diagonal K _ γ)⁻¹, ⟨γ⁻¹, map_inv _ _⟩, _, ⟨_, ⟨b, hbω, _, ⟨fun i => ⟨r i, hr i⟩, fun i _ => hbox i, rfl⟩, rfl⟩, k, hk, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`.
-
-Rewrite using `[← heq, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_forall_of_pos_le_height {ε : ℝ} (hε : 0 < ε) :
     ∃ C : Set (AdelicGLn.AdelicGL K n), IsCompact C ∧ ∀ g ∈ normOneGL K n,
@@ -419,9 +409,9 @@ theorem exists_isCompact_forall_of_pos_le_height {ε : ℝ} (hε : 0 < ε) :
     rw [← heq, inv_mul_cancel_left]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, hC, hYC⟩`. Take `⟨ε, hε, h⟩` from `exists_pos_le_height_of_subset hC`. Conclude with `⟨ε, hε, fun g hg => h g (hYC hg)⟩`. Introduce and unpack `⟨ε, hε, h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨C, hC, hC'⟩` from `exists_isCompact_forall_of_pos_le_height (K := K) (n := n) hε`. Conclude with `⟨C, hC, fun g hg => hC' g (hY hg) (h g hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isCompact_subset_iff {Y : Set (AdelicGLn.AdelicGL K n)}
     (hY : Y ⊆ (normOneGL K n : Set (AdelicGLn.AdelicGL K n))) :
@@ -454,19 +444,17 @@ instance discreteTopology_rationalGLOne : DiscreteTopology (rationalGLOne K n) :
     exact Subtype.ext (Subtype.ext h1)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hc`. Take `⟨D, hD, hKD⟩` from `RightCosetSpace.exists_isCompact_subset_mk_image _ hc`. Take `⟨ε, hε, h⟩` from `exists_pos_le_height_of_subset (hD.image continuous_subtype_val)`. Use `⟨ε, hε, fun g hg x hx => h _ ?_ x hx⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, hdD, hd⟩` from `hKD (subset_closure ⟨g, hg, rfl⟩)`. Take `⟨γ, hγ⟩` from `(RightCosetSpace.mk_eq_mk_iff).1 hd`. Use `⟨((γ⁻¹ : rationalGLOne K n) : normOneGL K n), (γ⁻¹ : rationalGLOne K n).2, d, ⟨d, hdD, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hγ]`. Express the relevant statement in the definitionally equal form `(((γ : normOneGL K n) : AdelicGLn.AdelicGL K n))⁻¹ * ((γ : normOneGL K n) * g : AdelicGLn.AdelicGL K n) = g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[inv_mul_cancel_left]`. Introduce and unpack `⟨ε, hε, h⟩`. Take `⟨C, hC, hC'⟩` from `exists_isCompact_forall_of_pos_le_height (K := K) (n := n) hε`. Use `set D : Set (normOneGL K n) := Subtype.val ⁻¹' C with hD`. Establish `hDc : IsCompact D` using `isClosed_normOneGL.isClosedEmbedding_subtypeVal.isCompact_preimage hC`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : RightCosetSpace.mk (rationalGLOne K n) '' Y ⊆ RightCosetSpace.mk (rationalGLOne K n) '' D`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨_, ⟨γ, rfl⟩, c, hc, hgc⟩` from `hC' g g.2 (h g hg)`. Establish `hγ1 : AdelicGLn.diagonal K n γ ∈ normOneGL K n` using `rationalGL_le_normOneGL ⟨γ, rfl⟩`. Establish `hc1 : c ∈ normOneGL K n`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: c = (AdelicGLn.diagonal K n γ)⁻¹ * g` using `by rw [← hgc, inv_mul_cancel_left]`. Rewrite using `[this]`. Conclude with `mul_mem (inv_mem hγ1) g.2`. Use `⟨⟨c, hc1⟩, hc, (RightCosetSpace.mk_eq_mk_iff).2 ⟨⟨⟨_, inv_mem hγ1⟩, ⟨γ⁻¹, map_inv _ _⟩⟩, ?_⟩⟩` and prove the remaining obligations. Use `Subtype.ext ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(AdelicGLn.diagonal K n γ)⁻¹ * (g : AdelicGLn.AdelicGL K n) = c`. Rewrite using `[← hgc]`. Conclude with `inv_mul_cancel_left _ _`. Establish `hT2 : T2Space (RightCosetSpace (rationalGLOne K n))` using `RightCosetSpace.t2Space _`. Establish `hcl : IsClosed (RightCosetSpace.mk (rationalGLOne K n) '' D)` using `(hDc.image (RightCosetSpace.continuous_mk _)).isClosed`.
-
-Conclude with `(hDc.image (RightCosetSpace.continuous_mk _)).of_isClosed_subset isClosed_closure (closure_minimal hsub hcl)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_closure_mk_image_iff {Y : Set (normOneGL K n)} :
     IsCompact (closure (RightCosetSpace.mk (rationalGLOne K n) '' Y)) ↔

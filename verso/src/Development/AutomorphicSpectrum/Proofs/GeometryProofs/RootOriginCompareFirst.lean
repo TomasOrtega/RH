@@ -23,11 +23,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.SingCmp
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S S₀ Ω Ω₀ _ _ K K₀ _ _ J J₀ y y₀ 𝔐 𝔐₀ i ι W φ z₁ z₂ hξ hpt hW h₁ h₂`. Take `⟨σ₁, σ₂, g₁, g₂, v₁, v₂, hx⟩` from `GlobalTheory.T.hodge_component_base_change_compat E H D l Xo c Y S S₀ Ω Ω₀ K K₀ J J₀ y y₀ 𝔐 𝔐₀ i W φ z₁ z₂ hξ hW h₁ h₂`. Use `⟨?_, GlobalTheory.T.hodge_component_lattice_map_compat E H D l Xo c Y S S₀ Ω Ω₀ K K₀ J J₀ y y₀ 𝔐 𝔐₀ i ι W φ z₁ z₂ σ₁ σ₂ hξ hpt g₁ g₂ v₁ v₂ hx⟩` and prove the remaining obligations. Establish `e₁ : spMap φ ≫ spMap σ₁ ≫ 𝔐.X.fromSpecStalk (centre z₁) = z₁`. Establish `: φ.comp σ₁ = (Scheme.stalkClosedPointTo z₁).hom` using `RingHom.ext v₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, ← FlagPull.spMap_comp, this]`. Conclude with `LieTangent.spec_centre z₁`. Establish `e₂ : spMap φ ≫ spMap σ₂ ≫ 𝔐₀.X.fromSpecStalk (centre z₂) = z₂`. Establish `: φ.comp σ₂ = (Scheme.stalkClosedPointTo z₂).hom` using `RingHom.ext v₂`. Rewrite using `[← Category.assoc, ← FlagPull.spMap_comp, this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `LieTangent.spec_centre z₂`. Establish `f₁ : z₁ ≫ 𝔐.f = spMap φ ≫ spMap σ₁ ≫ 𝔐.X.fromSpecStalk (centre z₁) ≫ 𝔐.f` using `(congrArg (· ≫ 𝔐.f) e₁).symm.trans (by simp only [Category.assoc])`. Establish `f₂ : z₂ ≫ 𝔐₀.f = spMap φ ≫ spMap σ₂ ≫ 𝔐₀.X.fromSpecStalk (centre z₂) ≫ 𝔐₀.f` using `(congrArg (· ≫ 𝔐₀.f) e₂).symm.trans (by simp only [Category.assoc])`. Rewrite using `[f₁, f₂, hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_ext : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S S₀ : Finset ℕ) (Ω Ω₀ : Type) [Field Ω] [Field Ω₀] (K K₀ : Type) [Fintype K] [Fintype K₀] (J : K → Type) (J₀ : K₀ → Type) (y : (Σ k, J k) → Ω) (y₀ : (Σ k, J₀ k) → Ω₀) (𝔐 : HodgeCpt Y S y) (𝔐₀ : HodgeCpt Y S₀ y₀) (i : Ω₀ →+* Ω) (ι : 𝔐₀.Li →+ 𝔐.Li) (W : Subring Ω) (φ : W →+* ℂ) (z₁ : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (z₂ : Spec (CommRingCat.of ℂ) ⟶ 𝔐₀.X), 𝔐.ξ ≫ 𝔐.f = spMap i ≫ 𝔐₀.ξ ≫ 𝔐₀.f → (∀ (e : 𝔐₀.Li) (e' : 𝔐.Li), (𝔐.M.pt e').left ≫ 𝔐.m.φ = spMap (dualMap i) ≫ (𝔐₀.M.pt e).left ≫ 𝔐₀.m.φ ↔ e' = ι e) → (∀ a : W, φ a ≠ 0 → IsUnit a) → (∀ (a : Ω) (r : ℂ), ValAt 𝔐.ξ z₁ a r → ∃ h : a ∈ W, φ ⟨a, h⟩ = r) → (∀ (a : Ω₀) (r : ℂ), ValAt 𝔐₀.ξ z₂ a r → ∃ h : i a ∈ W, φ ⟨_, h⟩ = r) → z₁ ≫ 𝔐.f = z₂ ≫ 𝔐₀.f ∧ ∀ (Vz : Type) [AddCommGroup Vz] [Module ℂ Vz] (MR : LieModel 𝔐.t.G z₁ Vz), ∃ (Lm : Submodule W 𝔐.Li) (val : 𝔐.Li → Vz), val 0 = 0 ∧ (∀ e ∈ Lm, ∀ e' ∈ Lm, val (e + e') = val e + val e') ∧ (∀ a : W, ∀ e ∈ Lm, val ((a : Ω) • e) = φ a • val e) ∧ (∀ (e : 𝔐.Li) (v : epsAt z₁ ⟶ 𝔐.t.G), 𝔐.M.ValAt z₁ e v → e ∈ Lm ∧ v = MR.pt (val e)) ∧ ∀ (e₀ : 𝔐₀.Li) (v₀ : epsAt z₂ ⟶ 𝔐₀.t.G), 𝔐₀.M.ValAt z₂ e₀ v₀ → ι e₀ ∈ Lm ∧ (MR.pt (val (ι e₀))).left ≫ 𝔐.m.φ = v₀.left ≫ 𝔐₀.m.φ := by
   intro E _ _ _ H D l Xo c Y S S₀ Ω Ω₀ _ _ K K₀ _ _ J J₀ y y₀ 𝔐 𝔐₀ i ι W φ z₁ z₂ hξ hpt hW h₁ h₂
@@ -59,7 +59,7 @@ section Move
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : v = v'` from `Over.OverMorphism.ext hv`. Take `rfl : w = w'` from `Over.OverMorphism.ext hw`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem hodgeInnerProduct_congr {X : Scheme.{0}} {G : Over X} [GrpObj G] {L : LB G.left} {z z' : Spec (CommRingCat.of ℂ) ⟶ X}
     (h : z = z') {v w : epsAt z ⟶ G} {v' w' : epsAt z' ⟶ G} (hv : v.left = v'.left) (hw : w.left = w'.left) (c : ℂ) :
@@ -70,7 +70,7 @@ theorem hodgeInnerProduct_congr {X : Scheme.{0}} {G : Over X} [GrpObj G] {L : LB
   rfl
 
 /- English proof (translation)
-Establish `a₁` using `(GlobalTheory.T.hodge_inner_product_pullback_unique E H S₁ S t₁ t f₁ m₁ z₁ v₁ w₁ (HodgePull.push m₁ v₁) (HodgePull.push m₁ w₁) rfl rfl).1 c`. Establish `a₂` using `(GlobalTheory.T.hodge_inner_product_pullback_unique E H S₂ S t₂ t f₂ m₂ z₂ v₂ w₂ (HodgePull.push m₂ v₂) (HodgePull.push m₂ w₂) rfl rfl).1 c`. Conclude with `a₁.trans ((hodgeInnerProduct_congr hz hv hw c).trans a₂.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hodge_move {S₁ S₂ S : Scheme.{0}} {t₁ : SAB H S₁} {t₂ : SAB H S₂} {t : SAB H S} {f₁ : S₁ ⟶ S} {f₂ : S₂ ⟶ S}
     (m₁ : SABMap t₁ t f₁) (m₂ : SABMap t₂ t f₂) {z₁ : Spec (CommRingCat.of ℂ) ⟶ S₁} {z₂ : Spec (CommRingCat.of ℂ) ⟶ S₂}
@@ -84,7 +84,7 @@ theorem hodge_move {S₁ S₂ S : Scheme.{0}} {t₁ : SAB H S₁} {t₂ : SAB H 
 end Move
 
 /- English proof (translation)
-Unfold `flagStep`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem flagStep_top {Ω Li : Type} [Field Ω] [AddCommGroup Li] [Module Ω Li] {r : ℕ} (c : Fin r → Li) :
     flagStep Ω c r = Submodule.span Ω (Set.range c) := by
@@ -101,43 +101,35 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   [∀ k, Fintype (J k)] [∀ k, Fintype (J₀ k)] {y : (Σ k, J k) → Ω} {y₀ : (Σ k, J₀ k) → Ω₀}
 
 /- English proof (translation)
-Establish `hβ : Function.Injective (algebraMap (𝓞 c.F) c.F)` using `RingOfIntegers.coe_injective`. Take `⟨jj, hext, hspan, hpt, hlat⟩` from `GlobalTheory.T.hodge_comp_compare_flag E H D l Xo c Y S S₀ Ω Ω₀ K K₀ J J₀ y y₀ 𝔐 𝔐₀ Fl₀ i hξ`. Take `⟨hz, hval⟩` from `val_ext E H D l Xo c Y S S₀ Ω Ω₀ K K₀ J J₀ y y₀ 𝔐 𝔐₀ i jj W φ z₁ z₂ hξ hpt hW h₁ h₂`. Establish `hq : genPt 𝔐.ξ ⤳ centre z₁` using `𝔐.all _`. Establish `hq₀ : genPt 𝔐₀.ξ ⤳ centre z₂` using `𝔐₀.all _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q : Cpt 𝔐.ξ := ⟨centre z₁, hq⟩ with hqdef`. Use `set q₀ : Cpt 𝔐₀.ξ := ⟨centre z₂, hq₀⟩ with hq₀def`. Establish `hfq : 𝔐.f q.1 = 𝔐₀.f q₀.1`. Use `congrArg (fun g : Spec (CommRingCat.of ℂ) ⟶ Y.X => g (IsLocalRing.closedPoint ℂ)) hz` as an intermediate fact. Conclude with `(Scheme.Hom.comp_apply z₁ 𝔐.f _).symm.trans (this.trans (Scheme.Hom.comp_apply z₂ 𝔐₀.f _))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Vz, _, _, ⟨MR⟩⟩` from `lieModel_exists 𝔐.X 𝔐.t.G ℂ z₁`. Take `⟨Lm, val, h0, hadd, hsm, hv₁, hv₂⟩` from `hval Vz MR`. Take `⟨h, hHI, -, -⟩` from `GlobalTheory.T.hodge_hermitian_form_exists E H 𝔐.X 𝔐.t z₁ Vz MR (GrNorm.interior_pol 𝔐 hβ z₁ hI₁)`. Take `⟨_, b, Γ, hflag, hfr, ht, ⟨v, hv, hI⟩, -, rfl⟩` from `hn`. Take `⟨_, b₀, Γ₀, hflag₀, hfr₀, ht₀, ⟨v₀, hv₀, hI₀⟩, -, rfl⟩` from `hn₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, -, hind, -⟩` from `GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ`. Take `⟨-, -, -, -, -, -, hind₀, -⟩` from `GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y S₀ Ω₀ K₀ J₀ y₀ 𝔐₀ hβ`. Take `⟨hV, -, hL⟩` from `GlobalTheory.T.hodge_cpt_away_from_primes E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ q fun r hr => GrNorm.not_inFibre 𝔐.tie.gen hq hr`. Take `⟨hV₀, -, hL₀⟩` from `GlobalTheory.T.hodge_cpt_away_from_primes E H D l Xo c _ _ Y S₀ Ω₀ K₀ J₀ y₀ 𝔐₀ hβ q₀ fun r hr => GrNorm.not_inFibre 𝔐₀.tie.gen hq₀ hr`. Take `⟨π, hπ, hreg⟩` from `GrNorm.exists_dual 𝔐 hind q hL s b hfr.1 ((hV s).symm.trans hfr.2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨π₀, hπ₀, hreg₀⟩` from `GrNorm.exists_dual 𝔐₀ hind₀ q₀ hL₀ s b₀ hfr₀.1 ((hV₀ s).symm.trans hfr₀.2)`. Establish `hbL : ∀ k, b k ∈ 𝔐.M.lat q` using `fun k => by`. Establish `e1 : b k ∈ 𝔐.V s q` using `hfr.2 ▸ Submodule.subset_span ⟨k, rfl⟩`. Rewrite `e1` using `[hV s]`. Rewrite using `[hL]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(le_iSup (fun s' => 𝔐.dR s' q) s) e1`. Establish `hbL₀ : ∀ k, b₀ k ∈ 𝔐₀.M.lat q₀` using `fun k => by`. Establish `e1 : b₀ k ∈ 𝔐₀.V s q₀` using `hfr₀.2 ▸ Submodule.subset_span ⟨k, rfl⟩`. Rewrite `e1` using `[hV₀ s]`. Rewrite using `[hL₀]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(le_iSup (fun s' => 𝔐₀.dR s' q₀) s) e1`. Establish `regW : ∀ a ∈ regAt 𝔐.ξ q, a ∈ W` using `fun a ha => by`. Take `⟨g, hg⟩` from `ha`. Conclude with `(h₁ a _ ⟨hq, g, hg, rfl⟩).1`. Establish `regW₀ : ∀ a ∈ regAt 𝔐₀.ξ q₀, i a ∈ W` using `fun a ha => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `ha`. Conclude with `(h₂ a _ ⟨hq₀, g, hg, rfl⟩).1`. Establish `hb : ∀ s' k, jj (Fl₀.b s' k) = Fl.b s' k` using `fun s' k => ((hpt _ _).1 (hFl s' k)).symm`. Establish `hFlli : LinearIndependent Ω (Fl.b s)`. Take `⟨_, _, -, -, -, h4, -⟩` from `Fl.generic`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h4 s`. Establish `hflagJ : ∀ n, flagStep Ω (fun k => jj (b₀ k)) n = flagStep Ω (Fl.b s) n` using `fun n => by`. Establish `e1` using `FlagPull.flagStep_map_eq hext.1 hflag₀ n`. Establish `e2 : (fun k => jj (Fl₀.b s k)) = Fl.b s` using `funext (hb s)`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hspb : Submodule.span Ω (Set.range b) = Submodule.span Ω (Set.range fun k => jj (b₀ k))`. Rewrite using `[← flagStep_top, ← flagStep_top, hflag, hflagJ]`. Set `T : Module.End Ω 𝔐.Li` to `∑ l, (π l).smulRight (b l)`. Establish `hT : ∀ e, T e = ∑ l, π l e • b l` using `fun e => by`. Simplify using `[T, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hTb : ∀ x ∈ Submodule.span Ω (Set.range b), T x = x`. Establish `hon : Set.EqOn (T : 𝔐.Li →ₗ[Ω] 𝔐.Li) (LinearMap.id : 𝔐.Li →ₗ[Ω] 𝔐.Li) (Set.range b)`. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `[hT, hπ, ite_smul]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `LinearMap.eqOn_span hon hx`. Establish `fr` using `GlobalTheory.T.lattice_span_projection_bound Ω Ω₀ i 𝔐.Li 𝔐₀.Li jj hext hspan W (𝔐₀.M.lat q₀ : Set 𝔐₀.Li) (𝔐.M.lat q : Set 𝔐.Li) (labelRk D s) b b₀ π₀ T 1 1 1 (hlat W q q₀ regW regW₀ hfq) (fun e he => by`. Rewrite using `[hT]`. Conclude with `Submodule.sum_mem _ fun l _ => (Submodule.span W (Set.range b)).smul_mem (⟨π l e, regW _ (hreg l e he)⟩ : W) (Submodule.subset_span ⟨l, rfl⟩))`. Use the proof step `(fun j => by`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[one_smul]`. Conclude with `hTb _ (hspb ▸ Submodule.subset_span ⟨j, rfl⟩))`. Use the proof step `(fun j => by rw [one_smul]; exact hbL₀ j)`. Use `hπ₀`. Use the proof step `(fun a e he => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.one_mul]`. Conclude with `regW₀ _ (hreg₀ a e he))`. Use the proof step `(fun j => by rw [one_smul]; exact hbL j)`. Use the proof step `(fun j => hspb ▸ Submodule.subset_span ⟨j, rfl⟩)`. Establish `hs : Submodule.span W (Set.range b) = Submodule.span W (Set.range fun k => jj (b₀ k))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `fr.2 k` as an intermediate fact. Simplify using `using this`. Introduce and unpack `_ ⟨k, rfl⟩`.
-
-Use `fr.1 k` as an intermediate fact. Simplify using `using this`. Establish `ht' : jj (b₀ idx) - i t₀ • Fl.b s idx ∈ flagStep Ω (Fl.b s) idx`. Establish `e1` using `FlagPull.map_mem_flagStep hext.1 (Fl₀.b s) idx ht₀`. Establish `e2 : (fun k => jj (Fl₀.b s k)) = Fl.b s` using `funext (hb s)`.
-
-Rewrite `e1` using `[e2, map_sub, hext.1, hb]`. Conclude with `e1`. Take `⟨a, ha, e1, e2⟩` from `GrNorm.compare (A := W) (φ := φ) (Lm := Lm) (val := val) h0 hadd hsm h hFlli hfr.1 (hext.2 _ _ hfr₀.1) (fun k => (hv₁ _ _ (hv k)).1) hs hflag hflagJ idx ht ht'`. Use `⟨a, ha, e1, ?_⟩` and prove the remaining obligations. Establish `eΓ : Γ = GrNorm.gramOf h val b`.
-
-Use extensionality with `p p'`. Establish `e3` using `hI p p'`. Rewrite `e3` using `[(hv₁ _ _ (hv p)).2, (hv₁ _ _ (hv p')).2]`. Conclude with `(hHI _ _ _).1 e3`. Establish `eΓ₀ : Γ₀ = GrNorm.gramOf h val (fun k => jj (b₀ k))`.
-
-Use extensionality with `p p'`. Establish `e3` using `(hodge_move 𝔐.m 𝔐₀.m hz (hv₂ _ _ (hv₀ p)).2 (hv₂ _ _ (hv₀ p')).2 _).2 (hI₀ p p')`. Conclude with `(hHI _ _ _).1 e3`. Rewrite using `[eΓ, eΓ₀]`. Conclude with `e2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_cmp (𝔐 : HodgeCpt Y S y) (𝔐₀ : HodgeCpt Y S₀ y₀) (Fl : 𝔐.Flag) (Fl₀ : 𝔐₀.Flag) (i : Ω₀ →+* Ω)
     (hξ : 𝔐.ξ ≫ 𝔐.f = spMap i ≫ 𝔐₀.ξ ≫ 𝔐₀.f)
@@ -258,7 +250,7 @@ end Norm
 section Final
 
 /- English proof (translation)
-Establish `hW2 : W₂⁻¹ * W₂ = 1` using `inv_mul_cancel₀ hW`. Apply `mul_right_cancel₀ hP` to reduce the goal to its premises. Substitute `ev` using the available equality. Take the linear combination `(X * W₁ * W₂⁻¹) * e2 + (X * W₁ * U₂) * hW2 - Pn * e1 - W₁ * k`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem real_alg {N Pn hM hR U₁ U₂ X W₁ W₂ V : ℝ} (hP : Pn * N ≠ 0) (hW : W₂ ≠ 0) (e1 : N * hM = U₁ * W₁)
     (e2 : (Pn * N) * hR = U₂ * W₂) (k : U₁ * Pn = U₂ * X) (ev : X * (W₁ * W₂⁻¹) = V) : V * hR = hM := by
@@ -268,7 +260,7 @@ theorem real_alg {N Pn hM hR U₁ U₂ X W₁ W₂ V : ℝ} (hP : Pn * N ≠ 0) 
   linear_combination (X * W₁ * W₂⁻¹) * e2 + (X * W₁ * U₂) * hW2 - Pn * e1 - W₁ * k
 
 /- English proof (translation)
-Establish `e` using `congrArg Units.val (map_zpow (Units.map (f : R →* F)) u n)`. Rewrite `e` using `[Units.val_zpow_eq_zpow_val]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_unit_val {R F : Type} [CommRing R] [Field F] (f : R →+* F) (u : Rˣ) (n : ℤ) :
     f ((u ^ n : Rˣ) : R) = f (u : R) ^ n := by
@@ -277,41 +269,37 @@ theorem zpow_unit_val {R F : Type} [CommRing R] [Field F] (f : R →+* F) (u : R
   exact e
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi z₁ z₂ w hw hc₁ hc₂ hI₁ hI₂ r v hv`. Establish `hβ : Function.Injective (algebraMap (𝓞 c.F) c.F)` using `RingOfIntegers.coe_injective`. Establish `hξ : o.𝔐.ξ ≫ o.𝔐.f = spMap i ≫ o₀.𝔐.ξ ≫ o₀.𝔐.f`. Rewrite using `[o.g_over, o₀.g_over, ← hi, ← Category.assoc]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(FlagPull.spMap_comp _ _)`. Establish `hFl : ∀ s k, (o.𝔐.M.pt (o.Fl.b s k)).left ≫ o.𝔐.m.φ = spMap (dualMap i) ≫ (o₀.𝔐.M.pt (o₀.Fl.b s k)).left ≫ o₀.𝔐.m.φ` using `fun s k => by`. Rewrite using `[o.g_flag, o₀.g_flag, ← hi, ← Category.assoc, FlagPull.dualMap_comp]`. Use `congr 1`. Conclude with `(FlagPull.spMap_comp _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W, φ, hW, hr, hs⟩` from `GlobalTheory.T.valuation_coords_complex_point _ _ _ (Ht.joinOf M R i) w hw`. Take `h₁` from `GlobalTheory.T.subring_coords_complex_value o.𝔐.X M.Ω M.Ω (RingHom.id _) o.𝔐.ξ M.K M.ι M.y z₁ _ W φ o.𝔐.tie hc₁ hW (fun k c' e hc => hr (Sum.inl k) c' e hc)`. Take `h₂` from `GlobalTheory.T.subring_coords_complex_value o₀.𝔐.X R.Ω M.Ω i o₀.𝔐.ξ R.K R.ι R.y z₂ _ W φ o₀.𝔐.tie hc₂ hW (fun k c' e hc => by`. Take `⟨h, e'⟩` from `hr (Sum.inr k) c' e hc`. Establish `e1 : i (R.y ⟨k, e⟩ / R.y ⟨k, c'⟩) = Ht.joinOf M R i ⟨Sum.inr k, e⟩ / Ht.joinOf M R i ⟨Sum.inr k, c'⟩` using `map_div₀ i _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨e1 ▸ h, by show φ _ * w ⟨Sum.inr k, c'⟩ = w ⟨Sum.inr k, e⟩`. Simplify `e'⟩)` using `only [e1]`. Take `⟨t, ht⟩` from `Flag.gr_gen_of_isFlagVBOn (o.Fl.sub (rootIdx D r).1) (p := ⟨centre z₁, o.𝔐.all _⟩) (Set.mem_univ _) (rootIdx D r).2`. Take `⟨ν, hνpos, hn⟩` from `GrNorm.exists_norm E H D l Xo c _ _ Y S M.Ω M.K M.ι M.y o.𝔐 o.Fl hβ z₁ hI₁ _ _ t ht`. Establish `hg` using `(hn t ν).2 ⟨1, one_ne_zero, by rw [div_self ht.1]; exact CxVal.one (o.𝔐.all _), by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t₀, ht₀⟩` from `Flag.gr_gen_of_isFlagVBOn (o₀.Fl.sub (rootIdx D r).1) (p := ⟨centre z₂, o₀.𝔐.all _⟩) (Set.mem_univ _) (rootIdx D r).2`. Take `⟨ν₀, hνpos₀, hn₀⟩` from `GrNorm.exists_norm E H D l Xo c _ _ Y S₀ R.Ω R.K R.ι R.y o₀.𝔐 o₀.Fl hβ z₂ hI₂ _ _ t₀ ht₀`. Establish `hg₀` using `(hn₀ t₀ ν₀).2 ⟨1, one_ne_zero, by rw [div_self ht₀.1]; exact CxVal.one (o₀.𝔐.all _), by simp⟩`. Take `⟨a, ha, eat, eν⟩` from `norm_cmp o.𝔐 o₀.𝔐 o.Fl o₀.Fl i hξ hFl W φ hW z₁ z₂ hI₁ h₁ h₂ _ _ hg hg₀`. Establish `s1` using `o.hodge r z₁ _ hc₁ hI₁ t ν hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2` using `o₀.hodge r z₂ _ hc₂ hI₂ t₀ ν₀ hg₀`. Use `choose c₁ hc₁' using hc₁.1`. Use `choose c₂ hc₂' using hc₂.1`. Establish `hne₁ : ∀ k, w (Cmp.joinInl M.ι R.ι ⟨k, c₁ k⟩) ≠ 0` using `fun k => (hc₁' k).ne_zero`. Establish `hne₂ : ∀ k, w (Cmp.joinInr M.ι R.ι ⟨k, c₂ k⟩) ≠ 0` using `fun k => (hc₂' k).ne_zero`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Treat this case separately.
 
-Take `⟨u₁, hu₁, en₁⟩` from `s1.2.2 c₁ hne₁`. Take `⟨u₂, hu₂, en₂⟩` from `s2.2.2 c₂ hne₂`. Set `C : ∀ k, Cmp.joinIdx M.ι R.ι k` to `fun k => match k with`. Consider the case `Sum.inl k => c₁ k`. Consider the case `Sum.inr k => c₂ k`.
+Treat this case separately. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hx, evx⟩` from `hs _ _ v C hv (by`. Introduce and unpack `(k | k)`. Conclude with `hne₁ k`. Conclude with `hne₂ k)`. Take `⟨m₁, em₁⟩` from `h₁ _ _ hu₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m₂, em₂⟩` from `h₂ _ _ hu₂`. Establish `hdM : ∀ k, Ht.joinDeg M R (some r) (Sum.inl k) = (o.sing r).a k` using `fun k => by`. Rewrite using `[o.sing_deg r]`. Use `show (M.x 1 r).a k = _`. Rewrite using `[M.x_deg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hdR : ∀ k, Ht.joinDeg M R (some r) (Sum.inr k) = -(o₀.sing r).a k` using `fun k => by`. Rewrite using `[o₀.sing_deg r]`. Use `show -(R.x 1 r).a k = _`. Rewrite using `[R.x_deg]`. Establish `pY : ∏ k, Ht.joinOf M R i ⟨k, C k⟩ ^ (-Ht.joinDeg M R (some r) k) = (∏ k, M.y ⟨k, c₁ k⟩ ^ (o.sing r).a k)⁻¹ * i (∏ k, R.y ⟨k, c₂ k⟩ ^ (o₀.sing r).a k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [hdM, hdR]`. Use `show (∏ k, M.y ⟨k, c₁ k⟩ ^ (-(o.sing r).a k)) * ∏ k, i (R.y ⟨k, c₂ k⟩) ^ (- -(o₀.sing r).a k) = _`. Simplify using `only [zpow_neg, neg_neg, Finset.prod_inv_distrib, map_prod, map_zpow₀]`. Establish `pw : ∏ k, w ⟨k, C k⟩ ^ Ht.joinDeg M R (some r) k = (∏ k, w (Cmp.joinInl M.ι R.ι ⟨k, c₁ k⟩) ^ (o.sing r).a k) * (∏ k, w (Cmp.joinInr M.ι R.ι ⟨k, c₂ k⟩) ^ (o₀.sing r).a k)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [hdM, hdR]`. Use `show (∏ k, w (Cmp.joinInl M.ι R.ι ⟨k, c₁ k⟩) ^ (o.sing r).a k) * ∏ k, w (Cmp.joinInr M.ι R.ι ⟨k, c₂ k⟩) ^ (-(o₀.sing r).a k) = _`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib]`. Take `⟨au, rfl⟩` from `ha`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmon : (∏ k, M.y ⟨k, c₁ k⟩ ^ (o.sing r).a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (s1.2.1.2 k (c₁ k) (hc₁' k)).1`. Establish `hmon₀ : (∏ k, R.y ⟨k, c₂ k⟩ ^ (o₀.sing r).a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (s2.2.1.2 k (c₂ k) (hc₂' k)).1`. Establish `he : o.e r ≠ 0` using `s1.1`. Establish `he₀ : o₀.e r ≠ 0` using `s2.1`. Establish `key : (⟨_, m₁⟩ : W) * ((au ^ rootSgn D r : Wˣ) : W) = ⟨_, m₂⟩ * ⟨_, hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `e1 : (((au ^ rootSgn D r : Wˣ) : W) : M.Ω) = ((au : W) : M.Ω) ^ rootSgn D r` using `zpow_unit_val W.subtype au _`. Establish `e2 : i t₀ ^ rootSgn D r = ((au : W) : M.Ω) ^ rootSgn D r * t ^ rootSgn D r`. Rewrite using `[← eat, mul_zpow]`. Simplify using `only [Subring.coe_mul, e1, RingHom.id_apply, pY, map_div₀, map_mul, map_zpow₀, e2]`.
+Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm'` using `(map_ne_zero i).2 hmon₀`. Establish `he'` using `(map_ne_zero i).2 he₀`. Generalize the expression as in `∏ k, M.y ⟨k, c₁ k⟩ ^ (o.sing r).a k = m at hmon ⊢`. Generalize the expression as in `i (∏ k, R.y ⟨k, c₂ k⟩ ^ (o₀.sing r).a k) = m₀ at hm' ⊢`. Generalize the expression as in `i (o₀.e r) = f₀ at he' ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `o.e r = f at he ⊢`. Clear the denominators using the available nonvanishing facts. Establish `key2` using `congrArg (fun x => ‖φ x‖) key`. Simplify using `only [map_mul, norm_mul, em₁, em₂, zpow_unit_val φ au] at key2`. Establish `hp0 : φ (au : W) ≠ 0` using `((au.isUnit).map φ).ne_zero`.
-
-Establish `hpn : ‖φ (au : W)‖ ^ rootSgn D r * ν ^ rootSgn D r ≠ 0` using `mul_ne_zero (zpow_ne_zero _ (norm_ne_zero_iff.2 hp0)) (zpow_ne_zero _ hνpos.ne')`. Establish `hW₂ : (∏ k, ‖w (Cmp.joinInr M.ι R.ι ⟨k, c₂ k⟩)‖ ^ (o₀.sing r).a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hne₂ k))`. Rewrite `evx` using `[pw]`. Establish `evn` using `congrArg norm evx`. Simplify using `only [norm_mul, norm_inv, norm_prod, norm_zpow] at evn`.
-
-Rewrite `key2` using `[norm_zpow]`. Rewrite `en₂` using `[eν, mul_zpow]`. Conclude with `real_alg hpn hW₂ en₁ en₂ key2 evn`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sing_agree : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S S₀ : Finset ℕ) (M R : Top.RootModel (CMType H) (D.p + D.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))) (Fx : FixedData Y Sys) (o : RootOrigin Y S M Fx) (o₀ : RootOrigin Y S₀ R Fx) (i : R.Ω →+* M.Ω), i.comp o₀.g = o.g → ∀ (z₁ : Spec (CommRingCat.of ℂ) ⟶ o.𝔐.X) (z₂ : Spec (CommRingCat.of ℂ) ⟶ o₀.𝔐.X) (w : (Σ k, Cmp.joinIdx M.ι R.ι k) → ℂ), w ∈ Small.ptsOver ℂ (mCoordIdeal (Ht.joinOf M R i)) → CoordsAt o.𝔐.ξ M.y z₁ (fun p => w (Cmp.joinInl M.ι R.ι p)) → CoordsAt o₀.𝔐.ξ R.y z₂ (fun p => w (Cmp.joinInr M.ι R.ι p)) → o.𝔐.Interior z₁ → o₀.𝔐.Interior z₂ → ∀ (r : RootIx D) (v : ℂ), Small.HasVal (Ht.joinOf M R i) (Ht.joinDeg M R (some r)) (i (o₀.e r) / o.e r) w v → ‖v‖ * (o₀.sing r).h (fun p => w (Cmp.joinInr M.ι R.ι p)) = (o.sing r).h (fun p => w (Cmp.joinInl M.ι R.ι p)) := by
   intro E _ _ _ H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi z₁ z₂ w hw hc₁ hc₂ hI₁ hI₂ r v hv

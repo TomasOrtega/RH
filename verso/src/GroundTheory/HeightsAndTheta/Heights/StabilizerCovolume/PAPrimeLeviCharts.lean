@@ -18,7 +18,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `h : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_blocks : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   have h : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0} := by
@@ -28,7 +28,7 @@ theorem isOpen_blocks : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k,
     isOpen_ne_fun (continuous_apply _) continuous_const
 
 /- English proof (translation)
-Establish `h1 : ContDiffAt ℝ 2 A.h z` using `(hA.contDiffAt (isOpen_blocks.mem_nhds hz)).of_le (WithTop.coe_le_coe.mpr le_top)`. Conclude with `h1.log (A.pos z hz).ne'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_log_h {A : HermLine ι} (hA : IsSmoothHerm A) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : ContDiffAt ℝ 2 (fun y => Real.log (A.h y)) z := by
@@ -37,27 +37,23 @@ theorem contDiffAt_log_h {A : HermLine ι} (hA : IsSmoothHerm A) {z : (Σ k, ι 
   exact h1.log (A.pos z hz).ne'
 
 /- English proof (translation)
-Establish `hb` using `hrel.self_of_nhds.1`. Use `choose i hi using hb`. Use `set c : K → (J → ℂ) → ℂ := fun k u => τ₁ u ⟨k, i k⟩ / τ₂ u ⟨k, i k⟩ with hcdef`. Establish `hcan : ∀ k, AnalyticAt ℂ (c k) u₀` using `fun k => ((analyticAt_pi_iff.1 h₁) ⟨k, i k⟩).div ((analyticAt_pi_iff.1 h₂) ⟨k, i k⟩) (hi k)`. Establish `hne : ∀ᶠ u in 𝓝 u₀, ∀ k, τ₂ u ⟨k, i k⟩ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eventually_all]`. Introduce `k`. Conclude with `((analyticAt_pi_iff.1 h₂) ⟨k, i k⟩).continuousAt.eventually_ne (hi k)`. Establish `hrel' : ∀ᶠ u in 𝓝 u₀, (∀ k, ∃ i, τ₂ u ⟨k, i⟩ ≠ 0) ∧ (∀ k, c k u ≠ 0) ∧ τ₁ u = torusSmul (fun k => c k u) (τ₂ u)` using `by filter_upwards [hrel, hne] with u hu hn`. Take `⟨hbl, c', hc'0, hc'⟩` from `hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcc : ∀ k, c k u = c' k`. Introduce `k`. Use `show τ₁ u ⟨k, i k⟩ / τ₂ u ⟨k, i k⟩ = c' k`. Rewrite using `[hc']`. Conclude with `mul_div_cancel_right₀ _ (hn k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `⟨hbl, fun k => by rw [hcc]; exact hc'0 k, ?_⟩` and prove the remaining obligations. Rewrite using `[hc']`. Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `(hcc k).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc0 : ∀ k, c k u₀ ≠ 0` using `hrel'.self_of_nhds.2.1`. Use `set H : (J → ℂ) → ℂ := fun u => ∑ k, ((A.a k : ℝ) : ℂ) * (Complex.log (c k u / c k u₀) + Complex.log (c k u₀)) with hHdef`. Establish `hH : AnalyticAt ℂ H u₀`. Establish `hk : ∀ k ∈ Finset.univ, AnalyticAt ℂ (fun u => ((A.a k : ℝ) : ℂ) * (Complex.log (c k u / c k u₀) + Complex.log (c k u₀))) u₀`. Introduce `k _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `analyticAt_const.mul (AnalyticAt.add ?_ analyticAt_const)` and prove the remaining obligations. Use `((hcan k).div analyticAt_const (hc0 k)).clog ?_` and prove the remaining obligations. Use `show c k u₀ / c k u₀ ∈ Complex.slitPlane`. Rewrite using `[div_self (hc0 k)]`. Conclude with `Complex.one_mem_slitPlane`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `Finset.analyticAt_sum _ hk`. Use `hs using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `only [hHdef, Finset.sum_apply]`. Establish `hHre : ∀ u, (∀ k, c k u ≠ 0) → (H u).re = ∑ k, (A.a k : ℝ) * Real.log ‖c k u‖`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu`. Simplify using `only [hHdef, Complex.re_sum, Complex.re_ofReal_mul, Complex.add_re, Complex.log_re, norm_div]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_div (norm_ne_zero_iff.2 (hu k)) (norm_ne_zero_iff.2 (hc0 k))]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `heq : ((fun y => Real.log (A.h y)) ∘ τ₁) =ᶠ[𝓝 u₀] fun u => ((fun y => Real.log (A.h y)) ∘ τ₂) u + 1 * (H u).re` using `by filter_upwards [hrel'] with u hu`. Take `⟨hbl, hcu, hτ⟩` from `hu`. Establish `hs` using `A.smul (fun k => c k u) (τ₂ u) hcu`. Establish `hprod : ∀ k ∈ Finset.univ, ‖c k u‖ ^ A.a k ≠ 0` using `fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hcu k))`. Simplify using `only [Function.comp_apply, one_mul]`.
-
-Rewrite using `[hHre u hcu, hτ]`. Use `show Real.log (A.h (fun p => c p.1 u * τ₂ u p)) = _`. Rewrite using `[hs, Real.log_mul (Finset.prod_ne_zero_iff.2 hprod) (A.pos _ hbl).ne', Real.log_prod hprod]`. Simplify using `only [Real.log_zpow]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hf : ContDiffAt ℝ 2 ((fun y => Real.log (A.h y)) ∘ τ₂) u₀` using `(contDiffAt_log_h hA hrel'.self_of_nhds.1).comp u₀ h₂.restrictScalars.contDiffAt`. Establish `hg : ContDiffAt ℝ 2 (fun u => (H u).re) u₀` using `Complex.reCLM.contDiff.contDiffAt.comp u₀ hH.restrictScalars.contDiffAt`. Rewrite using `[levi_congr heq, levi_add_smul 1 hf hg, levi_re_analytic hH]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem levi_log_h_torus {J : Type} [Fintype J] {A : HermLine ι} (hA : IsSmoothHerm A)
     {τ₁ τ₂ : (J → ℂ) → (Σ k, ι k) → ℂ} {u₀ : J → ℂ} (h₁ : AnalyticAt ℂ τ₁ u₀) (h₂ : AnalyticAt ℂ τ₂ u₀)
@@ -138,11 +134,11 @@ section Charts
 variable {P : Ideal (MRing ι)} {d : ℕ}
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `M.atlas.cover (e.symm u)`. Use `set V : Set (Fin d → ℂ) := e.target ∩ e.symm ⁻¹' (U ∩ (M.atlas.chart j).source) with hV`. Establish `hVo : IsOpen V` using `e.continuousOn_symm.isOpen_inter_preimage e.open_target (hU.inter (M.atlas.chart j).open_source)`. Establish `huV : u ∈ V` using `⟨hu, huU, hj⟩`. Use `analyticAt_pi_iff.2 fun p => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : AnalyticAt ℂ (M.atlas.chart j ∘ e.symm) u` using `(he j).2 u ⟨hu, hj⟩`. Establish `h2 : AnalyticAt ℂ ((fun y' => s y' p) ∘ (M.atlas.chart j).symm) ((M.atlas.chart j ∘ e.symm) u)`. Use `hs p j _ ⟨(M.atlas.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Use `show (M.atlas.chart j).symm ((M.atlas.chart j) (e.symm u)) ∈ U`. Rewrite using `[(M.atlas.chart j).left_inv hj]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `huU`. Use `(h2.comp h1).congr ?_` and prove the remaining obligations. Use `filter_upwards [hVo.mem_nhds huV] with u' hu'`. Simplify using `only [Function.comp_apply]`. Rewrite using `[(M.atlas.chart j).left_inv hu'.2.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticAt_sec (M : CxModel P d) {e : OpenPartialHomeomorph M.Xc (Fin d → ℂ)}
     (he : ReciprocityTheory.AnForm.M.IsCompatChart M.atlas e) {U : Set M.Xc} (hU : IsOpen U)
@@ -171,39 +167,33 @@ end Charts
 end APrimeLeviCharts
 
 /- English proof (translation)
-Introduce `II Ψ _ K _ ι _ Ω _ _ E _ _ D M C kc`. Use `set ψ := C.chart kc with hψ`. Establish `hcompat : ReciprocityTheory.AnForm.M.IsCompatChart M.atlas ψ` using `C.compat kc`. Establish `hsm : IsSmoothHerm D.A'` using `D.A'_pos.1`. Use `set φ : ((Σ k, ι k) → ℂ) → ℝ := fun y => Real.log (D.A'.h y) with hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsec : ∀ x : M.Xc, ∃ s : M.Xc → (Σ k, ι k) → ℂ, ∃ U : Set M.Xc, IsOpen U ∧ x ∈ U ∧ (∀ y ∈ U, s y ∈ mcPts (mCoordIdeal D.y) ∧ M.proj (s y) = y) ∧ ∀ p, M.atlas.HoloOn U fun y => s y p`. Introduce `x`. Take `⟨U, hUo, hxU, s, hs, hsh⟩` from `M.sections x`. Conclude with `⟨s, U, hUo, hxU, hs, hsh⟩`. Use `choose sec U hUo hxU hs hsh using hsec`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNo : ∀ x, IsOpen (ψ.target ∩ ψ.symm ⁻¹' U x)` using `fun x => ψ.continuousOn_symm.isOpen_inter_preimage ψ.open_target (hUo x)`. Establish `hgan : ∀ x, ∀ u ∈ ψ.target ∩ ψ.symm ⁻¹' U x, AnalyticAt ℂ (fun u => sec x (ψ.symm u)) u` using `fun x u hu => APrimeLeviCharts.analyticAt_sec M hcompat (hUo x) (hsh x) hu.1 hu.2`. Establish `hgC : ∀ x, ∀ u ∈ ψ.target ∩ ψ.symm ⁻¹' U x, ContDiffAt ℝ 2 (φ ∘ fun u => sec x (ψ.symm u)) u` using `fun x u hu => (APrimeLeviCharts.contDiffAt_log_h hsm (hs x _ hu.2).1.1).comp u (hgan x u hu).restrictScalars.contDiffAt`. Establish `hind : ∀ x₁ x₂, ∀ y ∈ ψ.target, ψ.symm y ∈ U x₁ → ψ.symm y ∈ U x₂ → ∀ v, levi (φ ∘ fun u => sec x₁ (ψ.symm u)) y v = levi (φ ∘ fun u => sec x₂ (ψ.symm u)) y v`. Introduce `x₁ x₂ y hy h₁ h₂ v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hO : IsOpen (ψ.target ∩ ψ.symm ⁻¹' (U x₁ ∩ U x₂))` using `ψ.continuousOn_symm.isOpen_inter_preimage ψ.open_target ((hUo x₁).inter (hUo x₂))`. Use `APrimeLeviCharts.levi_log_h_torus hsm (hgan x₁ y ⟨hy, h₁⟩) (hgan x₂ y ⟨hy, h₂⟩) ?_ v` and prove the remaining obligations. Use `filter_upwards [hO.mem_nhds ⟨hy, h₁, h₂⟩] with u hu`. Establish `e₁` using `hs x₁ _ hu.2.1`. Establish `e₂` using `hs x₂ _ hu.2.2`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨e₂.1.1, (M.fibre _ e₂.1 _ e₁.1).1 (by rw [e₁.2, e₂.2])⟩`. Use `⟨fun y v => levi (φ ∘ fun u => sec (ψ.symm y) (ψ.symm u)) y v, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Use `set x₀ := ψ.symm p.1 with hx₀`. Establish `hp₀ : p.1 ∈ ψ.target ∩ ψ.symm ⁻¹' U x₀` using `⟨hp.1, hxU x₀⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hC : ContinuousOn (fun q : (Fin D.n → ℂ) × (Fin D.n → ℂ) => levi (φ ∘ fun u => sec x₀ (ψ.symm u)) q.1 q.2) ((ψ.target ∩ ψ.symm ⁻¹' U x₀) ×ˢ Set.univ)` using `continuousOn_levi (hNo x₀) fun u hu => (hgC x₀ u hu).contDiffWithinAt`. Establish `hnhds : (ψ.target ∩ ψ.symm ⁻¹' U x₀) ×ˢ (Set.univ : Set (Fin D.n → ℂ)) ∈ 𝓝 p` using `prod_mem_nhds ((hNo x₀).mem_nhds hp₀) Filter.univ_mem`. Use `((hC.continuousAt hnhds).congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [hnhds] with q hq`. Conclude with `(hind _ _ q.1 hq.1.1 (hxU _) hq.1.2 q.2).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `z hz hzs w v hv`. Take `⟨γ, hγ0, hγw, hγev, hγv⟩` from `hv`. Take `⟨W, hWo, hzW, F, hFd, hF⟩` from `hP II Ψ K ι Ω E D M ψ hcompat z hz hzs`. Use `set y₀ := ψ (M.proj z) with hy₀`. Use `set x := ψ.symm y₀ with hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxz : x = M.proj z` using `ψ.left_inv hzs`. Establish `hy₀N : y₀ ∈ ψ.target ∩ ψ.symm ⁻¹' U x` using `⟨ψ.map_source hzs, hxU x⟩`. Establish `hWγ : ∀ᶠ t in 𝓝 (0 : ℂ), γ t ∈ W` using `hγw.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hWo.mem_nhds hzW)`. Take `⟨S, hS, hSp⟩` from `(hγev.and hWγ).exists_mem`. Establish `hγan : AnalyticAt ℂ γ 0` using `DifferentiableOn.analyticAt (fun t ht => (hSp t ht).1.1.differentiableWithinAt) hS`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set β : ℂ → Fin D.n → ℂ := fun t => F (γ t) with hβ`. Establish `hβan : AnalyticAt ℂ β 0` using `DifferentiableOn.analyticAt (fun t ht => ((hFd.differentiableAt (hWo.mem_nhds (hSp t ht).2)).comp t (hSp t ht).1.1).differentiableWithinAt) hS`. Establish `hβψ : ∀ t ∈ S, M.proj (γ t) ∈ ψ.source ∧ ψ (M.proj (γ t)) = β t` using `fun t ht => hF (γ t) ⟨(hSp t ht).2, (hSp t ht).1.2⟩`. Establish `hβ0 : β 0 = y₀`. Rewrite using `[← (hβψ 0 (mem_of_mem_nhds hS)).2, hγ0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβv : HasDerivAt β v 0`. Use `hγv.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hS] with t ht`. Conclude with `(hβψ t ht).2.symm`. Establish `hβN : ∀ᶠ t in 𝓝 (0 : ℂ), β t ∈ ψ.target ∩ ψ.symm ⁻¹' U x` using `hβan.continuousAt.preimage_mem_nhds (by rw [hβ0]; exact (hNo x).mem_nhds hy₀N)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrelC : ∀ᶠ t in 𝓝 (0 : ℂ), (∀ k, ∃ i, sec x (ψ.symm (β t)) ⟨k, i⟩ ≠ 0) ∧ ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ γ t = torusSmul c (sec x (ψ.symm (β t)))` using `by filter_upwards [hS, hβN] with t ht htN`. Establish `e₁` using `hs x _ htN.2`. Establish `hpr : M.proj (γ t) = ψ.symm (β t)`. Rewrite using `[← (hβψ t ht).2, ψ.left_inv (hβψ t ht).1]`. Conclude with `⟨e₁.1.1, (M.fibre _ e₁.1 _ (hSp t ht).1.2).1 (by rw [e₁.2, hpr])⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set L₁ : (Fin 1 → ℂ) →L[ℂ] ℂ := ContinuousLinearMap.proj 0 with hL₁`. Establish `hL0 : L₁ 0 = 0` using `map_zero L₁`. Establish `hLt : Tendsto L₁ (𝓝 0) (𝓝 0)`. Establish `h` using `L₁.continuous.tendsto 0`. Rewrite `h` using `[hL0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e₁ : Fin 1 → ℂ := fun _ => 1 with he₁`. Establish `hLe : L₁ e₁ = 1` using `rfl`. Establish `hτ₁ : AnalyticAt ℂ (γ ∘ L₁) 0` using `hγan.comp_of_eq (L₁.analyticAt 0) hL0`. Establish `hβL : AnalyticAt ℂ (β ∘ L₁) 0` using `hβan.comp_of_eq (L₁.analyticAt 0) hL0`. Establish `hβL0 : (β ∘ L₁) 0 = y₀` using `by simp [hL0, hβ0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hτ₂ : AnalyticAt ℂ ((fun u => sec x (ψ.symm u)) ∘ (β ∘ L₁)) 0` using `(hgan x y₀ hy₀N).comp_of_eq hβL hβL0`. Establish `hγD : HasFDerivAt (γ ∘ L₁) ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) w).comp L₁) 0`. Establish `h` using `hγw.hasFDerivAt`. Rewrite `h` using `[← hL0]`. Conclude with `h.comp 0 L₁.hasFDerivAt`.
-
-Establish `s1` using `levi_comp (φ := φ) e₁ hτ₁ (by simp only [Function.comp_apply, hL0, hγ0]; exact APrimeLeviCharts.contDiffAt_log_h hsm hz.1)`. Rewrite `s1` using `[hγD.fderiv]`. Simplify using `only [Function.comp_apply, hL0, hγ0, ContinuousLinearMap.coe_comp', ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.one_apply, hLe, one_smul] at s1`. Establish `hβD : HasFDerivAt (β ∘ L₁) ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) v).comp L₁) 0`. Establish `h` using `hβv.hasFDerivAt`.
-
-Rewrite `h` using `[← hL0]`. Conclude with `h.comp 0 L₁.hasFDerivAt`. Establish `s3` using `levi_comp (φ := φ ∘ fun u => sec x (ψ.symm u)) e₁ hβL (by rw [hβL0]; exact hgC x y₀ hy₀N)`. Rewrite `s3` using `[hβD.fderiv, hβL0]`. Simplify using `only [ContinuousLinearMap.coe_comp', Function.comp_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.one_apply, hLe, one_smul] at s3`.
-
-Establish `s2` using `APrimeLeviCharts.levi_log_h_torus hsm hτ₁ hτ₂ (hLt.eventually hrelC) e₁`. Rewrite using `[← s1]`. Conclude with `s2.trans s3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem APrimeLeviCharts.proof (hP : ProjHoloLocal.Statement) : APrimeLeviCharts.Statement := by
   intro II Ψ _ K _ ι _ Ω _ _ E _ _ D M C kc

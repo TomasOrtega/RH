@@ -10,9 +10,9 @@ variable {F : Type} [NormedField F] (p : ℕ) [Fact p.Prime] [CharP F p] [Perfec
 noncomputable abbrev frobAut : RingAut F := frobeniusEquiv F p
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, RingAut.mul_apply, ih]`. Simplify using `only [frobAut, frobeniusEquiv_apply, frobenius_def, ← pow_mul, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_pow_apply (n : ℕ) (x : F) : ((frobAut (F := F) p) ^ n) x = x ^ p ^ n := by
   induction n generalizing x with
@@ -23,7 +23,7 @@ theorem frob_pow_apply (n : ℕ) (x : F) : ((frobAut (F := F) p) ^ n) x = x ^ p 
     rw [mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Function.iterate_succ_apply, RingAut.mul_apply, ih, RingAut.inv_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_inv_pow_apply (n : ℕ) (x : F) :
     (((frobAut (F := F) p)⁻¹) ^ n) x = ((frobeniusEquiv F p).symm)^[n] x := by
@@ -33,9 +33,9 @@ theorem frob_inv_pow_apply (n : ℕ) (x : F) :
     rw [pow_succ, Function.iterate_succ_apply, RingAut.mul_apply, ih, RingAut.inv_apply]
 
 /- English proof (translation)
-Unfold `pw`. Use `split_ifs with hk`. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le hk`. Rewrite using `[zpow_natCast, frob_pow_apply]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `Int.exists_eq_neg_ofNat (le_of_lt (not_le.mp hk))`. Substitute `hn` using the available equality. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow, frob_inv_pow_apply]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pw_eq (k : ℤ) (x : F) : pw p k x = ((frobAut (F := F) p) ^ k) x := by
   unfold pw
@@ -49,15 +49,15 @@ theorem pw_eq (k : ℤ) (x : F) : pw p k x = ((frobAut (F := F) p) ^ k) x := by
     simp
 
 /- English proof (translation)
-Rewrite using `[pw_eq, pw_eq, pw_eq, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pw_mul (k : ℤ) (a b : F) : pw p k (a * b) = pw p k a * pw p k b := by
   rw [pw_eq, pw_eq, pw_eq, map_mul]
 
 /- English proof (translation)
-Establish `e1 : z ^ (p ^ h) ^ (L - 1) = ((frobAut (F` using `F) p) ^ (((h * (L - 1) : ℕ)) : ℤ)) z := by`. Rewrite using `[zpow_natCast, frob_pow_apply, pow_mul]`. Establish `e2 : z ^ (p ^ h) ^ ((n + L).toNat) = ((frobAut (F` using `F) p) ^ (((h * (n + L).toNat : ℕ)) : ℤ)) z := by`. Rewrite using `[zpow_natCast, frob_pow_apply, pow_mul]`. Establish `e3 : ∀ y : F, y ^ p ^ (h - r) = ((frobAut (F` using `F) p) ^ (((h - r : ℕ)) : ℤ)) y := fun y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zpow_natCast, frob_pow_apply]`. Rewrite using `[e3, pw_eq, e1, e2, ← RingAut.mul_apply, ← RingAut.mul_apply, ← zpow_add, ← zpow_add]`. Use `congr 2`. Establish `ht : ((n + L).toNat : ℤ) = n + L` using `Int.toNat_of_nonneg (by omega)`. Move the coercions through the operations in `[Nat.cast_sub hr, Nat.cast_sub hL, ht]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -81,15 +81,15 @@ end GlobalTheory.PMonE.WinCoef
 open GlobalTheory.PMonE.WinCoef in
 
 /- English proof (translation)
-Introduce `hL z r`. Establish `hr : (r : ℕ) ≤ h` using `r.isLt.le`. Simplify using `only [rowS, winPt, gsum, Finset.sum_apply, Matrix.mulVec, dotProduct, coefB, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm (s := Finset.range (L + U + 1)), Finset.sum_div, sum_pow_char_pow]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_div, sum_pow_char_pow]`. Use `Finset.sum_nbij' (fun n => (n + L).toNat) (fun m => (m : ℤ) - L) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `n hn`. Simplify using `only [Finset.mem_Icc, Finset.mem_range] at hn ⊢`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `m hm`. Simplify using `only [Finset.mem_Icc, Finset.mem_range] at hm ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `n hn`. Simplify using `only [Finset.mem_Icc] at hn`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `m hm`. Simplify using the standard rewrite rules. Introduce `n hn`. Simplify using `only [Finset.mem_Icc] at hn`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `ht : ((n + L).toNat : ℤ) = n + L` using `Int.toNat_of_nonneg (by omega)`. Establish `hle : (n + L).toNat ≤ L + U` using `by omega`. Establish `hsub : (((n + L).toNat : ℕ) : ℤ) - L = n` using `by omega`. Rewrite using `[if_pos hle, hsub, term, term, winPt, pw_mul, ← pw_win p h r L hr hL n hn.1 (z j)]`. Rewrite using `[show lam j * ϖ ^ (-n) * (pw p (↑↑r + n * ↑h) (π j) * pw p (↑↑r + n * ↑h) (z j ^ (p ^ h) ^ (L - 1))) / (lam r * π r ^ p ^ (r : ℕ)) = (lam j * ϖ ^ (-n) * pw p (↑↑r + n * ↑h) (π j) / (lam r * π r ^ p ^ (r : ℕ))) * pw p (↑↑r + n * ↑h) (z j ^ (p ^ h) ^ (L - 1)) by ring, mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.PMonE.rowS_winPt_pow_eq_gsum_coefB (F : Type) [NormedField F] (p : ℕ) [Fact p.Prime] [CharP F p] [PerfectRing F p] (h : ℕ)
     (ϖ : F) (lam π : Fin h → F) (L U : ℕ) : 1 ≤ L → ∀ (z : Fin h → F) (r : Fin h),

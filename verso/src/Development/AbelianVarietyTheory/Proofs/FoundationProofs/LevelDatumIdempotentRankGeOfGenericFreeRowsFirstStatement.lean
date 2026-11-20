@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.StandardFiveNont
 open Polynomial Classical GlobalTheory.BadShare
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BadShare.rk_ge_of_isGeneric_of_s_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FLevelDatumIdempotentRankGeOfGenericFreeRowsFirst.lean&line=264#L264)
 -/

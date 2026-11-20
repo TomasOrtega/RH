@@ -6,9 +6,9 @@ namespace ReciprocityTheory.CA
 open IsLocalRing RingTheory.Sequence
 
 /- English proof (translation)
-Establish `hd : ringKrullDim R = ((maximalIdeal R).spanFinrank : WithBot ℕ∞)` using `(IsRegularLocalRing.spanFinrank_maximalIdeal (R := R)).symm`. Use `⟨inferInstance, (maximalIdeal R).spanFinrank, hd, ?_⟩` and prove the remaining obligations. Take `⟨rs, hlen, reg, hm⟩` from `ReciprocityTheory.CA.RegGens.exists_regular_gens R _ hd`. Use `⟨rs, hlen, fun r hr => ?_, reg⟩` and prove the remaining obligations. Rewrite using `[← hm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.subset_span hr`.
+A detailed English derivation is pending.
 -/
 theorem isCM_of_isRegularLocalRing (R : Type*) [CommRing R] [IsRegularLocalRing R] : IsCM R := by
   have hd : ringKrullDim R = ((maximalIdeal R).spanFinrank : WithBot ℕ∞) :=

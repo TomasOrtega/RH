@@ -9,7 +9,7 @@ namespace PI.GTS
 open Formalism.BasicNotions MvPolynomial
 
 /- English proof (translation)
-Unfold `Formalism.REAL.fockF`. Apply `Finset.sum_subset hS` to reduce the goal to its premises. Introduce `m _ hm`. Establish `h0 : f.coeff m = 0` using `by simpa [MvPolynomial.mem_support_iff] using hm`. Simplify using `[h0]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem fockF_eq_sum_lemma {σ : Type*} (f g : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ))
     (hS : f.support ⊆ S) :
@@ -22,7 +22,7 @@ private theorem fockF_eq_sum_lemma {σ : Type*} (f g : MvPolynomial σ ℂ) (S :
   simp [h0]
 
 /- English proof (translation)
-Rewrite using `[fockF_eq_sum_lemma (c • f) _ f.support MvPolynomial.support_smul, fockF_eq_sum_lemma f f f.support subset_rfl, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [MvPolynomial.coeff_smul, smul_eq_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockF_smul_self {σ : Type*} (c : ℂ) (f : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (c • f) (c • f) = (c * star c) * Formalism.REAL.fockF f f := by
@@ -33,7 +33,7 @@ theorem fockF_smul_self {σ : Type*} (c : ℂ) (f : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `normFock`. Rewrite using `[fockF_smul_self, mul_div_assoc]`. Establish `hc : c * star c = ((‖c‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[show star c = (starRingEnd ℂ) c from rfl, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[hc, Complex.re_ofReal_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem re_normFock_smul {N : ℕ} (lam : DomWeight N) (c : ℂ) (x : MvPolynomial (Fin N × Fin N) ℂ) :
     (normFock lam (c • x) (c • x)).re = ‖c‖ ^ 2 * (normFock lam x x).re := by
@@ -44,7 +44,7 @@ theorem re_normFock_smul {N : ℕ} (lam : DomWeight N) (c : ℂ) (x : MvPolynomi
   rw [hc, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Rewrite using `[Units.val_zpow_eq_zpow_val, norm_zpow, ← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_units_zpow_sq (u : ℂˣ) (e : ℤ) :
     ‖((u ^ e : ℂˣ) : ℂ)‖ ^ 2 = ‖(u : ℂ)‖ ^ (2 * e) := by
@@ -54,7 +54,7 @@ theorem norm_units_zpow_sq (u : ℂˣ) (e : ℤ) :
   ring
 
 /- English proof (translation)
-Unfold `sqAct delSq at *`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `Formalism.UG.P.wlocal_main le_rfl lam.natW N 0 (zero_add N) ((g : Matrix (Fin N) (Fin N) ℂ).transpose) ((g⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ).transpose (by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]) (fun i j hj => absurd hj (Nat.not_lt_zero _)) f …`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sqAct_mem_delSq (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ)
     (hf : f ∈ delSq ℂ N lam) : sqAct ℂ N lam g f ∈ delSq ℂ N lam := by
@@ -66,13 +66,13 @@ theorem sqAct_mem_delSq (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : 
     (fun i j hj => absurd hj (Nat.not_lt_zero _)) f hf
 
 /- English proof (translation)
-Introduce `n N h lam sg io br hio hbr a`. Take `⟨-, -, -, -, hio5, hio6⟩` from `hio`. Take `⟨-, -, -, -, hbr5, hbr6⟩` from `hbr`. Establish `ha : ‖(a : ℂ)‖ ≠ 0` using `norm_ne_zero_iff.mpr a.ne_zero`. Establish `hnn : 0 ≤ ‖(a : ℂ)‖ ^ (-(2 * degZ lam sg))` using `zpow_nonneg (norm_nonneg _) _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `s hs`. Establish `hk : ‖((a⁻¹ ^ degZ lam sg : ℂˣ) : ℂ)‖ ^ 2 = ‖(a : ℂ)‖ ^ (-(2 * degZ lam sg))`. Rewrite using `[norm_units_zpow_sq, Units.val_inv_eq_inv_val, norm_inv, inv_zpow']`. Rewrite using `[hio5 a⁻¹ s hs, re_normFock_smul, hk, mul_assoc]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hio6 s hs) hnn`. Introduce `f hf`. Establish `hf'` using `sqAct_mem_delSq N lam (lastGL ℂ N a) f hf`. Establish `h1` using `hbr6 _ hf'`. Rewrite `h1` using `[hbr5 a f hf, re_normFock_smul, norm_units_zpow_sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← zpow_add₀ ha]`. Simplify using the standard rewrite rules. Use `_ ≤ ‖(a : ℂ)‖ ^ (-(2 * degZ lam sg)) * (brBd h lam sg ^ 2 * (normFock lam (sqAct ℂ N lam (lastGL ℂ N a) f) (sqAct ℂ N lam (lastGL ℂ N a) f)).re) := mul_le_mul_of_nonneg_left h1 hnn`. Use `_ = _ := by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gTScale : PI.GTScale := by
   intro n N h lam sg io br hio hbr a

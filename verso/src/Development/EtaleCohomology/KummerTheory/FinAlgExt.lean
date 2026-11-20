@@ -6,32 +6,32 @@ import Development.EtaleCohomology.KummerTheory.AlgExtPf
 
 namespace LateralTheory.Fin.AlgExt
 /- English proof (translation)
-Apply `LateralTheory.KummerTheory.PlaceResGood_of` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem etale_cohomology_place_restriction_good_reduction : LateralTheory.KummerTheory.PlaceResGood := by
   apply LateralTheory.KummerTheory.PlaceResGood_of
 /- English proof (translation)
-Apply the tactic sequence `apply LateralTheory.KummerTheory.PlaceStep_of <;> first | exact etale_cohomology_place_restriction_good_reduction`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem etale_cohomology_place_localization_inductive_extension : LateralTheory.KummerTheory.PlaceStep := by
   apply LateralTheory.KummerTheory.PlaceStep_of <;> first | exact etale_cohomology_place_restriction_good_reduction
 /- English proof (translation)
-Apply the tactic sequence `apply LateralTheory.KummerTheory.PlaceEx_of_step <;> first | exact etale_cohomology_place_localization_inductive_extension`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem etale_cohomology_place_localization_exists : LateralTheory.KummerTheory.PlaceEx := by
   apply LateralTheory.KummerTheory.PlaceEx_of_step <;> first | exact etale_cohomology_place_localization_inductive_extension
 /- English proof (translation)
-Apply the tactic sequence `apply LateralTheory.KummerTheory.Place_of_ex <;> first | exact etale_cohomology_place_localization_exists`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem etale_cohomology_place_localization_holds : LateralTheory.KummerTheory.Place := by
   apply LateralTheory.KummerTheory.Place_of_ex <;> first | exact etale_cohomology_place_localization_exists
 /- English proof (translation)
-Apply the tactic sequence `apply LateralTheory.KummerTheory.AlgExt_of <;> first | exact etale_cohomology_place_localization_holds`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem etale_cohomology_algebraic_extension_invariance_of_places : LateralTheory.KummerTheory.AlgExt := by
   apply LateralTheory.KummerTheory.AlgExt_of <;> first | exact etale_cohomology_place_localization_holds
 /- English proof (translation)
-The claim follows from `etale_cohomology_algebraic_extension_invariance_of_places`.
+A detailed English derivation is pending.
 -/
 theorem intersectionNumber_baseChange : LateralTheory.KummerTheory.AlgExt := etale_cohomology_algebraic_extension_invariance_of_places
 end LateralTheory.Fin.AlgExt

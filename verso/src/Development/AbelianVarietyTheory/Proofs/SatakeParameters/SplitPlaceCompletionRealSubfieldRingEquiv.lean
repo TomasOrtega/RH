@@ -10,15 +10,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.SplitCompl
 
 /- English proof (translation)
-Introduce `L _ _ _ s`. Establish `hf : ∀ x : L, Valued.v (s.i.toRingHom x) = s.w.valuation L x` using `fun x => PI.CompAtExist.muV_eq s x`. Take `⟨φ, hφc, hφ, -⟩` from `GlobalTheory.DenseCompl.exists_extension s.w s.v (f := s.i.toRingHom) hf`. Set `g : maximalRealSubfield L →+* s.w.adicCompletion L` to `(algebraMap L (s.w.adicCompletion L)).comp (algebraMap (maximalRealSubfield L) L)`. Establish `hg : ∀ a, Valued.v (g a) = s.v.valuation (maximalRealSubfield L) a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a`. Simplify using `only [g, RingHom.comp_apply]`. Rewrite using `[GlobalTheory.Idele.valued_algebraMap, ← PI.CompAtExist.muV_eq s, PI.CompAtExist.muV_apply, AlgHom.commutes, GlobalTheory.Idele.valued_algebraMap]`. Take `⟨ψ, hψc, hψ, -⟩` from `GlobalTheory.DenseCompl.exists_extension s.v s.w g hg`. Establish `hcomp : ∀ y, φ (ψ y) = y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y`. Use `(HeightOneSpectrum.denseRange_algebraMap (maximalRealSubfield L) s.v).induction_on (p := fun y => φ (ψ y) = y) y (isClosed_eq (hφc.comp hψc) continuous_id) fun a => ?_` and prove the remaining obligations. Rewrite using `[hψ]`. Simplify using `only [g, RingHom.comp_apply]`. Rewrite using `[hφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `s.i.commutes a`. Establish `hsurj : Function.Surjective φ` using `fun y => ⟨ψ y, hcomp y⟩`. Set `e` to `RingEquiv.ofBijective φ ⟨φ.injective, hsurj⟩`. Establish `he : ∀ y, e.symm y = ψ y` using `fun y => e.injective (by rw [e.apply_symm_apply]; exact (hcomp y).symm)`. Use `⟨e.symm, ?_, ?_, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hψc.congr fun y => (he y).symm`. Conclude with `hφc`. Establish `h` using `e.symm_apply_apply (algebraMap L (s.w.adicCompletion L) x)`. Conclude with `(congrArg e.symm (hφ x)).symm.trans h`.
+A detailed English derivation is pending.
 -/
 theorem exists_ringEquiv : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L),
     ∃ i : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L, Continuous i ∧ Continuous i.symm ∧

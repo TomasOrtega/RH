@@ -23,9 +23,9 @@ def lam (c : Pic G.left) (x y : T ⟶ G) : Pic T.left :=
   pull (x * y).left c - pull x.left c - pull y.left c + pull (1 : T ⟶ G).left c
 
 /- English proof (translation)
-Use `(cls_linComb hL _ _ h).trans ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp Equiv.ulift.symm, show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton]`. Establish `e : ((-1 : ℤ) ^ 2) • pull (1 : T ⟶ G).left (cls L hL) + (((-1 : ℤ) ^ 1) • pull (x * 1).left (cls L hL) + (((-1 : ℤ) ^ 1) • pull (y * 1).left (cls L hL) + ((-1 : ℤ) ^ 0) • pull (x * (y * 1)).left (cls L hL))) = lam (cls L hL) x y`. Simplify using `only [_root_.mul_one, lam]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Normalize the expressions using the abelian group laws. Conclude with `e`.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cls_cube_two {L : LB G.left} (hL : L.IsLB) (x y : T ⟶ G) (h : (cubeLB G ![x, y] L).IsLB) :
     cls _ h = lam (cls L hL) x y := by
@@ -42,9 +42,9 @@ theorem cls_cube_two {L : LB G.left} (hL : L.IsLB) (x y : T ⟶ G) (h : (cubeLB 
   exact e
 
 /- English proof (translation)
-Use `(cls_linComb hL _ _ h).trans ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp Equiv.ulift.symm, show (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}} by decide, Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.s …`. Establish `e : ((-1 : ℤ) ^ 3) • pull (1 : T ⟶ G).left (cls L hL) + (((-1 : ℤ) ^ 2) • pull (x * 1).left (cls L hL) + (((-1 : ℤ) ^ 2) • pull (y * 1).left (cls L hL) + (((-1 : ℤ) ^ 2) • pull (z * 1).left (cls L hL) + (((-1 : ℤ) ^ 1) • pull (x * (y * 1)).left (cls L hL) + (((-1 : ℤ) ^ 1) • pull …`. Simplify using `only [_root_.mul_one, lam, _root_.mul_assoc]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Normalize the expressions using the abelian group laws. Conclude with `e`.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cls_cube_three [IsCommMonObj G] {L : LB G.left} (hL : L.IsLB) (x y z : T ⟶ G)
     (h : (cubeLB G ![x, y, z] L).IsLB) :
@@ -67,33 +67,33 @@ theorem cls_cube_three [IsCommMonObj G] {L : LB G.left} (hL : L.IsLB) (x y z : T
   exact e
 
 /- English proof (translation)
-Simplify using `only [lam, map_add, map_sub, ← pull_comp, ← Over.comp_left, MonObj.comp_mul, MonObj.comp_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pull_lam (h : T' ⟶ T) (c : Pic G.left) (x y : T ⟶ G) :
     pull h.left (lam c x y) = lam c (h ≫ x) (h ≫ y) := by
   simp only [lam, map_add, map_sub, ← pull_comp, ← Over.comp_left, MonObj.comp_mul, MonObj.comp_one]
 
 /- English proof (translation)
-Simplify using `only [lam, ← pull_comp, ← Over.comp_left, MonObj.mul_comp, MonObj.one_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_pull (ψ : G ⟶ G') [IsMonHom ψ] (c : Pic G'.left) (x y : T ⟶ G) :
     lam (pull ψ.left c) x y = lam c (x ≫ ψ) (y ≫ ψ) := by
   simp only [lam, ← pull_comp, ← Over.comp_left, MonObj.mul_comp, MonObj.one_comp]
 
 /- English proof (translation)
-Simplify using `only [lam, map_nsmul, nsmul_add, nsmul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_nsmul (n : ℕ) (c : Pic G.left) (x y : T ⟶ G) : lam (n • c) x y = n • lam c x y := by
   simp only [lam, map_nsmul, nsmul_add, nsmul_sub]
 
 /- English proof (translation)
-Simplify using `only [lam, _root_.one_mul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_one_left (c : Pic G.left) (y : T ⟶ G) : lam c 1 y = 0 := by
   simp only [lam, _root_.one_mul]; abel
 
 /- English proof (translation)
-Simplify using `only [lam, _root_.mul_one]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_one_right (c : Pic G.left) (x : T ⟶ G) : lam c x 1 = 0 := by
   simp only [lam, _root_.mul_one]; abel
@@ -101,15 +101,15 @@ theorem lam_one_right (c : Pic G.left) (x : T ⟶ G) : lam c x 1 = 0 := by
 variable [IsCommMonObj G]
 
 /- English proof (translation)
-Simplify using `only [lam, _root_.mul_comm x y]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_comm (c : Pic G.left) (x y : T ⟶ G) : lam c x y = lam c y x := by
   simp only [lam, _root_.mul_comm x y]; abel
 
 /- English proof (translation)
-Establish `h₀` using `(cls_eq_zero_iff (N := Theta G L) (LB.isLB_linComb hL _ _)).2 hΘ`. Establish `h₁` using `(cls_cube_three hL (fst _ _) (snd _ _ ≫ fst _ _) (snd G (G ⊗ G) ≫ snd _ _) (LB.isLB_linComb hL _ _)).symm.trans h₀`. Establish `h₂` using `congrArg (pull (lift x (lift y z)).left) h₁`. Simplify using `only [map_sub, map_zero, pull_lam, MonObj.comp_mul, lift_fst, lift_snd_assoc, lift_snd] at h₂`. Rewrite `h₂` using `[sub_sub, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h₂`.
+A detailed English derivation is pending.
 -/
 theorem lam_mul_left {L : LB G.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta G L), t.IsGen) (x y z : T ⟶ G) :
     lam (cls L hL) (x * y) z = lam (cls L hL) x z + lam (cls L hL) y z := by
@@ -122,7 +122,7 @@ theorem lam_mul_left {L : LB G.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta 
   exact h₂
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, lam_one_left, zero_nsmul]`. Consider the case `succ n ih => rw [pow_succ, lam_mul_left hL hΘ, ih, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lam_pow_left {L : LB G.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta G L), t.IsGen) (x z : T ⟶ G) (n : ℕ) :
     lam (cls L hL) (x ^ n) z = n • lam (cls L hL) x z := by
@@ -131,16 +131,16 @@ theorem lam_pow_left {L : LB G.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta 
   | succ n ih => rw [pow_succ, lam_mul_left hL hΘ, ih, succ_nsmul]
 
 /- English proof (translation)
-Rewrite using `[lam_comm, lam_pow_left hL hΘ, lam_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_pow_right {L : LB G.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta G L), t.IsGen) (x z : T ⟶ G) (n : ℕ) :
     lam (cls L hL) x (z ^ n) = n • lam (cls L hL) x z := by
   rw [lam_comm, lam_pow_left hL hΘ, lam_comm]
 
 /- English proof (translation)
-Take `⟨_, w, hw, -⟩` from `h`. Establish `e` using `(cls_eq_iff L.isLB (pull_isLB L.isLB _)).2 ⟨w, hw⟩`. Rewrite `e` using `[cls_pull L.isLB]`. Use `fun s => ⟨⊤, trivial, (cls_eq_zero_iff (LB.isLB_linComb L.isLB _ _)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[cls_linComb L.isLB, Fin.sum_univ_two]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, pull_comp, ← e, one_smul, neg_smul, add_neg_cancel]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sym_of_isSymmetric (L : RigLB G) (h : L.IsSymmetric) : Out.Sym G L.L := by
   obtain ⟨_, w, hw, -⟩ := h
@@ -153,9 +153,9 @@ theorem sym_of_isSymmetric (L : RigLB G) (h : L.IsSymmetric) : Out.Sym G L.L := 
 end Pairing
 
 /- English proof (translation)
-Establish `: JacobsonSpace A.left` using `LocallyOfFiniteType.jacobsonSpace A.hom`. Establish `hd : Dense (closedPoints A.left)` using `dense_iff_closure_eq.2 closure_closedPoints`. Use `(f.left.surjective.denseRange.dense_image f.left.continuous hd).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Set `u : 𝟙_ (Over (Sp k)) ⟶ A` to `Over.homMk (pointOfClosedPoint A.hom a ha) (pointOfClosedPoint_comp A.hom a ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Use `Set.mem_iUnion₂.2 ⟨u ≫ f, hP u, ⟨(default : PrimeSpectrum k), ?_⟩⟩` and prove the remaining obligations. Conclude with `congrArg f.left (pointOfClosedPoint_apply A.hom a ha _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dense_image_points {k : Type} [Field k] [IsAlgClosed k] {A B : Over (Sp k)} [LocallyOfFiniteType A.hom]
     (f : A ⟶ B) [Surjective f.left] (P : Set (𝟙_ (Over (Sp k)) ⟶ B)) (hP : ∀ u : 𝟙_ (Over (Sp k)) ⟶ A, u ≫ f ∈ P) :

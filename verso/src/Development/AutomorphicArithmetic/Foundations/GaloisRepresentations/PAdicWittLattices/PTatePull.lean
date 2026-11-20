@@ -8,15 +8,13 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Introduce `p _ D R _ _ gb S S' s s' f N o o' m k _ t`. Establish `hT` using `HeckeRestrict.tate_pullback D.toG o.A o'.A o.act o'.act o.P o'.P o.isLB o'.isLB f m.φ m.φ₂ m.cart m.sq m.act m.pol k t`. Establish `hpt : ∀ y, (toUnit (Over.mk (t ≫ f)) ≫ o.eta y).left = t ≫ (o'.eta y).left ≫ m.φ`. Introduce `y`. Rewrite using `[Over.comp_left, HeckeRestrict.toUnit_left, m.eta y]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Category.assoc _ _ _`. Establish `hpt' : ∀ y, (toUnit (Over.mk t) ≫ o'.eta y).left ≫ m.φ = t ≫ (o'.eta y).left ≫ m.φ`. Introduce `y`. Rewrite using `[Over.comp_left, HeckeRestrict.toUnit_left]`. Conclude with `Category.assoc _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun I => ?_, fun I' => ?_⟩` and prove the remaining obligations. Take `⟨I', hI'⟩` from `hT.2 I`. Use `⟨I', fun hI y => ?_, fun n x => (hI' n x).symm⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpt', ← hpt, hI y, hI' N y]`. Rewrite using `[Over.w, Over.w]`. Take `⟨I, hI⟩` from `hT.1 I'`. Use `⟨I, fun hI' y => ?_, fun n x => (hI n x).symm⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
-
-Rewrite using `[hpt, hI N y, ← hI' y, hpt']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pTatePull :
     TatePull := by

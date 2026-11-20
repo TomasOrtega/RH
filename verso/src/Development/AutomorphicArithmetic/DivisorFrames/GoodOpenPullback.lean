@@ -8,11 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
 /- English proof (translation)
-Take `⟨τ, hτ, hχ, e⟩` from `h`. Set `t₀ : Over.mk (Z.hom ≫ f) ⟶ splitTorus S X` to `Over.homMk (t.left ≫ τ) (by`. Rewrite using `[Category.assoc, hτ, ← Category.assoc, Over.w]`. Use the proof step `rfl)`. Set `g₀ : Over.mk (Z.hom ≫ f) ⟶ G` to `Over.homMk (g.left ≫ φ) (by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hφ.1.w, ← Category.assoc, Over.w]`. Use the proof step `rfl)`. Use `⟨t₀, g₀, fun χ => ?_, rfl, ?_⟩` and prove the remaining obligations. Use `show (t.left ≫ τ).appTop.hom _ = _`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, hχ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `hφ.2 Z (t ≫ u') g _ _ ?_ rfl` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, ← e, ← Category.assoc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem key {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G']
     {φ : G'.left ⟶ G.left} (hφ : IsGrpPullback G' G f φ) {X : Type} [AddCommGroup X] {u : splitTorus S X ⟶ G}
@@ -32,7 +32,7 @@ private theorem key {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {
     rw [Over.comp_left, Over.comp_left, Category.assoc, ← e, ← Category.assoc]; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `⟨h, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun q => q.hom s) (Scheme.Hom.comp_appLE a φ V ⊤ h)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem appLE_comp_exists {Z Y Y' : Scheme.{0}} (a : Z ⟶ Y') (φ : Y' ⟶ Y) (b : Z ⟶ Y) (e : b = a ≫ φ)
     (V : Y.Opens) (h : ⊤ ≤ a ⁻¹ᵁ φ ⁻¹ᵁ V) (s : Γ(Y, V)) :
@@ -42,13 +42,13 @@ private theorem appLE_comp_exists {Z Y Y' : Scheme.{0}} (a : Z ⟶ Y') (φ : Y' 
   exact congrArg (fun q => q.hom s) (Scheme.Hom.comp_appLE a φ V ⊤ h)
 
 /- English proof (translation)
-Introduce `S S' f hf G _ G' _ φ hφ X _ u u' h V ⟨hV, hst, w, hw⟩`. Establish `haff : IsAffineHom φ` using `MorphismProperty.of_isPullback hφ.1.flip hf`. Use `⟨hV.preimage φ, ?_, (Units.map (φ.app V).hom.toMonoidHom).comp w, fun χ Z t g h₁ h₂ => ?_⟩` and prove the remaining obligations. Take `⟨t₀, g₀, -, e₁, e₂⟩` from `key hφ h _ (fst (splitTorus S' X) G') (snd (splitTorus S' X) G')`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : g₀.left x ∈ V` using `by rw [e₁]; exact hx`. Establish `h2 : (lift t₀ g₀).left x ∈ (snd (splitTorus S X) G).left ⁻¹ᵁ V` using `by show (lift t₀ g₀ ≫ snd _ _).left x ∈ V`. Rewrite using `[lift_snd]` and apply the resulting hypothesis. Establish `h3 : (lift t₀ g₀ ≫ ((fst (splitTorus S X) G ≫ u) * snd (splitTorus S X) G)).left x ∈ V` using `hst h2`. Rewrite `h3` using `[MonObj.comp_mul, lift_fst_assoc, lift_snd, e₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`. Take `⟨t₀, g₀, e₀, e₁, e₂⟩` from `key hφ h Z t g`. Take `⟨k₁, r₁⟩` from `appLE_comp_exists _ φ _ e₂ V h₁ (w (Multiplicative.ofAdd χ)).val`. Take `⟨k₂, r₂⟩` from `appLE_comp_exists _ φ _ e₁ V h₂ (w (Multiplicative.ofAdd χ)).val`. Use `hw χ _ t₀ g₀ k₁ k₂` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[r₁, r₂, e₀]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.good_open_pullback :
     ∀ (S S' : Scheme.{0}) (f : S' ⟶ S), IsAffineHom f → ∀ (G : Over S) [GrpObj G] (G' : Over S') [GrpObj G']

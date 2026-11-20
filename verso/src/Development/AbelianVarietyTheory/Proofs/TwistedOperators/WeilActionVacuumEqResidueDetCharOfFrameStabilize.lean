@@ -12,15 +12,15 @@ noncomputable section
 namespace GlobalTheory.VacLaw
 
 /- English proof (translation)
-Take `⟨x', rfl⟩` from `hx`. Take `⟨y', rfl⟩` from `hy`. Rewrite using `[redFn_frGL, redFn_frGL]`. Use extensionality with `i j`. Simplify using `[frGL, intGL, Formalism.UG.bc] at h ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hinv : (β : Matrix (Fin n) (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F)))⁻¹ = ((β⁻¹ : GL (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F))) : Matrix (Fin n) (Fin n) _)` using `(Matrix.coe_units_inv β).symm`. Establish `hBiB : ((β⁻¹ : GL (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F))) : Matrix (Fin n) (Fin n) _) * (β : Matrix (Fin n) (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F))) = 1` using `Units.inv_mul β`. Establish `back : ∀ Z : Matrix (Fin n) (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F)), ((β⁻¹ : GL (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F))) : Matrix (Fin n) (Fin n) _) * ((a : TensorProduct F E (Formalism.L2.Herm.Af F)) • ((β : Matrix (Fin n) (Fin n) (TensorProduct F E (Fo …`. Introduce `Z`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, hinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Z := by rw [hBiB, Matrix.one_mul, Matrix.mul_one]`. Establish `hm : (a : TensorProduct F E (Formalism.L2.Herm.Af F)) • ((β : Matrix (Fin n) (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F))) * (x' : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf F E)).map Subtype.val * (β : Matrix (Fin n) (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af …`.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `k l`. Simplify `h k l` using `[Matrix.smul_apply]`. Establish `hxy` using `congrArg (fun Z => Z i j) ((back _).symm.trans ((congrArg (fun W => ((β⁻¹ : GL (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F))) : Matrix (Fin n) (Fin n) _) * W * (β : Matrix (Fin n) (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F)))) hm).trans (back _)))`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul] at hxy`. Establish `hs : a * (x' : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf F E)) i j = a * (y' : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf F E)) i j` using `Subtype.ext (by simpa using hxy)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `congrArg (resS F PP) hs`. Simplify `hr` using `[map_mul, ha]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem redFn_congr {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F))) (PP : Pl E) (a : Formalism.L2.Herm.intAf F E) (ha : resS F PP a = 1)
@@ -78,16 +78,16 @@ def detScal (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (P : Finset (Pl D.hos
   ∏ PP ∈ P, c PP (Matrix.GeneralLinearGroup.det (redFn β PP (finE V k)))
 
 /- English proof (translation)
-Simplify using `[detScal, redFn, blockDiagonalExtendByOnePrimeField_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem detScal_one (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (P : Finset (Pl D.host.E))
     (c : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) : detScal V β P c 1 = 1 := by
   simp [detScal, redFn, blockDiagonalExtendByOnePrimeField_one]
 
 /- English proof (translation)
-Unfold `detScal`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul]`. Rewrite using `[show redFn β PP (finE V k * finE V l) = redFn β PP (finE V k) * redFn β PP (finE V l) from extendMatrixByIdentityAlongIndices_mul _ hk hl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem detScal_mul (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (P : Finset (Pl D.host.E))
     (c : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) {k l : GA D V} (hk : finE V k ∈ St β) (hl : finE V l ∈ St β) :
@@ -100,7 +100,7 @@ theorem detScal_mul (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (P : Finset (
   simp only [map_mul]
 
 /- English proof (translation)
-Simplify using `[vacScal, detScal, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vacScal_eq {S T : HSp D} (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D))
     (P : Finset (Pl D.host.E)) (cS cT : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (g : GA D S) (h : GA D T) :
@@ -109,31 +109,27 @@ theorem vacScal_eq {S T : HSp D} (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (
   simp [vacScal, detScal, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Introduce `g hg hgS`. Take `⟨γ, hγ, hs⟩` from `GlobalTheory.T.exists_local_products_tendsto_frameStabiliser D V β g hg hgS`. Take `⟨⟨es, hes, rfl⟩, _⟩` from `he`. Establish `hfin : ∀ (k : GA D V) (i j : Fin V.rank), ((finE V k : GL (Fin V.rank) (Lev.EAf D)) : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D)) i j = toEAf D (Formalism.L2.Theta.mt V k i j)`. Introduce `k i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[finE, Formalism.UG.bc, finHom, Formalism.L2.Theta.mt, toEAf, swapAE, Formalism.L2.Theta.finPart]`. Establish `hgen : ∀ k ∈ Subgroup.closure {k : GA D V | k ∈ GfC V ∧ finE V k ∈ St β ∧ ∃ v ε, IsPlaceIdem D v ε ∧ SuppPl ε V k}, k ∈ GfC V ∧ finE V k ∈ St β ∧ ρ k f = ((detScal V β P c k : ℂˣ) : ℂ) • f`. Introduce `k hk`. Proceed by induction on `hk using Subgroup.closure_induction with`. Consider the case `mem k hk`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨hk1, hk2, v, ε, hv, hsupp⟩` from `hk`. Conclude with `⟨hk1, hk2, hloc k hk1 hk2 v ε hv hsupp⟩`. Consider the case `one`. Use `⟨(GfC V).one_mem, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(St β).one_mem`. Simplify using `[detScal_one]`. Consider the case `mul k l _ _ hk hl`. Take `⟨hk1, hk2, hk3⟩` from `hk`. Take `⟨hl1, hl2, hl3⟩` from `hl`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(GfC V).mul_mem hk1 hl1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(St β).mul_mem hk2 hl2`. Rewrite using `[detScal_mul V β P c hk2 hl2, ρ.map_mul, Module.End.mul_apply, hl3, LinearMap.map_smul, hk3, smul_smul, Units.val_mul, mul_comm]`. Consider the case `inv k _ hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hk1, hk2, hk3⟩` from `hk`. Establish `hk2' : finE V k⁻¹ ∈ St β`. Rewrite using `[map_inv]`. Conclude with `(St β).inv_mem hk2`. Use `⟨(GfC V).inv_mem hk1, hk2', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ((detScal V β P c k⁻¹ : ℂˣ) : ℂ) * ((detScal V β P c k : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.val_mul, ← detScal_mul V β P c hk2' hk2, inv_mul_cancel, detScal_one, Units.val_one]`. Establish `h1 : f = ((detScal V β P c k : ℂˣ) : ℂ) • ρ k⁻¹ f`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hd, one_smul]`. Use `_ = _ := by rw [mul_smul, ← h1]`. Establish `hev : ∀ᶠ s in Filter.atTop, detScal V β P c (γ s) = detScal V β P c g`. Establish `hP : ∀ PP ∈ P, ∀ᶠ s in Filter.atTop, redFn β PP (finE V (γ s)) = redFn β PP (finE V g)`. Introduce `PP hPP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hsp, _⟩` from `hes PP hPP`. Take `⟨hee, hec, v, ε, hv, hsum⟩` from `hsp`. Take `⟨hint, hres⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D (es PP) PP (hes PP hPP)`. Establish `hfix : es PP * algebraMap (AF D.host.F) (AE D) ε = es PP`. Rewrite using `[← hsum, mul_add, hee, hec, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `filter_upwards [Filter.eventually_ge_atTop {v}] with s hsv`. Establish `hvs : v ∈ s` using `Finset.singleton_subset_iff.mp hsv`. Use `redFn_congr β PP ⟨toEAf D (es PP), hint⟩ hres (hgen (γ s) (hs s).1).2.1 hgS ?_` and prove the remaining obligations. Introduce `i j`. Establish `hij` using `(hs s).2 v hvs ε hv i j`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[hfin, hfin, ← map_mul (toEAf D), ← map_mul (toEAf D), ← hfix, mul_assoc, mul_assoc, hij]`. Use `filter_upwards [(Filter.eventually_all_finset P).2 hP] with s hs'`. Unfold `detScal`. Conclude with `Finset.prod_congr rfl fun PP hPP => by rw [hs' PP hPP]`.
-
-Use function extensionality and compare the values at `w`. Establish `h1 : Filter.Tendsto (fun s => ρ (γ s) f w) Filter.atTop (nhds (ρ g f w))` using `((hc w).tendsto g).comp hγ`. Establish `h2 : Filter.Tendsto (fun s => ρ (γ s) f w) Filter.atTop (nhds ((((detScal V β P c g : ℂˣ) : ℂ) • f) w))`. Apply `tendsto_const_nhds.congr'` to reduce the goal to its premises. Use `filter_upwards [hev] with s hs'`.
-
-Rewrite using `[(hgen (γ s) (hs s).1).2.2, hs']`. Conclude with `tendsto_nhds_unique h1 h2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_of_local (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (e : AE D) (P : Finset (Pl D.host.E))
     (c : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) {W : Type} (ρ : GA D V →* Module.End ℂ (W → ℂ)) (f : W → ℂ)
@@ -217,22 +213,20 @@ theorem law_of_local (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (e : AE D) (
   exact tendsto_nhds_unique h1 h2
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `[SuppPl, Formalism.L2.Theta.mt]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem suppPl_one (ε : AF D.host.F) (V : HSp D) : SuppPl ε V 1 := by
   intro i j
   simp [SuppPl, Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om θ sS sT ΛS ΛT βS βT e P cS cT f hW hθ hS hT hsS hsT hΛS hΛT hfS hfT he htS htT hfx hvac g hg h hh hgS hhT`. Establish `loc` using `GlobalTheory.T.weil_vacuum_eq_residueChar_det_smul D ψ S T χS χT om θ sS sT ΛS ΛT βS βT e P cS cT f hW hθ hS hT hsS hsT hΛS hΛT hfS hfT he htS htT hfx hvac`. Establish `hcont : ∀ w, Continuous fun p : GA D S × GA D T => om p f w` using `hW.9 f hvac.2.2`. Establish `hS1 : finE S 1 ∈ St βS`. Rewrite using `[map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(St βS).one_mem`. Establish `hT1 : finE T 1 ∈ St βT`. Rewrite using `[map_one]`. Conclude with `(St βT).one_mem`. Establish `lawS : ∀ k ∈ GfC S, finE S k ∈ St βS → om (k, 1) f = ((detScal S βS P (fun PP => (cT PP)⁻¹) k : ℂˣ) : ℂ) • f` using `law_of_local S βS e P (fun PP => (cT PP)⁻¹) (om.comp (MonoidHom.inl (GA D S) (GA D T))) f he (fun w => (hcont w).comp (continuous_id.prodMk continuous_const)) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k hk hkS v ε hv hsupp`. Establish `hl` using `loc k hk 1 (GfC T).one_mem hkS hT1 v ε hv hsupp (suppPl_one ε T)`. Rewrite `hl` using `[vacScal_eq, detScal_one, Units.val_one, mul_one]`. Conclude with `hl)`. Establish `lawT : ∀ k ∈ GfC T, finE T k ∈ St βT → om (1, k) f = ((detScal T βT P cS k : ℂˣ) : ℂ) • f` using `law_of_local T βT e P cS (om.comp (MonoidHom.inr (GA D S) (GA D T))) f he (fun w => (hcont w).comp (continuous_const.prodMk continuous_id)) (by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k hk hkT v ε hv hsupp`. Establish `hl` using `loc 1 (GfC S).one_mem k hk hS1 hkT v ε hv (suppPl_one ε S) hsupp`. Rewrite `hl` using `[vacScal_eq, detScal_one, Units.val_one, one_mul]`. Conclude with `hl)`. Establish `hsplit : ((g, h) : GA D S × GA D T) = (g, 1) * (1, h)`.
-
-Simplify using the standard rewrite rules. Rewrite using `[hsplit, om.map_mul, Module.End.mul_apply, lawT h hh hhT, LinearMap.map_smul, lawS g hg hgS, smul_smul, vacScal_eq, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vac_law : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (θ : InfFam D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (e : AE D) (P : Finset (Pl D.host.E)) (cS cT : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (f : WO S T → ℂ), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → S.SigOK → T.SigOK → (∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) → (∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) → IsSelfDualC S ΛS → IsSelfDualC T ΛT → IsFrame βS ΛS → IsFrame βT ΛT → IsIdemSum e P → TameOn χS e P cS → TameOn χT e P cT → (∀ v ε, NonSplitAt D v ε → UnramAt ε χS → UnramAt ε χT → FixesVacAt ψ S T ΛS ΛT om v ε) → IsVacO ψ θ S T sS sT ΛS ΛT f → ∀ g ∈ GfC S, ∀ h ∈ GfC T, finE S g ∈ St βS → finE T h ∈ St βT → om (g, h) f = vacScal βS βT P cS cT g h • f := by
   intro D ψ S T χS χT om θ sS sT ΛS ΛT βS βT e P cS cT f hW hθ hS hT hsS hsT hΛS hΛT hfS hfT he htS htT hfx hvac g hg h hh hgS hhT

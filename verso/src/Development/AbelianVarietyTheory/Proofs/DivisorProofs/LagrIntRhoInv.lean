@@ -17,7 +17,7 @@ abbrev dC (R : Type) [CommRing R] (n : ℕ) : Matrix (Fin (n + n)) (Fin n) R :=
   ((diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) R).submatrix finSumFinEquiv.symm id)
 
 /- English proof (translation)
-Simplify using `only [dC, Matrix.mul_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]`. Simplify using `[diagCols, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dC_mul_inl {R : Type} [CommRing R] {n m : ℕ} (a : Matrix (Fin n) (Fin m) R) (p : Fin n) (j : Fin m) :
     (dC R n * a) (finSumFinEquiv (Sum.inl p)) j = a p j := by
@@ -25,7 +25,7 @@ theorem dC_mul_inl {R : Type} [CommRing R] {n m : ℕ} (a : Matrix (Fin n) (Fin 
   simp [diagCols, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `only [dC, Matrix.mul_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]`. Simplify using `[diagCols, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dC_mul_inr {R : Type} [CommRing R] {n m : ℕ} (a : Matrix (Fin n) (Fin m) R) (p : Fin n) (j : Fin m) :
     (dC R n * a) (finSumFinEquiv (Sum.inr p)) j = a p j := by
@@ -33,23 +33,23 @@ theorem dC_mul_inr {R : Type} [CommRing R] {n m : ℕ} (a : Matrix (Fin n) (Fin 
   simp [diagCols, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `using dC_mul_inl a p j`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dC_mul_castAdd {R : Type} [CommRing R] {n m : ℕ} (a : Matrix (Fin n) (Fin m) R) (p : Fin n) (j : Fin m) :
     (dC R n * a) (Fin.castAdd n p) j = a p j := by
   simpa using dC_mul_inl a p j
 
 /- English proof (translation)
-Simplify using `using dC_mul_inr a p j`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dC_mul_addNat {R : Type} [CommRing R] {n m : ℕ} (a : Matrix (Fin n) (Fin m) R) (p : Fin n) (j : Fin m) :
     (dC R n * a) (p.addNat n) j = a p j := by
   simpa using dC_mul_inr a p j
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Break down `i with p | p` into its components or cases. Rewrite using `[dC_mul_inl, Matrix.of_apply, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[dC_mul_inr, Matrix.of_apply, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dC_mul_eq {R : Type} [CommRing R] {n m : ℕ} (a : Matrix (Fin n) (Fin m) R) :
     dC R n * a = Matrix.of fun i j => a (Sum.elim id id (finSumFinEquiv.symm i)) j := by
@@ -60,16 +60,16 @@ theorem dC_mul_eq {R : Type} [CommRing R] {n m : ℕ} (a : Matrix (Fin n) (Fin m
   · rw [dC_mul_inr, Matrix.of_apply, Equiv.symm_apply_apply]; rfl
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilSchrodinger.DblTargetF.dblG, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dblG_apply {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (i k : Fin n ⊕ Fin n) :
     GlobalTheory.WeilSchrodinger.DblTargetF.dblG J (finSumFinEquiv i) (finSumFinEquiv k) = dbl J i k := by
   simp only [GlobalTheory.WeilSchrodinger.DblTargetF.dblG, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Unfold `hTens`. Establish `ha : dC (AF F ⊗[F] E) nT * a = Matrix.of fun i j => a (Sum.elim id id (finSumFinEquiv.symm i)) j` using `dC_mul_eq a`. Establish `hb : dC (AF F ⊗[F] E) nT * b = Matrix.of fun i j => b (Sum.elim id id (finSumFinEquiv.symm i)) j` using `dC_mul_eq b`. Rewrite using `[ha, hb]`. Simplify using `only [← finSumFinEquiv.sum_comp, Matrix.of_apply, Equiv.symm_apply_apply, incM, Matrix.map_apply, Matrix.transpose_apply, dblG_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.sum_sum_type]`. Simplify using `[dbl, Finset.sum_add_distrib, Finset.sum_neg_distrib, dC_mul_castAdd, dC_mul_addNat]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hTens_dC (σ : E →ₐ[F] E) {nS nT : ℕ} (JT : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E)
     (a b : Matrix (Fin nT) (Fin nS) (AF F ⊗[F] E)) :
@@ -92,7 +92,7 @@ namespace GlobalTheory.LagrThetaInv
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ThetaQuasiRat.schr_schr, ← co.form, symp, hTens_dC, mul_zero, map_zero, mul_zero, AddChar.map_zero_eq_one, one_smul, ← map_add, Matrix.mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem schr_dC (σ : E →ₐ[F] E) {nS nT : ℕ} (JT : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E)
     (ξ : AF F ⊗[F] E) {κ : Type} [Fintype κ]
@@ -104,7 +104,7 @@ theorem schr_dC (σ : E →ₐ[F] E) {nS nT : ℕ} (JT : Matrix (Fin nT) (Fin nT
     AddChar.map_zero_eq_one, one_smul, ← map_add, Matrix.mul_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Apply the tactic sequence `rcases i with p | p <;>`. Apply the tactic sequence `simp only [dC, Matrix.map_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, diagCols, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.one_apply] <;> split_ifs <;> simp`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dC_map {n : ℕ} : (dC E n).map (incAF F E) = dC (AF F ⊗[F] E) n := by
   ext i j
@@ -114,7 +114,7 @@ theorem dC_map {n : ℕ} : (dC E n).map (incAF F E) = dC (AF F ⊗[F] E) n := by
       Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.one_apply] <;> split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[← dC_map, ← Matrix.map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dC_mul_rat {nS nT : ℕ} (γ : Matrix (Fin nT) (Fin nS) E) :
     dC (AF F ⊗[F] E) nT * γ.map (incAF F E) = incM F (dC E nT * γ) := by
@@ -127,21 +127,15 @@ open scoped Pointwise in
 open GlobalTheory.LagrThetaInv in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JT JB ξ κ _ co hco ν 𝓕 _ h𝓕 u φ hφ`. Express the relevant statement in the definitionally equal form `GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC (AF F ⊗[F] E) nT) (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ (co.rho B.ψ (dC (AF F ⊗[F] E) nT * u) φ)) = GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC (AF F ⊗[F] E) nT) (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ)`. Use `set g : WOF F E nS nT → ℂ := fun v => GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ (dC (AF F ⊗[F] E) nT * v) with hg`. Establish `h1 : ∀ v : WOF F E nS nT, GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ (co.rho B.ψ (dC (AF F ⊗[F] E) nT * u) φ) (dC (AF F ⊗[F] E) nT * v) = g (v + u)`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hg, GlobalTheory.WeilSchrodinger.thetaTr, Darboux.rho]`. Rewrite using `[schr_dC]`. Establish `h2 : ∀ (r : ratLF F E nS nT) (v : WOF F E nS nT), g (r +ᵥ v) = g v`. Introduce and unpack `⟨r, γ, rfl⟩ v`. Take `⟨y, z, hyz⟩` from `hco (dC E nT * γ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : ((incAF F E).toAddMonoidHom.mapMatrix γ : WOF F E nS nT) = γ.map (incAF F E)` using `rfl`. Use `show GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ (dC (AF F ⊗[F] E) nT * (_ + v)) = _`. Simplify using `only [hg, GlobalTheory.WeilSchrodinger.thetaTr, Darboux.rho]`. Rewrite using `[← schr_dC, hr, dC_mul_rat, hyz, GlobalTheory.ThetaQuasiRat.thetaSum_schr_rat F B.ψ hB.std.2.1 y z]`. Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Use `haveI : ContinuousAdd (WOF F E nS nT) := inferInstanceAs (ContinuousAdd (Fin nT → Fin nS → AF F ⊗[F] E))`. Use `haveI : MeasurableAdd (WOF F E nS nT) := ⟨fun c => (continuous_const_add c).measurable, fun c => (continuous_add_const c).measurable⟩`. Use `haveI : MeasurableConstVAdd (ratLF F E nS nT) (WOF F E nS nT) := ⟨fun r => (continuous_const_add (r : WOF F E nS nT)).measurable⟩`. Use `haveI : VAddInvariantMeasure (ratLF F E nS nT) (WOF F E nS nT) ν := ⟨fun r s _ => measure_preimage_add ν (r : WOF F E nS nT) s⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `haveI : VAddCommClass (WOF F E nS nT) (ratLF F E nS nT) (WOF F E nS nT) := ⟨fun a r x => add_left_comm a (r : WOF F E nS nT) x⟩`. Use `haveI : Countable (ratLF F E nS nT) := by haveI : Countable E := by haveI : FiniteDimensional ℚ E := inferInstance`. Conclude with `((Module.finBasis ℚ E).equivFun).injective.countable`. Establish `: Countable (Matrix (Fin nT) (Fin nS) E)` using `inferInstanceAs (Countable (Fin nT → Fin nS → E))`. Conclude with `(Set.countable_range ((incAF F E).toAddMonoidHom.mapMatrix (m := Fin nT) (n := Fin nS))).to_subtype`.
-
-Unfold `GlobalTheory.LagrTheta.lagrInt`. Repeatedly rewrite using `[h1]`. Rewrite using `[← (measurePreserving_add_right ν u).setIntegral_image_emb (measurableEmbedding_addRight u) g 𝓕]`. Establish `hF' : IsAddFundamentalDomain (ratLF F E nS nT) ((· + u) '' 𝓕) ν`. Establish `hs : (· + u) '' 𝓕 = ((u : WOF F E nS nT) +ᵥ 𝓕 : Set (WOF F E nS nT))`.
-
-Rewrite using `[← Set.image_vadd]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `add_comm v u`. Rewrite using `[hs]`.
-
-Conclude with `h𝓕.vadd_of_comm (G' := WOF F E nS nT) (u : WOF F E nS nT)`. Conclude with `hF'.setIntegral_eq h𝓕 h2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LagrThetaInv.lagrInt_rho_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JT : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E) (ξ : AF F ⊗[F] E)

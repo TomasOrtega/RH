@@ -14,11 +14,9 @@ namespace PI.PoincareSeriesMemLp.UnitaryGroupMassFormula
 open Formalism.L2.SG.FoldBound Formalism.L2.SG.PoincareSeriesSquareIntegrable
 
 /- English proof (translation)
-Establish `hsum : ∀ x, Summable (fun δ : D => Ph ((δ : G) * x))`. Introduce `x`. Establish `h1 : Summable (fun δ : D => ‖Ph ((δ : G) * x)‖₊)`. Establish `h2` using `hs x`. Simplify using `only [enorm_eq_nnnorm] at h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `ENNReal.tsum_coe_ne_top_iff_summable.mp h2`. Conclude with `Summable.of_norm (by simpa using NNReal.summable_coe.mpr h1)`. Use `measurable_of_tendsto_metrizable' (Filter.atTop : Filter (Finset D)) (f := fun (s : Finset D) x => ∑ δ ∈ s, Ph ((δ : G) * x)) (fun s => ?_) ?_` and prove the remaining obligations. Conclude with `Finset.measurable_sum _ (fun δ _ => hPh.comp (measurable_const_mul _))`. Rewrite using `[tendsto_pi_nhds]`.
-
-Introduce `x`. Unfold `poinc`. Conclude with `(hsum x).hasSum`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_poinc {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
     (D : Set G) [Countable D] (Ph : G → ℂ) (hPh : Measurable Ph)
@@ -39,25 +37,23 @@ theorem measurable_poinc {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMu
     exact (hsum x).hasSum
 
 /- English proof (translation)
-Introduce `Γ S hΓ hSΓ Ω hΩ h1 a Ph hdat F hF hI D hD FΓ hFΓ`. Take `⟨hPh, hinv, hrep⟩` from `hdat`. Establish `hcΓ : Countable Γ` using `(TopologicalSpace.separableSpace_iff_countable (α := Γ)).mp inferInstance`. Establish `hcD : Countable D`. Establish `hinj : Function.Injective (fun d : D => (⟨d.1, hD.1 d.2⟩ : Γ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `d e h`. Conclude with `Subtype.ext (by simpa using congrArg Subtype.val h)`. Conclude with `hinj.countable`. Take `⟨hm1, hmtop, hminv, hmmeas⟩` from `overlapMultiplicityProperties G Γ hΓ Ω hΩ h1`. Establish `hqI : quotientLIntegral μ F Ph ≤ multiplicityLIntegral μ Γ Ω F Ph`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `quotientLIntegral multiplicityLIntegral`. Conclude with `lintegral_mono fun y => le_mul_of_one_le_left (by simp) (hm1 y)`. Establish `hq : quotientLIntegral μ F Ph < ⊤` using `lt_of_le_of_lt hqI hI`. Establish `hT : ∀ x : G, ∑' δ : D, ‖Ph ((δ : G) * x)‖ₑ ≤ (a : ℝ≥0∞) * mult Γ Ω x * quotientLIntegral μ F Ph` using `fun x => foldBound_holds G μ Γ S hΓ hSΓ Ω hΩ.measurableSet a Ph hPh hinv hrep F hF D hD x`. Establish `hTfin : ∀ x : G, ∑' δ : D, ‖Ph ((δ : G) * x)‖ₑ ≠ ⊤` using `fun x => ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.coe_ne_top (hmtop x).ne) hq.ne) (hT x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set g : G → ℝ≥0∞ := fun y => mult Γ Ω y * ‖Ph y‖ₑ with hgdef`. Establish `hpt : ∀ x : G, ‖poinc D Ph x‖ₑ ^ 2 ≤ (a : ℝ≥0∞) * quotientLIntegral μ F Ph * ∑' δ : D, g ((δ : G) * x)`. Introduce `x`. Establish `hP : ‖poinc D Ph x‖ₑ ≤ ∑' δ : D, ‖Ph ((δ : G) * x)‖ₑ` using `enorm_tsum_le_tsum_enorm`. Establish `hg : ∑' δ : D, g ((δ : G) * x) = mult Γ Ω x * ∑' δ : D, ‖Ph ((δ : G) * x)‖ₑ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.tsum_mul_left]`. Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Simplify using `only [hgdef]`. Rewrite using `[hminv δ (hD.1 δ.2) x]`. Rewrite using `[hg, pow_two]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hgm : Measurable g` using `hmmeas.mul hPh.enorm`. Establish `hginv : ∀ s ∈ S, ∀ y : G, g (s * y) = g y`. Introduce `s hs y`. Simplify using `only [hgdef]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hminv s (hSΓ hs) y, hinv s hs y]`. Establish `hunf : (∫⁻ x in FΓ, ∑' δ : D, g ((δ : G) * x) ∂μ) = multiplicityLIntegral μ Γ Ω F Ph` using `lintegralTransversalSum G μ Γ S hSΓ F hF FΓ hFΓ D hD g hgm hginv`. Establish `hbound : (∫⁻ x in FΓ, ‖poinc D Ph x‖ₑ ^ 2 ∂μ) ≤ (a : ℝ≥0∞) * quotientLIntegral μ F Ph * multiplicityLIntegral μ Γ Ω F Ph`. Combine the equalities or inequalities in the displayed calculation. Establish `hlast : (a : ℝ≥0∞) * quotientLIntegral μ F Ph * multiplicityLIntegral μ Γ Ω F Ph ≤ (a : ℝ≥0∞) * multiplicityLIntegral μ Γ Ω F Ph ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_two, ← mul_assoc]`. Conclude with `mul_le_mul' (mul_le_mul' le_rfl hqI) le_rfl`. Establish `hfin : (a : ℝ≥0∞) * quotientLIntegral μ F Ph * multiplicityLIntegral μ Γ Ω F Ph < ⊤` using `ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.coe_lt_top hq) hI`. Establish `hPm : Measurable (poinc D Ph)` using `measurable_poinc D Ph hPh hTfin`. Use `⟨⟨hPm.aestronglyMeasurable, ?_⟩, hbound, hlast⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top (by norm_num) (by norm_num)]`. Establish `h2 : ∀ x, ‖poinc D Ph x‖ₑ ^ ((2 : ℝ≥0∞).toReal) = ‖poinc D Ph x‖ₑ ^ 2`. Introduce `x`. Rewrite using `[ENNReal.toReal_ofNat, ← ENNReal.rpow_natCast]`. Evaluate the numerical expressions.
-
-Repeatedly rewrite using `[h2]`. Conclude with `lt_of_le_of_lt hbound hfin`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fold_L2_double_coset (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G]

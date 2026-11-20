@@ -21,7 +21,7 @@ namespace StrictPreorder
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `hR.get (i := i.1) (by simp) (by simp)` as an intermediate fact. Simplify using `using this`.
+Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem forall₂_ofFn {α β : Type} {R : α → β → Prop} {c c' : ℕ} (h : c = c') (f : Fin c → α) (g : Fin c' → β)
     (hR : List.Forall₂ R (List.ofFn f) (List.ofFn g)) (i : Fin c) : R (f i) (g (Fin.cast h i)) := by
@@ -30,9 +30,9 @@ theorem forall₂_ofFn {α β : Type} {R : α → β → Prop} {c c' : ℕ} (h :
   simpa using this
 
 /- English proof (translation)
-Take `⟨x1, x2⟩` from `x`. Take `⟨y1, y2⟩` from `y`. Take `⟨h, hI⟩` from `hxy`. Simplify using `only at h`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Conclude with `F5.Bo.LocUniq_holds E x1 y2 hy w σ σ' (F5.Bo.LocIso_holds E x1 x2 y2 hI w σ hσ) hσ'`.
+A detailed English derivation is pending.
 -/
 theorem cls_eq (x y : Σ M : ℕ, Submodule ℂ (Sm E M)) (hxy : SIso x y) (hy : IsDiscrete y.2)
     (w : HeightOneSpectrum (𝓞 E)) (σ : SmIrr (GL (Fin x.1) (w.adicCompletion E)))
@@ -48,7 +48,7 @@ theorem cls_eq (x y : Σ M : ℕ, Submodule ℂ (Sm E M)) (hxy : SIso x y) (hy :
 end StrictPreorder
 
 /- English proof (translation)
-Introduce `E _ _ _ n P P' hS`. Take `⟨hF, hc, hm⟩` from `hS`. Use `⟨finCongr hc, fun i w => ?_, fun i τ => congrFun (hm i) τ⟩` and prove the remaining obligations. Establish `hI : SIso ⟨P.N i, P.V i⟩ ⟨P'.N (Fin.cast hc i), P'.V (Fin.cast hc i)⟩` using `StrictPreorder.forall₂_ofFn hc (fun j => (⟨P.N j, P.V j⟩ : Σ M : ℕ, Submodule ℂ (Sm E M))) (fun j => (⟨P'.N j, P'.V j⟩ : Σ M : ℕ, Submodule ℂ (Sm E M))) hF i`. Conclude with `StrictPreorder.cls_eq _ _ hI (P'.discrete _) w (P.σ i w) (P'.σ _ w) (P.loc i w) (P'.loc _ w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem StrictPre_holds : StrictPre := by
   intro E _ _ _ n P P' hS

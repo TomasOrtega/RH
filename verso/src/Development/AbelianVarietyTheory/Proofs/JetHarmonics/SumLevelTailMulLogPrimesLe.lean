@@ -7,11 +7,11 @@ open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryB
 namespace GlobalTheory.TailPrimeSum
 
 /- English proof (translation)
-Introduce `k l hk hl`. Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Take `⟨-, h3, hlt, he⟩` from `GlobalTheory.LevelsOrbits.thlEq k l hk hl`. Use `⟨?_, ?_, fun h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he]`. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_right₀ (by linarith) h3)`. Rewrite using `[he]`. Conclude with `inv_strictAnti₀ (by positivity) hlt`. Establish `h1 : (k : ℝ) ^ ((3 : ℝ) / 2) < (l : ℝ) ^ 3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by positivity), ← Real.rpow_natCast]`. Evaluate the numerical expressions. Establish `h2 : i0 k l ≤ 3` using `Nat.sInf_le ⟨⟨1, by norm_num⟩, le_rfl, h1⟩`. Rewrite using `[he, le_antisymm h2 h3]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thBounds : ThBounds := by
   intro k l hk hl
@@ -33,11 +33,11 @@ theorem thBounds : ThBounds := by
     rw [he, le_antisymm h2 h3]
 
 /- English proof (translation)
-Establish `h1 : ∑ p ∈ Q, Real.log p ≤ Chebyshev.theta x`. Unfold `Chebyshev.theta`. Use `Finset.sum_le_sum_of_subset_of_nonneg (fun p hp => ?_) (fun p _ _ => Real.log_natCast_nonneg p)` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_Ioc]`. Conclude with `⟨⟨(hQ p hp).pos, Nat.le_floor (hle p hp)⟩, hQ p hp⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `h2` using `Chebyshev.theta_le_log4_mul_x hx`. Establish `h3 : Real.log 4 ≤ 3 / 2`. Establish `: Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Use `Real.log_two_lt_d9` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_le_mul_of_nonneg_right h3 hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma sum_log_le (Q : Finset ℕ) (x : ℝ) (hx : 0 ≤ x) (hQ : ∀ p ∈ Q, p.Prime)
     (hle : ∀ p ∈ Q, (p : ℝ) ≤ x) : ∑ p ∈ Q, Real.log p ≤ 3 / 2 * x := by
@@ -57,19 +57,17 @@ lemma sum_log_le (Q : Finset ℕ) (x : ℝ) (hx : 0 ≤ x) (hQ : ∀ p ∈ Q, p.
   linarith
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `Q Y hY _ h`. Establish `: Q = ∅` using `Finset.eq_empty_of_forall_notMem fun p hp => by`. Use `h p hp` as an intermediate fact.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [pow_zero, one_mul] at this`. Combine the linear relations using `[this.1, this.2]`. Rewrite using `[this, Finset.sum_empty]`. Check the signs of the components of the expression. Consider the case `succ N ih`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Treat this case separately.
 
-Introduce `Q Y hY hQ h`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Q (fun p : ℕ => (p : ℝ) ≤ 2 * Y)]`. Establish `h1 : ∑ p ∈ Q.filter (fun p : ℕ => (p : ℝ) ≤ 2 * Y), ((p : ℝ) ^ 3)⁻¹ * Real.log p ≤ (Y ^ 3)⁻¹ * (3 / 2 * (2 * Y))`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h p (Finset.mem_filter.1 hp).1).1` as an intermediate fact. Use `mul_le_mul_of_nonneg_right ?_ (Real.log_natCast_nonneg p)` and prove the remaining obligations. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_left₀ hY.le this.le 3)`. Use `_ ≤ _ := by`. Rewrite using `[← Finset.mul_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Conclude with `sum_log_le _ _ (by positivity) (fun p hp => hQ p (Finset.mem_filter.1 hp).1) (fun p hp => (Finset.mem_filter.1 hp).2)`. Establish `h2` using `ih (Q.filter (fun p : ℕ => ¬ (p : ℝ) ≤ 2 * Y)) (2 * Y) (by positivity) (fun p hp => hQ p (Finset.mem_filter.1 hp).1) (fun p hp => by`. Take `⟨a, b⟩` from `Finset.mem_filter.1 hp`. Use `⟨not_le.1 b, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(h p a).2` as an intermediate fact. Rewrite `this` using `[pow_succ, mul_assoc]`. Conclude with `this)`. Establish `h3 : (Y ^ 3)⁻¹ * (3 / 2 * (2 * Y)) + 4 / (2 * Y) ^ 2 = 4 / Y ^ 2`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma tail_le (N : ℕ) : ∀ (Q : Finset ℕ) (Y : ℝ), 0 < Y → (∀ p ∈ Q, p.Prime) →
     (∀ p ∈ Q, Y < p ∧ (p : ℝ) ≤ 2 ^ N * Y) →
@@ -111,23 +109,19 @@ lemma tail_le (N : ℕ) : ∀ (Q : Finset ℕ) (Y : ℝ), 0 < Y → (∀ p ∈ Q
     linarith
 
 /- English proof (translation)
-Use `⟨thBounds, fun k Q hk hQ => ?_⟩` and prove the remaining obligations. Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Use `set Y : ℝ := Real.sqrt k with hYdef`. Establish `hY1 : 1 ≤ Y` using `Real.one_le_sqrt.2 hk'`. Establish `hY : 0 < Y` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY2 : Y ^ 2 = k` using `Real.sq_sqrt (by positivity)`. Establish `hY3 : (k : ℝ) ^ ((3 : ℝ) / 2) = Y ^ 3`. Rewrite using `[← hY2, ← Real.rpow_natCast, ← Real.rpow_mul hY.le, ← Real.rpow_natCast]`. Evaluate the numerical expressions. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Q (fun p : ℕ => (p : ℝ) ≤ Y)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∑ p ∈ Q.filter (fun p : ℕ => (p : ℝ) ≤ Y), thl k p * Real.log p ≤ (Y ^ 3)⁻¹ * (3 / 2 * Y)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (Real.log_natCast_nonneg p)` and prove the remaining obligations. Rewrite using `[← hY3]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(thBounds k p hk (hQ p (Finset.mem_filter.1 hp).1).two_le).2.1.le`. Use `_ ≤ _ := by`. Rewrite using `[← Finset.mul_sum]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Conclude with `sum_log_le _ _ hY.le (fun p hp => hQ p (Finset.mem_filter.1 hp).1) (fun p hp => (Finset.mem_filter.1 hp).2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ∑ p ∈ Q.filter (fun p : ℕ => ¬ (p : ℝ) ≤ Y), thl k p * Real.log p ≤ 4 / Y ^ 2`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (Real.log_natCast_nonneg p)` and prove the remaining obligations. Conclude with `(thBounds k p hk (hQ p (Finset.mem_filter.1 hp).1).two_le).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ _ := by`. Use `tail_le (Q.sup id) _ Y hY (fun p hp => hQ p (Finset.mem_filter.1 hp).1) (fun p hp => ?_)` and prove the remaining obligations. Take `⟨a, b⟩` from `Finset.mem_filter.1 hp`. Use `⟨not_le.1 b, ?_⟩` and prove the remaining obligations. Establish `h3 : p ≤ Q.sup id` using `Finset.le_sup (f := id) a`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h4 : p ≤ 2 ^ (Q.sup id)` using `h3.trans Nat.lt_two_pow_self.le`. Establish `h5 : (p : ℝ) ≤ 2 ^ (Q.sup id)` using `by exact_mod_cast h4`. Conclude with `h5.trans (le_mul_of_one_le_right (by positivity) hY1)`. Establish `h3 : (Y ^ 3)⁻¹ * (3 / 2 * Y) + 4 / Y ^ 2 = (11 / 2) / Y ^ 2`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `h4 : (11 / 2 : ℝ) / Y ^ 2 ≤ 20 / k`. Rewrite using `[hY2]`. Use `gcongr`. Evaluate the numerical expressions.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main : Formalism.UnitaryBoundIntegral.ThBounds ∧ ∀ (k : ℕ) (Q : Finset ℕ), 1 ≤ k → (∀ p ∈ Q, p.Prime) →
     ∑ p ∈ Q, thl k p * Real.log p ≤ 20 / k := by

@@ -29,7 +29,7 @@ private def tenPiE {J V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
   right_inv y := by ext j; simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [cf]`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, mul_add, ((cfBasic n).2.2.2.1 _ _ 1 μ).1, ih, mul_comm c₀ (ex (η j)), (cfBasic n).2.2.2.2.1]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cf_mul_sum {n : ℕ} {J : Type} (c₀ : FR n) (η : J → Wt n) (s : Finset J) (μ : Wt n) :
     cf (c₀ * ∑ j ∈ s, ex (η j)) μ = ∑ j ∈ s, cf c₀ (μ - η j) := by
@@ -41,21 +41,21 @@ private theorem cf_mul_sum {n : ℕ} {J : Type} (c₀ : FR n) (η : J → Wt n) 
       mul_comm c₀ (ex (η j)), (cfBasic n).2.2.2.2.1]
 
 /- English proof (translation)
-Introduce `n V _ _ F hF S hS hSt J _ _ c η hc c₀ hch`. Use `⟨tenPiS (fun _ => S), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Module.Finite.equiv (tenPiE (fun _ : J => S)).symm`. Introduce `a b x hx j`. Establish `h : (dg F c a b x) j = F a b (x j) + ∑ k, spn c a b j k • x k` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `S.add_mem (hSt a b _ (hx j)) (S.sum_mem fun k _ => S.smul_mem _ (hx k))`. Introduce `μ`. Establish `hdiag : ∀ (x : Ten J V) a j, (dg F c a a x) j = F a a (x j) + (η j a : ℂ) • x j`. Introduce `x a j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (dg F c a a x) j = F a a (x j) + ∑ k, spn c a a j k • x k` using `rfl`. Rewrite using `[h, hc.diag a]`. Simplify using `[Matrix.diagonal_apply]`. Establish `hset : wsp (dg F c) μ ⊓ tenPiS (fun _ => S) = tenPiS (fun j => wsp F (μ - η j) ⊓ S)`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, hx⟩ j`. Use `⟨fun a => ?_, hx j⟩` and prove the remaining obligations. Establish `h1 : (dg F c a a x) j = (μ a : ℂ) • x j`. Use `congrArg (fun y : Ten J V => y j) (hw a)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Rewrite `h1` using `[hdiag]`. Establish `h2 : F a a (x j) = (μ a : ℂ) • x j - (η j a : ℂ) • x j` using `eq_sub_of_add_eq h1`. Rewrite using `[h2, ← sub_smul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hx`. Use `⟨fun a => ?_, fun j => (hx j).2⟩` and prove the remaining obligations. Use extensionality with `j`. Establish `h1 : F a a (x j) = (((μ - η j) a : ℝ) : ℂ) • x j` using `(hx j).1 a`. Rewrite using `[hdiag, h1, ← add_smul]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hfin : ∀ j, FiniteDimensional ℂ ↥(wsp F (μ - η j) ⊓ S)` using `fun j => Submodule.finiteDimensional_inf_right _ _`. Establish `hfin' : FiniteDimensional ℂ ↥(tenPiS fun j => wsp F (μ - η j) ⊓ S)` using `Module.Finite.equiv (tenPiE _).symm`. Rewrite using `[hset, (trAdd (Ten J V) 1).2.2.2 _ hfin', LinearEquiv.finrank_eq (tenPiE _), Module.finrank_pi_fintype, cf_mul_sum]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hch, (trAdd V 1).2.2.2 _ (hfin j)]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.tenCh :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fin n → Fin n → Module.End ℂ V), UF F → ∀ S : Submodule ℂ V, FiniteDimensional ℂ S → Stb F S → ∀ (J : Type) [Fintype J] [DecidableEq J] (c : Fin n → Fin n → Matrix J J ℂ) (η : J → Wt n), ClifMod c η → ∀ c₀, IsCh F S 1 c₀ → ∃ S' : Submodule ℂ (Ten J V), FiniteDimensional ℂ S' ∧ Stb (dg F c) S' ∧ IsCh (dg F c) S' 1 (c₀ * ∑ j, ex (η j)) := by

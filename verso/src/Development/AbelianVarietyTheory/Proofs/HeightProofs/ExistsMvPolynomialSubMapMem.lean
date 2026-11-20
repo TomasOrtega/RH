@@ -12,15 +12,15 @@ namespace GlobalTheory
 open IsLocalRing
 
 /- English proof (translation)
-Establish `hd : IsDomain O₂` using `IsLocalization.isDomain_of_le_nonZeroDivisors O₂ P.primeCompl_le_nonZeroDivisors`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Establish `: IsNoetherianRing O₂` using `IsLocalization.isNoetherianRing P.primeCompl _ inferInstance`. Establish `hinj` using `IsLocalization.injective O₂ (M := P.primeCompl) P.primeCompl_le_nonZeroDivisors`. Take `⟨g, hg⟩` from `IsPrincipalIdealRing.principal (maximalIdeal O₁)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg' : maximalIdeal O₁ = Ideal.span {g}` using `hg`. Establish `hmax : maximalIdeal O₂ = Ideal.span {algebraMap (MvPolynomial σ O₁) O₂ (MvPolynomial.C g)}`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal P O₂]`. Use `conv_lhs => rw [hP]`. Rewrite using `[hg', Ideal.map_span, Set.image_singleton, Ideal.map_span, Set.image_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnf : ¬ IsField O₂`. Rewrite using `[isField_iff_maximalIdeal_eq, hmax, Ideal.span_singleton_eq_bot]`. Introduce `h`. Establish `h1` using `hinj (h.trans (map_zero _).symm)`. Establish `h2 : g = 0` using `by simpa using h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsDiscreteValuationRing.not_a_field O₁` to reduce the goal to its premises. Rewrite using `[hg', h2]`. Simplify using the standard rewrite rules. Use `((IsDiscreteValuationRing.TFAE O₂ hnf).out 0 4).mpr ?_` and prove the remaining obligations. Rewrite using `[hmax]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨_, rfl⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem gaussRing_isDVR {σ : Type} [Finite σ] (O₁ : Type) [CommRing O₁] [IsDomain O₁]
     [IsDiscreteValuationRing O₁] (P : Ideal (MvPolynomial σ O₁)) [P.IsPrime]
@@ -52,15 +52,15 @@ theorem gaussRing_isDVR {σ : Type} [Finite σ] (O₁ : Type) [CommRing O₁] [I
   exact ⟨⟨_, rfl⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C x`. Take `⟨a, ha⟩` from `h x`. Use `⟨MvPolynomial.C a, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_C, ← map_sub]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem _ ha`. Consider the case `add p q hp hq`. Take `⟨a, ha⟩` from `hp`. Take `⟨b, hb⟩` from `hq`. Use `⟨a + b, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Ideal.add_mem _ ha hb` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p n hp`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hp`. Use `⟨a * MvPolynomial.X n, ?_⟩` and prove the remaining obligations. Use `Ideal.mul_mem_right (MvPolynomial.X n) _ ha` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, MvPolynomial.map_X]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_mvPolynomial_sub_map_mem {σ R S : Type} [CommRing R] [CommRing S] (φ : R →+* S)
     (I : Ideal S) (h : ∀ x : S, ∃ a : R, x - φ a ∈ I) (p : MvPolynomial σ S) :
@@ -87,37 +87,33 @@ theorem exists_mvPolynomial_sub_map_mem {σ R S : Type} [CommRing R] [CommRing S
     rw [map_mul, MvPolynomial.map_X]; ring
 
 /- English proof (translation)
-Introduce `K _ _ D N la O₁ _ _ _ _ hinj hmap hres P _ hP O₂ _ _ _ _`. Take `⟨hd, hdvr⟩` from `gaussRing_isDVR O₁ P hP O₂`. Use `⟨⟨hd, hdvr⟩, ?_⟩` and prove the remaining obligations. Establish `hcomap : (maximalIdeal O₁).comap (algebraMap (𝓞 K) O₁) = la.asIdeal`. Use `symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use symmetry to reverse the relation.
 
-Apply `la.isMaximal.eq_of_le` to reduce the goal to its premises. Conclude with `Ideal.IsPrime.ne_top inferInstance`. Rewrite using `[← hmap]`. Conclude with `Ideal.le_comap_map`. Establish `hmem : ∀ p : OT K D N, MvPolynomial.map (algebraMap (𝓞 K) O₁) p ∈ P ↔ p ∈ laT D N la`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `p`. Rewrite using `[hP, MvPolynomial.mem_map_C_iff]`. Use `Iff.trans ?_ (MvPolynomial.mem_map_C_iff (I := la.asIdeal) (f := p)).symm` and prove the remaining obligations. Use `forall_congr' fun m => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map, ← hcomap, Ideal.mem_comap]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : OT K D N →+* O₂` to `(algebraMap (MvPolynomial (TVar D N) O₁) O₂).comp (MvPolynomial.map (algebraMap (𝓞 K) O₁))`. Establish `hu : ∀ y : (laT D N la).primeCompl, IsUnit (g y)` using `fun y => IsLocalization.map_units (M := P.primeCompl) O₂ ⟨MvPolynomial.map (algebraMap (𝓞 K) O₁) (y : OT K D N), fun h => y.2 ((hmem _).1 h)⟩`. Set `f : Op D N la →+* O₂` to `IsLocalization.lift (M := (laT D N la).primeCompl) hu`. Establish `hf : f.comp (algebraMap (OT K D N) (Op D N la)) = g` using `IsLocalization.lift_comp hu`. Establish `hf' : ∀ p : OT K D N, f (algebraMap (OT K D N) (Op D N la) p) = algebraMap (MvPolynomial (TVar D N) O₁) O₂ (MvPolynomial.map (algebraMap (𝓞 K) O₁) p)` using `fun p => IsLocalization.lift_eq hu p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj₂` using `IsLocalization.injective O₂ (M := P.primeCompl) P.primeCompl_le_nonZeroDivisors`. Establish `hginj : Function.Injective g` using `hinj₂.comp (MvPolynomial.map_injective _ hinj)`. Establish `hfinj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨p, s⟩, h⟩` from `IsLocalization.surj (laT D N la).primeCompl x`. Establish `h1` using `congrArg f h`. Rewrite `h1` using `[map_mul, hx, zero_mul, hf']`. Establish `h2 : p = 0` using `hginj (h1.symm.trans (map_zero g).symm)`. Simplify using `only [h2, map_zero] at h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsLocalization.map_units (Op D N la) s).mul_left_eq_zero.mp h`. Establish `hmax : Ideal.map f (maximalIdeal (Op D N la)) = maximalIdeal O₂`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, hf, ← IsLocalization.AtPrime.map_eq_maximalIdeal P O₂, ← Ideal.map_map]`. Use `congr 1`. Rewrite using `[hP, ← hmap, Ideal.map_map]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `Ideal.map _ (Ideal.map MvPolynomial.C la.asIdeal) = _`. Rewrite using `[Ideal.map_map]`. Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f, hf', ?_, ?_, hmax, ?_⟩` and prove the remaining obligations. Use `haveI := Op_isDVR D N la algebraize [f]`. Establish `: Module.IsTorsionFree (Op D N la) O₂`. Rewrite using `[Module.isTorsionFree_iff_algebraMap_injective]`. Conclude with `hfinj`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `RingHom.Flat`. Use `infer_instance`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Establish `h1 : f a ∈ maximalIdeal O₂` using `hmax ▸ Ideal.mem_map_of_mem f ((mem_maximalIdeal a).2 hna)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mem_maximalIdeal _).1 h1 ha`. Introduce `x`. Take `⟨⟨p, s⟩, h⟩` from `IsLocalization.surj P.primeCompl x`. Take `⟨p₀, hp⟩` from `exists_mvPolynomial_sub_map_mem (algebraMap (𝓞 K) O₁) _ hres p`. Take `⟨s₀, hs⟩` from `exists_mvPolynomial_sub_map_mem (algebraMap (𝓞 K) O₁) _ hres (s : MvPolynomial (TVar D N) O₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite `hp`, `hs` using `[← hP]`. Establish `hs₀ : s₀ ∈ (laT D N la).primeCompl`. Introduce `h0`. Apply `s.2` to reduce the goal to its premises. Use `P.add_mem hs ((hmem _).2 h0)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨u, hu'⟩` from `IsLocalization.map_units (Op D N la) ⟨s₀, hs₀⟩`. Use `⟨algebraMap (OT K D N) (Op D N la) p₀ * ↑u⁻¹, ?_⟩` and prove the remaining obligations. Establish `hm : ∀ q ∈ P, algebraMap (MvPolynomial (TVar D N) O₁) O₂ q ∈ maximalIdeal O₂`. Introduce `q hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal P O₂]`. Conclude with `Ideal.mem_map_of_mem _ hq`. Establish `h1` using `hm _ hp`. Establish `h2` using `hm _ hs`. Rewrite `h1`, `h2` using `[map_sub, ← hf']`.
-
-Simplify using `only at h hu'`. Rewrite `h2` using `[← hu']`. Establish `h3 : f u * f ↑u⁻¹ = 1` using `by rw [← map_mul]; simp`. Establish `h4` using `Ideal.mul_mem_right (f ↑u⁻¹) _ (Ideal.sub_mem _ h1 (Ideal.mul_mem_left _ x h2))`. Use `h4 using 1` and compare the differences between its conclusion and the goal.
-
-Rewrite using `[map_mul, ← h]`. Take the linear combination `(-x) * h3`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gaussRing_completion :
     ∀ (K : Type) [Field K] [NumberField K] (D N : ℕ) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (O₁ : Type) [CommRing O₁] [IsDomain O₁] [IsDiscreteValuationRing O₁] [Algebra (𝓞 K) O₁], Function.Injective (algebraMap (𝓞 K) O₁) → Ideal.map (algebraMap (𝓞 K) O₁) la.asIdeal = IsLocalRing.maximalIdeal O₁ → (∀ x : O₁, ∃ a : 𝓞 K, x - algebraMap (𝓞 K) O₁ a ∈ IsLocalRing.maximalIdeal O₁) → ∀ (P : Ideal (MvPolynomial (TVar D N) O₁)) [P.IsPrime], P = Ideal.map MvPolynomial.C (IsLocalRing.maximalIdeal O₁) → ∀ (O₂ : Type) [CommRing O₂] [IsLocalRing O₂] [Algebra (MvPolynomial (TVar D N) O₁) O₂] [IsLocalization.AtPrime O₂ P], (∃ _ : IsDomain O₂, IsDiscreteValuationRing O₂) ∧ ∃ f : Op D N la →+* O₂, (∀ p : OT K D N, f (algebraMap (OT K D N) (Op D N la) p) = algebraMap (MvPolynomial (TVar D N) O₁) O₂ (MvPolynomial.map (algebraMap (𝓞 K) O₁) p)) ∧ f.Flat ∧ IsLocalHom f ∧ Ideal.map f (IsLocalRing.maximalIdeal (Op D N la)) = IsLocalRing.maximalIdeal O₂ ∧ ∀ x : O₂, ∃ a, x - f a ∈ IsLocalRing.maximalIdeal O₂ := by

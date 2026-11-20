@@ -9,9 +9,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l _ K bk ρ h0 h1`. Take `⟨N, hmul, hadd, hl, hle, hge⟩` from `GlobalTheory.T.exists_gaussNorm_ainf_disc l K bk ρ h0 h1`. Establish `hρ : (0 : ℝ) < (ρ : ℝ)` using `h0`. Take `⟨hdom, hnorm⟩` from `GlobalTheory.T.isDomain_closedDiscGaugeCompletion_of_equiv_norm l (Ainf l) (bk.ev X) ρ N (ρ : ℝ) hρ hmul hadd hl hle hge`. Use `⟨hdom, hnorm, fun a ha => ⟨((ρ : ℝ) ^ 2 * ‖a‖)⁻¹, fun y => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos : 0 < (ρ : ℝ) ^ 2 * ‖a‖` using `mul_pos (pow_pos hρ 2) (norm_pos_iff.2 ha)`. Establish `h` using `hnorm a y`. Rewrite `h` using `[← mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem discAinf_isDomain : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (ρ : ℝ≥0), 0 < ρ → ρ < 1 →
     IsDomain (bk.DA ρ) ∧ (∀ x y : bk.DA ρ, (ρ : ℝ) ^ 2 * (‖x‖ * ‖y‖) ≤ ‖x * y‖) ∧

@@ -16,25 +16,21 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `α β L _ S r Rel hr H`. Break down `isEmpty_or_nonempty β with hβ | hβ` into its components or cases. Conclude with `⟨id, fun _ _ _ _ k => isEmptyElim k, fun _ _ _ _ h => h⟩`. Establish `hF : (⋃ e ∈ (S : Set (α → L)), {f | Rel e f}).Finite`. Use `Set.Finite.biUnion S.finite_toSet fun e he => Set.Subsingleton.finite ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f hf f' hf'`. Conclude with `(H e he e he f f' hf hf').1 rfl`. Establish `hinf` using `hF.infinite_compl`. Establish `hT : ((fun e : α → L => e ∘ r) '' (S : Set (α → L))).Countable` using `(S.finite_toSet.image _).countable`. Take `⟨n, hn⟩` from `Set.countable_iff_exists_injOn.1 hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `j : (β → L) → (β → L)` to `fun c => (hinf.natEmbedding _ (n c)).1`. Establish `hj : ∀ c, ∀ e ∈ S, ¬ Rel e (j c)`. Introduce `c e he h`. Conclude with `(hinf.natEmbedding _ (n c)).2 (Set.mem_biUnion (Finset.mem_coe.2 he) h)`. Establish `hji : ∀ e ∈ S, ∀ e' ∈ S, j (e ∘ r) = j (e' ∘ r) → e ∘ r = e' ∘ r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `e he e' he' h`. Conclude with `hn ⟨e, he, rfl⟩ ⟨e', he', rfl⟩ ((hinf.natEmbedding _).injective (Subtype.ext h))`. Set `g : (β → L) → (β → L)` to `fun c => if h : ∃ f, ∃ e ∈ S, e ∘ r = c ∧ Rel e f then h.choose else j c`. Establish `hg : ∀ c, (∃ e ∈ S, e ∘ r = c ∧ Rel e (g c)) ∨ g c = j c`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : ∃ f, ∃ e ∈ S, e ∘ r = c ∧ Rel e f`. Use `left`. Establish `: g c = h.choose` using `dif_pos h`. Rewrite using `[this]`. Conclude with `h.choose_spec`.
+Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Or.inr (dif_neg h)`. Use `⟨fun e => Function.extend r (g (e ∘ r)) e, ?_, ?_⟩` and prove the remaining obligations. Introduce `e he f hf k`. Establish `h : ∃ f, ∃ e' ∈ S, e' ∘ r = e ∘ r ∧ Rel e' f` using `⟨f, e, he, rfl, hf⟩`. Establish `h1 : g (e ∘ r) = h.choose` using `dif_pos h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨e', he', h2, h3⟩` from `h.choose_spec`. Establish `h4` using `(H e' he' e he _ _ h3 hf).1 h2`. Use `show f k = Function.extend r (g (e ∘ r)) e (r k)`. Rewrite using `[hr.extend_apply, h1, h4]`. Introduce and unpack `e he e' he' ⟨k, hk⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Assume the negation of the conclusion as `hc`. Establish `hge : g (e ∘ r) = g (e' ∘ r)`. Use function extensionality and compare the values at `i`. Assume the negation of the conclusion as `hi`. Use `hc ⟨i, ?_⟩` and prove the remaining obligations.
-
-Use `show Function.extend r (g (e ∘ r)) e (r i) ≠ Function.extend r (g (e' ∘ r)) e' (r i)`. Rewrite using `[hr.extend_apply, hr.extend_apply]` and apply the resulting hypothesis. Apply `hk` to reduce the goal to its premises. It suffices to establish `h : e ∘ r = e' ∘ r from congrFun h k`. Apply the tactic sequence `rcases hg (e ∘ r) with ⟨a, ha, h1, h2⟩ | h1 <;> rcases hg (e' ∘ r) with ⟨b, hb, h3, h4⟩ | h3`.
-
-Rewrite using `[← h1, ← h3]`. Conclude with `(H a ha b hb _ _ h2 h4).2 hge`. Conclude with `absurd (by rw [← h3, ← hge]; exact h2) (hj (e' ∘ r) a ha)`. Conclude with `absurd (by rw [← h1, hge]; exact h4) (hj (e ∘ r) b hb)`. Conclude with `hji e he e' he' (by rw [← h1, ← h3, hge])`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the argument to an intermediate assertion. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_separating_extension_of_rel : ∀ {α β L : Type} [Infinite L] (S : Finset (α → L)) (r : β → α) (Rel : (α → L) → (β → L) → Prop), Function.Injective r → (∀ e ∈ S, ∀ e' ∈ S, ∀ f f', Rel e f → Rel e' f' → (e ∘ r = e' ∘ r ↔ f = f')) → ∃ tr : (α → L) → α → L, (∀ e ∈ S, ∀ f, Rel e f → ∀ k, f k = tr e (r k)) ∧ ∀ e ∈ S, ∀ e' ∈ S, (∃ k, e (r k) ≠ e' (r k)) → ∃ k, tr e (r k) ≠ tr e' (r k) := by
   intro α β L _ S r Rel hr H

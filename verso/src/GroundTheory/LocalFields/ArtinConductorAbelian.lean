@@ -13,9 +13,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 section HasseArf
 
 /- English proof (translation)
-Set `ι : M →ₐ[K] SeparableClosure K` to `IsSepClosed.lift`. Set `E : IntermediateField K (SeparableClosure K)` to `ι.fieldRange`. Set `e : M ≃ₐ[K] E` to `AlgEquiv.ofInjectiveField ι`. Establish `: FiniteDimensional K E` using `e.toLinearEquiv.finiteDimensional`. Establish `: IsAbelianGalois K E` using `IsAbelianGalois.of_algHom (M := M) e.symm.toAlgHom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `exists_int_eq_of_forall_upperRamificationGroup_ne E` to reduce the goal to its premises. Introduce `w hw heq`. Apply `h w hw` to reduce the goal to its premises. Rewrite `heq` using `[← map_upperRamificationGroup_autCongr e w, ← map_upperRamificationGroup_autCongr e v]`. Conclude with `Subgroup.map_injective e.autCongr.injective heq`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_eq_of_forall_upperRamificationGroup_ne_of_isAbelianGalois
     {M : Type*} [Field M] [ValuativeRel M] [TopologicalSpace M] [IsNonarchimedeanLocalField M]
@@ -39,7 +39,7 @@ variable {L : Type*} [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchi
 omit [IsGalois K L] in
 
 /- English proof (translation)
-Establish `hψ : (j : ℝ) < herbrandPsi K L w`. Rewrite using `[← herbrandPsi_herbrandPhi (K := K) (L := L) (j : ℝ)]`. Conclude with `herbrandPsi_strictMono hw`. Use `show lowerRamificationGroup K L ⌈herbrandPsi K L w⌉ ≤ _`. Conclude with `lowerRamificationGroup_antitone K L (Int.add_one_le_iff.mpr (Int.lt_ceil.mpr hψ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upperRamificationGroup_le_of_herbrandPhi_lt {j : ℕ} {w : ℝ} (hw : herbrandPhi K L j < w) :
     upperRamificationGroup K L w ≤ lowerRamificationGroup K L ((j : ℤ) + 1) := by
@@ -52,20 +52,18 @@ theorem upperRamificationGroup_le_of_herbrandPhi_lt {j : ℕ} {w : ℝ} (hw : he
 omit [IsGalois K L] in
 
 /- English proof (translation)
-Rewrite using `[upperRamificationGroup_herbrandPhi, lowerRamificationGroupReal_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem upperRamificationGroup_herbrandPhi_natCast (j : ℕ) :
     upperRamificationGroup K L (herbrandPhi K L j) = lowerRamificationGroup K L j := by
   rw [upperRamificationGroup_herbrandPhi, lowerRamificationGroupReal_natCast]
 
 /- English proof (translation)
-Use `set M := IntermediateField.fixedField ψ.ker`. Establish `hker : (AlgEquiv.restrictNormalHom (F` using `K) (K₁ := L) M).ker = ψ.ker := by`. Rewrite using `[IntermediateField.restrictNormalHom_ker, IntermediateField.fixingSubgroup_fixedField]`. Establish `hcomm : ∀ a b : (L ≃ₐ[K] L) ⧸ ψ.ker, a * b = b * a` using `fun a b ↦ QuotientGroup.kerLift_injective ψ (by rw [map_mul, map_mul, mul_comm])`. Establish `: IsMulCommutative (M ≃ₐ[K] M)` using `⟨⟨fun a b ↦ by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a', rfl⟩` from `(IsGalois.normalAutEquivQuotient ψ.ker).surjective a`. Take `⟨b', rfl⟩` from `(IsGalois.normalAutEquivQuotient ψ.ker).surjective b`. Rewrite using `[← map_mul, ← map_mul, hcomm]⟩⟩`. Establish `: IsAbelianGalois K M` using `{ }`. Apply `exists_int_eq_of_forall_upperRamificationGroup_ne_of_isAbelianGalois (K := K) (M := M)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw heq`. Establish `h1 : upperRamificationGroup K M w = ⊥`. Rewrite using `[← map_upperRamificationGroup M w, Subgroup.map_eq_bot_iff, hker]`. Conclude with `(upperRamificationGroup_le_of_herbrandPhi_lt hw).trans hj1`. Establish `h2 : upperRamificationGroup K M (herbrandPhi K L j) ≠ ⊥`.
-
-Rewrite using `[← map_upperRamificationGroup M, Ne, Subgroup.map_eq_bot_iff, hker, upperRamificationGroup_herbrandPhi_natCast]`. Conclude with `hj`. Conclude with `h2 (heq ▸ h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_herbrandPhi_eq_of_monoidHom (ψ : (L ≃ₐ[K] L) →* ℂˣ) {j : ℕ}
     (hj : ¬ lowerRamificationGroup K L j ≤ ψ.ker)
@@ -109,7 +107,7 @@ theorem charRep_apply (ψ : G →* ℂˣ) (g : G) (v : ℂ) : charRep ψ g v = (
   rfl
 
 /- English proof (translation)
-Establish `h : charRep ψ g = (ψ g : ℂ) • LinearMap.id`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[Representation.character, h, map_smul, LinearMap.trace_id, finrank_self]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem character_charRep (ψ : G →* ℂˣ) (g : G) : (charRep ψ).character g = ψ g := by
   have h : charRep ψ g = (ψ g : ℂ) • LinearMap.id := by
@@ -121,13 +119,13 @@ theorem character_charRep (ψ : G →* ℂˣ) (g : G) : (charRep ψ).character g
 open Classical in
 
 /- English proof (translation)
-Use `split_ifs with h`. Establish `htop : Representation.invariants ((charRep ψ).comp S.subtype) = ⊤`. Use extensionality with `v`. Simplify using `only [Submodule.mem_top, iff_true]`. Introduce `g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ψ g = 1` using `h g.2`. Simplify using `[this]`. Rewrite using `[htop, finrank_top, finrank_self]`. Establish `hbot : Representation.invariants ((charRep ψ).comp S.subtype) = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Take `⟨g, hg, hψ⟩` from `SetLike.not_le_iff_exists.mp h`. Establish `hv' : (ψ g : ℂ) * v = v` using `hv ⟨g, hg⟩`. Establish `hne : (ψ g : ℂ) ≠ 1` using `fun h1 ↦ hψ (MonoidHom.mem_ker.mpr (Units.val_eq_one.mp h1))`. Establish `: ((ψ g : ℂ) - 1) * v = 0` using `by rw [sub_mul, hv', one_mul, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hne)`. Rewrite using `[hbot, finrank_bot]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_invariants_charRep_comp (ψ : G →* ℂˣ) (S : Subgroup G) :
     finrank ℂ (Representation.invariants ((charRep ψ).comp S.subtype)) = if S ≤ ψ.ker then 1 else 0 := by
@@ -159,7 +157,7 @@ variable {L : Type*} [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchi
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[artinConductor_eq_sum _ hN]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[finrank_invariants_charRep_comp, finrank_self]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem artinConductor_charRep_eq_sum (ψ : (L ≃ₐ[K] L) →* ℂˣ) {N : ℕ}
     (hN : lowerRamificationGroup K L N = ⊥) :
@@ -172,13 +170,13 @@ theorem artinConductor_charRep_eq_sum (ψ : (L ≃ₐ[K] L) →* ℂˣ) {N : ℕ
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [herbrandPhi_zero]`. Consider the case `succ n ih`. Establish `h` using `herbrandPhi_of_mem_Icc (K := K) (L := L) n (u := (n : ℝ) + 1) ⟨by linarith, le_rfl⟩`. Establish `hrel` using `relIndex_mul_card_inf (lowerRamificationGroup K L ((n : ℤ) + 1)) (lowerRamificationGroup K L 0)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hrel` using `[inf_of_le_left (lowerRamificationGroup_antitone K L (by omega))]`. Establish `hc : (Nat.card (lowerRamificationGroup K L ((n : ℤ) + 1)) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hr : ((lowerRamificationGroup K L ((n : ℤ) + 1)).relIndex (lowerRamificationGroup K L 0) : ℝ) ≠ 0`. Introduce `h0`. Establish `h0' : (lowerRamificationGroup K L ((n : ℤ) + 1)).relIndex (lowerRamificationGroup K L 0) = 0` using `by exact_mod_cast h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hrel` using `[h0', zero_mul]`. Conclude with `Nat.card_pos.ne' hrel.symm`. Use `push_cast`. Rewrite using `[h, ih, Finset.sum_range_succ, add_sub_cancel_left, ← hrel]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem herbrandPhi_natCast_eq_sum (n : ℕ) :
     herbrandPhi K L n = ∑ i ∈ Finset.range n,
@@ -207,11 +205,11 @@ theorem herbrandPhi_natCast_eq_sum (n : ℕ) :
     field_simp
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_lowerRamificationGroup_eq_bot K L`. Establish `hex : ∃ n : ℕ, lowerRamificationGroup K L n ≤ ψ.ker` using `⟨N, by rw [hN N le_rfl]; exact bot_le⟩`. Use `set k := Nat.find hex with hk`. Establish `hk0 : k ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Nat.find_spec hex` as an intermediate fact. Rewrite `this` using `[← hk, h]`. Conclude with `h0 (by exact_mod_cast this)`. Use `⟨k - 1, Nat.find_min hex (by omega), ?_⟩` and prove the remaining obligations. Use `Nat.find_spec hex` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite `this` using `[← hk]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_lowerRamificationGroup_jump (ψ : (L ≃ₐ[K] L) →* ℂˣ)
     (h0 : ¬ lowerRamificationGroup K L 0 ≤ ψ.ker) :
@@ -234,15 +232,15 @@ theorem exists_lowerRamificationGroup_jump (ψ : (L ≃ₐ[K] L) →* ℂˣ)
   omega
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_lowerRamificationGroup_eq_bot K L`. Establish `hjN : j < N`. Assume the negation of the conclusion as `h`. Apply `hj` to reduce the goal to its premises. Rewrite using `[hN j (by exact_mod_cast not_lt.mp h)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bot_le`. Establish `hiff : ∀ i : ℕ, lowerRamificationGroup K L i ≤ ψ.ker ↔ ¬ i ≤ j`. Introduce `i`. Prove the components needed by the constructor for the conclusion. Introduce `hi hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hj ((lowerRamificationGroup_antitone K L (by exact_mod_cast hij)).trans hi)`. Introduce `hij`. Conclude with `(lowerRamificationGroup_antitone K L (by omega)).trans hj1`. Establish `h0 : (Nat.card (lowerRamificationGroup K L 0) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Rewrite using `[artinConductor_charRep_eq_sum ψ (hN N le_rfl)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[hiff, ite_not]`. Rewrite using `[← Finset.sum_filter]`. Establish `hfilt : (Finset.range N).filter (fun i ↦ i ≤ j) = Finset.range (j + 1)`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hfilt, Finset.sum_range_succ', herbrandPhi_natCast_eq_sum]`. Use `push_cast`. Rewrite using `[div_self h0, add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem artinConductor_charRep_eq_one_add_herbrandPhi (ψ : (L ≃ₐ[K] L) →* ℂˣ) {j : ℕ}
     (hj : ¬ lowerRamificationGroup K L j ≤ ψ.ker)
@@ -276,15 +274,15 @@ theorem artinConductor_charRep_eq_one_add_herbrandPhi (ψ : (L ≃ₐ[K] L) →*
   rw [div_self h0, add_comm]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : lowerRamificationGroup K L 0 ≤ ψ.ker`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_zero, artinConductor_eq_zero_iff]`. Introduce `σ hσ`. Establish `h1 : ψ σ = 1` using `h0 hσ`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `ext`. Simplify using `[h1]`. Take `⟨j, hj, hj1⟩` from `exists_lowerRamificationGroup_jump ψ h0`. Take `⟨m, hm⟩` from `exists_int_herbrandPhi_eq_of_monoidHom ψ hj hj1`. Establish `hpos : (0 : ℝ) ≤ herbrandPhi K L j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← herbrandPhi_zero (K := K) (L := L)]`. Conclude with `herbrandPhi_strictMono.monotone (Nat.cast_nonneg j)`. Establish `hm0 : 0 ≤ m`. Establish `: (0 : ℝ) ≤ m` using `hm ▸ hpos`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(1 + m).toNat, ?_⟩` and prove the remaining obligations. Establish `h` using `artinConductor_charRep_eq_one_add_herbrandPhi ψ hj hj1`. Rewrite `h` using `[hm]`. Establish `hn : (((1 + m).toNat : ℕ) : ℝ) = 1 + m`. Establish `h2 : (((1 + m).toNat : ℕ) : ℤ) = 1 + m` using `Int.toNat_of_nonneg (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2` after adjusting the coercions. Establish `h' : ((artinConductor (charRep ψ) : ℚ) : ℝ) = ((((1 + m).toNat : ℕ) : ℚ) : ℝ)`. Rewrite using `[Rat.cast_natCast, hn, h]`. Conclude with `Rat.cast_injective h'`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_artinConductor_charRep_eq [IsGalois K L] (ψ : (L ≃ₐ[K] L) →* ℂˣ) :
     ∃ n : ℕ, artinConductor (charRep ψ) = n := by

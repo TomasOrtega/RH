@@ -14,41 +14,35 @@ open scoped TensorProduct ENNReal
 namespace LocPosW
 
 /- English proof (translation)
-Take `⟨hsupp, hdis, hcont⟩` from `hfib`. Take `⟨hint, hIc⟩` from `hcont φ hφc hφs hφU`. Establish `hIcont : Continuous (fun b => ∫ v, φ v ∂(fib b))` using `continuousOn_univ.mp hIc`. Establish `hI0 : ∀ b, 0 ≤ ∫ v, φ v ∂(fib b)` using `fun b => integral_nonneg hφ0`. Assume the negation of the conclusion as `hneg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hneg`. Establish `hb0 : ∫ v, φ v ∂(fib b0) = 0` using `le_antisymm hneg (hI0 b0)`. Establish `hcr : 0 < c.toReal` using `ENNReal.toReal_pos hc.ne' hc'`. Take `⟨ε, hε⟩ : ∃ ε : ℝ, ε = c.toReal * δ / 2` from `⟨_, rfl⟩`. Establish `hεpos : 0 < ε` using `by rw [hε]; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : {b | ∫ v, φ v ∂(fib b) < ε} ∈ 𝓝 b0` using `hIcont.continuousAt.preimage_mem_nhds (Iio_mem_nhds (by rw [hb0]; exact hεpos))`. Take `⟨N', hN', hN'fin⟩` from `hνfin`. Take `⟨S, hSdef⟩ : ∃ S : Set X, S = interior N ∩ interior N' ∩ interior {b | ∫ v, φ v ∂(fib b) < ε}` from `⟨_, rfl⟩`. Establish `hSo : IsOpen S`. Rewrite using `[hSdef]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(isOpen_interior.inter isOpen_interior).inter isOpen_interior`. Establish `hb0S : b0 ∈ S`. Rewrite using `[hSdef]`. Conclude with `⟨⟨mem_interior_iff_mem_nhds.mpr hN, mem_interior_iff_mem_nhds.mpr hN'⟩, mem_interior_iff_mem_nhds.mpr hO⟩`. Establish `hSN : S ⊆ N`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[hSdef]`. Conclude with `fun b hb => interior_subset hb.1.1`. Establish `hSN' : S ⊆ N'`. Rewrite using `[hSdef]`. Conclude with `fun b hb => interior_subset hb.1.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hSε : ∀ b ∈ S, ∫ v, φ v ∂(fib b) < ε`. Rewrite using `[hSdef]`. Conclude with `fun b hb => interior_subset (s := {b | ∫ v, φ v ∂(fib b) < ε}) hb.2`. Establish `hSm : MeasurableSet S` using `hSo.measurableSet`. Establish `hνS0 : ν S ≠ 0` using `hνpos S hSo ⟨b0, hb0S⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hνSfin : ν S ≠ ⊤` using `ne_top_of_le_ne_top hN'fin.ne (measure_mono hSN')`. Establish `hlbS` using `hlb S hSN hSm`. Take `⟨ψ, hψ⟩ : ∃ ψ : V → ℝ≥0∞, ψ = (f' ⁻¹' S).indicator (fun v => ENNReal.ofReal (φ v))` from `⟨_, rfl⟩`. Establish `hψm : Measurable ψ`. Rewrite using `[hψ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(ENNReal.measurable_ofReal.comp hφc.measurable).indicator (hf'.measurable hSm)`. Establish `hA : ENNReal.ofReal δ * μ (f ⁻¹' (ι '' S) ∩ W) ≤ ∫⁻ v in U, ψ v ∂μ`. Combine the equalities or inequalities in the displayed calculation. Apply `setLIntegral_mono hψm` to reduce the goal to its premises. Introduce `v hv`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨s, hs, hsv⟩, hvW⟩` from `hv`. Establish `hsf : s = f' v` using `hι (hsv.trans (hff v))`. Establish `hvS : v ∈ f' ⁻¹' S`. Rewrite using `[Set.mem_preimage, ← hsf]`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hψ, Set.indicator_of_mem hvS]`. Conclude with `ENNReal.ofReal_le_ofReal (hWφ v hvW)`. Use `_ ≤ ∫⁻ v in U, ψ v ∂μ := lintegral_mono_set (fun v hv => hWU hv.2)`. Establish `hfibψ : ∀ b, ∫⁻ v, ψ v ∂(fib b) ≤ S.indicator (fun _ => ENNReal.ofReal ε) b`. Introduce `b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ v ∂(fib b), f' v = b`. Use `ae_iff.mpr (measure_mono_null ?_ (hsupp b))` and prove the remaining obligations. Introduce `v hv hv'`. Conclude with `hv (hι ((hff v).symm.trans hv'.1))`. Distinguish the cases in `hbS : b ∈ S`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hbS]`. Establish `heq : ∫⁻ v, ψ v ∂(fib b) = ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib b)`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with v hv`. Establish `hvS : v ∈ f' ⁻¹' S`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.mem_preimage, hv]`. Conclude with `hbS`. Rewrite using `[hψ, Set.indicator_of_mem hvS]`. Rewrite using `[heq, ← ofReal_integral_eq_lintegral_ofReal (hint b (Set.mem_univ b)) (Eventually.of_forall hφ0)]`. Conclude with `ENNReal.ofReal_le_ofReal (hSε b hbS).le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `heq : ∫⁻ v, ψ v ∂(fib b) = ∫⁻ _v, (0 : ℝ≥0∞) ∂(fib b)`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with v hv`. Establish `hvS : v ∉ f' ⁻¹' S`. Rewrite using `[Set.mem_preimage, hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hbS`. Simplify using `[hψ, hvS]`. Rewrite using `[heq, lintegral_zero]`. Conclude with `bot_le`. Establish `hU : ∫⁻ v in U, ψ v ∂μ ≤ ENNReal.ofReal ε * ν S`.
-
-Rewrite using `[hdis ψ hψm]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlt : ENNReal.ofReal ε < c * ENNReal.ofReal δ`. Rewrite using `[← ENNReal.ofReal_toReal hc', ← ENNReal.ofReal_mul hcr.le, ENNReal.ofReal_lt_ofReal_iff (by positivity)]`. Use `mul_pos hcr hδ` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : ENNReal.ofReal δ * (c * ν S) ≤ ENNReal.ofReal δ * μ (f ⁻¹' (ι '' S) ∩ W)` using `by gcongr`. Establish `h1 : ENNReal.ofReal δ * (c * ν S) ≤ ENNReal.ofReal ε * ν S` using `h0.trans (hA.trans hU)`. Establish `h2 : ν S * ENNReal.ofReal ε < ν S * (c * ENNReal.ofReal δ)` using `ENNReal.mul_lt_mul_right hνS0 hνSfin hlt`. Establish `h3 : ENNReal.ofReal δ * (c * ν S) = ν S * (c * ENNReal.ofReal δ)` using `by ring`.
-
-Establish `h4 : ENNReal.ofReal ε * ν S = ν S * ENNReal.ofReal ε` using `by ring`. Rewrite `h1` using `[h3, h4]`. Conclude with `lt_irrefl _ (h1.trans_lt h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pos_of_lb {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
     [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
@@ -163,7 +157,7 @@ theorem pos_of_lb {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [Borel
   exact lt_irrefl _ (h1.trans_lt h2)
 
 /- English proof (translation)
-Establish `hs : ∀ e : E, sigR R σ (inclR R e) = inclR R (σ e)`. Introduce `e`. Simplify using `[sigR, inclR, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]`. Use extensionality with `a b`. Simplify using `only [gramR, gramE, hR, hE, Formalism.UG.hform, ratTup, JR, Matrix.map_apply, hs, map_sum, map_mul, AlgHom.coe_toRingHom]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramR_ratTup {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
@@ -189,17 +183,17 @@ def LBInf : Prop := InCtx fun F E _ _ _ _ _ σ M J a X0 hT =>
         c * νinf S ≤ μinf ((gramR (Ainf F) σ J) ⁻¹' (Subtype.val '' S) ∩ W)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μinf hμ νinf hν fibInf hfib`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol σ hCM.2.2.2`. Use `hμ.1` as an intermediate fact. Use `hν.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t1, t2, t3, t4, t5, t6, t7⟩` from `(tensAll_holds F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet).1`. Establish `: BorelSpace (Ainf F ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (HermR (Ainf F) σ a)` using `⟨rfl⟩`. Establish `: LocallyCompactSpace (HermR (Ainf F) σ a)` using `t4.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `set X1 := ratTup (F := F) (Ainf F) X0 with hX1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX1U : X1 ∈ {X : Fin a → Fin M → Ainf F ⊗[F] E | LinearIndependent (Ainf F ⊗[F] E) X}` using `linIndep_of_isUnit_det (Ainf F) σ J X1 (by rw [gramR_ratTup]; exact isUnit_det_hermOf (Ainf F) σ _ hT hdet)`. Take `⟨K, hK, hxK, hKU⟩` from `exists_compact_subset t7 hX1U`. Take `⟨φ, hφ1, hφ0, hφc, hφr⟩` from `exists_continuous_one_zero_of_isCompact (isCompact_singleton (x := X1)) isOpen_interior.isClosed_compl (disjoint_singleton_left.2 fun h => h hxK)`. Establish `hsupp : Function.support φ ⊆ interior K` using `fun X hX => by`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hX (hφ0 h)`. Establish `hts : tsupport φ ⊆ {X : Fin a → Fin M → Ainf F ⊗[F] E | LinearIndependent (Ainf F ⊗[F] E) X}` using `(closure_mono hsupp).trans ((closure_minimal interior_subset hK.isClosed).trans hKU)`. Set `W : Set (Fin a → Fin M → Ainf F ⊗[F] E)` to `{X | (1 / 2 : ℝ) < φ X}`. Establish `hWo : IsOpen W` using `isOpen_lt continuous_const φ.continuous`. Establish `hX1W : X1 ∈ W` using `by show (1 / 2 : ℝ) < φ X1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[hφ1 (mem_singleton X1)]`. Evaluate the numerical expressions. Establish `hWU : W ⊆ {X : Fin a → Fin M → Ainf F ⊗[F] E | LinearIndependent (Ainf F ⊗[F] E) X}` using `fun X hX => hts (subset_tsupport _ (lt_trans (by norm_num : (0 : ℝ) < 1 / 2) hX).ne')`. Take `⟨c, hc0, hctop, N, hN, hlb⟩` from `hL F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet μinf νinf hμ.1 hν.1 W hWo hX1W`. Establish `hpos` using `pos_of_lb (f' := gramH (Ainf F) σ hσ J hJ.1) Subtype.val_injective hfib (continuous_gramH (Ainf F) σ hσ J hJ.1) (fun _ => rfl) φ.continuous hφc hts (fun X => (hφr X).1) hWU (by norm_num : (0 : ℝ) < 1 / 2) (fun X hX => hX.le) hc0 hctop hN hlb (fun O hO hne => (hO.measure_pos νinf …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun X => ((φ X : ℝ) : ℂ), Complex.continuous_ofReal.comp φ.continuous, hφc.comp_left Complex.ofReal_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_complex_ofReal]`. Conclude with `hpos.ne'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem archPos_of_lb (hL : LBInf) : ArchPos := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μinf hμ νinf hν fibInf hfib

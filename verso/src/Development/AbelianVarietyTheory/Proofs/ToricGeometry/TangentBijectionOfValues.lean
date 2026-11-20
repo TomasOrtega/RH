@@ -18,7 +18,7 @@ def evalPt (x : Sp R ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) : Γ(X, U) 
   (x.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom).hom
 
 /- English proof (translation)
-Use `congrArg (fun φ => ((φ ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom).hom f)) (x.map_appLE hV (homOfLE e).op)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evalPt_res (x : Sp R ⟶ X) {U V : X.Opens} (e : V ≤ U) (hU : ⊤ ≤ x ⁻¹ᵁ U)
     (hV : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, U)) : evalPt x V hV (resG X e f) = evalPt x U hU f := by
@@ -27,9 +27,9 @@ theorem evalPt_res (x : Sp R ⟶ X) {U V : X.Opens} (e : V ≤ U) (hU : ⊤ ≤ 
   exact this
 
 /- English proof (translation)
-Establish `e1 : (spMap φ ≫ x).appLE U ⊤ h' = x.appLE U ⊤ h ≫ (spMap φ).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`. Establish `e2` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ)`. Unfold `evalPt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Category.assoc, e2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem evalPt_spMap_comp (φ : R →+* R') (x : Sp R ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (h' : ⊤ ≤ (spMap φ ≫ x) ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -43,7 +43,7 @@ theorem evalPt_spMap_comp (φ : R →+* R') (x : Sp R ⟶ X) (U : X.Opens) (h : 
   rfl
 
 /- English proof (translation)
-Use `IsAffineOpen.SpecMap_appLE_fromSpec x hU (isAffineOpen_top _) h` as an intermediate fact. Rewrite `this` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Unfold `evalPt`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, this, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_spec_fromSpec {U : X.Opens} (hU : IsAffineOpen U) (x : Sp R ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ U) :
     x = Spec.map (CommRingCat.ofHom (evalPt x U h)) ≫ hU.fromSpec := by
@@ -54,16 +54,16 @@ theorem eq_spec_fromSpec {U : X.Opens} (hU : IsAffineOpen U) (x : Sp R ⟶ X) (h
     ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]
 
 /- English proof (translation)
-Conclude with `(eq_spec_fromSpec hU x hx).trans (e ▸ (eq_spec_fromSpec hU y hy).symm)`.
+A detailed English derivation is pending.
 -/
 theorem ext_evalPt {U : X.Opens} (hU : IsAffineOpen U) {x y : Sp R ⟶ X} (hx : ⊤ ≤ x ⁻¹ᵁ U)
     (hy : ⊤ ≤ y ⁻¹ᵁ U) (e : evalPt x U hx = evalPt y U hy) : x = y := by
   exact (eq_spec_fromSpec hU x hx).trans (e ▸ (eq_spec_fromSpec hU y hy).symm)
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ (Spec.map (CommRingCat.ofHom ψ) ≫ hU.fromSpec) ⁻¹ᵁ U`. Rewrite using `[Scheme.Hom.comp_preimage, hU.fromSpec_preimage_self]`. Conclude with `le_rfl`. Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ hU.fromSpec, h, ?_⟩` and prove the remaining obligations. Use `eq_spec_fromSpec hU _ h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[cancel_mono]`. Use `Spec.map_injective this` as an intermediate fact. Conclude with `(congrArg CommRingCat.Hom.hom this).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_evalPt_eq {U : X.Opens} (hU : IsAffineOpen U) (ψ : Γ(X, U) →+* R) :
     ∃ (x : Sp R ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ U), evalPt x U h = ψ := by
@@ -77,7 +77,7 @@ theorem exists_evalPt_eq {U : X.Opens} (hU : IsAffineOpen U) (ψ : Γ(X, U) →+
   exact (congrArg CommRingCat.Hom.hom this).symm
 
 /- English proof (translation)
-Use `Scheme.Hom.appLE_comp_appLE x p ⊤ U ⊤ (fun _ _ => trivial) h` as an intermediate fact. Unfold `evalPt constFn`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalPt_constFn {k : Type} [CommRing k] (p : X ⟶ Sp k) (x : Sp R ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (a : k) :
@@ -88,9 +88,9 @@ theorem evalPt_constFn {k : Type} [CommRing k] (p : X ⟶ Sp k) (x : Sp R ⟶ X)
   rfl
 
 /- English proof (translation)
-Use `evalPt_spMap_comp φ (𝟙 (Sp R)) ⊤ le_rfl le_rfl ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)` as an intermediate fact. Simplify using `only [Category.comp_id] at this`. Rewrite using `[this]`. Use `congr 1`. Establish `e : Scheme.Hom.appLE (𝟙 (Sp R)) ⊤ ⊤ le_rfl = 𝟙 _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `[Scheme.Hom.appLE]`. Unfold `evalPt`. Rewrite using `[e, Category.id_comp]`. Conclude with `Iso.inv_hom_id_apply (Scheme.ΓSpecIso (CommRingCat.of R)) a`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalPt_spMap (φ : R →+* R') (a : R) :
     evalPt (spMap φ) ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a) = φ a := by
@@ -105,7 +105,7 @@ theorem evalPt_spMap (φ : R →+* R') (a : R) :
   exact Iso.inv_hom_id_apply (Scheme.ΓSpecIso (CommRingCat.of R)) a
 
 /- English proof (translation)
-Use `ext_evalPt (isAffineOpen_top _) le_rfl le_rfl (RingHom.ext fun b => ?_)` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of k)).inv).2 b`. Conclude with `(h a).trans (evalPt_spMap φ a).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_spMap_of_evalPt {k : Type} [CommRing k] (y : Sp R ⟶ Sp k) (φ : k →+* R)
     (h : ∀ a, evalPt y ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom a) = φ a) :
@@ -116,7 +116,7 @@ theorem eq_spMap_of_evalPt {k : Type} [CommRing k] (y : Sp R ⟶ Sp k) (φ : k �
   exact (h a).trans (evalPt_spMap φ a).symm
 
 /- English proof (translation)
-Unfold `valAt'`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valAt'_eq_evalPt (x : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     valAt' x U f = evalPt x U h f := by
@@ -127,13 +127,11 @@ theorem valAt'_eq_evalPt (x : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹�
 abbrev fstC : DualNumber ℂ →+* ℂ := (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom
 
 /- English proof (translation)
-Introduce `p`. Use `⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ), ?_⟩` and prove the remaining obligations. Use `PrimeSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x.fst ∈ (⊥ : Ideal ℂ) ↔ x ∈ PrimeSpectrum.asIdeal p`. Rewrite using `[Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Apply `p.isPrime.mem_of_pow_mem 2` to reduce the goal to its premises. Establish `: x ^ 2 = 0`. Rewrite using `[pow_two, show x = TrivSqZeroExt.inr x.snd from TrivSqZeroExt.ext hx rfl, TrivSqZeroExt.inr_mul_inr]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`. Introduce `hx`. Assume the negation of the conclusion as `h0`. Establish `hu : IsUnit x` using `TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (Ne.isUnit h0)`.
-
-Conclude with `p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hx hu)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spMap_fst_surjective : Function.Surjective (spMap fstC) := by
   intro p
@@ -155,9 +153,7 @@ theorem spMap_fst_surjective : Function.Surjective (spMap fstC) := by
     exact p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hx hu)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h p _`. Conclude with `h (Set.mem_univ (spMap fstC p))`. Introduce `h p _`. Take `⟨q, rfl⟩` from `spMap_fst_surjective p`.
-
-Conclude with `h (Set.mem_univ q)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem top_le_preimage_iff (x : Sp (DualNumber ℂ) ⟶ X) (W : X.Opens) :
     ⊤ ≤ x ⁻¹ᵁ W ↔ ⊤ ≤ (spMap fstC ≫ x) ⁻¹ᵁ W := by
@@ -175,7 +171,7 @@ section Jets
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
 /- English proof (translation)
-Use `u.ex_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left.1 this.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_zero : u.ex 0 = 1 := by
   have := u.ex_add 0 0
@@ -183,34 +179,34 @@ theorem ex_zero : u.ex 0 = 1 := by
   exact (mul_eq_left.1 this.symm)
 
 /- English proof (translation)
-Rewrite using `[ex_zero, Hom.one_def, toUnit_unit, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_zero_left : (u.ex 0).left = η[A].left := by
   rw [ex_zero, Hom.one_def, toUnit_unit, Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `Over.w (u.ex z)`.
+A detailed English derivation is pending.
 -/
 theorem ex_left_comp (z : Fin g → ℂ) : (u.ex z).left ≫ A.hom = 𝟙 (Sp ℂ) := Over.w (u.ex z)
 
 /- English proof (translation)
-The claim follows from `(u.hol W 0).1.mem_nhds h`.
+A detailed English derivation is pending.
 -/
 theorem eventually_mem {W : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W) :
     ∀ᶠ z in 𝓝 (0 : Fin g → ℂ), ⊤ ≤ (u.ex z).left ⁻¹ᵁ W :=
   (u.hol W 0).1.mem_nhds h
 
 /- English proof (translation)
-The claim follows from `(u.hol W f).2.differentiableAt (eventually_mem u h)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_val {W : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W) (f : Γ(A.left, W)) :
     DifferentiableAt ℂ (fun z => valAt' (u.ex z).left W f) 0 :=
   (u.hol W f).2.differentiableAt (eventually_mem u h)
 
 /- English proof (translation)
-Establish `: (fun z => valAt' (u.ex z).left W (constFn A.hom W a)) =ᶠ[𝓝 0] fun _ => a` using `by filter_upwards [eventually_mem u h] with z hz`. Rewrite using `[valAt'_eq_evalPt _ _ hz, evalPt_constFn]`. Establish `e : (u.ex z).left ≫ A.hom = spMap (RingHom.id ℂ)` using `(ex_left_comp u z).trans (Spec.map_id _).symm`. Conclude with `(congrArg (fun y : Sp ℂ ⟶ Sp ℂ => evalPt y ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) e).trans (evalPt_spMap _ a)`. Rewrite using `[this.fderiv_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem fderiv_val_const {W : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W) (a : ℂ) :
     fderiv ℂ (fun z => valAt' (u.ex z).left W (constFn A.hom W a)) 0 = 0 := by
@@ -225,7 +221,7 @@ theorem fderiv_val_const {W : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ 
   simp
 
 /- English proof (translation)
-Establish `: (fun z => valAt' (u.ex z).left W (f + f')) =ᶠ[𝓝 0] fun z => valAt' (u.ex z).left W f + valAt' (u.ex z).left W f'` using `by filter_upwards [eventually_mem u h] with z hz`. Simplify using `only [valAt'_eq_evalPt _ _ hz, map_add]`. Rewrite using `[this.fderiv_eq, fderiv_fun_add (differentiableAt_val u h f) (differentiableAt_val u h f')]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fderiv_val_add {W : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W) (f f' : Γ(A.left, W)) :
     fderiv ℂ (fun z => valAt' (u.ex z).left W (f + f')) 0 =
@@ -238,7 +234,7 @@ theorem fderiv_val_add {W : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W)
   rw [this.fderiv_eq, fderiv_fun_add (differentiableAt_val u h f) (differentiableAt_val u h f')]
 
 /- English proof (translation)
-Establish `: (fun z => valAt' (u.ex z).left W (f * f')) =ᶠ[𝓝 0] fun z => valAt' (u.ex z).left W f * valAt' (u.ex z).left W f'` using `by filter_upwards [eventually_mem u h] with z hz`. Simplify using `only [valAt'_eq_evalPt _ _ hz, map_mul]`. Rewrite using `[this.fderiv_eq, fderiv_fun_mul (differentiableAt_val u h f) (differentiableAt_val u h f')]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fderiv_val_mul {W : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W) (f f' : Γ(A.left, W)) :
     fderiv ℂ (fun z => valAt' (u.ex z).left W (f * f')) 0 =
@@ -251,7 +247,7 @@ theorem fderiv_val_mul {W : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W)
   rw [this.fderiv_eq, fderiv_fun_mul (differentiableAt_val u h f) (differentiableAt_val u h f')]
 
 /- English proof (translation)
-Apply `Filter.EventuallyEq.fderiv_eq` to reduce the goal to its premises. Use `filter_upwards [eventually_mem u hW, eventually_mem u hV] with z hz hz'`. Rewrite using `[valAt'_eq_evalPt _ _ hz, valAt'_eq_evalPt _ _ hz', evalPt_res]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_val_res {W V : A.left.Opens} (e : V ≤ W) (hW : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W)
     (hV : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ V) (f : Γ(A.left, W)) :
@@ -307,7 +303,7 @@ theorem jet_snd (w : Fin g → ℂ) (W : A.left.Opens) (h : ⊤ ≤ (u.ex 0).lef
     (jet u w W h f).snd = fderiv ℂ (fun z => valAt' (u.ex z).left W f) 0 w := rfl
 
 /- English proof (translation)
-Use `TrivSqZeroExt.ext (evalPt_res _ e hW hV f) ?_` and prove the remaining obligations. Rewrite using `[jet_snd, jet_snd, fderiv_val_res u e hW hV]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem jet_res (w : Fin g → ℂ) {W V : A.left.Opens} (e : V ≤ W) (hW : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W)
     (hV : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ V) (f : Γ(A.left, W)) :
@@ -316,7 +312,7 @@ theorem jet_res (w : Fin g → ℂ) {W V : A.left.Opens} (e : V ≤ W) (hW : ⊤
   rw [jet_snd, jet_snd, fderiv_val_res u e hW hV]
 
 /- English proof (translation)
-Rewrite using `[evalPt_constFn]`. Establish `e : (u.ex z).left ≫ A.hom = spMap (RingHom.id ℂ)` using `(ex_left_comp u z).trans (Spec.map_id _).symm`. Conclude with `(congrArg (fun y : Sp ℂ ⟶ Sp ℂ => evalPt y ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) e).trans (evalPt_spMap _ a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evalPt_ex_const (z : Fin g → ℂ) {W : A.left.Opens} (h : ⊤ ≤ (u.ex z).left ⁻¹ᵁ W) (a : ℂ) :
     evalPt (u.ex z).left W h (constFn A.hom W a) = a := by
@@ -327,7 +323,7 @@ theorem evalPt_ex_const (z : Fin g → ℂ) {W : A.left.Opens} (h : ⊤ ≤ (u.e
     ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) e).trans (evalPt_spMap _ a)
 
 /- English proof (translation)
-Use `TrivSqZeroExt.ext (evalPt_ex_const u 0 h a) ?_` and prove the remaining obligations. Rewrite using `[jet_snd, fderiv_val_const u h]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem jet_const (w : Fin g → ℂ) (W : A.left.Opens) (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W) (a : ℂ) :
     jet u w W h (constFn A.hom W a) = algebraMap ℂ (DualNumber ℂ) a := by
@@ -338,13 +334,13 @@ theorem jet_const (w : Fin g → ℂ) (W : A.left.Opens) (h : ⊤ ≤ (u.ex 0).l
 variable {u}
 
 /- English proof (translation)
-The claim follows from `hv.trans (ex_zero_left u).symm`.
+A detailed English derivation is pending.
 -/
 theorem tangent_comp {v : epsR ℂ ⟶ A} (hv : IsTangent v) :
     spMap fstC ≫ v.left = (u.ex 0).left := hv.trans (ex_zero_left u).symm
 
 /- English proof (translation)
-Rewrite using `[← tangent_comp (u := u) hv]`. Conclude with `top_le_preimage_iff v.left W`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tangent_mem_iff {v : epsR ℂ ⟶ A} (hv : IsTangent v) (W : A.left.Opens) :
     ⊤ ≤ v.left ⁻¹ᵁ W ↔ ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W := by
@@ -352,7 +348,7 @@ theorem tangent_mem_iff {v : epsR ℂ ⟶ A} (hv : IsTangent v) (W : A.left.Open
   exact top_le_preimage_iff v.left W
 
 /- English proof (translation)
-Establish `key : ∀ (y : Sp ℂ ⟶ A.left) (hy : ⊤ ≤ y ⁻¹ᵁ W), spMap fstC ≫ v.left = y → (evalPt (R` using `DualNumber ℂ) v.left W h f).fst = evalPt y W hy f := by`. Introduce and unpack `y hy rfl`. Conclude with `(evalPt_spMap_comp fstC v.left W h hy f).symm`. Conclude with `key _ h0 (tangent_comp hv)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem tangent_fst {v : epsR ℂ ⟶ A} (hv : IsTangent v) {W : A.left.Opens}
     (h : ⊤ ≤ v.left ⁻¹ᵁ W) (h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W) (f : Γ(A.left, W)) :
@@ -364,7 +360,7 @@ theorem tangent_fst {v : epsR ℂ ⟶ A} (hv : IsTangent v) {W : A.left.Opens}
   exact key _ h0 (tangent_comp hv)
 
 /- English proof (translation)
-Rewrite using `[evalPt_constFn]`. Establish `e : v.left ≫ A.hom = spMap (algebraMap ℂ (DualNumber ℂ))` using `Over.w v`. Conclude with `(congrArg (fun y : Sp (DualNumber ℂ) ⟶ Sp ℂ => evalPt y ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) e).trans (evalPt_spMap _ a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tangent_const (v : epsR ℂ ⟶ A) {W : A.left.Opens} (h : ⊤ ≤ v.left ⁻¹ᵁ W) (a : ℂ) :
     evalPt (R := DualNumber ℂ) v.left W h (constFn A.hom W a) = algebraMap ℂ (DualNumber ℂ) a := by
@@ -374,15 +370,15 @@ theorem tangent_const (v : epsR ℂ ⟶ A) {W : A.left.Opens} (h : ⊤ ≤ v.lef
     ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) e).trans (evalPt_spMap _ a)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hd`. Use `RingHom.ext fun f => TrivSqZeroExt.ext (tangent_fst hv h h0 f) (hd U h f)` and prove the remaining obligations. Introduce `he W hW f`. Establish `hW0` using `(tangent_mem_iff (u := u) hv W).1 hW`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `pt : (𝟙_ (Over (Sp ℂ))).left` to `(default : PrimeSpectrum ℂ)`. Establish `hsub : ∀ q : (𝟙_ (Over (Sp ℂ))).left, q = pt` using `fun q => Subsingleton.elim (α := PrimeSpectrum ℂ) q pt`. Take `⟨s, hsW, hs⟩` from `hU.exists_basicOpen_le (V := W) ⟨(u.ex 0).left pt, hW0 (Set.mem_univ pt)⟩ (h0 (Set.mem_univ pt))`. Establish `hB0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ A.left.basicOpen s`. Introduce `q _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsub q]`. Conclude with `hs`. Establish `hB` using `(tangent_mem_iff (u := u) hv _).2 hB0`. Use `hU.isLocalization_basicOpen s` as an intermediate fact. Establish `heq : evalPt (R` using `DualNumber ℂ) v.left _ hB = jet u w _ hB0 := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsLocalization.ringHom_ext (Submonoid.powers s)` to reduce the goal to its premises. Use `RingHom.ext fun b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalPt (R := DualNumber ℂ) v.left _ hB (resG A.left (A.left.basicOpen_le s) b) = jet u w _ hB0 (resG A.left (A.left.basicOpen_le s) b)`. Rewrite using `[evalPt_res _ _ h, jet_res u w _ h0, he]`. Express the relevant statement in the definitionally equal form `(evalPt (R := DualNumber ℂ) v.left W hW f).snd = (jet u w W hW0 f).snd`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← evalPt_res _ hsW hW hB, ← jet_res u w hsW hW0 hB0, heq]`.
+A detailed English derivation is pending.
 -/
 theorem isDiff_iff {v : epsR ℂ ⟶ A} (hv : IsTangent v) {U : A.left.Opens} (hU : IsAffineOpen U)
     (h : ⊤ ≤ v.left ⁻¹ᵁ U) (h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U) (w : Fin g → ℂ) :
@@ -415,25 +411,23 @@ theorem isDiff_iff {v : epsR ℂ ⟶ A} (hv : IsTangent v) {U : A.left.Opens} (h
 end Jets
 
 /- English proof (translation)
-Introduce and unpack `A _ L g u ⟨U, t, hU, h0, huniq, ht⟩`. Establish `hjet : ∀ w i, (jet u w U h0 (t i)).snd = w i`. Introduce `w i`. Use `(hasFDerivAt_pi'.1 ht i).fderiv` as an intermediate fact. Rewrite using `[jet_snd, this]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨fun v hv => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `h` using `(tangent_mem_iff (u := u) hv U).2 h0`. Use `⟨fun i => (evalPt (R := DualNumber ℂ) v.left U h (t i)).snd, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `set w : Fin g → ℂ := fun i => (evalPt (R := DualNumber ℂ) v.left U h (t i)).snd with hw`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(isDiff_iff hv hU h h0 w).2 ?_` and prove the remaining obligations. Set `D : Γ(A.left, U) →+ ℂ` to `{ toFun := fun f => (evalPt (R := DualNumber ℂ) v.left U h f).snd - (jet u w U h0 f).snd map_zero' := by simp map_add' := fun f f' => by`. Simplify using `only [map_add, TrivSqZeroExt.snd_add]`. Use `ring }`. Establish `hD : ∀ f, D f = (evalPt (R` using `DualNumber ℂ) v.left U h f).snd - (jet u w U h0 f).snd := fun _ => rfl`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : D = 0`. Apply `huniq` to reduce the goal to its premises. Introduce `a`. Rewrite using `[hD, tangent_const, jet_const, sub_self]`. Introduce `f f'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD, hD, hD, map_mul, map_mul, DualNumber.snd_mul, DualNumber.snd_mul, tangent_fst hv h h0, tangent_fst hv h h0, jet_fst, jet_fst, valAt'_eq_evalPt _ _ h0, valAt'_eq_evalPt _ _ h0]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i`. Rewrite using `[hD, hjet, sub_self]`. Use `RingHom.ext fun f => TrivSqZeroExt.ext (tangent_fst hv h h0 f) ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hD f` as an intermediate fact. Rewrite `this` using `[hz]`. Conclude with `sub_eq_zero.1 this.symm`. Use `replace hw := (isDiff_iff hv hU h h0 w).1 hw`. Use function extensionality and compare the values at `i`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hw, hjet]`. Take `⟨x, hx, hxe⟩` from `exists_evalPt_eq hU (jet u w U h0)`. Establish `hover : x ≫ A.hom = spMap (algebraMap ℂ (DualNumber ℂ))`. Use `eq_spMap_of_evalPt _ _ fun a => ?_` and prove the remaining obligations. Rewrite using `[← evalPt_constFn A.hom x U hx, hxe, jet_const]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `v : epsR ℂ ⟶ A` to `Over.homMk x hover`. Establish `hv : IsTangent v`. Use `Eq.trans ?_ (ex_zero_left u)` and prove the remaining obligations. Use `ext_evalPt hU ((top_le_preimage_iff x U).1 hx) h0 (RingHom.ext fun f => ?_)` and prove the remaining obligations. Use `(evalPt_spMap_comp fstC x U hx _ f).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hxe]`. Both sides reduce to the same expression. Use `⟨v, ⟨hv, (isDiff_iff hv hU hx h0 w).2 hxe⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `v' ⟨hv', hd'⟩`. Establish `h'` using `(tangent_mem_iff (u := u) hv' U).2 h0`.
-
-Rewrite `hd'` using `[isDiff_iff hv' hU h' h0]`. Conclude with `Over.OverMorphism.ext (ext_evalPt hU h' hx (hd'.trans hxe.symm))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tangent_bijection :
     (∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (g : ℕ) (u : HolUnif A L g), (∃ (U : A.left.Opens) (t : Fin g → Γ(A.left, U)), IsAffineOpen U ∧ ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U ∧ (∀ D : Γ(A.left, U) →+ ℂ, (∀ a, D (constFn A.hom U a) = 0) → (∀ f f', D (f * f') = valAt' (u.ex 0).left U f * D f' + valAt' (u.ex 0).left U f' * D f) → (∀ i, D (t i) = 0) → D = 0) ∧ HasFDerivAt (fun w i => valAt' (u.ex w).left U (t i)) (ContinuousLinearMap.id ℂ (Fin g → ℂ)) 0) → (∀ v, IsTangent v → ∃! w, u.IsDiff w v) ∧ (∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v)) := by
@@ -492,7 +486,7 @@ theorem tangent_bijection :
     exact Over.OverMorphism.ext (ext_evalPt hU h' hx (hd'.trans hxe.symm))
 
 /- English proof (translation)
-Introduce `_` and use `tangent_bijection`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tangent_bijection_of_values :
     (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)) →

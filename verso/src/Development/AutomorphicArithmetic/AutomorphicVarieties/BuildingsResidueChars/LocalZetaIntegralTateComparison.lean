@@ -15,9 +15,9 @@ section SlopeTestRemainingChoices
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `ordDet_nonneg_of_integral`. Introduce `h i j`. Rewrite using `[Fin.fin_one_eq_zero i, Fin.fin_one_eq_zero j]`. Establish `hne : (g : Matrix (Fin 1) (Fin 1) F) 0 0 ≠ 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `det_ne_zero g` using `[Matrix.det_unique]`. Rewrite using `[← GroundTheory.LocalField.mem_valBall_zero_iff, GroundTheory.LocalField.mem_valBall_iff_le_ord hne]`. Simplify `h` using `[ordDet, Matrix.det_unique]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem integral_iff_one (g : GL (Fin 1) F) :
     (∀ i j, (g : Matrix (Fin 1) (Fin 1) F) i j ∈ 𝒪[F]) ↔ 0 ≤ ordDet g := by
@@ -31,7 +31,7 @@ private theorem integral_iff_one (g : GL (Fin 1) F) :
     simpa [ordDet, Matrix.det_unique] using h
 
 /- English proof (translation)
-Simplify using `only [tile, Set.mem_ofPred_eq]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem mem_tile_one (g : GL (Fin 1) F) : g ∈ tile F 1 0 ↔ ordDet g = 0 := by
   simp only [tile, Set.mem_ofPred_eq]
@@ -39,7 +39,7 @@ private theorem mem_tile_one (g : GL (Fin 1) F) : g ∈ tile F 1 0 ↔ ordDet g 
   omega
 
 /- English proof (translation)
-Establish `h0` using `(mem_tile_one g).1 hg`. Rewrite using `[mem_integralGL_iff]`. Use `⟨(integral_iff_one g).2 (by omega), (integral_iff_one g⁻¹).2 ?_⟩` and prove the remaining obligations. Rewrite using `[ordDet_inv]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem int_of_tile {g : GL (Fin 1) F} (hg : g ∈ tile F 1 0) : g ∈ integralGL F 1 := by
   have h0 := (mem_tile_one g).1 hg
@@ -49,7 +49,7 @@ private theorem int_of_tile {g : GL (Fin 1) F} (hg : g ∈ tile F 1 0) : g ∈ i
   omega
 
 /- English proof (translation)
-Establish `h` using `isCompact_shell F 1 0 0`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, pow_zero, one_mul, mem_tile_one]`. Conclude with `⟨fun h0 => ⟨(integral_iff_one g).2 h0.ge, h0⟩, fun h => h.2⟩`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem isCompact_tile_one : IsCompact (tile F 1 0) := by
   have h := isCompact_shell F 1 0 0
@@ -61,25 +61,23 @@ private theorem isCompact_tile_one : IsCompact (tile F 1 0) := by
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ μ _`. Use `⟨integralIndicator F 1, isSchwartzBruhat_integralIndicator, ((μ.real (tile F 1 0) : ℝ) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Establish `hpos : 0 < μ (tile F 1 0)` using `(isOpen_tile 0).measure_pos μ ⟨1, (mem_tile_one 1).2 ordDet_one⟩`. Establish `hfin : μ (tile F 1 0) < ⊤` using `isCompact_tile_one.measure_lt_top`. Use `show (((μ (tile F 1 0)).toReal : ℝ) : ℂ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(ENNReal.toReal_pos hpos.ne' hfin.ne).ne'` after adjusting the coercions. Introduce `α c hc hcK s hs`. Establish `hs1 : ‖α * qs F s‖ < 1` using `by simpa using hs`. Establish `hint` using `hc.integrable_zeta μ (isSchwartzBruhat_integralIndicator (F := F) (n := 1)) hs`. Establish `h1` using `hasSum_integral_tile μ hint`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hterm : ∀ j : ℤ, (∫ g in tile F 1 0, integralIndicator F 1 ↑(centralUnif F 1 ^ j * g) * detPow (centralUnif F 1 ^ j * g) s * c (centralUnif F 1 ^ j * g) ∂μ) = if 0 ≤ j then (α * qs F s) ^ j * c 1 * ((μ.real (tile F 1 0) : ℝ) : ℂ) else 0`. Introduce `j`. Establish `hEq : Set.EqOn (fun g => integralIndicator F 1 ↑(centralUnif F 1 ^ j * g) * detPow (centralUnif F 1 ^ j * g) s * c (centralUnif F 1 ^ j * g)) (fun _ => if 0 ≤ j then (α * qs F s) ^ j * c 1 else 0) (tile F 1 0)`. Introduce `g hg`. Establish `hgK` using `int_of_tile hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `(mem_tile_one g).1 hg`. Establish `hiff : ((↑(centralUnif F 1 ^ j * g) : Matrix (Fin 1) (Fin 1) F) ∈ integralMatrixSet F 1) ↔ 0 ≤ j`. Rewrite using `[mem_integralMatrixSet, integral_iff_one, ordDet_centralUnif_zpow_mul, h0]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hind : integralIndicator F 1 ↑(centralUnif F 1 ^ j * g) = if 0 ≤ j then 1 else 0`. Unfold `integralIndicator`. Distinguish the cases in `hj : 0 ≤ j`. Rewrite using `[Set.indicator_of_mem (hiff.2 hj), if_pos hj]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.indicator_of_notMem (fun h => hj (hiff.1 h)), if_neg hj]`. Simplify using `only`. Rewrite using `[hind, detPow_centralUnif_zpow_mul, detPow_of_mem_integralGL hgK, hc.zpow_mul, hcK g hgK]`. Use `split_ifs`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_one, mul_zpow]`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Rewrite using `[setIntegral_congr_fun (measurableSet_tile 0) hEq, setIntegral_const, Complex.real_smul]`. Apply the tactic sequence `split_ifs <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `h1`. Simplify using `only [hterm] at h2`. Establish `hgeo : HasSum (fun j : ℤ => if 0 ≤ j then (α * qs F s) ^ j * c 1 * ((μ.real (tile F 1 0) : ℝ) : ℂ) else 0) ((1 - α * qs F s)⁻¹ * (c 1 * ((μ.real (tile F 1 0) : ℝ) : ℂ)))`. Establish `hn` using `(hasSum_geometric_of_norm_lt_one hs1).mul_right (c 1 * ((μ.real (tile F 1 0) : ℝ) : ℂ))`. Rewrite using `[← Nat.cast_injective.hasSum_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `hn` using `[Function.comp_def, zpow_natCast, mul_assoc]`. Introduce `j hj`. Establish `hn' : ¬ 0 ≤ j` using `fun h => hj ⟨j.toNat, Int.toNat_of_nonneg h⟩`. Simplify using `[hn']`. Rewrite using `[h2.unique hgeo, div_eq_mul_inv]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.local_zeta_integral_tate_comparison :
     UpperTheory.V.Z.Gam.LdTate := by

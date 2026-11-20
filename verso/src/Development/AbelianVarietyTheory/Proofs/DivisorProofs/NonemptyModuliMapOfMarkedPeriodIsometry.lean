@@ -15,28 +15,26 @@ open GlobalTheory.UPel.HT
 namespace GlobalTheory.HTIso
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Hom.one_def, Category.assoc, IsMonHom.one_hom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_comp_monHom {S : Scheme.{0}} {A A' : Over S} [GrpObj A] [GrpObj A'] (f : A ⟶ A') [IsMonHom f] :
     (1 : A ⟶ A) ≫ f = 1 := by
   rw [Hom.one_def, Hom.one_def, Category.assoc, IsMonHom.one_hom]
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc, comp_toUnit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_one' {S : Scheme.{0}} {A A' : Over S} [GrpObj A'] (f : A ⟶ A') : f ≫ (1 : A' ⟶ A') = 1 := by
   rw [Hom.one_def, Hom.one_def, ← Category.assoc, comp_toUnit]
 
 /- English proof (translation)
-Introduce `S A A' _ _ _ _ f hf P hP ⟨t₁, ht₁⟩ ⟨t₂, ht₂⟩ hs`. Use `haveI := hf`. Use `set φ₂ := (lift (fst A A ≫ f) (snd A A ≫ f)).left with hφ₂`. Establish `hP₂ : (P.pull φ₂).IsLB` using `pull_isLB hP _`. Establish `triv : ∀ (l : A ⟶ G2 A) (l' : A' ⟶ G2 A'), l ≫ lift (fst A A ≫ f) (snd A A ≫ f) = f ≫ l' → ∀ t : (P.pull l'.left).Gen, t.IsGen → ∃ s : ((P.pull φ₂).pull l.left).Gen, s.IsGen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `l l' hl t ht`. Establish `e₁ : LBIso (P.pull (f.left ≫ l'.left)) ((P.pull l'.left).pull f.left)` using `GlobalTheory.GenSpread.lbIso_pull_pull hP f.left rfl`. Establish `e₂ : LBIso (P.pull (f.left ≫ l'.left)) ((P.pull φ₂).pull l.left)` using `GlobalTheory.GenSpread.lbIso_pull_pull hP l.left (by rw [hφ₂, ← Over.comp_left, ← Over.comp_left, hl])`. Take `⟨s, hs⟩` from `GlobalTheory.RigidTranslate.gen_of_lbIso (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) e₁.symm (pullGenLB t f.left) (pullGenLB_isGen ht f.left)`. Conclude with `GlobalTheory.RigidTranslate.gen_of_lbIso (pull_isLB hP _) (pull_isLB hP₂ _) e₂ s hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨hP₂, triv _ _ ?_ t₁ ht₁, triv _ _ ?_ t₂ ht₂, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [one_comp_monHom, comp_one']`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [one_comp_monHom, comp_one']`. Establish `eq : (lift (snd A A) (fst A A)).left ≫ φ₂ = φ₂ ≫ (lift (snd A' A') (fst A' A')).left`. Rewrite using `[hφ₂, ← Over.comp_left, ← Over.comp_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `congr 1`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Establish `e₁ : LBIso (P.pull φ₂) ((P.pull (lift (snd A' A') (fst A' A')).left).pull φ₂)` using `GlobalTheory.GenSpread.lbIso_pullback hs φ₂`. Establish `e₂ : LBIso (P.pull (φ₂ ≫ (lift (snd A' A') (fst A' A')).left)) ((P.pull (lift (snd A' A') (fst A' A')).left).pull φ₂)` using `GlobalTheory.GenSpread.lbIso_pull_pull hP φ₂ rfl`. Establish `e₃ : LBIso (P.pull (φ₂ ≫ (lift (snd A' A') (fst A' A')).left)) ((P.pull φ₂).pull (lift (snd A A) (fst A A)).left)` using `GlobalTheory.GenSpread.lbIso_pull_pull hP _ eq.symm`.
-
-Conclude with `LBIso.trans hP₂ (pull_isLB (pull_isLB hP _) _) (pull_isLB hP₂ _) e₁ (LBIso.trans (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) (pull_isLB hP₂ _) e₂.symm e₃)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_birig : ∀ (S : Scheme.{0}) (A A' : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A']
     (f : A ⟶ A'), IsMonHom f → ∀ P : LB (G2 A').left, P.IsLB →
@@ -81,11 +79,11 @@ theorem pull_birig : ∀ (S : Scheme.{0}) (A A' : Over S) [GrpObj A] [IsCommMonO
       (LBIso.trans (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) (pull_isLB hP₂ _) e₂.symm e₃)
 
 /- English proof (translation)
-Introduce `S A A' _ _ _ _ F hF P hP T k x y c H`. Use `haveI := hF`. Use `set φ₂ := (lift (fst A A ≫ F.hom) (snd A A ≫ F.hom)).left with hφ₂`. Establish `eq : (lift (𝟙 A) (𝟙 A)).left ≫ φ₂ = F.hom.left ≫ (lift (𝟙 A') (𝟙 A')).left`. Rewrite using `[hφ₂, ← Over.comp_left, ← Over.comp_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congr 1`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Establish `e₁ : LBIso (P.pull ((lift (𝟙 A) (𝟙 A)).left ≫ φ₂)) ((P.pull φ₂).pull (lift (𝟙 A) (𝟙 A)).left)` using `GlobalTheory.GenSpread.lbIso_pull_pull hP _ rfl`. Establish `e₂ : LBIso (P.pull ((lift (𝟙 A) (𝟙 A)).left ≫ φ₂)) ((P.pull (lift (𝟙 A') (𝟙 A')).left).pull F.hom.left)` using `GlobalTheory.GenSpread.lbIso_pull_pull hP _ eq`. Establish `iso` using `LBIso.trans (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) e₁.symm e₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x₀ : Over.mk (T.hom ≫ 𝟙 S) ⟶ A'` to `Over.homMk (x.left ≫ F.hom.left) (by simp)`. Set `y₀ : Over.mk (T.hom ≫ 𝟙 S) ⟶ A'` to `Over.homMk (y.left ≫ F.hom.left) (by simp)`. Use `(GlobalTheory.weilIs_iff_of_isGrpPullback_comm S S A' A (𝟙 S) F.hom.left _ _ (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) (isGrpPullback_of_iso F) iso T k x y x₀ y₀ c rfl rfl).2 ?_` and prove the remaining obligations. Conclude with `GlobalTheory.UnifPoint.weilIs_congr (Category.comp_id _).symm rfl rfl H`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem weil_pull_iso : ∀ (S : Scheme.{0}) (A A' : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A']
     (F : A ≅ A'), IsMonHom F.hom → ∀ P : LB (G2 A').left, P.IsLB → ∀ (T : Over S) (k : ℤ) (x y : T ⟶ A)
@@ -110,39 +108,33 @@ theorem weil_pull_iso : ∀ (S : Scheme.{0}) (A A' : Over S) [GrpObj A] [IsCommM
   exact GlobalTheory.UnifPoint.weilIs_congr (Category.comp_id _).symm rfl rfl H
 
 /- English proof (translation)
-Introduce and unpack `p _ D R _ b N σ ρ o o' h hL h' hL' D' D'' t t' Q Q' e e' w u hN0 ⟨-, hP, he, hk, hl, hw, hη⟩ ⟨-, hP', he', hk', hl', hw', hη'⟩ ⟨hiso, hmark⟩ hu`. Establish `k1 : ∀ z, e z = 1 → e' (u z) = 1`. Introduce `z hz`. Take `⟨x, rfl⟩` from `(hk z).1 hz`. Conclude with `(hk' _).2 ⟨w x, hu x⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k2 : ∀ z, e' z = 1 → e (u.symm z) = 1`. Introduce `z hz`. Take `⟨x, rfl⟩` from `(hk' z).1 hz`. Use `(hk _).2 ⟨w.symm x, ?_⟩` and prove the remaining obligations. Apply `u.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[u.apply_symm_apply, ← hu, w.apply_symm_apply]`. Take `⟨f, ⟨hf, hfe⟩, -⟩` from `GlobalTheory.T.existsUnique_isMonHom_of_linear_map_kernels o.A o'.A D.g D.g o.ab o'.ab h h' e e' u.toLinearMap he he' k1`. Take `⟨f', ⟨hf', hfe'⟩, -⟩` from `GlobalTheory.T.existsUnique_isMonHom_of_linear_map_kernels o'.A o.A D.g D.g o'.ab o.ab h' h e' e u.symm.toLinearMap he' he k2`. Take `⟨f₀, -, uid⟩` from `GlobalTheory.T.existsUnique_isMonHom_of_linear_map_kernels o.A o.A D.g D.g o.ab o.ab h h e e LinearMap.id he he (fun z hz => hz)`. Take `⟨f₀', -, uid'⟩` from `GlobalTheory.T.existsUnique_isMonHom_of_linear_map_kernels o'.A o'.A D.g D.g o'.ab o'.ab h' h' e' e' LinearMap.id he' he' (fun z hz => hz)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfe2 : ∀ z, e' (u z) = e z ≫ f` using `hfe`. Establish `hfe2' : ∀ z, e (u.symm z) = e' z ≫ f'` using `hfe'`. Use `haveI := hf`. Use `haveI := hf'`. Establish `c1 : f ≫ f' = 𝟙 _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[uid (f ≫ f') ⟨inferInstance, fun z => ?_⟩, uid (𝟙 _) ⟨inferInstance, fun z => (Category.comp_id _).symm⟩]`. Use `Eq.trans ?_ (Category.assoc (e z) f f')` and prove the remaining obligations. Rewrite using `[← hfe2]`. Conclude with `(by rw [u.symm_apply_apply]; rfl : e (LinearMap.id z) = e (u.symm (u z))).trans (hfe2' (u z))`. Establish `c2 : f' ≫ f = 𝟙 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[uid' (f' ≫ f) ⟨inferInstance, fun z => ?_⟩, uid' (𝟙 _) ⟨inferInstance, fun z => (Category.comp_id _).symm⟩]`. Use `Eq.trans ?_ (Category.assoc (e' z) f' f)` and prove the remaining obligations. Rewrite using `[← hfe2']`. Conclude with `(by rw [u.apply_symm_apply]; rfl : e' (LinearMap.id z) = e' (u (u.symm z))).trans (hfe2 (u.symm z))`. Set `F : o.A ≅ o'.A` to `⟨f, f', c1, c2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsMonHom F.hom := hf`. Establish `hcomm : ∀ (c : D.O) z, u (ρ c *ᵥ z) = ρ c *ᵥ u z`. Introduce `c`. Use `LinearMap.ext_on_range (R := ℝ) (v := fun x => Q x) hP.2.2.2.1 (f := (u.toLinearMap ∘ₗ Matrix.toLin' (ρ c)).restrictScalars ℝ) (g := (Matrix.toLin' (ρ c) ∘ₗ u.toLinearMap).restrictScalars ℝ) (fun x => by` as an intermediate fact. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.comp_apply, Matrix.toLin'_apply, LinearEquiv.coe_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hP.1, ← hu, ← hu, w.map_smul, hP'.1])`. Introduce `z`. Simplify using `using LinearMap.congr_fun this z`. Establish `hact : ∀ c, o.act.act c ≫ f = f ≫ o'.act.act c`. Introduce `c`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI := o.act.hom c`. Use `haveI := o'.act.hom c`. Take `⟨fa, -, ua⟩` from `GlobalTheory.T.existsUnique_isMonHom_of_linear_map_kernels o.A o'.A D.g D.g o.ab o'.ab h h' e e' (u.toLinearMap ∘ₗ Matrix.toLin' (ρ c)) he he' (fun z hz => by`. Take `⟨x, rfl⟩` from `(hk z).1 hz`. Simplify using `only [LinearMap.comp_apply, Matrix.toLin'_apply, LinearEquiv.coe_coe]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hP.1]`. Conclude with `k1 _ ((hk _).2 ⟨_, rfl⟩))`. Rewrite using `[ua (o.act.act c ≫ f) ⟨inferInstance, fun z => ?_⟩, ua (f ≫ o'.act.act c) ⟨inferInstance, fun z => ?_⟩]`. Simplify using `only [LinearMap.comp_apply, Matrix.toLin'_apply, LinearEquiv.coe_coe]`. Use `Eq.trans ?_ (Category.assoc (e z) f (o'.act.act c))` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hfe2, hcomm]`. Conclude with `hl' c (u z)`. Simplify using `only [LinearMap.comp_apply, Matrix.toLin'_apply, LinearEquiv.coe_coe]`. Use `Eq.trans ?_ (Category.assoc (e z) (o.act.act c) f)` and prove the remaining obligations. Rewrite using `[hfe2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (· ≫ f) (hl c z)`. Establish `hT : (toUnit (Over.mk (𝟙 (Sp ℂ)))).left = 𝟙 _`. Simplify using `using Over.w (toUnit (Over.mk (𝟙 (Sp ℂ))))`. Establish `heta : ∀ y, (o.eta y).left ≫ f.left = 𝟙 _ ≫ (o'.eta y).left`. Introduce `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨e₀, he₀⟩` from `hmark y`. Establish `hN : (N : ℂ) ≠ 0` using `by exact_mod_cast hN0.ne'`. Establish `hη2 : toUnit (Over.mk (𝟙 (Sp ℂ))) ≫ o.eta y = e ((N : ℂ)⁻¹ • Q (t y))` using `hη y`. Establish `hη2' : toUnit (Over.mk (𝟙 (Sp ℂ))) ≫ o'.eta y = e' ((N : ℂ)⁻¹ • Q' (t' y))` using `hη' y`. Establish `a1 : (toUnit (Over.mk (𝟙 (Sp ℂ))) ≫ o.eta y) ≫ f = toUnit (Over.mk (𝟙 (Sp ℂ))) ≫ o'.eta y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (· ≫ f) hη2).trans ((hfe2 _).symm.trans (Eq.trans ?_ hη2'.symm))` and prove the remaining obligations. Establish `hz : (N : ℂ)⁻¹ • N • Q' e₀ = Q' e₀`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hN, one_smul]`. Rewrite using `[map_smul, ← hu, he₀, map_add, map_nsmul, smul_add, hz, he'.1, (hk' (Q' e₀)).2 ⟨e₀, rfl⟩, _root_.mul_one]`. Establish `a2` using `congrArg (fun q => q.left) a1`.
-
-Simplify using `only [Over.comp_left, hT, Category.id_comp] at a2`. Rewrite using `[Category.id_comp]`. Conclude with `a2`. Take `⟨B1, B2, B3, B4⟩` from `pull_birig (Sp ℂ) o.A o'.A f hf o'.P o'.isLB o'.rig₁ o'.rig₂ o'.symm`. Establish `ew : ∀ (k : ℕ) a, e' ((k : ℂ)⁻¹ • Q' (w a)) = e ((k : ℂ)⁻¹ • Q a) ≫ f`.
-
-Introduce `k a`. Rewrite using `[hu, ← u.map_smul]`. Conclude with `hfe2 _`. Establish `pol` using `GlobalTheory.T.birigidified_bundle_iso_of_weil_pairing_eq o.A D.g o.ab h o.P (o'.P.pull (lift (fst o.A o.A ≫ f) (snd o.A o.A ≫ f)).left) o.isLB o.rig₁ o.rig₂ o.symm B1 B2 B3 B4 e D'.La Q D'.EF he hP.2.1 hk hw (fun k a a₂ c hk0 hc => by`. Establish `W'` using `hw' k (w a) (w a₂) c hk0 (by rw [hiso]; exact hc)`.
-
-Rewrite `W'` using `[ew, ew]`. Conclude with `weil_pull_iso (Sp ℂ) o.A o'.A F inferInstance o'.P o'.isLB _ k _ _ _ W')`. Conclude with `⟨{ φ := f.left φ₂ := (lift (fst o.A o.A ≫ f) (snd o.A o.A ≫ f)).left cart := isGrpPullback_of_iso F sq := ⟨by rw [← Over.comp_left, lift_fst, Over.comp_left], by rw [← Over.comp_left, lift_snd, Over.comp_left]⟩ act := fun c => by rw [← Over.comp_left, hact c, Over.comp_left] pol …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_objMap_of_markedIsom : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (σ : R →+* ℂ) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (o o' : Obj b N (spMap σ)) h hL h' hL' (D' D'' : PLat D.O D.inv) t t' Q Q' e e' (w : D'.La ≃ₗ[D.O] D''.La) (u : (Fin D.g → ℂ) ≃ₗ[ℂ] (Fin D.g → ℂ)), 0 < N → UnifAt (o.fam h hL) σ ρ N D' t Q (𝟙 _) e → UnifAt (o'.fam h' hL') σ ρ N D'' t' Q' (𝟙 _) e' → IsMarkedIsom N D' D'' t t' w → (∀ x, Q' (w x) = u (Q x)) → Nonempty (ObjMap o o' (𝟙 _)) := by
   rintro p _ D R _ b N σ ρ o o' h hL h' hL' D' D'' t t' Q Q' e e' w u hN0

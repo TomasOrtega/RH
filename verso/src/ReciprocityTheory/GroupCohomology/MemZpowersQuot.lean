@@ -10,9 +10,9 @@ open scoped Pointwise
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Establish `hcl : IsClosed {p : G × G | p.1 * p.2 = p.2 * p.1}` using `isClosed_eq (continuous_fst.mul continuous_snd) (continuous_snd.mul continuous_fst)`. Establish `hd : Dense ((Subgroup.zpowers s : Set G) ×ˢ (Subgroup.zpowers s : Set G))` using `hs.prod hs`. Establish `hsub : (Subgroup.zpowers s : Set G) ×ˢ (Subgroup.zpowers s : Set G) ⊆ {p : G × G | p.1 * p.2 = p.2 * p.1}`. Introduce and unpack `⟨x, y⟩ ⟨hx, hy⟩`. Take `⟨i, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hy`. Conclude with `zpow_mul_comm s i j`. Establish `h` using `hcl.closure_subset_iff.2 hsub`. Rewrite `h` using `[hd.closure_eq]`. Conclude with `h (Set.mem_univ (a, b))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_of_dense [T2Space G] {s : G} (hs : Dense (Subgroup.zpowers s : Set G)) (a b : G) :
     a * b = b * a := by
@@ -30,20 +30,20 @@ theorem comm_of_dense [T2Space G] {s : G} (hs : Dense (Subgroup.zpowers s : Set 
   exact h (Set.mem_univ (a, b))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun n hn g => by rw [hc g n, mul_inv_cancel_right]; exact hn⟩`.
+Supply the required witnesses or components.
 -/
 theorem normal_of_comm (hc : ∀ a b : G, a * b = b * a) (W : Subgroup G) : W.Normal :=
   ⟨fun n hn g => by rw [hc g n, mul_inv_cancel_right]; exact hn⟩
 
 /- English proof (translation)
-Conclude with `Subgroup.quotient_finite_of_isOpen W hW`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot [CompactSpace G] (hc : ∀ a b : G, a * b = b * a) {W : Subgroup G}
     (hW : IsOpen (W : Set G)) : Finite (G ⧸ W) := by
   exact Subgroup.quotient_finite_of_isOpen W hW
 
 /- English proof (translation)
-Use `haveI := finite_quot hc hW`. Conclude with `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`.
+A detailed English derivation is pending.
 -/
 theorem index_pos [CompactSpace G] (hc : ∀ a b : G, a * b = b * a) {W : Subgroup G}
     (hW : IsOpen (W : Set G)) : 0 < W.index := by
@@ -53,9 +53,9 @@ theorem index_pos [CompactSpace G] (hc : ∀ a b : G, a * b = b * a) {W : Subgro
 variable {s : G}
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective x`. Establish `hU : IsOpen ((fun y => g⁻¹ * y) ⁻¹' (W : Set G))` using `hW.preimage (continuous_const.mul continuous_id)`. Take `⟨y, hyU, hy⟩` from `hs.inter_open_nonempty _ hU ⟨g, by simp [W.one_mem]⟩`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hy`. Use `Subgroup.mem_zpowers_iff.mpr ⟨k, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_zpow, QuotientGroup.mk'_apply]`. Conclude with `(QuotientGroup.eq.mpr hyU).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_zpowers_quot (hs : Dense (Subgroup.zpowers s : Set G)) {W : Subgroup G} [W.Normal]
     (hW : IsOpen (W : Set G)) (x : G ⧸ W) : x ∈ Subgroup.zpowers (QuotientGroup.mk' W s) := by
@@ -69,9 +69,7 @@ theorem mem_zpowers_quot (hs : Dense (Subgroup.zpowers s : Set G)) {W : Subgroup
   exact (QuotientGroup.eq.mpr hyU).symm
 
 /- English proof (translation)
-Use `haveI := normal_of_comm hc W`. Use `haveI := finite_quot hc hW`. Establish `hord : orderOf (QuotientGroup.mk' W s) = W.index`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers (mem_zpowers_quot hs hW)]`. Both sides reduce to the same expression.
-
-Rewrite using `[← QuotientGroup.eq_one_iff (N := W), ← hord, orderOf_dvd_iff_zpow_eq_one, ← map_zpow, QuotientGroup.mk'_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_mem_iff [CompactSpace G] (hc : ∀ a b : G, a * b = b * a)
     (hs : Dense (Subgroup.zpowers s : Set G)) {W : Subgroup G} (hW : IsOpen (W : Set G)) (z : ℤ) :
@@ -85,13 +83,11 @@ theorem zpow_mem_iff [CompactSpace G] (hc : ∀ a b : G, a * b = b * a)
     QuotientGroup.mk'_apply]
 
 /- English proof (translation)
-Use `haveI := normal_of_comm hc W`. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.mp (mem_zpowers_quot hs hW (g : G ⧸ W))`. Rewrite `hk` using `[← map_zpow, QuotientGroup.mk'_apply]`. Establish `hgk : g⁻¹ * s ^ k ∈ W` using `QuotientGroup.eq.mp hk.symm`. Establish `hn : (0 : ℤ) < W.index` using `by exact_mod_cast index_pos hc hW`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(k % (W.index : ℤ)).toNat, ?_⟩` and prove the remaining obligations. Establish `hj : (((k % (W.index : ℤ)).toNat : ℕ) : ℤ) = k % (W.index : ℤ)` using `Int.toNat_of_nonneg (Int.emod_nonneg _ hn.ne')`. Establish `hd : s ^ (k % (W.index : ℤ) - k) ∈ W`. Rewrite using `[zpow_mem_iff hc hs hW]`. Conclude with `⟨-(k / (W.index : ℤ)), by rw [Int.emod_def]; ring⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `heq : g⁻¹ * s ^ (k % (W.index : ℤ)).toNat = (g⁻¹ * s ^ k) * s ^ (k % (W.index : ℤ) - k)`. Rewrite using `[mul_assoc, ← zpow_add, ← zpow_natCast, hj]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`.
-
-Conclude with `W.mul_mem hgk hd`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow [CompactSpace G] (hc : ∀ a b : G, a * b = b * a)
     (hs : Dense (Subgroup.zpowers s : Set G)) {W : Subgroup G} (hW : IsOpen (W : Set G)) (g : G) :
@@ -120,7 +116,7 @@ section Desc
 variable {X : Type*} (n : ℕ) (T : ℕ → X)
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `succ t ih => rw [Nat.mul_succ, ← Nat.add_assoc, hper, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem per_mul (hper : ∀ j, T (j + n) = T j) (a t : ℕ) : T (a + n * t) = T a := by
   induction t with
@@ -128,9 +124,9 @@ theorem per_mul (hper : ∀ j, T (j + n) = T j) (a t : ℕ) : T (a + n * t) = T 
   | succ t ih => rw [Nat.mul_succ, ← Nat.add_assoc, hper, ih]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg c`. Establish `h1 : ((b : ℕ) : ℤ) = ((a + n * m : ℕ) : ℤ)` using `by push_cast; linarith`. Establish `h2 : b = a + n * m` using `by exact_mod_cast h1`. Rewrite using `[h2, per_mul n T hper]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hc` using `[mul_neg]`. Establish `h1 : ((a : ℕ) : ℤ) = ((b + n * m : ℕ) : ℤ)` using `by push_cast; linarith`. Establish `h2 : a = b + n * m` using `by exact_mod_cast h1`. Rewrite using `[h2, per_mul n T hper]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem per_of_dvd (hper : ∀ j, T (j + n) = T j) (a b : ℕ) (h : (n : ℤ) ∣ (b : ℤ) - a) :
     T a = T b := by
@@ -151,9 +147,9 @@ noncomputable def desc (W : Subgroup G) (h : ∀ g : G, ∃ j : ℕ, g⁻¹ * s 
   T (Classical.choose (h g))
 
 /- English proof (translation)
-Establish `h0` using `Classical.choose_spec (h g)`. Use `show T (Classical.choose (h g)) = T j`. Establish `hm : s ^ ((j : ℤ) - (Classical.choose (h g) : ℕ)) ∈ W`. Establish `hw` using `W.mul_mem (W.inv_mem h0) hj`. Rewrite `hw` using `[mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_sub, zpow_natCast, zpow_natCast, hc]`. Conclude with `hw`. Conclude with `per_of_dvd W.index T hper _ _ ((zpow_mem_iff hc hs hW _).mp hm)`.
+A detailed English derivation is pending.
 -/
 theorem desc_eq [CompactSpace G] (hc : ∀ a b : G, a * b = b * a)
     (hs : Dense (Subgroup.zpowers s : Set G)) {W : Subgroup G} (hW : IsOpen (W : Set G))
@@ -170,11 +166,11 @@ theorem desc_eq [CompactSpace G] (hc : ∀ a b : G, a * b = b * a)
   exact per_of_dvd W.index T hper _ _ ((zpow_mem_iff hc hs hW _).mp hm)
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.mpr fun g => ?_` and prove the remaining obligations. Establish `hU : IsOpen ((fun y => g⁻¹ * y) ⁻¹' (W : Set G))` using `hW.preimage (continuous_const.mul continuous_id)`. Establish `hg : g ∈ (fun y => g⁻¹ * y) ⁻¹' (W : Set G)` using `by simp [W.one_mem]`. Use `(continuousAt_const : ContinuousAt (fun _ : G => desc W h T g) g).congr ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds hg] with y hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0` using `Classical.choose_spec (h g)`. Establish `hy' : y⁻¹ * s ^ Classical.choose (h g) ∈ W`. Establish `hw` using `W.mul_mem (W.inv_mem hy) h0`. Rewrite `hw` using `[mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel_left]`. Conclude with `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[desc_eq hc hs hW h T hper hy']`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem desc_continuous [CompactSpace G] (hc : ∀ a b : G, a * b = b * a)
     (hs : Dense (Subgroup.zpowers s : Set G)) {W : Subgroup G} (hW : IsOpen (W : Set G))

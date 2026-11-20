@@ -23,13 +23,13 @@ open scoped ContDiff
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `hθ : ContDiffAt ℂ ω (fun v : Fin N → ℂ => v k) 0` using `(contDiff_apply ℂ ℂ k).contDiffAt`. Use `TCPf.eq_of_cc _ _ fun l => ?_` and prove the remaining obligations. Break down `l.eq_nil_or_concat with rfl | ⟨l', ⟨a, j⟩, rfl⟩` into its components or cases. Simplify using `only [List.foldr_nil, constantCoeff_tay, TM.mD_zero, MvPowerSeries.constantCoeff_X, Pi.zero_apply]`. Take `rfl : a = 0` from `Subsingleton.elim _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hd : (fun y : Fin N → ℂ => fderiv ℂ (fun v : Fin N → ℂ => v k) y (Pi.single j 1)) = fun _ => (Pi.single j (1 : ℂ) : Fin N → ℂ) k`. Use function extensionality and compare the values at `y`. Conclude with `congrArg (fun T : (Fin N → ℂ) →L[ℂ] ℂ => T (Pi.single j 1)) (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin N => ℂ) k).fderiv`. Rewrite using `[List.concat_eq_append, List.foldr_append, List.foldr_append]`. Simplify using `only [List.foldr_cons, List.foldr_nil]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TM.pderiv_tay hθ, hd, TM.tay_const, MvPowerSeries.pderiv_X]`. Use `congr 2`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h, Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem tay_coord {N : ℕ} (k : Fin N) :
     tay (fun v : Fin N → ℂ => v k) 0 = MvPowerSeries.X ((0 : Fin 1), k) := by
@@ -53,9 +53,9 @@ theorem tay_coord {N : ℕ} (k : Fin N) :
     · simp [h, Ne.symm h, Pi.single_apply]
 
 /- English proof (translation)
-Establish `h1 : jetOf m (fun v : Fin (n * g) → ℂ => v (finProdFinEquiv (i, j))) = Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), finProdFinEquiv (i, j)))`. Rewrite using `[jetOf, tay_coord, psJet, FBIdJet.psTrunc_eq, ← MvPolynomial.coe_X, FBIdJet.mk_trunc_coe]`. Establish `h2` using `jetOf_mul m (f := fun _ : Fin (n * g) → ℂ => a) (h := fun v => v (finProdFinEquiv (i, j))) contDiffAt_const (contDiff_apply ℂ ℂ _).contDiffAt`. Rewrite `h2` using `[jetOf_const, h1]`. Establish `h3 : jetN m (fun w : Fin n → Fin g → ℂ => a * w i j) = renN n g m (jetOf m ((fun _ : Fin (n * g) → ℂ => a) * fun v => v (finProdFinEquiv (i, j))))` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : renN n g m (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), finProdFinEquiv (i, j)))) = Ideal.Quotient.mk _ (MvPolynomial.X (i, j))` using `by show Ideal.Quotient.mk _ (MvPolynomial.aeval _ _) = _`. Rewrite using `[MvPolynomial.aeval_X, Equiv.symm_apply_apply]`. Rewrite using `[h3, h2, map_mul, AlgHom.commutes, map_mul, h4, ← MvPolynomial.algebraMap_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem jetN_coord {n g : ℕ} (m : ℕ) (a : ℂ) (i : Fin n) (j : Fin g) :
     jetN m (fun w : Fin n → Fin g → ℂ => a * w i j) =
@@ -76,7 +76,7 @@ theorem jetN_coord {n g : ℕ} (m : ℕ) (a : ℂ) (i : Fin n) (j : Fin g) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[psJet, FBIdJet.psTrunc_eq, ← MvPolynomial.coe_X, FBIdJet.mk_trunc_coe]`. Use `show Ideal.Quotient.mk _ (MvPolynomial.aeval _ _) = _`. Rewrite using `[MvPolynomial.aeval_X]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetSubstP_X {κ κ' : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (sb : κ → MvPolynomial κ' ℂ) (p : κ) :
     (jetSubstP m sb : Jet ℂ κ m →ₐ[ℂ] Jet ℂ κ' m) (psJet m (MvPowerSeries.X p)) =
@@ -86,7 +86,7 @@ theorem jetSubstP_X {κ κ' : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (sb 
   rw [MvPolynomial.aeval_X]
 
 /- English proof (translation)
-Rewrite using `[jetN, renN, jetAug_jetMap, jetAug_jetOf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem jetAug_jetN {n g : ℕ} (m : ℕ) (f : (Fin n → Fin g → ℂ) → ℂ) :
     (jetAug : Jet ℂ (Fin n × Fin g) m →ₐ[ℂ] ℂ) (jetN m f) = f 0 := by
@@ -94,7 +94,7 @@ theorem jetAug_jetN {n g : ℕ} (m : ℕ) (f : (Fin n → Fin g → ℂ) → ℂ
   rfl
 
 /- English proof (translation)
-Take `rfl : W = ⊤` from `top_le_iff.mp hW`. Rewrite `h` using `[valAt'_of _ _ le_rfl, valAt'_of _ _ le_rfl]`. Unfold `valAt at h`. Use `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).1 h` as an intermediate fact. Simplify `this` using `[Scheme.Hom.appLE]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem valAt'_id_inj {W : (Sp ℂ).Opens} (hW : ⊤ ≤ W) {a b : Γ(Sp ℂ, W)}
     (h : valAt' (𝟙 (Sp ℂ)) W a = valAt' (𝟙 (Sp ℂ)) W b) : a = b := by
@@ -105,9 +105,9 @@ theorem valAt'_id_inj {W : (Sp ℂ).Opens} (hW : ⊤ ≤ W) {a b : Γ(Sp ℂ, W)
   simpa [Scheme.Hom.appLE] using this
 
 /- English proof (translation)
-Rewrite using `[valAt'_of _ _ le_rfl]`. Use `ConcreteCategory.congr_hom (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f)) (toΓ R a)` as an intermediate fact. Establish `h1 : (spMap f).appLE ⊤ ⊤ le_rfl = (spMap f).appTop` using `(Scheme.Hom.app_eq_appLE _).symm`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of R)).hom (toΓ R a) = a` using `by simp [toΓ]`. Unfold `valAt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1]`. Conclude with `this.trans (congrArg f h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt'_spMap_toΓ {R : Type} [CommRing R] (f : R →+* ℂ) (a : R) :
     valAt' (spMap f) ⊤ (toΓ R a) = f a := by
@@ -120,11 +120,11 @@ theorem valAt'_spMap_toΓ {R : Type} [CommRing R] (f : R →+* ℂ) (a : R) :
   exact this.trans (congrArg f h2)
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Choose the witnesses or unpack the hypotheses as in `rfl : φ = Sum.elim (fun _ => x) φ' := by`. Use function extensionality and compare the values at `i`. Break down `i with i | I` into its components or cases. Use `exacts [h1 i, h2 I]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ψ`. Rewrite using `[Fintype.sum_sum_type, Fintype.sum_sum_type, add_assoc, ← Finset.sum_add_distrib, Finset.sum_eq_zero (s := (Finset.univ : Finset P)), add_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : x = ψ <;> simp [h]`. Introduce `I _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h : φ' I = ψ <;> simp [h]`.
+A detailed English derivation is pending.
 -/
 theorem sameSum_cancel {X Y : Scheme.{0}} {P : Type} [Fintype P] (x x' : Y ⟶ X) (hx : x = x') (k : ℤ)
     (φ : Fin 1 ⊕ P → (Y ⟶ X)) (φ' : P → (Y ⟶ X)) (ε : P → ℤ) (h1 : ∀ i, φ (Sum.inl i) = x')
@@ -145,7 +145,7 @@ theorem sameSum_cancel {X Y : Scheme.{0}} {P : Type} [Fintype P] (x x' : Y ⟶ X
     by_cases h : φ' I = ψ <;> simp [h]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert k s hk ih => rw [Finset.prod_insert hk, Finset.sum_insert hk, ih, zpow_add₀ ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_sum {K : Type} {a : ℂ} (ha : a ≠ 0) (s : Finset K) (ε : K → ℤ) :
     ∏ k ∈ s, a ^ ε k = a ^ ∑ k ∈ s, ε k := by
@@ -159,7 +159,7 @@ section General
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x0 : Sp ℂ ⟶ S} {g : ℕ} (Φ : AnFr A L x0 g)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `⟨_, rfl⟩` from `h`. Take `⟨_, rfl⟩` from `h'`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem jetMap_uniq {n m : ℕ} {ψ ψ' : Sp (Jet ℂ (Fin n × Fin g) m) ⟶ A.left}
     {Λ Λ' : (Fin n → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)} (h : Φ.JetMap m ψ Λ) (h' : Φ.JetMap m ψ' Λ') (e : Λ = Λ') :
@@ -170,14 +170,14 @@ theorem jetMap_uniq {n m : ℕ} {ψ ψ' : Sp (Jet ℂ (Fin n × Fin g) m) ⟶ A.
   rfl
 
 /- English proof (translation)
-Rewrite using `[(Φ.e_ker 0).2 Φ.lat.zero_mem, Hom.one_def, Over.comp_left, Over.toUnit_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem e_zero_left : (Φ.e 0).left = x0 ≫ eSec A := by
   rw [(Φ.e_ker 0).2 Φ.lat.zero_mem, Hom.one_def, Over.comp_left, Over.toUnit_left]
   rfl
 
 /- English proof (translation)
-Take `⟨hol, rfl⟩` from `h`. Establish `hr : ((jetAug : Jet ℂ (Fin n × Fin g) m →ₐ[ℂ] ℂ) : Jet ℂ (Fin n × Fin g) m →+* ℂ).comp (renN n g m : Jet ℂ (Fin 1 × Fin (n * g)) m →+* Jet ℂ (Fin n × Fin g) m) = ((jetAug : Jet ℂ (Fin 1 × Fin (n * g)) m →ₐ[ℂ] ℂ) : Jet ℂ (Fin 1 × Fin (n * g)) m →+* ℂ)` using `RingHom.ext fun a => jetAug_jetMap _ (fun _ => X_mem_orig _) a`. Rewrite using `[← Category.assoc, ← anSpMap_comp, hr, jetPt_aug]`. Conclude with `congrArg (fun z => (Φ.e z).left) (map_zero Λ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetMap_aug {n m : ℕ} {ψ : Sp (Jet ℂ (Fin n × Fin g) m) ⟶ A.left}
     {Λ : (Fin n → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)} (h : Φ.JetMap m ψ Λ) :
@@ -191,23 +191,21 @@ theorem jetMap_aug {n m : ℕ} {ψ : Sp (Jet ℂ (Fin n × Fin g) m) ⟶ A.left}
   exact congrArg (fun z => (Φ.e z).left) (map_zero Λ)
 
 /- English proof (translation)
-Establish `hid : spMap (algebraMap ℂ ℂ) = 𝟙 (Sp ℂ)` using `Spec.map_id _`. Establish `h0 : (overAt x0 ℂ).hom = x0` using `by show spMap (algebraMap ℂ ℂ) ≫ x0 = x0`. Rewrite using `[hid, Category.id_comp]`. Introduce `j j' _ _ hjj`. Establish `hj : ∀ k, j k = j' 0` using `fun k => hjj k 0 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h0, ← e_zero_left Φ]`. Conclude with `jetMap_aug Φ (h.1 k))`. Apply `Units.ext` to reduce the goal to its premises. Use `set W := LB.wchart L.L (fun k => (homAt x0 (jetAug : Jet ℂ (Fin n × Fin g) m →ₐ[ℂ] ℂ)).left ≫ φ k) j ⊓ LB.wchart L.L (fun _ : Fin 1 => (overAt x0 ℂ).hom ≫ eSec A) j' with hWdef`. Distinguish the cases in `hc : cpt ∈ W`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : (⊤ : (Sp ℂ).Opens) ≤ W` using `top_le_of_mem (x := 𝟙 (Sp ℂ)) hc`. Establish `hW1` using `hW.trans inf_le_left`. Establish `hW2` using `hW.trans inf_le_right`. Use `haveI : IsLocalHom ((jetAug : Jet ℂ (Fin n × Fin g) m →ₐ[ℂ] ℂ) : Jet ℂ (Fin n × Fin g) m →+* ℂ) := ⟨fun a ha => isUnit_of_jetAug a ha.ne_zero⟩`. Establish `hp : spMap ((jetAug : Jet ℂ (Fin n × Fin g) m →ₐ[ℂ] ℂ) : Jet ℂ (Fin n × Fin g) m →+* ℂ) cpt = IsLocalRing.closedPoint _` using `Spec_closedPoint`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hT : ⊤ ≤ LB.wchart L.L φ j`. Use `(Scheme.preimage_eq_top_of_closedPoint_mem (𝟙 (Spec (CommRingCat.of (Jet ℂ (Fin n × Fin g) m)))) (U := LB.wchart L.L φ j) ?_).ge` and prove the remaining obligations. Establish `: spMap ((jetAug : Jet ℂ (Fin n × Fin g) m →ₐ[ℂ] ℂ) : Jet ℂ (Fin n × Fin g) m →+* ℂ) cpt ∈ LB.wchart L.L φ j` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hc.1 k`. Rewrite `this` using `[hp]`. Then use the resulting hypothesis. Establish `hU : ⊤ ≤ (Φ.e 0).left ⁻¹ᵁ L.L.U (j' 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e_zero_left Φ, ← h0]`. Conclude with `hW2.trans (LB.wchart_le _ _ _ 0)`. Use `valAt'_id_inj hW ?_` and prove the remaining obligations. Use `(TB.ValAt.valAt'_res (𝟙 (Sp ℂ)) inf_le_left hW _).trans (Eq.trans ?_ (TB.ValAt.valAt'_res (𝟙 (Sp ℂ)) inf_le_right hW _).symm)` and prove the remaining obligations. Use `(TB.ValAt.valAt'_res (𝟙 (Sp ℂ)) (V := LB.wchart L.L _ j) _ hW1 _).trans ((valAt'_comp (𝟙 (Sp ℂ)) _ _ _).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hR : valAt' (𝟙 (Sp ℂ)) _ ((rigT A L.L L.rig (overAt x0 ℂ) 1).s j').val = Φ.fr (j' 0) 0`. Rewrite using `[Φ.fr_0 _ hU]`. Simplify using `only [rigT, zpow_one]`. Use `(TB.ValAt.valAt'_res (𝟙 (Sp ℂ)) (V := LB.wchart L.L _ j') _ hW2 _).trans ((valAt'_comp (𝟙 (Sp ℂ)) _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp, h0]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `Eq.trans ?_ hR.symm` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Use `(TB.ValAt.valAt'_res _ hT le_rfl _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (valAt' _ ⊤) (h.2 j hT)).trans ((valAt'_spMap_toΓ _ _).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(jetAug_jetN m _).trans ?_` and prove the remaining obligations. Establish `hne` using `Φ.fr_ne _ _ hU`. Simplify using `only [map_zero, hj]`. Rewrite using `[prod_zpow_sum hne, hε, zpow_one]`. Establish `hb : W = ⊥`.
-
-Use `le_bot_iff.1 fun p hp => hc ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim cpt p]` and apply the resulting hypothesis. Use `haveI : Subsingleton Γ(Sp ℂ, W) := by rw [hb]; infer_instance`. Conclude with `Subsingleton.elim (α := Γ(Sp ℂ, W)) _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem corr_rig {n m : ℕ} {K : Type} [Fintype K] (φ : K → (Sp (Jet ℂ (Fin n × Fin g) m) ⟶ A.left)) (ε : K → ℤ)
     (τ : LB.Gen (LB.LinComb L.L φ ε)) (Λ : K → (Fin n → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (h : Φ.JetRd m φ ε τ Λ)
@@ -277,18 +275,18 @@ def graphL (ty : Fin g → (E →+* ℂ)) (a : 𝓞 E) : (Fin 1 → Fin g → �
 
 omit [IsCMField E] [StarRing (𝓞 E)] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem graphL_apply (a : 𝓞 E) (w : Fin 1 → Fin g → ℂ) : graphL ty a w = ![w 0, tyAct ty a (w 0)] := by
   funext i
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Take `⟨hq, hx⟩` from `(GlobalTheory.AnVal.jetPts_jetMap E H Dw l Xo c y g ty el Φ 1 m).2.2.2.2`. Rewrite using `[hx]`. Use `GlobalTheory.AnValJetGlob.jetRd_pullGen _ _ _ _ _ Φ.toAnFr 1 m _ _ _ _ wP _ _ hq fun v => ?_` and prove the remaining obligations. Use `(GlobalTheory.AnVal.PrimRd.prim_reading E H Dw l Xo c y g ty el Φ).2 wP hP (colsOf 1 g v 0)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `k`. Break down `k with k | I` into its components or cases. Both sides reduce to the same expression. Use `show psumL 2 g I (graphL ty H.w0 _) = _`.
+Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[graphL_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jetRd_prim (wP : PrimTy H Xo) (hP : IsPrim wP) (m : ℕ) :
     Φ.toAnFr.JetRd (n := 1) m _ _ (LB.pullGen Xo.univ.t.PP.L _ _ wP (Φ.jx m).left)
@@ -307,13 +305,13 @@ theorem jetRd_prim (wP : PrimTy H Xo) (hP : IsPrim wP) (m : ℕ) :
     rfl
 
 /- English proof (translation)
-Use `GlobalTheory.JetLinSub.jetRd_linSubst _ _ _ _ _ Φ.toAnFr 2 1 m (graphL ty H.w0) _ (fun p => ?_) _ _ _ (e m) _ (he m).2` and prove the remaining obligations. Take `⟨i, j⟩` from `p`. Rewrite using `[jetSubstP_X]`. Use `fin_cases i`. Use `jetN_coord (n := 1) m 1 0 j` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [_root_.one_mul, map_one] at this`. Use `Eq.trans ?_ this.symm` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `Eq.trans ?_ (jetN_coord (n := 1) m (ty j (H.w0 : E)) 0 j).symm` and prove the remaining obligations. Establish `hr : psIn g m ![0] ((anFB ty).A.act H.w0 j) = psTrunc m (linAct ty H.w0 j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (fun p : Fin 1 × Fin g => ((![0] : Fin 1 → Fin 1) p.1, p.2)) = id`. Use function extensionality and compare the values at `p`. Conclude with `Prod.ext (Subsingleton.elim _ _) rfl`. Rewrite using `[psIn, this, MvPolynomial.rename_id]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hc` using `constantCoeff_of_mem_orig (FBIdJet.psTrunc_mem_orig m _ (cc_linAct ty H.w0 j))`. Use `show Ideal.Quotient.mk _ (psIn g m ![0] ((anFB ty).A.act H.w0 j) - MvPolynomial.C (MvPolynomial.constantCoeff (psIn g m ![0] ((anFB ty).A.act H.w0 j)))) = _`. Rewrite using `[hr, hc, map_zero, sub_zero, FBIdJet.psTrunc_eq, ← FBIdJet.mk_trunc_coe m (MvPolynomial.C _ * _)]`. Simplify using `[linAct]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetRd_pe (e : ∀ m, FrTy y g Φ.jx m) (he : Φ.IsAnE e) (m : ℕ) :
     Φ.toAnFr.JetRd (n := 1) m _ _
@@ -343,9 +341,9 @@ theorem jetRd_pe (e : ∀ m, FrTy y g Φ.jx m) (he : Φ.IsAnE e) (m : ℕ) :
 end Pt
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ _ y g ty el Φ hI e wP he hP`. Establish `key` using `fun m => GlobalTheory.AnVal.jetRd_mul_inv_pow _ _ _ _ _ Φ.toAnFr 1 m _ _ _ _ _ _ _ _ _ _ (jetRd_prim Φ wP hP m) (jetRd_pe Φ e he m)`. Use `⟨fun m k τ hτ => ?_, corr_rig Φ.toAnFr _ _ _ _ (key 0).1 ?_⟩` and prove the remaining obligations. Establish `h2` using `(GlobalTheory.AnVal.jetRd_mul_inv_pow _ _ _ _ _ Φ.toAnFr 1 m _ _ _ _ _ _ _ _ _ _ (key m).1 hτ).2.2 k`. Use `GlobalTheory.AnVal.JetCorr.corr_of_jetRd _ _ _ _ _ Φ.toAnFr hI 1 m _ _ _ _ _ _ _ _ _ _ hτ h2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sameSum_cancel _ _ rfl _ _ _ _ (fun _ => Category.comp_id _) fun I => jetMap_uniq Φ.toAnFr ((jetRd_prim Φ wP hP m).1 (Sum.inr I)) ((jetRd_pe Φ e he m).1 I) rfl`. Simplify using `[Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eL_appellHumbert : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] [StarRing (𝓞 E)] (y : FrPt Xo c ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (el : Fin g ≃ Lt1 Dw) (Φ : AnPt y g ty el), Φ.toAnFr.Imm → ∀ (e : ∀ m, FrTy y g Φ.jx m) (wP : PrimTy H Xo), Φ.IsAnE e → IsPrim wP → (∀ (m k : ℕ) (τ : LB.Gen (LB.LinComb Xo.univ.t.PP.L (K := Fin 1) (fun _ => (Φ.jx m).left) fun _ => (k : ℤ))), Φ.toAnFr.JetRd (n := 1) m (fun _ : Fin 1 => (Φ.jx m).left) (fun _ => (k : ℤ)) τ (fun _ => LinearMap.proj 0) → LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ τ (genPow _ _ (eL y g Φ.jx (anFB ty).A.act e wP m) k)) ∧ LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ (LB.pullGen Xo.univ.t.PP.L _ _ (eL y g Φ.jx (anFB ty).A.act e wP 0) (homAt y.x (jetAug : Jet ℂ (Fin 1 × Fin g) 0 →ₐ[ℂ] ℂ)).left) (rigT Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig (overAt y.x ℂ) 1) := by
   intro E _ _ _ H Dw l Xo c _ _ y g ty el Φ hI e wP he hP

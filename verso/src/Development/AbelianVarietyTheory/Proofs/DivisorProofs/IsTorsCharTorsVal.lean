@@ -25,7 +25,7 @@ def torsVal (b : G.A N) : Fn0 A := fun D _ _ x ↦
   if h : x ^ p ^ N = 1 then t.lift N x h b else 0
 
 /- English proof (translation)
-The claim follows from `t.inj N D' _ _ (by rw [t.lift_y, ← spOver_comp, Category.assoc, t.lift_y])`.
+A detailed English derivation is pending.
 -/
 theorem lift_spOver {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D']
     (φ : D →ₐ[R] D') (w : Pt A D) (hw : w ^ p ^ N = 1) (hw' : (spOver φ ≫ w) ^ p ^ N = 1) :
@@ -33,7 +33,7 @@ theorem lift_spOver {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Alge
   t.inj N D' _ _ (by rw [t.lift_y, ← spOver_comp, Category.assoc, t.lift_y])
 
 /- English proof (translation)
-The claim follows from `t.inj N D _ _ (by rw [t.lift_y, t.mul, ofConv_toConv, ofConv_toConv, t.lift_y, t.lift_y])`.
+A detailed English derivation is pending.
 -/
 theorem lift_mul {D : Type} [CommRing D] [Algebra R D] (w w' : Pt A D) (hw : w ^ p ^ N = 1)
     (hw' : w' ^ p ^ N = 1) (h : (w * w') ^ p ^ N = 1) :
@@ -41,9 +41,9 @@ theorem lift_mul {D : Type} [CommRing D] [Algebra R D] (w w' : Pt A D) (hw : w ^
   t.inj N D _ _ (by rw [t.lift_y, t.mul, ofConv_toConv, ofConv_toConv, t.lift_y, t.lift_y])
 
 /- English proof (translation)
-Establish `hc : Coalgebra.comul (R` using `R) b = b ⊗ₜ 1 + 1 ⊗ₜ b := by`. Rewrite `hb` using `[cobOne_apply, sub_sub, sub_eq_zero]`. Conclude with `hb`. Use `⟨fun D _ _ D' _ _ φ w hw ↦ ?_, fun D _ _ w w' hw hw' ↦ ?_⟩` and prove the remaining obligations. Establish `hw2 : (spOver φ ≫ w) ^ p ^ N = 1` using `by rw [← MonObj.comp_pow, hw, MonObj.comp_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [torsVal, dif_pos hw, dif_pos hw2, lift_spOver t N φ w hw hw2, AlgHom.comp_apply]`. Establish `h : (w * w') ^ p ^ N = 1` using `(t.exists_iff N _).1 ⟨(toConv (t.lift N w hw) * toConv (t.lift N w' hw')).ofConv, by`. Rewrite using `[t.mul, ofConv_toConv, ofConv_toConv, t.lift_y, t.lift_y]⟩`. Simplify using `only [torsVal, dif_pos hw, dif_pos hw', dif_pos h, lift_mul t N w w' hw hw' h, AlgHom.convMul_apply, hc, map_add, Algebra.TensorProduct.lift_tmul, ofConv_toConv, map_one, _root_.mul_one, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isTorsChar_torsVal (b : G.A N) (hb : cobOne R (G.A N) b = 0) :
     IsTorsChar (p ^ N) (torsVal t N b) := by
@@ -60,7 +60,7 @@ theorem isTorsChar_torsVal (b : G.A N) (hb : cobOne R (G.A N) b = 0) :
       _root_.mul_one, _root_.one_mul]
 
 /- English proof (translation)
-Introduce `p R _ A _ G t N b hb`. Use `⟨torsVal t N b, isTorsChar_torsVal t N b hb, fun D _ _ φ ↦ ?_⟩` and prove the remaining obligations. Establish `h : (spOver φ ≫ t.y N) ^ p ^ N = 1` using `(t.exists_iff N _).1 ⟨φ, rfl⟩`. Establish `e : t.lift N (spOver φ ≫ t.y N) h = φ` using `t.inj N D _ _ (t.lift_y N _ h)`. Simplify using `only [torsVal, dif_pos h, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem exists_isTorsChar : ∀ (p : ℕ)  (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (G : PDivGroup p R) (t : G.TorsionTower A) (N : ℕ) (b : G.A N), cobOne R (G.A N) b = 0 → ∃ β : Fn0 A, IsTorsChar (p ^ N) β ∧ ∀ (D : Type) [CommRing D] [Algebra R D] (φ : G.A N →ₐ[R] D), β D (spOver φ ≫ t.y N) = φ b := by
   intro p R _ A _ G t N b hb

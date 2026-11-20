@@ -10,7 +10,7 @@ namespace Formalism.H
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> intro m hm <;> simpa using hm m`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem innerₗ_nondegenerate : (innerₗ V : LinearMap.BilinForm ℝ V).Nondegenerate := by
   constructor <;> intro m hm <;> simpa using hm m
@@ -21,7 +21,7 @@ abbrev dualB (e : Module.Basis ι ℝ V) : Module.Basis ι ℝ V :=
   LinearMap.BilinForm.dualBasis (innerₗ V) innerₗ_nondegenerate e
 
 /- English proof (translation)
-Establish `h` using `LinearMap.BilinForm.apply_dualBasis_left (innerₗ_nondegenerate (V := V)) e i j`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inner_dualB (e : Module.Basis ι ℝ V) (i j : ι) :
     ⟪dualB e i, e j⟫ = if j = i then 1 else 0 := by
@@ -31,7 +31,7 @@ theorem inner_dualB (e : Module.Basis ι ℝ V) (i j : ι) :
 def dualVec (e : Module.Basis ι ℝ V) (m : ι → ℤ) : V := ∑ i, m i • dualB e i
 
 /- English proof (translation)
-Unfold `dualVec`. Conclude with `Finset.sum_congr rfl fun i _ => (Int.cast_smul_eq_zsmul ℝ (m i) _).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dualVec_eq (e : Module.Basis ι ℝ V) (m : ι → ℤ) :
     dualVec e m = ∑ i, (m i : ℝ) • dualB e i := by
@@ -39,7 +39,7 @@ theorem dualVec_eq (e : Module.Basis ι ℝ V) (m : ι → ℤ) :
   exact Finset.sum_congr rfl fun i _ => (Int.cast_smul_eq_zsmul ℝ (m i) _).symm
 
 /- English proof (translation)
-Rewrite using `[dualVec_eq, sum_inner]`. Repeatedly rewrite using `[real_inner_smul_left, inner_dualB]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_dualVec_basis (e : Module.Basis ι ℝ V) (m : ι → ℤ) (j : ι) :
     ⟪dualVec e m, e j⟫ = m j := by
@@ -48,14 +48,14 @@ theorem inner_dualVec_basis (e : Module.Basis ι ℝ V) (m : ι → ℤ) (j : ι
   simp
 
 /- English proof (translation)
-Conclude with `LinearMap.BilinForm.dualSubmodule_span_of_basis (innerₗ V) innerₗ_nondegenerate e`.
+A detailed English derivation is pending.
 -/
 theorem dual_span_eq (e : Module.Basis ι ℝ V) :
     dual (Submodule.span ℤ (Set.range e)) = Submodule.span ℤ (Set.range (dualB e)) := by
   exact LinearMap.BilinForm.dualSubmodule_span_of_basis (innerₗ V) innerₗ_nondegenerate e
 
 /- English proof (translation)
-Rewrite using `[dual_span_eq]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualVec_mem (e : Module.Basis ι ℝ V) (m : ι → ℤ) :
     dualVec e m ∈ dual (Submodule.span ℤ (Set.range e)) := by
@@ -63,7 +63,7 @@ theorem dualVec_mem (e : Module.Basis ι ℝ V) (m : ι → ℤ) :
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Introduce `m n h`. Use function extensionality and compare the values at `j`. Establish `h1` using `congrArg (fun x => ⟪x, e j⟫) h`. Simplify using `only [inner_dualVec_basis] at h1`. Conclude with `h1` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualVec_injective (e : Module.Basis ι ℝ V) : Function.Injective (dualVec e) := by
   intro m n h
@@ -73,7 +73,7 @@ theorem dualVec_injective (e : Module.Basis ι ℝ V) : Function.Injective (dual
   exact_mod_cast h1
 
 /- English proof (translation)
-Rewrite `hμ` using `[dual_span_eq]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp hμ`. Conclude with `⟨c, hc⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dualVec_surjective (e : Module.Basis ι ℝ V) (μ : V)
     (hμ : μ ∈ dual (Submodule.span ℤ (Set.range e))) : ∃ m, dualVec e m = μ := by

@@ -10,15 +10,13 @@ noncomputable section
 namespace GlobalTheory.FunctionFieldTrdeg
 
 /- English proof (translation)
-Introduce `F _ G _ s d hs hd φ hφ`. Take `⟨N, i, hi, hcomp⟩` from `hs`. Use `haveI : IsProper (PSpace.str F N) := isProper_str F N`. Use `haveI : LocallyOfFiniteType s := by rw [← hcomp]; infer_instance`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `G.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint G)) isOpen_univ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU : IsAffineOpen U` using `hU`. Use `haveI : Nonempty U := ⟨⟨_, hxU⟩⟩`. Set `ψ` to `Spec.preimage (hU.fromSpec ≫ s)`. Establish `hψ : Spec.map ψ = hU.fromSpec ≫ s` using `Spec.map_preimage _`. Use `letI : Algebra F Γ(G, U) := ψ.hom.toAlgebra`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI hft : Algebra.FiniteType F Γ(G, U) := (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := ψ)).mp (hψ ▸ inferInstance)`. Establish `hA : Algebra.trdeg F Γ(G, U) = d` using `GlobalTheory.GenFinite.trdeg_affineOpen_eq F s hU ⟨_, hxU⟩ d hd`. Use `letI : Algebra F G.functionField := φ.toAlgebra`. Establish `key : CommRingCat.ofHom φ = ψ ≫ G.germToFunctionField U`. Apply `Spec.map_injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Spec.map_comp]`. Express the relevant statement in the definitionally equal form `spMap φ = _`. Rewrite using `[← hφ, hψ, ← hU.fromSpecStalk_eq_fromSpecStalk hxU, IsAffineOpen.fromSpecStalk, Category.assoc]`. Use `haveI : IsScalarTower F Γ(G, U) G.functionField := IsScalarTower.of_algebraMap_eq' congr($(key).hom)`. Use `haveI := functionField_isFractionRing_of_isAffineOpen G U hU`.
-
-Use `haveI : FaithfulSMul F Γ(G, U) := (faithfulSMul_iff_algebraMap_injective _ _).mpr (algebraMap F Γ(G, U)).injective`. Use `haveI : FaithfulSMul Γ(G, U) G.functionField := (faithfulSMul_iff_algebraMap_injective _ _).mpr (IsFractionRing.injective Γ(G, U) G.functionField)`. Use `haveI : Algebra.IsAlgebraic Γ(G, U) G.functionField := IsLocalization.isAlgebraic _ (nonZeroDivisors Γ(G, U))`. Use `show Algebra.trdeg F G.functionField = d`. Rewrite using `[GlobalTheory.trdeg_eq_of_isAlgebraic_top F Γ(G, U) G.functionField, hA]`.
+A detailed English derivation is pending.
 -/
 theorem trdeg_functionField_eq : ∀ (F : Type) [Field F] (G : Scheme.{0}) [IsIntegral G] (s : G ⟶ Sp F) (d : ℕ), IsProjOver s → topologicalKrullDim G = d → ∀ (φ : F →+* G.functionField), G.fromSpecStalk (genericPoint G) ≫ s = spMap φ → (letI := φ.toAlgebra; Algebra.trdeg F G.functionField = d) := by
   intro F _ G _ s d hs hd φ hφ

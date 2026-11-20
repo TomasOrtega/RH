@@ -19,7 +19,7 @@ section Res
 variable {X : Scheme.{u}}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(F.presheaf.map (homOfLE h).op).hom m = m`. Rewrite using `[show (homOfLE h).op = 𝟙 (op U) from rfl, F.presheaf.map_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma resF_refl (F : X.Modules) {U : X.Opens} (h : U ≤ U) (m : Γ(F, U)) : resF F h m = m := by
   change (F.presheaf.map (homOfLE h).op).hom m = m
@@ -27,7 +27,7 @@ private lemma resF_refl (F : X.Modules) {U : X.Opens} (h : U ≤ U) (m : Γ(F, U
   rfl
 
 /- English proof (translation)
-Introduce `a b hab` and use `by have := congrArg (resF F h') hab rwa [resF_resF, resF_resF, resF_refl, resF_refl] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private lemma resF_injective_of_le (F : X.Modules) {U V : X.Opens} (h : V ≤ U) (h' : U ≤ V) :
     Function.Injective (resF F h) := fun a b hab => by
@@ -48,7 +48,7 @@ private def upowS (k : Fin (n + 1)) (m : ℤ) :
   ProjTwist.upow (grading A n) (X_mem k) m
 
 /- English proof (translation)
-The claim follows from `ProjTwist.upow_res _ _ m`.
+A detailed English derivation is pending.
 -/
 private lemma upowS_res (k l : Fin (n + 1)) (m : ℕ) :
     resM ((preMod (projectiveSpace A n)).obj (twistingSheaf (grading A n) m))
@@ -59,14 +59,14 @@ private lemma upowS_res (k l : Fin (n + 1)) (m : ℕ) :
   ProjTwist.upow_res _ _ m
 
 /- English proof (translation)
-The claim follows from `ProjTwist.basicOpen_ratio _ _`.
+A detailed English derivation is pending.
 -/
 private lemma basicOpen_yR (k j : Fin (n + 1)) :
     (projectiveSpace A n).basicOpen (yR (A := A) k j) = stdOpen A n k ⊓ stdOpen A n j :=
   ProjTwist.basicOpen_ratio _ _
 
 /- English proof (translation)
-Establish `e : stdOpen A n k ⊓ stdOpen A n l = Proj.basicOpen (grading A n) (X k * X l)` using `(Proj.basicOpen_mul _ _ _).symm`. Rewrite using `[e]`. Conclude with `Proj.isAffineOpen_basicOpen _ _ (SetLike.mul_mem_graded (X_mem k) (X_mem l)) two_pos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isAffineOpen_stdOpen_inf (k l : Fin (n + 1)) :
     IsAffineOpen (stdOpen A n k ⊓ stdOpen A n l) := by
@@ -76,9 +76,9 @@ private lemma isAffineOpen_stdOpen_inf (k l : Fin (n + 1)) :
   exact Proj.isAffineOpen_basicOpen _ _ (SetLike.mul_mem_graded (X_mem k) (X_mem l)) two_pos
 
 /- English proof (translation)
-Establish `hb` using `basicOpen_yR (A := A) k j`. Establish `hle : (projectiveSpace A n).basicOpen (yR (A` using `A) k j) ≤ stdOpen A n j := hb.le.trans inf_le_right`. Take `⟨e, g, hg⟩` from `qcoh_exists_res_eq G (isAffineOpen_stdOpen k) (yR k j) (resF G hle s)`. Use `⟨e, g, ?_⟩` and prove the remaining obligations. Establish `h2 : stdOpen A n k ⊓ stdOpen A n j ≤ (projectiveSpace A n).basicOpen (yR (A` using `A) k j) := hb.ge`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (resF G h2) hg` as an intermediate fact. Rewrite `this` using `[resF_resF, resF_smul, map_pow, resO_resO, resF_resF]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_local (G : (projectiveSpace A n).Modules) [G.IsQuasicoherent] (j : Fin (n + 1))
     (s : Γ(G, stdOpen A n j)) (k : Fin (n + 1)) :
@@ -98,7 +98,7 @@ private lemma exists_local (G : (projectiveSpace A n).Modules) [G.IsQuasicoheren
   exact this
 
 /- English proof (translation)
-Use `choose e g hg using exists_local G j s`. Use `⟨Finset.univ.sup e, fun k => yR (A := A) k j ^ (Finset.univ.sup e - e k) • g k, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[resF_smul, hg, smul_smul, map_pow, ← pow_add, Nat.sub_add_cancel (Finset.le_sup (f := e) (Finset.mem_univ k))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_local_uniform (G : (projectiveSpace A n).Modules) [G.IsQuasicoherent]
     (j : Fin (n + 1)) (s : Γ(G, stdOpen A n j)) :
@@ -112,7 +112,7 @@ private lemma exists_local_uniform (G : (projectiveSpace A n).Modules) [G.IsQuas
     Nat.sub_add_cancel (Finset.le_sup (f := e) (Finset.mem_univ k))]
 
 /- English proof (translation)
-Establish `hO : O ≤ stdOpen A n k ⊓ stdOpen A n j` using `le_inf hk hj`. Use `congrArg (resF G hO) (hg k)` as an intermediate fact. Rewrite `this` using `[resF_resF, resF_smul, map_pow, resO_resO, resF_resF]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma local_res {G : (projectiveSpace A n).Modules} {j : Fin (n + 1)} {s : Γ(G, stdOpen A n j)}
     {a : ℕ} {g : ∀ k, Γ(G, stdOpen A n k)}
@@ -128,15 +128,13 @@ private lemma local_res {G : (projectiveSpace A n).Modules} {j : Fin (n + 1)} {s
   exact this
 
 /- English proof (translation)
-Establish `key : ∀ k l, ∃ b : ℕ, resO (inf_le_left : stdOpen A n k ⊓ stdOpen A n l ≤ stdOpen A n k) (yR k j) ^ b • (resF G (inf_le_left : stdOpen A n k ⊓ stdOpen A n l ≤ stdOpen A n k) (g k) - resO (inf_le_left : stdOpen A n k ⊓ stdOpen A n l ≤ stdOpen A n k) (yR k l) ^ a • resF G (inf_le_r …`. Introduce `k l`. Apply `qcoh_exists_pow_smul_eq_zero G (isAffineOpen_stdOpen_inf k l)` to reduce the goal to its premises. Use `set W := stdOpen A n k ⊓ stdOpen A n l`. Use `set f := resO (inf_le_left : W ≤ stdOpen A n k) (yR (A := A) k j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : (projectiveSpace A n).basicOpen f = W ⊓ (stdOpen A n k ⊓ stdOpen A n j)`. Establish `h1 : (projectiveSpace A n).basicOpen f = W ⊓ (projectiveSpace A n).basicOpen (yR (A` using `A) k j) := Scheme.basicOpen_res _ _ _`. Rewrite using `[h1, basicOpen_yR]`. Establish `hOW : (projectiveSpace A n).basicOpen f ≤ W` using `(projectiveSpace A n).basicOpen_le f`. Establish `hOk : (projectiveSpace A n).basicOpen f ≤ stdOpen A n k` using `hOW.trans inf_le_left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOl : (projectiveSpace A n).basicOpen f ≤ stdOpen A n l` using `hOW.trans inf_le_right`. Establish `hOj : (projectiveSpace A n).basicOpen f ≤ stdOpen A n j` using `hO.le.trans (inf_le_right.trans inf_le_right)`. Rewrite using `[map_sub, resF_resF, resF_smul, resF_resF, map_pow, resO_resO, local_res hg k hOk hOj, local_res hg l hOl hOj, smul_smul, sub_eq_zero]`. Use `congr 1`. Establish `hr0 : resO (inf_le_right : W ≤ stdOpen A n l) (yR (A` using `A) l j) * resO (inf_le_left : W ≤ stdOpen A n k) (yR (A := A) k l) = resO (inf_le_left : W ≤ stdOpen A n k) (yR (A := A) k j) := ProjTwist.ratio_mul_ratio (𝒜 := grading A n) (X_mem k) (X_mem l) (X_mem j)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr` using `congrArg (resO hOW) hr0`. Rewrite `hr` using `[map_mul, resO_resO, resO_resO, resO_resO]`. Rewrite using `[← hr, mul_pow, mul_comm]`. Use `choose b hb using key`. Use `⟨Finset.univ.sup fun p : Fin (n + 1) × Fin (n + 1) => b p.1 p.2, fun k l => ?_⟩` and prove the remaining obligations.
-
-Establish `hle : b k l ≤ Finset.univ.sup fun p : Fin (n + 1) × Fin (n + 1) => b p.1 p.2` using `Finset.le_sup (f := fun p : Fin (n + 1) × Fin (n + 1) => b p.1 p.2) (Finset.mem_univ (k, l))`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_smul, hb k l, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_kill (G : (projectiveSpace A n).Modules) [G.IsQuasicoherent] (j : Fin (n + 1))
     (s : Γ(G, stdOpen A n j)) (a : ℕ) (g : ∀ k, Γ(G, stdOpen A n k))
@@ -184,21 +182,21 @@ private lemma exists_kill (G : (projectiveSpace A n).Modules) [G.IsQuasicoherent
   rw [← Nat.sub_add_cancel hle, pow_add, mul_smul, hb k l, smul_zero]
 
 /- English proof (translation)
-Take `⟨a, g, hg⟩` from `exists_local_uniform G j s`. Take `⟨b, hb⟩` from `exists_kill G j s a g hg`. Use `⟨a + b, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le (le_trans (Nat.le_add_right a b) hm)`. Establish `hdb : b ≤ d` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `ρ : ∀ k : ULift.{u} (Fin (n + 1)), Γ(twist G (a + d : ℕ), stdOpen A n k.down)` to `fun k => tensorBasisMap G (twistingSheaf (grading A n) (a + d : ℕ)) (upowS k.down (a + d : ℕ)) (le_rfl : stdOpen A n k.down ≤ stdOpen A n k.down) (yR (A := A) k.down j ^ d • g k.down)`. Establish `hcov : ∀ x ∈ (⊤ : (projectiveSpace A n).Opens), ∃ k : ULift.{u} (Fin (n + 1)), x ∈ stdOpen A n k.down`. Introduce `x _`. Establish `hx : x ∈ ⨆ i, stdOpen A n i` using `by rw [iSup_stdOpen]; trivial`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨k⟩, hk⟩`. Establish `hcompat : ∀ k l : ULift.{u} (Fin (n + 1)), resF (twist G (a + d : ℕ)) (inf_le_left : stdOpen A n k.down ⊓ stdOpen A n l.down ≤ stdOpen A n k.down) (ρ k) = resF (twist G (a + d : ℕ)) (inf_le_right : stdOpen A n k.down ⊓ stdOpen A n l.down ≤ stdOpen A n l.down) (ρ l)`. Introduce and unpack `⟨k⟩ ⟨l⟩`. Simplify using `only [ρ]`. Unfold `twist`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[tensorBasisMap_res, tensorBasisMap_res, tensorBasisMap_change (s := upowS k (a + d : ℕ)) (upowS l (a + d : ℕ)) (inf_le_left.trans le_rfl) (inf_le_right.trans le_rfl) _ (upowS_res k l (a + d))]`. Use `congr 1`. Use `set W := stdOpen A n k ⊓ stdOpen A n l`. Establish `hr0 : resO (inf_le_right : W ≤ stdOpen A n l) (yR (A` using `A) l j) * resO (inf_le_left : W ≤ stdOpen A n k) (yR (A := A) k l) = resO (inf_le_left : W ≤ stdOpen A n k) (yR (A := A) k j) := ProjTwist.ratio_mul_ratio (𝒜 := grading A n) (X_mem k) (X_mem l) (X_mem j)`. Establish `e1` using `hb k l`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : resO (inf_le_left : W ≤ stdOpen A n k) (yR (A` using `A) k j) ^ d • (resF G (inf_le_left : W ≤ stdOpen A n k) (g k) - resO (inf_le_left : W ≤ stdOpen A n k) (yR (A := A) k l) ^ a • resF G (inf_le_right : W ≤ stdOpen A n l) (g l)) = 0 := by`. Rewrite using `[← Nat.sub_add_cancel hdb, pow_add, mul_smul, e1, smul_zero]`. Rewrite `e2` using `[smul_sub, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `resF G (inf_le_left : W ≤ stdOpen A n k) (yR (A := A) k j ^ d • g k) = (resO (inf_le_left : W ≤ stdOpen A n k) (yR (A := A) k l) ^ (a + d)) • resF G (inf_le_right : W ≤ stdOpen A n l) (yR (A := A) l j ^ d • g l)`. Rewrite using `[resF_smul, resF_smul, map_pow, map_pow, e2, smul_smul, smul_smul, ← hr0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take `⟨t, ht⟩` from `sheaf_exists_glue ⟨(twist G (a + d : ℕ)).presheaf, (twist G (a + d : ℕ)).isSheaf⟩ (V := ⊤) (fun k : ULift.{u} (Fin (n + 1)) => stdOpen A n k.down) (fun _ => le_top) hcov ρ hcompat`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `htj : resF (twist G (a + d : ℕ)) le_top t = ρ ⟨j⟩` using `ht ⟨j⟩`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `htj.trans ?_` and prove the remaining obligations. Establish `hjj : yR (A` using `A) j j = 1 := ProjTwist.ratio_self (X_mem j)`. Establish `hgj : g j = s`. Apply `resF_injective_of_le G (inf_le_left : stdOpen A n j ⊓ stdOpen A n j ≤ stdOpen A n j) (le_inf le_rfl le_rfl)` to reduce the goal to its premises. Rewrite using `[hg j, hjj, map_one, one_pow, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : yR (A` using `A) j j ^ d • g j = s := by rw [hjj, one_pow, one_smul, hgj]`. Conclude with `congrArg (tensorBasisMap G (twistingSheaf (grading A n) (a + d : ℕ)) (upowS j (a + d : ℕ)) (le_rfl : stdOpen A n j ≤ stdOpen A n j)) hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_extend (G : (projectiveSpace A n).Modules) [G.IsQuasicoherent] (j : Fin (n + 1))
     (s : Γ(G, stdOpen A n j)) : ∃ m₀ : ℕ, ∀ m : ℕ, m₀ ≤ m → ∃ t : Γ(twist G m, ⊤),
@@ -275,22 +273,20 @@ def twistLinear (G : (projectiveSpace A n).Modules) (j : Fin (n + 1)) (q : ℤ) 
   map_smul' r m := tensorBasisMap_smul _ r m
 
 /- English proof (translation)
-The claim follows from `(tensorBasisMap_bijective (ProjTwist.isBasisOn_upow (grading A n) (X_mem j) q) le_rfl).2`.
+A detailed English derivation is pending.
 -/
 lemma twistLinear_surjective (G : (projectiveSpace A n).Modules) (j : Fin (n + 1)) (q : ℤ) :
     Function.Surjective (twistLinear G j q) :=
   (tensorBasisMap_bijective (ProjTwist.isBasisOn_upow (grading A n) (X_mem j) q) le_rfl).2
 
 /- English proof (translation)
-Take `⟨hqc, hfin⟩` from `hG`. Establish `hfg : ∀ j : Fin (n + 1), ∃ S : Finset Γ(G, stdOpen A n j), Submodule.span Γ(projectiveSpace A n, stdOpen A n j) (S : Set Γ(G, stdOpen A n j)) = ⊤` using `fun j => (hfin _ (isAffineOpen_stdOpen j)).fg_top`. Use `choose S hS using hfg`. Establish `hext : ∀ p : (j : Fin (n + 1)) × S j, ∃ m₀ : ℕ, ∀ m : ℕ, m₀ ≤ m → ∃ t : Γ(twist G m, ⊤), resF (twist G m) (le_top : stdOpen A n p.1 ≤ ⊤) t = twistLinear G p.1 m p.2.1` using `fun p => exists_extend G p.1 p.2.1`. Use `choose m₀ hm₀ using hext`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Finset.univ.sup m₀, fun q hq => ?_⟩` and prove the remaining obligations. Establish `hq' : ∀ p, m₀ p ≤ q` using `fun p => (Finset.le_sup (f := m₀) (Finset.mem_univ p)).trans hq`. Use `choose t ht using fun p => hm₀ p q (hq' p)`. Establish `hcov : (⨆ i : ULift.{u} (Fin (n + 1)), stdOpen A n i.down) = ⊤`. Use `le_antisymm le_top ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← iSup_stdOpen (A := A) (n := n)]`. Conclude with `iSup_le fun j => le_iSup_of_le (⟨j⟩ : ULift.{u} (Fin (n + 1))) le_rfl`. Use `exists_generatingSections (twist G q) (fun i : ULift.{u} (Fin (n + 1)) => stdOpen A n i.down) (fun i => isAffineOpen_stdOpen _) hcov t fun ⟨j⟩ => ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, rfl⟩` from `twistLinear_surjective G j q z`. Establish `hw : w ∈ Submodule.span Γ(projectiveSpace A n, stdOpen A n j) (S j : Set Γ(G, stdOpen A n j))` using `(hS j).symm ▸ Submodule.mem_top`. Establish `hmap` using `Submodule.mem_map_of_mem (f := twistLinear G j q) hw`. Rewrite `hmap` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ hmap` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨⟨j, ⟨x, hx⟩⟩, ht ⟨j, ⟨x, hx⟩⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_generatingSections_twist (G : (projectiveSpace A n).Modules) (hG : IsCoherent G) :
     ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∃ σ : (twist G q).GeneratingSections, σ.IsFiniteType := by

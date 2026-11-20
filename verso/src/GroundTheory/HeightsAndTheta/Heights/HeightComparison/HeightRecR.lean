@@ -15,7 +15,7 @@ def HeightRecR.Statement : Prop :=
       (Geo.degC (ι := blockIdx n) (orbitIdeal x) : ℝ) * height A x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨samplePoint_blockNonzero, isSectionOn_chartMonomial _ _ _ (fun _ ↦ by simp [samplePoint]) 1 (fun _ ↦ rfl)⟩`.
+Supply the required witnesses or components.
 -/
 example : BlockNonzero samplePoint ∧
     Geo.IsSectionOn (orbitIdeal samplePoint) (HermLine.standard _).toGeo

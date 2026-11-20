@@ -28,13 +28,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LatModel
 
 /- English proof (translation)
-Introduce `hPer hST hDR hDC hPol E _ _ _ _ I _ d φ hF 𝔣 Λ h𝔣 hΛ l _ Q hQ hQl y hy lam Ω hΩ`. Establish `hc : condQ 𝔣 Q ≠ ⊥`. Rewrite using `[← Ideal.zero_eq_bot]`. Use `mul_ne_zero (by rw [Ideal.zero_eq_bot]; exact h𝔣.1) (Finset.prod_ne_zero_iff.2 fun q _ ↦ ?_)` and prove the remaining obligations. Rewrite using `[Ideal.zero_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `q.ne_bot`. Take `⟨𝔠, X, U, hend⟩` from `GlobalTheory.T.cm_order_uniformization_exists E I d φ hF (condQ 𝔣 Q) y hc`. Take `⟨k₀, R₀, hk₀, hR₀, hR₀k, G₀, _, p₀, P₀, Ψ₀, hG₀, hp₀, hΨ₀, hΨf, hΨfl, hΨs, htan⟩` from `GlobalTheory.T.integral_lattice_l_adic_congruence hST hDC E I d φ hF 𝔣 Λ h𝔣 hΛ l Q hQ hQl y hy lam Ω hΩ 𝔠 X U`. Take `⟨k, hk, H⟩` from `(GlobalTheory.T.cm_order_l_adic_endomorphism_integral hDC hDR E I φ hF.2.2.2.2.2.2.1 (condQ 𝔣 Q) y hc l lam 𝔠 X U hend k₀ R₀ hk₀ hR₀ hR₀k G₀ p₀ P₀ Ψ₀ hG₀ hp₀ hΨ₀ hΨf hΨfl hΨs).and (GlobalTheory.T.eventually_place_ring E l lam)`. Take `⟨R, hR⟩` from `GlobalTheory.T.exists_place_ring_over_prime l lam k hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨X₀, p, cm, hpb, hrm, hcm, hlie⟩, hplace⟩` from `H R hR`. Use `⟨𝔠, R, hplace, X₀, X, U, p, cm, hpb, hrm, fun a ↦ ?_, fun i e a he _ ↦ ?_⟩` and prove the remaining obligations. Take `⟨α, hα, hα'⟩` from `hend a`. Conclude with `⟨α, hα, hcm a α hα hα', hα'⟩`. Take `⟨v₀, v', W, htv, hvv, hW, hW0, hsz⟩` from `htan i`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `hlie v₀ v' htv hvv`. Conclude with `sz_period_of_tangent hplace he hv hW hW0 hsz`.
+A detailed English derivation is pending.
 -/
 theorem exists_model_periods : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.SerreTateGoodReductionSt → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
   GlobalTheory.IndefiniteRowSideFullHecke.PolarisationModuleIndex.PolarisationModule →

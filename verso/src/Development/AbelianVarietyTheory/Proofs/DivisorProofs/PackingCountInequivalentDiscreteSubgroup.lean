@@ -10,7 +10,7 @@ open scoped Pointwise
 namespace GlobalTheory.Packing
 
 /- English proof (translation)
-Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, Set.mem_smul_set_iff_inv_smul_mem]`. Simplify using `[Subgroup.smul_def, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_smul_smul_iff {G : Type} [Group G] (Λ : Subgroup G) (γ : Λ) (t x : G) (U : Set G) :
     x ∈ γ • (t • U) ↔ t⁻¹ * ((γ : G)⁻¹ * x) ∈ U := by
@@ -18,43 +18,37 @@ theorem mem_smul_smul_iff {G : Type} [Group G] (Λ : Subgroup G) (γ : Λ) (t x 
   simp [Subgroup.smul_def, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ Λ _ μ D U hΛΓ hdisc hHaar hD hU`. Establish `hUc : IsCompact (U * U⁻¹)` using `hU.mul hU.inv`. Establish `hfin : (U * U⁻¹ ∩ (Γ : Set G)).Finite` using `hdisc _ hUc`. Use `⟨hfin.toFinset.card, ?_⟩` and prove the remaining obligations. Introduce `T S hTΓ hTdist hS hSinv hTS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hUm : MeasurableSet U` using `hU.isClosed.measurableSet`. Establish `hmeasA : ∀ (γ : Λ) (t : G), MeasurableSet (γ • (t • U))`. Introduce `γ t`. Establish `: γ • (t • U) = (fun y => t⁻¹ * ((γ : G)⁻¹ * y)) ⁻¹' U`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[mem_smul_smul_iff]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hUm.preimage (continuous_const.mul (continuous_const.mul continuous_id)).measurable`. Establish `hsubS : ∀ (γ : Λ), ∀ t ∈ T, γ • (t • U) ⊆ S`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ t ht y hy`. Rewrite `hy` using `[mem_smul_smul_iff]`. Establish `h1` using `hSinv (γ : G) γ.2 _ (hTS t ht _ hy)`. Simplify `h1` using `[mul_assoc]`. Use `set ν := μ.restrict (S ∩ D) with hν`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ t ∈ T, μ U = ∑' γ : Λ, ∫⁻ x, (γ • (t • U)).indicator 1 x ∂ν`. Introduce `t ht`. Rewrite using `[← measure_smul μ t U, hD.measure_eq_tsum (t • U)]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_indicator_one (hmeasA γ t), hν, Measure.restrict_apply (hmeasA γ t)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, hsubS γ t ht h1, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, _, h2⟩`. Conclude with `⟨h1, h2⟩`. Establish `hpt : ∀ x : G, ∑ t ∈ T, ∑' γ : Λ, (γ • (t • U)).indicator (1 : G → ℝ≥0∞) x ≤ (hfin.toFinset.card : ℝ≥0∞)`. Introduce `x`. Establish `hswap : ∑ t ∈ T, ∑' γ : Λ, (γ • (t • U)).indicator (1 : G → ℝ≥0∞) x = ∑' γ : Λ, ∑ t ∈ T, (γ • (t • U)).indicator (1 : G → ℝ≥0∞) x` using `by first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Summable.tsum_finsetSum fun _ _ => ENNReal.summable).symm`. Consider the case `exact (tsum_sum fun _ _ => ENNReal.summable).symm`. Consider the case `exact (ENNReal.tsum_finsetSum _ _).symm`. Rewrite using `[hswap, ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun s => ?_` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbool : ∑ γ ∈ s, ∑ t ∈ T, (γ • (t • U)).indicator (1 : G → ℝ≥0∞) x = (((s ×ˢ T).filter (fun p : Λ × G => x ∈ p.1 • (p.2 • U))).card : ℝ≥0∞)`. Rewrite using `[Finset.card_filter, Finset.sum_product]`. Use `push_cast`. Simplify using `only [Set.indicator_apply, Pi.one_apply]`. Rewrite using `[hbool]`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : ((s ×ˢ T).filter (fun p : Λ × G => x ∈ p.1 • (p.2 • U))).card ≤ hfin.toFinset.card` using `by set P := (s ×ˢ T).filter (fun p : Λ × G => x ∈ p.1 • (p.2 • U)) with hPdef`. Establish `memP : ∀ p : Λ × G, p ∈ P → p.2 ∈ T ∧ x ∈ p.1 • (p.2 • U)`. Introduce `p hp`. Rewrite `hp` using `[hPdef, Finset.mem_filter, Finset.mem_product]`. Conclude with `⟨hp.1.2, hp.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `P.eq_empty_or_nonempty with hP | ⟨p₀, h₀⟩` into its components or cases. Rewrite using `[hP]`. Conclude with `Nat.zero_le _`. Take `⟨ht₀, hx₀⟩` from `memP p₀ h₀`. Rewrite `hx₀` using `[mem_smul_smul_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.card_le_card_of_injOn (fun p : Λ × G => (p₀.2⁻¹ * (p₀.1 : G)⁻¹) * ((p.1 : G) * p.2)) ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Apply the tactic sequence `have hp' : p ∈ P := by first | exact Finset.mem_coe.1 hp | exact hp`. Take `⟨ht, hx⟩` from `memP p hp'`. Rewrite `hx` using `[mem_smul_smul_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ ∈ (hfin.toFinset : Set G)`. Rewrite using `[Set.Finite.coe_toFinset]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Set.mem_mul.2 ⟨_, hx₀, (p.2⁻¹ * ((p.1 : G)⁻¹ * x))⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_inv, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hx`. Use `group`. Conclude with `Γ.mul_mem (Γ.mul_mem (Γ.inv_mem (hTΓ _ ht₀)) (Γ.inv_mem (hΛΓ p₀.1.2))) (Γ.mul_mem (hΛΓ p.1.2) (hTΓ _ ht))`. Introduce `p hp q hq hpq`. Apply the tactic sequence `have hp' : p ∈ P := by first | exact Finset.mem_coe.1 hp | exact hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `have hq' : q ∈ P := by first | exact Finset.mem_coe.1 hq | exact hq`. Establish `hpT` using `(memP p hp').1`. Establish `hqT` using `(memP q hq').1`. Establish `h1 : (p.1 : G) * p.2 = (q.1 : G) * q.2` using `mul_left_cancel hpq`. Establish `e : q.2 * p.2⁻¹ = (q.1 : G)⁻¹ * p.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_inv_eq_iff_eq_mul, mul_assoc, h1, ← mul_assoc, inv_mul_cancel, one_mul]`. Establish `htt : p.2 = q.2` using `hTdist _ hpT _ hqT (e ▸ Λ.mul_mem (Λ.inv_mem q.1.2) p.1.2)`. Establish `hg : (p.1 : G) = q.1`. Rewrite `h1` using `[htt]`. Conclude with `mul_right_cancel h1`.
-
-Conclude with `Prod.ext (Subtype.ext hg) htt`. Conclude with `hcard` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_finset_sum']`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[lintegral_tsum]`. Conclude with `fun γ => ((measurable_one.indicator (hmeasA γ t))).aemeasurable`. Introduce `t _`. Conclude with `(Measurable.ennreal_tsum fun γ => measurable_one.indicator (hmeasA γ t)).aemeasurable`. Use `_ ≤ ∫⁻ _x, (hfin.toFinset.card : ℝ≥0∞) ∂ν := lintegral_mono hpt`.
-
-Use `_ = (hfin.toFinset.card : ℝ≥0∞) * μ (S ∩ D) := by`. Rewrite using `[lintegral_const, hν, Measure.restrict_apply_univ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem packing_count : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (Γ Λ : Subgroup G) [Countable Λ] (μ : Measure G) (D U : Set G), Λ ≤ Γ → (∀ K : Set G, IsCompact K → (K ∩ Γ).Finite) → μ.IsHaarMeasure → IsFundamentalDomain Λ D μ → IsCompact U → ∃ k : ℕ, ∀ (T : Finset G) (S : Set G), (∀ t ∈ T, t ∈ Γ) → (∀ t ∈ T, ∀ t' ∈ T, t' * t⁻¹ ∈ Λ → t = t') → MeasurableSet S → (∀ γ ∈ Λ, ∀ x ∈ S, γ * x ∈ S) → (∀ t ∈ T, ∀ u ∈ U, t * u ∈ S) → T.card * μ U ≤ k * μ (S ∩ D) := by
   intro G _ _ _ _ _ _ _ _ Γ Λ _ μ D U hΛΓ hdisc hHaar hD hU

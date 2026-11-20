@@ -13,7 +13,7 @@ open GlobalTheory.Mem.R3.LiftBrg
 namespace GlobalTheory.Mem.R3.LiftBrg.EtaInvLat
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hB k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mat_mul_mem {R : Type} [CommRing R] (I : Subring R) {m : Type} [Fintype m]
     {A B : Matrix m m R} (hA : ∀ i j, A i j ∈ I) (hB : ∀ i j, B i j ∈ I) :
@@ -22,7 +22,7 @@ theorem mat_mul_mem {R : Type} [CommRing R] (I : Subring R) {m : Type} [Fintype 
   exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hB k j)
 
 /- English proof (translation)
-Introduce `i` and use `by simp only [Matrix.mulVec, dotProduct] exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hy k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulVec_mem {R : Type} [CommRing R] (I : Subring R) {m : Type} [Fintype m]
     {A : Matrix m m R} {y : m → R} (hA : ∀ i j, A i j ∈ I) (hy : ∀ j, y j ∈ I) :
@@ -31,9 +31,9 @@ theorem mulVec_mem {R : Type} [CommRing R] (I : Subring R) {m : Type} [Fintype m
   exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hy k)
 
 /- English proof (translation)
-Establish `h : s * ((C * N * Ci) *ᵥ y) a = ((C * (s • N) * Ci) *ᵥ y) a`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mulVec]`. Simplify using `[Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h]`. Use `mulVec_mem I (mat_mul_mem I (mat_mul_mem I hC (fun i j => ?_)) hCi) hy a` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hN i j` using `[Matrix.smul_apply, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_mulVec_mem {R : Type} [CommRing R] (I : Subring R) {m : Type} [Fintype m]
     {C N Ci : Matrix m m R} (hC : ∀ i j, C i j ∈ I) (hCi : ∀ i j, Ci i j ∈ I) (s : R)
@@ -53,41 +53,33 @@ namespace GlobalTheory.Mem.R3.LiftBrg.EtaInvLat
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D V n _ h v Pb Ut d e C α hI hV hL hC hα hg`. Substitute `h` using the available equality. Rewrite `hg` using `[GlobalTheory.Mem.R3.LiftBrg.StdFrame.castGL_rfl]`. Establish `hee : e * e = e` using `hI.1.1`. Establish `hεI : swapAE D (finPart D e) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `(GlobalTheory.IdemSupport.mem_intAE_iff _).1 (GlobalTheory.SplitPlace.idem_mem hee)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiA : ∀ x : 𝓞 D.host.E, Formalism.L2.Col.iA D.host.F D.host.E (algebraMap (𝓞 D.host.E) D.host.E x) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun x => Formalism.L2.Col.iA_mem x`. Establish `hπ0 : algebraMap (𝓞 D.host.E) D.host.E Ut.π ≠ 0`. Rewrite using `[← map_zero (algebraMap (𝓞 D.host.E) D.host.E)]`. Conclude with `(IsFractionRing.injective (𝓞 D.host.E) D.host.E).ne Ut.hπ0`. Establish `hsπ0 : star (algebraMap (𝓞 D.host.E) D.host.E Ut.π) ≠ 0` using `star_ne_zero.mpr hπ0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπinv : swapAE D (finPart D e) * Formalism.L2.Col.iA D.host.F D.host.E (algebraMap (𝓞 D.host.E) D.host.E Ut.π)⁻¹ ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Establish `h1` using `not_not.mp ((hI.2 Ut.π Ut.hπ0).not.mp Ut.hπP)`. Establish `h2` using `(GlobalTheory.IdemSupport.mem_intAE_iff _).1 h1`. Rewrite `h2` using `[map_mul, map_mul]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstar : star (algebraMap (𝓞 D.host.E) D.host.E Ut.π) = algebraMap (𝓞 D.host.E) D.host.E (Formalism.L2.Col.cO D.host.E Ut.π)` using `rfl`. Establish `hCC` using `(Formalism.L2.Col.rll_mem_St_iff _ C).1 hC`. Take `⟨η, hη⟩ : ∃ η : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D), η = ((Formalism.L2.Col.mhlEta D.sp.cm V.rank v Ut.hπ0 d : Formalism.L2.Col.UAd D.sp.cm V.rank) : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))` from `⟨_, rfl⟩`. Rewrite `hg` using `[← hη]`. Establish `hprη : ∀ i j, Formalism.UG.prV v ((Units.val η) i j) = Formalism.UG.prV v (Formalism.L2.Col.iA D.host.F D.host.E (if i = j then Formalism.L2.Col.mhlDiag V.rank Ut.π d i else 0))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Use `congrArg (fun g : GL (Fin V.rank) (D.host.E ⊗[D.host.F] HeightOneSpectrum.adicCompletion D.host.F v) => (Units.val g) i j) (Formalism.L2.Col.rll_put_self (F := D.host.F) (E := D.host.E) V.rank v ((Formalism.UG.bc (Formalism.UG.prV v)) ((Formalism.UG.bc (Formalism.L2.Col.iA D.host …` as an intermediate fact. Rewrite using `[hη]`. Conclude with `this`. Establish `hV' : ∀ a b : Formalism.IndefR.Lev.EAf D, Formalism.UG.prV v a = Formalism.UG.prV v b → swapAE D (finPart D e) * a = swapAE D (finPart D e) * b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b hab`. Establish `h0` using `hV (a - b) (by`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `hab)`. Rewrite `h0` using `[mul_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_eq_zero.mp h0`. Establish `hεη : ∀ i j, swapAE D (finPart D e) * (Units.val η) i j = swapAE D (finPart D e) * Formalism.L2.Col.iA D.host.F D.host.E (if i = j then Formalism.L2.Col.mhlDiag V.rank Ut.π d i else 0)` using `fun i j => hV' _ _ (hprη i j)`. Establish `hεηi : ∀ i j, swapAE D (finPart D e) * (Units.val η⁻¹) i j = swapAE D (finPart D e) * Formalism.L2.Col.iA D.host.F D.host.E (if i = j then (Formalism.L2.Col.mhlDiag V.rank Ut.π d i)⁻¹ else 0)` using `fun i j => hV' _ _ (by rw [hη]; exact Formalism.L2.Col.mhl_prV_eta_inv _ _ _ _ _ _)`. Establish `hN1 : ∀ i j, swapAE D (finPart D e) * (Units.val η⁻¹) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hεηi]`. Use `split_ifs with hij`. Simplify using `only [Formalism.L2.Col.mhlDiag] split_ifs`. Rewrite using `[Formalism.L2.Col.mhlA, _root_.mul_inv_rev, inv_inv, map_mul, mul_left_comm]`. Conclude with `Subring.mul_mem _ (hstar ▸ hiA _) hπinv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_one, map_one, mul_one]`. Conclude with `hεI`. Rewrite using `[map_zero, mul_zero]`. Conclude with `Subring.zero_mem _`. Establish `hN2 : ∀ i j, (swapAE D (finPart D e) * Formalism.L2.Col.iA D.host.F D.host.E (star (algebraMap (𝓞 D.host.E) D.host.E Ut.π))) * (Units.val η) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[mul_right_comm, hεη]`. Use `split_ifs with hij`. Simplify using `only [Formalism.L2.Col.mhlDiag] split_ifs`. Rewrite using `[Formalism.L2.Col.mhlA, mul_assoc, ← map_mul, mul_assoc, inv_mul_cancel₀ hsπ0, mul_one]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.mul_mem _ hεI (hiA _)`. Rewrite using `[map_one, mul_one]`. Conclude with `Subring.mul_mem _ hεI (hstar ▸ hiA _)`. Rewrite using `[map_zero, mul_zero, zero_mul]`. Conclude with `Subring.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT : ∀ (β : GA D V) (w : Fin V.rank → GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) (a : Fin V.rank), swapAE D ((finMat D.sp.cm.sig V.gram β *ᵥ w) a) = ((Units.val (Formalism.UG.bc (swapAE D) (finHom V β))) *ᵥ (fun b => swapAE D (w b))) a`. Introduce `β w a`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression. Establish `hgi : Formalism.UG.bc (swapAE D) (finHom V α⁻¹) = C * η⁻¹ * C⁻¹`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_inv, map_inv, hg]`. Use `group`. Establish `hinv : finMat D.sp.cm.sig V.gram α⁻¹ * finMat D.sp.cm.sig V.gram α = 1` using `by show Units.val (finHom V α⁻¹) * Units.val (finHom V α) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Use `⟨fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy`, the goal using `[hL]`. Introduce `a`. Use `show swapAE D (finPart D e * _) ∈ _`. Rewrite using `[map_mul, hT, hgi, Units.val_mul, Units.val_mul]`. Conclude with `conj_mulVec_mem _ hCC.1 hCC.2 _ hN1 hy a`.
-
-Use `⟨fun a => finPart D e * (finMat D.sp.cm.sig V.gram α *ᵥ (fun b => finPart D (incA D ((Formalism.L2.Col.cO D.host.E Ut.π : 𝓞 D.host.E) : D.host.E)) * y b)) a, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[hL]`. Introduce `a`. Use `show swapAE D (finPart D e * _) ∈ _`. Rewrite using `[map_mul, hT, hg, Units.val_mul, Units.val_mul]`.
-
-Establish `hw : (fun b => swapAE D (finPart D (incA D ((Formalism.L2.Col.cO D.host.E Ut.π : 𝓞 D.host.E) : D.host.E)) * y b)) = (Formalism.L2.Col.iA D.host.F D.host.E (star (algebraMap (𝓞 D.host.E) D.host.E Ut.π))) • (fun b => swapAE D (y b))`. Use function extensionality and compare the values at `b`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Rewrite using `[hw, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, ← mul_assoc]`.
-
-Conclude with `conj_mulVec_mem _ hCC.1 hCC.2 _ hN2 hy a`. Establish `hz : (fun a => finPart D e * (finMat D.sp.cm.sig V.gram α *ᵥ (fun b => finPart D (incA D ((Formalism.L2.Col.cO D.host.E Ut.π : 𝓞 D.host.E) : D.host.E)) * y b)) a) = finPart D e • (finMat D.sp.cm.sig V.gram α *ᵥ (fun b => finPart D (incA D ((Formalism.L2.Col.cO D.host.E Ut.π : 𝓞 D …` using `rfl`. Rewrite using `[hz, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
-
-Rewrite using `[← mul_assoc (finPart D e) (finPart D e), ← map_mul, hee]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_inv_lat : ∀ {D : D7} (V : HSp D) (n : ℕ) [NeZero n] (h : n = V.rank) (v : HeightOneSpectrum (𝓞 D.host.F)) (Pb : Formalism.L2.DIV.Pl D.host.E) (Ut : Formalism.L2.Col.MhlUnif Pb) (d : ℕ) (e : Formalism.L2.Theta.AE D) (C : GL (Fin n) (Formalism.IndefR.Lev.EAf D)) (α : GA D V), Formalism.L2.NTheta.IsIdemAt e (Formalism.L2.Col.conjPrime₂ Pb) → (∀ z : Formalism.IndefR.Lev.EAf D, Formalism.UG.prV v z = 0 → swapAE D (finPart D e) * z = 0) → (∀ y : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E, y ∈ Formalism.L2.NTheta.LamHat V ↔ ∀ j, swapAE D (y j) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) → C ∈ Formalism.L2.DIV.St 1 → α ∈ GfC V → castGL h.symm (Formalism.UG.bc (swapAE D) (finHom V α)) = C * ((Formalism.L2.Col.mhlEta D.sp.cm n v Ut.hπ0 d : Formalism.L2.Col.UAd D.sp.cm n) : GL (Fin n) (Formalism.IndefR.Lev.EAf D)) * C⁻¹ →
     (∀ y ∈ Formalism.L2.NTheta.LamHat V, (fun a => finPart D e * (finMat D.sp.cm.sig V.gram α⁻¹).mulVec y a) ∈ Formalism.L2.NTheta.LamHat V) ∧

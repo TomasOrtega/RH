@@ -8,7 +8,7 @@ open MvPolynomial
 namespace GlobalTheory.CompactHowe
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.mapDomain]`. Use `Finsupp.sum_congr fun p _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem weight_fst_eq_mapDomain {ι κ : Type} (k : ι × κ →₀ ℕ) :
     Finsupp.weight (fun p : ι × κ => (Finsupp.single p.1 1 : ι →₀ ℕ)) k = Finsupp.mapDomain Prod.fst k := by
@@ -17,7 +17,7 @@ theorem weight_fst_eq_mapDomain {ι κ : Type} (k : ι × κ →₀ ℕ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[substF_X]`. Use `IsWeightedHomogeneous.sum _ _ _ fun k _ => IsWeightedHomogeneous.sum _ _ _ fun l _ => ?_` and prove the remaining obligations. Establish `h1` using `isWeightedHomogeneous_X ℂ (fun p : ι × Fin N × Fin n => (Finsupp.single p.1 1 : ι →₀ ℕ)) (p.1, k, l)`. Establish `h2` using `(isWeightedHomogeneous_C (fun p : ι × Fin N × Fin n => (Finsupp.single p.1 1 : ι →₀ ℕ)) (h p.1 k p.2.1 * g p.1 l p.2.2)).mul h1`. Rewrite `h2` using `[zero_add]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem substF_X_isWeightedHomogeneous {ι : Type} {N n : ℕ} (h : ι → Matrix (Fin N) (Fin N) ℂ)
     (g : ι → Matrix (Fin n) (Fin n) ℂ) (p : ι × Fin N × Fin n) :
@@ -31,9 +31,9 @@ theorem substF_X_isWeightedHomogeneous {ι : Type} {N n : ℕ} (h : ι → Matri
   rwa [zero_add] at h2
 
 /- English proof (translation)
-Establish `key : IsWeightedHomogeneous (fun p : ι × Fin N × Fin n => (Finsupp.single p.1 1 : ι →₀ ℕ)) (substF h g (MvPolynomial.monomial k 1)) (Finsupp.mapDomain Prod.fst k)`. Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod, map_prod, ← weight_fst_eq_mapDomain, Finsupp.weight_apply, Finsupp.sum]`. Use `IsWeightedHomogeneous.prod _ _ _ fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `(substF_X_isWeightedHomogeneous h g p).pow (k p)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← weight_fst_eq_mapDomain]`. Conclude with `key hk`.
+A detailed English derivation is pending.
 -/
 theorem mapDomain_fst_eq_of_coeff_substF_ne_zero {ι : Type} {N n : ℕ} (h : ι → Matrix (Fin N) (Fin N) ℂ)
     (g : ι → Matrix (Fin n) (Fin n) ℂ) (k k' : ι × Fin N × Fin n →₀ ℕ)

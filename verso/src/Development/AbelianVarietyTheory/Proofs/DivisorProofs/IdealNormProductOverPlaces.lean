@@ -17,17 +17,15 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.RegroupAbsNorm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ I hI`. Use `set f : HeightOneSpectrum (𝓞 E) → ℝ := fun w => (Ideal.absNorm w.asIdeal : ℝ) ^ FractionalIdeal.count E w I with hf`. Establish `hS : (Function.mulSupport f).Finite`. Use `(Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors I)).subset fun u hu h0 => hu ?_` and prove the remaining obligations. Simplify using `only [hf, h0, zpow_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set S := hS.toFinset`. Establish `key` using `GlobalTheory.AdeleCharConductor.finprod_absNorm_zpow_count (F := E) hI`. Rewrite `key` using `[finprod_eq_prod_of_mulSupport_subset f (s := S) (by simp [S])]`. Rewrite using `[← key]`. Establish `hmem : ∀ v (w : HeightOneSpectrum (𝓞 E)), w ∈ Formalism.L2.Host.aboveF (L` using `E) F v ↔ w.under (𝓞 F) = v := by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v w`. Simplify using `[Formalism.L2.Host.aboveF]`. Establish `hinner : ∀ v, ∏ w ∈ Formalism.L2.Host.aboveF (L` using `E) F v, f w = ∏ w ∈ S with w.under (𝓞 F) = v, f w := by`. Introduce `v`. Use `symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.prod_subset (fun w hw => ?_) (fun w hw hw' => ?_)` and prove the remaining obligations. Rewrite `hw` using `[Finset.mem_filter]`. Conclude with `(hmem v w).2 hw.2`. Establish `: w ∉ S` using `fun h => hw' (Finset.mem_filter.2 ⟨h, (hmem v w).1 hw⟩)`. Simplify `this` using `[S]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := S.image (fun w => w.under (𝓞 F)))]`. Rewrite using `[Finset.prod_congr rfl (fun v _ => hinner v)]`. Conclude with `Finset.prod_fiberwise_of_maps_to (fun w hw => Finset.mem_image_of_mem _ hw) f`. Introduce `v hv`. Rewrite `hv` using `[Function.mem_mulSupport, hinner v]`.
-
-Take `⟨w, hw, hw1⟩` from `Finset.exists_ne_one_of_prod_ne_one hv`. Rewrite `hw` using `[Finset.mem_filter]`. Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨w, hw.1, hw.2⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_aboveF_absNorm_zpow_count : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (I : FractionalIdeal (𝓞 E)⁰ E), I ≠ 0 →

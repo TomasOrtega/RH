@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory.ThK
 
 /- English proof (translation)
-Establish `hcc : (starRingEnd ℂ c * c).re = ‖c‖ ^ 2`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Apply the tactic sequence `first | (simp [Complex.mul_re]; done) | (simp [Complex.mul_re]; ring)`. Establish `h1 : (starRingEnd ℂ c * w).re = ‖c‖ ^ 2 + (starRingEnd ℂ c * (w - c)).re`. Rewrite using `[mul_sub, Complex.sub_re, hcc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : |(starRingEnd ℂ c * (w - c)).re| ≤ ‖c‖ * ‖w - c‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖c‖ * ‖w - c‖ ≤ ‖c‖ * (‖c‖ / 2)` using `mul_le_mul_of_nonneg_left h.le hc.le`. Rewrite using `[h1]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[neg_abs_le (starRingEnd ℂ c * (w - c)).re]`.
+A detailed English derivation is pending.
 -/
 theorem re_conj_mul_pos_of_near {c w : ℂ} (hc : 0 < ‖c‖) (h : ‖w - c‖ < ‖c‖ / 2) : 0 < (starRingEnd ℂ c * w).re := by
   have hcc : (starRingEnd ℂ c * c).re = ‖c‖ ^ 2 := by
@@ -37,23 +37,17 @@ theorem re_conj_mul_pos_of_near {c w : ℂ} (hc : 0 < ‖c‖) (h : ‖w - c‖ 
   nlinarith [neg_abs_le (starRingEnd ℂ c * (w - c)).re]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hei hev hpure K hK μK μ hμK hμ l hl hinv T hTf`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨eh⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : SecondCountableTopology (AE F E) := eh.secondCountableTopology`. Use `haveI : SecondCountableTopology (Matrix (Fin (b + 2)) (Fin (b + 2)) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin (b + 2) → Fin (b + 2) → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin (b + 2)) (Fin (b + 2)) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (Matrix (Fin (b + 2)) (Fin (b + 2)) (AE F E))ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`. Use `haveI := hμK.1`. Use `haveI hfin : IsFiniteMeasure μK := ⟨by rw [hμK.2]; exact ENNReal.one_lt_top⟩`. Use `haveI : SFinite μK := @MeasureTheory.instSFiniteOfSigmaFinite _ _ μK (@MeasureTheory.IsFiniteMeasure.toSigmaFinite _ _ μK hfin)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set z := (b + 2 - a') / 2`. Take `⟨f₀, hc⟩` from `GlobalTheory.T.config_A_theta_integral_compare hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hei hev hpure K hK μK μ hμK hμ l hl hinv`. Use `set c := l (coneInfInt B G.M om ei (shiftA H H') X.ν z f₀ 1 1) with hcdef`. Establish `hG : Continuous fun p : KAt K (evI F) × idelesAt E (evI F) => l (coneInfInt B G.M om ei (shiftA H H') X.ν z f₀ p.1.1 p.2.1)` using `l.continuous.comp (GlobalTheory.T.config_A_theta_integral_unfold hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hei hev hpure K hK μK μ hμK hμ l hl hinv f₀)`. Use `set O : Set (KAt K (evI F) × idelesAt E (evI F)) := {p | ‖l (coneInfInt B G.M om ei (shiftA H H') X.ν z f₀ p.1.1 p.2.1) - c‖ < ‖c‖ / 2} with hOdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hO : IsOpen O` using `isOpen_lt (continuous_norm.comp (hG.sub continuous_const)) continuous_const`. Establish `hc0 : 0 < ‖c‖` using `norm_pos_iff.2 hc`. Establish `hSig : ∀ (k : KAt K (evI F)) (t : idelesAt E (evI F)), mat k.1⁻¹ *ᵥ ((t.1 : AE F E) • incV F H.x) = incV F H.x → (k, t) ∈ O` using `fun k t h => by show ‖_ - c‖ < ‖c‖ / 2`. Rewrite using `[GlobalTheory.T.config_A_theta_integral_fold hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hei hev hpure K hK μK μ hμK hμ l hl hinv f₀ k t h, ← hcdef, sub_self, norm_zero]`. Conclude with `half_pos hc0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨f, Ψ, C, hΨ, hΨ0, hΨ1, hCc, hCO, hΨC, hf⟩` from `GlobalTheory.T.config_A_theta_integral_equal hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hei hev hpure K hK μK μ hμK hμ l hl hinv f₀ O hO hSig`. Use `⟨f, ?_⟩` and prove the remaining obligations. Establish `hcont : Continuous fun p : KAt K (evI F) × idelesAt E (evI F) => coneInfInt B G.M om ei (shiftA H H') X.ν z f p.1.1 p.2.1`. Establish `e1 : (fun p : KAt K (evI F) × idelesAt E (evI F) => coneInfInt B G.M om ei (shiftA H H') X.ν z f p.1.1 p.2.1) = fun p => (Ψ p : ℂ) • coneInfInt B G.M om ei (shiftA H H') X.ν z f₀ p.1.1 p.2.1` using `funext hf`. Rewrite using `[e1]`.
-
-Conclude with `(Complex.continuous_ofReal.comp hΨ).smul (GlobalTheory.T.config_A_theta_integral_unfold hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hei hev hpure K hK μK μ hμK hμ l hl hinv f₀)`. Establish `hzero : ∀ p ∉ C, coneInfInt B G.M om ei (shiftA H H') X.ν z f p.1.1 p.2.1 = 0` using `fun p hp => by`. Rewrite using `[hf p, hΨC p hp, Complex.ofReal_zero, zero_smul]`. Establish `hlT : l (T f) = ∫ k, ∫ t, l (coneInfInt B G.M om ei (shiftA H H') X.ν z f k.1 t.1) ∂μ ∂μK` using `GlobalTheory.T.schwartz_valued_double_integral μK μ (fun k t => coneInfInt B G.M om ei (shiftA H H') X.ν z f k.1 t.1) hcont C hCc hzero (T f) (fun y => by rw [hTf]; rfl) l`. Rewrite using `[hlT]`.
-
-Use `GlobalTheory.T.continuous_kernel_integral_prod μK μ (fun k t => l (coneInfInt B G.M om ei (shiftA H H') X.ν z f k.1 t.1)) (l.continuous.comp hcont) C hCc (fun p hp => by simp only [hzero p hp, map_zero]) c (fun k t => ?_) 1 1 ?_` and prove the remaining obligations. Rewrite using `[hf (k, t), map_smul, smul_eq_mul, mul_left_comm, Complex.re_ofReal_mul]`. Distinguish the cases in `h0 : Ψ (k, t) = 0`. Simplify using `[h0]`. Establish `hm : (k, t) ∈ O` using `hCO (by_contra fun h => h0 (hΨC _ h))`.
-
-Conclude with `mul_nonneg (hΨ0 _) (re_conj_mul_pos_of_near hc0 hm).le`. Rewrite using `[hf (1, 1), map_smul, smul_eq_mul, mul_left_comm, Complex.re_ofReal_mul]`. Establish `hm : ((1 : KAt K (evI F)), (1 : idelesAt E (evI F))) ∈ O` using `hSig 1 1 (by simp [mat])`. Conclude with `mul_pos hΨ1 (re_conj_mul_pos_of_near hc0 hm)`.
+A detailed English derivation is pending.
 -/
 theorem coneInf_bump_ne_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))

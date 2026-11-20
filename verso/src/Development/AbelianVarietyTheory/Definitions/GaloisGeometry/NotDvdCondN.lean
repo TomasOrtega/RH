@@ -195,9 +195,9 @@ def InertUnr (D : D7) (p : ℕ) : Prop :=
   p ∉ D.host.small ∧ p ≠ D.host.q ∧ p ≠ D.host.d ∧ jacobiSym (-(D.host.d : ℤ)) p ≠ 1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `h1 (Nat.mem_primeFactors.2 ⟨Nat.prime_two, (dvd_pow_self 2 (Nat.succ_ne_zero _)).trans D.host.tower_dvd, D.host.QS_pos.ne'⟩)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun h => h2.2.2 ?_, h2⟩` and prove the remaining obligations. Establish `h'` using `Nat.mem_primeFactors.1 h`. Conclude with `D.host.QS_split p h'.1 h1 h'.2.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inertUnr_iff (D : D7) (p : ℕ) : InertUnr D p ↔
     Ne p 2 ∧ p ≠ D.host.q ∧ p ≠ D.host.d ∧ jacobiSym (-(D.host.d : ℤ)) p ≠ 1 := by
@@ -213,14 +213,12 @@ theorem inertUnr_iff (D : D7) (p : ℕ) : InertUnr D p ↔
     exact D.host.QS_split p h'.1 h1 h'.2.1
 
 /- English proof (translation)
-The claim follows from `((inertUnr_iff D p).1 h).1`.
+A detailed English derivation is pending.
 -/
 theorem InertUnr.ne_two {D : D7} {p : ℕ} (h : InertUnr D p) : p ≠ 2 := ((inertUnr_iff D p).1 h).1
 
 /- English proof (translation)
-Introduce `hd`. Break down `(Nat.Prime.dvd_mul hp).1 hd with h1 | h1` into its components or cases. Break down `(Nat.Prime.dvd_mul hp).1 h1 with h2 | h2` into its components or cases. Conclude with `h.1 (Nat.mem_primeFactors.2 ⟨hp, h2, D.host.QS_pos.ne'⟩)`. Conclude with `h.2.1 ((Nat.prime_dvd_prime_iff_eq hp D.host.hyp.1).1 h2)`.
-
-Conclude with `h.2.2.1 ((Nat.prime_dvd_prime_iff_eq hp D.host.hyp.2.1).1 h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem InertUnr.not_dvd_condN {D : D7} {p : ℕ} (h : InertUnr D p) (hp : p.Prime) : ¬ p ∣ D.host.condN := by
   intro hd
@@ -234,7 +232,7 @@ def IsRowB {D : D7} (L : SizeData₂ D) (p : ℕ) : Prop :=
   (p : ℝ) < LevelStarExponents.lA L ∧ 4 * D.host.Lw < orderOf (D.R.hH (DV.frobG D p).2)
 
 /- English proof (translation)
-The claim follows from `h.2.trans_le (Nat.le_of_dvd (orderOf_pos _) (orderOf_map_dvd _ _))`.
+A detailed English derivation is pending.
 -/
 theorem IsRowB.lt_orderOf {D : D7} {L : SizeData₂ D} {p : ℕ} (h : IsRowB L p) :
     4 * D.host.Lw < orderOf (DV.frobG D p).2 :=

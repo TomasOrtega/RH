@@ -6,19 +6,17 @@ open Formalism.NG (KO)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O _ _ G _ _ _ ε Θ M _ _ _ _ _ N hmono hopen hcov hfg n`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Unfold `mapH2 at hz`. Rewrite `hz` using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨c, hc, hcf⟩` from `(separated_dvr_second_cohomology_mem _ _).1 hz`. Establish `hK : IsCompact (Set.range c)` using `isCompact_range hc`. Take `⟨i, hi⟩` from `hK.elim_directed_cover (fun k => (N k : Set M)) hopen (fun x _ => Set.mem_iUnion.2 (hcov x)) (hmono.directed_le)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set m := max n i with hm`. Establish `hnm : N n ≤ N m` using `hmono (le_max_left n i)`. Establish `him : ∀ g, c g ∈ N m` using `fun g => hmono (le_max_right n i) (hi ⟨g, rfl⟩)`. Establish `hincl : Continuous (Submodule.inclusion hnm)` using `continuous_inclusion hnm`. Establish `hzero : mapH2 (twist ε (N n)) (twist ε (N m)) (Submodule.inclusion hnm) hincl (twist_map ε (Submodule.inclusion hnm)) (Submodule.Quotient.mk f) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `mapH2`. Rewrite using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨fun g => ⟨c g, him g⟩, hc.subtype_mk him, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e` using `congrFun hcf p`. Simplify using `[d1, twist] at e ⊢`. Rewrite using `[e]`. Both sides reduce to the same expression. Establish `hnat` using `Θ.nat (N n) (N m) (hfg n) (hfg m) (Submodule.inclusion hnm) hincl (Submodule.Quotient.mk f)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hnat` using `[hzero, map_zero]`. Establish `h0 : Θ.θ (N n) (hfg n) (Submodule.Quotient.mk f) = 0`. Use `hnat.symm` as an intermediate fact. Rewrite `this` using `[← (Submodule.inclusion hnm).map_zero]`. Conclude with `Submodule.inclusion_injective hnm this`.
-
-Conclude with `(LinearEquiv.map_eq_zero_iff _).1 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_H2_subtype_injective_of_union : ∀ {O : Type} [CommRing O] [TopologicalSpace O] {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G]
     {ε : G →* Oˣ} (Θ : NatInv ε (fun M _ _ _ => IsFGTop O M))

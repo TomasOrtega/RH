@@ -5,15 +5,15 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Rewrite `hf` using `[RingHom.mem_ker]`. Take `⟨s, rfl⟩` from `ha`. Establish `hc : ∀ n, PowerSeries.coeff n f ∈ Ideal.span (s : Set R)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `n`. Use `congrArg (PowerSeries.coeff n) hf` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_map, map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this`. Establish `hc' : ∀ n, ∃ c : R → R, ∑ x ∈ s, c x * x = PowerSeries.coeff n f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Take `⟨c, -, hc⟩` from `Submodule.mem_span_finset.1 (hc n)`. Conclude with `⟨c, by simpa [smul_eq_mul] using hc⟩`. Use `choose c hc' using hc'`. Establish `: f = ∑ x ∈ s, PowerSeries.mk (fun n => c n x) * PowerSeries.C x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `n`. Rewrite using `[map_sum, ← hc' n]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_mul_C, PowerSeries.coeff_mk]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.sum_mem _ fun x hx => Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Conclude with `Ideal.mem_map_of_mem _ (Ideal.subset_span hx)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, PowerSeries.map_C, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_map_power_series_quotient (R : Type) [CommRing R] (a : Ideal R) (ha : a.FG) :
     RingHom.ker (PowerSeries.map (Ideal.Quotient.mk a)) = a.map (PowerSeries.C : R →+* PowerSeries R) := by
@@ -45,13 +45,13 @@ private theorem ker_map_power_series_quotient (R : Type) [CommRing R] (a : Ideal
     rw [Ideal.mem_comap, RingHom.mem_ker, PowerSeries.map_C, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero]
 
 /- English proof (translation)
-Introduce `R _ a ha`. Establish `hk` using `ker_map_power_series_quotient R a ha`. Use `⟨hk, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g choose c hc using fun n => Ideal.Quotient.mk_surjective (I := a) (PowerSeries.coeff n g)`. Use `⟨PowerSeries.mk c, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_map, PowerSeries.coeff_mk, hc]`. Introduce `hp`. Rewrite using `[← hk]`. Conclude with `RingHom.ker_isPrime _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hk]`. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, PowerSeries.map_C, ← Ideal.Quotient.eq_zero_iff_mem]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `PowerSeries.C_injective (by rw [h, map_zero])`. Introduce `h`. Rewrite using `[h, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.powerSeries_ker_map :
     ∀ (R : Type) [CommRing R] (a : Ideal R), a.FG →

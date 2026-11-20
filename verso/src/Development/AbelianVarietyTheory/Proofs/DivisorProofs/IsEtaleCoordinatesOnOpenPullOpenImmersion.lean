@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.LogPair
 
 /- English proof (translation)
-Introduce `hU hW ht`. Establish `hφ : (e.appLE U W h).hom.Etale` using `e.etale_appLE hU hW h`. Establish `hc : (e.appLE U W h).hom.comp (cstOn f U) = cstOn (e ≫ f) W`. Establish `e₁ : f.appLE ⊤ U le_top ≫ e.appLE U W h = (e ≫ f).appLE ⊤ W le_top` using `Scheme.Hom.appLE_comp_appLE e f ⊤ U W le_top h`. Establish `e₂ : ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ f.appLE ⊤ U le_top) ≫ e.appLE U W h = (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (e ≫ f).appLE ⊤ W le_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, e₁]`. Conclude with `congrArg CommRingCat.Hom.hom e₂`. Unfold `IsEtCoord`. Rewrite using `[← hc, ← MvPolynomial.comp_eval₂Hom]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ ht hφ`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEtCoord_openImmersion (R : Type) [CommRing R] (X Y : Scheme.{0}) (f : X ⟶ Sp R) (e : Y ⟶ X)
     [IsOpenImmersion e] (U : X.Opens) (W : Y.Opens) (h : W ≤ e ⁻¹ᵁ U) (d : ℕ) (t : Fin d → Γ(X, U)) :

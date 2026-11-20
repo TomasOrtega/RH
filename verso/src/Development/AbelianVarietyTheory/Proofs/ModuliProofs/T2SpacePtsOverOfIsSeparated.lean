@@ -17,11 +17,11 @@ namespace GlobalTheory.UnifPoint
 open Topology Filter
 
 /- English proof (translation)
-Rewrite using `[t2_iff_isClosed_diagonal]`. Set `h` to `Points.PtsOver.prodHomeomorph (IsPullback.of_hasPullback p p) s`. Establish `hd : pullback.diagonal p ≫ pullback.fst p p ≫ p = p` using `by simp`. Establish `hc` using `(h.isClosedEmbedding.comp (Points.PtsOver.isClosedEmbedding_map (pullback.diagonal p) hd s)).isClosed_range`. Use `hc using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `key : ∀ x, h (Points.PtsOver.map (pullback.diagonal p) hd s x) = (x, x)` using `fun x => Prod.ext (Subtype.ext (by simp [h])) (Subtype.ext (by simp [h]))`. Use extensionality with `⟨a, b⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hab`. Take `rfl : a = b` from `hab`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, key a⟩`. Introduce and unpack `⟨x, hx⟩`. Rewrite `hx` using `[Function.comp_apply, key]`. Rewrite using `[← hx]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem t2Space_ptsOver_of_isSeparated {X S : Scheme.{0}} (p : X ⟶ S) [IsSeparated p] (s : Sp ℂ ⟶ S) :
     T2Space (Points.PtsOver p s) := by
@@ -44,15 +44,13 @@ theorem t2Space_ptsOver_of_isSeparated {X S : Scheme.{0}} (p : X ⟶ S) [IsSepar
     rfl
 
 /- English proof (translation)
-Establish `heq : ∀ z w, e z = e w ↔ z - w ∈ Λ` using `fun z w => by`. Rewrite using `[← hk, ← mul_left_inj (e w) (b := e (z - w)), ← he, sub_add_cancel, _root_.one_mul]`. Establish `: CompactSpace (W ⧸ Λ)`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← (Submodule.mkQ_surjective Λ).range_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsZLattice.isCompact_range_of_periodic Λ _ Λ.isOpenQuotientMap_mkQ.continuous fun z w hw => ?_` and prove the remaining obligations. Rewrite using `[map_add, Submodule.mkQ_apply _ w, (Submodule.Quotient.mk_eq_zero Λ).2 hw, add_zero]`. Set `ē : W ⧸ Λ → T` to `Quotient.lift (j ∘ e) fun a b hab => congrArg j ((heq a b).2 ((Submodule.quotientRel_def Λ).1 hab))`. Establish `hē : ∀ w, ē (Λ.mkQ w) = j (e w)` using `fun _ => rfl`. Establish `hemb : IsClosedEmbedding ē`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hc.quotient_lift _).isClosedEmbedding fun a b hab => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Λ.mkQ_surjective a`. Take `⟨b, rfl⟩` from `Λ.mkQ_surjective b`. Conclude with `(Submodule.Quotient.eq Λ).2 ((heq a b).1 (hj hab))`. Use `choose σ hσ using hs`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `φ : V →+ W ⧸ Λ` to `AddMonoidHom.mk' (fun z => Λ.mkQ (σ (e₀ z))) fun a b => by`. Rewrite using `[← map_add]`. Conclude with `(Submodule.Quotient.eq Λ).2 ((heq _ _).1 (by rw [he, hσ, hσ, hσ, he₀]))`. Establish `hφ : Continuous φ` using `hemb.isEmbedding.continuous_iff.2 (hc₀.congr fun z => by show j (e₀ z) = j (e (σ (e₀ z)))`. Rewrite using `[hσ])`.
-
-Take `⟨L, hL, -⟩` from `existsUnique_realLinear_lift (ex := φ) (isDiscrete_ker_mkQ Λ) (Λ.isOpenMap_mkQ.nhds_le 0) hφ.continuousAt`. Conclude with `⟨L, fun z => ((heq _ _).2 ((Submodule.Quotient.eq Λ).1 (hL z))).trans (hσ _)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_realLinear_lift {V W Q T : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup W]
     [NormedSpace ℝ W] [FiniteDimensional ℝ W] [Group Q] [TopologicalSpace T] [T2Space T] (j : Q → T)
@@ -95,14 +93,14 @@ def IsExp {g : ℕ} (e : (Fin g → ℂ) → (Over.mk y ⟶ G)) : Prop :=
       ∃! w, IsDerivAt0 (fun z => (e z).left) w v.left)
 
 /- English proof (translation)
-The claim follows from `Points.continuous_of_differentiableOn fun U f => by simpa using h U f`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_isHolTo {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}}
     {a : V → (Sp ℂ ⟶ X)} (h : IsHolTo Set.univ a) : Continuous a :=
   Points.continuous_of_differentiableOn fun U f => by simpa using h U f
 
 /- English proof (translation)
-The claim follows from `(h U f).2.differentiableAt ((h U f).1.mem_nhds ⟨trivial, hz⟩)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_of_isHolTo {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}}
     {a : V → (Sp ℂ ⟶ X)} (h : IsHolTo Set.univ a) (U : X.Opens) (f : Γ(X, U)) {z : V} (hz : ⊤ ≤ a z ⁻¹ᵁ U) :
@@ -110,7 +108,7 @@ theorem differentiableAt_of_isHolTo {V : Type} [NormedAddCommGroup V] [NormedSpa
   (h U f).2.differentiableAt ((h U f).1.mem_nhds ⟨trivial, hz⟩)
 
 /- English proof (translation)
-Take `⟨v, hv, -⟩` from `he.2.2.2.1 w`. Use `(he.2.2.2.2 v hv.1).unique hv ⟨hv.1, fun U hU f => (hv.2 U hU f).trans (h U f ?_)⟩` and prove the remaining obligations. Establish `h1 : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (e 0).left` using `hv.1`. Rewrite using `[← h1]`. Conclude with `Points.le_preimage_comp _ _ hU (Points.le_preimage_top _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsExp.eq_of_fderiv {g : ℕ} {e : (Fin g → ℂ) → (Over.mk y ⟶ G)} (he : IsExp e) {w w' : Fin g → ℂ}
     (h : ∀ (U : G.left.Opens) (f : Γ(G.left, U)), ⊤ ≤ (e 0).left ⁻¹ᵁ U →
@@ -122,7 +120,7 @@ theorem IsExp.eq_of_fderiv {g : ℕ} {e : (Fin g → ℂ) → (Over.mk y ⟶ G)}
   exact Points.le_preimage_comp _ _ hU (Points.le_preimage_top _)
 
 /- English proof (translation)
-Use `he 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_zero_of_add {V Q : Type*} [AddGroup V] [Group Q] {e : V → Q} (he : ∀ z w, e (z + w) = e z * e w) :
     e 0 = 1 := by
@@ -131,22 +129,22 @@ theorem map_zero_of_add {V Q : Type*} [AddGroup V] [Group Q] {e : V → Q} (he :
   exact mul_eq_left.1 this.symm
 
 /- English proof (translation)
-Rewrite using `[← mul_left_inj (e w) (b := e (z - w)), ← he, sub_add_cancel, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_iff_sub_of_add {V Q : Type*} [AddGroup V] [Group Q] {e : V → Q} (he : ∀ z w, e (z + w) = e z * e w)
     (z w : V) : e z = e w ↔ e (z - w) = 1 := by
   rw [← mul_left_inj (e w) (b := e (z - w)), ← he, sub_add_cancel, _root_.one_mul]
 
 /- English proof (translation)
-Use `t2Space_ptsOver_of_isSeparated G.hom y` as an intermediate fact. Take `⟨L, hL⟩` from `exists_realLinear_lift (T := Points.PtsOver G.hom y) (fun x : Over.mk y ⟶ G => ⟨x.left, Over.w x⟩) (fun a b hab => Over.OverMorphism.ext (congrArg Subtype.val hab)) e e₀ he.1 ha he.2.1 Λ hk ((continuous_of_isHolTo he.2.2.1).subtype_mk _) ((continuous_of_isHolTo hh).subtype_mk _)`. Establish `hsm : ∀ (c : ℂ) z, L (c • z) = c • L z` using `fun c z => he.eq_of_fderiv fun U f hU => by`. Establish `h0 : (e₀ 0).left = (e 0).left` using `by rw [map_zero_of_add ha, map_zero_of_add he.1]`. Establish `d` using `(differentiableAt_of_isHolTo he.2.2.1 U f hU).hasFDerivAt.restrictScalars ℝ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d₀` using `(differentiableAt_of_isHolTo hh U f (z := 0) (by simpa only [h0] using hU)).hasFDerivAt.restrictScalars ℝ`. Rewrite `d` using `[← L.map_zero]`. Establish `d₁` using `d.comp 0 L.hasFDerivAt`. Rewrite `d₁` using `[L.map_zero]`. Establish `e₁ : (fun b => valAt' (e b).left U f) ∘ L = fun b => valAt' (e₀ b).left U f`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `b`. Simplify using `only [Function.comp_apply, hL]`. Rewrite `d₁` using `[e₁]`. Establish `k` using `fun x => DFunLike.congr_fun (d₁.unique d₀) x`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars'] at k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[k, map_smul, map_smul, k]`. Establish `hi : Function.Injective L` using `realLinear_injective_of_countable_ker L.toLinearMap (hc.mono fun x (hx : L x = 0) => by show e₀ x = 1`. Rewrite using `[← hL, hx, map_zero_of_add he.1])`. Establish `hsu : Function.Surjective L` using `realLinear_surjective_of_mod_countable L.toLinearMap (Γ := Λ) (Set.countable_coe_iff.1 (inferInstanceAs (Countable Λ))) fun w => by`. Take `⟨x, hx⟩` from `hs (e w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, (hk _).1 ((eq_iff_sub_of_add he.1 _ _).1 (hx.symm.trans (hL x).symm))⟩`. Conclude with `⟨LinearEquiv.ofBijective ⟨⟨L, L.map_add⟩, hsm⟩ ⟨hi, hsu⟩, hL⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem IsExp.exists_linearEquiv [IsSeparated G.hom] {g g₀ : ℕ} {e : (Fin g → ℂ) → (Over.mk y ⟶ G)} (he : IsExp e)
     (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ] [IsZLattice ℝ Λ] (hk : ∀ z, e z = 1 ↔ z ∈ Λ)

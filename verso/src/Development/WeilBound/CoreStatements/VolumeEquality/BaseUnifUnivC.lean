@@ -31,14 +31,14 @@ section Tz
 variable {I : Type} [Fintype I]
 
 /- English proof (translation)
-Simplify using `only [tz, star_add, mulVec_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem tz_add (Z : Matrix I I ℂ) (z w : I → ℂ) : tz Z (z + w) = tz Z z + tz Z w := by
   simp only [tz, star_add, mulVec_add]
   abel
 
 /- English proof (translation)
-Establish `h : star (Complex.I • z) = (-Complex.I) • star z`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[tz, h, mulVec_smul, smul_add]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules.
 -/
@@ -62,23 +62,23 @@ def tzR (Z : Matrix I I ℂ) : (I → ℂ) →ₗ[ℝ] (I → ℂ) where
     rw [mulVec_smul]
 
 /- English proof (translation)
-Establish `h2 : ∀ z : I → ℂ, d * z + Z *ᵥ star (d * z) = M z + M (Z *ᵥ star z)`. Introduce `z`. Establish `e : d * (Complex.I • z) = Complex.I • (d * z)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `h (Complex.I • z)` as an intermediate fact. Rewrite `this` using `[e, tz_I, tz_I, map_smul, map_add]`. Conclude with `smul_right_injective _ Complex.I_ne_zero this`. Establish `h1 : ∀ z : I → ℂ, d * z - Z *ᵥ star (d * z) = M z - M (Z *ᵥ star z)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Use `h z` as an intermediate fact. Rewrite `this` using `[tz, tz, map_sub]`. Then use the resulting hypothesis. Establish `h3 : ∀ z : I → ℂ, d * z = M z`. Introduce `z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Establish `a1` using `congrFun (h1 z) a`. Establish `a2` using `congrFun (h2 z) a`. Simplify using `only [Pi.sub_apply, Pi.add_apply] at a1 a2`. Take the linear combination `(a1 + a2) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h4 : ∀ z : I → ℂ, Z *ᵥ star (d * z) = d * (Z *ᵥ star z)`. Introduce `z`. Rewrite using `[h3 (Z *ᵥ star z)]`. Use function extensionality and compare the values at `a`. Establish `a1` using `congrFun (h1 z) a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `congrFun (h2 z) a`. Simplify using `only [Pi.sub_apply, Pi.add_apply] at a1 a2`. Take the linear combination `(a2 - a1) / 2`. Use `congrFun (h4 (Pi.single k 1)) i` as an intermediate fact. Establish `s1 : star (d * (Pi.single k 1 : I → ℂ)) = Pi.single k (star (d k))`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Distinguish the cases in `hak : a = k`. Substitute `hak` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hak]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `s2 : star (Pi.single k 1 : I → ℂ) = Pi.single k 1`. Use function extensionality and compare the values at `a`. Distinguish the cases in `hak : a = k`. Substitute `hak` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hak]`. Rewrite `this` using `[s1, s2]`. Simplify using `only [Pi.mul_apply, mulVec_single, MulOpposite.op_mul] at this`. Simplify `this.symm` using `[mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tz_support [DecidableEq I] (Z : Matrix I I ℂ) (d : I → ℂ) (M : (I → ℂ) →ₗ[ℂ] (I → ℂ))
     (h : ∀ z, tz Z (d * z) = M (tz Z z)) (i k : I) : d i * Z i k = Z i k * star (d k) := by
@@ -128,19 +128,19 @@ theorem tz_support [DecidableEq I] (Z : Matrix I I ℂ) (d : I → ℂ) (M : (I 
   simpa [mul_comm] using this.symm
 
 /- English proof (translation)
-Establish `hall : ∀ z, A (tz Z z) = A' (tz Z' z)`. Establish `hf : (A.toLinearMap.restrictScalars ℝ) ∘ₗ tzR Z = (A'.toLinearMap.restrictScalars ℝ) ∘ₗ tzR Z'` using `LinearMap.ext_on hS fun z hz => h z hz`. Conclude with `fun z => LinearMap.congr_fun hf z`. Establish `h2 : ∀ z : I → ℂ, A (z + Z *ᵥ star z) = A' (z + Z' *ᵥ star z)`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hall (Complex.I • z)` as an intermediate fact. Rewrite `this` using `[tz_I, tz_I, map_smul, map_smul]`. Conclude with `smul_right_injective _ Complex.I_ne_zero this`. Establish `h3 : ∀ z : I → ℂ, A z = A' z`. Introduce `z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Establish `a1` using `congrFun (hall z) a`. Establish `a2` using `congrFun (h2 z) a`. Simplify using `only [tz, map_sub, map_add, Pi.sub_apply, Pi.add_apply] at a1 a2`. Take the linear combination `(a1 + a2) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h4 : ∀ z : I → ℂ, Z *ᵥ star z = Z' *ᵥ star z`. Introduce `z`. Apply `A.injective` to reduce the goal to its premises. Use `h2 z` as an intermediate fact. Rewrite `this` using `[map_add, map_add, h3 z]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[h3 (Z' *ᵥ star z)]`. Conclude with `add_left_cancel this`. Use extensionality with `i k`. Use `congrFun (h4 (Pi.single k 1)) i` as an intermediate fact. Establish `s2 : star (Pi.single k 1 : I → ℂ) = Pi.single k 1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `a`. Distinguish the cases in `hak : a = k`. Substitute `hak` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hak]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[s2]`. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem tz_unique [DecidableEq I] (S : Set (I → ℂ)) (hS : Submodule.span ℝ S = ⊤) (A A' : (I → ℂ) ≃ₗ[ℂ] (I → ℂ))
     (Z Z' : Matrix I I ℂ) (h : ∀ z ∈ S, A (tz Z z) = A' (tz Z' z)) : Z = Z' := by
@@ -185,7 +185,7 @@ section Big
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {j j' n g : ℕ}
 
 /- English proof (translation)
-Unfold `bigZe bigZ`. Rewrite using `[transpose_submatrix, blockDiagonal_transpose]`. Use `congr 2`. Use function extensionality and compare the values at `τ`. Rewrite using `[fromBlocks_transpose]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -199,14 +199,14 @@ theorem bigZe_symm (e : Ix Ψ j j' ≃ Fin g) (q : Ψ × Fin j × Fin j' ≃ Fin
   simp
 
 /- English proof (translation)
-Simplify using `[bigZ, blockDiagonal_apply_eq, ballMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bigZ_entry (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ) (τ : Ψ) (a : Fin j) (b : Fin j') :
     bigZ q t (Sum.inr a, τ) (Sum.inl b, τ) = t (q (τ, a, b)) := by
   simp [bigZ, blockDiagonal_apply_eq, ballMat]
 
 /- English proof (translation)
-Introduce `t t' h`. Use function extensionality and compare the values at `k`. Take `⟨⟨τ, a, b⟩, rfl⟩` from `q.surjective k`. Use `congrFun (congrFun h (e (Sum.inr a, τ))) (e (Sum.inl b, τ))` as an intermediate fact. Simplify `this` using `[bigZe, bigZ_entry]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bigZe_injective (e : Ix Ψ j j' ≃ Fin g) (q : Ψ × Fin j × Fin j' ≃ Fin n) :
     Function.Injective (bigZe e q) := by
@@ -217,9 +217,9 @@ theorem bigZe_injective (e : Ix Ψ j j' ≃ Fin g) (q : Ψ × Fin j × Fin j' �
   simpa [bigZe, bigZ_entry] using this
 
 /- English proof (translation)
-Take `⟨a, τ⟩` from `i`. Take `⟨b, τ'⟩` from `k`. Distinguish the cases in `h : τ = τ'`. Substitute `h` using the available equality. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[bigZ, blockDiagonal_apply_eq, ballMat, differentiable_apply]`. Simplify using `[bigZ, blockDiagonal_apply_ne _ _ _ h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bigZ_hol (q : Ψ × Fin j × Fin j' ≃ Fin n) (i k : Ix Ψ j j') :
     Differentiable ℂ (fun t => bigZ q t i k) := by
@@ -232,7 +232,7 @@ theorem bigZ_hol (q : Ψ × Fin j × Fin j' ≃ Fin n) (i k : Ix Ψ j j') :
   · simp [bigZ, blockDiagonal_apply_ne _ _ _ h]
 
 /- English proof (translation)
-Use `differentiable_pi.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [tz, Pi.sub_apply, mulVec, dotProduct, bigZe, submatrix_apply]`. Use `(differentiable_const _).sub (Differentiable.fun_sum fun k _ => ?_)` and prove the remaining obligations. Conclude with `(bigZ_hol q _ _).mul_const _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bigZe_hol (e : Ix Ψ j j' ≃ Fin g) (q : Ψ × Fin j × Fin j' ≃ Fin n) (z : Fin g → ℂ) :
     Differentiable ℂ (fun t => tz (bigZe e q t) z) := by
@@ -244,11 +244,11 @@ theorem bigZe_hol (e : Ix Ψ j j' ≃ Fin g) (q : Ψ × Fin j × Fin j' ≃ Fin 
 end Big
 
 /- English proof (translation)
-Establish `hinv : ((1 - Zᴴ * Z)⁻¹).PosDef` using `hp.inv`. Set `P : Λ →+ (Fin g → ℂ)` to `{ toFun := fun x => tz Z (R₁.P x) map_zero' := by simp [tz] map_add' := fun x y => by rw [map_add, tz_add] }`. Use `⟨{ free := R₁.free, fin := R₁.fin, rank := R₁.rank, form := R₁.form, alt := R₁.alt, unimod := R₁.unimod, adj := R₁.adj, P := P, Hm := (1 - Zᴴ * Z)⁻¹, herm := hinv.isHermitian, pos := ?_, im := ?_, B := R₁.B, act := ?_ }, rfl, rfl, rfl, fun _ => rfl⟩` and prove the remaining obligations. Introduce `z hz`. Establish `h` using `(Matrix.posDef_iff_dotProduct_mulVec.1 hinv).2 (x := star z) (by simpa using hz)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[star_star, Complex.lt_def]`. Conclude with `h.1`. Introduce `x y show (tz Z (R₁.P x) ⬝ᵥ (1 - Zᴴ * Z)⁻¹ *ᵥ star (tz Z (R₁.P y))).im = _`. Rewrite using `[GlobalTheory.T.siegel_transform_symplectic_imaginary Z hs hp, ← R₁.im, hH, one_mulVec]`. Introduce `a x show tz Z (R₁.P (a • x)) = R₁.B a (tz Z (R₁.P x))`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[R₁.act, hc]`.
+A detailed English derivation is pending.
 -/
 theorem member {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
     (R₁ : RiemLat E g Λ) (Z : Matrix (Fin g) (Fin g) ℂ) (hH : R₁.Hm = 1) (hs : Zᵀ = Z) (hp : (1 - Zᴴ * Z).PosDef)
@@ -274,29 +274,29 @@ theorem member {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ 
     rw [R₁.act, hc]
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ R₀ σ q hσ hsig`. Take `⟨e, c, hc, hco⟩` from `Frame.exists_ortho_frame R₀ σ hσ hsig`. Take `⟨R₁, hform, hHm, hB⟩` from `GlobalTheory.T.exists_normalized_riemann_lattice R₀ σ e c hc hco`. Establish `hmem : ∀ t, ∃ R : RiemLat E g Λ, R.form = R₀.form ∧ (t ∈ ballDom q → R.B = R₁.B ∧ R.Hm = (1 - (bigZe e q t)ᴴ * bigZe e q t)⁻¹ ∧ ∀ x, R.P x = tz (bigZe e q t) (R₁.P x))`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `ht : t ∈ ballDom q`. Take `⟨R, h1, h2, h3, h4⟩` from `member R₁ (bigZe e q t) hHm (bigZe_symm e q t) ((GlobalTheory.T.ball_domain_iff_pos_def e q t).1 ht) (GlobalTheory.T.siegel_transform_commutes_action σ e q t R₁.B hσ hB)`. Conclude with `⟨R, h1.trans hform, fun _ => ⟨h2, h3, h4⟩⟩`. Conclude with `⟨R₁, hform, fun h => absurd h ht⟩`. Use `choose R hRf hR using hmem`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hfr` using `GlobalTheory.T.span_standard_basis_eigenspace σ e R₁.B hσ hB`. Establish `hli : ∀ {m : ℕ} (f : Fin m → Ix Ψ j j'), Function.Injective f → LinearIndependent ℂ (fun i : Fin m => (Pi.single (e (f i)) 1 : Fin g → ℂ))`. Introduce `m f hf`. Use `(Pi.basisFun ℂ (Fin g)).linearIndependent.comp (fun i => e (f i)) (e.injective.comp hf)` as an intermediate fact. Simplify `this` using `[Function.comp_def, Pi.basisFun_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hl : ∀ τ, LinearIndependent ℂ (fun i : Fin j' => (Pi.single (e (Sum.inl i, τ)) 1 : Fin g → ℂ))` using `fun τ => hli (fun i => (Sum.inl i, τ)) (fun a b h => by simpa using h)`. Establish `hr : ∀ τ, LinearIndependent ℂ (fun i : Fin j => (Pi.single (e (Sum.inr i, τ)) 1 : Fin g → ℂ))` using `fun τ => hli (fun i => (Sum.inr i, τ)) (fun a b h => by simpa using h)`. Use `⟨{ q := q, σ := σ, cm := hσ, form := R₀.form, R := R, form_eq := hRf, hol := ?_, sig := ?_, b := fun τ i _ => Pi.single (e (Sum.inl i, τ)) 1, frames := ?_, logDet_eq := ?_, univ := ?_ }, rfl, rfl, rfl⟩` and prove the remaining obligations. Use `⟨fun t _ t' _ => (hRf t).trans (hRf t').symm, fun x => ?_⟩` and prove the remaining obligations. Conclude with `((bigZe_hol e q (R₁.P x)).differentiableOn).congr fun t ht => (hR t ht).2.2 x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `t ht τ`. Rewrite using `[(hR t ht).1, ← (hfr τ).1, ← (hfr τ).2]`. Conclude with `⟨by rw [finrank_span_eq_card (hl τ)]; simp, by rw [finrank_span_eq_card (hr τ)]; simp⟩`. Use `⟨fun τ i => differentiableOn_const _, fun t ht τ => ⟨hl τ, ?_⟩⟩ show _ = eigSp (R t).B (σ τ)` and prove the remaining obligations. Rewrite using `[(hR t ht).1]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hfr τ).1`. Introduce `t ht`. Conclude with `GlobalTheory.T.log_det_eq_ball_potential e q t (R t) ht (hR t ht).2.1`. Introduce `R' hR' _`. Take `⟨L, hL1, hL2, hL3⟩` from `exists_realExt R₁ R' (hR'.trans hform.symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨A, Z, hZs, hZp, hLZ⟩` from `GlobalTheory.T.siegel_normal_form_of_hermitian L R'.Hm R'.herm R'.pos (by`. Introduce `z w`. Rewrite using `[hL2, hHm, one_mulVec])`. Establish `hsupp : ∀ (a : 𝓞 E) i k, emb σ (e.symm i) a * Z i k = Z i k * star (emb σ (e.symm k) a)`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `tz_support Z (fun k => emb σ (e.symm k) a) (A.symm.toLinearMap ∘ₗ (R'.B a) ∘ₗ A.toLinearMap) fun z => ?_` and prove the remaining obligations. Establish `hz : (fun k => emb σ (e.symm k) a) * z = R₁.B a z`. Use function extensionality and compare the values at `k`. Simplify using `[hB]`. Apply `A.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hz]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Rewrite using `[← hLZ, ← hLZ, hL3]`. Establish `hZ0 : ∀ i k, Z i k ≠ 0 → (e.symm i).2 = (e.symm k).2 ∧ (e.symm i).1.isLeft ≠ (e.symm k).1.isLeft`. Introduce `i k hik`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(GlobalTheory.T.conjugate_embeddings_criterion σ hσ (e.symm i) (e.symm k)).1 fun a => ?_` and prove the remaining obligations. Use `hsupp a i k` as an intermediate fact. Rewrite `this` using `[mul_comm]`. Conclude with `mul_left_cancel₀ hik this`. Take `⟨t, rfl⟩` from `GlobalTheory.T.symmetric_pattern_matrix_mem_range_bigZe e q Z hZs hZ0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Establish `ht : t ∈ ballDom q` using `(GlobalTheory.T.ball_domain_iff_pos_def e q t).2 hZp`. Use `⟨t, ⟨ht, A, fun x => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[(hR t ht).2.2 x, ← hLZ, hL1]`. Both sides reduce to the same expression. Introduce and unpack `t' ⟨ht', h', hh⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hspan` using `(SheetDecomposition.riemBasic E g Λ Ψ R₁).2.1`. Use `bigZe_injective e q (tz_unique _ hspan h' A _ _ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← (hR t' ht').2.2 x, ← hh x, ← hLZ, hL1]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_univFam : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (R₀ : RiemLat E g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) (q : Ψ × Fin j × Fin j' ≃ Fin n), IsCMFam σ → R₀.HasSig σ j j' → ∃ F : UnivFam E Ψ j j' n g Λ, F.q = q ∧ F.σ = σ ∧ F.form = R₀.form := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ R₀ σ q hσ hsig
@@ -374,7 +374,7 @@ theorem exists_univFam : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
 end SheetDecomposition.Univ
 
 /- English proof (translation)
-The claim follows from `SheetDecomposition.Univ.exists_univFam`.
+A detailed English derivation is pending.
 -/
 theorem SheetDecomposition.univExists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (R₀ : RiemLat E g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) (q : Ψ × Fin j × Fin j' ≃ Fin n), IsCMFam σ → R₀.HasSig σ j j' → ∃ F : UnivFam E Ψ j j' n g Λ, F.q = q ∧ F.σ = σ ∧ F.form = R₀.form :=
   SheetDecomposition.Univ.exists_univFam

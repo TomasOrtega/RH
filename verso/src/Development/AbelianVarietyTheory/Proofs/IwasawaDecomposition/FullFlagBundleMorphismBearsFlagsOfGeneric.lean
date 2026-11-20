@@ -8,17 +8,15 @@ open Classical
 namespace GlobalTheory.FlagBundle
 
 /- English proof (translation)
-Introduce `F _ ι _ m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ h₁ h₂ ψ hψ hgen g hg K _ p`. Establish `hgf : g ≫ f₂ = f₁`. Use `h₂.1.comp hg` as an intermediate fact. Rewrite `this` using `[hψ]`. Conclude with `this.unique h₁.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `y : Y₁.X` to `p (IsLocalRing.closedPoint K)`. Set `R` to `Y₁.X.presheaf.stalk y`. Set `v₁ : Sp R ⟶ Y₁.X` to `Y₁.X.fromSpecStalk y`. Establish `hpt : spMap (algebraMap R Y₁.Fn) ≫ v₁ = (ratOf Y₁).pt` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)`. Establish `hinc` using `GlobalTheory.T.fullFlag_common_closedPoint_of_generic F ι m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ h₁ h₂ R Y₁.Fn v₁ (v₁ ≫ g) (by rw [Category.assoc, hgf]) (by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : spMap (algebraMap R Y₁.Fn) ≫ v₁ ≫ f₁ = (ratOf Y₁).pt ≫ f₁`. Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ f₁) hpt`. Establish `e2 : spMap (algebraMap R Y₁.Fn) ≫ v₁ ≫ g = spMap ψ.toRingHom ≫ (ratOf Y₂).pt`. Rewrite using `[← Category.assoc, hpt]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hg`. Rewrite using `[e1, hpt, e2]`. Conclude with `hgen)`. Set `c` to `Scheme.stalkClosedPointTo (R := .of K) p`. Set `σ : IsLocalRing.ResidueField R →+* K` to `IsLocalRing.ResidueField.lift c.hom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hσ : σ.comp (IsLocalRing.residue R) = c.hom` using `IsLocalRing.ResidueField.lift_comp_residue c.hom`. Establish `hp : spMap σ ≫ spMap (IsLocalRing.residue R) ≫ v₁ = p`. Rewrite using `[← Category.assoc, ← spMap_comp, hσ]`. Conclude with `spMap_stalkClosedPointTo p`. Establish `hbc` using `GlobalTheory.T.pointsCarryCommonFlag_spectrumMap_field_ext F ι m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ h₁ h₂ (IsLocalRing.ResidueField R) K σ _ _ _ hinc`.
-
-Rewrite using `[← hp]`. Simplify `hbc` using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coBear_comp_of_isHom : ∀ (F : Type) [Field F] (ι : Type) [Fintype ι] (m : ι → ℕ) (X Y₁ Y₂ : Var F) (Eb : Fr (ratOf X) m 0) (S₁ : Fr (ratOf Y₁) m m) (φ₁ : X.Fn →ₐ[F] Y₁.Fn) (f₁ : Y₁.X ⟶ X.X) (S₂ : Fr (ratOf Y₂) m m) (φ₂ : X.Fn →ₐ[F] Y₂.Fn) (f₂ : Y₂.X ⟶ X.X), Reps Eb S₁ φ₁ f₁ → Reps Eb S₂ φ₂ f₂ → ∀ ψ : Y₂.Fn →ₐ[F] Y₁.Fn, ψ.comp φ₂ = φ₁ → CoBear Eb S₁ φ₁ S₂ φ₂ ((ratOf Y₁).pt ≫ f₁) (ratOf Y₁).pt (spMap ψ.toRingHom ≫ (ratOf Y₂).pt) → ∀ g : Y₁.X ⟶ Y₂.X, (ratOf Y₂).IsHom (ratOf Y₁) ψ g → ∀ (K : Type) [Field K] (p : Sp K ⟶ Y₁.X), CoBear Eb S₁ φ₁ S₂ φ₂ (p ≫ f₁) p (p ≫ g) := by
   intro F _ ι _ m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ h₁ h₂ ψ hψ hgen g hg K _ p

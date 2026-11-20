@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PicGlue
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_val f y U h, Units.coe_map, gm_val _ (f y) U h, ← Scheme.Hom.germ_stalkMap_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gm_eq_map_stalk {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a : Γ(X, U)ˣ) :
     gm f y U a = Units.map (f.stalkMap y).hom.toMonoidHom (gm (𝟙 X) (f y) U a) := by
@@ -21,23 +21,21 @@ theorem gm_eq_map_stalk {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (
   rfl
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Establish `hle : ∀ (a : L.ι) (b : M.ι), W ⊓ (L.U a ⊓ M.U b) ≤ W.ι ''ᵁ ((M.pull W.ι).U (fun _ => b) ⊓ (L.pull W.ι).U (fun _ => a))`. Introduce `a b x hx`. Take `⟨y, rfl⟩ : ∃ y : W.toScheme, W.ι y = x` from `⟨⟨x, hx.1⟩, rfl⟩`. Conclude with `W.ι.apply_mem_image_iff.2 ⟨mem_pull.2 hx.2.2, mem_pull.2 hx.2.1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a b => (res (hle a b) (GlobalTheory.GlueLineBundle.imU W.ι _ (s.s (fun _ => b, fun _ => a))))⁻¹, ?_⟩` and prove the remaining obligations. Introduce `x hx a a' b b' ha ha' hb hb'`. Take `⟨y, rfl⟩ : ∃ y : W.toScheme, W.ι y = x` from `⟨⟨x, hx⟩, rfl⟩`. Establish `E : ∀ (a : L.ι) (b : M.ι), W.ι y ∈ L.U a → W.ι y ∈ M.U b → gm W.ι y (W ⊓ (L.U a ⊓ M.U b)) ((res (hle a b) (GlobalTheory.GlueLineBundle.imU W.ι _ (s.s (fun _ => b, fun _ => a))))⁻¹) = (gm (𝟙 _) y _ (s.s (fun _ => b, fun _ => a)))⁻¹`. Introduce `a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : W.ι y ∈ W ⊓ (L.U a ⊓ M.U b)` using `⟨hx, ha, hb⟩`. Establish `hv : (𝟙 W.toScheme) y ∈ (M.pull W.ι).U (fun _ => b) ⊓ (L.pull W.ι).U (fun _ => a)` using `⟨mem_pull.2 hb, mem_pull.2 ha⟩`. Establish `e` using `GlobalTheory.GlueLineBundle.gm_imU W.ι (𝟙 _) y _ hv (s.s (fun _ => b, fun _ => a))`. Rewrite `e` using `[Category.id_comp]`. Rewrite using `[map_inv, gm_res W.ι y (hle a b) hm, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `EL : ∀ (a a' : L.ι), W.ι y ∈ L.U a → W.ι y ∈ L.U a' → gm W.ι y (L.U a ⊓ L.U a') (L.g a a') = gm (𝟙 _) y _ ((L.pull W.ι).g (fun _ => a) (fun _ => a'))`. Introduce `a a' ha ha'`. Establish `e` using `gm_pull_g L W.ι (𝟙 _) y (fun _ => a) (fun _ => a') (mem_pull.2 ha) (mem_pull.2 ha')`. Rewrite `e` using `[Category.id_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e.symm`. Establish `EM : ∀ (b b' : M.ι), W.ι y ∈ M.U b → W.ι y ∈ M.U b' → gm W.ι y (M.U b ⊓ M.U b') (M.g b b') = gm (𝟙 _) y _ ((M.pull W.ι).g (fun _ => b) (fun _ => b'))`. Introduce `b b' hb hb'`. Establish `e` using `gm_pull_g M W.ι (𝟙 _) y (fun _ => b) (fun _ => b') (mem_pull.2 hb) (mem_pull.2 hb')`. Rewrite `e` using `[Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.symm`. Establish `hp : y ∈ (LB.div (M.pull W.ι) (L.pull W.ι)).U (fun _ => b, fun _ => a)` using `⟨mem_pull.2 hb, mem_pull.2 ha⟩`. Establish `hq : y ∈ (LB.div (M.pull W.ι) (L.pull W.ι)).U (fun _ => b', fun _ => a')` using `⟨mem_pull.2 hb', mem_pull.2 ha'⟩`. Establish `G` using `(isGen_iff_germ s).1 hs y _ _ hp hq`. Rewrite `G` using `[gm_div' (M.pull W.ι) (L.pull W.ι) (𝟙 _) y _ _ hp hq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `alg : ∀ {Gp : Type} [CommGroup Gp] (S Mg large₂ S' : Gp), S = Mg * large₂⁻¹ * S' → S⁻¹ * Mg = large₂ * S'⁻¹`. Introduce `Gp _ S Mg large₂ S' e`. Rewrite using `[e, _root_.mul_inv_rev, _root_.mul_inv_rev, inv_inv, _root_.mul_assoc, _root_.mul_assoc, inv_mul_cancel, _root_.mul_one]`. Conclude with `_root_.mul_comm _ _`. Establish `key : gm W.ι y (W ⊓ (L.U a ⊓ M.U b)) ((res (hle a b) (GlobalTheory.GlueLineBundle.imU W.ι _ (s.s (fun _ => b, fun _ => a))))⁻¹) * gm W.ι y (M.U b ⊓ M.U b') (M.g b b') = gm W.ι y (L.U a ⊓ L.U a') (L.g a a') * gm W.ι y (W ⊓ (L.U a' ⊓ M.U b')) ((res (hle a' b') (GlobalTheory.GlueLin …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[E a b ha hb, E a' b' ha' hb', EL a a' ha ha', EM b b' hb hb']`. Conclude with `alg _ _ _ _ G`. Establish `hinj : Function.Injective (Units.map (W.ι.stalkMap y).hom.toMonoidHom)` using `fun u v e => Units.ext ((ConcreteCategory.bijective_of_isIso (W.ι.stalkMap y)).1 (congrArg Units.val e))`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← gm_eq_map_stalk W.ι y _ (show W.ι y ∈ W ⊓ (L.U a ⊓ M.U b) from ⟨hx, ha, hb⟩), ← gm_eq_map_stalk W.ι y _ (show W.ι y ∈ M.U b ⊓ M.U b' from ⟨hb, hb'⟩), ← gm_eq_map_stalk W.ι y _ (show W.ι y ∈ L.U a ⊓ L.U a' from ⟨ha, ha'⟩), ← gm_eq_map_stalk W.ι y _ (show W.ι y …`.
-
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem isoOn_of_lbIso (X : Scheme.{0}) (W : X.Opens) (L M : LB X) (h : LBIso (L.pull W.ι) (M.pull W.ι)) :
     ∃ w : Cmp W L M, IsoOn W L M w := by

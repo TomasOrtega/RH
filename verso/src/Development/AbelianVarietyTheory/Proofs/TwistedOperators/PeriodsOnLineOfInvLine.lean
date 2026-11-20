@@ -20,9 +20,9 @@ def InvLine (ch : Choice R) : Prop :=
         ∃ l ∈ invFun (omRep P), ∀ Q, defPer t ch.S.toGridChoice M Q d (colFn ch a) (formTop ch t y) = l (e Q)
 
 /- English proof (translation)
-Take `⟨ι, _, _, S, P, hP, e, he⟩` from `h`. Use `haveI : Module.Free ℂ (invFun (omRep P)) := Module.Free.of_divisionRing ℂ _`. Take `⟨L0, -, hL0⟩` from `finrank_eq_one_iff'.1 (hL ι S P hP)`. Use `⟨fun Q => L0.1 (e Q), fun t a hS β hβ M hM τ hτ d hd y => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, hle⟩` from `he t a hS β hβ M hM τ hτ d hd y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hL0 ⟨l, hl⟩`. Use `⟨c, fun Q => ?_⟩` and prove the remaining obligations. Establish `hc' : c • L0.1 = l` using `congrArg Subtype.val hc`. Rewrite using `[hle Q, ← hc']`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem periodsOnLine_of_invLine (hL : OneLine) (ch : Choice R) (h : InvLine ch) : PeriodsOnLine ch := by
   obtain ⟨ι, _, _, S, P, hP, e, he⟩ := h

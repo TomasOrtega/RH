@@ -8,25 +8,25 @@ namespace GlobalTheory
 open QuadraticZeta
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℚ ![(1 : K), r]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Rewrite `hst` using `[Rat.smul_def, Rat.smul_def, mul_one]`. Distinguish the cases in `ht : t = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `ht` using the available equality. Simplify using `at hst`. Conclude with `⟨hst, rfl⟩`. It suffices to derive a contradiction. Establish `htK : (t : K) ≠ 0` using `Rat.cast_ne_zero.mpr ht`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hr' : r = ((-s / t : ℚ) : K)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hst`. Establish `h0 : (((-s / t) ^ 2 + d : ℚ) : K) = 0`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Rat.cast_add, Rat.cast_pow, ← hr', hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h0' : (-s / t) ^ 2 + (d : ℚ) = 0` using `by exact_mod_cast h0`. Establish `hdpos : (0 : ℚ) < d` using `by exact_mod_cast (show 0 < d by omega)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg (-s / t)]`. Set `B` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [h2])`. Establish `hB0 : B 0 = 1` using `by simp [B]`. Establish `hB1 : B 1 = r` using `by simp [B]`. Establish `hdec : ∀ x : K, ∃ a b : ℚ, x = a + b * r`.
+Use the polynomial consequences of the given equalities and inequalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Use `⟨B.repr x 0, B.repr x 1, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← B.sum_repr x]`. Rewrite using `[Fin.sum_univ_two, hB0, hB1, Rat.smul_def, Rat.smul_def, mul_one]`. Use `⟨hdec, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hf : ∀ a b : ℚ, (B.constr ℚ ![(1 : K), -r]) ((a : K) + b * r) = a - b * r`. Introduce `a b`. Establish `e : ((a : K) + b * r) = a • B 0 + b • B 1`. Rewrite using `[hB0, hB1, Rat.smul_def, Rat.smul_def, mul_one]`. Rewrite using `[e, map_add, map_smul, map_smul, Basis.constr_basis, Basis.constr_basis]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Rat.smul_def, sub_eq_add_neg]`. Establish `hone : (B.constr ℚ ![(1 : K), -r]) 1 = 1` using `by simpa using hf 1 0`. Establish `hmul : ∀ x y : K, (B.constr ℚ ![(1 : K), -r]) (x * y) = (B.constr ℚ ![(1 : K), -r]) x * (B.constr ℚ ![(1 : K), -r]) y`. Introduce `x y`. Take `⟨a, b, rfl⟩` from `hdec x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, e, rfl⟩` from `hdec y`. Establish `hxy : ((a : K) + b * r) * (c + e * r) = ((a * c - d * b * e : ℚ) : K) + ((a * e + b * c : ℚ) : K) * r`. Use `push_cast`. Take the linear combination `((b : K) * e) * hr`. Rewrite using `[hxy, hf, hf, hf]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Take the linear combination `(-((b : K) * e)) * hr`. Conclude with `⟨(AlgHom.ofLinearMap (B.constr ℚ ![(1 : K), -r]) hone hmul).toRingHom, by show (B.constr ℚ ![(1 : K), -r]) r = -r; simpa using hf 0 1⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem norm_sq_add_norm_sq_sub_eq_complete_square {K : Type*} [Field K] [NumberField K] {d : ℕ}
     (h2 : finrank ℚ K = 2) (hd : d % 4 = 3) {r : K} (hr : r ^ 2 = -d) :
@@ -84,7 +84,7 @@ private theorem norm_sq_add_norm_sq_sub_eq_complete_square {K : Type*} [Field K]
     by show (B.constr ℚ ![(1 : K), -r]) r = -r; simpa using hf 0 1⟩
 
 /- English proof (translation)
-Establish `hq : IsIntegral ℤ q` using `(isIntegral_algHom_iff (algebraMap ℚ K).toIntAlgHom (algebraMap ℚ K).injective).mp h`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hq`. Conclude with `⟨z, by simpa using hz.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_int_eq_of_isIntegral_rat {K : Type*} [Field K] [CharZero K] (q : ℚ)
     (h : IsIntegral ℤ (q : K)) : ∃ z : ℤ, q = z := by
@@ -94,13 +94,13 @@ private theorem exists_int_eq_of_isIntegral_rat {K : Type*} [Field K] [CharZero 
   exact ⟨z, by simpa using hz.symm⟩
 
 /- English proof (translation)
-Establish `hden : q.den = 1`. Establish `hq` using `Rat.num_div_den q`. Establish `hpos : (q.den : ℚ) ≠ 0` using `by positivity`. Establish `key : (d : ℤ) * q.num ^ 2 = M * q.den ^ 2`. Establish `h' : (d : ℚ) * ((q.num : ℚ) / q.den) ^ 2 = M` using `by rw [hq]; exact h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear denominators, using `at h'` for the nonvanishing conditions. Establish `h'' : (d : ℤ) * q.num ^ 2 = ((q.den ^ 2 : ℕ) : ℤ) * M` using `by exact_mod_cast h'`. Move the coercions through the operations in `at h''`. Take the linear combination `h''`. Establish `key' : d * q.num.natAbs ^ 2 = M.natAbs * q.den ^ 2`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `congrArg Int.natAbs key` as an intermediate fact. Simplify `this` using `[Int.natAbs_mul, Int.natAbs_pow]`. Establish `hdvd : q.den ^ 2 ∣ d * q.num.natAbs ^ 2` using `⟨M.natAbs, by rw [key']; ring⟩`. Establish `hcop : Nat.Coprime (q.den ^ 2) (q.num.natAbs ^ 2)` using `Nat.Coprime.pow 2 2 q.reduced.symm`. Establish `h3 : q.den ^ 2 ∣ d` using `hcop.dvd_of_dvd_mul_right hdvd`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `hsq q.den (by simpa [sq] using h3)`. Simplify using `using hu`. Conclude with `⟨q.num, (Rat.coe_int_num_of_den_eq_one hden).symm⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 private theorem exists_int_eq_of_squarefree_mul_sq_eq_int {d : ℕ} (hsq : Squarefree d) (q : ℚ) (M : ℤ)
     (h : (d : ℚ) * q ^ 2 = M) : ∃ z : ℤ, q = z := by
@@ -124,31 +124,29 @@ private theorem exists_int_eq_of_squarefree_mul_sq_eq_int {d : ℕ} (hsq : Squar
   exact ⟨q.num, (Rat.coe_int_num_of_den_eq_one hden).symm⟩
 
 /- English proof (translation)
-Take `⟨hdec, τ, hτ⟩` from `norm_sq_add_norm_sq_sub_eq_complete_square h2 hd hr`. Take `⟨k, hk⟩ : ∃ k, d = 4 * k + 3` from `⟨d / 4, by omega⟩`. Establish `hw : IsIntegral ℤ ((1 + r) / 2)`. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C ((k : ℤ) + 1), ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr` using `[hk]`. Move the coercions through the operations in `at hr`. Simplify using the standard rewrite rules. Take the linear combination `(1 / 4 : K) * hr`. Use `⟨⟨(1 + r) / 2, hw⟩, ?_, ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show 2 * ((1 + r) / 2) = 1 + r`. Expand and normalize the polynomial expressions, which then agree. Introduce `c`. Take `⟨a, b, hab⟩` from `hdec c`. Establish `hc : IsIntegral ℤ (c : K)` using `c.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : IsIntegral ℤ (τ c)` using `map_isIntegral_int τ hc`. Establish `hτc : τ (c : K) = a - b * r`. Rewrite using `[hab, map_add, map_mul, map_ratCast, map_ratCast, hτ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : IsIntegral ℤ (((2 * a : ℚ)) : K)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hc.add hc'`. Rewrite `h` using `[hτc, hab]`. Establish `e : ((2 * a : ℚ) : K) = ↑a + ↑b * r + (↑a - ↑b * r)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h`. Establish `hprod : IsIntegral ℤ (((a ^ 2 + d * b ^ 2 : ℚ)) : K)`. Establish `h` using `hc.mul hc'`. Rewrite `h` using `[hτc, hab]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e : ((a ^ 2 + d * b ^ 2 : ℚ) : K) = (↑a + ↑b * r) * (↑a - ↑b * r)`. Use `push_cast`. Take the linear combination `((b : K) ^ 2) * hr`. Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations.
 
-Take `⟨A, hA⟩` from `exists_int_eq_of_isIntegral_rat _ hsum`. Take `⟨N, hN⟩` from `exists_int_eq_of_isIntegral_rat _ hprod`. Take `⟨B, hB⟩` from `exists_int_eq_of_squarefree_mul_sq_eq_int hsq (2 * b) (4 * N - A ^ 2) (by`. Use `push_cast`. Rewrite using `[← hN, ← hA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use the proof step `ring)`. Establish `hpar : Even (A - B)`. Establish `h4 : (A : ℚ) ^ 2 + d * (B : ℚ) ^ 2 = 4 * N`. Rewrite using `[← hA, ← hB, ← hN]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4' : A ^ 2 + (d : ℤ) * B ^ 2 = 4 * N` using `by exact_mod_cast h4`. Establish `hdodd : Odd (d : ℤ)` using `⟨2 * k + 1, by rw [hk]; push_cast; ring⟩`. Establish `hnd : ¬ Even (d : ℤ)` using `Int.not_even_iff_odd.mpr hdodd`. Establish `hev : Even (A ^ 2 + (d : ℤ) * B ^ 2)` using `⟨2 * N, by rw [h4']; ring⟩`. Rewrite using `[Int.even_sub]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify `hev` using `[Int.even_add, Int.even_mul, Int.even_pow, hnd]`. Take `⟨m, hm⟩` from `hpar`. Use `⟨m, B, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `hA' : 2 * (a : K) = A` using `by exact_mod_cast congrArg (fun q : ℚ => (q : K)) hA`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hB' : 2 * (b : K) = B` using `by exact_mod_cast congrArg (fun q : ℚ => (q : K)) hB`. Establish `hm' : (A : K) - B = m + m` using `by exact_mod_cast congrArg (fun z : ℤ => (z : K)) hm`. Rewrite using `[hab]`. Use `push_cast`. Use `show (a : K) + b * r = m + B * ((1 + r) / 2)`.
-
-Take the linear combination `(1 / 2 : K) * hA' + (r / 2) * hB' + (1 / 2 : K) * hm'`.
+A detailed English derivation is pending.
 -/
 theorem exists_integer_generator_of_sq_eq_neg {K : Type*} [Field K] [NumberField K] {d : ℕ}
     (h2 : finrank ℚ K = 2) (hsq : Squarefree d) (hd : d % 4 = 3) {r : K} (hr : r ^ 2 = -d) :
@@ -216,7 +214,7 @@ theorem exists_integer_generator_of_sq_eq_neg {K : Type*} [Field K] [NumberField
     linear_combination (1 / 2 : K) * hA' + (r / 2) * hB' + (1 / 2 : K) * hm'
 
 /- English proof (translation)
-Establish `h : (Complex.I * √d) ^ 2 = -(d : ℂ)`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `sq_eq_sq_iff_eq_or_eq_neg.mp (hz.trans h.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eq_I_mul_sqrt_or_of_sq_eq_neg {d : ℕ} {z : ℂ} (hz : z ^ 2 = -d) :
     z = Complex.I * √d ∨ z = -(Complex.I * √d) := by
@@ -227,21 +225,19 @@ theorem eq_I_mul_sqrt_or_of_sq_eq_neg {d : ℕ} {z : ℂ} (hz : z ^ 2 = -d) :
   exact sq_eq_sq_iff_eq_or_eq_neg.mp (hz.trans h.symm)
 
 /- English proof (translation)
-Take `⟨hdec, τ, hτ⟩` from `norm_sq_add_norm_sq_sub_eq_complete_square h2 hd hr`. Take `⟨w, hw2, hgen⟩` from `exists_integer_generator_of_sq_eq_neg h2 hsq hd hr`. Establish `hσr : ∀ σ : K →+* ℂ, σ r = Complex.I * √d ∨ σ r = -(Complex.I * √d)` using `fun σ => eq_I_mul_sqrt_or_of_sq_eq_neg (by rw [← map_pow, hr, map_neg, map_natCast])`. Establish `hconj : ∀ σ : K →+* ℂ, starRingEnd ℂ (σ r) = -σ r`. Introduce `σ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `rcases hσr σ with h | h <;> rw [h] <;> simp [Complex.conj_ofReal]`. Establish `hcomp : ∀ σ : K →+* ℂ, ∀ x : K, σ (τ x) = starRingEnd ℂ (σ x)`. Introduce `σ x`. Take `⟨a, b, rfl⟩` from `hdec x`. Simplify using `only [map_add, map_mul, map_ratCast, hτ, map_neg, hconj]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨w, RingOfIntegers.mapRingHom τ, hw2, ?_, hgen, ?_, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `hw' : (w : K) = (1 + r) / 2` using `by linear_combination hw2 / 2`. Use `show (w : K) + τ (w : K) = 1`. Rewrite using `[hw', map_div₀, map_add, map_one, hτ, map_ofNat]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `σ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `hreal`. Establish `h1` using `RingHom.congr_fun (ComplexEmbedding.isReal_iff.mp hreal) r`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[ComplexEmbedding.conjugate_coe_eq, hconj]`. Establish `h0 : σ r = 0` using `by linear_combination (-1 / 2 : ℂ) * h1`. Establish `hr0 : r = 0` using `by simpa using h0`. Rewrite `hr` using `[hr0]`. Establish `hd0 : (d : K) = 0` using `by linear_combination hr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: d = 0` using `by exact_mod_cast hd0`. Use linear arithmetic over natural numbers and integers. Introduce `c`. Simplify using `using hcomp σ c`. Choose the witnesses or unpack the hypotheses as in `σ₀ : K →+* ℂ := by`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: 0 < Fintype.card (K →+* ℂ)` using `by rw [NumberField.Embeddings.card]; omega`. Conclude with `(Fintype.card_pos_iff.mp this).some`. Break down `hσr σ₀ with h | h` into its components or cases. Conclude with `⟨σ₀, h⟩`. Use `⟨σ₀.comp τ, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[RingHom.comp_apply, hτ, map_neg, h, neg_neg]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringOfIntegers_sqrt_neg_three_mod_four (d : ℕ) (hsq : Squarefree d) (hd : d % 4 = 3)
     (K : Type) [Field K] [NumberField K] (h2 : Module.finrank ℚ K = 2) (r : K)

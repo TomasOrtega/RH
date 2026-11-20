@@ -61,14 +61,14 @@ def IntegralFrames : Prop :=
     (Xo : Moduli Dw l) (c : Coeff l), IntegralFramesAt Xo c
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨y.tan τ, y.eig τ, y.basis τ⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEigenBasisAt_frPt {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S]
     (y : FrPt Xo c S) (τ : E →+* ℂ) : IsEigenBasisAt Xo c y.x τ (y.u τ) :=
   ⟨y.tan τ, y.eig τ, y.basis τ⟩
 
 /- English proof (translation)
-Take `⟨G, t', m₁, m₂, ⟨ub, h1, h2, h3, h4⟩, -⟩` from `h`. Conclude with `⟨G, t', m₁, m₂, fun τ => ⟨ub τ, ⟨h1 τ, h2 τ, h3 τ⟩, h4 τ⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_basis_of_integral {Xo : Moduli Dw l} {c : Coeff l} {T : CDVR} {io : c.F →+* T.Fr}
     (y : letI := io.toAlgebra; FrPt Xo c T.Fr) (h : Integral T io y) :

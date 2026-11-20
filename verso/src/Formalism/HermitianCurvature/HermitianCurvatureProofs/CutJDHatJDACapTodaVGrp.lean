@@ -15,7 +15,7 @@ section loc
 variable {r : ℕ} {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
 
 /- English proof (translation)
-Establish `hev : f₁ =ᶠ[nhds c] f₂` using `by filter_upwards [(Formalism.FourierDecayAlt.P.Qx3.isOpen_OmX r).mem_nhds hc] with c' hc' using h c' hc'`. Simplify using `only [pbOp, wirtBar, if_pos hc, hev.fderiv_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem pbOp_locO (l : Fin r) {f₁ f₂ : (Fin r → ℂ) → X} (h : ∀ c ∈ OmX r, f₁ c = f₂ c) {c : Fin r → ℂ}
     (hc : c ∈ OmX r) : pbOp l f₁ c = pbOp l f₂ c := by
@@ -24,7 +24,7 @@ theorem pbOp_locO (l : Fin r) {f₁ f₂ : (Fin r → ℂ) → X} (h : ∀ c ∈
   simp only [pbOp, wirtBar, if_pos hc, hev.fderiv_eq]
 
 /- English proof (translation)
-Unfold `pbN`. Use `split_ifs with hi`. Conclude with `pbOp_locO _ h hc`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pbN_locO (i : ℕ) {f₁ f₂ : (Fin r → ℂ) → X} (h : ∀ c ∈ OmX r, f₁ c = f₂ c) {c : Fin r → ℂ}
     (hc : c ∈ OmX r) : pbN r i f₁ c = pbN r i f₂ c := by
@@ -34,7 +34,7 @@ theorem pbN_locO (i : ℕ) {f₁ f₂ : (Fin r → ℂ) → X} (h : ∀ c ∈ Om
   · rfl
 
 /- English proof (translation)
-The claim follows from `| 0, f₁, f₂, h, c, hc => ⟨h c hc, rfl⟩ | m + 1, f₁, f₂, h, c, hc => by have hin : ∀ c' ∈ OmX r, (w - (m : ℂ)) • f₁ c' - pbN r (r - m - 1) f₁ c' = (w - (m : ℂ)) • f₂ c' - pbN r (r - m - 1) f₂ c' := fun c' hc' => by rw [h c' hc', pbN_locO _ h hc'] have ih1 := iteratedOperator_eqOn_ …`.
+A detailed English derivation is pending.
 -/
 theorem iteratedOperator_eqOn_of_eqOn (w : ℂ) : ∀ (m : ℕ) (f₁ f₂ : (Fin r → ℂ) → X), (∀ c ∈ OmX r, f₁ c = f₂ c) →
     ∀ c ∈ OmX r, (kvP r w m).1 f₁ c = (kvP r w m).1 f₂ c ∧ (kvP r w m).2 f₁ c = (kvP r w m).2 f₂ c
@@ -54,7 +54,7 @@ theorem iteratedOperator_eqOn_of_eqOn (w : ℂ) : ∀ (m : ℕ) (f₁ f₂ : (Fi
     split_ifs <;> simp [cbOp, cbiOp, (ih2 c hc).2]
 
 /- English proof (translation)
-The claim follows from `(iteratedOperator_eqOn_of_eqOn w m f₁ f₂ h c hc).1`.
+A detailed English derivation is pending.
 -/
 theorem kvC_loc (w : ℂ) (m : ℕ) (f₁ f₂ : (Fin r → ℂ) → X) (h : ∀ c ∈ OmX r, f₁ c = f₂ c) {c : Fin r → ℂ}
     (hc : c ∈ OmX r) : kvC r w m f₁ c = kvC r w m f₂ c := (iteratedOperator_eqOn_of_eqOn w m f₁ f₂ h c hc).1
@@ -65,9 +65,9 @@ Both sides reduce to the same expression.
 theorem kvC_zero (w : ℂ) (f : (Fin r → ℂ) → X) : kvC r w 0 f = f := rfl
 
 /- English proof (translation)
-Use `show (w - ((0 : ℕ) : ℂ)) • f c - pbN r (r - 0 - 1) f c - cbN r (r - 0) (cbiN r (r - 0 - 1) (fun _ => 0)) c = _`. Establish `h1 : r - 0 - 1 = r - 1` using `by omega`. Simplify using `only [Nat.cast_zero, sub_zero, Nat.sub_zero]`. Unfold `pbN cbN`. Rewrite using `[dif_pos (by omega), dif_neg (lt_irrefl r)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem kvC_one (w : ℂ) (f : (Fin r → ℂ) → X) (hr : 1 ≤ r) (c : Fin r → ℂ) :
     kvC r w 1 f c = w • f c - pbOp ⟨r - 1, by omega⟩ f c := by
@@ -95,9 +95,9 @@ abbrev TorV (hD : IsOpen D) (j : ℕ) : Subalgebra ℂ (SA E hD) :=
   Algebra.adjoin ℂ {x | ∃ l : Fin r, l.val < j ∧ x = EA hD (esI k r l) (esI k r l)}
 
 /- English proof (translation)
-Proceed by induction on `hP using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨l, hl, rfl⟩` from `hy`. Establish `h` using `EA_gl (E := E) hD p q (esI k r l) (esI k r l)`. Rewrite `h` using `[if_neg (hq l hl), if_neg (fun e => hp l hl e.symm), sub_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 h`. Consider the case `algebraMap c => exact Algebra.commute_algebraMap_right c _`. Consider the case `add y₁ y₂ _ _ h₁ h₂ => exact h₁.add_right h₂`. Consider the case `mul y₁ y₂ _ _ h₁ h₂ => exact h₁.mul_right h₂`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem comm_TorV (hD : IsOpen D) (j : ℕ) (p q : Fin (2 * r + k + 1))
     (hp : ∀ l : Fin r, l.val < j → p ≠ esI k r l) (hq : ∀ l : Fin r, l.val < j → q ≠ esI k r l) (P : SA E hD)
@@ -113,18 +113,18 @@ theorem comm_TorV (hD : IsOpen D) (j : ℕ) (p q : Fin (2 * r + k + 1))
   | mul y₁ y₂ _ _ h₁ h₂ => exact h₁.mul_right h₂
 
 /- English proof (translation)
-The claim follows from `Algebra.adjoin_mono fun x ⟨l, hl, hx⟩ => ⟨l, lt_of_lt_of_le hl h, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem TorV_mono (hD : IsOpen D) {j j' : ℕ} (h : j ≤ j') : TorV (E := E) hD j ≤ TorV hD j' := Algebra.adjoin_mono fun x ⟨l, hl, hx⟩ => ⟨l, lt_of_lt_of_le hl h, hx⟩
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨l, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem EAs_mem_TorV (hD : IsOpen D) (l : Fin r) {j : ℕ} (h : l.val < j) :
     EA (E := E) hD (esI k r l) (esI k r l) ∈ TorV hD j := Algebra.subset_adjoin ⟨l, h, rfl⟩
 
 /- English proof (translation)
-Introduce `h'`. Establish `h2` using `congrArg Fin.val h'`. Simplify using `only [esI] at h2`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -137,11 +137,9 @@ theorem esI_ne {a b : Fin r} (h : a.val ≠ b.val) : esI k r a ≠ esI k r b := 
   omega
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ Glev k r 0 ∩ D`. Rewrite using `[EA_val, ev_E hD _ _ _ hg]`. Establish `hloc` using `(good_eh (E := E) hD (cI (esI k r a)) (cI (esI k r b))).loc (cut k r 0 D f) f (fun x hx => cut_of_mem f hx) g hg`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [posL_cI] at hloc`. Rewrite using `[posL_cI, posL_cI]`. Use `show EH k r (esI k r a) (esI k r b) (cut k r 0 D f) g = (if a.val = b.val + 1 then (1 : ℂ) else 0) • cut k r 0 D f g`. Rewrite using `[hloc, hRR E k r z' D f hz' hD hf hRf g hg a b hab, cut_of_mem f hg]`. Use `show ((Eh hD (cI (esI k r a)) (cI (esI k r b)) ⟨cut k r 0 D f, cut_mem hD hf⟩ : VS k r 0 D E) : Mx k r → E) g = (if a.val = b.val + 1 then (1 : ℂ) else 0) • cut k r 0 D f g`.
-
-Rewrite using `[(Eh hD (cI (esI k r a)) (cI (esI k r b)) ⟨cut k r 0 D f, cut_mem hD hf⟩).2.2 g hg, show cut k r 0 D f g = 0 from Set.indicator_of_notMem hg f, smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_action_on_truncated_vector (hD : IsOpen D) (z' : Fin (2 * r + k + 1) → ℂ) (hz' : inWb k r z') (hRR : RightRuleEv)
     {f : Mx k r → E} (hf : SmoothLev k r 0 D f) (hRf : RightEq k r z' 0 D f) (a b : Fin r) (hab : b.val < a.val) :
@@ -163,7 +161,7 @@ theorem root_action_on_truncated_vector (hD : IsOpen D) (z' : Fin (2 * r + k + 1
       show cut k r 0 D f g = 0 from Set.indicator_of_notMem hg f, smul_zero]
 
 /- English proof (translation)
-Establish `hγ` using `hcell c hc`. Rewrite using `[La_apply, La_apply]`. Simplify using `only [Tm, Subalgebra.coe_mul, Subalgebra.coe_add, Module.End.mul_apply, LinearMap.add_apply, EA_val, Submodule.coe_add, Pi.add_apply, ite_true, Subalgebra.coe_algebraMap, Module.algebraMap_end_apply, Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[ev_E hD _ _ _ hγ, posL_cI, hTC E k r D _ hD ((x : Module.End ℂ (VS k r 0 D E)) v₀).2.1 c hc g₀ hg₀ hγ.2 l, sub_eq_add_neg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem la_torus (hD : IsOpen D) (hTC : TorusCellv) (v₀ : VS k r 0 D E) (g₀ : Mx k r)
     (hg₀ : g₀ ∈ Glev k r (Fin.last r)) (hcell : ∀ c ∈ OmX r, wCell k r (Fin.last r) c * g₀ ∈ Glev k r 0 ∩ D)
@@ -187,33 +185,31 @@ section claim
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : Set (Mx k r)}
 
 /- English proof (translation)
-Establish `hLv : LeftEq k r z 0 D (v₀ : Mx k r → E)` using `by rw [hv]; exact leftEq_cut z hN hLf`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `hm P hP c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `m with _ | _ | m` into its components or cases. Rewrite using `[MC.qminor_zero, one_mul]`. Both sides reduce to the same expression. Rewrite using `[MC.qminor_one]`. Establish `hx0 : colsVm k r 1 0 = esI k r ⟨r - 1, by omega⟩`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ext`. Simplify using `only [colsVm, esI, Fin.val_zero]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hx0, la_torus hD hTC v₀ g₀ hg₀ hcell ⟨r - 1, by omega⟩ w P c hc, kvC_one w _ hm c]`. Establish `hm2 : m + 2 ≤ r` using `hm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP1 : P ∈ TorV hD (r - (m + 1))` using `TorV_mono hD (by omega) hP`. Establish `hP0 : P ∈ TorV hD (r - m)` using `TorV_mono hD (by omega) hP`. Use `set ρ : ℂ := star (c ⟨r - m - 1, by omega⟩) / star (c ⟨r - m - 2, by omega⟩) with hρ`. Use `set LaP : SA E hD →ₗ[ℂ] E := (La hD v₀ (wCell k r (Fin.last r) c * g₀)).comp (LinearMap.mulRight ℂ P) with hLaP`. Establish `hLaP_apply : ∀ x, LaP x = La hD v₀ (wCell k r (Fin.last r) c * g₀) (x * P)` using `fun x => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnot : ∀ a : Fin r, r - m - 2 ≤ a.val → ∀ l' : Fin r, l'.val < r - (m + 2) → esI k r a ≠ esI k r l'` using `fun a ha l' hl' => esI_ne (by omega)`. Establish `hR0 : ∀ (x : SA E hD) (a : Fin r), r - m - 1 < a.val → LaP (x * EA hD (esI k r a) (esI k r ⟨r - m - 2, by omega⟩)) = 0`. Introduce `x a ha`. Rewrite using `[hLaP_apply, mul_assoc, (comm_TorV hD (r - (m + 2)) _ _ (hnot a (by omega)) (hnot ⟨r - m - 2, by omega⟩ le_rfl) P hP).eq, ← mul_assoc, La_apply, Subalgebra.coe_mul, Module.End.mul_apply]`. Use `conv_lhs => rw [hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[root_action_on_truncated_vector hD z' hz' hRR hf hRf a ⟨r - m - 2, by omega⟩ (by simp only; omega), if_neg (by simp only; omega), zero_smul, map_zero]`. Both sides reduce to the same expression. Establish `hR1 : ∀ x : SA E hD, LaP (x * EA hD (esI k r ⟨r - m - 1, by omega⟩) (esI k r ⟨r - m - 2, by omega⟩)) = LaP x`. Introduce `x`. Rewrite using `[hLaP_apply, hLaP_apply, mul_assoc, (comm_TorV hD (r - (m + 2)) _ _ (hnot ⟨r - m - 1, by omega⟩ (by simp only; omega)) (hnot ⟨r - m - 2, by omega⟩ le_rfl) P hP).eq, ← mul_assoc, La_apply, La_apply, Subalgebra.coe_mul, Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [hv]`. Rewrite using `[root_action_on_truncated_vector hD z' hz' hRR hf hRf ⟨r - m - 1, by omega⟩ ⟨r - m - 2, by omega⟩ (by simp only; omega), if_pos (by simp only; omega), one_smul, ← hv]`. Establish `hL : ∀ (x : SA E hD) (b : Fin r), r - m - 2 < b.val → LaP (EA hD (esI k r ⟨r - m - 2, by omega⟩) (esI k r b) * x) = (if b.val = r - m - 1 then ρ else 0) • LaP x`. Introduce `x b hb`. Rewrite using `[hLaP_apply, hLaP_apply, mul_assoc, La_apply, La_apply, Subalgebra.coe_mul, Module.End.mul_apply, EA_val, ev_E hD _ _ _ (hcell c hc), posL_cI, posL_cI]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hsm` using `(((x * P : SA E hD) : Module.End ℂ (VS k r 0 D E)) v₀).2.1`. Establish `hle` using `leftEq_SA hD z hN (x * P) v₀ hLv`. Rewrite using `[hLR E k r z D _ hz hD hN hsm hle c hc g₀ hg₀ (hcell c hc).2 b ⟨r - m - 2, by omega⟩ (by simp only; omega)]`. Use `congr 1`. Distinguish the cases in `hbm : b.val = r - m - 1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb' : b = ⟨r - m - 1, by omega⟩` using `Fin.ext hbm`. Rewrite using `[if_pos (by simp only; omega), if_pos hbm, hρ, congrArg c hb']`. Rewrite using `[if_neg (by simp only; omega), if_neg hbm]`. Establish `hX` using `hCh (SA E hD) E k r (EA (E := E) hD) LaP ρ (EA_gl (E := E) hD) m hm2 w hR0 hR1 hL`. Use `set T := Tm (EA (E := E) hD) (w - ((m + 1 : ℕ) : ℂ)) (esI k r ⟨r - m - 2, by omega⟩) (esI k r ⟨r - m - 2, by omega⟩) with hT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTmem : T ∈ TorV hD (r - (m + 1))`. Rewrite using `[hT]`. Unfold `Tm`. Rewrite using `[if_pos rfl]`. Conclude with `Subalgebra.add_mem _ (Subalgebra.algebraMap_mem _ _) (EAs_mem_TorV hD ⟨r - m - 2, by omega⟩ (by simp only; omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTP : T * P ∈ TorV hD (r - (m + 1))` using `Subalgebra.mul_mem _ hTmem hP1`. Establish `ih1` using `ih (m + 1) (by omega) (by omega) (T * P) hTP c hc`. Establish `ih0` using `ih m (by omega) (by omega) P hP0 c hc`. Rewrite `hX` using `[hLaP_apply, hLaP_apply, hLaP_apply, mul_assoc]`. Rewrite using `[hX, ih1, ih0, kvC_two]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hloc` using `kvC_loc w (m + 1) (fun c' => La hD v₀ (wCell k r (Fin.last r) c' * g₀) (T * P)) (fun c' => (w - ((m + 1 : ℕ) : ℂ)) • La hD v₀ (wCell k r (Fin.last r) c' * g₀) P - pbN r (r - (m + 1) - 1) (fun c'' => La hD v₀ (wCell k r (Fin.last r) c'' * g₀) P) c') (fun c' hc' => by`. Rewrite using `[hT, la_torus hD hTC v₀ g₀ hg₀ hcell ⟨r - m - 2, by omega⟩ _ P c' hc']`. Unfold `pbN`. Rewrite using `[dif_pos (by omega)]`. Establish `e : (⟨r - (m + 1) - 1, by omega⟩ : Fin r) = ⟨r - m - 2, by omega⟩` using `Fin.ext (by simp only; omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]) hc`. Rewrite using `[hloc]`. Use `congr 1`. Unfold `cbN cbiN`. Rewrite using `[dif_pos (by omega), dif_pos (by omega)]`.
-
-Establish `e1 : (⟨r - (m + 1), by omega⟩ : Fin r) = ⟨r - m - 1, by omega⟩` using `Fin.ext (by simp only; omega)`. Establish `e2 : (⟨r - (m + 1) - 1, by omega⟩ : Fin r) = ⟨r - m - 2, by omega⟩` using `Fin.ext (by simp only; omega)`. Rewrite using `[e1, e2]`. Simplify using `only [cbOp, cbiOp, hρ, div_eq_mul_inv, mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem claimV (hRR : RightRuleEv) (hLR : LeftRuleCellv) (hTC : TorusCellv) (hCh : MirrorChainExpansion)
     (hD : IsOpen D) (v₀ : VS k r 0 D E) (g₀ : Mx k r) (w : ℂ)

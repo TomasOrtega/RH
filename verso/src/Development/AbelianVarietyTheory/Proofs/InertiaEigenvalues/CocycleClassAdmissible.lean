@@ -16,13 +16,11 @@ open ReciprocityTheory.Def (Z1 B1 H1)
 open TensorProduct
 
 /- English proof (translation)
-Introduce `l _ P S M _ _ W X _ _ _ hX hlev z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a₀, h⟩`. Take `⟨a₁, h1⟩` from `hX`. Establish `hle1 : a₁ ≤ max a₀ (max a₁ 1)` using `le_trans (le_max_left _ _) (le_max_right _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha : ∀ x : X, S.Γ.lam ^ (max a₀ (max a₁ 1)) • x = 0`. Introduce `x`. Rewrite using `[← Nat.sub_add_cancel hle1, pow_add, mul_smul, h1, smul_zero]`. Establish `hA` using `h (max a₀ (max a₁ 1)) (le_max_left _ _) ha`. Establish `hone : 1 ≤ max a₀ (max a₁ 1)` using `le_trans (le_max_right _ _) (le_max_right _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hlev _ ha hone]`. Conclude with `(mk_mem_admissibleAt_iff_cocycle ha z).mpr hA`. Introduce `h`. Use `⟨1, fun a ha1 ha => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hlev a ha ha1]`.
-
-Conclude with `(mk_mem_admissibleAt_iff_cocycle ha z).mp h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.admissible_eventually_iff_mem_cls : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P) {M : Type} [AddCommGroup M]
     [Module S.O M] (W : Representation S.O S.G M) (X : Type) [AddCommGroup X] [Module S.O X] [Finite X],

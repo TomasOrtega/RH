@@ -18,7 +18,7 @@ private def nu1 (ι : Qbar l ≃+* ℂ) (e : ℕ) (s : ℂ) (u w : ℤ → ℂ) 
   κ • ∑ i, β i • (nu0 ι e s u w α B c M).comp (LinearMap.funLeft (Qbar l) (Qbar l) fun y => (t i : ZMod (l ^ M)) * y)
 
 /- English proof (translation)
-Simplify using `only [nu1, LinearMap.smul_apply, LinearMap.sum_apply, smul_eq_mul, LinearMap.comp_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem distribution_apply (ι : Qbar l ≃+* ℂ) (e : ℕ) (s : ℂ) (u w : ℤ → ℂ) (α : ℂ) (B : ℕ) (c : ℕ → ℂ) (κ : Qbar l) {n : ℕ}
     (β : Fin n → Qbar l) (t : Fin n → ℕ) (M : ℕ) (g : ZMod (l ^ M) → Qbar l) :
@@ -27,7 +27,7 @@ private theorem distribution_apply (ι : Qbar l ≃+* ℂ) (e : ℕ) (s : ℂ) (
   rfl
 
 /- English proof (translation)
-Establish `h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem q_lt : ‖(l : Qbar l)‖ < 1 := by
   have h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l]) := by simp
@@ -35,12 +35,12 @@ private theorem q_lt : ‖(l : Qbar l)‖ < 1 := by
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`.
+A detailed English derivation is pending.
 -/
 private theorem q_ne : (l : Qbar l) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero
 
 /- English proof (translation)
-Establish `h` using `((tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg (l : Qbar l)) q_lt).mul_const C).eventually (gt_mem_nhds (by simpa using hε : 0 * C < ε))`. Conclude with `Filter.eventually_atTop.1 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem small (C ε : ℝ) (hε : 0 < ε) : ∃ k : ℕ, ∀ r, k ≤ r → ‖(l : Qbar l)‖ ^ r * C < ε := by
   have h := ((tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg (l : Qbar l)) q_lt).mul_const C).eventually
@@ -49,7 +49,7 @@ private theorem small (C ε : ℝ) (hε : 0 < ε) : ∃ k : ℕ, ∀ r, k ≤ r 
 
 open Polynomial in
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite `h` using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_degree_eq_and_monic ((lifts_iff_coeff_lifts (f := algebraMap ℤ_[l] ℚ_[l]) (minpoly ℚ_[l] x)).mpr fun n => ⟨⟨_, h n⟩, rfl⟩) (minpoly.monic hi)`. Conclude with `⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem int_of_norm (x : Qbar l) (h : ‖x‖ ≤ 1) : IsIntegral ℤ_[l] x := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -60,7 +60,7 @@ private theorem int_of_norm (x : Qbar l) (h : ‖x‖ ≤ 1) : IsIntegral ℤ_[l
   exact ⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `UpperTheory.V.abelian₂.dvr_intClosure l K`. Set `f : K →ₐ[ℤ_[l]] Qbar l` to `K.val.restrictScalars ℤ_[l]`. Establish `hf : Function.Injective f` using `Subtype.val_injective`. Set `e` to `(integralClosure ℤ_[l] K).equivMapOfInjective f hf`. Conclude with `⟨⟨(integralClosure ℤ_[l] K).map f, IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e, Module.Finite.equiv e.toLinearEquiv⟩, fun x hx h => ⟨⟨x, hx⟩, (isIntegral_algHom_iff f hf).1 (int_of_norm _ h), rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 private theorem coef_of (K : IntermediateField ℚ_[l] (Qbar l)) [FiniteDimensional ℚ_[l] K] :
     ∃ c : Coef l, ∀ x ∈ K, ‖x‖ ≤ 1 → x ∈ c.O := by
@@ -72,13 +72,13 @@ private theorem coef_of (K : IntermediateField ℚ_[l] (Qbar l)) [FiniteDimensio
     Module.Finite.equiv e.toLinearEquiv⟩, fun x hx h => ⟨⟨x, hx⟩, (isIntegral_algHom_iff f hf).1 (int_of_norm _ h), rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `eisensteinUnitFunctional_bounded H hs hl`. Take `⟨E, hE, hF⟩` from `exists_finiteExt_eisensteinUnitFunctional_mem H hs`. Take `⟨k, hk⟩` from `small (l := l) (∑ i, ‖β i‖ * C) 1 one_pos`. Use `haveI : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] (Set.range β)) := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Take `⟨cO, hO⟩` from `coef_of (E ⊔ IntermediateField.adjoin ℚ_[l] (Set.range β))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨cO, (l : Qbar l) ^ k, pow_ne_zero _ q_ne, fun M x => ?_⟩` and prove the remaining obligations. Rewrite using `[distribution_apply]`. Use `hO _ (mul_mem (pow_mem (natCast_mem _ _) _) (sum_mem fun i _ => mul_mem ?_ ?_)) ?_` and prove the remaining obligations. Conclude with `le_sup_right (a := E) (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`. Use `le_sup_left (a := E) (hF _ _ fun y => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Rewrite using `[norm_mul, norm_pow]`. Use `le_trans (mul_le_mul_of_nonneg_left ((norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)) (by positivity)) (hk k le_rfl).le` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left (hC _ _ fun y => ?_) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 private theorem distribution_integral {ι : Qbar l ≃+* ℂ} {e : ℕ} {s : ℂ} {u w : ℤ → ℂ} {ψ : DirichletCharacter ℂ l} {α : ℂ} {B : ℕ} {c : ℕ → ℂ}
     {v : ℂ} (H : MeasMu ι e s u w ψ α B c v) (hs : s * s = 1) (hl : l ≠ 2) {n : ℕ} (β : Fin n → Qbar l) (t : Fin n → ℕ) :
@@ -106,23 +106,21 @@ private theorem distribution_integral {ι : Qbar l ≃+* ℂ} {e : ℕ} {s : ℂ
     split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `eisensteinUnitFunctional_interpolation H hs hl`. Use `⟨C, fun r hr t ht => ?_⟩` and prove the remaining obligations. Establish `hp : l.Prime` using `Fact.out`. Establish `hT : ‖φ t * (t : Qbar l) ^ e‖ = 1`. Establish `hu : IsUnit (t : ZMod l)` using `(ZMod.isUnit_iff_coprime _ _).2 (hp.coprime_iff_not_dvd.2 ht).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_pow, norm_nat ht, one_pow, mul_one, ← hu.unit_spec, φ.unit_norm_eq_one]`. Use `set T := φ t * (t : Qbar l) ^ e with hTd`. Establish `hT0 : T ≠ 0` using `norm_ne_zero_iff.1 (by rw [hT]; exact one_ne_zero)`. Establish `key : ∀ x y : Qbar l, ‖T⁻¹ * x - y‖ = ‖x - T * y‖` using `fun x y => by`. Rewrite using `[show x - T * y = T * (T⁻¹ * x - y) by field_simp, norm_mul, hT, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ' : ∀ x, φ⁻¹ x = ι.symm (ψ x)` using `fun x => by`. Rewrite using `[MulChar.inv_apply_eq_inv', hφ, MulChar.inv_apply_eq_inv', map_inv₀, inv_inv]`. Establish `hσ : ι.symm s * ι.symm s = 1` using `by rw [← map_mul, hs, map_one]`. Apply the tactic sequence `have hσn : ‖ι.symm s‖ = 1 := by rcases sgn_cases hs with rfl | rfl <;> simp`. Establish `hσ' : φ (-1) * (-1) ^ e = ι.symm s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ψ⁻¹ (-1) = ψ (-1)`. Rewrite using `[MulChar.inv_apply_eq_inv']`. Conclude with `inv_eq_of_mul_eq_one_right (by rw [← map_mul]; simp)`. Rewrite using `[hφ, h1, hs']`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← key, ← smul_eq_mul, ← map_smul]`. Use `hC r hr _ _ (norm_nonneg _) fun a d ha hd y hy => ?_` and prove the remaining obligations. Establish `htd : ¬ (l : ℤ) ∣ ((t * d : ℕ) : ℤ)` using `fun h => (hp.dvd_mul.1 (Int.natCast_dvd_natCast.1 h)).elim ht hd`. Take `⟨h1, h2⟩` from `UpperTheory.norm_character_pow_difference_estimate l r e φ ((t : ZMod (l ^ r)) * y) a ((t * d : ℕ) : ℤ) hr ha htd (by`. Rewrite using `[mul_assoc, hy]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Use the proof step `rfl)`. Take `⟨h3, h4⟩` from `UpperTheory.norm_character_pow_difference_estimate l r e φ ((t : ZMod (l ^ r)) * -y) a (-((t * d : ℕ) : ℤ)) hr ha (by rwa [dvd_neg]) (by`. Rewrite using `[mul_assoc, neg_mul, hy]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use the proof step `ring)`. Establish `hX : T * ι.symm (ψ a * ψ⁻¹ d * ((d : ℂ) / a) ^ e) = φ (((t * d : ℕ) : ℤ) : ZMod l) * φ⁻¹ (a : ZMod l) * ((((t * d : ℕ) : ℤ) : Qbar l) / a) ^ e`. Simplify using `only [hTd, map_mul, map_pow, map_div₀, map_natCast, ← hφ, ← hφ', Int.cast_natCast, Nat.cast_mul, Int.cast_mul, div_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.smul_apply, smul_eq_mul, if_neg h1, if_neg h3]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨by rw [key, hX]; exact h2, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm, key, hX]`. Use `le_trans (le_of_eq ?_) h4` and prove the remaining obligations. Rewrite using `[← one_mul ‖_ - φ ((-_ : ℤ) : ZMod l) * _ * _‖, ← hσn, ← norm_mul]`. Use `congr 1`.
-
-Rewrite using `[Int.cast_neg, Int.cast_neg, ← neg_one_mul (((t * d : ℕ) : ℤ) : ZMod l), map_mul, neg_div, neg_pow]`. Take the linear combination `(φ (((t * d : ℕ) : ℤ) : ZMod l) * φ⁻¹ (a : ZMod l) * ((((t * d : ℕ) : ℤ) : Qbar l) / a) ^ e) * (ι.symm s * hσ' + hσ)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem riem0 {ι : Qbar l ≃+* ℂ} {e : ℕ} {s : ℂ} {u w : ℤ → ℂ} {ψ : DirichletCharacter ℂ l} {α : ℂ} {B : ℕ} {c : ℕ → ℂ}
     {v : ℂ} (H : MeasMu ι e s u w ψ α B c v) (hs : s * s = 1) (hs' : s = (-1) ^ e * ψ (-1)) (hl : l ≠ 2)
@@ -173,13 +171,13 @@ private theorem riem0 {ι : Qbar l ≃+* ℂ} {e : ℕ} {s : ℂ} {u w : ℤ →
     (ι.symm s * hσ' + hσ)
 
 /- English proof (translation)
-Establish `h0 : 0 < ‖A‖ / 2` using `by have := norm_pos_iff.2 hA; positivity`. Take `⟨n₀, h1⟩` from `small (l := l) 1 _ h0`. Take `⟨r₁, h2⟩` from `small (l := l) (1 + C) _ h0`. Use `⟨n₀, r₁, fun r hr S N hS hN hZ => ?_⟩` and prove the remaining obligations. Unfold `Cg at hS hZ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hq : 0 < ‖(l : Qbar l)‖ ^ r` using `pow_pos (norm_pos_iff.2 q_ne) _`. Rewrite `hZ` using `[sub_zero, norm_pow, pow_add]`. Rewrite `hS` using `[norm_pow, two_mul, pow_add]`. Rewrite `hN` using `[norm_pow]`. Establish `h3 : ‖(l : Qbar l)‖ ^ r * ‖N‖ ≤ ‖S‖ + ‖S - (l : Qbar l) ^ r * N‖`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← norm_pow, ← norm_mul]`. Simplify using `using norm_sub_le S (S - (l : Qbar l) ^ r * N)`. Establish `h4 : ‖N‖ ≤ ‖(l : Qbar l)‖ ^ n₀ + ‖(l : Qbar l)‖ ^ r` using `le_of_mul_le_mul_left (by nlinarith) hq`. Establish `h5 : ‖A‖ ≤ ‖N‖ + ‖N - A‖` using `by simpa using norm_sub_le N (N - A)`. Use `h1 n₀ le_rfl` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2 r hr` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem final (A : Qbar l) (hA : A ≠ 0) (C : ℝ) : ∃ n₀ r₁ : ℕ, ∀ r, r₁ ≤ r → ∀ S N : Qbar l,
     Cg (2 * r) S ((l : Qbar l) ^ r * N) → ‖N - A‖ ≤ C * ‖(l : Qbar l) ^ r‖ → ¬ Cg (n₀ + r) S 0 := by
@@ -206,25 +204,25 @@ end UpperTheory.V.Z.Kato.Joint.M3
 open UpperTheory.V.Z.Kato.Joint UpperTheory.V.Z.Kato.Joint.M3
 
 /- English proof (translation)
-Introduce `l _ ι e s u w ψ α B c v n β t hl he hs' H hv ht hS`. Establish `hs : s * s = 1`. Establish `h1 : ψ (-1) * ψ (-1) = 1` using `by rw [← map_mul]; simp`. Establish `h2 : ((-1 : ℂ) ^ e) * (-1) ^ e = 1` using `by rw [← mul_pow]; simp`. Rewrite using `[hs']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `ψ (-1) * ψ (-1) * h2 + h1`. Establish `hσ : ι.symm s * ι.symm s = 1` using `by rw [← map_mul, hs, map_one]`. Take `⟨cO, κ, hκ, hO⟩` from `distribution_integral H hs hl β t`. Take `⟨L, hL, hval⟩` from `UpperTheory.exists_integral_powerSeries_of_bounded_distribution l cO (nu1 ι e s u w α B c κ β t) (fun M hM g g' h => by`. Rewrite using `[distribution_apply, distribution_apply]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[eisensteinUnitFunctional_compat_succ H hs M hM]`. Introduce `y`. Simplify `h (t i * y)) fun M _ x => hO M x` using `only [Nat.cast_mul]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Set `φ : DirichletCharacter (Qbar l) l` to `ψ⁻¹.ringHomComp (ι.symm : ℂ →+* Qbar l)`. Establish `hφ : ∀ x, φ x = ι.symm (ψ⁻¹ x)` using `fun x => rfl`. Establish `hchar : ∀ m, 1 ≤ m → ∀ ψ' : DirichletCharacter (Qbar l) (l ^ m), ∀ z : Qbar l, IsPrimitiveRoot z (l ^ m) → Cg (2 * m) (∑ b : (ZMod (l ^ m))ˣ, ψ' b * tval L (l ^ (3 * m)) (z ^ (b : ZMod (l ^ m)).val)) ((1 + ι.symm s * ψ' (-1)) / 2 * (κ * (∑ i, β i * ψ'⁻¹ (t i : ZMod (l ^ m))) * (∑ …`. Introduce `m hm ψ' z hz`. Establish `h` using `UpperTheory.gaussSum_twist_congr_of_measure l m (nu1 ι e s u w α B c κ β t m) L (fun g g' h => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[distribution_apply, distribution_apply]`. Use `congrArg _ (Finset.sum_congr rfl fun i _ => congrArg _ ?_)` and prove the remaining obligations. Conclude with `eisensteinUnitFunctional_congr_on_units ι e s u w α B c m _ _ fun x hx => h _ (((unit_iff hm _).2 (ht i)).mul hx)) (hval m hm) ψ' z hz.pow_eq_one`. Establish `h2 : ∀ i, nu0 ι e s u w α B c m (fun y => ψ'⁻¹ ((t i : ZMod (l ^ m)) * y)) = ψ'⁻¹ (t i : ZMod (l ^ m)) * nu0 ι e s u w α B c m (fun y => ψ'⁻¹ y)` using `fun i => by`. Rewrite using `[← smul_eq_mul (ψ'⁻¹ _) (nu0 ι e s u w α B c m _), ← map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg _ (funext fun y => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, Pi.smul_apply, smul_eq_mul]`. Rewrite `h` using `[distribution_apply]`. Simplify using `only [h2, eisensteinUnitFunctional_dirichletChar, ← mul_assoc, ← Finset.sum_mul] at h`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨C, hC⟩` from `riem0 H hs hs' hl φ hφ`. Establish `hA : κ * (∑ i, β i * (φ (t i : ZMod l) * (t i : Qbar l) ^ e)) * ι.symm v ≠ 0`. Use `mul_ne_zero (mul_ne_zero hκ fun h => hS ?_) (by simpa using hv)` and prove the remaining obligations. Simplify `congrArg ι h` using `[hφ, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨n₀, r₁, hfin⟩` from `final _ hA (‖κ‖ * ∑ i, ‖β i‖ * C)`. Use `⟨cO, L, κ, φ, n₀, r₁, hκ, hL, fun x => by simp [hφ], fun m hm ψ' h z hz => ?_, fun m hm ψ' h z hz => ?_, fun r hr hr1 ξ hξ => ?_⟩` and prove the remaining obligations. Use `hchar m hm ψ' z hz` as an intermediate fact. Rewrite `this` using `[h, hσ, add_self_div_two, one_mul]`. Then use the resulting hypothesis. Use `hchar m hm ψ' z hz` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[h, mul_neg, hσ, add_neg_cancel, zero_div, zero_mul]`. Then use the resulting hypothesis. Use `hfin r hr _ _ (UpperTheory.restriction_to_units_congr_of_measure l r (nu1 ι e s u w α B c κ β t r) L (hval r hr1) ξ hξ (fun x => φ (x : ZMod l) * (x : Qbar l) ^ e) fun x => ?_) ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (φ.norm_le_one _) (by positivity) (pow_le_one₀ (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ _))`. Rewrite using `[distribution_apply, mul_assoc κ, ← mul_sub, norm_mul, mul_assoc ‖κ‖, Finset.sum_mul, Finset.sum_mul, ← Finset.sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left ((norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[mul_assoc (β i), ← mul_sub, norm_mul, mul_assoc ‖β i‖]`. Conclude with `mul_le_mul_of_nonneg_left (hC r hr1 _ (ht i)) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Joint.meas3 :
     UpperTheory.V.Z.Kato.Joint.Meas3 := by

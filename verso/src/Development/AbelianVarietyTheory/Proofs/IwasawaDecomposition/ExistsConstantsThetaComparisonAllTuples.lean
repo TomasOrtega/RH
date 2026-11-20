@@ -46,11 +46,11 @@ variable {C : Core D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDat D A C.Q.c.F} {
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hu0 : ∀ j, u j ≠ 0` using `fun j h0 => by`. Take `⟨m, hm, e⟩` from `hc0`. Rewrite `e` using `[← hu j, h0]`. Simplify using `[hm.ne'] at e`. Use `⟨hlift, fun j => ⟨?_, ((hsrc j).tuple ()).B, ((hsrc j).tuple ()).xi, ((hsrc j).tuple ()).phi, ((hsrc j).tuple ()).half⟩, ⟨hact, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ h₃ _ _ hact).1⟩, fun j => (hsrc j).bad (), fun j => (hsrc j).reps (), fun j => ⟨fun k => congrArg ( …` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨J', hr⟩` from `hh j`. Take `⟨_, _, _, hT, hc⟩` from `hlift.c0`. Conclude with `⟨h j, J', repsR_map _ hr, GlobalTheory.RationalValues.placeEx_of_type_mem R i jL₃ (inC c₃) (tup j) (h j) c0₃ hR.jV hT hc (GlobalTheory.RationalValues.type_mem R i (tup j) _ (fun PP hPP x => ⟨⟨_, hv (tup j) PP (Or.inl hPP) _ x⟩, rfl⟩) fun PP hPP x => ⟨⟨_, hv (tup j) PP (Or.inr hPP …`. Use `(cXiVal_iff _ _ _ _ _ _ _ _ _).2 ⟨c0, hc0, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu j]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.OneMapAll.cXiAt_covBC D _ _ _ _ _ _ _ _ (hs j) _ _ _ (u j) _ _ _ _ _ _ ((hsrc j).cov ()).1.2.2.2.2.2.2.2.1 (hcs j)`.
+A detailed English derivation is pending.
 -/
 theorem pins_merge (hR : R.IsModels) {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {ι x₀}
     (hv : ∀ t PP, PP ∈ R.Pg ∨ PP ∈ R.Q t → ∀ (ξ : (kP PP)ˣ →* ℂˣ) (x : (kP PP)ˣ), ((ξ x : ℂˣ) : ℂ) ∈ c₃.F)
@@ -93,29 +93,27 @@ variable {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨a, ha, hca⟩` from `(cXiVal_iff _ _ _ _ _ _ _ _ _).1 hO.cxi`. Take `⟨b, hb, hcb⟩` from `(cXiVal_iff _ _ _ _ _ _ _ _ _).1 hO'.cxi`. Take `⟨c₂, h'', haF', hbF'⟩` from `exists_coeff_roots O'.c' ha hb`. Use `choose MC hMC hC using fun t => GlobalTheory.PinnedPre.exists_char_field (R.Pg ∪ R.Q t)`. Use `c₂.fin` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c₃, hc₃⟩` from `GlobalTheory.TupleCover.exists_coeff_ge T.Q.l (c₂.F ⊔ ⨆ t, MC t)`. Establish `h23 : c₂.F ≤ c₃.F` using `le_sup_left.trans hc₃`. Establish `h'` using `h''.trans h23`. Establish `haF` using `h23 haF'`. Establish `hbF` using `h23 hbF'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ t PP, PP ∈ R.Pg ∨ PP ∈ R.Q t → ∀ (ξ : (kP PP)ˣ →* ℂˣ) (x : (kP PP)ˣ), ((ξ x : ℂˣ) : ℂ) ∈ c₃.F` using `fun t PP hPP ξ x => (((le_iSup MC t).trans le_sup_right).trans hc₃) (hC t PP (Finset.mem_union.2 hPP) ξ x)`. Establish `hb0 : b ≠ 0` using `fun h0 => by`. Take `⟨m, hm, e⟩` from `hb`. Simplify using `[h0, hm.ne'] at e`. Establish `h₁ : O.c'.F ≤ c₃.F` using `hle.trans h'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : T.Q.c.F ≤ c₃.F` using `O.hle.trans h₁`. Establish `hV₃ : T.V ((i : ℕ) + 1) (sOv T.toCore c₃ h₃) = Wc D i` using `O.hV`. Take `⟨c0₃, hc0⟩` from `exists_coef_ext (incF O.c' c₃ h₁) (σ := inC O.c') (inC c₃) (fun _ => rfl) (lamV D i) O.c0'`. Take `⟨io₃, hw₃, hio, hover⟩` from `GlobalTheory.IoExtend.exists_ioLFRec_over _ _ _ _ O.c' c₃ h₁ _ _ (tauE D) (lamV D i) (wtA κ) O.io O.hw hO.io`. Establish `hlift : ThPinsR R i ((incF O.c' c₃ h₁).comp O.jL) (inC c₃) v₀ c0₃ ι T.Q.l.M (Mfr T.Q.l) O.lev`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(RingHom.ext fun _ => rfl : _ = (inC O.c').comp O.jL).trans hO.lift.field, hO.lift.std, hO.lift.v0, ?_, hO.lift.lev⟩` and prove the remaining obligations. Take `⟨g, r, c0L, hT, hc⟩` from `hO.lift.c0`. Use `⟨g, r, c0L, hT, fun v => ?_⟩` and prove the remaining obligations. Take `⟨v', hv', e⟩` from `hc v`. Take `⟨v'', hv''⟩` from `GlobalTheory.FieldBCModel.exists_over h₁ (lamV D i) v'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨v'', by rw [hv'', hv', MvPolynomial.map_map], (hc0 v' v'' hv'').trans e⟩`. Take `⟨h₀, J₀, hr₀, -, hth₀, hpl₀⟩` from `(hO.tuple ()).reps`. Use `choose hh Jt hrt _ using fun t => (hO'.tuple t).reps`. Set `src : ∀ o : Option T0, OMDat T.toCore R i Unit (fun _ => o.getD A.μ0)` to `fun o => match o with`. Consider the case `none => O`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `some t => comap O' (fun _ => t)`. Establish `hs : ∀ o, (src o).c'.F ≤ c₃.F` using `fun o => match o with`. Consider the case `none => h₁`. Consider the case `some _ => h'`. Set `u : Option T0 → c₃.F` to `fun o => match o with`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Treat this case separately. Treat this case separately.
 
-Consider the case `none => 1`. Consider the case `some _ => ⟨a, haF⟩ / ⟨b, hbF⟩`. Set `h : ∀ o, (src o).Cl' () → GA D (Vc D i)` to `fun o => match o with`. Consider the case `none => h₀`. Consider the case `some t => hh t`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Establish `hP` using `pins_merge src c₃ h₃ hs _ hV₃ c0₃ O.lev io₃ hw₃ u h v₀ hR hv (fun o => match o with`. Consider the case `none => hO`. Consider the case `some t => pins_comap (fun _ => t) hO') hlift hO.act.1 hio`. Use the proof step `(fun o => match o with`. Consider the case `none => ⟨J₀, hr₀⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `some t => ⟨Jt t, hrt t⟩) a ha (fun o => o.elim a fun _ => b)`. Use the proof step `(fun o => match o with`. Consider the case `none => one_mul a`. Consider the case `some _ => div_mul_cancel₀ a hb0)`. Use the proof step `(fun o => match o with`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `none => hca ()`. Consider the case `some t => hcb t)`. Use `⟨_, h₁, rfl, hP, fun cc ph hS => ⟨hS.1, hS.2.1, fun t k J' hr y x hy f hf hfx g => ?_⟩⟩` and prove the remaining obligations. Use `choose x' hx' using fun k => GlobalTheory.FieldBCModel.exists_over h₁ (lamV D i) (x k)`. Establish `hy' : Place R i A.μ0 k c0₃ y x'` using `fun k => (hy k).trans (hc0 _ _ (hx' k)).symm`.
-
-Establish `e` using `hS.2.2 none k J' (repsR_map _ hr) y x' hy' (rulBC h₁ f) (GlobalTheory.FieldBCModel.rulBC_mem_sec h₁ hf) (isThClsD_covBC_one h₁ (O.dδ ()) rfl _ _ _ _ _ _ O.io io₃ x x' (fun k => hover _ _ (hx' k)) (hO.cov ()).1.2.2.2.2.2.2.2.1 hf hfx) g`. Take `⟨m, as, fs, -, hBC⟩` from `(GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ O.hle).1 _ _ f hf`. Establish `e1` using `GlobalTheory.PhRatCommon.rdU_of_isBC O.hle (T.U ((i : ℕ) + 1)) (inC O.c') hBC (O.dict g).1 (O.dict g).2`. Establish `e2` using `GlobalTheory.PhRatCommon.rdU_of_isBC h₃ (T.U ((i : ℕ) + 1)) (inC c₃) (isBC_rulBC_trans O.hle h₁ h₃ hf hBC) (O.dict g).1 (O.dict g).2`. Conclude with `e.trans (congrArg (fun w => cc (O.dict g).1 * (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * O.mu g * w) (e2.trans e1.symm))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_extension [Finite T0] (hR : R.IsModels) {ι x₀}
     (O : OMDat T.toCore R i Unit (fun _ => A.μ0)) (O' : OMDat T.toCore R i T0 id) (hle : O.c'.F ≤ O'.c'.F)
@@ -206,13 +204,11 @@ variable {C : Core D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDat D A C.Q.c.F} {
   (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ)
 
 /- English proof (translation)
-Use `show IsRat O κ cc (Formalism.IndefR.Lev.actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) F)`. Unfold `Formalism.IndefR.Lev.actG0`. Use `split_ifs with hk`. Take `⟨n, a, f, hf⟩` from `h`. Establish `e` using `hE g _ hk.choose_spec`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨n, fun k => a k * (((chi g)⁻¹ : D.what₂.LLˣ) : D.what₂.LL), fun k => ⟨_, (e _ (f k).2).1⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[levChi_flag, inv_one]`. Use `beta_reduce`. Rewrite using `[one_mul, hf]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `(e _ (f k).2).2 x`. Rewrite `e2` using `[← (hχ g).trans (Units.coe_prod _ _)]`. Establish `e3 : D.what₂.embLL (((chi g)⁻¹ : D.what₂.LLˣ) : D.what₂.LL) * D.what₂.embLL ((chi g : D.what₂.LLˣ) : D.what₂.LL) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Use `show _ = _ * (_ * O.phi cc (actLev C.Q.c O.lev2 g (f k : C.R ((i : ℕ) + 1))) x)`.
-
-Rewrite using `[e2, map_mul]`. Take the linear combination `(-(D.what₂.embLL (a k) * (lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * O.phi cc (f k : C.R ((i : ℕ) + 1)) (x * hk.choose))) * e3`. Conclude with `IsRat.zero O κ cc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isRat_act (hE : O.EquivAt κ cc) {chi : G →* D.what₂.LLˣ} (hχ : ChiIs R i chi) (g : G) {F : GA D (Wc D i) → ℂ}
     (h : IsRat O κ cc F) : IsRat O κ cc (Formalism.IndefR.Links.actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) F) := by
@@ -239,11 +235,11 @@ theorem isRat_act (hE : O.EquivAt κ cc) {chi : G →* D.what₂.LLˣ} (hχ : Ch
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `x`. Establish `key : IsRat O κ cc (R.eWf i (sg0 D A) (ph • R.thF i A.μ0 (jVx R i A.μ0 x) v₀))`. Unfold `RealDat.eWf gaL`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_induction _ (IsRat O κ cc) (fun _ _ => IsRat.add O κ cc) (IsRat.zero O κ cc) fun g _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : sg0 D A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Establish `: RealDat.eC (A` using `A) (sg0 D A) g = D.what₂.embLL ((idemOf A.X).coeff g) := RingHom.congr_fun hs ((idemOf A.X).coeff g)`. Establish `h2` using `IsRat.mul O κ cc ((idemOf A.X).coeff g) (isRat_act O κ cc hE hχ g (h x))`. Rewrite `h2` using `[← this]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, a, f, hf⟩` from `key`. Use `⟨n, a, f, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf y, hG i A.μ0, map_smul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem phRat_of_before (hE : O.EquivAt κ cc) {chi : G →* D.what₂.LLˣ} (hχ : ChiIs R i chi) (hG : R.thP_thG) (ph : ℂ)
     (h : ∀ x : A.fam.amb.FL i A.μ0, IsRat O κ cc (ph • R.thF i A.μ0 (jVx R i A.μ0 x) v₀)) : O.PhRat κ v₀ cc ph := by
@@ -273,17 +269,17 @@ variable {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨h, J', hrep, hPl, hA, hPc⟩` from `(hP.tuple ()).reps`. Use `⟨hE, ⟨hF.ge, (GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ O.hle).2 _ _, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ O.hle _ _ hP.act.1).2, ?_⟩, ?_⟩` and prove the remaining obligations. Use `⟨hS.1, hS.2.1, 1, Subgroup.one_mem _, fun t => ⟨1, one_mem _, ⟨1, Nat.one_pos, one_pow _⟩, fun x hx => ⟨hex x hx, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `f hf hc q`. Take `⟨x₀, hx₀⟩` from `(hPc x).1 hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hL` using `hP.act.2`. Establish `h1 : actLev (Xo` using `T.Q.Xo ((i : ℕ) + 1)) O.c' O.lev2 1 f = f := actL_one _ _ _ hL.total hL.func hL.one hf.1`. Establish `h2` using `hS.2.2 t h J' hrep _ x hx₀ f hf hc q.out`. Rewrite using `[h1, hA _ x hx₀, one_mul (cc _)]`. Use `h2.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc (cc _ * _)]`. Both sides reduce to the same expression. Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm ⟨1, by simp [Formalism.FrobeniusOrbits.Psi]⟩⟩`. Establish `hn : (κ i).n = (Vc D i).rank` using `(hT.kap i τ).2.2.trans (D.sp.V_rank _ (Nat.le_add_left _ _) i.2).symm`. Use `phRat_of_before O (κ i) _ cc hE (Half.chiIs_chiTop_of_tie T R κ v₀ hR.lev hT i) hR.thP.thG 1 fun x₀ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx⟩` from `hPl x₀`. Take `⟨f, hf, hcl⟩` from `hex x ((hPc x).2 ⟨x₀, hx⟩)`. Establish `hf' : f ∈ cusp (T.Q.Xo ((i : ℕ) + 1)) O.c' (unfBC O.hle (T.U ((i : ℕ) + 1))) (wtA (κ i)) (κ i).n`. Rewrite using `[hn]`. Conclude with `hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, as, fs, hbc⟩` from `GlobalTheory.PhRatCommon.exists_rdU_eq_sum O.hle (T.U ((i : ℕ) + 1)) (inC O.c') _ _ f hf'`. Establish `hL : ∀ a : O.c'.F, ∃ b : D.what₂.LL, D.what₂.embLL b = inC O.c' a` using `fun a => by`. Establish `: (a : ℂ) ∈ D.what₂.embLL.toRatAlgHom.fieldRange` using `hF ▸ a.2`. Conclude with `this`. Use `choose b hb using hL`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨m, fun j => b (as j), fs, fun g => ?_⟩` and prove the remaining obligations. Use `hS.2.2 () h J' hrep _ x hx f hf.1 hcl g` as an intermediate fact. Establish `e1` using `hbc (O.dict g).1 (O.dict g).2`. Establish `e2 : ∀ j, O.phi cc (fs j : T.R ((i : ℕ) + 1)) g = cc (O.dict g).1 * O.mu g * rdU (T.U ((i : ℕ) + 1) O.s0) (fs j : T.R ((i : ℕ) + 1)) (O.dict g).1 (O.dict g).2` using `fun j => rfl`. Conclude with `this.trans (GlobalTheory.PhRatCommon.sum_shape e1 (fun j => hb (as j)) e2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem oneMapOf_of_serOf (hR : PreChar R) (hT : TieIn T R κ v₀) {O : OMDat T.toCore R i Unit (fun _ => A.μ0)}
     (hF : O.c'.F = D.what₂.embLL.toRatAlgHom.fieldRange) {ι x₀} (hP : O.Pins (κ i) (v₀ i (sg0 D A)) ι x₀) {cc}
@@ -325,11 +321,11 @@ theorem oneMapOf_of_serOf (hR : PreChar R) (hT : TieIn T R κ v₀) {O : OMDat T
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨M, h₁, hlev, hM, hdesc⟩` from `exists_extension hR.models O O' (hF.le.trans hF') hP hP'`. Take `⟨cc, hE, hS, hrow⟩` from `hof _ _ M hM`. Take `⟨cc₀, -, -, -, -, z, -, h0⟩` from `hof _ _ O hP`. Take `⟨ze, -, -, h0⟩` from `h0 ()`. Establish `e : M.lev2 = O.lev2` using `by funext g; simp only [OMDat.lev2, hlev]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE' : O.EquivAt (κ i) cc`. Unfold `OMDat.EquivAt at hE ⊢`. Rewrite `hE` using `[e]`. Conclude with `hE`. Establish `hO` using `oneMapOf_of_serOf hR hT hF hP hE' (hdesc cc 1 hS) fun x hx => (h0 x hx).1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `hF.ge.trans h₁`. Conclude with `⟨cc, hO, comap M some, hL, pins_comap some hM, oneMapOf_comap some ⟨hE, ⟨hL, (GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ M.hle).2 _ _, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ M.hle _ _ hM.act.1).2, hrow⟩, hO.2.2⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_common [Finite T0] (hR : PreChar R) (hT : TieIn T R κ v₀) {ι x₀}
     (hof : ∀ (Tp : Type) (tup : Tp → T0) (M : OMDat T.toCore R i Tp tup), M.Pins (κ i) (v₀ i (sg0 D A)) ι x₀ →
@@ -362,7 +358,7 @@ section Levels
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Use `⟨⟨fun a => ⟨if (a : ℕ) < ρ then k + a else if (a : ℕ) < ρ + k then a - ρ else a, ?_⟩, fun b => ⟨if (b : ℕ) < k then b + ρ else if (b : ℕ) < ρ + k then b - k else b, ?_⟩, fun a => Fin.ext ?_, fun b => Fin.ext ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Apply the tactic sequence `have := a.2 split_ifs <;> omega`. Apply the tactic sequence `have := b.2 split_ifs <;> omega`. Apply the tactic sequence `dsimp only split_ifs <;> omega`. Apply the tactic sequence `dsimp only split_ifs <;> omega`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_symOrd {r : ℕ} (ρ k : ℕ) (h : ρ + k ≤ r) : ∃ π : Equiv.Perm (Fin r), IsSymOrd ρ k π := by
   refine ⟨⟨fun a => ⟨if (a : ℕ) < ρ then k + a else if (a : ℕ) < ρ + k then a - ρ else a, ?_⟩,
@@ -378,7 +374,7 @@ theorem exists_symOrd {r : ℕ} (ρ k : ℕ) (h : ρ + k ≤ r) : ∃ π : Equiv
     split_ifs <;> omega
 
 /- English proof (translation)
-Take `⟨H, c⟩` from `L`. Take `⟨H', c'⟩` from `L'`. Take `rfl : H = H'` from `Subgroup.ext h`. Take `rfl : c = c'` from `MonoidHom.ext fun g => h' g.1 g.2 g.2`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem level_ext₂ {Pg : Finset (Pl D.host.E)} {r : ℕ} {L L' : LevelP Pg r ℂ} (h : ∀ g, g ∈ L.H ↔ g ∈ L'.H)
     (h' : ∀ g hg hg', L.chi ⟨g, hg⟩ = L'.chi ⟨g, hg'⟩) : L = L' := by
@@ -389,7 +385,7 @@ theorem level_ext₂ {Pg : Finset (Pl D.host.E)} {r : ℕ} {L L' : LevelP Pg r �
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `((congrArg (Units.map σ.toMonoidHom) (MonoidHom.finsetProd_apply _ _ _)).trans (map_prod _ _ _)).trans (Eq.trans ?_ (MonoidHom.finsetProd_apply _ _ _).symm)` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun PP _ => Units.ext rfl`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chi_ofLocal_map {Pg : Finset (Pl D.host.E)} {r : ℕ} {K : Type} [Field K] (σ : K →+* ℂ)
     (Hl : ∀ PP : Pg, Subgroup (GL (Fin r) (kP PP.1))) (f : ∀ PP : Pg, Hl PP →* Multiplicative (kP PP.1))
@@ -403,13 +399,13 @@ theorem chi_ofLocal_map {Pg : Finset (Pl D.host.E)} {r : ℕ} {K : Type} [Field 
   exact Finset.prod_congr rfl fun PP _ => Units.ext rfl
 
 /- English proof (translation)
-Establish `key : ∀ PP : Pl D.host.E, ∃ ψ : AddChar (kP PP) D.what₂.LL, PP ∈ R.Pg → ∃ x, ψ x ≠ 1` using `fun PP => by`. Distinguish the cases in `hP : PP ∈ R.Pg`. Use `swap`. Conclude with `⟨1, fun h => absurd h hP⟩`. Take `⟨-, plg, iso, -⟩` from `hrec`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨kv, hkv⟩` from `plg.surjective ⟨PP, hP⟩`. Take `rfl : (plg kv).1 = PP` from `congrArg Subtype.val hkv`. Take `⟨z, hz⟩` from `hroot A.μ0 _ (Or.inl hP)`. Establish `hfin : Finite (kP (plg kv).1)` using `Ideal.finiteQuotientOfFreeOfNeBot _ (plg kv).1.ne_bot`. Establish `hnt : Nontrivial (kP (plg kv).1)` using `Ideal.Quotient.nontrivial_iff.2 (plg kv).1.isPrime.ne_top`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 < Nat.card (kP (plg kv).1)` using `Finite.one_lt_card`. Rewrite `hz`, `h1` using `[← Nat.card_congr (iso kv).toEquiv, Nat.card_zmod]`. Establish `: NeZero (D.host.g kv.1)` using `⟨by omega⟩`. Establish `: Fact (1 < D.host.g kv.1)` using `⟨h1⟩`. Use `⟨(AddChar.zmodChar _ hz.pow_eq_one).compAddMonoidHom (iso kv).symm.toAddMonoidHom, fun _ => ⟨iso kv 1, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show AddChar.zmodChar _ hz.pow_eq_one ((iso kv).symm (iso kv 1)) ≠ 1`. Rewrite using `[RingEquiv.symm_apply_apply, AddChar.zmodChar_apply, ZMod.val_one, pow_one]`. Conclude with `hz.ne_one h1`. Use `choose ψ hψ using key`. Conclude with `⟨ψ, hψ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_psi (hrec : R.grp_record) (hroot : R.fam_roots) :
     ∃ ψ : ∀ PP : Pl D.host.E, AddChar (kP PP) D.what₂.LL, ∀ PP ∈ R.Pg, ∃ x, ψ PP x ≠ 1 := by
@@ -438,13 +434,11 @@ def reordHom {Pg : Finset (Pl D.host.E)} {r : ℕ} (π : Equiv.Perm (Fin r)) : G
   MonoidHom.mk' (reord π) fun a b => funext fun PP => map_mul _ (a PP) (b PP)
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `exists_psi R hrec hroot`. Take `⟨π, hπ⟩` from `exists_symOrd (r := D.R.r) D.R.rS D.R.k (by`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r Ranks.rS`. Use the proof step `omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression.
 
-Set `L0` to `P0 R.Pg D.R.r ψ`. Set `L1` to `PsharpSym R.Pg D.R.r D.R.rS D.R.k ψ`. Set `e1 : G →* G0 R.Pg D.R.r` to `(reordHom π).comp R.eG.toMonoidHom`. Use `⟨⟨L0.H.comap R.eG.toMonoidHom, L0.chi.comp (R.eG.toMonoidHom.subgroupComap L0.H), L1.H.comap e1, L1.chi.comp (e1.subgroupComap L1.H), fun _ => ⟨Empty, fun _ => 0, fun _ _ => 0, fun _ _ => 0⟩, fun _ => ⟨ℂ, inferInstance, inferInstance, fun _ => 0, ⊥⟩, fun _ => ⟨0, 0, 0, 0, 0, 0, 0 …` and prove the remaining obligations. Take `⟨x, hx⟩` from `hψ PP hP`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx (D.what₂.embLL.injective ((DFunLike.congr_fun h x).trans (map_one _).symm))`. Use `show R.eG (R.eG.symm g) ∈ L0.H ↔ _`. Rewrite using `[MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Conclude with `chi_ofLocal_map D.what₂.embLL _ _ ψ _ _ (R.eG.apply_symm_apply g) hg hg'`.
-
-Use `show reord π (R.eG (R.eG.symm g)) ∈ L1.H ↔ _`. Rewrite using `[MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Conclude with `chi_ofLocal_map D.what₂.embLL _ _ ψ _ _ (congrArg (reord π) (R.eG.apply_symm_apply g)) hg hg'`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_face (hrec : R.grp_record) (hroot : R.fam_roots) : ∃ F : Face D A, R.grp_levels F := by
   obtain ⟨ψ, hψ⟩ := exists_psi R hrec hroot
@@ -481,7 +475,7 @@ variable {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `h` using `Half.preChar_updFW R (nTop T κ) (fun i => formsN T R κ v₀ i (nTop T κ i)) hR`. Take `⟨F, hF⟩` from `exists_face (topR T R κ v₀) h.record h.fam.roots`. Conclude with `⟨F, h.lev, ⟨h.red_R, h.red_L, hF, h.record, fun i g => (Half.chiIs_chiTop_of_tie T R κ v₀ hR.lev hT i g).trans (Units.coe_prod _ _)⟩, h.fam, h.models, h.chain, h.thP⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_core (hR : PreChar R) (hT : TieIn T R κ v₀) : ∃ F : Face D A, GlobalTheory.Hk3.Core (topR T R κ v₀) F := by
   have h := Half.preChar_updFW R (nTop T κ) (fun i => formsN T R κ v₀ i (nTop T κ i)) hR
@@ -492,9 +486,9 @@ theorem exists_core (hR : PreChar R) (hT : TieIn T R κ v₀) : ∃ F : Face D A
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `exists_core hR hT`. Establish `hT' : TieIn T (topR T R κ v₀) κ v₀` using `⟨hT.laws, hT.alg, hT.kap, hT.hv₀, hT.chiR, hT.x0⟩`. Establish `hM' : (Half.updO T R (nTop T κ) (fun i => formsN T R κ v₀ i (nTop T κ i)) M).Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) T.σ₀)`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩` from `hM`. Use `⟨⟨h1.field, h1.std, ?_, h1.c0, h1.lev⟩, fun t => ⟨(h2 t).reps, (h2 t).B, (h2 t).xi, (h2 t).phi, (h2 t).half⟩, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1.v0`. Take `⟨cc, -, u, -, h1, h2, h3⟩` from `GlobalTheory.T.exists_unitModulus_constants_equivariant_dictionary GlobalTheory.ChartFree.chartIndep D G Pl0 T0 A T (topR T R κ v₀) F κ v₀ hF hT' hio i Tp tup _ hM'`. Conclude with `⟨u • cc, h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_serOf (hR : PreChar R) (hT : TieIn T R κ v₀) (hio : IoExt R) (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0)
     (M : OMDat T.toCore R i Tp tup) (hM : M.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) T.σ₀)) :
@@ -524,7 +518,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ O hR hT hpb hfin hG hio i hV hO`. Take `⟨O', hF', hP'⟩` from `GlobalTheory.PinnedPre.exists_pins D G Pl0 T0 A T R κ v₀ hR hT hpb hfin hG i hV`. Conclude with `RowAll.exists_common (ι := iotaW T i) (x₀ := T.x₀ ((i : ℕ) + 1) T.σ₀) hR hT (RowAll.exists_serOf hR hT hio i) (O i) hO.1 hO.2 O' hF' hP'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_const_oneMapOf_all : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)), PreChar R → TieIn T R κ v₀ → T.pb = R.C.P.pb → Finite T0 → QGuard R → IoExt R → ∀ i, VStd D i → OMPins T R κ v₀ O i → ∃ cc : (T.U ((i : ℕ) + 1) T.σ₀).Comp → ℂ, (O i).OneMapOf (κ i) (v₀ i (sg0 D A)) cc 1 ∧ ∃ O' : OMDat T.toCore R i T0 id, D.what₂.embLL.toRatAlgHom.fieldRange ≤ O'.c'.F ∧ O'.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O'.s0) ∧ O'.OneMapOf (κ i) (v₀ i (sg0 D A)) cc 1 := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ O hR hT hpb hfin hG hio i hV hO

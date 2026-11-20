@@ -11,19 +11,17 @@ noncomputable section
 namespace GlobalTheory.ColFockRed
 open GlobalTheory.Grid
 /- English proof (translation)
-Introduce `hL _hPr D hSz G₀ _ _ Pl0 T A Ks _ _ _ R G hRB hG t j hj Φ hΦ n F w hint`. Establish `hCA` using `hL D hSz G₀ Pl0 T A Ks R G hRB hG`. Establish `hθ : IsInfFam R.θ` using `hRB.inf`. Take `⟨νS, PS, hS⟩` from `xp_is hG j hj.le`. Take `⟨νT, PT, hT⟩` from `xp_is hG (j + 1) hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hsig, hdef⟩` from `GlobalTheory.ColTypeLift.xp_definite hG j hj.le`. Take `⟨χ, hχ⟩` from `GlobalTheory.T.exists_realCentralCharacter_definiteVertexMultiplicity D R.θ hθ (G.Xp j) νS PS hS`. Establish `hψc : GlobalTheory.SeeSaw.HasCen (G.Xp j).V χ (∑ i, (F i).1 (w i))` using `fun z hz hc h => by`. Simplify using `only [Finset.sum_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hχ (F i) (w i) z hz hc h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hψa : GlobalTheory.Unf.IsContAut (G.Xp j).V (∑ i, (F i).1 (w i))`. Use `⟨fun γ hγ g => ?_, by rw [Finset.sum_fn]; exact continuous_finset_sum _ fun i _ => (isContAut_cusp (F i) (w i)).2⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => (isContAut_cusp (F i) (w i)).1 γ hγ g`. Take `⟨hν, hfd⟩` from `measX_haar_fd hG j hj.le`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hA` using `hG.arrows.col t j hj`. Take `⟨Φ', hΦ', heig, heq⟩` from `GlobalTheory.T.exists_thetaLift_realCentre_average_eigenvector D R.ψ _ _ _ _ (G.col t j).ω hA.weil hsig hdef _ _ hν hfd χ _ hψc hψa Φ hΦ hint`. Take `⟨k, f, p, hf, hsum⟩` from `GlobalTheory.T.centreEigen_thetaFunction_finite_sum_fockPolynomials D R.ψ R.θ hθ (G.Xp j) (G.Xp (j + 1)) νS νT PS PT hS hT (G.col t j) _ _ hA (fun z => (χ z)⁻¹) Φ' hΦ' heig`. Establish `hcol` using `hCA.col t j hj`. Use `choose F' hF' hI using fun (l : Fin k) (i : Fin n) => hcol (f l) (hf l) (F i).1 (F i).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k * n, fun q => ⟨F' (finProdFinEquiv.symm q).1 (finProdFinEquiv.symm q).2, hF' _ _⟩, fun q => (G.col t j).It (p (finProdFinEquiv.symm q).1) (w (finProdFinEquiv.symm q).2), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Rewrite using `[heq h, hsum]`. Establish `key : ∀ g, thetaKO (G.col t j).ω g h (∑ l, fock R.ψ R.θ false (G.Xp j) (G.Xp (j + 1)) (f l) (p l)) * (∑ i, (F i).1 (w i)) g = ∑ l, ∑ i, thetaKO (G.col t j).ω g h (fock R.ψ R.θ false (G.Xp j) (G.Xp (j + 1)) (f l) (p l)) * (F i).1 (w i) g` using `fun g => by`. Simplify using `only [thetaKO, map_sum, Finset.sum_apply, Finset.sum_mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall key)]`. Rewrite using `[integral_finset_sum _ fun l _ => integrable_finset_sum _ fun i _ => (hI l i (p l) (w i) h).1]`. Repeatedly rewrite using `[integral_finset_sum _ fun i _ => (hI _ i _ (w i) h).1]`. Establish `e2 : ∀ l i, ∫ g in (G.measX j).fd, thetaKO (G.col t j).ω g h (fock R.ψ R.θ false (G.Xp j) (G.Xp (j + 1)) (f l) (p l)) * (F i).1 (w i) g ∂(G.measX j).ν = F' l i ((G.col t j).It (p l) (w i)) h` using `fun l i => (hI l i (p l) (w i) h).2`. Repeatedly rewrite using `[e2]`.
-
-Rewrite using `[← Fintype.sum_prod_type']`. Rewrite using `[Finset.sum_apply]`. Conclude with `(finProdFinEquiv.symm.sum_comp (fun x : Fin k × Fin n => F' x.1 x.2 ((G.col t j).It (p x.1) (w x.2)) h)).symm`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_lift_finite_sum_smooth : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ t j, j < D.R.m → ∀ Φ, IsThetaFunO R.ψ (G.Xp j).V (G.Xp (j + 1)).V Φ →
     ∀ (n : ℕ) (F : Fin n → (G.Xp j).Cusp R.θ) (w : Fin n → SmT (G.Xp j).M),
@@ -78,7 +76,7 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ColFockRed.theta_lift_finite_sum_smooth | exact _root_.GlobalTheory.ColFockRed.theta_lift_finite_sum_smooth | (intros; apply _root_.GlobalTheory.ColFockRed.theta_lift_finite_sum_smooth <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.smooth_of_theta_lift_finite_sum : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ t j, j < D.R.m → ∀ Φ, IsThetaFunO R.ψ (G.Xp j).V (G.Xp (j + 1)).V Φ →
     ∀ (n : ℕ) (F : Fin n → (G.Xp j).Cusp R.θ) (w : Fin n → SmT (G.Xp j).M),

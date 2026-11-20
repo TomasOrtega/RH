@@ -12,17 +12,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Proceed by induction on `l with`. Consider the case `zero => simp [cubN]`. Consider the case `succ l ih`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e` using `h.coc b (c * m ^ l) m y`. Simplify using `only [cubN, Finset.prod_range_succ, Finset.prod_range_zero, Nat.zero_add, pow_zero, _root_.mul_one, _root_.one_mul] at ih ⊢`. Rewrite using `[pow_succ m, ← _root_.mul_assoc c, _root_.mul_assoc b c]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `ih'` using `congrArg Additive.ofMul ih`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e'` using `congrArg Additive.ofMul e`. Simplify using `only [_root_.mul_assoc b c] at ih'`. Simplify using `only [ofMul_mul, _root_.mul_assoc b c] at ih' e' ⊢`. Take the linear combination `(norm := abel) ih' - e'`. Consider the case `succ k ih`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately.
 
-Establish `e` using `h.coc m (b * m ^ k) (c * m ^ l) y`. Establish `p₁ : m * (b * m ^ k) = b * m ^ (k + 1)` using `by rw [pow_succ, mul_comm m, _root_.mul_assoc]`. Establish `p₂ : b * m ^ k * (c * m ^ l) = b * c * m ^ (k + l)` using `by rw [pow_add, _root_.mul_mul_mul_comm]`. Rewrite `e` using `[p₁, p₂, h.s01 m, h.s01 m]`. Rewrite using `[Nat.add_right_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cubN, Finset.prod_range_succ] at ih ⊢`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `ih'` using `congrArg Additive.ofMul ih`. Establish `e'` using `congrArg Additive.ofMul e`. Simplify using `only [ofMul_mul] at ih' e' ⊢`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := abel) ih' + e'`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cubN_mul_cubN_add {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → A → U} (h : IsCub θ)
     (k l : ℕ) (b c m y : A) :
@@ -56,9 +56,9 @@ theorem cubN_mul_cubN_add {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A
     linear_combination (norm := abel) ih' + e'
 
 /- English proof (translation)
-Introduce `A U _ _ θ h k l b c m y`. Establish `a` using `congrArg Additive.ofMul (cubN_mul_cubN_add h k l b c m y)`. Establish `e` using `congrArg Additive.ofMul (h.compat b c y m)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at a e ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := abel) a + e`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem translationUnit_mul :
     ∀ (A U : Type) [CommGroup A] [CommGroup U] (θ : A → A → A → U), IsCub θ → ∀ (k l : ℕ) (b c m y : A), (cubN θ k b m y * (θ b y m)⁻¹) * (cubN θ l c m y * (θ c y m)⁻¹) * θ (b * m ^ k) (c * m ^ l) y * θ b c m = θ b c (y * m) * (cubN θ (k + l) (b * c) m y * (θ (b * c) y m)⁻¹) := by

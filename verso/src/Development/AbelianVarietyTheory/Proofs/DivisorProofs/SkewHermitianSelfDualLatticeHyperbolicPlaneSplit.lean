@@ -23,7 +23,7 @@ section Helpers
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n n₁ : ℕ}
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma (h : IsCMExt F E σ) (a : E) : σ (σ a) = a := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -31,14 +31,14 @@ theorem sigma_sigma (h : IsCMExt F E σ) (a : E) : σ (σ a) = a := by
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Simplify using `only [form, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left (J : Matrix (Fin n) (Fin n) E) (c : E) (a b : Fin n → E) :
     form σ J (c • a) b = c * form σ J a b := by
   simp only [form, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Establish `: (fun i => σ ((c • b) i)) = σ c • fun i => σ (b i)` using `funext fun i => by simp`. Simplify using `only [form, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem form_smul_right (J : Matrix (Fin n) (Fin n) E) (c : E) (a b : Fin n → E) :
     form σ J a (c • b) = σ c * form σ J a b := by
@@ -46,7 +46,7 @@ theorem form_smul_right (J : Matrix (Fin n) (Fin n) E) (c : E) (a b : Fin n → 
   simp only [form, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, Matrix.smul_apply, Matrix.map_apply, Pi.star_apply, smul_eq_mul, map_sum, map_mul, hτ, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum, mul_assoc, mul_left_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem form_map (τ : E →+* ℂ) (hτ : ∀ a, τ (σ a) = star (τ a)) (J : Matrix (Fin n) (Fin n) E) (a b : Fin n → E) :
     (fun i => τ (a i)) ⬝ᵥ (Complex.I • J.map τ) *ᵥ star (fun i => τ (b i)) = Complex.I * τ (form σ J a b) := by
@@ -66,7 +66,7 @@ section Helpers2
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n n₁ : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, sigma_sigma h, hJ, Finset.sum_mul, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_skew (h : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} (hJ : ∀ i j, σ (J j i) = -J i j)
     (ι : Matrix (Fin n) (Fin n₁) E) (i j : Fin n₁) :
@@ -78,7 +78,7 @@ theorem gram_skew (h : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} (hJ : ∀ 
   ring
 
 /- English proof (translation)
-Establish `e : (ι.map σ).map τ = (ι.map τ).map star` using `Matrix.ext fun i j => by simp [hτ]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e, Matrix.transpose_map, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_map (τ : E →+* ℂ) (hτ : ∀ a, τ (σ a) = star (τ a)) (J : Matrix (Fin n) (Fin n) E)
     (ι : Matrix (Fin n) (Fin n₁) E) :
@@ -87,7 +87,7 @@ theorem gram_map (τ : E →+* ℂ) (hτ : ∀ a, τ (σ a) = star (τ a)) (J : 
   rw [Matrix.map_mul, Matrix.map_mul, e, Matrix.transpose_map, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, star_mul', ← hτ, hJ, map_neg, Complex.star_def, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_map (τ : E →+* ℂ) (hτ : ∀ a, τ (σ a) = star (τ a)) {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) : (Complex.I • J.map τ).conjTranspose = Complex.I • J.map τ := by
@@ -97,9 +97,9 @@ theorem herm_map (τ : E →+* ℂ) (hτ : ∀ a, τ (σ a) = star (τ a)) {J : 
   ring
 
 /- English proof (translation)
-Rewrite using `[dotProduct_comm, Matrix.dotProduct_mulVec]`. Establish `hz : ((Complex.I • J.map τ) *ᵥ star (fun i => τ (a i))) ᵥ* ι.map τ = 0`. Use function extensionality and compare the values at `j`. Establish `e` using `form_map τ hτ J (ι *ᵥ Pi.single j 1) a`. Rewrite `e` using `[h, map_zero, mul_zero, Matrix.mulVec_single_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Pi.zero_apply, ← e, dotProduct_comm]`. Simplify using `[Matrix.vecMul, dotProduct, Matrix.col, mul_comm]`. Rewrite using `[hz, zero_dotProduct]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem orth_map (τ : E →+* ℂ) (hτ : ∀ a, τ (σ a) = star (τ a)) (J : Matrix (Fin n) (Fin n) E)
     (ι : Matrix (Fin n) (Fin n₁) E) (a : Fin n → E) (h : ∀ u, form σ J (ι *ᵥ u) a = 0) (u : Fin n₁ → ℂ) :
@@ -114,9 +114,9 @@ theorem orth_map (τ : E →+* ℂ) (hτ : ∀ a, τ (σ a) = star (τ a)) (J : 
   rw [hz, zero_dotProduct]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.mulVecLin ι) (LinearMap.ker_eq_bot.2 h)`. Use `set K := LinearMap.toMatrix' g`. Establish `hK : K * ι = 1`. Rewrite using `[← LinearMap.toMatrix'_toLin' ι, ← LinearMap.toMatrix'_comp, Matrix.toLin'_apply', hg, LinearMap.toMatrix'_id]`. Introduce `u u' e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun z => (K.map τ) *ᵥ z) e` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.map_mul, hK, Matrix.map_one _ (map_zero τ) (map_one τ), Matrix.one_mulVec] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inj_map (τ : E →+* ℂ) (ι : Matrix (Fin n) (Fin n₁) E) (h : Function.Injective ι.mulVec) :
     Function.Injective (ι.map τ).mulVec := by
@@ -139,31 +139,25 @@ namespace GlobalTheory.PlaneSkew
 open GlobalTheory.AdelicU (splitPrime IsSplitBasis)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB n n₁ hn hn₁ Y r s hr hs hY i₀ i₁ h01 h1n`. Substitute `hn` using the available equality. Establish `hCM : IsCMExt F E σ` using `hB.cm`. Establish `hτσ : ∀ (τ : E →+* ℂ) (a : E), τ (σ a) = star (τ a)` using `hCM.2.2.2`. Take `⟨θ, hθ⟩` from `GlobalTheory.LatVac.exists_integer_add_conj_eq_one_of_isGood σ B hB`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, hx₀, hxx₀⟩` from `GlobalTheory.T.exists_isotropic_indefinite_skewHermitian_cm F E σ B hCM (n₁ + 2) Y.J r s hY.skew hY.sig hr hs (by omega)`. Take `⟨y₀, ι, hxy₀, hyy₀, horth₀, hind₀, hsplit₀⟩` from `GlobalTheory.T.selfDualSkewHermitianLattice_splits_hyperbolicPlane F E σ hCM θ hθ n₁ Y.J Y.L hY.skew hY.lat hY.dual x₀ hx₀ hxx₀`. Establish `hy₀ : y₀ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hxy₀` using `[show (0 : Fin (n₁ + 2) → E) = (0 : E) • x₀ by simp, form_smul_right, map_zero, zero_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hxy₀`. Take `⟨c, hc, hprim⟩` from `GlobalTheory.T.exists_rescale_primitive_in_lattice_at_split_primes F E σ hCM (n₁ + 2) Y.L hY.lat x₀ y₀ hx₀ hy₀ B.P B.τ`. Establish `hσc : σ c ≠ 0` using `fun h => hc (by simpa [sigma_sigma hCM] using congrArg σ h)`. Use `set x := c • x₀ with hxdef`. Use `set y := (σ c)⁻¹ • y₀ with hydef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxx : form σ Y.J x x = 0` using `by rw [form_smul_left, form_smul_right, hxx₀, mul_zero, mul_zero]`. Establish `hyy : form σ Y.J y y = 0` using `by rw [form_smul_left, form_smul_right, hyy₀, mul_zero, mul_zero]`. Establish `hxy : form σ Y.J x y = 1`. Rewrite using `[form_smul_left, form_smul_right, hxy₀, map_inv₀, sigma_sigma hCM, mul_one, mul_inv_cancel₀ hc]`. Establish `horth : ∀ u, form σ Y.J (ι *ᵥ u) x = 0 ∧ form σ Y.J (ι *ᵥ u) y = 0` using `fun u => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[form_smul_right, form_smul_right, (horth₀ u).1, (horth₀ u).2, mul_zero, mul_zero]`. Conclude with `⟨rfl, rfl⟩`. Establish `hsplit : ∀ z ∈ Y.L, ∃ (s t : E) (u : Fin n₁ → E), s • x ∈ Y.L ∧ t • y ∈ Y.L ∧ ι *ᵥ u ∈ Y.L ∧ z = s • x + ι *ᵥ u + t • y`. Introduce `z hz`. Take `⟨s', t, u, h1, h2, h3, rfl⟩` from `hsplit₀ z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `e1 : (s' / c) • x = s' • x₀` using `by rw [hxdef, smul_smul, div_mul_cancel₀ _ hc]`. Establish `e2 : (t * σ c) • y = t • y₀` using `by rw [hydef, smul_smul, mul_assoc, mul_inv_cancel₀ hσc, mul_one]`. Conclude with `⟨s' / c, t * σ c, u, e1 ▸ h1, e2 ▸ h2, h3, by rw [e1, e2]⟩`. Establish `hind : ∀ (s t : E) (u : Fin n₁ → E), s • x + ι *ᵥ u + t • y = 0 → s = 0 ∧ t = 0 ∧ u = 0`. Introduce `s' t u h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `h` using `[hxdef, hydef, smul_smul, smul_smul]`. Take `⟨h1, h2, h3⟩` from `hind₀ _ _ _ h`. Conclude with `⟨(mul_eq_zero.1 h1).resolve_right hc, (mul_eq_zero.1 h2).resolve_right (inv_ne_zero hσc), h3⟩`. Establish `hinjι : Function.Injective ι.mulVec` using `fun u u' h => by`. Use `hind₀ 0 0 (u - u') (by simp [Matrix.mulVec_sub, h])` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 this.2.2`. Take `⟨𝔟, h𝔟⟩` from `GlobalTheory.T.exists_fractionalIdeal_mem_iff_smul_mem_lattice E (n₁ + 2) Y.L hY.lat x (smul_ne_zero hc hx₀)`. Use `haveI hlat1 : (lowLat ι Y.L).IsLattice E := GlobalTheory.T.isLattice_sublatticePullbackAlongEmbedding E (n₁ + 2) n₁ Y.L ι hY.lat hinjι`. Establish `hXX : ∀ w, (fun i => (B.emb w).1 (x i)) ⬝ᵥ (Complex.I • Y.J.map (B.emb w).1) *ᵥ star (fun i => (B.emb w).1 (x i)) = 0` using `fun w => by rw [form_map _ (hτσ _), hxx, map_zero, mul_zero]`. Establish `hYY : ∀ w, (fun i => (B.emb w).1 (y i)) ⬝ᵥ (Complex.I • Y.J.map (B.emb w).1) *ᵥ star (fun i => (B.emb w).1 (y i)) = 0` using `fun w => by rw [form_map _ (hτσ _), hyy, map_zero, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hXY : ∀ w, (fun i => (B.emb w).1 (x i)) ⬝ᵥ (Complex.I • Y.J.map (B.emb w).1) *ᵥ star (fun i => (B.emb w).1 (y i)) = Complex.I` using `fun w => by rw [form_map _ (hτσ _), hxy, map_one, mul_one]`. Establish `hO : ∀ w (u : Fin n₁ → ℂ), (ι.map (B.emb w).1 *ᵥ u) ⬝ᵥ (Complex.I • Y.J.map (B.emb w).1) *ᵥ star (fun i => (B.emb w).1 (x i)) = 0 ∧ (ι.map (B.emb w).1 *ᵥ u) ⬝ᵥ (Complex.I • Y.J.map (B.emb w).1) *ᵥ star (fun i => (B.emb w).1 (y i)) = 0` using `fun w u => ⟨orth_map _ (hτσ _) Y.J ι x (fun u => (horth u).1) u, orth_map _ (hτσ _) Y.J ι y (fun u => (horth u).2) u⟩`. Establish `hsig1 : ∀ w, HasSig (Complex.I • (ιᵀ * Y.J * ι.map σ).map (B.emb w).1) (r - 1) (s - 1)` using `fun w => by`. Rewrite using `[← gram_map _ (hτσ _)]`. Conclude with `GlobalTheory.T.hasHermitianSignature_hyperbolicPlane_orthComplement n₁ _ _ _ _ r s (hY.sig w) hr hs (hXX w) (hYY w) (by rw [hXY w]; exact Complex.I_ne_zero) (hO w) (inj_map _ ι hinjι)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose θ₁ hθ₁ using fun w => GlobalTheory.T.exists_cartanInvolution_hermitianSignature n₁ _ (r - 1) (s - 1) (hsig1 w)`. Use `choose θW hθW using fun w => GlobalTheory.T.exists_cartanInvolution_hyperbolicSwap_extension n₁ (Complex.I • Y.J.map (B.emb w).1) _ _ (ι.map (B.emb w).1) (θ₁ w) (herm_map _ (hτσ _) hY.skew) (hXX w) (hYY w) (hXY w) (hO w) (inj_map _ ι hinjι) (by rw [gram_map _ (hτσ _)]; exact hθ₁ …`. Use `choose β₁ hβ₁ using fun v : B.P => GlobalTheory.AdelicU.exists_isSplitBasis (B.τ v) (lowLat ι Y.L) hCM`. Use `choose βY hβY using fun v : B.P => GlobalTheory.T.exists_splitPlace_localLatticeBasis_hyperbolicPlane F E σ hCM v.1 (B.τ v) n₁ Y.L x y ι (β₁ v) i₀ i₁ h01 h1n hsplit hind (hprim v).1 (hprim v).2 (hβ₁ v)`. Set `Y₁ : Spc F E n₁` to `{ J := ιᵀ * Y.J * ι.map σ L := lowLat ι Y.L θ := θ₁ bas := fun v => if h : v ∈ B.P then β₁ ⟨v, h⟩ else 1 }`.
-
-Set `Y' : Spc F E (n₁ + 2)` to `{ J := Y.J L := Y.L θ := θW bas := fun v => if h : v ∈ B.P then βY ⟨v, h⟩ else 1 }`. Use `⟨Y', Y₁, ⟨x, y, ι, 𝔟⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `{ skew := hY.skew sig := hY.sig lat := hY.lat dual := hY.dual cartan := fun w => (hθW w).1 bas := fun v => by show IsSplitBasis (B.τ v) Y.L (if h : v.1 ∈ B.P then βY ⟨v.1, h⟩ else 1)`. Rewrite using `[dif_pos v.2]`. Conclude with `(hβY v).1 }`.
-
-Conclude with `{ skew := gram_skew hCM hY.skew ι sig := hsig1 lat := hlat1 dual := GlobalTheory.T.orthogonalComplement_hyperbolicPlane_lattice_selfDual F E σ n₁ Y.J Y.L x y ι hY.dual horth hsplit cartan := hθ₁ bas := fun v => by show IsSplitBasis (B.τ v) (lowLat ι Y.L) (if h : v.1 ∈ B.P then β₁ …`. Rewrite using `[dif_pos v.2]`. Conclude with `hβ₁ v }`. Conclude with `{ rank := rfl xx := hxx yy := hyy xy := hxy orth := horth gram := rfl low := fun u => Iff.rfl split := hsplit ideal := h𝔟 cartan := fun w => ⟨(hθW w).2.1, (hθW w).2.2⟩ bas := fun v i => by`. Establish `e1 : (GlobalTheory.ThK.reS Y Y').bas v = βY v` using `dif_pos v.2`.
-
-Establish `e2 : Y₁.bas v = β₁ v` using `dif_pos v.2`. Rewrite using `[e1, e2]`. Conclude with `(hβY v).2 i }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plane_skew : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (n n₁ : ℕ), n = n₁ + 2 → 1 ≤ n₁ → ∀ (Y : Spc F E n) (r s : ℕ), 1 ≤ r → 1 ≤ s →

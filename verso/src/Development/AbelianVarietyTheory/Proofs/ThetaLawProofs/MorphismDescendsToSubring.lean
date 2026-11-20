@@ -18,7 +18,7 @@ open GlobalTheory.KeyKa
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
     (f : A →+* B) (g : B →+* C) : spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -27,17 +27,17 @@ private lemma spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] 
   rfl
 
 /- English proof (translation)
-Introduce `R _ R₀ X X₀ Y₀ f f₀ q π _ _ _ φ hP hφ`. Set `_ : Algebra R₀ R` to `R₀.subtype.toAlgebra`. Establish `hP' : IsPullback π f f₀ (spMap (algebraMap R₀ R))` using `hP`. Set `e` to `hP'.isoPullback`. Take `⟨R', ψ', hfg, hψ'q, hψ'φ⟩` from `Spread.exists_fg_comp_eq (pB := f₀) (pZ := q) (A := R) (e.inv ≫ φ) (by rw [Category.assoc, hφ, ← Category.assoc, hP'.isoPullback_inv_fst])`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hfg`. Use `⟨t, fun R₁ h hS X₁ f₁ π₁ j hP₁ hjπ hjf => ?_⟩` and prove the remaining obligations. Establish `hle : ∀ x ∈ R', x ∈ R₁`. Set `T : Subalgebra R₀ R` to `{ R₁.toSubsemiring with algebraMap_mem' := fun r => h r.2 }`. Establish `hT : R' ≤ T` using `ht ▸ Algebra.adjoin_le hS`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `fun x hx => hT hx`. Set `a : R' →+* R₁` to `RingHom.codRestrict R'.val.toRingHom R₁ (fun x => hle x x.2)`. Establish `ha : spMap a ≫ spMap (algebraMap R₀ R') = spMap (Subring.inclusion h)`. Rewrite using `[spMap_comp_moduli_spaces]`. Use `congr 1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hb : spMap R₁.subtype ≫ spMap a = spMap R'.val.toRingHom`. Rewrite using `[spMap_comp_moduli_spaces]`. Use `congr 1`. Set `L : X₁ ⟶ pullback f₀ (spMap (algebraMap R₀ R'))` to `pullback.lift π₁ (f₁ ≫ spMap a) (by rw [Category.assoc, ha]; exact hP₁.w)`. Use `⟨L ≫ ψ', ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hjL : j ≫ L = e.hom ≫ Spread.bcMap f₀ R'.val`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [L, e, Category.assoc, Spread.bcMap_fst, IsPullback.isoPullback_hom_fst]`. Rewrite using `[pullback.lift_fst, hjπ]`. Simplify using `only [L, e, Category.assoc, pullback.lift_snd, Spread.bcMap_snd, IsPullback.isoPullback_hom_snd_assoc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, hjf, Category.assoc, hb]`. Rewrite using `[← Category.assoc, hjL, Category.assoc, hψ'φ, ← Category.assoc, e.hom_inv_id, Category.id_comp]`. Rewrite using `[Category.assoc, hψ'q, ← Category.assoc, pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem morphism_descends_to_subring :
     ∀ (R : Type) [CommRing R] (R₀ : Subring R) (X X₀ Y₀ : Scheme.{0}) (f : X ⟶ Sp R) (f₀ : X₀ ⟶ Sp R₀) (q : Y₀ ⟶ Sp R₀) (π : X ⟶ X₀) [QuasiCompact f₀] [QuasiSeparated f₀] [LocallyOfFinitePresentation q] (φ : X ⟶ Y₀), IsPullback π f f₀ (spMap R₀.subtype) → φ ≫ q = π ≫ f₀ → ∃ S : Finset R, ∀ (R₁ : Subring R) (h : R₀ ≤ R₁), (S : Set R) ⊆ R₁ → ∀ (X₁ : Scheme.{0}) (f₁ : X₁ ⟶ Sp R₁) (π₁ : X₁ ⟶ X₀) (j : X ⟶ X₁), IsPullback π₁ f₁ f₀ (spMap (Subring.inclusion h)) → j ≫ π₁ = π → j ≫ f₁ = f ≫ spMap R₁.subtype → ∃ ψ : X₁ ⟶ Y₀, j ≫ ψ = φ ∧ ψ ≫ q = π₁ ≫ f₀ := by

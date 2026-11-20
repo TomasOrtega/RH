@@ -16,13 +16,13 @@ local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 local notation "jK" => algebraMap (𝓞 K) K
 
 /- English proof (translation)
-Conclude with `⟨1, fun h1 => ‹𝔭.IsPrime›.ne_top ((Ideal.eq_top_iff_one _).2 h1), 0, Submodule.zero_mem _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem InP.zero {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (k : ℕ) : InP 𝔭 k (0 : K) := by
   exact ⟨1, fun h1 => ‹𝔭.IsPrime›.ne_top ((Ideal.eq_top_iff_one _).2 h1), 0, Submodule.zero_mem _, by simp⟩
 
 /- English proof (translation)
-Take `⟨s, hs, y, hy, hya⟩` from `ha`. Take `⟨t, ht, z, hz, hzb⟩` from `hb`. Use `⟨s * t, fun hst => (‹𝔭.IsPrime›.mem_or_mem hst).elim hs ht, ι t * y + ι s * z, Ideal.add_mem _ (Ideal.mul_mem_left _ _ hy) (Ideal.mul_mem_left _ _ hz), ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul]`. Take the linear combination `(jK (ι t)) * hya + (jK (ι s)) * hzb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem inP_add {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {k : ℕ} {a b : K} (ha : InP 𝔭 k a)
     (hb : InP 𝔭 k b) : InP 𝔭 k (a + b) := by
@@ -34,14 +34,14 @@ private theorem inP_add {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {k : ℕ} {a b : 
   linear_combination (jK (ι t)) * hya + (jK (ι s)) * hzb
 
 /- English proof (translation)
-Conclude with `Finset.sum_induction f (InP 𝔭 k) (fun a b ha hb => inP_add ha hb) (InP.zero k) hf`.
+A detailed English derivation is pending.
 -/
 theorem InP.sum {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {k : ℕ} {α : Type*} (s : Finset α) (f : α → K)
     (hf : ∀ i ∈ s, InP 𝔭 k (f i)) : InP 𝔭 k (∑ i ∈ s, f i) := by
   exact Finset.sum_induction f (InP 𝔭 k) (fun a b ha hb => inP_add ha hb) (InP.zero k) hf
 
 /- English proof (translation)
-Take `⟨s, hs, y, hy, hya⟩` from `ha`. Take `⟨t, ht, z, hz, hzb⟩` from `hb`. Use `⟨s * t, fun hst => (‹𝔭.IsPrime›.mem_or_mem hst).elim hs ht, ι t * y - ι s * z, Ideal.sub_mem _ (Ideal.mul_mem_left _ _ hy) (Ideal.mul_mem_left _ _ hz), ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, map_mul]`. Take the linear combination `(jK (ι t)) * hya - (jK (ι s)) * hzb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem InP.sub {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {k : ℕ} {a b : K} (ha : InP 𝔭 k a) (hb : InP 𝔭 k b) :
     InP 𝔭 k (a - b) := by
@@ -53,43 +53,39 @@ theorem InP.sub {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {k : ℕ} {a b : K} (ha :
   linear_combination (jK (ι t)) * hya - (jK (ι s)) * hzb
 
 /- English proof (translation)
-Establish `key : ∀ s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}, ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ι t = s`. Introduce `s hs`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => exact ⟨1, fun h1 => ‹𝔭.IsPrime›.ne_top ((Ideal.eq_top_iff_one _).2 h1), map_one _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x x' _ _ hx hx'`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨a', ha', rfl⟩` from `hx'`. Conclude with `⟨a * a', fun h1 => (‹𝔭.IsPrime›.mem_or_mem h1).elim ha ha', map_mul _ _ _⟩`. Establish `hc : ∀ w : spanO b, ∃ c : κ → 𝓞 K, cmb b c = w`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `w`. Unfold `cmb`. Conclude with `(Basis.equivFun _).symm.surjective w`. Establish `coords : ∀ u ∈ locF 𝔭 (spanO b), ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ∃ c : κ → 𝓞 K, (cmb b c : V) = ι t • u`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu' : ∃ s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}, s • u ∈ spanO b` using `hu`. Take `⟨s, hs, hsu⟩` from `hu'`. Take `⟨t, ht, rfl⟩` from `key s hs`. Take `⟨c, hcw⟩` from `hc ⟨ι t • u, hsu⟩`. Conclude with `⟨t, ht, c, congrArg Subtype.val hcw⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hfix : ∀ t : 𝓞 F, star (jK (ι t)) = jK (ι t)` using `fun t => (hF _).2 ⟨(t : F), rfl⟩`. Establish `hst : ∀ r : 𝓞 K, jK (star r) = star (jK r)` using `fun r => rfl`. Establish `hl : ∀ (r : 𝓞 K) (v w : V), h (r • v) w = star (jK r) * h v w` using `fun r v w => by`. Rewrite using `[← algebraMap_smul K r v, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Establish `hr : ∀ (r : 𝓞 K) (v w : V), h v (r • w) = jK r * h v w` using `fun r v w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K r w, map_smul, smul_eq_mul]`. Establish `scale : ∀ {m j : ℕ} {c : K} {p : 𝓞 K}, InP 𝔭 m c → p ∈ extP K 𝔭 ^ j → InP 𝔭 (m + j) (jK p * c)`. Introduce `m j c p hc0 hp`. Take `⟨t, ht, z, hz, hzc⟩` from `hc0`. Use `⟨t, ht, z * p, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add]`. Conclude with `Ideal.mul_mem_mul hz hp`. Rewrite using `[map_mul, hzc]`. Expand and normalize the polynomial expressions, which then agree. Establish `mulI : ∀ {m : ℕ} {c : K} (r : 𝓞 K), InP 𝔭 m c → InP 𝔭 m (jK r * c)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `m c r hc0`. Take `⟨t, ht, z, hz, hzc⟩` from `hc0`. Conclude with `⟨t, ht, r * z, Ideal.mul_mem_left _ r hz, by rw [map_mul, hzc]; ring⟩`. Establish `base : ∀ u ∈ locF 𝔭 (spanO b), ∀ v ∈ locF 𝔭 (spanO b), InP 𝔭 0 (h u v)`. Introduce `u hu v hv`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, c, hcu⟩` from `coords u hu`. Take `⟨t', ht', c', hcv⟩` from `coords v hv`. Establish `e : h (cmb b c : V) (cmb b c' : V) = jK (∑ i, ∑ j, star (c i) * (c' j * H i j))`. Rewrite using `[coe_cmb, coe_cmb]`. Establish `h1 : ∀ w : V, h (∑ i, c i • b i) w = ∑ i, star (jK (c i)) * h (b i) w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => hl _ _ _`. Rewrite using `[h1]`. Simplify using `only [map_sum, map_mul, hst, hr, ← hH, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[hcu, hcv, hl, hr, hfix]`. Use `⟨t * t', fun h1 => (‹𝔭.IsPrime›.mem_or_mem h1).elim ht ht', ∑ i, ∑ j, star (c i) * (c' j * H i j), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`. Rewrite using `[← e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `step1 : ∀ u ∈ locF 𝔭 (spanO b), ∀ {m : ℕ} {w : V}, w ∈ (extP K 𝔭 ^ m • locF 𝔭 (spanO b) : Submodule (𝓞 K) V) → InP 𝔭 m (h u w)`. Introduce `u hu m w hw`. Use `Submodule.smul_induction_on (p := fun w => InP 𝔭 m (h u w)) hw (fun p hp v hv => ?_) (fun w₁ w₂ h₁ h₂ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Establish `h3` using `scale (base u hu v hv) hp`. Rewrite `h3` using `[zero_add]`. Then use the resulting hypothesis. Rewrite using `[map_add]`. Conclude with `inP_add h₁ h₂`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hstar : ∀ {j m : ℕ} {c : K}, InP 𝔭 m c → ∀ p ∈ extP K 𝔭 ^ j, InP 𝔭 (j + m) (star (jK p) * c)`. Introduce `j m c hc0 p hp`. Establish `hp' : p ∈ Submodule.span (𝓞 K) (ι '' ((𝔭 ^ j : Ideal (𝓞 F)) : Set (𝓞 F)))`. Unfold `extP at hp`. Rewrite `hp` using `[← Ideal.map_pow]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hp`. Use `clear hp`. Proceed by induction on `hp' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, ht, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfix, add_comm]`. Use `scale hc0 ?_` and prove the remaining obligations. Unfold `extP`. Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ ht`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simpa using InP.zero (𝔭 := 𝔭) (K := K) (j + m)`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, star_add, add_mul]`. Conclude with `inP_add hx hy`. Consider the case `smul r x _ hx`.
-
-Rewrite using `[smul_eq_mul, map_mul, star_mul', mul_assoc, ← hst]`. Conclude with `mulI _ hx`. Use `Submodule.smul_induction_on (p := fun w => InP 𝔭 (k + l) (h w y)) hx (fun p hp u hu => ?_) (fun w₁ w₂ h₁ h₂ => ?_)` and prove the remaining obligations. Rewrite using `[hl]`. Conclude with `hstar (step1 u hu hy) p hp`.
-
-Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `inP_add h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem form_inP (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Basis κ K V) {H : Matrix κ κ (𝓞 K)}
     (hH : ∀ i j, jK (H i j) = h (b i) (b j)) {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {k l : ℕ} {x y : V}
@@ -198,7 +194,7 @@ theorem form_inP (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Basis
     exact inP_add h₁ h₂
 
 /- English proof (translation)
-Rewrite using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smul_zero {𝔭 : Ideal (𝓞 F)} {A : Submodule (𝓞 K) V} {x : V} (hx : x ∈ A) :
     x ∈ (extP K 𝔭 ^ 0 • A : Submodule (𝓞 K) V) := by
@@ -206,9 +202,9 @@ theorem mem_smul_zero {𝔭 : Ideal (𝓞 F)} {A : Submodule (𝓞 K) V} {x : V}
   exact hx
 
 /- English proof (translation)
-Establish `e : h x y - h x₁ y₁ = h (x - x₁) y + h x₁ (y - y₁)`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `h1` using `form_inP hF b hH hxx (mem_smul_zero hy)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `form_inP hF b hH (mem_smul_zero hx₁) hyy`. Rewrite `h2` using `[zero_add]`. Conclude with `inP_add h1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_congr (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Basis κ K V) {H : Matrix κ κ (𝓞 K)}
     (hH : ∀ i j, jK (H i j) = h (b i) (b j)) {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {k : ℕ} {x x₁ y y₁ : V}
@@ -225,15 +221,15 @@ theorem form_congr (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Bas
   exact inP_add h1 h2
 
 /- English proof (translation)
-Establish `hst : ∀ r : 𝓞 K, jK (star r) = star (jK r)` using `fun r => rfl`. Establish `hl : ∀ (r : 𝓞 K) (v w : V), h (r • v) w = star (jK r) * h v w` using `fun r v w => by`. Rewrite using `[← algebraMap_smul K r v, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Establish `hr : ∀ (r : 𝓞 K) (v w : V), h v (r • w) = jK r * h v w` using `fun r v w => by`. Rewrite using `[← algebraMap_smul K r w, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `expand : h (∑ i, c i • b i) (∑ j, c' j • b j) = ∑ i, ∑ j, star (jK (c i)) * (jK (c' j) * h (b i) (b j))`. Establish `h1 : ∀ w : V, h (∑ i, c i • b i) w = ∑ i, star (jK (c i)) * h (b i) w`. Introduce `w`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => hl _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `rhs : jK (star c ⬝ᵥ (H *ᵥ c')) = ∑ i, ∑ j, star (jK (c i)) * (jK (H i j) * jK (c' j))`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, map_sum, map_mul, hst, Finset.mul_sum]`. Rewrite using `[coe_cmb, coe_cmb, expand, rhs]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hH]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem form_cmb {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Basis κ K V) {H : Matrix κ κ (𝓞 K)}
     (hH : ∀ i j, jK (H i j) = h (b i) (b j)) (c c' : κ → 𝓞 K) :
@@ -263,13 +259,13 @@ theorem form_cmb {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Basis κ K V) {H : Matr
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, z, hz, hzt⟩`. Establish `e1 : z = ι t * a`. Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[hzt, map_mul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, i, hi, hyi⟩` from `h𝔭.exists_inv ht`. Take `⟨q, hq⟩` from `sub_dvd_pow_sub_pow (1 : 𝓞 F) i k`. Establish `e0 : (1 : 𝓞 F) - i = y * t` using `by linear_combination -hyi`. Rewrite `hq` using `[e0, one_pow]`. Establish `e2 : (1 : 𝓞 F) = i ^ k + y * t * q` using `by linear_combination hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrArg ι e2`. Simplify using `only [map_one, map_add, map_mul] at h1`. Establish `e3 : a = ι (i ^ k) * a + ι y * ι q * (ι t * a)` using `by linear_combination a * h1`. Rewrite using `[e3]`. Use `Ideal.add_mem _ (Ideal.mul_mem_right _ _ ?_) (Ideal.mul_mem_left _ _ (by rw [← e1]; exact hz))` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_pow]`. Conclude with `Ideal.pow_mem_pow (Ideal.mem_map_of_mem _ hi) k`. Introduce `ha`. Conclude with `⟨1, fun h1 => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h1), a, ha, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inP_jK_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) (a : 𝓞 K) :
     InP 𝔭 k (jK a) ↔ a ∈ extP K 𝔭 ^ k := by
@@ -294,13 +290,13 @@ theorem inP_jK_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) (a
     exact ⟨1, fun h1 => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h1), a, ha, by simp⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.smul_mono_left (Ideal.pow_le_pow_right hjk)`.
+A detailed English derivation is pending.
 -/
 theorem smul_mono_pow {𝔭 : Ideal (𝓞 F)} {A : Submodule (𝓞 K) V} {j k : ℕ} (hjk : j ≤ k) :
     (extP K 𝔭 ^ k • A : Submodule (𝓞 K) V) ≤ extP K 𝔭 ^ j • A := Submodule.smul_mono_left (Ideal.pow_le_pow_right hjk)
 
 /- English proof (translation)
-Establish `hg' : Formalism.HermitianLatticesTheory.gmap g A = A` using `hg.2`. Rewrite using `[← hg']`. Conclude with `Submodule.mem_map_of_mem hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aut_mem {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V} {g : V ≃ₗ[K] V} (hg : g ∈ autSub h A)
     {x : V} (hx : x ∈ A) : g x ∈ A := by
@@ -309,9 +305,9 @@ theorem aut_mem {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V} {g
   exact Submodule.mem_map_of_mem hx
 
 /- English proof (translation)
-Establish `hs : ∀ (r : 𝓞 K) (v : V), g (r • v) = r • g v` using `fun r v => by`. Rewrite using `[← algebraMap_smul K r v, map_smul, algebraMap_smul]`. Use `Submodule.smul_induction_on (p := fun w => g w ∈ J • A) hx (fun r hr a ha => ?_) (fun u w hu hw => ?_)` and prove the remaining obligations. Simplify using `only [hs]`. Conclude with `Submodule.smul_mem_smul hr (aut_mem hg ha)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Conclude with `Submodule.add_mem _ hu hw`.
+A detailed English derivation is pending.
 -/
 theorem aut_mem_smul {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V} {g : V ≃ₗ[K] V}
     (hg : g ∈ autSub h A) (J : Ideal (𝓞 K)) {x : V} (hx : x ∈ J • A) : g x ∈ J • A := by
@@ -325,11 +321,11 @@ theorem aut_mem_smul {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) 
     exact Submodule.add_mem _ hu hw
 
 /- English proof (translation)
-Establish `hs : ∀ (r : 𝓞 K) (v : V), g (r • v) = r • g v` using `fun r v => by`. Rewrite using `[← algebraMap_smul K r v, map_smul, algebraMap_smul]`. Establish `e : ∑ l, (Y *ᵥ c) l • b l = ∑ i, c i • ∑ l, Y l i • b l`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Rewrite using `[coe_cmb, coe_cmb, map_sum, e]`. Simplify using `only [hs]`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_sub]`. Conclude with `Submodule.smul_mem _ (c i) (hgY i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aut_cmb {𝔭 : Ideal (𝓞 F)} (b : Basis κ K V) {g : V ≃ₗ[K] V} {Y : Matrix κ κ (𝓞 K)} {j : ℕ}
     (hgY : ∀ i, g (b i) - ∑ l, Y l i • b l ∈ (extP K 𝔭 ^ j • locF 𝔭 (spanO b) : Submodule (𝓞 K) V))
@@ -350,25 +346,21 @@ theorem aut_cmb {𝔭 : Ideal (𝓞 F)} (b : Basis κ K V) {g : V ≃ₗ[K] V} {
   exact Submodule.smul_mem _ (c i) (hgY i)
 
 /- English proof (translation)
-Establish `key : ∀ s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}, ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ι t = s`. Introduce `s hs`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => exact ⟨1, fun h1 => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h1), map_one _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x x' _ _ hx hx'`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨a', ha', rfl⟩` from `hx'`. Conclude with `⟨a * a', fun h1 => (‹𝔭.IsPrime›.mem_or_mem h1).elim ha ha', map_mul _ _ _⟩`. Establish `surj : ∀ z : QA 𝔭 b k, ∃ w : spanO b, Submodule.Quotient.mk (inA 𝔭 b w) = z`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `z`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Establish `hy : ∃ s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s}, s • (y : V) ∈ spanO b` using `y.2`. Take `⟨s, hs, hsy⟩` from `hy`. Take `⟨t, ht, rfl⟩` from `key s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y', i, hi, hyi⟩` from `h𝔭.exists_inv ht`. Take `⟨q, hq⟩` from `sub_dvd_pow_sub_pow (1 : 𝓞 F) i k`. Establish `e0 : (1 : 𝓞 F) - i = y' * t` using `by linear_combination -hyi`. Rewrite `hq` using `[e0, one_pow]`. Establish `hc : ι (y' * q) * ι t = 1 - ι (i ^ k)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg ι hq`. Simplify using `only [map_sub, map_one, map_mul, map_pow] at h2 ⊢`. Take the linear combination `-h2`. Establish `hmem : ι (i ^ k) ∈ extP K 𝔭 ^ k`. Rewrite using `[map_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.pow_mem_pow (Ideal.mem_map_of_mem _ hi) k`. Use `⟨⟨ι (y' * q) • (ι t • (y : V)), Submodule.smul_mem _ _ hsy⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.Quotient.eq]`. Establish `e4 : inA 𝔭 b ⟨ι (y' * q) • (ι t • (y : V)), Submodule.smul_mem _ _ hsy⟩ - y = (-ι (i ^ k)) • y`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show ι (y' * q) • (ι t • (y : V)) - (y : V) = (-ι (i ^ k)) • (y : V)`. Rewrite using `[smul_smul, hc, sub_smul, one_smul, neg_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e4]`. Conclude with `Submodule.smul_mem_smul (Submodule.neg_mem _ hmem) Submodule.mem_top`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hc : ∀ w : spanO b, ∃ c : κ → 𝓞 K, cmb b c = w`. Introduce `w`. Unfold `cmb`. Conclude with `(Basis.equivFun _).symm.surjective w`. Use `choose w hw using surj`.
-
-Use `choose c hc' using hc`. Use `⟨Matrix.of fun l i => c (w (X (Submodule.Quotient.mk (inA 𝔭 b (cmb b (Pi.single i 1)))))) l, fun i => ?_⟩` and prove the remaining obligations. Establish `e : (cmb b fun l => Matrix.of (fun l i => c (w (X (Submodule.Quotient.mk (inA 𝔭 b (cmb b (Pi.single i 1)))))) l) l i) = w (X (Submodule.Quotient.mk (inA 𝔭 b (cmb b (Pi.single i 1)))))`. Simplify using `only [Matrix.of_apply]`. Conclude with `hc' _`.
-
-Rewrite using `[e, hw]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_matrix_of_end {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) [𝔭.IsPrime] (b : Basis κ K V) (k : ℕ)
     (X : Module.End (𝓞 K) (QA 𝔭 b k)) : ∃ Y : Matrix κ κ (𝓞 K),
@@ -428,13 +420,13 @@ theorem exists_matrix_of_end {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) [�
   rw [e, hw]
 
 /- English proof (translation)
-Use `h𝔭.isPrime` as an intermediate fact. Take `⟨Y, hXY⟩` from `exists_matrix_of_end h𝔭 b k X`. Establish `hY : ∀ i j, (Yᴴ * H * Y - H) i j ∈ extP K 𝔭 ^ k`. Introduce `i j`. Establish `h1` using `hX _ _ _ _ (hXY i).symm (hXY j).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[congrP_iff_inP, coe_inA, coe_inA, coe_inA, coe_inA, form_cmb b hH, form_cmb b hH, ← form_col, form_single, ← map_sub, inP_jK_iff h𝔭]`. Conclude with `h1`. Take `⟨g, hg, hgY⟩` from `exists_isom_matrix hK hF hs hd b hH h𝔭 he hk Y hY`. Use `⟨g, hg, fun x x' hxx' => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_cmb h𝔭 b k (Submodule.Quotient.mk x)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hxx'` using `[hc, end_apply_cmb b k X Y hXY c, mk_eq_iff]`. Rewrite `hc` using `[mk_eq_iff]`. Establish `e1 : g (x : V) - x' = g ((x : V) - (inA 𝔭 b (cmb b c) : V)) + (g (cmb b c : V) - (cmb b (Y *ᵥ c) : V)) - ((x' : V) - (inA 𝔭 b (cmb b (Y *ᵥ c)) : V))`. Rewrite using `[map_sub, coe_inA, coe_inA]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `sub_mem (add_mem (smul_mono_pow (Nat.sub_le k e) (aut_mem_smul hg _ hc)) (aut_cmb b hgY c)) (smul_mono_pow (Nat.sub_le k e) hxx')`.
+A detailed English derivation is pending.
 -/
 theorem exists_isom_lift_basis (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0) (b : Basis κ K V) {H : Matrix κ κ (𝓞 K)}

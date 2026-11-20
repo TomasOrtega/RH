@@ -11,15 +11,15 @@ noncomputable def higher : MvPowerSeries (Fin 2) R :=
   F.toPowerSeries - X 0 - X 1
 
 /- English proof (translation)
-Simplify using `[higher]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toPowerSeries_eq_X_add_X_add_higher : F.toPowerSeries = X 0 + X 1 + higher F := by
   simp [higher]
 
 /- English proof (translation)
-Use `nat_le_order fun d hd => ?_` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨a, b, rfl⟩ : ∃ a b : ℕ, d = Finsupp.single 0 a + Finsupp.single 1 b := ⟨d 0, d 1, by ext i; fin_cases i <;> simp⟩`. Establish `hab : a + b < 2` using `by simpa [Finsupp.degree_eq_sum, Fin.sum_univ_two] using hd`. Establish `h01 : (Finsupp.single (0 : Fin 2) 1 : Fin 2 →₀ ℕ) ≠ Finsupp.single 1 1`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun d => d 0) h` as an intermediate fact. Simplify using `at this`. Establish `ha : a < 2` using `by omega`. Establish `hb : b < 2` using `by omega`. Apply the tactic sequence `interval_cases a <;> interval_cases b <;> simp_all [higher, coeff_X, F.lin_coeff_X, F.lin_coeff_Y, F.zero_constantCoeff, Ne.symm h01]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem two_le_order_higher : (2 : ℕ∞) ≤ order (higher F) := by
   refine nat_le_order fun d hd => ?_
@@ -36,13 +36,13 @@ theorem two_le_order_higher : (2 : ℕ∞) ≤ order (higher F) := by
     F.lin_coeff_Y, F.zero_constantCoeff, Ne.symm h01]
 
 /- English proof (translation)
-The claim follows from `one_le_order_iff_constCoeff_eq_zero.1 (le_trans (by norm_num) (two_le_order_higher F))`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_higher : constantCoeff (higher F) = 0 :=
   one_le_order_iff_constCoeff_eq_zero.1 (le_trans (by norm_num) (two_le_order_higher F))
 
 /- English proof (translation)
-Use `conv_lhs => rw [toPowerSeries_eq_X_add_X_add_higher F]`. Rewrite using `[subst_add hab, subst_add hab, subst_X hab, subst_X hab]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subst_eq_add_add_subst_higher {τ : Type*} {a b : MvPowerSeries τ R}
     (hab : HasSubst ![a, b]) :
@@ -52,7 +52,7 @@ theorem subst_eq_add_add_subst_higher {τ : Type*} {a b : MvPowerSeries τ R}
   simp
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> simpa`.
+A detailed English derivation is pending.
 -/
 lemma hasSubst_pair {τ : Type*} {a b : MvPowerSeries τ R} (ha : constantCoeff a = 0)
     (hb : constantCoeff b = 0) : HasSubst ![a, b] :=
@@ -68,13 +68,13 @@ private lemma constantCoeff_sub_C (g : MvPowerSeries Unit R) :
     constantCoeff (g - C (constantCoeff g)) = 0 := by simp
 
 /- English proof (translation)
-Establish `hX : constantCoeff (X () : MvPowerSeries Unit R) = 0` using `by simp`. Apply the tactic sequence `have key := add_le_order_subst_sub_subst (R := R) (m := 2) (n := (n : ℕ∞)) (hasSubst_pair hX (constantCoeff_sub_C f)) (hasSubst_pair hX (constantCoeff_sub_C g)) (fun i => by fin_cases i <;> simp) (fun i => by fin_cases i <;> simp) ?_ (two_le_order_higher F)`. Establish `e : invStep F f - invStep F g = -(subst ![X (), f - C (constantCoeff f)] (higher F) -`. Substitute `![X (), g - C (constantCoeff g)] (higher F)) := by` using the available equality. Simplify using `only [invStep]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, order_neg]`. Establish `: ((n + 1 : ℕ) : ℕ∞) + 1 = (n : ℕ∞) + 2` using `by push_cast; ring`. Conclude with `(ENat.add_le_add_iff_right ENat.one_ne_top).1 (this ▸ key)`. Introduce `i fin_cases i`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Simplify using `[hn]`. Establish `h0 : constantCoeff (f - g) = 0`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Conclude with `coeff_of_lt_order (lt_of_lt_of_le (by simpa using hn) h)`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[h0]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma invStep_contract (f g : MvPowerSeries Unit R) (n : ℕ)
     (h : (n : ℕ∞) ≤ order (f - g)) :
@@ -104,7 +104,7 @@ private lemma invStep_contract (f g : MvPowerSeries Unit R) (n : ℕ)
         simpa using h
 
 /- English proof (translation)
-The claim follows from `existsUnique_fixedPoint _ (invStep_contract F)`.
+A detailed English derivation is pending.
 -/
 private lemma existsUnique_invStep : ∃! g, invStep F g = g :=
   existsUnique_fixedPoint _ (invStep_contract F)
@@ -113,13 +113,13 @@ noncomputable def inv : PowerSeries R :=
   (existsUnique_invStep F).exists.choose
 
 /- English proof (translation)
-The claim follows from `(existsUnique_invStep F).exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 private lemma invStep_inv : invStep F (inv F) = inv F :=
   (existsUnique_invStep F).exists.choose_spec
 
 /- English proof (translation)
-Establish `hX : constantCoeff (X () : MvPowerSeries Unit R) = 0` using `by simp`. Apply the tactic sequence `rw [invStep, map_sub, map_neg, hX, constantCoeff_subst_eq_zero (hasSubst_pair hX (constantCoeff_sub_C g)) (fun i => by fin_cases i <;> simp) (constantCoeff_higher F)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private lemma constantCoeff_invStep (g : MvPowerSeries Unit R) :
     constantCoeff (invStep F g) = 0 := by
@@ -130,29 +130,29 @@ private lemma constantCoeff_invStep (g : MvPowerSeries Unit R) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← invStep_inv F]`. Conclude with `constantCoeff_invStep F _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_inv : PowerSeries.constantCoeff (inv F) = 0 := by
   rw [← invStep_inv F]
   exact constantCoeff_invStep F _
 
 /- English proof (translation)
-The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero' (constantCoeff_inv F)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_inv : PowerSeries.HasSubst (inv F) :=
   PowerSeries.HasSubst.of_constantCoeff_zero' (constantCoeff_inv F)
 
 /- English proof (translation)
-Simplify using `[invStep, hg]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma invStep_of_constantCoeff_eq_zero {g : MvPowerSeries Unit R}
     (hg : constantCoeff g = 0) : invStep F g = -X () - subst ![X (), g] (higher F) := by
   simp [invStep, hg]
 
 /- English proof (translation)
-Establish `hX : constantCoeff (X () : MvPowerSeries Unit R) = 0` using `by simp`. Establish `hi : constantCoeff (inv F : MvPowerSeries Unit R) = 0` using `constantCoeff_inv F`. Use `invStep_inv F` as an intermediate fact. Rewrite `this` using `[invStep_of_constantCoeff_eq_zero F hi]`. Express the relevant statement in the definitionally equal form `subst ![X (), (inv F : MvPowerSeries Unit R)] F.toPowerSeries = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[subst_eq_add_add_subst_higher F (hasSubst_pair hX hi)]`. Take the linear combination `(-1 : MvPowerSeries Unit R) * this`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem subst_X_inv :
     subst ![PowerSeries.X, inv F] F.toPowerSeries = (0 : PowerSeries R) := by
@@ -165,9 +165,9 @@ theorem subst_X_inv :
   linear_combination (-1 : MvPowerSeries Unit R) * this
 
 /- English proof (translation)
-Establish `hX : constantCoeff (X () : MvPowerSeries Unit R) = 0` using `by simp`. Establish `hg' : constantCoeff (g : MvPowerSeries Unit R) = 0` using `hg`. Express the relevant statement in the definitionally equal form `subst ![X (), (g : MvPowerSeries Unit R)] F.toPowerSeries = 0 at h`. Rewrite `h` using `[subst_eq_add_add_subst_higher F (hasSubst_pair hX hg')]`. Establish `hfix : invStep F g = g`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[invStep_of_constantCoeff_eq_zero F hg']`. Take the linear combination `(-1 : MvPowerSeries Unit R) * h`. Conclude with `(existsUnique_invStep F).unique hfix (invStep_inv F)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_inv_of_subst_eq_zero {g : PowerSeries R} (hg : PowerSeries.constantCoeff g = 0)
     (h : subst ![PowerSeries.X, g] F.toPowerSeries = (0 : PowerSeries R)) : g = inv F := by
@@ -181,7 +181,7 @@ theorem eq_inv_of_subst_eq_zero {g : PowerSeries R} (hg : PowerSeries.constantCo
   exact (existsUnique_invStep F).unique hfix (invStep_inv F)
 
 /- English proof (translation)
-Establish `hx' : HasSubst (fun _ : Unit => x)` using `PowerSeries.hasSubst_iff.mp hx`. Rewrite using `[PowerSeries.subst_def, subst_comp_subst_apply hgh hx']`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_subst_pair {σ : Type*} {g h : PowerSeries R} (hgh : HasSubst ![g, h])
     {x : MvPowerSeries σ R} (hx : PowerSeries.HasSubst x) (G : MvPowerSeries (Fin 2) R) :
@@ -205,9 +205,9 @@ Both sides reduce to the same expression.
 theorem neg_point_val (x : F.Point σ) : (-x).val = PowerSeries.subst x.val (inv F) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hX : constantCoeff (PowerSeries.X : PowerSeries R) = 0` using `PowerSeries.constantCoeff_X`. Establish `h` using `congrArg (PowerSeries.subst x.val) (subst_X_inv F)`. Rewrite `h` using `[subst_subst_pair (hasSubst_pair hX (constantCoeff_inv F)) x.prop, PowerSeries.subst_X x.prop]`. Rewrite using `[FormalGroup.add_apply, neg_point_val, h]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PowerSeries.coe_substAlgHom x.prop, map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma add_neg_point (x : F.Point σ) : x + -x = 0 := by
   apply Subtype.ext

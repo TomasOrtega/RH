@@ -12,9 +12,9 @@ set_option autoImplicit false
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits GlobalTheory.HilbertSch GlobalTheory.HilbGlue Opposite
 
 /- English proof (translation)
-Rewrite using `[Precoverage.isSheaf_toGrothendieck_iff_of_isStableUnderBaseChange]`. Introduce and unpack `Y P hP`. Take `⟨(𝒰 : Scheme.OpenCover Y), rfl⟩` from `Scheme.exists_cover_of_mem_pretopology hP`. Rewrite using `[Presieve.isSheafFor_arrows_iff]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `existsUnique_of_exists_of_unique (GlobalTheory.T.hilbert_point_glue_open_cover z r Y 𝒰 x fun i j R b c h => hx i j R b c h) fun y y' h h' => GlobalTheory.T.hilbert_point_eq_of_open_cover z r Y 𝒰 y y' fun i => (h i).trans (h' i).symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HilbGlue.isSheaf_hilbFunctor {S Z : Scheme.{0}} (z : Z ⟶ S) (r : ℕ) :
     Presieve.IsSheaf Scheme.zariskiTopology (hilbFunctor z r) := by
@@ -27,15 +27,15 @@ theorem GlobalTheory.HilbGlue.isSheaf_hilbFunctor {S Z : Scheme.{0}} (z : Z ⟶ 
     fun y y' h h' => GlobalTheory.T.hilbert_point_eq_of_open_cover z r Y 𝒰 y y' fun i => (h i).trans (h' i).symm
 
 /- English proof (translation)
-Introduce `S Z z _ _ _ r hS`. Establish `hloc : ∀ s : S, ∃ W : S.Opens, s ∈ W ∧ ∃ (T : Scheme.{0}) (y : HPt z r T) (π : T ⟶ W.toScheme), IsProper π ∧ y.1 = π ≫ W.ι ∧ ∀ (Y : Scheme.{0}) (x : HPt z r Y) (b : Y ⟶ W.toScheme), x.1 = b ≫ W.ι → ∃! c : Y ⟶ T, HPt.map c y = x` using `fun s => by`. Take `⟨W, hs, hW⟩` from `hS s`. Conclude with `⟨W, hs, GlobalTheory.T.hilbertFunctor_local_representing_data_of_restrict z r W hW⟩`. Establish `hloc'` using `hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose W hsW T y π _ hπ huniq using hloc`. Establish `hrep : (hilbFunctor z r).IsRepresentable` using `GlobalTheory.GenTorsor.isRepresentable_of_cover (hilbFunctor z r) (GlobalTheory.HilbGlue.isSheaf_hilbFunctor z r) (hilbProj z r) W (eq_top_iff.2 fun s _ => TopologicalSpace.Opens.mem_iSup.2 ⟨s, hsW s⟩) T y π hπ huniq`. Choose the witnesses or unpack the hypotheses as in `⟨H, u, hu⟩ : ∃ (H : Scheme.{0}) (u : HPt z r H), ∀ (T : Scheme.{0}) (x : HPt z r T), ∃! c : T ⟶ H, HPt.map c u = x := by`. Take `⟨H, ⟨e⟩⟩` from `hrep.has_representation`. Establish `h : ∀ {T : Scheme.{0}} (c : T ⟶ H), HPt.map c (e.homEquiv (𝟙 H)) = e.homEquiv c` using `fun c => (e.homEquiv_eq c).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨H, e.homEquiv (𝟙 H), fun T x => ⟨e.homEquiv.symm x, (h _).trans (e.homEquiv.apply_symm_apply x), fun c hc => e.homEquiv.eq_symm_apply.2 ((h c).symm.trans hc)⟩⟩`. Establish `hprop : IsProper u.1` using `GlobalTheory.T.isProper_of_represents_hilbertFunctor_of_local z r H u hu hloc'`. Take `⟨h, I⟩` from `u`. Use `⟨H, h, I.1.subscheme, I.1.subschemeι, hprop, inferInstance, I.2.1, I.2.2.1, I.2.2.2, ?_⟩` and prove the remaining obligations. Introduce `T g V v _ h1 h2 h3`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv' : IsFinFlatRk (v ≫ pullback.snd z g) r` using `⟨h1, h2, h3⟩`. Take `⟨c, hc, hcu⟩` from `hu T (mkPt g v hv')`. Establish `key : ∀ (f : T ⟶ H) (hf : f ≫ h = g), HPt.map f ⟨h, I⟩ = mkPt g v hv' ↔ ∃ w : V ⟶ I.1.subscheme, IsPullback v w (bc z f h g hf) I.1.subschemeι`. Introduce `f hf`. Rewrite using `[mkPt, HPt.map_eq_mk_iff f ⟨h, I⟩ hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.HilbGlue.comap_eq_ker_iff (bc z f h g hf) I.1 v`. Establish `hcg : c ≫ h = g` using `congrArg Sigma.fst hc`. Conclude with `⟨c, ⟨hcg, (key c hcg).1 hc⟩, fun f ⟨hf, hw⟩ => hcu f ((key f hf).2 hw)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HilbGlue.isHilbRep_of_cover : ∀ (S Z : Scheme.{0}) (z : Z ⟶ S), IsFinite z → Flat z →
     LocallyOfFinitePresentation z → ∀ r : ℕ, (∀ s : S, ∃ W : S.Opens, s ∈ W ∧ IsHilbRep (z ∣_ W) r) →

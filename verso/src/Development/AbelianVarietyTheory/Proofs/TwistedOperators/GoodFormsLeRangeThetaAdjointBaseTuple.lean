@@ -21,11 +21,11 @@ noncomputable section
 namespace GlobalTheory.LiftOntoGood
 
 /- English proof (translation)
-Establish `hcomp : e ∘ₗ th = th` using `LinearMap.ext hfix`. Rewrite using `[← Submodule.orthogonal_orthogonal (LinearMap.range th)]`. Introduce `v hv`. Establish `hv0 : LinearMap.adjoint th v = 0`. Use `ext_inner_left ℂ fun z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.adjoint_inner_right, inner_zero_right]`. Conclude with `hv _ (LinearMap.mem_range_self _ z)`. Establish `h1 : LinearMap.adjoint th (e v) = 0`. Establish `e2 : LinearMap.adjoint th (e v) = LinearMap.adjoint (e ∘ₗ th) v`. Rewrite using `[LinearMap.adjoint_comp, hsa, LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, hcomp, hv0]`. Establish `h2 : e (e v) = e v` using `by rw [← Module.End.mul_apply, hid]`. Establish `h3 : e v = 0` using `hinj (e v) h2 h1`. Rewrite using `[← hx, ← LinearMap.adjoint_inner_left, hsa, h3, inner_zero_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_of_fixed {X Y : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] [FiniteDimensional ℂ X]
     [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [FiniteDimensional ℂ Y] (th : X →ₗ[ℂ] Y) (e : Y →ₗ[ℂ] Y)
@@ -49,21 +49,19 @@ theorem mem_range_of_fixed {X Y : Type} [NormedAddCommGroup X] [InnerProductSpac
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hC hEx hUp _ _ hU j`. Establish `hM : R.toRealDat.IsModels` using `hC.base.models`. Establish `hC3` using `RealDat3.characterisation_of_weak hC hEx`. Establish `hX : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hOk.ok2.irr`. Establish `hsa : LinearMap.adjoint (GlobalTheory.Hk3.eH R.toRealDat j) = GlobalTheory.Hk3.eH R.toRealDat j` using `GlobalTheory.LiftScalarL.adjoint_eH R.toRealDat hM hX j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ g, ∑ a, RealDat.eC (A` using `A3.A) (sg0 D A3.A) a * RealDat.eC (A := A3.A) (sg0 D A3.A) (a⁻¹ * g) = RealDat.eC (A := A3.A) (sg0 D A3.A) g := fun g => GlobalTheory.Hk3.conv_map_idem _ (idemOf_mul_self A3.A.X hX) (sg0 D A3.A) g`. Establish `hidem : GlobalTheory.Hk3.eH R.toRealDat j * GlobalTheory.Hk3.eH R.toRealDat j = GlobalTheory.Hk3.eH R.toRealDat j` using `GlobalTheory.Hk3.sum_rep_idem _ _ hc`. Establish `hinj` using `(hM.HW j (sg0 D A3.A)).1`. Establish `hrange` using `(hM.HW j (sg0 D A3.A)).2.1`. Establish `hfixth : ∀ y, GlobalTheory.Hk3.eH R.toRealDat j (R.thG j A3.A.μ0 y) = R.thG j A3.A.μ0 y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Establish `hm` using `hC3.thP.thF_mem j A3.A.μ0 y`. Rewrite `hm` using `[← hrange]`. Take `⟨x0, hx0⟩` from `hm`. Establish `e1 : R.thG j A3.A.μ0 y = GlobalTheory.Hk3.eH R.toRealDat j x0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[hC3.thP.thG j A3.A.μ0 y, ← hx0, GlobalTheory.LiftScalarL.e_eH R.toRealDat hM j x0]`. Rewrite using `[e1, ← Module.End.mul_apply, hidem]`. Establish `key` using `mem_range_of_fixed (R.thG j A3.A.μ0) (GlobalTheory.Hk3.eH R.toRealDat j) hsa hidem hfixth (hUp j A3.A.μ0)`. Introduce `w hw`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw' : w ∈ LinearMap.range ((R.toCx3 F).w0C false j)` using `hw`. Rewrite `hw'` using `[GlobalTheory.LevelRange.range_w0C_eq R F hOk hC hU false j]`. Take `⟨x, rfl⟩ : ∃ x : (R.HW j (sg0 D A3.A)).H, Tw.mk (twAt D.what₂.embLL A3.A.v0) x = w` from `⟨w, rfl⟩`. Establish `hgood : (R.HW j (sg0 D A3.A)).e x ∈ R.toRealDat.Wat j (sg0 D A3.A) (R.toRealDat.levL F.lv2 false (sg0 D A3.A))` using `hw'`. Establish `hfix : GlobalTheory.Hk3.eH R.toRealDat j x = x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[GlobalTheory.LiftScalarL.e_eH R.toRealDat hM j]`. Conclude with `GlobalTheory.LiftScalarCompare.postOn_of_good hgood`. Take `⟨y, hy⟩` from `key _ hfix`. Establish `hne : cj (twAt D.what₂.embLL A3.A.v0) (R.phs j) ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Use `congrArg norm h0` as an intermediate fact. Rewrite `this` using `[norm_cj, (hC.phase j).1, norm_zero]`. Conclude with `one_ne_zero this`. Use `⟨Tw.mk (twAt D.what₂.embLL A3.A.v0) ((cj (twAt D.what₂.embLL A3.A.v0) (R.phs j))⁻¹ • y), ?_⟩` and prove the remaining obligations.
-
-Use `show cj (twAt D.what₂.embLL A3.A.v0) (R.phs j) • R.thG j A3.A.μ0 ((cj (twAt D.what₂.embLL A3.A.v0) (R.phs j))⁻¹ • y) = x`. Rewrite using `[map_smul, smul_inv_smul₀ hne, hy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodW_le_range : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → UpInjW R.toRealDat → (∀ j t, (A3.A.fam.L j t).OkH ∧ (A3.liftI j t).InertRationalAdjoint) → R.PGEquiv F → R.toRealDat.LUnif → ∀ j, U2.goodW A3 (R.toCx3 F) j ≤ LinearMap.range ((R.toCx3 F).θ' j A3.A.fam.μ0) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hC hEx hUp _ _ hU j

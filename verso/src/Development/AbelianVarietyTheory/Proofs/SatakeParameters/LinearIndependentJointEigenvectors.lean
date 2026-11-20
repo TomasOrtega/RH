@@ -3,21 +3,19 @@ import Mathlib
 namespace GlobalTheory.JointEigenvectorsIndependentSatakeParameters
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `g _ i hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at hi`. Consider the case `insert a s ha ih`. Introduce `g hg`. Rewrite `hg` using `[Finset.sum_insert ha]`. Establish `e1 : ∑ i ∈ s, g i • v i = -(g a • v a)` using `eq_neg_of_add_eq_zero_right hg`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ∀ i ∈ s, g i = 0`. Introduce `i hi`. Establish `hne : (i : J → ℂ) ≠ a` using `fun h => ha (Subtype.ext h ▸ hi)`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hne`. Establish `e2 : ∑ i ∈ s, (g i * (i : J → ℂ) j) • v i = -((g a * (a : J → ℂ) j) • v a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (T j) e1` as an intermediate fact. Simplify `this` using `[map_sum, map_smul, hT, smul_smul]`. Establish `e3 : ∑ i ∈ s, ((a : J → ℂ) j * g i) • v i = -(((a : J → ℂ) j * g a) • v a)`. Use `congrArg (fun x => (a : J → ℂ) j • x) e1` as an intermediate fact. Simplify `this` using `[Finset.smul_sum, smul_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ∑ i ∈ s, (g i * ((i : J → ℂ) j - (a : J → ℂ) j)) • v i = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [e2, e3, mul_comm ((a : J → ℂ) j) (g a)]; exact sub_self _`. Use `ih (fun i => g i * ((i : J → ℂ) j - (a : J → ℂ) j)) h2 i hi` as an intermediate fact. Conclude with `(mul_eq_zero.mp this).resolve_right (sub_ne_zero.mpr hj)`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∑ i ∈ s, g i • v i = 0` using `Finset.sum_eq_zero fun i hi => by rw [hs i hi, zero_smul]`. Introduce `i hi`. Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases. Rewrite `hg` using `[hsum, add_zero]`. Conclude with `(smul_eq_zero.mp hg).resolve_right (hv _)`.
-
-Conclude with `hs i hi`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_jointEigenvectors {J V : Type} [AddCommGroup V] [Module ℂ V]
     (T : J → V →ₗ[ℂ] V) (S : Set (J → ℂ)) (v : S → V)

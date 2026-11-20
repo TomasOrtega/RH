@@ -12,23 +12,21 @@ open scoped InnerProductSpace
 namespace GlobalTheory.TypeSum.CasBasis
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ d e X Y h hX hY hK`. Establish `hσ` using `h.1`. Take `⟨v₀, hv₀K, hv₀⟩` from `h.2.2.2.2`. Set `f : KG ε → ℂ` to `fun k => star ⟪v₀, σ (toMK k) v₀⟫_ℂ`. Establish `hfc : Continuous f` using `(continuous_const.inner (KCoef.continuous_orbit hσ v₀)).star`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨Q, hQ⟩` from `KCoef.exists_clm_kAvg hσ hfc`. Take `⟨m, a, c, -, haK, -, hsum⟩` from `kAvg_finite_rank n ε H σ h f (KCoef.kFinFun_coef hσ hv₀K)`. Set `Ss : Submodule ℂ H` to `smooth (Jm ε) σ`. Set `V : Submodule ℂ H` to `Ss.map (Q : H →ₗ[ℂ] H)`. Establish `hVspan : V ≤ Submodule.span ℂ (Set.range a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨w, -, rfl⟩`. Express the relevant statement in the definitionally equal form `Q w ∈ _`. Rewrite using `[hQ, hsum]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hVsm : ∀ u ∈ V, Sm ε σ u`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Establish `hspan : Submodule.span ℂ (Set.range a) ≤ Ss` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact h.2.2.1 _ (haK j))`. Conclude with `hspan (hVspan hu)`. Use `haveI : FiniteDimensional ℂ V := by haveI := FiniteDimensional.span_of_finite ℂ (Set.finite_range a)`. Conclude with `Submodule.finiteDimensional_of_le hVspan`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcomm : ∀ v, Sm ε σ v → casOp σ X Y (Q v) = Q (casOp σ X Y v)`. Introduce `v hv`. Establish `hQv : Sm ε σ (Q v)` using `hVsm _ ⟨v, hv, rfl⟩`. Use `h.dense_smooth.eq_of_inner_right ℂ fun y hy => ?_` and prove the remaining obligations. Establish `hy' : Sm ε σ y` using `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[inner_casOp hσ hX hY hy' hQv, hQ, hQ, KCoef.inner_kAvg hσ hfc, KCoef.inner_kAvg hσ hfc]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Use `congr 1`. Rewrite using `[← inner_casOp hσ hX hY hy' (Sm.translate hσ hv (KCoef.toMK_mem_UJ k)), hK _ (toMK_mem_K k) v hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hVmap : ∀ u ∈ V, casOp σ X Y u ∈ V`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Express the relevant statement in the definitionally equal form `casOp σ X Y (Q v) ∈ V`. Rewrite using `[hcomm v hv]`. Conclude with `⟨_, sm_casOp hσ hX hY hv, rfl⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Set `F : Module.End ℂ V` to `{ toFun := fun u => ⟨casOp σ X Y u, hVmap u u.2⟩ map_add' := fun x y => Subtype.ext (casOp_add hσ hX hY (hVsm _ x.2) (hVsm _ y.2)) map_smul' := fun r x => Subtype.ext (casOp_smul hσ hX hY r (hVsm _ x.2)) }`. Establish `hQv₀ : Q v₀ ≠ 0`. Introduce `h0`. Apply `KCoef.inner_kAvg_ne_zero hσ hv₀` to reduce the goal to its premises. Rewrite using `[← hQ, h0, inner_zero_right]`.
-
-Use `haveI : Nontrivial V := ⟨⟨⟨Q v₀, v₀, h.2.2.1 _ hv₀K, rfl⟩, 0, fun h0 => hQv₀ (congrArg Subtype.val h0)⟩⟩`. Take `⟨χ, hχ⟩` from `Module.End.exists_eigenvalue F`. Take `⟨u, hu⟩` from `hχ.exists_hasEigenvector`. Use `⟨u, χ, hVsm _ u.2, fun h0 => hu.2 (Subtype.ext h0), ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (hu.apply_eq_smul)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_eigen_casOp : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)) (d e : ℕ) (X : Fin d → Mx n) (Y : Fin e → Mx n), Std ε σ →

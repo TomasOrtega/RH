@@ -17,9 +17,9 @@ variable (x : Fin (N + 1) → Ω) (η : Fin (r + 1) → Ω) (S : Type u) [CommRi
 variable (n0 : ℕ) (d0 : Fin n0 → ℤ) (g0 : Fin n0 → Ω)
 
 /- English proof (translation)
-Proceed by induction on `ht using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨i, hi, rfl⟩` from `ha`. Rewrite using `[map_X]`. Conclude with `X_mem_monos (Finset.mem_coe.mp hi)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `one => rw [map_one]`. Conclude with `one_mem _`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_C_mem_monos {I : Finset (Fin (N + 1))} {t : Poly S N} (ht : t ∈ monos (S := S) I) :
     MvPolynomial.map (C : S →+* Sy S r) t ∈ monos (S := Sy S r) I := by
@@ -31,15 +31,13 @@ theorem map_C_mem_monos {I : Finset (Fin (N + 1))} {t : Poly S N} (ht : t ∈ mo
   | mul a b _ _ ha hb => rw [map_mul]; exact mul_mem ha hb
 
 /- English proof (translation)
-It suffices to establish `key : ∀ z ∈ Submodule.span S {z | ∃ (j : Fin n0) (f : Poly S N) (e : ℕ), f.IsHomogeneous e ∧ (e : ℤ) + d0 j = a ∧ z = aeval x f • g0 j}, (toA x η).symm (single (a, (0 : ℤ)) z) ∈ TMod x η S n0 d0 g0 from key m (hspan a hm)`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨j, f, e, hf, he, rfl⟩` from `hz`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `: (toA x η).symm (single (a, (0 : ℤ)) (aeval x f • g0 j)) = (MvPolynomial.map (C : S →+* Sy S r) f : Poly (Sy S r) N) • genT x η n0 d0 g0 j`. Apply `(toA x η).injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply, toA_smulP, genT, AddEquiv.apply_symm_apply, phi_map_C x η S hf, single_mul_single, smul_eq_mul, ← he]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Consider the case `zero => rw [single_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add p q _ _ hp hq => rw [single_add, map_add]`. Conclude with `add_mem hp hq`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `smul s p _ hp`. Establish `: (toA x η).symm (single (a, (0 : ℤ)) (s • p)) = (C (C s) : Poly (Sy S r) N) • (toA x η).symm (single (a, (0 : ℤ)) p)`. Apply `(toA x η).injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply, toA_smulP, AddEquiv.apply_symm_apply, phi_C, psi, aeval_C, algebraMap_LA, single_mul_single, Algebra.smul_def]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_mem_TMod (M0 : FinGradedSub (S := S) (x := x) Ω)
     (hspan : ∀ c, M0.piece c ≤ Submodule.span S {z | ∃ (j : Fin n0) (f : Poly S N) (e : ℕ),
@@ -77,13 +75,13 @@ def toChart (I : StdCell N) (hI : ∀ i ∈ I.1, x i ≠ 0) : Chart x :=
   ⟨I.1, I.2.1, fun i hi => (mem_support x).mpr (hI i hi)⟩
 
 /- English proof (translation)
-Proceed by induction on `b with`. Consider the case `zero`. Take `⟨i, hi⟩` from `I.2.1`. Express the relevant statement in the definitionally equal form `twistMod S x 0 I ≤ _`. Rewrite using `[twistMod_eq_span 0 I hi, zpow_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.span_mono (Set.singleton_subset_iff.mpr ⟨1, isHomogeneous_one _ _, by simp⟩)`. Consider the case `succ b ih`. Express the relevant statement in the definitionally equal form `Submodule.span _ _ ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[← hgen I]`. Establish `hmul : q * y ∈ Submodule.span (chartRing S x I) (Set.range η) * Submodule.span (chartRing S x I) {z | ∃ h : MvPolynomial (Fin (r + 1)) S, h.IsHomogeneous b ∧ z = aeval η h}` using `Submodule.mul_mem_mul hq (ih hy)`. Rewrite `hmul` using `[Submodule.span_mul_span]`. Rewrite using `[smul_eq_mul]`. Use `Submodule.span_mono ?_ hmul` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, _, ⟨h, hh, rfl⟩, rfl⟩`. Use `⟨X j * h, ?_, by rw [map_mul, aeval_X]⟩` and prove the remaining obligations. Simplify `(isHomogeneous_X S j).mul hh` using `[add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pow_sub_le (B : SubSystem S x Ω)
     (hgen : ∀ I, Submodule.span (chartRing S x I) (Set.range η) = B.sub I) (I : Chart x) (b : ℕ) :
@@ -119,13 +117,11 @@ def genSet (I : Chart x) (b : ℕ) : Set Ω :=
     t.IsHomogeneous e' ∧ (e' : ℤ) = e + a ∧ ω = aeval x f * aeval η h * m / aeval x t}
 
 /- English proof (translation)
-Take `⟨f', t', e'', ht', hf', hte', hc⟩` from `c.2`. Proceed by induction on `hω using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨f, e, h, m, a, t, e', hf, hh, hm, ht, hte, hee, rfl⟩` from `hz`. Use `Submodule.subset_span ⟨f' * f, e'' + e, h, m, a, t' * t, e'' + e', hf'.mul hf, hh, hm, mul_mem ht' ht, hte'.mul hte, by push_cast; omega, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc]`. Establish `h1` using `eval_ne_zero_of_mem_monos I ht'`. Establish `h2` using `eval_ne_zero_of_mem_monos I ht`. Simplify using `only [map_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add p q _ _ hp hq => rw [mul_add]`. Conclude with `add_mem hp hq`. Consider the case `smul s p _ hp => rw [mul_smul_comm]`.
-
-Conclude with `Submodule.smul_mem _ s hp`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem chart_mul_mem_span (I : Chart x) (b : ℕ) (c : chartRing S x I) {ω : Ω}
     (hω : ω ∈ Submodule.span S (genSet x η S M0 I b)) :
@@ -146,11 +142,11 @@ theorem chart_mul_mem_span (I : Chart x) (b : ℕ) (c : chartRing S x I) {ω : �
   | smul s p _ hp => rw [mul_smul_comm]; exact Submodule.smul_mem _ s hp
 
 /- English proof (translation)
-Set `W : Submodule (chartRing S x I) Ω` to `{ carrier := Submodule.span S (genSet x η S M0 I b) add_mem' := fun ha hb => add_mem ha hb zero_mem' := zero_mem _ smul_mem' := fun c ω hω => chart_mul_mem_span x η S M0 I b c hω }`. It suffices to establish `hle : (G.twist (B.pow b)).sub I ≤ W from fun ω hω => hle hω`. Express the relevant statement in the definitionally equal form `Submodule.span _ _ ≤ W`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`.
+Introduce a local definition for the expression. Reduce the argument to an intermediate assertion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hq'` using `pow_sub_le x η S B.toSubFamily.toSubSystem hgen I b hq`. Rewrite `hy` using `[← hG I]`. Establish `hmul` using `Submodule.mul_mem_mul hq' hy`. Rewrite `hmul` using `[FinGradedSub.tilde, Submodule.span_mul_span]`. Rewrite using `[smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(Submodule.span_le.mpr ?_) hmul` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨h, hh, rfl⟩, _, ⟨m, t, a, e, ht, hte, hm, hae, rfl⟩, rfl⟩`. Use `Submodule.subset_span ⟨1, 0, h, m, a, t, e, isHomogeneous_one _ _, hh, hm, ht, hte, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_mul, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem twist_sub_le (G B : LineBundle S x)
     (hgen : ∀ I, Submodule.span (chartRing S x I) (Set.range η) = B.sub I)
@@ -178,15 +174,15 @@ theorem twist_sub_le (G B : LineBundle S x)
 
 variable {n0 d0 g0} in
 /- English proof (translation)
-Take `⟨f, e, h, m, a, t, e', hf, hh, hm, ht, hte, hee, rfl⟩` from `hω`. Set `mm : TMod x η S n0 d0 g0` to `⟨_, single_mem_TMod x η S n0 d0 g0 M0 hspan hm⟩`. Set `p : Poly (Sy S r) N` to `MvPolynomial.map (C : S →+* Sy S r) f * C h`. Establish `hp : p.IsHomogeneous e`. Simplify using `using (hf.map (C : S →+* Sy S r)).mul (isHomogeneous_C (Fin (N + 1)) h)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmm : mm ∈ (tgraded x η S n0 d0 g0).piece a`. Express the relevant statement in the definitionally equal form `toA x η ((toA x η).symm _) ∈ tgr a`. Rewrite using `[AddEquiv.apply_symm_apply]`. Conclude with `single_mem_tgr _ _ _`. Establish `hpm` using `(tgraded x η S n0 d0 g0).smul_mem e a p mm hp hmm`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `s : monos (S` to `Sy S r) I.1 := ⟨MvPolynomial.map (C : S →+* Sy S r) t, map_C_mem_monos S ht⟩`. Use `⟨(LocalizedModule.mk (p • mm) s : LocalizedModule (monos (S := Sy S r) I.1) (TMod x η S n0 d0 g0)), Submodule.subset_span ⟨p • mm, s, a + e, e', hpm, hte.map _, by omega, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `locL_mk_eq` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `phi x η S (MvPolynomial.map (C : S →+* Sy S r) t) * _ = toA x η (p • (mm : Amb x η))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toA_smulP, AddEquiv.apply_symm_apply, phi_map_C x η S hte, map_mul, phi_map_C x η S hf, phi_C, psi_of_isHomogeneous η S hh]`. Simplify using `only [single_mul_single]`. Establish `ht0` using `eval_ne_zero_of_mem_monos (toChart x I hI) ht`. Use `congr 1`. Use `ext`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem gen_pre
     (hspan : ∀ c, M0.piece c ≤ Submodule.span S {z | ∃ (j : Fin n0) (f : Poly S N) (e : ℕ),
@@ -224,13 +220,13 @@ theorem gen_pre
 variable {n0 d0 g0} in
 
 /- English proof (translation)
-Establish `h1` using `twist_sub_le x η S M0 G B hgen hG (toChart x I hI) b ω hω`. Use `clear hω`. Proceed by induction on `h1 using Submodule.span_induction with`. Consider the case `mem z hz => exact gen_pre x η S M0 hspan I hI b hz`. Consider the case `zero => exact ⟨0, zero_mem _, by rw [map_zero, single_zero, map_zero]⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add p q _ _ hp hq`. Take `⟨z1, hz1, e1⟩` from `hp`. Take `⟨z2, hz2, e2⟩` from `hq`. Conclude with `⟨z1 + z2, add_mem hz1 hz2, by rw [map_add, e1, e2, single_add, map_add]⟩`. Consider the case `smul s p _ hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨z1, hz1, e1⟩` from `hp`. Use `⟨(C s : Sy S r) • z1, Submodule.smul_mem _ _ hz1, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower, e1]`. Apply `(toA x η).injective` to reduce the goal to its premises. Rewrite using `[toA_smulSy, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, psi, aeval_C, algebraMap_LA, single_mul_single, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem chart_pre (G B : LineBundle S x)
     (hgen : ∀ I, Submodule.span (chartRing S x I) (Set.range η) = B.sub I)
@@ -260,9 +256,9 @@ theorem chart_pre (G B : LineBundle S x)
     simp
 
 /- English proof (translation)
-Use `conv_lhs => rw [← sum_homogeneousComponent c]`. Rewrite using `[map_sum, Finset.sum_mul, AddMonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[psi_of_isHomogeneous η S (homogeneousComponent_isHomogeneous d c), single_mul_single, coeff_single, Finsupp.single_apply]`. Distinguish the cases in `hdb : d + b' = b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [if_pos hdb, if_pos (by ext <;> simp; omega)]`. Rewrite using `[if_neg hdb, if_neg (by intro h; apply hdb; have := congrArg Prod.snd h; simp at this; omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_psi_mul_single (c : Sy S r) (b' b : ℕ) (s' : Ω) :
     (psi η S c * single ((0 : ℤ), (b' : ℤ)) s').coeff ((0 : ℤ), (b : ℤ)) =

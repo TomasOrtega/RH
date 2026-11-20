@@ -5,23 +5,21 @@ namespace GlobalTheory
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Set `cd : InnerProductSpace.Core ℂ S` to `{ inner := fun x y => Bf x y conj_inner_symm := fun x y => by show starRingEnd ℂ (Bf y x) = Bf x y`. Rewrite using `[hsym x y, Complex.conj_conj]`. Use `re_inner_nonneg := fun x => by`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `(hpos x hx).le`. Use `add_left := fun x y z => by show Bf (x + y) z = Bf x z + Bf y z`. Simplify using the standard rewrite rules. Use `smul_left := fun x y r => by show Bf (r • x) y = starRingEnd ℂ r * Bf x y`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `definite := fun x hx => by`. Assume the negation of the conclusion as `h`. Use `hpos x h` as an intermediate fact. Establish `hx' : Bf x x = 0` using `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite `this` using `[hx']`. Simplify using `at this }`. Use `letI : NormedAddCommGroup S := cd.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ S := InnerProductSpace.ofCore cd.toCore`. Establish `hin : ∀ x y : S, (inner ℂ x y : ℂ) = Bf x y` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `ob` to `stdOrthonormalBasis ℂ S`. Establish `horth : ∀ i j, Bf (ob i) (ob j) = if i = j then 1 else 0`. Introduce `i j`. Rewrite using `[← hin]`. Conclude with `orthonormal_iff_ite.mp ob.orthonormal i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Module.finrank ℂ S, ob, horth, ?_, ?_⟩` and prove the remaining obligations. Use `ob.toBasis.span_eq` as an intermediate fact. Rewrite `this` using `[OrthonormalBasis.coe_toBasis]`. Then use the resulting hypothesis. Introduce `T hT`. Use `⟨fun j => ?_, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(ob.sum_repr' (T (ob j))).symm` as an intermediate fact. Simplify `this` using `only [hin]`. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Use extensionality with `j l`. Simplify using `only [Matrix.mul_apply, Matrix.star_apply, Matrix.of_apply, Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ∀ i, star (Bf (ob i) (T (ob j))) = Bf (T (ob j)) (ob i)`. Introduce `i`. Rewrite using `[hsym (ob i) (T (ob j))]`. Both sides reduce to the same expression. Simplify using `only [h1]`.
-
-Use `ob.sum_inner_mul_inner (T (ob j)) (T (ob l))` as an intermediate fact. Simplify using `only [hin] at this`. Rewrite using `[this, hT, horth]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitian_onb_unitary (Wt : Type) [AddCommGroup Wt] [Module ℂ Wt] (S : Submodule ℂ Wt)
     [FiniteDimensional ℂ S] (Bf : S →ₗ⋆[ℂ] S →ₗ[ℂ] ℂ)

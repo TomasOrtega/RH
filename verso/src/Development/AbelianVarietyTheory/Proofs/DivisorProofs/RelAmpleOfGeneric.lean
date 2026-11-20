@@ -20,22 +20,20 @@ noncomputable section
 namespace GlobalTheory.ModelAmpleExt
 
 /- English proof (translation)
-The claim follows from `congrArg (fun g => (⟨H.ι, H.U, g⟩ : LB X)) (funext fun i => funext fun j => (zpow_mul (H.g i j) a b).symm)`.
+A detailed English derivation is pending.
 -/
 theorem pw_pw' {X : Scheme.{0}} (H : LB X) (a b : ℤ) :
     GlobalTheory.AbLaw.pw (GlobalTheory.AbLaw.pw H a) b = GlobalTheory.AbLaw.pw H (a * b) :=
   congrArg (fun g => (⟨H.ι, H.U, g⟩ : LB X)) (funext fun i => funext fun j => (zpow_mul (H.g i j) a b).symm)
 
 /- English proof (translation)
-Introduce `W L _ _ _ _ _ _ G _ A _ φ hG hφ M hM hA`. Establish `hAab : IsAbelianScheme A` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hG hφ`. Take `⟨d, hd, hex⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy L A (M.pull φ) (pull_isLB hM φ)).1 hA`. Rewrite `hex` using `[← GlobalTheory.TrivLocus.pull_pw M φ (d : ℤ)]`. Take `⟨m, s, hs⟩` from `hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set f := spMap (algebraMap W L) with hf`. Use `set g := spMap (algebraMap L L) with hg`. Establish `hg1 : g = 𝟙 _`. Simplify using `[hg, spMap]`. Use `haveI : IsIso g := by rw [hg1]; infer_instance`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h1 : inv (pullback.fst A.hom g) ≫ pullback.snd A.hom g = A.hom`. Rewrite using `[IsIso.inv_comp_eq, pullback.condition, hg1, Category.comp_id]`. Set `i : pullback G.hom f ≅ pullback A.hom g` to `hφ.1.isoPullback.symm ≪≫ (asIso (pullback.fst A.hom g)).symm`. Establish `hi : i.hom ≫ pullback.snd A.hom g = pullback.snd G.hom f`. Simplify using `only [i, Iso.trans_hom, Iso.symm_hom, asIso_inv, Category.assoc, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hφ.1.isoPullback_inv_snd`. Set `e : (Over.pullback f).obj G ≅ (Over.pullback g).obj A` to `Over.isoMk i hi`. Establish `he : e.hom.left ≫ pullback.fst A.hom g = hφ.1.isoPullback.inv`. Simplify using `[e, i]`. Establish `hMd` using `GlobalTheory.AbLaw.isLB_pw hM (d : ℤ)`.
-
-Take `⟨w, hw⟩ : LBIso ((GlobalTheory.AbLaw.pw M (d : ℤ)).pull (pullback.fst G.hom f)) (((GlobalTheory.AbLaw.pw M (d : ℤ)).pull φ).pull (e.hom.left ≫ pullback.fst A.hom g))` from `LBIso.chartPull (chartPullSame (GlobalTheory.AbLaw.pw M (d : ℤ)) (fun _ : PUnit => pullback.fst G.hom f) (fun _ => φ) (fun _ => 1) (e.hom.left ≫ pullback.fst A.hom g) fun _ => by rw [he]; exact hφ.1.isoPullback_inv_fst.symm) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPull …`. Take `⟨n, hn, hex2⟩` from `GlobalTheory.ModelAmple.veryAmpleBy_pw_of_generic L W L A hAab G hG e ((GlobalTheory.AbLaw.pw M (d : ℤ)).pull φ) m s (GlobalTheory.AbLaw.pw M (d : ℤ)) w (pull_isLB hMd φ) hs hMd hw`. Rewrite `hex2` using `[pw_pw', show (d : ℤ) * (n : ℤ) = ((d * n : ℕ) : ℤ) by push_cast; rfl]`. Conclude with `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy W G M hM).2 ⟨d * n, Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (Nat.one_le_iff_ne_zero.1 hd) (Nat.one_le_iff_ne_zero.1 hn)), hex2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relAmple_of_generic : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G] (A : Over (Sp L)) [GrpObj A] (φ : A.left ⟶ G.left), IsAbelianScheme G → IsGrpPullback A G (spMap (algebraMap W L)) φ → ∀ M : LB G.left, M.IsLB → Out.RelAmple A (M.pull φ) → Out.RelAmple G M := by
   intro W L _ _ _ _ _ _ G _ A _ φ hG hφ M hM hA

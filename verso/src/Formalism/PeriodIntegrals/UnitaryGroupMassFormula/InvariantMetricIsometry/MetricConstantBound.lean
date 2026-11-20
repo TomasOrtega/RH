@@ -9,31 +9,29 @@ open Matrix Finset
 namespace PI.IsoInvMetricW
 
 /- English proof (translation)
-Introduce `h N A B`. Rewrite using `[GenFrameSpan.det_mul_rect]`. Establish `hR : ∀ J : Fin h ↪o Fin N, (A.submatrix id J).det * (B.submatrix J id).det = ∑ σ : Equiv.Perm (Fin h), (∏ i, B (J (σ i)) i) * (A.submatrix id (J ∘ σ)).det`. Introduce `J`. Rewrite using `[det_apply (B.submatrix J id), Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hA : A.submatrix id (J ∘ σ) = (A.submatrix id J).submatrix id σ`. Use extensionality with `i k`. Simplify using the standard rewrite rules. Rewrite using `[hA, det_permute']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.smul_def, zsmul_eq_mul, submatrix_apply, id]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun J _ => hR J), ← Fintype.sum_prod_type']`. Use `symm`. Use `Finset.sum_bij_ne_zero (fun p _ _ => (p.1 : Fin h → Fin N) ∘ p.2) (fun _ _ _ => Finset.mem_univ _) ?_ ?_ (fun _ _ _ => rfl)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨J, σ⟩ _ _ ⟨J', σ'⟩ _ _ heq`. Establish `hr : Set.range J = Set.range J'`. Establish `h1 : Set.range ((J : Fin h → Fin N) ∘ σ) = Set.range J` using `σ.surjective.range_comp _`. Establish `h2 : Set.range ((J' : Fin h → Fin N) ∘ σ') = Set.range J'` using `σ'.surjective.range_comp _`. Rewrite using `[← h1, ← h2]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Set.range heq`. Establish `hJ : J = J'` using `OrderEmbedding.range_inj.mp hr`. Substitute `hJ` using the available equality. Establish `hσ : σ = σ'`. Use extensionality with `i`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrFun heq i` as an intermediate fact. Simplify using `only [Function.comp_apply] at this`. Rewrite using `[J.injective this]`. Rewrite using `[hσ]`. Introduce `f _ hf`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective f`. Assume the negation of the conclusion as `hni`. Apply `hf` to reduce the goal to its premises. Establish `: ∃ i j, f i = f j ∧ i ≠ j`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `push Not at hc`. Conclude with `hni fun i j e => hc i j e`. Take `⟨i, j, hij, hne⟩` from `this`. Rewrite using `[Matrix.det_zero_of_column_eq hne (by intro r; simp [hij]), mul_zero]`. Use `set s : Finset (Fin N) := Finset.univ.image f with hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hcard : s.card = h`. Rewrite using `[hs, Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]`. Establish `hmem : ∀ i, f i ∈ s` using `fun i => Finset.mem_image_of_mem f (Finset.mem_univ i)`. Set `g : Fin h → Fin h` to `fun i => (s.orderIsoOfFin hcard).symm ⟨f i, hmem i⟩`. Establish `hg : ∀ i, s.orderEmbOfFin hcard (g i) = f i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[← Finset.coe_orderIsoOfFin_apply]`. Simplify using `[g]`. Establish `ginj : Function.Injective g`. Introduce `i j e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hg i, ← hg j, e]`. Set `σ : Equiv.Perm (Fin h)` to `Equiv.ofBijective g (Finite.injective_iff_bijective.mp ginj)`. Use `⟨(s.orderEmbOfFin hcard, σ), Finset.mem_univ _, ?_, ?_⟩` and prove the remaining obligations. Establish `hfi : ∀ i, (s.orderEmbOfFin hcard) (σ i) = f i` using `fun i => by simp [σ, hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Establish `: ((s.orderEmbOfFin hcard : Fin h ↪o Fin N) : Fin h → Fin N) ∘ σ = f`. Use function extensionality and compare the values at `i`. Conclude with `hfi i`. Rewrite using `[this]`. Simplify using `only`.
-
-Simplify using `only [hfi]`. Conclude with `hf`. Use function extensionality and compare the values at `i`. Simplify using `[σ, hg]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem metric_constant_bound : CB := by
   intro h N A B

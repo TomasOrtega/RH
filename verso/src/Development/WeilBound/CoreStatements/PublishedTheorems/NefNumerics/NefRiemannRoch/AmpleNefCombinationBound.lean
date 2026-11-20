@@ -22,35 +22,33 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory.NefLower
 
 /- English proof (translation)
-Introduce `k _ _ X _ hX d hdim A N L hA hN hL hyp a b hcls`. Establish `hsupp : suppDim (GlobalTheory.structureModule X) ≤ ((d + 1 : ℕ) : WithBot ℕ∞)` using `(QCoh.suppDim_le _).trans hdim`. Establish `hDV : DiffVanish (d + 1 + 1) (chiPic k (GlobalTheory.structureModule X))` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom k X) _ hX hsupp`. Establish `hALB : A.IsLB` using `hA.isLB`. Establish `hNLB : N.IsLB` using `hN.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLLB : L.IsLB` using `hL.isLB`. Use `set R : Fin d → LB X := fun _ => L with hR`. Establish `hL0 : (fun _ : Fin (d + 1) => L) = (Fin.cons L R : Fin (d + 1) → LB X)`. Use function extensionality and compare the values at `i`. Conclude with `Fin.cases rfl (fun _ => rfl) i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconsLB : ∀ M : LB X, M.IsLB → ∀ i, ((Fin.cons M R : Fin (d + 1) → LB X) i).IsLB` using `fun M hM i => Fin.cases hM (fun _ => hLLB) i`. Establish `hadd` using `DiffVanish.interNum_update_of_cls_eq_add hDV (le_of_eq (Fintype.card_fin _).symm) (hconsLB L hLLB) 0 hLLB (isLB_lbPow hNLB a) (isLB_lbPow hALB b) (by rw [cls_lbPow hNLB, cls_lbPow hALB]; exact hcls)`. Simplify using `only [Fin.update_cons_zero] at hadd`. Establish `hsN` using `DiffVanish.interNum_update_of_cls_eq_zsmul hDV (le_of_eq (Fintype.card_fin _).symm) (hconsLB N hNLB) 0 (isLB_lbPow hNLB a) hNLB (a : ℤ) (by rw [cls_lbPow hNLB]; simp)`. Establish `hsA` using `DiffVanish.interNum_update_of_cls_eq_zsmul hDV (le_of_eq (Fintype.card_fin _).symm) (hconsLB A hALB) 0 (isLB_lbPow hALB b) hALB (b : ℤ) (by rw [cls_lbPow hALB]; simp)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Fin.update_cons_zero] at hsN hsA`. Establish `hNpos : 0 ≤ interNum k (GlobalTheory.structureModule X) (Fin.cons N R : Fin (d + 1) → LB X)` using `T.intersection_nef_ample_nonneg k X hX d _ hsupp N R hN (fun _ => hL)`. Establish `hfam : ∀ j, ((![A, N] : Fin 2 → LB X) j).IsLB` using `fun j => by fin_cases j`. Conclude with `hALB`. Conclude with `hNLB`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQLB : ∀ i, ((Fin.cons A R : Fin (d + 1) → LB X) i).IsLB` using `hconsLB A hALB`. Set `n : Fin (d + 1) → Fin 2 → ℤ` to `Fin.cons ![1, 0] (fun _ => ![(b : ℤ), (a : ℤ)])`. Establish `hexp` using `DiffVanish.interNum_of_cls_eq_sum hDV hfam hQLB n (by`. Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[n, Fin.sum_univ_two]`. Simplify using `only [n, Fin.sum_univ_two, Fin.cons_succ]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, natCast_zsmul]`. Use `show cls L _ = _`. Rewrite using `[hcls, add_comm])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hterm : ∀ α : Fin (d + 1) → Fin 2, 0 ≤ (∏ i, n i (α i)) * interNum k (GlobalTheory.structureModule X) ((![A, N] : Fin 2 → LB X) ∘ α)`. Introduce `α`. Establish `hprod : 0 ≤ ∏ i, n i (α i)`. Use `Finset.prod_nonneg fun i _ => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [n, Fin.cons_zero]`. Generalize the expression as in `α 0 = t`. Apply the tactic sequence `fin_cases t <;> simp`. Simplify using `only [n, Fin.cons_succ]`. Generalize the expression as in `α j.succ = t`.
+Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases t <;> simp`. Break down `Fin.exists_fin_two.mp ⟨α 0, rfl⟩ with h0 | h0` into its components or cases. Use `mul_nonneg hprod ?_` and prove the remaining obligations. Establish `hcomp : ((![A, N] : Fin 2 → LB X) ∘ α) = Fin.cons A (fun j : Fin d => (![A, N] : Fin 2 → LB X) (α j.succ))`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Use `Fin.cases ?_ (fun j => rfl) i` and prove the remaining obligations. Simplify using `[h0]`. Rewrite using `[hcomp]`. Use `hyp _ (fun j => ?_)` and prove the remaining obligations. Generalize the expression as in `α j.succ = t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `fin_cases t`. Conclude with `hA.isNef`. Conclude with `hN`. Establish `hz : (∏ i, n i (α i)) = 0`. Use `Finset.prod_eq_zero (Finset.mem_univ 0) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[n, h0]`. Rewrite using `[hz, zero_mul]`. Set `α0 : Fin (d + 1) → Fin 2` to `fun _ => 0`. Establish `hsingle : (∏ i, n i (α0 i)) * interNum k (GlobalTheory.structureModule X) ((![A, N] : Fin 2 → LB X) ∘ α0) ≤ interNum k (GlobalTheory.structureModule X) (Fin.cons A R : Fin (d + 1) → LB X)`. Rewrite using `[hexp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.single_le_sum (fun α _ => hterm α) (Finset.mem_univ α0)`. Establish `hprod0 : (∏ i, n i (α0 i)) = (b : ℤ) ^ d`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `[n, α0]`. Establish `hA0 : interNum k (GlobalTheory.structureModule X) ((![A, N] : Fin 2 → LB X) ∘ α0) = topSelfIntersection k A (d + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[topSelf_def]`. Both sides reduce to the same expression. Rewrite `hsingle` using `[hprod0, hA0]`. Rewrite using `[topSelf_def k L, hL0, hadd, hsN, hsA]`. Establish `hb : (0 : ℤ) ≤ b` using `by positivity`.
-
-Establish `ha : (0 : ℤ) ≤ a` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `mul_nonneg ha hNpos` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem topSelf_lower : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ d : ℕ, topologicalKrullDim X ≤ (d + 1 : ℕ) → ∀ (A N L : LB X) (hA : IsAmpleLB A) (hN : IsNef k N) (hL : IsAmpleLB L), (∀ P : Fin d → LB X, (∀ i, IsNef k (P i)) → 0 ≤ interNum k (GlobalTheory.structureModule X) (Fin.cons A P : Fin (d + 1) → LB X)) → ∀ a b : ℕ, cls L hL.isLB = a • cls N hN.isLB + b • cls A hA.isLB → (b : ℤ) ^ (d + 1) * topSelfIntersection k A (d + 1) ≤ topSelfIntersection k L (d + 1) := by
   intro k _ _ X _ hX d hdim A N L hA hN hL hyp a b hcls

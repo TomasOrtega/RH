@@ -16,9 +16,9 @@ variable {O : Type} [CommRing O] {bar : O → O} {q s : ℕ} {W : Matrix (Fin s)
   (Φ : VPre bar q W A)
 
 /- English proof (translation)
-Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Establish `h0 : ∀ i, 0 ≤ qW W (Φ.δ y i) mu` using `fun i => qW_nonneg Φ.posW (Φ.bal y i).1 (Φ.nonneg y i) mu`. Establish `h1 : mono W (Φ.t y) (Φ.δ y) mu ∈ maximalIdeal (Φ.V y) ^ ∑ i, (qW W (Φ.δ y i) mu).toNat`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Conclude with `Ideal.prod_mem_prod fun i _ => Ideal.pow_mem_pow (Φ.t_mem y i).1 _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.pow_le_pow_right ?_ h1` and prove the remaining obligations. Establish `: ((∑ i, (qW W (Φ.δ y i) mu).toNat : ℕ) : ℤ) = ∑ i, qW W (Φ.δ y i) mu`. Rewrite using `[Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Int.toNat_of_nonneg (h0 i)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem term_mem (y : Φ.Y) (mu : Fin s → Φ.X y) (c : Φ.Q) (j : ℕ) (h : (j : ℤ) ≤ ∑ i, qW W (Φ.δ y i) mu) :
     Φ.term y mu c ∈ maximalIdeal (Φ.V y) ^ j := by
@@ -33,13 +33,13 @@ theorem term_mem (y : Φ.Y) (mu : Fin s → Φ.X y) (c : Φ.Q) (j : ℕ) (h : (j
   omega
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing (Φ.V y) := (Φ.cn y).1`. Establish `hb` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal (Φ.V y)) (maximalIdeal.isMaximal _).ne_top`. Rewrite using `[← sub_eq_zero, ← Ideal.mem_bot, ← hb, Ideal.mem_iInf]`. Introduce `j`. Take `⟨S, a1, a2, a3⟩` from `h j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S', b1, b2, b3⟩` from `h' j`. Simplify using `only [RingHom.id_apply] at a3 b3`. Establish `e1` using `Finset.sum_sdiff (f := fun mu => Φ.term y mu c) (Finset.inter_subset_left (s₁ := S) (s₂ := S'))`. Establish `e2` using `Finset.sum_sdiff (f := fun mu => Φ.term y mu c) (Finset.inter_subset_right (s₁ := S) (s₂ := S'))`. Establish `m1 : ∑ mu ∈ S \ (S ∩ S'), Φ.term y mu c ∈ maximalIdeal (Φ.V y) ^ j` using `Ideal.sum_mem _ fun mu hmu => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, p'⟩` from `Finset.mem_sdiff.1 hmu`. Conclude with `term_mem Φ y mu c j (b2 mu (a1 mu p) fun r => p' (Finset.mem_inter.2 ⟨p, r⟩))`. Establish `m2 : ∑ mu ∈ S' \ (S ∩ S'), Φ.term y mu c ∈ maximalIdeal (Φ.V y) ^ j` using `Ideal.sum_mem _ fun mu hmu => by`. Take `⟨p, p'⟩` from `Finset.mem_sdiff.1 hmu`. Conclude with `term_mem Φ y mu c j (a2 mu (b1 mu p) fun r => p' (Finset.mem_inter.2 ⟨r, p⟩))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: x - x' = (x - ∑ mu ∈ S, Φ.term y mu c) - (x' - ∑ mu ∈ S', Φ.term y mu c) + ∑ mu ∈ S \ (S ∩ S'), Φ.term y mu c - ∑ mu ∈ S' \ (S ∩ S'), Φ.term y mu c`. Rewrite using `[← e1, ← e2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `sub_mem (add_mem (sub_mem a3 b3) m1) m2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClassSum_unique (y : Φ.Y) (N : ℕ) (κ : Fin s → Φ.X y) (c : Φ.Q) {x x' : Φ.V y}
     (h : Φ.IsClassSum y N κ c (RingHom.id _) x) (h' : Φ.IsClassSum y N κ c (RingHom.id _) x') : x = x' := by
@@ -66,14 +66,14 @@ theorem isClassSum_unique (y : Φ.Y) (N : ℕ) (κ : Fin s → Φ.X y) (c : Φ.Q
   exact sub_mem (add_mem (sub_mem a3 b3) m1) m2
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Φ.u_unit y 0`. Conclude with `⟨c, by simpa [VPre.term, mono, qW] using hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isUnit_term_zero (y : Φ.Y) : ∃ c : Φ.Q, IsUnit (Φ.term y (0 : Fin s → Φ.X y) c) := by
   obtain ⟨c, hc⟩ := Φ.u_unit y 0
   exact ⟨c, by simpa [VPre.term, mono, qW] using hc⟩
 
 /- English proof (translation)
-Use `choose c hc using fun y => Φ.u_unit y 0`. Establish `key : ∀ y : Φ.Y, Φ.u y 0 (c y) * ((hc y).unit⁻¹ : (Φ.V y)ˣ) * mono W (Φ.t y) (Φ.δ y) 0 = 1` using `fun y => by`. Simplify using `[mono, qW]`. Conclude with `⟨fun y => (hc y).unit⁻¹, fun y => ⟨c y, key y⟩⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rescale : ∃ v : ∀ y, (Φ.V y)ˣ, ∀ y : (Φ.rescale v).Y, ∃ c : (Φ.rescale v).Q,
     (Φ.rescale v).term y (0 : Fin s → (Φ.rescale v).X y) c = 1 := by
@@ -83,19 +83,15 @@ theorem exists_rescale : ∃ v : ∀ y, (Φ.V y)ˣ, ∀ y : (Φ.rescale v).Y, �
   exact ⟨fun y => (hc y).unit⁻¹, fun y => ⟨c y, key y⟩⟩
 
 /- English proof (translation)
-Take `⟨c₀, hc₀, hq⟩` from `GlobalTheory.Poinc.QWDom.qW_ge s W Φ.posW`. Set `D : LinearMap.BilinForm ℤ (Φ.X y)` to `∑ i, Φ.δ y i`. Establish `hD : ∀ x, D x x = ∑ i, Φ.δ y i x x` using `fun x => by simp [D, LinearMap.sum_apply]`. Establish `hDs : ∀ a b, D a b = D b a` using `fun a b => by`. Simplify using `only [D, LinearMap.sum_apply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun i _ => (Φ.bal y i).1 a b`. Establish `hDp : ∀ x, x ≠ 0 → 0 < D x x` using `fun x hx => by`. Rewrite using `[hD]`. Take `⟨i, hi⟩` from `Φ.pos y x hx`. Conclude with `lt_of_lt_of_le hi (Finset.single_le_sum (f := fun i => Φ.δ y i x x) (fun i _ => Φ.nonneg y i x) (Finset.mem_univ i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(Set.Finite.pi' fun _ : Fin s => GlobalTheory.CompanionTheory.Ar.Fan.sublevel_finite _ D hDs hDp ⌈(j : ℝ) / c₀⌉).subset ?_` and prove the remaining obligations. Introduce and unpack `mu ⟨-, hmu⟩ u`. Establish `h1 : ∀ i, c₀ * ((∑ u, Φ.δ y i (mu u) (mu u) : ℤ) : ℝ) ≤ (qW W (Φ.δ y i) mu : ℝ)` using `fun i => hq _ (Φ.δ y i) (Φ.bal y i).1 (Φ.nonneg y i) mu`. Establish `h2 : c₀ * ((∑ u, D (mu u) (mu u) : ℤ) : ℝ) ≤ ((∑ i, qW W (Φ.δ y i) mu : ℤ) : ℝ)`. Establish `: ((∑ u, D (mu u) (mu u) : ℤ) : ℝ) = ∑ i, ((∑ u, Φ.δ y i (mu u) (mu u) : ℤ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [hD]`. Use `push_cast`. Conclude with `Finset.sum_comm`. Rewrite using `[this, Finset.mul_sum]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_le_sum fun i _ => by exact_mod_cast h1 i`. Establish `h3 : (D (mu u) (mu u) : ℝ) ≤ ((∑ u, D (mu u) (mu u) : ℤ) : ℝ)`. Conclude with `Finset.single_le_sum (f := fun u => D (mu u) (mu u)) (fun u _ => by` after adjusting the coercions. Distinguish the cases in `h : mu u = 0`. Simplify using `[h]`.
-
-Conclude with `(hDp _ h).le) (Finset.mem_univ u)`. Establish `h4 : ((∑ i, qW W (Φ.δ y i) mu : ℤ) : ℝ) < j` using `by exact_mod_cast hmu`. Establish `h5 : (D (mu u) (mu u) : ℝ) ≤ (j : ℝ) / c₀`. Rewrite using `[le_div_iff₀' hc₀]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use `show D (mu u) (mu u) ≤ ⌈(j : ℝ) / c₀⌉`. Conclude with `h5.trans (Int.le_ceil _)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem low_finite (y : Φ.Y) (P : (Fin s → Φ.X y) → Prop) (j : ℕ) :
     {mu | P mu ∧ ∑ i, qW W (Φ.δ y i) mu < (j : ℤ)}.Finite := by
@@ -129,13 +125,13 @@ theorem low_finite (y : Φ.Y) (P : (Fin s → Φ.X y) → Prop) (j : ℕ) :
   exact_mod_cast h5.trans (Int.le_ceil _)
 
 /- English proof (translation)
-Use `haveI : IsAdicComplete (maximalIdeal (Φ.V y)) (Φ.V y) := (Φ.cn y).2.2.1`. Set `S : ℕ → Finset (Fin s → Φ.X y)` to `fun j => (low_finite Φ y P j).toFinset`. Establish `hS : ∀ j mu, mu ∈ S j ↔ P mu ∧ ∑ i, qW W (Φ.δ y i) mu < (j : ℤ)` using `fun j mu => Set.Finite.mem_toFinset _`. Take `⟨x, hx⟩` from `IsPrecomplete.prec (I := maximalIdeal (Φ.V y)) (M := Φ.V y) inferInstance (f := fun j => ∑ mu ∈ S j, Φ.term y mu c) (by`. Introduce `m n hmn`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsub : S m ⊆ S n` using `fun mu hmu => by`. Rewrite using `[hS] at hmu ⊢; exact ⟨hmu.1, hmu.2.trans_le (by exact_mod_cast hmn)⟩`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← Finset.sum_sdiff hsub, sub_add_cancel_right]`. Use `neg_mem (Ideal.sum_mem _ fun mu hmu => ?_)` and prove the remaining obligations. Take `⟨p, p'⟩` from `Finset.mem_sdiff.1 hmu`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `term_mem Φ y mu c m ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `p' ((hS m mu).2 ⟨((hS n mu).1 p).1, by omega⟩))`. Use `⟨x, fun j => ⟨S j, fun mu h => ((hS j mu).1 h).1, fun mu h hn => ?_, ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hn ((hS j mu).2 ⟨h, by omega⟩)`. Use `(hx j).symm` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_sum (y : Φ.Y) (P : (Fin s → Φ.X y) → Prop) (c : Φ.Q) : ∃ x : Φ.V y, ∀ j : ℕ,
     ∃ S : Finset (Fin s → Φ.X y), (∀ mu ∈ S, P mu) ∧ (∀ mu, P mu → mu ∉ S → (j : ℤ) ≤ ∑ i, qW W (Φ.δ y i) mu) ∧
@@ -164,7 +160,7 @@ theorem exists_sum (y : Φ.Y) (P : (Fin s → Φ.X y) → Prop) (c : Φ.Q) : ∃
 def lim (y : Φ.Y) (P : (Fin s → Φ.X y) → Prop) (c : Φ.Q) : Φ.V y := (exists_sum Φ y P c).choose
 
 /- English proof (translation)
-The claim follows from `(exists_sum Φ y _ c).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isClassSum_lim (y : Φ.Y) (N : ℕ) (κ : Fin s → Φ.X y) (c : Φ.Q) :
     Φ.IsClassSum y N κ c (RingHom.id _) (lim Φ y (fun mu => ∀ v, CongMod N (mu v) (κ v)) c) :=
@@ -172,20 +168,20 @@ theorem isClassSum_lim (y : Φ.Y) (N : ℕ) (κ : Fin s → Φ.X y) (c : Φ.Q) :
 end
 
 /- English proof (translation)
-Introduce `y κ c` and use `⟨_, isClassSum_lim _ y N κ c⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem tate_exact (N : ℕ) : VSys.tate.pre.Exact N := fun y κ c => ⟨_, isClassSum_lim _ y N κ c⟩
 
 /- English proof (translation)
-Introduce `y₀ N₀`. Set `A` to `PowerSeries ℚ`. Set `L` to `FractionRing A`. Establish `hbij : Function.Bijective (algebraMap A (integralClosure A L))`. Use `⟨fun a b h => IsFractionRing.injective A L (congrArg Subtype.val h), fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := A) (K := L)).1 x.2`. Conclude with `⟨a, Subtype.ext ha⟩`. Set `E : A ≃+* integralClosure A L` to `RingEquiv.ofBijective _ hbij`. Set `M` to `N₁ * (N₀ + 1)`. Use `⟨M, by show N₀ ≤ N₁ * (N₀ + 1); nlinarith, by show 1 ≤ N₁ * (N₀ + 1); nlinarith, dvd_mul_right _ _, fun _ => (LinearMap.id : ℤ →ₗ[ℤ] ℤ), rfl, fun _ => ⟨fun c x => ⟨0, by rw [smul_zero, add_zero]; rfl⟩, LinearEquiv.refl ℤ ℤ, by show _ ∣ LinearMap.det ((LinearEquiv.refl ℤ ℤ).toLine …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `κ κ' c h`. Establish `hP : (fun mu : Fin 1 → VSys.tate.pre.X y₀ => ∀ v, CongMod M (mu v) (κ v)) = (fun mu => ∀ v, CongMod M (mu v) (κ' v))`. Use function extensionality and compare the values at `mu`. Use `propext (forall_congr' fun u => ⟨fun h' => GlobalTheory.Poinc.OrbTrace.cm_trans h' (h u), fun h' => GlobalTheory.Poinc.OrbTrace.cm_trans h' (GlobalTheory.Poinc.OrbTrace.cm_symm (h u))⟩)` and prove the remaining obligations. Use `show E (lim _ _ _ c) = E (lim _ _ _ c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP]`. Introduce `y`. Use `⟨VSys.tate.pre.V y, inferInstance, inferInstance, RingHom.id _, (E.symm.toRingHom : integralClosure A L →+* VSys.tate.pre.V y), RingHom.Finite.id _, inferInstance, fun I => by rw [Ideal.map_id, Ideal.comap_id], RingHom.ext fun a => E.symm_apply_apply a, rfl, fun κ c => ?_⟩` and prove the remaining obligations. Take `rfl : y = y₀` from `rfl`. Establish `key` using `isClassSum_lim VSys.tate.pre y M κ c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (E.symm (E (lim VSys.tate.pre y (fun mu => ∀ v, CongMod M (mu v) (κ v)) c)) : VSys.tate.pre.V y) = lim VSys.tate.pre y (fun mu => ∀ v, CongMod M (mu v) (κ v)) c` using `E.symm_apply_apply _`. Conclude with `(congrArg (VSys.tate.pre.IsClassSum y M κ c (RingHom.id _)) e).mpr key`. Introduce `σ _`. Use `⟨(LinearMap.id : ℤ →ₗ[ℤ] ℤ), fun c (x : ℤ) => (⟨0, by simp⟩ : CongMod _ (c • x) (c • x)), (by simp : ((M : ℕ) : ℤ) ∣ LinearMap.det (LinearMap.id : ℤ →ₗ[ℤ] ℤ) - 1), fun (x : ℤ) => (⟨0, by simp⟩ : CongMod N₁ x x), fun κ c => σ.commutes _⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tate_classSums (N₁ : ℕ) (hN : 1 ≤ N₁) : VSys.tate.pre.ClassSums N₁ := by
   intro y₀ N₀
@@ -244,9 +240,9 @@ def cpt : const.Y := PUnit.unit
 def toZ (x : const.X cpt) : ℤ := x
 
 /- English proof (translation)
-Introduce and unpack `⟨C, hC⟩`. Take `⟨h, hh, hd⟩` from `hC cpt rfl (0 : Fin 1) (show const.X cpt from (1 : ℤ)) (one_ne_zero : (1 : ℤ) ≠ 0)`. Establish `h0 : h = 0` using `by rwa [IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot] at hh`. Substitute `h0` using the available equality. Rewrite `hd` using `[map_zero, zero_dvd_iff]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero _ (PowerSeries.X_ne_zero (R := ℚ)) hd`.
+A detailed English derivation is pending.
 -/
 theorem not_lam : ¬ const.abelian₂ := by
   rintro ⟨C, hC⟩
@@ -257,25 +253,25 @@ theorem not_lam : ¬ const.abelian₂ := by
   exact pow_ne_zero _ (PowerSeries.X_ne_zero (R := ℚ)) hd
 
 /- English proof (translation)
-Introduce `hE`. Set `κ : Fin 1 → const.X cpt` to `fun _ => show const.X cpt from (1 : ℤ)`. Take `⟨h, hh⟩` from `hE cpt κ ()`. Take `⟨S, a1, a2, a3⟩` from `hh 2`. Establish `hone : κ ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Establish `h2` using `a2 κ (fun _ => ⟨0, by simp⟩) hn`. Establish `h3 : ∑ i : Fin (const.m cpt), qW !![1] (const.δ cpt i) κ = 1` using `by show ∑ i : Fin 1, qW !![1] (LinearMap.mul ℤ ℤ) (fun _ => (1 : ℤ)) = 1`. Simplify using `[qW]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `a4 : const.ev cpt h - ∑ mu ∈ S, const.term cpt mu () ∈ maximalIdeal (const.V cpt) ^ 2` using `a3`. Rewrite `a4` using `[← Finset.add_sum_erase _ _ hone]`. Establish `a5 : ∑ mu ∈ S.erase κ, const.term cpt mu () ∈ maximalIdeal (const.V cpt) ^ 2`. Use `Ideal.sum_mem _ fun mu hmu => term_mem const cpt mu () 2 ?_` and prove the remaining obligations. Take `⟨p, p'⟩` from `Finset.mem_erase.1 hmu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `a1 mu p' (0 : Fin 1)`. Establish `hw' : toZ (mu 0) = 1 + 3 * toZ w`. Establish `: toZ (mu 0) = (1 : ℤ) + (3 : ℕ) • toZ w` using `hw`. Rewrite using `[this, nsmul_eq_mul]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hw0 : toZ w ≠ 0`. Introduce `h0`. Apply `p` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Subsingleton.elim a 0]`. Use `show toZ (mu 0) = 1`. Rewrite using `[hw', h0]`. Expand and normalize the polynomial expressions, which then agree. Use `show ((2 : ℕ) : ℤ) ≤ ∑ i : Fin 1, qW !![1] (LinearMap.mul ℤ ℤ) (fun v => toZ (mu v))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.univ_unique, Finset.sum_singleton, qW_mul]`. Rewrite using `[hw']`. Use `push_cast`. Apply the tactic sequence `rcases lt_or_gt_of_ne hw0 with h | h <;> nlinarith`. Establish `a6 : const.term cpt κ () = (show const.V cpt from PowerSeries.X)` using `by show (1 : PowerSeries ℚ) * mono !![1] (fun _ : Fin 1 => PowerSeries.X) (fun _ => LinearMap.mul ℤ ℤ) (fun _ => (1 : ℤ)) = PowerSeries.X`.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [mono, qW]`. Simplify using the standard rewrite rules. Conclude with `(one_mul _).trans ((pow_one _).trans (pow_one _))`. Establish `a7 : const.ev cpt h - (show const.V cpt from PowerSeries.X) ∈ maximalIdeal (const.V cpt) ^ 2`. Use `add_mem a4 a5` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `this` using `[a6]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `(PowerSeries.C h : PowerSeries ℚ) - PowerSeries.X ∈ maximalIdeal (PowerSeries ℚ) ^ 2 at a7`. Establish `a8 : (PowerSeries.C h - PowerSeries.X : PowerSeries ℚ) ∈ Ideal.span {PowerSeries.X ^ 2}`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← Ideal.span_singleton_pow, ← PowerSeries.maximalIdeal_eq_span_X]`. Conclude with `a7`. Rewrite `a8` using `[Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff]`. Simplify `a8 1 (by norm_num)` using `[PowerSeries.coeff_C]`.
+A detailed English derivation is pending.
 -/
 theorem not_exact : ¬ const.Exact 3 := by
   classical

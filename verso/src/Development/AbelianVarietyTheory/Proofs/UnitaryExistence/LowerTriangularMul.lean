@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.LowerTriangularMul
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge i k with hik | hki` into its components or cases. Rewrite using `[hA i k hik, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB k j (lt_of_le_of_lt hki hij), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lowerTriangular_mul {S : Type} [CommRing S] {n : ℕ} (A B : Matrix (Fin n) (Fin n) S)
     (hA : ∀ (i j : Fin n), i < j → A i j = (0 : S))
@@ -19,7 +19,7 @@ theorem lowerTriangular_mul {S : Type} [CommRing S] {n : ℕ} (A B : Matrix (Fin
   · rw [hB k j (lt_of_le_of_lt hki hij), mul_zero]
 
 /- English proof (translation)
-Introduce `A B hA hB` and use `lowerTriangular_mul A B hA hB`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {S : Type} [inst : CommRing S] {n : ℕ} (A B : Matrix (Fin n) (Fin n) S), (∀ (i j : Fin n), i < j → A i j = (0 : S)) → (∀ (i j : Fin n), i < j → B i j = (0 : S)) → ∀ (i j : Fin n), i < j → (A * B) i j = (0 : S) :=
   fun A B hA hB => lowerTriangular_mul A B hA hB

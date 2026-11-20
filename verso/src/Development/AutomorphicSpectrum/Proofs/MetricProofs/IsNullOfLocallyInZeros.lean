@@ -9,11 +9,11 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq
 namespace GlobalTheory.CompanionTheory.Ar.PB.NullLocal
 
 /- English proof (translation)
-Introduce `j`. Use `measure_null_of_locally_null _ fun w hw => ?_` and prove the remaining obligations. Take `⟨hwt, hwZ⟩` from `hw`. Take `⟨W, f, hWo, hxW, hf, hfZ, hne⟩` from `hZ _ hwZ`. Establish `hOo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' W)` using `(A.chart j).isOpen_inter_preimage_symm hWo`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, hrO⟩` from `Metric.isOpen_iff.mp hOo w ⟨hwt, hxW⟩`. Establish `hV : IsOpen ((A.chart j).symm '' Metric.ball w r)` using `(A.chart j).isOpen_image_symm_of_subset_target Metric.isOpen_ball fun z hz => (hrO hz).1`. Take `⟨y, ⟨z, hz, rfl⟩, hy⟩` from `hne _ hV ⟨_, w, Metric.mem_ball_self hr, rfl⟩ (by`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `(hrO hz).2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hnull` using `ReciprocityTheory.AnForm.volume_zero_set_of_analyticOnNhd (U := Metric.ball w r) Metric.isOpen_ball (convex_ball w r).isPreconnected (f := f ∘ (A.chart j).symm) ((hf j).mono hrO) ⟨z, hz, hy⟩`. Use `⟨((A.chart j).target ∩ (A.chart j).symm ⁻¹' Z) ∩ Metric.ball w r, inter_mem_nhdsWithin _ (Metric.ball_mem_nhds w hr), measure_mono_null ?_ hnull⟩` and prove the remaining obligations. Introduce and unpack `v ⟨⟨-, hvZ⟩, hvb⟩`. Conclude with `⟨hvb, hfZ _ ⟨(hrO hvb).2, hvZ⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isNull_of_locally_in_zeros (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X)
     (Z : Set X)

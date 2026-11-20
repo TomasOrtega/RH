@@ -17,7 +17,7 @@ namespace SectionsLatticeFS
 open ProjScheme
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma polySection_congr {A : Type u} [CommRing A] {N n : ℕ} {P Q : MvPolynomial (Fin (N + 1)) A}
     (hP : P ∈ ProjSpace.grading A N n) (hQ : Q ∈ ProjSpace.grading A N n) (h : P = Q) :
@@ -30,9 +30,9 @@ def monomialBasisGrading (A : Type u) [CommRing A] (N n : ℕ) :
     (LinearEquiv.ofEq _ _ (MvPolynomial.homogeneousSubmodule_eq_finsupp_supported (σ := Fin (N + 1)) (R := A) n).symm)
 
 /- English proof (translation)
-Establish `h : monomialBasisGrading A N n a = ⟨_, monomial_mem_grading (A` using `A) a.1 a.2⟩ := by`. Rewrite using `[Module.Basis.apply_eq_iff]`. Use extensionality with `b`. Simplify using `only [monomialBasisGrading, MvPolynomial.basisRestrictSupport, Module.Basis.map_repr, Finsupp.single_apply, Subtype.ext_iff]`. Express the relevant statement in the definitionally equal form `MvPolynomial.coeff b.1 (MvPolynomial.monomial a.1 (1 : A)) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[MvPolynomial.coeff_monomial]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma monomialBasisGrading_apply (A : Type u) [CommRing A] (N n : ℕ)
     (a : {a : Fin (N + 1) →₀ ℕ // a.degree = n}) :
@@ -47,7 +47,7 @@ lemma monomialBasisGrading_apply (A : Type u) [CommRing A] (N n : ℕ)
   rw [h]
 
 /- English proof (translation)
-Introduce `A _ N n`. Take `⟨e, he⟩` from `h A N n`. Use `⟨(monomialBasisGrading A N n).map e, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.map_apply, he]`. Conclude with `polySection_congr _ _ (monomialBasisGrading_apply A N n a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MonomialBasis.proof (h : PolySections.Statement.{u}) : MonomialBasis.Statement.{u} := by
   intro A _ N n

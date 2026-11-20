@@ -5,13 +5,13 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[Finset.sum_apply, uOp, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `set g := Matrix.GeneralLinearGroup.map (Rat.castHom ℝ) (Matrix.GeneralLinearGroup.mkOfDetNeZero !![(1 : ℚ), (j : ℚ); 0, (q : ℚ)] (by simp [Matrix.det_fin_two_of]; exact_mod_cast hq.ne')) with hg`. Establish `hval : g.1 = !![(1 : ℝ), (j : ℝ); 0, (q : ℝ)]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [hg]`. Establish `hdet : g.det.val = (q : ℝ)`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hval]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpos : 0 < g.det.val` using `by rw [hdet]; exact_mod_cast hq`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Rewrite using `[slash_apply, σ, if_pos hpos, hdet, ← ofComplex_apply (g • z), coe_smul_of_det_pos hpos]`. Simplify using `[num, denom, hval]`. Rewrite using `[zpow_sub_one₀ hq0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem uOp_eq_sum_slash (q : ℕ) (k : ℤ) (f : ℍ → ℂ) (hq : 0 < q) : GlobalTheory.Hk.uOp q f = ∑ j ∈ Finset.range q, f ∣[k] (Matrix.GeneralLinearGroup.map (Rat.castHom ℝ) (Matrix.GeneralLinearGroup.mkOfDetNeZero !![(1 : ℚ), (j : ℚ); 0, (q : ℚ)] (by simp [Matrix.det_fin_two_of]; exact_mod_cast hq.ne'))) := by
   funext z

@@ -16,11 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.IwLevel
 
 /- English proof (translation)
-Introduce `k _ _ A _ hA φ _ hfin d hd`. Take `⟨hflat, hsurj⟩` from `GlobalTheory.flat_and_surjective_of_isFinite_abelianEnd GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected k A hA φ inferInstance hfin`. Use `hA.smooth` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Establish `: ConnectedSpace A.left` using `GeometricallyConnected.connectedSpace A.hom A.hom.isOpenMap`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyOfFinitePresentation (φ.left ≫ A.hom)`. Rewrite using `[Over.w]`. Use `infer_instance`. Use `GlobalTheory.TangentCrit.locallyOfFinitePresentation_of_comp φ.left A.hom` as an intermediate fact. Use `⟨hfin, hflat, hsurj, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hd]`. Conclude with `(Scheme.Hom.isLocallyConstant_finrank φ.left).apply_eq_of_preconnectedSpace y _`.
+A detailed English derivation is pending.
 -/
 theorem isIsogDeg_of_isFinite_of_finrank_origin :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k)) [GrpObj A], IsAbelianScheme A →

@@ -14,9 +14,9 @@ namespace GlobalTheory.Mem.Col2
 namespace JetEx
 
 /- English proof (translation)
-Take `⟨sp, hT, hY, hA, hV, hz, rfl, -⟩` from `h`. Establish `hx : 0 < K.s.x` using `zero_lt_one.trans K.s.one_lt_alt`. Use `⟨(Delv K.s K.cD : ℚ), K.c, Nat.cast_pos.2 (Nat.ceil_pos.2 (Real.rpow_pos_of_pos hx _)), K.ok.inj, fun w τ l hl => ?_, K.ok.code⟩` and prove the remaining obligations. Establish `h1` using `(K.ok.hc w).1 τ`. Express the relevant statement in the definitionally equal form `l + 1 < K.P.R.k - 1 at hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `show (K.P.hcW w τ).v ⟨l, by omega⟩ - (K.P.hcW w τ).v ⟨l + 1, hl⟩ = _`. Rewrite using `[h1, h1, show K.P.R.k - 2 - l = K.P.R.k - 2 - (l + 1) + 1 by omega]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasLetters_of_over {K : Ctx} {P : Pre} (h : K.Over P) : StagesInhab.HasLetters P := by
   obtain ⟨sp, hT, hY, hA, hV, hz, rfl, -⟩ := h
@@ -31,7 +31,7 @@ theorem hasLetters_of_over {K : Ctx} {P : Pre} (h : K.Over P) : StagesInhab.HasL
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun P f _ _ Ξ => gens P f.chiPsi Ξ, by simp, fun P f _ _ Ξ => gens_algebraic P f.chiPsi Ξ, fun _ _ _ _ h _ _ => h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem lg_gens (K : Ctx) : large₂ K fun B f T => ∀ z ∈ gens B.toPre f.chiPsi (T.set f), z ∈ B.embLL.fieldRange :=
   ⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun P f _ _ Ξ => gens P f.chiPsi Ξ, by simp,
@@ -40,7 +40,7 @@ theorem lg_gens (K : Ctx) : large₂ K fun B f T => ∀ z ∈ gens B.toPre f.chi
 end JetEx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨JetEx.gens, JetEx.gens_algebraic, fun _ _ _ hL h hK => JetEx.exists_jetsIn hL h hK⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_bound_jetsIn : ∃ Z : ∀ P : Pre, HChar P.host.E → Set (HChar P.host.E) → Finset ℂ,
     (∀ P χ Ξ, ∀ z ∈ Z P χ Ξ, IsAlgebraic ℚ z) ∧

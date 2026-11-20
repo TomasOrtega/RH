@@ -9,11 +9,9 @@ namespace RestTerms
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `f N H`. Take `⟨R, hR⟩` from `h1 f N _ (isBlockAlternating_antisymmetrize f N H)`. Use `⟨R, hR, fun w => ?_⟩` and prove the remaining obligations. Establish `h` using `isBlockAlternating_antisymmetrize f N H w`. Rewrite `h` using `[hR, map_mul, Flag.blockPermute_blockVandermonde, smul_mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : blockSign f N w ≠ 0`. Introduce `h0`. Use `Flag.blockSign_mul_self f N w` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`. Conclude with `zero_ne_one this`.
-
-Conclude with `mul_left_cancel₀ (Flag.blockVandermonde_ne_zero f N) (smul_right_injective _ hs h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagDividedDifferencePoly.proof (h1 : FlagVandermondeDvd.Statement) :
     FlagDividedDifferencePoly.Statement := by

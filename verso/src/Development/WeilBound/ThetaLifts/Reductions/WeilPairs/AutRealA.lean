@@ -30,9 +30,9 @@ variable {σ : E →ₐ[F] E} {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {J
   {ψ : AddChar (AF F) ℂ}
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℝ (fun v => rhoVF σ JS JT ξ₀ ψ hc ι v G) 0` using `(hG.differentiable (by simp)).differentiableAt`. Set `L : ↥(BBF σ JS JT ξ₀ ψ) →L[ℝ] ℂ` to `((BoundedContinuousFunction.evalCLM ℂ w).comp (BBF σ JS JT ξ₀ ψ).subtypeL).restrictScalars ℝ`. Establish `hline : HasDerivAt (fun t : ℝ => t • z) z 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const z`. Establish `h2 : HasDerivAt (fun t : ℝ => rhoVF σ JS JT ξ₀ ψ hc ι (t • z) G) (fderiv ℝ (fun v => rhoVF σ JS JT ξ₀ ψ hc ι v G) 0 z) 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hline (by simp)`. Conclude with `h`. Establish `h3` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h2`. Conclude with `h3.deriv.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ev_fderivF (hc : IsCharAF F ψ) (ι : (InfinitePlace F → ℂ) →+ AEF F E) (G : BBF σ JS JT ξ₀ ψ)
     (hG : Sm (rhoVF σ JS JT ξ₀ ψ hc ι) G) (z : IxF F nS nT → ℂ) (w : WOF F E nS nT) :
@@ -52,9 +52,9 @@ theorem ev_fderivF (hc : IsCharAF F ψ) (ι : (InfinitePlace F → ℂ) →+ AEF
   exact h3.deriv.symm
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `w`. Establish `h1` using `ev_fderivF hc ι G hG z w`. Establish `h2` using `ev_fderivF hc ι G hG (Complex.I • s *ᵥ z) w`. Establish `h3` using `hv w z`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[PositivityTheory.ThKW.jV_apply]`. Simplify using `only [Submodule.coe_add, Submodule.coe_smul, BoundedContinuousFunction.coe_add, BoundedContinuousFunction.coe_smul, Pi.add_apply, smul_eq_mul, Submodule.coe_zero, BoundedContinuousFunction.coe_zero, Pi.zero_apply]`. Rewrite using `[h1, h2]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_vacF (hc : IsCharAF F ψ) (ι : (InfinitePlace F → ℂ) →+ AEF F E) (s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ)
     (G : BBF σ JS JT ξ₀ ψ) (hG : Sm (rhoVF σ JS JT ξ₀ ψ hc ι) G) (hv : IsVacF σ JS JT ξ₀ ψ ι s G.1)
@@ -76,37 +76,33 @@ theorem fderiv_vacF (hc : IsCharAF F ψ) (ι : (InfinitePlace F → ℂ) →+ AE
 variable {B : Base F E} {θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)} {ι : (InfinitePlace F → ℂ) →+ AEF F E}
 
 /- English proof (translation)
-Take `⟨good, hS, hT, h0, hξ, hinf, hchart⟩` from `C`. Take `⟨hc, -⟩` from `GlobalTheory.T.standardTraceAddChar_isStandardChar_of_admissibleCMBase F E σ B good`. Take `⟨hHh, hHd⟩` from `GlobalTheory.T.hermitianFormRealCoordinateMatrix_hermitian_det_ne_zero F E σ B good nS nT JS JT hS hT ξ₀ h0 hξ`. Establish `hheis : GlobalTheory.RealWeil.IsHeis (fun x y : IxF F nS nT → ℂ => (star y ⬝ᵥ (HMF JS JT ξ₀ (tauB B)).mulVec x).im) (rhoVF σ JS JT ξ₀ B.ψ hc ι)`. Unfold `GlobalTheory.RealWeil.IsHeis`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [GlobalTheory.RealWeilF.rhoVF]`. Use `⟨fun f => ?_, fun u v f => ?_, fun u f => ?_, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[iotaVF_zero, rhoBF_zero]`. Rewrite using `[rhoBF_rhoBF, iotaVF_add, GlobalTheory.T.stdChar_half_symplecticForm_real_coordinates F E σ B good nS nT JS JT hS hT ξ₀ h0 hξ θ hinf ι hchart u v]`. Conclude with `norm_rhoBF hc _ f`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(GlobalTheory.T.continuous_heisenbergOperatorBoundedThetaFunctions F E σ nS nT JS JT ξ₀ B.ψ hc f).comp (continuous_iotaVF hchart)`. Take `⟨Ω, hosc, hone1, hcont, hvac⟩` from `GlobalTheory.T.exists_oscillatorAction_unitaryGroup_hermitian (IxF F nS nT) (HMF JS JT ξ₀ (tauB B)) hHh hHd (↥(BBF σ JS JT ξ₀ B.ψ)) (rhoVF σ JS JT ξ₀ B.ψ hc ι) hheis (GAF σ JS × GAF σ JT) (mMF σ JS JT θ) (GlobalTheory.T.realCoordinateAction_unitary_preserves_hermitianForm F E σ B …`. Take `⟨hadd, hsmul, hsmp, hone, hmul, hequiv, hcomm7, hnorm⟩` from `hosc`. Establish `hSmθ : ∀ x : ↥(BBF σ JS JT ξ₀ B.ψ), IsThetaFunOF σ JS JT ξ₀ B.ψ ⇑(x : BoundedContinuousFunction (WOF F E nS nT) ℂ) → GlobalTheory.RealWeil.Sm (rhoVF σ JS JT ξ₀ B.ψ hc ι) x` using `fun x hx => GlobalTheory.T.thetaFunction_smoothVector_realHeisenberg F E σ B good nS nT JS JT hS hT ξ₀ h0 hξ θ hinf ι hchart hc x hx`. Establish `hcommA : ∀ u : WOF F E nS nT, Matrix.map u ⇑(infPartF F E) = 0 → ∀ (v : IxF F nS nT → ℂ) (z : ↥(BBF σ JS JT ξ₀ B.ψ)), rhoBF σ JS JT ξ₀ B.ψ hc u (rhoVF σ JS JT ξ₀ B.ψ hc ι v z) = rhoVF σ JS JT ξ₀ B.ψ hc ι v (rhoBF σ JS JT ξ₀ B.ψ hc u z)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `u hu v z`. Take `⟨h1, h2⟩` from `GlobalTheory.T.halvedSymplecticForm_finite_real_orthogonal F E σ nS nT JS JT ξ₀ u (iotaVF ι v) hu (real_iotaVF hchart v)`. Simplify using `only [GlobalTheory.RealWeilF.rhoVF]`. Rewrite using `[rhoBF_rhoBF, rhoBF_rhoBF, h1, h2, add_comm u (iotaVF ι v)]`. Establish `hfix : ∀ (u : WOF F E nS nT) (z : ↥(BBF σ JS JT ξ₀ B.ψ)), heisOF σ JS JT ξ₀ B.ψ u ⇑(z : BoundedContinuousFunction (WOF F E nS nT) ℂ) = ⇑(z : BoundedContinuousFunction (WOF F E nS nT) ℂ) → rhoBF σ JS JT ξ₀ B.ψ hc u z = z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `u z hz`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Rewrite using `[coe_rhoBF, hz]`. Establish `hth : ∀ p (x : ↥(BBF σ JS JT ξ₀ B.ψ)), IsThetaFunOF σ JS JT ξ₀ B.ψ ⇑(x : BoundedContinuousFunction (WOF F E nS nT) ℂ) → IsThetaFunOF σ JS JT ξ₀ B.ψ ⇑((Ω p x) : BoundedContinuousFunction (WOF F E nS nT) ℂ)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p x hx`. Establish `hsm` using `hSmθ x hx`. Take `⟨-, ⟨U, hU, hUx⟩, -, -⟩` from `hx`. Use `GlobalTheory.T.isThetaFun_of_smooth_real_heisenberg_level F E σ B good nS nT JS JT hS hT ξ₀ h0 hξ θ hinf ι hchart hc (Ω p x) (hsmp p x hsm) ⟨U, hU, fun u hu hu0 => ?_⟩` and prove the remaining obligations. Establish `hA : rhoBF σ JS JT ξ₀ B.ψ hc u x = x` using `hfix u x (hUx u hu hu0)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h7` using `hcomm7 p (rhoBF σ JS JT ξ₀ B.ψ hc u) (fun v f => hcommA u hu0 v f) x hsm`. Rewrite `h7` using `[hA]`. Rewrite using `[← coe_rhoBF hc u (Ω p x), ← h7]`. Take `⟨om, hom⟩` from `GlobalTheory.RealWeilF.exists_homF (GlobalTheory.T.orientedModelThetaFunction_bounded F E σ nS nT JS JT ξ₀ B.ψ hc) Ω hth (fun p x x' hx hx' => hadd p x x' (hSmθ x hx) (hSmθ x' hx')) (fun p a x hx => hsmul p a x (hSmθ x hx)) (fun x hx => hone x (hSmθ x hx)) (fun p p' x hx => hmul …`. Establish `hx : ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → ∃ x : ↥(BBF σ JS JT ξ₀ B.ψ), ⇑(x : BoundedContinuousFunction (WOF F E nS nT) ℂ) = f`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `f hf`. Establish `hb` using `GlobalTheory.T.orientedModelThetaFunction_bounded F E σ nS nT JS JT ξ₀ B.ψ hc f hf`. Take `⟨hq, -, hcf, -⟩` from `hf`. Conclude with `⟨GlobalTheory.RealWeilF.toBF f hcf hb hq, rfl⟩`. Use `⟨om, ⟨⟨fun p f hf => ?_, fun f hf w => ?_, fun μ 𝓕 hμ h𝓕 p f hf => ?_⟩, fun g hg h hh f hf => ?_, fun g hg h hh w₀ f hf => ?_⟩, fun s hss hpos p hsp f hf hv => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩` from `hx f hf`. Rewrite using `[hom p x hf]`. Conclude with `hth p x hf`. Take `⟨x, rfl⟩` from `hx f hf`. Establish `e : (fun p => om p ⇑(x : BoundedContinuousFunction (WOF F E nS nT) ℂ) w) = fun p => (↑(Ω p x) : BoundedContinuousFunction (WOF F E nS nT) ℂ) w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `fun p => by rw [hom p x hf]`. Rewrite using `[e]`. Conclude with `(BoundedContinuousFunction.evalCLM ℂ w).continuous.comp (continuous_subtype_val.comp (hcont (GlobalTheory.T.continuous_adelicAction_realCoordinates F E σ B good nS nT JS JT θ hinf) x (hSmθ x hf)))`. Take `⟨x, rfl⟩` from `hx f hf`. Rewrite using `[show om p ⇑(x : BoundedContinuousFunction (WOF F E nS nT) ℂ) = ⇑((Ω p x) : BoundedContinuousFunction (WOF F E nS nT) ℂ) from hom p x hf]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.lintegral_eq_of_heisenbergInvariant_norms F E σ nS nT JS JT ξ₀ B.ψ hc μ 𝓕 hμ h𝓕 x (Ω p x) (fun Hs _ _ _ Φ hΦ => hnorm Hs Φ (fun v g => hΦ (iotaVF ι v) g) p x (hSmθ x hf))`. Take `⟨x, rfl⟩` from `hx f hf`. Rewrite using `[hom (g, h) x hf, hone1 (g, h) (mMF_fin θ hg hh) x (hSmθ x hf)]`. Take `⟨x, rfl⟩` from `hx f hf`. Take `⟨u, v, hu, rfl⟩` from `GlobalTheory.T.exists_finiteAdelic_add_realChartPoint F E nS nT θ ι hchart w₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ0` using `GlobalTheory.T.theta_function_heisenberg_invariant F E σ B good nS nT JS JT ξ₀ (u + iotaVF ι v) ⇑(x : BoundedContinuousFunction (WOF F E nS nT) ℂ) hf`. Take `⟨y, hy⟩` from `hx _ hθ0`. Establish `hyθ : IsThetaFunOF σ JS JT ξ₀ B.ψ ⇑(y : BoundedContinuousFunction (WOF F E nS nT) ℂ)` using `by rw [hy]; exact hθ0`. Establish `hsym` using `GlobalTheory.T.halvedSymplecticForm_finite_real_orthogonal F E σ nS nT JS JT ξ₀ u (iotaVF ι v) hu (real_iotaVF hchart v)`. Establish `hyx : y = rhoBF σ JS JT ξ₀ B.ψ hc u (rhoVF σ JS JT ξ₀ B.ψ hc ι v x)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Use `show ⇑(y : BoundedContinuousFunction (WOF F E nS nT) ℂ) = ⇑((rhoBF σ JS JT ξ₀ B.ψ hc u (rhoBF σ JS JT ξ₀ B.ψ hc (iotaVF ι v) x)) : BoundedContinuousFunction (WOF F E nS nT) ℂ)`. Rewrite using `[hy, coe_rhoBF, coe_rhoBF, heisOF_heisOF, hsym.1, AddChar.map_zero_eq_one, one_smul]`. Establish `hsmv : GlobalTheory.RealWeil.Sm (rhoVF σ JS JT ξ₀ B.ψ hc ι) (rhoVF σ JS JT ξ₀ B.ψ hc ι v x)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `hSmθ` to reduce the goal to its premises. Use `show IsThetaFunOF σ JS JT ξ₀ B.ψ ⇑((rhoBF σ JS JT ξ₀ B.ψ hc (iotaVF ι v) x) : BoundedContinuousFunction (WOF F E nS nT) ℂ)`. Rewrite using `[coe_rhoBF]`. Conclude with `GlobalTheory.T.theta_function_heisenberg_invariant F E σ B good nS nT JS JT ξ₀ (iotaVF ι v) _ hf`. Rewrite using `[← hy, hom (g, h) y hyθ, hyx, hcomm7 (g, h) _ (hcommA u hu) _ hsmv, hequiv (g, h) v x (hSmθ x hf), GlobalTheory.RealWeilF.actOF_add, GlobalTheory.T.unitaryRealPoints_fix_finiteAdelicHoms F E σ nS nT JS JT g h hg hh u hu, GlobalTheory.T.adelicHomAction_realCoordinates_eq F E σ B g …`.
-
-Establish `hsym2` using `GlobalTheory.T.halvedSymplecticForm_finite_real_orthogonal F E σ nS nT JS JT ξ₀ u (iotaVF ι ((mMF σ JS JT θ (g, h)).mulVec v)) hu (real_iotaVF hchart _)`. Use `show ⇑((rhoBF σ JS JT ξ₀ B.ψ hc u (rhoBF σ JS JT ξ₀ B.ψ hc (iotaVF ι ((mMF σ JS JT θ (g, h)).mulVec v)) (Ω (g, h) x))) : BoundedContinuousFunction (WOF F E nS nT) ℂ) = _`. Rewrite using `[coe_rhoBF, coe_rhoBF, heisOF_heisOF, hsym2.1, AddChar.map_zero_eq_one, one_smul]`. Take `⟨x, rfl⟩` from `hx f hf`. Rewrite using `[hom p x hf, hvac s p hss hpos hsp x (hSmθ x hf) (fun z => fderiv_vacF hc ι s x (hSmθ x hf) hv z)]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_inf_A (C : Ctx σ B JS JT ξ₀ θ ι) : ∃ oi, IsInfWeilF σ JS JT ξ₀ B.ψ oi ∧
     ∀ s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ, s * s = 1 → ((HMF JS JT ξ₀ (tauB B)) * s).PosDef → ∀ p,

@@ -16,9 +16,9 @@ section Comp
 variable {R : Type} [CommRing R] {ι κ : Type} {n : ℕ}
 
 /- English proof (translation)
-Unfold `homComp`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_filter, mem_support_iff]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases h : ∀ i, multideg a i = δ i <;> by_cases hc : F.coeff a = 0 <;> simp [h, hc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_homComp (δ : ι → ℕ) (F : MvPolynomial (ι × Fin n) R) (a : ι × Fin n →₀ ℕ) :
     (homComp δ F).coeff a = if (∀ i, multideg a i = δ i) then F.coeff a else 0 := by
@@ -31,15 +31,15 @@ theorem coeff_homComp (δ : ι → ℕ) (F : MvPolynomial (ι × Fin n) R) (a : 
   by_cases h : ∀ i, multideg a i = δ i <;> by_cases hc : F.coeff a = 0 <;> simp [h, hc]
 
 /- English proof (translation)
-Use `⟨∑ mo ∈ G.support.filter (fun mo => ∀ i, multideg (Finsupp.mapDomain f mo) i = δ i), monomial mo (G.coeff mo), ?_, ?_⟩` and prove the remaining obligations. Introduce `mo hmo`. Take `⟨x, hx, h2⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hmo)`. Rewrite using `[Finset.mem_singleton.mp (support_monomial_subset h2)]`. Conclude with `(Finset.mem_filter.mp hx).1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Rewrite using `[coeff_homComp]`. Use `conv_rhs => rw [G.as_sum]`. Simplify using `only [map_sum, coeff_sum, rename_monomial, coeff_monomial]`. Rewrite using `[Finset.sum_filter]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `mo _`. Distinguish the cases in `hm : Finsupp.mapDomain f mo = a`. Establish `hP : ∀ i, multideg (Finsupp.mapDomain f mo) i = δ i` using `by rw [hm]; exact h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[if_pos hP]`. Simplify using `only [hm, if_false, ite_self]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `mo _`. Distinguish the cases in `hm : Finsupp.mapDomain f mo = a`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hP : ¬ ∀ i, multideg (Finsupp.mapDomain f mo) i = δ i` using `by rw [hm]; exact h`. Simplify using `[hP]`. Simplify using `[hm]`.
+A detailed English derivation is pending.
 -/
 theorem homComp_rename (f : κ × Fin n → ι × Fin n) (δ : ι → ℕ) (G : MvPolynomial (κ × Fin n) R) :
     ∃ G' : MvPolynomial (κ × Fin n) R, G'.support ⊆ G.support ∧ rename f G' = homComp δ (rename f G) := by
@@ -77,9 +77,9 @@ variable {n' r K m : ℕ} [NeZero n'] (Fr : Frames n' r) (p : ℕ) (O : Type) [C
   (hk : m + 1 = r + K) {J : ℕ} [NeZero J] (nL : ZMod J → ℕ)
 
 /- English proof (translation)
-Rewrite using `[show monomial (mPl Fr p hk nL bp) c = C c * monomial (mPl Fr p hk nL bp) 1 by`. Rewrite using `[C_mul_monomial, mul_one]]`. Simplify using `only [upPl, aeval_monomial, algebraMap_eq]`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), mPl, MvPolynomial.monomial_sum_one]`. Use `congr 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `v _`. Rewrite using `[← pow_mul, X_pow_eq_monomial]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem upPl_monomial_eq_monomial_mPl (bp : TL J nL r × Fin r →₀ ℕ) (c : KK O) :
     upPl Fr p O hk nL (monomial bp c) = monomial (mPl Fr p hk nL bp) c := by
@@ -93,9 +93,9 @@ private theorem upPl_monomial_eq_monomial_mPl (bp : TL J nL r × Fin r →₀ �
   rw [← pow_mul, X_pow_eq_monomial]
 
 /- English proof (translation)
-Rewrite using `[show monomial (mNo Fr p hk nL bn) c = C c * monomial (mNo Fr p hk nL bn) 1 by`. Rewrite using `[C_mul_monomial, mul_one]]`. Simplify using `only [upNo, aeval_monomial, algebraMap_eq]`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), mNo, MvPolynomial.monomial_sum_one]`. Use `congr 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `v _`. Rewrite using `[← pow_mul, X_pow_eq_monomial]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem upNo_monomial_eq_monomial_mNo (bn : TL J nL r × Fin K →₀ ℕ) (c : KK O) :
     upNo Fr p O hk nL (monomial bn c) = monomial (mNo Fr p hk nL bn) c := by
@@ -109,11 +109,11 @@ private theorem upNo_monomial_eq_monomial_mNo (bn : TL J nL r × Fin K →₀ �
   rw [← pow_mul, X_pow_eq_monomial]
 
 /- English proof (translation)
-Establish `e : asm Fr p O hk nL rho A N = ∑ bp ∈ A.support, ∑ bn ∈ N.support, monomial (bigM Fr p hk nL rho bp bn) (A.coeff bp * N.coeff bn)` using `by conv_lhs => rw [asm, A.as_sum, N.as_sum]`. Simplify using `only [map_sum, upPl_monomial_eq_monomial_mPl, upNo_monomial_eq_monomial_mNo, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `bp _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `bn _`. Rewrite using `[monomial_mul, monomial_mul, one_mul, bigM_eq]`. Rewrite `h` using `[e]`. Take `⟨bp, hbp, h2⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum h)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨bn, hbn, h3⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum h2)`. Conclude with `⟨bp, hbp, bn, hbn, Finset.mem_singleton.mp (support_monomial_subset h3)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem asm_support (rho : TL J nL r × Fin (r + K) → ℕ) (A : MvPolynomial (TL J nL r × Fin r) (KK O))
     (N : MvPolynomial (TL J nL r × Fin K) (KK O)) (mm : TV n' (m + 1) →₀ ℕ)
@@ -136,7 +136,7 @@ theorem asm_support (rho : TL J nL r × Fin (r + K) → ℕ) (A : MvPolynomial (
   exact ⟨bp, hbp, bn, hbn, Finset.mem_singleton.mp (support_monomial_subset h3)⟩
 
 /- English proof (translation)
-Apply `bigM_notin` to reduce the goal to its premises. Introduce and unpack `⟨v, hv⟩`. Conclude with `hs ⟨v.1, congrArg Prod.fst hv⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem bigM_off (htop : ∀ x : TL J nL r, posOf n' (posTL Fr x) ∈ Fr.TT)
     (rho : TL J nL r × Fin (r + K) → ℕ) (bp : TL J nL r × Fin r →₀ ℕ) (bn : TL J nL r × Fin K →₀ ℕ)
@@ -147,11 +147,11 @@ theorem bigM_off (htop : ∀ x : TL J nL r, posOf n' (posTL Fr x) ∈ Fr.TT)
   exact hs ⟨v.1, congrArg Prod.fst hv⟩
 
 /- English proof (translation)
-Distinguish the cases in `hs : s ∈ Set.range fun x : TL J nL r => posOf n' (posTL Fr x)`. Take `⟨x, rfl⟩` from `hs`. Establish `hsc : multideg (bigM Fr p hk nL rho bp bn) (posOf n' (posTL Fr x)) = ∑ a : Fin r, bigM Fr p hk nL rho bp bn (plVar Fr hk nL x a) + ∑ b : Fin K, bigM Fr p hk nL rho bp bn (noVar Fr hk nL x b)`. Unfold `multideg`. Rewrite using `[← Equiv.sum_comp (finCongr hk.symm) (fun c => bigM Fr p hk nL rho bp bn (posOf n' (posTL Fr x), c)), Fin.sum_univ_add]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hsc]`. Simplify using `only [bigM_pl hinj, bigM_no hinj, Finset.sum_add_distrib, ← Finset.mul_sum]`. Rewrite using `[← hB.2 x, ← h1 x, ← h2 x, Fin.sum_univ_add (fun c => rho (x, c))]`. Unfold `multideg`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hT : s ∉ Fr.TT` using `fun hT => hs (hsurj s hT)`. Rewrite using `[hd s hT]`. Unfold `multideg`. Conclude with `Finset.sum_eq_zero (fun c _ => bigM_off Fr p hk nL htop rho bp bn s hs c)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem multideg_bigM (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x))
     (hsurj : ∀ s ∈ Fr.TT, ∃ x : TL J nL r, posOf n' (posTL Fr x) = s)

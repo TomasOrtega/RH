@@ -16,9 +16,9 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.IndLine
 
 /- English proof (translation)
-Introduce `r _ x`. Establish `h0 : tens (evI F) (⇑(0 : SInf F (Fin n × Fin d))) r = 0`. Use function extensionality and compare the values at `y`. Simplify using `[tens]`. Rewrite using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hasDerivAt_const (0 : ℝ) (0 : ℂ)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem actsD_zero_weil {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (om : Rep σ Y W)
@@ -32,21 +32,17 @@ theorem actsD_zero_weil {F E : Type} [Field F] [NumberField F] [Field E] [Number
   simpa using hasDerivAt_const (0 : ℝ) (0 : ℂ)
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `h0 : ∀ f ∈ fockDeg G.M B.ψ B.emb (fixDeg B G.M om), R.p f = 0`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `Nat.notMem_of_lt_sInf hlt ⟨f, hf, hne⟩`. Establish `hall : ∀ m, ∀ f ∈ fockDeg G.M B.ψ B.emb m, IsKFix B om f → R.p f = 0`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact fun f hf _ => h0 f (fockDeg_mono _ _ _ (Nat.zero_le _) hf)`. Consider the case `succ m ih`. Introduce `f hf hfix`. Distinguish the cases in `hmD : fixDeg B G.M om ≤ m`. Establish `hspan` using `GlobalTheory.T.fixed_fock_degree_span hKP F E σ B a a' G X om om' R Rf hM m hmD f hf hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : Submodule.span ℂ ({g | g ∈ fockDeg G.M B.ψ B.emb m ∧ IsKFix B om g} ∪ {f₁ | ∃ γ ∈ Lines σ G.W, ∃ g ∈ fockDeg G.M B.ψ B.emb m, IsKFix B om g ∧ ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) g f₁}) ≤ LinearMap.ker R.p`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `g (⟨hg, hgfix⟩ | ⟨γ, hγ, g₀, hg₀, hg₀fix, hd⟩)`. Conclude with `ih g hg hgfix`. Establish `h` using `hM.real.lie γ hγ g₀ (fockDeg_le_pol _ _ _ _ hg₀) 0 (zero_mem _) g 0 hd (actsD_zero_weil om' γ) (by rw [ih g₀ hg₀ hg₀fix, map_zero])`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_zero]`. Conclude with `h`. Conclude with `hle hspan`. Use `push_neg at hmD`. Conclude with `h0 f (fockDeg_mono _ _ _ hmD hf)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Establish `hcov` using `GlobalTheory.T.low_part_le_fixed_part_image hKP F E σ B a a' G X om om' R Rf hM`. Establish `hfixbot : (fixPart B G.M om (lowDegInf B G.M R.p)).map R.p = ⊥`. Rewrite using `[fixPart, Submodule.map_span, Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨g, ⟨hg, hgfix⟩, rfl⟩`. Conclude with `hall _ g hg hgfix`.
-
-Establish `hne : lowPartInf B G.M R.p ≠ ⊥`. Apply `lowPartInf_ne_bot` to reduce the goal to its premises. Use `haveI := hM.real.nontriv`. Take `⟨x, hx⟩` from `exists_ne (0 : R.Pi)`. Establish `hx' : x ∈ (G.M.Pol B.ψ B.emb).map R.p` using `by rw [hM.real.quot.onto]; trivial`.
-
-Take `⟨f, hf, rfl⟩` from `hx'`. Conclude with `⟨f, hf, hx⟩`. Conclude with `hne (eq_bot_iff.2 (hcov.trans hfixbot.le))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lowDegInf_le_fixDeg : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W)

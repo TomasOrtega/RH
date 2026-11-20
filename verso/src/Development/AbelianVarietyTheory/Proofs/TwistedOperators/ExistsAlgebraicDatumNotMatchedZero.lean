@@ -19,7 +19,7 @@ namespace GlobalTheory.PolKer
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Use `choose l hl using fun j => Module.Projective.exists_dual_eq_one ℂ (hv j)`. Introduce `h`. Use `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ κ ℂ).compLinearMap l)) h` as an intermediate fact. Simplify using `[hl] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tprod_ne_zero_of_ne {κ : Type} [Fintype κ] {V : κ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)]
     {v : ∀ j, V j} (hv : ∀ j, v j ≠ 0) : PiTensorProduct.tprod ℂ v ≠ 0 := by
@@ -29,7 +29,7 @@ theorem tprod_ne_zero_of_ne {κ : Type} [Fintype κ] {V : κ → Type} [∀ j, A
   simp [hl] at this
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `Module.Projective.exists_dual_eq_one ℂ hy`. Introduce `h0`. Use `congrArg ((TensorProduct.rid ℂ P).toLinearMap ∘ₗ LinearMap.lTensor P l) h0` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul, map_zero, hl, one_smul] at this`. Conclude with `hx this`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tmul_ne_zero_of_ne {P Q : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup Q] [Module ℂ Q] {x : P} {y : Q}
     (hx : x ≠ 0) (hy : y ≠ 0) : x ⊗ₜ[ℂ] y ≠ 0 := by
@@ -41,7 +41,7 @@ theorem tmul_ne_zero_of_ne {P Q : Type} [AddCommGroup P] [Module ℂ P] [AddComm
   exact hx this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, neg_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_neg {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : SInf F κ)
     (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (-f) φ = -GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ := by
@@ -49,23 +49,21 @@ theorem pure_neg {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (
   simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, neg_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM`. Use `haveI := hM.real.nontriv`. Take `⟨y, hy⟩` from `exists_ne (0 : R.Pi)`. Choose the witnesses or unpack the hypotheses as in `⟨f, hfP, hfy⟩ : ∃ f ∈ G.M.Pol Bs.ψ Bs.emb, R.p f = y := by`. Establish `: y ∈ (G.M.Pol Bs.ψ Bs.emb).map R.p` using `hM.real.quot.onto ▸ Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_map.1 this`. Establish `hloc : ∀ v, ∃ φ ∈ GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Fv F v), Rf.p v φ ≠ 0` using `fun v => by haveI := hM.fin.nontriv v`. Take `⟨z, hz⟩` from `exists_ne (0 : Rf.Pi v)`. Establish `: z ∈ (GlobalTheory.WeilM.SB _).map (Rf.p v)` using `(hM.fin.onto v) ▸ Submodule.mem_top`. Take `⟨φ, hφ, rfl⟩` from `Submodule.mem_map.1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨φ, hφ, hz⟩`. Use `choose ψ0 hψ0 hψ0ne using hloc`. Establish `hvac` using `hM.triple.geo.hM.vac`. Set `φ : ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ` to `fun v => if v ∈ Xc.T then ψ0 v else G.M.vac v`. Establish `hφSB : ∀ v, φ v ∈ GlobalTheory.WeilM.SB _` using `fun v => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : v ∈ Xc.T`. Simplify using `only [φ, h, if_true]`. Conclude with `hψ0 v`. Simplify using `only [φ, h, if_false]`. Conclude with `(hvac v).1`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hφout : ∀ v ∉ Xc.T, φ v = G.M.vac v` using `fun v h => by simp [φ, h]`. Establish `hφne : ∀ v, Rf.p v (φ v) ≠ 0` using `fun v => by`. Distinguish the cases in `h : v ∈ Xc.T`. Simplify using `only [φ, h, if_true]`. Conclude with `hψ0ne v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Simplify using `only [φ, h, if_false]`. Conclude with `(hM.fin.sph v h).2`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ, ?_, ?_⟩` and prove the remaining obligations. Use `sum_pure_mem_algD G.M Bs.ψ Bs.emb Xc.T (m := 1) (fun _ => f) (fun _ => φ) (fun _ => ⟨hfP, hφSB, hφout⟩)` as an intermediate fact. Simplify using `using this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨T, hT, m, f', φ', hf', hΦ, hsum⟩`. Set `g : Fin (m + 1) → SInf F (Fin a × Fin (a + a'))` to `Fin.cons (-f) f'`. Set `χ : Fin (m + 1) → ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ` to `Fin.cons φ φ'`. Establish `h0 : ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (g i) (χ i) = 0`. Simplify using `only [Fin.sum_univ_succ, g, χ, Fin.cons_zero, Fin.cons_succ, pure_neg, ← hΦ, neg_add_cancel]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hout : ∀ i, ∀ v ∉ T, χ i v = G.M.vac v`. Introduce `i v hv`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => exact hφout v (fun h => hv (hT h))`. Consider the case `succ j => exact (hf' j).2.2 v hv`.
-
-Establish `key` using `GlobalTheory.T.tmul_sum_eq_zero_of_pureTensor_function_zero G.M.vac (fun v => (hvac v).2.1) hM.triple.geo.hM.std R.p Rf.Pi Rf.p T (m + 1) g χ hout h0`. Simplify using `only [Fin.sum_univ_succ, g, χ, Fin.cons_zero, Fin.cons_succ, map_neg, TensorProduct.neg_tmul, hsum, add_zero, neg_eq_zero] at key`. Conclude with `tmul_ne_zero_of_ne (hfy ▸ hy) (tprod_ne_zero_of_ne fun v : T => hφne v.1) key`.
+A detailed English derivation is pending.
 -/
 theorem exists_not_polZero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
 theorem sZ_eq (T T' : ℝ) (ζ : ℂ) : sZ T T' ζ = ((sR T T' ζ : ℝ) : ℂ) := rfl
 
 /- English proof (translation)
-Unfold `sR`. Apply `Real.sqrt_pos.2` to reduce the goal to its premises. Rewrite using `[sub_pos, one_lt_div (mul_pos hT hT')]`. Conclude with `hζ`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sR_pos {T T' : ℝ} (hT : 0 < T) (hT' : 0 < T') {ζ : ℂ} (hζ : T * T' < Complex.normSq ζ) : 0 < sR T T' ζ := by
   unfold sR
@@ -35,11 +35,11 @@ theorem sR_pos {T T' : ℝ} (hT : 0 < T) (hT' : 0 < T') {ζ : ℂ} (hζ : T * T'
   exact hζ
 
 /- English proof (translation)
-Establish `hTT : 0 < T * T'` using `mul_pos hT hT'`. Establish `harg : 0 ≤ Complex.normSq ζ / (T * T') - 1`. Rewrite using `[sub_nonneg, le_div_iff₀ hTT]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcpos : 0 < Real.sqrt T * Real.sqrt T'` using `mul_pos (Real.sqrt_pos.2 hT) (Real.sqrt_pos.2 hT')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hc2 : (Real.sqrt T * Real.sqrt T') ^ 2 = T * T'`. Rewrite using `[mul_pow, Real.sq_sqrt hT.le, Real.sq_sqrt hT'.le]`. Unfold `sZ wZ`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt harg]`. Rewrite using `[star_mul', star_neg, star_inv₀, Complex.star_def, Complex.conj_ofReal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (-(((Real.sqrt T * Real.sqrt T' : ℝ) : ℂ))⁻¹ * ζ) * (-(((Real.sqrt T * Real.sqrt T' : ℝ) : ℂ))⁻¹ * (starRingEnd ℂ) ζ) = ((((Real.sqrt T * Real.sqrt T') ^ 2 : ℝ) : ℂ))⁻¹ * (ζ * (starRingEnd ℂ) ζ) by push_cast; ring, Complex.mul_conj, hc2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sw_rel (hk : 1 ≤ k) {T T' : ℝ} (hT : 0 < T) (hT' : 0 < T') {ζ : ℂ} (hζ : T * T' < Complex.normSq ζ) :
     sZ T T' ζ * sZ T T' ζ = wZ T T' ζ * star (wZ T T' ζ) - 1 := by
@@ -60,9 +60,9 @@ theorem sw_rel (hk : 1 ≤ k) {T T' : ℝ} (hT : 0 < T) (hT' : 0 < T') {ζ : ℂ
   ring
 
 /- English proof (translation)
-Establish `h` using `(gA_spec k hT ha).2`. Establish `hne : ((Real.sqrt T : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.2 hT).ne'`. Rewrite `h` using `[Matrix.mulVec_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hne, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [h]`.
+A detailed English derivation is pending.
 -/
 theorem gA_last {a : Fin (k + 1) → ℂ} {T : ℝ} (hT : 0 < T) (ha : herm (Hb k) a a = -(T : ℂ)) :
     gA k a T *ᵥ Pi.single (Fin.last k) 1 = (((Real.sqrt T : ℝ) : ℂ))⁻¹ • a := by
@@ -75,20 +75,20 @@ theorem gA_last {a : Fin (k + 1) → ℂ} {T : ℝ} (hT : 0 < T) (ha : herm (Hb 
     _ = _ := by rw [h]
 
 /- English proof (translation)
-The claim follows from `(UHb_inv (show gB k b T' ∈ UH (Hb k) from (gB_spec k hT' hb).1)).1`.
+A detailed English derivation is pending.
 -/
 theorem gB_unit {b : Fin (k + 1) → ℂ} {T' : ℝ} (hT' : 0 < T') (hb : herm (Hb k) b b = -(T' : ℂ)) :
     IsUnit (gB k b T').det := (UHb_inv (show gB k b T' ∈ UH (Hb k) from (gB_spec k hT' hb).1)).1
 
 /- English proof (translation)
-The claim follows from `((theSecB_core k hk a b T T' hT hT' ha hb).2 ζ hζ).1`.
+A detailed English derivation is pending.
 -/
 theorem secB_mem (hk : 1 ≤ k) {a b : Fin (k + 1) → ℂ} {T T' : ℝ} (hT : 0 < T) (hT' : 0 < T')
     (ha : herm (Hb k) a a = -(T : ℂ)) (hb : herm (Hb k) b b = -(T' : ℂ)) {ζ : ℂ} (hζ : T * T' < Complex.normSq ζ) :
     theSecB k a b T T' ζ ∈ UH (Hb k) := ((theSecB_core k hk a b T T' hT hT' ha hb).2 ζ hζ).1
 
 /- English proof (translation)
-Unfold `theSecB`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, (gB_spec k hT' hb).2, Matrix.mulVec_smul, nu_last_vec hk, Matrix.mulVec_smul, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, gA_last hT ha, sZ_eq, smul_add, smul_smul, smul_smul, smul_smul]`. Use `push_cast`. Rewrite using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem secB_b (hk : 1 ≤ k) {a b : Fin (k + 1) → ℂ} {T T' : ℝ} (hT : 0 < T) (hT' : 0 < T')
     (ha : herm (Hb k) a a = -(T : ℂ)) (hb : herm (Hb k) b b = -(T' : ℂ)) (ζ : ℂ) :
@@ -102,11 +102,11 @@ theorem secB_b (hk : 1 ≤ k) {a b : Fin (k + 1) → ℂ} {T T' : ℝ} (hT : 0 <
   rw [mul_assoc]
 
 /- English proof (translation)
-Establish `h0` using `zero_ne_last hk`. Rewrite using `[nu_mulVec]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, h0, h0.symm, if_true, if_false]`. Distinguish the cases in `hi0 : i = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hi0` using the available equality. Simplify using `only [h0, if_true, if_false]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hil : i = Fin.last k`. Substitute `hil` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [h0.symm, if_true, if_false]`. Take the linear combination `-hw`. Simplify using `only [hi0, hil, if_false]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nu_back (hk : 1 ≤ k) (w s : ℂ) (hw : s * s = w * star w - 1) :
     nu k w s *ᵥ ((-s) • Pi.single 0 1 + star w • Pi.single (Fin.last k) 1) = Pi.single (Fin.last k) 1 := by
@@ -126,11 +126,11 @@ theorem nu_back (hk : 1 ≤ k) (w s : ℂ) (hw : s * s = w * star w - 1) :
       ring
 
 /- English proof (translation)
-Establish `hU` using `(UHb_inv (secB_mem hk hT hT' ha hb hζ)).1`. Establish `hne : ((Real.sqrt T' : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.2 hT').ne'`. Establish `key : theSecB k a b T T' ζ *ᵥ ((((-(Real.sqrt T * sR T T' ζ) : ℝ) : ℂ)) • ((gB k b T')⁻¹ *ᵥ Pi.single 0 1) + (((Real.sqrt T : ℝ) : ℂ) * star (wZ T T' ζ) * (((Real.sqrt T' : ℝ) : ℂ))⁻¹) • b) = a`. Unfold `theSecB`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec _ (gB k b T') _, Matrix.mul_nonsing_inv _ (gB_unit hT' hb), Matrix.one_mulVec, (gB_spec k hT' hb).2, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (((-(Real.sqrt T * sR T T' ζ) : ℝ) : ℂ)) • (Pi.single 0 1 : Fin (k + 1) → ℂ) + (((Real.sqrt T : ℝ) : ℂ) * star (wZ T T' ζ) * (((Real.sqrt T' : ℝ) : ℂ))⁻¹ * ((Real.sqrt T' : ℝ) : ℂ)) • (Pi.single (Fin.last k) 1 : Fin (k + 1) → ℂ) = ((Real.sqrt T : ℝ) : ℂ) • ((-(sZ T T' ζ)) • ( …`. Rewrite using `[smul_add, smul_smul, smul_smul, sZ_eq, mul_assoc _ _ ((Real.sqrt T' : ℝ) : ℂ), inv_mul_cancel₀ hne, mul_one]`. Use `push_cast`. Rewrite using `[mul_neg]`. Rewrite using `[e, Matrix.mulVec_smul, nu_back hk _ _ (sw_rel hk hT hT' hζ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(gA_spec k hT ha).2`. Establish `h2` using `congrArg (fun v => (theSecB k a b T T' ζ)⁻¹ *ᵥ v) key`. Rewrite `h2` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hU, Matrix.one_mulVec]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secB_inv_a (hk : 1 ≤ k) {a b : Fin (k + 1) → ℂ} {T T' : ℝ} (hT : 0 < T) (hT' : 0 < T')
     (ha : herm (Hb k) a a = -(T : ℂ)) (hb : herm (Hb k) b b = -(T' : ℂ)) {ζ : ℂ} (hζ : T * T' < Complex.normSq ζ) :
@@ -159,7 +159,7 @@ theorem secB_inv_a (hk : 1 ≤ k) {a b : Fin (k + 1) → ℂ} {T T' : ℝ} (hT :
   exact h2.symm
 
 /- English proof (translation)
-Establish `h0` using `zero_ne_last hk`. Establish `h` using `form_of_unitary (Hb k) (gA_spec k hT ha).1 (Pi.single 0 1) (((Real.sqrt T : ℝ) : ℂ) • Pi.single (Fin.last k) 1)`. Rewrite `h` using `[(gA_spec k hT ha).2]`. Rewrite using `[h, herm_smul_right, herm_Hb_right]`. Simplify using `[h0.symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem boost_first_orthogonal (hk : 1 ≤ k) {a : Fin (k + 1) → ℂ} {T : ℝ} (hT : 0 < T) (ha : herm (Hb k) a a = -(T : ℂ)) :
     herm (Hb k) (gA k a T *ᵥ Pi.single 0 1) a = 0 := by
@@ -170,7 +170,7 @@ theorem boost_first_orthogonal (hk : 1 ≤ k) {a : Fin (k + 1) → ℂ} {T : ℝ
   simp [h0.symm]
 
 /- English proof (translation)
-Establish `h0` using `zero_ne_last hk`. Rewrite using `[form_of_unitary (Hb k) (gA_spec k hT ha).1, herm_Hb_right]`. Simplify using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem boost_first_unit_norm (hk : 1 ≤ k) {a : Fin (k + 1) → ℂ} {T : ℝ} (hT : 0 < T) (ha : herm (Hb k) a a = -(T : ℂ)) :
     herm (Hb k) (gA k a T *ᵥ Pi.single 0 1) (gA k a T *ᵥ Pi.single 0 1) = 1 := by
@@ -179,7 +179,7 @@ theorem boost_first_unit_norm (hk : 1 ≤ k) {a : Fin (k + 1) → ℂ} {T : ℝ}
   simp [h0]
 
 /- English proof (translation)
-Rewrite using `[← form_of_unitary (Hb k) (gB_spec k hT' hb).1 x, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (gB_unit hT' hb), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gB_adj {b : Fin (k + 1) → ℂ} {T' : ℝ} (hT' : 0 < T') (hb : herm (Hb k) b b = -(T' : ℂ)) (x y : Fin (k + 1) → ℂ) :
     herm (Hb k) x ((gB k b T')⁻¹ *ᵥ y) = herm (Hb k) (gB k b T' *ᵥ x) y := by
@@ -187,7 +187,7 @@ theorem gB_adj {b : Fin (k + 1) → ℂ} {T' : ℝ} (hT' : 0 < T') (hb : herm (H
     Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `h0` using `zero_ne_last hk`. Rewrite using `[← SettingConstruction.herm_symm (Hb k) (SettingConstruction.Hb_herm k), gB_adj hT' hb, (gB_spec k hT' hb).2, herm_smul_left, herm_Hb_right]`. Simplify using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inverse_boost_first_orthogonal (hk : 1 ≤ k) {b : Fin (k + 1) → ℂ} {T' : ℝ} (hT' : 0 < T') (hb : herm (Hb k) b b = -(T' : ℂ)) :
     herm (Hb k) ((gB k b T')⁻¹ *ᵥ Pi.single 0 1) b = 0 := by
@@ -196,7 +196,7 @@ theorem inverse_boost_first_orthogonal (hk : 1 ≤ k) {b : Fin (k + 1) → ℂ} 
   simp [h0]
 
 /- English proof (translation)
-Establish `h0` using `zero_ne_last hk`. Rewrite using `[gB_adj hT' hb, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (gB_unit hT' hb), Matrix.one_mulVec, herm_Hb_right]`. Simplify using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inverse_boost_first_unit_norm (hk : 1 ≤ k) {b : Fin (k + 1) → ℂ} {T' : ℝ} (hT' : 0 < T') (hb : herm (Hb k) b b = -(T' : ℂ)) :
     herm (Hb k) ((gB k b T')⁻¹ *ᵥ Pi.single 0 1) ((gB k b T')⁻¹ *ᵥ Pi.single 0 1) = 1 := by
@@ -205,11 +205,11 @@ theorem inverse_boost_first_unit_norm (hk : 1 ≤ k) {b : Fin (k + 1) → ℂ} {
   simp [h0]
 
 /- English proof (translation)
-Establish `hne : ((Real.sqrt T' : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.2 hT').ne'`. Establish `c0 : (gB k b T' *ᵥ x) 0 = 0`. Rewrite `hx0` using `[gB_adj hT' hb, herm_Hb_right]`. Apply the tactic sequence `have hs : (if (0 : Fin (k + 1)) = Fin.last k then (-1 : ℂ) else 1) ≠ 0 := by split_ifs <;> norm_num`. Conclude with `(mul_eq_zero.1 hx0).resolve_left hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `cl : (gB k b T' *ᵥ x) (Fin.last k) = 0`. Rewrite `hxb` using `[← form_of_unitary (Hb k) (gB_spec k hT' hb).1, (gB_spec k hT' hb).2, herm_smul_right, herm_Hb_right, if_pos rfl]`. Establish `h1 : star ((Real.sqrt T' : ℝ) : ℂ) ≠ 0` using `by rw [show star ((Real.sqrt T' : ℝ) : ℂ) = _ from Complex.conj_ofReal _]; exact hne`. Establish `h2` using `(mul_eq_zero.1 hxb).resolve_left h1`. Conclude with `(mul_eq_zero.1 h2).resolve_left (by norm_num)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `theSecB`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, nu_mulVec, c0, cl, zero_smul, zero_smul, add_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem secB_perp {a b : Fin (k + 1) → ℂ} {T T' : ℝ} (hT' : 0 < T') (hb : herm (Hb k) b b = -(T' : ℂ)) (ζ : ℂ)
     {x : Fin (k + 1) → ℂ} (hxb : herm (Hb k) x b = 0) (hx0 : herm (Hb k) x ((gB k b T')⁻¹ *ᵥ Pi.single 0 1) = 0) :
@@ -234,7 +234,7 @@ section big
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [jV, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jV_add (u v : Fin (k + 1) → ℂ) : jV k r (u + v) = jV k r u + jV k r v := by
   ext i
@@ -242,7 +242,7 @@ theorem jV_add (u v : Fin (k + 1) → ℂ) : jV k r (u + v) = jV k r u + jV k r 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [jV, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jV_smul (c : ℂ) (u : Fin (k + 1) → ℂ) : jV k r (c • u) = c • jV k r u := by
   ext i
@@ -250,7 +250,7 @@ theorem jV_smul (c : ℂ) (u : Fin (k + 1) → ℂ) : jV k r (c • u) = c • j
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h` using `emb_mulVec_jV (r := r) μ (wbPart k r v)`. Rewrite `h` using `[jV_wbPart hv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem emb_mulVec_of (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) :
     embWb k r μ *ᵥ v = jV k r (μ *ᵥ wbPart k r v) := by
@@ -258,7 +258,7 @@ theorem emb_mulVec_of (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {v : Fin (2 
   rwa [jV_wbPart hv] at h
 
 /- English proof (translation)
-Establish `h` using `herm_jV (r := r) (wbPart k r u) (wbPart k r v)`. Rewrite `h` using `[jV_wbPart hu, jV_wbPart hv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem herm_of {u v : Fin (2 * r + k + 1) → ℂ} (hu : inWb k r u) (hv : inWb k r v) :
     herm (Hpk k r) u v = herm (Hb k) (wbPart k r u) (wbPart k r v) := by
@@ -272,9 +272,9 @@ def EE' (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) : Fin (2 * r + k + 1) →
   jV k r ((gB k (wbPart k r z') (Tz k r z'))⁻¹ *ᵥ Pi.single 0 1)
 
 /- English proof (translation)
-Establish `hw : SSn.wbP k r x = x`. Use function extensionality and compare the values at `i`. Unfold `SSn.wbP`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Conclude with `(hx i (by omega)).symm`. Unfold `SSn.prWv`. Rewrite using `[hw, h0, zero_div, zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prWv_fix {z x : Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x) (h0 : herm (Hpk k r) x z = 0) :
     SSn.prWv k r z x = x := by
@@ -288,11 +288,9 @@ theorem prWv_fix {z x : Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x) (h0 : her
   rw [hw, h0, zero_div, zero_smul, add_zero]
 
 /- English proof (translation)
-Establish `hw : SSn.wbP k r z = z`. Use function extensionality and compare the values at `i`. Unfold `SSn.wbP`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `(hz i (by omega)).symm`. Establish `hT0 : ((Tz k r z : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hT.ne'`. Unfold `SSn.prWv`. Rewrite using `[hw, PRhoCut.FL.herm_alt]`. Use `push_cast`.
-
-Rewrite using `[neg_div, div_self hT0, neg_smul, one_smul, add_neg_cancel]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prWv_self {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) : SSn.prWv k r z z = 0 := by
   have hw : SSn.wbP k r z = z := by
@@ -308,7 +306,7 @@ theorem prWv_self {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < 
   rw [neg_div, div_self hT0, neg_smul, one_smul, add_neg_cancel]
 
 /- English proof (translation)
-Unfold `SSn.unitH`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitH_one {x : Fin (2 * r + k + 1) → ℂ} (h : herm (Hpk k r) x x = 1) : SSn.unitH k r x = x := by
   unfold SSn.unitH
@@ -316,11 +314,11 @@ theorem unitH_one {x : Fin (2 * r + k + 1) → ℂ} (h : herm (Hpk k r) x x = 1)
   simp
 
 /- English proof (translation)
-Establish `e : Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) (((c : ℝ) : ℂ) • x) (((c : ℝ) : ℂ) • x) = ((c ^ 2 : ℝ) : ℂ)`. Unfold `Formalism.QuantumDeterminants.herm at h ⊢`. Rewrite using `[Matrix.mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul, h]`. Simplify using `only [smul_eq_mul, Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `SSn.unitH`. Rewrite using `[e, Complex.ofReal_re, Real.sqrt_sq hc.le, smul_smul]`. Rewrite using `[show (((c⁻¹ : ℝ) : ℂ)) * ((c : ℝ) : ℂ) = 1 by`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `inv_mul_cancel₀ (by exact_mod_cast hc.ne'), one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem unitH_pos {c : ℝ} (hc : 0 < c) {x : Fin (2 * r + k + 1) → ℂ} (h : herm (Hpk k r) x x = 1) :
     SSn.unitH k r (((c : ℝ) : ℂ) • x) = x := by
@@ -337,11 +335,11 @@ theorem unitH_pos {c : ℝ} (hc : 0 < c) {x : Fin (2 * r + k + 1) → ℂ} (h : 
     exact inv_mul_cancel₀ (by exact_mod_cast hc.ne'), one_smul]
 
 /- English proof (translation)
-Establish `e : Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) (((-c : ℝ) : ℂ) • x) (((-c : ℝ) : ℂ) • x) = ((c ^ 2 : ℝ) : ℂ)`. Unfold `Formalism.QuantumDeterminants.herm at h ⊢`. Rewrite using `[Matrix.mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul, h]`. Simplify using `only [smul_eq_mul, Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `SSn.unitH`. Rewrite using `[e, Complex.ofReal_re, Real.sqrt_sq hc.le, smul_smul]`. Rewrite using `[show (((c⁻¹ : ℝ) : ℂ)) * ((-c : ℝ) : ℂ) = -1 by`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[mul_neg, inv_mul_cancel₀ (by exact_mod_cast hc.ne')], neg_one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unitH_neg {c : ℝ} (hc : 0 < c) {x : Fin (2 * r + k + 1) → ℂ} (h : herm (Hpk k r) x x = 1) :
     SSn.unitH k r (((-c : ℝ) : ℂ) • x) = -x := by
@@ -366,11 +364,11 @@ theorem muZ_eq (ζ : ℂ) : NF.muZ k r (theSection k r z z') ζ =
     embWb k r (theSecB k (wbPart k r z) (wbPart k r z') (Tz k r z) (Tz k r z') ζ) := rfl
 
 /- English proof (translation)
-Establish `ha` using `SettingConstruction.herm_self k r z hz`. Establish `hb` using `SettingConstruction.herm_self k r z' hz'`. Establish `hE : inWb k r (EE k r z)` using `inWb_jV _`. Establish `hEz : herm (Hpk k r) (EE k r z) z = 0`. Rewrite using `[herm_of hE hz, EE, wbPart_jV]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `boost_first_orthogonal hk hT ha`. Establish `hEE : herm (Hpk k r) (EE k r z) (EE k r z) = 1`. Rewrite using `[EE, herm_jV]`. Conclude with `boost_first_unit_norm hk hT ha`. Unfold `SSn.nu0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[muZ_eq, emb_mulVec_of _ hz', secB_b hk hT hT' ha hb, jV_add, jV_smul, jV_smul, jV_wbPart hz, PRhoCut.FL.prWv_add, PRhoCut.FL.prWv_smul, PRhoCut.FL.prWv_smul, prWv_self hz hT, smul_zero, add_zero]`. Use `show SSn.unitH k r (_ • SSn.prWv k r z (EE k r z)) = _`. Rewrite using `[prWv_fix hE hEz]`. Conclude with `unitH_pos (mul_pos (Real.sqrt_pos.2 hT') (sR_pos hT hT' hζ)) hEE`.
+A detailed English derivation is pending.
 -/
 theorem section_first_vector_eq (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') {ζ : ℂ}
     (hζ : Tz k r z * Tz k r z' < Complex.normSq ζ) : SSn.nu0 k r z z' (theSection k r z z') ζ = EE k r z := by
@@ -391,9 +389,7 @@ theorem section_first_vector_eq (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r
   exact unitH_pos (mul_pos (Real.sqrt_pos.2 hT') (sR_pos hT hT' hζ)) hEE
 
 /- English proof (translation)
-Establish `hb` using `SettingConstruction.herm_self k r z' hz'`. Use `⟨inWb_jV _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[EE', herm_of (inWb_jV _) hz', wbPart_jV]`. Conclude with `inverse_boost_first_orthogonal hk hT' hb`. Rewrite using `[EE', herm_jV]`.
-
-Conclude with `inverse_boost_first_unit_norm hk hT' hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EE'_facts (hk : 1 ≤ k) (hz' : inWb k r z') (hT' : 0 < Tz k r z') :
     inWb k r (EE' k r z') ∧ herm (Hpk k r) (EE' k r z') z' = 0 ∧ herm (Hpk k r) (EE' k r z') (EE' k r z') = 1 := by
@@ -405,9 +401,9 @@ theorem EE'_facts (hk : 1 ≤ k) (hz' : inWb k r z') (hT' : 0 < Tz k r z') :
     exact inverse_boost_first_unit_norm hk hT' hb
 
 /- English proof (translation)
-Establish `ha` using `SettingConstruction.herm_self k r z hz`. Establish `hb` using `SettingConstruction.herm_self k r z' hz'`. Take `⟨hE, hEz, hEE⟩` from `EE'_facts (r := r) hk hz' hT'`. Unfold `SSn.nu0'`. Rewrite using `[muZ_eq, emb_inv (secB_mem hk hT hT' ha hb hζ), emb_mulVec_of _ hz, secB_inv_a hk hT hT' ha hb hζ, jV_add, jV_smul, jV_smul, jV_wbPart hz', PRhoCut.FL.prWv_add, PRhoCut.FL.prWv_smul, PRhoCut.FL.prWv_smul, prWv_self hz' hT', smul_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show SSn.unitH k r (_ • SSn.prWv k r z' (EE' k r z')) = _`. Rewrite using `[prWv_fix hE hEz]`. Conclude with `unitH_neg (mul_pos (Real.sqrt_pos.2 hT) (sR_pos hT hT' hζ)) hEE`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu0'_eq (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') {ζ : ℂ}
     (hζ : Tz k r z * Tz k r z' < Complex.normSq ζ) : SSn.nu0' k r z z' (theSection k r z z') ζ = -EE' k r z' := by
@@ -422,9 +418,9 @@ theorem nu0'_eq (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < T
   exact unitH_neg (mul_pos (Real.sqrt_pos.2 hT) (sR_pos hT hT' hζ)) hEE
 
 /- English proof (translation)
-Establish `hb` using `SettingConstruction.herm_self k r z' hz'`. Establish `h1 : herm (Hb k) (wbPart k r u) (wbPart k r z') = 0`. Rewrite using `[← herm_of hu hz']`. Conclude with `huz`. Establish `h2 : herm (Hb k) (wbPart k r u) ((gB k (wbPart k r z') (Tz k r z'))⁻¹ *ᵥ Pi.single 0 1) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `huE` using `[EE', herm_of hu (inWb_jV _), wbPart_jV]`. Conclude with `huE`. Rewrite using `[muZ_eq, emb_mulVec_of _ hu, secB_perp hT' hb ζ h1 h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muZ_perp (hz' : inWb k r z') (hT' : 0 < Tz k r z') (ζ : ℂ) {u : Fin (2 * r + k + 1) → ℂ} (hu : inWb k r u)
     (huz : herm (Hpk k r) u z' = 0) (huE : herm (Hpk k r) u (EE' k r z') = 0) :
@@ -441,11 +437,11 @@ def uu (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) 
   SSn.prWv k r z' (Pi.single j 1) - herm (Hpk k r) (SSn.prWv k r z' (Pi.single j 1)) (-EE' k r z') • (-EE' k r z')
 
 /- English proof (translation)
-Take `⟨hE, hEz, hEE⟩` from `EE'_facts (r := r) hk hz' hT'`. Take `⟨hp, hpz⟩` from `PRhoCut.FL.prWv_inW hz' hT' (Pi.single j 1)`. Establish `hneg : (-EE' k r z') = (-1 : ℂ) • EE' k r z'` using `by rw [neg_smul, one_smul]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [uu, Pi.sub_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul]`. Rewrite using `[hp i hi, hE i hi]`. Simplify using the standard rewrite rules. Unfold `uu`. Rewrite using `[herm_sub_left, herm_smul_left, hneg, herm_smul_left, hpz, hEz]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Unfold `uu`. Rewrite using `[herm_sub_left, herm_smul_left, hneg, herm_smul_left, herm_smul_right, hEE]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uu_facts (hk : 1 ≤ k) (hz' : inWb k r z') (hT' : 0 < Tz k r z') (j : Fin (2 * r + k + 1)) :
     inWb k r (uu k r z' j) ∧ herm (Hpk k r) (uu k r z' j) z' = 0 ∧ herm (Hpk k r) (uu k r z' j) (EE' k r z') = 0 := by
@@ -465,7 +461,7 @@ theorem uu_facts (hk : 1 ≤ k) (hz' : inWb k r z') (hT' : 0 < Tz k r z') (j : F
     simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨h1, h2, h3⟩` from `uu_facts (r := r) hk hz' hT' j`. Unfold `SSn.io0`. Rewrite using `[Matrix.of_apply, Matrix.of_apply, nu0'_eq hk hz hz' hT hT' hζ]`. Conclude with `congrFun (muZ_perp hz' hT' ζ h1 h2 h3) i`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem section_embedding_eq_matrix (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') {ζ : ℂ}
     (hζ : Tz k r z * Tz k r z' < Complex.normSq ζ) : SSn.io0 k r z z' (theSection k r z z') ζ =
@@ -482,7 +478,7 @@ end big
 end DC
 
 /- English proof (translation)
-Introduce `k r z z' hk hz hz' hT hT' ζ ζ₁ hζ hζ₁`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[DC.section_first_vector_eq hk hz hz' hT hT' hζ, DC.section_first_vector_eq hk hz hz' hT hT' hζ₁]`. Rewrite using `[DC.nu0'_eq hk hz hz' hT hT' hζ, DC.nu0'_eq hk hz hz' hT hT' hζ₁]`. Rewrite using `[DC.section_embedding_eq_matrix hk hz hz' hT hT' hζ, DC.section_embedding_eq_matrix hk hz hz' hT hT' hζ₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem datum_constancy_holds : DatumConst := by
   intro k r z z' hk hz hz' hT hT' ζ ζ₁ hζ hζ₁

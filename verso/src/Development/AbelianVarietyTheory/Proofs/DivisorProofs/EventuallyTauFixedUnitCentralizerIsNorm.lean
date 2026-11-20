@@ -25,41 +25,37 @@ open scoped TensorProduct Classical
 open GlobalTheory.LocNormTau in
 
 /- English proof (translation)
-Introduce `p _ G β hβ Y s hY hsep hdeg`. Take `⟨f, hf0, hfc⟩` from `exists_conj_neg G`. Use `set e : G.C := algebraMap G.F G.C f with he_def`. Use `set e' : G.C := algebraMap G.F G.C f⁻¹ with he'_def`. Establish `hecomm : ∀ c : G.C, Commute e c` using `fun c => Algebra.commutes f c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he'comm : ∀ c : G.C, Commute e' c` using `fun c => Algebra.commutes f⁻¹ c`. Establish `hee' : e * e' = 1` using `by rw [he_def, he'_def, ← map_mul, mul_inv_cancel₀ hf0, map_one]`. Establish `hsh_e : sh G e = -e`. Simplify using `only [sh, he_def, G.star_F, hfc, map_neg]`. Establish `hsh_e' : sh G e' = -e'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [sh, he'_def, G.star_F, map_inv₀, hfc, inv_neg, map_neg]`. Establish `hτe : (β : G.C) * sh G e * ((β⁻¹ : G.Cˣ) : G.C) = -e`. Rewrite using `[hsh_e, mul_neg, neg_mul, (hecomm _).symm.eq, mul_assoc, Units.mul_inv, mul_one]`. Take `⟨L, _, _, _, _, ι, hιinj, hιrange⟩` from `GlobalTheory.FixedCentraliserReg.fixed_algebra_exists p G β Y hsep hdeg`. Establish `hee : e * e ∈ Set.range ι`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hιrange _).2 ⟨(hecomm _).mul_left (hecomm _), ?_⟩` and prove the remaining obligations. Rewrite using `[sh_mul, hsh_e, neg_mul_neg, ← ((hecomm (β : G.C)).mul_left (hecomm _)).eq, mul_assoc, Units.mul_inv, mul_one]`. Establish `hee'' : e' * e' ∈ Set.range ι`. Use `(hιrange _).2 ⟨(he'comm _).mul_left (he'comm _), ?_⟩` and prove the remaining obligations. Rewrite using `[sh_mul, hsh_e', neg_mul_neg, ← ((he'comm (β : G.C)).mul_left (he'comm _)).eq, mul_assoc, Units.mul_inv, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `hee`. Take `⟨di, hdi⟩` from `hee''`. Establish `hddi : d * di = 1` using `hιinj (by`. Rewrite using `[map_mul, hd, hdi, map_one, mul_assoc, ← mul_assoc e e', hee', one_mul, hee'])`. Establish `hne2 : ∀ᶠ w : AwayP p in Filter.cofinite, w.1.asIdeal ≠ Ideal.span {2}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Filter.eventually_cofinite]`. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `w₁ h₁ w₂ h₂`. Simplify using `only [Set.mem_setOf_eq, not_not] at h₁ h₂`. Conclude with `Subtype.ext (IsDedekindDomain.HeightOneSpectrum.ext (h₁.trans h₂.symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [hne2, GlobalTheory.T.eventually_isIntegral_of_integralCoordsLocalTensor p G, GlobalTheory.T.eventually_integralCoords_scalarTensorInclusion p G (ι d), GlobalTheory.T.eventually_integralCoords_scalarTensorInclusion p G (ι di)] with w h2 hint hId hId'`. Introduce `m hmY hmI hmI' hmτ`. Use `set K := w.1.adicCompletion ℚ`. Take `⟨hΦinj, hΦrange⟩` from `GlobalTheory.FinClsLoc.baseChange_fixedCentraliser_alg p G β Y L ι hιinj hιrange K`. Use `set Φ := Algebra.TensorProduct.map (AlgHom.id K K) ι with hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hmτ' : tauR G β K (m : K ⊗[ℚ] G.C) = m` using `hmτ`. Establish `hm'τ : tauR G β K ((m⁻¹ : (K ⊗[ℚ] G.C)ˣ) : K ⊗[ℚ] G.C) = ((m⁻¹ : (K ⊗[ℚ] G.C)ˣ) : K ⊗[ℚ] G.C)`. Establish `h1 : tauR G β K ((m⁻¹ : (K ⊗[ℚ] G.C)ˣ) : K ⊗[ℚ] G.C) * (m : K ⊗[ℚ] G.C) = 1`. Rewrite using `[← hmτ', ← tauR_mul, Units.mul_inv, tauR_one]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.mul_inv, mul_one]`. Use `_ = _ := by rw [← mul_assoc, h1, one_mul]`. Take `⟨y, hy⟩` from `(hΦrange m).2 ⟨hmY, hmτ⟩`. Take `⟨y', hy'⟩` from `(hΦrange ((m⁻¹ : (K ⊗[ℚ] G.C)ˣ) : K ⊗[ℚ] G.C)).2 ⟨hmY.units_inv_left, hm'τ⟩`. Establish `hyy' : y * y' = 1` using `hΦinj (by rw [map_mul, hy, hy', Units.mul_inv, map_one])`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `set dK : K ⊗[ℚ] L := (1 : K) ⊗ₜ d`. Use `set dK' : K ⊗[ℚ] L := (1 : K) ⊗ₜ di`. Establish `hdd' : dK * dK' = 1`. Simplify using `only [dK, dK', Algebra.TensorProduct.tmul_mul_tmul, one_mul, hddi]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hΦd : Φ dK = inC G K (ι d)`. Simplify using `only [hΦ, dK, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Both sides reduce to the same expression. Establish `hΦd' : Φ dK' = inC G K (ι di)`. Simplify using `only [hΦ, dK', Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `pull : ∀ z : K ⊗[ℚ] L, IntC G w (Φ z) → ∃ g : Polynomial K, g.Monic ∧ (∀ i, g.coeff i ∈ w.1.adicCompletionIntegers ℚ) ∧ Polynomial.aeval z g = 0`. Introduce `z hz`. Take `⟨g, hg1, hg2, hg3⟩` from `hint _ hz`. Use `⟨g, hg1, hg2, hΦinj ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.aeval_algHom_apply, hg3, map_zero]`. Take `⟨a', b', hab⟩` from `GlobalTheory.OddLocalNormEtale.exists_eq_sq_sub_mul_sq L w.1 h2 y y' dK dK' hyy' hdd' (pull y (by rw [hy]; exact hmI)) (pull y' (by rw [hy']; exact hmI')) (pull dK (by rw [hΦd]; exact hId)) (pull dK' (by rw [hΦd']; exact hId'))`. Use `set a := Φ a'`. Use `set b := Φ b'`. Use `set E := inC G K e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `haY` using `((hΦrange a).1 ⟨a', rfl⟩).1`. Establish `haτ : tauR G β K a = a` using `((hΦrange a).1 ⟨a', rfl⟩).2`. Establish `hbY` using `((hΦrange b).1 ⟨b', rfl⟩).1`. Establish `hbτ : tauR G β K b = b` using `((hΦrange b).1 ⟨b', rfl⟩).2`. Establish `hE : ∀ x : K ⊗[ℚ] G.C, Commute E x` using `commute_inC_of_forall G K e hecomm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hτE : tauR G β K E = -E`. Rewrite using `[tauR_inC, hτe, map_neg]`. Establish `habc : a * b = b * a`. Simplify using `only [a, b, ← map_mul, mul_comm a' b']`. Establish `hEE : Φ dK = E * E` using `by rw [hΦd, hd, map_mul]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hm : (m : K ⊗[ℚ] G.C) = a * a - E * E * (b * b)`. Rewrite using `[← hy, hab, map_sub, map_mul, map_mul, map_mul, hEE]`. Use `set vv : K ⊗[ℚ] G.C := a + b * E`. Establish `hτv : tauR G β K vv = a - E * b`. Rewrite using `[tauR_add, tauR_mul, haτ, hbτ, hτE, neg_mul, sub_eq_add_neg]`.
-
-Take `⟨key1, key2⟩` from `norm_aux a b E (hE a) (hE b) habc`. Rewrite `key1`, `key2` using `[← hm]`. Establish `hmv : Commute (m : K ⊗[ℚ] G.C) vv` using `by show (m : K ⊗[ℚ] G.C) * vv = vv * m`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨vv, (a - E * b) * ((m⁻¹ : (K ⊗[ℚ] G.C)ˣ) : K ⊗[ℚ] G.C), ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← mul_assoc, key1, Units.mul_inv]`. Rewrite using `[mul_assoc, hmv.units_inv_left.eq, ← mul_assoc, key2, Units.mul_inv]`. Conclude with `haY.add_left (hbY.mul_left (hE _))`. Express the relevant statement in the definitionally equal form `(m : K ⊗[ℚ] G.C) = vv * tauR G β K vv`. Rewrite using `[hτv, key1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocNormTau.exists_norm_of_tau_fixed_sep : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ), sh G (β : G.C) = β →
     ∀ (Y : G.Cˣ) (s : ℚ), (Y : G.C) * β * sh G (Y : G.C) = algebraMap ℚ G.C s * β →

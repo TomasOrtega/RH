@@ -5,9 +5,9 @@ open NumberField IsDedekindDomain Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1' : d.natAbs ∣ m ^ k`. Use `Int.natAbs_dvd_natAbs.mpr h1` as an intermediate fact. Simplify `this` using `[Int.natAbs_pow]`. Establish `hc : Nat.Coprime m d.natAbs`. Rewrite using `[hm.coprime_iff_not_dvd]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `h2 (Int.natCast_dvd.mpr h)`. Conclude with `Nat.Coprime.eq_one_of_dvd (Nat.Coprime.pow_left k hc).symm h1'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma natAbs_eq_one_of_dvd_prime_pow_not_dvd {d : ℤ} {m k : ℕ} (hm : m.Prime) (h1 : d ∣ (m : ℤ) ^ k)
     (h2 : ¬ (m : ℤ) ∣ d) : d.natAbs = 1 := by
@@ -21,29 +21,25 @@ private lemma natAbs_eq_one_of_dvd_prime_pow_not_dvd {d : ℤ} {m k : ℕ} (hm :
   exact Nat.Coprime.eq_one_of_dvd (Nat.Coprime.pow_left k hc).symm h1'
 
 /- English proof (translation)
-Establish `: NeZero m` using `⟨hm.ne_zero⟩`. Establish `: Fact m.Prime` using `⟨hm⟩`. Set `E` to `CyclotomicField m K`. Establish `: FiniteDimensional ℚ E` using `Module.Finite.trans K E`. Establish `hζ` using `IsCyclotomicExtension.zeta_spec m K E`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ζ := IsCyclotomicExtension.zeta m K E`. Set `A : IntermediateField ℚ E` to `IntermediateField.adjoin ℚ {ζ}`. Set `B : IntermediateField ℚ E` to `(IsScalarTower.toAlgHom ℚ K E).fieldRange`. Establish `hAc : IsCyclotomicExtension {m} ℚ A` using `hζ.intermediateField_adjoin_isCyclotomicExtension ℚ`. Establish `hGal : IsGalois ℚ A` using `IsCyclotomicExtension.isGalois {m} ℚ A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinf : A ⊓ B = ⊥`. Set `F : IntermediateField ℚ E` to `A ⊓ B`. Set `_ : Algebra F A` to `(IntermediateField.inclusion (inf_le_left : F ≤ A)).toRingHom.toAlgebra`. Set `_ : Algebra F K` to `(((IsScalarTower.toAlgHom ℚ K E).equivFieldRange.symm.toAlgHom).comp (IntermediateField.inclusion (inf_le_right : F ≤ B))).toRingHom.toAlgebra`. Establish `hFA : NumberField.discr F ∣ NumberField.discr A` using `NumberField.discr_dvd_discr F A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFK : NumberField.discr F ∣ NumberField.discr K` using `NumberField.discr_dvd_discr F K`. Establish `hA : NumberField.discr A = (-1) ^ ((m - 1) / 2) * (m : ℤ) ^ (m - 2)` using `IsCyclotomicExtension.Rat.discr_prime m A`. Establish `hpow : NumberField.discr F ∣ (m : ℤ) ^ (m - 2)`. Establish `: NumberField.discr F ∣ (-1) ^ ((m - 1) / 2) * (m : ℤ) ^ (m - 2)` using `hA ▸ hFA`. Conclude with `(IsUnit.dvd_mul_left ((isUnit_neg_one).pow _)).mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnd : ¬ (m : ℤ) ∣ NumberField.discr F` using `fun h => hd (h.trans hFK)`. Establish `h1 : (NumberField.discr F).natAbs = 1` using `natAbs_eq_one_of_dvd_prime_pow_not_dvd hm hpow hnd`. Establish `hrank : Module.finrank ℚ F = 1`. Assume the negation of the conclusion as `hne`. Establish `hgt : 1 < Module.finrank ℚ F` using `lt_of_le_of_ne Module.finrank_pos (Ne.symm hne)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `NumberField.abs_discr_gt_two hgt`. Rewrite `h2` using `[Int.abs_eq_natAbs, h1]`. Evaluate the numerical expressions using `at h2`. Conclude with `IntermediateField.finrank_eq_one_iff.mp hrank`. Establish `hdis : A.LinearDisjoint B` using `@IntermediateField.LinearDisjoint.of_inf_eq_bot _ _ _ _ _ A B (by exact hGal) _ _ hinf`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (IsScalarTower.toAlgHom ℚ K E).range = B.toSubalgebra` using `(AlgHom.fieldRange_toSubalgebra _).symm`. Establish `hdisK : A.LinearDisjoint K`. Rewrite using `[IntermediateField.linearDisjoint_iff, e1]`. Conclude with `IntermediateField.linearDisjoint_iff'.mp hdis`. Establish `hrk : Module.rank K (IntermediateField.adjoin K (A : Set E)) = Module.rank ℚ A` using `hdisK.adjoin_rank_eq_rank_left_of_isAlgebraic_left`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htop : IntermediateField.adjoin K {ζ} = ⊤`. Rewrite using `[← IntermediateField.toSubalgebra_inj, IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic ζ), IntermediateField.top_toSubalgebra]`. Conclude with `IsCyclotomicExtension.adjoin_primitive_root_eq_top hζ`. Establish `htop' : IntermediateField.adjoin K (A : Set E) = ⊤`. Use `top_le_iff.mp (htop ▸ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `IntermediateField.adjoin_le_iff.mpr (Set.singleton_subset_iff.mpr (IntermediateField.subset_adjoin K (A : Set E) (IntermediateField.mem_adjoin_simple_self ℚ ζ)))`. Establish `hfinA : Module.finrank ℚ A = m.totient` using `IsCyclotomicExtension.finrank A (cyclotomic.irreducible_rat hm.pos)`. Establish `hfinE : Module.finrank K E = m.totient`. Establish `h' : Module.finrank K (IntermediateField.adjoin K (A : Set E)) = m.totient`. Rewrite using `[Module.finrank, hrk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hfinA`. Rewrite `h'` using `[htop', IntermediateField.finrank_top']`. Then use the resulting hypothesis. Establish `hint : IsIntegral K ζ` using `Algebra.IsIntegral.isIntegral ζ`. Establish `hdeg : (minpoly K ζ).natDegree = m.totient`. Rewrite using `[← IntermediateField.adjoin.finrank hint, htop, IntermediateField.finrank_top', hfinE]`.
-
-Establish `hdvd : minpoly K ζ ∣ cyclotomic m K`. Apply `minpoly.dvd` to reduce the goal to its premises. Rewrite using `[aeval_def, eval₂_eq_eval_map, map_cyclotomic]`. Conclude with `hζ.isRoot_cyclotomic hm.pos`. Establish `heq : cyclotomic m K = minpoly K ζ` using `eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) (cyclotomic.monic m K) hdvd (by rw [natDegree_cyclotomic, hdeg])`.
-
-Rewrite using `[heq]`. Conclude with `minpoly.irreducible hint`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irreducible_cyclotomic_of_not_dvd_discr (K : Type) [Field K] [NumberField K] (m : ℕ)
     (hm : m.Prime) (hd : ¬ (m : ℤ) ∣ discr K) : Irreducible (cyclotomic m K) := by
@@ -116,9 +112,9 @@ theorem irreducible_cyclotomic_of_not_dvd_discr (K : Type) [Field K] [NumberFiel
   exact minpoly.irreducible hint
 
 /- English proof (translation)
-Introduce `K _ _ n hn`. Take `⟨m, hmp, hgt, hmod⟩` from `Nat.exists_prime_gt_modEq_one (NumberField.discr K).natAbs hn`. Use `⟨m, hmp, (Nat.modEq_iff_dvd' hmp.one_le).mp hmod.symm, ?_⟩` and prove the remaining obligations. Apply `irreducible_cyclotomic_of_not_dvd_discr K m hmp` to reduce the goal to its premises. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : NumberField.discr K ≠ 0` using `NumberField.discr_ne_zero K`. Use `Nat.le_of_dvd (Int.natAbs_pos.mpr hne) (Int.natCast_dvd.mp h)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_prime_dvd_sub_one_irreducible_cyclotomic :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), n ≠ 0 →

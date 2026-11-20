@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.SgInf.QuotInt
 
 /- English proof (translation)
-Establish `h : Continuous fun g : Matrix (Fin n) (Fin n) ℂ => Matrix.toEuclideanCLM (𝕜` using `ℂ) (n := Fin n) g := LinearMap.continuous_of_finiteDimensional ({ toFun := fun g => Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Fin n) g map_add' := fun a b => map_add _ a b map_smul' := fun c a => map_smul _ c a } : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] (EuclideanSpace ℂ (Fin n) →L[ℂ] Euclide …`. Conclude with `h.norm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem opn_continuous {n : ℕ} : Continuous (opn : Matrix (Fin n) (Fin n) ℂ → ℝ) := by
   have h : Continuous fun g : Matrix (Fin n) (Fin n) ℂ =>
@@ -35,35 +35,31 @@ namespace GlobalTheory.SgInf
 open GlobalTheory.SgInf.QuotInt in
 
 /- English proof (translation)
-Introduce `k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide ν hν u hu v hv ξ`. Establish `hStd'` using `hStd`. Establish `hSide'` using `hSide`. Take `⟨hk, hrep, -, -, hHaar, -, ha, hdec, -⟩` from `hStd'`. Take `⟨hz, hT, hπ, hHaarS, -⟩` from `hSide'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcl` using `GlobalTheory.SgInf.closedSub_groups k r z hz hT`. Establish `hG : IsClosedSub k r (GG k r)` using `hcl.1`. Establish `hS : IsClosedSub k r (Sset k r z)` using `hcl.2.2.2.1`. Establish `hunim : IsUnimod (Sset k r z) μS` using `(GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μS).1 hHaarS`. Establish `hW` using `GlobalTheory.T.weil_formula_besselUnitary_integrable k r (Sset k r z) μG μS ν hS hHaar hHaarS hunim hν`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hνG : ν {x | Matrix.of x ∉ GG k r} = 0` using `hW.2.1`. Establish `hstab` using `(GlobalTheory.SgInfDD.DD_stable_dense k r σ w hrep).1`. Establish `hD1` using `GlobalTheory.T.besselForm_converges_equivariant_hermitian k r σ w a μG d z c π μS hStd hSide (DD σ w : Set H) hstab hdec u hu v hv`. Establish `hPi` using `GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hz hT hπ`. Establish `hmeasG : MeasurableSet {x : Mt k r | Matrix.of x ∈ GG k r}` using `(hG.2.1.preimage (f := fun x : Mt k r => (Matrix.of x : Mat k r)) continuous_id).measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haeG : ∀ᵐ x ∂ν, x ∈ {x : Mt k r | Matrix.of x ∈ GG k r}`. Rewrite using `[ae_iff]`. Simplify using `using hνG`. Establish `hcont : ContinuousOn (fun x : Mt k r => Afun (psiGen k r z c) π μS σ u v ξ (Matrix.of x)) {x | Matrix.of x ∈ GG k r}`. Establish `h1 : ContinuousOn (fun x : Mt k r => be (psiGen k r z c) π μS σ (σ (Matrix.of x) u) v) {x | Matrix.of x ∈ GG k r}` using `hD1.2.2.2.comp (f := fun x : Mt k r => (Matrix.of x : Mat k r)) continuous_id.continuousOn (fun x hx => hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.clm_apply continuousOn_const`. Establish `hae : AEStronglyMeasurable (fun x : Mt k r => Afun (psiGen k r z c) π μS σ u v ξ (Matrix.of x)) ν`. Establish `h1` using `hcont.aestronglyMeasurable (μ := ν) hmeasG`. Rewrite `h1` using `[Measure.restrict_eq_self_of_ae_mem haeG]`. Then use the resulting hypothesis. Use `⟨hae, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hdec u hu v hv`. Establish `hC'0 : 0 ≤ max C 0` using `le_max_right _ _`. Set `f : Mt k r → ENNReal` to `fun y => ENNReal.ofReal (max C 0 * opn (Matrix.of y : Mat k r) ^ (-a))`. Establish `hopn : Measurable fun y : Mt k r => opn (Matrix.of y : Mat k r)` using `Continuous.measurable (α := Mt k r) (opn_continuous (n := 2 * r + k + 1))`. Establish `hfm : Measurable f` using `ENNReal.measurable_ofReal.comp (measurable_const.mul (hopn.pow_const (-a)))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcoef : ∀ g ∈ GG k r, ‖coef σ u v g‖ₑ ≤ ENNReal.ofReal (max C 0 * opn g ^ (-a))`. Introduce `g hg`. Rewrite using `[← ofReal_norm]`. Use `ENNReal.ofReal_le_ofReal ((hC g hg).trans ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg (opn_nonneg _) _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `haeS : ∀ᵐ s ∂μS, Matrix.of s ∈ Sset k r z`. Rewrite using `[ae_iff]`. Simplify using `using hHaarS.2.2.1`. Establish `hpt : ∀ x : Mt k r, Matrix.of x ∈ GG k r → ‖Afun (psiGen k r z c) π μS σ u v ξ (Matrix.of x)‖ₑ ≤ ‖ξ‖ₑ * ∫⁻ s, f (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS`. Introduce `x hx`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ‖Afun (psiGen k r z c) π μS σ u v ξ (Matrix.of x)‖ₑ ≤ ‖be (psiGen k r z c) π μS σ (σ (Matrix.of x) u) v‖ₑ * ‖ξ‖ₑ` using `ContinuousLinearMap.le_opENorm_of_le _ le_rfl`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `gcongr`. Use `(enorm_integral_le_lintegral_enorm _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [haeS] with s hs`. Establish `hsG : Matrix.of s ∈ GG k r` using `hS.1 hs`. Establish `hsi : (Matrix.of s : Mat k r)⁻¹ ∈ Sset k r z` using `hS.2.2.2.2 _ hs`. Establish `hP : ‖PiS (psiGen k r z c) π (Matrix.of s)⁻¹‖ₑ ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ofReal_norm, ← ENNReal.ofReal_one]`. Conclude with `ENNReal.ofReal_le_ofReal (hPi.2.2.1 _ hsi).1`. Establish `hc : coef σ (σ (Matrix.of x) u) v (Matrix.of s) = coef σ u v (Matrix.of s * Matrix.of x)`. Simplify using `only [coef, hrep.1.2 _ hsG _ hx, ContinuousLinearMap.comp_apply]`. Rewrite using `[enorm_smul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hfin : ∫⁻ x, f x ∂μG < ⊤`. Establish `hn : 2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 < a`. Establish `h2 : (1 : ℝ) < ((2 * r + k + 1 : ℕ) : ℝ)`. Conclude with `(by omega : 1 < 2 * r + k + 1)` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `pow_lt_pow_right₀ h2 (by norm_num : 2 < 5)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN` using `GlobalTheory.T.besselOpNormPowerIntegral_lt_top_closedSubgroup k r (GG k r) μG a hG hHaar hn`. Establish `heq : ∫⁻ x, f x ∂μG = ENNReal.ofReal (max C 0) * normInt μG a`. Rewrite using `[normInt, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
-
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Conclude with `ENNReal.ofReal_mul hC'0`. Rewrite using `[heq]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hN`. Unfold `HasFiniteIntegral`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integrable_Afun_quotMeas : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)), Std σ w a μG d → Side z π μS → ∀ ν : Measure (Mt k r), IsQuotMeas μG μS ν → ∀ u ∈ DD σ w, ∀ v ∈ DD σ w, ∀ ξ : Wp, Integrable (fun x : Mt k r => Afun (psiGen k r z c) π μS σ u v ξ (Matrix.of x)) ν := by
   intro k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide ν hν u hu v hv ξ

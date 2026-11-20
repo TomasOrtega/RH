@@ -6,7 +6,7 @@ open scoped ENNReal
 namespace GlobalTheory.TorusAngles
 
 /- English proof (translation)
-Establish `h` using `Complex.norm_mul_exp_arg_mul_I w`. Rewrite `h` using `[hw]`. Simplify `h` using `[mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exp_I_arg {w : ℂ} (hw : ‖w‖ = 1) : Complex.exp (Complex.I * (Complex.arg w : ℂ)) = w := by
   have h := Complex.norm_mul_exp_arg_mul_I w
@@ -14,19 +14,17 @@ theorem exp_I_arg {w : ℂ} (hw : ‖w‖ = 1) : Complex.exp (Complex.I * (Compl
   simpa [mul_comm] using h
 
 /- English proof (translation)
-Rewrite using `[Complex.exp_neg, exp_I_arg hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_neg_I_arg {w : ℂ} (hw : ‖w‖ = 1) : Complex.exp (-(Complex.I * (Complex.arg w : ℂ))) = w⁻¹ := by
   rw [Complex.exp_neg, exp_I_arg hw]
 
 /- English proof (translation)
-Introduce `r z hz hp`. Break down `r with _ | n` into its components or cases. Conclude with `⟨fun _ => 0, fun a => a.elim0⟩`. Use `⟨fun k => Complex.arg (z ⟨k, by omega⟩), fun a => ?_⟩` and prove the remaining obligations. Unfold `angles`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h`. Conclude with `exp_I_arg (hz _)`. Establish `ha : a = Fin.last n` using `by ext; simp at h ⊢; omega`. Substitute `ha` using the available equality. Rewrite `hp` using `[Fin.prod_univ_castSucc]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlast : z (Fin.last n) = (∏ k : Fin n, z k.castSucc)⁻¹`. Conclude with `eq_inv_of_mul_eq_one_right hp`. Rewrite using `[hlast, Complex.ofReal_neg, Complex.ofReal_sum, mul_neg, Finset.mul_sum, ← Finset.sum_neg_distrib, Complex.exp_sum, ← Finset.prod_inv_distrib]`. Use `show ∏ k : Fin n, Complex.exp (-(Complex.I * (Complex.arg (z ⟨k, _⟩) : ℂ))) = _`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[exp_neg_I_arg (hz _)]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_angles_of_prod_eq_one : ∀ (r : ℕ) (z : Fin r → ℂ), (∀ a, ‖z a‖ = 1) → ∏ a, z a = 1 →
     ∃ φ : Fin (r - 1) → ℝ, ∀ a, Complex.exp (Complex.I * (angles φ a : ℂ)) = z a := by

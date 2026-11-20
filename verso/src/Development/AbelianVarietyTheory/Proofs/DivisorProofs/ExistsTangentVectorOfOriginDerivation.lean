@@ -38,21 +38,19 @@ end GlobalTheory.CoordsOrigin
 
 namespace GlobalTheory.CoordsOrigin
 /- English proof (translation)
-Use `set ψ := derHom G D hadd hmul hc with hψdef`. Establish `hψ : ∀ f, ψ f = TrivSqZeroExt.inl (evO G f) + TrivSqZeroExt.inr (D f)` using `fun f => rfl`. Use `haveI : IsLocalHom (evO G) := Scheme.isLocalHom_stalkClosedPointTo' (R := R) (η[G]).left`. Use `haveI hloc : IsLocalHom ψ := ⟨fun a ha => by`. Establish `h2 : IsUnit (ψ a).fst` using `(TrivSqZeroExt.isUnit_iff_isUnit_fst).1 ha`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [hψ, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero] at h2`. Conclude with `isUnit_of_map_unit (evO G) a h2⟩`. Use `haveI hloc' : IsLocalHom (CommRingCat.ofHom ψ).hom := hloc`. Set `p : Sp (DualNumber R) ⟶ G.left` to `spMap ψ ≫ G.left.fromSpecStalk (origin G)`. Establish `hcomp : ψ.comp (constO G) = algebraMap R (DualNumber R)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `ext r <;> simp [hψ, evO_constO, hc, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hover : p ≫ G.hom = (overAt (𝟙 (Sp R)) (DualNumber R)).hom`. Simplify using `only [p, Category.assoc]`. Rewrite using `[spMap_fromSpecStalk_origin_hom, hcomp]`. Simplify using `[overAt]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `w : overAt (𝟙 (Sp R)) (DualNumber R) ⟶ G` to `Over.homMk p hover`. Establish `hw : smT (𝟙 (Sp R)) 0 w = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[smT_left, one_left]`. Establish `e1 : (epsMul (0 : R)).comp ψ = (algebraMap R (DualNumber R)).comp (evO G)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `ext f <;> simp [hψ, epsMul, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e2 : spMap (evO G) ≫ G.left.fromSpecStalk (origin G) = (η[G]).left` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of R) (η[G]).left`. Express the relevant statement in the definitionally equal form `spMap (epsMul (0 : R)) ≫ spMap ψ ≫ G.left.fromSpecStalk (origin G) = _`. Establish `e3 : spMap (epsMul (0 : R)) ≫ spMap ψ = spMap ((epsMul (0 : R)).comp ψ)`. Simplify using `only [spMap, ← Spec.map_comp]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e4 : spMap ((algebraMap R (DualNumber R)).comp (evO G)) = spMap (algebraMap R (DualNumber R)) ≫ spMap (evO G)`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, e3, e1, e4, Category.assoc, e2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[overAt]`. Use `⟨ReciprocityTheory.ChartRestriction.G.PullbackSections.mkT w hw, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[tanDer_eq]`. Establish `key : (G.left.presheaf.stalkCongr (Inseparable.of_eq (tv_closedPoint G (ReciprocityTheory.ChartRestriction.G.PullbackSections.mkT w hw)).symm)).hom ≫ Scheme.stalkClosedPointTo (R` using `CommRingCat.of (DualNumber R)) (tv (ReciprocityTheory.ChartRestriction.G.PullbackSections.mkT w hw)).left = CommRingCat.ofHom ψ := by`. Use `TopCat.Presheaf.stalk_hom_ext _ fun U hU => ?_` and prove the remaining obligations.
-
-Rewrite using `[TopCat.Presheaf.stalkCongr_hom]`. Use `erw [TopCat.Presheaf.germ_stalkSpecializes_assoc]`. Conclude with `Scheme.germ_stalkClosedPointTo_Spec_fromSpecStalk (CommRingCat.ofHom ψ) U _`. Rewrite using `[key]`. Simplify using `[hψ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_tan_of_derivation (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G]
     [IsCommMonObj G] (D : G.left.presheaf.stalk (origin G) → R) (hadd : ∀ x y, D (x + y) = D x + D y)

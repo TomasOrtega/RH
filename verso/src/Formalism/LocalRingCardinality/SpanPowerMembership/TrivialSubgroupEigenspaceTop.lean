@@ -12,7 +12,7 @@ variable (D : D7) [hL : IsEmpty D.nd.Loc] (C : TwCore D.R D.host D.what₂ D.LL0
   (E : EmbC D C) (S : StdMt D C I)
 
 /- English proof (translation)
-Use `iInf_eq_top.mpr fun u => LinearMap.ker_eq_top.mpr ?_` and prove the remaining obligations. Establish `hu : u = 1` using `Subsingleton.elim _ _`. Substitute `hu` using the available equality. Rewrite using `[Subgroup.coe_one, map_one, map_one, Units.val_one, one_smul]`. Conclude with `sub_self _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivialSubgroup_eigenspace_top {Γ K V : Type} [Group Γ] [Field K] [AddCommGroup V] [Module K V] (ψ : Γ →* Kˣ) :
     (⨅ u : (⊥ : Subgroup Γ), LinearMap.ker ((scalAct K V ψ u).toLinearMap -
@@ -25,7 +25,7 @@ theorem trivialSubgroup_eigenspace_top {Γ K V : Type} [Group Γ] [Field K] [Add
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-The claim follows from `I.hPsi i b (I.ix j → FractionRing (C.O i))`.
+A detailed English derivation is pending.
 -/
 theorem nEG_one (i : C.Tw) (j : ℕ) (b : Bool) : NForms.eG (recN D C I he) i j b = 1 :=
   I.hPsi i b (I.ix j → FractionRing (C.O i))
@@ -33,14 +33,14 @@ theorem nEG_one (i : C.Tw) (j : ℕ) (b : Bool) : NForms.eG (recN D C I he) i j 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-The claim follows from `trivialSubgroup_eigenspace_top (Γ := G0g D.nd) (K := FractionRing (C.O i)) (V := I.ix j → FractionRing (C.O i)) (I.Psi i)`.
+A detailed English derivation is pending.
 -/
 theorem nFm0_top (i : C.Tw) (j : ℕ) (b : Bool) : NForms.Fm0 (recN D C I he) i j b = ⊤ :=
   trivialSubgroup_eigenspace_top (Γ := G0g D.nd) (K := FractionRing (C.O i)) (V := I.ix j → FractionRing (C.O i)) (I.Psi i)
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Unfold `NForms.V0`. Rewrite using `[nEG_one D C I he i j b, nFm0_top D C I he i j b]`. Conclude with `Submodule.map_id _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem newformsBase_top (i : (recN D C I he).ntw.Tw) (j : ℕ) (b : Bool) : NForms.V0 (recN D C I he) i j b = ⊤ := by
   unfold NForms.V0
@@ -49,7 +49,7 @@ theorem newformsBase_top (i : (recN D C I he).ntw.Tw) (j : ℕ) (b : Bool) : NFo
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Rewrite using `[newformsBase_top D C I he i j b, Submodule.restrictScalars_top, Submodule.baseChange_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nV0bc_top (i : (recN D C I he).ntw.Tw) (j : ℕ) (b : Bool) (k : ℕ) :
     ((NForms.V0 (recN D C I he) i j b).restrictScalars ((recN D C I he).ntw.O i)).baseChange
@@ -74,7 +74,7 @@ structure StdMj where
 variable (T : StdMj D C I he S X)
 
 /- English proof (translation)
-Rewrite using `[eMjN_apply]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `congrArg (E.embW w) (T.th_std w j h1 h2 x y hy a)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem eMjN_th (w : D.what₂.places.Pl) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (x : D.what₂.MtL (D.what₂.muTw w) j) (y : (mjH D C I he X j).V)

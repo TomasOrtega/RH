@@ -9,7 +9,7 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 namespace GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.FlagBasis
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.Ar.flagStep`. Establish `: {k : Fin r | (k : ℕ) < r} = Set.univ` using `by ext k; simp [k.2]`. Rewrite using `[this, Set.image_univ]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagStep_full {E : Type} [AddCommGroup E] (Ω : Type) [Field Ω] [Module Ω E] {r : ℕ} (b : Fin r → E) :
     GlobalTheory.CompanionTheory.Ar.flagStep Ω b r = Submodule.span Ω (Set.range b) := by
@@ -18,13 +18,11 @@ theorem flagStep_full {E : Type} [AddCommGroup E] (Ω : Type) [Field Ω] [Module
   rw [this, Set.image_univ]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ J y 𝔐 Fl t`. Use `letI := 𝔐.fn.toAlgebra`. Take `⟨cc, u, hc, _hj, _hjc, hb, _hu1, _hu0, hflag, _⟩` from `Fl.generic`. Use `⟨hb t, ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span Ω (Set.range (Fl.b t)) ≤ 𝔐.Vgen t`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← flagStep_full, hflag t (labelRk D t), flagStep_full, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `(Fl.V₀_mem t (cc t l)).1 ((hc t).2 ▸ Submodule.subset_span ⟨l, rfl⟩)`. Take `⟨U, hpU, b', hspan, hfr⟩` from `𝔐.vb t ⟨GlobalTheory.CompanionTheory.Ar.genPt 𝔐.ξ, 𝔐.all _⟩ trivial`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hli' : LinearIndependent Ω b'` using `(hfr _ trivial hpU).1`. Establish `hV : Submodule.span Ω (Set.range b') = 𝔐.Vgen t` using `hspan`. Use `haveI : FiniteDimensional Ω (𝔐.Vgen t) := by`. Rewrite using `[← hV]`. Conclude with `FiniteDimensional.span_of_finite Ω (Set.finite_range b')`.
-
-Apply `Submodule.eq_of_le_of_finrank_eq hle` to reduce the goal to its premises. Rewrite using `[← hV, finrank_span_eq_card (hb t), finrank_span_eq_card hli']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flag_b_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ)

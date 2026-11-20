@@ -12,7 +12,7 @@ open MvPolynomial NumberField IsDedekindDomain
 noncomputable section
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [coeff_homogeneousComponent, coeff_map]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem homogeneousComponent_map_coeffs {R S : Type*} [CommRing R] [CommRing S] {n : ℕ}
     (φ : R →+* S) (d : ℕ) (p : MvPolynomial (Fin n) R) :
@@ -22,27 +22,25 @@ theorem homogeneousComponent_map_coeffs {R S : Type*} [CommRing R] [CommRing S] 
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `K _ _ n e I f v hI hf W hW`. Establish `: v.asIdeal.IsMaximal` using `v.isMaximal`. Establish `: I.IsPrime` using `hI.isPrime`. Set `k` to `v.asIdeal.ResidueField`. Set `φ : MvPolynomial (Fin n) (𝓞 K) →+* MvPolynomial (Fin n) k` to `MvPolynomial.map (algebraMap (𝓞 K) k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : MvPolynomial (Fin n) (𝓞 K) →+* MvPolynomial (Fin n) K` to `MvPolynomial.map (algebraMap (𝓞 K) K)`. Establish `hφ : Function.Surjective φ` using `MvPolynomial.map_surjective _ (Ideal.algebraMap_residueField_surjective _)`. Establish `hker : RingHom.ker φ = Ideal.map C v.asIdeal`. Rewrite using `[MvPolynomial.ker_map, Ideal.ker_algebraMap_residueField]`. Take `⟨hWmin, hWrel⟩` from `hW`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hWprime : W.IsPrime` using `hWmin.1.1`. Establish `hkerW : RingHom.ker φ ≤ W` using `hker ▸ le_sup_right.trans hWmin.1.2`. Establish `hP : (integralModel I).IsPrime` using `Ideal.comap_isPrime ψ I`. Establish `hPC : (integralModel I).comap (C : 𝓞 K →+* MvPolynomial (Fin n) (𝓞 K)) = ⊥`. Use extensionality with `c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Ideal.mem_comap, integralModel, Ideal.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hc`. Establish `hu : IsUnit (ψ (C c))`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[show ψ (C c) = C (algebraMap (𝓞 K) K c) from map_C _ _]`. Conclude with `(isUnit_iff_ne_zero.mpr ((map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hc)).map C`. Conclude with `hI.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h hu)`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hPloc : (integralModel I).map ψ = I`. Set `_` to `MvPolynomial.algebraMvPolynomial (σ := Fin n) (R := 𝓞 K) (S := K)`. Use `MvPolynomial.isLocalization (σ := Fin n) (nonZeroDivisors (𝓞 K)) K` as an intermediate fact. Conclude with `IsLocalization.map_under ((nonZeroDivisors (𝓞 K)).map (C (σ := Fin n))) (MvPolynomial (Fin n) K) I`. Establish `hdim` using `hFib (𝓞 K) K n (integralModel I) W v hP hPC hWmin`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hdim` using `[hPloc, hCone K n (e + 1) I f hI hf]`. Use `⟨⟨Ideal.map_isPrime_of_surjective hφ hkerW, ?_, ?_⟩, hdim⟩` and prove the remaining obligations. Establish `hmin : reduceMod v W ∈ (reduceMod v (integralModel I)).minimalPrimes`. Express the relevant statement in the definitionally equal form `W.map φ ∈ ((integralModel I).map φ).minimalPrimes`. Rewrite using `[Ideal.minimalPrimes_map_of_surjective hφ, hker]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨W, hWmin, rfl⟩`. Use `MinimalPrimeHomog.proof k n _ _ ?_ hmin` and prove the remaining obligations. Introduce `g hg d`. Express the relevant statement in the definitionally equal form `g ∈ (integralModel I).map φ at hg`. Take `⟨p, hp, rfl⟩` from `(Ideal.mem_map_iff_of_surjective φ hφ).mp hg`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[homogeneousComponent_map_coeffs]`. Use `Ideal.mem_map_of_mem φ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ (homogeneousComponent d p) ∈ I`. Rewrite using `[← homogeneousComponent_map_coeffs]`. Conclude with `hI.isHomog _ hp d`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, hj⟩` from `hWrel`. Use `⟨j, fun h => hj ?_⟩` and prove the remaining obligations. Establish `h' : X j ∈ (W.map φ).comap φ`. Rewrite using `[Ideal.mem_comap, map_X]`. Conclude with `h`.
-
-Rewrite `h'` using `[Ideal.comap_map_of_surjective _ hφ, ← RingHom.ker_eq_comap_bot, sup_eq_left.mpr hkerW]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem SpecCompDim.proof (hCone : ConeDimOfChowForm.Statement) (hFib : FibreCompDim.Statement) :
     SpecCompDim.Statement := by

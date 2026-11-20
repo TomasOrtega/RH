@@ -15,9 +15,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Establish `hP : 1 ≤ Y ^ ((3 : ℝ) / 4)` using `Real.one_le_rpow hY (by norm_num)`. Establish `hs : Y ^ ((9 : ℝ) / 10) = Y ^ ((3 : ℝ) / 20) * Y ^ ((3 : ℝ) / 4)`. Rewrite using `[← Real.rpow_add (by linarith)]; norm_num`. Rewrite using `[hs]`. Generalize the expression as in `Y ^ ((3 : ℝ) / 4) = P at hP ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `hr2 : 1 ≤ r ^ 2` using `one_le_pow₀ hr`. Establish `h1 : 1 ≤ r ^ 2 * P` using `one_le_mul_of_one_le_of_one_le hr2 hP`. Establish `h2 : r ^ 2 ≤ r ^ 2 * P` using `le_mul_of_one_le_right (by positivity) hP`. Establish `h3 : 1 + 2 * r ^ 2 * (P + 1) ≤ 5 * (r ^ 2 * P)` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem excluded_count_lt {Y r : ℝ} (hY : 1 ≤ Y) (hr : 1 ≤ r) (h : 20 * r ^ 3 < Y ^ ((3 : ℝ) / 20)) :
     (3 * r + 1) * (1 + 2 * r ^ 2 * (Y ^ ((3 : ℝ) / 4) + 1)) < Y ^ ((9 : ℝ) / 10) := by
@@ -36,11 +36,11 @@ theorem excluded_count_lt {Y r : ℝ} (hY : 1 ≤ Y) (hr : 1 ≤ r) (h : 20 * r 
     _ < _ := mul_lt_mul_of_pos_right h (by linarith)
 
 /- English proof (translation)
-Establish `hpos : 0 < Y ^ ((9 : ℝ) / 10)` using `Real.rpow_pos_of_pos (by linarith) _`. Establish `hne : G.Nonempty` using `Finset.card_pos.1 (by exact_mod_cast hpos.trans_le hc)`. Take `⟨a, ha⟩` from `hne`. Establish `hex : ∃ b ∈ G, ¬ (Formalism.CyclotomicNorms.BB r b ∩ Formalism.CyclotomicNorms.BB r a).Nonempty`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hcon`. Establish `h1` using `GlobalTheory.choice_count Y r a hY hr (hG a ha).1 (hG a ha).2 G (fun g hg => ⟨(hG g hg).1, (hG g hg).2, hcon g hg⟩)`. Establish `h2` using `excluded_count_lt (Y := Y) (r := r) (by linarith) (by exact_mod_cast hr) h`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨b, hb, hab⟩` from `hex`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, ha, b, hb, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hab ⟨a, Or.inl rfl, Or.inl rfl⟩`. Rewrite using `[Set.disjoint_iff_inter_eq_empty, Set.inter_comm]`. Conclude with `Set.not_nonempty_iff_eq_empty.1 hab`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pair_disjoint_exceptional {Y : ℝ} {r : ℕ} (hY : 2 ≤ Y) (hr : 1 ≤ r)
     (h : 20 * (r : ℝ) ^ 3 < Y ^ ((3 : ℝ) / 20)) (G : Finset ℕ) (hG : ∀ g ∈ G, Y ≤ g ∧ (g : ℝ) ≤ 2 * Y)
@@ -64,21 +64,21 @@ theorem exists_pair_disjoint_exceptional {Y : ℝ} {r : ℕ} (hY : 2 ≤ Y) (hr 
     exact Set.not_nonempty_iff_eq_empty.1 hab
 
 /- English proof (translation)
-Introduce `hN eps he0 he1`. Take `⟨x1, h1⟩` from `hN eps he0 he1`. Take `⟨x2, h2⟩` from `GlobalTheory.scale_poly_comparison eps 16 1 he0 one_pos`. Take `⟨x3, h3⟩` from `rank_basic_bounds eps he0 he1`. Use `⟨max (max x1 x2) (max x3 21), fun s R q d hs hx hR hq => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [max_le_iff] at hx`. Take `⟨⟨hx1, hx2⟩, hx3, hx4⟩` from `hx`. Establish `hc` using `h1 s R q d hs hx1 hR hq`. Establish `hb` using `(h2 s hs hx2).2.2.1`. Take `⟨-, -, hr5, hkr, -⟩` from `h3 s R hs hx3 hR`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmk` using `R.m_add_three_le_k`. Establish `hk1 : (1 : ℝ) ≤ R.k` using `by exact_mod_cast (by omega : 1 ≤ R.k)`. Establish `hx0 : 0 < s.x` using `by linarith`. Establish `hX : 1 ≤ s.X'` using `Real.one_le_exp (Real.rpow_nonneg hx0.le _)`. Rewrite `hb` using `[Real.rpow_one, show (16 : ℝ) = ((16 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr5` using `[show (5 : ℝ) = ((5 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `hb1 : s.x ^ 16 ≤ s.b` using `(le_mul_of_one_le_right (by positivity) hX).trans hb`. Establish `hx15 : 1 ≤ s.x ^ 15` using `one_le_pow₀ (by linarith)`. Establish `hx16 : 21 * s.x ^ 15 ≤ s.x ^ 16`. Rewrite using `[pow_succ s.x 15, mul_comm]; exact mul_le_mul_of_nonneg_left hx4 (by linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb2 : 2 ≤ s.b` using `by linarith`. Establish `hkb : s.b ≤ (R.k : ℝ) * s.b` using `le_mul_of_one_le_left (by linarith) hk1`. Establish `hkb1 : 1 ≤ (R.k : ℝ) * s.b` using `by linarith`. Establish `hY : 2 ≤ ((R.k : ℝ) * s.b) ^ 8` using `(hb2.trans hkb).trans (le_self_pow₀ hkb1 (by norm_num))`. Establish `hr3 : (R.r : ℝ) ^ 3 ≤ s.x ^ 15`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hZ : (R.k : ℝ) * s.b ≤ (((R.k : ℝ) * s.b) ^ 8) ^ ((3 : ℝ) / 20)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]`. Conclude with `Real.self_le_rpow_of_one_le hkb1 (by norm_num)`. Take `⟨a, ha, b, hb', hab, hd⟩` from `exists_pair_disjoint_exceptional (r := R.r) hY (by omega) (by linarith) _ (fun g hg => by`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[Finset.mem_filter, Finset.mem_range, Nat.lt_succ_iff, Nat.le_floor_iff (by linarith)]`. Conclude with `⟨hg.2.2.1, hg.1⟩) hc`. Rewrite `ha`, `hb'` using `[Finset.mem_filter, Finset.mem_range, Nat.lt_succ_iff, Nat.le_floor_iff (by linarith)]`. Use `⟨![a, b], ?_, hab, hd⟩` and prove the remaining obligations. Introduce `i`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `fin_cases i`. Conclude with `⟨ha.2.1, ha.2.2.1, ha.1, ha.2.2.2⟩`. Conclude with `⟨hb'.2.1, hb'.2.2.1, hb'.1, hb'.2.2.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem two_type_primes : NormPrimes → ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks) (N d : ℕ), s.eps = eps → x0 ≤ s.x → RankVal s R → ModRow s N d → ∃ g : Fin 2 → ℕ, (∀ i, (g i).Prime ∧ ((R.k : ℝ) * s.b) ^ 8 ≤ (g i : ℝ) ∧ (g i : ℝ) ≤ 2 * ((R.k : ℝ) * s.b) ^ 8 ∧ NormOne d N (g i)) ∧ g 0 ≠ g 1 ∧ Disjoint (Formalism.CyclotomicNorms.BB R.r (g 0)) (Formalism.CyclotomicNorms.BB R.r (g 1)) := by
   classical

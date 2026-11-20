@@ -13,13 +13,11 @@ open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
 
 /- English proof (translation)
-Establish `hfix : ∀ z : Ω, z ^ m = 1 → s z = z`. Introduce `z hz`. Take `⟨k, rfl⟩` from `h`. Conclude with `(mem_fixMu_iff s).1 hs z (by rw [pow_mul, hz, one_pow])`. Break down `Nat.lt_or_ge 1 m with hm1 | hm1` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `haveI : Fact (1 < m) := ⟨hm1⟩`. Establish `hspec : ∃ y : ZMod m, ∀ z : Ω, z ^ m = 1 → s z = z ^ y.val` using `⟨1, fun z hz => by rw [hfix z hz, ZMod.val_one, pow_one]⟩`. Establish `hy : ∀ z : Ω, z ^ m = 1 → s z = z ^ (cyc m s).val` using `Classical.epsilon_spec hspec`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hζ` using `isPrimitiveRoot_eOm ε hm.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hy _ hζ.pow_eq_one`. Rewrite `h1` using `[hfix _ hζ.pow_eq_one]`. Establish `hv : (cyc m s).val = 1` using `hζ.pow_inj (ZMod.val_lt _) hm1 (by rw [pow_one]; exact h1.symm)`. Rewrite using `[← ZMod.natCast_zmod_val (cyc m s), hv, Nat.cast_one]`. Establish `hm2 : m = 1` using `by omega`.
-
-Substitute `hm2` using the available equality. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem cyc_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) {m M' : ℕ} (hm : 0 < m)
     (h : m ∣ M') (s : Ω ≃ₐ[ℚ] Ω) (hs : s ∈ fixMu Ω M') : cyc m s = 1 := by
@@ -44,9 +42,9 @@ private theorem cyc_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
     exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Break down `Nat.lt_or_ge 1 m with h1 | h1` into its components or cases. Use `⟨1, ?_⟩ haveI : Fact (1 < m) := ⟨h1⟩` and prove the remaining obligations. Simplify using `[ZMod.val_one]`. Establish `hm1 : m = 1` using `by omega`. Substitute `hm1` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨f⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[show (1 : ZMod 1).val = 0 by decide]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pow_val_one {K : Type} [Field K] {m : ℕ} (hm : 0 < m) (f : Kˣ) : ∃ h : Kˣ, f ^ (1 : ZMod m).val = f * h ^ m := by
   rcases Nat.lt_or_ge 1 m with h1 | h1
@@ -60,13 +58,13 @@ private theorem pow_val_one {K : Type} [Field K] {m : ℕ} (hm : 0 < m) (f : Kˣ
     simp
 
 /- English proof (translation)
-Establish `hadm1 : admitted X (RingEquiv.refl X.K) 1` using `(admB Ω ε X).2.2.1`. Establish `hPτ : IsPt X m (τ u) (τ v) P` using `by rw [hu, hv]; exact hP`. Establish `hQτ : IsPt X m (τ u) (τ v) Q` using `by rw [hu, hv]; exact hQ`. Establish `c1` using `mvComp Ω ε X m hm (RingEquiv.refl X.K) τ 1 s hadm1 hτ u v Q P P hQ hP hPτ a F' ha hF'`. Establish `c2` using `mvComp Ω ε X m hm τ (RingEquiv.refl X.K) s 1 hτ hadm1 u v Q Q P hQ hQτ hPτ F a hF ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (RingEquiv.refl X.K).trans τ = τ` using `RingEquiv.ext fun _ => rfl`. Establish `e2 : τ.trans (RingEquiv.refl X.K) = τ` using `RingEquiv.ext fun _ => rfl`. Rewrite `c1` using `[e1, mul_one]`. Rewrite `c2` using `[e2, one_mul]`. Establish `hc1 : cyc m (1 : Ω ≃ₐ[ℚ] Ω) = 1` using `((lgB Ω ε X m hm).2.2.2.2.2.2 1 1).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨h, hh⟩` from `((mvEx Ω ε X m hm τ s hτ u v Q hQ).2.2.2 P hPτ _ _ c1).1 c2`. Rewrite `hh` using `[hc1, hs]`. Establish `hrefl : unU X (RingEquiv.refl X.K) F = F` using `Units.ext rfl`. Rewrite `hh` using `[hrefl]`. Take `⟨h1, hh1⟩` from `pow_val_one hm F`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h2, hh2⟩` from `pow_val_one hm (unU X τ a)`. Rewrite `hh` using `[hh1, hh2]`. Use `⟨h2 * h * h1⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, mul_pow, inv_pow, ← mul_left_inj (h1 ^ m)]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem key {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) {m : ℕ} (hm : 0 < m)
     {τ : X.K ≃+* X.K} {s : Ω ≃ₐ[ℚ] Ω} (hτ : admitted X τ s) (hs : cyc m s = 1) {u v : X.K} (hu : τ u = u) (hv : τ v = v) {P Q : Pt X m}
@@ -96,9 +94,9 @@ private theorem key {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω
     _ = _ := by rw [mul_right_comm (unU X τ a)]; group
 
 /- English proof (translation)
-Rewrite `hγ`, the goal using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨h1, h2, h3, h4⟩` from `hγ`. Establish `hc` using `fun (z : ℤ) => map_intCast (ZMod.castHom h (ZMod N)) z`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, h1, map_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, h2, map_zero]`. Rewrite using `[← hc, h3, map_zero]`. Rewrite using `[← hc, h4, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_gamma_of_dvd_of_mem_gamma' {N N' : ℕ} (h : N ∣ N') {γ : SL(2, ℤ)}
     (hγ : γ ∈ CongruenceSubgroup.Gamma N') : γ ∈ CongruenceSubgroup.Gamma N := by
@@ -112,33 +110,33 @@ private theorem mem_gamma_of_dvd_of_mem_gamma' {N N' : ℕ} (h : N ∣ N') {γ :
   · rw [← hc, h4, map_one]
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Z.Kato.Sym.PTop`. Introduce `Ω _ _ _ ε X l n c d k M M' hl hc hd hc6 hd6 hLv hk hM' hkM hlM t w ht hw x y hxy x' y' hx' hy'`. Establish `hm : 0 < l ^ n` using `pow_pos hl.pos n`. Take `⟨hM, hcM, hdM⟩` from `hLv`. Establish `hMM' : M ∣ M'` using `(Dvd.intro_left k rfl).trans hkM`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hadm` using `admB Ω ε X`. Take `⟨hx0, hy0, -, -⟩` from `(rowB Ω M hM).2.1 x y hxy`. Take `⟨hUx, hslx, hgalx, hsix⟩` from `sgB Ω ε X c M hc hc6 hM hcM x hx0`. Take `⟨hUy, hsly, hgaly, hsiy⟩` from `sgB Ω ε X d M hd hd6 hM hdM y hy0`. Take `⟨hgd1, hgd2, hgd3⟩` from `galDg Ω ε X k hk`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ⟩` from `PC.dgPt Ω ε X (l ^ n) c d k M hm hc hd hc6 hd6 ⟨hM, hcM, hdM⟩ hk t w ht hw`. Take `⟨hQxy, hQgal, hQsl⟩` from `hQ x y hxy`. Establish `hfixU : ∀ s ∈ fixMu Ω M', ∀ z : Row M, gr M s z = z`. Introduce `s hs z`. Express the relevant statement in the definitionally equal form `![z 0, cyc M s * z 1] = z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[cyc_one X hM hMM' s hs, one_mul]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Establish `hmemF : ∀ f : X.K, (∀ γ ∈ CongruenceSubgroup.Gamma M', X.sl (ofSL γ) f = f) → (∀ s ∈ fixMu Ω M', X.gal s f = f) → f ∈ topF X M'`. Introduce `f h1 h2`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Subfield.mem_inf.2 ⟨(mem_lev_iff X _ f).2 h1, ?_⟩` and prove the remaining obligations. Simplify using `only [Subfield.mem_iInf]`. Introduce `s hs`. Conclude with `h2 s hs`. Establish `hgu : ∀ s ∈ fixMu Ω M', X.gal s (X.sl (dg k) (sg X c M x)) = X.sl (dg k) (sg X c M x)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Rewrite using `[hgd1 s, hgalx s, hfixU s hs x]`. Establish `hgv : ∀ s ∈ fixMu Ω M', X.gal s (X.sl (dg k) (sg X d M y)) = X.sl (dg k) (sg X d M y)`. Introduce `s hs`. Rewrite using `[hgd1 s, hgaly s, hfixU s hs y]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hslu : ∀ γ ∈ CongruenceSubgroup.Gamma M', X.sl (ofSL γ) (X.sl (dg k) (sg X c M x)) = X.sl (dg k) (sg X c M x)`. Introduce `γ hγ`. Take `⟨γ', hγ', hcomm⟩` from `hgd3 M γ (mem_gamma_of_dvd_of_mem_gamma' hkM hγ)`. Rewrite using `[hgd2 γ γ' hcomm, hslx, (rowB Ω M hM).2.2.1 γ' x hγ']`. Establish `hslv : ∀ γ ∈ CongruenceSubgroup.Gamma M', X.sl (ofSL γ) (X.sl (dg k) (sg X d M y)) = X.sl (dg k) (sg X d M y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ`. Take `⟨γ', hγ', hcomm⟩` from `hgd3 M γ (mem_gamma_of_dvd_of_mem_gamma' hkM hγ)`. Rewrite using `[hgd2 γ γ' hcomm, hsly, (rowB Ω M hM).2.2.1 γ' y hγ']`. Establish `hIu : IsU X (X.sl (dg k) (sg X c M x))` using `(hadm.2.2.2.2.2.1 _ _ (hadm.1 (dg k))).1 _ hUx`. Establish `hIv : IsU X (X.sl (dg k) (sg X d M y))` using `(hadm.2.2.2.2.2.1 _ _ (hadm.1 (dg k))).1 _ hUy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hPγ, hPs⟩` from `ptTop Ω ε X l n M' hl hM' hlM _ _ hIu hIv (hmemF _ hslu hgu) (hmemF _ hslv hgv)`. Take `⟨a, haU, ha⟩` from `(mvEx Ω ε X (l ^ n) hm (RingEquiv.refl X.K) 1 hadm.2.2.1 _ _ (Q x y) hQxy).1 P hP`. Rewrite using `[hsix x' hx', hsiy y' hy']`. Use `⟨a, haU, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ', hγ', hcomm⟩` from `hgd3 M γ (mem_gamma_of_dvd_of_mem_gamma' hkM hγ)`. Establish `hF` using `hQsl γ γ' hcomm`. Rewrite `hF` using `[(rowB Ω M hM).2.2.1 γ' x hγ', (rowB Ω M hM).2.2.1 γ' y hγ']`. Take `⟨h, hh⟩` from `key X hm (hadm.1 (ofSL γ)) ((lgB Ω ε X (l ^ n) hm).2.2.2.2.2.2 1 1).2.1 (hslu γ hγ) (hslv γ hγ) hP hQxy ha hF (hPγ γ hγ)`. Rewrite `hh` using `[one_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h⁻¹, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `unU X (slR X (ofSL γ)) a = a * h⁻¹ ^ (l ^ n)`. Rewrite using `[inv_pow]`. Conclude with `eq_mul_inv_of_mul_eq hh.symm`. Introduce `s hs`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : s⁻¹ ∈ fixMu Ω M'` using `inv_mem hs`. Establish `hF` using `hQgal s`. Rewrite `hF` using `[hfixU _ hs' x, hfixU _ hs' y]`. Take `⟨f, hf, hf'⟩` from `hPs s hs`. Take `⟨h, hh⟩` from `key X hm (hadm.2.1 s) (cyc_one X hm hlM s hs) (hgu s hs) (hgv s hs) hP hQxy ha hF hf'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `hh'` using `congrArg (fun z : X.Kˣ => (z : X.K)) hh`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val] at hh'`. Express the relevant statement in the definitionally equal form `X.sl (dg k) (w s x y : X.K) * (a : X.K) = X.gal s (a : X.K) * (f : X.K) * (h : X.K) ^ (l ^ n) at hh'`. Express the relevant statement in the definitionally equal form `X.sl (dg k) (w s x y : X.K) = wGen X M' l n (X.sl (dg k) (sg X c M x)) (X.sl (dg k) (sg X d M y)) s * (X.gal s (a : X.K) / (a : X.K)) * (h : X.K) ^ (l ^ n)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hf]`. Establish `ha0 : (a : X.K) ≠ 0` using `a.ne_zero`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hh'`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Sym.pTop : UpperTheory.V.Z.Kato.Sym.PTop := by
   unfold UpperTheory.V.Z.Kato.Sym.PTop

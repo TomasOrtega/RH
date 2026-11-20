@@ -15,7 +15,7 @@ open scoped ComplexOrder
 namespace Formalism.L2.SG.Pf.Tau
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `[Complex.mul_re]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem re_star_dotProduct_self {m : ℕ} (z : Fin m → ℂ) :
     (star z ⬝ᵥ z).re = ∑ i, ‖z i‖ ^ 2 := by
@@ -25,20 +25,20 @@ theorem re_star_dotProduct_self {m : ℕ} (z : Fin m → ℂ) :
   simp [Complex.mul_re]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_dotProduct_gram {m k : ℕ} (A : Matrix (Fin m) (Fin k) ℂ) (z : Fin k → ℂ) :
     star z ⬝ᵥ ((Aᴴ * A) *ᵥ z) = star (A *ᵥ z) ⬝ᵥ (A *ᵥ z) := by
   rw [← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]
 
 /- English proof (translation)
-Establish `key : ∀ i, a ≤ hM.eigenvalues i ∧ hM.eigenvalues i ≤ b`. Introduce `i`. Use `set v : Fin j → ℂ := (hM.eigenvectorBasis i).ofLp with hv_def`. Establish `hnorm : ∑ k, ‖v k‖ ^ 2 = 1`. Establish `h1` using `(hM.eigenvectorBasis).norm_eq_one i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[EuclideanSpace.norm_eq]`. Establish `h2` using `congrArg (fun t : ℝ => t ^ 2) h1`. Simplify using `only [one_pow] at h2`. Rewrite `h2` using `[Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Then use the resulting hypothesis. Establish `e : (star v ⬝ᵥ (M *ᵥ v)).re = hM.eigenvalues i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv_def, hM.mulVec_eigenvectorBasis i, dotProduct_smul, Complex.smul_re, smul_eq_mul, ← hv_def, re_star_dotProduct_self, hnorm, mul_one]`. Use `h v` as an intermediate fact. Rewrite `this` using `[e, hnorm, mul_one, mul_one]`. Conclude with `this`. Use `⟨∏ i, hM.eigenvalues i, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Rewrite using `[hM.det_eq_prod_eigenvalues]`. Use `norm_cast`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem det_bounds_of_rayleigh {j : ℕ} (M : Matrix (Fin j) (Fin j) ℂ) (hM : M.IsHermitian) (a b : ℝ)
     (ha : 0 ≤ a)
@@ -70,15 +70,15 @@ theorem det_bounds_of_rayleigh {j : ℕ} (M : Matrix (Fin j) (Fin j) ℂ) (hM : 
       _ = b ^ j := by simp
 
 /- English proof (translation)
-Establish `hH` using `hG.isHermitian`. Use `set U : Matrix (Fin j) (Fin j) ℂ := (hH.eigenvectorUnitary : Matrix (Fin j) (Fin j) ℂ) with hU_def`. Establish `hU : star U * U = 1` using `by simp [U]`. Establish `hspec : G = U * diagonal (RCLike.ofReal ∘ hH.eigenvalues) * star U`. Use `hH.spectral_theorem` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Unitary.conjStarAlgAut_apply]`. Then use the resulting hypothesis. Establish `hpos : ∀ i, 0 < hH.eigenvalues i` using `hG.eigenvalues_pos`. Use `⟨diagonal (fun i => (((Real.sqrt (hH.eigenvalues i))⁻¹ : ℝ) : ℂ)) * star U, ?_⟩` and prove the remaining obligations. Rewrite using `[show (diagonal (fun i => (((Real.sqrt (hH.eigenvalues i))⁻¹ : ℝ) : ℂ)) * star U) * G * (diagonal (fun i => (((Real.sqrt (hH.eigenvalues i))⁻¹ : ℝ) : ℂ)) * star U)ᴴ = (diagonal (fun i => (((Real.sqrt (hH.eigenvalues i))⁻¹ : ℝ) : ℂ)) * star U) * (U * diagonal (RCLike.ofReal ∘ hH.e …`. Rewrite using `[conjTranspose_mul, Matrix.star_eq_conjTranspose, conjTranspose_conjTranspose, ← Matrix.star_eq_conjTranspose]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (star U) U, hU, Matrix.one_mul, ← Matrix.mul_assoc (star U) U, hU, Matrix.one_mul, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hs : 0 < Real.sqrt (hH.eigenvalues i)` using `Real.sqrt_pos.2 (hpos i)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : Real.sqrt (hH.eigenvalues i) ^ 2 = hH.eigenvalues i` using `Real.sq_sqrt (hpos i).le`. Establish `h1 : (Real.sqrt (hH.eigenvalues i))⁻¹ * hH.eigenvalues i * (Real.sqrt (hH.eigenvalues i))⁻¹ = 1`. Rewrite using `[show (Real.sqrt (hH.eigenvalues i))⁻¹ * hH.eigenvalues i * (Real.sqrt (hH.eigenvalues i))⁻¹ = hH.eigenvalues i * (Real.sqrt (hH.eigenvalues i) ^ 2)⁻¹ by ring, hsq, mul_inv_cancel₀ (hpos i).ne']`. Simplify using `only [Function.comp, Pi.star_apply, RCLike.star_def, Complex.conj_ofReal]`. Rewrite using `[← mul_assoc]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun t : ℝ => (t : ℂ)) h1`. Move the coercions through the operations in `at h2`. Simplify using `using h2`.
+Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_mul_mul_conjTranspose_eq_one {j : ℕ} {G : Matrix (Fin j) (Fin j) ℂ} (hG : G.PosDef) :
     ∃ S : Matrix (Fin j) (Fin j) ℂ, S * G * Sᴴ = 1 := by
@@ -115,9 +115,9 @@ theorem exists_mul_mul_conjTranspose_eq_one {j : ℕ} {G : Matrix (Fin j) (Fin j
   simpa using h2
 
 /- English proof (translation)
-Take `⟨z, hz0, hz⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hd`. Establish `hCz : C *ᵥ z = 0`. Establish `h1 : star z ⬝ᵥ ((Cᴴ * C) *ᵥ z) = 0` using `by rw [hz, dotProduct_zero]`. Rewrite `h1` using `[star_dotProduct_gram]`. Conclude with `dotProduct_star_self_eq_zero.mp h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.exists_mulVec_eq_zero_iff.mp` to reduce the goal to its premises. Use `⟨z, hz0, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hCz, Matrix.mulVec_zero, Matrix.mulVec_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_gram_mul_eq_zero {n j : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) (C : Matrix (Fin n) (Fin j) ℂ)
     (hd : (Cᴴ * C).det = 0) : ((Y * C)ᴴ * (Y * C)).det = 0 := by
@@ -131,21 +131,19 @@ theorem det_gram_mul_eq_zero {n j : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) (C : M
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hCz, Matrix.mulVec_zero, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Introduce `n j Y C a b ha hY`. Distinguish the cases in `hd : (Cᴴ * C).det = 0`. Rewrite using `[hd, det_gram_mul_eq_zero Y C hd]`. Simplify using the standard rewrite rules. Establish `hPS : (Cᴴ * C).PosSemidef` using `Matrix.posSemidef_conjTranspose_mul_self C`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hPD : (Cᴴ * C).PosDef` using `hPS.posDef_iff_isUnit.mpr ((Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hd))`. Take `⟨S, hS⟩` from `exists_mul_mul_conjTranspose_eq_one hPD`. Use `set V := C * Sᴴ with hV_def`. Establish `hV : Vᴴ * V = 1`. Rewrite using `[hV_def, conjTranspose_mul, conjTranspose_conjTranspose]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show S * Cᴴ * (C * Sᴴ) = S * (Cᴴ * C) * Sᴴ by simp only [Matrix.mul_assoc]]`. Conclude with `hS`. Use `set M := (Y * V)ᴴ * (Y * V) with hM_def`. Establish `hMH : M.IsHermitian` using `Matrix.isHermitian_conjTranspose_mul_self _`. Establish `hray : ∀ z : Fin j → ℂ, a * ∑ i, ‖z i‖ ^ 2 ≤ (star z ⬝ᵥ (M *ᵥ z)).re ∧ (star z ⬝ᵥ (M *ᵥ z)).re ≤ b * ∑ i, ‖z i‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Establish `e1 : (star z ⬝ᵥ (M *ᵥ z)).re = ∑ i, ‖((Y * V) *ᵥ z) i‖ ^ 2`. Rewrite using `[hM_def, star_dotProduct_gram, re_star_dotProduct_self]`. Establish `e2 : ∑ i, ‖(V *ᵥ z) i‖ ^ 2 = ∑ i, ‖z i‖ ^ 2`. Rewrite using `[← re_star_dotProduct_self, ← star_dotProduct_gram, hV, Matrix.one_mulVec, re_star_dotProduct_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hY (V *ᵥ z)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, e2]`. Rewrite using `[e1]`. Conclude with `this`. Take `⟨μ, hμ, h1, h2⟩` from `det_bounds_of_rayleigh M hMH a b ha hray`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hMeq : M = S * ((Y * C)ᴴ * (Y * C)) * Sᴴ`. Simplify using `only [hM_def, hV_def, conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Establish `hdet1 : S.det * (Cᴴ * C).det * Sᴴ.det = 1`. Rewrite using `[← det_mul, ← det_mul, hS, det_one]`. Establish `hdY : ((Y * C)ᴴ * (Y * C)).det = μ * (Cᴴ * C).det`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hG0` using `hPS.det_nonneg`. Rewrite `hG0` using `[Complex.nonneg_iff]`. Establish `hre : ((Y * C)ᴴ * (Y * C)).det.re = μ * (Cᴴ * C).det.re`. Rewrite using `[hdY, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`.
-
-Rewrite using `[hre]`. Conclude with `⟨mul_le_mul_of_nonneg_right h1 hG0.1, mul_le_mul_of_nonneg_right h2 hG0.1⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem t5 : GramDistortionBound := by
   intro n j Y C a b ha hY

@@ -5,11 +5,9 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.smul_induction_on (p := fun x => ∀ i, x i ∈ J) hx ?_ ?_` and prove the remaining obligations. Introduce `a ha m _ i`. Conclude with `J.mul_mem_right _ ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb i`. Conclude with `J.add_mem (ha i) (hb i)`. Introduce `hx`. Rewrite using `[show x = ∑ i, x i • Pi.single i (1 : R) by`. Use extensionality with `j`.
-
-Simplify using `[Finset.sum_apply, Pi.single_apply]]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nak_mem_smul_top_pi {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
     (J : Ideal R) (x : ι → R) :
@@ -25,13 +23,11 @@ theorem nak_mem_smul_top_pi {R : Type} [CommRing R] {ι : Type} [Fintype ι] [De
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top
 
 /- English proof (translation)
-Establish `key : ∀ k (x : ι → R), x ∈ I ^ k • (⊤ : Submodule R (ι → R)) ↔ ∀ i, x i ∈ I ^ k • (⊤ : Submodule R R)`. Introduce `k x`. Rewrite using `[nak_mem_smul_top_pi]`. Simplify using `only [smul_eq_mul, Ideal.mul_top]`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ∀ i, ∃ l : R, ∀ n, f n i ≡ l [SMOD (I ^ n • ⊤ : Submodule R R)]`. Introduce `i`. Use `IsPrecomplete.prec' (fun n => f n i) fun {m n} hmn => ?_` and prove the remaining obligations. Use `(hf hmn)` as an intermediate fact. Rewrite `this`, the goal using `[SModEq.sub_mem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(key m _).1 this i`. Use `choose l hl using hc`. Use `⟨l, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, key]`. Introduce `i`.
-
-Conclude with `SModEq.sub_mem.1 (hl i n)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nak_isPrecomplete_pi {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
     (I : Ideal R) [IsPrecomplete I R] : IsPrecomplete I (ι → R) := by
@@ -54,23 +50,19 @@ theorem nak_isPrecomplete_pi {R : Type} [CommRing R] {ι : Type} [Fintype ι] [D
   exact SModEq.sub_mem.1 (hl i n)
 
 /- English proof (translation)
-Introduce `O A _ _ _ _ _ J _ hJ hfin`. Establish `hsm : ∀ n : ℕ, (J ^ n • (⊤ : Submodule O A)) = Submodule.restrictScalars O ((J.map (algebraMap O A)) ^ n)`. Introduce `n`. Rewrite using `[Ideal.smul_top_eq_map, Ideal.map_pow]`. Establish `hH : IsHausdorff J A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `: x ∈ ⨅ n : ℕ, (J.map (algebraMap O A)) ^ n`. Rewrite using `[Submodule.mem_iInf]`. Introduce `n`. Establish `h1` using `SModEq.sub_mem.1 (hx n)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[sub_zero, hsm n]`. Conclude with `h1`. Rewrite `this` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ hJ]`. Conclude with `this`. Use `set I := J.map (algebraMap O A) with hI`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, s, hs⟩` from `Module.Finite.exists_fin (R := O) (M := A ⧸ I)`. Use `choose s' hs' using fun i => Ideal.Quotient.mk_surjective (s i)`. Establish `: IsPrecomplete J (Fin r → O)` using `nak_isPrecomplete_pi _`. Establish `hsurj : Function.Surjective ((J • (⊤ : Submodule O A)).mkQ ∘ₗ Fintype.linearCombination O s')`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `hx : (Ideal.Quotient.mk I x) ∈ Submodule.span O (Set.range s)`. Rewrite using `[hs]`. Conclude with `Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hq : Ideal.Quotient.mk I (Fintype.linearCombination O s' c) = Ideal.Quotient.mk I x`. Rewrite using `[Fintype.linearCombination_apply, map_sum, ← hc]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, ← hs' i, Algebra.smul_def]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hmem : Fintype.linearCombination O s' c - x ∈ I`. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `hq`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply]`.
-
-Rewrite using `[Submodule.Quotient.eq]`. Establish `h1` using `hsm 1`. Simplify using `only [pow_one] at h1`. Rewrite using `[h1]`. Conclude with `hmem`.
-
-Conclude with `Module.Finite.of_surjective _ (surjective_of_mkQ_comp_surjective hsurj)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_finite_quot_map_of_isPrecomplete :
     ∀ (O A : Type) [CommRing O] [CommRing A] [IsLocalRing A] [IsNoetherianRing A] [Algebra O A]

@@ -18,34 +18,34 @@ variable {k : Type} [Field k] {R T D : Type} [Fintype R] [DecidableEq R] [Fintyp
   [Fintype D] [DecidableEq D]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toRows₁, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toRows₁_mul_right (Y : Matrix (R ⊕ T) D k) (h : Matrix D D k) : (Y * h).toRows₁ = Y.toRows₁ * h := by
   ext i j; simp [Matrix.toRows₁, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toRows₂, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toRows₂_mul_right (Y : Matrix (R ⊕ T) D k) (h : Matrix D D k) : (Y * h).toRows₂ = Y.toRows₂ * h := by
   ext i j; simp [Matrix.toRows₂, Matrix.mul_apply]
 
 /- English proof (translation)
-Simplify using `[shear, toRows₁_mul_right, toRows₂_mul_right, Matrix.fromRows_mul, Matrix.add_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shear_mul_right (c : Matrix T R k) (Y : Matrix (R ⊕ T) D k) (h : Matrix D D k) :
     shear c (Y * h) = shear c Y * h := by
   simp [shear, toRows₁_mul_right, toRows₂_mul_right, Matrix.fromRows_mul, Matrix.add_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← shearGL_transpose_mul]`. Conclude with `rank_mul_le_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_shear_le (c : Matrix T R k) (Y : Matrix (R ⊕ T) D k) : (shear c Y).rank ≤ Y.rank := by
   rw [← shearGL_transpose_mul]; exact rank_mul_le_right _ _
 
 /- English proof (translation)
-Establish `e : ∀ C : Matrix T R k, (C * Y₁).submatrix id τ = C * Y₁.submatrix id τ` using `fun C => by`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Establish `h2 : C * Y₁.submatrix id τ = C' * Y₁.submatrix id τ` using `by rw [← e, ← e, h]`. Establish `hu : IsUnit (Y₁.submatrix id τ).det` using `isUnit_iff_ne_zero.2 hY`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Use `_ = C' := by rw [h2, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_mul_eq_of_minor (τ : R → D) (Y₁ : Matrix R D k) (hY : (Y₁.submatrix id τ).det ≠ 0)
     {C C' : Matrix T R k} (h : C * Y₁ = C' * Y₁) : C = C' := by
@@ -58,7 +58,7 @@ theorem eq_of_mul_eq_of_minor (τ : R → D) (Y₁ : Matrix R D k) (hY : (Y₁.s
     _ = C' := by rw [h2, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]
 
 /- English proof (translation)
-Use `le_antisymm (rank_le_card_height Y₁) ?_` and prove the remaining obligations. Use `rank_submatrix_le Y₁ id τ` as an intermediate fact. Rewrite `this` using `[rank_of_isUnit _ ((isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hY))]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rank_eq_of_minor (τ : R → D) (Y₁ : Matrix R D k) (hY : (Y₁.submatrix id τ).det ≠ 0) :
     Y₁.rank = Fintype.card R := by
@@ -69,9 +69,7 @@ theorem rank_eq_of_minor (τ : R → D) (Y₁ : Matrix R D k) (hY : (Y₁.submat
 variable [TopologicalSpace k] [IsTopologicalRing k]
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Break down `i with i | i` into its components or cases. Simplify using `only [stack, fromRows_apply_inl]`. Conclude with `(continuous_apply j).comp (continuous_apply i)`. Simplify using `only [stack, fromRows_apply_inr, Matrix.mul_apply]`.
-
-Conclude with `continuous_finset_sum _ fun r _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply r))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_stack (C : Matrix T R k) : Continuous (fun Y₁ : Matrix R D k => stack Y₁ C) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -82,7 +80,7 @@ theorem continuous_stack (C : Matrix T R k) : Continuous (fun Y₁ : Matrix R D 
     exact continuous_finset_sum _ fun r _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply r))
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => continuous_pi fun j => (continuous_apply j).comp (continuous_apply (Sum.inl i))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toRows₁_fun : Continuous (fun Y : Matrix (R ⊕ T) D k => Y.toRows₁) :=
   continuous_pi fun i => continuous_pi fun j => (continuous_apply j).comp (continuous_apply (Sum.inl i))
@@ -93,53 +91,47 @@ namespace GlobalTheory.RankChart
 open GlobalTheory.SplitFlip GlobalTheory.LocMod.Inhab ValuativeRel Matrix
 
 /- English proof (translation)
-Introduce `hKP k _ _ _ _ n ρ d T _ _ ν ϖ hnd hρn hsm hun hν Bf hlact hquasi hkill τ Ψ₀ f hsupp`. Take `⟨a, ha⟩` from `GlobalTheory.T.rank_chart_bounded_coefficients k (Fin ρ) T (Fin d) τ f.1 f.2 hsupp`. Take `⟨b₀, hb₀⟩` from `GlobalTheory.T.rank_chart_shear_invariance k (Fin ρ) T (Fin d) f.1 f.2`. Choose the witnesses or unpack the hypotheses as in `⟨b, hba, hbb⟩ : ∃ b : kˣ, box T (Fin ρ) b ≤ box T (Fin ρ) a ∧ box T (Fin ρ) b ≤ box T (Fin ρ) b₀ := by`. Break down `le_total (valuation k (a : k)) (valuation k (b₀ : k)) with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨a, le_rfl, fun C hC r q => (hC r q).trans h⟩`. Conclude with `⟨b₀, fun C hC r q => (hC r q).trans h, le_rfl⟩`. Establish `key : ∀ (Ψ : fullRk k n d) (X X' : SB (Matrix (Fin ρ ⊕ T) (Fin d) k)), (∀ Y : Matrix (Fin ρ ⊕ T) (Fin d) k, Y.rank ≤ ρ → X.1 Y = X'.1 Y) → Bf Ψ X = Bf Ψ X'`. Introduce `Ψ X X' h`. Use `hkill Ψ (X - X') (fun Y hY => by simp [h Y hY])` as an intermediate fact.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hext` using `fun θ : fullRk k ρ d => GlobalTheory.T.full_rank_box_indicator_representation k ρ d T b θ.1 θ.2`. Set `E : fullRk k ρ d → Matrix (Fin ρ ⊕ T) (Fin d) k → ℂ` to `fun θ => Classical.choose (hext θ)`. Establish `hEmem : ∀ θ, E θ ∈ SB (Matrix (Fin ρ ⊕ T) (Fin d) k)` using `fun θ => (Classical.choose_spec (hext θ)).1`. Establish `hEval : ∀ θ (Y : Matrix (Fin ρ ⊕ T) (Fin d) k), Y.rank ≤ ρ → E θ Y = Set.indicator {Z : Matrix (Fin ρ ⊕ T) (Fin d) k | ∃ C ∈ box T (Fin ρ) b, Z.toRows₂ = C * Z.toRows₁} (fun Z => θ.1 Z.toRows₁) Y` using `fun θ => (Classical.choose_spec (hext θ)).2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e : Matrix T (Fin ρ) k → fullRk k ρ d → SB (Matrix (Fin ρ ⊕ T) (Fin d) k)` to `fun C θ => ⟨omB ν ν (shearGL (-C)) 1 (E θ), omB_mem_SB ν ν _ _ (hEmem θ)⟩`. Establish `hev : ∀ C θ (Y : Matrix (Fin ρ ⊕ T) (Fin d) k), Y.rank ≤ ρ → (e C θ).1 Y = Set.indicator {Z : Matrix (Fin ρ ⊕ T) (Fin d) k | ∃ C ∈ box T (Fin ρ) b, Z.toRows₂ = C * Z.toRows₁} (fun Z => θ.1 Z.toRows₁) (shear (-C) Y)`. Introduce `C θ Y hY`. Use `show omB ν ν (shearGL (-C)) 1 (E θ) Y = _`. Rewrite using `[omB_shearGL]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hEval θ _ ((rank_shear_le _ _).trans hY)`. Establish `hD : ∀ (C : Matrix T (Fin ρ) k) (Ψ : fullRk k n d) (θ : fullRk k ρ d), Bf Ψ (e C θ) = 0`. Introduce `C`. Set `Dq : fullRk k n d →ₗ[ℂ] fullRk k ρ d →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun Ψ θ => Bf Ψ (e C θ)) (fun Ψ Ψ' θ => by simp [map_add]) (fun c Ψ θ => by simp) (fun Ψ θ θ' => by`. Rewrite using `[← map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `key Ψ _ _ fun Y hY => ?_` and prove the remaining obligations. Simplify using `only [Submodule.coe_add, Pi.add_apply]`. Rewrite using `[hev C _ Y hY, hev C _ Y hY, hev C _ Y hY]`. Simplify using `only [Set.indicator_apply, Submodule.coe_add, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun c Ψ θ => by`. Rewrite using `[← LinearMap.map_smulₛₗ]`. Use `key Ψ _ _ fun Y hY => ?_` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hev C _ Y hY, hev C _ Y hY]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [Set.indicator_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp)`. Establish `H` using `GlobalTheory.T.invariant_bilinear_full_rank_vanishes hKP k n ρ d ν ϖ hnd hρn hsm hun hν Dq ?_ ?_`. Introduce `Ψ θ`. Conclude with `H Ψ θ`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g Ψ₁ Ψ₁' Ψ₂ h`. Conclude with `hlact g Ψ₁ Ψ₁' _ h`. Introduce `h`. Take `⟨m, hm, hm'⟩` from `hquasi h`. Use `⟨m, hm, fun Ψ₁ Ψ₁' θ θ' h1 h2 => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `X' : SB (Matrix (Fin ρ ⊕ T) (Fin d) k)` to `⟨fun Y => (e C θ).1 (Y * h.1), by`. Use `comp_mul_mem_SB 1 h (e C θ).2` as an intermediate fact. Simplify using `only [Units.val_one, Matrix.one_mul] at this`. Conclude with `this⟩`. Use `show (m : ℂ) * Bf Ψ₁' (e C θ') = Bf Ψ₁ (e C θ)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[key Ψ₁' (e C θ') X' ?_]`. Conclude with `hm' Ψ₁ Ψ₁' (e C θ) X' h1 rfl`. Introduce `Y hY`. Use `show (e C θ').1 Y = (e C θ).1 (Y * h.1)`. Rewrite using `[hev C θ' Y hY, hev C θ (Y * h.1) ((rank_mul_le_left _ _).trans hY), shear_mul_right]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ C' : Matrix T (Fin ρ) k, ((shear (-C) Y).toRows₂ * h.1 = C' * ((shear (-C) Y).toRows₁ * h.1) ↔ (shear (-C) Y).toRows₂ = C' * (shear (-C) Y).toRows₁)` using `fun C' => by`. Rewrite using `[← Matrix.mul_assoc]`. Use `⟨fun e' => ?_, fun e' => by rw [e']⟩` and prove the remaining obligations. Use `congrArg (· * (h⁻¹ : GL (Fin d) k).1) e'` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Set.indicator_apply, Set.mem_setOf_eq, toRows₁_mul_right, toRows₂_mul_right, hc, h2]`. Use `haveI : Finite (box T (Fin ρ) a ⧸ (box T (Fin ρ) b).addSubgroupOf (box T (Fin ρ) a)) := finite_box a b`. Use `letI : Fintype (box T (Fin ρ) a ⧸ (box T (Fin ρ) b).addSubgroupOf (box T (Fin ρ) a)) := Fintype.ofFinite _`. Establish `hθmem : ∀ C : Matrix T (Fin ρ) k, (fun Y₁ : Matrix (Fin ρ) (Fin d) k => f.1 (stack Y₁ C)) ∈ fullRk k ρ d`. Introduce `C`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨GlobalTheory.LocFlat.ContrBil.comp_mem_SB f.2 (continuous_stack C) continuous_toRows₁_fun (fun Y₁ => toRows₁_stack Y₁ C), fun Y₁ hY₁ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hY₁` to reduce the goal to its premises. Use `hsupp _ hne` as an intermediate fact. Rewrite `this` using `[submatrix_inl_eq, toRows₁_stack]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using rank_eq_of_minor τ Y₁ this`. Set `θq : (box T (Fin ρ) a ⧸ (box T (Fin ρ) b).addSubgroupOf (box T (Fin ρ) a)) → fullRk k ρ d` to `fun q => ⟨_, hθmem ((q.out : box T (Fin ρ) a) : Matrix T (Fin ρ) k)⟩`. Set `Φ : SB (Matrix (Fin ρ ⊕ T) (Fin d) k)` to `∑ q, e ((q.out : box T (Fin ρ) a) : Matrix T (Fin ρ) k) (θq q)`. Rewrite using `[key Ψ₀ f Φ ?_, map_sum]`. Conclude with `Finset.sum_eq_zero fun q _ => hD _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Introduce `Y hY`. Simplify using `only [Φ, Submodule.coe_sum, Finset.sum_apply]`. Rewrite using `[Finset.sum_congr rfl fun q _ => hev _ _ Y hY]`. Distinguish the cases in `hd : (Y.submatrix Sum.inl τ).det = 0`. Establish `hf0 : f.1 Y = 0` using `by by_contra h; exact hsupp Y h hd`.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hf0]`. Use `(Finset.sum_eq_zero fun q _ => ?_).symm` and prove the remaining obligations. Simplify using `only [Set.indicator_apply]`. Use `split_ifs`. Use `show f.1 (stack (shear _ Y).toRows₁ _) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Assume the negation of the conclusion as `h`. Conclude with `hsupp _ h (by rwa [submatrix_inl_eq, toRows₁_stack, toRows₁_shear, ← submatrix_inl_eq])`. Both sides reduce to the same expression. Take `⟨C, hC⟩` from `GlobalTheory.T.rank_chart_stack_decomposition k (Fin ρ) T (Fin d) τ Y (by simpa using hY) hd`. Generalize the expression as in `hY₁ : Y.toRows₁ = Y₁ at hC`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hC` using the available equality. Establish `hd' : (Y₁.submatrix id τ).det ≠ 0` using `by rwa [submatrix_inl_eq, toRows₁_stack] at hd`. Establish `hterm : ∀ q : box T (Fin ρ) a ⧸ (box T (Fin ρ) b).addSubgroupOf (box T (Fin ρ) a), Set.indicator {Z : Matrix (Fin ρ ⊕ T) (Fin d) k | ∃ C ∈ box T (Fin ρ) b, Z.toRows₂ = C * Z.toRows₁} (fun Z => (θq q).1 Z.toRows₁) (shear (-((q.out : box T (Fin ρ) a) : Matrix T (Fin ρ) k)) (stack Y …`. Introduce `q`. Use `set Cq : Matrix T (Fin ρ) k := ((q.out : box T (Fin ρ) a) : Matrix T (Fin ρ) k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[shear_stack]`. Establish `hiff : (∃ C' ∈ box T (Fin ρ) b, (stack Y₁ (C + -Cq)).toRows₂ = C' * (stack Y₁ (C + -Cq)).toRows₁) ↔ -C + Cq ∈ box T (Fin ρ) b`. Simplify using `only [stack, toRows₁_fromRows, toRows₂_fromRows]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C', hC', he⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hC'` using `[← eq_of_mul_eq_of_minor τ Y₁ hd' he]`. Use `(box T (Fin ρ) b).neg_mem hC'` as an intermediate fact. Rewrite `this` using `[neg_add, neg_neg]`. Then use the resulting hypothesis. Introduce `h`. Use `⟨C + -Cq, ?_, rfl⟩` and prove the remaining obligations.
-
-Use `(box T (Fin ρ) b).neg_mem h` as an intermediate fact. Rewrite `this` using `[neg_add, neg_neg]`. Then use the resulting hypothesis. Simplify using `only [Set.indicator_apply, Set.mem_setOf_eq, hiff]`. Use `split_ifs with h`. Use `show f.1 (stack (stack Y₁ (C + -Cq)).toRows₁ Cq) = f.1 (stack Y₁ C)`.
-
-Rewrite using `[toRows₁_stack]`. Use `hb₀ (stack Y₁ C) (-C + Cq) (hbb h)` as an intermediate fact. Rewrite `this` using `[shear_stack, add_neg_cancel_left]`. Then use the resulting hypothesis. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun q _ => hterm q, sum_ite_out _ _ hba]`.
-
-Use `split_ifs with h`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Conclude with `h ((box T (Fin ρ) a).neg_mem (ha Y₁ C hne))`.
+A detailed English derivation is pending.
 -/
 theorem chart_form_eq_zero : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n ρ d : ℕ) (T : Type) [Fintype T] [DecidableEq T] (ν : kˣ →* ℂˣ) (ϖ : kˣ), n < d → ρ < n → GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν → (∀ m : ℕ, 0 < m → ∀ r : ℝ, ((ν ϖ : ℂ)) ^ m ≠ (r : ℂ)) →

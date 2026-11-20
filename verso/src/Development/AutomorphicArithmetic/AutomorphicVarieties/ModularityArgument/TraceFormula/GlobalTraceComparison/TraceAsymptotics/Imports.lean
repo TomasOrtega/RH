@@ -5,9 +5,9 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Bernste
 open GlobalTheory.CuspRep GlobalTheory.PRep
 
 /- English proof (translation)
-Introduce `E _ _ _ n w τ U hU`. Use `letI := GlobalTheory.LocalData.complRel w`. Use `haveI := GlobalTheory.LocalData.isLocalField w`. Establish `hadm` using `PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top (w.adicCompletion E) n τ.V τ.ρ τ.smooth τ.irred`. Take `⟨ho, hc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsmall : FiniteDimensional ℂ (fixed τ.ρ (U ⊓ GlobalTheory.LFun.KGL w n))` using `hadm.2 _ (hU.inter ho) (hc.inter_left (U.isClosed_of_isOpen hU))`. Establish `hle : fixed τ.ρ U ≤ fixed τ.ρ (U ⊓ GlobalTheory.LFun.KGL w n)` using `fun v hv h => hv ⟨h.1, h.2.1⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.adm :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.admitted := by

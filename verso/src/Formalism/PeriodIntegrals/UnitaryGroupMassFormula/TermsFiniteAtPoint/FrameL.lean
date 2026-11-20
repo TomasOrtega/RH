@@ -17,7 +17,7 @@ def psiF (e f : Fin r → S.V) (U U' : Matrix (Fin r) (Fin r) E) : S.V →ₗ[E]
     ∑ a, (S.hT (e a)).smulRight (∑ c, U' c a • f c - f a)
 
 /- English proof (translation)
-Simplify using `[psiF, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psiF_apply (e f : Fin r → S.V) (U U' : Matrix (Fin r) (Fin r) E) (v : S.V) :
     psiF e f U U' v = v + ∑ a, S.hT (f a) v • (∑ c, U c a • e c - e a) +
@@ -28,7 +28,7 @@ def wv (e f : Fin r → S.V) (v : S.V) : S.V :=
   v - ∑ a, S.hT (f a) v • e a - ∑ a, S.hT (e a) v • f a
 
 /- English proof (translation)
-Rewrite using `[psiF_apply, wv]`. Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem psiF_eq (e f : Fin r → S.V) (U U' : Matrix (Fin r) (Fin r) E) (v : S.V) :
     psiF e f U U' v = wv e f v + ∑ a, S.hT (f a) v • ∑ c, U c a • e c +
@@ -38,7 +38,7 @@ theorem psiF_eq (e f : Fin r → S.V) (U U' : Matrix (Fin r) (Fin r) E) (v : S.V
   abel
 
 /- English proof (translation)
-Rewrite using `[psiF_apply]`. Simplify using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psiF_one (e f : Fin r → S.V) (v : S.V) : psiF e f 1 1 v = v := by
   rw [psiF_apply]
@@ -51,7 +51,7 @@ variable (e f : Fin r → S.V) (hee : ∀ a b, S.hT (e a) (e b) = 0) (hff : ∀ 
 
 include hef in
 /- English proof (translation)
-Rewrite using `[← hsym, hef]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hfe (a b : Fin r) : S.hT (f a) (e b) = if a = b then 1 else 0 := by
   rw [← hsym, hef]
@@ -61,22 +61,22 @@ theorem hfe (a b : Fin r) : S.hT (f a) (e b) = if a = b then 1 else 0 := by
 
 include hee hef in
 /- English proof (translation)
-Simplify using `[wv, hee, hef]`.
+Simplify using the standard rewrite rules.
 -/
 theorem e_w (c : Fin r) (v : S.V) : S.hT (e c) (wv e f v) = 0 := by
   simp [wv, hee, hef]
 
 include hff hef in
 /- English proof (translation)
-Simplify using `[wv, hff, hfe e f hef]`.
+Simplify using the standard rewrite rules.
 -/
 theorem f_w (c : Fin r) (v : S.V) : S.hT (f c) (wv e f v) = 0 := by
   simp [wv, hff, hfe e f hef]
 
 /- English proof (translation)
-Establish `key : ∀ a, ∑ c, u c a * ∑ b, q b * w c b = q a`. Introduce `a`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Use `_ = q a := by simp [h]`. Simplify using `only [key]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem algδ (p q : Fin r → E) (u w : Matrix (Fin r) (Fin r) E)
     (h : ∀ a b, ∑ c, u c a * w c b = if a = b then 1 else 0) :
@@ -92,17 +92,17 @@ theorem algδ (p q : Fin r → E) (u w : Matrix (Fin r) (Fin r) E)
 
 include hee hff hef in
 /- English proof (translation)
-Establish `hUU' : ∀ a b, ∑ c, star (U' c a) * U c b = if a = b then 1 else 0`. Introduce `a b`. Establish `h1 : ∑ c, star (U' c a) * U c b = star (∑ c, star (U c b) * U' c a)`. Simplify using `only [star_sum, star_mul', star_star]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hUU b a]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `pairR : ∀ (u : S.V) (s : Fin r → E) (t : Matrix (Fin r) (Fin r) E) (g : Fin r → S.V), S.hT u (∑ a, s a • ∑ c, t c a • g c) = ∑ a, s a * ∑ c, t c a * S.hT u (g c)`. Introduce `u s t g`. Simplify using `[map_sum, smul_eq_mul]`. Establish `pairL : ∀ (u : S.V) (s : Fin r → E) (t : Matrix (Fin r) (Fin r) E) (g : Fin r → S.V), S.hT (∑ a, s a • ∑ c, t c a • g c) u = ∑ a, star (s a) * ∑ c, star (t c a) * S.hT (g c) u`. Introduce `u s t g`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[map_sum, LinearMap.sum_apply, smul_eq_mul, starRingEnd_apply]`. Establish `hwe : ∀ (v : S.V) (c : Fin r), S.hT (wv e f v) (e c) = 0` using `fun v c => by`. Rewrite using `[← hsym, e_w e f hee hef c v, star_zero]`. Establish `hwf : ∀ (v : S.V) (c : Fin r), S.hT (wv e f v) (f c) = 0` using `fun v c => by`. Rewrite using `[← hsym, f_w e f hff hef c v, star_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfe'` using `hfe e f hef`. Establish `k1 : ∑ a, star (S.hT (f a) x) * ∑ c, star (U c a) * ∑ b, S.hT (e b) y * U' c b = ∑ a, star (S.hT (f a) x) * S.hT (e a) y` using `algδ _ _ (fun c a => star (U c a)) U' hUU`. Establish `k2 : ∑ a, star (S.hT (e a) x) * ∑ c, star (U' c a) * ∑ b, S.hT (f b) y * U c b = ∑ a, star (S.hT (e a) x) * S.hT (f a) y` using `algδ _ _ (fun c a => star (U' c a)) U hUU'`. Rewrite using `[psiF_eq, psiF_eq]`. Simplify using `only [map_add, LinearMap.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [pairL]`. Simplify using `only [pairR]`. Simplify using `only [hwe, hwf, e_w e f hee hef, f_w e f hff hef, hee, hff, hef, hfe', mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, mul_ite, mul_one, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Take the linear combination `k1 + k2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gram (U U' : Matrix (Fin r) (Fin r) E) (hUU : ∀ a b, ∑ c, star (U c a) * U' c b = if a = b then 1 else 0)
     (x y : S.V) :
@@ -147,11 +147,11 @@ theorem gram (U U' : Matrix (Fin r) (Fin r) E) (hUU : ∀ a b, ∑ c, star (U c 
 
 include hee hff hef in
 /- English proof (translation)
-Rewrite using `[gram e f hee hff hef U U' hUU x y]`. Establish `h1 : ∀ c, S.hT (wv e f x) (e c) = 0` using `fun c => by`. Rewrite using `[← hsym, e_w e f hee hef c x, star_zero]`. Establish `h2 : ∀ c, S.hT (wv e f x) (f c) = 0` using `fun c => by`. Rewrite using `[← hsym, f_w e f hff hef c x, star_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : S.hT (wv e f x) (wv e f y) = S.hT (wv e f x) y`. Rewrite using `[show wv e f y = y - ∑ a, S.hT (f a) y • e a - ∑ a, S.hT (e a) y • f a from rfl]`. Simplify using `[h1, h2]`. Establish `h4 : S.hT (wv e f x) y = S.hT x y - ∑ a, star (S.hT (f a) x) * S.hT (e a) y - ∑ a, star (S.hT (e a) x) * S.hT (f a) y`. Simplify using `[wv, LinearMap.sum_apply, smul_eq_mul, starRingEnd_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isom_psiF (U U' : Matrix (Fin r) (Fin r) E)
     (hUU : ∀ a b, ∑ c, star (U c a) * U' c b = if a = b then 1 else 0) (x y : S.V) :
@@ -172,7 +172,7 @@ theorem isom_psiF (U U' : Matrix (Fin r) (Fin r) E)
 
 include hef in
 /- English proof (translation)
-Rewrite using `[psiF_apply]`. Apply the tactic sequence `simp [hfe e f hef, hee] <;> abel`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psiF_e (U U' : Matrix (Fin r) (Fin r) E) (hee : ∀ a b, S.hT (e a) (e b) = 0) (j : Fin r) :
     psiF e f U U' (e j) = ∑ c, U c j • e c := by
@@ -180,7 +180,7 @@ theorem psiF_e (U U' : Matrix (Fin r) (Fin r) E) (hee : ∀ a b, S.hT (e a) (e b
   simp [hfe e f hef, hee] <;> abel
 
 /- English proof (translation)
-Rewrite using `[psiF_apply]`. Simplify using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psiF_fix (U U' : Matrix (Fin r) (Fin r) E) (v : S.V) (h1 : ∀ a, S.hT (f a) v = 0)
     (h2 : ∀ a, S.hT (e a) v = 0) : psiF e f U U' v = v := by
@@ -190,11 +190,11 @@ theorem psiF_fix (U U' : Matrix (Fin r) (Fin r) E) (v : S.V) (h1 : ∀ a, S.hT (
 end Pair
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.gmap`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `w hw`. Conclude with `hΛ w hw`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Rewrite using `[Submodule.mem_map]`. Use `⟨n.symm v, ?_, by simp⟩` and prove the remaining obligations. Establish `hU' : Formalism.HermitianLatticesTheory.dual S.hT Λ = Λ` using `hU`. Establish `h1 : v ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ` using `by rw [hU']; exact hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hU']`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars] at h1 ⊢`. Introduce `y hy`. Use `h1 (n y) (hΛ y hy)` as an intermediate fact. Rewrite using `[← hn y (n.symm v), LinearEquiv.apply_symm_apply]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gmap_of_isom (Λ : Submodule (𝓞 E) S.V) (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (n : S.V ≃ₗ[E] S.V)
     (hn : ∀ x y, S.hT (n x) (n y) = S.hT x y) (hΛ : ∀ v ∈ Λ, n v ∈ Λ) : Formalism.HermitianLatticesTheory.gmap n Λ = Λ := by
@@ -216,7 +216,7 @@ theorem gmap_of_isom (Λ : Submodule (𝓞 E) S.V) (hU : Formalism.HermitianLatt
     rwa [← hn y (n.symm v), LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Apply `S.nondeg.1 x` to reduce the goal to its premises. Introduce `y`. Rewrite using `[← hg x y, hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

@@ -23,36 +23,36 @@ open PositivityTheory.SiegelWeilFormula
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-The claim follows from `meas_herm_top' d`.
+A detailed English derivation is pending.
 -/
 theorem meas_herm_top (d : SD σ) : IsTopologicalAddGroup (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) ∧
     LocallyCompactSpace (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) ∧ SecondCountableTopology (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) ∧
     BorelSpace (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) ∧ Countable (MeasP.ratHerm F E σ d.n) := meas_herm_top' d
 
 /- English proof (translation)
-The claim follows from `meas_mx_top' d`.
+A detailed English derivation is pending.
 -/
 theorem meas_mx_top (d : SD σ) : IsTopologicalAddGroup (Mx F E d.m d.n) ∧ LocallyCompactSpace (Mx F E d.m d.n) ∧
     SecondCountableTopology (Mx F E d.m d.n) ∧ BorelSpace (Mx F E d.m d.n) ∧ Countable d.ratM := meas_mx_top' d
 
 /- English proof (translation)
-The claim follows from `d.ok.good.cm`.
+A detailed English derivation is pending.
 -/
 theorem meas_cm (d : SD σ) : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ := d.ok.good.cm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.StdCharFromIsStd.isCharAF d.ok.good.std`.
+A detailed English derivation is pending.
 -/
 theorem meas_char (d : SD σ) : HeckeCharacterZeroLocus.SiegelWeilU.IsCharAF F d.B.ψ := GlobalTheory.StdCharFromIsStd.isCharAF d.ok.good.std
 
 /- English proof (translation)
-The claim follows from `meas_hermND' d hη hh`.
+A detailed English derivation is pending.
 -/
 theorem meas_hermND (d : SD σ) {η : E} (hη : η ≠ 0) (hh : ∀ i j, σ (η * d.A.J j i) = η * d.A.J i j) :
     HeckeCharacterZeroLocus.SiegelWeilU.IsHermND σ (Jd d η) := meas_hermND' d hη hh
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.SiegelWeilFormula.MeasD.meas_hOf hR hc`.
+A detailed English derivation is pending.
 -/
 theorem meas_hOf {d : SD σ} {R : RD d} {x : d.G} {t u : GL (Fin d.n) (AE F E)} {T : nF σ d.Y d.b} {η : E}
     {T₀ : Matrix (Fin d.n) (Fin d.n) E} {hOf : nA σ d.Y d.b → HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n}
@@ -65,7 +65,7 @@ theorem meas_hOf {d : SD σ} {R : RD d} {x : d.G} {t u : GL (Fin d.n) (AE F E)} 
   PositivityTheory.SiegelWeilFormula.MeasD.meas_hOf hR hc
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.SiegelWeilFormula.MeasD.meas_toMx d μ 𝓕 hμ hF h1`.
+A detailed English derivation is pending.
 -/
 theorem meas_toMx (d : SD σ) (μ : Measure (Fin d.n → Fin d.m → AF F ⊗[F] E)) (𝓕 : Set (Fin d.n → Fin d.m → AF F ⊗[F] E))
     (hμ : μ.IsAddHaarMeasure) (hF : IsAddFundamentalDomain (MeasP.ratTupA F E d.n d.m) 𝓕 μ) (h1 : μ 𝓕 = 1) :
@@ -74,17 +74,11 @@ theorem meas_toMx (d : SD σ) (μ : Measure (Fin d.n → Fin d.m → AF F ⊗[F]
   PositivityTheory.SiegelWeilFormula.MeasD.meas_toMx d μ 𝓕 hμ hF h1
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R x t u T η T₀ hOf θ fr g hR`. Prove the components needed by the constructor for the conclusion. Introduce `nb lam 𝓖 hc ν hν`. Take `⟨i1, i2, i3, i4, i5⟩` from `meas_herm_top d`. Use `haveI := i1`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := i2`. Use `haveI := i3`. Use `haveI := i4`. Use `haveI := i5`. Take `⟨hemb, hH', hfd, h1⟩` from `meas_hOf hR hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hH'`. Take `⟨𝓕, hF, hF1⟩` from `hH F E σ (meas_cm d) d.B.ψ (meas_char d) d.n ν hν`. Use `haveI := hν.1`. Conclude with `⟨hemb, hemb.measurable, @MeasG.covol_unique _ _ _ _ _ _ _ _ (MeasP.ratHerm F E σ d.n) _ _ _ hν.1 hH' _ _ hF hfd hF1 h1⟩`. Introduce `μ νc hμ hνc`.
-
-Take `⟨i1, i2, i3, i4, i5⟩` from `meas_mx_top d`. Use `haveI := i1`. Use `haveI := i2`. Use `haveI := i3`. Use `haveI := i4`.
-
-Use `haveI := i5`. Take `⟨𝓕, hF, hF1⟩` from `hT F E σ (meas_cm d) d.m (Jd d η) (meas_hermND d hR.ne hR.herm) d.B.ψ (meas_char d) d.n μ hμ`. Take `⟨hemb, hH', hfd, h1⟩` from `meas_toMx d μ 𝓕 hμ.1 hF hF1`. Take `⟨hνH, 𝓖, hG, hG1⟩` from `hνc`. Use `haveI := hνH`.
-
-Use `haveI := hH'`. Conclude with `⟨hemb, hemb.measurable, @MeasG.covol_unique _ _ _ _ _ _ _ _ d.ratM _ _ _ hνH hH' _ _ hG hfd hG1 h1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem measDict_of (hH : MeasP.HermCovol) (hT : MeasP.TupCovol) : MeasDict := by
   intro F E _ _ _ _ _ σ d R x t u T η T₀ hOf θ fr g hR
@@ -107,7 +101,7 @@ theorem measDict_of (hH : MeasP.HermCovol) (hT : MeasP.TupCovol) : MeasDict := b
     exact ⟨hemb, hemb.measurable, @MeasG.covol_unique _ _ _ _ _ _ _ _ d.ratM _ _ _ hνH hH' _ _ hG hfd hG1 h1⟩
 
 /- English proof (translation)
-The claim follows from `measDict_of GlobalTheory.T.hermitian_covolume_formula GlobalTheory.T.tuple_space_covolume_formula`.
+A detailed English derivation is pending.
 -/
 theorem measDict : MeasDict := measDict_of GlobalTheory.T.hermitian_covolume_formula GlobalTheory.T.tuple_space_covolume_formula
 

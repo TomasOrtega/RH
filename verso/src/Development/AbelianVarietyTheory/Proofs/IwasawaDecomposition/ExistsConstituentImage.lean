@@ -5,33 +5,29 @@ open Formalism.ConjugateSelfDual Formalism.MainNotions.N Polynomial
 namespace GlobalTheory.ConstituentImage
 
 /- English proof (translation)
-Introduce `Γ L _ _ a n τ τ₀ P hP hss Vs hVs hirr V hV`. Take `⟨W', hW'i, hc⟩` from `hss V hV.2.1`. Use `set p : (Fin a → L) →ₗ[L] (Fin a → L) := V.subtype ∘ₗ Submodule.linearProjOfIsCompl V W' hc with hpdef`. Establish `hpV : ∀ x, p x ∈ V` using `fun x => (Submodule.linearProjOfIsCompl V W' hc x).2`. Establish `hpid : ∀ x ∈ V, p x = x` using `fun x hx => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hc ⟨x, hx⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : ∀ x ∈ W', p x = 0` using `fun x hx => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_right hc ⟨x, hx⟩)`. Establish `hcomm : ∀ g v, p ((τ g : Matrix (Fin a) (Fin a) L).mulVec v) = (τ g : Matrix (Fin a) (Fin a) L).mulVec (p v)`. Introduce `g v`. Use `set q := v - p v`. Establish `hq : q ∈ W'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.linearProjOfIsCompl_apply_eq_zero_iff hc, map_sub]`. Use `Submodule.linearProjOfIsCompl_apply_left hc ⟨p v, hpV v⟩` as an intermediate fact. Rewrite using `[this, sub_eq_zero]`. Both sides reduce to the same expression. Establish `hv : v = p v + q` using `by simp [q]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hv]`. Rewrite using `[Matrix.mulVec_add, map_add, hpid _ (hV.2.1 g _ (hpV v)), hp0 _ (hW'i g _ hq), add_zero]`. Use `set π : Matrix (Fin a) (Fin a) L := LinearMap.toMatrix' p with hπ`. Establish `hπv : ∀ v, π.mulVec v = p v` using `fun v => by simp [hπ, LinearMap.toMatrix'_mulVec]`. Establish `hπc : ∀ g, (τ g : Matrix (Fin a) (Fin a) L) * π = π * (τ g : Matrix (Fin a) (Fin a) L)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `g`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_mul, LinearMap.comp_apply, Matrix.toLin'_apply, hπv, hcomm]`. Use `set M : Matrix (Fin a) (Fin a) L := π * (P : Matrix (Fin a) (Fin a) L) with hM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hMc : ∀ g, (τ g : Matrix (Fin a) (Fin a) L) * M = M * (τ₀ g : Matrix (Fin a) (Fin a) L)`. Introduce `g`. Rewrite using `[hM, ← Matrix.mul_assoc, hπc g, Matrix.mul_assoc, hP g, Matrix.mul_assoc]`. Establish `hMv : ∀ g v, (τ g : Matrix (Fin a) (Fin a) L).mulVec (M.mulVec v) = M.mulVec ((τ₀ g : Matrix (Fin a) (Fin a) L).mulVec v)`. Introduce `g v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Matrix.mulVec_mulVec, hMc g, ← Matrix.mulVec_mulVec]`. Establish `hMV : ∀ v, M.mulVec v ∈ V` using `fun v => by`. Rewrite using `[hM, ← Matrix.mulVec_mulVec, hπv]`. Conclude with `hpV _`. Establish `hex : ∃ j, Submodule.map M.mulVecLin (Vs j) ≠ ⊥`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨x, hxV, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hV.1`. Establish `hsup : Submodule.map M.mulVecLin ⊤ = ⊥`. Rewrite using `[← hVs, Submodule.map_iSup]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `[hne]`. Establish `hmem : M.mulVec (((P⁻¹ : GL (Fin a) L) : Matrix (Fin a) (Fin a) L).mulVec x) ∈ Submodule.map M.mulVecLin ⊤` using `⟨_, Submodule.mem_top, rfl⟩`. Rewrite `hmem` using `[hsup, Submodule.mem_bot, hM, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec (M := (P : Matrix (Fin a) (Fin a) L)), ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec, hπv, hpid x hxV]`. Conclude with `hx0 hmem`. Take `⟨j, hj⟩` from `hex`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨j, M, hMc, ?_, ?_⟩` and prove the remaining obligations. Establish `hinv : IsInv τ (Submodule.map M.mulVecLin (Vs j))`. Introduce and unpack `g _ ⟨v, hv, rfl⟩`. Use `⟨(τ₀ g : Matrix (Fin a) (Fin a) L).mulVec v, (hirr j).2.1 g v hv, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hMv g v).symm`. Establish `hle : Submodule.map M.mulVecLin (Vs j) ≤ V`. Introduce and unpack `_ ⟨v, _, rfl⟩`. Conclude with `hMV v`. Break down `hV.2.2 _ hle hinv with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `absurd h hj`. Conclude with `h`. Establish `hinv : IsInv τ₀ (LinearMap.ker M.mulVecLin ⊓ Vs j)`. Introduce and unpack `g v ⟨hk, hv⟩`. Use `⟨?_, (hirr j).2.1 g v hv⟩` and prove the remaining obligations.
-
-Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, Matrix.mulVecLin_apply] at hk ⊢`. Rewrite using `[← hMv, hk, Matrix.mulVec_zero]`. Break down `(hirr j).2.2 _ inf_le_right hinv with h | h` into its components or cases. Conclude with `disjoint_iff.2 h`. It suffices to derive a contradiction.
-
-Apply `hj` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hk : v ∈ LinearMap.ker M.mulVecLin` using `(h ▸ (inf_le_left : LinearMap.ker M.mulVecLin ⊓ Vs j ≤ _)) hv`. Simplify using `using hk`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_constituent_image : ∀ {Γ L : Type} [Group Γ] [Field L] {a n : ℕ} (τ τ₀ : Γ →* GL (Fin a) L) (P : GL (Fin a) L), (∀ g, ((τ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L) * (P : Matrix (Fin a) (Fin a) L) = (P : Matrix (Fin a) (Fin a) L) * ((τ₀ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L)) → IsSSRep τ → ∀ (Vs : Fin n → Submodule L (Fin a → L)), iSup Vs = ⊤ → (∀ j, IsIrrSub τ₀ (Vs j)) → ∀ V, IsIrrSub τ V → ∃ (j : Fin n) (M : Matrix (Fin a) (Fin a) L), (∀ g, ((τ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L) * M = M * ((τ₀ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L)) ∧ Submodule.map M.mulVecLin (Vs j) = V ∧ Disjoint (LinearMap.ker M.mulVecLin) (Vs j) := by
   intro Γ L _ _ a n τ τ₀ P hP hss Vs hVs hirr V hV

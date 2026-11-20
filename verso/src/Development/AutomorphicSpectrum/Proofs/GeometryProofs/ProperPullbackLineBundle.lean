@@ -12,7 +12,7 @@ variable {X Y : Scheme.{0}} {Ω : Type} [Field Ω]
   {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξg : Spec (CommRingCat.of Ω) ⟶ Y} {e : Y ⟶ X}
 
 /- English proof (translation)
-Establish `h0 : Spec.map (CommRingCat.ofHom (RingHom.id Ω)) = 𝟙 _`. Rewrite using `[show CommRingCat.ofHom (RingHom.id Ω) = 𝟙 (CommRingCat.of Ω) from rfl, Spec.map_id]`. Unfold `Dominates`. Rewrite using `[h0, Category.id_comp, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dominates_id (h : ξg ≫ e = ξ) : Dominates ξg ξ e (RingHom.id Ω) := by
   have h0 : Spec.map (CommRingCat.ofHom (RingHom.id Ω)) = 𝟙 _ := by
@@ -23,16 +23,16 @@ theorem dominates_id (h : ξg ≫ e = ξ) : Dominates ξg ξ e (RingHom.id Ω) :
 def emb (hD : Dominates ξg ξ e (RingHom.id Ω)) (p : Cpt ξg) : Cpt ξ := ⟨e p.1, hD.specializes p⟩
 
 /- English proof (translation)
-The claim follows from `PullReg.stalkMap_comp_genMap hD p (hD.specializes p) s`.
+A detailed English derivation is pending.
 -/
 theorem genMap_stalkMap (hD : Dominates ξg ξ e (RingHom.id Ω)) (p : Cpt ξg) (s : X.presheaf.stalk (e p.1)) :
     genMap ξg p ((e.stalkMap p.1).hom s) = genMap ξ (emb hD p) s :=
   PullReg.stalkMap_comp_genMap hD p (hD.specializes p) s
 
 /- English proof (translation)
-Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`. Take `⟨s', rfl⟩` from `Scheme.Hom.stalkMap_surjective e p.1 s`. Conclude with `⟨s', (genMap_stalkMap hD p s').symm⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨s, rfl⟩`. Conclude with `⟨_, genMap_stalkMap hD p s⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem regAt_emb [IsPreimmersion e] (hD : Dominates ξg ξ e (RingHom.id Ω)) (p : Cpt ξg) :
     regAt ξg p = regAt ξ (emb hD p) := by
@@ -45,15 +45,15 @@ theorem regAt_emb [IsPreimmersion e] (hD : Dominates ξg ξ e (RingHom.id Ω)) (
     exact ⟨_, genMap_stalkMap hD p s⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hD : Dominates ξg (ξg ≫ e) e (RingHom.id Ω)` using `dominates_id rfl`. Use `⟨?_, fun p => ?_⟩` and prove the remaining obligations. Establish `hb` using `hg.bij`. Rewrite `hb` using `[Scheme.stalkClosedPointTo_comp]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs` using `Scheme.Hom.stalkMap_surjective e (ξg (IsLocalRing.closedPoint Ω))`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Take `⟨a', rfl⟩` from `hs a`. Take `⟨b', rfl⟩` from `hs b`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: a' = b'` using `hb.1 hab`. Rewrite using `[this]`. Introduce `c`. Take `⟨a, rfl⟩` from `hb.2 c`. Conclude with `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `a b hab`. Take `⟨a', rfl⟩` from `Scheme.Hom.stalkMap_surjective e p.1 a`. Take `⟨b', rfl⟩` from `Scheme.Hom.stalkMap_surjective e p.1 b`. Establish `h1` using `genMap_stalkMap hD p a'`. Establish `h2` using `genMap_stalkMap hD p b'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: a' = b'` using `hg.inj (emb hD p) (h1.symm.trans (Eq.trans hab h2))`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCptGen_of [IsPreimmersion e] (h : ξg ≫ e = ξ) (hg : IsCptGen ξ) : IsCptGen ξg := by
   subst h
@@ -80,14 +80,14 @@ theorem isCptGen_of [IsPreimmersion e] (h : ξg ≫ e = ξ) (hg : IsCptGen ξ) :
     rw [this]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `ha`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isIntegral_congr {R S : Subring Ω} (h : R = S) {a : Ω} (ha : IsIntegral R a) : IsIntegral S a := by
   subst h
   exact ha
 
 /- English proof (translation)
-Introduce `p a ha`. Rewrite using `[regAt_emb hD p]`. Conclude with `hn (emb hD p) a (isIntegral_congr (regAt_emb hD p) ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normalCpt_of [IsPreimmersion e] (hD : Dominates ξg ξ e (RingHom.id Ω)) (hn : NormalCpt ξ) :
     NormalCpt ξg := by
@@ -96,7 +96,7 @@ theorem normalCpt_of [IsPreimmersion e] (hD : Dominates ξg ξ e (RingHom.id Ω)
   exact hn (emb hD p) a (isIntegral_congr (regAt_emb hD p) ha)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Submodule.span_eq]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_span_eq {R S : Subring Ω} (h : R = S) (M : Submodule S Ω) :
     ((Submodule.span R (M : Set Ω) : Submodule R Ω) : Set Ω) = M := by
@@ -104,7 +104,7 @@ theorem coe_span_eq {R S : Subring Ω} (h : R = S) (M : Submodule S Ω) :
   rw [Submodule.span_eq]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `(SetLike.coe_injective hNM).trans hM`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eq_span_of_coe {R S : Subring Ω} (h : R = S) {N : Submodule R Ω} {M : Submodule S Ω}
     (hNM : (N : Set Ω) = M) {A : Set Ω} (hM : M = Submodule.span S A) : N = Submodule.span R A := by
@@ -112,7 +112,7 @@ theorem eq_span_of_coe {R S : Subring Ω} (h : R = S) {N : Submodule R Ω} {M : 
   exact (SetLike.coe_injective hNM).trans hM
 
 /- English proof (translation)
-Rewrite using `[Lat.pull_apply L hD]`. Establish `h0 : (AddMonoidHom.id Ω) '' (L (emb hD p) : Set Ω) = (L (emb hD p) : Set Ω)` using `Set.image_id _`. Conclude with `(congrArg (fun A : Set Ω => ((Submodule.span (regAt ξg p) A : Submodule _ Ω) : Set Ω)) h0).trans (coe_span_eq (regAt_emb hD p) _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coe_pull [IsPreimmersion e] (hD : Dominates ξg ξ e (RingHom.id Ω)) (L : Lat ξ Ω) (p : Cpt ξg) :
     ((L.pull ξg e (AddMonoidHom.id Ω) p : Submodule (regAt ξg p) Ω) : Set Ω) = L (emb hD p) := by
@@ -122,9 +122,9 @@ theorem coe_pull [IsPreimmersion e] (hD : Dominates ξg ξ e (RingHom.id Ω)) (L
     (coe_span_eq (regAt_emb hD p) _)
 
 /- English proof (translation)
-Establish `hmem : ∀ p : Cpt ξg, emb hD p ∈ T` using `fun p => (hT _).2 ⟨p.1, rfl⟩`. Introduce `p _`. Take `⟨U, hU, b, hb, hq⟩` from `h (emb hD p) (hmem p)`. Use `⟨e ⁻¹ᵁ U, hU, b, hb, fun q _ hqU => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hq (emb hD q) (hmem q) hqU`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, eq_span_of_coe (regAt_emb hD q) (coe_pull hD L q) h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isVBOn_pull [IsPreimmersion e] (hD : Dominates ξg ξ e (RingHom.id Ω)) (L : Lat ξ Ω) {T : Set (Cpt ξ)}
     (hT : ∀ x : Cpt ξ, x ∈ T ↔ x.1 ∈ Set.range e) (h : L.IsVBOn T 1 ⊤) :
@@ -137,7 +137,7 @@ theorem isVBOn_pull [IsPreimmersion e] (hD : Dominates ξg ξ e (RingHom.id Ω))
   exact ⟨h1, eq_span_of_coe (regAt_emb hD q) (coe_pull hD L q) h2⟩
 
 /- English proof (translation)
-Rewrite using `[Lat.pull_apply _ hD', Lat.pull_apply _ hD'']`. Use `congr 1`. Establish `h1` using `coe_pull hD L ⟨f p'.1, hD'.specializes p'⟩`. Establish `h2 : emb hD ⟨f p'.1, hD'.specializes p'⟩ = ⟨(f ≫ e) p'.1, hD''.specializes p'⟩` using `Subtype.ext (Scheme.Hom.comp_apply f e p'.1).symm`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -155,15 +155,13 @@ theorem pull_pull_eq [IsPreimmersion e] {X' : Scheme.{0}} {ξ' : Spec (CommRingC
   rfl
 
 /- English proof (translation)
-Introduce `X₀ Xg X' Ω _ ξ ξg ξ' e f L T t hpre hprop hloc h1 h2 hgen hnorm hT hVB hG x hx`. Use `haveI := hpre`. Use `haveI := hprop`. Use `haveI := hloc`. Establish `hD : Dominates ξg ξ e (RingHom.id Ω)` using `dominates_id h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hD' : Dominates ξ' ξg f (RingHom.id Ω)` using `dominates_id h2`. Establish `hD'' : Dominates ξ' ξ (f ≫ e) (RingHom.id Ω)` using `dominates_id (by rw [← Category.assoc, h2, h1])`. Take `⟨z, hz⟩` from `(hT x).1 hx`. Establish `hs : genPt ξg ⤳ z`. Establish `h3 : e (genPt ξg) ⤳ e z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hD.map_genPt, hz]`. Conclude with `x.2`. Conclude with `(e.isEmbedding.isInducing.specializes_iff).1 h3`. Establish `hp : (L.pull ξg e (AddMonoidHom.id Ω)).IsGenAt ⟨z, hs⟩ t` using `GlobalTheory.T.line_bundle_normal_proper_pullback Xg Ω ξg X' Ω ξ' f (RingHom.id Ω) hD' Function.bijective_id (isCptGen_of h1 hgen) (normalCpt_of hD hnorm) (L.pull ξg e (AddMonoidHom.id Ω)) Set.univ ⟨z, hs⟩ t (isVBOn_pull hD L hT hVB) (fun _ _ => trivial) (fun p' _ => by`. Establish `h4` using `hG p'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨h4.1, ?_⟩` and prove the remaining obligations. Rewrite using `[pull_pull_eq hD hD' hD'' L p']`. Conclude with `h4.2)`. Establish `hx' : x = emb hD ⟨z, hs⟩` using `Subtype.ext hz.symm`. Rewrite using `[hx']`.
-
-Conclude with `⟨hp.1, eq_span_of_coe (regAt_emb hD _).symm (coe_pull hD L _).symm hp.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_descends : ∀ (X₀ Xg X' : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X₀) (ξg : Spec (CommRingCat.of Ω) ⟶ Xg) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (e : Xg ⟶ X₀) (f : X' ⟶ Xg) (L : Lat ξ Ω) (T : Set (Cpt ξ)) (t : Ω), IsPreimmersion e → IsProper f → IsLocallyNoetherian Xg → ξg ≫ e = ξ → ξ' ≫ f = ξg → IsCptGen ξ → NormalCpt ξ → (∀ x : Cpt ξ, x ∈ T ↔ x.1 ∈ Set.range e) → L.IsVBOn T 1 ⊤ → (∀ p' : Cpt ξ', (L.pull ξ' (f ≫ e) (AddMonoidHom.id _)).IsGenAt p' t) → ∀ x ∈ T, L.IsGenAt x t := by
   intro X₀ Xg X' Ω _ ξ ξg ξ' e f L T t hpre hprop hloc h1 h2 hgen hnorm hT hVB hG x hx

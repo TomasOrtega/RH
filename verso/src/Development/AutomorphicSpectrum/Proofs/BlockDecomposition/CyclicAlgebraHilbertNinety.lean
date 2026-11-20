@@ -7,7 +7,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.FirstApprox
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ', AlgEquiv.mul_apply, ih, pow_succ', AlgEquiv.mul_apply, Algebra.TensorProduct.congr_apply]`. Conclude with `Algebra.TensorProduct.map_tmul ..`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tensorProduct_congr_refl_pow_tmul_lemma {O O' κ : Type} [CommRing O] [CommRing O']
     [Algebra O O'] [CommRing κ] [Algebra O κ] (τ : O' ≃ₐ[O] O') (j : ℕ) (k : κ) (x : O') :
@@ -21,21 +21,21 @@ private theorem tensorProduct_congr_refl_pow_tmul_lemma {O O' κ : Type} [CommRi
     exact Algebra.TensorProduct.map_tmul ..
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `htr`. Take `⟨σ, hσ⟩ : ∃ σ : κ ⊗[O] O' ≃ₐ[κ] κ ⊗[O] O', σ = Algebra.TensorProduct.congr (AlgEquiv.refl : κ ≃ₐ[κ] κ) τ` from `⟨_, rfl⟩`. Rewrite `hz` using `[← hσ]`. Establish `hpow : ∀ (j : ℕ) (k : κ) (x : O'), (σ ^ j) (k ⊗ₜ[O] x) = k ⊗ₜ[O] (τ ^ j) x`. Introduce `j k x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hσ]`. Conclude with `tensorProduct_congr_refl_pow_tmul_lemma τ j k x`. Establish `hzfix : ∀ j : ℕ, (σ ^ j) z = z`. Introduce `j`. Proceed by induction on `j with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', AlgEquiv.mul_apply, ih, hz]`. Establish `htrace : ∀ t : κ ⊗[O] O', ∑ j ∈ Finset.range ℓ, (σ ^ j) t ∈ Set.range (algebraMap κ (κ ⊗[O] O'))`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul k x`. Establish `hfx : τ (∑ j ∈ Finset.range ℓ, (τ ^ j) x) = ∑ j ∈ Finset.range ℓ, (τ ^ j) x`. Rewrite using `[map_sum]`. Establish `e` using `(Finset.sum_range_succ' (fun j => (τ ^ j) x) ℓ).symm.trans (Finset.sum_range_succ (fun j => (τ ^ j) x) ℓ)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hτ, pow_zero]`. Rewrite using `[← add_right_cancel e]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pow_succ', AlgEquiv.mul_apply]`. Take `⟨c, hc⟩` from `hfix _ hfx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c • k, ?_⟩` and prove the remaining obligations. Simplify using `only [hpow]`. Rewrite using `[← TensorProduct.tmul_sum, ← hc, Algebra.algebraMap_eq_smul_one (A := O') c, ← TensorProduct.smul_tmul, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Consider the case `add t₁ t₂ h₁ h₂`. Take `⟨u₁, hu₁⟩` from `h₁`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u₂, hu₂⟩` from `h₂`. Conclude with `⟨u₁ + u₂, by simp only [map_add, Finset.sum_add_distrib, hu₁, hu₂]⟩`. Establish `key : ∑ j ∈ Finset.range ℓ, (σ ^ j) ((1 ⊗ₜ[O] a) * z) = z`. Simplify using `only [map_mul, hpow, hzfix]`. Rewrite using `[← Finset.sum_mul, ← TensorProduct.tmul_sum, ha, ← Algebra.TensorProduct.one_def, one_mul]`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key]`. Conclude with `htrace _`.
+A detailed English derivation is pending.
 -/
 theorem res_fixed (O O' κ : Type) [CommRing O] [CommRing O'] [Algebra O O'] [CommRing κ] [Algebra O κ] (ℓ : ℕ) (τ : O' ≃ₐ[O] O') (hs : Function.Surjective (algebraMap O κ)) (hℓ : 0 < ℓ) (hτ : τ ^ ℓ = 1) (hfix : ∀ z : O', τ z = z → z ∈ Set.range (algebraMap O O')) (htr : ∃ a : O', ∑ j ∈ Finset.range ℓ, (τ ^ j) a = 1) (z : κ ⊗[O] O') (hz : Algebra.TensorProduct.congr (AlgEquiv.refl : κ ≃ₐ[κ] κ) τ z = z) : z ∈ Set.range (algebraMap κ (κ ⊗[O] O')) := by
   obtain ⟨a, ha⟩ := htr
@@ -82,17 +82,17 @@ theorem res_fixed (O O' κ : Type) [CommRing O] [CommRing O'] [Algebra O O'] [Co
   exact htrace _
 
 /- English proof (translation)
-Set `ψ : O' ⊗[O] R →+* (κ ⊗[O] O') ⊗[κ] A` to `(((Algebra.TensorProduct.comm κ A (κ ⊗[O] O') : A ⊗[κ] (κ ⊗[O] O') →+* (κ ⊗[O] O') ⊗[κ] A).comp ((Algebra.TensorProduct.cancelBaseChange O κ κ A O').symm : A ⊗[O] O' →+* A ⊗[κ] (κ ⊗[O] O'))).comp (Algebra.TensorProduct.comm O O' A : O' ⊗[O] A →+* A ⊗[O] O')).comp (Algebra.TensorP …`. Establish `hψ : ∀ t, ψ t = Algebra.TensorProduct.comm κ A (κ ⊗[O] O') ((Algebra.TensorProduct.cancelBaseChange O κ κ A O').symm (Algebra.TensorProduct.comm O O' A (Algebra.TensorProduct.map (AlgHom.id O O') π t)))` using `fun t => rfl`. Establish `hψt : ∀ (x : O') (r : R), ψ (x ⊗ₜ[O] r) = (1 ⊗ₜ[O] x) ⊗ₜ[κ] π r`. Introduce `x r`. Rewrite using `[hψ, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.cancelBaseChange_symm_tmul, Algebra.TensorProduct.comm_tmul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ψ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Take `⟨t, ht⟩` from `Algebra.TensorProduct.map_surjective (AlgHom.id O O') π Function.surjective_id hπ ((Algebra.TensorProduct.comm O O' A).symm ((Algebra.TensorProduct.cancelBaseChange O κ κ A O') ((Algebra.TensorProduct.comm κ A (κ ⊗[O] O')).symm w)))`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, ht]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AlgEquiv.apply_symm_apply, AlgEquiv.symm_apply_apply]`. Introduce `t ht`. Establish `hm : Algebra.TensorProduct.map (AlgHom.id O O') π t = 0`. Rewrite `ht` using `[RingHom.mem_ker, hψ]`. Simplify using `using ht`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hker : RingHom.ker (Algebra.TensorProduct.map (AlgHom.id O O') π) = Ideal.map (Algebra.TensorProduct.includeRight : R →ₐ[O] O' ⊗[O] R) (RingHom.ker π)`. Rewrite using `[Algebra.TensorProduct.map_ker _ _ Function.surjective_id hπ, (RingHom.injective_iff_ker_eq_bot (AlgHom.id O O')).mp Function.injective_id, Ideal.map_bot, bot_sup_eq]`. Rewrite using `[← hker]`. Conclude with `hm`. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.TensorProduct.includeRight_apply, hψt, ← Algebra.TensorProduct.one_def]`. Introduce `f s`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x r => simp only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, hψt]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+A detailed English derivation is pending.
 -/
 theorem res_compare (O O' R κ A : Type) [CommRing O] [CommRing O'] [Algebra O O'] [CommRing R] [Algebra O R] [CommRing κ] [Algebra O κ] [CommRing A] [Algebra O A] [Algebra κ A] [IsScalarTower O κ A] (π : R →ₐ[O] A) (hπ : Function.Surjective π) : ∃ ψ : O' ⊗[O] R →+* (κ ⊗[O] O') ⊗[κ] A, Function.Surjective ψ ∧ RingHom.ker ψ ≤ Ideal.map (Algebra.TensorProduct.includeRight : R →ₐ[O] O' ⊗[O] R) (RingHom.ker π) ∧ (∀ x : R, ψ ((Algebra.TensorProduct.includeRight : R →ₐ[O] O' ⊗[O] R) x) = Algebra.TensorProduct.includeRight (π x)) ∧ ∀ (f : O' →ₐ[O] O') (s : O' ⊗[O] R), ψ (Algebra.TensorProduct.map f (AlgHom.id O R) s) = Algebra.TensorProduct.map (Algebra.TensorProduct.map (AlgHom.id κ κ) f) (AlgHom.id κ A) (ψ s) := by
   let ψ : O' ⊗[O] R →+* (κ ⊗[O] O') ⊗[κ] A :=
@@ -138,33 +138,27 @@ theorem res_compare (O O' R κ A : Type) [CommRing O] [CommRing O'] [Algebra O O
     | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Introduce `hNI O O' R _ _ _ _ _ _ _ _ _ _ _ _ ℓ τ hℓ hτ hfix hdual htr r`. Take `⟨J, hJ⟩ : ∃ J : Ideal R, J = (⊥ : Ideal R).jacobson` from `⟨_, rfl⟩`. Establish `hmJ : Ideal.map (algebraMap O R) (IsLocalRing.maximalIdeal O) ≤ J` using `hJ ▸ (GlobalTheory.CompanionTheory.LocalFinite.map_maximalIdeal_le_jacobson_and_pow_le O R).1`. Use `letI : Algebra (IsLocalRing.ResidueField O) (R ⧸ J) := (Ideal.Quotient.lift (IsLocalRing.maximalIdeal O) (algebraMap O (R ⧸ J)) fun c hc => by first`. Consider the case `exact Ideal.Quotient.eq_zero_iff_mem.mpr (hmJ (Ideal.mem_map_of_mem _ hc))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Treat this case separately.
 
-Consider the case `(rw [← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hmJ (Ideal.mem_map_of_mem _ hc))).toAlgebra`. Use `haveI : IsScalarTower O (IsLocalRing.ResidueField O) (R ⧸ J) := IsScalarTower.of_algebraMap_eq fun c => rfl`. Use `haveI : Module.Finite O (R ⧸ J) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ O J).toLinearMap (Ideal.Quotient.mkₐ_surjective O J)`. Use `haveI : Module.Finite (IsLocalRing.ResidueField O) (R ⧸ J) := Module.Finite.of_restrictScalars_finite O _ _`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrad : J.IsRadical`. Rewrite using `[hJ]`. Conclude with `Ideal.radical_le_jacobson.trans Ideal.jacobson_idem.le`. Use `haveI : IsReduced (R ⧸ J) := (Ideal.isRadical_iff_quotient_reduced J).mp hrad`. Use `haveI : Module.Finite (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField O ⊗[O] O') := Module.Finite.base_change O _ O'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hres : Function.Surjective (algebraMap O (IsLocalRing.ResidueField O))` using `IsLocalRing.residue_surjective`. Take `⟨x, y, hxy⟩` from `hdual`. Establish `hτ' : Algebra.TensorProduct.congr (AlgEquiv.refl : IsLocalRing.ResidueField O ≃ₐ[IsLocalRing.ResidueField O] IsLocalRing.ResidueField O) τ ^ ℓ = 1`. Use `AlgEquiv.ext fun t => ?_` and prove the remaining obligations. Proceed by induction on `t using TensorProduct.induction_on with`.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `zero => simp only [map_zero]`. Consider the case `tmul k w => rw [tensorProduct_congr_refl_pow_tmul_lemma, hτ]`. Both sides reduce to the same expression. Consider the case `add t₁ t₂ h₁ h₂ => simp only [map_add, h₁, h₂]`. Establish `hfix' : ∀ z : IsLocalRing.ResidueField O ⊗[O] O', Algebra.TensorProduct.congr (AlgEquiv.refl : IsLocalRing.ResidueField O ≃ₐ[IsLocalRing.ResidueField O] IsLocalRing.ResidueField O) τ z = z → z ∈ Set.range (algebraMap (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField O ⊗[O] O …` using `fun z hz => GlobalTheory.CompanionTheory.FirstApprox.res_fixed O O' (IsLocalRing.ResidueField O) ℓ τ hres hℓ hτ hfix htr z hz`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdual' : ∃ x' y' : Fin ℓ → IsLocalRing.ResidueField O ⊗[O] O', ∀ j < ℓ, ∑ i, x' i * (Algebra.TensorProduct.congr (AlgEquiv.refl : IsLocalRing.ResidueField O ≃ₐ[IsLocalRing.ResidueField O] IsLocalRing.ResidueField O) τ ^ j) (y' i) = if j = 0 then 1 else 0`. Use `⟨fun i => 1 ⊗ₜ[O] x i, fun i => 1 ⊗ₜ[O] y i, fun j hj => ?_⟩` and prove the remaining obligations. Simplify using `only [tensorProduct_congr_refl_pow_tmul_lemma, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Rewrite using `[← TensorProduct.tmul_sum, hxy j hj]`. Use `split_ifs`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(Algebra.TensorProduct.one_def).symm`. Conclude with `TensorProduct.tmul_zero _ _`. Take `⟨sb, hsb⟩` from `hNI (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField O ⊗[O] O') (R ⧸ J) ℓ (Algebra.TensorProduct.congr (AlgEquiv.refl : IsLocalRing.ResidueField O ≃ₐ[IsLocalRing.ResidueField O] IsLocalRing.ResidueField O) τ) hℓ hτ' hfix' hdual' (Units.map (Ideal.Quotient.mk J).toMonoidHom …`. Take `⟨ψ, hψs, hψk, hψi, hψe⟩` from `GlobalTheory.CompanionTheory.FirstApprox.res_compare O O' R (IsLocalRing.ResidueField O) (R ⧸ J) (Ideal.Quotient.mkₐ O J) (Ideal.Quotient.mkₐ_surjective O J)`. Establish `hkerπ : RingHom.ker (Ideal.Quotient.mkₐ O J) = J`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `w`. Rewrite using `[RingHom.mem_ker]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem`. Rewrite `hψk` using `[hkerπ]`. Take `⟨s0, hs0⟩` from `hψs ↑sb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨t0, ht0⟩` from `hψs ↑(sb⁻¹)`. Establish `hunit : IsUnit s0`. Establish `h1 : s0 * t0 - 1 ∈ Ideal.map (Algebra.TensorProduct.includeRight : R →ₐ[O] O' ⊗[O] R) J` using `hψk (by rw [RingHom.mem_ker, map_sub, map_mul, hs0, ht0, Units.mul_inv, map_one, sub_self])`. Establish `h2 : IsUnit (1 + (s0 * t0 - 1))` using `GlobalTheory.CompanionTheory.JacUnit.main O O' R _ (by rw [← hJ]; exact h1)`. Rewrite `h2` using `[show (1 : O' ⊗[O] R) + (s0 * t0 - 1) = s0 * t0 by ring]`.
+Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isUnit_of_mul_isUnit_left h2`. Establish `hmap : ∀ j : ℕ, Algebra.TensorProduct.map (AlgHom.id (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField O)) ((τ ^ j : O' ≃ₐ[O] O').toAlgHom) = (Algebra.TensorProduct.congr (AlgEquiv.refl : IsLocalRing.ResidueField O ≃ₐ[IsLocalRing.ResidueField O] IsLocalRing.ResidueField O) τ …`. Introduce `j`. Use `AlgHom.ext fun t => ?_` and prove the remaining obligations. Proceed by induction on `t using TensorProduct.induction_on with`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `zero => simp only [map_zero]`. Consider the case `tmul k w`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgEquiv.toAlgHom_eq_coe, AlgEquiv.coe_algHom, tensorProduct_congr_refl_pow_tmul_lemma]`. Consider the case `add t₁ t₂ h₁ h₂ => simp only [map_add, h₁, h₂]`. Use `⟨hunit.unit, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[IsUnit.unit_spec, ← hJ]`. Use `hψk ?_` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, map_sub, map_prod]`. Repeatedly rewrite using `[hψe]`. Rewrite using `[hψi, hs0, sub_eq_zero]`.
-
-Use `Eq.trans ?_ (hsb.trans ?_)` and prove the remaining obligations. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun g : (IsLocalRing.ResidueField O ⊗[O] O') →ₐ[IsLocalRing.ResidueField O] (IsLocalRing.ResidueField O ⊗[O] O') => Algebra.TensorProduct.map g (AlgHom.id (IsLocalRing.ResidueField O) (R ⧸ J)) (sb : _)) (hmap j)`. Use `first`. Consider the case `rfl`.
-
-Consider the case `simp [Units.coe_map]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem main : PositivityTheory.Rg.Tf.Loc.N1 → ∀ (O O' R : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Finite (IsLocalRing.ResidueField O)] [CommRing O'] [Algebra O O'] [Module.Finite O O'] [Module.Free O O'] [CommRing R] [Algebra O R] [Module.Finite O R] (ℓ : ℕ) (τ : O' ≃ₐ[O] O'), 0 < ℓ → τ ^ ℓ = 1 → (∀ z : O', τ z = z → z ∈ Set.range (algebraMap O O')) → (∃ x y : Fin ℓ → O', ∀ j < ℓ, ∑ i, x i * (τ ^ j) (y i) = if j = 0 then 1 else 0) → (∃ a : O', ∑ j ∈ Finset.range ℓ, (τ ^ j) a = 1) → ∀ r : Rˣ, ∃ s : (O' ⊗[O] R)ˣ, (∏ j ∈ Finset.range ℓ, Algebra.TensorProduct.map ((τ ^ j : O' ≃ₐ[O] O').toAlgHom) (AlgHom.id O R) (s : O' ⊗[O] R)) - (Algebra.TensorProduct.includeRight : R →ₐ[O] O' ⊗[O] R) (r : R) ∈ Ideal.map (Algebra.TensorProduct.includeRight : R →ₐ[O] O' ⊗[O] R) (⊥ : Ideal R).jacobson := by
   intro hNI O O' R _ _ _ _ _ _ _ _ _ _ _ _ ℓ τ hℓ hτ hfix hdual htr r

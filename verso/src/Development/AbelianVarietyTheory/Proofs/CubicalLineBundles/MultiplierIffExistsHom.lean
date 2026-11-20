@@ -14,9 +14,9 @@ open scoped CategoryTheory.Obj UpperHalfPlane
 namespace GlobalTheory.EllipticHom
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Establish `hw0 : w 0 ≠ 0` using `fun h => hw (funext fun i => by rw [Subsingleton.elim i 0, h]; rfl)`. Use `⟨(w 0)⁻¹ • LinearMap.proj 0, fun x => ?_, by simp [hw0]⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.smul_apply, LinearMap.proj_apply, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_coord {g : ℕ} (hg : g = 1) {w : Fin g → ℂ} (hw : w ≠ 0) :
     ∃ c : (Fin g → ℂ) →ₗ[ℂ] ℂ, (∀ x, c x • w = x) ∧ c w = 1 := by
@@ -29,11 +29,11 @@ theorem exists_coord {g : ℕ} (hg : g = 1) {w : Fin g → ℂ} (hw : w ≠ 0) :
   field_simp
 
 /- English proof (translation)
-Take `⟨p, q, h1⟩` from `PeriodPair.mem_lattice.1 (h _ L.ω₁_mem_lattice)`. Take `⟨r, s, h2⟩` from `PeriodPair.mem_lattice.1 (h _ L.ω₂_mem_lattice)`. Use `⟨(p * s - q * r).natAbs, ?_⟩` and prove the remaining obligations. Establish `e : Complex.normSq α * (L.ω₁ * starRingEnd ℂ L.ω₂).im = ((p * s - q * r : ℤ) : ℝ) * (L'.ω₁ * starRingEnd ℂ L'.ω₂).im`. Establish `e1 : Complex.normSq α * (L.ω₁ * starRingEnd ℂ L.ω₂).im = ((α * L.ω₁) * starRingEnd ℂ (α * L.ω₂)).im`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, ← h1, ← h2]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Nat.cast_natAbs, Int.cast_abs, ← abs_mul, ← e, abs_mul, abs_of_nonneg (Complex.normSq_nonneg α)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_index {L L' : PeriodPair} {α : ℂ} (h : ∀ z ∈ L.lattice, α * z ∈ L'.lattice) :
     ∃ n : ℕ, Complex.normSq α * |(L.ω₁ * starRingEnd ℂ L.ω₂).im| = n * |(L'.ω₁ * starRingEnd ℂ L'.ω₂).im| := by
@@ -51,9 +51,9 @@ theorem exists_index {L L' : PeriodPair} {α : ℂ} (h : ∀ z ∈ L.lattice, α
   rw [Nat.cast_natAbs, Int.cast_abs, ← abs_mul, ← e, abs_mul, abs_of_nonneg (Complex.normSq_nonneg α)]
 
 /- English proof (translation)
-Introduce `h`. Establish `hi` using `LinearIndependent.pair_iff.1 L.indep`. Simplify using `at h`. Establish `h1` using `hi L.ω₂.re (-L.ω₁.re) (by`. Apply the tactic sequence `apply Complex.ext <;> simp <;> linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2` using `hi L.ω₂.im (-L.ω₁.im) (by`. Apply the tactic sequence `apply Complex.ext <;> simp <;> linarith)`. Establish `h3` using `hi 0 1 (by`. Apply the tactic sequence `apply Complex.ext <;> simp [h1.1, h2.1])`. Conclude with `one_ne_zero h3.2`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem covolume_ne_zero (L : PeriodPair) : (L.ω₁ * starRingEnd ℂ L.ω₂).im ≠ 0 := by
   intro h
@@ -68,31 +68,29 @@ theorem covolume_ne_zero (L : PeriodPair) : (L.ω₁ * starRingEnd ℂ L.ω₂).
   exact one_ne_zero h3.2
 
 /- English proof (translation)
-Introduce `hU hB R _ P Q v t s L L' α hP hQ hv ht hL hL'`. Prove the components needed by the constructor for the conclusion. Introduce `hα P₁ Q₁ φ₁ ψ₁ v₁ t₁ hφ hψ hv₁ ht₁`. Take `⟨rig, hrig⟩` from `P₁.rigid`. Take `⟨rig', hrig'⟩` from `Q₁.rigid`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, Hm, χ, Ef, hA, -, hd, -, -, hθ, hE, hEb, -⟩` from `hU P₁ rig hrig`. Take `⟨u', Hm', χ', Ef', hA', -, hd', he', -, hθ', hE', hEb', -⟩` from `hU Q₁ rig' hrig'`. Establish `tv` using `hv₁.isTangent hφ.2.1 hv`. Establish `tt` using `ht₁.isTangent hψ.2.1 ht`. Take `⟨w, hw, -⟩` from `hd v₁ tv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw', -⟩` from `hd' t₁ tt`. Take `⟨w0, hΛ⟩` from `hL P₁ φ₁ v₁ u w hφ hv₁ hw`. Take `⟨w0', hΛ'⟩` from `hL' Q₁ ψ₁ t₁ u' w' hψ ht₁ hw'`. Establish `g1 : P₁.g = 1` using `hφ.1.trans hP`. Establish `g2 : Q₁.g = 1` using `hψ.1.trans hQ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH` using `hermForm_principal_dim_one _ u.Λ w L Hm Ef g1 w0 hΛ hA.1 (hA.2.1 w w0) hE hEb`. Establish `hH'` using `hermForm_principal_dim_one _ u'.Λ w' L' Hm' Ef' g2 w0' hΛ' hA'.1 (hA'.2.1 w' w0') hE' hEb'`. Take `⟨c, hc, hc1⟩` from `exists_coord g1 w0`. Take `⟨n, hn⟩` from `exists_index hα`. Set `F : (Fin P₁.g → ℂ) →ₗ[ℂ] (Fin Q₁.g → ℂ)` to `(α • c).smulRight w'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hF : ∀ x, F x = (α * c x) • w'` using `fun x => rfl`. Take `⟨f, hf, hFf⟩` from `exists_hom_of_linear_scaling_hermForm P₁ Q₁ u u' Hm χ Hm' χ' hA hA' (fun k => (hθ k).2) (fun k => (hθ' k).1) F n (fun l hl => by`. Rewrite using `[hF, ← hΛ']`. Conclude with `hα _ ((hΛ _).2 (by rwa [hc])))`. Use the proof step `(fun x y => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hH (c x) (c y)`. Rewrite `e` using `[hc, hc]`. Establish `a1 : ((|(L.ω₁ * starRingEnd ℂ L.ω₂).im| : ℝ) : ℂ) ≠ 0`. Conclude with `abs_ne_zero.2 (covolume_ne_zero L)` after adjusting the coercions. Establish `a2 : ((|(L'.ω₁ * starRingEnd ℂ L'.ω₂).im| : ℝ) : ℂ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `abs_ne_zero.2 (covolume_ne_zero L')` after adjusting the coercions. Establish `hn'` using `congrArg (fun r : ℝ => (r : ℂ)) hn`. Simplify using `only [Complex.ofReal_mul, Complex.ofReal_natCast, ← Complex.mul_conj] at hn'`. Rewrite using `[hF, hF, hH', e, map_mul, ← mul_div_assoc, div_eq_div_iff a2 a1]`. Take the linear combination `(c x * starRingEnd ℂ (c y)) * hn')`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Establish `h1` using `HomLinear.isDiff_comp u u' f F hFf tv hw`. Rewrite `h1` using `[hF, hc1, _root_.mul_one]`. Establish `hx` using `(LieMultiple.isLieComb_one_iff_comp α t₁ _).2 rfl`. Establish `hxt : IsTangent (Chart.spMap (Chart.scaleD α) ≫ t₁)` using `(Chart.isTan_iff _).1 (Chart.isTan_scale α ((Chart.isTan_iff _).2 tt))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(he' (α • w')).unique ⟨HomLinear.isTangent_comp f tv, h1⟩ ⟨hxt, CMNormIdentity.isDiff_of_isLieComb u' hw' α hx⟩` as an intermediate fact. Rewrite using `[this]`. Conclude with `hx`. Introduce `h z hz`. Take `⟨P₁, φ₁, hφ⟩` from `exists_isPolFibre hB s P`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q₁, ψ₁, hψ⟩` from `exists_isPolFibre hB s Q`. Take `⟨v₁, hv₁, -⟩` from `existsUnique_isVecOver hφ.2.1.1 v`. Take `⟨t₁, ht₁, -⟩` from `existsUnique_isVecOver hψ.2.1.1 t`. Take `⟨f, hf, hl⟩` from `h P₁ Q₁ φ₁ ψ₁ v₁ t₁ hφ hψ hv₁ ht₁`. Take `⟨rig, hrig⟩` from `P₁.rigid`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨rig', hrig'⟩` from `Q₁.rigid`. Take `⟨u, -, -, -, -, -, hd, -⟩` from `hU P₁ rig hrig`. Take `⟨u', -, -, -, -, -, hd', he', -⟩` from `hU Q₁ rig' hrig'`. Establish `tv` using `hv₁.isTangent hφ.2.1 hv`. Establish `tt` using `ht₁.isTangent hψ.2.1 ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, -⟩` from `hd v₁ tv`. Take `⟨w', hw', -⟩` from `hd' t₁ tt`. Take `⟨-, hΛ⟩` from `hL P₁ φ₁ v₁ u w hφ hv₁ hw`. Take `⟨-, hΛ'⟩` from `hL' Q₁ ψ₁ t₁ u' w' hψ ht₁ hw'`. Take `⟨F, -, hF, hT, -⟩` from `HomLinear.exists_linear_of_isMonHom P₁.A Q₁.A P₁.isAb Q₁.isAb P₁.L Q₁.L _ _ u u' hd' he' f hf`.
-
-Take `⟨tf, df⟩` from `hT w v₁ tv hw`. Establish `e : F w = α • w'` using `(hd' _ tf).unique df (CMNormIdentity.isDiff_of_isLieComb u' hw' α hl)`. Use `hF _ ((hΛ z).1 hz)` as an intermediate fact. Rewrite `this` using `[map_smul, e, smul_smul, _root_.mul_comm]`. Conclude with `(hΛ' _).2 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiplier_iff_exists_hom : ThetaUnifAV → Out.PolBaseChangeSt → ∀ (R : Type) [CommRing R] (P Q : Out.PolAV (Sp R)) (v : epsR R ⟶ P.A) (t : epsR R ⟶ Q.A) (s : R →+* ℂ) (L L' : PeriodPair) (α : ℂ), P.g = 1 → Q.g = 1 → IsTangent v → IsTangent t → (∀ (P' : Out.PolAV (Sp ℂ)) (φ' : P'.A.left ⟶ P.A.left) (v' : epsR ℂ ⟶ P'.A) (u' : HolUnif P'.A P'.L P'.g) (w' : Fin P'.g → ℂ), IsPolFibre s P P' φ' → IsVecOver s φ' v v' → u'.IsDiff w' v' → w' ≠ 0 ∧ ∀ z : ℂ, z ∈ L.lattice ↔ z • w' ∈ u'.Λ) → (∀ (P' : Out.PolAV (Sp ℂ)) (φ' : P'.A.left ⟶ Q.A.left) (v' : epsR ℂ ⟶ P'.A) (u' : HolUnif P'.A P'.L P'.g) (w' : Fin P'.g → ℂ), IsPolFibre s Q P' φ' → IsVecOver s φ' t v' → u'.IsDiff w' v' → w' ≠ 0 ∧ ∀ z : ℂ, z ∈ L'.lattice ↔ z • w' ∈ u'.Λ) → ((∀ z ∈ L.lattice, α * z ∈ L'.lattice) ↔ (∀ (P₁ Q₁ : Out.PolAV (Sp ℂ)) (φ₁ : P₁.A.left ⟶ P.A.left) (ψ₁ : Q₁.A.left ⟶ Q.A.left) (v₁ : epsR ℂ ⟶ P₁.A) (t₁ : epsR ℂ ⟶ Q₁.A), IsPolFibre s P P₁ φ₁ → IsPolFibre s Q Q₁ ψ₁ → IsVecOver s φ₁ v v₁ → IsVecOver s ψ₁ t t₁ → ∃ f₁ : P₁.A ⟶ Q₁.A, IsMonHom f₁ ∧ IsLieComb ![α] ![t₁] (v₁ ≫ f₁))) := by
   intro hU hB R _ P Q v t s L L' α hP hQ hv ht hL hL'

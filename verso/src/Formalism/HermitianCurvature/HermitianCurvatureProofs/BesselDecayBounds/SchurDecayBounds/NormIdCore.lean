@@ -14,9 +14,9 @@ variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
 
 /- English proof (translation)
-Establish `hT` using `hM.2.1 h hh m hm`. Set `L : (Wp →L[ℂ] Wp) →L[ℂ] (Wp →L[ℂ] Wp)` to `ContinuousLinearMap.compL ℂ Wp Wp Wp (psi k r z c m • π h)`. Establish `key : ∀ᵐ p ∂(μW.prod μN), beF z c π σ (σ (h * m) w) v p = L (beF z c π σ w v (Cv.tEq h m p))` using `by filter_upwards [hM.1] with p hp`. Conclude with `Cv.beF_tEq z c π σ hG hσ hπ hψ h m hh hm w v p hp`. Establish `hint2 : Integrable (fun p => beF z c π σ w v (Cv.tEq h m p)) (μW.prod μN)` using `hT.integrable_comp_of_integrable hint`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : ∫ p, beF z c π σ w v (Cv.tEq h m p) ∂(μW.prod μN) = be z c π μW μN σ w v`. Rewrite using `[← integral_map hT.measurable.aemeasurable (by rw [hT.map_eq]; exact hint.aestronglyMeasurable), hT.map_eq]`. Both sides reduce to the same expression. Use `show ∫ p, beF z c π σ (σ (h * m) w) v p ∂(μW.prod μN) = L (be z c π μW μN σ w v)`. Rewrite using `[integral_congr_ae key, L.integral_comp_comm hint2, hmap]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem be_equiv_of_int {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {μW μN : Measure (Mt k r)} {σ : Mx k r → (H →L[ℂ] H)}
@@ -55,9 +55,9 @@ def Fx (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ
   ⟪v, σ y u⟫_ℂ * star ⟪ξ, Aop z c π μW μN σ u v y ξ⟫_ℂ
 
 /- English proof (translation)
-Establish `e1 : ⟪ξ, be z c π μW μN σ w' v ξ⟫_ℂ = ∫ p, evL ξ (beF z c π σ w' v p) ∂(μW.prod μN)`. Rewrite using `[(evL ξ).integral_comp_comm hint, evL_apply]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Establish `e2` using `integral_conj (μ := μW.prod μN) (f := fun p => evL ξ (beF z c π σ w' v p))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [starRingEnd_apply] at e2`. Rewrite using `[← e2]`. Use `integral_congr_ae (ae_of_all _ fun p => ?_)` and prove the remaining obligations. Simplify using `only [evL_apply, beF, kx, sM, _root_.smul_apply, inner_smul_right, star_mul', star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem star_ev_be {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {μW μN : Measure (Mt k r)} {σ : Mx k r → (H →L[ℂ] H)} {w' v : H}
@@ -75,7 +75,7 @@ theorem star_ev_be {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → 
   ring
 
 /- English proof (translation)
-Unfold `kx`. Rewrite using `[norm_mul, Cv.norm_psi, one_mul, norm_star]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_kx_le {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)} (hGr : Cv.GrpF k r z)
     (hPi : Cv.PiU z π) (ξ : Wp) {p : Mt k r × Mt k r} (hp : Matrix.of p.1 ∈ UWset k r z) :
@@ -86,7 +86,7 @@ theorem norm_kx_le {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → 
     _ = ‖ξ‖ ^ 2 := by rw [hPi.2.2 _ (hGr.2.2.1 _ hp)]; ring
 
 /- English proof (translation)
-Establish `hc1 : Continuous (fun p : Mt k r × Mt k r => psi k r z c (Matrix.of p.2))` using `(Cv.psi_cont z c).comp continuous_snd`. Establish `h1 : AEStronglyMeasurable (fun p : Mt k r × Mt k r => psi k r z c (Matrix.of p.2)) (μW.prod μN)` using `hc1.aestronglyMeasurable`. Establish `hc : Continuous (fun B : Wp →L[ℂ] Wp => star ⟪ξ, B ξ⟫_ℂ)` using `continuous_star.comp (evL ξ).continuous`. Establish `h2 : AEStronglyMeasurable (fun p : Mt k r × Mt k r => star ⟪ξ, π (Matrix.of p.1)⁻¹ ξ⟫_ℂ) (μW.prod μN)` using `hc.comp_aestronglyMeasurable hM.2.2.2.comp_fst`. Conclude with `h1.mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kx_aesm {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {μW μN : Measure (Mt k r)} [SFinite μN] (hM : Cv.MeasF z π μW μN) (ξ : Wp) :

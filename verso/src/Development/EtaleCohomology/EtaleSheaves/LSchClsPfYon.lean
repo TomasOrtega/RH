@@ -24,9 +24,9 @@ def yon (G : Shv R) (X : Scheme.{0}) (z : Sec G X) : (free R).obj (yoneda.obj X)
   ⟨sheafifyLift Scheme.etaleTopology (yon0 R G X z) G.cond⟩
 
 /- English proof (translation)
-Establish `h` using `toSheafify_sheafifyLift Scheme.etaleTopology (yon0 R G X z) G.cond`. Use `congrArg (fun φ => (φ.app (op X)).hom (ModuleCat.freeMk (ULift.up (𝟙 X)))) h` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Simplify using `only [yon0]`. Use `erw [ModuleCat.freeDesc_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem yon_gen (G : Shv R) (X : Scheme.{0}) (z : Sec G X) : Sec.map (yon R G X z) (freeGen R _ X (𝟙 X)) = z := by
   have h := toSheafify_sheafifyLift Scheme.etaleTopology (yon0 R G X z) G.cond
@@ -37,11 +37,11 @@ theorem yon_gen (G : Shv R) (X : Scheme.{0}) (z : Sec G X) : Sec.map (yon R G X 
   simp
 
 /- English proof (translation)
-Establish `key : ∀ (U : Scheme.{0}) (g : U ⟶ X), Sec.map φ (freeGen R _ U g) = Sec.map ψ (freeGen R _ U g)`. Introduce `U g`. Establish `hg : freeGen R (yoneda.obj X) U g = Sec.res g (freeGen R _ X (𝟙 X))`. Rewrite using `[LateralTheory.E.LeafKumSpecPf.freeGen_res]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hg, ← LateralTheory.E.LeafKumSpecPf.sec_res_map, ← LateralTheory.E.LeafKumSpecPf.sec_res_map, h]`. Establish `hv : φ.hom = ψ.hom`. Apply `sheafify_hom_ext Scheme.etaleTopology _ _ G.cond` to reduce the goal to its premises. Use `NatTrans.ext (funext fun U => ?_)` and prove the remaining obligations. Apply `ModuleCat.free_hom_ext (R := ULift.{1} R)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨g⟩`. Conclude with `key U.unop g`. Apply the tactic sequence `first | exact Sheaf.hom_ext hv | (cases φ; cases ψ; cases hv; rfl)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem yon_ext {G : Shv R} {X : Scheme.{0}} (φ ψ : (free R).obj (yoneda.obj X) ⟶ G)
     (h : Sec.map φ (freeGen R _ X (𝟙 X)) = Sec.map ψ (freeGen R _ X (𝟙 X))) : φ = ψ := by
@@ -60,7 +60,7 @@ theorem yon_ext {G : Shv R} {X : Scheme.{0}} (φ ψ : (free R).obj (yoneda.obj X
   first | exact Sheaf.hom_ext hv | (cases φ; cases ψ; cases hv; rfl)
 
 /- English proof (translation)
-Establish `hg : freeGen R (yoneda.obj X) U g = Sec.res g (freeGen R _ X (𝟙 X))`. Rewrite using `[LateralTheory.E.LeafKumSpecPf.freeGen_res]`. Simplify using the standard rewrite rules. Rewrite using `[hg, ← LateralTheory.E.LeafKumSpecPf.sec_res_map, yon_gen]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem yon_res {G : Shv R} {X : Scheme.{0}} (z : Sec G X) (U : Scheme.{0}) (g : U ⟶ X) :
     Sec.map (yon R G X z) (freeGen R _ U g) = Sec.res g z := by

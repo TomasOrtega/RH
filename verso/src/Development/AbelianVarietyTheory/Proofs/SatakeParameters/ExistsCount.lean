@@ -21,21 +21,19 @@ set_option maxHeartbeats 1000000 in
 include T in
 
 /- English proof (translation)
-Take `⟨lo, hlo⟩` from `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_fildR_lo (P.PD K) (vrep r) τ`. Take `⟨hi, hhi⟩` from `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_fildR_hi (P.PD K) (vrep r) τ`. Establish `anti` using `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_fildR_anti (P.PD K) (vrep r) τ`. Use `haveI : ∀ a, FiniteDimensional ↥LL.1 ↥(FildR (P.PD K) (vrep r) τ a) := fun a => Submodule.finiteDimensional_of_le (inf_le_left : FildR (P.PD K) (vrep r) τ a ≤ DdRE (P.PD K) (vrep r) τ)`. Establish `nn : ∀ a, 0 ≤ multV (P.PD K) (vrep r) τ a` using `fun a => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.finrank_mono (anti (show a ≤ a + 1 by omega))` as an intermediate fact. Unfold `multV`. Use linear arithmetic over natural numbers and integers. Take `⟨lo₁, hl1, hl2⟩ : ∃ lo₁, lo₁ ≤ lo ∧ lo₁ ≤ hi` from `⟨min lo hi, min_le_left _ _, min_le_right _ _⟩`. Establish `zero : ∀ a, a ∉ Finset.Ico lo₁ hi → multV (P.PD K) (vrep r) τ a = 0` using `fun a ha => by`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[Finset.mem_Ico, not_and_or, not_le, not_lt]`. Establish `e : FildR (P.PD K) (vrep r) τ a = FildR (P.PD K) (vrep r) τ (a + 1)`. Break down `ha with ha | ha` into its components or cases. Conclude with `(hlo a (by omega)).trans (hlo (a + 1) (by omega)).symm`. Conclude with `(hhi a ha).trans (hhi (a + 1) (by omega)).symm`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `multV`. Rewrite using `[e, sub_self]`. Use `⟨∑ a ∈ Finset.Ico lo₁ hi, Multiset.replicate (multV (P.PD K) (vrep r) τ a).toNat a, ?_, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.card_sum]`. Simplify using `only [Multiset.card_replicate]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∑ a ∈ Finset.Ico lo₁ hi, multV (P.PD K) (vrep r) τ a = (finrank ↥LL.1 ↥(FildR (P.PD K) (vrep r) τ lo₁) : ℤ) - finrank ↥LL.1 ↥(FildR (P.PD K) (vrep r) τ hi)` using `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_sum_multV _ _ _ _ _ hl2`. Establish `e1 : finrank ↥LL.1 ↥(FildR (P.PD K) (vrep r) τ lo₁) = finrank ↥LL.1 ↥(DdRE (P.PD K) (vrep r) τ)`. Rewrite using `[hlo lo₁ hl1]`. Establish `e2 : finrank ↥LL.1 ↥(FildR (P.PD K) (vrep r) τ hi) = 0` using `Submodule.finrank_eq_zero.2 (hhi hi le_rfl)`. Rewrite `hs` using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((∑ a ∈ Finset.Ico lo₁ hi, (multV (P.PD K) (vrep r) τ a).toNat : ℕ) : ℤ) = (finrank ↥LL.1 ↥(DdRE (P.PD K) (vrep r) τ) : ℤ)`. Use `push_cast`. Rewrite using `[Finset.sum_congr rfl fun a _ => Int.toNat_of_nonneg (nn a), hs]`. Simplify using the standard rewrite rules. Conclude with `this` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Multiset.count_sum']`. Simplify using `only [Multiset.count_replicate]`. Rewrite using `[Finset.sum_ite_eq']`. Distinguish the cases in `hb : b ∈ Finset.Ico lo₁ hi`. Rewrite using `[if_pos hb, Int.toNat_of_nonneg (nn b)]`.
-
-Rewrite using `[if_neg hb, zero b hb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_count (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) [FiniteDimensional ↥LL.1 ↥(DdRE (P.PD K) (vrep r) τ)] :
     ∃ M : Multiset ℤ, Multiset.card M = finrank ↥LL.1 ↥(DdRE (P.PD K) (vrep r) τ) ∧
@@ -85,7 +83,7 @@ theorem exists_count (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) [FiniteDimensional �
 end Local
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PhtCompare.phtCmp`.
+A detailed English derivation is pending.
 -/
 theorem htCard : GlobalTheory.HeightCounting.HtCard := GlobalTheory.PhtCompare.phtCmp
 

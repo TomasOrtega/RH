@@ -24,13 +24,13 @@ open GlobalTheory.Cris GlobalTheory.CatCoh GlobalTheory.Published GlobalTheory.P
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨-, hF⟩` from `P.2.2.1 T C g hC gC R A φ h`. Take `⟨-, ⟨N, hN⟩, -⟩` from `P.2.1 T C g hC gC`. Use `haveI : Module.Projective T (primDR C) := (P.1.prim hC gC).2.1`. Set `l : primDR C →ₗ[T] R` to `{ toFun c := f ((bcMor h).pull c) map_add' := fun a b => by rw [map_add, map_add] map_smul' := fun a b => by rw [LinearMap.map_smulₛₗ, map_smul, smul_eq_mul, RingHom.id_apply, Algebra.smul_def] }`. Take `⟨d₀, hd₀⟩` from `Module.projective_lifting_property (Algebra.linearMap T R) l su`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₀ : ∀ c, algebraMap T R (d₀ c) = f ((bcMor h).pull c)` using `fun c => LinearMap.congr_fun hd₀ c`. Establish `z : ∀ c ∈ PrimitiveSubmodule C, f ((bcMor h).pull c) = 0` using `fun c hc => (Submodule.mem_dualAnnihilator _).1 hf _ (hF ▸ Submodule.subset_span ⟨c, hc, rfl⟩)`. Set `p : primDR C →ₗ[T] primDR C` to `N.subtype ∘ₗ N.linearProjOfIsCompl _ hN.symm`. Establish `p0 : ∀ c ∈ PrimitiveSubmodule C, p c = 0` using `fun c hc => (congrArg N.subtype (Submodule.linearProjOfIsCompl_apply_right hN.symm ⟨c, hc⟩)).trans (map_zero _)`. Establish `p1 : ∀ c, c - p c ∈ PrimitiveSubmodule C` using `fun c => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, rfl, -⟩` from `Submodule.existsUnique_add_of_isCompl hN c`. Establish `e : p b = b` using `congrArg N.subtype (Submodule.linearProjOfIsCompl_apply_left hN.symm b)`. Rewrite using `[map_add, p0 a a.2, e, zero_add, add_sub_cancel_right]`. Conclude with `a.2`. Use `⟨d₀ ∘ₗ p, (Submodule.mem_dualAnnihilator _).2 fun c hc => ?_, fun c => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply, p0 c hc, map_zero]`. Rewrite using `[LinearMap.comp_apply, e₀, ← sub_eq_zero, ← map_sub, ← map_sub]`. Conclude with `z _ (p1 c)`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_Fil_corr (P : AbelianDeRham) {T : Type} [CommRing T] [Algebra T R]
     (su : Function.Surjective (algebraMap T R)) {C : Over (Sp T)} [GrpObj C] {g : ℕ} (hC : IsAbelianScheme C)
@@ -64,27 +64,25 @@ theorem exists_mem_Fil_corr (P : AbelianDeRham) {T : Type} [CommRing T] [Algebra
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Set `κ : DividedPowers (RingHom.ker (TrivSqZeroExt.fstHom R R (ι → R)).toRingHom)` to `divided₂ (SqExt.ofModule R R (ι → R)).sq`. Establish `su : Function.Surjective (TrivSqZeroExt.fstHom R R (ι → R)).toRingHom` using `fun r => ⟨TrivSqZeroExt.inl r, rfl⟩`. Establish `su' : Function.Surjective (TrivSqZeroExt.fstHom R R R).toRingHom` using `fun r => ⟨TrivSqZeroExt.inl r, rfl⟩`. Establish `rC` using `P.2.2.2.1 _ C g hC gC _ κ (isDPNilpotent_squareZero _) R _ su rfl A φ₀ h₀`. Establish `cst : GrpMor (dp0 R) (𝟙 _) A κ (spMap (TrivSqZeroExt.fstHom R R (ι → R)).toRingHom) A (algebraMap R (TrivSqZeroExt R (ι → R))) (𝟙 _) (Over.Hom.left (𝟙 A))` using `GrpMor.of_hom (isDPMorphism_of_eq_bot _ rfl _ _) (by rw [← Cris.spMap_comp]; exact (Cris.spMap_id R).symm) (𝟙 A)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `red : GrpMor κ (spMap (TrivSqZeroExt.fstHom R R (ι → R)).toRingHom) A (dp0 R) (𝟙 _) A (TrivSqZeroExt.fstHom R R (ι → R)).toRingHom (𝟙 _) (Over.Hom.left (𝟙 A))`. Use `GrpMor.of_hom ?_ (by rw [Category.id_comp]) (𝟙 A)` and prove the remaining obligations. Use `(isDPMorphism_iff _ _ _).2 ⟨Ideal.map_le_iff_le_comap.2 fun a ha => ha, fun n hn a ha => ?_⟩` and prove the remaining obligations. Establish `ha' : (TrivSqZeroExt.fstHom R R (ι → R)).toRingHom a = 0` using `ha`. Rewrite using `[ha', dpow_eval_zero _ hn]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `n with _ | _ | n` into its components or cases. Conclude with `absurd rfl hn`. Rewrite using `[zero_add, κ.dpow_one ha, ha']`. Establish `e : κ.dpow (n + 1 + 1) a = 0` using `squareZeroDividedPowers_dpow _ (by omega) a`. Rewrite using `[e, map_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨d, hd, D, eD, ef⟩ : ∃ d ∈ Fil C, ∃ D, crysToDR κ h₀ D = d ∧ ∀ c, (D (cst.pull c)).fst = f c := by`. Use `letI : Algebra (TrivSqZeroExt R (ι → R)) R := (TrivSqZeroExt.fstHom R R (ι → R)).toRingHom.toAlgebra`. Take `⟨d, hd, ed⟩` from `exists_mem_Fil_corr P su hC gC h₀ hf`. Take `⟨D, rfl⟩` from `(P.2.2.2.1.crysToDR_bijective hC gC (κ := κ) (isDPNilpotent_squareZero _) su rfl h₀).2 d`. Use `⟨_, hd, D, rfl, fun c => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `rC.2 (cst.pull c)`. Establish `k1 : red.pull (cst.pull c) = c` using `(GrpMor.pull_pull cst red (homMor (dp0 R) (𝟙 _) (𝟙 A)) (fun r => by simp [TrivSqZeroExt.algebraMap_eq_inl]) (by simp) c).trans (Subtype.ext (IsMor.pullCohomologyOne_id _ c.1))`. Establish `k2 : red.pull ((liftMor κ h₀).pull e) = (bcMor h₀).pull e` using `GrpMor.pull_pull (liftMor κ h₀) red (bcMor h₀) (fun _ => rfl) (by simp) e`. Rewrite `k2` using `[he, k1]`. Rewrite using `[← he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `((congrArg f k2).trans (ed e)).symm`. Set `gs : ι → HdR A` to `fun k => { toFun c := (D (cst.pull c)).snd k map_add' := fun a b => by rw [LinearMap.map_add, LinearMap.map_add]; rfl map_smul' := fun a b => by`. Rewrite using `[LinearMap.map_smulₛₗ, map_smul]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl] }`. Use `⟨gs, fun m B _ φ j hj hφ sq => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra (TrivSqZeroExt R (ι → R)) (DualNumber R) := (TrivSqZeroExt.map (Fintype.linearCombination R m)).toRingHom.toAlgebra`. Establish `hB` using `PolPull.isAbelianScheme_of_isGrpPullback hC hφ`. Establish `gB` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hφ.1 gC`. Take `⟨bc, hF⟩` from `P.2.2.1 _ C g hC gC _ B φ hφ`. Establish `rB` using `P.2.2.2.1.crysToDR_bijective hB gB (κ := epsDP R) (isDPNilpotent_squareZero _) su' rfl hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x', ex⟩` from `bc.exists d`. Take `⟨d', rfl⟩` from `rB.2 x'`. Substitute `eD` using the available equality. Establish `μ : GrpMor κ (spMap (TrivSqZeroExt.fstHom R R (ι → R)).toRingHom) A (epsDP R) (epsRed R) A (TrivSqZeroExt.map (Fintype.linearCombination R m)).toRingHom (𝟙 _) (Over.Hom.left (𝟙 A))` using `GrpMor.of_hom (isDPMorphism_sqDP _ _ _ fun a ha => (TrivSqZeroExt.fst_map _ a).trans ha) (by`. Rewrite using `[← Cris.spMap_comp]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg spMap (RingHom.ext fun a => (TrivSqZeroExt.fst_map _ a).symm)) (𝟙 A)`. Establish `em : μ.Corr D d'` using `fun c => by`. Take `⟨c, rfl⟩` from `rC.2 c`. Establish `n` using `(liftMor κ h₀).comp μ`. Rewrite using `[GrpMor.pull_pull (liftMor κ h₀) μ n (fun _ => rfl) rfl c, ← GrpMor.pull_pull (bcMor hφ) (liftMor (epsDP R) hj) n (fun _ => rfl) (by simpa using sq) c]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ex c`. Use `⟨d', mem_Fil_of_corr (hφ := hφ) hF ex hd, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[← GrpMor.pull_pull cst μ (constMor A) (fun r => (TrivSqZeroExt.map _).commutes r) (by simp) c, em]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Conclude with `(TrivSqZeroExt.fst_map _ _).trans ((ef c).trans (by simp))`.
-
-Use `(TrivSqZeroExt.snd_map _ _).trans ?_` and prove the remaining obligations. Simplify using `[Fintype.linearCombination_apply, gs, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isFilLift_dir (P : AbelianDeRham) {ι : Type} [Fintype ι] {C : Over (Sp (TrivSqZeroExt R (ι → R)))}
     [GrpObj C] {g : ℕ} (hC : IsAbelianScheme C) (gC : SmoothOfRelativeDimension g C.hom) {A : Over (Sp R)} [GrpObj A]
@@ -172,31 +170,31 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {K : Type} [Field K] [Algebra c.F K]
 
 /- English proof (translation)
-Take `⟨A, _, A', _, π, π', i, hi, b, ub, hb, hπ, hπ', e, hpol, hu, hl, hM⟩` from `hM`. Take `⟨φ, hφ, eφ⟩` from `exists_isGrpPullback_self hπ hρ (spMap_algebraMap_id (K := K))`. Take `⟨φ', hφ', eφ'⟩` from `exists_isGrpPullback_self hπ' hρ' (spMap_dualMap_id (K := K))`. Establish `hU` using `ObjDim.isAbelianScheme Xo.univ`. Establish `hg` using `ObjDim.smoothOfRelativeDimension Xo.univ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `PolPull.isAbelianScheme_of_isGrpPullback hU hπ`. Establish `gA` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ.1 hg`. Establish `hB` using `PolPull.isAbelianScheme_of_isGrpPullback hU hρ`. Establish `gB` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hρ.1 hg`. Establish `hA'` using `PolPull.isAbelianScheme_of_isGrpPullback hU hπ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gA'` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ'.1 hg`. Use `haveI : IsCommMonObj B := PolPull.isCommMonObj_of_isGrpPullback hρ`. Establish `sq : j ≫ φ' = φ ≫ i`. Apply `hπ'.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, eφ', e₂, e, eφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `w1 : φ' ≫ A'.hom = B'.hom ≫ spMap (dualMap (algebraMap K K))` using `hφ'.1.w`. Establish `w2 : i ≫ A'.hom = A.hom ≫ DeRham.epsRed K` using `hi.1.w`. Establish `w3 : j ≫ B'.hom = B.hom ≫ DeRham.epsRed K` using `hj.1.w`. Establish `w4 : φ ≫ A.hom = B.hom ≫ spMap (algebraMap K K)` using `hφ.1.w`. Rewrite `w1` using `[spMap_dualMap_id, Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `w4` using `[spMap_algebraMap_id, Category.comp_id]`. Rewrite using `[Category.assoc, Category.assoc, w1, w2, ← Category.assoc, w3, w4]`. Take `⟨bc, hF⟩` from `P.2.2.1 K A _ hA gA K B φ hφ`. Establish `hL` using `(P.2.1 K B _ hB gB).1`. Establish `isL` using `Xo.univ.t.PP.isLB`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `isLρ` using `pull_isLB isL ρ`. Take `⟨b', hpol', eb⟩` from `hpol.pull_comp (AbelianDeRham.bcMor hφ) isL`. Rewrite `hpol'` using `[eφ]`. Take `rfl : b' = b₂` from `IsPolForm.unique P.1 hB gB isLρ hpol' hpol₂`. Take `⟨iso, perf⟩` from `P.2.2.2.2 K B _ hB gB _ isLρ _ hpol'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `ChernExists.lbIso_refl isLρ`. Establish `pp` using `perf (kTriv_pull hρ isL isLρ ((isGen_iff w).1 hw) Xo.univ.ktriv)`. Use `choose tv' htv using ArcQ.NormalForm.exists_baseChange hφ`. Use `choose th hth using bc.exists`. Establish `et : ∀ (σ k), tv' (ub σ k) = vb σ k` using `fun σ k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `push_inj hρ` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(tv' (ub σ k)).left ≫ ρ = (vb σ k).left ≫ ρ`. Rewrite using `[hv, ← eφ, ← Category.assoc, htv, spMap_dualMap_id, Category.id_comp, hu]`. Establish `hvs : ∀ k : (Σ σ : E →+* ℂ, Fin (Dw.mult σ)), pushHom hρ (epsR K) (vb k.1 k.2) = tv (fullB y k)` using `fun k => Over.OverMorphism.ext (hv k.1 k.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `zero : ∀ f ∈ Fil B, (∀ k, b' f (kb k) = 0) → f = 0` using `fun f hf h0 => by`. Apply `pp.bijective_left.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `LinearMap.ext fun h => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_sub_mem_Fil hρ hL hvs (kb := kb) (fun k => hl₂ k.1 k.2) h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `iso f hf _ ha` as an intermediate fact. Rewrite `this` using `[map_sub, map_sum]`. Simplify `this` using `[h0]`. Establish `ed : ∀ k, th (hb k) - kb k ∈ Fil B` using `fun k => by`. Use `(hl k.1 k.2).baseChange (hφ := hφ) hF hL (hth _) (htv _)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[et]`. Conclude with `this.sub_mem (hl₂ k.1 k.2)`. Take `⟨w₁, hc₁, f₁, hf₁, hd₁, hv₁⟩` from `hM τ r`. Establish `mf : th f₁ ∈ Fil B` using `mem_Fil_of_corr (hφ := hφ) hF (hth f₁) hf₁`. Establish `ev₁ : IsKSValue hj (th f₁) (tv' w₁)` using `hv₁.baseChange (hφ := hφ) P hA' gA' hj hφ' sq (hth f₁) (htv w₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e0 : th f₁ - f₂ = 0` using `zero _ (sub_mem mf hf₂) fun k => by`. Establish `h1` using `eb _ _ _ _ (hth f₁) (hth (hb k))`. Establish `h2` using `iso _ mf _ (ed k)`. Rewrite `h2` using `[map_sub, h1, hd₁, sub_eq_zero]`. Rewrite using `[map_sub, LinearMap.sub_apply, hd₂, ← h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `ev₁` using `[sub_eq_zero.1 e0]`. Establish `c₁` using `ArcQ.NormalForm.isLieComb_baseChange hφ (u := fun i => tv' (ub τ.1 i)) (fun _ => htv _) (htv w₁) hc₁`. Simplify using `only [et, Algebra.algebraMap_self, RingHom.id_apply] at c₁`. Conclude with `⟨_, c₁, ev₁⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsKS.row (P : AbelianDeRham) {Φ : Finset (E →+* ℂ)} {y : FrPt Xo c K} {x' : Sp (DualNumber K) ⟶ Xo.X}
     {M : HIx Dw Φ → K} (hM : IsKS Φ y x' M) {B : Over (Sp K)} [GrpObj B] {B' : Over (Sp (DualNumber K))} [GrpObj B']
@@ -276,27 +274,25 @@ theorem IsKS.row (P : AbelianDeRham) {Φ : Finset (E →+* ℂ)} {y : FrPt Xo c 
   exact ⟨_, c₁, ev₁⟩
 
 /- English proof (translation)
-Introduce `Pr E _ _ _ H Dw l Xo c K _ _ y ι _ _ X hpq hXs hXy N hN M`. Establish `P` using `Pr.p5`. Establish `e₀ : ∀ m : ι → K, DeRham.epsRed K ≫ spMap (dir c m).toRingHom = spMap (TrivSqZeroExt.fstHom K K (ι → K)).toRingHom` using `fun m => by`. Rewrite using `[← Cris.spMap_comp]`. Conclude with `congrArg spMap (RingHom.ext fun z => fst_dir (c := c) m z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `tan : IsTanX y (spMap (dir c M).toRingHom ≫ X)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hXs]`. Unfold `sOf`. Rewrite using `[← Cris.spMap_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg spMap (RingHom.ext fun r => (dir c M).commutes _)`. Rewrite using `[← Category.assoc, ← hXy]`. Conclude with `congrArg (· ≫ X) (e₀ M)`. Take `⟨M₀, A, _, A', _, π, π', i, hi, ψ, ub, hb, hπ, hπ', hiπ, hpol, hu, hl, what₂⟩` from `GlobalTheory.T.kodaira_spencer_matrix_exists Pr E H Dw l Xo c K y _ hpq tan`. Take `⟨C, _, πC, hC⟩` from `exists_isGrpPullback Xo.univ.t.G X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `ObjDim.isAbelianScheme Xo.univ`. Establish `hg` using `ObjDim.smoothOfRelativeDimension Xo.univ`. Establish `aC` using `PolPull.isAbelianScheme_of_isGrpPullback hU hC`. Establish `gC` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hC.1 hg`. Establish `hA` using `PolPull.isAbelianScheme_of_isGrpPullback hU hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `gA` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ.1 hg`. Establish `hL` using `(P.2.1 K A _ hA gA).1`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ, eφ⟩ : ∃ φ : A'.left ⟶ C.left, IsGrpPullback A' C (spMap (dir c M).toRingHom) φ ∧ φ ≫ πC = π' := by`. Establish `w : π' ≫ Xo.univ.t.G.hom = (A'.hom ≫ spMap (dir c M).toRingHom) ≫ X` using `hπ'.1.w.trans (Category.assoc _ _ _).symm`. Conclude with `⟨hC.1.lift _ _ w, hC.cancel (hπ'.congr rfl (hC.1.lift_fst _ _ w).symm) (hC.1.lift_snd _ _ w), hC.1.lift_fst _ _ w⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h₀` using `(hi.comp hφ).congr (e₀ M) rfl`. Use `⟨A, _, A', _, π, π', i, hi, ψ, ub, hb, hπ, hπ', hiπ, hpol, hu, hl, fun τ a => ?_⟩` and prove the remaining obligations. Take `⟨-, -, f, hf, hd, -⟩` from `what₂ τ a`. Take `⟨gs, hgs⟩` from `exists_isFilLift_dir P aC gC h₀ hf`. Establish `row : ∀ k, ∃ w, IsLieComb (fun b => N k ⟨τ, a, b⟩) (ub τ.1) w ∧ DeRham.IsLieImage (gs k) w` using `fun k => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨B, _, χ, hχ⟩` from `exists_isGrpPullback C (spMap (dir c (Pi.single k (1 : K))).toRingHom)`. Establish `w : (i ≫ φ) ≫ C.hom = (A.hom ≫ DeRham.epsRed K) ≫ spMap (dir c (Pi.single k (1 : K))).toRingHom`. Rewrite using `[Category.assoc _ (DeRham.epsRed K), e₀]`. Conclude with `h₀.1.w`. Establish `sq : hχ.1.lift _ _ w ≫ χ = i ≫ φ` using `hχ.1.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj : IsGrpPullback A B (DeRham.epsRed K) (hχ.1.lift _ _ w)` using `hχ.cancel (h₀.congr (e₀ _).symm sq.symm) (hχ.1.lift_snd _ _ _)`. Take `⟨v, hc, hv⟩` from `(hN k).row P hj hπ (hχ.comp hC) (by rw [← Category.assoc, sq, Category.assoc, eφ, hiπ]) hpol hu hl τ a hf hd`. Take `⟨v', hv', -⟩` from `hL.1 (gs k)`. Establish `fl` using `hgs (Pi.single k 1) B χ _ hj hχ sq`. Simplify using `only [Pi.single_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at fl`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl` from `IsKSValue.unique P (PolPull.isAbelianScheme_of_isGrpPullback aC hχ) ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hχ.1 gC) hv ⟨_, fl, hv'⟩`. Conclude with `⟨_, hc, hv'⟩`. Use `choose w hwc hwl using row`. Set `e` to `(Fintype.equivFin ι).symm`. Use `⟨lieComb (fun q => M (e q)) (fun q => w (e q)), ?_, f, hf, hd, _, ?_, isLieImage_lieComb _ (f := fun q => gs (e q)) fun q => hwl _⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨V, _, _, v, -, -, htan, hcomb, -, -⟩` from `GlobalTheory.T.exists_tangent_module_universal_group E H Dw l Xo K y.x choose n hn using fun σ k => (htan _).1 (y.tan σ k)`. Establish `key : ∀ {m : ℕ} (cf : Fin m → K) (u : Fin m → (epsR K ⟶ A)) (b : Fin m → V) (w : epsR K ⟶ A), (∀ j, (u j).left ≫ π = v (b j)) → (IsLieComb cf u w ↔ w.left ≫ π = v (∑ j, cf j • b j))` using `fun cf u b w hu => by rw [isLieComb_iff_isCombAt hπ, funext hu, hcomb]`. Establish `hun : ∀ j, (ub τ.1 j).left ≫ π = v (n τ.1 j)` using `fun j => (hu _ j).trans (hn _ j).symm`. Rewrite using `[key _ _ _ _ hun, (key _ _ _ _ fun q => (key _ _ _ _ hun).1 (hwc (e q))).1 (isLieComb_lieComb _ _), e.sum_comp fun k => M k • ∑ j, N k ⟨τ, a, j⟩ • n τ.1 j]`. Use `congr 1`.
-
-Simplify using `only [Finset.smul_sum, smul_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Rewrite using `[e.sum_comp fun k => M k • gs k]`. Conclude with `hgs M A' φ i hi hφ rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKS_dir_sum : GlobalTheory.CovTop.Hypotheses₂ → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K]

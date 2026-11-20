@@ -18,7 +18,7 @@ section Sep
 variable {L : Type*} [Field L] {G : Type*} [Group G] [MulSemiringAction G L]
 
 /- English proof (translation)
-The claim follows from `mul_mem (h.a_mem i) hd b_mem := h.b_mem c_mem := mul_mem h.c_mem hd a_le i := by rw [map_mul]; exact mul_le_one' (h.a_le i) hdv b_le := h.b_le c_le := hcd sum_in σ hσ := by simp_rw [mul_right_comm _ d]; rw [← Finset.sum_mul, h.sum_in σ hσ] sum_out σ hσ := by simp_rw [mul_right_co …`.
+A detailed English derivation is pending.
 -/
 theorem isSep_mul_right {v : Valuation L ℝ≥0} {N : Subgroup G} {n : ℕ} {a b : Fin n → L} {c : L}
     (h : IsSep v N a b c) {d : L} (hd : d ∈ Fix L N) (hdv : v d ≤ 1) (hcd : v (c * d) ≤ 1) :
@@ -35,7 +35,7 @@ theorem isSep_mul_right {v : Valuation L ℝ≥0} {N : Subgroup G} {n : ℕ} {a 
     simp_rw [mul_right_comm _ d]; rw [← Finset.sum_mul, h.sum_out σ hσ, zero_mul]
 
 /- English proof (translation)
-The claim follows from `h.b_mem b_mem := h.a_mem c_mem := h.c_mem a_le := h.b_le b_le := h.a_le c_le := h.c_le sum_in σ hσ := by have h1 := congrArg (σ • ·) (h.sum_in σ⁻¹ (inv_mem hσ)) have hc : σ • c = c := h.c_mem ⟨σ, hσ⟩ simp only [Finset.smul_sum, smul_mul', smul_inv_smul, hc] at h1 simpa [mul_comm] …`.
+A detailed English derivation is pending.
 -/
 theorem isSep_swap {v : Valuation L ℝ≥0} {N : Subgroup G} {n : ℕ} {a b : Fin n → L} {c : L}
     (h : IsSep v N a b c) : IsSep v N b a c where
@@ -75,9 +75,7 @@ def fixInt {H : Subgroup (Gal p Ω)} (V : Subgroup H) :
     exact ((g : H) : Gal p Ω).commutes r
 
 /- English proof (translation)
-Establish `hle : towerAlg T ≤ fixInt (⊤ : Subgroup ↥(⨅ n, Gn T n))`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `x (⟨m, rfl⟩ | ⟨m, rfl⟩) g`. Conclude with `((GlobalTheory.K5.Basic.mem_gn T m _).1 (Subgroup.mem_iInf.1 (g : ↥(⨅ n, Gn T n)).2 m)).1`. Conclude with `((GlobalTheory.K5.Basic.mem_gn T m _).1 (Subgroup.mem_iInf.1 (g : ↥(⨅ n, Gn T n)).2 m)).2`.
-
-Conclude with `hle hs ⟨g, trivial⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem towerAlg_fixed (T : Tower p Ω) {s : integralClosure (O0 p) Ω} (hs : s ∈ towerAlg T)
     (g : ↥(⨅ n, Gn T n)) : g • (s : Ω) = s := by
@@ -95,29 +93,25 @@ end GlobalTheory.AlmostEt.TrTower
 namespace GlobalTheory.AlmostEt.TrTower
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hp2 hclo T F`. Establish `hpcoe : ((p : integralClosure (O0 p) Ω) : Ω) = p` using `map_natCast (integralClosure (O0 p) Ω).val p`. Take `⟨v, hvint, hvinv, hp0, hp1, hS⟩` from `GlobalTheory.T.exists_valuation_almostEtale_towerFixer p Ω hp2 hclo T`. Take `⟨U, -, hUfin, hUfix, hUsep⟩` from `hS (F.image Subtype.val)`. Take `⟨n, a, b, c, hsep, hc⟩` from `hUsep (v p) hp1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hUfin`. Use `haveI : Fintype (↥(⨅ n, Gn T n) ⧸ U) := Fintype.ofFinite _`. Establish `hvinv' : ∀ (g : ↥(⨅ n, Gn T n)) (x : Ω), v (g • x) = v x` using `fun g x => hvinv g x`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc` using `[map_zero]`. Conclude with `(not_lt_zero' hc)`. Establish `hvc : 0 < v c` using `lt_of_le_of_lt (by positivity) hc`. Establish `hpfix : ∀ (g : ↥(⨅ n, Gn T n)), g • (p : Ω) = p` using `fun g => by`. Express the relevant statement in the definitionally equal form `((g : Gal p Ω)) (p : Ω) = p`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_natCast _ p`. Establish `hd : (p : Ω) / c ∈ Fix Ω U` using `div_mem (fun g => hpfix g) hsep.c_mem`. Establish `hdv : v ((p : Ω) / c) ≤ 1`. Rewrite using `[map_div₀]; exact div_le_one_of_le₀ hc.le (by positivity)`. Establish `hsep' : IsSep v U (fun i => a i * ((p : Ω) / c)) b (p : Ω)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isSep_mul_right hsep hd hdv (by rw [mul_div_cancel₀ _ hc0]; exact hp1.le)` as an intermediate fact. Rewrite `this` using `[mul_div_cancel₀ _ hc0]`. Then use the resulting hypothesis. Establish `hsw` using `isSep_swap hsep'`. Establish `hint : ∀ x : Ω, v x ≤ 1 → x ∈ integralClosure (O0 p) Ω` using `fun x hx => (hvint x).1 hx`. Set `a' : Fin n → integralClosure (O0 p) Ω` to `fun i => ⟨_, hint _ (hsep'.a_le i)⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b' : Fin n → integralClosure (O0 p) Ω` to `fun i => ⟨_, hint _ (hsep'.b_le i)⟩`. Establish `htrint : ∀ s : integralClosure (O0 p) Ω, cosetTrace U (s : Ω) ∈ integralClosure (O0 p) Ω` using `fun s => Subalgebra.sum_mem _ fun q _ => GlobalTheory.K5.Basic.isInt_gal _ s.2`. Set `tr : integralClosure (O0 p) Ω → integralClosure (O0 p) Ω` to `fun s => ⟨_, htrint s⟩`. Establish `htr : ∀ s, (tr s : Ω) = cosetTrace U (s : Ω)` using `fun s => rfl`. Establish `hle : towerAlg T ≤ fixInt U` using `fun s hs g => towerAlg_fixed T hs (g : ↥(⨅ n, Gn T n))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fixInt U, tr, n, a', b', ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Conclude with `hUfix _ (Finset.mem_image_of_mem _ hs)`. Use `{ le := hle e_mem := Subalgebra.natCast_mem _ p a_mem := fun i => hsep'.a_mem i b_mem := fun i => hsep'.b_mem i tr_mem := ?_ tr_add := ?_ tr_mul := ?_ left := ?_ right := ?_ sum := ?_ }` and prove the remaining obligations. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `GlobalTheory.T.mem_towerUnionAdjoin_of_galois_fixed p Ω hclo T` to reduce the goal to its premises. Introduce `g hg`. Conclude with `(cosetTrace_fixed_props Ω v _ hvinv' U _ hx).1 ⟨g, hg⟩`. Introduce `x _ y _`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [htr, Subalgebra.coe_add, cosetTrace, smul_add, Finset.sum_add_distrib]`. Introduce `β hβ x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [htr, Subalgebra.coe_mul]`. Conclude with `(cosetTrace_fixed_props Ω v _ hvinv' U _ hx).2.2 _ (towerAlg_fixed T hβ)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_mul, hpcoe, AddSubmonoidClass.coe_finsetSum, htr]`. Conclude with `GlobalTheory.T.sum_mul_cosetRepresentativeTrace_eq Ω v _ U n _ _ _ hsep' _ hx`. Introduce `x hx`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_mul, hpcoe, AddSubmonoidClass.coe_finsetSum, htr]`. Conclude with `GlobalTheory.T.sum_mul_cosetRepresentativeTrace_eq Ω v _ U n _ _ _ hsw _ hx`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_mul, hpcoe, AddSubmonoidClass.coe_finsetSum]`.
-
-Simplify using `using hsep'.sum_in 1 (one_mem _)`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_trData_towerAlg : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω],
     p ≠ 2 → IsClo p Ω → ∀ (T : Tower p Ω) (F : Finset (integralClosure (O0 p) Ω)),

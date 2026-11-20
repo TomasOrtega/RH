@@ -29,29 +29,27 @@ variable {D : D7} (V : HSp D) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hσ` using the available equality. Establish `hσ : GoodEmb c c.F.val.toRingHom` using `rfl`. Establish `hc0' : c0 ≠ 0` using `by rintro rfl; rw [zero_pow hN.ne'] at hc0; exact zero_ne_one hc0`. Establish `hty` using `(GlobalTheory.Relab.relab_good _ H l c _ hσ).2.2.2 Dw g e`. Establish `hfree : ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra c.F K] (y y' : FrPt Xo c K), y'.x = y.x → evR Xo c f y' = evR Xo c f y` using `fun K _ _ _ y y' h => by`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, z', hz, -, hz'⟩` from `GlobalTheory.Frames.exists_complex_framed_pair _ _ _ _ Xo c K y y'`. Use `hz' f hf 1 (by` as an intermediate fact. Rewrite using `[map_one, one_mul]`. Conclude with `GlobalTheory.WeightZeroValue.evR_eq_of_same_point hf (by simpa using hz (𝟙 _) (by simpa using h)))`. Rewrite `this` using `[map_one, one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `val₀ : ∀ h : GA D V, ∃ hx : (dict h).2 ∈ (U.X (dict h).1).dom, toC (evR Xo c f (U.un _ ⟨_, hx⟩)) = c0 * ((xi (Matrix.GeneralLinearGroup.det (finHom V h)) : ℂˣ) : ℂ)`. Introduce `h`. Take `⟨γ, hγ, hΛ, hm, -⟩` from `hD.2 h`. Establish `hv` using `hval h γ ⟨hγ, hΛ, hm⟩`. Rewrite `hv` using `[map_mul, map_mul, map_mul, hxi γ hγ, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hx, ex⟩` from `rdU_eq U f _ _ (hv ▸ mul_ne_zero hc0' (Units.ne_zero _))`. Conclude with `⟨hx, ex.symm.trans hv⟩`. Use `choose hdom val₀ using val₀`. Establish `hroot : ∃ N : ℕ, 0 < N ∧ ∀ y : FrPt Xo c (CAt c.F.val.toRingHom), evR Xo c f y ^ N = 1` using `⟨N, hN, fun y => by`. Take `⟨h, hh⟩` from `exists_dict_over V U dict io e F ik φ th x₀ hσ hA hpq hU hW hD hι hth hx₀ hdom y`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.WeightZeroValue.evR_eq_of_same_point hf hh]`. Express the relevant statement in the definitionally equal form `toC (evR Xo c f _) ^ N = (1 : ℂ)`. Rewrite using `[val₀, mul_pow, hc0, ← Units.val_pow_eq_pow_val, hxN, Units.val_one, one_mul]⟩`. Establish `val : ∀ (h : GA D V) (i : Fin F.n) P (y : FrPt Xo c (CAt c.F.val.toRingHom)), i = ik (dict h).1 → IsPeriod (F.Di i) (fun j => relab c c.F.val.toRingHom (e j).1) P → y.x = F.u i P → toC (evR Xo c f y) = c0 * ((xi (Matrix.GeneralLinearGroup.det (finHom V h)) : ℂˣ) : ℂ)`. Introduce and unpack `h _ P y rfl hP hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P₀, -, hP₀, hy₀, -⟩` from `hD.1.2 (dict h).1 ⟨_, hdom h⟩`. Rewrite using `[← val₀, GlobalTheory.FiniteOrderConst.const_on_period_space _ H Dw l Xo c _ f hf hfree hroot g _ F hty _ P P₀ y _ hP hP₀ hy hy₀]`. Establish `pt : ∀ y : FrPt Xo c (CAt c.F.val.toRingHom), ∃ k P, IsPeriod (F.Di (ik k)) (fun j => relab c c.F.val.toRingHom (e j).1) P ∧ y.x = F.u (ik k) P`. Introduce `y`. Take `⟨k, x, t, ht⟩` from `hU.2.2.1 y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨P, -, hP, hy, -⟩` from `hD.1.2 k x`. Conclude with `⟨k, P, hP, ht.1.trans hy⟩`. Establish `hA' : ∀ {i i' : Fin F.n} (gam : (F.Di i).La ≃ₗ[𝓞 D.host.E] (F.Di i').La) a, ∃ x, gam (F.t i a) = F.t i' a + l.A • x` using `fun gam a => ⟨gam (F.t _ a) - F.t _ a, by rw [hA, one_smul, add_sub_cancel]⟩`. Take `⟨k, P, hP, hyP⟩` from `pt z`. Take `⟨k', P', hP', hyP'⟩` from `pt z'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `GlobalTheory.ShortMove.exists_marked_of_component D V H Dw l Xo _ g _ F hty _ rfl (U.X k) (ik k) (φ k) io (hW k) (hD.1.1 k) hι.emb hι.isom`. Take `⟨γ₁, hγ₁, hΛ₁, hm₁, -⟩` from `hD.2 h`. Take `⟨γ₂, hγ₂, hΛ₂, hm₂, -⟩` from `hD.2 (h * κ)`. Take `⟨δ₁, hδu₁, hδf₁, -⟩` from `GlobalTheory.MarkCoset.rational_matrix V γ₁ hγ₁`. Take `⟨δ₂, hδu₂, hδf₂, -⟩` from `GlobalTheory.MarkCoset.rational_matrix V γ₂ hγ₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g₁, e₁, t₁, -⟩` from `marked_isometry_half V l io (U.X k) (U.X (dict h).1) _ _ (φ k) (φ _) (F.t _) (F.t _) LinearMap.id h γ₁ 1 (hW k) (hW _) (hD.1.1 k) (hD.1.1 _) δ₁ hδu₁ hδf₁ rfl (fun a _ => ⟨0, zero_mem _, by`. Rewrite using `[map_one, Units.val_one, Matrix.one_mulVec, smul_zero, add_zero]`. Use the proof step `rfl⟩) hh`. Use the proof step `(by rw [mul_one]; exact ⟨hΛ₁, hm₁⟩)`. Take `⟨g₂, e₂, t₂, -⟩` from `marked_isometry_half V l io (U.X k) (U.X (dict (h * κ)).1) _ _ (φ k) (φ _) (F.t _) (F.t _) (s.f l.M) h γ₂ κ (hW k) (hW _) (hD.1.1 k) (hD.1.1 _) δ₂ hδu₂ hδf₂ hκ hκ' hh (by rw [mul_assoc]; exact ⟨hΛ₂, hm₂⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g₃, e₃, t₃⟩` from `GlobalTheory.LevStab.exists_isometry_of_levAut F hρ hP hP' (hyP ▸ hz.symm.trans hyP')`. Apply the tactic sequence `have i₁ : ik k = ik (dict h).1 := GlobalTheory.Dict.index_eq_of_marked_isometry F hpq hσ hty _ _ g₁ e₁ t₁ (hA' g₁)`. Establish `i₂ : ik k' = ik (dict (h * κ)).1`. Apply the tactic sequence `refine GlobalTheory.Dict.index_eq_of_marked_isometry F hpq hσ hty _ _ (g₃.symm.trans g₂) (fun a b => ?_) (fun a ha => ?_) (hA' _)`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, e₂, ← e₃, g₃.apply_symm_apply, g₃.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `t₂ a ha`. Take `⟨z, hz⟩` from `exists_eq_nsmul l (t₃ a) (sub_mem (GlobalTheory.LevStab.map_mem_smul_top _ g₃.toLinearMap (GlobalTheory.LevStab.map_mem_smul_top _ _ (GlobalTheory.LevStab.map_mem_smul_top _ _ ha))) (GlobalTheory.LevStab.map_mem_smul_top _ _ ha))`. Use `⟨x - g₂ (g₃.symm z), ?_⟩` and prove the remaining obligations. Establish `: F.t (ik k') a = g₃ (F.t (ik k) (s.f l.M a)) - l.M • z` using `by rw [← hz, sub_sub_cancel]`. Rewrite using `[LinearEquiv.trans_apply, this, map_sub, map_sub, g₃.symm_apply_apply, hx, map_nsmul, map_nsmul, smul_sub, add_sub_assoc]`.
-
-Rewrite using `[val _ _ P z i₁ hP hyP, val _ _ P' z' i₂ hP' hyP', map_mul, map_mul, map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem value_ratio_complex (hσ : σ = c.F.val.toRingHom) (hA : l.A = 1) (hpq : 1 ≤ Dw.p + Dw.q)
     (hU : IsUnf U) (hW : ∀ k, ModelW V rfl (U.X k)) (hD : DictLat U V rfl dict io e F ik φ th x₀)
@@ -150,15 +148,15 @@ open GlobalTheory.GeoLevel GlobalTheory.DatumInverseCharacter GlobalTheory.Pinne
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨hdv, hM, hp, hI, -⟩` from `hd`. Take `⟨g, hg, hk⟩` from `GlobalTheory.CoverCharacter.exists_sim_inducing Dw hpq l d.l₂ d.pd d.I hdv hM hp hI hA k`. Establish `hM₂ : 0 < d.l₂.M` using `by have := d.l₂.three_le; omega`. Establish `hM0 : 0 < l.M` using `by have := l.three_le; omega`. Establish `hpd : 0 < d.pd` using `Nat.pos_of_ne_zero fun e => by rw [hM, e] at hM₂; omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g', hg'⟩` from `g.inv d.l₂.M hM₂`. Establish `hmap : ∀ f : Dw.La →ₗ[𝓞 E] Dw.La, (d.l₂.Mb • ⊤ : Submodule (𝓞 E) Dw.La) ≤ (d.l₂.Mb • ⊤ : Submodule (𝓞 E) Dw.La).comap f` using `fun f a ha => GlobalTheory.LevStab.map_mem_smul_top _ f ha`. Set `σ : LevQ Dw d.l₂ ≃ₗ[𝓞 E] LevQ Dw d.l₂` to `LinearEquiv.ofLinear (Submodule.mapQ _ _ (g.f d.l₂.M) (hmap _)) (Submodule.mapQ _ _ g' (hmap _)) (LinearMap.ext fun q => by`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `(Submodule.Quotient.eq _).2 (mem_of_modN Dw (natCast_mem_Mb _) (hg' a).2))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the proof step `(LinearMap.ext fun q => by`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `(Submodule.Quotient.eq _).2 (mem_of_modN Dw (natCast_mem_Mb _) (hg' a).1))`. Take `⟨s, hν, hs, -⟩` from `GlobalTheory.LevelIsometry.exists_isometry_inducing E H Dw d.l₂ σ`. Establish `hs' : ∀ a, s.f d.l₂.M a - g.f d.l₂.M a ∈ (d.l₂.Mb • ⊤ : Submodule (𝓞 E) Dw.La)` using `fun a => (Submodule.Quotient.eq _).1 (hs a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hA1 : l.A = 1` using `Nat.dvd_one.1 (hA ▸ hdv.2.2)`. Use `⟨s, hν, ⟨by rw [hν, sub_self]; exact dvd_zero _, fun a => ?_, fun a => ⟨s.f l.A a - a, by rw [hA1, one_smul]⟩⟩, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `mem_of_modN Dw (natCast_mem_Mb l) (s.tower l.M d.pd hM0 hpd a)`. Establish `h2` using `mem_of_modN Dw (natCast_mem_Mb l) (g.tower l.M d.pd hM0 hpd a)`. Rewrite `h1`, `h2` using `[← hM]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 
-Establish `h3` using `add_mem (add_mem (sub_mem (Submodule.smul_mono_left hdv.2.1 (hs' a)) h1) h2) (hg.2.1 a)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Rewrite using `[← hk, Submodule.Quotient.eq]`. Conclude with `Submodule.smul_mono_left (hI.le.trans Ideal.mul_le_right) (hs' a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isometry_inGam {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) (hd : d.IsLev)
@@ -201,13 +199,13 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Take `⟨hU, hW, g₀, e₀, F, ik, φ, th, hth, hD, hval⟩` from `hv`. Take `⟨-, -, -, -, -, -, -, hsec, hne⟩` from `hd`. Establish `hc0' : c0 ≠ 0` using `by rintro rfl; rw [zero_pow hN.ne'] at hc0; exact zero_ne_one hc0`. Take `⟨γ, hγ, hΛ, hm, -⟩` from `hD.2 1`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hv` using `hval 1 γ ⟨hγ, hΛ, hm⟩`. Take `⟨hx, -⟩` from `GlobalTheory.ShortMove.rdU_eq U₂ d.cδ _ _ (hv ▸ mul_ne_zero hc0' (Units.ne_zero _))`. Set `z` to `U₂.un _ ⟨_, hx⟩`. Take `⟨ρ, hρ⟩` from `GlobalTheory.LevelActionLaws.exists_levAut hpq d.Xo₂ s hs.1`. Take `⟨hρs, ν, -⟩` from `id hρ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z', hz'⟩` from `(GlobalTheory.exists_unique_frMove _ H Dw d.l₂ d.Xo₂ d.c₂ ρ.hom ν hρs _ z).1`. Establish `h1` using `value_ratio_complex V U₂ dict₂ io e₀ F ik φ th x₀ (RingHom.ext fun _ => rfl) hA₂ hpq hU hW hD hι hth (fun k τ hτ => by`. Rewrite using `[(hW k).1, (hU.2.1 k).1]`. Conclude with `hx₀ τ (((hU.2.1 k).2 τ).1 hτ)) d.cδ hsec c0 xi N hN hc0 hxN hval hrat s ρ hρ u`. Use the proof step `(by unfold latGHat; rw [hu, GlobalTheory.TwistTie.gLat_one]) (fun b _ => hlift b) z z' hz'.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `h2 : toC (evR d.Xo₂ d.c₂ d.cδ z') = (((ψ k : c.Fˣ) : c.F) : ℂ) * toC (evR d.Xo₂ d.c₂ d.cδ z) ∧ toC (evR d.Xo₂ d.c₂ d.cδ z) ≠ 0`. Use `letI : Field (CAt (c.F.val.toRingHom.comp (d.eF.symm : d.c₂.F →+* c.F))) := inferInstanceAs (Field ℂ)`. Use `haveI : IsAlgClosed (CAt (c.F.val.toRingHom.comp (d.eF.symm : d.c₂.F →+* c.F))) := inferInstanceAs (IsAlgClosed ℂ)`. Conclude with `⟨hψ k s ρ hs (fun a => ⟨s.f d.l₂.A a - a, by rw [hA₂, one_smul]⟩) hρ hk _ z z' hz'.1, hne _ z⟩`. Conclude with `mul_right_cancel₀ h2.2 (h2.1.symm.trans h1)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem psi_value (V : HSp D) {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {n r : ℕ}
     (d : DeltaDat Xo c n) (hr : V.rank = r) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
@@ -263,11 +261,11 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨s, hν, hs, hk⟩` from `exists_isometry_inGam d hd hA₂ hpq k`. Establish `hM₂ : 0 < d.l₂.M` using `by have := d.l₂.three_le; omega`. Establish `hQ' : ∀ P ∈ Q, d.l₂.Mb ≤ P.asIdeal` using `fun P hP => (hd.2.2.2.1.le.trans Ideal.mul_le_right).trans (hQ P hP)`. Apply the tactic sequence `obtain ⟨u, hu₀, hu, hus⟩ := GlobalTheory.ClassSumRule.exists_finite_of_isometry hι s hν`. Take `⟨y, hy, hdet⟩` from `exists_int_matrix hβ hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s.f d.l₂.M, fun P => Formalism.UG.bc (resS D.host.F P) y, hk, fun x x' => ?_, fun P hP x => ?_, ?_⟩` and prove the remaining obligations. Use `s.mult _ hM₂ x x'` as an intermediate fact. Rewrite `this` using `[hν, one_mul]`. Conclude with `(Int.natCast_dvd_natCast.2 (Dvd.intro_left _ hd.2.1.symm)).trans this`. Conclude with `GlobalTheory.AdjMove.redM_uMat_move D S V βS β e _ io hint u y hy d.l₂.M P (hQ' P hP (natCast_mem_Mb d.l₂)) _ x fun b => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.ClassSumRule.latGHat_one_eq hι.emb]`. Conclude with `hus _ hM₂ _`. Establish `hres' : ∀ P : Q, ((Matrix.GeneralLinearGroup.det (Formalism.UG.bc (resS D.host.F P.1) y) : (kP P.1)ˣ) : kP P.1) = resS D.host.F P.1 y.1.det` using `fun P => ((resS D.host.F P.1).map_det _).symm`. Take `⟨z, hz, hval⟩` from `exists_root_value d.l₂ hu₀ hχ ht Q ch hres hQ' hram _ hdet _ hres'`. Rewrite using `[hψ k s hs hk u hu (hus _ hM₂), hxi u z hz, hval, ← Finset.prod_coe_sort Q]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_move (S V : HSp D) (βS : GL (Fin S.rank) (EAf D)) (β : GL (Fin V.rank) (EAf D))
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hβ : IsSDFrame V β Λ 1) (e : AE D)

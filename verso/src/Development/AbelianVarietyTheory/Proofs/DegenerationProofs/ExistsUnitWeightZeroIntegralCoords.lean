@@ -16,15 +16,15 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.ZH.ModPrim
 
 /- English proof (translation)
-Introduce `L₁ L₂ p _ V _ j G _ g N N' X _ q H J _ σ cls m hB c w hc hw`. Use `haveI : IsAlgClosed (kb p) := (GlobalTheory.ZJ.kb_isAlgClosed_and_conj p).1`. Establish `pb : IsPullback m.r m.Φ.G.hom G.hom (rPt p ≫ spMap j)` using `m.cart.1`. Establish `hsq : (rPt p ≫ c) ≫ G.hom = 𝟙 _ ≫ rPt p ≫ spMap j`. Rewrite using `[Category.assoc, hc, Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `x : m.Φ.Pt` to `Over.homMk (pb.lift (rPt p ≫ c) (𝟙 _) hsq) (pb.lift_snd _ _ hsq)`. Establish `hx : x.left ≫ m.r = rPt p ≫ c` using `pb.lift_fst _ _ hsq`. Take `⟨v, hv⟩` from `CrdCalc.crd_exists (R := kb p) (m.Φ.H_isLB 1) m.F x.left`. Establish `h₁` using `m.red x v hv`. Rewrite `h₁` using `[hx]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂` using `CrdCalc.crd_map (IsLocalRing.residue (OO p)) hw`. Take `⟨u, hu⟩` from `CrdCalc.crd_unique h₁ h₂`. Establish `h₃ : Crd (m.Φ.H 1) m.F x.left (fun i => IsLocalRing.residue (OO p) (w i))`. Use `CrdCalc.crd_smul u hv` as an intermediate fact. Rewrite `this` using `[← funext hu]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, x, hx, h₃⟩` and prove the remaining obligations. Establish `hcov` using `(GlobalTheory.T.immBy_weight_zero' L₁ L₂ (kb p) m.Φ g N N' _ J _ m.F m.pol hB m.good m.dim).1`. Establish `hmem : (x.left : Sp (kb p) ⟶ m.Φ.G.left) (IsLocalRing.closedPoint (kb p)) ∈ ⨆ i ∈ {i | m.xe.symm (cls i) = 0}, Out.nonzeroLocus (m.F i)`. Rewrite using `[hcov]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Simplify using the standard rewrite rules.
 
-Simplify using `only [TopologicalSpace.Opens.mem_iSup] at hmem`. Take `⟨i, hi, hm⟩` from `hmem`. Use `⟨i, m.xe.symm.map_eq_zero_iff.1 hi, ?_⟩` and prove the remaining obligations. Establish `h₄` using `(CrdCalc.crd_isUnit_iff i h₃).2 ((CrdCalc.top_le_iff _ _).2 hm)`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).1 h₄.ne_zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_unit_and_residue_point : Out.Laws → Out.Laws2 → ∀ (p : ℕ) [Fact p.Prime] (V : Type) [CommRing V] (j : V →+* OO p) (G : Over (Sp V)) [GrpObj G] (g N N' : ℕ) (X : Type) [AddCommGroup X] (q : QuadraticMap ℤ X ℝ) (H : LB G.left) (J : Type) [Fintype J] (σ : J → H.Sec) (cls : J → X) (m : Mod p j G g N q H σ cls), Big g N N' → ∀ (c : Sp (OO p) ⟶ G.left) (w : J → OO p), c ≫ G.hom = spMap j → Crd H σ c w → (∃ i, cls i = 0 ∧ IsUnit (w i)) ∧ ∃ x : m.Φ.Pt, x.left ≫ m.r = rPt p ≫ c ∧ Crd (m.Φ.H 1) m.F x.left (fun i => IsLocalRing.residue (OO p) (w i)) := by
   intro L₁ L₂ p _ V _ j G _ g N N' X _ q H J _ σ cls m hB c w hc hw

@@ -29,19 +29,19 @@ Both sides reduce to the same expression.
 private lemma toMatrix_one_alt : toMK (1 : KG ε) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← toMatrix_mul_alt, inv_mul_cancel, toMatrix_one_alt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma toMatrix_inv_mul (a : KG ε) : toMK a⁻¹ * toMK a = 1 := by
   rw [← toMatrix_mul_alt, inv_mul_cancel, toMatrix_one_alt]
 
 /- English proof (translation)
-Rewrite using `[← toMatrix_mul_alt, mul_inv_cancel, toMatrix_one_alt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma toMatrix_mul_inv (a : KG ε) : toMK a * toMK a⁻¹ = 1 := by
   rw [← toMatrix_mul_alt, mul_inv_cancel, toMatrix_one_alt]
 
 /- English proof (translation)
-Unfold `KType.op`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma kType_op_mul (T : KType ε Λ) (a b : KG ε) : T.op (a * b) = T.op a * T.op b := by
   unfold KType.op
@@ -49,7 +49,7 @@ private lemma kType_op_mul (T : KType ε Λ) (a b : KG ε) : T.op (a * b) = T.op
   rfl
 
 /- English proof (translation)
-Unfold `KType.op`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma kType_op_one (T : KType ε Λ) : T.op 1 = 1 := by
   unfold KType.op
@@ -57,13 +57,13 @@ private lemma kType_op_one (T : KType ε Λ) : T.op 1 = 1 := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[← kType_op_mul, mul_inv_cancel, kType_op_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma kType_op_mul_inv (T : KType ε Λ) (a : KG ε) : T.op a * T.op a⁻¹ = 1 := by
   rw [← kType_op_mul, mul_inv_cancel, kType_op_one]
 
 /- English proof (translation)
-Rewrite using `[← kType_op_mul, inv_mul_cancel, kType_op_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma kType_op_inv_mul (T : KType ε Λ) (a : KG ε) : T.op a⁻¹ * T.op a = 1 := by
   rw [← kType_op_mul, inv_mul_cancel, kType_op_one]
@@ -81,7 +81,7 @@ private def ps2C (T : KType ε Λ) (k : KG ε) : (T.V →L[ℂ] T.V) ≃L[ℂ] (
   (ps2E T k).arrowCongr (ps2E T k)
 
 /- English proof (translation)
-Use extensionality with `v`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private lemma conjAction_apply (T : KType ε Λ) (k : KG ε) (A : T.V →L[ℂ] T.V) :
     ps2C T k A = T.op k * A * T.op k⁻¹ := by
@@ -89,17 +89,15 @@ private lemma conjAction_apply (T : KType ε Λ) (k : KG ε) (A : T.V →L[ℂ] 
   rfl
 
 /- English proof (translation)
-Establish `hw : T.w ≠ 0` using `fun h => by`. Use `T.w_norm` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Use `haveI : Nontrivial T.V := ⟨⟨T.w, 0, hw⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (A : Module.End ℂ T.V)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `key : ∀ k v, A (T.op k v) = T.op k (A v)` using `fun k v => by`. Use `congrArg (fun B : T.V →L[ℂ] T.V => B v) (hA k)` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this.symm`. Establish `hinv : ∀ k : KG ε, ∀ v ∈ Module.End.eigenspace (A : Module.End ℂ T.V) c, ((T.τ k : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V) v ∈ Module.End.eigenspace (A : Module.End ℂ T.V) c`. Introduce `k v hv`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Express the relevant statement in the definitionally equal form `A (T.op k v) = c • T.op k v`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Rewrite using `[key, show A v = c • v from hv, map_smul]`. Break down `T.irred _ hinv with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨v, hv⟩` from `hc.exists_hasEigenvector`. Establish `hv1 : v ∈ Module.End.eigenspace (A : Module.End ℂ T.V) c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `hv.apply_eq_smul`. Rewrite `hv1` using `[h]`. Conclude with `hv.2 ((Submodule.mem_bot ℂ).1 hv1)`. Use extensionality with `v`.
-
-Establish `hv : v ∈ Module.End.eigenspace (A : Module.End ℂ T.V) c`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Rewrite `hv` using `[Module.End.mem_eigenspace_iff]`. Simplify using `using hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma kType_schur_lemma (T : KType ε Λ) (A : T.V →L[ℂ] T.V) (hA : ∀ k, T.op k * A = A * T.op k) :
     ∃ c : ℂ, A = c • (1 : T.V →L[ℂ] T.V) := by
@@ -137,24 +135,22 @@ private lemma kType_schur_lemma (T : KType ε Λ) (A : T.V →L[ℂ] T.V) (hA : 
     simpa using hv
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp T.cont`.
+A detailed English derivation is pending.
 -/
 private lemma continuous_kType_op (T : KType ε Λ) : Continuous fun k : KG ε => T.op k := continuous_subtype_val.comp T.cont
 
 /- English proof (translation)
-The claim follows from `((continuous_kType_op T).mul continuous_const).mul ((continuous_kType_op T).comp continuous_inv)`.
+A detailed English derivation is pending.
 -/
 private lemma continuous_conj_projection (T : KType ε Λ) :
     Continuous fun k : KG ε => T.op k * projW T * T.op k⁻¹ := ((continuous_kType_op T).mul continuous_const).mul ((continuous_kType_op T).comp continuous_inv)
 
 /- English proof (translation)
-Use `haveI : (muK ε).IsMulLeftInvariant := by`. Unfold `muK`. Use `infer_instance`. Rewrite using `[← ContinuousLinearEquiv.integral_comp_comm (ps2C T k)]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `k'`. Rewrite using `[map_smul, conjAction_apply]`. Use `congr 1`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[_root_.mul_inv_rev, toMatrix_mul_alt, toMatrix_mul_alt]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [toMatrix_inv_mul, Matrix.mul_one, Matrix.mul_one]`. Rewrite using `[_root_.mul_inv_rev, kType_op_mul, kType_op_mul]`.
-
-Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma integral_conj_equivariant (T : KType ε Λ) (μ : Fin n → ℤ) (k : KG ε) (x : Matrix (Fin n) (Fin n) ℂ) :
     ∫ k', PhiM μ (toMK k'⁻¹ * (toMK k * x * toMK k⁻¹) * toMK k') • (T.op k' * projW T * T.op k'⁻¹) ∂(muK ε) =
@@ -181,7 +177,7 @@ private lemma integral_conj_equivariant (T : KType ε Λ) (μ : Fin n → ℤ) (
           simp only [mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [psM]`. Rewrite using `[integral_conj_equivariant, conjAction_apply, mul_smul_comm, smul_mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem psM_conj (T : KType ε Λ) (μ : Fin n → ℤ) (k : KG ε) (x : Matrix (Fin n) (Fin n) ℂ) :
     psM T μ (toMK k * x * toMK k⁻¹) = T.op k * psM T μ x * T.op k⁻¹ := by
@@ -189,27 +185,23 @@ theorem psM_conj (T : KType ε Λ) (μ : Fin n → ℤ) (k : KG ε) (x : Matrix 
   rw [integral_conj_equivariant, conjAction_apply, mul_smul_comm, smul_mul_assoc]
 
 /- English proof (translation)
-Establish `hw : T.w ≠ 0` using `fun h => by`. Use `T.w_norm` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Use `haveI : Nontrivial T.V := ⟨⟨T.w, 0, hw⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `haveI : CompactSpace (KG ε) := compactSpace_KG ε`. Use `haveI : IsFiniteMeasureOnCompacts (muK ε) := by`. Unfold `muK`. Use `infer_instance`. Establish `hPhi1 : PhiM μ (1 : Matrix (Fin n) (Fin n) ℂ) = 1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `PhiM`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Unfold `lead`. Rewrite using `[dif_pos (by have := i.isLt; omega), Matrix.submatrix_one _ (Fin.castLE_injective _), Matrix.det_one, _root_.one_zpow]`. Establish `hcomm : ∀ k : KG ε, T.op k * psM T μ 1 = psM T μ 1 * T.op k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Establish `h` using `psM_conj T μ k 1`. Rewrite `h` using `[Matrix.mul_one, toMatrix_mul_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[kType_op_inv_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = T.op k * psM T μ 1 * T.op k⁻¹ * T.op k := by simp only [mul_assoc]`. Use `_ = psM T μ 1 * T.op k := by rw [← h]`. Take `⟨c, hc⟩` from `kType_schur_lemma T (psM T μ 1) hcomm`. Take `⟨tr, htr⟩ : ∃ tr : (T.V →L[ℂ] T.V) →L[ℂ] ℂ, ∀ A, tr A = LinearMap.trace ℂ T.V (A : T.V →ₗ[ℂ] T.V)` from `⟨LinearMap.toContinuousLinearMap ((LinearMap.trace ℂ T.V).comp (ContinuousLinearMap.coeLM ℂ)), fun A => rfl⟩`. Establish `hP : LinearMap.trace ℂ T.V (projW T : T.V →ₗ[ℂ] T.V) = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (projW T : T.V →ₗ[ℂ] T.V) = ((innerSL ℂ T.w : T.V →L[ℂ] ℂ) : T.V →ₗ[ℂ] ℂ).smulRight T.w` using `LinearMap.ext fun v => rfl`. Rewrite using `[e2, LinearMap.trace_smulRight]`. Simplify using `[inner_self_eq_norm_sq_to_K, T.w_norm]`. Establish `htrk : ∀ k, tr (T.op k * projW T * T.op k⁻¹) = 1`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[htr]`. Establish `e1 : ((T.op k * projW T * T.op k⁻¹ : T.V →L[ℂ] T.V) : T.V →ₗ[ℂ] T.V) = (ps2E T k).toLinearEquiv.conj (projW T : T.V →ₗ[ℂ] T.V)` using `LinearMap.ext fun v => rfl`. Rewrite using `[e1, LinearMap.trace_conj', hP]`. Establish `hint : Integrable (fun k : KG ε => T.op k * projW T * T.op k⁻¹) (muK ε)` using `(continuous_conj_projection T).integrable_of_hasCompactSupport (isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (Set.subset_univ _))`. Establish `hv : ((muK ε Set.univ).toReal : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (muK_univ_pos ε).ne'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hd : (Module.finrank ℂ T.V : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `h1 : tr (psM T μ 1) = c * (Module.finrank ℂ T.V : ℂ)`. Rewrite using `[htr, hc]`. Simplify using `[LinearMap.trace_one]`. Establish `hI : psM T μ 1 = ((Module.finrank ℂ T.V : ℂ) / ((muK ε Set.univ).toReal : ℂ)) • ∫ k, (T.op k * projW T * T.op k⁻¹) ∂(muK ε)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [psM]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Matrix.mul_one, toMatrix_inv_mul, hPhi1, one_smul]`.
-
-Establish `h2 : tr (psM T μ 1) = (Module.finrank ℂ T.V : ℂ)`. Rewrite using `[hI, map_smul, ← ContinuousLinearMap.integral_comp_comm tr hint]`. Simplify using `only [htrk, integral_const, smul_eq_mul, Complex.real_smul, mul_one]`. Conclude with `div_mul_cancel₀ _ hv`. Establish `hc1 : c = 1`.
-
-Use `h1.symm.trans h2` as an intermediate fact. Conclude with `mul_right_cancel₀ hd (this.trans (one_mul _).symm)`. Rewrite using `[hc, hc1, one_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psM_one (T : KType ε Λ) (μ : Fin n → ℤ) : psM T μ 1 = 1 := by
   have hw : T.w ≠ 0 := fun h => by
@@ -290,9 +282,7 @@ Both sides reduce to the same expression.
 private lemma toMatrix_signElement : toMK (ps2J ε) = Jm ε := rfl
 
 /- English proof (translation)
-Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show Jm ε * Jm ε = 1`.
-
-Conclude with `Jm_mul_self ε`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private lemma signElement_inv : (ps2J ε)⁻¹ = ps2J ε := by
   apply inv_eq_of_mul_eq_one_right
@@ -303,7 +293,7 @@ private lemma signElement_inv : (ps2J ε)⁻¹ = ps2J ε := by
   exact Jm_mul_self ε
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show Jm ε * toMK k = toMK k * Jm ε`. Conclude with `(show toMK k ∈ Kset ε from k.2).2.symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private lemma signElement_central (k : KG ε) : ps2J ε * k = k * ps2J ε := by
   apply Subtype.ext
@@ -313,13 +303,13 @@ private lemma signElement_central (k : KG ε) : ps2J ε * k = k * ps2J ε := by
   exact (show toMK k ∈ Kset ε from k.2).2.symm
 
 /- English proof (translation)
-Establish `hJ : Jm ε * X * Jm ε = -X`. Combine the equalities or inequalities in the displayed calculation. Establish `hinv : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_left_inv (Jm_mul_self ε)`. Establish `hU : IsUnit (Jm ε)` using `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_left_inverse (Jm_mul_self ε))`. Establish `hE` using `Matrix.exp_conj (Jm ε) X hU`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hE` using `[hinv, hJ]`. Establish `hE' : NormedSpace.exp (-X) = toMK (ps2J ε) * NormedSpace.exp X * toMK (ps2J ε)⁻¹`. Rewrite using `[signElement_inv, toMatrix_signElement]`. Conclude with `hE`. Rewrite using `[hE', psM_conj]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `kType_schur_lemma T (T.op (ps2J ε)) (fun k => by`. Rewrite using `[← kType_op_mul, ← kType_op_mul, signElement_central])`. Establish `hm` using `kType_op_mul_inv T (ps2J ε)`. Rewrite `hm`, the goal using `[hc]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_mul_assoc, one_mul, mul_smul_comm]`. Use `_ = psM T μ (NormedSpace.exp X) := by rw [hm, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem psM_exp_neg (T : KType ε Λ) (μ : Fin n → ℤ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inP ε X) :
     psM T μ (NormedSpace.exp (-X)) = psM T μ (NormedSpace.exp X) := by

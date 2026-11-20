@@ -14,33 +14,33 @@ noncomputable def homDeg (Q : isogHom E E') : ℤ :=
   open Classical in if h : Q = 0 then 0 else ((isogOfHom Q h).degree : ℤ)
 
 /- English proof (translation)
-Rewrite using `[homDeg, dif_neg φ.toHom_ne_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem homDeg_toHom (φ : Isogeny E E') : homDeg φ.toHom = φ.degree := by
   rw [homDeg, dif_neg φ.toHom_ne_zero]
   rfl
 
 /- English proof (translation)
-Rewrite using `[homDeg, dif_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homDeg_zero : homDeg (0 : isogHom E E') = 0 := by rw [homDeg, dif_pos rfl]
 
 /- English proof (translation)
-Rewrite using `[homDeg, dif_neg hQ]`. Conclude with `(isogOfHom Q hQ).degree_pos` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homDeg_pos {Q : isogHom E E'} (hQ : Q ≠ 0) : 0 < homDeg Q := by
   rw [homDeg, dif_neg hQ]
   exact_mod_cast (isogOfHom Q hQ).degree_pos
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by rw [Isogeny.toHom_val, Isogeny.mulIsogeny_val]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem mulIsogeny_toHom (n : ℤ) (hn : n ≠ 0) :
     (mulIsogeny E n hn).toHom = n • (homId : isogEnd E) :=
   Subtype.ext (by rw [Isogeny.toHom_val, Isogeny.mulIsogeny_val]; rfl)
 
 /- English proof (translation)
-Distinguish the cases in `h : Q = 0`. Substitute `h` using the available equality. Rewrite using `[homComp_zero_right, homDeg_zero, zero_smul]`. Rewrite using `[← isogOfHom_toHom Q h, homDual_toHom, Isogeny.homComp_toHom, Isogeny.dual_comp, mulIsogeny_toHom, homDeg_toHom]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem homComp_homDual_self (Q : isogHom E E') : homComp (homDual Q) Q = homDeg Q • homId := by
   by_cases h : Q = 0
@@ -50,7 +50,7 @@ theorem homComp_homDual_self (Q : isogHom E E') : homComp (homDual Q) Q = homDeg
       mulIsogeny_toHom, homDeg_toHom]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Rewrite `h` using `[← mulIsogeny_toHom n hn]`. Conclude with `(mulIsogeny E n hn).toHom_ne_zero h`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_zsmul_homId {n : ℤ} (h : n • (homId : isogEnd E) = 0) : n = 0 := by
   by_contra hn
@@ -58,7 +58,7 @@ theorem eq_zero_of_zsmul_homId {n : ℤ} (h : n • (homId : isogEnd E) = 0) : n
   exact (mulIsogeny E n hn).toHom_ne_zero h
 
 /- English proof (translation)
-Establish `h` using `homComp_homDual_self (Q₁ + Q₂)`. Rewrite `h` using `[map_add, homComp_add_left, homComp_add_right, homComp_add_right, homComp_homDual_self, homComp_homDual_self]`. Rewrite using `[sub_smul, sub_smul, ← h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cross_eq (Q₁ Q₂ : isogHom E E') :
     homComp (homDual Q₁) Q₂ + homComp (homDual Q₂) Q₁ =
@@ -72,7 +72,7 @@ theorem cross_eq (Q₁ Q₂ : isogHom E E') :
 noncomputable def degBilin (Q₁ Q₂ : isogHom E E') : ℤ := homDeg (Q₁ + Q₂) - homDeg Q₁ - homDeg Q₂
 
 /- English proof (translation)
-The claim follows from `(cross_eq Q₁ Q₂).symm`.
+A detailed English derivation is pending.
 -/
 theorem degBilin_smul_homId (Q₁ Q₂ : isogHom E E') :
     degBilin Q₁ Q₂ • (homId : isogEnd E) =
@@ -80,7 +80,7 @@ theorem degBilin_smul_homId (Q₁ Q₂ : isogHom E E') :
   (cross_eq Q₁ Q₂).symm
 
 /- English proof (translation)
-Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `eq_zero_of_zsmul_homId (E := E)` to reduce the goal to its premises. Rewrite using `[sub_smul, add_smul, degBilin_smul_homId, degBilin_smul_homId, degBilin_smul_homId, map_add, homComp_add_left, homComp_add_right]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem degBilin_add_left (Q₁ Q₁' Q₂ : isogHom E E') :
     degBilin (Q₁ + Q₁') Q₂ = degBilin Q₁ Q₂ + degBilin Q₁' Q₂ := by
@@ -91,38 +91,38 @@ theorem degBilin_add_left (Q₁ Q₁' Q₂ : isogHom E E') :
   abel
 
 /- English proof (translation)
-Rewrite using `[degBilin, degBilin, add_comm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem degBilin_comm (Q₁ Q₂ : isogHom E E') : degBilin Q₁ Q₂ = degBilin Q₂ Q₁ := by
   rw [degBilin, degBilin, add_comm]; ring
 
 /- English proof (translation)
-Rewrite using `[degBilin_comm, degBilin_add_left, degBilin_comm Q₂, degBilin_comm Q₂']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem degBilin_add_right (Q₁ Q₂ Q₂' : isogHom E E') :
     degBilin Q₁ (Q₂ + Q₂') = degBilin Q₁ Q₂ + degBilin Q₁ Q₂' := by
   rw [degBilin_comm, degBilin_add_left, degBilin_comm Q₂, degBilin_comm Q₂']
 
 /- English proof (translation)
-The claim follows from `(AddMonoidHom.mk' (fun Q => degBilin Q Q₂) (fun a b => degBilin_add_left a b Q₂)).map_zsmul c Q₁`.
+A detailed English derivation is pending.
 -/
 theorem degBilin_zsmul_left (c : ℤ) (Q₁ Q₂ : isogHom E E') :
     degBilin (c • Q₁) Q₂ = c • degBilin Q₁ Q₂ :=
   (AddMonoidHom.mk' (fun Q => degBilin Q Q₂) (fun a b => degBilin_add_left a b Q₂)).map_zsmul c Q₁
 
 /- English proof (translation)
-The claim follows from `(AddMonoidHom.mk' (fun Q => degBilin Q₁ Q) (fun a b => degBilin_add_right Q₁ a b)).map_zsmul c Q₂`.
+A detailed English derivation is pending.
 -/
 theorem degBilin_zsmul_right (c : ℤ) (Q₁ Q₂ : isogHom E E') :
     degBilin Q₁ (c • Q₂) = c • degBilin Q₁ Q₂ :=
   (AddMonoidHom.mk' (fun Q => degBilin Q₁ Q) (fun a b => degBilin_add_right Q₁ a b)).map_zsmul c Q₂
 
 /- English proof (translation)
-Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Rewrite using `[zero_smul, homDeg_zero]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hQ : Q = 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails.
 
-Substitute `hQ` using the available equality. Rewrite using `[smul_zero, homDeg_zero, mul_zero]`. Use `set φ := isogOfHom Q hQ`. Establish `e : n • Q = ((mulIsogeny E' n hn).comp φ).toHom`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Isogeny.toHom_val, Isogeny.mulIsogeny_comp_val]`. Both sides reduce to the same expression. Rewrite using `[e, homDeg_toHom, Isogeny.degree_comp, degree_mulIsogeny, ← isogOfHom_toHom Q hQ, homDeg_toHom]`. Use `push_cast`. Rewrite using `[sq_abs]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homDeg_zsmul (n : ℤ) (Q : isogHom E E') : homDeg (n • Q) = n ^ 2 * homDeg Q := by
   by_cases hn : n = 0
@@ -149,7 +149,7 @@ noncomputable def degForm : QuadraticForm ℤ (isogHom E E') where
 namespace Isogeny
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨φ.dual, φ.dual_comp, φ.comp_dual, φ.degree_dual⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_dual (φ : Isogeny E E') :
     ∃ ψ : Isogeny E' E,

@@ -8,7 +8,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (iterD partialD
 open scoped Classical MatrixGroups nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbFam.sum_realEmb_eq_trace | exact GlobalTheory.HilbFam.sum_realEmb_eq_trace | (intros; apply GlobalTheory.HilbFam.sum_realEmb_eq_trace <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.sum_realEmbeddings_eq_trace_totallyReal : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (y : F), ∑ i : Emb F, ((i y : ℝ) : ℂ) = ((Algebra.trace ℚ F y : ℚ) : ℂ) := by
   first | exact @GlobalTheory.HilbFam.sum_realEmb_eq_trace | exact GlobalTheory.HilbFam.sum_realEmb_eq_trace | (intros; apply GlobalTheory.HilbFam.sum_realEmb_eq_trace <;> assumption)

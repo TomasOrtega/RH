@@ -9,31 +9,29 @@ set_option autoImplicit false
 namespace GlobalTheory.LogUniq
 
 /- English proof (translation)
-Introduce `p _ O E _ _ _ hF d μ hμ R hlin hcob`. Establish `hunit : ∀ n : ℕ, n ≠ 0 → IsUnit (n : E)`. Introduce `n hn`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn p (Fact.out : p.Prime).ne_one`. Rewrite using `[Nat.cast_mul, Nat.cast_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `(hF.unit_p.pow a).mul ?_` and prove the remaining obligations. Establish `hc : Nat.Coprime m p` using `Nat.coprime_comm.1 (((Fact.out : p.Prime).coprime_iff_not_dvd).2 hm)`. Use `(hF.unit_coprime m hc).map (algebraMap O E)` as an intermediate fact. Simplify using `using this`. Establish `hL : IsLift (RingHom.id O) μ` using `⟨hμ.const, hμ.unit, hμ.comm, by simpa using hμ⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hlow : ∀ i (α : Fin d ⊕ Fin d →₀ ℕ), α.degree ≤ 1 → coeff α (up E μ i) = coeff α (addLaw E d i)`. Introduce `i α hα`. Rewrite using `[up, coeff_map, GlobalTheory.CobHom.coeff_lift_low hL i α hα, GlobalTheory.Katz.LowLaw.coeff_addLaw]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hdeg : ∀ a e : Fin d →₀ ℕ, (Finsupp.sumElim a e).degree = (a + e).degree`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `a e`. Rewrite using `[Finsupp.degree_eq_sum, Finsupp.degree_eq_sum, Fintype.sum_sum_type, ← Finset.sum_add_distrib]`. Simplify using the standard rewrite rules. Establish `key : ∀ N : ℕ, ∀ α : Fin d →₀ ℕ, α.degree < N → coeff α R = 0`. Introduce `N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `N with`. Consider the case `zero => intro α h`. Use linear arithmetic over natural numbers and integers. Consider the case `succ N ih`. Introduce `α hα`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_or_eq_of_le (Nat.lt_succ_iff.1 hα) with h | h` into its components or cases. Conclude with `ih α h`. Establish `hc` using `(GlobalTheory.CobLead.cob_eq_additive_lead E d (up E μ) N hlow).1 R ih`. Establish `hcoef : ∀ a e : Fin d →₀ ℕ, a + e = α → coeff (Finsupp.sumElim a e) (cob1 (addLaw E d) R) = 0`. Introduce `a e hae`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hc _).2 (by rw [hdeg, hae, h]), hcob, map_zero]`. Break down `Nat.lt_or_ge N 2 with hN | hN` into its components or cases. Use `interval_cases N`. Establish `h0 : α = 0` using `(Finsupp.degree_eq_zero_iff α).1 h`. Substitute `h0` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hcoef 0 0 (by simp)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.CobHom.coeff_cob1_additive_law_binomial]`. Simplify using `using this`. Take `⟨j, rfl⟩` from `GlobalTheory.Katz.LowLaw.eq_single_of_degree_eq_one h`. Conclude with `congrFun hlin j`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨i, hi⟩ : ∃ i, α i ≠ 0` from `by by_contra! hc0`. Establish `: α = 0` using `Finsupp.ext hc0`. Rewrite `h` using `[this, map_zero]`. Use linear arithmetic over natural numbers and integers. Use `set a := α - Finsupp.single i 1 with ha`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hae : a + Finsupp.single i 1 = α`. Use extensionality with `k`. Simplify using `only [ha, Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs with h1 <;> (try subst h1) <;> omega`. Establish `ha0 : a ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h0`. Rewrite `hae` using `[h0, zero_add]`. Rewrite `h` using `[← hae, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Establish `hs0 : Finsupp.single i 1 ≠ 0` using `Finsupp.single_ne_zero.2 one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hcoef a (Finsupp.single i 1) hae` as an intermediate fact. Rewrite `this` using `[GlobalTheory.CobHom.coeff_cob1_additive_law_binomial, if_neg hs0, if_neg ha0, sub_zero, sub_zero, hae]`. Establish `hpos : (∏ s, (α s).choose (a s)) ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun s _ => (Nat.choose_pos ?_).ne'` and prove the remaining obligations. Rewrite using `[← hae]`.
-
-Simplify using the standard rewrite rules. Conclude with `(hunit _ hpos).mul_right_eq_zero.1 this`. Use extensionality with `α`. Simplify using `using key (α.degree + 1) α (by omega)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_linear_zero_coboundary_zero_fractions : ∀ (p : ℕ) [Fact p.Prime] (O E : Type) [CommRing O] [CommRing E]
     [Algebra O E], IsFrame p E (RingHom.id O) → ∀ (d : ℕ)

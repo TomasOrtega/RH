@@ -12,17 +12,15 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 variable [hFF : Fact (IsFixF K F)] {m : ℕ}
 
 /- English proof (translation)
-Establish `hF` using `hFF.out`. Use `set 𝔭 := P.comap (algebraMap (𝓞 F) (𝓞 K)) with h𝔭def`. Take `⟨θ, hθ⟩` from `exists_sub_conjO_notMem hK hP`. Establish `e1 : extP K 𝔭 ^ 1 = P`. Rewrite using `[pow_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `SplitPrimeIdeals.map_comap_of_inert conjO_conjO (conjO_eq_iff_mem_range hF) hP (by rw [← conjIdeal_eq_comap]; exact hc) hθ`. Set `_` to `Ideal.Quotient.field P`. Use `NormResidues.finite_quot hP` as an intermediate fact. Set `_` to `Fintype.ofFinite (𝓞 K ⧸ P)`. Establish `hq : Fintype.card (𝓞 K ⧸ P) = Ideal.absNorm 𝔭 ^ 2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Nat.card_eq_fintype_card, NormResidues.natCard_quot, absNorm_comap_inert hK hF hP hc]`. Establish `hσ : ∀ x, NormResidues.sigEquiv P hc (NormResidues.sigEquiv P hc x) = x` using `NormResidues.sigHom_sigHom P hc`. Establish `hne : ∃ x, NormResidues.sigEquiv P hc x ≠ x`. Use `⟨Ideal.Quotient.mk P θ, fun h => hθ ?_⟩` and prove the remaining obligations. Rewrite `h` using `[NormResidues.sigEquiv_mk]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.Quotient.eq.1 h.symm`. Establish `h1` using `UnitaryNormCounts.card_inert (m := Fin m) (Ideal.quotEquivOfEq e1) (NormResidues.sigEquiv P hc) (by`. Introduce `a`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[star_mk, Ideal.quotEquivOfEq_mk, Ideal.quotEquivOfEq_mk, NormResidues.sigEquiv_mk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use the proof step `rfl) hσ hne _ hq (fun i => Ideal.Quotient.mk (extP K 𝔭 ^ 1) (u i))`. Use the proof step `(by`. Introduce `i`. Rewrite using `[star_mk, star_def, hu])`. Use the proof step `(fun i => isUnit_mk (hunit i) 1)`.
-
-Unfold `isoCount`. Rewrite using `[diagonal_map (map_zero _), h1]`. Conclude with `card_unitary_fin _ hσ hne _ hq m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoCount_one_inert (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)} (hP : P.IsMaximal)
     (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P) (u : Fin m → 𝓞 K) (hu : ∀ i, conjO K (u i) = u i)
@@ -63,19 +61,17 @@ theorem isoCount_one_inert (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) 
   exact card_unitary_fin _ hσ hne _ hq m
 
 /- English proof (translation)
-Establish `hF` using `hFF.out`. Establish `h𝔭 : (P.comap (algebraMap (𝓞 F) (𝓞 K))).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal P`. Use `set 𝔭 := P.comap (algebraMap (𝓞 F) (𝓞 K)) with h𝔭def`. Establish `e1 : extP K 𝔭 ^ 1 ≤ P`. Rewrite using `[pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Ideal.map_comap_le`. Set `_` to `Ideal.Quotient.field P`. Use `NormResidues.finite_quot hP` as an intermediate fact. Set `_` to `Fintype.ofFinite (𝓞 K ⧸ P)`. Use `finite_quot (K := K) h𝔭 1` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : Fintype.card (𝓞 K ⧸ P) = Ideal.absNorm 𝔭`. Rewrite using `[← Nat.card_eq_fintype_card, NormResidues.natCard_quot, absNorm_comap_split hK hF hP hc]`. Establish `hb : Function.Bijective fun a : 𝓞 K ⧸ extP K 𝔭 ^ 1 => (Ideal.Quotient.factor e1 (star a), Ideal.Quotient.factor e1 a)`. Apply `Function.Surjective.bijective_of_nat_card_le` to reduce the goal to its premises. Introduce `y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `NormResidues.pairHom_surjective hP hc y`. Use `⟨Ideal.Quotient.mk _ z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, NormResidues.pairHom_apply]`. Use `show (Ideal.Quotient.factor e1 (star (Ideal.Quotient.mk _ z)), _) = _`. Rewrite using `[star_mk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Rewrite using `[absNorm_extP_pow hK hF h𝔭, Nat.card_prod, Nat.card_eq_fintype_card, hq]`. Apply `le_of_eq` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `UnitaryNormCounts.card_split (m := Fin m) (Ideal.Quotient.factor e1) hb ((diagonal u).map (Ideal.Quotient.mk (extP K 𝔭 ^ 1))) (by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_mk_conjTranspose, diagonal_conjTranspose]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `hu i)`. Use the proof step `(by`.
-
-Rewrite using `[diagonal_map (map_zero _), det_diagonal]`. Conclude with `Finset.univ.prod_induction _ IsUnit (fun _ _ h1 h2 => h1.mul h2) isUnit_one (fun i _ => isUnit_mk (hunit i) 1))`. Unfold `isoCount`. Rewrite using `[h1]`. Conclude with `card_GL_fin _ hq m`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoCount_one_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)} (hP : P.IsMaximal)
     (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P ≠ P) (u : Fin m → 𝓞 K) (hu : ∀ i, conjO K (u i) = u i)
@@ -125,13 +121,13 @@ theorem isoCount_one_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) 
   exact card_GL_fin _ hq m
 
 /- English proof (translation)
-Establish `hF` using `hFF.out`. Take `⟨P, hP, rfl⟩` from `exists_maximal_over hK hF h𝔭`. Unfold `alphaStd`. Rewrite using `[etaF_comap hK hF hP]`. Distinguish the cases in `hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[isoCount_one_inert hK hP hc u hu hunit, if_pos hc]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[_root_.zpow_neg, _root_.zpow_natCast, ← inv_pow, ← mul_pow, inv_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[isoCount_one_split hK hP hc u hu hunit, if_neg hc]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j _`. Rewrite using `[_root_.zpow_neg, _root_.zpow_natCast, ← inv_pow, one_pow, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoCount_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     (u : Fin m → 𝓞 K) (hu : ∀ i, conjO K (u i) = u i)
@@ -156,11 +152,11 @@ theorem isoCount_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 
     rw [_root_.zpow_neg, _root_.zpow_natCast, ← inv_pow, one_pow, one_mul]
 
 /- English proof (translation)
-Establish `hg : (diagonal u)ᴴ = diagonal u`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `hu i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hdet : Ideal.span {(diagonal u).det} ⊔ extP K 𝔭 = ⊤`. Rewrite using `[Matrix.det_diagonal, ← Ideal.prod_span_singleton]`. Conclude with `Ideal.prod_sup_eq_top fun i _ => hunit i`. Rewrite using `[isoCount_eq_pow hK h𝔭 (diagonal u) hg hdet k]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[isoCount_one hK h𝔭 u hu hunit]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem isoCount_diag (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     (u : Fin m → 𝓞 K) (hu : ∀ i, conjO K (u i) = u i)

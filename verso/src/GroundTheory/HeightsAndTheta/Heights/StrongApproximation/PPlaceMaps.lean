@@ -19,7 +19,7 @@ variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [Algebra F E]
 open Classical in
 
 /- English proof (translation)
-Use `show Pi.single v x v = x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalAt_singleF_self (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F) :
     evalAt F v (singleF F v x) = x := by
@@ -29,7 +29,7 @@ theorem evalAt_singleF_self (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompleti
 open Classical in
 
 /- English proof (translation)
-Use `show Pi.single v x w = 0`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalAt_singleF_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (x : v.adicCompletion F) :
     evalAt F w (singleF F v x) = 0 := by
@@ -39,9 +39,9 @@ theorem evalAt_singleF_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (x : 
 open Classical in
 
 /- English proof (translation)
-Apply `FiniteAdeleRing.ext` to reduce the goal to its premises. Introduce `w`. Express the relevant statement in the definitionally equal form `Pi.single v (x * y) w = Pi.single v x w * Pi.single v y w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem singleF_mul (v : HeightOneSpectrum (𝓞 F)) (x y : v.adicCompletion F) :
     singleF F v (x * y) = singleF F v x * singleF F v y := by
@@ -54,9 +54,9 @@ theorem singleF_mul (v : HeightOneSpectrum (𝓞 F)) (x y : v.adicCompletion F) 
 open Classical in
 
 /- English proof (translation)
-Apply `FiniteAdeleRing.ext` to reduce the goal to its premises. Introduce `u`. Express the relevant statement in the definitionally equal form `Pi.single v x u * Pi.single w y u = 0`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Ne.symm h]`. Simplify using `[hu]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem singleF_mul_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (x : v.adicCompletion F)
     (y : w.adicCompletion F) : singleF F v x * singleF F w y = 0 := by
@@ -91,7 +91,7 @@ theorem sigV_tmul (c : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (a : v.ad
     sigV c v (a ⊗ₜ b) = a ⊗ₜ c b := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rw [singleV_tmul, compAt_tmul, evalAt_singleF_self]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compAt_singleV_self (v : HeightOneSpectrum (𝓞 F)) (x : Kv E v) :
     compAt E v (singleV E v x) = x := by
@@ -101,7 +101,7 @@ theorem compAt_singleV_self (v : HeightOneSpectrum (𝓞 F)) (x : Kv E v) :
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rw [singleV_tmul, compAt_tmul, evalAt_singleF_ne h, zero_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compAt_singleV_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (x : Kv E v) :
     compAt E w (singleV E v x) = 0 := by
@@ -111,9 +111,9 @@ theorem compAt_singleV_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (x : 
   | add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => rw [add_mul, map_add, map_add, hx, hx', add_mul]`. Consider the case `tmul a b`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add y y' hy hy' => rw [mul_add, map_add, map_add, hy, hy', mul_add]`. Consider the case `tmul a' b'`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, singleV_tmul, singleV_tmul, singleV_tmul, Algebra.TensorProduct.tmul_mul_tmul, singleF_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem singleV_mul (v : HeightOneSpectrum (𝓞 F)) (x y : Kv E v) :
     singleV E v (x * y) = singleV E v x * singleV E v y := by
@@ -129,9 +129,9 @@ theorem singleV_mul (v : HeightOneSpectrum (𝓞 F)) (x y : Kv E v) :
         Algebra.TensorProduct.tmul_mul_tmul, singleF_mul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => rw [map_add, add_mul, hx, hx', add_zero]`. Consider the case `tmul a b`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add y y' hy hy' => rw [map_add, mul_add, hy, hy', add_zero]`. Consider the case `tmul a' b'`. Rewrite using `[singleV_tmul, singleV_tmul, Algebra.TensorProduct.tmul_mul_tmul, singleF_mul_ne h, zero_tmul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem singleV_mul_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (x : Kv E v) (y : Kv E w) :
     singleV E v x * singleV E w y = 0 := by
@@ -147,7 +147,7 @@ theorem singleV_mul_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (x : Kv 
         zero_tmul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => rw [add_mul, map_add, map_add, hx, hx', add_mul]`. Consider the case `tmul a b => show singleV E v (a ⊗ₜ b * 1 ⊗ₜ y) = singleV E v (a ⊗ₜ b) * (1 ⊗ₜ y)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, singleV_tmul, singleV_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem singleV_mul_inclV (v : HeightOneSpectrum (𝓞 F)) (x : Kv E v) (y : E) :
     singleV E v (x * inclV E v y) = singleV E v x * inclA F E y := by
@@ -160,7 +160,7 @@ theorem singleV_mul_inclV (v : HeightOneSpectrum (𝓞 F)) (x : Kv E v) (y : E) 
       Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_one]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => rw [map_add, map_add, hx, hx', map_add, map_add]`. Consider the case `tmul a b => rw [singleV_tmul, sigA_tmul, sigV_tmul, singleV_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigA_singleV (c : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : Kv E v) :
     sigA c (singleV E v x) = singleV E v (sigV c v x) := by
@@ -170,7 +170,7 @@ theorem sigA_singleV (c : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : K
   | tmul a b => rw [singleV_tmul, sigA_tmul, sigV_tmul, singleV_tmul]
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => rw [map_add, map_add, hx, hx', map_add, map_add]`. Consider the case `tmul a b => rw [sigA_tmul, compAt_tmul, compAt_tmul, sigV_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compAt_sigA (c : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (a : AE F E) :
     compAt E v (sigA c a) = sigV c v (compAt E v a) := by
@@ -180,7 +180,7 @@ theorem compAt_sigA (c : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (a : AE
   | tmul a b => rw [sigA_tmul, compAt_tmul, compAt_tmul, sigV_tmul]
 
 /- English proof (translation)
-Use `show compAt E v (1 ⊗ₜ x) = 1 ⊗ₜ x`. Rewrite using `[compAt_tmul, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_inclA (v : HeightOneSpectrum (𝓞 F)) (x : E) :
     compAt E v (inclA F E x) = inclV E v x := by
@@ -188,11 +188,11 @@ theorem compAt_inclA (v : HeightOneSpectrum (𝓞 F)) (x : E) :
   rw [compAt_tmul, map_one]
 
 /- English proof (translation)
-Set `𝒞` to `Module.Free.chooseBasis F E`. Establish `key : ∀ (v : HeightOneSpectrum (𝓞 F)) (x : AE F E) k, equivFinsuppOfBasisRight 𝒞 (compAt E v x) k = evalAt F v (equivFinsuppOfBasisRight 𝒞 x k)`. Introduce `v x k`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b`. Rewrite using `[compAt_tmul, equivFinsuppOfBasisRight_apply_tmul_apply, equivFinsuppOfBasisRight_apply_tmul_apply, map_smul]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`. Apply `(equivFinsuppOfBasisRight 𝒞).injective` to reduce the goal to its premises. Use `Finsupp.ext fun k => FiniteAdeleRing.ext _ fun w => ?_` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk` using `congrArg (fun z => equivFinsuppOfBasisRight 𝒞 z k) (h w)`. Simplify using `only [key] at hk`. Conclude with `hk`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem compAt_separates (a b : AE F E) (h : ∀ v, compAt E v a = compAt E v b) : a = b := by
   let 𝒞 := Module.Free.chooseBasis F E
@@ -213,7 +213,7 @@ theorem compAt_separates (a b : AE F E) (h : ∀ v, compAt E v a = compAt E v b)
   exact hk
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `compAt_separates _ _ fun v => congrFun (congrFun (h v) i) j`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem matrix_separates {N : ℕ} (X Y : Matrix (Fin N) (Fin N) (AE F E))
     (h : ∀ v, X.map (compAt E v) = Y.map (compAt E v)) : X = Y := by
@@ -221,7 +221,7 @@ theorem matrix_separates {N : ℕ} (X Y : Matrix (Fin N) (Fin N) (AE F E))
   exact compAt_separates _ _ fun v => congrFun (congrFun (h v) i) j
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [embed, hij, compAt_singleV_self]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embed_map_self (v : HeightOneSpectrum (𝓞 F)) {N : ℕ} (g : Matrix (Fin N) (Fin N) (Kv E v)) :
     (embed E v g).map (compAt E v) = g := by
@@ -229,7 +229,7 @@ theorem embed_map_self (v : HeightOneSpectrum (𝓞 F)) {N : ℕ} (g : Matrix (F
   by_cases hij : i = j <;> simp [embed, hij, compAt_singleV_self]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [embed, Matrix.one_apply, hij, compAt_singleV_ne h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embed_map_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) {N : ℕ}
     (g : Matrix (Fin N) (Fin N) (Kv E v)) : (embed E v g).map (compAt E w) = 1 := by
@@ -237,7 +237,7 @@ theorem embed_map_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) {N : ℕ}
   by_cases hij : i = j <;> simp [embed, Matrix.one_apply, hij, compAt_singleV_ne h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[compAt_inclA]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem inclA_map_compAt (v : HeightOneSpectrum (𝓞 F)) {N : ℕ} (J : Matrix (Fin N) (Fin N) E) :
     (J.map (inclA F E)).map (compAt E v) = J.map (inclV E v) := by
@@ -245,7 +245,7 @@ theorem inclA_map_compAt (v : HeightOneSpectrum (𝓞 F)) {N : ℕ} (J : Matrix 
   simp [compAt_inclA]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[compAt_sigA]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sigA_map_compAt (c : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) {N : ℕ}
     (X : Matrix (Fin N) (Fin N) (AE F E)) :
@@ -254,7 +254,7 @@ theorem sigA_map_compAt (c : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) {N 
   simp [compAt_sigA]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, inclA_map_compAt, sigA_map_compAt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_map_compAt (c : E ≃ₐ[F] E) (w : HeightOneSpectrum (𝓞 F)) {N : ℕ}
     (J : Matrix (Fin N) (Fin N) E) (X : Matrix (Fin N) (Fin N) (AE F E)) :
@@ -265,23 +265,23 @@ theorem form_map_compAt (c : E ≃ₐ[F] E) (w : HeightOneSpectrum (𝓞 F)) {N 
 end Lemmas
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ c _ _`. Use `⟨compAt_separates, fun v => ⟨compAt_singleV_self v, fun w h => compAt_singleV_ne h, singleV_mul v, fun w h => singleV_mul_ne h, singleV_mul_inclV v, sigA_singleV c v, compAt_sigA c v, compAt_inclA v, fun N => ⟨?_, ?_, fun J => ⟨?_, ?_⟩⟩⟩⟩` and prove the remaining obligations. Apply `matrix_separates` to reduce the goal to its premises. Introduce `w`. Distinguish the cases in `hw : w = v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[embed_map_self]`. Simplify using the standard rewrite rules. Rewrite using `[embed_map_ne hw]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `g h`. Apply `matrix_separates` to reduce the goal to its premises. Introduce `w`. Rewrite using `[Matrix.map_mul]`. Distinguish the cases in `hw : w = v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[embed_map_self, embed_map_self, embed_map_self]`. Rewrite using `[embed_map_ne hw, embed_map_ne hw, embed_map_ne hw, mul_one]`. Introduce and unpack `g ⟨hdet, hJ⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Apply `compAt_separates` to reduce the goal to its premises. Introduce `w`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, map_one]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[embed_map_self, hdet]`. Rewrite using `[embed_map_ne hw, det_one]`. Apply `matrix_separates` to reduce the goal to its premises. Introduce `w`. Rewrite using `[form_map_compAt, inclA_map_compAt]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[embed_map_self]`. Conclude with `hJ`. Rewrite using `[embed_map_ne hw]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce and unpack `x ⟨hdet, hJ⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, hdet, map_one]`. Establish `: (xᵀ * J.map (inclA F E) * x.map (sigA c)).map (compAt E v) = (J.map (inclA F E)).map (compAt E v)` using `by rw [hJ]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[form_map_compAt, inclA_map_compAt]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem intersectionNumber_baseChange : PlaceMaps.Statement := by
   intro F E _ _ _ _ _ c _ _
@@ -319,7 +319,7 @@ theorem intersectionNumber_baseChange : PlaceMaps.Statement := by
       exact this
 
 /- English proof (translation)
-The claim follows from `intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem proof (_h : LocalRingHypotheses.Statement) : PlaceMaps.Statement := intersectionNumber_baseChange
 

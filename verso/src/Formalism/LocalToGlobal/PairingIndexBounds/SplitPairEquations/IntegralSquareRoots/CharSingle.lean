@@ -11,13 +11,13 @@ open Formalism.L2.Th1.H Formalism.L2.PairingIndexBounds.Eq
 variable {ι : Type} [Fintype ι] {V V₁ : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V₁] [Module ℂ V₁]
 
 /- English proof (translation)
-Set `f : V₁ →+ V` to `AddMonoidHom.mk' (fun x => e.symm (Pi.single i₀ x)) (fun x y => by`. Rewrite using `[Pi.single_add, map_add])`. Establish `hcomap : ∀ (N : AddSubgroup V) (N₁ : AddSubgroup V₁), (∀ x, x ∈ N ↔ ∀ i, e x i ∈ N₁) → N₁ = N.comap f`. Introduce `N N₁ hN`. Use extensionality with `x`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[AddSubgroup.mem_comap, hN]`. Use `show x ∈ N₁ ↔ ∀ i, e (e.symm (Pi.single i₀ x)) i ∈ N₁`. Simplify using `only [LinearEquiv.apply_symm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hx i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using `using hx`. Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `N₁.zero_mem`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Simplify using `using h i₀`. Unfold `relIdx at *`. Rewrite using `[hcomap M M₁ hM, hcomap P P₁ hP]`. Conclude with `AddSubgroup.relIndex_comap_ne_zero f h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idx_coord (e : V ≃ₗ[ℂ] (ι → V₁)) (i₀ : ι) {M P : AddSubgroup V} {M₁ P₁ : AddSubgroup V₁}
     (hM : ∀ x, x ∈ M ↔ ∀ i, e x i ∈ M₁) (hP : ∀ x, x ∈ P ↔ ∀ i, e x i ∈ P₁) (h : relIdx M P ≠ 0) :
@@ -48,11 +48,11 @@ variable {e : V ≃ₗ[ℂ] (ι → V₁)} {H : Sesq V} {H₁ : Sesq V₁} {α :
   {Λ : AddSubgroup V} {Λ₁ : AddSubgroup V₁} {δ Ae : V ≃ₗ[ℂ] V} {δ₁ Ae₁ : V₁ ≃ₗ[ℂ] V₁}
 
 /- English proof (translation)
-Establish `key : ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (d : W ≃ₗ[ℂ] W) (L : AddSubgroup W) (z : W), z ∈ imgLat (d : W →ₗ[ℂ] W) L ↔ d.symm z ∈ L`. Introduce `W _ _ d L z`. Simplify using `only [imgLat, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `using hy`. Introduce `hz`. Conclude with `⟨d.symm z, hz, by simp⟩`. Rewrite using `[key, c.lat]`. Apply `forall_congr'` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i`. Rewrite using `[key]`. Establish `hmap` using `c.map (δ.symm x) i`. Rewrite `hmap` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[hmap, LinearEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Copies.mem_img (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (x : V) :
     x ∈ imgLat (δ : V →ₗ[ℂ] V) Λ ↔ ∀ i, e x i ∈ imgLat (δ₁ : V₁ →ₗ[ℂ] V₁) Λ₁ := by
@@ -74,9 +74,9 @@ theorem Copies.mem_img (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁)
   rw [hmap, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[c.form, LinearEquiv.apply_symm_apply, Finset.sum_eq_single i₀]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[Pi.single_eq_of_ne hi]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem Copies.form_single (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (i₀ : ι) (x : V₁) (y : V) :
     H (e.symm (Pi.single i₀ x)) y = H₁ x (e y i₀) := by
@@ -88,9 +88,9 @@ theorem Copies.form_single (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[c.lat]`. Introduce `i`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hx`. Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `Λ₁.zero_mem`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Copies.single_mem (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (i₀ : ι) {x : V₁} (hx : x ∈ Λ₁) :
     e.symm (Pi.single i₀ x) ∈ Λ := by
@@ -104,9 +104,9 @@ theorem Copies.single_mem (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae�
     exact Λ₁.zero_mem
 
 /- English proof (translation)
-Rewrite using `[c.char _ (c.single_mem i₀ hx), LinearEquiv.apply_symm_apply, Finset.prod_eq_single i₀]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Rewrite using `[Pi.single_eq_of_ne hi, h0]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem Copies.char_single (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (h0 : α₁ 0 = 1) (i₀ : ι) {x : V₁} (hx : x ∈ Λ₁) :
     α (e.symm (Pi.single i₀ x)) = α₁ x := by
@@ -118,33 +118,29 @@ theorem Copies.char_single (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hs : ∀ x : V₁, e (e.symm (Pi.single i₀ x)) i₀ = x` using `fun x => by simp`. Establish `hform : ∀ x y : V₁, H (e.symm (Pi.single i₀ x)) (e.symm (Pi.single i₀ y)) = H₁ x y`. Introduce `x y`. Rewrite using `[c.form_single, hs]`. Establish `hadd : ∀ x y : V₁, e.symm (Pi.single i₀ (x + y)) = e.symm (Pi.single i₀ x) + e.symm (Pi.single i₀ y)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y`. Rewrite using `[Pi.single_add, map_add]`. Establish `hδs : ∀ y : V₁, δ (e.symm (Pi.single i₀ y)) = e.symm (Pi.single i₀ (δ₁ y))`. Introduce `y`. Apply `e.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[c.map, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hi]`. Establish `himg_single : ∀ x : V₁, x ∈ imgLat (δ₁ : V₁ →ₗ[ℂ] V₁) Λ₁ → e.symm (Pi.single i₀ x) ∈ imgLat (δ : V →ₗ[ℂ] V) Λ`. Introduce `x hx`. Rewrite using `[c.mem_img]`. Introduce `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using `using hx`. Rewrite using `[Pi.single_eq_of_ne hi]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(imgLat _ Λ₁).zero_mem`. Establish `hαimg : ∀ x : V₁, x ∈ imgLat (δ₁ : V₁ →ₗ[ℂ] V₁) Λ₁ → α (e.symm (Pi.single i₀ x)) = α₁ x`. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Use `show α (e.symm (Pi.single i₀ (δ₁ y))) = α₁ (δ₁ y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hδs, hU.inv _ (c.single_mem i₀ hy), c.char_single h0 i₀ hy, hαδ]`. Use `⟨hH₁, hP₁, ?_, ⟨?_, ?_⟩, hI₁, ⟨?_, ?_⟩, fun x _ => hαδ x, ?_, ?_, hA₁⟩` and prove the remaining obligations. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : e.symm (Pi.single i₀ x) ∈ Λ`. Rewrite using `[← hU.selfDual]`. Introduce `y hy`. Take `⟨m, hm⟩` from `hx (e y i₀) ((c.lat y).1 hy i₀)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [altE] at hm ⊢`. Rewrite using `[c.form_single]`. Conclude with `hm`. Establish `h1` using `(c.lat _).1 hv i₀`. Rewrite `h1` using `[hs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx y hy`. Establish `h1 : e.symm (Pi.single i₀ x) ∈ dualLat H Λ`. Rewrite using `[hU.selfDual]`. Conclude with `c.single_mem i₀ hx`. Take `⟨m, hm⟩` from `h1 _ (c.single_mem i₀ hy)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Simplify using `only [altE] at hm ⊢`. Rewrite `hm` using `[hform]`. Conclude with `hm`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← c.char_single h0 i₀ hx]`. Conclude with `hU.semi.1 _ (c.single_mem i₀ hx)`. Introduce `x hx y hy`. Rewrite using `[← c.char_single h0 i₀ hx, ← c.char_single h0 i₀ hy, ← c.char_single h0 i₀ (Λ₁.add_mem hx hy), hadd, hU.semi.2 _ (c.single_mem i₀ hx) _ (c.single_mem i₀ hy)]`. Simplify using `only [altE, hform]`.
-
-Introduce `x hx`. Rewrite using `[← hαimg x hx]`. Conclude with `hU.semi'.1 _ (himg_single x hx)`. Introduce `x hx y hy`. Rewrite using `[← hαimg x hx, ← hαimg y hy, ← hαimg (x + y) ((imgLat _ Λ₁).add_mem hx hy), hadd, hU.semi'.2 _ (himg_single x hx) _ (himg_single y hy)]`.
-
-Simplify using `only [altE, hform]`. Conclude with `idx_coord e i₀ c.mem_img c.lat hU.idx₁`. Conclude with `idx_coord e i₀ c.lat c.mem_img hU.idx₂`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Copies.unitaryData₁ (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (i₀ : ι) (hU : UnitaryData H Λ α δ Ae)
     (hH₁ : IsHerm H₁) (hP₁ : IsPosDef H₁) (hI₁ : IsIsom H₁ H₁ (δ₁ : V₁ →ₗ[ℂ] V₁)) (hA₁ : ∀ x, Ae₁ x = x - δ₁.symm x)
@@ -222,15 +218,15 @@ theorem Copies.unitaryData₁ (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁
   · exact idx_coord e i₀ c.lat c.mem_img hU.idx₂
 
 /- English proof (translation)
-Take `⟨m1, hm1⟩` from `hq x hx`. Take `⟨m2, hm2⟩` from `hq (σ x) (hM.sΛ x hx)`. Take `⟨m3, hm3⟩` from `hq (x + σ x) (Λ.add_mem hx (hM.sΛ x hx))`. Establish `hexp : H (x + σ x) (x + σ x) = H x x + H x (σ x) + H x (σ x) + H (σ x) (σ x)`. Simplify using `only [map_add, LinearMap.add_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hM.sadj x x]`. Expand and normalize the polynomial expressions, which then agree. Establish `hk : c * (H x (σ x)).re * 2 = ((m3 - m1 - m2 : ℤ) : ℝ)`. Rewrite `hm3` using `[hexp]`. Simplify using `only [Complex.add_re] at hm3`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl : H (ℓ x) (ℓ x) = -H x x + ((4 * n : ℕ) : ℂ) * H x (σ x)`. Rewrite using `[hM.adj, hM.rel, map_add, map_neg, map_nsmul, nsmul_eq_mul]`. Establish `hq' : c * (H (ℓ x) (ℓ x)).re = ((m1 + 2 * (-m1 + (n : ℤ) * (m3 - m1 - m2)) : ℤ) : ℝ)`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hl]`. Simplify using `only [Complex.add_re, Complex.neg_re, Complex.mul_re, Complex.natCast_re, Complex.natCast_im, zero_mul, sub_zero]`. Use `push_cast`. Move the coercions through the operations in `at hk`. Use polynomial arithmetic with `[hm1, hk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hα, hα, hq', hm1, round_intCast, round_intCast, zpow_add₀ (by norm_num), zpow_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem alpha_mult {H : Sesq V} {Λ : AddSubgroup V} {δ : V ≃ₗ[ℂ] V} {ℓ ℓ' σ : V →ₗ[ℂ] V} {n : ℕ}
     (hM : Multipliers H Λ δ ℓ ℓ' σ n) (c : ℝ) (α : V → ℂ) (hα : ∀ x, α x = (-1 : ℂ) ^ round (c * (H x x).re))

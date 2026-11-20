@@ -24,7 +24,7 @@ noncomputable def reImLinear (ι : Type) (n : ℕ) :
     rcases p with ⟨v, i, _ | _⟩ <;> simp
 
 /- English proof (translation)
-Establish `h` using `Complex.volume_preserving_equiv_real_prod.measure_preimage (hA.prod hB).nullMeasurableSet`. Rewrite `h` using `[Measure.volume_eq_prod, Measure.prod_prod]`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem volume_re_im (A B : Set ℝ) (hA : MeasurableSet A) (hB : MeasurableSet B) :
     volume {z : ℂ | z.re ∈ A ∧ z.im ∈ B} = volume A * volume B := by
@@ -35,13 +35,13 @@ theorem volume_re_im (A B : Set ℝ) (hA : MeasurableSet A) (hB : MeasurableSet 
   rfl
 
 /- English proof (translation)
-Establish `hm : Measurable (reImLinear ι n)` using `(reImLinear ι n).toLinearMap.continuous_of_finiteDimensional.measurable`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[volume_pi (α := fun _ : ι × Fin n × Bool => ℝ)]`. Use `(Measure.pi_eq fun s hs => ?_).symm` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hpre : (reImLinear ι n) ⁻¹' (Set.univ.pi s) = Set.univ.pi fun v => Set.univ.pi fun i => {z : ℂ | z.re ∈ s (v, i, true) ∧ z.im ∈ s (v, i, false)}`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_imp_iff, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h v i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨h (v, i, true), h (v, i, false)⟩`. Introduce and unpack `h ⟨v, i, _ | _⟩`. Conclude with `(h v i).2`. Conclude with `(h v i).1`. Rewrite using `[hpre, volume_pi_pi, Fintype.prod_prod_type]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[volume_pi_pi, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_bool, volume_re_im _ _ (hs _) (hs _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_reImLinear (ι : Type) [Fintype ι] (n : ℕ) :
     MeasurePreserving (reImLinear ι n) volume volume := by
@@ -69,7 +69,7 @@ theorem measurePreserving_reImLinear (ι : Type) [Fintype ι] (n : ℕ) :
   rw [Fintype.prod_bool, volume_re_im _ _ (hs _) (hs _)]
 
 /- English proof (translation)
-Introduce `ι _ n`. Set `L` to `(reImLinear ι n).toContinuousLinearEquiv`. Use `⟨{ toAddEquiv := (reImLinear ι n).toAddEquiv continuous_toFun := L.continuous continuous_invFun := L.symm.continuous }, ?_, fun y v i => ⟨rfl, rfl⟩⟩` and prove the remaining obligations. Conclude with `measurePreserving_reImLinear ι n`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_reIm_measurePreserving :
     ∀ (ι : Type) [Fintype ι] (n : ℕ), ∃ T : (ι → Fin n → ℂ) ≃ₜ+ (ι × Fin n × Bool → ℝ),

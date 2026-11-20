@@ -8,15 +8,15 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hPw hPt p _ D G L gb N N' h X X' c₁ c₂ ρ D' S hact ga hcomp k α`. Establish `w₁` using `hPw p D G L gb N N' 1 X X' c₁ k`. Establish `w₂` using `hPw p D G L gb N N' h X X' c₂ k`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `P P'' hP hP'' hga z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hu, hex⟩` from `hcomp P P'' hP hP'' hga`. Establish `f` using `hPt D.O D.inv D.g ρ D' X'.X X'.s X'.univ.A S k P hP`. Establish `f''` using `hPt D.O D.inv D.g ρ D' X'.X X'.s X'.univ.A S k P'' hP''`. Apply `KS.PowPB.pow_left_hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, (w₂.2.2.2 α).1, w₁.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Category.assoc, f.1, f''.1]`. Conclude with `hu`. Introduce `i`. Simplify using `only [Category.assoc, (w₂.2.2.2 α).2 i, w₁.2.1 i]`. Simplify using `only [← Category.assoc, f.2.1, f''.2.1]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hex, Category.assoc, ← w₁.2.2.1, ← Category.assoc, ← hact P'' hP'']`. Both sides reduce to the same expression. Introduce `P hP hinj z z' heq`. Establish `f` using `hPt D.O D.inv D.g ρ D' X'.X X'.s X'.univ.A S k P hP`. Use `(f.2.2.2.1 z z').2 (fun j => hinj (z j) (z' j) ?_)` and prove the remaining obligations.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `congrArg (· ≫ Over.Hom.left (KS.pr X.univ.A j)) heq`. Simplify using `only [Category.assoc, w₁.2.1 j] at e`. Simplify `e` using `only [← Category.assoc, f.2.1]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.powCorr_of :
     UpperTheory.Gal.W2.PwOver → UpperTheory.Gal.W2.PtFibre → UpperTheory.Gal.W2.PowCorr := by

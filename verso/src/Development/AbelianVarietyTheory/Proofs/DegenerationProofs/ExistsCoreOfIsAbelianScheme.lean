@@ -22,14 +22,14 @@ open GlobalTheory.ZJ
 namespace GlobalTheory.ZJ
 
 /- English proof (translation)
-Introduce `i j` and use `(map_one _).trans ((congrArg₂ (· * ·) (h i j) (map_one _)).trans (_root_.mul_one _)).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGen_one_of_g_eq_one {X : Scheme.{0}} (L : LB X) (h : ∀ i j, L.g i j = 1) :
     (⟨fun _ => 1⟩ : LB.Gen L).IsGen := fun i j =>
   (map_one _).trans ((congrArg₂ (· * ·) (h i j) (map_one _)).trans (_root_.mul_one _)).symm
 
 /- English proof (translation)
-Simplify using `only [LB.div, hM, hL, map_one, inv_one, _root_.mul_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem div_g_eq_one {X : Scheme.{0}} (M L : LB X) (hM : ∀ i j, M.g i j = 1) (hL : ∀ i j, L.g i j = 1)
     (i j : (LB.div M L).ι) : (LB.div M L).g i j = 1 := by
@@ -37,7 +37,7 @@ theorem div_g_eq_one {X : Scheme.{0}} (M L : LB X) (hM : ∀ i j, M.g i j = 1) (
   rfl
 
 /- English proof (translation)
-The claim follows from `isGen_one_of_g_eq_one _ (Out.Inh.linComb_triv_g φ ε)`.
+A detailed English derivation is pending.
 -/
 theorem isGen_one_linComb_triv {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
     (⟨fun _ => 1⟩ : LB.Gen (LB.LinComb (Out.Inh.trivLB X) φ ε)).IsGen :=
@@ -54,13 +54,11 @@ def splitExtOfAbelian {S : Scheme.{0}} (B : Over S) [GrpObj B] (h : IsAbelianSch
   primitive := fun _ => ⟨⟨fun _ => 1⟩, isGen_one_linComb_triv _ _⟩
 
 /- English proof (translation)
-Use `h.comm` as an intermediate fact. Use `isIso_toUnit_splitTorus_punit S` as an intermediate fact. Establish `hk : IsPullback (toUnit (splitTorus S PUnit) ≫ η[B]) (toUnit _) (𝟙 B) η[B]` using `IsPullback.of_vert_isIso ⟨Category.comp_id _⟩`. Use `CoordToExt.isGt_of_units (splitExtOfAbelian B h) (𝟙 B) (toUnit _ ≫ η[B]) (inferInstanceAs (IsMonHom (𝟙 B))) (inferInstanceAs (IsMonHom (toUnit (splitTorus S PUnit) ≫ η[B]))) (inferInstanceAs (Flat (𝟙 B.left))) (inferInstanceAs (Surjective (𝟙 B.left))) (inferInstanceAs (IsAffineHo …` and prove the remaining obligations. Introduce `χ Z r z a a' _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(map_one _).trans ((congrArg₂ (· * ·) (map_one _) (map_one _)).trans (_root_.mul_one _)).symm`. Introduce `χ a Z t g z _`. Establish `e : charUnit S PUnit χ = 1`. Establish `e₀ : Multiplicative.ofAdd (α` using `PUnit) χ = 1 := rfl`. Unfold `charUnit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₀]`. Simplify using `only [map_one]`. Conclude with `(congrArg _ (map_one _)).trans (map_one _)`. Conclude with `(map_one _).trans ((congrArg₂ (· * ·) ((congrArg _ e).trans (map_one _)) (map_one _)).trans (_root_.mul_one _)).symm`. Introduce `χ a y _`.
-
-Conclude with `(congrArg₂ (· * ·) (map_one _) (map_one _)).trans (_root_.mul_one _)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isGt_splitExtOfAbelian {S : Scheme.{0}} (B : Over S) [GrpObj B] (h : IsAbelianScheme B) :
     (splitExtOfAbelian B h).IsGt B := by

@@ -21,9 +21,9 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D`. Establish `h : ∀ PP : Pl D.host.E, ∃ x : 𝓞 D.host.E, x ∈ PP.asIdeal ∧ x ∉ PP.asIdeal ^ 2`. Introduce `PP`. Establish `hlt : PP.asIdeal ^ 2 < PP.asIdeal` using `Ideal.pow_lt_self _ PP.ne_bot PP.isPrime.ne_top 2 le_rfl`. Take `⟨x, hx1, hx2⟩` from `SetLike.exists_of_lt hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, hx1, hx2⟩`. Use `choose f hf using h`. Conclude with `⟨f, hf⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_uniformiser_family_host :
     ∀ (D : D7), ∃ ϖ : Pl D.host.E → 𝓞 D.host.E, ∀ PP : Pl D.host.E, ϖ PP ∈ PP.asIdeal ∧ ϖ PP ∉ PP.asIdeal ^ 2 := by

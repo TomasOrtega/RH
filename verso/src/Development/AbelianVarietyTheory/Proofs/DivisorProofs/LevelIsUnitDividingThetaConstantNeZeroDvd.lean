@@ -16,17 +16,15 @@ noncomputable section
 namespace GlobalTheory.GSep
 
 /- English proof (translation)
-Introduce `I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪 x₀`. Introduce `hdiv`. Establish `sp : ∀ w, X₁.M.Z.fromSpecStalk z₁ w ⤳ z₁` using `fun w => by`. Establish `: X₁.M.Z.fromSpecStalk z₁ w ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `set y' : Sp V ⟶ X₁.M.Z := spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ with hy'`. Use `set y : Sp (FractionRing V) ⟶ X₁.M.Z := jK V ≫ y' with hy`. Establish `h1 : y' (closedPoint V) ⤳ z₁` using `sp _`. Use `set ξ := y (closedPoint (FractionRing V)) with hξ`. Establish `hξz : ξ ⤳ z₁` using `sp _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyξ : ∀ w, y w ⤳ ξ` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton y _)`. Establish `hx₀ : X₁.S.th x₀ ∈ X₁.M.O ξ` using `𝔪.reg _ (X₁.S.th_mem x₀)`. Establish `key : ∀ a, 𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩ = algebraMap V (FractionRing V) (RatModel.valLoc y' z₁ h1 ⟨_, hdiv.2 a⟩) * 𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩`. Introduce `a`. Establish `hq : X₁.S.th a / X₁.S.th x₀ ∈ X₁.M.O ξ` using `RatModel.O_le_of_specializes hξz (hdiv.2 a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e : X₁.S.th a = X₁.S.th a / X₁.S.th x₀ * X₁.S.th x₀` using `(div_mul_cancel₀ _ hdiv.1).symm`. Rewrite using `[𝔪.yK_eq, 𝔪.yK_eq]`. Express the relevant statement in the definitionally equal form `X₁.M.val y (X₁.S.th a) = _ * X₁.M.val y (X₁.S.th x₀)`. Rewrite using `[show X₁.M.val y (X₁.S.th a) = X₁.M.val y (X₁.S.th a / X₁.S.th x₀ * X₁.S.th x₀) from congrArg _ e, RatModel.val_mul hyξ hq hx₀]`. Use `congr 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `RatModel.val_spMap_comp (algebraMap V (FractionRing V)) y' h1 ⟨_, hdiv.2 a⟩`. Use `⟨?_, ?_, fun a => ⟨_, key a⟩⟩` and prove the remaining obligations. Use `X₁.S.unit.map (ev.comp ((X₁.M.stalkEquiv z₁).symm.toRingHom.comp (algebraMap X₁.o₁ (X₁.M.O z₁))))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Introduce `h0`.
-
-Take `⟨c, -, hc⟩` from `GoodOut.exists_th_notMem abelianSchemeLaws_all.1 abelianSchemeLaws_all.2 X₁.ρ ⟨RingHom.ker 𝔪.yK, RingHom.ker_isPrime _⟩ x₀`. Conclude with `hc (by`. Express the relevant statement in the definitionally equal form `𝔪.yK _ = 0`. Rewrite using `[key, h0, mul_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_ne_zero_dvd : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → IsUnit ((X₁.S.r * X₁.S.N : ℕ) : V) ∧ 𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩ ≠ 0 ∧ ∀ a, ∃ r : V, 𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩ = algebraMap V (FractionRing V) r * 𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩ := by
   intro I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪 x₀

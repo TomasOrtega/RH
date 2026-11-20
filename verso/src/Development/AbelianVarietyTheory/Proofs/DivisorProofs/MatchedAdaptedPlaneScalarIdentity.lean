@@ -17,7 +17,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ThKTowerCT
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem sFinite_restrict_haar {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (s : Set G) :
@@ -26,21 +26,19 @@ theorem sFinite_restrict_haar {G : Type*} [Group G] [TopologicalSpace G] [IsTopo
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM d₁ W₁ H' i₀ i₁ hH' c Φ hΦ Φ' hΦ' hct hdec Φ₁ hΦ₁ μ 𝓕 hμ h𝓕 d₂ H hH V₁ M₁ e hV₁ hM₁ he`. Establish `hT` using `hM.triple`. Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hS : Φ₁ ∈ schA F _` using `GlobalTheory.ThK.SqIntCont.polData_le_schA hT.geo.hM hΦ₁`. Take `⟨C₀, hC₀⟩` from `GlobalTheory.T.pair_hyp_plane_adapted_lift hK F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV₁ hM₁ he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨starRingEnd ℂ C₀, ?_⟩` and prove the remaining obligations. Introduce `μN 𝓕N hμN h𝓕N h1 g`. Take `⟨T, γ, hTc, hTu, hTp, hγ, hsum, hbd, hct'⟩` from `hC₀ Φ₁ hS g`. Establish `hfc : Continuous fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h` using `(GlobalTheory.T.continuous_left_invariant_theta hK F E σ B a a' G X om om' hT Φ hΦ).1.sub (continuous_const.mul (GlobalTheory.T.continuous_left_invariant_dual hK F E σ B a a' G X om om' hT Φ' hΦ').1)`. Establish `hfinv : ∀ p ∈ ratU σ G.W.J, ∀ h, (fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h) (p * h) = (fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h) h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p hp h`. Simplify using `only [(GlobalTheory.T.continuous_left_invariant_theta hK F E σ B a a' G X om om' hT Φ hΦ).2 p hp h, (GlobalTheory.T.continuous_left_invariant_dual hK F E σ B a a' G X om om' hT Φ' hΦ').2 p hp h]`. Establish `hint` using `GlobalTheory.T.pair_plane_hyperbolic_reduction hK F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hP d₂ H hH _ hfc hdec Φ₁ hS μ 𝓕 hμ h𝓕 μN 𝓕N hμN h𝓕N h1 g`. Take `⟨hvi, hv0⟩` from `GlobalTheory.T.skew_space_fundamental_domain_integral hK F E σ B (a + a') d₁ G.W W₁ H' i₀ i₁ _ _ hP.base hP.skew hH' μ 𝓕 hμ h𝓕 _ hfc hfinv hct hdec T γ hTc hTu hTp hγ hsum hbd`. Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.UnipCT.topFacts (F := F) σ G.W.J`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := i1`. Use `haveI := i2`. Use `haveI := i3`. Use `haveI := i4`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hμ`. Establish `fN : IsFiniteMeasure (μN.restrict 𝓕N)` using `⟨by rw [Measure.restrict_apply_univ, h1]; exact ENNReal.one_lt_top⟩`. Use `haveI s1 : SFinite (μN.restrict 𝓕N) := @instSFiniteOfSigmaFinite _ _ _ (@IsFiniteMeasure.toSigmaFinite _ _ _ fN)`. Use `haveI s2 : SFinite (μ.restrict 𝓕) := sFinite_restrict_haar μ 𝓕`. Set `Θ : unip σ G.V H → UA σ G.W.J → ℂ` to `fun u h => (G.M.I om Φ h - c * G.M'.I om' Φ' h) * (starRingEnd ℂ) (theta om Φ₁ (u.1 * g) h)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint' : Integrable (Function.uncurry Θ) ((μN.restrict 𝓕N).prod (μ.restrict 𝓕))` using `hint`. Establish `hpt : ∀ h, ∫ u in 𝓕N, Θ u h ∂μN = starRingEnd ℂ C₀ * ((G.M.I om Φ h - c * G.M'.I om' Φ' h) * (starRingEnd ℂ) (thetaSum F (e (om (g, h) Φ₁)))) + (G.M.I om Φ h - c * G.M'.I om' Φ' h) * (starRingEnd ℂ) (∑' w, T (γ w * h))`. Introduce `h`. Simplify using `only [Θ]`. Rewrite using `[integral_const_mul, integral_conj, hct' μN 𝓕N hμN h𝓕N h1 h, map_add, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hK : Integrable (fun h => ∫ u in 𝓕N, Θ u h ∂μN) (μ.restrict 𝓕)` using `hint'.integral_prod_right`. Establish `hA : Integrable (fun h => starRingEnd ℂ C₀ * ((G.M.I om Φ h - c * G.M'.I om' Φ' h) * (starRingEnd ℂ) (thetaSum F (e (om (g, h) Φ₁))))) (μ.restrict 𝓕)`. Use `(hK.sub hvi).congr (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, hpt]`.
-
-Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `starRingEnd ℂ C₀ * ∫ h in 𝓕, (G.M.I om Φ h - c * G.M'.I om' Φ' h) * (starRingEnd ℂ) (thetaSum F (e (om (g, h) Φ₁))) ∂μ = ∫ u in 𝓕N, ∫ h in 𝓕, Θ u h ∂μ ∂μN`. Rewrite using `[integral_integral_swap hint']`. Simplify using `only [hpt]`. Rewrite using `[integral_add hA hvi, integral_const_mul, hv0, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constTerm_lift : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),

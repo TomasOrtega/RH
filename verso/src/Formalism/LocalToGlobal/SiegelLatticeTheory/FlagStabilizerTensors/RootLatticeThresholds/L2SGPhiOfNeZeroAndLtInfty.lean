@@ -13,25 +13,21 @@ set_option linter.unusedVariables false
 namespace Formalism.L2.SG.Pf.GoodS
 
 /- English proof (translation)
-Establish `hUH : ∀ a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) → b ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) → a * b ∈ Formalism.QuantumDeterminants.UH (Formalism.Qu …`. Introduce `a b ha hb`. Establish `ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r` using `ha`. Establish `hb' : bᴴ * Formalism.QuantumDeterminants.Hpk k r * b = Formalism.QuantumDeterminants.Hpk k r` using `hb`. Use `show (a * b)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (a * b) = Formalism.QuantumDeterminants.Hpk k r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.QuantumDeterminants.Hpk k r := by rw [ha', hb']`. Establish `hSG : ∀ M, M ∈ Formalism.QuantumDeterminants.Sset k r z → M ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `M ⟨g, hg, m, hm, rfl⟩`. Conclude with `hUH g m hg.1 hm.1`. Establish `hc : Continuous fun x : Formalism.QuantumDeterminants.Mt k r => (Matrix.of x)ᴴ * Formalism.QuantumDeterminants.Hpk k r * Matrix.of x`. Establish `h0 : Continuous fun x : Formalism.QuantumDeterminants.Mt k r => Matrix.of x` using `continuous_id`. Conclude with `(h0.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hBm : MeasurableSet {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)}`. Establish `hcl : IsClosed {x : Formalism.QuantumDeterminants.Mt k r | (Matrix.of x)ᴴ * Formalism.QuantumDeterminants.Hpk k r * Matrix.of x = Formalism.QuantumDeterminants.Hpk k r}` using `isClosed_eq hc continuous_const`. Conclude with `hcl.measurableSet.compl`. Establish `hq1` using `hq ({x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)}.indicator fun _ => (1 : ℝ≥0∞)) (measurable_const.indicator hBm)`. Rewrite `hq1` using `[lintegral_indicator_const hBm, hG.2.2.1, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ x : Formalism.QuantumDeterminants.Mt k r, ({x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)}.indicator fun _ => μS Set.univ) x ≤ ∫⁻ s, ({x : Formalism.QuantumDeterminants.Mt k r | Matrix.of …`. Introduce `x`. Distinguish the cases in `hx : Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)`. Establish `hnm : x ∉ {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)}` using `fun h => h hx`. Rewrite using `[Set.indicator_apply, if_neg hnm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `bot_le`. Establish `hxm : x ∈ {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)}` using `hx`. Rewrite using `[Set.indicator_apply, if_pos hxm]`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_mono_ae` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hae : ∀ᵐ s ∂μS, Matrix.of s ∈ Formalism.QuantumDeterminants.Sset k r z` using `ae_iff.mpr hS.2.2.1`. Use `filter_upwards [hae] with s hs`. Establish `hsG : (Matrix.of s)ᴴ * Formalism.QuantumDeterminants.Hpk k r * Matrix.of s = Formalism.QuantumDeterminants.Hpk k r` using `hSG _ hs`. Establish `hmem : (fun i j => (Matrix.of s * Matrix.of x) i j) ∈ {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)}` using `by show ¬ (Matrix.of (fun i j => (Matrix.of s * Matrix.of x) i j) ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))`. Introduce `hG'`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (Matrix.of s * Matrix.of x)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (Matrix.of s * Matrix.of x) = Formalism.QuantumDeterminants.Hpk k r` using `hG'`. Apply `hx` to reduce the goal to its premises. Use `show (Matrix.of x)ᴴ * Formalism.QuantumDeterminants.Hpk k r * Matrix.of x = Formalism.QuantumDeterminants.Hpk k r`. Rewrite `e` using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [Set.indicator_of_mem hmem, le_refl]`. Establish `hle` using `lintegral_mono (μ := ν) hpt`. Rewrite `hle` using `[lintegral_indicator_const hBm, ← hq1]`. Establish `hpos : μS Set.univ ≠ 0` using `(Measure.measure_univ_pos.mpr hS.2.1).ne'`. Break down `mul_eq_zero.mp (nonpos_iff_eq_zero.mp hle) with h | h` into its components or cases.
-
-Conclude with `absurd h hpos`. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem nu_conc {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : Formalism.QuantumDeterminants.inWb k r z) (hT : 0 < Formalism.QuantumDeterminants.Tz k r z)
     {μG μS ν : Measure (Formalism.QuantumDeterminants.Mt k r)} (hG : Formalism.MainNotions.S.IsHaarOn (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) μG)
@@ -118,13 +114,13 @@ def toUJn {n : ℕ} {ε : Fin n → Bool} (M : Matrix (Fin n) (Fin n) ℂ)
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
 /- English proof (translation)
-Take `⟨h1, h2, hg, -⟩` from `C.isT τ`. Establish `hy` using `C.y_mem τ`. Take `⟨hrep, -⟩` from `Formalism.L2.SG.Pf.WuBL.sigB_rep C τ`. Establish `hmy : m * C.y τ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)` using `Formalism.MainNotions.S.Inh.mul_mem_UH_Hpk_nonempty_parameter_models _ _ hm hy`. Establish `hJ : (C.Q τ * (m * C.y τ) * C.Qi τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * (C.Q τ * (m * C.y τ) * C.Qi τ) = Formalism.REAL.Jm (X.B.I.ε (vOf X τ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmy' : (m * C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (m * C.y τ) = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `hmy`. Combine the equalities or inequalities in the displayed calculation. Use `set γ := toUJn (C.Q τ * (m * C.y τ) * C.Qi τ) hJ`. Establish `hγ : uMat γ = C.Q τ * (m * C.y τ) * C.Qi τ` using `rfl`. Establish `hW` using `(hB u τ).choose_spec.2 γ`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : sigB X (C.Q τ) (C.Qi τ) τ m (v0Of C τ) = X.B.σ (vOf X τ) (uMat γ) (X.B.w (vOf X τ))`. Unfold `v0Of`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hrep.2 _ hm _ hy, hγ]`. Both sides reduce to the same expression. Unfold `phiOf bOf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, ← hW, ← Formalism.L2.SG.Pf.WuBL.wT_at C u τ γ, hγ]`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_eq (C : Choice X θ) (hB : WuBessel C) (u : D.what₂.Word) (τ : D.what₂.Tau)
     (m : Formalism.FourierDecayAlt.B.Mat D.R.k D.R.rS) (hm : m ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) :
@@ -153,15 +149,15 @@ theorem phi_eq (C : Choice X θ) (hB : WuBessel C) (u : D.what₂.Word) (τ : D.
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]
 
 /- English proof (translation)
-Take `⟨hwsm, hw1, hSH, hWc, hWe, hWr, hne, hfin⟩` from `hLF u τ`. Take `⟨hz, hTz⟩` from `Formalism.L2.SG.Pf.zTr C u τ`. Establish `hT : 0 < Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (zB X (C.Qi τ) u τ)` using `by rw [hTz]; exact Tr_pos D u`. Establish `hHG` using `Formalism.L2.SG.Pf.haarTr C τ`. Establish `hq` using `C.nuS_q u τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy` using `C.y_mem τ`. Establish `hconc` using `nu_conc hz hT hHG hSH hq`. Establish `hπ` using `Formalism.MainNotions.BridgeLemma₃.lbRepOfHC_proved D.R.k D.R.rS _ _ _ _ hz hT (Formalism.L2.SG.Pf.colsTypeTr C u τ)`. Establish `hinv : ∀ s ∈ Formalism.QuantumDeterminants.Sset D.R.k D.R.rS (zB X (C.Qi τ) u τ), ∀ x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS), ‖wT C u τ (s * x)‖ = ‖wT C u τ x‖`. Introduce and unpack `_ ⟨h0, hh0, n0, hn0, rfl⟩ x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hWe h0 hh0 n0 hn0 x hx, norm_smul, psiS, Formalism.L2.SG.Pf.WuBL.norm_psi, one_mul, hπ.2.1 h0 hh0]`. Establish `heq` using `Formalism.L2.SG.Pf.WuBL.l2RightTranslation_thm D.R.k D.R.rS _ hz hT _ _ _ hHG hSH hq _ (wT C u τ) hWc (Formalism.L2.SG.Pf.WuBL.wT_off C u τ) hinv (C.y τ) hy`. Establish `hae : ∀ᵐ x ∂(C.nuS u τ), Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)`. Rewrite using `[ae_iff]`. Conclude with `hconc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hphi : l2SG (C.nuS u τ) (phiOf hB u τ) = l2SG (C.nuS u τ) (fun x => wT C u τ (x * C.y τ))`. Unfold `l2SG`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Rewrite using `[phi_eq C hB u τ _ hx]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hphi, heq]`. Conclude with `⟨hne, hfin⟩`.
+A detailed English derivation is pending.
 -/
 theorem l2SG_phiOf_ne_zero_and_lt_infty (C : Choice X θ) (hLF : LocFactor C) (hB : WuBessel C) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     l2SG (C.nuS u τ) (phiOf hB u τ) ≠ 0 ∧ l2SG (C.nuS u τ) (phiOf hB u τ) < ⊤ := by

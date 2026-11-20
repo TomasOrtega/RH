@@ -20,7 +20,7 @@ structure PublishedThetaConditionTheorems : Prop where
   q13 : GlobalTheory.Published.WeilRepresentationUnitaryPair
   q14 : GlobalTheory.Published.SchurOrthogonalitySquareIntegrable
 /- English proof (translation)
-Introduce `D` and use `GlobalTheory.Core.Rk.SW.heckeFormNS_of_heckeForm (_root_.GlobalTheory.Core.Rk.IP.heckeForm_of_doubling' h.q13 h.q2 h.q7 h.sw h.q9 h.q10 D)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PublishedThetaConditionTheorems.q8 (h : _root_.GlobalTheory.PrimIn.PublishedThetaConditionTheorems) : ∀ D : Formalism.BasicNotions.D7, GlobalTheory.Core.Rk.SW.HeckeFormNS D := fun D =>
   GlobalTheory.Core.Rk.SW.heckeFormNS_of_heckeForm

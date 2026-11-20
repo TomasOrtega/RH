@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [MonObj.comp_one]`. Consider the case `succ k ih => rw [pow_succ, MonObj.comp_mul, ih, Category.comp_id, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_pow_id_torscard {S : Scheme.{0}} {G T : Over S} [GrpObj G] (x : T ⟶ G) (n : ℕ) :
     x ≫ (𝟙 G) ^ n = x ^ n := by
@@ -20,13 +20,13 @@ theorem comp_pow_id_torscard {S : Scheme.{0}} {G T : Over S} [GrpObj G] (x : T �
   | succ k ih => rw [pow_succ, MonObj.comp_mul, ih, Category.comp_id, pow_succ]
 
 /- English proof (translation)
-Establish `hn0 : (n : ℤ) ≠ 0`. Introduce `h`. Apply `hn` to reduce the goal to its premises. Simplify using `at h`. Simplify using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨hiso, hdeg⟩` from `GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree K A (n : ℤ) hn0`. Establish `hf : ((n : ℤ) • 𝟙 A).hom = (𝟙 A.X) ^ n`. Rewrite using `[natCast_zsmul, nsmul_hom, id_hom]`. Establish `hker : ∀ {T : Over (Sp K)} (x : T ⟶ A.X), x ≫ ((n : ℤ) • 𝟙 A).hom = x ^ n`. Introduce `T x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hf, comp_pow_id_torscard]`. Establish `hd` using `GlobalTheory.T.isogenyDegree_eq_card_kernel_of_killed_by_invertible K A A ((n : ℤ) • 𝟙 A) n hn hiso (fun T x hx => by rw [← hker]; exact hx)`. Rewrite `hd` using `[hdeg, Int.natAbs_natCast]`. Rewrite using `[hd]`. Apply `Nat.card_congr` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Equiv.subtypeEquivRight (fun x => by rw [MonoidHom.mem_ker, ptMap_apply, hker])`.
+A detailed English derivation is pending.
 -/
 theorem card_torsion_pt (K : Type) [Field K] (A : AbVar K) (n : ℕ) (hn : (n : K) ≠ 0) :
     Nat.card {x : A.Pt // x ^ n = 1} = n ^ (2 * A.dim) := by

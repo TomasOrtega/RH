@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX
 
 /- English proof (translation)
-Unfold `tI eP`. Rewrite using `[Sigma.ι_desc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem e1 {K : Type} [CommRing K] {W Z Y T : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z}
     {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) (j : T ⟶ Y) (p : B.ι × Fin d) :
@@ -14,7 +14,7 @@ private theorem e1 {K : Type} [CommRing K] {W Z Y T : Scheme.{0}} {q : Z ⟶ Spe
   rw [Sigma.ι_desc]
 
 /- English proof (translation)
-Unfold `tI tauP`. Rewrite using `[Sigma.ι_desc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem e2 {K : Type} [CommRing K] {W Z Y T : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z}
     {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) (j : T ⟶ Y) (p : B.ι × Fin d) :
@@ -23,7 +23,7 @@ private theorem e2 {K : Type} [CommRing K] {W Z Y T : Scheme.{0}} {q : Z ⟶ Spe
   rw [Sigma.ι_desc]
 
 /- English proof (translation)
-Unfold `tI rhoP`. Rewrite using `[Sigma.ι_desc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem e3 {K : Type} [CommRing K] {W Z Y T : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z}
     {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) (j : T ⟶ Y) (r : T ⟶ W) (hw : j ≫ π = r ≫ i) (p : B.ι × Fin d) :
@@ -32,15 +32,15 @@ private theorem e3 {K : Type} [CommRing K] {W Z Y T : Scheme.{0}} {q : Z ⟶ Spe
   rw [Sigma.ι_desc]
 
 /- English proof (translation)
-Introduce `K _ W Z Y q i π D d B T j r hw v hv p V a₁`. Establish `ey : (a₁ ≫ tI B j p) ≫ eP B j ≫ j = a₁ ≫ (oT B j p).ι ≫ j`. Rewrite using `[Category.assoc, ← Category.assoc (tI B j p), e1]`. Establish `hle : ⊤ ≤ (a₁ ≫ (oT B j p).ι ≫ j) ⁻¹ᵁ (B.c p.1).C p.2`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `oT_le B j p (Set.mem_univ (a₁ x))` as an intermediate fact. Simplify using `using this`. Establish `key : ∀ (y' : V ⟶ Y) (h' : ⊤ ≤ y' ⁻¹ᵁ (B.c p.1).C p.2), y' = a₁ ≫ (oT B j p).ι ≫ j → (a₁ ≫ tI B j p).appTop.hom ∘ v = uV B p.1 p.2 y' h' ∧ (a₁ ≫ tI B j p) ≫ tauP B j = secOf B p.1 p.2 y' h'`. Introduce and unpack `y' h' rfl`. Take `⟨n1, n2⟩` from `chartNat B p.1 p.2 a₁ ((oT B j p).ι ≫ j) (oT_le B j p) h'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Rewrite using `[n1 m, ← hv p m]`. Rewrite using `[Function.comp_apply, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[n2, Category.assoc, e2]`. Establish `h : ⊤ ≤ ((a₁ ≫ tI B j p) ≫ eP B j ≫ j) ⁻¹ᵁ (B.c p.1).C p.2`. Rewrite using `[ey]`. Conclude with `hle`. Take `⟨k1, k2⟩` from `key _ h ey`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨h, k1, k2, by rw [Category.assoc, e3, Category.assoc]⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.pieceFacts :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) {T : Scheme.{0}} (j : T ⟶ Y) (r : T ⟶ W) (hw : j ≫ π = r ≫ i) (v : Fin d → Γ(TP B j, ⊤)), IsV B j v → ∀ (p : B.ι × Fin d) {V : Scheme.{0}} (a₁ : V ⟶ (oT B j p : Scheme.{0})), ∃ h : ⊤ ≤ ((a₁ ≫ tI B j p) ≫ eP B j ≫ j) ⁻¹ᵁ (B.c p.1).C p.2, (a₁ ≫ tI B j p).appTop.hom ∘ v = uV B p.1 p.2 _ h ∧ (a₁ ≫ tI B j p) ≫ tauP B j = secOf B p.1 p.2 _ h ∧ (a₁ ≫ tI B j p) ≫ rhoP B j r hw = (a₁ ≫ rhoC B j r hw p) ≫ wI B p.1 := by

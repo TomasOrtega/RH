@@ -7,37 +7,37 @@ import Development.EtaleCohomology.TateTwists.EtaleCupCompatibleWithCoefficientM
 
 namespace LateralTheory.Fin.EtaleCupProductNaturalInCoefficients
 /- English proof (translation)
-Apply `LateralTheory.EtaleFoundations.etale_alexander_whitney_cup_cochain_exists_holds` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem etale_alexander_whitney_cup_exists_of_components : LateralTheory.EtaleFoundations.EtaleAlexanderWhitneyCupCochainExistsForPairing := by
   apply LateralTheory.EtaleFoundations.etale_alexander_whitney_cup_cochain_exists_holds
 /- English proof (translation)
-Apply `LateralTheory.EtaleFoundations.etale_cup_alexanderWhitney_uniqueness_holds` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem etale_alexander_whitney_cup_unique_of_components : LateralTheory.EtaleFoundations.EtaleAlexanderWhitneyCupCochainUnique := by
   apply LateralTheory.EtaleFoundations.etale_cup_alexanderWhitney_uniqueness_holds
 /- English proof (translation)
-Apply `LateralTheory.EtaleFoundations.etale_cup_alexanderWhitney_leibniz_succ_holds` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem etale_alexander_whitney_cup_leibniz_rule_succ_of_components : LateralTheory.EtaleFoundations.EtaleAlexanderWhitneyLeibnizPositiveSimplexDegree := by
   apply LateralTheory.EtaleFoundations.etale_cup_alexanderWhitney_leibniz_succ_holds
 /- English proof (translation)
-Apply the tactic sequence `apply LateralTheory.EtaleFoundations.etale_cup_alexanderWhitney_leibniz_of_succ <;> first | exact etale_alexander_whitney_cup_leibniz_rule_succ_of_components`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem etale_alexander_whitney_cup_leibniz_rule_of_components : LateralTheory.EtaleFoundations.EtaleAlexanderWhitneyCupLeibnizRule := by
   apply LateralTheory.EtaleFoundations.etale_cup_alexanderWhitney_leibniz_of_succ <;> first | exact etale_alexander_whitney_cup_leibniz_rule_succ_of_components
 /- English proof (translation)
-Apply the tactic sequence `apply LateralTheory.EtaleFoundations.etale_cup_compat_spec_of_alexander_whitney_exists_unique_leibniz <;> first | exact etale_alexander_whitney_cup_exists_of_components | exact etale_alexander_whitney_cup_unique_of_components | exact etale_alexander_whitney_cup_leibniz_rule_of_co …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem etale_cup_product_compatibility_specification_of_components : LateralTheory.EtaleFoundations.EtaleCupCompatAlexanderWhitneyCocycleSpec := by
   apply LateralTheory.EtaleFoundations.etale_cup_compat_spec_of_alexander_whitney_exists_unique_leibniz <;> first | exact etale_alexander_whitney_cup_exists_of_components | exact etale_alexander_whitney_cup_unique_of_components | exact etale_alexander_whitney_cup_leibniz_rule_of_components
 /- English proof (translation)
-Apply the tactic sequence `apply LateralTheory.EtaleFoundations.etale_cup_compatible_with_coefficient_maps_of_spec <;> first | exact etale_cup_product_compatibility_specification_of_components`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem etale_cup_product_compatible_with_cochains_of_components : LateralTheory.EtaleFoundations.EtaleCupProductNaturalInCoefficients := by
   apply LateralTheory.EtaleFoundations.etale_cup_compatible_with_coefficient_maps_of_spec <;> first | exact etale_cup_product_compatibility_specification_of_components
 /- English proof (translation)
-The claim follows from `etale_cup_product_compatible_with_cochains_of_components`.
+A detailed English derivation is pending.
 -/
 theorem intersectionNumber_baseChange : LateralTheory.EtaleFoundations.EtaleCupProductNaturalInCoefficients := etale_cup_product_compatible_with_cochains_of_components
 end LateralTheory.Fin.EtaleCupProductNaturalInCoefficients

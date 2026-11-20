@@ -14,7 +14,7 @@ def smoothAbs (η x : ℝ) : ℝ := 2 * η * rmRho (x / (2 * η))
 def regMaxTwo (η : ℝ) (p : ℝ × ℝ) : ℝ := (p.1 + p.2) / 2 + smoothAbs η (p.1 - p.2) / 2
 
 /- English proof (translation)
-The claim follows from `|x| ≤ smoothAbs η x ∧ smoothAbs η x ≤ |x| + 2 * η := by have h2 : 0 < 2 * η := by linarith have h := rmRho_bounds (x / (2 * η)) rw [abs_div, abs_of_pos h2] at h have e : 2 * η * (|x| / (2 * η)) = |x| := by field_simp unfold smoothAbs constructor · have := mul_le_mul_of_nonneg_lef …`.
+A detailed English derivation is pending.
 -/
 lemma smoothAbs_bounds {η : ℝ} (hη : 0 < η) (x : ℝ) :
     |x| ≤ smoothAbs η x ∧ smoothAbs η x ≤ |x| + 2 * η := by
@@ -30,7 +30,7 @@ lemma smoothAbs_bounds {η : ℝ} (hη : 0 < η) (x : ℝ) :
     rw [mul_add, e, mul_one] at this; exact this
 
 /- English proof (translation)
-The claim follows from `|smoothAbs η s - smoothAbs η t| ≤ |s - t| := by have h2 : 0 < 2 * η := by linarith rw [show smoothAbs η s - smoothAbs η t = 2 * η * (rmRho (s / (2 * η)) - rmRho (t / (2 * η))) by unfold smoothAbs; ring, abs_mul, abs_of_pos h2] calc 2 * η * |rmRho (s / (2 * η)) - rmRho (t / (2 * η …`.
+A detailed English derivation is pending.
 -/
 lemma smoothAbs_lip {η : ℝ} (hη : 0 < η) (s t : ℝ) :
     |smoothAbs η s - smoothAbs η t| ≤ |s - t| := by
@@ -42,9 +42,9 @@ lemma smoothAbs_lip {η : ℝ} (hη : 0 < η) (s t : ℝ) :
     _ = |s - t| := by rw [← sub_div, abs_div, abs_of_pos h2]; field_simp
 
 /- English proof (translation)
-Establish `h2 : 0 < 2 * η` using `by linarith`. Establish `h : 1 / 2 ≤ |x / (2 * η)|`. Rewrite using `[abs_div, abs_of_pos h2, le_div_iff₀ h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `smoothAbs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Rewrite using `[rmRho_of_abs _ h, abs_div, abs_of_pos h2]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 lemma smoothAbs_of_le_abs {η : ℝ} (hη : 0 < η) {x : ℝ} (hx : 2 * η ≤ |x|) :
     smoothAbs η x = |x| := by
@@ -56,14 +56,14 @@ lemma smoothAbs_of_le_abs {η : ℝ} (hη : 0 < η) {x : ℝ} (hx : 2 * η ≤ |
   field_simp
 
 /- English proof (translation)
-The claim follows from `Monotone.convexOn_univ_of_deriv (fun t => (rmRho_hasDerivAt t).differentiableAt) (by rw [rmRho_deriv]; exact rmRho'_monotone)`.
+A detailed English derivation is pending.
 -/
 lemma rmRho_convexOn : ConvexOn ℝ Set.univ rmRho :=
   Monotone.convexOn_univ_of_deriv (fun t => (rmRho_hasDerivAt t).differentiableAt)
     (by rw [rmRho_deriv]; exact rmRho'_monotone)
 
 /- English proof (translation)
-Establish `hs : ContDiff ℝ (⊤ : ℕ∞) (smoothAbs η)`. Unfold `smoothAbs`. Conclude with `contDiff_const.mul (rmRho_contDiff.comp (contDiff_id.div_const _))`. Unfold `regMaxTwo`. Conclude with `((contDiff_fst.add contDiff_snd).div_const _).add ((hs.comp (contDiff_fst.sub contDiff_snd)).div_const _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma regMaxTwo_contDiff (η : ℝ) : ContDiff ℝ (⊤ : ℕ∞) (regMaxTwo η) := by
   have hs : ContDiff ℝ (⊤ : ℕ∞) (smoothAbs η) := by
@@ -74,9 +74,9 @@ lemma regMaxTwo_contDiff (η : ℝ) : ContDiff ℝ (⊤ : ℕ∞) (regMaxTwo η)
     ((hs.comp (contDiff_fst.sub contDiff_snd)).div_const _)
 
 /- English proof (translation)
-Establish `h2 : 0 < 2 * η` using `by linarith`. Use `⟨convex_univ, fun x _ y _ a b ha hb hab => ?_⟩` and prove the remaining obligations. Establish `key` using `rmRho_convexOn.2 (Set.mem_univ ((x.1 - x.2) / (2 * η))) (Set.mem_univ ((y.1 - y.2) / (2 * η))) ha hb hab`. Simplify using `only [smul_eq_mul] at key`. Establish `k2` using `mul_le_mul_of_nonneg_left key h2.le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [regMaxTwo, smoothAbs, smul_eq_mul, Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd]`. Establish `harg : (a * x.1 + b * y.1 - (a * x.2 + b * y.2)) / (2 * η) = a * ((x.1 - x.2) / (2 * η)) + b * ((y.1 - y.2) / (2 * η))` using `by field_simp; ring`. Rewrite using `[harg]`. Use polynomial arithmetic with `[k2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma regMaxTwo_convexOn {η : ℝ} (hη : 0 < η) : ConvexOn ℝ Set.univ (regMaxTwo η) := by
   have h2 : 0 < 2 * η := by linarith
@@ -94,9 +94,9 @@ lemma regMaxTwo_convexOn {η : ℝ} (hη : 0 < η) : ConvexOn ℝ Set.univ (regM
   nlinarith [k2]
 
 /- English proof (translation)
-Introduce `p q hpq`. Establish `h1 : p.1 ≤ q.1` using `hpq.1`. Establish `h2 : p.2 ≤ q.2` using `hpq.2`. Establish `L` using `(abs_le.mp (smoothAbs_lip hη (q.1 - q.2) (p.1 - p.2))).1`. Establish `: |q.1 - q.2 - (p.1 - p.2)| ≤ (q.1 - p.1) + (q.2 - p.2)` using `abs_le.mpr ⟨by linarith, by linarith⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [regMaxTwo]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma regMaxTwo_monotone {η : ℝ} (hη : 0 < η) : Monotone (regMaxTwo η) := by
   intro p q hpq
@@ -109,17 +109,17 @@ lemma regMaxTwo_monotone {η : ℝ} (hη : 0 < η) : Monotone (regMaxTwo η) := 
   linarith
 
 /- English proof (translation)
-Introduce `η hη`. Use `⟨regMaxTwo η, regMaxTwo_contDiff η, regMaxTwo_convexOn hη, regMaxTwo_monotone hη, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Establish `hb` using `smoothAbs_bounds hη (a - b)`. Simplify using `only [regMaxTwo]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Break down `le_total a b with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Rewrite `hb` using `[abs_of_nonpos (by linarith : a - b ≤ 0)]`. Apply the tactic sequence `constructor <;> linarith [hb.1, hb.2]`. Rewrite using `[max_eq_left h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hb` using `[abs_of_nonneg (by linarith : 0 ≤ a - b)]`. Apply the tactic sequence `constructor <;> linarith [hb.1, hb.2]`. Introduce `a b hab`. Establish `h0 : 0 ≤ a - b` using `by linarith`. Establish `e` using `smoothAbs_of_le_abs hη (x := a - b) (by rw [abs_of_nonneg h0]; linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[abs_of_nonneg h0]`. Simplify using `only [regMaxTwo, e]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b hab`. Establish `h0 : a - b ≤ 0` using `by linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `smoothAbs_of_le_abs hη (x := a - b) (by rw [abs_of_nonpos h0]; linarith)`. Rewrite `e` using `[abs_of_nonpos h0]`. Simplify using `only [regMaxTwo, e]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [regMaxTwo]`. Rewrite using `[show a + c - (b + c) = a - b by ring]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_regMaxTwo : ∀ η : ℝ, 0 < η → ∃ m : ℝ × ℝ → ℝ, ContDiff ℝ (⊤ : ℕ∞) m ∧
     ConvexOn ℝ Set.univ m ∧ Monotone m ∧ (∀ a b, max a b ≤ m (a, b) ∧ m (a, b) ≤ max a b + η) ∧

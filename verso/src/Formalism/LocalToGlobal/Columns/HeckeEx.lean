@@ -31,7 +31,7 @@ def compU (w : HeightOneSpectrum (𝓞 L)) : Ideles L →* (w.adicCompletion L)�
       map_mul' := fun _ _ => rfl }
 
 /- English proof (translation)
-Establish `hlt : w.asIdeal ^ 2 < w.asIdeal` using `Ideal.pow_lt_self w.asIdeal w.ne_bot w.isPrime.ne_top 2 le_rfl`. Take `⟨x, hx, hx2⟩` from `SetLike.exists_of_lt hlt`. Conclude with `⟨x, hx, hx2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unifO (w : HeightOneSpectrum (𝓞 L)) : ∃ ϖ : 𝓞 L, ϖ ∈ w.asIdeal ∧ ϖ ∉ w.asIdeal ^ 2 := by
   have hlt : w.asIdeal ^ 2 < w.asIdeal := Ideal.pow_lt_self w.asIdeal w.ne_bot w.isPrime.ne_top 2 le_rfl
@@ -44,7 +44,7 @@ def resU (w : HeightOneSpectrum (𝓞 L)) (y : 𝓞 L) (hy : y ∉ w.asIdeal) : 
   Units.mk0 (Ideal.Quotient.mk w.asIdeal y) (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])
 
 /- English proof (translation)
-Introduce `h`. Apply `hy` to reduce the goal to its premises. Establish `: y = 0` using `by exact_mod_cast h`. Rewrite using `[this]`. Conclude with `w.asIdeal.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_notMem {w : HeightOneSpectrum (𝓞 L)} {y : 𝓞 L} (hy : y ∉ w.asIdeal) : (y : L) ≠ 0 := by
   intro h
@@ -83,7 +83,7 @@ section Col
 variable {X : Fields}
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show star (star (x : X.E)) = x`. Conclude with `star_star _`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem hxConjO_invol (X : Fields) (x : 𝓞 X.E) : X.conjO (X.conjO x) = x := by
   apply RingOfIntegers.ext
@@ -103,18 +103,18 @@ def cP (X : Fields) (w : HeightOneSpectrum (𝓞 X.E)) : HeightOneSpectrum (𝓞
     rw [← hxConjO_invol X p, h1, map_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cP (w : HeightOneSpectrum (𝓞 X.E)) (r : 𝓞 X.E) : r ∈ (cP X w).asIdeal ↔ X.conjO r ∈ w.asIdeal := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_cP, hxConjO_invol X]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_cP {w : HeightOneSpectrum (𝓞 X.E)} {y : 𝓞 X.E} (hy : y ∈ w.asIdeal) : X.conjO y ∈ (cP X w).asIdeal := by
   rw [mem_cP, hxConjO_invol X]; exact hy
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : (cP X w).asIdeal ^ 2 ≤ (w.asIdeal ^ 2).comap X.conjO` using `Ideal.le_comap_pow _ 2`. Establish `h3` using `h2 h`. Rewrite `h3` using `[Ideal.mem_comap, hxConjO_invol X]`. Conclude with `hy h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_notMem_sq_cP {w : HeightOneSpectrum (𝓞 X.E)} {y : 𝓞 X.E} (hy : y ∉ w.asIdeal ^ 2) :
     X.conjO y ∉ (cP X w).asIdeal ^ 2 := by
@@ -140,12 +140,12 @@ def cB (w : {w // w ∈ Pr.vGs}) : (𝓞 X.E ⧸ (cP X w.1).asIdeal)ˣ →* ℂ�
 def unifW (w : HeightOneSpectrum (𝓞 X.E)) : 𝓞 X.E := (exists_unifO w).choose
 
 /- English proof (translation)
-The claim follows from `(exists_unifO w).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem unifW_mem (w : HeightOneSpectrum (𝓞 X.E)) : unifW w ∈ w.asIdeal := (exists_unifO w).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_unifO w).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem unifW_notMem (w : HeightOneSpectrum (𝓞 X.E)) : unifW w ∉ w.asIdeal ^ 2 := (exists_unifO w).choose_spec.2
 
@@ -164,9 +164,9 @@ def psiF : Ideles X.E →* ℂˣ :=
 variable {Ch σ₀ j hT}
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `r`. Use `show X.conjO (algebraMap (𝓞 X.F) (𝓞 X.E) r) ∈ w.asIdeal ↔ algebraMap (𝓞 X.F) (𝓞 X.E) r ∈ w.asIdeal`. Establish `e : X.conjO (algebraMap (𝓞 X.F) (𝓞 X.E) r) = algebraMap (𝓞 X.F) (𝓞 X.E) r`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `show star ((algebraMap (𝓞 X.F) (𝓞 X.E) r : 𝓞 X.E) : X.E) = _`. Establish `e2 : ((algebraMap (𝓞 X.F) (𝓞 X.E) r : 𝓞 X.E) : X.E) = algebraMap X.F X.E (r : X.F)` using `rfl`. Rewrite using `[e2, hX.star_F]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjPrime_under₂ (hX : X.Ok) (w : HeightOneSpectrum (𝓞 X.E)) : (cP X w).under (𝓞 X.F) = w.under (𝓞 X.F) := by
   apply HeightOneSpectrum.ext

@@ -110,12 +110,12 @@ def equivField : GtPt D (TF (R := R) F) ≃ GtPtF D F where
   right_inv _ := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example (g : GtPt D (TF (R := R) F)) : g.IsZero ↔ (equivField D F g).IsZero := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example (g g' g'' : GtPt D (TF (R := R) F)) :
     GtPt.IsAdd g g' g'' ↔

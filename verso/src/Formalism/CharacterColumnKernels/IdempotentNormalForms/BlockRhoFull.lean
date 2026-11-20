@@ -9,17 +9,15 @@ noncomputable section
 namespace Formalism.NG
 
 /- English proof (translation)
-Introduce `O A T' G _ _ _ _ _ M _ _ _ _ r χ E e₁ δ ι _ D j Kc k0`. Use extensionality with `φ`. Simplify using `only [LinearMap.mem_ker, kerY, Submodule.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ g, φ (yGen r χ E e₁ δ D j Kc k0 g) = 0` using `fun g => by`. Use `congrArg (fun c : coZ1s (uRep O (M := M) r χ) => (c : G → M) g) h` as an intermediate fact. Conclude with `this`. Establish `key : ∀ (x : A) (hx : x ∈ Submodule.span A (Set.range (ycoc r χ E))), φ (Submodule.Quotient.mk (((⟨x, hx⟩ : Ymod r χ E)), (0 : (l : ι) → A × (Fin (j l) → A) × A))) = 0`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Conclude with `hg g`. Consider the case `zero => show φ (Submodule.Quotient.mk 0) = 0`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Submodule.Quotient.mk_zero, map_zero]`. Consider the case `add x z hx hz ihx ihz`. Establish `e : (((⟨x + z, Submodule.add_mem _ hx hz⟩ : Ymod r χ E)), (0 : (l : ι) → A × (Fin (j l) → A) × A)) = (((⟨x, hx⟩ : Ymod r χ E)), (0 : (l : ι) → A × (Fin (j l) → A) × A)) + (((⟨z, hz⟩ : Ymod r χ E)), (0 : (l : ι) → A × (Fin (j l) → A) × A))` using `Prod.ext rfl (add_zero 0).symm`. Rewrite using `[e, Submodule.Quotient.mk_add, map_add, ihx, ihz, add_zero]`. Consider the case `smul a x hx ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (((⟨a • x, Submodule.smul_mem _ a hx⟩ : Ymod r χ E)), (0 : (l : ι) → A × (Fin (j l) → A) × A)) = a • (((⟨x, hx⟩ : Ymod r χ E)), (0 : (l : ι) → A × (Fin (j l) → A) × A))` using `Prod.ext rfl (smul_zero a).symm`. Rewrite using `[e, Submodule.Quotient.mk_smul, map_smul, ih, smul_zero]`. Introduce `y`. Conclude with `key y.1 y.2`. Introduce `h`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `h ⟨ycoc r χ E g, Submodule.subset_span ⟨g, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem colPsiKer : StatColPsiKer := by
   intro O A T' G _ _ _ _ _ M _ _ _ _ r χ E e₁ δ ι _ D j Kc k0
@@ -62,23 +60,23 @@ theorem colPsiKer : StatColPsiKer := by
     exact h ⟨ycoc r χ E g, Submodule.subset_span ⟨g, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `O A T' G _ _ _ _ _ M _ _ _ _ _ _ r χ E e₁ δ δO ι _ D j Kc k0 s t hE hEE hEm hδ hτ φ v hv`. Set `Fl : Ymod r χ E →ₗ[A] M` to `φ.comp ((colRelJ r χ E e₁ δ D j Kc k0).mkQ.comp (LinearMap.inl A (Ymod r χ E) ((l : ι) → A × (Fin (j l) → A) × A)))`. Set `yg : G → Ymod r χ E` to `fun g => ⟨ycoc r χ E g, Submodule.subset_span ⟨g, rfl⟩⟩`. Establish `hF : ∀ g, Fl (yg g) = uElt r χ g • v - v` using `fun g => congrFun hv g`. Establish `huv : ∀ g, algebraMap T' A (t g * ((χ g : T'ˣ) : T')) * ((((χ g)⁻¹ : T'ˣ) : T') • r g) = t g • r g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g`. Rewrite using `[← Algebra.smul_def, smul_smul, mul_assoc, Units.mul_inv, mul_one]`. Establish `hu' : ∀ g, algebraMap T' A (t g * ((χ g : T'ˣ) : T')) * uElt r χ g = t g • r g` using `fun g => huv g`. Establish `hterm : ∀ g, algebraMap T' A (t g * ((χ g : T'ˣ) : T')) * ycoc r χ E g = (t g • r g - algebraMap T' A (t g * ((χ g : T'ˣ) : T'))) * E`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [ycoc]`. Rewrite using `[← mul_assoc, mul_sub, mul_one, huv g]`. Take `⟨y₁, hy₁def⟩ : ∃ y : Ymod r χ E, y = ∑ g ∈ s, algebraMap T' A (t g * ((χ g : T'ˣ) : T')) • yg g` from `⟨_, rfl⟩`. Establish `hy₁ : ((y₁ : Ymod r χ E) : A) = (E - algebraMap T' A (∑ g ∈ s, t g * ((χ g : T'ˣ) : T'))) * E`. Rewrite using `[hy₁def]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, smul_eq_mul, yg, Submodule.coe_mk]`. Rewrite using `[Finset.sum_congr rfl (fun g _ => hterm g), ← Finset.sum_mul, Finset.sum_sub_distrib, ← hE, ← map_sum]`. Establish `hFy : Fl y₁ = -(δO • v)`. Rewrite using `[hy₁def, map_sum]`. Establish `hgen : ∀ g ∈ s, Fl (algebraMap T' A (t g * ((χ g : T'ˣ) : T')) • yg g) = (t g • r g) • v - (t g * ((χ g : T'ˣ) : T')) • v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g _`. Rewrite using `[map_smul, hF g, smul_sub, smul_smul, hu' g, algebraMap_smul]`. Rewrite using `[Finset.sum_congr rfl hgen, Finset.sum_sub_distrib, ← Finset.sum_smul, ← Finset.sum_smul, ← hE, hEm, hτ, zero_sub]`. Establish `alg : ∀ (a b : A), E * E = a * E → E * b = b * E → a * b = b * a → E * ((E - b) * E) = a * ((E - b) * E)`. Introduce `a b hEE' hc hab`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : E * ((E - b) * E) = a * (a * E) - b * (a * E)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : a * ((E - b) * E) = a * (a * E) - b * (a * E)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hEE' : E * E = algebraMap T' A δ * E` using `by rw [hEE, Algebra.smul_def]`. Establish `hyE` using `alg (algebraMap T' A δ) (algebraMap T' A (∑ g ∈ s, t g * ((χ g : T'ˣ) : T'))) hEE' (Algebra.commutes _ E).symm (by rw [← map_mul, ← map_mul, mul_comm])`. Establish `h1 : Fl (E • y₁) = 0` using `by rw [map_smul, hEm]`. Establish `h2 : E • y₁ = algebraMap T' A δ • y₁`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Submodule.coe_smul, smul_eq_mul]`. Rewrite using `[hy₁]`. Conclude with `hyE`. Establish `h3 : Fl (algebraMap T' A δ • y₁) = -((δO * δO) • v)`. Rewrite using `[map_smul, hFy, algebraMap_smul, hδ, smul_neg, smul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, h3]`. Conclude with `neg_eq_zero.mp h1`.
+A detailed English derivation is pending.
 -/
 theorem cobColumn : StatCobColumn := by
   intro O A T' G _ _ _ _ _ M _ _ _ _ _ _ r χ E e₁ δ δO ι _ D j Kc k0 s t hE hEE hEm hδ hτ
@@ -143,7 +141,7 @@ theorem cobColumn : StatCobColumn := by
   exact neg_eq_zero.mp h1
 
 /- English proof (translation)
-Introduce `O _ _ _ A T' G _ _ _ _ d _ _ _ _ _ r χ E e₁ δ δO ι _ _ ι' _ colIdx hinj D j e' Kc k0 ℓ sE tE hE hEE hEm hk0 hδ hτ hiso hloc`. Conclude with `blockRhoColumn O A T' G d r χ E e₁ δ δO ι ι' colIdx hinj D j e' Kc k0 ℓ hEm hk0 (fun m => by rw [algebraMap_smul]; exact hδ m) hiso hloc (uRep O (M := d → KO O) r χ) (colPsi (O := O) (M := d → KO O) r χ E e₁ δ (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0) (colPsiKer O A …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem blockRhoFull : BlockRhoFull₂ := by
   intro O _ _ _ A T' G _ _ _ _ d _ _ _ _ _ r χ E e₁ δ δO ι _ _ ι' _ colIdx hinj D j e' Kc k0

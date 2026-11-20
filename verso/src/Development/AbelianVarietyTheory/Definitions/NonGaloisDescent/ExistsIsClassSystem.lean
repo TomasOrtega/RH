@@ -24,20 +24,20 @@ open scoped ComplexOrder
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Use `(GlobalTheory.GalLift.Vec.isCartanInv_one (h.onbS τ)).2.2` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Frame.Good.posDef {F : Frame S T} (h : F.Good) (τ : D.what₂.Tau) : (gramAt D S τ).PosDef := by
   have := (GlobalTheory.GalLift.Vec.isCartanInv_one (h.onbS τ)).2.2
   rwa [Matrix.mul_one] at this
 
 /- English proof (translation)
-Take `⟨m, c, hc⟩` from `GlobalTheory.RepsObj.exists_cover S hF.posDef (B.levJ ψ) (GlobalTheory.ParahoricCompact.isOpen_comap_lev S B.F.βS (B.levS ψ))`. Establish `hl : ∀ x : Bridge.Gf S, ∃ k ∈ GfC S, finPt S k = x`. Introduce and unpack `⟨_, g, rfl⟩`. Take `⟨k, hk, e⟩` from `GlobalTheory.LevelOpen.exists_finPart D S g`. Conclude with `⟨k, hk, Subtype.ext e⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose l hl1 hl2 using hl`. Establish `hr : Equivalence fun g g' : Bridge.Gf S => ∃ (γ : GQ S) (k : B.levJ ψ), g = Bridge.ratF S γ * g' * k` using `⟨fun g => ⟨1, 1, by simp⟩, by`. Introduce and unpack `g g' ⟨γ, k, rfl⟩`. Conclude with `⟨γ⁻¹, k⁻¹, by simp [mul_assoc]⟩, by`. Introduce and unpack `g g' g'' ⟨γ, k, rfl⟩ ⟨γ', k', rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨γ * γ', k' * k, by simp [mul_assoc]⟩⟩`. Take `⟨n, f, hf⟩` from `GlobalTheory.UnRep.FullReps.exists_subfamily _ hr c`. Take `⟨C, hC, hCe⟩` from `GlobalTheory.ParahoricCompact.exists_compact_entries B.F.βS`. Use `⟨n, fun a => l (c (f a)), fun a => hl1 _, fun g => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hc g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [hl2]`. Conclude with `hf g a ha`. Conclude with `GlobalTheory.RepsObj.finite_stab S hF.posDef _ hC (fun k hk => hCe k.1 (Base.mem_St_of_mem_levJ hk)) _`.
+A detailed English derivation is pending.
 -/
 theorem exists_isClassSystem (B : Base S T) (hF : B.F.Good) (ψ : Twist D Circle) :
     ∃ (m : ℕ) (h : Fin m → GA D S), IsClassSystem S (B.levJ ψ) h := by

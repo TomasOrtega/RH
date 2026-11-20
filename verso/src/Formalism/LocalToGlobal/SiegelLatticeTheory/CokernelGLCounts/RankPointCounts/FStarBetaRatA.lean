@@ -26,7 +26,7 @@ def moveL {ι : Type*} [Fintype ι] [DecidableEq ι] (u u' : ι → S.V) : S.V �
   map_smul' t x := by rw [pc_smul, lin_smul, RingHom.id_apply]
 
 /- English proof (translation)
-Establish `h0 : (fun k => S.hT (u k) y) = 0` using `funext fun k => hy k`. Rewrite using `[pc, h0, Matrix.mulVec_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pc_of_orth {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) {y : S.V} (hy : ∀ k, S.hT (u k) y = 0) :
     pc u y = 0 := by
@@ -34,32 +34,30 @@ theorem pc_of_orth {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) {
   rw [pc, h0, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Simplify using `[lin]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_zero {ι : Type*} [Fintype ι] (u : ι → S.V) : lin u 0 = 0 := by simp [lin]
 
 /- English proof (translation)
-Set `P : S.V →ₗ[E] S.V` to `LinearMap.id - projL u`. Set `β : S.V →ₗ[E] S.V` to `(LinearMap.id - projL w) ∘ₗ P + moveL u u'`. Establish `hβ : ∀ v, β v = ((v - lin u (pc u v)) - lin w (pc w (v - lin u (pc u v)))) + lin u' (pc u v)` using `fun v => rfl`. Establish `hsp' : ∀ c, lin u' c ∈ Submodule.span E (Set.range w)` using `fun c => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hsp i)`. Establish `hGe : ∀ i j, S.hT (u' i) (u' j) = S.hT (u i) (u j)` using `fun i j => congrFun (congrFun hG i) j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso : ∀ x y, S.hT (β x) (β y) = S.hT x y`. Introduce `x y`. Use `set x' := x - lin u (pc u x) with hx'`. Use `set y' := y - lin u (pc u y) with hy'`. Establish `hx'u : ∀ k, S.hT (u k) x' = 0` using `fun k => hT_u_rem u hdet x k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy'u : ∀ k, S.hT (u k) y' = 0` using `fun k => hT_u_rem u hdet y k`. Establish `hk` using `hkey x' y' hx'u hy'u`. Rewrite using `[hβ, hβ]`. Establish `t1 : S.hT (x' - lin w (pc w x')) (lin u' (pc u y)) = 0` using `(hT_span_rem w hdetw x' _ (hsp' _)).2`. Establish `t2 : S.hT (lin u' (pc u x)) (y' - lin w (pc w y')) = 0` using `(hT_span_rem w hdetw y' _ (hsp' _)).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `t3 : S.hT (lin u' (pc u x)) (lin u' (pc u y)) = S.hT (lin u (pc u x)) (lin u (pc u y))`. Rewrite using `[hT_lin_lin, hT_lin_lin]`. Simplify using `only [hGe]`. Establish `t4 : S.hT (x' - lin w (pc w x')) (lin w (pc w y')) = 0` using `(hT_span_rem w hdetw x' _ (lin_sub w _)).2`. Establish `t5 : S.hT (lin w (pc w x')) (y' - lin w (pc w y')) = 0` using `(hT_span_rem w hdetw y' _ (lin_sub w _)).1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t6 : S.hT (x' - lin w (pc w x')) (y' - lin w (pc w y')) = S.hT x' y'`. Establish `e1 : S.hT (x' - lin w (pc w x')) (y' - lin w (pc w y')) = S.hT (x' - lin w (pc w x')) y'`. Rewrite using `[map_sub, t4, sub_zero]`. Establish `e2 : S.hT (lin w (pc w x')) y' = 0`. Use `t5` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_sub, hk, sub_zero]`. Conclude with `this`. Rewrite using `[e1, map_sub S.hT x' (lin w (pc w x')), LinearMap.sub_apply, e2, sub_zero]`. Establish `hxy : S.hT x y = S.hT x' y' + S.hT (lin u (pc u x)) (lin u (pc u y))`. Establish `dx : x = x' + lin u (pc u x)` using `by rw [hx']; abel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `dy : y = y' + lin u (pc u y)` using `by rw [hy']; abel`. Use `conv_lhs => rw [dx, dy]`. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[(hT_span_rem u hdet x _ (lin_sub u _)).2, (hT_span_rem u hdet y _ (lin_sub u _)).1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hx', ← hy']`. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[t1, t2, t3, t6, hxy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinj : Function.Injective β`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `v hv`. Rewrite `hv` using `[LinearMap.mem_ker]`. Use `(Submodule.mem_bot E).2 (S.nondeg.1 v fun y => ?_)` and prove the remaining obligations. Rewrite using `[← hiso v y, hv, map_zero, LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective β` using `⟨hinj, LinearMap.injective_iff_surjective.1 hinj⟩`. Use `⟨LinearEquiv.ofBijective β hbij, hiso, fun i => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `show β (u i) = u' i`. Rewrite using `[hβ, pc_self u hdet, lin_single, lin_single, sub_self]`. Establish `: pc w (0 : S.V) = 0`.
-
-Use `pc_smul w 0 0` as an intermediate fact. Simplify using `using this`. Rewrite using `[this, lin_zero, sub_zero, zero_add]`. Use `show β y = y - lin w (pc w y)`. Rewrite using `[hβ, pc_of_orth u hy, lin_zero, lin_zero, sub_zero, add_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isometry_extension_two {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     (u u' : ι → S.V) (w : κ → S.V) (hG : gram S u' u' = gram S u u) (hdet : (gram S u u).det ≠ 0)
@@ -132,15 +130,15 @@ theorem isometry_extension_two {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fi
 variable {r : ℕ}
 
 /- English proof (translation)
-Establish `hx` using `om_zcoef A B hdet hΩ`. Use `set c := (Zhat A B)⁻¹ (Fin.last r) (Fin.last r) with hc`. Use `set x := Ω - c • B.z with hxd`. Establish `hΩe : Ω = x + c • B.z` using `by rw [hxd]; abel`. Establish `hxx : S.hT x x = 0` using `NMoveP.hT_X_X B hx hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxz : S.hT x B.z = 0`. Establish `h` using `NMoveP.hT_f_X B (Fin.last r) hx`. Rewrite `h` using `[NMoveP.fvecL]`. Rewrite using `[BwdNA.hsw S B.z x, h, star_zero]`. Establish `hzx : S.hT B.z x = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `NMoveP.hT_f_X B (Fin.last r) hx`. Rewrite `h` using `[NMoveP.fvecL]`. Then use the resulting hypothesis. Establish `hnorm : S.hT Ω Ω = star c * c * (-TB)`. Rewrite using `[hΩe]`. Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, map_smul, LinearMap.smul_apply, hxx, hxz, hzx, B.z_norm, smul_eq_mul, starRingEnd_apply, mul_zero, zero_add, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcl : c = leadMinorE (Zhat A B) r / (Zhat A B).det` using `inv_last _`. Introduce `h0`. Apply `hG` to reduce the goal to its premises. Unfold `Gflag Dl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[FsLA.leadMinorE_full]`. Rewrite `h0` using `[hnorm, hcl, star_div₀]`. Establish `hs : star (Zhat A B).det ≠ 0` using `star_ne_zero.2 hdet`. Clear denominators, using `at h0` for the nonvanishing conditions. Take the linear combination `h0`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_om_ne {TA TB : E} (A : FlagG S r TA) (B : FlagG S r TB) (hdet : (Zhat A B).det ≠ 0) {Ω : S.V}
     (hΩ : OmV A B Ω) (hG : Gflag A B ≠ 0) : 1 + TA * S.hT Ω Ω ≠ 0 := by
@@ -172,15 +170,15 @@ theorem norm_om_ne {TA TB : E} (A : FlagG S r TA) (B : FlagG S r TB) (hdet : (Zh
   linear_combination h0
 
 /- English proof (translation)
-Take `⟨x, hx, c, rfl⟩` from `dec A B hdet hΩ hq hqA`. Establish `hΩx : S.hT Ω x = 0`. Rewrite using `[BwdNA.hsw S x Ω]`. Establish `: x ∈ A.X` using `hx`. Establish `h` using `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).1 (show Ω ∈ orth S A.X from ?_) x this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, star_zero]`. Use `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).2 fun y hy => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y ∈ Submodule.span E (Set.range A.e) at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Take `⟨i, rfl⟩` from `hy`. Rewrite using `[← fvec_cs, hΩ.2]`. Simplify using `[Fin.castSucc_ne_last]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, LinearMap.add_apply, ha, hb, add_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `smul t y _ hy => rw [BwdNA.hT_smulL, hy, mul_zero]`. Establish `hΩz : S.hT Ω A.z = 1`. Rewrite using `[BwdNA.hsw S A.z Ω, ← fvec_last, hΩ.2]`. Simplify using the standard rewrite rules. Establish `h1 : S.hT Ω (x + c • (A.z + TA • Ω)) = c * (1 + TA * S.hT Ω Ω)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_add, hΩx, zero_add, map_smul, map_add, map_smul, hΩz, smul_eq_mul, smul_eq_mul]`. Rewrite `hqΩ` using `[h1]`. Establish `hc : c = 0` using `(mul_eq_zero.1 hqΩ).resolve_right (norm_om_ne A B hdet hΩ hG)`. Rewrite using `[hc, zero_smul, add_zero]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_X {TA TB : E} (A : FlagG S r TA) (B : FlagG S r TB) (hdet : (Zhat A B).det ≠ 0) {Ω : S.V}
     (hΩ : OmV A B Ω) (hG : Gflag A B ≠ 0) {q : S.V}

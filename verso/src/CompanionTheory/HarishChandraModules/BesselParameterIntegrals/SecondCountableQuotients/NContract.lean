@@ -15,7 +15,7 @@ def expo (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℤ :=
   if i.val < r then (r : ℤ) - i.val else if i.val ≤ r + k then 0 else -((i.val : ℤ) - r - k)
 
 /- English proof (translation)
-Establish `hp` using `piI_val (k := k) (r := r) i`. Use `i.isLt` as an intermediate fact. Unfold `expo`. Apply the tactic sequence `split_ifs at hp ⊢ <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expo_add_piI (i : Fin (2 * r + k + 1)) : expo k r i + expo k r (piI k r i) = 0 := by
   have hp := piI_val (k := k) (r := r) i
@@ -24,13 +24,13 @@ theorem expo_add_piI (i : Fin (2 * r + k + 1)) : expo k r i + expo k r (piI k r 
   split_ifs at hp ⊢ <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold expo; unfold inW at hi; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expo_eq_zero_of_inW {i : Fin (2 * r + k + 1)} (hi : inW k r i) : expo k r i = 0 := by
   unfold expo; unfold inW at hi; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold expo; unfold inW at hW; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expo_lt {i j : Fin (2 * r + k + 1)} (hij : i.val < j.val) (hW : ¬ (inW k r i ∧ inW k r j)) :
     expo k r j + 1 ≤ expo k r i := by
@@ -42,7 +42,7 @@ noncomputable def cdiag (k r : ℕ) (t : ℝ) : Matrix (Fin (2 * r + k + 1)) (Fi
   diagonal (dvec (k := k) (r := r) t)
 
 /- English proof (translation)
-Rewrite using `[dvec, dvec, ← Complex.ofReal_mul, ← mul_zpow, mul_inv_cancel₀ ht, _root_.one_zpow, Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dvec_mul_inv {t : ℝ} (ht : t ≠ 0) (i : Fin (2 * r + k + 1)) :
     dvec (k := k) (r := r) t i * dvec t⁻¹ i = 1 := by
@@ -50,42 +50,42 @@ theorem dvec_mul_inv {t : ℝ} (ht : t ≠ 0) (i : Fin (2 * r + k + 1)) :
     Complex.ofReal_one]
 
 /- English proof (translation)
-Rewrite using `[dvec, expo_eq_zero_of_inW hi, zpow_zero, Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dvec_of_inW {t : ℝ} {i : Fin (2 * r + k + 1)} (hi : inW k r i) : dvec (k := k) (r := r) t i = 1 := by
   rw [dvec, expo_eq_zero_of_inW hi, zpow_zero, Complex.ofReal_one]
 
 /- English proof (translation)
-Rewrite using `[cdiag, cdiag, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `dvec_mul_inv ht i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cdiag_mul {t : ℝ} (ht : t ≠ 0) : cdiag k r t * cdiag k r t⁻¹ = 1 := by
   rw [cdiag, cdiag, diagonal_mul_diagonal, ← diagonal_one]
   congr 1; funext i; exact dvec_mul_inv ht i
 
 /- English proof (translation)
-Use `cdiag_mul (k := k) (r := r) (inv_ne_zero ht)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cdiag_mul' {t : ℝ} (ht : t ≠ 0) : cdiag k r t⁻¹ * cdiag k r t = 1 := by
   have := cdiag_mul (k := k) (r := r) (inv_ne_zero ht)
   rwa [inv_inv] at this
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (cdiag_mul ht)`.
+A detailed English derivation is pending.
 -/
 theorem cdiag_inv {t : ℝ} (ht : t ≠ 0) : (cdiag k r t)⁻¹ = cdiag k r t⁻¹ :=
   Matrix.inv_eq_right_inv (cdiag_mul ht)
 
 /- English proof (translation)
-Rewrite using `[cdiag, cdiag, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_apply (t : ℝ) (g : 𝕄) (i j : Fin (2 * r + k + 1)) :
     (cdiag k r t * g * cdiag k r t⁻¹) i j = dvec t i * g i j * dvec t⁻¹ j := by
   rw [cdiag, cdiag, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Use `show (cdiag k r t)ᴴ * Hpk k r * cdiag k r t = Hpk k r`. Use extensionality with `i j`. Rewrite using `[cdiag, diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul, Hpk_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : star (dvec (k` using `k) (r := r) t) i * dvec t (piI k r i) = 1 := by`. Rewrite using `[Pi.star_apply, dvec, dvec, Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_mul, ← zpow_add₀ ht, expo_add_piI, zpow_zero, Complex.ofReal_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cdiag_mem_UH {t : ℝ} (ht : t ≠ 0) : cdiag k r t ∈ UH (Hpk k r) := by
   show (cdiag k r t)ᴴ * Hpk k r * cdiag k r t = Hpk k r
@@ -102,9 +102,9 @@ theorem cdiag_mem_UH {t : ℝ} (ht : t ≠ 0) : cdiag k r t ∈ UH (Hpk k r) := 
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[conj_apply]`. Distinguish the cases in `hij : inW k r i ∧ inW k r j`. Rewrite using `[dvec_of_inW hij.1, dvec_of_inW hij.2, one_mul, mul_one]`. Rewrite using `[ha i j hij] split_ifs with h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[mul_one, dvec_mul_inv ht]`. Rewrite using `[mul_zero, zero_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cdiag_conj_WB {t : ℝ} (ht : t ≠ 0) {a : 𝕄} (ha : WB k r a) :
     cdiag k r t * a * cdiag k r t⁻¹ = a := by
@@ -118,9 +118,9 @@ theorem cdiag_conj_WB {t : ℝ} (ht : t ≠ 0) {a : 𝕄} (ha : WB k r a) :
     · rw [mul_zero, zero_mul]
 
 /- English proof (translation)
-Rewrite `hm`, the goal using `[mem_Nset_iff]`. Use `⟨mul_mem_UH (mul_mem_UH (cdiag_mem_UH ht) hm.1) (cdiag_mem_UH (inv_ne_zero ht)), fun i j hj hi => ?_⟩` and prove the remaining obligations. Rewrite using `[conj_apply, hm.2 i j hj hi]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one, dvec_mul_inv ht]`. Rewrite using `[mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cdiag_conj_N {t : ℝ} (ht : t ≠ 0) {m : 𝕄} (hm : m ∈ Nset k r) :
     cdiag k r t * m * cdiag k r t⁻¹ ∈ Nset k r := by
@@ -135,9 +135,9 @@ theorem cdiag_conj_N {t : ℝ} (ht : t ≠ 0) {m : 𝕄} (hm : m ∈ Nset k r) :
 variable {z : Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Take `⟨h, hh, m, hm, rfl⟩` from `hg`. Use `⟨h, hh, cdiag k r t * m * cdiag k r t⁻¹, cdiag_conj_N ht hm, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (cdiag k r t * h * cdiag k r t⁻¹) * (cdiag k r t * m * cdiag k r t⁻¹) = cdiag k r t * h * (cdiag k r t⁻¹ * cdiag k r t) * m * cdiag k r t⁻¹ by`. Simplify using `only [Matrix.mul_assoc], cdiag_mul' ht, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = h * (cdiag k r t * m * cdiag k r t⁻¹) := by rw [cdiag_conj_WB ht (wb_of_mem_UW hh)]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cdiag_conj_S {t : ℝ} (ht : t ≠ 0) {g : 𝕄} (hg : g ∈ Sset k r z) :
     cdiag k r t * g * cdiag k r t⁻¹ ∈ Sset k r z := by
@@ -152,7 +152,7 @@ theorem cdiag_conj_S {t : ℝ} (ht : t ≠ 0) {g : 𝕄} (hg : g ∈ Sset k r z)
     _ = h * (cdiag k r t * m * cdiag k r t⁻¹) := by rw [cdiag_conj_WB ht (wb_of_mem_UW hh)]
 
 /- English proof (translation)
-Rewrite using `[cdiag_inv ht]`. Use `⟨fun h => ?_, cdiag_conj_S ht⟩` and prove the remaining obligations. Use `cdiag_conj_S (z := z) (inv_ne_zero ht) h` as an intermediate fact. Rewrite using `[inv_inv, show cdiag k r t⁻¹ * (cdiag k r t * g * cdiag k r t⁻¹) * cdiag k r t = (cdiag k r t⁻¹ * cdiag k r t) * g * (cdiag k r t⁻¹ * cdiag k r t) by` and apply the resulting hypothesis. Simplify using `only [Matrix.mul_assoc], cdiag_mul' ht, Matrix.one_mul, Matrix.mul_one] at this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 -/
 theorem cdiag_normalises {t : ℝ} (ht : t ≠ 0) (g : 𝕄) :
     cdiag k r t * g * (cdiag k r t)⁻¹ ∈ Sset k r z ↔ g ∈ Sset k r z := by
@@ -164,7 +164,7 @@ theorem cdiag_normalises {t : ℝ} (ht : t ≠ 0) (g : 𝕄) :
         simp only [Matrix.mul_assoc], cdiag_mul' ht, Matrix.one_mul, Matrix.mul_one] at this
 
 /- English proof (translation)
-Rewrite using `[dvec, dvec, norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos (zpow_pos ht _), abs_of_pos (zpow_pos (inv_pos.2 ht) _), _root_.inv_zpow', sub_eq_add_neg, zpow_add₀ ht.ne']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_dvec_mul (t : ℝ) (ht : 0 < t) (x : ℂ) (i j : Fin (2 * r + k + 1)) :
     ‖dvec (k := k) (r := r) t i * x * dvec t⁻¹ j‖ = t ^ (expo k r i - expo k r j) * ‖x‖ := by
@@ -174,19 +174,17 @@ theorem norm_dvec_mul (t : ℝ) (ht : 0 < t) (x : ℂ) (i j : Fin (2 * r + k + 1
   ring
 
 /- English proof (translation)
-Introduce `k r z _hz n hn ε hε`. Use `set M : ℝ := ∑ i, ∑ j, ‖n i j‖ with hM`. Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _`. Establish `hnM : ∀ i j, ‖n i j‖ ≤ M` using `fun i j => (Finset.single_le_sum (f := fun j => ‖n i j‖) (fun j _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖n i j‖) (fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _) (Finset.mem_univ i))`. Use `set t : ℝ := min 1 (ε / (M + 1)) with htdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : 0 < t` using `lt_min one_pos (div_pos hε (by linarith))`. Establish `ht1 : t ≤ 1` using `min_le_left _ _`. Establish `htM : t * M ≤ ε`. Establish `h1 : t ≤ ε / (M + 1)` using `min_le_right _ _`. Establish `h2 : ε / (M + 1) * M ≤ ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `(mul_le_mul_of_nonneg_right h1 hM0).trans h2`. Use `⟨cdiag k r t, ⟨⟨cdiag k r t, cdiag k r t⁻¹, cdiag_mul ht0.ne', cdiag_mul' ht0.ne'⟩, rfl⟩, cdiag_normalises ht0.ne', fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[cdiag_inv ht0.ne', Matrix.sub_apply, conj_apply, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Distinguish the cases in `hji : j.val ≤ i.val`. Rewrite using `[n_ut hn i j hji] split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_one, dvec_mul_inv ht0.ne', sub_self, norm_zero]`. Conclude with `hε.le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero, zero_mul, sub_zero, norm_zero]`. Conclude with `hε.le`. Establish `hij : i.val < j.val` using `by omega`. Establish `hne : i ≠ j` using `by intro e; subst e; omega`. Rewrite using `[if_neg hne, sub_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hW : inW k r i ∧ inW k r j`. Establish `hn'` using `((mem_Nset_iff n).1 hn).2 i j hW.2.2 (by unfold inW at hW; omega)`. Rewrite using `[hn', if_neg hne, mul_zero, zero_mul, norm_zero]`. Conclude with `hε.le`. Rewrite using `[norm_dvec_mul t ht0]`.
-
-Establish `hexp` using `expo_lt (k := k) (r := r) hij hW`. Establish `h1 : t ^ (expo k r i - expo k r j) ≤ t ^ (1 : ℤ)` using `zpow_le_zpow_right_of_le_one₀ ht0 ht1 (by omega)`. Rewrite `h1` using `[zpow_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem unipotent_radical_contracting : NContract := by
   intro k r z _hz n hn ε hε

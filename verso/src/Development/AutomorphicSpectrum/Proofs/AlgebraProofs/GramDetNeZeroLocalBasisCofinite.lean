@@ -8,51 +8,43 @@ open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionT
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `E _ _ _ H D I _ _ e hcard hli`. Use `haveI := D.fin`. Establish `T : ∀ (c : 𝓞 E) (x y : D.La), Algebra.trace ℚ E (algebraMap (𝓞 E) E c * sesq D x y) = ((D.EF (c • x) y : ℤ) : ℚ)`. Introduce `c x y`. Establish `key : ∀ j, Algebra.trace ℚ E (algebraMap (𝓞 E) E (RingOfIntegers.basis E j) * sesq D x y) = ((D.EF (RingOfIntegers.basis E j • x) y : ℤ) : ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `hterm : ∀ k, Algebra.trace ℚ E (algebraMap (𝓞 E) E (RingOfIntegers.basis E j) * (((D.EF (RingOfIntegers.basis E k • x) y : ℤ) : E) * HT.dualInt E k)) = ((D.EF (RingOfIntegers.basis E k • x) y : ℤ) : ℚ) * (if j = k then 1 else 0)`. Introduce `k`. Rewrite using `[← HT.LatBasic.trace_dualInt k j, ← map_intCast (algebraMap ℚ E), mul_left_comm, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm (algebraMap (𝓞 E) E _), ← NumberField.integralBasis_apply]`. Simplify using `only [sesq, Finset.mul_sum, map_sum, hterm, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `mul_one _`. Use `conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr c]`. Use `conv_rhs => rw [← (RingOfIntegers.basis E).sum_repr c]`. Simplify using `only [map_sum, Finset.sum_mul, Finset.sum_smul, LinearMap.sum_apply, Int.cast_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_zsmul, smul_mul_assoc, map_zsmul, key j, smul_assoc, map_zsmul, LinearMap.smul_apply, zsmul_eq_mul, zsmul_eq_mul, Int.cast_mul]`. Use `norm_cast`. Establish `hy : ∀ y : D.La, ∃ c : 𝓞 E, c ≠ 0 ∧ c • y ∈ Submodule.span (𝓞 E) (Set.range e)`. Introduce `y`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_neg at hne`. Establish `hli' : LinearIndependent (𝓞 E) (fun o : Option I => Option.elim o y e)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fintype.sum_option]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [Option.elim] at hg`. Establish `hnone : g none = 0`. Assume the negation of the conclusion as `h0`. Apply `hne (g none) h0` to reduce the goal to its premises. Establish `: g none • y = -∑ i, g (some i) • e i` using `eq_neg_of_add_eq_zero_left hg`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `Submodule.neg_mem _ (Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)))`. Rewrite `hg` using `[hnone, zero_smul, zero_add]`. Introduce `o`. Consider the cases of `o with`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Consider the case `none => exact hnone`. Consider the case `some i => exact (Fintype.linearIndependent_iff.mp hli) _ hg i`. Use `hli'.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Fintype.card_option, hcard, D.rank]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : ∃ c : 𝓞 E, c ≠ 0 ∧ ∀ y : D.La, c • y ∈ Submodule.span (𝓞 E) (Set.range e)`. Take `⟨s, hs⟩` from `(Module.Finite.fg_top : (⊤ : Submodule (𝓞 E) D.La).FG)`. Use `choose f hf0 hfm using hy`. Use `⟨∏ y ∈ s, f y, Finset.prod_ne_zero_iff.mpr (fun y _ => hf0 y), ?_⟩` and prove the remaining obligations. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : y ∈ Submodule.span (𝓞 E) (s : Set D.La)` using `hs ▸ Submodule.mem_top`. Use `Submodule.span_induction ?_ ?_ ?_ ?_ hy'` and prove the remaining obligations. Introduce `z hz`. Rewrite using `[← Finset.mul_prod_erase s f hz, mul_comm (f z), mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hfm z)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `r a _ ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ _ ha`. Take `⟨c, hc0, hc⟩` from `hfin`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {c}))`. Establish `hN0 : Ideal.absNorm (Ideal.span {c}) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hc0`. Establish `hNy : ∀ y : D.La, Ideal.absNorm (Ideal.span {c}) • y ∈ Submodule.span (𝓞 E) (Set.range e)`. Introduce `y`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E), ← ht, mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (hc y)`. Prove the components needed by the constructor for the conclusion. Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hdet`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 E)) Finset.univ v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `choose a ha using fun i => RingHom.mem_rangeS.mp (hb i (Finset.mem_univ i))`. Take `⟨i0, hi0⟩` from `Function.ne_iff.mp hv0`. Establish `hai0 : a i0 ≠ 0`. Introduce `h0`. Use `ha i0` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[h0, map_zero, Algebra.smul_def, eq_comm, mul_eq_zero]`. Break down `this with h | h` into its components or cases. Conclude with `nonZeroDivisors.coe_ne_zero b ((map_eq_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).mp h)`. Conclude with `hi0 h`. Establish `hx0 : (∑ i, a i • e i) ≠ 0` using `fun h => hai0 ((Fintype.linearIndependent_iff.mp hli) a h i0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEFc : ∀ (c : 𝓞 E) (n : I), D.EF (c • ∑ i, a i • e i) (e n) = 0`. Introduce `c n`. Establish `h1 : c • ∑ i, a i • e i = ∑ m, (c * a m) • e m` using `by simp only [Finset.smul_sum, mul_smul]`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[h1, map_sum, LinearMap.sum_apply, Int.cast_sum, Int.cast_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← T]`. Rewrite using `[← map_sum]`. Establish `h2 : ∑ m, algebraMap (𝓞 E) E (c * a m) * sesq D (e m) (e n) = algebraMap (𝓞 E) E c * (algebraMap (𝓞 E) E b * (v ᵥ* gramE D e) n)`. Simplify using `only [Matrix.vecMul, dotProduct, gramE, Matrix.of_apply, map_mul, ha, Algebra.smul_def, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun m _ => by ring)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h2, hv, Pi.zero_apply, mul_zero, mul_zero, map_zero]`. Establish `hEF : ∀ y, D.EF (∑ i, a i • e i) y = 0`. Introduce `y`. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).mp (hNy y)`. Establish `h2 : D.EF (∑ i, a i • e i) (Ideal.absNorm (Ideal.span {c}) • y) = 0`.
-
-Rewrite using `[← hg, map_sum]`. Use `Finset.sum_eq_zero (fun n _ => ?_)` and prove the remaining obligations. Use `D.adj (H.bar.symm (g n)) (∑ i, a i • e i) (e n)` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Rewrite using `[← this]`.
-
-Conclude with `hEFc _ n`. Rewrite `h2` using `[map_nsmul]`. Conclude with `(smul_eq_zero.mp h2).resolve_left hN0`. Apply `hx0` to reduce the goal to its premises. Apply `D.unimod.1` to reduce the goal to its premises.
-
-Rewrite using `[map_zero]`. Conclude with `LinearMap.ext hEF`. Apply `Set.Finite.subset ((Nat.divisors (Ideal.absNorm (Ideal.span {c}))).finite_toSet.preimage (f := ((↑) : Nat.Primes → ℕ)) (Set.injOn_of_injective Subtype.val_injective))` to reduce the goal to its premises. Introduce `ℓ hℓ`. Simplify using `only [Set.mem_preimage, Finset.mem_coe, Nat.mem_divisors]`.
-
-Use `⟨?_, hN0⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hd`. Conclude with `hℓ (by unfold IsLocBasis; exact ⟨hli, _, hd, hNy⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.gram_det_ne_zero_local_basis_cofinite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (I : Type) [Fintype I] [DecidableEq I] (e : I → D.La), Fintype.card I = D.p + D.q → LinearIndependent (𝓞 E) e → (gramE D e).det ≠ 0 ∧ {ℓ : Nat.Primes | ¬ IsLocBasis (𝓞 E) ℓ e}.Finite := by
   classical

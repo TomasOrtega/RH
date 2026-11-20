@@ -13,21 +13,19 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.DefectShare
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S hk β hβ`. Distinguish the cases in `hex : ∃ d Λ, S.IsTerm d Λ`. Use `swap`. Establish `h0 : (S.sumData fun d => S.mass d fun Λ => S.be d Λ = β) = 0`. Establish `: ∀ d Λ, ¬ S.IsTerm d Λ` using `fun d Λ h => hex ⟨d, Λ, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Frames.sumData, Frames.mass, this]`. Rewrite using `[h0]`. Conclude with `zero_le`. Take `⟨d0, Λ0, h0⟩` from `hex`. Take `⟨-, -, -, hq, -⟩` from `GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d0 Λ0 h0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconst : 4 * (S.q : ℝ) ^ (2 * S.a * (2 * r + 2)) * ((β : ℝ) ^ (k - 1))⁻¹ ≤ (4 * S.Hp ^ (4 * (r + 1))) * ((β : ℝ) ^ (k - 1))⁻¹`. Establish `e : (S.q : ℝ) ^ (2 * S.a * (2 * r + 2)) = ((S.q : ℝ) ^ S.a) ^ (4 * (r + 1))`. Rewrite using `[← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hn : (0 : ℝ) ≤ (S.q : ℝ) ^ S.a` using `zpow_nonneg (Nat.cast_nonneg _) _`. Use `gcongr`. Establish `s1` using `(GlobalTheory.T.hermitianDataMass_eq_sum_frameClasses L r k S (fun d Λ => S.be d Λ = β) (fun h hh d Λ hT hP => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `(GlobalTheory.T.hermitianFrames_stabilizer_acts_on_terms L r k S d Λ hT h hh).2.2.2.2.2.1` as an intermediate fact. Conclude with `this.trans hP)).1`. Establish `s2` using `(GlobalTheory.T.hermitianDataMass_eq_sum_frameClasses L r k S (fun _ _ => True) (fun _ _ _ _ _ _ => trivial)).1`. Unfold `Frames.nn`. Rewrite using `[s1, s2]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `Frames.sumCls`. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun o => ?_` and prove the remaining obligations. Use `split_ifs with hC`. Rewrite using `[mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_right ?_ _` and prove the remaining obligations. Use `(GlobalTheory.T.hermitianFrames_defectOrder_share_le L r k S hk _ hC.1 β hβ).trans ?_` and prove the remaining obligations. Use `mul_le_mul' (ENNReal.ofReal_le_ofReal hconst) ?_` and prove the remaining obligations. Unfold `Frames.sumData`. Use `ENNReal.tsum_le_tsum fun o' => mul_le_mul' le_rfl ?_` and prove the remaining obligations.
-
-Unfold `Frames.nT`. Conclude with `ENat.toENNReal_le.mpr (Set.encard_le_encard fun Λ h => ⟨h.1, trivial, h.2.2⟩)`. Conclude with `zero_le`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mass_defect_order_le : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 4 * r + 7 ≤ k → ∀ β : ℕ, 1 ≤ β → (S.sumData fun d => S.mass d fun Λ => S.be d Λ = β) ≤ ENNReal.ofReal ((4 * S.Hp ^ (4 * (r + 1))) * ((β : ℝ) ^ (k - 1))⁻¹) * S.nn := by
   intro F _ _ _ _ _ E _ _ _ L r k S hk β hβ

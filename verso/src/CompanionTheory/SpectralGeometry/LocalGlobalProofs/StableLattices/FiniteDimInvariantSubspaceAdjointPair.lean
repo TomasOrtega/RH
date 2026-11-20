@@ -9,21 +9,19 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CompanionTheory.FarReg
 
 /- English proof (translation)
-Set `S : Submodule ℂ E` to `Submodule.span ℂ {z | ∃ i, ∃ t ∈ T, z = b i t}`. Establish `hST : S ≤ T`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, t, ht, rfl⟩`. Conclude with `hbT i t ht`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `haveI : FiniteDimensional ℂ S := Submodule.finiteDimensional_of_le hST`. Take `⟨u, huS, w, hw, hyuw⟩` from `S.exists_add_mem_mem_orthogonal y`. Establish `hbS : ∀ i, ∀ t ∈ T, b i t ∈ S` using `fun i t ht => Submodule.subset_span ⟨i, t, ht, rfl⟩`. Establish `huT : u ∈ T` using `hST huS`. Establish `hwT : w ∈ T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: w = y - u` using `by rw [hyuw]; abel`. Rewrite using `[this]`. Conclude with `T.sub_mem hy huT`. Establish `haw : ∀ i, a i w = 0`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ⟪a i w, a i w⟫_ℂ = 0`. Rewrite using `[hadj]`. Conclude with `(Submodule.mem_orthogonal' S w).1 hw _ (hbS i _ (haT i w hwT))`. Conclude with `inner_self_eq_zero.1 h0`. Establish `har : ∀ i, a i (D u) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Establish `h1 : a i (D y) = a i (D u) + D (a i w)`. Rewrite using `[← haD i w hwT, ← map_add, ← map_add, hyuw]`. Rewrite `h1` using `[hDy i, haw i, map_zero, add_zero]`. Conclude with `h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hperp : ∀ z ∈ S, ⟪D u, D z⟫_ℂ = 0`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨i, t, ht, rfl⟩` from `hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite using `[← hbD i t ht, ← hadj, har i, inner_zero_left]`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [map_add, inner_add_right, hx, hz, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, inner_smul_right, hx, mul_zero]`. Establish `hDu : D u = 0` using `inner_self_eq_zero.1 (hperp u huS)`.
-
-Conclude with `⟨w, hwT, haw, by rw [hyuw, map_add, hDu, zero_add]⟩`.
+A detailed English derivation is pending.
 -/
 theorem highest_preimage_inner {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {ι : Type*}
     (T : Submodule ℂ E) (a b : ι → Module.End ℂ E) (D : Module.End ℂ E) (y : E)
@@ -72,17 +70,17 @@ theorem highest_preimage_inner {E : Type*} [NormedAddCommGroup E] [InnerProductS
   exact ⟨w, hwT, haw, by rw [hyuw, map_add, hDu, zero_add]⟩
 
 /- English proof (translation)
-Introduce `n V _ _ ι T a b D y hT hadj haT hbT haD hbD hy hDy`. Set `e : Cn n V ≃ₗ[ℂ] PiLp 2 (fun _ : Finset (Pos n) => V)` to `(WithLp.linearEquiv 2 ℂ (Finset (Pos n) → V)).symm`. Set `c : Module.End ℂ (Cn n V) → Module.End ℂ (PiLp 2 (fun _ : Finset (Pos n) => V))` to `fun f => (e : Cn n V →ₗ[ℂ] _) ∘ₗ f ∘ₗ (e.symm : _ →ₗ[ℂ] Cn n V)`. Establish `hc : ∀ f x, c f (e x) = e (f x)` using `fun f x => by simp [c]`. Use `haveI : FiniteDimensional ℂ (T.map e.toLinearMap) := Module.Finite.map T _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `highest_preimage_inner (T.map e.toLinearMap) (fun i => c (a i)) (fun i => c (b i)) (c D) (e y) inferInstance ?_ ?_ ?_ ?_ ?_ ⟨y, hy, rfl⟩ ?_`. Take `⟨_, ⟨y', hy', rfl⟩, h1, h2⟩` from `key`. Use `⟨y', hy', fun i => e.injective ?_, e.injective ?_⟩` and prove the remaining obligations. Use `h1 i` as an intermediate fact. Simplify `this` using `[hc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `h2` as an intermediate fact. Simplify `this` using `[hc]`. Introduce `i x z`. Take `⟨x, rfl⟩` from `e.surjective x`. Take `⟨z, rfl⟩` from `e.surjective z`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show ⟪c (a i) (e x), e z⟫_ℂ = ⟪e x, c (b i) (e z)⟫_ℂ`. Rewrite using `[hc, hc, PiLp.inner_apply, PiLp.inner_apply]`. Conclude with `hadj i x z`. Introduce and unpack `i _ ⟨t, ht, rfl⟩`. Conclude with `⟨a i t, haT i t ht, (hc _ _).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `i _ ⟨t, ht, rfl⟩`. Conclude with `⟨b i t, hbT i t ht, (hc _ _).symm⟩`. Introduce and unpack `i _ ⟨t, ht, rfl⟩ show c (a i) (c D (e t)) = c D (c (a i) (e t))`. Simplify using `only [hc, haD i t ht]`. Introduce and unpack `i _ ⟨t, ht, rfl⟩ show c (b i) (c D (e t)) = c D (c (b i) (e t))`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc, hbD i t ht]`. Introduce `i show c (a i) (c D (e y)) = 0`. Simplify using `only [hc, hDy i, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem highest_preimage_of_stable : ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ι : Type) (T : Submodule ℂ (Cn n V))
     (a b : ι → Module.End ℂ (Cn n V)) (D : Module.End ℂ (Cn n V)) (y : Cn n V), FiniteDimensional ℂ T →

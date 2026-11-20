@@ -11,7 +11,7 @@ namespace PI.UnitaryGroupMassFormula.CntFormula.R6
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gram, Matrix.of_apply, hx, Matrix.mul_apply, Matrix.conjTranspose_apply, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_comb {K V ι κ : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [Fintype ι]
     (h : V →ₗ⋆[K] V →ₗ[K] K) (v : ι → V) (A : Matrix ι κ K) (x : κ → V)
@@ -23,11 +23,11 @@ theorem gram_comb {K V ι κ : Type} [Field K] [StarRing K] [AddCommGroup V] [Mo
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `hv : Matrix.mulVec (gram h x) c = 0`. Use function extensionality and compare the values at `j`. Establish `hj` using `congrArg (h (x j)) hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_smul, smul_eq_mul, map_zero] at hj`. Simplify using `only [Matrix.mulVec, dotProduct, gram, Matrix.of_apply, Pi.zero_apply]`. Rewrite using `[← hj]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `h0` using `Matrix.eq_zero_of_mulVec_eq_zero hd hv`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Conclude with `congrFun h0 i`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_det_gram {K V ι : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     [Fintype ι] [DecidableEq ι] (h : V →ₗ⋆[K] V →ₗ[K] K) (x : ι → V) (hd : (gram h x).det ≠ 0) :
@@ -48,9 +48,9 @@ theorem linearIndependent_of_det_gram {K V ι : Type} [Field K] [StarRing K] [Ad
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Establish `hs : ∀ x y, (VS D).hT y x = star ((VS D).hT x y)` using `fun x y => ((VS D).herm.eq x y).symm`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨i, rfl⟩ | rfl <;>`. Break down `Fin.eq_castSucc_or_eq_last b with ⟨j, rfl⟩ | rfl` into its components or cases. Simplify using `[FlagG.fvec, F.e_iso, Fin.castSucc_ne_last]`. Simplify using `[FlagG.fvec, F.z_orth, Fin.castSucc_ne_last]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[FlagG.fvec, Fin.castSucc_ne_last]`. Rewrite using `[hs (F.e j) F.z, F.z_orth j, star_zero]`. Simplify using `[FlagG.fvec, F.z_norm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem flag_gram {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (a b : Fin (D.R.rS + 1)) :
     (VS D).hT (F.fvec a) (F.fvec b) = if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then -T else 0 := by
@@ -64,9 +64,9 @@ theorem flag_gram {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (a b : Fin (D.R.rS 
   · simp [FlagG.fvec, F.z_norm]
 
 /- English proof (translation)
-Establish `hs : ∀ x y, (VS D).hT y x = star ((VS D).hT x y)` using `fun x y => ((VS D).herm.eq x y).symm`. Substitute `hZ` using the available equality. Use extensionality with `(a | a) (b | b)`. Simplify using `[gram, Ga, flag_gram]`. Simplify using `[gram, Ga, ZhatL, Zhat, brS]`.
+Establish an intermediate fact. Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[gram, Ga, ZhatL, Zhat, brS, Matrix.conjTranspose_apply, hs (F'.fl.fvec a)]`. Simplify using `[gram, Ga, flag_gram]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gram_pair {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (Z : MatZ D) (hZ : ZhatL (lf D F0) F' = Z) :
@@ -85,7 +85,7 @@ def flagDifferenceMatrix (D : Formalism.BasicNotions.D7) :
     (((gS D : D.host.E))⁻¹ • (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E))
 
 /- English proof (translation)
-Introduce `j`. Break down `j with b | b` into its components or cases. Simplify using `[flagDifferenceVectors, flagDifferenceMatrix, Fintype.sum_sum_type, Matrix.one_apply]`. Simplify using `[flagDifferenceVectors, flagDifferenceMatrix, Fintype.sum_sum_type, Matrix.one_apply, sub_eq_add_neg, add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem flagDifference_comb {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
     ∀ j, flagDifferenceVectors D F0 F' j = ∑ i, flagDifferenceMatrix D i j • Sum.elim F0.fvec F'.fl.fvec i := by
@@ -95,20 +95,20 @@ theorem flagDifference_comb {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' :
   · simp [flagDifferenceVectors, flagDifferenceMatrix, Fintype.sum_sum_type, Matrix.one_apply, sub_eq_add_neg, add_comm]
 
 /- English proof (translation)
-Rewrite using `[flagDifferenceMatrix, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_flagDifference_matrix (D : Formalism.BasicNotions.D7) : (flagDifferenceMatrix D).det = ((gS D : D.host.E))⁻¹ ^ (D.R.rS + 1) := by
   rw [flagDifferenceMatrix, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, Matrix.det_smul, Matrix.det_one,
     mul_one, Fintype.card_fin]
 
 /- English proof (translation)
-Rewrite using `[star_inv₀, star_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_gS (D : Formalism.BasicNotions.D7) : star ((gS D : D.host.E))⁻¹ = ((gS D : D.host.E))⁻¹ := by
   rw [star_inv₀, star_natCast]
 
 /- English proof (translation)
-Rewrite using `[gram_comb (VS D).hT _ (flagDifferenceMatrix D) _ (flagDifference_comb F0 F'), gram_pair F0 F' Z hZ, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, det_flagDifference_matrix, star_pow, star_gS]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_gram_flagDifference {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (Z : MatZ D) (hZ : ZhatL (lf D F0) F' = Z) :
@@ -118,13 +118,13 @@ theorem det_gram_flagDifference {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (
   ring
 
 /- English proof (translation)
-Establish `hg : ((gS D : D.host.E)) ≠ 0`. Establish `h0` using `(D.host.g_prime 0).ne_zero`. Establish `h1` using `(D.host.g_prime 1).ne_zero`. Rewrite using `[gS]`. Conclude with `mul_ne_zero h0 h1` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `UPair`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Break down `j with b | b` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.subset_span (Or.inl ⟨b, rfl⟩)`. Simplify using `only [flagDifferenceVectors, Sum.elim_inr]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (Submodule.subset_span (Or.inr ⟨b, rfl⟩)) (Submodule.subset_span (Or.inl ⟨b, rfl⟩)))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ (⟨b, rfl⟩ | ⟨b, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨Sum.inl b, rfl⟩`. Establish `h1 : F'.fl.fvec b = (gS D : D.host.E) • flagDifferenceVectors D F0 F' (Sum.inr b) + flagDifferenceVectors D F0 F' (Sum.inl b)`. Simplify using `only [flagDifferenceVectors, Sum.elim_inr, Sum.elim_inl, smul_smul, mul_inv_cancel₀ hg, one_smul, sub_add_cancel]`. Rewrite using `[h1]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)) (Submodule.subset_span ⟨_, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_flagDifferenceBasis {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
     Submodule.span D.host.E (Set.range (flagDifferenceVectors D F0 F')) = UPair D F0 F' := by

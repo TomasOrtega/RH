@@ -11,7 +11,7 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Unfold `Data.c`. Establish `h : τ.1 X.ξ0 ≠ 0` using `(map_ne_zero τ.1).mpr X.ξ0_ne`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem c_pos (X : Data E r) (τ : X.Ψ) : 0 < X.c τ := by
   unfold Data.c
@@ -19,21 +19,21 @@ theorem c_pos (X : Data E r) (τ : X.Ψ) : 0 < X.c τ := by
   positivity
 
 /- English proof (translation)
-Establish `hcpos` using `c_pos X`. Choose the witnesses or unpack the hypotheses as in `⟨D, hD, hDb⟩ : ∃ D : ℝ, 0 < D ∧ ∀ σ : E →+* ℂ, ‖σ (X.den : E)‖ ≤ D := by`. Use `⟨∑ σ : E →+* ℂ, ‖σ (X.den : E)‖ + 1, by positivity, fun σ => ?_⟩` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun σ : E →+* ℂ => ‖σ (X.den : E)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ σ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set S := ∑ τ : X.Ψ, (X.c τ)⁻¹ with hS`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun τ _ => (inv_pos.2 (hcpos τ)).le`. Establish `hcl : ∀ τ, (S + 1)⁻¹ ≤ X.c τ` using `fun τ => by`. Establish `h1 : (X.c τ)⁻¹ ≤ S` using `Finset.single_le_sum (f := fun τ => (X.c τ)⁻¹) (fun τ _ => (inv_pos.2 (hcpos τ)).le) (Finset.mem_univ τ)`. Rewrite using `[inv_le_comm₀ (by linarith) (hcpos τ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨(S + 1)⁻¹ / D, div_pos (inv_pos.2 (by linarith)) hD, ?_⟩` and prove the remaining obligations. Introduce `x hx v hv hsum`. Establish `hmaj0 : ∀ τ : X.Ψ, 0 ≤ X.maj x τ (Data.emb τ.1 v)` using `fun τ => (norm_nonneg _).trans (UnipotentCoefficientShift.norm_hermC_le_maj hx τ _)`. Establish `hterm : ∀ τ : X.Ψ, X.c τ * X.maj x τ (Data.emb τ.1 v) < (S + 1)⁻¹ / D` using `fun τ => lt_of_le_of_lt (Finset.single_le_sum (f := fun τ => X.c τ * X.maj x τ (Data.emb τ.1 v)) (fun τ _ => mul_nonneg (hcpos τ).le (hmaj0 τ)) (Finset.mem_univ τ)) hsum`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmaj : ∀ τ : X.Ψ, D * X.maj x τ (Data.emb τ.1 v) < 1` using `fun τ => by`. Establish `h3` using `hcpos τ`. Establish `h5 : X.c τ * X.maj x τ (Data.emb τ.1 v) < X.c τ / D` using `lt_of_lt_of_le (hterm τ) (div_le_div_of_nonneg_right (hcl τ) hD.le)`. Rewrite `h5` using `[lt_div_iff₀ hD]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hemb : ∀ τ : E →+* ℂ, hermC τ X.Gm (Data.emb τ v) (Data.emb τ v) = τ (herm X.Gm v v)`. Introduce `τ`. Simplify using `only [hermC, herm, Data.emb, map_sum, map_mul, emb_cc]`. Establish `ha : IsIntegral ℤ ((X.den : E) * herm X.Gm v v)` using `X.Λ_int v hv v hv`. Establish `hzero` using `UnipotentCoefficientShift.eq_zero_of_conj_lt_one ha (fun σ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨τ, h1, h2⟩ : ∃ τ : X.Ψ, ‖σ (herm X.Gm v v)‖ = ‖τ.1 (herm X.Gm v v)‖ ∧ ‖σ (X.den : E)‖ = ‖τ.1 (X.den : E)‖ := by`. Distinguish the cases in `hσ : σ ∈ X.Ψ`. Conclude with `⟨⟨σ, hσ⟩, rfl, rfl⟩`. Establish `hc : NumberField.ComplexEmbedding.conjugate σ ∈ X.Ψ`. Assume the negation of the conclusion as `h`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `hσ ((X.cmType σ).2 h)`. Apply the tactic sequence `refine ⟨⟨_, hc⟩, ?_, ?_⟩ <;> simp [NumberField.ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[map_mul, norm_mul, h1]`. Establish `hb` using `UnipotentCoefficientShift.norm_hermC_le_maj hx τ (Data.emb τ.1 v)`. Rewrite `hb` using `[hemb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis.
 
-Combine the equalities or inequalities in the displayed calculation. Break down `mul_eq_zero.1 hzero with h | h` into its components or cases. Conclude with `absurd h (NumberField.RingOfIntegers.coe_ne_zero_iff.2 X.den_ne)`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem iso_threshold (X : Data E r) : ∃ δ0 : ℝ, 0 < δ0 ∧ ∀ x ∈ X.dom, ∀ v ∈ X.Λ,
     ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 v) < δ0 → herm X.Gm v v = 0 := by

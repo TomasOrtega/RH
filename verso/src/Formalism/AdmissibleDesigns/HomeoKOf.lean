@@ -18,17 +18,15 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
   (Bw : LocBridge l E Ω Gw O) [TopologicalSpace (FractionRing O)] [IsTopologicalAddGroup (FractionRing O)]
 
 /- English proof (translation)
-Establish `hG` using `(T2.litGoodO l Bw.LL)`. Establish `hOpen : IsOpen ((OL Bw.LL : Subalgebra ℤ_[l] (Br.LLw Bw)) : Set (Br.LLw Bw))`. Establish `h` using `hG.2.2.2.2`. Rewrite `h` using `[show Set.range (algebraMap ↥(OL Bw.LL) ↥Bw.LL.1) = ((OL Bw.LL : Subalgebra ℤ_[l] (Br.LLw Bw)) : Set (Br.LLw Bw)) from Subtype.range_coe]`. Then use the resulting hypothesis. Establish `hOL : IsOpenEmbedding (Subtype.val : ↥(OL Bw.LL) → Br.LLw Bw)` using `hOpen.isOpenEmbedding_subtypeVal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `continuous_of_continuousAt_zero (eK Bw) ?_` and prove the remaining obligations. Establish `hc : Continuous fun x : O => eK Bw (algebraMap O (FractionRing O) x)`. Establish `h1 : (fun x : O => eK Bw (algebraMap O (FractionRing O) x)) = fun x => ((Bw.eO x : ↥(OL Bw.LL)) : Br.LLw Bw)`. Use function extensionality and compare the values at `fun x => Br.toLLK_alg Bw x`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[h1]`. Conclude with `continuous_subtype_val.comp Bw.eO_cont`. Use `show Filter.Tendsto (eK Bw) (𝓝 0) (𝓝 (eK Bw 0))`. Rewrite using `[← map_zero (algebraMap O (FractionRing O)), ← hF.map_nhds_eq, Filter.tendsto_map'_iff]`. Conclude with `hc.tendsto 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `continuous_of_continuousAt_zero (eK Bw).symm ?_` and prove the remaining obligations. Establish `hc : Continuous fun y : ↥(OL Bw.LL) => (eK Bw).symm (y : Br.LLw Bw)`. Establish `h1 : (fun y : ↥(OL Bw.LL) => (eK Bw).symm (y : Br.LLw Bw)) = fun y => algebraMap O (FractionRing O) (Bw.eO.symm y)`. Use function extensionality and compare the values at `y`. Apply `(eK Bw).injective` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingEquiv.apply_symm_apply, eK_apply, Br.toLLK_alg, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `hF.continuous.comp Bw.eO_symm_cont`. Use `show Filter.Tendsto (eK Bw).symm (𝓝 0) (𝓝 ((eK Bw).symm 0))`.
-
-Rewrite using `[show (0 : Br.LLw Bw) = ((0 : ↥(OL Bw.LL)) : Br.LLw Bw) from rfl, ← hOL.map_nhds_eq, Filter.tendsto_map'_iff]`. Conclude with `hc.tendsto 0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homeoK_of (hF : IsOpenEmbedding (algebraMap O (FractionRing O))) : HomeoK (eK Bw) := by
   have hG := (T2.litGoodO l Bw.LL)
@@ -73,7 +71,7 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   [ContinuousSMul (D.nd.O i) (FractionRing (D.nd.O i))] [IsDiscreteValuationRing (D.nd.O i)]
 
 /- English proof (translation)
-The claim follows from `bk_a_of_admitted_bk_a i dc _ _ Dat hBK hG hw hreal (rowIn_of i dc _ _ Dat hε (fun hn => ⟨homeoK_of (D.nbr i _ hn) hF, topMatch_pi (eK (D.nbr i _ hn)) n (homeoK_of (D.nbr i _ hn) hF), topMatch_pi (eK (D.nbr i _ hn)) n' (homeoK_of (D.nbr i _ hn) hF)⟩) hdr)`.
+A detailed English derivation is pending.
 -/
 theorem bKa_pi (n n' : Type) [Fintype n] [Fintype n']
     (Dat : ∀ w, Formalism.RepresentationBoundsCohomology.LOC.LatData (D.nd.O i) ↥(Γn i dc w) (n → FractionRing (D.nd.O i))

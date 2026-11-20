@@ -24,9 +24,7 @@ def IsLocSec {N : S.Opens} (s : LocSec G L N) : Prop :=
       resG _ (fun _ hx => ⟨hx.1.2, hx.2⟩ : L.U i ⊓ L.U j ⊓ G.hom ⁻¹ᵁ N ≤ L.U j ⊓ G.hom ⁻¹ᵁ N) (s j)
 
 /- English proof (translation)
-Introduce `y hy`. Use `⟨Set.mem_iInter.1 hy 0, ?_⟩` and prove the remaining obligations. Establish `e : (snd (Over.mk ξ) G).left ≫ G.hom = (fst (Over.mk ξ) G).left ≫ ξ` using `(Over.w (snd (Over.mk ξ) G)).trans (Over.w (fst (Over.mk ξ) G)).symm`. Use `show G.hom ((snd (Over.mk ξ) G).left y) ∈ N`. Rewrite using `[← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply]`.
-
-Conclude with `hξ ⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lpow_U_le [GrpObj G] {K : Type} [Field K] {ξ : Sp K ⟶ S} {N : S.Opens} (hξ : Set.range ξ ⊆ N)
     (j : Fin 1 → L.ι) :
@@ -53,7 +51,7 @@ def FibNz {N : S.Opens} (s : LocSec G L N) (W : S.Opens) : Prop :=
       valF y _ (s i) ≠ 0
 
 /- English proof (translation)
-Introduce `i j` and use `by simp [Pi.zero_apply, map_zero, mul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLocSec_zero {N : S.Opens} : IsLocSec (0 : LocSec G L N) := fun i j => by
   simp [Pi.zero_apply, map_zero, mul_zero]

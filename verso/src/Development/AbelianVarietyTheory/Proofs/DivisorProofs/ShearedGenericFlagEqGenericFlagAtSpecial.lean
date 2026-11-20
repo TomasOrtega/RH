@@ -11,9 +11,9 @@ open Classical
 namespace GlobalTheory.FlagPush.Meet
 
 /- English proof (translation)
-Establish `hx : x ∈ (ratOf Y).O ((ratOf Y).pt (IsLocalRing.closedPoint Y.Fn))`. Use `(congrArg (fun z => x ∈ (ratOf Y).O z) ((ratOf Y).pt_apply _)).mpr ?_` and prove the remaining obligations. Rewrite using `[RatModel.O_genericPoint]`. Conclude with `Algebra.mem_top`. Establish `h` using `RatModel.val_spMap_comp (M := ratOf Y) σ (ratOf Y).pt specializes_rfl ⟨x, hx⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[RatModel.valLoc_eq_val]`. Conclude with `h.trans (congrArg σ (RatModel.val_pt x))`.
+A detailed English derivation is pending.
 -/
 theorem val_spMap_pt {F : Type} [Field F] (Y : Var F) {K : Type} [Field K] (σ : Y.Fn →+* K) (x : Y.Fn) :
     (ratOf Y).val (spMap σ ≫ (ratOf Y).pt) x = σ x := by
@@ -27,29 +27,25 @@ theorem val_spMap_pt {F : Type} [Field F] (Y : Var F) {K : Type} [Field K] (σ :
 open GlobalTheory.FlagBundle.ClosedPt in
 
 /- English proof (translation)
-Introduce `F _ X Y ι _ m E E' φ f hf B hB A hA τ a b hab K _ V c t ht v₂ e hbear`. Establish `hM` using `hf.sub _ B hB A hA`. Take `⟨-, -, -, hsm⟩` from `GlobalTheory.T.blockMatrixElementaryShear_properties ι m τ a b hab V t`. Take `⟨-, -, hs0, -⟩` from `GlobalTheory.T.blockMatrixElementaryShear_properties ι m τ a b hab (IsLocalRing.ResidueField V) 0`. Establish `hpt : ∀ (R : Type) [CommRing R] (g : Y.Fn →+* R) (w : Sp R), (spMap g ≫ (ratOf Y).pt) w = genericPoint Y.X` using `fun R _ g w => (Scheme.Hom.comp_apply _ _ _).trans ((ratOf Y).pt_apply _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf₂ : f (v₂ (IsLocalRing.closedPoint V)) = f (genericPoint Y.X)`. Use `(Scheme.Hom.comp_apply _ _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(Scheme.Hom.comp_apply (spMap c ≫ (ratOf Y).pt) f _).trans (congrArg f (hpt _ c _))`. Take `⟨A₂, hA₂⟩` from `E'.nonempty (v₂ (IsLocalRing.closedPoint V))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hM₂` using `hf.sub _ A₂ hA₂ A ((congrArg (fun z => A ∈ E.S z) hf₂).mpr hA)`. Take `⟨A₂', hA₂', hpar⟩` from `hbear`. Establish `hA₂g : A₂ ∈ E'.S ((spMap (algebraMap V K) ≫ v₂) (IsLocalRing.closedPoint K))` using `Fr.mem_of_specializes hA₂ (gen_specializes v₂ _)`. Establish `hsp₂` using `gen_specializes (L := K) v₂ (IsLocalRing.closedPoint K)`. Establish `hG` using `(Fr.mem_iff hA₂g).1 hA₂'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM₂g : Par 0 ((ratOf Y).O ((spMap (algebraMap V K) ≫ v₂) (IsLocalRing.closedPoint K))).toSubring (A₂ * (A.map φ)⁻¹)` using `hM₂.mono le_rfl fun _ hx => RatModel.O_le_of_specializes hsp₂ hx`. Use `set ψ := RatModel.valHom (M := ratOf Y) (spMap (algebraMap V K) ≫ v₂) _ (RatModel.range_eq_singleton _ (IsLocalRing.closedPoint K))`. Establish `hv : ∀ x : ((ratOf Y).O ((spMap (algebraMap V K) ≫ v₂) (IsLocalRing.closedPoint K))).toSubring, (ratOf Y).val (spMap (algebraMap V K) ≫ v₂) x = ψ x` using `fun _ => rfl`. Establish `heqM : A₂' * (A.map φ)⁻¹ = (A₂' * A₂⁻¹) * (A₂ * (A.map φ)⁻¹)`. Rewrite using `[mul_assoc, ← mul_assoc A₂⁻¹, Mat.inv_mul (Fr.det_ne hA₂), one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : (A₂' * (A.map φ)⁻¹).map ((ratOf Y).val (spMap (algebraMap V K) ≫ v₂)) = (A₂' * A₂⁻¹).map ((ratOf Y).val (spMap (algebraMap V K) ≫ v₂)) * (A₂ * (A.map φ)⁻¹).map ((ratOf Y).val (spMap (algebraMap V K) ≫ v₂))`. Rewrite using `[heqM]`. Conclude with `Par.map_mul_of hG hM₂g ((ratOf Y).val (spMap (algebraMap V K) ≫ v₂)) ψ hv`. Establish `hGv` using `Par.map_of hG ((ratOf Y).val (spMap (algebraMap V K) ≫ v₂)) ψ hv`. Establish `hpar2` using `hpar`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `erw [hmap] at hpar2`. Rewrite `hpar2` using `[Mat.mul_inv_rev]`. Use `clear hpar`. Establish `hL` using `hpar2.mul hGv`. Rewrite `hL` using `[mul_assoc, mul_assoc, mul_assoc, Mat.inv_mul hGv.det_ne, mul_one, ← mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `hL` using `[map_val (algebraMap V K) v₂ _ (fun τ a b => (hM₂ τ).1 a b)]`. Establish `hN : ∀ (S : Type) [CommRing S] (g : V →+* S), (shear τ a b t * (B * (A.map φ)⁻¹).map c).map g = shear τ a b (g t) * (B * (A.map φ)⁻¹).map (g.comp c)` using `fun S _ g => by`. Rewrite using `[← hsm S g]`. Use function extensionality and compare the values at `σ`. Conclude with `Matrix.map_mul`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN1` using `hN K (algebraMap V K)`. Establish `hN2` using `hN _ (IsLocalRing.residue V)`. Rewrite `hN2` using `[ht, hs0, one_mul]`. Establish `hh : Par 0 ⊤ ((B * (A.map φ)⁻¹).map ((IsLocalRing.residue V).comp c))` using `hM.map _ fun _ _ => trivial`. Establish `hk₂` using `par_val (IsLocalRing.residue V) v₂ hM₂`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hD` using `descend (L := K) (shear τ a b t * (B * (A.map φ)⁻¹).map c) (vals v₂ _ (fun τ a b => (hM₂ τ).1 a b)) (by rw [hN2]; exact hh.det_ne) (by rw [← map_val]; exact hk₂.det_ne) (by rw [hN1]; exact hL)`. Rewrite `hD` using `[hN2, ← map_val]`. Establish `ec : spMap (IsLocalRing.residue V) ≫ spMap c ≫ (ratOf Y).pt = spMap ((IsLocalRing.residue V).comp c) ≫ (ratOf Y).pt`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb₂ : Bears E' φ A ((B * (A.map φ)⁻¹).map ((IsLocalRing.residue V).comp c)) (spMap (IsLocalRing.residue V) ≫ v₂)` using `⟨A₂, (congrArg (fun z => A₂ ∈ E'.S z) (closedPt_comp v₂)).mpr hA₂, hD⟩`. Establish `hb₁ : Bears E' φ A ((B * (A.map φ)⁻¹).map ((IsLocalRing.residue V).comp c)) (spMap ((IsLocalRing.residue V).comp c) ≫ (ratOf Y).pt)`. Use `⟨B, (congrArg (fun z => B ∈ E'.S z) (hpt _ _ _)).mpr hB, ?_⟩` and prove the remaining obligations. Rewrite using `[show (ratOf Y).val (spMap ((IsLocalRing.residue V).comp c) ≫ (ratOf Y).pt) = ⇑((IsLocalRing.residue V).comp c) from funext (val_spMap_pt Y _), Mat.mul_inv hh.det_ne]`. Conclude with `Par.one`.
-
-Establish `hAk : A ∈ E.S (((spMap (IsLocalRing.residue V) ≫ v₂) ≫ f) (IsLocalRing.closedPoint (IsLocalRing.ResidueField V)))`. Use `(congrArg (fun z => A ∈ E.S z) ?_).mpr hA` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg f (closedPt_comp v₂)).trans hf₂)`. Take `⟨p, -, hp⟩` from `hf.lifts _ _ A hAk _ hh`. Use `(ec.trans (hp _ ⟨?_, hb₁⟩)).trans (hp _ ⟨rfl, hb₂⟩).symm` and prove the remaining obligations.
-
-Rewrite using `[← ec]`. Conclude with `congrArg (spMap (IsLocalRing.residue V) ≫ ·) e.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meet : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ B ∈ E'.S (genericPoint Y.X), ∀ A ∈ E.S (f (genericPoint Y.X)), ∀ (τ : ι) (a b : Fin (m τ)), a < b → ∀ (K : Type) [Field K] (V : ValuationSubring K) (c : Y.Fn →+* V) (t : V), IsLocalRing.residue V t = 0 → ∀ v₂ : Sp V ⟶ Y.X, v₂ ≫ f = spMap c ≫ (ratOf Y).pt ≫ f → Bears E' φ A (shear τ a b (t : K) * (B * (A.map φ)⁻¹).map ((algebraMap V K).comp c)) (spMap (algebraMap V K) ≫ v₂) → spMap (IsLocalRing.residue V) ≫ spMap c ≫ (ratOf Y).pt = spMap (IsLocalRing.residue V) ≫ v₂ := by
   intro F _ X Y ι _ m E E' φ f hf B hB A hA τ a b hab K _ V c t ht v₂ e hbear

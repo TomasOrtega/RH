@@ -8,23 +8,21 @@ variable {R M M' P : Type} [Ring R] [AddCommGroup M] [Module R M] [AddCommGroup 
   [AddCommGroup P] [Module R P]
 
 /- English proof (translation)
-Use `set d : P →ₗ[R] P := (LinearMap.snd R M' P) ∘ₗ (e : (M × P) →ₗ[R] (M' × P)) ∘ₗ LinearMap.inr R M P with hd_def`. Set `dE : P ≃ₗ[R] P` to `LinearEquiv.ofBijective d hd`. Set `c : M →ₗ[R] P` to `(LinearMap.snd R M' P) ∘ₗ (e : (M × P) →ₗ[R] (M' × P)) ∘ₗ LinearMap.inl R M P`. Set `φ : M →ₗ[R] M'` to `(LinearMap.fst R M' P) ∘ₗ (e : (M × P) →ₗ[R] (M' × P)) ∘ₗ (LinearMap.prod LinearMap.id (-((dE.symm : P →ₗ[R] P) ∘ₗ c)))`. Set `ψ : M' →ₗ[R] M` to `(LinearMap.fst R M P) ∘ₗ (e.symm : (M' × P) →ₗ[R] (M × P)) ∘ₗ LinearMap.inl R M' P`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsplit : ∀ x : M × P, (e x).2 = c x.1 + d x.2`. Introduce `x`. Establish `hx : x = ((x.1, 0) : M × P) + (0, x.2)` using `by simp`. Use `conv_lhs => rw [hx]`. Rewrite using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hdd : ∀ p : P, d (dE.symm p) = p` using `fun p => dE.apply_symm_apply p`. Establish `key : ∀ m : M, e (m, -dE.symm (c m)) = (φ m, 0)`. Introduce `m`. Use `ext`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hsplit]`. Simplify using `only [map_neg, hdd]`. Simplify using the standard rewrite rules. Use `⟨LinearEquiv.ofLinear φ ψ ?_ ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `m'`. Use `set x := e.symm (m', 0) with hx`. Establish `hex : e x = (m', 0)` using `by simp [hx]`. Establish `hp : -dE.symm (c x.1) = x.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `hsplit x`. Rewrite `h0` using `[hex]`. Establish `h1 : d x.2 = -c x.1`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Conclude with `h0.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : dE.symm (d x.2) = x.2` using `dE.symm_apply_apply x.2`. Rewrite `h2` using `[h1, map_neg]`. Conclude with `h2`. Establish `hk` using `key x.1`. Rewrite `hk` using `[hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψ : ψ m' = x.1` using `rfl`. Use `show φ (ψ m') = m'`. Rewrite using `[hψ]`. Establish `h3 : ((φ x.1, (0 : P)) : M' × P) = (m', 0)` using `by rw [← hk]; exact hex`. Conclude with `congrArg Prod.fst h3`.
-
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `m`. Use `show ψ (φ m) = m`. Establish `h : ψ (φ m) = (e.symm (φ m, 0)).1` using `rfl`. Rewrite using `[h, ← key m, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearEquiv_of_prod_corner_bijective (e : (M × P) ≃ₗ[R] (M' × P))
     (hd : Function.Bijective ((LinearMap.snd R M' P) ∘ₗ (e : (M × P) →ₗ[R] (M' × P)) ∘ₗ
@@ -80,29 +78,25 @@ theorem linearEquiv_of_prod_corner_bijective (e : (M × P) ≃ₗ[R] (M' × P))
     rw [h, ← key m, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `set d : Module.End R P := (LinearMap.snd R M' P) ∘ₗ (e : (M × P) →ₗ[R] (M' × P)) ∘ₗ LinearMap.inr R M P with hd_def`. Distinguish the cases in `hd : Function.Bijective d`. Conclude with `linearEquiv_of_prod_corner_bijective e hd`. Set `b : P →ₗ[R] M'` to `(LinearMap.fst R M' P) ∘ₗ (e : (M × P) →ₗ[R] (M' × P)) ∘ₗ LinearMap.inr R M P`. Set `c' : M' →ₗ[R] P` to `(LinearMap.snd R M P) ∘ₗ (e.symm : (M' × P) →ₗ[R] (M × P)) ∘ₗ LinearMap.inl R M' P`.
+Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `d' : Module.End R P` to `(LinearMap.snd R M P) ∘ₗ (e.symm : (M' × P) →ₗ[R] (M × P)) ∘ₗ LinearMap.inr R M' P`. Establish `hsum : c' ∘ₗ b = 1 - d' * d`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `p`. Establish `h : e (0, p) = ((b p, 0) : M' × P) + (0, d p)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg Prod.snd (e.symm_apply_apply (0, p))`. Rewrite `h2` using `[h, map_add]`. Use `show c' (b p) = p - d' (d p)`. Rewrite using `[eq_sub_iff_add_eq]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hnil : IsNilpotent (d' * d)`. Break down `hP (d' * d) with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Apply `hd` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective d` using `fun x y hxy => h.1 (by show d' (d x) = d' (d y)`. Rewrite using `[hxy])`. Break down `hP d with ⟨n, hn⟩ | h2` into its components or cases. Establish `hsub : ∀ x : P, x = 0`. Introduce `x`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Establish an intermediate fact.
 
-Apply `hinj.iterate n` to reduce the goal to its premises. Establish `h3 : (d ^ n) x = (d ^ n) 0` using `by rw [hn]; simp`. Simplify `h3` using `[Module.End.pow_apply]`. Conclude with `⟨hinj, fun y => ⟨0, by rw [map_zero, hsub y]⟩⟩`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw : IsUnit (c' ∘ₗ b : Module.End R P)`. Rewrite using `[hsum]`. Conclude with `hnil.isUnit_one_sub`. Set `winv : Module.End R P` to `↑(hw.unit⁻¹)`. Set `g : M' →ₗ[R] P` to `((1 - d) * winv) ∘ₗ c'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `τ : (M' × P) ≃ₗ[R] (M' × P)` to `LinearEquiv.skewProd (LinearEquiv.refl R M') (LinearEquiv.refl R P) g`. Establish `hcorner : (LinearMap.snd R M' P) ∘ₗ ((e.trans τ : (M × P) ≃ₗ[R] (M' × P)) : (M × P) →ₗ[R] (M' × P)) ∘ₗ LinearMap.inr R M P = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `p`. Establish `h1 : g (b p) = p - d p`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h4 : (winv * (c' ∘ₗ b : Module.End R P)) p = p`. Rewrite using `[hw.val_inv_mul]`. Both sides reduce to the same expression. Use `show ((1 - d) * winv) (c' (b p)) = p - d p`. Express the relevant statement in the definitionally equal form `(1 - d) ((winv * (c' ∘ₗ b : Module.End R P)) p) = p - d p`.
-
-Rewrite using `[h4]`. Simplify using the standard rewrite rules. Use `show (e (0, p)).2 + g ((e (0, p)).1) = p`. Express the relevant statement in the definitionally equal form `d p + g (b p) = p`. Rewrite using `[h1]`.
-
-Normalize the expressions using the abelian group laws. Conclude with `linearEquiv_of_prod_corner_bijective (e.trans τ) (by rw [hcorner]; exact Function.bijective_id)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem linearEquiv_cancel_of_nilpotent_or_bijective
     (hP : ∀ f : Module.End R P, IsNilpotent f ∨ Function.Bijective f)
@@ -171,7 +165,7 @@ theorem linearEquiv_cancel_of_nilpotent_or_bijective
 end CancelSummand
 
 /- English proof (translation)
-Introduce `R M M' P _ _ _ _ _ _ _ hP he`. Take `⟨e⟩` from `he`. Conclude with `linearEquiv_cancel_of_nilpotent_or_bijective hP e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cancel_summand_nilpotent_or_bijective : ∀ (R M M' P : Type) [Ring R] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R M'] [AddCommGroup P] [Module R P],

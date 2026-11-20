@@ -10,7 +10,7 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 namespace GlobalTheory.CompanionTheory.GAUnimod
 
 /- English proof (translation)
-Introduce `E _ _ _ N _ _ μ _` and use `GlobalTheory.CompanionTheory.PairDom.isMulRightInvariant_GA E N μ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_haar_GA : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ) [MeasurableSpace (GA E N)] [BorelSpace (GA E N)] (μ : Measure (GA E N)) [μ.IsHaarMeasure], μ.IsMulRightInvariant :=
   fun E _ _ _ N _ _ μ _ => GlobalTheory.CompanionTheory.PairDom.isMulRightInvariant_GA E N μ

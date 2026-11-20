@@ -17,14 +17,14 @@ variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (TR : TypedRed
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (cs : ColSys X u what₂)
 
 /- English proof (translation)
-The claim follows from `LeviOntoSPf.leviOntoS_of_steps TR u cs (LeviOntoSPf.SIdemPf.idempotent_places_exists X) hF (LeviOntoSPf.LeviEltPf.levi_element_exists TR u) (LeviOntoSPf.MatLiftPf.integral_matrix_lift_exists TR)`.
+A detailed English derivation is pending.
 -/
 theorem leviOntoS_of_frame (hF : LeviOntoSPf.FrameOfS X u) : LeviOntoS TR cs :=
   LeviOntoSPf.leviOntoS_of_steps TR u cs (LeviOntoSPf.SIdemPf.idempotent_places_exists X) hF
     (LeviOntoSPf.LeviEltPf.levi_element_exists TR u) (LeviOntoSPf.MatLiftPf.integral_matrix_lift_exists TR)
 
 /- English proof (translation)
-The claim follows from `leviOntoS_of_frame TR cs (LeviOntoSPf.exact_dual_frame_exists X u)`.
+A detailed English derivation is pending.
 -/
 theorem levi_onto_reduction : LeviOntoS TR cs :=
   leviOntoS_of_frame TR cs (LeviOntoSPf.exact_dual_frame_exists X u)

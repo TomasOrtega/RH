@@ -21,7 +21,7 @@ namespace GlobalTheory.BirigidRoot
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.one_comp]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_comp_hom {Z H : Over S} [GrpObj H] (f : A ⟶ H) [IsMonHom f] (x : Z ⟶ A) (n : ℕ) :
     (x ^ n) ≫ f = (x ≫ f) ^ n := by
@@ -30,14 +30,14 @@ theorem pow_comp_hom {Z H : Over S} [GrpObj H] (f : A ⟶ H) [IsMonHom f] (x : Z
   | succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]
 
 /- English proof (translation)
-Rewrite using `[evc, lift_comp_fst_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_eq_evc {P : LB (A ⊗ A).left} (hP : P.IsLB) {Y : Over S} (w : Y ⟶ A ⊗ A) :
     CechPic.pull w.left (cls P hP) = evc hP (w ≫ fst A A) (w ≫ snd A A) := by
   rw [evc, lift_comp_fst_snd]
 
 /- English proof (translation)
-Establish `hX` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `t` using `GlobalTheory.CubeTop.cubeTheorem S (A ⊗ A) hX P hP Y x y z`. Establish `z0` using `(cls_linComb hP _ _ (LB.isLB_linComb hP _ _)).symm.trans ((cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 t)`. Simplify using `only [Fin.sum_univ_succ, Fin.sum_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, one_zsmul, neg_one_zsmul, add_zero] at z0`. Rewrite using `[← z0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -57,9 +57,9 @@ theorem cube_rel (hA : IsAbelianScheme A) {P : LB (A ⊗ A).left} (hP : P.IsLB) 
   abel
 
 /- English proof (translation)
-Use `⟨(isAdditive_iff hP).2 fun Y a a' t ↦ ?_, (BirigidLift.isAdditive_swap_iff hP).2 fun Y a t t' ↦ ?_⟩` and prove the remaining obligations. Establish `e` using `cube_rel hA hP (lift a 1) (lift a' 1) (lift 1 t)`. Simplify using `only [pull_eq_evc hP, MonObj.mul_comp, lift_fst, lift_snd, MonObj.one_comp, _root_.mul_one, _root_.one_mul, evc_one_right hP h₂, evc_one_left hP h₁] at e`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `e` using `cube_rel hA hP (lift a 1) (lift 1 t) (lift 1 t')`. Simplify using `only [pull_eq_evc hP, MonObj.mul_comp, lift_fst, lift_snd, MonObj.one_comp, _root_.mul_one, _root_.one_mul, evc_one_right hP h₂, evc_one_left hP h₁] at e`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem additive_of_birigid (hA : IsAbelianScheme A) {P : LB (A ⊗ A).left} (hP : P.IsLB)
     (h₁ : Triv (ev P (1 : A ⟶ A) (𝟙 A))) (h₂ : Triv (ev P (𝟙 A) (1 : A ⟶ A))) :
@@ -79,17 +79,15 @@ theorem additive_of_birigid (hA : IsAbelianScheme A) {P : LB (A ⊗ A).left} (hP
 end GlobalTheory.BirigidRoot
 
 /- English proof (translation)
-Introduce `S A _ _ k P₁ P₂ hA hk _ hP₁ h₁ h₂ hP₂ h₁' h₂' e`. Take `⟨a₁, b₁⟩` from `GlobalTheory.BirigidRoot.additive_of_birigid hA hP₁ h₁ h₂`. Take `⟨a₂, b₂⟩` from `GlobalTheory.BirigidRoot.additive_of_birigid hA hP₂ h₁' h₂'`. Take `⟨D, _, Q, -, -, q, q'⟩` from `GlobalTheory.dualAbelianScheme S A hA`. Take `⟨x₁, hx₁, ex₁⟩` from `GlobalTheory.BirigidLift.exists_hom q q'.additive hP₁ a₁ b₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x₂, hx₂, ex₂⟩` from `GlobalTheory.BirigidLift.exists_hom q q'.additive hP₂ a₂ b₂`. Establish `hk' : k • cls P₁ hP₁ = k • cls P₂ hP₂`. Rewrite using `[← cls_lbPow hP₁ k (LB.isLB_linComb hP₁ _ _), ← cls_lbPow hP₂ k (LB.isLB_linComb hP₂ _ _)]`. Conclude with `(cls_eq_iff _ _).2 e`. Establish `pw : ∀ (y : A ⟶ D) (n : ℕ), evc q.isLB (fst A A) (snd A A ≫ y ^ n) = n • evc q.isLB (fst A A) (snd A A ≫ y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y n`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, MonObj.comp_one, zero_smul]`. Conclude with `evc_one_right q.isLB q.zero _`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_succ, MonObj.comp_mul, (GlobalTheory.BirigidLift.isAdditive_swap_iff q.isLB).1 q'.additive, ih, succ_nsmul]`. Establish `hpow : x₁ ^ k = x₂ ^ k` using `GlobalTheory.BirigidLift.dual_ext q (by rw [pw, pw, ← ex₁, ← ex₂, hk'])`. Establish `hx : x₁ = x₂`. Take `⟨hfl, hsu, -⟩` from `GlobalTheory.UPel.HT.SiegUniqBase.flat_surjective_qc_pow S A hA k hk`. Use `haveI := hfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := hsu`. Use `haveI : Epi ((𝟙 A) ^ k).left := Flat.epi_of_flat_of_surjective _`. Establish `c : (((𝟙 A) ^ k) ≫ x₁).left = (((𝟙 A) ^ k) ≫ x₂).left`. Rewrite using `[GlobalTheory.BirigidRoot.pow_comp_hom, GlobalTheory.BirigidRoot.pow_comp_hom, Category.id_comp, Category.id_comp, hpow]`. Rewrite `c` using `[Over.comp_left, Over.comp_left]`.
-
-Conclude with `Over.OverMorphism.ext ((cancel_epi ((𝟙 A) ^ k).left).1 c)`. Substitute `hx` using the available equality. Conclude with `(cls_eq_iff hP₁ hP₂).1 (ex₁.trans ex₂.symm)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BirigidRoot.iso_of_lbPow_iso : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (k : ℕ)
     (P₁ P₂ : LB (G2 A).left), IsAbelianScheme A → 0 < k → IsUnit (k : Γ(S, ⊤)) → P₁.IsLB →

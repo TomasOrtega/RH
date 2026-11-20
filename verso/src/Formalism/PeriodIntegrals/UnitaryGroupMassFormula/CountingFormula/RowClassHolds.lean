@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.RowUnit
 namespace PI.UnitaryGroupMassFormula.CntFormula.RowsMassW
 
 /- English proof (translation)
-The claim follows from `rowClass_of_zunit row_unit_condition`.
+A detailed English derivation is pending.
 -/
 theorem row_class_holds : RowClass := rowClass_of_zunit row_unit_condition
 

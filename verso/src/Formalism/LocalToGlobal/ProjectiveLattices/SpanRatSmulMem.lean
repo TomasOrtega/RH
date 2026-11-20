@@ -29,15 +29,15 @@ theorem trBE_apply {n : ℕ} (l x : Fin n → E) :
     trBE n l x = Algebra.trace ℚ E (∑ i, l i * x i) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun l x => by rw [trBE_apply, trBE_apply]; simp only [mul_comm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem trBE_symm (n : ℕ) : (trBE (E := E) n).IsSymm :=
   ⟨fun l x => by rw [trBE_apply, trBE_apply]; simp only [mul_comm]⟩
 
 /- English proof (translation)
-Introduce `l hl`. Use function extensionality and compare the values at `i`. Use `(traceForm_nondegenerate ℚ E).1 (l i) (fun y => ?_)` and prove the remaining obligations. Establish `h` using `hl (Pi.single i y)`. Rewrite `h` using `[trBE_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h` using `[Pi.single_apply, Algebra.traceForm_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trBE_sepLeft (n : ℕ) : LinearMap.SeparatingLeft (trBE (E := E) n) := by
   intro l hl
@@ -48,13 +48,13 @@ theorem trBE_sepLeft (n : ℕ) : LinearMap.SeparatingLeft (trBE (E := E) n) := b
   simpa [Pi.single_apply, Algebra.traceForm_apply] using h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨trBE_sepLeft n, fun x hx => trBE_sepLeft n x fun l => by rw [(trBE_symm n).eq]; exact hx l⟩`.
+Supply the required witnesses or components.
 -/
 theorem trBE_nondeg (n : ℕ) : (trBE (E := E) n).Nondegenerate :=
   ⟨trBE_sepLeft n, fun x hx => trBE_sepLeft n x fun l => by rw [(trBE_symm n).eq]; exact hx l⟩
 
 /- English proof (translation)
-Use extensionality with `l`. Simplify using `only [dualZE, Set.mem_ofPred_eq, SetLike.mem_coe, LinearMap.BilinForm.mem_dualSubmodule, Submodule.restrictScalars_mem, Submodule.mem_one, trBE_apply, Set.mem_range, algebraMap_int_eq, eq_intCast]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dualZE_eq {n : ℕ} (Xs : Submodule (𝓞 E) (Fin n → E)) :
     dualZE Xs = ((trBE n).dualSubmodule (Xs.restrictScalars ℤ) : Set (Fin n → E)) := by
@@ -83,7 +83,7 @@ def dualZSubE {n : ℕ} (Xs : Submodule (𝓞 E) (Fin n → E)) : Submodule (�
     exact ⟨u, by rw [h]; exact hu⟩
 
 /- English proof (translation)
-Establish `h : XcFD 𝔄 cu = dualZSubE (crdI 𝔄 cu)` using `Submodule.span_eq (dualZSubE (crdI 𝔄 cu))`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem xcFD_coe (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) {X : Data E r} (cu : CuspFD X ρ) :
     (XcFD 𝔄 cu : Set (Fin ρ → E)) = dualZE (crdI 𝔄 cu) := by
@@ -91,11 +91,11 @@ theorem xcFD_coe (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) {X : Data
   rw [h]; rfl
 
 /- English proof (translation)
-Set `b` to `Module.Basis.span cu.ind`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Submodule.span E (Set.range cu.e)).subtype (Submodule.ker_subtype _)`. Use `⟨b.equivFun.toLinearMap.comp g, fun v => ?_⟩` and prove the remaining obligations. Establish `hmem : ∑ i, v i • cu.e i ∈ Submodule.span E (Set.range cu.e)` using `sum_mem fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hgv : g (∑ i, v i • cu.e i) = ⟨_, hmem⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun hg ⟨_, hmem⟩` as an intermediate fact. Simplify using `using this`. Establish `hb : (⟨_, hmem⟩ : Submodule.span E (Set.range cu.e)) = b.equivFun.symm v`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Use `ext`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[b, Module.Basis.span_apply]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hgv, hb, LinearEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_crdMap {X : Data E r} (cu : CuspFD X ρ) :
     ∃ Ψ : (Fin r → E) →ₗ[E] (Fin ρ → E), ∀ v : Fin ρ → E, Ψ (∑ i, v i • cu.e i) = v := by
@@ -115,13 +115,11 @@ theorem exists_crdMap {X : Data E r} (cu : CuspFD X ρ) :
   simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, hgv, hb, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨Ψ, hΨ⟩` from `exists_crdMap cu`. Take `⟨d, hd, hdA⟩` from `𝔄.isFractional`. Establish `hI : cu.I.FG` using `Submodule.FG.of_le X.Λ_fg inf_le_left`. Establish `hd0 : algebraMap (𝓞 E) E d ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `nonZeroDivisors.ne_zero hd (IsFractionRing.injective (𝓞 E) E (by rw [h, map_zero]))`. Use `set Ψ' : (Fin r → E) →ₗ[E] (Fin ρ → E) := (algebraMap (𝓞 E) E d)⁻¹ • Ψ`. Use `Submodule.FG.of_le (hI.map (Ψ'.restrictScalars (𝓞 E))) ?_` and prove the remaining obligations. Rewrite using `[crdI, Submodule.span_le]`. Introduce and unpack `v ⟨a, ha, x, hx, hax⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨o, ho⟩` from `hdA a ha`. Use `⟨o • x, cu.I.smul_mem o hx, ?_⟩` and prove the remaining obligations. Use `show Ψ' (o • x) = v`. Establish `hcoef : (algebraMap (𝓞 E) E d)⁻¹ * algebraMap (𝓞 E) E o = a`. Rewrite using `[ho, Algebra.smul_def, ← mul_assoc, inv_mul_cancel₀ hd0, one_mul]`.
-
-Rewrite using `[← hΨ v, ← hax]`. Use `show ((algebraMap (𝓞 E) E d)⁻¹ • Ψ) (o • x) = Ψ (a • x)`. Rewrite using `[LinearMap.smul_apply, ← algebraMap_smul E o x, map_smul, smul_smul, hcoef, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crdI_fg (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) {X : Data E r} (cu : CuspFD X ρ) :
     (crdI 𝔄 cu).FG := by
@@ -146,15 +144,15 @@ theorem crdI_fg (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) {X : Data 
   rw [LinearMap.smul_apply, ← algebraMap_smul E o x, map_smul, smul_smul, hcoef, map_smul]
 
 /- English proof (translation)
-Establish `halg : IsAlgebraic ℤ e` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (.of_finite ℚ e)`. Take `⟨m, hm, hint⟩` from `halg.exists_integral_multiple`. Use `set o : 𝓞 E := ⟨m • e, hint⟩`. Establish `hmE : (m : E) ≠ 0` using `Int.cast_ne_zero.2 hm`. Establish `key : ∀ x ∈ Xs, e • x ∈ Submodule.span ℚ (Xs : Set (Fin n → E))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hox : o • x ∈ Xs` using `Xs.smul_mem _ hx`. Establish `h1 : o • x = ((m : E) * e) • x`. Rewrite using `[← algebraMap_smul E o x]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[o, zsmul_eq_mul]`. Establish `h2 : e • x = ((m : ℚ)⁻¹) • (o • x)`. Rewrite using `[h1]`. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Rat.smul_def, Rat.cast_inv, Rat.cast_intCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hox)`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact key x hx`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul q x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_rat_smul_mem {n : ℕ} (Xs : Submodule (𝓞 E) (Fin n → E)) (e : E)
     {w : Fin n → E} (hw : w ∈ Submodule.span ℚ (Xs : Set (Fin n → E))) :
@@ -184,23 +182,23 @@ theorem span_rat_smul_mem {n : ℕ} (Xs : Submodule (𝓞 E) (Fin n → E)) (e :
   | smul q x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem .. | (apply UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem <;> assumption) | (intros; apply UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem <;> assumption) | (apply @UpperTheory.Reformula …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_smul_mem (X : Data E r) (w : Fin r → E) : ∃ c : 𝓞 E, c ≠ 0 ∧ c • w ∈ X.Λ := by
   first | exact UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem .. | (apply UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem <;> assumption) | (intros; apply UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem <;> assumption) | (apply @UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem <;> assumption) | (apply @UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem E ‹_› ‹_› ‹_› r X w | exact @UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem E ‹_› ‹_› ‹_› r X | exact @UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem E ‹_› ‹_› ‹_› r | exact @UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem E ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem E ‹_› ‹_› | exact @UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem E ‹_› | exact @UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem E
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha, ha0⟩ : ∃ a ∈ (𝔄 : Submodule (𝓞 E) E), a ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `h𝔄` to reduce the goal to its premises. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FractionalIdeal.mem_zero_iff]`. Conclude with `⟨fun hx => hne x hx, fun hx => hx ▸ (𝔄 : Submodule (𝓞 E) E).zero_mem⟩`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Rewrite using `[pi_eq_sum_univ w]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_mem fun i _ => span_rat_smul_mem _ (w i) ?_` and prove the remaining obligations. Take `⟨c, hc, hcI⟩` from `exists_smul_mem X (cu.e i)`. Use `set cE : E := algebraMap (𝓞 E) E c`. Establish `hcE : cE ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc (IsFractionRing.injective (𝓞 E) E (by rw [map_zero]; exact h))`. Establish `hx : c • cu.e i ∈ cu.I` using `⟨hcI, Submodule.smul_mem _ c (Submodule.subset_span ⟨i, rfl⟩ : cu.e i ∈ (Submodule.span E (Set.range cu.e)).restrictScalars (𝓞 E))⟩`. Establish `hv : (Pi.single i (a * cE) : Fin ρ → E) ∈ crdI 𝔄 cu`. Use `Submodule.subset_span ⟨a, ha, c • cu.e i, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul E c, smul_smul]`. Simplify using `[cE]`. Establish `hsp` using `span_rat_smul_mem _ (a * cE)⁻¹ (Submodule.subset_span hv)`. Use `hsp using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using `[h, Ne.symm h]`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crdI_span (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (h𝔄 : 𝔄 ≠ 0) {X : Data E r}
     (cu : CuspFD X ρ) : Submodule.span ℚ (crdI 𝔄 cu : Set (Fin ρ → E)) = ⊤ := by
@@ -237,16 +235,16 @@ theorem crdI_span (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (h𝔄 :
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(crdI_fg 𝔄 cu).restrictScalars, by rw [Submodule.coe_restrictScalars]; exact crdI_span 𝔄 h𝔄 cu⟩`.
+Supply the required witnesses or components.
 -/
 theorem crdI_lat (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (h𝔄 : 𝔄 ≠ 0) {X : Data E r}
     (cu : CuspFD X ρ) : Submodule.IsLattice ℚ ((crdI 𝔄 cu).restrictScalars ℤ) :=
   ⟨(crdI_fg 𝔄 cu).restrictScalars, by rw [Submodule.coe_restrictScalars]; exact crdI_span 𝔄 h𝔄 cu⟩
 
 /- English proof (translation)
-Use `crdI_lat 𝔄 h𝔄 cu` as an intermediate fact. Use `set X0 := (crdI 𝔄 cu).restrictScalars ℤ`. Set `b` to `Module.Free.chooseBasis ℤ X0`. Use `⟨_, inferInstance, b.extendOfIsLattice ℚ, ?_⟩` and prove the remaining obligations. Establish `hr : Set.range (b.extendOfIsLattice ℚ) = X0.subtype '' Set.range b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Simplify using `[Module.Basis.extendOfIsLattice_apply]`. Rewrite using `[hr, Submodule.span_image, b.span_eq, Submodule.map_subtype_top]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (h𝔄 : 𝔄 ≠ 0) {X : Data E r}
     (cu : CuspFD X ρ) : ∃ (ι : Type) (_ : Fintype ι) (b : Module.Basis ι ℚ (Fin ρ → E)),
@@ -261,7 +259,7 @@ theorem exists_basis (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (h�
   rw [hr, Submodule.span_image, b.span_eq, Submodule.map_subtype_top]
 
 /- English proof (translation)
-Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[Submodule.coe_restrictScalars, xcFD_coe, dualZE_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem xcFD_restrict (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) {X : Data E r} (cu : CuspFD X ρ) :
     (XcFD 𝔄 cu).restrictScalars ℤ = (trBE ρ).dualSubmodule ((crdI 𝔄 cu).restrictScalars ℤ) := by
@@ -269,13 +267,13 @@ theorem xcFD_restrict (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) {X :
   rw [Submodule.coe_restrictScalars, xcFD_coe, dualZE_eq]
 
 /- English proof (translation)
-Take `⟨ι, _, b, hb⟩` from `exists_basis 𝔄 h𝔄 cu`. Establish `hX : (XcFD 𝔄 cu).restrictScalars ℤ = Submodule.span ℤ (Set.range ((trBE ρ).dualBasis (trBE_nondeg ρ) b))`. Rewrite using `[xcFD_restrict, ← hb, LinearMap.BilinForm.dualSubmodule_span_of_basis _ (trBE_nondeg ρ) b]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.FG.restrictScalars_iff (R := ℤ), hX]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.fg_span (Set.finite_range _)`. Rewrite using `[eq_top_iff]`. Establish `h1 : Submodule.span ℚ (Set.range ((trBE ρ).dualBasis (trBE_nondeg ρ) b)) = ⊤` using `Module.Basis.span_eq _`. Establish `h2 : Set.range ((trBE ρ).dualBasis (trBE_nondeg ρ) b) ⊆ (XcFD 𝔄 cu : Set (Fin ρ → E))`. Establish `h3 : Set.range ((trBE ρ).dualBasis (trBE_nondeg ρ) b) ⊆ ((XcFD 𝔄 cu).restrictScalars ℤ : Set (Fin ρ → E))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX]`. Conclude with `Submodule.subset_span`. Rewrite `h3` using `[Submodule.coe_restrictScalars]`. Then use the resulting hypothesis. Introduce `v _`. Establish `hv : v ∈ Submodule.span ℚ (XcFD 𝔄 cu : Set (Fin ρ → E))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `Submodule.span_mono (R := ℚ) h2`. Rewrite `h4` using `[h1]`. Conclude with `h4 Submodule.mem_top`. Conclude with `Submodule.span_le_restrictScalars ℚ E _ hv`.
+A detailed English derivation is pending.
 -/
 theorem xcFD_lat (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (h𝔄 : 𝔄 ≠ 0) {X : Data E r}
     (cu : CuspFD X ρ) : Submodule.IsLattice E (XcFD 𝔄 cu) := by
@@ -303,7 +301,7 @@ theorem xcFD_lat (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (h𝔄 : 
     exact Submodule.span_le_restrictScalars ℚ E _ hv
 
 /- English proof (translation)
-Introduce `cu` and use `xcFD_lat 𝔄 h𝔄 cu.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem xcLatF {Comp : Type} (X : Comp → Data E r) (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
     (h𝔄 : 𝔄 ≠ 0) : XcLatF X 𝔄 ρ :=

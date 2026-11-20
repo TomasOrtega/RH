@@ -14,7 +14,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.
 namespace GlobalTheory.Dict
 
 /- English proof (translation)
-Introduce `j hj k k'`. Take `⟨hr, hW⟩` from `h.j.modelW j hj T.J.σ₀ T.J.good_σ₀`. Take `⟨hG, hξ⟩` from `hW k`. Take `⟨hG', hξ'⟩` from `hW k'`. Conclude with `⟨hG.trans hG'.symm, hξ.trans hξ'.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gram_xi_eq_of_lawsFull {D : D7} {T : Full D} (h : LawsFull T) :
     ∀ j, InR D j → ∀ k k', ((T.U j T.σ₀).X k).Gm = ((T.U j T.σ₀).X k').Gm ∧

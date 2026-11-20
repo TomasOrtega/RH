@@ -13,13 +13,13 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `E _ _ _ n μ _ θ σ s hs he π V hV`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨P', hsp, hiso⟩` from `h s hs`. Consider the cases of `P' with`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the case `cx π'`. Establish `e : π' = π` using `(UpperTheory.ConvolutionTheory.Dp.isoEq E n π' π).1 hiso`. Substitute `e` using the available equality. Establish `h1` using `(UpperTheory.ConvolutionTheory.Dp.conjCarries E n μ θ σ s hs he π' π' V hsp).1 hV`. Conclude with `((UpperTheory.ConvolutionTheory.Dp.exSummand E n μ π' _).1 h1).2.trans ((UpperTheory.ConvolutionTheory.Dp.exSummand E n μ π' _).1 hV).2.symm`.
+Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `re π' => exact hiso.elim`. Introduce `h s' hs'`. Take `rfl : s' = s` from `(UpperTheory.ConvolutionTheory.Dp.galCentral E n σ s hs).1 s' hs'`. Take `⟨π', hsp⟩` from `UpperTheory.CBC.SConjSpaceC_holds E σ s' hs n π`. Establish `h1 : Carries μ π' V` using `(UpperTheory.ConvolutionTheory.Dp.conjCarries E n μ θ σ s' hs he π π' V hsp).2 (by rw [h]; exact hV)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : π' = π` using `(UpperTheory.ConvolutionTheory.Dp.exCusp E n μ V hV.summand).unique h1 hV`. Conclude with `⟨.cx π', hsp, (UpperTheory.ConvolutionTheory.Dp.isoEq E n π' π).2 e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.conjIff :
     UpperTheory.ConvolutionTheory.Dp.ConjIff := by

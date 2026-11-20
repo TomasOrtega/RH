@@ -10,7 +10,7 @@ open scoped TensorProduct NNReal Matrix SchwartzMap Classical InnerProductSpace
 namespace PositivityTheory.SiegelWeilFormula.KFP
 
 /- English proof (translation)
-Conclude with `KFPB.poly_of_rot q hq μ ω hμ hω0 hω`.
+A detailed English derivation is pending.
 -/
 theorem poly_of_rot (q : Polynomial ℂ) (hq : q ≠ 0) (μ ω : ℂ) (hμ : μ ≠ 0) (hω0 : ω ≠ 0)
     (hω : ∀ j : ℕ, 0 < j → ω ^ j ≠ 1) :
@@ -20,7 +20,7 @@ theorem poly_of_rot (q : Polynomial ℂ) (hq : q ≠ 0) (μ ω : ℂ) (hμ : μ 
   exact KFPB.poly_of_rot q hq μ ω hμ hω0 hω
 
 /- English proof (translation)
-Conclude with `KFPB.poly_gauss_of_lines c hc N h H`.
+A detailed English derivation is pending.
 -/
 theorem poly_gauss_of_lines {ι : Type} [Fintype ι] (c : ℝ) (hc : 0 < c) (N : ℕ) (h : 𝓢(EuclideanSpace ℝ ι, ℂ))
     (H : ∀ ξ : EuclideanSpace ℝ ι, ∃ p : Polynomial ℂ, p.natDegree ≤ N ∧ ∀ z : ℂ,
@@ -31,7 +31,7 @@ theorem poly_gauss_of_lines {ι : Type} [Fintype ι] (c : ℝ) (hc : 0 < c) (N :
   exact KFPB.poly_gauss_of_lines c hc N h H
 
 /- English proof (translation)
-Conclude with `KFPB.entire_laplace c hc h ξ`.
+A detailed English derivation is pending.
 -/
 theorem entire_laplace {ι : Type} [Fintype ι] (c : ℝ) (hc : 0 < c) (h : 𝓢(EuclideanSpace ℝ ι, ℂ))
     (ξ : EuclideanSpace ℝ ι) :

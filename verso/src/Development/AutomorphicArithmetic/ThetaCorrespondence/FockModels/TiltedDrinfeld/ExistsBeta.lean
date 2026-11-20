@@ -14,11 +14,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GroundTheory.PA
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P}
 
 /- English proof (translation)
-Take `⟨a, b, ht, hr⟩` from `Kum.exists_rel AI T`. Establish `h1 : T.eB P.tB = period_ring_base.qB l (a : ℚ_[l]) * period_ring_base.t l`. Apply `period_ring_base.base_ι_inj l` to reduce the goal to its premises. Rewrite using `[map_mul, period_ring_base.base_ι_q, period_ring_base.period_image_eq, period_ring_base.BaseA.ι_eq, ← PositivityTheory.LocInh.tie_ι T, ht, map_mul, DeRhamTwist.Twist.tQ_eq]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨(b : ℚ_[l]), fun g => ?_⟩` and prove the remaining obligations. Establish `h2 : period_ring_base.κ g + period_ring_base.χ g * (b : ℚ_[l]) = b + a * (GlobalTheory.Pst.kummer P g : ℚ_[l])`. Use `congrArg (fun z : ℤ_[l] => (z : ℚ_[l])) (hr g)` as an intermediate fact. Simplify using `only [PadicInt.coe_add, PadicInt.coe_mul] at this`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (period_ring_base.qB l) h2`. Simplify using `only [map_add, map_mul] at h3`. Rewrite using `[Algebra.smul_def, map_mul, period_ring_base.DualB.tie_qB T, h1, map_mul, period_ring_base.base_σ_q, period_ring_base.galois_period_cyclotomic]`. Take the linear combination `(-(period_ring_base.t l)) * h3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_beta (T : LocTied6 l P AI) : ∃ β : ℚ_[l], ∀ g : GQ l,
     T.eB ((GlobalTheory.Pst.kummer P g : ℚ_[l]) • P.tB) =

@@ -16,9 +16,9 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h : Nat.Coprime a b` using `(Nat.coprime_primes ha hb).2 hne`. Take `⟨u, v, e⟩` from `(Nat.isCoprime_iff_coprime.2 h).map (Int.castRingHom R)`. Apply `hI.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← e]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [eq_intCast, Int.cast_natCast]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hai) (Ideal.mul_mem_left _ _ hbi)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.WildA.prime_eq_of_mem_prime_ideal {R : Type} [CommRing R] {I : Ideal R} (hI : I.IsPrime) {a b : ℕ} (ha : a.Prime)
     (hb : b.Prime) (hai : (a : R) ∈ I) (hbi : (b : R) ∈ I) : a = b := by
@@ -31,7 +31,7 @@ private theorem UpperTheory.WildA.prime_eq_of_mem_prime_ideal {R : Type} [CommRi
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ hai) (Ideal.mul_mem_left _ _ hbi)
 
 /- English proof (translation)
-Use `right`. Unfold `Formalism.BasicNotions.Host.cls primeClass at h`. Apply the tactic sequence `split_ifs at h with h1 h2 h3 h4 <;> first | exact h4 | cases h`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.WildA.split_of_split_class {D : D7} {p : ℕ} (h : D.host.cls p = .splitK) : GlobalTheory.NormSum.SplitIn D p := by
   right
@@ -39,11 +39,9 @@ private theorem UpperTheory.WildA.split_of_split_class {D : D7} {p : ℕ} (h : D
   split_ifs at h with h1 h2 h3 h4 <;> first | exact h4 | cases h
 
 /- English proof (translation)
-Introduce `D T L sc G large₂ hS v hv l hl hlv`. Take `⟨⟨Pm, -, -⟩, -⟩` from `hS`. Establish `key : ∀ p : ℕ, p.Prime → p ∈ D.host.levelPrimes → ((p : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal → GlobalTheory.NormSum.SplitIn D l` using `fun p hp hm h => by`. Rewrite using `[UpperTheory.WildA.prime_eq_of_mem_prime_ideal v.isPrime hl hp hlv h]`. Conclude with `UpperTheory.WildA.split_of_split_class (Pm.level_split p hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `G.pl.mem_S0_of_sum_eq.1 hv with rfl | h1` into its components or cases. Rewrite using `[UpperTheory.WildA.prime_eq_of_mem_prime_ideal G.pl.v0.isPrime hl (Formalism.L2.Host.leastSplitAuxiliaryPrimeThetaChain_spec D).1 hlv G.pl.basePlace_over_qZero]`. Conclude with `Or.inr (Formalism.L2.Host.split_prime_jacobi_neg_d D)`. Break down `(S1_mem_OmF D).1 h1 with h | h | h | h` into its components or cases. Conclude with `key _ (D.host.g_prime 0) (D.host.g_level 0) h`.
-
-Conclude with `key _ (D.host.g_prime 1) (D.host.g_level 1) h`. Conclude with `key _ D.host.pde_prime D.host.pde_level.1 h`. Conclude with `key _ D.host.pde'_prime D.host.pde_level.2 h`.
+Rewrite the conclusion using the stated equalities. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildA.small_set_primes_split :
     ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} (large₂ : SizeData₂ D), GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂ → ∀ v ∈ G.pl.S0, ∀ l : ℕ, l.Prime → ((l : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal →

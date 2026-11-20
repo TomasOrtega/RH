@@ -142,9 +142,9 @@ end Lemmas
 section Examples
 
 /- English proof (translation)
-Use `letI := MvPolynomial.weightedGradedAlgebra R (blockWeight ι)`. Establish `h : (Ideal.span {x}).IsHomogeneous (weightedHomogeneousSubmodule R (blockWeight ι))` using `Ideal.homogeneous_span _ _ (by`. Introduce and unpack `y rfl`. Conclude with `⟨e, hx⟩)`. Introduce `f hf b`.
+Equip the data with the indicated structure. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `MvPolynomial.weightedHomogeneousComponent_mem_of_mem R (blockWeight ι) h hf b`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_span_singleton {K : Type*} [DecidableEq K] {ι : K → Type*} {R : Type*}
     [CommRing R] {x : MRing ι R} {e : K → ℕ} (hx : IsMultiHomog x e) :
@@ -159,15 +159,15 @@ theorem isMultiHomogIdeal_span_singleton {K : Type*} [DecidableEq K] {ι : K →
   exact MvPolynomial.weightedHomogeneousComponent_mem_of_mem R (blockWeight ι) h hf b
 
 /- English proof (translation)
-Introduce `S ϖ H`. Establish `hϖ : ϖ ≠ 0` using `PadicInt.irreducible_p.ne_zero`. Establish `hCϖ : (C ϖ : S) ∉ (⊥ : Ideal S)`. Rewrite using `[Ideal.mem_bot, C_eq_zero]`. Conclude with `hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : ∀ p ∈ H, aeval (fun v : Σ _ : Unit, Fin 2 => if v.2 = 0 then (0 : S) else X v) p = 0`. Introduce `p hp`. Take `⟨q, rfl⟩` from `Ideal.mem_span_singleton'.mp hp`. Simplify using the standard rewrite rules. Establish `hHprime : H.IsPrime` using `(Ideal.span_singleton_prime (X_ne_zero _)).mpr (MvPolynomial.X_prime)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨isModelOver_projectiveSpace 1, by rw [Ideal.mem_bot]; exact X_ne_zero _, by rw [Ideal.mem_bot]; exact X_ne_zero _, isVerticalDivisor_uniformiser ϖ ⊥ hCϖ, ⟨hHprime, isMultiHomogIdeal_span_singleton (isWeightedHomogeneous_X _ _ _), ?_⟩, bot_le, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Use `⟨1, fun h => ?_⟩` and prove the remaining obligations. Use `hev _ h` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `X_ne_zero _ this`. Introduce `h`. Use `hev _ h` as an intermediate fact. Rewrite `this` using `[aeval_C]`. Express the relevant statement in the definitionally equal form `(C ϖ : S) = 0 at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hϖ (C_eq_zero.mp this)`. Rewrite using `[bot_sup_eq, Ideal.minimalPrimes_eq_subsingleton_self]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem lemmas_hypotheses_example :
     let S := MRing (fun _ : Unit => Fin 2) ℤ_[2]

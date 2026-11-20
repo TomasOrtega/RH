@@ -17,7 +17,7 @@ def pullOver (f : X ⟶ Y) (g : W ⟶ Y) (a : W ⟶ X) (ha : a ≫ f = g) (U : Y
 variable (f : X ⟶ Y) (g : W ⟶ Y) (a : W ⟶ X) (ha : a ≫ f = g) (p : W ⟶ X) (hp : p ≫ f = g)
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Rewrite using `[pullOver, Scheme.Hom.app_eq_appLE, Scheme.Hom.app_eq_appLE]`. Conclude with `Scheme.Hom.appLE_comp_appLE ..`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma app_pullOver (U : Y.Opens) : f.app U ≫ pullOver f g a ha U = g.app U := by
   subst ha
@@ -25,7 +25,7 @@ lemma app_pullOver (U : Y.Opens) : f.app U ≫ pullOver f g a ha U = g.app U := 
   exact Scheme.Hom.appLE_comp_appLE ..
 
 /- English proof (translation)
-Simplify using `[pullOver]`.
+Simplify using the standard rewrite rules.
 -/
 lemma map_pullOver {U V : Y.Opens} (h : U ≤ V) :
     X.presheaf.map (homOfLE (f.preimage_mono h)).op ≫ pullOver f g a ha U =
@@ -36,20 +36,20 @@ def invariants (U : Y.Opens) : Subring Γ(X, f ⁻¹ᵁ U) :=
   (pullOver f g a ha U).hom.eqLocus (pullOver f g p hp U).hom
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_invariants {U : Y.Opens} {x : Γ(X, f ⁻¹ᵁ U)} :
     x ∈ invariants f g a ha p hp U ↔ pullOver f g a ha U x = pullOver f g p hp U x := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_invariants, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, app_pullOver, app_pullOver]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma app_mem_invariants {U : Y.Opens} (y : Γ(Y, U)) : f.app U y ∈ invariants f g a ha p hp U := by
   rw [mem_invariants, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, app_pullOver,
     app_pullOver]
 
 /- English proof (translation)
-Rewrite using `[mem_invariants, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, map_pullOver _ _ _ _ h, map_pullOver _ _ _ _ h, CommRingCat.comp_apply, CommRingCat.comp_apply, (mem_invariants ..).1 hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma map_mem_invariants {U V : Y.Opens} (h : U ≤ V) {x : Γ(X, f ⁻¹ᵁ V)}
     (hx : x ∈ invariants f g a ha p hp V) :
@@ -79,7 +79,7 @@ def diagramMap : Y.presheaf ⟶ diagram f g a ha p hp where
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Set `: Algebra Γ(X, f ⁻¹ᵁ U) Γ(X, X.basicOpen (f.app _ r))` to `(X.presheaf.map (homOfLE (X.basicOpen_le _)).op).hom.toAlgebra`. Use `rw! (castMode := .all) [f.preimage_basicOpen r]`. Conclude with `isLocalization_basicOpen_of_qcqs (f.isCompact_preimage hU.isCompact) (f.isQuasiSeparated_preimage hU.isQuasiSeparated) (f.app _ r)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 lemma isLocalization_preimage [QuasiCompact f] [QuasiSeparated f] {U : Y.Opens}
     (hU : IsAffineOpen U) (r : Γ(Y, U)) :
@@ -92,17 +92,17 @@ lemma isLocalization_preimage [QuasiCompact f] [QuasiSeparated f] {U : Y.Opens}
       (f.isQuasiSeparated_preimage hU.isQuasiSeparated) (f.app _ r)
 
 /- English proof (translation)
-Establish `hr : α r = β r` using `r.2`. Use `IsLocalization.Away.mk r ?_ ?_ ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `(IsLocalization.Away.algebraMap_isUnit (S := B') (r : B)).exists_right_inv`. Establish `hT` using `IsLocalization.Away.algebraMap_isUnit (S := T') (α r)`. Establish `hm : α' u = β' u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hT.mul_left_cancel` to reduce the goal to its premises. Establish `h1` using `congr(α' $hu)`. Establish `h2` using `congr(β' $hu)`. Rewrite `h1` using `[map_mul, map_one, hα]`. Rewrite `h2` using `[map_mul, map_one, hβ, ← hr]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, h2]`. Use `IsUnit.of_mul_eq_one (⟨u, hm⟩ : α'.eqLocus β') (Subtype.ext ?_)` and prove the remaining obligations. Simplify `hu` using `[h]`. Introduce and unpack `⟨z, hz⟩`. Take `⟨n, y, hy⟩` from `IsLocalization.Away.surj (r : B) z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hz' : α' z = β' z` using `hz`. Establish `h1 : algebraMap T T' (α y) = algebraMap T T' (β y)`. Rewrite using `[← hα, ← hβ, ← hy, map_mul, map_mul, map_pow, map_pow, hα, hβ, hr, hz']`. Take `⟨m, hm⟩` from `IsLocalization.Away.exists_of_eq (α r) h1`. Use `⟨m + n, ⟨r ^ m * y, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `α _ = β _`. Rewrite using `[map_mul, map_mul, map_pow, map_pow, hm, hr]`. Simplify using `only [h, Subring.coe_mul, SubmonoidClass.coe_pow, map_mul, map_pow, ← hy]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x y hxy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : algebraMap B B' x = algebraMap B B' y` using `by rw [← h, ← h, hxy]`. Take `⟨m, hm⟩` from `IsLocalization.Away.exists_of_eq (r : B) h1`. Conclude with `⟨m, Subtype.ext (by simpa using hm)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma isLocalization_eqLocus {B T B' T' : Type} [CommRing B] [CommRing T] [CommRing B']
     [CommRing T'] [Algebra B B'] [Algebra T T'] (α β : B →+* T) (α' β' : B' →+* T')
@@ -145,9 +145,9 @@ variable [QuasiCompact f] [QuasiSeparated f] [QuasiCompact g] [QuasiSeparated g]
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Use `coequifibered_iff_forall_isLocalizationAway.mpr fun U r ↦ ?_` and prove the remaining obligations. Set `` to `(X.presheaf.map (homOfLE (f.preimage_mono (Y.basicOpen_le r))).op).hom.toAlgebra`. Set `` to `(W.presheaf.map (homOfLE (g.preimage_mono (Y.basicOpen_le r))).op).hom.toAlgebra`. Establish `h1` using `isLocalization_preimage f U.2 r`. Establish `h2` using `isLocalization_preimage g U.2 r`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[← app_pullOver f g a ha]`. Conclude with `@isLocalization_eqLocus _ _ _ _ _ _ _ _ _ _ (pullOver f g a ha U.1).hom (pullOver f g p hp U.1).hom (pullOver f g a ha (Y.basicOpen r)).hom (pullOver f g p hp (Y.basicOpen r)).hom (fun x ↦ congr($(map_pullOver f g a ha (Y.basicOpen_le r)) x)) (fun x ↦ congr($(map_pullOver f g p h …`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma coequifibered_diagramMap :
     ((toOpensFunctor Y).op.whiskerLeft (diagramMap f g a ha p hp)).Coequifibered := by
@@ -208,9 +208,7 @@ set_option backward.isDefEq.respectTransparency.types false in
 set_option backward.defeqAttrib.useBackward true in
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[← cancel_epi (pullbackRestrictIsoRestrict f U.1).hom, ← Category.assoc]`. Use `trans ((directedCover Y).pullback₁ f).f U ≫ toQuot f g a ha p hp`. Use `congr 1`. Simplify using the standard rewrite rules. Use `delta toQuot`.
-
-Use `generalize_proofs _ _ _ _ H`. Conclude with `Scheme.OpenCover.map_glueMorphismsOfLocallyDirected _ _ H _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ι_toQuot (U : Y.affineOpens) :
     (f ⁻¹ᵁ U.1).ι ≫ toQuot f g a ha p hp = (f ⁻¹ᵁ U.1).toSpecΓ ≫
@@ -227,7 +225,7 @@ def fromQuot : quot f g a ha p hp ⟶ Y := (glueData f g a ha p hp).toBase
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `colimit.ι_desc _ _`.
+A detailed English derivation is pending.
 -/
 lemma ι_fromQuot (U : Y.affineOpens) :
     (cover f g a ha p hp).f U ≫ fromQuot f g a ha p hp =
@@ -236,7 +234,7 @@ lemma ι_fromQuot (U : Y.affineOpens) :
 
 set_option backward.isDefEq.respectTransparency.types false in
 /- English proof (translation)
-Simplify using `using! (glueData f g a ha p hp).toBase_preimage_eq_opensRange_ι U`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma fromQuot_preimage (U : Y.affineOpens) :
     fromQuot f g a ha p hp ⁻¹ᵁ U = ((cover f g a ha p hp).f U).opensRange := by
@@ -245,7 +243,7 @@ lemma fromQuot_preimage (U : Y.affineOpens) :
 set_option backward.isDefEq.respectTransparency false in
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Use `Scheme.Cover.hom_ext (X.openCoverOfIsOpenCover _ (.comap (iSup_affineOpens_eq_top Y) f.base.1)) _ _ fun U ↦ ?_` and prove the remaining obligations. Use `(ι_toQuot_assoc f g a ha p hp _ _).trans ?_` and prove the remaining obligations. Rewrite using `[ι_fromQuot, ← Spec.map_comp_assoc]`. Express the relevant statement in the definitionally equal form `(f ⁻¹ᵁ U.1).toSpecΓ ≫ Spec.map (f.app _) ≫ U.2.fromSpec = (f ⁻¹ᵁ U.1).ι ≫ _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 lemma toQuot_fromQuot : toQuot f g a ha p hp ≫ fromQuot f g a ha p hp = f := by
   refine Scheme.Cover.hom_ext (X.openCoverOfIsOpenCover _
@@ -260,7 +258,7 @@ set_option backward.isDefEq.respectTransparency false
 omit [QuasiCompact f] [QuasiSeparated f] [QuasiCompact g] [QuasiSeparated g] in
 
 /- English proof (translation)
-Use `IsZariskiLocalAtTarget.of_openCover (Scheme.Cover.mkOfCovers ι Y' v hv) fun i ↦ ?_` and prove the remaining obligations. Use `(h i).flip.isoPullback_inv_snd` as an intermediate fact. Express the relevant statement in the definitionally equal form `P (pullback.snd f (v i))`. Rewrite using `[← this, MorphismProperty.cancel_left_of_respectsIso P]`. Conclude with `hP i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma of_charts (P : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget P] {ι : Type}
     (X' Y' : ι → Scheme.{0}) (u : ∀ i, X' i ⟶ X) (v : ∀ i, Y' i ⟶ Y) (f' : ∀ i, X' i ⟶ Y' i)
@@ -275,7 +273,7 @@ lemma of_charts (P : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget P] {ι
 omit [QuasiCompact f] [QuasiSeparated f] [QuasiCompact g] [QuasiSeparated g] in
 
 /- English proof (translation)
-Use `Scheme.isPullback_of_openCover _ _ _ _ (Scheme.Cover.mkOfCovers ι X' v hv) fun i ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsPullback (pullback.snd a (v i)) (pullback.fst a (v i) ≫ b) (v i ≫ q) q'`. Apply the tactic sequence `refine (h' i).of_iso (h i).flip.isoPullback (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma isPullback_of_charts {Z Q : Scheme.{0}} (b : W ⟶ Z) (q : X ⟶ Q) (q' : Z ⟶ Q) {ι : Type}
     (W' X' : ι → Scheme.{0}) (u : ∀ i, W' i ⟶ W) (v : ∀ i, X' i ⟶ X) (a' : ∀ i, W' i ⟶ X' i)
@@ -289,7 +287,7 @@ lemma isPullback_of_charts {Z Q : Scheme.{0}} (b : W ⟶ Z) (q : X ⟶ Q) (q' : 
 
 omit [QuasiCompact f] [QuasiSeparated f] [QuasiCompact g] [QuasiSeparated g] in
 /- English proof (translation)
-The claim follows from `IsAffineOpen.SpecMap_appLE_fromSpec ..`.
+A detailed English derivation is pending.
 -/
 lemma SpecMap_pullOver {U : Y.Opens} (hf : IsAffineOpen (f ⁻¹ᵁ U)) (hg : IsAffineOpen (g ⁻¹ᵁ U)) :
     Spec.map (pullOver f g a ha U) ≫ hf.fromSpec = hg.fromSpec ≫ a :=
@@ -297,7 +295,7 @@ lemma SpecMap_pullOver {U : Y.Opens} (hf : IsAffineOpen (f ⁻¹ᵁ U)) (hg : Is
 
 omit [QuasiCompact f] [QuasiSeparated f] [QuasiCompact g] [QuasiSeparated g] in
 /- English proof (translation)
-Use `IsOpenImmersion.isPullback _ _ _ _ (SpecMap_pullOver f g a ha hf hg).symm ?_` and prove the remaining obligations. Substitute `ha` using the available equality. Rewrite using `[IsAffineOpen.opensRange_fromSpec, IsAffineOpen.opensRange_fromSpec]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma isPullback_pullOver {U : Y.Opens} (hf : IsAffineOpen (f ⁻¹ᵁ U))
     (hg : IsAffineOpen (g ⁻¹ᵁ U)) :
@@ -308,7 +306,7 @@ lemma isPullback_pullOver {U : Y.Opens} (hf : IsAffineOpen (f ⁻¹ᵁ U))
   rfl
 
 /- English proof (translation)
-Rewrite using `[← cancel_epi hf.isoSpec.hom, IsAffineOpen.isoSpec_hom, IsAffineOpen.toSpecΓ_fromSpec_assoc, ι_toQuot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma fromSpec_toQuot (U : Y.affineOpens) (hf : IsAffineOpen (f ⁻¹ᵁ U.1)) :
     hf.fromSpec ≫ toQuot f g a ha p hp =
@@ -318,7 +316,7 @@ lemma fromSpec_toQuot (U : Y.affineOpens) (hf : IsAffineOpen (f ⁻¹ᵁ U.1)) :
     IsAffineOpen.toSpecΓ_fromSpec_assoc, ι_toQuot]
 
 /- English proof (translation)
-Use `IsOpenImmersion.isPullback _ _ _ _ (fromSpec_toQuot f g a ha p hp U hf) ?_` and prove the remaining obligations. Rewrite using `[← fromQuot_preimage, ← Scheme.Hom.comp_preimage, toQuot_fromQuot, IsAffineOpen.opensRange_fromSpec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma isPullback_toQuot (U : Y.affineOpens) (hf : IsAffineOpen (f ⁻¹ᵁ U.1)) :
     IsPullback (Spec.map (CommRingCat.ofHom (invariants f g a ha p hp U.1).subtype)) hf.fromSpec
@@ -328,7 +326,7 @@ lemma isPullback_toQuot (U : Y.affineOpens) (hf : IsAffineOpen (f ⁻¹ᵁ U.1))
     IsAffineOpen.opensRange_fromSpec]
 
 /- English proof (translation)
-Use `IsOpenImmersion.isPullback _ _ _ _ (ι_fromQuot f g a ha p hp U) ?_` and prove the remaining obligations. Rewrite using `[← fromQuot_preimage, IsAffineOpen.opensRange_fromSpec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma isPullback_fromQuot (U : Y.affineOpens) :
     IsPullback (Spec.map ((diagramMap f g a ha p hp).app (.op U.1))) ((cover f g a ha p hp).f U)
@@ -338,7 +336,7 @@ lemma isPullback_fromQuot (U : Y.affineOpens) :
 
 omit [QuasiCompact f] [QuasiSeparated f] [QuasiCompact g] [QuasiSeparated g] in
 /- English proof (translation)
-Take `⟨_, ⟨U, hU, rfl⟩, hx, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (f x)) isOpen_univ`. Use `⟨⟨U, hU⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ Set.range _`. Rewrite using `[IsAffineOpen.range_fromSpec]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_fromSpec_eq [IsAffineHom f] (x : X) :
     ∃ (U : Y.affineOpens) (z : Spec Γ(X, f ⁻¹ᵁ U.1)), (U.2.preimage f).fromSpec z = x := by
@@ -350,9 +348,9 @@ lemma exists_fromSpec_eq [IsAffineHom f] (x : X) :
   exact hx
 
 /- English proof (translation)
-Use `of_charts _ @IsFinite _ _ _ _ _ (fun y ↦ ?_) (isPullback_fromQuot f g a ha p hp) fun U ↦ ?_` and prove the remaining obligations. Conclude with `exists_fromSpec_eq (𝟙 Y) y`. Rewrite using `[IsFinite.SpecMap_iff]`. Establish `h1 : (f.app U.1).hom.Finite` using `f.finite_app U.1 U.2`. Establish `: IsNoetherianRing Γ(Y, U.1)` using `IsLocallyNoetherian.component_noetherian U`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : Γ(Y, U.1) →+* invariants f g a ha p hp U.1` to `(f.app U.1).hom.codRestrict (invariants f g a ha p hp U.1) (app_mem_invariants f g a ha p hp)`. Express the relevant statement in the definitionally equal form `φ.Finite`. Use `algebraize [(f.app U.1).hom, φ]`. Establish `: IsScalarTower Γ(Y, U.1) (invariants f g a ha p hp U.1) Γ(X, f ⁻¹ᵁ U.1)` using `.of_algebraMap_eq' rfl`. Conclude with `Module.Finite.of_injective (IsScalarTower.toAlgHom Γ(Y, U.1) (invariants f g a ha p hp U.1) Γ(X, f ⁻¹ᵁ U.1)).toLinearMap Subtype.val_injective`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isFinite_fromQuot [IsFinite f] [IsLocallyNoetherian Y] :
     IsFinite (fromQuot f g a ha p hp) := by
@@ -376,11 +374,9 @@ lemma isFinite_fromQuot [IsFinite f] [IsLocallyNoetherian Y] :
 omit [QuasiCompact f] [QuasiSeparated f] [QuasiCompact g] [QuasiSeparated g] in
 
 /- English proof (translation)
-Establish `h1` using `isFinite_fromQuot f g a ha p hp`. Establish `hc : ∀ y, ∃ (U : Y.affineOpens) (z : _), (cover f g a ha p hp).f U z = y` using `fun y ↦ (cover f g a ha p hp).exists_eq y`. Use `⟨_, toQuot f g a ha p hp, fromQuot f g a ha p hp, toQuot_fromQuot .., h1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: IsFinite (toQuot f g a ha p hp ≫ fromQuot f g a ha p hp)`. Rewrite using `[toQuot_fromQuot]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Conclude with `.of_comp _ (fromQuot f g a ha p hp)`. Conclude with `of_charts _ @Flat _ _ _ _ _ hc (fun U ↦ isPullback_toQuot f g a ha p hp U (U.2.preimage f)) fun U ↦ ((flat_and_surjective_SpecMap_iff _).2 (H U).1).1`. Conclude with `of_charts _ @Surjective _ _ _ _ _ hc (fun U ↦ isPullback_toQuot f g a ha p hp U (U.2.preimage f)) fun U ↦ ((flat_and_surjective_SpecMap_iff _).2 (H U).1).2`. Use `isPullback_of_charts a p _ _ _ _ _ _ _ (exists_fromSpec_eq f) (fun U ↦ isPullback_pullOver f g a ha (U.2.preimage f) (U.2.preimage g)) fun U ↦ ?_` and prove the remaining obligations.
-
-Rewrite using `[← SpecMap_pullOver f g p hp (U.2.preimage f), fromSpec_toQuot]`. Conclude with `(isPullback_SpecMap_of_isPushout _ _ _ _ (H U).2).paste_vert (isPullback_toQuot f g a ha p hp U (U.2.preimage f))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quotient [IsFinite f] [IsAffineHom g] [IsLocallyNoetherian Y]
     (H : ∀ U : Y.affineOpens, (invariants f g a ha p hp U.1).subtype.FaithfullyFlat ∧

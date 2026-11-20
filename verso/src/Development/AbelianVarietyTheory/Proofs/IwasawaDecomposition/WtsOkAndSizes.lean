@@ -8,7 +8,7 @@ open Formalism.L2.Col
 namespace GlobalTheory.Mem
 
 /- English proof (translation)
-Introduce `B X` and use `⟨B.wts_isOk, B.primes_sizes X⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem wts_ok_and_sizes :
     ∀ (B : Base) (X : PreX B.toPre), B.wts.Ok ∧ Sizes (B.primes X) B.wts X.a :=

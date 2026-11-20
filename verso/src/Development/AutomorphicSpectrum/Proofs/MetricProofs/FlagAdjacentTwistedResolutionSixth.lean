@@ -21,7 +21,7 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.DensW
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c (some k), fun k => hc _, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fst_orbit {k₀ : K} {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (h : SameOrbit z z') :
     SameOrbit (fstPt k₀ z) (fstPt k₀ z') := by
@@ -29,9 +29,9 @@ theorem fst_orbit {k₀ : K} {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ
   exact ⟨fun k => c (some k), fun k => hc _, rfl⟩
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Apply the tactic sequence `refine ⟨fun k => if k = k₀ then c none else c (some k), fun k => by dsimp only; split_ifs <;> exact hc _, ?_⟩`. Use function extensionality and compare the values at `⟨k, m⟩`. Distinguish the cases in `e : k = k₀`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[sndPt, v₁_self]`. Simplify using `[sndPt, v₁_ne (p := ⟨k, m⟩) e, e]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem snd_orbit {k₀ : K} {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (h : SameOrbit z z') :
     SameOrbit (sndPt k₀ z) (sndPt k₀ z') := by
@@ -44,7 +44,7 @@ theorem snd_orbit {k₀ : K} {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ
   · simp [sndPt, v₁_ne (p := ⟨k, m⟩) e, e]
 
 /- English proof (translation)
-Use `b.2` as an intermediate fact. Use `cb.2` as an intermediate fact. Unfold `lastCol at hca`. Apply the tactic sequence `split_ifs at hca <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem same_block {N j : ℕ} {a b ca cb : Fin N} (hj : j ≤ N) (hb : (b : ℕ) = a + 1)
     (hab : (b : ℕ) < j ∨ j ≤ (a : ℕ)) (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1) :
@@ -55,9 +55,9 @@ theorem same_block {N j : ℕ} {a b ca cb : Fin N} (hj : j ≤ N) (hb : (b : ℕ
   split_ifs at hca <;> omega
 
 /- English proof (translation)
-Introduce `r s hrs`. Establish `hne : r ≠ s` using `fun e => hrs (by rw [e])`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hne, zero_add, Matrix.single_apply]`. Use `split_ifs with e`. Take `⟨rfl, rfl⟩` from `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Conclude with `absurd h hrs`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem blockDiag_transv {N j : ℕ} {ca cb : Fin N} (h : (cb : ℕ) < N - j ↔ (ca : ℕ) < N - j) (t : ℂ) :
     IsBlockDiag j (1 + Matrix.single cb ca t) := by
@@ -70,9 +70,9 @@ theorem blockDiag_transv {N j : ℕ} {ca cb : Fin N} (h : (cb : ℕ) < N - j ↔
   · rfl
 
 /- English proof (translation)
-Use `⟨fun r => ?_, fun r s hrs => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, Matrix.single_apply, if_neg, add_zero]`. Introduce and unpack `⟨rfl, e⟩`. Conclude with `h.ne e`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hrs.ne, zero_add, Matrix.single_apply, if_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd h (not_lt.2 hrs.le)`.
+A detailed English derivation is pending.
 -/
 theorem lowerUni_transv {N : ℕ} {ca cb : Fin N} (h : ca < cb) (t : ℂ) :
     IsLowerUni (1 + Matrix.single cb ca t) := by
@@ -85,9 +85,9 @@ theorem lowerUni_transv {N : ℕ} {ca cb : Fin N} (h : ca < cb) (t : ℂ) :
     exact absurd h (not_lt.2 hrs.le)
 
 /- English proof (translation)
-Unfold `minorIJ`. Distinguish the cases in `e : I.card = J.card`. Simplify using `only [dif_pos e, Matrix.det_apply]`. Use `Finset.analyticOnNhd_fun_sum _ fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Units.smul_def, zsmul_eq_mul]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `analyticOnNhd_const.mul (Finset.analyticOnNhd_fun_prod _ fun i _ => hA _ _)`. Simplify using `only [dif_neg e]`. Conclude with `analyticOnNhd_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem minor_analytic {m N : ℕ} {V : Set (Fin m → ℂ)} {A : (Fin m → ℂ) → Matrix (Fin N) (Fin N) ℂ}
     (hA : ∀ r s, AnalyticOnNhd ℂ (fun u => A u r s) V) (I J : Finset (Fin N)) :
@@ -102,7 +102,7 @@ theorem minor_analytic {m N : ℕ} {V : Set (Fin m → ℂ)} {A : (Fin m → ℂ
     exact analyticOnNhd_const
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.analyticOnNhd_fun_sum _ fun i _ => (hA r i).mul analyticOnNhd_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_analytic {m N : ℕ} {V : Set (Fin m → ℂ)} {A : (Fin m → ℂ) → Matrix (Fin N) (Fin N) ℂ}
     (hA : ∀ r s, AnalyticOnNhd ℂ (fun u => A u r s) V) (C : Matrix (Fin N) (Fin N) ℂ) (r s : Fin N) :
@@ -120,9 +120,9 @@ theorem wVec_some (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (b
     wVec M F b h τ a k₀ ca cb t ⟨some k, m⟩ = flagPt M F b h ⟨k, m⟩ := rfl
 
 /- English proof (translation)
-Establish `hg` using `bvec_good K ι Φ y Ψ N j M n BM l b hb`. Consider the cases of `hp : M.blk p with`. Consider the case `none => simp [plk, hp]`. Consider the case `some k`. Rewrite using `[plk_flagPt K ι Φ y Ψ N j M (BM.F l) _ h p k (BM.isFrame l) hg.1 hg.2.1 hh hp]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `hm _ _ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Rewrite `hp` using `[(M.blk_none p).2 hn]`. Consider the cases of `hp`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 -/
 theorem plk_ne_zero (M : FlagModel y Ψ N j) {n : ℕ} (BM : BaseMetric M n) (l : Fin BM.q) {b : BM.Rb.X} (hb : b ∈ BM.O l)
     (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (hh : ∀ τ', IsBlockDiag j (h τ'))
@@ -139,7 +139,7 @@ theorem plk_ne_zero (M : FlagModel y Ψ N j) {n : ℕ} (BM : BaseMetric M n) (l 
     cases hp
 
 /- English proof (translation)
-Introduce `h` and use `by have := h.2 1 trivial simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_mem_top (z : (Σ k, ι k) → ℂ) : z ∉ mcPts (⊤ : Ideal (MRing ι)) := fun h => by
   have := h.2 1 trivial
@@ -150,33 +150,29 @@ end GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.DensW
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA τ a b k₀ ca cb hb hab hblk hca hcb RW q _ h0 _ _ l x hx V hV hxV`. Establish `harith : IsArithVar (mCoordIdeal y) (d + 2)` using `FA.Re.arith`. Establish `hsb` using `FC.DensW.same_block M.j_le hb hab hca hcb`. Establish `hlt : ca < cb` using `Fin.lt_def.2 (by omega)`. Establish `hbase : ∀ w : RW.X, SameOrbit (basePart M.blk (fstPt k₀ (RW.lift w w))) (BM.Rb.lift (FA.pr (q 0 w)) (FA.pr (q 0 w)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Take `⟨x₀, hx₀⟩` from `(FC.re_pi_bijective K ι Φ y Ψ N j M n d BM FA).2 (q 0 w)`. Establish `e1` using `h0 w x₀ hx₀`. Establish `e2` using `FA.pr_eq x₀`. Rewrite `e2` using `[hx₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `orbit_trans (orbit_symm (FibreCount.basePart_orbit M.blk e1)) e2`. Take `⟨h₀, t, hh₀, ho⟩` from `GlobalTheory.T.flag_adjacent_arith_variety_second K ι Φ y Ψ N j M n BM d τ a b k₀ ca cb hb hab hblk hca hcb harith l _ hx _ (RW.mem x x (RW.mem_U x)) (hbase x)`. Establish `hT : ∀ τ', IsLowerUni ((Function.update (fun _ => (1 : Matrix (Fin N) (Fin N) ℂ)) τ (1 + Matrix.single cb ca t)) τ')`. Introduce `τ'`. Distinguish the cases in `e : τ' = τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `FC.DensW.lowerUni_transv hlt t`. Rewrite using `[Function.update_of_ne e]`. Conclude with `⟨fun r => Matrix.one_apply_eq r, fun r s h => Matrix.one_apply_ne h.ne⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `han : ∀ (m : ℕ) (V : Set (Fin m → ℂ)) (bp : (Fin m → ℂ) → BM.Rb.X) (hh : Ψ → (Fin m → ℂ) → Matrix (Fin N) (Fin N) ℂ), IsOpen V → ContinuousOn bp V → (∀ k, AnalyticOnNhd ℂ (BM.Rb.A.chart k ∘ bp) (V ∩ bp ⁻¹' (BM.Rb.A.chart k).source)) → (∀ u ∈ V, bp u ∈ BM.O l) → (∀ τ' r s, Analyti …`. Introduce `m V bp hh hV hc hch hO hhan _ qq`. Take `⟨hbv, hval⟩` from `GlobalTheory.T.base_chart_holomorphic_composition K ι Φ y Ψ N j M n BM l m V bp hV hc hch hO`. Establish `hreg : ∀ qq I, AnalyticOnNhd ℂ (fun u => valAt M.x ((BM.F l).u qq I) (FC.bvec BM l (bp u))) V` using `fun qq I => hval _ fun c hcO => ((FC.bvec_good K ι Φ y Ψ N j M n BM l c hcO).2.1.2.1 qq I).1`. Take `⟨o, mm⟩` from `qq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `o with`. Consider the case `none`. Conclude with `Finset.analyticOnNhd_fun_sum _ fun I _ => (hreg _ I).mul (FC.DensW.minor_analytic (FC.DensW.mul_analytic (hhan τ) _) _ _)`. Consider the case `some k`. Distinguish the cases in `hk : ∀ p, M.blk p ≠ some k`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `e : ∀ u, FC.wVec M (BM.F l) (FC.bvec BM l (bp u)) (fun τ' => hh τ' u) τ a k₀ ca cb t ⟨some k, mm⟩ = FC.bvec BM l (bp u) ⟨⟨k, hk⟩, mm⟩` using `fun u => (FC.DensW.wVec_some M (BM.F l) _ _ τ a k₀ ca cb t k mm).trans (dif_pos hk)`. Simplify using `only [e]`. Conclude with `hbv _`. Take `⟨p, hp⟩` from `not_forall.1 hk`. Establish `hp' : M.blk p = some k` using `not_not.1 hp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : ∀ u, FC.wVec M (BM.F l) (FC.bvec BM l (bp u)) (fun τ' => hh τ' u) τ a k₀ ca cb t ⟨some k, mm⟩ = ∑ I, valAt M.x ((BM.F l).u ⟨k, mm⟩ I) (FC.bvec BM l (bp u)) * minorIJ (hh p.1 u) I (stepCols N j p.2)` using `fun u => (FC.DensW.wVec_some M (BM.F l) _ _ τ a k₀ ca cb t k mm).trans (FC.flagPt_step M (BM.F l) (FC.bvec BM l (bp u)) (fun τ' => hh τ' u) hp' mm)`. Simplify using `only [e]`. Conclude with `Finset.analyticOnNhd_fun_sum _ fun I _ => (hreg _ I).mul (FC.DensW.minor_analytic (hhan p.1) _ _)`. Take `⟨x', hx'V, b', hb', h', hh', ho', hmin⟩` from `GlobalTheory.T.base_metric_vector_log_resolution K ι Φ y Ψ N j M n BM (Option K) (fun o => ι (o.getD k₀)) _ ⊤ (d + 2) RW rfl l (fun c h => FC.wVec M (BM.F l) (FC.bvec BM l c) h τ a k₀ ca cb t) _ hT han (fun c hc h hh => GlobalTheory.T.flag_adjacent_arith_variety_first K ι Φ y Ψ N …`. Establish `hw` using `GlobalTheory.T.flag_adjacent_plucker_orbit K ι Φ y Ψ N j M τ a b k₀ ca cb hb hab hblk hca hcb (BM.F l) (FC.bvec BM l b') h' t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb'O : b' ∈ BM.O l` using `hb'.1`. Establish `hg` using `FC.bvec_good K ι Φ y Ψ N j M n BM l b' hb'O`. Establish `o₀` using `FC.DensW.fst_orbit ho'`. Establish `o₁` using `FC.DensW.snd_orbit ho'`. Rewrite `o₀` using `[hw.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `o₁` using `[hw.2]`. Establish `hpr : FA.pr (q 0 x') = b'`. Use `BM.Rb.inj _ _ (GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.DensW.not_mem_top _) (orbit_trans (orbit_symm (hbase x')) ?_)` and prove the remaining obligations. Establish `o₂` using `FibreCount.basePart_orbit M.blk o₀`. Rewrite `o₂` using `[FC.basePart_flagPt]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `orbit_trans o₂ hg.2.2.2`. Use `⟨x', hx'V, by rw [hpr]; exact hb', fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[hpr]`. Use `⟨(FC.plk_ne_zero_iff_of_sameOrbit K ι Φ y Ψ N j M (BM.F l) _ _ _ p o₀).2 (FC.DensW.plk_ne_zero M BM l hb'O h' (fun τ' => (hh' τ').1) (fun τ' i hi => (hmin τ' i hi).1) p), (FC.plk_ne_zero_iff_of_sameOrbit K ι Φ y Ψ N j M (BM.F l) _ _ _ p o₁).2 (FC.DensW.plk_ne_zero M BM l hb'O _ ( …` and prove the remaining obligations. Distinguish the cases in `e : τ' = τ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `(hh' τ').1.mul (FC.DensW.blockDiag_transv hsb t)`. Rewrite using `[Function.update_of_ne e]`. Conclude with `(hh' τ').1`.
-
-Establish `hm` using `(hmin τ' i hi).2`. Distinguish the cases in `e : τ' = τ`. Substitute `e` using the available equality. Rewrite `hm`, the goal using `[Function.update_self]`. Conclude with `hm`.
-
-Rewrite `hm`, the goal using `[Function.update_of_ne e]`. Rewrite `hm` using `[Matrix.mul_one]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.dens_w : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → ∀ (RW : AnLogRes (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) ⊤ (d + 2)) (q : Fin 2 → RW.X → FA.S.X), (∀ i, HoloMap RW.A FA.S.A (q i)) → (∀ x x₀, FA.Re.π x₀ = q 0 x → SameOrbit (FA.Re.R.lift x₀ x₀) (fstPt k₀ (RW.lift x x))) → (∀ x x₀, FA.Re.π x₀ = q 1 x → SameOrbit (FA.Re.R.lift x₀ x₀) (sndPt k₀ (RW.lift x x))) → (Function.Injective fun w => (q 0 w, q 1 w)) → ∀ (l : Fin BM.q) (x : RW.X), FA.pr (q 0 x) ∈ BM.O l → ∀ V, IsOpen V → x ∈ V → ∃ x' ∈ V, FA.pr (q 0 x') ∈ BM.O l \ bdry BM.s ∧ ∀ p, FC.plk M (BM.F l) (FC.bvec BM l (FA.pr (q 0 x'))) (fstPt k₀ (RW.lift x' x')) p ≠ 0 ∧ FC.plk M (BM.F l) (FC.bvec BM l (FA.pr (q 0 x'))) (sndPt k₀ (RW.lift x' x')) p ≠ 0 := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA τ a b k₀ ca cb hb hab hblk hca hcb RW q _ h0 _ _ l x hx V hV hxV

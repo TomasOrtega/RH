@@ -31,7 +31,7 @@ noncomputable def homogeneousPart (c : ℕ) (F : E → V) (a : E) (v : E) : V :=
   (c ! : ℂ)⁻¹ • iteratedFDeriv ℂ c F a (fun _ => v)
 
 /- English proof (translation)
-Simplify using `[homogeneousPart]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem homogeneousPart_zero (F : E → V) (a v : E) : homogeneousPart 0 F a v = F a := by
   simp [homogeneousPart]

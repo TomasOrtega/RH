@@ -10,7 +10,7 @@ namespace Formalism.HermitianLattices.Ext.L3.NormLifting
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact RingOfIntegers.ext (star_star (x : K))`. Consider the case `(apply RingOfIntegers.ext; simp [conjO])`. Consider the case `(apply RingOfIntegers.ext; unfold conjO; simp)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem conjO_conjO (x : 𝓞 K) : conjO K (conjO K x) = x := by
   first
@@ -19,9 +19,9 @@ theorem conjO_conjO (x : 𝓞 K) : conjO K (conjO K x) = x := by
   | (apply RingOfIntegers.ext; unfold conjO; simp)
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `h' : (t : K) = star (θ : K)` using `h`. Rewrite using `[h']`. Use `first`. Consider the case `rfl`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [conjO]`. Consider the case `(unfold conjO; simp)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_conjO_of {θ t : 𝓞 K} (h : algebraMap (𝓞 K) K t = star (algebraMap (𝓞 K) K θ)) :
     t = conjO K θ := by
@@ -37,7 +37,7 @@ def conjQ (J : Ideal (𝓞 K)) (hJ : ∀ a ∈ J, conjO K a ∈ J) : (𝓞 K ⧸
   Ideal.quotientMap J (conjO K) (fun a ha => hJ a ha)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact Ideal.quotientMap_mk`. Consider the case `simp [conjQ]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem conjQ_mk (J : Ideal (𝓞 K)) (hJ : ∀ a ∈ J, conjO K a ∈ J) (a : 𝓞 K) :
     conjQ J hJ (Ideal.Quotient.mk J a) = Ideal.Quotient.mk J (conjO K a) := by
@@ -47,11 +47,11 @@ theorem conjQ_mk (J : Ideal (𝓞 K)) (hJ : ∀ a ∈ J, conjO K a ∈ J) (a : �
   | simp [conjQ]
 
 /- English proof (translation)
-Unfold `normRepCount`. Apply `Nat.card_congr` to reduce the goal to its premises. Apply `Equiv.subtypeEquivRight` to reduce the goal to its premises. Introduce `x`. Establish `key : ∀ y : Fin M → 𝓞 K, (∀ i, Ideal.Quotient.mk J (y i) = x i) → Ideal.Quotient.mk J (∑ i, conjO K (y i) * y i) = ∑ i, conjQ J hJ (x i) * x i`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hy i, conjQ_mk]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, h⟩`. Rewrite using `[← key y hy, h]`. Introduce `h`. Use `⟨fun i => (Ideal.Quotient.mk_surjective (x i)).choose, fun i => (Ideal.Quotient.mk_surjective (x i)).choose_spec, ?_⟩` and prove the remaining obligations. Rewrite using `[key _ (fun i => (Ideal.Quotient.mk_surjective (x i)).choose_spec), h]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem normRepCount_eq (J : Ideal (𝓞 K)) (hJ : ∀ a ∈ J, conjO K a ∈ J) (M : ℕ) (n : 𝓞 K) :
     normRepCount K J M n =
@@ -75,9 +75,9 @@ theorem normRepCount_eq (J : Ideal (𝓞 K)) (hJ : ∀ a ∈ J, conjO K a ∈ J)
     rw [key _ (fun i => (Ideal.Quotient.mk_surjective (x i)).choose_spec), h]
 
 /- English proof (translation)
-Take `⟨i, hi, j, hj, hij⟩` from `Ideal.isCoprime_iff_exists.mp h`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp hi`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk J), Ideal.Quotient.eq, ← hij]`. Establish `e : a * b - (b * a + j) = -j` using `by ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `J.neg_mem hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv_mod {J : Ideal (𝓞 K)} {a : 𝓞 K} (h : IsCoprime (Ideal.span {a}) J) :
     ∃ b : 𝓞 K, Ideal.Quotient.mk J a * Ideal.Quotient.mk J b = 1 := by
@@ -90,7 +90,7 @@ theorem exists_inv_mod {J : Ideal (𝓞 K)} {a : 𝓞 K} (h : IsCoprime (Ideal.s
   exact J.neg_mem hj
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h1` using `Ideal.mem_map_of_mem (conjO K) ha`. Rewrite `h1` using `[Ideal.map_pow, hQ]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stable_pow {Q : Ideal (𝓞 K)} (hQ : Q.map (conjO K) = Q) (k : ℕ) :
     ∀ a ∈ Q ^ k, conjO K a ∈ Q ^ k := by
@@ -99,19 +99,15 @@ theorem stable_pow {Q : Ideal (𝓞 K)} (hQ : Q.map (conjO K) = Q) (k : ℕ) :
   rwa [Ideal.map_pow, hQ] at h1
 
 /- English proof (translation)
-Rewrite using `[normRepCount_eq _ (stable_pow hQ (k + 1)), normRepCount_eq _ (stable_pow hQ k)]`. Establish `hle : Q ^ (k + 1) ≤ Q ^ k` using `Ideal.pow_le_pow_right (Nat.le_succ k)`. Establish `: Finite (𝓞 K ⧸ Q ^ (k + 1))` using `Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero _ hQ0)`. Take `⟨e, he⟩` from `exists_inv_mod (hθ.pow_right (n := k + 1))`. Take `⟨m, hm⟩` from `exists_inv_mod (hnQ.pow_right (n := k + 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `card_lift (σ := conjQ _ (stable_pow hQ (k + 1))) (τ := conjQ _ (stable_pow hQ k)) (π := Ideal.Quotient.factor hle) (Ideal.Quotient.factor_surjective hle) (by`. Introduce `a`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[conjQ_mk, Ideal.Quotient.factor_mk, Ideal.Quotient.factor_mk, conjQ_mk])`. Use the proof step `(by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[conjQ_mk, conjQ_mk, conjO_conjO])`. Use the proof step `(by`. Introduce `a b ha hb`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite `ha`, `hb` using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h2 : a * b ∈ Q ^ (k + k)` using `by rw [pow_add]; exact Ideal.mul_mem_mul ha hb`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.pow_le_pow_right (by omega) h2)`. Use the proof step `(θ := Ideal.Quotient.mk _ θ) (e := Ideal.Quotient.mk _ e)`. Use the proof step `(by rw [conjQ_mk, ← map_sub]; exact he)`. Use the proof step `(n := Ideal.Quotient.mk _ n) (m := Ideal.Quotient.mk _ m) hm`. Use the proof step `(by rw [conjQ_mk, hn]) q`.
-
-Use the proof step `(by`. Establish `h1 : ∀ J : Ideal (𝓞 K), Nat.card (𝓞 K ⧸ J) = Ideal.absNorm J` using `fun J => by`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[h1, h1, map_pow, map_pow, hq]`. Use the proof step `ring) M hM`.
-
-Rewrite `h` using `[Ideal.Quotient.factor_mk]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normRepCount_pow_succ_of {Q : Ideal (𝓞 K)} (hQ0 : Q ≠ ⊥) (hQ : Q.map (conjO K) = Q)
     (θ n : 𝓞 K) (hθ : IsCoprime (Ideal.span {θ - conjO K θ}) Q)
@@ -153,7 +149,7 @@ theorem normRepCount_pow_succ_of {Q : Ideal (𝓞 K)} (hQ0 : Q ≠ ⊥) (hQ : Q.
   exact h
 
 /- English proof (translation)
-Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `h`. Establish `h2` using `hP.eq_of_le h le_sup_right`. Conclude with `ha (by rw [h2]; exact Ideal.mem_sup_left (Ideal.mem_span_singleton_self a))`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCoprime_span_of_notMem {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {a : 𝓞 K} (ha : a ∉ P) :
     IsCoprime (Ideal.span {a}) P := by
@@ -171,11 +167,11 @@ open NormLifting
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.conjIdeal Ideal.map`. Use `congr 1`. Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Use `show ((conjO K s : 𝓞 K) : K) = star ((s : 𝓞 K) : K)`. Use `first`. Consider the case `rfl`. Consider the case `(symm; simp [conjO])`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [conjO]`. Consider the case `(unfold conjO; simp)`. Introduce and unpack `⟨s, hs, h⟩`. Conclude with `⟨s, hs, (eq_conjO_of h).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma map_conjO_eq_conjIdeal (P : Ideal (𝓞 K)) :
     P.map (conjO K) = Formalism.HermitianLatticesTheory.conjIdeal (K := K) P := by
@@ -195,7 +191,7 @@ private lemma map_conjO_eq_conjIdeal (P : Ideal (𝓞 K)) :
     exact ⟨s, hs, (eq_conjO_of h).symm⟩
 
 /- English proof (translation)
-Take `⟨θ, t, ht, hθP⟩` from `hK.2.2 P hP`. Rewrite `hθP` using `[eq_conjO_of ht]`. Establish `hP0 : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField K)`. Establish `hmap : P.map (conjO K) = P` using `by rw [map_conjO_eq_conjIdeal]; exact hc`. Conclude with `normRepCount_pow_succ_of hP0 hmap θ n (isCoprime_span_of_notMem hP hθP) (isCoprime_span_of_notMem hP hnP) hn q hq M k hM hk`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem normRepCount_pow_succ_inert (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)}
     (hP : P.IsMaximal) (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P) (M k : ℕ) (hM : 1 ≤ M)
@@ -210,21 +206,21 @@ theorem normRepCount_pow_succ_inert (hK : Formalism.HermitianLatticesTheory.IsCM
     (isCoprime_span_of_notMem hP hnP) hn q hq M k hM hk
 
 /- English proof (translation)
-Take `⟨θ, t, ht, hθP⟩` from `hK.2.2 P hP`. Rewrite `hθP` using `[eq_conjO_of ht]`. Establish `hP0 : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField K)`. Generalize the expression as in `hPbdef : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = Pb`. Establish `hm : P.map (conjO K) = Pb` using `by rw [← hPbdef]; exact map_conjO_eq_conjIdeal P`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hcc : (conjO K).comp (conjO K) = RingHom.id _` using `RingHom.ext conjO_conjO`. Establish `hmm : ∀ I : Ideal (𝓞 K), (I.map (conjO K)).map (conjO K) = I` using `fun I => by`. Rewrite using `[Ideal.map_map, hcc, Ideal.map_id]`. Establish `hPb0 : Pb ≠ ⊥`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hP0` to reduce the goal to its premises. Rewrite using `[← hmm P, hm, h, Ideal.map_bot]`. Establish `hQ0 : P * Pb ≠ ⊥`. Rewrite using `[Ne, Ideal.mul_eq_bot, not_or]`. Conclude with `⟨hP0, hPb0⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hQ : (P * Pb).map (conjO K) = P * Pb`. Rewrite using `[Ideal.map_mul, ← hm, hmm, mul_comm]`. Establish `hcop : ∀ a, IsCoprime (Ideal.span {a}) P → IsCoprime (Ideal.span {conjO K a}) Pb`. Introduce `a ha`. Rewrite `ha`, the goal using `[Ideal.isCoprime_iff_sup_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h3` using `congrArg (Ideal.map (conjO K)) ha`. Rewrite `h3` using `[Ideal.map_sup, Ideal.map_top, hm, Ideal.map_span, Set.image_singleton]`. Then use the resulting hypothesis. Establish `h1` using `isCoprime_span_of_notMem hP hθP`. Establish `h4` using `hcop _ h1`. Rewrite `h4` using `[map_sub, conjO_conjO, ← Ideal.span_singleton_neg (conjO K θ - θ), neg_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hθ : IsCoprime (Ideal.span {θ - conjO K θ}) (P * Pb)` using `IsCoprime.mul_right h1 h4`. Establish `h5` using `isCoprime_span_of_notMem hP hnP`. Establish `h6` using `hcop _ h5`. Rewrite `h6` using `[hn]`. Establish `hnQ : IsCoprime (Ideal.span {n}) (P * Pb)` using `IsCoprime.mul_right h5 h6`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnorm : Ideal.absNorm Pb = Ideal.absNorm P`. Establish `hbij : Function.Bijective (conjO K)` using `⟨Function.LeftInverse.injective (g := conjO K) (fun x => conjO_conjO x), Function.RightInverse.surjective (g := conjO K) (fun x => conjO_conjO x)⟩`. Set `f : 𝓞 K ≃+* 𝓞 K` to `RingEquiv.ofBijective (conjO K) hbij`. Establish `e` using `Ideal.quotientEquiv P Pb f (by rw [← hm]; rfl)`. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.card_congr e.toEquiv).symm`. Establish `hq : Ideal.absNorm (P * Pb) = Ideal.absNorm P ^ 2` using `by rw [map_mul, hnorm, sq]`. Establish `hQ' : (P * Pb).map (conjO K) = P * Pb` using `hQ`. Conclude with `normRepCount_pow_succ_of hQ0 hQ' θ n hθ hnQ hn (Ideal.absNorm P) hq M k hM hk`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem normRepCount_pow_succ_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)}
     (hP : P.IsMaximal) (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P ≠ P) (M k : ℕ) (hM : 1 ≤ M)

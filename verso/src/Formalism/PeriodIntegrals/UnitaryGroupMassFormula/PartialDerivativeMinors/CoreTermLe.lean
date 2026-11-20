@@ -11,15 +11,15 @@ namespace PI.EntAtD.W
 open PI.EntAtD
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt.le`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hq0 : (0 : ℝ) ≤ (p : ℝ) ^ ((1 : ℝ) / 2)` using `Real.rpow_nonneg hp0.le _`. Establish `hq1 : (1 : ℝ) ≤ (p : ℝ) ^ ((1 : ℝ) / 2)` using `Real.one_le_rpow hp1 (by norm_num)`. Establish `hA : ‖((A : ℤ) : ℂ_[p])‖ ≤ 1` using `IsUltrametricDist.norm_intCast_le_one ℂ_[p] A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∏ t : H, ‖(-(S * ut t)) ^ n t‖ ≤ (p : ℝ) ^ ((∑ t : H, (c t : ℝ)) / 2)`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod (fun t _ => norm_nonneg _)` to reduce the goal to its premises. Introduce `t _`. Rewrite using `[norm_pow, norm_neg, norm_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `pow_le_pow_left₀ (mul_nonneg (norm_nonneg _) (norm_nonneg _))` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ _ := pow_le_pow_right₀ hq1 (hn t)`. Use `_ = _ := by`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_div, Real.rpow_sum_of_pos hp0]`. Use `Finset.prod_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hp0.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_mul, norm_mul, norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul hX h2 (Finset.prod_nonneg fun _ _ => norm_nonneg _) zero_le_one) hA (norm_nonneg _)` to reduce the goal to its premises. Conclude with `mul_nonneg zero_le_one (Real.rpow_nonneg hp0.le _)`. Use `_ = _ := by ring`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem coreTerm_le {H : Type} [Fintype H] (p : ℕ) [Fact p.Prime] (S : ℂ_[p]) (ut : H → ℂ_[p])
     (hS : ‖S‖ ≤ (p : ℝ) ^ ((1 : ℝ) / 2)) (hut : ∀ t, ‖ut t‖ ≤ 1) (X : ℂ_[p]) (hX : ‖X‖ ≤ 1) (A : ℤ)
@@ -57,11 +57,11 @@ theorem coreTerm_le {H : Type} [Fintype H] (p : ℕ) [Fact p.Prime] (S : ℂ_[p]
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `H _ _ N0 N1 p _ nu Th hTh I m`. Take `⟨S, hS, ut, hut, sg, hsg, rfl⟩` from `hTh`. Rewrite using `[hE H N0 N1 p S ut sg (Gxz N0 N1 nu I) m, neg_neg]`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`. Establish `hB0 : (0 : ℝ) ≤ (p : ℝ) ^ ((∑ t : H, (cPr (nu (false, t)) (nu (true, t)) : ℝ)) / 2)` using `Real.rpow_nonneg hp0.le _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hB0 (fun κ2 _ => ?_)` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hB0 (fun n _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hn : ∃ t, cPr (nu (false, t)) (nu (true, t)) < n t`. Take `⟨t, ht⟩` from `hn`. Rewrite using `[hV H N0 N1 nu I m κ2 n t ht]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hB0`. Simplify using `only [not_exists, not_lt] at hn`. Conclude with `coreTerm_le p S ut hS hut _ (hsg κ2) _ n (fun t => cPr (nu (false, t)) (nu (true, t))) hn`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem core_of (hE : PExpand) (hV : PVanish) : CoreBound := by
   intro H _ _ N0 N1 p _ nu Th hTh I m

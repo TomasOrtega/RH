@@ -11,9 +11,9 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Use `Cm.mixed_ext fun w => ?_` and prove the remaining obligations. Establish `h : (Cm.mixEq E (GlobalTheory.CuspRep.atEmb τ z)).2 w = GlobalTheory.CuspRep.atEmb τ z w.1` using `Cm.mixRing_snd _ w`. Rewrite using `[h, PositivityTheory.Rg.Cz.GK.atEmb_apply]`. Simplify using `only [UpperTheory.ConvolutionTheory.along]`. Distinguish the cases in `e : w.1 = InfinitePlace.mk τ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos e, if_pos e, e]`. Rewrite using `[if_neg e, if_neg e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.ConvolutionTheory.Dp.jGen_along {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (τ : E →+* ℂ) (z : ℂ) :
     Cm.mixEq E (GlobalTheory.CuspRep.atEmb τ z) = UpperTheory.ConvolutionTheory.along τ z := by
@@ -26,9 +26,9 @@ private theorem UpperTheory.ConvolutionTheory.Dp.jGen_along {E : Type} [Field E]
   · rw [if_neg e, if_neg e]
 
 /- English proof (translation)
-Rewrite using `[Cm.ιC_apply, UpperTheory.ConvolutionTheory.elem]`. Use `congr 2`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Cm.matEq E n (Matrix.single a b (GlobalTheory.CuspRep.atEmb τ z)) = Matrix.single a b (UpperTheory.ConvolutionTheory.along τ z)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Cm.matEq_apply, Matrix.single_apply, Matrix.single_apply]`. Use `split_ifs`. Conclude with `UpperTheory.ConvolutionTheory.Dp.jGen_along τ z`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Dp.jGen_lie {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ} (τ : E →+* ℂ)
     (a b : Fin n) (z : ℂ) :
@@ -44,7 +44,7 @@ private theorem UpperTheory.ConvolutionTheory.Dp.jGen_lie {E : Type} [Field E] [
   · exact map_zero _
 
 /- English proof (translation)
-Rewrite using `[Cm.genC, AlgRepEndIrreducible.eL, UpperTheory.ConvolutionTheory.Dp.jGen_lie, UpperTheory.ConvolutionTheory.Dp.jGen_lie, TensorProduct.smul_tmul', smul_sub, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`. Simplify using `only [smul_eq_mul, mul_one, one_div]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.ConvolutionTheory.Dp.jGen_gen {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ} (τ : E →+* ℂ)
     (a b : Fin n) :
@@ -60,9 +60,9 @@ private noncomputable def UpperTheory.ConvolutionTheory.Dp.jGen_lin {A : Type} [
   map_smul' r X := by simp [Finset.smul_sum, mul_smul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ d : Fin n × Fin n, (HarishChandra.E c) d.1 d.2 • F d.1 d.2 = _`. Rewrite using `[Finset.sum_eq_single c]`. Simplify using `[HarishChandra.E]`. Introduce `d _ hd`. Establish `: ¬ (c.1 = d.1 ∧ c.2 = d.2)` using `fun h => hd (Prod.ext h.1.symm h.2.symm)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[HarishChandra.E, Matrix.single_apply, this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.ConvolutionTheory.Dp.jGen_lin_E {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (F : Fin n → Fin n → A)
     (c : Fin n × Fin n) : UpperTheory.ConvolutionTheory.Dp.jGen_lin F (HarishChandra.E c) = F c.1 c.2 := by
@@ -75,9 +75,9 @@ private theorem UpperTheory.ConvolutionTheory.Dp.jGen_lin_E {A : Type} [Ring A] 
   · simp
 
 /- English proof (translation)
-Establish `hE : ∀ c d : Fin n × Fin n, UpperTheory.ConvolutionTheory.Dp.jGen_lin F ⁅HarishChandra.E c, HarishChandra.E d⁆ = ⁅UpperTheory.ConvolutionTheory.Dp.jGen_lin F (HarishChandra.E c), UpperTheory.ConvolutionTheory.Dp.jGen_lin F (HarishChandra.E d)⁆`. Introduce `c d`. Rewrite using `[LieRing.of_associative_ring_bracket, LieRing.of_associative_ring_bracket, HarishChandra.E_mul_sub_mul, UpperTheory.ConvolutionTheory.Dp.jGen_lin_E, UpperTheory.ConvolutionTheory.Dp.jGen_lin_E, hF, map_sub]`. Apply the tactic sequence `congr 1 <;> split_ifs <;> simp [UpperTheory.ConvolutionTheory.Dp.jGen_lin_E]`. Rewrite using `[HarishChandra.eq_sum_E X, HarishChandra.eq_sum_E Y]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sum_lie, lie_sum, smul_lie, lie_smul, map_sum, map_smul, hE]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.ConvolutionTheory.Dp.jGen_lin_lie {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (F : Fin n → Fin n → A)
     (hF : Formalism.REAL.GlRel F) (X Y : HarishChandra.gl n) :
@@ -92,7 +92,7 @@ private theorem UpperTheory.ConvolutionTheory.Dp.jGen_lin_lie {A : Type} [Ring A
   simp only [sum_lie, lie_sum, smul_lie, lie_smul, map_sum, map_smul, hE]
 
 /- English proof (translation)
-Set `L : HarishChandra.gl n →ₗ⁅ℂ⁆ A` to `{ UpperTheory.ConvolutionTheory.Dp.jGen_lin F with map_lie' := fun {X Y} => UpperTheory.ConvolutionTheory.Dp.jGen_lin_lie F hF X Y }`. Use `⟨UniversalEnvelopingAlgebra.lift ℂ L, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[HarishChandra.e, UniversalEnvelopingAlgebra.lift_ι_apply]`. Conclude with `UpperTheory.ConvolutionTheory.Dp.jGen_lin_E F (a, b)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Dp.jGen_ex {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (F : Fin n → Fin n → A)
     (hF : Formalism.REAL.GlRel F) : ∃ f : HarishChandra.U n →ₐ[ℂ] A, ∀ a b, f (HarishChandra.e (a, b)) = F a b := by
@@ -103,7 +103,7 @@ private theorem UpperTheory.ConvolutionTheory.Dp.jGen_ex {A : Type} [Ring A] [Al
   exact UpperTheory.ConvolutionTheory.Dp.jGen_lin_E F (a, b)
 
 /- English proof (translation)
-Introduce `E _ _ _ n τ`. Establish `key : ∀ j : HarishChandra.U n →ₐ[ℂ] UpperTheory.ConvolutionTheory.UC E n, UpperTheory.ConvolutionTheory.IsJ (n` using `n) τ j ↔ ∀ a b, j (HarishChandra.e (a, b)) = Cm.genC τ a b := fun j => ⟨fun h a b => (h a b).trans (UpperTheory.ConvolutionTheory.Dp.jGen_gen τ a b), fun h a b => (h a b).trans (UpperTheory.ConvolutionTheory.Dp.jGen_gen τ a b).symm⟩`. Take `⟨f, hf⟩` from `UpperTheory.ConvolutionTheory.Dp.jGen_ex (Cm.genC (a := n) τ) (Cm.glRel_genC τ)`. Conclude with `⟨⟨f, (key f).2 hf⟩, key⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.jGen :
     UpperTheory.ConvolutionTheory.Dp.JGen := by

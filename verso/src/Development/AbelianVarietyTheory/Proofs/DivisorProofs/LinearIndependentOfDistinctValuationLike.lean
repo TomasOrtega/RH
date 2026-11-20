@@ -5,21 +5,19 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C V Γ ι _ _ _ _ ν hsm hadd f hf hinj`. Establish `key : ∀ (g : ι → C) (s : Finset ι), s.Nonempty → (∀ i ∈ s, g i ≠ 0) → (∑ i ∈ s, g i • f i) ≠ 0 ∧ ∃ j ∈ s, ν (∑ i ∈ s, g i • f i) = ν (f j)`. Introduce `g s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `absurd h Finset.not_nonempty_empty`. Consider the case `@insert a s ha ih`. Introduce `_ hg`. Establish `hga : g a ≠ 0` using `hg a (Finset.mem_insert_self a s)`. Establish `hx : g a • f a ≠ 0` using `smul_ne_zero hga (hf a)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hνx : ν (g a • f a) = ν (f a)` using `hsm _ _ hga`. Rewrite using `[Finset.sum_insert ha]`. Break down `s.eq_empty_or_nonempty with hs | hs` into its components or cases. Substitute `hs` using the available equality. Simplify using `only [Finset.sum_empty, add_zero]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨hx, a, Finset.mem_insert_self a _, hνx⟩`. Take `⟨hy, j, hj, hνy⟩` from `ih hs (fun i hi => hg i (Finset.mem_insert_of_mem hi))`. Establish `hne : ν (f a) ≠ ν (f j)`. Introduce `h`. Establish `: a = j` using `hinj h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `ha (this ▸ hj)`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Take `⟨h1, h2⟩` from `hadd _ _ hx hy (by rw [hνx, hνy]; exact hlt)`. Conclude with `⟨h1, a, Finset.mem_insert_self a s, by rw [h2, hνx]⟩`. Take `⟨h1, h2⟩` from `hadd _ _ hy hx (by rw [hνx, hνy]; exact hlt)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by rw [add_comm]; exact h1, j, Finset.mem_insert_of_mem hj, ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm, h2, hνy]`. Rewrite using `[linearIndependent_iff']`. Introduce `s g hsum i hi`. Assume the negation of the conclusion as `hgi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum' : ∑ k ∈ s.filter (fun k => g k ≠ 0), g k • f k = 0`. Rewrite using `[Finset.sum_filter_of_ne]`. Conclude with `hsum`. Introduce `x _ hx h`. Apply `hx` to reduce the goal to its premises.
-
-Simplify using `[h]`. Establish `hne : (s.filter (fun k => g k ≠ 0)).Nonempty` using `⟨i, Finset.mem_filter.2 ⟨hi, hgi⟩⟩`. Conclude with `(key g _ hne (fun j hj => (Finset.mem_filter.1 hj).2)).1 hsum'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_distinct_valuationLike :
     ∀ (C V Γ ι : Type) [Field C] [AddCommGroup V] [Module C V] [LinearOrder Γ] (ν : V → Γ),

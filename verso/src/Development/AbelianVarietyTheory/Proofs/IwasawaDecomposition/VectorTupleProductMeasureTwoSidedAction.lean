@@ -9,31 +9,29 @@ open scoped TensorProduct NNReal ENNReal Pointwise Kronecker
 namespace GlobalTheory.GaugeEx.ModDet
 
 /- English proof (translation)
-Set `E : Matrix κ κ S ≃+* ∀ k, Matrix κ κ (K k)` to `e.mapMatrix.trans Matrix.piRingEquiv`. Establish `hE : ∀ A k i j, E A k i j = e (A i j) k` using `fun _ _ _ _ => rfl`. Establish `h1 : ∀ k (A : Matrix κ κ (K k)), A.det ≠ 0 → P (E.symm (Pi.mulSingle k A))`. Introduce `k A hA`. Apply `diagonal_transvection_induction_of_det_ne_zero (fun A => P (E.symm (Pi.mulSingle k A))) A hA` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `D hD`. Rewrite `hD` using `[det_diagonal]`. Establish `: E.symm (Pi.mulSingle k (diagonal D)) = diagonal fun i => e.symm (Pi.mulSingle k (D i))`. Rewrite using `[RingEquiv.symm_apply_eq]`. Use function extensionality and compare the values at `k'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use extensionality with `i j`. Rewrite using `[hE]`. Distinguish the cases in `hk : k' = k`. Substitute `hk` using the available equality. Distinguish the cases in `hij : i = j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hk]`. Simplify using `[hij, hk]`. Rewrite using `[this]`. Use `hd _ fun i => ?_` and prove the remaining obligations. Establish `: IsUnit (D i)` using `(Finset.prod_ne_zero_iff.1 hD i (Finset.mem_univ i)).isUnit`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(this.map (MonoidHom.mulSingle K k)).map e.symm`. Introduce `t`. Take `⟨a, b, hab, c⟩` from `t`. Establish `: E.symm (Pi.mulSingle k (transvection a b c)) = transvection a b (e.symm (Pi.single k c))`. Rewrite using `[RingEquiv.symm_apply_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k'`. Use extensionality with `i j`. Rewrite using `[hE]`. Distinguish the cases in `hk : k' = k`. Substitute `hk` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[transvection, Matrix.one_apply, Matrix.single, apply_ite e, ite_apply]`. Simplify using `[transvection, Matrix.one_apply, Matrix.single, apply_ite e, ite_apply, hk]`. Rewrite using `[TransvectionStruct.toMatrix_mk, this]`. Conclude with `ht _ _ _ hab`. Introduce `A B _ _ hA hB`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.mulSingle_mul, map_mul]`. Conclude with `hm _ _ hA hB`. Establish `hdet : ∀ k, (E g k).det ≠ 0`. Introduce `k`. Establish `: E g k = ((Pi.evalRingHom K k).comp e.toRingHom).mapMatrix g` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, ← RingHom.map_det]`. Conclude with `(hg.map _).ne_zero`. Establish `h2 : ∀ s : Finset ι, P (E.symm fun k => if k ∈ s then E g k else 1)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `empty`. Establish `: (fun k => if k ∈ (∅ : Finset ι) then E g k else 1) = 1` using `by funext k; simp`. Rewrite using `[this, map_one, ← diagonal_one]`. Conclude with `hd _ fun _ => isUnit_one`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: (fun k => if k ∈ insert a s then E g k else 1) = Pi.mulSingle a (E g a) * fun k => if k ∈ s then E g k else 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality. Simplify using `[ha]`.
-
-Simplify using `[hk]`. Rewrite using `[this, map_mul]`. Conclude with `hm _ _ (h1 a _ (hdet a)) ih`. Simplify using `using h2 Finset.univ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem induction_pi {S : Type} [CommRing S] {ι : Type} [Fintype ι] [DecidableEq ι] {K : ι → Type}
     [∀ k, Field (K k)] (e : S ≃+* ∀ k, K k) {κ : Type} [Fintype κ] [DecidableEq κ]
@@ -111,13 +109,13 @@ section
 variable {S : Type} [CommRing S] [TopologicalSpace S] [IsTopologicalRing S] [LocallyCompactSpace S]
 
 /- English proof (translation)
-Simplify using `[modu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modu_coe (u : Sˣ) : modu S u = distribHaarChar S u := by
   simp [modu]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `ha`. Take `⟨b, rfl⟩` from `hb`. Rewrite using `[← Units.val_mul, modu_coe, modu_coe, modu_coe, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem modu_mul {a b : S} (ha : IsUnit a) (hb : IsUnit b) : modu S (a * b) = modu S a * modu S b := by
   obtain ⟨a, rfl⟩ := ha
@@ -125,7 +123,7 @@ theorem modu_mul {a b : S} (ha : IsUnit a) (hb : IsUnit b) : modu S (a * b) = mo
   rw [← Units.val_mul, modu_coe, modu_coe, modu_coe, map_mul]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `ha`. Rewrite using `[← Units.val_pow_eq_pow_val, modu_coe, modu_coe, map_pow]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem modu_pow {a : S} (ha : IsUnit a) (n : ℕ) : modu S (a ^ n) = modu S a ^ n := by
   obtain ⟨a, rfl⟩ := ha
@@ -134,19 +132,19 @@ theorem modu_pow {a : S} (ha : IsUnit a) (n : ℕ) : modu S (a ^ n) = modu S a ^
 variable [T2Space S] [SecondCountableTopology S] [MeasurableSpace S] [BorelSpace S]
 
 /- English proof (translation)
-Establish `hm : ∀ A : Matrix κ κ S, Measurable A.mulVec` using `fun A => (continuous_const.matrix_mulVec continuous_id).measurable`. Use `letI := Fintype.ofFinite (MaximalSpectrum S)`. Use `letI : ∀ m : MaximalSpectrum S, Field (S ⧸ m.asIdeal) := fun m => haveI := m.isMaximal Ideal.Quotient.field m.asIdeal`. Use `(induction_pi (IsArtinianRing.equivPi S).toRingEquiv (fun M : Matrix κ κ S => IsUnit M.det ∧ (modu S M.det : ℝ≥0∞) • Measure.map M.mulVec (Measure.pi fun _ : κ => ν) = Measure.pi fun _ : κ => ν) ?_ ?_ ?_ M hM).2` and prove the remaining obligations. Introduce `D A`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu' : (diagonal D).det = ((∏ i, (A i).unit : Sˣ) : S)` using `by simp`. Use `⟨hu' ▸ Units.isUnit _, (Measure.pi_eq fun s hs => ?_).symm⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, Measure.map_apply (hm _) (MeasurableSet.univ_pi hs)]`. Establish `: ((diagonal D).mulVec ⁻¹' Set.pi Set.univ fun i : κ => s i) = Set.pi Set.univ fun i : κ => ((A i).unit)⁻¹ • s i`. Use extensionality with `f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_preimage, Set.mem_univ_pi, mulVec_diagonal]`. Conclude with `forall_congr' fun i => (Set.mem_inv_smul_set_iff (a := (A i).unit)).symm`. Rewrite using `[this, Measure.pi_pi, hu', modu_coe, map_prod, ENNReal.coe_finset_prod, smul_eq_mul, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[distribHaarChar_mul, smul_inv_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b c hab`. Rewrite using `[det_transvection_of_ne _ _ hab]`. Use `⟨isUnit_one, ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_one, modu_coe, map_one, ENNReal.coe_one, one_smul]`. Use `(Measure.pi_eq fun s hs ↦ ?_).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2s : MeasurableSet (Set.univ.pi s)` using `.pi Set.countable_univ fun i _ ↦ hs i`. Repeatedly rewrite using `[← Measure.pi_pi, ← lintegral_indicator_one h2s]`. Rewrite using `[lintegral_map (measurable_one.indicator h2s) (hm _)]`. Use `lintegral_eq_of_lmarginal_eq {a} ((measurable_one.indicator h2s).comp (hm _)) (measurable_one.indicator h2s) ?_` and prove the remaining obligations. Repeatedly rewrite using `[lmarginal_singleton]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[transvection, add_mulVec, single_mulVec, hab.symm, ← Function.update_add, lintegral_add_right_eq_self fun xᵢ ↦ Set.indicator (Set.univ.pi s) 1 (Function.update x a xᵢ)]`. Introduce and unpack `A B ⟨hA, IHA⟩ ⟨hB, IHB⟩`. Establish `e : (A * B).mulVec = A.mulVec ∘ B.mulVec` using `funext fun x => (mulVec_mulVec x A B).symm`. Rewrite using `[det_mul]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hA.mul hB, ?_⟩` and prove the remaining obligations. Rewrite using `[modu_mul hA hB, ENNReal.coe_mul, mul_smul, e, ← Measure.map_map (hm _) (hm _), ← Measure.map_smul, IHB, IHA]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_map_mulVec_pi [IsArtinianRing S] [IsReduced S] (ν : Measure S) [ν.IsAddHaarMeasure]
     {κ : Type} [Fintype κ] [DecidableEq κ] (M : Matrix κ κ S) (hM : IsUnit M.det) :
@@ -199,11 +197,11 @@ theorem smul_map_mulVec_pi [IsArtinianRing S] [IsReduced S] (ν : Measure S) [ν
 end
 
 /- English proof (translation)
-Establish `hu : Measurable (Function.uncurry : (Fin n → Fin M → S) → Fin n × Fin M → S)` using `measurable_pi_lambda _ fun p => (measurable_pi_apply p.2).comp (measurable_pi_apply p.1)`. Establish `hc : Measurable (Function.curry : (Fin n × Fin M → S) → Fin n → Fin M → S)` using `measurable_pi_lambda _ fun a => measurable_pi_lambda _ fun i => measurable_pi_apply (a, i)`. Establish `: (Measure.pi fun _ : Fin n × Fin M => lam) = (tupMeas lam n M).map Function.uncurry`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hu (MeasurableSet.univ_pi hs)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Function.uncurry ⁻¹' Set.pi Set.univ s : Set (Fin n → Fin M → S)) = Set.pi Set.univ fun a => Set.pi Set.univ fun i => s (a, i)`. Use extensionality with `X`. Simplify using `[Function.uncurry]`. Rewrite using `[this, tupMeas, Measure.pi_pi, Fintype.prod_prod_type]`. Repeatedly rewrite using `[Measure.pi_pi]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[this, Measure.map_map hc hu]`. Conclude with `Measure.map_id.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupMeas_eq_map {S : Type} [MeasurableSpace S] (lam : Measure S) [SigmaFinite lam] (n M : ℕ) :
     tupMeas lam n M = (Measure.pi fun _ : Fin n × Fin M => lam).map Function.curry := by
@@ -224,13 +222,11 @@ theorem tupMeas_eq_map {S : Type} [MeasurableSpace S] (lam : Measure S) [SigmaFi
   exact Measure.map_id.symm
 
 /- English proof (translation)
-Introduce `S _ _ _ _ _ _ _ _ _ _ lam _ n M g γ hg hγ`. Establish `hc : Measurable (Function.curry : (Fin n × Fin M → S) → Fin n → Fin M → S)` using `measurable_pi_lambda _ fun a => measurable_pi_lambda _ fun i => measurable_pi_apply (a, i)`. Establish `hl : Measurable (lrAct g γ)`. Use `Continuous.measurable (continuous_pi fun a => continuous_const.matrix_mulVec ?_)` and prove the remaining obligations. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hdet : (γᵀ ⊗ₖ g).det = γ.det ^ M * g.det ^ n` using `by simp [det_kronecker]`. Establish `key` using `smul_map_mulVec_pi lam (γᵀ ⊗ₖ g) (hdet ▸ (hγ.pow M).mul (hg.pow n))`. Rewrite `key` using `[hdet, modu_mul (hγ.pow M) (hg.pow n), modu_pow hγ, modu_pow hg, mul_comm]`. Establish `hcomm : lrAct g γ ∘ Function.curry = Function.curry ∘ (γᵀ ⊗ₖ g).mulVec`. Use function extensionality and compare the values at `X a i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp, lrAct, Function.curry, mulVec, dotProduct, Fintype.sum_prod_type, kroneckerMap_apply, transpose_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `hm : Measurable (γᵀ ⊗ₖ g).mulVec` using `(continuous_const.matrix_mulVec continuous_id).measurable`. Rewrite using `[tupMeas_eq_map, Measure.map_map hl hc, hcomm, ← Measure.map_map hc hm, ← Measure.map_smul]`.
-
-Conclude with `congrArg _ key.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupMeas_lrAct : ∀ (S : Type) [CommRing S] [TopologicalSpace S] [IsTopologicalRing S] [T2Space S] [LocallyCompactSpace S] [SecondCountableTopology S] [MeasurableSpace S] [BorelSpace S], IsArtinianRing S → IsReduced S → ∀ (lam : Measure S), lam.IsAddHaarMeasure → ∀ (n M : ℕ) (g : Matrix (Fin M) (Fin M) S) (γ : Matrix (Fin n) (Fin n) S), IsUnit g.det → IsUnit γ.det → tupMeas lam n M = (modu S g.det ^ n * modu S γ.det ^ M) • (tupMeas lam n M).map (lrAct g γ) := by
   intro S _ _ _ _ _ _ _ _ _ _ lam _ n M g γ hg hγ

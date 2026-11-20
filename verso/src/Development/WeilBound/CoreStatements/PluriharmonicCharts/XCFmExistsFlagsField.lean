@@ -7,15 +7,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.PB.FMX GlobalTheory.CompanionTheory.Ar.FlagBun GlobalTheory.CompanionTheory.Ar.PB.FMX.GenFl
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω Ω' _ _ K K' _ _ J J' x x' A A' h i j d hov hcov`. Take `⟨hd, hf, -⟩` from `hov`. Establish `hgen : genPt A'.ξ₀ = genPt A.ξ₀`. Establish `h1` using `RegAtDom.map_genPt hd`. Establish `h2` using `RegAtDom.map_genPt A.fn_over`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `RegAtDom.map_genPt A'.fn_over`. Rewrite using `[← h2, ← h3, ← h1, hf]`. Both sides reduce to the same expression. Take `⟨ψ, hψ⟩` from `FlagPull.exists_iso A'.gen₀ A.gen₀ hgen`. Establish `e1 : spMap A'.fn ≫ A'.ξ₀ = A'.ξ ≫ A'.f` using `A'.fn_over.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : spMap A.fn ≫ A.ξ₀ = A.ξ ≫ A.f` using `A.fn_over.symm`. Establish `e3 : A'.ξ ≫ h = spMap i ≫ A.ξ` using `hd`. Establish `e5 : spMap (A.fn.comp ψ.toRingHom) ≫ A'.ξ₀ = A.ξ ≫ A.f`. Rewrite using `[FlagPull.spMap_comp, Category.assoc, hψ, e2]`. Use `⟨A.fn.comp ψ.toRingHom, ?_, e5.symm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := FlagPull.mono_of_isCptGen A'.gen₀`. Establish `e4 : spMap (i.comp (A.fn.comp ψ.toRingHom)) = spMap A'.fn`. Use `(cancel_mono A'.ξ₀).1 ?_` and prove the remaining obligations. Rewrite using `[FlagPull.spMap_comp, Category.assoc, e5, e1, hf, ← Category.assoc, ← e3, Category.assoc]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e4)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := A.fn.toAlgebra`. Use `letI := (A.fn.comp ψ.toRingHom).toAlgebra`. Conclude with `(Algebra.finrank_eq_of_equiv_equiv ψ (RingEquiv.refl Ω) (RingHom.ext fun _ => rfl)).trans hcov.2`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_c_fm_exists_flags_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω Ω' : Type) [Field Ω] [Field Ω'] (K K' : Type) [Fintype K] [Fintype K'] (J : K → Type) (J' : K' → Type) (x : (Σ k, J k) → Ω) (x' : (Σ k, J' k) → Ω') (A : HodgeCpt Y S x) (A' : HodgeCpt Y S x') (h : A'.X ⟶ A.X) (i : Ω →+* Ω') (j : A.Li →+ A'.Li) (d : ℕ), HodgeOver A' A h i j → A.IsCover d → ∃ ι : A'.Ω₀ →+* Ω, i.comp ι = A'.fn ∧ GlobalTheory.CompanionTheory.Ar.Dominates A.ξ A'.ξ₀ A.f ι ∧ letI := ι.toAlgebra; Module.finrank A'.Ω₀ Ω = d := by
   intro E _ _ _ H D l Xo c Y S Ω Ω' _ _ K K' _ _ J J' x x' A A' h i j d hov hcov

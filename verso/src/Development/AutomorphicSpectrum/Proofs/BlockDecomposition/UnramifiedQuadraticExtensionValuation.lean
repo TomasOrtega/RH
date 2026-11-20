@@ -13,11 +13,11 @@ open scoped NumberField.AdeleRing ValuativeRel
 namespace GlobalTheory.CompanionTheory.SphTheta.UnramQuad
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ hfin _ hcard`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Establish `hq : 1 < residueCard F` using `one_lt_residueCard (K := F)`. Establish `hf : residueDegree F E = 2`. Establish `h : residueCard E = residueCard F ^ residueDegree F E` using `card_residueField_eq_pow_residueDegree F E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hcard]`. Conclude with `(Nat.pow_right_injective hq h).symm`. Establish `he : ramificationIndex F E = 1`. Establish `h` using `ramificationIndex_mul_residueDegree F E`. Rewrite `h` using `[hf, hfin]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h` using `ord_algebraMap (K := F) (L := E) (unifUnit F : F)`. Rewrite `h` using `[he, ord_unifUnit]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ord_unifUnit_of_residueCard_eq_sq : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [CharZero F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E], Module.finrank F E = 2 → Continuous (algebraMap F E) → residueCard E = residueCard F ^ 2 → GroundTheory.LocalField.ord (algebraMap F E (unifUnit F : F)) = 1 := by
   intro F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ hfin _ hcard

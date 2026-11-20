@@ -19,26 +19,26 @@ variable {K R : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [CommRing 
   (L : LocE K R) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) R)
 
 /- English proof (translation)
-Simplify using `[hf, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_right (x a b : Fin n → R) : hf L Hm x (a + b) = hf L Hm x a + hf L Hm x b := by
   simp [hf, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hf_smul_right (x : Fin n → R) (c : R) (a : Fin n → R) : hf L Hm x (c • a) = L.cj c * hf L Hm x a := by
   simp only [hf, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `[hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_zero_right (x : Fin n → R) : hf L Hm x 0 = 0 := by simp [hf]
 end
 
 /- English proof (translation)
-Simplify using `only [Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, sub_mul, Finset.sum_sub_distrib, Finset.sum_mul, Finset.mul_sum]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_sub_sum {E : Type} [Field E] {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) {ι : Type} [Fintype ι] (x : Fin n → E) (a : ι → E)
     (v : ι → Fin n → E) (s : Fin n → E) :
@@ -58,23 +58,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Places.bc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bc_add (x y : Fin n → E) : A.bc p (x + y) = A.bc p x + A.bc p y := by
   funext i; simp [Places.bc]
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Places.bc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bc_smul (c : E) (x : Fin n → E) : A.bc p (c • x) = (A.loc p).ιE c • A.bc p x := by
   funext i; simp [Places.bc]
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[Places.bc, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bc_sum {ι : Type} (s : Finset ι) (x : ι → Fin n → E) :
     A.bc p (∑ i ∈ s, x i) = ∑ i ∈ s, A.bc p (x i) := by
   funext j; simp [Places.bc, Finset.sum_apply]
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem bc_mem_lat (Λ : Submodule (𝓞 E) (Fin n → E)) {x : Fin n → E} (hx : x ∈ Λ) :
     A.bc p x ∈ A.lat p Λ :=
@@ -86,13 +86,13 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨oa, hoa⟩` from `ha`. Use `choose o ho hoeq using hMx`. Establish `hdiff : h (A.bc p (g j)) - A.bc p (g j) = ∑ i, (Mx - 1) i j • A.bc p (g i)`. Rewrite using `[hg]`. Simplify using `[Matrix.sub_apply, Matrix.one_apply, sub_smul, Finset.sum_sub_distrib]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ i, (⟨o i j, ho i j⟩ : (A.L p).O) • A.bc p (oa • ((D : 𝓞 E) • g i)), Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (bc_mem_lat A p Λ (Λ.smul_mem _ (hgΛ i))), ?_⟩` and prove the remaining obligations. Rewrite using `[hdiff, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e1 : (oa • ((D : 𝓞 E) • g i) : Fin n → E) = ((D : E) ^ 3 * a) • g i`. Express the relevant statement in the definitionally equal form `(oa : E) • (((D : 𝓞 E) : E) • g i) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hD : ((D : 𝓞 E) : E) = (D : E)` using `by simp`. Rewrite using `[smul_smul, ← hoa, hD]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Subring.smul_def, e1, bc_smul, hoeq, smul_smul, smul_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [map_mul, map_pow, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem step (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) {n m : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E))
     (D : ℤ) (h : (Fin n → (A.loc p).Ep) ≃ₗ[(A.loc p).Ep] (Fin n → (A.loc p).Ep))
@@ -125,37 +125,33 @@ theorem step (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) {n m : ℕ} (
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A r k G Λ D p h M M' t hΓ hΓD hb hDu hh hM hM' hM1 hM1'`. Use `haveI := (A.loc p).lf`. Use `haveI := (A.loc p).char0`. Establish `key : ∀ l ∈ Λ, ∃ y ∈ A.lat p Λ, h (A.bc p l) - A.bc p l = algebraMap (A.loc p).Fp (A.loc p).Ep t • y`. Introduce `l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set Γ : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) E := Matrix.of fun k l => ∑ i, ∑ j, Sum.elim G.f G.f' k i * G.Hm i j * sig (Sum.elim G.f G.f' l j) with hΓdef`. Establish `hbl : ∀ m, ∃ o : 𝓞 E, (D : E) * ∑ i, ∑ j, l i * G.Hm i j * sig (Sum.elim G.f G.f' m j) = o` using `hb l hl`. Use `choose ob hob using hbl`. Use `choose og hog using hΓD`. Set `b : Fin (r + 1) ⊕ Fin (r + 1) → E` to `fun m => ∑ i, ∑ j, l i * G.Hm i j * sig (Sum.elim G.f G.f' m j)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `α` to `Matrix.vecMul b Γ⁻¹`. Set `w` to `l - ∑ q, α q • Sum.elim G.f G.f' q`. Establish `hw0 : ∀ m, ∑ i, ∑ j, w i * G.Hm i j * sig (Sum.elim G.f G.f' m j) = 0`. Introduce `m`. Rewrite using `[form_sub_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e : ∑ q, α q * ∑ i, ∑ j, Sum.elim G.f G.f' q i * G.Hm i j * sig (Sum.elim G.f G.f' m j) = Matrix.vecMul α Γ m` using `rfl`. Rewrite using `[e, Matrix.vecMul_vecMul, hΓ, Matrix.vecMul_one, sub_self]`. Establish `hwloc : ∀ m, hf (A.L p) (G.S p).Hm (A.bc p w) (A.bc p (Sum.elim G.f G.f' m)) = 0`. Introduce `m`. Rewrite using `[G.Hm_eq p, (RatExt.rational_extend A (k + 2 * r + 1) p).2.2.2.2.1, hw0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwW : A.bc p w ∈ (G.S p).W0`. Establish `hME : (G.S p).ME = Submodule.span _ (Set.range (Sum.elim (G.S p).f (G.S p).f'))`. Rewrite using `[Frames.ME, FrameStab.spanTo_top, FrameStab.spanTo_top, Set.Sum.elim_range, Submodule.span_union]`. Express the relevant statement in the definitionally equal form `∀ y ∈ (G.S p).ME, hf (A.L p) (G.S p).Hm (A.bc p w) y = 0`. Introduce `y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hy` using `[hME]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨q, rfl⟩` from `hy`. Break down `q with a | a` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `G.f_eq p a`. Establish `h0` using `hwloc (Sum.inl a)`. Simplify using `only [Sum.elim_inl] at h0 ⊢`. Rewrite `h0` using `[← e, hf_smul_right, AlgEquiv.commutes]`. Conclude with `((((G.c p).isUnit.pow _).map (algebraMap _ _)).mul_right_eq_zero).1 h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Establish `e` using `G.f'_eq p a`. Establish `h0` using `hwloc (Sum.inr a)`. Simplify using `only [Sum.elim_inr] at h0 ⊢`. Rewrite `h0` using `[← e, hf_smul_right, AlgEquiv.commutes]`. Conclude with `((((G.c p).isUnit.pow _).map (algebraMap _ _)).mul_right_eq_zero).1 h0`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact hf_zero_right _ _ _`. Consider the case `add x y _ _ hx hy => rw [hf_add_right, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [hf_smul_right, hx, mul_zero]`. Establish `hhw : h (A.bc p w) = A.bc p w` using `(FrameStab.stab_eq (A.L p) r k (G.S p)).1 h hh _ hwW`. Establish `hl' : l = w + ∑ q, α q • Sum.elim G.f G.f' q` using `by simp only [w, sub_add_cancel]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsplit : h (A.bc p l) - A.bc p l = ∑ q, (A.loc p).ιE (α q) • (h (A.bc p (Sum.elim G.f G.f' q)) - A.bc p (Sum.elim G.f G.f' q))`. Rewrite using `[hl', bc_add, bc_sum, map_add, map_sum, hhw]`. Simplify using `only [bc_smul, map_smul, smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Establish `hα : ∀ q, ∃ o : 𝓞 E, (D : E) ^ 2 * α q = o`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q`. Use `⟨∑ m, ob m * og m q, ?_⟩` and prove the remaining obligations. Establish `e : ((∑ m, ob m * og m q : 𝓞 E) : E) = ∑ m, ((ob m : 𝓞 E) : E) * ((og m q : 𝓞 E) : E)`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [α, Matrix.vecMul, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Take the linear combination `((D : E) * Γ⁻¹ m q) * hob m + ((ob m : 𝓞 E) : E) * hog m q`. Establish `hper : ∀ q, ∃ z ∈ A.lat p Λ, (A.loc p).ιE (α q) • (h (A.bc p (Sum.elim G.f G.f' q)) - A.bc p (Sum.elim G.f G.f' q)) = algebraMap (A.loc p).Fp (A.loc p).Ep t • z`. Introduce and unpack `(j | j)`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `step A p Λ D h G.f M t hM hM1 (fun i => hDu (Sum.inl i)) (α (Sum.inl j)) (hα _) j`. Conclude with `step A p Λ D h G.f' M' t hM' hM1' (fun i => hDu (Sum.inr i)) (α (Sum.inr j)) (hα _) j`. Use `choose z hz hze using hper`. Conclude with `⟨∑ q, z q, Submodule.sum_mem _ fun q _ => hz q, by`. Rewrite using `[hsplit, Finset.smul_sum]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `Finset.sum_congr rfl fun q _ => hze q⟩`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span _ _ at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨l, hl, rfl⟩ := hx`.
-
-Conclude with `key l hl`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add a b _ _ ha hb'`. Take `⟨y1, hy1, e1⟩` from `ha`. Take `⟨y2, hy2, e2⟩` from `hb'`.
-
-Conclude with `⟨y1 + y2, add_mem hy1 hy2, by rw [map_add, smul_add, ← e1, ← e2]; abel⟩`. Consider the case `smul c a _ ha`. Take `⟨y, hy, e⟩` from `ha`. Use `⟨c • y, Submodule.smul_mem _ c hy, ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, Subring.smul_def, map_smul, ← smul_sub, e, smul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem close_on_lattice : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig) (r k : ℕ) (G : GFrames A r k) (Λ : G.Lt) (D : ℤ) (p : HeightOneSpectrum (𝓞 F)) (h : (G.S p).GLV) (M M' : Matrix (Fin (r + 1)) (Fin (r + 1)) (A.loc p).Ep) (t : (A.loc p).Fp), (Matrix.of fun k l : Fin (r + 1) ⊕ Fin (r + 1) => ∑ i, ∑ j, Sum.elim G.f G.f' k i * G.Hm i j * sig (Sum.elim G.f G.f' l j))⁻¹ * (Matrix.of fun k l : Fin (r + 1) ⊕ Fin (r + 1) => ∑ i, ∑ j, Sum.elim G.f G.f' k i * G.Hm i j * sig (Sum.elim G.f G.f' l j)) = 1 → (∀ k l, ∃ o : 𝓞 E, (D : E) * (Matrix.of fun k l : Fin (r + 1) ⊕ Fin (r + 1) => ∑ i, ∑ j, Sum.elim G.f G.f' k i * G.Hm i j * sig (Sum.elim G.f G.f' l j))⁻¹ k l = o) → (∀ x ∈ Λ, ∀ l, ∃ o : 𝓞 E, (D : E) * ∑ a, ∑ b, x a * G.Hm a b * sig (Sum.elim G.f G.f' l b) = o) → (∀ l, (D : 𝓞 E) • Sum.elim G.f G.f' l ∈ Λ) → h ∈ (G.S p).St → (∀ j, h (A.bc p (G.f j)) = ∑ i, M i j • A.bc p (G.f i)) → (∀ j, h (A.bc p (G.f' j)) = ∑ i, M' i j • A.bc p (G.f' i)) → (∀ i j, ∃ o ∈ (A.L p).O, (M - 1) i j = algebraMap (A.loc p).Fp (A.loc p).Ep (t * (D : (A.loc p).Fp) ^ 3) * o) → (∀ i j, ∃ o ∈ (A.L p).O, (M' - 1) i j = algebraMap (A.loc p).Fp (A.loc p).Ep (t * (D : (A.loc p).Fp) ^ 3) * o) → ∀ x ∈ A.lat p Λ, ∃ y ∈ A.lat p Λ, h x - x = algebraMap (A.loc p).Fp (A.loc p).Ep t • y := by
   intro F E _ _ _ _ _ sig A r k G Λ D p h M M' t hΓ hΓD hb hDu hh hM hM' hM1 hM1'

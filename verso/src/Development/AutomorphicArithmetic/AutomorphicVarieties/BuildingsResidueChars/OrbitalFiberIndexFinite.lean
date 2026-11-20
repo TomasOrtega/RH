@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 namespace UpperTheory
 
 /- English proof (translation)
-Establish `hA : (A.map (QuotientGroup.mk' N)).comap (QuotientGroup.mk' N) = A`. Rewrite using `[Subgroup.comap_map_eq, QuotientGroup.ker_mk', sup_eq_left.2 hN]`. Establish `key : ∀ K : Subgroup Γ, A.relIndex K = (A.map (QuotientGroup.mk' N)).relIndex (K.map (QuotientGroup.mk' N))`. Introduce `K`. Rewrite using `[← Subgroup.relIndex_comap, hA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (N ⊔ C).map (QuotientGroup.mk' N) = C.map (QuotientGroup.mk' N)`. Rewrite using `[Subgroup.map_sup]`. Establish `: N.map (QuotientGroup.mk' N) = ⊥`. Rewrite using `[Subgroup.map_eq_bot_iff, QuotientGroup.ker_mk']`. Rewrite using `[this, bot_sup_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, hm, ← key]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma relIndex_normal_sup {Γ : Type} [Group Γ] (N A C : Subgroup Γ) [N.Normal] (hN : N ≤ A)
     (h : A.relIndex C ≠ 0) : A.relIndex (N ⊔ C) ≠ 0 := by
@@ -25,23 +25,19 @@ private lemma relIndex_normal_sup {Γ : Type} [Group Γ] (N A C : Subgroup Γ) [
   exact h
 
 /- English proof (translation)
-Introduce `Γ G _ _ ι S U' Γ₁ Γ₀ hS hΓ₁ hT h0`. Take `⟨T, hT⟩` from `hT`. Establish `hAC : (Γ₁ ⊔ Γ₀).relIndex (U'.comap ι) ≠ 0`. Introduce `h`. Apply `h0` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Subgroup.relIndex_dvd_of_le_left (U'.comap ι) (le_sup_right : Γ₀ ≤ Γ₁ ⊔ Γ₀)` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `Nat.eq_zero_of_zero_dvd this`. Establish `h1 : (Γ₁ ⊔ Γ₀).relIndex (Γ₁ ⊔ U'.comap ι) ≠ 0` using `relIndex_normal_sup Γ₁ _ _ le_sup_left hAC`. Establish `pick : ∀ b : ((S ⊔ U').comap ι : Subgroup Γ), ∃ t, t ∈ T ∧ ∃ h ∈ Γ₁, ∃ u ∈ U', ι (b : Γ) = ι h * t * u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Establish `hb : ι (b : Γ) ∈ S ⊔ U'` using `b.2`. Rewrite `hb` using `[← SetLike.mem_coe, Subgroup.normal_mul, Set.mem_mul]`. Take `⟨s, hs, u, hu, e⟩` from `hb`. Take `⟨h, hh, t, ht, u₂, hu₂, rfl⟩` from `hT s hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨t, ht, h, hh, u₂ * u, U'.mul_mem hu₂ hu, by rw [← e]; group⟩`. Use `choose f hfT hf using pick`. Establish `h2 : (Γ₁ ⊔ U'.comap ι).relIndex ((S ⊔ U').comap ι) ≠ 0`. Establish `inj : Function.Injective (fun q : ((S ⊔ U').comap ι : Subgroup Γ) ⧸ (Γ₁ ⊔ U'.comap ι).subgroupOf ((S ⊔ U').comap ι) => (⟨f q.out, hfT _⟩ : T))`. Introduce `q q' hq`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq' : f q.out = f q'.out` using `congrArg Subtype.val hq`. Rewrite using `[← q.out_eq', ← q'.out_eq', QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Generalize the expression as in `q.out = a at hq'`. Generalize the expression as in `q'.out = b at hq'`. Take `⟨h, hh, u, hu, ha⟩` from `hf a`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h', hh', u', hu', hb⟩` from `hf b`. Rewrite `hb` using `[← hq']`. Establish `hx : (a : Γ)⁻¹ * (h' * h⁻¹) * a ∈ Γ₁`. Simplify using `using hΓ₁.conj_mem (h' * h⁻¹) (Γ₁.mul_mem hh' (Γ₁.inv_mem hh)) (a : Γ)⁻¹`. Establish `hc : (a : Γ)⁻¹ * h * h'⁻¹ * b ∈ U'.comap ι`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ι ((a : Γ)⁻¹ * h * h'⁻¹ * b) = u⁻¹ * u'`. Simplify using `only [map_mul, map_inv, ha, hb]`. Use `group`. Rewrite using `[Subgroup.mem_comap, this]`. Conclude with `U'.mul_mem (U'.inv_mem hu) hu'`.
-
-Establish `e : (((a⁻¹ * b : ((S ⊔ U').comap ι : Subgroup Γ))) : Γ) = ((a : Γ)⁻¹ * (h' * h⁻¹) * a) * ((a : Γ)⁻¹ * h * h'⁻¹ * b)`. Use `push_cast`. Use `group`. Rewrite using `[e]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_left hx) (Subgroup.mem_sup_right hc)`.
-
-Use `haveI := Finite.of_injective _ inj`. Conclude with `Subgroup.index_ne_zero_of_finite`. Conclude with `Subgroup.relIndex_ne_zero_trans h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitalFiber_index_finite : V.Z.Sym.Glob.Fib.IndexFin := by
   intro Γ G _ _ ι S U' Γ₁ Γ₀ hS hΓ₁ hT h0

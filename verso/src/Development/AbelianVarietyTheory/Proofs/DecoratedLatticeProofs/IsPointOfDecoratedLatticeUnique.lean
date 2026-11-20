@@ -10,7 +10,7 @@ namespace GlobalTheory.Mem.Col2.PtUniq
 open Formalism.L2.Col Formalism.L2.DIV GlobalTheory.Mem.Col2
 
 /- English proof (translation)
-Establish `h1` using `Formalism.UG.P.global_lattice_one_holds F E (Fin n) N (Module.Finite.iff_fg.2 hN.fg) hN.span_eq_top`. Use `conv_lhs => rw [← h1]`. Establish `e1 : ∀ (x : GL (Fin n) (AfE F E)) (Λ : Submodule (𝓞 E) (Fin n → E)) (v : Fin n → E), v ∈ Formalism.UG.CS.globLat x Λ ↔ Matrix.mulVec ((x⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) (fun i => Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (v i)) ∈ Formalism.L2.Herm.hatL (F := F) Λ := fun _ _ _ => Iff.rfl`. Rewrite using `[e1, inv_one, Units.val_one, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff_hatL {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
     {n : ℕ} {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N) (v : Sp E n) :
@@ -24,17 +24,15 @@ theorem mem_iff_hatL {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   rw [e1, inv_one, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n ST SG Q g p p' h h'`. Establish `hN : p.deco.1.N = p'.deco.1.N`. Use extensionality with `v`. Rewrite using `[mem_iff_hatL (F := F) p.deco.2.lat, mem_iff_hatL (F := F) p'.deco.2.lat, h.lat, h'.lat]`. Establish `hd : p.deco = p'.deco`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `Deco.Ok.ext_on p.deco.2 p'.deco.2 hN (fun P x hx => ?_) (fun w x hx => ?_)` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Establish `hx0 : x = 0` using `Subsingleton.elim _ _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hx0` using the available equality. Establish `a` using `p.deco.2.f_smul P 0 0 (zero_mem _)`. Establish `b` using `p'.deco.2.f_smul P 0 0 (zero_mem _)`. Rewrite `a`, `b` using `[zero_smul, map_zero, zero_mul]`. Rewrite using `[a, b]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `HasRes.unique (h.f P x hx ⟨n - 1, by omega⟩ (by simp; omega)) (h'.f P x (hN ▸ hx) ⟨n - 1, by omega⟩ (by simp; omega))`. Use function extensionality and compare the values at `i`. Conclude with `HasRes.unique (h.be w x hx i) (h'.be w x (hN ▸ hx) i)`. Establish `hfr : ∀ P : Q, p.fr P = p'.fr P`. Introduce `P`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `LinearEquiv.toLinearMap_injective (Module.Basis.ext (Pi.basisFun E (Fin n)) fun j => ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `e` using `(h.fr P i j).symm.trans (h'.fr P i j)`. Simplify using `using (algebraMap E (P.1.adicCompletion E)).injective e`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Conclude with `Prod.ext hd (funext hfr)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem isPtOf_unique : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
     (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))} (g : GL (Fin n) (Formalism.L2.DIV.AfE F E))

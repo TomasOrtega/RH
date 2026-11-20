@@ -10,7 +10,7 @@ open GlobalTheory.PlaceInt
 open ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.DVR.QForm
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.tied_section_expansion_existsUnique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FRingsOfIntegers%2FExistsUniqueCompatibleSectionExpansionIntegralFr.lean&line=17#L17)
 -/

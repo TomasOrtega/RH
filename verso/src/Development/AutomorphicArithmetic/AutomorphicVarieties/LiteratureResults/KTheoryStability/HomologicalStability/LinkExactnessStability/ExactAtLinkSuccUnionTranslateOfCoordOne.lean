@@ -9,7 +9,7 @@ open GlobalTheory.SeqCx Matrix
 namespace GlobalTheory.SeqCx
 
 /- English proof (translation)
-Introduce and unpack `x (hx | hx)`. Conclude with `Or.inl fun i hi => hx i (by omega)`. Conclude with `Or.inr fun i hi => hx i (by omega)`.
+Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative.
 -/
 theorem low_aff_subset_succ (R : Type) [CommRing R] (n j : ℕ) :
     low R n ∪ aff R n j ⊆ low R (n + 1) ∪ aff R (n + 1) j := by
@@ -18,9 +18,9 @@ theorem low_aff_subset_succ (R : Type) [CommRing R] (n j : ℕ) :
   · exact Or.inr fun i hi => hx i (by omega)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[Finsupp.lapply_apply]`. Break down `hx with hx | hx` into its components or cases. Conclude with `hx n le_rfl`. Use `hx n le_rfl` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Finsupp.single_apply, show j ≠ n by omega]`.
+A detailed English derivation is pending.
 -/
 theorem coord_vanish_low_aff (R : Type) [CommRing R] (n j : ℕ) (hj : n + 1 ≤ j) :
     ∀ x ∈ low R n ∪ aff R n j, (Finsupp.lapply n : (ℕ →₀ R) →ₗ[R] R) x = 0 := by
@@ -32,17 +32,15 @@ theorem coord_vanish_low_aff (R : Type) [CommRing R] (n j : ℕ) (hj : n + 1 ≤
     simpa [Finsupp.single_apply, show j ≠ n by omega] using this
 
 /- English proof (translation)
-Introduce `R _ s n h j hj τ hτ v hv hvn p hp`. Establish `hsub : SubClosed (uniM R (ℕ →₀ R))` using `(T.subClosed_and_perm_and_linearEquiv_invariant_uniM R (ℕ →₀ R)).1`. Establish `hlenpos` using `List.length_pos_of_mem hv`. Apply `exactAt_of_links (ℕ →₀ R) _ (low R n ∪ aff R n j)` to reduce the goal to its premises. Introduce `l hl l' hl'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun x hx => hl.1 x (hl'.subset hx), hsub _ hl.2 _ ?_⟩` and prove the remaining obligations. Simplify using `using hl'`. Introduce `τ1 hτ1 hlen`. Establish `heq : linkIn (linkIn (uniM R (ℕ →₀ R)) (low R (n + 1) ∪ aff R (n + 1) j) τ) (low R n ∪ aff R n j) τ1 = linkIn (uniM R (ℕ →₀ R)) (low R n ∪ aff R n j) (τ ++ τ1)`. Use extensionality with `w`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, -, h2⟩`. Use `⟨hw, ?_⟩` and prove the remaining obligations. Rewrite using `[List.append_assoc]`. Conclude with `h2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hw, h2⟩`. Use `⟨hw, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Break down `List.mem_append.mp hx with hx | hx` into its components or cases. Conclude with `hτ1.1 x hx`. Conclude with `low_aff_subset_succ R n j (hw x hx)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← List.append_assoc]`. Conclude with `h2`. Rewrite using `[heq]`. Take `⟨τ', hτ', hl', heq'⟩` from `T.linkIn_uniM_eq_shorter_of_form_eq_one R (ℕ →₀ R) (Finsupp.lapply n) (low R n ∪ aff R n j) (coord_vanish_low_aff R n j hj) (τ ++ τ1) hτ1.2 v (List.mem_append_left _ hv) (by rw [Finsupp.lapply_apply]; exact hvn)`. Rewrite using `[heq']`.
-
-Rewrite `hl'` using `[List.length_append]`. Conclude with `h j (by omega) τ' hτ' (p - τ1.length) (by omega)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linkIn_exactAt_of_coord_one : ∀ (R : Type) [CommRing R] (s n : ℕ), LinkExactAff R s n →
     ∀ j : ℕ, n + 1 ≤ j → ∀ τ ∈ uniM R (ℕ →₀ R), ∀ v ∈ τ, v n = 1 → ∀ p : ℕ,
@@ -84,7 +82,7 @@ end GlobalTheory.SeqCx
 section
 open GlobalTheory.SeqCx Matrix
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.SeqCx.linkIn_exactAt_of_coord_one`. Consider the case `exact @GlobalTheory.SeqCx.coord_vanish_low_aff`. Consider the case `exact @GlobalTheory.SeqCx.low_aff_subset_succ`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.exactAt_link_succ_union_translate_of_coord_one : ∀ (R : Type) [CommRing R] (s n : ℕ), LinkExactAff R s n → ∀ j : ℕ, n + 1 ≤ j → ∀ τ ∈ uniM R (ℕ →₀ R), ∀ v ∈ τ, v n = 1 → ∀ p : ℕ, p + s + τ.length ≤ n + 2 → ExactAt (linkIn (uniM R (ℕ →₀ R)) (low R (n + 1) ∪ aff R (n + 1) j) τ) p := by
   first

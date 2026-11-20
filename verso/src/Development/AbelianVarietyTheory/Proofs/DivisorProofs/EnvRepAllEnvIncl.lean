@@ -35,7 +35,7 @@ def envIncl (V : HSp D) (τ : D.what₂.Tau) : EnvAt V τ →ₐ[ℂ] GlobalTheo
 
 open Classical in
 /- English proof (translation)
-Simplify using `[envIncl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem envIncl_ι (τ : D.what₂.Tau) (x : ℂ ⊗[ℝ] LieAt V τ) :
     envIncl V τ (UniversalEnvelopingAlgebra.ι ℂ x) =
@@ -43,9 +43,9 @@ theorem envIncl_ι (τ : D.what₂.Tau) (x : ℂ ⊗[ℝ] LieAt V τ) :
   simp [envIncl]
 
 /- English proof (translation)
-Establish `: (envRepAll R).comp (envIncl V τ) = envRep R τ`. Apply `UniversalEnvelopingAlgebra.hom_ext` to reduce the goal to its premises. Use `LieHom.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `envRepAll R (envIncl V τ (UniversalEnvelopingAlgebra.ι ℂ x)) = envRep R τ (UniversalEnvelopingAlgebra.ι ℂ x)`. Rewrite using `[envIncl_ι, envRepAll, UniversalEnvelopingAlgebra.lift_ι_apply, lieRep]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `DirectSum.toModule_lof ℂ (M := fun τ => ℂ ⊗[ℝ] LieAt V τ) τ x`. Conclude with `congrArg (fun f : EnvAt V τ →ₐ[ℂ] _ => f u) this`.
+A detailed English derivation is pending.
 -/
 theorem envRepAll_envIncl (R : RealPoints θ V) (τ : D.what₂.Tau) (u : EnvAt V τ) :
     envRepAll R (envIncl V τ u) = envRep R τ u := by

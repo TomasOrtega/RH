@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ H K _ hrel`. Establish `hfin : Finite (H ⧸ K.subgroupOf H)`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Simplify `hrel` using `[Subgroup.relIndex, Subgroup.index]`. Set `f : H ⧸ K.subgroupOf H → G` to `fun q => ((Quotient.out q : H) : G)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hR : (Set.range f).Finite` using `Set.finite_range f`. Use `⟨hR.toFinset, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Rewrite `hr` using `[Set.Finite.mem_toFinset]`. Take `⟨q, rfl⟩` from `hr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Quotient.out q : H).2`. Introduce `k hk`. Use `⟨f (QuotientGroup.mk (⟨k, hk⟩ : H)), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1 : (QuotientGroup.mk (Quotient.out (QuotientGroup.mk (⟨k, hk⟩ : H) : H ⧸ K.subgroupOf H)) : H ⧸ K.subgroupOf H) = QuotientGroup.mk ⟨k, hk⟩` using `QuotientGroup.out_eq' _`. Rewrite `h1` using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify `h1` using `[f]`. Introduce and unpack `r ⟨hr, hrk⟩`. Rewrite `hr` using `[Set.Finite.mem_toFinset]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, rfl⟩` from `hr`. Establish `h2 : (QuotientGroup.mk (Quotient.out q) : H ⧸ K.subgroupOf H) = QuotientGroup.mk ⟨k, hk⟩`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify `hrk` using `[f]`. Rewrite `h2` using `[QuotientGroup.out_eq']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[f, h2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_leftTransversal_of_relIndex_ne_zero : ∀ {G : Type} [Group G] (H K : Subgroup G),
     K ≤ H → K.relIndex H ≠ 0 → ∃ R : Finset G, (∀ r ∈ R, r ∈ H) ∧ ∀ k ∈ H, ∃! r, r ∈ R ∧ r⁻¹ * k ∈ K := by

@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.GrpLoc
 
 /- English proof (translation)
-Use `choose W a ha hp hfg using h`. Conclude with `Scheme.Cover.hom_ext (Scheme.Cover.mkOfCovers (P := @IsOpenImmersion) X W a (fun x => by obtain ⟨y, hy⟩ := hp x; exact ⟨x, y, hy⟩) ha) f g hfg`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext_loc {X Y : Scheme.{0}} {f g : X ⟶ Y}
     (h : ∀ p : X, ∃ (W : Scheme.{0}) (a : W ⟶ X), IsOpenImmersion a ∧ p ∈ Set.range a ∧ a ≫ f = a ≫ g) : f = g := by
@@ -24,9 +24,9 @@ theorem hom_ext_loc {X Y : Scheme.{0}} {f g : X ⟶ Y}
     (fun x => by obtain ⟨y, hy⟩ := hp x; exact ⟨x, y, hy⟩) ha) f g hfg
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`. Conclude with `⟨b p, by rw [← Scheme.Hom.comp_apply, ← h.w, Scheme.Hom.comp_apply]⟩`. Introduce and unpack `⟨y, hy⟩`. Take `⟨q, hq₁, -⟩` from `Scheme.Pullback.exists_preimage_pullback x y hy.symm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨h.isoPullback.inv q, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, h.isoPullback_inv_fst, hq₁]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_of_isPullback {P X Y Z : Scheme.{0}} {a : P ⟶ X} {b : P ⟶ Y} {f : X ⟶ Z} {g : Y ⟶ Z}
     (h : IsPullback a b f g) (x : X) : x ∈ Set.range a ↔ f x ∈ Set.range g := by
@@ -39,7 +39,7 @@ theorem range_of_isPullback {P X Y Z : Scheme.{0}} {a : P ⟶ X} {b : P ⟶ Y} {
     rw [← Scheme.Hom.comp_apply, h.isoPullback_inv_fst, hq₁]
 
 /- English proof (translation)
-Establish `ex : x' = Over.homMk k hk ≫ x` using `by ext; simp [hx]`. Establish `ey : y' = Over.homMk k hk ≫ y` using `by ext; simp [hy]`. Rewrite using `[ex, ey, ← MonObj.comp_mul, Over.comp_left]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mul_left_pre {S : Scheme.{0}} {G : Over S} [GrpObj G] {T T' : Over S} (k : T'.left ⟶ T.left)
     (hk : k ≫ T.hom = T'.hom) (x y : T ⟶ G) (x' y' : T' ⟶ G) (hx : x'.left = k ≫ x.left)
@@ -50,19 +50,19 @@ theorem mul_left_pre {S : Scheme.{0}} {G : Over S} [GrpObj G] {T T' : Over S} (k
   rfl
 
 /- English proof (translation)
-Use `⟨IsPullback.of_horiz_isIso ⟨by simpa using w⟩, ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Apply `hom_ext_loc` to reduce the goal to its premises. Introduce `t`. Take `⟨W, xS, B, _, a, hxo, ⟨w0, hw0⟩, hB, hB'⟩` from `h (T.hom t)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨pullback T.hom xS, pullback.fst T.hom xS, inferInstance, (range_of_isPullback (IsPullback.of_hasPullback T.hom xS) t).2 ⟨w0, hw0⟩, ?_⟩` and prove the remaining obligations. Set `TW : Over W` to `Over.mk (pullback.snd T.hom xS)`. Establish `cx : (pullback.fst T.hom xS ≫ x.left) ≫ A.hom = pullback.snd T.hom xS ≫ xS`. Rewrite using `[Category.assoc, Over.w x, pullback.condition]`. Establish `cy : (pullback.fst T.hom xS ≫ y.left) ≫ A.hom = pullback.snd T.hom xS ≫ xS`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Over.w y, pullback.condition]`. Establish `cx' : (pullback.fst T.hom xS ≫ x.left ≫ φ) ≫ A'.hom = pullback.snd T.hom xS ≫ xS`. Simplify `cx` using `[w]`. Establish `cy' : (pullback.fst T.hom xS ≫ y.left ≫ φ) ≫ A'.hom = pullback.snd T.hom xS ≫ xS`. Simplify `cy` using `[w]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `XB : TW ⟶ B` to `Over.homMk (hB.1.lift _ _ cx) (hB.1.lift_snd _ _ cx)`. Set `YB : TW ⟶ B` to `Over.homMk (hB.1.lift _ _ cy) (hB.1.lift_snd _ _ cy)`. Set `x' : Over.mk (TW.hom ≫ xS) ⟶ A` to `Over.homMk (pullback.fst T.hom xS ≫ x.left) cx`. Set `y' : Over.mk (TW.hom ≫ xS) ⟶ A` to `Over.homMk (pullback.fst T.hom xS ≫ y.left) cy`. Set `x₁ : Over.mk (TW.hom ≫ xS) ⟶ A'` to `Over.homMk (pullback.fst T.hom xS ≫ x.left ≫ φ) cx'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `y₁ : Over.mk (TW.hom ≫ xS) ⟶ A'` to `Over.homMk (pullback.fst T.hom xS ≫ y.left ≫ φ) cy'`. Establish `e1 : (x' * y').left = (XB * YB).left ≫ a` using `hB.2 TW XB YB x' y' (hB.1.lift_fst _ _ cx).symm (hB.1.lift_fst _ _ cy).symm`. Establish `e2 : (x₁ * y₁).left = (XB * YB).left ≫ a ≫ φ`. Use `hB'.2 TW XB YB x₁ y₁ ?_ ?_` and prove the remaining obligations. Simplify using `only [x₁, XB, Over.homMk_left]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc (hB.1.lift _ _ cx), hB.1.lift_fst, Category.assoc]`. Simplify using `only [y₁, YB, Over.homMk_left]`. Rewrite using `[← Category.assoc (hB.1.lift _ _ cy), hB.1.lift_fst, Category.assoc]`. Establish `hk : pullback.fst T.hom xS ≫ T.hom = (Over.mk (TW.hom ≫ xS)).hom`. Simplify using `[TW, pullback.condition]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hk' : pullback.fst T.hom xS ≫ (Over.mk (T.hom ≫ 𝟙 S)).hom = (Over.mk (TW.hom ≫ xS)).hom`. Simplify using `[TW, pullback.condition]`. Establish `m1` using `mul_left_pre (pullback.fst T.hom xS) hk x y x' y' rfl rfl`. Establish `m2` using `mul_left_pre (pullback.fst T.hom xS) hk' x₀ y₀ x₁ y₁ (by simp only [x₁, Over.homMk_left, hx]) (by simp only [y₁, Over.homMk_left, hy])`. Rewrite using `[← m2, e2, ← Category.assoc, ← e1, m1, Category.assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isGrpPullback_id_of_loc {S : Scheme.{0}} {A A' : Over S} [GrpObj A] [GrpObj A'] (φ : A.left ⟶ A'.left) [IsIso φ]
     (w : φ ≫ A'.hom = A.hom)
@@ -109,7 +109,7 @@ theorem isGrpPullback_id_of_loc {S : Scheme.{0}} {A A' : Over S} [GrpObj A] [Grp
   rw [← m2, e2, ← Category.assoc, ← e1, m1, Category.assoc]
 
 /- English proof (translation)
-Introduce `S A A' _ _ φ hφ w h`. Conclude with `isGrpPullback_id_of_loc φ w h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_local_on_base : ∀ (S : Scheme.{0}) (A A' : Over S) [GrpObj A] [GrpObj A'] (φ : A.left ⟶ A'.left), IsIso φ → φ ≫ A'.hom = A.hom → (∀ p : S, ∃ (V : Scheme.{0}) (x : V ⟶ S) (B : Over V) (_ : GrpObj B) (a : B.left ⟶ A.left), IsOpenImmersion x ∧ p ∈ Set.range x ∧ IsGrpPullback B A x a ∧ IsGrpPullback B A' x (a ≫ φ)) → IsGrpPullback A A' (𝟙 S) φ := by
   intro S A A' _ _ φ hφ w h

@@ -8,25 +8,23 @@ namespace GlobalTheory
 open GroundTheory.LocalField IsLocalRing in
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ _ _ _ _ _ he h2`. Use `haveI : IsUnramified K L := ⟨he⟩`. Establish `memK : ∀ x : K, x ∈ 𝒪[K] ↔ x ≤ᵥ 1` using `fun x ↦ by`. Rewrite using `[Valuation.mem_integer_iff, ← map_one (ValuativeRel.valuation K), ← Valuation.vle_iff_le]`. Establish `memL : ∀ x : L, x ∈ 𝒪[L] ↔ x ≤ᵥ 1` using `fun x ↦ by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.mem_integer_iff, ← map_one (ValuativeRel.valuation L), ← Valuation.vle_iff_le]`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Establish `hϖ0 : (ϖ : K) ≠ 0` using `by exact_mod_cast hϖ.ne_zero`. Use `⟨(ϖ : K), hϖ0, (memK _).1 ϖ.2, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv : ValuativeRel.valuation K (ϖ : K) = 1` using `le_antisymm ((Valuation.vle_iff_le _).1 ((memK _).1 ϖ.2) |>.trans_eq (map_one _)) ((map_one (ValuativeRel.valuation K)).symm.trans_le ((Valuation.vle_iff_le _).1 h1))`. Conclude with `hϖ.not_isUnit ((Valuation.integer.integers _).isUnit_iff_valuation_eq_one.2 hv)`. Introduce and unpack `⟨y, hy⟩`. Establish `h` using `ord_norm (K := K) y`. Rewrite `h` using `[hy, ord_uniformizer hϖ, IsUnramified.residueDegree_eq_finrank K L, h2]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `y hy`. Establish `hπ` using `irreducible_algebraMap_of_isUnramified (L := L) hϖ`. Use `set y' : 𝒪[L] := ⟨y, (memL y).2 hy⟩`. Distinguish the cases in `hu : IsUnit y'`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `right`. Use `⟨((hu.unit⁻¹ : 𝒪[L]ˣ) : 𝒪[L]), (memL _).1 (hu.unit⁻¹ : 𝒪[L]ˣ).1.2, ?_⟩` and prove the remaining obligations. Establish `h` using `hu.unit.mul_inv`. Rewrite `h` using `[IsUnit.unit_spec]`. Use `congrArg (fun u : 𝒪[L] ↦ (u : L)) h` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one] at this`. Conclude with `this`. Use `left`. Establish `hm : y' ∈ maximalIdeal 𝒪[L]` using `(mem_maximalIdeal y').2 hu`. Rewrite `hm` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hm`. Use `⟨(c : L), (memL _).1 c.2, ?_⟩` and prove the remaining obligations. Use `congrArg (fun u : 𝒪[L] ↦ (u : L)) hc` as an intermediate fact. Simplify using `only [y', MulMemClass.coe_mul, coe_algebraMap_integer] at this`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s hs`. Take `⟨a, ha⟩` from `trace_integer_surjective (K := K) (L := L) ⟨s, (memK s).2 hs⟩`. Use `⟨(a : L), (memL _).1 a.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← coe_trace_integer, ha]`. Introduce `s hs1 hs2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set s' : 𝒪[K] := ⟨s, (memK s).2 hs1⟩`. Establish `hv : ValuativeRel.valuation K s = 1` using `le_antisymm ((Valuation.vle_iff_le _).1 hs1 |>.trans_eq (map_one _)) ((map_one (ValuativeRel.valuation K)).symm.trans_le ((Valuation.vle_iff_le _).1 hs2))`. Establish `hu : IsUnit s'` using `(Valuation.integer.integers _).isUnit_iff_valuation_eq_one.2 hv`. Take `⟨w, hw⟩` from `normIntegerUnits_surjective (K := K) (L := L) hu.unit`. Use `⟨((w : 𝒪[L]) : L), (memL _).1 (w : 𝒪[L]).2, ?_⟩` and prove the remaining obligations.
-
-Use `congrArg (fun u : 𝒪[K]ˣ ↦ ((u : 𝒪[K]) : K)) hw` as an intermediate fact. Simplify using `only [coe_normIntegerUnits_eq, IsUnit.unit_spec] at this`. Rewrite using `[← coe_norm_integer]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem unramified_quadratic_uniformizer_trace_norm : ∀ (K L : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L], GroundTheory.LocalField.ramificationIndex K L = 1 → Module.finrank K L = 2 → ∃ ϖ : K, ϖ ≠ 0 ∧ ϖ ≤ᵥ 1 ∧ ¬ (1 : K) ≤ᵥ ϖ ∧ (¬ ∃ y : L, Algebra.norm K y = ϖ) ∧ (∀ y : L, y ≤ᵥ 1 → (∃ z : L, z ≤ᵥ 1 ∧ y = algebraMap K L ϖ * z) ∨ ∃ z : L, z ≤ᵥ 1 ∧ y * z = 1) ∧ (∀ s : K, s ≤ᵥ 1 → ∃ z : L, z ≤ᵥ 1 ∧ Algebra.trace K L z = s) ∧ ∀ s : K, s ≤ᵥ 1 → 1 ≤ᵥ s → ∃ w : L, w ≤ᵥ 1 ∧ Algebra.norm K w = s := by
   intro K L _ _ _ _ _ _ _ _ _ _ _ he h2

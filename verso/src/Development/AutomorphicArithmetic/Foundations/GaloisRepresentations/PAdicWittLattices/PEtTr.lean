@@ -6,15 +6,13 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `l _ B hl n i Z Y p q s _ _ W r c hc J _ σ hσ hsp x`. Take `⟨hsc, hiso⟩` from `hsp`. Establish `hT` using `UpperTheory.Gal.TranscendenceTraces.adic.2.2.2.2.2.2.2.2.2`. Set `e` to `Fintype.equivFin J`. Establish `hiso' : IsIso (Sigma.desc fun k : Fin (Fintype.card J) => pullback.lift (σ (e.symm k)) (𝟙 W) (by rw [hsc, Category.id_comp]))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hEq : (Sigma.desc fun k : Fin (Fintype.card J) => pullback.lift (σ (e.symm k)) (𝟙 W) (by rw [hsc, Category.id_comp])) = (Sigma.reindex e.symm (fun _ : J => W)).hom ≫ Sigma.desc fun j => pullback.lift (σ j) (𝟙 W) (by rw [hsc, Category.id_comp])`. Use `Sigma.hom_ext _ _ (fun k => ?_)` and prove the remaining obligations. Rewrite using `[Sigma.ι_desc]`. Establish `h4` using `Sigma.ι_reindex_hom_assoc (ε := e.symm) (f := fun _ : J => W) (b := k) (h := Sigma.desc fun j => pullback.lift (σ j) (𝟙 W) (by rw [hsc, Category.id_comp]))`. Rewrite `h4` using `[Sigma.ι_desc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h4.symm`. Rewrite using `[hEq]`. Use `infer_instance`. Establish `hlZ : IsUnit ((l : Γ(Z, ⊤)))`. Simplify using `using hl.map (Scheme.Hom.appTop p).hom`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hT l n i s hlZ W c (Fintype.card J) (fun k => σ (e.symm k)) (fun k => hsc _) hiso'`. Establish `h2 : ∀ y : HQ l (sch.obj Y) n i, pullHQ l (sch.map c) n i (TranscendenceTraces.trHQ l s (TranscendenceTraces.Wt.const Y 1) n i y) = ∑ j, pullHQ l (sch.map (σ j)) n i y`. Introduce `y`. Establish `h3` using `LinearMap.congr_fun h1 y`. Rewrite `h3` using `[LinearMap.comp_apply, LinearMap.sum_apply]`.
-
-Rewrite using `[h3]`. Conclude with `Equiv.sum_comp e.symm (fun j => pullHQ l (sch.map (σ j)) n i y)`. Conclude with `h2 x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pEtTr :
     EtTr := by

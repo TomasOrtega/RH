@@ -5,27 +5,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D hD X T hOn k₀ hk hr hfix`. Take `⟨hne, -, -, -, -, -, hrb, -, -⟩` from `barFacts D hD`. Take `⟨-, -, -, -, haw⟩` from `away D hD`. Establish `hH : ∀ g : G T.F Ω, Raw.bar D.Psi (resQ T.F g) = ((X.φ (resQ T.F g) : ℤ) : ResidueField c.O)` using `fun g => (X.mem_H.1 (hOn.1 ▸ resQ_mem T.F g)).1`. Establish `hps : ∀ g : G T.F Ω, T.rb wPs g = ((X.φ (resQ T.F g) : ℤ) : ResidueField c.O)` using `fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hrb, hH]`. Apply the tactic sequence `rcases Int.units_eq_one_or (X.φ (resQ T.F g)) with h | h <;> rw [h] <;> cases T.pr <;> simp [wPs]`. Establish `hal : ∀ g : G T.F Ω, T.rb wAl g = Raw.bar D.ξ (resQ T.F g)` using `fun g => by`. Rewrite using `[hrb]`. Apply the tactic sequence `cases T.pr <;> simp [wAl]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hiff : ∀ g : G T.F Ω, T.rb wPs g = 1 ↔ X.φ (resQ T.F g) = 1` using `fun g => by`. Rewrite using `[hps]`. Apply the tactic sequence `rcases Int.units_eq_one_or (X.φ (resQ T.F g)) with h | h <;> rw [h]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h'`. Conclude with `absurd (by simpa using h') hne`. Introduce `h'`. Conclude with `absurd h' (by decide)`. Establish `key : ∀ q ∈ D.S, ∀ A : ValuationSubring Ω, A.valuation (q : Ω) < 1 → ∀ g ∈ Dec (F` using `ℚ) A, Raw.bar D.Psi g = 1 → X.κ g = 1 → ∃ s : G T.F Ω, resQ T.F s = g := fun q hq A hA g hg h1 h2 => by`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a : X.φ g = 1` using `X.hφ.split q hq A hA hg`. Establish `b : X.η g = 1` using `X.hη.split q (Finset.mem_insert_of_mem hq) A hA hg`. Establish `d : X.η' g = 1` using `X.hη'.split q (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem hq)) A hA hg`. Use `exists_resQ ?_` and prove the remaining obligations. Rewrite using `[hOn.1, X.mem_H]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, b.trans d.symm, h2⟩` and prove the remaining obligations. Rewrite using `[h1, a]`. Simplify using the standard rewrite rules. Use `⟨fun g => ?_, fun A g hg => ?_, fun A hA g hg => ?_, ⟨k₀, hk, hr, fun p hp A hA => ?_, fun g => ?_⟩, X.ord, X.xi, fun A hA => ?_, fun A hA => ?_⟩` and prove the remaining obligations. Rewrite using `[hps]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or (X.φ (resQ T.F g)) with h | h <;> rw [h] <;> simp`. Establish `hg'` using `(resQ_Ine T.F A g).1 hg`. Distinguish the cases in `hA : A.valuation (X.p₃ : Ω) < 1`. Rewrite using `[hps, ← hH, Raw.bar, ((haw A X.p₃ X.hφ.prime X.hφ.nm hA).2 _ hg').1]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hiff g).2 (X.hφ.unr A hA hg')`. Conclude with `(hiff g).2 (X.hφ.split l hD.l_mem A hA ((resQ_Dec T.F A g).1 hg))`. Rewrite using `[hfix]`. Use `X.hφ.split p ?_ A hA` and prove the remaining obligations. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hp`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `hp with rfl | rfl` into its components or cases. Conclude with `hD.two_mem`. Conclude with `hD.l_mem`. Rewrite using `[hfix, MonoidHom.mem_ker]`. Conclude with `hiff g`.
-
-Take `⟨g, hg, h1, h2, h3⟩` from `X.bigL A hA`. Take `⟨s, rfl⟩` from `key l hD.l_mem A hA g hg h1 h2`. Conclude with `⟨s, (resQ_Dec T.F A s).2 hg, by rw [hal]; exact h3⟩`. Take `⟨g, hg, h1, h2, h3⟩` from `X.big2 A hA`. Take `⟨s, rfl⟩` from `key 2 hD.two_mem A (by exact_mod_cast hA) g (Ine_le_Dec A hg) h1 h2`.
-
-Conclude with `⟨s, (resQ_Ine T.F A s).2 hg, by rw [hal]; exact h3⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.two2 :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (X : Set2 D) (T : Tower D), X.On T → ∀ k₀ : IntermediateField ℚ Ω, Module.finrank ℚ k₀ = 2 → IsTotallyReal k₀ → k₀.fixingSubgroup = X.φ.ker → T.Two := by

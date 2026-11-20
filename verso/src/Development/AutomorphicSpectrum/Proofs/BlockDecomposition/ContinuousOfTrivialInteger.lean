@@ -11,9 +11,9 @@ namespace GlobalTheory.CompanionTheory.JSBound
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Use `IsLocallyConstant.continuous ?_` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨(fun y => y - x) ⁻¹' (𝒪[F] : Set F), (Valuation.isOpen_integer).preimage (by fun_prop), ?_, ?_⟩` and prove the remaining obligations. Simplify using `using (𝒪[F]).zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `y hy`. Establish `hxy : y = x + (y - x)` using `by ring`. Rewrite using `[hxy, AddChar.map_add_eq_mul, h _ hy, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem continuous_of_trivial_integer {ψ : AddChar F ℂ} (h : ∀ x ∈ 𝒪[F], ψ x = 1) : Continuous ψ := by
   refine IsLocallyConstant.continuous ?_
@@ -27,13 +27,13 @@ theorem continuous_of_trivial_integer {ψ : AddChar F ℂ} (h : ∀ x ∈ 𝒪[F
     rw [hxy, AddChar.map_add_eq_mul, h _ hy, mul_one]
 
 /- English proof (translation)
-The claim follows from `pow_ne_zero _ ((Valuation.ne_zero_iff _).mp (valuation_uniformizer_ne_zero F))`.
+A detailed English derivation is pending.
 -/
 theorem uniformizer_pow_ne_zero (M : ℕ) : (uniformizer F : F) ^ M ≠ 0 :=
   pow_ne_zero _ ((Valuation.ne_zero_iff _).mp (valuation_uniformizer_ne_zero F))
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[lat, Measures.mem_box]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lat_eq_preimage (m M : ℕ) : lat F m M =
     (Homeomorph.smulOfNeZero ((uniformizer F : F) ^ M) (uniformizer_pow_ne_zero M)) ⁻¹'
@@ -42,21 +42,21 @@ theorem lat_eq_preimage (m M : ℕ) : lat F m M =
   simp [lat, Measures.mem_box]
 
 /- English proof (translation)
-Rewrite using `[lat_eq_preimage]`. Conclude with `Measures.isOpen_box.preimage (Homeomorph.continuous _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_lat (m M : ℕ) : IsOpen (lat F m M) := by
   rw [lat_eq_preimage]
   exact Measures.isOpen_box.preimage (Homeomorph.continuous _)
 
 /- English proof (translation)
-Rewrite using `[lat_eq_preimage]`. Conclude with `(Homeomorph.isCompact_preimage _).2 Measures.isCompact_box`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_lat (m M : ℕ) : IsCompact (lat F m M) := by
   rw [lat_eq_preimage]
   exact (Homeomorph.isCompact_preimage _).2 Measures.isCompact_box
 
 /- English proof (translation)
-Introduce `i`. Simplify using `using (𝒪[F]).zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zero_mem_lat (m M : ℕ) : (0 : Fin m → F) ∈ lat F m M := by
   intro i
@@ -65,7 +65,7 @@ theorem zero_mem_lat (m M : ℕ) : (0 : Fin m → F) ∈ lat F m M := by
 variable [MeasurableSpace F] [BorelSpace F] (μ : Measure F) [μ.IsAddHaarMeasure]
 
 /- English proof (translation)
-Use `haveI := Measures.sigmaCompactSpace F`. Establish `h0` using `(isOpen_lat (F := F) m M).measure_ne_zero (Measure.pi fun _ : Fin m => μ) ⟨0, zero_mem_lat m M⟩`. Establish `h1` using `(isCompact_lat (F := F) m M).measure_lt_top (μ := Measure.pi fun _ : Fin m => μ)`. Conclude with `ENNReal.toReal_pos h0 h1.ne`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lat_measure_pos (m M : ℕ) :
     0 < (Measure.pi fun _ : Fin m => μ).real (lat F m M) := by
@@ -76,13 +76,13 @@ theorem lat_measure_pos (m M : ℕ) :
   exact ENNReal.toReal_pos h0 h1.ne
 
 /- English proof (translation)
-Use `haveI := Measures.sigmaCompactSpace F`. Use `haveI := Measures.metrizableSpace F`. Use `set ν : Measure (Fin m → F) := Measure.pi fun _ => μ with hν`. Use `set L := Measures.glEquiv g with hL`. Set `e : (Fin m → F) ≃ᵐ (Fin m → F)` to `(Homeomorph.smul L).toMeasurableEquiv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `he : ∀ x, e x = (g : Matrix (Fin m) (Fin m) F) *ᵥ x` using `fun x => Measures.glEquiv_apply g x`. Establish `hc : distribHaarChar (Fin m → F) L = Measures.modulus (g : Matrix (Fin m) (Fin m) F).det`. Rewrite using `[hL, Measures.distribHaarChar_glEquiv, ← Measures.modulus_units]`. Both sides reduce to the same expression. Establish `hmap : ν.map e.symm = (Measures.modulus (g : Matrix (Fin m) (Fin m) F).det) • ν`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Measure.ext fun s _ => ?_` and prove the remaining obligations. Establish `hs : e.symm ⁻¹' s = L • s` using `(e.image_eq_preimage_symm s).symm`. Rewrite using `[e.symm.map_apply, hs, ← distribHaarChar_mul ν L s, hc, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `himg : (fun x => (g : Matrix (Fin m) (Fin m) F) *ᵥ x) '' A = e.symm ⁻¹' A`. Rewrite using `[← e.image_eq_preimage_symm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Set.image_congr fun x _ => (he x).symm`. Establish `key` using `setIntegral_map_equiv (μ := ν) e.symm (fun x => f (e x)) A`. Simplify using `only [MeasurableEquiv.apply_symm_apply] at key`. Rewrite using `[himg, ← key, hmap, Measure.restrict_smul, integral_smul_nnreal_measure]`. Simplify using `only [he, NNReal.smul_def, Complex.real_smul]`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_image_mulVec {m : ℕ} (g : GL (Fin m) F) (A : Set (Fin m → F))
     (f : (Fin m → F) → ℂ) :
@@ -113,7 +113,7 @@ theorem setIntegral_image_mulVec {m : ℕ} (g : GL (Fin m) F) (A : Set (Fin m �
   simp only [he, NNReal.smul_def, Complex.real_smul]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ μ _ ψ hψ`. Use `⟨continuous_of_trivial_integer hψ.1, fun m => ⟨fun M => ?_, fun g A f _ => ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨isCompact_lat m M, isOpen_lat m M, (isOpen_lat m M).measurableSet, lat_measure_pos μ m M⟩`. Conclude with `setIntegral_image_mulVec μ g A f`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem l0 : L0 := by
   intro F _ _ _ _ _ _ μ _ ψ hψ

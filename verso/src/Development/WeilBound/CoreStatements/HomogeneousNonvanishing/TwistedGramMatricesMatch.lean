@@ -17,9 +17,9 @@ namespace GlobalTheory.CompanionTheory.Ar.SpecStalkMap
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Apply `(PrimeSpectrum.le_iff_specializes (R := R) _ _).1` to reduce the goal to its premises. Introduce `a ha`. Establish `e : ((Spec.map φ).base (IsLocalRing.closedPoint Ω)) = PrimeSpectrum.comap φ.hom (IsLocalRing.closedPoint Ω)` using `rfl`. Express the relevant statement in the definitionally equal form `a ∈ ((Spec.map φ).base (IsLocalRing.closedPoint Ω)).asIdeal at ha`. Rewrite `ha` using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : φ.hom a = 0`. Assume the negation of the conclusion as `h`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 ha (isUnit_iff_ne_zero.2 h)`. Rewrite using `[show a = 0 from hφ (by rw [h0, map_zero])]`. Conclude with `q.asIdeal.zero_mem`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genPt_specializes {R : CommRingCat} {Ω : Type} [Field Ω] (φ : R ⟶ CommRingCat.of Ω)
     (hφ : Function.Injective φ.hom) (q : Spec R) : genPt (Spec.map φ) ⤳ q := by
@@ -38,7 +38,7 @@ theorem genPt_specializes {R : CommRingCat} {Ω : Type} [Field Ω] (φ : R ⟶ C
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_cast {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f f' : S' ⟶ S} (m : SABMap t' t f)
     (h : f = f') : ∃ m' : SABMap t' t f', m'.φ = m.φ := by
@@ -46,7 +46,7 @@ theorem exists_cast {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f f' : S'
   exact ⟨m, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specMap_fromSpecStalk {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (q : X)
     (h : ξ (IsLocalRing.closedPoint (CommRingCat.of Ω)) ⤳ q) :
@@ -55,55 +55,55 @@ theorem specMap_fromSpecStalk {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec
   exact Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ
 
 /- English proof (translation)
-The claim follows from `m.cart.1.hom_ext h0 h1`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext' {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f)
     {W : Scheme.{0}} {k l : W ⟶ t'.G.left} (h0 : k ≫ m.φ = l ≫ m.φ) (h1 : k ≫ t'.G.hom = l ≫ t'.G.hom) : k = l :=
   m.cart.1.hom_ext h0 h1
 
 /- English proof (translation)
-The claim follows from `m.cart.1.w`.
+A detailed English derivation is pending.
 -/
 theorem phi_w {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) :
     m.φ ≫ t.G.hom = t'.G.hom ≫ f :=
   m.cart.1.w
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O O' _ _ β β' Y Y' g Φ n S Ω _ K _ J _ y A A' e x x' hβ hβ' hΦ hξ hx hx' h1 h2 _ _ _ t tΩ k m mA' u u' M₁ φ hu hu' hn _ htie _ _ z hz r b Γ`. Establish `hzq : A'.ξ (IsLocalRing.closedPoint (CommRingCat.of Ω)) ⤳ centre z` using `A'.all _`. Set `p : Cpt A'.ξ` to `⟨centre z, hzq⟩`. Take `⟨hjm', hint'⟩` from `GlobalTheory.T.hodge_cpt_interior_iff E H D l Xo c O' β' Y' S Ω K J y A' z hβ'`. Take `⟨hjm, -⟩` from `GlobalTheory.T.hodge_cpt_interior_iff E H D l Xo c O β Y S Ω K J y A (z ≫ e.hom) hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u'p, hu'p⟩` from `hint'.1 hz`. Take `⟨ΦF, ν, hΦ1, hΦ2, hν⟩` from `PositivityTheory.UnitarySelfGeneration.tw_phiF E H D l Xo c Y.oF Y.m0 g Φ n hΦ`. Establish `hxx : x' = x ≫ ΦF.hom` using `pullback.hom_ext (by rw [Category.assoc, hΦ1, h1]) (by rw [Category.assoc, hΦ2, h2])`. Establish `: IsDomain (A'.X.presheaf.stalk (centre z))` using `Function.Injective.isDomain (genMap A'.ξ p) (A'.tie.gen.inj p)`. Set `ξp : Sp Ω ⟶ Spec (A'.X.presheaf.stalk (centre z))` to `Spec.map (A'.X.presheaf.stalkSpecializes hzq ≫ Scheme.stalkClosedPointTo A'.ξ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hξp : ξp ≫ A'.X.fromSpecStalk (centre z) = A'.ξ` using `specMap_fromSpecStalk A'.ξ _ hzq`. Establish `hgen : ∀ q, genPt ξp ⤳ q` using `genPt_specializes _ (A'.tie.gen.inj p)`. Establish `hξu' : ξp ≫ u'p = x'`. Use `hjm'` as an intermediate fact. Conclude with `(cancel_mono Y'.j).1 (by rw [Category.assoc, hu'p, ← Category.assoc, hξp, hx'])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨up, hup_def⟩ : ∃ up, up = u'p ≫ ΦF.inv` from `⟨_, rfl⟩`. Establish `hξup : ξp ≫ up = x`. Rewrite using `[hup_def, ← Category.assoc, hξu', hxx, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Establish `hup : up ≫ Y.j = A'.X.fromSpecStalk (centre z) ≫ e.hom ≫ A.f`. Use `GlobalTheory.T.eq_of_eq_generic_projective O (Spec (A'.X.presheaf.stalk (centre z))) Y.X Y.s Ω ξp _ _ Y.proj hgen ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hξup, ← hx, reassoc_of% hξp, ← hξ, Category.assoc]`. Choose the witnesses or unpack the hypotheses as in `⟨tp, π⟩ : ∃ tp : SAB H (Spec (A'.X.presheaf.stalk (centre z))), Nonempty (SABMap tp Y.oF.t up) := by`. Take `⟨_, _, _, _, _, π, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.proved_CubePullSt up Y.oF.t`. Conclude with `⟨_, ⟨π⟩⟩`. Take `⟨π⟩` from `π`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ A.m k`. Take `⟨πY, hπY⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Y.m π`. Take `⟨πY', hπY'⟩` from `exists_cast πY (show up ≫ (Y.jQ ≫ pullback.fst _ _) = A'.X.fromSpecStalk (centre z) ≫ (e.hom ≫ A.f) from hup)`. Take `⟨mp, hmp⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ a πY'`. Take `⟨m0c, hm0c⟩` from `exists_cast Y.m0.toSABMap (Category.id_comp (pullback.fst _ _)).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w0, hw0⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y'.m0.toSABMap m0c`. Take `⟨c1, hc1⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ ν (twistMap π g)`. Take `⟨c2, hc2⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ w0 c1`. Take `⟨c3, hc3⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Y'.m c2`. Take `⟨c3', hc3'⟩` from `exists_cast c3 (show ((up ≫ ΦF.hom) ≫ 𝟙 _) ≫ (Y'.jQ ≫ pullback.fst _ _) = A'.X.fromSpecStalk (centre z) ≫ A'.f by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.comp_id, hup_def]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc]`. Conclude with `hu'p)`. Take `⟨mp', hmp'⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ A'.m c3'`. Take `⟨νφ, hνφ⟩ : ∃ f : Y.oF.t.G.left ⟶ Y.oF.t.G.left, ν.φ = f` from `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨nφ, hnφ⟩ : ∃ f : Xo.univ.t.G.left ⟶ Xo.univ.t.G.left, n.φ = f` from `⟨_, rfl⟩`. Take `⟨u'φ, hu'φ⟩ : ∃ f : tΩ.G.left ⟶ Y'.oF.t.G.left, u'.φ = f` from `⟨_, rfl⟩`. Take `⟨mAφ, hmAφ⟩ : ∃ f : tΩ.G.left ⟶ A'.t.G.left, mA'.φ = f` from `⟨_, rfl⟩`. Take `⟨c1φ, hc1φ⟩ : ∃ f : tp.G.left ⟶ Y.oF.t.G.left, c1.φ = f` from `⟨_, rfl⟩`. Take `⟨c2φ, hc2φ⟩ : ∃ f : tp.G.left ⟶ Y'.oF.t.G.left, c2.φ = f` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c3φ, hc3φ⟩ : ∃ f : tp.G.left ⟶ Y'.t.G.left, c3.φ = f` from `⟨_, rfl⟩`. Take `⟨c3'φ, hc3'φ⟩ : ∃ f : tp.G.left ⟶ Y'.t.G.left, c3'.φ = f` from `⟨_, rfl⟩`. Take `⟨mp'φ, hmp'φ⟩ : ∃ f : tp.G.left ⟶ A'.t.G.left, mp'.φ = f` from `⟨_, rfl⟩`. Establish `F1 : νφ ≫ Y.m0.toSABMap.φ = Y.m0.toSABMap.φ ≫ nφ` using `by subst hνφ hnφ; exact hν`. Establish `F2 : u'φ ≫ Y'.m0.toSABMap.φ = u.φ ≫ Y.m0.toSABMap.φ ≫ nφ` using `by subst hu'φ hnφ; exact hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `F3 : νφ ≫ Y.oF.t.G.hom = Y.oF.t.G.hom ≫ ΦF.hom` using `by subst hνφ; exact phi_w ν`. Establish `F4 : u'φ ≫ Y'.oF.t.G.hom = tΩ.G.hom ≫ x'` using `by subst hu'φ; exact phi_w u'`. Establish `F5 : mAφ ≫ A'.m.φ = u'φ ≫ Y'.m.φ` using `by subst hmAφ hu'φ; exact hu'`. Establish `F7 : mAφ ≫ A'.t.G.hom = tΩ.G.hom ≫ A'.ξ` using `by subst hmAφ; exact phi_w mA'`. Establish `F8 : c1φ = π.φ ≫ νφ` using `by subst hc1φ hνφ; exact hc1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `F9 : c2φ = c1φ ≫ w0.φ` using `by subst hc2φ hc1φ; exact hc2`. Establish `WorkedExample : c3φ = c2φ ≫ Y'.m.φ` using `by subst hc3φ hc2φ; exact hc3`. Establish `LargeParameterEstimates : c3'φ = c3φ` using `by subst hc3'φ hc3φ; exact hc3'`. Establish `F12 : c3'φ = mp'φ ≫ A'.m.φ` using `by subst hc3'φ hmp'φ; exact hmp'`. Establish `InertPlaceConditions : mp'φ ≫ A'.t.G.hom = tp.G.hom ≫ A'.X.fromSpecStalk (centre z)` using `by subst hmp'φ; exact phi_w mp'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : u.φ ≫ νφ ≫ w0.φ = u'φ`. Use `hom_ext' Y'.m0.toSABMap ?_ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[← hw0, hm0c, F1, F2]`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[phi_w w0, Category.comp_id, F3, reassoc_of% (phi_w u), F4, hxx]`. Use `GlobalTheory.T.codim_one_gram_twist_agree E H g A'.X Ω A'.ξ p t A'.t tp mp mp' A.Li M₁ (Flat.lieModelOfEquiv A'.M φ) ?_ z rfl r b Γ` and prove the remaining obligations. Introduce `ev`. Take `⟨w, hw1, hw2⟩` from `htie ev`. Establish `hsq : (w.left ≫ u.φ) ≫ Y.oF.t.G.hom = (w.left ≫ tΩ.G.hom ≫ ξp) ≫ up`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[phi_w u, hξup]`. Establish `hl1` using `π.cart.1.lift_fst _ _ hsq`. Establish `hl2` using `π.cart.1.lift_snd _ _ hsq`. Generalize the expression as in `π.cart.1.lift _ _ hsq = vv at hl1 hl2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨vv, ?_, ?_⟩` and prove the remaining obligations. Use `hom_ext' a ?_ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[← hmp, hπY', hπY, reassoc_of% hl1, ← hu, reassoc_of% hw1, ha]`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[phi_w mp, reassoc_of% hl2, hξp, ← hw1, Category.assoc, phi_w m]`. Establish `F6 : w.left ≫ mAφ = (A'.M.pt (φ ev)).left` using `by subst hmAφ; exact hw2 show vv ≫ mp'.φ = (A'.M.pt (φ ev)).left`. Rewrite using `[hmp'φ]`. Use `hom_ext' A'.m ?_ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← F12, LargeParameterEstimates, WorkedExample, F9, F8]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% hl1, reassoc_of% key, ← F6, Category.assoc, F5]`. Simplify using `only [Category.assoc]`. Rewrite using `[InertPlaceConditions, reassoc_of% hl2, hξp, ← F6, Category.assoc, F7]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramAt_iff_of_tied : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F) (β' : O' →+* c.F)
@@ -230,7 +230,7 @@ namespace PositivityTheory.UnitarySelfGeneration
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.Ar.SpecStalkMap.gramAt_iff_of_tied`.
+A detailed English derivation is pending.
 -/
 theorem twisted_gram_matrices_match : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F) (β' : O' →+* c.F)

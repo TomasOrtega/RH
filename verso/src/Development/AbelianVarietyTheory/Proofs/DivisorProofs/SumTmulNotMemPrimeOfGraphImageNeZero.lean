@@ -11,13 +11,13 @@ open scoped TensorProduct
 namespace GlobalTheory.GraphLocal
 
 /- English proof (translation)
-Introduce `K κ κ' _ _ _ _ _ _ R π ρ E 𝔭 _ hle hR l a b w hw hc`. Set `g : Fin l → tens (κ'` to `κ') (placeAlg E) := fun i => ⟨(a i : K) ⊗ₜ 1 - 1 ⊗ₜ ρ (π (a i)), sub_mem (tmul_mem (hR _ (a i).2) 1) (tmul_mem (one_mem (placeAlg E)) _)⟩`. Set `bb : Fin l → tens (κ'` to `κ') (placeAlg E) := fun i => ⟨1 ⊗ₜ b i, tmul_mem (one_mem (placeAlg E)) _⟩`. Set `u : tens (κ'` to `κ') (placeAlg E) := ⟨1 ⊗ₜ (∑ i, ρ (π (a i)) * b i), tmul_mem (one_mem (placeAlg E)) _⟩`. Set `v : tens (κ'` to `κ') (placeAlg E) := ⟨1 ⊗ₜ (∑ i, ρ (π (a i)) * b i)⁻¹, tmul_mem (one_mem (placeAlg E)) _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hg : ∀ i, g i ∈ graphIdeal E R π ρ` using `fun i => Ideal.subset_span (Or.inr ⟨a i, rfl⟩)`. Establish `hsum : w - u = ∑ i, g i * bb i`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subalgebra.coe_sub, hw, AddSubmonoidClass.coe_finset_sum]`. Simplify using `only [g, bb, u, Subalgebra.coe_mul, sub_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, Finset.sum_sub_distrib, TensorProduct.tmul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `huv : u * v = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [u, v, Subalgebra.coe_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_inv_cancel₀ hc, Subalgebra.coe_one, Algebra.TensorProduct.one_def]`. Establish `hu : u ∉ 𝔭` using `fun h => one_notMem 𝔭 (huv ▸ 𝔭.mul_mem_right v h)`. Introduce `hwp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : w - u ∈ 𝔭` using `hle (hsum ▸ Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (hg i))`. Conclude with `hu (by simpa using 𝔭.sub_mem hwp hd)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_notMem_of_ne_zero : ∀ {K κ κ' : Type} [Field K] [Field κ] [Field κ'] [Algebra ℂ K] [Algebra ℂ κ] [Algebra ℂ κ']
     (R : Subring K) (π : R →+* κ) (ρ : κ →ₐ[ℂ] κ') (E : Place (algebraMap ℂ K))

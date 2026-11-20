@@ -11,15 +11,13 @@ open scoped NNReal
 namespace GlobalTheory.K5
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ h`. Take `⟨_, hdvr, hirr⟩` from `GlobalTheory.T.completed_laurent_isDVR_statement p`. Establish `hmax : IsLocalRing.maximalIdeal (O0 p) = Ideal.span {(p : O0 p)}` using `hirr.maximalIdeal_eq`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal (O0 p)) (O0 p) := by`. Rewrite using `[hmax]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.unramified_integers_adic_complete p`. Use `haveI := h.alg`. Take `⟨v, hv⟩` from `GlobalTheory.T.exists_valuation_le_one_iff_isIntegral_of_complete_dvr (O0 p) Ω h.inj`. Establish `hinv` using `GlobalTheory.T.valuation_algEquiv_apply_eq_of_le_one_iff_isIntegral (O0 p) Ω h.inj v hv`. Use `haveI : CharZero Ω := GlobalTheory.K5.Basic.charZero_of_isClo h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (p : Ω) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Use `⟨v, hv, hinv, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Valuation.pos_iff v).2 hp0`. Establish `hle : v (p : Ω) ≤ 1` using `(hv _).2 (by`. Use `GlobalTheory.K5.Basic.isInt_intCast (p := p) (Ω := Ω) (p : ℤ)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this)` using `[IsInt]`. Use `lt_of_le_of_ne hle ?_` and prove the remaining obligations. Introduce `heq`. Establish `hi : v (p : Ω)⁻¹ ≤ 1` using `by rw [map_inv₀, heq, inv_one]`. Establish `hint : IsInt p ((p : Ω)⁻¹)` using `(hv _).1 hi`.
-
-Conclude with `GlobalTheory.K5.Basic.not_cong_one_zero h 1 one_ne_zero ⟨(p : Ω)⁻¹, hint, by rw [sub_zero, pow_one, mul_inv_cancel₀ hp0]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_valuation_isInt : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω],
     IsClo p Ω → ∃ v : Valuation Ω ℝ≥0, (∀ x : Ω, v x ≤ 1 ↔ IsInt p x) ∧

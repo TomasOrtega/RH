@@ -38,7 +38,7 @@ def LiftLaws (θ : Γ → Γ → Γ → U) (ρ φ : Γ → U) (w : Γ → Γ) (a
   ∀ x y, φ (x * y) * φ 1 * (c3 ρ x y a / ρ 1 * quadQ θ θ w x y a) ^ k = φ x * φ y
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [quadQ, quadT, c3, h₁, h₂, map_mul, ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem quadQ_of_diff {p₁ p₂ q₁ q₂ : Γ → Γ → Γ → U} {e : Γ → Γ → U} (w : Γ →* Γ)
     (h₁ : ∀ x y z, p₁ x y z = q₁ x y z * (e (x * y) z / (e x z * e y z)))
@@ -49,7 +49,7 @@ theorem quadQ_of_diff {p₁ p₂ q₁ q₂ : Γ → Γ → Γ → U} {e : Γ →
   abel
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [quadN, h₁, h₂, map_inv, mul_inv_cancel, e₁, e₂, ofMul_mul, ofMul_div, ofMul_one]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem quadN_of_diff {p₁ p₂ q₁ q₂ : Γ → Γ → Γ → U} {e : Γ → Γ → U} (w : Γ →* Γ)
     (h₁ : ∀ x y z, p₁ x y z = q₁ x y z * (e (x * y) z / (e x z * e y z)))
@@ -61,17 +61,17 @@ theorem quadN_of_diff {p₁ p₂ q₁ q₂ : Γ → Γ → Γ → U} {e : Γ →
   abel
 
 /- English proof (translation)
-Simplify using `[quadQ, quadT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quadQ_one (w : Γ → Γ) (x y z : Γ) : quadQ (fun _ _ _ => (1 : U)) (fun _ _ _ => 1) w x y z = 1 := by simp [quadQ, quadT]
 
 /- English proof (translation)
-Simplify using `[quadN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quadN_one (w : Γ → Γ) (x : Γ) : quadN (fun _ _ _ => (1 : U)) (fun _ _ _ => 1) w x = 1 := by simp [quadN]
 
 /- English proof (translation)
-Establish `hP : ∀ a b, P a * P b = P (a * b)` using `fun a b => (map_mul P a b).symm`. Simplify using `only [c3, hP, h, map_mul g, map_div g]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem map_lineCoeffCubic (P : Γ →* Γ') (g : U →* U') {q : Γ → U} {q' : Γ' → U'} (h : ∀ x, q' (P x) = g (q x)) (x y z : Γ) :
     c3 q' (P x) (P y) (P z) = g (c3 q x y z) := by
@@ -79,7 +79,7 @@ theorem map_lineCoeffCubic (P : Γ →* Γ') (g : U →* U') {q : Γ → U} {q' 
   simp only [c3, hP, h, map_mul g, map_div g]
 
 /- English proof (translation)
-Establish `hP : ∀ a b, P a * P b = P (a * b)` using `fun a b => (map_mul P a b).symm`. Simplify using `only [quadQ, quadT, hP, hw, h₁, h₂, map_mul g, map_div g]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem quadQ_map (P : Γ →* Γ') (g : U →* U') {p₁ p₂ : Γ → Γ → Γ → U} {p₁' p₂' : Γ' → Γ' → Γ' → U'} {w : Γ → Γ}
     {w' : Γ' → Γ'} (hw : ∀ x, w' (P x) = P (w x)) (h₁ : ∀ x y z, p₁' (P x) (P y) (P z) = g (p₁ x y z))
@@ -89,7 +89,7 @@ theorem quadQ_map (P : Γ →* Γ') (g : U →* U') {p₁ p₂ : Γ → Γ → �
   simp only [quadQ, quadT, hP, hw, h₁, h₂, map_mul g, map_div g]
 
 /- English proof (translation)
-Establish `hP : ∀ a, (P a)⁻¹ = P a⁻¹` using `fun a => (map_inv P a).symm`. Simplify using `only [quadN, hw, hP, h₁, h₂, map_div g]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem quadN_map (P : Γ →* Γ') (g : U →* U') {p₁ p₂ : Γ → Γ → Γ → U} {p₁' p₂' : Γ' → Γ' → Γ' → U'} {w : Γ → Γ}
     {w' : Γ' → Γ'} (hw : ∀ x, w' (P x) = P (w x)) (h₁ : ∀ x y z, p₁' (P x) (P y) (P z) = g (p₁ x y z))
@@ -184,31 +184,31 @@ def evA (a : Fin m → Sm B n) : PS V m d →ₐ[V] PS V n d :=
   (exists_algHom_evC (fun p : Fin m × Fin d => (a p.1).1 p.2) (fun p => (a p.1).2 p.2)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_algHom_evC (fun p : Fin m × Fin d => (a p.1).1 p.2) (fun p => (a p.1).2 p.2)).choose_spec p`.
+A detailed English derivation is pending.
 -/
 theorem evA_X (a : Fin m → Sm B n) (p : Fin m × Fin d) : evA a (MvPowerSeries.X p) = (a p.1).1 p.2 := (exists_algHom_evC (fun p : Fin m × Fin d => (a p.1).1 p.2) (fun p => (a p.1).2 p.2)).choose_spec p
 
 /- English proof (translation)
-The claim follows from `(evC_eq_algHom (fun p : Fin m × Fin d => (a p.1).1 p.2) (fun p => (a p.1).2 p.2) (evA a) (evA_X a) f).symm`.
+A detailed English derivation is pending.
 -/
 theorem evA_apply (a : Fin m → Sm B n) (f : PS V m d) : evA a f = evV (fun j => (a j).1) f := (evC_eq_algHom (fun p : Fin m × Fin d => (a p.1).1 p.2) (fun p => (a p.1).2 p.2) (evA a) (evA_X a) f).symm
 
 /- English proof (translation)
-Rewrite using `[evA_apply]`. Apply the tactic sequence `exact congrArg (evV · f) (funext fun j => by fin_cases j <;> rfl)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smallPointsSubstitutionAlgHom_single_point (x : Sm B n) (f : PS V 1 d) : evA ![x] f = evV ![x.1] f := by
   rw [evA_apply]
   exact congrArg (evV · f) (funext fun j => by fin_cases j <;> rfl)
 
 /- English proof (translation)
-Rewrite using `[evA_apply]`. Apply the tactic sequence `exact congrArg (evV · f) (funext fun j => by fin_cases j <;> rfl)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smallPointsSubstitutionAlgHom_two_points (x y : Sm B n) (f : PS V 2 d) : evA ![x, y] f = evV ![x.1, y.1] f := by
   rw [evA_apply]
   exact congrArg (evV · f) (funext fun j => by fin_cases j <;> rfl)
 
 /- English proof (translation)
-Rewrite using `[evA_apply]`. Apply the tactic sequence `exact congrArg (evV · f) (funext fun j => by fin_cases j <;> rfl)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smallPointsSubstitutionAlgHom_three_points (x y z : Sm B n) (f : PS V 3 d) : evA ![x, y, z] f = evV ![x.1, y.1, z.1] f := by
   rw [evA_apply]
@@ -220,7 +220,7 @@ def Sm.subFun (b : Fin m → Sm B n) (x : Sm B m) : Sm B n :=
       (constantCoeff_evC_mem (fun p : Fin m × Fin d => (b p.1).1 p.2) (fun p => (b p.1).2 p.2) _ (x.2 i))⟩
 
 /- English proof (translation)
-Rewrite using `[evA_apply (fun j => Sm.subFun b (a j))]`. Conclude with `(evC_eq_algHom (fun p : Fin l × Fin d => (Sm.subFun b (a p.1)).1 p.2) (fun p => (Sm.subFun b (a p.1)).2 p.2) ((evA b).comp (evA a)) (fun p => by rw [AlgHom.comp_apply, evA_X]; rfl) f).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evA_evA' (b : Fin m → Sm B n) (a : Fin l → Sm B m) (f : PS V l d) :
     evA b (evA a f) = evA (fun j => Sm.subFun b (a j)) f := by
@@ -235,24 +235,24 @@ def Sm.sub (b : Fin m → Sm B n) : Sm B m →* Sm B n :=
     exact congrArg (evA · (B.G.F i)) (funext fun j => by fin_cases j <;> rfl))
 
 /- English proof (translation)
-The claim follows from `evA_evA' b a f`.
+A detailed English derivation is pending.
 -/
 theorem evA_evA (b : Fin m → Sm B n) (a : Fin l → Sm B m) (f : PS V l d) :
     evA b (evA a f) = evA (fun j => Sm.sub b (a j)) f := evA_evA' b a f
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun i => evA_X b (j, i))`.
+A detailed English derivation is pending.
 -/
 theorem Sm.sub_gen (b : Fin m → Sm B n) (j : Fin m) : Sm.sub b (Sm.gen B j) = b j := Subtype.ext (funext fun i => evA_X b (j, i))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun i => (evA b).commutes (α i))`.
+A detailed English derivation is pending.
 -/
 theorem Sm.sub_const (b : Fin m → Sm B n) (α : Fin d → V) (hα : Small α) :
     Sm.sub b (Sm.const B α hα) = Sm.const B α hα := Subtype.ext (funext fun i => (evA b).commutes (α i))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun i => by show evA b (evV ![x.1] (B.A.act o i)) = evV ![(Sm.sub b x).1] (B.A.act o i) rw [← smallPointsSubstitutionAlgHom_single_point, ← smallPointsSubstitutionAlgHom_single_point, evA_evA] exact congrArg (evA · (B.A.act o i)) (funext fun j => by fin_cases …`.
+A detailed English derivation is pending.
 -/
 theorem Sm.sub_act (b : Fin m → Sm B n) (o : O) (x : Sm B m) : Sm.sub b (Sm.act B o x) = Sm.act B o (Sm.sub b x) := Subtype.ext (funext fun i => by
     show evA b (evV ![x.1] (B.A.act o i)) = evV ![(Sm.sub b x).1] (B.A.act o i)
@@ -260,14 +260,14 @@ theorem Sm.sub_act (b : Fin m → Sm B n) (o : O) (x : Sm B m) : Sm.sub b (Sm.ac
     exact congrArg (evA · (B.A.act o i)) (funext fun j => by fin_cases j; rfl))
 
 /- English proof (translation)
-Rewrite using `[evA_apply]`. Conclude with `evC_eq_algHom _ (fun p => (Sm.gen B p.1).2 p.2) (AlgHom.id V _) (fun p => rfl) f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evA_gen (f : PS V n d) : evA (Sm.gen B) f = f := by
   rw [evA_apply]
   exact evC_eq_algHom _ (fun p => (Sm.gen B p.1).2 p.2) (AlgHom.id V _) (fun p => rfl) f
 
 /- English proof (translation)
-Rewrite using `[evA_apply]`. Conclude with `(evC_spec V (Fin m × Fin d) (Fin n × Fin d) (Fin n × Fin d) (fun p => (a p.1).1 p.2) (fun p => (a p.1).2 p.2)).2.2.1 (fun p => ha p.1 p.2) f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evA_eq_ev (a : Fin m → Sm B n) (ha : ∀ j i, MvPowerSeries.constantCoeff ((a j).1 i) = 0) (f : PS V m d) :
     evA a f = ev (fun j => (a j).1) f := by
@@ -289,7 +289,7 @@ def u2 (f : (PS V 2 d)ˣ) (x y : Sm B n) : (PS V n d)ˣ := evU ![x, y] f
 def u3 (f : (PS V 3 d)ˣ) (x y z : Sm B n) : (PS V n d)ˣ := evU ![x, y, z] f
 
 /- English proof (translation)
-The claim follows from `Units.ext (by show evA ![Sm.sub b x] f.val = evA b (evA ![x] f.val) rw [evA_evA] exact congrArg (evA · f.val) (funext fun j => by fin_cases j <;> rfl))`.
+A detailed English derivation is pending.
 -/
 theorem besselUnipotentSubgroup_zero_subsingleton (b : Fin m → Sm B n) (f : (PS V 1 d)ˣ) (x : Sm B m) : u1 f (Sm.sub b x) = evU b (u1 f x) := Units.ext (by
     show evA ![Sm.sub b x] f.val = evA b (evA ![x] f.val)
@@ -297,7 +297,7 @@ theorem besselUnipotentSubgroup_zero_subsingleton (b : Fin m → Sm B n) (f : (P
     exact congrArg (evA · f.val) (funext fun j => by fin_cases j <;> rfl))
 
 /- English proof (translation)
-The claim follows from `Units.ext (by show evA ![Sm.sub b x, Sm.sub b y] f.val = evA b (evA ![x, y] f.val) rw [evA_evA] exact congrArg (evA · f.val) (funext fun j => by fin_cases j <;> rfl))`.
+A detailed English derivation is pending.
 -/
 theorem unitSeriesValueTwoPoints_substitution (b : Fin m → Sm B n) (f : (PS V 2 d)ˣ) (x y : Sm B m) :
     u2 f (Sm.sub b x) (Sm.sub b y) = evU b (u2 f x y) := Units.ext (by
@@ -306,7 +306,7 @@ theorem unitSeriesValueTwoPoints_substitution (b : Fin m → Sm B n) (f : (PS V 
     exact congrArg (evA · f.val) (funext fun j => by fin_cases j <;> rfl))
 
 /- English proof (translation)
-The claim follows from `Units.ext (by show evA ![Sm.sub b x, Sm.sub b y, Sm.sub b z] f.val = evA b (evA ![x, y, z] f.val) rw [evA_evA] exact congrArg (evA · f.val) (funext fun j => by fin_cases j <;> rfl))`.
+A detailed English derivation is pending.
 -/
 theorem unitSeriesValueThreePoints_substitution (b : Fin m → Sm B n) (f : (PS V 3 d)ˣ) (x y z : Sm B m) :
     u3 f (Sm.sub b x) (Sm.sub b y) (Sm.sub b z) = evU b (u3 f x y z) := Units.ext (by
@@ -318,11 +318,11 @@ def ptOf {G : Over (Sp V)} (X : limO V d 1 ⟶ G) (a : Sm B n) : limO V d n ⟶ 
   Formalism.L2.Pj.homAt (𝟙 (Sp V)) (evA ![a]) ≫ X
 
 /- English proof (translation)
-Establish `hc : (evA b).comp (evA ![a]) = evA ![Sm.sub b a]` using `AlgHom.ext fun f => by`. Rewrite using `[AlgHom.comp_apply, evA_evA]`. Apply the tactic sequence `exact congrArg (evA · f) (funext fun j => by fin_cases j <;> rfl)`. Simplify using `only [ptOf]`. Rewrite using `[← Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext1`. Simplify using `only [Over.comp_left, Formalism.L2.Pj.homAt, Over.homMk_left]`. Rewrite using `[← hc]`. Unfold `spMap`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptOf_sub {G : Over (Sp V)} (X : limO V d 1 ⟶ G) (b : Fin m → Sm B n) (a : Sm B m) :
     Formalism.L2.Pj.homAt (𝟙 (Sp V)) (evA b) ≫ ptOf X a = ptOf X (Sm.sub b a) := by

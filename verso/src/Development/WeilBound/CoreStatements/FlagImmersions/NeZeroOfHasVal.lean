@@ -12,17 +12,15 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
   [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
 /- English proof (translation)
-Establish `hc0 : (∏ k, y ⟨k, c k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Establish `hle : Algebra.adjoin ℤ (Set.range fun j : (k : K) → J k => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩) ≤ chartRingZ y c`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `show (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩ ∈ chartRingZ y c`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `Subalgebra.prod_mem _ fun k _ => Algebra.subset_adjoin ⟨⟨k, j k⟩, rfl⟩`. Establish `hge : chartRingZ y c ≤ Algebra.adjoin ℤ (Set.range fun j : (k : K) → J k => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩)`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, i⟩, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Algebra.subset_adjoin ⟨Function.update c k i, ?_⟩` and prove the remaining obligations. Use `show (∏ k', y ⟨k', Function.update c k i k'⟩) / ∏ k, y ⟨k, c k⟩ = y ⟨k, i⟩ / y ⟨k, c k⟩`. Rewrite using `[← Finset.prod_div_distrib, Finset.prod_eq_single k]`. Rewrite using `[Function.update_self]`. Introduce `k' _ h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne h, div_self (hc k')]`. Simplify using the standard rewrite rules. Establish `hmem : a ∈ chartRingZ y c`. Use `hle ((T.ring c hc0 a).2 fun q hq => ?_)` and prove the remaining obligations. Take `⟨h1, -, h3⟩` from `GlobalTheory.T.regAt_fraction_noetherian_closed X Ω ξ T.gen q`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h4` using `h3 (hn q.1).2`. Set `φ : chartRingZ y c →+* regAt ξ q` to `(algebraMap (chartRingZ y c) Ω).codRestrict _ fun r => (T.ring c hc0 r).1 (hge r.2) q hq`. Establish `h5 : IsIntegral (regAt ξ q) a` using `IsIntegral.map_of_comp_eq φ (RingHom.id Ω) rfl ha`. Take `⟨r, rfl⟩` from `(isIntegrallyClosed_iff Ω).1 h4 h5`. Conclude with `r.2`.
-
-Unfold `chartRingZ at hmem`. Rewrite `hmem` using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `hmem`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_poly (T : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩)) (hn : IsNormalScheme X)
     (c : (k : K) → J k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {a : Ω} (ha : a ∈ integralClosure (chartRingZ y c) Ω) :
@@ -61,7 +59,7 @@ theorem exists_poly (T : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y �
 variable {z : Spec (CommRingCat.of ℂ) ⟶ X} {w : (Σ k, J k) → ℂ}
 
 /- English proof (translation)
-Take `⟨r, hr, e⟩` from `(h.2 k c (IsUnit.mk0 _ hc)).2 i`. Rewrite using `[e, mul_div_cancel_right₀ _ hc]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem val_ratio (h : CoordsAt ξ y z w) (k : K) (i c : J k) (hc : w ⟨k, c⟩ ≠ 0) :
     ValAt ξ z (y ⟨k, i⟩ / y ⟨k, c⟩) (w ⟨k, i⟩ / w ⟨k, c⟩) := by
@@ -69,9 +67,9 @@ theorem val_ratio (h : CoordsAt ξ y z w) (k : K) (i c : J k) (hc : w ⟨k, c⟩
   rwa [e, mul_div_cancel_right₀ _ hc]
 
 /- English proof (translation)
-Establish `: ∀ s : Finset K, ValAt ξ z (∏ k ∈ s, a k) (∏ k ∈ s, r k)` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CxVal.one hz`. Consider the case `insert k s hk ih`. Rewrite using `[Finset.prod_insert hk, Finset.prod_insert hk]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `CxVal.mul (h k) ih`. Conclude with `this _`.
+A detailed English derivation is pending.
 -/
 theorem val_prod (hz : genPt ξ ⤳ centre z) {a : K → Ω} {r : K → ℂ} (h : ∀ k, ValAt ξ z (a k) (r k)) :
     ValAt ξ z (∏ k, a k) (∏ k, r k) := by
@@ -85,7 +83,7 @@ theorem val_prod (hz : genPt ξ ⤳ centre z) {a : K → Ω} {r : K → ℂ} (h 
   exact this _
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using CxVal.one hz`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `CxVal.mul ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem val_pow (hz : genPt ξ ⤳ centre z) {a : Ω} {r : ℂ} (h : ValAt ξ z a r) (n : ℕ) : ValAt ξ z (a ^ n) (r ^ n) := by
   induction n with
@@ -96,11 +94,11 @@ def fn (y : (Σ k, J k) → Ω) (s : Ω) (m : ℕ) (k₀ : K) (i₀ : J k₀) (c
   s * (∏ k, y ⟨k, c k⟩) / y ⟨k₀, i₀⟩ ^ m
 
 /- English proof (translation)
-Establish `h1` using `CxVal.aeval hz (fun q : Σ k, J k => val_ratio h q.1 q.2 (c' q.1) (hc q.1)) p`. Establish `h2` using `val_prod hz fun k => val_ratio h k (c k) (c' k) (hc k)`. Establish `h3` using `val_pow hz (val_ratio h k₀ (c' k₀) i₀ hi) m`. Establish `hy` using `fun k => (h.2 k (c' k) (IsUnit.mk0 _ (hc k))).1`. Establish `hy0` using `(h.2 k₀ i₀ (IsUnit.mk0 _ hi)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (∏ k, y ⟨k, c' k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hy k`. Establish `hk` using `hy k₀`. Use `CxVal.mul (CxVal.mul h1 h2) h3 using 1` and compare the differences between its conclusion and the goal. Establish `hp' : aeval (fun q : Σ k, J k => y ⟨q.1, q.2⟩ / y ⟨q.1, c' q.1⟩) p = fn y s m k₀ (c' k₀) c'` using `hp`. Rewrite using `[hp', Finset.prod_div_distrib, div_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `fn`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
 -/
 theorem val_fn (hz : genPt ξ ⤳ centre z) (h : CoordsAt ξ y z w) {s : Ω} {m : ℕ} {k₀ : K} (i₀ : J k₀) (c c' : (k : K) → J k)
     (hc : ∀ k, w ⟨k, c' k⟩ ≠ 0) (hi : w ⟨k₀, i₀⟩ ≠ 0) {p : MRing J}
@@ -121,9 +119,9 @@ theorem val_fn (hz : genPt ξ ⤳ centre z) (h : CoordsAt ξ y z w) {s : Ω} {m 
   field_simp
 
 /- English proof (translation)
-Establish `e : ∀ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * a k - 1)) = y ⟨k, c k⟩ / y ⟨k, c k⟩ ^ ((m : ℤ) * a k)` using `fun k => by`. Rewrite using `[neg_sub, zpow_sub₀ (hc k), zpow_one]`. Simplify using `only [e, Finset.prod_div_distrib]`. Rewrite using `[Finset.prod_eq_single k₀ (f := fun k => y ⟨k, c k⟩ ^ ((m : ℤ) * a k))]`. Rewrite using `[ha.1, mul_one, zpow_natCast, fn, mul_div_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _ h`. Rewrite using `[ha.2 k h, mul_zero, zpow_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fn_eq [DecidableEq K] {s : Ω} {m : ℕ} {k₀ : K} {a : K → ℤ} (ha : a k₀ = 1 ∧ ∀ k, k ≠ k₀ → a k = 0)
     (c : (k : K) → J k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
@@ -138,17 +136,17 @@ theorem fn_eq [DecidableEq K] {s : Ω} {m : ℕ} {k₀ : K} {a : K → ℤ} (ha 
   · simp
 
 /- English proof (translation)
-Take `⟨dg, dh, g, h', hg, hh, hd, e1, hne, e2⟩` from `hs`. Establish `hy` using `fun k => (h.2 k (c k) (IsUnit.mk0 _ (hc k))).1`. Establish `V` using `fun f : MRing J => CxVal.aeval hz (fun q : Σ k, J k => val_ratio h q.1 q.2 (c q.1) (hc q.1)) f`. Establish `ey : y = fun q => y ⟨q.1, c q.1⟩ * (y ⟨q.1, q.2⟩ / y ⟨q.1, c q.1⟩)`. Use function extensionality and compare the values at `fun q => (mul_div_cancel₀ _ (hy q.1)).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `ew : w = fun q => w ⟨q.1, c q.1⟩ * (w ⟨q.1, q.2⟩ / w ⟨q.1, c q.1⟩)`. Use function extensionality and compare the values at `fun q => (mul_div_cancel₀ _ (hc q.1)).symm`. Establish `g1` using `aeval_blockScale hg (fun k => y ⟨k, c k⟩) fun q => y ⟨q.1, q.2⟩ / y ⟨q.1, c q.1⟩`. Establish `g2` using `aeval_blockScale hh (fun k => y ⟨k, c k⟩) fun q => y ⟨q.1, q.2⟩ / y ⟨q.1, c q.1⟩`. Establish `g3` using `aeval_blockScale hg (fun k => w ⟨k, c k⟩) fun q => w ⟨q.1, q.2⟩ / w ⟨q.1, c q.1⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `g1`, `g2` using `[← ey]`. Rewrite `g3` using `[← ew]`. Establish `key : aeval (fun q : Σ k, J k => y ⟨q.1, q.2⟩ / y ⟨q.1, c q.1⟩) g = aeval (fun q : Σ k, J k => y ⟨q.1, q.2⟩ / y ⟨q.1, c q.1⟩) p * aeval (fun q : Σ k, J k => y ⟨q.1, q.2⟩ / y ⟨q.1, c q.1⟩) h'`. Establish `hp' : aeval (fun q : Σ k, J k => y ⟨q.1, q.2⟩ / y ⟨q.1, c q.1⟩) p = s * ∏ k, y ⟨k, c k⟩ ^ (-a k)` using `hp`. Establish `h0 : (∏ k, y ⟨k, c k⟩ ^ dg k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy k)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (∏ k, y ⟨k, c k⟩ ^ dg k) * ∏ k, y ⟨k, c k⟩ ^ (-a k) = ∏ k, y ⟨k, c k⟩ ^ dh k`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hy k), hd k]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Use `mul_left_cancel₀ h0 ?_` and prove the remaining obligations. Rewrite using `[← g1, e1, g2, hp', ← h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3` using `CxVal.unique (key ▸ V g) (CxVal.mul (V p) (V h'))`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h0' : aeval (fun q : Σ k, J k => w ⟨q.1, q.2⟩ / w ⟨q.1, c q.1⟩) p = 0` using `h0`. Rewrite `e3` using `[h0', zero_mul]`. Rewrite `g3` using `[e3, mul_zero, e2]`. Conclude with `mul_ne_zero hv hne g3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_hasVal (hz : genPt ξ ⤳ centre z) (h : CoordsAt ξ y z w) {s : Ω} {a : K → ℤ} (c : (k : K) → J k)
     (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) {p : MRing J}

@@ -24,13 +24,13 @@ open Matrix
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Rewrite using `[← toV_crd X y, ← toV_crd X y', h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem crd_injective' {y y' : (VS D).V} (h : X.crd y = X.crd y') : y = y' := by
   rw [← toV_crd X y, ← toV_crd X y', h]
 
 /- English proof (translation)
-Use extensionality with `y`. Conclude with `crd_injective' X (by rw [h3, matE_crdC])`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem eq_matEC {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} {M : GL (Fin X.B.I.n) X.B.I.E}
     (h3 : ∀ y, X.crd (n y) = (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ X.crd y) : n = matEC X M := by
@@ -38,35 +38,31 @@ theorem eq_matEC {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} {M : GL (Fin X.B.I.n) 
   exact crd_injective' X (by rw [h3, matE_crdC])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hn`. Establish `hgtop : Formalism.HermitianLatticesTheory.gmap n (⊤ : Submodule (𝓞 D.host.E) (VS D).V) = ⊤`. Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.map_top]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.range_eq_top.2 n.surjective`. Conclude with `nLamNinf_holds D X u ⊤ x n hx ⟨⟨hn.1, hgtop⟩, hn.2.1, hn.2.2⟩`. Introduce `hν1`. Take `⟨M, hM, hinf, -, h3⟩` from `hx`. Establish `hn` using `eq_matEC X h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `hn` using the available equality. Take `⟨v⟩ : Nonempty (InfinitePlace X.B.I.F)` from `inferInstance`. Establish `hGv : ∀ y, uMat (x.1 v) *ᵥ Formalism.L2.SG.Pf.Vanish2.rvHom X.B.I v y = Formalism.L2.SG.Pf.Vanish2.rvHom X.B.I v ((M : Matrix _ _ _) *ᵥ y)`. Introduce `y`. Rewrite using `[Formalism.L2.SG.Pf.Vanish2.rvHom_apply, Formalism.L2.SG.Pf.Vanish2.rvHom_apply, hinf v]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `rv_mulVec X v _ y`. Establish `hsub : ∀ y, (uMat (x.1 v) - 1) *ᵥ rv X.B.I v y = rv X.B.I v (((M : Matrix _ _ _) - 1) *ᵥ y)` using `fun y => tr_sub (Formalism.L2.SG.Pf.Vanish2.rvHom X.B.I v) _ _ hGv y`. Establish `hcrdn : ∀ y, X.crd (matEC X M y - y) = ((M : Matrix _ _ _) - 1) *ᵥ X.crd y`. Introduce `y`. Rewrite using `[crd_sub', matE_crdC, Matrix.sub_mulVec, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hback : ∀ (y : (VS D).V) (T : Set (Fin D.R.rS)), ((M : Matrix _ _ _) - 1) *ᵥ X.crd y ∈ Submodule.span X.B.I.E (X.eR '' T) → matEC X M y - y ∈ Submodule.span D.host.E (X.eX '' T)`. Introduce `y T hy`. Rewrite `hy` using `[← hcrdn]`. Use `toV_span X hy` as an intermediate fact. Rewrite `this` using `[toV_crd]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hInN` using `hν1 v`. Use `⟨matE_isomC X M hM, ?_, ?_⟩` and prove the remaining obligations. Introduce `j x hx`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span D.host.E ((X.Fu u).e '' {i | i.1 < j + 1}) at hx`. Express the relevant statement in the definitionally equal form `_ ∈ Submodule.span D.host.E ((X.Fu u).e '' {i | i.1 < j})`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite `hx`, the goal using `[X.Fu_e]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, rfl⟩` from `hy`. Establish `h1` using `hInN.1.1 a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hsub]`. Establish `h2 : rv X.B.I v (((M : Matrix _ _ _) - 1) *ᵥ X.eR a) ∈ Submodule.span ℂ (rv X.B.I v '' (X.eR '' {b | b.1 < a.1}))`. Rewrite using `[Set.image_image]`. Conclude with `h1`. Establish `h3` using `rv_desc X v _ _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ((M : Matrix _ _ _) - 1) *ᵥ X.crd (X.eX a) ∈ Submodule.span X.B.I.E (X.eR '' {b | b.1 < j})`. Use `Submodule.span_mono (Set.image_mono fun b hb => ?_) h3` and prove the remaining obligations. Establish `: a.1 < j + 1` using `ha`. Use `show b.1 < j`. Establish `: b.1 < a.1` using `hb`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `hback _ _ h4`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add, add_sub_add_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`. Rewrite using `[map_smul, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ ha`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `x ∈ orth (VS D) (Submodule.span D.host.E (Set.range (X.Fu u).e)) at hx`. Express the relevant statement in the definitionally equal form `_ ∈ Submodule.span D.host.E (Set.range (X.Fu u).e)`. Rewrite `hx`, the goal using `[X.Fu_e]`. Establish `hzero : ∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.crd x)) = 0`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hJ_rv]`. Establish `h0 : hE X (X.eR a) (X.crd x) = 0`. Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[iota_hE, map_zero, HidaSetting.eR, toV_crd, toV_crd]`. Conclude with `(mem_orth_iff _ _).1 hx _ (Submodule.subset_span ⟨a, rfl⟩)`.
-
-Rewrite using `[h0, map_zero]`. Establish `h1` using `hInN.2 _ hzero`. Rewrite `h1` using `[hsub]`. Establish `huniv : {b : Fin D.R.rS | b.1 < D.R.rS} = Set.univ` using `Set.eq_univ_of_forall fun b => b.2`. Establish `h2 : rv X.B.I v (((M : Matrix _ _ _) - 1) *ᵥ X.crd x) ∈ Submodule.span ℂ (rv X.B.I v '' (X.eR '' {b | b.1 < D.R.rS}))`.
-
-Rewrite using `[Set.image_image]`. Conclude with `h1`. Establish `h3` using `hback x _ (rv_desc X v _ _ h2)`. Rewrite `h3` using `[huniv, Set.image_univ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nrat_iff (u : D.what₂.Word) {x : X.B.I.GA} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x n) :
     n ∈ NRat (lf D (X.Fu u)) ↔ x.1 ∈ X.NinfU u := by
@@ -156,7 +152,7 @@ open Formalism.L2.SG.NonRelPf
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.PairVal.sgUp`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.coe_castSucc, Fin.val_last, lt_self_iff_false, dif_neg, not_false_eq_true, add_zero]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -170,11 +166,11 @@ theorem sgUp_eq {E : Type} [Field E] [NumberField E] {r : ℕ} (A : Matrix (Fin 
   rfl
 
 /- English proof (translation)
-Establish `e : nxt X.eX (X.zu u) a = frame (lf D (X.Fu u)) a.succ` using `by show _ = (X.Fu u).fvec a.succ`. Rewrite using `[fvec_succ, X.Fu_e, X.flagZVector]`. Rewrite using `[e, hA, map_sum, Fin.sum_univ_castSucc]`. Establish `h1 : ∀ b : Fin D.R.rS, frame (lf D (X.Fu u)) b.castSucc = X.eX b`. Introduce `b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (X.Fu u).fvec b.castSucc = _`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc, X.Fu_e]`. Establish `h2 : frame (lf D (X.Fu u)) (Fin.last D.R.rS) = X.zu u` using `by show (X.Fu u).fvec (Fin.last _) = _`. Simplify using `only [FlagG.fvec, Fin.snoc_last, X.flagZVector]`. Simplify using `only [map_smul, smul_eq_mul, h1, h2, hTfe, (X.zu_orth u a).2, mul_zero, add_zero, mul_ite, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem root_entry (u : D.what₂.Word) (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (A : Formalism.L2.SG.PairVal.MatR D)
     (hA : ∀ b, n (frame (lf D (X.Fu u)) b) = ∑ a, A a b • frame (lf D (X.Fu u)) a) (a : Fin D.R.rS) :
@@ -195,9 +191,9 @@ theorem root_entry (u : D.what₂.Word) (n : (VS D).V ≃ₗ[D.host.E] (VS D).V)
   simp
 
 /- English proof (translation)
-Rewrite using `[psi_rat X u hx]`. Apply the tactic sequence `simp only [root_entry X u n A hA]`. Establish `hs : ∀ v, (∑ a : Fin D.R.rS, (Φ X v (A a.castSucc a.succ) + star (Φ X v (A a.castSucc a.succ)))) = X.B.I.φ v (X.ιE.symm (Formalism.L2.SG.PairVal.sgUp A)) + star (X.B.I.φ v (X.ιE.symm (Formalism.L2.SG.PairVal.sgUp A)))`. Introduce `v`. Rewrite using `[Finset.sum_add_distrib, ← star_sum, ← Φ_sum, ← sgUp_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [hs]`. Rewrite using `[Formalism.L2.SG.RealObj.PlaceEmbeddingTraceSums.TraceSum_holds D X X.B.g (X.ιE.symm _), RingEquiv.apply_symm_apply, X.g_eq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psi_eq (u : D.what₂.Word) {x : X.B.I.GA} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x n)
     (A : Formalism.L2.SG.PairVal.MatR D)
@@ -220,9 +216,9 @@ end GlobalTheory.RatIsomPoint
 namespace GlobalTheory.RatIsomPoint
 
 /- English proof (translation)
-Introduce `D X`. Use `⟨fun γ hγ => ?_, fun x y γ δ hx hy => ?_, fun u x n hx => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `Formalism.L2.SG.Pf.ratPt_holds D X γ hγ`. Conclude with `⟨x, hx, fun y hy => Formalism.L2.SG.TermOp.Vanish.ratLink_unique X hy hx⟩`. Conclude with `⟨Formalism.L2.SG.TermOp.Vanish.ratLink_mul X hx hy, Formalism.L2.SG.TermOp.Vanish.ratLink_inv X hx, Formalism.L2.SG.Pf.IdMeet.lin_eq_of_fst X hx hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨nrat_iff X u hx, fun _ A hA => psi_eq X u hx A hA⟩`.
+Supply the required witnesses or components.
 -/
 theorem ratLink_points : ∀ (D : D7) (X : HidaSetting D), (∀ γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT, ∃! x : X.B.I.GA, RatLink X x γ) ∧ (∀ x y γ δ, RatLink X x γ → RatLink X y δ → RatLink X (x * y) (γ * δ) ∧ RatLink X x⁻¹ γ⁻¹ ∧ (x.1 = y.1 → γ = δ)) ∧ ∀ (u : D.what₂.Word) x n, RatLink X x n → (n ∈ NRat (lf D (X.Fu u)) ↔ x.1 ∈ X.NinfU u) ∧ (n ∈ NRat (lf D (X.Fu u)) → ∀ A : Formalism.L2.SG.PairVal.MatR D, (∀ b, n (frame (lf D (X.Fu u)) b) = ∑ a, A a b • frame (lf D (X.Fu u)) a) → X.psiInfU u x.1 = Formalism.L2.SG.PairVal.psiInf (gS D) (Formalism.L2.SG.PairVal.sgUp A)) := by
   intro D X

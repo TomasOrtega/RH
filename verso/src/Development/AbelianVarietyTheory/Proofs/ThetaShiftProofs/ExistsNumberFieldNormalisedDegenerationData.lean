@@ -18,7 +18,7 @@ variable {X G : Type} [AddCommGroup X] [CommGroup G]
 def polar (q : X → G) (a b : X) : G := q (a + b) * (q a)⁻¹ * (q b)⁻¹
 
 /- English proof (translation)
-Rewrite using `[polar, polar, add_comm, mul_right_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem polar_comm (q : X → G) (a b : X) : polar q a b = polar q b a := by
   rw [polar, polar, add_comm, mul_right_comm]
@@ -30,20 +30,20 @@ def polarHom (b : X) : X →+ Additive G :=
   AddMonoidHom.mk' (fun a => Additive.ofMul (polar q a b)) fun a a' => congrArg Additive.ofMul (hB a a' b)
 
 /- English proof (translation)
-Establish `e : polar q 0 0 = 1` using `congrArg Additive.toMul (map_zero (polarHom hB 0))`. Simplify `e` using `[polar]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem apply_zero : q 0 = 1 := by
   have e : polar q 0 0 = 1 := congrArg Additive.toMul (map_zero (polarHom hB 0))
   simpa [polar] using e
 
 /- English proof (translation)
-The claim follows from `congrArg Additive.toMul (map_nsmul (polarHom hB b) n a)`.
+A detailed English derivation is pending.
 -/
 theorem polar_nsmul (n : ℕ) (a b : X) : polar q (n • a) b = polar q a b ^ n :=
   congrArg Additive.toMul (map_nsmul (polarHom hB b) n a)
 
 /- English proof (translation)
-Establish `e` using `hK x (-x)`. Rewrite `e` using `[polar_nsmul hB, polar_comm, polar_nsmul hB, polar, neg_add_cancel, apply_zero hB, hE, one_mul, ← mul_inv, ← sq, ← pow_mul, inv_pow, inv_eq_one, ← pow_mul]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_one (hE : ∀ x, q (-x) = q x) {n : ℕ} (hK : ∀ a b, polar q (n • a) (n • b) = 1) (x : X) :
     q x ^ (2 * (n * n)) = 1 := by
@@ -53,9 +53,9 @@ theorem pow_eq_one (hE : ∀ x, q (-x) = q x) {n : ℕ} (hK : ∀ a b, polar q (
   exact e
 
 /- English proof (translation)
-Establish `z : ∀ f : X →+ Additive G, (∀ i, f (b i) = 0) → ∀ x, f x = 0` using `fun f hf x => AddMonoidHom.eq_of_eqOn_dense hb (g := 0) (by rintro _ ⟨i, rfl⟩; exact hf i) ▸ rfl`. Establish `p₁ : ∀ j x, polar q x (b j) = 1` using `fun j x => congrArg Additive.toMul (z (polarHom hB (b j)) (fun i => by show Additive.ofMul (polar q (b i) (b j)) = 0`. Simplify using `[polar, h₁, h₂]) x)`. Establish `p₂ : ∀ y x, polar q x y = 1` using `fun y x => congrArg Additive.toMul (z (polarHom hB y) (fun i => by show Additive.ofMul (polar q (b i) y) = 0`. Rewrite using `[polar_comm, p₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl) x)`. Conclude with `congrArg Additive.toMul (z (AddMonoidHom.mk' (fun a => Additive.ofMul (q a)) fun a a' => by`. Use `p₂ a' a` as an intermediate fact. Rewrite `this` using `[polar, mul_assoc, ← mul_inv, mul_inv_eq_one]`. Conclude with `congrArg Additive.ofMul this) (fun i => congrArg Additive.ofMul (h₁ i)) x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one {I : Type} (b : I → X) (hb : AddSubgroup.closure (Set.range b) = ⊤) (h₁ : ∀ i, q (b i) = 1)
     (h₂ : ∀ i j, q (b i + b j) = 1) (x : X) : q x = 1 := by
@@ -84,15 +84,15 @@ def unitsIn (k : IntermediateField ℚ ℂ) : Subgroup ℂˣ where
     exact inv_mem hx
 
 /- English proof (translation)
-Establish `pm : ∀ (S : Subgroup ℂˣ) a b, polar (fun x => QuotientGroup.mk' S (u x)) a b = QuotientGroup.mk' S (polar u a b)` using `fun S a b => by simp only [polar, map_mul, map_inv]`. Establish `one : ∀ (S : Subgroup ℂˣ) x, QuotientGroup.mk' S x = 1 ↔ x ∈ S` using `fun S x => QuotientGroup.eq_one_iff x`. Establish `hB' : ∀ S : Subgroup ℂˣ, unitsIn k ≤ S → ∀ a a' b, polar (fun x => QuotientGroup.mk' S (u x)) (a + a') b = polar (fun x => QuotientGroup.mk' S (u x)) a b * polar (fun x => QuotientGroup.mk' S (u x)) a' b` using `fun S hS a a' b => by`. Rewrite using `[pm, pm, pm, ← map_mul, ← mul_inv_eq_one, ← map_inv, ← map_mul, one]`. Conclude with `hS (hB a a' b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ∀ x, IsIntegral k (u x : ℂ)` using `fun x => by`. Establish `e` using `pow_eq_one (hB' _ le_rfl) (fun x => by`. Rewrite using `[← mul_inv_eq_one, ← map_inv, ← map_mul, one]; exact hE x) (fun a b => by rw [pm, one]; exact hK a b) x`. Rewrite `e` using `[← map_pow, one]`. Use `IsIntegral.of_pow (n := 2 * (n * n)) (by positivity) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e' : (u x : ℂ) ^ (2 * (n * n)) ∈ k` using `by rw [← Units.val_pow_eq_pow_val]; exact e`. Conclude with `isIntegral_algebraMap (R := k) (x := ⟨_, e'⟩)`. Take `⟨m, b, hb⟩` from `Module.Finite.exists_fin (R := ℤ) (M := X)`. Establish `hb' : AddSubgroup.closure (Set.range b) = ⊤`. Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure, hb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Set `S : Set ℂ` to `Set.range (fun i => (u (b i) : ℂ)) ∪ Set.range fun p : Fin m × Fin m => (u (b p.1 + b p.2) : ℂ)`. Establish `: Finite S` using `(Set.finite_range _).union (Set.finite_range _)`. Establish `hfd : FiniteDimensional k (IntermediateField.adjoin k S)` using `IntermediateField.finiteDimensional_adjoin (by`. Apply the tactic sequence `rintro _ (⟨i, rfl⟩ | ⟨p, rfl⟩) <;> exact hint _)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd' : FiniteDimensional ℚ (IntermediateField.adjoin k S)` using `Module.Finite.trans k _`. Establish `le : k ≤ (IntermediateField.adjoin k S).restrictScalars ℚ` using `fun x hx => (IntermediateField.adjoin k S).algebraMap_mem ⟨x, hx⟩`. Use `⟨(IntermediateField.adjoin k S).restrictScalars ℚ, hfd', le, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(one (unitsIn _) _).1 (eq_one (hB' (unitsIn ((IntermediateField.adjoin k S).restrictScalars ℚ)) fun y hy => le hy) b hb' (fun i => (one _ _).2 (IntermediateField.subset_adjoin k S (Or.inl ⟨i, rfl⟩))) (fun i j => (one _ _).2 (IntermediateField.subset_adjoin k S (Or.inr ⟨(i, j), rf …`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_field {X : Type} [AddCommGroup X] [Module.Finite ℤ X] (k : IntermediateField ℚ ℂ) [FiniteDimensional ℚ k]
     (u : X → ℂˣ) {n : ℕ} (hn : 0 < n) (hE : ∀ x, u (-x) * (u x)⁻¹ ∈ unitsIn k)
@@ -141,7 +141,7 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ
   {D' : DegPre R'}
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_ratio (F := FractionRing R) hL hF ht ht'`. Establish `c : LB.Gen.Corr L _ _ _ _ t (scaleGen (unitOn r) t')` using `corr_of_val hL fun y J hJ => (hr y J hJ).trans (val_scale r t' _ hJ).symm`. Conclude with `⟨r, fun z J hJ => (val_corr hJ c _).trans (val_scale r t' _ hJ)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_ratio_genMap (hφ : Function.Injective φ) {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Type}
     [Fintype K] [Fintype K'] {ψ : K → ((TK R).left ⟶ X)} {ε : K → ℤ} {ψ' : K' → ((TK R).left ⟶ X)} {ε' : K' → ℤ}
@@ -154,22 +154,20 @@ theorem exists_ratio_genMap (hφ : Function.Injective φ) {X : Scheme.{0}} {L : 
   exact ⟨r, fun z J hJ => (val_corr hJ c _).trans (val_scale r t' _ hJ)⟩
 
 /- English proof (translation)
-Use `show (toUnit _ ≫ D.c (-x)).left = _`. Rewrite using `[PsiEvenPull.c_neg, ← Category.assoc, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xK_neg (D : DegPre R) (x : D.X) : D.xK (-x) = D.xK x ≫ (ι[D.P.A]).left := by
   show (toUnit _ ≫ D.c (-x)).left = _
   rw [PsiEvenPull.c_neg, ← Category.assoc, Over.comp_left]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_ratio_genMap hφ D.P.isLB (fun U _ h => by`. Simplify using `only [Fintype.prod_sum_type, Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_two]`. Use `show h (D.xK (-hD.xe x)) ^ (-1 : ℤ) * (h (D.xK (hD.xe x) ≫ (ι[D.P.A]).left) ^ (1 : ℤ) * h (D.xK (hD.xe x) ≫ 𝟙 _) ^ (-1 : ℤ)) = h (D.xK (hD.xe x)) ^ (-1 : ℤ)`. Rewrite using `[xK_neg, Category.comp_id]`. Use the proof step `simp)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (D.psi_gen (-hD.xe x)) (pullGen_isGen _ _ _ _ D.sym_gen (D.xK (hD.xe x))))`. Use the proof step `(D.psi_gen (hD.xe x))`. Use `⟨r, fun z J' hJ' => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB (Z := (TK R').left) z`. Establish `sq` using `fracMap_sq hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh : (TK R').hom ≫ spMap φ = genMap hφ ≫ (TK R).hom` using `(Category.id_comp _).symm.trans sq`. Establish `cW : (𝟙 _ ≫ D'.xK x) ≫ proj hD = genMap hφ ≫ D.xK (hD.xe x)`. Rewrite using `[Category.id_comp]`. Conclude with `cPoint_proj hD _ hh x`. Establish `c' : 𝟙 _ ≫ D'.xK (-x) = (𝟙 _ ≫ D'.xK x) ≫ (ι[D'.P.A]).left` using `by rw [xK_neg, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a₁` using `psi_val hD (Z := (TK R').left) _ _ sq hJ hJ' (-x)`. Establish `a₂` using `psi_val hD (Z := (TK R').left) _ _ sq hJ hJ' x`. Establish `a₃ : val D.sym (genMap hφ ≫ D.xK (hD.xe x)) z J = om hD.w z J J' ((𝟙 _ ≫ D'.xK x) ≫ (ι[D'.P.A]).left) * (om hD.w z J J' (𝟙 _ ≫ D'.xK x))⁻¹ * val D'.sym (𝟙 _ ≫ D'.xK x) z J'` using `(congrArg (fun q => val D.sym q z J) cW.symm).trans (PsiEvenPull.sym_pull hG hD _ z hJ hJ')`. Rewrite `a₁` using `[c', map_neg]`. Establish `e` using `(congrArg₂ (· * ·) a₁ ((val_pull hJ _ _ _).trans a₃)).symm.trans ((val_mul hJ _ _ _).symm.trans ((hr z J hJ).trans (congrArg₂ (· * ·) rfl a₂)))`.
-
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`. Simplify using `only [ofMul_mul, ofMul_inv] at e' ⊢`. Take the linear combination `(norm := abel) e'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem even_defect (hG : GlobalFnsSt) (hφ : Function.Injective φ) (hD : IsPullDeg φ D D') (x : D'.X) :
     ∃ r : (FractionRing R)ˣ, ∀ (z : (TK R').left) J', Good D'.P.L z J' →
@@ -205,7 +203,7 @@ theorem even_defect (hG : GlobalFnsSt) (hφ : Function.Injective φ) (hD : IsPul
   linear_combination (norm := abel) e'
 
 /- English proof (translation)
-Rewrite using `[← cPoint_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_tau (D : DegPre R) (a b : D.X) {U : Type} [CommGroup U] (h : ((TK R).left ⟶ D.P.A.left) → U) :
     (h (D.xK (a + b)))⁻¹ * h (D.xK a) * h (D.xK b) * (h ((toUnit (TK R)).left ≫ eSec D.P.A))⁻¹ =
@@ -214,11 +212,11 @@ theorem prod_tau (D : DegPre R) (a b : D.X) {U : Type} [CommGroup U] (h : ((TK R
   rw [← cPoint_add]; rfl
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_ratio_genMap hφ D.P.isLB (ψ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Establish `p` using `prod_tau D (hD.xe a) (hD.xe b) h`. Rewrite `p` using `[ha₀, hb₀, _root_.mul_one]`. Simplify using `only [Fintype.prod_sum_type, Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr, neg_neg, zpow_neg, zpow_one, Fintype.prod_empty]`. Conclude with `p.trans (by simp)) (tau_isGen D (hD.xe a) (hD.xe b)) oneGen_isGen`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, fun z J' hJ' => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB (Z := (TK R').left) z`. Establish `e` using `tau_val hD (Z := (TK R').left) _ _ (fracMap_sq hφ) hJ hJ' a b`. Establish `c : ∀ x, cP D' (TK R') x = 1 → D'.xK x = (1 : TK R' ⟶ D'.P.A).left` using `fun x hx => congrArg (fun q => q.left) hx`. Rewrite `e` using `[c a ha, c b hb, c (a + b) (by rw [cPoint_add, ha, hb, _root_.mul_one]), hr z J hJ, val_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using e.symm`.
+A detailed English derivation is pending.
 -/
 theorem tau_defect (hφ : Function.Injective φ) (hD : IsPullDeg φ D D') (a b : D'.X) (ha : cP D' (TK R') a = 1)
     (hb : cP D' (TK R') b = 1) (ha₀ : cP D (TK R) (hD.xe a) = 1) (hb₀ : cP D (TK R) (hD.xe b) = 1) :
@@ -240,27 +238,25 @@ theorem tau_defect (hφ : Function.Injective φ) (hD : IsPullDeg φ D D') (a b :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_ratio_genMap hφ D.P.isLB (fun U _ h => by`. Establish `p₁` using `prod_tau D (hD.xe a + hD.xe a') (hD.xe b) h`. Establish `p₂` using `prod_tau D (hD.xe a) (hD.xe b) h`. Establish `p₃` using `prod_tau D (hD.xe a') (hD.xe b) h`. Establish `p₄` using `prod_cub (cP D (TK R) (hD.xe a)) (cP D (TK R) (hD.xe a')) (cP D (TK R) (hD.xe b)) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `p₁` using `[cPoint_add]`. Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations. Simplify using `only [Fintype.prod_sum_type, Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr, neg_neg, zpow_neg, zpow_one]`. Use `(congrArg₂ (· * ·) p₁ p₄).trans (Eq.trans ?_ (congrArg₂ (· * ·) p₂ p₃).symm)` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (tau_isGen D (hD.xe a + hD.xe a') (hD.xe b)) (pullGen_isGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t D.cub.isGen (D.pt3 (hD.xe a) (hD.xe a') (hD.xe b))))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (tau_isGen D (hD.xe a) (hD.xe b)) (tau_isGen D (hD.xe a') (hD.xe b)))`. Use `⟨r, fun y J' hJ' => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB (Z := (TK R').left) y`. Establish `sq` using `fracMap_sq hφ`. Establish `hh : (TK R').hom ≫ spMap φ = genMap hφ ≫ (TK R).hom` using `(Category.id_comp _).symm.trans sq`. Establish `gp` using `pull_grp hD`. Set `T : Over (Spec (CommRingCat.of R))` to `Over.mk ((TK R').hom ≫ spMap φ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `κ : T ⟶ TK R` to `Over.homMk (genMap hφ) hh.symm`. Set `β : (TK R' ⟶ D'.P.A) → (T ⟶ D.P.A)` to `fun x => pushPt gp.1.w x`. Establish `βc : ∀ χ, β (cP D' _ χ) = cP D _ (hD.xe χ)` using `fun χ => Over.OverMorphism.ext (by show ((TK R').hom ≫ (D'.c χ).left) ≫ proj hD = ((TK R').hom ≫ spMap φ) ≫ (D.c (hD.xe χ)).left`. Rewrite using `[Category.assoc, hD.c_pr, Category.assoc])`. Set `Ω : (TK R' ⟶ D'.P.A) → ((TK R').left.presheaf.stalk y)ˣ` to `fun x => om hD.w (Z := (TK R').left) y J J' x.left`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `θ : (T ⟶ D.P.A) → (T ⟶ D.P.A) → (T ⟶ D.P.A) → ((TK R').left.presheaf.stalk y)ˣ` to `th D (T := T) y J`. Establish `cub : ∀ a b c : TK R' ⟶ D'.P.A, θ (β a) (β b) (β c) = Ω (a * b * c) * (Ω (a * b))⁻¹ * (Ω (a * c))⁻¹ * (Ω (b * c))⁻¹ * Ω a * Ω b * Ω c * (Ω 1)⁻¹ * th D' (T` using `TK R') y J' a b c := by`. Introduce `a b c`. Establish `e` using `cub_pull hG hD (T' := TK R') hJ hJ' a b c`. Establish `q : (lift a (lift b c)).left ≫ (cubeMapOf gp).F3 = (lift (β a) (lift (β b) (β c))).left` using `hom_ext_triple _ fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, ← Over.comp_left, ← Over.comp_left]`. Apply the tactic sequence `fin_cases i <;> simp [x3] <;> rfl`. Rewrite `e` using `[q]`. Conclude with `e.trans (congrArg₂ (· * ·) (prod_cub a b c (fun q => om hD.w (Z := (TK R').left) y J J' q)) rfl)`. Set `τ : D.X → D.X → ((TK R').left.presheaf.stalk y)ˣ` to `fun a b => val (D.tau a b) (genMap hφ) y J`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `τ' : D'.X → D'.X → ((TK R').left.presheaf.stalk y)ˣ` to `fun a b => val (D'.tau a b) (𝟙 (TK R').left) y J'`. Establish `vτ : ∀ a b, τ (hD.xe a) (hD.xe b) = (Ω (cP D' _ a * cP D' _ b))⁻¹ * Ω (cP D' _ a) * Ω (cP D' _ b) * (Ω 1)⁻¹ * τ' a b` using `fun a b => by`. Establish `e` using `tau_val hD (Z := (TK R').left) _ _ sq hJ hJ' a b`. Simplify using `only [Category.id_comp] at e`. Rewrite using `[← cPoint_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Establish `key : τ (hD.xe a + hD.xe a') (hD.xe b) * θ (cP D T (hD.xe a)) (cP D T (hD.xe a')) (cP D T (hD.xe b)) = unitAt (A` using `FractionRing R) (genMap hφ) y r * (τ (hD.xe a) (hD.xe b) * τ (hD.xe a') (hD.xe b)) := by`. Use `Eq.trans (congrArg₂ (· * ·) rfl ?_) ((val_mul hJ _ _ _).symm.trans ((hr y J hJ).trans (congrArg₂ (· * ·) rfl (val_mul hJ _ _ _))))` and prove the remaining obligations. Use `Eq.trans ?_ (val_cub D.cub κ hJ (cP D _ (hD.xe a)) (cP D _ (hD.xe a')) (cP D _ (hD.xe b))).symm` and prove the remaining obligations. Rewrite using `[comp_cP, comp_cP, comp_cP]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `key` using `[← βc, ← βc, ← βc, cub, ← map_add, vτ, vτ, vτ, cPoint_add]`. Use `show τ' (a + a') b * _ = _ * (τ' a b * τ' a' b)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul key`. Simplify using `only [ofMul_mul, ofMul_inv] at e' ⊢`.
-
-Take the linear combination `(norm := abel) e'`.
+A detailed English derivation is pending.
 -/
 theorem bimult_defect (hG : GlobalFnsSt) (hφ : Function.Injective φ) (hD : IsPullDeg φ D D') (a a' b : D'.X) :
     ∃ r : (FractionRing R)ˣ, ∀ (y : (TK R').left) J', Good D'.P.L y J' →
@@ -336,9 +332,9 @@ variable {k K : Type} [Field k] [Field K] (β : k →+* K) (D : DegPre K) (ψ : 
 include hu
 
 /- English proof (translation)
-Establish `e` using `val_tau (withPsi D ψ hψ) a b (𝟙 _) hJ`. Establish `e₅ : val (withPsi D ψ hψ).rigK (𝟙 _) z J = val D.rigK (𝟙 _) z J` using `rfl`. Rewrite `e` using `[e₅]`. Rewrite using `[e, val_tau D a b _ hJ, hu _ z J hJ, hu _ z J hJ, hu _ z J hJ, polar, map_mul, map_mul, map_inv, map_inv]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem val_tau_ratio (a b : D.X) {z : (TK K).left} {J} (hJ : Good D.P.L z J) : val (D.tau a b) (𝟙 _) z J =
     unitAt (A := FractionRing K) (Z := (TK K).left) (𝟙 _) z (polar u a b) *
@@ -352,19 +348,19 @@ theorem val_tau_ratio (a b : D.X) {z : (TK K).left} {J} (hJ : Good D.P.L z J) : 
   abel
 
 /- English proof (translation)
-Set `z : (TK K).left` to `IsLocalRing.closedPoint (FractionRing K)`. Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB (Z := (TK K).left) z`. Set `υ` to `unitAt (A := FractionRing K) (Z := (TK K).left) (𝟙 _) z`. Establish `inj : Function.Injective υ` using `unitAt_injective z`. Use `⟨fun x => ?_, fun a a' b => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `even_defect hG β.injective h x`. Establish `e₁ : val (ψ (-x)) (𝟙 _) z J * val D.sym (𝟙 _ ≫ D.xK x) z J = υ (Units.map (fracMap β.injective).toMonoidHom r) * val (ψ x) (𝟙 _) z J` using `(hr z J hJ).trans (congrArg₂ (· * ·) (FieldPull.unitAt_genMap β z r) rfl)`. Establish `e₂ : υ (u (-x)) * val (ψ (-x)) (𝟙 _) z J * val D.sym (𝟙 _ ≫ D.xK x) z J = υ (u x) * val (ψ x) (𝟙 _) z J` using `(congrArg₂ (· * ·) (hu _ z J hJ) (val_pull hJ _ _ _)).symm.trans ((val_mul hJ _ _ _).symm.trans ((val_corr hJ (hE x) (𝟙 _)).trans (hu _ z J hJ)))`. Use `⟨r⁻¹, inj ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, map_inv, map_mul, map_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e₁'` using `congrArg Additive.ofMul e₁`. Establish `e₂'` using `congrArg Additive.ofMul e₂`. Simplify using `only [ofMul_mul, ofMul_inv] at e₁' e₂' ⊢`. Take the linear combination `(norm := abel) e₂' - e₁'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨r, hr⟩` from `bimult_defect hG β.injective h a a' b`. Set `τ` to `fun a b => val ((withPsi D ψ hψ).tau a b) (𝟙 _) z J`. Set `θ` to `th D (T := TK K) z J (cP D _ a) (cP D _ a') (cP D _ b)`. Establish `e₁ : τ (a + a') b * θ = υ (Units.map (fracMap β.injective).toMonoidHom r) * (τ a b * τ a' b)` using `(hr z J hJ).trans (congrArg₂ (· * ·) (FieldPull.unitAt_genMap β z r) rfl)`. Establish `e₂ : υ (polar u (a + a') b) * τ (a + a') b * θ = (υ (polar u a b) * τ a b) * (υ (polar u a' b) * τ a' b)` using `(congrArg₂ (· * ·) (val_tau_ratio D ψ hψ u hu _ _ hJ) rfl).symm.trans ((val_tau_add (𝟙 (TK K)) hJ hB a a' b).trans (congrArg₂ (· * ·) (val_tau_ratio D ψ hψ u hu _ _ hJ) (val_tau_ratio D ψ hψ u hu _ _ hJ)))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨r⁻¹, inj ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, map_inv, map_mul, map_inv, map_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e₁'` using `congrArg Additive.ofMul e₁`. Establish `e₂'` using `congrArg Additive.ofMul e₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ofMul_mul, ofMul_inv] at e₁' e₂' ⊢`. Take the linear combination `(norm := abel) e₂' - e₁'`. Take `⟨r, hr⟩` from `tau_defect β.injective h (n • a) (n • b) (cPoint_nsmul_eq_one hc _ a) (cPoint_nsmul_eq_one hc _ b) (by rw [map_nsmul]; exact cPoint_nsmul_eq_one hc₀ _ _) (by rw [map_nsmul]; exact cPoint_nsmul_eq_one hc₀ _ _)`. Establish `e` using `(unitAt_kappa hc a b hJ).trans ((val_tau_ratio D ψ hψ u hu _ _ hJ).trans (congrArg₂ (· * ·) rfl ((hr z J hJ).trans (FieldPull.unitAt_genMap β z r))))`. Rewrite `e` using `[hκ]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨r⁻¹, inj ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, map_inv, eq_inv_iff_mul_eq_one]`. Conclude with `e.symm.trans (map_one _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_defects (hG : GlobalFnsSt) (D₀ : DegPre k) (h : IsPullDeg β D₀ (withPsi D ψ hψ)) (hE : D.PsiEven)
     (hB : D.TauBimult) {n : ℕ} (hc : ∀ y, D.c y ^ n = 1) (hκ : ∀ y y', kappa hc y y' = 1)
@@ -419,9 +415,9 @@ theorem ratio_defects (hG : GlobalFnsSt) (D₀ : DegPre k) (h : IsPullDeg β D�
 end Ratio
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `h.xe.surjective y`. Use `FieldBaseChange.flat_spMap β` as an intermediate fact. Use `FieldBaseChange.surjective_spMap β` as an intermediate fact. Establish `: Epi (spMap β)` using `Flat.epi_of_flat_of_surjective _`. Set `ρ : Over.mk ((𝟙_ (Over (Sp K))).hom ≫ spMap β) ⟶ 𝟙_ (Over (Sp k))` to `Over.homMk (spMap β) ((Category.comp_id _).trans (Category.id_comp _).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e : pushHom (pull_grp h) (𝟙_ _) (D.c x) = ρ ≫ D₀.c (h.xe x)` using `Over.OverMorphism.ext (h.c_pr x)`. Establish `e' : ρ ≫ D₀.c (h.xe x) ^ n = ρ ≫ 1`. Rewrite using `[MonObj.comp_pow, ← e, ← map_pow, MonObj.comp_one]`. Conclude with `(congrArg _ (hc x)).trans (map_one _)`. Conclude with `Over.OverMorphism.ext ((cancel_epi (spMap β)).1 (congrArg (fun q => q.left) e'))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_below {k K : Type} [Field k] [Field K] {β : k →+* K} {D₀ : DegPre k} {D : DegPre K}
     (h : IsPullDeg β D₀ D) {n : ℕ} (hc : ∀ y, D.c y ^ n = 1) (y : D₀.X) : D₀.c y ^ n = 1 := by
@@ -438,13 +434,13 @@ theorem torsion_below {k K : Type} [Field k] [Field K] {β : k →+* K} {D₀ : 
   exact Over.OverMorphism.ext ((cancel_epi (spMap β)).1 (congrArg (fun q => q.left) e'))
 
 /- English proof (translation)
-Substitute `hi` using the available equality. Take `⟨D', h₁, -, hg⟩` from `DegPull.exists_isPullDeg hL.polBaseChange k k₂ i D₀ ⊤ (FieldPull.nonempty_psiOn_field D₀)`. Discharge the goal by the elementary cases of `trivial`. Take `⟨h₂, e₂⟩` from `FieldPull.exists_isPullDeg_cancel k k₂ K i β₂ D₀ D' _ h₁ h`. Establish `key : ∀ χ, fracMap β₂.injective (algebraMap k₂ (FractionRing k₂) (a χ)) = (u χ).val` using `fun χ => by`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[fracMap_algebraMap, ha]`. Conclude with `(FractionRing.algEquiv K K).injective ((FractionRing.algEquiv K K).commutes _)`. Establish `hne : ∀ χ, algebraMap k₂ (FractionRing k₂) (a χ) ≠ 0` using `fun χ e => (u χ).ne_zero (by`. Rewrite using `[← key, e, map_zero])`. Take `⟨q, hq⟩ : ∃ q : D'.X → (FractionRing k₂)ˣ, ∀ χ, Units.map (fracMap β₂.injective).toMonoidHom (q (h₂.xe χ)) = u χ` from `⟨fun y => Units.mk0 _ (hne (h₂.xe.symm y)), fun χ => Units.ext (by show fracMap β₂.injective (algebraMap k₂ (FractionRing k₂) (a (h₂.xe.symm (h₂.xe χ)))) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddEquiv.symm_apply_apply, key])⟩`. Take `⟨hD, hp⟩` from `FieldPull.exists_isPullDeg_rescale β₂ D' D ψ hψ h₂ q fun χ z J hJ => by`. Rewrite using `[hq]`. Conclude with `hu χ z J hJ`. Establish `f : IsPolFibre i D₀.P D'.P (proj h₁)` using `⟨hg, pull_grp h₁, LBIso.symm ⟨h₁.w, h₁.w_gen⟩⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨rescale D' q, hD, proj (D := D₀) (D' := D') h₁, f, ?_⟩` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `e₂`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_ratio (hL : Laws) {k k₂ K : Type} [Field k] [Field k₂] [Field K] (i : k →+* k₂) (β₂ : k₂ →+* K)
     {β : k →+* K} (hi : β₂.comp i = β) (D : DegPre K) (ψ : PsiFam D) (hψ : ∀ χ, (ψ χ).IsGen) (D₀ : DegPre k)
@@ -478,7 +474,7 @@ theorem exists_of_ratio (hL : Laws) {k k₂ K : Type} [Field k] [Field k₂] [Fi
 def toC : (FractionRing ℂ)ˣ →* ℂˣ := Units.map (FractionRing.algEquiv ℂ ℂ).toRingHom.toMonoidHom
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(FractionRing.algEquiv k k).symm.surjective r.val`. Establish `ha' : algebraMap k (FractionRing k) a = r.val` using `((FractionRing.algEquiv k k).symm.commutes a).symm.trans ha`. Use `show FractionRing.algEquiv ℂ ℂ (fracMap (algebraMap k ℂ).injective r.val) ∈ k`. Rewrite using `[← ha', fracMap_algebraMap, AlgEquiv.commutes]`. Conclude with `a.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toC_mem (k : IntermediateField ℚ ℂ) (r : (FractionRing k)ˣ) :
     toC (Units.map (fracMap (algebraMap k ℂ).injective).toMonoidHom r) ∈ unitsIn k := by
@@ -489,13 +485,11 @@ theorem toC_mem (k : IntermediateField ℚ ℂ) (r : (FractionRing k)ˣ) :
   exact a.2
 
 /- English proof (translation)
-Use `choose u hu using FieldPull.exists_psi_ratio D ψ hψ`. Take `⟨d₁, d₂, d₃⟩` from `ratio_defects _ D ψ hψ u hu hL.globalFns D₀ h hE hB hc hκ (torsion_below h hc)`. Establish `pm : ∀ a b, polar (fun x => toC (u x)) a b = toC (polar u a b)` using `fun a b => by`. Simplify using `only [polar, map_mul, map_inv]`. Take `⟨k₂, fd, le, hk⟩` from `exists_field k (fun x => toC (u x)) hn (fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `d₁ x`. Rewrite using `[← map_inv, ← map_mul, hr]`. Conclude with `toC_mem k r)`. Use the proof step `(fun a a' b => by`. Take `⟨r, hr⟩` from `d₂ a a' b`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pm, pm, pm, ← map_mul, ← map_inv, ← map_mul, hr]`. Conclude with `toC_mem k r)`. Use the proof step `(fun a b => by`. Take `⟨r, hr⟩` from `d₃ a b`. Rewrite using `[pm, hr]`.
-
-Conclude with `toC_mem k r)`. Establish `hi : (algebraMap k₂ ℂ).comp (IntermediateField.inclusion le).toRingHom = algebraMap k ℂ` using `RingHom.ext fun _ => rfl`. Take `⟨D₂, p, χ, h₁, h₂⟩` from `exists_of_ratio hL _ _ hi D ψ hψ D₀ h u hu (fun χ => ⟨_, hk χ⟩) fun _ => rfl`. Conclude with `⟨k₂, fd, _, D₂, p, χ, hi, h₁, h₂⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_of_pre (hL : Laws) (k : IntermediateField ℚ ℂ) [FiniteDimensional ℚ k] (D : DegPre ℂ) (ψ : PsiFam D)
     (hψ : ∀ χ, (ψ χ).IsGen) (D₀ : DegPre k) (h : IsPullDeg (algebraMap k ℂ) D₀ (withPsi D ψ hψ)) (hE : D.PsiEven)
@@ -523,13 +517,13 @@ theorem exists_of_pre (hL : Laws) (k : IntermediateField ℚ ℂ) [FiniteDimensi
   exact ⟨k₂, fd, _, D₂, p, χ, hi, h₁, h₂⟩
 
 /- English proof (translation)
-Set `k₀ : IntermediateField ℚ ℂ` to `σ.toRatAlgHom.fieldRange`. Establish `: FiniteDimensional ℚ k₀` using `(AlgEquiv.ofInjectiveField σ.toRatAlgHom).toLinearEquiv.finiteDimensional`. Set `i₀ : K →+* k₀` to `σ.codRestrict k₀ fun x => ⟨x, rfl⟩`. Take `⟨P₀, φ₀, h₀⟩` from `exists_isPolFibre hL.polBaseChange i₀ P`. Take `⟨Φ₀, e₀, H₀⟩` from `CM.EllComp.exists_isPolFibre_lift (g := algebraMap k₀ ℂ) h₀ h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, fd, le, hk⟩` from `exists_numberField_torsion_points hL k₀ P₀ n hn`. Set `j : k₀ →+* k` to `(IntermediateField.inclusion le).toRingHom`. Take `⟨P₁, φ₁, h₁⟩` from `exists_isPolFibre hL.polBaseChange j P₀`. Take `⟨Φ, e₁, H₁⟩` from `CM.EllComp.exists_isPolFibre_lift (g := algebraMap k ℂ) h₁ H₀`. Use `⟨k, fd, j.comp i₀, P₁, φ₁ ≫ φ₀, Φ, rfl, CM.EllComp.isPolFibre_comp h₀ h₁, H₁, by rw [← Category.assoc, e₁, e₀], fun x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `ρ : Over.mk (spMap (algebraMap k₀ ℂ)) ⟶ Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ spMap (algebraMap k₀ ℂ))` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans (Category.id_comp _))`. Take `⟨y, hy, -⟩` from `hk k le le_rfl (ρ ≫ pushHom H₀.2.1 (𝟙_ _) x) (by`. Rewrite using `[← MonObj.comp_pow, ← map_pow, hx, map_one, MonObj.comp_one])`. Establish `hy' : spMap (algebraMap k ℂ) ≫ y.left = x.left ≫ Φ₀` using `hy.trans (Category.id_comp _)`. Establish `w : y.left ≫ P₀.A.hom = 𝟙 (Sp k) ≫ spMap j` using `(Over.w y).trans (Category.id_comp _).symm`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Over.homMk (h₁.2.1.1.lift _ _ w) (h₁.2.1.1.lift_snd _ _ w), h₁.2.1.1.hom_ext ?_ ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) e₁).trans (hy'.symm.trans ((congrArg (_ ≫ ·) (h₁.2.1.1.lift_fst _ _ w).symm).trans (Category.assoc _ _ _).symm)))`. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) H₁.2.1.1.w).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (Over.w x)).trans (Eq.trans ?_ ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (h₁.2.1.1.lift_snd _ _ w))).symm))))` and prove the remaining obligations. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_points (hL : Laws) (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (P : PolAV (Sp K))
     (Q : PolAV (Sp ℂ)) (φ : Q.A.left ⟶ P.A.left) {n : ℕ} (hn : 0 < n) (h : IsPolFibre σ P Q φ) :
@@ -570,9 +564,9 @@ open Formalism.L2.Pj Formalism.L2.PjFree Formalism.L2.Pj.QAt Formalism.L2.LamCM 
 open scoped LaurentSeries
 
 /- English proof (translation)
-Introduce `hK K _ _ σ₁ P DC φ n hn h hE hB ⟨hc, hκ⟩`. Take `⟨k, fd, i, P₁, φ₁, Φ, hi, h₁, H, e, hx⟩` from `NormDescent.exists_points hK.laws K σ₁ P DC.P φ hn h`. Use `choose x₀ hx₀ using fun y => hx (DC.c y) (hc y)`. Take `⟨c₀, hc₀, hc₁⟩` from `PointDescent.additive_points_descend k ℂ _ P₁ DC.P Φ H.2.1 DC.X DC.X id (by simp) DC.c DC.c_add x₀ hx₀`. Take `⟨D₀, ψ, hψ, h₀, rfl, e₀⟩` from `FieldPull.exists_pre_below hK.laws k ℂ _ DC P₁ Φ H.2.1 H.2.2.symm c₀ hc₀ hc₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_of_heq e₀`. Take `⟨k₂, fd₂, j, D₂, p, χ, hj, h₂, e₂⟩` from `NormDescent.exists_of_pre hK.laws k DC ψ hψ D₀ h₀ hE hB hn hc hκ`. Use `⟨k₂, inferInstance, ⟨⟩, j.comp i, algebraMap k₂ ℂ, D₂, p, χ ≫ φ₁, ?_, CM.EllComp.isPolFibre_comp h₁ h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_assoc, hj, hi]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ₁) e₂).trans e)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NormDescent.exists_numberField_pre : Known → ∀ (K : Type) [Field K] [NumberField K] (σ₁ : K →+* ℂ) (P : Out.PolAV (Sp K)) (DC : Out.DegPre ℂ) (φ : DC.P.A.left ⟶ P.A.left) (n : ℕ), 0 < n → IsPolFibre σ₁ P DC.P φ → DC.PsiEven → DC.TauBimult → TauCan DC n → ∃ (K₂ : Type) (_ : Field K₂) (_ : NumberField K₂) (i : K →+* K₂) (σ₂ : K₂ →+* ℂ) (D₂ : Out.DegPre K₂) (p : Out.IsPullDeg σ₂ D₂ DC) (ψ : D₂.P.A.left ⟶ P.A.left), σ₂.comp i = σ₁ ∧ IsPolFibre i P D₂.P ψ ∧ prj p ≫ ψ = φ := by
   intro hK K _ _ σ₁ P DC φ n hn h hE hB ⟨hc, hκ⟩

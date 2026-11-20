@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.TChart.GensFrom
 
 /- English proof (translation)
-Establish `p : ∀ I : Finset (Fin 2), (lift x y).left ≫ (psum B (x2 B) I).left = (psum B ![x, y] I).left` using `fun I => congrArg (fun q => q.left) ((psum_hom (preHom (lift x y)) (x2 B) I).trans (by`. Apply the tactic sequence `congr 1; funext i; fin_cases i <;> simp [x2, preHom]))`. Simplify using `only [p]`. Rewrite using `[← Equiv.ulift.symm.prod_comp, show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} from by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton, Fin.prod_univ_four]`. Establish `q0 : psum B ![x, y] ∅ = 1` using `rfl`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `q1 : psum B ![x, y] {0} = x` using `_root_.mul_one x`. Establish `q2 : psum B ![x, y] {1} = y` using `_root_.mul_one y`. Establish `q3 : psum B ![x, y] {0, 1} = x * y` using `congrArg (x * ·) (_root_.mul_one y)`. Simplify using `[q0, q1, q2, q3, lamPts, negε]`. Generalize the expression as in `H (x * y).left = A, H x.left = A₁, H y.left = A₂, H (1 : T ⟶ B).left = A₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_form {S : Scheme.{0}} {B : Over S} [GrpObj B] [IsCommMonObj B] {T : Over S} (x y : T ⟶ B) (U : Type)
     [CommGroup U] (H : (T.left ⟶ B.left) → U) :
@@ -51,13 +51,13 @@ namespace GlobalTheory.TChart.GensFrom
 variable {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} {F : Y' ⟶ Y}
 
 /- English proof (translation)
-Introduce `ψ` and use `hJ.mem φ ψ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_linComb {z : Z} {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     Good (LB.LinComb L φ ε) z (fun ψ k => J (ψ ≫ φ k)) := fun ψ => hJ.mem φ ψ
 
 /- English proof (translation)
-Conclude with `(gm_res r z _ (hJ.mem (fun k => F ≫ φ k) r) _).trans (val_of u r z _ (fun _ k => J (r ≫ F ≫ φ k)) (fun _ => funext fun k => by simp only [Category.assoc])).symm`.
+A detailed English derivation is pending.
 -/
 theorem val_flatGen (u : LB.Gen ((LB.LinComb L φ ε).pull F)) (r : Z ⟶ Y') (z : Z) {J : (Z ⟶ X) → L.ι}
     (hJ : Good L z J) : val (GlobalTheory.UU.flatGen u) r z J = val u r z (fun ψ k => J (ψ ≫ φ k)) := by
@@ -65,7 +65,7 @@ theorem val_flatGen (u : LB.Gen ((LB.LinComb L φ ε).pull F)) (r : Z ⟶ Y') (z
     (val_of u r z _ (fun _ k => J (r ≫ F ≫ φ k)) (fun _ => funext fun k => by simp only [Category.assoc])).symm
 
 /- English proof (translation)
-Conclude with `(gm_res r z _ ((good_linComb (φ := φ) (ε := ε) hJ).mem (fun _ : PUnit => F) r) _).trans (val_of v r z J (fun k => J ((r ≫ F) ≫ φ k)) (fun k => by simp only [Category.assoc])).symm`.
+A detailed English derivation is pending.
 -/
 theorem val_unflatGen (v : LB.Gen (LB.LinComb L (fun k => F ≫ φ k) ε)) (r : Z ⟶ Y') (z : Z) {J : (Z ⟶ X) → L.ι}
     (hJ : Good L z J) : val (GlobalTheory.UU.unflatGen v) r z (fun ψ k => J (ψ ≫ φ k)) = val v r z J := by
@@ -77,9 +77,9 @@ end GlobalTheory.TChart.GensFrom
 namespace GlobalTheory.TChart.GensFrom
 
 /- English proof (translation)
-Establish `H : ∀ i i' : (LB.div ((abelian₂ B M).pull β₂) (abelian₂ B' M')).ι, i = i' → gm p z ((LB.div ((abelian₂ B M).pull β₂) (abelian₂ B' M')).U i) (w.s i) = gm p z ((LB.div ((abelian₂ B M).pull β₂) (abelian₂ B' M')).U i') (w.s i')`. Introduce and unpack `_ _ rfl`. Both sides reduce to the same expression. Unfold `GlobalTheory.ArcPull.om Geo.Tor.gw lamVal`. Use `H (fun _ (I : ULift.{0} (Finset (Fin 2))) => J ((p ≫ β₂) ≫ (psum B (x2 B) I.down).left), fun (I : ULift.{0} (Finset (Fin 2))) => J' (p ≫ (psum B' (x2 B') I.down).left)) (fun _ (I : ULift.{0} (Finset (Fin 2))) => J (p ≫ β₂ ≫ (psum B (x2 B) I.down).left), fun (I : ULift.{0} (Finset …` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `_ I`. Conclude with `congrArg J (Category.assoc _ _ _)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem om_lam {S S' : Scheme.{0}} {B : Over S} {B' : Over S'} [GrpObj B] [IsCommMonObj B] [GrpObj B'] [IsCommMonObj B']
     {M : LB B.left} {M' : LB B'.left} {β₂ : (G2 B').left ⟶ (G2 B).left} (w : LB.Iso (abelian₂ B' M') ((abelian₂ B M).pull β₂))
@@ -103,19 +103,17 @@ end GlobalTheory.TChart.GensFrom
 namespace GlobalTheory.TChart.GensFrom
 
 /- English proof (translation)
-Establish `hψ : (lift x y).left ≫ β₂ = spMap iw ≫ (lift x₀ y₀).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show ((lift x y).left ≫ β₂) ≫ (fst BT BT).left = (spMap iw ≫ (lift x₀ y₀).left) ≫ (fst BT BT).left`. Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, hx, Category.assoc, ← Over.comp_left, lift_fst]`. Use `show ((lift x y).left ≫ β₂) ≫ (snd BT BT).left = (spMap iw ≫ (lift x₀ y₀).left) ≫ (snd BT BT).left`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, hy, Category.assoc, ← Over.comp_left, lift_snd]`. Take `⟨t₂, ht₂, hv₂⟩` from `exists_gen hMT (φ' := fun I : ULift.{0} (Finset (Fin 2)) => (lift x₀ y₀).left ≫ (psum BT (x2 BT) I.down).left) (ε' := fun I => (-1 : ℤ) ^ (2 - I.down.card)) (by`. Introduce `U _ H`. Rewrite using `[lam_form x₀ y₀ U H, ← Finset.prod_inv_distrib]`. Simplify using `only [zpow_neg]) (LB.invGen MT _ _ τ₁) (DVR.invGen_isGen _ _ _ _ h₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `t₃ : LB.Gen ((abelian₂ BT MT).pull (lift x₀ y₀).left)` to `GlobalTheory.UU.unflatGen t₂`. Establish `ht₃ : t₃.IsGen` using `GlobalTheory.UU.unflatGen_isGen ht₂`. Take `⟨a, ha, hva⟩` from `GlobalTheory.ArcPull.exists_down_om hw (LB.isLB_linComb hMT _ _) (LB.isLB_linComb hMQ _ _) (φ' := fun _ : PUnit => (lift x y).left) (φ := fun _ => (lift x₀ y₀).left) (ε := fun _ => 1) (spMap iw) (fun _ => hψ) t₃ ht₃`. Take `⟨τ, hτ, hvτ⟩` from `exists_gen hMQ (φ := fun I : ULift.{0} (Finset (Fin 2)) => (lift x y).left ≫ (psum BQ (x2 BQ) I.down).left) (ε := fun I => -((-1 : ℤ) ^ (2 - I.down.card))) (φ' := lamPts x y) (ε' := negε) (by`. Introduce `U _ H`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[lam_form x y U H, inv_inv]) (LB.invGen MQ _ _ (GlobalTheory.UU.flatGen a))`. Use the proof step `(DVR.invGen_isGen _ _ _ _ (GlobalTheory.UU.flatGen_isGen ha))`. Use `⟨τ, hτ, fun T' z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `e1` using `hvτ _ (toUnit T').left z J' hJ'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e5` using `val_flatGen (L := MQ) (φ := fun I : ULift.{0} (Finset (Fin 2)) => (psum BQ (x2 BQ) I.down).left) (ε := fun I => (-1 : ℤ) ^ (2 - I.down.card)) (F := (lift x y).left) a (toUnit T').left z hJ'`. Rewrite `e1` using `[val_inv, e5]`. Establish `e6 : val t₃ ((toUnit T').left ≫ spMap iw) z (fun ψ (k : ULift.{0} (Finset (Fin 2))) => J (ψ ≫ (psum BT (x2 BT) k.down).left)) = val t₂ ((toUnit T').left ≫ spMap iw) z J` using `val_unflatGen (L := MT) (φ := fun I : ULift.{0} (Finset (Fin 2)) => (psum BT (x2 BT) I.down).left) (ε := fun I => (-1 : ℤ) ^ (2 - I.down.card)) (F := (lift x₀ y₀).left) t₂ ((toUnit T').left ≫ spMap iw) z hJ`. Establish `e2` using `hva _ (toUnit T').left z _ _ (good_linComb (L := MT) (φ := fun I : ULift.{0} (Finset (Fin 2)) => (psum BT (x2 BT) I.down).left) (ε := fun I => (-1 : ℤ) ^ (2 - I.down.card)) hJ) (good_linComb (L := MQ) (φ := fun I : ULift.{0} (Finset (Fin 2)) => (psum BQ (x2 BQ) I.down).left) (ε : …`. Rewrite `e2` using `[e6, hv₂ _ _ z J hJ, val_inv, Fintype.prod_unique, zpow_one, om_lam]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e3 : (lift (toUnit T' ≫ x) (toUnit T' ≫ y)).left = (toUnit T').left ≫ (lift x y).left`. Rewrite using `[← comp_lift]`. Both sides reduce to the same expression. Establish `e4 : (toUnit T').left = T'.hom` using `by simpa using Over.w (toUnit T')`. Rewrite using `[e1, e3, ← e4, ← inv_inv (val τ₁ ((toUnit T').left ≫ spMap iw) z J), e2, _root_.mul_inv, _root_.mul_inv_cancel_left]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_base {W V : Type} [CommRing W] [CommRing V] {BT : Over (Sp W)} [GrpObj BT] [IsCommMonObj BT]
     {BQ : Over (Sp V)} [GrpObj BQ] [IsCommMonObj BQ] {MT : LB BT.left} {MQ : LB BQ.left} (hMT : MT.IsLB) (hMQ : MQ.IsLB)
@@ -181,11 +179,9 @@ namespace GlobalTheory.TChart
 open GensFrom in
 
 /- English proof (translation)
-Take `⟨β, β₂, w, hpb, hsq, hw, hc, hτ⟩` from `hD`. Establish `key` using `fun a b => exists_gen_of_base T.M.isLB Q.M.isLB iw hsq w hw (Q.c a) (Q.c b) (T.c₀ ((n : ℤ) • e a)) (T.c₀ ((n : ℤ) • e b)) (hc a) (hc b) (T.τ₀ _ _) (T.τ₀_gen _ _)`. Use `choose τ hτg hτv using key`. Use `⟨τ, fun a b => ⟨hτg a b, ?_⟩, T.B, inferInstance, inferInstance, T.M.L, fun a => T.c₀ ((n : ℤ) • e a), fun a b => T.τ₀ _ _, β, β₂, w, T.isAb, T.M.isLB, hpb, hsq, hw, hc, fun a b => T.τ₀_gen _ _, fun T' a b z J J' hJ hJ' => hτv a b T' z J J' hJ hJ'⟩` and prove the remaining obligations. Take `⟨k, hk, hv⟩` from `hτ a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, ?_, fun z J' hJ' => ?_⟩` and prove the remaining obligations. Rewrite using `[hk]`. Use `Fintype.prod_equiv eI _ _ fun i => ?_` and prove the remaining obligations. Simplify using `[pull]`. Use `choose J hJ using fun χ : (TK V).left ⟶ T.B.left => exists_chart T.M.isLB (χ z)`.
-
-Rewrite using `[hv z J J' hJ hJ', hτv a b (TK V) z J J' hJ hJ']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gens_of_dataFrom {o W V : Type} [CommRing o] [CommRing W] [IsLocalRing W] [CommRing V] [IsDomain V]
     (T : TautBase o W) (iw : W →+* V) {I : Type} [Fintype I] (s : I → V)

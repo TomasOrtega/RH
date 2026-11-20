@@ -40,7 +40,7 @@ def coefOut {L : Type} [DecidableEq L] {r : ℕ} (out : L → Prop) [DecidablePr
   ∑ α ∈ F.support, if eOut out α = μ then monomial (eIn out α) (F.coeff α) else 0
 
 /- English proof (translation)
-Establish `hb : (basisMonomials σ K) α = monomial α 1` using `by simp [coe_basisMonomials]`. Establish `h1 : dg f (monomial α 1) = monomial α (f α)` using `by rw [← hb, dg, Module.Basis.constr_basis]`. Rewrite using `[show monomial α c = c • monomial α (1 : K) by rw [smul_monomial, smul_eq_mul, mul_one], map_smul, h1, smul_monomial, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dg_monomial {σ : Type} (f : (σ →₀ ℕ) → K) (α : σ →₀ ℕ) (c : K) :
     dg f (monomial α c) = monomial α (f α * c) := by
@@ -50,9 +50,9 @@ theorem dg_monomial {σ : Type} (f : (σ →₀ ℕ) → K) (α : σ →₀ ℕ)
     smul_monomial, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial β c`. Rewrite using `[dg_monomial, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Rewrite using `[h]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeff_dg {σ : Type} (f : (σ →₀ ℕ) → K) (F : MvPolynomial σ K) (α : σ →₀ ℕ) :
     (dg f F).coeff α = f α * F.coeff α := by
@@ -66,7 +66,7 @@ theorem coeff_dg {σ : Type} (f : (σ →₀ ℕ) → K) (F : MvPolynomial σ K)
   | add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]
 
 /- English proof (translation)
-Simplify using `only [PolK, mem_restrictSupport_iff, Set.subset_def, Finset.mem_coe, Set.mem_setOf_eq, ldeg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_PolK_iff {L : Type} {r : ℕ} (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) :
     F ∈ PolK K r d ↔ ∀ α ∈ F.support, ∀ i, ldeg α i = d i := by

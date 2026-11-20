@@ -7,7 +7,7 @@ noncomputable section
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_singleton]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem span_p_map_ringEquiv (p : ℕ) {O : Type} [CommRing O] (γ : O ≃+* O) :
     Ideal.span {(p : O)} = Ideal.map (γ : O →+* O) (Ideal.span {(p : O)}) := by
@@ -24,7 +24,7 @@ def perfectionEquiv (p : ℕ) [Fact p.Prime] {R : Type} [CommRing R] [CharP R p]
     (RingHom.ext fun x => Perfection.ext (R := R) (p := p) fun n => by simp [Perfection.coeff_map])
 
 /- English proof (translation)
-The claim follows from `Perfection.coeff_map p (e : R →+* R) x n`.
+A detailed English derivation is pending.
 -/
 theorem perfectionEquiv_coeff (p : ℕ) [Fact p.Prime] {R : Type} [CommRing R] [CharP R p]
     (e : R ≃+* R) (x : Perfection R p) (n : ℕ) :
@@ -36,7 +36,7 @@ def tiltEquiv (p : ℕ) [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p
   perfectionEquiv p (modPEquiv p γ)
 
 /- English proof (translation)
-Establish `: PreTilt.coeff n (tiltEquiv p γ x) = modPEquiv p γ (PreTilt.coeff n x)` using `perfectionEquiv_coeff p (modPEquiv p γ) x n`. Rewrite using `[this, hy]`. Conclude with `Ideal.quotientEquiv_mk _ _ γ _ y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tiltEquiv_coeff (p : ℕ) [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
     (γ : O ≃+* O) (x : PreTilt O p) (n : ℕ) (y : O)
@@ -48,7 +48,7 @@ theorem tiltEquiv_coeff (p : ℕ) [Fact p.Prime] {O : Type} [CommRing O] [Fact �
   exact Ideal.quotientEquiv_mk _ _ γ _ y
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ γ`. Use `⟨tiltEquiv p γ, fun x => ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Per.untilt_natural (γ : O →+* O) (tiltEquiv p γ : PreTilt O p →+* PreTilt O p) (fun x n y hy => tiltEquiv_coeff p γ x n y hy) x`. Conclude with `GlobalTheory.Per.fontaineTheta_natural (γ : O →+* O) (tiltEquiv p γ : PreTilt O p →+* PreTilt O p) (fun x n y hy => tiltEquiv_coeff p γ x n y hy) a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ringEquiv_tilt_theta : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (γ : O ≃+* O), ∃ Γ : PreTilt O p ≃+* PreTilt O p,

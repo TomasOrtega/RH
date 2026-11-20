@@ -17,23 +17,23 @@ open GlobalTheory.Mum
 namespace GlobalTheory.AlgClosedHomDescent
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ j A A' _ _ B B' _ _ b b' hA hA' hB hB' f hf`. Set `Ωb` to `AlgebraicClosure Ω`. Set `io : Ω →+* Ωb` to `algebraMap Ω Ωb`. Use `letI : Algebra K Ωb := (io.comp j).toAlgebra`. Establish `hJ : spMap io ≫ spMap j = spMap (algebraMap K Ωb)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Set `P` to `(Over.pullback (spMap (algebraMap K Ωb))).obj A`. Set `P'` to `(Over.pullback (spMap (algebraMap K Ωb))).obj A'`. Establish `hP : IsGrpPullback P A (spMap (algebraMap K Ωb)) (pullback.fst _ _)` using `isGrpPullback_pullback A _`. Establish `hP' : IsGrpPullback P' A' (spMap (algebraMap K Ωb)) (pullback.fst _ _)` using `isGrpPullback_pullback A' _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `u : P.left ⟶ B.left` to `hB.1.lift (pullback.fst A.hom _) (pullback.snd A.hom _ ≫ spMap io) (by rw [pullback.condition, Category.assoc, hJ])`. Set `u' : P'.left ⟶ B'.left` to `hB'.1.lift (pullback.fst A'.hom _) (pullback.snd A'.hom _ ≫ spMap io) (by rw [pullback.condition, Category.assoc, hJ])`. Establish `hu₁ : u ≫ b = pullback.fst A.hom _` using `hB.1.lift_fst _ _ _`. Establish `hu₂ : u ≫ B.hom = P.hom ≫ spMap io` using `hB.1.lift_snd _ _ _`. Establish `hu₁' : u' ≫ b' = pullback.fst A'.hom _` using `hB'.1.lift_fst _ _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu₂' : u' ≫ B'.hom = P'.hom ≫ spMap io` using `hB'.1.lift_snd _ _ _`. Establish `hPB : IsGrpPullback P B (spMap io) u` using `hB.cancel (hP.congr hJ.symm hu₁.symm) hu₂`. Establish `hPB' : IsGrpPullback P' B' (spMap io) u'` using `hB'.cancel (hP'.congr hJ.symm hu₁'.symm) hu₂'`. Set `fb : P ⟶ P'` to `Over.homMk (pullback.lift (u ≫ f.left ≫ b') (pullback.snd A.hom _) (by`. Rewrite using `[Category.assoc, Category.assoc, hB'.1.w, ← Category.assoc f.left, Over.w f, ← Category.assoc, hu₂, Category.assoc, hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl))`. Use the proof step `(pullback.lift_snd _ _ _)`. Establish `hfb₁ : fb.left ≫ pullback.fst A'.hom _ = u ≫ f.left ≫ b'` using `pullback.lift_fst _ _ _`. Establish `hfb₂ : fb.left ≫ P'.hom = P.hom` using `Over.w fb`. Establish `hfbu : u ≫ f.left = fb.left ≫ u'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hB'.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hu₁', hfb₁]`. Rewrite using `[Category.assoc, Over.w f, hu₂, Category.assoc, hu₂', ← Category.assoc, hfb₂]`. Establish `hfbm : IsMonHom fb` using `((GlobalTheory.FieldBaseChange.epi_and_isMonHom_iff Ω Ωb io).2 B B' P P' u u' f fb hPB hPB' hfbu).2 hf`. Take `⟨g, hg, hge⟩` from `GlobalTheory.T.exists_mon_hom_over_algebraic_closure K Ωb A A' hA hA' fb hfbm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L` to `algebraicClosure K Ωb`. Establish `hbij : Function.Bijective (algebraMap K L)` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`. Use `haveI : IsIso (CommRingCat.ofHom (algebraMap K L)) := (ConcreteCategory.isIso_iff_bijective _).2 hbij`. Use `haveI : IsIso (spMap (algebraMap K L)) := by unfold spMap; infer_instance`. Set `q` to `pullback.fst A.hom (spMap (algebraMap K L))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `q'` to `pullback.fst A'.hom (spMap (algebraMap K L))`. Set `f₀ : A ⟶ A'` to `Over.homMk (inv q ≫ g.left ≫ q') (by`. Establish `hg' : g.left ≫ pullback.snd A'.hom (spMap (algebraMap K L)) = pullback.snd A.hom _` using `Over.w g`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc g.left, hg', ← pullback.condition, IsIso.inv_hom_id_assoc])`. Establish `hq : q ≫ f₀.left = g.left ≫ q'` using `by show q ≫ inv q ≫ g.left ≫ q' = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[IsIso.hom_inv_id_assoc]`. Establish `hf₀ : IsMonHom f₀` using `((GlobalTheory.FieldBaseChange.epi_and_isMonHom_iff K L (algebraMap K L)).2 A A' _ _ q q' f₀ g (isGrpPullback_pullback A _) (isGrpPullback_pullback A' _) hq).1 hg`. Use `⟨f₀, hf₀, ?_⟩` and prove the remaining obligations. Establish `hepi : Epi u` using `((GlobalTheory.FieldBaseChange.epi_and_isMonHom_iff Ω Ωb io).1 B.left P.left B.hom P.hom u hPB.1).1`. Rewrite using `[← cancel_epi u, ← Category.assoc, hu₁, ← GlobalTheory.Spread.bcMap_fst A.hom L.val, Category.assoc, hq, hge, hfb₁]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_descends : ∀ (K Ω : Type) [Field K] [IsAlgClosed K] [CharZero K] [Field Ω] (j : K →+* Ω) (A A' : Over (Sp K)) [GrpObj A] [GrpObj A'] (B B' : Over (Sp Ω)) [GrpObj B] [GrpObj B'] (b : B.left ⟶ A.left) (b' : B'.left ⟶ A'.left), IsAbelianScheme A → IsAbelianScheme A' → IsGrpPullback B A (spMap j) b → IsGrpPullback B' A' (spMap j) b' → ∀ f : B ⟶ B', IsMonHom f → ∃ f₀ : A ⟶ A', IsMonHom f₀ ∧ b ≫ f₀.left = f.left ≫ b' := by
   intro K Ω _ _ _ _ j A A' _ _ B B' _ _ b b' hA hA' hB hB' f hf

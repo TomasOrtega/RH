@@ -19,7 +19,7 @@ instance : Ring O8 := inferInstanceAs (Ring (Matrix (Fin 8) (Fin 8) ℤ))
 def adj (a : Matrix (Fin 8) (Fin 8) ℤ) : Matrix (Fin 8) (Fin 8) ℤ := GlobalTheory.E8inv * aᵀ * GlobalTheory.E8
 
 /- English proof (translation)
-Unfold `adj`. Rewrite using `[transpose_mul, transpose_mul, transpose_transpose, GlobalTheory.e8_transpose, E8inv_transpose]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[GlobalTheory.e8inv_mul_e8, Matrix.mul_one, ← Matrix.mul_assoc, GlobalTheory.e8inv_mul_e8, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_adj (a : Matrix (Fin 8) (Fin 8) ℤ) : adj (adj a) = a := by
   unfold adj
@@ -28,7 +28,7 @@ theorem adj_adj (a : Matrix (Fin 8) (Fin 8) ℤ) : adj (adj a) = a := by
   rw [GlobalTheory.e8inv_mul_e8, Matrix.mul_one, ← Matrix.mul_assoc, GlobalTheory.e8inv_mul_e8, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `adj`. Rewrite using `[transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc GlobalTheory.E8 GlobalTheory.E8inv, GlobalTheory.e8_mul_e8inv, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_mul (a b : Matrix (Fin 8) (Fin 8) ℤ) : adj (a * b) = adj b * adj a := by
   unfold adj
@@ -37,7 +37,7 @@ theorem adj_mul (a b : Matrix (Fin 8) (Fin 8) ℤ) : adj (a * b) = adj b * adj a
   rw [← Matrix.mul_assoc GlobalTheory.E8 GlobalTheory.E8inv, GlobalTheory.e8_mul_e8inv, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `adj`. Rewrite using `[transpose_add, Matrix.mul_add, Matrix.add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_add (a b : Matrix (Fin 8) (Fin 8) ℤ) : adj (a + b) = adj a + adj b := by
   unfold adj

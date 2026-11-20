@@ -28,11 +28,11 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Set `y : Fin n → IrrGL k` to `fun i => IrrGL.ofChar (ξ i) (hξ i)`. Establish `hy : ∀ i, (y i).IsCusp` using `fun i => IrrGL.isCusp_ofChar _ _`. Establish `hd : ∑ i, (y i).1 = n` using `by simp [y, IrrGL.ofChar]`. Establish `hmem : ∀ i, y i ∈ GlobalTheory.RoadU.chars ξ hξ` using `fun i => Multiset.mem_map_of_mem _ (Finset.mem_univ i)`. Establish `hnl : ∀ i j, ¬ (Segment.single (y i) (hy i)).Linked (Segment.single (y j) (hy j))` using `fun i j => GlobalTheory.CompanionTheory.BZPair.not_linked_single (hy i) (hy j) (hu _ (hmem j) _ (hmem i)) (hu _ (hmem i) _ (hmem j))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (prodIrr y hd).IsIrreducible` using `GlobalTheory.RgGu.Holds.lUnlinkedIrr_holds k n n (fun i => Segment.single (y i) (hy i)) y hd hnl (fun i => (single_spec (hy i)).2.1)`. Take `⟨p⟩` from `(Placing.parInd_jac_placing k _ _ _ (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) (stdBlocks (fun i => (y i).1) hd) _).1 (piTensor fun i => detRep (Fin 1) (ξ i))`. Set `q` to `multiProdEquiv (stdBlocks (fun i => (y i).1) hd) fun i => equivRep (IrrRep.det (Fin 1) (ξ i) (hξ i))`. Establish `hM : (multiProd (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) fun i => detRep (Fin 1) (ξ i)).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv (p.trans q).symm hP`. Use `haveI := nontrivial_of_irreducible hM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := GlobalTheory.TypeTwo.PowIrrProof.nontrivial_of_isSubquotient (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) ξ)`. Take `⟨e1⟩` from `GlobalTheory.TypeTwo.PowIrrProof.equiv_of_isSubquotient (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n ξ) hM`. Establish `φ : ρ.Equiv (prodIrr y hd)` using `(e.trans e1.symm).trans (p.trans q)`. Conclude with `⟨n, y, hd, ⟨fun i => Segment.single (y i) (hy i), ⟨Fin.univ_val_map _, fun i j _ hp => hnl i j hp.1⟩, fun i => (single_spec (hy i)).2.1⟩, (isCosocle_self hρ).of_equiv (.refl _) φ⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem isL_chars {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin n) k) V)
     (hρ : ρ.IsIrreducible) (ξ : Fin n → kˣ →* ℂˣ) (hξ : ∀ i, IsSmoothChar (ξ i))
@@ -69,9 +69,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => show (WD.lpZero h).mono0`. Rewrite using `[WD.lpZero, WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Both sides reduce to the same expression. Consider the case `cons b l ih => show (WD.lpSum b (sumList l)).mono0`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Conclude with `(WD.monomial_sum_iff _ _).2 ⟨hl b (by simp), ih fun z hz => hl z (by simp [hz])⟩`.
+A detailed English derivation is pending.
 -/
 private theorem monodromy_free_sum_list (l : List (WD h)) (hl : ∀ z ∈ l, z.mono0) : (sumList l).mono0 := by
   induction l with
@@ -84,23 +84,23 @@ private theorem monodromy_free_sum_list (l : List (WD h)) (hl : ∀ z ∈ l, z.m
     exact (WD.monomial_sum_iff _ _).2 ⟨hl b (by simp), ih fun z hz => hl z (by simp [hz])⟩
 
 /- English proof (translation)
-Rewrite using `[WD.lpOfChar, WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem monodromy_free_of_character (c : Weil h →* ℂˣ) (hc : GlobalTheory.WeilDeligne.IsSmooth c) : (WD.lpOfChar h c hc).mono0 := by
   rw [WD.lpOfChar, WD.monodromyZero_ofWeilDeligneRepClass_iff]
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_commutatorElement]`. Conclude with `(Commute.all _ _).commutator_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comm_one {G : Type} [Group G] {H : Type} [CommGroup H] (f : G →* H) (s t : G) : f ⁅s, t⁆ = 1 := by
   rw [map_commutatorElement]
   exact (Commute.all _ _).commutator_eq
 
 /- English proof (translation)
-Introduce `s t`. Use `show WD.charPol _ _ = _`. Rewrite using `[hd, GlobalTheory.GalCut.AwayMono.charPol_lpTw, comm_one, GlobalTheory.LocLanglands.CuspExt.charPol_sumList, List.map_ofFn]`. Establish `h1 : ∀ i, (WD.lpOfChar h (c i) (hc i)).charPol ⁅s, t⁆ = X - 1` using `fun i => by`. Rewrite using `[WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [comm_one]`. Simplify using the standard rewrite rules. Simplify using `[h1, List.prod_ofFn]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tor_sum {n : ℕ} (c : Fin n → Weil h →* ℂˣ) (hc : ∀ i, GlobalTheory.WeilDeligne.IsSmooth (c i)) (r : ℝ)
     (hd : ((sumList (List.ofFn fun i => WD.lpOfChar h (c i) (hc i))).lpTw r).lpDim = n) :
@@ -120,19 +120,17 @@ end UpperTheory.V.Z.Win.MonodromyFreeReciprocity
 
 open UpperTheory.V.Z.Win.MonodromyFreeReciprocity in
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ A w h rc ⟨a, ha, L⟩ n π t hw σ hσ`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Establish `hq : GroundTheory.LocalField.residueCard (w.adicCompletion E) = Ideal.absNorm w.asIdeal` using `GroundTheory.Global.residueCard_adicCompletion`. Establish `hP : GlobalTheory.RoadU.PlainTor (IrrGL.of σ.ρ σ.smooth σ.irred)`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, h1⟩` from `hw.1 σ hσ`. Use `⟨s, hs, h1, fun y hy z _ => ?_⟩` and prove the remaining obligations. Establish `h2` using `hs.sum_fst`. Establish `h3` using `Multiset.le_sum_of_mem (Multiset.mem_map_of_mem Sigma.fst hy)`. Rewrite `h3` using `[h2, h1 y hy]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (show 1 ≤ 0 from h3) (by omega)`. Conclude with `(plainIff E n hn π w).2 ⟨hw.1, fun s hs => winUnl E n π t w hw s hs⟩ σ hσ`. Take `⟨ξ, hξ, hs, hu⟩` from `GlobalTheory.RoadU.plainTor_exists_chars _ _ hP`. Establish `hs' : HasSupport σ.ρ (GlobalTheory.RoadU.chars ξ hξ)` using `hs.of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred).symm`. Establish `hl` using `winUnl E n π t w hw _ ⟨σ, hσ, hs'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e⟩` from `unlFull (w.adicCompletion E) n σ.V σ.ρ ξ hξ hs' (hq ▸ hl)`. Establish `hL` using `(isL_chars σ.ρ σ.irred ξ hξ hu e).of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred)`. Establish `hr : rc (IrrGL.of σ.ρ σ.smooth σ.irred) = sumList (List.ofFn fun i => WD.lpOfChar h ((ξ i).comp a) (ha.smooth (hξ i)))`. Rewrite using `[L.langlands _ _ hL, segSum, List.map_ofFn]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `List.ofFn_inj.mpr (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Segment.single, Segment.first_ofFirst, Segment.len_ofFirst, Nat.cast_one, sub_self, zero_div, WD.lpTw_zero, Test.lpChar_lpSp_one, L.one]`. Establish `hA : rc (algNorm σ) = (sumList (List.ofFn fun i => WD.lpOfChar h ((ξ i).comp a) (ha.smooth (hξ i)))).lpTw ((1 - (n : ℝ)) / 2)`. Rewrite using `[algNorm, L.nu, hr]`. Use `⟨hP, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hA]`. Conclude with `tor_sum _ _ _ (by rw [← hA, L.dim]; rfl)`. Rewrite using `[hA, WD.monomial_twist_iff]`. Conclude with `monodromy_free_sum_list _ fun z hz => by`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hz`.
-
-Conclude with `monodromy_free_of_character _ _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.plainRec :
     UpperTheory.V.Z.Win.PlainRec := by

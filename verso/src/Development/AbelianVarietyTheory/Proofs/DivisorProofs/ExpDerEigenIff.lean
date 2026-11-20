@@ -19,13 +19,13 @@ variable (he : IsExp y e)
 include he
 
 /- English proof (translation)
-The claim follows from `(he.2.2.2.1 w).exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem expDer_spec (w : Fin g → ℂ) : IsDerivAt0 (fun z => (e z).left) w (expDer he w).left :=
   (he.2.2.2.1 w).exists.choose_spec
 
 /- English proof (translation)
-Establish `h` using `he.1 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.1 h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_zero : e 0 = 1 := by
   have h := he.1 0 0
@@ -33,7 +33,7 @@ theorem exp_zero : e 0 = 1 := by
   exact (mul_eq_left.1 h.symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hv => Over.OverMorphism.ext (ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_unique (expDer_spec he w) hv), fun hv => hv ▸ expDer_spec he w⟩`.
+Supply the required witnesses or components.
 -/
 theorem expDer_eq_iff (w : Fin g → ℂ) (v : epsPt y ⟶ G) :
     IsDerivAt0 (fun z => (e z).left) w v.left ↔ expDer he w = v :=
@@ -41,16 +41,16 @@ theorem expDer_eq_iff (w : Fin g → ℂ) (v : epsPt y ⟶ G) :
     (ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_unique (expDer_spec he w) hv), fun hv => hv ▸ expDer_spec he w⟩
 
 /- English proof (translation)
-Rewrite using `[(expDer_spec he w).1]`. Use `show (e 0).left = _`. Rewrite using `[exp_zero he]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expDer_base (w : Fin g → ℂ) :
     spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ (expDer he w).left = (1 : Over.mk y ⟶ G).left := by
   rw [(expDer_spec he w).1]; show (e 0).left = _; rw [exp_zero he]
 
 /- English proof (translation)
-Introduce `w w' h`. Establish `h1` using `expDer_spec he w`. Establish `h2` using `expDer_spec he w'`. Rewrite `h2` using `[← h]`. Establish `hb : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ (expDer he w).left = (e 0).left` using `h1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(he.2.2.2.2 _ hb).unique h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem expDer_injective : Function.Injective (expDer he) := by
   intro w w' h
@@ -61,7 +61,7 @@ theorem expDer_injective : Function.Injective (expDer he) := by
   exact (he.2.2.2.2 _ hb).unique h1 h2
 
 /- English proof (translation)
-Take `⟨w, hw, -⟩` from `he.2.2.2.2 v (by rw [hv, exp_zero he])`. Conclude with `⟨w, (expDer_eq_iff he w v).1 hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem expDer_surj (v : epsPt y ⟶ G)
     (hv : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (1 : Over.mk y ⟶ G).left) :
@@ -70,14 +70,14 @@ theorem expDer_surj (v : epsPt y ⟶ G)
   exact ⟨w, (expDer_eq_iff he w v).1 hw⟩
 
 /- English proof (translation)
-The claim follows from `(expDer_eq_iff he _ _).1 (GlobalTheory.UnifCompare.isDerivAt0_mul (by rw [exp_zero he]) (expDer_spec he w) (expDer_spec he w'))`.
+A detailed English derivation is pending.
 -/
 theorem expDer_add (w w' : Fin g → ℂ) : expDer he (w + w') = expDer he w * expDer he w' :=
   (expDer_eq_iff he _ _).1 (GlobalTheory.UnifCompare.isDerivAt0_mul (by rw [exp_zero he]) (expDer_spec he w)
     (expDer_spec he w'))
 
 /- English proof (translation)
-Establish `h` using `expDer_add he 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.1 h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expDer_zero : expDer he 0 = 1 := by
   have h := expDer_add he 0 0
@@ -85,7 +85,7 @@ theorem expDer_zero : expDer he 0 = 1 := by
   exact (mul_eq_left.1 h.symm)
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_unique (expDer_spec he _) (GlobalTheory.UnifCompare.isDerivAt0_smul (expDer_spec he w) c)`.
+A detailed English derivation is pending.
 -/
 theorem expDer_smul (c : ℂ) (w : Fin g → ℂ) :
     (expDer he (c • w)).left = spMap (epsScale c) ≫ (expDer he w).left :=
@@ -93,7 +93,7 @@ theorem expDer_smul (c : ℂ) (w : Fin g → ℂ) :
     (GlobalTheory.UnifCompare.isDerivAt0_smul (expDer_spec he w) c)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [expDer_zero he]`. Consider the case `succ n ih`. Rewrite using `[List.ofFn_succ, List.prod_cons, ih (fun j => f j.succ), Fin.sum_univ_succ, expDer_add he]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem expDer_prod {n : ℕ} (f : Fin n → Fin g → ℂ) :
     (List.ofFn fun j => expDer he (f j)).prod = expDer he (∑ j, f j) := by
@@ -103,9 +103,9 @@ theorem expDer_prod {n : ℕ} (f : Fin n → Fin g → ℂ) :
     rw [List.ofFn_succ, List.prod_cons, ih (fun j => f j.succ), Fin.sum_univ_succ, expDer_add he]
 
 /- English proof (translation)
-Establish `h1` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_comp_hom (expDer_spec he w) φ.left`. Establish `h2 : (fun z => (e z).left ≫ φ.left) = fun z => (e (Matrix.mulVecLin M z)).left`. Use function extensionality and compare the values at `z`. Rewrite using `[Matrix.mulVecLin_apply, hM z, Over.comp_left]`. Rewrite `h1` using `[h2, GlobalTheory.ThetaWitness.isDerivAt0_comp_linear_iff (fun z => (e z).left) he.2.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(expDer_eq_iff he _ _).1 h1`.
+A detailed English derivation is pending.
 -/
 theorem expDer_mulVec (M : Matrix (Fin g) (Fin g) ℂ) (φ : G ⟶ G) (hM : ∀ z, e (M *ᵥ z) = e z ≫ φ)
     (w : Fin g → ℂ) : expDer he (M *ᵥ w) = expDer he w ≫ φ := by
@@ -116,9 +116,9 @@ theorem expDer_mulVec (M : Matrix (Fin g) (Fin g) ℂ) (φ : G ⟶ G) (hM : ∀ 
   exact (expDer_eq_iff he _ _).1 h1
 
 /- English proof (translation)
-Rewrite using `[← expDer_mulVec he M φ hM, ← expDer_smul he]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `expDer_injective he (Over.OverMorphism.ext h)`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem expDer_eigen_iff (M : Matrix (Fin g) (Fin g) ℂ) (φ : G ⟶ G) (hM : ∀ z, e (M *ᵥ z) = e z ≫ φ)
     (c : ℂ) (w : Fin g → ℂ) :

@@ -12,21 +12,17 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinea
 open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult UpperTheory.Lit.Cas
 
 /- English proof (translation)
-Take `⟨B, h1, h2, h3⟩` from `hu`. Set `c : InnerProductSpace.Core ℂ V` to `{ inner := fun x y => B y x conj_inner_symm := fun x y => (h1 x y).symm re_inner_nonneg := fun x => by`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Conclude with `(h2 x hx).le`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `add_left := fun x y z => map_add (B z) x y`. Use `smul_left := fun x y r => by show B y (r • x) = _`. Rewrite using `[LinearMap.map_smulₛₗ, smul_eq_mul]`. Use `definite := fun x hx => by`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Equip the data with the indicated structure.
 
-Use `h2 x h` as an intermediate fact. Establish `hx' : B x x = 0` using `hx`. Simplify using `[hx'] at this }`. Use `letI : NormedAddCommGroup V := c.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore c.toCore`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hin : ∀ x y : V, inner ℂ x y = B y x` using `fun _ _ => rfl`. Use `ha.2 K ho hc` as an intermediate fact. Set `ν` to `LinearMap.toContinuousLinearMap (μ ∘ₗ (fixed σ K).subtype)`. Establish `hn : ∀ g w, ‖σ g w‖ = ‖w‖` using `fun g w => by`. Rewrite using `[norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ), hin, hin, h3]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨‖ν‖ * ‖v‖, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hw'⟩` from `GlobalTheory.WordGrowth.exists_average ha.1 hc (σ g v)`. Establish `e1` using `hw' μ hg`. Establish `e2 : B w w = B (σ g v) w` using `hw' (B.flip w) fun j hj => by`. Establish `: σ j w = w` using `by simpa using hw ⟨j, hj⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show B (σ j (σ g v)) w = B (σ g v) w`. Use `conv_lhs => rw [← this]`. Conclude with `h3 _ _ _`. Establish `e3 : ‖w‖ ≤ ‖v‖`. Establish `a1 : ‖w‖ * ‖w‖ ≤ ‖w‖ * ‖v‖`.
-
-Use `norm_inner_le_norm (𝕜 := ℂ) w (σ g v)` as an intermediate fact. Rewrite `this` using `[hin, ← e2, ← hin, hn, inner_self_eq_norm_sq_to_K]`. Simplify `this` using `[sq]`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
-
-Use polynomial arithmetic with `[norm_nonneg v]`. Rewrite using `[← e1]`. Conclude with `(ν.le_opNorm ⟨w, hw⟩).trans (mul_le_mul_of_nonneg_left e3 (norm_nonneg _))`.
+Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem abs_bound {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V]
     [Module ℂ V] (σ : Representation ℂ G V) (ha : IsAdmissible σ) (hu : IsUnitarisable σ) (K : Subgroup G)
@@ -76,27 +72,25 @@ private theorem abs_bound {G V : Type} [Group G] [TopologicalSpace G] [IsTopolog
   exact (ν.le_opNorm ⟨w, hw⟩).trans (mul_le_mul_of_nonneg_left e3 (norm_nonneg _))
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Rewrite `hU` using `[(GlobalTheory.SplitFlip.isEmbedding_val_GL (k := k) (n := n)).nhds_eq_comap, mem_comap]`. Take `⟨O, hO, hOU⟩` from `hU`. Set `M : GL n k → Matrix (a ⊕ b) (a ⊕ b) k` to `fun x => x.val.submatrix e e`. Establish `hM : Continuous M` using `Units.continuous_val.matrix_submatrix _ _`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM1 : M 1 = 1` using `by simp [M]`. Establish `c11 : Continuous fun x => (M x).toBlocks₁₁` using `hM.matrix_submatrix Sum.inl Sum.inl`. Establish `c12 : Continuous fun x => (M x).toBlocks₁₂` using `hM.matrix_submatrix Sum.inl Sum.inr`. Establish `c21 : Continuous fun x => (M x).toBlocks₂₁` using `hM.matrix_submatrix Sum.inr Sum.inl`. Establish `c22 : Continuous fun x => (M x).toBlocks₂₂` using `hM.matrix_submatrix Sum.inr Sum.inr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v11 : (M 1).toBlocks₁₁ = 1` using `by rw [hM1, ← Matrix.fromBlocks_one]; rfl`. Establish `v12 : (M 1).toBlocks₁₂ = 0` using `by rw [hM1, ← Matrix.fromBlocks_one]; rfl`. Establish `v21 : (M 1).toBlocks₂₁ = 0` using `by rw [hM1, ← Matrix.fromBlocks_one]; rfl`. Establish `v22 : (M 1).toBlocks₂₂ = 1` using `by rw [hM1, ← Matrix.fromBlocks_one]; rfl`. Establish `cinv : ContinuousAt (fun x => (M x).toBlocks₂₂⁻¹) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ContinuousAt.comp (g := fun A : Matrix b b k => A⁻¹) (continuousAt_matrix_inv _ ?_) c22.continuousAt` and prove the remaining obligations. Rewrite using `[Ring.inverse_eq_inv', v22, Matrix.det_one]`. Conclude with `continuousAt_inv₀ one_ne_zero`. Set `H : (GL n k × k) × Matrix b b k → Matrix n n k` to `fun p => (Matrix.fromBlocks ((M p.1.1).toBlocks₁₁ - (M p.1.1).toBlocks₁₂ * p.2 * (M p.1.1).toBlocks₂₁) 0 (p.1.2 • (M p.1.1).toBlocks₂₁) (M p.1.1).toBlocks₂₂).submatrix e.symm e.symm`. Establish `hp : Continuous fun p : (GL n k × k) × Matrix b b k => p.1.1` using `continuous_fst.fst`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : Continuous H` using `(Continuous.matrix_fromBlocks ((c11.comp hp).sub (((c12.comp hp).matrix_mul continuous_snd).matrix_mul (c21.comp hp))) continuous_const (continuous_fst.snd.smul (c21.comp hp)) (c22.comp hp)).matrix_submatrix _ _`. Establish `h1 : ∀ᶠ x in 𝓝 (1 : GL n k), ∀ s ∈ insert (0 : k) (Set.range fun i : ℕ => (t : k) ^ i), H ((x, s), (M x).toBlocks₂₂⁻¹) ∈ O`. Use `ht.isCompact_insert_range.eventually_forall_of_forall_eventually fun s _ => ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun z : GL n k × k => H (z, (M z.1).toBlocks₂₂⁻¹)) (1, s)` using `hH.continuousAt.comp (continuousAt_id.prodMk (cinv.comp_of_eq continuousAt_fst rfl))`. Use `hc.preimage_mem_nhds ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hO` using `[H, v11, v12, v21, v22]`. Establish `h2 : ∀ᶠ x in 𝓝 (1 : GL n k), (M x).toBlocks₂₂.det ≠ 0` using `c22.matrix_det.continuousAt.eventually_ne (by simp [v22])`. Use `filter_upwards [h1, h2] with x hx hd i`. Use `set Z := (M x).toBlocks₁₂ * (M x).toBlocks₂₂⁻¹ with hZ`. Set `u : GL n k` to `⟨(Matrix.fromBlocks 1 Z 0 1).submatrix e.symm e.symm, (Matrix.fromBlocks 1 (-Z) 0 1).submatrix e.symm e.symm, by simp [Matrix.fromBlocks_multiply], by simp [Matrix.fromBlocks_multiply]⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hu : u ∈ unipRad k (two e)`. Use `mem_unipRad.2 ⟨(mem_parab_two k).2 fun j i => by simp [u], ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (_ | _) i j <;> simp [u]`. Use `set d := emb₂ k e (Matrix.GeneralLinearGroup.scalar a t, 1) ^ i with hd'`. Establish `hdv : d.val = (Matrix.fromBlocks (((t : k) ^ i) • (1 : Matrix a a k)) 0 0 1).submatrix e.symm e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd', ← map_pow, val_emb₂, Prod.pow_mk, ← map_pow, one_pow]`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.smul_one_eq_diagonal, Matrix.diagonal_pow, Pi.pow_def]`. Establish `hx' : x.val = (Matrix.fromBlocks (M x).toBlocks₁₁ (M x).toBlocks₁₂ (M x).toBlocks₂₁ (M x).toBlocks₂₂).submatrix e.symm e.symm`. Rewrite using `[Matrix.fromBlocks_toBlocks]`. Simplify using `[M]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (u * d).val * H ((x, (t : k) ^ i), (M x).toBlocks₂₂⁻¹) = (x * d).val`. Rewrite using `[Units.val_mul, Units.val_mul, hdv]`. Use `conv_rhs => rw [hx']`. Establish `hZD : Z * (M x).toBlocks₂₂ = (M x).toBlocks₁₂`. Rewrite using `[hZ, Matrix.nonsing_inv_mul_cancel_right _ _ (Ne.isUnit hd)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [u, H, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, ← hZ]`. Simplify using `[hZD, smul_sub]`. Use `⟨u, hu, (u * d)⁻¹ * (x * d), hOU ?_, by group⟩` and prove the remaining obligations. Establish `: ((u * d)⁻¹ * (x * d)).val = H ((x, (t : k) ^ i), (M x).toBlocks₂₂⁻¹)`. Rewrite using `[Units.val_mul, ← key, Units.inv_mul_cancel_left]`.
-
-Use `show ((u * d)⁻¹ * (x * d)).val ∈ O`. Rewrite using `[this]`. Conclude with `hx _ (Or.inr ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem geo {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b n : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] [Fintype n] [DecidableEq n]
@@ -169,31 +163,29 @@ private theorem geo {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [
   exact hx _ (Or.inr ⟨i, rfl⟩)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ m n V _ _ W₁ _ _ W₂ _ _ σ π₁ π₂ ha _ hu ⟨f, hf⟩ t ht c hc`. Use `set γ : ℂ := c * ((absPow k (((m * n : ℕ) : ℂ) / 2) t : ℂˣ) : ℂ) with hγ`. Set `e` to `stdSum (rfl : m + n = m + n)`. Set `φ : V →ₗ[ℂ] TensorProduct ℂ W₁ W₂` to `{ toFun := fun v => (f v).1.1 1 map_add' := fun v w => by rw [map_add]; rfl map_smul' := fun r v => by rw [map_smul]; rfl }`. Establish `hφ : ∀ g v, φ (σ g v) = (f v).1.1 g` using `fun g v => by show (f (σ g v)).1.1 1 = _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[f.isIntertwining]`. Use `show (f v).1.1 (1 * g) = _`. Rewrite using `[one_mul]`. Set `ρ` to `(extTensor π₁ π₂).comp (leviTwo k (Fin m) (Fin n)).symm.toMonoidHom`. Establish `hP : ∀ (p : parab k (two e)) v, φ (σ p v) = (deltaHalf k _ (leviProj k (two e) p) : ℂ) • ρ (leviProj k (two e) p) (φ v)` using `fun p v => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hφ]`. Use `parInd_law (two e) ρ (f v) p 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Establish `hN : ∀ u ∈ unipRad k (two e), ∀ v, φ (σ u v) = φ v` using `fun u hu v => by`. Establish `h` using `hP ⟨u, unipRad_le_parab k _ hu⟩ v`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[(coe_mem_unipRad k ⟨u, unipRad_le_parab k _ hu⟩).1 hu]`. Simplify using `using h`. Set `d` to `emb₂ k e (Matrix.GeneralLinearGroup.scalar (Fin m) t, 1)`. Establish `hd : ∀ v, φ (σ d v) = γ • φ v` using `fun v => by`. Establish `h` using `hP ⟨_, leviEmb_mem_parab k (two e) (leviTwo k (Fin m) (Fin n) (Matrix.GeneralLinearGroup.scalar (Fin m) t, 1))⟩ v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[leviProj_leviEmb, deltaHalf_two]`. Establish `h1 : ∀ w, extTensor π₁ π₂ (Matrix.GeneralLinearGroup.scalar (Fin m) t, 1) w = c • w` using `fun w => by`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [hc, TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`. Establish `h2 : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin m) t) = t ^ m` using `by ext; simp [Matrix.GeneralLinearGroup.scalar]`. Use `h.trans ?_` and prove the remaining obligations. Use `(congrArg _ (h1 (φ v))).trans ?_` and prove the remaining obligations. Rewrite using `[smul_smul, hγ, mul_comm c]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[map_one, map_one, mul_one, h2, map_pow, Units.val_pow_eq_pow_val, val_absPow, val_absPow, ← Complex.cpow_nat_mul]`. Use `congr 1`. Simplify using `[mul_div_assoc]`. Establish `hdi : ∀ (i : ℕ) v, φ (σ (d ^ i) v) = γ ^ i • φ v` using `fun i v => by`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [pow_succ', map_mul, Module.End.mul_apply, hd, ih, smul_smul, pow_succ']`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, φ v ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Treat this case separately. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push Not at h`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Use `hv (hf ?_)` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `Subtype.ext (Subtype.ext (funext fun g => (hφ g v).symm.trans (h _)))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l : Module.Dual ℂ (TensorProduct ℂ W₁ W₂), l (φ v) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hv ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 h)`. Take `⟨K, ho, hK, hKU⟩` from `GlobalTheory.CompanionTheory.SmGL.exists_compact_open_subgroup_subset k (m + n) _ (geo e t ht _ ((ha.1 v).mem_nhds (by simp)))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `abs_bound σ ha hu K ho hK (l ∘ₗ φ) v`. Establish `hb : ∀ i : ℕ, ‖γ‖ ^ i * ‖l (φ v)‖ ≤ C` using `fun i => by`. Establish `h` using `hC (d ^ i) fun x hx => by`. Take `⟨u, hu, y, hy, h⟩` from `hKU hx i`. Establish `hy' : σ y v = v` using `hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h' : σ x (σ (d ^ i) v) = σ u (σ (d ^ i) v)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, h, map_mul, map_mul, Module.End.mul_apply, hy', Module.End.mul_apply]`. Rewrite using `[h', LinearMap.comp_apply, hN u hu, LinearMap.comp_apply]`. Rewrite `h` using `[LinearMap.comp_apply, hdi, map_smul, norm_smul, norm_pow]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `hlt`.
-
-Use `push Not at hlt`. Use `(tendsto_pow_atTop_atTop_of_one_lt hlt).atTop_mul_const (norm_pos_iff.2 hl)` as an intermediate fact. Take `⟨i, hi⟩` from `(this.eventually_gt_atTop C).exists`. Conclude with `absurd (hb i) hi.not_ge`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Mix.bound :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (m n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (W₁ : Type) [AddCommGroup W₁] [Module ℂ W₁] (W₂ : Type) [AddCommGroup W₂] [Module ℂ W₂] (σ : Representation ℂ (GL (Fin (m + n)) k) V) (π₁ : Representation ℂ (GL (Fin m) k) W₁) (π₂ : Representation ℂ (GL (Fin n) k) W₂), IsAdmissible σ → Nontrivial V → IsUnitarisable σ → (∃ f : σ.IntertwiningMap (prod₂ π₁ π₂), Function.Injective f) → ∀ (t : kˣ), Tendsto (fun i : ℕ => (t : k) ^ i) atTop (𝓝 0) → ∀ c : ℂ, (∀ v, π₁ (Matrix.GeneralLinearGroup.scalar (Fin m) t) v = c • v) → ‖c * ((absPow k (((m * n : ℕ) : ℂ) / 2) t : ℂˣ) : ℂ)‖ ≤ 1 := by

@@ -8,11 +8,11 @@ namespace PI.UConjT
 open ComplexConjugate
 
 /- English proof (translation)
-Use `set z : ℂ := inner ℂ w e with hzdef`. Establish `hw' : ‖w‖ ≠ 0` using `norm_ne_zero_iff.mpr hw`. Distinguish the cases in `hz : z = 0`. Use `⟨((‖w‖⁻¹ : ℝ) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[inner_smul_left, ← hzdef, hz]`. Simplify using the standard rewrite rules. Establish `hz' : ‖z‖ ≠ 0` using `norm_ne_zero_iff.mpr hz`. Use `⟨z * ((‖z‖⁻¹ * ‖w‖⁻¹ : ℝ) : ℂ), ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[inner_smul_left, ← hzdef]`. Simplify using `only [Complex.mul_im, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_unit_real {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     (w e : E) (hw : w ≠ 0) :
@@ -34,35 +34,33 @@ theorem exists_unit_real {E : Type} [NormedAddCommGroup E] [InnerProductSpace �
       ring
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `E _ _ _ _ T _ e`. Conclude with `⟨fun i => i.elim0, ⟨fun i => i.elim0, fun i => i.elim0⟩, fun i => i.elim0, fun i => i.elim0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ m ih`. Introduce `E _ _ _ hm T hT e`. Establish `: Nontrivial E` using `Module.nontrivial_of_finrank_eq_succ hm`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue T`. Take `⟨w, hw⟩` from `hμ.exists_hasEigenvector`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw0 : w ≠ 0` using `hw.2`. Take `⟨c, hc1, hcre⟩` from `exists_unit_real w e hw0`. Use `set v : E := c • w with hv`. Establish `hv0 : v ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc1` using `[h, norm_zero]`. Conclude with `zero_ne_one hc1`. Establish `hTv : T v = μ • v`. Rewrite using `[hv, map_smul, hw.apply_eq_smul, smul_comm c μ w]`. Establish `hvv : inner ℂ v v = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K, hc1]`. Simplify using the standard rewrite rules. Establish `hμ0 : μ ≠ 0`. Introduce `h0`. Establish `h1` using `hT v v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hTv, h0, zero_smul, inner_zero_left, hvv]`. Conclude with `zero_ne_one h1`. Use `set K : Submodule ℂ E := (ℂ ∙ v)ᗮ with hK`. Establish `: Fact (Module.finrank ℂ E = m + 1)` using `⟨hm⟩`. Establish `hKdim : Module.finrank ℂ K = m` using `Submodule.finrank_orthogonal_span_singleton hv0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTK : ∀ x ∈ K, T x ∈ K`. Introduce `x hx`. Rewrite `hx`, the goal using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`. Establish `h1` using `hT v x`. Rewrite `h1` using `[hTv, inner_smul_left, hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(mul_eq_zero.mp h1).resolve_left (by simpa using hμ0)`. Set `T' : K →ₗ[ℂ] K` to `T.restrict hTK`. Establish `hT' : ∀ x y : K, inner ℂ (T' x) (T' y) = inner ℂ x y`. Introduce `x y`. Simplify using `only [Submodule.coe_inner, T', LinearMap.coe_restrict_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hT x y`. Use `set a : ℂ := inner ℂ v e with ha`. Establish `he'K : e - a • v ∈ K`. Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_right, inner_sub_right, inner_smul_right, hvv, mul_one, ha, sub_self]`. Take `⟨b', hb'o, hb'e, hb'r⟩` from `ih K hKdim T' hT' ⟨e - a • v, he'K⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `hperp : ∀ i, inner ℂ (b' i : E) v = 0` using `fun i => (Submodule.mem_orthogonal_singleton_iff_inner_left).mp (b' i).2`. Establish `hperp' : ∀ i, inner ℂ v (b' i : E) = 0` using `fun i => (Submodule.mem_orthogonal_singleton_iff_inner_right).mp (b' i).2`. Use `⟨(Fin.cons v (fun i => (b' i : E)) : Fin (m + 1) → E), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hb'o`, the goal using `[orthonormal_iff_ite]`. Introduce `i j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify using `[hc1]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, hperp']`. Simplify using `[(Fin.succ_ne_zero j).symm]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, hperp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Fin.succ_ne_zero i]`. Simplify using `only [Fin.cons_succ, Fin.succ_inj]`. Rewrite using `[← Submodule.coe_inner]`. Conclude with `hb'o i j`. Introduce `i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Fin.cases ⟨μ, by simpa using hTv⟩ (fun i => ?_) i` and prove the remaining obligations. Take `⟨d, hd⟩` from `hb'e i`. Use `⟨d, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Subtype.val hd`. Simplify `h2` using `[T', LinearMap.coe_restrict_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Use `Fin.cases (by simpa using hcre) (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_succ]`. Establish `hi` using `hb'r i`. Rewrite `hi` using `[Submodule.coe_inner]`.
-
-Establish `h3 : inner ℂ (b' i : E) e = inner ℂ (b' i : E) (e - a • v)`. Rewrite using `[inner_sub_right, inner_smul_right, hperp i, mul_zero, sub_zero]`. Rewrite using `[h3]`. Conclude with `hi`.
+A detailed English derivation is pending.
 -/
 theorem onbReal : OnbReal := by
   intro m

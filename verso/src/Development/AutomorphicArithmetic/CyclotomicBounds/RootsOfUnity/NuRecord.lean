@@ -12,9 +12,9 @@ open NumberField Formalism.BasicNotions KStar.Tree
 namespace UpperTheory.Mu
 
 /- English proof (translation)
-Use `Nat.odd_mul.2 ⟨R.t_odd, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.m_even`. Establish `hm` using `R.two_le_m`. Unfold `Ranks.r`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `⟨a + b - 1, by omega⟩`.
+Supply the required witnesses or components.
 -/
 theorem tr_odd (R : Ranks) : Odd (R.t * R.r) := by
   refine Nat.odd_mul.2 ⟨R.t_odd, ?_⟩
@@ -27,9 +27,9 @@ theorem tr_odd (R : Ranks) : Odd (R.t * R.r) := by
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-Establish `hpos : 0 < R.t * R.r` using `(tr_odd R).pos`. Take `⟨hq, hd⟩` from `H.qd_big`. Establish `e : 4 * R.t * R.r = 4 * (R.t * R.r)` using `by ring`. Rewrite `hq`, `hd` using `[e]`. Apply `Nat.not_dvd_of_pos_of_lt hpos` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Generalize the expression as in `R.t * R.r = N at *`. Apply the tactic sequence `rcases h with rfl | rfl <;> omega`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem half_not_dvd {l : ℕ} (h : l = H.q ∨ l = H.d) : ¬ (l - 1) / 2 ∣ R.t * R.r := by
   have hpos : 0 < R.t * R.r := (tr_odd R).pos
@@ -41,22 +41,20 @@ theorem half_not_dvd {l : ℕ} (h : l = H.q ∨ l = H.d) : ¬ (l - 1) / 2 ∣ R.
   rcases h with rfl | rfl <;> omega
 
 /- English proof (translation)
-The claim follows from `(wDvdQS _ H.toHostRaw H.q_ne_three).1`.
+A detailed English derivation is pending.
 -/
 theorem w_dvd_QS : H.w ∣ H.QS := (wDvdQS _ H.toHostRaw H.q_ne_three).1
 
 variable (Ω : Type) [Field Ω] [Algebra H.E Ω] [IsAlgClosure H.E Ω]
 
 /- English proof (translation)
-The claim follows from `nuQD _ H.toHostRaw l Ω _ h (half_not_dvd H h)`.
+A detailed English derivation is pending.
 -/
 theorem nu_eq_zero_of_qd (l : ℕ) [Fact l.Prime] (h : l = H.q ∨ l = H.d) : nuOf l (cyc l H.E Ω) (R.t * R.r) = 0 :=
   nuQD _ H.toHostRaw l Ω _ h (half_not_dvd H h)
 
 /- English proof (translation)
-Distinguish the cases in `hqd : l = H.q ∨ l = H.d`. Conclude with `nu_eq_zero_of_qd H Ω l hqd`. Use `push_neg at hqd`. Establish `hle` using `nuLe _ H.toHostRaw l Ω (R.t * R.r) (tr_odd R) hqd.1 hqd.2`. Rewrite `hle` using `[if_neg h, Nat.factorization_eq_zero_of_not_dvd h]`.
-
-Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem nu_eq_zero_of_not_dvd (l : ℕ) [Fact l.Prime] (h : ¬ l ∣ H.QS) : nuOf l (cyc l H.E Ω) (R.t * R.r) = 0 := by
   by_cases hqd : l = H.q ∨ l = H.d
@@ -67,7 +65,7 @@ theorem nu_eq_zero_of_not_dvd (l : ℕ) [Fact l.Prime] (h : ¬ l ∣ H.QS) : nuO
     omega
 
 /- English proof (translation)
-The claim follows from `nu_eq_zero_of_not_dvd H Ω l (splitNotDvd _ H.toHostAx H.QS_exact l hl.out h)`.
+A detailed English derivation is pending.
 -/
 theorem nu_eq_zero_of_split (l : ℕ) [hl : Fact l.Prime]
     (h : {v : IsDedekindDomain.HeightOneSpectrum (𝓞 H.E) | ((l : ℕ) : 𝓞 H.E) ∈ v.asIdeal}.ncard = Module.finrank ℚ H.E) :
@@ -75,7 +73,7 @@ theorem nu_eq_zero_of_split (l : ℕ) [hl : Fact l.Prime]
   nu_eq_zero_of_not_dvd H Ω l (splitNotDvd _ H.toHostAx H.QS_exact l hl.out h)
 
 /- English proof (translation)
-Set `μ : ℕ → ℕ` to `fun l => if h : l.Prime then (haveI := Fact.mk h; nuOf l (cyc l H.E Ω) (R.t * R.r)) else 0`. Establish `hμ : ∀ (l : ℕ) [Fact l.Prime], μ l = nuOf l (cyc l H.E Ω) (R.t * R.r)` using `fun l hl => dif_pos hl.out`. Use `le_of_eq_of_le (Finset.sum_congr rfl fun l hl => ?_) (nuSum _ H.toHostRaw Ω _ (tr_odd R) (half_not_dvd H (Or.inl rfl)) (half_not_dvd H (Or.inr rfl)) μ hμ S hS)` and prove the remaining obligations. Use `haveI := Fact.mk (hS l hl)`. Rewrite using `[hν l, hμ l]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_nu_le (ν : ℕ → ℝ) (hν : ∀ (l : ℕ) [Fact l.Prime], ν l = (nuOf l (cyc l H.E Ω) (R.t * R.r) : ℝ))
     (S : Finset ℕ) (hS : ∀ l ∈ S, l.Prime) :
@@ -89,9 +87,9 @@ theorem sum_nu_le (ν : ℕ → ℝ) (hν : ∀ (l : ℕ) [Fact l.Prime], ν l =
   rw [hν l, hμ l]
 
 /- English proof (translation)
-Establish `h1 : Real.log (H.QS : ℝ) ≤ 2 * Real.log R.n`. Establish `: ((H.QS : ℕ) : ℝ) ≤ (R.n : ℝ) ^ 2` using `by exact_mod_cast H.QS_le`. Establish `h0 : (0 : ℝ) < H.QS` using `by exact_mod_cast H.QS_pos`. Simplify using `using Real.log_le_log h0 this`. Establish `h2` using `(tr_odd R).pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `ht : (R.t : ℝ) ≠ 0` using `by exact_mod_cast (Nat.pos_of_mul_pos_right h2).ne'`. Establish `hr : (R.r : ℝ) ≠ 0` using `by exact_mod_cast (Nat.pos_of_mul_pos_left h2).ne'`. Rewrite using `[Nat.cast_mul, Real.log_mul ht hr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem budget_le : Real.log (H.QS : ℝ) + Real.log ((R.t * R.r : ℕ) : ℝ) ≤
     2 * Real.log R.n + Real.log R.t + Real.log R.r := by

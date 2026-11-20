@@ -23,13 +23,13 @@ theorem coe_unitsIncl (F : FiniteSubfield) (u : F.1ˣ) : ((unitsIncl F u : ℚ̄
   rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Units.ext (Subtype.ext (congrArg (fun a : ℚ̄ˣ => (a : ℚ̄)) h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitsIncl_injective (F : FiniteSubfield) : Function.Injective (unitsIncl F) :=
   fun _ _ h => Units.ext (Subtype.ext (congrArg (fun a : ℚ̄ˣ => (a : ℚ̄)) h))
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ (a : ℚ̄)` using `Algebra.IsIntegral.isIntegral _`. Set `F : FiniteSubfield` to `⟨ℚ⟮(a : ℚ̄)⟯, IntermediateField.adjoin.finiteDimensional hint⟩`. Establish `hmem : (a : ℚ̄) ∈ F.1` using `IntermediateField.mem_adjoin_simple_self ℚ (a : ℚ̄)`. Use `⟨F, Units.mk0 ⟨a, hmem⟩ fun h => a.ne_zero (congrArg Subtype.val h), Units.ext rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_unitsIncl (a : ℚ̄ˣ) : ∃ (F : FiniteSubfield) (u : F.1ˣ), unitsIncl F u = a := by
   have hint : IsIntegral ℚ (a : ℚ̄) := Algebra.IsIntegral.isIntegral _
@@ -38,7 +38,7 @@ theorem exists_unitsIncl (a : ℚ̄ˣ) : ∃ (F : FiniteSubfield) (u : F.1ˣ), u
   refine ⟨F, Units.mk0 ⟨a, hmem⟩ fun h => a.ne_zero (congrArg Subtype.val h), Units.ext rfl⟩
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem unitsIncl_map {F E : FiniteSubfield} (h : F ≤ E) (u : F.1ˣ) :
     letI := algebraOfLE h
@@ -49,7 +49,7 @@ def diagOf (F : FiniteSubfield) : F.1ˣ →* IdeleLimit :=
   (of F).comp (IdeleGroup.diagonal F.1)
 
 /- English proof (translation)
-Use `letI := algebraOfLE h`. Express the relevant statement in the definitionally equal form `of E (IdeleGroup.diagonal E.1 _) = of F (IdeleGroup.diagonal F.1 u)`. Rewrite using `[← ideleEmbedding_diagonal]`. Conclude with `of_ideleMap h _`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagOf_map {F E : FiniteSubfield} (h : F ≤ E) (u : F.1ˣ) :
     letI := algebraOfLE h
@@ -60,9 +60,9 @@ theorem diagOf_map {F E : FiniteSubfield} (h : F ≤ E) (u : F.1ˣ) :
   exact of_ideleMap h _
 
 /- English proof (translation)
-Set `M : FiniteSubfield` to `⟨F.1 ⊔ F'.1, inferInstance⟩`. Establish `hM : F ≤ M` using `show F.1 ≤ F.1 ⊔ F'.1 from le_sup_left`. Establish `hM' : F' ≤ M` using `show F'.1 ≤ F.1 ⊔ F'.1 from le_sup_right`. Use `letI := algebraOfLE hM`. Use `letI := algebraOfLE hM'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Rewrite using `[← diagOf_map hM, ← diagOf_map hM']`. Use `congr 1`. Apply `unitsIncl_injective M` to reduce the goal to its premises. Rewrite using `[unitsIncl_map, unitsIncl_map, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagOf_eq_of_unitsIncl_eq {F F' : FiniteSubfield} (u : F.1ˣ) (u' : F'.1ˣ)
     (h : unitsIncl F u = unitsIncl F' u') : diagOf F u = diagOf F' u' := by
@@ -80,7 +80,7 @@ def diagFun (a : ℚ̄ˣ) : IdeleLimit :=
   diagOf (exists_unitsIncl a).choose (exists_unitsIncl a).choose_spec.choose
 
 /- English proof (translation)
-The claim follows from `diagOf_eq_of_unitsIncl_eq _ _ (exists_unitsIncl (unitsIncl F u)).choose_spec.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem diagFun_unitsIncl (F : FiniteSubfield) (u : F.1ˣ) : diagFun (unitsIncl F u) = diagOf F u :=
   diagOf_eq_of_unitsIncl_eq _ _ (exists_unitsIncl (unitsIncl F u)).choose_spec.choose_spec
@@ -102,15 +102,15 @@ def diag : ℚ̄ˣ →* IdeleLimit where
       diagFun_unitsIncl, map_mul]
 
 /- English proof (translation)
-The claim follows from `diagFun_unitsIncl F u`.
+A detailed English derivation is pending.
 -/
 theorem diag_unitsIncl (F : FiniteSubfield) (u : F.1ˣ) : diag (unitsIncl F u) = diagOf F u :=
   diagFun_unitsIncl F u
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_one]`. Introduce `a ha`. Take `⟨F, u, rfl⟩` from `exists_unitsIncl a`. Rewrite `ha` using `[diag_unitsIncl]`. Establish `h1 : IdeleGroup.diagonal F.1 u = 1` using `of_injective F (ha.trans (map_one _).symm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IdeleGroup.diagonal_injective F.1 (h1.trans (map_one _).symm), map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_injective : Function.Injective diag := by
   rw [injective_iff_map_eq_one]
@@ -121,7 +121,7 @@ theorem diag_injective : Function.Injective diag := by
   rw [IdeleGroup.diagonal_injective F.1 (h1.trans (map_one _).symm), map_one]
 
 /- English proof (translation)
-Take `⟨F, u, rfl⟩` from `exists_unitsIncl a`. Establish `h : Units.map (σ : ℚ̄ →* ℚ̄) (unitsIncl F u) = unitsIncl (map σ F) (Units.map (mapEquiv σ F : F.1 →* (map σ F).1) u)` using `Units.ext rfl`. Rewrite using `[h, diag_unitsIncl, diag_unitsIncl, diagOf, diagOf, MonoidHom.comp_apply, MonoidHom.comp_apply, smul_of, ideleEquiv_diagonal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_map (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (a : ℚ̄ˣ) :
     diag (Units.map (σ : ℚ̄ →* ℚ̄) a) = σ • diag a := by
@@ -132,7 +132,7 @@ theorem diag_map (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (a : ℚ̄ˣ) :
     smul_of, ideleEquiv_diagonal]
 
 /- English proof (translation)
-Take `⟨F, u, rfl⟩` from `exists_unitsIncl a`. Rewrite using `[diag_unitsIncl, diagOf, MonoidHom.comp_apply, toClassLimit_of, IdeleClassGroup.mk_diagonal, map_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem toClassLimit_diag (a : ℚ̄ˣ) : toClassLimit (diag a) = 1 := by
   obtain ⟨F, u, rfl⟩ := exists_unitsIncl a
@@ -140,11 +140,11 @@ theorem toClassLimit_diag (a : ℚ̄ˣ) : toClassLimit (diag a) = 1 := by
     map_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `toClassLimit_diag a`. Introduce `hz`. Take `⟨F, x, rfl⟩` from `exists_of z`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[toClassLimit_of]`. Establish `h1 : IdeleClassGroup.mk F.1 x = 1` using `IdeleClassLimit.of_injective F (hz.trans (map_one _).symm)`. Establish `h2 : x ∈ (IdeleGroup.diagonal F.1).range`. Rewrite using `[← IdeleClassGroup.ker_mk]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨u, rfl⟩` from `h2`. Conclude with `⟨unitsIncl F u, by rw [diag_unitsIncl]; rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_diag_iff (z : IdeleLimit) : z ∈ diag.range ↔ toClassLimit z = 1 := by
   constructor

@@ -7,9 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.Z
 open NumberField Matrix IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.Aut UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Establish `h1 : (((GG.map f x).left⁻¹ : GL (Fin m) S) : Matrix (Fin m) (Fin m) S) = ((x.left⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R).map f` using `rfl`. Unfold `GG.adFun`. Rewrite using `[h1, GG.map_mat, GG.map_right, Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`. Use `split_ifs`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Unfold `thetaLie`. Rewrite using `[Matrix.map_neg _ (map_neg f), Matrix.map_mul, Matrix.map_mul, Jmat_map, Matrix.transpose_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rigloc_adFun {m : ℕ} {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (x : GG m R)
     (X : Matrix (Fin m) (Fin m) R) : (x.adFun X).map f = (GG.map f x).adFun (X.map f) := by
@@ -24,7 +24,7 @@ private theorem rigloc_adFun {m : ℕ} {R S : Type} [CommRing R] [CommRing S] (f
     rw [Matrix.map_neg _ (map_neg f), Matrix.map_mul, Matrix.map_mul, Jmat_map, Matrix.transpose_map]
 
 /- English proof (translation)
-Establish `h1 : GG.map f (GG.ofGL h) = GG.ofGL (Matrix.GeneralLinearGroup.map f h)` using `rfl`. Simplify using `only [conjBy, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem rigloc_conj {m : ℕ} {G R S : Type} [Group G] [CommRing R] [CommRing S] (f : R →+* S)
     (h : GL (Fin m) R) (r : G →* GG m R) (g : G) :
@@ -33,7 +33,7 @@ private theorem rigloc_conj {m : ℕ} {G R S : Type} [Group G] [CommRing R] [Com
   simp only [conjBy, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv, h1]
 
 /- English proof (translation)
-Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `[TrivSqZeroExt.fst_sum, TrivSqZeroExt.snd_sum, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem rigloc_mul {m : ℕ} {R : Type} [CommRing R] (y a : Matrix (Fin m) (Fin m) R) (i j : Fin m) :
     (((1 + y.map (TrivSqZeroExt.inr : R → DualNumber R)) * a.map (algebraMap R (DualNumber R))) i j).fst = a i j ∧
@@ -44,43 +44,37 @@ private theorem rigloc_mul {m : ℕ} {R : Type} [CommRing R] (y a : Matrix (Fin 
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `P l _ Γ _ _ _ φ hφ η hη r y r' h hm hr hy hcoc hdef H _ hH hHη hU w hw hκ hne`. Establish `hc : IsClosed (φ.range : Set (Formalism.BasicNotions.Loc.GQ l))` using `φ.range.isClosed_of_isOpen hφ.isOpen_range`. Use `haveI : CompactSpace Γ := (Topology.IsClosedEmbedding.mk hφ.isEmbedding hc).compactSpace`. Use `haveI : T2Space Γ := hφ.isEmbedding.t2Space`. Establish `hfst : ∀ g a b, ((r' g).mat a b).fst = (r g).mat a b` using `fun g a b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hdef g).2]`. Conclude with `(rigloc_mul (y g) (r g).mat a b).1`. Establish `hsnd : ∀ g a b, ((r' g).mat a b).snd = (y g * (r g).mat) a b` using `fun g a b => by`. Rewrite using `[(hdef g).2]`. Conclude with `(rigloc_mul (y g) (r g).mat a b).2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨L, f, s', h₁, hf, hs', hh⟩` from `rig_desc r' h (fun a b => by simp only [hfst]; exact hr.matrix_elem a b) (fun a b => by simp only [hsnd]; exact (hy.matrix_mul hr).matrix_elem a b)`. Use `haveI := L.2`. Use `haveI : IsModuleTopology ℚ_[l] ↥L.1 := isModuleTopologyOfFiniteDimensional`. Set `ι : ↥L.1 →+* PadicAlgCl l` to `L.1.val.toRingHom`. Establish `hι : Function.Injective ι` using `Subtype.val_injective`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hιm : Function.Injective fun X : Matrix (Fin 3) (Fin 3) ↥L.1 => X.map ι` using `Matrix.map_injective hι`. Establish `hfi : Function.Injective f` using `fun a b hab => by`. Use `ext`. Rewrite using `[← (hf a).1, ← (hf b).1, hab]`. Rewrite using `[← (hf a).2, ← (hf b).2, hab]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ∀ z : Γ → Matrix (Fin 3) (Fin 3) ↥L.1, Continuous (fun g => (z g).map ι) → Continuous z` using `fun z hz => continuous_matrix fun a b => Topology.IsInducing.subtypeVal.continuous_iff.2 (hz.matrix_elem a b)`. Establish `he : ∀ g, GG.map f (s' g) = r' g` using `fun g => by rw [← hs']; rfl`. Establish `hem : ∀ g a b, f ((s' g).mat a b) = (r' g).mat a b` using `fun g a b => by rw [← he]; rfl`. Set `s : Γ →* GG 3 ↥L.1` to `(GG.map (TrivSqZeroExt.fstHom ↥L.1 ↥L.1 ↥L.1).toRingHom).comp s'`. Establish `hsr : ∀ g, (s g).right = (r g).right` using `fun g => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `(hdef g).1` as an intermediate fact. Rewrite `this` using `[← he]`. Conclude with `this`. Establish `hsm : ∀ g, (s g).mat.map ι = (r g).mat` using `fun g => by`. Use extensionality with `a b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hfst, ← hem, (hf _).1]`. Both sides reduce to the same expression. Establish `hs : ∀ g, GG.map ι (s g) = r g` using `fun g => SemidirectProduct.ext (Units.ext (hsm g)) (hsr g)`. Set `z : Γ → Matrix (Fin 3) (Fin 3) ↥L.1` to `fun g => (s' g).mat.map TrivSqZeroExt.snd * (((s g).left⁻¹ : GL (Fin 3) ↥L.1) : Matrix (Fin 3) (Fin 3) ↥L.1)`. Establish `hzs : ∀ g, z g * (s g).mat = (s' g).mat.map TrivSqZeroExt.snd` using `fun g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [z, GG.mat, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Establish `hz : ∀ g, (z g).map ι = y g` using `fun g => by`. Establish `h1 : (z g).map ι * (r g).mat = y g * (r g).mat`. Rewrite using `[← hsm g, ← Matrix.map_mul, hzs, hsm]`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hsnd, ← hem, (hf _).2]`. Both sides reduce to the same expression. Conclude with `(Units.mul_left_inj (r g).left).1 h1`. Establish `had : ∀ g X, (adRep s g X).map ι = adRep r g (X.map ι)` using `fun g X => by`. Use `rigloc_adFun ι (s g) X` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[hs]`. Conclude with `this`. Establish `hcj : ∀ g a b, f ((conjBy h₁⁻¹ s' g).mat a b) = (conjBy h⁻¹ r' g).mat a b` using `fun g a b => by`. Use `rigloc_conj f h₁⁻¹ s' g` as an intermediate fact. Rewrite `this` using `[map_inv, hh, hs']`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `hcy : ∀ σ, Units.map f.toMonoidHom (UpperTheory.V.Loc.cycA l l (DualNumber ↥L.1) σ) = UpperTheory.V.Loc.cycA l l (DualNumber (PadicAlgCl l)) σ` using `fun σ => by`. Apply `Units.ext` to reduce the goal to its premises. Apply `TrivSqZeroExt.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `(hf _).1`. Conclude with `(hf _).2`. Establish `key : z ∈ UpperTheory.V.Loc.finiteCocycles φ (adRep s)`. Use `rig_fin P φ hφ η hη s z s' h₁ (fun g => (hsr g).trans (hm g)) ?_ ?_ ?_ ?_ H hH hHη ?_ w hw ?_ ?_` and prove the remaining obligations. Conclude with `hcont _ (by simp only [mats, hsm]; exact hr)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hcont _ (by simp only [hz]; exact hy)`. Introduce `g k`. Apply `hιm` to reduce the goal to its premises. Simplify using `only []`. Rewrite using `[Matrix.map_add _ (map_add ι), had, hz, hz, hz, hcoc g k]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Use extensionality with `a b : 1`. Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Conclude with `(rigloc_mul (z g) (s g).mat a b).1.symm`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (rigloc_mul (z g) (s g).mat a b).2.symm` and prove the remaining obligations. Rewrite using `[hzs]`. Both sides reduce to the same expression. Introduce `g hg a b hab`. Apply `hfi` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcj, hU g hg a b hab, map_zero]`. Introduce `g hg hI a`. Apply `hfi` to reduce the goal to its premises. Rewrite using `[hcj, hκ g hg hI a, ← hcy, ← map_zpow, Units.coe_map]`. Both sides reduce to the same expression.
-
-Introduce `i j hij`. Take `⟨g, hg, hne⟩` from `hne i j hij`. Use `⟨g, hg, fun e => hne ?_⟩` and prove the remaining obligations. Rewrite using `[← hcj, ← hcj, (hf _).1, (hf _).1]`. Establish `e2` using `congrArg ι e`.
-
-Rewrite `e2` using `[map_mul]`. Establish `e3 : ι ((UpperTheory.V.Loc.cycA l l ↥L.1 (φ g) : (↥L.1)ˣ) : ↥L.1) = ((UpperTheory.V.Loc.cycA l l (PadicAlgCl l) (φ g) : (PadicAlgCl l)ˣ) : PadicAlgCl l)` using `rfl`. Rewrite `e2` using `[e3]`. Conclude with `e2`. Use `UpperTheory.V.Loc.z1fCoef φ (adRep s) (adRep r) (L.1.val.toLinearMap.mapMatrix) (continuous_matrix fun a b => continuous_subtype_val.comp (continuous_id.matrix_elem a b)) had z key` as an intermediate fact.
-
-Establish `e : y = fun g => (z g).map ι` using `funext fun g => (hz g).symm`. Rewrite using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.rig_loc :
     UpperTheory.V.Loc.LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (φ : Γ →* Formalism.BasicNotions.Loc.GQ l), Topology.IsOpenEmbedding φ → ∀ (η : Γ →* ℤˣ), IsLocallyConstant η → ∀ (r : Γ →* GG 3 (PadicAlgCl l)) (y : Γ → Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) (r' : Γ →* GG 3 (DualNumber (PadicAlgCl l))) (h : GL (Fin 3) (DualNumber (PadicAlgCl l))), HasMult η r → Continuous (mats r) → Continuous y → IsCoc r y → IsDeform ((GG.map (algebraMap (PadicAlgCl l) (DualNumber (PadicAlgCl l)))).comp r) (fun g => (y g).map (TrivSqZeroExt.inr : (PadicAlgCl l) → DualNumber (PadicAlgCl l))) r' → ∀ (H : Subgroup Γ) [H.Normal], IsOpen (H : Set Γ) → H ≤ η.ker → Upper η (conjBy h⁻¹ r') → ∀ w : Fin 3 → ℤ, StrictAnti w → (∀ g ∈ H, φ g ∈ UpperTheory.V.Loc.Iq l → ∀ a, (conjBy h⁻¹ r' g).mat a a = ((UpperTheory.V.Loc.cycA l l (DualNumber (PadicAlgCl l)) (φ g) ^ w a : (DualNumber (PadicAlgCl l))ˣ) : DualNumber (PadicAlgCl l))) → (∀ i j : Fin 3, i < j → ∃ g ∈ H, ((conjBy h⁻¹ r' g).mat i i).fst ≠ ((conjBy h⁻¹ r' g).mat j j).fst * ((UpperTheory.V.Loc.cycA l l (PadicAlgCl l) (φ g) : (PadicAlgCl l)ˣ) : (PadicAlgCl l))) → y ∈ UpperTheory.V.Loc.finiteCocycles φ (adRep r) := by

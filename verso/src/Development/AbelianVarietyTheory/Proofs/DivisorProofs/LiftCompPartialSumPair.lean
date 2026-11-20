@@ -31,28 +31,28 @@ Both sides reduce to the same expression.
 theorem pzero_eq_one' : pzero G T = 1 := rfl
 
 /- English proof (translation)
-Establish `hl : (List.finRange 2).filter (· ∈ ({0, 1} : Finset (Fin 2))) = [0, 1]` using `by decide`. Rewrite using `[psum, hl]`. Simplify using `[padd_eq_mul', pzero_eq_one']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psum_pair_01 : psum G ![u, v] {0, 1} = u * v := by
   have hl : (List.finRange 2).filter (· ∈ ({0, 1} : Finset (Fin 2))) = [0, 1] := by decide
   rw [psum, hl]
   simp [padd_eq_mul', pzero_eq_one']
 /- English proof (translation)
-Establish `hl : (List.finRange 2).filter (· ∈ ({0} : Finset (Fin 2))) = [0]` using `by decide`. Rewrite using `[psum, hl]`. Simplify using `[padd_eq_mul', pzero_eq_one']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psum_pair_0 : psum G ![u, v] {0} = u := by
   have hl : (List.finRange 2).filter (· ∈ ({0} : Finset (Fin 2))) = [0] := by decide
   rw [psum, hl]
   simp [padd_eq_mul', pzero_eq_one']
 /- English proof (translation)
-Establish `hl : (List.finRange 2).filter (· ∈ ({1} : Finset (Fin 2))) = [1]` using `by decide`. Rewrite using `[psum, hl]`. Simplify using `[padd_eq_mul', pzero_eq_one']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psum_pair_1 : psum G ![u, v] {1} = v := by
   have hl : (List.finRange 2).filter (· ∈ ({1} : Finset (Fin 2))) = [1] := by decide
   rw [psum, hl]
   simp [padd_eq_mul', pzero_eq_one']
 /- English proof (translation)
-Establish `hl : (List.finRange 2).filter (· ∈ (∅ : Finset (Fin 2))) = []` using `by decide`. Rewrite using `[psum, hl]`. Simplify using `[pzero_eq_one']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psum_pair_e : psum G ![u, v] ∅ = 1 := by
   have hl : (List.finRange 2).filter (· ∈ (∅ : Finset (Fin 2))) = [] := by decide

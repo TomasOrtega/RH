@@ -13,13 +13,11 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂
   (ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i))) (π : N.X i)
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_eq_one_iff]`. Establish `hc1 : 1 ≤ (c : ℕ)`. Break down `Nat.eq_zero_or_pos (c : ℕ) with h | h` into its components or cases. Conclude with `absurd (Fin.ext h) hc`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hct` using `c.isLt`. Use `⟨⟨⟨r + ((c : ℕ) - 1), by omega⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Unfold `blkG`. Rewrite using `[dif_neg (by simp)]`. Conclude with `Fin.ext (by simp; omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Introduce and unpack `⟨a, ha⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Unfold `blkG at ha`. Use `split_ifs at ha with h`. Conclude with `absurd ha.symm hc`.
-
-Establish `h2` using `congrArg Fin.val ha`. Simplify using `at h2`. Conclude with `Fin.ext (by simp; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_blk (r t : ℕ) (c : Fin (t + 1)) (hc : c ≠ 0) :
     Fintype.card {a : Fin (r + t) // blkG r t a = c} = 1 := by
@@ -43,7 +41,7 @@ theorem card_blk (r t : ℕ) (c : Fin (t + 1)) (hc : c ≠ 0) :
       exact Fin.ext (by simp; omega)
 
 /- English proof (translation)
-Unfold `blkG at ha`. Use `split_ifs at ha with h`. Conclude with `absurd rfl ha`. Conclude with `⟨⟨(a : ℕ) - r, by have := a.2; omega⟩, Fin.ext (by simp; omega)⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_natAdd (r t : ℕ) (a : Fin (r + t)) (ha : blkG r t a ≠ 0) :
     ∃ c : Fin t, a = Fin.natAdd r c := by
@@ -53,13 +51,13 @@ theorem exists_natAdd (r t : ℕ) (a : Fin (r + t)) (ha : blkG r t a ≠ 0) :
   · exact ⟨⟨(a : ℕ) - r, by have := a.2; omega⟩, Fin.ext (by simp; omega)⟩
 
 /- English proof (translation)
-Take `⟨hbd, hχ, -⟩` from `hN`. Use `⟨N.T_local i, N.T_sep i, hG1, hbd, fun c hc => card_blk R.r R.t c hc, fun g a ha => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `exists_natAdd R.r R.t a ha`. Establish `h1 : ((blk R (Fin.natAdd R.r c) : Fin (R.t + 1)) : ℕ) - 1 = (c : ℕ)`. Rewrite using `[show blk R (Fin.natAdd R.r c) = c.succ from blkG_natAdd R.r R.t c]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1]`. Use `(hχ g c).trans ?_` and prove the remaining obligations. Establish `h2` using `N.chi_def i ((c : ℕ) + 1) (by omega) (by have := c.2; omega)`. Establish `h3 : chiU N i ((c : ℕ) + 1) g = chiU N i 1 g * ((epsU N i g)⁻¹ ^ (c : ℕ))` using `by show N.chi i ((c : ℕ) + 1) g = _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2, MonoidHom.mul_apply]`. Use `congr 1`. Establish `h4 : (-(((((c : ℕ) + 1 : ℕ) : ℤ)) - 1)) = -((c : ℕ) : ℤ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h4, _root_.zpow_neg, zpow_natCast, MonoidHom.inv_apply, MonoidHom.pow_apply, inv_pow]`. Both sides reduce to the same expression. Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem primHyp_of (hN : NormAt N r ρ π)
     (hG1 : ∀ (γ : GE N) (k : ℕ), (fun x : N.X i => ((rO N i r x γ).charpolyRev).coeff k) ∈ N.T i) :

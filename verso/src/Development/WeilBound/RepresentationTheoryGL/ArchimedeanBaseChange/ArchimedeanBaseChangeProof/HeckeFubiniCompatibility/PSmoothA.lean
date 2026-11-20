@@ -16,9 +16,9 @@ def pd {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (Q : X × M → V) 
 
 omit [FiniteDimensional ℝ X] in
 /- English proof (translation)
-Introduce `q hq`. Establish `hQa : ContDiffAt ℝ ∞ Q q` using `hQ.contDiffAt ((hU.prod hW).mem_nhds hq)`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Use `ContDiffAt.fderiv (f := fun (r : X × M) (x : X) => Q (x, r.2)) (g := fun r => r.1) ?_ contDiffAt_fst ENat.coe_top_add_one.le` and prove the remaining obligations. Establish `e : Function.uncurry (fun (r : X × M) (x : X) => Q (x, r.2)) = Q ∘ fun z : (X × M) × X => (z.2, z.1.2)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `ContDiffAt.comp _ hQa (contDiffAt_snd.prodMk (contDiffAt_snd.comp _ contDiffAt_fst))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffOn_pd {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {Q : X × M → V} {U : Set X} {W : Set M}
     (hU : IsOpen U) (hW : IsOpen W) (hQ : ContDiffOn ℝ ∞ Q (U ×ˢ W)) : ContDiffOn ℝ ∞ (pd Q) (U ×ˢ W) := by
@@ -34,21 +34,17 @@ theorem contDiffOn_pd {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {Q :
 variable {μ : Measure T} [IsFiniteMeasureOnCompacts μ] {U : Set X} {W : Set M} {p : T → M}
 
 /- English proof (translation)
-Take `⟨K, hK, hKe⟩` from `hs x₀ hx₀`. Establish `hUW` using `hU.prod hW`. Take `⟨δ, hδ, hδK⟩` from `Metric.eventually_nhds_iff_ball.1 hKe`. Take `⟨ε₀, hε₀, hε₀U⟩` from `Metric.isOpen_iff.1 hU x₀ hx₀`. Use `set ε := min (δ / 2) (ε₀ / 2) with hεdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hε : 0 < ε` using `lt_min (half_pos hδ) (half_pos hε₀)`. Establish `hcb : closedBall x₀ ε ⊆ U` using `fun x hx => hε₀U (mem_ball.2 (lt_of_le_of_lt (mem_closedBall.1 hx) (lt_of_le_of_lt (min_le_right _ _) (half_lt_self hε₀))))`. Establish `hcbδ : closedBall x₀ ε ⊆ ball x₀ δ` using `fun x hx => mem_ball.2 (lt_of_le_of_lt (mem_closedBall.1 hx) (lt_of_le_of_lt (min_le_left _ _) (half_lt_self hδ)))`. Establish `hQc : ContinuousOn Q (U ×ˢ W)` using `hQ.continuousOn`. Establish `hPc : ContinuousOn (pd Q) (U ×ˢ W)` using `(contDiffOn_pd hU hW hQ).continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcpt : IsCompact (closedBall x₀ ε ×ˢ (p '' K))` using `(isCompact_closedBall x₀ ε).prod (hK.image hp)`. Establish `hsub : closedBall x₀ ε ×ˢ (p '' K) ⊆ U ×ˢ W` using `prod_mono hcb (by rintro _ ⟨y, -, rfl⟩; exact hpW y)`. Take `⟨C, hC⟩` from `hcpt.exists_bound_of_continuousOn (hPc.mono hsub)`. Establish `hzero : ∀ x ∈ ball x₀ δ, ∀ y ∉ K, pd Q (x, p y) = 0`. Introduce `x hx y hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : (fun x' => Q (x', p y)) =ᶠ[𝓝 x] fun _ => 0` using `by filter_upwards [isOpen_ball.mem_nhds hx] with x' hx' using hδK x' hx' y hy`. Use `show fderiv ℝ (fun x' => Q (x', p y)) x = 0`. Rewrite using `[h0.fderiv_eq]`. Conclude with `fderiv_const_apply _`. Establish `hdiff : ∀ x ∈ U, ∀ y, HasFDerivAt (fun x' => Q (x', p y)) (pd Q (x, p y)) x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx y`. Establish `h1 : ContDiffAt ℝ ∞ Q (x, p y)` using `hQ.contDiffAt (hUW.mem_nhds ⟨hx, hpW y⟩)`. Establish `h2 : DifferentiableAt ℝ (fun x' => Q (x', p y)) x` using `(h1.differentiableAt (by simp)).comp x (differentiableAt_id.prodMk (differentiableAt_const _))`. Conclude with `h2.hasFDerivAt`. Establish `hcont : ∀ x ∈ U, Continuous fun y => Q (x, p y)` using `fun x hx => hQc.comp_continuous (continuous_const.prodMk hp) fun y => ⟨hx, hpW y⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hcont' : ∀ x ∈ U, Continuous fun y => pd Q (x, p y)` using `fun x hx => hPc.comp_continuous (continuous_const.prodMk hp) fun y => ⟨hx, hpW y⟩`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (𝕜 := ℝ) (μ := μ) (F := fun x y => Q (x, p y)) (F' := fun x y => pd Q (x, p y)) (s := ball x₀ ε) (bound := K.indicator fun _ => C) (ball_mem_nhds x₀ hε) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds hx₀] with x hx using (hcont x hx).aestronglyMeasurable`. Conclude with `(hcont x₀ hx₀).integrable_of_hasCompactSupport (HasCompactSupport.intro hK fun y hy => hδK x₀ (mem_ball_self hδ) y hy)`. Conclude with `(hcont' x₀ hx₀).aestronglyMeasurable`.
-
-Use `ae_of_all _ fun y x hx => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ K`. Rewrite using `[indicator_of_mem hy]`. Conclude with `hC _ ⟨ball_subset_closedBall hx, mem_image_of_mem p hy⟩`. Rewrite using `[hzero x (hcbδ (ball_subset_closedBall hx)) y hy, indicator_of_notMem hy, norm_zero]`.
-
-Conclude with `(integrableOn_const hK.measure_lt_top.ne).integrable_indicator hK.measurableSet`. Conclude with `ae_of_all _ fun y x hx => hdiff x (hcb (ball_subset_closedBall hx)) y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_step (hU : IsOpen U) (hW : IsOpen W) (hp : Continuous p) (hpW : ∀ y, p y ∈ W) {V : Type}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {Q : X × M → V}
@@ -103,13 +99,13 @@ theorem hasFDerivAt_step (hU : IsOpen U) (hW : IsOpen W) (hp : Continuous p) (hp
   · exact ae_of_all _ fun y x hx => hdiff x (hcb (ball_subset_closedBall hx)) y
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `V _ _ _ Q hQ hs`. Rewrite using `[Nat.cast_zero, contDiffOn_zero]`. Conclude with `fun x hx => (hasFDerivAt_step (μ := μ) hU hW hp hpW hQ hs hx).continuousAt.continuousWithinAt`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Consider the case `succ n ih`. Introduce `V _ _ _ Q hQ hs`. Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen hU]`. Use `⟨fun x hx => (hasFDerivAt_step (μ := μ) hU hW hp hpW hQ hs hx).differentiableAt.differentiableWithinAt, fun h => absurd h (by simp), ?_⟩` and prove the remaining obligations. Establish `hs' : ∀ x ∈ U, ∃ K, IsCompact K ∧ ∀ᶠ x' in 𝓝 x, ∀ y ∉ K, pd Q (x', p y) = 0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨K, hK, hKe⟩` from `hs x hx`. Use `⟨K, hK, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_eventually_nhds.2 hKe] with x' hx' y hy`. Establish `h0 : (fun x'' => Q (x'', p y)) =ᶠ[𝓝 x'] fun _ => 0` using `hx'.mono fun x'' h => h y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show fderiv ℝ (fun x'' => Q (x'', p y)) x' = 0`. Rewrite using `[h0.fderiv_eq]`. Conclude with `fderiv_const_apply _`. Conclude with `(ih (X →L[ℝ] V) (pd Q) (contDiffOn_pd hU hW hQ) hs').congr fun x hx => (hasFDerivAt_step (μ := μ) hU hW hp hpW hQ hs hx).fderiv`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_integral_nat (hU : IsOpen U) (hW : IsOpen W) (hp : Continuous p) (hpW : ∀ y, p y ∈ W) (n : ℕ) :
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (Q : X × M → V),
@@ -138,7 +134,7 @@ theorem contDiffOn_integral_nat (hU : IsOpen U) (hW : IsOpen W) (hp : Continuous
       (hasFDerivAt_step (μ := μ) hU hW hp hpW hQ hs hx).fderiv
 
 /- English proof (translation)
-The claim follows from `contDiffOn_infty.2 fun n => contDiffOn_integral_nat hU hW hp hpW n V Q hQ hs`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_integral (hU : IsOpen U) (hW : IsOpen W) (hp : Continuous p) (hpW : ∀ y, p y ∈ W) {V : Type}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {Q : X × M → V}

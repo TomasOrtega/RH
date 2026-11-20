@@ -8,29 +8,25 @@ open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F _ _ μ _`. Establish `h0 : ∀ g : G1 F, (Measure.modularCharacter g : ℝ≥0) ≠ 0` using `fun g h => by`. Establish `e` using `map_mul (Measure.modularCharacter (G := G1 F)) g g⁻¹`. Rewrite `e` using `[mul_inv_cancel, map_one, h, zero_mul]`. Conclude with `one_ne_zero e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2F : (2 : F) ≠ 0` using `two_ne_zero`. Establish `h3F : (3 : F) ≠ 0` using `by norm_num`. Set `two : (A F)ˣ` to `Units.map (algebraMap F (A F)).toMonoidHom (Units.mk0 2 h2F)`. Establish `h2 : (two : A F) = 2` using `map_ofNat (algebraMap F (A F)) 2`. Establish `h4 : ∀ b : A F, (Measure.modularCharacter (nU (4 * b)) : ℝ≥0) = Measure.modularCharacter (nU b)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Establish `e` using `congrArg (Measure.modularCharacter (G := G1 F)) (M.mD_mul_nU two b)`. Rewrite `e` using `[map_mul, map_mul, mul_comm]`. Establish `c` using `mul_right_cancel₀ (h0 _) e`. Rewrite `c` using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `at c`. Conclude with `c.symm`. Establish `hn : ∀ c : A F, (Measure.modularCharacter (nU c) : ℝ≥0) = 1`. Introduce `c`. Establish `h3 : (3 : A F) * (rt (3⁻¹ : F) * c) = c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (3 : A F) * rt (3⁻¹ : F) = 1`. Rewrite using `[show (3 : A F) = rt (3 : F) from (map_ofNat (algebraMap F (A F)) 3).symm, ← map_mul, mul_inv_cancel₀ h3F, map_one]`. Rewrite using `[← mul_assoc, this, one_mul]`. Use `set b : A F := rt (3⁻¹ : F) * c with hb`. Establish `e` using `h4 b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[show (4 : A F) * b = 3 * b + b by ring, M.nU_add, map_mul, h3]`. Conclude with `mul_right_cancel₀ (h0 (nU b)) (e.trans (one_mul _).symm)`. Establish `hw : (Measure.modularCharacter (wW F) : ℝ≥0) = 1`. Establish `e : wW F * wW F * (wW F * wW F) = 1`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[M.val_mul, M.val_mul]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [wW, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e'` using `congrArg (Measure.modularCharacter (G := G1 F)) e`. Rewrite `e'` using `[map_mul, map_mul, map_one]`. Establish `e4 : (Measure.modularCharacter (wW F) : ℝ≥0) ^ 4 = 1` using `by rw [← e']; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pow_eq_one_iff.1 e4).resolve_right (by norm_num)`. Establish `hall : ∀ g : G1 F, (Measure.modularCharacter g : ℝ≥0) = 1`. Introduce `g`. Establish `hg : g ∈ Subgroup.closure (Set.range (nU (F` using `F)) ∪ {wW F}) := by`. Rewrite using `[(gen F).1]`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Subgroup.mem_top g`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨c, rfl⟩ | hx` into its components or cases. Conclude with `hn c`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.mem_singleton_iff.1 hx]`. Conclude with `hw`. Consider the case `one => exact map_one _`. Consider the case `mul x y _ _ hx hy => rw [map_mul, hx, hy, one_mul]`. Consider the case `inv x _ hx`.
-
-Establish `e` using `map_mul (Measure.modularCharacter (G := G1 F)) x x⁻¹`. Rewrite `e` using `[mul_inv_cancel, map_one, hx, one_mul]`. Conclude with `e.symm`. Use `haveI : μ.InnerRegular := inferInstance`. Use `⟨fun g => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Measure.map_right_mul_eq_modularCharacterFun_smul μ g, show Measure.modularCharacterFun g = 1 from hall g, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.M.unimod :
     ∀ (F : Type) [Field F] [NumberField F], ∀ (μ : Measure (G1 F)) [μ.IsHaarMeasure], μ.IsMulRightInvariant := by

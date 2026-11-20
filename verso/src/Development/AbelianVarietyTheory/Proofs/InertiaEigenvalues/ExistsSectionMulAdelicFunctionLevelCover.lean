@@ -19,23 +19,21 @@ set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r hr U dict io g e F ik φ th x₀ hio hpq hA hσ hW hL hdom hU hF w hfin hQ hK a n f hf`. Take `⟨v₀, hv₀⟩` from `GlobalTheory.T.exists_factor_components_of_adelic_invariant_function D H Dw l Xo c σ V r hr U dict io g e F ik φ th x₀ hio hpq hA hσ hW hL hdom w hfin hQ hK`. Establish `hr1 : 1 ≤ r` using `hU.1 ▸ hpq`. Take `⟨χ, hχ, hid, -, -, hrd⟩` from `GlobalTheory.T.exists_orthogonal_idempotent_sections_indicating_components D.host.E H Dw l Xo c σ r U hr1 hσ hU hF`. Set `v : U.Comp → c.F` to `fun k => if ∃ h : GA D V, (dict h).1 = k then v₀ k else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hv : ∀ h : GA D V, v (dict h).1 = w h` using `fun h => by`. Simplify using `only [v]`. Rewrite using `[if_pos ⟨h, rfl⟩, hv₀ h]`. Establish `he : (∑ k, v k • χ k) ∈ sec Xo c 0 0` using `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hχ k)`. Establish `hval : ∀ k x, x ∈ (U.X k).dom → rdU U (∑ k, v k • χ k) k x = σ (v k)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k x hx`. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_apply, Finset.sum_eq_single k]`. Rewrite using `[LinearMap.map_smulₛₗ, Pi.smul_apply, Pi.smul_apply, (hrd k k x hx).1 rfl, smul_eq_mul, mul_one]`. Introduce `k' _ hk`. Rewrite using `[LinearMap.map_smulₛₗ, Pi.smul_apply, Pi.smul_apply, (hrd k' k x hx).2 hk.symm, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`. Establish `hmul : rdU U ((∑ k, v k • χ k) * f) = fun k x => σ (v k) * rdU U f k x`. Use function extensionality and compare the values at `k x`. Rewrite using `[GlobalTheory.rdU_mul_apply D.host.E H Dw l Xo c σ r U]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ (U.X k).dom`. Rewrite using `[hval k x hx]`. Rewrite using `[rdU_mem_offZero U f k x hx, mul_zero, mul_zero]`. Use `⟨(∑ k, v k • χ k) * f, ?_, fun h => ?_, fun la hla => ?_, fun lam hw hint => ?_⟩` and prove the remaining obligations. Use `sec_mul Xo c 0 a 0 n he hf` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [zero_add]`. Rewrite using `[hmul, ← hv h]`. Rewrite using `[hmul]`. Conclude with `(GlobalTheory.CompRat.holSub_compMul D.host.E r U.Comp U.X la (fun k => σ (v k)) (rdU U f)).2 hla`. Establish `hvi : ∀ k, lam.valuation c.F (v k) ≤ 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `k`. Distinguish the cases in `hk : ∃ h : GA D V, (dict h).1 = k`. Take `⟨h, rfl⟩` from `hk`. Rewrite using `[hv h]`. Conclude with `hw h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [v]`. Rewrite using `[if_neg hk, map_zero]`. Conclude with `zero_le_one`. Set `ε` to `(Fintype.equivFin U.Comp).symm`. Rewrite using `[← ε.sum_comp (fun k => v k • χ k)]`.
-
-Conclude with `GlobalTheory.T.integralComb_idempotentSections_nonneg_over_place D.host.E H Dw l Xo c lam _ (fun i => χ (ε i)) (fun i => v (ε i)) (fun i => ⟨hχ _, hid _⟩) (fun i => hvi _) f hint`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_mul_adelic_fun : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (hr : V.rank = r) (U : Unf Xo c σ r) (dict : GA D V → Σ k, Frame (U.X k).Ψ r) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) (g : ℕ) (e : Fin g ≃ Σ τ : D.host.E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (ik : U.Comp → Fin F.n) (φ : ∀ k, (F.Di (ik k)).La ≃ₗ[𝓞 D.host.E] (U.X k).Λ) (th : ∀ k, (U.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ), IotaOK Dw V io → 1 ≤ Dw.p + Dw.q → l.A = 1 → GoodEmb c σ → (∀ k, ModelW V hr (U.X k)) → DictLat U V hr dict io e F ik φ th x₀ → (∀ h, (dict h).2 ∈ (U.X (dict h).1).dom) → IsUnf U → FnAlgClosed Xo c → ∀ w : GA D V → c.F, (∀ h h' : GA D V, finHom V h = finHom V h' → w h = w h') → (∀ γ ∈ GQ V, ∀ h, w (γ * h) = w h) → (∀ u : GA D V, gLat V u = latHat V → FinCong V l.M u → ∀ h, w (h * u) = w h) → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ sec Xo c a n, ∃ f' ∈ sec Xo c a n, (∀ h : GA D V, rdU U f' (dict h).1 (dict h).2 = σ (w h) * rdU U f (dict h).1 (dict h).2) ∧ (∀ la : ∀ k, ReciprocityTheory.ChartRestriction.G.FD.Wt (U.X k).Ψ r, rdU U f ∈ holSub0 U.X la → rdU U f' ∈ holSub0 U.X la) ∧ ∀ lam : HeightOneSpectrum (𝓞 c.F), (∀ h, lam.valuation c.F (w h) ≤ 1) → (∀ v ∈ valSet Xo c (algCls Xo c) lam, 0 ≤ v f) → ∀ v ∈ valSet Xo c (algCls Xo c) lam, 0 ≤ v f' := by
   intro D H Dw l Xo c σ V r hr U dict io g e F ik φ th x₀ hio hpq hA hσ hW hL hdom hU hF w hfin hQ hK a n f hf

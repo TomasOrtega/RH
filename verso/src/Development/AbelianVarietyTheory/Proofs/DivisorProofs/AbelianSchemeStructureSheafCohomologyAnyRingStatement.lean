@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbCoh.oStr_of_noetherian | exact GlobalTheory.AbCoh.oStr_of_noetherian | (intros; apply GlobalTheory.AbCoh.oStr_of_noetherian <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.abelianScheme_structureSheafCohomology_anyRing : GlobalTheory.AbCoh.OStr := by
   first | exact @GlobalTheory.AbCoh.oStr_of_noetherian | exact GlobalTheory.AbCoh.oStr_of_noetherian | (intros; apply GlobalTheory.AbCoh.oStr_of_noetherian <;> assumption)

@@ -26,7 +26,7 @@ namespace GlobalTheory.CrysChiOne
 variable {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
   {hw : w ∈ placesOver D.host.E (D.nd.l i)}
 /- English proof (translation)
-Establish `h1` using `(_root_.UpperTheory.GalS.g2a' ((h41 i).2.2 r hr).2.1 w hw hl0 hl1 x).1`. Establish `h2 : IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (Br.loc D.nbr i w hw (rO D.nd i r x)))` using `((D.loc_tie i w hw).2.1 D.R.nV (r x) (by simpa [rO] using (hr x).1)).1.1 h1`. Conclude with `GlobalTheory.CrysCoef.isCrys_inclusion (D.nd.l i) (D.loc (D.nd.l i)) (D.nbr i w hw).Kw (D.nbr i w hw).LL C.LL C.le D.R.nV _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rx_crys_alt_alt (h41 : _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (hr : GoodR D.nd i r) (hl0 : D.nd.l i ≠ D.host.g 0) (hl1 : D.nd.l i ≠ D.host.g 1)

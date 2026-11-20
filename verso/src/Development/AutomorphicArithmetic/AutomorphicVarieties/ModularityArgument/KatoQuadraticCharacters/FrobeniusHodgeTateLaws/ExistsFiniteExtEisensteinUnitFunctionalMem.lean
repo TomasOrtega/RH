@@ -10,9 +10,9 @@ variable {l : ℕ} [Fact l.Prime]
 
 omit [Fact l.Prime] in
 /- English proof (translation)
-Proceed by induction on `r generalizing a with`. Consider the case `zero => simp`. Consider the case `succ r ih`. Rewrite using `[Function.iterate_succ_apply, ih]`. Simplify using `only [Uo]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_succ', mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_uo (r : ℕ) (a : ℕ → ℂ) (n : ℕ) : (Uo l)^[r] a n = a (l ^ r * n) := by
   induction r generalizing a with
@@ -24,9 +24,9 @@ theorem iter_uo (r : ℕ) (a : ℕ → ℂ) (n : ℕ) : (Uo l)^[r] a n = a (l ^ 
 
 omit [Fact l.Prime] in
 /- English proof (translation)
-Establish `h : ∀ n, Zm k l u w (fun A d => a * f ((A : ZMod (l ^ m)) * (d : ZMod (l ^ m))⁻¹) + f' ((A : ZMod (l ^ m)) * (d : ZMod (l ^ m))⁻¹)) n = a * Zm k l u w (fun A d => f ((A : ZMod (l ^ m)) * (d : ZMod (l ^ m))⁻¹)) n + Zm k l u w (fun A d => f' ((A : ZMod (l ^ m)) * (d : ZMod (l ^ m)) …`. Introduce `n`. Simplify using `only [Zm, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [mesMu, val, lam, iter_uo, h, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun n _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mes_lin (k : ℕ) (u w : ℤ → ℂ) (α : ℂ) (B : ℕ) (c : ℕ → ℂ) (m : ℕ) (a : ℂ) (f f' : ZMod (l ^ m) → ℂ) :
     mesMu k l u w α B c m (fun y => a * f y + f' y) = a * mesMu k l u w α B c m f + mesMu k l u w α B c m f' := by
@@ -42,9 +42,9 @@ theorem mes_lin (k : ℕ) (u w : ℤ → ℂ) (α : ℂ) (B : ℕ) (c : ℕ → 
 
 omit [Fact l.Prime] in
 /- English proof (translation)
-Establish `key : ∀ n, Zm k l u w (fun A d => (fun y => a * f y) ((A : ZMod (l ^ m)) * (d : ZMod (l ^ m))⁻¹)) n = a * Zm k l u w (fun A d => f ((A : ZMod (l ^ m)) * (d : ZMod (l ^ m))⁻¹)) n`. Introduce `n`. Simplify using `only [Zm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [mesMu, val, lam, iter_uo]`. Simplify using `only [key, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mes_smul (k : ℕ) (u w : ℤ → ℂ) (α : ℂ) (B : ℕ) (c : ℕ → ℂ) (m : ℕ) (a : ℂ) (f : ZMod (l ^ m) → ℂ) :
     mesMu k l u w α B c m (fun y => a * f y) = a * mesMu k l u w α B c m f := by
@@ -83,19 +83,19 @@ theorem eisensteinUnitFunctional_apply (ι : Qbar l ≃+* ℂ) (e : ℕ) (s : �
     (g : ZMod (l ^ M) → Qbar l) : nu0 ι e s u w α B c M g = ι.symm (mesMu (2 * e + 1) l u w α B c M (sym ι s g)) := rfl
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one y (ZMod.inv_mul_of_unit y h)`.
+A detailed English derivation is pending.
 -/
 theorem inv_unit {N : ℕ} {y : ZMod N} (h : IsUnit y) : IsUnit y⁻¹ := IsUnit.of_mul_eq_one y (ZMod.inv_mul_of_unit y h)
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `h`. Rewrite using `[← Units.val_neg, ZMod.inv_coe_unit, ZMod.inv_coe_unit, inv_neg, Units.val_neg]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem neg_inv_unit {N : ℕ} {y : ZMod N} (h : IsUnit y) : (-y)⁻¹ = -y⁻¹ := by
   obtain ⟨u, rfl⟩ := h
   rw [← Units.val_neg, ZMod.inv_coe_unit, ZMod.inv_coe_unit, inv_neg, Units.val_neg]
 
 /- English proof (translation)
-Distinguish the cases in `hy : IsUnit y`. Simplify using `only [sym, if_pos hy, if_pos hy.neg, neg_neg]`. Take the linear combination `(-ι (g (-y)⁻¹) / 2) * hs`. Simplify using `[sym, hy]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem sym_par (ι : Qbar l ≃+* ℂ) {s : ℂ} (hs : s * s = 1) {N : ℕ} (g : ZMod N → Qbar l) (y : ZMod N) :
     sym ι s g (-y) = s * sym ι s g y := by
@@ -105,9 +105,9 @@ theorem sym_par (ι : Qbar l ≃+* ℂ) {s : ℂ} (hs : s * s = 1) {N : ℕ} (g 
   · simp [sym, hy]
 
 /- English proof (translation)
-Establish `hs : sym ι s g = sym ι s g'`. Use function extensionality and compare the values at `y`. Unfold `sym`. Use `split_ifs with hy`. Rewrite using `[h _ (inv_unit hy), h _ (inv_unit hy.neg)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[eisensteinUnitFunctional_apply, eisensteinUnitFunctional_apply, hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eisensteinUnitFunctional_congr_on_units (ι : Qbar l ≃+* ℂ) (e : ℕ) (s : ℂ) (u w : ℤ → ℂ) (α : ℂ) (B : ℕ) (c : ℕ → ℂ) (M : ℕ)
     (g g' : ZMod (l ^ M) → Qbar l) (h : ∀ x, IsUnit x → g x = g' x) : nu0 ι e s u w α B c M g = nu0 ι e s u w α B c M g' := by
@@ -120,19 +120,19 @@ theorem eisensteinUnitFunctional_congr_on_units (ι : Qbar l ≃+* ℂ) (e : ℕ
   rw [eisensteinUnitFunctional_apply, eisensteinUnitFunctional_apply, hs]
 
 /- English proof (translation)
-Rewrite using `[ZMod.isUnit_iff_coprime, Nat.coprime_pow_right_iff hM, Nat.coprime_comm, (Fact.out : l.Prime).coprime_iff_not_dvd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_iff {M : ℕ} (hM : 1 ≤ M) (y : ℕ) : IsUnit (y : ZMod (l ^ M)) ↔ ¬ l ∣ y := by
   rw [ZMod.isUnit_iff_coprime, Nat.coprime_pow_right_iff hM, Nat.coprime_comm, (Fact.out : l.Prime).coprime_iff_not_dvd]
 
 /- English proof (translation)
-Establish `hdvd : l ^ M ∣ l ^ (M + 1)` using `pow_dvd_pow l (Nat.le_succ M)`. Use `haveI : NeZero (l ^ (M + 1)) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `set φ := ZMod.castHom hdvd (ZMod (l ^ M))`. Establish `hg : ∀ x, g' x = g (φ x)`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ZMod.natCast_zmod_val x, h, map_natCast]`. Establish `hinv : ∀ x : ZMod (l ^ (M + 1)), IsUnit x → φ x⁻¹ = (φ x)⁻¹`. Introduce `x hx`. Use `symm`. Apply `ZMod.inv_eq_of_mul_eq_one` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ZMod.mul_inv_of_unit x hx, map_one]`. Establish `hsym : ∀ y : ℕ, sym ι s g' (y : ZMod (l ^ (M + 1))) = sym ι s g y`. Introduce `y`. Unfold `sym`. Distinguish the cases in `hy : l ∣ y`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg (by rw [unit_iff (M := M + 1) (by omega)]; exact not_not.2 hy), if_neg (by rw [unit_iff hM]; exact not_not.2 hy)]`. Establish `h1 : IsUnit (y : ZMod (l ^ (M + 1)))` using `(unit_iff (M := M + 1) (by omega) y).2 hy`. Rewrite using `[if_pos h1, if_pos ((unit_iff hM y).2 hy), hg, hg, hinv _ h1, hinv _ h1.neg, map_neg, map_natCast]`. Rewrite using `[eisensteinUnitFunctional_apply, eisensteinUnitFunctional_apply, H.compat M hM (sym ι s g) (sym ι s g') (sym_par ι hs g) hsym]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eisensteinUnitFunctional_compat_succ {ι : Qbar l ≃+* ℂ} {e : ℕ} {s : ℂ} {u w : ℤ → ℂ} {ψ : DirichletCharacter ℂ l} {α : ℂ} {B : ℕ} {c : ℕ → ℂ} {v : ℂ}
     (H : MeasMu ι e s u w ψ α B c v) (hs : s * s = 1) (M : ℕ) (hM : 1 ≤ M) (g : ZMod (l ^ M) → Qbar l)
@@ -160,7 +160,7 @@ theorem eisensteinUnitFunctional_compat_succ {ι : Qbar l ≃+* ℂ} {e : ℕ} {
   rw [eisensteinUnitFunctional_apply, eisensteinUnitFunctional_apply, H.compat M hM (sym ι s g) (sym ι s g') (sym_par ι hs g) hsym]
 
 /- English proof (translation)
-Establish `h1 : algebraMap ℚ_[l] (Qbar l) (a : ℚ_[l]) = (a : Qbar l)` using `map_natCast _ a`. Establish `h2 : ((a : ℚ) : ℚ_[l]) = (a : ℚ_[l])` using `by push_cast; rfl`. Rewrite using `[← h1, PadicAlgCl.norm_extends l (a : ℚ_[l])]`. Rewrite using `[← h2, Padic.eq_padicNorm, (padicNorm.nat_eq_one_iff a).2 ha]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_nat {a : ℕ} (ha : ¬ l ∣ a) : ‖(a : Qbar l)‖ = 1 := by
   have h1 : algebraMap ℚ_[l] (Qbar l) (a : ℚ_[l]) = (a : Qbar l) := map_natCast _ a
@@ -170,7 +170,7 @@ theorem norm_nat {a : ℕ} (ha : ¬ l ∣ a) : ‖(a : Qbar l)‖ = 1 := by
   simp
 
 /- English proof (translation)
-Establish `h2 : ‖(2 : Qbar l)‖ = 1`. Simplify using `using norm_nat (l := l) (a := 2) fun h => hl ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 h)`. Rewrite using `[norm_div, h2, div_one]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_half (hl : l ≠ 2) {a b : Qbar l} {δ : ℝ} (ha : ‖a‖ ≤ δ) (hb : ‖b‖ ≤ δ) : ‖(a + b) / 2‖ ≤ δ := by
   have h2 : ‖(2 : Qbar l)‖ = 1 := by
@@ -179,12 +179,12 @@ theorem norm_half (hl : l ≠ 2) {a b : Qbar l} {δ : ℝ} (ha : ‖a‖ ≤ δ)
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)
 
 /- English proof (translation)
-The claim follows from `mul_self_eq_one_iff.1 hs`.
+A detailed English derivation is pending.
 -/
 theorem sgn_cases {s : ℂ} (hs : s * s = 1) : s = 1 ∨ s = -1 := mul_self_eq_one_iff.1 hs
 
 /- English proof (translation)
-Unfold `sym`. Rewrite using `[if_pos hy, neg_inv_unit hy, map_div₀, map_add, map_mul, RingEquiv.symm_apply_apply, RingEquiv.symm_apply_apply, map_ofNat]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_sym (ι : Qbar l ≃+* ℂ) (s : ℂ) {N : ℕ} (g : ZMod N → Qbar l) {y : ZMod N} (hy : IsUnit y) :
     ι.symm (sym ι s g y) = (g y⁻¹ + ι.symm s * g (-y⁻¹)) / 2 := by
@@ -193,11 +193,11 @@ theorem symm_sym (ι : Qbar l ≃+* ℂ) (s : ℂ) {N : ℕ} (g : ZMod N → Qba
     RingEquiv.symm_apply_apply, map_ofNat]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `H.bound`. Use `⟨C * 1, fun M g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[eisensteinUnitFunctional_apply]`. Apply `hC M _ 1 zero_le_one` to reduce the goal to its premises. Introduce `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hy : IsUnit y`. Rewrite using `[symm_sym ι s g hy]`. Apply `norm_half hl (hg _)` to reduce the goal to its premises. Rewrite using `[norm_mul]`. Establish `hn : ‖ι.symm s‖ = 1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases sgn_cases hs with rfl | rfl <;> simp`. Rewrite using `[hn, one_mul]`. Conclude with `hg _`. Simplify using `[sym, hy]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eisensteinUnitFunctional_bounded {ι : Qbar l ≃+* ℂ} {e : ℕ} {s : ℂ} {u w : ℤ → ℂ} {ψ : DirichletCharacter ℂ l} {α : ℂ} {B : ℕ} {c : ℕ → ℂ} {v : ℂ}
     (H : MeasMu ι e s u w ψ α B c v) (hs : s * s = 1) (hl : l ≠ 2) :
@@ -218,13 +218,11 @@ theorem eisensteinUnitFunctional_bounded {ι : Qbar l ≃+* ℂ} {e : ℕ} {s : 
   · simp [sym, hy]
 
 /- English proof (translation)
-Take `⟨E, hE, hf⟩` from `H.field`. Use `⟨E, hE, fun M g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[eisensteinUnitFunctional_apply]`. Apply `hf M _ E le_rfl` to reduce the goal to its premises. Introduce `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hy : IsUnit y`. Rewrite using `[symm_sym ι s g hy]`. Establish `hs' : ι.symm s ∈ E`. Break down `sgn_cases hs with rfl | rfl` into its components or cases. Rewrite using `[map_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `E.one_mem`. Rewrite using `[map_neg, map_one]`. Conclude with `E.neg_mem E.one_mem`. Establish `h2 : (2 : Qbar l) ∈ E`. Rewrite using `[← one_add_one_eq_two]`.
-
-Conclude with `E.add_mem E.one_mem E.one_mem`. Conclude with `E.div_mem (E.add_mem (hg _) (E.mul_mem hs' (hg _))) h2`. Simplify using `only [sym, if_neg hy, map_zero]`. Conclude with `E.zero_mem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_finiteExt_eisensteinUnitFunctional_mem {ι : Qbar l ≃+* ℂ} {e : ℕ} {s : ℂ} {u w : ℤ → ℂ} {ψ : DirichletCharacter ℂ l} {α : ℂ} {B : ℕ} {c : ℕ → ℂ} {v : ℂ}
     (H : MeasMu ι e s u w ψ α B c v) (hs : s * s = 1) :
@@ -251,11 +249,11 @@ theorem exists_finiteExt_eisensteinUnitFunctional_mem {ι : Qbar l ≃+* ℂ} {e
     exact E.zero_mem
 
 /- English proof (translation)
-Unfold `sym`. Use `split_ifs with hy`. Establish `key : ∀ z : ZMod N, IsUnit z → χ⁻¹ z⁻¹ = χ z`. Introduce `z hz`. Rewrite using `[MulChar.inv_apply_eq_inv']`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : χ z⁻¹ * χ z = 1` using `by rw [← map_mul, ZMod.inv_mul_of_unit z hz, map_one]`. Conclude with `inv_eq_of_mul_eq_one_right hm`. Simplify using `only`. Rewrite using `[key y hy, key (-y) hy.neg]`. Establish `hn : χ (-y) = χ (-1) * χ y` using `by rw [← map_mul, neg_one_mul]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hn, map_mul ι]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[MulChar.map_nonunit χ hy, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sym_char (ι : Qbar l ≃+* ℂ) (s : ℂ) {N : ℕ} (χ : DirichletCharacter (Qbar l) N) (y : ZMod N) :
     sym ι s (fun x => χ⁻¹ x) y = (1 + s * ι (χ (-1))) / 2 * ι (χ y) := by
@@ -274,7 +272,7 @@ theorem sym_char (ι : Qbar l ≃+* ℂ) (s : ℂ) {N : ℕ} (χ : DirichletChar
   · rw [MulChar.map_nonunit χ hy, map_zero, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[eisensteinUnitFunctional_apply]`. Establish `hs : sym ι s (fun x => χ⁻¹ x) = fun y => (1 + s * ι (χ (-1))) / 2 * ι (χ y)` using `funext (sym_char ι s χ)`. Rewrite using `[hs, mes_smul, map_mul]`. Use `congr 1`. Rewrite using `[map_div₀, map_add, map_one, map_mul, RingEquiv.symm_apply_apply, map_ofNat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem eisensteinUnitFunctional_dirichletChar (ι : Qbar l ≃+* ℂ) (e : ℕ) (s : ℂ) (u w : ℤ → ℂ) (α : ℂ) (B : ℕ) (c : ℕ → ℂ) (M : ℕ)
     (χ : DirichletCharacter (Qbar l) (l ^ M)) :
@@ -287,13 +285,11 @@ theorem eisensteinUnitFunctional_dirichletChar (ι : Qbar l ≃+* ℂ) (e : ℕ)
   rw [map_div₀, map_add, map_one, map_mul, RingEquiv.symm_apply_apply, map_ofNat]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `H.interp`. Use `⟨C, fun M hM g δ hδ hg => ?_⟩` and prove the remaining obligations. Rewrite using `[eisensteinUnitFunctional_apply, ← map_sub]`. Apply `hC M hM _ δ hδ (sym_par ι hs g)` to reduce the goal to its premises. Introduce `a d ha hd`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hua : IsUnit (a : ZMod (l ^ M))` using `(unit_iff hM a).2 ha`. Establish `hud : IsUnit (d : ZMod (l ^ M))` using `(unit_iff hM d).2 hd`. Use `set x : ZMod (l ^ M) := (a : ZMod (l ^ M)) * (d : ZMod (l ^ M))⁻¹ with hxdef`. Establish `hx : IsUnit x` using `hua.mul (inv_unit hud)`. Establish `hxd : x * d = a` using `by rw [hxdef, mul_assoc, ZMod.inv_mul_of_unit _ hud, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : x⁻¹ * a = d` using `by rw [← hxd, ← mul_assoc, ZMod.inv_mul_of_unit _ hx, one_mul]`. Take `⟨h1, h2⟩` from `hg a d ha hd x⁻¹ hy`. Rewrite using `[map_sub, symm_sym ι s g hx]`. Use `set T := ι.symm (ψ a * ψ⁻¹ d * ((d : ℂ) / a) ^ e)`. Establish `hT : (g x⁻¹ + ι.symm s * g (-x⁻¹)) / 2 - T = ((g x⁻¹ - T) + (ι.symm s * g (-x⁻¹) - T)) / 2` using `by ring`.
-
-Rewrite using `[hT]`. Conclude with `norm_half hl h1 h2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eisensteinUnitFunctional_interpolation {ι : Qbar l ≃+* ℂ} {e : ℕ} {s : ℂ} {u w : ℤ → ℂ} {ψ : DirichletCharacter ℂ l} {α : ℂ} {B : ℕ} {c : ℕ → ℂ} {v : ℂ}
     (H : MeasMu ι e s u w ψ α B c v) (hs : s * s = 1) (hl : l ≠ 2) :

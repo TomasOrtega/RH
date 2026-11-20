@@ -10,25 +10,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Set `F : PtDer x K →ₗ[K] PtDer (x.comp f) K` to `{ toFun := fun D => ⟨(D : B →ₗ[O] K).comp f.toLinearMap, by`. Introduce `a a'`. Establish `hD` using `D.2 (f a) (f a')`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_mul, AlgHom.comp_apply]`. Simplify using `using hD⟩`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `map_add' := fun D E => by`. Use extensionality with `a`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := fun c D => by`. Use extensionality with `a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `}`. Use `LinearMap.rank_le_of_injective F ?_` and prove the remaining obligations. Establish `key : ∀ G : PtDer x K, F G = 0 → G = 0`. Introduce `G hG`. Establish `hmul : ∀ b b' : B, (G : B →ₗ[O] K) (b * b') = x b • (G : B →ₗ[O] K) b' + x b' • (G : B →ₗ[O] K) b` using `G.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (G : B →ₗ[O] K) 1 = 0`. Use `hmul 1 1` as an intermediate fact. Simplify using `only [map_one, one_smul, mul_one] at this`. Establish `h2 : (G : B →ₗ[O] K) 1 + (G : B →ₗ[O] K) 1 = (G : B →ₗ[O] K) 1 + 0`. Rewrite using `[add_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this.symm`. Conclude with `add_left_cancel h2`. Establish `hc : ∀ r : O, (G : B →ₗ[O] K) (algebraMap O B r) = 0`. Introduce `r`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, h1, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components.
 
-Establish `halg : ∀ r : O, algebraMap O (DualNumber K) r = TrivSqZeroExt.inl (algebraMap O K r)` using `fun r => rfl`. Set `y : B →ₐ[O] DualNumber K` to `{ toFun := fun b => TrivSqZeroExt.inl (x b) + TrivSqZeroExt.inr ((G : B →ₗ[O] K) b) map_one' := by`. Apply the tactic sequence `ext <;> simp [h1]`. Use the proof step `map_mul' := fun b b' => by`. Use `ext`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[hmul b b', smul_eq_mul, mul_comm, add_comm]`. Use the proof step `map_zero' := by`. Apply the tactic sequence `ext <;> simp`. Use the proof step `map_add' := fun b b' => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [add_comm, add_left_comm, add_assoc]`. Use the proof step `commutes' := fun r => by`. Rewrite using `[halg]`. Use `ext`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[hc] }`. Establish `hz` using `h y (fun b => by simp [y]) (fun a => by`. Use `congrArg (fun H : PtDer (x.comp f) K => (H : A →ₗ[O] K) a) hG` as an intermediate fact. Simplify `this)` using `[F, y]`. Use extensionality with `b`.
-
-Simplify `hz b` using `[y]`. Introduce `D E hDE`. Use `key (D - E) (by rw [map_sub, hDE, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+A detailed English derivation is pending.
 -/
 private theorem rank_le_res {O A B K : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing B] [Algebra O B]
     [Field K] [Algebra O K] (f : A →ₐ[O] B) (x : B →ₐ[O] K)
@@ -89,15 +87,11 @@ private theorem rank_le_res {O A B K : Type} [CommRing O] [CommRing A] [Algebra 
   exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Introduce `l _ c N B _ _ _ f J hfin hreg x hJ htan q hq hqx`. Use `haveI : Algebra.IsAlgebraic ℤ_[l] (PadicAlgCl l) := (IsFractionRing.comap_isAlgebraic_iff (A := ℤ_[l]) (K := ℚ_[l])).2 inferInstance`. Use `haveI : Algebra.IsAlgebraic c.O (PadicAlgCl l) := Algebra.IsAlgebraic.extendScalars (R := ℤ_[l]) (UpperTheory.V.Base.dvrFacts l c.O).1`. Use `haveI : FaithfulSMul c.O (PadicAlgCl l) := (faithfulSMul_iff_algebraMap_injective _ _).2 Subtype.val_injective`. Use `haveI hp : (RingHom.ker x).IsPrime := RingHom.ker_isPrime _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `tanEmb c.O B (PadicAlgCl l) x (RingHom.ker x) rfl N ((rank_le_res f x htan).trans (derLam c N (x.comp f)))`. Establish `h2` using `dimLow c N B f J hfin hreg x (RingHom.ker x) rfl hJ`. Establish `hne : J.map (algebraMap B (Localization.AtPrime (RingHom.ker x))) ≠ ⊤`. Introduce `ht`. Use `Ideal.map_mono (f := algebraMap B (Localization.AtPrime (RingHom.ker x))) hJ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[ht, Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `(maximalIdeal.isMaximal _).ne_top (top_le_iff.1 this)`. Establish `h3` using `UpperTheory.V.AlgebraTools.regOfDim _ _ hne (le_trans (by exact_mod_cast h1) h2)`. Introduce `a ha`. Establish `h4 : algebraMap B (Localization.AtPrime (RingHom.ker x)) a = 0`.
-
-Use `Ideal.mem_map_of_mem (algebraMap B (Localization.AtPrime (RingHom.ker x))) ha` as an intermediate fact. Rewrite `this` using `[h3]`. Conclude with `this`. Take `⟨s, hs⟩` from `(IsLocalization.map_eq_zero_iff (RingHom.ker x).primeCompl _ a).1 h4`. Establish `h5 : (s : B) * a ∈ q` using `by rw [hs]; exact q.zero_mem`.
-
-Conclude with `(hq.mem_or_mem h5).resolve_left fun h => s.2 (hqx h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.regOfTan :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) (N : ℕ) (B : Type) [CommRing B] [Algebra c.O B] [IsCO c.O B] (f : MvPowerSeries (Fin N) c.O →ₐ[c.O] B) (J : Ideal B), ((Ideal.Quotient.mk J).comp (f : MvPowerSeries (Fin N) c.O →+* B)).Finite → (∀ a, a ≠ 0 → ∀ b, f a * b ∈ J → b ∈ J) →

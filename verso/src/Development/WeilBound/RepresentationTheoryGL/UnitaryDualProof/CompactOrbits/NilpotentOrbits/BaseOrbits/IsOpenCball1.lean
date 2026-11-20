@@ -12,9 +12,9 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil ValuativeRel
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Use `⟨γ, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hx hy ⊢`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h` using `(valuation k).map_add (y - x) x`. Rewrite `h` using `[sub_add_cancel]`. Conclude with `lt_of_le_of_lt h (max_lt hy hx)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ball' (γ : (ValueGroupWithZero k)ˣ) : IsOpen {x : k | valuation k x < γ} := by
   rw [isOpen_iff_mem_nhds]
@@ -27,9 +27,9 @@ theorem isOpen_ball' (γ : (ValueGroupWithZero k)ˣ) : IsOpen {x : k | valuation
   exact lt_of_le_of_lt h (max_lt hy hx)
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Use `⟨1, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Units.val_one] at hx hy ⊢`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h` using `(valuation k).map_add (y - x) x`. Rewrite `h` using `[sub_add_cancel]`. Conclude with `le_trans h (max_le hy.le hx)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_cball1 : IsOpen {x : k | valuation k x ≤ 1} := by
   rw [isOpen_iff_mem_nhds]
@@ -42,7 +42,7 @@ theorem isOpen_cball1 : IsOpen {x : k | valuation k x ≤ 1} := by
   exact le_trans h (max_le hy.le hx)
 
 /- English proof (translation)
-Establish `: {A : Matrix (Fin n) (Fin n) k | sm γ A} = ⋂ i, ⋂ j, (fun A : Matrix (Fin n) (Fin n) k => A i j) ⁻¹' ({x | valuation k x < γ} ∩ {x | valuation k x < ((1 : (ValueGroupWithZero k)ˣ) : ValueGroupWithZero k)})`. Use extensionality with `A`. Simplify using `[sm]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ((isOpen_ball' γ).inter (isOpen_ball' 1)).preimage (continuous_id.matrix_elem i j)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_sm (γ : (ValueGroupWithZero k)ˣ) : IsOpen {A : Matrix (Fin n) (Fin n) k | sm γ A} := by
   have : {A : Matrix (Fin n) (Fin n) k | sm γ A} = ⋂ i, ⋂ j, (fun A : Matrix (Fin n) (Fin n) k => A i j) ⁻¹'
@@ -54,15 +54,13 @@ theorem isOpen_sm (γ : (ValueGroupWithZero k)ˣ) : IsOpen {A : Matrix (Fin n) (
     ((isOpen_ball' γ).inter (isOpen_ball' 1)).preimage (continuous_id.matrix_elem i j)
 
 /- English proof (translation)
-Set `B : (ValueGroupWithZero k)ˣ → Set (Matrix (Fin n) (Fin n) k)` to `fun γ => {A | ∀ i j, valuation k ((A - 1) i j) < γ}`. Establish `hdir : Directed (· ≥ ·) (fun γ => Filter.principal (B γ))`. Introduce `a b`. Use `⟨min a b, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [ge_iff_le, Filter.principal_mono]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `A hA i j`. Conclude with `lt_of_lt_of_le (hA i j) (by exact_mod_cast min_le_left a b)`. Simplify using `only [ge_iff_le, Filter.principal_mono]`. Introduce `A hA i j`. Conclude with `lt_of_lt_of_le (hA i j) (by exact_mod_cast min_le_right a b)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht : Filter.Tendsto (fun A : Matrix (Fin n) (Fin n) k => A) (⨅ γ, Filter.principal (B γ)) (𝓝 (1 : Matrix (Fin n) (Fin n) k))`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Rewrite using `[(IsValuativeTopology.hasBasis_nhds ((1 : Matrix (Fin n) (Fin n) k) i j)).tendsto_right_iff]`. Introduce `δ _`. Rewrite using `[Filter.eventually_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Filter.mem_iInf_of_mem δ ?_` and prove the remaining obligations. Rewrite using `[Filter.mem_principal]`. Introduce `A hA`. Simplify `hA i j` using `[Matrix.sub_apply]`. Take `⟨γ, hγ⟩` from `(Filter.mem_iInf_of_directed hdir _).mp (ht hU)`.
-
-Conclude with `⟨γ, fun A hA => Filter.mem_principal.mp hγ hA⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nhds_one_ball {U : Set (Matrix (Fin n) (Fin n) k)} (hU : U ∈ 𝓝 (1 : Matrix (Fin n) (Fin n) k)) :
     ∃ γ : (ValueGroupWithZero k)ˣ, ∀ A : Matrix (Fin n) (Fin n) k,
@@ -92,7 +90,7 @@ theorem nhds_one_ball {U : Set (Matrix (Fin n) (Fin n) k)} (hU : U ∈ 𝓝 (1 :
   exact ⟨γ, fun A hA => Filter.mem_principal.mp hγ hA⟩
 
 /- English proof (translation)
-Apply `continuousAt_matrix_inv` to reduce the goal to its premises. Rewrite using `[det_one, Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ one_ne_zero`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_inv_one : ContinuousAt (fun A : Matrix (Fin n) (Fin n) k => A⁻¹) 1 := by
   apply continuousAt_matrix_inv
@@ -100,15 +98,15 @@ theorem cont_inv_one : ContinuousAt (fun A : Matrix (Fin n) (Fin n) k => A⁻¹)
   exact continuousAt_inv₀ one_ne_zero
 
 /- English proof (translation)
-The claim follows from `isClosed_eq (continuous_const.matrix_mulVec continuous_id) continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_Wt (e : Matrix (Fin n) (Fin n) k) : IsClosed {w : Fin n → k | e *ᵥ w = w} :=
   isClosed_eq (continuous_const.matrix_mulVec continuous_id) continuous_id
 
 /- English proof (translation)
-Establish `hK : IsCompact (Set.pi Set.univ fun _ : Fin n => {x : k | valuation k x ≤ 1})` using `isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Establish `heq : {w : Wt e | ∀ i, valuation k (w.1 i) ≤ 1} = (Subtype.val : Wt e → (Fin n → k)) ⁻¹' (Set.pi Set.univ fun _ : Fin n => {x : k | valuation k x ≤ 1})`. Use extensionality with `w`. Simplify using the standard rewrite rules. Rewrite using `[heq]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isClosed_Wt e).isClosedEmbedding_subtypeVal.isCompact_preimage hK`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_L (e : Matrix (Fin n) (Fin n) k) :
     IsCompact {w : Wt e | ∀ i, valuation k (w.1 i) ≤ 1} := by
@@ -122,7 +120,7 @@ theorem isCompact_L (e : Matrix (Fin n) (Fin n) k) :
   exact (isClosed_Wt e).isClosedEmbedding_subtypeVal.isCompact_preimage hK
 
 /- English proof (translation)
-Establish `hO : IsOpen (Set.pi Set.univ fun _ : Fin n => {x : k | valuation k x ≤ 1})` using `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_cball1`. Use `hO.preimage (continuous_subtype_val : Continuous (Subtype.val : Wt e → (Fin n → k)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isOpen_L (e : Matrix (Fin n) (Fin n) k) :
     IsOpen {w : Wt e | ∀ i, valuation k (w.1 i) ≤ 1} := by

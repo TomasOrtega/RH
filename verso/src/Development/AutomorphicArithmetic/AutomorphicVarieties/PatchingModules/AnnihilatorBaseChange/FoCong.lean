@@ -4,19 +4,17 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W m j N hj`. Establish `hlO : (l : O) ∈ maximalIdeal O` using `by haveI := IsCoef.char (l := l) (O := O)`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_natCast]`. Conclude with `CharP.cast_eq_zero _ l`. Establish `hl : (l : W.R) ∈ maximalIdeal W.R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hco` using `(inferInstance : IsCO O W.R).isLocalHom`. Introduce `hu`. Rewrite `hu` using `[← map_natCast (algebraMap O W.R)]`. Conclude with `hlO (hco.map_nonunit _ hu)`. Use `set I : Ideal W.R := Ideal.span {(l : W.R) ^ j} with hI`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hq : ∀ jj, (T.Nq N jj : W.R) - 1 ∈ I`. Introduce `jj`. Take `⟨k, hk⟩` from `Nat.modEq_iff_dvd.mp (T.Nq_mod N jj).symm`. Establish `h3` using `congrArg (Int.cast : ℤ → W.R) hk`. Move the coercions through the operations in `at h3`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_span_singleton]`. Use `⟨(l : W.R) ^ (N - j) * (k : W.R), ?_⟩` and prove the remaining obligations. Rewrite using `[h3, ← pow_mul_pow_sub (l : W.R) hj, mul_assoc]`. Establish `hq' : ∀ jj, Ideal.Quotient.mk I (T.Nq N jj : W.R) = 1`. Introduce `jj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_one (Ideal.Quotient.mk I)]`. Conclude with `Ideal.Quotient.eq.mpr (hq jj)`. Establish `hmod : Ideal.Quotient.mk I (fo W) = Ideal.Quotient.mk I (fEl (T.Nq N) W.t.U)`. Simplify using `only [fo, fEl, map_prod, map_mul, map_sub, hq', Nat.cast_one, map_one, one_mul]`. Establish `hdiff : fo W - fEl (T.Nq N) W.t.U ∈ I` using `Ideal.Quotient.eq.mp hmod`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.mp hdiff`. Use `⟨?_, ?_, ⟨c, hc⟩⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hl j)`. Take `⟨-, -, -, hU, -⟩` from `m.ρ_maps N`.
-
-Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at hU`. Simplify using `[fEl, map_prod, hU]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.foCong :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) (m : RMaps W) (j N : ℕ), j ≤ N → fo W - fEl (T.Nq N) W.t.U ∈ maximalIdeal W.R ^ j ∧ m.ρ N (fEl (T.Nq N) W.t.U) = fEl (T.Nq N) (A.A N).U ∧ ∃ c : W.R, fo W - fEl (T.Nq N) W.t.U = (l : W.R) ^ j * c := by

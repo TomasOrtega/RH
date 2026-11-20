@@ -17,13 +17,13 @@ def conjPl (w : HeightOneSpectrum (𝓞 H.E)) : HeightOneSpectrum (𝓞 H.E) :=
 variable {H}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_conjPl (w : HeightOneSpectrum (𝓞 H.E)) (y : 𝓞 H.E) :
     y ∈ (conjPl H w).asIdeal ↔ (cInt H).symm y ∈ w.asIdeal := Iff.rfl
 
 /- English proof (translation)
-Introduce `x y hy`. Establish `e : y = cInt H x` using `RingOfIntegers.ext (by rw [hy]; rfl)`. Substitute `e` using the available equality. Rewrite using `[mem_conjPl, RingEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem isConjPl_conjPl (w : HeightOneSpectrum (𝓞 H.E)) : IsConjPl H w (conjPl H w) := by
   intro x y hy
@@ -32,9 +32,9 @@ theorem isConjPl_conjPl (w : HeightOneSpectrum (𝓞 H.E)) : IsConjPl H w (conjP
   rw [mem_conjPl, RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Introduce `w w' h`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Use `congrArg (fun u : HeightOneSpectrum (𝓞 H.E) => cInt H x ∈ u.asIdeal) h` as an intermediate fact. Simplify using `only [mem_conjPl, RingEquiv.symm_apply_apply] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Iff.of_eq this`.
+A detailed English derivation is pending.
 -/
 theorem conjPl_injective : Function.Injective (conjPl H) := by
   intro w w' h
@@ -45,7 +45,7 @@ theorem conjPl_injective : Function.Injective (conjPl H) := by
   exact Iff.of_eq this
 
 /- English proof (translation)
-Use `show ((p : ℕ) : 𝓞 H.E) ∈ (conjPl H w).asIdeal`. Rewrite using `[mem_conjPl, map_natCast]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjPl_mem_placesOver {p : ℕ} {w : HeightOneSpectrum (𝓞 H.E)} (hw : w ∈ placesOver H.E p) :
     conjPl H w ∈ placesOver H.E p := by
@@ -54,7 +54,7 @@ theorem conjPl_mem_placesOver {p : ℕ} {w : HeightOneSpectrum (𝓞 H.E)} (hw :
   exact hw
 
 /- English proof (translation)
-Rewrite using `[H.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Put the polynomial expressions in normal form.
 -/
 theorem finrank_E (H : Host R) : Module.finrank ℚ H.E = 2 * R.f := by
   rw [H.finrank_cmField]
@@ -62,17 +62,15 @@ theorem finrank_E (H : Host R) : Module.finrank ℚ H.E = 2 * R.f := by
   ring_nf
 
 /- English proof (translation)
-Introduce `D k w hw`. Use `set S := placesOver D.host.E (D.host.g k) with hSdef`. Use `set A : Set (HeightOneSpectrum (𝓞 D.host.E)) := D.naut.plGw k '' Set.univ with hAdef`. Use `set B : Set (HeightOneSpectrum (𝓞 D.host.E)) := conjPl D.host '' A with hBdef`. Establish `hAS : A ⊆ S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨v, -, rfl⟩`. Conclude with `D.naut.plGw_over k v`. Establish `hBS : B ⊆ S`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `conjPl_mem_placesOver (hAS hu)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdisj : Disjoint A B`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨v, -, rfl⟩ ⟨_, ⟨v', -, rfl⟩, h⟩`. Conclude with `D.naut.plGw_nconj k v' v (h ▸ isConjPl_conjPl _)`. Establish `hS : S.ncard = 2 * D.R.f` using `by rw [hSdef, D.nd.g_split k, finrank_E]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSfin : S.Finite` using `Set.finite_of_ncard_pos (by rw [hS]; unfold Ranks.f Ranks.n; positivity)`. Establish `hA : A.ncard = D.R.f`. Rewrite using `[hAdef, Set.ncard_image_of_injective _ (D.naut.plGw_inj k), Set.ncard_univ, Nat.card_eq_fintype_card, D.nd.card_PlG k]`. Establish `hB : B.ncard = D.R.f`. Rewrite using `[hBdef, Set.ncard_image_of_injective _ conjPl_injective, hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `hAfin : A.Finite` using `hSfin.subset hAS`. Establish `hBfin : B.Finite` using `hSfin.subset hBS`. Establish `hU : A ∪ B = S` using `Set.eq_of_subset_of_ncard_le (Set.union_subset hAS hBS) (by rw [Set.ncard_union_eq hdisj hAfin hBfin, hA, hB, hS]; ring_nf; rfl) hSfin`. Rewrite `hw` using `[← hU]`. Break down `hw with ⟨v, -, rfl⟩ | ⟨_, ⟨v, -, rfl⟩, rfl⟩` into its components or cases.
-
-Conclude with `⟨v, Or.inl rfl⟩`. Conclude with `⟨v, Or.inr (isConjPl_conjPl _)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_plGw_or_isConjPl : ∀ (D : D7) (k : Fin 2), ∀ w ∈ placesOver D.host.E (D.host.g k),
     ∃ v : D.nd.PlG k, w = D.naut.plGw k v ∨ IsConjPl D.host (D.naut.plGw k v) w := by

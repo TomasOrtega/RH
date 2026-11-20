@@ -83,9 +83,9 @@ def sSq {D N : ℕ} {X : FD.Data E r} (Xa : ArchInM X) (hD : nd X = D) (hN : N +
   ∑ k, X.pnorm Xa.L (sF Xa hD hN t k) x ^ 2
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.eval₂Hom sg fun p : TVar D N => e (algebraMap (KTp K D N) (KTf K D N) (MvPolynomial.X p))) = e.comp (algebraMap (KTp K D N) (KTf K D N))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[he]`. Introduce `p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Unfold `IsGenParam`. Rewrite using `[h]`. Conclude with `e.injective.comp (IsFractionRing.injective (KTp K D N) (KTf K D N))`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example {D N : ℕ} (sg : K →+* ℂ) (e : KTf K D N →+* ℂ)
     (he : ∀ a : K, e (algebraMap (KTp K D N) (KTf K D N) (MvPolynomial.C a)) = sg a) :

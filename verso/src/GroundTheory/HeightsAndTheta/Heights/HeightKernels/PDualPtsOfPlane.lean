@@ -11,7 +11,7 @@ noncomputable section
 namespace DualPointsOfPlane
 
 /- English proof (translation)
-Rewrite using `[eval₂_comp_left]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_eval₂_int {ι A B : Type*} [CommRing A] [CommRing B] (k : A →+* B) (c : ℤ →+* A) (g : ι → A)
     (f : MvPolynomial ι ℤ) :
@@ -21,7 +21,7 @@ theorem map_eval₂_int {ι A B : Type*} [CommRing A] [CommRing B] (k : A →+* 
   exact RingHom.ext_int _ _
 
 /- English proof (translation)
-Rewrite using `[aeval_def, map_eval₂_int]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_aeval_int {ι A B : Type*} [CommRing A] {_ : Algebra ℤ A} [CommRing B] (k : A →+* B) (g : ι → A)
     (f : MvPolynomial ι ℤ) :
@@ -37,7 +37,7 @@ def formPoly (b : Module.Basis T ℤ (dualLattice F)) (p : Σ _ : Unit, T) : MvP
 omit [Fintype T] [DecidableEq T] in
 
 /- English proof (translation)
-Simplify using `only [dualPlanePt, mulVec, dotProduct, dualEmbMatrix, Fintype.sum_prod_type]`. Rewrite using `[Fintype.sum_eq_single σ]`. Simplify using the standard rewrite rules. Introduce `τ hτ`. Simplify using `[hτ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem dualPlanePt_eq_mulVec [DecidableEq (K →+* ℂ)] (b : Module.Basis T ℤ (dualLattice F))
     (σ : K →+* ℂ) (v : Fin i → ℂ) (t : T) :
@@ -52,7 +52,7 @@ theorem dualPlanePt_eq_mulVec [DecidableEq (K →+* ℂ)] (b : Module.Basis T �
 omit [Fintype T] [DecidableEq T] in
 
 /- English proof (translation)
-Simplify using `[formPoly, dualPlanePt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval₂_formPoly (b : Module.Basis T ℤ (dualLattice F)) (σ : K →+* ℂ) (v : Fin i → ℂ)
     (p : Σ _ : Unit, T) :
@@ -64,17 +64,17 @@ end DualPointsOfPlane
 open DualPointsOfPlane in
 
 /- English proof (translation)
-Introduce `K _ _ i F T _ _ b hb σ v hv`. Use `⟨fun _ => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hw : (fun p : (K →+* ℂ) × Fin i => if p.1 = σ then v p.2 else 0) ≠ 0`. Introduce `h0`. Apply `hv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `j`. Simplify using `using congrFun h0 (σ, j)`. Establish `hne : dualEmbMatrix b *ᵥ (fun p : (K →+* ℂ) × Fin i => if p.1 = σ then v p.2 else 0) ≠ 0`. Introduce `h0`. Apply `hw` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hb.1` to reduce the goal to its premises. Rewrite using `[map_zero, Matrix.mulVecLin_apply]`. Conclude with `h0`. Take `⟨t, ht⟩` from `Function.ne_iff.mp hne`. Conclude with `⟨t, by rw [dualPlanePt_eq_mulVec]; exact ht⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h0 : mConeMap (dualLatticeCoord b) f = 0` using `hf`. Establish `h1` using `congrArg (MvPolynomial.eval fun _ : Unit => (1 : ProjField K i)) h0`. Unfold `mConeMap at h1`. Rewrite `h1` using `[map_zero, map_aeval_int]`. Establish `hy : (MvPolynomial.eval fun _ : Unit => (1 : ProjField K i)) ∘ (fun p => C (dualLatticeCoord b p) * X p.1) = (algebraMap (MvPolynomial (Fin i) K) (ProjField K i)) ∘ formPoly b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Simplify using `[dualLatticeCoord, formPoly]`. Rewrite `h1` using `[hy, ← map_eval₂_int (c := Int.castRingHom _)]`. Establish `h2 : eval₂ (Int.castRingHom _) (formPoly b) f = 0` using `(map_eq_zero_iff _ (IsFractionRing.injective _ _)).mp h1`. Establish `h3` using `congrArg (eval₂Hom σ v) h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[map_zero, map_eval₂_int]`. Establish `hz : (eval₂Hom σ v) ∘ formPoly b = dualPlanePt b σ v` using `funext (eval₂_formPoly b σ v)`. Rewrite `h3` using `[hz]`. Rewrite using `[eval_map]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DualPtsOfPlane.proof : DualPtsOfPlane.Statement := by
   intro K _ _ i F T _ _ b hb σ v hv

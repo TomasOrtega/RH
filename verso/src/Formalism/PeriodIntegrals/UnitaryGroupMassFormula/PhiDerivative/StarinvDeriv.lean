@@ -11,11 +11,11 @@ attribute [local instance] Matrix.frobeniusNormedAddCommGroup Matrix.frobeniusNo
   Matrix.frobeniusNormedRing Matrix.frobeniusNormedAlgebra
 
 /- English proof (translation)
-Establish `h1 : HasStrictFDerivAt (fun z : ℂ => 1 + (Complex.conjCLE : ℂ →L[ℝ] ℂ) z) (Complex.conjCLE : ℂ →L[ℝ] ℂ) 0` using `(Complex.conjCLE : ℂ →L[ℝ] ℂ).hasStrictFDerivAt.const_add 1`. Establish `h2 : ∀ y : ℂ, y = 1 → HasStrictFDerivAt (fun w : ℂ => w⁻¹) ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) (-((1 : ℂ) ^ 2)⁻¹)).restrictScalars ℝ) y`. Introduce and unpack `y rfl`. Conclude with `(hasStrictDerivAt_inv (𝕜 := ℂ) (x := 1) one_ne_zero).hasStrictFDerivAt.restrictScalars ℝ`. Establish `h3` using `(h2 _ (by simp)).comp 0 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (fun z : ℂ => (star (1 + z))⁻¹) = (fun w : ℂ => w⁻¹) ∘ (fun z : ℂ => 1 + (Complex.conjCLE : ℂ →L[ℝ] ℂ) z)`. Use function extensionality and compare the values at `z`. Simplify using `[star_add]`. Rewrite using `[hf]`. Use `h3.congr_fderiv ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousLinearMap.ext fun z => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem starinv_deriv :
     HasStrictFDerivAt (fun z : ℂ => (star (1 + z))⁻¹) (-(Complex.conjCLE : ℂ →L[ℝ] ℂ)) 0 := by
@@ -46,7 +46,7 @@ def dvC : (Fin r → ℂ) →L[ℝ] (Fin (2 * r + k + 1) → ℂ) :=
         ⟨2 * r + k - i.val, by have := i.isLt; omega⟩))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `dvC dv`. Simplify using `only [ContinuousLinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dvC_apply (x : Fin r → ℂ) : dvC k r x = dv k r x := by
   funext i
@@ -55,13 +55,13 @@ theorem dvC_apply (x : Fin r → ℂ) : dvC k r x = dv k r x := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[hasStrictFDerivAt_pi']`. Introduce `i`. Unfold `dvC`. Rewrite using `[ContinuousLinearMap.proj_pi]`. Unfold `tv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h : i.val < r`. Simplify using `only [h, ↓reduceDIte, Pi.add_apply, Pi.one_apply]`. Conclude with `(hasStrictFDerivAt_apply (𝕜 := ℝ) (i := (⟨i.val, h⟩ : Fin r)) (f := (0 : Fin r → ℂ))).const_add 1`. Distinguish the cases in `h2 : i.val ≤ r + k`. Simplify using `only [h, h2, ↓reduceDIte]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hasStrictFDerivAt_const _ _`. Simplify using `only [h, h2, ↓reduceDIte, Pi.add_apply, Pi.one_apply]`. Establish `ha` using `hasStrictFDerivAt_apply (𝕜 := ℝ) (i := (⟨2 * r + k - i.val, by have := i.isLt; omega⟩ : Fin r)) (f := (0 : Fin r → ℂ))`. Establish `hs : ∀ y : ℂ, y = 0 → HasStrictFDerivAt (fun z : ℂ => (star (1 + z))⁻¹) (-(Complex.conjCLE : ℂ →L[ℝ] ℂ)) y`. Introduce and unpack `y rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `starinv_deriv`. Use `((hs _ (by simp)).comp 0 ha).congr_fderiv ?_` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun z => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tv_deriv : HasStrictFDerivAt (fun x : Fin r → ℂ => tv k r (1 + x)) (dvC k r) 0 := by
   rw [hasStrictFDerivAt_pi']
@@ -89,13 +89,13 @@ def diagC : (Fin (2 * r + k + 1) → ℂ) →L[ℝ] Mat k r :=
   LinearMap.toContinuousLinearMap (Matrix.diagonalLinearMap (Fin (2 * r + k + 1)) ℝ ℂ)
 
 /- English proof (translation)
-Simplify using `[diagC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagC_apply (v : Fin (2 * r + k + 1) → ℂ) : diagC k r v = Matrix.diagonal v := by
   simp [diagC]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `tv`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tv_one : tv k r 1 = 1 := by
   funext i
@@ -103,18 +103,18 @@ theorem tv_one : tv k r 1 = 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `Matrix.diagonal_one`.
+A detailed English derivation is pending.
 -/
 theorem diag1 : Matrix.diagonal (1 : Fin (2 * r + k + 1) → ℂ) = 1 := Matrix.diagonal_one
 
 /- English proof (translation)
-Establish `e0 : ∀ y : Mat k r, y = 0 → HasStrictFDerivAt (NormedSpace.exp : Mat k r → Mat k r) (1 : Mat k r →L[ℝ] Mat k r) y`. Introduce and unpack `y rfl`. Conclude with `hasStrictFDerivAt_exp_zero`. Establish `c0 : ∀ (f : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r → Mat k r) f', HasStrictFDerivAt f f' 0 → f 0 = 0 → HasStrictFDerivAt (fun p => NormedSpace.exp (f p)) ((1 : Mat k r →L[ℝ] Mat k r).comp f') 0` using `fun f f' hf h0 => (e0 _ h0).comp 0 hf`. Establish `hX` using `c0 _ _ (hasStrictFDerivAt_fst (𝕜 := ℝ) (p := (0 : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r))) (by simp)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ` using `c0 _ _ (hasStrictFDerivAt_snd (𝕜 := ℝ) (p := (0 : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r))).snd.fst (by simp)`. Establish `hX'` using `c0 _ _ (hasStrictFDerivAt_snd (𝕜 := ℝ) (p := (0 : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r))).snd.snd.neg (by simp)`. Establish `hT` using `(diagC k r).hasStrictFDerivAt.comp 0 ((tv_deriv k r).comp 0 (hasStrictFDerivAt_snd (𝕜 := ℝ) (p := (0 : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r))).fst)`. Establish `h1` using `(hX.const_mul (w0B k r)).mul_const' (w0B k r)`. Establish `h5` using `((h1.mul' hT).mul' hZ).mul' hX'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h5.congr_fderiv` to reduce the goal to its premises. Use `ContinuousLinearMap.ext fun p => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Prod.fst_zero, Prod.snd_zero, NormedSpace.exp_zero, mul_one, hW k r, add_zero, neg_zero, Pi.neg_apply, diagC_apply, tv_one]`. Express the relevant statement in the definitionally equal form `(1 * diagonal 1) * (-p.2.2.2) + ((1 * diagonal 1) * p.2.2.1 + (1 * diagC k r (dvC k r p.2.1) + w0B k r * p.1 * w0B k r * diagonal 1) * 1) * 1 = w0B k r * p.1 * w0B k r + diagonal (dv k r p.2.1) + p.2.2.1 - p.2.2.2`. Rewrite using `[diagC_apply, dvC_apply, diag1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_mul, mul_one]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem main (hW : LongWeylElementSquare) :
     HasStrictFDerivAt

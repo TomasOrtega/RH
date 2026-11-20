@@ -8,17 +8,17 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `hKer p _ D R _ b N M r w j c T S x σ o₁ m₁ y hy P a`. Establish `hw : (a.left ≫ P.m₀.φ) ≫ T.o.A.hom = y`. Establish `h1` using `P.m₀.cart.1.w`. Establish `h2 : a.left ≫ o₁.A.hom = 𝟙 S` using `Over.w a`. Rewrite using `[Category.assoc, h1, ← Category.assoc, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Category.id_comp y`. Establish `htri : (a.left ≫ P.m₀.φ) ≫ T.ms.φ = a.left ≫ m₁.φ`. Rewrite using `[Category.assoc, P.tri]`. Set `a₀ : Over.mk y ⟶ T.o.A` to `Over.homMk (a.left ≫ P.m₀.φ) hw`. Establish `ha₀ : a₀.left = a.left ≫ P.m₀.φ` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `((hKer p D R b N T.Y S (T.s ≫ M.s) σ y T.o T.o' o₁ P.o' P.m₀ P.m' T.ψ P.ψ P.sq).1 (𝟙_ (Over S)) (Over.mk y) rfl a a₀ (by simp [ha₀])).1`. Use `⟨⟨fun h a' ha' => ?_, fun h => ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Establish `hEq : a' = a₀`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `T.ms.cart.1.hom_ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha', ha₀, htri]`. Establish `h3 : a'.left ≫ T.o.A.hom = y` using `Over.w a'`. Rewrite using `[h3, ha₀, hw]`. Rewrite using `[hEq]`. Conclude with `hk.1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hk.2 (h a₀ (by rw [ha₀, htri]))`. Establish `hl : T.ms.cart.1.lift (a.left ≫ m₁.φ) y h = a.left ≫ P.m₀.φ`. Apply `T.ms.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[T.ms.cart.1.lift_fst, htri]`. Rewrite using `[T.ms.cart.1.lift_snd, hw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `TjD.img`. Rewrite using `[hl, Over.comp_left]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% P.sq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.pulledRead_of :
     PullKer → PulledRead := by

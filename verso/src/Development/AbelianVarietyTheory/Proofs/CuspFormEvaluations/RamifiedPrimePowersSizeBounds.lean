@@ -10,23 +10,23 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.RunIn
 
 /- English proof (translation)
-Introduce `D j w`. Establish `hq : 1 ≤ D.host.q` using `by have := D.host.qd_big.1; omega`. Establish `hd : 1 ≤ D.host.d` using `by have := D.host.qd_big.2; omega`. Establish `hqR : (1 : ℝ) ≤ D.host.q` using `by exact_mod_cast hq`. Establish `hdR : (1 : ℝ) ≤ D.host.d` using `by exact_mod_cast hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlq : 0 ≤ Real.log D.host.q` using `Real.log_nonneg hqR`. Establish `hld : 0 ≤ Real.log D.host.d` using `Real.log_nonneg hdR`. Establish `hQ : (1 : ℝ) ≤ D.host.QS` using `by exact_mod_cast D.host.QS_pos`. Establish `hl2 : 0 ≤ Real.log D.host.QS` using `Real.log_nonneg hQ`. Establish `hQf : (D.host.QS : ℝ) ≤ 4 * ((D.R.f : ℝ) / 2) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (D.host.QS : ℝ) ≤ (D.R.n : ℝ) ^ 2` using `by exact_mod_cast D.host.QS_le`. Establish `h2 : (D.R.f : ℝ) = 2 * D.R.n` using `by unfold Ranks.f; push_cast; ring`. Rewrite using `[h2]`. Use polynomial arithmetic with `[sq_nonneg (D.R.n : ℝ)]`. Establish `hlf : Real.log D.host.QS ≤ Real.log (4 * ((D.R.f : ℝ) / 2) ^ 2)` using `Real.log_le_log (by linarith) hQf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hlog : Real.log (4 * ((D.R.f : ℝ) / 2) ^ 2 * D.host.q * D.host.d) = Real.log (4 * ((D.R.f : ℝ) / 2) ^ 2) + Real.log D.host.q + Real.log D.host.d`. Establish `h0 : (0 : ℝ) < 4 * ((D.R.f : ℝ) / 2) ^ 2` using `by linarith`. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul h0.ne' (by positivity)]`. Establish `hD : (0 : ℝ) ≤ (WeightAlgebra.DF w : ℝ)` using `Nat.cast_nonneg _`. Use `⟨hq, hd, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hlog]`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `Real.log_nonneg` to reduce the goal to its premises. Establish `h0 : (1 : ℝ) ≤ D.host.g 0` using `by exact_mod_cast (D.host.g_prime 0).one_le`. Establish `h1 : (1 : ℝ) ≤ D.host.g 1` using `by exact_mod_cast (D.host.g_prime 1).one_le`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hc2 : (c2 D w : ℝ) = (WeightAlgebra.DF w : ℝ)` using `rfl`. Establish `hch : (Formalism.MainNotions.DIV.Cons.cHalf w : ℝ) ≤ (WeightAlgebra.DF w : ℝ) + 1`. Establish `h1` using `(Nat.ceil_lt_add_one (show (0 : ℝ) ≤ (WeightAlgebra.DF w : ℝ) / 2 by positivity)).le`. Unfold `Formalism.MainNotions.DIV.Cons.cHalf`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `a1` using `mul_le_mul_of_nonneg_left hlf hD`. Establish `a2` using `mul_le_mul_of_nonneg_right hch hlq`. Establish `a3` using `mul_le_mul_of_nonneg_right hch hld`. Rewrite using `[hlog, hc2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `a b c`. Establish `hQ0 : 0 < D.host.QS` using `D.host.QS_pos`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `pPow`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `Nat.one_le_iff_ne_zero.mpr (by positivity)`. Unfold `pPow`. Use `push_cast`. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow, Real.log_pow]`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pPow_size : ∀ (D : D7) (j : ℕ) (w : WeightFamilies.Wt D j), 1 ≤ D.host.q ∧ 1 ≤ D.host.d ∧ 0 ≤ Real.log (4 * ((D.R.f : ℝ) / 2) ^ 2 * D.host.q * D.host.d) ∧ 0 ≤ Real.log ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) ∧ (c2 D w : ℝ) * Real.log D.host.QS + (Formalism.MainNotions.DIV.Cons.cHalf w : ℝ) * Real.log D.host.q + (Formalism.MainNotions.DIV.Cons.cHalf w : ℝ) * Real.log D.host.d ≤ ((WeightAlgebra.DF w : ℝ) + 1) * Real.log (4 * ((D.R.f : ℝ) / 2) ^ 2 * D.host.q * D.host.d) ∧ ∀ a b c : ℕ, 1 ≤ pPow D a b c ∧ Real.log (pPow D a b c) = a * Real.log D.host.QS + b * Real.log D.host.q + c * Real.log D.host.d := by
   intro D j w

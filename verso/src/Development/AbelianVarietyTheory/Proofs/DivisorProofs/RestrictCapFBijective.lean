@@ -25,7 +25,7 @@ variable {I : Type} {X : Scheme.{0}}
 def NE.set (S : NE I) : Set I := (OrderDual.ofDual S).1
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem NE.le_iff {S T : NE I} : S ≤ T ↔ T.set ⊆ S.set := Iff.rfl
 
@@ -35,7 +35,7 @@ Both sides reduce to the same expression.
 theorem NE.set_inf (S T : NE I) : (S ⊓ T).set = S.set ∪ T.set := rfl
 
 /- English proof (translation)
-The claim follows from `(OrderDual.ofDual S).2`.
+A detailed English derivation is pending.
 -/
 theorem NE.nonempty (S : NE I) : S.set.Nonempty := (OrderDual.ofDual S).2
 
@@ -54,13 +54,13 @@ Both sides reduce to the same expression.
 theorem NE.set_pair (i j : I) : (NE.pair i j).set = {i, j} := rfl
 
 /- English proof (translation)
-The claim follows from `NE.le_iff.2 (Set.singleton_subset_iff.2 (Set.mem_insert i {j}))`.
+A detailed English derivation is pending.
 -/
 theorem NE.pair_le_single_left (i j : I) : NE.pair i j ≤ NE.single i :=
   NE.le_iff.2 (Set.singleton_subset_iff.2 (Set.mem_insert i {j}))
 
 /- English proof (translation)
-The claim follows from `NE.le_iff.2 (Set.singleton_subset_iff.2 (Set.mem_insert_of_mem i rfl))`.
+A detailed English derivation is pending.
 -/
 theorem NE.pair_le_single_right (i j : I) : NE.pair i j ≤ NE.single j :=
   NE.le_iff.2 (Set.singleton_subset_iff.2 (Set.mem_insert_of_mem i rfl))
@@ -68,52 +68,52 @@ theorem NE.pair_le_single_right (i j : I) : NE.pair i j ≤ NE.single j :=
 def NE.pt (S : NE I) : I := S.nonempty.some
 
 /- English proof (translation)
-The claim follows from `S.nonempty.some_mem`.
+A detailed English derivation is pending.
 -/
 theorem NE.pt_mem (S : NE I) : S.pt ∈ S.set := S.nonempty.some_mem
 
 def cap (U : I → X.Opens) (S : NE I) : X.Opens := ⨅ i ∈ S.set, U i
 
 /- English proof (translation)
-The claim follows from `iInf₂_le i h`.
+A detailed English derivation is pending.
 -/
 theorem cap_le (U : I → X.Opens) {S : NE I} {i : I} (h : i ∈ S.set) : cap U S ≤ U i := iInf₂_le i h
 
 /- English proof (translation)
-Introduce `_ _ h` and use `le_iInf₂ fun i hi => iInf₂_le i (h hi)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cap_mono (U : I → X.Opens) : Monotone (cap U) := fun _ _ h => le_iInf₂ fun i hi => iInf₂_le i (h hi)
 
 /- English proof (translation)
-Simplify using `only [cap, NE.set_inf, iInf_union]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cap_inf (U : I → X.Opens) (S T : NE I) : cap U (S ⊓ T) = cap U S ⊓ cap U T := by
   simp only [cap, NE.set_inf, iInf_union]
 
 /- English proof (translation)
-Simplify using `[cap, NE.set_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cap_single (U : I → X.Opens) (i : I) : cap U (NE.single i) = U i := by
   simp [cap, NE.set_single]
 
 /- English proof (translation)
-Rewrite using `[cap, NE.set_pair, iInf_insert, iInf_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cap_pair (U : I → X.Opens) (i j : I) : cap U (NE.pair i j) = U i ⊓ U j := by
   rw [cap, NE.set_pair, iInf_insert, iInf_singleton]
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 (hU ▸ iSup_le fun i => (cap_single U i).symm.le.trans (le_iSup (cap U) (NE.single i)))`.
+A detailed English derivation is pending.
 -/
 theorem cap_iSup (U : I → X.Opens) (hU : ⨆ i, U i = ⊤) : ⨆ S, cap U S = ⊤ :=
   eq_top_iff.2 (hU ▸ iSup_le fun i => (cap_single U i).symm.le.trans (le_iSup (cap U) (NE.single i)))
 
 /- English proof (translation)
-Establish `key : ∀ s : Set I, s.Finite → s.Nonempty → IsAffineOpen (⨅ i ∈ s, U i)`. Introduce `s hs`. Take `⟨t, rfl⟩` from `hs.exists_finset_coe`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => intro h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Simplify using `at h`. Consider the case `insert a t _ ih`. Introduce `_`. Rewrite using `[Finset.coe_insert]`. Break down `(t : Set I).eq_empty_or_nonempty with ht | ht` into its components or cases.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[ht, iInf_insert, iInf_emptyset, inf_top_eq]`. Conclude with `hU a`. Rewrite using `[iInf_insert]`. Conclude with `hinf _ _ (hU a) (ih (Set.toFinite _) ht)`. Conclude with `key _ (Set.toFinite _) S.nonempty`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_cap [Finite I] (U : I → X.Opens) (hU : ∀ i, IsAffineOpen (U i))
     (hinf : ∀ V W : X.Opens, IsAffineOpen V → IsAffineOpen W → IsAffineOpen (V ⊓ W)) (S : NE I) :
@@ -137,7 +137,7 @@ def capAff [Finite I] (U : I → X.Opens) (hU : ∀ i, IsAffineOpen (U i))
   ⟨cap U S, isAffineOpen_cap U hU hinf S⟩
 
 /- English proof (translation)
-Introduce `_ _ h` and use `cap_mono U h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem capAff_mono [Finite I] (U : I → X.Opens) (hU : ∀ i, IsAffineOpen (U i))
     (hinf : ∀ V W : X.Opens, IsAffineOpen V → IsAffineOpen W → IsAffineOpen (V ⊓ W)) :
@@ -153,14 +153,14 @@ abbrev capF : (NE I)ᵒᵖ ⥤ CommAlgCat.{0} R := (capAff_mono U hU hinf).funct
 def cv (T : (NE I)ᵒᵖ) : (capF s U hU hinf).obj T ≃+* Γ(X, cap U T.unop) := RingEquiv.refl _
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.KS.rsT_of_le (O₀ := cap U T.unop) (cap_mono U (leOfHom a.unop)) b).symm`.
+A detailed English derivation is pending.
 -/
 theorem cv_mp {T T' : (NE I)ᵒᵖ} (a : T ⟶ T') (b : (capF s U hU hinf).obj T) :
     cv s U hU hinf T' (mp (capF s U hU hinf) a b) = rsT (cv s U hU hinf T b) (cap U T'.unop) :=
   (GlobalTheory.KS.rsT_of_le (O₀ := cap U T.unop) (cap_mono U (leOfHom a.unop)) b).symm
 
 /- English proof (translation)
-The claim follows from `Algebra.smul_def r b`.
+A detailed English derivation is pending.
 -/
 theorem cv_smul {T : (NE I)ᵒᵖ} (r : R) (b : (capF s U hU hinf).obj T) :
     cv s U hU hinf T (r • b) = constFn s (cap U T.unop) r * cv s U hU hinf T b :=
@@ -176,7 +176,7 @@ def toCech (f : CatCoh.C1 (capF s U hU hinf)) : C1 U := fun i j =>
       (U i ⊓ U j)
 
 /- English proof (translation)
-The claim follows from `RingEquiv.apply_symm_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem cv_toPos (c : C1 U) {T T' : (NE I)ᵒᵖ} (a : T ⟶ T') :
     cv s U hU hinf T' (toPos s U hU hinf c T T' a) = rsT (c T.unop.pt T'.unop.pt) (cap U T'.unop) :=
@@ -193,7 +193,7 @@ theorem toCech_apply (f : CatCoh.C1 (capF s U hU hinf)) (i j : I) :
         (U i ⊓ U j) := rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CoverO.restrict_bijective R X s (NE I) (capAff U hU hinf) (capAff_mono U hU hinf) (fun S T => cap_inf U S T) (cap_iSup U hcov)`.
+A detailed English derivation is pending.
 -/
 theorem restrict_capF_bijective (hcov : ⨆ i, U i = ⊤) :
     Function.Bijective (CoefMap.restrict (OAff s) (capAff_mono U hU hinf).functor.op).pull1 :=
@@ -210,12 +210,12 @@ variable {I : Type} {X : Scheme.{0}} {R : Type} [CommRing R] [Finite I] (s : X �
   (hU : ∀ i, IsAffineOpen (U i)) (hinf : ∀ V W : X.Opens, IsAffineOpen V → IsAffineOpen W → IsAffineOpen (V ⊓ W))
 
 /- English proof (translation)
-The claim follows from `Set.mem_singleton_iff.1 (NE.pt_mem (NE.single i))`.
+A detailed English derivation is pending.
 -/
 theorem NE.pt_single (i : I) : (NE.single i).pt = i := Set.mem_singleton_iff.1 (NE.pt_mem (NE.single i))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T T' φ`. Establish `hle : cap U T'.unop ≤ U T.unop.pt ⊓ U T'.unop.pt` using `le_inf (cap_le U ((NE.le_iff.1 (leOfHom φ.unop)) T.unop.pt_mem)) (cap_le U T'.unop.pt_mem)`. Apply `(cv s U hU hinf T').injective` to reduce the goal to its premises. Simplify using `only [cv_toPos, Finset.sum_apply, Pi.smul_apply, map_sum, cv_smul, GlobalTheory.KS.rsT_sum, GlobalTheory.KS.rsT_mul, GlobalTheory.KS.rsT_constFn s hle]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem toPos_lc {n : ℕ} (cc : Fin n → R) (b : Fin n → C1 U) :
     toPos s U hU hinf (fun i j => ∑ a, constFn s (U i ⊓ U j) (cc a) * b a i j) =
@@ -228,7 +228,7 @@ theorem toPos_lc {n : ℕ} (cc : Fin n → R) (b : Fin n → C1 U) :
     GlobalTheory.KS.rsT_constFn s hle]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Simplify using `only [toCech_apply, Pi.sub_apply, map_sub, GlobalTheory.KS.rsT_sub]`. Normalize the expressions using the abelian group laws.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem toCech_sub (f f' : CatCoh.C1 (capF s U hU hinf)) :
     toCech s U hU hinf (f - f') = toCech s U hU hinf f - toCech s U hU hinf f' := by
@@ -237,7 +237,7 @@ theorem toCech_sub (f f' : CatCoh.C1 (capF s U hU hinf)) :
   abel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Establish `hle : U i ⊓ U j ≤ cap U (NE.pair i j)` using `(cap_pair U i j).ge`. Simplify using `only [toCech_apply, Finset.sum_apply, Pi.smul_apply, map_sum, cv_smul, GlobalTheory.KS.rsT_sum, GlobalTheory.KS.rsT_mul, GlobalTheory.KS.rsT_constFn s hle, mul_sub, Finset.sum_sub_distrib]`. Apply the tactic sequence `refine congrArg₂ _ (Finset.sum_congr rfl fun a _ => ?_) (Finset.sum_congr rfl fun a _ => ?_) <;>`. Rewrite using `[cv_smul, GlobalTheory.KS.rsT_mul, GlobalTheory.KS.rsT_constFn s hle]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem toCech_lc {n : ℕ} (cc : Fin n → R) (f : Fin n → CatCoh.C1 (capF s U hU hinf)) :
     toCech s U hU hinf (∑ a, cc a • f a) =

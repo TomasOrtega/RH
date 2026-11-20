@@ -5,11 +5,9 @@ namespace GlobalTheory.NatMulMemUnitaryExistence
 open NumberField
 
 /- English proof (translation)
-Take `⟨y, hy, hint⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic c)).exists_integral_multiple`. Use `⟨y.natAbs, Int.natAbs_pos.mpr hy, ?_⟩` and prove the remaining obligations. Establish `hcast : ((y.natAbs : ℕ) : E) = ((y.natAbs : ℤ) : E)` using `(Int.cast_natCast _).symm`. Establish `hint' : IsIntegral ℤ ((y.natAbs : E) * c)`. Break down `Int.natAbs_eq y with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hcast, ← h, ← zsmul_eq_mul]`. Conclude with `hint`. Establish `h2 : (y.natAbs : ℤ) = -y` using `by omega`. Rewrite using `[hcast, h2, Int.cast_neg, neg_mul, ← zsmul_eq_mul]`. Conclude with `hint.neg`.
-
-Conclude with `⟨⟨_, hint'⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem {E : Type} [Field E] [NumberField E] (c : E) :
     ∃ k : ℕ, 0 < k ∧ ∃ a : 𝓞 E, (a : E) = (k : E) * c := by
@@ -24,15 +22,15 @@ theorem exists_nat_mul_mem {E : Type} [Field E] [NumberField E] (c : E) :
   exact ⟨⟨_, hint'⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span E (L : Set (Fin n → E))` using `by rw [hL]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_pos, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨d₁, hd₁, h₁⟩` from `hy`. Take `⟨d₂, hd₂, h₂⟩` from `hz`. Use `⟨d₁ * d₂, Nat.mul_pos hd₁ hd₂, ?_⟩` and prove the remaining obligations. Establish `e : (d₁ * d₂) • (y + z) = d₂ • (d₁ • y) + d₁ • (d₂ • z)`. Rewrite using `[smul_add, mul_comm, mul_smul, mul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `L.add_mem (L.smul_of_tower_mem d₂ h₁) (L.smul_of_tower_mem d₁ h₂)`. Consider the case `smul c y _ hy`. Take `⟨d, hd, h⟩` from `hy`. Take `⟨k, hk, a, ha⟩` from `exists_nat_mul_mem c`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k * d, Nat.mul_pos hk hd, ?_⟩` and prove the remaining obligations. Establish `e : (k * d) • (c • y) = a • (d • y)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul, smul_eq_mul]`. Rewrite using `[Algebra.smul_def, show algebraMap (𝓞 E) E a = (a : E) from rfl, ha]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.mul_apply, Pi.natCast_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `L.smul_mem a h`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E))
@@ -64,7 +62,7 @@ theorem main {E : Type} [Field E] [NumberField E] {n : ℕ}
     exact L.smul_mem a h
 
 /- English proof (translation)
-Introduce `L hL x` and use `main L hL x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem target : ∀ {E : Type} [inst : Field E] [NumberField E] {n : ℕ}
     (L : Submodule (NumberField.RingOfIntegers E) (Fin n → E)),

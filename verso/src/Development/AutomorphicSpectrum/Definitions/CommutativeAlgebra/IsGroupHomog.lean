@@ -34,7 +34,7 @@ def IsGroupHomog (δ : ℕ) (G : MvPolynomial (TVar D N) F) : Prop :=
   ∀ i : Fin (D + 1), G.IsWeightedHomogeneous (fun p : TVar D N => if p.1 = i then 1 else 0) δ
 
 /- English proof (translation)
-Introduce `p hp` and use `by simp [vars_C] at hp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (c : F) : InS (C c : MvPolynomial (TVar D N) F) := fun p hp => by simp [vars_C] at hp
 

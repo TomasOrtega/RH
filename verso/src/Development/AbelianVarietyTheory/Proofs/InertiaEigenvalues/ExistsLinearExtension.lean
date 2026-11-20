@@ -8,7 +8,7 @@ section Multilinear
 variable {R A : Type*} [CommRing A] [Ring R] [Algebra A R]
 
 /- English proof (translation)
-The claim follows from `| 0, _, i, _, _, _ => i.elim0 | n + 1, x, i, a, u, v => by have ih := alt_update_smul_add T n refine Fin.cases ?_ (fun k => ?_) i · simp only [alt, Fin.tail_update_zero, Function.update_self, add_mul, smul_mul_assoc, ih, map_add, map_smul, smul_eq_mul, Finset.sum_add_distrib, ← F …`.
+A detailed English derivation is pending.
 -/
 theorem alt_update_smul_add (T : R →ₗ[A] A) :
     ∀ (n : ℕ) (x : Fin n → R) (i : Fin n) (a : A) (u v : R),
@@ -59,7 +59,7 @@ theorem altMultilinear_apply (T : R →ₗ[A] A) (n : ℕ) (x : Fin n → R) :
 end Multilinear
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | n + 1, x => by have ih := alt_comp_monoidHom f T n have ht : Fin.tail (fun i => f (x i)) = fun i => f (Fin.tail x i) := rfl have hu : ∀ i : Fin n, Function.update (fun i => f (Fin.tail x i)) i (f (x 0) * f (Fin.tail x i)) = fun j => f (Function.update (Fin.tail x) …`.
+A detailed English derivation is pending.
 -/
 theorem alt_comp_monoidHom {M N A : Type*} [Monoid M] [Monoid N] [CommRing A] (f : M →* N)
     (T : N → A) :
@@ -78,15 +78,13 @@ theorem alt_comp_monoidHom {M N A : Type*} [Monoid M] [Monoid N] [CommRing A] (f
     simp only [alt, ht, hu, ih]
 
 /- English proof (translation)
-Set `b : Module.Basis M A (MonoidAlgebra A M)` to `MonoidAlgebra.basis M A`. Establish `hb : ∀ g, b g = MonoidAlgebra.of A M g` using `fun g => by simp [b]`. Set `T' : MonoidAlgebra A M →ₗ[A] A` to `b.constr A T`. Establish `hT : ∀ g, T' (MonoidAlgebra.of A M g) = T g` using `fun g => by`. Rewrite using `[← hb]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `b.constr_basis A T g`. Use `⟨T', hT, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (MonoidAlgebra.of A M).map_one, hT, h.one]`. Introduce `x y`. Establish `: (LinearMap.mul A (MonoidAlgebra A M)).compr₂ T' = (LinearMap.mul A (MonoidAlgebra A M)).flip.compr₂ T'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `b.ext fun g => b.ext fun k => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compr₂_apply, LinearMap.flip_apply, LinearMap.mul_apply', hb, ← map_mul, hT]`. Conclude with `h.comm g k`. Simplify using `using LinearMap.congr_fun₂ this x y`. Introduce `x`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: altMultilinear T' (d + 1) = 0`. Use `Module.Basis.ext_multilinear (fun _ => b) fun g => ?_` and prove the remaining obligations. Rewrite using `[altMultilinear_apply]`. Simplify using `only [hb, alt_comp_monoidHom, hT]`. Conclude with `h.alt_eq_zero g`.
-
-Rewrite using `[← altMultilinear_apply, this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_linear_extension (M A : Type) [Monoid M] [CommRing A] (d : ℕ) (T : M → A)
     (h : IsPsChar d T) :

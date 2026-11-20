@@ -6,7 +6,7 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Establish `hu : IsUnit Sb.det` using `isUnit_iff_ne_zero.mpr hS`. Establish `hinv : Sb * Sb⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hM : M = Sb * Matrix.diagonal d * Sb⁻¹`. Rewrite using `[← h, Matrix.mul_assoc, hinv, Matrix.mul_one]`. Rewrite using `[hM, Matrix.trace_mul_comm, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul, Matrix.trace_diagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma trace_of_diag {g : ℕ} (M Sb : Matrix (Fin g) (Fin g) ℂ) (d : Fin g → ℂ) (hS : Sb.det ≠ 0)
     (h : M * Sb = Sb * Matrix.diagonal d) : M.trace = ∑ i, d i := by
@@ -18,9 +18,9 @@ private lemma trace_of_diag {g : ℕ} (M Sb : Matrix (Fin g) (Fin g) ℂ) (d : F
     Matrix.trace_diagonal]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Establish `: (fun i => e i ^ 0) = fun _ => (1 : ℂ)` using `by funext i; simp`. Rewrite using `[this]`. Simplify using `[Matrix.diagonal_one]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih, Matrix.mul_assoc, Matrix.diagonal_mul_diagonal]`. Use `congr 2`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private lemma pow_mul_diag {g : ℕ} (H Sb : Matrix (Fin g) (Fin g) ℂ) (e : Fin g → ℂ)
     (h : H * Sb = Sb * Matrix.diagonal e) (j : ℕ) :
@@ -36,7 +36,7 @@ private lemma pow_mul_diag {g : ℕ} (H Sb : Matrix (Fin g) (Fin g) ℂ) (e : Fi
     congr 2
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, h, ih, Matrix.mulVec_mulVec]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private lemma per_pow {L : Type} {O : Type} [Ring O] [AddCommGroup L] [Module O L] {g : ℕ}
     (P : L →+ (Fin g → ℂ)) (ga : L →ₗ[O] L) (H : Matrix (Fin g) (Fin g) ℂ)
@@ -48,7 +48,7 @@ private lemma per_pow {L : Type} {O : Type} [Ring O] [AddCommGroup L] [Module O 
 
 open scoped Classical in
 /- English proof (translation)
-Unfold `evAt`. Rewrite using `[Multiset.map_map, ← Finset.sum_filter]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma sum_evAt {F : Type} [Field F] {g : ℕ} (ty : Fin g → (F →+* ℂ)) (e : Fin g → ℂ)
     (τ : F →+* ℂ) (u : ℂ → ℂ) :
@@ -59,15 +59,15 @@ private lemma sum_evAt {F : Type} [Field F] {g : ℕ} (ty : Fin g → (F →+* �
 
 open scoped Classical in
 /- English proof (translation)
-Establish `cc : ∀ φ : F →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ` using `fun φ => RingHom.ext fun y => by simp [ComplexEmbedding.conjugate_coe_eq]`. Establish `h1 : ∑ τ : F →+* ℂ, τ x * ((evAt ty e τ).map fun r => r ^ j).sum = ∑ i, ty i x * e i ^ j`. Repeatedly rewrite using `[sum_evAt, Finset.mul_sum, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Establish `h2 : ∑ τ : F →+* ℂ, τ x * (((evAt ty e (ComplexEmbedding.conjugate τ)).map (starRingEnd ℂ)).map fun r => r ^ j).sum = (starRingEnd ℂ) (∑ i, ty i x * e i ^ j)`. Repeatedly rewrite using `[Multiset.map_map, sum_evAt, Finset.mul_sum, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_comm, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (ComplexEmbedding.conjugate (ty i))]`. Rewrite using `[if_pos (cc _).symm, ComplexEmbedding.conjugate_coe_eq]`. Simplify using the standard rewrite rules. Introduce `τ _ hτ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `hc`. Apply `hτ` to reduce the goal to its premises. Rewrite using `[hc, cc]`. Introduce `hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) hn`. Repeatedly rewrite using `[evFull, Multiset.map_add, Multiset.sum_add, mul_add]`. Rewrite using `[Finset.sum_add_distrib, h1, h2]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_evFull {F : Type} [Field F] [NumberField F] {g : ℕ} (ty : Fin g → (F →+* ℂ))
     (e : Fin g → ℂ) (j : ℕ) (x : F) :
@@ -101,13 +101,11 @@ private lemma sum_evFull {F : Type} [Field F] [NumberField F] {g : ℕ} (ty : Fi
   rw [Finset.sum_add_distrib, h1, h2]
 
 /- English proof (translation)
-Introduce `hL hD F _ _ O _ bar g ρ a D P₀ hP ga H hga Sb ty ev hd j`. Take `⟨hS, hρ, hH⟩` from `hd`. Use `hD F (fun τ => ((evFull ty ev τ).map fun r => r ^ j).sum) ?_` and prove the remaining obligations. Introduce `c`. Set `f : D.La →ₗ[ℤ] D.La` to `(AddMonoidHom.mk' (fun x => a c • (ga ^ j) x) (by intro x y; simp [smul_add])).toIntLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hf : ∀ x, P₀ (f x) = (ρ (a c) * H ^ j) *ᵥ P₀ x`. Introduce `x`. Use `show P₀ (a c • (ga ^ j) x) = _`. Rewrite using `[hP.1, per_pow P₀ ga H hga, Matrix.mulVec_mulVec]`. Use `⟨LinearMap.trace ℤ D.La f, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL D.La g P₀ hP.2.1 hP.2.2.1 hP.2.2.2.1 f _ hf]`. Establish `htr : (ρ (a c) * H ^ j).trace = ∑ i, ty i (c : F) * ev i ^ j`. Use `trace_of_diag _ Sb (fun i => ty i (c : F) * ev i ^ j) hS ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, pow_mul_diag H Sb ev hH j, ← Matrix.mul_assoc, hρ c, Matrix.mul_assoc, Matrix.diagonal_mul_diagonal]`. Rewrite using `[htr]`.
-
-Conclude with `sum_evFull ty ev j (c : F)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.powSumRat_of :
     UpperTheory.Gal.W2.TraceLat → UpperTheory.Gal.W2.TraceDual → UpperTheory.Gal.W2.PowSumRat := by

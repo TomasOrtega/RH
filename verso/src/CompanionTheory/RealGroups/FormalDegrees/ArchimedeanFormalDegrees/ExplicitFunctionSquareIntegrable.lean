@@ -8,12 +8,12 @@ namespace CompanionTheory.RgFd
 open CompanionTheory.RgDs
 
 /- English proof (translation)
-The claim follows from `psiNorm_of (normInd_of_steps coefPow GlobalTheory.CompanionTheory.RgFdNorm.norm_induction_of_estimates)`.
+A detailed English derivation is pending.
 -/
 theorem psiNorm : PsiNorm := psiNorm_of (normInd_of_steps coefPow GlobalTheory.CompanionTheory.RgFdNorm.norm_induction_of_estimates)
 
 /- English proof (translation)
-The claim follows from `square_integrable_of_norm psiNorm`.
+A detailed English derivation is pending.
 -/
 theorem explicit_function_square_integrable : ExplicitFunctionSquareIntegrable := square_integrable_of_norm psiNorm
 

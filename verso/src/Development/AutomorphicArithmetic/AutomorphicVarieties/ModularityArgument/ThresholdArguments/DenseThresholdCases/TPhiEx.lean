@@ -8,17 +8,17 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 /- English proof (translation)
-Rewrite using `[← (AlgebraTools.Det.mapApi E f).1, MonoidAlgebra.mapRingHom_single, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem chi_map {n : ℕ} {A A' G : Type} [CommRing A] [CommRing A'] [Group G] (E : W.GDet n A G) (f : A →+* A') (g : G) :
     (E.map f).chi (MonoidAlgebra.single g 1) = (E.chi (MonoidAlgebra.single g 1)).map f := by
   rw [← (AlgebraTools.Det.mapApi E f).1, MonoidAlgebra.mapRingHom_single, map_one]
 /- English proof (translation)
-Introduce `U Ω _ _ _ l _ c D T _ _ c' h K X n`. Take `⟨hs, hq, hk⟩` from `phiKer K.V`. Take `⟨E, hE, hcp, hc⟩` from `phiDet (maximalIdeal X.B) (algebraMap X.B X.A) X.inj K.V.pr hs hq (K.rho X n) (K.cpT X n) (fun g => (phiCpMap K X n g).2.2.2) (phiCpCont K X n) fun U hU hle => hk U hU fun A v hA hv => (phiUnr K X n A v hA hv).trans hle`. Take `⟨ψ, hψ⟩` from `phiPsiEx K X n`. Take `⟨p, hD, hp⟩` from `phiPair K.r X.inj (by norm_num) K.V.pr hs (K.rho X n) E ψ hE hc (fun g => (congrArg _ (hcp g)).trans (phiCpRed K X n g)) (phiIsPsi K X n ψ hψ) (phiPol K X n) (fun v => ⟨_, rfl, phiFlag K X n ψ hψ v⟩) (phiIne K X n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B₀⟩` from `U.b0 l T.L Ω K.s K.V c' 4 K.r X.B ⟨p⟩`. Use `⟨⟨B₀, trivial⟩, fun B => ?_⟩` and prove the remaining obligations. Take `⟨φ, ⟨h1, h2⟩, -⟩` from `B.univ X.B p`. Use `⟨φ, fun g => ?_, fun v i g => ?_⟩` and prove the remaining obligations. Establish `e` using `chi_map B.u.D (φ : B.B →+* X.B) (K.V.pr g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[h1, hD]`. Conclude with `e.symm.trans (hcp g)`. Establish `e` using `congrArg Units.val (DFunLike.congr_fun (h2 v i) g)`. Rewrite `e` using `[hp]`. Conclude with `e.trans (hψ v i g)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.exists_phi_universal_ordinary_det_ring_of_link :
     _root_.UpperTheory.V.Ws.UnramifiedInputs → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → T.Deep → ∀ (c' : Coef l) (h : c.O ≤ c'.O) (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (n : ℕ), (∃ B : W.UniversalOrdinaryDeterminantRing K.r, True) ∧ ∀ B : W.UniversalOrdinaryDeterminantRing K.r, ∃ φ : B.B →ₐ[c'.O] X.B, K.IsPhi X n B φ := by

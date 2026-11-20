@@ -11,17 +11,17 @@ open PowerSeries Formalism.G Formalism.LT Formalism.L2.Th1.CM
 open Formalism.L2.Th1
 
 /- English proof (translation)
-Take `⟨h0, h1, hadd, -⟩` from `C.mvExpLaws K Unit`. Take `⟨-, hLadd, -⟩` from `C.lGSubgroup K R Unit`. Establish `hD : C.LG R ((a - m • ph) + (a - m • ph))` using `hLadd _ _ hcong hcong`. Establish `ha' : MvPowerSeries.constantCoeff a = 0` using `ha`. Establish `hph' : MvPowerSeries.constantCoeff ph = 0` using `hph`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : MvPowerSeries.constantCoeff (-((2 : K) • a)) = 0`. Rewrite using `[map_neg, MvPowerSeries.smul_eq_C_mul, map_mul, ha', mul_zero, neg_zero]`. Establish `c2 : MvPowerSeries.constantCoeff ((2 : K) • a) = 0`. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, ha', mul_zero]`. Establish `c3 : MvPowerSeries.constantCoeff (-((2 * ((c : K) + 1)) • ph)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_neg, MvPowerSeries.smul_eq_C_mul, map_mul, hph', mul_zero, neg_zero]`. Use `⟨C.mvExp ((a - m • ph) + (a - m • ph)), h1 _ hD.1, fun n => hD.2 _, ?_⟩` and prove the remaining obligations. Establish `e1 : C.mvExp (-((2 : K) • a)) * C.mvExp ((2 : K) • a) = 1`. Rewrite using `[← hadd _ _ c1 c2, neg_add_cancel, h0]`. Establish `e2 : C.mvExp (-((2 * ((c : K) + 1)) • ph)) * C.mvExp ((2 : K) • a) = C.mvExp ((a - m • ph) + (a - m • ph))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hadd _ _ c3 c2, hc]`. Use `congr 1`. Rewrite using `[mul_smul, two_smul, two_smul]`. Normalize the expressions using the abelian group laws. Establish `hX : (X : PowerSeries K) ^ (2 * c) ≠ 0` using `pow_ne_zero _ X_ne_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Apply `mul_right_cancel₀ hX` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show M ^ 2 * C.mvExp (-((2 : K) • a)) * X ^ (2 * c) * C.mvExp ((2 : K) • a) = M ^ 2 * X ^ (2 * c) * (C.mvExp (-((2 : K) • a)) * C.mvExp ((2 : K) • a)) by ring, e1, mul_one]`. Use `_ = G * X ^ (2 * (c + 1)) * (C.mvExp (-((2 * ((c : K) + 1)) • ph)) * C.mvExp ((2 : K) • a)) := by`. Rewrite using `[hiso]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = X ^ 2 * C.mvExp ((a - m • ph) + (a - m • ph)) * G * X ^ (2 * c) := by`. Rewrite using `[e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_powerSeries_square_formula {K : Type} [Field K] [CharZero K] (R : Subring K) (M a ph G : PowerSeries K)
     (c : ℕ) (m : K) (ha : constantCoeff a = 0) (hph : constantCoeff ph = 0)
@@ -64,27 +64,23 @@ theorem exists_powerSeries_square_formula {K : Type} [Field K] [CharZero K] (R :
         rw [e2]; ring
 
 /- English proof (translation)
-Establish `h2 : ‖(2 : ℂ_[l])‖ = 1`. Establish `: ¬ l ∣ 2` using `fun hd => hl ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).mp hd)`. Conclude with `norm_natCast_Cl_of_not_dvd l this` after adjusting the coercions. Establish `h2R : (2 : ℂ_[l])⁻¹ ∈ unitBall ℂ_[l]`. Express the relevant statement in the definitionally equal form `‖(2 : ℂ_[l])⁻¹‖ ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_inv, h2, inv_one]`. Establish `h4 : ‖(4 : ℂ_[l])‖ = 1`. Establish `: (4 : ℂ_[l]) = 2 * 2` using `by norm_num`. Rewrite using `[this, norm_mul, h2, one_mul]`. Use `set W := A.shortW g2 g3 with hW`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hco : C.CoeffIn (unitBall ℂ_[l]) W`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(unitBall ℂ_[l]).zero_mem`. Conclude with `(unitBall ℂ_[l]).zero_mem`. Conclude with `(unitBall ℂ_[l]).zero_mem`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `‖-g2 / 4‖ ≤ 1`. Rewrite using `[norm_div, norm_neg, h4, div_one]`. Conclude with `hM.n2`. Express the relevant statement in the definitionally equal form `‖-g3 / 4‖ ≤ 1`. Rewrite using `[norm_div, norm_neg, h4, div_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hM.n3`. Establish `hb2 : W.b₂ / 12 = 0`. Rewrite using `[(A.shortInv ℂ_[l] g2 g3).1, zero_div]`. Take `⟨hLP, hXW, -, hFG, -⟩` from `C.curveFrame ℂ_[l] (unitBall ℂ_[l]) W hco`. Use `set s2 : ℂ_[l] := ι (F.s2 L) with hs2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set ph := B.phO s2 (A.wpReg W) (A.logSer W) with hph`. Establish `hPh : C.IsPh (A.wpReg W) s2 (A.logSer W) ph` using `(C.phOIsPh ℂ_[l] (A.wpReg W) (A.logSer W) s2 hLP.1 hLP.2.1).2`. Establish `hn0 : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `hst : F.MulStable L (n : ℂ)`. Introduce `ω hω`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `L.lattice.nsmul_mem hω n` as an intermediate fact. Rewrite `this` using `[nsmul_eq_mul]`. Then use the resulting hypothesis. Establish `hIF` using `iso_formula l L ι (n : ℂ) S hn0 hst hS`. Rewrite `hIF` using `[← hM.eq2, ← hM.eq3, map_natCast]`. Establish `hcard : ((Fintype.card S : ℕ) : ℂ_[l]) + 1 = (n : ℂ_[l]) * (n : ℂ_[l])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `F.kerRepsCard L (n : ℂ) S hn0 hst hS`. Rewrite `h` using `[Complex.normSq_natCast]`. Establish `h' : S.card + 1 = n * n` using `by exact_mod_cast h`. Rewrite using `[Fintype.card_coe]`. Conclude with `h'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU` using `C.isogenyU ℂ_[l] (A.wpReg W) s2 (A.logSer W) (A.expSer W) ph (A.xS W) (W.b₂ / 12) S (fun P : S => ι (L.weierstrassP (P : ℂ))) (n : ℂ_[l]) hLP hPh hXW (by simpa only [hb2, add_zero] using hIF)`. Establish `hFr : C.Frame (unitBall ℂ_[l]) (A.logSer W) (A.expSer W) ph` using `⟨hLP, hFG, hPh.1⟩`. Establish `hN` using `phNorm_int (unitBall ℂ_[l]) (A.logSer W) (A.expSer W) ph hFr (G.weierstrass_biadditive_mod_equiv ℂ_[l] W hco h2 s2) (G.curveNegNorm ℂ_[l] (unitBall ℂ_[l]) W hco h2R s2) h2R (n : ℤ)`. Rewrite `hN` using `[Int.cast_natCast]`. Establish `hMul : (uSer g2 g3).subst (C (n : ℂ_[l]) * lgS g2 g3) = C.mulBy (A.logSer W) (A.expSer W) (n : ℂ_[l])`.
-
-Rewrite using `[lgS_eq_logSer, A.uSerEq ℂ_[l] g2 g3]`. Both sides reduce to the same expression. Establish `hM0 : constantCoeff (C.mulBy (A.logSer W) (A.expSer W) (n : ℂ_[l])) = 0`. Rewrite using `[← hMul]`. Conclude with `mult_const g2 g3 _`.
-
-Establish `ha : constantCoeff (PowerSeries.subst (C.mulBy (A.logSer W) (A.expSer W) (n : ℂ_[l])) ph) = 0` using `constantCoeff_subst_eq_zero hM0 _ hPh.1`. Take `⟨U, hU1, hU2, hU3⟩` from `exists_powerSeries_square_formula (unitBall ℂ_[l]) (C.mulBy (A.logSer W) (A.expSer W) (n : ℂ_[l])) (PowerSeries.subst (C.mulBy (A.logSer W) (A.expSer W) (n : ℂ_[l])) ph) ph (C ((n : ℂ_[l]) ^ 2) * ∏ P : S, (A.xS W - C (ι (L.weierstrassP (P : ℂ))) * X ^ 2)) (Fintype.card S) ((n : ℂ …`. Use `⟨U, hU1, hU2, ?_⟩` and prove the remaining obligations. Rewrite using `[hMul, hU3, Finset.prod_coe_sort S (fun P => A.xS W - C (ι (L.weierstrassP P)) * X ^ 2)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_formula (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (L : PeriodPair) (ι : ℂ ≃+* ℂ_[l])
     (g2 g3 : ℂ_[l]) (hM : LatModel l L ι g2 g3) (n : ℕ) (hn : 0 < n) (S : Finset ℂ)

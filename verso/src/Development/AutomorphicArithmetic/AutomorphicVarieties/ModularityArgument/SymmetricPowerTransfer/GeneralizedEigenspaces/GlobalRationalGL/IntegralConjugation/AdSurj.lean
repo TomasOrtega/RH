@@ -7,27 +7,25 @@ open UpperTheory.V.W (Plc Lp)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `L _ _ _ R n g`. Set `G : Matrix (Fin n) (Fin n) (Ad L)` to `(g.1 : Matrix (Fin n) (Fin n) (Ad L))`. Set `A : Matrix (Fin n) (Fin n) (Af L)` to `G.map (pFin L)`. Establish `hU : ∀ i j, ∑ k, cjF (L` using `L) (A k i) * A k j = (1 : Matrix (Fin n) (Fin n) (Af L)) i j := by`. Establish `hG : Formalism.UG.cT (conjAd L) G * 1 * G = 1` using `g.2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (pFin L).mapMatrix hG`. Rewrite `h1` using `[map_one, map_mul, map_mul, map_one, Matrix.mul_one]`. Introduce `i j`. Establish `h2` using `congrFun (congrFun h1 i) j`. Rewrite `h2` using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Establish `hx : ∀ v i j, ∃ x : Lsq (Kv v) (cv v R.Δ), ∀ w h, R.ρ v w h x = pLoc L w (A i j)` using `fun v i j => R.ρ_surj v (A i j)`. Use `choose x hx using hx`. Use `⟨fun v => Matrix.of (x v), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v ext1 i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← sub_eq_zero]`. Apply `R.ρ_inj v` to reduce the goal to its premises. Introduce `w h`. Rewrite using `[map_sub, Matrix.mul_apply, map_sum]`. Establish `e1 : ∀ k, R.ρ v w h ((star (Matrix.of (x v))) i k * (Matrix.of (x v)) k j) = pLoc L w (cjF (L` using `L) (A k i) * A k j) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Rewrite using `[map_mul, map_mul, Matrix.star_apply, Matrix.of_apply, Matrix.of_apply, R.ρ_star v _ _ (hx v k i) w h, hx v k j w h]`. Rewrite using `[Finset.sum_congr rfl fun k _ => e1 k, ← map_sum, hU i j]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Establish `hfin : ∀ i j, {w : Plc L | pLoc L w (A i j) ∉ w.adicCompletionIntegers L}.Finite`. Introduce `i j`. Conclude with `(A i j).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hall : {w : Plc L | ∃ i j, pLoc L w (A i j) ∉ w.adicCompletionIntegers L}.Finite`. Establish `: {w : Plc L | ∃ i j, pLoc L w (A i j) ∉ w.adicCompletionIntegers L} = ⋃ i, ⋃ j, {w : Plc L | pLoc L w (A i j) ∉ w.adicCompletionIntegers L}`. Use extensionality with `w`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Set.finite_iUnion fun i => Set.finite_iUnion fun j => hfin i j`. Establish `hbad` using `hall.image (fun w : Plc L => un w)`. Rewrite using `[Filter.eventually_cofinite]`. Use `hbad.subset ?_` and prove the remaining obligations. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, not_forall] at hv`. Take `⟨i, j, hij⟩` from `hv`. Establish `: ¬ ∀ w h, R.ρ v w h (x v i j) ∈ w.adicCompletionIntegers L` using `fun h => hij ((R.ρ_int v _).2 h)`. Simplify using `only [not_forall] at this`. Take `⟨w, h, hw⟩` from `this`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `⟨w, ⟨i, j, by rwa [hx v i j w h] at hw⟩, h⟩`. Introduce `w`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mL w g i j = R.ρ _ w rfl (x (un w) i j)`. Rewrite using `[hx (un w) i j w rfl]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.adSurj :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (R : RingBr L) (n : ℕ) (g : UA L n), ∃ x : ∀ v : Pl (Lp L), Matrix (Fin n) (Fin n) (Lsq (Kv v) (cv v R.Δ)), (∀ v, star (x v) * x v = 1) ∧ (∀ᶠ v in Filter.cofinite, ∀ i j, IsIntegral (Ov v) (x v i j)) ∧ ∀ w, mL w g = (x (un w)).map (R.ρ _ w rfl) := by

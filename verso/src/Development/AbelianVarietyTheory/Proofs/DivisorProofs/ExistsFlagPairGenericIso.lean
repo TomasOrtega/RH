@@ -24,7 +24,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : V
 include ha in
 
 /- English proof (translation)
-Use `haveI : Nonempty B.gen := ⟨⟨_, B.genericPoint_mem_gen⟩⟩`. Use `haveI : IsIntegral B.gen.toScheme := isIntegral_of_isOpenImmersion B.gen.ι`. Use `GlobalTheory.T.iso_of_subbundle_same_rank B.gen.toScheme _ _ _ i (B.genRes.map (fl.ι i)) _ ((fl.isVB i).pullback _) ((fl'.isVB i).pullback _) inferInstance ?_` and prove the remaining obligations. Rewrite using `[← Functor.map_comp, ha, Functor.map_comp]`. Conclude with `GrBundle.isSubbundle_comp_isIso (SubPull.isSubbundle_pullback _ _ B.gen.ι _ _ (fl'.ι i) i (fl'.isVB i) (fl'.isSubbundle i)) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_genRes_map (i : Fin (r + 1)) : IsIso (B.genRes.map (a i)) := by
   haveI : Nonempty B.gen := ⟨⟨_, B.genericPoint_mem_gen⟩⟩
@@ -38,7 +38,7 @@ theorem isIso_genRes_map (i : Fin (r + 1)) : IsIso (B.genRes.map (a i)) := by
 include ha in
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (fl.ι i.succ), Category.assoc, Category.assoc, Vert.Flag.step_ι, ha, ha, Vert.Flag.step_ι_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem step_comm (i : Fin r) : fl'.step i ≫ a i.succ = a i.castSucc ≫ fl.step i := by
   rw [← cancel_mono (fl.ι i.succ), Category.assoc, Category.assoc, Vert.Flag.step_ι, ha, ha,
@@ -59,13 +59,13 @@ def grMap (i : Fin r) : fl'.gr i ⟶ fl.gr i :=
   cokernel.map (fl'.step i) (fl.step i) (a i.castSucc) (a i.succ) (step_comm ψ a ha i)
 
 /- English proof (translation)
-The claim follows from `cokernel.π_desc _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem π_grMap (i : Fin r) : fl'.π i ≫ grMap ψ a ha i = a i.succ ≫ fl.π i :=
   cokernel.π_desc _ _ _
 
 /- English proof (translation)
-Establish `h` using `(pair ψ a ha).π_grIso_hom i`. Rewrite `h` using `[← Iso.inv_comp_eq, ← Category.assoc, ← Iso.eq_comp_inv]`. Rewrite using `[← cancel_epi (B.genRes.map (fl'.π i)), ← Functor.map_comp, π_grMap, Functor.map_comp]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grIso_inv (i : Fin r) : ((pair ψ a ha).grIso i).inv = B.genRes.map (grMap ψ a ha i) := by
   have h := (pair ψ a ha).π_grIso_hom i
@@ -74,7 +74,7 @@ theorem grIso_inv (i : Fin r) : ((pair ψ a ha).grIso i).inv = B.genRes.map (grM
   exact h.symm
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ ψ _ _ _ _ a ha` and use `⟨pair ψ a ha, rfl, rfl, fun i => ⟨(pair ψ a ha).grIso i, grMap ψ a ha i, grIso_inv ψ a ha i, π_grMap ψ a ha i, rfl⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_flagPair : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B : Vert.Model O) (E E' : B.X.Modules) (ψ : E' ⟶ E) [IsIso (B.genRes.map ψ)] (r : ℕ) (fl : Vert.Flag E r) (fl' : Vert.Flag E' r) (a : ∀ i, fl'.F i ⟶ fl.F i), (∀ i, a i ≫ fl.ι i = fl'.ι i ≫ ψ) → ∃ P : Vert.Model.FlagPair (Vert.Model.GenIso.ofHom ψ) r, ∃ (_ : P.fl = fl) (_ : P.fl' = fl'), ∀ i, ∃ (φ : B.GenIso (fl.gr i) (fl'.gr i)) (b : fl'.gr i ⟶ fl.gr i), φ.inv = B.genRes.map b ∧ fl'.π i ≫ b = a i.succ ≫ fl.π i ∧ P.div i = φ.div (fl.isVB_gr i) (fl'.isVB_gr i) :=
   fun _ _ _ _ _ _ _ ψ _ _ _ _ a ha => ⟨pair ψ a ha, rfl, rfl, fun i =>

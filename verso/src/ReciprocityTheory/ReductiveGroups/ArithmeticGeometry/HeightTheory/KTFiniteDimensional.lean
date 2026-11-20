@@ -17,15 +17,13 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Establish `hval : ∀ p : (KTp K d.D d.N), d.KTtoS h c (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) p) = MvPolynomial.aeval (sImg (d.jc c) (d.x c)) p`. Introduce `p`. Simplify using `only [KTtoS]`. Rewrite using `[IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := (KTp K d.D d.N)) z`. Establish `hmem : ∀ p : (KTp K d.D d.N), d.KTtoS h c (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) p) ∈ (d.KT c).toSubfield`. Introduce `p`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hval]`. Use `show _ ∈ IntermediateField.adjoin K (Set.range (sImg (d.jc c) (d.x c)))`. Apply `IntermediateField.algebra_adjoin_le_adjoin` to reduce the goal to its premises. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨p, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀]`. Conclude with `(d.KT c).toSubfield.div_mem (hmem a) (hmem b)`. Introduce `y hy`. Establish `hE : IntermediateField.adjoin K (Set.range (sImg (d.jc c) (d.x c))) ≤ { (d.KTtoS h c).fieldRange with algebraMap_mem'` using `fun k => (d.KTtoS h c).mem_fieldRange.2 ⟨algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (MvPolynomial.C k), by rw [hval, MvPolynomial.aeval_C]⟩ } := by`. Rewrite using `[IntermediateField.adjoin_le_iff]`.
-
-Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `(d.KTtoS h c).mem_fieldRange.2 ⟨algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (MvPolynomial.X v), by rw [hval, MvPolynomial.aeval_X]⟩`. Conclude with `hE hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem KTtoS_fieldRange (h : d.S1) (c : ι) :
     (d.KTtoS h c).fieldRange = (d.KT c).toSubfield := by
@@ -59,11 +57,11 @@ theorem KTtoS_fieldRange (h : d.S1) (c : ι) :
     exact hE hy
 
 /- English proof (translation)
-Establish `hfs` using `ReciprocityTheory.MultiplicativeHeights.Closed.fieldOfS K (Ω c) d.D d.N (d.x c) (hd.fg c) (hd.trdeg c) (hd.a1 c)`. Set `e : TVar d.D d.N ≃ TVar d.D d.N` to `Equiv.prodCongr (Equiv.refl _) (Fin.cycleRange (d.jc c)).symm`. Establish `key : (ReciprocityTheory.MultiplicativeHeights.sImage (D` using `d.D) (d.x c)) = (sImg (D := d.D) (d.jc c) (d.x c)) ∘ e := by`. Use function extensionality and compare the values at `p`. Take `⟨i, j⟩` from `p`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using `[e, ReciprocityTheory.MultiplicativeHeights.sImage, sImg, Fin.cycleRange_symm_zero]`. Simplify using `[e, ReciprocityTheory.MultiplicativeHeights.sImage, sImg, Fin.cycleRange_symm_succ]`. Establish `hrange : Set.range (ReciprocityTheory.MultiplicativeHeights.sImage (D` using `d.D) (d.x c)) = Set.range (sImg (D := d.D) (d.jc c) (d.x c)) := by`. Rewrite using `[key, EquivLike.range_comp]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hfs.2`. Rewrite `h2` using `[hrange]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KT_finiteDimensional (hd : d.AxH 𝒜) (c : ι) :
     FiniteDimensional (d.KT c) (OmS (Ω c) d.D d.N) := by
@@ -84,11 +82,9 @@ theorem KT_finiteDimensional (hd : d.AxH 𝒜) (c : ι) :
   exact h2
 
 /- English proof (translation)
-Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `haveI := d.KT_finiteDimensional hd c`. Establish `hfr` using `d.KTtoS_fieldRange h c`. Set `e : (KTf K d.D d.N) ≃+* (d.KT c)` to `((d.KTtoS h c).rangeRestrictFieldEquiv).trans (RingEquiv.subfieldCongr hfr)`. Establish `he : ∀ z, ((e z : d.KT c) : (OmS (Ω c) d.D d.N)) = d.KTtoS h c z` using `fun z => rfl`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (algebraMap (KTf K d.D d.N) (OmS (Ω c) d.D d.N)).comp e.symm.toRingHom = (RingEquiv.refl (OmS (Ω c) d.D d.N)).toRingHom.comp (algebraMap (d.KT c) (OmS (Ω c) d.D d.N))`. Use `RingHom.ext fun y => ?_` and prove the remaining obligations. Use `show d.KTtoS h c (e.symm y) = (y : (OmS (Ω c) d.D d.N))`. Rewrite using `[← he, RingEquiv.apply_symm_apply]`. Use `⟨Module.Finite.of_equiv_equiv e.symm (RingEquiv.refl _) hc, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[show d.delc c = Module.finrank (d.KT c) (OmS (Ω c) d.D d.N) from rfl]`. Conclude with `(Algebra.finrank_eq_of_equiv_equiv e.symm (RingEquiv.refl _) hc).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omS_finite (hd : d.AxH 𝒜) (h : d.S1) (c : ι) :
     letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra

@@ -10,7 +10,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Basic
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.Et GlobalTheory.EtC
 
 /- English proof (translation)
-Unfold `pullHQ`. Rewrite using `[pullHl_comp, LinearMap.baseChange_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem pullHQ_comp' (l : ℕ) [Fact l.Prime] {E E' E'' : Spc} (f : E ⟶ E') (g : E' ⟶ E'') (n i : ℤ)
     (x : HQ l E'' n i) : pullHQ l (f ≫ g) n i x = pullHQ l f n i (pullHQ l g n i x) := by
@@ -19,33 +19,31 @@ private theorem pullHQ_comp' (l : ℕ) [Fact l.Prime] {E E' E'' : Spc} (f : E �
   rfl
 
 /- English proof (translation)
-Introduce `hE2 hE3 O _ K _ _ κ _ _ Ω _ _ _ V hV kb _ _ _ r hr hrO Y p _ _ iY jY hi1 hi2 hj1 hj2`. Take `⟨hAIC, hSH⟩` from `UpperTheory.Gal.Mod.spValsub Ω V`. Use `set ι : O →+* V := RingHom.codRestrict ((algebraMap K Ω).comp (algebraMap O K)) V hV with hι`. Establish `hpbJ : IsPullback jY (pullback.snd _ _) (pullback.snd p (Spec.map (CommRingCat.ofHom ι))) (Spec.map (CommRingCat.ofHom V.subtype))`. Use `UpperTheory.Gal.Mod.spPaste p (Spec.map (CommRingCat.ofHom ι)) (Spec.map (CommRingCat.ofHom (algebraMap O K))) (Spec.map (CommRingCat.ofHom V.subtype)) (Spec.map (CommRingCat.ofHom (algebraMap K Ω))) ?_ jY hj1 hj2` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Establish `hpbI : IsPullback iY (pullback.snd _ _) (pullback.snd p (Spec.map (CommRingCat.ofHom ι))) (Spec.map (CommRingCat.ofHom r))`. Use `UpperTheory.Gal.Mod.spPaste p (Spec.map (CommRingCat.ofHom ι)) (Spec.map (CommRingCat.ofHom (algebraMap O κ))) (Spec.map (CommRingCat.ofHom r)) (Spec.map (CommRingCat.ofHom (algebraMap κ kb))) ?_ iY hi1 hi2` and prove the remaining obligations. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use extensionality with `a`. Conclude with `hrO a`. Establish `hpbJ' : IsPullback jY (pullback.snd _ _) (pullback.snd p (Spec.map (CommRingCat.ofHom ι))) (Spec.map (CommRingCat.ofHom (algebraMap V Ω)))` using `hpbJ`. Establish `hEq : ∀ q : ℕ, IsUnit (q : kb) → ∀ i : ℤ, Eqv _ (sch.map iY) (tw q i) ∧ Eqv _ (sch.map jY) (tw q i)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `q hq i`. Establish `hqV : IsUnit (q : V)` using `UpperTheory.Gal.Mod.spUnit V kb r hr q hq`. Use `haveI : NeZero q := ⟨by rintro rfl; simp at hq⟩`. Establish `h2` using `UpperTheory.Gal.Mod.specialization_eqv_of_proper_of_strictly_henselian hE2 q V hSH hqV kb r hr (pullback.snd p (Spec.map (CommRingCat.ofHom ι))) i`. Establish `h3` using `UpperTheory.Gal.Mod.generic_fibre_eqv_of_smooth_of_normal_local_domain hE3 q V hAIC hqV Ω (pullback.snd p (Spec.map (CommRingCat.ofHom ι))) i`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨UpperTheory.Gal.Mod.spPbEqv _ _ _ _ _ _ hpbI h2, UpperTheory.Gal.Mod.spPbEqv _ _ _ _ _ _ hpbJ' h3⟩`. Use `⟨hEq, ?_⟩` and prove the remaining obligations. Introduce `l _ hl n i`. Establish `hlk : ∀ k : ℕ, IsUnit (((l ^ k : ℕ)) : kb)` using `fun k => by`. Use `push_cast`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hl.pow k`. Establish `hbI : Function.Bijective (pullHQ l (sch.map iY) n i)` using `UpperTheory.Gal.Mod.spHqBij l _ n i (fun k => (hEq _ (hlk k) i).1 n)`. Establish `hbJ : Function.Bijective (pullHQ l (sch.map jY) n i)` using `UpperTheory.Gal.Mod.spHqBij l _ n i (fun k => (hEq _ (hlk k) i).2 n)`. Set `eI` to `LinearEquiv.ofBijective _ hbI`. Set `eJ` to `LinearEquiv.ofBijective _ hbJ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hsp : ∀ x, (eI.symm.trans eJ) (pullHQ l (sch.map iY) n i x) = pullHQ l (sch.map jY) n i x`. Introduce `x`. Establish `: eI.symm (pullHQ l (sch.map iY) n i x) = x` using `eI.symm_apply_apply x`. Express the relevant statement in the definitionally equal form `eJ (eI.symm (pullHQ l (sch.map iY) n i x)) = _`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Use `⟨eI.symm.trans eJ, hsp, ?_⟩` and prove the remaining obligations. Introduce `σ τ hσ hτ x`. Take `⟨y, rfl⟩` from `hbI.2 x`. Set `σV : V →+* V` to `RingHom.codRestrict ((σ : Ω →+* Ω).comp V.subtype) V (fun v => hσ v v.2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `hσι : Spec.map (CommRingCat.ofHom σV) ≫ Spec.map (CommRingCat.ofHom ι) = Spec.map (CommRingCat.ofHom ι)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `a`. Conclude with `σ.commutes (algebraMap O K a)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `s : pullback p (Spec.map (CommRingCat.ofHom ι)) ⟶ pullback p (Spec.map (CommRingCat.ofHom ι))` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ Spec.map (CommRingCat.ofHom σV)) (by`. Rewrite using `[Category.assoc, hσι, pullback.condition])`. Establish `hs1 : s ≫ pullback.fst _ _ = pullback.fst _ _` using `pullback.lift_fst _ _ _`. Establish `hs2 : s ≫ pullback.snd _ _ = pullback.snd _ _ ≫ Spec.map (CommRingCat.ofHom σV)` using `pullback.lift_snd _ _ _`. Establish `hJ : galMap Ω (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap O K)))) σ ≫ jY = jY ≫ s`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hj1, hs1, hj1, galMap_fst_assoc]`. Rewrite using `[Category.assoc, Category.assoc, hj2, hs2, galMap_snd_assoc, ← Category.assoc jY, hj2, Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Establish `hI : galMap kb (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap O κ)))) τ ≫ iY = iY ≫ s`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hi1, hs1, hi1, galMap_fst_assoc]`. Rewrite using `[Category.assoc, Category.assoc, hi2, hs2, galMap_snd_assoc, ← Category.assoc iY, hi2, Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Use extensionality with `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hτ v).symm`. Establish `hgI : galHQ l kb (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap O κ)))) n i τ (pullHQ l (sch.map iY) n i y) = pullHQ l (sch.map iY) n i (pullHQ l (sch.map s) n i y)`. Rewrite using `[← pullHQ_comp', ← Functor.map_comp, ← hI, Functor.map_comp, pullHQ_comp']`. Both sides reduce to the same expression. Establish `hgJ : galHQ l Ω (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap O K)))) n i σ (pullHQ l (sch.map jY) n i y) = pullHQ l (sch.map jY) n i (pullHQ l (sch.map s) n i y)`.
-
-Rewrite using `[← pullHQ_comp', ← Functor.map_comp, ← hJ, Functor.map_comp, pullHQ_comp']`. Both sides reduce to the same expression. Rewrite using `[hgI, hsp, hsp, hgJ]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Mod.spSpecIf :
     GlobalTheory.EtC.E2 → GlobalTheory.EtC.E3 → GlobalTheory.EtC.SpecGood := by

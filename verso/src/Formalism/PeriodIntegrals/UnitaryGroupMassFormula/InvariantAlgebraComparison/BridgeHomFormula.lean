@@ -21,21 +21,21 @@ Both sides reduce to the same expression.
 theorem hmat_one (I : AutInst) : hmat I 1 = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))`.
+A detailed English derivation is pending.
 -/
 theorem P_mul_inv (I : AutInst) (v : InfinitePlace I.F) : I.P v * (I.P v)⁻¹ = 1 :=
   Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))`.
+A detailed English derivation is pending.
 -/
 theorem P_inv_mul (I : AutInst) (v : InfinitePlace I.F) : (I.P v)⁻¹ * I.P v = 1 :=
   Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))
 
 /- English proof (translation)
-Unfold `ofHAInf`. Rewrite using `[hmat_mul, Matrix.map_mul]`. Use `set A := (hmat I g).map (thetaV I v)`. Use `set B := (hmat I h).map (thetaV I v)`. Use `set P := I.P v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[P_mul_inv]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = P⁻¹ * A * P * (P⁻¹ * B * P) := by simp only [Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem ofHAInf_mul (I : AutInst) (g h : HAd I) (v : InfinitePlace I.F) :
     ofHAInf I (g * h) v = ofHAInf I g v * ofHAInf I h v := by
@@ -49,14 +49,14 @@ theorem ofHAInf_mul (I : AutInst) (g h : HAd I) (v : InfinitePlace I.F) :
     _ = P⁻¹ * A * P * (P⁻¹ * B * P) := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `ofHAInf`. Rewrite using `[hmat_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, P_inv_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofHAInf_one (I : AutInst) (v : InfinitePlace I.F) : ofHAInf I 1 v = 1 := by
   unfold ofHAInf
   rw [hmat_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, P_inv_mul]
 
 /- English proof (translation)
-Unfold `ofHAFin`. Rewrite using `[hmat_mul, Matrix.map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofHAFin_mul (I : AutInst) (g h : HAd I) :
     ofHAFin I (g * h) = ofHAFin I g * ofHAFin I h := by
@@ -64,7 +64,7 @@ theorem ofHAFin_mul (I : AutInst) (g h : HAd I) :
   rw [hmat_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Unfold `ofHAFin`. Rewrite using `[hmat_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofHAFin_one (I : AutInst) : ofHAFin I 1 = 1 := by
   unfold ofHAFin

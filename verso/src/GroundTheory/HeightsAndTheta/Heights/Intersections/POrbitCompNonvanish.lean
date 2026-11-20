@@ -15,9 +15,9 @@ attribute [local instance] MvPolynomial.weightedGradedAlgebra
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `hP`. Apply `Ideal.homogeneous_span` to reduce the goal to its premises. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`. Use `⟨Finsupp.equivFunOnFinite.symm a, (mem_weightedHomogeneousSubmodule ℤ _ _ _).mpr ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m hm`. Use extensionality with `k`. Rewrite using `[weight_blkWt_apply, ha m (mem_support_iff.mpr hm) k]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem OrbitCompNonvanish.isHomogeneous_blkWt {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) :
     P.IsHomogeneous (weightedHomogeneousSubmodule ℤ (blkWt (ι := ι))) := by
@@ -32,7 +32,7 @@ theorem OrbitCompNonvanish.isHomogeneous_blkWt {P : Ideal (MRing ι)} (hP : IsMu
   simp
 
 /- English proof (translation)
-Introduce `m hm k`. Establish `h` using `weightedHomogeneousComponent_isWeightedHomogeneous (w := blkWt (ι := ι)) δ E (mem_support_iff.mp hm)`. Rewrite using `[← weight_blkWt_apply, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem OrbitCompNonvanish.isMultiHomog_component (E : MRing ι) (δ : K →₀ ℕ) :
     IsMultiHomog (weightedHomogeneousComponent (blkWt (ι := ι)) δ E) δ := by
@@ -42,21 +42,17 @@ theorem OrbitCompNonvanish.isMultiHomog_component (E : MRing ι) (δ : K →₀ 
   rw [← weight_blkWt_apply, h]
 
 /- English proof (translation)
-Introduce `K _ ι _ P E hP hE`. Establish `hPh` using `OrbitCompNonvanish.isHomogeneous_blkWt hP`. Take `⟨δ, hδ⟩ : ∃ δ, weightedHomogeneousComponent (blkWt (ι` from `ι)) δ E ∉ P := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hE ((mem_iff_weightedHomogeneousComponent_mem ℤ _ hPh E).mpr h)`. Use `⟨_, δ, OrbitCompNonvanish.isMultiHomog_component E δ, hδ, fun z hz => ?_⟩` and prove the remaining obligations. Set `comp : (K →₀ ℕ) → MRing ι` to `fun b => weightedHomogeneousComponent (blkWt (ι := ι)) b E`. Set `lam : (K →₀ ℕ) → ℂ` to `fun b => eval z (map (Int.castRingHom ℂ) (comp b))`. Establish `hfin` using `weightedHomogeneousComponent_finsupp (w := blkWt (ι := ι)) E`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T : Finset (K →₀ ℕ)` to `insert δ hfin.toFinset`. Establish `hsum : ∑ b ∈ T, comp b = E`. Rewrite using `[← Finset.sum_subset (Finset.subset_insert δ hfin.toFinset), ← finsum_eq_sum _ hfin]`. Conclude with `sum_weightedHomogeneousComponent _ E`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hb (hfin.mem_toFinset.mpr hne)`. Set `Q : MvPolynomial K ℂ` to `∑ b ∈ T, monomial b (lam b)`. Establish `hQ : ∀ c : K → ℂ, eval c Q = eval (fun p => c p.1 * z p) (map (Int.castRingHom ℂ) E)`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `conv_rhs => rw [← hsum]`. Simplify using `only [Q, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[eval_smul_homog (comp b) b (OrbitCompNonvanish.isMultiHomog_component E b) c z, eval_monomial, Finsupp.prod_fintype _ _ (by simp)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hQ0 : Q ≠ 0`. Introduce `h0`. Establish `hc` using `congrArg (coeff δ) h0`. Simplify using `only [Q, coeff_sum, coeff_monomial, coeff_zero] at hc`. Rewrite `hc` using `[Finset.sum_ite_eq' T δ, if_pos (Finset.mem_insert_self _ _)]`.
-
-Conclude with `hz hc`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Apply `hQ0` to reduce the goal to its premises. Use `funext_set (fun _ => ({0}ᶜ : Set ℂ)) (fun _ => (Set.finite_singleton 0).infinite_compl) fun x hx => ?_` and prove the remaining obligations.
-
-Rewrite using `[hQ, map_zero]`. Conclude with `hno x fun k => hx k (Set.mem_univ k)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OrbitCompNonvanish.proof : OrbitCompNonvanish.Statement := by
   intro K _ ι _ P E hP hE

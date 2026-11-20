@@ -29,7 +29,7 @@ namespace GlobalTheory.PlaneComplementSig
 open Matrix
 
 /- English proof (translation)
-Use `GlobalTheory.FrameComplement.hasSignature_of_frame (by simp) (Matrix.of fun i k => Sum.elim (fun _ => ![1, 1 / 2] i) (fun _ => ![1, -1 / 2] i) k) ?_` and prove the remaining obligations. Apply the tactic sequence `ext (a | a) (b | b) <;> fin_cases a <;> fin_cases b <;>`. Apply the tactic sequence `simp [Formalism.UG.Jpq, Matrix.mul_apply, Fin.sum_univ_two, Matrix.conjTranspose_apply, map_ofNat] <;> norm_num`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hasSignature_plane : Formalism.UG.HasSignature (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) ℂ) 1 1 := by
   refine GlobalTheory.FrameComplement.hasSignature_of_frame (by simp)
@@ -38,23 +38,21 @@ theorem hasSignature_plane : Formalism.UG.HasSignature (!![0, 1; 1, 0] : Matrix 
     simp [Formalism.UG.Jpq, Matrix.mul_apply, Fin.sum_univ_two, Matrix.conjTranspose_apply, map_ofNat] <;> norm_num
 
 /- English proof (translation)
-Introduce `D S S₁ ι x y q hr hι hxx hyy hxy ho hneg τ`. Establish `hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a)` using `D.sp.cm.cmUnram.2.1 τ`. Establish `hS : Formalism.UG.HasSignature (S.gram.map τ) (S.rank - (q + 1)) (q + 1)`. Take `⟨ρ, hσ | hσ⟩` from `GlobalTheory.DefiniteMult.exists_tauE_or_conj D τ`. Substitute `hσ` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Simplify `hneg ρ` using `[gramAt]`. Substitute `hσ` using the available equality. Establish `h1` using `GlobalTheory.BottomIsom.hasSignature_map_star (by simpa [gramAt] using hneg ρ)`. Rewrite `h1` using `[Matrix.map_map]`. Conclude with `h1`.
+Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a, b⟩, h₁⟩` from `GlobalTheory.WittLow.exists_sig S₁ τ`. Establish `c₁` using `(Formalism.UG.P.sig_data _ _ _ h₁).1`. Establish `cS` using `(Formalism.UG.P.sig_data _ _ _ hS).1`. Simplify using `only [Fintype.card_fin] at c₁ cS`. Set `v : Fin S₁.rank ⊕ Fin 2 → S.V` to `Sum.elim (fun i => ι (S₁.frame i)) ![x, y]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hyx : S.hT y x = 1`. Establish `h` using `S.herm.eq x y`. Rewrite `h` using `[hxy, map_one]`. Conclude with `h.symm`. Establish `hv : (Matrix.of fun k l => S.hT (v k) (v l)) = fromBlocks S₁.gram 0 0 (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) D.host.E)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `(i | i) (j | j)`. Simplify using `only [v, Matrix.of_apply, fromBlocks_apply₁₁, Sum.elim_inl, HSpace.gram]`. Conclude with `hι _ _`. Use `fin_cases j`. Establish `h` using `S.herm.eq x (ι (S₁.frame i))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[(ho _).1, map_zero]`. Simplify using `[v, ← h]`. Establish `h` using `S.herm.eq y (ι (S₁.frame i))`. Rewrite `h` using `[(ho _).2, map_zero]`. Simplify using `[v, ← h]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `fin_cases i`. Simplify `(ho _).1` using `[v]`. Simplify `(ho _).2` using `[v]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [v, hxx, hyy, hxy, hyx]`. Establish `hF : Formalism.UG.HasSignature ((Matrix.of fun k l => S.hT (v k) (v l)).map τ) (a + 1) (b + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hv, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero τ), Matrix.map_zero _ (map_zero τ)]`. Establish `e : (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) D.host.E).map τ = !![0, 1; 1, 0]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp`. Rewrite using `[e]`. Conclude with `GlobalTheory.FrameComplement.hasSignature_fromBlocks h₁ hasSignature_plane`.
-
-Establish `key` using `Formalism.BasicNotions.sig_family S τ hτ v hF hS`. Establish `hb : b = q` using `by omega`. Establish `ha : a = S₁.rank - q` using `by omega`. Substitute `hb ha` using the available equality. Conclude with `h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sig : ∀ (D : D7) (S S₁ : HSp D) (ι : S₁.V →ₗ[D.host.E] S.V) (x y : S.V) (q : ℕ), S.rank = S₁.rank + 2 →
     Formalism.BasicNotions.HSpace.IsIsomEmb S₁ S ι → S.hT x x = 0 → S.hT y y = 0 → S.hT x y = 1 →

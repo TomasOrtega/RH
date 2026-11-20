@@ -11,7 +11,7 @@ open PI.SqPair Formalism.L2.PairingIndexBounds.Eq.SqG
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, ← sub_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem scal_sq (ε : 𝓞 E) :
     (ε : E) • (1 : Matrix (Fin N) (Fin N) E) * (ε : E) • 1 - (ε : E) • 1 =
@@ -22,7 +22,7 @@ theorem scal_sq (ε : 𝓞 E) :
   ring
 
 /- English proof (translation)
-Establish `hc0 : ((cj E ε : 𝓞 E) : E) = star (ε : E)` using `rfl`. Establish `hc : ((ε + cj E ε - 1 : 𝓞 E) : E) = (ε : E) + star (ε : E) - 1`. Use `push_cast`. Conclude with `congrArg (fun z => (ε : E) + z - 1) hc0`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_one, hc, sub_smul, add_smul, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_adj (ε : 𝓞 E) :
     (ε : E) • (1 : Matrix (Fin N) (Fin N) E) + ((ε : E) • (1 : Matrix (Fin N) (Fin N) E))ᴴ - 1 =
@@ -34,9 +34,9 @@ theorem scal_adj (ε : 𝓞 E) :
   rw [Matrix.conjTranspose_smul, Matrix.conjTranspose_one, hc, sub_smul, add_smul, one_smul]
 
 /- English proof (translation)
-Unfold `Dv at h`. Unfold `SmallAt`. Introduce `y hy`. Take `⟨s, hs, w, hw⟩` from `h`. Use `⟨s, hs, w • y, L.smul_mem w hy, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ (r : 𝓞 E) (z : Fin N → E), r • z = (r : E) • z` using `fun r z => rfl`. Simplify using `only [Matrix.smul_mulVec, Matrix.one_mulVec, key, smul_smul]`. Use `congr 1`. Conclude with `hw` after adjusting the coercions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private lemma smallAt_smul_one_of_dv {Q : Ideal (𝓞 E)} {c a : 𝓞 E} {L : Submodule (𝓞 E) (Fin N → E)}
     (h : Dv Q c a) : SmallAt Q c L (((a : 𝓞 E) : E) • (1 : Matrix (Fin N) (Fin N) E)) := by
@@ -51,7 +51,7 @@ private lemma smallAt_smul_one_of_dv {Q : Ideal (𝓞 E)} {c a : 𝓞 E} {L : Su
   exact_mod_cast hw
 
 /- English proof (translation)
-Unfold `Good`. Rewrite using `[scal_sq, scal_adj]`. Use the proof step `repeat' constructor`. Apply the tactic sequence `all_goals first | exact smallAt_smul_one_of_dv h1 | exact smallAt_smul_one_of_dv h2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_scal {Q : Ideal (𝓞 E)} [Q.IsPrime] {c : 𝓞 E} {L' L'' : Submodule (𝓞 E) (Fin N → E)}
     {ε : 𝓞 E} (h1 : Dv Q c (ε * (ε - 1))) (h2 : Dv Q c (ε + cj E ε - 1)) :
@@ -62,9 +62,9 @@ theorem good_scal {Q : Ideal (𝓞 E)} [Q.IsPrime] {c : 𝓞 E} {L' L'' : Submod
   all_goals first | exact smallAt_smul_one_of_dv h1 | exact smallAt_smul_one_of_dv h2
 
 /- English proof (translation)
-Unfold `Pres`. Introduce `y hy`. Establish `key : ∀ (r : 𝓞 E) (z : Fin N → E), r • z = (r : E) • z` using `fun r z => rfl`. Establish `he : ((ε : E) • (1 : Matrix (Fin N) (Fin N) E)) *ᵥ y = ε • y`. Rewrite using `[key]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.smul_mulVec, Matrix.one_mulVec]`. Rewrite using `[he]`. Conclude with `L.smul_mem ε hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pres_integer_smul_one {L : Submodule (𝓞 E) (Fin N → E)} (ε : 𝓞 E) :
     Pres L ((ε : E) • (1 : Matrix (Fin N) (Fin N) E)) := by
@@ -78,29 +78,23 @@ private lemma pres_integer_smul_one {L : Submodule (𝓞 E) (Fin N → E)} (ε :
   exact L.smul_mem ε hy
 
 /- English proof (translation)
-Introduce `E _ _ _ _ N L' L'' _ _ _ Q hQ hne c hc`. Establish `cjcj : ∀ x : 𝓞 E, cj E (cj E x) = x` using `fun x => by`. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Use `show star (star (x : E)) = (x : E)`. Conclude with `star_star _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q' := Ideal.comap (cj E) Q with hQ'def`. Establish `hsurj : Function.Surjective (cj E)` using `fun y => ⟨cj E y, cjcj y⟩`. Use `haveI := hQ`. Establish `hQ' : Q'.IsMaximal` using `Ideal.comap_isMaximal_of_surjective (cj E) hsurj`. Establish `hcc : Ideal.comap (cj E) Q' = Q`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use extensionality with `x`. Rewrite using `[hQ'def, Ideal.mem_comap, Ideal.mem_comap, cjcj]`. Establish `hsup : Q ⊔ Q' = ⊤`. Assume the negation of the conclusion as `h`. Establish `h1 : Q = Q ⊔ Q'` using `hQ.eq_of_le h le_sup_left`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : Q' = Q ⊔ Q'` using `hQ'.eq_of_le h le_sup_right`. Conclude with `hne (h2.trans h1.symm)`. Take `⟨K, hK⟩` from `hP E Q hQ c hc`. Take `⟨K', hK'⟩` from `hP E Q' hQ' c hc`. Use `set M := max K K'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1top : (1 : 𝓞 E) ∈ Q ^ M ⊔ Q' ^ M`. Rewrite using `[Ideal.pow_sup_pow_eq_top hsup]`. Conclude with `Submodule.mem_top`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp h1top`. Establish `hb1 : b - 1 ∈ Q ^ M`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hba : b - 1 = -a`. Rewrite using `[← hab]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hba]`. Conclude with `(Q ^ M).neg_mem ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `toQ' : ∀ x, x ∈ Q ^ M → cj E x ∈ Q' ^ M` using `fun x hx => by`. Establish `hle : Q ^ M ≤ Ideal.comap (cj E) (Q' ^ M)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Ideal.mem_comap.mp (hle hx)`. Establish `toQ : ∀ x, x ∈ Q' ^ M → cj E x ∈ Q ^ M` using `fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hle : Q' ^ M ≤ Ideal.comap (cj E) (Q ^ M)` using `Ideal.le_comap_pow _ M`. Conclude with `Ideal.mem_comap.mp (hle hx)`. Establish `hcb1 : cj E b - 1 ∈ Q' ^ M`. Establish `h` using `toQ' _ hb1`. Rewrite `h` using `[map_sub, map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcb : cj E b ∈ Q ^ M` using `toQ _ hb`. Establish `dvQ : ∀ x, x ∈ Q ^ M → Dv Q c x` using `fun x hx => hK x (Ideal.pow_le_pow_right (le_max_left K K') hx)`. Establish `dvQ' : ∀ x, x ∈ Q' ^ M → Dv Q' c x` using `fun x hx => hK' x (Ideal.pow_le_pow_right (le_max_right K K') hx)`. Use `haveI := hQ.isPrime`. Use `haveI := hQ'.isPrime`.
-
-Use `⟨(b : E) • (1 : Matrix (Fin N) (Fin N) E), pres_integer_smul_one b, pres_integer_smul_one b, ?_, ?_⟩` and prove the remaining obligations. Apply `good_scal` to reduce the goal to its premises. Conclude with `dvQ _ (Ideal.mul_mem_left _ b hb1)`. Establish `hr : b + cj E b - 1 = (b - 1) + cj E b` using `by ring`. Rewrite using `[hr]`.
-
-Conclude with `dvQ _ (Ideal.add_mem _ hb1 hcb)`. Apply `good_scal` to reduce the goal to its premises. Conclude with `dvQ' _ (Ideal.mul_mem_right _ _ hb)`. Establish `hr : b + cj E b - 1 = b + (cj E b - 1)` using `by ring`. Rewrite using `[hr]`.
-
-Conclude with `dvQ' _ (Ideal.add_mem _ hb hcb1)`.
+A detailed English derivation is pending.
 -/
 theorem splitPlace_of (hP : PowLoc) : SplitPlace := by
   intro E _ _ _ _ N L' L'' _ _ _ Q hQ hne c hc

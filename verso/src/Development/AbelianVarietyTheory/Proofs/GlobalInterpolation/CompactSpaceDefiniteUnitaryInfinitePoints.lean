@@ -13,11 +13,11 @@ namespace GlobalTheory.InfUCompact
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Use `haveI : CompactSpace (Matrix.unitaryGroup (Fin n) (Cinf E)) := GlobalTheory.KinfCompactness.compactSpace_Kinf E n`. Set `f : Matrix.unitaryGroup (Fin n) (Cinf E) → GL (Fin n) (Cinf E)` to `fun u => ⟨u.1, star u.1, Matrix.mem_unitaryGroup_iff.1 u.2, Matrix.mem_unitaryGroup_iff'.1 u.2⟩`. Establish `hf : Continuous f` using `Units.continuous_iff.2 ⟨continuous_subtype_val, continuous_star.comp continuous_subtype_val⟩`. Establish `hr : Set.range f = (UJ (starRingEnd (Cinf E)) (1 : Matrix (Fin n) (Fin n) (Cinf E)) : Set (GL (Fin n) (Cinf E)))`. Use extensionality with `g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Express the relevant statement in the definitionally equal form `cT (starRingEnd (Cinf E)) u.1 * 1 * u.1 = 1`. Rewrite using `[mul_one]`. Conclude with `Matrix.mem_unitaryGroup_iff'.1 u.2`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hg`. Establish `h : cT (starRingEnd (Cinf E)) (g : Matrix (Fin n) (Fin n) (Cinf E)) * 1 * g = 1` using `hg`. Rewrite `h` using `[mul_one]`. Conclude with `⟨⟨g.1, Matrix.mem_unitaryGroup_iff'.2 h⟩, Units.ext rfl⟩`. Conclude with `isCompact_iff_compactSpace.1 (hr ▸ isCompact_range hf)`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem compactSpace_UJ (E : Type) [Field E] (n : ℕ) :
     CompactSpace (UJ (starRingEnd (Cinf E)) (1 : Matrix (Fin n) (Fin n) (Cinf E))) := by
@@ -41,13 +41,11 @@ theorem compactSpace_UJ (E : Type) [Field E] (n : ℕ) :
   exact isCompact_iff_compactSpace.1 (hr ▸ isCompact_range hf)
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `pFin_infGL _`. Introduce `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp : ∀ a : Ad E, pInf E (conjAd E a) = starRingEnd (Cinf E) (pInf E a)` using `fun a => (infEq E).symm_apply_apply _`. Establish `hM : GeneralLinearGroup.map (pInf E) x.1 ∈ UJ (starRingEnd (Cinf E)) (1 : Matrix (Fin n) (Fin n) (Cinf E))`. Establish `h0 : cT (conjAd E) (x.1 : Matrix (Fin n) (Fin n) (Ad E)) * 1 * x.1 = 1` using `x.2`. Rewrite `h0` using `[mul_one]`. Establish `e : cT (starRingEnd (Cinf E)) ((x.1 : Matrix (Fin n) (Fin n) (Ad E)).map (pInf E)) = (cT (conjAd E) (x.1 : Matrix (Fin n) (Fin n) (Ad E))).map (pInf E)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hp]`. Express the relevant statement in the definitionally equal form `cT (starRingEnd (Cinf E)) ((x.1 : Matrix (Fin n) (Fin n) (Ad E)).map (pInf E)) * 1 * (x.1 : Matrix (Fin n) (Fin n) (Ad E)).map (pInf E) = 1`. Rewrite using `[e, mul_one, ← Matrix.map_mul, h0, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨⟨_, hM⟩, Subtype.ext (ga_ext ?_ ?_)⟩` and prove the remaining obligations.
-
-Conclude with `pInf_infGL _`. Conclude with `(pFin_infGL _).trans (Eq.symm hx)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem range_infPt : Set.range (GlobalTheory.DefiniteDense.infPt (E := E) (n := n)) = (infU E n : Set (UA E n)) := by
   ext x
@@ -73,7 +71,7 @@ theorem range_infPt : Set.range (GlobalTheory.DefiniteDense.infPt (E := E) (n :=
     · exact (pFin_infGL _).trans (Eq.symm hx)
 
 /- English proof (translation)
-Introduce `E _ _ _ n`. Use `haveI := compactSpace_UJ E n`. Establish `h : IsCompact (infU E n : Set (UA E n))` using `range_infPt (E := E) (n := n) ▸ isCompact_range GlobalTheory.DefiniteDense.continuous_infPt`. Conclude with `isCompact_iff_compactSpace.1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compactSpace_infU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ),
     CompactSpace (infU E n) := by

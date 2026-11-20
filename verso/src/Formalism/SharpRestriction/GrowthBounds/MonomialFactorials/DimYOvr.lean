@@ -21,7 +21,7 @@ Both sides reduce to the same expression.
 theorem topA_eq (dl : DCl X) (l : Fin X.s) : topA C0 CE1 CE2 X dl l = (Wl C0 CE1 CE2 X dl l).sup id := rfl
 
 /- English proof (translation)
-Unfold `Wl`. Rewrite using `[Finset.mem_filter]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_Wl_iff_mem_winA_and_dvd_sub (dl : DCl X) (l : Fin X.s) (v : ℕ) :
     v ∈ Wl C0 CE1 CE2 X dl l ↔
@@ -30,7 +30,7 @@ private theorem mem_Wl_iff_mem_winA_and_dvd_sub (dl : DCl X) (l : Fin X.s) (v : 
   rw [Finset.mem_filter]
 
 /- English proof (translation)
-Unfold `cbox`. Simplify using `only [Finset.mem_filter]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem mem_cbox_iff_mem_piFinset_and_compat (dl : DCl X) (a : Fin X.s → ℕ) :
     a ∈ cbox C0 CE1 CE2 X dl ↔ a ∈ Fintype.piFinset (fun _ : Fin X.s => X.winA) ∧ Compat C0 CE1 CE2 X dl a := by
@@ -39,9 +39,9 @@ private theorem mem_cbox_iff_mem_piFinset_and_compat (dl : DCl X) (a : Fin X.s �
   simp only [Finset.mem_filter]
 
 /- English proof (translation)
-Establish `h0'` using `((mem_cbox_iff_mem_piFinset_and_compat C0 CE1 CE2 X dl a0).1 h0).2`. Simplify using `only [Compat, DigitsOK, ColumnSystems.digitBlock] at h0'`. Use extensionality with `a`. Rewrite using `[mem_cbox_iff_mem_piFinset_and_compat, Fintype.mem_piFinset, Fintype.mem_piFinset]`. Simplify using `only [Compat, DigitsOK, ColumnSystems.digitBlock, mem_Wl_iff_mem_winA_and_dvd_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, -, -, h3⟩ i`. Conclude with `⟨ha i, h3 i⟩`. Introduce `h`. Conclude with `⟨fun i => (h i).1, h0'.1, h0'.2.1, fun i => (h i).2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem cbox_eq (dl : DCl X) (a0 : Fin X.s → ℕ) (h0 : a0 ∈ cbox C0 CE1 CE2 X dl) :
     cbox C0 CE1 CE2 X dl = Fintype.piFinset (Wl C0 CE1 CE2 X dl) := by
@@ -63,7 +63,7 @@ def Nl (dl : DCl X) (x : Lv C0 CE1 CE2 X) (i : Fin (X.S C0 CE1 CE2).t) : Finset 
   (Wl C0 CE1 CE2 X dl (uTop (X.S C0 CE1 CE2) i)).image (cm C0 CE1 CE2 X dl x i)
 
 /- English proof (translation)
-Unfold `SegData.P`. Conclude with `pow_pos X.std.1.prime.pos _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem twoPow_pos (l : Fin X.s) : 0 < (X.S C0 CE1 CE2).P X.p l := by
   unfold SegData.P
@@ -76,11 +76,11 @@ def LvlRoom (dl : DCl X) (x : Lv C0 CE1 CE2 X) : Prop :=
 variable {C0 CE1 CE2 X}
 
 /- English proof (translation)
-Introduce `v hv v' hv' he`. Establish `r1` using `hr i v hv`. Establish `r2` using `hr i v' hv'`. Simplify using `only [Finset.mem_coe, mem_Wl_iff_mem_winA_and_dvd_sub] at hv hv'`. Simplify using `only [cm] at he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hPp` using `twoPow_pos C0 CE1 CE2 X (uTop (X.S C0 CE1 CE2) i)`. Take `⟨k, hk⟩` from `hv.2.2`. Take `⟨k', hk'⟩` from `hv'.2.2`. Rewrite `r1` using `[hk, Nat.mul_div_cancel_left _ hPp]`. Rewrite `he` using `[hk, Nat.mul_div_cancel_left _ hPp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `r2` using `[hk', Nat.mul_div_cancel_left _ hPp]`. Rewrite `he` using `[hk', Nat.mul_div_cancel_left _ hPp]`. Establish `hkk : k = k'` using `by omega`. Substitute `hkk` using the available equality. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cm_inj {dl : DCl X} {x : Lv C0 CE1 CE2 X} (hr : LvlRoom C0 CE1 CE2 X dl x) (i : Fin (X.S C0 CE1 CE2).t) :
     Set.InjOn (cm C0 CE1 CE2 X dl x i) (Wl C0 CE1 CE2 X dl (uTop (X.S C0 CE1 CE2) i)) := by
@@ -101,7 +101,7 @@ theorem cm_inj {dl : DCl X} {x : Lv C0 CE1 CE2 X} (hr : LvlRoom C0 CE1 CE2 X dl 
   omega
 
 /- English proof (translation)
-Unfold `cm`. Conclude with `Nat.sub_le_sub_right (Nat.div_le_div_right (Nat.sub_le_sub_right h _)) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cm_mono (dl : DCl X) (x : Lv C0 CE1 CE2 X) (i : Fin (X.S C0 CE1 CE2).t) {v v' : ℕ} (h : v ≤ v') :
     cm C0 CE1 CE2 X dl x i v ≤ cm C0 CE1 CE2 X dl x i v' := by
@@ -109,15 +109,15 @@ theorem cm_mono (dl : DCl X) (x : Lv C0 CE1 CE2 X) (i : Fin (X.S C0 CE1 CE2).t) 
   exact Nat.sub_le_sub_right (Nat.div_le_div_right (Nat.sub_le_sub_right h _)) _
 
 /- English proof (translation)
-Introduce `y hy y' hy' z hyz hzy'`. Simplify using `only [Nl, Finset.mem_image] at hy hy' ⊢`. Take `⟨v, hv, rfl⟩` from `hy`. Take `⟨v', hv', rfl⟩` from `hy'`. Establish `r1` using `hr i v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `r2` using `hr i v' hv'`. Simplify using `only [mem_Wl_iff_mem_winA_and_dvd_sub, Formalism.MainNotions.flipOneThree.Inst.winA, Finset.mem_Icc] at hv hv' ⊢`. Simplify using `only [cm] at hyz hzy' ⊢`. Establish `hPp` using `twoPow_pos C0 CE1 CE2 X (uTop (X.S C0 CE1 CE2) i)`. Take `⟨k, hk⟩` from `hv.2.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k', hk'⟩` from `hv'.2.2`. Rewrite `r1` using `[hk, Nat.mul_div_cancel_left _ hPp]`. Rewrite `hyz` using `[hk, Nat.mul_div_cancel_left _ hPp]`. Rewrite `r2` using `[hk', Nat.mul_div_cancel_left _ hPp]`. Rewrite `hzy'` using `[hk', Nat.mul_div_cancel_left _ hPp]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle1 : k ≤ z + x.1 i` using `by omega`. Establish `hle2 : z + x.1 i ≤ k'` using `by omega`. Establish `m1` using `Nat.mul_le_mul_left ((X.S C0 CE1 CE2).P X.p (uTop (X.S C0 CE1 CE2) i)) hle1`. Establish `m2` using `Nat.mul_le_mul_left ((X.S C0 CE1 CE2).P X.p (uTop (X.S C0 CE1 CE2) i)) hle2`. Use `⟨(∑ c, dl.2 (uTop (X.S C0 CE1 CE2) i) c) + (X.S C0 CE1 CE2).P X.p (uTop (X.S C0 CE1 CE2) i) * (z + x.1 i), ⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Conclude with `⟨z + x.1 i, by omega⟩`. Rewrite using `[Nat.add_sub_cancel_left, Nat.mul_div_cancel_left _ hPp, Nat.add_sub_cancel]`.
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem Nl_conv {dl : DCl X} {x : Lv C0 CE1 CE2 X} (hr : LvlRoom C0 CE1 CE2 X dl x) (i : Fin (X.S C0 CE1 CE2).t) :
     ∀ y ∈ Nl C0 CE1 CE2 X dl x i, ∀ y' ∈ Nl C0 CE1 CE2 X dl x i, ∀ z, y ≤ z → z ≤ y' → z ∈ Nl C0 CE1 CE2 X dl x i := by
@@ -148,11 +148,9 @@ theorem Nl_conv {dl : DCl X} {x : Lv C0 CE1 CE2 X} (hr : LvlRoom C0 CE1 CE2 X dl
   · rw [Nat.add_sub_cancel_left, Nat.mul_div_cancel_left _ hPp, Nat.add_sub_cancel]
 
 /- English proof (translation)
-Rewrite using `[topA_eq]`. Take `⟨m, hm, hmax⟩` from `Finset.exists_max_image _ id hne`. Establish `hsup : (Wl C0 CE1 CE2 X dl (uTop (X.S C0 CE1 CE2) i)).sup id = m` using `le_antisymm (Finset.sup_le fun v hv => hmax v hv) (Finset.le_sup (f := id) hm)`. Rewrite using `[hsup]`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Finset.le_sup (f := id) (Finset.mem_image_of_mem _ hm)`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `y hy`. Simplify using `only [Nl, Finset.mem_image] at hy`. Take `⟨v, hv, rfl⟩` from `hy`.
-
-Conclude with `cm_mono dl x i (hmax v hv)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cm_top {dl : DCl X} (x : Lv C0 CE1 CE2 X) (i : Fin (X.S C0 CE1 CE2).t)
     (hne : (Wl C0 CE1 CE2 X dl (uTop (X.S C0 CE1 CE2) i)).Nonempty) :
@@ -198,9 +196,9 @@ def FRf (a : Fin X.s → ℕ) (b : SegBlock X.s X.r) (x : Lv C0 CE1 CE2 X) (n : 
     (gT C0 CE1 CE2 X b).J (gT C0 CE1 CE2 X b).thr)
 
 /- English proof (translation)
-Establish `h` using `lLL_ovr C0 CE1 CE2 X a n b x`. Establish `hf : (fun i => cm C0 CE1 CE2 X dl x i (n i)) = (fun i : Fin (X.S C0 CE1 CE2).t => (n i - ∑ c, b.ry (uTop (X.S C0 CE1 CE2) i) c) / (X.S C0 CE1 CE2).P X.p (uTop (X.S C0 CE1 CE2) i) - x.1 i)`. Use function extensionality and compare the values at `i`. Simplify using `only [cm, hb]`. Unfold `BADf bY badY`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hf, ← h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bY_ovr (dl : DCl X) (a : Fin X.s → ℕ) (n : Fin (X.S C0 CE1 CE2).t → ℕ) (b : SegBlock X.s X.r)
     (hb : b.ry = dl.2) (x : Lv C0 CE1 CE2 X) (D : ℤ) :
@@ -216,9 +214,9 @@ theorem bY_ovr (dl : DCl X) (a : Fin X.s → ℕ) (n : Fin (X.S C0 CE1 CE2).t �
   rfl
 
 /- English proof (translation)
-Establish `h` using `lLL_ovr C0 CE1 CE2 X a n b x`. Establish `hf : (fun i => cm C0 CE1 CE2 X dl x i (n i)) = (fun i : Fin (X.S C0 CE1 CE2).t => (n i - ∑ c, b.ry (uTop (X.S C0 CE1 CE2) i) c) / (X.S C0 CE1 CE2).P X.p (uTop (X.S C0 CE1 CE2) i) - x.1 i)`. Use function extensionality and compare the values at `i`. Simplify using `only [cm, hb]`. Unfold `FRf dimY`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hf, ← h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dimY_ovr (dl : DCl X) (a : Fin X.s → ℕ) (n : Fin (X.S C0 CE1 CE2).t → ℕ) (b : SegBlock X.s X.r)
     (hb : b.ry = dl.2) (x : Lv C0 CE1 CE2 X) :

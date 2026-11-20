@@ -5,17 +5,17 @@ open NumberField ReciprocityTheory.GeometryOfNumbersTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set m : AddSubgroup M := a ⊔ (b ⊓ g.ker) with hm`. Establish `ham : a ≤ m` using `le_sup_left`. Establish `hmb : m ≤ b` using `sup_le hab inf_le_left`. Establish `hmeq : m = b ⊓ (a.map g).comap g`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [hm, AddSubgroup.mem_sup, AddSubgroup.mem_inf, AddSubgroup.mem_comap, AddSubgroup.mem_map, AddMonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, z, ⟨hzb, hzk⟩, rfl⟩`. Conclude with `⟨b.add_mem (hab hy) hzb, y, hy, by simp [hzk]⟩`. Introduce and unpack `⟨hxb, y, hy, hyx⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, hy, x - y, ⟨b.sub_mem hxb (hab hy), by simp [hyx]⟩, by abel⟩` and prove the remaining obligations. Establish `h1 : m.relIndex b = (a.map g).relIndex (b.map g)`. Rewrite using `[hmeq, inf_comm, AddSubgroup.inf_relIndex_right, AddSubgroup.relIndex_comap]`. Establish `h2 : a.relIndex m = (a ⊓ g.ker).relIndex (b ⊓ g.ker)`. Rewrite using `[hm, sup_comm, AddSubgroup.relIndex_sup_right, ← AddSubgroup.inf_relIndex_right, ← AddSubgroup.inf_relIndex_right (a ⊓ g.ker)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hb, hk⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨ha, hk⟩, hb, hk⟩`. Introduce and unpack `⟨⟨ha, hk⟩, hb, -⟩`. Conclude with `⟨ha, hb, hk⟩`. Establish `h3` using `AddSubgroup.relIndex_mul_relIndex a m b ham hmb`. Rewrite `h3` using `[h1, h2]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem addSubgroup_relIndex_split {M N : Type} [AddCommGroup M] [AddCommGroup N]
     (g : M →+ N) (a b : AddSubgroup M) (hab : a ≤ b) :
@@ -48,11 +48,11 @@ theorem addSubgroup_relIndex_split {M N : Type} [AddCommGroup M] [AddCommGroup N
   rw [← h3, mul_comm]
 
 /- English proof (translation)
-Establish `hk : (LinearMap.ker f).toAddSubgroup = f.toAddMonoidHom.ker`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hmap : ∀ P : Submodule R M, (P.map f).toAddSubgroup = P.toAddSubgroup.map f.toAddMonoidHom`. Introduce `P`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hinf : ∀ P Q : Submodule R M, (P ⊓ Q).toAddSubgroup = P.toAddSubgroup ⊓ Q.toAddSubgroup`. Introduce `P Q`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[hmap, hmap, hinf, hinf, hk]`. Conclude with `addSubgroup_relIndex_split f.toAddMonoidHom _ _ hAB`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem submodule_relIndex_split {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] (f : M →ₗ[R] N) (A B : Submodule R M) (hAB : A ≤ B) :

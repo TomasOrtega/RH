@@ -10,9 +10,9 @@ namespace Formalism.HermitianLattices.Ext.L3.QuadraticExtensionConjugation
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
 /- English proof (translation)
-Take `⟨hTC, hconj, -⟩` from `hK`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨w⟩ : Nonempty (NumberField.InfinitePlace K)` from `inferInstance`. Establish `hc` using `hTC.isComplex w`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[NumberField.InfinitePlace.isComplex_iff]`. Apply `hc` to reduce the goal to its premises. Rewrite using `[NumberField.ComplexEmbedding.isReal_iff]`. Use extensionality with `a`. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq, ← hconj, h]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_star_ne (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : ∃ a : K, star a ≠ a := by
   obtain ⟨hTC, hconj, -⟩ := hK
@@ -27,18 +27,18 @@ theorem exists_star_ne (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : �
   rw [NumberField.ComplexEmbedding.conjugate_coe_eq, ← hconj, h]
 
 /- English proof (translation)
-The claim follows from `(hF _).2 ⟨u, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem star_algebraMap (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) (u : F) :
     star (algebraMap F K u) = algebraMap F K u :=
   (hF _).2 ⟨u, rfl⟩
 
 /- English proof (translation)
-Establish `hb : a - star a ≠ 0` using `sub_ne_zero.mpr (Ne.symm ha)`. Take `⟨w, hw⟩ : ∃ w : K, w * (a - star a) = x - star x` from `⟨(x - star x) / (a - star a), div_mul_cancel₀ _ hb⟩`. Establish `hsw : star w = w`. Establish `h1` using `congrArg star hw`. Rewrite `h1` using `[star_mul', star_sub, star_sub, star_star, star_star]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `mul_right_cancel₀ hb` to reduce the goal to its premises. Take the linear combination `-h1 - hw`. Take `⟨v, hv⟩` from `(hF w).1 hsw`. Establish `hz : star (x - w * a) = x - w * a`. Rewrite using `[star_sub, star_mul', hsw]`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hw`. Take `⟨u, hu⟩` from `(hF _).1 hz`. Conclude with `⟨u, v, by rw [hu, hv]; ring⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_decomp (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) {a : K}
     (ha : star a ≠ a) (x : K) : ∃ u v : F, x = algebraMap F K u + algebraMap F K v * a := by
@@ -58,17 +58,15 @@ theorem exists_decomp (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMa
   exact ⟨u, v, by rw [hu, hv]; ring⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_star_ne hK`. Establish `hli : LinearIndependent F ![(1 : K), a]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Distinguish the cases in `ht : t = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero] at hst`. Conclude with `⟨(smul_eq_zero.mp hst).resolve_right one_ne_zero, rfl⟩`. It suffices to derive a contradiction. Apply `ha` to reduce the goal to its premises.
+Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `htK : algebraMap F K t ≠ 0` using `(_root_.map_ne_zero _).mpr ht`. Establish `hA : a = algebraMap F K (-s / t)`. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Rewrite using `[map_div₀, map_neg, eq_div_iff htK]`. Take the linear combination `hst`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `(hF a).2 ⟨_, hA.symm⟩`. Establish `hsp : ⊤ ≤ Submodule.span F (Set.range ![(1 : K), a])`. Introduce `x _`. Take `⟨u, v, rfl⟩` from `exists_decomp hF ha x`. Apply `Submodule.add_mem` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, by simp⟩)`. Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, by simp⟩)`. Rewrite using `[Module.finrank_eq_card_basis (Basis.mk hli hsp)]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finrank_eq_two (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) : finrank F K = 2 := by
@@ -100,7 +98,7 @@ theorem finrank_eq_two (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
   simp
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨u, v, rfl⟩` from `exists_decomp hF ha x`. Conclude with `Subalgebra.add_mem _ (Subalgebra.algebraMap_mem _ u) (Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ v) (Algebra.subset_adjoin (Set.mem_singleton a)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem adjoin_eq_top (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) {a : K}
     (ha : star a ≠ a) : Algebra.adjoin F {a} = ⊤ := by
@@ -118,9 +116,9 @@ theorem coe_algebraMap (z : 𝓞 F) :
   rfl
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `(hF _).1 hy`. Establish `hint : IsIntegral ℤ u`. Establish `h1 : IsIntegral ℤ (algebraMap F K u)`. Rewrite using `[hu]`. Conclude with `RingOfIntegers.isIntegral_coe y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isIntegral_algebraMap_iff (algebraMap F K).injective).mp h1`. Use `⟨⟨u, hint⟩, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `(coe_algebraMap (F := F) (K := K) ⟨u, hint⟩).trans hu`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_int_of_star_eq (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K))
     (y : 𝓞 K) (hy : star (algebraMap (𝓞 K) K y) = algebraMap (𝓞 K) K y) :
@@ -135,11 +133,11 @@ theorem exists_int_of_star_eq (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (a
   exact (coe_algebraMap (F := F) (K := K) ⟨u, hint⟩).trans hu
 
 /- English proof (translation)
-Take `⟨-, hconj, -⟩` from `hK`. Use `⟨fun w => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `NumberField.InfinitePlace.comap_surjective (k := F) (K := K) w`. Apply the tactic sequence `try dsimp only`. Rewrite using `[← NumberField.InfinitePlace.mk_embedding v, NumberField.InfinitePlace.comap_mk]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[NumberField.InfinitePlace.not_isReal_iff_isComplex, NumberField.InfinitePlace.isComplex_mk_iff]`. Apply `h` to reduce the goal to its premises. Rewrite using `[NumberField.ComplexEmbedding.isReal_iff]`. Use extensionality with `u`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hconj, star_algebraMap hF]`.
+A detailed English derivation is pending.
 -/
 theorem isTotallyReal (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) : IsTotallyReal F := by
@@ -156,23 +154,21 @@ theorem isTotallyReal (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
   rw [NumberField.ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hconj, star_algebraMap hF]
 
 /- English proof (translation)
-Establish `ht' : star (algebraMap (𝓞 K) K t) = algebraMap (𝓞 K) K θ` using `by rw [ht, star_star]`. Take `⟨s, hs⟩` from `exists_int_of_star_eq hF (θ + t) (by rw [map_add, star_add, ht', ← ht, add_comm])`. Take `⟨p, hp⟩` from `exists_int_of_star_eq hF (θ * t) (by rw [map_mul, star_mul', ht', ← ht, mul_comm])`. Take `⟨q, hq⟩ : ∃ q : Polynomial (𝓞 F), q = X ^ 2 - C s * X + C p` from `⟨_, rfl⟩`. Establish `hqdeg : q.natDegree = 2` using `by rw [hq]; compute_degree!`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hqm : q.Monic` using `by rw [hq]; monicity!`. Establish `hroot : aeval θ q = 0`. Rewrite using `[hq]`. Simplify using `only [map_add, map_sub, map_mul, map_pow, aeval_X, aeval_C, hs, hp]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hint : IsIntegral (𝓞 F) θ` using `by first`. Consider the case `exact Algebra.IsIntegral.isIntegral θ`. Consider the case `exact IsIntegral.tower_top (A := 𝓞 F) (RingOfIntegers.isIntegral θ)`. Consider the case `exact (Algebra.IsIntegral.isIntegral (R := ℤ) θ).tower_top`. Establish `hdvd : minpoly (𝓞 F) θ ∣ q` using `minpoly.isIntegrallyClosed_dvd hint hroot`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hdeg2 : 2 ≤ (minpoly (𝓞 F) θ).natDegree`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `h1 : (minpoly (𝓞 F) θ).natDegree = 1`. Use `minpoly.natDegree_pos hint` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hd1 : (minpoly (𝓞 F) θ).degree = 1`. Rewrite using `[Polynomial.degree_eq_natDegree (minpoly.ne_zero hint), h1]`. Both sides reduce to the same expression. Establish `hr : θ ∈ (algebraMap (𝓞 F) (𝓞 K)).range` using `by first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact minpoly.mem_range_of_degree_eq_one (𝓞 F) θ hd1`. Consider the case `exact minpoly.mem_range_of_degree_eq_one hd1`. Consider the case `exact minpoly.mem_range_of_degree_eq_one (𝓞 F) hd1`. Take `⟨z, hz⟩` from `hr`. Apply `hne` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `hfx : star (algebraMap (𝓞 K) K θ) = algebraMap (𝓞 K) K θ`. Rewrite using `[← hz, coe_algebraMap]`. Conclude with `star_algebraMap hF _`. Conclude with `(ht.trans hfx).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `heq : q = minpoly (𝓞 F) θ` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) hqm hdvd (by rw [hqdeg]; exact hdeg2)`. Rewrite using `[← heq, hq]`. Simplify using `only [derivative_add, derivative_sub, derivative_mul, derivative_X_pow, derivative_C, derivative_X, zero_mul, mul_one, zero_add, add_zero, map_add, map_sub, map_mul, map_pow, aeval_X, aeval_C, map_natCast, hs]`. Use `first`. Consider the case `ring`.
-
-Consider the case `(norm_num; ring)`. Consider the case `norm_num`. Consider the case `(push_cast; ring)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem minpoly_eq (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) (θ t : 𝓞 K)
     (ht : algebraMap (𝓞 K) K t = star (algebraMap (𝓞 K) K θ)) (hne : θ ≠ t) :
@@ -227,11 +223,11 @@ theorem minpoly_eq (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F
     | (push_cast; ring)
 
 /- English proof (translation)
-Take `⟨-, -, hmax⟩` from `hK`. Assume the negation of the conclusion as `hne`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨θ, t, ht, hθt⟩` from `hmax P hP`. Establish `hne' : θ ≠ t` using `fun h => hθt (by rw [h, sub_self]; exact P.zero_mem)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hstar : star (algebraMap (𝓞 K) K θ) ≠ algebraMap (𝓞 K) K θ`. Rewrite using `[← ht]`. Conclude with `fun h => hne' (RingOfIntegers.ext h.symm)`. Apply `hθt` to reduce the goal to its premises. Apply `hle` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← minpoly_eq hF θ t ht hne']`. Conclude with `aeval_derivative_mem_differentIdeal (A := 𝓞 F) (K := F) (L := K) θ (adjoin_eq_top hF hstar)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentIdeal_eq_top (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) :
@@ -249,7 +245,7 @@ theorem differentIdeal_eq_top (hK : Formalism.HermitianLatticesTheory.IsCMUnram 
   exact aeval_derivative_mem_differentIdeal (A := 𝓞 F) (K := F) (L := K) θ (adjoin_eq_top hF hstar)
 
 /- English proof (translation)
-Rewrite using `[natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow F (𝓞 F) K (𝓞 K), differentIdeal_eq_top hK hF, Ideal.absNorm_top, one_mul, finrank_eq_two hK hF]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natAbs_discr (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) :
@@ -258,9 +254,7 @@ theorem natAbs_discr (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     differentIdeal_eq_top hK hF, Ideal.absNorm_top, one_mul, finrank_eq_two hK hF]
 
 /- English proof (translation)
-Use `haveI := isTotallyReal hK hF`. Use `first`. Consider the case `exact NumberField.discr_pos_of_isTotallyReal F`. Consider the case `(have h := NumberField.sign_discr F`. Rewrite `h` using `[IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero]`.
-
-Conclude with `Int.sign_eq_one_iff_pos.mp h)`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discr_pos (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) : 0 < discr F := by
@@ -276,23 +270,21 @@ end Formalism.HermitianLattices.Ext.L3.QuadraticExtensionConjugation
 namespace Formalism.HermitianLattices.Ext.L3
 
 /- English proof (translation)
-Introduce `K F _ _ _ _ _ _ hK hF`. Establish `hpos` using `QuadraticExtensionConjugation.discr_pos hK hF`. Establish `h1` using `QuadraticExtensionConjugation.natAbs_discr hK hF`. Establish `hTC : IsTotallyComplex K`. Take `⟨h, -, -⟩` from `hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Establish `hA : |(discr K : ℝ)| = (discr F : ℝ) ^ 2`. Establish `h2` using `congrArg (fun n : ℕ => (n : ℝ)) h1`. Simplify using `only [Nat.cast_pow, Nat.cast_natAbs, Int.cast_abs] at h2`. Rewrite using `[h2, sq_abs]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdeg : finrank ℚ F = Formalism.HermitianLatticesTheory.fDeg K`. Establish `e1` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank K`. Establish `e2` using `Module.finrank_mul_finrank ℚ F K`. Establish `e3` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := K)`. Establish `e4 : NumberField.InfinitePlace.nrRealPlaces K = 0` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact NumberField.IsTotallyComplex.nrRealPlaces_eq_zero`. Consider the case `exact IsTotallyComplex.nrRealPlaces_eq_zero`. Consider the case `exact NumberField.InfinitePlace.nrRealPlaces_eq_zero_iff.mpr hTC`. Consider the case `exact NumberField.nrRealPlaces_eq_zero_iff.mpr hTC`. Consider the case `(haveI : IsEmpty {w : NumberField.InfinitePlace K // w.IsReal} := ⟨fun w => (NumberField.InfinitePlace.not_isReal_iff_isComplex.mpr (hTC.isComplex w.1)) w.2⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[NumberField.InfinitePlace.nrRealPlaces])`. Consider the case `(unfold NumberField.InfinitePlace.nrRealPlaces`. Rewrite using `[Fintype.card_eq_zero_iff]`. Conclude with `⟨fun w => (NumberField.InfinitePlace.not_isReal_iff_isComplex.mpr (hTC.isComplex w.1)) w.2⟩)`. Rewrite `e2` using `[QuadraticExtensionConjugation.finrank_eq_two hK hF]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.HermitianLatticesTheory.fDeg`. Use linear arithmetic over natural numbers and integers. Use `⟨hA, hdeg, ?_⟩` and prove the remaining obligations. Establish `hF0 : (0 : ℝ) < discr F` using `by exact_mod_cast hpos`. Establish `hd : 0 < Formalism.HermitianLatticesTheory.fDeg K`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.HermitianLatticesTheory.fDeg`. Conclude with `Fintype.card_pos`. Establish `hd0 : ((Formalism.HermitianLatticesTheory.fDeg K : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast hd.ne'`. Unfold `Formalism.HermitianLatticesTheory.vInv`. Rewrite using `[show ∀ x : ℝ, 2 * (x / 2) = x from fun x => by ring, hA, ← Real.rpow_natCast (discr F : ℝ) 2, ← Real.rpow_mul hF0.le, ← Real.rpow_natCast _ (Formalism.HermitianLatticesTheory.fDeg K), ← Real.rpow_mul hF0.le]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Use `conv_lhs => rw [← Real.rpow_one (discr F : ℝ)]`. Use `congr 1`. Use `first`. Consider the case `(push_cast; field_simp)`. Consider the case `(push_cast; field_simp; ring)`.
-
-Consider the case `field_simp`. Consider the case `(field_simp; ring)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem discrTower : DiscrTower := by
   intro K F _ _ _ _ _ _ hK hF

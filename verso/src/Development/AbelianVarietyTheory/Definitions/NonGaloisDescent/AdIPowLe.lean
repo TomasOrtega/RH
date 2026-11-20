@@ -14,7 +14,7 @@ variable {l : ℕ} {R : Type} [CommRing R]
 abbrev adI (B : Obj l R) : Ideal B.A := Ideal.span {(l : B.A)} ⊔ B.I
 
 /- English proof (translation)
-Use `le_trans (Ideal.pow_right_mono ?_ m) (Ideal.le_comap_pow f.f m)` and prove the remaining obligations. Use `sup_le ?_ fun a ha => Ideal.mem_sup_right (f.f_I a ha)` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adI_pow_le {B B' : Obj l R} (f : Hom B B') (m : ℕ) : adI B ^ m ≤ (adI B' ^ m).comap f.f := by
   refine le_trans (Ideal.pow_right_mono ?_ m) (Ideal.le_comap_pow f.f m)

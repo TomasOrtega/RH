@@ -7,89 +7,77 @@ open GlobalTheory.PRep
 namespace DiscreteGroups.sglob.LConv
 
 /- English proof (translation)
-Introduce `G _ _ _ K hKo hKc _ N hN H _ _ _ π hπ e he hKe hfix d hd g`. Establish `hd0 : d ≠ 0`. Introduce `h0`. Rewrite `hd` using `[h0]`. Conclude with `Nat.not_lt_zero _ hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩` from `Nat.exists_eq_add_one_of_ne_zero hd0`. Establish `hstar : ∀ a, star (π a) = π a⁻¹` using `alt_star_eq π hπ`. Establish `hes : star e = e` using `he.star_eq`. Establish `hKe' : ∀ κ ∈ K, π κ * e = e` using `fun κ hκ => ContinuousLinearMap.ext fun x => hKe x κ hκ`. Establish `hee : e * e = e` using `ContinuousLinearMap.ext fun x => hfix (e x) fun κ hκ => hKe x κ hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heK : ∀ κ ∈ K, e * π κ = e`. Introduce `κ hκ`. Establish `h1` using `hKe' κ⁻¹ (K.inv_mem hκ)`. Combine the equalities or inequalities in the displayed calculation. Set `f : G → (H →L[ℂ] H)` to `fun a => e * π a * e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Y : Submodule ℂ (H →L[ℂ] H)` to `Submodule.span ℂ (Set.range fun a => π a * e)`. Establish `hY1 : ∀ a, ∀ y ∈ Y, π a * y ∈ Y`. Introduce `a y hy`. Establish `: Y ≤ Y.comap (LinearMap.mulLeft ℂ (π a))` using `Submodule.span_le.mpr (by`. Introduce and unpack `_ ⟨b, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show π a * (π b * e) ∈ Y`. Conclude with `Submodule.subset_span ⟨a * b, by simp only [map_mul, mul_assoc]⟩)`. Conclude with `this hy`. Establish `hSm : ∀ y ∈ Y, ∃ U : Subgroup G, IsOpen (U : Set G) ∧ ∀ u ∈ U, π u * y = y`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Use `⟨K.comap (MulAut.conj a⁻¹).toMonoidHom, ?_, fun u hu => ?_⟩` and prove the remaining obligations. Establish `: ((K.comap (MulAut.conj a⁻¹).toMonoidHom : Subgroup G) : Set G) = (fun h => a⁻¹ * h * a) ⁻¹' (K : Set G)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `h`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hKo.preimage ((continuous_const.mul continuous_id).mul continuous_const)`. Establish `hu' : a⁻¹ * u * a ∈ K` using `by simpa [MulAut.conj_apply] using hu`.
+Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Consider the case `zero => exact ⟨⊤, by simp, fun u _ => by simp⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨U₁, h1o, h1⟩` from `hx`. Take `⟨U₂, h2o, h2⟩` from `hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨U₁ ⊓ U₂, by rw [Subgroup.coe_inf]; exact h1o.inter h2o, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, h1 u hu.1, h2 u hu.2]`. Consider the case `smul c x _ hx`. Take `⟨U, ho, h⟩` from `hx`. Conclude with `⟨U, ho, fun u hu => by rw [mul_smul_comm, h u hu]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Establish `hYe : ∀ y ∈ Y, y * e = y`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Simplify using `only [mul_assoc, hee]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [add_mul, hx, hz]`. Consider the case `smul c x _ hx => rw [smul_mul_assoc, hx]`. Establish `heY : e ∈ Y` using `Submodule.subset_span ⟨1, by simp⟩`. Establish `hE : ∀ Z : Submodule ℂ (H →L[ℂ] H), Z ≤ Y → (∀ a, ∀ z ∈ Z, π a * z ∈ Z) → ∀ z ∈ Z, e * z ∈ Z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z hZY hZ z hz`. Take `⟨U, hUo, hU⟩` from `hSm z (hZY hz)`. Conclude with `alt_avg K hKc π e heK hfix Z (fun κ _ => hZ κ) z hz U hUo hU`. Establish `hYE : ∀ y ∈ Y, e * y ∈ Y` using `hE Y le_rfl hY1`. Establish `hYmul : ∀ x ∈ Y, ∀ y ∈ Y, x * y ∈ Y`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Use `show π a * e * y ∈ Y`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[mul_assoc]`. Conclude with `hY1 a _ (hYE y hy)`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [add_mul]`. Conclude with `Y.add_mem hx hz`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c x _ hx => rw [smul_mul_assoc]`. Conclude with `Y.smul_mem c hx`. Establish `hword : ∀ Z : Submodule ℂ (H →L[ℂ] H), Z ≤ Y → (∀ a, ∀ z ∈ Z, π a * z ∈ Z) → ∀ l : List G, ∀ z ∈ Z, (l.map f).prod * z ∈ Z`. Introduce `Z hZY hZ l`. Proceed by induction on `l with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `nil => intro z hz`. Simplify using `using hz`. Consider the case `cons a l ih`. Introduce `z hz`. Rewrite using `[List.map_cons, List.prod_cons, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `show e * π a * e * ((l.map f).prod * z) ∈ Z`. Rewrite using `[mul_assoc, mul_assoc]`. Conclude with `hE Z hZY hZ _ (hZ a _ (hE Z hZY hZ _ (ih z hz)))`. Establish `hfstar : ∀ a, star (f a) = f a⁻¹`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show star (e * π a * e) = e * π a⁻¹ * e`. Simplify using `only [star_mul, hes, hstar, mul_assoc]`. Establish `hwstar : ∀ l : List G, star ((l.map f).prod) = ((l.reverse.map (·⁻¹)).map f).prod`. Introduce `l`. Proceed by induction on `l with`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `nil => simp`. Consider the case `cons a l ih => simp [List.reverse_cons, List.map_append, List.prod_append, star_mul, ih, hfstar]`. Establish `hterm : ∀ σ : Equiv.Perm (Fin (n + 1)), (List.ofFn fun i => e * π (g (σ i)) * e) = (List.ofFn fun i => g (σ i)).map f`. Introduce `σ`. Rewrite using `[List.map_ofFn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Both sides reduce to the same expression. Use `set S := ∑ σ : Equiv.Perm (Fin (n + 1)), ((Equiv.Perm.sign σ : ℤ) : ℂ) • (List.ofFn fun i => e * π (g (σ i)) * e).prod with hSdef`. Establish `hSZ : ∀ Z : Submodule ℂ (H →L[ℂ] H), Z ≤ Y → (∀ a, ∀ z ∈ Z, π a * z ∈ Z) → ∀ z ∈ Z, S * z ∈ Z ∧ star S * z ∈ Z`. Introduce `Z hZY hZ z hz`. Prove the components needed by the constructor for the conclusion.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hSdef, Finset.sum_mul]`. Use `Z.sum_mem fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, hterm]`. Conclude with `Z.smul_mem _ (hword Z hZY hZ _ z hz)`. Rewrite using `[hSdef, star_sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Z.sum_mem fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[star_smul, star_intCast, hterm, hwstar, smul_mul_assoc]`. Conclude with `Z.smul_mem _ (hword Z hZY hZ _ z hz)`. Establish `hQ : ∀ (l : List G) a, f a * (l.map f).prod * e = f a * (l.map f).prod`. Introduce `l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Proceed by induction on `l with`. Consider the case `nil`. Introduce `a`. Simplify using `only [List.map_nil, List.prod_nil, mul_one]`. Use `show e * π a * e * e = e * π a * e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, hee]`. Consider the case `cons b l ih => intro a`. Rewrite using `[List.map_cons, List.prod_cons, mul_assoc (f a), ih b]`. Establish `hSe : S * e = S`. Rewrite using `[hSdef, Finset.sum_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, hterm, List.ofFn_succ, List.map_cons, List.prod_cons, hQ]`. Establish `heSs : e * star S = star S`. Use `congrArg star hSe` as an intermediate fact. Rewrite `this` using `[star_mul, hes]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hSY : S ∈ Y` using `by rw [← hSe]; exact (hSZ Y le_rfl hY1 e heY).1`. Assume the negation of the conclusion as `hS`. Establish `: Nontrivial (H →L[ℂ] H)` using `nontrivial_of_ne S 0 hS`. Use `set c := star S * S with hc`. Establish `hcsa : IsSelfAdjoint c` using `IsSelfAdjoint.star_mul_self S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : c ≠ 0`. Introduce `h0`. Establish `: ‖S‖ * ‖S‖ = 0` using `by rw [← CStarRing.norm_star_mul_self, ← hc, h0, norm_zero]`. Conclude with `hS (norm_eq_zero.mp (mul_self_eq_zero.mp this))`. Establish `hec : e * c = c` using `by rw [hc, ← mul_assoc, heSs]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hcY : c ∈ Y` using `(hSZ Y le_rfl hY1 S hSY).2`. Take `⟨z, hz, hzn⟩` from `spectrum.exists_nnnorm_eq_spectralRadius c`. Rewrite `hzn` using `[hcsa.spectralRadius_eq_nnnorm]`. Establish `hz0 : z ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hc0` to reduce the goal to its premises. Rewrite `hzn` using `[h0, nnnorm_zero, ENNReal.coe_zero, eq_comm, ENNReal.coe_eq_zero, nnnorm_eq_zero]`. Conclude with `hzn`. Establish `hzr : star z = z`. Rewrite using `[hcsa.mem_spectrum_eq_re hz]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `Complex.conj_ofReal _`. Establish `hnotl : ∀ y ∈ Y, y * (c - z • e) ≠ e`. Introduce `y hy hyu`. Use `set b := e * y with hb`. Establish `hbe : b * e = b` using `by rw [hb, mul_assoc, hYe y hy]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbu : b * (c - z • e) = e` using `by rw [hb, mul_assoc, hyu, hee]`. Establish `h1 : b * (c - z • (1 : H →L[ℂ] H)) = e`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (1 - e) * (c - z • (1 : H →L[ℂ] H)) = -(z • (1 - e))`. Rewrite using `[sub_mul, one_mul, mul_sub, hec, mul_smul_comm, mul_one, smul_sub]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Normalize the expressions using the abelian group laws. Establish `hL : (b - z⁻¹ • (1 - e)) * (c - z • (1 : H →L[ℂ] H)) = 1`. Rewrite using `[sub_mul, h1, smul_mul_assoc, h2, smul_neg, smul_smul, inv_mul_cancel₀ hz0, one_smul]`. Normalize the expressions using the abelian group laws. Use `set L := b - z⁻¹ • (1 - e) with hLd`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hv : star (c - z • (1 : H →L[ℂ] H)) = c - z • 1`. Rewrite using `[star_sub, hcsa.star_eq, star_smul, hzr, star_one]`. Establish `hR : (c - z • (1 : H →L[ℂ] H)) * star L = 1`. Use `congrArg star hL` as an intermediate fact. Rewrite `this` using `[star_mul, hv, star_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLR : L = star L`. Combine the equalities or inequalities in the displayed calculation. Establish `hunit : IsUnit (c - z • (1 : H →L[ℂ] H))` using `⟨⟨c - z • 1, L, by rw [hLR]; exact hR, hL⟩, rfl⟩`. Apply `spectrum.mem_iff.mp hz` to reduce the goal to its premises. Rewrite using `[Algebra.algebraMap_eq_smul_one, ← neg_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hunit.neg`. Set `s : Set (Submodule ℂ (H →L[ℂ] H))` to `{Z | Z ≤ Y ∧ (∀ a, ∀ x ∈ Z, π a * x ∈ Z) ∧ e ∉ Z}`. Establish `hZ0 : Y.map (LinearMap.mulRight ℂ (c - z • e)) ∈ s`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩ show y * (c - z • e) ∈ Y`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[mul_sub, mul_smul_comm, hYe y hy]`. Conclude with `Y.sub_mem (hYmul y hy c hcY) (Y.smul_mem z hy)`. Introduce and unpack `a _ ⟨y, hy, rfl⟩`. Conclude with `⟨π a * y, hY1 a y hy, by simp [mul_assoc]⟩`. Introduce and unpack `⟨y, hy, hyu⟩`.
-
-Conclude with `hnotl y hy hyu`. Take `⟨Y', hZY', hmax⟩` from `zorn_le_nonempty₀ s (by`. Introduce `C hCs hC Z0 hZ0C`. Use `⟨sSup C, ⟨sSup_le fun Z hZ => (hCs hZ).1, ?_, ?_⟩, fun Z hZ => le_sSup hZ⟩` and prove the remaining obligations. Introduce `a x hx`.
-
-Take `⟨Z, hZ, hxZ⟩` from `(Submodule.mem_sSup_of_directed ⟨Z0, hZ0C⟩ hC.directedOn).mp hx`. Conclude with `le_sSup hZ ((hCs hZ).2.1 a x hxZ)`. Introduce `he'`. Take `⟨Z, hZ, hxZ⟩` from `(Submodule.mem_sSup_of_directed ⟨Z0, hZ0C⟩ hC.directedOn).mp he'`. Conclude with `(hCs hZ).2.2 hxZ) _ hZ0`.
-
-Take `⟨hY'Y, hY'G, heY'⟩` from `hmax.prop`. Establish `hY'E : ∀ x ∈ Y', e * x ∈ Y'` using `hE Y' hY'Y hY'G`. Establish `hq` using `alt_quot K N hN π e hKe' hee Y Y' le_rfl heY hY1 hYE hSm hY'Y hY'G hY'E heY' (fun Z hZY hZG heZ hle => hmax.le_of_ge ⟨hZY, hZG, heZ⟩ hle) (n + 1) hd g`. Rewrite `hq` using `[← hSdef, hSe]`. Establish `hcY' : c ∈ Y'` using `(hSZ Y' hY'Y hY'G S hq).2`.
-
-Establish `huY' : c - z • e ∈ Y'`. Establish `h` using `hZY' ⟨e, heY, rfl⟩`. Establish `h' : (LinearMap.mulRight ℂ (c - z • e)) e = c - z • e`. Rewrite using `[LinearMap.mulRight_apply, mul_sub, hec, mul_smul_comm, hee]`. Rewrite `h` using `[h']`. Then use the resulting hypothesis.
-
-Establish `hze : z • e ∈ Y'`. Use `Y'.sub_mem hcY' huY'` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Apply `heY'` to reduce the goal to its premises. Use `Y'.smul_mem z⁻¹ hze` as an intermediate fact.
-
-Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hz0, one_smul]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem altIdentity : AltIdentity := by
   intro G _ _ _ K hKo hKc _ N hN H _ _ _ π hπ e he hKe hfix d hd g

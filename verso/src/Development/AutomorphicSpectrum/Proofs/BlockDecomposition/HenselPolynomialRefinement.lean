@@ -11,21 +11,19 @@ namespace GlobalTheory.CompanionTheory.AicStep
 open Polynomial in
 
 /- English proof (translation)
-Introduce `B _ T _ π g hC hπ hA hV P hP hd M a ha`. Take `⟨_, hsurj, hinj⟩` from `hC`. Use `haveI : Nontrivial T := by`. Assume the negation of the conclusion as `hT`. Rewrite `hT` using `[not_nontrivial_iff_subsingleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hP0 : P = 0` using `Polynomial.ext fun n => Subsingleton.elim _ _`. Rewrite `hd` using `[hP0, natDegree_zero]`. Conclude with `lt_irrefl _ hd`. Use `haveI : Nontrivial B := g.domain_nontrivial`. Use `choose c hc using fun i : ℕ => hsurj (P.natDegree * (M + 1)) (P.coeff i)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : (∑ i ∈ Finset.range P.natDegree, C (c i) * X ^ i : B[X]) = ∑ i : Fin P.natDegree, C (c i) * X ^ (i : ℕ)` using `(Fin.sum_univ_eq_sum_range (fun i => (C (c i) * X ^ i : B[X])) _).symm`. Set `Q : B[X]` to `X ^ P.natDegree + ∑ i ∈ Finset.range P.natDegree, C (c i) * X ^ i`. Establish `hQm : Q.Monic` using `by show (X ^ P.natDegree + ∑ i ∈ Finset.range P.natDegree, C (c i) * X ^ i : B[X]).Monic`. Rewrite using `[hsum]`. Conclude with `monic_X_pow_add (degree_sum_fin_lt _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQd : Q.natDegree = P.natDegree` using `by show (X ^ P.natDegree + ∑ i ∈ Finset.range P.natDegree, C (c i) * X ^ i : B[X]).natDegree = _`. Rewrite using `[hsum, natDegree_add_eq_left_of_degree_lt, natDegree_X_pow]`. Rewrite using `[degree_X_pow]`. Conclude with `degree_sum_fin_lt _`. Establish `key : ∀ x : B, P.eval (g x) - g (Q.eval x) ∈ Ideal.span {g π ^ (P.natDegree * (M + 1))}`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Establish `e : P.eval (g x) - g (Q.eval x) = ∑ i ∈ Finset.range P.natDegree, (P.coeff i - g (c i)) * g x ^ i` using `by conv_lhs => rw [hP.as_sum]`. Simplify using `only [Q, eval_add, eval_pow, eval_X, eval_finsetSum, eval_mul, eval_C, map_add, map_pow, map_sum, map_mul, sub_mul, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (hc i)`. Take `⟨b, hb⟩` from `GlobalTheory.CompanionTheory.AicSplit.exists_eval_eq_prod_of_natDegree_eq (fun p hp hpd => hA p hp hpd) P.natDegree Q hQm hQd`. Establish `hle : Ideal.span {g π ^ (P.natDegree * (M + 1))} ≤ Ideal.span {g π ^ (P.natDegree * M)}` using `Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow _ (by gcongr; omega))`. Establish `h1 : g (Q.eval a) ∈ Ideal.span {g π ^ (P.natDegree * M)}`. Establish `h` using `Ideal.sub_mem _ ha (hle (key a))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h2` using `hinj _ _ h1`. Rewrite `h2` using `[hb a]`. Take `⟨a₁, ha₁, h0⟩` from `GlobalTheory.CompanionTheory.RootNear.root_near B π hπ hV P.natDegree M b a hd h2`. Use `⟨a₁, ha₁, ?_⟩` and prove the remaining obligations.
-
-Establish `h3` using `key a₁`. Rewrite `h3` using `[hb a₁, h0, map_zero, sub_zero]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem aic_step : ∀ (B : Type) [CommRing B] (T : Type) [CommRing T] (π : B) (g : B →+* T), IsCompl π g → π ∈ nonZeroDivisors B → AIC B → VAL π → ∀ P : Polynomial T, P.Monic → 0 < P.natDegree → ∀ (M : ℕ) (a : B), P.eval (g a) ∈ Ideal.span {g π ^ (P.natDegree * M)} → ∃ a₁ : B, a₁ - a ∈ Ideal.span {π ^ M} ∧ P.eval (g a₁) ∈ Ideal.span {g π ^ (P.natDegree * (M + 1))} := by
   intro B _ T _ π g hC hπ hA hV P hP hd M a ha

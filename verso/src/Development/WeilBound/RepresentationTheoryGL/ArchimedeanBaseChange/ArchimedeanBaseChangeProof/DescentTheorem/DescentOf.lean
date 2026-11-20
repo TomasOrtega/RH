@@ -72,7 +72,7 @@ def WeightUniq : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   IsAutRepU σ → ∀ φ lam lam', HasWeightAt σ φ lam → HasWeightAt σ φ lam' → infOfWeight lam = infOfWeight lam'
 
 /- English proof (translation)
-Take `⟨-, f, h0, hf, h2⟩` from `h`. Take `⟨e⟩` from `he`. Use `⟨τ'.irred, f ∘ₗ e.symm.toLinearMap, fun h => h0 (LinearMap.ext fun v => ?_), fun v => hf _, fun x v => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg f (e.symm_apply_apply v)).symm.trans (LinearMap.congr_fun h (e v))`. Conclude with `(congrArg f (LinearMap.congr_fun (e.symm.isIntertwining' _) v)).trans (h2 x _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Comp.congr {σ : Submodule ℂ (UA E n → ℂ)} {w : HeightOneSpectrum (𝓞 E)}
     {τ τ' : SmIrr (GL (Fin n) (w.adicCompletion E))} (h : Comp σ w τ) (he : Nonempty (τ.ρ.Equiv τ'.ρ)) : Comp σ w τ' := by

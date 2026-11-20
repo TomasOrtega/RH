@@ -12,7 +12,7 @@ open GroundTheory.PAdicHodge Formalism Formalism.BasicNotions Formalism.BasicNot
 section Abstract
 
 /- English proof (translation)
-Rewrite `e` using `[← h, ← h]`. Conclude with `exists_map_eq_of_pow_mul F (IsLocalization.Away.algebraMap_isUnit a) e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_away_range {A E : Type} [CommRing A] [Field E] {a : A}
     (F : Localization.Away a →+* E) (f : A → E)
@@ -22,7 +22,7 @@ theorem inv_away_range {A E : Type} [CommRing A] [Field E] {a : A}
   exact exists_map_eq_of_pow_mul F (IsLocalization.Away.algebraMap_isUnit a) e
 
 /- English proof (translation)
-Establish `h1` using `congrArg F e`. Rewrite `h1` using `[map_mul, map_mul, map_pow, map_pow, h, h, h]`. Rewrite using `[← h1, mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_map_frac {A B E : Type} [CommRing A] [CommRing B] [Field E] {F : B →+* E} {f : A →+* B}
     {g : A →+* E} (h : Fac F f g) {a t y : A} {m n : ℕ} {x : B} (e : f a ^ m * f t ^ n * x = f y) :
@@ -32,7 +32,7 @@ theorem inv_map_frac {A B E : Type} [CommRing A] [CommRing B] [Field E] {F : B �
   rw [← h1, mul_assoc]
 
 /- English proof (translation)
-Establish `e : F.comp s = (τ : E →+* E).comp F`. Use `hf.hom_ext fun x => ?_` and prove the remaining obligations. Establish `h1 : s (f x) = f (s₀ x)` using `RingHom.congr_fun hs x`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, h1, h, h, hτ, RingHom.coe_coe]`. Conclude with `RingHom.congr_fun e b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_equivariant {A B E : Type} [CommRing A] [CommRing B] [Field E] {F : B →+* E}
     {f : A →+* B} {g : A →+* E} (h : Fac F f g) {a t : A} (hf : IsFrac f a t) {s : B →+* B}
@@ -54,7 +54,7 @@ local notation "𝔹" => BDeRhamPlus (normInteger ℂ_[p]) p
 local notation "𝔹dR" => BDeRham (normInteger ℂ_[p]) p
 
 /- English proof (translation)
-The claim follows from `RingHom.ext (congrFun (eq_galCp_of_continuous τ (galCp σ) (continuous_galCp σ) fun y => by rw [galCp_coe, h]))`.
+A detailed English derivation is pending.
 -/
 theorem inv_galCp_congr (σ : Gal(PadicAlgCl p/K)) (τ : Gal(PadicAlgCl p/L)) (h : ∀ x, σ x = τ x) :
     (galCp σ : ℂ_[p] →+* ℂ_[p]) = (galCp τ : ℂ_[p] →+* ℂ_[p]) :=
@@ -62,14 +62,14 @@ theorem inv_galCp_congr (σ : Gal(PadicAlgCl p/K)) (τ : Gal(PadicAlgCl p/L)) (h
     fun y => by rw [galCp_coe, h]))
 
 /- English proof (translation)
-The claim follows from `AInf.map_congr (inv_galCp_congr σ τ h) _ _`.
+A detailed English derivation is pending.
 -/
 theorem inv_galMap_congr (σ : Gal(PadicAlgCl p/K)) (τ : Gal(PadicAlgCl p/L)) (h : ∀ x, σ x = τ x) :
     AInf.galMap σ = AInf.galMap τ :=
   AInf.map_congr (inv_galCp_congr σ τ h) _ _
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (p : AInf ℂ_[p] p)) (RingHom.ext fun w => by rw [RingHom.comp_apply, RingHom.comp_apply, galAway_algebraMap, galAway_algebraMap, AInf.gal_smul_def, AInf.gal_smul_def, inv_galMap_congr σ τ h])`.
+A detailed English derivation is pending.
 -/
 theorem inv_galAway_congr (σ : Gal(PadicAlgCl p/K)) (τ : Gal(PadicAlgCl p/L)) (h : ∀ x, σ x = τ x) :
     galAway σ = galAway τ :=
@@ -78,7 +78,7 @@ theorem inv_galAway_congr (σ : Gal(PadicAlgCl p/K)) (τ : Gal(PadicAlgCl p/L)) 
       AInf.gal_smul_def, AInf.gal_smul_def, inv_galMap_congr σ τ h])
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.ringHom_ext (RingHom.ext fun a => by simp only [RingHom.comp_apply, galQuot_mk, inv_galAway_congr σ τ h])`.
+A detailed English derivation is pending.
 -/
 theorem inv_galQuot_congr (σ : Gal(PadicAlgCl p/K)) (τ : Gal(PadicAlgCl p/L)) (h : ∀ x, σ x = τ x)
     (n : ℕ) : galQuot σ n = galQuot τ n :=
@@ -86,7 +86,7 @@ theorem inv_galQuot_congr (σ : Gal(PadicAlgCl p/K)) (τ : Gal(PadicAlgCl p/L)) 
     simp only [RingHom.comp_apply, galQuot_mk, inv_galAway_congr σ τ h])
 
 /- English proof (translation)
-The claim follows from `IsPerfectoidField.evalB_ext fun n => by rw [evalB_galBdRHom, evalB_galBdRHom, inv_galQuot_congr σ τ h]`.
+A detailed English derivation is pending.
 -/
 theorem inv_galBdRHom_congr (σ : Gal(PadicAlgCl p/K)) (τ : Gal(PadicAlgCl p/L))
     (h : ∀ x, σ x = τ x) (x : 𝔹) : galBdRHom σ x = galBdRHom τ x :=
@@ -94,7 +94,7 @@ theorem inv_galBdRHom_congr (σ : Gal(PadicAlgCl p/K)) (τ : Gal(PadicAlgCl p/L)
     rw [evalB_galBdRHom, evalB_galBdRHom, inv_galQuot_congr σ τ h]
 
 /- English proof (translation)
-Establish `e : galBdR σ = galBdR τ` using `RingEquiv.ext fun x => by`. Rewrite using `[galBdR_apply, galBdR_apply, gal_smul_bdR_def, gal_smul_bdR_def, inv_galBdRHom_congr σ τ h]`. Unfold `galBdRField`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_galBdRField_congr (σ : Gal(PadicAlgCl p/K)) (τ : Gal(PadicAlgCl p/L))
     (h : ∀ x, σ x = τ x) : galBdRField σ = galBdRField τ := by
@@ -108,21 +108,21 @@ end Restrict
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `inv_galBdRField_congr σ (Per6.toBot (σ.restrictScalars ℚ_[l])) fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem inv_galBdRField_eq {K : IntermediateField ℚ_[l] (Om l)} (σ : Gal(PadicAlgCl l/K)) :
     galBdRField σ = Per6.σD (σ.restrictScalars ℚ_[l]) :=
   inv_galBdRField_congr σ (Per6.toBot (σ.restrictScalars ℚ_[l])) fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => σ.commutes ⟨x, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem inv_restrictScalars_mem (K : FinExt l) (σ : Gal(PadicAlgCl l/K.1)) :
     σ.restrictScalars ℚ_[l] ∈ GK K :=
   (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => σ.commutes ⟨x, hx⟩
 
 /- English proof (translation)
-Use `K.2` as an intermediate fact. Take `⟨k, hk⟩` from `bDeRham_fixed K.1 b fun σ => by`. Rewrite using `[gal_smul_bDeRham_def, inv_galBdRField_eq]`. Conclude with `hb _ (inv_restrictScalars_mem K σ)`. Conclude with `⟨k.1, k.2, hk⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem invD (K : FinExt l) (b : Per6.BdR l) (hb : ∀ g ∈ GK K, Per6.σD g b = b) :
     ∃ c ∈ K.1, oD l c = b := by
@@ -133,7 +133,7 @@ theorem invD (K : FinExt l) (b : Per6.BdR l) (hb : ∀ g ∈ GK K, Per6.σD g b 
   exact ⟨k.1, k.2, hk⟩
 
 /- English proof (translation)
-Rewrite using `[cD_apply, cD_apply, ← ACris.gal_smul_def, ACris.iota_gal_smul]`. Conclude with `(galBdRField_algebraMap _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_cD_galCris (g : GQ l) (x : ACris.ACris ℂ_[l] l) :
     cD l (ACris.galCris (Per6.toBot g) x) = Per6.σD g (cD l x) := by
@@ -141,7 +141,7 @@ theorem inv_cD_galCris (g : GQ l) (x : ACris.ACris ℂ_[l] l) :
   exact (galBdRField_algebraMap _ _).symm
 
 /- English proof (translation)
-The claim follows from `inv_equivariant (ιCD_fac l) (cB_isFrac l) (σB_comp g) (Per6.σD g) (inv_cD_galCris g) b`.
+A detailed English derivation is pending.
 -/
 theorem inv_ιCD_σB (g : GQ l) (b : Per6.Bcris l) : ιCD l (Per6.σB g b) = Per6.σD g (ιCD l b) :=
   inv_equivariant (ιCD_fac l) (cB_isFrac l) (σB_comp g) (Per6.σD g) (inv_cD_galCris g) b
@@ -152,14 +152,14 @@ def invPlusD : ACris.BCrisPlus ℂ_[l] l →+* Per6.BdR l :=
   (algebraMap (Per6.BdRp l) (Per6.BdR l)).comp (ACris.iotaPlus ℂ_[l] l)
 
 /- English proof (translation)
-The claim follows from `congrArg (algebraMap (Per6.BdRp l) (Per6.BdR l)) (ACris.iotaPlus_algebraMap x)`.
+A detailed English derivation is pending.
 -/
 theorem invPlusD_algebraMap (x : ACris.ACris ℂ_[l] l) :
     invPlusD l (algebraMap (ACris.ACris ℂ_[l] l) (ACris.BCrisPlus ℂ_[l] l) x) = cD l x :=
   congrArg (algebraMap (Per6.BdRp l) (Per6.BdR l)) (ACris.iotaPlus_algebraMap x)
 
 /- English proof (translation)
-Take `⟨m, n, y, h⟩` from `bcris_surj b`. Conclude with `⟨n, inv_away_range (invPlusD l) (cD l) invPlusD_algebraMap (inv_map_frac (ιCD_fac l) h)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inv_exists_plus (b : Per6.Bcris l) : ∃ (n : ℕ) (y : ACris.BCrisPlus ℂ_[l] l),
     invPlusD l y = cD l (Per6.tA l) ^ n * ιCD l b := by
@@ -168,7 +168,7 @@ theorem inv_exists_plus (b : Per6.Bcris l) : ∃ (n : ℕ) (y : ACris.BCrisPlus 
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-The claim follows from `inv_away_range (ACris.iotaB hε hζ) (invPlusD l) (ACris.iotaB_algebraMap hε hζ) (h.trans (congrArg (· ^ n * z) (invPlusD_algebraMap (ACris.periodT hε)).symm))`.
+A detailed English derivation is pending.
 -/
 theorem inv_exists_iotaB {ε : PreTilt (normInteger ℂ_[l]) l} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv (PreTilt (normInteger ℂ_[l]) l) l).symm ε) ≠ 1)
@@ -180,7 +180,7 @@ theorem inv_exists_iotaB {ε : PreTilt (normInteger ℂ_[l]) l} (hε : PreTilt.u
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Take `⟨n, y, hy⟩` from `inv_exists_plus b`. Rewrite `hy` using `[← h]`. Rewrite using `[kur_eq]`. Conclude with `(ACris.exists_iotaB_eq_iff untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one).1 (inv_exists_iotaB untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one hy)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_Kur {b : Per6.Bcris l} {c : Om l} (h : oD l c = ιCD l b) : c ∈ MaximalUnramifiedExtension l := by
   obtain ⟨n, y, hy⟩ := inv_exists_plus b
@@ -190,7 +190,7 @@ theorem inv_mem_Kur {b : Per6.Bcris l} {c : Om l} (h : oD l c = ιCD l b) : c �
     (inv_exists_iotaB untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one hy)
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `invD K (ιCD l b) fun g hg => (inv_ιCD_σB g b).symm.trans (congrArg (ιCD l) (hb g hg))`. Conclude with `⟨⟨c, inv_mem_Kur h⟩, hc, ιCD_injective ((ιCD_uB _).trans h)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem invB (K : FinExt l) (b : Per6.Bcris l) (hb : ∀ g ∈ GK K, Per6.σB g b = b) :
     ∃ c : ↥(MaximalUnramifiedExtension l), (c : Om l) ∈ K.1 ∧ uB l c = b := by

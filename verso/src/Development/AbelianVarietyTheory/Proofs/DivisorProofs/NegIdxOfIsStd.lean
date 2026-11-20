@@ -28,7 +28,7 @@ def IsStageC (W : G.Weil) (i j : Fin D.R.m) (p q : ℕ) {A A' WW : HSp D} (X : T
       (fun _ => G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2)) (fun t => nuH G t i j) (locPl G)
 
 /- English proof (translation)
-Introduce `τ` and use `by have : gramAt D V τ = 1 := by rw [gramAt, h.1]; simp rw [this] refine ⟨(Equiv.sumEmpty _ _).symm, 1, ?_⟩ ext (a | a) (b | b) · simp [Formalism.UG.Jpq, Formalism.UG.cT, Matrix.one_apply] all_goals first | exact a.elim0 | exact b.elim0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem negIdx_of_isStd {V : HSp D} {r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V} (h : r.IsStd) : NegIdx V 0 := fun τ => by
   have : gramAt D V τ = 1 := by rw [gramAt, h.1]; simp
@@ -39,9 +39,9 @@ theorem negIdx_of_isStd {V : HSp D} {r : GlobalTheory.IndefiniteRowSideFullHecke
   all_goals first | exact a.elim0 | exact b.elim0
 
 /- English proof (translation)
-Establish `r` using `ranks_exact D i j`. Use `⟨Nat.zero_le _, Nat.zero_le _, ?_, ?_, negIdx_of_isStd h.std, negIdx_of_isStd h.std', negIdx_of_isStd h.stdW, h.is⟩` and prove the remaining obligations. Rewrite using `[h.rank]`. Simplify `r.1` using `[pp]`. Rewrite using `[h.rank']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `r.2.1` using `[qq]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsBottomTri.isStageC {W : G.Weil} {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}
     (h : IsBottomTri W i j X) : IsStageC W i j 0 0 X := by

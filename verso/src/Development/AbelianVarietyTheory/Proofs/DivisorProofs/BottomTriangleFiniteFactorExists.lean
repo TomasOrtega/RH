@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BotFinRef
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ M, φ a ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `ha ((Module.forall_dual_apply_eq_zero_iff ℂ a).1 h)`. Conclude with `⟨(φ a)⁻¹ • φ, by rw [LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hφ]⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dual_eq_one {M : Type} [AddCommGroup M] [Module ℂ M] {a : M} (ha : a ≠ 0) :
     ∃ φ : M →ₗ[ℂ] ℂ, φ a = 1 := by
@@ -34,7 +34,7 @@ theorem contract_tmul {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup
   simp
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `exists_dual_eq_one ha`. Use `⟨φ c, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z => (TensorProduct.lid ℂ N) (φ.rTensor N z)) h` as an intermediate fact. Simplify using `only [contract_tmul, hφ, one_smul] at this`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_smul_of_tmul_eq {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N] {a c : M}
     {b d : N} (ha : a ≠ 0) (h : a ⊗ₜ[ℂ] b = c ⊗ₜ[ℂ] d) : ∃ l : ℂ, b = l • d := by
@@ -45,7 +45,7 @@ theorem exists_smul_of_tmul_eq {M N : Type} [AddCommGroup M] [Module ℂ M] [Add
   exact this
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul a b => rw [Subsingleton.elim a 0, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensor_eq_zero_of_subsingleton {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
     [Subsingleton M] (z : M ⊗[ℂ] N) : z = 0 := by
@@ -55,15 +55,15 @@ theorem tensor_eq_zero_of_subsingleton {M N : Type} [AddCommGroup M] [Module ℂ
   | add x y hx hy => rw [hx, hy, add_zero]
 
 /- English proof (translation)
-Break down `H with H | ⟨P, P', κ, h0, h1⟩` into its components or cases. Establish `hPr : Nontrivial Pr`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Take `⟨z, hz⟩` from `exists_ne (0 : Pi)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hz ?_` and prove the remaining obligations. Rewrite using `[← e.apply_symm_apply z, tensor_eq_zero_of_subsingleton (e.symm z), map_zero]`. Take `⟨y, hy⟩` from `exists_ne (0 : Pr)`. Take `⟨P, rfl⟩` from `hq y`. Establish `h2 : q P ⊗ₜ[ℂ] x = q P ⊗ₜ[ℂ] (0 : Pf)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[TensorProduct.tmul_zero]`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← ha, H, map_zero]`. Take `⟨l, hl⟩` from `exists_smul_of_tmul_eq hy h2`. Conclude with `⟨0, by rw [hl, smul_zero, zero_smul]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h2 : q P ⊗ₜ[ℂ] x = q' P' ⊗ₜ[ℂ] (κ • x')`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← ha, h1, ha', ← LinearEquiv.map_smul, TensorProduct.tmul_smul]`. Establish `hy : q P ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h0 (by rw [ha, h, TensorProduct.zero_tmul, map_zero])`. Take `⟨l, hl⟩` from `exists_smul_of_tmul_eq hy h2`. Conclude with `⟨l * κ, by rw [hl, smul_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_of_factor {Q Q' Pr Pf Pi : Type} [AddCommGroup Q] [Module ℂ Q] [AddCommGroup Q'] [Module ℂ Q']
     [AddCommGroup Pr] [Module ℂ Pr] [AddCommGroup Pf] [Module ℂ Pf] [AddCommGroup Pi] [Module ℂ Pi] [Nontrivial Pi]
@@ -96,7 +96,7 @@ theorem exists_smul_of_factor {Q Q' Pr Pf Pi : Type} [AddCommGroup Q] [Module �
     exact ⟨l * κ, by rw [hl, smul_smul]⟩
 
 /- English proof (translation)
-Take `⟨a₁, h₁⟩` from `h₁`. Use `⟨a₁, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C₁, x₁, h₁⟩` from `h₁ ε CF hCF`. Conclude with `⟨C₁, x₁, fun C hC D large₂ he hx r T Lc μ hLc G => H G μ C _ _ (h₁ C hC D large₂ he hx r T Lc μ hLc G)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gBig_mono {Q₁ Q₂ : GlobalTheory.SqTop.GP} (h₁ : GlobalTheory.SqTop.GBig Q₁)
     (H : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
@@ -111,9 +111,9 @@ end GlobalTheory.BotFinRef
 namespace GlobalTheory.BotFinRef
 
 /- English proof (translation)
-Introduce `hH hP hK hL`. Use `gBig_mono (GlobalTheory.T.bottom_triangle_finite_factor hH hP hK hL) fun {D T Lc sc} G μ₀ C x b hA => ?_` and prove the remaining obligations. Introduce `W i j A A' WW X hX FA FA' FW t hf hf'`. Take `⟨Pi, rf, rl, p, p', hm, hc⟩` from `hA W i j A A' WW X hX FA FA' FW t hf hf'`. Use `⟨Pi, rf, rl, p, p', hm, fun Pr Pf q q' r r' e hq hq' hp hp' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Nontrivial Pi := hm.irred.1`. Conclude with `exists_smul_of_factor q q' e hq (r (X.f t)) (r' (X.f' t)) (fun P => p (fockF W.ψ W.θ true FA FW (X.f t) P)) (fun P' => p' (fockF W.ψ W.θ false FA' FW (X.f' t) P')) (hp _ hf) (hp' _ hf') hc`.
+A detailed English derivation is pending.
 -/
 theorem exists_match_finData : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW), IsBottomTri W i j X → ∀ (FA : GlobalTheory.ChainFr.Fr A) (FA' : GlobalTheory.ChainFr.Fr A') (FW : GlobalTheory.ChainFr.Fr WW) (t : T), IsFinF W.ψ W.θ true FA FW (X.f t) → IsFinF W.ψ W.θ false FA' FW (X.f' t) → ∃ (Pi : ModuleCat.{0} ℂ) (rf : GA D WW → Module.End ℂ Pi) (rl : D.what₂.Tau → Matrix (Fin WW.rank) (Fin WW.rank) ℂ → Module.End ℂ Pi) (p : (WO A WW → ℂ) →ₗ[ℂ] Pi) (p' : (WO A' WW → ℂ) →ₗ[ℂ] Pi), IsMatch W.ψ W.θ FA FA' FW (Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2)) (G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2)) (X.ω t) (X.ω' t) Pi rf rl p p' ∧ ∀ (Pr Pf : ModuleCat.{0} ℂ) (q : PolF D WW.rank A.rank →ₗ[ℂ] Pr) (q' : PolF D WW.rank A'.rank →ₗ[ℂ] Pr) (r : (WO A WW → ℂ) →ₗ[ℂ] Pf) (r' : (WO A' WW → ℂ) →ₗ[ℂ] Pf) (e : Pr ⊗[ℂ] Pf ≃ₗ[ℂ] Pi), Function.Surjective q → Function.Surjective q' → (∀ f, IsFinF W.ψ W.θ true FA FW f → ∀ P, p (fockF W.ψ W.θ true FA FW f P) = e (q P ⊗ₜ r f)) → (∀ f, IsFinF W.ψ W.θ false FA' FW f → ∀ P, p' (fockF W.ψ W.θ false FA' FW f P) = e (q' P ⊗ₜ r' f)) → ∃ κ : ℂ, r (X.f t) = κ • r' (X.f' t) := by
   intro hH hP hK hL

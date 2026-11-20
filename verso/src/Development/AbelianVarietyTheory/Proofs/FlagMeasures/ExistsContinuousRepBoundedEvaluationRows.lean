@@ -12,7 +12,7 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.EvalBound
 
 /- English proof (translation)
-The claim follows from `(tens_w_mem B hB 0).1`.
+A detailed English derivation is pending.
 -/
 theorem tens_mem_VP (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (hB : IsDSData B d) :
     B.tens B.w ∈ VP B 0 :=
@@ -25,21 +25,19 @@ noncomputable def realRep (B : RowsAut) : B.I.Ginf →* (B.I.L2 B.μf B.fund →
     rw [← (GlobalTheory.RightRegFund.rightReg_unitary_continuous B).2.1, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Introduce `hSL B d hB hn hg`. Take `⟨hU, -, -, hw1, -⟩` from `GlobalTheory.Dec.tensorRep B d hB`. Take `⟨F, hF, hFc, hFeq⟩` from `GlobalTheory.StepAverage.exists_smooth_average hSL B d hB 0 _ (tens_mem_VP B d hB)`. Use `set a : B.I.Ginf → ℂ := fun g => F (fun v i j => uMat (g v) i j) with ha`. Establish `hemb` using `GlobalTheory.StepAverage.isClosedEmbedding_entries_inf B.I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hac : Continuous a` using `hF.continuous.comp hemb.continuous`. Establish `haS : HasCompactSupport a` using `hFc.comp_isClosedEmbedding hemb`. Establish `hsm : SmoothInf B.I a` using `fun x => ⟨F, hF.contDiffAt, Filter.Eventually.of_forall fun _ => rfl⟩`. Establish `hvi : Integrable (fun g => a g • B.σs g (B.tens B.w)) (muInf B.I)`. Assume the negation of the conclusion as `hni`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : B.tens B.w = 0` using `by rw [hFeq]; exact integral_undef hni`. Rewrite `hw1` using `[h0, norm_zero]`. Conclude with `zero_ne_one hw1`. Establish `hai : Integrable a (muInf B.I)`. Use `hvi.norm.mono' hac.aestronglyMeasurable (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[norm_smul, hU.2.2.1, hw1, mul_one]`. Take `⟨C, hC⟩` from `GlobalTheory.T.convolutionSmoothL2_of_def B B.g hn hg a hsm haS`. Use `⟨C, fun A hA hK => ?_⟩` and prove the remaining obligations. Establish `hRU` using `GlobalTheory.RightRegFund.rightReg_unitary_continuous B`. Take `⟨P, hP1, hP2⟩` from `GlobalTheory.absOpInt B.I.Ginf (muInf B.I) (B.I.L2 B.μf B.fund) (realRep B) (fun g x => hRU.2.2.1 (g, 1) x) (fun x => (hRU.2.2.2.1 x).comp (continuous_id.prodMk continuous_const)) a hai`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA' : ∀ g, A.comp (B.σs g) = (B.R (g, 1)).comp A` using `hA`. Establish `hPy : P (A (B.tens B.w)) = A (B.tens B.w)`. Rewrite using `[hP1]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[map_smul]`. Use `congr 1`. Conclude with `congrArg (fun T => T (B.tens B.w)) (hA' g)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨f, hsmg, hfc, hfb, hfae⟩` from `hC (A (B.tens B.w)) hK P ⟨hai, fun x y => hP2 x y⟩`. Use `⟨f, ?_, hfb⟩` and prove the remaining obligations. Rewrite `hfae` using `[hPy]`. Unfold `IsSmoothMG at hsmg`. Unfold `IsContRep`.
-
-Conclude with `⟨hfc, hsmg.1, hfae⟩`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_contRep_bound : GlobalTheory.DSId.StrictLow → ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ), IsDSData B d → 1 ≤ B.I.n → 1 ≤ B.g → ∃ C : ℝ, ∀ A ∈ B.I.HomS B.σs B.μf B.fund B.R, (∀ k ∈ B.I.Kg B.g, B.R (1, k) (A (B.tens B.w)) = A (B.tens B.w)) → ∃ f : B.I.GA → ℂ, IsContRep B (A (B.tens B.w)) f ∧ ∀ x, ‖f x‖ ≤ C * (tau1 B.I x)⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f) * ‖A (B.tens B.w)‖ := by
   intro hSL B d hB hn hg

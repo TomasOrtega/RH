@@ -6,13 +6,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity
 
 /- English proof (translation)
-Take `⟨δ, hex, hnat, -⟩` from `bd`. Take `⟨j, y, hy⟩` from `(hR (m + 1)).1 (Hs.fgt q P (m + 1) i x)`. Establish `h0 : pull _ (c j).left (tw q i) (m + 1) (pull _ (F.obj (op j)).hom (tw q i) (m + 1) y) = 0`. Rewrite using `[← GlobalTheory.EtC.pull_comp, Arrow.w (c j), GlobalTheory.EtC.pull_comp, hy]`. Conclude with `((hex q P hP (m + 1) i).1 _).mpr ⟨x, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, f, hk⟩` from `(hL (m + 1)).2 j _ h0`. Establish `hk' : pull _ (F.obj (op k)).hom (tw q i) (m + 1) (pull _ (F.map f.op).right (tw q i) (m + 1) y) = 0`. Rewrite using `[← GlobalTheory.EtC.pull_comp, ← Arrow.w (F.map f.op), GlobalTheory.EtC.pull_comp, hk]`. Take `⟨s, hs⟩` from `((hex q _ (hm k) (m + 1) i).1 _).mp hk'`. Establish `hv : Hs.fgt q P (m + 1) i (x - Hs.pull q (c k) _ _ s) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, Hs.fgt_pull, hs, ← GlobalTheory.EtC.pull_comp, ← Arrow.comp_right, hc, hy, sub_self]`. Take `⟨u, hu⟩` from `((hex q P hP m i).2.2 _).mp hv`. Take `⟨l, a, ha⟩` from `(hL m).1 u`. Rewrite `hu` using `[← ha, ← hnat q _ _ (c l) hP (hm l)]`. Take `⟨M, g1, g2, -⟩` from `IsFilteredOrEmpty.cocone_objs k l`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M, Hs.pull q (F.map g1.op) _ _ s + Hs.pull q (F.map g2.op) _ _ (δ q _ m i a), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← Hs.pullComp, ← Hs.pullComp, hc, hc, hu, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairFiveS_surj (bd : LeafBd) (q : ℕ) {J : Type} [SmallCategory J] [IsFiltered J] (F : Jᵒᵖ ⥤ Arrow Spc)
     (P : Arrow Spc) (c : ∀ j, P ⟶ F.obj (op j)) (hc : ∀ j k (f : j ⟶ k), c k ≫ F.map f.op = c j)
@@ -38,13 +38,13 @@ theorem pairFiveS_surj (bd : LeafBd) (q : ℕ) {J : Type} [SmallCategory J] [IsF
   rw [map_add, ← Hs.pullComp, ← Hs.pullComp, hc, hc, hu, add_sub_cancel]
 
 /- English proof (translation)
-Take `⟨δ, hex, hnat, -⟩` from `bd`. Establish `h0 : pull _ (c j).right (tw q i) (m + 1) (Hs.fgt q _ (m + 1) i y) = 0`. Rewrite using `[← Hs.fgt_pull, hy, map_zero]`. Take `⟨k, f, hk⟩` from `(hR (m + 1)).2 j _ h0`. Rewrite `hk` using `[← Hs.fgt_pull]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha⟩` from `((hex q _ (hm k) m i).2.2 _).mp hk`. Establish `hz : δ q P m i (pull _ (c k).left (tw q i) m a) = 0`. Rewrite using `[← hnat q _ _ (c k) hP (hm k), ha, ← Hs.pullComp, hc, hy]`. Take `⟨b, hb⟩` from `((hex q P hP m i).2.1 _).mp hz`. Take `⟨l, e, he⟩` from `(hR m).1 b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M, g1, g2, -⟩` from `IsFilteredOrEmpty.cocone_objs k l`. Establish `hd : pull _ (c M).left (tw q i) m (pull _ (F.map g1.op).left (tw q i) m a - pull _ (F.obj (op M)).hom (tw q i) m (pull _ (F.map g2.op).right (tw q i) m e)) = 0`. Rewrite using `[map_sub, ← GlobalTheory.EtC.pull_comp, ← Arrow.comp_left, hc, ← hb, ← he, ← GlobalTheory.EtC.pull_comp, ← GlobalTheory.EtC.pull_comp, ← GlobalTheory.EtC.pull_comp, Category.assoc, ← Arrow.w (F.map g2.op), ← Category.assoc, ← Arrow.comp_left, hc, Arrow.w (c l), sub_self]`. Take `⟨p, h, hp⟩` from `(hL m).2 M _ hd`. Rewrite `hp` using `[map_sub, sub_eq_zero, ← GlobalTheory.EtC.pull_comp, ← Arrow.comp_left, ← F.map_comp, ← op_comp, ← GlobalTheory.EtC.pull_comp, Arrow.w (F.map h.op), GlobalTheory.EtC.pull_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨p, f ≫ g1 ≫ h, ?_⟩` and prove the remaining obligations. Establish `e1 : F.map (f ≫ g1 ≫ h).op = F.map (g1 ≫ h).op ≫ F.map f.op` using `by rw [op_comp, F.map_comp]`. Rewrite using `[e1, Hs.pullComp, ← ha, hnat q _ _ _ (hm p) (hm k), hp]`. Conclude with `((hex q _ (hm p) m i).2.1 _).mpr ⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairFiveS_inj (bd : LeafBd) (q : ℕ) {J : Type} [SmallCategory J] [IsFiltered J] (F : Jᵒᵖ ⥤ Arrow Spc)
     (P : Arrow Spc) (c : ∀ j, P ⟶ F.obj (op j)) (hc : ∀ j k (f : j ⟶ k), c k ≫ F.map f.op = c j)
@@ -77,7 +77,7 @@ theorem pairFiveS_inj (bd : LeafBd) (q : ℕ) {J : Type} [SmallCategory J] [IsFi
   exact ((hex q _ (hm p) m i).2.1 _).mpr ⟨_, rfl⟩
 
 /- English proof (translation)
-Introduce `bd q J _ _ F P c hc hm hP i hL hR n`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Conclude with `⟨pairFiveS_surj bd q F P c hc hm hP i hL hR m, fun j y hy => pairFiveS_inj bd q F P c hc hm hP i hL hR m j y hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pairFiveS : PairFiveS := by
   intro bd q J _ _ F P c hc hm hP i hL hR n
@@ -86,7 +86,7 @@ theorem pairFiveS : PairFiveS := by
     fun j y hy => pairFiveS_inj bd q F P c hc hm hP i hL hR m j y hy⟩
 
 /- English proof (translation)
-The claim follows from `etale_complement_continuity_induction_of_localization_and_pair_lemmas hL pairFiveS hG`.
+A detailed English derivation is pending.
 -/
 theorem etale_purity_continuity_off_closed_of_local_and_chase (hL : OffContLoc) (hG : OffChaseGeo) : OffContStep :=
   etale_complement_continuity_induction_of_localization_and_pair_lemmas hL pairFiveS hG

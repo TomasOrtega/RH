@@ -37,13 +37,13 @@ def IndSt : Prop :=
     ∀ a : ZMod d, (fun (s : ℕ) (n : N) => if ty n = a + (s : ZMod d) then (1 : C) else 0) ∈ M
 
 /- English proof (translation)
-Introduce `K s n`. Distinguish the cases in `hy : y s n = 0`. Conclude with `⟨0, fun k _ => by simp [hy, VF.Ge.zero]⟩`. Establish `hne : V.v (y s n) ≠ ⊤`. Rewrite using `[Ne, AddValuation.top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.mp hne`. Take `⟨k0, hk0⟩` from `h (K - r) s n`. Use `⟨k0, fun k hk => ?_⟩` and prove the remaining obligations. Establish `e : (m' * y) s n - (m k * y) s n = (m' s n - m k s n) * y s n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hyr : V.Ge r (y s n)` using `by unfold VF.Ge; rw [← hr]`. Use `(hk0 k hk).mul hyr` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem VLim.mul_right {V : VF C} {N : Type} {m : ℕ → ℕ → N → C} {m' : ℕ → N → C} (h : VLim V m m')
     (y : ℕ → N → C) : VLim V (fun k => m k * y) (m' * y) := by
@@ -63,17 +63,15 @@ theorem VLim.mul_right {V : VF C} {N : Type} {m : ℕ → ℕ → N → C} {m' :
     simpa using this
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I _ p g a x hx hx0`. Use `set X := Y.raw p with hX`. Set `M : Set (ℕ → I g ⊕ JJ I g → C)` to `{m | ∀ y ∈ X.TySet V g, m * y ∈ X.TySet V g}`. Establish `hAdd` using `addCvFB_of germIAll_holds C V O dd Y d I p`. Establish `h1 : (1 : ℕ → I g ⊕ JJ I g → C) ∈ M` using `fun y hy => by rwa [one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd : ∀ m m', m ∈ M → m' ∈ M → m + m' ∈ M` using `fun m m' hm hm' y hy => by`. Rewrite using `[add_mul]`. Conclude with `X.add_mem V g hAdd p.u_int _ _ (hm y hy) (hm' y hy)`. Establish `hneg : ∀ m, m ∈ M → -m ∈ M` using `fun m hm y hy => by`. Rewrite using `[neg_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X.neg_mem V g Y.l_odd _ (hm y hy)`. Establish `hmul : ∀ m m', m ∈ M → m' ∈ M → m * m' ∈ M` using `fun m m' hm hm' y hy => by`. Rewrite using `[mul_assoc]`. Conclude with `hm _ (hm' y hy)`. Establish `hteich : ∀ c : C, V.Ge 0 c → (fun s (_ : I g ⊕ JJ I g) => c ^ (V.l ^ s)) ∈ M` using `fun c hc y hy => X.teich_mem V g c hc y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hact : ∀ α : O, (fun (_ : ℕ) n => p.em g (X.tyC g n) α) ∈ M` using `fun α y hy => hAct C V O dd Y d I p g α y hy`. Establish `hlim : ∀ (m : ℕ → ℕ → I g ⊕ JJ I g → C) (m' : ℕ → I g ⊕ JJ I g → C), (∀ k, m k ∈ M) → VLim V m m' → m' ∈ M` using `fun m m' hm hmm' y hy => hLim C V O dd Y d I p g (fun k => m k * y) (m' * y) (fun k => hm k y hy) (hmm'.mul_right y)`. Establish `hI` using `hInd C V O dd Y d I p g (I g ⊕ JJ I g) (X.tyC g) M h1 hadd hneg hmul hteich hact hlim a`. Use `⟨_, hI x hx, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `n`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.mul_apply, Nat.cast_zero, add_zero]`. Distinguish the cases in `hn : X.tyC g n = a`. Rewrite using `[if_pos hn, one_mul]`. Rewrite using `[if_neg hn, zero_mul, hx0 n hn]`. Introduce `i n hn`.
-
-Simplify using `only [Pi.mul_apply]`. Rewrite using `[if_neg hn, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptAvg_of (hAct : OActTySt) (hLim : LimTySt) (hInd : IndSt) : PTAvgFBSt := by
   intro C _ _ V O _ _ dd Y d _ I _ p g a x hx hx0
@@ -105,7 +103,7 @@ theorem ptAvg_of (hAct : OActTySt) (hLim : LimTySt) (hInd : IndSt) : PTAvgFBSt :
     rw [if_neg hn, zero_mul]
 
 /- English proof (translation)
-The claim follows from `ptFB_of hEx (ptAvg_of hAct hLim hInd) germIAll_holds hStab`.
+A detailed English derivation is pending.
 -/
 theorem ptFB_of_act (hEx : PTExFBSt) (hAct : OActTySt) (hLim : LimTySt) (hInd : IndSt) (hStab : HStabFBSt) : PTFBSt :=
   ptFB_of hEx (ptAvg_of hAct hLim hInd) germIAll_holds hStab

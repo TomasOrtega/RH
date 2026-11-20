@@ -7,7 +7,7 @@ namespace UpperTheory.Gal.ClosedPhiFromClosedTrace
 open GlobalTheory.CrisSec Matrix
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem matrix_map_smul' {R : Type} [CommRing R] {d : ℕ} (φ : R →+* R) (c : R)
     (X : Matrix (Fin d) (Fin d) R) : (c • X).map φ = φ c • X.map φ := by
@@ -15,9 +15,9 @@ private theorem matrix_map_smul' {R : Type} [CommRing R] {d : ℕ} (φ : R →+*
   simp [Matrix.map_apply]
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro x hx`. Simplify using `using hx`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `x hx`. Apply `ih` to reduce the goal to its premises. Apply `hL` to reduce the goal to its premises. Rewrite `hx` using `[pow_succ]`. Take the linear combination `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem eq_zero_of_pow_mul_eq_zero_of_nonzerodivisor {R : Type} [CommRing R] (L : R) (hL : ∀ x : R, L * x = 0 → x = 0) :
     ∀ (m : ℕ) (x : R), L ^ m * x = 0 → x = 0 := by
@@ -32,7 +32,7 @@ private theorem eq_zero_of_pow_mul_eq_zero_of_nonzerodivisor {R : Type} [CommRin
     linear_combination hx
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1 : s * X i j = s * Y i j`. Use `congrArg (fun M : Matrix (Fin d) (Fin d) R => M i j) h` as an intermediate fact. Simplify `this` using `[Matrix.smul_apply]`. Conclude with `sub_eq_zero.mp (hs _ (by rw [mul_sub, h1, sub_self]))`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem matrix_eq_of_smul_eq_nonzerodivisor {R : Type} [CommRing R] {d : ℕ} (s : R) (hs : ∀ x : R, s * x = 0 → x = 0)
     (X Y : Matrix (Fin d) (Fin d) R) (h : s • X = s • Y) : X = Y := by
@@ -43,16 +43,16 @@ private theorem matrix_eq_of_smul_eq_nonzerodivisor {R : Type} [CommRing R] {d :
   exact sub_eq_zero.mp (hs _ (by rw [mul_sub, h1, sub_self]))
 
 /- English proof (translation)
-Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem lau_mem_iff_vecL_mem {R : Type} [CommRing R] (L x : R) (m : ℕ) :
     x ∈ (Ideal.span {L}) ^ m • (⊤ : Submodule R R) ↔ L ^ m ∣ x := by
   rw [Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show X i j = 0`. Apply `hc.toIsHausdorff.haus` to reduce the goal to its premises. Introduce `m`. Rewrite using `[SModEq.sub_mem, sub_zero, lau_mem_iff_vecL_mem]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, hZ⟩` from `h m`. Conclude with `⟨Z i j, by rw [hZ]; simp [Matrix.smul_apply]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem matrix_eq_zero_of_adic_divisible {R : Type} [CommRing R] {d : ℕ} (L : R) (hc : IsAdicComplete (Ideal.span {L}) R)
     (X : Matrix (Fin d) (Fin d) R) (h : ∀ m : ℕ, ∃ Z : Matrix (Fin d) (Fin d) R, X = L ^ m • Z) : X = 0 := by
@@ -65,13 +65,13 @@ private theorem matrix_eq_zero_of_adic_divisible {R : Type} [CommRing R] {d : �
   exact ⟨Z i j, by rw [hZ]; simp [Matrix.smul_apply]⟩
 
 /- English proof (translation)
-Establish `key : ∀ i j, ∃ t : R, ∀ m : ℕ, L ^ m ∣ t - ∑ k ∈ Finset.range m, L ^ k * y k i j`. Introduce `i j`. Take `⟨t, ht⟩` from `hc.toIsPrecomplete.prec (f := fun m => ∑ k ∈ Finset.range m, L ^ k * y k i j) (by`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, lau_mem_iff_vecL_mem, ← Finset.sum_range_add_sum_Ico _ hmn, sub_add_cancel_left, dvd_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.dvd_sum` to reduce the goal to its premises. Introduce `k hk`. Conclude with `(pow_dvd_pow L (Finset.mem_Ico.mp hk).1).mul_right _)`. Use `⟨t, fun m => ?_⟩` and prove the remaining obligations. Use `ht m` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[SModEq.sub_mem, lau_mem_iff_vecL_mem]`. Conclude with `dvd_sub_comm.mp this`. Use `choose t ht using key`. Use `⟨Matrix.of t, fun m => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ i j, ∃ z : R, t i j - ∑ k ∈ Finset.range m, L ^ k * y k i j = L ^ m * z` using `fun i j => ht i j m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `choose z hz using hz`. Use `⟨Matrix.of z, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, Matrix.sum_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Conclude with `hz i j`.
+A detailed English derivation is pending.
 -/
 private theorem exists_matrix_limit_adic_series {R : Type} [CommRing R] {d : ℕ} (L : R) (hc : IsAdicComplete (Ideal.span {L}) R)
     (y : ℕ → Matrix (Fin d) (Fin d) R) :
@@ -102,11 +102,11 @@ private theorem exists_matrix_limit_adic_series {R : Type} [CommRing R] {d : ℕ
   exact hz i j
 
 /- English proof (translation)
-Establish `hdet : X.det * Y.det = c ^ d`. Rewrite using `[← Matrix.det_mul, h, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Establish `hX : ∀ x : R, X.det * x = 0 → x = 0`. Introduce `x hx`. Apply `eq_zero_of_pow_mul_eq_zero_of_nonzerodivisor c hc d` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hdet, mul_comm X.det, mul_assoc, hx, mul_zero]`. Apply `matrix_eq_of_smul_eq_nonzerodivisor X.det hX` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.adjugate_mul, Matrix.smul_mul, Matrix.smul_mul, one_mul]`. Use `_ = X.adjugate * (X * Y) * X := by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = X.det • (c • (1 : Matrix (Fin d) (Fin d) R)) := by`. Rewrite using `[h, Matrix.mul_smul, mul_one, Matrix.smul_mul, Matrix.adjugate_mul, smul_comm]`.
+A detailed English derivation is pending.
 -/
 private theorem matrix_mul_comm_of_mul_eq_smul_one {R : Type} [CommRing R] {d : ℕ} (c : R) (hc : ∀ x : R, c * x = 0 → x = 0)
     (X Y : Matrix (Fin d) (Fin d) R) (h : X * Y = c • 1) : Y * X = c • 1 := by
@@ -124,13 +124,13 @@ private theorem matrix_mul_comm_of_mul_eq_smul_one {R : Type} [CommRing R] {d : 
         rw [h, Matrix.mul_smul, mul_one, Matrix.smul_mul, Matrix.adjugate_mul, smul_comm]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Use `⟨Γ * b', ?_⟩` and prove the remaining obligations. Rewrite using `[hPs, hP0, Matrix.map_one _ (map_zero φ) (map_one φ), mul_one, ← hbb, ← Matrix.sub_mul, ← Matrix.smul_mul, hab, Matrix.smul_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Take `⟨M, hM⟩` from `ih`. Use `⟨a * M.map φ * b', ?_⟩` and prove the remaining obligations. Rewrite using `[show P (k + 1 + 1) - L ^ (2 * N) • P (k + 1) = a * (P (k + 1)).map φ * b' - L ^ (2 * N) • (a * (P k).map φ * b') by`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← hPs k, ← hPs (k + 1)]]`. Establish `e : L • (a * (P (k + 1)).map φ * b' - L ^ (2 * N) • (a * (P k).map φ * b')) = a * (L • (P (k + 1) - L ^ (2 * N) • P k)).map φ * b'`. Rewrite using `[matrix_map_smul', Matrix.map_sub _ (fun x y => map_sub φ x y), matrix_map_smul', map_pow, hφL]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, smul_sub]`. Rewrite using `[e, hM, matrix_map_smul', map_pow, hu, ← pow_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem exists_matrix_seq_diff_congruence {R : Type} [CommRing R] {d N q : ℕ} (L u : R) (φ : R →+* R)
     (hφL : φ L = L) (hu : φ u = u ^ q) (a b b' Γ : Matrix (Fin d) (Fin d) R)
@@ -161,15 +161,15 @@ private theorem exists_matrix_seq_diff_congruence {R : Type} [CommRing R] {d N q
     ring
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by simp [hP0]⟩`. Consider the case `succ k ih`. Take `⟨Y, hY⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `hD k`. Establish `he : 1 ≤ q ^ (k + 1)` using `Nat.one_le_pow _ _ hq`. Establish `hu' : u ^ (q ^ (k + 1)) = u * u ^ (q ^ (k + 1) - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨L ^ k • u ^ (q ^ (k + 1) - 1) • M + L ^ (2 * N + 1) • Y, ?_⟩` and prove the remaining obligations. Establish `hsplit : P (k + 1) - L ^ (2 * N * (k + 1)) • 1 = (P (k + 1) - L ^ (2 * N) • P k) + L ^ (2 * N) • (P k - L ^ (2 * N * k) • 1)`. Rewrite using `[smul_sub, smul_smul, ← pow_add, show 2 * N + 2 * N * k = 2 * N * (k + 1) by ring]`. Normalize the expressions using the abelian group laws.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `h2 : L ^ (k + 1) • L ^ (2 * N) • (P k - L ^ (2 * N * k) • 1) = L ^ (2 * N + 1) • (L ^ k • (P k - L ^ (2 * N * k) • 1))`. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, smul_add, h2, hY, pow_succ, mul_smul, hM, hu']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_add, smul_smul]`. Apply the tactic sequence `congr 1 <;> congr 1 <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem exists_matrix_pow_sub_mod_u {R : Type} [CommRing R] {d N q : ℕ} (L u : R) (hq : 0 < q)
     (P : ℕ → Matrix (Fin d) (Fin d) R) (hP0 : P 0 = 1)
@@ -202,11 +202,11 @@ private theorem exists_matrix_pow_sub_mod_u {R : Type} [CommRing R] {d N q : ℕ
     congr 1 <;> congr 1 <;> ring
 
 /- English proof (translation)
-Introduce `n hn`. Take `⟨M, hM⟩` from `hD n`. Take `⟨w, hw⟩` from `hdiv n hn`. Establish `he : 1 ≤ q ^ (n + 1)` using `Nat.one_le_pow _ _ hq`. Establish `hu' : u ^ (q ^ (n + 1)) = u * u ^ (q ^ (n + 1) - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Use `⟨w • M, ?_⟩` and prove the remaining obligations. Apply `matrix_eq_of_smul_eq_nonzerodivisor L hL` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hM, hu', hw]`. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem matrix_seq_diff_divisible_of_le {R : Type} [CommRing R] {d N q n₀ : ℕ} (L u : R) (hq : 0 < q)
     (hL : ∀ x : R, L * x = 0 → x = 0)
@@ -232,17 +232,17 @@ private theorem matrix_seq_diff_divisible_of_le {R : Type} [CommRing R] {d N q n
   ring
 
 /- English proof (translation)
-Establish `hC : ∀ m, ∃ C : Matrix (Fin d) (Fin d) R, P (n₀ + m + 1) - L ^ (2 * N) • P (n₀ + m) = L ^ ((2 * N + 1) * (n₀ + m + 1)) • u • C` using `fun m => hBig (n₀ + m) (by omega)`. Use `choose C hC using hC`. Take `⟨T, hT⟩` from `exists_matrix_limit_adic_series L hc (fun j => L ^ (n₀ + 2 * N * n₀ + 1) • C j)`. Use `⟨P n₀ + u • T, fun m => P n₀ + u • ∑ j ∈ Finset.range m, L ^ j • L ^ (n₀ + 2 * N * n₀ + 1) • C j, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `hsplit : P (n₀ + (m + 1)) = (P (n₀ + m + 1) - L ^ (2 * N) • P (n₀ + m)) + L ^ (2 * N) • P (n₀ + m)`. Rewrite using `[sub_add_cancel]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `beta_reduce at ih ⊢`. Rewrite using `[hsplit, hC m, ih, Finset.sum_range_succ, smul_add u, ← add_assoc]`. Generalize the expression as in `P n₀ + u • ∑ j ∈ Finset.range m, L ^ j • L ^ (n₀ + 2 * N * n₀ + 1) • C j = X`. Simplify using `only [smul_add, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[add_comm]`. Use `congr 1`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `m`. Take `⟨Z, hZ⟩` from `hT m`. Use `⟨u • Z, ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[add_sub_add_left_eq_sub, ← smul_sub, hZ, smul_comm]`. Take `⟨Y, hY⟩` from `hMod n₀`. Use `⟨Y + L ^ n₀ • T, ?_⟩` and prove the remaining obligations. Rewrite using `[add_sub_right_comm, smul_add, hY, smul_add, smul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_limit_matrix_seq_congruent {R : Type} [CommRing R] {d N n₀ : ℕ} (L u : R)
     (hc : IsAdicComplete (Ideal.span {L}) R)
@@ -289,33 +289,31 @@ private theorem exists_limit_matrix_seq_congruent {R : Type} [CommRing R] {d N n
     rw [add_sub_right_comm, smul_add, hY, smul_add, smul_comm]
 
 /- English proof (translation)
-Introduce `R _ d l q N hl hc φ u hu hq α α' β β' Γ hαα hββ hΓ n₀ hdiv`. Establish `hφL : φ (l : R) = l` using `map_natCast φ l`. Establish `hβ'β : β' * β = (l : R) ^ (2 * N) • 1` using `matrix_mul_comm_of_mul_eq_smul_one _ (fun x hx => eq_zero_of_pow_mul_eq_zero_of_nonzerodivisor _ hl _ x hx) β β' hββ`. Take `⟨P, hP0, hPs⟩ : ∃ P : ℕ → Matrix (Fin d) (Fin d) R, P 0 = 1 ∧ ∀ n, P (n + 1) = α * (P n).map φ * β'` from `⟨fun n => Nat.rec 1 (fun _ X => α * X.map φ * β') n, rfl, fun _ => rfl⟩`. Take `⟨P', hP'0, hP's⟩ : ∃ P : ℕ → Matrix (Fin d) (Fin d) R, P 0 = 1 ∧ ∀ n, P (n + 1) = β * (P n).map φ * α'` from `⟨fun n => Nat.rec 1 (fun _ X => β * X.map φ * α') n, rfl, fun _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hΓ' : (l : R) • (β - α) = u ^ q • (-Γ)`. Rewrite using `[smul_neg, ← hΓ, ← smul_neg, neg_sub]`. Establish `hD` using `exists_matrix_seq_diff_congruence _ u φ hφL hu α β β' Γ hββ hΓ P hP0 hPs`. Establish `hD'` using `exists_matrix_seq_diff_congruence _ u φ hφL hu β α α' (-Γ) hαα hΓ' P' hP'0 hP's`. Take `⟨S, Sq, hSq, hSl, hSu⟩` from `exists_limit_matrix_seq_congruent _ u hc P (matrix_seq_diff_divisible_of_le _ u hq hl hdiv P hD) (exists_matrix_pow_sub_mod_u _ u hq P hP0 hD)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S', Sq', hSq', hSl', hSu'⟩` from `exists_limit_matrix_seq_congruent _ u hc P' (matrix_seq_diff_divisible_of_le _ u hq hl hdiv P' hD') (exists_matrix_pow_sub_mod_u _ u hq P' hP'0 hD')`. Establish `hPP : ∀ n, P n * P' n = (l : R) ^ (4 * N * n) • 1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [hP0, hP'0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[hPs, hP's]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (l : R) ^ (2 * N) • (α * (P k * P' k).map φ * α') := by`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβ'β]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = (l : R) ^ (4 * N * (k + 1)) • 1 := by`. Rewrite using `[ih, matrix_map_smul', map_pow, hφL, Matrix.map_one _ (map_zero φ) (map_one φ), Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hαα, smul_smul, smul_smul, ← pow_add, ← pow_add]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hSS0 : ∀ m, Sq m * Sq' m = (l : R) ^ (4 * N * n₀) • 1`. Introduce `m`. Apply `matrix_eq_of_smul_eq_nonzerodivisor ((l : R) ^ (4 * N * m)) (eq_zero_of_pow_mul_eq_zero_of_nonzerodivisor _ hl _)` to reduce the goal to its premises. Rewrite using `[smul_smul, ← pow_add, show 4 * N * m + 4 * N * n₀ = 4 * N * (n₀ + m) by ring, ← hPP, hSq, hSq', smul_mul_smul_comm, ← pow_add, show 2 * N * m + 2 * N * m = 4 * N * m by ring]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSS : S * S' = (l : R) ^ (4 * N * n₀) • 1`. Establish `h0` using `matrix_eq_zero_of_adic_divisible _ hc (S * S' - (l : R) ^ (4 * N * n₀) • 1) (fun m => by`. Take `⟨Z, hZ⟩` from `hSl m`. Take `⟨Z', hZ'⟩` from `hSl' m`. Use `⟨Sq m * Z' + Z * Sq' m + (l : R) ^ m • (Z * Z'), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : S = Sq m + (l : R) ^ m • Z` using `by rw [← hZ]; abel`. Establish `e2 : S' = Sq' m + (l : R) ^ m • Z'` using `by rw [← hZ']; abel`. Rewrite using `[← hSS0 m, e1, e2]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_smul, Matrix.smul_mul, smul_add, smul_smul]`. Use the proof step `abel)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `sub_eq_zero.mp h0`. Establish `hstep : ∀ m, Sq (m + 1) * β = α * (Sq m).map φ`. Introduce `m`. Apply `matrix_eq_of_smul_eq_nonzerodivisor ((l : R) ^ (2 * N * (m + 1))) (eq_zero_of_pow_mul_eq_zero_of_nonzerodivisor _ hl _)` to reduce the goal to its premises. Rewrite using `[← Matrix.smul_mul, ← hSq, show n₀ + (m + 1) = n₀ + m + 1 from rfl, hPs, Matrix.mul_assoc, hβ'β, Matrix.mul_smul, Matrix.mul_one, hSq, matrix_map_smul', map_pow, hφL, Matrix.mul_smul, smul_smul, ← pow_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : S * β = α * S.map φ`. Establish `h0` using `matrix_eq_zero_of_adic_divisible _ hc (S * β - α * S.map φ) (fun m => by`. Take `⟨Z0, h0⟩` from `hSl m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Z1, h1⟩` from `hSl (m + 1)`. Use `⟨(l : R) • (Z1 * β) - α * Z0.map φ, ?_⟩` and prove the remaining obligations. Establish `e0 : S = Sq m + (l : R) ^ m • Z0` using `by rw [← h0]; abel`. Establish `e1 : S = Sq (m + 1) + (l : R) ^ (m + 1) • Z1` using `by rw [← h1]; abel`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e0, ← e1]`. Use `_ = (l : R) ^ m • ((l : R) • (Z1 * β) - α * Z0.map φ) := by`. Rewrite using `[Matrix.map_add _ (fun x y => map_add φ x y), matrix_map_smul', map_pow, hφL, Matrix.add_mul, Matrix.mul_add, hstep]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_sub, smul_smul, ← pow_succ]`. Use the proof step `abel)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `sub_eq_zero.mp h0`. Use `⟨(l : R) ^ n₀ • S, (l : R) ^ n₀ • S', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm, hSS, smul_smul, ← pow_add, ← pow_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
-
-Take `⟨Y, hY⟩` from `hSu`. Conclude with `⟨Y, by rw [← hY, smul_sub, pow_add, mul_smul]⟩`. Take `⟨Y, hY⟩` from `hSu'`. Conclude with `⟨Y, by rw [← hY, smul_sub, pow_add, mul_smul]⟩`. Rewrite using `[Matrix.smul_mul, hint, matrix_map_smul', map_pow, hφL, Matrix.mul_smul]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coreU_holds : CoreU := by
   intro R _ d l q N hl hc φ u hu hq α α' β β' Γ hαα hββ hΓ n₀ hdiv

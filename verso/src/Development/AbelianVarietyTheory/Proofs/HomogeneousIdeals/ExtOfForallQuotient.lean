@@ -17,14 +17,14 @@ noncomputable def evalAt {A : Type} [CommRing A] (r : L →+* A) (u : Aˣ) :
     fun _ _ ↦ Commute.all _ _
 
 /- English proof (translation)
-Simplify using `[evalAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalAt_single {A : Type} [CommRing A] (r : L →+* A) (u : Aˣ) (n : ℤ) (c : L) :
     evalAt r u (single n c) = r c * ((u ^ n : Aˣ) : A) := by
   simp [evalAt]
 
 /- English proof (translation)
-Use `MonoidHom.ext_mint (f := f.toMonoidHom.comp (AddMonoidAlgebra.of L ℤ)) (g := g.toMonoidHom.comp (AddMonoidAlgebra.of L ℤ)) h₁` as an intermediate fact. Conclude with `AddMonoidAlgebra.ringHom_ext h₀ fun n ↦ DFunLike.congr_fun this (Multiplicative.ofAdd n)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hom_ext {A : Type} [CommRing A] {f g : AddMonoidAlgebra L ℤ →+* A}
     (h₀ : ∀ c, f (single 0 c) = g (single 0 c)) (h₁ : f (single 1 1) = g (single 1 1)) : f = g := by
@@ -49,9 +49,9 @@ noncomputable def svar : (LaurentSeries R)ˣ where
   inv_val := by simp [HahnSeries.single_mul_single]
 
 /- English proof (translation)
-Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [zpow_add_one, Units.val_mul, ih]`. Simplify using `[svar, HahnSeries.single_mul_single]`. Consider the case `pred n ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[zpow_sub_one, Units.val_mul, ih]`. Simplify using `[svar, HahnSeries.single_mul_single, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem svar_zpow (n : ℤ) : ((svar R ^ n : (LaurentSeries R)ˣ) : LaurentSeries R) =
     HahnSeries.single n 1 := by
@@ -70,33 +70,33 @@ variable (R) in
 noncomputable def atInf : AddMonoidAlgebra R ℤ →+* LaurentSeries R := evalAt HahnSeries.C (svar R)⁻¹
 
 /- English proof (translation)
-Simplify using `using evalAt_single r u 0 c`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem evalAt_const {A : Type} [CommRing A] (r : L →+* A) (u : Aˣ) (c : L) :
     evalAt r u (algebraMap L _ c) = r c := by
   simpa using evalAt_single r u 0 c
 
 /- English proof (translation)
-Simplify `evalAt_single r u 1 1` using `[var]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem evalAt_var {A : Type} [CommRing A] (r : L →+* A) (u : Aˣ) :
     evalAt r u (var L : AddMonoidAlgebra L ℤ) = u := by
   simpa [var] using evalAt_single r u 1 1
 
 /- English proof (translation)
-The claim follows from `evalAt_const _ _ c`.
+A detailed English derivation is pending.
 -/
 theorem atZero_const (c : R) : atZero R (algebraMap R _ c) = HahnSeries.C c := evalAt_const _ _ c
 
 /- English proof (translation)
-The claim follows from `evalAt_const _ _ c`.
+A detailed English derivation is pending.
 -/
 theorem atInf_const (c : R) : atInf R (algebraMap R _ c) = HahnSeries.C c := evalAt_const _ _ c
 
 /- English proof (translation)
-Proceed by induction on `z using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp [ha, hb]`. Consider the case `single m r`. Rewrite using `[atZero, evalAt_single, svar_zpow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[HahnSeries.coeff_single, Finsupp.single_apply, eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_atZero (z : AddMonoidAlgebra R ℤ) (n : ℤ) : (atZero R z).coeff n = z.coeff n := by
   induction z using AddMonoidAlgebra.induction_linear with
@@ -107,9 +107,9 @@ theorem coeff_atZero (z : AddMonoidAlgebra R ℤ) (n : ℤ) : (atZero R z).coeff
     simp [HahnSeries.coeff_single, Finsupp.single_apply, eq_comm]
 
 /- English proof (translation)
-Proceed by induction on `z using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp [ha, hb]`. Consider the case `single m r`. Rewrite using `[atInf, evalAt_single, inv_zpow', svar_zpow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[HahnSeries.coeff_single, Finsupp.single_apply, eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_atInf (z : AddMonoidAlgebra R ℤ) (n : ℤ) : (atInf R z).coeff (-n) = z.coeff n := by
   induction z using AddMonoidAlgebra.induction_linear with
@@ -120,9 +120,9 @@ theorem coeff_atInf (z : AddMonoidAlgebra R ℤ) (n : ℤ) : (atInf R z).coeff (
     simp [HahnSeries.coeff_single, Finsupp.single_apply, eq_comm]
 
 /- English proof (translation)
-Use extensionality with `n`. Break down `lt_trichotomy n 0 with h | rfl | h` into its components or cases. Rewrite using `[← coeff_atZero, hp, PowerSeries.coeff_coe, if_pos h]`. Simplify using `[Finsupp.single_apply, h.ne]`. Rewrite using `[← coeff_atZero, hp, PowerSeries.coeff_coe]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← coeff_atInf, hq, PowerSeries.coeff_coe, if_pos (by omega)]`. Simplify using `[Finsupp.single_apply, h.ne']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_const {z : AddMonoidAlgebra R ℤ} {p q : PowerSeries R}
     (hp : atZero R z = HahnSeries.ofPowerSeries ℤ R p)
@@ -146,14 +146,14 @@ noncomputable def scaleP : PowerSeries L →+* PowerSeries R :=
   (PowerSeries.rescale (t : R)).comp (PowerSeries.map r)
 
 /- English proof (translation)
-Simplify using `[scaleP, svar, PowerSeries.rescale_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_scaleP_X : HahnSeries.ofPowerSeries ℤ R (scaleP r t PowerSeries.X) =
     HahnSeries.C (t : R) * (svar R : LaurentSeries R) := by
   simp [scaleP, svar, PowerSeries.rescale_X]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[scaleP, PowerSeries.coeff_C]`. Discharge the remaining goals by the proof search in `aesop`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Search for a derivation from the available facts and logical rules.
 -/
 theorem scaleP_C (c : L) : scaleP r t (PowerSeries.C c) = PowerSeries.C (r c) := by
   ext n
@@ -167,39 +167,39 @@ noncomputable def scaleL : LaurentSeries L →+* LaurentSeries R :=
       exact (t.isUnit.map _).mul (svar R).isUnit)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ p`.
+A detailed English derivation is pending.
 -/
 theorem scaleL_coe (p : PowerSeries L) : scaleL r t (HahnSeries.ofPowerSeries ℤ L p) =
     HahnSeries.ofPowerSeries ℤ R (scaleP r t p) :=
   IsLocalization.Away.lift_eq _ _ p
 
 /- English proof (translation)
-Rewrite using `[← HahnSeries.ofPowerSeries_C, scaleL_coe, scaleP_C, HahnSeries.ofPowerSeries_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scaleL_C (c : L) : scaleL r t (HahnSeries.C c) = HahnSeries.C (r c) := by
   rw [← HahnSeries.ofPowerSeries_C, scaleL_coe, scaleP_C, HahnSeries.ofPowerSeries_C]
 
 /- English proof (translation)
-Rewrite using `[← coe_scaleP_X r, ← scaleL_coe, HahnSeries.ofPowerSeries_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem scaleL_svar : scaleL r t (svar L : LaurentSeries L) =
     HahnSeries.C (t : R) * (svar R : LaurentSeries R) := by
   rw [← coe_scaleP_X r, ← scaleL_coe, HahnSeries.ofPowerSeries_X]; rfl
 
 /- English proof (translation)
-Simplify using `[scale, evalAt_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scale_single_zero (c : L) : scale r t (single 0 c) = single 0 (r c) := by
   simp [scale, evalAt_single]
 
 /- English proof (translation)
-Simplify using `[scale, evalAt_single, var, single_mul_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scale_single_one : scale r t (single 1 1) = single 1 (t : R) := by
   simp [scale, evalAt_single, var, single_mul_single]
 
 /- English proof (translation)
-Use `hom_ext (fun c ↦ ?_) ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, scale_single_zero, atZero, evalAt_single, zpow_zero, Units.val_one, mul_one, scaleL_C]`. Simplify using `only [RingHom.comp_apply, scale_single_one, atZero, evalAt_single, zpow_one, map_one, one_mul, scaleL_svar]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem atZero_scale : (atZero R).comp (scale r t) = (scaleL r t).comp (atZero L) := by
   refine hom_ext (fun c ↦ ?_) ?_
@@ -209,9 +209,9 @@ theorem atZero_scale : (atZero R).comp (scale r t) = (scaleL r t).comp (atZero L
       one_mul, scaleL_svar]
 
 /- English proof (translation)
-Use `hom_ext (fun c ↦ ?_) ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, scale_single_zero, atInf, evalAt_single, zpow_zero, Units.val_one, mul_one, scaleL_C]`. Simplify using `only [RingHom.comp_apply, scale_single_one, atInf, evalAt_single, zpow_one, map_one, one_mul]`. Establish `h` using `congrArg (scaleL r t⁻¹) (svar L).inv_mul`. Rewrite `h` using `[map_mul, scaleL_svar, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : (HahnSeries.C t.val : LaurentSeries R) * ((svar R)⁻¹).val * (HahnSeries.C (t⁻¹).val * (svar R).val) = 1`. Rewrite using `[mul_mul_mul_comm, ← map_mul, Units.mul_inv, Units.inv_mul, map_one, mul_one]`. Rewrite `h` using `[mul_comm]`. Conclude with `left_inv_eq_right_inv h' h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atInf_scale : (atInf R).comp (scale r t) = (scaleL r t⁻¹).comp (atInf L) := by
   refine hom_ext (fun c ↦ ?_) ?_
@@ -228,7 +228,7 @@ theorem atInf_scale : (atInf R).comp (scale r t) = (scaleL r t⁻¹).comp (atInf
     exact left_inv_eq_right_inv h' h
 
 /- English proof (translation)
-Use `RingHom.ext fun p ↦ ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, scaleP, RingHom.comp_apply, PowerSeries.coeff_rescale, PowerSeries.coeff_map, pow_zero, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_scaleP : PowerSeries.constantCoeff.comp (scaleP r t) =
     r.comp PowerSeries.constantCoeff := by
@@ -240,7 +240,7 @@ theorem constantCoeff_scaleP : PowerSeries.constantCoeff.comp (scaleP r t) =
 variable {t}
 
 /- English proof (translation)
-Use `(ht.map ρ).eq_zero` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem map_eq_one {A : Type} [CommRing A] [IsReduced A] (ht : IsNilpotent ((t : R) - 1))
     (ρ : R →+* A) : ρ t = 1 := by
@@ -248,7 +248,7 @@ theorem map_eq_one {A : Type} [CommRing A] [IsReduced A] (ht : IsNilpotent ((t :
   rwa [map_sub, map_one, sub_eq_zero] at this
 
 /- English proof (translation)
-Use `hom_ext (fun c ↦ by simp only [RingHom.comp_apply, scale_single_zero]) ?_` and prove the remaining obligations. Establish `e : (single 1 (t : R) : AddMonoidAlgebra R ℤ) = algebraMap R _ t * single 1 1`. Simplify using `[single_mul_single]`. Simplify using `only [RingHom.comp_apply, scale_single_one, Units.val_one]`. Rewrite using `[e, map_mul, ← RingHom.comp_apply, map_eq_one ht, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_scale {A : Type} [CommRing A] [IsReduced A] (ht : IsNilpotent ((t : R) - 1))
     (ρ : AddMonoidAlgebra R ℤ →+* A) : ρ.comp (scale r t) = ρ.comp (scale r 1) := by
@@ -259,9 +259,9 @@ theorem comp_scale {A : Type} [CommRing A] [IsReduced A] (ht : IsNilpotent ((t :
   rw [e, map_mul, ← RingHom.comp_apply, map_eq_one ht, one_mul]
 
 /- English proof (translation)
-Use `RingHom.ext fun p ↦ ?_` and prove the remaining obligations. Use `choose c hc using fun n : ℕ ↦ sub_one_dvd_pow_sub_one (t : R) n`. Establish `e : scaleP r t p = scaleP r 1 p + (PowerSeries.C (t : R) - 1) * PowerSeries.mk fun n ↦ c n * r (PowerSeries.coeff n p)`. Use extensionality with `n`. Rewrite using `[← map_one PowerSeries.C, ← map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [scaleP, RingHom.comp_apply, PowerSeries.coeff_rescale, PowerSeries.coeff_map, map_add, PowerSeries.coeff_C_mul, PowerSeries.coeff_mk, Units.val_one, one_pow]`. Take the linear combination `(r (PowerSeries.coeff n p)) * hc n`. Establish `h1 : ρ (PowerSeries.C (t : R)) = 1` using `map_eq_one ht (ρ.comp PowerSeries.C)`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[e, map_add, map_mul, map_sub, h1, map_one, sub_self, zero_mul, add_zero]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_scaleP {A : Type} [CommRing A] [IsReduced A] (ht : IsNilpotent ((t : R) - 1))
     (ρ : PowerSeries R →+* A) : ρ.comp (scaleP r t) = ρ.comp (scaleP r 1) := by
@@ -292,7 +292,7 @@ noncomputable def quot (a b : Z ⟶ B.left) (h : b ≫ B.hom = a ≫ B.hom) : Z 
   ((Over.homMk a rfl : Over.mk (a ≫ B.hom) ⟶ B) * (Over.homMk b h : Over.mk (a ≫ B.hom) ⟶ B)⁻¹).left
 
 /- English proof (translation)
-Set `j' : Over.mk ((j ≫ a) ≫ B.hom) ⟶ Over.mk (a ≫ B.hom)` to `Over.homMk j (by simp)`. Establish `: j' ≫ ((Over.homMk a rfl : Over.mk (a ≫ B.hom) ⟶ B) * (Over.homMk b h : Over.mk (a ≫ B.hom) ⟶ B)⁻¹) = (Over.homMk (j ≫ a) rfl) * (Over.homMk (j ≫ b) (by simp [h]))⁻¹`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv]`. Both sides reduce to the same expression. Conclude with `congrArg (·.left) this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comp_quot (j : W ⟶ Z) (a b : Z ⟶ B.left) (h : b ≫ B.hom = a ≫ B.hom) :
     j ≫ quot a b h = quot (j ≫ a) (j ≫ b) (by simp [h]) := by
@@ -304,9 +304,9 @@ theorem comp_quot (j : W ⟶ Z) (a b : Z ⟶ B.left) (h : b ≫ B.hom = a ≫ B.
   exact congrArg (·.left) this
 
 /- English proof (translation)
-Establish `e : a ≫ B.hom ≫ (η[B] : 𝟙_ (Over S) ⟶ B).left = (1 : Over.mk (a ≫ B.hom) ⟶ B).left`. Rewrite using `[Hom.one_def, Over.comp_left, ← Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `⟨fun H ↦ congrArg (·.left) (mul_inv_eq_one.1 (Over.OverMorphism.ext H)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Rewrite using `[quot, mul_inv_cancel]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem quot_eq_iff (a b : Z ⟶ B.left) (h : b ≫ B.hom = a ≫ B.hom) :
     quot a b h = a ≫ B.hom ≫ (η[B] : 𝟙_ (Over S) ⟶ B).left ↔ a = b := by
@@ -318,16 +318,16 @@ theorem quot_eq_iff (a b : Z ⟶ B.left) (h : b ≫ B.hom = a ≫ B.hom) :
   rw [quot, mul_inv_cancel]
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem quot_congr {a b a' b' : Z ⟶ B.left} (h : b ≫ B.hom = a ≫ B.hom)
     (h' : b' ≫ B.hom = a' ≫ B.hom) (ha : a = a') (hb : b = b') : quot a b h = quot a' b' h' := by
   subst ha hb; rfl
 
 /- English proof (translation)
-Establish `hz : z.asIdeal.IsPrime` using `z.isPrime`. Set `j : Spec (.of (A ⧸ z.asIdeal)) ⟶ Spec (.of A)` to `Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk z.asIdeal))`. Take `⟨w, hw⟩ : z ∈ Set.range j` from `⟨(⊥ : PrimeSpectrum (A ⧸ z.asIdeal)), by`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Conclude with `Ideal.mk_ker⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, comp_quot, (quot_eq_iff _ _ _).2, Category.assoc]`. Simplify using `only [j, ← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp, H]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quot_apply {D A : Type} [CommRing D] [CommRing A] (f : Spec (.of D) ⟶ B.left)
     (α β : D →+* A) (h) (H : ∀ (C : Type) [CommRing C] [IsReduced C] (ρ : A →+* C),
@@ -345,13 +345,13 @@ theorem quot_apply {D A : Type} [CommRing D] [CommRing A] (f : Spec (.of D) ⟶ 
   simp only [j, ← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp, H]
 
 /- English proof (translation)
-Use `isClosedImmersion_equalizer_ι_of_isSeparated p hab` as an intermediate fact. Establish `: IsIso (equalizer.ι a b)`. Use `IsClosedImmersion.isIso_of_injective_of_isAffine ((injective_iff_map_eq_zero _).2 ?_)` and prove the remaining obligations. Introduce `x hx`. Take `⟨d, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of D)).inv).2 x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hd : d ∈ ⨅ n, I n`. Use `Ideal.mem_iInf.2 fun n ↦ Ideal.Quotient.eq_zero_iff_mem.1 ?_` and prove the remaining obligations. Apply `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of (D ⧸ I n))).inv).1` to reduce the goal to its premises. Establish `e` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (Ideal.Quotient.mk (I n)))`. Rewrite `e` using `[← equalizer.lift_ι _ (H n), Scheme.Hom.comp_appTop]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e'` using `congrArg (fun φ ↦ φ.hom d) e`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e'`. Rewrite using `[map_zero, e', hx, map_zero]`. Rewrite `hd` using `[hI, Ideal.mem_bot]`. Rewrite using `[hd, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi (equalizer.ι a b), equalizer.condition]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_of_forall_quotient {Y : Scheme.{0}} (p : Y ⟶ S) [IsSeparated p] {D : Type} [CommRing D]
     {a b : Spec (.of D) ⟶ Y} (hab : a ≫ p = b ≫ p) (I : ℕ → Ideal D) (hI : ⨅ n, I n = ⊥)
@@ -375,9 +375,9 @@ theorem ext_of_forall_quotient {Y : Scheme.{0}} (p : Y ⟶ S) [IsSeparated p] {D
   rw [← cancel_epi (equalizer.ι a b), equalizer.condition]
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `exists_specMap_fromSpec_eq g hU hg`. Take `⟨φ₀, rfl⟩` from `exists_specMap_fromSpec_eq g₀ hU hg₀`. Take `⟨φ₁, rfl⟩` from `exists_specMap_fromSpec_eq g₁ hU hg₁`. Simplify using `only [← Spec.map_comp_assoc, cancel_mono, Spec.map_inj] at h₀ h₁ ⊢`. Use `ext1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun u ↦ ?_` and prove the remaining obligations. Conclude with `eq_const (congrArg (fun ψ ↦ ψ.hom u) h₀) (congrArg (fun ψ ↦ ψ.hom u) h₁)`.
+A detailed English derivation is pending.
 -/
 theorem eq_const_of_affine {Y : Scheme.{0}} {U : Y.Opens} (hU : IsAffineOpen U) {R : Type}
     [CommRing R] (g : Spec (.of (AddMonoidAlgebra R ℤ)) ⟶ Y) (g₀ g₁ : Spec (.of (PowerSeries R)) ⟶ Y)
@@ -397,9 +397,9 @@ theorem eq_const_of_affine {Y : Scheme.{0}} {U : Y.Opens} (hU : IsAffineOpen U) 
   exact eq_const (congrArg (fun ψ ↦ ψ.hom u) h₀) (congrArg (fun ψ ↦ ψ.hom u) h₁)
 
 /- English proof (translation)
-Establish `h : ValuativeCriterion.Existence p`. Establish `: UniversallyClosed p` using `inferInstance`. Rewrite `this` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `this.1`. Take `⟨⟨l⟩⟩` from `h { R := PowerSeries L, K := LaurentSeries L, i₁ := x i₂ := Spec.map (CommRingCat.ofHom PowerSeries.C) ≫ s commSq := ⟨by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, ← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Conclude with `RingHom.ext fun c ↦ (HahnSeries.ofPowerSeries_C c).symm⟩ }`. Conclude with `⟨l.l, l.fac_left, l.fac_right⟩`.
+Reduce the equality to equality of the corresponding arguments. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_extension {Y : Scheme.{0}} (p : Y ⟶ S) [UniversallyClosed p] {L : Type} [Field L]
     (s : Spec (.of L) ⟶ S) (x : Spec (.of (LaurentSeries L)) ⟶ Y)
@@ -421,7 +421,7 @@ theorem exists_extension {Y : Scheme.{0}} (p : Y ⟶ S) [UniversallyClosed p] {L
   exact ⟨l.l, l.fac_left, l.fac_right⟩
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem specMap_comp {A C D : Type} [CommRing A] [CommRing C] [CommRing D] (α : C →+* A)
     (β : D →+* C) {Y : Scheme.{0}} (f : Spec (.of D) ⟶ Y) :
@@ -430,23 +430,21 @@ theorem specMap_comp {A C D : Type} [CommRing A] [CommRing C] [CommRing D] (α :
   rw [← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Establish `ht' : IsNilpotent (((t⁻¹ : Rˣ) : R) - 1)`. Establish `: ((t⁻¹ : Rˣ) : R) - 1 = -(t⁻¹ : Rˣ) * ((t : R) - 1)`. Rewrite using `[mul_sub, neg_mul, Units.inv_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Commute.all _ _).isNilpotent_mul_left ht`. Take `⟨f₀, e₀, p₀⟩` from `exists_extension B.hom s (Spec.map (CommRingCat.ofHom (atZero L)) ≫ f) (by`. Rewrite using `[Category.assoc, hf, specMap_comp]`. Use `congr 3`. Conclude with `RingHom.ext fun c ↦ atZero_const c)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f₁, e₁, p₁⟩` from `exists_extension B.hom s (Spec.map (CommRingCat.ofHom (atInf L)) ≫ f) (by`. Rewrite using `[Category.assoc, hf, specMap_comp]`. Use `congr 3`. Conclude with `RingHom.ext fun c ↦ atInf_const c)`. Establish `hs : ∀ u : Rˣ, (Spec.map (CommRingCat.ofHom (scale r u)) ≫ f) ≫ B.hom = Spec.map (CommRingCat.ofHom ((algebraMap R _).comp r)) ≫ s` using `fun u ↦ by`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hf, specMap_comp]`. Use `congr 3`. Conclude with `RingHom.ext fun c ↦ scale_single_zero r u c`. Establish `hP : ∀ (u : Rˣ) (y : Spec (.of (PowerSeries L)) ⟶ B.left), y ≫ B.hom = Spec.map (CommRingCat.ofHom PowerSeries.C) ≫ s → (Spec.map (CommRingCat.ofHom (scaleP r u)) ≫ y) ≫ B.hom = Spec.map (CommRingCat.ofHom (PowerSeries.C.comp r)) ≫ s` using `fun u y hy ↦ by`. Rewrite using `[Category.assoc, hy, specMap_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `congr 3`. Conclude with `RingHom.ext fun c ↦ scaleP_C r u c`. Establish `hL : ∀ u : Rˣ, (HahnSeries.ofPowerSeries ℤ R).comp (scaleP r u) = (scaleL r u).comp (HahnSeries.ofPowerSeries ℤ L)` using `fun u ↦ RingHom.ext fun p ↦ (scaleL_coe r u p).symm`. Set `e : Spec (.of L) ⟶ B.left` to `s ≫ (η[B] : 𝟙_ (Over S) ⟶ B).left`. Take `⟨_, ⟨U, hU, rfl⟩, hx, -⟩` from `B.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (e default)) isOpen_univ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hin : ∀ {D A : Type} [CommRing D] [CommRing A] (y : Spec (.of D) ⟶ B.left) (α β : D →+* A) (h) (c : L →+* A), (∀ (C : Type) [CommRing C] [IsReduced C] (ρ : A →+* C), ρ.comp α = ρ.comp β) → (Spec.map (CommRingCat.ofHom α) ≫ y) ≫ B.hom = Spec.map (CommRingCat.ofHom c) ≫ s → Set.ran …`. Introduce and unpack `D A _ _ y α β h c H hc _ ⟨z, rfl⟩`. Rewrite using `[quot_apply y α β h H, ← Category.assoc, hc, Category.assoc, Scheme.Hom.comp_apply, Subsingleton.elim (Spec.map (CommRingCat.ofHom c) z) default]`. Conclude with `hx`. Establish `key` using `eq_const_of_affine hU (quot _ _ ((hs 1).trans (hs t).symm)) (quot _ _ ((hP 1 f₀ p₀).trans (hP t f₀ p₀).symm)) (quot _ _ ((hP 1 f₁ p₁).trans (hP t⁻¹ f₁ p₁).symm)) (hin _ _ _ _ _ (fun _ _ _ ρ ↦ comp_scale r ht ρ) (hs t)) (hin _ _ _ _ _ (fun _ _ _ ρ ↦ comp_scaleP r ht ρ) (hP t f₀ p₀ …`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_quot, comp_quot]`. Apply the tactic sequence `refine quot_congr _ _ ?_ ?_ <;>`. Rewrite using `[specMap_comp, specMap_comp, atZero_scale, hL, ← specMap_comp, ← specMap_comp, e₀])`. Use the proof step `(by`. Rewrite using `[comp_quot, comp_quot]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `quot_congr _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[specMap_comp, specMap_comp, atInf_scale, hL, ← specMap_comp, ← specMap_comp, e₁]`. Rewrite using `[specMap_comp, specMap_comp, atInf_scale, hL, inv_one, ← specMap_comp, ← specMap_comp, e₁])`. Rewrite using `[comp_quot _ _ _ ((hP 1 f₀ p₀).trans (hP t f₀ p₀).symm), (quot_eq_iff (_ ≫ Spec.map (CommRingCat.ofHom (scaleP r t)) ≫ f₀) _ _).2 (by`. Rewrite `key` using `[specMap_comp, specMap_comp, constantCoeff_scaleP, constantCoeff_scaleP])]`.
-
-Use `(quot_eq_iff _ _ ((hs 1).trans (hs t).symm)).1 (key.trans ?_)` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% (hs t), reassoc_of% (hP t f₀ p₀), specMap_comp, specMap_comp]`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem scale_comp_eq [UniversallyClosed B.hom] {L R : Type} [Field L] [CommRing R]
     (s : Spec (.of L) ⟶ S) (f : Spec (.of (AddMonoidAlgebra L ℤ)) ⟶ B.left)
@@ -521,15 +519,15 @@ theorem scale_comp_eq [UniversallyClosed B.hom] {L R : Type} [Field L] [CommRing
 end Geometry
 
 /- English proof (translation)
-Use `⟨Spec.map (CommRingCat.ofHom (evalAt (RingHom.id L) 1)) ≫ f, ?_⟩` and prove the remaining obligations. Set `I : Ideal (AddMonoidAlgebra L ℤ)` to `Ideal.span {(var L : AddMonoidAlgebra L ℤ) - 1}`. Establish `hI : I ≠ ⊤`. Introduce `h`. Establish `h1` using `(Ideal.span_singleton_eq_top.1 h).map (evalAt (RingHom.id L) 1)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_sub, map_one, evalAt_var]`. Simplify using `at h1`. Establish `: IsNoetherianRing (AddMonoidAlgebra L ℤ)` using `Algebra.FiniteType.isNoetherianRing L _`. Use `ext_of_forall_quotient B.hom ?_ (fun n ↦ I ^ n) (Ideal.iInf_pow_eq_bot_of_isDomain I hI) fun n ↦ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, hf, specMap_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 3`. Conclude with `RingHom.ext fun c ↦ by simp only [RingHom.comp_apply, evalAt_const, RingHom.id_apply]`. Set `ϖ` to `Ideal.Quotient.mk (I ^ n)`. Set `r : L →+* _` to `ϖ.comp (algebraMap L _)`. Set `t` to `Units.map ϖ.toMonoidHom (var L)`.
+Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ht : IsNilpotent ((t : _ ⧸ I ^ n) - 1)` using `⟨n, by`. Express the relevant statement in the definitionally equal form `(ϖ (var L) - 1) ^ n = 0`. Rewrite using `[← map_one ϖ, ← map_sub, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) n⟩`. Establish `h` using `congrArg (Spec.map (CommRingCat.ofHom (evalAt (RingHom.id _) 1)) ≫ ·) (scale_comp_eq s f hf r t ht)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [specMap_comp] at h ⊢`. Apply the tactic sequence `convert h using 4 <;> refine LaurentConst.hom_ext (fun c ↦ ?_) ?_ <;>`. Apply the tactic sequence `simp only [RingHom.comp_apply, scale_single_zero, scale_single_one, evalAt_single, one_zpow, Units.val_one, _root_.mul_one, RingHom.id_apply, map_one] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.laurent_point_const {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsProper B.hom]
     (L : Type) [Field L] (s : Spec (CommRingCat.of L) ⟶ S)

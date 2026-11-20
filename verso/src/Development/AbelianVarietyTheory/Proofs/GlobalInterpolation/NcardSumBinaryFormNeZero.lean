@@ -13,17 +13,17 @@ open Finset
 variable {k : Type} [Field k] [Fintype k] [DecidableEq k]
 
 /- English proof (translation)
-Take `⟨u, v, huv⟩` from `UnramifiedHermitian.exists_binary_eq_of_finite hD c`. Use `symm`. Use `Finset.card_nbij' (fun p => (p.1 * u - n * p.2 * v, p.1 * v + p.2 * u + t * p.2 * v)) (fun p => ((p.1 * (u + t * v) + n * p.2 * v) / c, (p.2 * u - p.1 * v) / c)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [coe_filter, mem_univ, true_and, Set.mem_setOf_eq] at hp ⊢`.
+Extract witnesses or component facts from the available result. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take the linear combination `(u ^ 2 + t * u * v + n * v ^ 2) * hp + huv`. Introduce `p hp`. Simplify using `only [coe_filter, mem_univ, true_and, Set.mem_setOf_eq] at hp ⊢`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(u ^ 2 + t * u * v + n * v ^ 2) * hp + c * huv`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `p _`. Use `ext`. Simplify using `only`. Clear the denominators using the available nonvanishing facts. Take the linear combination `p.1 * huv`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only`. Clear the denominators using the available nonvanishing facts. Take the linear combination `p.2 * huv`. Introduce `p _`. Use `ext`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only`. Clear the denominators using the available nonvanishing facts. Take the linear combination `p.1 * huv`. Simplify using `only`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Take the linear combination `p.2 * huv`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem card_fibre_eq {t n : k} (hD : t ^ 2 - 4 * n ≠ 0) {c : k} (hc : c ≠ 0) :
     #{p : k × k | p.1 ^ 2 + t * p.1 * p.2 + n * p.2 ^ 2 = c}
@@ -49,25 +49,25 @@ theorem card_fibre_eq {t n : k} (hD : t ^ 2 - 4 * n ≠ 0) {c : k} (hc : c ≠ 0
     · simp only; field_simp; linear_combination p.2 * huv
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ r : k, r ^ 2 - t * r + n = 0`. Rewrite using `[h1 h]`. Take `⟨r, hr⟩` from `h`. Establish `hne : t - 2 * r ≠ 0`. Introduce `h0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hD` to reduce the goal to its premises. Take the linear combination `(t - 2 * r) * h0 - 4 * hr`. Establish `e : ({p : k × k | p.1 ^ 2 + t * p.1 * p.2 + n * p.2 ^ 2 = 0} : Finset (k × k)) = (univ.image fun b : k => (-r * b, b)) ∪ (univ.image fun b : k => (-(t - r) * b, b))`. Use extensionality with `⟨a, b⟩`. Simplify using `only [mem_filter, mem_univ, true_and, mem_union, mem_image, Prod.mk.injEq, exists_eq_right]`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hab`. Establish `: (-r * b - a) * (-(t - r) * b - a) = 0` using `by linear_combination hab - b ^ 2 * hr`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `Or.inl (sub_eq_zero.1 h)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr (sub_eq_zero.1 h)`. Apply the tactic sequence `rintro (rfl | rfl) <;> linear_combination b ^ 2 * hr`. Establish `i : (univ.image fun b : k => (-r * b, b)) ∩ (univ.image fun b : k => (-(t - r) * b, b)) = {((0 : k), (0 : k))}`. Use extensionality with `⟨a, b⟩`. Simplify using `only [mem_univ, true_and, mem_inter, mem_image, Prod.mk.injEq, exists_eq_right, mem_singleton]`.
+Prove the second alternative. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl, h⟩`. Establish `: (t - 2 * r) * b = 0` using `by linear_combination -h`. Establish `hb` using `(mul_eq_zero.1 this).resolve_left hne`. Simplify using `[hb]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Simplify using the standard rewrite rules. Use `Finset.card_union_add_card_inter (univ.image fun b : k => (-r * b, b)) (univ.image fun b : k => (-(t - r) * b, b))` as an intermediate fact. Rewrite `this` using `[i, ← e, card_image_of_injective _ (fun a b h => congrArg Prod.snd h), card_image_of_injective _ (fun a b h => congrArg Prod.snd h), card_singleton, card_univ]`. Establish `h3` using `congrArg (Nat.cast : ℕ → ℝ) this`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h2 h]`. Establish `e : ({p : k × k | p.1 ^ 2 + t * p.1 * p.2 + n * p.2 ^ 2 = 0} : Finset (k × k)) = {((0 : k), (0 : k))}`. Use extensionality with `⟨a, b⟩`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [mem_filter, mem_univ, true_and, Prod.mk.injEq, mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `hab`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hab`. Use `(h ⟨-a / b, ?_⟩).elim` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `hab`. Introduce and unpack `⟨rfl, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, card_singleton]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_zero {t n : k} (hD : t ^ 2 - 4 * n ≠ 0) {η : ℝ}
     (h1 : (∃ r : k, r ^ 2 - t * r + n = 0) → η = 1)
@@ -131,11 +131,11 @@ theorem card_zero {t n : k} (hD : t ^ 2 - 4 * n ≠ 0) {η : ℝ}
     ring
 
 /- English proof (translation)
-Establish `hz` using `card_zero hD h1 h2`. Distinguish the cases in `hc : c = 0`. Rewrite using `[if_pos hc, hc, hz]`. Rewrite using `[if_neg hc, card_fibre_eq hD hc, add_zero]`. Establish `tot` using `Finset.card_eq_sum_card_fiberwise (s := (univ : Finset (k × k))) (t := univ) (f := fun p : k × k => p.1 ^ 2 + t * p.1 * p.2 + n * p.2 ^ 2) (fun _ _ => mem_univ _)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `tot` using `[← Finset.add_sum_erase _ _ (mem_univ (0 : k)), Finset.sum_congr rfl (fun d hd => card_fibre_eq hD (Finset.ne_of_mem_erase hd)), sum_const, card_erase_of_mem (mem_univ _), card_univ, card_univ, Fintype.card_prod, smul_eq_mul]`. Establish `hq : 1 < Fintype.card k` using `Fintype.one_lt_card`. Establish `h3` using `congrArg (Nat.cast : ℕ → ℝ) tot`. Move the coercions through the operations in `[Nat.cast_sub hq.le] at h3`. Rewrite `h3` using `[hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq' : (Fintype.card k : ℝ) - 1 ≠ 0`. Establish `: (1 : ℝ) < Fintype.card k` using `by exact_mod_cast hq`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `mul_left_cancel₀ hq'` to reduce the goal to its premises. Take the linear combination `-h3`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem card_fibre {t n : k} (hD : t ^ 2 - 4 * n ≠ 0) {η : ℝ}
     (h1 : (∃ r : k, r ^ 2 - t * r + n = 0) → η = 1)
@@ -163,13 +163,13 @@ theorem card_fibre {t n : k} (hD : t ^ 2 - 4 * n ≠ 0) {η : ℝ}
   linear_combination -h3
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => simp`. Consider the case `succ M ih`. Establish `key : (#{x : Fin (M + 1) → α | ∑ i, Q (x i) = 0} : ℝ) = q ^ (2 * M) * (q - η) + η * q * #{x : Fin M → α | ∑ i, Q (x i) = 0}`. Rewrite using `[Finset.card_filter, Finset.card_filter]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[← (Fin.consEquiv fun _ => α).sum_comp, Fintype.sum_prod_type_right]`. Establish `: ∀ y : Fin M → α, (∑ a : α, if ∑ i, Q ((Fin.consEquiv fun _ => α) (a, y) i) = 0 then (1 : ℝ) else 0) = q - η + η * q * if ∑ i, Q (y i) = 0 then 1 else 0`. Introduce `y`. Use `hQ (-∑ i, Q (y i))` as an intermediate fact.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Finset.card_filter]`. Move the coercions through the operations in `at this`. Simplify using `only [Fin.consEquiv_apply, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, ← eq_neg_iff_add_eq_zero, this, neg_eq_zero, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_congr rfl fun y _ => this y, sum_add_distrib, ← mul_sum, sum_const, card_univ, Fintype.card_fun, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hα, ← pow_mul]`. Rewrite using `[key, show 2 * (M + 1) = 2 * M + 2 by ring]`. Take the linear combination `(η * q) * ih`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem card_sum_zero {α : Type} [Fintype α] [DecidableEq α] (Q : α → k) (q η : ℝ)
     (hα : (Fintype.card α : ℝ) = q ^ 2)
@@ -205,15 +205,15 @@ namespace GlobalTheory
 open Finset in
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite k`. Establish `hz` using `BinaryFormCount.card_sum_zero (fun p : k × k => p.1 ^ 2 + t * p.1 * p.2 + n * p.2 ^ 2) (Fintype.card k) η (by rw [Fintype.card_prod]; push_cast; ring) (BinaryFormCount.card_fibre hD h1 h2) M`. Establish `hs` using `Finset.card_filter_add_card_filter_not (s := (univ : Finset (Fin M → k × k))) (fun x => ∑ i, ((x i).1 ^ 2 + t * (x i).1 * (x i).2 + n * (x i).2 ^ 2) = 0)`. Establish `hb : {x : Fin M × Fin 2 → k | ∑ i : Fin M, (x (i, 0) ^ 2 + t * x (i, 0) * x (i, 1) + n * x (i, 1) ^ 2) ≠ 0}.ncard = #{x : Fin M → k × k | ¬ ∑ i, ((x i).1 ^ 2 + t * (x i).1 * (x i).2 + n * (x i).2 ^ 2) = 0}`. Rewrite using `[Set.ncard_eq_toFinset_card', Set.toFinset_setOf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.card_nbij' (fun x i => (x (i, 0), x (i, 1))) (fun x p => ![(x p.1).1, (x p.1).2] p.2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `using hx`. Introduce `x hx`. Simplify using `using hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Use extensionality with `⟨i, j⟩`. Apply the tactic sequence `fin_cases j <;> simp`. Introduce `x _`. Apply the tactic sequence `ext i <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[card_univ, Fintype.card_fun, Fintype.card_prod, Fintype.card_fin]`. Establish `h3` using `congrArg (Nat.cast : ℕ → ℝ) hs`. Move the coercions through the operations in `at h3`. Rewrite using `[hb, Nat.card_eq_fintype_card, pow_mul, pow_two]`. Rewrite `hz` using `[pow_mul, pow_two]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(Fintype.card k : ℝ) * h3 - hz`.
+A detailed English derivation is pending.
 -/
 theorem ncard_sum_binary_form_ne_zero (k : Type) [Field k] [Finite k] (t n : k)
     (hD : t ^ 2 - 4 * n ≠ 0) (η : ℝ) (h1 : (∃ r : k, r ^ 2 - t * r + n = 0) → η = 1)

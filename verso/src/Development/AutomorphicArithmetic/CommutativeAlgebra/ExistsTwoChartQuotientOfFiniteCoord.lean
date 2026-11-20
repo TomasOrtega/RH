@@ -5,9 +5,9 @@ noncomputable section
 open IsLocalRing UpperTheory.Et
 
 /- English proof (translation)
-Establish `hx' : x ∈ I • (⊤ : Submodule A D)`. Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `hx`. Use `Submodule.smul_induction_on (p := fun y => β.repr y i ∈ I) hx' ?_ ?_` and prove the remaining obligations. Introduce `a ha n _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `I.mul_mem_right _ ha`. Introduce `y z hy hz`. Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `I.add_mem hy hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coord_mem_of_mem {A D ι : Type} [CommRing A] [CommRing D] [Algebra A D]
     (β : Module.Basis ι A D) (I : Ideal A) {x : D} (hx : x ∈ I.map (algebraMap A D)) (i : ι) :
@@ -24,7 +24,7 @@ private theorem coord_mem_of_mem {A D ι : Type} [CommRing A] [CommRing D] [Alge
     exact I.add_mem hy hz
 
 /- English proof (translation)
-Establish `hs : ↑(β.repr x).support ⊆ W` using `(β.mem_span_image).1 hW`. Rewrite using `[← β.linearCombination_repr x, Finsupp.linearCombination_apply, Finsupp.sum]`. Use `Submodule.sum_mem _ (fun i hi => ?_)` and prove the remaining obligations. Conclude with `Submodule.smul_mem_smul (hc i) (Submodule.subset_span ⟨i, hs hi, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem mem_smul_span_of_coord {A D ι : Type} [CommRing A] [CommRing D] [Algebra A D]
     (β : Module.Basis ι A D) (I : Ideal A) (W : Set ι) {x : D}
@@ -36,7 +36,7 @@ private theorem mem_smul_span_of_coord {A D ι : Type} [CommRing A] [CommRing D]
   exact Submodule.smul_mem_smul (hc i) (Submodule.subset_span ⟨i, hs hi, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[← β.linearCombination_repr x, Finsupp.linearCombination_apply, Finsupp.sum]`. Use `Ideal.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hc i))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_map_of_coord {A D ι : Type} [CommRing A] [CommRing D] [Algebra A D]
     (β : Module.Basis ι A D) (I : Ideal A) {x : D} (hc : ∀ i, β.repr x i ∈ I) :
@@ -47,41 +47,35 @@ private theorem mem_map_of_coord {A D ι : Type} [CommRing A] [CommRing D] [Alge
   exact Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hc i))
 
 /- English proof (translation)
-Introduce `A D _ _ _ T hF hC I`. Take `⟨ι, β, U, V, hU, hV⟩` from `hC`. Use `set J := I.map (algebraMap A D) with hJ`. Set `q` to `Ideal.Quotient.mkₐ A J`. Establish `hq : ∀ z, q z = Ideal.Quotient.mk J z` using `fun z => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (Ideal.Quotient.mk J)` using `Ideal.Quotient.mk_surjective`. Establish `h1 : Ideal.Quotient.mk J T.t * Ideal.Quotient.mk J T.s = 1`. Rewrite using `[← map_mul, T.ts, map_one]`. Set `T' : TC A (D ⧸ J)` to `{ B := T.B.map q C := T.C.map q t := Ideal.Quotient.mk J T.t s := Ideal.Quotient.mk J T.s ts := h1 tB := Subalgebra.mem_map.2 ⟨T.t, T.tB, rfl⟩ sC := Subalgebra.mem_map.2 ⟨T.s, T.sC, rfl⟩ locB := by`. Introduce `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `hsurj y`. Take `⟨k, hk⟩` from `T.locB x`. Conclude with `⟨k, Subalgebra.mem_map.2 ⟨_, hk, by rw [hq, map_mul, map_pow]⟩⟩`. Use `locC := by`. Introduce `y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `hsurj y`. Take `⟨k, hk⟩` from `T.locC x`. Conclude with `⟨k, Subalgebra.mem_map.2 ⟨_, hk, by rw [hq, map_mul, map_pow]⟩⟩ }`. Use `⟨T', ?_, rfl, rfl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨X, hX1, hX2⟩` from `hF`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨X.image q, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `Subalgebra.mem_map.2 ⟨x, hX1 x hx, rfl⟩`. Introduce `b hb`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b0, hb0, rfl⟩` from `Subalgebra.mem_map.1 hb`. Establish `hm` using `Submodule.mem_map_of_mem (f := q.toLinearMap) (hX2 b0 hb0)`. Rewrite `hm` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨y, ⟨x, hx, i, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨q x, Finset.mem_image.2 ⟨x, hx, rfl⟩, i, ?_⟩` and prove the remaining obligations. Use `show q (T.t ^ i * x) = Ideal.Quotient.mk J T.t ^ i * q x`. Rewrite using `[map_mul, map_pow]`. Both sides reduce to the same expression. Introduce `j y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hyB, hyC⟩` from `Submodule.mem_inf.1 hy`. Take `⟨b, hb, rfl⟩` from `Subalgebra.mem_map.1 hyB`. Take `⟨c, hc, hce⟩` from `Subalgebra.mem_map.1 (Submodule.mem_comap.1 hyC)`. Establish `hw : T.t ^ j * c ∈ Submodule.span A (β '' V j)`. Rewrite using `[← (hV j).1, Submodule.mem_comap, LinearMap.mulLeft_apply, ← mul_assoc, ← mul_pow, mul_comm T.s, T.ts, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`. Establish `hbw : b - T.t ^ j * c ∈ J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, map_pow, ← hq c, hce]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J b - Ideal.Quotient.mk J T.t ^ j * (Ideal.Quotient.mk J T.s ^ j * Ideal.Quotient.mk J b) = 0`. Rewrite using `[← mul_assoc, ← mul_pow, h1, one_pow, one_mul, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcoord` using `coord_mem_of_mem β I hbw`. Establish `hbU : ↑(β.repr b).support ⊆ U` using `β.mem_span_image.1 (by rw [← hU]; exact hb)`. Establish `hwV : ↑(β.repr (T.t ^ j * c)).support ⊆ V j` using `β.mem_span_image.1 hw`. Use `set f := Finsupp.filter (· ∈ V j) (β.repr b) with hf`. Establish `hrx : β.repr (β.repr.symm f) = f` using `β.repr.apply_symm_apply f`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨β.repr.symm f, Submodule.mem_inf.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show β.repr.symm f ∈ Subalgebra.toSubmodule T.B`. Rewrite using `[hU, β.mem_span_image, hrx]`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_coe, hf, Finsupp.support_filter, Finset.mem_filter]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hbU hi.1`. Use `show β.repr.symm f ∈ Submodule.comap (LinearMap.mulLeft A (T.s ^ j)) (Subalgebra.toSubmodule T.C)`. Rewrite using `[(hV j).1, β.mem_span_image, hrx]`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_coe, hf, Finsupp.support_filter, Finset.mem_filter]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hi.2`. Use `Ideal.Quotient.eq.2 (mem_map_of_coord β I (fun i => ?_))` and prove the remaining obligations. Rewrite using `[map_sub, Finsupp.sub_apply, hrx, hf, Finsupp.filter_apply]`. Distinguish the cases in `hi : i ∈ V j`. Rewrite using `[if_pos hi, sub_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `I.zero_mem`. Rewrite using `[if_neg hi, zero_sub]`. Establish `hw0 : β.repr (T.t ^ j * c) i = 0` using `Finsupp.notMem_support_iff.1 (fun h => hi (hwV h))`. Establish `hci` using `hcoord i`. Rewrite `hci` using `[map_sub, Finsupp.sub_apply, hw0, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `I.neg_mem hci`. Introduce `j x hx`. Take `⟨hxB, hxC⟩` from `Submodule.mem_inf.1 hx`. Use `Submodule.mem_inf.2 ⟨Subalgebra.mem_map.2 ⟨x, hxB, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show Ideal.Quotient.mk J T.s ^ j * Ideal.Quotient.mk J x ∈ T.C.map q`.
-
-Conclude with `Subalgebra.mem_map.2 ⟨T.s ^ j * x, hxC, by rw [hq, map_mul, map_pow]⟩`. Introduce `x hx hxJ`. Establish `hxs : x ∈ Submodule.span A (β '' U)` using `by rw [← hU]; exact hx`. Rewrite using `[hU]`. Conclude with `mem_smul_span_of_coord β I U hxs (coord_mem_of_mem β I hxJ)`.
-
-Introduce `x hx hxJ`. Establish `hC0 : Subalgebra.toSubmodule T.C = Submodule.span A (β '' V 0)`. Rewrite using `[← (hV 0).1, pow_zero, LinearMap.mulLeft_one, Submodule.comap_id]`. Establish `hxs : x ∈ Submodule.span A (β '' V 0)` using `by rw [← hC0]; exact hx`. Rewrite using `[hC0]`.
-
-Conclude with `mem_smul_span_of_coord β I (V 0) hxs (coord_mem_of_mem β I hxJ)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_twoChart_quotient_of_finite_coord :
     ∀ (A D : Type) [CommRing A] [CommRing D] [Algebra A D] (T : TC A D), T.Fin → T.Coord → ∀ I : Ideal A, ∃ T' : TC A (D ⧸ I.map (algebraMap A D)), T'.Fin ∧ T'.t = Ideal.Quotient.mk _ T.t ∧ T'.s = Ideal.Quotient.mk _ T.s ∧

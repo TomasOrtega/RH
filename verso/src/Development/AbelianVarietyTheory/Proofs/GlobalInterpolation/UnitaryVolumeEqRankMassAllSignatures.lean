@@ -13,13 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Glob
 
 /- English proof (translation)
-Introduce `D hT h2 W P Q hW hs`. Establish `hv : DefiniteVolumeEqMass D` using `mass_volume_identity_of_class_decomp D hT (GlobalTheory.genusMassStd_all D) (GlobalTheory.DefiniteDecompObj.doubleCosets_mass D)`. Establish `hrk : W.rank = P + Q`. Use `Formalism.BasicNotions.sig_sum W hW D.host.φ₀` as an intermediate fact. Rewrite `this` using `[hs D.host.φ₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Break down `Nat.eq_zero_or_pos Q with hQ | hQ` into its components or cases. Substitute `hQ` using the available equality. Rewrite using `[← hrk]`. Conclude with `hv W hW (fun τ => by rw [hs τ, hrk]; rfl)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `h2r : 2 ≤ P + Q`. Conclude with `GlobalTheory.T.vol_eq_mass_selfDual_rank_ge_two D hT h2 hv W P Q hW hs h2r`. Establish `hP : P = 0` using `by omega`. Establish `hQ1 : Q = 1` using `by omega`. Substitute `hP hQ1` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : D.vol W = D.vol (GlobalTheory.NegSpace.neg W)` using `GlobalTheory.T.volume_negativeDefinite_eq_opposite D hT W 1 hW hs`. Establish `hN : (GlobalTheory.NegSpace.neg W).SigOK` using `GlobalTheory.T.hermitianSpaceOppositeForm_signatureCondition _ W hW`. Establish `e2 : D.vol (GlobalTheory.NegSpace.neg W) = massI D (GlobalTheory.NegSpace.neg W).rank` using `hv _ hN (fun τ => by rw [GlobalTheory.NegSpace.neg_sig, hs τ, GlobalTheory.NegSpace.neg_rank, hrk])`. Rewrite using `[e1, e2, GlobalTheory.NegSpace.neg_rank, hrk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_eq_massI_all_sig : ∀ D : D7, VolTie D → Conclusion2 D → ∀ (W : HSpace D.host.E) (P Q : ℕ), W.SigOK →
     (∀ τ, W.sig τ = (P, Q)) → D.vol W = massI D (P + Q) := by

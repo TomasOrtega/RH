@@ -10,23 +10,19 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Introduce `D K _ _ ι _ Ω _ _ d n r b hb a ha`. Use `choose f hf hbf using hb.1`. Take `⟨g, hgJ, hgP⟩` from `SetLike.not_le_iff_exists.1 d.R.nondeg`. Use `set F : ((Σ k, ι k) → ℂ) → ℂ := fun z => ∑ k, a k * eval z (map (Int.castRingHom ℂ) (f k)) with hF`. Establish `ha' : ∀ x : d.R.X, F (blockPt d x) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Use `ha x` as an intermediate fact. Simplify using `only [hbf, eval_map_int_rat] at this`. Conclude with `this`. Establish `hli : LinearIndependent ℤ fun k => aeval d.y (f k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hb.2.1` as an intermediate fact. Simplify using `only [hbf, aeval_map_int] at this`. Conclude with `this`. Establish `hFc : Continuous F` using `continuous_finsetSum _ fun k _ => continuous_const.mul (continuous_eval _)`. Establish `hev : ∀ (s : MRing ι) (e : K → ℕ), IsMultiHomog s e → ∀ (c : K → ℂ) (z : (Σ k, ι k) → ℂ), eval (fun p => c p.1 * z p) (map (Int.castRingHom ℂ) s) = (∏ k, c k ^ e k) * eval z (map (Int.castRingHom ℂ) s)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `s e hs c z`. Rewrite using `[eval_map, eval_map, eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hc : (∏ i : (Σ k, ι k), c i.1 ^ m i) = ∏ k, c k ^ e k`. Rewrite using `[Fintype.prod_sigma]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, c k ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hs m hm k]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsmul : ∀ (c : K → ℂ) (z : (Σ k, ι k) → ℂ), F (fun p => c p.1 * z p) = (∏ k, c k ^ blockDeg d.k₀ n k) * F z`. Introduce `c z`. Simplify using `only [hF, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hev (f k) _ (hf k) c z]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hoff : ∀ z, z ∈ mcPts (mCoordIdeal d.y) → eval z (map (Int.castRingHom ℂ) g) ≠ 0 → F z = 0`. Introduce `z hz hgz`. Take `⟨x, c, hc, hxz⟩` from `d.R.surj z hz (fun hJ => hgz (hJ.2 g hgJ))`. Establish `h1` using `ha' x`.
-
-Rewrite `h1` using `[show blockPt d x = d.R.lift x x from rfl, hxz, hsmul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k))`. Establish `hpts : ∀ z ∈ mcPts (mCoordIdeal d.y), F z = 0`. Introduce `z hz`. Establish `hcl` using `hND K ι (mCoordIdeal d.y) (D + 1) g d.arith hgP hz`.
-
-Conclude with `(isClosed_eq hFc continuous_const).closure_subset_iff.2 (fun z' hz' => hoff z' hz'.1 hz'.2) hcl`. Conclude with `coeff_eq_zero hli (mcPts_nonempty d) hpts`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem BlockResolutionFormsIndependent.proof (hND : NonvanishingDense.Statement) :
     BlockResolutionFormsIndependent.Statement := by

@@ -22,7 +22,7 @@ namespace GlobalTheory.PlaceRead.LevVal
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hz`. Establish `h1 : y ^ n = 1` using `D.what₂.embLL.injective (by rw [map_pow, h, map_one])`. Establish `hi : IsIntegral ℤ y` using `⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hn, by simp [h1]⟩`. Conclude with `⟨⟨y, hi⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mem_intLL_of_pow {z : ℂ} {n : ℕ} (hn : n ≠ 0) (h : z ^ n = 1) (hz : ∃ y, D.what₂.embLL y = z) : z ∈ intLL D := by
   obtain ⟨y, rfl⟩ := hz
@@ -31,9 +31,9 @@ theorem mem_intLL_of_pow {z : ℂ} {n : ℕ} (hn : n ≠ 0) (h : z ^ n = 1) (hz 
   exact ⟨⟨y, hi⟩, rfl⟩
 
 /- English proof (translation)
-Use `letI : Algebra K ℂ := f.toAlgebra`. Establish `hi : IsIntegral K z` using `⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hn, by simp [h]⟩`. Set `L` to `IntermediateField.adjoin K {z}`. Use `haveI : FiniteDimensional K L := IntermediateField.adjoin.finiteDimensional hi`. Use `haveI : Countable L := (Module.finBasis K L).equivFun.toEquiv.injective.countable`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `r : L` to `⟨z, IntermediateField.mem_adjoin_simple_self K z⟩`. Take `⟨y, hy⟩` from `GlobalTheory.CompRat.FixedConst.mem_range_of_fixed (K := K) L.val (r := r) (IsIntegral.of_finite K r) hf`. Conclude with `⟨y, congrArg Subtype.val hy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_of_pow_of_fixed {K : Type} [Field K] [Countable K] [CharZero K] (f : K →+* ℂ) {z : ℂ} {n : ℕ} (hn : n ≠ 0)
     (h : z ^ n = 1) (hf : ∀ τ : ℂ ≃+* ℂ, (∀ x, τ (f x) = f x) → τ z = z) : ∃ y, f y = z := by
@@ -47,23 +47,21 @@ theorem mem_range_of_pow_of_fixed {K : Type} [Field K] [Countable K] [CharZero K
   exact ⟨y, congrArg Subtype.val hy⟩
 
 /- English proof (translation)
-Take `⟨hsplit, hdisj, hopen, hanti, hzk, hram, -⟩` from `hψ`. Establish `hadm : (ρ.B i j b).admitted (half (ρ.ch i) Q)` using `GlobalTheory.T.chosenPlaces_admissible_goodSetup D D.nd D.ntw ρ hρ i j b Q hsplit hdisj`. Set `g : (D.ntw.Ok i k)ˣ →* Circle` to `unitPart.comp (Units.map f.toMonoidHom)`. Establish `hkey : charOf ρ.rc f ψ = ρ.rc.pull (g.comp ψ)`. Rewrite using `[Recip.pull_comp _ hopen]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hz : D.ntw.zk i k ^ (D.ntw.l i ^ k) = 1` using `Units.ext (by simpa using (D.ntw.zk_prim i k).pow_eq_one)`. Establish `hpow : ∀ σ, ψ σ ^ (D.ntw.l i ^ k) = 1`. Introduce `σ`. Take `⟨m, hm⟩` from `hzk σ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hm, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hz, one_zpow]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (⟨half (ρ.ch i) Q, charOf ρ.rc f ψ, resOf (charOf ρ.rc f ψ)⟩ : Twist D Circle).Good`. Rewrite using `[hkey]`. Use `GlobalTheory.T.artinPullback_isGoodTwist_of_anticyclotomic_tame D D.nd D.ntw ρ.rc hρ.rc Circle (g.comp ψ) (D.ntw.l i) (D.ntw.lPrime i).out (fun σ => ⟨k, by rw [MonoidHom.comp_apply, ← map_pow, hpow, map_one]⟩) ?_ ?_ _ ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Subgroup.isOpen_mono (H₁ := ψ.ker) (fun x hx => by`. Rewrite `hx`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[MonoidHom.comp_apply, hx, map_one]) hopen`. Introduce `x x' hx show g (ψ x') = (g (ψ x))⁻¹`. Rewrite using `[hanti x x' hx, map_inv]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P, -, h2, h3⟩` from `hadm.1.split`. Conclude with `h3.mono (Finset.subset_union_right.trans h2)`. Introduce `P hP hl`. Conclude with `Finset.disjoint_left.1 hdisj (mem_half.1 hP).1 (D.ntw.twistExcludedPlaces_contains_residueChar i (show P ∈ placesOver D.host.E (D.ntw.l i) from hl))`. Introduce `v hv hnc B hB σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hvQ : v ∉ Q`. Introduce `hvQ`. Distinguish the cases in `hc : v ∈ ρ.ch i`. Conclude with `hv (mem_half.2 ⟨hvQ, hc⟩)`. Take `⟨v', hv'⟩` from `GlobalTheory.TwistDet.exists_isConjPl v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hv'Q : v' ∈ Q` using `GlobalTheory.TwistGood.ramExactly_conj D.ntw ψ _ hanti hram v hvQ v' hv'`. Establish `hne` using `ne_of_split (hsplit v hvQ) hv'`. Establish `hv'c : v' ∈ ρ.ch i`. Assume the negation of the conclusion as `h`. Conclude with `hc (((hρ.ch i).pair v v' hv' hne).2 h)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hnc v' (mem_half.2 ⟨hv'Q, hv'c⟩) (GlobalTheory.TwistDet.isConjPl_symm hv')`. Establish `h1 : ψ σ = 1`. Assume the negation of the conclusion as `h`. Conclude with `hvQ ((hram v B hB).1 ⟨σ, hσ, h⟩)`. Rewrite using `[MonoidHom.comp_apply, h1, map_one]`.
-
-Introduce `x`. Take `⟨σ, hσ⟩` from `ρ.rc.exists_sym x`. Conclude with `⟨σ, charOf_eq ρ.rc f hopen hσ (pow_ne_zero _ (D.ntw.lPrime i).out.ne_zero) (hpow σ), _, pow_ne_zero _ (D.ntw.lPrime i).out.ne_zero, hpow σ⟩`.
+A detailed English derivation is pending.
 -/
 theorem twistOf_good {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (k : ℕ) (Q : Finset (Pl D.host.E))
     (ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ) (hψ : TwOK i k Q ψ) (f : D.ntw.Ok i k →+* ℂ) :
@@ -118,11 +116,11 @@ theorem twistOf_good {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin 
       pow_ne_zero _ (D.ntw.lPrime i).out.ne_zero, hpow σ⟩
 
 /- English proof (translation)
-Use `set ψ := Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i) with hψ`. Establish `hopen : IsOpen (ψ.ker : Set (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om))`. Establish `: ψ.ker = (D.ntw.delta i).ker`. Use extensionality with `σ`. Apply the tactic sequence `cases b <;> simp [hψ, Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, MonoidHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `D.ntw.delta_open i`. Use `haveI : ψ.ker.FiniteIndex := @Subgroup.finiteIndex_of_finite_quotient _ _ _ (Subgroup.quotient_finite_of_isOpen _ hopen)`. Establish `hpow : ∀ σ, ψ σ ^ ψ.ker.index = 1` using `fun σ => by`. Rewrite using `[← map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ψ.ker.pow_index_mem σ`. Take `⟨σ, hσ⟩` from `ρ.rc.exists_sym x`. Use `⟨σ, ?_, _, Subgroup.FiniteIndex.index_ne_zero, hpow σ⟩` and prove the remaining obligations. Rewrite using `[hρ.delta i j b]`. Conclude with `charOf_eq _ _ hopen hσ Subgroup.FiniteIndex.index_ne_zero (hpow σ)`.
+A detailed English derivation is pending.
 -/
 theorem de_chi_eq_pow {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (x : (AE D)ˣ) :
     ∃ σ, (((ρ.B i j b).de.chi x : Circle) : ℂ) = ρ.eO i b (algebraMap (D.ntw.O0 i) (D.ntw.O i)
@@ -145,11 +143,9 @@ theorem de_chi_eq_pow {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin
 variable {X : RealSide D} {S : NX.RatDat D.ntw} {YS : NX.NExpRealS X.R X.cG S} (Z : ExportTie YS X.geo.v₀)
 
 /- English proof (translation)
-Take `⟨σ, hσ, n, hn, hp⟩` from `de_chi_eq_pow Z.good i j b x`. Establish `hz : (((Z.ρ.B i j b).de.chi x : Circle) : ℂ) ^ n = 1`. Rewrite using `[hσ, ← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, hp, Units.val_one, map_one, map_one]`. Use `haveI : Countable D.what₂.LL := (Module.finBasis ℚ D.what₂.LL).equivFun.toEquiv.injective.countable`. Take `⟨y, hy⟩` from `mem_range_of_pow_of_fixed (embLL0 D) hn hz fun τ hτ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hσ]`. Use `GlobalTheory.DeltaFixed.aut_fixes_delta_values Z.ρ Z.good i j b (X.R.C.delAt (D.ntw.l i)) (Z.pin.delta i j b) ?_ τ hτ σ` and prove the remaining obligations. Unfold `Formalism.L2.Host.CharFrame.delAt`. Use `split_ifs`. Use `exacts [hX.vals.del', hX.vals.del]`.
-
-Conclude with `mem_intLL_of_pow hn hz ⟨y, hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem de_mem_intLL (hX : FieldOk X) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (x : (AE D)ˣ) :
     (((Z.ρ.B i j b).de.chi x : Circle) : ℂ) ∈ intLL D := by
@@ -166,9 +162,9 @@ theorem de_mem_intLL (hX : FieldOk X) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) 
   exact mem_intLL_of_pow hn hz ⟨y, hy⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Z.good.Pg i j b PP hPP`. Establish `hw : w ^ (D.host.g k - 1) = 1`. Rewrite using `[← card_residueField_of_type hk, ← Nat.card_units]`. Conclude with `pow_card_eq_one'`. Establish `hz : (((Z.ρ.B i j b).G.muC PP w : ℂˣ) : ℂ) ^ (D.host.g k * (D.host.g k - 1)) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, pow_mul, ← Units.val_pow_eq_pow_val, ← map_pow, hw, map_one, Units.val_one, one_pow]`. Take `⟨x, hx⟩` from `hX.roots k _ hz`. Establish `h2` using `(D.host.g_prime k).two_le`. Conclude with `mem_intLL_of_pow (Nat.mul_ne_zero (by omega) (by omega)) hz ⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem muC_mem_intLL (hX : FieldOk X) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) {PP : Pl D.host.E}
     (hPP : PP ∈ (Z.ρ.B i j b).G.Pg) (w : (kP PP)ˣ) : (((Z.ρ.B i j b).G.muC PP w : ℂˣ) : ℂ) ∈ intLL D := by
@@ -183,17 +179,15 @@ theorem muC_mem_intLL (hX : FieldOk X) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
   exact mem_intLL_of_pow (Nat.mul_ne_zero (by omega) (by omega)) hz ⟨x, hx⟩
 
 /- English proof (translation)
-Introduce `D X X0 Y S YS Z c w j H ι hι x`. Take `⟨hg, hv⟩` from `twistOf_good Z.good (c.twI w) j (c.sd w) (c.k' w) (c.Q w) (chr c w) H.ok (viaOk ι)`. Establish `htw : ∀ z, (((twVia Z.ρ ι).chi z : Circle) : ℂ) ∈ intLL D` using `fun z => by`. Take `⟨σ, hσ, n, hn, hp⟩` from `hv z`. Take `⟨y, hy⟩` from `H.val σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `mem_intLL_of_pow hn ?_ ⟨y, ?_⟩` and prove the remaining obligations. Use `(congrArg (· ^ n) hσ).trans ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hp, Units.val_one, map_one]`. Rewrite using `[← hι, hy]`. Conclude with `hσ.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hext : ∀ g : G0 (Z.ρ.B (c.twI w) j (c.sd w)).G.Pg (Wc D j).rank, ((ext1 (Z.ρ.B (c.twI w) j (c.sd w)).G.P.H (⇑(Z.ρ.B (c.twI w) j (c.sd w)).G.P.chi) g : ℂˣ) : ℂ) ∈ intLL D` using `fun g => by`. Unfold `ext1`. Use `split_ifs with h`. Take `⟨g', rfl⟩` from `(Z.ρ.eG (c.twI w) j (c.sd w)).surjective g`. Take `⟨g₀, rfl⟩` from `(X.R.eG.trans X.cG).surjective g'`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : X.cG (X.R.eG g₀) ∈ D.nexp.U` using `((Z.tie (c.twI w) j (c.sd w)).U_eq _).1 h`. Establish `e1` using `((Z.tie (c.twI w) j (c.sd w)).psiU_eq ⟨_, hu⟩ h).trans (H.psi_eq (c.twI w) (c.sd w) ⟨g₀, (H.U_eq g₀).1 hu⟩ hu)`. Use `mem_intLL_of_pow (n := Nat.card (Z.ρ.B (c.twI w) j (c.sd w)).G.P.H) Nat.card_pos.ne' ?_ ⟨_, (map_inv₀ _ _).trans e1.symm⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]`. Conclude with `one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Establish `e : (baseOf Z c w j).levLam (twVia Z.ρ ι) x = levFn (baseOf Z c w j).F.βS ((baseOf Z c w j).levS (twVia Z.ρ ι)) (Formalism.UG.bc (Lev.swapAE D) x.1.1)`. Unfold `Base.levLam Lev.levCharAfE`. Both sides reduce to the same expression. Rewrite using `[e]`. Simplify using `only [levFn, Base.levS, Units.val_mul, Units.coe_prod]`.
-
-Use `mul_mem (mul_mem (hext _) (prod_mem fun PP hPP => prod_mem fun _ _ => muC_mem_intLL Z H.field _ j _ hPP _)) (prod_mem fun PP _ => ?_)` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, Units.val_mul]`. Conclude with `mul_mem (locC_mem (Z.good.base _ j _).de (de_mem_intLL Z H.field _ j _) PP _) (locC_mem (t := twVia Z.ρ ι) hg htw PP _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levLam_twVia_mem_intLL : ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),
   ∀ ι : KE c w →+* ℂ, (∀ x, ι (c.embW w x) = D.what₂.embLL x) →

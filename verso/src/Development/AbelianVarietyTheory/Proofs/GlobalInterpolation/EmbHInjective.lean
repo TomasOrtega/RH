@@ -20,22 +20,22 @@ def Dom (S : Finset (HeightOneSpectrum (𝓞 E))) (M₁ M₂ : Submodule (𝓞 E
 def Full (M : Submodule (𝓞 E) W) : Prop := ∀ x : W, ∃ n : ℕ, 0 < n ∧ (n : 𝓞 E) • x ∈ M
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => le_rfl, fun _ _ => le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Dom.refl (S : Finset (HeightOneSpectrum (𝓞 E))) (M : Submodule (𝓞 E) W) : Dom S M M :=
   ⟨fun _ _ => le_rfl, fun _ _ => le_rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun P hP => (h'.1 P hP).trans (h.1 P hP), fun Q hQ => (h.2 Q hQ).trans (h'.2 Q hQ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Dom.trans {S : Finset (HeightOneSpectrum (𝓞 E))} {M₁ M₂ M₃ : Submodule (𝓞 E) W} (h : Dom S M₁ M₂) (h' : Dom S M₂ M₃) :
     Dom S M₁ M₃ :=
   ⟨fun P hP => (h'.1 P hP).trans (h.1 P hP), fun Q hQ => (h.2 Q hQ).trans (h'.2 Q hQ)⟩
 
 /- English proof (translation)
-Introduce `x`. Take `⟨n, hn, hx⟩` from `h x`. Take `⟨m, hm, hy⟩` from `h' x`. Use `⟨n * m, Nat.mul_pos hn hm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.smul_mem _ hx`. Rewrite using `[Nat.cast_mul, mul_smul]`. Conclude with `M'.smul_mem _ hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Full.inf {M M' : Submodule (𝓞 E) W} (h : Full M) (h' : Full M') : Full (M ⊓ M') := by
   intro x
@@ -46,13 +46,13 @@ theorem Full.inf {M M' : Submodule (𝓞 E) W} (h : Full M) (h' : Full M') : Ful
   · rw [Nat.cast_mul, mul_smul]; exact M'.smul_mem _ hy
 
 /- English proof (translation)
-Introduce `_ ⟨s, hs, hx⟩` and use `⟨s, hs, h hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem localization_mono (Q : HeightOneSpectrum (𝓞 E)) {M M' : Submodule (𝓞 E) W} (h : M ≤ M') :
     localization₂ Q.asIdeal M ≤ localization₂ Q.asIdeal M' := fun _ ⟨s, hs, hx⟩ => ⟨s, hs, h hx⟩
 
 /- English proof (translation)
-Use `le_antisymm ?_ fun x hx => ⟨1, Q.asIdeal.primeCompl.one_mem, by rwa [one_smul]⟩` and prove the remaining obligations. Introduce and unpack `x ⟨s, hs, t, ht, hx⟩`. Conclude with `⟨t * s, Q.asIdeal.primeCompl.mul_mem ht hs, by rwa [mul_smul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem localization_localization₂ (Q : HeightOneSpectrum (𝓞 E)) (M : Submodule (𝓞 E) W) :
     localization₂ Q.asIdeal (localization₂ Q.asIdeal M) = localization₂ Q.asIdeal M := by
@@ -61,9 +61,9 @@ theorem localization_localization₂ (Q : HeightOneSpectrum (𝓞 E)) (M : Submo
   exact ⟨t * s, Q.asIdeal.primeCompl.mul_mem ht hs, by rwa [mul_smul]⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Establish `hne : M.comap (LinearMap.toSpanSingleton (𝓞 E) W x) ≠ ⊤` using `fun e => hx (by`. Establish `: (1 : 𝓞 E) ∈ M.comap (LinearMap.toSpanSingleton (𝓞 E) W x)` using `e ▸ Submodule.mem_top`. Simplify using `using this)`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsx⟩` from `h ⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)⟩`. Conclude with `hs (hle (by simpa using hsx))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_locP {M : Submodule (𝓞 E) W} {x : W} (h : ∀ Q : HeightOneSpectrum (𝓞 E), x ∈ localization₂ Q.asIdeal M) : x ∈ M := by
   by_contra hx
@@ -75,23 +75,19 @@ theorem mem_of_locP {M : Submodule (𝓞 E) W} {x : W} (h : ∀ Q : HeightOneSpe
   exact hs (hle (by simpa using hsx))
 
 /- English proof (translation)
-Establish `key : ∀ I : Ideal (𝓞 E), I ≠ ⊥ → ∃ J₁ J₂ : Ideal (𝓞 E), I = J₁ * J₂ ∧ (∀ P ∈ S, ¬ J₂ ≤ P.asIdeal) ∧ ∀ Q : HeightOneSpectrum (𝓞 E), Q ∉ S → ¬ J₁ ≤ Q.asIdeal`. Introduce `I`. Proceed by induction on `I using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => intro h`. Conclude with `absurd rfl h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `h₂ u hu`. Introduce `_`. Rewrite `hu` using `[Ideal.isUnit_iff]`. Conclude with `⟨⊤, ⊤, by simp [hu], fun P _ h => P.isPrime.ne_top (top_le_iff.1 h), fun P _ h => P.isPrime.ne_top (top_le_iff.1 h)⟩`. Consider the case `h₃ I p hI hp ih`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_`. Take `⟨J₁, J₂, rfl, h1, h2⟩` from `ih hI`. Set `P₀ : HeightOneSpectrum (𝓞 E)` to `⟨p, Ideal.isPrime_of_prime hp, hp.ne_zero⟩`. Establish `hmax : ∀ Q : HeightOneSpectrum (𝓞 E), p ≤ Q.asIdeal → Q = P₀` using `fun Q h => HeightOneSpectrum.ext (P₀.isMaximal.eq_of_le Q.isPrime.ne_top h).symm`. Distinguish the cases in `hS : P₀ ∈ S`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p * J₁, J₂, by ring, h1, fun Q hQ h => ?_⟩` and prove the remaining obligations. Break down `(Q.isPrime.mul_le).1 h with h | h` into its components or cases. Conclude with `hQ (hmax Q h ▸ hS)`. Conclude with `h2 Q hQ h`. Use `⟨J₁, p * J₂, by ring, fun Q hQ h => ?_, h2⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `(Q.isPrime.mul_le).1 h with h | h` into its components or cases. Conclude with `hS (hmax Q h ▸ hQ)`. Conclude with `h1 Q hQ h`. Take `⟨J₁, J₂, hJ, h1, h2⟩` from `key (Ideal.span {a}) (by simpa using ha)`. Establish `hsup : J₁ ⊔ J₂ = ⊤`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Set `Q : HeightOneSpectrum (𝓞 E)` to `⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)⟩`. Distinguish the cases in `hQ : Q ∈ S`. Conclude with `h1 Q hQ (le_sup_right.trans hle)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h2 Q hQ (le_sup_left.trans hle)`. Take `⟨u, hu, r, hr, hur⟩` from `Submodule.mem_sup.1 (hsup ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ J₁ ⊔ J₂)`. Use `⟨r, fun P hP => ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hs'⟩` from `SetLike.not_le_iff_exists.1 (h1 P hP)`. Use `⟨s, hs', Ideal.mem_span_singleton.1 ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hJ, show s * (r - 1) = (-u) * s by rw [← hur]; ring]`. Conclude with `Ideal.mul_mem_mul (J₁.neg_mem hu) hs`. Take `⟨s, hs, hs'⟩` from `SetLike.not_le_iff_exists.1 (h2 Q hQ)`. Use `⟨s, hs', Ideal.mem_span_singleton.1 ?_⟩` and prove the remaining obligations. Rewrite using `[hJ]`.
-
-Conclude with `Ideal.mul_mem_mul hs hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idem (S : Finset (HeightOneSpectrum (𝓞 E))) {a : 𝓞 E} (ha : a ≠ 0) :
     ∃ r : 𝓞 E, (∀ P ∈ S, ∃ s, s ∉ P.asIdeal ∧ a ∣ s * (r - 1)) ∧ ∀ Q : HeightOneSpectrum (𝓞 E), Q ∉ S → ∃ s, s ∉ Q.asIdeal ∧ a ∣ s * r := by
@@ -142,11 +138,9 @@ theorem exists_idem (S : Finset (HeightOneSpectrum (𝓞 E))) {a : 𝓞 E} (ha :
     exact Ideal.mul_mem_mul hs hr
 
 /- English proof (translation)
-Take `⟨n, hn, hx⟩` from `hM x`. Take `⟨r, h1, h2⟩` from `exists_idem S (a := (n : 𝓞 E)) (by exact_mod_cast hn.ne')`. Use `⟨r • x, fun P hP => ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, k, hk⟩` from `h1 P hP`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show s • (r • x - x) = (s * (r - 1)) • x by rw [mul_smul, sub_smul, one_smul], hk, mul_comm, mul_smul]`. Conclude with `M.smul_mem _ hx`. Take `⟨s, hs, k, hk⟩` from `h2 Q hQ`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_smul, hk, mul_comm, mul_smul]`.
-
-Conclude with `M.smul_mem _ hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Full.approx {M : Submodule (𝓞 E) W} (hM : Full M) (S : Finset (HeightOneSpectrum (𝓞 E))) (x : W) :
     ∃ t : W, (∀ P ∈ S, t - x ∈ localization₂ P.asIdeal M) ∧ ∀ Q : HeightOneSpectrum (𝓞 E), Q ∉ S → t ∈ localization₂ Q.asIdeal M := by
@@ -163,13 +157,13 @@ theorem Full.approx {M : Submodule (𝓞 E) W} (hM : Full M) (S : Finset (Height
     exact M.smul_mem _ hx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Q.asIdeal.primeCompl.one_mem, by rwa [one_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_localization_of_mem (Q : HeightOneSpectrum (𝓞 E)) {M : Submodule (𝓞 E) W} {x : W} (hx : x ∈ M) : x ∈ localization₂ Q.asIdeal M :=
   ⟨1, Q.asIdeal.primeCompl.one_mem, by rwa [one_smul]⟩
 
 /- English proof (translation)
-Use `le_antisymm (le_inf (localization_mono Q inf_le_left) (localization_mono Q inf_le_right)) ?_` and prove the remaining obligations. Introduce and unpack `x ⟨⟨s, hs, hx⟩, t, ht, hy⟩`. Conclude with `⟨s * t, Q.asIdeal.primeCompl.mul_mem hs ht, by rw [mul_comm, mul_smul]; exact M.smul_mem _ hx, by rw [mul_smul]; exact M'.smul_mem _ hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem localization_inf (Q : HeightOneSpectrum (𝓞 E)) (M M' : Submodule (𝓞 E) W) :
     localization₂ Q.asIdeal (M ⊓ M') = localization₂ Q.asIdeal M ⊓ localization₂ Q.asIdeal M' := by
@@ -179,21 +173,21 @@ theorem localization_inf (Q : HeightOneSpectrum (𝓞 E)) (M M' : Submodule (�
     by rw [mul_smul]; exact M'.smul_mem _ hy⟩
 
 /- English proof (translation)
-Establish `hmem : ∀ y : W, y ∈ twist₂ M c e ↔ ∀ Q' : HeightOneSpectrum (𝓞 E), ((c : E) ^ e Q')⁻¹ • y ∈ localization₂ Q'.asIdeal M` using `fun y => by`. Simplify using `[twist₂, Submodule.mem_iInf]`. Establish `hcE : (c : E) ≠ 0` using `by exact_mod_cast hc.ne'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hx⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← localization_localization₂]`. Conclude with `⟨s, hs, by rw [smul_comm]; exact (hmem _).1 hx Q⟩`. Introduce and unpack `⟨s, hs, hx⟩`. Take `⟨p, hp, hp0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot Q.ne_bot`. Take `⟨r, h1, h2⟩` from `exists_idem {Q} (a := (c : 𝓞 E) ^ 2 * p) (mul_ne_zero (pow_ne_zero _ (by exact_mod_cast hc.ne')) hp0)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, k, hk⟩` from `h1 Q (Finset.mem_singleton_self Q)`. Establish `hr : r ∉ Q.asIdeal` using `fun hr => by`. Establish `h3 : t * (r - 1) ∈ Q.asIdeal` using `hk ▸ Q.asIdeal.mul_mem_right _ (Q.asIdeal.mul_mem_left _ hp)`. Establish `h4` using `(Q.isPrime.mem_or_mem h3).resolve_left ht`. Conclude with `Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using Q.asIdeal.sub_mem hr h4))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r * s, Q.asIdeal.primeCompl.mul_mem hr hs, (hmem _).2 fun Q' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hQ : Q' = Q`. Substitute `hQ` using the available equality. Use `mem_localization_of_mem _ ?_` and prove the remaining obligations. Rewrite using `[smul_comm, mul_smul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `M.smul_mem _ hx`. Take `⟨t', ht', k', hk'⟩` from `h2 Q' (by simpa using hQ)`. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ 2 - e Q' + e Q by have := he Q; have := he Q'; omega)`. Use `⟨t', ht', ?_⟩` and prove the remaining obligations. Establish `h5 : t' • ((c : E) ^ e Q')⁻¹ • (r * s) • x = ((c : 𝓞 E) ^ m * (p * k')) • s • ((c : E) ^ e Q)⁻¹ • x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `congrArg (algebraMap (𝓞 E) E) hk'`. Establish `h7 : (c : E) ^ m = (c : E) ^ 2 * ((c : E) ^ e Q')⁻¹ * (c : E) ^ e Q`. Rewrite using `[← zpow_natCast, ← hm, zpow_add₀ hcE, zpow_sub₀ hcE, div_eq_mul_inv, zpow_ofNat]`. Simplify using `only [map_mul, map_pow, map_natCast] at h6`. Simplify using `only [← algebraMap_smul E (_ : 𝓞 E), smul_smul, map_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[h7]`. Use `zpow_ne_zero (e Q) hcE` as an intermediate fact. Use `zpow_ne_zero (e Q') hcE` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(algebraMap (𝓞 E) E s) * h6`. Rewrite using `[h5]`. Conclude with `M.smul_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_localization_twist [Module E W] [IsScalarTower (𝓞 E) E W] (M : Submodule (𝓞 E) W) {c : ℕ} (hc : 0 < c)
     {e : HeightOneSpectrum (𝓞 E) → ℤ} (he : ∀ Q, -1 ≤ e Q ∧ e Q ≤ 1) (Q : HeightOneSpectrum (𝓞 E)) (x : W) :
@@ -239,7 +233,7 @@ theorem mem_localization_twist [Module E W] [IsScalarTower (𝓞 E) E W] (M : Su
       exact M.smul_mem _ hx
 
 /- English proof (translation)
-Unfold `expS`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expS_bound [StarRing E] (S : Finset (HeightOneSpectrum (𝓞 E))) (Q : HeightOneSpectrum (𝓞 E)) :
     -1 ≤ expS S Q ∧ expS S Q ≤ 1 := by
@@ -280,14 +274,14 @@ def Moves : Prop :=
 end Ambient
 
 /- English proof (translation)
-Introduce `x y`. Simplify using `[Formalism.L2.Ker.HV, map_sum, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isHerm_HV {ι : Type} [Fintype ι] {a b : ℕ} (sc : ℝ) : IsHerm (Formalism.L2.Ker.HV (ι := ι) (a := a) (b := b) sc) := by
   intro x y
   simp [Formalism.L2.Ker.HV, map_sum, mul_comm]
 
 /- English proof (translation)
-Introduce `x y h`. Take `⟨τ⟩` from `‹Nonempty ι›`. Use `LinearMap.pi_ext' fun j => LinearMap.ext_ring (funext fun i => ?_)` and prove the remaining obligations. Use `congrFun (congrFun (congrFun h τ) i) j` as an intermediate fact. Conclude with `(emb τ).injective (by simpa [embH, hδ] using this)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem embH_injective {E : Type} [Field E] [NumberField E] [StarRing E] {ι : Type} [Fintype ι] [Nonempty ι] {a b : ℕ}
     (emb : ι → E →+* ℂ) {δ : ℂ} (hδ : δ ≠ 0) : Function.Injective (embH (a := a) (b := b) emb δ) := by

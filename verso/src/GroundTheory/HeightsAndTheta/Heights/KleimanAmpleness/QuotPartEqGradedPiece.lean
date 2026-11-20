@@ -15,9 +15,9 @@ open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (cechHc cechZc cec
 noncomputable section
 
 /- English proof (translation)
-Establish `hset : {p : MvPolynomial (Σ k, ι k) F | (∀ k, 0 ≤ m k) ∧ IsMultiHomog p (fun k => (m k).toNat)} = (weightedHomogeneousSubmodule F (NumbersDVR.blockWeight ι) (fun k => (m k).toNat) : Set _)`. Use extensionality with `p`. Simplify using `only [Set.mem_ofPred_eq, SetLike.mem_coe, mem_weightedHomogeneousSubmodule, hm, implies_true, true_and]`. Conclude with `(Bridge.isMultiHomog_iff p _).symm`. Rewrite using `[quotPart, hset, NumbersDVR.gradedPiece]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `conv_rhs => rw [← Submodule.span_eq (weightedHomogeneousSubmodule F _ _), Submodule.map_span]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem quotPart_eq_gradedPiece {F : Type} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
     [∀ k, Fintype (ι k)] (V : Ideal (MvPolynomial (Σ k, ι k) F)) (m : K → ℤ) (hm : ∀ k, 0 ≤ m k) :
@@ -32,9 +32,7 @@ theorem quotPart_eq_gradedPiece {F : Type} [Field F] {K : Type} [Fintype K] [Dec
   rfl
 
 /- English proof (translation)
-Introduce `d hd k`. Rewrite `hd` using `[mem_support_iff, coeff_one]`. Use `split_ifs at hd with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `absurd rfl hd`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_one {S : Type} [CommRing S] {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] :
     IsMultiHomog (1 : MRingOver S ι) 0 := by
@@ -47,23 +45,21 @@ theorem isMultiHomog_one {S : Type} [CommRing S] {K : Type} [Fintype K] {ι : K 
   · exact absurd rfl hd
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ _ V hV`. Establish `hV' : IsMultiHomogIdeal V` using `(Bridge.isMultiHomogIdeal_iff V).mp hV`. Establish `hG : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.IsMGraded F ι (quotPart F V)` using `HilbertSamuel.QuotPartGraded.proof F K ι V hV'`. Take `⟨-, ⟨c₁, h₁⟩, ⟨c₂, h₂⟩, -⟩` from `hS F K ι (MvPolynomial (Σ k, ι k) F ⧸ V) (quotPart F V) inferInstance inferInstance hG`. Take `⟨c₃, h₃⟩` from `hI F K ι (MvPolynomial (Σ k, ι k) F ⧸ V) (quotPart F V) inferInstance inferInstance hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [eventually_ge_atTop (fun _ : K => max (max c₁ c₂) (max c₃ 0))] with m hm`. Establish `hk : ∀ k, max (max c₁ c₂) (max c₃ 0) ≤ m k` using `fun k => hm k`. Use `⟨fun i hi => h₁ m i hi fun k => le_trans (by omega) (hk k), ?_⟩` and prove the remaining obligations. Set `Z` to `cechZc ι (quotPart F V) m 0`. Establish `hmem : ∀ x ∈ quotPart F V m, (fun _ => LocalizedModule.mk x 1 : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.CechC F ι (MvPolynomial (Σ k, ι k) F ⧸ V) 0) ∈ Z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Use `HilbertSamuel.GenTwistGenerated.mem_cechZc_zero (fun J => ?_) (HilbertSamuel.GenTwistGenerated.cechD_const x)` and prove the remaining obligations. Use `Submodule.subset_span ⟨x, 1, 0, isMultiHomog_one, ?_, rfl⟩` and prove the remaining obligations. Use `hx using 2` and compare the differences between its conclusion and the goal. Use extensionality with `k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Set `φ : quotPart F V m →ₗ[F] Z` to `{ toFun := fun x => ⟨fun _ => LocalizedModule.mk x.1 1, hmem x.1 x.2⟩ map_add' := fun x y => by`. Use extensionality with `I`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := fun r x => by`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `I`. Simplify using `[LocalizedModule.smul'_mk] }`. Establish `hinj : Function.Injective φ`. Introduce `x y hxy`. Establish `hsub : x.1 - y.1 = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h₃ m (fun k => le_trans (by omega) (hk k)) _ (Submodule.sub_mem _ x.2 y.2) fun I => ?_` and prove the remaining obligations. Establish `h` using `congrFun (congrArg Subtype.val hxy) I`. Express the relevant statement in the definitionally equal form `LocalizedModule.mk x.1 1 = LocalizedModule.mk y.1 1 at h`. Express the relevant statement in the definitionally equal form `LocalizedModule.mkLinearMap (cellMon F I.1) _ (x.1 - y.1) = 0`. Rewrite using `[map_sub]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `sub_eq_zero.mpr h`. Conclude with `Subtype.ext (sub_eq_zero.mp hsub)`. Establish `hsurj : Function.Surjective φ`. Introduce and unpack `⟨z, hz⟩`. Take `⟨x, hx, hzx⟩` from `h₂ m (fun k => le_trans (by omega) (hk k)) z hz`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨⟨x, hx⟩, Subtype.ext (funext fun I => (hzx I).symm)⟩`. Establish `hbot : (cechBc ι (quotPart F V) m 0).comap (cechZc ι (quotPart F V) m 0).subtype = ⊥`. Rewrite using `[cechBc, Submodule.comap_bot, Submodule.ker_subtype]`. Establish `e2 : cechHc ι (quotPart F V) m 0 ≃ₗ[F] Z` using `Submodule.quotEquivOfEqBot _ hbot`. Establish `hm0 : ∀ k, 0 ≤ m k` using `fun k => le_trans (by omega) (hk k)`.
-
-Rewrite using `[e2.finrank_eq, ← (LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩).finrank_eq, NumbersDVR.hilbFn, if_pos hm0, quotPart_eq_gradedPiece V m hm0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MultiSerre.proof (hS : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.TheoremSStatement) (hI : SectionMapInj.Statement) :
     MultiSerre.Statement := by

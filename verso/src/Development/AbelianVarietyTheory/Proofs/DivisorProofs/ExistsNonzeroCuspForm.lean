@@ -46,11 +46,11 @@ noncomputable section
 namespace GlobalTheory.CovTop.LowNonzero
 
 /- English proof (translation)
-Introduce `τ k hk`. Establish `a` using `(gaps_of_wtBig _ _ _ P hB P.u₁ (by simp)).1 τ k hk`. Establish `hg` using `hB.gaps τ k hk`. Establish `b` using `(P.gap_rem τ k).1`. Establish `c : gap (GlobalTheory.FlatLine.parWt Dw w τ) k = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[gap, GlobalTheory.FlatLine.parWt]`. Establish `hC0 : (0 : ℤ) ≤ (((FlagTan.dimFlag Dw + 1).choose 2 : ℕ) : ℤ)` using `Int.natCast_nonneg _`. Establish `hD0 : (0 : ℤ) ≤ (FlagTan.dimFlag Dw : ℤ)` using `Int.natCast_nonneg _`. Establish `hp0 : (0 : ℤ) ≤ (Dw.p : ℤ)` using `Int.natCast_nonneg _`. Establish `hq0 : (0 : ℤ) ≤ (Dw.q : ℤ)` using `Int.natCast_nonneg _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `mul_nonneg hD0 (le_trans zero_le_one a)`. Establish `e2` using `mul_nonneg (Int.natCast_nonneg j) (le_trans zero_le_one a)`. Simplify using `only [WtPar.wt, WtPar.uc, WtPar.u₂, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, gap_add, gap_sub, gap_nsmul, c]`. Move the coercions through the operations in `at hg ⊢`. Use polynomial arithmetic with `[mul_nonneg hD0 hC0, mul_nonneg hD0 hp0, mul_nonneg hD0 hq0, mul_nonneg hD0 hD0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem gapGe_wt_add_parWt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} (P : WtPar Dw) (hB : WtBig P) (j : ℕ) (w : Psi H → ℤ) :
@@ -74,9 +74,9 @@ theorem gapGe_wt_add_parWt {E : Type} [Field E] [NumberField E] [IsCMField E] {H
 open GlobalTheory.CechPic GlobalTheory.Vanishing GlobalTheory.HermTools GlobalTheory.Adelic GlobalTheory.Vanishing.H0 ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.GeometryOfNumbersTheory in
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hU`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `h y hy ((mem_support_baseIdeal hB W y).2 fun s hs hy' => ?_)` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart hB y`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu` using `(isUnit_ger_iff _ hi).2 hy'`. Rewrite `hu` using `[ger_toSec, hne s hs, map_zero]`. Conclude with `not_isUnit_zero hu`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_noBase {k : Type} [Field k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {B : LB Y} {hB : B.IsLB}
     {W : Submodule k (H0 p B ⊤)} {U : Y.Opens} (h : NoBase hB W U) (hU : (U : Set Y).Nonempty) : ∃ f ∈ W, f ≠ 0 := by
@@ -90,9 +90,9 @@ theorem ne_zero_of_noBase {k : Type} [Field k] {Y : Scheme.{0}} {p : Y ⟶ Sp k}
   exact not_isUnit_zero hu
 
 /- English proof (translation)
-Establish `hP1` using `GlobalTheory.T.stronger_published_hypotheses_imply hP`. Take `⟨TF⟩` from `GlobalTheory.T.toroidal_flag_nonempty hP1 _ _ _ _ Y.d.Xo₂ Y.d.c₂ hD`. Establish `hfree` using `GlobalTheory.T.toroidal_integral_weight_section hP1 hG hQ hP.q15 hP.q16 hS hT hN _ _ _ _ _ _ TF Z _ Y.U hY.geo hD _ hla ⟨GlobalTheory.T.cuspForms_extend_vanish_compactifiedFlagSpace _ _ _ Y _ _ hY hf Z TF _, vanBd_le_space _ _ _ Y _ _ hY hf Z TF _⟩`. Use `haveI := (GlobalTheory.T.flagSpace_component_smooth_projective_connected _ _ _ _ _ _ TF Z hY.geo).2.2`. Use `haveI : ConnectedSpace (Y₀ TF.X Z) := GeometricallyConnected.connectedSpace_of_subsingleton (str₀ TF.X Z)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, hs0⟩` from `ne_zero_of_noBase hfree (dense_U₀ TF.X Z).nonempty`. Use `⟨(ofSpace TF.X Z Y.U _ ⟨s, hs⟩).1, (ofSpace TF.X Z Y.U _ ⟨s, hs⟩).2, fun h0 => hs0 ?_⟩` and prove the remaining obligations. Establish `h1 : ofSpace TF.X Z Y.U _ ⟨s, hs⟩ = 0` using `Subtype.ext h0`. Conclude with `congrArg Subtype.val (ofSpace_injective TF.X Z Y.U _ (h1.trans (map_zero _).symm))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_cusp_ne_zero (hP : Hypotheses2) (hG : GlobalTheory.Published.GrothendieckDeformation) (hQ : GlobalTheory.HSCore.Quoted)
     (hS : GlobalTheory.Published.SiegelToroidalIntegral) (hT : GlobalTheory.Published.ToroidalChartsForFan)
@@ -113,13 +113,13 @@ theorem exists_cusp_ne_zero (hP : Hypotheses2) (hG : GlobalTheory.Published.Grot
   exact congrArg Subtype.val (ofSpace_injective TF.X Z Y.U _ (h1.trans (map_zero _).symm))
 
 /- English proof (translation)
-Introduce `_ hP hG hQ hS hT hN`. Establish `R` using `GlobalTheory.T.weight_conditions_at_index`. Establish `W` using `GlobalTheory.T.weight_parameter_strict_antitone GlobalTheory.CovTop.SizeRows.size`. Establish `B` using `wtBig_run`. Unfold `Covers Lifts at *`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `(R.and (W.and B)).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨C1, h1, e1⟩, ⟨C2, h2, e2⟩, ⟨C3, h3, e3⟩⟩` from `h`. Use `⟨C1, h1, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `e1.and (e2.and e3)`. Use `⟨x0, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hA, hB, hC⟩` from `hx0 x hx hle ι p hp`. Take `⟨hL, -, -, hf, hj, -⟩` from `hA i hi`. Take `⟨-, -, -, -, -, ⟨w, -, hw⟩, -⟩` from `hB i hi`. Establish `hbig` using `hC i hi`. Take `⟨Z⟩` from `GlobalTheory.CovTop.good_comp_nonempty _ p.T hL _ hj Y _ _ hY.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Z, exists_cusp_ne_zero hP hG hQ hS hT hN Y hY.1 hf hbig.one_le Z _ ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `gapGe_wt_add_parWt _ hbig _ w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cusp_uM : GlobalTheory.Published.ScholzeWeinsteinB → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → GlobalTheory.Published.SemiAbelianLieSeminegative → Covers fun Fm x _ ι p i Y _ _ => ∃ Z : Comp Y.d.Xo₂ Y.d.c₂, ∃ f ∈ cuspOn Y.U Z (wtOf (dat p i) (uM p i) 0), f ≠ 0 := by
   intro _ hP hG hQ hS hT hN

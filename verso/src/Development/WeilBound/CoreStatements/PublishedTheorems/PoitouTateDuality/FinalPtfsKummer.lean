@@ -11,29 +11,27 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Establish `hN0 : l ^ r ≠ 0` using `pow_ne_zero r (Fact.out : l.Prime).ne_zero`. Establish `: NeZero (l ^ r)` using `⟨hN0⟩`. Establish `hy0 : y ≠ 0`. Introduce `h0`. Rewrite `hy` using `[h0, zero_pow hN0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ha ((algebraMap F (AlgebraicClosure ℚ)).injective (by rw [← hy, map_zero]))`. Establish `hroot : ∀ σ : G F (AlgebraicClosure ℚ), (σ y / y) ^ (l ^ r) = 1`. Introduce `σ`. Rewrite using `[div_pow, ← map_pow, hy, AlgEquiv.commutes, ← hy, div_self (pow_ne_zero _ hy0)]`. Establish `hex : ∀ σ : G F (AlgebraicClosure ℚ), ∃ i < l ^ r, ζ ^ i = σ y / y` using `fun σ => hζ.eq_pow_of_pow_eq_one (hroot σ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmod : ∀ a b : ℕ, ζ ^ a = ζ ^ b ↔ a ≡ b [MOD l ^ r]`. Introduce `a b`. Establish `hu : IsPrimitiveRoot (hζ.isUnit hN0).unit (l ^ r)` using `IsPrimitiveRoot.coe_units_iff.mp (by simpa using hζ)`. Establish `e : ζ ^ a = ζ ^ b ↔ (hζ.isUnit hN0).unit ^ a = (hζ.isUnit hN0).unit ^ b`. Rewrite using `[Units.ext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, pow_eq_pow_iff_modEq, ← hu.eq_orderOf]`. Establish `huniq : ∀ a b : ℕ, ζ ^ a * y = ζ ^ b * y → (a : ZMod (l ^ r)) = b`. Introduce `a b h`. Establish `h' : ζ ^ a = ζ ^ b` using `mul_right_cancel₀ hy0 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).mpr ((hmod a b).mp h')`. Set `κ : Dec (F` to `F) A → ZMod (l ^ r) := fun g => ((hex (g : G F (AlgebraicClosure ℚ))).choose : ZMod (l ^ r))`. Establish `hκ : ∀ g : Dec (F` using `F) A, (g : G F (AlgebraicClosure ℚ)) y = ζ ^ (κ g).val * y := by`. Introduce `g`. Establish `h1` using `(hex (g : G F (AlgebraicClosure ℚ))).choose_spec`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : (κ g).val = (hex (g : G F (AlgebraicClosure ℚ))).choose` using `ZMod.val_cast_of_lt h1.1`. Rewrite using `[hv, h1.2, div_mul_cancel₀ _ hy0]`. Establish `hκ_iff : ∀ (g : Dec (F` using `F) A) (b : ZMod (l ^ r)), κ g = b ↔ (g : G F (AlgebraicClosure ℚ)) y = ζ ^ b.val * y := by`. Introduce `g b`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `rfl`. Conclude with `hκ g`. Introduce `h`. Use `huniq _ _ ((hκ g).symm.trans h)` as an intermediate fact. Rewrite `this` using `[ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Algebra.IsIntegral F (AlgebraicClosure ℚ)`. Establish `: Algebra.IsAlgebraic F (AlgebraicClosure ℚ)` using `IsAlgClosure.isAlgebraic`. Use `infer_instance`. Use `⟨κ, hκ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[continuous_discrete_rng]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `b`. Establish `hset : κ ⁻¹' {b} = Subtype.val ⁻¹' {τ : G F (AlgebraicClosure ℚ) | τ y = ζ ^ b.val * y}`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_setOf_eq]`. Conclude with `hκ_iff g b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset]`. Conclude with `(isOpen_setOf_apply (F := F) y (fun z => z = ζ ^ b.val * y)).preimage continuous_subtype_val`. Introduce `g h set c := ((cycMod F (AlgebraicClosure ℚ) l r (g : G F (AlgebraicClosure ℚ)) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) with hc`. Establish `hgζ : (g : G F (AlgebraicClosure ℚ)) ζ = ζ ^ c.val`. Establish `hspec` using `cyclotomicCharacter.spec (L := AlgebraicClosure ℚ) l (MulSemiringAction.toRingAut (G F (AlgebraicClosure ℚ)) (AlgebraicClosure ℚ) (g : G F (AlgebraicClosure ℚ))) ζ hζ.pow_eq_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hspec.trans (by rw [hc]; rfl)`. Rewrite using `[hκ_iff]`. Establish `e1 : ((g * h : Dec (F` using `F) A) : G F (AlgebraicClosure ℚ)) y = (g : G F (AlgebraicClosure ℚ)) ((h : G F (AlgebraicClosure ℚ)) y) := rfl`. Rewrite using `[e1, hκ h, map_mul, map_pow, hgζ, hκ g, ← pow_mul, ← mul_assoc, ← pow_add]`. Use `congr 1`.
-
-Apply `(hmod _ _).mpr` to reduce the goal to its premises. Rewrite using `[← ZMod.natCast_eq_natCast_iff]`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_kummer' (F : Type) [Field F] [NumberField F] {l r : ℕ} [Fact l.Prime]
     (A : ValuationSubring (AlgebraicClosure ℚ)) [Algebra F (AlgebraicClosure ℚ)]

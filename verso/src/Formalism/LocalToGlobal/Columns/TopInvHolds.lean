@@ -15,9 +15,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Unfold `Loc.eN`. Distinguish the cases in `h : l = ⟨p, hp⟩`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.single_eq_of_ne h, if_neg]`. Introduce `h2`. Conclude with `h (Fin.ext h2)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem xt_eN_single {E : Type} [Field E] {N p : ℕ} (hp : p < N) : Loc.eN E N p = (Pi.single (⟨p, hp⟩ : Fin N) (1 : E) : Fin N → E) := by
   funext l
@@ -30,9 +30,9 @@ theorem xt_eN_single {E : Type} [Field E] {N p : ℕ} (hp : p < N) : Loc.eN E N 
     exact h (Fin.ext h2)
 
 /- English proof (translation)
-Introduce `w hw y z hz`. Establish `hu` using `ciQ_notMem_sq hX hPr hw`. Establish `hq0 : ((qOf w.1 : ℕ) : X.E) ≠ 0` using `ciQ_ne_zero hu`. Take `⟨k, hk⟩ : ∃ k, cst.B = k + 1` from `⟨cst.B - 1, by have := hc.B_pos; omega⟩`. Use `xtPhiTop_congr Ch mu hX hPr hm cst.sharp hw y (y + z) fun p p' hp hp' => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp'' : p' < R.N (m2 + 1) + cOf R (m2 + 1)` using `by omega`. Use `⟨(qOf w.1 : X.E) ^ k * (((qOf w.1 : X.E) ^ cst.B)⁻¹ * z (Pi.single ⟨p', hp''⟩ 1) ⟨p, hp⟩), (xtIntAt_qpow (qOf w.1) k).mul (hz _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[xtEntB (xt_cOf hm) _ (by omega) hp', xtEntB (xt_cOf hm) _ (by omega) hp', LinearMap.add_apply, Pi.add_apply, xt_eN_single hp'', hk]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

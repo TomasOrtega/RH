@@ -9,7 +9,7 @@ variable {L F : Type} [Field L] [NumberField L] [Field F] [NumberField F] [Algeb
 
 omit [NumberField L] [NumberField F] in
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `i`. Conclude with `h w j`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem blk_apply {g : GG L F J} {s : J → F ≃ₐ[L] F} {β : J → X}
     {g' : ∀ x : X, ({j // β j = x} → F) ≃ₗ[F] ({j // β j = x} → F)} (h : BlockForm g s β g') (w : J → F) (x : X)
@@ -19,7 +19,7 @@ private theorem blk_apply {g : GG L F J} {s : J → F ≃ₐ[L] F} {β : J → X
 
 omit [NumberField L] [NumberField F] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Take `⟨j, hj⟩` from `i`. Substitute `hj` using the available equality. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem blk_glue {β : J → X} (f : ∀ x : X, ({j // β j = x} → F)) (x : X) :
     (fun i : {j // β j = x} => f (β i.1) ⟨i.1, rfl⟩) = f x := by
@@ -30,15 +30,13 @@ private theorem blk_glue {β : J → X} (f : ∀ x : X, ({j // β j = x} → F))
 
 omit [NumberField L] [NumberField F] in
 /- English proof (translation)
-Set `G : (J → F) ≃ₗ[F] (J → F)` to `{ toFun := fun v j => g' (β j) (fun i => v i.1) ⟨j, rfl⟩ invFun := fun v j => (g' (β j)).symm (fun i => v i.1) ⟨j, rfl⟩ map_add' := by`. Introduce `v w`. Use function extensionality and compare the values at `j`. Conclude with `congrFun (map_add (g' (β j)) (fun i => v i.1) (fun i => w i.1)) _`. Use the proof step `map_smul' := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `c v`. Use function extensionality and compare the values at `j`. Conclude with `congrFun (map_smul (g' (β j)) c (fun i => v i.1)) _`. Use `left_inv := by`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Establish `e` using `blk_glue (β := β) (fun x => g' x (fun i' => v i'.1)) (β j)`. Use `show (g' (β j)).symm (fun i : {k // β k = β j} => g' (β i.1) (fun i' => v i'.1) ⟨i.1, rfl⟩) ⟨j, rfl⟩ = v j`. Rewrite using `[e, LinearEquiv.symm_apply_apply]`. Use `right_inv := by`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v`. Use function extensionality and compare the values at `j`. Establish `e` using `blk_glue (β := β) (fun x => (g' x).symm (fun i' => v i'.1)) (β j)`. Use `show (g' (β j)) (fun i : {k // β k = β j} => (g' (β i.1)).symm (fun i' => v i'.1) ⟨i.1, rfl⟩) ⟨j, rfl⟩ = v j`. Rewrite using `[e, LinearEquiv.apply_symm_apply] }`.
-
-Set `S : (J → F) ≃ₗ[L] (J → F)` to `LinearEquiv.piCongrRight fun j => (s j).toLinearEquiv`. Use `⟨S.trans ((G.restrictScalars L).trans S.symm), ?_⟩` and prove the remaining obligations. Introduce `w j`. Simplify using `[S, G]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem blk_exists (s : J → F ≃ₐ[L] F) (β : J → X)
     (g' : ∀ x : X, ({j // β j = x} → F) ≃ₗ[F] ({j // β j = x} → F)) : ∃ g : GG L F J, BlockForm g s β g' := by
@@ -71,9 +69,7 @@ private theorem blk_exists (s : J → F ≃ₐ[L] F) (β : J → X)
   simp [S, G]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h P`. Take `⟨Q, rfl⟩` from `(HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv σ.toRingEquiv)).surjective P`. Conclude with `h Q`. Introduce `h P`.
-
-Conclude with `h _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem act_forall (σ : F ≃ₐ[L] F) (p : HeightOneSpectrum (𝓞 F) → Prop) :
     (∀ P, p (actP σ P)) ↔ ∀ P, p P := by
@@ -86,7 +82,7 @@ private theorem act_forall (σ : F ≃ₐ[L] F) (p : HeightOneSpectrum (𝓞 F) 
     exact h _
 
 /- English proof (translation)
-Take `⟨hv, -, -, hm, -⟩` from `cAct L F`. Use `Iff.trans (act_forall σ (fun P => algebraMap (𝓞 L) (𝓞 F) b ∉ P.asIdeal → P.valuation F (σ a) ≤ 1)).symm ?_` and prove the remaining obligations. Simplify using `only [hm, hv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem loc_iff (σ : F ≃ₐ[L] F) (b : 𝓞 L) (a : F) :
     (∀ P : HeightOneSpectrum (𝓞 F), algebraMap (𝓞 L) (𝓞 F) b ∉ P.asIdeal → P.valuation F (σ a) ≤ 1) ↔
@@ -97,7 +93,7 @@ private theorem loc_iff (σ : F ≃ₐ[L] F) (b : 𝓞 L) (a : F) :
   simp only [hm, hv]
 
 /- English proof (translation)
-Take `⟨hv, -⟩` from `cAct L F`. Use `Iff.trans (act_forall σ (fun P => P.valuation F (σ a) ≤ WithZero.exp (-𝔠 P))).symm ?_` and prove the remaining obligations. Simplify using `only [hv, h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem lat_iff (σ : F ≃ₐ[L] F) (𝔟 𝔠 : HeightOneSpectrum (𝓞 F) →₀ ℤ) (h : ∀ P, 𝔠 (actP σ P) = 𝔟 P) (a : F) :
     (∀ P : HeightOneSpectrum (𝓞 F), P.valuation F (σ a) ≤ WithZero.exp (-𝔠 P)) ↔
@@ -109,37 +105,33 @@ private theorem lat_iff (σ : F ≃ₐ[L] F) (𝔟 𝔠 : HeightOneSpectrum (�
 end
 
 /- English proof (translation)
-Introduce `L F _ _ _ _ _ J X s β g'`. Use `⟨blk_exists s β g', fun g hg => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hg' : ∀ (w : J → F) (j : J), s j (g w j) = g' (β j) (fun i => s i.1 (w i.1)) ⟨j, rfl⟩` using `hg`. Introduce `u u' hu`. Establish `hu' : ∀ k, s k (u k : F) = (u' (β k) : F)` using `fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Units.val (hu k)` as an intermediate fact. Simplify `this` using `[UpperTheory.V.ZK.actU]`. Use `show g * diag L u = diag L u * g`. Use `LinearEquiv.ext fun w => funext fun j => ?_` and prove the remaining obligations. Use `show g (diag L u w) j = diag L u (g w) j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : diag L u w = fun k => (u k : F) * w k` using `funext (diag_apply u w)`. Rewrite using `[hw, diag_apply]`. Apply `(s j).injective` to reduce the goal to its premises. Rewrite using `[hg', map_mul, hg', hu']`. Establish `e : (fun i : {k // β k = β j} => s i.1 ((u i.1 : F) * w i.1)) = (u' (β j) : F) • (fun i => s i.1 (w i.1))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `i`. Take `⟨k, hk⟩` from `i`. Simplify using `only [map_mul, hu', Pi.smul_apply, smul_eq_mul, hk]`. Rewrite using `[e, map_smul, Pi.smul_apply, smul_eq_mul]`. Establish `hg' : ∀ (w : J → F) (j : J), s j (g w j) = g' (β j) (fun i => s i.1 (w i.1)) ⟨j, rfl⟩` using `hg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b hb x w`. Establish `hb' : ∀ W : J → F, InLoc b W ↔ InLoc b (g W)` using `hb`. Set `W : J → F` to `fun j => if h : β j = x then (s j).symm (w ⟨j, h⟩) else 0`. Establish `hW : (fun i : {k // β k = x} => s i.1 (W i.1)) = w`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Take `⟨k, hk⟩` from `i`. Substitute `hk` using the available equality. Simplify using `[W]`. Establish `hW0 : ∀ j, β j ≠ x → W j = 0`. Introduce `j hj`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[W, hj]`. Establish `h0 : ∀ j, β j ≠ x → g W j = 0`. Introduce `j hj`. Apply `(s j).injective` to reduce the goal to its premises. Rewrite using `[hg', map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hz : (fun i : {k // β k = β j} => s i.1 (W i.1)) = 0`. Use function extensionality and compare the values at `i`. Take `⟨k, hk⟩` from `i`. Establish `hk' : β k ≠ x` using `hk ▸ hj`. Simplify using `[hW0 k hk']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hz, map_zero]`. Both sides reduce to the same expression. Establish `key : ∀ V : J → F, (∀ j, β j ≠ x → V j = 0) → (InLoc b V ↔ InLoc b (fun i : {k // β k = x} => s i.1 (V i.1)))`. Introduce `V hV`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i P hP`. Conclude with `(loc_iff (s i.1) b (V i.1)).2 (h i.1) P hP`. Introduce `h j P hP`. Distinguish the cases in `hj : β j = x`. Conclude with `(loc_iff (s j) b (V j)).1 (h ⟨j, hj⟩) P hP`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV j hj, map_zero]`. Conclude with `zero_le'`. Establish `hgW : (fun i : {k // β k = x} => s i.1 (g W i.1)) = g' x w`. Use function extensionality and compare the values at `i`. Rewrite using `[blk_apply hg W x i, hW]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Use `(key W hW0).symm.trans ((hb' W).trans (key (g W) h0))` as an intermediate fact. Rewrite `this` using `[hW, hgW]`. Conclude with `this`. Establish `hg' : ∀ (w : J → F) (j : J), s j (g w j) = g' (β j) (fun i => s i.1 (w i.1)) ⟨j, rfl⟩` using `hg`. Introduce `𝔟 𝔠 h𝔠 hblk w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hw j P`. Apply `(lat_iff (s j) (𝔟 j) (𝔠 j) (h𝔠 j) (g w j)).1 ?_ P` to reduce the goal to its premises. Introduce `Q`. Rewrite using `[hg']`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : InLat 0 (fun i : {k // β k = β j} => s i.1 (w i.1))`. Introduce `i Q'`. Conclude with `(lat_iff (s i.1) 0 0 (fun _ => rfl) (w i.1)).2 (hw i.1) Q'`. Conclude with `(hblk (β j) _).1 h2 ⟨j, rfl⟩ Q`. Introduce `hw j P`.
-
-Apply `(lat_iff (s j) 0 0 (fun _ => rfl) (w j)).1 ?_ P` to reduce the goal to its premises. Introduce `Q`. Establish `h2 : InLat (fun i : {k // β k = β j} => 𝔠 i.1) (g' (β j) (fun i => s i.1 (w i.1)))`. Introduce `i Q'`. Rewrite using `[← blk_apply hg w (β j) i]`.
-
-Conclude with `(lat_iff (s i.1) (𝔟 i.1) (𝔠 i.1) (h𝔠 i.1) (g w i.1)).2 (hw i.1) Q'`. Conclude with `(hblk (β j) _).2 h2 ⟨j, rfl⟩ Q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Cl.cBlock :
     UpperTheory.V.ZK.Cl.CBlock := by

@@ -8,9 +8,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y Z e he h`. Use `GlobalTheory.SncIso.snc_vanishingIdeal_of_isIso e.inv (genBd Y) (genBd Z) (fun x => ?_) h` and prove the remaining obligations. Rewrite using `[mem_genBd, mem_genBd, not_iff_not, ← he]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, by rw [Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, e.hom_inv_id]; rfl⟩`. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨a, by rw [Scheme.Hom.comp_apply, ha, ← Scheme.Hom.comp_apply, e.inv_hom_id]; rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem snc_genBdIdeal_of_iso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (Z : GMod Xo c)

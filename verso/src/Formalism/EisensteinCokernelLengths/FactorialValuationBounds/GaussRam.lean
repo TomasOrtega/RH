@@ -5,7 +5,7 @@ open scoped ENNReal
 namespace Formalism.ZetaNonvanishing.EisensteinGaussValuationBounds
 
 /- English proof (translation)
-Rewrite `hc` using `[Ideal.mem_span_singleton]`. Establish `h` using `(IsDiscreteValuationRing.addVal_le_iff_dvd (R := O)).2 hc`. Rewrite `h` using `[IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ, nsmul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem le_addVal_of_mem_span_pow {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {ϖ : O} (hϖ : Irreducible ϖ) {e : ℕ} {c : O}
@@ -16,9 +16,9 @@ private theorem le_addVal_of_mem_span_pow {O : Type} [CommRing O] [IsDomain O]
     nsmul_one] at h
 
 /- English proof (translation)
-Use `le_antisymm ?_ (le_addVal_of_mem_span_pow hϖ h1)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_le]`. Apply `h2` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(IsDiscreteValuationRing.addVal_le_iff_dvd (R := O)).1` to reduce the goal to its premises. Rewrite using `[IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ, nsmul_one, Nat.cast_succ]`. Conclude with `Order.add_one_le_of_lt h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem addVal_eq_of_mem_span_pow_not_mem_succ {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {ϖ : O} (hϖ : Irreducible ϖ) {e : ℕ} {c : O}
@@ -35,17 +35,15 @@ private theorem addVal_eq_of_mem_span_pow_not_mem_succ {O : Type} [CommRing O] [
   exact Order.add_one_le_of_lt h
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ e he x hx E N hN hE`. Take `⟨hmon, hdeg, hcoef, h0⟩` from `hE`. Establish `hc0 : IsDiscreteValuationRing.addVal O (E.coeff 0) = e` using `addVal_eq_of_mem_span_pow_not_mem_succ hϖ (hcoef 0 (by omega)) h0`. Establish `hcN : E.coeff N = 1`. Use `hmon.leadingCoeff` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Polynomial.leadingCoeff, hdeg]`. Then use the resulting hypothesis. Unfold `Formalism.NOK.gaussV`. Simplify using `only [Polynomial.coeff_coe]`. Apply `le_antisymm` to reduce the goal to its premises. Establish `h1` using `iInf_le (fun n : ℕ => ((IsDiscreteValuationRing.addVal O (E.coeff n) : ℕ∞) : ℝ≥0∞) + ENNReal.ofReal (x * n)) 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2` using `iInf_le (fun n : ℕ => ((IsDiscreteValuationRing.addVal O (E.coeff n) : ℕ∞) : ℝ≥0∞) + ENNReal.ofReal (x * n)) N`. Simplify using `only [hc0, hcN, AddValuation.map_one, ENat.toENNReal_zero, ENat.toENNReal_coe, Nat.cast_zero, mul_zero, ENNReal.ofReal_zero, add_zero, zero_add] at h1 h2`. Break down `le_total (e : ℝ) (x * N) with h | h` into its components or cases. Rewrite using `[min_eq_left h, ENNReal.ofReal_natCast]`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[min_eq_right h]`. Conclude with `h2`. Apply `le_iInf` to reduce the goal to its premises. Introduce `n`. Break down `lt_trichotomy n N with h | h | h` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hv` using `le_addVal_of_mem_span_pow hϖ (hcoef n h)`. Combine the equalities or inequalities in the displayed calculation. Substitute `h` using the available equality. Rewrite using `[hcN, AddValuation.map_one, ENat.toENNReal_zero, zero_add]`. Conclude with `ENNReal.ofReal_le_ofReal (min_le_right _ _)`.
-
-Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by rw [hdeg]; exact h)]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gaussValEisenstein : GaussEisRam := by
   intro O _ _ _ ϖ hϖ e he x hx E N hN hE

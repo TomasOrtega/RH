@@ -22,9 +22,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {W : LocWach PD LL O v n}
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitDualParts.SumFor at hW`. Introduce `T T' S f g hT hT' hb hs z hz`. Take `⟨σ, hσ, -, -, hmem⟩` from `hW T T' S hT hT' f g (by`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitDualParts.IsSumLat`. Conclude with `⟨hb, hs⟩)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Use `set p := σ.symm z with hp`. Establish `hz' : σ (p.1, p.2) = z` using `by simp [hp]`. Rewrite `hz` using `[← hz']`. Take `⟨hx, hy⟩` from `(hmem p.1 p.2).1 hz`. Conclude with `⟨p.1, hx, p.2, hy, by rw [← hz', hσ]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem additive_of_sumFor (hW : GlobalTheory.IndefiniteRowSideFullHecke.UnitDualParts.SumFor W) : Additive W := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.UnitDualParts.SumFor at hW
@@ -42,7 +42,7 @@ theorem additive_of_sumFor (hW : GlobalTheory.IndefiniteRowSideFullHecke.UnitDua
 end Generic
 
 /- English proof (translation)
-Introduce `l _ P _ H _ _ K LL h`. Conclude with `additive_of_sumFor (GlobalTheory.WachSum.sumPart l P H K 1 LL h.2.2)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem additive_of_caseA : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (H : LocHW l P)
     (E : LocFon l P AI H) (C : LocCmpT l P AI H E), ∀ (K LL : FinExt l) (h : CaseA K LL),

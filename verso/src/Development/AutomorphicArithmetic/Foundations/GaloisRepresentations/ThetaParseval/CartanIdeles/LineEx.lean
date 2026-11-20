@@ -10,7 +10,7 @@ open GroundTheory.Global GroundTheory.Global.IdeleGroup
 open UpperTheory.Gal.TP.Skew
 
 /- English proof (translation)
-Unfold `ordE`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul E w (FractionalIdeal.spanSingleton_ne_zero_iff.mpr ha) (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hb)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ordE_mul {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) {a b : E}
     (ha : a ≠ 0) (hb : b ≠ 0) : ordE w (a * b) = ordE w a + ordE w b := by
@@ -20,21 +20,21 @@ private theorem ordE_mul {E : Type} [Field E] [NumberField E] (w : HeightOneSpec
       (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hb)]
 
 /- English proof (translation)
-Introduce `hA hL hM hD F E _ _ _ _ _ σ hc hu`. Take `⟨s, δ, I, hs, hss, hδ, hsk, hI, hid⟩` from `hL F E σ hc hu`. Establish `hD0 : FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero`. Take `⟨m1, m2, m3⟩` from `hM E I hI`. Take `⟨d1, -, -⟩` from `hM E _ hD0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hss' : ∀ w : HeightOneSpectrum (𝓞 E), s • s • w = w` using `fun w => by`. Rewrite using `[smul_smul, hss, one_smul]`. Establish `ordS : ∀ (w : HeightOneSpectrum (𝓞 E)) (x : E), ordE w (σ x) = ordE (s • w) x` using `fun w x => by`. Establish `h` using `(hA F E s (s • w)).1 x`. Rewrite `h` using `[hss', hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hσ0 : ∀ x : E, x ≠ 0 → σ x ≠ 0` using `fun x hx h => hx (by simpa using (map_eq_zero_iff σ σ.toRingHom.injective).mp h)`. Establish `key : ∀ (w : HeightOneSpectrum (𝓞 E)) (y x : E), y ≠ 0 → x ≠ 0 → ordE w (y * (δ * σ x)) = ordE w y + ordE w δ + ordE (s • w) x` using `fun w y x hy hx => by`. Rewrite using `[ordE_mul w hy (mul_ne_zero hδ (hσ0 x hx)), ordE_mul w hδ (hσ0 x hx), ordS]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hdual : ∀ y : E, (∀ x ∈ I, y * (δ * σ x) ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)) ↔ ∀ x ∈ (I : Submodule (𝓞 E) E), ∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E (o * (y * (δ * σ x))))` using `fun y => forall₂_congr fun x _ => hD E _`. Use `⟨δ, (I : Submodule (𝓞 E) E), hδ, hsk, m3, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_coe, ← hdual y]`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy0 : y = 0`. Simplify `FractionalIdeal.mem_coe.mp (Submodule.zero_mem _)` using `[hy0]`. Distinguish the cases in `hx0 : x = 0`. Simplify `FractionalIdeal.mem_coe.mp (Submodule.zero_mem _)` using `[hx0]`. Use `(d1 _ (mul_ne_zero hy0 (mul_ne_zero hδ (hσ0 x hx0)))).mpr fun w => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `(m1 y hy0).mp hy w`. Establish `h2` using `(m1 x hx0).mp hx (s • w)`. Establish `h3` using `hid w`. Rewrite using `[key w y x hy0 hx0]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Distinguish the cases in `hy0 : y = 0`. Simplify `FractionalIdeal.mem_coe.mp (Submodule.zero_mem _)` using `[hy0]`. Use `(m1 y hy0).mpr fun w => ?_` and prove the remaining obligations. Take `⟨x, hx, hx0, hxo⟩` from `m2 (s • w)`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(d1 _ (mul_ne_zero hy0 (mul_ne_zero hδ (hσ0 x hx0)))).mp (h x hx) w`. Establish `h3` using `hid w`. Rewrite `h1` using `[key w y x hy0 hx0]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Skew.lineEx :
     UpperTheory.Gal.TP.Skew.OrdAut → UpperTheory.Gal.TP.Skew.OrdLine → UpperTheory.Gal.TP.Skew.MemOrd → UpperTheory.Gal.TP.Skew.MemDual → UpperTheory.Gal.TP.Skew.LineEx := by

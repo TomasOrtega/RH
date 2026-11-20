@@ -64,7 +64,7 @@ structure EntPl (D : D7) where
   iL_int : ∀ w x, x ∈ intW D.what₂.places w ↔ ‖iL w x‖ ≤ 1
 
 /- English proof (translation)
-Use `choose lam iL h1 h2 using fun w => exists_placeEmb D w`. Conclude with `⟨⟨lam, iL, fun w x => by`. Take `⟨hx, e⟩` from `h1 w x`. Rewrite using `[lamV, dif_pos hx, e], fun w x _ => (h1 w x).choose_spec, h2⟩⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entPl_nonempty (D : D7) : Nonempty (EntPl D) := by
   choose lam iL h1 h2 using fun w => exists_placeEmb D w

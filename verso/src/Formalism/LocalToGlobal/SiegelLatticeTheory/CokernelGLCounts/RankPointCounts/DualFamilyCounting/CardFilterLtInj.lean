@@ -12,13 +12,13 @@ namespace Formalism.L2.SG.Pf.GluingBases
 open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.Cnt Formalism.HermitianLattices.Ext.L3.HU
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Establish `: (P.filter (· < i)).card < (P.filter (· < k)).card`. Apply `Finset.card_lt_card` to reduce the goal to its premises. Use `⟨fun x hx => ?_, fun hsub => ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.mem_filter] at hx ⊢`. Conclude with `⟨hx.1, hx.2.trans h⟩`. Use `hsub (Finset.mem_filter.2 ⟨hi, h⟩)` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `: (P.filter (· < k)).card < (P.filter (· < i)).card`. Apply `Finset.card_lt_card` to reduce the goal to its premises. Use `⟨fun x hx => ?_, fun hsub => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter] at hx ⊢`. Conclude with `⟨hx.1, hx.2.trans h⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `hsub (Finset.mem_filter.2 ⟨hk, h⟩)` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_filter_lt_inj {n : ℕ} (P : Finset (Fin n)) {i k : Fin n} (hi : i ∈ P) (hk : k ∈ P)
     (e : (P.filter (· < i)).card = (P.filter (· < k)).card) : i = k := by
@@ -40,7 +40,7 @@ theorem card_filter_lt_inj {n : ℕ} (P : Finset (Fin n)) {i k : Fin n} (hi : i 
     omega
 
 /- English proof (translation)
-The claim follows from `Finset.card_lt_card (Finset.filter_ssubset.2 ⟨i, hi, lt_irrefl i⟩)`.
+A detailed English derivation is pending.
 -/
 theorem card_filter_lt_lt {n : ℕ} (P : Finset (Fin n)) {i : Fin n} (hi : i ∈ P) :
     (P.filter (· < i)).card < P.card :=

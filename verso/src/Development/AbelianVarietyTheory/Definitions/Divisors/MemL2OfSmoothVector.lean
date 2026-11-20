@@ -19,14 +19,14 @@ def typeOf (σ : Γ →* (K →L[ℂ] K)) (v : K) : Submodule ℂ K :=
   ⨅ c ∈ {c : Γ →₀ ℂ | ∀ γ, algOp σ c (σ γ v) = 0}, LinearMap.ker (algOp σ c : K →ₗ[ℂ] K)
 
 /- English proof (translation)
-Simplify using `only [typeOf, Submodule.mem_iInf, LinearMap.mem_ker, Set.mem_setOf_eq, ContinuousLinearMap.coe_coe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_typeOf {σ : Γ →* (K →L[ℂ] K)} {v w : K} :
     w ∈ typeOf σ v ↔ ∀ c : Γ →₀ ℂ, (∀ γ, algOp σ c (σ γ v) = 0) → algOp σ c w = 0 := by
   simp only [typeOf, Submodule.mem_iInf, LinearMap.mem_ker, Set.mem_setOf_eq, ContinuousLinearMap.coe_coe]
 
 /- English proof (translation)
-The claim follows from `mem_typeOf.2 fun c hc => by simpa using hc 1`.
+A detailed English derivation is pending.
 -/
 theorem self_mem_typeOf (σ : Γ →* (K →L[ℂ] K)) (v : K) : v ∈ typeOf σ v :=
   mem_typeOf.2 fun c hc => by simpa using hc 1
@@ -44,7 +44,7 @@ structure IsTestGL (f : GA E a → ℂ) : Prop where
   level : IsOpen {k : GL (Fin a) (Af E) | ∀ g, f (finGL E a k * g) = f g}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, HasCompactSupport.zero, (Sm E a).zero_mem, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTestGL_zero : IsTestGL (fun _ : GA E a => (0 : ℂ)) :=
   ⟨continuous_const, HasCompactSupport.zero, (Sm E a).zero_mem, by simp⟩
@@ -97,19 +97,19 @@ def smv (H : Submodule ℂ (L2 (latticeGL E a) μ)) : Submodule ℂ (Sm E a) := 
 variable {μ} {H : Submodule ℂ (L2 (latticeGL E a) μ)}
 
 /- English proof (translation)
-Simplify using `only [smv, Submodule.mem_iInf, Submodule.mem_comap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_smv {φ : Sm E a} : φ ∈ smv μ H ↔ ∀ l, word l φ ∈ good μ H := by
   simp only [smv, Submodule.mem_iInf, Submodule.mem_comap]
 
 /- English proof (translation)
-Simplify `mem_smv.1 h []` using `[word]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem good_of_mem_smv {φ : Sm E a} (h : φ ∈ smv μ H) : φ ∈ good μ H := by
   simpa [word] using mem_smv.1 h []
 
 /- English proof (translation)
-Use `mem_smv.2 fun l => ?_` and prove the remaining obligations. Establish `e : word l (lie E a X φ) = word (l ++ [X]) φ`. Simplify using `only [word, List.map_append, List.map_cons, List.map_nil, List.prod_append, List.prod_cons, List.prod_nil, mul_one, Module.End.mul_apply]`. Rewrite using `[e]`. Conclude with `mem_smv.1 h _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_mem_smv (X : Lie E a) {φ : Sm E a} (h : φ ∈ smv μ H) : lie E a X φ ∈ smv μ H := by
   refine mem_smv.2 fun l => ?_
@@ -120,9 +120,9 @@ theorem lie_mem_smv (X : Lie E a) {φ : Sm E a} (h : φ ∈ smv μ H) : lie E a 
   exact mem_smv.1 h _
 
 /- English proof (translation)
-Introduce `φ hφ`. Take `⟨h1, -, -, F, -, e⟩` from `good_of_mem_smv hφ`. Establish `hl` using `leftInv_of_mem_cuspCont h1`. Establish `hae : (F : GlobalTheory.AutomorphicL2Unitary.Quot (latticeGL E a) → ℂ) =ᵐ[GlobalTheory.AutomorphicL2Unitary.quotMeasure (latticeGL E a) μ] descend (latticeGL E a) φ.1`. Use `(ae_quotMeasure_iff (μ := μ)).2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [e] with g hg`. Rewrite using `[hl.descend_mk]`. Conclude with `hg`. Conclude with `⟨hl, (Lp.memLp F).ae_eq hae⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem memL2_of_smoothVector : ∀ φ ∈ smv μ H, MemL2Quotient (latticeGL E a) μ φ.1 := by
   intro φ hφ

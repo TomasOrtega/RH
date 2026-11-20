@@ -27,9 +27,9 @@ open scoped Matrix
 namespace GlobalTheory.PotGoodLie
 
 /- English proof (translation)
-Take `⟨e, -⟩` from `hM`. Use `hA.proper` as an intermediate fact. Establish `h : ((Over.pullback (spMap (algebraMap W L))).obj G).hom = e.hom.left ≫ ((Over.pullback (spMap (algebraMap K L))).obj A).hom` using `(Over.w e.hom).symm`. Rewrite using `[h]`. Establish `: IsProper ((Over.pullback (spMap (algebraMap K L))).obj A).hom` using `by show IsProper (pullback.snd A.hom _) infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.hom))`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proper_pull {K W L : Type} [Field K] [CommRing W] [Field L] [Algebra K L] [Algebra W L]
     (A : Over (Sp K)) [GrpObj A] (G : Over (Sp W)) [GrpObj G] (hM : GlobalTheory.SS.IsModel (L := L) A G)
@@ -45,14 +45,14 @@ theorem proper_pull {K W L : Type} [Field K] [CommRing W] [Field L] [Algebra K L
   infer_instance
 
 /- English proof (translation)
-Simplify using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Take `⟨v, -, H⟩` from `h`. Take `⟨c, ⟨u, -, hu⟩, -⟩` from `H w hw`. Simplify using `using hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_one_of_lieMult_zero {S : Scheme.{0}} {O : Type} [CommRing O] {G : Over S} [GrpObj G] (a : OAct O G)
     {k : Type} [Field k] (t : Sp k ⟶ S) (τ : O →+* k) (h : LieMult a t τ 0) (w : epsPt t ⟶ G)
@@ -62,11 +62,11 @@ theorem eq_one_of_lieMult_zero {S : Scheme.{0}} {O : Type} [CommRing O] {G : Ove
   simpa using hu
 
 /- English proof (translation)
-Use `letI := g.toAlgebra`. Establish `hint : Algebra.IsIntegral V W` using `Algebra.IsIntegral.of_finite V W`. Establish `halg : ∀ w : W, IsAlgebraic K (algebraMap W L w)`. Introduce `w`. Take `⟨p, hp, hpw⟩` from `hint.isIntegral w`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨p.map (algebraMap V K), (hp.map _).ne_zero, ?_⟩` and prove the remaining obligations. Use `congrArg (algebraMap W L) hpw` as an intermediate fact. Rewrite `this` using `[map_zero, Polynomial.hom_eval₂]`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map, ← this, hc]`. Use `haveI : Algebra.IsAlgebraic K L := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := W) x`. Rewrite using `[div_eq_mul_inv]`. Conclude with `IsAlgebraic.mul (halg a) (IsAlgebraic.inv (halg b))`. Conclude with `⟨(IsAlgClosed.lift : L →ₐ[K] Ω).toRingHom, by ext x; simp [RingHom.algebraMap_toAlgebra]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lift_ext (V K W L Ω : Type) [CommRing V] [Field K] [CommRing W] [IsDomain W] [Field L] [Field Ω]
     [IsAlgClosed Ω] [Algebra V K] [Algebra V W] [Algebra W L] [Algebra K L] [IsFractionRing W L]
@@ -89,7 +89,7 @@ theorem lift_ext (V K W L Ω : Type) [CommRing V] [Field K] [CommRing W] [IsDoma
   exact ⟨(IsAlgClosed.lift : L →ₐ[K] Ω).toRingHom, by ext x; simp [RingHom.algebraMap_toAlgebra]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, hadd, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_of_add {A B J : Type} [AddCommMonoid A] [CommMonoid B] (φ : A → B) (h0 : φ 0 = 1)
     (hadd : ∀ x y, φ (x + y) = φ x * φ y) (s : Finset J) (g : J → A) : φ (∑ i ∈ s, g i) = ∏ i ∈ s, φ (g i) := by
@@ -99,15 +99,15 @@ theorem prod_of_add {A B J : Type} [AddCommMonoid A] [CommMonoid B] (φ : A → 
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, hadd, ih]
 
 /- English proof (translation)
-Establish `key : ∀ P Q : Matrix (Fin n) (Fin n) R, (∀ c, T ((P.map f) *ᵥ c) = T ((Q.map f) *ᵥ c)) → P = Q`. Introduce `P Q h`. Apply `Matrix.map_injective hf` to reduce the goal to its premises. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Conclude with `LinearMap.ext fun c => by simpa [Matrix.toLin'_apply] using Tinj (h c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `T0 : T 0 = 1` using `by simpa using Tadd 0 0`. Establish `act0 : a.act 0 = 1` using `by simpa using a.add 0 0`. Use `⟨{ toFun := fun x => M (a.act x), map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, fun _ => rfl⟩` and prove the remaining obligations. Apply `key` to reduce the goal to its premises. Introduce `c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Tact _ (a.hom 1), a.one]`. Simplify using the standard rewrite rules. Introduce `x y`. Apply `key` to reduce the goal to its premises. Introduce `c`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Tact _ (a.hom (x * y)), mul_comm x y, a.mul, ← Category.assoc, Tact _ (a.hom y), Tact _ (a.hom x), Matrix.mulVec_mulVec, ← Matrix.map_mul]`. Apply `key` to reduce the goal to its premises. Introduce `c`. Rewrite using `[← Tact _ (a.hom 0), act0, comp_one]`. Simplify using `[T0]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Apply `key` to reduce the goal to its premises. Introduce `c`. Rewrite using `[← Tact _ (a.hom (x + y)), a.add, comp_mul, Tact _ (a.hom x), Tact _ (a.hom y), ← Tadd, Matrix.map_add _ (map_add f), Matrix.add_mulVec]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringHom {R : Type} [CommRing R] {S : Scheme.{0}} {G : Over S} [GrpObj G] {O : Type} [CommRing O]
     (a : OAct O G) {n : ℕ} (M : (G ⟶ G) → Matrix (Fin n) (Fin n) R) {k : Type} [Field k] (f : R →+* k)
@@ -138,23 +138,21 @@ theorem exists_ringHom {R : Type} [CommRing R] {S : Scheme.{0}} {G : Over S} [Gr
       Matrix.add_mulVec]
 
 /- English proof (translation)
-Use `letI := E.addCommGroup`. Use `haveI := E.free`. Use `haveI := E.finite`. Use `haveI : IsCommMonObj G := hG.comm`. Take `⟨n, M, -, hT⟩` from `GlobalTheory.T.exists_lie_coordinates_on_field_fibres_local_ring W G hG.smooth`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, Tinj, Trange, Tadd, Tsc, Tact⟩` from `hT Ω f`. Take `⟨Mr, hMr⟩` from `exists_ringHom a M f hf T Tinj Tadd Tact`. Establish `T0 : T 0 = 1` using `by simpa using Tadd 0 0`. Establish `hno : ∀ c : Fin n → Ω, (∀ x, ((Mr x).map f).mulVec c = σ x • c) → c = 0`. Introduce `c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : IsLieEigen a (spMap f) σ (T c)`. Use `⟨(Trange (T c)).2 ⟨c, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Tact _ (a.hom x), ← hMr, hc, Tsc]`. Conclude with `Tinj ((eq_one_of_lieMult_zero a _ σ h0 _ hE).trans T0.symm)`. Set `b` to `Module.Free.chooseBasis ℤ (𝓞 F)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, ⟨i0, hu⟩, hsum⟩` from `GlobalTheory.T.exists_primitive_annihilator' F W Ω f hf n Mr σ hno _ b`. Take `⟨ρ, U, Uinj, Ufst, Uadd, Usc, Uact⟩` from `GlobalTheory.T.toric_part_fibre_lie_algebra_characters (Sp W) G (𝓞 F) a.act a.hom a.one a.mul a.add (ResidueField W) (spMap (residue W)) E`. Take `⟨T', -, T'range, T'add, T'sc, T'act⟩` from `hT (ResidueField W) (residue W)`. Establish `T'0 : T' 0 = 1` using `by simpa using T'add 0 0`. Establish `U0 : U 0 = 1` using `by simpa using Uadd 0 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.finrank_eq_zero_of_dual_killed_by_tensor F E.X ρ (ResidueField W) _ b (fun i => residue W (w i)) ?_ ?_` and prove the remaining obligations. Introduce `h`. Conclude with `(residue_ne_zero_iff_isUnit _).2 hu (congrFun h i0)`. Introduce `l χ`. Take `⟨c, hc⟩` from `(T'range (U l)).1 (Ufst l)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `step : ∀ i, U ((AddMonoidHom.mulLeft (residue W (w i))).comp (l.comp (ρ (b i)).toAddMonoidHom)) = T' (residue W (w i) • ((Mr (b i)).map (residue W) *ᵥ c))`. Introduce `i`. Establish `e : U (l.comp (ρ (b i)).toAddMonoidHom) = T' ((Mr (b i)).map (residue W) *ᵥ c)`. Rewrite using `[← Uact, ← hc, T'act _ (a.hom _), hMr]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Usc, T'sc, e]`. Establish `hv : ∑ i, residue W (w i) • ((Mr (b i)).map (residue W) *ᵥ c) = 0`. Use `congrArg (fun P => ((residue W).mapMatrix P) *ᵥ c) hsum` as an intermediate fact. Establish `hsm : ∀ i, (w i • Mr (b i)).map (residue W) = residue W (w i) • (Mr (b i)).map (residue W)`. Introduce `i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `ext`. Simplify using the standard rewrite rules. Simplify `this` using `[map_sum, Matrix.sum_mulVec, hsm, Matrix.smul_mulVec]`. Establish `hL : (∑ i, (AddMonoidHom.mulLeft (residue W (w i))).comp (l.comp (ρ (b i)).toAddMonoidHom)) = 0`. Apply `Uinj` to reduce the goal to its premises.
-
-Rewrite using `[prod_of_add U U0 Uadd, U0, Finset.prod_congr rfl (fun i _ => step i), ← prod_of_add T' T'0 T'add, hv, T'0]`. Use `congrArg (fun m => m χ) hL` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_zero (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (G : Over (Sp W)) [GrpObj G]
     (hG : IsSemiAbelian G) (F : Type) [Field F] [NumberField F] (a : OAct (𝓞 F) G) (Ω : Type) [Field Ω] [CharZero Ω]
@@ -206,13 +204,13 @@ theorem finrank_zero (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRi
     simpa using this
 
 /- English proof (translation)
-Introduce `V K _ _ _ _ _ _ _ _ A _ hA F _ _ act Ω _ _ g σ hL`. Take `⟨W, L, iW, iD, iDVR, iL, iVW, iWL, iKL, iFR, hc, hfin, hloc, hcpl, G, iG, hM, hsemi, ⟨E⟩⟩` from `GlobalTheory.T.abelianVariety_potential_semiAbelian_splitTorus V K A hA`. Use `⟨W, L, iW, iD, iDVR, iL, iVW, iWL, iKL, iFR, hc, hfin, hloc, hcpl, G, iG, hM, ?_⟩` and prove the remaining obligations. Establish `hAL` using `isGrpPullback_pullback A (spMap (algebraMap K L))`. Take `⟨actL, ⟨h1, h2, h3, h4⟩, hLc⟩` from `GlobalTheory.T.exists_ring_action_pullback_cartesian_group_schemes _ _ (spMap (algebraMap K L)) A ((Over.pullback (spMap (algebraMap K L))).obj A) _ hAL (𝓞 F) act.act act.hom act.one act.mul act.add`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `GlobalTheory.T.isGrpPullback_of_group_scheme_model_base_change K W L A G hM _ _ hAL`. Take `⟨actG, ⟨g1, g2, g3, g4⟩, hGc⟩` from `GlobalTheory.T.exists_ring_action_extension_compatible W L G _ φ hsemi hφ (𝓞 F) actL h1 h2 h3 h4`. Set `aL : OAct (𝓞 F) ((Over.pullback (spMap (algebraMap K L))).obj A)` to `⟨actL, h1, h2, h3, h4⟩`. Set `aG : OAct (𝓞 F) G` to `⟨actG, g1, g2, g3, g4⟩`. Take `⟨g', hg'⟩` from `lift_ext V K W L Ω hc hfin g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `GlobalTheory.LiePull.lieMult_pull (𝓞 F) _ _ A _ _ (pullback.fst _ _) act aL hAL hLc Ω (spMap g') σ 0`. Establish `hx : spMap g' ≫ spMap (algebraMap K L) = spMap g` using `by rw [← hg', spMap_comp]`. Establish `e2` using `GlobalTheory.LiePull.lieMult_pull (𝓞 F) _ _ G _ _ φ aG aL hφ hGc Ω (spMap g') σ 0`. Establish `hG0 : LieMult aG (spMap (g'.comp (algebraMap W L))) σ 0`. Rewrite using `[spMap_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e2.1 (e1.2 (hx ▸ hL))`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom g.injective`. Establish `hinj : Function.Injective (g'.comp (algebraMap W L))` using `g'.injective.comp (IsFractionRing.injective W L)`. Conclude with `GlobalTheory.T.isAbelianScheme_semiAbelian_dvr_noSpecialTorus W L G hsemi (proper_pull A G hM hA) E (finrank_zero W G hsemi F aG Ω _ hinj σ hG0 E)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem potGood_of_lieMult_zero : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (F : Type) [Field F] [NumberField F] (act : OAct (𝓞 F) A) (Ω : Type) [Field Ω] [IsAlgClosed Ω] (g : K →+* Ω) (σ : 𝓞 F →+* Ω), LieMult act (spMap g) σ 0 → GlobalTheory.SS.PotModel V K A (fun _ _ _ G _ => IsAbelianScheme G) := by
   intro V K _ _ _ _ _ _ _ _ A _ hA F _ _ act Ω _ _ g σ hL

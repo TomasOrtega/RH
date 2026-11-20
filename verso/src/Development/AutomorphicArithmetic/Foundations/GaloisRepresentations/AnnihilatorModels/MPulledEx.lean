@@ -8,9 +8,9 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `hTri hIsog hKer p _ D R _ b N hN hc M r w j c T S x σ hx o₁ m₁ y hy`. Take `⟨m₀, htri⟩` from `(hTri p D R b N hN hc S T.Y M.X σ (T.s ≫ M.s) M.s o₁ T.o M.univ y T.s).2 x hy m₁ T.ms`. Establish `hσ : y ≫ T.s ≫ M.s = σ` using `by rw [← Category.assoc, hy, hx]`. Take `⟨o', m', ψ, hisog, hsq⟩` from `hIsog p D R b N T.Y S (T.s ≫ M.s) σ y hσ c T.o T.o' T.ψ T.isog o₁ m₀`. Establish `htj` using `(hKer p D R b N T.Y S (T.s ≫ M.s) σ y T.o T.o' o₁ o' m₀ m' T.ψ ψ hsq).2 r w j T.tj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨⟨o', ψ, m₀, m', hsq, htri, hisog, htj⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.pulledEx_of :
     ObjTri → PullIsog → PullKer → PulledEx := by

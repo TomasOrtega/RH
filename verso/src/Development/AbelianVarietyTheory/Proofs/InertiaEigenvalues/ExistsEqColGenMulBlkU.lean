@@ -38,20 +38,20 @@ def mirU (R : Type) [CommRing R] (a m : ℕ) : Subgroup (GL (Fin a) R) where
       · simp
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_mirU {m : ℕ} {g : GL (Fin a) R} :
     g ∈ mirU R a m ↔ ∀ i k : Fin a, m ≤ (i : ℕ) → k ≤ i → g.val i k = (1 : Matrix (Fin a) (Fin a) R) i k := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hg i k hi hk` and use `hg i k (h.trans hi) hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mirU_mono {m n : ℕ} (h : m ≤ n) : mirU R a m ≤ mirU R a n := fun _ hg i k hi hk => hg i k (h.trans hi) hk
 
 /- English proof (translation)
-Use `⟨fun h => ⟨fun i k hk => ?_, fun i => ?_⟩, fun h i k _ hk => ?_⟩` and prove the remaining obligations. Rewrite using `[h i k (Nat.zero_le _) hk.le, Matrix.one_apply_ne hk.ne']`. Rewrite using `[h i i (Nat.zero_le _) le_rfl, Matrix.one_apply_eq]`. Break down `hk.eq_or_lt with rfl | h1` into its components or cases. Rewrite using `[h.2, Matrix.one_apply_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.1 i k h1, Matrix.one_apply_ne h1.ne']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_mirU_zero {g : GL (Fin a) R} :
     g ∈ mirU R a 0 ↔ (∀ i k : Fin a, k < i → g.val i k = 0) ∧ ∀ i, g.val i i = 1 := by
@@ -63,9 +63,9 @@ theorem mem_mirU_zero {g : GL (Fin a) R} :
     · rw [h.1 i k h1, Matrix.one_apply_ne h1.ne']
 
 /- English proof (translation)
-Use `⟨fun h k => ?_, fun h i k hi _ => ?_⟩` and prove the remaining obligations. Rewrite using `[h _ k le_rfl (Fin.le_last k), Matrix.one_apply]`. Simplify using `only [eq_comm]`. Take `rfl : i = Fin.last n` from `Fin.ext (by have := i.2; simp only [Fin.val_last]; omega)`. Rewrite using `[h, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_mirU_last {n : ℕ} {g : GL (Fin (n + 1)) R} :
     g ∈ mirU R (n + 1) n ↔ ∀ k, g.val (Fin.last n) k = if k = Fin.last n then 1 else 0 := by
@@ -92,9 +92,9 @@ def colFix (R : Type) [CommRing R] (a m : ℕ) : Subgroup (GL (Fin a) R) where
 def lateU (R : Type) [CommRing R] (a m : ℕ) : Subgroup (GL (Fin a) R) := mirU R a m ⊓ colFix R a m
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : (l : ℕ) < n`. Rewrite using `[h l hl]`. Establish `h1 : k < l` using `by change (k : ℕ) < l; omega`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy l k (by omega) h1.le, Matrix.one_apply_ne h1.ne', mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_apply_congr {n : ℕ} {y : GL (Fin a) R} (hy : y ∈ mirU R a n) {x x' : Matrix (Fin a) (Fin a) R} {i : Fin a}
     (h : ∀ l : Fin a, (l : ℕ) < n → x i l = x' i l) {k : Fin a} (hk : (k : ℕ) < n) :
@@ -107,9 +107,9 @@ theorem mul_apply_congr {n : ℕ} {y : GL (Fin a) R} (hy : y ∈ mirU R a n) {x 
     rw [hy l k (by omega) h1.le, Matrix.one_apply_ne h1.ne', mul_zero, mul_zero]
 
 /- English proof (translation)
-Use `⟨(mirU R a n).mul_mem ((mirU R a n).mul_mem ((mirU R a n).inv_mem hγ) hu.1) hγ, fun i k hk => ?_⟩` and prove the remaining obligations. Establish `h : ∀ l, (u.val * γ.val) l k = γ.val l k` using `fun l => by`. Rewrite using `[mul_apply_congr hγ (x' := 1) (fun l' hl' => hu.2 l l' hl') hk, Matrix.one_mul]`. Rewrite using `[mul_assoc, Units.val_mul, Units.val_mul, Matrix.mul_apply]`. Simplify using `only [h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_apply, Units.inv_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_lateU {n : ℕ} {γ u : GL (Fin a) R} (hγ : γ ∈ mirU R a n) (hu : u ∈ lateU R a n) :
     γ⁻¹ * u * γ ∈ lateU R a n := by
@@ -121,7 +121,7 @@ theorem conj_mem_lateU {n : ℕ} {γ u : GL (Fin a) R} (hγ : γ ∈ mirU R a n)
   rw [← Matrix.mul_apply, Units.inv_mul]
 
 /- English proof (translation)
-Rewrite using `[← posM_block_entry]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blkU_apply {n : ℕ} (y : UnipotentBlockColumnIndex a n n → R) (i k : Fin a) :
     (blkU y : GL (Fin a) R).val i k = (1 : Matrix (Fin a) (Fin a) R) i k +
@@ -129,19 +129,19 @@ theorem blkU_apply {n : ℕ} (y : UnipotentBlockColumnIndex a n n → R) (i k : 
   rw [← posM_block_entry]; rfl
 
 /- English proof (translation)
-The claim follows from `posU_add _ x y`.
+A detailed English derivation is pending.
 -/
 theorem blkU_add {n : ℕ} (x y : UnipotentBlockColumnIndex a n n → R) : (blkU (x + y) : GL (Fin a) R) = blkU x * blkU y := posU_add _ x y
 
 /- English proof (translation)
-Introduce `i k _ hk` and use `by have : (k : ℕ) ≤ i := hk rw [blkU_apply, dif_neg (by omega), add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blkU_mem_mirU (m : ℕ) {n : ℕ} (y : UnipotentBlockColumnIndex a n n → R) : blkU y ∈ mirU R a m := fun i k _ hk => by
   have : (k : ℕ) ≤ i := hk
   rw [blkU_apply, dif_neg (by omega), add_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨blkU_mem_mirU m y, fun i k hk => by rw [blkU_apply, dif_neg (by omega), add_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem blkU_mem_lateU {m n : ℕ} (h : m ≤ n) (y : UnipotentBlockColumnIndex a n n → R) : blkU y ∈ lateU R a m :=
   ⟨blkU_mem_mirU m y, fun i k hk => by rw [blkU_apply, dif_neg (by omega), add_zero]⟩
@@ -150,23 +150,21 @@ def colGen (R : Type) [CommRing R] (a n : ℕ) : Subgroup (GL (Fin a) R) :=
   Subgroup.closure {u | ∃ k, n ≤ k ∧ ∃ y : UnipotentBlockColumnIndex a k k → R, u = blkU y}
 
 /- English proof (translation)
-The claim follows from `(Subgroup.closure_le _).2 (by rintro _ ⟨k, hk, y, rfl⟩; exact blkU_mem_lateU hk y)`.
+A detailed English derivation is pending.
 -/
 theorem colGen_le_lateU {n : ℕ} : colGen R a n ≤ lateU R a n :=
   (Subgroup.closure_le _).2 (by rintro _ ⟨k, hk, y, rfl⟩; exact blkU_mem_lateU hk y)
 
 /- English proof (translation)
-Distinguish the cases in `hna : a ≤ n`. Conclude with `⟨1, one_mem _, g, hg, (one_mul g).symm, fun i k hk => absurd k.2 (by omega), fun _ _ _ => rfl⟩`. Use `replace hna : n ≤ a := by omega`. Proceed by induction on `hna using Nat.decreasingInduction with`. Consider the case `self => exact ⟨1, one_mem _, g, hg, (one_mul g).symm, fun i k hk => absurd k.2 (by omega), fun _ _ _ => rfl⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `of_succ n hn ih`. Take `⟨u, hu, g₁, hg₁, rfl, h1, h2⟩` from `ih (by omega)`. Set `y : UnipotentBlockColumnIndex a n n → R` to `fun t => g₁.val t.1.1 t.1.2`. Establish `hrow : ∀ k : Fin a, (k : ℕ) = n → ∀ j, g₁.val k j = (1 : Matrix (Fin a) (Fin a) R) k j`. Introduce `k hk j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j ≤ k`. Conclude with `hg₁ k j (by omega) hj`. Conclude with `h1 k j (by have : ¬ (j : ℕ) ≤ k := hj; omega)`. Establish `hval : ∀ i j, ((blkU y)⁻¹ * g₁).val i j = g₁.val i j - if h : (i : ℕ) < n ∧ n ≤ (j : ℕ) ∧ (j : ℕ) ≤ n then y ⟨(i, j), h⟩ else 0`. Introduce `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ((blkU y)⁻¹ * g₁).val = (1 - posM Subtype.val y) * g₁.val` using `rfl`. Rewrite using `[e, sub_mul, one_mul, posM_col_mul y _ hrow, Matrix.sub_apply, posM_block_entry]`. Use `⟨u * blkU y, mul_mem (Subgroup.closure_mono ?_ hu) (Subgroup.subset_closure ⟨n, le_rfl, y, rfl⟩), (blkU y)⁻¹ * g₁, mul_mem (inv_mem (blkU_mem_mirU m y)) hg₁, by group, fun i k hk => ?_, fun i k hk => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, z, rfl⟩`. Conclude with `⟨k, by omega, z, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval] split_ifs with h`. Rewrite using `[Matrix.one_apply_ne (fun e => by rw [e] at h; omega)]`. Conclude with `sub_self _`. Rewrite using `[sub_zero]`. Distinguish the cases in `hkn : n + 1 ≤ (k : ℕ)`.
-
-Conclude with `h1 i k hkn`. Conclude with `hg₁ i k (by omega) (by change (k : ℕ) ≤ i; omega)`. Rewrite using `[hval, dif_neg (by omega), sub_zero, h2 i k (by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_peel {m n : ℕ} (hmn : m ≤ n) {g : GL (Fin a) R} (hg : g ∈ mirU R a m) :
     ∃ u ∈ colGen R a n, ∃ g₀ ∈ mirU R a m, g = u * g₀ ∧
@@ -205,11 +203,9 @@ theorem exists_peel {m n : ℕ} (hmn : m ≤ n) {g : GL (Fin a) R} (hg : g ∈ m
     · rw [hval, dif_neg (by omega), sub_zero, h2 i k (by omega)]
 
 /- English proof (translation)
-Take `⟨v, hv, g₀, hg₀, rfl, h1, h2⟩` from `exists_peel (Nat.le_succ n) hu.1`. Use `⟨v, hv, fun t => g₀.val t.1.1 t.1.2, ?_⟩` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i k`. Rewrite using `[blkU_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[Matrix.one_apply_ne (fun e => by rw [e] at h; omega), zero_add]`. Rewrite using `[add_zero]`. Break down `lt_trichotomy (k : ℕ) n with hk | hk | hk` into its components or cases. Rewrite using `[h2 i k (by omega)]; exact hu.2 i k hk`.
-
-Conclude with `hg₀ i k (by omega) (by change (k : ℕ) ≤ i; omega)`. Conclude with `h1 i k hk`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_colGen_mul_blkU {n : ℕ} {u : GL (Fin a) R} (hu : u ∈ lateU R a n) :
     ∃ v ∈ colGen R a (n + 1), ∃ y : UnipotentBlockColumnIndex a n n → R, u = v * blkU y := by
@@ -227,9 +223,9 @@ theorem exists_eq_colGen_mul_blkU {n : ℕ} {u : GL (Fin a) R} (hu : u ∈ lateU
     · exact h1 i k hk
 
 /- English proof (translation)
-Proceed by induction on `hu using Subgroup.closure_induction generalizing g with`. Consider the case `mem x hx => obtain ⟨k, hk, y, rfl⟩ := hx`. Conclude with `h k hk y g`. Consider the case `one => rw [map_one, one_mul]`. Consider the case `mul x y _ _ hx hy => rw [map_mul, mul_assoc, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `inv x _ hx => rw [← hx, map_inv, mul_inv_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem invariant_colGen {β : Sort*} {n : ℕ} {S : Type} [CommRing S] (φ : GL (Fin a) R →* GL (Fin a) S)
     (Φ : GL (Fin a) S → β) (h : ∀ k, n ≤ k → ∀ (y : UnipotentBlockColumnIndex a k k → R) g, Φ (φ (blkU y) * g) = Φ g)
@@ -241,7 +237,7 @@ theorem invariant_colGen {β : Sort*} {n : ℕ} {S : Type} [CommRing S] (φ : GL
   | inv x _ hx => rw [← hx, map_inv, mul_inv_cancel_left]
 
 /- English proof (translation)
-Introduce `i k hi hk` and use `by change φ (g.val i k) = _ rw [hg i k hi hk, Matrix.one_apply, Matrix.one_apply] split_ifs <;> simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem map_mem_mirU {S : Type} [CommRing S] (φ : R →+* S) {m : ℕ} {g : GL (Fin a) R} (hg : g ∈ mirU R a m) :
     GeneralLinearGroup.map φ g ∈ mirU S a m := fun i k hi hk => by
@@ -250,9 +246,9 @@ theorem map_mem_mirU {S : Type} [CommRing S] (φ : R →+* S) {m : ℕ} {g : GL 
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hc : ∀ i k : Fin a, IsClosed {g : GL (Fin a) R | g.val i k = (1 : Matrix (Fin a) (Fin a) R) i k}` using `fun i k => isClosed_eq (Units.continuous_val.matrix_elem i k) continuous_const`. Establish `e : (lateU R a n : Set (GL (Fin a) R)) = (⋂ i : Fin a, ⋂ k : Fin a, ⋂ _ : n ≤ (i : ℕ), ⋂ _ : k ≤ i, {g | g.val i k = (1 : Matrix (Fin a) (Fin a) R) i k}) ∩ ⋂ i : Fin a, ⋂ k : Fin a, ⋂ _ : (k : ℕ) < n, {g | g.val i k = (1 : Matrix (Fin a) (Fin a) R) i k}`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `(isClosed_iInter fun i => isClosed_iInter fun k => isClosed_iInter fun _ => isClosed_iInter fun _ => hc i k).inter (isClosed_iInter fun i => isClosed_iInter fun k => isClosed_iInter fun _ => hc i k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_lateU [TopologicalSpace R] [T2Space R] (n : ℕ) : IsClosed (lateU R a n : Set (GL (Fin a) R)) := by
   have hc : ∀ i k : Fin a, IsClosed {g : GL (Fin a) R | g.val i k = (1 : Matrix (Fin a) (Fin a) R) i k} := fun i k =>
@@ -276,15 +272,15 @@ variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 def ratMirU (E : Type) [Field E] [NumberField E] (a m : ℕ) : Subgroup (GA E a) := (mirU E a m).map (ratGL E a)
 
 /- English proof (translation)
-Take `⟨U, hU, h0⟩` from `GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero E`. Take `⟨V, hVU, hVo, hV0⟩` from `mem_nhds_iff.1 hU`. Use `discreteTopology_of_isOpen_singleton_one ?_` and prove the remaining obligations. Establish `hW : IsOpen (⋂ i : Fin a, ⋂ k : Fin a, {g : Γ | (g : GA E a).val i k - (1 : Matrix (Fin a) (Fin a) (Ad E)) i k ∈ V})` using `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => hVo.preimage (((Units.continuous_val.comp continuous_subtype_val).matrix_elem i k).sub continuous_const)`. Use `hW using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `⟨g, hg⟩`. Take `⟨γ, rfl⟩` from `hΓ hg`. Simplify using `only [Set.mem_singleton_iff, Set.mem_iInter, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h i k`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ratGL E a γ = 1` using `congrArg Subtype.val h`. Rewrite using `[h1, Units.val_one, sub_self]`. Conclude with `hV0`. Introduce `h`. Establish `h1 : γ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i k`. Establish `h2` using `h i k`. Establish `e : (ratGL E a γ).val i k - (1 : Matrix (Fin a) (Fin a) (Ad E)) i k = algebraMap E (Ad E) (γ.val i k - (1 : Matrix (Fin a) (Fin a) E) i k)`. Rewrite using `[map_sub, Matrix.one_apply, Matrix.one_apply]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h2` using `[e]`. Conclude with `sub_eq_zero.1 (h0 _ (hVU h2))`. Substitute `h1` using the available equality. Conclude with `Subtype.ext (map_one _)`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem discrete_of_le_range {Γ : Subgroup (GA E a)} (hΓ : Γ ≤ (ratGL E a).range) : DiscreteTopology Γ := by
   obtain ⟨U, hU, h0⟩ := GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero E
@@ -318,17 +314,15 @@ theorem discrete_of_le_range {Γ : Subgroup (GA E a)} (hΓ : Γ ≤ (ratGL E a).
     exact Subtype.ext (map_one _)
 
 /- English proof (translation)
-Establish `top : ∀ n, a ≤ n → ∃ K : Set (GA E a), IsCompact K ∧ ∀ u ∈ lateU (Ad E) a n, ∃ γ ∈ mirU E a 0, ratGL E a γ ∈ lateU (Ad E) a n ∧ ratGL E a γ * u ∈ K`. Introduce `n hn`. Use `⟨{1}, isCompact_singleton, fun u hu => ⟨1, one_mem _, by rw [map_one]; exact one_mem _, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_one, one_mul]`. Conclude with `Units.ext (Matrix.ext fun i k => hu.2 i k (by have := k.2; omega))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hna : a ≤ n`. Conclude with `top n hna`. Use `replace hna : n ≤ a := by omega`. Proceed by induction on `hna using Nat.decreasingInduction with`. Consider the case `self => exact top a le_rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `of_succ n hn ih`. Take `⟨K, hK, hcov⟩` from `ih`. Take `⟨-, L, hL, hLcov⟩` from `isCoLat_ratV E (UnipotentBlockColumnIndex a n n)`. Use `⟨(fun p : GA E a × (UnipotentBlockColumnIndex a n n → Ad E) => p.1 * blkU p.2) '' (K ×ˢ L), (hK.prod hL).image (continuous_fst.mul ((continuous_posU _).comp continuous_snd)), fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, y, rfl⟩` from `exists_eq_colGen_mul_blkU hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨c, rfl⟩, hc⟩` from `hLcov y`. Use `set z : UnipotentBlockColumnIndex a n n → Ad E := fun t => algebraMap E (Ad E) (c t) with hz`. Establish `hv'` using `conj_mem_lateU (inv_mem (blkU_mem_mirU (n + 1) z)) (colGen_le_lateU hv)`. Take `⟨γ, hγ, hγU, hγK⟩` from `hcov _ hv'`. Establish `hle : lateU (Ad E) a (n + 1) ≤ lateU (Ad E) a n` using `fun w hw => ⟨fun i k hi hk => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : n + 1 ≤ (i : ℕ)`. Conclude with `hw.1 i k h hk`. Conclude with `hw.2 i k (by have : (k : ℕ) ≤ i := hk; omega), fun i k hk => hw.2 i k (by omega)⟩`. Use `⟨γ * blkU c, mul_mem hγ (blkU_mem_mirU 0 c), ?_, ⟨_, z + y⟩, ⟨hγK, hc⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ratGL_blkU]`.
-
-Conclude with `mul_mem (hle hγU) (blkU_mem_lateU le_rfl _)`. Simplify using `only [map_mul, ratGL_blkU, blkU_add, ← hz] group`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_lateU (n : ℕ) : ∃ K : Set (GA E a), IsCompact K ∧
     ∀ u ∈ lateU (Ad E) a n, ∃ γ ∈ mirU E a 0, ratGL E a γ ∈ lateU (Ad E) a n ∧ ratGL E a γ * u ∈ K := by

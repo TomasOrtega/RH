@@ -17,7 +17,7 @@ def analyticAtSubring {σ : Type} [Fintype σ] (p : σ → ℂ) : Subring ((σ �
   neg_mem' ha := AnalyticAt.neg ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_analyticAtSubring {σ : Type} [Fintype σ] {p : σ → ℂ} {g : (σ → ℂ) → ℂ} :
     g ∈ analyticAtSubring p ↔ AnalyticAt ℂ g p :=
@@ -54,7 +54,7 @@ def analyticAtGerm {σ : Type} [Fintype σ] (p : σ → ℂ) : analyticAtSubring
     fun g => ⟨g, g.2, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Subtype.ext_iff]`. Conclude with `Germ.coe_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticAtGerm_eq_iff {σ : Type} [Fintype σ] {p : σ → ℂ} (a b : analyticAtSubring p) :
     analyticAtGerm p a = analyticAtGerm p b ↔ (a : (σ → ℂ) → ℂ) =ᶠ[𝓝 p] b := by
@@ -62,7 +62,7 @@ theorem analyticAtGerm_eq_iff {σ : Type} [Fintype σ] {p : σ → ℂ} (a b : a
   exact Germ.coe_eq
 
 /- English proof (translation)
-Introduce and unpack `⟨φ, g, hg, rfl⟩`. Conclude with `⟨⟨g, hg⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem analyticAtGerm_surjective {σ : Type} [Fintype σ] (p : σ → ℂ) :
     Function.Surjective (analyticAtGerm p) := by
@@ -70,9 +70,9 @@ theorem analyticAtGerm_surjective {σ : Type} [Fintype σ] (p : σ → ℂ) :
   exact ⟨⟨g, hg⟩, rfl⟩
 
 /- English proof (translation)
-Establish `he : (A.adjugate * A) *ᵥ e = 0`. Rewrite using `[← Matrix.mulVec_mulVec, hA, Matrix.mulVec_zero]`. Rewrite `he` using `[Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Use `_ = 0 := Finset.sum_eq_zero fun m _ => by`. Use `congrFun he m` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Rewrite using `[this, mul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_eq_zero_of_mulVec_eq_zero {Q : Type*} [CommRing Q] {n : ℕ} (A : Matrix (Fin n) (Fin n) Q)
     (e β : Fin n → Q) (hA : A *ᵥ e = 0) (h1 : ∑ m, β m * e m = 1) : A.det = 0 := by

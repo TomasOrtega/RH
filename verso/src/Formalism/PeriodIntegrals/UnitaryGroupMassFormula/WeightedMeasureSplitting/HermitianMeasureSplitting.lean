@@ -12,7 +12,7 @@ namespace PI.UnitaryGroupMassFormula.MeasWCore
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures NumberField
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r P T _ _ _`. Establish `: Module.Finite F E` using `PI.VolSemiDirect.W.Lc.finite_nf F E`. Conclude with `splitEquiv _ _ _ (splitA_injective σ J splT_bijective.1) (continuous_haMap σ J (fstA F) (continuous_tensMap (AF F) _ continuous_fstA)) (continuous_haMap σ J (sndA F) (continuous_tensMap (AF F) _ continuous_sndA)) (mem_Hsub_iff σ J splT_bijective.1 P)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hermitian_measure_splitting : SplitH := by
   intro F E _ _ _ _ _ σ n J r P T _ _ _
@@ -23,7 +23,7 @@ theorem hermitian_measure_splitting : SplitH := by
     (mem_Hsub_iff σ J splT_bijective.1 P)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r P T _ _ _`. Establish `: Module.Finite F E` using `PI.VolSemiDirect.W.Lc.finite_nf F E`. Conclude with `splitEquiv _ _ _ (splitA_injective σ J splT_bijective.1) (continuous_haMap σ J (fstA F) (continuous_tensMap (AF F) _ continuous_fstA)) (continuous_haMap σ J (sndA F) (continuous_tensMap (AF F) _ continuous_sndA)) (mem_Nsub_iff σ J splT_bijective P)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nilpotent_measure_splitting : SplitN := by
   intro F E _ _ _ _ _ σ n J r P T _ _ _
@@ -34,7 +34,7 @@ theorem nilpotent_measure_splitting : SplitN := by
     (mem_Nsub_iff σ J splT_bijective P)
 
 /- English proof (translation)
-The claim follows from `mwCore_of hermitian_measure_splitting nilpotent_measure_splitting continuous_measure_splitting product_decomposition_holds`.
+A detailed English derivation is pending.
 -/
 theorem measWCore_main : Formalism.L2.SG.Pf.MeasCore.MWCore :=
   mwCore_of hermitian_measure_splitting nilpotent_measure_splitting continuous_measure_splitting product_decomposition_holds

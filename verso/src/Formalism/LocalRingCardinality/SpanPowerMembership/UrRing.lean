@@ -19,11 +19,11 @@ def ball (M : Subfield C) : Subring C where
 variable (M : Subfield C)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Rewrite using `[Subring.coe_mul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) c.2.2`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha : (a : C) = 0`. Establish `: b = 0` using `Subtype.ext (by rw [ha, norm_zero] at h; exact norm_le_zero_iff.mp h)`. Rewrite using `[this]`. Conclude with `dvd_zero _`. Use `⟨⟨b / a, div_mem b.2.1 a.2.1, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)`. Use `show (b : C) = a * (b / a)`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem dvd_iff (a b : ball M) : a ∣ b ↔ ‖(b : C)‖ ≤ ‖(a : C)‖ := by
   constructor
@@ -40,7 +40,7 @@ theorem dvd_iff (a b : ball M) : a ∣ b ↔ ‖(b : C)‖ ≤ ‖(a : C)‖ := 
         field_simp
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_dvd_one, dvd_iff, Subring.coe_one, norm_one]`. Conclude with `⟨fun h => le_antisymm a.2.2 h, fun h => h.ge⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isUnit_iff (a : ball M) : IsUnit a ↔ ‖(a : C)‖ = 1 := by
   rw [isUnit_iff_dvd_one, dvd_iff, Subring.coe_one, norm_one]
@@ -52,7 +52,7 @@ instance : IsLocalRing (ball M) := .of_nonunits_add fun a b ha hb => by
     (max_lt (lt_of_le_of_ne a.2.2 ha) (lt_of_le_of_ne b.2.2 hb))).ne
 
 /- English proof (translation)
-Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, isUnit_iff]`. Conclude with `⟨fun h => lt_of_le_of_ne a.2.2 h, fun h => h.ne⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_max (a : ball M) : a ∈ maximalIdeal (ball M) ↔ ‖(a : C)‖ < 1 := by
   rw [mem_maximalIdeal, mem_nonunits_iff, isUnit_iff]
@@ -79,19 +79,19 @@ instance : IsFractionRing (ball M) M := by
 def iC : FractionRing (ball M) →+* C := IsFractionRing.lift (g := (ball M).subtype) Subtype.val_injective
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.lift_algebraMap _ a`.
+A detailed English derivation is pending.
 -/
 theorem iC_alg (a : ball M) : iC M (algebraMap _ _ a) = a := IsFractionRing.lift_algebraMap _ a
 
 /- English proof (translation)
-Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := ball M) x`. Rewrite using `[map_div₀, iC_alg, iC_alg]`. Conclude with `div_mem a.2.1 b.2.1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iC_mem (x : FractionRing (ball M)) : iC M x ∈ M := by
   obtain ⟨a, b, -, rfl⟩ := IsFractionRing.div_surjective (A := ball M) x
   rw [map_div₀, iC_alg, iC_alg]; exact div_mem a.2.1 b.2.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨⟨iC M x, iC_mem M x, h⟩, (iC M).injective (iC_alg M _)⟩, fun ⟨a, h⟩ => by rw [← h, iC_alg]; exact a.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem iC_int (x : FractionRing (ball M)) :
     ‖iC M x‖ ≤ 1 ↔ x ∈ (algebraMap (ball M) (FractionRing (ball M))).range :=
@@ -99,9 +99,7 @@ theorem iC_int (x : FractionRing (ball M)) :
     fun ⟨a, h⟩ => by rw [← h, iC_alg]; exact a.2.2⟩
 
 /- English proof (translation)
-Set `V` to `(NormedField.valuation (K := C)).integer`. Set `_ : Algebra (ball M) V` to `(Subring.inclusion (S := ball M) (T := V) fun y hy => by show ‖y‖₊ ≤ 1`. Conclude with `hy.2).toAlgebra` after adjusting the coercions. Establish `: IsScalarTower (ball M) V C` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := C))).isIntegral_iff_v_le_one.mp (h.tower_top (A := V))`.
-
-Conclude with `(show ‖x‖₊ ≤ 1 from h2)` after adjusting the coercions.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_le_of_integral {x : C} (h : IsIntegral (ball M) x) : ‖x‖ ≤ 1 := by
   let V := (NormedField.valuation (K := C)).integer
@@ -114,15 +112,15 @@ theorem norm_le_of_integral {x : C} (h : IsIntegral (ball M) x) : ‖x‖ ≤ 1 
   exact_mod_cast (show ‖x‖₊ ≤ 1 from h2)
 
 /- English proof (translation)
-The claim follows from `(lifts_iff_coeff_lifts g).mpr fun n => ⟨⟨g.coeff n, (g.coeff n).2, h n⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem lifts_of_coeff (g : M[X]) (h : ∀ n, ‖(g.coeff n : C)‖ ≤ 1) : g ∈ lifts (algebraMap (ball M) M) :=
   (lifts_iff_coeff_lifts g).mpr fun n => ⟨⟨g.coeff n, (g.coeff n).2, h n⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[aeval_eq_sum_range]`. Establish `: (Finset.range (g.natDegree + 1)).Nonempty` using `⟨0, by simp⟩`. Take `⟨i, -, hi⟩` from `IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty this (fun i => g.coeff i • α ^ i)`. Use `hi.trans_lt ?_` and prove the remaining obligations. Establish `h1 : ‖(g.coeff i : C)‖ < 1` using `(mem_max M _).mp ((residue_eq_zero_iff _).mp (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← coeff_map, h, coeff_zero]))`. Rewrite using `[Algebra.smul_def, norm_mul, norm_pow]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) h1 (pow_le_one₀ (norm_nonneg _) hα)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_aeval_lt (g : (ball M)[X]) (h : g.map (residue (ball M)) = 0) {α : C} (hα : ‖α‖ ≤ 1) :
     ‖aeval α g‖ < 1 := by
@@ -137,7 +135,7 @@ theorem norm_aeval_lt (g : (ball M)[X]) (h : g.map (residue (ball M)) = 0) {α :
   exact mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) h1 (pow_le_one₀ (norm_nonneg _) hα)
 
 /- English proof (translation)
-Rewrite using `[aeval_eq_sum_range]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (g.coeff i).2.2 (by positivity) (pow_le_one₀ (norm_nonneg _) hα)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_aeval_le (g : (ball M)[X]) {α : C} (hα : ‖α‖ ≤ 1) : ‖aeval α g‖ ≤ 1 := by
   rw [aeval_eq_sum_range]
@@ -151,11 +149,9 @@ variable {M} {π : C} (hπ : π ∈ M) (h0 : π ≠ 0) (h1 : ‖π‖ < 1) (hD :
 
 include h0 hD in
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[mem_max, Ideal.mem_span_singleton, dvd_iff]`. Use `⟨fun h => ?_, fun h => h.trans_lt h1⟩` and prove the remaining obligations. Distinguish the cases in `ha : (a : C) = 0`. Rewrite using `[ha, norm_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_nonneg _`. Take `⟨n, hn⟩` from `hD a a.2.1 ha`. Establish `hp : 0 < ‖π‖` using `norm_pos_iff.mpr h0`. Rewrite `h`, the goal using `[hn]`. Establish `: 0 < n` using `(zpow_lt_one_iff_right_of_lt_one₀ hp h1).mp h`.
-
-Conclude with `(zpow_le_zpow_right_of_le_one₀ hp h1.le (show 1 ≤ n by omega)).trans (zpow_one _).le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem max_eq : maximalIdeal (ball M) = Ideal.span {(⟨π, hπ, h1.le⟩ : ball M)} := by
   ext a
@@ -171,9 +167,9 @@ theorem max_eq : maximalIdeal (ball M) = Ideal.span {(⟨π, hπ, h1.le⟩ : bal
 
 include hπ h0 h1 hD in
 /- English proof (translation)
-Establish `hp : 0 < ‖π‖` using `norm_pos_iff.mpr h0`. Use `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨⟨π, hπ, h1.le⟩, IsDiscreteValuationRing.irreducible_of_span_eq_maximalIdeal _ (fun h => h0 (congrArg Subtype.val h)) (max_eq hπ h0 h1 hD), fun {x} hx => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hD x x.2.1 (fun h => hx (Subtype.ext h))`. Establish `: 0 ≤ n` using `(zpow_le_one_iff_right_of_lt_one₀ hp h1).mp (hn ▸ x.2.2)`. Use `lift n to ℕ using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[zpow_natCast, ← norm_pow]`. Conclude with `⟨n, associated_of_dvd_dvd ((dvd_iff M _ _).mpr hn.le) ((dvd_iff M _ _).mpr hn.ge)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isDVR : IsDiscreteValuationRing (ball M) := by
   have hp : 0 < ‖π‖ := norm_pos_iff.mpr h0
@@ -188,11 +184,11 @@ theorem isDVR : IsDiscreteValuationRing (ball M) := by
 
 include hπ h0 h1 hD in
 /- English proof (translation)
-Establish `hp : 0 < ‖π‖` using `norm_pos_iff.mpr h0`. Establish `key : ∀ n : ℕ, ((maximalIdeal (ball M) ^ n : Ideal (ball M)) : Set (ball M)) = Metric.closedBall 0 (‖π‖ ^ n)` using `fun n => by`. Use extensionality with `a`. Rewrite using `[max_eq hπ h0 h1 hD, Ideal.span_singleton_pow, SetLike.mem_coe, Ideal.mem_span_singleton, dvd_iff, Metric.mem_closedBall, Subtype.dist_eq, ZeroMemClass.coe_zero, dist_zero_right, ← norm_pow]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `isAdic_iff.mpr ⟨fun n => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `IsUltrametricDist.isOpen_closedBall _ (pow_pos hp n).ne'`. Take `⟨ε, hε, h⟩` from `Metric.mem_nhds_iff.mp hs`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, by rw [key]; exact (Metric.closedBall_subset_ball hn).trans h⟩`.
+A detailed English derivation is pending.
 -/
 theorem isAdic : IsAdic (maximalIdeal (ball M)) := by
   have hp : 0 < ‖π‖ := norm_pos_iff.mpr h0
@@ -209,14 +205,14 @@ theorem isAdic : IsAdic (maximalIdeal (ball M)) := by
     exact ⟨n, by rw [key]; exact (Metric.closedBall_subset_ball hn).trans h⟩
 
 /- English proof (translation)
-The claim follows from `hc.inter (isClosed_le continuous_norm continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem ball_closed (hc : IsClosed (M : Set C)) : IsClosed (ball M : Set C) :=
   hc.inter (isClosed_le continuous_norm continuous_const)
 
 include hπ h0 h1 hD in
 /- English proof (translation)
-Use `(ball_closed hc).completeSpace_coe` as an intermediate fact. Conclude with `(isAdic hπ h0 h1 hD).isAdicComplete_iff.mpr ⟨this, inferInstance⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isComplete [CompleteSpace C] (hc : IsClosed (M : Set C)) :
     IsAdicComplete (maximalIdeal (ball M)) (ball M) := by
@@ -224,7 +220,7 @@ theorem isComplete [CompleteSpace C] (hc : IsClosed (M : Set C)) :
   exact (isAdic hπ h0 h1 hD).isAdicComplete_iff.mpr ⟨this, inferInstance⟩
 
 /- English proof (translation)
-Use `zorn_le_nonempty₀ {M | Disc M π} (fun c hc hch y hy => ⟨sSup c, fun x hx hx0 => ?_, fun z hz => le_sSup hz⟩) L hL` and prove the remaining obligations. Take `⟨S, hS, hxS⟩` from `(Subfield.mem_sSup_of_directedOn ⟨y, hy⟩ hch.directedOn).mp hx`. Conclude with `hc hS x hxS hx0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_max (L : Subfield C) (π : C) (hL : Disc L π) :
     ∃ M, L ≤ M ∧ Maximal (fun M => Disc M π) M := by
@@ -234,9 +230,9 @@ theorem exists_max (L : Subfield C) (π : C) (hL : Disc L π) :
   exact hc hS x hxS hx0
 
 /- English proof (translation)
-Establish `: Disc M.topologicalClosure π` using `fun x hx hx0 => by`. Take `⟨y, hy, hxy⟩` from `Metric.mem_closure_iff.mp (show x ∈ closure (M : Set C) from hx) ‖x‖ (norm_pos_iff.mpr hx0)`. Rewrite `hxy` using `[dist_comm, dist_eq_norm]`. Establish `e : ‖y‖ = ‖x‖`. Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hxy.ne` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_add_cancel, max_eq_right hxy.le]`. Then use the resulting hypothesis. Take `⟨n, hn⟩` from `hM.1 y hy (by rintro rfl; exact hx0 (by simpa using e.symm))`. Conclude with `⟨n, e ▸ hn⟩`. Conclude with `isClosed_of_closure_subset (hM.2 this M.le_topologicalClosure)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem closed_of_max (hM : Maximal (fun M => Disc M π) M) : IsClosed (M : Set C) := by
   have : Disc M.topologicalClosure π := fun x hx hx0 => by
@@ -251,31 +247,29 @@ theorem closed_of_max (hM : Maximal (fun M => Disc M π) M) : IsClosed (M : Set 
   exact isClosed_of_closure_subset (hM.2 this M.le_topologicalClosure)
 
 /- English proof (translation)
-Use `IsAlgClosed.of_exists_root _ fun fb hm hirr => ?_` and prove the remaining obligations. Take `⟨f, hf, hdeg, hfm⟩` from `lifts_and_degree_eq_and_monic (show fb ∈ lifts (residue (ball M)) from map_surjective _ residue_surjective fb) hm`. Establish `hd0 : f.degree ≠ 0` using `by rw [hdeg]; exact (degree_pos_of_irreducible hirr).ne'`. Take `⟨α, hα⟩` from `IsAlgClosed.exists_aeval_eq_zero_of_injective C Subtype.val_injective f hd0`. Establish `hint : IsIntegral (ball M) α` using `⟨f, hfm, hα⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hα1` using `norm_le_of_integral M hint`. Establish `unit : ∀ g : (ball M)[X], g.degree < f.degree → g.map (residue _) ≠ 0 → ‖aeval α g‖ = 1`. Introduce `g hg hg0`. Establish `hc : IsCoprime fb (g.map (residue _))` using `hirr.coprime_iff_not_dvd.mpr fun hdv => absurd ((degree_le_of_dvd hdv hg0).trans degree_map_le) (not_le.mpr (hdeg ▸ hg))`. Take `⟨a, b, hab⟩` from `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `map_surjective _ residue_surjective a`. Take `⟨b, rfl⟩` from `map_surjective _ residue_surjective b`. Establish `h2` using `norm_aeval_lt M (a * f + b * g - 1) (by rw [Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, hf, hab]; simp) hα1`. Rewrite `h2` using `[map_sub, map_add, map_mul, map_mul, hα, mul_zero, zero_add, map_one]`. Establish `h3 : ‖aeval α b * aeval α g‖ = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := aeval α b * aeval α g - 1) (y := 1) (by rw [norm_one]; exact h2.ne)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_one, max_eq_right h2.le]`. Then use the resulting hypothesis. Rewrite `h3` using `[norm_mul]`. Use `le_antisymm (norm_aeval_le M g hα1) ?_` and prove the remaining obligations. Use polynomial arithmetic with `[norm_aeval_le M b hα1, norm_nonneg (aeval α g), norm_nonneg (aeval α b)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hintM : IsIntegral M α` using `hint.tower_top`. Establish `hDisc : Disc (IntermediateField.adjoin M {α}).toSubfield π` using `fun x hx hx0 => by`. Establish `hx' : x ∈ Algebra.adjoin M {α}`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hintM.isAlgebraic]`. Conclude with `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx'` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨q, rfl⟩` from `hx'`. Set `F` to `f.map (algebraMap (ball M) M)`. Establish `hF : F.Monic` using `hfm.map _`. Set `g` to `q %ₘ F`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgx : aeval α g = aeval α q` using `aeval_modByMonic_eq_self_of_root (by rw [aeval_map_algebraMap, hα])`. Establish `hg0 : g ≠ 0` using `fun h => hx0 (by show aeval α q = 0`. Rewrite using `[← hgx, h, map_zero])`. Take `⟨i, hi, hmax⟩` from `g.support.exists_max_image (fun n => ‖(g.coeff n : C)‖) (support_nonempty.mpr hg0)`. Establish `hc0 : g.coeff i ≠ 0` using `mem_support_iff.mp hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0' : (g.coeff i : C) ≠ 0` using `fun h => hc0 (Subtype.ext h)`. Take `⟨g0, hg0e, hg0d⟩` from `(mem_lifts_and_degree_eq (lifts_of_coeff M (Polynomial.C (g.coeff i)⁻¹ * g) fun n => by`. Rewrite using `[coeff_C_mul]`. Use `push_cast`. Rewrite using `[norm_mul, norm_inv, inv_mul_le_one₀ (norm_pos_iff.mpr hc0')]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hn : n ∈ g.support`. Conclude with `hmax n hn`. Rewrite using `[notMem_support_iff.mp hn]`. Use the proof step `simp))`. Establish `hco : g0.coeff i = 1` using `IsFractionRing.injective (ball M) M (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coeff_map, hg0e, coeff_C_mul, inv_mul_cancel₀ hc0, map_one])`. Establish `hu` using `unit g0 (by`. Rewrite using `[hg0d, degree_C_mul (inv_ne_zero hc0), ← hfm.degree_map (algebraMap (ball M) M)]`. Conclude with `degree_modByMonic_lt q hF) (fun h => by`. Use `congrArg (coeff · i) h` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hco] at this)`. Rewrite `hu` using `[← aeval_map_algebraMap M, hg0e, map_mul, aeval_C, norm_mul, hgx]`. Take `⟨n, hn⟩` from `hM.1 _ (g.coeff i).2 hc0'`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `e : ‖algebraMap M C (g.coeff i)⁻¹‖ = ‖(g.coeff i : C)‖⁻¹` using `by rw [map_inv₀, norm_inv]; rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hu` using `[e, inv_mul_eq_one₀ (norm_ne_zero_iff.mpr hc0')]`. Conclude with `hu.symm.trans hn`. Establish `hαM : α ∈ M` using `hM.2 hDisc (fun y hy => (IntermediateField.adjoin M {α}).algebraMap_mem ⟨y, hy⟩) (IntermediateField.mem_adjoin_simple_self M α)`. Use `⟨residue _ ⟨α, hαM, hα1⟩, ?_⟩` and prove the remaining obligations. Establish `: f.eval ⟨α, hαM, hα1⟩ = 0` using `Subtype.val_injective (by`.
-
-Conclude with `(aeval_algebraMap_apply C (⟨α, hαM, hα1⟩ : ball M) f).symm.trans hα)`. Rewrite using `[← hf, eval_map, eval₂_at_apply, this, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_algClosed [IsAlgClosed C] (hM : Maximal (fun M => Disc M π) M) :
     IsAlgClosed (ResidueField (ball M)) := by
@@ -353,7 +347,7 @@ variable (M) (ζ : C)
 def ext : Subfield C := (IntermediateField.adjoin M {ζ}).toSubfield
 
 /- English proof (translation)
-Introduce `y hy` and use `(IntermediateField.adjoin M {ζ}).algebraMap_mem ⟨y, hy⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_ext : M ≤ ext M ζ := fun y hy => (IntermediateField.adjoin M {ζ}).algebraMap_mem ⟨y, hy⟩
 
@@ -361,7 +355,7 @@ instance : Algebra (ball M) (ball (ext M ζ)) :=
   (Subring.inclusion (S := ball M) (T := ball (ext M ζ)) fun _ h => ⟨le_ext M ζ h.1, h.2⟩).toAlgebra
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (congrArg (fun t : ball (ext M ζ) => (t : C)) h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ext_inj : Function.Injective (algebraMap (ball M) (ball (ext M ζ))) :=
   fun _ _ h => Subtype.ext (congrArg (fun t : ball (ext M ζ) => (t : C)) h)
@@ -372,17 +366,15 @@ variable {M}
 
 include hπ h0 h1 hD in
 /- English proof (translation)
-Use `isDVR hπ h0 h1 hD` as an intermediate fact. Set `K` to `IntermediateField.adjoin M {ζ}`. Establish `: FiniteDimensional M K` using `IntermediateField.adjoin.finiteDimensional hζ`. Set `_ : NontriviallyNormedField M` to `{ (inferInstance : NormedField M) with non_trivial := ⟨⟨π, hπ⟩⁻¹, by show 1 < ‖π⁻¹‖`. Rewrite using `[norm_inv]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(one_lt_inv₀ (norm_pos_iff.mpr h0)).mpr h1⟩ }`. Establish `: CompleteSpace M` using `hc.completeSpace_coe`. Set `_ : Algebra (ball (ext M ζ)) K` to `(toM (ext M ζ)).toAlgebra`. Establish `: IsScalarTower (ball M) (ball (ext M ζ)) K` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsIntegralClosure (ball (ext M ζ)) (ball M) K` using `⟨fun a b h => Subtype.ext (congrArg (fun t : K => (t : C)) h), fun {x} => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨⟨x, x.2, norm_le_of_integral M (hx.map (K.val.restrictScalars (ball M)))⟩, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`. Establish `hs` using `spectralNorm_unique_field_norm_ext (K := M) (L := K) (f := (NormedField.toAbsoluteValue C).comp (algebraMap K C).injective) (fun _ => rfl) (algebraMap _ K y)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : IsIntegral M (algebraMap _ K y)` using `Algebra.IsIntegral.isIntegral _`. Establish `hv : spectralValue (minpoly M (algebraMap _ K y)) ≤ 1` using `hs.symm.le.trans y.2.2`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_degree_eq_and_monic (lifts_of_coeff M _ ((spectralValue_le_one_iff (minpoly.monic hi)).mp hv)) (minpoly.monic hi)`. Conclude with `⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap M, hq, minpoly.aeval]⟩⟩`. Establish `hfin` using `IsIntegralClosure.finite (ball M) M K (ball (ext M ζ))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hded` using `IsIntegralClosure.isDedekindDomain (ball M) M K (ball (ext M ζ))`. Establish `hnf : ¬ IsField (ball (ext M ζ))` using `fun hf => by`. Establish `hm : (⟨π, le_ext M ζ hπ, h1.le⟩ : ball (ext M ζ)) ∈ maximalIdeal _` using `(mem_max _ _).mpr h1`. Rewrite `hm` using `[isField_iff_maximalIdeal_eq.mp hf, Ideal.mem_bot]`. Conclude with `h0 (congrArg Subtype.val hm)`.
-
-Conclude with `⟨hfin, ((IsDiscreteValuationRing.TFAE _ hnf).out 0 2).mpr hded⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ext_spec [CompleteSpace C] [CharZero C] (hc : IsClosed (M : Set C)) (hζ : IsIntegral M ζ) :
     Module.Finite (ball M) (ball (ext M ζ)) ∧ IsDiscreteValuationRing (ball (ext M ζ)) := by
@@ -417,11 +409,11 @@ theorem ext_spec [CompleteSpace C] [CharZero C] (hc : IsClosed (M : Set C)) (hζ
   exact ⟨hfin, ((IsDiscreteValuationRing.TFAE _ hnf).out 0 2).mpr hded⟩
 
 /- English proof (translation)
-Establish `hx : iC _ x ∈ Algebra.adjoin M {ζ}`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hζ.isAlgebraic]`. Conclude with `iC_mem _ x`. Rewrite `hx` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨q, hq⟩` from `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, e⟩` from `IsLocalization.integerNormalization_spec (nonZeroDivisors (ball M)) q`. Use `⟨IsLocalization.integerNormalization (nonZeroDivisors (ball M)) q, d, nonZeroDivisors.ne_zero hd, (iC _).injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, iC_alg, iC_alg, ← hq]`. Establish `h2 : ((aeval z (IsLocalization.integerNormalization (nonZeroDivisors (ball M)) q) : ball (ext M ζ)) : C) = aeval ζ (IsLocalization.integerNormalization (nonZeroDivisors (ball M)) q)` using `(aeval_algebraMap_apply C z _).symm.trans (congrArg (fun t => aeval t _) hz)`. Rewrite using `[h2, ← aeval_map_algebraMap M, e, Algebra.smul_def, map_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `(aeval_C ζ (algebraMap (ball M) M d)).symm`.
+A detailed English derivation is pending.
 -/
 theorem ext_gen (hζ : IsIntegral M ζ) (z : ball (ext M ζ)) (hz : (z : C) = ζ)
     (x : FractionRing (ball (ext M ζ))) : ∃ p : (ball M)[X], ∃ d : ball M, d ≠ 0 ∧

@@ -24,13 +24,13 @@ def xfer (h : (algebraMap A K).range = (algebraMap B K).range) (X : Submodule A 
     exact X.smul_mem a hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_xfer (h : (algebraMap A K).range = (algebraMap B K).range) {X : Submodule A M} {y : M} :
     y ∈ xfer h X ↔ y ∈ X := Iff.rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Conclude with `(Submodule.span_le (p := xfer h.symm (Submodule.span B s))).2 (fun z hz => Submodule.subset_span hz) hy`. Conclude with `Submodule.span_le.2 fun z hz => Submodule.subset_span hz`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem xfer_span (h : (algebraMap A K).range = (algebraMap B K).range) (s : Set M) :
     xfer h (Submodule.span A s) = Submodule.span B s := by
@@ -49,7 +49,7 @@ variable {A B K M : Type} [CommRing A] [CommRing B] [Field K] [Algebra A K] [Alg
   {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use extensionality with `y`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem xfer_eigSub (h : (algebraMap A K).range = (algebraMap B K).range) (ρ : 𝓞 E →+* Module.End K M) (σ : E →+* K)
     (X : Submodule A M) : xfer h (HT.eigSub ρ σ X) = HT.eigSub ρ σ (xfer h X) := by
@@ -57,9 +57,9 @@ theorem xfer_eigSub (h : (algebraMap A K).range = (algebraMap B K).range) (ρ : 
   exact Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨z, hz, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem xfer_eigQuot (h : (algebraMap A K).range = (algebraMap B K).range) (ρ : 𝓞 E →+* Module.End K M) (σ : E →+* K)
     (X : Submodule A M) : xfer h (HT.eigQuot ρ σ X) = HT.eigQuot ρ σ (xfer h X) := by
@@ -71,7 +71,7 @@ theorem xfer_eigQuot (h : (algebraMap A K).range = (algebraMap B K).range) (ρ :
     exact ⟨z, hz, rfl⟩
 
 /- English proof (translation)
-Use `⟨hf.1, hf.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← xfer_span h, ← hf.2.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFreeOn_xfer (h : (algebraMap A K).range = (algebraMap B K).range) {ρ : 𝓞 E →+* Module.End K M}
     {X : Submodule A M} {N : ℕ} {t : Fin N → M} (hf : HT.IsFreeOn ρ X t) :
@@ -82,23 +82,19 @@ theorem isFreeOn_xfer (h : (algebraMap A K).range = (algebraMap B K).range) {ρ 
 end XferEig
 
 /- English proof (translation)
-Introduce `hO E _ _ V C _ _ _ _ _ _ _ bar σ σ' rk p q ν hν hℓ hs hcard hσ' hbar`. Establish `hr : (algebraMap V C).range = (algebraMap ν.valuationSubring C).range`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨_, (Valuation.mem_valuationSubring_iff _ _).2 (hν.map_le_one a)⟩, rfl⟩`. Introduce and unpack `⟨o, rfl⟩`. Take `⟨a, ha⟩` from `hν.exists_of_le_one ((Valuation.mem_valuationSubring_iff _ _).1 o.2)`. Conclude with `⟨a, ha⟩`. Take `⟨γ, hγ, H⟩` from `hO E C ν bar σ σ' rk p q hℓ (fun s a => by`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨o, ho⟩ : s (a : E) ∈ (algebraMap ν.valuationSubring C).range` from `hr ▸ hs s a`. Rewrite using `[← ho]`. Conclude with `o.2) hcard hσ' hbar`. Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations. Introduce `W _ _ _ _ _ ρ ρH HV Lie x v w u A h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Use `letI : Module ν.valuationSubring W := Module.compHom W (algebraMap ν.valuationSubring C)`. Use `haveI : IsScalarTower ν.valuationSubring C W := ⟨fun o c y => by`. Express the relevant statement in the definitionally equal form `((o : C) * c) • y = (o : C) • (c • y)`. Rewrite using `[mul_smul]⟩`. Take `⟨ε, hε⟩` from `H W ρ ρH (xfer hr HV) (xfer hr Lie) x v w u A h1 h2 (by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Rewrite using `[mem_xfer, ← h3]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩)`. Use the proof step `(fun φ => by`. Rewrite using `[mem_xfer, h4, ← hr]`. Conclude with `Iff.rfl)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `(isFreeOn_xfer hr h5) h6 h7`. Use the proof step `(by rw [← xfer_span hr, h8, xfer_eigSub]) h9`. Use the proof step `(by rw [← xfer_span hr, h10, xfer_eigSub]) h11 h12`. Use the proof step `(by rw [← xfer_span hr, h13, xfer_eigQuot])`. Take `⟨a, ha⟩ : algebraMap ν.valuationSubring C (ε : ν.valuationSubring) ∈ (algebraMap V C).range` from `hr ▸ ⟨_, rfl⟩`.
-
-Take `⟨b, hb⟩ : algebraMap ν.valuationSubring C ((ε⁻¹ : (ν.valuationSubring)ˣ) : ν.valuationSubring) ∈ (algebraMap V C).range` from `hr ▸ ⟨_, rfl⟩`. Establish `hab : a * b = 1`. Apply `hν.hom_inj` to reduce the goal to its premises. Rewrite using `[map_mul, ha, hb, ← map_mul, Units.mul_inv, map_one, map_one]`. Use `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hε]`. Conclude with `congrArg (· * γ) ha.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem targetV : TargetO → ∀ (E : Type) [Field E] [NumberField E] (V C : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field C] [CharZero C] [Algebra V C] [IsFractionRing V C] (bar : 𝓞 E ≃+* 𝓞 E) (σ σ' : E →+* C) (rk : (E →+* C) → ℕ) (p q : ℕ) (ν : Valuation C NNReal), ν.Integers V → (∃ ℓ : C, 0 < ν ℓ ∧ ν ℓ < 1) → (∀ (s : E →+* C) (a : 𝓞 E), s (a : E) ∈ (algebraMap V C).range) → Nat.card (E →+* C) = Module.finrank ℚ E → (∀ a : 𝓞 E, σ' (a : E) = σ (bar a : 𝓞 E)) → (∀ a, bar (bar a) = a) → ∃ γ : C, γ ≠ 0 ∧ ∀ (W : Type) [AddCommGroup W] [Module C W] [Module V W] [IsScalarTower V C W] [FiniteDimensional C W] (ρ : 𝓞 E →+* Module.End C W) (ρH : 𝓞 E →+* Module.End C (W × Module.Dual C W)) (HV : Submodule V (W × Module.Dual C W)) (Lie : Submodule V W) (x : Fin (p + q) → W × Module.Dual C W) (v : Fin p → W) (w : Fin q → W) (u : Fin (p + q) → W × Module.Dual C W) (A : Matrix (Fin (p + q)) (Fin (p + q)) C), (∀ a y, (ρH a y).1 = ρ a y.1) → (∀ a φ, ρH a (0, φ) = (0, φ ∘ₗ ρ (bar a))) → HV.map ((LinearMap.fst C W (Module.Dual C W)).restrictScalars V) = Lie → (∀ φ : Module.Dual C W, (0, φ) ∈ HV ↔ ∀ e ∈ Lie, φ e ∈ (algebraMap V C).range) → HT.IsFreeOn ρH HV x → (∀ s, Module.finrank C (HT.eigSp ρ s) = rk s) → LinearIndependent C v → Submodule.span V (Set.range v) = HT.eigSub ρ σ Lie → LinearIndependent C w → Submodule.span V (Set.range w) = HT.eigSub ρ σ' Lie → IsAdapted ρH σ v w u → LinearIndependent C (fun i => ∑ j, A i j • u j) → Submodule.span V (Set.range fun i => ∑ j, A i j • u j) = HT.eigQuot ρH σ HV → ∃ ε : Vˣ, A.det = algebraMap V C ε * γ := by
   intro hO E _ _ V C _ _ _ _ _ _ _ bar σ σ' rk p q ν hν hℓ hs hcard hσ' hbar

@@ -28,7 +28,7 @@ noncomputable section
 namespace GlobalTheory.CharPVanish
 
 /- English proof (translation)
-Unfold `inter`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.inf_insert]`. Conclude with `⟨h i, ih⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 -/
 theorem gen_mem_inter {X : Scheme.{0}} [IsIntegral X] {ι : Type} (U : ι → X.Opens)
     (h : ∀ i, genericPoint X ∈ U i) (s : Finset ι) : genericPoint X ∈ inter U s := by
@@ -39,7 +39,7 @@ theorem gen_mem_inter {X : Scheme.{0}} [IsIntegral X] {ι : Type} (U : ι → X.
   | insert i s hi ih => rw [Finset.inf_insert]; exact ⟨h i, ih⟩
 
 /- English proof (translation)
-Introduce `c hc _`. Use `⟨0, ⟨rfl, fun s => zero_mem _, fun _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Simplify using `only [DI.delta, Pi.zero_apply, smul_zero, Finset.sum_const_zero]`. Conclude with `(h t _ (hc.2.1 t)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cechZero_of_forall_eq_zero {ι : Type} [LinearOrder ι] {E : Type} [AddCommGroup E]
     (N : Finset ι → AddSubgroup E) (h : ∀ s, ∀ x ∈ N s, x = 0) (b : ℕ) : DI.CechZero N b := by
@@ -50,9 +50,9 @@ theorem cechZero_of_forall_eq_zero {ι : Type} [LinearOrder ι] {E : Type} [AddC
   exact (h t _ (hc.2.1 t)).symm
 
 /- English proof (translation)
-Introduce `x hx`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, genericPoint X ∈ 𝒜.U i := by`. Establish `: genericPoint X ∈ (⨆ i, 𝒜.U i)` using `by rw [𝒜.cover]; trivial`. Simplify `this` using `[Opens.mem_iSup]`. Establish `hx' : x ∈ logAt (suppAll E) G a (genericPoint X)` using `AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 hx (genericPoint X)) (gen_mem_inter _ 𝒜.gen s)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc` using `((𝒜.chart i).chart _ hi).coord`. Rewrite `hx'` using `[logAt, spanForms_eq_bot_of_lt_card _ n (𝒜.x i) _ _ a hc ha]`. Conclude with `(AddSubgroup.mem_bot).1 hx'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechFam_eq_zero {X : Scheme.{0}} [IsIntegral X] {C : Type} {E : C → CartierDiv X} {n : ℕ}
     {ι : Type} (𝒜 : SncAtlas E n ι) (G : CartierDiv X) {a : ℕ} (ha : n < a) (s : Finset ι) :
@@ -68,7 +68,7 @@ theorem cechFam_eq_zero {X : Scheme.{0}} [IsIntegral X] {C : Type} {E : C → Ca
   exact (AddSubgroup.mem_bot).1 hx'
 
 /- English proof (translation)
-Use `GlobalTheory.SchemeWords.isProper_of_isProjOver h` as an intermediate fact. Conclude with `⟨by rw [← terminal.comp_from f]; infer_instance⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isSeparated_of_isProjOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R}
     (h : IsProjOver f) : X.IsSeparated := by
@@ -76,9 +76,9 @@ theorem isSeparated_of_isProjOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : 
   exact ⟨by rw [← terminal.comp_from f]; infer_instance⟩
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Nat.div_add_mod N r]`. Generalize the expression as in `N / r = Q`. Generalize the expression as in `N % r = ρ`. Establish `hfl : ∀ c, (r * Q + ρ) * b c / r = ρ * b c / r + Q * b c`. Introduce `c`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (r * Q + ρ) * b c = ρ * b c + r * (Q * b c) by ring, Nat.add_mul_div_left _ _ hr]`. Simplify using `only [hfl, add_smul, Finset.sum_add_distrib]`. Rewrite using `[show r * Q = Q * r from mul_comm _ _, mul_smul, key]`. Simplify using `only [mul_smul, ← Finset.smul_sum, smul_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem twist_split {X : Scheme.{0}} [IsIntegral X] {C : Type} [Fintype C] (E : C → CartierDiv X)
     (M K H : CartierDiv X) (r : ℕ) (b : C → ℕ) (hr : 0 < r) (key : r • (M - K) = ∑ c, b c • E c + H)
@@ -97,25 +97,23 @@ theorem twist_split {X : Scheme.{0}} [IsIntegral X] {C : Type} [Fintype C] (E : 
   abel
 
 /- English proof (translation)
-Introduce `p _ X _ f d _ hproj _ C _ E ι _ _ 𝒜 hdec M H r b hH hr hb hM q hq`. Use `haveI : CharP X.functionField p := charP_of_injective_ringHom (Cartier.constFn f).injective p`. Use `haveI : X.IsSeparated := isSeparated_of_isProjOver hproj`. Set `G : ℕ → CartierDiv X` to `fun e => p ^ e • (M - canonical f d) - ∑ c, (p ^ e * b c / r) • E c - ∑ c, E c`. Set `R : Fin r → CartierDiv X` to `fun j => (j : ℕ) • (M - canonical f d) - ∑ c, ((j : ℕ) * b c / r) • E c - ∑ c, E c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q₀, hq₀⟩` from `GlobalTheory.T.serre_vanishing_snc_atlas (ZMod p) X f hproj E 𝒜 H r R hH`. Establish `hp1 : 1 < p` using `(Fact.out : p.Prime).one_lt`. Establish `hpow : q₀ * r ≤ p ^ (q₀ * r)`. Use `Nat.lt_pow_self hp1 (n := q₀ * r)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : q₀ ≤ p ^ (q₀ * r) / r` using `(Nat.le_div_iff_mul_le hr).2 hpow`. Establish `key : r • (M - canonical f d) = ∑ c, b c • E c + H`. Rewrite using `[smul_sub, hM]`. Normalize the expressions using the abelian group laws. Establish `hG : G (q₀ * r) = (p ^ (q₀ * r) / r) • H + R ⟨p ^ (q₀ * r) % r, Nat.mod_lt _ hr⟩` using `twist_split E M (canonical f d) H r b hr key _`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrec : ∀ e, ∃ ρ : C → ℕ, (∀ c, ρ c < p) ∧ G (e + 1) = p • G e + ∑ c, ρ c • E c` using `GlobalTheory.T.frobenius_twist_divisor_recursion X p E M (canonical f d) r b (by omega) hr`. Establish `hvan : ∀ a b' : ℕ, d < a + b' → DI.CechZero (cechFam 𝒜 (G (q₀ * r)) a) b'`. Introduce `a b' hab`. Break down `Nat.eq_zero_or_pos b' with rfl | hb'` into its components or cases. Conclude with `cechZero_of_forall_eq_zero _ (cechFam_eq_zero 𝒜 _ (by omega)) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hG]`. Conclude with `hq₀ _ hQ _ a b' hb'`. Establish `h0` using `GlobalTheory.T.cech_vanishing_frobenius_descent p X E 𝒜 G hdec hrec (q₀ * r) hvan d q (by omega)`. Establish `hG0 : G 0 = M - canonical f d - ∑ c, E c`. Simplify using `only [G, pow_zero, one_smul, one_mul, Nat.div_eq_of_lt (hb _), zero_smul, Finset.sum_const_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ω₀, hω₀, htop⟩` from `GlobalTheory.T.top_log_forms_canonical_generator p X f d E 𝒜`. Set `φ : X.functionField →ₗ[X.functionField] abelian₂ X.functionField` to `LinearMap.toSpanSingleton _ _ ω₀`. Establish `hφ : Function.Injective φ` using `fun c c' h => smul_left_injective _ hω₀ h`. Establish `hD : canonical f d + ∑ c, E c + G 0 = M` using `by rw [hG0]; abel`. Establish `hlat : logAt (suppAll E) (G 0) d = fun y => ((M.secOn {y}).toAddSubgroup).map φ.toAddMonoidHom`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use function extensionality and compare the values at `y`. Use extensionality with `η`. Rewrite using `[htop, AddSubgroup.mem_map, hD]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, CartierDiv.mem_secOn.2 (fun z hz => by rw [Set.mem_singleton_iff.1 hz]; exact hc), rfl⟩`. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨c, CartierDiv.mem_secOn.1 hc y rfl, rfl⟩`. Take `⟨L0⟩` from `nonempty_latModel_of_presents X M (toLB M) _ (presents_toLB M)`. Take `⟨L1⟩` from `(GlobalTheory.T.lattice_model_unique_injective X _ (LB.toMod (toLB M)) (LB.toMod (toLB M)) φ hφ L0).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `haveI := LB.isQuasicoherent_toMod (isLB_toLB M)`. Use `(GlobalTheory.T.cech_lattice_cohomology_vanish X _ (LB.toMod (toLB M)) 𝒜.U L1 𝒜.affine 𝒜.gen 𝒜.cover q hq).1 ?_` and prove the remaining obligations. Establish `hfam : cechFam 𝒜 (G 0) d = fun s => latSec (fun y => ((M.secOn {y}).toAddSubgroup).map φ.toAddMonoidHom) (inter 𝒜.U s)`. Use function extensionality and compare the values at `s`. Simplify using `only [cechFam, logSec]`.
-
-Rewrite using `[hlat]`. Rewrite `h0` using `[hfam]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem subsingleton_coh_of_decomp : ∀ (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) [IsIntegral X]
     (f : X ⟶ Sp (ZMod p)) (d : ℕ) [SmoothOfRelativeDimension d f], IsProjOver f → d < p →

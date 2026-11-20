@@ -13,9 +13,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.RowPointLoc
 /- English proof (translation)
-Introduce `hL D P h42 _ i σ hne`. Take `⟨Q, hQ⟩` from `((h42 i) σ hne).1.2`. Take `⟨i', hi', P', x', hth, hx⟩` from `GlobalTheory.T.theta_lift_has_point_at_localisation_same_place D P.M P.H.hecke P.H.av P.H.cover (_root_.GlobalTheory.T.heckeStdTw_cover' hL D P) i σ Q hQ`. Take `⟨hj, hw⟩` from `(D.nd.locs_mem _ _ i').1 hi'`. Establish `hl : D.nd.l i' = D.nd.l i` using `by rw [← D.nd.w_l i', ← D.nd.w_l i, hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩` from `P.H.hecke.sameO i' i hj hw`. Use `⟨i', hj, hl, fun w _ => P.locW_eq i' i σ w, ⟨φ, ?_, fun z => (hφ z).symm⟩, P', x', hth, hx⟩` and prove the remaining obligations. Conclude with `continuous_of_adic (D.nd.O_adic i') (D.nd.O_adic i) φ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), Formalism.MainNotions.SumRepresentations.Conclusion42 D → _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D → RowPoint D.nd D.naut := by
   intro hL D P h42 _ i σ hne

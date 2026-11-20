@@ -8,9 +8,9 @@ open scoped MatrixGroups ModularForm
 namespace Ad3P.EigenformCoefficientExpansion
 
 /- English proof (translation)
-Establish `hp : (1 : ℝ) ∈ (Gamma1 N : Subgroup (GL (Fin 2) ℝ)).strictPeriods` using `by simp`. Establish `h` using `hasSum_qExpansion one_pos (SlashInvariantFormClass.periodic_comp_ofComplex f hp) f.holo' (ModularFormClass.bdd_at_infty f) τ`. Use `cast (congrArg (HasSum · (f τ)) (funext fun n => ?_)) h` and prove the remaining obligations. Rewrite using `[smul_eq_mul, Function.Periodic.qParam, ← Complex.exp_nat_mul, coef]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exp_of {k N : ℕ} [NeZero N] (f : CuspForm (Gamma1 N) (k : ℤ)) (τ : ℍ) :
     HasSum (fun n : ℕ => coef f n * Complex.exp (2 * Real.pi * Complex.I * n * τ)) (f τ) := by
@@ -24,7 +24,7 @@ theorem exp_of {k N : ℕ} [NeZero N] (f : CuspForm (Gamma1 N) (k : ℤ)) (τ : 
   ring
 
 /- English proof (translation)
-Establish `hp : (1 : ℝ) ∈ (Gamma1 N : Subgroup (GL (Fin 2) ℝ)).strictPeriods` using `by simp`. Conclude with `CuspFormClass.qExpansion_coeff_zero f one_pos hp`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coef_zero {k N : ℕ} [NeZero N] (f : CuspForm (Gamma1 N) (k : ℤ)) : coef f 0 = 0 := by
   have hp : (1 : ℝ) ∈ (Gamma1 N : Subgroup (GL (Fin 2) ℝ)).strictPeriods := by simp
@@ -34,9 +34,9 @@ end Ad3P.EigenformCoefficientExpansion
 
 open Ad3P.EigenformCoefficientExpansion in
 /- English proof (translation)
-Introduce `k N _ _ χ g`. Use `⟨⟨fun γ hγ => g.char γ hγ, fun τ => exp_of g.f τ⟩, coef_zero g.f, g.one, fun p n hp => ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `only [Eigenform.a, mul_zero, dvd_zero, if_true, Nat.zero_div, coef_zero, add_zero]`. Establish `h` using `g.eig p hp n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Eigenform.a]`. Rewrite using `[← h]`. Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Ad3P.sEig : Ad3P.SEig := by
   intro k N _ _ χ g

@@ -13,31 +13,27 @@ noncomputable section
 namespace GlobalTheory.BCT
 
 /- English proof (translation)
-Introduce `E _ _ _ n w hinv hv P₀ hcop γ hchar hK Q₁ hdvd`. Unfold `kapSign`. Use `split_ifs with hs`. Both sides reduce to the same expression. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hU : (γ.1.val.map (cj w))ᵀ * γ.1.val = 1`. Establish `h2 : (UL n w : Subgroup (GLw n w)) = UJ (cj w) 1` using `by unfold UL; rw [if_neg hs]`. Establish `h : γ.1 ∈ UJ (cj w) 1` using `by rw [← h2]; exact γ.2`. Simplify `h` using `[UJ, cT]`. Use `set K := w.adicCompletion E`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `set f := algebraMap (w.adicCompletionIntegers E) K with hf`. Establish `finj : Function.Injective f` using `fun a b h => Subtype.ext h`. Use `set V₁ := LinearMap.ker (Matrix.toLin' (aeval γ.1.val Q₁)) with hV₁`. Use `set G := (Matrix.of fun i j => ∑ k, cj w ((Module.finBasis K V₁ i).1 k) * (Module.finBasis K V₁ j).1 k) with hG`. Distinguish the cases in `h0 : G.det = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Simplify using `[ordL]`. Take `⟨g, hg⟩` from `hK`. Establish `hγ : γ.1.val = g.val.map (fun x => (x : K))`. Use `congrArg (fun u => (u : GLw n w).val) hg` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify `this.symm` using `[bc]`. Establish `hmon : P₀.Monic`. Apply `Polynomial.monic_of_injective finj` to reduce the goal to its premises. Rewrite using `[← hchar]`. Conclude with `Matrix.charpoly_monic _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Q₁₀, Q₂₀, A, B, c, hc, hP, hAB, hQ⟩` from `GlobalTheory.T.dvd_integral_monic_coprime_derivative_bezout_factor E w P₀ hmon hcop Q₁ hdvd`. Use `set q₁ := Q₁₀.map f`. Use `set q₂ := Q₂₀.map f`. Establish `hAB' : A.map f * q₁ + B.map f * q₂ = 1`. Use `congrArg (Polynomial.map f) hAB` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[Polynomial.map_add, Polynomial.map_mul]`. Establish `hCH : aeval γ.1.val (q₁ * q₂) = 0`. Rewrite using `[← Polynomial.map_mul, ← hP, ← hchar]`. Conclude with `Matrix.aeval_self_charpoly _`. Establish `hmem : ∀ x, x ∈ V₁ ↔ aeval γ.1.val q₁ *ᵥ x = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[hV₁, LinearMap.mem_ker, Matrix.toLin'_apply, hQ, map_mul, aeval_C]`. Rewrite using `[show (algebraMap K (Matrix (Fin n) (Fin n) K) c) = c • (1 : Matrix (Fin n) (Fin n) K) from (Algebra.algebraMap_eq_smul_one c)]`. Rewrite using `[smul_mul_assoc, one_mul, Matrix.smul_mulVec, smul_eq_zero]`. Simplify using `[hc]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set e := aeval γ.1.val (q₂ * B.map f) with he`. Establish `heint : ∀ i j, Valued.v (e i j) ≤ 1`. Introduce `i j`. Establish `: e = (aeval g.val (Q₂₀ * B)).map (fun x => (x : K))`. Rewrite using `[he, ← Polynomial.map_mul, Polynomial.aeval_map_algebraMap, hγ, show g.val.map (fun x => (x : K)) = (Algebra.ofId (w.adicCompletionIntegers E) K).mapMatrix g.val from rfl, Polynomial.aeval_algHom_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, Matrix.map_apply]`. Conclude with `((aeval g.val (Q₂₀ * B)) i j).2`. Establish `hcomm1 : ∀ x, aeval γ.1.val q₁ *ᵥ (e *ᵥ x) = 0`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Matrix.mulVec_mulVec, he, ← map_mul, ← mul_assoc, map_mul, hCH, zero_mul, Matrix.zero_mulVec]`. Establish `he1 : e = 1 - aeval γ.1.val (A.map f) * aeval γ.1.val q₁`. Rewrite using `[he, ← map_mul, mul_comm q₂, eq_sub_iff_add_eq, ← map_add, add_comm, hAB', map_one]`. Establish `hfix : ∀ x ∈ V₁, e *ᵥ x = x`. Introduce `x hx`.
-
-Rewrite using `[he1, Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, (hmem x).1 hx, Matrix.mulVec_zero, sub_zero]`. Establish `hker2 : ∀ y, aeval γ.1.val q₂ *ᵥ (y - e *ᵥ y) = 0`. Introduce `y`. Rewrite using `[he1, Matrix.sub_mulVec, Matrix.one_mulVec, sub_sub_cancel, Matrix.mulVec_mulVec, ← map_mul, ← map_mul, show q₂ * (A.map f * q₁) = A.map f * (q₁ * q₂) by ring, map_mul, hCH, mul_zero, Matrix.zero_mulVec]`. Establish `horth` using `GlobalTheory.T.unitary_aeval_kernels_orthogonal_of_coprime K (cj w) n γ.1.val hU q₁ q₂ (A.map f) (B.map f) hAB' hCH V₁ hmem (Module.finBasis K V₁) h0`.
-
-Take `⟨s, fb, hfb⟩` from `GlobalTheory.T.orthogonal_projection_integral_adic E w (cj w) hinv hv n V₁ e heint (fun x => (hmem _).2 (hcomm1 x)) hfix (fun x hx y => horth x hx _ (hker2 y))`. Conclude with `GlobalTheory.T.even_ordL_conjGramDet_of_unit_gram_adicCompletion E w (cj w) hv n V₁ (Module.finBasis K V₁) fb hfb`.
+A detailed English derivation is pending.
 -/
 theorem kapSign_eq_one_of_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E),
     (∀ x, cj w (cj w x) = x) → (∀ x, Valued.v (cj w x) = Valued.v x) →

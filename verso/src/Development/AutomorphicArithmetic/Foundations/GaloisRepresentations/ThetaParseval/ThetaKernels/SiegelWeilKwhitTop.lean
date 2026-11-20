@@ -23,24 +23,24 @@ noncomputable section
 namespace PositivityTheory.SiegelWeilFormula.KWhit
 open PositivityTheory.SiegelWeilFormula
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.dictAsmX_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.cellFormula_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.relEx_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.heightDict_k _root_.PositivityTheory.SiegelWeilFormu …`.
+A detailed English derivation is pending.
 -/
 theorem genDictX_of_k : _root_.PositivityTheory.SiegelWeilFormula.KWhit.GenDictX_k :=
   _root_.PositivityTheory.SiegelWeilFormula.KWhit.dictAsmX_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.cellFormula_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.relEx_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.heightDict_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.measDict_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.thetaDict_k
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.whitK_of_X_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.iwaRedC_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.pureSpan_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.linRedC_k _root_.PositivityTheory.SiegelWeilFormula.KW …`.
+A detailed English derivation is pending.
 -/
 theorem whitK_of_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hR : _root_.PositivityTheory.SiegelWeilFormula.RDEx_k) (hF : _root_.PositivityTheory.SiegelWeilFormula.FockMem_k) (hK : _root_.PositivityTheory.SiegelWeilFormula.KFinPoly_k) (hS : _root_.PositivityTheory.SiegelWeilFormula.SecK_k) (hU : _root_.PositivityTheory.SiegelWeilFormula.Unfold_k) (hW : Gen.WhitGenLt)
     (hTC : _root_.PositivityTheory.SiegelWeilFormula.ThetaCoef_k) (hLB : _root_.PositivityTheory.SiegelWeilFormula.LamBd_k) (hPK : _root_.PositivityTheory.SiegelWeilFormula.PolyKFin_k) : _root_.PositivityTheory.SiegelWeilFormula.WhitK_k :=
   _root_.PositivityTheory.SiegelWeilFormula.KWhit.whitK_of_X_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.iwaRedC_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.pureSpan_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.linRedC_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.coreX_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.genDictX_of_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.kFinK_k hT hA hR hF hK hS hU hW hTC hLB hPK
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.whitEq_of_X_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.iwaRedC_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.pureSpan_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.linRedC_k _root_.PositivityTheory.SiegelWeilFormula.K …`.
+A detailed English derivation is pending.
 -/
 theorem whitEq_of_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hR : _root_.PositivityTheory.SiegelWeilFormula.RDEx_k) (hF : _root_.PositivityTheory.SiegelWeilFormula.FockMem_k) (hK : _root_.PositivityTheory.SiegelWeilFormula.KFinPoly_k) (hS : _root_.PositivityTheory.SiegelWeilFormula.SecK_k) (hU : _root_.PositivityTheory.SiegelWeilFormula.Unfold_k) (hEW : _root_.PositivityTheory.SiegelWeilFormula.EisWk_k)
     (hW : Gen.WhitGenEq) (hTC : _root_.PositivityTheory.SiegelWeilFormula.ThetaCoef_k) (hLB : _root_.PositivityTheory.SiegelWeilFormula.LamBd_k) (hPK : _root_.PositivityTheory.SiegelWeilFormula.PolyKFin_k) : _root_.PositivityTheory.SiegelWeilFormula.WhitEq_k :=
   _root_.PositivityTheory.SiegelWeilFormula.KWhit.whitEq_of_X_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.iwaRedC_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.pureSpan_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.linRedC_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.coreX_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.genDictX_of_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.kFinK_k hT hA hR hF hK hS hU hEW hW hTC hLB hPK
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.whitLow_of_X_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.iwaRedC_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.vacSpan_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.linRedC_k _root_.PositivityTheory.SiegelWeilFormula.K …`.
+A detailed English derivation is pending.
 -/
 theorem whitLow_of_k (hVK : _root_.PositivityTheory.SiegelWeilFormula.VacK_k)
     (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hF : _root_.PositivityTheory.SiegelWeilFormula.FockMem_k) (hS : _root_.PositivityTheory.SiegelWeilFormula.SecK_k) (hU : _root_.PositivityTheory.SiegelWeilFormula.Unfold_k) (hEW : _root_.PositivityTheory.SiegelWeilFormula.EisWk_k) (hW : Gen.WhitGenLow)

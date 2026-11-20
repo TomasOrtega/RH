@@ -5,7 +5,7 @@ open UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit Upper
 open scoped TensorProduct
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Lit.Geo.hd`. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, Pi.smul_apply, smul_add, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem geo_hd_smul_add {Γ M : Type} [AddCommGroup M] [Module ℂ M] (s : ℂ)
     (b b' : List Γ → M) (x : List Γ) :
@@ -17,11 +17,11 @@ private theorem geo_hd_smul_add {Γ M : Type} [AddCommGroup M] [Module ℂ M] (s
   rw [Pi.add_apply, Pi.smul_apply, smul_add, smul_comm]
 
 /- English proof (translation)
-Introduce `Γ M _ _ _ ρ q s c c' hc hc'`. Consider the cases of `q with`. Consider the case `zero`. Simplify using `only [UpperTheory.V.Lit.Geo.HCob] at hc hc' ⊢`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.add_apply, Pi.smul_apply, hc x hx, hc' x hx, smul_zero, add_zero]`. Consider the case `succ k`. Simplify using `only [UpperTheory.V.Lit.Geo.HCob] at hc hc' ⊢`. Take `⟨b, hbe, hbc⟩` from `hc`. Take `⟨b', hbe', hbc'⟩` from `hc'`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s • b + b', fun γ x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, Pi.smul_apply, Pi.add_apply, Pi.smul_apply, hbe γ x hx, hbe' γ x hx, map_add, map_smul]`. Rewrite using `[geo_hd_smul_add, Pi.add_apply, Pi.smul_apply, hbc x hx, hbc' x hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Cj.cobLin :
     UpperTheory.V.Cj.CobLin := by

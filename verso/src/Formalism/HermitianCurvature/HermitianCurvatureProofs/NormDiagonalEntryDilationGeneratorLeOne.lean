@@ -90,7 +90,7 @@ section basic
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `rr`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem rr_pos (r : ℕ) : 0 < rr r := by unfold rr; positivity
 
@@ -104,15 +104,13 @@ Both sides reduce to the same expression.
 theorem lie_element_eq_diagonal (k r : ℕ) : X0 k r = Matrix.diagonal (dilationGeneratorDiagonal k r) := rfl
 
 /- English proof (translation)
-Distinguish the cases in `c1 : i.val < r ∧ i.val + j.val = 2 * r + k`. Use `right`. Establish `h1 : ¬ j.val < r` using `by omega`. Establish `h2 : ¬ j.val ≤ r + k` using `by omega`. Establish `h3 : j.val - (r + k) = r - i.val` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [dilationGeneratorDiagonal, c1.1, h1, h2, if_true, if_false, h3]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `c2 : j.val < r ∧ i.val + j.val = 2 * r + k`. Use `right`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ¬ i.val < r` using `by omega`. Establish `h2 : ¬ i.val ≤ r + k` using `by omega`. Establish `h3 : i.val - (r + k) = r - j.val` using `by omega`. Simplify using `only [dilationGeneratorDiagonal, c2.1, h1, h2, if_true, if_false, h3]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails.
 
-Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `c3 : r ≤ i.val ∧ i.val ≤ r + k ∧ i = j`. Use `right`. Take `⟨a, b, rfl⟩` from `c3`. Establish `h1 : ¬ i.val < r` using `by omega`.
-
-Simplify using `[dilationGeneratorDiagonal, h1, b]`. Use `left`. Simplify using `[Hpk, c1, c2, c3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermitian_entry_zero_or_weights_cancel (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = 0 ∨ dilationGeneratorDiagonal k r i + dilationGeneratorDiagonal k r j = 0 := by
@@ -139,18 +137,18 @@ theorem hermitian_entry_zero_or_weights_cancel (k r : ℕ) (i j : Fin (2 * r + k
         simp [Hpk, c1, c2, c3]
 
 /- English proof (translation)
-Unfold `dilationGeneratorDiagonal`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagonal_lie_element_self_adjoint (k r : ℕ) (i : Fin (2 * r + k + 1)) : star (dilationGeneratorDiagonal k r i) = dilationGeneratorDiagonal k r i := by
   unfold dilationGeneratorDiagonal
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `dilationGeneratorDiagonal`. Establish `hr : (0 : ℝ) < (r : ℝ) + 1` using `by positivity`. Use `split_ifs with h1 h2`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity), div_le_one hr]`. Establish `: ((r - i.val : ℕ) : ℝ) ≤ (r : ℝ)` using `by exact_mod_cast Nat.sub_le _ _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_neg, abs_of_nonneg (by positivity), div_le_one hr]`. Establish `h3 : i.val - (r + k) ≤ r` using `by have := i.isLt; omega`. Establish `: ((i.val - (r + k) : ℕ) : ℝ) ≤ (r : ℝ)` using `by exact_mod_cast h3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem norm_diagonal_entry_dilation_generator_le_one (k r : ℕ) (i : Fin (2 * r + k + 1)) : ‖dilationGeneratorDiagonal k r i‖ ≤ 1 := by
   unfold dilationGeneratorDiagonal
@@ -166,11 +164,11 @@ theorem norm_diagonal_entry_dilation_generator_le_one (k r : ℕ) (i : Fin (2 * 
     linarith
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Unfold `inLie`. Rewrite using `[lie_element_eq_diagonal, Matrix.diagonal_conjTranspose]`. Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.zero_apply, Pi.star_apply, diagonal_lie_element_self_adjoint]`.
+Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Break down `hermitian_entry_zero_or_weights_cancel k r i j with h | h` into its components or cases. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(Hpk k r i j) * h`. Introduce `i j`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lie_element_eq_diagonal, Matrix.diagonal_apply]`. Use `split_ifs with h`. Conclude with `norm_diagonal_entry_dilation_generator_le_one k r i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lie_element_unitary (k r : ℕ) : unitLie k r (X0 k r) := by
   constructor
@@ -188,13 +186,13 @@ theorem lie_element_unitary (k r : ℕ) : unitLie k r (X0 k r) := by
     · simp
 
 /- English proof (translation)
-Rewrite using `[lie_element_eq_diagonal, ← Matrix.diagonal_smul, Matrix.exp_diagonal]`. Unfold `aDil`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.coe_exp, Pi.smul_apply, smul_eq_mul, ← Complex.exp_eq_exp_ℂ]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : (rr r) ≠ 0` using `(rr_pos r).ne'`. Unfold `dilationGeneratorDiagonal`. Use `split_ifs with h1 h2`. Rewrite using `[← Real.exp_nat_mul, ← Complex.ofReal_mul, ← Complex.ofReal_exp]`. Use `congr 2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Unfold `rr`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_neg, ← Complex.ofReal_mul, ← Complex.ofReal_exp]`. Use `congr 2`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Unfold `rr`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exp_dilation_generator_eq_aDil (k r : ℕ) (s : ℝ) :
     NormedSpace.exp ((s : ℂ) • X0 k r) = aDil k r (Real.exp (s / rr r)) := by
@@ -215,37 +213,37 @@ theorem exp_dilation_generator_eq_aDil (k r : ℕ) (s : ℝ) :
     unfold rr; field_simp
 
 /- English proof (translation)
-The claim follows from `dilation_mem_group k r t ht.ne'`.
+A detailed English derivation is pending.
 -/
 theorem aDil_mem (k r : ℕ) {t : ℝ} (ht : 0 < t) : aDil k r t ∈ GV k r := dilation_mem_group k r t ht.ne'
 
 /- English proof (translation)
-The claim follows from `WeylGroupFacts.uh_inv (aDil_mem k r ht)`.
+A detailed English derivation is pending.
 -/
 theorem aDil_inv_mem (k r : ℕ) {t : ℝ} (ht : 0 < t) : (aDil k r t)⁻¹ ∈ GV k r :=
   WeylGroupFacts.uh_inv (aDil_mem k r ht)
 
 /- English proof (translation)
-Rewrite using `[exp_dilation_generator_eq_aDil]`. Conclude with `aDil_mem k r (Real.exp_pos _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_mem (k r : ℕ) (s : ℝ) : NormedSpace.exp ((s : ℂ) • X0 k r) ∈ GV k r := by
   rw [exp_dilation_generator_eq_aDil]; exact aDil_mem k r (Real.exp_pos _)
 
 /- English proof (translation)
-Rewrite using `[← exp_dilation_generator_eq_aDil, ← neg_smul, Complex.ofReal_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_neg_dilation_generator_eq_aDil (k r : ℕ) (s : ℝ) :
     NormedSpace.exp (-((s : ℂ) • X0 k r)) = aDil k r (Real.exp (-s / rr r)) := by
   rw [← exp_dilation_generator_eq_aDil, ← neg_smul, Complex.ofReal_neg]
 
 /- English proof (translation)
-Rewrite using `[exp_neg_dilation_generator_eq_aDil]`. Conclude with `aDil_mem k r (Real.exp_pos _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_neg_mem (k r : ℕ) (s : ℝ) : NormedSpace.exp (-((s : ℂ) • X0 k r)) ∈ GV k r := by
   rw [exp_neg_dilation_generator_eq_aDil]; exact aDil_mem k r (Real.exp_pos _)
 
 /- English proof (translation)
-Unfold `aDil`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem aDil_one (k r : ℕ) : aDil k r 1 = 1 := by
   unfold aDil
@@ -255,11 +253,11 @@ theorem aDil_one (k r : ℕ) : aDil k r 1 = 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `aDil`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `split_ifs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite using `[mul_pow, mul_inv]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aDil_mul_eq_mul_aDil (k r : ℕ) (t t' : ℝ) : aDil k r (t * t') = aDil k r t * aDil k r t' := by
   unfold aDil
@@ -272,14 +270,14 @@ theorem aDil_mul_eq_mul_aDil (k r : ℕ) (t t' : ℝ) : aDil k r (t * t') = aDil
   · rw [mul_pow, mul_inv]; push_cast; ring
 
 /- English proof (translation)
-The claim follows from `hasDerivAt_mul_exp_smul_zero g (X0 k r)`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_curveR (g : Mat k r) :
     HasDerivAt (fun s : ℝ => g * NormedSpace.exp ((s : ℂ) • X0 k r)) (g * X0 k r) 0 :=
   hasDerivAt_mul_exp_smul_zero g (X0 k r)
 
 /- English proof (translation)
-Establish `h` using `(tendsto_slope_exp_smul (-(X0 k r))).mul_const g`. Rewrite `h` using `[Matrix.neg_mul]`. Use `hasDerivAt_iff_tendsto_slope.mpr (h.congr (fun t => ?_))` and prove the remaining obligations. Simplify using `only [slope_def_module, Matrix.sub_mul, Matrix.smul_mul, smul_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hasDerivAt_curveL (g : Mat k r) :
     HasDerivAt (fun s : ℝ => NormedSpace.exp (-((s : ℂ) • X0 k r)) * g) (-(X0 k r * g)) 0 := by
@@ -289,7 +287,7 @@ theorem hasDerivAt_curveL (g : Mat k r) :
   simp only [slope_def_module, Matrix.sub_mul, Matrix.smul_mul, smul_neg]
 
 /- English proof (translation)
-Establish `h` using `((Real.hasDerivAt_log hy.ne').const_sub (Real.log y)).const_mul (rr r)`. Establish `e : rr r * -y⁻¹ = -(rr r / y)` using `by rw [div_eq_mul_inv]; ring`. Rewrite `h` using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_log_difference_scaled (r : ℕ) {y : ℝ} (hy : 0 < y) :
     HasDerivAt (fun y' : ℝ => rr r * (Real.log y - Real.log y')) (-(rr r / y)) y := by
@@ -299,16 +297,16 @@ theorem hasDerivAt_log_difference_scaled (r : ℕ) {y : ℝ} (hy : 0 < y) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[mul_div_cancel_left₀ _ (rr_pos r).ne', Real.exp_sub, Real.exp_log hy, Real.exp_log hy']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_log_ratio (r : ℕ) {y y' : ℝ} (hy : 0 < y) (hy' : 0 < y') :
     Real.exp (rr r * (Real.log y - Real.log y') / rr r) = y / y' := by
   rw [mul_div_cancel_left₀ _ (rr_pos r).ne', Real.exp_sub, Real.exp_log hy, Real.exp_log hy']
 
 /- English proof (translation)
-Establish `h0 : rr r * (Real.log y - Real.log y) = 0` using `by simp`. Establish `hc` using `HasDerivAt.scomp_of_eq y h (hasDerivAt_log_difference_scaled r hy) h0.symm`. Use `hc.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [lt_mem_nhds hy] with y' hy'`. Simplify using `only [Function.comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[exp_dilation_generator_eq_aDil, exp_log_ratio r hy hy', B2.aDil_inv k r y hy.ne', B2.aDil_inv k r y' hy'.ne', Matrix.mul_assoc, ← aDil_mul_eq_mul_aDil]`. Use `congr 3`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem curveR {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (f : Mat k r → E) (z : Mat k r) {y : ℝ}
     (hy : 0 < y) {d : E}
@@ -325,11 +323,9 @@ theorem curveR {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (f : Mat k
   field_simp
 
 /- English proof (translation)
-Establish `h0 : rr r * (Real.log x - Real.log x) = 0` using `by simp`. Establish `hc` using `HasDerivAt.scomp_of_eq x h (hasDerivAt_log_difference_scaled r hx) h0.symm`. Use `hc.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [lt_mem_nhds hx] with x' hx'`. Simplify using `only [Function.comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : Real.exp (-(rr r * (Real.log x - Real.log x')) / rr r) = x' / x`. Rewrite using `[show -(rr r * (Real.log x - Real.log x')) = rr r * (Real.log x' - Real.log x) by ring]`. Conclude with `exp_log_ratio r hx' hx`. Rewrite using `[exp_neg_dilation_generator_eq_aDil, e, ← Matrix.mul_assoc, ← aDil_mul_eq_mul_aDil]`. Use `congr 3`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem curveL {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (f : Mat k r → E) (z : Mat k r) {x : ℝ}
     (hx : 0 < x) {d : E}
@@ -348,22 +344,22 @@ theorem curveL {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (f : Mat k
   field_simp
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem gN_nonneg (g : Mat k r) : 0 ≤ gN g := Real.sqrt_nonneg _
 
 def hilbertSchmidtNormSq (g : Mat k r) : ℝ := ∑ i, ∑ j, Complex.normSq (g i j)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem sum_normSq_entries_nonneg (g : Mat k r) : 0 ≤ hilbertSchmidtNormSq g :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Complex.normSq_eq_norm_sq]`. Establish `h1 : ‖∑ l, a i l * b l j‖ ≤ ∑ l, ‖a i l‖ * ‖b l j‖`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun l _ => norm_mul _ _`. Establish `h2 : (∑ l, ‖a i l‖ * ‖b l j‖) ^ 2 ≤ (∑ l, ‖a i l‖ ^ 2) * ∑ l, ‖b l j‖ ^ 2` using `Finset.sum_mul_sq_le_sq_mul_sq _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem matrix_product_entry_bound (a b : Mat k r) (i j : Fin (2 * r + k + 1)) :
     Complex.normSq ((a * b) i j) ≤ (∑ l, Complex.normSq (a i l)) * ∑ l, Complex.normSq (b l j) := by
@@ -379,7 +375,7 @@ theorem matrix_product_entry_bound (a b : Mat k r) (i j : Fin (2 * r + k + 1)) :
     _ = _ := by simp only [Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Unfold `hilbertSchmidtNormSq`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul_sum]`. Use `_ = (∑ i, ∑ l, Complex.normSq (a i l)) * ∑ l, ∑ j, Complex.normSq (b l j) := by`. Rewrite using `[Finset.sum_comm (f := fun j l => Complex.normSq (b l j))]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_normSq_entries_mul_le (a b : Mat k r) : hilbertSchmidtNormSq (a * b) ≤ hilbertSchmidtNormSq a * hilbertSchmidtNormSq b := by
   unfold hilbertSchmidtNormSq
@@ -392,7 +388,7 @@ theorem sum_normSq_entries_mul_le (a b : Mat k r) : hilbertSchmidtNormSq (a * b)
         rw [Finset.sum_comm (f := fun j l => Complex.normSq (b l j))]
 
 /- English proof (translation)
-Establish `h : gN a * gN b = Real.sqrt (hilbertSchmidtNormSq a * hilbertSchmidtNormSq b)` using `(Real.sqrt_mul (sum_normSq_entries_nonneg a) _).symm`. Rewrite using `[h]`. Conclude with `Real.sqrt_le_sqrt (sum_normSq_entries_mul_le a b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gN_mul_le (a b : Mat k r) : gN (a * b) ≤ gN a * gN b := by
   have h : gN a * gN b = Real.sqrt (hilbertSchmidtNormSq a * hilbertSchmidtNormSq b) := (Real.sqrt_mul (sum_normSq_entries_nonneg a) _).symm
@@ -400,11 +396,11 @@ theorem gN_mul_le (a b : Mat k r) : gN (a * b) ≤ gN a * gN b := by
   exact Real.sqrt_le_sqrt (sum_normSq_entries_mul_le a b)
 
 /- English proof (translation)
-Apply `Real.sqrt_pos.2` to reduce the goal to its premises. Assume the negation of the conclusion as `hcon`. Establish `h0 : hilbertSchmidtNormSq g = 0` using `le_antisymm (not_lt.1 hcon) (sum_normSq_entries_nonneg g)`. Establish `hz : g = 0`. Use extensionality with `i j`.
+Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg (g i j))).1 h0 i (Finset.mem_univ _)`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => Complex.normSq_nonneg (g i j))).1 h1 j (Finset.mem_univ _)`. Simplify using `using Complex.normSq_eq_zero.1 h2`. Establish `hu` using `WeylGroupFacts.isUnit_of_uh hg`. Rewrite `hu` using `[hz, Matrix.det_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_isUnit_zero hu`.
+A detailed English derivation is pending.
 -/
 theorem gN_pos {g : Mat k r} (hg : g ∈ GV k r) : 0 < gN g := by
   apply Real.sqrt_pos.2
@@ -422,7 +418,7 @@ theorem gN_pos {g : Mat k r} (hg : g ∈ GV k r) : 0 < gN g := by
   exact not_isUnit_zero hu
 
 /- English proof (translation)
-Unfold `gN`. Use `Real.continuous_sqrt.comp ?_` and prove the remaining obligations. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `Complex.continuous_normSq.comp (continuous_id.matrix_elem i j)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gN_continuous : Continuous (gN : Mat k r → ℝ) := by
   unfold gN
@@ -431,9 +427,9 @@ theorem gN_continuous : Continuous (gN : Mat k r → ℝ) := by
   exact Complex.continuous_normSq.comp (continuous_id.matrix_elem i j)
 
 /- English proof (translation)
-Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Unfold `aDil`. Use `Continuous.matrix_diagonal (continuous_pi fun i => ?_)` and prove the remaining obligations. Use `show Continuous fun t : Set.Ioi (0 : ℝ) => if i.val < r then (((t : ℝ) ^ (r - i.val) : ℝ) : ℂ) else if i.val ≤ r + k then 1 else ((((t : ℝ) ^ (i.val - (r + k)))⁻¹ : ℝ) : ℂ)`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Complex.continuous_ofReal.comp (continuous_subtype_val.pow _)`. Conclude with `continuous_const`. Use `Complex.continuous_ofReal.comp (Continuous.inv₀ (continuous_subtype_val.pow _) ?_)` and prove the remaining obligations. Introduce `t`. Conclude with `pow_ne_zero _ (ne_of_gt t.2)`.
+A detailed English derivation is pending.
 -/
 theorem aDil_continuousOn (k r : ℕ) : ContinuousOn (fun t : ℝ => aDil k r t) (Set.Ioi 0) := by
   rw [continuousOn_iff_continuous_domRestrict]
@@ -449,9 +445,9 @@ theorem aDil_continuousOn (k r : ℕ) : ContinuousOn (fun t : ℝ => aDil k r t)
     exact pow_ne_zero _ (ne_of_gt t.2)
 
 /- English proof (translation)
-Establish `h : ContinuousOn (fun t : ℝ => aDil k r t⁻¹) (Set.Ioi 0)`. Use `(aDil_continuousOn k r).comp (continuousOn_inv₀.mono ?_) ?_` and prove the remaining obligations. Introduce `t ht`. Conclude with `ne_of_gt ht`. Introduce `t ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `inv_pos.2 (Set.mem_Ioi.1 ht)`. Use `h.congr ?_` and prove the remaining obligations. Introduce `t ht`. Conclude with `B2.aDil_inv k r t (ne_of_gt ht)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem aDil_inv_continuousOn (k r : ℕ) : ContinuousOn (fun t : ℝ => (aDil k r t)⁻¹) (Set.Ioi 0) := by
   have h : ContinuousOn (fun t : ℝ => aDil k r t⁻¹) (Set.Ioi 0) := by
@@ -463,9 +459,7 @@ theorem aDil_inv_continuousOn (k r : ℕ) : ContinuousOn (fun t : ℝ => (aDil k
   exact B2.aDil_inv k r t (ne_of_gt ht)
 
 /- English proof (translation)
-Establish `hsub : Set.Icc a b ⊆ Set.Ioi 0` using `fun t ht => lt_of_lt_of_le ha ht.1`. Take `⟨C₁, h₁⟩` from `isCompact_Icc.exists_bound_of_continuousOn ((gN_continuous.comp_continuousOn (aDil_continuousOn k r)).mono hsub)`. Take `⟨C₂, h₂⟩` from `isCompact_Icc.exists_bound_of_continuousOn ((gN_continuous.comp_continuousOn (aDil_inv_continuousOn k r)).mono hsub)`. Use `⟨max (max C₁ C₂) 0, le_max_right _ _, fun t ht => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `((le_abs_self _).trans (h₁ t ht)).trans ((le_max_left _ _).trans (le_max_left _ _))`.
-
-Conclude with `((le_abs_self _).trans (h₂ t ht)).trans ((le_max_right _ _).trans (le_max_left _ _))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem aDil_gN_bound (k r : ℕ) {a b : ℝ} (ha : 0 < a) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ t ∈ Set.Icc a b, gN (aDil k r t) ≤ K ∧ gN (aDil k r t)⁻¹ ≤ K := by
@@ -485,7 +479,7 @@ section basic
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `h : Continuous fun g : Mat k r => gᴴ * Hpk k r * g` using `((continuous_id.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_id`. Conclude with `isClosed_eq h continuous_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_GV (k r : ℕ) : IsClosed (GV k r) := by
   have h : Continuous fun g : Mat k r => gᴴ * Hpk k r * g :=
@@ -493,9 +487,9 @@ theorem isClosed_GV (k r : ℕ) : IsClosed (GV k r) := by
   exact isClosed_eq h continuous_const
 
 /- English proof (translation)
-Unfold `QuantumDeterminants.Nset`. Use `IsClosed.and (isClosed_GV k r) (IsClosed.and ?_ ?_)` and prove the remaining obligations. Simplify using `only [Set.ofPred_forall]`. Use `isClosed_iInter fun a => isClosed_iInter fun i => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Conclude with `isClosed_eq (continuous_id.matrix_elem _ _) continuous_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.ofPred_forall]`. Use `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Conclude with `isClosed_eq (continuous_id.matrix_elem _ _) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_Nset (k r : ℕ) : IsClosed (Nset k r) := by
   unfold QuantumDeterminants.Nset
@@ -509,9 +503,7 @@ theorem isClosed_Nset (k r : ℕ) : IsClosed (Nset k r) := by
     exact isClosed_eq (continuous_id.matrix_elem _ _) continuous_const
 
 /- English proof (translation)
-Unfold `UWset`. Use `IsClosed.and (isClosed_GV k r) (IsClosed.and ?_ ?_)` and prove the remaining obligations. Simplify using `only [Set.ofPred_forall]`. Use `isClosed_iInter fun a => IsClosed.and ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const`.
-
-Conclude with `isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const`. Conclude with `isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_UWset (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (UWset k r z) := by
   unfold UWset
@@ -523,7 +515,7 @@ theorem isClosed_UWset (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : IsClosed 
   · exact isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hg', WeylGroupFacts.hpk_sq]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_eq_hermitian_form_conjTranspose {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
   apply Matrix.inv_eq_left_inv
@@ -533,7 +525,7 @@ theorem inv_eq_hermitian_form_conjTranspose {g : Mat k r} (hg : g ∈ GV k r) : 
     _ = 1 := by rw [hg', WeylGroupFacts.hpk_sq]
 
 /- English proof (translation)
-Establish `h : Continuous fun g : Mat k r => Hpk k r * gᴴ * Hpk k r` using `(continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const`. Conclude with `h.continuousOn.congr fun g hg => inv_eq_hermitian_form_conjTranspose hg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inv_continuousOn (k r : ℕ) : ContinuousOn (fun g : Mat k r => g⁻¹) (GV k r) := by
   have h : Continuous fun g : Mat k r => Hpk k r * gᴴ * Hpk k r :=
@@ -541,9 +533,9 @@ theorem inv_continuousOn (k r : ℕ) : ContinuousOn (fun g : Mat k r => g⁻¹) 
   exact h.continuousOn.congr fun g hg => inv_eq_hermitian_form_conjTranspose hg
 
 /- English proof (translation)
-Unfold `lam ell`. Use `Complex.continuous_re.comp (continuous_const.mul ?_)` and prove the remaining obligations. Use `continuous_finsetSum _ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : a.val + 1 < r`. Simplify using `only [h, dif_pos]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_id.matrix_elem _ _`. Simplify using `only [h, dif_neg, not_false_iff]`. Establish `h2 : Continuous fun n : Mat k r => n *ᵥ z` using `continuous_id.matrix_mulVec continuous_const`. Conclude with `(continuous_apply (eI k r a)).comp h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lam_continuous (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : Continuous (fun n : Mat k r => lam k r z n) := by
   unfold lam ell
@@ -557,37 +549,37 @@ theorem lam_continuous (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : Continuou
     exact (continuous_apply (eI k r a)).comp h2
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Nset_sub (k r : ℕ) : Nset k r ⊆ GV k r := fun _ h => h.1
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UWset_sub (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : UWset k r z ⊆ GV k r := fun _ h => h.1
 
 /- English proof (translation)
-Establish `: IsFiniteMeasureOnCompacts μ` using `⟨fun K hK => h.finite_compact K hK⟩`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem haar_sigmaFinite {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : SigmaFinite μ := by
   have : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => h.finite_compact K hK⟩
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[ae_iff]`. Conclude with `h.conc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_ae {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) :
     ∀ᵐ g ∂μ, (Matrix.of g : Mat k r) ∈ U := by
   rw [ae_iff]; exact h.conc
 
 /- English proof (translation)
-Establish `hmaps : ∀ g ∈ GV k r, u * g * v ∈ GV k r` using `fun g hg => WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul hu hg) hv`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun g : Mat k r => u * g * v` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Conclude with `hf.1.comp hc.continuousOn hmaps`. Introduce `g hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw` using `hmaps g hg`. Establish `huu` using `WeylGroupFacts.isUnit_of_uh hu`. Establish `hvu` using `WeylGroupFacts.isUnit_of_uh hv`. Establish `eg : g = u⁻¹ * (u * g * v) * v⁻¹`. Rewrite using `[Matrix.mul_assoc u g v, Matrix.nonsing_inv_mul_cancel_left _ _ huu, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hvu, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : gN g ≤ (gN u⁻¹ * gN v⁻¹) * gN (u * g * v)`. Combine the equalities or inequalities in the displayed calculation. Establish `hK : 0 ≤ gN u⁻¹ * gN v⁻¹` using `mul_nonneg (gN_nonneg _) (gN_nonneg _)`. Establish `h2 : gN g ^ α ≤ (gN u⁻¹ * gN v⁻¹) ^ α * gN (u * g * v) ^ α`. Rewrite using `[← Real.mul_rpow hK (gN_nonneg _)]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Real.rpow_le_rpow (gN_nonneg _) h1 hα`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem admissible_two_sided_translate {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {α c : ℝ} {f : Mat k r → E}
     (hα : 0 ≤ α) (hf : admitted α c f) {u v : Mat k r} (hu : u ∈ GV k r) (hv : v ∈ GV k r) :
@@ -623,14 +615,14 @@ theorem admissible_two_sided_translate {E : Type*} [NormedAddCommGroup E] [Norme
       _ = c * (gN u⁻¹ * gN v⁻¹) ^ α := by ring
 
 /- English proof (translation)
-The claim follows from `le_trans (mul_nonneg (Real.rpow_nonneg (gN_nonneg _) _) (norm_nonneg _)) (hf.2 1 WeylGroupFacts.uh_one)`.
+A detailed English derivation is pending.
 -/
 theorem admissible_constant_nonneg {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {α c : ℝ} {f : Mat k r → E}
     (hf : admitted α c f) : 0 ≤ c :=
   le_trans (mul_nonneg (Real.rpow_nonneg (gN_nonneg _) _) (norm_nonneg _)) (hf.2 1 WeylGroupFacts.uh_one)
 
 /- English proof (translation)
-Establish `hp : 0 < gN g ^ α` using `Real.rpow_pos_of_pos (gN_pos hg) _`. Rewrite using `[Real.rpow_neg (gN_nonneg g), ← div_eq_mul_inv, le_div_iff₀ hp, mul_comm]`. Conclude with `hf.2 g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_norm_bound {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {α c : ℝ} {f : Mat k r → E}
     (hf : admitted α c f) {g : Mat k r} (hg : g ∈ GV k r) : ‖f g‖ ≤ c * gN g ^ (-α) := by
@@ -639,9 +631,9 @@ theorem admissible_norm_bound {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   exact hf.2 g hg
 
 /- English proof (translation)
-Establish `hcl : IsClosed {x : Mt k r | (Matrix.of x : Mat k r) ∈ GV k r}` using `isClosed_GV k r`. Establish `hm : MeasurableSet {x : Mt k r | (Matrix.of x : Mat k r) ∈ GV k r}` using `hcl.measurableSet`. Establish `hc : ContinuousOn (fun g : Mt k r => f (Matrix.of g)) {x : Mt k r | (Matrix.of x : Mat k r) ∈ GV k r}` using `hf.1`. Establish `h1` using `hc.aestronglyMeasurable (μ := μ) hm`. Establish `h2 : μ.restrict {x : Mt k r | (Matrix.of x : Mat k r) ∈ GV k r} = μ` using `Measure.restrict_eq_self_of_ae_mem (haar_ae h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem admissible_ae_strongly_measurable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {α c : ℝ} {f : Mat k r → E}
     (hf : admitted α c f) {μ : Measure (Mt k r)} (h : IsHaarOn (GV k r) μ) :
@@ -663,7 +655,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Use `haar_sigmaFinite D.haarW` as an intermediate fact. Use `haar_sigmaFinite D.haarN` as an intermediate fact. Use `haar_sigmaFinite D.haarW'` as an intermediate fact. Unfold `RealPlaceData.μSS`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_μSS (D : RealPlaceData k r Wp Wq) : SigmaFinite D.μSS := by
   have := haar_sigmaFinite D.haarW
@@ -673,9 +665,9 @@ theorem sigmaFinite_μSS (D : RealPlaceData k r Wp Wq) : SigmaFinite D.μSS := b
   infer_instance
 
 /- English proof (translation)
-Use `haar_sigmaFinite D.haarW` as an intermediate fact. Use `haar_sigmaFinite D.haarN` as an intermediate fact. Use `haar_sigmaFinite D.haarW'` as an intermediate fact. Establish `h1 : ∀ᵐ p ∂D.μSS, (Matrix.of p.1.1 : Mat k r) ∈ UWset k r D.z` using `(Measure.quasiMeasurePreserving_fst.comp Measure.quasiMeasurePreserving_fst).ae (haar_ae D.haarW)`. Establish `h2 : ∀ᵐ p ∂D.μSS, (Matrix.of p.1.2 : Mat k r) ∈ Nset k r` using `(Measure.quasiMeasurePreserving_snd.comp Measure.quasiMeasurePreserving_fst).ae (haar_ae D.haarN)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ᵐ p ∂D.μSS, (Matrix.of p.2.1 : Mat k r) ∈ UWset k r D.z'` using `(Measure.quasiMeasurePreserving_fst.comp Measure.quasiMeasurePreserving_snd).ae (haar_ae D.haarW')`. Establish `h4 : ∀ᵐ p ∂D.μSS, (Matrix.of p.2.2 : Mat k r) ∈ Nset k r` using `(Measure.quasiMeasurePreserving_snd.comp Measure.quasiMeasurePreserving_snd).ae (haar_ae D.haarN)`. Use `filter_upwards [h1, h2, h3, h4] with p a b c d`. Conclude with `⟨a, b, c, d⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ae_inSS (D : RealPlaceData k r Wp Wq) : ∀ᵐ p ∂D.μSS, D.inSS p := by
   have := haar_sigmaFinite D.haarW
@@ -693,7 +685,7 @@ theorem ae_inSS (D : RealPlaceData k r Wp Wq) : ∀ᵐ p ∂D.μSS, D.inSS p := 
   exact ⟨a, b, c, d⟩
 
 /- English proof (translation)
-Establish `c1 : IsClosed {x : Mt k r | (Matrix.of x : Mat k r) ∈ UWset k r D.z}` using `isClosed_UWset k r D.z`. Establish `c2 : IsClosed {x : Mt k r | (Matrix.of x : Mat k r) ∈ Nset k r}` using `isClosed_Nset k r`. Establish `c3 : IsClosed {x : Mt k r | (Matrix.of x : Mat k r) ∈ UWset k r D.z'}` using `isClosed_UWset k r D.z'`. Unfold `RealPlaceData.inSS`. Use `IsClosed.and (c1.preimage (continuous_fst.comp continuous_fst)) (IsClosed.and (c2.preimage (continuous_snd.comp continuous_fst)) (IsClosed.and (c3.preimage (continuous_fst.comp continuous_snd)) (c2.preimage (continuous_snd.comp continuous_snd))))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem setting_support_closed (D : RealPlaceData k r Wp Wq) : IsClosed {p : SS k r | D.inSS p} := by
   have c1 : IsClosed {x : Mt k r | (Matrix.of x : Mat k r) ∈ UWset k r D.z} := isClosed_UWset k r D.z
@@ -706,20 +698,20 @@ theorem setting_support_closed (D : RealPlaceData k r Wp Wq) : IsClosed {p : SS 
         (c2.preimage (continuous_snd.comp continuous_snd))))
 
 /- English proof (translation)
-The claim follows from `(setting_support_closed D).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_inSS (D : RealPlaceData k r Wp Wq) : MeasurableSet {p : SS k r | D.inSS p} :=
   (setting_support_closed D).measurableSet
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hp.1, (hN k r D.z x hx.ne' D.z_mem _ hp.2.1).1, hp.2.2.1, (hN k r D.z y hy.ne' D.z_mem _ hp.2.2.2).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem dil_inSS (hN : DilN) (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) {x y : ℝ} (hx : 0 < x)
     (hy : 0 < y) : D.inSS (dilation₂ (x, y) p) :=
   ⟨hp.1, (hN k r D.z x hx.ne' D.z_mem _ hp.2.1).1, hp.2.2.1, (hN k r D.z y hy.ne' D.z_mem _ hp.2.2.2).1⟩
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (fun q : SS k r × (ℝ × ℝ) => aDil k r (ψ q)) (Set.univ ×ˢ Quad)` using `(aDil_continuousOn k r).comp hψ.continuousOn hpos`. Establish `h2 : ContinuousOn (fun q : SS k r × (ℝ × ℝ) => (aDil k r (ψ q))⁻¹) (Set.univ ×ˢ Quad)` using `(aDil_inv_continuousOn k r).comp hψ.continuousOn hpos`. Establish `h3 : ContinuousOn (fun q : SS k r × (ℝ × ℝ) => (Matrix.of (φ q) : Mat k r)) (Set.univ ×ˢ Quad)` using `hφ.continuousOn`. Conclude with `(h1.mul h3).mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_conj_by_dilation (k r : ℕ) (φ : SS k r × (ℝ × ℝ) → Mt k r) (hφ : Continuous φ)
     (ψ : SS k r × (ℝ × ℝ) → ℝ) (hψ : Continuous ψ) (hpos : ∀ q ∈ (Set.univ : Set (SS k r)) ×ˢ Quad, 0 < ψ q) :
@@ -733,9 +725,7 @@ theorem continuousOn_conj_by_dilation (k r : ℕ) (φ : SS k r × (ℝ × ℝ) �
   exact (h1.mul h3).mul h2
 
 /- English proof (translation)
-Unfold `dilation₂`. Use `ContinuousOn.prodMk (ContinuousOn.prodMk ?_ ?_) (ContinuousOn.prodMk ?_ ?_)` and prove the remaining obligations. Conclude with `(continuous_fst.comp (continuous_fst.comp continuous_fst)).continuousOn`. Conclude with `continuousOn_conj_by_dilation k r (fun q => q.1.1.2) (continuous_snd.comp (continuous_fst.comp continuous_fst)) (fun q => q.2.1) (continuous_fst.comp continuous_snd) (fun q hq => hq.2.1)`. Conclude with `(continuous_fst.comp (continuous_snd.comp continuous_fst)).continuousOn`.
-
-Conclude with `continuousOn_conj_by_dilation k r (fun q => q.1.2.2) (continuous_snd.comp (continuous_snd.comp continuous_fst)) (fun q => q.2.2) (continuous_snd.comp continuous_snd) (fun q hq => hq.2.2)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dilationAction_continuousOn (k r : ℕ) :
     ContinuousOn (fun q : SS k r × (ℝ × ℝ) => dilation₂ q.2 q.1) (Set.univ ×ˢ Quad) := by
@@ -749,9 +739,9 @@ theorem dilationAction_continuousOn (k r : ℕ) :
       (fun q => q.2.2) (continuous_snd.comp continuous_snd) (fun q hq => hq.2.2)
 
 /- English proof (translation)
-Establish `h : ∀ x : Mt k r, conjM (aDil k r 1) x = x`. Introduce `x`. Unfold `conjM`. Rewrite using `[aDil_one, inv_one, Matrix.one_mul, Matrix.mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `dilation₂`. Simplify using `only [h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dilationAction_one (p : SS k r) : dilation₂ (1, 1) p = p := by
   have h : ∀ x : Mt k r, conjM (aDil k r 1) x = x := by
@@ -763,7 +753,7 @@ theorem dilationAction_one (p : SS k r) : dilation₂ (1, 1) p = p := by
   simp only [h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨WeylGroupFacts.uh_mul (Nset_sub k r hp.2.1) (UWset_sub k r _ hp.1), WeylGroupFacts.uh_mul (Nset_sub k r hp.2.2.2) (UWset_sub k r _ hp.2.2.1)⟩`.
+Supply the required witnesses or components.
 -/
 theorem inSS_mem (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) :
     (Matrix.of p.1.2 * Matrix.of p.1.1 : Mat k r) ∈ GV k r ∧ (Matrix.of p.2.2 * Matrix.of p.2.1 : Mat k r) ∈ GV k r :=
@@ -771,7 +761,7 @@ theorem inSS_mem (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) :
     WeylGroupFacts.uh_mul (Nset_sub k r hp.2.2.2) (UWset_sub k r _ hp.2.2.1)⟩
 
 /- English proof (translation)
-Unfold `sgs`. Rewrite using `[Matrix.mul_inv_rev]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sgs_eq (p : SS k r) (g : Mat k r) :
     sgs p g = (Matrix.of p.1.2 * Matrix.of p.1.1 : Mat k r)⁻¹ * g * (Matrix.of p.2.2 * Matrix.of p.2.1) := by
@@ -780,17 +770,15 @@ theorem sgs_eq (p : SS k r) (g : Mat k r) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨⟨h, n⟩, ⟨h', n'⟩⟩` from `p`. Establish `ua` using `WeylGroupFacts.isUnit_of_uh (aDil_mem k r hx)`. Establish `ub` using `WeylGroupFacts.isUnit_of_uh (aDil_mem k r hy)`. Establish `uh` using `WeylGroupFacts.isUnit_of_uh (UWset_sub k r _ hp.1)`. Establish `uh'` using `WeylGroupFacts.isUnit_of_uh (UWset_sub k r _ hp.2.2.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k1 : aDil k r x * (Matrix.of h : Mat k r) = Matrix.of h * aDil k r x` using `hU k r D.z x _ hp.1`. Establish `k2 : aDil k r y * (Matrix.of h' : Mat k r) = Matrix.of h' * aDil k r y` using `hU k r D.z' y _ hp.2.2.1`. Establish `c1 : (Matrix.of h : Mat k r)⁻¹ * aDil k r x = aDil k r x * (Matrix.of h : Mat k r)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ uh, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = aDil k r x * (Matrix.of h : Mat k r)⁻¹ := by`. Rewrite using `[k1, Matrix.nonsing_inv_mul_cancel_left _ _ uh]`. Establish `c2 : (aDil k r y)⁻¹ * (Matrix.of h' : Mat k r) = Matrix.of h' * (aDil k r y)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ub, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Matrix.of h' * (aDil k r y)⁻¹ := by`. Rewrite using `[← k2, Matrix.nonsing_inv_mul_cancel_left _ _ ub]`. Establish `e1 : (aDil k r x * (Matrix.of n : Mat k r) * (aDil k r x)⁻¹)⁻¹ = aDil k r x * (Matrix.of n : Mat k r)⁻¹ * (aDil k r x)⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ ua, Matrix.mul_assoc]`. Use `show (Matrix.of h : Mat k r)⁻¹ * (aDil k r x * (Matrix.of n : Mat k r) * (aDil k r x)⁻¹)⁻¹ * (aDil k r x * g * (aDil k r y)⁻¹) * (aDil k r y * (Matrix.of n' : Mat k r) * (aDil k r y)⁻¹) * (Matrix.of h' : Mat k r) = aDil k r x * ((Matrix.of h : Mat k r)⁻¹ * (Matrix.of n : Mat k r) …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (aDil k r x * (Matrix.of h : Mat k r)⁻¹) * (Matrix.of n : Mat k r)⁻¹ * 1 * g * 1 * Matrix.of n' * (Matrix.of h' * (aDil k r y)⁻¹) := by`. Rewrite using `[c1, c2, Matrix.nonsing_inv_mul _ ua, Matrix.nonsing_inv_mul _ ub]`.
-
-Use `_ = aDil k r x * ((Matrix.of h : Mat k r)⁻¹ * (Matrix.of n : Mat k r)⁻¹ * g * Matrix.of n' * Matrix.of h') * (aDil k r y)⁻¹ := by`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sgs_dil (hU : DilUW) (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) {x y : ℝ} (hx : 0 < x)
     (hy : 0 < y) (g : Mat k r) :
@@ -837,7 +825,7 @@ theorem sgs_dil (hU : DilUW) (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.
         simp only [Matrix.mul_assoc, Matrix.mul_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(hN k r D.z x hx.ne' D.z_mem _ hp.2.1).2.2, (hN k r D.z' y hy.ne' D.z'_mem _ hp.2.2.2).2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem lam_dil (hN : DilN) (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) {x y : ℝ} (hx : 0 < x)
     (hy : 0 < y) :
@@ -852,7 +840,7 @@ section calcG
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', he⟩` from `h g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hf'.of_le (by exact_mod_cast hm), he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smooth_on_mono {m m' : ℕ∞} (hm : m' ≤ m) {UU : Set (Mat k r)} {f : Mat k r → E} (h : CkOn m UU f) :
     CkOn m' UU f := by
@@ -861,9 +849,9 @@ theorem smooth_on_mono {m m' : ℕ∞} (hm : m' ≤ m) {UU : Set (Mat k r)} {f :
   exact ⟨U, f', hU, hgU, hf'.of_le (by exact_mod_cast hm), he⟩
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', he⟩` from `h g₀ hg₀`. Establish `h1 : ContinuousAt f' g₀` using `hf'.continuousOn.continuousAt (hU.mem_nhds hgU)`. Establish `h2 : ContinuousWithinAt f' (GV k r) g₀` using `h1.continuousWithinAt`. Use `h2.congr_of_eventuallyEq ?_ (he g₀ hgU hg₀)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (hU.mem_nhds hgU), self_mem_nhdsWithin] with g hg1 hg2`. Conclude with `he g hg1 hg2`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_of_contDiffOn_group {m : ℕ∞} {f : Mat k r → E} (h : CkOn m (GV k r) f) : ContinuousOn f (GV k r) := by
   intro g₀ hg₀
@@ -875,21 +863,21 @@ theorem continuousOn_of_contDiffOn_group {m : ℕ∞} {f : Mat k r → E} (h : C
   exact he g hg1 hg2
 
 /- English proof (translation)
-The claim follows from `(LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ X)).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_mul_right' (X : Mat k r) {n : WithTop ℕ∞} : ContDiff ℝ n (fun g : Mat k r => g * X) :=
   (LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ X)).contDiff
 
 /- English proof (translation)
-The claim follows from `(LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ X)).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_matrix_mul_left (X : Mat k r) {n : WithTop ℕ∞} : ContDiff ℝ n (fun g : Mat k r => X * g) :=
   (LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ X)).contDiff
 
 /- English proof (translation)
-Establish `hγ` using `hasDerivAt_curveR (k := k) (r := r) g`. Establish `hγ0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X0 k r) = g`. Simplify using `[NormedSpace.exp_zero]`. Establish `hcomp : HasDerivAt (fun s : ℝ => f' (g * NormedSpace.exp ((s : ℂ) • X0 k r))) (fderiv ℝ f' g (g * X0 k r)) 0` using `hf'.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ hγ0.symm`. Use `hcomp.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ᶠ s : ℝ in 𝓝 0, g * NormedSpace.exp ((s : ℂ) • X0 k r) ∈ U` using `hγ.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hU.mem_nhds hgU)`. Use `filter_upwards [hmem] with s hs`. Conclude with `he _ hs (WeylGroupFacts.uh_mul hg (exp_mem k r s))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_right_flow_dilation_generator {f f' : Mat k r → E} {U : Set (Mat k r)} (hU : IsOpen U) {g : Mat k r} (hgU : g ∈ U)
     (hg : g ∈ GV k r) (hf' : DifferentiableAt ℝ f' g) (he : ∀ x ∈ U, x ∈ GV k r → f x = f' x) :
@@ -907,9 +895,9 @@ theorem hasDerivAt_right_flow_dilation_generator {f f' : Mat k r → E} {U : Set
   exact he _ hs (WeylGroupFacts.uh_mul hg (exp_mem k r s))
 
 /- English proof (translation)
-Establish `hγ` using `hasDerivAt_curveL (k := k) (r := r) g`. Establish `hγ0 : NormedSpace.exp (-(((0 : ℝ) : ℂ) • X0 k r)) * g = g`. Simplify using `[NormedSpace.exp_zero]`. Establish `hcomp : HasDerivAt (fun s : ℝ => f' (NormedSpace.exp (-((s : ℂ) • X0 k r)) * g)) (fderiv ℝ f' g (-(X0 k r * g))) 0` using `hf'.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ hγ0.symm`. Use `hcomp.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ᶠ s : ℝ in 𝓝 0, NormedSpace.exp (-((s : ℂ) • X0 k r)) * g ∈ U` using `hγ.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hU.mem_nhds hgU)`. Use `filter_upwards [hmem] with s hs`. Conclude with `he _ hs (WeylGroupFacts.uh_mul (exp_neg_mem k r s) hg)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem left_derivative_has_deriv {f f' : Mat k r → E} {U : Set (Mat k r)} (hU : IsOpen U) {g : Mat k r} (hgU : g ∈ U)
     (hg : g ∈ GV k r) (hf' : DifferentiableAt ℝ f' g) (he : ∀ x ∈ U, x ∈ GV k r → f x = f' x) :
@@ -928,9 +916,9 @@ theorem left_derivative_has_deriv {f f' : Mat k r → E} {U : Set (Mat k r)} (hU
   exact he _ hs (WeylGroupFacts.uh_mul (exp_neg_mem k r s) hg)
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨U, f', hU, hgU, hf', he⟩` from `h g hg`. Establish `hd : DifferentiableAt ℝ f' g` using `(hf'.differentiableOn (by norm_cast)).differentiableAt (hU.mem_nhds hgU)`. Establish `h1` using `hasDerivAt_right_flow_dilation_generator hU hgU hg hd he`. Establish `h2 : RdV (X0 k r) f g = fderiv ℝ f' g (g * X0 k r)` using `h1.deriv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_derivative_exists {n : ℕ} {f : Mat k r → E} (h : CkOn ((n + 1 : ℕ) : ℕ∞) (GV k r) f) : DR f := by
   intro g hg
@@ -942,9 +930,9 @@ theorem right_derivative_exists {n : ℕ} {f : Mat k r → E} (h : CkOn ((n + 1 
   rw [h2]; exact h1
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨U, f', hU, hgU, hf', he⟩` from `h g hg`. Establish `hd : DifferentiableAt ℝ f' g` using `(hf'.differentiableOn (by norm_cast)).differentiableAt (hU.mem_nhds hgU)`. Establish `h1` using `left_derivative_has_deriv hU hgU hg hd he`. Establish `h2 : LdV (X0 k r) f g = fderiv ℝ f' g (-(X0 k r * g))` using `h1.deriv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiable_left_of_contDiffOn_succ {n : ℕ} {f : Mat k r → E} (h : CkOn ((n + 1 : ℕ) : ℕ∞) (GV k r) f) : DL f := by
   intro g hg
@@ -956,9 +944,9 @@ theorem differentiable_left_of_contDiffOn_succ {n : ℕ} {f : Mat k r → E} (h 
   rw [h2]; exact h1
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', he⟩` from `h g₀ hg₀`. Use `⟨U, fun g => fderiv ℝ f' g (g * X0 k r), hU, hgU, ?_, ?_⟩` and prove the remaining obligations. Conclude with `ContDiffOn.clm_apply (hf'.fderiv_of_isOpen hU (m := ((n : ℕ∞) : WithTop ℕ∞)) (by norm_cast)) (contDiff_mul_right' (X0 k r)).contDiffOn`. Introduce `g hgU' hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : DifferentiableAt ℝ f' g` using `(hf'.differentiableOn (by norm_cast)).differentiableAt (hU.mem_nhds hgU')`. Conclude with `(hasDerivAt_right_flow_dilation_generator hU hgU' hg hd he).deriv`.
+A detailed English derivation is pending.
 -/
 theorem smooth_right_derivative {n : ℕ} {f : Mat k r → E} (h : CkOn ((n + 1 : ℕ) : ℕ∞) (GV k r) f) :
     CkOn (n : ℕ∞) (GV k r) (Rr f) := by
@@ -973,9 +961,9 @@ theorem smooth_right_derivative {n : ℕ} {f : Mat k r → E} (h : CkOn ((n + 1 
     exact (hasDerivAt_right_flow_dilation_generator hU hgU' hg hd he).deriv
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', he⟩` from `h g₀ hg₀`. Use `⟨U, fun g => fderiv ℝ f' g (-(X0 k r * g)), hU, hgU, ?_, ?_⟩` and prove the remaining obligations. Conclude with `ContDiffOn.clm_apply (hf'.fderiv_of_isOpen hU (m := ((n : ℕ∞) : WithTop ℕ∞)) (by norm_cast)) (contDiff_matrix_mul_left (X0 k r)).neg.contDiffOn`. Introduce `g hgU' hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : DifferentiableAt ℝ f' g` using `(hf'.differentiableOn (by norm_cast)).differentiableAt (hU.mem_nhds hgU')`. Conclude with `(left_derivative_has_deriv hU hgU' hg hd he).deriv`.
+A detailed English derivation is pending.
 -/
 theorem smooth_left_derivative {n : ℕ} {f : Mat k r → E} (h : CkOn ((n + 1 : ℕ) : ℕ∞) (GV k r) f) :
     CkOn (n : ℕ∞) (GV k r) (Ll f) := by
@@ -990,9 +978,7 @@ theorem smooth_left_derivative {n : ℕ} {f : Mat k r → E} (h : CkOn ((n + 1 :
     exact (left_derivative_has_deriv hU hgU' hg hd he).deriv
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => intro f h`. Conclude with `h`. Consider the case `succ j ih`. Introduce `f h`.
-
-Conclude with `ih (smooth_right_derivative (n := n + j) h)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_iterated_right_derivative {n : ℕ} (j : ℕ) : ∀ {f : Mat k r → E}, CkOn ((n + j : ℕ) : ℕ∞) (GV k r) f →
     CkOn (n : ℕ∞) (GV k r) (Rr^[j] f) := by
@@ -1003,9 +989,7 @@ theorem smooth_iterated_right_derivative {n : ℕ} (j : ℕ) : ∀ {f : Mat k r 
     exact ih (smooth_right_derivative (n := n + j) h)
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => intro f h`. Conclude with `h`. Consider the case `succ i ih`. Introduce `f h`.
-
-Conclude with `ih (smooth_left_derivative (n := n + i) h)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_iterated_left_derivative {n : ℕ} (i : ℕ) : ∀ {f : Mat k r → E}, CkOn ((n + i : ℕ) : ℕ∞) (GV k r) f →
     CkOn (n : ℕ∞) (GV k r) (Ll^[i] f) := by
@@ -1016,14 +1000,14 @@ theorem smooth_iterated_left_derivative {n : ℕ} (i : ℕ) : ∀ {f : Mat k r �
     exact ih (smooth_left_derivative (n := n + i) h)
 
 /- English proof (translation)
-The claim follows from `smooth_iterated_left_derivative i (smooth_iterated_right_derivative j (smooth_on_mono (by exact_mod_cast hn) h))`.
+A detailed English derivation is pending.
 -/
 theorem smooth_iterated_left_right_derivatives {n i j : ℕ} {f : Mat k r → E} (h : CkOn ((4 : ℕ) : ℕ∞) (GV k r) f) (hn : n + i + j ≤ 4) :
     CkOn (n : ℕ∞) (GV k r) (Ll^[i] (Rr^[j] f)) :=
   smooth_iterated_left_derivative i (smooth_iterated_right_derivative j (smooth_on_mono (by exact_mod_cast hn) h))
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ i ih => rw [List.replicate_succ, List.foldr_cons, ih, Function.iterate_succ_apply']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_replicate_iterate {β γ : Type*} (φ : β → γ → γ) (X : β) (a : γ) (i : ℕ) :
     (List.replicate i X).foldr φ a = (φ X)^[i] a := by
@@ -1032,7 +1016,7 @@ theorem foldr_replicate_iterate {β γ : Type*} (φ : β → γ → γ) (X : β)
   | succ i ih => rw [List.replicate_succ, List.foldr_cons, ih, Function.iterate_succ_apply']
 
 /- English proof (translation)
-Unfold `dLR Rw`. Rewrite using `[foldr_replicate_iterate, foldr_replicate_iterate]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem replicated_word_derivative (i j : ℕ) (f : Mat k r → E) :
     dLR (List.replicate i (X0 k r)) (List.replicate j (X0 k r)) f = Ll^[i] (Rr^[j] f) := by
@@ -1040,13 +1024,13 @@ theorem replicated_word_derivative (i j : ℕ) (f : Mat k r → E) :
   rw [foldr_replicate_iterate, foldr_replicate_iterate]
 
 /- English proof (translation)
-Take `⟨hck, hb⟩` from `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j hj i hi`. Use `⟨continuousOn_of_contDiffOn_group (smooth_iterated_left_right_derivatives (n := 0) hck (by omega)), ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← replicated_word_derivative]`. Use `hb _ _ ?_ ?_ ?_ g hg` and prove the remaining obligations. Introduce `X hX`. Rewrite using `[List.eq_of_mem_replicate hX]`. Conclude with `lie_element_unitary k r`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X hX`. Rewrite using `[List.eq_of_mem_replicate hX]`. Conclude with `lie_element_unitary k r`. Simplify using `only [List.length_replicate]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Conclude with `right_derivative_exists (n := 0) (smooth_iterated_left_right_derivatives (n := 1) (i := 0) hck (by omega))`. Introduce `j hj i hi`. Conclude with `differentiable_left_of_contDiffOn_succ (n := 0) (smooth_iterated_left_right_derivatives (n := 1) hck (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem admissible_weighted_of_bound {α c : ℝ} {F : Mat k r → E} (h : CCle α 4 F c) : AdmW α c 2 2 F := by
   obtain ⟨hck, hb⟩ := h
@@ -1065,23 +1049,23 @@ theorem admissible_weighted_of_bound {α c : ℝ} {F : Mat k r → E} (h : CCle 
     exact differentiable_left_of_contDiffOn_succ (n := 0) (smooth_iterated_left_right_derivatives (n := 1) hck (by omega))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun j hj i hi => h.1 (j + 1) (by omega) i hi, fun j hj => h.2.1 (j + 1) (by omega), fun j hj i hi => h.2.2 (j + 1) (by omega) i hi⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissibleWeight_right_derivative {α c : ℝ} {n m : ℕ} {f : Mat k r → E} (h : AdmW α c (n + 1) m f) : AdmW α c n m (Rr f) :=
   ⟨fun j hj i hi => h.1 (j + 1) (by omega) i hi, fun j hj => h.2.1 (j + 1) (by omega),
     fun j hj i hi => h.2.2 (j + 1) (by omega) i hi⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun j hj i hi => h.1 j (by omega) i hi, fun j hj => h.2.1 j (by omega), fun j hj i hi => h.2.2 j (by omega) i hi⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissible_weight_lower_order {α c : ℝ} {n m : ℕ} {f : Mat k r → E} (h : AdmW α c (n + 1) m f) : AdmW α c n m f :=
   ⟨fun j hj i hi => h.1 j (by omega) i hi, fun j hj => h.2.1 j (by omega),
     fun j hj i hi => h.2.2 j (by omega) i hi⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j hj i hi`. Take `rfl : j = 0` from `by omega`. Conclude with `h.1 0 le_rfl (i + 1) (by omega)`. Introduce `j hj`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `j hj i hi`. Take `rfl : j = 0` from `by omega`. Conclude with `h.2.2 0 le_rfl (i + 1) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem admissibleWeight_left_derivative {α c : ℝ} {m : ℕ} {f : Mat k r → E} (h : AdmW α c 0 (m + 1) f) : AdmW α c 0 m (Ll f) := by
   refine ⟨?_, ?_, ?_⟩
@@ -1094,13 +1078,13 @@ theorem admissibleWeight_left_derivative {α c : ℝ} {m : ℕ} {f : Mat k r →
     exact h.2.2 0 le_rfl (i + 1) (by omega)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun j hj i hi => h.1 j hj i (by omega), h.2.1, fun j hj i hi => h.2.2 j hj i (by omega)⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissibleWeight_of_succ_left_order {α c : ℝ} {n m : ℕ} {f : Mat k r → E} (h : AdmW α c n (m + 1) f) : AdmW α c n m f :=
   ⟨fun j hj i hi => h.1 j hj i (by omega), h.2.1, fun j hj i hi => h.2.2 j hj i (by omega)⟩
 
 /- English proof (translation)
-The claim follows from `h.1 0 (Nat.zero_le _) 0 (Nat.zero_le _)`.
+A detailed English derivation is pending.
 -/
 theorem admissible_of_weighted {α c : ℝ} {n m : ℕ} {f : Mat k r → E} (h : AdmW α c n m f) : admitted α c f :=
   h.1 0 (Nat.zero_le _) 0 (Nat.zero_le _)
@@ -1113,16 +1097,16 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Simplify using `[hsInner, hsVec, PiLp.inner_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hilbert_schmidt_inner_basis_sum (A B : Wq →L[ℂ] Wp) :
     hsInner A B = ∑ i, inner ℂ (B (stdOrthonormalBasis ℂ Wq i)) (A (stdOrthonormalBasis ℂ Wq i)) := by
   simp [hsInner, hsVec, PiLp.inner_apply]
 
 /- English proof (translation)
-Rewrite using `[hilbert_schmidt_inner_basis_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Establish `h1 : ‖B (stdOrthonormalBasis ℂ Wq i)‖ ≤ ‖B‖`. Simplify using `using B.le_opNorm (stdOrthonormalBasis ℂ Wq i)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ‖A (stdOrthonormalBasis ℂ Wq i)‖ ≤ ‖A‖`. Simplify using `using A.le_opNorm (stdOrthonormalBasis ℂ Wq i)`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (Module.finrank ℂ Wq : ℝ) * ‖A‖ * ‖B‖ := by`. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hsInner_norm_le (A B : Wq →L[ℂ] Wp) : ‖hsInner A B‖ ≤ (Module.finrank ℂ Wq : ℝ) * ‖A‖ * ‖B‖ := by
   rw [hilbert_schmidt_inner_basis_sum]
@@ -1140,31 +1124,31 @@ theorem hsInner_norm_le (A B : Wq →L[ℂ] Wp) : ‖hsInner A B‖ ≤ (Module.
         simp [mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [hilbert_schmidt_inner_basis_sum, _root_.add_apply, inner_add_right, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsInner_add_left (A A' B : Wq →L[ℂ] Wp) : hsInner (A + A') B = hsInner A B + hsInner A' B := by
   simp only [hilbert_schmidt_inner_basis_sum, _root_.add_apply, inner_add_right, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hilbert_schmidt_inner_basis_sum, _root_.add_apply, inner_add_left, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsInner_add_right (A B B' : Wq →L[ℂ] Wp) : hsInner A (B + B') = hsInner A B + hsInner A B' := by
   simp only [hilbert_schmidt_inner_basis_sum, _root_.add_apply, inner_add_left, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hilbert_schmidt_inner_basis_sum, _root_.smul_apply, inner_smul_right, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsInner_smul_left (a : ℂ) (A B : Wq →L[ℂ] Wp) : hsInner (a • A) B = a * hsInner A B := by
   simp only [hilbert_schmidt_inner_basis_sum, _root_.smul_apply, inner_smul_right, Finset.mul_sum]
 
 /- English proof (translation)
-Simplify using `only [hilbert_schmidt_inner_basis_sum, _root_.smul_apply, inner_smul_left, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsInner_smul_right (a : ℂ) (A B : Wq →L[ℂ] Wp) : hsInner A (a • B) = conj a * hsInner A B := by
   simp only [hilbert_schmidt_inner_basis_sum, _root_.smul_apply, inner_smul_left, Finset.mul_sum]
 
 /- English proof (translation)
-Simplify using `only [hilbert_schmidt_inner_basis_sum]`. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `Continuous.inner (by fun_prop) (by fun_prop)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hsInner_continuous : Continuous (fun P : (Wq →L[ℂ] Wp) × (Wq →L[ℂ] Wp) => hsInner P.1 P.2) := by
   simp only [hilbert_schmidt_inner_basis_sum]
@@ -1172,9 +1156,7 @@ theorem hsInner_continuous : Continuous (fun P : (Wq →L[ℂ] Wp) × (Wq →L[�
   exact Continuous.inner (by fun_prop) (by fun_prop)
 
 /- English proof (translation)
-Simplify using `only [hilbert_schmidt_inner_basis_sum, ← Finset.sum_add_distrib]`. Use `HasDerivAt.fun_sum fun i _ => ?_` and prove the remaining obligations. Establish `h1 : HasDerivAt (fun s => u s (stdOrthonormalBasis ℂ Wq i)) (u' (stdOrthonormalBasis ℂ Wq i)) y`. Conclude with `((ContinuousLinearMap.apply ℂ Wp (stdOrthonormalBasis ℂ Wq i)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt y hu`. Establish `h2 : HasDerivAt (fun s => v s (stdOrthonormalBasis ℂ Wq i)) (v' (stdOrthonormalBasis ℂ Wq i)) y`.
-
-Conclude with `((ContinuousLinearMap.apply ℂ Wp (stdOrthonormalBasis ℂ Wq i)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt y hv`. Conclude with `h2.inner ℂ h1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hsInner_hasDerivAt {u v : ℝ → (Wq →L[ℂ] Wp)} {u' v' : Wq →L[ℂ] Wp} {y : ℝ} (hu : HasDerivAt u u' y)
     (hv : HasDerivAt v v' y) :
@@ -1204,14 +1186,14 @@ theorem rho_eq (D : RealPlaceData k r Wp Wq) (p : SS k r) (F : Mat k r → (Wq �
     rho D p F g = Sd D p (F (sgs p g)) := rfl
 
 /- English proof (translation)
-The claim follows from `T.opNorm_le_bound zero_le_one fun v => by rw [h v, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem opNorm_le_one_of_norm_map_eq {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] (T : W →L[ℂ] W)
     (h : ∀ v, ‖T v‖ = ‖v‖) : ‖T‖ ≤ 1 :=
   T.opNorm_le_bound zero_le_one fun v => by rw [h v, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Sd_apply]`. Establish `h1 : ‖D.π (Matrix.of p.1.1)‖ ≤ 1` using `opNorm_le_one_of_norm_map_eq _ (D.π_unitary _ hp.1)`. Establish `h2 : ‖D.π' (Matrix.of p.2.1)⁻¹‖ ≤ 1` using `opNorm_le_one_of_norm_map_eq _ (D.π'_unitary _ (WeylGroupFacts.uw_inv hp.2.2.1))`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem Sd_norm_le (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (X : Wq →L[ℂ] Wp) :
     ‖Sd D p X‖ ≤ ‖X‖ := by
@@ -1230,24 +1212,24 @@ Both sides reduce to the same expression.
 theorem Sd_dil (D : RealPlaceData k r Wp Wq) (p : SS k r) (t : ℝ × ℝ) : Sd D (dilation₂ t p) = Sd D p := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_fst.fst`.
+A detailed English derivation is pending.
 -/
 theorem continuous_first_coordinate_matrix : Continuous (fun p : SS k r => (Matrix.of p.1.1 : Mat k r)) := continuous_fst.fst
 /- English proof (translation)
-The claim follows from `continuous_fst.snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matrix_coordinate_projection : Continuous (fun p : SS k r => (Matrix.of p.1.2 : Mat k r)) := continuous_fst.snd
 /- English proof (translation)
-The claim follows from `continuous_snd.fst`.
+A detailed English derivation is pending.
 -/
 theorem continuous_third_coordinate : Continuous (fun p : SS k r => (Matrix.of p.2.1 : Mat k r)) := continuous_snd.fst
 /- English proof (translation)
-The claim follows from `continuous_snd.snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fourth_coordinate : Continuous (fun p : SS k r => (Matrix.of p.2.2 : Mat k r)) := continuous_snd.snd
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (fun p : SS k r => D.π (Matrix.of p.1.1)) {p | D.inSS p}` using `D.π_cont.comp continuous_first_coordinate_matrix.continuousOn (fun p hp => hp.1)`. Establish `h2 : ContinuousOn (fun p : SS k r => D.π' (Matrix.of p.2.1)⁻¹) {p | D.inSS p}` using `D.π'_cont.comp ((inv_continuousOn k r).comp continuous_third_coordinate.continuousOn (fun p hp => UWset_sub _ _ _ hp.2.2.1)) (fun p hp => WeylGroupFacts.uw_inv hp.2.2.1)`. Conclude with `((ContinuousLinearMap.compL ℂ Wq Wp Wp).continuous.comp_continuousOn h1).clm_comp (((ContinuousLinearMap.compL ℂ Wq Wq Wp).flip).continuous.comp_continuousOn h2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Sd_continuousOn (D : RealPlaceData k r Wp Wq) : ContinuousOn (fun p : SS k r => Sd D p) {p | D.inSS p} := by
   have h1 : ContinuousOn (fun p : SS k r => D.π (Matrix.of p.1.1)) {p | D.inSS p} :=
@@ -1261,7 +1243,7 @@ theorem Sd_continuousOn (D : RealPlaceData k r Wp Wq) : ContinuousOn (fun p : SS
 variable {D : RealPlaceData k r Wp Wq} {Ξ : Mat k r → NNReal} {α : ℝ}
 
 /- English proof (translation)
-Rewrite using `[norm_smul, hT, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (gN_nonneg g) _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scaled_operator_norm (T : Wq →L[ℂ] Wp) (hT : ‖T‖ = 1) (g : Mat k r) :
     ‖((gN g ^ (-α) : ℝ) : ℂ) • T‖ = gN g ^ (-α) := by
@@ -1269,7 +1251,7 @@ theorem scaled_operator_norm (T : Wq →L[ℂ] Wp) (hT : ‖T‖ = 1) (g : Mat k
     abs_of_nonneg (Real.rpow_nonneg (gN_nonneg g) _)]
 
 /- English proof (translation)
-Use `⟨?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : ContinuousOn (fun g : Mat k r => gN g ^ (-α)) (GV k r)` using `gN_continuous.continuousOn.rpow_const (fun g hg => Or.inl (gN_pos hg).ne')`. Conclude with `(Complex.continuous_ofReal.comp_continuousOn h1).smul continuousOn_const`. Rewrite using `[scaled_operator_norm T hT, ← Real.rpow_add (gN_pos hg)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adm_gN_rpow_neg_smul_of_norm_eq_one (T : Wq →L[ℂ] Wp) (hT : ‖T‖ = 1) :
     admitted α 1 (fun g : Mat k r => ((gN g ^ (-α) : ℝ) : ℂ) • T) := by
@@ -1281,15 +1263,15 @@ theorem adm_gN_rpow_neg_smul_of_norm_eq_one (T : Wq →L[ℂ] Wp) (hT : ‖T‖ 
     simp
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `H.coef`. Use `⟨max C 0, le_max_right _ _, fun A B cA cB hA hB x hx y hy => ?_⟩` and prove the remaining obligations. Establish `hcA` using `admissible_constant_nonneg hA`. Establish `hcB` using `admissible_constant_nonneg hB`. Establish `hL` using `hC A B cA cB (admissible_ae_strongly_measurable hA D.haarG) (admissible_ae_strongly_measurable hB D.haarG) hA.2 hB.2 x hx y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAt : AEStronglyMeasurable (fun g : Mt k r => A (x⁻¹ * Matrix.of g * y)) D.μG` using `admissible_ae_strongly_measurable (admissible_two_sided_translate H.α_nonneg hA (WeylGroupFacts.uh_inv hx) hy) D.haarG`. Establish `hm : AEStronglyMeasurable (fun g : Mt k r => ‖A (x⁻¹ * Matrix.of g * y)‖ * ‖B (Matrix.of g)‖) D.μG` using `hAt.norm.mul (admissible_ae_strongly_measurable hB D.haarG).norm`. Establish `he : ∀ g : Mt k r, ENNReal.ofReal (‖A (x⁻¹ * Matrix.of g * y)‖ * ‖B (Matrix.of g)‖) = ‖A (x⁻¹ * Matrix.of g * y)‖ₑ * ‖B (Matrix.of g)‖ₑ` using `fun g => by`. Rewrite using `[ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm, ofReal_norm]`. Establish `hfin : ENNReal.ofReal (C * cA * cB) * (Ξ x : ℝ≥0∞) * (Ξ y : ℝ≥0∞) < ∞` using `ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.coe_lt_top) ENNReal.coe_lt_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnn : ∀ g : Mt k r, 0 ≤ ‖A (x⁻¹ * Matrix.of g * y)‖ * ‖B (Matrix.of g)‖` using `fun g => by positivity`. Prove the components needed by the constructor for the conclusion. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Eventually.of_forall hnn)]`. Simplify using `only [he]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `lt_of_le_of_lt hL hfin`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall hnn) hm]`. Simplify using `only [he]`. Use `(ENNReal.toReal_mono hfin.ne hL).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.coe_toReal, ENNReal.coe_toReal, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_ofReal']`. Use `max_le ?_ (by positivity)` and prove the remaining obligations. Establish `: C ≤ max C 0` using `le_max_left _ _`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem translated_product_integrable_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (A B : Mat k r → (Wq →L[ℂ] Wp)) (cA cB : ℝ),
     admitted α cA A → admitted α cB B → ∀ x ∈ GV k r, ∀ y ∈ GV k r,
@@ -1327,7 +1309,7 @@ theorem translated_product_integrable_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 �
     gcongr
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `H.T0`. Take `⟨K, -, hK⟩` from `translated_product_integrable_bound H`. Establish `h` using `(hK _ _ 1 1 (adm_gN_rpow_neg_smul_of_norm_eq_one (α := α) T hT) (adm_gN_rpow_neg_smul_of_norm_eq_one (α := α) T hT) 1 WeylGroupFacts.uh_one 1 WeylGroupFacts.uh_one).1`. Simplify `h` using `only [scaled_operator_norm T hT, inv_one, Matrix.one_mul, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem model_integrable (H : Hyp D Ξ α) :
     Integrable (fun g : Mt k r => gN (Matrix.of g : Mat k r) ^ (-α) * gN (Matrix.of g : Mat k r) ^ (-α)) D.μG := by
@@ -1337,9 +1319,7 @@ theorem model_integrable (H : Hyp D Ξ α) :
   simpa only [scaled_operator_norm T hT, inv_one, Matrix.one_mul, Matrix.mul_one] using h
 
 /- English proof (translation)
-Establish `hxy` using `inSS_mem D hp`. Establish `hAt : AEStronglyMeasurable (fun g : Mt k r => A (sgs p (Matrix.of g))) D.μG`. Simplify using `only [sgs_eq]`. Conclude with `admissible_ae_strongly_measurable (admissible_two_sided_translate H.α_nonneg hA (WeylGroupFacts.uh_inv hxy.1) hxy.2) D.haarG`. Establish `h1 : AEStronglyMeasurable (fun g : Mt k r => Sd D p (A (sgs p (Matrix.of g)))) D.μG` using `(Sd D p).continuous.comp_aestronglyMeasurable hAt`.
-
-Conclude with `hsInner_continuous.comp_aestronglyMeasurable (h1.prodMk (admissible_ae_strongly_measurable hB D.haarG))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_hilbertSchmidt_rho_integrand (H : Hyp D Ξ α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ} (hA : admitted α cA A)
     (hB : admitted α cB B) {p : SS k r} (hp : D.inSS p) :
@@ -1353,7 +1333,7 @@ theorem aestronglyMeasurable_hilbertSchmidt_rho_integrand (H : Hyp D Ξ α) {A B
   exact hsInner_continuous.comp_aestronglyMeasurable (h1.prodMk (admissible_ae_strongly_measurable hB D.haarG))
 
 /- English proof (translation)
-Rewrite using `[rho_eq, ← sgs_eq, ← mul_assoc]`. Use `(hsInner_norm_le _ _).trans ?_` and prove the remaining obligations. Use `Sd_norm_le D hp (A (sgs p g))` as an intermediate fact. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hilbert_schmidt_integrand_bound (D : RealPlaceData k r Wp Wq) (A B : Mat k r → (Wq →L[ℂ] Wp)) {p : SS k r}
     (hp : D.inSS p) (g : Mat k r) :
@@ -1365,7 +1345,7 @@ theorem hilbert_schmidt_integrand_bound (D : RealPlaceData k r Wp Wq) (A B : Mat
   gcongr
 
 /- English proof (translation)
-Take `⟨K, -, hK⟩` from `translated_product_integrable_bound H`. Establish `hxy` using `inSS_mem D hp`. Establish `h` using `(hK A B cA cB hA hB _ hxy.1 _ hxy.2).1`. Conclude with `(h.const_mul (Module.finrank ℂ Wq : ℝ)).mono' (aestronglyMeasurable_hilbertSchmidt_rho_integrand H hA hB hp) (Eventually.of_forall fun g => hilbert_schmidt_integrand_bound D A B hp _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ph_integrable (H : Hyp D Ξ α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ} (hA : admitted α cA A)
     (hB : admitted α cB B) {p : SS k r} (hp : D.inSS p) :
@@ -1377,9 +1357,9 @@ theorem ph_integrable (H : Hyp D Ξ α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {c
     (Eventually.of_forall fun g => hilbert_schmidt_integrand_bound D A B hp _)
 
 /- English proof (translation)
-Take `⟨K, hK0, hK⟩` from `translated_product_integrable_bound H`. Use `⟨(Module.finrank ℂ Wq : ℝ) * K, by positivity, fun A B cA cB hA hB p hp => ?_⟩` and prove the remaining obligations. Establish `hxy` using `inSS_mem D hp`. Establish `h` using `hK A B cA cB hA hB _ hxy.1 _ hxy.2`. Unfold `Ph`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `(norm_integral_le_of_norm_le (h.1.const_mul (Module.finrank ℂ Wq : ℝ)) (Eventually.of_forall fun g => hilbert_schmidt_integrand_bound D A B hp _)).trans ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem ph_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (A B : Mat k r → (Wq →L[ℂ] Wp)) (cA cB : ℝ),
     admitted α cA A → admitted α cB B → ∀ p, D.inSS p → ‖Ph D A B p‖ ≤ K * cA * cB * XX Ξ p := by
@@ -1396,7 +1376,7 @@ theorem ph_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (A B : Mat k r
     _ = _ := by ring
 
 /- English proof (translation)
-Unfold `rmulF`. Conclude with `continuous_id.matrix_mul continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_right_multiplication_map (a : Mat k r) : Continuous (rmulF a) := by
   unfold rmulF
@@ -1415,11 +1395,11 @@ def rightMulMeasurableEquiv (a : Mat k r) (ha : IsUnit a.det) : Mt k r ≃ᵐ Mt
   measurable_invFun := (continuous_right_multiplication_map a⁻¹).measurable
 
 /- English proof (translation)
-Establish `hax` using `aDil_mem k r hx`. Establish `hay` using `aDil_inv_mem k r hy`. Establish `mpL : MeasurePreserving (lmulM (aDil k r x)) D.μG D.μG` using `⟨(BesselUnitaryEquiv.continuous_lmulM _).measurable, D.haarG.left _ hax⟩`. Establish `mpR : MeasurePreserving (rmulF (aDil k r y)⁻¹) D.μG D.μG` using `⟨(continuous_right_multiplication_map _).measurable, D.haarG.right _ hay⟩`. Establish `eL : MeasurableEmbedding (lmulM (k` using `k) (r := r) (aDil k r x)) := (BesselUnitaryEquiv.lmulE _ (WeylGroupFacts.isUnit_of_uh hax)).measurableEmbedding`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eR : MeasurableEmbedding (rmulF (aDil k r y)⁻¹)` using `(rightMulMeasurableEquiv _ (WeylGroupFacts.isUnit_of_uh hay)).measurableEmbedding`. Unfold `Ph`. Rewrite using `[← (mpR.comp mpL).integral_comp (eR.comp eL)]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e : (Matrix.of ((rmulF (aDil k r y)⁻¹ ∘ lmulM (aDil k r x)) g) : Mat k r) = aDil k r x * Matrix.of g * (aDil k r y)⁻¹` using `rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show hsInner (rho D (dilation₂ (x, y) p) A (Matrix.of ((rmulF (aDil k r y)⁻¹ ∘ lmulM (aDil k r x)) g))) (B (Matrix.of ((rmulF (aDil k r y)⁻¹ ∘ lmulM (aDil k r x)) g))) = hsInner (rho D p (fun g => A (aDil k r x * g * (aDil k r y)⁻¹)) (Matrix.of g)) (B (aDil k r x * Matrix.of g * …`. Rewrite using `[e, rho_eq, rho_eq, sgs_dil H.dilUW D hp hx hy, Sd_dil]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ph_dil (H : Hyp D Ξ α) (A B : Mat k r → (Wq →L[ℂ] Wp)) {p : SS k r} (hp : D.inSS p) {x y : ℝ}
     (hx : 0 < x) (hy : 0 < y) :
@@ -1447,13 +1427,13 @@ theorem ph_dil (H : Hyp D Ξ α) (A B : Mat k r → (Wq →L[ℂ] Wp)) {p : SS k
   rw [e, rho_eq, rho_eq, sgs_dil H.dilUW D hp hx hy, Sd_dil]
 
 /- English proof (translation)
-Take `⟨K, hK0, hK⟩` from `ph_bound H`. Take `⟨M, hM0, hM⟩` from `aDil_gN_bound k r (a := 1 / 2) (b := 2) (by norm_num)`. Use `⟨K * ((M * M) ^ α * (M * M) ^ α), by positivity, fun A B cA cB hA hB p hp x hx y hy => ?_⟩` and prove the remaining obligations. Establish `hx0 : 0 < x` using `lt_of_lt_of_le (by norm_num) hx.1`. Establish `hy0 : 0 < y` using `lt_of_lt_of_le (by norm_num) hy.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hax` using `aDil_mem k r hx0`. Establish `hay` using `aDil_inv_mem k r hy0`. Establish `hcA` using `admissible_constant_nonneg hA`. Establish `hcB` using `admissible_constant_nonneg hB`. Rewrite using `[ph_dil H A B hp hx0 hy0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hK _ _ _ _ (admissible_two_sided_translate H.α_nonneg hA hax hay) (admissible_two_sided_translate H.α_nonneg hB hax hay) p hp`. Use `h.trans ?_` and prove the remaining obligations. Establish `hXX : 0 ≤ XX Ξ p` using `by unfold XX; positivity`. Establish `he : (gN (aDil k r x)⁻¹ * gN (aDil k r y)⁻¹⁻¹) ^ α ≤ (M * M) ^ α`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ (WeylGroupFacts.isUnit_of_uh (aDil_mem k r hy0))]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.rpow_le_rpow (mul_nonneg (gN_nonneg _) (gN_nonneg _)) (mul_le_mul (hM x hx).2 (hM y hy).1 (gN_nonneg _) hM0) H.α_nonneg`. Establish `he0 : 0 ≤ (gN (aDil k r x)⁻¹ * gN (aDil k r y)⁻¹⁻¹) ^ α` using `Real.rpow_nonneg (mul_nonneg (gN_nonneg _) (gN_nonneg _)) _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem phdil_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (A B : Mat k r → (Wq →L[ℂ] Wp)) (cA cB : ℝ),
     admitted α cA A → admitted α cB B → ∀ p, D.inSS p → ∀ x ∈ Set.Icc (1 / 2 : ℝ) 2, ∀ y ∈ Set.Icc (1 / 2 : ℝ) 2,
@@ -1483,7 +1463,7 @@ theorem phdil_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (A B : Mat 
     _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `(continuous_fst.matrix_mul continuous_snd : Continuous fun P : Mat k r × Mat k r => P.1 * P.2).comp_continuousOn (hf.prodMk hg)`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_matrix_mul {X : Type*} [TopologicalSpace X] {s : Set X} {f g : X → Mat k r}
     (hf : ContinuousOn f s) (hg : ContinuousOn g s) : ContinuousOn (fun x => f x * g x) s :=
@@ -1491,7 +1471,7 @@ theorem continuousOn_matrix_mul {X : Type*} [TopologicalSpace X] {s : Set X} {f 
     Continuous fun P : Mat k r × Mat k r => P.1 * P.2).comp_continuousOn (hf.prodMk hg)
 
 /- English proof (translation)
-Unfold `sgs`. Establish `i1 : ContinuousOn (fun p : SS k r => (Matrix.of p.1.1 : Mat k r)⁻¹) {p | D.inSS p}` using `(inv_continuousOn k r).comp continuous_first_coordinate_matrix.continuousOn (fun p hp => UWset_sub _ _ _ hp.1)`. Establish `i2 : ContinuousOn (fun p : SS k r => (Matrix.of p.1.2 : Mat k r)⁻¹) {p | D.inSS p}` using `(inv_continuousOn k r).comp continuous_matrix_coordinate_projection.continuousOn (fun p hp => Nset_sub _ _ hp.2.1)`. Conclude with `continuousOn_matrix_mul (continuousOn_matrix_mul (continuousOn_matrix_mul (continuousOn_matrix_mul i1 i2) continuousOn_const) continuous_fourth_coordinate.continuousOn) continuous_third_coordinate.continuousOn`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conjugated_pair_continuous_on (D : RealPlaceData k r Wp Wq) (g : Mat k r) :
     ContinuousOn (fun p : SS k r => sgs p g) {p | D.inSS p} := by
@@ -1504,7 +1484,7 @@ theorem conjugated_pair_continuous_on (D : RealPlaceData k r Wp Wq) (g : Mat k r
     continuousOn_const) continuous_fourth_coordinate.continuousOn) continuous_third_coordinate.continuousOn
 
 /- English proof (translation)
-Establish `hxy` using `inSS_mem D hp`. Rewrite using `[sgs_eq]`. Conclude with `WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_inv hxy.1) hg) hxy.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_product_mem_unitary_group (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) {g : Mat k r} (hg : g ∈ GV k r) :
     sgs p g ∈ GV k r := by
@@ -1516,7 +1496,7 @@ def normProductOfPair (p : SS k r) : ℝ :=
   gN (Matrix.of p.1.2 * Matrix.of p.1.1 : Mat k r) * gN (Matrix.of p.2.2 * Matrix.of p.2.1 : Mat k r)⁻¹
 
 /- English proof (translation)
-Unfold `normProductOfPair`. Establish `h1 : ContinuousOn (fun p : SS k r => (Matrix.of p.1.2 * Matrix.of p.1.1 : Mat k r)) {p | D.inSS p}` using `continuousOn_matrix_mul continuous_matrix_coordinate_projection.continuousOn continuous_first_coordinate_matrix.continuousOn`. Establish `h2 : ContinuousOn (fun p : SS k r => (Matrix.of p.2.2 * Matrix.of p.2.1 : Mat k r)) {p | D.inSS p}` using `continuousOn_matrix_mul continuous_fourth_coordinate.continuousOn continuous_third_coordinate.continuousOn`. Establish `h3 : ContinuousOn (fun p : SS k r => (Matrix.of p.2.2 * Matrix.of p.2.1 : Mat k r)⁻¹) {p | D.inSS p}` using `(inv_continuousOn k r).comp h2 (fun p hp => (inSS_mem D hp).2)`. Conclude with `(gN_continuous.comp_continuousOn h1).mul (gN_continuous.comp_continuousOn h3)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_product_continuous_on (D : RealPlaceData k r Wp Wq) : ContinuousOn (normProductOfPair (k := k) (r := r)) {p | D.inSS p} := by
   unfold normProductOfPair
@@ -1529,11 +1509,11 @@ theorem norm_product_continuous_on (D : RealPlaceData k r Wp Wq) : ContinuousOn 
   exact (gN_continuous.comp_continuousOn h1).mul (gN_continuous.comp_continuousOn h3)
 
 /- English proof (translation)
-Establish `hxy` using `inSS_mem D hp`. Establish `hcA` using `admissible_constant_nonneg hA`. Establish `hcB` using `admissible_constant_nonneg hB`. Establish `h1` using `admissible_norm_bound (admissible_two_sided_translate H.α_nonneg hA (WeylGroupFacts.uh_inv hxy.1) hxy.2) hg`. Rewrite `h1` using `[Matrix.nonsing_inv_nonsing_inv _ (WeylGroupFacts.isUnit_of_uh hxy.1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `admissible_norm_bound hB hg`. Establish `h3 : (gN (Matrix.of p.1.2 * Matrix.of p.1.1 : Mat k r) * gN (Matrix.of p.2.2 * Matrix.of p.2.1 : Mat k r)⁻¹) ^ α ≤ M ^ α` using `Real.rpow_le_rpow (mul_nonneg (gN_nonneg _) (gN_nonneg _)) hM H.α_nonneg`. Establish `hg0 : 0 ≤ gN g ^ (-α)` using `Real.rpow_nonneg (gN_nonneg g) _`. Establish `hM0 : 0 ≤ M ^ α` using `le_trans (Real.rpow_nonneg (mul_nonneg (gN_nonneg _) (gN_nonneg _)) _) h3`. Use `(hilbert_schmidt_integrand_bound D A B hp g).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (mul_le_mul (h1.trans ?_) h2 (norm_nonneg _) (by positivity)) (by positivity)` and prove the remaining obligations. Use `gcongr`. Use `_ = _ := by ring`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_hilbertSchmidt_rho_pointwise_le (H : Hyp D Ξ α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ} (hA : admitted α cA A)
     (hB : admitted α cB B) {p : SS k r} (hp : D.inSS p) {g : Mat k r} (hg : g ∈ GV k r) {M : ℝ} (hM : normProductOfPair p ≤ M) :
@@ -1560,11 +1540,9 @@ theorem norm_hilbertSchmidt_rho_pointwise_le (H : Hyp D Ξ α) {A B : Mat k r �
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `p₀ hp₀`. Use `show ContinuousWithinAt (fun p => ∫ g : Mt k r, hsInner (rho D p A (Matrix.of g)) (B (Matrix.of g)) ∂D.μG) {p | D.inSS p} p₀`. Use `continuousWithinAt_of_dominated (bound := fun g : Mt k r => (Module.finrank ℂ Wq : ℝ) * (cA * (normProductOfPair p₀ + 1) ^ α * cB) * (gN (Matrix.of g : Mat k r) ^ (-α) * gN (Matrix.of g : Mat k r) ^ (-α))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with p hp`. Conclude with `aestronglyMeasurable_hilbertSchmidt_rho_integrand H hA hB hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ∀ᶠ p in 𝓝[{p | D.inSS p}] p₀, normProductOfPair p < normProductOfPair p₀ + 1` using `(norm_product_continuous_on D p₀ hp₀).tendsto.eventually_lt_const (lt_add_one _) filter_upwards [self_mem_nhdsWithin, hN] with p hp hNp filter_upwards [haar_ae D.haarG] with g hg`. Conclude with `norm_hilbertSchmidt_rho_pointwise_le H hA hB hp hg hNp.le`. Conclude with `(model_integrable H).const_mul _`. Use `filter_upwards [haar_ae D.haarG] with g hg`. Establish `h1 : ContinuousWithinAt (fun p : SS k r => A (sgs p (Matrix.of g))) {p | D.inSS p} p₀` using `(hA.1.comp (conjugated_pair_continuous_on D (Matrix.of g)) (fun p hp => conj_product_mem_unitary_group D hp hg)) p₀ hp₀`.
-
-Establish `h2 : ContinuousWithinAt (fun p : SS k r => Sd D p (A (sgs p (Matrix.of g)))) {p | D.inSS p} p₀` using `(Sd_continuousOn D p₀ hp₀).clm_apply h1`. Conclude with `hsInner_continuous.continuousAt.comp_continuousWithinAt (h2.prodMk continuousWithinAt_const)`.
+A detailed English derivation is pending.
 -/
 theorem ph_continuousOn (H : Hyp D Ξ α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ} (hA : admitted α cA A)
     (hB : admitted α cB B) : ContinuousOn (Ph D A B) {p | D.inSS p} := by
@@ -1597,7 +1575,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `h1 : AEStronglyMeasurable (fun g => L (a g)) μ` using `L.continuous.comp_aestronglyMeasurable ha`. Establish `h2 : AEStronglyMeasurable (fun g => (L (a g), b g)) μ` using `h1.prodMk hb`. Establish `h3` using `(hsInner_continuous (Wp := Wp) (Wq := Wq)).comp_aestronglyMeasurable h2`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hilbert_schmidt_pairing_measurable {X : Type*} [MeasurableSpace X] {μ : Measure X}
     (L : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) {a b : X → (Wq →L[ℂ] Wp)} (ha : AEStronglyMeasurable a μ)
@@ -1608,9 +1586,9 @@ theorem hilbert_schmidt_pairing_measurable {X : Type*} [MeasurableSpace X] {μ :
   exact h3
 
 /- English proof (translation)
-Establish `hd0 : (0 : ℝ) ≤ (Module.finrank ℂ Wq : ℝ)` using `by positivity`. Establish `h0 : 0 ≤ C * t` using `le_trans (norm_nonneg _) ha`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : ‖L a‖ ≤ C * t` using `le_trans (hL a) ha`. Establish `: (Module.finrank ℂ Wq : ℝ) * ‖L a‖ ≤ (Module.finrank ℂ Wq : ℝ) * (C * t)` using `mul_le_mul_of_nonneg_left h1 hd0`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul this hb (norm_nonneg _) (mul_nonneg hd0 h0)`. Use `_ = (Module.finrank ℂ Wq : ℝ) * C ^ 2 * (t * t) := by ring`.
+A detailed English derivation is pending.
 -/
 theorem norm_hilbertSchmidt_inner_contraction_le (L : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) (hL : ∀ T, ‖L T‖ ≤ ‖T‖) {a b : Wq →L[ℂ] Wp}
     {C t : ℝ} (ha : ‖a‖ ≤ C * t) (hb : ‖b‖ ≤ C * t) :
@@ -1626,7 +1604,7 @@ theorem norm_hilbertSchmidt_inner_contraction_le (L : (Wq →L[ℂ] Wp) →L[ℂ
     _ = (Module.finrank ℂ Wq : ℝ) * C ^ 2 * (t * t) := by ring
 
 /- English proof (translation)
-Establish `hLu : HasDerivAt (fun y => L (u y)) (L u') y` using `(L.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt y hu`. Conclude with `hsInner_hasDerivAt hLu hv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hilbert_schmidt_pairing_deriv (L : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) {u v : ℝ → (Wq →L[ℂ] Wp)}
     {u' v' : Wq →L[ℂ] Wp} {y : ℝ} (hu : HasDerivAt u u' y) (hv : HasDerivAt v v' y) :
@@ -1636,11 +1614,11 @@ theorem hilbert_schmidt_pairing_deriv (L : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[
   exact hsInner_hasDerivAt hLu hv
 
 /- English proof (translation)
-Establish `hy₀ : y₀ ∈ s` using `mem_of_mem_nhds hs`. Establish `c1 : ∀ᶠ y in 𝓝 y₀, AEStronglyMeasurable (fun g => hsInner (L (u y g)) (v y g)) μ` using `by filter_upwards [hs] with y hy using hilbert_schmidt_pairing_measurable L (mu y hy) (mv y hy)`. Establish `c2 : Integrable (fun g => hsInner (L (u y₀ g)) (v y₀ g)) μ`. Use `Integrable.mono' (hm.const_mul ((Module.finrank ℂ Wq : ℝ) * C ^ 2)) (hilbert_schmidt_pairing_measurable L (mu y₀ hy₀) (mv y₀ hy₀)) ?_` and prove the remaining obligations. Use `filter_upwards [bu, bv] with g h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `norm_hilbertSchmidt_inner_contraction_le L hL (h1 y₀ hy₀) (h2 y₀ hy₀)`. Establish `c3 : AEStronglyMeasurable (fun g => hsInner (L (u' y₀ g)) (v y₀ g) + hsInner (L (u y₀ g)) (v' y₀ g)) μ` using `(hilbert_schmidt_pairing_measurable L (mu' y₀ hy₀) (mv y₀ hy₀)).add (hilbert_schmidt_pairing_measurable L (mu y₀ hy₀) (mv' y₀ hy₀))`. Establish `c4 : ∀ᵐ g ∂μ, ∀ y ∈ s, ‖hsInner (L (u' y g)) (v y g) + hsInner (L (u y g)) (v' y g)‖ ≤ 2 * ((Module.finrank ℂ Wq : ℝ) * C ^ 2) * (m g * m g)` using `by filter_upwards [bu, bv, bu', bv'] with g h1 h2 h3 h4`. Introduce `y hy`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c5 : Integrable (fun g => 2 * ((Module.finrank ℂ Wq : ℝ) * C ^ 2) * (m g * m g)) μ` using `hm.const_mul _`. Establish `c6 : ∀ᵐ g ∂μ, ∀ y ∈ s, HasDerivAt (fun y => hsInner (L (u y g)) (v y g)) (hsInner (L (u' y g)) (v y g) + hsInner (L (u y g)) (v' y g)) y` using `by filter_upwards [du, dv] with g h1 h2`. Introduce `y hy`. Conclude with `hilbert_schmidt_pairing_deriv L (h1 y hy) (h2 y hy)`. Conclude with `(hasDerivAt_integral_of_dominated_loc_of_deriv_le hs c1 c2 c3 c4 c5 c6).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem parametric_derivative_under_integral {X : Type*} [MeasurableSpace X] {μ : Measure X}
     (L : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) (hL : ∀ T, ‖L T‖ ≤ ‖T‖)
@@ -1683,9 +1661,9 @@ theorem parametric_derivative_under_integral {X : Type*} [MeasurableSpace X] {μ
   exact (hasDerivAt_integral_of_dominated_loc_of_deriv_le hs c1 c2 c3 c4 c5 c6).2
 
 /- English proof (translation)
-Establish `h` using `admissible_norm_bound (admissible_two_sided_translate hα hf hu hv) hg`. Establish `hc` using `admissible_constant_nonneg hf`. Establish `hm : 0 ≤ gN g ^ (-α)` using `Real.rpow_nonneg (gN_nonneg g) _`. Establish `hP : (gN u⁻¹ * gN v⁻¹) ^ α ≤ (K * K) ^ α` using `Real.rpow_le_rpow (mul_nonneg (gN_nonneg _) (gN_nonneg _)) (mul_le_mul h1 h2 (gN_nonneg _) (le_trans (gN_nonneg _) h1)) hα`. Use `le_trans h ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hP hc) hm`.
+A detailed English derivation is pending.
 -/
 theorem norm_admissible_of_double_translate_le {α c : ℝ} (hα : 0 ≤ α) {f : Mat k r → (Wq →L[ℂ] Wp)} (hf : admitted α c f)
     {u v g : Mat k r} (hu : u ∈ GV k r) (hv : v ∈ GV k r) (hg : g ∈ GV k r) {K : ℝ}
@@ -1701,9 +1679,9 @@ theorem norm_admissible_of_double_translate_le {α c : ℝ} (hα : 0 ≤ α) {f 
   exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hP hc) hm
 
 /- English proof (translation)
-Establish `h` using `admissible_norm_bound (admissible_two_sided_translate hα (admissible_two_sided_translate hα hf hu hv) hu₂ hv₂) hg`. Establish `hc` using `admissible_constant_nonneg hf`. Establish `hm : 0 ≤ gN g ^ (-α)` using `Real.rpow_nonneg (gN_nonneg g) _`. Establish `hM : 0 ≤ (gN u₂⁻¹ * gN v₂⁻¹) ^ α` using `Real.rpow_nonneg (mul_nonneg (gN_nonneg _) (gN_nonneg _)) _`. Establish `hP : (gN u⁻¹ * gN v⁻¹) ^ α ≤ (K * K) ^ α` using `Real.rpow_le_rpow (mul_nonneg (gN_nonneg _) (gN_nonneg _)) (mul_le_mul h1 h2 (gN_nonneg _) (le_trans (gN_nonneg _) h1)) hα`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans h ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hP hc) hM) hm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem translated_norm_bound {α c : ℝ} (hα : 0 ≤ α) {f : Mat k r → (Wq →L[ℂ] Wp)} (hf : admitted α c f)
     {u v u₂ v₂ g : Mat k r} (hu : u ∈ GV k r) (hv : v ∈ GV k r) (hu₂ : u₂ ∈ GV k r) (hv₂ : v₂ ∈ GV k r)
@@ -1720,7 +1698,7 @@ theorem translated_norm_bound {α c : ℝ} (hα : 0 ≤ α) {f : Mat k r → (Wq
   exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hP hc) hM) hm
 
 /- English proof (translation)
-Establish `h1 : e * c ≤ (1 + K) * c₀` using `mul_le_mul he hc hc0 (le_trans he0 he)`. Establish `h2 : e * c * P ≤ (1 + K) * c₀ * P` using `mul_le_mul_of_nonneg_right h1 hP`. Establish `h3 : e * c * P * M' ≤ (1 + K) * c₀ * P * (1 + M)` using `mul_le_mul h2 hM hM0 (le_trans (mul_nonneg (mul_nonneg he0 hc0) hP) h2)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem product_bound_monotone_factors_le {e c P M' K c₀ M m : ℝ} (he0 : 0 ≤ e) (he : e ≤ 1 + K) (hc0 : 0 ≤ c) (hc : c ≤ c₀)
     (hP : 0 ≤ P) (hM0 : 0 ≤ M') (hM : M' ≤ 1 + M) (hm : 0 ≤ m) :
@@ -1735,37 +1713,31 @@ theorem product_bound_monotone_factors_le {e c P M' K c₀ M m : ℝ} (he0 : 0 �
 variable {D : RealPlaceData k r Wp Wq} {Ξ : Mat k r → NNReal} {α : ℝ}
 
 /- English proof (translation)
-Establish `hα` using `H.α_nonneg`. Establish `ht₀ : t₀ ∈ s` using `mem_of_mem_nhds hs`. Take `⟨hS1, hS2⟩` from `inSS_mem D hp`. Establish `hS1i` using `WeylGroupFacts.uh_inv hS1`. Establish `hK0 : 0 ≤ K` using `le_trans (gN_nonneg _) (hKa t₀ ht₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcA` using `admissible_constant_nonneg hA`. Establish `hcB` using `admissible_constant_nonneg hB`. Take `⟨S1, hS1d⟩ : ∃ S1 : Mat k r, S1 = (Matrix.of p.1.2 * Matrix.of p.1.1 : Mat k r)⁻¹` from `⟨_, rfl⟩`. Take `⟨S2, hS2d⟩ : ∃ S2 : Mat k r, S2 = (Matrix.of p.2.2 * Matrix.of p.2.1 : Mat k r)` from `⟨_, rfl⟩`. Rewrite `hS1i` using `[← hS1d]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hS2` using `[← hS2d]`. Establish `hsgs : ∀ g : Mat k r, sgs p g = S1 * g * S2`. Introduce `g`. Rewrite using `[sgs_eq, hS1d, hS2d]`. Take `⟨P, hPd⟩ : ∃ P : ℝ, P = (K * K) ^ α` from `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hMd⟩ : ∃ M : ℝ, M = (gN S1⁻¹ * gN S2⁻¹) ^ α` from `⟨_, rfl⟩`. Establish `hP0 : 0 ≤ P` using `by rw [hPd]; exact Real.rpow_nonneg (mul_nonneg hK0 hK0) _`. Establish `hM0 : 0 ≤ M` using `by rw [hMd]; exact Real.rpow_nonneg (mul_nonneg (gN_nonneg _) (gN_nonneg _)) _`. Establish `hG` using `haar_ae D.haarG`. Establish `ms2 : ∀ {f : Mat k r → (Wq →L[ℂ] Wp)} {c : ℝ}, admitted α c f → ∀ t ∈ s, AEStronglyMeasurable (fun g : Mt k r => f (a t * sgs p (Matrix.of g) * b t)) D.μG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f c hf t ht`. Use `admissible_ae_strongly_measurable (admissible_two_sided_translate hα (admissible_two_sided_translate hα hf (ha t ht) (hb t ht)) hS1i hS2) D.haarG` as an intermediate fact. Simplify `this` using `only [hsgs]`. Establish `ms1 : ∀ {f : Mat k r → (Wq →L[ℂ] Wp)} {c : ℝ}, admitted α c f → ∀ t ∈ s, AEStronglyMeasurable (fun g : Mt k r => f (a t * Matrix.of g * b t)) D.μG`. Introduce `f c hf t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `admissible_ae_strongly_measurable (admissible_two_sided_translate hα hf (ha t ht) (hb t ht)) D.haarG`. Establish `b2 : ∀ {f : Mat k r → (Wq →L[ℂ] Wp)} {c : ℝ}, admitted α c f → ∀ g : Mt k r, (Matrix.of g : Mat k r) ∈ GV k r → ∀ t ∈ s, ‖f (a t * sgs p (Matrix.of g) * b t)‖ ≤ c * P * M * gN (Matrix.of g : Mat k r) ^ (-α)`. Introduce `f c hf g hg t ht`. Rewrite using `[hsgs, hPd, hMd]`. Conclude with `translated_norm_bound hα hf (ha t ht) (hb t ht) hS1i hS2 hg (hKa t ht) (hKb t ht)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `b1 : ∀ {f : Mat k r → (Wq →L[ℂ] Wp)} {c : ℝ}, admitted α c f → ∀ g : Mt k r, (Matrix.of g : Mat k r) ∈ GV k r → ∀ t ∈ s, ‖f (a t * Matrix.of g * b t)‖ ≤ c * P * 1 * gN (Matrix.of g : Mat k r) ^ (-α)`. Introduce `f c hf g hg t ht`. Rewrite using `[hPd, mul_one]`. Conclude with `norm_admissible_of_double_translate_le hα hf (ha t ht) (hb t ht) hg (hKa t ht) (hKb t ht)`. Establish `hm0 : ∀ g : Mt k r, 0 ≤ gN (Matrix.of g : Mat k r) ^ (-α)` using `fun g => Real.rpow_nonneg (gN_nonneg _) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `parametric_derivative_under_integral (μ := D.μG) (Sd D p) (Sd_norm_le D hp) (u := fun t g => A (a t * sgs p (Matrix.of g) * b t)) (v := fun t g => B (a t * Matrix.of g * b t)) (u' := fun t g => κ t • A1 (a t * sgs p (Matrix.of g) * b t)) (v' := fun t g => κ t • B1 (a t * Matrix.o …`. Establish `hz : sgs p (Matrix.of g) ∈ GV k r`. Rewrite using `[hsgs]`. Conclude with `WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul hS1i hg) hS2`. Conclude with `dA _ hz t ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(by filter_upwards [hG] with g hg t ht`. Conclude with `dB _ hg t ht)`. Use the proof step `(by filter_upwards [hG] with g hg t ht`. Establish `h` using `b2 hA g hg t ht`. Establish `h2` using `product_bound_monotone_factors_le (e := 1) (K := K) (c₀ := cA + cB) (M := M) zero_le_one (by linarith) hcA (by linarith) hP0 hM0 (by linarith) (hm0 g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `linarith)`. Use the proof step `(by filter_upwards [hG] with g hg t ht`. Establish `h` using `b1 hB g hg t ht`. Establish `h2` using `product_bound_monotone_factors_le (e := 1) (K := K) (c₀ := cA + cB) (M := M) zero_le_one (by linarith) hcB (by linarith) hP0 zero_le_one (by linarith) (hm0 g)`. Use the proof step `linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by filter_upwards [hG] with g hg t ht`. Establish `h` using `b2 hA1 g hg t ht`. Establish `h2` using `product_bound_monotone_factors_le (e := |κ t|) (K := K) (c₀ := cA + cB) (M := M) (abs_nonneg _) (by have := hκ t ht; linarith) hcA (by linarith) hP0 hM0 (by linarith) (hm0 g)`. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Conclude with `le_trans (mul_le_mul_of_nonneg_left h (abs_nonneg _)) h2)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by filter_upwards [hG] with g hg t ht`. Establish `h` using `b1 hB1 g hg t ht`. Establish `h2` using `product_bound_monotone_factors_le (e := |κ t|) (K := K) (c₀ := cA + cB) (M := M) (abs_nonneg _) (by have := hκ t ht; linarith) hcB (by linarith) hP0 zero_le_one (by linarith) (hm0 g)`. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Conclude with `le_trans (mul_le_mul_of_nonneg_left h (abs_nonneg _)) h2)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `i1` using `ph_integrable H (admissible_two_sided_translate hα hA1 (ha t₀ ht₀) (hb t₀ ht₀)) (admissible_two_sided_translate hα hB (ha t₀ ht₀) (hb t₀ ht₀)) hp`. Establish `i2` using `ph_integrable H (admissible_two_sided_translate hα hA (ha t₀ ht₀) (hb t₀ ht₀)) (admissible_two_sided_translate hα hB1 (ha t₀ ht₀) (hb t₀ ht₀)) hp`. Establish `e1 : (∫ g : Mt k r, (hsInner (Sd D p (κ t₀ • A1 (a t₀ * sgs p (Matrix.of g) * b t₀))) (B (a t₀ * Matrix.of g * b t₀)) + hsInner (Sd D p (A (a t₀ * sgs p (Matrix.of g) * b t₀))) (κ t₀ • B1 (a t₀ * Matrix.of g * b t₀))) ∂D.μG) = (κ t₀ : ℂ) * (Ph D (fun g => A1 (a t₀ * g * b t₀)) (f …`. Unfold `Ph`. Rewrite using `[← integral_add i1 i2, ← integral_const_mul]`.
-
-Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [rho_eq]`. Rewrite using `[← Complex.coe_smul (κ t₀) (A1 _), ← Complex.coe_smul (κ t₀) (B1 _), map_smul, hsInner_smul_left, hsInner_smul_right, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e1]`.
-
-Establish `e2 : (fun t => Ph D (fun g => A (a t * g * b t)) (fun g => B (a t * g * b t)) p) = fun t => ∫ g : Mt k r, hsInner (Sd D p (A (a t * sgs p (Matrix.of g) * b t))) (B (a t * Matrix.of g * b t)) ∂D.μG`. Use function extensionality and compare the values at `t`. Unfold `Ph`. Simplify using `only [rho_eq]`. Rewrite using `[e2]`.
-
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem pairing_derivative_locally_dominated (H : Hyp D Ξ α) {A B A1 B1 : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : admitted α cA A) (hA1 : admitted α cA A1) (hB : admitted α cB B) (hB1 : admitted α cB B1)
@@ -1887,17 +1859,13 @@ theorem pairing_derivative_locally_dominated (H : Hyp D Ξ α) {A B A1 B1 : Mat 
   exact key
 
 /- English proof (translation)
-Take `⟨K1, hK1, hK1b⟩` from `aDil_gN_bound k r (a := y / 2) (b := 2 * y) (by linarith)`. Establish `hs : Set.Ioo (y / 2) (2 * y) ∈ 𝓝 y` using `Ioo_mem_nhds (by linarith) (by linarith)`. Establish `hpos : ∀ t ∈ Set.Ioo (y / 2) (2 * y), 0 < t` using `fun t ht => by have := ht.1; linarith`. Establish `hr` using `rr_pos r`. Establish `hd : ∀ {f : Mat k r → (Wq →L[ℂ] Wp)}, DR f → ∀ z ∈ GV k r, ∀ t ∈ Set.Ioo (y / 2) (2 * y), HasDerivAt (fun t => f (aDil k r x * z * (aDil k r t)⁻¹)) ((-(rr r / t)) • Rr f (aDil k r x * z * (aDil k r t)⁻¹)) t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f df z hz t ht`. Conclude with `curveR f (aDil k r x * z) (hpos t ht) (df _ (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (aDil_mem k r hx) hz) (aDil_inv_mem k r (hpos t ht))))`. Establish `key` using `pairing_derivative_locally_dominated H hA hA' hB hB' hp (a := fun _ => aDil k r x) (b := fun t => (aDil k r t)⁻¹) (κ := fun t => -(rr r / t)) hs (K := K1 + gN (aDil k r x)⁻¹ + 2 * rr r / y) (fun t _ => aDil_mem k r hx) (fun t ht => aDil_inv_mem k r (hpos t ht)) (fun t _ => by`. Establish `h1 : 0 ≤ 2 * rr r / y` using `by positivity`. Use the proof step `linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun t ht => by`. Establish `h1 : 0 ≤ 2 * rr r / y` using `by positivity`. Establish `h2` using `gN_nonneg (aDil k r x)⁻¹`. Establish `h3` using `(hK1b t ⟨ht.1.le, ht.2.le⟩).1`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ (WeylGroupFacts.isUnit_of_uh (aDil_mem k r (hpos t ht)))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `linarith)`. Use the proof step `(fun t ht => by`. Establish `h2` using `gN_nonneg (aDil k r x)⁻¹`. Establish `h3 : |-(rr r / t)| ≤ 2 * rr r / y`. Rewrite using `[abs_neg, abs_of_pos (div_pos hr (hpos t ht)), div_le_div_iff₀ (hpos t ht) hy]`.
-
-Use `ht.1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the proof step `linarith)`. Use the proof step `(hd dA) (hd dB)`. Rewrite using `[ph_dil H (Rr A) B hp hx hy, ph_dil H A (Rr B) hp hx hy]`.
-
-Use `key.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hs] with t ht`. Conclude with `ph_dil H A B hp hx (hpos t ht)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ph_hasDerivAt_y (H : Hyp D Ξ α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ} (hA : admitted α cA A)
     (hA' : admitted α cA (Rr A)) (hB : admitted α cB B) (hB' : admitted α cB (Rr B)) (dA : DR A) (dB : DR B)
@@ -1940,17 +1908,15 @@ theorem ph_hasDerivAt_y (H : Hyp D Ξ α) {A B : Mat k r → (Wq →L[ℂ] Wp)} 
   exact ph_dil H A B hp hx (hpos t ht)
 
 /- English proof (translation)
-Take `⟨K1, hK1, hK1b⟩` from `aDil_gN_bound k r (a := x / 2) (b := 2 * x) (by linarith)`. Establish `hs : Set.Ioo (x / 2) (2 * x) ∈ 𝓝 x` using `Ioo_mem_nhds (by linarith) (by linarith)`. Establish `hpos : ∀ t ∈ Set.Ioo (x / 2) (2 * x), 0 < t` using `fun t ht => by have := ht.1; linarith`. Establish `hr` using `rr_pos r`. Establish `hd : ∀ {f : Mat k r → (Wq →L[ℂ] Wp)}, DL f → ∀ z ∈ GV k r, ∀ t ∈ Set.Ioo (x / 2) (2 * x), HasDerivAt (fun t => f (aDil k r t * z * (aDil k r y)⁻¹)) ((-(rr r / t)) • Ll f (aDil k r t * z * (aDil k r y)⁻¹)) t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f df z hz t ht`. Establish `h` using `curveL f (z * (aDil k r y)⁻¹) (hpos t ht) (df _ (WeylGroupFacts.uh_mul (aDil_mem k r (hpos t ht)) (WeylGroupFacts.uh_mul hz (aDil_inv_mem k r hy))))`. Simplify `h` using `only [Matrix.mul_assoc]`. Establish `key` using `pairing_derivative_locally_dominated H hA hA' hB hB' hp (a := fun t => aDil k r t) (b := fun _ => (aDil k r y)⁻¹) (κ := fun t => -(rr r / t)) hs (K := K1 + gN ((aDil k r y)⁻¹)⁻¹ + 2 * rr r / x) (fun t ht => aDil_mem k r (hpos t ht)) (fun t _ => aDil_inv_mem k r hy) (fun t ht => b …`. Establish `h1 : 0 ≤ 2 * rr r / x` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `gN_nonneg ((aDil k r y)⁻¹)⁻¹`. Establish `h3` using `(hK1b t ⟨ht.1.le, ht.2.le⟩).2`. Use the proof step `linarith)`. Use the proof step `(fun t _ => by`. Establish `h1 : 0 ≤ 2 * rr r / x` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `linarith)`. Use the proof step `(fun t ht => by`. Establish `h2` using `gN_nonneg ((aDil k r y)⁻¹)⁻¹`. Establish `h3 : |-(rr r / t)| ≤ 2 * rr r / x`. Rewrite using `[abs_neg, abs_of_pos (div_pos hr (hpos t ht)), div_le_div_iff₀ (hpos t ht) hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ht.1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the proof step `linarith)`. Use the proof step `(hd dA) (hd dB)`. Rewrite using `[ph_dil H (Ll A) B hp hx hy, ph_dil H A (Ll B) hp hx hy]`.
-
-Use `key.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hs] with t ht`. Conclude with `ph_dil H A B hp (hpos t ht) hy`.
+A detailed English derivation is pending.
 -/
 theorem phase_dilation_deriv_x (H : Hyp D Ξ α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ} (hA : admitted α cA A)
     (hA' : admitted α cA (Ll A)) (hB : admitted α cB B) (hB' : admitted α cB (Ll B)) (dA : DL A) (dB : DL B)
@@ -1997,7 +1963,7 @@ end phd
 section abs
 
 /- English proof (translation)
-Establish `e1 : deriv f = f1` using `funext fun t => (h0 t).deriv`. Establish `e2 : deriv f1 = f2` using `funext fun t => (h1 t).deriv`. Rewrite using `[iteratedDeriv_succ, iteratedDeriv_one, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem iterated_deriv_two_of_chain {f f1 f2 : ℝ → ℂ} (h0 : ∀ t, HasDerivAt f (f1 t) t) (h1 : ∀ t, HasDerivAt f1 (f2 t) t) :
     iteratedDeriv 2 f = f2 := by
@@ -2006,9 +1972,9 @@ theorem iterated_deriv_two_of_chain {f f1 f2 : ℝ → ℂ} (h0 : ∀ t, HasDeri
   rw [iteratedDeriv_succ, iteratedDeriv_one, e1, e2]
 
 /- English proof (translation)
-Establish `e1 : deriv f = f1` using `funext fun t => (h0 t).deriv`. Establish `e2 : deriv f1 = f2` using `funext fun t => (h1 t).deriv`. Establish `c1 : ContDiff ℝ 1 f1`. Rewrite using `[contDiff_one_iff_deriv]`. Conclude with `⟨fun t => (h1 t).differentiableAt, by rw [e2]; exact hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `: ContDiff ℝ (1 + 1) f`. Rewrite using `[contDiff_succ_iff_deriv]`. Use `⟨fun t => (h0 t).differentiableAt, by simp, by rw [e1]; exact c1⟩` and prove the remaining obligations. Simplify `this` using `[one_add_one_eq_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem contDiff_two_of_derivatives {f f1 f2 : ℝ → ℂ} (h0 : ∀ t, HasDerivAt f (f1 t) t) (h1 : ∀ t, HasDerivAt f1 (f2 t) t)
     (hc : Continuous f2) : ContDiff ℝ 2 f := by
@@ -2023,34 +1989,34 @@ theorem contDiff_two_of_derivatives {f f1 f2 : ℝ → ℂ} (h0 : ∀ t, HasDeri
   simpa [one_add_one_eq_two] using this
 
 /- English proof (translation)
-The claim follows from `notMem_tsupport_iff_eventuallyEq.1 fun h => ht (hWs h)`.
+A detailed English derivation is pending.
 -/
 theorem cutoff_eventually_zero_outside {W : ℝ → ℝ} (hWs : tsupport W ⊆ Set.Ioo (1 / 2) 2) {t : ℝ} (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2) :
     W =ᶠ[𝓝 t] 0 :=
   notMem_tsupport_iff_eventuallyEq.1 fun h => ht (hWs h)
 
 /- English proof (translation)
-The claim follows from `(cutoff_eventually_zero_outside hWs ht).eq_of_nhds`.
+A detailed English derivation is pending.
 -/
 theorem cutoff_zero_outside {W : ℝ → ℝ} (hWs : tsupport W ⊆ Set.Ioo (1 / 2) 2) {t : ℝ} (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2) :
     W t = 0 := (cutoff_eventually_zero_outside hWs ht).eq_of_nhds
 
 /- English proof (translation)
-Rewrite using `[(cutoff_eventually_zero_outside hWs ht).deriv_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cutoff_derivative_zero_outside {W : ℝ → ℝ} (hWs : tsupport W ⊆ Set.Ioo (1 / 2) 2) {t : ℝ} (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2) :
     deriv W t = 0 := by
   rw [(cutoff_eventually_zero_outside hWs ht).deriv_eq]; simp
 
 /- English proof (translation)
-Rewrite using `[(cutoff_eventually_zero_outside hWs ht).iteratedDeriv_eq 2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iteratedDeriv_two_eq_zero_off_support {W : ℝ → ℝ} (hWs : tsupport W ⊆ Set.Ioo (1 / 2) 2) {t : ℝ} (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2) :
     iteratedDeriv 2 W t = 0 := by
   rw [(cutoff_eventually_zero_outside hWs ht).iteratedDeriv_eq 2]; simp
 
 /- English proof (translation)
-Use `match m with`. Consider the case `0 => simp [gam, cutoff_zero_outside hWs ht, iteratedDeriv_two_eq_zero_off_support hWs ht]`. Consider the case `1 => simp [gam, cutoff_zero_outside hWs ht, cutoff_derivative_zero_outside hWs ht]`. Consider the case `(n + 2) => simp [gam, cutoff_zero_outside hWs ht]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gam_zero {W : ℝ → ℝ} (hWs : tsupport W ⊆ Set.Ioo (1 / 2) 2) (ρ : ℝ) (m : ℕ) {t : ℝ}
     (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2) : gam ρ W m t = 0 := by
@@ -2060,9 +2026,9 @@ theorem gam_zero {W : ℝ → ℝ} (hWs : tsupport W ⊆ Set.Ioo (1 / 2) 2) (ρ 
   | (n + 2) => simp [gam, cutoff_zero_outside hWs ht]
 
 /- English proof (translation)
-Establish `e : (fun t => v t / t ^ n) = fun t => v t / (max t (1 / 2)) ^ n`. Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : (1 / 2 : ℝ) ≤ t`. Rewrite using `[max_eq_left ht]`. Rewrite using `[h0 t (fun h => ht h.1.le)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Use `hv.div ((continuous_id.max continuous_const).pow n) fun t => ?_` and prove the remaining obligations. Establish `: (0 : ℝ) < max t (1 / 2)` using `lt_of_lt_of_le (by norm_num) (le_max_right _ _)`. Check the signs of the components of the expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem cutoff_div_pow_continuous {v : ℝ → ℝ} (hv : Continuous v) (h0 : ∀ t, t ∉ Set.Ioo (1 / 2 : ℝ) 2 → v t = 0) (n : ℕ) :
     Continuous (fun t => v t / t ^ n) := by
@@ -2077,15 +2043,13 @@ theorem cutoff_div_pow_continuous {v : ℝ → ℝ} (hv : Continuous v) (h0 : �
   positivity
 
 /- English proof (translation)
-Establish `c0 : Continuous W` using `hW.continuous`. Establish `c1 : Continuous (deriv W)` using `hW.continuous_deriv (by simp)`. Establish `c2 : Continuous (iteratedDeriv 2 W)` using `(contDiff_infty.1 hW 2).continuous_iteratedDeriv 2 le_rfl`. Establish `d0` using `cutoff_div_pow_continuous c0 (fun t ht => cutoff_zero_outside hWs ht) 2`. Establish `d1` using `cutoff_div_pow_continuous c1 (fun t ht => cutoff_derivative_zero_outside hWs ht) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `match m with`. Consider the case `0 => exact c0.sub c2`. Consider the case `1`. Establish `: gam ρ W 1 = fun t => 2 * ρ * (deriv W t / t ^ 1) - ρ * (W t / t ^ 2)`. Use function extensionality and compare the values at `t`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [gam, pow_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(continuous_const.mul d1).sub (continuous_const.mul d0)`. Consider the case `(n + 2)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: gam ρ W (n + 2) = fun t => -(ρ ^ 2 * (W t / t ^ 2))`. Use function extensionality and compare the values at `t`. Simplify using `only [gam]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
-
-Conclude with `(continuous_const.mul d0).neg`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gam_continuous {W : ℝ → ℝ} (hW : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) W)
     (hWs : tsupport W ⊆ Set.Ioo (1 / 2) 2) (ρ : ℝ) (m : ℕ) : Continuous (gam ρ W m) := by
@@ -2108,9 +2072,9 @@ theorem gam_continuous {W : ℝ → ℝ} (hW : ContDiff ℝ ((⊤ : ℕ∞) : Wi
     exact (continuous_const.mul d0).neg
 
 /- English proof (translation)
-Establish `hb : ∀ m, ∃ C, ∀ t, ‖gam ρ W m t‖ ≤ C` using `fun m => (gam_continuous hW hWs ρ m).bounded_above_of_compact_support (HasCompactSupport.intro (isCompact_Icc (a := (1 / 2 : ℝ)) (b := 2)) fun t ht => gam_zero hWs ρ m fun h => ht ⟨h.1.le, h.2.le⟩)`. Take `⟨C0, h0⟩` from `hb 0`. Take `⟨C1, h1⟩` from `hb 1`. Take `⟨C2, h2⟩` from `hb 2`. Use `⟨max (max C0 C1) C2, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_trans (le_trans (norm_nonneg _) (h2 0)) (le_max_right _ _)`. Introduce `m t match m with`. Consider the case `0 => exact le_trans (h0 t) (le_trans (le_max_left _ _) (le_max_left _ _))`. Consider the case `1 => exact le_trans (h1 t) (le_trans (le_max_right _ _) (le_max_left _ _))`. Consider the case `(n + 2) => exact le_trans (h2 t) (le_max_right _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gam_bound {W : ℝ → ℝ} (hW : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) W)
     (hWs : tsupport W ⊆ Set.Ioo (1 / 2) 2) (ρ : ℝ) : ∃ Γ : ℝ, 0 ≤ Γ ∧ ∀ m t, |gam ρ W m t| ≤ Γ := by
@@ -2130,9 +2094,9 @@ theorem gam_bound {W : ℝ → ℝ} (hW : ContDiff ℝ ((⊤ : ℕ∞) : WithTop
     | (n + 2) => exact le_trans (h2 t) (le_max_right _ _)
 
 /- English proof (translation)
-Establish `i1 : ∀ x y, iteratedDeriv 2 (fun y' => h₁ x y' + h₂ x y') y = iteratedDeriv 2 (fun y' => h₁ x y') y + iteratedDeriv 2 (fun y' => h₂ x y') y` using `fun x y => iteratedDeriv_fun_add (a₁ x).contDiffAt (a₂ x).contDiffAt`. Establish `i2 : (fun x => (h₁ x y + h₂ x y) - iteratedDeriv 2 (fun y' => h₁ x y' + h₂ x y') y) = fun x => (h₁ x y - iteratedDeriv 2 (fun y' => h₁ x y') y) + (h₂ x y - iteratedDeriv 2 (fun y' => h₂ x y') y)`. Use function extensionality and compare the values at `x`. Rewrite using `[i1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `oneMinusDD`. Simplify using `only []`. Rewrite using `[i2, i1, iteratedDeriv_fun_add (b₁ y).contDiffAt (b₂ y).contDiffAt]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem oneMinusDD_add {h₁ h₂ : ℝ → ℝ → ℂ} (a₁ : ∀ x, ContDiff ℝ 2 (fun y => h₁ x y))
     (a₂ : ∀ x, ContDiff ℝ 2 (fun y => h₂ x y))
@@ -2152,9 +2116,9 @@ theorem oneMinusDD_add {h₁ h₂ : ℝ → ℝ → ℂ} (a₁ : ∀ x, ContDiff
   ring
 
 /- English proof (translation)
-Establish `i2 : (fun x => a * h x y - iteratedDeriv 2 (fun y' => a * h x y') y) = fun x => a * (h x y - iteratedDeriv 2 (fun y' => h x y') y)`. Use function extensionality and compare the values at `x`. Rewrite using `[iteratedDeriv_const_mul_field]`. Expand and normalize the polynomial expressions, which then agree. Unfold `oneMinusDD`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Simplify using `only []`. Rewrite using `[i2, iteratedDeriv_const_mul_field, iteratedDeriv_const_mul_field]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem oneMinusDD_const_mul (a : ℂ) (h : ℝ → ℝ → ℂ) (x y : ℝ) :
     oneMinusDD (fun x y => a * h x y) x y = a * oneMinusDD h x y := by
@@ -2167,11 +2131,11 @@ theorem oneMinusDD_const_mul (a : ℂ) (h : ℝ → ℝ → ℂ) (x y : ℝ) :
   ring
 
 /- English proof (translation)
-Distinguish the cases in `ht : 0 < t`. Conclude with `(hu t).ofReal_comp.mul (hq t ht)`. Establish `h0` using `hu0 t (not_lt.1 ht)`. Establish `e0 : u t = 0` using `h0.eq_of_nhds`. Establish `e1 : u' t = 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hu t).deriv` as an intermediate fact. Rewrite `this` using `[h0.deriv_eq]`. Simplify using `using this.symm`. Rewrite using `[e0, e1]`. Simplify using `only [Complex.ofReal_zero, zero_mul, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hasDerivAt_const t (0 : ℂ)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [h0] with s hs`. Simplify using `[hs]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cutoff_product_rule {u u' : ℝ → ℝ} (hu : ∀ t, HasDerivAt u (u' t) t) (hu0 : ∀ t, t ≤ 0 → u =ᶠ[𝓝 t] 0)
     {q q' : ℝ → ℂ} (hq : ∀ t, 0 < t → HasDerivAt q (q' t) t) (t : ℝ) :
@@ -2191,9 +2155,9 @@ theorem cutoff_product_rule {u u' : ℝ → ℝ} (hu : ∀ t, HasDerivAt u (u' t
     simp [hs]
 
 /- English proof (translation)
-Establish `e : (fun t => (v t : ℂ) * q t) = fun t => (v t : ℂ) * q (max t (1 / 2))`. Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : (1 / 2 : ℝ) ≤ t`. Rewrite using `[max_eq_left ht]`. Rewrite using `[h0 t (fun h => ht h.1.le)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Use `(Complex.continuous_ofReal.comp hv).mul (hq.comp_continuous (continuous_id.max continuous_const) fun t => ?_)` and prove the remaining obligations. Use `show (0 : ℝ) < max t (1 / 2)`. Conclude with `lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) (le_max_right _ _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cutoff_mul_continuous {v : ℝ → ℝ} (hv : Continuous v) (h0 : ∀ t, t ∉ Set.Ioo (1 / 2 : ℝ) 2 → v t = 0) {q : ℝ → ℂ}
     (hq : ContinuousOn q (Set.Ioi 0)) : Continuous (fun t => (v t : ℂ) * q t) := by
@@ -2209,29 +2173,29 @@ theorem cutoff_mul_continuous {v : ℝ → ℝ} (hv : Continuous v) (h0 : ∀ t,
   exact lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) (le_max_right _ _)
 
 /- English proof (translation)
-Introduce `h` and use `by have := h.1; linarith`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nonpositive_not_in_interval {t : ℝ} (ht : t ≤ 0) : t ∉ Set.Ioo (1 / 2 : ℝ) 2 := fun h => by
   have := h.1; linarith
 
 /- English proof (translation)
-Establish `hW2 : ContDiff ℝ 2 W` using `contDiff_infty.1 hW 2`. Establish `dW : ∀ t, HasDerivAt W (deriv W t) t` using `fun t => (hW2.differentiable (by norm_num) t).hasDerivAt`. Establish `hdW1 : ContDiff ℝ 1 (deriv W)`. Establish `: ContDiff ℝ (1 + 1) W` using `by simpa [one_add_one_eq_two] using hW2`. Conclude with `(contDiff_succ_iff_deriv.1 this).2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ddW : ∀ t, HasDerivAt (deriv W) (iteratedDeriv 2 W t) t` using `fun t => by`. Use `(hdW1.differentiable (by norm_num) t).hasDerivAt` as an intermediate fact. Rewrite using `[iteratedDeriv_succ, iteratedDeriv_one]` and apply the resulting hypothesis. Establish `evW : ∀ t, t ≤ 0 → W =ᶠ[𝓝 t] 0` using `fun t ht => cutoff_eventually_zero_outside hWs (nonpositive_not_in_interval ht)`. Establish `evdW : ∀ t, t ≤ 0 → deriv W =ᶠ[𝓝 t] 0` using `fun t ht => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(evW t ht).deriv` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun s => by simp`. Establish `evu2 : ∀ t, t ≤ 0 → (fun t => -(ρ * (W t / t))) =ᶠ[𝓝 t] 0` using `fun t ht => by filter_upwards [evW t ht] with s hs`. Simplify using `[hs]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `du2 : ∀ t, HasDerivAt (fun t => -(ρ * (W t / t))) (-(ρ * (deriv W t / t - W t / t ^ 2))) t` using `fun t => by`. Distinguish the cases in `ht : t = 0`. Establish `e : -(ρ * (deriv W t / t - W t / t ^ 2)) = 0`. Simplify using `[cutoff_zero_outside hWs (nonpositive_not_in_interval ht.le), cutoff_derivative_zero_outside hWs (nonpositive_not_in_interval ht.le)]`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hasDerivAt_const t (0 : ℝ)).congr_of_eventuallyEq (evu2 t ht.le)`. Use `(((dW t).div (hasDerivAt_id t) ht).const_mul ρ).neg` as an intermediate fact. Use `HasDerivAt.congr_deriv (f := fun t => -(ρ * (W t / t))) this ?_` and prove the remaining obligations. Simplify using `only [id]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Establish `A : ∀ t, HasDerivAt (fun t => (W t : ℂ) * q0 t) (((deriv W t : ℝ) : ℂ) * q0 t + ((-(ρ * (W t / t)) : ℝ) : ℂ) * q1 t) t` using `fun t => by`. Use `cutoff_product_rule dW evW h0 t using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `B : ∀ t, HasDerivAt (fun t => ((deriv W t : ℝ) : ℂ) * q0 t + ((-(ρ * (W t / t)) : ℝ) : ℂ) * q1 t) (((W t - gam ρ W 0 t : ℝ) : ℂ) * q0 t - (gam ρ W 1 t : ℂ) * q1 t - (gam ρ W 2 t : ℂ) * q2 t) t` using `fun t => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `((cutoff_product_rule ddW evdW h0 t).add (cutoff_product_rule du2 evu2 h1 t)).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [gam]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `cq0 : ContinuousOn q0 (Set.Ioi 0)` using `fun t ht => (h0 t ht).continuousAt.continuousWithinAt`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `cq1 : ContinuousOn q1 (Set.Ioi 0)` using `fun t ht => (h1 t ht).continuousAt.continuousWithinAt`. Establish `C : Continuous fun t => ((W t - gam ρ W 0 t : ℝ) : ℂ) * q0 t - (gam ρ W 1 t : ℂ) * q1 t - (gam ρ W 2 t : ℂ) * q2 t`. Use `((cutoff_mul_continuous (hW.continuous.sub (gam_continuous hW hWs ρ 0)) (fun t ht => ?_) cq0).sub (cutoff_mul_continuous (gam_continuous hW hWs ρ 1) (fun t ht => gam_zero hWs ρ 1 ht) cq1)).sub (cutoff_mul_continuous (gam_continuous hW hWs ρ 2) (fun t ht => gam_zero hWs ρ 2 ht) hc …` and prove the remaining obligations. Use `show W t - gam ρ W 0 t = 0`. Rewrite using `[cutoff_zero_outside hWs ht, gam_zero hWs ρ 0 ht, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨contDiff_two_of_derivatives A B C, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[iterated_deriv_two_of_chain A B]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem regularised_product_second_derivative {W : ℝ → ℝ} (hW : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) W) (hWs : tsupport W ⊆ Set.Ioo (1 / 2) 2)
     (ρ : ℝ) {q0 q1 q2 : ℝ → ℂ}
@@ -2291,11 +2255,11 @@ theorem regularised_product_second_derivative {W : ℝ → ℝ} (hW : ContDiff �
   push_cast; ring
 
 /- English proof (translation)
-Establish `e : (fun t : ℝ × ℝ => ((v1 t.1 * v2 t.2 : ℝ) : ℂ) * q t.1 t.2) = fun t : ℝ × ℝ => ((v1 t.1 * v2 t.2 : ℝ) : ℂ) * q (max t.1 (1 / 2)) (max t.2 (1 / 2))`. Use function extensionality and compare the values at `t`. Distinguish the cases in `ht1 : (1 / 2 : ℝ) ≤ t.1`. Distinguish the cases in `ht2 : (1 / 2 : ℝ) ≤ t.2`. Rewrite using `[max_eq_left ht1, max_eq_left ht2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 t.2 (fun h => ht2 h.1.le)]`. Simplify using the standard rewrite rules. Rewrite using `[h1 t.1 (fun h => ht1 h.1.le)]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : Continuous fun t : ℝ × ℝ => ((max t.1 (1 / 2), max t.2 (1 / 2)) : ℝ × ℝ)` using `(continuous_fst.max continuous_const).prodMk (continuous_snd.max continuous_const)`. Establish `hm : ∀ t : ℝ × ℝ, ((max t.1 (1 / 2), max t.2 (1 / 2)) : ℝ × ℝ) ∈ Quad` using `fun t => ⟨lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) (le_max_right _ _), lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) (le_max_right _ _)⟩`. Conclude with `(Complex.continuous_ofReal.comp ((hv1.comp continuous_fst).mul (hv2.comp continuous_snd))).mul (hq.comp_continuous hc hm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cutoff_product_continuous {v1 v2 : ℝ → ℝ} (hv1 : Continuous v1) (hv2 : Continuous v2)
     (h1 : ∀ t, t ∉ Set.Ioo (1 / 2 : ℝ) 2 → v1 t = 0) (h2 : ∀ t, t ∉ Set.Ioo (1 / 2 : ℝ) 2 → v2 t = 0)
@@ -2319,9 +2283,9 @@ theorem cutoff_product_continuous {v1 v2 : ℝ → ℝ} (hv1 : Continuous v1) (h
     (hq.comp_continuous hc hm)
 
 /- English proof (translation)
-Use `((cutoff_product_continuous hv1 hv2 h1 h2 hq).mul hE).integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro ((isCompact_Icc (a := (1 / 2 : ℝ)) (b := 2)).prod (isCompact_Icc (a := (1 / 2 : ℝ)) (b := 2))) fun t ht => ?_` and prove the remaining obligations. Use `show ((v1 t.1 * v2 t.2 : ℝ) : ℂ) * q t.1 t.2 * E t = 0`. Distinguish the cases in `a1 : t.1 ∈ Set.Ioo (1 / 2 : ℝ) 2`. Distinguish the cases in `a2 : t.2 ∈ Set.Ioo (1 / 2 : ℝ) 2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd ⟨⟨a1.1.le, a1.2.le⟩, ⟨a2.1.le, a2.2.le⟩⟩ ht`. Rewrite using `[h2 t.2 a2]`. Simplify using the standard rewrite rules. Rewrite using `[h1 t.1 a1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cutoff_product_integrable {v1 v2 : ℝ → ℝ} (hv1 : Continuous v1) (hv2 : Continuous v2)
     (h1 : ∀ t, t ∉ Set.Ioo (1 / 2 : ℝ) 2 → v1 t = 0) (h2 : ∀ t, t ∉ Set.Ioo (1 / 2 : ℝ) 2 → v2 t = 0)
@@ -2338,7 +2302,7 @@ theorem cutoff_product_integrable {v1 v2 : ℝ → ℝ} (hv1 : Continuous v1) (h
   · rw [h1 t.1 a1]; simp
 
 /- English proof (translation)
-Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exp_sum_split (x₁ x₂ a b : ℝ) :
     Complex.exp (Complex.I * ((x₁ * a + x₂ * b : ℝ) : ℂ)) =
@@ -2346,18 +2310,18 @@ theorem exp_sum_split (x₁ x₂ a b : ℝ) :
   rw [← Complex.exp_add]; congr 1; push_cast; ring
 
 /- English proof (translation)
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem continuous_exp_I_linear_form (x₁ x₂ : ℝ) :
     Continuous fun t : ℝ × ℝ => Complex.exp (Complex.I * ((x₁ * t.1 + x₂ * t.2 : ℝ) : ℂ)) := by
   fun_prop
 
 /- English proof (translation)
-Establish `key : ∀ (L : ℝ → ℝ → ℂ) (y : ℝ), (∫ x, L x y * Complex.exp (Complex.I * ((x₁ * x + x₂ * y : ℝ) : ℂ))) = (∫ x, L x y * Complex.exp (Complex.I * ((x₁ * x : ℝ) : ℂ))) * Complex.exp (Complex.I * ((x₂ * y : ℝ) : ℂ))` using `fun L y => by`. Rewrite using `[← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[exp_sum_split]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Measure.volume_eq_prod, integral_prod_symm _ hK, integral_prod_symm _ hK', ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only []`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[key K y, key K' y, h y]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fourier_slice_in_x {K K' : ℝ → ℝ → ℂ} (x₁ x₂ : ℝ) (c : ℂ)
     (hK : Integrable fun t : ℝ × ℝ => K t.1 t.2 * Complex.exp (Complex.I * ((x₁ * t.1 + x₂ * t.2 : ℝ) : ℂ)))
@@ -2378,11 +2342,11 @@ theorem fourier_slice_in_x {K K' : ℝ → ℝ → ℂ} (x₁ x₂ : ℝ) (c : �
   rw [key K y, key K' y, h y]; ring
 
 /- English proof (translation)
-Establish `key : ∀ (L : ℝ → ℝ → ℂ) (x : ℝ), (∫ y, L x y * Complex.exp (Complex.I * ((x₁ * x + x₂ * y : ℝ) : ℂ))) = (∫ y, L x y * Complex.exp (Complex.I * ((x₂ * y : ℝ) : ℂ))) * Complex.exp (Complex.I * ((x₁ * x : ℝ) : ℂ))` using `fun L x => by`. Rewrite using `[← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[exp_sum_split]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Measure.volume_eq_prod, integral_prod _ hK, integral_prod _ hK', ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only []`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[key K x, key K' x, h x]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_slice_second_variable_eq {K K' : ℝ → ℝ → ℂ} (x₁ x₂ : ℝ) (c : ℂ)
     (hK : Integrable fun t : ℝ × ℝ => K t.1 t.2 * Complex.exp (Complex.I * ((x₁ * t.1 + x₂ * t.2 : ℝ) : ℂ)))
@@ -2406,13 +2370,13 @@ def regularised_kernel_product (ρ : ℝ) (W : ℝ → ℝ) (q : ℕ → ℕ →
   (W x : ℂ) * ((gam ρ W 0 y : ℂ) * q 0 0 x y + (gam ρ W 1 y : ℂ) * q 0 1 x y + (gam ρ W 2 y : ℂ) * q 0 2 x y)
 
 /- English proof (translation)
-Establish `e : (fun y => h x y) = fun y => (W x : ℂ) * ((W y : ℂ) * q 0 0 x y)`. Use function extensionality and compare the values at `y`. Rewrite using `[hh]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e' : ∀ y, h x y = (W x : ℂ) * ((W y : ℂ) * q 0 0 x y)` using `fun y => congrFun e y`. Distinguish the cases in `hx0 : 0 < x`. Establish `cq : ContinuousOn (q 0 2 x) (Set.Ioi 0)` using `(hc 0 (by norm_num) 2 le_rfl).comp (continuous_const.prodMk continuous_id).continuousOn (fun y hy0 => ⟨hx0, hy0⟩)`. Take `⟨cd, fm⟩` from `regularised_product_second_derivative hW hWs ρ (q0 := q 0 0 x) (q1 := q 0 1 x) (q2 := q 0 2 x) (fun t ht => hy 0 (by norm_num) x hx0 t ht) (fun t ht => hy 1 (by norm_num) x hx0 t ht) cq`. Use `⟨by rw [e]; exact contDiff_const.mul cd, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, e' y, iteratedDeriv_const_mul_field, ← mul_sub, fm y]`. Both sides reduce to the same expression. Establish `hW0 : W x = 0` using `cutoff_zero_outside hWs (nonpositive_not_in_interval (not_lt.1 hx0))`. Use `⟨?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[e, hW0]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.ofReal_zero, zero_mul]`. Conclude with `contDiff_const`. Rewrite using `[e, e' y, iteratedDeriv_const_mul_field, hW0]`. Simplify using `[regularised_kernel_product, hW0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem second_derivative_in_y {W : ℝ → ℝ} (hW : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) W) (hWs : tsupport W ⊆ Set.Ioo (1 / 2) 2)
     (ρ : ℝ) (q : ℕ → ℕ → ℝ → ℝ → ℂ)
@@ -2440,13 +2404,13 @@ theorem second_derivative_in_y {W : ℝ → ℝ} (hW : ContDiff ℝ ((⊤ : ℕ�
     · rw [e, e' y, iteratedDeriv_const_mul_field, hW0]; simp [regularised_kernel_product, hW0]
 
 /- English proof (translation)
-Distinguish the cases in `hy0 : 0 < y`. Establish `cq : ∀ l ≤ 2, ContinuousOn (fun x => q 2 l x y) (Set.Ioi 0)` using `fun l hl => (hc 2 le_rfl l hl).comp (continuous_id.prodMk continuous_const).continuousOn (fun x hx0 => ⟨hx0, hy0⟩)`. Establish `hd : ∀ m < 2, ∀ t, 0 < t → HasDerivAt (fun x => (gam ρ W 0 y : ℂ) * q m 0 x y + (gam ρ W 1 y : ℂ) * q m 1 x y + (gam ρ W 2 y : ℂ) * q m 2 x y) (((-(ρ / t) : ℝ) : ℂ) * ((gam ρ W 0 y : ℂ) * q (m + 1) 0 t y + (gam ρ W 1 y : ℂ) * q (m + 1) 1 t y + (gam ρ W 2 y : ℂ) * q (m + 1) 2 t y) …` using `fun m hm t ht => by`. Use `((((hx m hm 0 (by norm_num) t ht y hy0).const_mul (gam ρ W 0 y : ℂ)).add ((hx m hm 1 (by norm_num) t ht y hy0).const_mul (gam ρ W 1 y : ℂ))).add ((hx m hm 2 le_rfl t ht y hy0).const_mul (gam ρ W 2 y : ℂ))).congr_deriv ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨cd, fm⟩` from `regularised_product_second_derivative hW hWs ρ (hd 0 (by norm_num)) (hd 1 (by norm_num)) (((continuousOn_const.mul (cq 0 (by norm_num))).add (continuousOn_const.mul (cq 1 (by norm_num)))).add (continuousOn_const.mul (cq 2 le_rfl)))`. Use `⟨cd, fun x => ?_⟩` and prove the remaining obligations. Use `fm x` as an intermediate fact. Unfold `regularised_kernel_product`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `g0 : ∀ l, gam ρ W l y = 0` using `fun l => gam_zero hWs ρ l (nonpositive_not_in_interval (not_lt.1 hy0))`. Establish `e : (fun x => regularised_kernel_product ρ W q x y) = fun _ => 0`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `[regularised_kernel_product, g0]`. Use `⟨by rw [e]; exact contDiff_const, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Simplify using `[regularised_kernel_product, g0]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem contDiff_two_outer_kernel {W : ℝ → ℝ} (hW : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) W) (hWs : tsupport W ⊆ Set.Ioo (1 / 2) 2)
     (ρ : ℝ) (q : ℕ → ℕ → ℝ → ℝ → ℂ)
@@ -2485,21 +2449,21 @@ theorem contDiff_two_outer_kernel {W : ℝ → ℝ} (hW : ContDiff ℝ ((⊤ : �
     simp [regularised_kernel_product, g0]
 
 /- English proof (translation)
-Establish `IN` using `second_derivative_in_y hW hWs ρ q hy hc h hh`. Establish `OUT` using `contDiff_two_outer_kernel hW hWs ρ q hx hc`. Establish `ek : ∀ y, (fun x => h x y - iteratedDeriv 2 (fun y' => h x y') y) = fun x => regularised_kernel_product ρ W q x y` using `fun y => funext fun x => (IN x).2 y`. Establish `om_eq : ∀ x y, oneMinusDD h x y = regularised_kernel_product ρ W q x y - iteratedDeriv 2 (fun x' => regularised_kernel_product ρ W q x' y) x` using `fun x y => by`. Unfold `oneMinusDD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[ek y, (IN x).2 y]`. Establish `form : ∀ x y, oneMinusDD h x y = ∑ m ∈ Finset.range 3, ∑ l ∈ Finset.range 3, ((gam ρ W m x * gam ρ W l y : ℝ) : ℂ) * q m l x y` using `fun x y => by`. Rewrite using `[om_eq]`. Conclude with `(OUT y).2 x`. Use `⟨form, fun x => (IN x).1, fun y => by rw [ek y]; exact (OUT y).1, fun x₁ x₂ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `cW : Continuous W` using `hW.continuous`. Establish `zW : ∀ t, t ∉ Set.Ioo (1 / 2 : ℝ) 2 → W t = 0` using `fun t ht => cutoff_zero_outside hWs ht`. Establish `cg` using `gam_continuous hW hWs ρ`. Establish `zg : ∀ m t, t ∉ Set.Ioo (1 / 2 : ℝ) 2 → gam ρ W m t = 0` using `fun m t ht => gam_zero hWs ρ m ht`. Establish `hE` using `continuous_exp_I_linear_form x₁ x₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `I_h : Integrable fun t : ℝ × ℝ => h t.1 t.2 * Complex.exp (Complex.I * ((x₁ * t.1 + x₂ * t.2 : ℝ) : ℂ))`. Use `(cutoff_product_integrable cW cW zW zW (hc 0 (by norm_num) 0 (by norm_num)) hE).congr (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Simplify using `only [hh]`. Establish `I_k : Integrable fun t : ℝ × ℝ => regularised_kernel_product ρ W q t.1 t.2 * Complex.exp (Complex.I * ((x₁ * t.1 + x₂ * t.2 : ℝ) : ℂ))`. Use `(((cutoff_product_integrable cW (cg 0) zW (zg 0) (hc 0 (by norm_num) 0 (by norm_num)) hE).add (cutoff_product_integrable cW (cg 1) zW (zg 1) (hc 0 (by norm_num) 1 (by norm_num)) hE)).add (cutoff_product_integrable cW (cg 2) zW (zg 2) (hc 0 (by norm_num) 2 le_rfl) hE)).congr (ae_o …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, regularised_kernel_product]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `I_o : Integrable fun t : ℝ × ℝ => oneMinusDD h t.1 t.2 * Complex.exp (Complex.I * ((x₁ * t.1 + x₂ * t.2 : ℝ) : ℂ))`. Establish `: Integrable fun t : ℝ × ℝ => ∑ m ∈ Finset.range 3, ∑ l ∈ Finset.range 3, ((gam ρ W m t.1 * gam ρ W l t.2 : ℝ) : ℂ) * q m l t.1 t.2 * Complex.exp (Complex.I * ((x₁ * t.1 + x₂ * t.2 : ℝ) : ℂ))` using `integrable_finsetSum _ fun m hm => integrable_finsetSum _ fun l hl => cutoff_product_integrable (cg m) (cg l) (zg m) (zg l) (hc m (by have := Finset.mem_range.1 hm; omega) l (by have := Finset.mem_range.1 hl; omega)) hE`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.congr (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Simplify using `only [form, Finset.sum_mul]`. Establish `csk : ∀ y, HasCompactSupport fun x => regularised_kernel_product ρ W q x y` using `fun y => HasCompactSupport.intro (isCompact_Icc (a := (1 / 2 : ℝ)) (b := 2)) fun x hx0 => by`. Simplify using `[regularised_kernel_product, zW x fun h => hx0 ⟨h.1.le, h.2.le⟩]`. Establish `csh : ∀ x, HasCompactSupport fun y => h x y` using `fun x => HasCompactSupport.intro (isCompact_Icc (a := (1 / 2 : ℝ)) (b := 2)) fun y hy0 => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hh, zW y fun h => hy0 ⟨h.1.le, h.2.le⟩]`. Establish `sX` using `fourier_slice_in_x (K := oneMinusDD h) (K' := regularised_kernel_product ρ W q) x₁ x₂ ((1 + x₁ ^ 2 : ℝ) : ℂ) I_o I_k (fun y => by`. Simplify using `only [om_eq]`. Conclude with `Formalism.FourierDecayAlt.P.integration_by_parts_regularised (fun x => regularised_kernel_product ρ W q x y) (OUT y).1 (csk y) x₁)`. Establish `sY` using `integral_slice_second_variable_eq (K := regularised_kernel_product ρ W q) (K' := h) x₁ x₂ ((1 + x₂ ^ 2 : ℝ) : ℂ) I_k I_h (fun x => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← (IN x).2]`. Conclude with `Formalism.FourierDecayAlt.P.integration_by_parts_regularised (fun y => h x y) (IN x).1 (csh x) x₂)`. Rewrite using `[sX, sY]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem al2 {W : ℝ → ℝ} (hW : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) W) (hWs : tsupport W ⊆ Set.Ioo (1 / 2) 2)
     (ρ : ℝ) (q : ℕ → ℕ → ℝ → ℝ → ℂ)
@@ -2578,14 +2542,14 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Unfold `Wd`. Conclude with `D.χ_smooth.mul (contDiff_id.pow _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Wd_contDiff (D : RealPlaceData k r Wp Wq) : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Wd D) := by
   unfold Wd
   exact D.χ_smooth.mul (contDiff_id.pow _)
 
 /- English proof (translation)
-Use `subset_trans ?_ D.χ_supp` and prove the remaining obligations. Conclude with `tsupport_mul_subset_left`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Wd_tsupport (D : RealPlaceData k r Wp Wq) : tsupport (Wd D) ⊆ Set.Ioo (1 / 2) 2 := by
   refine subset_trans ?_ D.χ_supp
@@ -2619,28 +2583,28 @@ def Gt (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp)) (τ 
 variable {D : RealPlaceData k r Wp Wq} {Ξ : Mat k r → NNReal} {α : ℝ}
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem XX_nonneg (Ξ : Mat k r → NNReal) (p : SS k r) : 0 ≤ XX Ξ p := mul_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)
 
 /- English proof (translation)
-Unfold `LL`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem LL_nonneg (D : RealPlaceData k r Wp Wq) (p : SS k r) : 0 ≤ LL D p := by unfold LL; positivity
 
 /- English proof (translation)
-Unfold `wt`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem wt_nonneg (D : RealPlaceData k r Wp Wq) (τ : ℝ × ℝ) (p : SS k r) : 0 ≤ wt D τ p := by unfold wt; positivity
 
 /- English proof (translation)
-Establish `e : (1 + |l|) ^ (-2 : ℝ) = ((1 + |l|) ^ 2)⁻¹`. Rewrite using `[Real.rpow_neg (by positivity)]`. Evaluate the numerical expressions. Rewrite using `[e, ← div_eq_mul_inv, le_div_iff₀ (by positivity), inv_mul_le_iff₀ (by positivity)]`. Establish `m1 : (1 : ℝ) ≤ max 1 (τ ^ 2)⁻¹` using `le_max_left _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `m2 : (τ ^ 2)⁻¹ ≤ max 1 (τ ^ 2)⁻¹` using `le_max_right _ _`. Establish `m3 : 1 ≤ max 1 (τ ^ 2)⁻¹ * τ ^ 2`. Establish `: (τ ^ 2)⁻¹ * τ ^ 2 = 1` using `inv_mul_cancel₀ (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Establish `hl : l ^ 2 = |l| ^ 2` using `(sq_abs l).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hl]`. Use `set a := |l| with ha`. Establish `ha0 : 0 ≤ a` using `abs_nonneg l`. Use `set M := max 1 (τ ^ 2)⁻¹`. Establish `: (1 + τ ^ 2 * a ^ 2) * (2 * M) = 2 * M + 2 * (M * τ ^ 2) * a ^ 2` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[this]`. Use polynomial arithmetic with `[sq_nonneg (1 - a), mul_le_mul_of_nonneg_right m3 (sq_nonneg a)]`.
+A detailed English derivation is pending.
 -/
 theorem lorentzian_weight_bound {τ : ℝ} (h : 0 < τ) (l : ℝ) :
     (1 + τ ^ 2 * l ^ 2)⁻¹ ≤ 2 * max 1 (τ ^ 2)⁻¹ * (1 + |l|) ^ (-2 : ℝ) := by
@@ -2664,7 +2628,7 @@ theorem lorentzian_weight_bound {τ : ℝ} (h : 0 < τ) (l : ℝ) :
   nlinarith [sq_nonneg (1 - a), mul_le_mul_of_nonneg_right m3 (sq_nonneg a)]
 
 /- English proof (translation)
-Establish `a1` using `lorentzian_weight_bound h1 (lam k r D.z (Matrix.of p.1.2))`. Establish `a2` using `lorentzian_weight_bound h2 (lam k r D.z' (Matrix.of p.2.2))`. Unfold `wt LL`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem wt_le (D : RealPlaceData k r Wp Wq) {τ : ℝ × ℝ} (h1 : 0 < τ.1) (h2 : 0 < τ.2) (p : SS k r) :
     wt D τ p ≤ 4 * max 1 (τ.1 ^ 2)⁻¹ * max 1 (τ.2 ^ 2)⁻¹ * LL D p := by
@@ -2677,7 +2641,7 @@ theorem wt_le (D : RealPlaceData k r Wp Wq) {τ : ℝ × ℝ} (h1 : 0 < τ.1) (h
     _ = _ := by ring
 
 /- English proof (translation)
-Unfold `wt`. Establish `c1 : Continuous (fun x : (ℝ × ℝ) × SS k r => lam k r D.z (Matrix.of x.2.1.2))` using `(lam_continuous k r D.z).comp (continuous_snd.comp (continuous_fst.comp continuous_snd))`. Establish `c2 : Continuous (fun x : (ℝ × ℝ) × SS k r => lam k r D.z' (Matrix.of x.2.2.2))` using `(lam_continuous k r D.z').comp (continuous_snd.comp (continuous_snd.comp continuous_snd))`. Use `Continuous.mul (Continuous.inv₀ (by fun_prop) (fun x => by positivity)) (Continuous.inv₀ (by fun_prop) (fun x => by positivity))` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem wt_continuous (D : RealPlaceData k r Wp Wq) : Continuous (fun x : (ℝ × ℝ) × SS k r => wt D x.1 x.2) := by
   unfold wt
@@ -2689,7 +2653,7 @@ theorem wt_continuous (D : RealPlaceData k r Wp Wq) : Continuous (fun x : (ℝ �
     (Continuous.inv₀ (by fun_prop) (fun x => by positivity))
 
 /- English proof (translation)
-Unfold `phase`. Establish `c1 : Continuous (fun x : ((ℝ × ℝ) × SS k r) × (ℝ × ℝ) => lam k r D.z (Matrix.of x.1.2.1.2))` using `(lam_continuous k r D.z).comp (continuous_snd.comp (continuous_fst.comp (continuous_snd.comp continuous_fst)))`. Establish `c2 : Continuous (fun x : ((ℝ × ℝ) × SS k r) × (ℝ × ℝ) => lam k r D.z' (Matrix.of x.1.2.2.2))` using `(lam_continuous k r D.z').comp (continuous_snd.comp (continuous_snd.comp (continuous_snd.comp continuous_fst)))`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem phase_continuous (D : RealPlaceData k r Wp Wq) :
     Continuous (fun x : ((ℝ × ℝ) × SS k r) × (ℝ × ℝ) => phase D x.1.1 x.1.2 x.2) := by
@@ -2703,11 +2667,11 @@ theorem phase_continuous (D : RealPlaceData k r Wp Wq) :
   fun_prop
 
 /- English proof (translation)
-Set `mm : Mt k r × Mt k r → Mt k r` to `fun p => (Matrix.of p.2 * Matrix.of p.1 : Mat k r)`. Establish `cm : Continuous mm` using `Continuous.matrix_mul continuous_snd continuous_fst`. Establish `m1 : Measurable (fun p : Mt k r × Mt k r => Ξ (Matrix.of p.2 * Matrix.of p.1))` using `hm.comp (cm.measurable)`. Establish `c2 : Continuous (fun p : Mt k r × Mt k r => lam k r z (Matrix.of p.2))` using `(lam_continuous k r z).comp continuous_snd`. Establish `m2 : Measurable (fun p : Mt k r × Mt k r => (1 + |lam k r z (Matrix.of p.2)|) ^ (-2 : ℝ))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Measurable (fun p : Mt k r × Mt k r => lam k r z (Matrix.of p.2))` using `c2.measurable`. Use `fun_prop`. Use `⟨(m1.coe_nnreal_real.mul m2).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`. Use `lt_of_le_of_lt (le_of_eq ?_) h` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul, Real.enorm_eq_ofReal (NNReal.coe_nonneg _), Real.enorm_eq_ofReal (by positivity), ENNReal.ofReal_coe_nnreal]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_integrable_first_factor {Ξ : Mat k r → NNReal} (z : Fin (2 * r + k + 1) → ℂ) (μ : Measure (Mt k r × Mt k r))
     (hm : Measurable fun x : Mt k r => Ξ (Matrix.of x))
@@ -2732,9 +2696,9 @@ theorem weight_integrable_first_factor {Ξ : Mat k r → NNReal} (z : Fin (2 * r
     ENNReal.ofReal_coe_nnreal]
 
 /- English proof (translation)
-Use `haar_sigmaFinite D.haarW` as an intermediate fact. Use `haar_sigmaFinite D.haarN` as an intermediate fact. Use `haar_sigmaFinite D.haarW'` as an intermediate fact. Take `⟨hm, h1, h2⟩` from `H.xi`. Establish `i1` using `weight_integrable_first_factor D.z (D.μW.prod D.μN) hm h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `i2` using `weight_integrable_first_factor D.z' (D.μW'.prod D.μN) hm h2`. Use `i1.mul_prod i2` as an intermediate fact. Use `this.congr (ae_of_all _ fun p => ?_)` and prove the remaining obligations. Simplify using `only [XX, LL]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem xi_integrable (H : Hyp D Ξ α) : Integrable (fun p : SS k r => XX Ξ p * LL D p) D.μSS := by
   have := haar_sigmaFinite D.haarW
@@ -2749,9 +2713,9 @@ theorem xi_integrable (H : Hyp D Ξ α) : Integrable (fun p : SS k r => XX Ξ p 
   ring
 
 /- English proof (translation)
-Proceed by induction on `l generalizing A B with`. Consider the case `zero`. Conclude with `ph_hasDerivAt_y H (hA.1 0 (by omega) 0 le_rfl) (hA.1 1 le_rfl 0 le_rfl) (hB.1 0 (by omega) 0 le_rfl) (hB.1 1 le_rfl 0 le_rfl) (hA.2.1 0 (by omega)) (hB.2.1 0 (by omega)) hp hx hy`. Consider the case `succ l ih`. Establish `h1` using `ih (admissibleWeight_right_derivative hA) (admissible_weight_lower_order hB)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ih (admissible_weight_lower_order hA) (admissibleWeight_right_derivative hB)`. Establish `h3` using `h1.add h2`. Rewrite `h3` using `[← mul_add]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem QR_hasDerivAt_y (H : Hyp D Ξ α) {l : ℕ} {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : AdmW α cA (l + 1) 0 A) (hB : AdmW α cB (l + 1) 0 B) {p : SS k r} (hp : D.inSS p) {x y : ℝ}
@@ -2769,9 +2733,9 @@ theorem QR_hasDerivAt_y (H : Hyp D Ξ α) {l : ℕ} {A B : Mat k r → (Wq →L[
     exact h3
 
 /- English proof (translation)
-Proceed by induction on `m generalizing A B with`. Consider the case `zero`. Conclude with `phase_dilation_deriv_x H (hA.1 0 le_rfl 0 (by omega)) (hA.1 0 le_rfl 1 le_rfl) (hB.1 0 le_rfl 0 (by omega)) (hB.1 0 le_rfl 1 le_rfl) (hA.2.2 0 le_rfl 0 (by omega)) (hB.2.2 0 le_rfl 0 (by omega)) hp hx hy`. Consider the case `succ m ih`. Establish `h1` using `ih (admissibleWeight_left_derivative hA) (admissibleWeight_of_succ_left_order hB)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ih (admissibleWeight_of_succ_left_order hA) (admissibleWeight_left_derivative hB)`. Establish `h3` using `h1.add h2`. Rewrite `h3` using `[← mul_add]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_left_derivative_pairing_x (H : Hyp D Ξ α) {m : ℕ} {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : AdmW α cA 0 (m + 1) A) (hB : AdmW α cB 0 (m + 1) B) {p : SS k r} (hp : D.inSS p) {x y : ℝ}
@@ -2789,9 +2753,9 @@ theorem hasDerivAt_left_derivative_pairing_x (H : Hyp D Ξ α) {m : ℕ} {A B : 
     exact h3
 
 /- English proof (translation)
-Proceed by induction on `l generalizing A B with`. Consider the case `zero => exact hasDerivAt_left_derivative_pairing_x H hA hB hp hx hy`. Consider the case `succ l ih`. Establish `h1` using `ih (admissibleWeight_right_derivative hA) (admissible_weight_lower_order hB)`. Establish `h2` using `ih (admissible_weight_lower_order hA) (admissibleWeight_right_derivative hB)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h1.add h2`. Rewrite `h3` using `[← mul_add]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regularised_pairing_deriv_x (H : Hyp D Ξ α) {m l : ℕ} {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : AdmW α cA l (m + 1) A) (hB : AdmW α cB l (m + 1) B) {p : SS k r} (hp : D.inSS p) {x y : ℝ}
@@ -2807,9 +2771,9 @@ theorem regularised_pairing_deriv_x (H : Hyp D Ξ α) {m l : ℕ} {A B : Mat k r
     exact h3
 
 /- English proof (translation)
-Proceed by induction on `m generalizing A B with`. Consider the case `zero`. Establish `h1` using `ph_continuousOn H (admissible_of_weighted hA) (admissible_of_weighted hB)`. Establish `h2 : ContinuousOn (fun q : SS k r × (ℝ × ℝ) => dilation₂ q.2 q.1) ({p | D.inSS p} ×ˢ Quad)` using `(dilationAction_continuousOn k r).mono (Set.prod_mono (Set.subset_univ _) le_rfl)`. Use `h1.comp h2 ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨p, t⟩ ⟨hp, ht⟩`. Conclude with `dil_inSS H.dilN D hp ht.1 ht.2`. Consider the case `succ m ih => exact (ih (admissibleWeight_left_derivative hA) (admissibleWeight_of_succ_left_order hB)).add (ih (admissibleWeight_of_succ_left_order hA) (admissibleWeight_left_derivative hB))`.
+Assume the hypotheses and unpack their components. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem quadrant_function_continuous_on (H : Hyp D Ξ α) {m : ℕ} {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : AdmW α cA 0 m A) (hB : AdmW α cB 0 m B) :
@@ -2825,7 +2789,7 @@ theorem quadrant_function_continuous_on (H : Hyp D Ξ α) {m : ℕ} {A B : Mat k
   | succ m ih => exact (ih (admissibleWeight_left_derivative hA) (admissibleWeight_of_succ_left_order hB)).add (ih (admissibleWeight_of_succ_left_order hA) (admissibleWeight_left_derivative hB))
 
 /- English proof (translation)
-Proceed by induction on `l generalizing A B with`. Consider the case `zero => exact quadrant_function_continuous_on H hA hB`. Consider the case `succ l ih => exact (ih (admissibleWeight_right_derivative hA) (admissible_weight_lower_order hB)).add (ih (admissible_weight_lower_order hA) (admissibleWeight_right_derivative hB))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem QR_continuousOn (H : Hyp D Ξ α) {m l : ℕ} {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : AdmW α cA l m A) (hB : AdmW α cB l m B) :
@@ -2835,15 +2799,15 @@ theorem QR_continuousOn (H : Hyp D Ξ α) {m l : ℕ} {A B : Mat k r → (Wq →
   | succ l ih => exact (ih (admissibleWeight_right_derivative hA) (admissible_weight_lower_order hB)).add (ih (admissible_weight_lower_order hA) (admissibleWeight_right_derivative hB))
 
 /- English proof (translation)
-Take `⟨K, hK, hb⟩` from `phdil_bound H`. Use `⟨K, hK, ?_⟩` and prove the remaining obligations. Establish `hQL : ∀ (m : ℕ) (A B : Mat k r → (Wq →L[ℂ] Wp)) (cA cB : ℝ), AdmW α cA 0 m A → AdmW α cB 0 m B → ∀ p, D.inSS p → ∀ x ∈ Set.Icc (1 / 2 : ℝ) 2, ∀ y ∈ Set.Icc (1 / 2 : ℝ) 2, ‖QL D p m A B x y‖ ≤ 2 ^ m * (K * cA * cB * XX Ξ p)`. Introduce `m`. Proceed by induction on `m with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `A B cA cB hA hB p hp x hx y hy`. Simplify `hb A B cA cB (admissible_of_weighted hA) (admissible_of_weighted hB) p hp x hx y hy` using `[QL]`. Consider the case `succ m ih`. Introduce `A B cA cB hA hB p hp x hx y hy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `ih (Ll A) B cA cB (admissibleWeight_left_derivative hA) (admissibleWeight_of_succ_left_order hB) p hp x hx y hy`. Establish `h2` using `ih A (Ll B) cA cB (admissibleWeight_of_succ_left_order hA) (admissibleWeight_left_derivative hB) p hp x hx y hy`. Combine the equalities or inequalities in the displayed calculation. Introduce `m l`. Proceed by induction on `l with`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `A B cA cB hA hB p hp x hx y hy`. Conclude with `hQL m A B cA cB hA hB p hp x hx y hy`. Consider the case `succ l ih`. Introduce `A B cA cB hA hB p hp x hx y hy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `ih (Rr A) B cA cB (admissibleWeight_right_derivative hA) (admissible_weight_lower_order hB) p hp x hx y hy`. Establish `h2` using `ih A (Rr B) cA cB (admissible_weight_lower_order hA) (admissibleWeight_right_derivative hB) p hp x hx y hy`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem QR_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (m l : ℕ) (A B : Mat k r → (Wq →L[ℂ] Wp)) (cA cB : ℝ),
     AdmW α cA l m A → AdmW α cB l m B → ∀ p, D.inSS p → ∀ x ∈ Set.Icc (1 / 2 : ℝ) 2,
@@ -2879,7 +2843,7 @@ theorem QR_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (m l : ℕ) (A
       _ = _ := by rw [← add_assoc m l 1]; ring
 
 /- English proof (translation)
-Use `show ((D.χ x * D.χ y * (x * y) ^ kap k r : ℝ) : ℂ) * Ph D F F' (dilation₂ (x, y) p) = ((Wd D x * Wd D y : ℝ) : ℂ) * Ph D F F' (dilation₂ (x, y) p)`. Use `congr 2`. Unfold `Wd`. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem regBracket_eq (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp)) (p : SS k r) (x y : ℝ) :
     regBracket D F F' p x y = ((Wd D x * Wd D y : ℝ) : ℂ) * QR D p 0 0 F F' x y := by
@@ -2891,7 +2855,7 @@ theorem regBracket_eq (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun j hj i hi => h.1 j (hj.trans hn) i (hi.trans hm), fun j hj => h.2.1 j (lt_of_lt_of_le hj hn), fun j hj i hi => h.2.2 j (hj.trans hn) i (lt_of_lt_of_le hi hm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissibleWeight_mono {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {α c : ℝ} {n m n' m' : ℕ}
     {f : Mat k r → E} (h : AdmW α c n m f) (hn : n' ≤ n) (hm : m' ≤ m) : AdmW α c n' m' f :=
@@ -2899,7 +2863,7 @@ theorem admissibleWeight_mono {E : Type*} [NormedAddCommGroup E] [NormedSpace �
     fun j hj i hi => h.2.2 j (hj.trans hn) i (lt_of_lt_of_le hi hm)⟩
 
 /- English proof (translation)
-The claim follows from `(QR_continuousOn H hA hB).comp (Continuous.prodMk_right p).continuousOn (fun _ ht => ⟨hp, ht⟩)`.
+A detailed English derivation is pending.
 -/
 theorem regularised_pairing_continuous_in_t (H : Hyp D Ξ α) {m l : ℕ} {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : AdmW α cA l m A) (hB : AdmW α cB l m B) {p : SS k r} (hp : D.inSS p) :
@@ -2907,7 +2871,7 @@ theorem regularised_pairing_continuous_in_t (H : Hyp D Ξ α) {m l : ℕ} {A B :
   (QR_continuousOn H hA hB).comp (Continuous.prodMk_right p).continuousOn (fun _ ht => ⟨hp, ht⟩)
 
 /- English proof (translation)
-The claim follows from `al2 (Wd_contDiff D) (Wd_tsupport D) (rr r) (fun m l x y => QR D p m l F F' x y) (fun l hl x hx y hy => QR_hasDerivAt_y H (admissibleWeight_mono hF (by omega) (by omega)) (admissibleWeight_mono hF' (by omega) (by omega)) hp hx hy) (fun m hm l hl x hx y hy => regularised_pairing_de …`.
+A detailed English derivation is pending.
 -/
 theorem regularised_bracket_expansion (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') {p : SS k r} (hp : D.inSS p) :
@@ -2930,14 +2894,14 @@ theorem regularised_bracket_expansion (H : Hyp D Ξ α) {F F' : Mat k r → (Wq 
     (regBracket D F F' p) (regBracket_eq D F F' p)
 
 /- English proof (translation)
-The claim follows from `(regularised_bracket_expansion H hF hF' hp).1 t.1 t.2`.
+A detailed English derivation is pending.
 -/
 theorem E_formula (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') {p : SS k r} (hp : D.inSS p) (t : ℝ × ℝ) :
     oneMinusDD (regBracket D F F' p) t.1 t.2 = Ef D F F' p t := (regularised_bracket_expansion H hF hF' hp).1 t.1 t.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(regularised_bracket_expansion H hF hF' hp).2.1, (regularised_bracket_expansion H hF hF' hp).2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem E_reg (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') {p : SS k r} (hp : D.inSS p) :
@@ -2946,7 +2910,7 @@ theorem E_reg (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : �
       iteratedDeriv 2 (fun y' => regBracket D F F' p x y') y)) := ⟨(regularised_bracket_expansion H hF hF' hp).2.1, (regularised_bracket_expansion H hF hF' hp).2.2.1⟩
 
 /- English proof (translation)
-The claim follows from `(regularised_bracket_expansion H hF hF' hp).2.2.2 x₁ x₂`.
+A detailed English derivation is pending.
 -/
 theorem E_ibp (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') {p : SS k r} (hp : D.inSS p) (x₁ x₂ : ℝ) :
@@ -2956,7 +2920,7 @@ theorem E_ibp (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : �
         ∫ t : ℝ × ℝ, regBracket D F F' p t.1 t.2 * Complex.exp (Complex.I * ((x₁ * t.1 + x₂ * t.2 : ℝ) : ℂ)) := (regularised_bracket_expansion H hF hF' hp).2.2.2 x₁ x₂
 
 /- English proof (translation)
-Distinguish the cases in `h1 : t.1 ∈ Set.Ioo (1 / 2 : ℝ) 2`. Establish `h2 : t.2 ∉ Set.Ioo (1 / 2 : ℝ) 2` using `fun h2 => ht ⟨h1, h2⟩`. Rewrite using `[gam_zero (Wd_tsupport D) _ _ h2, mul_zero]`. Rewrite using `[gam_zero (Wd_tsupport D) _ _ h1, zero_mul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cutoff_gamma_product_zero (D : RealPlaceData k r Wp Wq) (m l : ℕ) {t : ℝ × ℝ}
     (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2) :
@@ -2967,7 +2931,7 @@ theorem cutoff_gamma_product_zero (D : RealPlaceData k r Wp Wq) (m l : ℕ) {t :
   · rw [gam_zero (Wd_tsupport D) _ _ h1, zero_mul]
 
 /- English proof (translation)
-Unfold `Ef`. Use `Finset.sum_eq_zero fun m _ => Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[cutoff_gamma_product_zero D m l ht]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Ef_zero (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp)) (p : SS k r) {t : ℝ × ℝ}
     (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2) : Ef D F F' p t = 0 := by
@@ -2977,15 +2941,15 @@ theorem Ef_zero (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] 
   simp
 
 /- English proof (translation)
-Take `⟨K, hK, hb⟩` from `QR_bound H`. Take `⟨Γ, hΓ, hg⟩` from `gam_bound (Wd_contDiff D) (Wd_tsupport D) (rr r)`. Use `⟨9 * (Γ * Γ * (16 * K)), by positivity, ?_⟩` and prove the remaining obligations. Introduce `F F' c c' hF hF' p hp t`. Establish `hc` using `admissible_constant_nonneg (admissible_of_weighted hF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc'` using `admissible_constant_nonneg (admissible_of_weighted hF')`. Establish `hX` using `XX_nonneg Ξ p`. Establish `nn : 0 ≤ K * c * c' * XX Ξ p` using `by positivity`. Distinguish the cases in `ht : t ∈ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2`. Unfold `Ef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions.
 
-Establish `term : ∀ m ∈ Finset.range 3, ∀ l ∈ Finset.range 3, ‖((gam (rr r) (Wd D) m t.1 * gam (rr r) (Wd D) l t.2 : ℝ) : ℂ) * QR D p m l F F' t.1 t.2‖ ≤ Γ * Γ * (16 * (K * c * c' * XX Ξ p))`. Introduce `m hm l hl`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_mul]`. Establish `hm' : m ≤ 2` using `by have := Finset.mem_range.1 hm; omega`. Establish `hl' : l ≤ 2` using `by have := Finset.mem_range.1 hl; omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q` using `hb m l F F' c c' (admissibleWeight_mono hF hl' hm') (admissibleWeight_mono hF' hl' hm') p hp t.1 ⟨ht.1.1.le, ht.1.2.le⟩ t.2 ⟨ht.2.1.le, ht.2.2.le⟩`. Establish `p2 : (2 : ℝ) ^ (m + l) ≤ 16`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Ef_zero D F F' p ht, norm_zero]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem Ef_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (F F' : Mat k r → (Wq →L[ℂ] Wp)) (c c' : ℝ),
     AdmW α c 2 2 F → AdmW α c' 2 2 F' → ∀ p, D.inSS p → ∀ t, ‖Ef D F F' p t‖ ≤ K * c * c' * XX Ξ p := by
@@ -3021,7 +2985,7 @@ theorem Ef_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (F F' : Mat k 
   · rw [Ef_zero D F F' p ht, norm_zero]; positivity
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `h.1.1 show (0 : ℝ) < t.1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `h.2.1 show (0 : ℝ) < t.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem box_subset_quadrant {t : ℝ × ℝ} (h : t ∈ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2) : t ∈ Quad := by
   refine ⟨?_, ?_⟩
@@ -3033,7 +2997,7 @@ theorem box_subset_quadrant {t : ℝ × ℝ} (h : t ∈ Set.Ioo (1 / 2 : ℝ) 2 
     linarith
 
 /- English proof (translation)
-Unfold `Et`. Distinguish the cases in `ht : t ∈ Quad`. Rewrite using `[Set.indicator_of_mem (show (p, t) ∈ {p | D.inSS p} ×ˢ Quad from ⟨hp, ht⟩)]`. Rewrite using `[Set.indicator_of_notMem (fun h => ht h.2)]`. Conclude with `(Ef_zero D F F' p (fun h => ht (box_subset_quadrant h))).symm`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Et_eq (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp)) {p : SS k r} (hp : D.inSS p)
     (t : ℝ × ℝ) : Et D F F' (p, t) = Ef D F F' p t := by
@@ -3044,7 +3008,7 @@ theorem Et_eq (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp
     exact (Ef_zero D F F' p (fun h => ht (box_subset_quadrant h))).symm
 
 /- English proof (translation)
-Unfold `Et`. Distinguish the cases in `h : (p, t) ∈ {p | D.inSS p} ×ˢ Quad`. Rewrite using `[Set.indicator_of_mem h]`. Conclude with `Ef_zero D F F' p ht`. Conclude with `Set.indicator_of_notMem h _`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Et_zero (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp)) (p : SS k r) {t : ℝ × ℝ}
     (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2) : Et D F F' (p, t) = 0 := by
@@ -3054,13 +3018,13 @@ theorem Et_zero (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] 
   · exact Set.indicator_of_notMem h _
 
 /- English proof (translation)
-The claim follows from `Set.indicator_of_notMem (fun h => hp h.1) _`.
+A detailed English derivation is pending.
 -/
 theorem Et_zero' (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp)) {p : SS k r} (hp : ¬ D.inSS p)
     (t : ℝ × ℝ) : Et D F F' (p, t) = 0 := Set.indicator_of_notMem (fun h => hp h.1) _
 
 /- English proof (translation)
-Rewrite using `[← Set.piecewise_eq_indicator]`. Conclude with `(hf.measurable_piecewise continuousOn_const hs).stronglyMeasurable`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stronglyMeasurable_indicator_of_continuousOn' {X : Type*} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X]
     {s : Set X} (hs : MeasurableSet s) {f : X → ℂ} (hf : ContinuousOn f s) :
@@ -3070,7 +3034,7 @@ theorem stronglyMeasurable_indicator_of_continuousOn' {X : Type*} [TopologicalSp
   exact (hf.measurable_piecewise continuousOn_const hs).stronglyMeasurable
 
 /- English proof (translation)
-The claim follows from `Complex.continuous_ofReal.comp (((gam_continuous (Wd_contDiff D) (Wd_tsupport D) (rr r) m).comp continuous_fst).mul ((gam_continuous (Wd_contDiff D) (Wd_tsupport D) (rr r) l).comp continuous_snd))`.
+A detailed English derivation is pending.
 -/
 theorem cutoff_gamma_product_continuous (D : RealPlaceData k r Wp Wq) (m l : ℕ) :
     Continuous (fun t : ℝ × ℝ => ((gam (rr r) (Wd D) m t.1 * gam (rr r) (Wd D) l t.2 : ℝ) : ℂ)) :=
@@ -3079,7 +3043,7 @@ theorem cutoff_gamma_product_continuous (D : RealPlaceData k r Wp Wq) (m l : ℕ
       ((gam_continuous (Wd_contDiff D) (Wd_tsupport D) (rr r) l).comp continuous_snd))
 
 /- English proof (translation)
-Unfold `Ef`. Use `continuousOn_finsetSum _ fun m hm => continuousOn_finsetSum _ fun l hl => ?_` and prove the remaining obligations. Establish `hm' : m ≤ 2` using `by have := Finset.mem_range.1 hm; omega`. Establish `hl' : l ≤ 2` using `by have := Finset.mem_range.1 hl; omega`. Conclude with `((cutoff_gamma_product_continuous D m l).comp continuous_snd).continuousOn.mul (QR_continuousOn H (admissibleWeight_mono hF hl' hm') (admissibleWeight_mono hF' hl' hm'))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_averaged_pairing_quadrant (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ}
     (hF : AdmW α c 2 2 F) (hF' : AdmW α c' 2 2 F') :
@@ -3092,18 +3056,16 @@ theorem continuousOn_averaged_pairing_quadrant (H : Hyp D Ξ α) {F F' : Mat k r
     (QR_continuousOn H (admissibleWeight_mono hF hl' hm') (admissibleWeight_mono hF' hl' hm'))
 
 /- English proof (translation)
-The claim follows from `isOpen_Ioi.prod isOpen_Ioi`.
+A detailed English derivation is pending.
 -/
 theorem quadrant_is_open : IsOpen Quad := isOpen_Ioi.prod isOpen_Ioi
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `t`. Distinguish the cases in `ht : t ∈ Quad`. Conclude with `hu.continuousAt.mul (hv.continuousAt (quadrant_is_open.mem_nhds ht))`. Establish `hB : IsClosed (Set.Icc (1 / 2 : ℝ) 2 ×ˢ Set.Icc (1 / 2 : ℝ) 2)` using `isClosed_Icc.prod isClosed_Icc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htB : t ∈ (Set.Icc (1 / 2 : ℝ) 2 ×ˢ Set.Icc (1 / 2 : ℝ) 2)ᶜ`. Introduce `h`. Apply `ht` to reduce the goal to its premises. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `h.1.1 show (0 : ℝ) < t.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `h.2.1 show (0 : ℝ) < t.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (fun t => u t * v t) =ᶠ[𝓝 t] fun _ => 0` using `by filter_upwards [hB.isOpen_compl.mem_nhds htB] with s hs`. Rewrite using `[hz s (fun h => hs ⟨⟨h.1.1.le, h.1.2.le⟩, ⟨h.2.1.le, h.2.2.le⟩⟩), zero_mul]`.
-
-Conclude with `continuousAt_const.congr this.symm`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_mul_of_vanishing_outside_box {u v : ℝ × ℝ → ℂ} (hu : Continuous u)
     (hz : ∀ t, t ∉ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2 → u t = 0) (hv : ContinuousOn v Quad) :
@@ -3129,18 +3091,18 @@ theorem continuous_mul_of_vanishing_outside_box {u v : ℝ × ℝ → ℂ} (hu :
     exact continuousAt_const.congr this.symm
 
 /- English proof (translation)
-The claim follows from `stronglyMeasurable_indicator_of_continuousOn' ((measurableSet_inSS D).prod (measurableSet_Ioi.prod measurableSet_Ioi)) (continuousOn_averaged_pairing_quadrant H hF hF')`.
+A detailed English derivation is pending.
 -/
 theorem Et_measurable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') : StronglyMeasurable (Et D F F') := stronglyMeasurable_indicator_of_continuousOn' ((measurableSet_inSS D).prod (measurableSet_Ioi.prod measurableSet_Ioi))
     (continuousOn_averaged_pairing_quadrant H hF hF')
 
 /- English proof (translation)
-Distinguish the cases in `hp : D.inSS p`. Establish `e : (fun t : ℝ × ℝ => Et D F F' (p, t)) = fun t => Ef D F F' p t` using `funext (Et_eq D F F' hp)`. Rewrite using `[e]`. Unfold `Ef`. Use `continuous_finsetSum _ fun m hm => continuous_finsetSum _ fun l hl => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm' : m ≤ 2` using `by have := Finset.mem_range.1 hm; omega`. Establish `hl' : l ≤ 2` using `by have := Finset.mem_range.1 hl; omega`. Use `continuous_mul_of_vanishing_outside_box (cutoff_gamma_product_continuous D m l) (fun t ht => ?_) (regularised_pairing_continuous_in_t H (admissibleWeight_mono hF hl' hm') (admissibleWeight_mono hF' hl' hm') hp)` and prove the remaining obligations. Rewrite using `[cutoff_gamma_product_zero D m l ht]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : (fun t : ℝ × ℝ => Et D F F' (p, t)) = fun _ => 0` using `funext (Et_zero' D F F' hp)`. Rewrite using `[e]`. Conclude with `continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Et_continuous (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') (p : SS k r) : Continuous (fun t : ℝ × ℝ => Et D F F' (p, t)) := by
@@ -3159,13 +3121,13 @@ theorem Et_continuous (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {
     exact continuous_const
 
 /- English proof (translation)
-The claim follows from `image_eq_zero_of_notMem_tsupport (fun h => ht (Wd_tsupport D h))`.
+A detailed English derivation is pending.
 -/
 theorem cutoff_weight_zero_outside (D : RealPlaceData k r Wp Wq) {t : ℝ} (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2) : Wd D t = 0 :=
   image_eq_zero_of_notMem_tsupport (fun h => ht (Wd_tsupport D h))
 
 /- English proof (translation)
-Distinguish the cases in `h1 : t.1 ∈ Set.Ioo (1 / 2 : ℝ) 2`. Establish `h2 : t.2 ∉ Set.Ioo (1 / 2 : ℝ) 2` using `fun h2 => ht ⟨h1, h2⟩`. Rewrite using `[cutoff_weight_zero_outside D h2, mul_zero]`. Rewrite using `[cutoff_weight_zero_outside D h1, zero_mul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cutoff_square_product_zero (D : RealPlaceData k r Wp Wq) {t : ℝ × ℝ}
     (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2) : Wd D t.1 * Wd D t.2 = 0 := by
@@ -3175,7 +3137,7 @@ theorem cutoff_square_product_zero (D : RealPlaceData k r Wp Wq) {t : ℝ × ℝ
   · rw [cutoff_weight_zero_outside D h1, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[regBracket_eq, cutoff_square_product_zero D ht]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem regularized_bracket_zero_off_box (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp)) (p : SS k r) {t : ℝ × ℝ}
     (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2) : regBracket D F F' p t.1 t.2 = 0 := by
@@ -3183,7 +3145,7 @@ theorem regularized_bracket_zero_off_box (D : RealPlaceData k r Wp Wq) (F F' : M
   simp
 
 /- English proof (translation)
-The claim follows from `Complex.continuous_ofReal.comp (((Wd_contDiff D).continuous.comp continuous_fst).mul ((Wd_contDiff D).continuous.comp continuous_snd))`.
+A detailed English derivation is pending.
 -/
 theorem cutoff_square_product_continuous (D : RealPlaceData k r Wp Wq) :
     Continuous (fun t : ℝ × ℝ => ((Wd D t.1 * Wd D t.2 : ℝ) : ℂ)) :=
@@ -3191,7 +3153,7 @@ theorem cutoff_square_product_continuous (D : RealPlaceData k r Wp Wq) :
     (((Wd_contDiff D).continuous.comp continuous_fst).mul ((Wd_contDiff D).continuous.comp continuous_snd))
 
 /- English proof (translation)
-Unfold `Bt`. Distinguish the cases in `ht : t ∈ Quad`. Rewrite using `[Set.indicator_of_mem (show (p, t) ∈ {p | D.inSS p} ×ˢ Quad from ⟨hp, ht⟩)]`. Rewrite using `[Set.indicator_of_notMem (fun h => ht h.2)]`. Conclude with `(regularized_bracket_zero_off_box D F F' p (fun h => ht (box_subset_quadrant h))).symm`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bt_eq (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp)) {p : SS k r} (hp : D.inSS p)
     (t : ℝ × ℝ) : Bt D F F' (p, t) = regBracket D F F' p t.1 t.2 := by
@@ -3202,7 +3164,7 @@ theorem Bt_eq (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp
     exact (regularized_bracket_zero_off_box D F F' p (fun h => ht (box_subset_quadrant h))).symm
 
 /- English proof (translation)
-Unfold `Bt`. Distinguish the cases in `h : (p, t) ∈ {p | D.inSS p} ×ˢ Quad`. Rewrite using `[Set.indicator_of_mem h]`. Conclude with `regularized_bracket_zero_off_box D F F' p ht`. Conclude with `Set.indicator_of_notMem h _`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bt_zero (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp)) (p : SS k r) {t : ℝ × ℝ}
     (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2) : Bt D F F' (p, t) = 0 := by
@@ -3212,13 +3174,13 @@ theorem Bt_zero (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] 
   · exact Set.indicator_of_notMem h _
 
 /- English proof (translation)
-The claim follows from `Set.indicator_of_notMem (fun h => hp h.1) _`.
+A detailed English derivation is pending.
 -/
 theorem Bt_zero' (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp)) {p : SS k r} (hp : ¬ D.inSS p)
     (t : ℝ × ℝ) : Bt D F F' (p, t) = 0 := Set.indicator_of_notMem (fun h => hp h.1) _
 
 /- English proof (translation)
-Use `stronglyMeasurable_indicator_of_continuousOn' ((measurableSet_inSS D).prod (measurableSet_Ioi.prod measurableSet_Ioi)) ?_` and prove the remaining obligations. Establish `e : (fun q : SS k r × (ℝ × ℝ) => regBracket D F F' q.1 q.2.1 q.2.2) = fun q => ((Wd D q.2.1 * Wd D q.2.2 : ℝ) : ℂ) * QR D q.1 0 0 F F' q.2.1 q.2.2`. Use function extensionality and compare the values at `fun q => regBracket_eq D F F' q.1 q.2.1 q.2.2`. Rewrite using `[e]`. Conclude with `((cutoff_square_product_continuous D).comp continuous_snd).continuousOn.mul (QR_continuousOn H (admissibleWeight_mono hF (by omega) (by omega)) (admissibleWeight_mono hF' (by omega) (by omega)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bt_measurable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') : StronglyMeasurable (Bt D F F') := by
@@ -3231,9 +3193,9 @@ theorem Bt_measurable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {
     (QR_continuousOn H (admissibleWeight_mono hF (by omega) (by omega)) (admissibleWeight_mono hF' (by omega) (by omega)))
 
 /- English proof (translation)
-Distinguish the cases in `hp : D.inSS p`. Establish `e : (fun t : ℝ × ℝ => Bt D F F' (p, t)) = fun t => ((Wd D t.1 * Wd D t.2 : ℝ) : ℂ) * QR D p 0 0 F F' t.1 t.2`. Use function extensionality and compare the values at `fun t => (Bt_eq D F F' hp t).trans (regBracket_eq D F F' p t.1 t.2)`. Rewrite using `[e]`. Use `continuous_mul_of_vanishing_outside_box (cutoff_square_product_continuous D) (fun t ht => ?_) (regularised_pairing_continuous_in_t H (admissibleWeight_mono hF (by omega) (by omega)) (admissibleWeight_mono hF' (by omega) (by omega)) hp)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cutoff_square_product_zero D ht]`. Simplify using the standard rewrite rules. Establish `e : (fun t : ℝ × ℝ => Bt D F F' (p, t)) = fun _ => 0` using `funext (Bt_zero' D F F' hp)`. Rewrite using `[e]`. Conclude with `continuous_const`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bt_continuous (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') (p : SS k r) : Continuous (fun t : ℝ × ℝ => Bt D F F' (p, t)) := by
@@ -3250,13 +3212,13 @@ theorem Bt_continuous (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {
     exact continuous_const
 
 /- English proof (translation)
-Take `⟨K, hK, hb⟩` from `QR_bound H`. Establish `hcs : HasCompactSupport (Wd D)` using `IsCompact.of_isClosed_subset isCompact_Icc (isClosed_tsupport _) ((Wd_tsupport D).trans Set.Ioo_subset_Icc_self)`. Take `⟨C, hC⟩` from `(Wd_contDiff D).continuous.bounded_above_of_compact_support hcs`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 0)`. Use `⟨C * C * K, by positivity, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `F F' c c' hF hF' p t`. Establish `hc` using `admissible_constant_nonneg (admissible_of_weighted hF)`. Establish `hc'` using `admissible_constant_nonneg (admissible_of_weighted hF')`. Establish `hX` using `XX_nonneg Ξ p`. Establish `nn : 0 ≤ K * c * c' * XX Ξ p` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hp : D.inSS p`. Distinguish the cases in `ht : t ∈ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2`. Rewrite using `[Bt_eq D F F' hp, regBracket_eq, norm_mul, Complex.norm_real, norm_mul]`. Establish `q` using `hb 0 0 F F' c c' (admissibleWeight_mono hF (by omega) (by omega)) (admissibleWeight_mono hF' (by omega) (by omega)) p hp t.1 ⟨ht.1.1.le, ht.1.2.le⟩ t.2 ⟨ht.2.1.le, ht.2.2.le⟩`. Simplify using `only [add_zero, pow_zero, one_mul] at q`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Bt_zero D F F' p ht, norm_zero]`. Check the signs of the components of the expression. Rewrite using `[Bt_zero' D F F' hp, norm_zero]`. Check the signs of the components of the expression.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem Bt_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (F F' : Mat k r → (Wq →L[ℂ] Wp)) (c c' : ℝ),
     AdmW α c 2 2 F → AdmW α c' 2 2 F' → ∀ p t, ‖Bt D F F' (p, t)‖ ≤ K * c * c' * XX Ξ p := by
@@ -3286,11 +3248,11 @@ theorem Bt_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (F F' : Mat k 
   · rw [Bt_zero' D F F' hp, norm_zero]; positivity
 
 /- English proof (translation)
-Take `⟨K, hK, hb⟩` from `Ef_bound H`. Use `⟨K, hK, ?_⟩` and prove the remaining obligations. Introduce `F F' c c' hF hF' p t`. Establish `hc` using `admissible_constant_nonneg (admissible_of_weighted hF)`. Establish `hc'` using `admissible_constant_nonneg (admissible_of_weighted hF')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX` using `XX_nonneg Ξ p`. Distinguish the cases in `hp : D.inSS p`. Rewrite using `[Et_eq D F F' hp]`. Conclude with `hb F F' c c' hF hF' p hp t`. Rewrite using `[Et_zero' D F F' hp, norm_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem Et_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (F F' : Mat k r → (Wq →L[ℂ] Wp)) (c c' : ℝ),
     AdmW α c 2 2 F → AdmW α c' 2 2 F' → ∀ p t, ‖Et D F F' (p, t)‖ ≤ K * c * c' * XX Ξ p := by
@@ -3305,9 +3267,9 @@ theorem Et_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (F F' : Mat k 
   · rw [Et_zero' D F F' hp, norm_zero]; positivity
 
 /- English proof (translation)
-Unfold `betaInfTau`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_inSS D] with p hp`. Unfold `Gt wt phase`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[E_formula H hF hF' hp t, Et_eq D F F' hp t]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem betaInfTau_eq (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') (τ : ℝ × ℝ) : betaInfTau D τ F F' = ∫ p, Gt D F F' τ p ∂D.μSS := by
@@ -3321,9 +3283,9 @@ theorem betaInfTau_eq (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {
   rw [E_formula H hF hF' hp t, Et_eq D F F' hp t]
 
 /- English proof (translation)
-Establish `o1 : OpensMeasurableSpace ((ℝ × ℝ) × SS k r)` using `Prod.opensMeasurableSpace`. Establish `o2 : OpensMeasurableSpace (((ℝ × ℝ) × SS k r) × (ℝ × ℝ))` using `Prod.opensMeasurableSpace`. Establish `h1 : StronglyMeasurable (fun x : (ℝ × ℝ) × SS k r => ((wt D x.1 x.2 : ℝ) : ℂ))` using `(Complex.continuous_ofReal.comp (wt_continuous D)).stronglyMeasurable`. Establish `h2 : StronglyMeasurable (fun y : ((ℝ × ℝ) × SS k r) × (ℝ × ℝ) => Et D F F' (y.1.2, y.2) * Complex.exp (Complex.I * (phase D y.1.1 y.1.2 y.2 : ℂ)))`. Use `StronglyMeasurable.mul ((Et_measurable H hF hF').comp_measurable (by fun_prop)) (Continuous.stronglyMeasurable ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (phase_continuous D)))`. Conclude with `h1.mul h2.integral_prod_right'`.
+A detailed English derivation is pending.
 -/
 theorem Gt_measurable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') : StronglyMeasurable (fun x : (ℝ × ℝ) × SS k r => Gt D F F' x.1 x.2) := by
@@ -3340,13 +3302,13 @@ theorem Gt_measurable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {
   exact h1.mul h2.integral_prod_right'
 
 /- English proof (translation)
-Take `⟨K, hK, hb⟩` from `Et_bound H`. Establish `hBc : IsCompact (Set.Icc (1 / 2 : ℝ) 2 ×ˢ Set.Icc (1 / 2 : ℝ) 2)` using `isCompact_Icc.prod isCompact_Icc`. Establish `hBm : MeasurableSet (Set.Icc (1 / 2 : ℝ) 2 ×ˢ Set.Icc (1 / 2 : ℝ) 2)` using `hBc.isClosed.measurableSet`. Use `⟨K * (volume.real (Set.Icc (1 / 2 : ℝ) 2 ×ˢ Set.Icc (1 / 2 : ℝ) 2)), by positivity, ?_⟩` and prove the remaining obligations. Introduce `F F' c c' hF hF' τ p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Gt`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (wt_nonneg D τ p)]`. Use `mul_le_mul_of_nonneg_left ?_ (wt_nonneg D τ p)` and prove the remaining obligations. Establish `key : ∀ t : ℝ × ℝ, ‖Et D F F' (p, t) * Complex.exp (Complex.I * (phase D τ p t : ℂ))‖ ≤ (Set.Icc (1 / 2 : ℝ) 2 ×ˢ Set.Icc (1 / 2 : ℝ) 2).indicator (fun _ => K * c * c' * XX Ξ p) t`. Introduce `t`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul, Complex.norm_exp_I_mul_ofReal, mul_one]`. Distinguish the cases in `ht : t ∈ Set.Icc (1 / 2 : ℝ) 2 ×ˢ Set.Icc (1 / 2 : ℝ) 2`. Rewrite using `[Set.indicator_of_mem ht]`. Conclude with `hb F F' c c' hF hF' p t`. Rewrite using `[Set.indicator_of_notMem ht, Et_zero D F F' p (fun h => ht ⟨⟨h.1.1.le, h.1.2.le⟩, ⟨h.2.1.le, h.2.2.le⟩⟩), norm_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : Integrable ((Set.Icc (1 / 2 : ℝ) 2 ×ˢ Set.Icc (1 / 2 : ℝ) 2).indicator (fun _ : ℝ × ℝ => K * c * c' * XX Ξ p)) volume` using `(integrable_indicator_iff hBm).2 (continuousOn_const.integrableOn_compact hBc)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_indicator hBm, setIntegral_const, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Gt_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (F F' : Mat k r → (Wq →L[ℂ] Wp)) (c c' : ℝ),
     AdmW α c 2 2 F → AdmW α c' 2 2 F' → ∀ τ p, ‖Gt D F F' τ p‖ ≤ wt D τ p * (K * c * c' * XX Ξ p) := by
@@ -3376,17 +3338,17 @@ theorem Gt_bound (H : Hyp D Ξ α) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (F F' : Mat k 
       ring
 
 /- English proof (translation)
-Distinguish the cases in `hp : D.inSS p`. Unfold `Gt`. Establish `e1 : (∫ t : ℝ × ℝ, Et D F F' (p, t) * Complex.exp (Complex.I * (phase D τ p t : ℂ))) = ∫ t : ℝ × ℝ, oneMinusDD (regBracket D F F' p) t.1 t.2 * Complex.exp (Complex.I * ((τ.1 * lam k r D.z (Matrix.of p.1.2) * t.1 + -(τ.2 * lam k r D.z' (Matrix.of p.2.2)) * t.2 : ℝ) : ℂ))`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Simplify using `only []`.
+Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Et_eq D F F' hp, E_formula H hF hF' hp]`. Establish `: phase D τ p t = τ.1 * lam k r D.z (Matrix.of p.1.2) * t.1 + -(τ.2 * lam k r D.z' (Matrix.of p.2.2)) * t.2`. Unfold `phase`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (∫ t : ℝ × ℝ, Bt D F F' (p, t) * Complex.exp (Complex.I * (phase D τ p t : ℂ))) = ∫ t : ℝ × ℝ, regBracket D F F' p t.1 t.2 * Complex.exp (Complex.I * ((τ.1 * lam k r D.z (Matrix.of p.1.2) * t.1 + -(τ.2 * lam k r D.z' (Matrix.of p.2.2)) * t.2 : ℝ) : ℂ))`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[Bt_eq D F F' hp]`. Establish `: phase D τ p t = τ.1 * lam k r D.z (Matrix.of p.1.2) * t.1 + -(τ.2 * lam k r D.z' (Matrix.of p.2.2)) * t.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `phase`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Rewrite using `[e1, e2, E_ibp H hF hF' hp, ← mul_assoc, ← Complex.ofReal_mul]`. Establish `: wt D τ p * ((1 + (τ.1 * lam k r D.z (Matrix.of p.1.2)) ^ 2) * (1 + (-(τ.2 * lam k r D.z' (Matrix.of p.2.2))) ^ 2)) = 1`.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `wt`. Establish `a1 : (1 + τ.1 ^ 2 * lam k r D.z (Matrix.of p.1.2) ^ 2) ≠ 0` using `by positivity`. Establish `a2 : (1 + τ.2 ^ 2 * lam k r D.z' (Matrix.of p.2.2) ^ 2) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[Gt, Et_zero' D F F' hp, Bt_zero' D F F' hp]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Gt_eq (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') (τ : ℝ × ℝ) (p : SS k r) :
@@ -3434,13 +3396,11 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 variable {D : RealPlaceData k r Wp Wq} {Ξ : Mat k r → NNReal} {α : ℝ}
 
 /- English proof (translation)
-Establish `a1 : 0 < τ₀.1` using `h₀.1`. Establish `a2 : 0 < τ₀.2` using `h₀.2`. Use `⟨4 * max 1 ((τ₀.1 / 2) ^ 2)⁻¹ * max 1 ((τ₀.2 / 2) ^ 2)⁻¹, by positivity, ?_⟩` and prove the remaining obligations. Introduce `τ h1 h2 p`. Establish `b1 : 0 < τ.1` using `lt_trans (by positivity) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `b2 : 0 < τ.2` using `lt_trans (by positivity) h2`. Use `(wt_le D b1 b2 p).trans ?_` and prove the remaining obligations. Establish `c1 : max 1 (τ.1 ^ 2)⁻¹ ≤ max 1 ((τ₀.1 / 2) ^ 2)⁻¹`. Apply `max_le_max le_rfl` to reduce the goal to its premises. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `pow_le_pow_left₀ (by positivity) h1.le 2`. Establish `c2 : max 1 (τ.2 ^ 2)⁻¹ ≤ max 1 ((τ₀.2 / 2) ^ 2)⁻¹`. Apply `max_le_max le_rfl` to reduce the goal to its premises. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Conclude with `pow_le_pow_left₀ (by positivity) h2.le 2`.
-
-Establish `hL` using `LL_nonneg D p`. Use `gcongr`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weight_dominated_near_quadrant (D : RealPlaceData k r Wp Wq) {τ₀ : ℝ × ℝ} (h₀ : τ₀ ∈ Quad) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ τ : ℝ × ℝ, τ₀.1 / 2 < τ.1 → τ₀.2 / 2 < τ.2 → ∀ p, wt D τ p ≤ M * LL D p := by
@@ -3463,7 +3423,7 @@ theorem weight_dominated_near_quadrant (D : RealPlaceData k r Wp Wq) {τ₀ : �
   gcongr
 
 /- English proof (translation)
-Establish `a1 : 0 < τ₀.1` using `h₀.1`. Establish `a2 : 0 < τ₀.2` using `h₀.2`. Establish `ho : IsOpen {τ : ℝ × ℝ | τ₀.1 / 2 < τ.1 ∧ τ₀.2 / 2 < τ.2}` using `(isOpen_lt continuous_const continuous_fst).inter (isOpen_lt continuous_const continuous_snd)`. Conclude with `ho.mem_nhds ⟨by linarith, by linarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem half_quadrant_neighbourhood {τ₀ : ℝ × ℝ} (h₀ : τ₀ ∈ Quad) :
     {τ : ℝ × ℝ | τ₀.1 / 2 < τ.1 ∧ τ₀.2 / 2 < τ.2} ∈ 𝓝 τ₀ := by
@@ -3474,18 +3434,18 @@ theorem half_quadrant_neighbourhood {τ₀ : ℝ × ℝ} (h₀ : τ₀ ∈ Quad)
   exact ho.mem_nhds ⟨by linarith, by linarith⟩
 
 /- English proof (translation)
-The claim follows from `((Gt_measurable H hF hF').comp_measurable (measurable_const.prodMk measurable_id)).aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_beta_integrand (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') (τ : ℝ × ℝ) : AEStronglyMeasurable (Gt D F F' τ) D.μSS :=
   ((Gt_measurable H hF hF').comp_measurable (measurable_const.prodMk measurable_id)).aestronglyMeasurable
 
 /- English proof (translation)
-Take `⟨K, hK, hb⟩` from `Gt_bound H`. Take `⟨M, hM, hw⟩` from `weight_dominated_near_quadrant D hτ`. Establish `a1 : 0 < τ.1` using `hτ.1`. Establish `a2 : 0 < τ.2` using `hτ.2`. Use `Integrable.mono' ((xi_integrable H).const_mul (M * (K * c * c'))) (aestronglyMeasurable_beta_integrand H hF hF' τ) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Eventually.of_forall fun p => ?_` and prove the remaining obligations. Establish `hc` using `admissible_constant_nonneg (admissible_of_weighted hF)`. Establish `hc'` using `admissible_constant_nonneg (admissible_of_weighted hF')`. Establish `hX` using `XX_nonneg Ξ p`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Apply `mul_le_mul_of_nonneg_right (hw τ (by linarith) (by linarith) p)` to reduce the goal to its premises. Check the signs of the components of the expression. Use `_ = M * (K * c * c') * (XX Ξ p * LL D p) := by ring`.
+Reduce the claim to the hypotheses of an applicable result. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem pairing_kernel_integrable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') {τ : ℝ × ℝ} (hτ : τ ∈ Quad) : Integrable (Gt D F F' τ) D.μSS := by
@@ -3505,13 +3465,13 @@ theorem pairing_kernel_integrable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L
     _ = M * (K * c * c') * (XX Ξ p * LL D p) := by ring
 
 /- English proof (translation)
-Take `⟨K, hK, hb⟩` from `Gt_bound H`. Take `⟨M, hM, hw⟩` from `weight_dominated_near_quadrant D h₀`. Use `⟨M * K * ∫ p, XX Ξ p * LL D p ∂D.μSS, _, half_quadrant_neighbourhood h₀, ?_⟩` and prove the remaining obligations. Introduce `τ hτ F F' c c' hcF hcF'`. Establish `hF` using `admissible_weighted_of_bound hcF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF'` using `admissible_weighted_of_bound hcF'`. Establish `hc` using `admissible_constant_nonneg (admissible_of_weighted hF)`. Establish `hc'` using `admissible_constant_nonneg (admissible_of_weighted hF')`. Rewrite using `[betaInfTau_eq H hF hF' τ]`. Establish `key : ‖∫ p, Gt D F F' τ p ∂D.μSS‖ ≤ ∫ p, M * (K * c * c') * (XX Ξ p * LL D p) ∂D.μSS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `norm_integral_le_of_norm_le ((xi_integrable H).const_mul (M * (K * c * c')))` to reduce the goal to its premises. Use `Filter.Eventually.of_forall fun p => ?_` and prove the remaining obligations. Establish `hX` using `XX_nonneg Ξ p`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right (hw τ hτ.1 hτ.2 p)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Check the signs of the components of the expression. Use `_ = M * (K * c * c') * (XX Ξ p * LL D p) := by ring`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem locally_bounded_betaInfTau (H : Hyp D Ξ α) {τ₀ : ℝ × ℝ} (h₀ : τ₀ ∈ Quad) :
     ∃ C : ℝ, ∃ U ∈ 𝓝 τ₀, ∀ τ ∈ U, ∀ (F F' : Mat k r → (Wq →L[ℂ] Wp)) (c c' : ℝ),
@@ -3539,9 +3499,9 @@ theorem locally_bounded_betaInfTau (H : Hyp D Ξ α) {τ₀ : ℝ × ℝ} (h₀ 
   ring
 
 /- English proof (translation)
-Apply `(Et_continuous H hF hF' p).integrable_of_hasCompactSupport` to reduce the goal to its premises. Apply `HasCompactSupport.intro (K := Set.Icc (1 / 2 : ℝ) 2 ×ˢ Set.Icc (1 / 2 : ℝ) 2) (isCompact_Icc.prod isCompact_Icc)` to reduce the goal to its premises. Introduce `t ht`. Apply `Et_zero` to reduce the goal to its premises. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ht ⟨Set.Ioo_subset_Icc_self h.1, Set.Ioo_subset_Icc_self h.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem error_term_integrable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') (p : SS k r) : Integrable (fun t : ℝ × ℝ => Et D F F' (p, t)) := by
@@ -3554,15 +3514,15 @@ theorem error_term_integrable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ
   exact ht ⟨Set.Ioo_subset_Icc_self h.1, Set.Ioo_subset_Icc_self h.2⟩
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_exp_I_mul_real_eq_one (x : ℝ) : ‖Complex.exp (Complex.I * (x : ℂ))‖ = 1 := by
   rw [mul_comm]; exact Complex.norm_exp_ofReal_mul_I x
 
 /- English proof (translation)
-Establish `hph : Continuous (fun t : ℝ × ℝ => phase D τ p t)` using `(phase_continuous D).comp (f := fun t : ℝ × ℝ => ((τ, p), t)) (continuous_const.prodMk continuous_id)`. Establish `hE` using `Et_continuous H hF hF' p`. Establish `hcont : Continuous (fun t : ℝ × ℝ => Et D F F' (p, t) * Complex.exp (Complex.I * (phase D τ p t : ℂ)))` using `by fun_prop`. Use `(error_term_integrable H hF hF' p).norm.mono' hcont.aestronglyMeasurable ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun t => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, norm_exp_I_mul_real_eq_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integrable_pairing_times_phase_exp (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ}
     (hF : AdmW α c 2 2 F) (hF' : AdmW α c' 2 2 F') (τ : ℝ × ℝ) (p : SS k r) :
@@ -3577,11 +3537,11 @@ theorem integrable_pairing_times_phase_exp (H : Hyp D Ξ α) {F F' : Mat k r →
   rw [norm_mul, norm_exp_I_mul_real_eq_one, mul_one]
 
 /- English proof (translation)
-Unfold `Gt`. Establish `hw : Continuous (fun τ : ℝ × ℝ => wt D τ p)` using `(wt_continuous D).comp (f := fun τ : ℝ × ℝ => (τ, p)) (continuous_id.prodMk continuous_const)`. Use `(Complex.continuous_ofReal.comp hw).mul ?_` and prove the remaining obligations. Apply `continuous_of_dominated (bound := fun t : ℝ × ℝ => ‖Et D F F' (p, t)‖)` to reduce the goal to its premises. Introduce `τ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(integrable_pairing_times_phase_exp H hF hF' τ p).aestronglyMeasurable`. Introduce `τ`. Use `Filter.Eventually.of_forall fun t => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_exp_I_mul_real_eq_one, mul_one]`. Conclude with `(error_term_integrable H hF hF' p).norm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Filter.Eventually.of_forall fun t => ?_` and prove the remaining obligations. Establish `hph : Continuous (fun τ : ℝ × ℝ => phase D τ p t)` using `(phase_continuous D).comp (f := fun τ : ℝ × ℝ => ((τ, p), t)) ((continuous_id.prodMk continuous_const).prodMk continuous_const)`. Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem continuous_beta_integrand_in_tau (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') (p : SS k r) : Continuous (fun τ : ℝ × ℝ => Gt D F F' τ p) := by
@@ -3603,15 +3563,13 @@ theorem continuous_beta_integrand_in_tau (H : Hyp D Ξ α) {F F' : Mat k r → (
     fun_prop
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hcF`. Take `⟨c', hc'⟩` from `hcF'`. Establish `hF` using `admissible_weighted_of_bound hc`. Establish `hF'` using `admissible_weighted_of_bound hc'`. Establish `e : (fun τ => betaInfTau D τ F F') = fun τ => ∫ p, Gt D F F' τ p ∂D.μSS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Conclude with `betaInfTau_eq H hF hF' τ`. Rewrite using `[e]`. Introduce `τ₀ h₀`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, hb⟩` from `Gt_bound H`. Take `⟨M, hM, hw⟩` from `weight_dominated_near_quadrant D h₀`. Establish `hcn` using `admissible_constant_nonneg (admissible_of_weighted hF)`. Establish `hcn'` using `admissible_constant_nonneg (admissible_of_weighted hF')`. Apply `continuousAt_of_dominated (bound := fun p => M * (K * c * c') * (XX Ξ p * LL D p))` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Filter.Eventually.of_forall fun τ => aestronglyMeasurable_beta_integrand H hF hF' τ`. Use `filter_upwards [half_quadrant_neighbourhood h₀] with τ hτ`. Use `Filter.Eventually.of_forall fun p => ?_` and prove the remaining obligations. Establish `hX` using `XX_nonneg Ξ p`. Combine the equalities or inequalities in the displayed calculation.
-
-Apply `mul_le_mul_of_nonneg_right (hw τ hτ.1 hτ.2 p)` to reduce the goal to its premises. Check the signs of the components of the expression. Use `_ = M * (K * c * c') * (XX Ξ p * LL D p) := by ring`. Conclude with `(xi_integrable H).const_mul _`. Conclude with `Filter.Eventually.of_forall fun p => (continuous_beta_integrand_in_tau H hF hF' p).continuousAt`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem regularised_pairing_continuous (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} (hcF : InCC α 4 F) (hcF' : InCC α 4 F') :
     ContinuousOn (fun τ => betaInfTau D τ F F') Quad := by
@@ -3642,7 +3600,7 @@ theorem regularised_pairing_continuous (H : Hyp D Ξ α) {F F' : Mat k r → (Wq
   · exact Filter.Eventually.of_forall fun p => (continuous_beta_integrand_in_tau H hF hF' p).continuousAt
 
 /- English proof (translation)
-Unfold `Ph`. Rewrite using `[← integral_add (ph_integrable H h₁ hB hq) (ph_integrable H h₂ hB hq)]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[rho_eq, rho_eq, rho_eq, Pi.add_apply, map_add, hsInner_add_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem phase_function_add_left (H : Hyp D Ξ α) {A₁ A₂ B : Mat k r → (Wq →L[ℂ] Wp)} {c₁ c₂ cB : ℝ} (h₁ : admitted α c₁ A₁)
     (h₂ : admitted α c₂ A₂) (hB : admitted α cB B) {q : SS k r} (hq : D.inSS q) :
@@ -3654,7 +3612,7 @@ theorem phase_function_add_left (H : Hyp D Ξ α) {A₁ A₂ B : Mat k r → (Wq
   rw [rho_eq, rho_eq, rho_eq, Pi.add_apply, map_add, hsInner_add_left]
 
 /- English proof (translation)
-Unfold `Ph`. Rewrite using `[← integral_add (ph_integrable H hA h₁ hq) (ph_integrable H hA h₂ hq)]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[Pi.add_apply, hsInner_add_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem phase_function_add_right (H : Hyp D Ξ α) {A B₁ B₂ : Mat k r → (Wq →L[ℂ] Wp)} {cA c₁ c₂ : ℝ} (hA : admitted α cA A)
     (h₁ : admitted α c₁ B₁) (h₂ : admitted α c₂ B₂) {q : SS k r} (hq : D.inSS q) :
@@ -3666,7 +3624,7 @@ theorem phase_function_add_right (H : Hyp D Ξ α) {A B₁ B₂ : Mat k r → (W
   rw [Pi.add_apply, hsInner_add_right]
 
 /- English proof (translation)
-Unfold `Ph`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[rho_eq, rho_eq, Pi.smul_apply, map_smul, hsInner_smul_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing_smul_left_bis (D : RealPlaceData k r Wp Wq) (a : ℂ) (A B : Mat k r → (Wq →L[ℂ] Wp)) (q : SS k r) :
     Ph D (a • A) B q = a * Ph D A B q := by
@@ -3677,7 +3635,7 @@ theorem pairing_smul_left_bis (D : RealPlaceData k r Wp Wq) (a : ℂ) (A B : Mat
   rw [rho_eq, rho_eq, Pi.smul_apply, map_smul, hsInner_smul_left]
 
 /- English proof (translation)
-Unfold `Ph`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply, hsInner_smul_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem phase_function_smul_right (D : RealPlaceData k r Wp Wq) (a : ℂ) (A B : Mat k r → (Wq →L[ℂ] Wp)) (q : SS k r) :
     Ph D A (a • B) q = conj a * Ph D A B q := by
@@ -3688,16 +3646,16 @@ theorem phase_function_smul_right (D : RealPlaceData k r Wp Wq) (a : ℂ) (A B :
   rw [Pi.smul_apply, hsInner_smul_right]
 
 /- English proof (translation)
-Establish `h1` using `(D.χ_supp (subset_tsupport _ (Function.mem_support.2 h))).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cutoff_support_positive (D : RealPlaceData k r Wp Wq) {t : ℝ} (h : D.χ t ≠ 0) : 0 < t := by
   have h1 := (D.χ_supp (subset_tsupport _ (Function.mem_support.2 h))).1
   linarith
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x y`. Unfold `regBracket`. Distinguish the cases in `h1 : D.χ x = 0`. Simplify using `[h1]`. Distinguish the cases in `h2 : D.χ y = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h2]`. Rewrite using `[h _ (dil_inSS H.dilN D hp (cutoff_support_positive D h1) (cutoff_support_positive D h2))]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem regularized_bracket_additive (H : Hyp D Ξ α) {X Y X₁ Y₁ X₂ Y₂ : Mat k r → (Wq →L[ℂ] Wp)}
     (h : ∀ q, D.inSS q → Ph D X Y q = Ph D X₁ Y₁ q + Ph D X₂ Y₂ q) {p : SS k r} (hp : D.inSS p) :
@@ -3712,11 +3670,11 @@ theorem regularized_bracket_additive (H : Hyp D Ξ α) {X Y X₁ Y₁ X₂ Y₂ 
   ring
 
 /- English proof (translation)
-Rewrite using `[betaInfTau_eq H hX₁ hY₁ τ, betaInfTau_eq H hX₂ hY₂ τ, ← integral_add (pairing_kernel_integrable H hX₁ hY₁ hτ) (pairing_kernel_integrable H hX₂ hY₂ hτ)]`. Unfold `betaInfTau`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [ae_inSS D] with p hp`. Establish `e : ∀ t : ℝ × ℝ, oneMinusDD (regBracket D X Y p) t.1 t.2 = Et D X₁ Y₁ (p, t) + Et D X₂ Y₂ (p, t)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Rewrite using `[regularized_bracket_additive H h hp, oneMinusDD_add (E_reg H hX₁ hY₁ hp).1 (E_reg H hX₂ hY₂ hp).1 (E_reg H hX₁ hY₁ hp).2 (E_reg H hX₂ hY₂ hp).2, E_formula H hX₁ hY₁ hp t, E_formula H hX₂ hY₂ hp t, Et_eq D X₁ Y₁ hp t, Et_eq D X₂ Y₂ hp t]`. Simplify using `only [e]`. Unfold `Gt`. Rewrite using `[← mul_add, ← integral_add (integrable_pairing_times_phase_exp H hX₁ hY₁ τ p) (integrable_pairing_times_phase_exp H hX₂ hY₂ τ p)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [add_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem betaInfTau_additive_of_pairing_additive (H : Hyp D Ξ α) {X Y X₁ Y₁ X₂ Y₂ : Mat k r → (Wq →L[ℂ] Wp)} {c₁ c₁' c₂ c₂' : ℝ}
     (hX₁ : AdmW α c₁ 2 2 X₁) (hY₁ : AdmW α c₁' 2 2 Y₁) (hX₂ : AdmW α c₂ 2 2 X₂) (hY₂ : AdmW α c₂' 2 2 Y₂)
@@ -3739,11 +3697,11 @@ theorem betaInfTau_additive_of_pairing_additive (H : Hyp D Ξ α) {X Y X₁ Y₁
   rfl
 
 /- English proof (translation)
-Establish `e : ∀ p, regBracket D X Y p = fun x y => a * regBracket D X₁ Y₁ p x y`. Introduce `p`. Use function extensionality and compare the values at `x y`. Unfold `regBracket`. Rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `betaInfTau`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e p]`. Simplify using `only [oneMinusDD_const_mul, mul_assoc]`. Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem regularised_pairing_smul (D : RealPlaceData k r Wp Wq) {X Y X₁ Y₁ : Mat k r → (Wq →L[ℂ] Wp)} (a : ℂ)
     (h : ∀ q, Ph D X Y q = a * Ph D X₁ Y₁ q) (τ : ℝ × ℝ) :
@@ -3764,11 +3722,11 @@ theorem regularised_pairing_smul (D : RealPlaceData k r Wp Wq) {X Y X₁ Y₁ : 
   ring
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x x' y ⟨c, hc⟩ ⟨c', hc'⟩ ⟨d, hd⟩`. Establish `hx` using `admissible_weighted_of_bound hc`. Establish `hx'` using `admissible_weighted_of_bound hc'`. Establish `hy` using `admissible_weighted_of_bound hd`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `betaInfTau_additive_of_pairing_additive H hx hy hx' hy (fun q hq => phase_function_add_left H (admissible_of_weighted hx) (admissible_of_weighted hx') (admissible_of_weighted hy) hq) hτ`. Introduce and unpack `x y y' ⟨c, hc⟩ ⟨d, hd⟩ ⟨d', hd'⟩`. Establish `hx` using `admissible_weighted_of_bound hc`. Establish `hy` using `admissible_weighted_of_bound hd`. Establish `hy'` using `admissible_weighted_of_bound hd'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `betaInfTau_additive_of_pairing_additive H hx hy hx hy' (fun q hq => phase_function_add_right H (admissible_of_weighted hx) (admissible_of_weighted hy) (admissible_of_weighted hy') hq) hτ`. Introduce `a x y _ _`. Conclude with `regularised_pairing_smul D a (fun q => pairing_smul_left_bis D a x y q) τ`. Introduce `a x y _ _`. Conclude with `regularised_pairing_smul D (conj a) (fun q => phase_function_smul_right D a x y q) τ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem regularised_pairing_sesquilinear (H : Hyp D Ξ α) {τ : ℝ × ℝ} (hτ : τ ∈ Quad) : SesqOn (InCC α 4) (betaInfTau D τ) := by
   refine ⟨?_, ?_, ?_, ?_⟩
@@ -3790,7 +3748,7 @@ theorem regularised_pairing_sesquilinear (H : Hyp D Ξ α) {τ : ℝ × ℝ} (h�
     exact regularised_pairing_smul D (conj a) (fun q => phase_function_smul_right D a x y q) τ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ h₀ => locally_bounded_betaInfTau H h₀, fun _ _ hF hF' => regularised_pairing_continuous H hF hF', fun _ hτ => regularised_pairing_sesquilinear H hτ⟩`.
+Supply the required witnesses or components.
 -/
 theorem regBound_of_hyp (H : Hyp D Ξ α) : RegBound D α :=
   ⟨fun _ h₀ => locally_bounded_betaInfTau H h₀, fun _ _ hF hF' => regularised_pairing_continuous H hF hF', fun _ hτ => regularised_pairing_sesquilinear H hτ⟩
@@ -3805,11 +3763,11 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 variable {D : RealPlaceData k r Wp Wq} {Ξ : Mat k r → NNReal} {α : ℝ}
 
 /- English proof (translation)
-Take `⟨_, hc, hs⟩` from `h`. Establish `hcont : ContinuousOn (fun τ : ℝ => (τ ^ 2)⁻¹) (tsupport w)`. Apply `ContinuousOn.inv₀ (by fun_prop)` to reduce the goal to its premises. Introduce `τ hτ`. Establish `: 0 < τ` using `hs hτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Take `⟨M, hM⟩` from `hc.isCompact.exists_bound_of_continuousOn hcont`. Use `⟨max 1 M, le_trans zero_le_one (le_max_left _ _), fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `hmem : τ ∈ tsupport w` using `subset_tsupport _ hτ`. Use `⟨hs hmem, ?_⟩` and prove the remaining obligations.
+Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hM τ hmem` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Conclude with `max_le_max le_rfl ((le_abs_self _).trans this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_isTest_support {w : ℝ → ℝ} (h : IsTest w) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ τ, w τ ≠ 0 → 0 < τ ∧ max 1 (τ ^ 2)⁻¹ ≤ M := by
@@ -3828,13 +3786,13 @@ theorem exists_bound_isTest_support {w : ℝ → ℝ} (h : IsTest w) :
   exact max_le_max le_rfl ((le_abs_self _).trans this)
 
 /- English proof (translation)
-The claim follows from `h.1.continuous.integrable_of_hasCompactSupport h.2.1`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_isTest' {w : ℝ → ℝ} (h : IsTest w) : Integrable w :=
   h.1.continuous.integrable_of_hasCompactSupport h.2.1
 
 /- English proof (translation)
-Rewrite using `[Measure.volume_eq_prod]`. Conclude with `Integrable.mul_prod (integrable_of_isTest' h₁).abs (integrable_of_isTest' h₂).abs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem product_test_integrable {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂) :
     Integrable (fun τ : ℝ × ℝ => |w₁ τ.1| * |w₂ τ.2|) := by
@@ -3842,21 +3800,19 @@ theorem product_test_integrable {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (
   exact Integrable.mul_prod (integrable_of_isTest' h₁).abs (integrable_of_isTest' h₂).abs
 
 /- English proof (translation)
-Use `sigmaFinite_μSS D` as an intermediate fact. Take `⟨K, hK0, hK⟩` from `Gt_bound H`. Take `⟨M₁, hM₁0, hM₁⟩` from `exists_bound_isTest_support h₁`. Take `⟨M₂, hM₂0, hM₂⟩` from `exists_bound_isTest_support h₂`. Establish `hc : 0 ≤ c` using `admissible_constant_nonneg (admissible_of_weighted hF)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc' : 0 ≤ c'` using `admissible_constant_nonneg (admissible_of_weighted hF')`. Establish `hb : Integrable (fun x : (ℝ × ℝ) × SS k r => (|w₁ x.1.1| * |w₂ x.1.2|) * ((4 * M₁ * M₂ * (K * c * c')) * (XX Ξ x.2 * LL D x.2))) ((volume : Measure (ℝ × ℝ)).prod D.μSS)` using `Integrable.mul_prod (f := fun τ : ℝ × ℝ => |w₁ τ.1| * |w₂ τ.2|) (g := fun p : SS k r => (4 * M₁ * M₂ * (K * c * c')) * (XX Ξ p * LL D p)) (product_test_integrable h₁ h₂) ((xi_integrable H).const_mul _)`. Establish `hmeas : AEStronglyMeasurable (fun x : (ℝ × ℝ) × SS k r => ((w₁ x.1.1 * w₂ x.1.2 : ℝ) : ℂ) * Gt D F F' x.1 x.2) ((volume : Measure (ℝ × ℝ)).prod D.μSS)`. Apply `AEStronglyMeasurable.mul _ (Gt_measurable H hF hF').aestronglyMeasurable` to reduce the goal to its premises. Establish `h1c` using `h₁.1.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2c` using `h₂.1.continuous`. Conclude with `((by fun_prop : Continuous fun τ : ℝ × ℝ => ((w₁ τ.1 * w₂ τ.2 : ℝ) : ℂ)).stronglyMeasurable.comp_measurable measurable_fst).aestronglyMeasurable`. Use `hb.mono' hmeas (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Establish `hXX` using `XX_nonneg Ξ x.2`. Establish `hLL` using `LL_nonneg D x.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_mul]`. Distinguish the cases in `ha : w₁ x.1.1 = 0`. Rewrite using `[ha]`. Simplify using the standard rewrite rules. Distinguish the cases in `hb' : w₂ x.1.2 = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb']`. Simplify using the standard rewrite rules. Take `⟨p1, q1⟩` from `hM₁ _ ha`. Take `⟨p2, q2⟩` from `hM₂ _ hb'`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hB : 0 ≤ K * c * c' * XX Ξ x.2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hB` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ hLL` to reduce the goal to its premises. Establish `: (0:ℝ) ≤ max 1 (x.1.2 ^ 2)⁻¹` using `le_trans zero_le_one (le_max_left _ _)`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ this` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ ≤ 4 * M₁ * M₂ := by`. Apply `mul_le_mul_of_nonneg_left q2 (by positivity)` to reduce the goal to its premises.
-
-Use `_ = 4 * M₁ * M₂ * (K * c * c') * (XX Ξ x.2 * LL D x.2) := by ring`.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem joint_weighted_integrable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂) :
@@ -3908,9 +3864,9 @@ theorem joint_weighted_integrable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L
     _ = 4 * M₁ * M₂ * (K * c * c') * (XX Ξ x.2 * LL D x.2) := by ring
 
 /- English proof (translation)
-Apply `(Bt_continuous H hF hF' p).integrable_of_hasCompactSupport` to reduce the goal to its premises. Apply `HasCompactSupport.intro (K := Set.Icc (1 / 2 : ℝ) 2 ×ˢ Set.Icc (1 / 2 : ℝ) 2) (isCompact_Icc.prod isCompact_Icc)` to reduce the goal to its premises. Introduce `t ht`. Apply `Bt_zero` to reduce the goal to its premises. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ht ⟨Set.Ioo_subset_Icc_self h.1, Set.Ioo_subset_Icc_self h.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem regularised_kernel_integrable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') (p : SS k r) : Integrable (fun t : ℝ × ℝ => Bt D F F' (p, t)) := by
@@ -3923,11 +3879,11 @@ theorem regularised_kernel_integrable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq 
   exact ht ⟨Set.Ioo_subset_Icc_self h.1, Set.Ioo_subset_Icc_self h.2⟩
 
 /- English proof (translation)
-Establish `hb : Integrable (fun x : (ℝ × ℝ) × (ℝ × ℝ) => (|w₁ x.1.1| * |w₂ x.1.2|) * ‖Bt D F F' (p, x.2)‖) ((volume : Measure (ℝ × ℝ)).prod (volume : Measure (ℝ × ℝ)))` using `Integrable.mul_prod (f := fun τ : ℝ × ℝ => |w₁ τ.1| * |w₂ τ.2|) (g := fun t : ℝ × ℝ => ‖Bt D F F' (p, t)‖) (product_test_integrable h₁ h₂) (regularised_kernel_integrable H hF hF' p).norm`. Establish `h1c` using `h₁.1.continuous`. Establish `h2c` using `h₂.1.continuous`. Establish `hBc` using `Bt_continuous H hF hF' p`. Establish `hph : Continuous fun x : (ℝ × ℝ) × (ℝ × ℝ) => phase D x.1 p x.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `phase`. Use `fun_prop`. Establish `hcont : Continuous (fun x : (ℝ × ℝ) × (ℝ × ℝ) => ((w₁ x.1.1 * w₂ x.1.2 : ℝ) : ℂ) * (Bt D F F' (p, x.2) * Complex.exp (Complex.I * (phase D x.1 p x.2 : ℂ))))`. Establish `hB2 : Continuous fun x : (ℝ × ℝ) × (ℝ × ℝ) => Bt D F F' (p, x.2)` using `hBc.comp continuous_snd`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hb.mono' hcont.aestronglyMeasurable (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_mul, Complex.norm_exp_I_mul_ofReal, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem integrable_test_weighted_phase_product (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂) (p : SS k r) :
@@ -3952,11 +3908,11 @@ theorem integrable_test_weighted_phase_product (H : Hyp D Ξ α) {F F' : Mat k r
   rw [norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_mul, Complex.norm_exp_I_mul_ofReal, mul_one]
 
 /- English proof (translation)
-Unfold `om`. Rewrite using `[Measure.volume_eq_prod, ← integral_prod_mul]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Establish `: Complex.exp (Complex.I * ((τ.1 * a - τ.2 * b : ℝ) : ℂ)) = Complex.exp (Complex.I * ((τ.1 * a : ℝ) : ℂ)) * Complex.exp (Complex.I * ((τ.2 * -b : ℝ) : ℂ))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem test_product_tau_fourier_integral (w₁ w₂ : ℝ → ℝ) (a b : ℝ) :
     (∫ τ : ℝ × ℝ, ((w₁ τ.1 * w₂ τ.2 : ℝ) : ℂ) * Complex.exp (Complex.I * ((τ.1 * a - τ.2 * b : ℝ) : ℂ))) =
@@ -3976,11 +3932,11 @@ theorem test_product_tau_fourier_integral (w₁ w₂ : ℝ → ℝ) (a b : ℝ) 
   ring
 
 /- English proof (translation)
-Repeatedly rewrite using `[Gt_eq H hF hF', ← integral_const_mul]`. Rewrite using `[integral_integral_swap (integrable_test_weighted_phase_product H hF hF' h₁ h₂ p)]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[← test_product_tau_fourier_integral, ← integral_const_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ`. Establish `: phase D τ p t = τ.1 * (t.1 * lam k r D.z (Matrix.of p.1.2)) - τ.2 * (t.2 * lam k r D.z' (Matrix.of p.2.2))`. Unfold `phase`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tau_integral_fourier_form (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂) (p : SS k r) :
@@ -4001,9 +3957,9 @@ theorem tau_integral_fourier_form (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L
   ring
 
 /- English proof (translation)
-Use `sigmaFinite_μSS D` as an intermediate fact. Repeatedly rewrite using `[betaInfTau_eq H hF hF', ← integral_const_mul]`. Rewrite using `[integral_integral_swap (joint_weighted_integrable H hF hF' h₁ h₂)]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [ae_inSS D] with p hp`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tau_integral_fourier_form H hF hF' h₁ h₂ p]`. Repeatedly rewrite using `[Bt_eq D F F' hp]`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg1 (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂) :
@@ -4023,23 +3979,21 @@ end avg1
 section avg2pre
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_exp_I_mul_ofReal_eq_one (x : ℝ) : ‖Complex.exp (Complex.I * (x : ℂ))‖ = 1 := by
   rw [mul_comm]; exact Complex.norm_exp_ofReal_mul_I x
 
 /- English proof (translation)
-The claim follows from `hw.1.continuous.integrable_of_hasCompactSupport hw.2.1`.
+A detailed English derivation is pending.
 -/
 theorem test_function_integrable {w : ℝ → ℝ} (hw : IsTest w) : Integrable w :=
   hw.1.continuous.integrable_of_hasCompactSupport hw.2.1
 
 /- English proof (translation)
-Unfold `om`. Use `continuous_of_dominated (bound := fun τ => ‖w τ‖) ?_ ?_ (test_function_integrable hw).norm ?_` and prove the remaining obligations. Introduce `x`. Establish `hc : Continuous fun τ : ℝ => (w τ : ℂ) * Complex.exp (Complex.I * ((τ * x : ℝ) : ℂ))`. Use `hw.1.continuous` as an intermediate fact.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun_prop`. Conclude with `hc.aestronglyMeasurable`. Introduce `x`. Use `Filter.Eventually.of_forall fun τ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_exp_I_mul_ofReal_eq_one, mul_one, Complex.norm_real]`.
-
-Use `Filter.Eventually.of_forall fun τ => ?_ fun_prop` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem test_function_fourier_continuous {w : ℝ → ℝ} (hw : IsTest w) : Continuous (om w) := by
   unfold om
@@ -4056,13 +4010,13 @@ theorem test_function_fourier_continuous {w : ℝ → ℝ} (hw : IsTest w) : Con
     fun_prop
 
 /- English proof (translation)
-Rewrite using `[Real.rpow_neg hu, Real.rpow_two]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rpow_neg_two_eq_inv_sq {u : ℝ} (hu : 0 ≤ u) : u ^ (-2 : ℝ) = (u ^ 2)⁻¹ := by
   rw [Real.rpow_neg hu, Real.rpow_two]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `Formalism.FourierDecayAlt.P.test_function_decay w hw`. Use `⟨max C 0, le_max_right _ _, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[rpow_neg_two_eq_inv_sq (by positivity)]`. Conclude with `(hC x).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fourier_transform_quadratic_decay {w : ℝ → ℝ} (hw : IsTest w) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ x : ℝ, ‖om w x‖ ≤ C * (1 + |x|) ^ (-2 : ℝ) := by
@@ -4072,9 +4026,9 @@ theorem fourier_transform_quadratic_decay {w : ℝ → ℝ} (hw : IsTest w) :
   exact (hC x).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))
 
 /- English proof (translation)
-Rewrite using `[rpow_neg_two_eq_inv_sq (by positivity), rpow_neg_two_eq_inv_sq (by positivity)]`. Establish `h0 : 0 ≤ |x|` using `abs_nonneg x`. Establish `h1 : |t * x| = t * |x|` using `by rw [abs_mul, abs_of_nonneg (by linarith)]`. Rewrite using `[h1, ← div_eq_mul_inv, inv_eq_one_div, div_le_div_iff₀ (by positivity) (by positivity)]`. Establish `h2 : 1 + |x| ≤ 2 * (1 + t * |x|)` using `by nlinarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : 0 ≤ 1 + |x|` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem scaled_decay_weight_bound {t : ℝ} (ht : 1 / 2 ≤ t) (x : ℝ) :
     (1 + |t * x|) ^ (-2 : ℝ) ≤ 4 * (1 + |x|) ^ (-2 : ℝ) := by
@@ -4096,7 +4050,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 variable {D : RealPlaceData k r Wp Wq} {Ξ : Mat k r → NNReal} {α : ℝ}
 
 /- English proof (translation)
-Establish `h1` using `(BesselUnitaryEquiv.continuous_conjM (k := k) (r := r) (aDil k r t.1)).measurable`. Establish `h2` using `(BesselUnitaryEquiv.continuous_conjM (k := k) (r := r) (aDil k r t.2)).measurable`. Unfold `dilation₂`. Conclude with `((measurable_fst.fst).prodMk (h1.comp measurable_fst.snd)).prodMk ((measurable_snd.fst).prodMk (h2.comp measurable_snd.snd))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dilation_action_measurable (t : ℝ × ℝ) : Measurable (dilation₂ (k := k) (r := r) t) := by
   have h1 := (BesselUnitaryEquiv.continuous_conjM (k := k) (r := r) (aDil k r t.1)).measurable
@@ -4106,9 +4060,9 @@ theorem dilation_action_measurable (t : ℝ × ℝ) : Measurable (dilation₂ (k
     ((measurable_snd.fst).prodMk (h2.comp measurable_snd.snd))
 
 /- English proof (translation)
-Use `haar_sigmaFinite D.haarW` as an intermediate fact. Use `haar_sigmaFinite D.haarN` as an intermediate fact. Use `haar_sigmaFinite D.haarW'` as an intermediate fact. Establish `c1` using `(BesselUnitaryEquiv.continuous_conjM (k := k) (r := r) (aDil k r t.1)).measurable`. Establish `c2` using `(BesselUnitaryEquiv.continuous_conjM (k := k) (r := r) (aDil k r t.2)).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : dilation₂ (k` using `k) (r := r) t = Prod.map (Prod.map id (conjM (aDil k r t.1))) (Prod.map id (conjM (aDil k r t.2))) := rfl`. Unfold `RealPlaceData.μSS`. Rewrite using `[e, ← Measure.map_prod_map _ _ (measurable_id.prodMap c1) (measurable_id.prodMap c2), ← Measure.map_prod_map _ _ measurable_id c1, ← Measure.map_prod_map _ _ measurable_id c2, Measure.map_id, Measure.map_id, hJ t.1 h1, hJ t.2 h2, Measure.prod_smul_right, Measure.prod_smul_right, …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_measure_dilation_pair_eq_smul (hJ : DilJac D) {t : ℝ × ℝ} (h1 : 0 < t.1) (h2 : 0 < t.2) :
     D.μSS.map (dilation₂ t) =
@@ -4139,23 +4093,23 @@ def fourierWeightedPhase (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq �
   om w₁ (lam k r D.z (Matrix.of p.1.2)) * om w₂ (-lam k r D.z' (Matrix.of p.2.2)) * Ph D F F' p
 
 /- English proof (translation)
-The claim follows from `(lam_continuous k r D.z).comp (continuous_snd.comp continuous_fst)`.
+A detailed English derivation is pending.
 -/
 theorem first_eigenvalue_continuous (D : RealPlaceData k r Wp Wq) :
     Continuous (fun p : SS k r => lam k r D.z (Matrix.of p.1.2)) :=
   (lam_continuous k r D.z).comp (continuous_snd.comp continuous_fst)
 
 /- English proof (translation)
-The claim follows from `(lam_continuous k r D.z').comp (continuous_snd.comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_lambda_second_coordinate (D : RealPlaceData k r Wp Wq) :
     Continuous (fun p : SS k r => lam k r D.z' (Matrix.of p.2.2)) :=
   (lam_continuous k r D.z').comp (continuous_snd.comp continuous_snd)
 
 /- English proof (translation)
-Establish `hc : ContinuousOn (fourierWeightedPhase D F F' w₁ w₂) {p | D.inSS p}`. Unfold `fourierWeightedPhase`. Use `ContinuousOn.mul (Continuous.continuousOn ?_) (ph_continuousOn H hF hF')` and prove the remaining obligations. Conclude with `((test_function_fourier_continuous h₁).comp (first_eigenvalue_continuous D)).mul ((test_function_fourier_continuous h₂).comp (continuous_lambda_second_coordinate D).neg)`. Use `hc.aestronglyMeasurable (μ := D.μSS) (measurableSet_inSS D)` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : D.μSS.restrict {p | D.inSS p} = D.μSS` using `Measure.restrict_eq_self_of_ae_mem (ae_inSS D)`. Rewrite `this` using `[hr]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_dilation_pair_integrand (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : admitted α c F)
     (hF' : admitted α c' F') {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂) :
@@ -4170,11 +4124,11 @@ theorem aestronglyMeasurable_dilation_pair_integrand (H : Hyp D Ξ α) {F F' : M
   rwa [hr] at this
 
 /- English proof (translation)
-Take `⟨C₁, hC₁, d₁⟩` from `fourier_transform_quadratic_decay h₁`. Take `⟨C₂, hC₂, d₂⟩` from `fourier_transform_quadratic_decay h₂`. Take `⟨K, hK, hb⟩` from `ph_bound H`. Establish `hc` using `admissible_constant_nonneg hF`. Establish `hc'` using `admissible_constant_nonneg hF'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Integrable.mono' ((xi_integrable H).const_mul (C₁ * C₂ * (K * c * c'))) (aestronglyMeasurable_dilation_pair_integrand H hF hF' h₁ h₂) ?_` and prove the remaining obligations. Use `filter_upwards [ae_inSS D] with p hp`. Unfold `fourierWeightedPhase`. Rewrite using `[norm_mul, norm_mul]`. Establish `e1` using `d₁ (lam k r D.z (Matrix.of p.1.2))`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `d₂ (-lam k r D.z' (Matrix.of p.2.2))`. Rewrite `e2` using `[abs_neg]`. Establish `e3` using `hb F F' c c' hF hF' p hp`. Establish `hX` using `XX_nonneg Ξ p`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fourier_weighted_phase_integrable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : admitted α c F)
     (hF' : admitted α c' F') {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂) :
@@ -4209,7 +4163,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 variable {D : RealPlaceData k r Wp Wq} {Ξ : Mat k r → NNReal} {α : ℝ}
 
 /- English proof (translation)
-Establish `hm` using `map_measure_dilation_pair_eq_smul hJ h1 h2`. Establish `e : (∫ q, fourierWeightedPhase D F F' w₁ w₂ q ∂(D.μSS.map (dilation₂ t))) = ∫ p, fourierWeightedPhase D F F' w₁ w₂ (dilation₂ t p) ∂D.μSS` using `integral_map (dilation_action_measurable t).aemeasurable (by rw [hm]; exact (aestronglyMeasurable_dilation_pair_integrand H hF hF' h₁ h₂).smul_measure _)`. Rewrite using `[← e, hm, integral_smul_measure, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity), ENNReal.toReal_ofReal (by positivity), Complex.real_smul, mul_pow, mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_dilation_pair_integrand_eq (H : Hyp D Ξ α) (hJ : DilJac D) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ}
     (hF : admitted α c F) (hF' : admitted α c' F') {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂) {t : ℝ × ℝ}
@@ -4229,17 +4183,17 @@ def weightedPhaseJointIntegrand (D : RealPlaceData k r Wp Wq) (F F' : Mat k r �
     om w₂ (-(q.2.2 * lam k r D.z' (Matrix.of q.1.2.2))))
 
 /- English proof (translation)
-Use `sigmaFinite_μSS D` as an intermediate fact. Take `⟨C₁, hC₁, d₁⟩` from `fourier_transform_quadratic_decay h₁`. Take `⟨C₂, hC₂, d₂⟩` from `fourier_transform_quadratic_decay h₂`. Take `⟨K, hK, hb⟩` from `Bt_bound H`. Establish `hc` using `admissible_constant_nonneg (admissible_of_weighted hF)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc'` using `admissible_constant_nonneg (admissible_of_weighted hF')`. Establish `hbox : Integrable (Set.indicator (Set.Icc (1 / 2 : ℝ) 2 ×ˢ Set.Icc (1 / 2 : ℝ) 2) (fun _ : ℝ × ℝ => (1 : ℝ)))` using `(continuousOn_const.integrableOn_compact (isCompact_Icc.prod isCompact_Icc)).integrable_indicator (measurableSet_Icc.prod measurableSet_Icc)`. Establish `hdom` using `((xi_integrable H).const_mul (16 * (C₁ * C₂) * (K * c * c'))).mul_prod hbox`. Establish `hmeas : AEStronglyMeasurable (weightedPhaseJointIntegrand D F F' w₁ w₂) (D.μSS.prod volume)`. Unfold `weightedPhaseJointIntegrand`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `((Bt_measurable H hF hF').mul (Continuous.stronglyMeasurable ?_)).aestronglyMeasurable` and prove the remaining obligations. Conclude with `((test_function_fourier_continuous h₁).comp ((continuous_fst.comp continuous_snd).mul ((first_eigenvalue_continuous D).comp continuous_fst))).mul ((test_function_fourier_continuous h₂).comp ((continuous_snd.comp continuous_snd).mul ((continuous_lambda_second_coordinate D).comp co …`. Use `Integrable.mono' hdom hmeas (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Take `⟨p, t⟩` from `q`. Establish `hX` using `XX_nonneg Ξ p`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ht : t ∈ Set.Icc (1 / 2 : ℝ) 2 ×ˢ Set.Icc (1 / 2 : ℝ) 2`. Simplify using `only [Set.indicator_of_mem ht, mul_one]`. Unfold `weightedPhaseJointIntegrand`. Rewrite using `[norm_mul, norm_mul]`. Establish `e1` using `(d₁ (t.1 * lam k r D.z (Matrix.of p.1.2))).trans (mul_le_mul_of_nonneg_left (scaled_decay_weight_bound ht.1.1 _) hC₁)`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `d₂ (-(t.2 * lam k r D.z' (Matrix.of p.2.2)))`. Rewrite `e2` using `[abs_neg]`. Establish `e2'` using `e2.trans (mul_le_mul_of_nonneg_left (scaled_decay_weight_bound ht.2.1 _) hC₂)`. Establish `e3` using `hb F F' c c' hF hF' p t`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `ht' : t ∉ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2` using `fun h => ht ⟨Set.Ioo_subset_Icc_self h.1, Set.Ioo_subset_Icc_self h.2⟩`. Simplify using `only [Set.indicator_of_notMem ht, mul_zero]`. Unfold `weightedPhaseJointIntegrand`. Rewrite using `[Bt_zero D F F' p ht', zero_mul, norm_zero]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem second_integrand_integrable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ}
     (hF : AdmW α c 2 2 F) (hF' : AdmW α c' 2 2 F') {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂) :
@@ -4296,21 +4250,21 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 variable {D : RealPlaceData k r Wp Wq} {Ξ : Mat k r → NNReal} {α : ℝ}
 
 /- English proof (translation)
-The claim follows from `image_eq_zero_of_notMem_tsupport fun h => ht (D.χ_supp h)`.
+A detailed English derivation is pending.
 -/
 theorem cutoff_vanishes_outside_interval (D : RealPlaceData k r Wp Wq) {t : ℝ} (ht : t ∉ Set.Ioo (1 / 2 : ℝ) 2) : D.χ t = 0 :=
   image_eq_zero_of_notMem_tsupport fun h => ht (D.χ_supp h)
 
 /- English proof (translation)
-Distinguish the cases in `ht : t ∈ Set.Ioo (1 / 2 : ℝ) 2 ×ˢ Set.Ioo (1 / 2 : ℝ) 2`. Establish `h1 : 0 < t.1` using `lt_trans (by norm_num) ht.1.1`. Establish `h2 : 0 < t.2` using `lt_trans (by norm_num) ht.2.1`. Establish `e : ∀ᵐ p ∂D.μSS, weightedPhaseJointIntegrand D F F' w₁ w₂ (p, t) = ((D.χ t.1 * D.χ t.2 * (t.1 * t.2) ^ kap k r : ℝ) : ℂ) * fourierWeightedPhase D F F' w₁ w₂ (dilation₂ t p)` using `by filter_upwards [ae_inSS D] with p hp`. Take `⟨l1, l2⟩` from `lam_dil H.dilN D hp h1 h2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `l1' : lam k r D.z (Matrix.of (dilation₂ t p).1.2) = t.1 * lam k r D.z (Matrix.of p.1.2)` using `l1`. Establish `l2' : lam k r D.z' (Matrix.of (dilation₂ t p).2.2) = t.2 * lam k r D.z' (Matrix.of p.2.2)` using `l2`. Unfold `weightedPhaseJointIntegrand fourierWeightedPhase`. Rewrite using `[Bt_eq D F F' hp, l1', l2']`. Unfold `regBracket`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae e, integral_const_mul, integral_dilation_pair_integrand_eq H hJ (admissible_of_weighted hF) (admissible_of_weighted hF') h₁ h₂ h1 h2, ← mul_assoc, ← Complex.ofReal_mul]`. Use `congr 2`. Establish `hpos : (t.1 * t.2) ^ kap k r ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hz : D.χ t.1 * D.χ t.2 = 0`. Distinguish the cases in `h1 : t.1 ∈ Set.Ioo (1 / 2 : ℝ) 2`. Establish `h2 : t.2 ∉ Set.Ioo (1 / 2 : ℝ) 2` using `fun h => ht ⟨h1, h⟩`. Rewrite using `[cutoff_vanishes_outside_interval D h2, mul_zero]`. Rewrite using `[cutoff_vanishes_outside_interval D h1, zero_mul]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ p, weightedPhaseJointIntegrand D F F' w₁ w₂ (p, t) = 0` using `fun p => by`. Unfold `weightedPhaseJointIntegrand`. Rewrite using `[Bt_zero D F F' p ht, zero_mul]`. Simplify using `only [e, integral_zero, hz, Complex.ofReal_zero, zero_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integrand_slice_formula (H : Hyp D Ξ α) (hJ : DilJac D) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ}
     (hF : AdmW α c 2 2 F) (hF' : AdmW α c' 2 2 F') {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂)
@@ -4346,7 +4300,7 @@ theorem integrand_slice_formula (H : Hyp D Ξ α) (hJ : DilJac D) {F F' : Mat k 
     simp only [e, integral_zero, hz, Complex.ofReal_zero, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[integral_complex_ofReal]`. Establish `: (∫ t : ℝ × ℝ, D.χ t.1 * D.χ t.2) = (∫ x, D.χ x) * ∫ y, D.χ y` using `integral_prod_mul (μ := volume) (ν := volume) D.χ D.χ`. Rewrite using `[this, D.χ_int]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_cutoff_product_eq_one (D : RealPlaceData k r Wp Wq) : (∫ t : ℝ × ℝ, ((D.χ t.1 * D.χ t.2 : ℝ) : ℂ)) = 1 := by
   rw [integral_complex_ofReal]
@@ -4356,13 +4310,13 @@ theorem integral_cutoff_product_eq_one (D : RealPlaceData k r Wp Wq) : (∫ t : 
   simp
 
 /- English proof (translation)
-Introduce `F F' ⟨c, hc⟩ ⟨c', hc'⟩ w₁ w₂ h₁ h₂`. Establish `hF` using `admissible_weighted_of_bound hc`. Establish `hF'` using `admissible_weighted_of_bound hc'`. Use `sigmaFinite_μSS D` as an intermediate fact. Use `⟨fourier_weighted_phase_integrable H (admissible_of_weighted hF) (admissible_of_weighted hF') h₁ h₂, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[avg1 H hF hF' h₁ h₂]`. Establish `e1 : (∫ p : SS k r, (∫ t : ℝ × ℝ, regBracket D F F' p t.1 t.2 * (om w₁ (t.1 * lam k r D.z (Matrix.of p.1.2)) * om w₂ (-(t.2 * lam k r D.z' (Matrix.of p.2.2))))) ∂D.μSS) = ∫ p : SS k r, (∫ t : ℝ × ℝ, weightedPhaseJointIntegrand D F F' w₁ w₂ (p, t)) ∂D.μSS`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_inSS D] with p hp`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `show _ = weightedPhaseJointIntegrand D F F' w₁ w₂ (p, t)`. Unfold `weightedPhaseJointIntegrand`. Rewrite using `[Bt_eq D F F' hp]`. Rewrite using `[e1, integral_integral_swap (f := fun p t => weightedPhaseJointIntegrand D F F' w₁ w₂ (p, t)) (second_integrand_integrable H hF hF' h₁ h₂)]`. Simplify using `only [integrand_slice_formula H hJ hF hF' h₁ h₂]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[integral_mul_const, integral_cutoff_product_eq_one, one_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem regAverage_of_hyp (H : Hyp D Ξ α) (hJ : DilJac D) : RegAverage D α := by
   intro F F' ⟨c, hc⟩ ⟨c', hc'⟩ w₁ w₂ h₁ h₂
@@ -4394,9 +4348,9 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `Ph`. Establish `: ∀ g : Mt k r, hsInner (rho D p F (Matrix.of g)) (F' (Matrix.of g)) = 0`. Introduce `g`. Establish `h0 : F' (Matrix.of g) = 0` using `Subsingleton.elim _ _`. Rewrite using `[h0]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `hsInner hsVec`. Simplify using `[PiLp.inner_apply]`. Simplify using `[this]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem top_ph_zero [Subsingleton (Wq →L[ℂ] Wp)] (D : RealPlaceData k r Wp Wq) (F F' : Mat k r → (Wq →L[ℂ] Wp))
     (p : SS k r) : Ph D F F' p = 0 := by
@@ -4410,11 +4364,11 @@ theorem top_ph_zero [Subsingleton (Wq →L[ℂ] Wp)] (D : RealPlaceData k r Wp W
   simp [this]
 
 /- English proof (translation)
-Establish `hb : ∀ p, regBracket D F F' p = fun _ _ => 0`. Introduce `p`. Use function extensionality and compare the values at `x y`. Unfold `regBracket`. Rewrite using `[top_ph_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `ho : ∀ x y, oneMinusDD (fun _ _ => (0 : ℂ)) x y = 0`. Introduce `x y`. Unfold `oneMinusDD`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `betaInfTau`. Simplify using `[hb, ho]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem top_beta_zero [Subsingleton (Wq →L[ℂ] Wp)] (D : RealPlaceData k r Wp Wq) (τ : ℝ × ℝ)
     (F F' : Mat k r → (Wq →L[ℂ] Wp)) : betaInfTau D τ F F' = 0 := by
@@ -4426,7 +4380,7 @@ theorem top_beta_zero [Subsingleton (Wq →L[ℂ] Wp)] (D : RealPlaceData k r Wp
   simp [hb, ho]
 
 /- English proof (translation)
-The claim follows from `le_trans (B2.AB_nonneg k r) hA coef := h1 xi := h2 T0 := exists_norm_eq (Wq →L[ℂ] Wp) zero_le_one dilN := hN dilUW := hU`.
+A detailed English derivation is pending.
 -/
 theorem top_hyp (hN : DilN) (hU : DilUW) [Nontrivial (Wq →L[ℂ] Wp)] {D : RealPlaceData k r Wp Wq}
     {Ξ : Mat k r → NNReal} {A : ℝ} (hA : AB k r ≤ A) (h1 : CoefBound D Ξ A) (h2 : XiInt D Ξ 2) : Hyp D Ξ A where
@@ -4438,11 +4392,9 @@ theorem top_hyp (hN : DilN) (hU : DilUW) [Nontrivial (Wq →L[ℂ] Wp)] {D : Rea
   dilUW := hU
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D Ξ A hA h1 h2`. Break down `subsingleton_or_nontrivial (Wq →L[ℂ] Wp) with hs | hn` into its components or cases. Use `⟨fun τ₀ _ => ⟨0, Set.univ, univ_mem, fun τ _ F F' c c' _ _ => ?_⟩, fun F F' _ _ => ?_, fun τ _ => ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[top_beta_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [top_beta_zero]`. Conclude with `continuousOn_const`. Apply the tactic sequence `all_goals intros`. Simplify using `only [top_beta_zero]`. Simplify using the standard rewrite rules.
-
-Conclude with `regBound_of_hyp (top_hyp hN hU hA h1 h2)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem top_regBound (hN : DilN) (hU : DilUW) : StepRegBound := by
   intro k r Wp Wq _ _ _ _ _ _ D Ξ A hA h1 h2
@@ -4455,9 +4407,9 @@ theorem top_regBound (hN : DilN) (hU : DilUW) : StepRegBound := by
   · exact regBound_of_hyp (top_hyp hN hU hA h1 h2)
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D Ξ A hA h1 h2 hJ`. Break down `subsingleton_or_nontrivial (Wq →L[ℂ] Wp) with hs | hn` into its components or cases. Introduce `F F' _ _ w₁ w₂ _ _`. Simplify using `only [top_beta_zero, top_ph_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `regAverage_of_hyp (top_hyp hN hU hA h1 h2) hJ`.
+A detailed English derivation is pending.
 -/
 theorem top_regAverage (hN : DilN) (hU : DilUW) : StepRegAverage := by
   intro k r Wp Wq _ _ _ _ _ _ D Ξ A hA h1 h2 hJ
@@ -4474,12 +4426,12 @@ end Formalism.FourierDecayAlt.P.B6
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `B6.top_regBound dilation_unipotent_measure dilation_unipotent_weyl_measure`.
+A detailed English derivation is pending.
 -/
 theorem regularized_beta_bound_continuity_sesquilinear : Formalism.FourierDecayAlt.B.StepRegBound := B6.top_regBound dilation_unipotent_measure dilation_unipotent_weyl_measure
 
 /- English proof (translation)
-The claim follows from `B6.top_regAverage dilation_unipotent_measure dilation_unipotent_weyl_measure`.
+A detailed English derivation is pending.
 -/
 theorem regularised_average_identity : Formalism.FourierDecayAlt.B.StepRegAverage := B6.top_regAverage dilation_unipotent_measure dilation_unipotent_weyl_measure
 

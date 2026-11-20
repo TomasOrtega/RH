@@ -6,23 +6,21 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.StdAtPrime
 
 /- English proof (translation)
-Take `⟨b, hb, hbx⟩` from `HeightOneSpectrum.adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers Q x`. Rewrite `hbx` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Use `set N := Ideal.absNorm (Ideal.span {b}) with hNdef`. Establish `hN0 : N ≠ 0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hNdef, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hb0`. Establish `hmem : (N : 𝓞 E) ∈ Ideal.span {b}` using `Ideal.absNorm_mem _`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp hmem`. Use `set e := N.factorization p with he`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r := N / p ^ e with hr`. Establish `hcop : r.Coprime p` using `(Nat.coprime_ordCompl hp hN0).symm`. Establish `hsplit : p ^ e * r = N` using `Nat.ordProj_mul_ordCompl_eq_self N p`. Establish `hrQ : (r : 𝓞 E) ∉ Q.asIdeal`. Introduce `hrQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h1 : ((Nat.gcd r p : ℕ) : ℤ) = r * Nat.gcdA r p + p * Nat.gcdB r p` using `Nat.gcd_eq_gcd_ab r p`. Rewrite `h1` using `[hcop]`. Establish `h2` using `congrArg (Int.cast : ℤ → 𝓞 E) h1`. Move the coercions through the operations in `at h2`. Establish `h3 : (1 : 𝓞 E) ∈ Q.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ hrQ) (Ideal.mul_mem_right _ _ hpQ)`. Conclude with `Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h3)`. Establish `hvr : Valued.v ((r : Q.adicCompletion E)) = 1`. Establish `h1` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := E) (v := Q) (r : 𝓞 E)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Q.valuation E (algebraMap (𝓞 E) E (r : 𝓞 E)) = 1` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem Q).mpr hrQ`. Simplify using `only [map_natCast] at h1 h2`. Rewrite using `[h1, h2]`. Establish `hNx : Valued.v ((N : Q.adicCompletion E) * x) ≤ 1`. Establish `e' : ((N : Q.adicCompletion E)) = (algebraMap (𝓞 E) (Q.adicCompletion E) c) * (algebraMap (𝓞 E) (Q.adicCompletion E) b)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, hc, map_natCast]`. Rewrite using `[e', mul_assoc, Valuation.map_mul, mul_comm _ x]`. Use `mul_le_one' ?_ hbx` and prove the remaining obligations. Establish `h` using `HeightOneSpectrum.coe_mem_adicCompletionIntegers (K := E) (v := Q) c`. Rewrite `h` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hex : Valued.v (((p ^ e : ℕ) : Q.adicCompletion E) * x) ≤ 1`. Rewrite `hNx` using `[← hsplit]`. Rewrite `hNx` using `[Nat.cast_mul, mul_comm ((p ^ e : ℕ) : Q.adicCompletion E), mul_assoc, Valuation.map_mul, hvr, one_mul]`. Conclude with `hNx`. Use `⟨e, fun d hd => ?_⟩` and prove the remaining obligations.
-
-Establish `hde : p ^ d = p ^ (d - e) * p ^ e` using `by rw [← pow_add, Nat.sub_add_cancel hd]`. Rewrite using `[hde, Nat.cast_mul, mul_assoc, Valuation.map_mul]`. Conclude with `mul_le_one' (natCast_adicCompletion_v_le_one Q _) hex`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_v_le_one_of_mem {E : Type} [Field E] [NumberField E]
     (p : ℕ) (hp : p.Prime) (Q : HeightOneSpectrum (𝓞 E)) (hpQ : (p : 𝓞 E) ∈ Q.asIdeal)
@@ -75,13 +73,13 @@ theorem exists_pow_mul_v_le_one_of_mem {E : Type} [Field E] [NumberField E]
   exact mul_le_one' (natCast_adicCompletion_v_le_one Q _) hex
 
 /- English proof (translation)
-Introduce `E _ _ p hp n A`. Establish `h0 : Ideal.span {(p : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions. Establish `hF` using `Ideal.finite_factors h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemF : ∀ Q : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ Q.asIdeal → Q ∈ {v : HeightOneSpectrum (𝓞 E) | v.asIdeal ∣ Ideal.span {(p : 𝓞 E)}}` using `fun Q hQ => Ideal.dvd_span_singleton.mpr hQ`. Set `f : HeightOneSpectrum (𝓞 E) × Fin n × Fin n → ℕ` to `fun t => if h : (p : 𝓞 E) ∈ t.1.asIdeal then Classical.choose (exists_pow_mul_v_le_one_of_mem p hp t.1 h ((A t.2.1 t.2.2) t.1)) else 0`. Set `T : Finset (HeightOneSpectrum (𝓞 E) × Fin n × Fin n)` to `hF.toFinset ×ˢ Finset.univ`. Use `⟨T.sup f, fun d hd Q hQ i j => ?_⟩` and prove the remaining obligations. Set `ev : FiniteAdeleRing (𝓞 E) E →+* Q.adicCompletion E` to `RestrictedProduct.evalRingHom _ Q`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hev : ∀ x : FiniteAdeleRing (𝓞 E) E, x Q = ev x` using `fun _ => rfl`. Rewrite using `[hev, map_mul, map_natCast, ← hev]`. Establish `hmem : (Q, i, j) ∈ T`. Simplify using `only [T, Finset.mem_product, Set.Finite.mem_toFinset, Finset.mem_univ, and_true]`. Conclude with `hmemF Q hQ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : f (Q, i, j) ≤ d` using `le_trans (Finset.le_sup hmem) hd`. Establish `hspec` using `Classical.choose_spec (exists_pow_mul_v_le_one_of_mem p hp Q hQ ((A i j) Q))`. Establish `hfQ : f (Q, i, j) = Classical.choose (exists_pow_mul_v_le_one_of_mem p hp Q hQ ((A i j) Q))`. Simplify using `only [f, dif_pos hQ]`. Conclude with `hspec d (hfQ ▸ hle)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pow_clears_denom_over :
     ∀ {E : Type} [Field E] [NumberField E] (p : ℕ), p.Prime → ∀ (n : ℕ) (A : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E)), ∃ c : ℕ, ∀ d : ℕ, c ≤ d → ∀ Q : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ Q.asIdeal → ∀ i j, Valued.v ((((p ^ d : ℕ) : FiniteAdeleRing (𝓞 E) E) * A i j) Q) ≤ 1 := by

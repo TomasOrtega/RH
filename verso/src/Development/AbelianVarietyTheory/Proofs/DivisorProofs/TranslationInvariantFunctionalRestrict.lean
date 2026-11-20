@@ -19,7 +19,7 @@ def dSnd {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (F : ℝ × Y →
 
 omit [FiniteDimensional ℝ Y] in
 /- English proof (translation)
-The claim follows from `(hF.fderiv_right (m := ∞) (by simp)).clm_comp contDiff_const`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_dSnd {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {F : ℝ × Y → E} (hF : ContDiff ℝ ∞ F) :
     ContDiff ℝ ∞ (dSnd F) :=
@@ -27,14 +27,14 @@ theorem contDiff_dSnd {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {F :
 
 omit [FiniteDimensional ℝ Y] in
 /- English proof (translation)
-The claim follows from `(hF.differentiable (by simp) (s, x)).hasFDerivAt.comp x (hasFDerivAt_prodMk_right s x)`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_slice {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {F : ℝ × Y → E} (hF : ContDiff ℝ ∞ F)
     (s : ℝ) (x : Y) : HasFDerivAt (fun x => F (s, x)) (dSnd F (s, x)) x :=
   (hF.differentiable (by simp) (s, x)).hasFDerivAt.comp x (hasFDerivAt_prodMk_right s x)
 
 /- English proof (translation)
-Use `haveI : ProperSpace Y := FiniteDimensional.proper_real Y`. Establish `hc : Continuous (dSnd F)` using `(contDiff_dSnd hF).continuous`. Take `⟨C, hC⟩` from `((isCompact_uIcc (a := (0 : ℝ)) (b := 1)).prod (isCompact_closedBall x 1)).exists_bound_of_continuousOn hc.continuousOn`. Establish `c1 : ∀ y, Continuous fun s : ℝ => F (s, y)` using `fun y => hF.continuous.comp (by fun_prop)`. Conclude with `intervalIntegral.hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun x s => F (s, x)) (F' := fun x s => dSnd F (s, x)) (s := Metric.closedBall x 1) (bound := fun _ => C) (Metric.closedBall_mem_nhds x one_pos) (Eventually.of_forall fun y => (c1 y).aestronglyMeasurable) ((c1 x …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_integral {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {F : ℝ × Y → E}
     (hF : ContDiff ℝ ∞ F) (x : Y) :
@@ -53,15 +53,15 @@ theorem hasFDerivAt_integral {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ 
     (Eventually.of_forall fun s _ y _ => hasFDerivAt_slice hF s y)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `E _ _ F hF`. Use `⟨contDiff_zero.2 (continuous_iff_continuousAt.2 fun a => (hasFDerivAt_integral hF a).continuousAt), fun x w C hw h => ?_⟩` and prove the remaining obligations. Simplify using `only [norm_iteratedFDeriv_zero] at h ⊢`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1` using `intervalIntegral.norm_integral_le_of_norm_le_const (a := (0 : ℝ)) (b := 1) (C := C) (f := fun s => w • F (s, x)) (fun s hs => by`. Rewrite `hs` using `[Set.uIoc_of_le zero_le_one]`. Rewrite using `[norm_smul, Real.norm_of_nonneg hw]`. Conclude with `h s (Set.Ioc_subset_Icc_self hs))`. Rewrite `h1` using `[intervalIntegral.integral_smul, norm_smul, Real.norm_of_nonneg hw]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`. Consider the case `succ n ih`. Introduce `E _ _ F hF`. Take `⟨h1, h2⟩` from `ih _ (dSnd F) (contDiff_dSnd hF)`. Establish `e : fderiv ℝ (fun x => ∫ s in (0 : ℝ)..1, F (s, x)) = fun x => ∫ s in (0 : ℝ)..1, dSnd F (s, x)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun a => (hasFDerivAt_integral hF a).fderiv`. Use `⟨?_, fun x w C hw h => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_fderiv, e]`. Conclude with `⟨fun a => (hasFDerivAt_integral hF a).differentiableAt, by simp, h1⟩`. Rewrite using `[← norm_iteratedFDeriv_fderiv, e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2 x w C hw fun s hs => ?_` and prove the remaining obligations. Establish `e' : fderiv ℝ (fun x => F (s, x)) = fun x => dSnd F (s, x)`. Use function extensionality and compare the values at `fun a => (hasFDerivAt_slice hF s a).fderiv`. Use `h s hs` as an intermediate fact. Rewrite `this` using `[← norm_iteratedFDeriv_fderiv, e']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem smooth_bound (n : ℕ) : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (F : ℝ × Y → E),
     ContDiff ℝ ∞ F → ContDiff ℝ n (fun x => ∫ s in (0 : ℝ)..1, F (s, x)) ∧
@@ -96,15 +96,13 @@ theorem smooth_bound (n : ℕ) : ∀ (E : Type) [NormedAddCommGroup E] [NormedSp
       rwa [← norm_iteratedFDeriv_fderiv, e'] at this
 
 /- English proof (translation)
-Establish `hF : ContDiff ℝ ∞ (fun p : ℝ × Y => K ((B₀ + p.1 • B₁) p.2))`. Use `(K.smooth ⊤).comp ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply]`. Use `fun_prop`. Use `⟨⟨fun x => ∫ s in (0 : ℝ)..1, K ((B₀ + s • B₁) x), contDiff_infty.2 fun n => (smooth_bound n ℂ _ hF).1, fun k n => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c ^ k * SchwartzMap.seminorm ℝ k n K * (‖B₀‖ + ‖B₁‖) ^ n, fun x => ?_⟩` and prove the remaining obligations. Use `(smooth_bound n ℂ _ hF).2 x _ _ (by positivity) fun s hs => ?_` and prove the remaining obligations. Use `set B := B₀ + s • B₁ with hB`. Establish `hn : ‖B‖ ≤ ‖B₀‖ + ‖B₁‖`. Use `(norm_add_le _ _).trans (add_le_add le_rfl ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_smul, Real.norm_of_nonneg hs.1]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) hs.2`. Establish `h` using `ContinuousLinearMap.iteratedFDeriv_comp_right B (K.smooth ⊤) x (i := n) (by exact_mod_cast le_top)`. Express the relevant statement in the definitionally equal form `‖x‖ ^ k * ‖iteratedFDeriv ℝ n (K ∘ B) x‖ ≤ _`. Rewrite using `[h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hc s hs x`. Conclude with `ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _`. Use `_ = c ^ k * (‖B x‖ ^ k * ‖iteratedFDeriv ℝ n K (B x)‖) * ‖B‖ ^ n := by`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`. Conclude with `SchwartzMap.le_seminorm ℝ k n K _`.
+A detailed English derivation is pending.
 -/
 theorem exists_schwartz_average {Z : Type} [NormedAddCommGroup Z] [NormedSpace ℝ Z] (K : 𝓢(Z, ℂ))
     (B₀ B₁ : Y →L[ℝ] Z) (c : ℝ) (hc : ∀ s ∈ Set.Icc (0 : ℝ) 1, ∀ x, ‖x‖ ≤ c * ‖(B₀ + s • B₁) x‖) (hc0 : 0 ≤ c) :
@@ -142,9 +140,9 @@ section Box
 variable {A B : Type} [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
 
 /- English proof (translation)
-Establish `h` using `ContinuousLinearMap.iteratedFDeriv_comp_right e (f.smooth ⊤) x (i := i) (by exact_mod_cast le_top)`. Establish `h' : (fun y => f (e y)) = (f ∘ e)` using `rfl`. Rewrite using `[h', h]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun _ _ => he`. Use `_ = _ := mul_one _`.
+A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_comp_le (e : A →L[ℝ] B) (he : ‖e‖ ≤ 1) (f : 𝓢(B, ℂ)) (i : ℕ) (x : A) :
     ‖iteratedFDeriv ℝ i (fun y => f (e y)) x‖ ≤ ‖iteratedFDeriv ℝ i f (e x)‖ := by
@@ -159,17 +157,13 @@ theorem norm_iteratedFDeriv_comp_le (e : A →L[ℝ] B) (he : ‖e‖ ≤ 1) (f 
     _ = _ := mul_one _
 
 /- English proof (translation)
-Establish `hs₁ : ContDiff ℝ ∞ (fun y : A × B => f₁ y.1)` using `(f₁.smooth ⊤).comp contDiff_fst`. Establish `hs₂ : ContDiff ℝ ∞ (fun y : A × B => f₂ y.2)` using `(f₂.smooth ⊤).comp contDiff_snd`. Use `⟨⟨fun x => f₁ x.1 * f₂ x.2, hs₁.mul hs₂, fun k n => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Use `⟨∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (SchwartzMap.seminorm ℝ k i f₁ * SchwartzMap.seminorm ℝ 0 (n - i) f₂ + SchwartzMap.seminorm ℝ 0 i f₁ * SchwartzMap.seminorm ℝ k (n - i) f₂), fun x => ?_⟩` and prove the remaining obligations. Establish `hx : ‖x‖ ^ k ≤ ‖x.1‖ ^ k + ‖x.2‖ ^ k`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Prod.norm_def]`. Establish `p1` using `pow_nonneg (norm_nonneg x.1) k`. Establish `p2` using `pow_nonneg (norm_nonneg x.2) k`. Break down `le_total ‖x.1‖ ‖x.2‖ with h | h` into its components or cases. Rewrite using `[max_eq_right h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[max_eq_left h]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL` using `norm_iteratedFDeriv_mul_le hs₁ hs₂ x (n := n) (by exact_mod_cast le_top)`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `mul_le_mul hx (hL.trans ?_) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `norm_iteratedFDeriv_comp_le (ContinuousLinearMap.fst ℝ A B) (ContinuousLinearMap.norm_fst_le ..) f₁ i x`. Conclude with `norm_iteratedFDeriv_comp_le (ContinuousLinearMap.snd ℝ A B) (ContinuousLinearMap.norm_snd_le ..) f₂ (n - i) x`.
-
-Use `_ = ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * ((‖x.1‖ ^ k * ‖iteratedFDeriv ℝ i f₁ x.1‖) * ‖iteratedFDeriv ℝ (n - i) f₂ x.2‖ + ‖iteratedFDeriv ℝ i f₁ x.1‖ * (‖x.2‖ ^ k * ‖iteratedFDeriv ℝ (n - i) f₂ x.2‖)) := by`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Use `_ ≤ _ := by`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `gcongr`.
-
-Conclude with `SchwartzMap.le_seminorm ℝ k i f₁ _`. Conclude with `SchwartzMap.norm_iteratedFDeriv_le_seminorm ℝ f₂ _ _`. Conclude with `SchwartzMap.norm_iteratedFDeriv_le_seminorm ℝ f₁ _ _`. Conclude with `SchwartzMap.le_seminorm ℝ k (n - i) f₂ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_schwartz_prod (f₁ : 𝓢(A, ℂ)) (f₂ : 𝓢(B, ℂ)) :
     ∃ f : 𝓢(A × B, ℂ), ∀ x, f x = f₁ x.1 * f₂ x.2 := by
@@ -215,9 +209,9 @@ section Main
 variable {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y]
 
 /- English proof (translation)
-Set `b : ContDiffBump (0 : Y)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : ContDiff ℝ ∞ (fun x => ((b x : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Establish `h2 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Use `⟨h2.toSchwartzMap h1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((b 0 : ℝ) : ℂ) = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[b.one_of_mem_closedBall (by simp [b])]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_schwartz_zero_eq_one [FiniteDimensional ℝ Y] : ∃ g : 𝓢(Y, ℂ), g 0 = 1 := by
   let b : ContDiffBump (0 : Y) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -229,27 +223,25 @@ theorem exists_schwartz_zero_eq_one [FiniteDimensional ℝ Y] : ∃ g : 𝓢(Y, 
   simp
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `LinearMap.exists_leftInverse_of_injective P.subtype (Submodule.ker_subtype P)`. Set `π : Y →L[ℝ] Y` to `LinearMap.toContinuousLinearMap (LinearMap.id - P.subtype ∘ₗ q)`. Establish `hπ : ∀ x, π x = x - (q x : Y)` using `fun x => rfl`. Establish `hπP : ∀ p ∈ P, π p = 0` using `fun p hp => by`. Use `LinearMap.congr_fun hq ⟨p, hp⟩` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.id_apply] at this`. Rewrite using `[hπ, this, sub_self]`. Set `e` to `Module.finBasis ℝ Y`. Set `L : Fin (Module.finrank ℝ Y) → Y →L[ℝ] ℝ` to `fun j => LinearMap.toContinuousLinearMap (e.coord j ∘ₗ (π : Y →ₗ[ℝ] Y))`. Establish `hL : ∀ j x, L j x = e.repr (π x) j` using `fun j x => rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨χ, hχ⟩` from `exists_schwartz_zero_eq_one (Y := Y)`. Take `⟨H, hH⟩` from `exists_schwartz_prod f χ`. Set `B₀ : Y →L[ℝ] Y × Y` to `ContinuousLinearMap.inl ℝ Y Y`. Set `B₁ : Y →L[ℝ] Y × Y` to `(-π).prod π`. Establish `hB : ∀ (s : ℝ) x, (B₀ + s • B₁) x = (x - s • π x, s • π x)` using `fun s x => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[B₀, B₁, sub_eq_add_neg]`. Establish `hlow : ∀ s ∈ Set.Icc (0 : ℝ) 1, ∀ x, ‖x‖ ≤ 2 * ‖(B₀ + s • B₁) x‖` using `fun s _ x => by`. Rewrite using `[hB]`. Establish `h1` using `norm_fst_le (x - s • π x, s • π x)`. Establish `h2` using `norm_snd_le (x - s • π x, s • π x)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `norm_add_le (x - s • π x) (s • π x)`. Rewrite `h3` using `[sub_add_cancel]`. Simplify using `only at h1 h2`. Combine the linear equalities and inequalities to obtain the conclusion. Set `K : Fin (Module.finrank ℝ Y) → 𝓢(Y × Y, ℂ)` to `fun j => LineDeriv.lineDerivOpCLM ℂ 𝓢(Y × Y, ℂ) ((e j, -e j) : Y × Y) H`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression.
 
-Establish `hK : ∀ j z, K j z = fderiv ℝ H z (e j, -e j)` using `fun j z => by`. Simplify using `only [K, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv]`. Use `choose g hg using fun j => exists_schwartz_average (K j) B₀ B₁ 2 hlow zero_le_two`. Use `⟨_, L, g, fun j p hp => by rw [hL, hπP p hp]; simp, fun x => ?_⟩` and prove the remaining obligations. Establish `hd : ∀ s : ℝ, HasDerivAt (fun s : ℝ => -H ((B₀ + s • B₁) x)) (∑ j, (L j x : ℂ) * K j ((B₀ + s • B₁) x)) s` using `fun s => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : HasDerivAt (fun s : ℝ => (B₀ + s • B₁) x) (B₁ x) s`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply]`. Simplify using `using ((hasDerivAt_id s).smul_const (B₁ x)).const_add (B₀ x)`. Establish `h2` using `((H.differentiable _).hasFDerivAt.comp_hasDerivAt s h1).neg`. Use `h2.congr_deriv ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : -(B₁ x) = ∑ j, L j x • ((e j, -e j) : Y × Y)`. Establish `h4 : ∑ j, L j x • e j = π x` using `e.sum_repr (π x)`. Use `ext`. Simplify using `[B₁, Prod.fst_sum, h4]`. Simplify using `[B₁, Prod.snd_sum, h4]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_neg, h3, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_smul, hK, Complex.real_smul]`. Establish `hcK : ∀ j, Continuous fun s : ℝ => K j ((B₀ + s • B₁) x)` using `fun j => by`. Use `(K j).continuous.comp ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `fun_prop`. Establish `hI` using `intervalIntegral.integral_eq_sub_of_hasDerivAt (a := (0 : ℝ)) (b := 1) (fun s _ => hd s) ((continuous_finset_sum _ fun j _ => continuous_const.mul (hcK j)).intervalIntegrable _ _)`. Rewrite `hI` using `[intervalIntegral.integral_finset_sum (f := fun j s => (L j x : ℂ) * K j ((B₀ + s • B₁) x)) fun j _ => (continuous_const.mul (hcK j)).intervalIntegrable _ _]`. Simplify using `only [intervalIntegral.integral_const_mul, ← hg] at hI`. Rewrite using `[hI, hB, hB, hH, hH]`.
-
-Establish `h5 : f (x - π x) = 0` using `hf _ (by rw [hπ, sub_sub_cancel]; exact (q x).2)`. Simplify using `[h5, hχ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_hadamard [FiniteDimensional ℝ Y] (P : Submodule ℝ Y) (f : 𝓢(Y, ℂ)) (hf : ∀ p ∈ P, f p = 0) :
     ∃ (r : ℕ) (L : Fin r → Y →L[ℝ] ℝ) (g : Fin r → 𝓢(Y, ℂ)), (∀ j, ∀ p ∈ P, L j p = 0) ∧
@@ -314,19 +306,17 @@ theorem exists_hadamard [FiniteDimensional ℝ Y] (P : Submodule ℝ Y) (f : �
 open Complex GlobalTheory.CharFormDeriv in
 
 /- English proof (translation)
-Set `ft : ℝ → 𝓢(Y, ℂ)` to `fun t => SchwartzMap.smulLeftCLM ℂ (fun x : Y => Complex.exp ((I * t) * (L x : ℂ))) f`. Establish `hft : ∀ t x, ft t x = Complex.exp ((I * t) * (L x : ℂ)) * f x` using `fun t x => by`. Simplify using `only [ft, SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_char L t), smul_eq_mul]`. Establish `hTft : ∀ t : ℝ, T (ft t) = T f` using `fun t => hT t f (ft t) (hft t)`. Set `u : ℝ → 𝓢(Y, ℂ)` to `fun t => (t : ℂ)⁻¹ • (ft t - f) - I • g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hu : ∀ t : ℝ, ∀ x, u t x = rem t (L x) * f x` using `fun t x => by`. Simplify using `only [u, SchwartzMap.sub_apply, SchwartzMap.smul_apply, hft, hg, rem, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hTu : ∀ t : ℝ, T (u t) = -I * T g` using `fun t => by`. Simplify using `only [u, map_sub, map_smul, hTft, sub_self, smul_zero, smul_eq_mul, zero_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hlim : Tendsto u (nhdsWithin 0 {0}ᶜ) (nhds 0)`. Rewrite using `[(schwartz_withSeminorms ℂ Y ℂ).tendsto_nhds u 0]`. Introduce and unpack `⟨k, n⟩ ε hε`. Use `set K := 3 * 2 ^ n * (1 + ‖L‖) ^ (n + 2) * (2 ^ (k + 2) * ((Finset.Iic (k + 2, n)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) f) with hK`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hK0 : 0 ≤ K` using `mul_nonneg (by positivity) (mul_nonneg (by positivity) (apply_nonneg _ _))`. Establish `hδ : 0 < min 1 (ε / (K + 1))` using `lt_min one_pos (div_pos hε (by linarith))`. Use `filter_upwards [nhdsWithin_le_nhds (Metric.ball_mem_nhds (0 : ℝ) hδ), self_mem_nhdsWithin] with t ht ht0`. Rewrite `ht` using `[Metric.mem_ball, Real.dist_eq, sub_zero]`. Establish `ht0' : t ≠ 0` using `ht0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht1 : |t| ≤ 1` using `(lt_of_lt_of_le ht (min_le_left _ _)).le`. Establish `htε : |t| < ε / (K + 1)` using `lt_of_lt_of_le ht (min_le_right _ _)`. Rewrite using `[sub_zero]`. Use `show SchwartzMap.seminorm ℂ k n (u t) < ε`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcont : Tendsto (fun t => T (u t)) (nhdsWithin 0 {0}ᶜ) (nhds (T 0))` using `(T.continuous.tendsto 0).comp hlim`. Establish `hconst : Tendsto (fun t => T (u t)) (nhdsWithin (0 : ℝ) {0}ᶜ) (nhds (-I * T g))`. Simplify using `only [hTu]`. Conclude with `tendsto_const_nhds`. Establish `heq` using `tendsto_nhds_unique hconst hcont`.
-
-Rewrite `heq` using `[map_zero, neg_mul, neg_eq_zero]`. Conclude with `(mul_eq_zero.mp heq).resolve_left Complex.I_ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_linear_mul (T : 𝓢(Y, ℂ) →L[ℂ] ℂ) (L : Y →L[ℝ] ℝ)
     (hT : ∀ t : ℝ, ∀ f f' : 𝓢(Y, ℂ), (∀ x, f' x = Complex.exp ((I * t) * (L x : ℂ)) * f x) → T f' = T f)
@@ -372,13 +362,13 @@ theorem apply_linear_mul (T : 𝓢(Y, ℂ) →L[ℂ] ℂ) (L : Y →L[ℝ] ℝ)
 end Main
 
 /- English proof (translation)
-Introduce `Y _ _ _ P ℓ h f g hfg`. Take `⟨r, L, u, hL, hu⟩` from `exists_hadamard P (f - g) fun p hp => by`. Rewrite using `[SchwartzMap.sub_apply, hfg p hp, sub_self]`. Set `v : Fin r → 𝓢(Y, ℂ)` to `fun j => SchwartzMap.smulLeftCLM ℂ (fun x => ((L j x : ℝ) : ℂ)) (u j)`. Establish `hv : ∀ j x, v j x = (L j x : ℂ) * u j x` using `fun j x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `htg : Function.HasTemperateGrowth fun x : Y => ((L j x : ℝ) : ℂ)` using `(Complex.ofRealCLM.comp (L j)).hasTemperateGrowth`. Simplify using `only [v, SchwartzMap.smulLeftCLM_apply_apply htg, smul_eq_mul]`. Establish `e : f - g = ∑ j, v j`. Use extensionality with `x`. Rewrite using `[hu, SchwartzMap.sum_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => (hv j x).symm`. Rewrite using `[← sub_eq_zero, ← map_sub, e, map_sum]`. Use `Finset.sum_eq_zero fun j _ => apply_linear_mul ℓ (L j) (fun t a b hab => ?_) (u j) (v j) (hv j)` and prove the remaining obligations. Use `h ((-t / (2 * Real.pi)) • (L j : Y →ₗ[ℝ] ℝ)) (fun p hp => by simp [hL j p hp]) a b (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[hab, ech]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `only [LinearMap.smul_apply, ContinuousLinearMap.coe_coe, smul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem eq_of_eqOn : ∀ {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] [FiniteDimensional ℝ Y] (P : Submodule ℝ Y)
     (ℓ : SchwartzMap Y ℂ →L[ℂ] ℂ),

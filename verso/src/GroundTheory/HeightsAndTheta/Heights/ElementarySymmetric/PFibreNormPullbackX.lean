@@ -13,37 +13,33 @@ noncomputable section
 namespace FibreNormPullback
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D e L q hV hBir he hL hL0`. Establish `: CharZero Ω` using `charZero_of_isArithVar hV`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, aeval y (L j) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0` using `hG K ι Ω y D e L hV hBir he hL hL0 1 (X 0) (isHomogeneous_X ℚ 0) (by rw [aeval_X]; exact h 0)`. Conclude with `X_ne_zero _ h0`. Take `⟨hfin, hC'⟩` from `hC K ι Ω y D e L q hV hBir he hL hL0`. Take `⟨M₀, hM₀, hI'⟩` from `hI K ι Ω y D e L q hV hBir he hL hL0`. Establish `hR'` using `hR K ι Ω y D e L q hV hBir he hL hL0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : IsMultiHomogIdeal (mCoordIdeal y)` using `hV.2.1.2.1`. Use `set n := Module.finrank (pullField y L) Ω`. Establish `hn1 : 1 ≤ n` using `Module.finrank_pos`. Use `⟨n, M₀, hn1, by exact_mod_cast hM₀, fun τ s hs hs0 => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hcn⟩` from `hC' τ s hs j hj`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF⟩` from `hI' τ s hs j c hc`. Establish `hRc` using `hR' τ s hs j c hc`. Take `⟨-, _, hc0, hch, -⟩` from `hc`. Establish `hM₀q : ((M₀ : ℚ) ^ τ) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (show M₀ ≠ 0 by omega))`. Use `⟨F, ?_, ?_, fun ζ hζ S hS M hM hrep => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `rfl`. Rewrite `hF` using `[map_zero, eq_comm, smul_eq_zero]`. Conclude with `hF.elim hM₀q (hcn hs0)`. Apply `isHomogeneous_of_map` to reduce the goal to its premises. Rewrite using `[hF, smul_eq_C_mul, show n * q * τ = 0 + n * (q * τ) by ring]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(isHomogeneous_C _ _).mul (hch n le_rfl)`. Establish `hmapF : eval ζ (map (Int.castRingHom ℂ) F) = (M₀ : ℂ) ^ τ * eval ζ (map (algebraMap ℚ ℂ) (c n))`. Establish `h1 : map (Int.castRingHom ℂ) F = map (algebraMap ℚ ℂ) (map (Int.castRingHom ℚ) F)`. Rewrite using `[map_map]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, hF, smul_eq_C_mul, map_mul, map_C, eval_mul, eval_C]`. Simplify using the standard rewrite rules. Use `set B := M * ‖ζ‖ ^ (q * τ) with hBdef`. Establish `hB0 : 0 ≤ B` using `mul_nonneg hM (pow_nonneg (norm_nonneg _) _)`. Establish `hroot : ∀ w : ℂ, ∑ i ∈ Finset.range (n + 1), eval ζ (map (algebraMap ℚ ℂ) (c i)) * w ^ (n - i) = 0 → ‖w‖ ≤ B`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Introduce `w hw`. Take `⟨z, hz, t, ht0, hLz, hval⟩` from `hRc ζ hζ w hw`. Take `⟨z', hz'S, r, hr0, rfl⟩` from `hS z hz ⟨t, hLz⟩`. Establish `hz'm : z' ∈ mcPts (mCoordIdeal y)`. Establish `h1` using `mcPts_smul hP (fun k => (r k)⁻¹) (fun k => inv_ne_zero (hr0 k)) hz`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `[hr0 p.1]`. Take `⟨dg, dh, g, h, hg, hh, hd, hgh, hz'0, hle⟩` from `hrep z' hz'S hz'm`. Establish `hgz` using `eval_smul_homog g dg hg r z'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hhz` using `eval_smul_homog h dh hh r z'`. Establish `hhz0 : eval (fun p => r p.1 * z' p) (map (Int.castRingHom ℂ) h) ≠ 0`. Rewrite using `[hhz]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hr0 k)) hz'0`. Establish `hv` using `hval dg dh g h hg hh hd hgh hhz0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRg : (∏ k, r k ^ dg k) = (∏ k, r k ^ dh k) * (∏ k, r k ^ e k) ^ (q * τ)`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hd k, ← pow_mul, ← pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnormL : ‖∏ k, r k ^ e k‖ * ‖fun j => eval z' (map (Int.castRingHom ℂ) (L j))‖ = ‖t‖ * ‖ζ‖`. Establish `h1 : (∏ k, r k ^ e k) • (fun j => eval z' (map (Int.castRingHom ℂ) (L j))) = t • ζ`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← eval_smul_homog (L j) e (hL j) r z', hLz j]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← norm_smul, h1, norm_smul]`. Establish `hpos : 0 < ‖t‖ ^ (q * τ) * ‖eval (fun p => r p.1 * z' p) (map (Int.castRingHom ℂ) h)‖` using `mul_pos (pow_pos (norm_pos_iff.mpr ht0) _) (norm_pos_iff.mpr hhz0)`. Use `le_of_mul_le_mul_right ?_ hpos` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hv, norm_mul, norm_mul, norm_pow]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = ‖∏ k, r k ^ dg k‖ * ‖eval z' (map (Int.castRingHom ℂ) g)‖ := by rw [hgz, norm_mul]`. Use `_ ≤ ‖∏ k, r k ^ dg k‖ * (M * ‖fun j => eval z' (map (Int.castRingHom ℂ) (L j))‖ ^ (q * τ) * ‖eval z' (map (Int.castRingHom ℂ) h)‖) := mul_le_mul_of_nonneg_left hle (norm_nonneg _)`. Use `_ = M * (‖∏ k, r k ^ e k‖ * ‖fun j => eval z' (map (Int.castRingHom ℂ) (L j))‖) ^ (q * τ) * (‖∏ k, r k ^ dh k‖ * ‖eval z' (map (Int.castRingHom ℂ) h)‖) := by`. Rewrite using `[hRg, norm_mul, norm_pow]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ = B * (‖t‖ ^ (q * τ) * ‖eval (fun p => r p.1 * z' p) (map (Int.castRingHom ℂ) h)‖) := by`. Rewrite using `[hnormL, hhz, norm_mul, hBdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `norm_last_le (fun i => eval ζ (map (algebraMap ℚ ℂ) (c i))) (by simp [hc0]) hB0 hroot`.
-
-Rewrite using `[hmapF, norm_mul, norm_pow, Complex.norm_natCast]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hBdef, mul_pow, ← pow_mul, show q * τ * n = n * q * τ by ring]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem proof_dehom (hG : PullFormsGeneric.Statement) (hC : FibreNormDehomCharpoly.Statement)
     (hI : FibreNormDehomIntegral.Statement) (hR : FibreNormDehomRoots.Statement) :

@@ -12,7 +12,7 @@ section ConjInvariance
 variable {H : Type} [Group H]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Simplify `hz` using `[mul_assoc]`. Introduce `hy`. Conclude with `⟨x⁻¹ * y * x, hy, by simp [mul_assoc]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_map_conj_iff (B : Subgroup H) (x y : H) :
     y ∈ B.map (MulAut.conj x).toMonoidHom ↔ x⁻¹ * y * x ∈ B := by
@@ -23,7 +23,7 @@ theorem mem_map_conj_iff (B : Subgroup H) (x y : H) :
     exact ⟨x⁻¹ * y * x, hy, by simp [mul_assoc]⟩
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [mem_map_conj_iff, mul_inv_rev]`. Simplify using `[mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_conj_mul (B : Subgroup H) (x s : H) :
     (B.map (MulAut.conj s).toMonoidHom).map (MulAut.conj x).toMonoidHom =
@@ -36,13 +36,13 @@ def stabInv (A B : Subgroup H) (x : H) : ℚ :=
   ((Nat.card (A ⊓ B.map (MulAut.conj x).toMonoidHom : Subgroup H) : ℕ) : ℚ)⁻¹
 
 /- English proof (translation)
-Unfold `stabInv`. Establish `e : (A ⊓ B.map (MulAut.conj (a * x * b)).toMonoidHom : Subgroup H) = (A ⊓ B.map (MulAut.conj x).toMonoidHom : Subgroup H).map (MulAut.conj a).toMonoidHom`. Use extensionality with `y`. Simplify using `only [Subgroup.mem_inf, mem_map_conj_iff]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hyA, hyB⟩`. Use `⟨A.mul_mem (A.mul_mem (A.inv_mem ha) hyA) ha, ?_⟩` and prove the remaining obligations. Use `B.mul_mem (B.mul_mem hb hyB) (B.inv_mem hb)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hzA, hzB⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `A.mul_mem (A.mul_mem ha hzA) (A.inv_mem ha)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `B.mul_mem (B.mul_mem (B.inv_mem hb) hzB) hb` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Rewrite using `[e, Nat.card_congr ((A ⊓ B.map (MulAut.conj x).toMonoidHom).equivMapOfInjective _ (MulAut.conj a).injective).toEquiv.symm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabInv_mul (A B : Subgroup H) (x : H) {a b : H} (ha : a ∈ A) (hb : b ∈ B) :
     stabInv A B (a * x * b) = stabInv A B x := by
@@ -69,7 +69,7 @@ theorem stabInv_mul (A B : Subgroup H) (x : H) {a b : H} (ha : a ∈ A) (hb : b 
     (MulAut.conj a).injective).toEquiv.symm]
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, rfl⟩` from `(DoubleCoset.eq _ _ _ _).1 h`. Conclude with `(stabInv_mul A B x ha hb).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stabInv_eq_of_mk_eq (A B : Subgroup H) {x y : H}
     (h : DoubleCoset.mk A B x = DoubleCoset.mk A B y) : stabInv A B x = stabInv A B y := by
@@ -99,9 +99,9 @@ theorem dcMulRight_mk (A B : Subgroup H) (s x : H) :
       DoubleCoset.mk A B (x * s) := rfl
 
 /- English proof (translation)
-Rewrite using `[← finsum_comp_equiv (dcMulRight A B s)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Unfold `stabInv`. Rewrite using `[map_conj_mul]`. Use `stabInv_eq_of_mk_eq A B ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← dcMulRight_mk, DoubleCoset.out_eq', DoubleCoset.out_eq']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finsum_stabInv_conj (A B : Subgroup H) (s : H) :
     (∑ᶠ q : DoubleCoset.Quotient (A : Set H) ((B.map (MulAut.conj s).toMonoidHom : Subgroup H) : Set H),
@@ -117,9 +117,9 @@ theorem finsum_stabInv_conj (A B : Subgroup H) (s : H) :
 end ConjInvariance
 
 /- English proof (translation)
-Introduce `G _ Γ' T C t ht _`. Establish `hsub : (C.map (MulAut.conj t).toMonoidHom).subgroupOf T = (C.subgroupOf T).map (MulAut.conj (⟨t, ht⟩ : T)).toMonoidHom`. Use extensionality with `y`. Rewrite using `[Subgroup.mem_subgroupOf, mem_map_conj_iff, mem_map_conj_iff, Subgroup.mem_subgroupOf]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `massC`. Rewrite using `[hsub]`. Conclude with `finsum_stabInv_conj _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem massC_map_conj : ∀ {G : Type} [Group G] (Γ' T C : Subgroup G) (t : G), t ∈ T → C ≤ T →
     massC Γ' T (C.map (MulAut.conj t).toMonoidHom) = massC Γ' T C := by

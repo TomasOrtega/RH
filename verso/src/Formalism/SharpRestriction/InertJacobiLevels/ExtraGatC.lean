@@ -8,11 +8,11 @@ namespace Formalism.MainNotions.Inhab
 open Formalism.BasicNotions Formalism.BasicNotions.Examples₂ Formalism.BasicNotions.Examples₂.LevelValuationRings Formalism.MainNotions.G Formalism.FrobeniusOrbits NumberField
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : ((algebraMap (On p n) (Kn p n)).comp (algebraMap (Wn p n) (On p n))) 2 = ((algebraMap (On p n) (Kn p n)).comp (algebraMap (Wn p n) (On p n))) 0`. Rewrite using `[map_ofNat, map_zero, h]`. Establish `h2 : (2 : Wn p n) = 0` using `inj_WK p n h1`. Establish `h3 : ((2 : ℕ) : GaloisField p n) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (WittVector.constantCoeff (p := p) (R := GaloisField p n)) h2` as an intermediate fact. Rewrite `this` using `[map_ofNat, map_zero]`. Conclude with `this` after adjusting the coercions. Establish `h4` using `(CharP.cast_eq_zero_iff (GaloisField p n) p 2).1 h3`. Use `Nat.le_of_dvd (by norm_num) h4` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem two_ne_Kn (p : ℕ) [Fact p.Prime] (h5 : 5 ≤ p) (n : ℕ) : (2 : Kn p n) ≠ 0 := by
   intro h
@@ -43,7 +43,7 @@ def gatOfC (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Psi) →
     e := e }
 
 /- English proof (translation)
-The claim follows from `haveI : Fact p.Prime := ⟨S.prime⟩ gat_M_bot _ fun _ => levAll_M _ (two_ne_Kn p S.five_le _)`.
+A detailed English derivation is pending.
 -/
 theorem gatOfC_M (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Psi) → DomWeight (R.N 0))
     (comp : Type) [Fintype comp] (e : ℕ) : (gatOfC S T r lam comp e).M = ⊥ :=
@@ -71,7 +71,7 @@ def gatTiesC : GatTies (withGatC D h0 rOf eOf bs) where
   gat_lam := fun _ _ _ _ _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `gatOfC_M _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem withGatC_M (u w h) : ((withGatC D h0 rOf eOf bs).gat u w h).M = ⊥ := gatOfC_M _ _ _ _ _ _
 
@@ -81,7 +81,7 @@ Both sides reduce to the same expression.
 theorem withGatC_e (u w h) : ((withGatC D h0 rOf eOf bs).gat u w h).e = eOf (D.what₂.places.resChar w) := rfl
 
 /- English proof (translation)
-The claim follows from `levAll_trans _ L L' hL hL'`.
+A detailed English derivation is pending.
 -/
 theorem withGatC_trans (u w h) (c : ((withGatC D h0 rOf eOf bs).gat u w h).comp)
     (L L' : ((withGatC D h0 rOf eOf bs).gat u w h).P.Tup) (hL : ((withGatC D h0 rOf eOf bs).gat u w h).P.IsLatTup L)
@@ -93,7 +93,7 @@ def withGatC_comp (u w h) : ((withGatC D h0 rOf eOf bs).gat u w h).comp ≃ ((wi
   Equiv.refl _
 
 /- English proof (translation)
-The claim follows from `(D.eTau.apply_symm_apply _).trans (orbEquiv_idx _ _ hT hx s)`.
+A detailed English derivation is pending.
 -/
 theorem gatTiesC_pos_base (u) (w : D.what₂.places.Pl)
     (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
@@ -120,7 +120,7 @@ variable (u : D.what₂.Word) (w : D.what₂.places.Pl)
   (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
 
 /- English proof (translation)
-Introduce `t ht t' ht' e` and use `tau1P_injective _ (orbIdx_injOn _ _ (injOn_tau1P D (served_of h) _ hB) ⟨t, ht, rfl⟩ ⟨t', ht', rfl⟩ e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vOfCB_injOn
     (hB : ∀ t ∈ B u (D.what₂.places.resChar w), ∀ t' ∈ B u (D.what₂.places.resChar w), ∀ i : ℕ,
@@ -129,7 +129,7 @@ theorem vOfCB_injOn
   tau1P_injective _ (orbIdx_injOn _ _ (injOn_tau1P D (served_of h) _ hB) ⟨t, ht, rfl⟩ ⟨t', ht', rfl⟩ e)
 
 /- English proof (translation)
-The claim follows from `order_gPsi D (served_of h)`.
+A detailed English derivation is pending.
 -/
 theorem withGatCB_n' (v) :
     ((withGatCB D h0 rOf eOf B).gat u w h).P.n' v = addOrderOf (hP D (D.what₂.places.resChar w)) :=
@@ -141,7 +141,7 @@ Both sides reduce to the same expression.
 theorem withGatCB_r : ((withGatCB D h0 rOf eOf B).gat u w h).P.r = rOf u (D.what₂.places.resChar w) := rfl
 
 /- English proof (translation)
-Establish `h1` using `gatTiesC_pos_base D h0 rOf eOf (fun u p => tau1P D.R.toFrame '' B u p) u w h (injOn_tau1P D (served_of h) _ hB) ⟨t0, ht0, rfl⟩ s`. Conclude with `congrArg (fun x : ↥(D.R.Psi) => (x : D.R.GG)) (h1.trans (tau1P_mul_gPsi_pow D (served_of h) t0 s.val))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gatTiesCB_pos
     (hB : ∀ t ∈ B u (D.what₂.places.resChar w), ∀ t' ∈ B u (D.what₂.places.resChar w), ∀ i : ℕ,

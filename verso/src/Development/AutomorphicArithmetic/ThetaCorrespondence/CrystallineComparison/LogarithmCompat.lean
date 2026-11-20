@@ -12,7 +12,7 @@ variable (l : ℕ) [Fact l.Prime]
 
 set_option maxRecDepth 20000 in
 /- English proof (translation)
-Introduce `P AI y`. Conclude with `(LogF.isLog_iff l AI.ε y).trans (Cmp6.isLogA_iff_cP l AI.ε y)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem logarithm_compat : ∀ {P : LocPrime l} (AI : LocAinf l P) (y : Per.BdRp l), Per.IsLog l AI.ε y ↔ Per6.IsLog l AI.ε (equivDeRhamPlus l y) := by
   intro P AI y

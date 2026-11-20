@@ -9,27 +9,25 @@ open GlobalTheory.ExpFrame GlobalTheory.ExpTie GlobalTheory.UnitaryBC GlobalTheo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p j P W hD w hw hW v hv`. Establish `hL` using `p.charW.base.lev`. Establish `hl` using `Formalism.EigenvalueLevelCeiling.plc_prime w`. Establish `key : ∀ q : ℕ, q.Prime → q ≠ Formalism.EigenvalueLevelCeiling.plc w → ((q : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal`. Introduce `q hq hne hqv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : IsCoprime ((q : ℕ) : 𝓞 D.host.E) ((Formalism.EigenvalueLevelCeiling.plc w : ℕ) : 𝓞 D.host.E)` using `Nat.Coprime.cast ((Nat.coprime_primes hq hl).2 hne)`. Take `⟨a, b, hab⟩` from `hc`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left a hqv) (v.asIdeal.mul_mem_left b hv)))`. Establish `hsp : Formalism.EigenvalueLevelCeiling.plc w ∉ Formalism.MainNotions.JumpSetsAlt.excSet D` using `hD.special ▸ hW.2.2.2`. Establish `hunr : (p.R.xiH (p.R.mu w)).UnrAt v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, Q, hψ, e⟩` from `p.charW.tup.mu_on w hw`. Establish `e' : p.R.xiH (p.R.mu w) = p.R.C.delAt (Formalism.EigenvalueLevelCeiling.plc w) * ψ` using `e`. Establish `hd : (p.R.C.delAt (Formalism.EigenvalueLevelCeiling.plc w)).UnrAt v`. Unfold `Formalism.L2.Host.CharFrame.delAt`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `p.R.C.isDel'.unr v (key _ D.host.pde'_prime fun h => hsp ?_)` and prove the remaining obligations. Rewrite using `[← h]`. Simplify using `[Formalism.MainNotions.JumpSetsAlt.excSet]`. Use `p.R.C.isDel.unr v (key _ D.host.pde_prime fun h => hsp ?_)` and prove the remaining obligations. Rewrite using `[← h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Formalism.MainNotions.JumpSetsAlt.excSet]`. Introduce `x hx`. Establish `a1` using `hd x hx`. Establish `a2` using `hψ.atl v hv x`. Rewrite using `[e']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(p.R.C.delAt (Formalism.EigenvalueLevelCeiling.plc w)).loc v x * ψ.loc v x = 1`. Rewrite using `[a1, a2, mul_one]`. Introduce `PP hPP`. Break down `hPP with hPP | hPP` into its components or cases. Take `⟨k, hk⟩` from `(hL.Pg PP).1 hPP`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Establish `h1` using `p.R.C.P.pb_over k`. Establish `hk' : PP.under (𝓞 D.host.K) = p.R.C.P.pb k` using `hk`. Rewrite `h1` using `[← hk']`. Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ PP.asIdeal` using `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hn : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal`. Use `key _ (D.host.g_prime k) fun h => ?_` and prove the remaining obligations. Establish `h1` using `hD.big k`. Establish `h2` using `hW.2.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[h]`. Conclude with `absurd h1 (not_lt.2 h2)`. Use `⟨fun e => hn (e ▸ hg), fun hc => hn ?_⟩` and prove the remaining obligations. Take `⟨c', h1, h2⟩` from `hc _ hg`. Establish `: c' = ((D.host.g k : ℕ) : 𝓞 D.host.E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `e1 : (((D.host.g k : ℕ) : 𝓞 D.host.E) : D.host.E) = ((D.host.g k : ℕ) : D.host.E)` using `map_natCast (algebraMap (𝓞 D.host.E) D.host.E) _`. Establish `h3 : (c' : D.host.E) = star (((D.host.g k : ℕ) : 𝓞 D.host.E) : D.host.E)` using `h2`. Rewrite `h3` using `[e1, star_natCast, ← e1]`. Conclude with `h3`.
-
-Conclude with `this ▸ h1`. Conclude with `⟨fun e => (hL.Q_ram (p.R.mu w) v).2 (Or.inl (e ▸ hPP)) hunr, fun hc => (hL.Q_ram (p.R.mu w) v).2 (Or.inr ⟨PP, hPP, hc⟩) hunr⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.good_place_of_twist_place_dividing :
     ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}

@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HolDict
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.aut, h.bdd, fun k hk g => by rw [← e k hk]; exact h.lev k hk g, h.hol⟩`.
+Supply the required witnesses or components.
 -/
 theorem HolForm.congr_level {D : D7} {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
     {w : D.what₂.Tau → Fin V.rank → ℤ} {J : Set (GA D V)} {χ χ' φ : GA D V → ℂ} (h : HolForm θ M w J χ φ)
@@ -24,15 +24,15 @@ theorem HolForm.congr_level {D : D7} {θ : InfFam D} {V : HSp D} {S : D.what₂.
   ⟨h.aut, h.bdd, fun k hk g => by rw [← e k hk]; exact h.lev k hk g, h.hol⟩
 
 /- English proof (translation)
-Introduce `hdec hvol D θ V S M w r hr Comp X la dict mu c Kf hS hG hw v hv χ hχ`. Use `⟨fun P hP => ?_, fun T hT => ?_⟩` and prove the remaining obligations. Establish `hP1 : P ∈ Submodule.span ℂ {P | IsHolCusp X la P}` using `hP.1 clear hP`. Proceed by induction on `hP1 using Submodule.span_induction with`. Consider the case `mem P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `h1` using `GlobalTheory.T.holomorphicAdelicForm_of_boundedSection D θ V S M w r hr Comp X la dict mu c Kf hS hG P (fun k => (hP k).1)`. Establish `h2` using `GlobalTheory.T.adelicCuspForm_transvection_constantTerms_zero D θ V S M w r hr Comp X la dict mu c Kf hS hG P hP`. Take `⟨T, hT, hTv⟩` from `GlobalTheory.T.boundedHolomorphicForm_eq_multiplicitySpace_value D θ V S M w v hG.inf hS hw hv (exists_finPair hvol D V) (Kf : Set (GA D V)) χ _ hG.levFin (h1.congr_level fun k hk => (hχ k hk).symm) h2`. Conclude with `⟨T, Submodule.subset_span hT, hTv⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add P Q _ _ hP hQ`. Take `⟨T, hT, hTv⟩` from `hP`. Take `⟨T', hT', hTv'⟩` from `hQ`. Conclude with `⟨T + T', Submodule.add_mem _ hT hT', by rw [map_add, _root_.add_apply, hTv, hTv']⟩`. Consider the case `smul a P _ hP`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨T, hT, hTv⟩` from `hP`. Conclude with `⟨a • T, Submodule.smul_mem _ a hT, by rw [map_smul, _root_.smul_apply, hTv]⟩`. Take `⟨h1, h2⟩` from `GlobalTheory.T.holomorphic_cusp_form_of_extremal_vector_multiplicity hdec D θ V S M w v hG.inf hS hw hv (Kf : Set (GA D V)) χ T hT`. Take `⟨P, hP0, hPb, hPe⟩` from `GlobalTheory.T.exists_boundedSection_of_boundedHolomorphicForm D θ V S M w r hr Comp X la dict mu c Kf hS hG (T v) (h1.congr_level hχ)`. Establish `hc` using `GlobalTheory.T.isHolomorphicCuspForm_of_adelic_constantTerms_zero D θ V S M w r hr Comp X la dict mu c Kf hS hG P hPb (hPe ▸ h2)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨P, ⟨holCusp_mem_holSub X la hc, hP0⟩, hPe⟩`.
+Supply the required witnesses or components.
 -/
 theorem mult_eval_eq_adel_holSub0 : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Mem.Vol.FiniteVolume₂ → ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (w : D.what₂.Tau → Fin V.rank → ℤ) (r : ℕ) (hr : V.rank = r) (Comp : Type) (X : Comp → ReciprocityTheory.ChartRestriction.G.FD.Data D.host.E r) (la : ∀ k, ReciprocityTheory.ChartRestriction.G.FD.Wt (X k).Ψ r) (dict : GA D V → Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame (X k).Ψ r) (mu : GA D V → ℂ) (c : Comp → ℂ) (Kf : Subgroup (GA D V)), HolShape M → GoodDict θ M w hr X la dict mu c Kf → WtIs M w → ∀ v : M.Vec, IsExtVec M v → ∀ χ : GA D V → ℂ, (∀ k ∈ Kf, χ k = 1) → (∀ P ∈ Formalism.L2.Pj.holSub0 X la, ∃ T ∈ Mult θ M (Kf : Set (GA D V)) χ, T v = adel V dict (muPin V dict mu c) P) ∧ ∀ T ∈ Mult θ M (Kf : Set (GA D V)) χ, ∃ P ∈ Formalism.L2.Pj.holSub0 X la, adel V dict (muPin V dict mu c) P = T v := by
   intro hdec hvol D θ V S M w r hr Comp X la dict mu c Kf hS hG hw v hv χ hχ

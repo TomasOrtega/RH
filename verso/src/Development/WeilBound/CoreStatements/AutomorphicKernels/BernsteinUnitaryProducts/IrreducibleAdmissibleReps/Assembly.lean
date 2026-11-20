@@ -24,7 +24,7 @@ def jacMap₂ {n h : ℕ} (hn : n + h = N) {ρ : Representation ℂ (GL (Fin N) 
   twMap ρ σ (unipRad k (two (stdSum hn))) 1 f.toLinearMap (fun g v => LinearMap.congr_fun (f.isIntertwining' g) v)
 
 /- English proof (translation)
-Proceed by induction on `v using Submodule.Quotient.induction_on with`. Consider the case `H x`. Conclude with `congrArg Submodule.Quotient.mk (LinearMap.congr_fun (f.isIntertwining' _) x)`.
+Proceed by induction. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jacMap₂_comm {n h : ℕ} (hn : n + h = N) {ρ : Representation ℂ (GL (Fin N) k) X}
     {σ : Representation ℂ (GL (Fin N) k) Y} (f : ρ.IntertwiningMap σ) (g : GL (Fin n) k × GL (Fin h) k)
@@ -67,14 +67,14 @@ def subProj {ρ : Representation ℂ G X} (S T : Subrepresentation ρ) (hc : IsC
     rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.projectionOnto_apply_of_mem_right hc.symm x.2`.
+A detailed English derivation is pending.
 -/
 theorem subProj_subIncl_left {ρ : Representation ℂ G X} (S T : Subrepresentation ρ)
     (hc : IsCompl S.toSubmodule T.toSubmodule) (x : S.toSubmodule) : subProj S T hc (subIncl S x) = 0 :=
   Submodule.projectionOnto_apply_of_mem_right hc.symm x.2
 
 /- English proof (translation)
-The claim follows from `Submodule.projectionOnto_apply_of_mem_left hc.symm x.2`.
+A detailed English derivation is pending.
 -/
 theorem subProj_subIncl_right {ρ : Representation ℂ G X} (S T : Subrepresentation ρ)
     (hc : IsCompl S.toSubmodule T.toSubmodule) (x : T.toSubmodule) : subProj S T hc (subIncl T x) = x :=
@@ -83,7 +83,7 @@ theorem subProj_subIncl_right {ρ : Representation ℂ G X} (S T : Subrepresenta
 variable [TopologicalSpace G]
 
 /- English proof (translation)
-Introduce `v`. Use `hρ (v : X) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`. Conclude with `Subtype.ext_iff`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSmooth_sub {ρ : Representation ℂ G X} (hρ : IsSmooth ρ) (S : Subrepresentation ρ) :
     IsSmooth S.toRepresentation := by
@@ -96,13 +96,13 @@ theorem isSmooth_sub {ρ : Representation ℂ G X} (hρ : IsSmooth ρ) (S : Subr
 omit [TopologicalSpace G] in
 
 /- English proof (translation)
-Set `f : D →ₗ[ℂ] Z` to `e.toLinearEquiv.toLinearMap`. Establish `key : ∀ g y, f (σ g y) = twist τ χ g (f y)` using `fun g y => LinearMap.congr_fun (e.isIntertwining' g) y`. Establish `hinv : ∀ g, ∀ z ∈ I.map f, τ g z ∈ I.map f`. Introduce `g z hz`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h2 : τ g (f y) = (((χ g)⁻¹ : ℂˣ) : ℂ) • twist τ χ g (f y)`. Rewrite using `[twist_apply, smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_map.2 ⟨σ g y, hI g y hy, key g y⟩)`. Set `S : Subrepresentation τ` to `⟨I.map f, fun g v hv => hinv g v hv⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinjf : Function.Injective (Submodule.map f)` using `Submodule.map_injective_of_injective e.toLinearEquiv.injective`. Break down `hτ.eq_bot_or_eq_top S with hS | hS` into its components or cases. Use `left`. Apply `hinjf` to reduce the goal to its premises. Rewrite using `[Submodule.map_bot]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subrepresentation.toSubmodule hS`. Use `right`. Apply `hinjf` to reduce the goal to its premises. Rewrite using `[Submodule.map_top, LinearMap.range_eq_top.2 e.toLinearEquiv.surjective]`. Conclude with `congrArg Subrepresentation.toSubmodule hS`.
+A detailed English derivation is pending.
 -/
 theorem eq_bot_or_eq_top_of_equiv_twist {σ : Representation ℂ G D} {τ : Representation ℂ G Z} {χ : G →* ℂˣ}
     (e : σ.Equiv (twist τ χ)) (hτ : τ.IsIrreducible) (I : Submodule ℂ D) (hI : ∀ g, ∀ y ∈ I, σ g y ∈ I) :
@@ -133,11 +133,11 @@ theorem eq_bot_or_eq_top_of_equiv_twist {σ : Representation ℂ G D} {τ : Repr
 omit [TopologicalSpace G] in
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Take `⟨a, ha⟩` from `exists_ne (0 : A)`. Establish `hm : DS a ∈ LinearMap.range DS` using `LinearMap.mem_range_self DS a`. Rewrite `hm` using `[h, Submodule.mem_bot]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ha (hinj (hm.trans DS.map_zero.symm))`. Introduce `h`. Take `⟨b, hb⟩` from `exists_ne (0 : B)`. Establish `hm : DT b ∈ LinearMap.range DS` using `h ▸ Submodule.mem_top`. Take `⟨a, ha⟩` from `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hb` to reduce the goal to its premises. Rewrite using `[← h1 b, ← ha, h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_ne_bot_ne_top (DS : A →ₗ[ℂ] D) (DT : B →ₗ[ℂ] D) (Dp : D →ₗ[ℂ] B) (hinj : Function.Injective DS)
     [Nontrivial A] [Nontrivial B] (h0 : ∀ a, Dp (DS a) = 0) (h1 : ∀ b, Dp (DT b) = b) :

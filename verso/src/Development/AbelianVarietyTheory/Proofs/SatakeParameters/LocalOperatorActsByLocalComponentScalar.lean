@@ -20,9 +20,9 @@ namespace GlobalTheory.LocOpAct
 variable {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Introduce `k hk`. Rewrite using `[GroundTheory.Automorphic.cosetSum_apply, map_sum]`. Use `Fintype.sum_equiv (MulAction.toPerm (⟨k, hk⟩ : K)) _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Use `GroundTheory.Automorphic.act_eq_of_mk_eq ρ hv (a := ⟨k, hk⟩ * Quotient.out q) (b := Quotient.out ((⟨k, hk⟩ : K) • q)) (by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[QuotientGroup.out_eq']`. Use `conv_rhs => rw [← QuotientGroup.out_eq' q]`. Use the proof step `rfl)`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cosetSum_mem_fixed (ρ : Representation ℂ G V) {K N : Subgroup G} [Fintype (K ⧸ N.subgroupOf K)] {v : V}
     (hv : v ∈ GroundTheory.Automorphic.fixedVectors ρ N) :
@@ -38,14 +38,14 @@ theorem cosetSum_mem_fixed (ρ : Representation ℂ G V) {K N : Subgroup G} [Fin
   simpa using this
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.Cong.opOf, Finsupp.sum, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opOf_eq (ρ : Representation ℂ G V) (f : G →₀ ℂ) (v : V) :
     GlobalTheory.Cong.opOf ρ f v = (f.sum fun g c => c • ρ g) v := by
   simp [GlobalTheory.Cong.opOf, Finsupp.sum, LinearMap.sum_apply]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Cong.opOf, Finsupp.sum, map_sum, map_smul, hF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opOf_map {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G V)
     (τ : Representation ℂ G W) (F : V →ₗ[ℂ] W) (hF : ∀ g v, F (ρ g v) = τ g (F v)) (f : G →₀ ℂ) (v : V) :
@@ -55,31 +55,27 @@ theorem opOf_map {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation
 end GlobalTheory.LocOpAct
 
 /- English proof (translation)
-Introduce `E _ _ _ a w hw Kw hKc hKo f z hf`. Take `⟨hbij, -, -⟩` from `GlobalTheory.T.definiteUnitaryLocalComponent_splitPlace_homeomorph E a w hw`. Set `e : locU a w ≃* GL (Fin a) (w.adicCompletion E)` to `MulEquiv.ofBijective ((cLoc w).comp (locU a w).subtype) hbij`. Set `j : GL (Fin a) (w.adicCompletion E) →* UA E a` to `(locU a w).subtype.comp e.symm.toMonoidHom`. Set `ρ' : Representation ℂ (GL (Fin a) (w.adicCompletion E)) (UA E a → ℂ)` to `(RU E a).comp j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcj : ∀ g, cLoc w (j g) = g` using `fun g => e.apply_symm_apply g`. Establish `hinj : Function.Injective j` using `Subtype.val_injective.comp e.symm.injective`. Use `haveI : CompactSpace Kw := isCompact_iff_compactSpace.1 hKc`. Establish `hfin : ∀ N : Subgroup (GL (Fin a) (w.adicCompletion E)), IsOpen (N : Set (GL (Fin a) (w.adicCompletion E))) → Finite (Kw ⧸ N.subgroupOf Kw)` using `fun N hN => Subgroup.quotient_finite_of_isOpen _ (by rw [Subgroup.coe_subgroupOf]; exact hN.preimage continuous_subtype_val)`. Use `⟨f.mapDomain j, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Take `⟨h, -, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hg)`. Conclude with `⟨(e.symm h).2, by rw [Finsupp.mapDomain_apply hinj, hcj]⟩`. Introduce `U hU σ hσ φ hφU hφK`. Establish `hop : ∀ ψ, opOf (RU E a) (f.mapDomain j) ψ = opOf ρ' f ψ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ψ`. Simplify using `only [GlobalTheory.Cong.opOf]`. Rewrite using `[Finsupp.sum_mapDomain_index (by intro b; simp) (by intro b c₁ c₂; simp [add_smul])]`. Both sides reduce to the same expression. Rewrite using `[hop]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hFint : ∀ (F : {F : σ.V →ₗ[ℂ] (UA E a → ℂ) // (∀ v, F v ∈ U) ∧ ∀ (x : locU a w) v, F (σ.ρ (cLoc w x) v) = RU E a x (F v)}) g v, F.1 (σ.ρ g v) = ρ' g (F.1 v)`. Introduce `F g v`. Establish `h` using `F.2.2 (e.symm g) v`. Establish `h2 : cLoc w ((e.symm g : locU a w) : UA E a) = g` using `hcj g`. Rewrite `h` using `[h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h`. Set `T : Module.End ℂ (UA E a → ℂ)` to `(f.sum fun g c => c • ρ' g) - z σ • 1`. Establish `hT : ∀ ψ, T ψ = opOf ρ' f ψ - z σ • ψ` using `fun ψ => by`. Rewrite using `[GlobalTheory.LocOpAct.opOf_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.autRepDefiniteUnitary_spanned_by_split_component E a U hU w hw σ hσ φ hφU`. Establish `hC : ∃ N : Subgroup (GL (Fin a) (w.adicCompletion E)), IsOpen (N : Set (GL (Fin a) (w.adicCompletion E))) ∧ ∀ N' : Subgroup (GL (Fin a) (w.adicCompletion E)), IsOpen (N' : Set (GL (Fin a) (w.adicCompletion E))) → N' ≤ N → T (GroundTheory.Automorphic.cosetSum ρ' Kw N' φ) = 0`. Use `Submodule.iSup_induction _ (motive := fun ψ => ∃ N : Subgroup (GL (Fin a) (w.adicCompletion E)), IsOpen (N : Set (GL (Fin a) (w.adicCompletion E))) ∧ ∀ N' : Subgroup (GL (Fin a) (w.adicCompletion E)), IsOpen (N' : Set (GL (Fin a) (w.adicCompletion E))) → N' ≤ N → T (GroundTheory. …` and prove the remaining obligations. Introduce and unpack `F _ ⟨v, rfl⟩`. Use `⟨GroundTheory.Automorphic.stabilizerOf σ.ρ v, σ.smooth v, fun N' hN' hle => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hfin N' hN'`. Use `haveI := Fintype.ofFinite (Kw ⧸ N'.subgroupOf Kw)`. Establish `hv : v ∈ GroundTheory.Automorphic.fixedVectors σ.ρ N'` using `fun n hn => hle hn`. Establish `hu` using `GlobalTheory.LocOpAct.cosetSum_mem_fixed σ.ρ (K := Kw) hv`. Establish `hcs : GroundTheory.Automorphic.cosetSum ρ' Kw N' (F.1 v) = F.1 (GroundTheory.Automorphic.cosetSum σ.ρ Kw N' v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[GroundTheory.Automorphic.cosetSum_apply, GroundTheory.Automorphic.cosetSum_apply, map_sum]`. Simplify using `only [hFint]`. Establish `hfix : GroundTheory.Automorphic.cosetSum σ.ρ Kw N' v ∈ GlobalTheory.PRep.fixed σ.ρ Kw` using `fun k => by show σ.ρ k _ = ((1 : Kw →* ℂˣ) k : ℂ) • _`. Simplify using `[hu k k.2]`. Rewrite using `[hcs, hT, ← GlobalTheory.LocOpAct.opOf_map σ.ρ ρ' F.1 (hFint F) f, hf σ _ hfix, map_smul, sub_self]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⊤, by simp, fun N' _ _ => by simp⟩`. Introduce and unpack `x y ⟨N₁, h₁, hx⟩ ⟨N₂, h₂, hy⟩`. Use `⟨N₁ ⊓ N₂, by rw [Subgroup.coe_inf]; exact h₁.inter h₂, fun N' hN' hle => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, hx N' hN' (hle.trans inf_le_left), hy N' hN' (hle.trans inf_le_right), add_zero]`. Take `⟨N, hN, hNφ⟩` from `hC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := hfin N hN`. Use `haveI := Fintype.ofFinite (Kw ⧸ N.subgroupOf Kw)`. Establish `hφ : φ ∈ GroundTheory.Automorphic.fixedVectors ρ' Kw` using `fun k hk => by`. Use `hφK (j k) (e.symm k).2 (by rw [hcj]; exact hk)` as an intermediate fact. Conclude with `this`.
-
-Establish `h0` using `hNφ N hN le_rfl`. Rewrite `h0` using `[GroundTheory.Automorphic.cosetSum_of_mem ρ' hφ, map_smul]`. Establish `hne : (Fintype.card (Kw ⧸ N.subgroupOf Kw) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Rewrite `h0` using `[smul_eq_zero]`. Establish `h1` using `h0.resolve_left hne`.
-
-Rewrite `h1` using `[hT, sub_eq_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Cong.opOf_locU_eq_smul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (w : HeightOneSpectrum (𝓞 E)), IsSplitAt w → ∀ (Kw : Subgroup (GL (Fin a) (w.adicCompletion E))), IsCompact (Kw : Set (GL (Fin a) (w.adicCompletion E))) → IsOpen (Kw : Set (GL (Fin a) (w.adicCompletion E))) → ∀ (f : GL (Fin a) (w.adicCompletion E) →₀ ℂ) (z : SmIrr (GL (Fin a) (w.adicCompletion E)) → ℂ), (∀ σ : SmIrr (GL (Fin a) (w.adicCompletion E)), ∀ v ∈ GlobalTheory.PRep.fixed σ.ρ Kw, opOf σ.ρ f v = z σ • v) → ∃ f' : UA E a →₀ ℂ, (∀ g ∈ f'.support, g ∈ locU a w ∧ f' g = f (cLoc w g)) ∧ ∀ U : Submodule ℂ (UA E a → ℂ), IsAutRepU U → ∀ σ : SmIrr (GL (Fin a) (w.adicCompletion E)), IsCompAlong U (locU a w) ((cLoc w).comp (locU a w).subtype) σ.ρ → ∀ φ ∈ U, (∀ x ∈ locU a w, cLoc w x ∈ Kw → RU E a x φ = φ) → opOf (RU E a) f' φ = z σ • φ := by
   classical

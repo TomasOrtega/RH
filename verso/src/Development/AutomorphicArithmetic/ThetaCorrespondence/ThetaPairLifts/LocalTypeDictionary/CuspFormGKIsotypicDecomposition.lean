@@ -13,7 +13,7 @@ open scoped TensorProduct
 open Classical
 namespace GlobalTheory.CuspGKId
 /- English proof (citation)
-Apply `GlobalTheory.T.gKModule_map_finite_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FLocalTypeDictionary%2FFiniteSumOfGKModuleMaps.lean&line=96#L96)
 -/
@@ -26,7 +26,7 @@ theorem cuspForm_local_sum_model : _root_.GlobalTheory.FunPr.ThetaLocalInputs �
       (p : Fin m → GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ)),
       (∀ j, GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.IsGKMap θ V τ (M.ε τ) (M.σ τ) (M.fr τ) (T j)) ∧ φ = ∑ j, T j (p j) := _root_.GlobalTheory.T.gKModule_map_finite_sum
 /- English proof (citation)
-Apply `GlobalTheory.T.structure_of_kFinite_vectors` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FLocalTypeDictionary%2FStructureOfKFiniteVectors.lean&line=42#L42)
 -/
@@ -50,31 +50,27 @@ noncomputable section
 namespace GlobalTheory.CuspGKId
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
 /- English proof (translation)
-Introduce `hPr D θ V S M hθ τ φ hφ hty hW`. Take `⟨m, T, p, hT, hsum⟩` from `_root_.GlobalTheory.CuspGKId.cuspForm_local_sum_model hPr θ V S M hθ τ φ hφ hty hW`. Take `⟨-, hKst, hder, hsimp⟩` from `_root_.GlobalTheory.CuspGKId.cuspForm_kFinite_structure hPr V S M τ`. Set `P` to `GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ)`. Set `kOp : {g // g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) ∧ M.fr τ * g * (M.fr τ)⁻¹ ∈ Formalism.REAL.Kset (M.ε τ)} → Module.End ℂ P` to `fun g => LinearMap.codRestrict P ((M.rep τ g.1 : M.H τ →ₗ[ℂ] M.H τ).comp P.subtype) fun v => hKst g.1 g.2.1 g.2.2 v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hdu : ∀ X ∈ lieAt V τ, ∀ v w w' : P, HasDerivAt (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X)) (v : M.H τ)) (w : M.H τ) 0 → HasDerivAt (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X)) (v : M.H τ)) (w' : M.H τ) 0 → w = w'` using `fun X _ v w w' h h' => Subtype.ext (h.unique h')`. Set `dOp : {X // X ∈ lieAt V τ} → Module.End ℂ P` to `fun X => { toFun := fun v => Classical.choose (hder X.1 X.2 v) map_add' := fun a b => by`. Use `(hdu X.1 X.2 (a + b) _ _ (Classical.choose_spec (hder X.1 X.2 (a + b))) ?_)` and prove the remaining obligations. Establish `h` using `(Classical.choose_spec (hder X.1 X.2 a)).add (Classical.choose_spec (hder X.1 X.2 b))`. Establish `e : (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X.1)) ((a + b : P) : M.H τ)) = fun t => M.rep τ (NormedSpace.exp (t • X.1)) (a : M.H τ) + M.rep τ (NormedSpace.exp (t • X.1)) (b : M.H τ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun t => by rw [Submodule.coe_add, map_add]`. Rewrite using `[e, Submodule.coe_add]`. Conclude with `h`. Use the proof step `map_smul' := fun c a => by`. Use `(hdu X.1 X.2 (c • a) _ _ (Classical.choose_spec (hder X.1 X.2 (c • a))) ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(Classical.choose_spec (hder X.1 X.2 a)).const_smul c`. Establish `e : (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X.1)) ((c • a : P) : M.H τ)) = fun t => c • M.rep τ (NormedSpace.exp (t • X.1)) (a : M.H τ)`. Use function extensionality and compare the values at `fun t => by rw [Submodule.coe_smul, map_smul]`. Rewrite using `[e, Submodule.coe_smul]`. Conclude with `h }`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdOp : ∀ X : {X // X ∈ lieAt V τ}, ∀ v : P, HasDerivAt (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X.1)) (v : M.H τ)) (dOp X v : M.H τ) 0` using `fun X v => Classical.choose_spec (hder X.1 X.2 v)`. Set `a : ({g // g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) ∧ M.fr τ * g * (M.fr τ)⁻¹ ∈ Formalism.REAL.Kset (M.ε τ)} ⊕ {X // X ∈ lieAt V τ}) → Module.End ℂ P` to `fun i => Sum.elim kOp dOp i`. Establish `hsimple : ∀ B : Submodule ℂ P, (∀ i, ∀ v ∈ B, a i v ∈ B) → B ≠ ⊥ → B = ⊤` using `fun B hB h0 => hsimp B h0 fun X hX v w hv hd => by`. Rewrite using `[hdu X hX v w _ hd (hdOp ⟨X, hX⟩ v)]`. Conclude with `hB (Sum.inr ⟨X, hX⟩) v hv`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `Ttot : (Fin m → P) →ₗ[ℂ] (GA D V → ℂ)` to `∑ j, (T j).comp (LinearMap.proj j)`. Establish `hTtot : ∀ y, Ttot y = ∑ j, T j (y j)` using `fun y => by`. Simplify using `[Ttot, LinearMap.sum_apply]`. Establish `hTK : ∀ (g : {g // g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) ∧ M.fr τ * g * (M.fr τ)⁻¹ ∈ Formalism.REAL.Kset (M.ε τ)}) (y : Fin m → P), Ttot (fun j => kOp g (y j)) = rTr V (atTau θ V τ g.1) (Ttot y)` using `fun g y => by`. Rewrite using `[hTtot, hTtot, show rTr V (atTau θ V τ g.1) (∑ j, T j (y j)) = ∑ j, rTr V (atTau θ V τ g.1) (T j (y j)) from map_sum (rTrL V (atTau θ V τ g.1)) (fun j => T j (y j)) Finset.univ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `Finset.sum_congr rfl fun j _ => (hT j).mapK g.1 g.2.1 g.2.2 (y j) _ rfl`. Establish `hTL : ∀ (X : {X // X ∈ lieAt V τ}) (y : Fin m → P), Ttot (fun j => dOp X (y j)) = Rder θ V τ X.1 (Ttot y)` using `fun X y => by`. Rewrite using `[hTtot, hTtot, Rder_sum X.2 _ fun j => (hT j).aut _]`. Conclude with `Finset.sum_congr rfl fun j _ => (hT j).mapLie X.1 X.2 (y j) _ (hdOp X (y j))`. Establish `hloc` using `isLocSub_locGen θ M τ φ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `N : Submodule ℂ (Fin m → P)` to `(locGen θ M τ φ).comap Ttot`. Establish `hN : ∀ i, ∀ y ∈ N, (fun j => a i (y j)) ∈ N`. Introduce and unpack `(g | X) y hy`. Use `show Ttot (fun j => kOp g (y j)) ∈ locGen θ M τ φ`. Rewrite using `[hTK]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hloc.k g.1 g.2 _ hy`. Use `show Ttot (fun j => dOp X (y j)) ∈ locGen θ M τ φ`. Rewrite using `[hTL]`. Conclude with `hloc.lie X.1 X.2 _ hy`. Establish `hpN : p ∈ N` using `by show Ttot p ∈ locGen θ M τ φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hTtot, ← hsum]`. Conclude with `mem_locGen θ M τ φ`. Take `⟨n, Sm, q, hSa, hSN, hpq⟩` from `sub_pow_sum a hsimple m N hN p hpN`. Use `⟨n, fun l => Ttot.comp (Sm l), q, fun l => ⟨fun v => ?_, fun g hg hk v w hw => ?_, fun X hX v w hw => ?_⟩, fun l v => hSN l v, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hTtot]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isAutFunSm_sum _ fun j => (hT j).aut _`. Establish `e : w = kOp ⟨g, hg, hk⟩ v` using `Subtype.ext hw`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, e]`. Use `hSa l (Sum.inl ⟨g, hg, hk⟩) v` as an intermediate fact. Simplify using `only [a, Sum.elim_inl] at this`.
-
-Rewrite using `[this, hTK]`. Establish `e : w = dOp ⟨X, hX⟩ v` using `hdu X hX v w _ hw (hdOp ⟨X, hX⟩ v)`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, e]`. Use `hSa l (Sum.inr ⟨X, hX⟩) v` as an intermediate fact. Simplify using `only [a, Sum.elim_inr] at this`.
-
-Rewrite using `[this, hTL]`. Rewrite using `[hsum, ← hTtot p, hpq, map_sum]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cuspForm_local_sum_generates : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
     (V : HSp D) (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
@@ -181,25 +177,21 @@ namespace GlobalTheory.CuspGKId
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D} {S : D.what₂.Tau → SPar}
   {M : Formalism.IndefR.Mult.DSModel V S}
 /- English proof (translation)
-Establish `hsm : ∀ f ∈ A, IsAutFunSm θ V f` using `fun f hf => (hAf f hf).1`. Use `set Hs := partSub θ M A hsm s p0 lam with hHs`. Establish `hinj : ∀ F₁ ∈ Hs, ∀ F₂ ∈ Hs, F₁ p0 = F₂ p0 → F₁ = F₂`. Introduce `F₁ h₁ F₂ h₂ e`. Establish `h3 : F₁ - F₂ ∈ Hs` using `Hs.sub_mem h₁ h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsPartMult.eq_zero h3 hp0 hsimple (by rw [MultilinearMap.sub_apply, e, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Use `set E := Hs.map (evAt p0) with hE`. Establish `hEloc : IsLocSub θ M τ E`. Use `⟨fun g hg y hy => ?_, fun X hX y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨F', hF', rfl⟩` from `hy`. Conclude with `⟨_, IsPartMult.rTr_comp hθ hA hF' hτ hg, rfl⟩`. Take `⟨F', hF', rfl⟩` from `hy`. Conclude with `⟨_, IsPartMult.postRder_comp hθ hA hsm hF' hτ hX, rfl⟩`. Establish `hx : F p0 ∈ A` using `hF.mem p0`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hxa, -, hxt, W, hW1, hW2, hW3⟩` from `hAf _ hx`. Take `⟨n, T, p, hT, hTl, hsum⟩` from `_root_.GlobalTheory.CuspGKId.cuspForm_local_sum_generates hPr θ V S M hθ τ (F p0) hxa (hxt τ) ⟨W, hW1, hW2, hW3 τ⟩`. Establish `hgen : locGen θ M τ (F p0) ≤ E` using `locGen_le θ M ⟨F, hF, rfl⟩ hEloc`. Set `f` to `(evAt p0).domRestrict Hs`. Establish `hfi : Function.Injective f` using `fun a b e => Subtype.ext (hinj a a.2 b b.2 e)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `e` to `LinearEquiv.ofInjective f hfi`. Establish `hrange : ∀ l v, T l v ∈ LinearMap.range f` using `fun l v => by`. Rewrite using `[LinearMap.range_domRestrict]`. Conclude with `hgen (hTl l v)`. Set `T' : Fin n → (GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ) →ₗ[ℂ] MMK M)` to `fun l => Hs.subtype.comp (e.symm.toLinearMap.comp ((T l).codRestrict (LinearMap.range f) (hrange l)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT'mem : ∀ l v, T' l v ∈ Hs` using `fun l v => (e.symm _).2`. Establish `hT'ev : ∀ l v, T' l v p0 = T l v` using `fun l v => by`. Use `LinearEquiv.ofInjective_apply (h := hfi) f (e.symm ⟨T l v, hrange l v⟩)` as an intermediate fact. Establish `h2 : e (e.symm ⟨T l v, hrange l v⟩) = ⟨T l v, hrange l v⟩` using `e.apply_symm_apply _`. Conclude with `(this.symm.trans (congrArg Subtype.val h2))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨n, T', p, fun m v => hT'mem m v, fun m g hg hk v w hw u => ?_, fun m X hX v w hw u => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : T' m w = (rTrL V (atTau θ V τ g)).compMultilinearMap (T' m v)` using `hinj _ (hT'mem m w) _ (IsPartMult.rTr_comp hθ hA (hT'mem m v) hτ ⟨hg, hk⟩) (by`. Rewrite using `[hT'ev, LinearMap.compMultilinearMap_apply, hT'ev]`. Conclude with `(hT m).mapK g hg hk v w hw)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h1 : T' m w = GlobalTheory.CuspGKId.postRder (θ` using `θ) τ X hX (T' m v) (fun u => hsm _ ((hT'mem m v).mem u)) := hinj _ (hT'mem m w) _ (IsPartMult.postRder_comp hθ hA hsm (hT'mem m v) hτ hX) (by`. Rewrite using `[hT'ev]`. Use `show T m w = Rder θ V τ X (T' m v p0)`. Rewrite using `[hT'ev]`.
-
-Conclude with `(hT m).mapLie X hX v w hw)`. Rewrite using `[h1]`. Both sides reduce to the same expression. Use `hinj _ hF _ (Hs.sum_mem fun m _ => hT'mem m (p m)) ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.sum_apply]`.
-
-Simplify using `only [hT'ev]`. Conclude with `hsum`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsPartMult.partialMultiplicity_decomposition (hPr : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hθ : IsInfFam (D := D) θ) {A : Submodule ℂ (GA D V → ℂ)}
     (hA : GlobalTheory.CuspGK.IsGKSub θ M A) (hAf : ∀ f ∈ A, GlobalTheory.CuspGK.IsKFinCuspOfType θ M f) {s : Finset D.what₂.Tau}
@@ -275,17 +267,17 @@ namespace GlobalTheory.CuspGKId
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D} {S : D.what₂.Tau → SPar}
   {M : Formalism.IndefR.Mult.DSModel V S}
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `f hf`. Set `F : MMK M` to `(MultilinearMap.mkPiRing ℂ D.what₂.Tau f).compLinearMap lam`. Establish `hFu : ∀ u : Tup M, F u = (∏ τ, lam τ (u τ)) • f` using `fun u => by`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[F, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiRing_apply]`. Use `Submodule.subset_span ⟨F, p0, ⟨fun u => by rw [hFu]; exact A.smul_mem _ hf, fun τ h => absurd h (Finset.notMem_empty τ), fun τ h => absurd h (Finset.notMem_empty τ), fun τ _ u w => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hFu, hFu, smul_smul]`. Use `congr 1`. Establish `h1 : ∀ w' : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ), (∏ τ', lam τ' (Function.update u τ w' τ')) = lam τ w' * ∏ τ' ∈ Finset.univ.erase τ, lam τ' (u τ')`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `w'`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ' h' => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase h')]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h1, hlam, one_mul]`. Rewrite using `[hFu, Finset.prod_congr rfl (fun τ _ => hlam τ), Finset.prod_const_one, one_smul]`. Consider the case `insert τ s hτ ih`. Use `ih.trans (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `y ⟨F, u, hF, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨n, T, q, hT, hK, hL, hsum⟩` from `_root_.GlobalTheory.CuspGKId.IsPartMult.partialMultiplicity_decomposition hPr hθ hA hAf hp0 hsimple hF hτ`. Rewrite using `[hsum, MultilinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Establish `h1 : T m (q m) u = lam τ (u τ) • glue τ (T m) (p0 τ) (Function.update u τ (q m))`. Rewrite using `[glue_apply, Function.update_self, Function.update_idem, ← (hT m (q m)).other τ hτ u (u τ), Function.update_eq_self]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, _, isPartMult_glue hτ (hT m) (hK m) (hL m), rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_partialMultiplicity (hPr : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hθ : IsInfFam (D := D) θ) {A : Submodule ℂ (GA D V → ℂ)}
     (hA : GlobalTheory.CuspGK.IsGKSub θ M A) (hAf : ∀ f ∈ A, GlobalTheory.CuspGK.IsKFinCuspOfType θ M f)
@@ -331,13 +323,11 @@ end GlobalTheory.CuspGKId
 noncomputable section
 namespace GlobalTheory.CuspGKId
 /- English proof (translation)
-Introduce `hPr D θ V S M hθ A hA hAf`. Establish `hA1` using `hA.1`. Establish `hst` using `fun τ => _root_.GlobalTheory.CuspGKId.cuspForm_kFinite_structure hPr V S M τ`. Use `choose p0 hp0 using fun τ => (hst τ).1`. Establish `hl : ∀ τ, ∃ l : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ) →ₗ[ℂ] ℂ, l (p0 τ) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ (GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ)), φ (p0 τ) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hp0 τ ((Module.forall_dual_apply_eq_zero_iff ℂ (p0 τ)).1 h)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨(φ (p0 τ))⁻¹ • φ, by simp [hφ]⟩`. Use `choose lam hlam using hl`. Establish `hsimple` using `fun τ => (hst τ).2.2.2`. Use `(_root_.GlobalTheory.CuspGKId.mem_span_partialMultiplicity hPr hθ hA1 hAf (p0 := p0) (lam := lam) hp0 hlam hsimple Finset.univ).trans ?_` and prove the remaining obligations. Use `Submodule.span_mono ?_` and prove the remaining obligations.
-
-Introduce and unpack `y ⟨F, u, hF, rfl⟩`. Use `⟨F, u, ⟨fun v => (hAf _ (hF.mem v)).1, fun v => (hAf _ (hF.mem v)).2.1, fun τ => hF.equivK τ (Finset.mem_univ τ), fun τ => hF.equivLie τ (Finset.mem_univ τ)⟩, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem le_multiplicitySpan_cuspForm : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
@@ -379,7 +369,7 @@ open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CuspGKId.le_multiplicitySpan_cuspForm | exact _root_.GlobalTheory.CuspGKId.le_multiplicitySpan_cuspForm | (intros; apply _root_.GlobalTheory.CuspGKId.le_multiplicitySpan_cuspForm <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cuspForm_gK_isotypic_decomposition : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →

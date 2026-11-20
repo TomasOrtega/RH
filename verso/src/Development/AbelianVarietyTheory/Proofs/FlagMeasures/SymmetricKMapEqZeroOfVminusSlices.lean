@@ -21,9 +21,9 @@ def sliceIns (α' : Fin j → Fin n × Fin n) (m : Arr V n 1) : Arr V n (j + 1) 
     if Fin.tail α = α' then m (fun _ => α 0) else 0)
 
 /- English proof (translation)
-Apply `indexArray_ext` to reduce the goal to its premises. Introduce `β`. Rewrite using `[firstPositionSlice_apply]`. Establish `hβ : (fun _ : Fin 1 => β 0) = β`. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using `only [sliceIns, PiLp.toLp_apply, Fin.tail_cons, Fin.cons_zero]`. Use `split_ifs with h`. Rewrite using `[hβ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem slice_sliceIns (α' β' : Fin j → Fin n × Fin n) (m : Arr V n 1) :
     sliceLin V n β' (sliceIns α' m) = if β' = α' then m else 0 := by
@@ -39,13 +39,13 @@ theorem slice_sliceIns (α' β' : Fin j → Fin n × Fin n) (m : Arr V n 1) :
   · rfl
 
 /- English proof (translation)
-Rewrite using `[mem_admissibleArrays]`. Introduce `α`. Distinguish the cases in `ht : Fin.tail α = α'`. Establish `hv : (sliceIns α' m) α = m (fun _ => α 0)` using `by simp [sliceIns, ht]`. Rewrite using `[hv]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : ε (α 0).1 ≠ ε (α 0).2`. Establish `hall : ∀ i, ε (α i).1 ≠ ε (α i).2`. Introduce `i`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => exact h0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ k`. Establish `hk` using `hα k`. Rewrite `hk` using `[← ht]`. Simplify `hk` using `[Fin.tail]`. Rewrite using `[if_pos hall]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `admissibleArrays_apply_mem hm _`. Apply the tactic sequence `rw [admissibleArrays_apply_eq_zero hm _ (fun h => h0 (h 0))] split_ifs <;> exact Submodule.zero_mem _`. Establish `hv : (sliceIns α' m) α = 0` using `by simp [sliceIns, ht]`. Rewrite using `[hv]`. Apply the tactic sequence `split_ifs <;> exact Submodule.zero_mem _`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sliceIns_mem {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V} {u : V}
     {α' : Fin j → Fin n × Fin n} (hα : ∀ i, ε (α' i).1 ≠ ε (α' i).2) {m : Arr V n 1}
@@ -73,9 +73,7 @@ theorem sliceIns_mem {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End �
     split_ifs <;> exact Submodule.zero_mem _
 
 /- English proof (translation)
-Rewrite using `[mem_admissibleArrays]`. Introduce `β`. Rewrite using `[firstPositionSlice_apply]`. Use `split_ifs with h`. Conclude with `admissibleArrays_apply_mem hF _`.
-
-Rewrite using `[admissibleArrays_apply_eq_zero hF _ (fun h' => h (fun i => by rw [Fin.fin_one_eq_zero i]; simpa using h' 0))]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_mem_highest_jets {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V} {u : V}
     {F : Arr V n (j + 1)} (hF : F ∈ arrV0 ε E u (j + 1)) (α' : Fin j → Fin n × Fin n) :
@@ -89,7 +87,7 @@ theorem slice_mem_highest_jets {ε : Fin n → Bool} {E : Fin n → Fin n → Mo
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Apply `indexArray_ext` to reduce the goal to its premises. Introduce `β`. Rewrite using `[firstPositionSlice_apply, admissibleArrays_apply_eq_zero hF _ (fun h => hα (fun i => by simpa using h i.succ))]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem slice_eq_zero_of_compact {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V} {u : V}
     {F : Arr V n (j + 1)} (hF : F ∈ arrV0 ε E u (j + 1)) (α' : Fin j → Fin n × Fin n)
@@ -100,9 +98,7 @@ theorem slice_eq_zero_of_compact {ε : Fin n → Bool} {E : Fin n → Fin n → 
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_admissibleArrays]`. Introduce `α`. Rewrite using `[permutePositions_apply]`. Use `split_ifs with h`. Conclude with `admissibleArrays_apply_mem hF _`.
-
-Rewrite using `[admissibleArrays_apply_eq_zero hF _ (fun h' => h (fun i => by simpa using h' (s.symm i)))]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem permute_mem_highest_jets {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V} {u : V}
     {F : Arr V n j} (hF : F ∈ arrV0 ε E u j) (s : Equiv.Perm (Fin j)) :
@@ -116,9 +112,9 @@ theorem permute_mem_highest_jets {ε : Fin n → Bool} {E : Fin n → Fin n → 
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Set `ψ : arrV0 ε E u j →ₗ[ℂ] ((Fin j → Fin n × Fin n) → kSpan ε E u)` to `LinearMap.pi fun α => LinearMap.codRestrict (kSpan ε E u) ((LinearMap.proj α ∘ₗ arrOf V n j) ∘ₗ (arrV0 ε E u j).subtype) (fun F => by simpa [arrOf] using admissibleArrays_apply_mem F.2 α)`. Use `Module.Finite.of_injective ψ ?_` and prove the remaining obligations. Introduce `F G hFG`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `indexArray_ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `α`. Establish `h1` using `congrArg Subtype.val (congrFun hFG α)`. Simplify `h1` using `[ψ, arrOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem finiteDimensional_arrV0_of_finiteDimensional_kSpan (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (u : V) (h : FiniteDimensional ℂ (kSpan ε E u)) :
@@ -136,7 +132,7 @@ private theorem finiteDimensional_arrV0_of_finiteDimensional_kSpan (ε : Fin n �
   simpa [ψ, arrOf] using h1
 
 /- English proof (translation)
-Apply `indexArray_ext` to reduce the goal to its premises. Introduce `α`. Rewrite using `[permutePositions_apply, permutePositions_apply]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem permArr_inv_permArr (s : Equiv.Perm (Fin j)) (F : Arr V n j) : permArr V n s⁻¹ (permArr V n s F) = F := by
   apply indexArray_ext
@@ -147,45 +143,39 @@ private theorem permArr_inv_permArr (s : Equiv.Perm (Fin j)) (F : Arr V n j) : p
 end
 
 /- English proof (translation)
-Introduce `V _ _ n ε E lam g u j hgl hun hhi hfd hgap hg T hT hE hS hM`. Establish `hsplit` using `typesSplit V n ε E (LamOf ε lam) u hgl hun hhi hfd`. Establish `hstab` using `admissibleArrays_invariant ε E u (j + 1)`. Set `K : Submodule ℂ (Arr V n (j + 1))` to `arrV0 ε E u (j + 1) ⊓ LinearMap.ker T`. Establish `memK : ∀ G, G ∈ arrV0 ε E u (j + 1) → T G = 0 → G ∈ K` using `fun G h1 h2 => ⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ f ∈ arrV0 ε E u (j + 1), (∀ k ∈ K, ⟪k, f⟫_ℂ = 0) → f = 0`. Introduce `f hf horth`. Establish `hsym : f ∈ symSub V n (j + 1)`. Rewrite using `[mem_symmetricArrays]`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hGW : permArr V n s f - f ∈ arrV0 ε E u (j + 1)` using `sub_mem (permute_mem_highest_jets hf s) hf`. Establish `hGT : T (permArr V n s f - f) = 0` using `by rw [map_sub, hS f hf s, sub_self]`. Establish `hGK : permArr V n s f - f ∈ K` using `memK _ hGW hGT`. Establish `hG'K : permArr V n s⁻¹ (permArr V n s f - f) ∈ K` using `memK _ (permute_mem_highest_jets hGW s⁻¹) (by rw [hS _ hGW s⁻¹, hGT])`. Establish `h1 : ⟪permArr V n s f - f, permArr V n s f⟫_ℂ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← inner_permutePositions s⁻¹, permArr_inv_permArr]`. Conclude with `horth _ hG'K`. Establish `h2 : ⟪permArr V n s f - f, f⟫_ℂ = 0` using `horth _ hGK`. Establish `h3 : ⟪permArr V n s f - f, permArr V n s f - f⟫_ℂ = 0`. Rewrite using `[inner_sub_right, h1, h2, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp (inner_self_eq_zero.mp h3)`. Establish `hplus : ∀ α' : Fin j → Fin n × Fin n, sliceLin V n α' f ∈ Vplus ε E (LamOf ε lam) u`. Introduce `α'`. Distinguish the cases in `hα : ∀ i, ε (α' i).1 ≠ ε (α' i).2`. Establish `hmem : sliceLin V n α' f ∈ Vplus ε E (LamOf ε lam) u ⊔ Vminus ε E (LamOf ε lam) u`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsplit.2]`. Conclude with `slice_mem_highest_jets hf α'`. Take `⟨p, hp, m, hm, hpm⟩` from `Submodule.mem_sup.mp hmem`. Establish `hm0 : m ∈ arrV0 ε E u 1`. Rewrite using `[← hsplit.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Submodule.mem_sup_right hm`. Establish `hGW : sliceIns α' m ∈ arrV0 ε E u (j + 1)` using `sliceIns_mem hα hm0`. Establish `hGT : T (sliceIns α' m) = 0`. Apply `hM _ hGW` to reduce the goal to its premises. Introduce `β'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[slice_sliceIns]`. Use `split_ifs`. Conclude with `hm`. Conclude with `Submodule.zero_mem _`. Establish `hin : ⟪sliceIns α' m, f⟫_ℂ = 0` using `horth _ (memK _ hGW hGT)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum : ∑ β' : Fin j → Fin n × Fin n, ⟪sliceLin V n β' (sliceIns α' m), sliceLin V n β' f⟫_ℂ = ⟪m, sliceLin V n α' f⟫_ℂ`. Rewrite using `[Finset.sum_eq_single α']`. Rewrite using `[slice_sliceIns, if_pos rfl]`. Introduce `b _ hb`. Rewrite using `[slice_sliceIns, if_neg hb, inner_zero_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite `hin` using `[inner_eq_sum_firstPositionSlice, hsum, ← hpm, inner_add_right]`. Establish `hmp : ⟪m, p⟫_ℂ = 0`. Rewrite using `[← inner_conj_symm, hsplit.1 p hp m hm, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `hin` using `[hmp, zero_add]`. Establish `hm' : m = 0` using `inner_self_eq_zero.mp hin`. Rewrite using `[← hpm, hm', add_zero]`. Conclude with `hp`. Rewrite using `[slice_eq_zero_of_compact hf α' hα]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.zero_mem _`. Establish `hN : f ∈ Formalism.REAL.Nset ε E (LamOf ε lam) u j`. Unfold `Formalism.REAL.Nset`. Conclude with `⟨⟨hf, hsym⟩, (Submodule.mem_iInf _).mpr fun α' => Submodule.mem_comap.mpr (hplus α')⟩`. Establish `hCasW : CasK ε (arrE E (j + 1)) f ∈ arrV0 ε E u (j + 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[compactCasimir_apply]`. Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hab`. Conclude with `hstab a b hab _ (hstab b a hab.symm _ hf)`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hCasT : T (CasK ε (arrE E (j + 1)) f) = CasK ε E (T f)`. Rewrite using `[compactCasimir_apply, compactCasimir_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with hab`. Rewrite using `[hE a b hab _ (hstab b a hab.symm _ hf), hE b a hab.symm _ hf]`. Conclude with `map_zero T`. Establish `hKf : CasK ε E (T f) = ((ckv ε (LamOf ε lam) : ℝ) : ℂ) • T f` using `kCasSpan V n ε E (LamOf ε lam) u (glRel_kRel ε E hgl) hhi (T f) (hT f hf)`. Establish `hkK : CasK ε (arrE E (j + 1)) f - ((ckv ε (LamOf ε lam) : ℝ) : ℂ) • f ∈ K` using `memK _ (sub_mem hCasW (Submodule.smul_mem _ _ hf)) (by rw [map_sub, map_smul, hCasT, hKf, sub_self])`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfk : ⟪f, CasK ε (arrE E (j + 1)) f - ((ckv ε (LamOf ε lam) : ℝ) : ℂ) • f⟫_ℂ = 0`. Rewrite using `[← inner_conj_symm, horth _ hkK, map_zero]`. Establish `hre : (⟪f, CasK ε (arrE E (j + 1)) f⟫_ℂ).re = ckv ε (LamOf ε lam) * ‖f‖ ^ 2`. Rewrite `hfk` using `[inner_sub_right, sub_eq_zero]`. Rewrite using `[hfk, inner_smul_right, Complex.re_ofReal_mul, re_inner_self_indexArray]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos` using `nPos V n ε E lam g u j hgl hun hhi hfd hgap f hN`. Rewrite `hpos` using `[hre]`. Establish `hcoef : 0 < 2 * ((j : ℝ) + 1) * (g - 2 * (n : ℝ))`. Establish `h1 : (0 : ℝ) < (j : ℝ) + 1` using `by positivity`. Establish `h2 : (0 : ℝ) < g - 2 * (n : ℝ)` using `by linarith`.
-
-Check the signs of the components of the expression. Establish `h4 : 2 * ((j : ℝ) + 1) * (g - 2 * (n : ℝ)) * ‖f‖ ^ 2 ≤ 0` using `by nlinarith`. Establish `h5 : ‖f‖ ^ 2 = 0` using `le_antisymm (by nlinarith) (by positivity)`. Simplify using `using h5`. Use `haveI : FiniteDimensional ℂ (arrV0 ε E u (j + 1)) := finiteDimensional_arrV0_of_finiteDimensional_kSpan ε E u hfd`.
-
-Use `haveI : FiniteDimensional ℂ K := Submodule.finiteDimensional_of_le inf_le_left`. Introduce `F hF`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.exists_add_mem_mem_orthogonal (K := K) F`. Establish `hzW : z ∈ arrV0 ε E u (j + 1)`. Establish `hz' : z = F - y` using `by rw [hyz]; abel`.
-
-Rewrite using `[hz']`. Conclude with `sub_mem hF hy.1`. Establish `hz0 : z = 0` using `key z hzW (fun k hk => (Submodule.mem_orthogonal K z).mp hz k hk)`. Rewrite using `[hyz, hz0, add_zero]`. Conclude with `hy.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jet_map_eq_zero : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (lam : Fin n → ℝ) (g : ℝ) (u : V) (j : ℕ), GlRel E → IsUnitary ε E → KHighest ε E (LamOf ε lam) u → FiniteDimensional ℂ (kSpan ε E u) → (∀ a b : Fin n, a < b → ε a ≠ ε b → g ≤ lam a - lam b) → 2 * (n : ℝ) < g → ∀ T : Arr V n (j + 1) →ₗ[ℂ] V, (∀ F ∈ arrV0 ε E u (j + 1), T F ∈ kSpan ε E u) → (∀ c d, ε c = ε d → ∀ F ∈ arrV0 ε E u (j + 1), T (arrE E (j + 1) c d F) = E c d (T F)) → (∀ F ∈ arrV0 ε E u (j + 1), ∀ s : Equiv.Perm (Fin (j + 1)), T (permArr V n s F) = T F) → (∀ F ∈ arrV0 ε E u (j + 1), (∀ α', sliceLin V n α' F ∈ Vminus ε E (LamOf ε lam) u) → T F = 0) → ∀ F ∈ arrV0 ε E u (j + 1), T F = 0 := by
   intro V _ _ n ε E lam g u j hgl hun hhi hfd hgap hg T hT hE hS hM

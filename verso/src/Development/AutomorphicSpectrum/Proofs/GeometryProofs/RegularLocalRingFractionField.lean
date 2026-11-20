@@ -8,11 +8,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.LieStalk
 
 /- English proof (translation)
-Take `⟨U, hU, hyU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := y) (U := ⊤) trivial`. Establish `hzU : ξ (IsLocalRing.closedPoint Ω) ∈ U` using `hs.mem_open U.isOpen hyU`. Set `z : U` to `⟨_, hzU⟩`. Use `letI := X.presheaf.algebra_section_stalk z`. Establish `hl` using `hU.isLocalization_stalk z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Take `⟨s, rfl⟩` from `hb.2 a`. Take `⟨⟨f, g⟩, e⟩` from `IsLocalization.surj (S := X.presheaf.stalk z.1) (hU.primeIdealOf z).asIdeal.primeCompl s`. Establish `hgerm : ∀ r : Γ(X, U), (X.presheaf.stalkSpecializes hs).hom (X.presheaf.germ U y hyU r) = X.presheaf.germ U _ hzU r` using `fun r => ConcreteCategory.congr_hom (TopCat.Presheaf.germ_stalkSpecializes X.presheaf hyU hs) r`. Use `⟨X.presheaf.germ U y hyU f, X.presheaf.germ U y hyU g.1, ?_, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (X.presheaf.germ U _ hzU g.1)` using `IsLocalization.map_units (X.presheaf.stalk z.1) g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hu.map (Scheme.stalkClosedPointTo ξ).hom` as an intermediate fact. Simplify `this.ne_zero` using `[hgerm]`. Establish `e' : s * X.presheaf.germ U _ hzU g.1 = X.presheaf.germ U _ hzU f` using `e`. Use `congrArg (Scheme.stalkClosedPointTo ξ).hom e'` as an intermediate fact. Simplify `this` using `[hgerm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_germ_frac {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Sp Ω ⟶ X)
     (hb : Function.Bijective (Scheme.stalkClosedPointTo ξ).hom) {y : X}
@@ -42,7 +42,7 @@ theorem exists_germ_frac {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Sp Ω ⟶
     simpa [hgerm] using this
 
 /- English proof (translation)
-Introduce `X Ω _ ξ h p`. Use `IsFractionRing.of_field (regAt ξ p) Ω fun a => ?_` and prove the remaining obligations. Take `⟨f, g, hg, e⟩` from `exists_germ_frac ξ h.bij (y := p.1) p.2 a`. Use `⟨⟨genMap ξ p f, f, rfl⟩, ⟨genMap ξ p g, g, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `eq_div_of_mul_eq hg e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFractionRing_regAt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X), IsCptGen ξ →
     ∀ p : Cpt ξ, IsFractionRing (regAt ξ p) Ω := by

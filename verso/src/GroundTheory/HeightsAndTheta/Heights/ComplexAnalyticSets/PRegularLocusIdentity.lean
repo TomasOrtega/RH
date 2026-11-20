@@ -8,15 +8,15 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open MvPolynomial Topology Filter
 
 /- English proof (translation)
-Take `⟨hzY, d, A, O, V, g, hO, hV, hzV, hg, hAg, hYV⟩` from `hz`. Establish `hzO : z ∈ g '' O` using `by rw [← hYV]; exact ⟨hzY, hzV⟩`. Take `⟨y₀, hy₀O, rfl⟩` from `hzO`. Establish `hN : interior W ∩ V ∈ 𝓝 (g y₀)` using `inter_mem (interior_mem_nhds.2 hW) (hV.mem_nhds hzV)`. Take `⟨r, hr, hball⟩` from `Metric.mem_nhds_iff.1 (inter_mem (hO.mem_nhds hy₀O) ((hg y₀ hy₀O).continuousAt.preimage_mem_nhds hN))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨d, V ∩ interior W ∩ A ⁻¹' Metric.ball y₀ r, Metric.ball y₀ r, g, (hV.inter isOpen_interior).inter (Metric.isOpen_ball.preimage A.continuous), ⟨⟨hzV, mem_interior_iff_mem_nhds.2 hW⟩, ?_⟩, fun x hx => interior_subset hx.1.2, Metric.isOpen_ball, (convex_ball y₀ r).isPreconnected, f …` and prove the remaining obligations. Use `show A (g y₀) ∈ Metric.ball y₀ r`. Rewrite using `[hAg y₀ hy₀O]`. Conclude with `Metric.mem_ball_self hr`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxY, ⟨hxV, -⟩, hxB⟩`. Establish `hx : x ∈ g '' O` using `by rw [← hYV]; exact ⟨hxY, hxV⟩`. Take `⟨y, hyO, rfl⟩` from `hx`. Establish `hyB : A (g y) ∈ Metric.ball y₀ r` using `hxB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hyB` using `[hAg y hyO]`. Conclude with `⟨y, hyB, rfl⟩`. Introduce and unpack `⟨y, hyB, rfl⟩`. Establish `hyO : y ∈ O` using `(hball hyB).1`. Establish `hyN : g y ∈ interior W ∩ V` using `(hball hyB).2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgy : g y ∈ Y ∩ V` using `by rw [hYV]; exact ⟨y, hyO, rfl⟩`. Use `⟨hgy.1, ⟨hyN.2, hyN.1⟩, ?_⟩` and prove the remaining obligations. Use `show A (g y) ∈ Metric.ball y₀ r`. Rewrite using `[hAg y hyO]`. Conclude with `hyB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRegularPointOf.exists_ball_chart {σ : Type} [Fintype σ] {Y : Set (σ → ℂ)} {z : σ → ℂ}
     (hz : IsRegularPointOf Y z) {W : Set (σ → ℂ)} (hW : W ∈ 𝓝 z) :
@@ -54,11 +54,11 @@ theorem IsRegularPointOf.exists_ball_chart {σ : Type} [Fintype σ] {Y : Set (σ
       exact hyB
 
 /- English proof (translation)
-Take `⟨y, hy, hyF⟩` from `h0`. Establish `hgB : ∀ t ∈ B, g t ∈ Y ∩ V` using `fun t ht => by rw [hYV]; exact ⟨t, ht, rfl⟩`. Establish `hy' : y ∈ g '' B` using `by rw [← hYV]; exact hy`. Take `⟨t₀, ht₀, rfl⟩` from `hy'`. Establish `hFg : AnalyticOnNhd ℂ (F ∘ g) B` using `fun t ht => (hF (g t) (hgB t ht).2).comp (hg t ht)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev : F ∘ g =ᶠ[𝓝 t₀] 0` using `by filter_upwards [(hg t₀ ht₀).continuousAt.tendsto.eventually hyF, hBo.mem_nhds ht₀] with t ht htB`. Conclude with `ht (hgB t htB).1`. Establish `hzero` using `hFg.eqOn_zero_of_preconnected_of_eventuallyEq_zero hBc ht₀ hev`. Introduce `u hu`. Establish `hu' : u ∈ g '' B` using `by rw [← hYV]; exact hu`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, rfl⟩` from `hu'`. Conclude with `hzero ht`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_on_chart_of_eventually_eq_zero {σ : Type} [Fintype σ] {Y V : Set (σ → ℂ)} {d : ℕ}
     {B : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → σ → ℂ} (hBo : IsOpen B) (hBc : IsPreconnected B)
@@ -79,7 +79,7 @@ theorem eq_zero_on_chart_of_eventually_eq_zero {σ : Type} [Fintype σ] {Y V : S
   exact hzero ht
 
 /- English proof (translation)
-Introduce `σ _ I hI`. Take `⟨h, hhI, hh⟩` from `hreg σ I hI`. Use `⟨h, hhI, fun z hz hhz W hW => ?_⟩` and prove the remaining obligations. Take `⟨d, V, B, g, hVo, hzV, hVW, hBo, hBc, hg, hYV⟩` from `(hh z hz hhz).exists_ball_chart hW`. Conclude with `⟨V, hVo, hzV, hVW, fun F hF h0 => eq_zero_on_chart_of_eventually_eq_zero hBo hBc hg hYV F hF h0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RegularLocusIdentity.proof (hreg : RegularOffHypersurface.Statement) :
     RegularLocusIdentity.Statement := by

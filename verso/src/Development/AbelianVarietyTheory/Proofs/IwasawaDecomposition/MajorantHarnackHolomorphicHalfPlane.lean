@@ -8,25 +8,25 @@ open scoped ComplexConjugate ComplexOrder Matrix
 namespace GlobalTheory.MajHarnack
 
 /- English proof (translation)
-Use `set wb : ℂ := conj w + 2 * T * I with hwb`. Use `set φ : ℂ → ℂ := fun ζ => (w - wb * ζ) / (1 - ζ) with hφ`. Establish `hne : ∀ ζ ∈ Metric.ball (0 : ℂ) 1, (1 - ζ) ≠ 0`. Introduce `ζ hζ h`. Establish `: ζ = 1` using `by linear_combination -h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[this] at hζ`. Establish `hmaps : Set.MapsTo φ (Metric.ball (0 : ℂ) 1) {w | T < w.im}`. Introduce `ζ hζ`. Establish `h1` using `hne ζ hζ`. Establish `hn : 0 < Complex.normSq (1 - ζ)` using `Complex.normSq_pos.mpr h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ' : ζ.re ^ 2 + ζ.im ^ 2 < 1`. Establish `h2 : ‖ζ‖ < 1` using `by simpa using hζ`. Establish `h3 : ‖ζ‖ ^ 2 < 1` using `by nlinarith [norm_nonneg ζ]`. Rewrite `h3` using `[Complex.sq_norm, Complex.normSq_apply]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show T < ((w - wb * ζ) / (1 - ζ)).im`. Rewrite using `[Complex.div_im, ← sub_div, lt_div_iff₀ hn, Complex.normSq_apply]`. Simplify using `[hwb]`. Use polynomial arithmetic with `[mul_pos (sub_pos.mpr hw) (sub_pos.mpr hζ')]`. Establish `hdφ : DifferentiableOn ℂ φ (Metric.ball (0 : ℂ) 1)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `DifferentiableOn.div (by fun_prop) (by fun_prop) hne` and prove the remaining obligations. Establish `hden : w' - wb ≠ 0`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `[hwb] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hden' : w - wb ≠ 0`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `[hwb] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hφ0 : φ 0 = w` using `by simp [hφ]`. Establish `hζ : (w' - w) / (w' - wb) ∈ Metric.ball (0 : ℂ) 1`. Rewrite using `[mem_ball_zero_iff, norm_div, div_lt_one (norm_pos_iff.mpr hden)]`. Use `lt_of_pow_lt_pow_left₀ 2 (norm_nonneg _) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[Complex.sq_norm, Complex.sq_norm, Complex.normSq_apply, Complex.normSq_apply]`. Simplify using `[hwb]`. Use polynomial arithmetic with `[mul_pos (sub_pos.mpr hw) (sub_pos.mpr hw')]`. Establish `hφ1 : φ ((w' - w) / (w' - wb)) = w'`. Simplify using `only [hφ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `: 1 - (w' - w) / (w' - wb) = (w - wb) / (w' - wb)` using `by field_simp; ring`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `Complex.dist_le_div_mul_dist_of_mapsTo_ball (R₂ := R) (hd.comp hdφ hmaps) (fun ζ hζ => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [Function.comp_apply, hφ0, h0, mem_closedBall_zero_iff]`. Conclude with `hb _ (hmaps hζ)) hζ`. Simplify using `only [Function.comp_apply, hφ0, hφ1, h0, dist_zero_right, div_one] at key`. Rewrite using `[sub_sub]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem schwarz_half {T R : ℝ} {f : ℂ → ℂ} (hd : DifferentiableOn ℂ f {w | T < w.im})
     (hb : ∀ z : ℂ, T < z.im → ‖f z‖ ≤ R) {w w' : ℂ} (hw : T < w.im) (hw' : T < w'.im)
@@ -84,11 +84,11 @@ theorem schwarz_half {T R : ℝ} {f : ℂ → ℂ} (hd : DifferentiableOn ℂ f 
   rwa [sub_sub]
 
 /- English proof (translation)
-Establish `hden : w' - conj w - 2 * T * I ≠ 0`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e : ‖w - w'‖ ^ 2 + 4 * ((w.im - T) * (w'.im - T)) = ‖w' - conj w - 2 * T * I‖ ^ 2`. Rewrite using `[Complex.sq_norm, Complex.sq_norm, Complex.normSq_apply, Complex.normSq_apply]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_div, norm_sub_rev w' w]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `norm_pos_iff.mpr hden` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem rho_sq {T : ℝ} {w w' : ℂ} (hw : T < w.im) (hw' : T < w'.im) :
     ‖(w' - w) / (w' - conj w - 2 * T * I)‖ ^ 2 * (‖w - w'‖ ^ 2 + 4 * ((w.im - T) * (w'.im - T))) =
@@ -107,11 +107,11 @@ theorem rho_sq {T : ℝ} {w w' : ℂ} (hw : T < w.im) (hw' : T < w'.im) :
   field_simp
 
 /- English proof (translation)
-Establish `hk : 0 < 1 - ρ ^ 2`. Assume the negation of the conclusion as `h`. Use the polynomial consequences of the given equalities and inequalities. Establish `hK : 2 + d / m = 2 * (1 + ρ ^ 2) / (1 - ρ ^ 2)`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : s ≤ 2 * a * (p + ρ * q) - (1 - ρ ^ 2) * a ^ 2`. Establish `: b ^ 2 ≤ (ρ * a) ^ 2` using `by gcongr`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hba hq]`. Establish `h2 : (1 - ρ ^ 2) * s ≤ (p + ρ * q) ^ 2`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 hk.le, sq_nonneg ((1 - ρ ^ 2) * a - (p + ρ * q))]`. Rewrite using `[hK, div_mul_eq_mul_div, le_div_iff₀ hk]`. Use polynomial arithmetic with `[mul_nonneg hρ (sq_nonneg (p - q)), mul_nonneg (sq_nonneg (1 - ρ)) (add_nonneg (sq_nonneg p) (sq_nonneg q))]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem real_bound {a b p q ρ d m s : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hp : 0 ≤ p) (hq : 0 ≤ q)
     (hρ : 0 ≤ ρ) (hd : 0 ≤ d) (hm : 0 < m) (hρd : ρ ^ 2 * (d + 4 * m) = d) (hba : b ≤ ρ * a)
@@ -134,7 +134,7 @@ theorem real_bound {a b p q ρ d m s : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hp : 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Rewrite using `[hermC_quad]`. Conclude with `quad_re_pos (X.gramPos_posDef hx τ) hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) {c : Fin X.p0 → ℂ} (hc : c ≠ 0) :
     0 < (hermC τ.1 X.Gm (∑ a, c a • X.colP x τ a) (∑ a, c a • X.colP x τ a)).re := by
@@ -142,7 +142,7 @@ theorem span_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) {c : Fin X.p0
   exact quad_re_pos (X.gramPos_posDef hx τ) hc
 
 /- English proof (translation)
-Rewrite using `[hermC_quad]`. Conclude with `quad_re_nonneg (X.gramPos_posDef hx τ).posSemidef c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_nonneg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (c : Fin X.p0 → ℂ) :
     0 ≤ (hermC τ.1 X.Gm (∑ a, c a • X.colP x τ a) (∑ a, c a • X.colP x τ a)).re := by
@@ -150,7 +150,7 @@ theorem span_nonneg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (c : Fin X
   exact quad_re_nonneg (X.gramPos_posDef hx τ).posSemidef c
 
 /- English proof (translation)
-Apply `X.ppos_eq_of x τ (X.gramPos_det_ne hx τ)` to reduce the goal to its premises. Introduce `b`. Use `show hermC τ.1 X.Gm (∑ a, c a • X.colP x τ a - ∑ a, c a • X.colP x τ a) (X.colP x τ b) = 0`. Rewrite using `[sub_self, hermC_zero_left]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ppos_span {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (c : Fin X.p0 → ℂ) :
     X.ppos x τ (∑ a, c a • X.colP x τ a) = ∑ a, c a • X.colP x τ a := by
@@ -160,7 +160,7 @@ theorem ppos_span {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (c : Fin X.p
   rw [sub_self, hermC_zero_left]
 
 /- English proof (translation)
-Simplify using `only [Data.ppos_eq, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ppos_congr (x : Frame X.Ψ r) (τ : X.Ψ) {u u' : Fin r → ℂ}
     (h : ∀ b, hermC τ.1 X.Gm u (X.colP x τ b) = hermC τ.1 X.Gm u' (X.colP x τ b)) :
@@ -168,35 +168,35 @@ theorem ppos_congr (x : Frame X.Ψ r) (τ : X.Ψ) {u u' : Fin r → ℂ}
   simp only [Data.ppos_eq, h]
 
 /- English proof (translation)
-Rewrite using `[Data.ppos_sub, X.ppos_ppos hx, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ppos_neg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u : Fin r → ℂ) :
     X.ppos x τ (u - X.ppos x τ u) = 0 := by
   rw [Data.ppos_sub, X.ppos_ppos hx, sub_self]
 
 /- English proof (translation)
-Rewrite using `[X.hermC_ppos_left hx, ppos_neg X hx, hermC_zero_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_pos_neg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin r → ℂ) :
     hermC τ.1 X.Gm (X.ppos x τ u) (v - X.ppos x τ v) = 0 := by
   rw [X.hermC_ppos_left hx, ppos_neg X hx, hermC_zero_right]
 
 /- English proof (translation)
-Rewrite using `[Data.Hf_eq_two_ppos, X.ppos_ppos hx]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin r → ℂ) :
     X.Hf x τ (X.ppos x τ u) v = hermC τ.1 X.Gm (X.ppos x τ u) v := by
   rw [Data.Hf_eq_two_ppos, X.ppos_ppos hx]; ring
 
 /- English proof (translation)
-Rewrite using `[Data.Hf_eq_two_ppos, ppos_neg X hx, hermC_zero_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_neg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin r → ℂ) :
     X.Hf x τ (u - X.ppos x τ u) v = - hermC τ.1 X.Gm (u - X.ppos x τ u) v := by
   rw [Data.Hf_eq_two_ppos, ppos_neg X hx, hermC_zero_left]; ring
 
 /- English proof (translation)
-Rewrite using `[Hf_neg X hx, hermC_sub_left, herm_pos_neg X hx]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_right_neg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin r → ℂ) :
     hermC τ.1 X.Gm u (v - X.ppos x τ v) =
@@ -204,7 +204,7 @@ theorem herm_right_neg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : 
   rw [Hf_neg X hx, hermC_sub_left, herm_pos_neg X hx]; ring
 
 /- English proof (translation)
-Establish `h` using `herm_right_neg X hx τ u v`. Rewrite `h` using `[hermC_sub_right, X.hermC_ppos_right hx]`. Rewrite using `[Hf_pos X hx]`. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem herm_split {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin r → ℂ) :
     hermC τ.1 X.Gm u v = X.Hf x τ (X.ppos x τ u) (X.ppos x τ v) -
@@ -215,14 +215,14 @@ theorem herm_split {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin 
   linear_combination h
 
 /- English proof (translation)
-Rewrite using `[herm_split X hx, X.Hf_self hx, X.Hf_self hx]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_self_re {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u : Fin r → ℂ) :
     (hermC τ.1 X.Gm u u).re = X.maj x τ (X.ppos x τ u) - X.maj x τ (u - X.ppos x τ u) := by
   rw [herm_split X hx, X.Hf_self hx, X.Hf_self hx]; simp
 
 /- English proof (translation)
-Establish `h` using `X.Hf_self hx τ u`. Rewrite `h` using `[Data.Hf_eq_two_ppos, X.hermC_ppos_left hx]`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem maj_eq {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u : Fin r → ℂ) :
     X.maj x τ u = 2 * (hermC τ.1 X.Gm (X.ppos x τ u) (X.ppos x τ u)).re -
@@ -234,7 +234,7 @@ theorem maj_eq {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u : Fin r → 
   linarith
 
 /- English proof (translation)
-Rewrite using `[maj_eq X hx τ u, herm_self_re X hx τ u, ← Hf_pos X hx, X.Hf_self hx]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem maj_split {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u : Fin r → ℂ) :
     X.maj x τ u = X.maj x τ (X.ppos x τ u) + X.maj x τ (u - X.ppos x τ u) := by
@@ -242,7 +242,7 @@ theorem maj_split {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u : Fin r �
   simp; ring
 
 /- English proof (translation)
-Rewrite using `[← Real.sqrt_mul (MajorantConjugateTransfer.maj_nonneg X hx τ u)]`. Conclude with `Real.le_sqrt_of_sq_le (MajorantConjugateTransfer.cs X hx τ u v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cs' {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin r → ℂ) :
     ‖X.Hf x τ u v‖ ≤ Real.sqrt (X.maj x τ u) * Real.sqrt (X.maj x τ v) := by
@@ -253,7 +253,7 @@ noncomputable def cross (y x : Frame X.Ψ r) (τ : X.Ψ) : Matrix (Fin X.p0) (Fi
   Matrix.of fun b a => hermC τ.1 X.Gm (X.colP y τ a) (X.colP x τ b)
 
 /- English proof (translation)
-Rewrite using `[hermC_sum_left]`. Simplify using `only [cross, Matrix.mulVec, dotProduct, Matrix.of_apply, hermC_smul_left, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cross_mulVec (y x : Frame X.Ψ r) (τ : X.Ψ) (c : Fin X.p0 → ℂ) (b : Fin X.p0) :
     (cross X y x τ *ᵥ c) b = hermC τ.1 X.Gm (∑ a, c a • X.colP y τ a) (X.colP x τ b) := by
@@ -261,9 +261,9 @@ theorem cross_mulVec (y x : Frame X.Ψ r) (τ : X.Ψ) (c : Fin X.p0 → ℂ) (b 
   simp only [cross, Matrix.mulVec, dotProduct, Matrix.of_apply, hermC_smul_left, mul_comm]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨c, hc, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h`. Establish `hp` using `span_pos X hy τ hc`. Establish `hne : (∑ a, c a • X.colP y τ a) ≠ 0`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hp` using `[e, hermC_zero_left]`. Simplify using `at hp`. Use `X.neg_of_perp hx τ hne fun b => by rw [← cross_mulVec, h0]; rfl` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cross_det {y x : Frame X.Ψ r} (hy : y ∈ X.dom) (hx : x ∈ X.dom) (τ : X.Ψ) :
     (cross X y x τ).det ≠ 0 := by
@@ -276,7 +276,7 @@ theorem cross_det {y x : Frame X.Ψ r} (hy : y ∈ X.dom) (hx : x ∈ X.dom) (τ
   linarith
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `DifferentiableOn.fun_sum fun σ _ => DifferentiableOn.const_mul ?_ _` and prove the remaining obligations. Conclude with `DifferentiableOn.fun_finsetProd fun i _ => h _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem diff_det {n : ℕ} {s : Set ℂ} {M : ℂ → Matrix (Fin n) (Fin n) ℂ}
     (h : ∀ a b, DifferentiableOn ℂ (fun z => M z a b) s) :
@@ -286,7 +286,7 @@ theorem diff_det {n : ℕ} {s : Set ℂ} {M : ℂ → Matrix (Fin n) (Fin n) ℂ
   exact DifferentiableOn.fun_finsetProd fun i _ => h _ _
 
 /- English proof (translation)
-Unfold `hermC`. Use `DifferentiableOn.fun_sum fun i _ => DifferentiableOn.fun_sum fun j _ => ?_` and prove the remaining obligations. Use `DifferentiableOn.mul_const (DifferentiableOn.mul_const ?_ _) _` and prove the remaining obligations. Conclude with `differentiableOn_pi.mp (differentiableOn_pi.mp (differentiableOn_pi.mp hx τ) i) _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem diff_herm {s : Set ℂ} {x : ℂ → Frame X.Ψ r} (hx : DifferentiableOn ℂ x s) (τ : X.Ψ)
     (a : Fin X.p0) (v : Fin r → ℂ) :
@@ -297,29 +297,25 @@ theorem diff_herm {s : Set ℂ} {x : ℂ → Frame X.Ψ r} (hx : DifferentiableO
   exact differentiableOn_pi.mp (differentiableOn_pi.mp (differentiableOn_pi.mp hx τ) i) _
 
 /- English proof (translation)
-Establish `h0` using `hx w hw`. Use `set m : Fin X.p0 → ℂ := fun b => hermC τ.1 X.Gm u (X.colP (x w) τ b) with hm`. Use `set γ : ℂ → Fin X.p0 → ℂ := fun z => (cross X (x z) (x w) τ)⁻¹ *ᵥ m with hγ`. Use `set U : ℂ → Fin r → ℂ := fun z => ∑ a, γ z a • X.colP (x z) τ a with hU`. Establish `hunit : ∀ z : ℂ, T < z.im → IsUnit (cross X (x z) (x w) τ).det` using `fun z hz => isUnit_iff_ne_zero.mpr (cross_det X (hx z hz) h0 τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hPU : ∀ z : ℂ, T < z.im → X.ppos (x w) τ (U z) = X.ppos (x w) τ u`. Introduce `z hz`. Use `ppos_congr X _ τ fun b => ?_` and prove the remaining obligations. Simplify using `only [hU]`. Rewrite using `[← cross_mulVec, hγ, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hunit z hz), Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hUw' : U w' = u`. Establish `: m = cross X (x w') (x w) τ *ᵥ c`. Use function extensionality and compare the values at `b`. Rewrite using `[cross_mulVec, ← hu]`. Simplify using `only [hU, hγ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (hunit w' hw'), Matrix.one_mulVec, hu]`. Establish `hdγ : ∀ a, DifferentiableOn ℂ (fun z => γ z a) {w | T < w.im}`. Introduce `a`. Establish `hc : ∀ a b, DifferentiableOn ℂ (fun z => cross X (x z) (x w) τ a b) {w | T < w.im}` using `fun a b => diff_herm X hd τ b _`. Establish `h1 : DifferentiableOn ℂ (fun z => ((cross X (x z) (x w) τ).updateCol a m).det / (cross X (x z) (x w) τ).det) {w | T < w.im}`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `DifferentiableOn.div (diff_det fun i j => ?_) (diff_det hc) fun z hz => cross_det X (hx z hz) h0 τ` and prove the remaining obligations. Simplify using `only [Matrix.updateCol_apply]`. Use `split_ifs`. Conclude with `differentiableOn_const _`. Conclude with `hc _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `h1.congr fun z hz => ?_` and prove the remaining obligations. Establish `h2` using `congrFun (Matrix.det_smul_inv_mulVec_eq_cramer _ m (hunit z hz)) a`. Rewrite `h2` using `[Matrix.cramer_apply]`. Rewrite using `[eq_div_iff (cross_det X (hx z hz) h0 τ), ← h2, mul_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set e := u - X.ppos (x w) τ u with he`. Use `set f : ℂ → ℂ := fun z => hermC τ.1 X.Gm (U z) e with hf`. Establish `hdf : DifferentiableOn ℂ f {w | T < w.im}`. Simplify using `only [hf, hU, hermC_sum_left, hermC_smul_left]`. Conclude with `DifferentiableOn.fun_sum fun a _ => (hdγ a).mul (diff_herm X hd τ a e)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf0 : f w = 0`. Simplify using `only [hf, hU]`. Rewrite using `[← ppos_span X h0, he, herm_pos_neg X h0]`. Use `set A := Real.sqrt (X.maj (x w) τ (X.ppos (x w) τ u))`. Use `set B := Real.sqrt (X.maj (x w) τ e) with hB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hb : ∀ z : ℂ, T < z.im → ‖f z‖ ≤ A * B`. Introduce `z hz`. Simplify using `only [hf]`. Rewrite using `[he, herm_right_neg X h0, norm_neg]`. Use `(cs' X h0 τ _ _).trans (mul_le_mul_of_nonneg_right ?_ (Real.sqrt_nonneg _))` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Establish `h1` using `herm_self_re X h0 τ (U z)`. Establish `h2 : 0 ≤ (hermC τ.1 X.Gm (U z) (U z)).re` using `span_nonneg X (hx z hz) τ _`. Rewrite using `[← hPU z hz]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `key` using `schwarz_half hdf hb hw hw' hf0`. Establish `hfw : ‖f w'‖ = B * B`. Simplify using `only [hf]`. Rewrite using `[hUw', he, herm_right_neg X h0, norm_neg, X.Hf_self h0, hB, Real.mul_self_sqrt (MajorantConjugateTransfer.maj_nonneg X h0 τ _), Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (MajorantConjugateTransfer.maj_nonneg X h0 τ _)]`. Rewrite `key` using `[hfw]`.
-
-Establish `hB0 : 0 ≤ B` using `Real.sqrt_nonneg _`. Break down `hB0.eq_or_lt with h | h` into its components or cases. Conclude with `h.symm.trans_le (mul_nonneg (norm_nonneg _) (Real.sqrt_nonneg _))`. Use `le_of_mul_le_mul_right ?_ h` and prove the remaining obligations. Conclude with `key.trans_eq (by ring)`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem neg_le {T : ℝ} {x : ℂ → Frame X.Ψ r} (hd : DifferentiableOn ℂ x {w | T < w.im})
     (hx : ∀ w : ℂ, T < w.im → x w ∈ X.dom) {w w' : ℂ} (hw : T < w.im) (hw' : T < w'.im)
@@ -401,11 +397,11 @@ namespace GlobalTheory
 open MajHarnack in
 
 /- English proof (translation)
-Introduce `E _ _ _ N X T x hd hx w w' hw hw' τ v`. Establish `h0` using `hx w hw`. Establish `h1` using `hx w' hw'`. Use `set u := X.ppos (x w') τ v with hu`. Establish `hba` using `neg_le X hd hx hw hw' τ _ u (X.ppos_eq (x w') τ v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `nn` using `MajorantConjugateTransfer.maj_nonneg X h0 τ`. Establish `key` using `real_bound (s := (hermC τ.1 X.Gm u u).re) (p := Real.sqrt (X.maj (x w) τ (X.ppos (x w) τ v))) (q := Real.sqrt (X.maj (x w) τ (v - X.ppos (x w) τ v))) (Real.sqrt_nonneg _) (Real.sqrt_nonneg _) (Real.sqrt_nonneg _) (Real.sqrt_nonneg _) (norm_nonneg _) (sq_nonneg _) (mul_pos (sub_po …`. Rewrite using `[hu, ← X.hermC_ppos_right h1, ← hu, herm_split X h0]`. Use `(Complex.re_le_norm _).trans ((norm_sub_le _ _).trans ?_)` and prove the remaining obligations. Conclude with `add_le_add (cs' X h0 τ _ _) (cs' X h0 τ _ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[Real.sq_sqrt (nn _), Real.sq_sqrt (nn _), ← herm_self_re X h0, ← maj_split X h0]`. Rewrite using `[maj_eq X h1]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem maj_harnack : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) (X : Data E N)
     (T : ℝ) (x : ℂ → Frame X.Ψ N), DifferentiableOn ℂ x {w | T < w.im} →

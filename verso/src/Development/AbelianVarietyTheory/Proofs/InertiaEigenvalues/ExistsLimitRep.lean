@@ -12,13 +12,11 @@ open Formalism.MainNotions.N GlobalTheory.Cong GlobalTheory.PsChar
 namespace GlobalTheory.Cong
 
 /- English proof (translation)
-Introduce `l _ Γ _ _ _ _ a J x hx θ L hL hθL C hC hA`. Establish `hU` using `GlobalTheory.T.approximatedTraceSystem_locally_cauchy l Γ a J x θ C hC hA`. Take `⟨T, hTc, hTx⟩` from `GlobalTheory.Cong.extend_of_locallyCauchy l Γ J x hx θ L hL hθL hU`. Establish `hA' : PolyApprox (fun j => T (x j)) ((fun ρ j => trc ρ (x j)) '' C)`. Establish `: (fun j => T (x j)) = θ` using `funext hTx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hA`. Establish `hT : PolyApprox T (trc '' C)` using `GlobalTheory.Cong.polyApprox_of_denseRange l Γ a J x hx T hTc C hC hA'`. Establish `hP : IsPsChar a T` using `GlobalTheory.T.isPseudoCharacter_of_approximatedByTraces l Γ a T C hT`. Take `⟨r, hr, htr⟩` from `GlobalTheory.PsChar.exists_ssRep Γ (PadicAlgCl l) a T hP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htrc : trc r = T` using `funext fun g => htr g`. Use `⟨r, ?_, hr, fun j => by rw [htrc]; exact hTx j, by rw [htrc]; exact hT⟩` and prove the remaining obligations. Use `GlobalTheory.SSCont.continuous_of_continuous_trace Γ (PadicAlgCl l) a r hr ?_` and prove the remaining obligations. Establish `: (fun g => ((r g : GL (Fin a) (PadicAlgCl l)) : Matrix (Fin a) (Fin a) (PadicAlgCl l)).trace) = T` using `htrc`. Rewrite using `[this]`.
-
-Conclude with `hTc`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_limit_rep : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] (a : ℕ) (J : Type) (x : J → Γ), DenseRange x → ∀ (θ : J → PadicAlgCl l) (L : IntermediateField ℚ_[l] (PadicAlgCl l)), FiniteDimensional ℚ_[l] L → (∀ j, θ j ∈ L) → ∀ (C : Set (Γ →* GL (Fin a) (PadicAlgCl l))), (∀ ρ ∈ C, Continuous ρ) → PolyApprox θ ((fun ρ j => trc ρ (x j)) '' C) → ∃ r : Γ →* GL (Fin a) (PadicAlgCl l), Continuous r ∧ IsSSRep r ∧ (∀ j, trc r (x j) = θ j) ∧ PolyApprox (trc r) (trc '' C) := by
   intro l _ Γ _ _ _ _ a J x hx θ L hL hθL C hC hA

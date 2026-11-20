@@ -5,15 +5,15 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ O _ _ V _ _ _ _ h π hπ`. Establish `key : ∀ x : Fin h → C, π x = ∑ i, x i • π (Pi.single i 1)`. Introduce `x`. Use `conv_lhs => rw [pi_eq_sum_univ' x]`. Simplify using `only [map_sum, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => π (Pi.single i 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`. Take `⟨x, rfl⟩` from `hπ v`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨x, (key x).symm⟩`. Use extensionality with `v`. Simplify using `only [Set.mem_range, SetLike.mem_coe, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Simplify using `only [algebraMap_smul]`. Introduce and unpack `⟨t, rfl⟩`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Simplify using `only [algebraMap_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem image_integral_points_eq_span_of_surjective :
     ∀ (C : Type) [Field C] (O : Type) [CommRing O] [Algebra O C] (V : Type) [AddCommGroup V]

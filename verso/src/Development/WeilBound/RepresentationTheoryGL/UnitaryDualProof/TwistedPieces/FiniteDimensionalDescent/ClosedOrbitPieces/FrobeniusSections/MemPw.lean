@@ -19,15 +19,15 @@ def Pw (k B : Type*) [Field k] [CommRing B] [Algebra k B] (q : ℕ) : Subalgebra
   Algebra.adjoin k (Set.range fun b : B => b ^ q)
 
 /- English proof (translation)
-Unfold `Pw`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Break down `subsingleton_or_nontrivial B with hB | hB` into its components or cases. Conclude with `⟨b, Subsingleton.elim _ _⟩`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `: CharP B p` using `charP_of_injective_algebraMap' k p`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`. Conclude with `⟨w, rfl⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `algebraMap r => exact hroot r`. Consider the case `add x y _ _ hx hy`. Take `⟨w₁, rfl⟩` from `hx`. Take `⟨w₂, rfl⟩` from `hy`. Conclude with `⟨w₁ + w₂, add_pow_char_pow w₁ w₂ p c⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨w₁, rfl⟩` from `hx`. Take `⟨w₂, rfl⟩` from `hy`. Conclude with `⟨w₁ * w₂, mul_pow w₁ w₂ _⟩`. Introduce and unpack `⟨w, rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `Algebra.subset_adjoin ⟨w, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_Pw {B : Type*} [CommRing B] [Algebra k B] (p c : ℕ) [Fact p.Prime] [CharP k p]
     (hroot : ∀ a : k, ∃ w : B, w ^ (p ^ c) = algebraMap k B a) {b : B} :
@@ -55,17 +55,15 @@ theorem mem_Pw {B : Type*} [CommRing B] [Algebra k B] (p c : ℕ) [Fact p.Prime]
     exact Algebra.subset_adjoin ⟨w, rfl⟩
 
 /- English proof (translation)
-Use `letI iT : Module (Tw k p c) (Pw k B (p ^ c)) := inferInstanceAs (Module k (Pw k B (p ^ c)))`. Establish `hadd : ∀ x y : B, (x + y) ^ (p ^ c) = x ^ (p ^ c) + y ^ (p ^ c)`. Introduce `x y`. Break down `subsingleton_or_nontrivial B with hB | hB` into its components or cases. Conclude with `Subsingleton.elim _ _`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `haveI := charP_of_injective_algebraMap (algebraMap k B).injective p`. Conclude with `add_pow_char_pow x y p c`. Establish `hmem : ∀ x : B, x ^ (p ^ c) ∈ Pw k B (p ^ c)` using `fun x => Algebra.subset_adjoin ⟨x, rfl⟩`. Set `f : B →ₗ[k] RestrictScalars k (Tw k p c) (Pw k B (p ^ c))` to `{ toFun := fun x => (⟨x ^ (p ^ c), hmem x⟩ : Pw k B (p ^ c)) map_add' := fun x y => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hadd x y`. Use the proof step `map_smul' := fun a x => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (a • x) ^ (p ^ c) = ((algebraMap k (Tw k p c) a) • (⟨x ^ (p ^ c), hmem x⟩ : Pw k B (p ^ c)) : Pw k B (p ^ c)).1`. Rewrite using `[smul_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `rfl }`. Establish `hinj : Function.Injective f`. Use `(injective_iff_map_eq_zero f).2 fun x hx => ?_` and prove the remaining obligations. Establish `h0 : x ^ (p ^ c) = 0` using `congrArg (fun z : Pw k B (p ^ c) => (z : B)) hx`. Conclude with `IsReduced.eq_zero x ⟨_, h0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Equip the data with the indicated structure. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : Function.Surjective f`. Introduce `y`. Take `⟨w, hw⟩` from `(mem_Pw p c hroot).1 (show (Pw k B (p ^ c)) from y).2`. Conclude with `⟨w, Subtype.ext hw⟩`. Use `letI : Module (Tw k p c) (RestrictScalars k (Tw k p c) (Pw k B (p ^ c))) := RestrictScalars.moduleOrig k (Tw k p c) (Pw k B (p ^ c))`.
-
-Use `haveI : Module.Free (Tw k p c) (RestrictScalars k (Tw k p c) (Pw k B (p ^ c))) := show Module.Free k (Pw k B (p ^ c)) from inferInstance`. Set `e` to `LinearEquiv.ofBijective f ⟨hinj, hsurj⟩`. Rewrite using `[e.finrank_eq, ← Module.finrank_mul_finrank k (Tw k p c) (RestrictScalars k (Tw k p c) (Pw k B (p ^ c)))]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fc {B : Type*} [CommRing B] [Algebra k B] [FiniteDimensional k B] [IsReduced B]
     (p c : ℕ) [Fact p.Prime] [CharP k p] [FiniteDimensional k (Tw k p c)]

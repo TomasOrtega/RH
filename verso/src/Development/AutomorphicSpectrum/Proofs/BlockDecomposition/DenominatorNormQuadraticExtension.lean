@@ -9,7 +9,7 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Globa
 open scoped Matrix nonZeroDivisors
 
 /- English proof (translation)
-Rewrite using `[HS.den, Ideal.mem_torsionOf_iff, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `show (∀ i : Fin 1, ∃ o, algebraMap (𝓞 K) K o = (a • fun _ : Fin 1 => x) i) ↔ _`. Simplify using `only [Pi.smul_apply, Algebra.smul_def]`. Conclude with `⟨fun h => h 0, fun h _ => h⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_den_iff {K : Type} [Field K] [NumberField K] (x : K) (a : 𝓞 K) :
     a ∈ HS.den K x ↔ ∃ o : 𝓞 K, algebraMap (𝓞 K) K o = algebraMap (𝓞 K) K a * x := by
@@ -19,21 +19,19 @@ theorem mem_den_iff {K : Type} [Field K] [NumberField K] (x : K) (a : 𝓞 K) :
   exact ⟨fun h => h 0, fun h _ => h⟩
 
 /- English proof (translation)
-Take `⟨S, hSdef⟩ : ∃ S : FractionalIdeal (𝓞 K)⁰ K, S = FractionalIdeal.spanSingleton (𝓞 K)⁰ (1 : K) ⊔ FractionalIdeal.spanSingleton (𝓞 K)⁰ x` from `⟨_, rfl⟩`. Establish `h1S : (1 : K) ∈ S`. Rewrite using `[hSdef]`. Conclude with `(le_sup_left : FractionalIdeal.spanSingleton (𝓞 K)⁰ (1 : K) ≤ _) (FractionalIdeal.mem_spanSingleton_self _ _)`. Establish `hxS : x ∈ S`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hSdef]`. Conclude with `(le_sup_right : FractionalIdeal.spanSingleton (𝓞 K)⁰ x ≤ _) (FractionalIdeal.mem_spanSingleton_self _ _)`. Establish `hS : S ≠ 0`. Introduce `h`. Rewrite `h1S` using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_ne_zero ((FractionalIdeal.mem_zero_iff _).1 h1S)`. Establish `hden : ∀ t ∈ S⁻¹, ∃ a ∈ HS.den K x, algebraMap (𝓞 K) K a = t`. Introduce `t ht`. Rewrite `ht` using `[FractionalIdeal.mem_inv_iff hS]`. Establish `ht1 : t ∈ (1 : FractionalIdeal (𝓞 K)⁰ K)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `ht 1 h1S` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `(FractionalIdeal.mem_one_iff (𝓞 K)⁰).1 ht1`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff (𝓞 K)⁰).1 (ht x hxS)`. Conclude with `⟨a, (mem_den_iff x a).2 ⟨o, by rw [ho, ha]⟩, ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : ∀ T : FractionalIdeal (𝓞 K)⁰ K, S * T = FractionalIdeal.spanSingleton (𝓞 K)⁰ (1 : K) * T ⊔ FractionalIdeal.spanSingleton (𝓞 K)⁰ x * T`. Introduce `T`. Rewrite using `[hSdef, FractionalIdeal.sup_eq_add, FractionalIdeal.sup_eq_add, add_mul]`. Establish `h1 : (1 : K) ∈ S * S⁻¹`. Rewrite using `[mul_inv_cancel₀ hS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `FractionalIdeal.one_mem_one _`. Rewrite `h1` using `[hsplit S⁻¹, ← FractionalIdeal.mem_coe, FractionalIdeal.coe_sup, Submodule.mem_sup]`. Take `⟨u, hu, v, hv, huv⟩` from `h1`. Rewrite `hu`, `hv` using `[FractionalIdeal.mem_coe, FractionalIdeal.mem_singleton_mul]`. Take `⟨u', hu', rfl⟩` from `hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v', hv', rfl⟩` from `hv`. Take `⟨a, ha, ha'⟩` from `hden u' hu'`. Take `⟨c, hc, hc'⟩` from `hden v' hv'`. Use `⟨a, ha, c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[ha', hc', ← huv]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_bezout {K : Type} [Field K] [NumberField K] (x : K) :
     ∃ a ∈ HS.den K x, ∃ c ∈ HS.den K x,
@@ -79,13 +77,13 @@ theorem exists_bezout {K : Type} [Field K] [NumberField K] (x : K) :
   ring
 
 /- English proof (translation)
-Establish `tower : ∀ o : 𝓞 F, algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) o) = algebraMap F E (algebraMap (𝓞 F) F o)`. Introduce `o`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `b hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, c, hc, hac⟩` from `exists_bezout x`. Take `⟨o, ho⟩` from `(mem_den_iff _ b).1 hb`. Establish `key : b = algebraMap (𝓞 F) (𝓞 E) a * b + algebraMap (𝓞 F) (𝓞 E) c * o`. Apply `FaithfulSMul.algebraMap_injective (𝓞 E) E` to reduce the goal to its premises. Establish `hac'` using `congrArg (algebraMap F E) hac`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_mul, map_one] at hac'`. Simplify using `only [map_add, map_mul, tower, ho]`. Take the linear combination `(-(algebraMap (𝓞 E) E b)) * hac'`. Rewrite using `[key]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ha)) (Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hc))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, mem_den_iff]`. Take `⟨o, ho⟩` from `(mem_den_iff x a).1 ha`. Conclude with `⟨algebraMap (𝓞 F) (𝓞 E) o, by rw [tower, tower, ho, map_mul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem den_algebraMap (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (x : F) :
@@ -114,7 +112,7 @@ theorem den_algebraMap (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
     exact ⟨algebraMap (𝓞 F) (𝓞 E) o, by rw [tower, tower, ho, map_mul]⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ h2 x`. Rewrite using `[den_algebraMap, Ideal.absNorm_algebraMap]`. Use `congr 1`. Rewrite using `[← h2]`. Conclude with `(IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_den_algebraMap : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E], Module.finrank F E = 2 → ∀ x : F,

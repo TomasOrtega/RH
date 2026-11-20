@@ -7,17 +7,17 @@ namespace GlobalTheory.FlowScaling
 variable {l d : ℕ} [NeZero d]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => le_rfl, fun s => by simpa using hD s⟩`.
+Supply the required witnesses or components.
 -/
 lemma isFlow_zero {D : ZMod d → ℝ} (hD : ∀ a, 0 ≤ D a) : IsFlow l d D (fun _ _ => 0) :=
   ⟨fun _ _ => le_rfl, fun s => by simpa using hD s⟩
 
 /- English proof (translation)
-Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast hl`. Unfold `flowVal`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Establish `h2` using `hx.2 a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : 0 ≤ ∑ i ∈ oddLevels d, x (a - (i : ZMod d)) i` using `Finset.sum_nonneg fun i _ => hx.1 _ i`. Establish `h4 : (l : ℝ) * ∑ i ∈ oddLevels d, x a i ≤ ∑ i ∈ oddLevels d, (l : ℝ) ^ i * x a i`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Establish `hi0 : i ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `absurd (Finset.mem_filter.1 hi).2 (by decide)`. Conclude with `mul_le_mul_of_nonneg_right (le_self_pow₀ hl1 hi0) (hx.1 a i)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the hypotheses and unpack their components. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma mul_flowVal_le (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMod d → ℕ → ℝ} (hx : IsFlow l d D x) :
     (l : ℝ) * flowVal d x ≤ ∑ a, D a := by
@@ -38,7 +38,7 @@ lemma mul_flowVal_le (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMod d → ℕ →
   linarith
 
 /- English proof (translation)
-Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast hl`. Rewrite using `[le_div_iff₀ hl0, mul_comm]`. Conclude with `mul_flowVal_le hl hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma flowVal_le (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMod d → ℕ → ℝ} (hx : IsFlow l d D x) :
     flowVal d x ≤ (∑ a, D a) / l := by
@@ -47,7 +47,7 @@ lemma flowVal_le (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMod d → ℕ → ℝ
   exact mul_flowVal_le hl hx
 
 /- English proof (translation)
-Use `le_csSup ⟨(∑ a, D a) / l, ?_⟩ ⟨x, hx, rfl⟩` and prove the remaining obligations. Introduce and unpack `t ⟨y, hy, rfl⟩`. Conclude with `flowVal_le hl hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma le_maxFlow (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMod d → ℕ → ℝ} (hx : IsFlow l d D x) :
     flowVal d x ≤ maxFlow l d D := by
@@ -56,7 +56,7 @@ lemma le_maxFlow (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMod d → ℕ → ℝ
   exact flowVal_le hl hy
 
 /- English proof (translation)
-Use `csSup_le ⟨_, _, isFlow_zero hD, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨y, hy, rfl⟩`. Conclude with `h y hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma maxFlow_le {D : ZMod d → ℝ} (hD : ∀ a, 0 ≤ D a) {B : ℝ}
     (h : ∀ x, IsFlow l d D x → flowVal d x ≤ B) : maxFlow l d D ≤ B := by
@@ -65,14 +65,14 @@ lemma maxFlow_le {D : ZMod d → ℝ} (hD : ∀ a, 0 ≤ D a) {B : ℝ}
   exact h y hy
 
 /- English proof (translation)
-The claim follows from `maxFlow_le hD fun _ hx => flowVal_le hl hx`.
+A detailed English derivation is pending.
 -/
 lemma maxFlow_le_div (hl : 1 ≤ l) {D : ZMod d → ℝ} (hD : ∀ a, 0 ≤ D a) :
     maxFlow l d D ≤ (∑ a, D a) / l :=
   maxFlow_le hD fun _ hx => flowVal_le hl hx
 
 /- English proof (translation)
-Use `le_maxFlow hl (isFlow_zero (l := l) hD)` as an intermediate fact. Simplify `this` using `[flowVal]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma maxFlow_nonneg (hl : 1 ≤ l) {D : ZMod d → ℝ} (hD : ∀ a, 0 ≤ D a) :
     0 ≤ maxFlow l d D := by
@@ -80,11 +80,11 @@ lemma maxFlow_nonneg (hl : 1 ≤ l) {D : ZMod d → ℝ} (hD : ∀ a, 0 ≤ D a)
   simpa [flowVal] using this
 
 /- English proof (translation)
-Break down `hc.eq_or_lt with rfl | hc0` into its components or cases. Rewrite using `[zero_mul]`. Conclude with `maxFlow_nonneg hl fun a => by simpa using h a`. Rewrite using `[← le_div_iff₀' hc0]`. Use `maxFlow_le hD fun x hx => ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_div_iff₀' hc0]`. Establish `hf : IsFlow l d D' (fun a i => c * x a i)`. Use `⟨fun s i => mul_nonneg hc (hx.1 s i), fun s => le_trans (le_of_eq ?_) ((mul_le_mul_of_nonneg_left (hx.2 s) hc).trans (h s))⟩` and prove the remaining obligations. Rewrite using `[mul_add, Finset.mul_sum, Finset.mul_sum]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hv : flowVal d (fun a i => c * x a i) = c * flowVal d x`. Simplify using `only [flowVal, Finset.mul_sum]`. Rewrite using `[← hv]`. Conclude with `le_maxFlow hl hf`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mul_maxFlow_le (hl : 1 ≤ l) {c : ℝ} {D D' : ZMod d → ℝ} (hc : 0 ≤ c) (hD : ∀ a, 0 ≤ D a)
     (h : ∀ a, c * D a ≤ D' a) : c * maxFlow l d D ≤ maxFlow l d D' := by
@@ -106,9 +106,9 @@ lemma mul_maxFlow_le (hl : 1 ≤ l) {c : ℝ} {D D' : ZMod d → ℝ} (hc : 0 �
     exact le_maxFlow hl hf
 
 /- English proof (translation)
-Use `le_antisymm ?_ (mul_maxFlow_le hl hc hD fun _ => le_rfl)` and prove the remaining obligations. Break down `hc.eq_or_lt with rfl | hc0` into its components or cases. Use `maxFlow_le_div (D := fun a => 0 * D a) hl (fun a => by simp)` as an intermediate fact. Simplify using `using this`. Use `mul_maxFlow_le (c := c⁻¹) (D := fun a => c * D a) (D' := D) hl (inv_nonneg.2 hc) (fun a => mul_nonneg hc (hD a)) (fun a => by rw [inv_mul_cancel_left₀ hc0.ne'])` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[inv_mul_le_iff₀ hc0]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma maxFlow_mul (hl : 1 ≤ l) {c : ℝ} {D : ZMod d → ℝ} (hc : 0 ≤ c) (hD : ∀ a, 0 ≤ D a) :
     maxFlow l d (fun a => c * D a) = c * maxFlow l d D := by
@@ -121,7 +121,7 @@ lemma maxFlow_mul (hl : 1 ≤ l) {c : ℝ} {D : ZMod d → ℝ} (hc : 0 ≤ c) (
     rwa [inv_mul_le_iff₀ hc0] at this
 
 /- English proof (translation)
-Introduce `l d _ hl c D hc hD`. Unfold `Fnum`. Rewrite using `[maxFlow_mul (by omega) hc hD, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fScale : FScale := by
   intro l d _ hl c D hc hD
@@ -130,21 +130,19 @@ theorem fScale : FScale := by
   ring
 
 /- English proof (translation)
-Introduce `l d _ hl _ _ n T θ w W th hT hw hW hth hθ`. Establish `hl1 : 1 ≤ l` using `by omega`. Establish `hl3 : (3 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hθ0 : 0 ≤ θ` using `(hth 0).1.trans (hth 0).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW0 : ∀ a, 0 ≤ W a` using `fun a => by`. Establish `h1 : 0 ≤ T * W a`. Rewrite using `[hW a]`. Conclude with `mul_nonneg (hw a).le (by linarith [(hth a).2])`. Conclude with `(mul_nonneg_iff_of_pos_left hT).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnw : ∀ a, 0 ≤ (n : ℝ) * w a` using `fun a => mul_nonneg hn (hw a).le`. Establish `h1 : (1 - θ) * maxFlow l d (fun a => (n : ℝ) * w a) ≤ maxFlow l d (fun a => T * ((n : ℝ) * W a))`. Use `mul_maxFlow_le hl1 (by linarith) hnw fun a => ?_` and prove the remaining obligations. Establish `e : T * ((n : ℝ) * W a) = (1 - th a) * ((n : ℝ) * w a)`. Rewrite using `[mul_left_comm, hW a]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right (by linarith [(hth a).2]) (hnw a)`. Establish `h2 : maxFlow l d (fun a => (n : ℝ) * w a) ≤ (∑ a, (n : ℝ) * w a) / l` using `maxFlow_le_div hl1 hnw`. Establish `h3 : ∑ a, T * ((n : ℝ) * W a) ≤ ∑ a, (n : ℝ) * w a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Establish `e : T * ((n : ℝ) * W a) = (1 - th a) * ((n : ℝ) * w a)`. Rewrite using `[mul_left_comm, hW a]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_of_le_one_left (hnw a) (by linarith [(hth a).1])`. Establish `hg : 0 ≤ gam l` using `div_nonneg (by linarith) (by nlinarith)`. Establish `h4` using `mul_le_mul_of_nonneg_left h3 hg`. Establish `h5` using `mul_le_mul_of_nonneg_left h2 hθ0`. Establish `h6 : 0 ≤ θ * ((∑ a, (n : ℝ) * w a) / l)` using `mul_nonneg hθ0 (div_nonneg (Finset.sum_nonneg fun a _ => hnw a) (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h7 : 6 * θ * n * (∑ a, w a) / l = 6 * (θ * ((∑ a, (n : ℝ) * w a) / l))`. Rewrite using `[← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← fScale l d (by omega) T (fun a => (n : ℝ) * W a) hT.le (fun a => mul_nonneg hn (hW0 a)), h7]`. Unfold `Fnum`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem thetaShift : ThetaShift := by
   intro l d _ hl _ _ n T θ w W th hT hw hW hth hθ
@@ -186,9 +184,9 @@ theorem thetaShift : ThetaShift := by
   linarith
 
 /- English proof (translation)
-Introduce `n m D T hm hD hT h`. Establish `hm' : (0 : ℝ) < m` using `by exact_mod_cast hm`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Rewrite `h` using `[div_le_iff₀ hm']`. Establish `e : 6 * ((D + 4) / T) * n = 6 * (D + 4) * n / T` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, div_le_iff₀ hT]`. Use polynomial arithmetic with `[mul_nonneg hn (sub_nonneg.2 hD)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem thetaConst : ThetaConst := by
   intro n m D T hm hD hT h
@@ -200,7 +198,7 @@ theorem thetaConst : ThetaConst := by
   nlinarith [mul_nonneg hn (sub_nonneg.2 hD)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fScale, thetaShift, thetaConst⟩`.
+Supply the required witnesses or components.
 -/
 theorem main : FScale ∧ ThetaShift ∧ ThetaConst := ⟨fScale, thetaShift, thetaConst⟩
 

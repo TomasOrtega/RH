@@ -15,7 +15,7 @@ namespace GlobalTheory.PinScale
 open Formalism.L2.SG.RealObj
 
 /- English proof (translation)
-The claim follows from `| [], a, b, _, hb, _ => by simp at hb | (t, s) :: rest, a, b, hab, hb, hbl => by by_cases ha : a < s · by_cases hbs : b < s · refine ⟨0, by omega, fun j hj => ?_⟩ have hj0 : j = 0 := by omega subst hj0 have hs : 0 < s := by omega simp only [Formalism.MainNotions.S.ptEntry] rw [if …`.
+A detailed English derivation is pending.
 -/
 theorem ptEntry_row_zero {K : Type*} [Zero K] :
     ∀ (bs : List (K × ℕ)) (a b : ℕ), a < b → b < (bs.map Prod.snd).sum →
@@ -47,13 +47,13 @@ theorem ptEntry_row_zero {K : Type*} [Zero K] :
       · rfl
 
 /- English proof (translation)
-Use `⟨fun p => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, b⟩, hab, hbl⟩` from `p`. Establish `hab' : a.1 < b.1` using `hab`. Establish `hsum : (w.1.map Prod.snd).sum = D.R.rS + 1` using `w.2.2`. Establish `hb` using `b.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hcb, hz⟩` from `ptEntry_row_zero w.1 a.1 b.1 hab' (by rw [hsum]; exact b.2) hbl`. Take `⟨v⟩ : Nonempty (InfinitePlace X.B.I.F)` from `inferInstance`. Establish `hle : c + 1 ≤ D.R.rS + 1` using `by omega`. Apply `(hreg v).1 (c + 1) (by omega) (by omega)` to reduce the goal to its premises. Unfold `Formalism.L2.SG.RealObj.Dl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hle]`. Apply `Matrix.det_eq_zero_of_row_eq_zero ⟨c, by omega⟩` to reduce the goal to its premises. Introduce `j`. Simplify using `only [Matrix.submatrix_apply]`. Establish `hrow` using `congrFun (congrFun (hrep v) (Fin.castLE hle ⟨c, by omega⟩)) (Fin.castLE hle j)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ptC, Formalism.MainNotions.S.ptMat, Matrix.map_apply, Formalism.L2.SG.RealObj.ZhatO, Fin.val_castLE] at hrow`. Rewrite `hrow` using `[hz j.1 (by omega), map_zero, map_zero]`. Break down `mul_eq_zero.mp hrow with h | h` into its components or cases. Conclude with `absurd h (pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero))`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isEmpty_freeE_of_reg {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word)
     (w : Point D.host.E (D.R.rS + 1)) (γ : X.B.I.Ginf) (hreg : RegX X u u' γ) (hrep : IsPtRep X u u' w γ) :
@@ -80,9 +80,9 @@ theorem isEmpty_freeE_of_reg {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word
   · exact h
 
 /- English proof (translation)
-Take `⟨v⟩ : Nonempty (InfinitePlace X.B.I.F)` from `inferInstance`. Establish `e` using `(h v).symm.trans (h' v)`. Apply `GlobalTheory.IntTerm.ptMat_injective` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `hij` using `congrFun (congrFun e i) j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [ptC, Matrix.map_apply] at hij`. Conclude with `X.ιE.symm.injective ((X.B.I.φ v).injective hij)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptRep_unique {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) {w w' : Point D.host.E (D.R.rS + 1)}
     {γ : X.B.I.Ginf} (h : IsPtRep X u u' w γ) (h' : IsPtRep X u u' w' γ) : w = w' := by
@@ -95,26 +95,22 @@ theorem ptRep_unique {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) {w w' 
   exact X.ιE.symm.injective ((X.B.I.φ v).injective hij)
 
 /- English proof (translation)
-Rewrite using `[X.g_eq]`. Conclude with `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_g {D : D7} (X : HidaSetting D) : 1 ≤ X.B.g := by
   rw [X.g_eq]
   exact Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)
 
 /- English proof (translation)
-Introduce `D X u u'`. Establish `hg : (1 : NNReal) ≤ (X.B.g : NNReal)` using `by exact_mod_cast one_le_g X`. Set `sc : X.B.I.Ginf → NNReal` to `fun γ => if h : ∃ w, IsPtRep X u u' w γ then ((X.B.g : NNReal) ^ (D.R.f * Fintype.card (FreeE h.choose)))⁻¹ else 1`. Use `⟨sc, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [sc]`. Use `split_ifs with h`. Use `isEmpty_freeE_of_reg X u u' _ γ hγ h.choose_spec` as an intermediate fact. Simplify using `[Fintype.card_eq_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ`. Simplify using `only [sc]`. Use `split_ifs`. Conclude with `inv_pos.mpr (pow_pos (lt_of_lt_of_le one_pos hg) _)`. Conclude with `one_pos`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `γ`. Simplify using `only [sc]`. Use `split_ifs`. Conclude with `inv_le_one_of_one_le₀ (one_le_pow₀ hg)`. Conclude with `le_rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `w ⟨γ0, hγ0⟩`. Establish `hex0 : ∃ γ, IsPtRep X u u' w γ` using `⟨γ0, hγ0⟩`. Establish `hw : IsPtRep X u u' w (gamW X u u' w)`. Unfold `gamW`. Rewrite using `[dif_pos hex0]`.
-
-Conclude with `hex0.choose_spec`. Establish `hex : ∃ w', IsPtRep X u u' w' (gamW X u u' w)` using `⟨w, hw⟩`. Simplify using `only [sc, dif_pos hex]`. Rewrite using `[ptRep_unique X u u' hex.choose_spec hw]`. Use `push_cast`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem scale_pin : ∀ (D : D7) (X : HidaSetting D) (u u' : D.what₂.Word), ∃ s : X.B.I.Ginf → NNReal, (∀ γ, Formalism.L2.SG.RealObj.RegX X u u' γ → s γ = 1) ∧ (∀ γ, 0 < s γ) ∧ (∀ γ, s γ ≤ 1) ∧ ∀ w : Point D.host.E (D.R.rS + 1), (∃ g, Formalism.L2.SG.RealObj.IsPtRep X u u' w g) → (s (Formalism.L2.SG.RealObj.gamW X u u' w) : ℝ) = (((X.B.g : ℝ) ^ (D.R.f * Fintype.card (Formalism.L2.SG.RealObj.FreeE w)))⁻¹) := by
   intro D X u u'

@@ -60,13 +60,13 @@ namespace Geo
 variable {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [NormedSpace ℝ V] {d : ℕ} (G : Geo Γ V S d)
 
 /- English proof (translation)
-Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ρ_inv_apply (γ : Γ) (p : V) : G.ρ γ⁻¹ (G.ρ γ p) = p := by
   rw [← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one]; rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => G.ρ_inv_apply γ p ▸ G.maps γ⁻¹ _ h, G.maps γ p⟩`.
+Supply the required witnesses or components.
 -/
 theorem ρ_mem_iff (γ : Γ) (p : V) : G.ρ γ p ∈ G.Y ↔ p ∈ G.Y :=
   ⟨fun h => G.ρ_inv_apply γ p ▸ G.maps γ⁻¹ _ h, G.maps γ p⟩
@@ -91,7 +91,7 @@ def Om (q : ℕ) : Submodule ℂ (S → V → V [⋀^Fin q]→L[ℝ] (Fin d → 
   smul_mem' c w h s := ⟨(h s).1.const_smul c, fun p hp => by simp [(h s).2 p hp]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Om {q : ℕ} {w : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)} :
     w ∈ G.Om q ↔ ∀ s, ContDiffOn ℝ ∞ (w s) G.Y ∧ ∀ p ∉ G.Y, w s p = 0 := Iff.rfl
@@ -124,14 +124,14 @@ theorem act_apply (q : ℕ) (γ : Γ) (w : G.Om q) (s : S) (p : V) (v : Fin q �
 
 variable {G} in
 /- English proof (translation)
-The claim follows from `(w.2 s).1.contDiffAt (G.isOpen.mem_nhds hp)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_Om {q : ℕ} (w : G.Om q) (s : S) {p : V} (hp : p ∈ G.Y) : ContDiffAt ℝ ∞ (w.1 s) p :=
   (w.2 s).1.contDiffAt (G.isOpen.mem_nhds hp)
 
 variable {G} in
 /- English proof (translation)
-The claim follows from `(contDiffAt_Om w s hp).differentiableAt (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_Om {q : ℕ} (w : G.Om q) (s : S) {p : V} (hp : p ∈ G.Y) : DifferentiableAt ℝ (w.1 s) p :=
   (contDiffAt_Om w s hp).differentiableAt (by simp)
@@ -156,7 +156,7 @@ def dOm (q : ℕ) : G.Om q →ₗ[ℂ] G.Om (q + 1) where
     · simp [Set.indicator_of_notMem hp]
 
 /- English proof (translation)
-The claim follows from `Set.indicator_of_mem hp _`.
+A detailed English derivation is pending.
 -/
 theorem dOm_apply {q : ℕ} (w : G.Om q) (s : S) {p : V} (hp : p ∈ G.Y) : (G.dOm q w).1 s p = extDeriv (w.1 s) p :=
   Set.indicator_of_mem hp _
@@ -168,7 +168,7 @@ def incl : (S → Fin d → ℂ) →ₗ[ℂ] G.Om 0 where
   map_smul' c f := by ext s p v; by_cases hp : p ∈ G.Y <;> simp [hp]
 
 /- English proof (translation)
-Simplify using `[incl, hp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incl_apply (f : S → Fin d → ℂ) (s : S) {p : V} (hp : p ∈ G.Y) (v : Fin 0 → V) : (G.incl f).1 s p v = f s := by
   simp [incl, hp]

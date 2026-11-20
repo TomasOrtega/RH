@@ -14,7 +14,7 @@ variable {n P Q : ℕ}
 def sg (ε : Fin n → Bool) (a : Fin n) : ℂ := if ε a then 1 else -1
 
 /- English proof (translation)
-Use extensionality with `(i | i) (j | j)`. Apply the tactic sequence `by_cases h : i = j <;> simp [Formalism.UG.Jpq, Matrix.one_apply, Matrix.diagonal_apply, h]`. Simplify using `[Formalism.UG.Jpq, Matrix.diagonal_apply]`. Simplify using `[Formalism.UG.Jpq, Matrix.diagonal_apply]`. Apply the tactic sequence `by_cases h : i = j <;> simp [Formalism.UG.Jpq, Matrix.one_apply, Matrix.diagonal_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jpq_eq : Formalism.UG.Jpq P Q = Matrix.diagonal (Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1)) := by
   ext (i | i) (j | j)
@@ -24,9 +24,9 @@ theorem Jpq_eq : Formalism.UG.Jpq P Q = Matrix.diagonal (Sum.elim (fun _ => (1 :
   · by_cases h : i = j <;> simp [Formalism.UG.Jpq, Matrix.one_apply, Matrix.diagonal_apply, h]
 
 /- English proof (translation)
-Use `show Xᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * X = 0 ↔ _`. Rewrite using `[Jpq_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `hij` using `congrFun (congrFun h i) j`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hij` using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`. Introduce `h`. Use extensionality with `i j`. Simplify `h i j` using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_lieU_iff (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
     X ∈ Formalism.BasicNotions.lieU P Q ↔ ∀ i j, star (X j i) * Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1) j +
@@ -42,9 +42,9 @@ theorem mem_lieU_iff (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
     simpa [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply] using h i j
 
 /- English proof (translation)
-Rewrite using `[mem_lieU_iff]`. Establish `hs : ∀ i, Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1) i = sg ε (e i)`. Apply the tactic sequence `rintro (i | i) <;> simp [sg, he1, he2]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, hs]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h a b`. Simplify using `using h (e.symm a) (e.symm b)`. Introduce `h i j`. Conclude with `h (e i) (e j)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_reindex_iff (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false)
@@ -62,9 +62,9 @@ theorem mem_reindex_iff (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     exact h (e i) (e j)
 
 /- English proof (translation)
-Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Establish `h1 : ¬ b < a` using `lt_asymm h`. Establish `h2 : a ≠ b` using `ne_of_lt h`. Establish `h3 : b ≠ a` using `ne_of_gt h`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [gMat, kMat, pmat, sg, h, h1, h2, h3, ha, hb]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases ha : ε a <;> simp [gMat, kMat, pmat, sg, ha]`. Establish `h1 : ¬ a < b` using `lt_asymm h`. Establish `h2 : a ≠ b` using `ne_of_gt h`. Establish `h3 : b ≠ a` using `ne_of_lt h`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [gMat, kMat, pmat, sg, h, h1, h2, h3, ha, hb]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gMat_mem {ε : Fin n → Bool} (s : GCo ε) (a b : Fin n) :
     star (gMat s b a) * sg ε b + sg ε a * gMat s a b = 0 := by
@@ -80,7 +80,7 @@ theorem gMat_mem {ε : Fin n → Bool} (s : GCo ε) (a b : Fin n) :
     cases ha : ε a <;> cases hb : ε b <;> simp [gMat, kMat, pmat, sg, h, h1, h2, h3, ha, hb]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gMat, kMat, pmat, Matrix.add_apply, Prod.fst_add, Prod.snd_add, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> (try simp only [star_add, neg_add, Complex.ofReal_add]) <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gMat_add {ε : Fin n → Bool} (s t : GCo ε) : gMat (s + t) = gMat s + gMat t := by
   ext a b
@@ -88,7 +88,7 @@ theorem gMat_add {ε : Fin n → Bool} (s t : GCo ε) : gMat (s + t) = gMat s + 
   split_ifs <;> (try simp only [star_add, neg_add, Complex.ofReal_add]) <;> ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gMat, kMat, pmat, Matrix.add_apply, Matrix.smul_apply, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply]`. Apply the tactic sequence `split_ifs <;> (try simp only [smul_eq_mul, Complex.real_smul, Complex.ofReal_mul, star_mul', Complex.star_def, map_mul, Complex.conj_ofReal]) <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gMat_smul {ε : Fin n → Bool} (c : ℝ) (s : GCo ε) : gMat (c • s) = c • gMat s := by
   ext a b
@@ -101,11 +101,11 @@ def coordOf {ε : Fin n → Bool} (Y : Matrix (Fin n) (Fin n) ℂ) : GCo ε :=
   ((fun a => (Y a a).im, fun k => Y k.1.1 k.1.2), fun p => Y p.1.1 p.1.2)
 
 /- English proof (translation)
-Use `Prod.ext (Prod.ext ?_ ?_) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `[coordOf, gMat, kMat, pmat]`. Use function extensionality and compare the values at `k`. Take `⟨⟨a, b⟩, hk⟩` from `k`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `h1 : a ≠ b` using `ne_of_gt hk.1`. Establish `h2 : ¬ a < b` using `lt_asymm hk.1`. Simplify using `[coordOf, gMat, kMat, pmat, h1, h2, hk.1, hk.2]`. Use function extensionality and compare the values at `q`. Take `⟨⟨a, b⟩, hq⟩` from `q`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `h1 : a ≠ b` using `ne_of_gt hq.1`. Establish `h2 : ¬ a < b` using `lt_asymm hq.1`. Simplify using `[coordOf, gMat, kMat, pmat, h1, h2, hq.1, hq.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem coordOf_gMat {ε : Fin n → Bool} (s : GCo ε) : coordOf (gMat s) = s := by
   refine Prod.ext (Prod.ext ?_ ?_) ?_
@@ -123,13 +123,13 @@ theorem coordOf_gMat {ε : Fin n → Bool} (s : GCo ε) : coordOf (gMat s) = s :
     simp [coordOf, gMat, kMat, pmat, h1, h2, hq.1, hq.2]
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `key` using `hY a b`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Establish `h1 : ¬ b < a` using `lt_asymm h`. Establish `h2 : a ≠ b` using `ne_of_lt h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;>`. Apply the tactic sequence `simp [gMat, kMat, pmat, coordOf, sg, h, h1, h2, ha, hb] at key ⊢ <;>`. Apply the tactic sequence `first | linear_combination key | linear_combination -key`. Establish `hre : (Y a a).re = 0`. Establish `hk` using `congrArg Complex.re key`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases ha : ε a <;> simp [sg, ha] at hk <;> linarith`. Apply the tactic sequence `apply Complex.ext <;> simp [gMat, kMat, pmat, coordOf, hre]`. Establish `h1 : ¬ a < b` using `lt_asymm h`. Establish `h2 : a ≠ b` using `ne_of_gt h`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;>`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [gMat, kMat, pmat, coordOf, sg, h, h1, h2, ha, hb] at key ⊢ <;>`. Apply the tactic sequence `first | linear_combination key | linear_combination -key`.
+A detailed English derivation is pending.
 -/
 theorem gMat_coordOf {ε : Fin n → Bool} (Y : Matrix (Fin n) (Fin n) ℂ)
     (hY : ∀ a b, star (Y b a) * sg ε b + sg ε a * Y a b = 0) : gMat (coordOf (ε := ε) Y) = Y := by

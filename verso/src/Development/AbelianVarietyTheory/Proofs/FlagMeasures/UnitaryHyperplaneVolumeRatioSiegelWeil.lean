@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SiegelOneVectorMeasu
 namespace GlobalTheory.VolRatioFromSiegelWeil
 
 /- English proof (translation)
-Introduce `hP` and use `GlobalTheory.VolRatioFromSecondClause.volumeRatio (GlobalTheory.T.siegel_one_vector_measurable_of_compactSupport (GlobalTheory.GaussMean.oneVectorCc_of_siegelWeil hP))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem volumeRatio :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → ∀ D : Formalism.BasicNotions.D7, Formalism.MainNotions.RT.MassRatioUnderVolume D :=

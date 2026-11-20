@@ -15,7 +15,7 @@ def res (S : Submodule ℂ W) (π : Mx k r → (W →L[ℂ] W)) (g : Mx k r) : S
   S.orthogonalProjection.comp ((π g).comp S.subtypeL)
 
 /- English proof (translation)
-Use `S.orthogonalProjection_mem_subspace_eq_self ⟨π g v, hg v v.2⟩` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_coe {S : Submodule ℂ W} {π : Mx k r → (W →L[ℂ] W)} {g : Mx k r} (hg : ∀ v ∈ S, π g v ∈ S) (v : S) :
     (res S π g v : W) = π g v := by
@@ -23,11 +23,9 @@ theorem res_coe {S : Submodule ℂ W} {π : Mx k r → (W →L[ℂ] W)} {g : Mx 
   exact congrArg Subtype.val this
 
 /- English proof (translation)
-Use `⟨⟨?_, fun a ha b hb => ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Rewrite using `[res_coe (hS 1 (Qx8.uw_one z)), hπ.1.1]`. Both sides reduce to the same expression. Use extensionality with `v`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components.
 
-Establish `hab : ∀ v ∈ S, π (a * b) v ∈ S` using `fun v hv => by`. Rewrite using `[hπ.1.2 a ha b hb]`. Conclude with `hS a ha _ (hS b hb v hv)`. Rewrite using `[res_coe hab, ContinuousLinearMap.comp_apply, res_coe (hS a ha), res_coe (hS b hb), hπ.1.2 a ha b hb]`. Both sides reduce to the same expression.
-
-Conclude with `continuousOn_const.clm_comp (hπ.2.clm_comp continuousOn_const)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_isRepW {z : Fin (2 * r + k + 1) → ℂ} {S : Submodule ℂ W} {π : Mx k r → (W →L[ℂ] W)}
     (hπ : IsRepW k r z π) (hS : ∀ h ∈ UWset k r z, ∀ v ∈ S, π h v ∈ S) : IsRepW k r z (res S π) := by
@@ -41,11 +39,9 @@ theorem res_isRepW {z : Fin (2 * r + k + 1) → ℂ} {S : Submodule ℂ W} {π :
   · exact continuousOn_const.clm_comp (hπ.2.clm_comp continuousOn_const)
 
 /- English proof (translation)
-Establish `hR` using `res_isRepW hπ hS`. Unfold `capRep`. Use `Qx8.qmF_intertwine _ _ S.subtype ?_ _ _ _ v` and prove the remaining obligations. Introduce `a b v`. Establish `hU` using `Qx8.frame_InU hB (z := z) (by simp) a b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show S.subtypeL (dRep (res S π) _ v + Complex.I • dRep (res S π) _ v) = dRep π _ (S.subtypeL v) + Complex.I • dRep π _ (S.subtypeL v)`. Rewrite using `[map_add, map_smul]`. Use `congr 1`. Conclude with `Qx8.dRep_intertwine S.subtypeL (Qx8.rep_hasDeriv hR.1 hR.2 hU.1 v) fun t => res_coe (hS _ (hU.1 t)) v`. Use `congr 1`.
-
-Conclude with `Qx8.dRep_intertwine S.subtypeL (Qx8.rep_hasDeriv hR.1 hR.2 hU.2 v) fun t => res_coe (hS _ (hU.2 t)) v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem res_capRep {z : Fin (2 * r + k + 1) → ℂ} {S : Submodule ℂ W} {π : Mx k r → (W →L[ℂ] W)}
     (hπ : IsRepW k r z π) (hS : ∀ h ∈ UWset k r z, ∀ v ∈ S, π h v ∈ S) {m : ℕ}
@@ -65,7 +61,7 @@ theorem res_capRep {z : Fin (2 * r + k + 1) → ℂ} {S : Submodule ℂ W} {π :
     exact Qx8.dRep_intertwine S.subtypeL (Qx8.rep_hasDeriv hR.1 hR.2 hU.2 v) fun t => res_coe (hS _ (hU.2 t)) v
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_eq_prod_range (fun j => f (j + 1)) n]`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Finset.prod_Icc_succ_top (by omega), ih, Finset.prod_range_succ]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_Icc (n : ℕ) (f : ℕ → ℂ) : ∏ i ∈ Finset.Icc 1 n, f i = ∏ j : Fin n, f ((j : ℕ) + 1) := by
   rw [Fin.prod_univ_eq_prod_range (fun j => f (j + 1)) n]
@@ -74,19 +70,19 @@ theorem prod_Icc (n : ℕ) (f : ℕ → ℂ) : ∏ i ∈ Finset.Icc 1 n, f i = �
   | succ n ih => rw [Finset.prod_Icc_succ_top (by omega), ih, Finset.prod_range_succ]
 
 /- English proof (translation)
-Establish `hgl` using `(frame_general_linear W k r k z π B0 hπ hB0).1`. Set `c : ℂ → ℂ` to `fun w => ∏ j : Fin k, (w - (j : ℂ) + ν j)`. Set `K : Submodule ℂ W` to `{ carrier := {v | ∀ w, qdet (EB π B0) w v = c w • v} add_mem' := fun ha hb w => by rw [map_add, ha w, hb w, smul_add] zero_mem' := fun w => by simp smul_mem' := fun s v hv w => by rw [map_smul, hv w, smul_comm] }`. Establish `hKs : Stab (EB π B0) K`. Introduce `a b v hv w`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun T : Module.End ℂ W => T v) (Formalism.REAL.qDetCentral _ k _ hgl w a b)` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[this, hv w, map_smul]`. Establish `hK` using `lie_stabilizer W k r z π B0 hz hT hπ hB0 K hKs`. Establish `hv0K : v0 ∈ K` using `fun w => Formalism.REAL.qDetHW W k _ ν v0 hgl hw w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∃ n, ∃ S : Submodule ℂ W, S ≤ K ∧ S ≠ ⊥ ∧ (∀ h ∈ UWset k r z, ∀ v ∈ S, π h v ∈ S) ∧ Module.finrank ℂ S = n` using `⟨_, K, le_rfl, (Submodule.ne_bot_iff K).2 ⟨v0, hv0K, hv0⟩, hK, rfl⟩`. Take `⟨S, hSK, hS0, hS, hn⟩` from `Nat.find_spec hex`. Establish `hR` using `res_isRepW hπ hS`. Use `⟨S, hS, Submodule.nontrivial_iff_ne_bot.2 hS0, hR.1, hR.2, fun h hh v => ?_, fun S' hS' => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.norm_coe, res_coe (hS h hh), hu h hh, Submodule.norm_coe]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : S' = ⊥`. Conclude with `Or.inl h0`. Use `Or.inr ?_` and prove the remaining obligations. Establish `hle : Nat.find hex ≤ Module.finrank ℂ (S'.map S.subtype)`. Use `Nat.find_min' hex ⟨S'.map S.subtype, (Submodule.map_subtype_le S S').trans hSK, ?_, ?_, rfl⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Conclude with `h0 (Submodule.map_injective_of_injective S.subtype_injective (by rw [h, Submodule.map_bot]))`. Introduce and unpack `h hh _ ⟨v, hv, rfl⟩`. Conclude with `⟨_, hS' h hh v hv, res_coe (hS h hh) v⟩`. Rewrite `hle` using `[Submodule.finrank_map_subtype_eq, ← hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le S') hle)`. Introduce `Bs hB w v`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[res_capRep hπ hS hB, (frame_general_linear W k r k z π Bs hπ hB).2, QrCap.capChange hz hT hπ hB hB0, hSK v.2 w, prod_Icc, Submodule.coe_smul]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hν]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_type {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {π : Mx k r → (W →L[ℂ] W)} (hπ : IsRepW k r z π) (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖)

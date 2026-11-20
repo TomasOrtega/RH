@@ -43,20 +43,20 @@ def Lext : (G → ℂ) →ₗ[ℂ] ℂ := (LinearMap.exists_extend (I0 G)).choos
 variable {G}
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (LinearMap.exists_extend (I0 G)).choose_spec ⟨h, hh⟩`.
+A detailed English derivation is pending.
 -/
 theorem Lext_apply (h : G → ℂ) (hh : Integrable h (Measure.addHaar : Measure G)) :
     Lext G h = ∫ x, h x ∂(Measure.addHaar : Measure G) :=
   LinearMap.congr_fun (LinearMap.exists_extend (I0 G)).choose_spec ⟨h, hh⟩
 
 /- English proof (translation)
-The claim follows from `hf.1.continuous.integrable_of_hasCompactSupport hf.2`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_SB {f : G → ℂ} (hf : f ∈ SB G) : Integrable f (Measure.addHaar : Measure G) :=
   hf.1.continuous.integrable_of_hasCompactSupport hf.2
 
 /- English proof (translation)
-Establish `hi` using `integrable_of_SB hf`. Rewrite using `[Lext_apply _ (hi.comp_add_right a), Lext_apply _ hi]`. Conclude with `integral_add_right_eq_self _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lext_translate {f : G → ℂ} (hf : f ∈ SB G) (a : G) :
     Lext G (fun x => f (x + a)) = Lext G f := by
@@ -67,9 +67,9 @@ theorem Lext_translate {f : G → ℂ} (hf : f ∈ SB G) (a : G) :
 end General
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace G := hKc.locallyCompactSpace_of_mem_nhds_of_addGroup (hKo.mem_nhds h0)`. Use `letI := measG G`. Use `⟨Lext G, fun f hf a => Lext_translate hf a, K.indicator fun _ => 1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨(LocallyConstant.indicator (1 : LocallyConstant G ℂ) ⟨hKc.isClosed, hKo⟩).isLocallyConstant, HasCompactSupport.intro hKc fun z hz => Set.indicator_of_notMem hz _⟩`. Establish `hi : Integrable (K.indicator fun _ => (1 : ℂ)) (Measure.addHaar : Measure G)` using `(integrable_indicator_iff hKo.measurableSet).2 (integrableOn_const hKc.measure_lt_top.ne)`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Lext_apply _ hi, integral_indicator_const _ hKo.measurableSet]`. Establish `hpos : 0 < (Measure.addHaar : Measure G) K` using `hKo.measure_pos _ ⟨0, h0⟩`. Establish `: 0 < (Measure.addHaar : Measure G).real K` using `ENNReal.toReal_pos hpos.ne' hKc.measure_lt_top.ne`. Simplify using `using this.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_invariant_form (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [T2Space G] (K : Set G) (hKc : IsCompact K) (hKo : IsOpen K) (h0 : (0 : G) ∈ K) :
@@ -87,9 +87,7 @@ theorem exists_invariant_form (G : Type) [AddCommGroup G] [TopologicalSpace G] [
     simpa using this.ne'
 
 /- English proof (translation)
-Introduce `F _ _ v n d`. Use `set O : Set (Fv F v) := (v.adicCompletionIntegers F : Set (Fv F v))`. Establish `hO : IsOpen O` using `Valued.isOpen_valuationSubring _`. Establish `hOc : IsCompact O` using `PI.IntAdCpctOpenWork.isCompact_adicCompletionIntegers v`. Establish `h0 : (0 : Fv F v) ∈ O` using `(v.adicCompletionIntegers F).zero_mem`.
-
-Use `set K : Set (Matrix (Fin n) (Fin d) (Fv F v)) := Set.univ.pi fun _ => Set.univ.pi fun _ => O`. Conclude with `exists_invariant_form _ K (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hOc) (isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => hO) (fun _ _ _ _ => h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_invariant_form_matrix : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (n d : ℕ), ∃ Λ : (Matrix (Fin n) (Fin d) (Fv F v) → ℂ) →ₗ[ℂ] ℂ,
     (∀ f ∈ SB (Matrix (Fin n) (Fin d) (Fv F v)), ∀ a, Λ (fun Y => f (Y + a)) = Λ f) ∧

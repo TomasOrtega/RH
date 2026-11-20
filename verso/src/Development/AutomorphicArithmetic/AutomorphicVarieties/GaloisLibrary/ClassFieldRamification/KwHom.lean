@@ -7,11 +7,9 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `L _ _ _`. Set `f : L →ₐ[ℚ] AlgebraicClosure ℚ` to `IsAlgClosed.lift`. Set `e : L ≃ₐ[ℚ] f.fieldRange` to `AlgEquiv.ofInjectiveField f`. Use `haveI : IsAbelianGalois ℚ f.fieldRange := IsAbelianGalois.of_algHom e.symm.toAlgHom`. Use `haveI : FiniteDimensional ℚ f.fieldRange := e.toLinearEquiv.finiteDimensional`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, ζ, hN, hζ, hle⟩` from `UpperTheory.V.CF.kw (AlgebraicClosure ℚ) f.fieldRange`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI hNQ : NeZero ((N : ℕ) : ℚ) := ⟨by exact_mod_cast hN.ne'⟩`. Use `haveI : IsCyclotomicExtension {N} ℚ ℚ⟮ζ⟯ := hζ.intermediateField_adjoin_isCyclotomicExtension ℚ`. Use `haveI hC : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := @CyclotomicField.isCyclotomicExtension N _ ℚ _ hNQ`.
-
-Use `⟨N, hN, ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `((IsCyclotomicExtension.algEquiv {N} ℚ ℚ⟮ζ⟯ (CyclotomicField N ℚ)).toAlgHom.comp (IntermediateField.inclusion hle)).comp e.toAlgHom`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.kwHom :
     ∀ (L : Type) [Field L] [NumberField L] [IsAbelianGalois ℚ L], ∃ N : ℕ, 0 < N ∧ Nonempty (L →ₐ[ℚ] CyclotomicField N ℚ) := by

@@ -22,9 +22,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 namespace PositivityTheory.LocalTateOrthogonality.Bk
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hab`. Establish `hba : b + 1 ≤ a` using `by omega`. Establish `hq0 : 0 < q` using `by omega`. Establish `h1` using `h C`. Establish `h2 : q ^ (C * (b + 1)) ≤ q ^ (C * a)` using `Nat.pow_le_pow_right hq0 (Nat.mul_le_mul_left _ hba)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : q ^ (C * b) * q ^ C ≤ q ^ (C * b) * C`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : q ^ C ≤ C` using `Nat.le_of_mul_le_mul_left h3 (pow_pos hq0 _)`. Establish `h5 : C < q ^ C` using `Nat.lt_pow_self (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem le_of_growth {q a b C : ℕ} (hq : 2 ≤ q) (h : ∀ r : ℕ, q ^ (r * a) ≤ C * q ^ (r * b)) :
     a ≤ b := by
@@ -43,7 +43,7 @@ theorem le_of_growth {q a b C : ℕ} (hq : 2 ≤ q) (h : ∀ r : ℕ, q ^ (r * a
   omega
 
 /- English proof (translation)
-Use `le_of_growth (C := C * C') hq fun r => ?_` and prove the remaining obligations. Take `⟨x, x', y, hx, hx', hy, e⟩` from `H r`. Rewrite `e` using `[Nat.mul_assoc r]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.mul_add, Nat.mul_add, pow_add, pow_add]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -61,7 +61,7 @@ theorem growth_le {q a h h' n m C C' : ℕ} (hq : 2 ≤ q)
         rw [Nat.mul_add, Nat.mul_add, pow_add, pow_add]; ring
 
 /- English proof (translation)
-Introduce `g x hx`. Establish `h` using `Submodule.mem_map_of_mem (f := actT L g) hx`. Rewrite `h` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stable_pow {G : Type} [Group G] {LL O V : Type} [Field LL] [CommRing O] [Algebra O LL]
     [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V] {ρ : Representation LL G V}
@@ -73,15 +73,13 @@ theorem stable_pow {G : Type} [Group G] {LL O V : Type} [Field LL] [CommRing O] 
   exact Submodule.smul_mono le_rfl le_top h
 
 /- English proof (translation)
-Establish `hZ` using `GlobalTheory.CompanionTheory.FinCoc.finZQ_of_duality hT hE D l K`. Take `⟨-, hLat⟩` from `GlobalTheory.T.exists_dual_lattices D l K`. Take `⟨LA, LA', hd, -⟩` from `hLat LL O hG A A' P hP`. Take `⟨hfin, hrank⟩` from `FinT.h1_lattice_finite_rank_eq D l K hZ`. Take `⟨-, hr⟩` from `hrank LL O hG A LA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hdom, hdvr, -⟩, -⟩` from `id hG`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨-, hres, -⟩` from `GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hG ϖ hϖ`. Establish `hq : 2 ≤ Nat.card (O ⧸ Ideal.span {ϖ})`. Establish `: Nontrivial (O ⧸ Ideal.span {ϖ})` using `Ideal.Quotient.nontrivial_iff.mpr (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `hϖ.not_isUnit)`. Conclude with `Finite.one_lt_card`. Take `⟨C, h0⟩` from `GlobalTheory.CompanionTheory.GrowthOfInvariants.growth_galois_invariants_mod_prime_power_lattice_alt D l K hfin LL O hG A LA ϖ hϖ`. Take `⟨C', h0'⟩` from `GlobalTheory.CompanionTheory.GrowthOfInvariants.growth_galois_invariants_mod_prime_power_lattice_alt D l K hfin LL O hG A' LA' ϖ hϖ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `card_lower_bound D l K hfin hZ LL O hG A LA ϖ hϖ`. Establish `hE'` using `Eul.euler_quot hT hE D l K LL O hG A A' LA LA' P hd ϖ hϖ`. Establish `key : finrank O (LatticeCohomology LA) ≤ finrank LL ↥(H0V A.ρ) + finrank LL ↥(H0V A'.ρ) + finrank LL A.V * finrank ℚ_[l] ↥K.1` using `growth_le (C := C) (C' := C') hq fun r =>`. Establish `hI` using `stable_pow LA ϖ r`. Establish `hI'` using `stable_pow LA' ϖ r`.
-
-Use the proof step `⟨_, _, _, (h0 r hI).2, (h0' r hI').2, h1 r hI, hE' r hI hI'⟩`. Rewrite using `[hr, Nat.mul_comm (finrank ℚ_[l] ↥K.1)]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem euler_le (hT : Formalism.GaloisCohomology.LocalTateDualityK) (hE : Formalism.GaloisCohomology.LocalEulerCharK) (D : D7) (l : ℕ)
     [Fact l.Prime] (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL]
@@ -120,11 +118,11 @@ theorem euler_le (hT : Formalism.GaloisCohomology.LocalTateDualityK) (hE : Forma
 open ExactAnn in
 
 /- English proof (translation)
-Introduce `LL _ _ _ O _ _ hO A A' P hP S S' hBS hSZ hBS' hSZ' horth hdim`. Take `⟨-, hF⟩` from `GlobalTheory.T.cup_flip_continuous_cocycle D l K LL O hO A A' P hP`. Establish `hnd` using `hNd LL O hO A A' P hP`. Take `⟨LA, LA', -⟩` from `(GlobalTheory.T.exists_dual_lattices D l K).2 LL O hO A A' P hP`. Establish `hE1 : Module.Finite LL (H1V A.ρ)` using `((FinT.h1_lattice_finite_rank_eq D l K hZ).2 LL O hO A LA).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE2 : Module.Finite LL (H1V A'.ρ)` using `((FinT.h1_lattice_finite_rank_eq D l K hZ).2 LL O hO A' LA').1`. Distinguish the cases in `hall : ∀ a ∈ continuousCocycles A.ρ, ∀ b ∈ continuousCocycles A'.ρ, CobL ((D.loc l).PD K) (cupL A'.ρ P a b)`. Conclude with `⟨fun a ha _ => hBS (hnd.1 a ha fun b hb => hall a ha b hb), fun b hb _ => hBS' (hnd.2 b hb fun a ha => hall a ha b hb)⟩`. Use `push Not at hall`. Take `⟨a0, ha0, b0, hb0, hz0⟩` from `hall`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsTopologicalRing LL` using `hO.2.2.2.1`. Take `⟨Φ, hΦ⟩` from `exists_pairing (continuousCocycles A.ρ) (continuousCocycles A'.ρ) (cocSub ((D.loc l).PD K) LL) (cobSub ((D.loc l).PD K) LL) (cupBil A'.ρ P) (fun a ha b hb => ⟨(hF a ha b hb).1, (hF a ha b hb).2.1⟩) (cupL A'.ρ P a0 b0) hz0 (fun z hz => hTop LL O hO _ z (hF a0 ha0 b0 hb0).1 hz.1 (h …`. Establish `res` using `ann_of_pairing (continuousCocycles A.ρ) (B1 A.ρ) S (continuousCocycles A'.ρ) (B1 A'.ρ) S' Φ (fun a ha b => (hΦ a b).2 ((hF a a.2 b b.2).2.2.2 (Or.inl ha))) (fun b hb a => (hΦ a b).2 ((hF a a.2 b b.2).2.2.2 (Or.inr hb))) (fun a h => hnd.1 a a.2 fun b hb => (hΦ a ⟨b, hb⟩).1 (h _)) …`. Conclude with `⟨fun a ha h => res.1 ⟨a, ha⟩ fun b hb => (hΦ _ _).2 (h b hb), fun b hb h => res.2 ⟨b, hb⟩ fun a ha => (hΦ _ _).2 (h a ha)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dualL_of_fin (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l) (hZ : FinZQ ((D.loc l).PD K))
     (hTop : TopLine ((D.loc l).PD K)) (hNd : NondegL ((D.loc l).PD K)) : DualL ((D.loc l).PD K) := by
@@ -155,9 +153,9 @@ theorem dualL_of_fin (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l) (hZ : FinZ
     fun b hb h => res.2 ⟨b, hb⟩ fun a ha => (hΦ _ _).2 (h a ha)⟩
 
 /- English proof (translation)
-Establish `hFin : FinZQ ((D.loc l).PD K)` using `GlobalTheory.CompanionTheory.FinCoc.finZQ_of_duality hT hE D l K`. Establish `hTop : TopInj ((D.loc l).PD K)` using `TI.main hT D l K`. Establish `hQ : DualQ ((D.loc l).PD K)` using `Q.dualQ_of_topInj hT D l K hTop`. Establish `hD : DualD ((D.loc l).PD K)` using `GlobalTheory.CompanionTheory.TdDualD.dualD_of_dualQ D l K hFin hQ`. Establish `hCob : CobLO ((D.loc l).PD K)` using `CobDetect.cobLO_of_fin_inj D l K hFin hTop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH2 : LocalTateTopDegree ((D.loc l).PD K)` using `GlobalTheory.Cyc.tateH2_of_finite_duality D hT l K`. Establish `hLine : TopLine ((D.loc l).PD K)` using `Top.h2_line_of_tate_h2_and_coboundaries D l K hH2 hCob`. Establish `hNd : NondegL ((D.loc l).PD K)` using `Kernels.nondegL D l K hD hCob`. Conclude with `⟨hFin, hTop, hQ, hD, hCob, hLine, hNd, dualL_of_fin D l K hFin hLine hNd⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem forms (hT : Formalism.GaloisCohomology.LocalTateDualityK) (hE : Formalism.GaloisCohomology.LocalEulerCharK) (D : D7) (l : ℕ)
     [Fact l.Prime] (K : FinExt l) :
@@ -175,21 +173,21 @@ theorem forms (hT : Formalism.GaloisCohomology.LocalTateDualityK) (hE : Formalis
   exact ⟨hFin, hTop, hQ, hD, hCob, hLine, hNd, dualL_of_fin D l K hFin hLine hNd⟩
 
 /- English proof (translation)
-Introduce `hT hE D _ _ _ h8 l _ K hdim` and use `bkA_core D h8 l K (forms hT hE D l K).2.2.2.2.2.2.2 (euler_le hT hE D l K) hdim`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem local_bound_a_dim : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK → ∀ D : D7, LocalSituation.adm5 D → LocalSituation.adm6 D → LocalSituation.adm7 D → LocalSituation.adm8 D → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l), LocalSituation.bkADim ((D.loc l).PD K) → bkACore ((D.loc l).PD K) :=
   fun hT hE D _ _ _ h8 l _ K hdim =>
     bkA_core D h8 l K (forms hT hE D l K).2.2.2.2.2.2.2 (euler_le hT hE D l K) hdim
 
 /- English proof (translation)
-Introduce `hT hE D l _ K hA` and use `bkB_core D l K (forms hT hE D l K).2.2.2.1 (forms hT hE D l K).2.2.2.2.1 hA`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem local_bound_b_of_a : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK → ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), bkACore ((D.loc l).PD K) → bkBCore ((D.loc l).PD K) :=
   fun hT hE D l _ K hA =>
     bkB_core D l K (forms hT hE D l K).2.2.2.1 (forms hT hE D l K).2.2.2.2.1 hA
 
 /- English proof (translation)
-Introduce `hT hE` and use `local_bounds_give hT hE (local_bound_a_dim hT hE) (local_bound_b_of_a hT hE)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Conclusion5 : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK → ∀ D : D7, LocalSituation.Conclusion5 D :=
   fun hT hE => local_bounds_give hT hE (local_bound_a_dim hT hE) (local_bound_b_of_a hT hE)

@@ -35,7 +35,7 @@ private instance instTopSD (ρ : Representation A G V) [TopologicalSpace G] [Top
     TopologicalSpace (SD ρ) := inferInstanceAs (TopologicalSpace (V × G))
 
 /- English proof (translation)
-Establish `hm : Continuous fun x : (V × G) × (V × G) => ((x.1.1 + ρ x.1.2 x.2.1, x.1.2 * x.2.2) : V × G)` using `(continuous_fst.fst.add (h.comp (continuous_fst.snd.prodMk continuous_snd.fst))).prodMk (continuous_fst.snd.mul continuous_snd.snd)`. Establish `hi : Continuous fun x : V × G => ((-(ρ x.2⁻¹ x.1), x.2⁻¹) : V × G)` using `(h.comp (continuous_snd.inv.prodMk continuous_fst)).neg.prodMk continuous_snd.inv`. Conclude with `{ continuous_mul := hm, continuous_inv := hi }`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem topGroup_SD (ρ : Representation A G V) [TopologicalSpace G] [TopologicalSpace V]
     [IsTopologicalGroup G] [IsTopologicalAddGroup V] (h : ContAction ρ) : IsTopologicalGroup (SD ρ) := by
@@ -54,7 +54,7 @@ private def SDsub (ρ : Representation A G V) (L : AddSubgroup V) (hL : ∀ g, �
   inv_mem' := fun {p} hp => L.neg_mem (hL _ _ hp)
 
 /- English proof (translation)
-Establish `h1 : I ⊔ Subgroup.zpowers σ ≤ H` using `sup_le hI (Subgroup.zpowers_le.2 hσ)`. Establish `h2` using `Subgroup.topologicalClosure_minimal _ h1 hH`. Rewrite `h2` using `[hd]`. Conclude with `h2 (Subgroup.mem_top g)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem all_of_closed [TopologicalSpace G] [IsTopologicalGroup G] {I : Subgroup G} {σ : G}
     (hd : (I ⊔ Subgroup.zpowers σ).topologicalClosure = ⊤) (H : Subgroup G) (hH : IsClosed (H : Set G))
@@ -65,19 +65,19 @@ private theorem all_of_closed [TopologicalSpace G] [IsTopologicalGroup G] {I : S
   exact h2 (Subgroup.mem_top g)
 
 /- English proof (translation)
-Set `e : V ≃ₗ[ℚ_[l]] (Fin (Module.finrank ℚ_[l] V) → ℚ_[l])` to `(Module.finBasis ℚ_[l] V).equivFun`. Establish `he : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `he' : Continuous e.symm` using `LinearMap.continuous_of_finiteDimensional e.symm.toLinearMap`. Set `E : V ≃ₜ (Fin (Module.finrank ℚ_[l] V) → ℚ_[l])` to `{ toEquiv := e.toEquiv, continuous_toFun := he, continuous_invFun := he' }`. Establish `hT2 : T2Space V` using `E.isEmbedding.t2Space`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hTD : TotallyDisconnectedSpace V` using `E.isEmbedding.isTotallyDisconnected_range.1 (isTotallyDisconnected_of_totallyDisconnectedSpace _)`. Use `⟨hT2, hTD, ?_⟩` and prove the remaining obligations. Establish `hρc : ∀ g : G, Continuous fun v : V => ρ g v` using `fun g => h.comp (continuous_const.prodMk continuous_id)`. Establish `hK : IsCompact (Set.range fun g : G => e (ρ g x))` using `isCompact_range (he.comp (h.comp (continuous_id.prodMk continuous_const)))`. Take `⟨r, hr⟩` from `(Metric.isBounded_iff_subset_closedBall 0).1 hK.isBounded`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr1 : Set.range (fun g : G => e (ρ g x)) ⊆ Metric.closedBall 0 (max r 1)` using `hr.trans (Metric.closedBall_subset_closedBall (le_max_left _ _))`. Set `M` to `(IsUltrametricDist.closedBall_openAddSubgroup (Fin (Module.finrank ℚ_[l] V) → ℚ_[l]) (lt_of_lt_of_le one_pos (le_max_right r 1))).toAddSubgroup`. Establish `hM : ∀ y, y ∈ M ↔ y ∈ Metric.closedBall (0 : Fin (Module.finrank ℚ_[l] V) → ℚ_[l]) (max r 1)` using `fun y => Iff.rfl`. Set `L : AddSubgroup V` to `⨅ g : G, M.comap ((e.toLinearMap.toAddMonoidHom).comp (ρ g).toAddMonoidHom)`. Establish `hL : ∀ v, v ∈ L ↔ ∀ g, e (ρ g v) ∈ Metric.closedBall 0 (max r 1)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `v`. Simplify using `only [L, AddSubgroup.mem_iInf, AddSubgroup.mem_comap, hM]`. Both sides reduce to the same expression. Use `⟨L, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hcl : IsClosed (L : Set V)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (L : Set V) = ⋂ g : G, (fun v => e (ρ g v)) ⁻¹' Metric.closedBall 0 (max r 1)`. Use extensionality with `v`. Simplify using `only [SetLike.mem_coe, hL, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun g => Metric.isClosed_closedBall.preimage (he.comp (hρc g))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : (L : Set V) ⊆ E ⁻¹' Metric.closedBall 0 (max r 1)`. Introduce `v hv`. Use `(hL v).1 hv 1` as an intermediate fact. Simplify `this` using `[E]`. Conclude with `(E.isCompact_preimage.2 (isCompact_closedBall _ _)).of_isClosed_subset hcl hsub`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hL x).2 fun g => hr1 ⟨g, rfl⟩`. Introduce `g y hy`. Use `(hL _).2 fun k => ?_` and prove the remaining obligations. Use `(hL y).1 hy (k * g)` as an intermediate fact. Simplify `this` using `[map_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_lattice {l : ℕ} [Fact l.Prime] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V]
     [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V]
@@ -131,41 +131,35 @@ end UpperTheory.V.Loc.UnramifiedCocycles
 
 open UpperTheory.V.Loc.UnramifiedCocycles in
 /- English proof (translation)
-Introduce `v l _ _ A _ _ V _ _ _ _ _ _ _ _ _ ρ hc hI σ hσ x`. Take `⟨hT2, hTD, L, hLc, hxL, hLs⟩` from `exists_lattice (l := l) ρ hc x`. Use `haveI : IsTopologicalGroup (SD ρ) := topGroup_SD ρ hc`. Use `haveI : T2Space (SD ρ) := inferInstanceAs (T2Space (V × GQ v))`. Use `haveI : TotallyDisconnectedSpace (SD ρ) := inferInstanceAs (TotallyDisconnectedSpace (V × GQ v))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsCompact ((SDsub ρ L hLs : Subgroup (SD ρ)) : Set (SD ρ))`. Establish `h0 : IsCompact ((L : Set V) ×ˢ (Set.univ : Set (GQ v)))` using `hLc.prod isCompact_univ`. Establish `e0 : ((SDsub ρ L hLs : Subgroup (SD ρ)) : Set (SD ρ)) = ((L : Set V) ×ˢ (Set.univ : Set (GQ v)) : Set (V × GQ v))`. Use extensionality with `p`. Conclude with `⟨fun h => ⟨h, trivial⟩, fun h => h.1⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e0]`. Conclude with `h0`. Use `haveI : CompactSpace (SDsub ρ L hLs) := isCompact_iff_compactSpace.1 hS`. Take `⟨f, hfc, hf1, hfσ⟩` from `frobFree σ hσ (SDsub ρ L hLs) ⟨((x, σ) : V × GQ v), hxL⟩`. Establish `hfv : Continuous fun g => ((f g : SD ρ))` using `continuous_subtype_val.comp hfc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmul : ∀ g h, ((f (g * h) : SD ρ)) = (f g : SD ρ) * (f h : SD ρ)` using `fun g h => by`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Set `k : GQ v → GQ v` to `fun g => ((f g : SD ρ)).2`. Establish `hk1 : k 1 = 1` using `by show ((f 1 : SD ρ)).2 = 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_one]`. Both sides reduce to the same expression. Establish `hkm : ∀ a b, k (a * b) = k a * k b` using `fun a b => by show ((f (a * b) : SD ρ)).2 = _`. Rewrite using `[hmul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hki : ∀ a, k a⁻¹ = (k a)⁻¹` using `fun a => by`. Establish `: k a⁻¹ * k a = 1` using `by rw [← hkm, inv_mul_cancel, hk1]`. Conclude with `eq_inv_of_mul_eq_one_left this`. Establish `hkc : Continuous k` using `continuous_snd.comp hfv`. Establish `hgw : ∀ w : V, Continuous fun g : GQ v => ρ g w` using `fun w => hc.comp (continuous_id.prodMk continuous_const)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Establish `happ : ∀ (g : GQ v) (w : V), ρ g (ρ g⁻¹ w) = w` using `fun g w => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `happ' : ∀ (g : GQ v) (w : V), ρ g⁻¹ (ρ g w) = w` using `fun g w => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Set `H : Subgroup (GQ v)` to `{ carrier := {g | ∀ w, ρ (k g) w = ρ g w} one_mem' := fun w => by simp [hk1] mul_mem' := fun {a b} ha hb w => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq] at ha hb`. Rewrite using `[hkm, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hb, ha]`. Use the proof step `inv_mem' := fun {a} ha w => by`. Simplify using `only [Set.mem_setOf_eq] at ha`. Rewrite using `[hki]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hH : IsClosed (H : Set (GQ v))`. Establish `e1 : (H : Set (GQ v)) = ⋂ w : V, {g | ρ (k g) w = ρ g w}`. Use extensionality with `g`. Simplify using `[H]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `isClosed_iInter fun w => isClosed_eq ((hgw w).comp hkc) (hgw w)`. Establish `hIH : Iq v ≤ H` using `fun g hg w => by show ρ ((f g : SD ρ)).2 w = ρ g w`. Rewrite using `[hf1 g hg, hI g hg]`. Use `show ρ (1 : GQ v) w = (1 : Module.End A V) w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hσH : σ ∈ H` using `fun w => by show ρ ((f σ : SD ρ)).2 w = ρ σ w`. Rewrite using `[hfσ]`. Establish `hk : ∀ g w, ρ (k g) w = ρ g w` using `fun g => all_of_closed (frobDense σ hσ) H hH hIH hσH g`. Set `c : GQ v → V` to `fun g => ((f g : SD ρ)).1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ccont : Continuous c` using `continuous_fst.comp hfv`. Establish `cco : ∀ g h, c (g * h) = c g + ρ g (c h)` using `fun g h => by show ((f (g * h) : SD ρ)).1 = ((f g : SD ρ)).1 + ρ g ((f h : SD ρ)).1`. Rewrite using `[hmul]`. Conclude with `congrArg (((f g : SD ρ)).1 + ·) (hk g _)`. Establish `cI : ∀ g ∈ Iq v, c g = 0` using `fun g hg => by show ((f g : SD ρ)).1 = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hf1 g hg]`. Both sides reduce to the same expression. Establish `cσ : c σ = x` using `by show ((f σ : SD ρ)).1 = x`. Rewrite using `[hfσ]`. Establish `h1 : ∀ d : GQ v → V, (∀ g h, d (g * h) = d g + ρ g (d h)) → d 1 = 0` using `fun d hd => by`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `hd 1 1` as an intermediate fact. Simplify using `using this`. Establish `hinv : ∀ d : GQ v → V, (∀ g h, d (g * h) = d g + ρ g (d h)) → ∀ g, d g⁻¹ = -(ρ g⁻¹ (d g))` using `fun d hd g => by`. Use `hd g⁻¹ g` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1 d hd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_neg_of_add_eq_zero_left this.symm`. Use `⟨c, ⟨⟨ccont, cco⟩, cI, cσ⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `c' ⟨hZ, hc'I, hc'σ⟩`. Take `⟨c'cont, c'co⟩ : Continuous c' ∧ ∀ g h, c' (g * h) = c' g + ρ g (c' h)` from `hZ`. Set `H' : Subgroup (GQ v)` to `{ carrier := {g | c' g = c g} one_mem' := by show c' 1 = c 1`.
-
-Rewrite using `[h1 c' c'co, h1 c cco]`. Use the proof step `mul_mem' := fun {a b} ha hb => by show c' (a * b) = c (a * b)`. Rewrite using `[c'co, cco, show c' a = c a from ha, show c' b = c b from hb]`. Use the proof step `inv_mem' := fun {a} ha => by show c' a⁻¹ = c a⁻¹`. Rewrite using `[hinv c' c'co, hinv c cco, show c' a = c a from ha] }`.
-
-Establish `hH' : IsClosed (H' : Set (GQ v))` using `isClosed_eq c'cont ccont`. Establish `hIH' : Iq v ≤ H'` using `fun g hg => by show c' g = c g`. Rewrite using `[hc'I g hg, cI g hg]`. Establish `hσH' : σ ∈ H'` using `by show c' σ = c σ`. Rewrite using `[hc'σ, cσ]`.
-
-Use function extensionality and compare the values at `g`. Conclude with `all_of_closed (frobDense σ hσ) H' hH' hIH' hσH' g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.existsUnique_unramified_cocycle_frobenius_value :
     ∀ {v l : ℕ} [Fact v.Prime] [Fact l.Prime] {A : Type} [CommRing A] [Algebra ℚ_[l] A] {V : Type} [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul A V] (ρ : Representation A (GQ v) V), ContAction ρ → (∀ g ∈ Iq v, ρ g = 1) → ∀ σ : GQ v, IsFrob σ → ∀ x : V, ∃! c : GQ v → V, c ∈ Z1 ρ ∧ (∀ g ∈ Iq v, c g = 0) ∧ c σ = x := by

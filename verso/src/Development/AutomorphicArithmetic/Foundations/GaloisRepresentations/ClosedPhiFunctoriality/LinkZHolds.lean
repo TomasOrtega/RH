@@ -8,15 +8,15 @@ open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Introduce `hA hQ l _ K bk τ hτ N M`. Take `⟨n, hn⟩` from `hQ l K bk N M`. Use `⟨max n M, ?_⟩` and prove the remaining obligations. Introduce `k d d' ρ ρ' F F' Y Y₁ hY hY₁ Q Q' Q₁ Q₁' hS hS₁ Pi R hL`. Take `⟨h1, h2⟩` from `hA l K bk τ hτ N d d' (max n M) ρ ρ' F F' Y Y₁ hY hY₁ Pi R hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hfz : ∀ z : ℤ_[l], fI l (Per.zA l z) = zC l z` using `fun z => by`. Establish `h` using `(ActLaws.act_laws l).2.2.2.2.2.2.2.2.1 z`. Simplify using `only [fI, zC, RingHom.comp_apply]`. Rewrite using `[← GlobalTheory.RingBasics.φA_apply, h]`. Establish `hfe : ∀ s : bk.S, fI l (bk.ev s) = fA bk s` using `fun s => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [fI, fA, RingHom.comp_apply, bk.ev_frob]`. Establish `hlM : ∀ i j, (l : Per.Acris l) ^ M ∣ (Pi.map (zC l) * Y₁.map (fI l) - Y.map (fI l) * R.map (fA bk)) i j`. Introduce `i j`. Establish `h` using `map_dvd (fI l) (h1 i j)`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, map_sub, map_sum, map_mul, Matrix.map_apply, hfz, hfe, map_pow, map_natCast] at h ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(pow_dvd_pow _ (le_max_right _ _)).trans h`. Establish `h3` using `hn k d d' F.A F'.A F'.A' Q Q' Q₁ Q₁' R F'.A_mul hS hS₁ (fun i j => (pow_dvd_pow _ (le_max_left _ _)).trans (h2 i j))`. Introduce `i j`. Establish `e : Pi.map (zC l) * (Y₁.map (fI l) * Q₁) - (Y.map (fI l) * Q) * R.map (f0 bk) = (Pi.map (zC l) * Y₁.map (fI l) - Y.map (fI l) * R.map (fA bk)) * Q₁ + Y.map (fI l) * (R.map (fA bk) * Q₁ - Q * R.map (f0 bk))`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e, Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `dvd_add (Finset.dvd_sum fun x _ => (hlM i x).mul_right _) (Finset.dvd_sum fun x _ => (h3 x j).mul_left _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.linkZ_holds :
     LinkA → LinkQ → LinkZ := by

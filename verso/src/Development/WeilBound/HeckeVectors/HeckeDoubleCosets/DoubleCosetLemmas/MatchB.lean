@@ -14,7 +14,7 @@ variable {K : Type} [Field K] [NumberField K] {v : HeightOneSpectrum (𝓞 K)}
 local notation "𝒪" => HeightOneSpectrum.adicCompletionIntegers K v
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SplitUnif.card_residueField v (algebraMap K (Cv v)) v (fun _ => rfl) fun x => by rw [← v.valuation_lt_one_iff_mem (K := K)] exact (congrArg (· < 1) (v.valuedAdicCompletion_eq_valuation' (x : K))).to_iff.symm`.
+A detailed English derivation is pending.
 -/
 theorem card_res : Nat.card (IsLocalRing.ResidueField 𝒪) = qV K v :=
   GlobalTheory.SplitUnif.card_residueField v (algebraMap K (Cv v)) v (fun _ => rfl) fun x => by
@@ -22,9 +22,9 @@ theorem card_res : Nat.card (IsLocalRing.ResidueField 𝒪) = qV K v :=
     exact (congrArg (· < 1) (v.valuedAdicCompletion_eq_valuation' (x : K))).to_iff.symm
 
 /- English proof (translation)
-Establish `h : (((q : ℝ)⁻¹ ^ j) ^ ((m : ℝ) / 2) : ℝ) = (Real.sqrt q ^ m)⁻¹ ^ j`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by positivity), mul_comm, Real.rpow_mul (by positivity), Real.rpow_natCast, Real.inv_rpow (by positivity), Real.sqrt_eq_rpow, ← Real.rpow_natCast ((q : ℝ) ^ (1 / 2 : ℝ)), ← Real.rpow_mul (by positivity)]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem cst (q j m : ℕ) : (((((q : ℝ)⁻¹ ^ j) ^ ((m : ℝ) / 2) : ℝ)) : ℂ) =
     ((Real.sqrt q : ℂ) ^ m)⁻¹ ^ j := by
@@ -42,7 +42,7 @@ variable {l m j : ℕ} {α : GL (Fin m) (Cv v)} {ι : Type} {R : Finset ι}
   {ρ : ι → GL (Fin m) (Cv v)}
 
 /- English proof (translation)
-Use `Nat.card_eq_zero.2 (Or.inl ⟨fun ⟨γ, hγ, h⟩ => hy ?_⟩)` and prove the remaining obligations. Take `⟨k₁, k₂, g₁, g₂, h4⟩` from `hR.1 γ hγ`. Establish `hk : Hk 𝒪 p j (ρ γ)` using `h4 ▸ hα.mul g₁ g₂`. Use `h.mul hk.2.1` as an intermediate fact. Rewrite `this` using `[Matrix.mul_smul, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cnt_zero {p : 𝒪} (hα : Hk 𝒪 p j α) (hR : Reps 𝒪 α R ρ) {y : Matrix (Fin l) (Fin m) (Cv v)}
     (hy : ¬ IntM 𝒪 (algebraMap 𝒪 (Cv v) p • y)) :
@@ -55,9 +55,9 @@ theorem cnt_zero {p : 𝒪} (hα : Hk 𝒪 p j α) (hR : Reps 𝒪 α R ρ) {y :
     Matrix.mul_one] at this
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.SplitHecke.card_heckeCosetReps_integral_right_inversePrime hp hj hα hR w]`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun γ => and_congr_right fun hγ => ?_)` and prove the remaining obligations. Take `⟨k₁, k₂, g₁, g₂, h4⟩` from `hR.1 γ hγ`. Establish `hk : Hk 𝒪 p j (ρ γ)` using `h4 ▸ hα.mul g₁ g₂`. Establish `h1` using `hy.mul hk.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.sub_mul]`. Conclude with `⟨fun h => by simpa using h.sub h1, fun h => by simpa using h1.add h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cnt_eq {p : 𝒪} (hp : Irreducible p) (hj : j ≤ m) (hα : Hk 𝒪 p j α) (hR : Reps 𝒪 α R ρ)
     {y : Matrix (Fin l) (Fin m) (Cv v)} {w : Matrix (Fin l) (Fin m) (IsLocalRing.ResidueField 𝒪)}
@@ -74,7 +74,7 @@ theorem cnt_eq {p : 𝒪} (hp : Irreducible p) (hj : j ≤ m) (hα : Hk 𝒪 p j
 end Count
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [heckeVec]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, heckeVec_add_left hJ (Submodule.smul_mem _ _ (hf i)) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hf i)), heckeVec_smul_left hJ (hf i), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeVec_sum_left {G V ι : Type} [Group G] [AddCommGroup V] [Module ℂ V] {J : Subgroup G}
     (hJ : IsCommensurated J) (ρ : Representation ℂ G V) (s : Finset ι) (a : ι → ℂ)
@@ -126,11 +126,11 @@ def mtSub (c t : ℕ) : Submodule ℂ (GL (Fin (c + t)) (Cv v) → ℂ) where
       fun V _ _ ρ x hx => by rw [heckeVec_smul_left hK' a1, l2 V ρ x hx, mul_smul]⟩
 
 /- English proof (translation)
-Introduce and unpack `f' ⟨f, a1, a2, a3, a4⟩ g' ⟨g, b1, b2, b3, b4⟩`. Establish `hK : IsCommensurated (KGL v c)` using `Final.GLintComm K v c`. Establish `hK' : IsCommensurated (KGL v (c + t))` using `Final.GLintComm K v (c + t)`. Use `⟨conv (KGL v c) g f, Final.HeckeConvMem _ _ ℂ hK' _ a1 _ b1, Final.HeckeConvMem _ _ ℂ hK _ b2 _ a2, ?_, fun B hB => ?_⟩` and prove the remaining obligations. Rewrite using `[heckeVec_conv hK' a1 b1 (sphericalVector_fixed_left _ _), heckeVec_conv hK b2 a2 (sphericalVector_fixed_right _ _), b3, ← a3]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ Ψ, heckeVec (rS v (c + t) c) (KGL v c) g (heckeVec (rT v (c + t) c) (KGL v (c + t)) f' Ψ) = heckeVec (rT v (c + t) c) (KGL v (c + t)) f' (heckeVec (rS v (c + t) c) (KGL v c) g Ψ)` using `fun Ψ => map_heckeVec hK' a1 (heckeLin hK b2 (rS v (c + t) c)) (fun z y => (map_heckeVec hK b2 (rT v (c + t) c z) (fun g y => (rS_rT g z y).symm) y).symm) Ψ`. Rewrite using `[e1]`. Take `⟨l, l1, l2⟩` from `a4 B hB`. Take `⟨l', m1, m2⟩` from `b4 B hB`. Conclude with `⟨l * l', fun V _ _ ρ x hx => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[heckeVec_conv hK b2 a2 hx.2.1, l1 V ρ x hx, heckeVec_smul hK b2, m1 V ρ x hx, mul_smul],`. Use `fun V _ _ ρ x hx => by`. Rewrite using `[heckeVec_conv hK' a1 b1 hx.2.1, m2 V ρ x hx, heckeVec_smul hK' a1, l2 V ρ x hx, mul_comm, mul_smul]⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_mem_mtSub {c t : ℕ} : ∀ f' ∈ mtSub v c t, ∀ g' ∈ mtSub v c t,
     conv (KGL v (c + t)) f' g' ∈ mtSub v c t := by
@@ -158,21 +158,21 @@ theorem conv_mem_mtSub {c t : ℕ} : ∀ f' ∈ mtSub v c t, ∀ g' ∈ mtSub v 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hK : IsCommensurated (KGL v c)` using `Final.GLintComm K v c`. Take `⟨p, rfl⟩ : ∃ p : 𝒪, (p : Cv v) = ϖ` from `⟨⟨ϖ, mem_Ov_of_isUnifV hu⟩, rfl⟩`. Establish `h0` using `ne_zero_of_isUnifV hu`. Establish `hp : Irreducible p` using `GlobalTheory.SplitUnif.irreducible_of_valued v p hu`. Use `set q := qV K v with hq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `a : ℕ → ℂ` to `fun j => (q : ℂ) ^ ((c - j) * (d - j)) * (Formalism.L2.Col.gaussBin q t (d - j) : ℂ) * ((Real.sqrt q : ℂ) ^ c)⁻¹ ^ d * ((Real.sqrt q : ℂ) ^ (c + t)) ^ j`. Establish `hjc : ∀ j ∈ Finset.range (min d c + 1), j ≤ c` using `fun j hj => by`. Use `Finset.mem_range.1 hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨∑ j ∈ Finset.range (min d c + 1), a j • Tj ℂ c (Ov K v) p j, Tj_mem_hecke hu d, Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Tj_mem_hecke hu j), ?_, fun B hB => ⟨satEig q (c + t) (B + seg v 1 t) d, fun V _ _ ρ x hx => ?_, fun V _ _ ρ x hx => hx.2.2.2 _ hu d hd⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heckeVec_sum_left hK _ _ _ _ (Tj_mem_hecke hu)]`. Use function extensionality and compare the values at `y`. Take `⟨RT, hRT, eT⟩` from `Tj_count (X := Matrix (Fin (c + t)) (Fin c) (Cv v)) hd hu h0`. Rewrite using `[eT _ _ _ y (fun z => IntM 𝒪 (yᵀ * z.1)) (fun z => by`. Rewrite using `[rT_apply, characteristic_function_integral_apply, intM_tr_iff]), cst, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eS : ∀ j ∈ Finset.range (min d c + 1), ∀ N : ℕ, (∀ R : Finset (GL (Fin c) (Cv v) ⧸ KGL v c), Reps 𝒪 (tor h0 fun i : Fin c => if (i : ℕ) < j then 1 else 0) R Quotient.out → Nat.card {γ // γ ∈ R ∧ IntM 𝒪 (y * γ.out.1)} = N) → (a j • heckeVec (rS v (c + t) c) (KGL v c) (Tj ℂ c (Ov K …`. Introduce `j hj N hN`. Take `⟨R, hR, e⟩` from `Tj_count (X := Matrix (Fin (c + t)) (Fin c) (Cv v)) (hjc j hj) hu h0`. Establish `hs : ((Real.sqrt q : ℂ) ^ (c + t)) ≠ 0` using `pow_ne_zero _ (by`. Establish `: (0 : ℝ) < q` using `by exact_mod_cast Nat.pos_of_ne_zero (qV_ne_zero v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(Real.sqrt_pos.2 this).ne')` after adjusting the coercions. Rewrite using `[Pi.smul_apply, e _ _ _ y (fun g => IntM 𝒪 (y * g.1)) (fun g => by`. Rewrite using `[rS_apply, characteristic_function_integral_apply]), cst, hN R hR, smul_eq_mul]`. Rewrite using `[← hq]`. Simplify using `only [a]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(Real.sqrt q : ℂ) ^ (c + t) = u at hs ⊢`. Generalize the expression as in `((Real.sqrt q : ℂ) ^ c)⁻¹ ^ d = u'`. Use `push_cast`. Rewrite using `[inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hy : IntM 𝒪 (algebraMap 𝒪 (Cv v) p • y)`. Take `⟨w, hw, -⟩` from `GlobalTheory.SplitHecke.existsUnique_yw hp hy haveI : Finite (IsLocalRing.ResidueField 𝒪) := Nat.finite_of_card_ne_zero (card_res (v := v) ▸ qV_ne_zero v)`. Rewrite using `[cnt_eq hp hd (hk_tor h0 hd) hRT (y := yᵀ) (w := wᵀ) hw.transpose, Finset.sum_congr rfl fun j hj => eS j hj (nKer j w) fun R hR => cnt_eq hp (hjc j hj) (hk_tor h0 (hjc j hj)) hR hw, ← Finset.mul_sum, GlobalTheory.SplitHecke.nKer_eq_sum (t := t) rfl, card_res, Nat.cast_sum]`. Both sides reduce to the same expression. Rewrite using `[cnt_zero (hk_tor h0 hd) hRT (y := yᵀ) fun h => hy h.transpose, Finset.sum_congr rfl fun j hj => eS j hj 0 fun R hR => cnt_zero (hk_tor h0 (hjc j hj)) hR hy]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `e` using `GlobalTheory.T.gaussBinomial_twisted_sum_identity v c t d B 1 1 hB hd`. Simplify using `only [Units.val_one, one_mul, inv_one, mul_one, Multiset.map_id'] at e`. Rewrite using `[heckeVec_sum_left hK _ _ _ _ (Tj_mem_hecke hu), Finset.sum_congr rfl fun j hj => by rw [hx.2.2.2 _ hu j (hjc j hj), smul_smul], ← Finset.sum_smul]`. Conclude with `congrArg (· • x) e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tj_mem_mtSub {c t : ℕ} {ϖ : Cv v} (hu : IsUnifV K v ϖ) (d : ℕ) (hd : d ≤ c + t) :
     Tj ℂ (c + t) (Ov K v) ϖ d ∈ mtSub v c t := by

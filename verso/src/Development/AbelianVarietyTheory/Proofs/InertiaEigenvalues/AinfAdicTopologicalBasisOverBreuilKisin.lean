@@ -14,17 +14,17 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP.AinfTopBasis
 
 /- English proof (translation)
-Introduce `l _ K bk`. Take `⟨h0, hu, -, hJ⟩` from `GlobalTheory.T.breuilKisin_flat_radius_ideal_facts l K bk`. Take `⟨ι, b, i₀, hb, hspan, hind⟩` from `GlobalTheory.T.ideal_span_prime_variable_basis l K bk`. Establish `he` using `bk.deg_pos`. Establish `hstrict` using `GlobalTheory.T.strict_indep_pow_of_regular_pair bk.S (Ainf l) bk.ev (l : bk.S) X ι b (fun x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hx` using `[map_natCast, mul_comm]`. Conclude with `WittVector.eq_zero_of_p_mul_eq_zero x hx)`. Use the proof step `(fun x hx => by`. Rewrite `hx`, the goal using `[map_natCast, ← Ideal.mem_span_singleton, ← WittVector.ker_constantCoeff, RingHom.mem_ker]`. Rewrite `hx` using `[map_mul, bk.ev_X, WittVector.constantCoeff_apply (x := WittVector.teichmuller l _), WittVector.teichmuller_coeff_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 hx).resolve_left h0) hind`. Establish `hS : IsAdicComplete (Ideal.span {(l : bk.S)} ⊔ Ideal.span {(X : bk.S)}) bk.S`. Establish `h` using `ReciprocityTheory.P1.isAdicComplete_comap_constantCoeff (Ideal.span {(l : Wq l bk.a)})`. Rewrite `h` using `[← ReciprocityTheory.P1.map_C_sup_span_X, Ideal.map_span, Set.image_singleton, map_natCast]`. Then use the resulting hypothesis. Establish `hA : IsAdicComplete ((Ideal.span {(l : bk.S)} ⊔ Ideal.span {(X : bk.S)}).map bk.ev) (Ainf l)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.span_insert, Ideal.map_span, Set.image_pair, map_natCast]`. Use `(GlobalTheory.Per.AinfComplete.main l _ fun h => hu ?_).1` and prove the remaining obligations. Establish `h2` using `h.map (WittVector.constantCoeff (p := l) (R := OCb l))`. Rewrite `h2` using `[bk.ev_X, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Then use the resulting hypothesis. Take `⟨TB, -⟩` from `GlobalTheory.T.exists_adicTopologicalBasis_of_span_of_strict bk.S (Ainf l) bk.ev _ ι b i₀ hb (Submodule.FG.sup (Submodule.fg_span_singleton _) (Submodule.fg_span_singleton _)) hS hA hspan hstrict`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨TB', -⟩` from `GlobalTheory.T.exists_of_pow_le_of_pow_le_same_adicTopology bk.S (Ainf l) bk.ev _ ι TB bk.J (1 + bk.Ep.natDegree) 1 hS.toIsHausdorff (by omega) one_pos (by`. Rewrite using `[← hJ]`. Use `Ideal.sup_pow_add_le_pow_sup_pow.trans ?_` and prove the remaining obligations. Rewrite using `[pow_one, Ideal.span_singleton_pow])`. Use the proof step `(by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[pow_one, ← hJ]`. Use `sup_le_sup_left ?_ _` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_span_singleton]`. Conclude with `dvd_pow_self _ he.ne')`. Conclude with `⟨ι, ⟨TB'⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K),
     ∃ ι : Type, Nonempty (TopBasis bk.ev bk.J ι) := by

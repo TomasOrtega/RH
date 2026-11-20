@@ -28,29 +28,27 @@ namespace GlobalTheory.KAvgApprox
 open Formalism.REAL GlobalTheory.TypeSum
 
 /- English proof (translation)
-Introduce `n ε ι F hFc ⟨M, hM⟩ hequi δ hδ`. Use `haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds n ε).1`. Take `⟨U, hU, hUo, h1U⟩` from `eventually_nhds_iff.1 (hequi (δ / 3) (by positivity))`. Take `⟨f, hf0, hf1, hf01⟩` from `exists_continuous_zero_one_of_isClosed (X := KG ε) hUo.isClosed_compl isClosed_singleton (Set.disjoint_singleton_right.2 (fun h => h h1U))`. Establish `hfn : 0 ≤ (f : KG ε → ℝ)` using `fun k => (hf01 k).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf1' : f 1 = 1` using `hf1 rfl`. Establish `hc : 0 < ∫ k, f k ∂(muK ε)` using `f.continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (HasCompactSupport.of_compactSpace _) hfn (by rw [hf1']; norm_num)`. Use `set c := ∫ k, f k ∂(muK ε) with hcdef`. Set `g : C(KG ε, ℂ)` to `⟨fun k => ((f k / c : ℝ) : ℂ), by fun_prop⟩`. Establish `hgk : ∀ k, g k = ((f k / c : ℝ) : ℂ)` using `fun k => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hgint : ∫ k, g k ∂(muK ε) = 1`. Simplify using `only [hgk]`. Rewrite using `[integral_complex_ofReal, integral_div, ← hcdef, div_self hc.ne']`. Simplify using the standard rewrite rules. Use `set M' := max M 0 with hM'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM'0 : 0 ≤ M'` using `le_max_right _ _`. Establish `hMb : ∀ i k, ‖F i k‖ ≤ M'` using `fun i k => (hM i k).trans (le_max_left _ _)`. Establish `hgcl : g ∈ closure ((GlobalTheory.KFinSep.finAlg ε : StarSubalgebra ℂ C(KG ε, ℂ)) : Set C(KG ε, ℂ))`. Rewrite using `[← StarSubalgebra.topologicalClosure_coe, GlobalTheory.KFinSep.finAlg_dense]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set η := δ / (3 * (M' + 1)) with hη`. Establish `hη0 : 0 < η` using `by positivity`. Take `⟨p, hp, hpg⟩` from `Metric.mem_closure_iff.1 hgcl η hη0`. Establish `hpk : ∀ k, ‖g k - p k‖ ≤ η` using `fun k => by`. Use `ContinuousMap.norm_coe_le_norm (g - p) k` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hpg` using `[dist_eq_norm]`. Simplify using `only [ContinuousMap.sub_apply] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨p, hp.1, fun x => le_of_lt ?_⟩` and prove the remaining obligations. Establish `hFx : Continuous (F x)` using `hFc x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi1 : Integrable (fun k => g k * F x 1) (muK ε)` using `(g.continuous.mul continuous_const).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hi2 : Integrable (fun k => p k * F x k) (muK ε)` using `(p.continuous.mul hFx).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hid : F x 1 - ∫ k, p k * F x k ∂(muK ε) = ∫ k, (g k * (F x 1 - F x k) + (g k - p k) * F x k) ∂(muK ε)`. Establish `: (fun k => g k * (F x 1 - F x k) + (g k - p k) * F x k) = fun k => g k * F x 1 - p k * F x k`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, integral_sub hi1 hi2, integral_mul_const, hgint, one_mul]`. Rewrite using `[hid]`. Establish `hbd : ∀ k, ‖g k * (F x 1 - F x k) + (g k - p k) * F x k‖ ≤ f k / c * (δ / 3) + η * M'`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `(norm_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, hgk, Complex.norm_real, Real.norm_of_nonneg (div_nonneg (hfn k) hc.le)]`. Distinguish the cases in `hk : k ∈ U`. Conclude with `mul_le_mul_of_nonneg_left (by rw [norm_sub_rev]; exact (hU k hk x).le) (div_nonneg (hfn k) hc.le)`. Establish `: f k = 0` using `hf0 hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[this]`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hpk k) (hMb x k) (norm_nonneg _) hη0.le`. Establish `hbi : Integrable (fun k => f k / c * (δ / 3) + η * M') (muK ε)` using `(by fun_prop : Continuous fun k => f k / c * (δ / 3) + η * M').integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Use `(norm_integral_le_of_norm_le hbi (Filter.Eventually.of_forall hbd)).trans_lt ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[integral_add ((by fun_prop : Continuous fun k => f k / c * (δ / 3)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)) (integrable_const _), integral_mul_const, integral_div, ← hcdef, div_self hc.ne', integral_const]`. Simplify using `only [probReal_univ, one_smul, one_mul]`. Establish `: η * M' < δ / 3`. Rewrite using `[hη, div_mul_eq_mul_div, div_lt_div_iff₀ (by positivity) (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem approx_family : ∀ (n : ℕ) (ε : Fin n → Bool) (ι : Type) (F : ι → KG ε → ℂ), (∀ i, Continuous (F i)) →
     (∃ M : ℝ, ∀ i k, ‖F i k‖ ≤ M) → (∀ δ : ℝ, 0 < δ → ∀ᶠ k in 𝓝 (1 : KG ε), ∀ i, ‖F i k - F i 1‖ < δ) →
@@ -126,23 +124,21 @@ end GlobalTheory.KAvgApprox
 namespace GlobalTheory.KAvgApprox
 
 /- English proof (translation)
-Introduce `D V φ hφ K _ _ a ha k₀ δ hδ`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Take `⟨C, hC⟩` from `hφ.decay 1`. Take `⟨H, hH⟩` from `isCompact_univ.exists_bound_of_continuousOn ((continuous_height V).comp ha).continuousOn`. Establish `hHk : ∀ k, height V (a k) ≤ H` using `fun k => (le_abs_self _).trans (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hH k (Set.mem_univ k))` using `[Real.norm_eq_abs]`. Establish `hH1 : 1 ≤ H` using `(one_le_height V _).trans (hHk k₀)`. Use `set T : ℝ := 2 * |C| / δ + 1 with hTdef`. Establish `hT1 : 1 ≤ T` using `by rw [hTdef]; have : 0 ≤ 2 * |C| / δ := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : ∀ y, T ≤ quotHeight V y → ‖φ y‖ < δ / 2`. Introduce `y hy`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h1` using `hC y`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [pow_one] at h1`. Establish `h2 : δ / 2 * T = |C| + δ / 2` using `by rw [hTdef]; field_simp`. Establish `h3 : δ / 2 * T ≤ ‖φ y‖ * quotHeight V y` using `mul_le_mul hcon hy (by linarith) (norm_nonneg _)`. Establish `h4` using `le_abs_self C`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfar : ∀ x k, T * H ≤ quotHeight V x → T ≤ quotHeight V (x * a k)`. Introduce `x k hx`. Establish `h1` using `((GlobalTheory.Size.quotHeight_laws V).2.2.1 x (a k)).2`. Establish `hp` using `height_pos V (a k)`. Use `le_trans ?_ h1` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ hp]`. Conclude with `le_trans (mul_le_mul_of_nonneg_left (hHk k) (by linarith)) hx`. Establish `hΩ` using `GlobalTheory.Grow.isCompact_setOf_height_le V (T * H + 1)`. Establish `hev : ∀ᶠ k in 𝓝 k₀, ∀ y ∈ {g : GA D V | height V g ≤ T * H + 1}, ‖φ (y * a k) - φ (y * a k₀)‖ < δ`. Use `hΩ.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : Continuous fun z : K × GA D V => φ (z.2 * a z.1) - φ (z.2 * a k₀)` using `(hφ.continuous.comp (continuous_snd.mul (ha.comp continuous_fst))).sub (hφ.continuous.comp (continuous_snd.mul continuous_const))`. Establish `ht` using `(hc.tendsto (k₀, y)).norm`. Simplify using `only [sub_self, norm_zero] at ht`. Conclude with `ht.eventually (gt_mem_nhds hδ)`. Use `hev.mono fun k hk x => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hx : T * H ≤ quotHeight V x`. Establish `h1` using `hT _ (hfar x k hx)`. Establish `h2` using `hT _ (hfar x k₀ hx)`. Combine the equalities or inequalities in the displayed calculation. Use `push_neg at hx`.
-
-Take `⟨γ, hγ⟩ : ∃ γ : GQ V, height V (γ * x) < T * H + 1` from `exists_lt_of_ciInf_lt (f := fun γ : GQ V => height V (γ * x)) (by`. Express the relevant statement in the definitionally equal form `quotHeight V x < T * H + 1`. Use the proof step `linarith)`. Use `hk ((γ : GA D V) * x) hγ.le` as an intermediate fact. Simplify `this` using `only [mul_assoc, hφ.left γ.2]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unif_right : ∀ (D : D7) (V : HSp D) (φ : GA D V → ℂ), RapidDec V φ → ∀ (K : Type) [TopologicalSpace K]
     [CompactSpace K] (a : K → GA D V), Continuous a → ∀ (k₀ : K) (δ : ℝ), 0 < δ →
@@ -214,9 +210,9 @@ variable {𝒟 : Set (GA D V → ℂ)} (hθ : IsInfFam θ) (hκ : Continuous κ)
 include hθ hκ hU h𝒟
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, ψ, hψ, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `(hc.comp continuous_fst).mul ((h𝒟 ψ hψ).1.comp (continuous_snd.mul ((continuous_atTau hθ hκ hU).comp continuous_fst)))`. Consider the case `zero => exact continuous_const`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul a x _ hx => exact continuous_const.mul hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem famSpan_cont' : ∀ F ∈ famSpan θ V τ κ 𝒟, Continuous fun p : K × GA D V => F p.1 p.2 := by
   haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _
@@ -233,9 +229,9 @@ theorem famSpan_cont' : ∀ F ∈ famSpan θ V τ κ 𝒟, Continuous fun p : K 
 omit hκ in
 
 /- English proof (translation)
-Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, ψ, hψ, rfl⟩` from `hx`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(SmFun θ V).smul_mem (c k) (rTr_mem hθ (isRealPt_atTau hθ τ (hU k)) (h𝒟 ψ hψ).2)`. Consider the case `zero => exact fun _ => zero_mem _`. Consider the case `add x y _ _ hx hy => exact fun k => add_mem (hx k) (hy k)`. Consider the case `smul a x _ hx => exact fun k => (SmFun θ V).smul_mem a (hx k)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem famSpan_sm' : ∀ F ∈ famSpan θ V τ κ 𝒟, ∀ k, F k ∈ SmFun θ V := by
   intro F hF
@@ -258,13 +254,11 @@ variable {𝒟 : Set (GA D V → ℂ)} (hθ : IsInfFam θ) (hκ : Continuous κ)
 include hθ hκ hU h𝒟 hR
 
 /- English proof (translation)
-Use `set Z : Fin V.rank × Fin V.rank → Matrix (Fin V.rank) (Fin V.rank) ℂ := fun a => Matrix.single a.1 a.2 1`. Use `set X1 := fun a => (1 / 2 : ℂ) • (Z a + conjAt V τ' (Z a))`. Use `set X2 := fun a => (1 / (2 * Complex.I) : ℂ) • (Z a - conjAt V τ' (Z a))`. Use `set Y := fun k => adAt θ (atTau θ V τ (κ k)) τ' X`. Establish `e : (fun k => Rder θ V τ' X (fun x => c k * ψ (x * atTau θ V τ (κ k)))) = ∑ a : Fin V.rank × Fin V.rank, ((fun k x => (c k * Y k a.1 a.2) * Rder θ V τ' (X1 a) ψ (x * atTau θ V τ (κ k))) + (fun k x => (c k * Y k a.1 a.2 * Complex.I) * Rder θ V τ' (X2 a) ψ (x * atTau θ V τ (κ k))))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Establish `hh` using `isRealPt_atTau hθ τ (hU k)`. Establish `hsm : ψ ∈ SmFun θ V` using `(h𝒟 ψ hψ).2`. Rewrite using `[show (fun x => c k * ψ (x * atTau θ V τ (κ k))) = c k • rTr V (atTau θ V τ (κ k)) ψ from rfl, Rder_smul, Rder_rTr hθ hh hX, GlobalTheory.Size.Rder_eq_sum_glDer hθ hsm (adAt_mem hh hX)]`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.smul_apply, rTr, Finset.sum_apply, smul_eq_mul, GlobalTheory.Size.glDer, RderC, Pi.add_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Y, X1, X2, Z]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Establish `cY : ∀ a : Fin V.rank × Fin V.rank, Continuous fun k => c k * Y k a.1 a.2` using `fun a => hc.mul ((continuous_adAt_atTau hθ hκ hU τ' X).matrix_elem a.1 a.2)`. Use `Submodule.sum_mem _ fun a _ => add_mem (Submodule.subset_span ⟨_, cY a, _, hR ψ hψ τ' _ ?_, rfl⟩) (Submodule.subset_span ⟨_, (cY a).mul continuous_const, _, hR ψ hψ τ' _ ?_, rfl⟩)` and prove the remaining obligations. Conclude with `(GlobalTheory.SmoothAutCheck.parts_mem V τ' (Z a)).1`. Conclude with `(GlobalTheory.SmoothAutCheck.parts_mem V τ' (Z a)).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem famSpan_Rder_gen' {c : K → ℂ} (hc : Continuous c) {ψ : GA D V → ℂ} (hψ : ψ ∈ 𝒟) (τ' : D.what₂.Tau)
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ') :
@@ -296,15 +290,13 @@ theorem famSpan_Rder_gen' {c : K → ℂ} (hc : Continuous c) {ψ : GA D V → �
   · exact (GlobalTheory.SmoothAutCheck.parts_mem V τ' (Z a)).2
 
 /- English proof (translation)
-Introduce `F hF τ' X hX`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, ψ, hψ, rfl⟩` from `hx`. Conclude with `famSpan_Rder_gen' hθ hκ hU h𝒟 hR hc hψ τ' hX`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero`. Establish `e : (fun k => Rder θ V τ' X ((0 : K → GA D V → ℂ) k)) = 0`. Use function extensionality and compare the values at `k g`. Simplify using `[Rder]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y hx' hy' hx hy`. Establish `sx` using `famSpan_sm' hθ hU h𝒟 x hx'`. Establish `sy` using `famSpan_sm' hθ hU h𝒟 y hy'`. Establish `e : (fun k => Rder θ V τ' X ((x + y) k)) = (fun k => Rder θ V τ' X (x k)) + fun k => Rder θ V τ' X (y k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Conclude with `Rder_add (sx k) (sy k) hX`. Rewrite using `[e]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`.
-
-Establish `e : (fun k => Rder θ V τ' X ((a • x) k)) = a • fun k => Rder θ V τ' X (x k)`. Use function extensionality and compare the values at `k`. Conclude with `Rder_smul a (x k) τ' X`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ a hx`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famSpan_Rder' : ∀ F ∈ famSpan θ V τ κ 𝒟, ∀ τ', ∀ X ∈ lieAt V τ',
     (fun k => Rder θ V τ' X (F k)) ∈ famSpan θ V τ κ 𝒟 := by
@@ -346,21 +338,21 @@ variable {D : D7} {θ : InfFam D} {V : HSp D} {τ : D.what₂.Tau}
   {K : Type} [TopologicalSpace K] {κ : K → Matrix (Fin V.rank) (Fin V.rank) ℂ}
 
 /- English proof (translation)
-Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨c, hc, ψ, hψ, rfl⟩` from `hF`. Use `⟨fun k γ hγ x => by simp only [mul_assoc, (h𝒟 ψ hψ).left hγ], fun N => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Cψ, hCψ⟩` from `(h𝒟 ψ hψ).decay N`. Take `⟨Mc, hMc⟩` from `isCompact_univ.exists_bound_of_continuousOn hc.continuousOn`. Take `⟨H, hH⟩` from `isCompact_univ.exists_bound_of_continuousOn ((continuous_height V).comp (continuous_atTau hθ hκ hU)).continuousOn`. Establish `hHk : ∀ k, height V (atTau θ V τ (κ k)) ≤ H` using `fun k => (le_abs_self _).trans (by`. Simplify `hH k (Set.mem_univ k))` using `[Real.norm_eq_abs]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨|Mc| * (|Cψ| * |H| ^ N), fun k x => ?_⟩` and prove the remaining obligations. Use `set a := atTau θ V τ (κ k)`. Establish `hq : quotHeight V x ≤ quotHeight V (x * a) * H`. Establish `h1` using `quotHeight_mul_le V (x * a) a⁻¹`. Rewrite `h1` using `[mul_inv_cancel_right, height_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.trans (mul_le_mul_of_nonneg_left (hHk k) (quotHeight_pos V _).le)`. Establish `hq' : quotHeight V x ^ N ≤ quotHeight V (x * a) ^ N * |H| ^ N`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (quotHeight_pos V x).le (hq.trans (mul_le_mul_of_nonneg_left (le_abs_self _) (quotHeight_pos V _).le)) N`. Establish `h1 : ‖c k‖ ≤ |Mc|` using `(hMc k (Set.mem_univ k)).trans (le_abs_self _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ‖ψ (x * a)‖ * quotHeight V (x * a) ^ N ≤ |Cψ|` using `(hCψ _).trans (le_abs_self _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, mul_assoc]`. Use `_ ≤ |Mc| * (|Cψ| * |H| ^ N) := by`. Use `mul_le_mul h1 ?_ (mul_nonneg (norm_nonneg _) (pow_nonneg (quotHeight_pos V x).le N)) (abs_nonneg _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Consider the case `zero => exact ⟨fun _ _ _ _ => rfl, fun N => ⟨0, fun k x => by simp⟩⟩`. Consider the case `add F G _ _ hF hG`. Use `⟨fun k γ hγ x => by simp only [Pi.add_apply, hF.1 k γ hγ x, hG.1 k γ hγ x], fun N => ?_⟩` and prove the remaining obligations. Take `⟨C1, hC1⟩` from `hF.2 N`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Take `⟨C2, hC2⟩` from `hG.2 N`. Use `⟨C1 + C2, fun k x => ?_⟩` and prove the remaining obligations. Establish `h0` using `pow_nonneg (quotHeight_pos V x).le N`. Combine the equalities or inequalities in the displayed calculation. Consider the case `smul a F _ hF`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun k γ hγ x => by simp only [Pi.smul_apply, hF.1 k γ hγ x], fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hF.2 N`. Use `⟨‖a‖ * C, fun k x => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC k x) (norm_nonneg a)`.
+A detailed English derivation is pending.
 -/
 theorem famSpan_rapid [CompactSpace K] (hθ : IsInfFam θ) (hκ : Continuous κ)
     (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) {𝒟 : Set (GA D V → ℂ)} (h𝒟 : ∀ ψ ∈ 𝒟, RapidDec V ψ) :
@@ -422,9 +414,9 @@ namespace GlobalTheory.KAvgApprox
 open Formalism.REAL GlobalTheory.TypeSum GlobalTheory.Mem.AutSpace GlobalTheory.PointAtPlaceHom GlobalTheory.Mem.RealTranslate GlobalTheory.RealAverage
 
 /- English proof (translation)
-Use `haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds V.rank ε).1`. Take `⟨hl, hd⟩` from `famSpan_rapid hθ hκ hU (fun ψ h => (h𝒟 ψ h).1) G hG`. Use `⟨fun γ hγ x => by simp only [hl _ γ hγ x], GlobalTheory.AvgFam.continuous_avg (muK ε) (famSpan_cont' hθ hκ hU (fun ψ h => ⟨(h𝒟 ψ h).1.continuous, (h𝒟 ψ h).2⟩) G hG), fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hd N`. Use `⟨C, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hp` using `pow_pos (quotHeight_pos V x) N`. Establish `hb : ∀ k, ‖G k x‖ ≤ C / quotHeight V x ^ N` using `fun k => (le_div_iff₀ hp).2 (hC k x)`. Establish `h1` using `norm_integral_le_of_norm_le_const (μ := muK ε) (Filter.Eventually.of_forall hb)`. Simplify using `only [probReal_univ, mul_one] at h1`. Conclude with `(le_div_iff₀ hp).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rapidDec_avg_famSpan {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau} {ε : Fin V.rank → Bool}
     {κ : KG ε → Matrix (Fin V.rank) (Fin V.rank) ℂ} (hκ : Continuous κ)
@@ -444,19 +436,15 @@ theorem rapidDec_avg_famSpan {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {V : H
   exact (le_div_iff₀ hp).1 h1
 
 /- English proof (translation)
-Introduce `D θ hθ V τ ε P hP hJ e he f hf`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds V.rank ε).1`. Use `set κ : KG ε → Matrix (Fin V.rank) (Fin V.rank) ℂ := fun k => P⁻¹ * toMK k * P with hκdef`. Establish `hκ : Continuous κ` using `GlobalTheory.SeriesToClosure.continuous_conjK (ε := ε) (P := P)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun k => GlobalTheory.LowTypeDetermined.conj_inv_mem hP hJ (K_le_UJ (toMK_mem_K k))`. Use `set 𝒟 : Set (GA D V → ℂ) := {ψ | GlobalTheory.Size.RapidDecSm θ V ψ}`. Establish `h𝒟 : ∀ ψ ∈ 𝒟, Continuous ψ ∧ ψ ∈ SmFun θ V` using `fun ψ h => ⟨h.cont, h.smooth⟩`. Establish `h𝒟' : ∀ ψ ∈ 𝒟, RapidDec V ψ ∧ ψ ∈ SmFun θ V` using `fun ψ h => ⟨h.rapidDec, h.smooth⟩`. Establish `hR : ∀ ψ ∈ 𝒟, ∀ τ' X, X ∈ lieAt V τ' → Rder θ V τ' X ψ ∈ 𝒟` using `fun ψ h τ' X hX => h.rder hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set F0 : KG ε → GA D V → ℂ := fun k x => e k * f (x * atTau θ V τ (κ k))`. Establish `hF0 : F0 ∈ famSpan θ V τ κ 𝒟` using `Submodule.subset_span ⟨e, he, f, hf, rfl⟩`. Establish `FAM` using `GlobalTheory.T.compactAverage_smoothFamily_closedUnderDerivatives D θ hθ V (KG ε) (muK ε) (famSpan θ V τ κ 𝒟) (famSpan_cont' hθ hκ hU h𝒟) (famSpan_sm' hθ hU h𝒟) (famSpan_Rder' hθ hκ hU h𝒟 hR) F0 hF0`. Establish `hwords : ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → (fun k => l.foldr (fun p g => Rder θ V p.1 p.2 g) (F0 k)) ∈ famSpan θ V τ κ 𝒟`. Introduce `l hl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `l with`. Consider the case `nil => exact hF0`. Consider the case `cons p l ih`. Conclude with `famSpan_Rder' hθ hκ hU h𝒟 hR _ (ih fun q hq => hl q (List.mem_cons_of_mem _ hq)) p.1 p.2 (hl p List.mem_cons_self)`. Establish `hA : GlobalTheory.SeriesToClosure.avg θ V τ ε P e f = fun x => ∫ k, F0 k x ∂(muK ε)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h0` using `rapidDec_avg_famSpan hθ hκ hU h𝒟' hF0`. Rewrite using `[hA]`. Use `{ left := h0.1, level := ?_, cont := FAM.1, smooth := FAM.2.1, decay := fun l hl => ?_ }` and prove the remaining obligations. Take `⟨U, hUo, hk⟩` from `hf.level`. Use `⟨U, hUo, fun u hu hfu g => ?_⟩` and prove the remaining obligations.
-
-Use `show ∫ k, e k * f (g * u * atTau θ V τ (κ k)) ∂(muK ε) = ∫ k, e k * f (g * atTau θ V τ (κ k)) ∂(muK ε)`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[mul_assoc, ← comm_of_mem V (atTau_mem (θ := θ) V τ (κ k)) hfu, ← mul_assoc, hk u hu hfu]`. Establish `e2 : GlobalTheory.Size.rWord θ V l (fun x => ∫ k, F0 k x ∂(muK ε)) = fun x => ∫ k, l.foldr (fun p g => Rder θ V p.1 p.2 g) (F0 k) x ∂(muK ε)` using `FAM.2.2.1 l hl`.
-
-Rewrite using `[e2]`. Conclude with `rapidDec_avg_famSpan hθ hκ hU h𝒟' (hwords l hl)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_rapid : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (τ : D.what₂.Tau) (ε : Fin V.rank → Bool) (P : Matrix (Fin V.rank) (Fin V.rank) ℂ), IsUnit P → Pᴴ * Formalism.REAL.Jm ε * P = gramAt D V τ → ∀ e : Formalism.REAL.KG ε → ℂ, Continuous e → ∀ f : GA D V → ℂ, GlobalTheory.Size.RapidDecSm θ V f → GlobalTheory.Size.RapidDecSm θ V (GlobalTheory.SeriesToClosure.avg θ V τ ε P e f) := by
   intro D θ hθ V τ ε P hP hJ e he f hf
@@ -512,13 +500,13 @@ variable {D : D7} {θ : InfFam D} {V : HSp D} {τ : D.what₂.Tau} {ε : Fin V.r
 include hθ hκ hU h𝒟 hR
 
 /- English proof (translation)
-Use `haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds V.rank ε).1`. Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V a.1 (Matrix.single a.2.1 a.2.2 1)`. Establish `m1` using `famSpan_Rder' hθ hκ hU h𝒟 hR F hF a.1 _ h1`. Establish `m2` using `famSpan_Rder' hθ hκ hU h𝒟 hR F hF a.1 _ h2`. Establish `FAM` using `GlobalTheory.T.compactAverage_smoothFamily_closedUnderDerivatives D θ hθ V (KG ε) (muK ε) (famSpan θ V τ κ 𝒟) (famSpan_cont' hθ hκ hU h𝒟) (famSpan_sm' hθ hU h𝒟) (famSpan_Rder' hθ hκ hU h𝒟 hR) F hF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r1` using `FAM.2.2.1 [(a.1, (1 / 2 : ℂ) • (Matrix.single a.2.1 a.2.2 1 + conjAt V a.1 (Matrix.single a.2.1 a.2.2 1)))] (fun p hp => by rw [List.mem_singleton.1 hp]; exact h1)`. Establish `r2` using `FAM.2.2.1 [(a.1, (1 / (2 * Complex.I) : ℂ) • (Matrix.single a.2.1 a.2.2 1 - conjAt V a.1 (Matrix.single a.2.1 a.2.2 1)))] (fun p hp => by rw [List.mem_singleton.1 hp]; exact h2)`. Simplify using `only [List.foldr_cons, List.foldr_nil] at r1 r2`. Establish `i1 : ∀ x, Integrable (fun k => Rder θ V a.1 ((1 / 2 : ℂ) • (Matrix.single a.2.1 a.2.2 1 + conjAt V a.1 (Matrix.single a.2.1 a.2.2 1))) (F k) x) (muK ε)` using `fun x => GlobalTheory.AvgFam.integrable_of_continuous (muK ε) ((famSpan_cont' hθ hκ hU h𝒟 _ m1).comp (continuous_id.prodMk continuous_const))`. Establish `i2 : ∀ x, Integrable (fun k => Rder θ V a.1 ((1 / (2 * Complex.I) : ℂ) • (Matrix.single a.2.1 a.2.2 1 - conjAt V a.1 (Matrix.single a.2.1 a.2.2 1))) (F k) x) (muK ε)` using `fun x => GlobalTheory.AvgFam.integrable_of_continuous (muK ε) ((famSpan_cont' hθ hκ hU h𝒟 _ m2).comp (continuous_id.prodMk continuous_const))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨add_mem m1 (Submodule.smul_mem _ Complex.I m2), ?_⟩` and prove the remaining obligations. Use `show RderC θ V a.1 _ (fun x => ∫ k, F k x ∂(muK ε)) = fun x => ∫ k, RderC θ V a.1 _ (F k) x ∂(muK ε)`. Simplify using `only [RderC]`. Rewrite using `[r1, r2]`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_add (i1 x) ((i2 x).const_mul _), integral_const_mul]`.
+A detailed English derivation is pending.
 -/
 theorem famSpan_glDer {F : KG ε → GA D V → ℂ} (hF : F ∈ famSpan θ V τ κ 𝒟)
     (a : D.what₂.Tau × Fin V.rank × Fin V.rank) :
@@ -552,9 +540,9 @@ theorem famSpan_glDer {F : KG ε → GA D V → ℂ} (hF : F ∈ famSpan θ V τ
   rw [integral_add (i1 x) ((i2 x).const_mul _), integral_const_mul]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨hF, rfl⟩`. Consider the case `cons a w ih`. Take `⟨m, e⟩` from `ih`. Use `famSpan_glDer hθ hκ hU h𝒟 hR m a` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.Size.wordAct_cons]`. Rewrite using `[e]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famSpan_glWord {F : KG ε → GA D V → ℂ} (hF : F ∈ famSpan θ V τ κ 𝒟)
     (w : List (D.what₂.Tau × Fin V.rank × Fin V.rank)) :
@@ -573,23 +561,21 @@ theorem famSpan_glWord {F : KG ε → GA D V → ℂ} (hF : F ∈ famSpan θ V �
 end FamGl
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨c, hc, ψ, hψ, rfl⟩` from `hF`. Introduce `δ hδ`. Take `⟨M, hM⟩` from `(h𝒟 ψ hψ).bounded`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 1)`. Establish `h1 : ∀ᶠ k in 𝓝 (1 : KG ε), ‖c k - c 1‖ < δ / (2 * (M + 1))`. Establish `ht` using `((hc.tendsto 1).sub_const (c 1)).norm`. Simplify using `only [sub_self, norm_zero] at ht`. Conclude with `ht.eventually (gt_mem_nhds (by positivity))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `unif_right D V ψ (h𝒟 ψ hψ) (KG ε) (fun k => atTau θ V τ (κ k)) (continuous_atTau hθ hκ hU) 1 (δ / (2 * (‖c 1‖ + 1))) (by positivity)`. Use `filter_upwards [h1, h2] with k hk1 hk2 x`. Establish `e : c k * ψ (x * atTau θ V τ (κ k)) - c 1 * ψ (x * atTau θ V τ (κ 1)) = (c k - c 1) * ψ (x * atTau θ V τ (κ k)) + c 1 * (ψ (x * atTau θ V τ (κ k)) - ψ (x * atTau θ V τ (κ 1)))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `b1 : ‖(c k - c 1) * ψ (x * atTau θ V τ (κ k))‖ ≤ δ / (2 * (M + 1)) * M`. Rewrite using `[norm_mul]; exact mul_le_mul hk1.le (hM _) (norm_nonneg _) (by positivity)`. Establish `b2 : ‖c 1 * (ψ (x * atTau θ V τ (κ k)) - ψ (x * atTau θ V τ (κ 1)))‖ ≤ ‖c 1‖ * (δ / (2 * (‖c 1‖ + 1)))`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hk2 x).le (norm_nonneg _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `b3 : δ / (2 * (M + 1)) * M < δ / 2`. Rewrite using `[div_mul_eq_mul_div, div_lt_div_iff₀ (by positivity) (by norm_num)]; nlinarith`. Establish `b4 : ‖c 1‖ * (δ / (2 * (‖c 1‖ + 1))) < δ / 2`. Rewrite using `[mul_div_assoc', div_lt_div_iff₀ (by positivity) (by norm_num)]; nlinarith [norm_nonneg (c 1)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => exact fun δ hδ => Filter.Eventually.of_forall fun k x => by simpa using hδ`. Consider the case `add F G _ _ hF hG`. Introduce `δ hδ`. Use `filter_upwards [hF (δ / 2) (half_pos hδ), hG (δ / 2) (half_pos hδ)] with k h1 h2 x`. Establish `e : (F + G) k x - (F + G) 1 x = (F k x - F 1 x) + (G k x - G 1 x)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `smul a F _ hF`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `δ hδ`. Use `filter_upwards [hF (δ / (‖a‖ + 1)) (by positivity)] with k h1 x`. Establish `e : (a • F) k x - (a • F) 1 x = a * (F k x - F 1 x)`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem famSpan_equi {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau} {ε : Fin V.rank → Bool}
     {κ : KG ε → Matrix (Fin V.rank) (Fin V.rank) ℂ} (hκ : Continuous κ)
@@ -643,23 +629,21 @@ theorem famSpan_equi {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {�
       _ < δ := by rw [mul_div_assoc', div_lt_iff₀ (by positivity)]; nlinarith [norm_nonneg a]
 
 /- English proof (translation)
-Introduce `D θ hθ V τ ε P hP hJ f hf w`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds V.rank ε).1`. Use `set κ : KG ε → Matrix (Fin V.rank) (Fin V.rank) ℂ := fun k => P⁻¹ * toMK k * P with hκdef`. Establish `hκ : Continuous κ` using `GlobalTheory.SeriesToClosure.continuous_conjK (ε := ε) (P := P)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun k => GlobalTheory.LowTypeDetermined.conj_inv_mem hP hJ (K_le_UJ (toMK_mem_K k))`. Use `set 𝒟 : Set (GA D V → ℂ) := {ψ | GlobalTheory.Size.RapidDecSm θ V ψ}`. Establish `h𝒟 : ∀ ψ ∈ 𝒟, Continuous ψ ∧ ψ ∈ SmFun θ V` using `fun ψ h => ⟨h.cont, h.smooth⟩`. Establish `h𝒟r : ∀ ψ ∈ 𝒟, RapidDec V ψ` using `fun ψ h => h.rapidDec`. Establish `hR : ∀ ψ ∈ 𝒟, ∀ τ' X, X ∈ lieAt V τ' → Rder θ V τ' X ψ ∈ 𝒟` using `fun ψ h τ' X hX => h.rder hX`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Fr : KG ε → GA D V → ℂ := fun k x => (fun _ => (1 : ℂ)) k * f (x * atTau θ V τ (κ k))`. Establish `hFr : Fr ∈ famSpan θ V τ κ 𝒟` using `Submodule.subset_span ⟨fun _ => 1, continuous_const, f, hf, rfl⟩`. Take `⟨hGm, -⟩` from `famSpan_glWord hθ hκ hU h𝒟 hR hFr w`. Use `set G : KG ε → GA D V → ℂ := fun k => GlobalTheory.Size.wordAct (GlobalTheory.Size.glDer θ V) w (Fr k) with hGdef`. Establish `hκ1 : atTau θ V τ (κ 1) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `: κ 1 = 1` using `by show P⁻¹ * 1 * P = 1`. Rewrite using `[Matrix.mul_one, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hP)]`. Rewrite using `[this, GlobalTheory.PointAtPlaceHom.atTau_one hθ]`. Establish `hFr1 : Fr 1 = f`. Use function extensionality and compare the values at `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [Fr, hκ1, mul_one, one_mul]`. Use `clear_value G`. Take `⟨C, hC⟩` from `(famSpan_rapid hθ hκ hU h𝒟r G hGm).2 0`. Establish `c1 : ∀ x, Continuous fun k => G k x` using `fun x => (famSpan_cont' hθ hκ hU h𝒟 G hGm).comp (continuous_id.prodMk continuous_const)`. Establish `c2 : ∀ k x, ‖G k x‖ ≤ C` using `fun k x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hC k x` as an intermediate fact. Rewrite `this` using `[pow_zero, mul_one]`. Then use the resulting hypothesis. Establish `c3` using `famSpan_equi hθ hκ hU h𝒟r hGm`. Establish `c4 : G 1 = GlobalTheory.Size.wordAct (GlobalTheory.Size.glDer θ V) w f`. Rewrite using `[hGdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use `show GlobalTheory.Size.wordAct (GlobalTheory.Size.glDer θ V) w (Fr 1) = _`. Rewrite using `[hFr1]`. Use `⟨G, c1, ⟨C, c2⟩, c3, c4, fun e he => ?_⟩` and prove the remaining obligations. Use `set F0 : KG ε → GA D V → ℂ := fun k x => e k * f (x * atTau θ V τ (κ k))`. Establish `hF0 : F0 ∈ famSpan θ V τ κ 𝒟` using `Submodule.subset_span ⟨e, he, f, hf, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : GlobalTheory.SeriesToClosure.avg θ V τ ε P e f = fun x => ∫ k, F0 k x ∂(muK ε)` using `rfl`. Rewrite using `[hA, (famSpan_glWord hθ hκ hU h𝒟 hR hF0 w).2]`. Use function extensionality and compare the values at `x`. Use `congr 1`. Use function extensionality and compare the values at `k`.
-
-Establish `e1 : F0 k = e k • Fr k`. Use function extensionality and compare the values at `y`. Simplify using `only [F0, Fr, Pi.smul_apply, smul_eq_mul, one_mul]`. Rewrite using `[e1, (GlobalTheory.Size.linOnSm_glWord (θ := θ) (V := V) w).smul, hGdef]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem family : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (τ : D.what₂.Tau) (ε : Fin V.rank → Bool) (P : Matrix (Fin V.rank) (Fin V.rank) ℂ), IsUnit P → Pᴴ * Formalism.REAL.Jm ε * P = gramAt D V τ → ∀ f : GA D V → ℂ, GlobalTheory.Size.RapidDecSm θ V f → ∀ w : List (D.what₂.Tau × Fin V.rank × Fin V.rank), ∃ G : Formalism.REAL.KG ε → GA D V → ℂ, (∀ x, Continuous fun k => G k x) ∧ (∃ M : ℝ, ∀ k x, ‖G k x‖ ≤ M) ∧ (∀ δ : ℝ, 0 < δ → ∀ᶠ k in nhds (1 : Formalism.REAL.KG ε), ∀ x, ‖G k x - G 1 x‖ < δ) ∧ G 1 = GlobalTheory.Size.wordAct (GlobalTheory.Size.glDer θ V) w f ∧ ∀ e : Formalism.REAL.KG ε → ℂ, Continuous e → GlobalTheory.Size.wordAct (GlobalTheory.Size.glDer θ V) w (GlobalTheory.SeriesToClosure.avg θ V τ ε P e f) = fun x => ∫ k, e k * G k x ∂(Formalism.REAL.muK ε) := by
   intro D θ hθ V τ ε P hP hJ f hf w
@@ -717,21 +701,17 @@ namespace GlobalTheory.KAvgApprox
 open Formalism.REAL GlobalTheory.TypeSum
 
 /- English proof (translation)
-Introduce `D θ hθ V τ ε P hP hJ f hf d η hη`. Use `set α := D.what₂.Tau × Fin V.rank × Fin V.rank`. Use `choose G hGc hGb hGe hG1 hGa using fun w => family D θ hθ V τ ε P hP hJ f hf w`. Use `set ι := Σ k : Fin (d + 1), (Fin k → α)`. Use `set cnt : ℕ := Fintype.card ι`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set δ : ℝ := η / (cnt + 1) with hδ`. Establish `hδ0 : 0 < δ` using `by positivity`. Use `choose M hM using fun w => hGb w`. Take `⟨e, he, hap⟩` from `approx_family V.rank ε (ι × GA D V) (fun p k => G (List.ofFn p.1.2) k p.2) (fun p => hGc _ p.2) ⟨∑ i : ι, |M (List.ofFn i.2)|, fun p k => (hM _ k p.2).trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun i : ι => |M (List.ofFn i.2)|) (fun _ _ => abs_nonneg _) (Finset.mem_ …`. Establish `hec : Continuous e` using `by obtain ⟨F, -, h1, h2, -⟩ := he; exact h2 _ h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAs` using `(avg_rapid D θ hθ V τ ε P hP hJ e hec f hf).smooth`. Use `⟨e, he, ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ w : List α, (∃ i : ι, List.ofFn i.2 = w) → GlobalTheory.Size.growthSize V 0 (GlobalTheory.Size.wordAct (GlobalTheory.Size.glDer θ V) w (f - GlobalTheory.SeriesToClosure.avg θ V τ ε P e f)) ≤ ENNReal.ofReal δ`. Introduce and unpack `w ⟨i, rfl⟩`. Establish `hlin` using `GlobalTheory.Size.linOnSm_glWord (θ := θ) (V := V) (List.ofFn i.2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : f - GlobalTheory.SeriesToClosure.avg θ V τ ε P e f = f + (-1 : ℂ) • GlobalTheory.SeriesToClosure.avg θ V τ ε P e f`. Rewrite using `[neg_one_smul, sub_eq_add_neg]`. Rewrite using `[e1, hlin.add _ hf.smooth _ ((GlobalTheory.Mem.AutSpace.SmFun θ V).smul_mem _ hAs), hlin.smul, hGa _ e hec, ← hG1]`. Use `(GlobalTheory.Size.growthSize_le_iff hδ0.le).2 fun x => ?_` and prove the remaining obligations. Use `hap (i, x)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, pow_zero, mul_one]`. Simplify `this` using `[sub_eq_add_neg]`. Combine the equalities or inequalities in the displayed calculation. Unfold `GlobalTheory.Size.growthSob GlobalTheory.Size.wordSum`. Conclude with `Finset.sum_le_sum fun k hk => Finset.sum_le_sum fun a _ => hterm _ ⟨⟨⟨k, Finset.mem_range.1 hk⟩, a⟩, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ = (cnt : ℝ≥0∞) * ENNReal.ofReal δ := by`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[← Finset.sum_mul]`. Use `congr 1`. Simplify using `only [cnt, ι, Fintype.card_sigma]`.
-
-Use `push_cast`. Conclude with `(Fin.sum_univ_eq_sum_range (fun k => ((Fintype.card (Fin k → α) : ℕ) : ℝ≥0∞)) (d + 1)).symm`. Use `_ ≤ ENNReal.ofReal η := by`. Rewrite using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
-
-Rewrite using `[hδ, mul_div_assoc', div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem one_place : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (τ : D.what₂.Tau) (ε : Fin V.rank → Bool) (P : Matrix (Fin V.rank) (Fin V.rank) ℂ), IsUnit P → Pᴴ * Formalism.REAL.Jm ε * P = gramAt D V τ → ∀ f : GA D V → ℂ, GlobalTheory.Size.RapidDecSm θ V f → ∀ (d : ℕ) (η : ℝ), 0 < η → ∃ e : KG ε → ℂ, KFinFun ε e ∧ GlobalTheory.Size.growthSob θ V d 0 (f - GlobalTheory.SeriesToClosure.avg θ V τ ε P e f) ≤ ENNReal.ofReal η := by
   intro D θ hθ V τ ε P hP hJ f hf d η hη
@@ -786,7 +766,7 @@ namespace GlobalTheory.KAvgApprox
 open Formalism.REAL GlobalTheory.TypeSum
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons τ l ih`. Rewrite using `[GlobalTheory.CuspApproxAll.avgList_cons, GlobalTheory.CuspApproxAll.avgList_cons, h τ List.mem_cons_self, ih fun τ' hτ' => h τ' (List.mem_cons_of_mem _ hτ')]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem avgList_congr {D : D7} (θ : InfFam D) (N : GlobalTheory.Grid.Node D) {e e' : ∀ τ, KG (N.M.ε τ) → ℂ}
     (l : List D.what₂.Tau) (h : ∀ τ ∈ l, e τ = e' τ) (φ : GA D N.V → ℂ) :
@@ -798,7 +778,7 @@ theorem avgList_congr {D : D7} (θ : InfFam D) (N : GlobalTheory.Grid.Node D) {e
       ih fun τ' hτ' => h τ' (List.mem_cons_of_mem _ hτ')]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hφ`. Consider the case `cons τ l ih`. Rewrite using `[GlobalTheory.CuspApproxAll.avgList_cons]`. Conclude with `avg_rapid D θ hθ N.V τ (N.M.ε τ) (N.M.fr τ) (N.M.fr_unit τ) (N.M.fr_gram τ) (e τ) (he τ) _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avgList_rapid {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (N : GlobalTheory.Grid.Node D) (e : ∀ τ, KG (N.M.ε τ) → ℂ)
     (he : ∀ τ, Continuous (e τ)) (l : List D.what₂.Tau) {φ : GA D N.V → ℂ} (hφ : GlobalTheory.Size.RapidDecSm θ N.V φ) :
@@ -810,26 +790,24 @@ theorem avgList_rapid {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (N : GlobalTh
     exact avg_rapid D θ hθ N.V τ (N.M.ε τ) (N.M.fr τ) (N.M.fr_unit τ) (N.M.fr_gram τ) (e τ) (he τ) _ ih
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊥, inferInstance, zero_mem _, fun φ hφ => by rw [(Submodule.mem_bot ℂ).1 hφ]; exact continuous_const, fun φ hφ k₀ => by rw [(Submodule.mem_bot ℂ).1 hφ]; exact ⟨zero_mem _, zero_mem _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem kFinFun_zero {n : ℕ} (ε : Fin n → Bool) : KFinFun ε (0 : KG ε → ℂ) :=
   ⟨⊥, inferInstance, zero_mem _, fun φ hφ => by rw [(Submodule.mem_bot ℂ).1 hφ]; exact continuous_const,
     fun φ hφ k₀ => by rw [(Submodule.mem_bot ℂ).1 hφ]; exact ⟨zero_mem _, zero_mem _⟩⟩
 
 /- English proof (translation)
-Introduce `D θ hθ N φ hφ l hl d η hη`. Establish `hcont : ∀ τ (e : KG (N.M.ε τ) → ℂ), KFinFun (N.M.ε τ) e → Continuous e` using `fun τ e he => by`. Take `⟨F, -, h1, h2, -⟩` from `he`. Conclude with `h2 _ h1`. Proceed by induction on `l generalizing η with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `nil`. Use `⟨fun τ => 0, fun τ => kFinFun_zero _, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CuspApproxAll.avgList_nil, sub_self]`. Establish `h0` using `GlobalTheory.Size.growthSob_smul (θ := θ) (V := N.V) (φ := 0) (0 : ℂ) d 0`. Rewrite `h0` using `[zero_smul, enorm_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `zero_le`. Consider the case `cons τ l ih`. Take `⟨hτ, hl'⟩` from `List.nodup_cons.1 hl`. Take `⟨e, he, h1⟩` from `ih hl' (η / 2) (half_pos hη)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg` using `avgList_rapid hθ N e (fun τ => hcont τ _ (he τ)) l hφ`. Take `⟨e₀, he₀, h2⟩` from `one_place D θ hθ N.V τ (N.M.ε τ) (N.M.fr τ) (N.M.fr_unit τ) (N.M.fr_gram τ) _ hg d (η / 2) (half_pos hη)`. Establish `hA` using `avg_rapid D θ hθ N.V τ (N.M.ε τ) (N.M.fr τ) (N.M.fr_unit τ) (N.M.fr_gram τ) e₀ (hcont τ _ he₀) _ hg`. Use `⟨Function.update e τ e₀, fun τ' => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : τ' = τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `h` using the available equality. Simplify using `using he₀`. Rewrite using `[Function.update_of_ne h]`. Conclude with `he τ'`. Establish `hl2 : GlobalTheory.CuspApproxAll.avgList θ N (Function.update e τ e₀) l φ = GlobalTheory.CuspApproxAll.avgList θ N e l φ` using `avgList_congr θ N l (fun τ' hτ' => Function.update_of_ne (by rintro rfl; exact hτ hτ') _ _) φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CuspApproxAll.avgList_cons, hl2, Function.update_self]`. Use `set g := GlobalTheory.CuspApproxAll.avgList θ N e l φ`. Establish `e1 : φ - GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e₀ g = (φ - g) + (g - GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e₀ g)` using `by abel`. Rewrite using `[e1]`. Use `(GlobalTheory.Size.growthSob_add_le (sub_mem hφ.smooth hg.smooth) (sub_mem hg.smooth hA.smooth) d 0).trans ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem approx_avgList : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (N : GlobalTheory.Grid.Node D) (φ : GA D N.V → ℂ), GlobalTheory.Size.RapidDecSm θ N.V φ → ∀ (l : List D.what₂.Tau), l.Nodup → ∀ (d : ℕ) (η : ℝ), 0 < η → ∃ e : ∀ τ, Formalism.REAL.KG (N.M.ε τ) → ℂ, (∀ τ, GlobalTheory.TypeSum.KFinFun (N.M.ε τ) (e τ)) ∧ GlobalTheory.Size.growthSob θ N.V d 0 (φ - GlobalTheory.CuspApproxAll.avgList θ N e l φ) ≤ ENNReal.ofReal η := by
   intro D θ hθ N φ hφ l hl d η hη

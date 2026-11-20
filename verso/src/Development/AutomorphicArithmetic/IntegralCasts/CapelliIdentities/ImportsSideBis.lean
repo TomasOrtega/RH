@@ -3,17 +3,15 @@ import Mathlib
 namespace EqOneOfPowersNearOne
 
 /- English proof (translation)
-Use `set S : R := ∑ k ∈ Finset.range N, a ^ k with hS`. Establish `hgeom : S * (a - 1) = a ^ N - 1` using `geom_sum_mul a N`. Establish `hdiff : (N : R) - S = ∑ k ∈ Finset.range N, ((1 : R) - a ^ k)`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Establish `hbound : ‖(N : R) - S‖ ≤ N / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdiff]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[norm_sub_rev]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(h k).le`. Use `_ = N / 2 := by simp; ring`. Establish `hnorm : ‖(N : R) * (a - 1)‖ = (N : ℝ) * ‖a - 1‖`. Establish `: (N : R) * (a - 1) = (N : ℂ) • (a - 1)`. Rewrite using `[Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, norm_smul]`. Simplify using the standard rewrite rules. Establish `hsplit : (N : R) * (a - 1) = ((N : R) - S) * (a - 1) + S * (a - 1)`. Rewrite using `[sub_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hgeom]`. Use `gcongr`. Conclude with `norm_mul_le _ _`.
-
-Use `_ < ‖a - 1‖ * (N / 2) + 1 / 2 := by`. Use `h N` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg (a - 1)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma key {R : Type} [NormedRing R] [NormedAlgebra ℂ R] {a : R}
     (h : ∀ (p : ℕ), ‖a ^ p - (1 : R)‖ < (1 / 2 : ℝ)) (N : ℕ) :
@@ -48,9 +46,9 @@ private lemma key {R : Type} [NormedRing R] [NormedAlgebra ℂ R] {a : R}
 end EqOneOfPowersNearOne
 
 /- English proof (translation)
-Introduce `R _ _ a h`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖a - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hne)`. Take `⟨N, hN⟩` from `exists_nat_gt (1 / ‖a - 1‖)`. Establish `hk` using `EqOneOfPowersNearOne.key h N`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : 1 < (N : ℝ) * ‖a - 1‖`. Rewrite `hN` using `[div_lt_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem UpperTheory.Reformulated.B.Yhd7.main :
     ∀ {R : Type} [inst : NormedRing R] [NormedAlgebra ℂ R] {a : R},

@@ -31,9 +31,9 @@ def constGen (w : Γ(Y, ⊤)ˣ) : LB.Gen (LB.LinComb L (Y := Y) (K := PEmpty) PE
   ⟨fun _ => res le_top w⟩
 
 /- English proof (translation)
-Establish `e` using `h PEmpty.elim PEmpty.elim (fun k => k.elim) (fun k => k.elim) (fun k => k.elim)`. Establish `e2` using `res_eq_of_res_eq _ _ (W := ⊤) (fun _ _ => Set.mem_iInter.2 fun k => k.elim) (fun _ _ => Set.mem_iInter.2 fun k => k.elim) e`. Simplify using `only [constGen] at e2`. Use `erw [res_res', res_res'] at e2`. Use `ext`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrArg Units.val e2` using `[res]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_corr_constGen {w w' : Γ(Y, ⊤)ˣ}
     (h : LB.Gen.Corr L _ _ _ _ (constGen L w) (constGen L w')) : w = w' := by
@@ -49,7 +49,7 @@ variable {K : Type} [Fintype K]
 
 omit L in
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Rewrite using `[map_one, _root_.mul_one, res_res', res_res', res_res']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem shape_const {U₁ U₂ O O' O₂ : Y.Opens} (h₀ : O' ≤ U₁) (h₁ : O' ≤ U₂) (o : O ≤ O') (o' : O ≤ O₂) (o₂ : O₂ ≤ ⊤)
     (a : Γ(Y, U₁)ˣ) (b : Γ(Y, U₂)ˣ) (w : Γ(Y, ⊤)ˣ) (ha : a = res le_top w) (hb : b = 1) :
@@ -58,7 +58,7 @@ theorem shape_const {U₁ U₂ O O' O₂ : Y.Opens} (h₀ : O' ≤ U₁) (h₁ :
   rw [map_one, _root_.mul_one, res_res', res_res', res_res']
 
 /- English proof (translation)
-Introduce `j j' hj _ _`. Establish `h1` using `corr_one_alt L hu (j ∘ Sum.inr) (fun k₁ k₂ e => hj (Sum.inr k₁) (Sum.inr k₂) e)`. Conclude with `shape_const _ _ _ _ _ _ _ _ (hc _) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem corr_mulGen_const {φ₀ : PEmpty → (Y ⟶ X)} {ε₀ : PEmpty → ℤ} (c : LB.Gen (LB.LinComb L φ₀ ε₀)) (w : Γ(Y, ⊤)ˣ)
     (hc : ∀ j, c.s j = res le_top w) {φ : K → (Y ⟶ X)} {ε : K → ℤ} (u : LB.Gen (LB.LinComb L φ ε))
@@ -73,7 +73,7 @@ end Units
 section Level
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[pullU_res, res_res', pullTop]`. Use `erw [res_res']`. Rewrite using `[pullU_comp_eq_pullU_pullU]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem shape_char {W Z' Y : Scheme.{0}} (h : Y ⟶ W) (g : W ⟶ Z') (d : Y ⟶ Z') (e : h ≫ g = d) (x : Γ(Z', ⊤)ˣ)
     {U : W.Opens} (hU : U ≤ g ⁻¹ᵁ ⊤) {V : Y.Opens} (hV : V ≤ h ⁻¹ᵁ U) :
@@ -88,13 +88,13 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : 
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Establish `hL : D.P.L.IsLB` using `D.P.isLB`. Set `z : Y ⟶ thickObj R I e G` to `toUnit Y ≫ η[thickObj R I e G]`. Set `H : Y ⟶ splitTorus _ D.X ⊗ thickObj R I e G` to `lift δ z`. Establish `hact : H.left ≫ (lift (fst (splitTorus _ D.X) (thickObj R I e G) ≫ g.i) (snd _ _) ≫ μ[thickObj R I e G]).left = (δ ≫ g.i).left`. Rewrite using `[← Over.comp_left]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `: H ≫ lift (fst (splitTorus _ D.X) (thickObj R I e G) ≫ g.i) (snd _ _) = lift (δ ≫ g.i) z`. Simplify using `[H]`. Rewrite using `[← Category.assoc, this]`. Establish `h1 : z = 1` using `(Hom.one_def).symm`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Hom.mul_def, h1, _root_.mul_one]`. Establish `hsnd : H.left ≫ (snd (splitTorus _ D.X) (thickObj R I e G)).left = (toUnit Y).left ≫ eSec (thickObj R I e G)`. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Establish `w` using `corr_pullGen (g.t_weight χ) H.left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `a1` using `corr_pull_comp D.P.L (g.t χ) _ H.left _ hact`. Establish `a2` using `corr_pullGen_mulGen (charGen D.X (thickObj R I e G) D.P.L χ) (LB.pullGen D.P.L _ _ (g.t χ) (snd (splitTorus _ D.X) (thickObj R I e G)).left) H.left`. Establish `a3 : LB.Gen.Corr D.P.L _ _ PEmpty.elim PEmpty.elim (LB.pullGen D.P.L _ _ (LB.pullGen D.P.L _ _ (g.t χ) (snd (splitTorus _ D.X) (thickObj R I e G)).left) H.left) (LB.oneGen D.P.L)` using `corr_trans hL (corr_pull_comp D.P.L (g.t χ) _ H.left _ hsnd) (corr_trans hL (corr_symm (corr_pull_comp D.P.L (g.t χ) _ (toUnit Y).left _ rfl)) (corr_one_pull D.P.L (g.t_unit χ) (toUnit Y).left))`. Establish `a4` using `corr_mulGen_const D.P.L (LB.pullGen D.P.L _ _ (charGen D.X (thickObj R I e G) D.P.L χ) H.left) (pullTop δ.left (charUnit _ D.X χ)) (fun j => shape_char _ _ _ (by rw [← Over.comp_left, lift_fst]) _ _ _) _ a3`. Conclude with `corr_trans hL (corr_symm a1) (corr_trans hL w (corr_trans hL a2 a4))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem t_torus (g : GtCoord I D e G) (χ : D.X) {Y : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))}
     (δ : Y ⟶ splitTorus _ D.X) :
@@ -132,7 +132,7 @@ theorem t_torus (g : GtCoord I D e G) (χ : D.X) {Y : Over (Spec (CommRingCat.of
   exact corr_trans hL (corr_symm a1) (corr_trans hL w (corr_trans hL a2 a4))
 
 /- English proof (translation)
-The claim follows from `t_torus g χ (Y := Over.mk (τ ≫ (splitTorus _ D.X).hom)) (Over.homMk τ (Over.mk_hom _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem t_torus' (g : GtCoord I D e G) (χ : D.X) {Y : Scheme.{0}} (τ : Y ⟶ (splitTorus _ D.X).left) :
     LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ (g.t χ) (τ ≫ g.i.left))
@@ -153,9 +153,9 @@ def tau : (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) X).left ⟶
     (GlobalTheory.Diag.baseChangeIso (thick R I (e + 1)) X).hom.left
 
 /- English proof (translation)
-Establish `h1` using `Over.w (GlobalTheory.Diag.baseChangeIso (thick R I (e + 1)) X).hom`. Establish `h2` using `Over.w (GlobalTheory.Diag.baseChangeIso (thick R I e) X).inv`. Establish `hs : thickMap R I e (splitTorus (Spec (CommRingCat.of R)) X) ≫ pullback.snd (splitTorus (Spec (CommRingCat.of R)) X).hom (thick R I (e + 1)) = pullback.snd (splitTorus (Spec (CommRingCat.of R)) X).hom (thick R I e) ≫ thickTrans R I e` using `pullback.lift_snd _ _ _`. Simplify using `only [tau, Category.assoc]`. Rewrite using `[h1, ← h2, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (_ ≫ ·) hs`.
+A detailed English derivation is pending.
 -/
 theorem tau_hom : tau R I e X ≫ (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1 + 1)))) X).hom =
     (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) X).hom ≫ thickTrans R I e := by
@@ -170,9 +170,9 @@ theorem tau_hom : tau R I e X ≫ (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (
   exact congrArg (_ ≫ ·) hs
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.Diag.baseChangeIso_hom_torusFst (thick R I e) X`. Establish `h'` using `GlobalTheory.Diag.baseChangeIso_hom_torusFst (thick R I (e + 1)) X`. Establish `hι : thickMap R I e (splitTorus (Spec (CommRingCat.of R)) X) ≫ pullback.fst (splitTorus (Spec (CommRingCat.of R)) X).hom (thick R I (e + 1)) = pullback.fst (splitTorus (Spec (CommRingCat.of R)) X).hom (thick R I e)` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Establish `hinv : (GlobalTheory.Diag.baseChangeIso (thick R I e) X).inv.left ≫ (GlobalTheory.Diag.baseChangeIso (thick R I e) X).hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [tau, Category.assoc]`. Rewrite using `[h', reassoc_of% hι, ← h, reassoc_of% hinv]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_fst : tau R I e X ≫ torusFst (Spec (CommRingCat.of (R ⧸ I ^ (e + 1 + 1)))) X =
     torusFst (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) X := by
@@ -189,7 +189,7 @@ theorem tau_fst : tau R I e X ≫ torusFst (Spec (CommRingCat.of (R ⧸ I ^ (e +
   rw [h', reassoc_of% hι, ← h, reassoc_of% hinv]
 
 /- English proof (translation)
-Rewrite using `[chi, chi, coord, coord]`. Simplify using `only [Over.id_left, Category.id_comp]`. Use `conv_rhs => rw [← tau_fst R I e X]`. Rewrite using `[CommRingCat.comp_apply, CommRingCat.comp_apply, appTop_comp_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_chi (a : X) : (tau R I e X).appTop.hom (chi (S := Spec (CommRingCat.of (R ⧸ I ^ (e + 1 + 1)))) X a) =
     chi (S := Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) X a := by
@@ -205,16 +205,16 @@ section Main
 open ReciprocityTheory.ChartRestriction.G.Semi.Rosenlicht
 
 /- English proof (translation)
-The claim follows from `map_rfl' _`.
+A detailed English derivation is pending.
 -/
 theorem pullTop_val {Y Z : Scheme.{0}} (f : Y ⟶ Z) (w : Γ(Z, ⊤)ˣ) :
     ((pullTop f w : Γ(Y, ⊤)ˣ) : Γ(Y, ⊤)) = f.appTop.hom (w : Γ(Z, ⊤)) :=
   map_rfl' _
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun z => z.left) (map_one (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom (ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_pullback B f) T))`. Establish `e₁ : (1 : T ⟶ (Over.pullback f).obj B) = toUnit T ≫ η[(Over.pullback f).obj B]` using `Hom.one_def`. Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[B]).left = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, toUnit_left]`. Conclude with `Category.assoc _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem one_fst {S S' : Scheme.{0}} (f : S' ⟶ S) (B : Over S) [GrpObj B] (T : Over S') :
     (toUnit T ≫ η[(Over.pullback f).obj B]).left ≫ pullback.fst B.hom f = T.hom ≫ f ≫ η[B].left := by
@@ -228,7 +228,7 @@ theorem one_fst {S S' : Scheme.{0}} (f : S' ⟶ S) (B : Over S) [GrpObj B] (T : 
   exact Category.assoc _ _ _
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Conclude with `one_fst f B T`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem one_fst' {S S' : Scheme.{0}} (f : S' ⟶ S) (B : Over S) [GrpObj B] (T : Over S')
     (x : T ⟶ (Over.pullback f).obj B) (hx : x = toUnit T ≫ η[(Over.pullback f).obj B]) :
@@ -242,35 +242,33 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
 
 omit [IsDomain R] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Over.homMk (pullback.lift b T.hom hb) (pullback.lift_snd _ _ _), pullback.lift_fst _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift_pullback {S S' : Scheme.{0}} (B : Over S) (f : S' ⟶ S) (T : Over S') (b : T.left ⟶ B.left)
     (hb : b ≫ B.hom = T.hom ≫ f) : ∃ x : T ⟶ (Over.pullback f).obj B, x.left ≫ pullback.fst B.hom f = b :=
   ⟨Over.homMk (pullback.lift b T.hom hb) (pullback.lift_snd _ _ _), pullback.lift_fst _ _ _⟩
 
 /- English proof (translation)
-Simplify using `only [GtCoord.pG, DegPre.prBe, Over.comp_left, Over.map_map_left, Over.homMk_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pG_left {D₀ : DegPre R} {e : ℕ} (g : GtCoord I D₀ e G) :
     g.pG.left = g.q.left ≫ pullback.fst D₀.P.A.hom (thick R I e) := by
   simp only [GtCoord.pG, DegPre.prBe, Over.comp_left, Over.map_map_left, Over.homMk_left]
 
 /- English proof (translation)
-Establish `hL : D.toPre.P.L.IsLB` using `D.toPre.P.isLB`. Establish `hi'` using `Over.w (U.gt (e + 1)).i`. Establish `hsnd : (tau R I e D.toPre.X ≫ (U.gt (e + 1)).i.left) ≫ pullback.snd G.hom (thick R I (e + 1)) = (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X).hom ≫ thickTrans R I e`. Rewrite using `[Category.assoc]`. Conclude with `(congrArg (tau R I e D.toPre.X ≫ ·) hi').trans (tau_hom R I e D.toPre.X)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ii, hii⟩` from `exists_lift_pullback G (thick R I e) (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X) ((tau R I e D.toPre.X ≫ (U.gt (e + 1)).i.left) ≫ pullback.fst G.hom (thick R I (e + 1))) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hsnd, Category.assoc, thickTrans_comp])`. Establish `hthick : ii.left ≫ thickMap R I e G = tau R I e D.toPre.X ≫ (U.gt (e + 1)).i.left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `h : thickMap R I e G ≫ pullback.fst G.hom (thick R I (e + 1)) = pullback.fst G.hom (thick R I e)` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, h, hii]`. Establish `h : thickMap R I e G ≫ pullback.snd G.hom (thick R I (e + 1)) = pullback.snd G.hom (thick R I e) ≫ thickTrans R I e` using `pullback.lift_snd _ _ _`. Rewrite using `[Category.assoc, h, hsnd, ← Category.assoc]`. Conclude with `congrArg (· ≫ thickTrans R I e) (Over.w ii)`. Establish `hq : ii ≫ (U.gt e).q = toUnit _ ≫ η[thickObj R I e D.toPre.P.A]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Tors.hom_ext_pull` to reduce the goal to its premises. Establish `h1 : (ii ≫ (U.gt e).q).left ≫ pullback.fst D.toPre.P.A.hom (thick R I e) = ii.left ≫ (U.gt e).pG.left`. Rewrite using `[pG_left, Over.comp_left, Category.assoc]`. Establish `h2 : (U.gt (e + 1)).i.left ≫ (U.gt (e + 1)).pG.left = (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1 + 1)))) D.toPre.X).hom ≫ thick R I (e + 1) ≫ η[D.toPre.P.A].left`. Rewrite using `[pG_left, ← Category.assoc, ← Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `one_fst' _ _ _ _ (U.gt (e + 1)).isKernel.w`. Rewrite using `[h1, ← U.gt_q e, reassoc_of% hthick, h2, one_fst, reassoc_of% (tau_hom R I e D.toPre.X), reassoc_of% (thickTrans_comp R I e)]`. Set `δ` to `(U.gt e).isKernel.lift ii (toUnit _) hq`. Establish `hδ : δ ≫ (U.gt e).i = ii` using `(U.gt e).isKernel.lift_fst _ _ _`. Establish `hval : ∀ χ : D.toPre.X, GlobalTheory.SplitTorus.val δ χ = GlobalTheory.SplitTorus.val (𝟙 _) χ` using `fun χ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1` using `t_torus (U.gt e) χ δ`. Establish `c2` using `t_torus' (U.gt (e + 1)) χ (tau R I e D.toPre.X)`. Establish `c3` using `corr_pullGen (U.gt_t e χ) ii.left`. Establish `c4` using `corr_pull_comp D.toPre.P.L ((U.gt (e + 1)).t χ) (thickMap R I e G) ii.left _ hthick`. Establish `c5` using `corr_pullGen_of_eq ((U.gt e).t χ) ((U.gt e).t_gen χ) (δ ≫ (U.gt e).i).left ii.left (congrArg (fun z => z.left) hδ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `eq_of_corr_constGen D.toPre.P.L (corr_trans hL (corr_symm c1) (corr_trans hL c5 (corr_trans hL (corr_symm c3) (corr_trans hL c4 c2))))`. Establish `e2` using `congrArg Units.val e1`. Rewrite `e2` using `[pullTop_val, pullTop_val, GlobalTheory.SplitTorus.charUnit_val, GlobalTheory.SplitTorus.charUnit_val, tau_chi]`. Rewrite using `[GlobalTheory.SplitTorus.val_eq, GlobalTheory.SplitTorus.val_id, e2]`. Establish `hδ1 : δ = 𝟙 _` using `GlobalTheory.SplitTorus.hom_ext hval`.
-
-Rewrite `hδ` using `[hδ1, Category.id_comp]`. Rewrite using `[hδ, hthick]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_i (U : UnifPre I D A G) (e : ℕ) :
     tau R I e D.toPre.X ≫ (U.gt (e + 1)).i.left = (U.gt e).i.left ≫ thickMap R I e G := by
@@ -326,9 +324,9 @@ theorem tau_i (U : UnifPre I D A G) (e : ℕ) :
 end Main
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U e`. Establish `h` using `tau_i U e`. Establish `hb : (GlobalTheory.Diag.baseChangeIso (thick R I e) D.toPre.X).hom.left ≫ (GlobalTheory.Diag.baseChangeIso (thick R I e) D.toPre.X).inv.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.hom_inv_id]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h, tau]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gt_i : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (e : ℕ), thickMap R I e (splitTorus (Spec (CommRingCat.of R)) D.toPre.X) ≫ (GlobalTheory.Diag.baseChangeIso (thick R I (e + 1)) D.toPre.X).hom.left ≫ (U.gt (e + 1)).i.left = (GlobalTheory.Diag.baseChangeIso (thick R I e) D.toPre.X).hom.left ≫ (U.gt e).i.left ≫ thickMap R I e G := by
   intro R _ _ I D A G _ _ U e

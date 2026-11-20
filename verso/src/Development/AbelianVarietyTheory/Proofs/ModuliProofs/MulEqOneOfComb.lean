@@ -30,14 +30,14 @@ instance noeth [ArithBase o Ω] (S : ThetaSys o Ω) : IsNoetherianRing S.R := by
   exact isNoetherianRing_of_fg S.fg
 
 /- English proof (translation)
-Use `S.unit.map (cst S)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unit_rN (S : ThetaSys o Ω) : IsUnit ((S.r * S.N : ℕ) : Γ(Sp S.R, ⊤)) := by
   have := S.unit.map (cst S)
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Use `unit_rN S` as an intermediate fact. Rewrite `this` using `[Nat.cast_mul]`. Conclude with `isUnit_of_mul_isUnit_right this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_N (S : ThetaSys o Ω) : IsUnit ((S.N : ℕ) : Γ(Sp S.R, ⊤)) := by
   have := unit_rN S
@@ -45,12 +45,12 @@ theorem unit_N (S : ThetaSys o Ω) : IsUnit ((S.N : ℕ) : Γ(Sp S.R, ⊤)) := b
   exact isUnit_of_mul_isUnit_right this
 
 /- English proof (translation)
-The claim follows from `Nat.mul_pos S.r_pos (by have := S.N_ge; omega)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_rN (S : ThetaSys o Ω) : 1 ≤ S.r * S.N := Nat.mul_pos S.r_pos (by have := S.N_ge; omega)
 
 /- English proof (translation)
-The claim follows from `Z.N_eq ▸ Z.odd.pow.pow`.
+A detailed English derivation is pending.
 -/
 theorem odd_N {S : ThetaSys o Ω} (Z : Realisation S) : Odd S.N := Z.N_eq ▸ Z.odd.pow.pow
 
@@ -58,7 +58,7 @@ def newBasis {S : ThetaSys o Ω} (Z : Realisation S) (c : Change S) (j : c.J) : 
   ∑ i, cst S (c.M i j) • SecM.ofSec Z.P.A (Z.b i)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single i (fun l _ hl => by rw [if_neg hl, map_zero, zero_smul]) (fun h => (h (Finset.mem_univ i)).elim), if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_single (S : ThetaSys o Ω) {M : Type} [AddCommGroup M] [Module Γ((Base S).left, ⊤) M] {I : Type}
     [Fintype I] (b : I → M) (i : I) (d : o) : ∑ l, cst S (if l = i then d else 0) • b l = cst S d • b i := by
@@ -66,7 +66,7 @@ theorem comb_single (S : ThetaSys o Ω) {M : Type} [AddCommGroup M] [Module Γ((
     (fun h => (h (Finset.mem_univ i)).elim), if_pos rfl]
 
 /- English proof (translation)
-Simplify using `only [map_sum u, map_smul, h]`. Conclude with `comb_comb S b' A c`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_comb (S : ThetaSys o Ω) {M : Type} [AddCommGroup M] [Module Γ((Base S).left, ⊤) M] {I J : Type}
     [Fintype I] [Fintype J] (u : M →ₗ[Γ((Base S).left, ⊤)] M) (b : I → M) (b' : J → M) (A : Matrix J I o)
@@ -76,7 +76,7 @@ theorem map_comb (S : ThetaSys o Ω) {M : Type} [AddCommGroup M] [Module Γ((Bas
   exact comb_comb S b' A c
 
 /- English proof (translation)
-Use `Eq.trans ?_ (comb_comb S _ c.M fun j => c.M' j i).symm` and prove the remaining obligations. Use `Eq.trans ?_ (Finset.sum_congr rfl fun l _ => congrArg (fun q => cst S q • _) (c.sum_mul l i)).symm` and prove the remaining obligations. Use `Eq.symm ((comb_single S (fun i => SecM.ofSec Z.P.A (Z.b i)) i 1).trans ?_)` and prove the remaining obligations. Rewrite using `[(cst S).map_one, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem old_eq {S : ThetaSys o Ω} (Z : Realisation S) (c : Change S) (i : S.J) :
     SecM.ofSec Z.P.A (Z.b i) = ∑ j, cst S (c.M' j i) • newBasis Z c j := by
@@ -86,7 +86,7 @@ theorem old_eq {S : ThetaSys o Ω} (Z : Realisation S) (c : Change S) (i : S.J) 
   rw [(cst S).map_one, one_smul]
 
 /- English proof (translation)
-Simplify using `only [newBasis] at h`. Rewrite `h` using `[comb_comb]`. Establish `e : c.M.mulVec d = 0` using `Z.b_indep _ h`. Rewrite using `[← Matrix.one_mulVec d, ← c.inv_mul, ← Matrix.mulVec_mulVec, e, Matrix.mulVec_zero]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem newBasis_indep {S : ThetaSys o Ω} (Z : Realisation S) (c : Change S) (d : c.J → o)
     (h : ∑ j, cst S (d j) • newBasis Z c j = 0) : d = 0 := by
@@ -96,7 +96,7 @@ theorem newBasis_indep {S : ThetaSys o Ω} (Z : Realisation S) (c : Change S) (d
   rw [← Matrix.one_mulVec d, ← c.inv_mul, ← Matrix.mulVec_mulVec, e, Matrix.mulVec_zero]
 
 /- English proof (translation)
-The claim follows from `le_antisymm (cstSpan_le S fun _ ⟨j, e⟩ => (mem_cstSpan_range S _ _).2 ⟨fun i => c.M i j, e.symm⟩) (cstSpan_le S fun _ ⟨i, e⟩ => (mem_cstSpan_range S _ _).2 ⟨fun j => c.M' j i, e.symm.trans (old_eq Z c i)⟩)`.
+A detailed English derivation is pending.
 -/
 theorem newBasis_span {S : ThetaSys o Ω} (Z : Realisation S) (c : Change S) :
     cstSpan S (Set.range (newBasis Z c)) = cstSpan S (Set.range fun i => SecM.ofSec Z.P.A (Z.b i)) :=
@@ -104,9 +104,9 @@ theorem newBasis_span {S : ThetaSys o Ω} (Z : Realisation S) (c : Change S) :
     (cstSpan_le S fun _ ⟨i, e⟩ => (mem_cstSpan_range S _ _).2 ⟨fun j => c.M' j i, e.symm.trans (old_eq Z c i)⟩)
 
 /- English proof (translation)
-Take `⟨_, ⟨hx, -⟩, -⟩` from `Z.ρ_eq a (Classical.arbitrary _)`. Take `⟨u, hu⟩` from `exists_heis_linear abelianSchemeLaws_all.1 Z.P (odd_N Z) (unit_N S) hx`. Establish `hb : ∀ i, u (SecM.ofSec Z.P.A (Z.b i)) = ∑ i', cst S (S.ρ a i' i) • SecM.ofSec Z.P.A (Z.b i')` using `fun i => by`. Take `⟨s, h₁, h₂⟩` from `Z.ρ_eq a i`. Conclude with `((hu _ _).1 h₁).trans h₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨SecM.toSec Z.P.A (u (newBasis Z c j)), (hu _ _).2 rfl, ?_⟩` and prove the remaining obligations. Use `(map_comb S u _ _ (S.ρ a) hb fun i => c.M i j).trans (Eq.trans ?_ (comb_comb S _ c.M fun l => (c.M' * S.ρ a * c.M) l j).symm)` and prove the remaining obligations. Establish `e : c.M * (c.M' * S.ρ a * c.M) = S.ρ a * c.M`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, c.mul_inv, Matrix.one_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => congrArg (fun q => cst S q • _) (congrFun (congrFun e i) j).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem newBasis_act [ArithBase o Ω] {S : ThetaSys o Ω} (Z : Realisation S) (c : Change S) (a : S.Gam) (j : c.J) :
     ∃ s, IsHeis Z.P S.N (Z.tor a ^ S.r) (SecM.toSec Z.P.A (newBasis Z c j)) s ∧
@@ -124,7 +124,7 @@ theorem newBasis_act [ArithBase o Ω] {S : ThetaSys o Ω} (Z : Realisation S) (c
   exact Finset.sum_congr rfl fun i _ => congrArg (fun q => cst S q • _) (congrFun (congrFun e i) j).symm
 
 /- English proof (translation)
-Establish `: (⟨(change S c).ev a j, (change S c).ev_mem a j⟩ : S.R) = ∑ i, algebraMap o S.R (c.M i j) * ⟨S.ev a i, S.ev_mem a i⟩` using `Subtype.ext (by`. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Use the proof step `rfl)`. Rewrite using `[this, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_mul _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fn_ev (S : ThetaSys o Ω) (c : Change S) (a : S.Gam) (j : c.J) :
     IndefiniteRowSideFullHecke.UniformityLowerBounds.fn S ⟨(change S c).ev a j, (change S c).ev_mem a j⟩ =
@@ -136,7 +136,7 @@ theorem fn_ev (S : ThetaSys o Ω) (c : Change S) (a : S.Gam) (j : c.J) :
   exact Finset.sum_congr rfl fun i _ => map_mul _ _ _
 
 /- English proof (translation)
-Rewrite using `[← map_pow]`. Conclude with `map_mul (IndefiniteRowSideFullHecke.UniformityLowerBounds.fn S) (algebraMap o S.R (S.ζ ^ c.e a)) ⟨S.th a, S.th_mem a⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fn_th (S : ThetaSys o Ω) (c : Change S) (a : S.Gam) :
     IndefiniteRowSideFullHecke.UniformityLowerBounds.fn S ⟨(change S c).th a, (change S c).th_mem a⟩ =

@@ -9,7 +9,7 @@ namespace GlobalTheory.NormOneSplit
 open NumberField Module Matrix in
 open scoped ENNReal in
 /- English proof (translation)
-The claim follows from `RingHom.ker_isMaximal_of_surjective φ (ZMod.ringHom_surjective φ)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NormOneSplit.ker_isMaximal {R : Type} [CommRing R] {T : ℕ} [Fact T.Prime]
     (φ : R →+* ZMod T) :
@@ -19,9 +19,9 @@ theorem _root_.GlobalTheory.NormOneSplit.ker_isMaximal {R : Type} [CommRing R] {
 open NumberField Module Matrix in
 open scoped ENNReal in
 /- English proof (translation)
-Use `letI := Ideal.Quotient.field P`. Establish `hcard : Nat.card (𝓞 E ⧸ P) = T`. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, hN]`. Use `haveI : Finite (𝓞 E ⧸ P) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hT.ne_zero)`. Use `letI := Fintype.ofFinite (𝓞 E ⧸ P)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `e` to `ZMod.ringEquivOfPrime (𝓞 E ⧸ P) hT (by rw [Fintype.card_eq_nat_card, hcard])`. Use `⟨(e.symm : (𝓞 E ⧸ P) →+* ZMod T).comp (Ideal.Quotient.mk P), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_ringHom_zmod_ker_eq {E : Type} [Field E] [NumberField E] {T : ℕ}
     (hT : T.Prime) (P : Ideal (𝓞 E)) (hP : P.IsMaximal) (hN : Ideal.absNorm P = T) :
@@ -40,17 +40,15 @@ open NumberField Module Matrix in
 open scoped ENNReal in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx φ`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Simplify using the standard rewrite rules. Introduce `h set I := Ideal.span {(T : 𝓞 E)} with hI`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT0 : (T : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.mpr hT.ne_zero`. Establish `hTI : (T : 𝓞 E) ∈ I` using `Ideal.mem_span_singleton_self _`. Take `⟨K, hK⟩ : I.radical ∣ I` from `Ideal.dvd_iff_le.mpr Ideal.le_radical`. Establish `hKtop : K = ⊤`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨M, hM, hKM⟩` from `Ideal.exists_le_maximal K hne`. Establish `hIM : I ≤ M`. Rewrite using `[hK]`. Conclude with `le_trans (Ideal.mul_le.mpr fun a _ b hb => K.mul_mem_left a hb) hKM`. Establish `hrad : I.radical ≤ M` using `(Ideal.IsPrime.radical_le_iff hM.isPrime).2 hIM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : I ≤ M ^ 2`. Rewrite using `[hK, pow_two]`. Conclude with `Ideal.mul_mono hrad hKM`. Conclude with `(hs M hM (hIM hTI)).2 (hle hTI)`. Rewrite `hK` using `[hKtop, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[hK, Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `P ⟨hIP, hP⟩`. Establish `hPbot : P ≠ ⊥` using `fun hb => hT0 (by simpa [hb] using hIP hTI)`. Establish `hPmax` using `hP.isMaximal hPbot`. Take `⟨φ, hφ⟩` from `exists_ringHom_zmod_ker_eq hT P hPmax (hs P hPmax (hIP hTI)).1`.
-
-Rewrite using `[← hφ, RingHom.mem_ker]`. Conclude with `h φ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NormOneSplit.mem_span_iff {E : Type} [Field E] [NumberField E] {T : ℕ}
     (hT : T.Prime)
@@ -87,9 +85,9 @@ theorem _root_.GlobalTheory.NormOneSplit.mem_span_iff {E : Type} [Field E] [Numb
 open NumberField Module Matrix in
 open scoped ENNReal in
 /- English proof (translation)
-Use `haveI : NeZero T := ⟨hT.ne_zero⟩`. Set `b` to `Module.Free.chooseBasis ℤ (𝓞 E)`. Use `Finite.of_injective (fun φ : 𝓞 E →+* ZMod T => fun i => φ (b i)) ?_` and prove the remaining obligations. Introduce `φ ψ h`. Establish `key : φ.toIntAlgHom.toLinearMap = ψ.toIntAlgHom.toLinearMap` using `b.ext (fun i => congrFun h i)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `LinearMap.congr_fun key x`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NormOneSplit.finite_hom {E : Type} [Field E] [NumberField E] {T : ℕ}
     (hT : T.Prime) :
@@ -106,11 +104,9 @@ theorem _root_.GlobalTheory.NormOneSplit.finite_hom {E : Type} [Field E] [Number
 open NumberField Module Matrix in
 open scoped ENNReal in
 /- English proof (translation)
-Establish `hcop : Pairwise (Function.onFun IsCoprime (fun φ : R →+* ZMod T => RingHom.ker φ))`. Introduce `φ ψ hne`. Use `haveI := _root_.GlobalTheory.NormOneSplit.ker_isMaximal φ`. Use `haveI := _root_.GlobalTheory.NormOneSplit.ker_isMaximal ψ`. Conclude with `Ideal.isCoprime_of_isMaximal (fun h => hne (ZMod.ringHom_eq_of_ker_eq φ ψ h))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `Ideal.quotientInfToPiQuotient_surj hcop (fun φ => Ideal.Quotient.mk (RingHom.ker φ) (((g φ).val : ℕ) : R))`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `⟨x, fun φ => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun hy φ`. Rewrite `h` using `[Ideal.quotientInfToPiQuotient_mk', Ideal.Quotient.eq, RingHom.mem_ker, map_sub, sub_eq_zero, map_natCast, ZMod.natCast_zmod_val]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NormOneSplit.exists_forall_hom_eq {R : Type} [CommRing R] {T : ℕ} [Fact T.Prime]
     [Finite (R →+* ZMod T)] (g : (R →+* ZMod T) → ZMod T) :
@@ -133,25 +129,23 @@ theorem _root_.GlobalTheory.NormOneSplit.exists_forall_hom_eq {R : Type} [CommRi
 open NumberField Module Matrix in
 open scoped ENNReal in
 /- English proof (translation)
-Use `letI : Fintype H := Fintype.ofFinite H`. Use `letI : LinearOrder H := LinearOrder.lift' (Fintype.equivFin H) (Fintype.equivFin H).injective`. Establish `hlt : ∀ h, ¬ h < ι h → ι h < ι (ι h)` using `fun h hh => by`. Rewrite using `[hι]`. Conclude with `lt_of_le_of_ne (not_lt.1 hh) (hfix h)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnlt : ∀ h, h < ι h → ¬ ι h < ι (ι h)` using `fun h hh => by`. Rewrite using `[hι]`. Conclude with `not_lt.2 hh.le`. Use `⟨Nat.card {h : H // h < ι h}, ?_, ?_⟩` and prove the remaining obligations. Set `e : H ≃ {h : H // h < ι h} ⊕ {h : H // h < ι h}` to `{ toFun := fun h => if hh : h < ι h then Sum.inl ⟨h, hh⟩ else Sum.inr ⟨ι h, hlt h hh⟩ invFun := fun s => Sum.elim (fun a => a.1) (fun a => ι a.1) s left_inv := fun h => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hh : h < ι h`. Simplify using `[hh]`. Simplify using `[hh, hι]`. Use `right_inv := fun s => by`. Break down `s with ⟨a, ha⟩ | ⟨a, ha⟩` into its components or cases.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Simplify using `[ha]`. Establish `: ¬ ι a < ι (ι a)` using `hnlt a ha dsimp only [Sum.elim_inr]`. Rewrite using `[dif_neg this]`. Conclude with `congrArg Sum.inr (Subtype.ext (hι a)) }`. Rewrite using `[Nat.card_congr e, Nat.card_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails.
 
-Expand and normalize the polynomial expressions, which then agree. Set `e : {f : H → K // ∀ h, f h * f (ι h) = c h} ≃ ({h : H // h < ι h} → {x : K // x ≠ 0})` to `{ toFun := fun f a => ⟨f.1 a.1, fun h0 => hc0 a.1 (by rw [← f.2 a.1, h0, zero_mul])⟩ invFun := fun g => ⟨fun h => if hh : h < ι h then (g ⟨h, hh⟩).1 else c h / (g ⟨ι h, hlt h hh⟩).1, fun h => by`. Distinguish the cases in `hh : h < ι h`. Simplify using `only`. Rewrite using `[dif_pos hh, dif_neg (hnlt h hh)]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg` using `(g ⟨h, hh⟩).2`. Establish `hs : (⟨ι (ι h), hlt (ι h) (hnlt h hh)⟩ : {h : H // h < ι h}) = ⟨h, hh⟩` using `Subtype.ext (hι h)`. Rewrite using `[hs, hcι]`. Clear the denominators using the available nonvanishing facts. Simplify using `only`.
+Clear the denominators using the available nonvanishing facts. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[dif_neg hh, dif_pos (hlt h hh)]`. Establish `hg` using `(g ⟨ι h, hlt h hh⟩).2`. Use the proof step `field_simp⟩`. Use `left_inv := fun f => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h`. Distinguish the cases in `hh : h < ι h`. Simplify using `[hh]`. Simplify using `only [dif_neg hh]`. Establish `hf` using `f.2 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hne : f.1 (ι h) ≠ 0` using `fun h0 => hc0 h (by rw [← hf, h0, mul_zero])`. Rewrite using `[div_eq_iff hne, hf]`. Use `right_inv := fun g => by`. Use function extensionality and compare the values at `a`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Simplify using `[a.2] }`. Rewrite using `[Nat.card_congr e, Nat.card_fun, Nat.card_congr unitsEquivNeZero.symm, Nat.card_eq_fintype_card, Fintype.card_units]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_solutions_mul_involution_eq_pow {H K : Type} [Finite H] [Field K] [Fintype K]
     (ι : H → H) (hι : ∀ h, ι (ι h) = h) (hfix : ∀ h, ι h ≠ h) (c : H → K)
@@ -216,25 +210,21 @@ private theorem card_solutions_mul_involution_eq_pow {H K : Type} [Finite H] [Fi
 open NumberField Module Matrix in
 open scoped ENNReal in
 /- English proof (translation)
-Introduce `hφ`. Use `haveI : Fact T.Prime := ⟨hT⟩`. Set `σ : E ≃ₐ[F] E` to `AlgEquiv.ofRingEquiv (f := starRingAut) (fun x => (hcm.fixed _).2 ⟨x, rfl⟩)`. Establish `hσ : ∀ a : E, σ a = star a` using `fun a => rfl`. Establish `hσ1 : σ ≠ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Establish `hbot : (⊥ : Subalgebra F E) = ⊤`. Use `eq_top_iff.2 fun a _ => ?_` and prove the remaining obligations. Establish `ha : star a = a` using `by rw [← hσ, h1]; rfl`. Take `⟨y, hy⟩` from `(hcm.fixed a).1 ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Algebra.mem_bot.2 ⟨y, hy⟩`. Establish `h1'` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.1 hbot`. Rewrite `h1'` using `[hcm.deg2]`. Evaluate the numerical expressions using `at h1'`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hcm.deg2`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : 1 < Nat.card (E ≃ₐ[F] E)` using `by haveI : Nontrivial (E ≃ₐ[F] E) := ⟨⟨σ, 1, hσ1⟩⟩`. Conclude with `Finite.one_lt_card`. Establish `hle : Nat.card (E ≃ₐ[F] E) ≤ 2`. Rewrite using `[← hcm.deg2, Nat.card_eq_fintype_card]`. Conclude with `AlgEquiv.card_le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsGalois F E := IsGalois.of_card_aut_eq_finrank F E (by rw [hcm.deg2]; omega)`. Use `set P := RingHom.ker φ with hP`. Use `haveI hPm : P.IsMaximal := _root_.GlobalTheory.NormOneSplit.ker_isMaximal φ`. Establish `hmem : σ ∈ P.inertia (E ≃ₐ[F] E)`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `σ • x - x ∈ RingHom.ker φ`. Rewrite using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Establish `hx : σ • x = RingOfIntegers.mapRingHom (starRingEnd E) x` using `Subtype.ext rfl`. Rewrite using `[hx]`. Conclude with `RingHom.congr_fun hφ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcard : Nat.card (P.inertia (E ≃ₐ[F] E)) = P.ramificationIdx (𝓞 F)`. Rewrite using `[Ideal.card_inertia_eq_ramificationIdxIn (P.under (𝓞 F)) P, Ideal.ramificationIdxIn_eq_ramificationIdx _ P (E ≃ₐ[F] E)]`. Establish `h2le : 2 ≤ Nat.card (P.inertia (E ≃ₐ[F] E))` using `by haveI : Nontrivial (P.inertia (E ≃ₐ[F] E)) := ⟨⟨⟨σ, hmem⟩, 1, fun h => hσ1 (congrArg Subtype.val h)⟩⟩`. Conclude with `Finite.one_lt_card`. Establish `hTP : (T : 𝓞 E) ∈ P` using `by simp [hP, RingHom.mem_ker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hTunder : (T : 𝓞 F) ∈ P.under (𝓞 F)`. Rewrite using `[Ideal.under, Ideal.mem_comap]`. Simplify using `using hTP`. Establish `hTmap : (T : 𝓞 E) ∈ Ideal.map (algebraMap (𝓞 F) (𝓞 E)) (P.under (𝓞 F))`. Simplify using `using Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 E)) hTunder`.
-
-Establish `hne : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) (P.under (𝓞 F)) ≠ ⊥`. Introduce `hb`. Rewrite `hTmap` using `[hb, Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.mpr hT.ne_zero) hTmap`. Establish `hle2` using `Ideal.le_pow_ramificationIdx (p := P.under (𝓞 F)) (P := P)`.
-
-Rewrite `hle2` using `[Ideal.ramificationIdx'_eq_ramificationIdx' _ _ hne, ← hcard]`. Conclude with `(hs P hPm hTP).2 (Ideal.pow_le_pow_right h2le (hle2 hTmap))`.
+A detailed English derivation is pending.
 -/
 private theorem comp_mapRingHom_star_ne_of_split {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [StarRing E] [Algebra F E] (hcm : _root_.Formalism.BasicNotions.CMData F E) {T : ℕ} (hT : T.Prime)
@@ -296,31 +286,29 @@ open NumberField Module Matrix in
 open scoped ENNReal in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hcm T hT hs c hc hcop`. Use `haveI : Fact T.Prime := ⟨hT⟩`. Use `haveI := _root_.GlobalTheory.NormOneSplit.finite_hom (E := E) hT`. Use `set τ := RingOfIntegers.mapRingHom (starRingEnd E) with hτdef`. Establish `hτc : ∀ x : 𝓞 E, ((τ x : 𝓞 E) : E) = star (x : E)` using `fun x => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hττ : ∀ x, τ (τ x) = x` using `fun x => Subtype.ext ((hτc (τ x)).trans ((congrArg star (hτc x)).trans (star_star _)))`. Set `ev : (𝓞 E ⧸ Ideal.span {(T : 𝓞 E)}) →+* ((𝓞 E →+* ZMod T) → ZMod T)` to `Pi.ringHom (fun φ => Ideal.Quotient.lift (Ideal.span {(T : 𝓞 E)}) φ (fun a ha => by`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Use the proof step `simp))`. Establish `hev : ∀ x φ, ev (Ideal.Quotient.mk _ x) φ = φ x` using `fun x φ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbij : Function.Bijective ev`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, _root_.GlobalTheory.NormOneSplit.mem_span_iff hT hs]`. Introduce `φ`. Rewrite using `[← hev]`. Conclude with `congrFun ha φ`. Introduce `f`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `_root_.GlobalTheory.NormOneSplit.exists_forall_hom_eq f`. Conclude with `⟨Ideal.Quotient.mk _ x, funext fun φ => by rw [hev, hx]⟩`. Establish `hA : Nat.card {a : 𝓞 E ⧸ Ideal.span {(T : 𝓞 E)} // ∃ x y : 𝓞 E, Ideal.Quotient.mk _ x = a ∧ (y : E) = star (x : E) ∧ x * y - c ∈ Ideal.span {(T : 𝓞 E)}} = Nat.card {f : (𝓞 E →+* ZMod T) → ZMod T // ∀ φ, f φ * f (φ.comp τ) = φ c}`. Use `Nat.card_congr ((Equiv.ofBijective ev hbij).subtypeEquiv fun a => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ ↔ ∀ φ : 𝓞 E →+* ZMod T, ev (Ideal.Quotient.mk _ x) φ * ev (Ideal.Quotient.mk _ x) (φ.comp τ) = φ c`. Simplify using `only [hev]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', y, hx', hy, hxy⟩ φ`. Establish `hyτ : y = τ x'` using `Subtype.ext (hy.trans (hτc x').symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx'` using `[Ideal.Quotient.eq, _root_.GlobalTheory.NormOneSplit.mem_span_iff hT hs]`. Establish `h1` using `hx' φ`. Establish `h2` using `hx' (φ.comp τ)`. Establish `h3` using `(_root_.GlobalTheory.NormOneSplit.mem_span_iff hT hs _).1 hxy φ`. Rewrite `h1`, `h2`, `h3` using `[map_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h1, ← h2, ← h3, hyτ, map_mul, RingHom.comp_apply]`. Introduce `h`. Use `⟨x, τ x, rfl, hτc x, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.NormOneSplit.mem_span_iff hT hs]`. Introduce `φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_sub, map_mul, sub_eq_zero]`. Conclude with `h φ`. Establish `hT0 : ∀ φ : 𝓞 E →+* ZMod T, φ (T : 𝓞 E) = 0` using `fun φ => by simp`. Establish `hc0 : ∀ φ : 𝓞 E →+* ZMod T, φ c ≠ 0`. Introduce `φ h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `hcop`. Use `congrArg φ hab` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_mul, h0, hT0, map_one]`. Simplify using `at this`. Establish `hτcc : τ c = c` using `Subtype.ext ((hτc c).trans hc)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨m, hm, hcount⟩` from `card_solutions_mul_involution_eq_pow (fun φ : 𝓞 E →+* ZMod T => φ.comp τ) (fun φ => RingHom.ext fun x => by simp [hττ]) (fun φ => comp_mapRingHom_star_ne_of_split hcm hT hs φ) (fun φ => φ c) hc0 (fun φ => by simp [hτcc])`. Rewrite using `[hA, hcount, ZMod.card]`. Use `congr 1`. Establish `hcardQ : Nat.card (𝓞 E ⧸ Ideal.span {(T : 𝓞 E)}) = T ^ finrank ℚ E`. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ideal.absNorm_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hTmap : (T : 𝓞 E) = algebraMap ℤ (𝓞 E) (T : ℤ)` using `by simp`. Rewrite using `[hTmap, Algebra.norm_algebraMap, RingOfIntegers.rank, Int.natAbs_pow, Int.natAbs_natCast]`. Establish `hcardH : Nat.card (𝓞 E →+* ZMod T) = finrank ℚ E`. Establish `h` using `Nat.card_congr (Equiv.ofBijective ev hbij)`. Rewrite `h` using `[hcardQ, Nat.card_fun, Nat.card_zmod]`.
-
-Conclude with `(Nat.pow_right_injective hT.two_le h).symm`. Establish `hdeg : finrank ℚ E = finrank ℚ F * 2`. Rewrite using `[← Module.finrank_mul_finrank ℚ F E, hcm.deg2]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NormOneSplit.card_norm_classes : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E], _root_.Formalism.BasicNotions.CMData F E → ∀ T : ℕ, T.Prime → (∀ P : Ideal (𝓞 E), P.IsMaximal → ((T : 𝓞 E) ∈ P) → Ideal.absNorm P = T ∧ (T : 𝓞 E) ∉ P ^ 2) → ∀ c : 𝓞 E, star (c : E) = (c : E) → IsCoprime c (T : 𝓞 E) → Nat.card {a : 𝓞 E ⧸ Ideal.span {(T : 𝓞 E)} // ∃ x y : 𝓞 E, Ideal.Quotient.mk _ x = a ∧ (y : E) = star (x : E) ∧ x * y - c ∈ Ideal.span {(T : 𝓞 E)}} = (T - 1) ^ finrank ℚ F := by
   intro F E _ _ _ _ _ _ hcm T hT hs c hc hcop

@@ -26,13 +26,13 @@ def LinOn (S : Submodule ℂ M) (L : M → M) : Prop :=
   (∀ f ∈ S, L f ∈ S) ∧ (∀ f ∈ S, ∀ g ∈ S, L (f + g) = L f + L g) ∧ ∀ c : ℂ, ∀ f ∈ S, L (c • f) = c • L f
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ hf => hf, fun _ _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem LinOn.id : LinOn S fun f => f :=
   ⟨fun _ hf => hf, fun _ _ _ _ => rfl, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Use `⟨fun f hf => h.1 _ (h'.1 f hf), fun f hf g hg => ?_, fun c f hf => ?_⟩` and prove the remaining obligations. Use `show L (L' (f + g)) = L (L' f) + L (L' g)`. Rewrite using `[h'.2.1 f hf g hg, h.2.1 _ (h'.1 f hf) _ (h'.1 g hg)]`. Use `show L (L' (c • f)) = c • L (L' f)`. Rewrite using `[h'.2.2 c f hf, h.2.2 c _ (h'.1 f hf)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LinOn.comp {L L' : M → M} (h : LinOn S L) (h' : LinOn S L') : LinOn S fun f => L (L' f) := by
   refine ⟨fun f hf => h.1 _ (h'.1 f hf), fun f hf g hg => ?_, fun c f hf => ?_⟩
@@ -42,9 +42,7 @@ theorem LinOn.comp {L L' : M → M} (h : LinOn S L) (h' : LinOn S L') : LinOn S 
     rw [h'.2.2 c f hf, h.2.2 c _ (h'.1 f hf)]
 
 /- English proof (translation)
-Use `⟨fun f hf => S.add_mem (h.1 f hf) (S.smul_mem a (h'.1 f hf)), fun f hf g hg => ?_, fun c f hf => ?_⟩` and prove the remaining obligations. Use `show L (f + g) + a • L' (f + g) = (L f + a • L' f) + (L g + a • L' g)`. Rewrite using `[h.2.1 f hf g hg, h'.2.1 f hf g hg, smul_add]`. Normalize the expressions using the abelian group laws. Use `show L (c • f) + a • L' (c • f) = c • (L f + a • L' f)`.
-
-Rewrite using `[h.2.2 c f hf, h'.2.2 c f hf, smul_add, smul_comm a c]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LinOn.add_smul {L L' : M → M} (h : LinOn S L) (h' : LinOn S L') (a : ℂ) :
     LinOn S fun f => L f + a • L' f := by
@@ -56,9 +54,7 @@ theorem LinOn.add_smul {L L' : M → M} (h : LinOn S L) (h' : LinOn S L') (a : �
     rw [h.2.2 c f hf, h'.2.2 c f hf, smul_add, smul_comm a c]
 
 /- English proof (translation)
-Use `⟨fun f hf => S.sum_mem fun i _ => (h i).1 f hf, fun f hf g hg => ?_, fun c f hf => ?_⟩` and prove the remaining obligations. Use `show ∑ i, L i (f + g) = ∑ i, L i f + ∑ i, L i g`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => (h i).2.1 f hf g hg`. Use `show ∑ i, L i (c • f) = c • ∑ i, L i f`.
-
-Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (h i).2.2 c f hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LinOn.sum {ι : Type} [Fintype ι] {L : ι → M → M} (h : ∀ i, LinOn S (L i)) :
     LinOn S fun f => ∑ i, L i f := by
@@ -71,7 +67,7 @@ theorem LinOn.sum {ι : Type} [Fintype ι] {L : ι → M → M} (h : ∀ i, LinO
     exact Finset.sum_congr rfl fun i _ => (h i).2.2 c f hf
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact LinOn.id`. Consider the case `cons a l ih`. Conclude with `(h a (by simp)).comp (ih fun b hb => h b (List.mem_cons_of_mem a hb))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem LinOn.foldr {α : Type} (F : α → M → M) (l : List α) (h : ∀ a ∈ l, LinOn S (F a)) :
     LinOn S fun f => l.foldr F f := by
@@ -95,7 +91,7 @@ def smFun : Submodule ℂ (GA D V → ℂ) where
 variable {θ V}
 
 /- English proof (translation)
-Establish `h1` using `h 1 (fun _ => τ) (fun _ => X) (fun _ => hX) g`. Establish `h2` using `h1.comp (contDiff_pi.2 fun _ => contDiff_id : ContDiff ℝ ∞ fun t : ℝ => fun _ : Fin 1 => t)`. Simplify using `only [Function.comp_def, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, mul_one] at h2`. Conclude with `h2.differentiable (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diff_oneP {φ : GA D V → ℂ} (h : φ ∈ smFun θ V) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (g : GA D V) : Differentiable ℝ fun t : ℝ => φ (g * oneP θ V τ X t) := by
@@ -105,15 +101,13 @@ theorem diff_oneP {φ : GA D V → ℂ} (h : φ ∈ smFun θ V) {τ : D.what₂.
   exact h2.differentiable (by simp)
 
 /- English proof (translation)
-Establish `hline : ∀ (t : Fin k → ℝ) (s : ℝ), (Fin.snoc t s : Fin (k + 1) → ℝ) = Fin.snoc t 0 + s • Pi.single (Fin.last k) 1`. Introduce `t s`. Use function extensionality and compare the values at `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j => simp [(Fin.castSucc_lt_last j).ne]`. Establish `hd : ∀ t : Fin k → ℝ, deriv (fun s : ℝ => F (Fin.snoc t s)) 0 = fderiv ℝ F (Fin.snoc t 0) (Pi.single (Fin.last k) 1)`. Introduce `t`. Establish `hl : HasDerivAt (fun s : ℝ => (Fin.snoc t s : Fin (k + 1) → ℝ)) (Pi.single (Fin.last k) 1) 0`. Establish `hlin : HasDerivAt (fun s : ℝ => (Fin.snoc t 0 : Fin (k + 1) → ℝ) + s • Pi.single (Fin.last k) (1 : ℝ)) (Pi.single (Fin.last k) 1) 0`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const (Pi.single (Fin.last k) (1 : ℝ) : Fin (k + 1) → ℝ)).const_add (Fin.snoc t 0 : Fin (k + 1) → ℝ)`. Conclude with `hlin.congr_of_eventuallyEq (Filter.Eventually.of_forall (hline t))`. Establish `hF' : HasFDerivAt F (fderiv ℝ F (Fin.snoc t 0)) (Fin.snoc t 0)` using `((hF.differentiable (by simp)) _).hasFDerivAt`. Conclude with `(HasFDerivAt.comp_hasDerivAt (l := F) (f := fun s : ℝ => (Fin.snoc t s : Fin (k + 1) → ℝ)) 0 hF' hl).deriv`. Establish `hs : ContDiff ℝ ∞ fun t : Fin k → ℝ => (Fin.snoc t 0 : Fin (k + 1) → ℝ)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp only [Fin.snoc_last]`. Conclude with `contDiff_const`. Consider the case `cast j => simp only [Fin.snoc_castSucc]`.
-
-Conclude with `(contDiff_pi.1 contDiff_id) j`. Rewrite using `[funext hd]`. Conclude with `(((contDiff_infty_iff_fderiv.1 hF).2).comp hs).clm_apply contDiff_const`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_deriv_snoc {k : ℕ} {F : (Fin (k + 1) → ℝ) → ℂ} (hF : ContDiff ℝ ∞ F) :
     ContDiff ℝ ∞ fun t : Fin k → ℝ => deriv (fun s : ℝ => F (Fin.snoc t s)) 0 := by
@@ -146,13 +140,13 @@ theorem contDiff_deriv_snoc {k : ℕ} {F : (Fin (k + 1) → ℝ) → ℂ} (hF : 
   exact (((contDiff_infty_iff_fderiv.1 hF).2).comp hs).clm_apply contDiff_const
 
 /- English proof (translation)
-Use `⟨fun φ hφ => ?_, fun φ hφ ψ hψ => ?_, fun c φ hφ => ?_⟩` and prove the remaining obligations. Introduce `k τs Xs hXs g`. Establish `hX' : ∀ i, (Fin.snoc Xs X : Fin (k + 1) → _) i ∈ lieAt V ((Fin.snoc τs τ : Fin (k + 1) → _) i)`. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `last => simpa using hX`. Consider the case `cast j => simpa using hXs j`. Establish `hF` using `hφ (k + 1) (Fin.snoc τs τ) (Fin.snoc Xs X) hX' g`. Use `contDiff_deriv_snoc hF using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Rder, List.ofFn_succ', Fin.snoc_castSucc, Fin.snoc_last, List.concat_eq_append, List.prod_append, List.prod_cons, List.prod_nil, mul_one, mul_assoc]`. Use function extensionality and compare the values at `g`. Simplify using `only [Rder, Pi.add_apply]`. Conclude with `deriv_add (diff_oneP hφ hX g).differentiableAt (diff_oneP hψ hX g).differentiableAt`. Use function extensionality and compare the values at `g`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Rder, Pi.smul_apply, smul_eq_mul]`. Conclude with `deriv_const_mul c (diff_oneP hφ hX g).differentiableAt`.
+A detailed English derivation is pending.
 -/
 theorem linOn_Rder {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) :
     LinOn (smFun θ V) (Rder θ V τ X) := by
@@ -176,9 +170,9 @@ theorem linOn_Rder {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) �
     exact deriv_const_mul c (diff_oneP hφ hX g).differentiableAt
 
 /- English proof (translation)
-Establish `hC : ∀ Z, LinOn (smFun θ V) (RderC θ V τ Z)` using `fun Z => LinOn.add_smul (linOn_Rder (GlobalTheory.SmoothAutCheck.parts_mem V τ Z).1) (linOn_Rder (GlobalTheory.SmoothAutCheck.parts_mem V τ Z).2) Complex.I`. Unfold `gelf`. Use `LinOn.sum fun idx => LinOn.foldr (fun (f : (GA D V → ℂ) → GA D V → ℂ) acc => f acc) _ fun a ha => ?_` and prove the remaining obligations. Simplify using `only [List.mem_ofFn] at ha`. Take `⟨i, rfl⟩` from `ha`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hC _`.
+A detailed English derivation is pending.
 -/
 theorem linOn_gelf (τ : D.what₂.Tau) (k : ℕ) : LinOn (smFun θ V) (gelf θ V τ k) := by
 
@@ -192,19 +186,17 @@ theorem linOn_gelf (τ : D.what₂.Tau) (k : ℕ) : LinOn (smFun θ V) (gelf θ 
   exact hC _
 
 /- English proof (translation)
-Distinguish the cases in `h : Nonempty D.what₂.Tau ∧ 0 < V.rank`. Use `right`. Introduce `g`. Take `⟨⟨τ0⟩, hr⟩` from `h`. Establish `key : ∀ A B : Matrix (Fin V.rank) (Fin V.rank) ℂ, A * B = 1 → 1 ≤ ∑ i, ∑ j, (‖A i j‖ + ‖B i j‖)`.
+Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A B hAB`. Set `i0 : Fin V.rank` to `⟨0, hr⟩`. Establish `hx : 0 ≤ ∑ i, ∑ j, ‖A i j‖` using `by positivity`. Establish `hy : 0 ≤ ∑ i, ∑ j, ‖B i j‖` using `by positivity`. Establish `hb : ∀ i j, ‖B i j‖ ≤ ∑ i, ∑ j, ‖B i j‖` using `fun i j => (Finset.single_le_sum (f := fun j => ‖B i j‖) (fun j _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖B i j‖) (fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _) (Finset.mem_univ i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : ∑ k, ‖A i0 k‖ ≤ ∑ i, ∑ j, ‖A i j‖` using `Finset.single_le_sum (f := fun i => ∑ j, ‖A i j‖) (fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _) (Finset.mem_univ i0)`. Establish `e : (1 : ℂ) = ∑ k, A i0 k * B k i0`. Use `congrFun (congrFun hAB i0) i0` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : (1 : ℝ) ≤ (∑ i, ∑ j, ‖A i j‖) * ∑ i, ∑ j, ‖B i j‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_congr rfl fun i _ => Finset.sum_add_distrib, Finset.sum_add_distrib]`. Use polynomial arithmetic with `[sq_nonneg ((∑ i, ∑ j, ‖A i j‖) - ∑ i, ∑ j, ‖B i j‖)]`. Establish `hAB : infMat D.sp.cm.sig V.gram (θ τ0) g * infMat D.sp.cm.sig V.gram (θ τ0) g⁻¹ = 1`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← GlobalTheory.SmoothForms.HeightCoset.infMat_mul', mul_inv_cancel, GlobalTheory.SmoothForms.HeightCoset.infMat_one']`. Use `(key _ _ hAB).trans ?_` and prove the remaining obligations. Unfold `normInf`. Conclude with `Finset.single_le_sum (f := fun τ => ∑ i, ∑ j, (‖infMat D.sp.cm.sig V.gram (θ τ) g i j‖ + ‖infMat D.sp.cm.sig V.gram (θ τ) g⁻¹ i j‖)) (fun τ _ => by positivity) (Finset.mem_univ τ0)`. Use `left`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Unfold `normInf`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `τ _`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
-
-Introduce `i _`. Conclude with `absurd ⟨⟨τ⟩, Nat.zero_lt_of_lt i.2⟩ h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem normInf_cases : (∀ g, normInf θ V g = 0) ∨ ∀ g, 1 ≤ normInf θ V g := by
   by_cases h : Nonempty D.what₂.Tau ∧ 0 < V.rank
@@ -254,7 +246,7 @@ theorem normInf_cases : (∀ g, normInf θ V g = 0) ∨ ∀ g, 1 ≤ normInf θ 
     exact absurd ⟨⟨τ⟩, Nat.zero_lt_of_lt i.2⟩ h
 
 /- English proof (translation)
-Break down `normInf_cases (θ := θ) (V := V) with h | h` into its components or cases. Use `⟨0, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[h g, pow_zero]`. Conclude with `⟨pow_le_one₀ le_rfl zero_le_one, pow_le_one₀ le_rfl zero_le_one⟩`. Conclude with `⟨max N N', fun g => ⟨pow_le_pow_right₀ (h g) (le_max_left _ _), pow_le_pow_right₀ (h g) (le_max_right _ _)⟩⟩`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_exponent (N N' : ℕ) :
     ∃ K : ℕ, ∀ g, normInf θ V g ^ N ≤ normInf θ V g ^ K ∧ normInf θ V g ^ N' ≤ normInf θ V g ^ K := by
@@ -265,12 +257,12 @@ theorem exists_exponent (N N' : ℕ) :
   · exact ⟨max N N', fun g => ⟨pow_le_pow_right₀ (h g) (le_max_left _ _), pow_le_pow_right₀ (h g) (le_max_right _ _)⟩⟩
 
 /- English proof (translation)
-The claim follows from `h.smooth`.
+A detailed English derivation is pending.
 -/
 theorem mem_smFun {φ : GA D V → ℂ} (h : IsAutFunSm θ V φ) : φ ∈ smFun θ V := h.smooth
 
 /- English proof (translation)
-Use `LinOn.foldr (S := smFun θ V) (fun (p : D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ) f => Rder θ V p.1 p.2 f) l ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `linOn_Rder (hl p hp)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem linOn_word (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)) (hl : ∀ p ∈ l, p.2 ∈ lieAt V p.1) :
     LinOn (smFun θ V) fun φ => l.foldr (fun p f => Rder θ V p.1 p.2 f) φ := by
@@ -279,19 +271,19 @@ theorem linOn_word (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) 
   exact linOn_Rder (hl p hp)
 
 /- English proof (translation)
-Simplify using `only [Pi.add_apply, h.left γ hγ g, h'.left γ hγ g] level := by`. Take `⟨U, hU, hUk⟩` from `h.level`. Take `⟨U', hU', hUk'⟩` from `h'.level`. Use `⟨U ⊓ U', by simpa using hU.inter hU', fun k hk hk' g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, hUk k (Subgroup.mem_inf.1 hk).1 hk' g, hUk' k (Subgroup.mem_inf.1 hk).2 hk' g]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `cont := h.cont.add h'.cont`. Use `smooth k τs Xs hX g := (h.smooth k τs Xs hX g).add (h'.smooth k τs Xs hX g)`. Use `zfin := by`. Take `⟨W, hW, hφ, hWg⟩` from `h.zfin`. Take `⟨W', hW', hψ, hWg'⟩` from `h'.zfin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hW` as an intermediate fact. Use `hW'` as an intermediate fact. Establish `: FiniteDimensional ℂ (W ⊓ smFun θ V : Submodule ℂ (GA D V → ℂ))` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `: FiniteDimensional ℂ (W' ⊓ smFun θ V : Submodule ℂ (GA D V → ℂ))` using `Submodule.finiteDimensional_of_le inf_le_left`. Use `⟨W ⊓ smFun θ V ⊔ W' ⊓ smFun θ V, inferInstance, Submodule.add_mem_sup (Submodule.mem_inf.2 ⟨hφ, mem_smFun h⟩) (Submodule.mem_inf.2 ⟨hψ, mem_smFun h'⟩), fun τ k f hf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hf`. Establish `hl` using `linOn_gelf (θ := θ) (V := V) τ k`. Rewrite `ha`, `hb` using `[Submodule.mem_inf]`. Rewrite using `[hl.2.1 a ha.2 b hb.2]`. Conclude with `Submodule.add_mem_sup (Submodule.mem_inf.2 ⟨hWg τ k a ha.1, hl.1 a ha.2⟩) (Submodule.mem_inf.2 ⟨hWg' τ k b hb.1, hl.1 b hb.2⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `growth := by`. Take `⟨N, hN⟩` from `h.growth`. Take `⟨N', hN'⟩` from `h'.growth`. Take `⟨K, hK⟩` from `exists_exponent (θ := θ) (V := V) N N'`. Use `⟨K, fun l hl x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C, hC⟩` from `hN l hl x`. Take `⟨C', hC'⟩` from `hN' l hl x`. Use `⟨max C 0 + max C' 0, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e : l.foldr (fun p f => Rder θ V p.1 p.2 f) (φ + ψ) = l.foldr (fun p f => Rder θ V p.1 p.2 f) φ + l.foldr (fun p f => Rder θ V p.1 p.2 f) ψ` using `(linOn_word (θ := θ) (V := V) l hl).2.1 φ (mem_smFun h) ψ (mem_smFun h')`. Rewrite using `[e, Pi.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h0 : 0 ≤ normInf θ V g` using `by unfold normInf; positivity`. Establish `t1 : C * normInf θ V g ^ N ≤ max C 0 * normInf θ V g ^ K` using `(mul_le_mul_of_nonneg_right (le_max_left C 0) (pow_nonneg h0 N)).trans (mul_le_mul_of_nonneg_left (hK g).1 (le_max_right C 0))`. Establish `t2 : C' * normInf θ V g ^ N' ≤ max C' 0 * normInf θ V g ^ K` using `(mul_le_mul_of_nonneg_right (le_max_left C' 0) (pow_nonneg h0 N')).trans (mul_le_mul_of_nonneg_left (hK g).2 (le_max_right C' 0))`. Rewrite using `[add_mul]`. Combine the linear relations using `[norm_add_le (l.foldr (fun p f => Rder θ V p.1 p.2 f) φ (x * g)) (l.foldr (fun p f => Rder θ V p.1 p.2 f) ψ (x * g)), hC g hg, hC' g hg]`.
+A detailed English derivation is pending.
 -/
 theorem isAutFunSm_add {φ ψ : GA D V → ℂ} (h : IsAutFunSm θ V φ) (h' : IsAutFunSm θ V ψ) :
     IsAutFunSm θ V (φ + ψ) where
@@ -346,13 +338,13 @@ theorem isAutFunSm_add {φ ψ : GA D V → ℂ} (h : IsAutFunSm θ V φ) (h' : I
       (l.foldr (fun p f => Rder θ V p.1 p.2 f) ψ (x * g)), hC g hg, hC' g hg]
 
 /- English proof (translation)
-Simplify using `only [Pi.smul_apply, h.left γ hγ g] level := by`. Take `⟨U, hU, hUk⟩` from `h.level`. Conclude with `⟨U, hU, fun k hk hk' g => by simp only [Pi.smul_apply, hUk k hk hk' g]⟩`. Use `cont := h.cont.const_smul c`. Use `smooth k τs Xs hX g := (h.smooth k τs Xs hX g).const_smul c`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `zfin := by`. Take `⟨W, hW, hφ, hWg⟩` from `h.zfin`. Use `hW` as an intermediate fact. Establish `: FiniteDimensional ℂ (W ⊓ smFun θ V : Submodule ℂ (GA D V → ℂ))` using `Submodule.finiteDimensional_of_le inf_le_left`. Use `⟨W ⊓ smFun θ V, inferInstance, Submodule.smul_mem _ c (Submodule.mem_inf.2 ⟨hφ, mem_smFun h⟩), fun τ k f hf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite `hf`, the goal using `[Submodule.mem_inf]`. Conclude with `⟨hWg τ k f hf.1, (linOn_gelf (θ := θ) (V := V) τ k).1 f hf.2⟩`. Use `growth := by`. Take `⟨N, hN⟩` from `h.growth`. Use `⟨N, fun l hl x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C, hC⟩` from `hN l hl x`. Use `⟨‖c‖ * C, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e : l.foldr (fun p f => Rder θ V p.1 p.2 f) (c • φ) = c • l.foldr (fun p f => Rder θ V p.1 p.2 f) φ` using `(linOn_word (θ := θ) (V := V) l hl).2.2 c φ (mem_smFun h)`. Rewrite using `[e, Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC g hg) (norm_nonneg c)`.
+A detailed English derivation is pending.
 -/
 theorem isAutFunSm_smul (c : ℂ) {φ : GA D V → ℂ} (h : IsAutFunSm θ V φ) : IsAutFunSm θ V (c • φ) where
   left γ hγ g := by simp only [Pi.smul_apply, h.left γ hγ g]
@@ -381,7 +373,7 @@ theorem isAutFunSm_smul (c : ℂ) {φ : GA D V → ℂ} (h : IsAutFunSm θ V φ)
     exact mul_le_mul_of_nonneg_left (hC g hg) (norm_nonneg c)
 
 /- English proof (translation)
-Establish `hφ` using `(GlobalTheory.AutFunCompare.isCuspFun_iff V φ h.cont h.left).1 c`. Establish `hψ` using `(GlobalTheory.AutFunCompare.isCuspFun_iff V ψ h'.cont h'.left).1 c'`. Conclude with `(GlobalTheory.AutFunCompare.isCuspFun_iff V (φ + ψ) (h.cont.add h'.cont) (fun γ hγ g => by simp only [Pi.add_apply, h.left γ hγ g, h'.left γ hγ g])).2 (add_mem hφ hψ)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCuspFun_add {φ ψ : GA D V → ℂ} (h : IsAutFun V φ) (h' : IsAutFun V ψ) (c : IsCuspFun V φ)
     (c' : IsCuspFun V ψ) : IsCuspFun V (φ + ψ) := by
@@ -391,7 +383,7 @@ theorem isCuspFun_add {φ ψ : GA D V → ℂ} (h : IsAutFun V φ) (h' : IsAutFu
     (fun γ hγ g => by simp only [Pi.add_apply, h.left γ hγ g, h'.left γ hγ g])).2 (add_mem hφ hψ)
 
 /- English proof (translation)
-Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_const_mul, c r C hC μ 𝓕 hμ h𝓕 g, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCuspFun_smul (a : ℂ) {φ : GA D V → ℂ} (c : IsCuspFun V φ) : IsCuspFun V (a • φ) := by
   intro r C hC μ 𝓕 hμ h𝓕 g
@@ -404,14 +396,14 @@ variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {Lie : Set (Matrix (Fin n) (Fin n) ℂ)} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Unfold `Sobolev₂`. Conclude with `⟨[], 0, by simp, fun w _ => by simp⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem sobCont_zero : Sobolev₂ Lie σ 0 := by
   unfold Sobolev₂
   exact ⟨[], 0, by simp, fun w _ => by simp⟩
 
 /- English proof (translation)
-Unfold `Sobolev₂ at *`. Take `⟨L, C, hL, hC⟩` from `h`. Use `⟨L, ‖c‖ * C, hL, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC w hw) (norm_nonneg c)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sobCont_smul (c : ℂ) {ℓ : H →ₗ[ℂ] ℂ} (h : Sobolev₂ Lie σ ℓ) : Sobolev₂ Lie σ (c • ℓ) := by
   unfold Sobolev₂ at *
@@ -421,11 +413,11 @@ theorem sobCont_smul (c : ℂ) {ℓ : H →ₗ[ℂ] ℂ} (h : Sobolev₂ Lie σ 
   exact mul_le_mul_of_nonneg_left (hC w hw) (norm_nonneg c)
 
 /- English proof (translation)
-Unfold `Sobolev₂ at *`. Take `⟨L, C, hL, hC⟩` from `h`. Take `⟨L', C', hL', hC'⟩` from `h'`. Use `⟨L ++ L', |C| + |C'|, fun l hl X hX => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Break down `List.mem_append.1 hl with hl | hl exacts [hL l hl X hX, hL' l hl X hX]` into its components or cases.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[LinearMap.add_apply, List.map_append, List.sum_append]`. Establish `ha : 0 ≤ (L.map fun l => ‖l.foldr (dRep σ) w‖).sum` using `List.sum_nonneg (by simp)`. Establish `hb : 0 ≤ (L'.map fun l => ‖l.foldr (dRep σ) w‖).sum` using `List.sum_nonneg (by simp)`. Establish `e1` using `hC w hw`. Establish `e2` using `hC' w hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_add_le (ℓ w) (ℓ' w), le_abs_self C, le_abs_self C', abs_nonneg C, abs_nonneg C', mul_nonneg (sub_nonneg.2 (le_abs_self C)) ha, mul_nonneg (sub_nonneg.2 (le_abs_self C')) hb, mul_nonneg (abs_nonneg C) hb, mul_nonneg (abs_nonneg C') ha]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sobCont_add {ℓ ℓ' : H →ₗ[ℂ] ℂ} (h : Sobolev₂ Lie σ ℓ) (h' : Sobolev₂ Lie σ ℓ') : Sobolev₂ Lie σ (ℓ + ℓ') := by
   unfold Sobolev₂ at *
@@ -448,7 +440,7 @@ end Sob
 variable {S : D.what₂.Tau → SPar} {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ}
 
 /- English proof (translation)
-The claim follows from `rfl level := ⟨⊤, by simp, fun _ _ _ _ => rfl⟩ cont := continuous_const smooth _ _ _ _ _ := contDiff_const zfin := by refine ⟨⊥, inferInstance, Submodule.zero_mem _, fun τ k f hf => ?_⟩ rw [Submodule.mem_bot] at hf ⊢ subst hf have := (linOn_gelf (θ := θ) (V := V) τ k).2.2 0 0 (Sub …`.
+A detailed English derivation is pending.
 -/
 private theorem isAutFunSm_zero' : IsAutFunSm θ V (0 : GA D V → ℂ) where
   left _ _ _ := rfl
@@ -470,7 +462,7 @@ private theorem isAutFunSm_zero' : IsAutFunSm θ V (0 : GA D V → ℂ) where
     simp
 
 /- English proof (translation)
-The claim follows from `isAutFunSm_zero' cusp _ := by intro r C hC μ 𝓕 hμ h𝓕 g simp lev _ _ _ _ := by simp equiv _ _ _ _ _ _ := rfl cont _ _ _ := ⟨0, sobCont_zero, fun _ => by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem isMultMap_zero : IsMultMap θ M J χ 0 where
   aut _ := isAutFunSm_zero'
@@ -482,7 +474,7 @@ theorem isMultMap_zero : IsMultMap θ M J χ 0 where
   cont _ _ _ := ⟨0, sobCont_zero, fun _ => by simp⟩
 
 /- English proof (translation)
-The claim follows from `isAutFunSm_add (h.aut v) (h'.aut v) cusp v := isCuspFun_add (h.aut v).toIsAutFun (h'.aut v).toIsAutFun (h.cusp v) (h'.cusp v) lev v k hk g := by simp only [_root_.add_apply, Pi.add_apply, h.lev v k hk g, h'.lev v k hk g, mul_add] equiv τ g hg v w hw := by simp only [_root_.add_ap …`.
+A detailed English derivation is pending.
 -/
 theorem isMultMap_add {T T' : MMap M} (h : IsMultMap θ M J χ T) (h' : IsMultMap θ M J χ T') :
     IsMultMap θ M J χ (T + T') where
@@ -500,7 +492,7 @@ theorem isMultMap_add {T T' : MMap M} (h : IsMultMap θ M J χ T) (h' : IsMultMa
       _root_.add_apply, Pi.add_apply]⟩
 
 /- English proof (translation)
-The claim follows from `isAutFunSm_smul c (h.aut v) cusp v := isCuspFun_smul c (h.cusp v) lev v k hk g := by simp only [_root_.smul_apply, Pi.smul_apply, smul_eq_mul, h.lev v k hk g] ring equiv τ g hg v w hw := by simp only [_root_.smul_apply, h.equiv τ g hg v w hw] rfl cont τ v x := by obtain ⟨ℓ, hℓ, e …`.
+A detailed English derivation is pending.
 -/
 theorem isMultMap_smul (c : ℂ) {T : MMap M} (h : IsMultMap θ M J χ T) : IsMultMap θ M J χ (c • T) where
   aut v := isAutFunSm_smul c (h.aut v)
@@ -517,11 +509,11 @@ theorem isMultMap_smul (c : ℂ) {T : MMap M} (h : IsMultMap θ M J χ T) : IsMu
       _root_.smul_apply, Pi.smul_apply]⟩
 
 /- English proof (translation)
-Introduce `D θ V S M J χ T`. Unfold `Formalism.IndefR.Mult.Mult`. Prove the components needed by the constructor for the conclusion. Introduce `hT`. Proceed by induction on `hT using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx => exact hx`. Consider the case `zero => exact isMultMap_zero`. Consider the case `add x y _ _ hx hy => exact isMultMap_add hx hy`. Consider the case `smul a x _ hx => exact isMultMap_smul a hx`. Introduce `hT`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.subset_span hT`.
+A detailed English derivation is pending.
 -/
 theorem mem_mult_iff : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S)
     (J : Set (GA D V)) (χ : GA D V → ℂ) (T : MMap M), T ∈ Mult θ M J χ ↔ IsMultMap θ M J χ T := by

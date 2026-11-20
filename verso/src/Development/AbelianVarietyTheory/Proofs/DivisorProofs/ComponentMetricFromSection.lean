@@ -14,11 +14,11 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce and unpack `D O ⟨x, P, h⟩ A T H R c a`. Use `GlobalTheory.T.complex_points_connected _ (O.var c) ((R.man c).ε a)` as an intermediate fact. Use `⟨((R.man c).pt a).symm.surjective.connectedSpace ((R.man c).pt a).symm.continuous, ?_⟩` and prove the remaining obligations. Establish `hπ` using `GlobalTheory.T.flag_component_projection_smooth D _ _ _ _ _ O.s O.Φ c`. Establish `: Smooth (genStr O.s.T.Z)` using `SmoothOfRelativeDimension.smooth O.S.Dw.dim _`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian (gen O.s.T.Z : Scheme.{0})` using `LocallyOfFiniteType.isLocallyNoetherian (genStr O.s.T.Z)`. Use `isProper_genStr O.s.T.Z` as an intermediate fact. Establish `: CompactSpace (gen O.s.T.Z : Scheme.{0})` using `QuasiCompact.compactSpace_of_compactSpace (genStr O.s.T.Z)`. Establish `: IsNoetherian (gen O.s.T.Z : Scheme.{0})` using `{}`. Take `⟨L, t, h₁, h₂⟩` from `GlobalTheory.T.exists_boundary_potential_snc _ (O.var c) _ (T.M c) (R.man c) a x.m (fun i => (x.cpt i).preimage (O.Φ.C c).π.continuous) (fun i z => x.nrm _ i ((O.Φ.C c).down z)) (O.dim_eq c) (fun y => GlobalTheory.T.local_snc_pullback_smooth _ _ _ (genStr O.s.T.Z) _ _ _ y (Global …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨L, t, h₁, _, _, h₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem fromSec_of_core : ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y), O.Reads A T H → ∀ c, (T.M c).FromSec := by
   rintro D O ⟨x, P, h⟩ A T H R c a

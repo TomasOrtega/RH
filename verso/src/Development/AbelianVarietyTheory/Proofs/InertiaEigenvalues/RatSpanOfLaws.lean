@@ -14,7 +14,7 @@ open GlobalTheory.RawLift
 namespace GlobalTheory.RatSpanProof
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL _ i t`. Conclude with `GlobalTheory.HeckeClassSums.span_jV hL.models.HV hL.models.jV i t`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ratSpan_of_laws : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → RatSpan R := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL _ i t

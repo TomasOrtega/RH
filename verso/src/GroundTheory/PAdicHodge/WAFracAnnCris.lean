@@ -23,16 +23,14 @@ def annNormR (x : T.Ann ρ0 σ0) (s : ℝ) : ℝ :=
   if h : s ∈ Set.Icc (σ0 : ℝ) ρ0 then T.annNorm ρ0 σ0 ⟨s, h⟩ x else 0
 
 /- English proof (translation)
-Rewrite using `[annNormR, dif_pos r.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem annNormR_of_mem (x : T.Ann ρ0 σ0) (r : AnnRad ρ0 σ0) :
     T.annNormR x r = T.annNorm ρ0 σ0 r x := by
   rw [annNormR, dif_pos r.2]
 
 /- English proof (translation)
-Distinguish the cases in `hb : T.coeffB (T.coreVal ρ0 σ0 b) = 0`. Rewrite using `[hb]`. Establish `: gaussNorm (0 : ℤ → L) = fun _ => 0` using `by funext s; simp [gaussNorm]`. Rewrite using `[this]`. Conclude with `continuousOn_const`.
-
-Conclude with `continuousOn_gaussNorm σ0.2.1 (T.convergesAt_coreVal b (annIn ρ0 σ0)) (T.convergesAt_coreVal b (annOut ρ0 σ0)) hb`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_gaussNorm_coreVal (b : T.AnnCore ρ0 σ0) :
     ContinuousOn (gaussNorm (T.coeffB (T.coreVal ρ0 σ0 b))) (Set.Icc (σ0 : ℝ) ρ0) := by
@@ -44,21 +42,19 @@ theorem continuousOn_gaussNorm_coreVal (b : T.AnnCore ρ0 σ0) :
     (T.convergesAt_coreVal b (annOut ρ0 σ0)) hb
 
 /- English proof (translation)
-Introduce `s hs`. Rewrite using `[Metric.continuousWithinAt_iff]`. Introduce `ε hε`. Take `⟨b, hb⟩` from `T.exists_coeAnn_near x (show 0 < ε / 3 by positivity)`. Establish `hc` using `T.continuousOn_gaussNorm_coreVal (T.coreOf ρ0 σ0 b) s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ, hδ, hδc⟩` from `Metric.continuousWithinAt_iff.1 hc (ε / 3) (by positivity)`. Use `⟨δ, hδ, fun {s'} hs' hd => ?_⟩` and prove the remaining obligations. Establish `key : ∀ r : AnnRad ρ0 σ0, |T.annNorm ρ0 σ0 r x - gaussNorm (T.coeffB (T.coreVal ρ0 σ0 (T.coreOf ρ0 σ0 b))) r| < ε / 3`. Introduce `r`. Rewrite using `[← annNorm_coe, ← coeAnn_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `T.annNorm_sub_le r x (x - T.coeAnn b)`. Establish `h2` using `T.annNorm_add_le r (x - T.coeAnn b) (T.coeAnn b)`. Rewrite `h1` using `[sub_sub_cancel]`. Rewrite `h2` using `[sub_add_cancel]`. Establish `h3` using `hb r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[abs_sub_lt_iff]`. Prove the components needed by the constructor for the conclusion. Break down `le_max_iff.1 h2 with h | h` into its components or cases. Combine the linear relations using `[T.annNorm_nonneg r (T.coeAnn b)]`. Combine the linear relations using `[T.annNorm_nonneg r (x - T.coeAnn b)]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Break down `le_max_iff.1 h1 with h | h` into its components or cases. Combine the linear relations using `[T.annNorm_nonneg r x]`. Combine the linear relations using `[T.annNorm_nonneg r x]`. Establish `k1` using `key ⟨s', hs'⟩`. Establish `k2` using `key ⟨s, hs⟩`.
+Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k3` using `hδc hs' hd`. Rewrite `k3`, the goal using `[Real.dist_eq]`. Rewrite using `[annNormR_of_mem T x ⟨s', hs'⟩, annNormR_of_mem T x ⟨s, hs⟩]`. Use `set A := T.annNorm ρ0 σ0 ⟨s', hs'⟩ x`. Use `set D := T.annNorm ρ0 σ0 ⟨s, hs⟩ x`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := gaussNorm (T.coeffB (T.coreVal ρ0 σ0 (T.coreOf ρ0 σ0 b))) s'`. Use `set C := gaussNorm (T.coeffB (T.coreVal ρ0 σ0 (T.coreOf ρ0 σ0 b))) s`. Establish `e1` using `abs_sub_le A B D`. Establish `e2` using `abs_sub_le B C D`. Establish `e3 : |C - D| < ε / 3` using `by rw [abs_sub_comm]; exact k2`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem continuousOn_annNormR (x : T.Ann ρ0 σ0) :
     ContinuousOn (T.annNormR x) (Set.Icc (σ0 : ℝ) ρ0) := by
@@ -101,15 +97,15 @@ theorem continuousOn_annNormR (x : T.Ann ρ0 σ0) :
   linarith
 
 /- English proof (translation)
-Use `lt_of_le_of_ne (T.annNorm_nonneg r x) fun h0 => ?_` and prove the remaining obligations. Break down `eq_or_lt_of_le r.2.1 with hr | hr` into its components or cases. Establish `: r = annIn ρ0 σ0` using `Subtype.ext hr.symm`. Rewrite `h0` using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hzero : ∀ s ∈ Set.Ioo (σ0 : ℝ) r, T.annNormR x s = 0`. Introduce `s hs`. Establish `hsI : s ∈ Set.Icc (σ0 : ℝ) ρ0` using `⟨hs.1.le, hs.2.le.trans r.2.2⟩`. Take `⟨t, ht0, ht1, hst⟩` from `exists_interp_exponent σ0.2.1 hs.1 hs.2`. Use `T.annNorm_interp_le (annIn ρ0 σ0) r ⟨s, hsI⟩ ht0.le ht1.le hst x` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[← h0, Real.zero_rpow ht0.ne', mul_zero]`. Rewrite using `[annNormR_of_mem T x ⟨s, hsI⟩]`. Conclude with `le_antisymm this (T.annNorm_nonneg _ x)`. Establish `hc : ContinuousWithinAt (T.annNormR x) (Set.Ioo (σ0 : ℝ) r) σ0` using `(T.continuousOn_annNormR x σ0 ⟨le_rfl, σ0.2.2⟩).mono fun s hs => ⟨hs.1.le, hs.2.le.trans r.2.2⟩`. Establish `hmem : (σ0 : ℝ) ∈ closure (Set.Ioo (σ0 : ℝ) r)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[closure_Ioo hr.ne]`. Conclude with `⟨le_rfl, hr.le⟩`. Establish `hlim` using `hc.mem_closure_image hmem`. Establish `hsub : T.annNormR x '' Set.Ioo (σ0 : ℝ) r ⊆ {0}`. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hzero s hs`. Use `closure_mono hsub hlim` as an intermediate fact. Establish `h' : T.annNormR x (σ0 : ℝ) = T.annNorm ρ0 σ0 (annIn ρ0 σ0) x` using `T.annNormR_of_mem x (annIn ρ0 σ0)`. Rewrite `this` using `[closure_singleton, Set.mem_singleton_iff, h']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem annNorm_pos_of_annIn_pos {x : T.Ann ρ0 σ0} (hx : 0 < T.annNorm ρ0 σ0 (annIn ρ0 σ0) x)
     (r : AnnRad ρ0 σ0) : 0 < T.annNorm ρ0 σ0 r x := by
@@ -157,30 +153,30 @@ def awayToAnn : 𝔸 →+* (𝓣).Ann ρ0 σ0 := (𝓣).coeAnn.comp (awayToEcon 
 variable {ρ0 σ0}
 
 /- English proof (translation)
-The claim follows from `(𝓣).annNorm_coeAnn r _`.
+A detailed English derivation is pending.
 -/
 theorem annNorm_awayToAnn (r : AnnRad ρ0 σ0) (z : 𝔸) :
     (𝓣).annNorm ρ0 σ0 r (awayToAnn ρ0 σ0 z) = gn ℂ_[p] p r z :=
   (𝓣).annNorm_coeAnn r _
 
 /- English proof (translation)
-The claim follows from `((𝓣).toAnn_coe _).symm`.
+A detailed English derivation is pending.
 -/
 theorem awayToAnn_eq_toAnn (z : 𝔸) : awayToAnn ρ0 σ0 z = (𝓣).toAnn ρ0 σ0 (awayToExt p ρ0 z) :=
   ((𝓣).toAnn_coe _).symm
 
 /- English proof (translation)
-The claim follows from `σ0.2.1.trans_le r.2.1`.
+A detailed English derivation is pending.
 -/
 theorem rad_pos' (r : AnnRad ρ0 σ0) : (0 : ℝ) < r := σ0.2.1.trans_le r.2.1
 
 /- English proof (translation)
-The claim follows from `r.2.2.trans_lt ρ0.2.2`.
+A detailed English derivation is pending.
 -/
 theorem rad_lt_one' (r : AnnRad ρ0 σ0) : (r : ℝ) < 1 := r.2.2.trans_lt ρ0.2.2
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (awayToAnn ρ0 σ0) p, annNorm_awayToAnn]`. Conclude with `gn_natCast_p (rad_pos' r)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annNorm_awayToAnn_natCast_p (r : AnnRad ρ0 σ0) :
     (𝓣).annNorm ρ0 σ0 r (p : (𝓣).Ann ρ0 σ0) = r := by
@@ -188,7 +184,7 @@ theorem annNorm_awayToAnn_natCast_p (r : AnnRad ρ0 σ0) :
   exact gn_natCast_p (rad_pos' r)
 
 /- English proof (translation)
-Establish `h : IsUnit (p : 𝔸)`. Use `IsLocalization.Away.algebraMap_isUnit (S := 𝔸) (p : AInf ℂ_[p] p)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `h.map (awayToAnn ρ0 σ0)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_natCast_p_ann : IsUnit (p : (𝓣).Ann ρ0 σ0) := by
   have h : IsUnit (p : 𝔸) := by
@@ -201,13 +197,13 @@ variable (hσ : (p : ℝ)⁻¹ ≤ σ0)
 include hσ
 
 /- English proof (translation)
-Rewrite using `[norm_natCast_p]`. Conclude with `hσ.trans r.2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_p_le_rad (r : AnnRad ρ0 σ0) : ‖(p : ℂ_[p])‖ ≤ r := by
   rw [norm_natCast_p]; exact hσ.trans r.2.1
 
 /- English proof (translation)
-Rewrite using `[annNorm_awayToAnn]`. Conclude with `gn_acrisZero_le_one (norm_p_le_rad hσ r) (rad_pos' r) (rad_lt_one' r) hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annNorm_awayToAnn_le_one (r : AnnRad ρ0 σ0) {z : 𝔸} (hz : z ∈ ACrisZero ℂ_[p] p) :
     (𝓣).annNorm ρ0 σ0 r (awayToAnn ρ0 σ0 z) ≤ 1 := by
@@ -215,7 +211,7 @@ theorem annNorm_awayToAnn_le_one (r : AnnRad ρ0 σ0) {z : 𝔸} (hz : z ∈ ACr
   exact gn_acrisZero_le_one (norm_p_le_rad hσ r) (rad_pos' r) (rad_lt_one' r) hz
 
 /- English proof (translation)
-Rewrite using `[← map_sub, annNorm_awayToAnn]`. Conclude with `gn_sub_le_of_mem (norm_p_le_rad hσ r) (rad_lt_one' r) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annNorm_awayToAnn_sub_le (r : AnnRad ρ0 σ0) {c₁ c₂ : ACrisZero ℂ_[p] p} {N : ℕ}
     (h : algebraMap _ (ACris ℂ_[p] p) c₁ - algebraMap _ (ACris ℂ_[p] p) c₂ ∈
@@ -230,7 +226,7 @@ def acrisApprox (a : ACris ℂ_[p] p) (N : ℕ) : ACrisZero ℂ_[p] p := (exists
 
 omit hσ in
 /- English proof (translation)
-The claim follows from `(exists_approx a N).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem acrisApprox_spec (a : ACris ℂ_[p] p) (N : ℕ) :
     a - algebraMap _ (ACris ℂ_[p] p) (acrisApprox a N) ∈ Ideal.span {(p : ACris ℂ_[p] p) ^ N} :=
@@ -238,7 +234,7 @@ theorem acrisApprox_spec (a : ACris ℂ_[p] p) (N : ℕ) :
 
 omit hσ in
 /- English proof (translation)
-Establish `h₂' : a - algebraMap _ (ACris ℂ_[p] p) c₂ ∈ Ideal.span {(p : ACris ℂ_[p] p) ^ M}` using `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ hMN) h₂`. Use `sub_mem h₁ h₂'` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sub_mem_span_of_le {a : ACris ℂ_[p] p} {c₁ c₂ : ACrisZero ℂ_[p] p} {M N : ℕ} (hMN : M ≤ N)
     (h₁ : a - algebraMap _ (ACris ℂ_[p] p) c₁ ∈ Ideal.span {(p : ACris ℂ_[p] p) ^ M})
@@ -251,17 +247,15 @@ theorem sub_mem_span_of_le {a : ACris ℂ_[p] p} {c₁ c₂ : ACrisZero ℂ_[p] 
   rwa [sub_sub_sub_cancel_left] at this
 
 /- English proof (translation)
-The claim follows from `pow_le_pow_left₀ (rad_pos' r).le r.2.2 N`.
+A detailed English derivation is pending.
 -/
 theorem rad_pow_le (r : AnnRad ρ0 σ0) (N : ℕ) : (r : ℝ) ^ N ≤ (ρ0 : ℝ) ^ N :=
   pow_le_pow_left₀ (rad_pos' r).le r.2.2 N
 
 /- English proof (translation)
-Use `(𝓣).exists_limit_ann fun ε hε => ?_` and prove the remaining obligations. Take `⟨J₀, hJ₀⟩` from `exists_pow_lt_of_lt_one hε ρ0.2.2`. Establish `key : ∀ r : AnnRad ρ0 σ0, ∀ J ≥ J₀, ∀ K ≥ J₀, (𝓣).annNorm ρ0 σ0 r (awayToAnn ρ0 σ0 (acrisApprox a J : 𝔸) - awayToAnn ρ0 σ0 (acrisApprox a K : 𝔸)) ≤ ε`. Introduce `r J hJ K hK`. Establish `hle : ∀ M N, M ≤ N → (𝓣).annNorm ρ0 σ0 r (awayToAnn ρ0 σ0 (acrisApprox a N : 𝔸) - awayToAnn ρ0 σ0 (acrisApprox a M : 𝔸)) ≤ (r : ℝ) ^ M` using `fun M N hMN => annNorm_awayToAnn_sub_le hσ r (sub_mem_span_of_le hMN (acrisApprox_spec a M) (acrisApprox_spec a N))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hJ' : (r : ℝ) ^ J₀ ≤ ε` using `((rad_pow_le hσ r J₀).trans hJ₀.le)`. Break down `le_total J K with h | h` into its components or cases. Rewrite using `[(𝓣).annNorm_sub_comm]`. Conclude with `(hle J K h).trans ((pow_le_pow_of_le_one (rad_pos' r).le (rad_lt_one' r).le hJ).trans hJ')`. Conclude with `(hle K J h).trans ((pow_le_pow_of_le_one (rad_pos' r).le (rad_lt_one' r).le hK).trans hJ')`.
-
-Conclude with `⟨J₀, fun J hJ K hK => ⟨key _ J hJ K hK, key _ J hJ K hK⟩⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_acrisLimit (a : ACris ℂ_[p] p) :
     ∃ x : (𝓣).Ann ρ0 σ0, ∀ r : AnnRad ρ0 σ0,
@@ -285,11 +279,9 @@ theorem exists_acrisLimit (a : ACris ℂ_[p] p) :
 def acrisToAnnFun (a : ACris ℂ_[p] p) : (𝓣).Ann ρ0 σ0 := (exists_acrisLimit hσ a).choose
 
 /- English proof (translation)
-Use `set x := acrisToAnnFun hσ a`. Establish `hx` using `(exists_acrisLimit hσ a).choose_spec r`. Establish `hbound : ∀ J ≥ N, (𝓣).annNorm ρ0 σ0 r (x - awayToAnn ρ0 σ0 (c : 𝔸)) ≤ max ((𝓣).annNorm ρ0 σ0 r (awayToAnn ρ0 σ0 (acrisApprox a J : 𝔸) - x)) ((r : ℝ) ^ N)`. Introduce `J hJ`. Establish `e : x - awayToAnn ρ0 σ0 (c : 𝔸) = -(awayToAnn ρ0 σ0 (acrisApprox a J : 𝔸) - x) + (awayToAnn ρ0 σ0 (acrisApprox a J : 𝔸) - awayToAnn ρ0 σ0 (c : 𝔸))` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `((𝓣).annNorm_add_le r _ _).trans (max_le_max (by rw [(𝓣).annNorm_neg]) ?_)` and prove the remaining obligations. Conclude with `annNorm_awayToAnn_sub_le hσ r (sub_mem_span_of_le hJ hc (acrisApprox_spec a J))`. Establish `hlim : Tendsto (fun J => max ((𝓣).annNorm ρ0 σ0 r (awayToAnn ρ0 σ0 (acrisApprox a J : 𝔸) - x)) ((r : ℝ) ^ N)) atTop (𝓝 (max 0 ((r : ℝ) ^ N)))` using `hx.max tendsto_const_nhds`. Rewrite `hlim` using `[max_eq_right (pow_nonneg (rad_pos' r).le N)]`.
-
-Conclude with `ge_of_tendsto hlim (eventually_atTop.2 ⟨N, hbound⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annNorm_acrisToAnnFun_sub_le (a : ACris ℂ_[p] p) {c : ACrisZero ℂ_[p] p} {N : ℕ}
     (hc : a - algebraMap _ (ACris ℂ_[p] p) c ∈ Ideal.span {(p : ACris ℂ_[p] p) ^ N})
@@ -311,7 +303,7 @@ theorem annNorm_acrisToAnnFun_sub_le (a : ACris ℂ_[p] p) {c : ACrisZero ℂ_[p
   exact ge_of_tendsto hlim (eventually_atTop.2 ⟨N, hbound⟩)
 
 /- English proof (translation)
-Establish `h1` using `annNorm_acrisToAnnFun_sub_le hσ a (acrisApprox_spec a 0) r`. Establish `e : acrisToAnnFun hσ a = (acrisToAnnFun hσ a - awayToAnn ρ0 σ0 (acrisApprox a 0 : 𝔸)) + awayToAnn ρ0 σ0 (acrisApprox a 0 : 𝔸)` using `by ring`. Rewrite using `[e]`. Use `((𝓣).annNorm_add_le r _ _).trans (max_le (h1.trans (by rw [pow_zero])) ?_)` and prove the remaining obligations. Conclude with `annNorm_awayToAnn_le_one hσ r (acrisApprox a 0).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem annNorm_acrisToAnnFun_le_one (a : ACris ℂ_[p] p) (r : AnnRad ρ0 σ0) :
     (𝓣).annNorm ρ0 σ0 r (acrisToAnnFun hσ a) ≤ 1 := by
@@ -323,11 +315,9 @@ theorem annNorm_acrisToAnnFun_le_one (a : ACris ℂ_[p] p) (r : AnnRad ρ0 σ0) 
   exact annNorm_awayToAnn_le_one hσ r (acrisApprox a 0).2
 
 /- English proof (translation)
-Establish `key : ∀ r : AnnRad ρ0 σ0, (𝓣).annNorm ρ0 σ0 r (x - acrisToAnnFun hσ a) = 0`. Introduce `r`. Use `le_antisymm (le_of_forall_pos_le_add fun ε hε => ?_) ((𝓣).annNorm_nonneg r _)` and prove the remaining obligations. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hε ρ0.2.2`. Take `⟨c, hc, hx⟩` from `h N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : x - acrisToAnnFun hσ a = (x - awayToAnn ρ0 σ0 (c : 𝔸)) + -(acrisToAnnFun hσ a - awayToAnn ρ0 σ0 (c : 𝔸))` using `by ring`. Rewrite using `[e, zero_add]`. Use `((𝓣).annNorm_add_le r _ _).trans (max_le ((hx r).trans hN.le) ?_)` and prove the remaining obligations. Rewrite using `[(𝓣).annNorm_neg]`. Conclude with `(annNorm_acrisToAnnFun_sub_le hσ a hc r).trans ((rad_pow_le hσ r N).trans hN.le)`.
-
-Conclude with `(𝓣).eq_of_annNorm_sub (key _) (key _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_acrisToAnnFun {a : ACris ℂ_[p] p} {x : (𝓣).Ann ρ0 σ0}
     (h : ∀ N : ℕ, ∃ c : ACrisZero ℂ_[p] p,
@@ -348,7 +338,7 @@ theorem eq_acrisToAnnFun {a : ACris ℂ_[p] p} {x : (𝓣).Ann ρ0 σ0}
   exact (𝓣).eq_of_annNorm_sub (key _) (key _)
 
 /- English proof (translation)
-The claim follows from `(eq_acrisToAnnFun hσ fun N => ⟨c, by rw [sub_self]; exact Ideal.zero_mem _, fun r => by rw [sub_self, (𝓣).annNorm_zero]; exact pow_nonneg ρ0.2.1.le N⟩).symm`.
+A detailed English derivation is pending.
 -/
 theorem acrisToAnnFun_algebraMap (c : ACrisZero ℂ_[p] p) :
     acrisToAnnFun hσ (algebraMap _ (ACris ℂ_[p] p) c) = awayToAnn ρ0 σ0 (c : 𝔸) :=
@@ -409,14 +399,14 @@ Both sides reduce to the same expression.
 theorem acrisToAnn_apply (a : ACris ℂ_[p] p) : acrisToAnn hσ a = acrisToAnnFun hσ a := rfl
 
 /- English proof (translation)
-The claim follows from `acrisToAnnFun_algebraMap hσ c`.
+A detailed English derivation is pending.
 -/
 theorem acrisToAnn_algebraMap (c : ACrisZero ℂ_[p] p) :
     acrisToAnn hσ (algebraMap _ (ACris ℂ_[p] p) c) = awayToAnn ρ0 σ0 (c : 𝔸) :=
   acrisToAnnFun_algebraMap hσ c
 
 /- English proof (translation)
-The claim follows from `annNorm_acrisToAnnFun_sub_le hσ a hc r`.
+A detailed English derivation is pending.
 -/
 theorem annNorm_acrisToAnn_sub_le (a : ACris ℂ_[p] p) {c : ACrisZero ℂ_[p] p} {N : ℕ}
     (hc : a - algebraMap _ (ACris ℂ_[p] p) c ∈ Ideal.span {(p : ACris ℂ_[p] p) ^ N})
@@ -425,7 +415,7 @@ theorem annNorm_acrisToAnn_sub_le (a : ACris ℂ_[p] p) {c : ACrisZero ℂ_[p] p
   annNorm_acrisToAnnFun_sub_le hσ a hc r
 
 /- English proof (translation)
-The claim follows from `eq_acrisToAnnFun hσ h`.
+A detailed English derivation is pending.
 -/
 theorem eq_acrisToAnn {a : ACris ℂ_[p] p} {x : (𝓣).Ann ρ0 σ0}
     (h : ∀ N : ℕ, ∃ c : ACrisZero ℂ_[p] p,
@@ -435,7 +425,7 @@ theorem eq_acrisToAnn {a : ACris ℂ_[p] p} {x : (𝓣).Ann ρ0 σ0}
   eq_acrisToAnnFun hσ h
 
 /- English proof (translation)
-Rewrite using `[map_natCast]`. Conclude with `isUnit_natCast_p_ann`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_acrisToAnn_p : IsUnit (acrisToAnn hσ (p : ACris ℂ_[p] p)) := by
   rw [map_natCast]; exact isUnit_natCast_p_ann
@@ -444,7 +434,7 @@ def bcrisToAnn : BCrisPlus ℂ_[p] p →+* (𝓣).Ann ρ0 σ0 :=
   IsLocalization.Away.lift (p : ACris ℂ_[p] p) (isUnit_acrisToAnn_p hσ)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem bcrisToAnn_algebraMap (a : ACris ℂ_[p] p) :
     bcrisToAnn hσ (algebraMap _ (BCrisPlus ℂ_[p] p) a) = acrisToAnn hσ a :=

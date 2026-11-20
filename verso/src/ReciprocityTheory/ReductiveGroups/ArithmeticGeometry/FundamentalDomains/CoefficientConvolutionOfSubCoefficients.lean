@@ -31,7 +31,7 @@ def bas1 (la : Wt X.Ψ r) : Module.Basis (Fin (Fintype.card X.Ψ)) ℤ (perL X l
 def om1 (la : Wt X.Ψ r) : Fin (Fintype.card X.Ψ) → X.Ψ → ℝ := fun j => ((bas1 X la j : perL X la) : X.Ψ → ℝ)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (bas1 X la j).2`. Consider the case `exact AddSubgroup.mem_toIntSubmodule.mp (bas1 X la j).2`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem basicPeriod_mem (la : Wt X.Ψ r) (j : Fin (Fintype.card X.Ψ)) : om1 X la j ∈ X.periods la := by
   first
@@ -39,7 +39,7 @@ theorem basicPeriod_mem (la : Wt X.Ψ r) (j : Fin (Fintype.card X.Ψ)) : om1 X l
     | exact AddSubgroup.mem_toIntSubmodule.mp (bas1 X la j).2
 
 /- English proof (translation)
-Use `(Module.Basis.ofZLatticeBasis ℝ (perL X la) (bas1 X la)).linearIndependent` as an intermediate fact. Establish `h : ∀ j, (Module.Basis.ofZLatticeBasis ℝ (perL X la) (bas1 X la)) j = om1 X la j` using `fun j => by`. Rewrite using `[Module.Basis.ofZLatticeBasis_apply]`. Both sides reduce to the same expression. Conclude with `(funext h : _ = om1 X la) ▸ this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem basicPeriod_linearIndependent (la : Wt X.Ψ r) : LinearIndependent ℝ (om1 X la) := by
   have := (Module.Basis.ofZLatticeBasis ℝ (perL X la) (bas1 X la)).linearIndependent
@@ -48,15 +48,13 @@ theorem basicPeriod_linearIndependent (la : Wt X.Ψ r) : LinearIndependent ℝ (
   exact (funext h : _ = om1 X la) ▸ this
 
 /- English proof (translation)
-Establish `hK' : (X.chiOrd la : ℝ) * K = X.chiOrd la2 * K2` using `by exact_mod_cast hK`. Simplify using `only [Nat.cast_smul_eq_nsmul]`. Unfold `Data.periods at hp`. Use `AddSubgroup.closure_induction (fun q hq => ?_) ?_ (fun q q' _ _ h1 h2 => ?_) (fun q _ h => ?_) hp` and prove the remaining obligations. Take `⟨a, hca, hia, rfl⟩` from `hq`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨(K2 : E) * a, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [cc] at hca ⊢`. Rewrite using `[map_mul, map_natCast, hca]`. Establish `h2 : IsIntegral ℤ (K2 : E)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := E) (x := (K2 : ℤ)))`. Conclude with `h2.mul hia`. Use function extensionality and compare the values at `τ`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast, Nat.cast_mul, Complex.mul_re, Complex.natCast_re, Complex.natCast_im]`. Take the linear combination `((X.m : ℝ) * (τ.1 a).re) * hK'`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_zero]`. Conclude with `AddSubgroup.zero_mem _`. Rewrite using `[smul_add]`. Conclude with `AddSubgroup.add_mem _ h1 h2`. Rewrite using `[smul_neg]`.
-
-Conclude with `AddSubgroup.neg_mem _ h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_mem (la la2 : Wt X.Ψ r) (K K2 : ℕ) (hK : X.chiOrd la * K = X.chiOrd la2 * K2)
     {p : X.Ψ → ℝ} (hp : p ∈ X.periods la) : (K : ℝ) • p ∈ X.periods la2 := by
@@ -88,11 +86,9 @@ def omc (la la' : Wt X.Ψ r) : Fin (Fintype.card X.Ψ) → X.Ψ → ℝ :=
   fun j => ((X.chiOrd la' * X.chiOrd (la + la') : ℕ) : ℝ) • om1 X la j
 
 /- English proof (translation)
-Establish `hC : ((X.chiOrd la' * X.chiOrd (la + la') : ℕ) : ℝ) ≠ 0`. Establish `h1 : 0 < X.chiOrd la'` using `(X.χ_fin la').choose_spec.1`. Establish `h2 : 0 < X.chiOrd (la + la')` using `(X.χ_fin (la + la')).choose_spec.1`. Establish `h3 : 0 < X.chiOrd la' * X.chiOrd (la + la')` using `Nat.mul_pos h1 h2`. Conclude with `h3.ne'` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(basicPeriod_linearIndependent X la).units_smul (fun _ => Units.mk0 _ hC)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Use `first`. Consider the case `rfl`.
-
-Consider the case `simp [omc, Units.smul_def]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem omc_li (la la' : Wt X.Ψ r) : LinearIndependent ℝ (omc X la la') := by
   have hC : ((X.chiOrd la' * X.chiOrd (la + la') : ℕ) : ℝ) ≠ 0 := by
@@ -108,7 +104,7 @@ theorem omc_li (la la' : Wt X.Ψ r) : LinearIndependent ℝ (omc X la la') := by
     | simp [omc, Units.smul_def]
 
 /- English proof (translation)
-Use `show ((X.chiOrd la' * X.chiOrd (la + la') : ℕ) : ℝ) • om1 X la j ∈ X.periods la`. Simplify using `only [Nat.cast_smul_eq_nsmul]`. Conclude with `AddSubgroup.nsmul_mem _ (basicPeriod_mem X la j) _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scaledPeriod_mem_left (la la' : Wt X.Ψ r) (j : Fin (Fintype.card X.Ψ)) : omc X la la' j ∈ X.periods la := by
   show ((X.chiOrd la' * X.chiOrd (la + la') : ℕ) : ℝ) • om1 X la j ∈ X.periods la
@@ -116,14 +112,14 @@ theorem scaledPeriod_mem_left (la la' : Wt X.Ψ r) (j : Fin (Fintype.card X.Ψ))
   exact AddSubgroup.nsmul_mem _ (basicPeriod_mem X la j) _
 
 /- English proof (translation)
-Use `show ((X.chiOrd la' * X.chiOrd (la + la') : ℕ) : ℝ) • om1 X la j ∈ X.periods la'`. Conclude with `scale_mem X la la' _ (X.chiOrd la * X.chiOrd (la + la')) (by ring) (basicPeriod_mem X la j)`.
+A detailed English derivation is pending.
 -/
 theorem scaledPeriod_mem_right (la la' : Wt X.Ψ r) (j : Fin (Fintype.card X.Ψ)) : omc X la la' j ∈ X.periods la' := by
   show ((X.chiOrd la' * X.chiOrd (la + la') : ℕ) : ℝ) • om1 X la j ∈ X.periods la'
   exact scale_mem X la la' _ (X.chiOrd la * X.chiOrd (la + la')) (by ring) (basicPeriod_mem X la j)
 
 /- English proof (translation)
-Use `show ((X.chiOrd la' * X.chiOrd (la + la') : ℕ) : ℝ) • om1 X la j ∈ X.periods (la + la')`. Conclude with `scale_mem X la (la + la') _ (X.chiOrd la * X.chiOrd la') (by ring) (basicPeriod_mem X la j)`.
+A detailed English derivation is pending.
 -/
 theorem scaledPeriod_mem_sum (la la' : Wt X.Ψ r) (j : Fin (Fintype.card X.Ψ)) :
     omc X la la' j ∈ X.periods (la + la') := by
@@ -131,7 +127,7 @@ theorem scaledPeriod_mem_sum (la la' : Wt X.Ψ r) (j : Fin (Fintype.card X.Ψ)) 
   exact scale_mem X la (la + la') _ (X.chiOrd la * X.chiOrd la') (by ring) (basicPeriod_mem X la j)
 
 /- English proof (translation)
-Rewrite using `[Data.fj, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fj_eq_zero_of_not_freq (la : Wt X.Ψ r) (ξ : Fin r → E) (ν : X.Ψ → ℝ) (P : Frame X.Ψ r → ℂ)
     (x : Frame X.Ψ r) (h : ¬ ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, ν τ * p τ = k) :
@@ -139,7 +135,7 @@ theorem fj_eq_zero_of_not_freq (la : Wt X.Ψ r) (ξ : Fin r → E) (ν : X.Ψ �
   rw [Data.fj, if_neg h]
 
 /- English proof (translation)
-Take `⟨hdet, htri⟩` from `hb τ`. Establish `ht : (mat b τ).BlockTriangular id` using `fun a c h => htri a c h`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular ht]`. Conclude with `Finset.prod_ne_zero_iff.mp hdet i (Finset.mem_univ i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma diag_ne_lemma {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (τ : X.Ψ) (i : Fin r) :
     b τ i i ≠ 0 := by
@@ -149,11 +145,11 @@ private lemma diag_ne_lemma {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (τ : X.�
   exact Finset.prod_ne_zero_iff.mp hdet i (Finset.mem_univ i)
 
 /- English proof (translation)
-Take `⟨hPd, hPb, hPg⟩` from `hP`. Take `⟨hQd, hQb, hQg⟩` from `hQ`. Use `⟨hPd.mul hQd, fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩` and prove the remaining obligations. Establish `hbc : bchar (la + la') b = bchar la b * bchar la' b`. Simplify using `only [bchar, Pi.add_apply, ← Finset.prod_mul_distrib]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `zpow_add₀ (diag_ne_lemma X hb τ i) _ _`. Simplify using `only [Pi.mul_apply, hPb x hx b hb, hQb x hx b hb, hbc]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.mul_apply, hPg γ hγ x hx, hQg γ hγ x hx, X.χ_add la la' γ hγ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sec_mul {la la' : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ} (hP : X.IsSec la P) (hQ : X.IsSec la' Q) :
     X.IsSec (la + la') (P * Q) := by
@@ -174,31 +170,27 @@ section line
 variable {X}
 
 /- English proof (translation)
-Set `W : Matrix (Fin (Fintype.card X.Ψ)) X.Ψ ℝ` to `Matrix.of fun j τ => 2 * ω j τ`. Establish `hA : ∀ ν j, (W.mulVecLin ν) j = 2 * ∑ τ, ν τ * ω j τ`. Introduce `ν j`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, W, Matrix.of_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hspan : Submodule.span ℝ (Set.range ω) = ⊤`. Break down `isEmpty_or_nonempty (Fin (Fintype.card X.Ψ)) with hE | hE` into its components or cases. Establish `h0 : Fintype.card X.Ψ = 0` using `Nat.eq_zero_of_not_pos (fun h => hE.false ⟨0, h⟩)`. Establish `hΨ : IsEmpty X.Ψ` using `Fintype.card_eq_zero_iff.mp h0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subsingleton.elim _ _`. Conclude with `hωi.span_eq_top_of_card_eq_finrank (by simp)`. Establish `hinj : Function.Injective W.mulVecLin`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `ν hν`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∀ j, ∑ τ, ν τ * ω j τ = 0`. Introduce `j`. Establish `h1` using `congrFun hν j`. Rewrite `h1` using `[hA]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `φ : (X.Ψ → ℝ) →ₗ[ℝ] ℝ` to `{ toFun := fun w => ∑ τ, ν τ * w τ map_add' := by`. Introduce `a b`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`. Introduce `c a`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `ring }`. Establish `hle : Submodule.span ℝ (Set.range ω) ≤ LinearMap.ker φ` using `Submodule.span_le.mpr (by`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `LinearMap.mem_ker.mpr (h0 j))`. Establish `hmem : ν ∈ Submodule.span ℝ (Set.range ω)`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Establish `hsq : ∑ τ, ν τ * ν τ = 0` using `LinearMap.mem_ker.mp (hle hmem)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg (fun τ _ => mul_self_nonneg (ν τ))).mp hsq τ (Finset.mem_univ τ)`. Conclude with `mul_self_eq_zero.mp h2`. Establish `hsurj : Function.Surjective W.mulVecLin` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp)).mp hinj`. Set `L` to `LinearEquiv.ofBijective W.mulVecLin ⟨hinj, hsurj⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hL : ∀ ν j, L ν j = 2 * ∑ τ, ν τ * ω j τ` using `fun ν j => hA ν j`. Use `⟨fun k => L.symm (fun j => (k j : ℝ)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k j show 2 * ∑ τ, L.symm (fun j => (k j : ℝ)) τ * ω j τ = k j`. Rewrite using `[← hL, L.apply_symm_apply]`. Introduce `k k' h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h' : L.symm (fun j => (k j : ℝ)) = L.symm (fun j => (k' j : ℝ))` using `h`. Establish `h1` using `L.symm.injective h'`. Use function extensionality and compare the values at `j`. Conclude with `congrFun h1 j` after adjusting the coercions. Introduce `k k' show L.symm (fun j => (((k - k') j : ℤ) : ℝ)) = L.symm (fun j => (k j : ℝ)) - L.symm (fun j => (k' j : ℝ))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (fun j => (((k - k') j : ℤ) : ℝ)) = (fun j => (k j : ℝ)) - (fun j => (k' j : ℝ)) by`. Use function extensionality and compare the values at `j`. Use the proof step `simp]`. Conclude with `map_sub L.symm _ _`. Introduce `ν hν choose n hn using hν`.
-
-Use `⟨n, ?_⟩` and prove the remaining obligations. Use `show L.symm (fun j => (n j : ℝ)) = ν`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use function extensionality and compare the values at `j`. Rewrite using `[hL]`.
-
-Conclude with `(hn j).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_e (ω : Fin (Fintype.card X.Ψ) → X.Ψ → ℝ) (hωi : LinearIndependent ℝ ω) :
     ∃ e : (Fin (Fintype.card X.Ψ) → ℤ) → (X.Ψ → ℝ), (∀ k j, 2 * ∑ τ, e k τ * ω j τ = k j) ∧
@@ -282,11 +274,11 @@ def Om (ξ : Fin r → E) (x : Frame X.Ψ r) (ω : Fin (Fintype.card X.Ψ) → X
   {b | (fun τ => ∑ j, b j * ω j τ) ∈ admissibleImaginary X ξ x}
 
 /- English proof (translation)
-Establish `hc : ∀ (τ : X.Ψ) (i : Fin (r + 1)), Continuous fun b : Fin (Fintype.card X.Ψ) → ℝ => psgn X.p0 i * (lminor (gram τ.1 X.Gm (mat x τ) + ((2 * X.c τ * ∑ j, b j * ω j τ : ℝ) : ℂ) • rk1 X ξ τ (mat x τ)) i).re`. Introduce `τ i`. Use `continuous_const.mul (Complex.continuous_re.comp ?_)` and prove the remaining obligations. Unfold `lminor`. Use `Continuous.matrix_det (Continuous.matrix_submatrix ?_ _ _)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `first`. Consider the case `fun_prop`. Consider the case `exact continuous_const.add ((Complex.continuous_ofReal.comp (continuous_const.mul (continuous_finset_sum _ fun j _ => (continuous_apply j).mul continuous_const))).smul continuous_const)`. Establish `hO : Om ξ x ω = ⋂ (τ : X.Ψ), ⋂ (i : Fin (r + 1)), {b | 0 < psgn X.p0 i * (lminor (gram τ.1 X.Gm (mat x τ) + ((2 * X.c τ * ∑ j, b j * ω j τ : ℝ) : ℂ) • rk1 X ξ τ (mat x τ)) i).re}`. Use extensionality with `b`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Om, admissibleImaginary, Set.mem_setOf_eq, Set.mem_iInter]`. Rewrite using `[hO]`. Conclude with `isOpen_iInter_of_finite fun τ => isOpen_iInter_of_finite fun i => isOpen_lt continuous_const (hc τ i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Om_open (ξ : Fin r → E) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ω : Fin (Fintype.card X.Ψ) → X.Ψ → ℝ) :
     IsOpen (Om ξ x ω) := by
@@ -311,28 +303,28 @@ theorem Om_open (ξ : Fin r → E) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ω : F
     isOpen_lt continuous_const (hc τ i)
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hsubl_lemma_21 {n : ℕ} (σ : E →+* ℂ) (G : Matrix (Fin n) (Fin n) E)
     (u u' w : Fin n → ℂ) : hermC σ G (u - u') w = hermC σ G u w - hermC σ G u' w := by
   simp only [hermC, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hsmull_lemma_22 {n : ℕ} (σ : E →+* ℂ) (G : Matrix (Fin n) (Fin n) E)
     (k : ℂ) (u w : Fin n → ℂ) : hermC σ G (k • u) w = k * hermC σ G u w := by
   simp only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hsubr_lemma_23 {n : ℕ} (σ : E →+* ℂ) (G : Matrix (Fin n) (Fin n) E)
     (v w w' : Fin n → ℂ) : hermC σ G v (w - w') = hermC σ G v w - hermC σ G v w' := by
   simp only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma hsmulr_lemma_24 {n : ℕ} (σ : E →+* ℂ) (G : Matrix (Fin n) (Fin n) E)
     (k : ℂ) (v w : Fin n → ℂ) : hermC σ G v (k • w) = conj k * hermC σ G v w := by
@@ -341,9 +333,9 @@ private lemma hsmulr_lemma_24 {n : ℕ} (σ : E →+* ℂ) (G : Matrix (Fin n) (
   ring
 
 /- English proof (translation)
-Establish `hG : ∀ a b, conj (τ.1 (X.Gm a b)) = τ.1 (X.Gm b a)`. Introduce `a b`. Rewrite using `[← X.Gm_herm a b]`. Use `first`. Consider the case `simp [cc, IsCMField.complexEmbedding_complexConj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [cc, NumberField.IsCMField.complexEmbedding_complexConj]`. Simplify using `only [hermC, map_sum, map_mul, Complex.conj_conj, hG]`. Use `Finset.sum_comm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma hconj_lemma_25 (τ : X.Ψ) (u v : Fin r → ℂ) :
     conj (hermC τ.1 X.Gm u v) = hermC τ.1 X.Gm v u := by
@@ -359,7 +351,7 @@ private lemma hconj_lemma_25 (τ : X.Ψ) (u v : Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `h : τ.1 (herm X.Gm ξ ξ) = hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ)` using `by first`. Consider the case `simp [herm, hermC, Data.emb, cc, map_sum, map_mul, IsCMField.complexEmbedding_complexConj]`. Consider the case `simp [herm, hermC, Data.emb, cc, map_sum, map_mul, NumberField.IsCMField.complexEmbedding_complexConj]`. Rewrite using `[← h, hξ, map_zero]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private lemma huu_lemma_26 {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) :
     hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0 := by
@@ -371,7 +363,7 @@ private lemma huu_lemma_26 {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : 
   rw [← h, hξ, map_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private lemma colmul_lemma_27 (A M : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) :
     col (A * M) a = A *ᵥ col M a := by
@@ -379,7 +371,7 @@ private lemma colmul_lemma_27 (A M : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) :
   simp only [col, Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Data.flowMat, Matrix.of_apply, sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hermC, Data.emb]`. Use `congr 1`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -396,11 +388,11 @@ private lemma flowmv_lemma_28 (ξ : Fin r → E) (τ : X.Ψ) (s : ℂ) (p : Fin 
   ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `hu` using `huu_lemma_26 hξ τ`. Simplify using `only [gram, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, rk1, Matrix.vecMulVec_apply, hv]`. Rewrite using `[colmul_lemma_27, colmul_lemma_27, flowmv_lemma_28, flowmv_lemma_28]`. Simplify using `only [hsubl_lemma_21, hsubr_lemma_23, hsmull_lemma_22, hsmulr_lemma_24, hu]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hconj_lemma_25 τ (col M b) (Data.emb τ.1 ξ)]`. Simplify using `only [map_mul, Complex.conj_I, Complex.conj_ofReal, Complex.conj_conj]`. Establish `hs : (starRingEnd ℂ) s = s - 2 * I * (s.im : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma gramflow_lemma_29 {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) (s : ℂ)
     (M : Matrix (Fin r) (Fin r) ℂ) :
@@ -423,11 +415,11 @@ private lemma gramflow_lemma_29 {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (
   ring
 
 /- English proof (translation)
-Establish `hu` using `huu_lemma_26 hξ τ`. Establish `key : ∀ p, (X.flowMat ξ τ s * X.flowMat ξ τ (-s)) *ᵥ p = p`. Introduce `p`. Rewrite using `[← Matrix.mulVec_mulVec, flowmv_lemma_28, flowmv_lemma_28]`. Simplify using `only [hsubl_lemma_21, hsmull_lemma_22, hu, mul_zero, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinv : X.flowMat ξ τ s * X.flowMat ξ τ (-s) = 1`. Use extensionality with `a b`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h1` using `congrFun (key (Pi.single b 1)) a`. Simplify `h1` using `[Matrix.mulVec, dotProduct, Pi.single_apply, Matrix.one_apply]`. Establish `h2` using `congrArg Matrix.det hinv`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `left_ne_zero_of_mul_eq_one h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma flowdet_lemma_210 {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) (s : ℂ) :
     (X.flowMat ξ τ s).det ≠ 0 := by
@@ -448,11 +440,9 @@ private lemma flowdet_lemma_210 {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (
   exact left_ne_zero_of_mul_eq_one h2
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Use `show (X.flowMat ξ τ (∑ j, s j * (ω j τ : ℂ)) * mat x τ).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (flowdet_lemma_210 hξ τ _) (hx τ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show 0 < psgn X.p0 i * (lminor (gram τ.1 X.Gm (X.flowMat ξ τ (∑ j, s j * (ω j τ : ℂ)) * mat x τ)) i).re`. Establish `h1 : (fun τ => ∑ j, (s j).im * ω j τ) ∈ admissibleImaginary X ξ x` using `hs`. Establish `h2` using `h1 τ i`. Establish `him : (∑ j, s j * (ω j τ : ℂ)).im = ∑ j, (s j).im * ω j τ`. Simplify using `[Complex.im_sum]`.
-
-Rewrite using `[gramflow_lemma_29 hξ τ, him]`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flow_mem_of_tube {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     (ω : Fin (Fintype.card X.Ψ) → X.Ψ → ℝ) {s : Fin (Fintype.card X.Ψ) → ℂ}
@@ -473,7 +463,7 @@ theorem flow_mem_of_tube {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) {x : Fra
     exact h2
 
 /- English proof (translation)
-Use `show (fun τ => ∑ j, (0 : Fin (Fintype.card X.Ψ) → ℝ) j * ω j τ) ∈ admissibleImaginary X ξ x`. Simplify using `only [admissibleImaginary, Set.mem_setOf_eq, Pi.zero_apply, zero_mul, Finset.sum_const_zero, mul_zero, Complex.ofReal_zero, zero_smul, add_zero]`. Introduce `τ i`. Conclude with `(hx τ).2 i`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem zero_mem_Om {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     (ω : Fin (Fintype.card X.Ψ) → X.Ψ → ℝ) : (0 : Fin (Fintype.card X.Ψ) → ℝ) ∈ Om ξ x ω := by
@@ -484,9 +474,9 @@ theorem zero_mem_Om {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) {x : Frame X.
   exact (hx τ).2 i
 
 /- English proof (translation)
-Establish `hF : Differentiable ℂ (fun t : Fin (Fintype.card X.Ψ) → ℂ => X.flow ξ (fun τ => ∑ j, t j * (ω j τ : ℂ)) x)`. Rewrite using `[differentiable_pi]`. Introduce `τ`. Rewrite using `[differentiable_pi]`. Introduce `a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[differentiable_pi]`. Introduce `b`. Simplify using `only [Data.flow, Data.flowMat, mat, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Conclude with `hP.comp hF.differentiableOn (fun t ht => flow_mem_of_tube hξ hx ω ht)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hline_diff {P : Frame X.Ψ r → ℂ} (hP : DifferentiableOn ℂ P X.dom) {ξ : Fin r → E}
     (hξ : herm X.Gm ξ ξ = 0) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ω : Fin (Fintype.card X.Ψ) → X.Ψ → ℝ) :
@@ -504,11 +494,11 @@ theorem hline_diff {P : Frame X.Ψ r → ℂ} (hP : DifferentiableOn ℂ P X.dom
   exact hP.comp hF.differentiableOn (fun t ht => flow_mem_of_tube hξ hx ω ht)
 
 /- English proof (translation)
-Introduce `s hs n`. Use `set p : X.Ψ → ℝ := ∑ j, (n j : ℤ) • ω j with hpdef`. Establish `hp : p ∈ X.periods la` using `AddSubgroup.sum_mem _ fun j _ => AddSubgroup.zsmul_mem _ (hωp j) _`. Establish `hσ : (fun τ => ∑ j, (s + fun k => (n k : ℂ)) j * (ω j τ : ℂ)) = cR X p + fun τ => ∑ j, s j * (ω j τ : ℂ)`. Use function extensionality and compare the values at `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib, cR, hpdef, Finset.sum_apply, Pi.smul_apply]`. Simplify using `only [zsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `hline`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hσ, ← flow_flow X hξ.2.1]`. Conclude with `sec_periodic X la P hP hξ.1 hξ.2.1 hp _ (flow_mem_of_tube hξ.2.1 hx ω hs)`.
+A detailed English derivation is pending.
 -/
 theorem hline_per {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P) {ξ : Fin r → E}
     (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ω : Fin (Fintype.card X.Ψ) → X.Ψ → ℝ)
@@ -534,23 +524,23 @@ theorem hline_per {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P
 end line
 
 /- English proof (translation)
-Introduce `r X la la' P Q hP hQ _ _ ξ hξ x hx ν`. Use `set ω := omc X la la' with hωdef`. Establish `hωi` using `omc_li X la la'`. Take `⟨e, he_k, he_inj, he_sub, he_surj⟩` from `exists_e ω hωi`. Establish `hPQ` using `sec_mul X hP hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cP : ∀ k, X.fj la ξ (e k) P x = fourCoeff (hline X P ξ x ω) 0 k` using `fun k => (hsub r X la P hP ξ hξ x hx ω (scaledPeriod_mem_left X la la') hωi k (e k) (fun j => (he_k k j).symm)).symm`. Establish `cQ : ∀ k, X.fj la' ξ (e k) Q x = fourCoeff (hline X Q ξ x ω) 0 k` using `fun k => (hsub r X la' Q hQ ξ hξ x hx ω (scaledPeriod_mem_right X la la') hωi k (e k) (fun j => (he_k k j).symm)).symm`. Establish `cPQ : ∀ k, X.fj (la + la') ξ (e k) (P * Q) x = fourCoeff (hline X (P * Q) ξ x ω) 0 k` using `fun k => (hsub r X (la + la') (P * Q) hPQ ξ hξ x hx ω (scaledPeriod_mem_sum X la la') hωi k (e k) (fun j => (he_k k j).symm)).symm`. Establish `z : ∀ (la0 : Wt X.Ψ r) (P0 : Frame X.Ψ r → ℂ), (∀ j, ω j ∈ X.periods la0) → ∀ ν' : X.Ψ → ℝ, ν' ∉ Set.range e → X.fj la0 ξ ν' P0 x = 0`. Introduce `la0 P0 hmem ν' hν'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `fj_eq_zero_of_not_freq` to reduce the goal to its premises. Introduce `hfreq`. Apply `hν'` to reduce the goal to its premises. Take `⟨k, hk⟩` from `he_surj ν' (fun j => hfreq _ (hmem j))`. Conclude with `⟨k, hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `he_add : ∀ k k', e (k + k') = e k + e k'` using `fun k k' => by`. Use `he_sub (k + k') k'` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hν : ν ∈ Set.range e`. Take `⟨k0, rfl⟩` from `hν`. Establish `hfm` using `four_mul' (Fintype.card X.Ψ) (Om ξ x ω) (hline X P ξ x ω) (hline X Q ξ x ω) (Om_open ξ hx ω) (hline_diff hP.1 hξ.2.1 hx ω) (hline_diff hQ.1 hξ.2.1 hx ω) (hline_per hP hξ hx ω (scaledPeriod_mem_left X la la')) (hline_per hQ hξ hx ω (scaledPeriod_mem_right X la la')) 0 (zero_mem_Om …`. Establish `hprod : hline X P ξ x ω * hline X Q ξ x ω = hline X (P * Q) ξ x ω` using `rfl`. Rewrite `hfm` using `[hprod, ← cPQ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he_inj.hasSum_iff (fun ν' hν' => by rw [z la P (scaledPeriod_mem_left X la la') ν' hν', zero_mul])]`. Use `hfm using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k'`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← he_sub, cP, cQ]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[z (la + la') (P * Q) (scaledPeriod_mem_sum X la la') ν hν]`. Use `hasSum_zero with ν'` and compare the differences between its conclusion and the goal. Distinguish the cases in `h' : ν' ∈ Set.range e`. Take `⟨k', rfl⟩` from `h'`. Establish `: ν - e k' ∉ Set.range e`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k'', hk''⟩`. Apply `hν` to reduce the goal to its premises. Use `⟨k'' + k', ?_⟩` and prove the remaining obligations. Rewrite using `[he_add, hk'']`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[z la' Q (scaledPeriod_mem_right X la la') _ this, mul_zero]`. Rewrite using `[z la P (scaledPeriod_mem_left X la la') _ h', zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefficientConvolution_of_subCoefficients (hsub : SubCoeffSt (E := E)) : CoefficientConvolution (E := E) := by
   intro r X la la' P Q hP hQ _ _ ξ hξ x hx ν

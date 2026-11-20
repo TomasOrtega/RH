@@ -20,20 +20,20 @@ section Loc
 variable {D : D7} {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE} {M : MtFam D} {C : NChoice D}
   {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E}
 /- English proof (translation)
-Take `⟨Sp, hA, hs⟩` from `hb`. Conclude with `⟨{ Sp with iq_big := fun i z hz => Sp.iq_big i z (h _ hz) }, hA, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem built_anti_alt {big big' : D.what₂.places.Pl → Finset ℂ} {L : LocAll (lay0 D)} (h : ∀ w, big' w ⊆ big w)
     (hb : _root_.GlobalTheory.CoefDuty.BuiltAlt A M C tup big L) : _root_.GlobalTheory.CoefDuty.BuiltAlt A M C tup big' L := by
   obtain ⟨Sp, hA, hs⟩ := hb
   exact ⟨{ Sp with iq_big := fun i z hz => Sp.iq_big i z (h _ hz) }, hA, hs⟩
 /- English proof (translation)
-The claim follows from `let ⟨b, hb⟩ := hP; ⟨b, fun L hL => h L (hb L hL)⟩`.
+A detailed English derivation is pending.
 -/
 theorem eventuallyOfBuilt_mono_withLoc {P Q : D7 → Prop} (h : ∀ L : LocAll (lay0 D), P (withLoc L) → Q (withLoc L))
     (hP : _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData A M C tup P) : _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData A M C tup Q :=
   let ⟨b, hb⟩ := hP; ⟨b, fun L hL => h L (hb L hL)⟩
 /- English proof (translation)
-Take `⟨b1, h1⟩` from `hP`. Take `⟨b2, h2⟩` from `hQ`. Conclude with `⟨fun w => b1 w ∪ b2 w, fun L hL => ⟨h1 L (_root_.GlobalTheory.HeightCounting.Up.PointStatements.built_anti_alt (fun w => Finset.subset_union_left) hL), h2 L (_root_.GlobalTheory.HeightCounting.Up.PointStatements.built_anti_alt (fun w => Finset.subset_union_right) hL)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eventuallyOfBuilt_and {P Q : D7 → Prop} (hP : _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData A M C tup P) (hQ : _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData A M C tup Q) :
     _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData A M C tup fun D' => P D' ∧ Q D' := by
@@ -44,7 +44,7 @@ theorem eventuallyOfBuilt_and {P Q : D7 → Prop} (hP : _root_.GlobalTheory.Coef
     h2 L (_root_.GlobalTheory.HeightCounting.Up.PointStatements.built_anti_alt (fun w => Finset.subset_union_right) hL)⟩⟩
 end Loc
 /- English proof (translation)
-The claim follows from `_root_.Formalism.MainNotions.AdmissibleThreePrime.residual_irreducible_of_theorem_three_prime_alt D ⟨R.a.tieLab, _root_.GlobalTheory.AdmTame.main_alt_alt_alt D R.a.tie0 R.a.a2 R.a.a5 (_root_.GlobalTheory.TieLabAt.main_alt_alt hL D I.P).2.1⟩ R.a.a5 (GlobalTheory.BrauerNesbittIrr.l …`.
+A detailed English derivation is pending.
 -/
 theorem residualIrreducibleGood_of_inputs (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7)
     (I : _root_.GlobalTheory.NRows.LinkedInputs hL D) (R : _root_.GlobalTheory.NRows.PointConditions' D) : AutomorphicSideWildInertia.ResidualIrreducibleGood D :=

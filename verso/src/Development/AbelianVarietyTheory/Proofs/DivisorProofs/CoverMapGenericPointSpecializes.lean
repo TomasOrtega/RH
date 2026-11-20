@@ -18,7 +18,7 @@ namespace GlobalTheory.CoverGenPt
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.comp_apply, V.pb.w, Scheme.Hom.comp_apply]`. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap (𝓞 F) F) ((V.π ≫ Y.str) y).asIdeal = ⊥`. Use `((V.π ≫ Y.str) y).isPrime` as an intermediate fact. Rewrite using `[Ideal.eq_bot_of_prime ((V.π ≫ Y.str) y).asIdeal]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_j_asIdeal_eq_bot (V : Cover Y) (y : V.G) : (V.p (V.j y)).asIdeal = ⊥ := by
   rw [← Scheme.Hom.comp_apply, V.pb.w, Scheme.Hom.comp_apply]
@@ -28,7 +28,7 @@ theorem p_j_asIdeal_eq_bot (V : Cover Y) (y : V.G) : (V.p (V.j y)).asIdeal = ⊥
   exact Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)
 
 /- English proof (translation)
-Rewrite using `[← V.pb.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, V.pb.isoPullback.hom.surjective.range_eq, Set.image_univ, Scheme.Pullback.range_fst]`. Use `⟨IsLocalRing.closedPoint F, PrimeSpectrum.ext (Eq.trans ?_ hx.symm)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap (𝓞 F) F) (IsLocalRing.maximalIdeal F) = ⊥`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_j_of_bot (V : Cover Y) {x : V.X} (hx : (V.p x).asIdeal = ⊥) : x ∈ Set.range V.j := by
   rw [← V.pb.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp,
@@ -40,7 +40,7 @@ theorem mem_range_j_of_bot (V : Cover Y) {x : V.X} (hx : (V.p x).asIdeal = ⊥) 
   exact Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)
 
 /- English proof (translation)
-Introduce `F _ _ Y V`. Establish `h0 : (V.p (genericPoint V.X)).asIdeal = ⊥` using `eq_bot_iff.2 (((PrimeSpectrum.asIdeal_le_asIdeal _ _).2 ((PrimeSpectrum.le_iff_specializes _ _).2 ((genericPoint_specializes (V.j (genericPoint V.G))).map V.p.continuous))).trans (p_j_asIdeal_eq_bot V _).le)`. Take `⟨y, hy⟩` from `mem_range_j_of_bot V h0`. Conclude with `hy ▸ (genericPoint_specializes y).map V.j.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem j_genericPoint_specializes : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y),
     V.j (genericPoint V.G) ⤳ genericPoint V.X := by

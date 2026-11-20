@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.LbElem.JPredDom
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, ha, hb, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem entry_diag_mul {N : ℕ} {a b : GL (Fin N) k} (n : GL (Fin N) k) {α β : Fin N → k}
     (ha : (a : Matrix (Fin N) (Fin N) k) = Matrix.diagonal α)
@@ -25,7 +25,7 @@ theorem entry_diag_mul {N : ℕ} {a b : GL (Fin N) k} (n : GL (Fin N) k) {α β 
   rw [Units.val_mul, Units.val_mul, ha, hb, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Establish `h` using `diag_ne_zero_of_offDiag x (fun i j hij => by rw [hx, Matrix.diagonal_apply_ne _ hij]) i`. Rewrite `h` using `[hx, Matrix.diagonal_apply_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem diag_ne_zero {N : ℕ} {x : GL (Fin N) k} {d : Fin N → k}
     (hx : (x : Matrix (Fin N) (Fin N) k) = Matrix.diagonal d) (i : Fin N) : d i ≠ 0 := by
@@ -33,9 +33,9 @@ theorem diag_ne_zero {N : ℕ} {x : GL (Fin N) k} {d : Fin N → k}
   rwa [hx, Matrix.diagonal_apply_eq] at h
 
 /- English proof (translation)
-Establish `h1 : (x : Matrix (Fin N) (Fin N) k) * Matrix.diagonal (fun i => (d i)⁻¹) = 1`. Rewrite using `[hx, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mul_inv_cancel₀ (diag_ne_zero hx i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_inv_diag {N : ℕ} {x : GL (Fin N) k} {d : Fin N → k}
     (hx : (x : Matrix (Fin N) (Fin N) k) = Matrix.diagonal d) :
@@ -52,7 +52,7 @@ theorem val_inv_diag {N : ℕ} {x : GL (Fin N) k} {d : Fin N → k}
       rw [← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Units.val_pow_eq_pow_val, hx, Matrix.diagonal_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_pow_diag {N : ℕ} {x : GL (Fin N) k} {d : Fin N → k}
     (hx : (x : Matrix (Fin N) (Fin N) k) = Matrix.diagonal d) (r : ℕ) :
@@ -61,14 +61,14 @@ theorem val_pow_diag {N : ℕ} {x : GL (Fin N) k} {d : Fin N → k}
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv₀, map_pow, map_pow, div_pow, div_eq_mul_inv, mul_right_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_conj_up (a b c : k) (r : ℕ) :
     valuation k (a ^ r * c * (b ^ r)⁻¹) = (valuation k a / valuation k b) ^ r * valuation k c := by
   rw [map_mul, map_mul, map_inv₀, map_pow, map_pow, div_pow, div_eq_mul_inv, mul_right_comm]
 
 /- English proof (translation)
-Rewrite using `[← val_conj_up]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_conj_lo (a b c : k) (r : ℕ) :
     valuation k ((b ^ r)⁻¹ * c * a ^ r) = (valuation k a / valuation k b) ^ r * valuation k c := by
@@ -77,9 +77,9 @@ theorem val_conj_lo (a b c : k) (r : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `hp` using `val_pow_diag ht r`. Establish `hq` using `val_inv_diag hp`. Establish `he` using `entry_diag_mul n hp hq`. Use `⟨fun i j hij => ?_, fun i => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[he, h0 i j hij, mul_zero, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, h1, mul_one]`. Conclude with `mul_inv_cancel₀ (pow_ne_zero _ (diag_ne_zero ht i))`. Rewrite using `[he]`. Conclude with `val_conj_up _ _ _ r`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_entries {N : ℕ} {t n : GL (Fin N) k} {d : Fin N → k}
     (ht : (t : Matrix (Fin N) (Fin N) k) = Matrix.diagonal d)
@@ -100,9 +100,9 @@ theorem up_entries {N : ℕ} {t n : GL (Fin N) k} {d : Fin N → k}
     exact val_conj_up _ _ _ r
 
 /- English proof (translation)
-Establish `hp` using `val_pow_diag ht r`. Establish `hq` using `val_inv_diag hp`. Establish `he` using `entry_diag_mul n hq hp`. Use `⟨fun i j hij => ?_, fun i => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[he, h0 i j hij, mul_zero, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, h1, mul_one]`. Conclude with `inv_mul_cancel₀ (pow_ne_zero _ (diag_ne_zero ht i))`. Rewrite using `[he]`. Conclude with `val_conj_lo _ _ _ r`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lo_entries {N : ℕ} {t n : GL (Fin N) k} {d : Fin N → k}
     (ht : (t : Matrix (Fin N) (Fin N) k) = Matrix.diagonal d)
@@ -123,15 +123,15 @@ theorem lo_entries {N : ℕ} {t n : GL (Fin N) k} {d : Fin N → k}
     exact val_conj_lo _ _ _ r
 
 /- English proof (translation)
-The claim follows from `(div_lt_one₀ (lt_of_le_of_lt zero_le' h)).2 h`.
+A detailed English derivation is pending.
 -/
 theorem ratio_lt_one {a b : ValueGroupWithZero k} (h : a < b) : a / b < 1 :=
   (div_lt_one₀ (lt_of_le_of_lt zero_le' h)).2 h
 
 /- English proof (translation)
-Establish `h : ∀ p : Fin N × Fin N, ∃ r : ℕ, p.1 < p.2 → ∀ r' : ℕ, r ≤ r' → (valuation k (d p.1) / valuation k (d p.2)) ^ r' < γ`. Introduce `p`. Distinguish the cases in `hp : p.1 < p.2`. Establish `h1` using `ratio_lt_one (hinc _ _ hp)`. Establish `h2 : valuation k (d p.1) / valuation k (d p.2) ≠ 0` using `div_ne_zero ((Valuation.ne_zero_iff _).2 (hd _)) ((Valuation.ne_zero_iff _).2 (hd _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `GlobalTheory.CompanionTheory.CongruenceBasis.exists_pow_succ_lt h2 h1 hγ`. Conclude with `⟨m + 1, fun _ r' hr' => lt_of_le_of_lt (pow_le_pow_of_le_one zero_le' h1.le hr') hm⟩`. Conclude with `⟨0, fun h => absurd h hp⟩`. Use `choose f hf using h`. Conclude with `⟨Finset.univ.sup f, fun i j hij => hf (i, j) hij _ (Finset.le_sup (Finset.mem_univ _))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_contract {N : ℕ} {d : Fin N → k} (hd : ∀ i, d i ≠ 0)
     (hinc : ∀ i j : Fin N, i < j → valuation k (d i) < valuation k (d j))
@@ -152,9 +152,9 @@ theorem exists_contract {N : ℕ} {d : Fin N → k} (hd : ∀ i, d i ≠ 0)
   exact ⟨Finset.univ.sup f, fun i j hij => hf (i, j) hij _ (Finset.le_sup (Finset.mem_univ _))⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use `haveI : Subsingleton (Fin (ones N a)) := by show Subsingleton (Fin 1) infer_instance`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `rfl : i = j` from `Subsingleton.elim i j`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, Matrix.mul_apply, Pi.mul_apply]`. Rewrite using `[Fintype.sum_subsingleton _ i, Fintype.sum_subsingleton _ i, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_comm {N : ℕ} (s x : Levi k (Bl (ones N))) : s * x = x * s := by
   funext a
@@ -168,9 +168,9 @@ theorem levi_comm {N : ℕ} (s x : Levi k (Bl (ones N))) : s * x = x * s := by
   rw [Fintype.sum_subsingleton _ i, Fintype.sum_subsingleton _ i, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`. Rewrite using `[Matrix.diagonal_apply_ne _ h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tor_offDiag (⟨s, rfl⟩ : torEmb k N s ∈ Tor k N) h`.
+A detailed English derivation is pending.
 -/
 theorem torEmb_diag {N : ℕ} (s : Levi k (Bl (ones N))) :
     ((torEmb k N s : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) =
@@ -183,9 +183,7 @@ theorem torEmb_diag {N : ℕ} (s : Levi k (Bl (ones N))) :
     exact tor_offDiag (⟨s, rfl⟩ : torEmb k N s ∈ Tor k N) h
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[h1, Matrix.one_apply_eq, sub_self, map_zero]`. Conclude with `zero_le'`. Rewrite using `[Matrix.one_apply_ne h, sub_zero]`.
-
-Conclude with `h2 i j h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_one_le {N : ℕ} {x : GL (Fin N) k} {γ : ValueGroupWithZero k}
     (h1 : ∀ i, (x : Matrix (Fin N) (Fin N) k) i i = 1)
@@ -199,7 +197,7 @@ theorem sub_one_le {N : ℕ} {x : GL (Fin N) k} {γ : ValueGroupWithZero k}
     exact h2 i j h
 
 /- English proof (translation)
-Establish `hne : algebraMap 𝒪[k] k (Zls.unif k) ≠ 0` using `(map_ne_zero_iff (algebraMap 𝒪[k] k) (IsFractionRing.injective 𝒪[k] k)).2 Zls.irreducible_unif.ne_zero`. Take `⟨M, -, hsub⟩` from `GlobalTheory.CompanionTheory.CongruenceBasis.exists_congruence_subset k N _ hne GlobalTheory.CompanionTheory.CongruenceBasis.val_unif_lt_one GlobalTheory.CompanionTheory.CongruenceBasis.val_le_val_unif U (hU.mem_nhds h1)`. Conclude with `⟨_, (Valuation.ne_zero_iff _).2 (pow_ne_zero M hne), fun g hg => hsub hg⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_value_subset {N : ℕ} {U : Set (GL (Fin N) k)} (hU : IsOpen U) (h1 : (1 : GL (Fin N) k) ∈ U) :
     ∃ γ : ValueGroupWithZero k, γ ≠ 0 ∧ ∀ g : GL (Fin N) k, (∀ i j,

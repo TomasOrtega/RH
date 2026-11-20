@@ -13,9 +13,9 @@ open Formalism.TwoAdicCyclotomicDecomposition
 namespace Frob
 
 /- English proof (translation)
-Introduce `x`. Establish `h1 : ρ • (τ • x) - τ • x ∈ Q` using `hρ (τ • x)`. Establish `h2` using `hτ x`. Apply the tactic sequence `try simp only [MulSemiringAction.toAlgHom_apply] at h2 ⊢`. Rewrite using `[mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `Q.add_mem h1 h2`. Rewrite `h3` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem frob_mul_inertia {S : Type*} [CommRing S] {G : Type*} [Group G] [MulSemiringAction G S]
     [SMulCommClass G ℤ S] (Q : Ideal S) (ρ τ : G) (hρ : ρ ∈ Q.inertia G)
@@ -31,37 +31,33 @@ theorem frob_mul_inertia {S : Type*} [CommRing S] {G : Type*} [Group G] [MulSemi
 end Frob
 
 /- English proof (translation)
-Introduce `e q d hqd L _ _ ζ a b h p _ hp2 hpq hpd P _ _`. Take `⟨hEgal, -, hmulE, hbijE⟩` from `hGal e q d hqd L ζ a b h`. Take `⟨hLgal, -, hmulL, hbijL⟩` from `layerGalois (e + 2) q d (by omega) hqd L ζ a b h`. Use `hEgal` as an intermediate fact. Use `hLgal` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨Q, hQp, hQl⟩⟩ : Nonempty (P.primesOver (𝓞 L))` from `inferInstance`. Establish `: Q.LiesOver (span {(p : ℤ)})` using `Ideal.LiesOver.trans Q P (span {(p : ℤ)})`. Establish `hFr` using `layerFrob (e + 2) q d (by omega) hqd L ζ a b h p hp2 hpq hpd Q`. Take `⟨⟨τ, hτ⟩, hτspec⟩` from `hFr`. Take `⟨hτ1, hτ2, hτ3⟩` from `(hτspec τ).mp hτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hgm1 : galMap h.1 a b (1 : Gal(L/ℚ)) = 1`. Use `hmulL 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(mul_eq_left.mp this.symm)`. Establish `hIQ : ∀ ρ ∈ Q.inertia Gal(L/ℚ), ρ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ hρ`. Establish `hF` using `Frob.frob_mul_inertia Q ρ τ hρ hτ`. Take `⟨h1, h2, h3⟩` from `(hτspec (ρ * τ)).mp hF`. Establish `heq : galMap h.1 a b (ρ * τ) = galMap h.1 a b τ`. Use `Prod.ext (Units.ext (h1.trans hτ1.symm)) (Prod.ext ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Units.ext (h2.trans hτ2.symm)`. Conclude with `Units.ext (h3.trans hτ3.symm)`. Rewrite `heq` using `[hmulL, mul_eq_right]`. Conclude with `hbijL.1 (heq.trans hgm1.symm)`. Establish `heQ : Q.ramificationIdx ℤ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← odd_card L p Q]`. Establish `: Q.inertia Gal(L/ℚ) = ⊥` using `(Subgroup.eq_bot_iff_forall _).mpr hIQ`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `heP : P.ramificationIdx ℤ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hte` using `Ideal.ramificationIdx_tower (R := ℤ) P Q`. Rewrite `hte` using `[heQ]`. Conclude with `Nat.eq_one_of_mul_eq_one_right hte.symm`. Establish `hIP : ∀ σ ∈ P.inertia Gal(hostE ζ a b/ℚ), σ = 1`. Establish `hc` using `odd_card (hostE ζ a b) p P`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hc` using `[heP, Nat.card_eq_one_iff_unique]`. Introduce `σ hσ`. Establish `: (⟨σ, hσ⟩ : P.inertia Gal(hostE ζ a b/ℚ)) = ⟨1, one_mem _⟩` using `hc.1.elim _ _`. Conclude with `congrArg Subtype.val this`. Set `σ₀ : Gal(hostE ζ a b/ℚ)` to `τ.restrictNormal (hostE ζ a b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hσ₀ : ∀ x : hostE ζ a b, ((σ₀ x : hostE ζ a b) : L) = τ x` using `fun x => AlgEquiv.restrictNormal_commutes τ (hostE ζ a b) x`. Establish `hσ₀F : IsArithFrobAt ℤ σ₀ P`. Introduce `x`. Establish `hx` using `hτ (algebraMap (𝓞 (hostE ζ a b)) (𝓞 L) x)`. Rewrite `hx` using `[odd_card_under p Q]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[odd_card_under p P]`. Rewrite using `[Ideal.over_def Q P, Ideal.under_def, Ideal.mem_comap]`. Use `hx using 1` and compare the differences between its conclusion and the goal. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Simplify using `only [map_sub, map_pow, MulSemiringAction.toAlgHom_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use `show (((σ₀ • x : 𝓞 (hostE ζ a b)) : hostE ζ a b) : L) = τ (((x : 𝓞 (hostE ζ a b)) : hostE ζ a b) : L)`. Conclude with `hσ₀ x`. Establish `hval` using `(hSpec e q d hqd L ζ a b h σ₀).2.2.2 τ hσ₀`. Establish `hgalE1 : galE e ζ a b (1 : Gal(hostE ζ a b/ℚ)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `hmulE 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(mul_eq_left.mp this.symm)`. Establish `huniq : ∀ σ : Gal(hostE ζ a b/ℚ), IsArithFrobAt ℤ σ P → σ = σ₀`. Introduce `σ hσ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hIP _ (hσ.mul_inv_mem_inertia hσ₀F)` as an intermediate fact. Conclude with `mul_inv_eq_one.mp this`. Use `⟨⟨σ₀, hσ₀F⟩, fun σ => ⟨fun hσ => ?_, fun hs => ?_⟩, fun σ => ⟨fun hσ => ?_, fun hσ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[huniq σ hσ, hval]`. Conclude with `⟨hτ2, hτ3, (galMap h.1 a b τ).1, hτ1, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨s1, s2, u, hu, hu2⟩` from `hs`. Establish `: σ = σ₀`. Apply `hbijE.1` to reduce the goal to its premises. Rewrite using `[hval]`. Use `Prod.ext (Prod.ext ?_ ?_) ?_` and prove the remaining obligations.
-
-Conclude with `Units.ext (s1.trans hτ2.symm)`. Conclude with `Units.ext (s2.trans hτ3.symm)`. Rewrite using `[hu2]`. Conclude with `congrArg (hcl e) (Units.ext (hu.trans hτ1.symm))`. Rewrite using `[this]`.
-
-Conclude with `hσ₀F`. Conclude with `hIP σ (AddSubgroup.mem_inertia.mpr hσ)`. Substitute `hσ` using the available equality. Introduce `x`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem hostFrob_of (hGal : HostGalois) (hSpec : HostGalSpec) : HostFrob := by
   intro e q d hqd L _ _ ζ a b h p _ hp2 hpq hpd P _ _

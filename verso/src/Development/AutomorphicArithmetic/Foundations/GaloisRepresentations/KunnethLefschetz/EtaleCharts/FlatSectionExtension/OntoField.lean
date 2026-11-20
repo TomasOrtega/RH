@@ -7,11 +7,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Set `φ : Γ(V, ⊤) →+* V.presheaf.stalk x` to `(V.presheaf.germ ⊤ x trivial).hom`. Establish `hle : Ideal.span (Set.range v) ≤ (IsLocalRing.maximalIdeal (V.presheaf.stalk x)).comap φ`. Rewrite using `[Ideal.span_le]`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Use `hn k` as an intermediate fact. Rewrite `this` using `[Scheme.mem_basicOpen_top]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 this`. Rewrite `hle` using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : Γ(V, ⊤)) ∈ (IsLocalRing.maximalIdeal (V.presheaf.stalk x)).comap φ` using `hle trivial`. Establish `h2 : φ 1 ∈ IsLocalRing.maximalIdeal (V.presheaf.stalk x)` using `h1`. Rewrite `h2` using `[map_one]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 h2 isUnit_one`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_basicOpen_of_span {V : Scheme.{0}} {d : ℕ} (v : Fin d → Γ(V, ⊤))
     (h : Ideal.span (Set.range v) = ⊤) (x : V) : ∃ k, x ∈ V.basicOpen (v k) := by
@@ -31,9 +31,9 @@ private theorem exists_basicOpen_of_span {V : Scheme.{0}} {d : ℕ} (v : Fin d �
   exact (IsLocalRing.mem_maximalIdeal _).1 h2 isUnit_one
 
 /- English proof (translation)
-Establish `h0 : IsUnit ((V.presheaf.map (homOfLE (V.basicOpen_le s)).op).hom s)` using `RingedSpace.isUnit_res_basicOpen _ _`. Establish `hle : ⊤ ≤ U.ι ⁻¹ᵁ V.basicOpen s`. Introduce `z _`. Conclude with `hU z.2`. Establish `h1 : U.ι.appTop = V.presheaf.map (homOfLE (V.basicOpen_le s)).op ≫ U.ι.appLE (V.basicOpen s) ⊤ hle`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.map_appLE]`. Conclude with `Scheme.Hom.app_eq_appLE U.ι`. Rewrite using `[h1]`. Conclude with `h0.map (U.ι.appLE (V.basicOpen s) ⊤ hle).hom`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_restrict {V : Scheme.{0}} (s : Γ(V, ⊤)) (U : V.Opens) (hU : U ≤ V.basicOpen s) :
     IsUnit (U.ι.appTop.hom s) := by
@@ -49,7 +49,7 @@ private theorem isUnit_restrict {V : Scheme.{0}} (s : Γ(V, ⊤)) (U : V.Opens) 
   exact h0.map (U.ι.appLE (V.basicOpen s) ⊤ hle).hom
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem uV_congr {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)}
     {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) (α : B.ι) (k : Fin d)
@@ -58,23 +58,23 @@ private theorem uV_congr {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶
   subst e; rfl
 
 /- English proof (translation)
-Introduce `K _ W Z Y q i π D d B T j r hsq v hv V a₀ v₀ x`. Take `⟨U₀, α, a₁, hx₀, ha₁⟩` from `sigmaLocal (fun α : B.ι => (oW B α : Scheme.{0})) a₀ x`. Take `⟨k, hk⟩` from `exists_basicOpen_of_span v₀.1 v₀.2 x`. Set `U : V.Opens` to `U₀ ⊓ V.basicOpen (v₀.1 k)`. Take `⟨e, he⟩` from `isUnit_restrict (v₀.1 k) U inf_le_right`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `a₂ : (U : Scheme.{0}) ⟶ (oW B α : Scheme.{0})` to `V.homOfLE (inf_le_left : U ≤ U₀) ≫ a₁`. Set `p : (U : Scheme.{0}) ⟶ W` to `a₂ ≫ (oW B α).ι`. Establish `hp : ⊤ ≤ (p ≫ i) ⁻¹ᵁ B.V α`. Introduce `z _`. Establish `hz : (a₂ z).1 ∈ oW B α` using `(a₂ z).2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hz`. Set `w : Fin d → Γ((U : Scheme.{0}), ⊤)` to `fun m => (↑e⁻¹ : Γ((U : Scheme.{0}), ⊤)) * U.ι.appTop.hom (v₀.1 m)`. Establish `hwk : w k = 1`. Express the relevant statement in the definitionally equal form `(↑e⁻¹ : Γ((U : Scheme.{0}), ⊤)) * U.ι.appTop.hom (v₀.1 k) = 1`. Rewrite using `[← he]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `e.inv_mul`. Take `⟨y, hy, hyr, huv⟩` from `chartLift B j r hsq α k p hp w hwk`. Establish `hrange : Set.range y ⊆ Set.range (oT B j (α, k)).ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : (y ≫ j) z ∈ (B.c α).C k` using `hy (Set.mem_univ z)`. Rewrite `hz` using `[Scheme.Hom.comp_apply]`. Conclude with `hz`. Set `y₁ : (U : Scheme.{0}) ⟶ (oT B j (α, k) : Scheme.{0})` to `IsOpenImmersion.lift (oT B j (α, k)).ι y hrange`. Establish `hy₁ : y₁ ≫ (oT B j (α, k)).ι = y` using `IsOpenImmersion.lift_fac _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h', hv', -, hrho⟩` from `pieceFacts B j r hsq.w v hv (α, k) y₁`. Establish `hpath : (y₁ ≫ tI B j (α, k)) ≫ eP B j ≫ j = y ≫ j`. Establish `: tI B j (α, k) ≫ eP B j = (oT B j (α, k)).ι`. Simplify using `[tI, eP]`. Rewrite using `[← hy₁, Category.assoc, reassoc_of% this, Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap : y₁ ≫ rhoC B j r hsq.w (α, k) = a₂`. Rewrite using `[← cancel_mono (oW B α).ι]`. Establish `: rhoC B j r hsq.w (α, k) ≫ (oW B α).ι = (oT B j (α, k)).ι ≫ r` using `IsOpenImmersion.lift_fac _ _ _`. Rewrite using `[Category.assoc, this, reassoc_of% hy₁, hyr]`. Use `⟨U, y₁ ≫ tI B j (α, k), e⁻¹, ⟨hx₀, hk⟩, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrho, hmap]`. Establish `hι : U.ι ≫ a₀ = V.homOfLE (inf_le_left : U ≤ U₀) ≫ U₀.ι ≫ a₀`. Rewrite using `[← Category.assoc, Scheme.homOfLE_ι]`. Rewrite using `[hι, ha₁]`. Simplify using `only [a₂, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hv', uV_congr B α k hpath h' hy, huv]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.ontoField :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) {T : Scheme.{0}} (j : T ⟶ Y) (r : T ⟶ W) (hsq : IsPullback j r π i) (v : Fin d → Γ(TP B j, ⊤)), IsV B j v → ∀ {V : Scheme.{0}} (a₀ : V ⟶ WP B) (v₀ : Um d Γ(V, ⊤)) (x : V), ∃ (U : V.Opens) (a : (U : Scheme.{0}) ⟶ TP B j) (u : (Γ((U : Scheme.{0}), ⊤))ˣ), x ∈ U ∧ a ≫ rhoP B j r hsq.w = U.ι ≫ a₀ ∧ a.appTop.hom ∘ v = (u : Γ((U : Scheme.{0}), ⊤)) • (U.ι.appTop.hom ∘ v₀.1) := by

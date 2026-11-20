@@ -71,7 +71,7 @@ variable {R : Type*} [CommRing R]
   (he : Continuous e) (he' : Continuous e.symm)
 
 /- English proof (translation)
-Introduce `g n` and use `by rw [hσ, MulEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem symm_rel (hσ : ∀ g n, σ' g n = σ (e g) n) : ∀ g n, σ g n = σ' (e.symm g) n := fun g n => by
   rw [hσ, MulEquiv.apply_symm_apply]
@@ -107,9 +107,9 @@ def eq2 (hσ : ∀ g n, σ' g n = σ (e g) n) : H2 σ ≃ₗ[R] H2 σ' :=
 end Equiv
 
 /- English proof (translation)
-Establish `key : (⇑b' ∘ ⇑eA) = ⇑(LinearEquiv.arrowCongr eB eC) ∘ ⇑b`. Use function extensionality and compare the values at `a`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, LinearEquiv.arrowCongr_apply]`. Rewrite using `[← h, LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Function.Bijective (⇑(LinearEquiv.arrowCongr eB eC) ∘ ⇑b)` using `key ▸ hb.comp eA.bijective`. Conclude with `(LinearEquiv.bijective _).of_comp_iff' _ |>.1 h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_of_conj {R : Type*} [CommRing R] {A B C A' B' C' : Type*}
     [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B] [AddCommGroup C] [Module R C]
@@ -126,17 +126,17 @@ theorem bijective_of_conj {R : Type*} [CommRing R] {A B C A' B' C' : Type*}
   exact (LinearEquiv.bijective _).of_comp_iff' _ |>.1 h2
 
 /- English proof (translation)
-Introduce `R _ _ _ Γ Γ' _ _ _ _ M _ _ _ _ _ e he he' χ ρ h h' H`. Establish `hA : ∀ g m, ((ρ.comp e.toMonoidHom).comp (MonoidHom.id Γ')) g m = (ρ.comp (MonoidHom.id Γ)) (e g) m` using `fun _ _ => rfl`. Establish `hB : ∀ g φ, ((twDual (χ.comp e.toMonoidHom) (ρ.comp e.toMonoidHom)).comp (MonoidHom.id Γ')) g φ = ((twDual χ ρ).comp (MonoidHom.id Γ)) (e g) φ`. Introduce `g φ`. Use `TDual.ext fun m => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[twDual_apply, map_inv]`. Establish `hC : ∀ g x, ((charRep (χ.comp e.toMonoidHom)).comp (MonoidHom.id Γ')) g x = ((charRep χ).comp (MonoidHom.id Γ)) (e g) x` using `fun _ _ => rfl`. Set `E0A` to `eq0 _ _ e hA`. Set `E0B` to `eq0 _ _ e hB`. Set `FrameLocalData` to `eq1 _ _ e he he' hA`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `E1B` to `eq1 _ _ e he he' hB`. Set `E2A` to `eq2 _ _ e he he' hA`. Set `E2B` to `eq2 _ _ e he he' hB`. Set `E2C` to `eq2 _ _ e he he' hC`. Establish `c02 : ∀ m y, cupH0H2TwistedDual (χ.comp e.toMonoidHom) (ρ.comp e.toMonoidHom) (MonoidHom.id _) (E0A m) (E2B y) = E2C (cupH0H2TwistedDual χ ρ (MonoidHom.id _) m y)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `m y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H f => rfl`. Establish `c11 : ∀ y x, cupH1H1TwistedDual (χ.comp e.toMonoidHom) (ρ.comp e.toMonoidHom) (MonoidHom.id _) (h'.comp' continuous_id) (E1B y) (FrameLocalData x) = E2C (cupH1H1TwistedDual χ ρ (MonoidHom.id _) (h.comp' continuous_id) y x)`. Introduce `y x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H f`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H f' => rfl`. Establish `c20 : ∀ x m, cup20 (χ.comp e.toMonoidHom) (ρ.comp e.toMonoidHom) (MonoidHom.id _) (E2A x) (E0B m) = E2C (cup20 χ ρ (MonoidHom.id _) x m)`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Introduce `x m`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H f => rfl`. Take `⟨⟨j⟩, b02, b11, b11', b20⟩` from `H`. Use `⟨⟨(eq2 (charRep χ) (charRep (χ.comp e.toMonoidHom)) e he he' (fun _ _ => rfl)).trans j⟩, bijective_of_conj _ _ E0A E2B E2C c02 b02, bijective_of_conj _ _ E1B FrameLocalData E2C c11 b11, bijective_of_conj _ _ FrameLocalData E1B E2C (fun x y => by simp only [LinearMap.flip_apply]; …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem dualityClauses_of_mulEquiv : ∀ (R : Type) [CommRing R] [TopologicalSpace R] [DiscreteTopology R] (Γ Γ' : Type) [Group Γ] [TopologicalSpace Γ] [Group Γ'] [TopologicalSpace Γ'] (M : Type) [AddCommGroup M] [Module R M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (e : Γ' ≃* Γ), Continuous e → Continuous e.symm → ∀ (χ : Γ →* Rˣ) (ρ : Representation R Γ M) (h : ContAction ρ) (h' : ContAction (ρ.comp e.toMonoidHom)), (Nonempty (H2 (charRep (χ.comp e.toMonoidHom)) ≃ₗ[R] R) ∧ Function.Bijective (cupH0H2TwistedDual (χ.comp e.toMonoidHom) (ρ.comp e.toMonoidHom) (MonoidHom.id _)) ∧ Function.Bijective (cupH1H1TwistedDual (χ.comp e.toMonoidHom) (ρ.comp e.toMonoidHom) (MonoidHom.id _) (h'.comp' continuous_id)) ∧ Function.Bijective (cupH1H1TwistedDual (χ.comp e.toMonoidHom) (ρ.comp e.toMonoidHom) (MonoidHom.id _) (h'.comp' continuous_id)).flip ∧ Function.Bijective (cup20 (χ.comp e.toMonoidHom) (ρ.comp e.toMonoidHom) (MonoidHom.id _))) → (Nonempty (H2 (charRep χ) ≃ₗ[R] R) ∧ Function.Bijective (cupH0H2TwistedDual χ ρ (MonoidHom.id _)) ∧ Function.Bijective (cupH1H1TwistedDual χ ρ (MonoidHom.id _) (h.comp' continuous_id)) ∧ Function.Bijective (cupH1H1TwistedDual χ ρ (MonoidHom.id _) (h.comp' continuous_id)).flip ∧ Function.Bijective (cup20 χ ρ (MonoidHom.id _))) := by
   intro R _ _ _ Γ Γ' _ _ _ _ M _ _ _ _ _ e he he' χ ρ h h' H

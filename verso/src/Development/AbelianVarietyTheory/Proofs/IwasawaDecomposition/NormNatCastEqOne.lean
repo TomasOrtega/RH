@@ -19,38 +19,36 @@ namespace GlobalTheory.Mem.Col2.TC.AdaptedBases
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `(Formalism.BasicNotions.Examples₂.star_eq_conj D.host x).symm`.
+A detailed English derivation is pending.
 -/
 theorem conj_eq_complexConj (x : D.host.E) : D.host.conj x = IsCMField.complexConj D.host.E x :=
   (Formalism.BasicNotions.Examples₂.star_eq_conj D.host x).symm
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.EigenGenerator.norm_natCast_eq]`. Conclude with `Padic.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd hp.out).2 hk)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_eq_one {p : ℕ} [hp : Fact p.Prime] {k : ℕ} (hk : ¬ p ∣ k) : ‖(k : ℂ_[p])‖ = 1 := by
   rw [GlobalTheory.EigenGenerator.norm_natCast_eq]
   exact Padic.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd hp.out).2 hk)
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.DefiniteMass.unramified_of_isCMUnram D.sp.cm.cmUnram`. Establish `hsd : (⟨L, hL.1, hL.2.1⟩ : GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleHarmonicLattice.Lat D.host.E N).SelfDual`. Introduce `x`. Establish `h3` using `hL.2.2 x`. Use `h3.trans (forall₂_congr fun y _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : stdH D.host.E N y x = GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleHarmonicLattice.stdForm x y`. Unfold `stdH GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleHarmonicLattice.stdForm`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `⟨fun ⟨a, ha⟩ => ⟨a, ha⟩, fun ⟨a, ha⟩ => ⟨a, ha⟩⟩`. Take `⟨γ, hγ, h1, h2⟩` from `GlobalTheory.GenusSelfDual.inGenus_of_selfDual hsd p hp`. Use `⟨LinearMap.toMatrix' γ.toLinearMap, ?_, fun x hx => ?_, fun a => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h` using `hγ (Pi.single b 1) (Pi.single a 1)`. Establish `hr : GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleHarmonicLattice.stdForm (Pi.single b (1 : D.host.E)) (Pi.single a 1) = if a = b then 1 else 0`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleHarmonicLattice.stdForm`. Rewrite using `[Finset.sum_eq_single b]`. Distinguish the cases in `hab : a = b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, Ne.symm hab, hab]`. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `h` using `[hr]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.one_apply, LinearMap.toMatrix'_apply, LinearEquiv.coe_coe, conj_eq_complexConj]`. Rewrite using `[← h]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleHarmonicLattice.stdForm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Take `⟨k, hk, hkx⟩` from `h1 x hx`. Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.1 hkx`. Use `choose c hc using GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleHarmonicLattice.mem_stdMod.1 hy`. Use `⟨k, hk, c, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.toMatrix'_mulVec, Nat.cast_smul_eq_nsmul]`. Rewrite using `[← hyx]`. Establish `: (fun a => (c a : D.host.E)) = y` using `funext hc`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hm : (fun i => LinearMap.toMatrix' γ.toLinearMap i a) ∈ ((GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleHarmonicLattice.Lat.std D.host.E N).map γ).L`. Use `Submodule.mem_map.2 ⟨Pi.single a 1, GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleHarmonicLattice.single_mem_stdMod a, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[LinearMap.toMatrix'_apply]`. Take `⟨k, hk, hkx⟩` from `h2 _ hm`.
-
-Conclude with `⟨k, hk, by rwa [Nat.cast_smul_eq_nsmul]⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unitary_at (p : ℕ) (hp : p.Prime) {N : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (hL : letI := D.host.cmStar; IsSDLat D.host.E N L) :
@@ -111,15 +109,15 @@ namespace GlobalTheory.Mem.Col2.TC.AdaptedBases
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `GlobalTheory.JetTieCompare.exists_tauHom D lam τ`. Unfold `GL3Columns.BasR`. Rewrite using `[hρ]`. Establish `hdet' : (G.map ρ).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_ne_zero ρ).2 hdet`. Use `⟨hdet', fun x hx a => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, c, hc⟩` from `h1 x hx`. Establish `hk1` using `norm_natCast_eq_one (p := p) hk`. Establish `hk0 : (k : ℂ_[p]) ≠ 0` using `fun h => by rw [h, norm_zero] at hk1; exact zero_ne_one hk1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (fun i => ρ (x i)) = (G.map ρ).mulVec ((k : ℂ_[p])⁻¹ • fun a => ρ (c a : D.host.E))`. Use function extensionality and compare the values at `i`. Establish `e` using `congrArg (fun v => ρ (v i)) hc`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, map_natCast] at e`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, eq_inv_mul_iff_mul_eq₀ hk0, e, RingHom.map_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hv, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hdet'), Matrix.one_mulVec, Pi.smul_apply, smul_eq_mul, norm_mul, norm_inv, hk1, inv_one, one_mul]`. Conclude with `GlobalTheory.JetTieCompare.norm_int_le ρ (c a)`. Take `⟨k, hk, hkL⟩` from `h2 a`. Establish `hk1` using `norm_natCast_eq_one (p := p) hk`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk0 : (k : ℂ_[p]) ≠ 0` using `fun h => by rw [h, norm_zero] at hk1; exact zero_ne_one hk1`. Use `⟨1, fun _ => (k : ℂ_[p])⁻¹, fun _ => (k : D.host.E) • fun i => G i a, fun _ => by rw [norm_inv, hk1, inv_one], fun _ => hkL, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, Matrix.map_apply]`. Rewrite using `[inv_mul_cancel_left₀ hk0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basR_of {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (τ : D.what₂.Tau) {N : ℕ}
     (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (G : Matrix (Fin N) (Fin N) D.host.E) (hdet : G.det ≠ 0)
@@ -154,17 +152,17 @@ theorem basR_of {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (τ : D.what
     rw [inv_mul_cancel_left₀ hk0]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv h`.
+A detailed English derivation is pending.
 -/
 theorem dualM_eq_self {N : ℕ} {G : Matrix (Fin N) (Fin N) D.host.E} (h : (G.map D.host.conj).transpose * G = 1) : dualM G = G :=
   Matrix.inv_eq_right_inv h
 
 /- English proof (translation)
-Establish `hs0 : s ≠ 0` using `fun h => by rw [h, norm_zero] at hs; exact zero_ne_one hs`. Take `⟨h0, h1, h2⟩` from `hM`. Use `⟨?_, fun x hx a => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hs0) h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (s • M)⁻¹ = s⁻¹ • M⁻¹`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hs0, one_smul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 h0)]`. Rewrite using `[e, Matrix.smul_mulVec, Pi.smul_apply, smul_eq_mul, norm_mul, norm_inv, hs, inv_one, one_mul]`. Conclude with `h1 x hx a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, r, x, hr, hx, he⟩` from `h2 a`. Use `⟨n, fun k => s * r k, x, fun k => by rw [norm_mul, hs, one_mul]; exact hr k, hx, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, he i, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basR_smul {p : ℕ} [Fact p.Prime] {lam : Qbar →+* ℂ_[p]} {τ : D.what₂.Tau} {N : ℕ}
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {M : Matrix (Fin N) (Fin N) ℂ_[p]} (hM : GL3Columns.BasR D lam τ L M)
@@ -186,9 +184,9 @@ theorem basR_smul {p : ℕ} [Fact p.Prime] {lam : Qbar →+* ℂ_[p]} {τ : D.wh
     exact Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Unfold `AdPl Formalism.BasicNotions.Host.cls at hw`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `[Formalism.BasicNotions.primeClass, h] at hw`. Introduce `h`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hw` using `[h, Formalism.BasicNotions.primeClass_q]`. Simplify using `at hw`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ne_two_ne_q_of_adPl {w : D.what₂.places.Pl} (hw : AdPl D w) :
     D.what₂.places.resChar w ∉ D.host.small ∧ D.what₂.places.resChar w ≠ D.host.q := by
@@ -201,9 +199,9 @@ theorem ne_two_ne_q_of_adPl {w : D.what₂.places.Pl} (hw : AdPl D w) :
     simp at hw
 
 /- English proof (translation)
-Introduce `w hw u μ τ`. Take `⟨h2, hq⟩` from `ne_two_ne_q_of_adPl hw`. Take `⟨M, hM, hemb, hs⟩` from `(O u μ).dgen_gen`. Take `⟨s, hs1, hs2⟩` from `hs τ`. Rewrite using `[← hs1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.EigenGenerator.norm_generator_eq_one D _ (P.lam w) h2 hq M hemb τ s hs2`.
+A detailed English derivation is pending.
 -/
 theorem dgenUnitAd (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D (D.chTw u μ)) : DgenUnitAd P O := by
   intro w hw u μ τ
@@ -214,7 +212,7 @@ theorem dgenUnitAd (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D (
   exact GlobalTheory.EigenGenerator.norm_generator_eq_one D _ (P.lam w) h2 hq M hemb τ s hs2
 
 /- English proof (translation)
-Establish `hp : (D.what₂.places.resChar w).Prime` using `Fact.out`. Use `choose G hG h1 h2 using fun i (c : (D.chTw u μ).cls i) => exists_unitary_at (D := D) (D.what₂.places.resChar w) hp ((O u μ).lat i c).1 ((O u μ).lat i c).2`. Use `⟨fun i c _ => G i c, fun i _ c τ => ?_, fun _ _ _ _ _ _ => rfl, fun i _ c _ _ _ => (dualM_eq_self (hG i c)).symm⟩` and prove the remaining obligations. Conclude with `basR_of (P.lam w) τ _ (G i c) (Matrix.det_ne_zero_of_left_inverse (hG i c)) (h1 i c) (h2 i c)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_sys (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D (D.chTw u μ)) (w : D.what₂.places.Pl) (u : D.what₂.Word)
     (μ : D.what₂.Tup) : ∃ Pm : SysFam D u μ,

@@ -9,55 +9,51 @@ namespace PI.EF
 open Complex DirichletCharacter Filter Topology
 
 /- English proof (translation)
-Introduce `N _ χ hχ x₁ T' H hx₁ hT' hH`. Take `⟨hZ0, hZ0sum⟩` from `hW N χ hχ 0`. Establish `hlog : Real.log (N * (|(0:ℝ)| + 2)) = Real.log (2 * N)`. Rewrite using `[abs_zero, zero_add, mul_comm]`. Establish `hne0 : ∀ ρ ∈ ZerosNear χ 0, ρ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `ρ hρ rfl`. Use `hρ.1` as an intermediate fact. Simplify using `at this`. Establish `hB : (ZerosBelow χ T').Finite`. Use `((Finset.Icc ⌊-T'⌋ ⌊T'⌋).finite_toSet.biUnion (fun k _ => (hW N χ hχ (k : ℝ)).1)).subset ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ρ hρ`. Take `⟨h1, h2, h3, h4⟩` from `hρ`. Rewrite `h3` using `[abs_lt]`. Use `Set.mem_iUnion₂.mpr ⟨⌊ρ.im⌋, ?_, h1, h2, ?_, h4⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_coe, Finset.mem_Icc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Int.floor_mono h3.1.le, Int.floor_mono h3.2.le⟩`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [Int.floor_le ρ.im, Int.lt_floor_add_one ρ.im]`. Establish `hneB : ∀ ρ ∈ ZerosBelow χ T', ρ ≠ 0`. Introduce and unpack `ρ hρ rfl`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `hρ.1` as an intermediate fact. Simplify using `at this`. Establish `hofR : Tendsto (fun ε : ℝ => (ε : ℂ)) (𝓝[>] 0) (𝓝 0)`. Establish `h` using `(Complex.continuous_ofReal.tendsto (0:ℝ)).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))`. Simplify using `using h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0rect : (0 : ℂ) ∈ rect (-1 / 2) x₁ (-T') T'` using `by show (0 : ℂ) ∈ Set.Icc (-1 / 2 : ℝ) x₁ ×ℂ Set.Icc (-T') T'`. Rewrite using `[Complex.mem_reProdIm]`. Simplify using `only [Complex.zero_re, Complex.zero_im, Set.mem_Icc]`. Apply the tactic sequence `constructor <;> constructor <;> linarith`. Establish `hrect : ∀ ε : ℝ, 0 < ε → ε < 1 / 2 → (ε : ℂ) ∈ rect (-1 / 2) x₁ (-T') T'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `ε h1 h2`. Use `show (ε : ℂ) ∈ Set.Icc (-1 / 2 : ℝ) x₁ ×ℂ Set.Icc (-T') T'`. Rewrite using `[Complex.mem_reProdIm]`. Simplify using `only [Complex.ofReal_re, Complex.ofReal_im, Set.mem_Icc]`. Apply the tactic sequence `constructor <;> constructor <;> linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hHt : Tendsto (fun ε : ℝ => ‖H ε - H 0‖) (𝓝[>] 0) (𝓝 0)`. Establish `hc : ContinuousWithinAt H (rect (-1 / 2) x₁ (-T') T') 0` using `hH.1.continuousOn.continuousWithinAt h0rect`. Establish `hr : Tendsto (fun ε : ℝ => (ε : ℂ)) (𝓝[>] 0) (𝓝[rect (-1 / 2) x₁ (-T') T'] 0)`. Use `tendsto_nhdsWithin_iff.mpr ⟨hofR, ?_⟩` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT (show (0:ℝ) < 1 / 2 by norm_num)] with ε hε`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hrect ε hε.1 hε.2`. Use `((hc.tendsto.comp hr).sub_const (H 0)).norm` as an intermediate fact. Simplify using `using this`. Establish `hevZ : ∀ᶠ ε : ℝ in 𝓝[>] 0, (ε : ℂ) ∉ ZerosNear χ 0`. Establish `hc : (ZerosNear χ 0)ᶜ ∈ 𝓝 (0 : ℂ)` using `hZ0.isClosed.isOpen_compl.mem_nhds (fun h => hne0 0 h rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hofR.eventually_mem hc`. Establish `hpt : ∀ᶠ ε : ℝ in 𝓝[>] 0, ‖(∑ᶠ ρ ∈ ZerosBelow χ T', (mult χ ρ : ℂ) / ρ) - H 0‖ ≤ ‖H ε - H 0‖ + ‖(∑ᶠ ρ ∈ ZerosBelow χ T', (mult χ ρ : ℂ) / ρ) + ∑ᶠ ρ ∈ ZerosBelow χ T', (mult χ ρ : ℂ) / ((ε : ℂ) - ρ)‖ + Cl * Real.log (2 * N) + ‖∑ᶠ ρ ∈ ZerosNear χ 0, (mult χ ρ : ℂ) / ((ε : ℂ) - ρ)‖` using `by filter_upwards [Ioo_mem_nhdsGT (show (0:ℝ) < 1 / 2 by norm_num), hevZ] with ε hε hεZ`. Take `⟨hε0, hε1⟩` from `hε`. Establish `hLε : DirichletCharacter.LFunction χ ε ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Apply `hεZ` to reduce the goal to its premises. Use `⟨?_, ?_, ?_, h⟩` and prove the remaining obligations. Simplify using `using hε0`. Simplify using `only [Complex.ofReal_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hε1' : (ε : ℂ) ≠ 1`. Introduce `h`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `only [Complex.ofReal_re, Complex.one_re] at this`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hreg` using `hH.2 ε (hrect ε hε0 hε1) hLε hε1'`. Establish `hloc` using `hL N χ hχ ε (by simp only [Complex.ofReal_re]; linarith) (by simp only [Complex.ofReal_re]; linarith) hLε hε1'`. Simplify using `only [Complex.ofReal_im] at hloc`. Rewrite `hloc` using `[hlog]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (∑ᶠ ρ ∈ ZerosBelow χ T', (mult χ ρ : ℂ) / ρ) - H 0 = (H ε - H 0) + ((∑ᶠ ρ ∈ ZerosBelow χ T', (mult χ ρ : ℂ) / ρ) + ∑ᶠ ρ ∈ ZerosBelow χ T', (mult χ ρ : ℂ) / ((ε : ℂ) - ρ)) - (logDeriv (DirichletCharacter.LFunction χ) ε - (∑ᶠ ρ ∈ ZerosNear χ 0, (mult χ ρ : ℂ) / ((ε : ℂ) - ρ)) …`. Rewrite using `[hreg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Establish `h4 : ∀ a b c d : ℂ, ‖a + b - c - d‖ ≤ ‖a‖ + ‖b‖ + ‖c‖ + ‖d‖` using `fun a b c d =>`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `(h4 _ _ _ _).trans ?_` and prove the remaining obligations. Combine the linear relations using `[hloc]`. Establish `hPt : Tendsto (fun ε : ℝ => ‖(∑ᶠ ρ ∈ ZerosBelow χ T', (mult χ ρ : ℂ) / ρ) + ∑ᶠ ρ ∈ ZerosBelow χ T', (mult χ ρ : ℂ) / ((ε : ℂ) - ρ)‖) (𝓝[>] 0) (𝓝 0)`. Establish `h : Tendsto (fun ε : ℝ => ∑ ρ ∈ hB.toFinset, ((mult χ ρ : ℂ) / ρ + (mult χ ρ : ℂ) / ((ε : ℂ) - ρ))) (𝓝[>] 0) (𝓝 (∑ ρ ∈ hB.toFinset, ((mult χ ρ : ℂ) / ρ + (mult χ ρ : ℂ) / (0 - ρ))))` using `tendsto_finset_sum _ fun ρ hρ => tendsto_const_nhds.add (tendsto_const_nhds.div (hofR.sub_const ρ) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zero_sub, neg_ne_zero]; exact hneB ρ (by simpa using hρ)))`. Establish `h0 : (∑ ρ ∈ hB.toFinset, ((mult χ ρ : ℂ) / ρ + (mult χ ρ : ℂ) / (0 - ρ))) = 0` using `Finset.sum_eq_zero fun ρ _ => by rw [zero_sub, div_neg, add_neg_cancel]`. Rewrite `h` using `[h0]`. Use `h.norm` as an intermediate fact. Rewrite `this` using `[norm_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.congr fun ε => ?_` and prove the remaining obligations. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hB, finsum_mem_eq_finite_toFinset_sum _ hB, Finset.sum_add_distrib]`. Establish `hQt : Tendsto (fun ε : ℝ => ‖∑ᶠ ρ ∈ ZerosNear χ 0, (mult χ ρ : ℂ) / ((ε : ℂ) - ρ)‖) (𝓝[>] 0) (𝓝 ‖∑ ρ ∈ hZ0.toFinset, (mult χ ρ : ℂ) / (0 - ρ)‖)`. Establish `h : Tendsto (fun ε : ℝ => ∑ ρ ∈ hZ0.toFinset, (mult χ ρ : ℂ) / ((ε : ℂ) - ρ)) (𝓝[>] 0) (𝓝 (∑ ρ ∈ hZ0.toFinset, (mult χ ρ : ℂ) / (0 - ρ)))` using `tendsto_finset_sum _ fun ρ hρ => tendsto_const_nhds.div (hofR.sub_const ρ) (by`. Rewrite using `[zero_sub, neg_ne_zero]; exact hne0 ρ (by simpa using hρ))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.norm.congr fun ε => ?_` and prove the remaining obligations. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hZ0]`. Establish `hlim` using `((hHt.add hPt).add (tendsto_const_nhds : Tendsto (fun _ : ℝ => Cl * Real.log (2 * N)) (𝓝[>] 0) _)).add hQt`. Establish `hmain` using `ge_of_tendsto hlim hpt`. Establish `hB1 : ZerosBelow χ 1 ⊆ ZerosNear χ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `ρ ⟨h1, h2, h3, h4⟩`. Conclude with `⟨h1, h2, by rw [sub_zero]; exact h3.le, h4⟩`. Establish `hB1f : (ZerosBelow χ 1).Finite` using `hZ0.subset hB1`. Establish `hQ0 : ‖∑ ρ ∈ hZ0.toFinset, (mult χ ρ : ℂ) / (0 - ρ)‖ ≤ S1 χ + Cw * Real.log (2 * N)`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ∀ ρ, ‖(mult χ ρ : ℂ) / (0 - ρ)‖ = (mult χ ρ : ℝ) / ‖ρ‖` using `fun ρ => by`. Rewrite using `[norm_div, zero_sub, norm_neg, Complex.norm_natCast]`. Simplify using `only [hn]`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not hZ0.toFinset (fun ρ => ρ ∈ ZerosBelow χ 1)]`. Establish `hS1 : S1 χ = ∑ ρ ∈ hZ0.toFinset.filter (fun ρ => ρ ∈ ZerosBelow χ 1), (mult χ ρ : ℝ) / ‖ρ‖`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Unfold `S1`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hB1f]`. Use `congr 1`. Use extensionality with `ρ`. Simplify using `only [Set.Finite.mem_toFinset, Finset.mem_filter]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fun h => ⟨hB1 h, h⟩, fun h => h.2⟩`. Establish `hrest : ∑ ρ ∈ hZ0.toFinset.filter (fun ρ => ρ ∉ ZerosBelow χ 1), (mult χ ρ : ℝ) / ‖ρ‖ ≤ Cw * Real.log (2 * N)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun ρ hρ => ?_` and prove the remaining obligations. Rewrite `hρ` using `[Finset.mem_filter]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hρ1, hρ2⟩` from `hρ`. Establish `hρZ : ρ ∈ ZerosNear χ 0` using `by simpa using hρ1`. Take `⟨h1, h2, h3, h4⟩` from `hρZ`. Establish `him : 1 ≤ |ρ.im|`. Assume the negation of the conclusion as `hlt`.
-
-Use `push_neg at hlt`. Conclude with `hρ2 ⟨h1, h2, hlt, h4⟩`. Conclude with `div_le_self (Nat.cast_nonneg _) (him.trans (Complex.abs_im_le_norm ρ))`. Use `_ ≤ ∑ ρ ∈ hZ0.toFinset, (mult χ ρ : ℝ) := Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) (fun _ _ _ => Nat.cast_nonneg _)`. Use `_ ≤ Cw * Real.log (2 * N) := by`.
-
-Rewrite using `[← hlog, ← finsum_mem_eq_finite_toFinset_sum _ hZ0]`. Conclude with `hZ0sum`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem regAtZero_of {Cw Cl : ℝ} (hW : ZerosWindowWith Cw) (hL : LocalLemma Cl) :
     RegAtZero (Cw + Cl) := by

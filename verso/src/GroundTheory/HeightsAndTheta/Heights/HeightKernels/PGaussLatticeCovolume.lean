@@ -14,9 +14,9 @@ def cols {g : ℕ} (B : Matrix (Fin g) (Fin g) ℝ) : Fin g → EuclideanSpace �
   fun i => WithLp.toLp 2 (B *ᵥ Pi.single i 1)
 
 /- English proof (translation)
-Establish `h` using `Matrix.linearIndependent_cols_of_det_ne_zero hB`. Establish `e : cols B = (WithLp.linearEquiv 2 ℝ (Fin g → ℝ)).symm ∘ B.col`. Use function extensionality and compare the values at `i`. Simplify using `[cols]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.map' _ (LinearEquiv.ker _)`.
+A detailed English derivation is pending.
 -/
 theorem cols_linearIndependent {g : ℕ} {B : Matrix (Fin g) (Fin g) ℝ} (hB : B.det ≠ 0) :
     LinearIndependent ℝ (cols B) := by
@@ -32,14 +32,14 @@ def colBasis {g : ℕ} {B : Matrix (Fin g) (Fin g) ℝ} (hB : B.det ≠ 0) :
   basisOfLinearIndependentOfCardEqFinrank' (cols B) (cols_linearIndependent hB) (by simp)
 
 /- English proof (translation)
-Simplify using `[colBasis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_colBasis {g : ℕ} {B : Matrix (Fin g) (Fin g) ℝ} (hB : B.det ≠ 0) :
     ⇑(colBasis hB) = cols B := by
   simp [colBasis]
 
 /- English proof (translation)
-Rewrite using `[coe_colBasis]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem span_colBasis {g : ℕ} {B : Matrix (Fin g) (Fin g) ℝ} (hB : B.det ≠ 0) :
     Submodule.span ℤ (Set.range (colBasis hB)) = gaussLattice B := by
@@ -51,7 +51,7 @@ def intBasis {g : ℕ} {B : Matrix (Fin g) (Fin g) ℝ} (hB : B.det ≠ 0) :
   ((colBasis hB).restrictScalars ℤ).map (LinearEquiv.ofEq _ _ (span_colBasis hB))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[intBasis, Basis.restrictScalars_apply, coe_colBasis]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coe_intBasis {g : ℕ} {B : Matrix (Fin g) (Fin g) ℝ} (hB : B.det ≠ 0) :
     ((↑) : gaussLattice B → EuclideanSpace ℝ (Fin g)) ∘ intBasis hB = cols B := by
@@ -59,7 +59,7 @@ theorem coe_intBasis {g : ℕ} {B : Matrix (Fin g) (Fin g) ℝ} (hB : B.det ≠ 
   simp [intBasis, Basis.restrictScalars_apply, coe_colBasis]
 
 /- English proof (translation)
-Rewrite using `[Basis.det_apply]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Basis.toMatrix_apply, cols]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_cols {g : ℕ} (B : Matrix (Fin g) (Fin g) ℝ) :
     (EuclideanSpace.basisFun (Fin g) ℝ).toBasis.det (cols B) = B.det := by
@@ -69,7 +69,7 @@ theorem det_cols {g : ℕ} (B : Matrix (Fin g) (Fin g) ℝ) :
   simp [Basis.toMatrix_apply, cols]
 
 /- English proof (translation)
-Rewrite using `[measureReal_congr (ZSpan.fundamentalDomain_ae_parallelepiped _ volume), OrthonormalBasis.coe_toBasis, measureReal_def, (EuclideanSpace.basisFun (Fin g) ℝ).volume_parallelepiped, ENNReal.toReal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem volume_fundamentalDomain_basisFun (g : ℕ) :
     volume.real (ZSpan.fundamentalDomain (EuclideanSpace.basisFun (Fin g) ℝ).toBasis) = 1 := by
@@ -82,7 +82,7 @@ end PGaussLatticeCovolume
 open PGaussLatticeCovolume in
 
 /- English proof (translation)
-Introduce `g B hB`. Establish `: DiscreteTopology (gaussLattice B)` using `(hL g B hB).1`. Establish `: IsZLattice ℝ (gaussLattice B)` using `(hL g B hB).2`. Rewrite using `[ZLattice.covolume_eq_det_mul_measureReal (gaussLattice B) volume (intBasis hB) (EuclideanSpace.basisFun (Fin g) ℝ).toBasis, coe_intBasis, det_cols, volume_fundamentalDomain_basisFun, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem GaussLatticeCovolume.proof (hL : GaussLatticeIsLattice.Statement) :
     GaussLatticeCovolume.Statement := by

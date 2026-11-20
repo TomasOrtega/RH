@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GPKIntB.Compl
 
 /- English proof (translation)
-Establish `h : volC = ((2 : NNReal) • (volume : Measure ℂ))`. Unfold `volC`. Use extensionality with `s hs`. Simplify using the standard rewrite rules. Rewrite using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem sfinite_volC : SFinite volC := by
   have h : volC = ((2 : NNReal) • (volume : Measure ℂ)) := by
@@ -24,9 +24,9 @@ theorem sfinite_volC : SFinite volC := by
   infer_instance
 
 /- English proof (translation)
-Establish `hd : (Matrix.of (Matrix.of.symm g.val)).det ≠ 0`. Simplify using `using (Matrix.GeneralLinearGroup.det g).ne_zero`. Unfold `extC`. Rewrite using `[dif_pos hd]`. Use `congr 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem extC_val (W : GL (Fin 3) ℂ → ℂ) (g : GL (Fin 3) ℂ) :
     extC W (Matrix.of.symm g.val) = W g := by
@@ -39,9 +39,9 @@ theorem extC_val (W : GL (Fin 3) ℂ → ℂ) (g : GL (Fin 3) ℂ) :
   simp
 
 /- English proof (translation)
-Establish `hc : ContinuousOn (extC W) {m : complexMatrix3 | (Matrix.of m).det ≠ 0}` using `h.continuousOn`. Establish `hv : Continuous (fun g : GL (Fin 3) ℂ => (Matrix.of.symm g.val : complexMatrix3))`. Establish `h0 : Continuous (Units.val : GL (Fin 3) ℂ → Matrix (Fin 3) (Fin 3) ℂ)` using `Units.continuous_val`. Conclude with `h0`. Establish `hm : ∀ g : GL (Fin 3) ℂ, (Matrix.of.symm g.val : complexMatrix3) ∈ {m : complexMatrix3 | (Matrix.of m).det ≠ 0}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Simplify using `using (Matrix.GeneralLinearGroup.det g).ne_zero`. Use `hc.comp_continuous hv hm` as an intermediate fact. Simplify `this` using `[Function.comp_def, extC_val]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_of_smoothC {W : GL (Fin 3) ℂ → ℂ} (h : SmoothC W) : Continuous W := by
   have hc : ContinuousOn (extC W) {m : complexMatrix3 | (Matrix.of m).det ≠ 0} := h.continuousOn
@@ -55,9 +55,9 @@ theorem continuous_of_smoothC {W : GL (Fin 3) ℂ → ℂ} (h : SmoothC W) : Con
   simpa [Function.comp_def, extC_val] using this
 
 /- English proof (translation)
-Establish `hpos : 0 < ‖(t : ℂ)‖ ^ 2`. Use `norm_pos_iff.mpr t.ne_zero` as an intermediate fact. Check the signs of the components of the expression. Establish `hn : ‖chC 0 ((-(5 / 2 : ℝ) : ℝ) : ℂ) t‖ = (‖(t : ℂ)‖ ^ 2) ^ (-(5 / 2 : ℝ))`. Unfold `chC`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[zpow_zero, one_mul, Complex.norm_cpow_eq_rpow_re_of_pos hpos]`. Simplify using the standard rewrite rules. Rewrite using `[← ofReal_norm_eq_enorm, hn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem enorm_chC (t : ℂˣ) :
     ‖chC 0 ((-(5 / 2 : ℝ) : ℝ) : ℂ) t‖ₑ = ENNReal.ofReal ((‖(t : ℂ)‖ ^ 2) ^ (-(5 / 2 : ℝ))) := by
@@ -71,11 +71,11 @@ theorem enorm_chC (t : ℂˣ) :
   rw [← ofReal_norm_eq_enorm, hn]
 
 /- English proof (translation)
-Introduce `k V E E' h W hW`. Use `⟨continuous_of_smoothC (h.smooth W hW), ?_⟩` and prove the remaining obligations. Use `haveI := sfinite_volC`. Establish `hint` using `h.int' W hW ((-(5 / 2 : ℝ) : ℝ) : ℂ) (by norm_num)`. Establish `hfin` using `hint.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∫⁻ p : ℂˣ × ℂ, ‖W (mm p.1 p.2) * chC 0 ((-(5 / 2 : ℝ) : ℝ) : ℂ) p.1‖ₑ ∂(mulC.prod volC) ≠ ∞` using `hfin.ne`. Rewrite `hne` using `[lintegral_prod _ hint.1.enorm]`. Use `ne_of_eq_of_ne ?_ hne` and prove the remaining obligations. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Simplify using `only [enorm_mul, enorm_chC]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_mul_const' _ _ ENNReal.ofReal_ne_top]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : ℕ) (V : Submodule ℂ (GL (Fin 3) ℂ → ℂ)) (E E' : Fin 3 → Fin 3 → Module.End ℂ V), WhC k V E E' → ∀ W ∈ V, Continuous W ∧ ∫⁻ t : ℂˣ, (∫⁻ z, ‖W (mm t z)‖ₑ ∂volC) * ENNReal.ofReal ((‖(t : ℂ)‖ ^ 2) ^ (-(5 / 2 : ℝ))) ∂mulC ≠ ∞ := by
   intro k V E E' h W hW

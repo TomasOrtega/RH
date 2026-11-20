@@ -38,7 +38,7 @@ def chiC (chi1 : ∀ i : LocT B, G H.E (OmC H) →* (OOf B i)ˣ) (i : LocT B) (c
   chi1 i * ((Units.map (algebraMap ℤ_[lOf B i] (OOf B i)).toMonoidHom).comp (cycZ H.E (OmC H) (lOf B i))) ^ (-((c : ℤ) - 1))
 
 /- English proof (translation)
-Simplify using `[chiC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiC_one (chi1 : ∀ i : LocT B, G H.E (OmC H) →* (OOf B i)ˣ) (i : LocT B) : chiC B chi1 i 1 = chi1 i := by
   simp [chiC]
@@ -48,11 +48,11 @@ def finOf {X : Type} (hX : Finite X) (Z : Set X) : Finset X := by
   exact @Finset.filter _ (· ∈ Z) _ (@Finset.univ _ (@Fintype.ofFinite _ hX))
 
 /- English proof (translation)
-Unfold `TOf`. Use `congr 1`. Use extensionality with `f`. Simplify using `only [Set.mem_setOf_eq, Set.Finite.mem_toFinset]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨v, k, h1, h2, h3, h4, h5, h6, rfl⟩`. Establish `hg : GenAt0 H (lOf B i) (B.Qw (wOf B i)) v k` using `⟨h1, h2, h3, h4, h5, h6⟩`. Conclude with `⟨v, k, hg, by simp [hTOf, dif_pos hg]⟩`. Introduce and unpack `⟨v, k, hg, rfl⟩`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hg`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v, k, h1, h2, h3, h4, h5, h6, by simp [hTOf, dif_pos (show GenAt0 H (lOf B i) (B.Qw (wOf B i)) v k from ⟨h1, h2, h3, h4, h5, h6⟩)]⟩`.
+Supply the required witnesses or components.
 -/
 theorem tGen (hS : ∀ l, (exceptionalPlaces H l).Finite) (i : LocT B) :
     Algebra.adjoin (OOf B i) {f : XOf B i → OOf B i | ∃ v k, IsSplitPl H v ∧ v ∉ placesOver H.E (lOf B i) ∧
@@ -78,9 +78,7 @@ def gamC {R : Ranks} (H : Host R) (h : PlOverEx H) (v : HeightOneSpectrum (𝓞 
   Formalism.L2.Fam.NPCTyp.gamG H (plOmC H h) (gamW H h) v
 
 /- English proof (translation)
-Unfold `gamC Formalism.L2.Fam.NPCTyp.gamG`. Use `split_ifs with h0 h1`. Use `haveI : Fact (H.g 0).Prime := ⟨H.g_prime 0⟩`. Conclude with `(Classical.epsilon_spec (hg 0 v h0)).1`. Use `haveI : Fact (H.g 1).Prime := ⟨H.g_prime 1⟩`.
-
-Conclude with `(Classical.epsilon_spec (hg 1 v h1)).1`. Conclude with `gamW_gen H h ht v`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gamC_spec {R : Ranks} (H : Host R) (h : PlOverEx H) (ht : TameEx H h) (hg : TgEx H h) (v : HeightOneSpectrum (𝓞 H.E)) :
     TameGenAt ((plOmC H h).1 v) (gamC H h v) := by

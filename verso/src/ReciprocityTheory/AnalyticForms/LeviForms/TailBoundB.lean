@@ -9,11 +9,11 @@ noncomputable section
 namespace TailBoundAlt
 
 /- English proof (translation)
-Take `⟨hrc, -⟩` from `rW_open A L s hL hs`. Establish `hbm : MeasurableSet (bdry s)` using `(LeviFormBoundaryTopology.isClosed_bdry hs).measurableSet`. Use `⟨hbm, ?_⟩` and prove the remaining obligations. Establish `heq : rW L s = (bdry s)ᶜ.piecewise (rW L s) (fun _ => Real.exp 1)`. Use function extensionality and compare the values at `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hy : y ∈ bdry s`. Establish `hy' : s y y = 0` using `hy`. Simplify using `[Set.piecewise, hy, rW, logNormSec, hy']`. Simplify using `[Set.piecewise, hy]`. Rewrite using `[heq]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ContinuousOn.measurable_piecewise hrc continuousOn_const hbm.compl`.
+A detailed English derivation is pending.
 -/
 theorem bdry_rW_meas {e : ℕ} {X : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
     (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ) (hL : IsPotential A L)
@@ -32,15 +32,15 @@ theorem bdry_rW_meas {e : ℕ} {X : Type} [TopologicalSpace X] [MeasurableSpace 
   exact ContinuousOn.measurable_piecewise hrc continuousOn_const hbm.compl
 
 /- English proof (translation)
-Take `⟨-, hrm⟩` from `bdry_rW_meas A L s hL hs`. Establish `hlm : Measurable (logNormSec L s)`. Establish `: logNormSec L s = fun y => (Real.exp 1 - rW L s y) / 2`. Use function extensionality and compare the values at `y`. Simplify using `only [rW]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(measurable_const.sub hrm).div_const 2`. Take `⟨hfin, hint⟩` from `maMeasure_thm A Φ hΦ hΦp`. Establish `hlI` using `logNormIntegrable A L s m W hL hs hsnc Φ hΦ`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : Integrable (logNormSec L s) (maMeasure A Φ)` using `((hint _ hlm).1).1 hlI`. Establish `h1` using `(hint (fun _ => (1 : ℝ)) measurable_const).2 (mIntegrableCont A Φ hΦ _ continuous_const)`. Establish `h2` using `(hint _ hlm).2 hlI`. Establish `hrI : Integrable (rW L s) (maMeasure A Φ)` using `(integrable_const _).sub (hI.const_mul 2)`. Establish `hr0 : 0 ≤ᵐ[maMeasure A Φ] rW L s` using `Filter.Eventually.of_forall fun y => le_trans (Real.exp_pos 1).le (rW_ge L s hle y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Rewrite using `[h1, h2]`. Establish `: ∫ y, rW L s y ∂maMeasure A Φ = ∫ y, (Real.exp 1 - 2 * logNormSec L s y) ∂maMeasure A Φ` using `rfl`. Rewrite using `[this, integral_sub (integrable_const _) (hI.const_mul 2), integral_const_mul, integral_const, integral_const, smul_eq_mul, smul_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lintegral_rW_le {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) (L : LocPot X)
@@ -78,7 +78,7 @@ theorem lintegral_rW_le {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace 
         ring
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simpa using hQ`. Consider the case `succ i => simpa using hΦ i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cons_pot {e : ℕ} {X : Type} [TopologicalSpace X] (_A : FinHolAtlas (e + 1) X)
     (p : LocPot X → Prop) (Q : LocPot X) (Φ : Fin e → LocPot X) (hQ : p Q) (hΦ : ∀ i, p (Φ i)) :

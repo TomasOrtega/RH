@@ -45,7 +45,7 @@ Both sides reduce to the same expression.
 example {l : ℕ} [Fact l.Prime] (s : Ω ≃ₐ[ℚ] Ω) : psiCyc (fun _ : ZMod l => (1 : Qbar l)) s = 1 := rfl
 
 /- English proof (translation)
-Establish `: Fact (1 < l ^ 1)` using `⟨by simpa using (Fact.out : l.Prime).one_lt⟩`. Simplify using `[psiCyc, ZMod.val_one, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example {l : ℕ} [Fact l.Prime] (e : ℕ) (ψ : ZMod l → Qbar l) (h1 : ψ 1 = 1) :
     (cycBar ℚ Ω l 1 : Qbar l) ^ e * (psiCyc (Ω := Ω) ψ 1)⁻¹ = 1 := by
@@ -53,7 +53,7 @@ example {l : ℕ} [Fact l.Prime] (e : ℕ) (ψ : ZMod l → Qbar l) (h1 : ψ 1 =
   simp [psiCyc, ZMod.val_one, h1]
 
 /- English proof (translation)
-Introduce `h` and use `absurd h.1 (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (gN : Newform (2 * 0 + 1)) (W : R2 Ω l) (X : Tower Ω ε)
     (pr : X.Fn l → Fin 2 → Qbar l) (N : ℕ) [NeZero N] (x : ZMod N) (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ))

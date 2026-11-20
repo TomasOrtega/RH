@@ -10,26 +10,26 @@ open scoped TensorProduct Matrix NNReal
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[show A * B * C * D = A * (B * C * D) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm A]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tr4 {n : ℕ} (A B C D : Matrix (Fin n) (Fin n) ℂ) : (B * (C * D * A)).trace = (A * B * C * D).trace := by
   rw [show A * B * C * D = A * (B * C * D) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm A]
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gl_mul_inv {n : ℕ} (g : GL (Fin n) ℂ) : g.1 * (g⁻¹).1 = 1 := by
   rw [← Units.val_mul, mul_inv_cancel, Units.val_one]
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gl_inv_mul {n : ℕ} (g : GL (Fin n) ℂ) : (g⁻¹).1 * g.1 = 1 := by
   rw [← Units.val_mul, inv_mul_cancel, Units.val_one]
 
 /- English proof (translation)
-Establish `h1 : (g.1)ᴴ * ((g⁻¹).1)ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, gl_inv_mul, Matrix.conjTranspose_one]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[h1, Matrix.one_mul, Matrix.mul_assoc, gl_inv_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gl_conj_cancel {n : ℕ} (g : GL (Fin n) ℂ) (Q : Matrix (Fin n) (Fin n) ℂ) :
     (g.1)ᴴ * ((((g⁻¹).1)ᴴ * Q * (g⁻¹).1)) * g.1 = Q := by
@@ -38,7 +38,7 @@ theorem gl_conj_cancel {n : ℕ} (g : GL (Fin n) ℂ) (Q : Matrix (Fin n) (Fin n
   rw [h1, Matrix.one_mul, Matrix.mul_assoc, gl_inv_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `: (∑ a, ∑ b, ((x a b : ℝ) : ℂ) * ((y a b : ℝ) : ℂ)) = ((∑ a, ∑ b, x a b * y a b : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.ofReal_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem re_sum_cast {n : ℕ} (x y : WR.E n) :
     ((((∑ a, ∑ b, ((x a b : ℝ) : ℂ) * ((y a b : ℝ) : ℂ)) : ℂ).re : ℝ) : ℂ) =
@@ -47,11 +47,9 @@ theorem re_sum_cast {n : ℕ} (x y : WR.E n) :
   rw [this, Complex.ofReal_re]
 
 /- English proof (translation)
-Introduce `a b`. Apply `hP.bij.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show θ i (sigR _ σ (gramR (Ainf F) σ J Y b a)) = θ i (gramR (Ainf F) σ J Y a b)`. Rewrite using `[hP.conj]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `map_gramR_crd σ ψ θ l hP J ε fr hfr g Y i`. Establish `hh : ((gramR (Ainf F) σ J Y).map (θ i)).IsHermitian`. Rewrite using `[h]`. Conclude with `Matrix.isHermitian_conjTranspose_mul_mul _ (gramX_isHerm _ _)`. Use `congrFun (congrFun hh a) b` as an intermediate fact.
-
-Simplify `this` using `[Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gram_mem (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
@@ -69,11 +67,11 @@ theorem gram_mem (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fin
   simpa [Matrix.conjTranspose_apply] using this
 
 /- English proof (translation)
-Rewrite using `[psi_trPair_gen σ hCM ψ θ l hP, Finset.mul_sum, Complex.exp_sum]`. Unfold `phiInf`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `htr : ((((b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * (gramR (Ainf F) σ J Y).map (θ i)).trace.re : ℝ) : ℂ) = (herm (ybAll σ θ g b i) * gramX (ε i) (crdAll θ fr g Y i)).trace`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_gramR_crd σ ψ θ l hP J ε fr hfr g Y i, tr4, ← herm_ybAll σ ψ θ l hP g b i]`. Conclude with `trace_re_of_herm (WR.I.herm_isHermitian _) (gramX_isHerm _ _)`. Rewrite using `[htr]`. Use `congr 2`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem phi_mul_psi (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
@@ -97,13 +95,13 @@ theorem phi_mul_psi (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (A
   ring
 
 /- English proof (translation)
-Rewrite using `[psi_neg_trPair_gen σ hCM ψ θ l hP, Finset.mul_sum, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : (herm (ygAll σ θ g T i) * herm (ybAll σ θ g b i)).trace = ((T : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * (b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i)).trace`. Rewrite using `[herm_ygAll σ ψ θ l hP g T i, herm_ybAll σ ψ θ l hP g b i]`. Establish `h1 : (((g i)⁻¹).1)ᴴ * ((g i).1)ᴴ = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.conjTranspose_mul, gl_mul_inv, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (g i).1, gl_mul_inv, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ((T : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * (b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * ((((g i)⁻¹).1)ᴴ * ((g i).1)ᴴ)).trace := by`. Rewrite using `[Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.mul_one]`. Rewrite using `[← e, trace_herm_mul, re_sum_cast, WR.chr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psi_neg_trPair (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (g : ι → GL (Fin n) ℂ)
@@ -135,7 +133,7 @@ theorem psi_neg_trPair (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar
   ring
 
 /- English proof (translation)
-Unfold `nuInf`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[WR.dP, herm_ybAll σ ψ θ l hP g b i]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nuInf_eq (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (g : ι → GL (Fin n) ℂ)
@@ -146,13 +144,11 @@ theorem nuInf_eq (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F
   rw [WR.dP, herm_ybAll σ ψ θ l hP g b i]
 
 /- English proof (translation)
-Use extensionality with `Y`. Simplify using `only [Set.mem_preimage, Set.mem_image, Set.mem_univ_pi]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsY⟩ i`. Use `⟨ygAll σ θ g s i, hs i, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[herm_ygAll σ ψ θ l hP g s i, hsY, map_gramR_crd σ ψ θ l hP J ε fr hfr g Y i, gl_conj_cancel]`. Introduce `h`. Use `⟨⟨gramR (Ainf F) σ J Y, gram_mem σ ψ θ l hP J ε fr hfr g Y⟩, fun i => ?_, rfl⟩` and prove the remaining obligations. Take `⟨k, hk, hkQ⟩` from `h i`. Establish `: ygAll σ θ g ⟨gramR (Ainf F) σ J Y, gram_mem σ ψ θ l hP J ε fr hfr g Y⟩ i = k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hinv_herm k, hkQ]`. Use `show hinv _ = _`. Use `congr 1`. Use `show ((g i).1)ᴴ * (gramR (Ainf F) σ J Y).map (θ i) * (g i).1 = _`. Rewrite using `[map_gramR_crd σ ψ θ l hP J ε fr hfr g Y i, gl_conj_cancel]`.
-
-Rewrite using `[this]`. Conclude with `hk`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_preimage_box (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
@@ -179,13 +175,13 @@ theorem gram_preimage_box (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddC
     exact hk
 
 /- English proof (translation)
-Establish `e0 : pairHerm (Ainf F) σ n S T = trPair (Ainf F) (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) (T : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E))` using `rfl`. Rewrite using `[e0, psi_trPair_gen σ hCM ψ θ l hP]`. Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : (herm (ybAll σ θ g S i) * herm (ygAll σ θ g T i)).trace = ((S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * (T : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i)).trace`. Rewrite using `[herm_ygAll σ ψ θ l hP g T i, herm_ybAll σ ψ θ l hP g S i]`. Establish `h1 : (((g i)⁻¹).1)ᴴ * ((g i).1)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, gl_mul_inv, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (((g i)⁻¹).1)ᴴ, h1, Matrix.one_mul]`. Use `_ = ((S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * (T : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * ((g i).1 * ((g i)⁻¹).1)).trace := by`. Rewrite using `[Matrix.trace_mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [gl_mul_inv, Matrix.mul_one]`. Rewrite using `[← e, trace_herm_mul, re_sum_cast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_pairHerm (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (g : ι → GL (Fin n) ℂ)
@@ -218,7 +214,7 @@ theorem psi_pairHerm (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (
   rw [← e, trace_herm_mul, re_sum_cast]
 
 /- English proof (translation)
-Simplify using `only [pairHerm]`. Use `congr 2`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairHerm_comm (σ : E →ₐ[F] E) {n : ℕ} (S T : HermR (Ainf F) σ n) :
     pairHerm (Ainf F) σ n S T = pairHerm (Ainf F) σ n T S := by
@@ -228,9 +224,7 @@ theorem pairHerm_comm (σ : E →ₐ[F] E) {n : ℕ} (S T : HermR (Ainf F) σ n)
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
 /- English proof (translation)
-Rewrite using `[herm_ygAll σ ψ θ l hP g S i, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `h1 : ((S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i)).det ≠ 0`. Rewrite using `[show ((S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i)).det = θ i (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).det from (RingHom.map_det _ _).symm]`. Conclude with `(hS.map (θ i)).ne_zero`. Establish `h2 : ((g i).1).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp (g i).isUnit).ne_zero`.
-
-Conclude with `mul_ne_zero (mul_ne_zero (star_ne_zero.mpr h2) h1) h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_herm_ygAll (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (g : ι → GL (Fin n) ℂ)

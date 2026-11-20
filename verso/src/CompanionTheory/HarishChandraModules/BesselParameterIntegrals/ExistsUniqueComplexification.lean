@@ -28,22 +28,22 @@ def lieJ : Submodule ℝ (Matrix n n ℂ) where
     rw [← smul_add, hX, smul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lieJ {X : Matrix n n ℂ} : X ∈ lieJ J ↔ Xᴴ * J + J * X = 0 := Iff.rfl
 
 variable {J}
 
 /- English proof (translation)
-The claim follows from `eq_neg_of_add_eq_zero_left hX`.
+A detailed English derivation is pending.
 -/
 theorem conjTranspose_mul_eq_of_mem {X : Matrix n n ℂ} (hX : X ∈ lieJ J) : Xᴴ * J = -(J * X) :=
   eq_neg_of_add_eq_zero_left hX
 
 /- English proof (translation)
-Establish `hX'` using `conjTranspose_mul_eq_of_mem hX`. Establish `hY'` using `conjTranspose_mul_eq_of_mem hY`. Use `show (X * Y - Y * X)ᴴ * J + J * (X * Y - Y * X) = 0`. Rewrite using `[conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, Matrix.sub_mul, Matrix.mul_assoc Yᴴ Xᴴ J, hX', Matrix.mul_assoc Xᴴ Yᴴ J, hY', Matrix.mul_neg, Matrix.mul_neg, ← Matrix.mul_assoc Yᴴ J X, hY', ← Matrix.mul_assoc Xᴴ J Y, hX']`. Simplify using `only [Matrix.neg_mul, neg_neg, Matrix.mul_sub, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem commutator_mem_lieJ {X Y : Matrix n n ℂ} (hX : X ∈ lieJ J) (hY : Y ∈ lieJ J) :
     X * Y - Y * X ∈ lieJ J := by
@@ -65,12 +65,12 @@ def lieSubJ : LieSubalgebra ℝ (Matrix n n ℂ) :=
       exact commutator_mem_lieJ hX hY }
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_lieSubJ {X : Matrix n n ℂ} : X ∈ lieSubJ J ↔ X ∈ lieJ J := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `(lieSubJ J).lie_mem hX hY`.
+A detailed English derivation is pending.
 -/
 theorem lie_mem_lieSubJ {X Y : Matrix n n ℂ} (hX : X ∈ lieSubJ J) (hY : Y ∈ lieSubJ J) :
     ⁅X, Y⁆ ∈ lieSubJ J :=
@@ -84,19 +84,19 @@ variable {J : Matrix n n ℂ} (hJ : J * J = 1) (hJh : Jᴴ = J)
 include hJ
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, hJ, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_J_J (Z : Matrix n n ℂ) : Z * J * J = Z := by
   rw [Matrix.mul_assoc, hJ, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, hJ, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem J_J_mul (Z : Matrix n n ℂ) : J * (J * Z) = Z := by
   rw [← Matrix.mul_assoc, hJ, Matrix.one_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Introduce `h show Xᴴ * J + J * X = 0`. Rewrite using `[h, Matrix.neg_mul, mul_J_J hJ, neg_add_cancel]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_lieJ_iff {X : Matrix n n ℂ} : X ∈ lieJ J ↔ Xᴴ = -(J * X * J) := by
   constructor
@@ -108,7 +108,7 @@ theorem mem_lieJ_iff {X : Matrix n n ℂ} : X ∈ lieJ J ↔ Xᴴ = -(J * X * J)
     rw [h, Matrix.neg_mul, mul_J_J hJ, neg_add_cancel]
 
 /- English proof (translation)
-Rewrite `hX`, the goal using `[mem_lieJ_iff hJ]`. Rewrite using `[conjTranspose_conjTranspose, hX]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, ← Matrix.mul_assoc, hJ, Matrix.one_mul, mul_J_J hJ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conjTranspose_mem_lieJ {X : Matrix n n ℂ} (hX : X ∈ lieJ J) : Xᴴ ∈ lieJ J := by
   rw [mem_lieJ_iff hJ] at hX ⊢
@@ -117,13 +117,13 @@ theorem conjTranspose_mem_lieJ {X : Matrix n n ℂ} (hX : X ∈ lieJ J) : Xᴴ �
     mul_J_J hJ]
 
 /- English proof (translation)
-Rewrite using `[(mem_lieJ_iff hJ).1 hX, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem J_mul_mul_J_of_mem {X : Matrix n n ℂ} (hX : X ∈ lieJ J) : J * X * J = -Xᴴ := by
   rw [(mem_lieJ_iff hJ).1 hX, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[J_mul_mul_J_of_mem hJ hX]`. Conclude with `neg_mem (conjTranspose_mem_lieJ hJ hX)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem J_mul_mul_J_mem {X : Matrix n n ℂ} (hX : X ∈ lieJ J) : J * X * J ∈ lieJ J := by
   rw [J_mul_mul_J_of_mem hJ hX]
@@ -151,22 +151,22 @@ def pJ : Submodule ℝ (Matrix n n ℂ) where
     rw [Matrix.smul_mul, Matrix.mul_smul, hX.2, smul_neg]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_kJ {X : Matrix n n ℂ} : X ∈ kJ J ↔ X ∈ lieJ J ∧ X * J = J * X := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_pJ {X : Matrix n n ℂ} : X ∈ pJ J ↔ X ∈ lieJ J ∧ X * J = -(J * X) := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kJ_le : kJ J ≤ lieJ J := fun _ h => h.1
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pJ_le : pJ J ≤ lieJ J := fun _ h => h.1
 
@@ -174,9 +174,9 @@ variable {J} (hJ : J * J = 1) (hJh : Jᴴ = J)
 include hJ
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.1, ?_⟩, fun h => ⟨h.1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(mem_lieJ_iff hJ).1 h.1, h.2.symm, mul_J_J hJ]`. Establish `e` using `J_mul_mul_J_of_mem hJ h.1`. Rewrite `e` using `[h.2, neg_neg]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Matrix.mul_assoc J (J * X) J, ← Matrix.mul_assoc J J X, hJ, Matrix.one_mul]`. Use `_ = J * X := by rw [e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_kJ_iff {X : Matrix n n ℂ} : X ∈ kJ J ↔ X ∈ lieJ J ∧ Xᴴ = -X := by
   refine ⟨fun h => ⟨h.1, ?_⟩, fun h => ⟨h.1, ?_⟩⟩
@@ -188,9 +188,9 @@ theorem mem_kJ_iff {X : Matrix n n ℂ} : X ∈ kJ J ↔ X ∈ lieJ J ∧ Xᴴ =
       _ = J * X := by rw [e]
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.1, ?_⟩, fun h => ⟨h.1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(mem_lieJ_iff hJ).1 h.1, Matrix.mul_assoc J X J, h.2, Matrix.mul_neg, neg_neg, ← Matrix.mul_assoc, hJ, Matrix.one_mul]`. Establish `e` using `J_mul_mul_J_of_mem hJ h.1`. Rewrite `e` using `[h.2]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Matrix.mul_assoc J (J * X) J, ← Matrix.mul_assoc J J X, hJ, Matrix.one_mul]`. Use `_ = -(J * X) := by rw [e, Matrix.mul_neg]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pJ_iff {X : Matrix n n ℂ} : X ∈ pJ J ↔ X ∈ lieJ J ∧ Xᴴ = X := by
   refine ⟨fun h => ⟨h.1, ?_⟩, fun h => ⟨h.1, ?_⟩⟩
@@ -203,9 +203,9 @@ theorem mem_pJ_iff {X : Matrix n n ℂ} : X ∈ pJ J ↔ X ∈ lieJ J ∧ Xᴴ =
       _ = -(J * X) := by rw [e, Matrix.mul_neg]
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce and unpack `X ⟨hK, hP⟩`. Rewrite using `[Submodule.mem_bot]`. Establish `h1 : J * X = -(J * X)` using `hK.2.symm.trans hP.2`. Establish `h2 : J * X = 0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (2 : ℂ) • (J * X) = 0` using `by rw [two_smul]; nth_rewrite 1 [h1]; exact neg_add_cancel _`. Conclude with `(smul_eq_zero.1 this).resolve_left two_ne_zero`. Rewrite using `[← J_J_mul hJ X, h2, Matrix.mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kJ_inf_pJ : kJ J ⊓ pJ J = ⊥ := by
   rw [eq_bot_iff]
@@ -218,9 +218,9 @@ theorem kJ_inf_pJ : kJ J ⊓ pJ J = ⊥ := by
   rw [← J_J_mul hJ X, h2, Matrix.mul_zero]
 
 /- English proof (translation)
-Use `le_antisymm (sup_le (kJ_le J) (pJ_le J)) fun X hX => ?_` and prove the remaining obligations. Establish `hX'` using `J_mul_mul_J_mem hJ hX`. Use `Submodule.mem_sup.2 ⟨(1 / 2 : ℝ) • (X + J * X * J), ⟨Submodule.smul_mem _ _ (add_mem hX hX'), ?_⟩, (1 / 2 : ℝ) • (X - J * X * J), ⟨Submodule.smul_mem _ _ (sub_mem hX hX'), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, mul_J_J hJ, ← Matrix.mul_assoc J (J * X) J, ← Matrix.mul_assoc J J X, hJ, Matrix.one_mul, add_comm (J * X)]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, mul_J_J hJ, ← Matrix.mul_assoc J (J * X) J, ← Matrix.mul_assoc J J X, hJ, Matrix.one_mul, ← smul_neg, neg_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← smul_add, add_add_sub_cancel, ← two_smul ℝ X, smul_smul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem kJ_sup_pJ : kJ J ⊔ pJ J = lieJ J := by
   refine le_antisymm (sup_le (kJ_le J) (pJ_le J)) fun X hX => ?_
@@ -235,7 +235,7 @@ theorem kJ_sup_pJ : kJ J ⊔ pJ J = lieJ J := by
     norm_num
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨commutator_mem_lieJ hX.1 hY.1, by rw [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc X Y J, hY.2, ← Matrix.mul_assoc X J Y, hX.2, Matrix.mul_assoc Y X J, hX.2, ← Matrix.mul_assoc Y J X, hY.2, Matrix.mul_assoc J X Y, Matrix.mul_assoc J Y X]⟩`.
+Supply the required witnesses or components.
 -/
 theorem commutator_mem_kJ {X Y : Matrix n n ℂ} (hX : X ∈ kJ J) (hY : Y ∈ kJ J) :
     X * Y - Y * X ∈ kJ J :=
@@ -245,7 +245,7 @@ theorem commutator_mem_kJ {X Y : Matrix n n ℂ} (hX : X ∈ kJ J) (hY : Y ∈ k
       Matrix.mul_assoc J Y X]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨commutator_mem_lieJ hX.1 hY.1, by rw [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc X Y J, hY.2, Matrix.mul_neg, ← Matrix.mul_assoc X J Y, hX.2, Matrix.mul_assoc Y X J, hX.2, ← Matrix.mul_assoc Y J X, hY.2, Matrix.neg_mul, Matrix.mul_assoc J X Y, Matrix.mul_assoc J Y X, neg_s …`.
+Supply the required witnesses or components.
 -/
 theorem commutator_mem_pJ {X Y : Matrix n n ℂ} (hX : X ∈ kJ J) (hY : Y ∈ pJ J) :
     X * Y - Y * X ∈ pJ J :=
@@ -255,7 +255,7 @@ theorem commutator_mem_pJ {X Y : Matrix n n ℂ} (hX : X ∈ kJ J) (hY : Y ∈ p
       Matrix.neg_mul, Matrix.mul_assoc J X Y, Matrix.mul_assoc J Y X, neg_sub_neg, neg_sub]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨commutator_mem_lieJ hX.1 hY.1, by rw [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc X Y J, hY.2, Matrix.mul_neg, ← Matrix.mul_assoc X J Y, hX.2, Matrix.neg_mul, neg_neg, Matrix.mul_assoc Y X J, hX.2, Matrix.mul_neg, ← Matrix.mul_assoc Y J X, hY.2, Matrix.neg_mul, neg_neg, Mat …`.
+Supply the required witnesses or components.
 -/
 theorem commutator_mem_kJ_of_pJ {X Y : Matrix n n ℂ} (hX : X ∈ pJ J) (hY : Y ∈ pJ J) :
     X * Y - Y * X ∈ kJ J :=
@@ -280,19 +280,19 @@ noncomputable def imG (M : Matrix n n ℂ) : Matrix n n ℂ := (-(Complex.I / 2)
 variable {J}
 
 /- English proof (translation)
-Simplify using `only [thetaG, conjTranspose_add, Matrix.mul_add, Matrix.add_mul, neg_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaG_add (M N : Matrix n n ℂ) : thetaG J (M + N) = thetaG J M + thetaG J N := by
   simp only [thetaG, conjTranspose_add, Matrix.mul_add, Matrix.add_mul, neg_add]
 
 /- English proof (translation)
-Simplify using `only [thetaG, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul, neg_sub_neg, neg_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaG_sub (M N : Matrix n n ℂ) : thetaG J (M - N) = thetaG J M - thetaG J N := by
   simp only [thetaG, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul, neg_sub_neg, neg_sub]
 
 /- English proof (translation)
-Simplify using `only [thetaG, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaG_smul (c : ℂ) (M : Matrix n n ℂ) : thetaG J (c • M) = star c • thetaG J M := by
   simp only [thetaG, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]
@@ -301,7 +301,7 @@ variable (hJ : J * J = 1) (hJh : Jᴴ = J)
 include hJ hJh
 
 /- English proof (translation)
-Simplify using `only [thetaG, conjTranspose_neg, conjTranspose_mul, hJh, conjTranspose_conjTranspose, Matrix.neg_mul, Matrix.mul_neg, neg_neg, ← Matrix.mul_assoc, hJ, Matrix.one_mul, mul_J_J hJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaG_thetaG (M : Matrix n n ℂ) : thetaG J (thetaG J M) = M := by
   simp only [thetaG, conjTranspose_neg, conjTranspose_mul, hJh, conjTranspose_conjTranspose,
@@ -310,9 +310,9 @@ theorem thetaG_thetaG (M : Matrix n n ℂ) : thetaG J (thetaG J M) = M := by
 omit hJh in
 
 /- English proof (translation)
-Rewrite using `[mem_lieJ_iff hJ, thetaG]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, ← Matrix.mul_assoc, hJ, Matrix.one_mul, mul_J_J hJ]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Matrix.mul_assoc, hJ, Matrix.one_mul, mul_J_J hJ]`. Use `_ = -(J * (-(J * Xᴴ * J)) * J) := by simp only [Matrix.mul_neg, Matrix.neg_mul, neg_neg]`. Use `_ = -(J * X * J) := by rw [h]`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_lieJ_iff_thetaG {X : Matrix n n ℂ} : X ∈ lieJ J ↔ thetaG J X = X := by
   rw [mem_lieJ_iff hJ, thetaG]
@@ -328,7 +328,7 @@ theorem mem_lieJ_iff_thetaG {X : Matrix n n ℂ} : X ∈ lieJ J ↔ thetaG J X =
       _ = -(J * X * J) := by rw [h]
 
 /- English proof (translation)
-Rewrite using `[mem_lieJ_iff_thetaG hJ, reG, thetaG_smul, thetaG_add, thetaG_thetaG hJ hJh, add_comm (thetaG J M)]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem reG_mem (M : Matrix n n ℂ) : reG J M ∈ lieJ J := by
   rw [mem_lieJ_iff_thetaG hJ, reG, thetaG_smul, thetaG_add, thetaG_thetaG hJ hJh,
@@ -337,7 +337,7 @@ theorem reG_mem (M : Matrix n n ℂ) : reG J M ∈ lieJ J := by
   simp
 
 /- English proof (translation)
-Rewrite using `[mem_lieJ_iff_thetaG hJ, imG, thetaG_smul, thetaG_sub, thetaG_thetaG hJ hJh, ← neg_sub M (thetaG J M), smul_neg, ← neg_smul]`. Use `congr 1`. Apply the tactic sequence `simp <;> ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem imG_mem (M : Matrix n n ℂ) : imG J M ∈ lieJ J := by
   rw [mem_lieJ_iff_thetaG hJ, imG, thetaG_smul, thetaG_sub, thetaG_thetaG hJ hJh,
@@ -347,7 +347,7 @@ theorem imG_mem (M : Matrix n n ℂ) : imG J M ∈ lieJ J := by
 
 omit hJ hJh in
 /- English proof (translation)
-Rewrite using `[reG, imG, smul_smul, show Complex.I * -(Complex.I / 2) = 1 / 2 by`. Rewrite using `[mul_neg, ← mul_div_assoc, Complex.I_mul_I, neg_div, neg_neg], ← smul_add,`. Use the proof step `add_add_sub_cancel, ← two_smul ℂ M, smul_smul]`. Evaluate the numerical expressions.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem reG_add_I_smul_imG (M : Matrix n n ℂ) : M = reG J M + Complex.I • imG J M := by
   rw [reG, imG, smul_smul, show Complex.I * -(Complex.I / 2) = 1 / 2 by
@@ -356,9 +356,9 @@ theorem reG_add_I_smul_imG (M : Matrix n n ℂ) : M = reG J M + Complex.I • im
   norm_num
 
 /- English proof (translation)
-Establish `hM' : thetaG J M = X - Complex.I • Y`. Rewrite using `[hM, thetaG_add, thetaG_smul, (mem_lieJ_iff_thetaG hJ).1 hX, (mem_lieJ_iff_thetaG hJ).1 hY, Complex.star_def, Complex.conj_I, neg_smul, ← sub_eq_add_neg]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[reG, hM', hM, add_add_sub_cancel, ← two_smul ℂ X, smul_smul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[imG, hM', hM, add_sub_sub_cancel, ← two_smul ℂ, smul_smul, smul_smul, show -(Complex.I / 2) * 2 * Complex.I = 1 by`. Rewrite using `[neg_mul, neg_mul, div_mul_cancel₀ _ two_ne_zero, Complex.I_mul_I, neg_neg], one_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_reG_imG_of_eq {M X Y : Matrix n n ℂ} (hX : X ∈ lieJ J) (hY : Y ∈ lieJ J)
     (hM : M = X + Complex.I • Y) : X = reG J M ∧ Y = imG J M := by
@@ -373,7 +373,7 @@ theorem eq_reG_imG_of_eq {M X Y : Matrix n n ℂ} (hX : X ∈ lieJ J) (hY : Y �
         rw [neg_mul, neg_mul, div_mul_cancel₀ _ two_ne_zero, Complex.I_mul_I, neg_neg], one_smul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(reG J M, imG J M), ⟨reG_mem hJ hJh M, imG_mem hJ hJh M, reG_add_I_smul_imG M⟩, fun XY h => by obtain ⟨h1, h2⟩ := eq_reG_imG_of_eq hJ hJh h.1 h.2.1 h.2.2 exact Prod.ext h1 h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem existsUnique_complexification (M : Matrix n n ℂ) :
     ∃! XY : Matrix n n ℂ × Matrix n n ℂ, XY.1 ∈ lieJ J ∧ XY.2 ∈ lieJ J ∧ M = XY.1 + Complex.I • XY.2 :=

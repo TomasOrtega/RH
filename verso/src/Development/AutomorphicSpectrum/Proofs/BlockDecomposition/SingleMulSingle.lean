@@ -33,9 +33,9 @@ def pr (X Y : Matrix (Fin n) (Fin r) R) (X' Y' : Matrix (Fin r) (Fin n) R) : Idx
   | .inr (.inr i) => Y * Matrix.single i i (1 : R) * X'
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.sum_apply, Finset.sum_eq_single a]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.single_apply, Matrix.one_apply, h]`. Introduce `k _ hk`. Simplify using `only [Matrix.single_apply]`. Rewrite using `[if_neg (fun e => hk e.1)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_single (r : ℕ) : ∑ i : Fin r, (Matrix.single i i 1 : Matrix (Fin r) (Fin r) R) = 1 := by
   ext a b
@@ -49,7 +49,7 @@ theorem sum_single (r : ℕ) : ∑ i : Fin r, (Matrix.single i i 1 : Matrix (Fin
   · simp
 
 /- English proof (translation)
-Establish `e1 : ∑ i : Fin r, X * Matrix.single i i (1 : R) * Y' = X * Y'`. Simplify using `only [← Matrix.sum_mul, ← Matrix.mul_sum, sum_single, Matrix.mul_one]`. Establish `e2 : ∑ i : Fin r, Y * Matrix.single i i (1 : R) * X' = Y * X'`. Simplify using `only [← Matrix.sum_mul, ← Matrix.mul_sum, sum_single, Matrix.mul_one]`. Simplify using `only [Fintype.sum_sum_type, pr, Finset.univ_unique, Finset.sum_singleton, e1, e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -63,7 +63,7 @@ theorem sum_pr (X Y : Matrix (Fin n) (Fin r) R) (X' Y' : Matrix (Fin r) (Fin n) 
   abel
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.single_apply, Matrix.diagonal_mul]`. Discharge the remaining goals by the proof search in `aesop`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Search for a derivation from the available facts and logical rules.
 -/
 theorem diag_single (d : Fin r → R) (i : Fin r) :
     diagonal d * Matrix.single i i (1 : R) = d i • Matrix.single i i (1 : R) := by
@@ -72,9 +72,9 @@ theorem diag_single (d : Fin r → R) (i : Fin r) :
   aesop
 
 /- English proof (translation)
-Establish `key : ∀ α, a * pr X Y X' Y' α = f α • pr X Y X' Y' α`. Introduce and unpack `(i | u | i)`. Simplify using `only [pr, f1, ← Matrix.mul_assoc, hX]`. Rewrite using `[Matrix.mul_assoc X, diag_single, Matrix.mul_smul, Matrix.smul_mul]`. Simplify using `only [pr, f2, hZ, one_smul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [pr, f3, ← Matrix.mul_assoc, hY]`. Rewrite using `[Matrix.mul_assoc Y, diag_single, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[← Finset.sum_congr rfl fun α _ => key α, ← Finset.mul_sum, sum_pr, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_sum_pr {X Y : Matrix (Fin n) (Fin r) R} {X' Y' : Matrix (Fin r) (Fin n) R} {a : Matrix (Fin n) (Fin n) R}
     {d d' : Fin r → R} (hX : a * X = X * diagonal d) (hY : a * Y = Y * diagonal d')
@@ -91,7 +91,7 @@ theorem eq_sum_pr {X Y : Matrix (Fin n) (Fin r) R} {X' Y' : Matrix (Fin r) (Fin 
   rw [← Finset.sum_congr rfl fun α _ => key α, ← Finset.mul_sum, sum_pr, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.single_mul_mul_single, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem single_mul_single {M : Matrix (Fin r) (Fin r) R} {i j : Fin r} (h : M i j = 0) :
     (Matrix.single i i (1 : R)) * M * Matrix.single j j (1 : R) = 0 := by
@@ -99,19 +99,15 @@ theorem single_mul_single {M : Matrix (Fin r) (Fin r) R} {i j : Fin r} (h : M i 
   simp
 
 /- English proof (translation)
-Establish `hZX : (1 - X * Y' - Y * X') * X = 0`. Simplify using `only [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hyx, hxx]`. Simplify using the standard rewrite rules. Establish `hXZ : X' * (1 - X * Y' - Y * X') = 0`. Simplify using `only [Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hxx, hxy]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `rcases α with i | u | i <;> rcases β with j | v | j`. Establish `h' : j < i` using `h`. Establish `e : Matrix.single i i (1 : R) * B * Matrix.single j j (1 : R) = 0` using `single_mul_single (hBt h')`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [pr, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hB, ← Matrix.mul_assoc Y', hyx, Matrix.one_mul, e]; simp`. Conclude with `absurd h (by simp only [rk]; omega)`. Conclude with `absurd h (by simp only [rk]; omega)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [pr, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hB, ← Matrix.mul_assoc, hZX]; simp`. Conclude with `absurd h (by simp only [rk]; omega)`. Conclude with `absurd h (by simp only [rk]; omega)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [pr, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hL]; simp only [Matrix.mul_assoc, hxx]; simp`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [pr, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hL, Matrix.mul_assoc _ (L * X'), Matrix.mul_assoc L, hXZ]; simp`.
-
-Establish `h' : i < j`. Establish `h1` using `i.2`. Establish `h2` using `j.2`. Establish `: 2 * r - j.val < 2 * r - i.val` using `h`. Conclude with `Fin.lt_def.2 (by omega)`.
-
-Establish `e : Matrix.single i i (1 : R) * L * Matrix.single j j (1 : R) = 0` using `single_mul_single (hLt i j h')`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [pr, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hL, Matrix.mul_assoc L, hxy, Matrix.mul_one, e]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pr_mul_pr_eq_zero {X Y : Matrix (Fin n) (Fin r) R} {X' Y' : Matrix (Fin r) (Fin n) R}
     (hxx : X' * X = 0) (hyx : Y' * X = 1) (hxy : X' * Y = 1) {g : Matrix (Fin n) (Fin n) R}
@@ -156,13 +152,13 @@ end Alg
 section Cone
 
 /- English proof (translation)
-Establish `hb : 1 ≤ max 1 c⁻¹` using `le_max_left _ _`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `i j e`. Establish `: j = i` using `Fin.ext (by simpa using e)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[this]`. Consider the case `succ k ih`. Introduce `i j e`. Set `l : Fin r` to `⟨i.val + k, by have := j.2; omega⟩`. Establish `h1` using `ih i l rfl`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : c * t j ≤ t l` using `ht.2.1 l j (by simp only [l]; omega)`. Establish `h3 : t j ≤ c⁻¹ * t l`. Rewrite using `[inv_mul_eq_div, le_div_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : 0 < t l` using `ht.1 l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cone_chain {r : ℕ} {c : ℝ} (hc : 0 < c) {t : Fin r → ℝ} (ht : t ∈ cone r c) (k : ℕ) :
     ∀ i j : Fin r, j.val = i.val + k → t j ≤ max 1 c⁻¹ ^ k * t i := by
@@ -187,11 +183,11 @@ theorem cone_chain {r : ℕ} {c : ℝ} (hc : 0 < c) {t : Fin r → ℝ} (ht : t 
       _ = max 1 c⁻¹ ^ (k + 1) * t i := by ring
 
 /- English proof (translation)
-Establish `hb : 1 ≤ max 1 c⁻¹` using `le_max_left _ _`. Establish `hi` using `i.2`. Set `l : Fin r` to `⟨r - 1, by omega⟩`. Establish `h1 : t l ≤ max 1 c⁻¹ ^ (r - 1 - i.val) * t i` using `cone_chain hc ht _ i l (by simp only [l]; omega)`. Establish `h2 : c ≤ t l` using `ht.2.2 l (by simp only [l]; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 < t i` using `ht.1 i`. Establish `h4 : c ≤ max 1 c⁻¹ ^ (r - 1 - i.val) * t i` using `h2.trans h1`. Establish `h5 : 1 ≤ max 1 c⁻¹ * (max 1 c⁻¹ ^ (r - 1 - i.val) * t i)`. Combine the equalities or inequalities in the displayed calculation. Establish `h6 : max 1 c⁻¹ ^ (r - 1 - i.val + 1) ≤ max 1 c⁻¹ ^ r` using `pow_le_pow_right₀ hb (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[inv_le_iff_one_le_mul₀ h3]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cone_inv_le {r : ℕ} {c : ℝ} (hc : 0 < c) {t : Fin r → ℝ} (ht : t ∈ cone r c) (i : Fin r) :
     (t i)⁻¹ ≤ max 1 c⁻¹ ^ r := by
@@ -213,21 +209,19 @@ theorem cone_inv_le {r : ℕ} {c : ℝ} (hc : 0 < c) {t : Fin r → ℝ} (ht : t
     _ ≤ max 1 c⁻¹ ^ r * t i := mul_le_mul_of_nonneg_right h6 h3.le
 
 /- English proof (translation)
-Establish `hb : 1 ≤ max 1 c⁻¹` using `le_max_left _ _`. Use `⟨max 1 c⁻¹ ^ r * max 1 c⁻¹ ^ r, fun s hs α β hr => ?_⟩` and prove the remaining obligations. Establish `hb1 : 1 ≤ max 1 c⁻¹ ^ r` using `one_le_pow₀ hb`. Establish `hbr : max 1 c⁻¹ ^ r ≤ max 1 c⁻¹ ^ r * max 1 c⁻¹ ^ r` using `le_mul_of_one_le_left (by linarith) hb1`. Establish `h1 : ∀ i j : Fin r, i.val ≤ j.val → Real.exp (s j - s i) ≤ max 1 c⁻¹ ^ r` using `fun i j hij => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `cone_chain hc hs (j.val - i.val) i j (by omega)`. Establish `hj` using `j.2`. Establish `e2 : max 1 c⁻¹ ^ (j.val - i.val) ≤ max 1 c⁻¹ ^ r` using `pow_le_pow_right₀ hb (by omega)`. Rewrite using `[Real.exp_sub, div_le_iff₀ (Real.exp_pos _)]`. Conclude with `e.trans (mul_le_mul_of_nonneg_right e2 (Real.exp_pos _).le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ i : Fin r, Real.exp (- s i) ≤ max 1 c⁻¹ ^ r` using `fun i => by`. Rewrite using `[Real.exp_neg]`. Conclude with `cone_inv_le hc hs i`. Apply the tactic sequence `rcases α with i | u | i <;> rcases β with j | v | j <;> simp only [rk] at hr <;> simp only [dl]`. Conclude with `(h1 i j hr).trans hbr`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_sub]`. Conclude with `(h2 i).trans hbr`. Establish `e : Real.exp (- s j - s i) = Real.exp (- s j) * Real.exp (- s i)`. Rewrite using `[← Real.exp_add]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `mul_le_mul (h2 j) (h2 i) (Real.exp_pos _).le (by linarith)`. Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [sub_self, Real.exp_zero]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[sub_zero]`. Conclude with `(h2 j).trans hbr`. Use `j.2` as an intermediate fact. Use `i.2` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hi` using `i.2`. Establish `hj` using `j.2`.
-
-Establish `e : - s j - - s i = s i - s j` using `by ring`. Rewrite using `[e]`. Conclude with `(h1 j i (by omega)).trans hbr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cone_bound (r : ℕ) {c : ℝ} (hc : 0 < c) : ∃ M : ℝ, ∀ s : Fin r → ℝ, (fun i => Real.exp (s i)) ∈ cone r c →
     ∀ α β : Idx r, rk α ≤ rk β → Real.exp (dl s β - dl s α) ≤ M := by
@@ -293,7 +287,7 @@ Both sides reduce to the same expression.
 theorem eA_exp (u : ℝ) : eA F E (Real.exp u) = algebraMap (AF F) (AF F ⊗[F] E) (rId F u) := rfl
 
 /- English proof (translation)
-Rewrite using `[eA_exp, eA_exp, eA_exp, ← map_mul, ← rId_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eA_exp_mul [IsTotallyReal F] (u v : ℝ) :
     eA F E (Real.exp (-u)) * eA F E (Real.exp v) = eA F E (Real.exp (v - u)) := by
@@ -302,13 +296,11 @@ theorem eA_exp_mul [IsTotallyReal F] (u v : ℝ) :
   ring
 
 /- English proof (translation)
-Use `GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)` as an intermediate fact. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: ContinuousSMul (AF F) (AF F ⊗[F] E)` using `IsModuleTopology.toContinuousSMul (AF F) _`. Establish `h1 : Continuous fun x : ℝ => (1 + realAd F (x - 1) : AF F)`. Use `Continuous.prodMk (f := fun t => (1 + realAd F (t - 1) : AF F).1) (g := fun t => (1 + realAd F (t - 1) : AF F).2) (continuous_pi fun w => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(InfinitePlace.Completion.isometry_extensionEmbedding w).isEmbedding.continuous_iff.2 ?_` and prove the remaining obligations. Establish `: (InfinitePlace.Completion.extensionEmbedding w) ∘ (fun t => (1 + realAd F (t - 1) : AF F).1 w) = fun t : ℝ => (t : ℂ)` using `funext fun t => by`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding w (1 + (realAd F (t - 1)).1 w) = _`. Rewrite using `[map_add, map_one, realAd_inf]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `fun_prop`. Establish `: (fun t => (1 + realAd F (t - 1) : AF F).2) = fun _ => (1 : Af F)` using `funext fun t => add_zero _`. Rewrite using `[this]`.
-
-Conclude with `continuous_const`. Conclude with `(continuous_algebraMap (AF F) (AF F ⊗[F] E)).comp h1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_eA [IsTotallyReal F] : Continuous (eA F E) := by
   have := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)
@@ -332,17 +324,17 @@ theorem continuous_eA [IsTotallyReal F] : Continuous (eA F E) := by
   exact (continuous_algebraMap (AF F) (AF F ⊗[F] E)).comp h1
 
 /- English proof (translation)
-Set `P : Matrix (Fin n) (Fin n) E` to `1 - X * (cT (σ : E →+* E) Y * J) - Y * (cT (σ : E →+* E) X * J)`. Establish `yx : cT (σ : E →+* E) Y * J * X = 1` using `(show Sieg.Fr (σ : E →+* E) J X Y from ⟨sigma_sigma h, Matrix.ext fun i j => hJ.1 i j, hW.xx, hW.yy, hW.xy⟩).yx`. Establish `hPX : cT (σ : E →+* E) X * J * P = 0`. Simplify using `only [P]`. Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc _ Y, hW.xx, hW.xy, Matrix.zero_mul, Matrix.one_mul, sub_zero, sub_self]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hPY : cT (σ : E →+* E) Y * J * P = 0`. Simplify using `only [P]`. Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc _ Y, yx, hW.yy, Matrix.zero_mul, Matrix.one_mul, sub_zero, sub_self]`. Use `ext_inf_fin σ J (GInf_ext σ J fun w => ?_) (by rw [mem_infPts.1 ha.1, mem_infPts.1 hb.1])` and prove the remaining obligations. Simplify using `only [projInfArch_projInf]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Establish `key : ∀ y : GArch σ J w, archMat σ J τ y * X.map τ.1 = X.map τ.1 * diagonal (fun i => (t i : ℂ)) → archMat σ J τ y * Y.map τ.1 = Y.map τ.1 * diagonal (fun i => (t i : ℂ)⁻¹) → (∀ z : Fin n → E, (cT (σ : E →+* E) X * J) *ᵥ z = 0 → (cT (σ : E →+* E) Y * J) *ᵥ z = 0 → archMat σ J τ y …`. Introduce `y h1 h2 h3`. Establish `e1 : (1 : Matrix (Fin n) (Fin n) ℂ) = X.map τ.1 * (cT (σ : E →+* E) Y * J).map τ.1 + Y.map τ.1 * (cT (σ : E →+* E) X * J).map τ.1 + P.map τ.1`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_add _ (map_add _), ← Matrix.map_add _ (map_add _)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: X * (cT (σ : E →+* E) Y * J) + Y * (cT (σ : E →+* E) X * J) + P = 1` using `by simp only [P]; abel`. Rewrite using `[this, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e2 : archMat σ J τ y * P.map τ.1 = P.map τ.1`. Use extensionality with `i j`. Conclude with `congrFun (h3 (fun k => P k j) (funext fun k => congrFun (congrFun hPX k) j) (funext fun k => congrFun (congrFun hPY k) j)) i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_add, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, h2, e2]`. Take `⟨a1, a2, a3⟩` from `ha.2 w τ`. Take `⟨b1, b2, b3⟩` from `hb.2 w τ`. Apply `(archEquiv J h τ).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[← archMat_eq_archEquiv J h, ← archMat_eq_archEquiv J h, key _ a1 a2 a3, key _ b1 b2 b3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torus_unique (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {t : Fin r → ℝ} {a b : GAd σ J}
     (ha : IsTorusElt σ J X Y t a) (hb : IsTorusElt σ J X Y t b) : a = b := by
@@ -387,13 +379,13 @@ theorem torus_unique (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame
   rw [← archMat_eq_archEquiv J h, ← archMat_eq_archEquiv J h, key _ a1 a2 a3, key _ b1 b2 b3]
 
 /- English proof (translation)
-Use `haveI := h.1`. Set `P : Matrix (Fin n) (Fin n) E` to `1 - X * (cT (σ : E →+* E) Y * J) - Y * (cT (σ : E →+* E) X * J)`. Establish `yx : cT (σ : E →+* E) Y * J * X = 1` using `(show Sieg.Fr (σ : E →+* E) J X Y from ⟨sigma_sigma h, Matrix.ext fun i j => hJ.1 i j, hW.xx, hW.yy, hW.xy⟩).yx`. Establish `hPX : cT (σ : E →+* E) X * J * P = 0`. Simplify using `only [P]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc _ Y, hW.xx, hW.xy, Matrix.zero_mul, Matrix.one_mul, sub_zero, sub_self]`. Establish `hPY : cT (σ : E →+* E) Y * J * P = 0`. Simplify using `only [P]`. Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc _ Y, yx, hW.yy, Matrix.zero_mul, Matrix.one_mul, sub_zero, sub_self]`. Establish `hbP : (matHom _ σ J (a s)).1 * P.map (inclR (F` using `F) (AF F)) = P.map (inclR (F := F) (AF F)) := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `congrFun (ha.onV s (fun k => P k j) (funext fun k => congrFun (congrFun hPX k) j) (funext fun k => congrFun (congrFun hPY k) j)) i`. Establish `hPad : P.map (inclR (F` using `F) (AF F)) = 1 - adMat F X * (cT (sigR (AF F) σ) (adMat F Y) * JR (F := F) (AF F) J) - adMat F Y * (cT (sigR (AF F) σ) (adMat F X) * JR (F := F) (AF F) J) := by`. Simplify using `only [P]`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, map_cT_inclR, map_cT_inclR]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hbP` using `[hPad]`. Conclude with `eq_sum_pr (ha.onX s) (ha.onY s) hbP _ (fun i => rfl) (fun u => by simp only [dl]; rw [eA_exp, rId_zero', map_one]) (fun i => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem torus_mat (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {a : (Fin r → ℝ) → GAd σ J}
     (ha : IsTorus σ J X Y a) (s : Fin r → ℝ) :
@@ -425,9 +417,9 @@ theorem torus_mat (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ
     (fun u => by simp only [dl]; rw [eA_exp, rId_zero', map_one]) (fun i => rfl)
 
 /- English proof (translation)
-Take `⟨B, hB, e⟩` from `hp`. Take `⟨B', hB', e'⟩` from `inv_mem_minPar h hJ hW ⟨B, hB, e⟩`. Use `⟨B, cT (sigR (AF F) σ) B', e, hB, ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Establish `h1 : (matHom _ σ J p⁻¹).1 * (matHom _ σ J p).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : cT (sigR (AF F) σ) (matHom _ σ J p⁻¹).1 * JR (F` using `F) (AF F) J = JR (F := F) (AF F) J * (matHom _ σ J p).1 := by conv_rhs => rw [← unitary_matHom p⁻¹]`. Rewrite using `[Matrix.mul_assoc _ (matHom _ σ J p⁻¹).1, h1, Matrix.mul_one]`. Rewrite using `[Matrix.mul_assoc, ← h2, ← Matrix.mul_assoc, ← Formalism.UG.cT_mul, e', Formalism.UG.cT_mul, Matrix.mul_assoc]`. Express the relevant statement in the definitionally equal form `sigR (AF F) σ (B' j i) = 0`. Rewrite using `[hB' (show id i < id j from hij), map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem par_data (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {p : GAd σ J}
     (hp : p ∈ minPar σ J X) : ∃ B L : Matrix (Fin r) (Fin r) (AF F ⊗[F] E),
@@ -447,7 +439,7 @@ theorem par_data (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ 
     rw [hB' (show id i < id j from hij), map_zero]
 
 /- English proof (translation)
-Take `⟨B, L, h1, h2, h3, h4⟩` from `par_data h hJ hW hp`. Establish `hfr` using `fr_adMat h hJ hW`. Conclude with `pr_mul_pr_eq_zero hfr.xx hfr.yx hfr.xy h1 h2 h3 h4 hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pj_mul_pj_eq_zero (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {p : GAd σ J}
     (hp : p ∈ minPar σ J X) {α β : Idx r} (hr : rk β < rk α) :
@@ -457,7 +449,7 @@ theorem pj_mul_pj_eq_zero (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWitt
   exact pr_mul_pr_eq_zero hfr.xx hfr.yx hfr.xy h1 h2 h3 h4 hr
 
 /- English proof (translation)
-Apply the tactic sequence `rcases α with i | u | i <;> simp [dl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dl_neg (s : Fin r → ℝ) (α : Idx r) : dl (-s) α = - dl s α := by
   rcases α with i | u | i <;> simp [dl]
@@ -468,7 +460,7 @@ def Psi (q : (Idx r → Idx r → ℝ) × GAd σ J) : Matrix (Fin n) (Fin n) (AF
   ∑ α, ∑ β, eA F E (q.1 α β) • (Pj σ J X Y α * (matHom _ σ J q.2).1 * Pj σ J X Y β)
 
 /- English proof (translation)
-Use `GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)` as an intermediate fact. Use `continuous_finset_sum _ fun α _ => continuous_finset_sum _ fun β _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun q : (Idx r → Idx r → ℝ) × GAd σ J => eA F E (q.1 α β)` using `continuous_eA.comp ((continuous_apply β).comp ((continuous_apply α).comp continuous_fst))`. Establish `h2 : Continuous fun q : (Idx r → Idx r → ℝ) × GAd σ J => Pj σ J X Y α * (matHom _ σ J q.2).1 * Pj σ J X Y β` using `(continuous_const.matrix_mul (continuous_matHom_val.comp continuous_snd)).matrix_mul continuous_const`. Conclude with `h1.smul h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_Psi [IsTotallyReal F] : Continuous (Psi σ J X Y) := by
   have := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)
@@ -481,11 +473,11 @@ theorem continuous_Psi [IsTotallyReal F] : Continuous (Psi σ J X Y) := by
   exact h1.smul h2
 
 /- English proof (translation)
-Use `haveI := h.1`. Establish `ha0 : a 0 = 1`. Establish `e` using `ha.add 0 0`. Rewrite `e` using `[add_zero]`. Conclude with `mul_left_cancel (e.symm.trans (mul_one _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hainv : (a s)⁻¹ = a (-s)` using `inv_eq_of_mul_eq_one_right (by rw [← ha.add, add_neg_cancel, ha0])`. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul, hainv, torus_mat h hJ hW ha (-s), torus_mat h hJ hW ha s, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, dl_neg]`. Distinguish the cases in `hr : rk α ≤ rk β`. Rewrite using `[if_pos hr, eA_exp_mul]`. Rewrite using `[pj_mul_pj_eq_zero h hJ hW hp (not_le.1 hr), smul_zero, smul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_eq (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {a : (Fin r → ℝ) → GAd σ J}
     (ha : IsTorus σ J X Y a) (s : Fin r → ℝ) {p : GAd σ J} (hp : p ∈ minPar σ J X) :
@@ -509,13 +501,11 @@ theorem conj_eq (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J
   · rw [pj_mul_pj_eq_zero h hJ hW hp (not_le.1 hr), smul_zero, smul_zero]
 
 /- English proof (translation)
-Use `GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)` as an intermediate fact. Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : T2Space (AF F ⊗[F] E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`. Establish `h1` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) (AF F ⊗[F] E))).comp (isClosedEmbedding_matHom_GAd σ J)`. Establish `h2` using `h1.isCompact_preimage (hK.prod (hK.image MulOpposite.continuous_op))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : {g : GAd σ J | (matHom _ σ J g).1 ∈ K ∧ (matHom _ σ J g⁻¹).1 ∈ K} = (⇑(Units.embedProduct (Matrix (Fin n) (Fin n) (AF F ⊗[F] E))) ∘ ⇑(matHom (AF F) σ J)) ⁻¹' (K ×ˢ (MulOpposite.op '' K))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩`. Conclude with `⟨a, _, b, by rw [map_inv]; rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨a, y, hy, e⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e' : y = (matHom _ σ J g⁻¹).1`. Rewrite using `[map_inv]`. Conclude with `MulOpposite.op_injective e`.
-
-Conclude with `e' ▸ hy`. Rewrite using `[e]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_mat (K : Set (Matrix (Fin n) (Fin n) (AF F ⊗[F] E))) (hK : IsCompact K) :
     IsCompact {g : GAd σ J | (matHom _ σ J g).1 ∈ K ∧ (matHom _ σ J g⁻¹).1 ∈ K} := by
@@ -544,19 +534,17 @@ theorem isCompact_mat (K : Set (Matrix (Fin n) (Fin n) (AF F ⊗[F] E))) (hK : I
 end Ad
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW Ω c hΩ hsub hc`. Use `haveI := h.1`. Take `⟨a, ha⟩` from `exists_isTorus h hJ hW`. Take `⟨M, hM⟩` from `cone_bound r hc`. Establish `hΩ' : IsCompact (Ω ∪ Ω⁻¹)` using `hΩ.union hΩ.inv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `S : Set (Idx r → Idx r → ℝ)` to `Set.Icc 0 (fun _ _ => max M 0)`. Establish `hS : IsCompact S` using `isCompact_Icc`. Set `K` to `Psi σ J X Y '' (S ×ˢ (Ω ∪ Ω⁻¹))`. Establish `hK : IsCompact K` using `(hS.prod hΩ').image continuous_Psi`. Use `⟨_, isCompact_mat K hK, fun p hp t ht b hb => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `htpos` using `ht.1`. Set `s : Fin r → ℝ` to `fun i => Real.log (t i)`. Establish `hst : (fun i => Real.exp (s i)) = t` using `funext fun i => Real.exp_log (htpos i)`. Establish `hbs : b = a s` using `torus_unique h hJ hW hb (by simpa only [hst] using ha.tor s)`. Substitute `hbs` using the available equality.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hsc : (fun i => Real.exp (s i)) ∈ cone r c` using `by rwa [hst]`. Establish `mem : ∀ q ∈ Ω ∪ Ω⁻¹, q ∈ minPar σ J X → (matHom _ σ J ((a s)⁻¹ * q * a s)).1 ∈ K` using `fun q hq hq' => by`. Rewrite using `[conj_eq h hJ hW ha s hq']`. Use `⟨_, ⟨?_, hq⟩, rfl⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α β dsimp only split_ifs`. Conclude with `(Real.exp_pos _).le`. Conclude with `le_rfl`. Introduce `α β dsimp only split_ifs with hr`. Conclude with `(hM s hsc α β hr).trans (le_max_left _ _)`.
+Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_max_right _ _`. Establish `hpP : p ∈ minPar σ J X` using `minParOne_subset (hsub hp)`. Use `⟨mem p (Or.inl hp) hpP, ?_⟩` and prove the remaining obligations. Establish `e : ((a s)⁻¹ * p * a s)⁻¹ = (a s)⁻¹ * p⁻¹ * a s` using `by group`. Rewrite using `[e]`.
-
-Conclude with `mem p⁻¹ (Or.inr (by simpa using hp)) (inv_mem_minPar h hJ hW hpP)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_compact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ (Ω : Set (GAd σ J)) (c : ℝ), IsCompact Ω → Ω ⊆ minParOne σ J X → 0 < c → ∃ C : Set (GAd σ J), IsCompact C ∧ ∀ p ∈ Ω, ∀ t ∈ cone r c, ∀ a, IsTorusElt σ J X Y t a → a⁻¹ * p * a ∈ C := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW Ω c hΩ hsub hc

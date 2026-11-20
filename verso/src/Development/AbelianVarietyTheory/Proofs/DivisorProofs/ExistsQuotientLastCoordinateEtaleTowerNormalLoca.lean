@@ -17,19 +17,19 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 open MvPolynomial in
 /- English proof (translation)
-Use `letI := (eval₂Hom ι τ).toAlgebra`. Establish `hE : Algebra.FormallyEtale (MvPolynomial (Fin n) A) T` using `h`. Set `g : MvPolynomial (Fin n) A →+* DualNumber T` to `eval₂Hom ((TrivSqZeroExt.inlHom T T).comp ι) (fun j => TrivSqZeroExt.inl (τ j) + if j = i then DualNumber.eps else 0)`. Use `letI := g.toAlgebra`. Establish `hfst : (TrivSqZeroExt.fstHom T T T).toRingHom.comp g = eval₂Hom ι τ`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[g]`. Introduce `j`. Simplify using `only [g, RingHom.comp_apply, eval₂Hom_X']`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Set `p : DualNumber T →ₐ[MvPolynomial (Fin n) A] T` to `{ (TrivSqZeroExt.fstHom T T T).toRingHom with commutes' := fun x => by show (TrivSqZeroExt.fstHom T T T).toRingHom.comp g x = _`. Rewrite using `[hfst]`. Use `rfl }`. Establish `hp : Function.Surjective p` using `fun x => ⟨TrivSqZeroExt.inl x, rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hnil : IsNilpotent (RingHom.ker (p : DualNumber T →+* T))`. Use `⟨2, le_bot_iff.mp ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two]`. Use `Ideal.mul_le.mpr fun a ha b hb => ?_` and prove the remaining obligations. Establish `ha' : a.fst = 0` using `ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb' : b.fst = 0` using `hb`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [ha', hb']`. Introduce `h0`. Establish `hc` using `(Algebra.FormallySmooth.liftOfSurjective (AlgHom.id _ T) p hp hnil).commutes (X i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : algebraMap (MvPolynomial (Fin n) A) T (X i) = 0`. Rewrite using `[RingHom.algebraMap_toAlgebra, eval₂Hom_X', h0]`. Establish `h2 : algebraMap (MvPolynomial (Fin n) A) (DualNumber T) (X i) = DualNumber.eps`. Rewrite using `[RingHom.algebraMap_toAlgebra]`. Simplify using `[g, h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hc` using `[h1, h2, map_zero]`. Use `congrArg TrivSqZeroExt.snd hc` as an intermediate fact. Simplify using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private lemma ne_zero_of_eval₂Hom_formallyEtale {A T : Type} [CommRing A] [CommRing T] [Nontrivial T]
     {n : ℕ} (ι : A →+* T) (τ : Fin n → T) (h : (MvPolynomial.eval₂Hom ι τ).FormallyEtale) (i : Fin n) :
@@ -76,33 +76,31 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 open MvPolynomial in
 /- English proof (translation)
-Use `set I : Ideal T := Ideal.span {τ (Fin.last n)} with hI`. Use `set φ := eval₂Hom ι τ with hφ`. Use `set φ' := eval₂Hom ((Ideal.Quotient.mk I).comp ι) (fun i => Ideal.Quotient.mk I (τ (Fin.castSucc i))) with hφ'`. Set `σ : MvPolynomial (Fin (n + 1)) A →+* MvPolynomial (Fin n) A` to `eval₂Hom C (Fin.lastCases 0 X)`. Establish `hσ : ∀ p, φ' (σ p) = Ideal.Quotient.mk I (φ p)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p`. Use `show (φ'.comp σ) p = ((Ideal.Quotient.mk I).comp φ) p`. Use `congr 1`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[σ, φ, φ']`. Introduce `j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `[σ, φ, φ', I, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton_self]`. Simplify using `[σ, φ, φ']`.
+Simplify using the standard rewrite rules. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := φ.toAlgebra`. Use `letI := φ'.toAlgebra`. Establish `hE : Algebra.FormallyEtale (MvPolynomial (Fin (n + 1)) A) T` using `h`. Use `show Algebra.FormallyEtale (MvPolynomial (Fin n) A) (T ⧸ I)`. Establish `toT : ∀ (C' : Type) [CommRing C'] [Algebra (MvPolynomial (Fin n) A) C'] [Algebra (MvPolynomial (Fin (n + 1)) A) C'] (_ : ∀ p, algebraMap (MvPolynomial (Fin (n + 1)) A) C' p = algebraMap (MvPolynomial (Fin n) A) C' (σ p)), ∃ F : (T ⧸ I →ₐ[MvPolynomial (Fin n) A] C') → (T →ₐ[MvPoly …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `C' _ _ _ hC`. Use `⟨fun f => { f.toRingHom.comp (Ideal.Quotient.mk I) with commutes' := fun p => by show f (Ideal.Quotient.mk I (φ p)) = _` and prove the remaining obligations. Rewrite using `[← hσ, hC]`. Conclude with `f.commutes (σ p) }, ⟨?_, ?_⟩, fun f x => rfl⟩`. Introduce `f₁ f₂ hf`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `DFunLike.congr_fun hf y`. Introduce `g`. Establish `hg : I ≤ RingHom.ker g.toRingHom`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hI, Ideal.span_le, Set.singleton_subset_iff]`. Use `show g (τ (Fin.last n)) = 0`. Establish `: τ (Fin.last n) = algebraMap (MvPolynomial (Fin (n + 1)) A) T (X (Fin.last n))`. Simplify using `[RingHom.algebraMap_toAlgebra, φ]`. Rewrite using `[this, g.commutes, hC]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[σ]`. Use `⟨{ Ideal.Quotient.lift I g.toRingHom hg with commutes' := fun p => ?_ }, ?_⟩` and prove the remaining obligations. Use `show (Ideal.Quotient.lift I g.toRingHom hg).comp φ' p = algebraMap _ C' p`. Use `congr 1`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Introduce `a`. Use `g.commutes (C a)` as an intermediate fact. Rewrite `this` using `[hC]`. Simplify `this` using `[φ', φ, σ, RingHom.algebraMap_toAlgebra]`. Introduce `i`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `g.commutes (X (Fin.castSucc i))` as an intermediate fact. Rewrite `this` using `[hC]`. Simplify `this` using `[φ', φ, σ, RingHom.algebraMap_toAlgebra]`. Use extensionality with `x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[Algebra.FormallyEtale.iff_comp_bijective]`. Introduce `B _ _ J hJ`. Use `letI : Algebra (MvPolynomial (Fin (n + 1)) A) B := ((algebraMap (MvPolynomial (Fin n) A) B).comp σ).toAlgebra`. Take `⟨F, hF, hFa⟩` from `toT B (fun p => rfl)`. Take `⟨G, hG, hGa⟩` from `toT (B ⧸ J) (fun p => rfl)`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hbij` using `Algebra.FormallyEtale.comp_bijective (MvPolynomial (Fin (n + 1)) A) T J hJ`. Establish `hcomm : ∀ f, G ((Ideal.Quotient.mkₐ _ J).comp f) = (Ideal.Quotient.mkₐ _ J).comp (F f)`. Introduce `f`. Use extensionality with `x`. Simplify using `[hFa, hGa]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `f₁ f₂ hf`. Apply `hF.1` to reduce the goal to its premises. Apply `hbij.1` to reduce the goal to its premises. Rewrite using `[← hcomm, ← hcomm, hf]`.
-
-Introduce `g`. Take `⟨f, hf⟩` from `hbij.2 (G g)`. Take `⟨f', rfl⟩` from `hF.2 f`. Conclude with `⟨f', hG.1 (by rw [hcomm, hf])⟩`.
+A detailed English derivation is pending.
 -/
 private lemma formallyEtale_quotient_last {A T : Type} [CommRing A] [CommRing T] {n : ℕ}
     (ι : A →+* T) (τ : Fin (n + 1) → T) (h : (MvPolynomial.eval₂Hom ι τ).FormallyEtale) :
@@ -188,19 +186,15 @@ open scoped TensorProduct in
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Take `⟨S, M, hS, hM⟩` from `(Algebra.essFiniteType_iff_exists_subalgebra A B).1 inferInstance`. Use `haveI : Algebra.FinitePresentation A S := Algebra.FinitePresentation.of_finiteType.mp hS`. Set `q : Ideal S` to `(IsLocalRing.maximalIdeal B).comap (algebraMap S B)`. Use `haveI hq : q.IsPrime := Ideal.comap_isPrime _ _`. Use `haveI : IsLocalization.AtPrime B q := by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `IsLocalization.of_le M _ ?_ ?_` and prove the remaining obligations. Introduce `m hm hmq`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hmq (IsLocalization.map_units B ⟨m, hm⟩)`. Introduce `y hy`. Assume the negation of the conclusion as `hu`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hy ((IsLocalRing.mem_maximalIdeal _).2 hu)`. Set `e : Localization.AtPrime q ≃ₐ[A] B` to `(IsLocalization.algEquiv q.primeCompl (Localization.AtPrime q) B).restrictScalars A`. Use `haveI : Algebra.FormallyEtale A (Localization.AtPrime q) := Algebra.FormallyEtale.of_equiv e.symm`. Establish `hmem : (⟨q, hq⟩ : PrimeSpectrum S) ∈ Algebra.etaleLocus A S`. Rewrite using `[Algebra.mem_etaleLocus_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `‹_›`. Take `⟨_, ⟨f, rfl⟩, hqf, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hmem Algebra.isOpen_etaleLocus`. Use `haveI : Algebra.FormallyEtale A (Localization.Away f) := Algebra.basicOpen_subset_etaleLocus_iff.1 hsub`. Use `haveI : Algebra.Etale A (Localization.Away f) := ⟨inferInstance, Algebra.FinitePresentation.trans A S (Localization.Away f)⟩`. Establish `hdisj : Disjoint (Submonoid.powers f : Set S) (q : Set S)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨k, rfl⟩ hk`. Conclude with `hqf (hq.mem_of_pow_mem k hk)`. Set `q' : Ideal (Localization.Away f)` to `q.map (algebraMap S _)`. Use `haveI hq' : q'.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.powers f) _ q hq hdisj`.
-
-Establish `hcomap : q'.comap (algebraMap S (Localization.Away f)) = q` using `IsLocalization.comap_map_of_isPrime_disjoint (Submonoid.powers f) _ hq hdisj`. Take `⟨hdom, -⟩` from `_root_.GlobalTheory.isDomain_and_isIntegrallyClosed_atPrime_of_etale A q' (Localization.AtPrime q')`. Use `haveI : IsLocalization q.primeCompl (Localization.AtPrime q') := by`. Establish `h1 : IsLocalization (q'.comap (algebraMap S (Localization.Away f))).primeCompl (Localization.AtPrime q')` using `IsLocalization.isLocalization_atPrime_localization_atPrime (Submonoid.powers f) q'`. Establish `h2 : q.primeCompl = (q'.comap (algebraMap S (Localization.Away f))).primeCompl`.
-
-Use extensionality with `x`. Simplify using `only [Ideal.mem_primeCompl_iff, hcomap]`. Conclude with `h2 ▸ h1`. Set `e' : Localization.AtPrime q' ≃+* B` to `(IsLocalization.algEquiv q.primeCompl (Localization.AtPrime q') B).toRingEquiv`. Conclude with `e'.symm.toMulEquiv.isDomain`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private lemma isDomain_of_formallyEtale_of_isLocalRing {A B : Type} [CommRing A] [IsDomain A]
     [IsIntegrallyClosed A] [IsNoetherianRing A] [CommRing B] [IsLocalRing B] [Algebra A B]
@@ -253,33 +247,23 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `K L _ _ cK cL r R T ι ψ τ hT`. Establish `hne : τ (Fin.last r) ≠ 0` using `ne_zero_of_eval₂Hom_formallyEtale ι τ hT.etale _`. Use `set I : Ideal T := Ideal.span {τ (Fin.last r)} with hI`. Establish `hIt : I ≠ ⊤`. Rewrite using `[Ne, Ideal.eq_top_iff_one, hI, Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, hu⟩`. Establish `h1` using `congrArg ψ hu`. Rewrite `h1` using `[map_mul, hT.zero, zero_mul, map_one]`. Conclude with `one_ne_zero h1`. Use `haveI : Nontrivial (T ⧸ I) := Ideal.Quotient.nontrivial_iff.2 hIt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : IsLocalRing T := hT.top.isLocalRing`. Use `haveI : IsLocalRing (T ⧸ I) := IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective`. Use `haveI : IsIntegrallyClosed R := hT.normal`. Use `letI : Algebra ℂ R := (cK.codRestrict R hT.base.const_mem).toAlgebra`. Use `haveI : Algebra.EssFiniteType ℂ R := hT.base.essFiniteType`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsNoetherianRing R := Algebra.EssFiniteType.isNoetherianRing ℂ R`. Use `haveI : IsIntegrallyClosed (MvPolynomial (Fin r) R) := _root_.GlobalTheory.isIntegrallyClosed_mvPolynomial_fin R r`. Use `letI : Algebra ℂ T := (cL.codRestrict T hT.top.const_mem).toAlgebra`. Use `haveI : Algebra.EssFiniteType ℂ T := hT.top.essFiniteType`. Use `haveI : Algebra.EssFiniteType ℂ (T ⧸ I) := Algebra.EssFiniteType.comp ℂ T (T ⧸ I)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `set φ' := MvPolynomial.eval₂Hom ((Ideal.Quotient.mk I).comp ι) (fun i => Ideal.Quotient.mk I (τ (Fin.castSucc i))) with hφ'`. Use `letI : Algebra (MvPolynomial (Fin r) R) (T ⧸ I) := φ'.toAlgebra`. Use `haveI : IsScalarTower ℂ (MvPolynomial (Fin r) R) (T ⧸ I) := IsScalarTower.of_algebraMap_eq fun a => by show Ideal.Quotient.mk I (algebraMap ℂ T a) = φ' (MvPolynomial.C (algebraMap ℂ R a))`. Rewrite using `[hφ', MvPolynomial.eval₂Hom_C, RingHom.comp_apply]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subtype.ext (hT.const a).symm`. Use `haveI : Algebra.EssFiniteType (MvPolynomial (Fin r) R) (T ⧸ I) := Algebra.EssFiniteType.of_comp ℂ _ _`. Use `haveI : Algebra.FormallyEtale (MvPolynomial (Fin r) R) (T ⧸ I) := formallyEtale_quotient_last ι τ hT.etale`. Use `haveI : IsDomain (T ⧸ I) := isDomain_of_formallyEtale_of_isLocalRing (A := MvPolynomial (Fin r) R)`. Use `set f : (T ⧸ I) →+* FractionRing (T ⧸ I) := algebraMap _ _ with hf_def`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : Function.Injective f` using `IsFractionRing.injective _ _`. Set `e : (T ⧸ I) ≃+* f.range` to `RingEquiv.ofBijective f.rangeRestrict ⟨fun x y h => hf (by simpa using congrArg Subtype.val h), f.rangeRestrict_surjective⟩`. Establish `hψI : I ≤ RingHom.ker ψ`. Rewrite using `[hI, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hT.zero _`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `ψQ : (T ⧸ I) →+* R` to `Ideal.Quotient.lift I ψ hψI`. Set `π : T →+* f.range` to `(e : (T ⧸ I) →+* f.range).comp (Ideal.Quotient.mk I)`. Use `⟨FractionRing (T ⧸ I), inferInstance, f.comp ((Ideal.Quotient.mk I).comp (cL.codRestrict T hT.top.const_mem)), f.range, π, π.comp ι, ψQ.comp (e.symm : f.range →+* (T ⧸ I)), ?_, ?_, hne, ?_, ?_, rfl, fun a => rfl⟩` and prove the remaining obligations. Conclude with `e.surjective.comp Ideal.Quotient.mk_surjective`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.mem_ker]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← map_eq_zero_iff _ e.injective]`. Both sides reduce to the same expression. Use `⟨hT.base, hT.normal, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun a => ⟨_, rfl⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Conclude with `IsLocalRing.of_surjective' (e : (T ⧸ I) →+* f.range) e.surjective`. Establish `h1 : (algebraMap ℂ (T ⧸ I)).EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 inferInstance`. Establish `h2` using `h1.comp (RingHom.FiniteType.of_surjective (e : (T ⧸ I) →+* f.range) e.surjective).essFiniteType`. Conclude with `h2`. Introduce `z`.
-
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := T ⧸ I) z`. Establish `hb' : f b ≠ 0` using `(map_ne_zero_iff _ hf).2 (nonZeroDivisors.ne_zero hb)`. Conclude with `⟨f a, ⟨a, rfl⟩, f b, ⟨b, rfl⟩, hb', div_mul_cancel₀ _ hb'⟩`. Introduce `a show f (Ideal.Quotient.mk I (ι _)) = f (Ideal.Quotient.mk I _)`. Use `congr 2`.
-
-Conclude with `Subtype.ext (hT.const a)`. Introduce `a show ψQ (e.symm (e (Ideal.Quotient.mk I (ι a)))) = a`. Rewrite using `[RingEquiv.symm_apply_apply]`. Conclude with `hT.retr a`. Introduce `i show ψQ (e.symm (e (Ideal.Quotient.mk I (τ (Fin.castSucc i))))) = 0`.
-
-Rewrite using `[RingEquiv.symm_apply_apply]`. Conclude with `hT.zero _`. Establish `heq : MvPolynomial.eval₂Hom (π.comp ι) (fun i => π (τ (Fin.castSucc i))) = (e : (T ⧸ I) →+* f.range).comp φ'`. Apply the tactic sequence `apply MvPolynomial.ringHom_ext <;> intro <;> simp [π, φ']`. Rewrite using `[heq]`.
-
-Use `letI := ((e : (T ⧸ I) →+* f.range).comp φ').toAlgebra`. Conclude with `Algebra.FormallyEtale.of_equiv { e with commutes' := fun p => rfl : (T ⧸ I) ≃ₐ[MvPolynomial (Fin r) R] f.range }`. Use `RingHom.ext fun x => ?_ show ψQ (e.symm (e (Ideal.Quotient.mk I x))) = ψ x` and prove the remaining obligations. Rewrite using `[RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FieldPair.IsEtTower.exists_quotient_last :
     ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L) (r : ℕ) (R : Subring K)

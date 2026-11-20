@@ -16,9 +16,9 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Y π hπ ⟨x, hx⟩`. Use `ProjSpace.isIntegral_of_isDomain ℂ Y.dim` as an intermediate fact. Take `⟨-, -, -, A', hA'⟩` from `GlobalTheory.T.complexPoints_smoothProjVariety_compact_manifold Y`. Establish `hA : IsAlgAtlas (ProjAn.finAtlas ℂ (RingHom.id ℂ) Y.dim)` using `AnRead.isAlgAtlas_finAtlas _`. Establish `hne : π (genericPoint Y.X) ≠ genericPoint (PSpace ℂ Y.dim)` using `fun h => hx (h ▸ genericPoint_specializes x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `(ProjSpace.hermitianTwistingSheaf ℂ Y.dim).cInf (RingHom.id ℂ)`. Establish `hs` using `(ProjSpace.hermitianTwistingSheaf ℂ Y.dim).isSmooth hA.anRead`. Rewrite using `[(GlobalTheory.T.chernIntegral_one_eq_mongeAmpereIntegral Y _ _ (hc.pull π hπ)).2 A' hA', SameForm.mInt_eq (fun _ => hs.sameForm_pull hA hA' π hπ)]`. Conclude with `rankDrop _ A' _ (hA.holoMap hA' (f := π) fun _ => rfl) (GlobalTheory.T.finrank_range_fderiv_lt_of_not_dominant_charts ℂ _ _ _ _ _ _ _ A' hA hA' π hπ hne) _ (fun _ => hs.isPotential hA) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chernInt_pull_fubiniStudy_eq_zero_of_not_dominant : ∀ (Y : Var ℂ) (π : Y.X ⟶ PSpace ℂ Y.dim) (hπ : π ≫ PSpace.str ℂ Y.dim = Y.str), (∃ x : PSpace ℂ Y.dim, ¬ π (genericPoint Y.X) ⤳ x) → Weight.chernInt (((ProjSpace.hermitianTwistingSheaf ℂ Y.dim).φ (RingHom.id ℂ)).pull π hπ) Y.dim Set.univ (fun _ => 1) = 0 := by
   intro Y π hπ ⟨x, hx⟩

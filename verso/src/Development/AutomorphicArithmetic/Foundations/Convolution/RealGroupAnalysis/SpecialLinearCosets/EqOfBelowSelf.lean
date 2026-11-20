@@ -15,7 +15,7 @@ open GroundTheory.Global.SemiLocal GroundTheory.Global.AdeleBaseChange
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v` as an intermediate fact. Use `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion E w` as an intermediate fact. Conclude with `i.toEquiv.continuous_symm_iff.2 (AddMonoidHom.isOpenMap_of_sigmaCompact i.toAddEquiv.toAddMonoidHom i.surjective hi)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_symm (v : P F) (w : P E) (i : Kv v ≃+* Kv w) (hi : Continuous i) :
     Continuous i.symm := by
@@ -25,7 +25,7 @@ private theorem cont_symm (v : P F) (w : P E) (i : Kv v ≃+* Kv w) (hi : Contin
     (AddMonoidHom.isOpenMap_of_sigmaCompact i.toAddEquiv.toAddMonoidHom i.surjective hi)
 
 /- English proof (translation)
-Establish `h` using `(HeightOneSpectrum.denseRange_algebraMap F v).equalizer hi (continuous_completionMap v w) (funext fun x => by`. Simplify using `only [Function.comp]`. Rewrite using `[hc, completionMap_algebraMap, IsScalarTower.algebraMap_apply F E (Kv w)])`. Conclude with `congrFun h k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_completionMap (v : P F) (w : P E) [w.asIdeal.LiesOver v.asIdeal] (i : Kv v →+* Kv w)
     (hi : Continuous i) (hc : ∀ x : F, i (algebraMap F _ x) = algebraMap E _ (algebraMap F E x)) (k : Kv v) :
@@ -37,7 +37,7 @@ private theorem eq_completionMap (v : P F) (w : P E) [w.asIdeal.LiesOver v.asIde
   exact congrFun h k
 
 /- English proof (translation)
-Use `HeightOneSpectrum.ext ?_` and prove the remaining obligations. Rewrite using `[show w.asIdeal = _ from h]`. Use extensionality with `x`. Conclude with `Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem eq_of_below_self {w w' : P E} (h : Below w w') : w' = w := by
   refine HeightOneSpectrum.ext ?_
@@ -46,7 +46,7 @@ private theorem eq_of_below_self {w w' : P E} (h : Below w w') : w' = w := by
   exact Iff.rfl
 
 /- English proof (translation)
-Use `⟨D.b.repr x 0, D.b.repr x 1, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← D.b.sum_repr x]`. Simplify using `[Fin.sum_univ_two, D.b0, D.b1, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem coord (D : Dat F E) (x : E) :
     ∃ a b : F, x = algebraMap F E a + algebraMap F E b * D.θ := by
@@ -55,9 +55,9 @@ private theorem coord (D : Dat F E) (x : E) :
   simp [Fin.sum_univ_two, D.b0, D.b1, Algebra.smul_def]
 
 /- English proof (translation)
-Establish `hF : ∀ a : F, i.symm (algebraMap E (Kv w) (algebraMap F E a)) = algebraMap F (Kv v) a` using `fun a => by`. Rewrite using `[← hc, RingEquiv.symm_apply_apply]`. Use `eq_of_below_self (I.below E E w w' ((completionMap v w').comp i.symm.toRingHom) ((continuous_completionMap v w').comp (cont_symm v w i hi)) fun x => ?_)` and prove the remaining obligations. Take `⟨a, b, rfl⟩` from `coord D x`. Express the relevant statement in the definitionally equal form `completionMap v w' (i.symm (algebraMap E (Kv w) _)) = algebraMap E (Kv w') _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [map_add, map_mul, hF, h, completionMap_algebraMap, Algebra.algebraMap_self, RingHom.id_apply, IsScalarTower.algebraMap_apply F E (Kv w')]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem place_eq (D : Dat F E) (v : P F) (w w' : P E) [w'.asIdeal.LiesOver v.asIdeal]
     (i : Kv v ≃+* Kv w) (hi : Continuous i)
@@ -73,7 +73,7 @@ private theorem place_eq (D : Dat F E) (v : P F) (w w' : P E) [w'.asIdeal.LiesOv
     IsScalarTower.algebraMap_apply F E (Kv w')]
 
 /- English proof (translation)
-Establish `hb : AdeleBaseChange.below F w' = v` using `(below_eq_iff _ _).2 hl`. Substitute `hb` using the available equality. Take `⟨-, -, hs, -⟩` from `sgLaws F (AdeleBaseChange.below F w')`. Express the relevant statement in the definitionally equal form `completionMap (AdeleBaseChange.below F w') w' ((sg (AdeleBaseChange.below F w') (k / 2)).2 (AdeleBaseChange.below F w')) + completionMap (AdeleBaseChange.below F w') w' ((sg (AdeleBaseChange.below F w') (k / (2 * θ))).2 (AdeleBaseChange.below F w')) * algebraMap E (Kv w') D.θ = _`. Rewrite using `[show (sg (AdeleBaseChange.below F w') (k / 2)).2 (AdeleBaseChange.below F w') = k / 2 from hs _, show (sg (AdeleBaseChange.below F w') (k / (2 * θ))).2 (AdeleBaseChange.below F w') = k / (2 * θ) from hs _]`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem sE_snd_above (D : Dat F E) (v : P F) (θ k : Kv v) (w' : P E)
     [hl : w'.asIdeal.LiesOver v.asIdeal] :
@@ -88,7 +88,7 @@ private theorem sE_snd_above (D : Dat F E) (v : P F) (θ k : Kv v) (w' : P E)
     show (sg (AdeleBaseChange.below F w') (k / (2 * θ))).2 (AdeleBaseChange.below F w') = k / (2 * θ) from hs _]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, hs, -⟩` from `sgLaws F v`. Express the relevant statement in the definitionally equal form `completionMap (AdeleBaseChange.below F w') w' ((sg v (k / 2)).2 (AdeleBaseChange.below F w')) + completionMap (AdeleBaseChange.below F w') w' ((sg v (k / (2 * θ))).2 (AdeleBaseChange.below F w')) * algebraMap E (Kv w') D.θ = _`. Rewrite using `[(hs _).2 _ hb, (hs _).2 _ hb, map_zero, zero_mul, add_zero]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sE_snd_not_above (D : Dat F E) (v : P F) (θ k : Kv v) (w' : P E) (hb : AdeleBaseChange.below F w' ≠ v) :
     (sE D v θ k).2 w' = 0 := by
@@ -98,7 +98,7 @@ private theorem sE_snd_not_above (D : Dat F E) (v : P F) (θ k : Kv v) (w' : P E
   rw [(hs _).2 _ hb, (hs _).2 _ hb, map_zero, zero_mul, add_zero]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, hs, -⟩` from `sgLaws F v`. Express the relevant statement in the definitionally equal form `InfinitePlace.infiniteAdeleRingMap (sg v (k / 2)).1 + InfinitePlace.infiniteAdeleRingMap (sg v (k / (2 * θ))).1 * (rt D.θ).1 = 0`. Rewrite using `[(hs _).1, (hs _).1, map_zero, zero_mul, add_zero]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sE_fst (D : Dat F E) (v : P F) (θ k : Kv v) : (sE D v θ k).1 = 0 := by
   obtain ⟨-, -, -, -, -, -, -, hs, -⟩ := sgLaws F v
@@ -110,21 +110,21 @@ end UpperTheory.ConvolutionTheory.R2.I.PlaceCoordinates
 
 open UpperTheory.ConvolutionTheory.R2.I.PlaceCoordinates GroundTheory.Global.SemiLocal GroundTheory.Global.AdeleBaseChange in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ D v w i hi hc`. Establish `hb : Below v w` using `I.below F E v w i.toRingHom hi hc`. Use `haveI hl : w.asIdeal.LiesOver v.asIdeal := ⟨hb⟩`. Establish `hθE : D.θ ≠ 0` using `D.b1 ▸ D.b.ne_zero 1`. Take `⟨θ, hθ⟩ : ∃ θ, θ = i.symm (algebraMap E (Kv w) D.θ)` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hiθ : i θ = algebraMap E (Kv w) D.θ` using `by rw [hθ, RingEquiv.apply_symm_apply]`. Establish `hsq : θ ^ 2 = algebraMap F (Kv v) D.δ`. Apply `i.injective` to reduce the goal to its premises. Rewrite using `[map_pow, hiθ, hc, ← map_pow, D.sq]`. Establish `hne : θ ≠ 0` using `fun h => hθE ((map_eq_zero _).1 (by rw [← hiθ, h, map_zero]))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (2 : Kv v) ≠ 0`. Use `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v` as an intermediate fact. Conclude with `two_ne_zero`. Use `⟨θ, hsq, hne, fun k => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, -, -, -, -, hs, -⟩` from `sgLaws E w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, -, hs0, -⟩` from `sgLaws E w`. Use `Prod.ext ((hs _).1.trans (sE_fst D v θ k).symm) (FiniteAdeleRing.ext E fun w' => ?_)` and prove the remaining obligations. Distinguish the cases in `hv : AdeleBaseChange.below F w' = v`. Use `haveI hl' : w'.asIdeal.LiesOver v.asIdeal := (below_eq_iff _ _).1 hv`. Express the relevant statement in the definitionally equal form `(sg w (i k)).2 w' = (sE D v θ k).2 w'`.
+Consider separately whether the proposition holds or fails. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[sE_snd_above]`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality. Establish `e` using `eq_completionMap v w' i.toRingHom hi hc`. Establish `e' : ∀ x, completionMap v w' x = i x` using `fun x => (e x).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[show (sg w' (i k)).2 w' = i k from hs0 _, e', e', ← hiθ, ← map_mul, ← map_add]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hj : completionMap v w' θ ≠ algebraMap E (Kv w') D.θ` using `fun h => hw (place_eq D v w w' i hi hc (hθ ▸ h))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj2 : completionMap v w' θ ^ 2 = algebraMap E (Kv w') D.θ ^ 2`. Rewrite using `[← map_pow, hsq, completionMap_algebraMap, ← map_pow, D.sq, IsScalarTower.algebraMap_apply F E (Kv w')]`. Establish `hneg : algebraMap E (Kv w') D.θ = -completionMap v w' θ`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hj2 with h | h` into its components or cases. Conclude with `absurd h hj`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, neg_neg]`. Rewrite using `[(hs _).2 _ hw, hneg, mul_neg, ← map_mul, ← map_neg, ← map_add]`. Rewrite using `[show k / 2 + -(k / (2 * θ) * θ) = 0 by field_simp; ring, map_zero]`. Establish `hw : w' ≠ w` using `fun h => hv (h ▸ (below_eq_iff _ _).2 hl)`. Conclude with `((hs _).2 _ hw).trans (sE_snd_not_above D v θ k w' hv).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.place :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E) (v : P F) (w : P E) (i : Kv v ≃+* Kv w), Continuous i →

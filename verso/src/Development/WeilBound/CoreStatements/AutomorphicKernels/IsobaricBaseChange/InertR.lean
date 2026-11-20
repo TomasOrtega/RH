@@ -12,7 +12,7 @@ namespace GlobalTheory.PfBCI
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `s ϖ q hs hinv α hα`. Conclude with `absurd (GlobalTheory.BcSpehCompare.isUnramU_of_hasSatAt hs hinv.2.1 hα) hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inert_of_not_unram {π : Submodule ℂ (UA E n → ℂ)} {w : HeightOneSpectrum (𝓞 E)} (hw : ¬ IsUnramU π w)
     (P : SmIrr (GL (Fin n) (w.adicCompletion E))) :

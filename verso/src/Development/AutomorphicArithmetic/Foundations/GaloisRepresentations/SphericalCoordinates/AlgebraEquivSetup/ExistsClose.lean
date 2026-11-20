@@ -5,9 +5,9 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hd` using `InfinitePlace.denseRange_algebraMap_pi E`. Take `⟨x, hx⟩` from `hd.exists_dist_lt (fun v : InfinitePlace E => WithAbs.toAbs v.1 (c v)) (by norm_num : (0:ℝ) < 1/2)`. Use `⟨x, fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `(dist_le_pi_dist _ _ v).trans_lt hx`. Rewrite `h1` using `[dist_comm, dist_eq_norm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private lemma exists_close {E : Type} [Field E] [NumberField E] (c : InfinitePlace E → E) :
     ∃ x : E, ∀ v : InfinitePlace E, v (x - c v) < 1 / 2 := by
@@ -20,31 +20,31 @@ private lemma exists_close {E : Type} [Field E] [NumberField E] (c : InfinitePla
   exact h1
 
 /- English proof (translation)
-Introduce `E _ _ _ τ₀ M hM`. Take `⟨x, hx⟩` from `exists_close (E := E) (fun v => if v = InfinitePlace.mk τ₀ then -1 else 1)`. Establish `hbound : ∀ τ : E →+* ℂ, |(τ x).re - (if InfinitePlace.mk τ = InfinitePlace.mk τ₀ then -1 else 1)| < 1 / 2`. Introduce `τ`. Establish `h : ‖τ (x - (if InfinitePlace.mk τ = InfinitePlace.mk τ₀ then -1 else 1))‖ < 1 / 2` using `hx (InfinitePlace.mk τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `lt_of_le_of_lt ?_ h` and prove the remaining obligations. Use `split_ifs with hτ`. Use `Complex.abs_re_le_norm (τ x - -1)` as an intermediate fact. Simplify using `using this`. Use `Complex.abs_re_le_norm (τ x - 1)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hxalg : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨y, hy0, hyint⟩` from `IsAlgebraic.exists_integral_multiple hxalg`. Use `set z : E := y • (y • x) with hzdef`. Establish `hz : IsIntegral ℤ z` using `hyint.smul y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyR : (y : ℝ) ≠ 0` using `by exact_mod_cast hy0`. Establish `hy2 : 0 < (y : ℝ) ^ 2` using `by positivity`. Establish `hτz : ∀ τ : E →+* ℂ, (τ z).re = (y : ℝ) ^ 2 * (τ x).re`. Introduce `τ`. Simplify using `[hzdef, zsmul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set w : E := z + IsCMField.complexConj E z with hwdef`. Establish `hw : IsIntegral ℤ w` using `hz.add (map_isIntegral_int (IsCMField.complexConj E) hz)`. Establish `hτw : ∀ τ : E →+* ℂ, (τ w).re = 2 * (τ z).re`. Introduce `τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `[hwdef, IsCMField.complexEmbedding_complexConj]`. Expand and normalize the polynomial expressions, which then agree. Establish `hneg : (τ₀ w).re < 0`. Establish `hb` using `hbound τ₀`. Rewrite `hb` using `[if_pos rfl]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `(abs_lt.mp hb).2` as an intermediate fact. Rewrite using `[hτw, hτz]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hpos : ∀ τ : E →+* ℂ, InfinitePlace.mk τ ≠ InfinitePlace.mk τ₀ → 0 < (τ w).re`. Introduce `τ hτ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `hbound τ`. Rewrite `hb` using `[if_neg hτ]`. Use `(abs_lt.mp hb).1` as an intermediate fact. Rewrite using `[hτw, hτz]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hMR : (0 : ℝ) < M` using `by exact_mod_cast hM`. Take `⟨K, hK⟩` from `exists_nat_gt (1 / ((M : ℝ) * -(τ₀ w).re))`. Establish `hKM : 1 < (M : ℝ) * K * -(τ₀ w).re`. Establish `hd : 0 < (M : ℝ) * -(τ₀ w).re` using `by nlinarith`. Rewrite `hK` using `[div_lt_iff₀ hd]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Set `wO : 𝓞 E` to `⟨w, (mem_integralClosure_iff ℤ E).mpr hw⟩`. Establish `hcoe : (((1 : 𝓞 E) + (M : 𝓞 E) * ((K : 𝓞 E) * wO) : 𝓞 E) : E) = 1 + (M : E) * ((K : E) * w)`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hre : ∀ τ : E →+* ℂ, (τ (1 + (M : E) * ((K : E) * w))).re = 1 + (M : ℝ) * K * (τ w).re`. Introduce `τ`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Use `⟨1 + (M : 𝓞 E) * ((K : 𝓞 E) * wO), ?_, ?_, ?_, (K : 𝓞 E) * wO, rfl⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoe]`. Simplify using `[hwdef, add_comm]`. Rewrite using `[hcoe, hre]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `τ hτ`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcoe, hre]`. Use `hpos τ hτ` as an intermediate fact. Establish `: 0 ≤ (M : ℝ) * K * (τ w).re` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pCEx :
     CEx := by

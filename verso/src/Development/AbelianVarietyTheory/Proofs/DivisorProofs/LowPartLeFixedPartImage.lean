@@ -21,25 +21,23 @@ namespace GlobalTheory.LowFixCover
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ ψ _ _ M.co hψ`. Establish `hL` using `GlobalTheory.RealLift.actsLaws F (Fin n × Fin d)`. Establish `hSD : ∀ u, At (evI F) u → ∀ φ, GlobalTheory.RealLift.SD (M.heisLine ψ u) φ (D u φ)` using `fun u hu φ => (hD u hu φ).1`. Establish `hAD : ∀ u, At (evI F) u → ∀ φ : SInf F (Fin n × Fin d), ActsD (evI F) (M.heisLine ψ u) φ (D u φ)` using `fun u hu φ => (hL φ _ φ).1 _ (GlobalTheory.FockCompactW.heisLine_zero M ψ u) (hSD u hu φ)`. Establish `hint : ∀ u, At (evI F) u → ∀ φ : SInf F (Fin n × Fin d), ActsD (evI F) (M.heisLine ψ (mat k * u)) (A φ) (A (D u φ))` using `fun u hu φ => (hL _ _ φ).1 _ (GlobalTheory.FockCompactW.heisLine_zero M ψ _) (GlobalTheory.FockCompactX.sd_intertwine_left hw k (hA φ) (hA _) (hSD u hu φ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkk : mat k * mat k⁻¹ = 1`. Express the relevant statement in the definitionally equal form `mat (k * k⁻¹) = 1`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Establish `hcan : ∀ u : Matrix (Fin n) (Fin d) (AE F E), mat k * (mat k⁻¹ * u) = u` using `fun u => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, hkk, Matrix.one_mul]`. Establish `hvac : ∀ f₀, M.IsGauss ψ τ f₀ → M.IsGauss ψ τ (A f₀)`. Introduce `f₀ hf₀`. Take `⟨ε, hε⟩` from `hf₀`. Use `⟨ε, fun u u' hu hu' huu g g' hg hg' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv` using `GlobalTheory.FockCompactX.at_mul_left hu (mat k⁻¹)`. Establish `hv'` using `GlobalTheory.FockCompactX.at_mul_left hu' (mat k⁻¹)`. Establish `h1` using `hint _ hv f₀`. Establish `h2` using `hint _ hv' f₀`. Rewrite `h1`, `h2` using `[hcan]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `(hL _ _ _).2.2.1 _ hg h1`. Establish `e2` using `(hL _ _ _).2.2.1 _ hg' h2`. Establish `key` using `hε _ _ hv hv' (fun w => ?_) _ _ (hAD _ hv f₀) (hAD _ hv' f₀)`. Rewrite using `[e1, e2, key, map_smul]`. Establish `hm : (mat k⁻¹).map (piInf (τ w)) * (mat k).map (piInf (τ w)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `(mat (k⁻¹ * k)).map _ = 1`. Rewrite using `[inv_mul_cancel]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hm' : (mat k).map (piInf (τ w)) * (mat k⁻¹).map (piInf (τ w)) = 1` using `mul_eq_one_comm.1 hm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (mat k⁻¹).map (piInf (τ w)) * X.θ w = X.θ w * (mat k⁻¹).map (piInf (τ w))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul, Matrix.map_mul, huu w, Matrix.mul_smul]`. Use `congr 1`. Simplify using `only [← Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[fockDeg_zero]`. Conclude with `Submodule.span_le.2 fun f₀ hf₀ => Submodule.mem_comap.2 (Submodule.subset_span (hvac f₀ hf₀))`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ i ih`. Rewrite using `[fockDeg_succ]`. Use `sup_le (ih.trans (Submodule.comap_mono le_sup_left)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `φ₁ ⟨u, hu, φ, hφ, hφ₁⟩`. Establish `e : φ₁ = D u φ` using `(hL _ _ _).2.2.1 _ hφ₁ (hAD u hu φ)`.
-
-Rewrite using `[e]`. Conclude with `Submodule.mem_comap.2 (Submodule.mem_sup_right (Submodule.subset_span ⟨mat k * u, GlobalTheory.FockCompactX.at_mul_left hu _, A φ, ih hφ, hint u hu φ⟩))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fockDeg_stable_left {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {ψ : AddChar (AF F) ℂ}
     {χX χW : Chr F E} {om : Rep σ X W} (hψ : IsStd ψ) (hw : M.IsWeil ψ χX χW om)
@@ -105,21 +103,19 @@ theorem fockDeg_stable_left {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Mod
       (Submodule.subset_span ⟨mat k * u, GlobalTheory.FockCompactX.at_mul_left hu _, A φ, ih hφ, hint u hu φ⟩))
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' R Rf h`. Establish `hT` using `h.triple`. Establish `hψ : IsStd B.ψ` using `hT.base.std`. Establish `hw` using `hT.weil`. Establish `h1W : (1 : UA σ G.W.J) ∈ UAt σ G.W (evI F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u _`. Simplify using `[mat]`. Establish `hex : ∀ k : UA σ G.V.J, ∃ A : SInf F (Fin a × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a × Fin (a + a')), k ∈ KInf σ G.V B.emb → ∀ v : SInf F (Fin a × Fin (a + a')), Acts (evI F) (om (k, 1)) v (A v)`. Introduce `k`. Distinguish the cases in `hk : k ∈ KInf σ G.V B.emb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨A, hA⟩` from `GlobalTheory.FockCompactW.exists_op_of_UAt hψ hw (k, 1) hk.1 h1W`. Conclude with `⟨A, fun _ => hA⟩`. Conclude with `⟨0, fun h => absurd h hk⟩`. Use `choose A hA using hex`. Use `set V : Submodule ℂ (SInf F (Fin a × Fin (a + a'))) := fockDeg G.M B.ψ B.emb (lowDegInf B G.M R.p) with hVdef`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVfin : FiniteDimensional ℂ V` using `GlobalTheory.T.fock_degree_space_finiteDimensional F E σ B a (a + a') G.V G.W G.M _ _ _ _ hT.base hT.geo.hV hT.geo.hW hT.geo.hM _`. Establish `hVst : ∀ k ∈ KInf σ G.V B.emb, ∀ v ∈ V, A k v ∈ V` using `fun k hk v hv => fockDeg_stable_left hψ hw B.emb hk (A k) (hA k hk) _ hv`. Set `U : Submodule ℂ (SInf F (Fin a × Fin (a + a')))` to `Submodule.span ℂ {z | ∃ k ∈ KInf σ G.V B.emb, ∃ v ∈ V, z = A k v - v}`. Establish `hUV : U ≤ V` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, hk, v, hv, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `V.sub_mem (hVst k hk v hv) hv)`. Establish `hU0 : U ≤ LinearMap.ker R.p` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, hk, v, hv, rfl⟩`. Use `show R.p (A k v - v) = 0`. Rewrite using `[map_sub, h.real.quot.cpt k hk v (fockDeg_le_pol _ _ _ _ hv) _ (hA k hk v), sub_self])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Rewrite `hy` using `[lowPartInf, Submodule.mem_map]`. Take `⟨f, hf, rfl⟩` from `hy`. Take `⟨u, hu, hfx⟩` from `GlobalTheory.KFixedVanish.exists_fixed (Measure.addHaar : Measure (Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F)) U V hVfin hUV ((fun k => A k) '' KInf σ G.V B.emb) (by`. Introduce and unpack `_ ⟨k, hk, rfl⟩ v hv`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Submodule.subset_span ⟨k, hk, v, hv, rfl⟩)`. Use the proof step `(by`. Introduce and unpack `_ ⟨k, hk, rfl⟩ v`. Conclude with `GlobalTheory.T.weil_action_preserves_lintegral F E σ a (a + a') G.V G.W G.M B.ψ X.β (X.β / X.α) om hw (k, 1) v (A k v) (hA k hk v) _ inferInstance)`. Use `f hf`.
-
-Use `⟨f - u, Submodule.subset_span ⟨V.sub_mem hf (hUV hu), fun k hk => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h'` using `hA k hk (f - u)`. Rewrite `h'` using `[hfx (A k) ⟨k, hk, rfl⟩]`. Then use the resulting hypothesis. Rewrite using `[map_sub, LinearMap.mem_ker.1 (hU0 hu), sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowPartInf_le_fixPart : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

@@ -21,7 +21,7 @@ abbrev cuspPart (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     CuspL2 μ →ₗ[ℂ] Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ))
 
 /- English proof (translation)
-The claim follows from `hcl.preimage (toLp μ).continuous`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_cuspPart (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (V : Submodule ℂ (Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ)))
@@ -30,7 +30,7 @@ theorem isClosed_cuspPart (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
   hcl.preimage (toLp μ).continuous
 
 /- English proof (translation)
-Introduce `g v hv`. Use `show toLp μ (cuspRepT μ g v) ∈ V`. Rewrite using `[toLp_cuspRepT]`. Conclude with `hinv g _ hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInvariant_cuspPart (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (V : Submodule ℂ (Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ)))
@@ -42,24 +42,22 @@ theorem isInvariant_cuspPart (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
   exact hinv g _ hv
 
 /- English proof (translation)
-The claim follows from `AddMonoidHomClass.isometry_of_norm _ (norm_toLp μ)`.
+A detailed English derivation is pending.
 -/
 theorem isometry_toLp (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] :
     Isometry (toLp μ) :=
   AddMonoidHomClass.isometry_of_norm _ (norm_toLp μ)
 
 /- English proof (translation)
-Use `⟨isClosed_cuspPart μ V hcl, isInvariant_cuspPart μ V hinv, ?_, ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Introduce `h`. Set `u0 : CuspL2 μ` to `⟨u, hle hu⟩`. Establish `hmem : u0 ∈ cuspPart μ V` using `hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hmem` using `[h, Submodule.mem_bot]`. Conclude with `hu0 (congrArg Subtype.val hmem)`. Introduce `U hUc hUi hUV set U' : Submodule ℂ (Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ)) := U.map ((toLp μ : CuspL2 μ →L[ℂ] Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ)) : CuspL2 μ →ₗ[ℂ] Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ)) with hU'`. Establish `hU'V : U' ≤ V`. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hUV hv`. Establish `hU'c : IsClosed (U' : Set (Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ)))`. Rewrite using `[hU', Submodule.map_coe]`. Conclude with `(isometry_toLp μ).isClosedEmbedding.isClosedMap _ hUc`. Establish `hU'i : (rightRegularRep (rationalGLOne K n) μ).IsInvariant U'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `g _ ⟨v, hv, rfl⟩`. Conclude with `⟨cuspRepT μ g v, hUi g v hv, rfl⟩`. Break down `hirr U' hU'V hU'c hU'i with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Establish `: toLp μ v ∈ U'` using `⟨v, hv, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `toLp_injective μ (this.trans (map_zero (toLp μ)).symm)`.
-
-Use `right`. Use `le_antisymm hUV fun v hv => ?_` and prove the remaining obligations. Establish `: toLp μ v ∈ U'` using `by rw [h]; exact hv`. Take `⟨v', hv', e⟩` from `this`. Rewrite using `[← toLp_injective μ e]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isMinimal_cuspPart (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (V : Submodule ℂ (Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ)))
@@ -112,7 +110,7 @@ def clsL : P.carrier →ₗ[ℂ] Lp ℂ 2 (quotientMeasure (rationalGLOne K n) �
     CuspL2 μ →ₗ[ℂ] Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ)) ∘ₗ cuspVecL μ ∘ₗ P.carrier.subtype
 
 /- English proof (translation)
-Use `show toLp μ (cuspVecL μ (finRepCusp K n h c)) = _`. Rewrite using `[cuspToL2_finRepCusp μ h (P.le_central c.2), toLp_cuspRepT]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem clsL_tau (h : AdelicGLn.FiniteAdelicGL K n) (c : P.carrier) :
     clsL μ P (P.toModule.τ h c) =
@@ -123,9 +121,9 @@ theorem clsL_tau (h : AdelicGLn.FiniteAdelicGL K n) (c : P.carrier) :
 
 variable {P} in
 /- English proof (translation)
-Use `set E := D.toDecomposition.equiv`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Establish `key : E.toLinearEquiv (P.toModule.fullRep ((1 : FreeMonoid _), h) (E.toLinearEquiv.symm (a ⊗ₜ b))) = RestrictedTensor.outerTensor D.toDecomposition.π₁.rep D.toDecomposition.π₂ ((1 : FreeMonoid _), h) (E.toLinearEquiv (E.toLinearEquiv.symm (a ⊗ₜ b)))` using `LinearMap.congr_fun (E.toIntertwiningMap.isIntertwining' ((1 : FreeMonoid _), h)) _`. Rewrite `key` using `[LinearEquiv.apply_symm_apply, RestrictedTensor.outerTensor_tmul]`. Establish `hf : P.toModule.fullRep ((1 : FreeMonoid _), h) (E.toLinearEquiv.symm (a ⊗ₜ b)) = P.toModule.τ h (E.toLinearEquiv.symm (a ⊗ₜ b))` using `by show P.toModule.gk.rep 1 (P.toModule.τ h _) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one, Module.End.one_apply]`. Rewrite `key` using `[hf]`. Simplify using `only [map_one, Module.End.one_apply] at key`. Conclude with `key.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem equiv_symm_tmul_tau (h : AdelicGLn.FiniteAdelicGL K n) (a : D.toDecomposition.W₁)
     (b : D.toDecomposition.W₂) :
@@ -148,7 +146,7 @@ theorem equiv_symm_tmul_tau (h : AdelicGLn.FiniteAdelicGL K n) (a : D.toDecompos
 
 variable {P} in
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (D.finite.equiv.symm.toIntertwiningMap.isIntertwining' h) t`.
+A detailed English derivation is pending.
 -/
 theorem tensorEquiv_symm_rep (h : AdelicGLn.FiniteAdelicGL K n)
     (t : RestrictedTensor.restrictedTensor D.finite.ξ) :
@@ -169,7 +167,7 @@ def famL (w : HeightOneSpectrum (𝓞 K)) (x : ∀ v, D.finite.W v)
 open Classical in
 variable {P} in
 /- English proof (translation)
-Simplify using `[famL, MultilinearMap.toLinearMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_famL (w : HeightOneSpectrum (𝓞 K)) (x : ∀ v, D.finite.W v)
     (hx : RestrictedTensor.IsRestricted D.finite.ξ x) (y : D.finite.W w) :
@@ -178,7 +176,7 @@ theorem coe_famL (w : HeightOneSpectrum (𝓞 K)) (x : ∀ v, D.finite.W v)
 
 variable {P} in
 /- English proof (translation)
-Rewrite using `[coe_famL]`. Use `congr 1`. Conclude with `Function.update_eq_self w x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem famL_self (w : HeightOneSpectrum (𝓞 K)) (x : ∀ v, D.finite.W v)
     (hx : RestrictedTensor.IsRestricted D.finite.ξ x) :
@@ -190,9 +188,9 @@ theorem famL_self (w : HeightOneSpectrum (𝓞 K)) (x : ∀ v, D.finite.W v)
 
 variable {P} in
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hr : AdelicGLn.toRestricted K n (AdelicGLn.localEmbedding w g) = RestrictedProduct.mulSingle (fun v => GLnLocal.integralGL (v.adicCompletion K) n) w g` using `(AdelicGLn.finiteRestrictedEquiv K n).apply_symm_apply _`. Express the relevant statement in the definitionally equal form `_ = RestrictedTensor.tensorRep _ D.finite.π (AdelicGLn.toRestricted K n (AdelicGLn.localEmbedding w g)) (famL D w x hx y : PiTensorProduct ℂ D.finite.W)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Function.update_idem, Function.update_self]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = RestrictedTensor.tensorRep (fun v => GLnLocal.integralGL (v.adicCompletion K) n) D.finite.π (RestrictedProduct.mulSingle (fun v => GLnLocal.integralGL (v.adicCompletion K) n) w g) (PiTensorProduct.tprod ℂ (Function.update x w y)) := by`. Rewrite using `[RestrictedTensor.tensorRep_mulSingle_tprod]`. Use `_ = _ := congrArg₂ (fun z t => RestrictedTensor.tensorRep (fun v => GLnLocal.integralGL (v.adicCompletion K) n) D.finite.π z t) hr.symm (coe_famL D w x hx y).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famL_equivariant (w : HeightOneSpectrum (𝓞 K)) (x : ∀ v, D.finite.W v)
     (hx : RestrictedTensor.IsRestricted D.finite.ξ x) (g : GL (Fin n) (w.adicCompletion K))
@@ -227,7 +225,7 @@ def famF (w : HeightOneSpectrum (𝓞 K)) (a : D.toDecomposition.W₁) (x : ∀ 
     D.finite.equiv.toLinearEquiv.symm.toLinearMap ∘ₗ famL D w x hx
 
 /- English proof (translation)
-Establish `h12` using `(congrArg D.finite.equiv.toLinearEquiv.symm (famL_equivariant D w x hx g y)).trans (tensorEquiv_symm_rep D (AdelicGLn.localEmbedding w g) (famL D w x hx y))`. Establish `h3` using `congrArg (fun t => D.toDecomposition.equiv.toLinearEquiv.symm (a ⊗ₜ t)) h12`. Establish `h4` using `h3.trans (equiv_symm_tmul_tau D (AdelicGLn.localEmbedding w g) a (D.finite.equiv.toLinearEquiv.symm (famL D w x hx y)))`. Conclude with `(congrArg (clsL μ P) h4).trans (clsL_tau μ P _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem famF_equivariant (w : HeightOneSpectrum (𝓞 K)) (a : D.toDecomposition.W₁) (x : ∀ v, D.finite.W v)
     (hx : RestrictedTensor.IsRestricted D.finite.ξ x) (g : GL (Fin n) (w.adicCompletion K))
@@ -244,7 +242,7 @@ theorem famF_equivariant (w : HeightOneSpectrum (𝓞 K)) (a : D.toDecomposition
 end Family
 
 /- English proof (translation)
-Use `PositivityTheory.TfC.OccursIff.Span.span_core D.finite.ξ D.toDecomposition.equiv.toLinearEquiv D.finite.equiv.toLinearEquiv (clsL μ P) u (fun a x hx => ?_) c` and prove the remaining obligations. Establish `e : famL D w x hx (x w) = ⟨PiTensorProduct.tprod ℂ x, RestrictedTensor.tprod_mem_restrictedTensor hx⟩` using `Subtype.ext (famL_self D w x hx)`. Establish `e2` using `congrArg (fun t => clsL μ P (D.toDecomposition.equiv.toLinearEquiv.symm (a ⊗ₜ D.finite.equiv.toLinearEquiv.symm t))) e`. Conclude with `e2 ▸ h a x hx (x w)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inner_clsL_eq_zero (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (P : CuspidalAutomorphicRepresentation K n) (D : AdelicDecomposition P.toModule)
@@ -261,17 +259,15 @@ theorem inner_clsL_eq_zero (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
   exact e2 ▸ h a x hx (x w)
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ V hle hcl hinv hne hirr w`. Establish `: CompleteSpace (cuspPart μ V)` using `(isClosed_cuspPart μ V hcl).completeSpace_coe`. Establish `hV0` using `isInvariant_cuspPart μ V hinv`. Establish `hirr0` using `UnitaryRep.isIrreducible_restrict_of_isMinimal (π := cuspRepT μ) hV0 (isMinimal_cuspPart μ V hle hcl hinv hne hirr)`. Establish `hD` using `CuspidalAutomorphicRepresentation.nonempty_adelicDecomposition_ofL2Summand (cuspPart μ V) hV0 hirr0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P := CuspidalAutomorphicRepresentation.ofL2Summand (cuspPart μ V) hV0 hirr0 with hP`. Take `⟨D⟩` from `hD`. Establish `hmem : ∀ c : P.carrier, clsL μ P c ∈ V` using `fun c => c.2.2`. Use `⟨D.finite.W w, inferInstance, inferInstance, D.finite.π w, D.finite.isAdmissible w, D.finite.isIrreducible w, {f | ∃ a x hx, f = famF μ P D w a x hx}, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨a, x, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨fun y => hmem _, fun g y => famF_equivariant μ P D w a x hx g y⟩`. Introduce `u hu hu0`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `h0 : ∀ a x hx y, inner ℂ (famF μ P D w a x hx y) u = 0` using `fun a x hx y => hall _ ⟨a, x, hx, rfl⟩ y`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc` using `inner_clsL_eq_zero μ P D w u h0`. Set `u0 : CuspL2 μ` to `⟨u, hle hu⟩`. Establish `hu0' : u0 ∈ (P.carrier.map (cuspVecL μ))ᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce and unpack `_ ⟨c, hc', rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc ⟨c, hc'⟩`. Establish `hmemV : u0 ∈ (P.carrier.map (cuspVecL μ)).topologicalClosure`. Rewrite using `[hP, CuspidalAutomorphicRepresentation.topologicalClosure_map_ofL2Summand]`. Conclude with `hu`. Rewrite `hmemV` using `[← Submodule.orthogonal_orthogonal_eq_closure]`.
-
-Establish `h1` using `Submodule.inner_right_of_mem_orthogonal hu0' hmemV`. Rewrite `h1` using `[inner_self_eq_zero]`. Conclude with `hu0 (congrArg Subtype.val h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem occ_loccomp : ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (V : Submodule ℂ (Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ))), V ≤ cuspidalL2 μ → IsClosed (V : Set (Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ))) → (rightRegularRep (rationalGLOne K n) μ).IsInvariant V → V ≠ ⊥ → (∀ V' ≤ V, IsClosed (V' : Set (Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ))) → (rightRegularRep (rationalGLOne K n) μ).IsInvariant V' → V' = ⊥ ∨ V' = V) → ∀ (w : HeightOneSpectrum (𝓞 K)), ∃ (W : Type) (_ : AddCommGroup W) (_ : Module ℂ W) (π : Representation ℂ (GL (Fin n) (w.adicCompletion K)) W), GroundTheory.Automorphic.IsAdmissible π ∧ π.IsIrreducible ∧ ∃ F : Set (W →ₗ[ℂ] Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ)), (∀ f ∈ F, (∀ x, f x ∈ V) ∧ ∀ g x, f (π g x) = rightRegularRep (rationalGLOne K n) μ (MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g)) (f x)) ∧ ∀ u ∈ V, u ≠ 0 → ∃ f ∈ F, ∃ x, inner ℂ (f x) u ≠ 0 := by
   intro K _ _ n μ _ V hle hcl hinv hne hirr w

@@ -17,7 +17,7 @@ namespace GlobalTheory.IsoLin
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Simplify using `only [Hecke.transl, comp_mul, Category.comp_id, Category.id_comp]`. Rewrite using `[← Category.assoc _ (toUnit G) y, toUnit_unique (_ ≫ toUnit G) (toUnit G), _root_.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_mul' {G : Over S} [GrpObj G] (x y : 𝟙_ (Over S) ⟶ G) :
     Hecke.transl (x * y) = Hecke.transl x ≫ Hecke.transl y := by
@@ -25,23 +25,23 @@ theorem transl_mul' {G : Over S} [GrpObj G] (x y : 𝟙_ (Over S) ⟶ G) :
   rw [← Category.assoc _ (toUnit G) y, toUnit_unique (_ ≫ toUnit G) (toUnit G), _root_.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← transl_mul', ← transl_mul', _root_.mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_comm {G : Over S} [GrpObj G] [IsCommMonObj G] (x y : 𝟙_ (Over S) ⟶ G) :
     Hecke.transl x ≫ Hecke.transl y = Hecke.transl y ≫ Hecke.transl x := by
   rw [← transl_mul', ← transl_mul', _root_.mul_comm]
 
 /- English proof (translation)
-Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.mul_comp]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_mul_lift' {A : Over S} [GrpObj A] (a b c d : 𝟙_ (Over S) ⟶ A) :
     (lift (a * c) (b * d) : 𝟙_ (Over S) ⟶ G2 A) = lift a b * lift c d := by
   apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.mul_comp]
 
 /- English proof (translation)
-Establish `h2` using `(GlobalTheory.globalFns_holds S (G2 A) (AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA)).2`. Establish `w1 : (G2 A).hom = (fst A A).left ≫ A.hom` using `(Over.w (fst A A)).symm`. Establish `w2 : (G2 A).hom = (snd A A).left ≫ A.hom` using `(Over.w (snd A A)).symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[w1, Scheme.Hom.comp_appTop]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Function.Surjective.of_comp h2`. Rewrite `h2` using `[w2, Scheme.Hom.comp_appTop]`. Conclude with `Function.Surjective.of_comp h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_appTop {A : Over S} [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A) :
     Function.Surjective (fst A A).left.appTop.hom ∧ Function.Surjective (snd A A).left.appTop.hom := by
@@ -55,9 +55,9 @@ theorem surj_appTop {A : Over S} [GrpObj A] [IsCommMonObj A] (hA : IsAbelianSche
     exact Function.Surjective.of_comp h2
 
 /- English proof (translation)
-Establish `hQ : (Hecke.lbPow P m).IsLB` using `DVR.linComb_isLB P hP _ _`. Establish `h0` using `(GlobalTheory.CechPic.cls_eq_zero_iff (DVR.linComb_isLB P hP (fun _ : PUnit => f) (fun _ => 1))).2 h`. Use `(GlobalTheory.CechPic.cls_eq_zero_iff (DVR.linComb_isLB _ hQ (fun _ : PUnit => f) (fun _ => 1))).1 ?_` and prove the remaining obligations. Establish `e : GlobalTheory.CechPic.cls _ hQ = (m : ℤ) • GlobalTheory.CechPic.cls P hP`. Use `(GlobalTheory.CechPic.cls_linComb hP (fun _ : Fin m => 𝟙 X) (fun _ => 1) hQ).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[GlobalTheory.CechPic.pull_id]`. Rewrite using `[GlobalTheory.CechPic.cls_pull hQ f, e, map_zsmul, ← GlobalTheory.CechPic.cls_pull hP f (DVR.linComb_isLB P hP (fun _ : PUnit => f) (fun _ => 1)), h0, smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rig_lbPow {X Y : Scheme.{0}} (P : LB X) (hP : P.IsLB) (m : ℕ) (f : Y ⟶ X)
     (h : ∃ t : (P.pull f).Gen, t.IsGen) : ∃ t : ((Hecke.lbPow P m).pull f).Gen, t.IsGen := by
@@ -75,17 +75,15 @@ end GlobalTheory.IsoLin
 namespace GlobalTheory.IsoLin
 
 /- English proof (translation)
-Introduce `S A _ _ hA P hP hr1 hr2 m H hH1 hH2 hW`. Establish `hQ : (Hecke.lbPow P m).IsLB` using `DVR.linComb_isLB P hP _ _`. Establish `q1` using `rig_lbPow P hP m _ hr1`. Establish `q2` using `rig_lbPow P hP m _ hr2`. Take `⟨sf, ss⟩` from `surj_appTop hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm1 : ∀ a c : H, (lift ((a * c : H) : 𝟙_ (Over S) ⟶ A) 1 : 𝟙_ (Over S) ⟶ G2 A) = lift (a : 𝟙_ (Over S) ⟶ A) 1 * lift (c : 𝟙_ (Over S) ⟶ A) 1`. Introduce `a c`. Rewrite using `[← lift_mul_lift', _root_.mul_one, Subgroup.coe_mul]`. Establish `hm2 : ∀ a c : H, (lift 1 ((a * c : H) : 𝟙_ (Over S) ⟶ A) : 𝟙_ (Over S) ⟶ G2 A) = lift 1 (a : 𝟙_ (Over S) ⟶ A) * lift 1 (c : 𝟙_ (Over S) ⟶ A)`. Introduce `a c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← lift_mul_lift', _root_.mul_one, Subgroup.coe_mul]`. Take `⟨v₁, hv₁, cv₁⟩` from `GlobalTheory.MumLin.exists_linearisation A.left (G2 A).left (fst A A).left (lift (𝟙 A) (1 : A ⟶ A)).left (by rw [← Over.comp_left, lift_fst, Over.id_left]) sf (Hecke.lbPow P m) hQ q2 H (fun a => (Hecke.transl (lift (a : 𝟙_ (Over S) ⟶ A) 1 : 𝟙_ (Over S) ⟶ G2 A)).left) (fun a => (H …`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [Hecke.transl, MonObj.mul_comp, MonObj.comp_mul])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Use the proof step `(fun a => GlobalTheory.T.birigidified_bundle_translation_invariant_first_factor S A hA _ hQ q1 q2 a (hH1 a a.2))`. Take `⟨v₂, hv₂, cv₂⟩` from `GlobalTheory.MumLin.exists_linearisation A.left (G2 A).left (snd A A).left (lift (1 : A ⟶ A) (𝟙 A)).left (by rw [← Over.comp_left, lift_snd, Over.id_left]) ss (Hecke.lbPow P m) hQ q1 H (fun a => (Hecke.transl (lift 1 (a : 𝟙_ (Over S) ⟶ A) : 𝟙_ (Over S) ⟶ G2 A)).left) (fun a => (H …`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [Hecke.transl, MonObj.mul_comp, MonObj.comp_mul])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun a => GlobalTheory.T.birigidified_bundle_translation_invariant_second_factor S A hA _ hQ q1 q2 a (hH2 a a.2))`. Conclude with `GlobalTheory.T.exists_linearization_prod (G2 A).left (Hecke.lbPow P m) hQ H H _ _ (fun p => (Hecke.transl (lift (p.1 : 𝟙_ (Over S) ⟶ A) (p.2 : 𝟙_ (Over S) ⟶ A) : 𝟙_ (Over S) ⟶ G2 A)).left) (fun p => by show _ = (Hecke.transl _ ≫ Hecke.transl _).left`. Rewrite using `[← transl_mul', ← lift_mul_lift', _root_.mul_one, _root_.one_mul])`. Use the proof step `(fun a b => by rw [← Over.comp_left, ← Over.comp_left, transl_comm])`. Use the proof step `(fun a c => by simp only [hm1, transl_mul', Over.comp_left])`.
-
-Use the proof step `(fun a c => by simp only [hm2, transl_mul', Over.comp_left])`. Use `v₁ v₂ hv₁ hv₂ cv₁ cv₂`. Use the proof step `(fun a b => GlobalTheory.T.translation_isos_commute_of_commutatorPairing_one S (G2 A) (AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA) _ hQ _ _ (v₁ a) (v₂ b) (hv₁ a) (hv₂ b) (hW a a.2 b b.2))`.
+A detailed English derivation is pending.
 -/
 theorem exists_linearisation_isotropic : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (P : LB (G2 A).left), P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → ∀ (m : ℕ) (H : Subgroup (𝟙_ (Over S) ⟶ A)), (∀ h ∈ H, ∃ t : ((GlobalTheory.UPel.HT.Hecke.lbPow P m).pull (lift (toUnit A ≫ h) (𝟙 A)).left).Gen, t.IsGen) → (∀ h ∈ H, ∃ t : ((GlobalTheory.UPel.HT.Hecke.lbPow P m).pull (lift (𝟙 A) (toUnit A ≫ h)).left).Gen, t.IsGen) → (∀ h₁ ∈ H, ∀ h₂ ∈ H, Out.WeilIs (G2 A) (GlobalTheory.UPel.HT.Hecke.lbPow P m) 1 (lift h₁ 1 : 𝟙_ (Over S) ⟶ G2 A) (lift 1 h₂) 1) → ∃ u : ∀ a : H × H, LB.Gen (LB.LinComb (GlobalTheory.UPel.HT.Hecke.lbPow P m) (K := Fin 2) ![𝟙 (G2 A).left, (GlobalTheory.UPel.HT.Hecke.transl (lift a.1.1 a.2.1 : 𝟙_ (Over S) ⟶ G2 A)).left] ![1, -1]), (∀ a, (u a).IsGen) ∧ ∀ a c, LB.Gen.Corr (GlobalTheory.UPel.HT.Hecke.lbPow P m) _ _ _ _ (u (a * c)) (LB.mulGen (GlobalTheory.UPel.HT.Hecke.lbPow P m) _ _ _ _ (u a) (LB.pullGen (GlobalTheory.UPel.HT.Hecke.lbPow P m) _ _ (u c) (GlobalTheory.UPel.HT.Hecke.transl (lift a.1.1 a.2.1 : 𝟙_ (Over S) ⟶ G2 A)).left)) := by
   intro S A _ _ hA P hP hr1 hr2 m H hH1 hH2 hW

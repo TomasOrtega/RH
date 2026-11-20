@@ -28,7 +28,7 @@ def OActN.pullback {O : Type} [Ring O] (A : Over S) [GrpObj A] (a : GlobalTheory
   add x y := by rw [a.add]; exact CategoryTheory.Functor.map_mul _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem OActN.pullback_left {O : Type} [Ring O] (A : Over S) [GrpObj A] (a : GlobalTheory.UPel.HT.OActN O A) (c : O) :
     ((OActN.pullback f A a).act c).left ≫ pullback.fst A.hom f = pullback.fst A.hom f ≫ (a.act c).left :=
@@ -49,7 +49,7 @@ Both sides reduce to the same expression.
 theorem pushPt_left (w : φ ≫ A.hom = A'.hom ≫ f) {T : Over S'} (x : T ⟶ A') : (pushPt w x).left = x.left ≫ φ := rfl
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (Category.assoc _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem pushPt_comp (w : φ ≫ A.hom = A'.hom ≫ f) {T U : Over S'} (g : T ⟶ U) (x : U ⟶ A') :
     pushPt w (g ≫ x) = (Over.homMk g.left (by
@@ -58,7 +58,7 @@ theorem pushPt_comp (w : φ ≫ A.hom = A'.hom ≫ f) {T U : Over S'} (g : T ⟶
   Over.OverMorphism.ext (Category.assoc _ _ _)
 
 /- English proof (translation)
-Establish `e` using `pushPt_comp w (lift a b) (fst A' A')`. Establish `e'` using `pushPt_comp w (lift a b) (snd A' A')`. Rewrite `e` using `[lift_fst]`. Rewrite `e'` using `[lift_snd]`. Rewrite using `[e, e', ← comp_lift]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -72,9 +72,9 @@ theorem lift_sqMap (w : φ ≫ A.hom = A'.hom ≫ f) {T : Over S'} (a b : T ⟶ 
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `show (lift (pushPt w (fst A' A')) (pushPt w (snd A' A')) ≫ fst A A).left = _`. Rewrite using `[lift_fst]`. Both sides reduce to the same expression. Use `show (lift (pushPt w (fst A' A')) (pushPt w (snd A' A')) ≫ snd A A).left = _`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[lift_snd]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isSquare_sqMap (w : φ ≫ A.hom = A'.hom ≫ f) : IsSquare φ (sqMap w) := by
   constructor
@@ -127,7 +127,7 @@ section Pts
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {φ : A'.left ⟶ A.left}
 
 /- English proof (translation)
-Rewrite using `[lift_sqMap, ha, hb, ← comp_lift]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sqMap_of (w : φ ≫ A.hom = A'.hom ≫ f) {T : Over S'} {T₀ : Over S} (u : Over.mk (T.hom ≫ f) ⟶ T₀)
     (a' b' : T ⟶ A') (a b : T₀ ⟶ A) (ha : pushPt w a' = u ≫ a) (hb : pushPt w b' = u ≫ b) :

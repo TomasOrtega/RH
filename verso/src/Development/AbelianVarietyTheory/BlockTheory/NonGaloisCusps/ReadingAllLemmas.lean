@@ -74,7 +74,7 @@ def LemmaAllReadAt (N0 : X.Tw → ℕ) (i : X.Tw) (Rd : Set (Reading Y i)) : Pro
 variable {Y bkP E}
 
 /- English proof (translation)
-Use `h 1 isCoprime_one_left` as an intermediate fact. Rewrite `this` using `[zpow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem GoodAll.goodTw {N0 : X.Tw → ℕ} {i : X.Tw} {eps' : ℝ}
     {S : ∀ (j : ℕ) (b : Bool), Finset (Y.Dat i j b)} {A Q : Finset (PlE D.host)} {k' : ℕ}
@@ -96,7 +96,7 @@ def LemmaAllRead (D : Formalism.BasicNotions.D7) (bkP : BlochKatoReduction.BK D)
   ∀ i, D.ntw.NonzeroIndexPlace i → LemmaAllReadAt D.nexp (BlochKatoReduction.pin bkP) E N0 i (Rd i)
 
 /- English proof (translation)
-Introduce `i hi hs eps' he hF S hS A`. Take `⟨Q, k', ψ', hg⟩` from `h i hi hs eps' he hF S hS A`. Conclude with `⟨Q, k', ψ', hg.goodTw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LemmaAll.aux₃ {D : Formalism.BasicNotions.D7} {bkP : BlochKatoReduction.BK D} {E : IntegralHeckeForms.XD D} {N0 : D.ntw.Tw → ℕ}
     (h : LemmaAll D bkP E N0) : IntegralHeckeForms.aux₃ D bkP E N0 := by

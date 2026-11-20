@@ -11,23 +11,21 @@ namespace Formalism.MainNotions.G.ColumnFamilies
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees Formalism.MainNotions.G.GLWeightTheory Formalism.MainNotions.G.Joints Formalism.MainNotions.LemmaBAlt
 
 /- English proof (translation)
-Establish `hmaplc : ∀ c : X →₀ O, MvPolynomial.map (algebraMap O Kf) (Finsupp.linearCombination O bO c) = Finsupp.linearCombination Kf bK (c.mapRange (algebraMap O Kf) (map_zero _))`. Introduce `c`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (by intro i; exact zero_smul _ _), Finsupp.sum, Finsupp.sum, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, hmap, ← MvPolynomial.smul_eq_C_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `G`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hG, hGY⟩`. Take `⟨c, rfl⟩` from `(Finsupp.mem_span_range_iff_exists_finsupp).1 hG`. Express the relevant statement in the definitionally equal form `(c.sum fun x a => a • bO x) ∈ Submodule.span O (bO '' A)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Submodule.sum_mem _ fun x hx => Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, ?_, rfl⟩)` and prove the remaining obligations. Establish `h1 : MvPolynomial.map (algebraMap O Kf) (Finsupp.linearCombination O bO c) ∈ Submodule.span Kf (bK '' A)`. Rewrite using `[← hY]`. Use `⟨?_, hGY⟩` and prove the remaining obligations. Rewrite using `[hmaplc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finsupp.mem_span_range_iff_exists_finsupp.2 ⟨_, rfl⟩`. Take `⟨l, hl, hle⟩` from `(Finsupp.mem_span_image_iff_linearCombination Kf).1 h1`. Rewrite `hle` using `[hmaplc]`. Establish `hlc` using `hLI hle`. Establish `hxl : x ∈ l.support`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlc, Finsupp.mem_support_iff, Finsupp.mapRange_apply]`. Introduce `h0`. Conclude with `(Finsupp.mem_support_iff.1 hx) (hinj (by rw [h0, map_zero]))`. Conclude with `(Finsupp.mem_supported Kf l).1 hl hxl`. Introduce `hG`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `G ∈ Submodule.span O (bO '' A) at hG`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Use `⟨Submodule.subset_span ⟨x, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap]`. Establish `: bK x ∈ Submodule.span Kf (Set.range bK) ⊓ Y`. Rewrite using `[hY]`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Conclude with `this.2`.
+Treat this case separately. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨Submodule.zero_mem _, by rw [map_zero]; exact Submodule.zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Conclude with `⟨Submodule.add_mem _ hx.1 hy.1, by rw [map_add]; exact Submodule.add_mem _ hx.2 hy.2⟩`. Consider the case `smul a x _ hx`. Conclude with `⟨Submodule.smul_mem _ _ hx.1, by`.
-
-Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ hx.2⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_inter_eq_span_image {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] (hinj : Function.Injective (algebraMap O Kf))
     {σ X : Type} (bO : X → MvPolynomial σ O) (bK : X → MvPolynomial σ Kf)
@@ -105,7 +103,7 @@ variable (D : Formalism.BasicNotions.D7) (H : ExternalProductHyps) {F : Type} [F
 
 include D H in
 /- English proof (translation)
-The claim follows from `isoDecomp (glOpsE F LL S e) D (weight_condition_from_integral_form D) (H.e1 F N m k LL S e he)`.
+A detailed English derivation is pending.
 -/
 theorem exists_decSys_isoSub_glOpsE_of_injective {m k : ℕ} (S : Set (Fin N)) (e : Fin m → Fin k) (he : Function.Injective e) :
     ∃ pr : (Fin m → ℤ) → Module.End F (MvPolynomial (Fin N × Fin k) F), DecSys (isoSub (glOpsE F LL S e)) pr :=
@@ -124,19 +122,19 @@ def prTan (i : Fin (N + 1)) : (Fin K → ℤ) → Module.End F (MvPolynomial (Fi
   Classical.choose (exists_decSys_isoSub_glOpsE_of_injective (F := F) D H LL {j | j.val < i.val} (Fin.natAdd r) (Fin.natAdd_injective K r))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_decSys_isoSub_glOpsE_of_injective (F := F) D H LL {j | j.val < i.val} (Fin.castAdd K) (Fin.castAdd_injective r K))`.
+A detailed English derivation is pending.
 -/
 theorem prPl_sys (i : Fin (N + 1)) : DecSys (isoSub (EPl F r K LL i)) (prPl D H r K LL i) :=
   Classical.choose_spec (exists_decSys_isoSub_glOpsE_of_injective (F := F) D H LL {j | j.val < i.val} (Fin.castAdd K) (Fin.castAdd_injective r K))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_decSys_isoSub_glOpsE_of_injective (F := F) D H LL {j | j.val < i.val} (Fin.natAdd r) (Fin.natAdd_injective K r))`.
+A detailed English derivation is pending.
 -/
 theorem prTan_sys (i : Fin (N + 1)) : DecSys (isoSub (ETan F r K LL i)) (prTan D H r K LL i) :=
   Classical.choose_spec (exists_decSys_isoSub_glOpsE_of_injective (F := F) D H LL {j | j.val < i.val} (Fin.natAdd r) (Fin.natAdd_injective K r))
 
 /- English proof (translation)
-Break down `le_total i j with h | h` into its components or cases. Conclude with `Or.inl fun l (hl : l.val < i.val) => lt_of_lt_of_le hl h`. Conclude with `Or.inr fun l (hl : l.val < j.val) => lt_of_lt_of_le hl h`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem initialSegments_nested (i j : Fin (N + 1)) :
     ({l : Fin N | l.val < i.val} ⊆ {l : Fin N | l.val < j.val}) ∨
@@ -146,7 +144,7 @@ theorem initialSegments_nested (i j : Fin (N + 1)) :
   · exact Or.inr fun l (hl : l.val < j.val) => lt_of_lt_of_le hl h
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fin_castAdd_ne_natAdd (a : Fin r) (b : Fin K) : Fin.castAdd K a ≠ Fin.natAdd r b := by
   intro h

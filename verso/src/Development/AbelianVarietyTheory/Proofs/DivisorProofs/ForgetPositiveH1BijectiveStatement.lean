@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PullbackBijectiveDe
 open CategoryTheory GlobalTheory.CxCoh
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CxCoh.Cx.fnMap_h1_bijective` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FForgetPositiveH1Bijective.lean&line=7#L7)
 -/

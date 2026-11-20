@@ -17,7 +17,7 @@ open GlobalTheory.Mum GlobalTheory.Mum.GenDesc
 namespace GlobalTheory.Mum.GenDesc
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spMap_mul_aut {K' : Type} [Field K'] (a b : K' ≃+* K') :
     spMap ((a * b : K' ≃+* K') : K' →+* K') = spMap (a : K' →+* K') ≫ spMap (b : K' →+* K') := by
@@ -25,7 +25,7 @@ theorem spMap_mul_aut {K' : Type} [Field K'] (a b : K' ≃+* K') :
   rfl
 
 /- English proof (translation)
-The claim follows from `LBIso.trans hL (pull_isLB hL a) (pull_isLB hL _) ha (LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull L a a rfl) (chartPullSame L _ (fun _ => b) _ a fun _ => rfl) hb)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_comp_self {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (a b : X ⟶ X)
     (ha : LBIso L (L.pull a)) (hb : LBIso L (L.pull b)) : LBIso L (L.pull (a ≫ b)) :=
@@ -33,27 +33,23 @@ theorem lbIso_pull_comp_self {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (a b : X 
     (LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull L a a rfl) (chartPullSame L _ (fun _ => b) _ a fun _ => rfl) hb)
 
 /- English proof (translation)
-Introduce `K K' _ _ i hfin Γ _ s hs hfix A _ A' _ φ hA hp L' hL' hinv`. Use `letI : Algebra K K' := i.toAlgebra`. Take `⟨hgal, hgen⟩` from `GlobalTheory.T.isGalois_of_finite_fixed_automorphisms K K' i hfin Γ s hs hfix`. Use `haveI : FiniteDimensional K K' := hfin`. Establish `hc0` using `GlobalTheory.ZM.DwModel.isGaloisCover_field K K'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfixσ : ∀ σ : K' ≃ₐ[K] K', ∀ x, (σ : K' ≃+* K') (i x) = i x` using `fun σ x => σ.commutes x`. Establish `hσi : ∀ σ : K' ≃ₐ[K] K', spMap (σ : K' →+* K') ≫ spMap i = spMap i` using `fun σ => by`. Simplify using `only [spMap, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `σ.commutes x`. Establish `hw : ∀ σ : K' ≃ₐ[K] K', (A'.hom ≫ spMap (σ : K' →+* K')) ≫ spMap i = φ ≫ A.hom` using `fun σ => by`. Rewrite using `[Category.assoc, hσi σ, hp.1.w]`. Set `t : (K' ≃ₐ[K] K') → (A'.left ⟶ A'.left)` to `fun σ => hp.1.lift φ (A'.hom ≫ spMap (σ : K' →+* K')) (hw σ).symm`. Establish `ht1 : ∀ σ, t σ ≫ φ = φ` using `fun σ => hp.1.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht2 : ∀ σ, t σ ≫ A'.hom = A'.hom ≫ spMap (σ : K' →+* K')` using `fun σ => hp.1.lift_snd _ _ _`. Establish `hGC : GlobalTheory.ZM.IsGaloisCover (K' ≃ₐ[K] K') t φ` using `hc0.of_isPullback (u := A'.hom) (v := A.hom) hp.1.flip (fun a => ht2 a) ht1`. Establish `hQ : ∀ τ ∈ Submonoid.closure (Set.range s), ∃ ψ : A'.left ⟶ A'.left, ψ ≫ φ = φ ∧ ψ ≫ A'.hom = A'.hom ≫ spMap (τ : K' →+* K') ∧ LBIso L' (L'.pull ψ)`. Introduce `τ hτ`. Proceed by induction on `hτ using Submonoid.closure_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Conclude with `hinv g`. Consider the case `one`. Use `⟨𝟙 _, Category.id_comp _, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.id_comp]`. Establish `: ((1 : K' ≃+* K') : K' →+* K') = RingHom.id K'` using `rfl`. Rewrite using `[this]`. Conclude with `(Category.comp_id _).symm.trans (by simp [spMap])`. Conclude with `LBIso.symm (lbIso_of_chartPull (chartPullPull L' (𝟙 _)) hL')`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨ψ₁, a1, b1, c1⟩` from `hx`. Take `⟨ψ₂, a2, b2, c2⟩` from `hy`. Use `⟨ψ₁ ≫ ψ₂, by rw [Category.assoc, a2, a1], ?_, lbIso_pull_comp_self hL' _ _ c1 c2⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, b2, ← Category.assoc, b1, Category.assoc, spMap_mul_aut]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : ∀ σ : K' ≃ₐ[K] K', LBIso L' (L'.pull (t σ))` using `fun σ => by`. Take `⟨ψ, a1, b1, c1⟩` from `hQ (σ : K' ≃+* K') (hgen _ (hfixσ σ))`. Establish `: ψ = t σ` using `hp.1.hom_ext (by rw [a1, ht1]) (by rw [b1, ht2]; rfl)`. Conclude with `this ▸ c1`. Establish `hA' : IsAbelianScheme A'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hp`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj : Function.Surjective A'.hom.appTop.hom` using `(GlobalTheory.globalFns_holds (Sp K') A' hA').2`. Set `e : Sp K' ⟶ A'.left` to `hp.1.lift (spMap i ≫ eSec A) (𝟙 _) (by`. Rewrite using `[Category.id_comp, Category.assoc, show eSec A ≫ A.hom = 𝟙 _ from Over.w η[A]]`. Conclude with `Category.comp_id _)`. Establish `he : e ≫ A'.hom = 𝟙 _` using `hp.1.lift_snd _ _ _`.
-
-Establish `heθ : ∀ σ : K' ≃ₐ[K] K', e ≫ t σ = spMap (σ : K' →+* K') ≫ e` using `fun σ => by`. Use `hp.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ht1, Category.assoc, hp.1.lift_fst, ← Category.assoc, hσi σ]`. Rewrite using `[Category.assoc, ht2, ← Category.assoc, he, Category.assoc, he]`. Simplify using the standard rewrite rules.
-
-Take `⟨u, hu, hcoc⟩` from `GlobalTheory.T.exists_linearisation_invariant_rigidified_bundle (Sp K') A'.left A'.hom e he hsurj L' hL' (GlobalTheory.SS.HtForm.gen_field _ (pull_isLB hL' e)) (K' ≃ₐ[K] K') t (fun σ => spMap (σ : K' →+* K')) (fun a c => hGC.mul a c) (fun a c => hc0.mul a c) heθ hall`. Conclude with `GlobalTheory.LinDescent.exists_descent_of_isGaloisCover _ _ φ _ t L' hGC hL' u hu hcoc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_lb_descent_of_finite_aut : ∀ (K K' : Type) [Field K] [Field K'] (i : K →+* K'), i.Finite → ∀ (Γ : Type) [Finite Γ] (s : Γ → (K' ≃+* K')), (∀ g x, s g (i x) = i x) → (∀ y : K', (∀ g, s g y = y) → y ∈ i.range) → ∀ (A : Over (Sp K)) [GrpObj A] (A' : Over (Sp K')) [GrpObj A'] (φ : A'.left ⟶ A.left), IsAbelianScheme A → IsGrpPullback A' A (spMap i) φ → ∀ L' : LB A'.left, L'.IsLB → (∀ g, ∃ ψ : A'.left ⟶ A'.left, ψ ≫ φ = φ ∧ ψ ≫ A'.hom = A'.hom ≫ spMap (s g).toRingHom ∧ LBIso L' (L'.pull ψ)) → ∃ L : LB A.left, L.IsLB ∧ LBIso L' (L.pull φ) := by
   intro K K' _ _ i hfin Γ _ s hs hfix A _ A' _ φ hA hp L' hL' hinv

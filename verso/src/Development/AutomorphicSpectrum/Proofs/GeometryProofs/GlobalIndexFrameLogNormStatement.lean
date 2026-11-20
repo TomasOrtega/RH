@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PlaceEqOneOfNotMem
 open NumberField Matrix IsDedekindDomain GlobalTheory.CompanionTheory.Ar.Cusp.LocFrame
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Cusp.GlobDet.gIdx_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FGlobalIndexFrameLogNorm.lean&line=118#L118)
 -/

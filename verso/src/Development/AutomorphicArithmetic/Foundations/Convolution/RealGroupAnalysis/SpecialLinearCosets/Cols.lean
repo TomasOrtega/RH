@@ -7,19 +7,19 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTh
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ v a X`. Use `haveI : (μ2 v).IsAddHaarMeasure := by unfold μ2; infer_instance`. Establish `hadd` using `(UpperTheory.ConvolutionTheory.R2.I.psiLaws F v).2.2.1`. Use `⟨fun b => ?_, fun s => ?_⟩` and prove the remaining obligations. Unfold `Pt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← integral_const_mul, ← integral_add_right_eq_self (μ := μ2 v) (fun c' => ψl v (-(b * X.det)) * (a (cols (fun i => X i 1) c') * ψl v (X 0 0 * c' 1 - X 1 0 * c' 0))) (b • fun i => X i 1)]`. Use `integral_congr_ae (Eventually.of_forall fun c' => ?_)` and prove the remaining obligations. Establish `hm : cols (fun i => X i 1) c' * !![1, b; 0, 1] = cols (fun i => X i 1) (c' + b • fun i => X i 1)`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [cols, Matrix.mul_apply, Fin.sum_univ_two] <;> ring`. Establish `hp : ψl v (-(b * X.det)) * ψl v (X 0 0 * (c' + b • fun i => X i 1) 1 - X 1 0 * (c' + b • fun i => X i 1) 0) = ψl v (X 0 0 * c' 1 - X 1 0 * c' 0)`. Rewrite using `[← hadd]`. Use `congr 1`. Simplify using `[Matrix.det_fin_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hm]`. Rewrite using `[mul_left_comm, hp]`. Unfold `Pt`. Rewrite using `[show (fun i => (X * !![1, 0; -s, 1]) i 1) = (fun i => X i 1) by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]]`. Use `integral_congr_ae (Eventually.of_forall fun c' => ?_)` and prove the remaining obligations. Establish `hp : ψl v ((X * !![1, 0; -s, 1]) 0 0 * c' 1 - (X * !![1, 0; -s, 1]) 1 0 * c' 0) = ψl v (-(s * (cols (fun i => X i 1) c').det)) * ψl v (X 0 0 * c' 1 - X 1 0 * c' 0)`. Rewrite using `[← hadd]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `[cols, Matrix.det_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only []`. Rewrite using `[hp]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.ptN :
     ∀ (F : Type) [Field F] [NumberField F] (v : P F) (a : M2 v → ℂ) (X : M2 v),

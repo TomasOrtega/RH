@@ -4,11 +4,11 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `r k Mq ε hM hε t`. Establish `hU : IsUnit Mq` using `(Matrix.isUnit_iff_isUnit_det Mq).2 (Ne.isUnit hM)`. Establish `hinj : Function.Injective Mq.mulVecLin` using `Matrix.mulVec_injective_iff_isUnit.2 hU`. Establish `hli : LinearIndependent ℚ (fun i => Mq *ᵥ ε i)` using `hε.map' Mq.mulVecLin (LinearMap.ker_eq_bot.2 hinj)`. Set `U : Matrix (Fin k) (Fin r) ℚ` to `Matrix.of fun i => Mq *ᵥ ε i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hrow : LinearIndependent ℚ U.row` using `hli`. Establish `hrank : U.rank = Fintype.card (Fin k)` using `hrow.rank_matrix`. Establish `htop : LinearMap.range U.mulVecLin = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Module.finrank_fintype_fun_eq_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hrank`. Take `⟨x, hx⟩` from `LinearMap.range_eq_top.1 htop t`. Use `⟨x, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[dotProduct_comm, ← hx]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_dotProduct_mulVec_eq_of_linearIndependent :
     ∀ (r k : ℕ) (Mq : Matrix (Fin r) (Fin r) ℚ) (ε : Fin k → Fin r → ℚ), Mq.det ≠ 0 →

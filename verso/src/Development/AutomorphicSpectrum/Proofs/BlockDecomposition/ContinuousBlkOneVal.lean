@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.UnipLevel
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LeviFubini.blk_mul_blk]`. Simplify using `using GlobalTheory.LeviFubini.blk_one_zero h w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem blk_one_inv {a b n : ℕ} (h : a + b = n) (w : Pl E) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
     (blk h w 1 X)⁻¹ = blk h w 1 (-X) := by
@@ -21,7 +21,7 @@ theorem blk_one_inv {a b n : ℕ} (h : a + b = n) (w : Pl E) (X : Matrix (Fin a)
   simpa using GlobalTheory.LeviFubini.blk_one_zero h w
 
 /- English proof (translation)
-Rewrite using `[CtLevel.blk_val]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blk_one_corner {a b n : ℕ} (h : a + b = n) (w : Pl E) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E))
     (i : Fin a) (j : Fin b) :
@@ -30,9 +30,9 @@ theorem blk_one_corner {a b n : ℕ} (h : a + b = n) (w : Pl E) (X : Matrix (Fin
   simp
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(CtLevel.blkEq h).surjective i`. Take `⟨j, rfl⟩` from `(CtLevel.blkEq h).surjective j`. Simplify using `only [CtLevel.blk_val, reindex_apply, submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `using continuous_const`. Simplify using `using continuous_id.matrix_elem i j`. Simplify using `using continuous_const`. Simplify using `using continuous_const`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_blk_one_val {a b n : ℕ} (h : a + b = n) (w : Pl E) :
     Continuous fun X : Matrix (Fin a) (Fin b) (w.adicCompletion E) => (blk h w 1 X).val := by
@@ -47,7 +47,7 @@ theorem continuous_blk_one_val {a b n : ℕ} (h : a + b = n) (w : Pl E) :
   · simpa using continuous_const
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨continuous_blk_one_val h w, ?_⟩` and prove the remaining obligations. Establish `e : (fun X : Matrix (Fin a) (Fin b) (w.adicCompletion E) => (((blk h w 1 X)⁻¹ : GLw n w)).val) = (fun X => (blk h w 1 X).val) ∘ fun X => -X`. Use function extensionality and compare the values at `X`. Simplify using `[blk_one_inv]`. Conclude with `e ▸ (continuous_blk_one_val h w).comp continuous_neg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_blk_one {a b n : ℕ} (h : a + b = n) (w : Pl E) :
     Continuous fun X : Matrix (Fin a) (Fin b) (w.adicCompletion E) => blk h w 1 X := by
@@ -66,13 +66,13 @@ def intSub (a b : ℕ) (w : Pl E) : Subgroup (Multiplicative (Matrix (Fin a) (Fi
   inv_mem' := fun {X} hX i j => by simpa using hX i j
 
 /- English proof (translation)
-Use `le_antisymm ((Subgroup.closure_le _).2 fun X hX => hX) fun X hX => Subgroup.subset_closure hX` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem intMat_eq_intSub (a b : ℕ) (w : Pl E) : intMat a b w = intSub a b w := by
   refine le_antisymm ((Subgroup.closure_le _).2 fun X hX => hX) fun X hX => Subgroup.subset_closure hX
 
 /- English proof (translation)
-Establish `e : (intSub a b w : Set (Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)))) = Multiplicative.toAdd ⁻¹' (Set.pi Set.univ fun _ : Fin a => Set.pi Set.univ fun _ : Fin b => ((w.adicCompletionIntegers E : Set (w.adicCompletion E))))`. Use extensionality with `X`. Conclude with `⟨fun hX i _ j _ => hX i j, fun hX i j => hX i trivial j trivial⟩`. Rewrite using `[e]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers w`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_intSub (a b : ℕ) (w : Pl E) :
     IsCompact (intSub a b w : Set (Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)))) := by
@@ -85,11 +85,11 @@ theorem isCompact_intSub (a b : ℕ) (w : Pl E) :
   exact isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers w
 
 /- English proof (translation)
-Introduce `E _ _ _ a b n h w K' hK' hKK`. Establish `hmem : ∀ X, X ∈ (K'.subgroupOf (GlobalTheory.LeviFubini.parB h w)).comap (GlobalTheory.LeviFubini.uN h w) ↔ blk h w 1 (Multiplicative.toAdd X) ∈ K'` using `fun X => Iff.rfl`. Use `⟨fun X hX => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[intMat_eq_intSub]`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu⟩` from `hKK ((hmem X).1 hX)`. Establish `h1 : Valued.v ((blk h w 1 (Multiplicative.toAdd X)).val (CtLevel.blkEq h (Sum.inl i)) (CtLevel.blkEq h (Sum.inr j))) ≤ 1`. Rewrite using `[← hu]`. Conclude with `(u.val (CtLevel.blkEq h (Sum.inl i)) (CtLevel.blkEq h (Sum.inr j))).2`. Rewrite `h1` using `[blk_one_corner]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hopen : IsOpen (((K'.subgroupOf (GlobalTheory.LeviFubini.parB h w)).comap (GlobalTheory.LeviFubini.uN h w) : Subgroup _) : Set (Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E))))` using `hK'.preimage ((continuous_blk_one h w).comp continuous_toAdd)`. Rewrite using `[intMat_eq_intSub]`. Use `haveI : CompactSpace (intSub a b w) := isCompact_iff_compactSpace.1 (isCompact_intSub a b w)`. Use `haveI : Finite ((intSub a b w) ⧸ ((K'.subgroupOf (GlobalTheory.LeviFubini.parB h w)).comap (GlobalTheory.LeviFubini.uN h w)).subgroupOf (intSub a b w)) := Subgroup.quotient_finite_of_isOpen _ (hopen.preimage continuous_subtype_val)`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_level : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b n : ℕ) (h : a + b = n) (w : Pl E) (K' : Subgroup (GLw n w)), IsOpen (K' : Set (GLw n w)) → K' ≤ GlobalTheory.LFun.KGL w n → (K'.subgroupOf (GlobalTheory.LeviFubini.parB h w)).comap (GlobalTheory.LeviFubini.uN h w) ≤ intMat a b w ∧ ((K'.subgroupOf (GlobalTheory.LeviFubini.parB h w)).comap (GlobalTheory.LeviFubini.uN h w)).relIndex (intMat a b w) ≠ 0 := by
   intro E _ _ _ a b n h w K' hK' hKK

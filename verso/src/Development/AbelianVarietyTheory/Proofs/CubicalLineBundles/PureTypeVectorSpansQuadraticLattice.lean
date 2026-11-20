@@ -13,7 +13,7 @@ namespace PureTypeVector
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory NumberField in
 open scoped CategoryTheory.Obj in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm`. Rewrite using `[star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct]`. Simplify using `only [smul_eq_mul, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.PureTypeVector.hermForm_smul_smul {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : ℂ) (u v : Fin g → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (z • u) (w • v) = z * starRingEnd ℂ w * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm u v := by
@@ -25,9 +25,9 @@ theorem _root_.GlobalTheory.PureTypeVector.hermForm_smul_smul {g : ℕ} (Hm : Ma
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory NumberField in
 open scoped CategoryTheory.Obj in
 /- English proof (translation)
-Rewrite using `[← Complex.conj_eq_iff_im]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm`. Establish `key : ∀ u : Fin g → ℂ, star (star u ⬝ᵥ Hm.mulVec u) = star u ⬝ᵥ Hm.mulVec u`. Introduce `u`. Rewrite using `[← Matrix.star_dotProduct (Hm.mulVec u) u, Matrix.star_mulVec, hH.eq, ← Matrix.dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `key (star v)` as an intermediate fact. Rewrite `this` using `[star_star]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PureTypeVector.hermForm_self_im {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (v : Fin g → ℂ) :
     (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm v v).im = 0 := by
@@ -46,37 +46,35 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D g ty Pe Hm hP hH hpos hE ρ a hρ hsupp`. Establish `hw0 : ∀ i, Pe (H.w0 • a) i = (1 + ρ) / 2 * Pe a i`. Introduce `i`. Rewrite using `[hP.1 H.w0 a i]`. Distinguish the cases in `hi : ty i (H.rt : E) = ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : (2 : ℂ) * ty i (H.w0 : E) = 1 + ty i (H.rt : E)`. Use `congrArg (fun x : 𝓞 E => ty i (x : E)) H.two_weight_eq_one_add_root` as an intermediate fact. Simplify using `only [map_mul, map_add, map_one, RingOfIntegers.coe_eq_algebraMap, map_ofNat] at this`. Take the linear combination `this`. Rewrite `h2` using `[hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ty i (H.w0 : E) = (1 + ρ) / 2` using `by linear_combination h2 / 2`. Rewrite using `[h3]`. Rewrite using `[hsupp i hi]`. Simplify using the standard rewrite rules. Establish `hw0' : Pe (H.w0 • a) = ((1 + ρ) / 2) • Pe a` using `funext fun i => by simp [hw0 i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsqd : ((Real.sqrt H.d : ℝ) : ℂ) ^ 2 = H.d`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Establish `hsq : ρ = Complex.I * Real.sqrt H.d ∨ ρ = -(Complex.I * Real.sqrt H.d)`. Establish `hprod : (ρ - Complex.I * Real.sqrt H.d) * (ρ + Complex.I * Real.sqrt H.d) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `hρ + hsqd - ((Real.sqrt H.d : ℝ) : ℂ) ^ 2 * Complex.I_sq`. Break down `mul_eq_zero.1 hprod with h | h` into its components or cases. Use `left`. Take the linear combination `h`. Use `right`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Prove the components needed by the constructor for the conclusion.
 
-Take the linear combination `h`. Prove the components needed by the constructor for the conclusion. Introduce `m n`. Break down `hsq with h | h` into its components or cases. Use `⟨m • a + n • (H.w0 • a), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[map_add, map_zsmul, map_zsmul]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply]`. Simplify using `only [smul_eq_mul, zsmul_eq_mul, hw0 i, h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(m + n) • a - n • (H.w0 • a), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_zsmul, map_zsmul]`. Use extensionality with `i`. Simplify using `only [Pi.sub_apply, Pi.smul_apply]`. Simplify using `only [smul_eq_mul, zsmul_eq_mul, hw0 i, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `z w`. Rewrite using `[_root_.GlobalTheory.PureTypeVector.hermForm_smul_smul]`. Establish `him : (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (Pe a) (Pe a)).im = 0` using `_root_.GlobalTheory.PureTypeVector.hermForm_self_im hH _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hre : 0 ≤ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (Pe a) (Pe a)).re`. Distinguish the cases in `h0 : Pe a = 0`. Simplify using `[h0, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm]`. Conclude with `(hpos _ h0).le`. Establish `hc : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (((1 + ρ) / 2) • Pe a) (Pe a) = (1 + ρ) / 2 * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (Pe a) (Pe a)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using _root_.GlobalTheory.PureTypeVector.hermForm_smul_smul Hm ((1 + ρ) / 2) 1 (Pe a) (Pe a)`. Establish `hEF` using `hE (H.w0 • a) a`. Rewrite `hEF` using `[hw0', hc]`. Establish `hh : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (Pe a) (Pe a) = ((_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (Pe a) (Pe a)).re : ℂ)` using `Complex.ext rfl (by simp [him])`. Establish `hs : 0 < Real.sqrt H.d` using `Real.sqrt_pos.2 (Nat.cast_pos.2 H.d_prime.pos)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `habs : |((D.EF (H.w0 • a) a : ℤ) : ℝ)| = (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (Pe a) (Pe a)).re * Real.sqrt H.d / 2`. Rewrite `hEF` using `[hh]`. Establish `hnn : 0 ≤ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (Pe a) (Pe a)).re * Real.sqrt H.d / 2` using `div_nonneg (mul_nonneg hre hs.le) zero_le_two`. Break down `hsq with h | h` into its components or cases. Rewrite `hEF` using `[h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `[Complex.mul_im, Complex.div_re, Complex.div_im] at hEF`. Establish `he : ((D.EF (H.w0 • a) a : ℤ) : ℝ) = (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (Pe a) (Pe a)).re * Real.sqrt H.d / 2`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[he, abs_of_nonneg hnn]`. Rewrite `hEF` using `[h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `[Complex.mul_im, Complex.div_re, Complex.div_im] at hEF`. Establish `he : ((D.EF (H.w0 • a) a : ℤ) : ℝ) = -((_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (Pe a) (Pe a)).re * Real.sqrt H.d / 2)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[he, abs_neg, abs_of_nonneg hnn]`. Establish `hcast : (((D.EF (H.w0 • a) a).natAbs : ℕ) : ℂ) = ((|((D.EF (H.w0 • a) a : ℤ) : ℝ)| : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_natAbs, ← Int.cast_abs, Complex.ofReal_intCast]`. Establish `hs' : ((Real.sqrt H.d : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hs.ne'`. Rewrite using `[hcast, habs]`. Use `conv_lhs => rw [hh]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.pureType_vector_spans_quadratic_lattice :
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Pe : D.La →+ (Fin g → ℂ))

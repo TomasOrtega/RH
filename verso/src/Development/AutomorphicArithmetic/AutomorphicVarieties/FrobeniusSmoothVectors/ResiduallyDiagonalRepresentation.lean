@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ k _ F n Q _ _ _ f ρ hbar htri hchar hdiag`. Use `⟨hdiag, fun v i g => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ (s : F.G0) (a b : Fin n), a < b → ρ.r s a b = 0` using `fun s a b hab => by`. Establish `: ρ.r s a b ∈ ρ.triM` using `Ideal.subset_span ⟨s, a, b, hab, rfl⟩`. Rewrite `this` using `[htri]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.mem_bot Q).1 this`. Establish `hT : (ρ.r (F.loc0 v g))ᵀ.BlockTriangular id` using `fun a b hab => hz _ b a hab`. Establish `h1` using `Matrix.charpoly_of_upperTriangular _ hT`. Rewrite `h1` using `[Matrix.charpoly_transpose, hchar]`. Establish `h2` using `congrArg (Polynomial.eval (ρ.ψ v i g : Q)) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at h2`. Rewrite `h2` using `[Finset.prod_eq_zero (Finset.mem_univ i) (sub_self _)]`. Take `⟨j, -, hj⟩` from `Finset.prod_eq_zero_iff.1 h2.symm`. Rewrite `hj` using `[sub_eq_zero, Matrix.transpose_apply, hdiag]`. Establish `h3` using `hbar.2 v i g`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[NRep.map_ψ, hj]`. Establish `h4` using `((residue Q).comp f).injective h3`. Rewrite using `[hj, h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.residually_diagonal_representation :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {n : ℕ} {Q : Type} [CommRing Q] [IsDomain Q] [IsLocalRing Q] (f : k →+* Q) (ρ : NRep F n Q), (ρ.map (residue Q)).IsBar ((residue Q).comp f) → ρ.triM = ⊥ → (∀ v g, (ρ.r (F.loc0 v g)).charpoly = ∏ i, (Polynomial.X - Polynomial.C (ρ.ψ v i g : Q))) → (∀ (g : F.G0) (i : Fin n), ρ.r g i i = f ((F.Ψ g ^ w n i : kˣ) : k)) → ρ.IsBar f := by

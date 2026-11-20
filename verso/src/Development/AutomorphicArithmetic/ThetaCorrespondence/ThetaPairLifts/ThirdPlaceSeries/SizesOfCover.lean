@@ -24,37 +24,35 @@ open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.CovTop.CovSz
 /- English proof (translation)
-Use `_root_.GlobalTheory.CovTop.CovSz.covers_of_lifts_alt (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 6) ?_` and prove the remaining obligations. Introduce `eps Fm x hx ι p i C _ hN hi Y hY`. Establish `hL10 : 10 ≤ (Fm.L x ι).sc.L` using `hN.big.2.1`. Establish `hx1` using `(Fm.L x ι).sc.one_lt_alt`. Establish `he0` using `(Fm.L x ι).sc.eps_pos`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1` using `(Fm.L x ι).sc.eps_lt`. Establish `hx16 : (16 : ℝ) ≤ (Fm.L x ι).sc.x`. Establish `h1 : (Fm.L x ι).sc.L ≤ (Fm.L x ι).sc.x ^ ((1 : ℝ) / 52)` using `Real.rpow_le_rpow_of_exponent_le hx1.le he1.le`. Establish `h2 : ((Fm.L x ι).sc.x ^ ((1 : ℝ) / 52)) ^ (52 : ℕ) = (Fm.L x ι).sc.x`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]; norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (10 : ℝ) ^ (52 : ℕ) ≤ ((Fm.L x ι).sc.x ^ ((1 : ℝ) / 52)) ^ (52 : ℕ)` using `pow_le_pow_left₀ (by norm_num) (hL10.trans h1) _`. Rewrite `h3` using `[h2]`. Combine the linear relations using `[show (16 : ℝ) ≤ 10 ^ (52 : ℕ) by norm_num]`. Establish `hrec` using `fun j => GlobalTheory.sizes_record_at (Fm.L x ι) (Fm.sizes x hx ι) 5 (by norm_num) hx16 j`. Take `⟨-, -, -, -, h100, hr5, -⟩` from `hrec 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg : ∀ k, Real.exp (8 * (Fm.L x ι).sc.L) ≤ ((Fm.D x ι).host.g k : ℝ)` using `fun k => by`. Use `(hrec k).1` as an intermediate fact. Unfold `Formalism.BasicNotions.Scale.L`. Conclude with `this`. Establish `hgpos : ∀ k, (0 : ℝ) < ((Fm.D x ι).host.g k : ℝ)` using `fun k => lt_of_lt_of_le (Real.exp_pos _) (hg k)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog3 : Real.log 3 ≤ 2`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 3 by norm_num); linarith` as an intermediate fact. Establish `hlog3p : 0 < Real.log 3` using `Real.log_pos (by norm_num)`. Establish `hf8 : (8 : ℝ) ≤ (Fm.D x ι).R.f` using `by exact_mod_cast hN.f8`. Establish `hfpos : (0 : ℝ) < (Fm.D x ι).R.f` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr2 : (2 : ℝ) ≤ (Fm.D x ι).R.r` using `by exact_mod_cast (by omega : 2 ≤ (Fm.D x ι).R.r)`. Use `⟨p.fw.laws, ⟨by omega, by omega⟩, by linarith, ?_, ?_, hN.logfr.1, ?_, ?_, hN.f8, h100, hN.ppLow⟩` and prove the remaining obligations. Establish `hM : Y.d.l₂.M = (Fm.D x ι).host.g 0 * (Fm.D x ι).host.g 1 * 15 ^ expL (Fm.L x ι).sc.L`. Rewrite using `[hY.1.lev.1.2.1, hY.1.pd]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `p.fw.laws.toLawsM.pins.2.1.1`. Establish `he : (expL (Fm.L x ι).sc.L : ℝ) * Real.log 3 ≤ 3 * (Fm.L x ι).sc.L`. Use `Nat.floor_le (show 0 ≤ 3 * (Fm.L x ι).sc.L / Real.log 3 by positivity)` as an intermediate fact. Unfold `expL`. Rewrite `this` using `[le_div_iff₀ hlog3p]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h15 : Real.log 15 ≤ 5 / 2 * Real.log 3`. Establish `: Real.log ((15 : ℝ) ^ 2) ≤ Real.log ((3 : ℝ) ^ 5)` using `Real.log_le_log (by norm_num) (by norm_num)`. Rewrite `this` using `[Real.log_pow, Real.log_pow]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he0 : (0 : ℝ) ≤ expL (Fm.L x ι).sc.L` using `Nat.cast_nonneg _`. Rewrite using `[hM]`. Use `push_cast`. Rewrite using `[Real.log_mul (mul_pos (hgpos 0) (hgpos 1)).ne' (by positivity : (0 : ℝ) < 15 ^ expL (Fm.L x ι).sc.L).ne', Real.log_mul (hgpos 0).ne' (hgpos 1).ne', Real.log_pow]`. Establish `g0` using `hN.logg 0`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `g1` using `hN.logg 1`. Use the polynomial consequences of the given equalities and inequalities. Unfold `fieldSz`. Rewrite using `[hN.deg]`. Establish `hd` using `hN.disc`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2f : Real.log ((2 * (Fm.D x ι).R.f : ℕ) : ℝ) ≤ (Fm.L x ι).sc.L`. Use `le_trans ?_ hN.logfr.1` and prove the remaining obligations. Use `push_cast`. Conclude with `Real.log_le_log (by positivity) (by nlinarith)`. Establish `hq : Real.log |(NumberField.discr (Fm.D x ι).host.E : ℝ)| / ((2 * (Fm.D x ι).R.f : ℕ) : ℝ) ≤ 2 * (Fm.L x ι).sc.L`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[div_le_iff₀ (by push_cast; positivity)]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_expL (by push_cast; nlinarith)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `k`. Establish `hA` using `hN.poly.1`. Establish `hxA : (Fm.L x ι).sc.x ≤ (Fm.L x ι).sc.x ^ C`. Combine the equalities or inequalities in the displayed calculation. Establish `hroom : ((Fm.L x ι).sc.x ^ C) ^ (6 : ℕ) ≤ (Fm.L x ι).sc.b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hN.room` as an intermediate fact. Rewrite `this` using `[show (6 : ℝ) = ((6 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Then use the resulting hypothesis. Establish `h6 : (Fm.L x ι).sc.x ^ (6 : ℕ) ≤ ((Fm.L x ι).sc.x ^ C) ^ (6 : ℕ)` using `pow_le_pow_left₀ (by linarith) hxA 6`. Establish `h5 : (Fm.L x ι).sc.x ^ (5 : ℕ) + 1 < (Fm.L x ι).sc.x ^ (6 : ℕ)` using `pow_five_add_one_lt hx16`. Establish `hb : (Fm.L x ι).sc.b ≤ Real.exp (8 * (Fm.L x ι).sc.L)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.BasicNotions.Scale.b; exact Real.exp_le_exp.2 (by linarith)`. Establish `hr5' : ((Fm.D x ι).R.r : ℝ) ≤ (Fm.L x ι).sc.x ^ (5 : ℕ)`. Establish `e : (Fm.L x ι).sc.x ^ (5 : ℕ) = (Fm.L x ι).sc.x ^ (5 : ℝ)` using `by exact_mod_cast (Real.rpow_natCast _ 5).symm`. Apply the tactic sequence `first | exact hr5 | (rw [e]; exact hr5)`. Establish `: ((Fm.D x ι).R.r : ℝ) + 1 < (Fm.D x ι).host.g k`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sizes_of_cover_alt : _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => LawsJ p.T ∧ InR (Fm.D x ι) ((i : ℕ) + 1) ∧ 1 ≤ (Fm.L x ι).sc.L ∧ Real.log Y.d.l₂.M ≤ 30 * (Fm.L x ι).sc.L ∧ fieldSz (Fm.D x ι).host.E ≤ 3 * (Fm.L x ι).sc.L ∧ Real.log ((Fm.D x ι).R.f * (Fm.D x ι).R.r) ≤ (Fm.L x ι).sc.L ∧ 4 ≤ expL (Fm.L x ι).sc.L ∧ (∀ k, (Fm.D x ι).R.r + 1 < (Fm.D x ι).host.g k) ∧ 8 ≤ (Fm.D x ι).R.f ∧ 100 ≤ (Fm.D x ι).R.r ∧ zBase (Fm.L x ι) ^ 12 ≤ PP := by
   refine _root_.GlobalTheory.CovTop.CovSz.covers_of_lifts_alt (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 6) ?_
@@ -146,7 +144,7 @@ theorem sizes_of_cover_alt : _root_.GlobalTheory.CovTop.CoversCondition fun Fm x
         _ ≤ (Fm.D x ι).host.g k := hg k
     exact_mod_cast this
 /- English proof (translation)
-Introduce `hS`. Use `_root_.GlobalTheory.CovTop.CovSz.covers_of_covers_of_imp (_root_.GlobalTheory.CovTop.CovSz.covers_and_alt _root_.GlobalTheory.CovTop.CovSz.sizes_of_cover_alt (_root_.GlobalTheory.CovTop.CovSz.covers_and_alt (_root_.GlobalTheory.T.abs_flatDegVal_logOm_le_nine_mul_of_size hS) (_roo …` and prove the remaining obligations. Introduce `eps Fm x hx ι p i Y PP h`. Take `⟨⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a13⟩, b11, ⟨b12, b14⟩, ⟨b15, b16⟩, b17, b18⟩` from `h`. Conclude with `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, b11, b12, a13, b14, b15, b16, b17, b18⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem size_rows_alt : _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => LawsJ p.T ∧ InR (Fm.D x ι) ((i : ℕ) + 1) ∧ 1 ≤ (Fm.L x ι).sc.L ∧ Real.log Y.d.l₂.M ≤ 30 * (Fm.L x ι).sc.L ∧ fieldSz (Fm.D x ι).host.E ≤ 3 * (Fm.L x ι).sc.L ∧ Real.log ((Fm.D x ι).R.f * (Fm.D x ι).R.r) ≤ (Fm.L x ι).sc.L ∧ 4 ≤ expL (Fm.L x ι).sc.L ∧ (∀ k, (Fm.D x ι).R.r + 1 < (Fm.D x ι).host.g k) ∧ 8 ≤ (Fm.D x ι).R.f ∧ 100 ≤ (Fm.D x ι).R.r ∧ |GlobalTheory.FlatLine.flatDegVal (dat p i) (Formalism.L2.DIV.ofRecord (Fm.D x ι) (Fm.L x ι) p.Del p.h0).logOm| ≤ 9 * (Fm.D x ι).R.r * (Fm.L x ι).sc.L ∧ Real.log (kap p i) ≤ 2 * (Fm.L x ι).sc.L ∧ zBase (Fm.L x ι) ^ 12 ≤ PP ∧ (lenT p i PP : ℝ) * PP ≤ Real.sqrt (Fm.L x ι).sc.b ∧ zed p i PP (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ * (PP * kap p i) ≤ (Fm.L x ι).sc.b ∧ zed p i PP (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ ≤ 1 / 2 ∧ (∀ la ∈ ({(⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁, (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₂} : Set (AllWt.Weight (dat p i))), ∑ τ, ∑ k, |(la τ k : ℝ)| ≤ zBase (Fm.L x ι) ^ 2 * (kap p i / lenT p i PP + 1)) ∧ ∀ j ≤ lenT p i PP, ∑ τ, ∑ k, |((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt j τ k : ℝ)| ≤ zBase (Fm.L x ι) ^ 2 * kap p i := by
   intro hS

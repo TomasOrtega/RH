@@ -15,15 +15,15 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hK : PI.KFinSmooth` using `CompanionTheory.D.gk.admitted.k_finite_smooth`. Take `⟨hmu, Q0, hQ0, hDS⟩` from `id hR`. Establish `hU0 : IsUnit Q0` using `hQ0.1.1`. Take `⟨E0, hE0, hgl⟩` from `GlobalTheory.T.smoothVectors_discreteSeries_glModule hK k r ε mu R hR Q0 hU0`. Take `⟨hsm, hd⟩` from `GlobalTheory.T.smoothVectors_complexDerivedAction_cayleyTransport k r ε R Q0 hQ0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hexp, -⟩` from `GlobalTheory.T.derivedAction_expand_matrixUnits hK k r ε mu R hR Q0 E0 hU0 hE0`. Establish `hdQ : IsUnit Q.det` using `(Matrix.isUnit_iff_isUnit_det Q).1 hQ`. Establish `hdQ0 : IsUnit Q0.det` using `(Matrix.isUnit_iff_isUnit_det Q0).1 hU0`. Establish `hEE : E = Formalism.FourierDecayAlt.Q.Econj E0 (Q0 * Q⁻¹) (Q * Q0⁻¹)`. Use function extensionality and compare the values at `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hE a b v, hexp]`. Establish `h1 : Q0 * (Q⁻¹ * Matrix.single a b (1 : ℂ) * Q) * Q0⁻¹ = (Q0 * Q⁻¹) * Matrix.single a b (1 : ℂ) * (Q * Q0⁻¹)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.CapelliSmooth.entry_conj, Formalism.FourierDecayAlt.Q.Econj, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul]`. Establish `h2 : (Q * Q0⁻¹) * (Q0 * Q⁻¹) = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hdQ0, Matrix.mul_nonsing_inv _ hdQ]`. Establish `h3 : (Q0 * Q⁻¹) * (Q * Q0⁻¹) = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hdQ, Matrix.mul_nonsing_inv _ hdQ0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEE, covariant_det_of_lin covariant_linear _ _ E0 _ _ hgl h2 h3]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h4` using `GlobalTheory.T.freeAlgebraAction_capelliDeterminant_eq_operator _ ε R.H (fun g => R.σ (Q0⁻¹ * g * Q0)) R.smSub E0 (fun a b v => by rw [hd, hE0 a b v]; rfl) (Y + ((((2 * r + k + 1) : ℕ) : ℂ) - 1) / 2) w`. Rewrite using `[← h4, hC _ ε mu R.H _ hmu hDS w (hsm w w.2) Y]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qdet_smooth (hC : PI.DSInfCharCap.DSInfCharCap) (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool)
     (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r) (hR : R.IsDS ε mu) (Q : Mx k r)
@@ -60,7 +60,7 @@ theorem qdet_smooth (hC : PI.DSInfCharCap.DSInfCharCap) (k r : ℕ) (ε : Fin (2
   rfl
 
 /- English proof (translation)
-Establish `h1` using `U.dsig_coe (X := reH k r Y) (GlobalTheory.ComplexifiedAction.lie_re Y) v`. Establish `h2` using `U.dsig_coe (X := imH k r Y) (GlobalTheory.ComplexifiedAction.lie_im Y) v`. Simplify using `only [URep.dC, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, h1, h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dC_coe (U : URep k r) (Y : Mx k r) (v : U.R.smSub) : (U.dC Y v : U.R.H) = U.R.dC Y v := by
   have h1 := U.dsig_coe (X := reH k r Y) (GlobalTheory.ComplexifiedAction.lie_re Y) v
@@ -69,14 +69,14 @@ theorem dC_coe (U : URep k r) (Y : Mx k r) (v : U.R.smSub) : (U.dC Y v : U.R.H) 
   rfl
 
 /- English proof (translation)
-Introduce `a b v`. Rewrite using `[dC_coe, inv_one, Matrix.one_mul, Matrix.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isE_one (U : URep k r) : U.R.IsE 1 (fun a b => U.dC (Matrix.single a b 1)) := by
   intro a b v
   rw [dC_coe, inv_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.casimir_scalar_of_capelliDeterminant_eigenvalue U.R.smSub (2 * r + k + 1) (fun a b => U.dC (Matrix.single a b 1)) μ (by omega) (GlobalTheory.T.derivedAction_expand_matrixUnits CompanionTheory.D.gk.admitted.k_finite_smooth k r ε μ U.R hU 1 _ isUnit_one (isE_one U)). …`.
+A detailed English derivation is pending.
 -/
 theorem cas_smooth (hC : PI.DSInfCharCap.DSInfCharCap) {ε : Fin (2 * r + k + 1) → Bool}
     {μ : Fin (2 * r + k + 1) → ℝ} (U : URep k r) (hk : 1 ≤ k) (hU : U.R.IsDS ε μ) (w : U.R.smSub) :
@@ -86,7 +86,7 @@ theorem cas_smooth (hC : PI.DSInfCharCap.DSInfCharCap) {ε : Fin (2 * r + k + 1)
     (qdet_smooth hC k r ε μ U.R hU 1 _ isUnit_one (isE_one U)) w
 
 /- English proof (translation)
-Establish `h : ∀ X : Mx k r, (triv k r).dR X = 0`. Introduce `X`. Use function extensionality and compare the values at `c d`. Simplify using `[FRep.dR]`. Simplify using `[FRep.dC, h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem triv_dC (Y : Mx k r) : (triv k r).dC Y = 0 := by
   have h : ∀ X : Mx k r, (triv k r).dR X = 0 := by
@@ -96,16 +96,16 @@ theorem triv_dC (Y : Mx k r) : (triv k r).dC Y = 0 := by
   simp [FRep.dC, h]
 
 /- English proof (translation)
-Establish `h : (one U).1.dC Y = 0` using `triv_dC Y`. Simplify using `[L, h, dOp, mAct]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem L_one (U : URep k r) (Y : Mx k r) (x : M (one U)) (c : Unit) : L (one U) Y x c = U.dC Y (x c) := by
   have h : (one U).1.dC Y = 0 := triv_dC Y
   simp [L, h, dOp, mAct]
 
 /- English proof (translation)
-Introduce `hC k r ε μ U hk hU F`. Prove the components needed by the constructor for the conclusion. Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Conclude with `cas_smooth hC U hk hU (x c)`. Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `cas_smooth hC U hk hU (x c)`. Simplify using `only [LinearMap.sum_apply, Module.End.mul_apply] at h`. Simplify using `only [cas, LinearMap.sum_apply, Finset.sum_apply, Module.End.mul_apply, L_one]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem casDS : CasDS := by
   intro hC k r ε μ U hk hU F

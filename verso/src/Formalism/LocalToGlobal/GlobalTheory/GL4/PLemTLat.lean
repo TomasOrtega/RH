@@ -19,13 +19,13 @@ variable (S : HSpace E) (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ 
 include hσ hsig hpos
 
 /- English proof (translation)
-The claim follows from `S.form_pos hsig σ (fun a ↦ hσ σ a) (hpos σ) x hx`.
+A detailed English derivation is pending.
 -/
 theorem form_pos' (σ : E →+* ℂ) (x : S.V) (hx : x ≠ 0) : ∃ c : ℝ, 0 < c ∧ σ (S.hT x x) = c :=
   S.form_pos hsig σ (fun a ↦ hσ σ a) (hpos σ) x hx
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Take `⟨c, hc, he⟩` from `form_pos' S hσ hsig hpos σ x hx`. Rewrite using `[he, Complex.norm_real, Real.norm_of_nonneg hc.le, Complex.ofReal_re]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_eq_re (σ : E →+* ℂ) (x : S.V) : ‖σ (S.hT x x)‖ = (σ (S.hT x x)).re := by
   by_cases hx : x = 0
@@ -34,9 +34,9 @@ theorem norm_eq_re (σ : E →+* ℂ) (x : S.V) : ‖σ (S.hT x x)‖ = (σ (S.h
     rw [he, Complex.norm_real, Real.norm_of_nonneg hc.le, Complex.ofReal_re]
 
 /- English proof (translation)
-Unfold `trR`. Rewrite using `[Complex.re_sum]`. Establish `hne : (Finset.univ : Finset (E →+* ℂ)).Nonempty`. Rewrite using `[Finset.univ_nonempty_iff, ← Fintype.card_pos_iff, Embeddings.card]`. Conclude with `Module.finrank_pos`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_pos (fun σ _ ↦ ?_) hne` and prove the remaining obligations. Take `⟨c, hc, he⟩` from `form_pos' S hσ hsig hpos σ x hx`. Rewrite using `[he, Complex.ofReal_re]`. Conclude with `hc`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trR_pos (x : S.V) (hx : x ≠ 0) : 0 < trR (S.hT x x) := by
   unfold trR
@@ -49,7 +49,7 @@ theorem trR_pos (x : S.V) (hx : x ≠ 0) : 0 < trR (S.hT x x) := by
   rw [he, Complex.ofReal_re]; exact hc
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Use `trR_pos S hσ hsig hpos x hx` as an intermediate fact. Rewrite `this` using `[← norm_psi_sq M x, h, norm_zero]`. Simplify using `at this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_zero_of_psi (M : Model S) (x : S.V) (h : psi M x = 0) : x = 0 := by
   by_contra hx
@@ -58,13 +58,13 @@ theorem eq_zero_of_psi (M : Model S) (x : S.V) (h : psi M x = 0) : x = 0 := by
   simp at this
 
 /- English proof (translation)
-Establish `ha : S.hT z z ≠ 0`. Introduce `h0`. Use `trR_pos S hσ hsig hpos z hz0` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `[trR] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `one_le_norm S hσ q L hL hq z hz ha`. Establish `hX : (0 : ℝ) < (q : ℝ) * ((discr E).natAbs : ℝ) ^ 2`. Establish `: (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero E)`. Check the signs of the components of the expression. Establish `h1' : (1 : ℝ) ≤ |((Algebra.norm ℚ (S.hT z z) : ℚ) : ℝ)| * ((q : ℝ) * ((discr E).natAbs : ℝ) ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Use `(Rat.cast_le (K := ℝ)).2 h1` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Use `sum_re_ge (S.hT z z) (fun σ ↦ form_pos' S hσ hsig hpos σ z hz0) _ hX h1'` as an intermediate fact. Unfold `trR`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.re_sum]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem trR_dual_ge (q : ℕ) (hq : q ≠ 0) (L : Submodule (𝓞 E) S.V) (hL : LatT S q L) (z : S.V) (hz : TrDual S L z)
     (hz0 : z ≠ 0) :
@@ -95,7 +95,7 @@ def GQ (S : HSpace E) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι] (e :
   fun i j ↦ Algebra.trace ℚ E (S.hT (e i : S.V) (e j : S.V))
 
 /- English proof (translation)
-Rewrite using `[inner_psi hσ, trR_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inner_e {S : HSpace E} (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ a)) (M : Model S)
     (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι] (e : Basis ι ℤ L) (i j : ι) :
@@ -103,7 +103,7 @@ theorem inner_e {S : HSpace E} (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = st
   rw [inner_psi hσ, trR_eq]; rfl
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ psi_rat M (c i) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_sum_rat {S : HSpace E} (M : Model S) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι]
     (e : Basis ι ℤ L) (c : ι → ℚ) :
@@ -112,7 +112,7 @@ theorem psi_sum_rat {S : HSpace E} (M : Model S) (L : Submodule (𝓞 E) S.V) {�
   exact Finset.sum_congr rfl fun i _ ↦ psi_rat M (c i) _
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ map_zsmul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_sum_int {S : HSpace E} (M : Model S) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι]
     (e : Basis ι ℤ L) (c : ι → ℤ) :
@@ -121,27 +121,23 @@ theorem psi_sum_int {S : HSpace E} (M : Model S) (L : Submodule (𝓞 E) S.V) {�
   exact Finset.sum_congr rfl fun i _ ↦ map_zsmul _ _ _
 
 /- English proof (translation)
-Introduce `hdet`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Use `set x : S.V := ∑ i, (c i : E) • (e i : S.V) with hx`. Establish `hnorm : ⟪psi M x, psi M x⟫_ℝ = 0`. Rewrite using `[hx, psi_sum_rat M L e, sum_inner]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ i, ⟪(c i : ℝ) • psi M (e i : S.V), ∑ j, (c j : ℝ) • psi M (e j : S.V)⟫_ℝ = (c i : ℝ) * (((GQ S L e) *ᵥ c) i : ℝ)`. Introduce `i`. Rewrite using `[real_inner_smul_left, inner_sum]`. Use `congr 1`. Simplify using `only [real_inner_smul_right, inner_e hσ M L e, Matrix.mulVec, dotProduct]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `Finset.sum_congr rfl fun j _ ↦ by ring`. Simplify using `only [this, hc, Pi.zero_apply, Rat.cast_zero, mul_zero, Finset.sum_const_zero]`. Establish `hx0 : x = 0`. Apply `eq_zero_of_psi S hσ hsig hpos M` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `inner_self_eq_zero.1 hnorm`. Apply `hc0` to reduce the goal to its premises. Use `set m : ℕ := ∏ i, (c i).den with hm`. Establish `hm0 : m ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ ↦ (c i).den_nz`. Establish `hdvd : ∀ i, (c i).den ∣ m` using `fun i ↦ Finset.dvd_prod_of_mem _ (Finset.mem_univ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set k : ι → ℤ := fun i ↦ ((m / (c i).den : ℕ) : ℤ) * (c i).num with hk`. Establish `hkq : ∀ i, (k i : ℚ) = (m : ℚ) * c i`. Introduce `i`. Take `⟨t, ht⟩` from `hdvd i`. Establish `h1 : m / (c i).den = t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[ht, Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero (c i).den_nz)]`. Simplify using `only [hk, h1]`. Rewrite using `[ht]`. Establish `h2` using `Rat.mul_den_eq_num (c i)`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ i, k i • e i = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: ∀ i, ((k i • e i : L) : S.V) = (m : E) • ((c i : E) • (e i : S.V))`. Introduce `i`. Establish `hz : ((k i • e i : L) : S.V) = k i • (e i : S.V)` using `by simp`. Rewrite using `[hz, ← Int.cast_smul_eq_zsmul E, smul_smul]`. Use `congr 1`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `congrArg (fun t : ℚ ↦ (t : E)) (hkq i)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[Finset.sum_congr rfl fun i _ ↦ this i, ← Finset.smul_sum, ← hx, hx0, smul_zero]`. Establish `hk0` using `(Fintype.linearIndependent_iff.1 e.linearIndependent) k hsum`.
-
-Use extensionality with `i`. Use `hkq i` as an intermediate fact. Rewrite `this` using `[hk0 i]`. Simplify using `only [Int.cast_zero, Pi.zero_apply] at this ⊢`. Break down `mul_eq_zero.1 this.symm with h | h` into its components or cases.
-
-Conclude with `absurd (by exact_mod_cast h) hm0`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem GQ_det (S : HSpace E) (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ a)) (hsig : S.SigOK)
     (hpos : S.IsPosDef) (M : Model S) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -204,7 +200,7 @@ def GR (S : HSpace E) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι] (e :
   (GQ S L e).map (Rat.castHom ℝ)
 
 /- English proof (translation)
-Establish `h` using `RingHom.map_det (Rat.castHom ℝ) (GQ S L e)`. Rewrite `h` using `[RingHom.mapMatrix_apply]`. Unfold `GR`. Rewrite using `[← h]`. Simplify using `using GQ_det S hσ hsig hpos M L e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GR_det (S : HSpace E) (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ a)) (hsig : S.SigOK)
     (hpos : S.IsPosDef) (M : Model S) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -222,9 +218,9 @@ theorem GR_apply (S : HSpace E) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintyp
     GR S L e i j = (GQ S L e i j : ℝ) := rfl
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hG : (GR S L e) *ᵥ g = 0`. Use extensionality with `j`. Use `congrArg (fun w ↦ ⟪psi M (e j : S.V), w⟫_ℝ) hg` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [inner_sum, real_inner_smul_right, inner_e hσ M L e, inner_zero_right] at this`. Simplify using `only [Matrix.mulVec, dotProduct, GR_apply, Pi.zero_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ by ring`. Conclude with `fun i ↦ congrFun (Matrix.eq_zero_of_mulVec_eq_zero (GR_det S hσ hsig hpos M L e) hG) i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem psi_e_linInd (S : HSpace E) (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ a)) (hsig : S.SigOK)
     (hpos : S.IsPosDef) (M : Model S) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι] [DecidableEq ι]

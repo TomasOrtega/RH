@@ -34,7 +34,7 @@ def aM (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ)
     piV z π ξ p1.1
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (fun g : Mt k r => σ (Matrix.of g) w0) {g : Mt k r | Matrix.of g ∈ UH (Hpk k r)}` using `Formalism.FourierDecayAlt.P.S3dx4.sigma_contOn hσ w0`. Conclude with `Formalism.FourierDecayAlt.P.B7.meas_ind Formalism.FourierDecayAlt.P.B7.isClosed_GV.measurableSet (continuousOn_const.inner h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_cM {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
@@ -44,7 +44,7 @@ theorem meas_cM {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) �
   exact Formalism.FourierDecayAlt.P.B7.meas_ind Formalism.FourierDecayAlt.P.B7.isClosed_GV.measurableSet (continuousOn_const.inner h1)
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (fun h : Mt k r => π (Matrix.of h) ξ) {h : Mt k r | Matrix.of h ∈ UWset k r z}` using `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_cont hT hπ ξ`. Conclude with `Formalism.FourierDecayAlt.P.B7.sm_ind (Formalism.FourierDecayAlt.P.B7.isClosed_UW z).measurableSet h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sm_piV [FiniteDimensional ℂ Wp] {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ}
     {π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)}
@@ -55,7 +55,7 @@ theorem sm_piV [FiniteDimensional ℂ Wp] {z : Fin (2 * r + k + 1) → ℂ} {u :
   exact Formalism.FourierDecayAlt.P.B7.sm_ind (Formalism.FourierDecayAlt.P.B7.isClosed_UW z).measurableSet h1
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.B7.meas_mulM (Formalism.FourierDecayAlt.P.B7.meas_mulM (Formalism.FourierDecayAlt.P.B7.measurable_invM.comp hf) (Formalism.FourierDecayAlt.P.B7.measurable_invM.comp hg)) ht`.
+A detailed English derivation is pending.
 -/
 theorem measurable_mul_inv_inv {α : Type*} [MeasurableSpace α] {f g t : α → Mt k r} (hf : Measurable f)
     (hg : Measurable g) (ht : Measurable t) :
@@ -65,7 +65,7 @@ theorem measurable_mul_inv_inv {α : Type*} [MeasurableSpace α] {f g t : α →
     (Formalism.FourierDecayAlt.P.B7.measurable_invM.comp hg)) ht
 
 /- English proof (translation)
-Establish `hps : Measurable fun a => psi k r z c (Matrix.of (p1 a).2)` using `(Formalism.FourierDecayAlt.P.S3dx6.continuous_psi z c).measurable.comp (measurable_snd.comp hp1)`. Establish `hc : Measurable fun a => cM σ v w0 (Formalism.FourierDecayAlt.P.B7.mulM (Formalism.FourierDecayAlt.P.B7.mulM (Formalism.FourierDecayAlt.P.B7.invM (p1 a).1) (Formalism.FourierDecayAlt.P.B7.invM (p1 a).2)) (t a))` using `(meas_cM hσ v w0).comp (measurable_mul_inv_inv (measurable_fst.comp hp1) (measurable_snd.comp hp1) ht)`. Conclude with `(hps.mul hc).stronglyMeasurable.smul ((sm_piV hT hπ ξ).comp_measurable (measurable_fst.comp hp1))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sm_aM [FiniteDimensional ℂ Wp] {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
@@ -90,7 +90,7 @@ def PsiM (L : LocBessel k r) (w0 v v' : L.Hs) (ξ : L.Wp) (ξ' : L.Wq)
     (aM L.z L.c L.π L.σ w0 v ξ (Formalism.FourierDecayAlt.P.B7.mulM (γ : Mt k r) q.2) q.1.1)
 
 /- English proof (translation)
-The claim follows from `(ContinuousLinearMap.smulRightL ℂ E F).continuous₂.comp (((innerSL ℂ (E := E)).continuous.comp continuous_fst).prodMk continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rankOne {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] :
@@ -99,7 +99,7 @@ theorem continuous_rankOne {E F : Type} [NormedAddCommGroup E] [InnerProductSpac
     (((innerSL ℂ (E := E)).continuous.comp continuous_fst).prodMk continuous_snd)
 
 /- English proof (translation)
-Establish `hσ : PI.UpqRep.IsDSHpk k r L.ε L.lam L.σ` using `L.hσ`. Establish `hb` using `sm_aM hσ L.hz'.2 L.hπ' L.c w0 v' ξ' (t := fun q : PairSp k r × Mt k r => q.2) (p1 := fun q : PairSp k r × Mt k r => q.1.2) measurable_snd (measurable_snd.comp measurable_fst)`. Establish `ha` using `sm_aM hσ L.hz.2 L.hπ L.c w0 v ξ (t := fun q : PairSp k r × Mt k r => Formalism.FourierDecayAlt.P.B7.mulM (γ : Mt k r) q.2) (p1 := fun q : PairSp k r × Mt k r => q.1.1) (Formalism.FourierDecayAlt.P.B7.meas_mulM measurable_const measurable_snd) (measurable_fst.comp measurable_fst)`. Conclude with `continuous_rankOne.comp_stronglyMeasurable (hb.prodMk ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sm_PsiM (L : LocBessel k r) (w0 v v' : L.Hs) (ξ : L.Wp) (ξ' : L.Wq)
     (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
@@ -114,9 +114,9 @@ theorem sm_PsiM (L : LocBessel k r) (w0 v v' : L.Hs) (ξ : L.Wp) (ξ' : L.Wq)
   exact continuous_rankOne.comp_stronglyMeasurable (hb.prodMk ha)
 
 /- English proof (translation)
-Take `⟨hh, hn, hh', hn'⟩` from `hp`. Establish `g1 : (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * (γ * Matrix.of x) ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv (uh_of_uw hh)) (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv (uh_of_n hn))) (Formalism.QuantumDeterminants.WeylGrou …`. Establish `g2 : (Matrix.of p.2.1)⁻¹ * (Matrix.of p.2.2)⁻¹ * Matrix.of x ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv (uh_of_uw hh')) (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv (uh_of_n hn'))) hx`. Establish `e1 : cM L.σ v w0 (Formalism.FourierDecayAlt.P.B7.mulM (Formalism.FourierDecayAlt.P.B7.mulM (Formalism.FourierDecayAlt.P.B7.invM p.1.1) (Formalism.FourierDecayAlt.P.B7.invM p.1.2)) (Formalism.FourierDecayAlt.P.B7.mulM (γ : Mt k r) x)) = ⟪v, L.σ ((Matrix.of p.1.1)⁻¹ * (Matrix.of p. …` using `Set.indicator_of_mem (s := {g : Mt k r | Matrix.of g ∈ UH (Hpk k r)}) g1 _`. Establish `e2 : cM L.σ v' w0 (Formalism.FourierDecayAlt.P.B7.mulM (Formalism.FourierDecayAlt.P.B7.mulM (Formalism.FourierDecayAlt.P.B7.invM p.2.1) (Formalism.FourierDecayAlt.P.B7.invM p.2.2)) x) = ⟪v', L.σ ((Matrix.of p.2.1)⁻¹ * (Matrix.of p.2.2)⁻¹ * Matrix.of x) w0⟫_ℂ` using `Set.indicator_of_mem (s := {g : Mt k r | Matrix.of g ∈ UH (Hpk k r)}) g2 _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : piV L.z L.π ξ p.1.1 = L.π (Matrix.of p.1.1) ξ` using `Set.indicator_of_mem (s := {h : Mt k r | Matrix.of h ∈ UWset k r L.z}) hh _`. Establish `e4 : piV L.z' L.π' ξ' p.2.1 = L.π' (Matrix.of p.2.1) ξ'` using `Set.indicator_of_mem (s := {h : Mt k r | Matrix.of h ∈ UWset k r L.z'}) hh' _`. Simplify using `only [PsiM, aM, Psi, aVec]`. Rewrite using `[e1, e2, e3, e4]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem PsiM_eq (L : LocBessel k r) (w0 v v' : L.Hs) (ξ : L.Wp) (ξ' : L.Wq)
     {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hγ : γ ∈ UH (Hpk k r))

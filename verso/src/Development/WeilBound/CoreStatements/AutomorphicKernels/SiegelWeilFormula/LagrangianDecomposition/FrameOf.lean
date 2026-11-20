@@ -15,9 +15,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField F] in
 
 /- English proof (translation)
-Establish `h2 : (2 : E) ≠ 0` using `two_ne_zero`. Establish `ha : (2 : E)⁻¹ + (σ : E →+* E) (2 : E)⁻¹ = 1`. Rewrite using `[map_inv₀, map_ofNat, ← two_mul, mul_inv_cancel₀ h2]`. Establish `hJ' : (J.map (σ : E →+* E))ᵀ = e₀ • J`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `using hJ i j`. Establish `hT' : (1 : GL (Fin n) E).1ᵀ * J * (1 : GL (Fin n) E).1.map (σ : E →+* E) * T.1.map (σ : E →+* E) = 1`. Establish `: (1 : Matrix (Fin n) (Fin n) E).map (σ : E →+* E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Simplify `hT` using `[this]`. Use `⟨GlobalTheory.ThK.Dbl.Frame.two 1 * GlobalTheory.ThK.Dbl.Frame.wit (2 : E)⁻¹ T, GlobalTheory.ThK.Dbl.Frame.frame_gram (σ : E →+* E) hc he ha hJ' 1 T hT', toCols₁_wit T _⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem frame_of {n : ℕ} (hc : ∀ z : E, σ (σ z) = z) {J : Matrix (Fin n) (Fin n) E} {e₀ : E} (he : e₀ * e₀ = 1)
     (hJ : ∀ i j, σ (J j i) = e₀ * J i j) (T : GL (Fin n) E) (hT : J * T.1.map σ = 1) :
@@ -36,23 +36,23 @@ theorem frame_of {n : ℕ} (hc : ∀ z : E, σ (σ z) = z) {J : Matrix (Fin n) (
     GlobalTheory.ThK.Dbl.Frame.frame_gram (σ : E →+* E) hc he ha hJ' 1 T hT', toCols₁_wit T _⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d n hN hn`. Establish `hc : ∀ z : E, σ (σ z) = z` using `sig_sig' d.ok.good.cm`. Take `⟨ε, hε⟩` from `d.ok.frame.1`. Establish `hεσ : σ (((ε : ℤ) : E)) = ((ε : ℤ) : E)` using `map_intCast σ _`. Break down `d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨ξ, hξ, hσξ⟩` from `GlobalTheory.T.exists_ne_zero_conj_neg_of_cmExtension F E σ d.B d.ok.good`. Establish `hξ' : -ξ ≠ 0` using `neg_ne_zero.2 hξ`. Set `J : Matrix (Fin n) (Fin n) E` to `ξ • 1`. Establish `hJ : ∀ i j, σ (J j i) = (-1) * J i j` using `fun i j => by`. Distinguish the cases in `h : i = j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[J, hσξ]`. Simplify using `[J, Matrix.one_apply, h, Ne.symm h]`. Set `T : GL (Fin n) E` to `⟨(-ξ)⁻¹ • 1, (-ξ) • 1, by rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, inv_mul_cancel₀ hξ', one_smul], by rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, mul_inv_cancel₀ hξ', one_smul]⟩`. Establish `hm : T.1.map σ = ξ⁻¹ • 1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[T, map_inv₀, hσξ]`. Simplify using `[T, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hT : J * T.1.map σ = 1`. Rewrite using `[hm, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, mul_inv_cancel₀ hξ, one_smul]`. Take `⟨b, hb, hd⟩` from `frame_of hc (by norm_num) hJ T hT`. Establish `hεv : ((ε : ℤ) : E) = -1` using `eps_eq (by omega) hc (fun i j => by rw [hY]; ring) hε hεσ`. Apply the tactic sequence `refine ⟨spcOf F J, b, ε, Or.inl ⟨hA, fun i j => (by simpa using hJ i j : σ (J j i) = -J i j)⟩, ⟨⟨ε, ?_⟩, hd⟩, hε, ?_⟩ <;>`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `change b.1ᵀ * dbl J * b.1.map σ = _ try simp only [jeps]`. Rewrite using `[hεv]`. Conclude with `hb`. Set `J : Matrix (Fin n) (Fin n) E` to `1`. Establish `hJ : ∀ i j, σ (J j i) = 1 * J i j` using `fun i j => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[J]`. Simplify using `[J, Matrix.one_apply, h, Ne.symm h]`. Establish `hT : J * (1 : GL (Fin n) E).1.map σ = 1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[J, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Take `⟨b, hb, hd⟩` from `frame_of hc (by norm_num) hJ 1 hT`. Establish `hεv : ((ε : ℤ) : E) = 1` using `eps_eq (by omega) hc (fun i j => by rw [hY]; ring) hε hεσ`. Apply the tactic sequence `refine ⟨spcOf F J, b, ε, Or.inr ⟨hA, fun i j => (by simpa using hJ i j : σ (J j i) = J i j)⟩, ⟨⟨ε, ?_⟩, hd⟩, hε, ?_⟩ <;>`. Apply the tactic sequence `change b.1ᵀ * dbl J * b.1.map σ = _ try simp only [jeps]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hεv]`. Conclude with `hb`.
+A detailed English derivation is pending.
 -/
 theorem yFrame : YFrame := by
   intro F E _ _ _ _ _ σ d n hN hn

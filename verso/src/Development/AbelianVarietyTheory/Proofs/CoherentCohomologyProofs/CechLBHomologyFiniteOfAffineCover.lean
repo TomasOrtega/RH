@@ -13,7 +13,7 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory.AbLaw
 
 /- English proof (translation)
-Introduce `R _ Y f _ M κ _ _ D hM hsep hproj hD hcov n`. Take `⟨H, hH, m, s, hs⟩` from `hproj`. Establish `hfin` using `GlobalTheory.T.finite_cechLineBundle_homology R Y f H m s M hH hM hs n`. Take `⟨e⟩` from `GlobalTheory.T.nonempty_cechLB_homology_equiv_of_affine_covers R Y f M (Fin (m + 1)) (fun i => nonzeroLocus (s i)) κ D hM hsep (fun i => (hs.2 i).1) hs.1 hD hcov n`. Conclude with `Module.Finite.equiv e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cechLB_homology_finite_of_affine_cover : ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) [IsNoetherianRing R] (M : LB Y) (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens), M.IsLB → IsSeparated f → IsProjBy f → (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → ∀ n, Module.Finite R ((cechLB f M D).homology n) := by
   intro R _ Y f _ M κ _ _ D hM hsep hproj hD hcov n

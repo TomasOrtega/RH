@@ -4,25 +4,25 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.JSW Filter T
 namespace GlobalTheory.JSW
 
 /- English proof (translation)
-Introduce `q A B hq hA hB`. Use `set B' := B.map (Units.map (starRingEnd ℂ).toMonoidHom) with hB'`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (show q ≠ 0 by omega)`. Establish `hqr : (1 : ℝ) < q` using `by exact_mod_cast hq`. Establish `key : ∀ p ∈ A ×ˢ B', (1 - (p.1 : ℂ) * p.2 * (q : ℂ) ^ (-(1 : ℂ))) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Rewrite `hp` using `[Multiset.mem_product]`. Take `⟨h1, h2⟩` from `hp`. Rewrite `h2` using `[hB', Multiset.mem_map]`. Take `⟨β, hβ, hpe⟩` from `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpe]`. Establish `ha` using `hA _ h1`. Establish `hb` using `hB _ hβ`. Establish `hnb : ‖((Units.map (starRingEnd ℂ).toMonoidHom β : ℂˣ) : ℂ)‖ = ‖(β : ℂ)‖`. Simplify using `[Units.coe_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hprod : ‖(p.1 : ℂ)‖ * ‖(β : ℂ)‖ < q`. Establish `h0 : 0 ≤ ‖(p.1 : ℂ)‖ * ‖(β : ℂ)‖` using `by positivity`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: (q : ℝ) * q ≤ (‖(p.1 : ℂ)‖ * ‖(β : ℂ)‖) * (‖(p.1 : ℂ)‖ * ‖(β : ℂ)‖)` using `mul_le_mul hc hc (by positivity) h0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (‖(p.1 : ℂ)‖ * ‖(β : ℂ)‖) * (‖(p.1 : ℂ)‖ * ‖(β : ℂ)‖) = ‖(p.1 : ℂ)‖ ^ 2 * ‖(β : ℂ)‖ ^ 2` using `by ring`. Establish `h4 : ‖(p.1 : ℂ)‖ ^ 2 * ‖(β : ℂ)‖ ^ 2 < (q : ℝ) * q` using `mul_lt_mul'' ha hb (by positivity) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h0`. Establish `hz : (p.1 : ℂ) * ((Units.map (starRingEnd ℂ).toMonoidHom β : ℂˣ) : ℂ) * (q : ℂ) ^ (-(1 : ℂ)) = 1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `-h0`. Establish `hn` using `congrArg norm hz`. Rewrite `hn` using `[Complex.cpow_neg_one, norm_mul, norm_mul, hnb, norm_inv, Complex.norm_natCast, norm_one]`. Establish `hqpos : (0 : ℝ) < q` using `by linarith`. Rewrite `hn` using `[mul_inv_eq_one₀ hqpos.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Establish `hc : ∀ p ∈ A ×ˢ B', Tendsto (fun x : ℝ => (1 - (p.1 : ℂ) * p.2 * (q : ℂ) ^ (-(x : ℂ)))⁻¹) (𝓝[>] 1) (𝓝 ((1 - (p.1 : ℂ) * p.2 * (q : ℂ) ^ (-((1 : ℝ) : ℂ)))⁻¹))`. Introduce `p hp`. Apply `Tendsto.mono_left _ nhdsWithin_le_nhds` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ContinuousAt.tendsto` to reduce the goal to its premises. Apply `ContinuousAt.inv₀` to reduce the goal to its premises. Apply `ContinuousAt.sub continuousAt_const` to reduce the goal to its premises. Apply `ContinuousAt.mul continuousAt_const` to reduce the goal to its premises. Apply `ContinuousAt.const_cpow` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Prove the first alternative. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(Complex.continuous_ofReal.neg).continuousAt`. Conclude with `Or.inl hq0`. Simplify using `using key p hp`. Use `tendsto_multiset_prod (A ×ˢ B') hc` as an intermediate fact. Simplify `this` using `[locL]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Unfold `locL`. Apply `Multiset.prod_ne_zero` to reduce the goal to its premises. Rewrite using `[Multiset.mem_map]`. Introduce and unpack `⟨p, hp, h⟩`. Conclude with `inv_ne_zero (key p hp) h`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem locL_conj_tendsto_one_and_ne_zero : ∀ (q : ℕ) (A B : Multiset ℂˣ), 1 < q → (∀ α ∈ A, ‖(α : ℂ)‖ ^ 2 < (q : ℝ)) →
     (∀ β ∈ B, ‖(β : ℂ)‖ ^ 2 < (q : ℝ)) →

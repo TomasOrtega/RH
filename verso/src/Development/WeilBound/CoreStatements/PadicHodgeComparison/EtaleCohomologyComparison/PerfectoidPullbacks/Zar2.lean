@@ -14,7 +14,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.ZarCosieve.main`.
+A detailed English derivation is pending.
 -/
 theorem zar2 : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}}
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (hQ : Used Q₀)

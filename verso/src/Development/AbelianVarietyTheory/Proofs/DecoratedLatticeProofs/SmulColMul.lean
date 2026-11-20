@@ -24,26 +24,26 @@ namespace GlobalTheory.GoodPos
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Ideal.mul_mem_right _ _ ha.1, by rw [RingHom.map_mul]; exact FrameLat.mul_mem_intAE ha.2 hb.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem int_mul {x : Pl D} {a b : AE D} (ha : a ∈ intAt D (· = x)) (hb : b ∈ intAt D (· = x)) : a * b ∈ intAt D (· = x) :=
   ⟨Ideal.mul_mem_right _ _ ha.1, by rw [RingHom.map_mul]; exact FrameLat.mul_mem_intAE ha.2 hb.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by simpa using GlobalTheory.IdVGen.intAt_neg' h, GlobalTheory.IdVGen.intAt_neg'⟩`.
+Supply the required witnesses or components.
 -/
 theorem int_neg {x : Pl D} {a : AE D} : -a ∈ intAt D (· = x) ↔ a ∈ intAt D (· = x) :=
   ⟨fun h => by simpa using GlobalTheory.IdVGen.intAt_neg' h, GlobalTheory.IdVGen.intAt_neg'⟩
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[mem_idAt_iff]`. Rewrite using `[← cA_idem, ← RingHom.map_mul, ha]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem id_conj {x : Pl D} {a : AE D} (ha : a ∈ idAt D (· = x)) : cA D a ∈ idAt D (· = x) := by
   rw [mem_idAt_iff] at ha ⊢
   rw [← cA_idem, ← RingHom.map_mul, ha]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨by simpa only [cA_cA] using id_conj h.1, (FrameLat.cA_int_iff a).1 h.2⟩, fun h => ⟨id_conj h.1, (FrameLat.cA_int_iff a).2 h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem int_conj {x : Pl D} {a : AE D} : cA D a ∈ intAt D (· = x) ↔ a ∈ intAt D (· = x) :=
   ⟨fun h => ⟨by simpa only [cA_cA] using id_conj h.1, (FrameLat.cA_int_iff a).1 h.2⟩,
@@ -52,18 +52,18 @@ theorem int_conj {x : Pl D} {a : AE D} : cA D a ∈ intAt D (· = x) ↔ a ∈ i
 def IsU (x : Pl D) (u : AE D) : Prop := ∀ a ∈ idAt D (· = x), a ∈ intAt D (· = x) ↔ u * a ∈ intAt D (· = x)
 
 /- English proof (translation)
-Introduce `a _` and use `by rw [one_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsU.one (x : Pl D) : IsU x 1 := fun a _ => by rw [one_mul]
 
 /- English proof (translation)
-Introduce `a ha` and use `by rw [hv a ha, hu _ (Ideal.mul_mem_left _ _ ha), mul_assoc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsU.mul {x : Pl D} {u v : AE D} (hu : IsU x u) (hv : IsU x v) : IsU x (u * v) := fun a ha => by
   rw [hv a ha, hu _ (Ideal.mul_mem_left _ _ ha), mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `IsU.one x`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul hu`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsU.pow {x : Pl D} {u : AE D} (hu : IsU x u) (n : ℕ) : IsU x (u ^ n) := by
   induction n with
@@ -71,25 +71,25 @@ theorem IsU.pow {x : Pl D} {u : AE D} (hu : IsU x u) (n : ℕ) : IsU x (u ^ n) :
   | succ n ih => rw [pow_succ]; exact ih.mul hu
 
 /- English proof (translation)
-Introduce `a ha` and use `by rw [neg_mul, int_neg, hu a ha]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsU.neg {x : Pl D} {u : AE D} (hu : IsU x u) : IsU x (-u) := fun a ha => by
   rw [neg_mul, int_neg, hu a ha]
 
 /- English proof (translation)
-Introduce `a ha` and use `by rw [← int_conj, hu _ (id_conj ha), ← int_conj, RingHom.map_mul, cA_cA]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsU.conj {x : Pl D} {u : AE D} (hu : IsU x u) : IsU x (cA D u) := fun a ha => by
   rw [← int_conj, hu _ (id_conj ha), ← int_conj, RingHom.map_mul, cA_cA]
 
 /- English proof (translation)
-Introduce `a ha` and use `by rw [hu _ (Ideal.mul_mem_left _ v ha), ← mul_assoc, h, one_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsU.inv {x : Pl D} {u v : AE D} (hu : IsU x u) (h : u * v = 1) : IsU x v := fun a ha => by
   rw [hu _ (Ideal.mul_mem_left _ v ha), ← mul_assoc, h, one_mul]
 
 /- English proof (translation)
-Introduce `a _` and use `⟨hu a, fun h' => by simpa only [← mul_assoc, mul_comm v u, h, one_mul] using hv _ h'⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem IsU.of_pres {x : Pl D} {u v : AE D} (h : u * v = 1) (hu : ∀ a ∈ intAt D (· = x), u * a ∈ intAt D (· = x))
     (hv : ∀ a ∈ intAt D (· = x), v * a ∈ intAt D (· = x)) : IsU x u := fun a _ =>
@@ -117,17 +117,15 @@ Both sides reduce to the same expression.
 theorem inU_inv (e : D.host.E) (he : e ≠ 0) : (((inU e he)⁻¹ : (AE D)ˣ) : AE D) = incA D e⁻¹ := rfl
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨w, fun x hx => absurd hx (Finset.notMem_empty x), fun _ _ _ _ => rfl⟩`. Consider the case `insert y S hy ih`. Take `⟨μ, h1, h2⟩` from `ih`. Establish `he` using `idem_mul_self (D := D) (· = y)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set e := idem D (· = y) with hedef`. Establish `hk : (e * u y + (1 - e) * μ) * (e * ((u y)⁻¹ : (AE D)ˣ) + (1 - e) * (μ⁻¹ : (AE D)ˣ)) = 1`. Establish `a1` using `(u y).mul_inv`. Establish `a2` using `μ.mul_inv`. Take the linear combination `(e * e) * a1 + ((1 - e) * (1 - e)) * a2 + (2 - (u y : AE D) * (μ⁻¹ : (AE D)ˣ) - (μ : AE D) * ((u y)⁻¹ : (AE D)ˣ)) * he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hoff : ∀ x, x ≠ y → ∀ a ∈ idAt D (· = x), e * a = 0` using `fun x hx a ha => by`. Rewrite using `[hedef, ← mem_idOff_iff]`. Use `(Submodule.mem_iInf _).2 fun w => RingHom.mem_ker.2 (compAt_of_idAt ha ?_)` and prove the remaining obligations. Rewrite using `[w.2]`. Conclude with `hx.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hmv : ∀ x, x ≠ y → ∀ a ∈ idAt D (· = x), (e * u y + (1 - e) * μ) * a = μ * a` using `fun x hx a ha => by`. Take the linear combination `((u y : AE D) - μ) * hoff x hx a ha`. Use `⟨Units.mkOfMulEqOne _ _ hk, fun x hx a ha => ?_, fun x hx a ha => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(e * u y + (1 - e) * μ) * a = _`. Distinguish the cases in `hxy : x = y`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion.
 
-Substitute `hxy` using the available equality. Take the linear combination `((u x : AE D) - μ) * (mem_idAt_iff _ a).1 ha`. Rewrite using `[hmv x hxy a ha, h1 x ((Finset.mem_insert.1 hx).resolve_left hxy) a ha]`. Express the relevant statement in the definitionally equal form `(e * u y + (1 - e) * μ) * a = _`. Rewrite `hx` using `[Finset.mem_insert, not_or]`.
-
-Rewrite using `[hmv x hx.1 a ha, h2 x hx.2 a ha]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem patch (S : Finset (Pl D)) (u : Pl D → (AE D)ˣ) (w : (AE D)ˣ) : ∃ μ : (AE D)ˣ,
     (∀ x ∈ S, ∀ a ∈ idAt D (· = x), (μ : AE D) * a = u x * a) ∧ ∀ x, x ∉ S → ∀ a ∈ idAt D (· = x), (μ : AE D) * a = w * a := by
@@ -160,7 +158,7 @@ theorem patch (S : Finset (Pl D)) (u : Pl D → (AE D)ˣ) (w : (AE D)ˣ) : ∃ �
       rw [hmv x hx.1 a ha, h2 x hx.2 a ha]
 
 /- English proof (translation)
-Introduce `a ha` and use `by have := h _ (Ideal.mul_mem_left _ ((u⁻¹ : (AE D)ˣ) : AE D) ha) rw [Units.mul_inv_cancel_left] at this rw [← this, Units.inv_mul_cancel_left, this]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_same {x : Pl D} {μ u : (AE D)ˣ} (h : ∀ a ∈ idAt D (· = x), (μ : AE D) * a = u * a) :
     ∀ a ∈ idAt D (· = x), ((μ⁻¹ : (AE D)ˣ) : AE D) * a = (u⁻¹ : (AE D)ˣ) * a := fun a ha => by
@@ -169,13 +167,13 @@ theorem inv_same {x : Pl D} {μ u : (AE D)ˣ} (h : ∀ a ∈ idAt D (· = x), (�
   rw [← this, Units.inv_mul_cancel_left, this]
 
 /- English proof (translation)
-Simplify using `only [hermAt, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_eq (S : HSp D) (x y : Fin S.rank → AE D) : hermAt S x y = (fun i => cA D (y i)) ⬝ᵥ (gA S *ᵥ x) := by
   simp only [hermAt, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [hermAt, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, RingHom.map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem herm_smul (S : HSp D) (a b : AE D) (x y : Fin S.rank → AE D) :
     hermAt S (a • x) (b • y) = a * cA D b * hermAt S x y := by
@@ -183,7 +181,7 @@ theorem herm_smul (S : HSp D) (a b : AE D) (x y : Fin S.rank → AE D) :
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hermAt, map_sum, RingHom.map_mul, cA_cA]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: cA D (gA S j i) = gA S i j` using `congrFun (congrFun (adj_gA S) i) j`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -195,7 +193,7 @@ theorem herm_conj (S : HSp D) (x y : Fin S.rank → AE D) : cA D (hermAt S x y) 
   rw [this]; ring
 
 /- English proof (translation)
-Simplify using `only [hermAt, dotProduct, mulVec, Finset.mul_sum, map_sum, RingHom.map_mul, mul_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem herm_rat (S : HSp D) (z : Fin S.rank → D.host.E) :
     hermAt S (ratV z) (ratV z) = incA D (star z ⬝ᵥ S.gram *ᵥ z) := by
@@ -203,7 +201,7 @@ theorem herm_rat (S : HSp D) (z : Fin S.rank → D.host.E) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (incA D) M z i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rat_mulVec {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (z : Fin n → D.host.E) :
     (rat M : Mx D m n) *ᵥ ratV z = ratV (M *ᵥ z) := by
@@ -211,14 +209,14 @@ theorem rat_mulVec {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (z : Fin n 
   exact (RingHom.map_mulVec (incA D) M z i).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mul (incA D) a (z i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ratV_smul {n : ℕ} (a : D.host.E) (z : Fin n → D.host.E) : (ratV (a • z) : Fin n → AE D) = incA D a • ratV z := by
   funext i
   exact RingHom.map_mul (incA D) a (z i)
 
 /- English proof (translation)
-Establish `h1` using `h.1`. Use `⟨⟨0, by omega⟩, fun i => Fin.ext (by have := i.2; simp only; omega), fun h0 => h.2 ?_⟩` and prove the remaining obligations. Establish `: ζ = 0` using `funext fun i => by`. Rewrite using `[show i = ⟨0, by omega⟩ from Fin.ext (by have := i.2; simp only; omega)]; exact h0`. Rewrite using `[this, mulVec_zero, dotProduct_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem line_coord {L : HSp D} {ζ : Fin L.rank → D.host.E} (h : IsLineVec L ζ) :
     ∃ i₀ : Fin L.rank, (∀ i, i = i₀) ∧ ζ i₀ ≠ 0 := by
@@ -229,7 +227,7 @@ theorem line_coord {L : HSp D} {ζ : Fin L.rank → D.host.E} (h : IsLineVec L �
   rw [this, mulVec_zero, dotProduct_zero]
 
 /- English proof (translation)
-Take `⟨i₀, hi, h0⟩` from `line_coord h`. Use `⟨incA D (ζ i₀)⁻¹ * y i₀, Ideal.mul_mem_left _ _ (hy i₀), funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hi i]`. Express the relevant statement in the definitionally equal form `_ = incA D (ζ i₀)⁻¹ * y i₀ * incA D (ζ i₀)`. Rewrite using `[mul_right_comm, ← RingHom.map_mul, inv_mul_cancel₀ h0, RingHom.map_one, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem line_vec {L : HSp D} {ζ : Fin L.rank → D.host.E} (h : IsLineVec L ζ) {x : Pl D} {y : Fin L.rank → AE D}
     (hy : ∀ i, y i ∈ idAt D (· = x)) : ∃ a ∈ idAt D (· = x), y = a • ratV ζ := by
@@ -240,21 +238,21 @@ theorem line_vec {L : HSp D} {ζ : Fin L.rank → D.host.E} (h : IsLineVec L ζ)
   rw [mul_right_comm, ← RingHom.map_mul, inv_mul_cancel₀ h0, RingHom.map_one, one_mul]
 
 /- English proof (translation)
-Take `⟨i₀, hi, h0⟩` from `line_coord h`. Set `I : Submodule (𝓞 D.host.E) D.host.E` to `Λ.map (LinearMap.proj (R := 𝓞 D.host.E) (φ := fun _ => D.host.E) i₀)`. Establish `hI : I.FG` using `hΛ.fg.map _`. Set `𝔞 : FI D` to `⟨I, FractionalIdeal.isFractional_of_fg hI⟩`. Establish `hc : ∀ y : Fin L.rank → D.host.E, y = fun _ => y i₀` using `fun y => funext fun i => by rw [hi i]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h𝔞 : 𝔞 ≠ 0` using `fun h' => by`. Establish `h1 : ∀ y ∈ Λ, y = 0` using `fun y hy => by`. Establish `: y i₀ = 0` using `FractionalIdeal.eq_zero_iff.1 h' _ ⟨y, hy, rfl⟩`. Rewrite using `[hc y, this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : Submodule.span D.host.E (Λ : Set (Fin L.rank → D.host.E)) ≤ ⊥` using `Submodule.span_le.2 h1`. Rewrite `h2` using `[hΛ.span_eq_top]`. Conclude with `h0 (congrFun (h2 (Submodule.mem_top (x := ζ))) i₀)`. Take `⟨g, hg, hgen⟩` from `GlobalTheory.IdVGen.idV_gen D x 𝔞 h𝔞`. Establish `key : ∀ y : Fin L.rank → AE D, y ∈ latV L Λ (· = x) ↔ y i₀ ∈ idV 𝔞 x` using `fun y => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, h0, a, rfl, z, hz, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `AddSubgroup.subset_closure ⟨α, hα, h0, z i₀, ⟨z, hz, rfl⟩, by simp only [one_mul]⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `neg a _ ha => exact neg_mem ha`. Introduce `hy`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Establish `: ∀ s ∈ idV 𝔞 x, (fun _ => s) ∈ latV L Λ (· = x)` using `fun s hs => by`. Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, h0, _, ⟨z, hz, rfl⟩, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨α, hα, h0, 1, rfl, z, hz, funext fun i => by rw [one_mul, hi i]; rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `neg a _ ha => exact neg_mem ha`. Establish `h3 : y = fun _ => y i₀` using `funext fun i => by rw [hi i]`. Rewrite using `[h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `this _ hy`. Use `⟨g * (ζ i₀)⁻¹, mul_ne_zero hg (inv_ne_zero h0), fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[key, hgen]`. Express the relevant statement in the definitionally equal form `incA D g⁻¹ * (a * incA D (ζ i₀)) ∈ _ ∧ a * incA D (ζ i₀) ∈ _ ↔ _`. Rewrite using `[and_iff_left (Ideal.mul_mem_right _ _ ha), mul_inv, inv_inv, RingHom.map_mul, mul_assoc, mul_comm a]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_gen {L : HSp D} {ζ : Fin L.rank → D.host.E} (h : IsLineVec L ζ) {Λ : Lat L}
     (hΛ : Submodule.IsLattice D.host.E Λ) (x : Pl D) : ∃ e : D.host.E, e ≠ 0 ∧ ∀ a ∈ idAt D (· = x),
@@ -299,7 +297,7 @@ theorem line_gen {L : HSp D} {ζ : Fin L.rank → D.host.E} (h : IsLineVec L ζ)
   rw [and_iff_left (Ideal.mul_mem_right _ _ ha), mul_inv, inv_inv, RingHom.map_mul, mul_assoc, mul_comm a]
 
 /- English proof (translation)
-Introduce `a ha` and use `by have hsd := LocSD.isSDAt_latV D L Λ x hΛ have h1 := hμ _ (Ideal.mul_mem_left _ (μ : AE D) ha) rw [Units.inv_mul_cancel_left, hsd.2.2 (((μ : AE D) * a) • ratV ζ) fun i => Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ ha)] at h1 rw [← h1] have he := idem_mem_intAt (D := D) (· …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem line_norm {L : HSp D} {ζ : Fin L.rank → D.host.E} (h : IsLineVec L ζ) {Λ : Lat L} (hΛ : IsSelfDualC L Λ) {x : Pl D}
     {μ : (AE D)ˣ} (hμ : ∀ a ∈ idAt D (· = x), a • ratV ζ ∈ latV L Λ (· = x) ↔ ((μ⁻¹ : (AE D)ˣ) : AE D) * a ∈ intAt D (· = x)) :
@@ -325,7 +323,7 @@ theorem line_norm {L : HSp D} {ζ : Fin L.rank → D.host.E} (h : IsLineVec L ζ
     linear_combination (-(μ : AE D) * a * cA D b * incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ)) * e
 
 /- English proof (translation)
-Establish `e : (ratV (vecB o ζ) : Fin X.rank → AE D) = o.jB *ᵥ ratV ζ` using `(rat_mulVec _ _).symm`. Rewrite using `[h, e, mulVec_smul, mulVec_smul, mulVec_mulVec, mulVec_mulVec, o.pA_jB, o.pB_jB, zero_mulVec, smul_zero, one_mulVec, and_iff_right (zero_mem _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem orth_line {X T L : HSp D} (o : OrthDec X T L) {Λ : Lat X} {ΛT : Lat T} {ΛL : Lat L} {x : Pl D}
     (h : OrthAt o Λ ΛT ΛL x) (ζ : Fin L.rank → D.host.E) (a : AE D) :
@@ -335,19 +333,17 @@ theorem orth_line {X T L : HSp D} (o : OrthDec X T L) {Λ : Lat X} {ΛT : Lat T}
     and_iff_right (zero_mem _)]
 
 /- English proof (translation)
-Establish `h1 : ∀ x, ∃ u : (AE D)ˣ, ¬ P x → ∀ a ∈ idAt D (· = x), a • ratV (vecB o ζ) ∈ latV X Λ (· = x) ↔ ((u⁻¹ : (AE D)ˣ) : AE D) * a ∈ intAt D (· = x)` using `fun x => by`. Distinguish the cases in `hx : P x`. Conclude with `⟨1, fun h' => absurd hx h'⟩`. Take `⟨ΛL, hL, ho⟩` from `h x hx`. Take `⟨e, he, hg⟩` from `line_gen hζ hL.1 x`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨inU e he, fun _ a ha => by rw [← orth_line o ho, hg a ha, inU_inv]⟩`. Use `choose u hu using h1`. Establish `hz : vecB o ζ ≠ 0` using `fun h0 => by`. Take `⟨i₀, -, hi⟩` from `line_coord hζ`. Establish `: o.qB *ᵥ vecB o ζ = ζ` using `by rw [vecB, mulVec_mulVec, o.qB_iB, one_mulVec]`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, mulVec_zero]`. Conclude with `hi (congrFun this i₀).symm`. Take `⟨i₀, hi₀⟩` from `Function.ne_iff.1 hz`. Establish `hev : ∀ᶠ x : Pl D in cofinite, ∀ a ∈ idAt D (· = x), a • ratV (vecB o ζ) ∈ latV X Λ (· = x) ↔ a ∈ intAt D (· = x)` using `by filter_upwards [GlobalTheory.LatAlmostStd.eventually_latV_iff D X Λ hΛ, eventually_all.2 fun i => AeUnit.eventually_incA_mul_mem_intAt D (vecB o ζ i), AeUnit.eventually_incA_mul_mem_intAt D (vecB o ζ i₀)⁻¹] with x h1 h2 h3 a _`. Rewrite using `[h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun H => ?_, fun H i => ?_⟩` and prove the remaining obligations. Use `h3 _ (H i₀)` as an intermediate fact. Express the relevant statement in the definitionally equal form `incA D (vecB o ζ i₀)⁻¹ * (a * incA D (vecB o ζ i₀)) ∈ _ at this`. Rewrite `this` using `[mul_comm a, ← mul_assoc, ← RingHom.map_mul, inv_mul_cancel₀ hi₀, RingHom.map_one, one_mul]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `a * incA D (vecB o ζ i) ∈ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm]`. Conclude with `h2 i a H`. Establish `hfin` using `eventually_cofinite.1 hev`. Take `⟨μ, m1, m2⟩` from `patch hfin.toFinset u 1`. Use `⟨μ, fun x hx a ha => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hS : x ∈ hfin.toFinset`. Rewrite using `[inv_same (m1 x hS) a ha]`. Conclude with `hu x hx a ha`. Rewrite using `[inv_same (m2 x hS) a ha, inv_one, Units.val_one, one_mul]`. Rewrite `hS` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`.
-
-Conclude with `hS a ha`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_idele {X T L : HSp D} (o : OrthDec X T L) {ζ : Fin L.rank → D.host.E} (hζ : IsLineVec L ζ) {Λ : Lat X}
     (hΛ : Submodule.IsLattice D.host.E Λ) (ΛT : Lat T) (P : Pl D → Prop)
@@ -390,7 +386,7 @@ theorem line_idele {X T L : HSp D} (o : OrthDec X T L) {ζ : Fin L.rank → D.ho
     exact hS a ha
 
 /- English proof (translation)
-Establish `h1` using `mulVec_mem_idAt d.pX h j`. Establish `h2 : (d.pX *ᵥ colMul d.jX j a) j = a * (d.pX ⬝ d.jX) j j`. Simplify using `only [mulVec, dotProduct, colMul, Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite `h1` using `[h2, d.pX_jX, Matrix.one_apply_eq, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem colMul_id {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {x : Pl D} (j : Fin ρ) {a : AE D}
     (h : ∀ k, colMul d.jX j a k ∈ idAt D (· = x)) : a ∈ idAt D (· = x) := by
@@ -401,13 +397,13 @@ theorem colMul_id {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {x : Pl D} 
   rwa [h2, d.pX_jX, Matrix.one_apply_eq, mul_one] at h1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Conclude with `(mul_assoc _ _ _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem smul_colMul {m n : ℕ} (M : Mx D m n) (i : Fin n) (s a : AE D) : s • colMul M i a = colMul M i (s * a) := by
   funext k; exact (mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Introduce `i j hij s hs` and use `by have he := idem_mem_intAt (D := D) (· = x) rw [hψ s hs] constructor · intro H have := H _ ((hL j _ (Ideal.mul_mem_left _ (b j : AE D) he.1)).2 (by rwa [Units.inv_mul_cancel_left])) rw [hL i _ (Ideal.mul_mem_right _ _ hs), hb i j hij, mul_inv, Units.val_mul] at this convert thi …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prim_of {ψ : AddChar (AF D.host.F) ℂ} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {x : Pl D}
     {cc : (AE D)ˣ} {b : Fin ρ → (AE D)ˣ} (hb : ∀ i j : Fin ρ, j.1 = i.1 + 1 → b i = cc * b j)
@@ -432,7 +428,7 @@ theorem prim_of {ψ : AddChar (AF D.host.F) ℂ} {S S₀ : HSp D} {ρ : ℕ} (d 
     ring
 
 /- English proof (translation)
-Introduce `i a ha` and use `by rw [hα, smul_colMul, xZero, hV i a ha, hW i _ (Ideal.mul_mem_left _ _ ha), hb, mul_inv, Units.val_mul, mul_assoc, mul_left_comm]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cols_bf {V V₀ W W₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (d' : HypDec W W₀ ρ) {LV : Lat V} {LW : Lat W} {x : Pl D}
     {α : (AE D)ˣ} {b b' : Fin ρ → (AE D)ˣ} (hb : ∀ i, b i = α * b' i)
@@ -445,7 +441,7 @@ theorem cols_bf {V V₀ W W₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (d' : 
     mul_left_comm]
 
 /- English proof (translation)
-Introduce `i a ha` and use `by rw [hα, smul_colMul, hV i a ha] refine Fin.lastCases ?_ (fun i => ?_) i · have e : ∀ t : AE D, colMul (xLast d' z) (Fin.last σ) t = d'.j0 *ᵥ (t • ratV z) := fun t => by funext k simp only [colMul, xLast, Matrix.of_apply, Fin.snoc_last, mulVec_smul, Pi.smul_apply, smul_eq_mul] …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cols_fb {V V₀ W W₀ : HSp D} {σ : ℕ} (d : HypDec V V₀ (σ + 1)) (d' : HypDec W W₀ σ) (z : Fin W₀.rank → D.host.E)
     {LV : Lat V} {LW : Lat W} {LW₀ : Lat W₀} {x : Pl D} {α m : (AE D)ˣ} {b : Fin (σ + 1) → (AE D)ˣ} {b' : Fin σ → (AE D)ˣ}

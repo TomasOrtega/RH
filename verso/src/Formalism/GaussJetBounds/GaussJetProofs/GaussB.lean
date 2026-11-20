@@ -12,13 +12,11 @@ namespace Formalism.DworkPowerSeriesWeights
 namespace GaussB
 
 /- English proof (translation)
-Use `set M : Matrix (Fin N0) (Fin N0) (MvPolynomial (T × Fin N0 × Fin N0) ℤ) := Matrix.of fun i a => MvPolynomial.X (τ, i, a) with hM`. Establish `h1 : (Matrix.of fun i a : Fin N0 => Y (τ, i, a)).det = MvPolynomial.aeval Y M.det`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `i a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hM]`. Rewrite using `[h1]`. Use `hY _ fun h0 => ?_` and prove the remaining obligations. Use `set ψ : MvPolynomial (T × Fin N0 × Fin N0) ℤ →+* ZMod p := (MvPolynomial.eval (fun y : T × Fin N0 × Fin N0 => if y.2.1 = y.2.2 then (1 : ZMod p) else 0)).comp (MvPolynomial.map (Int.castRingHom (ZMod p))) with hψ`. Establish `h2 : ψ M.det = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hψ, RingHom.comp_apply, h0, map_zero]`. Rewrite `h2` using `[RingHom.map_det]`. Establish `h3 : ψ.mapMatrix M = 1`. Use extensionality with `i a`. Simplify using `[hM, hψ, Matrix.one_apply]`.
-
-Rewrite `h2` using `[h3, Matrix.det_one]`. Conclude with `one_ne_zero h2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_det_generic {K : Type} [NormedField K] {T : Type} {N0 : ℕ} (p : ℕ) [Fact p.Prime]
     (Y : T × Fin N0 × Fin N0 → K) (hY : IsGeneric p Y) (τ : T) :
@@ -46,7 +44,7 @@ lemma norm_det_generic {K : Type} [NormedField K] {T : Type} {N0 : ℕ} (p : ℕ
   exact one_ne_zero h2
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, map_sum, Finset.sum_eq_zero, mul_zero]`. Introduce `t _`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun ab _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma cc_expo {K : Type} [Field K] {H : Type} [Fintype H] {N0 N1 : ℕ} (S : K) (u : H → K) :
     MvPowerSeries.constantCoeff ((-S) • ∑ t : H, ∑ ab : Fin N0 × Fin N1, MvPowerSeries.C (u t) *
@@ -59,7 +57,7 @@ lemma cc_expo {K : Type} [Field K] {H : Type} [Fintype H] {N0 N1 : ℕ} (S : K) 
   simp
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.map_C, ← MvPowerSeries.smul_eq_C_mul, map_neg]`. Simplify using `only [map_sum, map_mul, MvPowerSeries.map_C, MvPowerSeries.map_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma map_expo {F K : Type} [Field F] [Field K] (φ : F →+* K) {H : Type} [Fintype H] {N0 N1 : ℕ}
     (S : F) (u : H → F) :
@@ -73,7 +71,7 @@ lemma map_expo {F K : Type} [Field F] [Field K] (φ : F →+* K) {H : Type} [Fin
   simp only [map_sum, map_mul, MvPowerSeries.map_C, MvPowerSeries.map_X]
 
 /- English proof (translation)
-Introduce `κ`. Rewrite using `[MvPowerSeries.coeff_map, ← map_natCast φ, ← map_mul, hφ]`. Conclude with `h κ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma jetsIntegral_map {F K : Type} [NormedField F] [NormedField K] (φ : F →+* K)
     (hφ : ∀ z, ‖φ z‖ = ‖z‖) {ι : Type} {sg : MvPowerSeries ι F} (h : JetsIntegral sg) :
@@ -86,15 +84,15 @@ end GaussB
 
 open GaussB in
 /- English proof (translation)
-Introduce `p _ H _ _ N0 N1 S u hS hu sg hsg TT colN ht hht hht1 I nu1 nu2 size hnu1 hnu2 hsize n`. Establish `hpp : p.Prime` using `Fact.out`. Take `⟨K, instK, hult, hchar, φ, Y, hφ, hgauss, hgen⟩` from `residuallyGenericExists p ((Bool × H) × Fin N0 × Fin N0)`. Use `hult` as an intermediate fact. Use `hchar` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnp : ‖(p : K)‖ = ‖(p : ℂ_[p])‖` using `by rw [← map_natCast φ, hφ]`. Establish `hp1 : ‖(p : ℂ_[p])‖ < 1`. Establish `h` using `norm_intCast_padicComplex p (p : ℤ)`. Rewrite `h` using `[Int.cast_natCast, Int.cast_natCast]`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Padic.norm_p_lt_one`. Establish `hp0 : 0 < ‖(p : ℂ_[p])‖` using `norm_pos_iff.2 (by exact_mod_cast hpp.ne_zero)`. Establish `hY : ∀ y, ‖Y y‖ ≤ 1`. Introduce `y`. Establish `h` using `hgauss (MvPolynomial.X y)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[MvPolynomial.eval₂_X]`. Rewrite using `[h]`. Use `ciSup_le fun m => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hB` using `theorem_B.{0} K ‖(p : ℂ_[p])‖ hp0 hp1 H N0 N1 (φ S) (fun t => φ (u t)) (by rw [hφ]; exact hS) (fun t => by rw [hφ]; exact hu t) _ (jetsIntegral_map φ hφ hsg) (fun τ => Matrix.of fun i a : Fin N0 => Y (τ, i, a)) (fun τ i a => hY _) (fun τ => norm_det_generic p Y hgen τ) TT colN ht …`. Use `le_trans (le_ciSup (bddAbove_norm_coeff _) n) ?_` and prove the remaining obligations. Rewrite using `[← hgauss, eval₂_jetPairPoly, map_mul, map_mvExp φ _ (cc_expo S u), map_expo, map_prod]`. Simplify using `only [ringMap_minorProd, map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X]`. Conclude with `hB`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theorem_B_gauss_sums : ThmBGauss := by
   intro p _ H _ _ N0 N1 S u hS hu sg hsg TT colN ht hht hht1 I nu1 nu2 size hnu1 hnu2 hsize n

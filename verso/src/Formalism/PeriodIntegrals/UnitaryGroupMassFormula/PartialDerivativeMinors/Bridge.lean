@@ -22,15 +22,15 @@ abbrev up (κ : ZV H N0 N1 →₀ ℕ) (t : H) (a : Fin N0) (b : Fin N1) : ZV H 
   κ + Finsupp.single (zF t a b) 1 + Finsupp.single (zT t a b) 1
 
 /- English proof (translation)
-Use `show MvPolynomial.coeff ν (MvPolynomial.pderiv i Q) = _`. Use `MvPolynomial.induction_on' Q (fun s c => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.pderiv_monomial, MvPolynomial.coeff_monomial, MvPolynomial.coeff_monomial]`. Distinguish the cases in `h : s = ν + Finsupp.single i 1`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (add_tsub_cancel_right _ _), if_pos rfl]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, zero_mul]`. Distinguish the cases in `h2 : s - Finsupp.single i 1 = ν`. Rewrite using `[if_pos h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsi : s i = 0`. Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Rewrite using `[← h2]`. Use extensionality with `j`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finsupp.tsub_apply, Finsupp.add_apply, Finsupp.single_apply]`. Use `split_ifs with hj`. Substitute `hj` using the available equality. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hsi]`. Rewrite using `[if_neg h2]`. Simplify using `only [map_add, MvPolynomial.coeff_add, hp, hq, add_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem coeff_pd_eq_coeff_add_single_mul (i : XZ (Bool × H) N0 N1) (Q : PolyXZ H N0 N1) (ν : XZ (Bool × H) N0 N1 →₀ ℕ) :
     MvPolynomial.coeff ν (pd i Q) = MvPolynomial.coeff (ν + Finsupp.single i 1) Q * ((ν i : ℤ) + 1) := by
@@ -58,9 +58,9 @@ private theorem coeff_pd_eq_coeff_add_single_mul (i : XZ (Bool × H) N0 N1) (Q :
   · simp only [map_add, MvPolynomial.coeff_add, hp, hq, add_mul]
 
 /- English proof (translation)
-Unfold `lapT`. Simplify using `only [LinearMap.sum_apply, MvPolynomial.coeff_sum, (show ∀ (f g : Module.End ℤ (PolyXZ H N0 N1)) (x : PolyXZ H N0 N1), (f * g) x = f (g x) from fun _ _ _ => rfl), coeff_pd_eq_coeff_add_single_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hne : (ν + Finsupp.single (Sum.inr (zF t a b)) 1 : XZ (Bool × H) N0 N1 →₀ ℕ) (Sum.inr (zT t a b)) = ν (Sum.inr (zT t a b))`. Simplify using `[Finsupp.single_apply, zF, zT]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hne]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coeff_lapT (t : H) (Q : PolyXZ H N0 N1) (ν : XZ (Bool × H) N0 N1 →₀ ℕ) :
     MvPolynomial.coeff ν (lapT N0 N1 t Q) =
@@ -77,7 +77,7 @@ theorem coeff_lapT (t : H) (Q : PolyXZ H N0 N1) (ν : XZ (Bool × H) N0 N1 →�
   ring
 
 /- English proof (translation)
-Use extensionality with `x`. Apply the tactic sequence `rcases x with x | x <;>`. Simplify using `[Finsupp.single_apply, Finsupp.sumFinsuppEquivProdFinsupp_symm_inl, Finsupp.sumFinsuppEquivProdFinsupp_symm_inr]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem symm_add_single (m : XV H N0 →₀ ℕ) (κ : ZV H N0 N1 →₀ ℕ) (v : ZV H N0 N1) :
     (Finsupp.sumFinsuppEquivProdFinsupp.symm (m, κ) : XZ (Bool × H) N0 N1 →₀ ℕ) +
@@ -103,7 +103,7 @@ def wt (μ : XZ (Bool × H) N0 N1 →₀ ℕ) (m : XV H N0 →₀ ℕ) (κ : ZV 
   if xpart μ = m ∧ κ ≤ zpart μ ∧ Bal N0 N1 n (zpart μ - κ) then (wv (zpart μ) κ : ℤ) else 0
 
 /- English proof (translation)
-Unfold `Acon wt wv`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> (try push_cast) <;> ring`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem acon_eq (P : PolyXZ H N0 N1) (m : XV H N0 →₀ ℕ) (κ : ZV H N0 N1 →₀ ℕ) (n : H → ℕ) :
     Acon P m κ n = ∑ μ ∈ P.support, MvPolynomial.coeff μ P * wt μ m κ n := by
@@ -112,14 +112,14 @@ theorem acon_eq (P : PolyXZ H N0 N1) (m : XV H N0 →₀ ℕ) (κ : ZV H N0 N1 �
   split_ifs <;> (try push_cast) <;> ring
 
 /- English proof (translation)
-Simplify using `only [Fintype.prod_prod_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nest {M : Type} [CommMonoid M] (F : H → Fin N0 → Fin N1 → M) :
     ∏ t : H, ∏ a : Fin N0, ∏ b : Fin N1, F t a b = ∏ x : H × Fin N0 × Fin N1, F x.1 x.2.1 x.2.2 := by
   simp only [Fintype.prod_prod_type]
 
 /- English proof (translation)
-Simplify using `only [up, zF, zT, Finsupp.add_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem up_apply_false (κ : ZV H N0 N1 →₀ ℕ) (t : H) (a : Fin N0) (b : Fin N1) (t' : H) (a' : Fin N0)
     (b' : Fin N1) :
@@ -128,7 +128,7 @@ theorem up_apply_false (κ : ZV H N0 N1 →₀ ℕ) (t : H) (a : Fin N0) (b : Fi
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Simplify using `only [up, zF, zT, Finsupp.add_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem up_apply_true (κ : ZV H N0 N1 →₀ ℕ) (t : H) (a : Fin N0) (b : Fin N1) (t' : H) (a' : Fin N0)
     (b' : Fin N1) :
@@ -137,9 +137,9 @@ theorem up_apply_true (κ : ZV H N0 N1 →₀ ℕ) (t : H) (a : Fin N0) (b : Fin
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Distinguish the cases in `ht : t' = t`. Substitute `ht` using the available equality. Rewrite using `[if_pos rfl, Finset.sum_eq_single a, Finset.sum_eq_single b]`. Apply the tactic sequence `all_goals first`. Consider the case `(simp; done)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(intro x _ hx; simp [hx]; done)`. Consider the case `(intro x _ hx; exact Finset.sum_eq_zero fun y _ => by simp [hx])`. Rewrite using `[if_neg ht]`. Conclude with `Finset.sum_eq_zero fun a' _ => Finset.sum_eq_zero fun b' _ => by simp [ht]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_ind (t t' : H) (a : Fin N0) (b : Fin N1) :
     (∑ a' : Fin N0, ∑ b' : Fin N1, if (t', a', b') = (t, a, b) then 1 else 0 : ℕ) = if t' = t then 1 else 0 := by
@@ -154,9 +154,9 @@ theorem sum_ind (t t' : H) (a : Fin N0) (b : Fin N1) :
     exact Finset.sum_eq_zero fun a' _ => Finset.sum_eq_zero fun b' _ => by simp [ht]
 
 /- English proof (translation)
-Unfold `Bal`. Simplify using `only [up_apply_false, up_apply_true, Finset.sum_add_distrib, sum_ind, hn]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun s a' b' => Nat.add_right_cancel (h1 s a' b'), fun s => Nat.add_right_cancel (h2 s)⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun s a' b' => by rw [h1 s a' b'], fun s => by rw [h2 s]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem bal_up (n n' : H → ℕ) (t : H) (hn : ∀ s, n s = n' s + if s = t then 1 else 0) (a : Fin N0)
     (b : Fin N1) (k : ZV H N0 N1 →₀ ℕ) : Bal N0 N1 n (up k t a b) ↔ Bal N0 N1 n' k := by
@@ -169,7 +169,7 @@ theorem bal_up (n n' : H → ℕ) (t : H) (hn : ∀ s, n s = n' s + if s = t the
     exact ⟨fun s a' b' => by rw [h1 s a' b'], fun s => by rw [h2 s]⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact h x`. Consider the case `exact Finsupp.le_def.1 h x`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem finsupp_le_apply_of_le {c d : ZV H N0 N1 →₀ ℕ} (h : c ≤ d) (x : ZV H N0 N1) : c x ≤ d x := by
   first
@@ -177,7 +177,7 @@ private theorem finsupp_le_apply_of_le {c d : ZV H N0 N1 →₀ ℕ} (h : c ≤ 
     | exact Finsupp.le_def.1 h x
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `hx` using `finsupp_le_apply_of_le hle x`. Simplify using `only [up, Finsupp.tsub_apply, Finsupp.add_apply] at hx ⊢`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem tsub_up {c κ : ZV H N0 N1 →₀ ℕ} {t : H} {a : Fin N0} {b : Fin N1} (hle : up κ t a b ≤ c) :
     c - κ = up (c - up κ t a b) t a b := by
@@ -187,9 +187,9 @@ theorem tsub_up {c κ : ZV H N0 N1 →₀ ℕ} {t : H} {a : Fin N0} {b : Fin N1}
   omega
 
 /- English proof (translation)
-Simplify using `only [nest]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun x : H × Fin N0 × Fin N1 => ((up k t a b) ((true, x.1), x.2.1, x.2.2)).factorial) (Finset.mem_univ (t, a, b)), ← Finset.mul_prod_erase Finset.univ (fun x : H × Fin N0 × Fin N1 => (k ((true, x.1), x.2.1, x.2.2)).factorial) (Finset.mem_univ …`. Establish `h1 : ∀ x ∈ (Finset.univ : Finset (H × Fin N0 × Fin N1)).erase (t, a, b), ((up k t a b) ((true, x.1), x.2.1, x.2.2)).factorial = (k ((true, x.1), x.2.1, x.2.2)).factorial`. Introduce `x hx`. Establish `hne : ¬ (x.1, x.2.1, x.2.2) = (t, a, b)` using `by simpa using hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[up_apply_true, if_neg hne, add_zero]`. Rewrite using `[Finset.prod_congr rfl h1]`. Apply the tactic sequence `try dsimp only`. Rewrite using `[up_apply_true, if_pos rfl, Nat.factorial_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fact_up (k : ZV H N0 N1 →₀ ℕ) (t : H) (a : Fin N0) (b : Fin N1) :
     ∏ t' : H, ∏ a' : Fin N0, ∏ b' : Fin N1, ((up k t a b) ((true, t'), a', b')).factorial =
@@ -212,21 +212,21 @@ theorem fact_up (k : ZV H N0 N1 →₀ ℕ) (t : H) (a : Fin N0) (b : Fin N1) :
   ring
 
 /- English proof (translation)
-Rewrite using `[up_apply_false, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem up_zF (κ : ZV H N0 N1 →₀ ℕ) (t : H) (a : Fin N0) (b : Fin N1) :
     up κ t a b (zF t a b) = κ (zF t a b) + 1 := by
   rw [up_apply_false, if_pos rfl]
 
 /- English proof (translation)
-Rewrite using `[up_apply_true, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem up_zT (κ : ZV H N0 N1 →₀ ℕ) (t : H) (a : Fin N0) (b : Fin N1) :
     up κ t a b (zT t a b) = κ (zT t a b) + 1 := by
   rw [up_apply_true, if_pos rfl]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem succ_mul_succ_mul_mul_eq_of_mul_succ_eq (x y A A0 B B0 R d1 d2 : ℕ) (e1 : A * (x + 1) = A0 * d1) (e2 : B * (y + 1) = B0 * d2) :
     (y + 1) * (x + 1) * (A * (B * R)) = A0 * (B0 * R) * d1 * d2 := by
@@ -235,13 +235,13 @@ private theorem succ_mul_succ_mul_mul_eq_of_mul_succ_eq (x y A A0 B B0 R d1 d2 :
     _ = A0 * (B0 * R) * d1 * d2 := by ring
 
 /- English proof (translation)
-Establish `hleF : κ (zF t a b) + 1 ≤ c (zF t a b)`. Establish `h` using `finsupp_le_apply_of_le hle (zF t a b)`. Rewrite `h` using `[up_zF]`. Then use the resulting hypothesis. Establish `hleT : κ (zT t a b) + 1 ≤ c (zT t a b)`. Establish `h` using `finsupp_le_apply_of_le hle (zT t a b)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[up_zT]`. Then use the resulting hypothesis. Establish `hne : zT t a b ≠ zF t a b` using `by simp [zF, zT]`. Establish `hF : zF t a b ∈ c.support` using `Finsupp.mem_support_iff.2 (by omega)`. Establish `hT : zT t a b ∈ c.support.erase (zF t a b)` using `Finset.mem_erase.2 ⟨hne, Finsupp.mem_support_iff.2 (by omega)⟩`. Establish `hrest : ∀ v ∈ (c.support.erase (zF t a b)).erase (zT t a b), (c v).choose (up κ t a b v) = (c v).choose (κ v)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `hvT` using `Finset.ne_of_mem_erase hv`. Establish `hvF` using `Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hv)`. Simplify using `only [up, Finsupp.add_apply, Finsupp.single_apply, if_neg (Ne.symm hvF), if_neg (Ne.symm hvT), add_zero]`. Unfold `binomF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Finset.mul_prod_erase c.support (fun v => (c v).choose (up κ t a b v)) hF, ← Finset.mul_prod_erase _ (fun v => (c v).choose (up κ t a b v)) hT, ← Finset.mul_prod_erase c.support (fun v => (c v).choose (κ v)) hF, ← Finset.mul_prod_erase _ (fun v => (c v).choose (κ v)) hT, Finse …`. Apply the tactic sequence `try dsimp only`. Rewrite using `[up_zF, up_zT, Finsupp.tsub_apply, Finsupp.tsub_apply]`. Conclude with `succ_mul_succ_mul_mul_eq_of_mul_succ_eq _ _ _ _ _ _ _ _ _ (Nat.choose_succ_right_eq _ _) (Nat.choose_succ_right_eq _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem binom_up {c κ : ZV H N0 N1 →₀ ℕ} {t : H} {a : Fin N0} {b : Fin N1} (hle : up κ t a b ≤ c) :
     (κ (zT t a b) + 1) * (κ (zF t a b) + 1) * binomF c (up κ t a b) =
@@ -274,7 +274,7 @@ theorem binom_up {c κ : ZV H N0 N1 →₀ ℕ} {t : H} {a : Fin N0} {b : Fin N1
   exact succ_mul_succ_mul_mul_eq_of_mul_succ_eq _ _ _ _ _ _ _ _ _ (Nat.choose_succ_right_eq _ _) (Nat.choose_succ_right_eq _ _)
 
 /- English proof (translation)
-Substitute `hFT` using the available equality. Combine the equalities or inequalities in the displayed calculation.
+Substitute using the available equality. Chain the equalities or inequalities of the calculation.
 -/
 private theorem alg_lemma_8 (p q B B0 P' F T : ℕ) (hB : p * q * B = B0 * F * T) (hFT : F = T) :
     p * q * (B * P') = B0 * (T * P') * T := by
@@ -283,9 +283,9 @@ private theorem alg_lemma_8 (p q B B0 P' F T : ℕ) (hB : p * q * B = B0 * F * T
     _ = _ := by rw [hB]; ring
 
 /- English proof (translation)
-Establish `hB` using `binom_up hle`. Establish `hP` using `fact_up (c - up κ t a b) t a b`. Rewrite `hP` using `[← tsub_up hle]`. Establish `hv : (c - up κ t a b) (zT t a b) + 1 = (c - κ) (zT t a b)`. Rewrite using `[tsub_up hle, up_zT]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `wv`. Rewrite using `[hP, hv]`. Conclude with `alg_lemma_8 _ _ _ _ _ _ _ hB hFG`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wv_up {c κ : ZV H N0 N1 →₀ ℕ} {t : H} {a : Fin N0} {b : Fin N1} (hle : up κ t a b ≤ c)
     (hFG : (c - κ) (zF t a b) = (c - κ) (zT t a b)) :
@@ -300,11 +300,11 @@ theorem wv_up {c κ : ZV H N0 N1 →₀ ℕ} {t : H} {a : Fin N0} {b : Fin N1} (
   exact alg_lemma_8 _ _ _ _ _ _ _ hB hFG
 
 /- English proof (translation)
-Introduce `v`. Establish `hv` using `finsupp_le_apply_of_le h v`. Distinguish the cases in `h1 : v = zF t a b`. Substitute `h1` using the available equality. Rewrite using `[up_zF]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h2 : v = zT t a b`. Substitute `h2` using the available equality. Rewrite using `[up_zT]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [up, Finsupp.add_apply, Finsupp.single_apply, if_neg (Ne.symm h1), if_neg (Ne.symm h2)]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem up_le_of_le_of_lt_zF_of_lt_zT {c κ : ZV H N0 N1 →₀ ℕ} {t : H} {a : Fin N0} {b : Fin N1} (h : κ ≤ c)
     (hF : κ (zF t a b) < c (zF t a b)) (hT : κ (zT t a b) < c (zT t a b)) : up κ t a b ≤ c := by
@@ -322,15 +322,15 @@ private theorem up_le_of_le_of_lt_zF_of_lt_zT {c κ : ZV H N0 N1 →₀ ℕ} {t 
       omega
 
 /- English proof (translation)
-Unfold `wt`. Distinguish the cases in `hup : up κ t a b ≤ zpart μ`. Establish `hκ : κ ≤ zpart μ` using `le_trans (le_self_add.trans le_self_add) hup`. Establish `hB : Bal N0 N1 n (zpart μ - κ) ↔ Bal N0 N1 n' (zpart μ - up κ t a b)`. Rewrite using `[tsub_up hup]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bal_up n n' t hn a b _`. Establish `hiff : (xpart μ = m ∧ up κ t a b ≤ zpart μ ∧ Bal N0 N1 n' (zpart μ - up κ t a b)) ↔ (xpart μ = m ∧ κ ≤ zpart μ ∧ Bal N0 N1 n (zpart μ - κ))` using `⟨fun h => ⟨h.1, hκ, hB.2 h.2.2⟩, fun h => ⟨h.1, hup, hB.1 h.2.2⟩⟩`. Distinguish the cases in `h : xpart μ = m ∧ κ ≤ zpart μ ∧ Bal N0 N1 n (zpart μ - κ)`. Rewrite using `[if_pos (hiff.2 h), if_pos h]`. Conclude with `wv_up hup (h.2.2.1 t a b)` after adjusting the coercions.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg (fun h' => h (hiff.1 h')), if_neg h, mul_zero]`. Establish `hn1 : ¬ (xpart μ = m ∧ up κ t a b ≤ zpart μ ∧ Bal N0 N1 n' (zpart μ - up κ t a b))` using `fun h' => hup h'.2.1`. Rewrite using `[if_neg hn1, mul_zero]`. Distinguish the cases in `h : xpart μ = m ∧ κ ≤ zpart μ ∧ Bal N0 N1 n (zpart μ - κ)`. Rewrite using `[if_pos h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hκ, hb⟩` from `h`. Establish `hFG : (zpart μ - κ) (zF t a b) = (zpart μ - κ) (zT t a b)` using `hb.1 t a b`. Establish `e1 : (zpart μ - κ) (zF t a b) = zpart μ (zF t a b) - κ (zF t a b)` using `Finsupp.tsub_apply _ _ _`. Establish `e2 : (zpart μ - κ) (zT t a b) = zpart μ (zT t a b) - κ (zT t a b)` using `Finsupp.tsub_apply _ _ _`. Establish `h0 : (zpart μ - κ) (zT t a b) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hup (up_le_of_le_of_lt_zF_of_lt_zT hκ (by omega) (by omega))`. Rewrite using `[h0, Nat.cast_zero, mul_zero]`. Rewrite using `[if_neg h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_eq (μ : XZ (Bool × H) N0 N1 →₀ ℕ) (m : XV H N0 →₀ ℕ) (κ : ZV H N0 N1 →₀ ℕ) (n n' : H → ℕ)
     (t : H) (hn : ∀ s, n s = n' s + if s = t then 1 else 0) (a : Fin N0) (b : Fin N1) :
@@ -366,11 +366,9 @@ theorem term_eq (μ : XZ (Bool × H) N0 N1 →₀ ℕ) (m : XV H N0 →₀ ℕ) 
     · rw [if_neg h]
 
 /- English proof (translation)
-Simplify using `only [term_eq μ m κ n n' t hn]`. Unfold `wt`. Distinguish the cases in `h : xpart μ = m ∧ κ ≤ zpart μ ∧ Bal N0 N1 n (zpart μ - κ)`. Simplify using `only [if_pos h]`. Establish `hs` using `h.2.2.2 t`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hs` using `[hn t, if_pos rfl]`. Establish `hs' : (∑ a : Fin N0, ∑ b : Fin N1, ((zpart μ - κ) (zT t a b) : ℤ)) = (n' t : ℤ) + 1`. Conclude with `hs` after adjusting the coercions. Simplify using `only [← Finset.mul_sum, hs']`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `only [if_neg h, mul_zero, Finset.sum_const_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem mono_step (μ : XZ (Bool × H) N0 N1 →₀ ℕ) (m : XV H N0 →₀ ℕ) (κ : ZV H N0 N1 →₀ ℕ) (n n' : H → ℕ)
     (t : H) (hn : ∀ s, n s = n' s + if s = t then 1 else 0) :
@@ -390,11 +388,11 @@ theorem mono_step (μ : XZ (Bool × H) N0 N1 →₀ ℕ) (m : XV H N0 →₀ ℕ
   · simp only [if_neg h, mul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-Simplify using `only [acon_eq, Finset.mul_sum]`. Establish `hb : ∀ μ ∈ P.support, ((n' t : ℤ) + 1) * (MvPolynomial.coeff μ P * wt μ m κ n) = ∑ a : Fin N0, ∑ b : Fin N1, ((κ (zT t a b) : ℤ) + 1) * ((κ (zF t a b) : ℤ) + 1) * (MvPolynomial.coeff μ P * wt μ m (up κ t a b) n')`. Introduce `μ _`. Use `mono_step μ m κ n n' t hn` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hb, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem acon_step (P : PolyXZ H N0 N1) (m : XV H N0 →₀ ℕ) (κ : ZV H N0 N1 →₀ ℕ) (n n' : H → ℕ) (t : H)
     (hn : ∀ s, n s = n' s + if s = t then 1 else 0) :
@@ -423,9 +421,9 @@ theorem acon_step (P : PolyXZ H N0 N1) (m : XV H N0 →₀ ℕ) (κ : ZV H N0 N1
 variable [DecidableEq H]
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun u => ((n u).factorial : ℤ)) (Finset.mem_univ s), ← Finset.mul_prod_erase Finset.univ (fun u => ((n' u).factorial : ℤ)) (Finset.mem_univ s)]`. Establish `h1 : ∀ u ∈ (Finset.univ : Finset H).erase s, ((n u).factorial : ℤ) = ((n' u).factorial : ℤ)`. Introduce `u hu`. Rewrite using `[hn u, if_neg (Finset.ne_of_mem_erase hu), add_zero]`. Rewrite using `[Finset.prod_congr rfl h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try dsimp only`. Rewrite using `[hn s, if_pos rfl, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem prod_factorial_eq_succ_mul_of_update (n n' : H → ℕ) (s : H) (hn : ∀ u, n u = n' u + if u = s then 1 else 0) :
     (∏ u : H, ((n u).factorial : ℤ)) = ((n' s : ℤ) + 1) * ∏ u : H, ((n' u).factorial : ℤ) := by
@@ -441,13 +439,13 @@ private theorem prod_factorial_eq_succ_mul_of_update (n n' : H → ℕ) (s : H) 
   ring
 
 /- English proof (translation)
-Unfold `Bal`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `hT : ∀ t a b, k ((true, t), a, b) = 0`. Introduce `t a b`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : ∑ a : Fin N0, ∑ b : Fin N1, k ((true, t), a, b) = 0` using `h2 t`. Rewrite `h` using `[Finset.sum_eq_zero_iff]`. Establish `h'` using `h a (Finset.mem_univ _)`. Rewrite `h'` using `[Finset.sum_eq_zero_iff]`. Conclude with `h' b (Finset.mem_univ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `⟨⟨bb, t⟩, a, b⟩`. Consider the cases of `bb`. Simplify using `[h1 t a b, hT t a b]`. Simplify using `[hT t a b]`. Introduce and unpack `rfl`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨fun _ _ _ => rfl, fun _ => by simp⟩`.
+A detailed English derivation is pending.
 -/
 private theorem bal_zero_iff (k : ZV H N0 N1 →₀ ℕ) : Bal N0 N1 (fun _ => 0) k ↔ k = 0 := by
   unfold Bal
@@ -468,21 +466,21 @@ private theorem bal_zero_iff (k : ZV H N0 N1 →₀ ℕ) : Bal N0 N1 (fun _ => 0
     exact ⟨fun _ _ _ => rfl, fun _ => by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `L generalizing κ with`. Consider the case `nil`. Simplify using `only [List.count_nil, Nat.factorial_zero, Nat.cast_one, Finset.prod_const_one, one_mul, List.map_nil, List.prod_nil, (show ∀ (x : PolyXZ H N0 N1), (1 : Module.End ℤ (PolyXZ H N0 N1)) x = x from fun _ => rfl)]`. Unfold `Acon`. Establish `key : ∀ μ : XZ (Bool × H) N0 N1 →₀ ℕ, (xpart μ = m ∧ κ ≤ zpart μ ∧ Bal N0 N1 (fun _ => 0) (zpart μ - κ)) ↔ μ = Finsupp.sumFinsuppEquivProdFinsupp.symm (m, κ)`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `μ`. Rewrite using `[bal_zero_iff, tsub_eq_zero_iff_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Establish `hz : zpart μ = κ` using `le_antisymm h3 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← h1, ← hz]`. Simplify using `[xpart, zpart]`. Introduce and unpack `rfl`. Simplify using `[xpart, zpart]`. Rewrite using `[Finset.sum_eq_single (Finsupp.sumFinsuppEquivProdFinsupp.symm (m, κ))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ((key _).2 rfl)]`. Simplify using `[zpart, binomF]`. Introduce `μ _ hne`. Rewrite using `[if_neg (fun h => hne ((key μ).1 h))]`. Introduce `hν`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_pos ((key _).2 rfl)]`. Establish `h0 : MvPolynomial.coeff (Finsupp.sumFinsuppEquivProdFinsupp.symm (m, κ)) P = 0`. Assume the negation of the conclusion as `h`. Conclude with `hν (MvPolynomial.mem_support_iff.2 h)`. Rewrite using `[h0, zero_mul, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cons s L ih`. Establish `hn : ∀ u, (s :: L).count u = L.count u + if u = s then 1 else 0`. Introduce `u`. Distinguish the cases in `h : u = s`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[List.count_cons]`. Simplify using `[List.count_cons, h, Ne.symm h]`. Rewrite using `[prod_factorial_eq_succ_mul_of_update (fun u => (s :: L).count u) (fun u => L.count u) s hn]`. Rewrite using `[List.map_cons, List.prod_cons, (show ∀ (f g : Module.End ℤ (PolyXZ H N0 N1)) (x : PolyXZ H N0 N1), (f * g) x = f (g x) from fun _ _ _ => rfl), coeff_lapT]`. Simplify using `only [symm_add_single, symm_inr, ← ih]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [mul_right_comm, acon_step P m κ (fun u => (s :: L).count u) (fun u => L.count u) s (fun u => by rw [hn u]; split_ifs <;> rfl), Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bridge_list (L : List H) (P : PolyXZ H N0 N1) (m : XV H N0 →₀ ℕ) (κ : ZV H N0 N1 →₀ ℕ) :
     (∏ t : H, ((L.count t).factorial : ℤ)) * Acon P m κ (fun t => L.count t) =
@@ -534,7 +532,7 @@ theorem bridge_list (L : List H) (P : PolyXZ H N0 N1) (m : XV H N0 →₀ ℕ) (
     ring
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons x l ih => simp [ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem prod_map_flatMap_replicate (n : H → ℕ) (l : List H) :
     ((l.flatMap fun t => List.replicate (n t) t).map (lapT N0 N1)).prod =
@@ -544,7 +542,7 @@ private theorem prod_map_flatMap_replicate (n : H → ℕ) (l : List H) :
   | cons x l ih => simp [ih]
 
 /- English proof (translation)
-Unfold `lapAll`. Rewrite using `[prod_map_flatMap_replicate]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lapAll_eq_list (n : H → ℕ) :
     lapAll (H := H) N0 N1 n =
@@ -553,9 +551,9 @@ theorem lapAll_eq_list (n : H → ℕ) :
   rw [prod_map_flatMap_replicate]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons x l ih`. Distinguish the cases in `h : x = s`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[ih]`. Simplify using `[ih, h, Ne.symm h, List.count_replicate, List.count_append]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem count_flatMap_replicate (n : H → ℕ) (s : H) (l : List H) :
     (l.flatMap fun t => List.replicate (n t) t).count s = (l.map fun t => if t = s then n t else 0).sum := by
@@ -568,9 +566,9 @@ private theorem count_flatMap_replicate (n : H → ℕ) (s : H) (l : List H) :
     · simp [ih, h, Ne.symm h, List.count_replicate, List.count_append]
 
 /- English proof (translation)
-Rewrite using `[count_flatMap_replicate]`. Use `first`. Consider the case `(rw [Finset.sum_map_toList]; simp; done)`. Consider the case `(simp [Finset.sum_map_toList]; done)`. Consider the case `(simp [Finset.sum_toList]; done)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [← Finset.sum_toList]; simp; done)`.
+A detailed English derivation is pending.
 -/
 theorem count_list (n : H → ℕ) (s : H) :
     ((Finset.univ : Finset H).toList.flatMap fun t => List.replicate (n t) t).count s = n s := by
@@ -584,9 +582,9 @@ theorem count_list (n : H → ℕ) (s : H) :
 end Br
 
 /- English proof (translation)
-Unfold `PBridge`. Introduce `H _ _ N0 N1 P m κ2 n`. Establish `h` using `Br.bridge_list (H := H) ((Finset.univ : Finset H).toList.flatMap fun t => List.replicate (n t) t) P m κ2`. Simplify using `only [Br.count_list] at h`. Rewrite using `[Br.lapAll_eq_list]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem pBridge : PBridge := by
   unfold PBridge

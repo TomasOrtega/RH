@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[genericMatrixInverse, Matrix.smul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem genericMatrixInverse_eq_adjugate (R : Type*) [CommRing R] (n : ℕ) :
     genericMatrixInverse R n = (IsLocalization.Away.invSelf (S := GLCoord R n) (genMat R n).det) •
@@ -18,9 +18,9 @@ theorem genericMatrixInverse_eq_adjugate (R : Type*) [CommRing R] (n : ℕ) :
   simp [genericMatrixInverse, Matrix.smul_apply]
 
 /- English proof (translation)
-Rewrite using `[genericMatrixInverse_eq_adjugate, genericMatrixRootWeights, Matrix.smul_mul, ← Matrix.map_mul, Matrix.adjugate_mul]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.one_apply, smul_eq_mul]`. Use `split_ifs`. Rewrite using `[mul_one, mul_comm]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `IsLocalization.Away.mul_invSelf _`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem genericMatrixInverse_mul (R : Type*) [CommRing R] (n : ℕ) : genericMatrixInverse R n * genericMatrixRootWeights R n = 1 := by
   rw [genericMatrixInverse_eq_adjugate, genericMatrixRootWeights, Matrix.smul_mul, ← Matrix.map_mul, Matrix.adjugate_mul]
@@ -32,9 +32,9 @@ theorem genericMatrixInverse_mul (R : Type*) [CommRing R] (n : ℕ) : genericMat
   · simp
 
 /- English proof (translation)
-Rewrite using `[genericMatrixInverse_eq_adjugate, genericMatrixRootWeights, Matrix.mul_smul, ← Matrix.map_mul, Matrix.mul_adjugate]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.one_apply, smul_eq_mul]`. Use `split_ifs`. Rewrite using `[mul_one, mul_comm]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `IsLocalization.Away.mul_invSelf _`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem genericMatrix_mul_inverse (R : Type*) [CommRing R] (n : ℕ) : genericMatrixRootWeights R n * genericMatrixInverse R n = 1 := by
   rw [genericMatrixInverse_eq_adjugate, genericMatrixRootWeights, Matrix.mul_smul, ← Matrix.map_mul, Matrix.mul_adjugate]
@@ -50,11 +50,9 @@ section asm
 variable {R : Type} [Field R] {ι : Type} [Fintype ι] (LL : Letters ι) {n : ℕ} (S : Set ι)
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨u, hu, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨g * u, Submonoid.mul_mem _ (Submonoid.subset_closure hg) hu, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`.
-
-Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generated_submodule_stable (G : MvPolynomial (ι × Fin n) R) (g : MvPolynomial (ι × Fin n) R →ₗ[R] MvPolynomial (ι × Fin n) R)
     (hg : g ∈ polUZgens R LL S) : ∀ x ∈ polGenSub R LL S G, g x ∈ polGenSub R LL S G := by
@@ -72,66 +70,58 @@ theorem generated_submodule_stable (G : MvPolynomial (ι × Fin n) R) (g : MvPol
     exact Submodule.smul_mem _ c hy
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨1, Submonoid.one_mem _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem self_mem_generated_submodule (G : MvPolynomial (ι × Fin n) R) : G ∈ polGenSub R LL S G := Submodule.subset_span ⟨1, Submonoid.one_mem _, rfl⟩
 
 /- English proof (translation)
-Use `set W := polGenSub R LL S G with hWdef`. Establish `hW2 : ∀ a k, ∀ x ∈ W, binomPol R LL S a k x ∈ W` using `fun a k x hx => generated_submodule_stable LL S G (binomPol R LL S a k) (Or.inr ⟨a, k, rfl⟩) x hx`. Establish `hWd : ∀ a b k, a ≠ b → ∀ x ∈ W, divPow R LL S a b k x ∈ W` using `fun a b k hab x hx => generated_submodule_stable LL S G (divPow R LL S a b k) (Or.inl ⟨a, b, k, hab, rfl⟩) x hx`. Use `haveI hdom : IsDomain (GLCoord R n) := IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors (Matrix.det_mvPolynomialX_ne_zero (Fin n) R : (genMat R n).det ≠ 0))`. Set `K` to `FractionRing (GLCoord R n)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : GLCoord R n →+* K` to `algebraMap (GLCoord R n) K`. Establish `hψ : Function.Injective ψ` using `IsFractionRing.injective (GLCoord R n) K`. Set `φ : R →+* K` to `ψ.comp (coefficientMap R n)`. Establish `good_of : ∀ h h' : Matrix (Fin n) (Fin n) K, (∀ w ∈ W, matrixSubst LL S φ h h' w ∈ scalarExtension φ W) → SubstitutionPreservesExtension LL S φ W h h'`. Introduce `h h' hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `SubstitutionPreservesExtension`. Introduce `x hx`. Rewrite `hx` using `[scalarExtension]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hwW, rfl⟩` from `hy`. Rewrite using `[matrixSubst_map]`. Conclude with `hw w hwW`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, matrixSubst_C, RingHom.id_apply, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ c hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `good_mul : ∀ h1 h1' h2 h2' : Matrix (Fin n) (Fin n) K, SubstitutionPreservesExtension LL S φ W h1 h1' → SubstitutionPreservesExtension LL S φ W h2 h2' → SubstitutionPreservesExtension LL S φ W (h1 * h2) (h2' * h1')`. Introduce `h1 h1' h2 h2' g1 g2`. Unfold `SubstitutionPreservesExtension at g1 g2 ⊢`. Introduce `x hx`. Rewrite using `[← matrixSubst_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g1 _ (g2 x hx)`. Establish `good_tr : ∀ (a b : Fin n), a ≠ b → ∀ t : K, SubstitutionPreservesExtension LL S φ W (Matrix.transvection a b t) (Matrix.transvection a b (-t))`. Introduce `a b hab t`. Apply `good_of` to reduce the goal to its premises. Introduce `w hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hT R K ι LL n S φ a b hab t w (w.totalDegree + 1) (Nat.lt_succ_self _)]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hWd a b k hab w hw, rfl⟩)`. Establish `good_diag : ∀ u : Fin n → Kˣ, SubstitutionPreservesExtension LL S φ W (Matrix.diagonal fun a => ((u a : Kˣ) : K)) (Matrix.diagonal fun a => (((u a)⁻¹ : Kˣ) : K))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u`. Apply `good_of` to reduce the goal to its premises. Introduce `w hw`. Rewrite using `[MvPolynomial.as_sum w, map_sum]`. Establish `hmono : ∀ m ∈ w.support, matrixSubst LL S φ (Matrix.diagonal fun a => ((u a : Kˣ) : K)) (Matrix.diagonal fun a => (((u a)⁻¹ : Kˣ) : K)) (MvPolynomial.monomial m (w.coeff m)) = (((∏ a, u a ^ (wtS LL S m a) : Kˣ) : K)) • MvPolynomial.map φ (MvPolynomial.monomial m (w.coeff m))`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce `m _`. Rewrite using `[hTo R K ι LL n S φ u m (w.coeff m), MvPolynomial.map_monomial, MvPolynomial.smul_monomial, smul_eq_mul]`. Use `congr 1`. Conclude with `mul_comm _ _`. Rewrite using `[Finset.sum_congr rfl hmono, ← Finset.sum_fiberwise_of_maps_to (g := fun m => wtS LL S m) (t := w.support.image (fun m => wtS LL S m)) (fun m hm => Finset.mem_image_of_mem _ hm)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `Submodule.sum_mem _ fun ν _ => ?_` and prove the remaining obligations. Use `Submodule.smul_mem _ (((∏ a, u a ^ (ν a) : Kˣ) : K)) (show MvPolynomial.map φ (weightComponent LL S ν w) ∈ scalarExtension φ W by` and compare the differences between its conclusion and the goal. Rewrite using `[scalarExtension]`. Conclude with `Submodule.subset_span ⟨_, hGr R ι LL n S W hW2 w hw ν, rfl⟩) using 1`. Unfold `weightComponent`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr ?_ fun m hm => ?_` and prove the remaining obligations. Use extensionality with `m`. Simplify using the standard rewrite rules. Rewrite using `[(Finset.mem_filter.mp hm).2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `good_list : ∀ l : List (Matrix.TransvectionStruct (Fin n) K), SubstitutionPreservesExtension LL S φ W (l.map Matrix.TransvectionStruct.toMatrix).prod (l.reverse.map fun t => Matrix.transvection t.i t.j (-t.c)).prod ∧ (l.map Matrix.TransvectionStruct.toMatrix).prod * (l.reverse.ma …`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.prod_nil, List.reverse_nil]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨?_, mul_one 1, mul_one 1⟩` and prove the remaining obligations. Unfold `SubstitutionPreservesExtension`. Introduce `x hx`. Rewrite using `[matrixSubst_one, MvPolynomial.map_id]`. Conclude with `hx`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons t l ih`. Take `⟨hg, h1, h2⟩` from `ih`. Establish `ht1 : t.toMatrix * Matrix.transvection t.i t.j (-t.c) = 1`. Conclude with `t.mul_inv`. Establish `ht2 : Matrix.transvection t.i t.j (-t.c) * t.toMatrix = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `t.inv_mul`. Simplify using `only [List.map_cons, List.prod_cons, List.reverse_cons, List.map_append, List.prod_append, List.map_nil, List.prod_nil, mul_one]`. Generalize the expression as in `(l.map Matrix.TransvectionStruct.toMatrix).prod = P at hg h1 h2 ⊢`. Generalize the expression as in `(l.reverse.map fun t => Matrix.transvection t.i t.j (-t.c)).prod = P' at hg h1 h2 ⊢`. Use `⟨good_mul _ _ _ _ (good_tr t.i t.j t.hij t.c) hg, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[mul_assoc, ← mul_assoc P, h1, one_mul, ht1]`. Rewrite using `[mul_assoc, ← mul_assoc (Matrix.transvection t.i t.j (-t.c)), ht2, one_mul, h2]`. Use `set A : Matrix (Fin n) (Fin n) K := (genericMatrixInverse R n).map ψ with hAdef`. Use `set A' : Matrix (Fin n) (Fin n) K := (genericMatrixRootWeights R n).map ψ with hA'def`. Establish `hAA' : A * A' = 1`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hAdef, hA'def, ← Matrix.map_mul, genericMatrixInverse_mul, Matrix.map_one _ (map_zero ψ) (map_one ψ)]`. Establish `hA'A : A' * A = 1`. Rewrite using `[hAdef, hA'def, ← Matrix.map_mul, genericMatrix_mul_inverse, Matrix.map_one _ (map_zero ψ) (map_one ψ)]`. Take `⟨l1, l2, D, hAdec⟩` from `Matrix.Pivot.exists_list_transvec_mul_diagonal_mul_list_transvec A`. Take `⟨g1, e1, f1⟩` from `good_list l1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨g2, e2, f2⟩` from `good_list l2`. Generalize the expression as in `(l1.map Matrix.TransvectionStruct.toMatrix).prod = P1 at hAdec g1 e1 f1`. Generalize the expression as in `(l1.reverse.map fun t => Matrix.transvection t.i t.j (-t.c)).prod = P1' at g1 e1 f1`. Generalize the expression as in `(l2.map Matrix.TransvectionStruct.toMatrix).prod = P2 at hAdec g2 e2 f2`. Generalize the expression as in `(l2.reverse.map fun t => Matrix.transvection t.i t.j (-t.c)).prod = P2' at g2 e2 f2`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hdiag : Matrix.diagonal D = P1' * A * P2'`. Rewrite using `[hAdec, ← mul_assoc, ← mul_assoc, f1, one_mul, mul_assoc, e2, mul_one]`. Establish `hDinv : Matrix.diagonal D * (P2 * A' * P1) = 1`. Rewrite using `[hdiag]`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← mul_assoc P2' P2, f2, one_mul, ← mul_assoc A A', hAA', one_mul, f1]`. Establish `hD0 : ∀ a, D a ≠ 0`. Introduce `a h0`. Establish `h3` using `congrFun (congrFun hDinv a) a`. Rewrite `h3` using `[Matrix.diagonal_mul, h0, zero_mul, Matrix.one_apply_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `zero_ne_one h3`. Set `u : Fin n → Kˣ` to `fun a => Units.mk0 (D a) (hD0 a)`. Establish `gd` using `good_diag u`. Establish `hu1 : (Matrix.diagonal fun a => ((u a : Kˣ) : K)) = Matrix.diagonal D`. Use extensionality with `i j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[u, Matrix.diagonal_apply]`. Establish `hu2 : (Matrix.diagonal fun a => (((u a)⁻¹ : Kˣ) : K)) = Matrix.diagonal fun a => (D a)⁻¹`. Use extensionality with `i j`. Simplify using `[u, Matrix.diagonal_apply]`. Rewrite `gd` using `[hu1, hu2]`.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `gA` using `good_mul _ _ _ _ (good_mul _ _ _ _ g1 gd) g2`. Establish `hX : P2' * ((Matrix.diagonal fun a => (D a)⁻¹) * P1') = A'`. Establish `hdd : Matrix.diagonal D * Matrix.diagonal (fun a => (D a)⁻¹) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `a`. Conclude with `mul_inv_cancel₀ (hD0 a)`. Establish `hAX : A * (P2' * ((Matrix.diagonal fun a => (D a)⁻¹) * P1')) = 1`. Rewrite using `[hAdec]`. Simplify using `only [mul_assoc]`.
-
-Rewrite using `[← mul_assoc P2 P2', e2, one_mul, ← mul_assoc (Matrix.diagonal D), hdd, one_mul, e1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `gA` using `[← hAdec, hX]`. Establish `hGW : MvPolynomial.map φ G ∈ scalarExtension φ W` using `Submodule.subset_span ⟨G, self_mem_generated_submodule LL S G, rfl⟩`. Establish `hHK : MvPolynomial.map ψ (genericTranslate LL S G) ∈ scalarExtension φ W`.
-
-Rewrite using `[genericTranslate, map_matrixSubst, ← hAdef, ← hA'def, ← matrixSubst_map]`. Conclude with `gA _ hGW`. Introduce `m hm`. Establish `hsupp : m ∈ (MvPolynomial.map ψ (genericTranslate LL S G)).support`. Rewrite using `[MvPolynomial.support_map_of_injective _ hψ]` and apply the resulting hypothesis.
-
-Conclude with `scalarExtension_monomial_weights (LL := LL) (S := S) (φ := φ) (W := W) hGr hW2 _ hHK m hsupp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem generic_translate_weights_mem (hT : TransvectionExpansion) (hTo : TorusActsThroughWeight) (hGr : BinomialStableContainsComponents) (G : MvPolynomial (ι × Fin n) R) :
     ∀ m ∈ (genericTranslate LL S G).support, wtS LL S m ∈ polWts LL S (polGenSub R LL S G) := by
@@ -299,15 +289,15 @@ theorem generic_translate_weights_mem (hT : TransvectionExpansion) (hTo : TorusA
 end asm
 
 /- English proof (translation)
-Introduce `R _ ι _ LL n _ S`. Use `⟨fun G θ => ?_, fun G M => ?_⟩` and prove the remaining obligations. Rewrite using `[valS, hSt R ι LL n S (lastIdx n) G, Finset.le_inf_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `weights_property_of_generic_translate (LL := LL) (S := S) (j := lastIdx n) (Pr := fun z => θ ≤ z) hT hTo hSp G (fun m hm => by`. Use `h _ (Finset.mem_image_of_mem _ hm)` as an intermediate fact. Simplify using `using this)`. Introduce `h k hk`. Take `⟨m, hm, rfl⟩` from `Finset.mem_image.mp hk`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `h _ (generic_translate_weights_mem LL S hT hTo hGr G m hm)` as an intermediate fact. Simplify using `using this`. Rewrite using `[lam1S, hSt R ι LL n S 0 G, Finset.sup_le_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `weights_property_of_generic_translate (LL := LL) (S := S) (j := 0) (Pr := fun z => z ≤ M) hT hTo hSp G (fun m hm => by`. Use `h _ (Finset.mem_image_of_mem _ hm)` as an intermediate fact. Simplify using `using this)`. Introduce `h k hk`. Take `⟨m, hm, rfl⟩` from `Finset.mem_image.mp hk`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h _ (generic_translate_weights_mem LL S hT hTo hGr G m hm)` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem generated_module_weight_lemma_of_interfaces (hT : TransvectionExpansion) (hTo : TorusActsThroughWeight) (hGr : BinomialStableContainsComponents) (hSt : TwistExponentsAreWeightEntries) (hSp : GenericMonomialsSpecialise) :
     GeneratedModuleWeightDescription := by

@@ -18,7 +18,7 @@ open Classical in
 def dEnt (n : ℕ) (π : E) (i : Fin n) : E := if i.1 + 1 = n then (if π = 0 then 1 else π) else 1
 
 /- English proof (translation)
-Unfold `dEnt`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dEnt_ne (n : ℕ) (π : E) (i : Fin n) : dEnt n π i ≠ 0 := by
   unfold dEnt
@@ -35,37 +35,33 @@ theorem dAut_apply (n : ℕ) (π : E) (x : Fin n → E) (i : Fin n) : dAut n π 
 end Diag
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n _ ST SG Q hQ π hπ`. Establish `hQc : ∀ P ∈ Q, conjPrime₂ P ∉ Q` using `fun P hP => (hQ P hP).2.2.2.2`. Establish `hπ0 : ∀ P ∈ Q, (π : E) ≠ 0` using `fun P hP h => hπ P hP (by`. Establish `: π = 0` using `RingOfIntegers.coe_eq_zero_iff.1 h`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.asIdeal.zero_mem)`. Establish `hval : ∀ P ∈ Q, ∀ i : Fin n, P.valuation E (dEnt n (π : E) i) = 1`. Introduce `P hP i`. Unfold `dEnt`. Rewrite using `[if_neg (hπ0 P hP)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `le_antisymm (HeightOneSpectrum.valuation_le_one _ π) (not_lt.1 fun h => hπ P hP ((HeightOneSpectrum.valuation_lt_one_iff_mem _ _).1 h))`. Conclude with `map_one _`. Establish `hfr : ∀ P ∈ Q, CharValCompare.IsFr P (Formalism.UG.CS.globLat (1 : GL (Fin n) (AfE F E)) (stdLat E n)) (dAut n (π : E))`. Introduce `P hP x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[globLat_one_std]`. Use `show _ ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (stdLat E n) ↔ x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (stdLat E n)`. Rewrite using `[mem_localization_standardLattice, mem_localization_standardLattice]`. Simplify using `only [dAut_apply, CharValCompare.intAt_iff, map_mul, hval P hP, one_mul]`. Take `⟨g, hg, c1, c2, c3⟩` from `PtExist.exists_modify (hc := hc) hQc (one_mem (UAd hc n)) (fun _ => dAut n (π : E)) hfr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hST : ∀ P ∈ ST, P ∉ Q ∧ conjPrime₂ P ∉ Q` using `fun P hP => ⟨fun h => (hQ P h).1 hP, fun h => (hQ _ h).2.2.1 (by rw [CharValCompare.conjP_conjP]; exact hP)⟩`. Establish `hSG : ∀ P ∈ SG, P ∉ Q ∧ conjPrime₂ P ∉ Q` using `fun P hP => ⟨fun h => (hQ P h).2.1 hP, fun h => (hQ _ h).2.2.2.1 (by rw [CharValCompare.conjP_conjP]; exact hP)⟩`. Establish `hb` using `isPtOf_base (F := F) hc (n := n) (ST := ST) (SG := SG) (Q := (∅ : Finset (HeightOneSpectrum (𝓞 E))))`. Establish `hpt : IsPtOf hc g (DecoF.base E n ST SG (∅ : Finset (HeightOneSpectrum (𝓞 E))))`. Use `⟨hg, ?_, fun P x hx i hi => ?_, fun w x hx i => ?_, fun P => absurd P.2 (Finset.notMem_empty _)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `c1`. Rewrite `h` using `[globLat_one_std]`. Conclude with `h`. Rewrite using `[c3 P.1 (hST P.1 P.2).1 (hST P.1 P.2).2 x i]`. Conclude with `hb.f P x hx i hi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[c3 w.1 (hSG w.1 w.2).1 (hSG w.1 w.2).2 x i]`. Conclude with `hb.be w x hx i`. Establish `hd` using `(PtDeco.isPtOf_iff_decoRaw F E hc n ST SG ∅ g (DecoF.base E n ST SG ∅) rfl).1 hpt`. Establish `hK` using `mem_principal_of_same_decoration hc n ST SG (one_mem _) hg (by rw [decoRaw_one, ← hd.2]; rfl)`. Rewrite `hK` using `[inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨g, hK, fun P i j => ?_, fun w hw hw' i j => ?_⟩` and prove the remaining obligations. Rewrite using `[c2 P.1 P.2 i j]`. Use `congr 1`. Use `show dAut n (π : E) (Pi.single j 1) i = _`. Rewrite using `[dAut_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `dEnt`. Rewrite using `[if_neg (hπ0 P.1 P.2)]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Establish `e1 : ∀ i j, adAt F w (((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j) = if i = j then 1 else 0`. Introduce `i j`. Establish `h` using `c3 w hw hw' (Pi.single j 1) i`. Establish `hv : (fun k => Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) ((Pi.single j (1 : E) : Fin n → E) k)) = Pi.single j 1 := by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h' : adAt F w ((((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single j 1) i) = adAt F w ((((1⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single j 1) i)`. Rewrite using `[← hv]`. Conclude with `h`. Rewrite `h'` using `[inv_one, Units.val_one, Matrix.one_mulVec, Matrix.mulVec_single_one]`. Establish `h'' : adAt F w (((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j) = adAt F w ((Pi.single j 1 : Fin n → AfE F E) i)` using `h'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h'', Pi.single_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hMi : (((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E))).map (adAt F w) = 1`. Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, e1, Matrix.one_apply]`. Establish `hgg : (g : Matrix (Fin n) (Fin n) (AfE F E)) * ((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
-
-Establish `hM : (g : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F w) = 1`. Establish `h` using `congrArg (fun M => M.map (adAt F w)) hgg`. Simplify using `only [Matrix.map_mul, hMi, mul_one] at h`. Rewrite using `[h, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h` using `congrFun (congrFun hM i) j`.
-
-Rewrite `h` using `[Matrix.map_apply, Matrix.one_apply]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tw : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : CMData F E) (n : ℕ) [NeZero n] (ST SG Q : Finset (HeightOneSpectrum (𝓞 E))), (∀ P ∈ Q, P ∉ ST ∧ P ∉ SG ∧ conjPrime₂ P ∉ ST ∧ conjPrime₂ P ∉ SG ∧ conjPrime₂ P ∉ Q) → ∀ (π : 𝓞 E), (∀ P ∈ Q, π ∉ P.asIdeal) → ∃ t : GL (Fin n) (AfE F E), t ∈ K1 hc n ST SG ∧ (∀ (P : Q) (i j : Fin n), adAt F P.1 (t.1 i j) = algebraMap E _ (if i = j then (if i.1 + 1 = n then (π : E) else 1) else 0)) ∧ ∀ w : HeightOneSpectrum (𝓞 E), w ∉ Q → conjPrime₂ w ∉ Q → ∀ i j : Fin n, adAt F w (t.1 i j) = if i = j then 1 else 0 := by
   intro F E _ _ _ _ _ _ hc n _ ST SG Q hQ π hπ

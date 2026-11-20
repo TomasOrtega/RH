@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge
   Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.PoincareInHH
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite (DoubleCoset.Quotient (Γ : Set G) (K : Set G))`. Unfold `massCl`. Simplify using `only [h, Subgroup.card_bot, Nat.cast_one, inv_one]`. Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `[Nat.card_eq_fintype_card]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem massCl_of_triv {G : Type} [Group G] (Γ K : Subgroup G)
     [Finite (DoubleCoset.Quotient (Γ : Set G) (K : Set G))]
@@ -57,15 +57,15 @@ def UnfoldGenStep : Prop :=
         (X.muH u Set.univ).toReal * ((X.measW u).μHf (U : Set ↥(Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))).toReal ≠ 0
 
 /- English proof (translation)
-Introduce `D X hb hK u hGF hMT hL hStab hFin`. Take `⟨hset, hle⟩` from `hG X hb hK u hMT hL`. Take `⟨hopen, hcpt⟩` from `hO X hb hK u hMT hL`. Establish `hcard` using `hB X hb hK u hGF hL`. Establish `htriv` using `hS X hb hK u hGF hL hStab`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hneC : Nonempty (Formalism.L2.SG.ColsDim.Classes (PoincareSetting.iotaF X u) (PoincareSetting.Ku X u hK))` using `by first`. Consider the case `infer_instance`. Consider the case `exact ⟨Quotient.mk _ 1⟩`. Consider the case `exact ⟨DoubleCoset.mk _ _ 1⟩`. Establish `hpos : 0 < Nat.card (ClsHA X hb u)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← hcard]`. Conclude with `Nat.card_pos`. Use `haveI hfinH : Finite (ClsHA X hb u) := Nat.finite_of_card_ne_zero hpos.ne'`. Use `haveI : IsTopologicalGroup (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) := PIW.MassDataColumns.isTopGroup_HA _ _`. Establish `hK2c : IsCompact (unitaryLevelClosureSubgroup X hb u : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))` using `hcpt.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hopen) hle`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hMF : MassFinite (GamHA X u) (unitaryLevelClosureSubgroup X hb u)`. Use `⟨hfinH, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[htriv x]`. Use `infer_instance`. Take `⟨hcov, hne⟩` from `hU X hb u hMT (unitaryLevelClosureSubgroup X hb u) hopen hK2c hMF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hm : massCl (GamHA X u) (unitaryLevelClosureSubgroup X hb u) = Nat.card (ClsHA X hb u)` using `massCl_of_triv _ _ htriv`. Rewrite using `[hcov, hm, hset, hcard]`. Rewrite `hne` using `[hset]`. Clear the denominators using the available nonvanishing facts. Conclude with `(div_self hne).symm`.
+A detailed English derivation is pending.
 -/
 theorem classCountStep_of (hB : ClassBijStep) (hS : HAStabTrivStep) (hU : UnfoldGenStep) (hG : IdxGroupStep)
     (hO : OpenCompactStep) : ClassCountStep' := by

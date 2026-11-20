@@ -19,16 +19,16 @@ noncomputable section
 namespace GlobalTheory.Unfold.GluedCong
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem bc_eq (D : D7) (Z : LocDat D) (p : PlF D) (v : (VS D).V) :
     (GlobalTheory.HL.placesOf Z).bc p ((VS D).frame.equivFun v) = baseChange₂ D p v := by
   funext i; rfl
 
 /- English proof (translation)
-Unfold `GlobalTheory.HL.Places.lat lattice₂`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [Set.mem_image, Submodule.map_coe, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨v, hv, rfl⟩, rfl⟩`. Conclude with `⟨v, hv, (bc_eq D Z p v).symm⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨_, ⟨v, hv, rfl⟩, bc_eq D Z p v⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem lat_eq (D : D7) (Z : LocDat D) (p : PlF D) (L : LV D) :
     (GlobalTheory.HL.placesOf Z).lat p (L.map (((VS D).frame.equivFun : (VS D).V →ₗ[D.host.E] (Fin (nV D) → D.host.E)).restrictScalars (𝓞 D.host.E))) = lattice₂ D Z.M p L := by
@@ -43,9 +43,9 @@ theorem lat_eq (D : D7) (Z : LocDat D) (p : PlF D) (L : LV D) :
     exact ⟨_, ⟨v, hv, rfl⟩, bc_eq D Z p v⟩
 
 /- English proof (translation)
-Establish `hg1 : I • Formalism.HermitianLatticesTheory.gmap γ L = (I • L).map ((γ : (VS D).V →ₗ[D.host.E] (VS D).V).restrictScalars (𝓞 D.host.E))`. Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.map_smul'']`. Rewrite using `[hg1]`. Use `Submodule.mem_map.2 ⟨s • v, h, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(γ : (VS D).V →ₗ[D.host.E] (VS D).V).map_smul_of_tower s v`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_gmap (D : D7) (γ : GV D) (I : Ideal (𝓞 D.host.E))
     (L : LV D) (v : (VS D).V) (s : 𝓞 D.host.E) (h : s • v ∈ I • L) :
@@ -60,33 +60,29 @@ theorem smul_mem_gmap (D : D7) (γ : GV D) (I : Ideal (𝓞 D.host.E))
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' w hw hG Z FP hB hR Λ y hL g g' hA hA' hr hr' P hP`. Take `⟨sg, hsp, hdict⟩` from `GlobalTheory.T.split_and_smul_completedLattice_le_at_level_prime D Z P hP`. Establish `hL0` using `hL`. Take `⟨hlat, hloc⟩` from `hL`. Take `⟨τ, hτ, hτL⟩` from `hloc (below D P)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB1, hB2, hBy⟩` from `GlobalTheory.T.local_adaptedIsometry_frame_upperTriangular_expansion D (lf D (X.Fu u)) F g hA Z (below D P) (FP (below D P)).A.f (hB (below D P)).1`. Take `⟨B', hB1', hB2', hBx⟩` from `GlobalTheory.T.local_adaptedIsometry_frame_upperTriangular_expansion D (lf D (X.Fu u')) F' g' hA' Z (below D P) (FP (below D P)).B.f (hB (below D P)).2.1`. Establish `hU` using `GlobalTheory.T.frameScale_isUnit_at_prime_over_level D (Tu D u) (Tu D u') (X.Fu u) F F' Z FP hB Λ y hL0 g hA hr P hP`. Establish `hmemg : ∀ (γ : GV D) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T), IsRowLat D F0 (Formalism.HermitianLatticesTheory.gmap γ⁻¹ Λ) → ∀ a, γ (frame (lf D F0) a) ∈ Λ`. Introduce `γ T F0 h a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv, hve⟩` from `Submodule.mem_map.1 (GlobalTheory.T.fixedFlag_frameVector_mem_rowLattice D F0 _ h a)`. Establish `e : γ (frame (lf D F0) a) = v`. Rewrite using `[← hve]`. Use `show γ (γ⁻¹ v) = v`. Conclude with `γ.apply_symm_apply v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hv`. Establish `hyL : ∀ a, baseChange₂ D (below D P) (g (frame (lf D (X.Fu u)) a)) ∈ τ.abelian₂` using `fun a => by`. Rewrite using `[hτL]`. Conclude with `Submodule.subset_span ⟨_, hmemg g (X.Fu u) hr a, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hxL : ∀ a, baseChange₂ D (below D P) (g' (frame (lf D (X.Fu u')) a)) ∈ τ.abelian₂` using `fun a => by`. Rewrite using `[hτL]`. Conclude with `Submodule.subset_span ⟨_, hmemg g' (X.Fu u') hr' a, rfl⟩`. Take `⟨ξp, hξO, hξ1, hξ2, hξc⟩` from `GlobalTheory.T.term_families_congr_mod_unitriangular (locH Z (below D P)) (FP (below D P)) (y (below D P)) τ sg hsp hτ (fun b => baseChange₂ D (below D P) (g (frame (lf D (X.Fu u)) b))) (fun b => baseChange₂ D (below D P) (g' (frame (lf D (X.Fu u')) b))) B B' hB1 hB1' (fun a => b …`. Rewrite using `[hB2]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(hU a).2, frFac Z.δ (below D P) a, (hU a).1, Ring.mul_inverse_cancel _ (Formalism.L2.SG.Pf.ScalarFramePf.isUnit_frFac Z (below D P) a)⟩)`. Use `hBy hBx hyL hxL`. Establish `hfg : (Λ.map (((VS D).frame.equivFun : (VS D).V →ₗ[D.host.E] (Fin (nV D) → D.host.E)).restrictScalars (𝓞 D.host.E))).FG` using `hlat.fg.map _`. Establish `hpos : 0 < gS D` using `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`. Take `⟨ξ, hu1, hu2, hPP⟩` from `GlobalTheory.HL.LocCongApprox.loc_cong_approx (GlobalTheory.HL.placesOf Z) (nV D) D.R.rS _ hfg (gS D) hpos (below D P) (fun a => (VS D).frame.equivFun (g (frame (lf D (X.Fu u)) a))) (fun b => (VS D).frame.equivFun (g' (frame (lf D (X.Fu u')) b))) ξp hξO hξ1 hξ2 (fun a => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[lat_eq, bc_eq, ← hτL]`. Conclude with `hyL a)`. Use the proof step `(fun b => by`. Rewrite using `[← Submodule.map_smul'', lat_eq]`. Establish `h1` using `hdict Λ _ (hτL ▸ hξc b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [bc_eq]`. Conclude with `h1)`. Use `⟨ξ, hu1, hu2, fun b => ?_⟩` and prove the remaining obligations. Establish `h` using `hPP P rfl b`. Take `⟨v, hv⟩ : ∃ v, v = g' (frame (lf D (X.Fu u')) b) - ∑ a, ((ξ a b : 𝓞 D.host.E) : D.host.E) • g (frame (lf D (X.Fu u)) a)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hφv : (VS D).frame.equivFun (g' (frame (lf D (X.Fu u')) b)) - ∑ a, ((ξ a b : 𝓞 D.host.E) : D.host.E) • (VS D).frame.equivFun (g (frame (lf D (X.Fu u)) a)) = (VS D).frame.equivFun v`. Rewrite using `[hv, map_sub, map_sum]`. Simplify using `only [map_smul]`. Rewrite `h` using `[hφv]`. Take `⟨s, hs, hsv⟩` from `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hsv` using `[← Submodule.map_smul'']`. Take `⟨z, hz, hzv⟩` from `Submodule.mem_map.1 hsv`. Establish `hzs : z = s • v`. Apply `((VS D).frame.equivFun).injective` to reduce the goal to its premises. Establish `e1 : (VS D).frame.equivFun z = s • (VS D).frame.equivFun v` using `hzv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e1]`. Conclude with `(((VS D).frame.equivFun : (VS D).V →ₗ[D.host.E] (Fin (nV D) → D.host.E)).map_smul_of_tower s v).symm`. Establish `hiso : g⁻¹ * g' ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `mul_mem (inv_mem hA.1) hA'.1`. Establish `hfr : frame (mapLF (g⁻¹ * g') (lf D (X.Fu u'))) b = (g⁻¹ * g') (frame (lf D (X.Fu u')) b)`. Unfold `mapLF`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hiso]`. Simplify using `only [frame, Formalism.MainNotions.S.FlagG.fvec, mapFlag]`. Conclude with `(congrFun (Fin.comp_snoc (⇑(g⁻¹ * g')) _ _) b).symm`. Establish `htarget : frame (mapLF (g⁻¹ * g') (lf D (X.Fu u'))) b - frameAct (frame (lf D (X.Fu u))) ξ b = g⁻¹ v`. Rewrite using `[hfr, hv, map_sub, map_sum, LinearEquiv.mul_apply]`.
-
-Unfold `frameAct`. Use `congrArg₂ (· - ·) rfl (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations. Conclude with `(((g⁻¹ : GV D).map_smul _ _).trans (congrArg _ (g.symm_apply_apply _))).symm`. Establish `hsv' : s • v ∈ Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ`. Rewrite using `[← hzs]`.
-
-Conclude with `hz`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[htarget]`. Conclude with `smul_mem_gmap D g⁻¹ (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)}) Λ v s hsv'`.
+A detailed English derivation is pending.
 -/
 theorem glued_loc_cong : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → ∀ (Λ : LV D) (y : Dat Z FP), LocOver Λ y → ∀ g g', Adapt g (lf D (X.Fu u)) F → Adapt g' (lf D (X.Fu u')) F' → IsRowLat D (X.Fu u) (Formalism.HermitianLatticesTheory.gmap g⁻¹ Λ) → IsRowLat D (X.Fu u') (Formalism.HermitianLatticesTheory.gmap g'⁻¹ Λ) → ∀ P : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E), ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → ∃ ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E), (∀ a b, b < a → ξ a b = 0) ∧ (∀ a, ξ a a = 1) ∧ ∀ b, frame (mapLF (g⁻¹ * g') (lf D (X.Fu u'))) b - frameAct (frame (lf D (X.Fu u))) ξ b ∈ (haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Formalism.HermitianLatticesTheory.gmap g⁻¹ Λ)) := by
   intro D X Y u u' F F' w hw hG Z FP hB hR Λ y hL g g' hA hA' hr hr' P hP

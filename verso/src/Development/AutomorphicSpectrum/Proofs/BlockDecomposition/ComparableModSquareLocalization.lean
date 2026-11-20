@@ -7,7 +7,7 @@ open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison Crystallin
 namespace GlobalTheory.CompanionTheory.CompMod
 
 /- English proof (translation)
-Take `⟨c', hc'⟩` from `Ideal.mem_span_singleton.1 h`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective c'`. Rewrite `hc'` using `[← map_mul]`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 hc')`. Conclude with `⟨c, d, by linear_combination hd⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_add_of_mem_span_quot {S : Type} [CommRing S] (ϖ x y : S)
     (h : Ideal.Quotient.mk (Ideal.span {ϖ ^ 2}) x ∈
@@ -20,19 +20,17 @@ theorem exists_eq_add_of_mem_span_quot {S : Type} [CommRing S] (ϖ x y : S)
   exact ⟨c, d, by linear_combination hd⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective f`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective g`. Take `⟨ε, hε, h1, h2⟩` from `h0 (Ideal.Quotient.mk _ a) (Ideal.Quotient.mk _ b)`. Take `⟨e, ⟨he, rfl⟩, -⟩` from `IdemLift.existsUnique_idempotent_lift ϖ 2 two_ne_zero ε hε`. Rewrite `h1` using `[← map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2' : Ideal.Quotient.mk (Ideal.span {ϖ ^ 2}) ((1 - e) * b) ∈ Ideal.span {Ideal.Quotient.mk (Ideal.span {ϖ ^ 2}) a}`. Simplify `h2` using `[map_mul, map_sub, map_one]`. Take `⟨c, d, hcd⟩` from `exists_eq_add_of_mem_span_quot ϖ _ _ h1`. Take `⟨c', d', hcd'⟩` from `exists_eq_add_of_mem_span_quot ϖ _ _ h2'`. Establish `key : ∀ t : S, IsIdempotentElem t → t ∈ P → Ideal.Quotient.mk (compI P) t = 0` using `fun t ht htP => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨ht, htP⟩)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `heP : e ∈ P`. Use `right`. Establish `hz` using `key e he heP`. Establish `hb` using `congrArg (Ideal.Quotient.mk (compI P)) hcd'`. Simplify using `only [map_mul, map_add, map_sub, map_one, map_pow, hz, sub_zero, one_mul] at hb`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Conclude with `Ideal.mem_span_pair.2 ⟨Ideal.Quotient.mk _ c', Ideal.Quotient.mk _ d', by ring⟩`. Use `left`. Establish `hmul : e * (1 - e) ∈ P`. Establish `: e * (1 - e) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `he' : e * e = e` using `he`. Take the linear combination `-he'`. Rewrite using `[this]`. Conclude with `P.zero_mem`. Establish `h1e : 1 - e ∈ P` using `(hP.mem_or_mem hmul).resolve_left heP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz` using `key (1 - e) he.one_sub h1e`. Establish `hz' : Ideal.Quotient.mk (compI P) e = 1`. Rewrite `hz` using `[map_sub, map_one]`. Conclude with `(sub_eq_zero.1 hz).symm`. Establish `ha` using `congrArg (Ideal.Quotient.mk (compI P)) hcd`.
-
-Simplify using `only [map_mul, map_add, map_pow, hz', one_mul] at ha`. Rewrite using `[ha]`. Conclude with `Ideal.mem_span_pair.2 ⟨Ideal.Quotient.mk _ c, Ideal.Quotient.mk _ d, by ring⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_or_mem_span {S : Type} [CommRing S] (ϖ : S)
     [IsAdicComplete (Ideal.span {ϖ}) S] (h0 : Val0 (S ⧸ Ideal.span {ϖ ^ 2}))

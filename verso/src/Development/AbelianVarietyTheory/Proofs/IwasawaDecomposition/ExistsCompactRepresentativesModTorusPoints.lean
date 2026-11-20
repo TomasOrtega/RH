@@ -16,11 +16,11 @@ open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.PeriodSpan G
 namespace GlobalTheory.TorusCocompact
 
 /- English proof (translation)
-Set `ψ : V →+ Additive H` to `AddMonoidHom.mk' (fun z => Additive.ofMul (φ z)) hφ`. Establish `: BaireSpace (Additive H)` using `inferInstanceAs (BaireSpace H)`. Establish `: T2Space (Additive H)` using `inferInstanceAs (T2Space H)`. Establish `ho : IsOpenMap φ` using `AddMonoidHom.isOpenMap_of_sigmaCompact ψ hs hc`. Take `⟨n, hn⟩` from `isCompact_univ.elim_directed_cover (fun n : ℕ => φ '' Metric.ball 0 n) (fun n => ho _ Metric.isOpen_ball) (fun h _ => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hs h`. Take `⟨n, hn⟩` from `exists_nat_gt ‖z‖`. Conclude with `Set.mem_iUnion.2 ⟨n, z, by simpa using hn, rfl⟩)`. Use the proof step `(Monotone.directed_le fun m n h => Set.image_mono (Metric.ball_subset_ball (Nat.cast_le.2 h)))`. Use `⟨Metric.closedBall 0 n, isCompact_closedBall _ _, fun z => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc, hcz⟩` from `hn (Set.mem_univ (φ z))`. Use `⟨c, Metric.ball_subset_closedBall hc, ?_⟩` and prove the remaining obligations. Establish `h` using `hφ (z - c) c`. Rewrite `h` using `[sub_add_cancel, hcz]`. Conclude with `(mul_eq_right.1 h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_surjOn {V H : Type} [NormedAddCommGroup V] [ProperSpace V] [Group H] [TopologicalSpace H]
     [IsTopologicalGroup H] [CompactSpace H] [T2Space H] (φ : V → H) (hφ : ∀ z w, φ (z + w) = φ z * φ w)
@@ -43,9 +43,9 @@ theorem exists_isCompact_surjOn {V H : Type} [NormedAddCommGroup V] [ProperSpace
   exact (mul_eq_right.1 h.symm)
 
 /- English proof (translation)
-Set `w' : Sp ℂ ⟶ B.left` to `w.left`. Take `⟨z, -⟩` from `(pullback.snd q.left w').surjective (IsLocalRing.closedPoint ℂ)`. Take `⟨x, hx, -⟩` from `GlobalTheory.ComplexPoints.exists_point_mem (pullback.snd q.left w') isClosed_univ.isLocallyClosed ⟨z, trivial⟩`. Establish `h : (x ≫ pullback.fst q.left w') ≫ q.left = w'`. Rewrite using `[Category.assoc, pullback.condition, reassoc_of% hx]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Over.homMk (x ≫ pullback.fst q.left w') ?_, Over.OverMorphism.ext h⟩` and prove the remaining obligations. Rewrite using `[← Over.w q, ← Category.assoc]`. Conclude with `(congrArg (· ≫ B.hom) h).trans (Over.w w)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_point {A B : Over (Sp ℂ)} (q : A ⟶ B) [Surjective q.left] [LocallyOfFiniteType q.left]
     (w : Over.mk (𝟙 (Sp ℂ)) ⟶ B) : ∃ u : Over.mk (𝟙 (Sp ℂ)) ⟶ A, u ≫ q = w := by
@@ -68,20 +68,20 @@ def fibrePt (x : Over.mk y ⟶ G) : Over.mk (𝟙 (Sp ℂ)) ⟶ (Over.pullback y
     (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fibrePt_fst (x : Over.mk y ⟶ G) : (fibrePt x).left ≫ pullback.fst G.hom y = x.left :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (pullback.hom_ext h ((Over.w u).trans (Over.w v).symm))`.
+A detailed English derivation is pending.
 -/
 theorem fibre_ext {u v : Over.mk (𝟙 (Sp ℂ)) ⟶ (Over.pullback y).obj G}
     (h : u.left ≫ pullback.fst G.hom y = v.left ≫ pullback.fst G.hom y) : u = v :=
   Over.OverMorphism.ext (pullback.hom_ext h ((Over.w u).trans (Over.w v).symm))
 
 /- English proof (translation)
-Introduce `u` and use `⟨Over.homMk (u.left ≫ pullback.fst G.hom y) (by have h : u.left ≫ pullback.snd G.hom y = 𝟙 _ := Over.w u rw [Category.assoc, pullback.condition, reassoc_of% h] rfl), fibre_ext (fibrePt_fst _)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fibrePt_surjective : Function.Surjective (fibrePt (G := G) (y := y)) := fun u =>
   ⟨Over.homMk (u.left ≫ pullback.fst G.hom y) (by
@@ -90,7 +90,7 @@ theorem fibrePt_surjective : Function.Surjective (fibrePt (G := G) (y := y)) := 
     rfl), fibre_ext (fibrePt_fst _)⟩
 
 /- English proof (translation)
-Set `U : Over.mk ((Over.mk (𝟙 (Sp ℂ))).hom ≫ y) ⟶ Over.mk y` to `Over.homMk (𝟙 (Sp ℂ)) rfl`. Establish `hU : ∀ x : Over.mk y ⟶ G, (U ≫ x).left = x.left` using `fun x => Category.id_comp _`. Use `fibre_ext ?_` and prove the remaining obligations. Rewrite using `[fibrePt_fst, ← (isGrpPullback_pullback G y).2 _ (fibrePt a) (fibrePt b) (U ≫ a) (U ≫ b) ((hU a).trans (fibrePt_fst a).symm) ((hU b).trans (fibrePt_fst b).symm), ← comp_mul, hU]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibrePt_mul [GrpObj G] (a b : Over.mk y ⟶ G) : fibrePt (a * b) = fibrePt a * fibrePt b := by
   let U : Over.mk ((Over.mk (𝟙 (Sp ℂ))).hom ≫ y) ⟶ Over.mk y := Over.homMk (𝟙 (Sp ℂ)) rfl
@@ -100,9 +100,9 @@ theorem fibrePt_mul [GrpObj G] (a b : Over.mk y ⟶ G) : fibrePt (a * b) = fibre
     ((hU a).trans (fibrePt_fst a).symm) ((hU b).trans (fibrePt_fst b).symm), ← comp_mul, hU]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun z => leftPt y (e z)`. Use `GlobalTheory.Points.continuous_iff.2 fun U => ⟨?_, fun f => ?_⟩` and prove the remaining obligations. Simplify using `using (he U 0).1`. Conclude with `(he U f).2.continuousOn.mono fun _ hb => ⟨trivial, hb⟩`. Use `(isEmbedding_of_isPullback (C := ℂ) (IsPullback.of_hasPullback G.hom y)).continuous_iff.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h1.prodMk (continuous_const (y := 𝟙 (Sp ℂ)))).congr fun z => ?_` and prove the remaining obligations. Conclude with `Prod.ext (fibrePt_fst (e z)).symm (Over.w (fibrePt (e z))).symm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fibrePt {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (e : V → (Over.mk y ⟶ G))
     (he : IsHolTo Set.univ (fun z => (e z).left)) :
@@ -120,17 +120,15 @@ end Fibre
 attribute [local instance] ptTopology in
 
 /- English proof (translation)
-Introduce `X G _ y g e E hG hadd hsurj hhol _`. Set `` to `E.addCommGroup`. Set `` to `E.grpB`. Use `E.q_hom` as an intermediate fact. Use `E.q_surjective` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `E.isAbelian.proper` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Establish `: LocallyOfFiniteType (E.q.left ≫ E.B.hom)`. Rewrite using `[Over.w E.q]`. Conclude with `inferInstanceAs (LocallyOfFiniteType (pullback.snd G.hom y))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType E.q.left` using `locallyOfFiniteType_of_comp _ E.B.hom`. Establish `: CompactSpace (PtsOver E.B.hom (𝟙 (Sp ℂ)))` using `GlobalTheory.ProperPoints.compactSpace_pts E.B.hom`. Use `compactSpace_of_ptsOver (𝟙 (Sp ℂ)) E.B` as an intermediate fact. Use `isTopologicalGroup (𝟙 (Sp ℂ)) E.B` as an intermediate fact. Establish `: T2Space (Over.mk (𝟙 (Sp ℂ)) ⟶ E.B)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `PtsOver.t2Space E.B.hom (𝟙 (Sp ℂ))` as an intermediate fact. Use the proof step `T2Space.of_injective_continuous (f := fun x => (⟨x.left, Over.w x⟩ : PtsOver E.B.hom (𝟙 (Sp ℂ)))) (fun _ _ h => Over.OverMorphism.ext (congrArg Subtype.val h)) ((isEmbedding_leftPt (𝟙 (Sp ℂ)) E.B).continuous.subtype_mk _)`. Take `⟨C, hC, H⟩` from `exists_isCompact_surjOn (fun z => fibrePt (e z) ≫ E.q) (fun z w => by rw [hadd, fibrePt_mul, mul_comp]) (fun w => by`. Take `⟨u, rfl⟩` from `exists_lift_point E.q w`. Take `⟨x, rfl⟩` from `fibrePt_surjective u`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨z, rfl⟩` from `hsurj x`. Conclude with `⟨z, rfl⟩)`. Use the proof step `((continuous_comp_over _ E.q).comp ((isEmbedding_leftPt _ _).continuous_iff.2 (continuous_fibrePt e hhol)))`. Use `⟨C, hC, fun z => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hz⟩` from `H z`.
-
-Use `⟨c, hc, E.isKernel.lift (fibrePt (e (z - c))) (toUnit _) hz, ?_⟩` and prove the remaining obligations. Rewrite using `[IsPullback.lift_fst]`. Conclude with `fibrePt_fst _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_mod_torusPts : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] (y : Sp ℂ ⟶ X) (g : ℕ)
     (e : (Fin g → ℂ) → (Over.mk y ⟶ G)) (E : TorusExtension ((Over.pullback y).obj G)), IsSemiAbelian G →

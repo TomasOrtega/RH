@@ -24,7 +24,7 @@ private def r2 : H2 M.ρ →ₗ[A] H2 (pull p.toMonoidHom hp M).ρ :=
   compatiblePairH2 M.ρ (pull p.toMonoidHom hp M).ρ p.toMonoidHom hp LinearMap.id continuous_id fun _ _ => rfl
 
 /- English proof (translation)
-Use `show M.ρ (p.toMonoidHom (p.symm g)) m = M.ρ g m`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem back (g : Γ') (m : M.X) : (pull p.toMonoidHom hp M).ρ (p.symm g) m = M.ρ g m := by
   show M.ρ (p.toMonoidHom (p.symm g)) m = M.ρ g m
@@ -32,11 +32,11 @@ private theorem back (g : Γ') (m : M.X) : (pull p.toMonoidHom hp M).ρ (p.symm 
 
 include hq in
 /- English proof (translation)
-Set `s : H1 (pull p.toMonoidHom hp M).ρ →ₗ[A] H1 M.ρ` to `pairH1DecompositionMap (pull p.toMonoidHom hp M).ρ M.ρ p.symm.toMonoidHom hq LinearMap.id continuous_id fun g m => back p hp M g m`. Use `Function.bijective_iff_has_inverse.mpr ⟨s, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Simplify using `only [s, r1, pairH1DecompositionMap, Submodule.mapQ_apply]`. Use `congr 1`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `g`. Conclude with `congrArg z.1 (p.apply_symm_apply g)`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Simplify using `only [s, r1, pairH1DecompositionMap, Submodule.mapQ_apply]`. Use `congr 1`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Conclude with `congrArg z.1 (p.symm_apply_apply g)`.
+A detailed English derivation is pending.
 -/
 private theorem restriction_one_bijective : Function.Bijective (r1 p hp M) := by
   let s : H1 (pull p.toMonoidHom hp M).ρ →ₗ[A] H1 M.ρ :=
@@ -56,11 +56,11 @@ private theorem restriction_one_bijective : Function.Bijective (r1 p hp M) := by
 
 include hq in
 /- English proof (translation)
-Set `s : H2 (pull p.toMonoidHom hp M).ρ →ₗ[A] H2 M.ρ` to `compatiblePairH2 (pull p.toMonoidHom hp M).ρ M.ρ p.symm.toMonoidHom hq LinearMap.id continuous_id fun g m => back p hp M g m`. Use `Function.bijective_iff_has_inverse.mpr ⟨s, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Simplify using `only [s, r2, compatiblePairH2, Submodule.mapQ_apply]`. Use `congr 1`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `g`. Conclude with `congrArg z.1 (Prod.ext (p.apply_symm_apply g.1) (p.apply_symm_apply g.2))`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Simplify using `only [s, r2, compatiblePairH2, Submodule.mapQ_apply]`. Use `congr 1`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Conclude with `congrArg z.1 (Prod.ext (p.symm_apply_apply g.1) (p.symm_apply_apply g.2))`.
+A detailed English derivation is pending.
 -/
 private theorem restriction_two_bijective : Function.Bijective (r2 p hp M) := by
   let s : H2 (pull p.toMonoidHom hp M).ρ →ₗ[A] H2 M.ρ :=
@@ -79,11 +79,9 @@ private theorem restriction_two_bijective : Function.Bijective (r2 p hp M) := by
     exact congrArg z.1 (Prod.ext (p.symm_apply_apply g.1) (p.symm_apply_apply g.2))
 
 /- English proof (translation)
-Establish `e : H0 (pull p.toMonoidHom hp M).ρ = H0 M.ρ`. Use extensionality with `m`. Simplify using `only [H0, Representation.mem_invariants]`. Prove the components needed by the constructor for the conclusion. Introduce `h g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← back p hp M g m]`. Conclude with `h _`. Introduce `h g`. Conclude with `h (p g)`. Rewrite using `[e]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem card_H0_pullback_eq : Nat.card (H0 (pull p.toMonoidHom hp M).ρ) = Nat.card (H0 M.ρ) := by
   have e : H0 (pull p.toMonoidHom hp M).ρ = H0 M.ρ := by
@@ -100,7 +98,7 @@ private theorem card_H0_pullback_eq : Nat.card (H0 (pull p.toMonoidHom hp M).ρ)
 
 include hp hq in
 /- English proof (translation)
-Introduce `A _ M hl`. Take `⟨h1, h2⟩` from `h A (pull p.toMonoidHom hp M) hl`. Conclude with `⟨Finite.of_equiv _ (Equiv.ofBijective _ (restriction_one_bijective p hp hq M)).symm, Finite.of_equiv _ (Equiv.ofBijective _ (restriction_two_bijective p hp hq M)).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem finH_iso (l : ℕ) (h : FinH l Γ) : FinH l Γ' := by
   intro A _ M hl
@@ -110,11 +108,11 @@ private theorem finH_iso (l : ℕ) (h : FinH l Γ) : FinH l Γ' := by
 
 include hp hq in
 /- English proof (translation)
-Introduce `A _ M M' hl u hu hs y`. Establish `hu' : ∀ (g : Γ) (m : (pull p.toMonoidHom hp M).X), u ((pull p.toMonoidHom hp M).ρ g m) = (pull p.toMonoidHom hp M').ρ g (u m)` using `fun g m => hu (p g) m`. Establish `key : ∀ x, r2 p hp M' (mapH2 M.ρ M'.ρ u continuous_of_discreteTopology hu x) = mapH2 (pull p.toMonoidHom hp M).ρ (pull p.toMonoidHom hp M').ρ u continuous_of_discreteTopology hu' (r2 p hp M x)`. Introduce `x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [r2, compatiblePairH2, mapH2, Submodule.mapQ_apply]`. Both sides reduce to the same expression. Take `⟨x', hx'⟩` from `h A (pull p.toMonoidHom hp M) (pull p.toMonoidHom hp M') hl u hu' hs (r2 p hp M' y)`. Take `⟨x, rfl⟩` from `(restriction_two_bijective p hp hq M).2 x'`. Use `⟨x, (restriction_two_bijective p hp hq M').1 ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key, hx']`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem onto_iso (l : ℕ) (h : SecondCohomologyRightExactModL l Γ) : SecondCohomologyRightExactModL l Γ' := by
   intro A _ M M' hl u hu hs y
@@ -140,7 +138,7 @@ section Gl
 variable {l : ℕ} [Fact l.Prime] {L : Loc} {G G' : Glob l L} (e : G.Hom G') {A : Type} [CommRing A]
 
 /- English proof (translation)
-Consider the cases of `w with`. Consider the case `inl v => exact e.φ v g`. Consider the case `inr u => exact e.φu u g`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 private theorem pl_φ (w : (plOf G).ι) (g : (plOf G).G w) : e.p ((plOf G).φ w g) = (plOf G').φ w g := by
   cases w with
@@ -162,25 +160,23 @@ end Gl
 end UpperTheory.V.Pa.B2
 
 /- English proof (translation)
-Introduce `l _ L G G' e d dv hinj hG`. Use `haveI : T2Space G'.Γ := inferInstance`. Set `q : G.Γ ≃* G'.Γ` to `MulEquiv.ofBijective e.p ⟨hinj, e.surj⟩`. Establish `hq : Continuous q` using `e.cont`. Establish `hqs : Continuous q.symm` using `(Continuous.homeoOfEquivCompactToT2 (f := q.toEquiv) e.cont).symm.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hG.sum, finH_iso q hq hqs l hG.fin, hG.finV, hG.finU, onto_iso q hq hqs l hG.onto, ?_, hG.leV, hG.leU, hG.ur, ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hf⟩` from `hG.ge`. Use `⟨fun i => e.p (c i), fun i => ⟨by rw [e.η]; exact (hc i).1, by rw [← map_mul, (hc i).2, map_one]⟩, ?_⟩` and prove the remaining obligations. Introduce `A _ M hl`. Establish `h` using `hf A (pull q.toMonoidHom hq M) hl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[card_H0_pullback_eq]`. Rewrite using `[Nat.card_congr (Equiv.ofBijective _ (restriction_two_bijective q hq hqs M)), Nat.card_congr (Equiv.ofBijective _ (restriction_one_bijective q hq hqs M))]`. Conclude with `h`. Introduce `A _ D hl`. Establish `h` using `hG.ck A (pullD e D) hl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ x, D.loc2 x = (pullD e D).loc2 (r2 q hq D.M x)`. Introduce `x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use function extensionality and compare the values at `w`. Simplify using `only [Dat.loc2, LinearMap.pi_apply, r2, compatiblePairH2, Submodule.mapQ_apply]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `y`. Use `show D.π w (z.1 ((plOf G').φ w y.1, (plOf G').φ w y.2)) = D.π w (z.1 (e.p ((plOf G).φ w y.1), e.p ((plOf G).φ w y.2)))`. Rewrite using `[pl_φ e w y.1, pl_φ e w y.2]`. Establish `hr : (pullD e D).loc2.range = D.loc2.range`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Take `⟨x0, rfl⟩` from `(restriction_two_bijective q hq hqs D.M).2 x`. Conclude with `⟨x0, hc x0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨r2 q hq D.M x, (hc x).symm⟩`. Establish `h1 : Nat.card (pullD e D).Ck2 = Nat.card D.Ck2` using `by show Nat.card (_ ⧸ (pullD e D).loc2.range) = Nat.card (_ ⧸ D.loc2.range)`. Rewrite using `[hr]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← h1]`. Use `h.trans (le_of_eq (Nat.card_congr (Equiv.subtypeEquivRight fun f => ?_)))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hf g m`. Take `⟨g0, rfl⟩` from `e.surj g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e.ε]`. Conclude with `hf g0 m`. Introduce `hf g m`. Use `hf (e.p g) m` as an intermediate fact. Rewrite `this` using `[e.ε]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.B2.cohAxIso :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G' : Glob l L) (e : G.Hom G') (d : ℕ) (dv : L.Vl → ℕ), Function.Injective e.p → CohAx G d dv → CohAx G' d dv := by

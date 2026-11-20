@@ -8,12 +8,12 @@ namespace UpperTheory.V.HV.DescentVanishingReductions
 open UpperTheory.V.Lit UpperTheory.V.W
 
 /- English proof (translation)
-The claim follows from `Th.adL hH (cohP hH.litN)`.
+A detailed English derivation is pending.
 -/
 theorem adL (hH : Af.HypothesesH) : Th.AdL := Th.adL hH (cohP hH.litN)
 
 /- English proof (translation)
-The claim follows from `have hC := Core0.cohInp hH.litN hK Th.caseI { toCohInp := hC, lemM := Alg.M.main_holds, lemM' := Alg.M.mprime_holds, lemP := Alg.lemmaP, kato := hKa, rigI := Th.rigI hC hH (adL hH), rigII := Th.rigII hC hH (adL hH), number := Af.numberU3_of_admissible hH.toClassicalTheorems } h3`.
+A detailed English derivation is pending.
 -/
 theorem countI (hH : Af.HypothesesH) (hK : ∃ CK : ℝ, LemmaK CK) (hKa : Z.Kato.KatoTwo) (h3 : Aut.AutomorphyUnramifiedCoefficients) : CountI :=
   have hC := Core0.cohInp hH.litN hK

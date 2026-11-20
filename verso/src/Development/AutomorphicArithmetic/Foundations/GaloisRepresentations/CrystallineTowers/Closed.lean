@@ -5,12 +5,12 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 namespace UpperTheory.Gal.Seam
 
 /- English proof (translation)
-The claim follows from `CrystallineSemistableComparison.Close.cstSmooth_of_side HT.etSideS`.
+A detailed English derivation is pending.
 -/
 theorem cstSmooth : CrystallineSemistableComparison.CstSmooth := CrystallineSemistableComparison.Close.cstSmooth_of_side HT.etSideS
 
 /- English proof (translation)
-The claim follows from `crysStep_of cstSmooth.1`.
+A detailed English derivation is pending.
 -/
 theorem crysStep_holds : UpperTheory.Gal.Int.Geo.CrysStep := crysStep_of cstSmooth.1
 

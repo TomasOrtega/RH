@@ -12,7 +12,7 @@ open NumberField IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal G
 open UpperTheory.V.Z.Win UpperTheory.V.Z
 
 /- English proof (translation)
-Take `⟨k, hk, hpow⟩` from `kills_pow hM hχ`. Use `(Af.algOfCyc H ℚ Ω l ι).1 _ (Matrix.GeneralLinearGroup.continuous_det.comp hW) fun w _ => ?_` and prove the remaining obligations. Take `⟨A, hA⟩ : ∃ A : ValuationSubring Ω, IsPlaceOver A w` from `exists_isPlaceOver Ω w`. Conclude with `⟨A, hA, 0, k, hk, fun s _ => by rw [neg_zero, zpow_zero, mul_one, hpow]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem detAlg (H : Af.HypothesesH) {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ}
     {W : G ℚ Ω →* GL (Fin 2) (Qbar l)} (hW : Continuous W) {M : ℕ} (hM : 1 ≤ M) (hχ : Af.KillsMu M (Matrix.GeneralLinearGroup.det.comp W)) :
@@ -23,7 +23,7 @@ private theorem detAlg (H : Af.HypothesesH) {Ω : Type} [Field Ω] [CharZero Ω]
   exact ⟨A, hA, 0, k, hk, fun s _ => by rw [neg_zero, zpow_zero, mul_one, hpow]⟩
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `pairing2 W c`. Conclude with `⟨ℚ, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, _, c, Q, h, Ws.auSign _, hc, fun s s' h => by`. Establish `h' : Base.galEmb ℚ K Ω s' = c * Base.galEmb ℚ K Ω s * c⁻¹` using `h`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, h']`. Conclude with `hQ _ _ rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem polTwo {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω] {l : ℕ} [Fact l.Prime]
     {ι : Qbar l ≃+* ℂ} (W : G ℚ Ω →* GL (Fin 2) (Qbar l)) (h : Af.IsAlgChar ι (Matrix.GeneralLinearGroup.det.comp W)) (c : G ℚ Ω)
@@ -37,51 +37,43 @@ private theorem polTwo {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
 
 open UpperTheory.V.Pr.LkAut2 in
 /- English proof (translation)
-Introduce `hDown hNew hTw hAlg Ω _ _ _ K _ _ _ l hl c N _ e ψ D g₁ B M L _ _ _ _ Φ k _ C₀ hok hM hB hLk ι ka hka hA`. Introduce `A _ _ r hr hII h11 W hW _`. Take `⟨hcc, hηc, -, hηl, -, -, h2, hcm, -⟩` from `dat_facts D`. Take `⟨hk1, hk2, hk3, -⟩` from `eta_killsMu D`. Use `haveI := k.ab`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hcm`. Use `haveI : IsAlgClosure K Ω := Th.Db.algClo K Ω`. Use `haveI : Module.IsTorsionFree L Ω := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsAlgClosure L Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩`. Use `haveI : FaithfulSMul c.O A := (faithfulSMul_iff_algebraMap_injective _ _).2 fun x y h => Subtype.ext (congrArg A.val h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `haveI : IsLocalHom (algebraMap c.O A) := Algebra.IsIntegral.isLocalHom _ _`. Use `haveI : IsNoetherianRing A := PrincipalIdealRing.isNoetherianRing`. Establish `hW' : ∀ g ∈ D.η.ker, (W g).val = (corner (r g).mat).map A.val` using `hW`. Establish `hblk : Block D.η r` using `fun g hg a b h => Subtype.ext (hII.1 g hg a b h)`. Establish `hirr : MatIrr D.η.ker fun g => (W g).val` using `fun V hV => hII.2 V fun g hg v hv => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: (W g).val.mulVec v ∈ V` using `hV g hg v hv`. Rewrite `this` using `[hW g hg]`. Then use the resulting hypothesis. Establish `hopen : IsOpen (D.η.ker : Set (G ℚ Ω))` using `hηl.isOpen_fiber 1`. Establish `hcont : Continuous W`. Use `cont_of_open W D.η.ker hopen _ (continuous_matrix fun i j => ?_) hW` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `cont_val (A.val : A →+* PadicAlgCl l) (norm_lt' c A) (fun g => (r g).mat (![0, 2] i) (![0, 2] j)) fun n => (hr.cont n).comp fun X => X (![0, 2] i) (![0, 2] j)`. Establish `hdW : ∀ g ∈ D.η.ker, (W g).val.det = A.val (corner (r g).mat).det` using `fun g hg => by`. Rewrite using `[hW' g hg, AlgHom.map_det]`. Both sides reduce to the same expression. Establish `hdet : ∀ g ∈ D.η.ker, (W g).val.det = 1` using `fun g hg => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s1, s2⟩` from `mat_gstar r D.cc g hr.norm.atc ((hr.red.mult _).trans hηc) ((hr.red.mult _).trans hg)`. Establish `e1` using `hdW _ (show gstar D.cc g ∈ D.η.ker from (hr.red.mult _).symm.trans s2)`. Rewrite `e1` using `[s1, det_star, ← hdW g hg]`. Establish `e2 : Matrix.GeneralLinearGroup.det (W (gstar D.cc g)) * Matrix.GeneralLinearGroup.det (W g) = 1`. Use `congrArg (Matrix.GeneralLinearGroup.det.comp W) hcc` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_one]`. Use `show (Matrix.GeneralLinearGroup.det.comp W) (D.cc * g⁻¹ * D.cc) * (Matrix.GeneralLinearGroup.det.comp W) g = 1`. Rewrite using `[map_mul, map_mul, map_inv, mul_right_comm _ _⁻¹, this, one_mul, inv_mul_cancel]`. Establish `e3 : (W (gstar D.cc g)).val.det * (W g).val.det = 1` using `congrArg Units.val e2`. Rewrite `e3` using `[e1, hdW g hg, ← map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdW g hg, det_one hr.red h2 g ((sq _).trans (Subtype.ext e3)), map_one]`. Establish `hcyc : Af.IsCycWt l 0 (Matrix.GeneralLinearGroup.det.comp W)` using `⟨_, Matrix.GeneralLinearGroup.det.comp W, hk2, fun s hs => Units.ext (hdet s (hk1 s hs)), by simp⟩`. Take `⟨hg, eg⟩` from `k.g0`. Establish `hηg : D.η g₁ = 1`. Establish `h` using `k.del ⟨g₁, hg⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[eg]`. Conclude with `h.symm.trans Φ.g0.2`. Establish `hirrL : Af.IsIrr (W.comp (Base.galEmb ℚ L Ω))`. Use `isIrr_of W _ _ (Base.range_galEmb ℚ L Ω).ge (irr_sub W D.η.ker (Base.galOf ℚ L Ω) (comm_mem L Ω) hirr (barChar c.O D.Ψ) (fun g hg ht => sq_of_trace hr.red g (Subtype.ext ?_)) g₁ (k.gal ▸ ⟨hg, hηg⟩) hηg ?_)` and prove the remaining obligations. Rewrite `ht` using `[hW g hg, Matrix.trace_fin_two]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `ht`. Establish `h` using `k.psi ⟨g₁, hg⟩`. Rewrite `h` using `[eg]`. Conclude with `h ▸ hok.baseSubgroup_spec`. Take `⟨ρ, r1, r2, r3⟩` from `exists_nrep2 k hok hM hcc r hr hblk`.
+Reduce the argument to an intermediate assertion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨π, p1, -, p3⟩, hWit⟩` from `csdN H.toClassicalTheorems (by norm_num) <| hA A ρ r1 r3 (W.comp (Base.galEmb ℚ L Ω)) (fun s => by`. Rewrite using `[r2]`. Conclude with `hW' _ (k.gal.le (Base.galEmb_mem ℚ L Ω s)).2) hirrL`. Establish `hC` using `hTw L Ω l ι 2 _ ka⁻¹ ((hAlg L Ω l ι).2.2 ka hka) ⟨π, p1, p3⟩`. Rewrite `hC` using `[tw_tw]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR` using `hDown L Ω l ι W hcont hcyc hirrL ⟨D.η, D.cc, D.conj, hηc, fun s => (k.gal.le (Base.galEmb_mem ℚ L Ω s)).2⟩ hC`. Establish `hΨ : ∀ g, Chr.dirG ℚ Ω ψ g = 1 → D.ΨQ g = cycBar ℚ Ω l g ^ (e : ℤ)` using `fun g hg => by show Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (Base.chiO ℚ Ω l c.O g ^ (e : ℤ) * Chr.dirG ℚ Ω ψ g) = _`. Rewrite using `[hg, mul_one, map_zpow]`. Both sides reduce to the same expression. It suffices to establish `hfl : Af.IsFlagOn W ((D.η.ker ⊓ (Chr.dirG ℚ Ω ψ).ker) ⊓ Ine (F` using `ℚ) B) (fun i => ((cycBar ℚ Ω l) ^ (![(e : ℤ), -(e : ℤ)] i)).comp ((D.η.ker ⊓ (Chr.dirG ℚ Ω ψ).ker) ⊓ Ine (F := ℚ) B).subtype) by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hop` using `hopen.inter (kills_open (NeZero.pos N) hk3)`. Establish `hWL` using `hWit (Af.Bc.irrBasic.2 _ _ _ _ _ (hcont.comp (Af.continuous_restrictScalarsHom ℚ L Ω)) hka.1)`. Establish `hirrQ` using `isIrr_of W (MonoidHom.id _) _ (fun g _ => ⟨g, rfl⟩) hirr`. Take `⟨f, hf⟩` from `Dn.nw hNew Ω l ι e D.gd.e_pos W hcont hirrQ hR ⟨hcyc, L, _, _, _, inferInstance, _, hirrL, ⟨D.η, D.cc, D.conj, hηc, fun s => (k.gal.le (Base.galEmb_mem ℚ L Ω s)).2⟩, ka, hka, hWL⟩ B hB _ hop hfl`. Use `⟨⟨f, hf⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ0 : IsAutomorphicOverImagQuad ι W` using `newformAut0 H.toClassicalTheorems _ (by have := D.gd.e_pos; omega) f l Ω ι W _ hf`. Establish `hP` using `hPot Ω l e D.gd.e_pos W B hB _ hop inferInstance hfl`. Establish `hFl : Flagged W` using `fun v hv A' hA' => (hP v hv A' hA').imp fun _ x => x.1`. Establish `hI : IneAb W` using `hIne Ω l c N e ψ D.η D.cc g₁ B M hLk L Φ C₀ k hok A r hr hblk h11 K D.η_ker hopen W hW`. Take `⟨hc', art, χ, a, h'⟩` from `(hAlg L Ω l ι).2.2 ka hka`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Dn.twist H.toClassicalTheorems ⟨χ, hc', art, a, h'⟩ hc' hWL`. Rewrite `h1` using `[tw_tw]`. Take `⟨_, _⟩` from `Th.Db.algKL K L Ω (D.η_ker ▸ (k.gal ▸ inf_le_right : Base.galOf ℚ L Ω ≤ D.η.ker))`. Take `⟨_, hsol⟩` from `Th.Db.galKL K L k.ab`. Establish `i2 : Af.IsIrr ((W.comp (Base.galEmb ℚ K Ω)).comp (Base.galEmb K L Ω))` using `hirrL`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `i1 : Af.IsIrr (W.comp (Base.galEmb ℚ K Ω))` using `(Af.Bc.irrBasic.1 _ _ _ 2 _).1 _ i2`. Establish `hcK : Continuous (W.comp (Base.galEmb ℚ K Ω))` using `hcont.comp (Af.continuous_restrictScalarsHom ℚ K Ω)`. Establish `halg : Af.IsAlgChar ι (Matrix.GeneralLinearGroup.det.comp W)` using `detAlg H hcont hk2 fun s hs => Units.ext (hdet s (hk1 s hs))`. Establish `fl` using `(flagLaws ℚ Ω l 2 W).2.2.2 K`. Establish `hWK : Wit ι (W.comp (Base.galEmb ℚ K Ω))` using `Dn.down L H hsol (by norm_num) hcK i2 (polTwo K W halg D.cc D.conj) (hQ0 hcont K D.gd.quad i1) (fl.2.1 hFl) (fl.1 hI) (Keep.keeps2 Ω l c N e ψ D.η D.cc g₁ B M hLk L Φ C₀ k hok A r hr hblk h11 K D.η_ker _ fun s => hW _ (D.η_ker.ge (Base.galEmb_mem ℚ K Ω s))) h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `Dn.across2 H K Ω D.gd.quad (by norm_num) hP hcont hQ0 ⟨_, halg, dual_two W⟩ hI hFl i1 hWK`. Take `⟨h, -, hT⟩` from `hr.ord`. Take `⟨s₀, hs₀, hn⟩` from `exists_two D.gd.l_odd B hB`. Establish `hID : ∀ s ∈ Ine (F` using `ℚ) B, s ∈ Dec (F := ℚ) B := fun s hs => Ine_le_Dec B hs`. Establish `hf` using `flag (D.η.ker ⊓ (Chr.dirG ℚ Ω ψ).ker ⊓ Ine (F := ℚ) B) W (cycBar ℚ Ω l ^ (e : ℤ)) (fun g => (UnitaryThreeInertia.push A.val r g).mat) (Matrix.GeneralLinearGroup.map (A.val : A →+* PadicAlgCl l) h) (fun s hs => hW s hs.1.1) (fun s hs => hII.1 s hs.1.1) (fun s hs => congrArg Subtyp …`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hf using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `(conj_mat _ r h s ((hr.red.mult _).trans hs.1.1) 0 0).trans ?_` and prove the remaining obligations. Use `hT.ine ⟨s, hID s hs.2⟩ hs.2 hs.1.1 0` as an intermediate fact. Use `(congrArg A.val this).trans ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.zpow_apply, ← hΨ s hs.1.2]`. Simplify using `[UnitaryThreeInertia.psi, wt1]`.
-
-Both sides reduce to the same expression. Use `(conj_mat _ r h s ((hr.red.mult _).trans hs.1.1) i j).trans ?_` and prove the remaining obligations. Conclude with `(congrArg A.val (hT.tri ⟨s, hID s hs.2⟩ hs.1.1 i j hij)).trans (map_zero _)`. Use `⟨s₀ ^ (2 * Nat.card (ZMod N)ˣ), ⟨⟨?_, ?_⟩, pow_mem hs₀ _⟩, fun h0 => ?_⟩` and prove the remaining obligations. Use `show D.η _ = 1`.
-
-Rewrite using `[map_pow, pow_mul, Int.units_sq, one_pow]`. Use `show ψ.toUnitHom (Chr.cls ℚ Ω N _) = 1`. Rewrite using `[map_pow, pow_mul', pow_card_eq_one', one_pow, map_one]`. Use `hn (((2 * Nat.card (ZMod N)ˣ : ℕ) : ℤ) * e * 2) (Units.ext (by` as an intermediate fact. Rewrite using `[_root_.zpow_mul, _root_.zpow_mul, zpow_two, ← sq, Units.val_pow_eq_pow_val, _root_.zpow_natCast _ (2 * _), ← map_pow]`.
-
-Conclude with `h0))`. Establish `h3 : 0 < 2 * Nat.card (ZMod N)ˣ * e * 2`. Use `D.gd.e_pos` as an intermediate fact. Use `Nat.card_pos (α := (ZMod N)ˣ)` as an intermediate fact. Check the signs of the components of the expression.
-
-Conclude with `h3.ne' (by exact_mod_cast this)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.Dn.autEnd2 (H : Af.HypothesesH) (hPot : Dn.PotTwo) (hIne : Dn.Ine2) :
     RankTwoAutomorphyDescendsFromAbelianCMToRat → AutNewform → Sd.TwC → Sd.AlgCyc → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N} (D : Dat Ω K c e ψ) {g₁ : G ℚ Ω} {B : ValuationSubring Ω} {M : ℕ}

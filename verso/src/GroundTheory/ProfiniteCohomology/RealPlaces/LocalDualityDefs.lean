@@ -21,9 +21,9 @@ def normClasses (A : Rep k G) [IsDiscreteRep A] : Submodule k (cohomology A 0) :
   (normRangeInvariants A).map (H0Iso A).inv.hom
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨a, ha⟩, rfl⟩`. Use `⟨a, ha ▸ y.2, ?_⟩` and prove the remaining obligations. Use `congr 1`. Conclude with `Subtype.ext ha.symm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, h, rfl⟩`. Conclude with `⟨⟨A.ρ.norm a, h⟩, ⟨a, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_normClasses_iff (A : Rep k G) [IsDiscreteRep A] (x : cohomology A 0) :
     x ∈ normClasses A ↔ ∃ a : A, ∃ h : A.ρ.norm a ∈ A.ρ.invariants,

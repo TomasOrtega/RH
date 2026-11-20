@@ -30,9 +30,9 @@ def ModelEx : Prop := TAll → AuxiliaryPrimeFunction → ∀ (F E : Type) [Fiel
     (l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ), IsDbl (σ := σ) (A := d.A) (Y := Y) d.B.ψ dd d.χ om S l ∧ Res d h b j dd om l
 
 /- English proof (translation)
-Introduce `hT hA F E _ _ _ _ _ σ d hd`. Establish `h : d.n - 1 + 1 = d.n` using `by omega`. Take `⟨Y, b, ε, hsign, hframe, hdb, hb⟩` from `h1 F E σ d (d.n - 1) h (by omega)`. Take `⟨j, hj⟩` from `h2 F E σ d (d.n - 1) h Y b ε hdb hb`. Establish `hK` using `h3 F E σ d (d.n - 1) h Y b j hframe hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hH` using `h4 F E σ d (d.n - 1) h Y b j (by omega) hsign hframe hj`. Take `⟨κ, hκ, dd, om, S, l, hdbl, hres⟩` from `h5 hT hA F E σ d (d.n - 1) h Y b j (by omega) hsign hframe ⟨ε, hdb, hb⟩ hj`. Conclude with `⟨{ n := d.n - 1, Y := Y, κ := κ, fin := hκ, dd := dd, om := om, S := S, l := l, b := b K := d.K.comap j, a := d.a ∘ j ok := { good := d.ok.good, hm := d.ok.hm, hn := by omega, aniso := d.ok.aniso, sign := hsign hecke := d.ok.hecke, res := d.ok.res, dbl := hdbl, frame := hframe, s …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ldEx_of_leaves (h1 : YFrame) (h2 : JEx) (h3 : KStd) (h4 : HgtPull) (h5 : ModelEx) : TAll → AuxiliaryPrimeFunction → LDEx := by
   intro hT hA F E _ _ _ _ _ σ d hd

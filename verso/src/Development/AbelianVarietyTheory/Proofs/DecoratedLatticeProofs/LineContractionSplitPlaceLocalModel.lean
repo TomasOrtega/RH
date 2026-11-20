@@ -17,23 +17,23 @@ namespace GlobalTheory.ContrLocProof
 open GlobalTheory.ContractionLocal
 
 /- English proof (translation)
-Establish `hH` using `GlobalTheory.T.besselLineContraction_heisenberg_invariant`. Establish `hC` using `GlobalTheory.T.lineRow_translation_heisenberg_splitPlace`. Establish `hD` using `GlobalTheory.T.splitPlace_lineColumn_translation_heisenberg`. Establish `hL` using `GlobalTheory.T.besselLine_contraction_thetaFunction_isLocalModel`. Establish `hR` using `GlobalTheory.T.thetaContraction_isLocalModel_secondVariable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `D hCF k _ _ _ _ _ _ p ν hν ψ hψ ψk hk ρ σ B B' l S vL s hs n n' n'' _ _ _ _ _ _ FA F₀ FS FA' F₀' hF hF' T₁ T₂ hT₁ hT₂`. Take `⟨-, hψk, -, -, -⟩` from `GlobalTheory.T.weilCharacter_splitPlace_exists_continuous_nontrivial D k p ψ hψ`. Take `⟨hψkc, hψk1⟩` from `hψk ψk hk`. Set `Bm` to `contrBil hψ l S vL T₁ T₂ hT₁.theta hT₂.theta`. Establish `inv1 : ∀ (u₀ : n → k) Ψ₁ Ψ₁' Ψ₂ Ψ₂', (∀ x, Ψ₁'.1 x = (ψk (-(u₀ ⬝ᵥ fun r => x r (Sum.inr ()))) : ℂ) * Ψ₁.1 x) → (∀ x, Ψ₂'.1 x = Ψ₂.1 (x + fromRows 0 (Matrix.of fun _ => u₀))) → Bm Ψ₁' Ψ₂' = Bm Ψ₁ Ψ₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `u₀ Ψ₁ Ψ₁' Ψ₂ Ψ₂' h1 h2`. Take `⟨x, hx1, hx2, hx3⟩` from `hC D k p ψ hψ ψk hk ρ σ B B' l S s hs n n' n'' FA F₀ FS FA' F₀' hF hF' u₀`. Establish `e1 : T₁ Ψ₁' = heisO ψ B.V₀ S ((B.o.resS S).symm (0, l.κ S x)) (T₁ Ψ₁)` using `hT₁.modul _ hx2 Ψ₁ Ψ₁' fun t => by rw [h1, hx3]`. Establish `e2 : T₂ Ψ₂' = heisO ψ S B'.V₀ ((B'.o.resT S).symm (0, x)) (T₂ Ψ₂)`. Rewrite using `[← hx1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT₂.trans _ Ψ₂ Ψ₂' h2`. Simplify using `only [Bm, contrBil_apply, e1, e2]`. Conclude with `hH D ψ hψ ρ σ B B' l S vL _ _ (hT₁.theta Ψ₁) (hT₂.theta Ψ₂) x`. Establish `inv2 : ∀ (y₀ : n → k) Ψ₁ Ψ₁' Ψ₂ Ψ₂', (∀ x, Ψ₁'.1 x = Ψ₁.1 (x + fromCols 0 (Matrix.of fun r _ => y₀ r))) → (∀ x, Ψ₂'.1 x = (ψk (-(x (Sum.inr ()) ⬝ᵥ y₀)) : ℂ) * Ψ₂.1 x) → Bm Ψ₁' Ψ₂' = Bm Ψ₁ Ψ₂`. Introduce `y₀ Ψ₁ Ψ₁' Ψ₂ Ψ₂' h1 h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx1, hx2, hx3⟩` from `hD D k p ψ hψ ψk hk ρ σ B B' l S s hs n n' n'' FA F₀ FS FA' F₀' hF hF' y₀`. Establish `e1 : T₁ Ψ₁' = heisO ψ B.V₀ S ((B.o.resS S).symm (0, l.κ S x)) (T₁ Ψ₁)`. Rewrite using `[← hx1]`. Conclude with `hT₁.trans _ Ψ₁ Ψ₁' h1`. Establish `e2 : T₂ Ψ₂' = heisO ψ S B'.V₀ ((B'.o.resT S).symm (0, x)) (T₂ Ψ₂)` using `hT₂.modul _ hx2 Ψ₂ Ψ₂' fun t => by rw [h2, hx3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Bm, contrBil_apply, e1, e2]`. Conclude with `hH D ψ hψ ρ σ B B' l S vL _ _ (hT₁.theta Ψ₁) (hT₂.theta Ψ₂) x`. Take `⟨Λ, hΛ⟩` from `hCF k ψk ν hψkc hψk1 hν n n' n'' (WO B.A S → WO S B'.A → ℂ) Bm inv1 inv2`. Take `⟨φ₀, φ₀', hφ⟩` from `exists_normPair ψk ν hψkc hν n`. Establish `hval : ∀ Ξ₁ Ξ₂ (Ξ : SB (Matrix n n' k × Matrix n'' n k)), (∀ q, Ξ.1 q = Ξ₁.1 q.1 * Ξ₂.1 q.2) → Λ Ξ = Bm (colTens φ₀ Ξ₁) (rowTens φ₀' Ξ₂)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `Ξ₁ Ξ₂ Ξ hq`. Take `⟨Ξ', hΞ'1, hΞ'2⟩` from `hΛ (colTens φ₀ Ξ₁) (rowTens φ₀' Ξ₂)`. Establish `: Ξ' = Ξ` using `Subtype.ext (funext fun q => by rw [hΞ'1, contr_tens, hφ, mul_one, hq])`. Rewrite using `[← this, hΞ'2]`. Use `⟨Λ, ⟨fun Ξ₂ v => ?_, fun Ξ₁ u => ?_⟩, hΛ⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `T : SB (Matrix n n' k) →ₗ[ℂ] (WO B.A S → ℂ)` to `{ toFun := fun Ξ₁ u => Bm (colTens φ₀ Ξ₁) (rowTens φ₀' Ξ₂) u v map_add' := fun a b => by funext u; simp only [map_add, LinearMap.add_apply, Pi.add_apply] map_smul' := fun c a => by funext u; simp only [map_smul, LinearMap.smul_apply, Pi.smul_apply, RingHom.id_apply] }`. Use `⟨T, hL D k p ψ hψ ρ σ B B' l S vL s hs n n' FA F₀ FS hF T₁ hT₁ φ₀ _ (hT₂.theta _) v T fun Ξ₁ u => rfl, fun Ξ₁ Ξ hq u => ?_⟩` and prove the remaining obligations. Rewrite using `[hval Ξ₁ Ξ₂ Ξ hq]`. Both sides reduce to the same expression. Set `T : SB (Matrix n'' n k) →ₗ[ℂ] (WO S B'.A → ℂ)` to `{ toFun := fun Ξ₂ v => Bm (colTens φ₀ Ξ₁) (rowTens φ₀' Ξ₂) u v map_add' := fun a b => by funext v; simp only [map_add, Pi.add_apply] map_smul' := fun c a => by funext v; simp only [map_smul, Pi.smul_apply, RingHom.id_apply] }`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨T, hR D k p ψ hψ ρ σ B B' l S vL (s * p.xi) ?_ n n'' FS FA' F₀' hF' T₂ hT₂ φ₀' _ (hT₁.theta _) u T fun Ξ₂ v => rfl, fun Ξ₂ Ξ hq v => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hxi, -, -⟩` from `GlobalTheory.T.weilCharacter_splitPlace_exists_continuous_nontrivial D k p ψ hψ`. Conclude with `mul_ne_zero hs hxi`. Rewrite using `[hval Ξ₁ Ξ₂ Ξ hq]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem contrLoc : ∀ (D : D7), GlobalTheory.LocFlat.ContrFactor → ContrLoc D := by
   have hH := GlobalTheory.T.besselLineContraction_heisenberg_invariant

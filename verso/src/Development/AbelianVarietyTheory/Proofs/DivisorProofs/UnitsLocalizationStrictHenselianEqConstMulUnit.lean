@@ -13,19 +13,17 @@ open IsLocalRing Polynomial
 namespace GlobalTheory.VertUnits
 
 /- English proof (translation)
-Distinguish the cases in `hL : Subsingleton (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)))`. Conclude with `⟨1, 1, 1, one_ne_zero, one_ne_zero, Subsingleton.elim _ _⟩`. Rewrite `hL` using `[not_subsingleton_iff_nontrivial]`. Take `⟨⟨b, s₁⟩, hb⟩` from `IsLocalization.mk'_surjective (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)) (u : (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))))`. Take `⟨⟨c, s₂⟩, hc⟩` from `IsLocalization.mk'_surjective (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)) ((u⁻¹ : (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)))ˣ) : (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))))`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t₁, ht₁, hs₁⟩` from `s₁.2`. Take `⟨t₂, ht₂, hs₂⟩` from `s₂.2`. Establish `h1 : algebraMap O (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) (b * c) = algebraMap O (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) ((s₁ : O) * (s₂ : O))`. Establish `hu : (u : (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)))) * ((u⁻¹ : (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)))ˣ) : (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)))) = 1` using `u.mul_inv`. Rewrite `hu` using `[← hb, ← hc, ← IsLocalization.mk'_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `IsLocalization.mk'_spec (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) (b * c) (s₁ * s₂)` as an intermediate fact. Rewrite `this` using `[hu, one_mul]`. Rewrite using `[← this]`. Both sides reduce to the same expression. Take `⟨m, hm⟩` from `(IsLocalization.eq_iff_exists (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)) (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)))).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨t₀, ht₀, hm₀⟩` from `m.2`. Establish `hmem : t₀ * t₁ * t₂ ∈ nonZeroDivisors T` using `mul_mem (mul_mem ht₀ ht₁) ht₂`. Establish `hne : t₀ * t₁ * t₂ ≠ 0` using `nonZeroDivisors.ne_zero hmem`. Take `⟨a, w, hbw⟩` from `h b ((m : O) * c) (t₀ * t₁ * t₂) hne (by`. Rewrite using `[map_mul, map_mul, hm₀, hs₁, hs₂]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `key : (u : (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)))) * algebraMap O (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) (s₁ : O) = algebraMap O (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) b`. Rewrite using `[← hb]`. Conclude with `IsLocalization.mk'_spec (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) b s₁`. Use `⟨a, t₁, w, ?_, nonZeroDivisors.ne_zero ht₁, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ha`. Establish `h0 : (u : (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)))) * algebraMap O (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) (s₁ : O) = 0`. Rewrite using `[key, hbw, ha]`. Simplify using the standard rewrite rules. Conclude with `(u.isUnit.mul (IsLocalization.map_units (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) s₁)).ne_zero h0`.
-
-Rewrite using `[hs₁, key, hbw, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_of_divConst (T O : Type) [CommRing T] [IsDomain T] [CommRing O] [Algebra T O]
     (h : DivConst T O)
@@ -70,7 +68,7 @@ theorem units_of_divConst (T O : Type) [CommRing T] [IsDomain T] [CommRing O] [A
   · rw [hs₁, key, hbw, map_mul]
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ _ _ _ hroot hO u`. Take `⟨P, hP, φ, hφ, hsh⟩` from `GlobalTheory.StrictHensUnion.isStrictHenselisation_of_directed_union T O hO`. Conclude with `units_of_divConst T O (hAll T O hroot P φ hφ hsh) u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main_of_divConstAll (hAll : DivConstAll) : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [Algebra T O] [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O] [HenselianLocalRing O] [IsSepClosed (ResidueField O)], (∀ f : Polynomial T, f.Monic → 0 < f.natDegree → ∃ x : T, f.eval x = 0) → (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra (Polynomial T) O), Monotone Si ∧ (∀ s : O, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra (Polynomial T) A) (_ : Algebra.Etale (Polynomial T) A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[(Polynomial T)] Si i)) → ∀ u : (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)))ˣ, ∃ (c d : T) (w : Oˣ), c ≠ 0 ∧ d ≠ 0 ∧ (u : Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) * algebraMap O (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) (algebraMap T O d) = algebraMap O (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) (algebraMap T O c) * algebraMap O (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) (w : O) := by
   intro T O _ _ _ _ _ _ _ _ _ hroot hO u
@@ -83,7 +81,7 @@ end GlobalTheory.VertUnits
 namespace GlobalTheory.VertUnits
 
 /- English proof (translation)
-The claim follows from `main_of_divConstAll (GlobalTheory.T.divisorsOfConstantsAllPrimes_of_closedFibre (divConstLocal_of (GlobalTheory.T.divisorsOfConstantsClosedPoints_of_origin GlobalTheory.T.div_const_origin) (GlobalTheory.T.divisorsOfConstants_genericFibre_of_closedPoints (GlobalTheory.T.divisorsOf …`.
+A detailed English derivation is pending.
 -/
 theorem units_eq_const_mul_unit : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [Algebra T O] [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O] [HenselianLocalRing O] [IsSepClosed (ResidueField O)], (∀ f : Polynomial T, f.Monic → 0 < f.natDegree → ∃ x : T, f.eval x = 0) → (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra (Polynomial T) O), Monotone Si ∧ (∀ s : O, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra (Polynomial T) A) (_ : Algebra.Etale (Polynomial T) A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[(Polynomial T)] Si i)) → ∀ u : (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)))ˣ, ∃ (c d : T) (w : Oˣ), c ≠ 0 ∧ d ≠ 0 ∧ (u : Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) * algebraMap O (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) (algebraMap T O d) = algebraMap O (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) (algebraMap T O c) * algebraMap O (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) (w : O) :=
   main_of_divConstAll (GlobalTheory.T.divisorsOfConstantsAllPrimes_of_closedFibre (divConstLocal_of

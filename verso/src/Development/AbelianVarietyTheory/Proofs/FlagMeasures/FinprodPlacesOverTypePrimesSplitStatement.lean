@@ -5,7 +5,7 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TypedPlacesProduct.finprod_typed_places` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FFinprodPlacesOverTypePrimesSplit.lean&line=47#L47)
 -/

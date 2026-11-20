@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ZmodCocycleEqCob
 open GlobalTheory.NeedB Polynomial
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ N ζ hN hζ hfix hnorm a b α β ha hb hα hβ`. Establish `: Algebra.IsAlgebraic K Ω` using `IsAlgClosure.isAlgebraic`. Take `⟨w, hwc, hw⟩` from `GlobalTheory.T.kummer_carry_cocycle_coboundary_of_norms K Ω N ζ hN hζ hfix hnorm a b α β ha hb hα hβ`. Take `⟨v, hvc, hv⟩` from `GlobalTheory.T.kummer_carry_coboundary_twist_cochain K Ω N ζ hN hζ hfix a b α β ha hb hα hβ w hwc hw`. Conclude with `GlobalTheory.T.exists_locallyConstant_zmod_coboundary_of_mu_cocycle K Ω N ζ hN hζ hfix (fun g h => kum ζ α g * kum ζ β h) v hvc hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.cup_kummer_coboundary_of_norms : ∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (N : ℕ) (ζ : Ω), 0 < N →
   IsPrimitiveRoot ζ N → (∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ) →

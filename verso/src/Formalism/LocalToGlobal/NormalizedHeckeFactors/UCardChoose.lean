@@ -9,7 +9,7 @@ section UCard
 variable {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isUpperTriangular hM.1]`. Simplify using `[hM.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsUniTri.det_eq_one {R : Type} [CommRing R] {M : Matrix (Fin r) (Fin r) R} (hM : IsUniTri r M) :
     M.det = 1 := by
@@ -43,9 +43,9 @@ def uniTriEquiv (R : Type) [CommRing R] :
     simp [q.2]
 
 /- English proof (translation)
-Establish `e : SUp r ≃ Σ b : Fin r, {a : Fin r // a < b}` using `{ toFun := fun q => ⟨q.1.2, q.1.1, q.2⟩ invFun := fun s => ⟨(s.2.1, s.1), s.2.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `h : ∀ b : Fin r, Fintype.card {a : Fin r // a < b} = (b : ℕ)`. Introduce `b`. Rewrite using `[Fintype.card_subtype, Finset.filter_gt_eq_Iio, Fin.card_Iio]`. Rewrite using `[Nat.card_congr e, Nat.card_eq_fintype_card, Fintype.card_sigma]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => i) r, Finset.sum_range_id]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_SUp (r : ℕ) : Nat.card (SUp r) = r * (r - 1) / 2 := by
   have e : SUp r ≃ Σ b : Fin r, {a : Fin r // a < b} :=
@@ -77,7 +77,7 @@ noncomputable def uupEquiv (p : ι → ℕ) (r : ℕ) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (uupEquiv p r), Nat.card_pi]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.card_congr (uniTriEquiv (ZMod (p x))), Nat.card_fun, card_SUp, Nat.card_zmod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_Uup (p : ι → ℕ) (r : ℕ) : Nat.card (Uup p r) = ∏ x, p x ^ (r * (r - 1) / 2) := by
   rw [Nat.card_congr (uupEquiv p r), Nat.card_pi]
@@ -85,13 +85,13 @@ theorem card_Uup (p : ι → ℕ) (r : ℕ) : Nat.card (Uup p r) = ∏ x, p x ^ 
   rw [Nat.card_congr (uniTriEquiv (ZMod (p x))), Nat.card_fun, card_SUp, Nat.card_zmod]
 
 /- English proof (translation)
-Rewrite using `[card_Uup]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example : Nat.card (Uup (fun _ : Fin 1 => 3) 3) = 27 := by
   rw [card_Uup]; rfl
 
 /- English proof (translation)
-Rewrite using `[card_Uup]`. Evaluate the decidable proposition.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 example : Nat.card (Uup (fun x : Fin 2 => if x = 0 then 2 else 5) 2) = 10 := by
   rw [card_Uup]; decide
@@ -105,7 +105,7 @@ namespace Formalism.L2
 open Formalism.BasicNotions NX
 
 /- English proof (translation)
-Rewrite using `[T.U_eq, card_Uup, Fintype.prod_sigma]`. Simplify using `only [Finset.prod_const, Finset.card_univ, D.nd.card_PlG, Fin.prod_univ_two]`. Rewrite using `[← pow_mul, ← pow_mul, ← mul_pow, mul_comm (D.R.r * (D.R.r - 1) / 2)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem NExpTied.uCard {D : D7} (T : NExpTied D) :
     Nat.card D.nexp.U = (D.host.g 0 * D.host.g 1) ^ (D.R.f * (D.R.r * (D.R.r - 1) / 2)) := by

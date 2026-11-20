@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AmpleApprox
 
 /- English proof (translation)
-Establish `e' : LBIso L' (L.pull (𝟙 _))` using `e.chartPull (chartPullId _) (Geo.Tor.chartPullPull L _ _ rfl)`. Conclude with `GlobalTheory.ModelAbLocus.relAmple_of_lbIso_pull (f := 𝟙 S) (φ := 𝟙 A.left) (IsPullback.of_horiz_isIso ⟨by simp⟩) hL hL' e' hA`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_of_lbIso_self {S : Scheme.{0}} {A : Over S} [IsProper A.hom] {L L' : LB A.left} (hL : L.IsLB)
     (hL' : L'.IsLB) (e : LBIso L' L) (hA : Out.RelAmple A L) : Out.RelAmple A L' := by
@@ -28,11 +28,11 @@ variable {R : Type} [CommRing R] {R₁ : Subring R} [IsNoetherianRing R₁] {A�
   [Flat A₀.hom] {M : LB A₀.left} {B : Over (Sp R)} {φ : B.left ⟶ A₀.left} {N : LB B.left}
 
 /- English proof (translation)
-Set `k` to `x.asIdeal.ResidueField`. Set `xr : R₁ →+* k` to `(algebraMap R k).comp R₁.subtype`. Set `p : Ideal R₁` to `RingHom.ker xr`. Establish `: p.IsPrime` using `RingHom.ker_isPrime xr`. Set `g` to `algebraMap R₁ p.ResidueField`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `i : p.ResidueField →+* k` to `Ideal.ResidueField.lift p xr le_rfl fun a ha => IsUnit.mk0 _ ha`. Establish `hi : i.comp g = xr` using `RingHom.ext fun a => Ideal.ResidueField.lift_algebraMap p xr le_rfl (fun a ha => IsUnit.mk0 _ ha) a`. Establish `hu : spMap (algebraMap R k) ≫ spMap R₁.subtype = spMap i ≫ spMap g`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hi]`. Establish `h₂` using `IsPullback.of_hasPullback A₀.hom (spMap i ≫ spMap g)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfib : Out.RelAmple ((Over.pullback (spMap g)).obj A₀) (M.pull (pullback.fst A₀.hom (spMap g)))` using `FibreAmple.relAmple_of_fieldExtension hM i (IsPullback.of_hasPullback A₀.hom (spMap g)) h₂ (LB.isLB_pull hM _) (GlobalTheory.lbIso_refl (LB.isLB_pull hM _)) (FibreAmple.relAmple_of_factor hM hφ h₂ _ hu hN e hB)`. Take `⟨r, hr, hA⟩` from `GlobalTheory.ProperFinite.relAmple_near_fibre A₀ hM g (FibreAmple.residueField_fraction p) hfib`. Use `⟨r, fun hx => hr (Ideal.algebraMap_residueField_eq_zero.2 (RingHom.mem_ker.2 ?_)), hA⟩` and prove the remaining obligations. Conclude with `Ideal.algebraMap_residueField_eq_zero.2 hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_basicOpen (hM : M.IsLB) (hφ : IsPullback φ B.hom A₀.hom (spMap R₁.subtype)) (hN : N.IsLB)
     (e : LBIso N (M.pull φ)) (hB : Out.RelAmple B N) (x : PrimeSpectrum R) :
@@ -59,21 +59,19 @@ theorem exists_basicOpen (hM : M.IsLB) (hφ : IsPullback φ B.hom A₀.hom (spMa
   exact Ideal.algebraMap_residueField_eq_zero.2 hx
 
 /- English proof (translation)
-Use `choose r hr hA using exists_basicOpen hM hφ hN e hB`. Establish `hspan : Ideal.span (Set.range fun x => (r x : R)) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Conclude with `hr ⟨m, hm.isPrime⟩ (hle (Ideal.subset_span ⟨_, rfl⟩))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : (1 : R) ∈ Submodule.span R (Set.range fun x => (r x : R))`. Express the relevant statement in the definitionally equal form `(1 : R) ∈ Ideal.span _`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 h1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨c.support.image c, fun R₂ h hF B₂ π hπ => ?_⟩` and prove the remaining obligations. Establish `hcR : ∀ x ∈ c.support, c x ∈ R₂` using `fun x hx => hF (Finset.mem_image_of_mem c hx)`. Establish `: IsProper B₂.hom` using `MorphismProperty.of_isPullback (P := @IsProper) hπ ‹_›`. Use `GlobalTheory.AmpleLocal.relAmple_of_locally _ B₂ (M.pull π) (pull_isLB hM π) inferInstance inferInstance fun s => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨x, -, hxs⟩ : ∃ x ∈ c.support, Subring.inclusion h (r x) ∉ (s : PrimeSpectrum R₂).asIdeal := by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `key : (∑ y ∈ c.support.attach, (⟨c y, hcR y y.2⟩ : R₂) * Subring.inclusion h (r y)) = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum, OneMemClass.coe_one, ← hc, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `Finset.sum_attach c.support (fun y => c y • (r y : R))`. Apply `(s : PrimeSpectrum R₂).isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← key]`. Conclude with `Ideal.sum_mem _ fun y _ => Ideal.mul_mem_left _ _ (hne y y.2)`. Set `D : (Sp R₁).Opens` to `PrimeSpectrum.basicOpen (r x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Set `U : (Sp R₂).Opens` to `PrimeSpectrum.basicOpen (Subring.inclusion h (r x))`. Use `⟨U, hxs, ?_⟩` and prove the remaining obligations. Establish `sq : IsPullback ((B₂.hom ⁻¹ᵁ U).ι ≫ π) (B₂.hom ∣_ U) A₀.hom (U.ι ≫ spMap (Subring.inclusion h))` using `(isPullback_morphismRestrict B₂.hom U).flip.paste_horiz hπ`. Establish `hrange : Set.range (U.ι ≫ spMap (Subring.inclusion h)) ⊆ Set.range D.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Establish `hz : U.ι z ∈ (U : Set (Sp R₂))` using `by first`. Consider the case `exact (Scheme.Opens.range_ι U) ▸ ⟨z, rfl⟩`. Consider the case `(rw [← Scheme.Opens.range_ι U]; exact ⟨z, rfl⟩)`. Consider the case `exact z.2`.
-
-Conclude with `hz`. Establish `hA'` using `FibreAmple.relAmple_of_factor hM (IsPullback.of_hasPullback A₀.hom D.ι) sq (IsOpenImmersion.lift D.ι _ hrange) (IsOpenImmersion.lift_fac _ _ _) (LB.isLB_pull hM _) (GlobalTheory.lbIso_refl (LB.isLB_pull hM _)) (hA x)`. Establish `: IsProper (Over.mk (B₂.hom ∣_ U)).hom` using `inferInstanceAs (IsProper (B₂.hom ∣_ _))`. Conclude with `relAmple_of_lbIso_self (pull_isLB hM _) (pull_isLB (pull_isLB hM _) _) (FibreAmple.lbIso_pull_pull hM _ _) hA'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_spread_subring (hM : M.IsLB) (hφ : IsPullback φ B.hom A₀.hom (spMap R₁.subtype)) (hN : N.IsLB)
     (e : LBIso N (M.pull φ)) (hB : Out.RelAmple B N) :

@@ -14,7 +14,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.kfour
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d nb lam 𝓖 hc f hf hper hfc`. Use function extensionality and compare the values at `g`. Conclude with `_root_.PositivityTheory.FTA.ZFC.fc_inj_pt_per_k d.ok.good d.b nb lam 𝓖 d.ok.frame hc f hf hper g fun T => hfc T g`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fourierZero_k : _root_.PositivityTheory.SiegelWeilFormula.FourierZero_k := by
   intro F E _ _ _ _ _ σ d nb lam 𝓖 hc f hf hper hfc

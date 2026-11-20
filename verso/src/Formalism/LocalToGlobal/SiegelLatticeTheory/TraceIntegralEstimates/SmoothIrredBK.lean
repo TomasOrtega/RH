@@ -37,37 +37,31 @@ def smoothSub (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (
   smul_mem' := fun c _ hx => Formalism.FourierDecayAlt.P.TranslationBesselVanishing.smooth_smul c hx
 
 /- English proof (translation)
-Establish `hU : IsURepOn (UH (Hpk k r)) σ` using `Formalism.MainNotions.LowestKTypeMultiplicity.urep_of_DS hσ`. Use `set n := Ws.length with hn`. Establish `hWi : ∀ i : Fin n, ∀ Y ∈ Ws.get i, InLieHpk k r Y` using `fun i => hWs _ (List.get_mem _ _)`. Set `ι : H → (Fin n → H)` to `fun v i => dsigW (k := k) (r := r) σ (Ws.get i) v`. Set `T : smoothSub (k` to `k) (r := r) σ →ₗ[ℂ] (Fin n → H) := { toFun := fun s => ι s map_add' := fun a b => funext fun i => ReciprocityTheory.ChartRestriction.DS.Lap.DifferentialActionLinearity.CW.dsigW_add hU a.2 b.2 _ (hWi i) map_smul' := fun c a => funext fun i => ReciprocityTheory.ChartRestriction.DS. …`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `M : smoothSub (k` to `k) (r := r) σ →ₗ[ℂ] ℂ := { toFun := fun s => m s map_add' := fun a b => hadd _ a.2 _ b.2 map_smul' := fun c a => hsm c _ a.2 }`. Establish `hsum : ∀ v : H, (Ws.map fun W => ‖dsigW (k` using `k) (r := r) σ W v‖).sum ≤ n * ‖ι v‖ := by`. Introduce `v`. Establish `h1 : ∀ x ∈ Ws.map (fun W => ‖dsigW (k` using `k) (r := r) σ W v‖), x ≤ ‖ι v‖ := by`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, rfl⟩` from `List.mem_map.1 hx`. Take `⟨i, rfl⟩` from `List.mem_iff_get.1 hW`. Conclude with `norm_le_pi_norm (ι v) i`. Use `List.sum_le_card_nsmul _ _ h1` as an intermediate fact. Rewrite `this` using `[List.length_map, nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Establish `hker : LinearMap.ker T ≤ LinearMap.ker M`. Introduce `s hs`. Rewrite `hs`, the goal using `[LinearMap.mem_ker]`. Establish `h0 : ι s = 0` using `hs`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb` using `hbd s s.2`. Establish `hz0 : (Ws.map fun W => ‖dsigW (k` using `k) (r := r) σ W (s : H)‖).sum = 0 := by`. Use `le_antisymm ?_ (List.sum_nonneg fun x hx => by` and prove the remaining obligations. Take `⟨W, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `norm_nonneg _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `hsum s` as an intermediate fact. Rewrite `this` using `[h0, norm_zero, mul_zero]`. Conclude with `this`. Rewrite `hb` using `[hz0, mul_zero]`. Conclude with `norm_le_zero_iff.1 hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Set `g : LinearMap.range T →ₗ[ℂ] ℂ` to `(LinearMap.ker T).liftQ M hker ∘ₗ T.quotKerEquivRange.symm.toLinearMap`. Establish `hg : ∀ s : smoothSub (k` using `k) (r := r) σ, g ⟨T s, LinearMap.mem_range_self T s⟩ = m s := by`. Introduce `s`. Use `show (LinearMap.ker T).liftQ M hker (T.quotKerEquivRange.symm ⟨T s, _⟩) = m s`. Rewrite using `[LinearMap.quotKerEquivRange_symm_apply_image, Submodule.mkQ_apply, Submodule.liftQ_apply]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hbound : ∀ p : LinearMap.range T, ‖g p‖ ≤ (|C| * n) * ‖p‖`. Introduce and unpack `⟨p, s, rfl⟩`. Rewrite using `[hg s]`. Establish `hb` using `hbd s s.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `hsum s`. Establish `hS0 : 0 ≤ (Ws.map fun W => ‖dsigW (k` using `k) (r := r) σ W (s : H)‖).sum := List.sum_nonneg fun x hx => by obtain ⟨W, -, rfl⟩ := List.mem_map.1 hx; exact norm_nonneg _`. Establish `hp : ‖(⟨T s, LinearMap.mem_range_self T s⟩ : LinearMap.range T)‖ = ‖ι s‖` using `rfl`. Rewrite using `[hp]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `g' : LinearMap.range T →L[ℂ] ℂ` to `g.mkContinuous (|C| * n) hbound`. Take `⟨Λ, hΛ, -⟩` from `exists_extension_norm_eq (LinearMap.range T) g'`. Establish `key1 : m u = Λ (ι u)`. Establish `h1` using `hΛ ⟨T ⟨u, hu⟩, LinearMap.mem_range_self T _⟩`. Establish `h2 : ((⟨T ⟨u, hu⟩, LinearMap.mem_range_self T _⟩ : LinearMap.range T) : Fin n → H) = ι u` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Rewrite using `[h1]`. Conclude with `(hg ⟨u, hu⟩).symm`. Establish `hFint : Integrable (fun x => f x • ι (σ (Matrix.of x) w)) μG`. Use `integrable_pi_iff.2 fun i => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hf (Ws.get i) (hWi i)).1`. Establish `key2 : ι u = ∫ x, f x • ι (σ (Matrix.of x) w) ∂μG`. Use function extensionality and compare the values at `i`. Establish `e` using `ContinuousLinearMap.integral_comp_comm (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => H) i) hFint`. Simplify using `only [ContinuousLinearMap.proj_apply] at e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `(hf (Ws.get i) (hWi i)).2`. Rewrite using `[key1, key2, ← ContinuousLinearMap.integral_comp_comm Λ hFint]`. Establish `hae : ∀ᵐ x ∂μG, Matrix.of x ∈ UH (Hpk k r)` using `by rw [ae_iff]; simpa using hG.2.2.1`. Use `(integral_congr_ae (g := fun _ => (0 : ℂ)) ?_).trans (by simp)` and prove the remaining obligations.
-
-Use `filter_upwards [hae] with x hx`. Establish `hsx : σ (Matrix.of x) w ∈ smoothVecs (k` using `k) (r := r) σ := Formalism.MainNotions.LowestKTypeMultiplicity.smooth_orbit hU hw hx`. Rewrite using `[map_smul]`. Establish `h1` using `hΛ ⟨T ⟨_, hsx⟩, LinearMap.mem_range_self T _⟩`. Establish `h2 : ((⟨T ⟨_, hsx⟩, LinearMap.mem_range_self T _⟩ : LinearMap.range T) : Fin n → H) = ι (σ (Matrix.of x) w)` using `rfl`.
-
-Rewrite `h1` using `[h2]`. Use `show f x • Λ (ι (σ (Matrix.of x) w)) = (0 : ℂ)`. Establish `e3 : Λ (ι (σ (Matrix.of x) w)) = m (σ (Matrix.of x) w)`. Rewrite using `[h1]`. Conclude with `hg ⟨_, hsx⟩`.
-
-Rewrite using `[e3, hz _ hx, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (hσ : IsDSHpk k r ε lam σ) {μG : Measure (Mt k r)} (hG : IsHaarOn (UH (Hpk k r)) μG)
     {w : H} (hw : w ∈ smoothVecs (k := k) (r := r) σ) (m : H → ℂ)

@@ -19,13 +19,13 @@ namespace GlobalTheory.PolTranslate
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
 
 /- English proof (translation)
-Establish `hL'` using `pull_isLB hL F`. Establish `hw` using `(isGen_iff _).1 (idIso_isGen hL')`. Establish `hP` using `linComb_isLB L hL (K := Fin 1) (fun _ => 𝟙 X) (fun _ => (n : ℤ))`. Establish `hP'` using `linComb_isLB (L.pull F) hL' (K := Fin 1) (fun _ => 𝟙 X') (fun _ => (n : ℤ))`. Take `⟨W, hW⟩` from `LBIso.chartPull (chartPullId _) (chartPullOut L (fun _ : Fin 1 => 𝟙 X) (fun _ => (n : ℤ)) F _ fun _ => (Category.id_comp F).trans (Category.comp_id F).symm) (iso_linComb hw (fun _ : Fin 1 => 𝟙 X') (fun _ => (n : ℤ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hs'⟩` from `sec_pull_down ((isGen_iff W).1 hW) hP hP' θ`. Use `⟨s', fun y => ?_⟩` and prove the remaining obligations. Use `(mem_nonzeroLocus _ y).trans (Iff.trans ⟨fun ⟨k, hk, u⟩ => ?_, fun ⟨j, hj, u⟩ => ?_⟩ (mem_nonzeroLocus _ (F y)).symm)` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart hP (F y)`. Establish `e` using `hs' _ (𝟙 _) y j k hj hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[Category.id_comp, gs_stalkMap F y _ hj]`. Conclude with `⟨j, hj, (isUnit_map_iff (F.stalkMap y).hom _).1 ((congrArg IsUnit e).mpr ((Units.isUnit _).mul u))⟩`. Take `⟨k, hk⟩` from `exists_chart hP' y`. Establish `e` using `hs' _ (𝟙 _) y j k hj hk`. Rewrite `e` using `[Category.id_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨k, hk, isUnit_of_mul_isUnit_right ((congrArg IsUnit ((gs_stalkMap F y _ hj _).symm.trans e)).mp (u.map _))⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_pullback_section_nonzero_locus {X X' : Scheme.{0}} {L : LB X} (hL : L.IsLB) (F : X' ⟶ X) (n : ℕ) (θ : H0 L n) :
     ∃ θ' : H0 (L.pull F) n, ∀ y : X', y ∈ nonzeroLocus θ' ↔ F y ∈ nonzeroLocus θ := by
@@ -54,26 +54,26 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 noncomputable def transl (x : 𝟙_ (Over S) ⟶ A) : A ⟶ A := 𝟙 A * (toUnit A ≫ x)
 
 /- English proof (translation)
-Rewrite using `[transl, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_transl (x : 𝟙_ (Over S) ⟶ A) {T : Over S} (y : T ⟶ A) : y ≫ transl x = y * (toUnit T ≫ x) := by
   rw [transl, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]
 
 /- English proof (translation)
-Rewrite using `[← MonObj.comp_mul, hx, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toUnit_mul_self {x : 𝟙_ (Over S) ⟶ A} (hx : x * x = 1) (T : Over S) :
     (toUnit T ≫ x) * (toUnit T ≫ x) = 1 := by
   rw [← MonObj.comp_mul, hx, MonObj.comp_one]
 
 /- English proof (translation)
-Rewrite using `[comp_transl, transl, _root_.mul_assoc, toUnit_mul_self hx, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_transl {x : 𝟙_ (Over S) ⟶ A} (hx : x * x = 1) : transl x ≫ transl x = 𝟙 A := by
   rw [comp_transl, transl, _root_.mul_assoc, toUnit_mul_self hx, _root_.mul_one]
 
 /- English proof (translation)
-Rewrite using `[comp_transl, ← Hom.inv_def, transl, mul_inv, inv_eq_of_mul_eq_one_right (toUnit_mul_self hx A), Hom.inv_def, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_transl [IsCommMonObj A] {x : 𝟙_ (Over S) ⟶ A} (hx : x * x = 1) :
     (GrpObj.inv : A ⟶ A) ≫ transl x = transl x ≫ (GrpObj.inv : A ⟶ A) := by
@@ -81,7 +81,7 @@ theorem inv_transl [IsCommMonObj A] {x : 𝟙_ (Over S) ⟶ A} (hx : x * x = 1) 
     Category.id_comp]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsOpenImmersion.lift _ ((p ⁻¹ᵁ V).ι ≫ h) (by rintro _ ⟨y, rfl⟩ rw [Scheme.Opens.range_ι] exact (congrArg (fun q => q y.1 ∈ V) e).mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_restrict {X Y : Scheme.{0}} (p : X ⟶ Y) (h : X ⟶ X) (e : h ≫ p = p) (V : Y.Opens) :
     ∃ n : (p ⁻¹ᵁ V).toScheme ⟶ (p ⁻¹ᵁ V).toScheme, n ≫ (p ⁻¹ᵁ V).ι = (p ⁻¹ᵁ V).ι ≫ h :=
@@ -91,9 +91,9 @@ theorem exists_restrict {X Y : Scheme.{0}} (p : X ⟶ Y) (h : X ⟶ X) (e : h �
     exact (congrArg (fun q => q y.1 ∈ V) e).mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩
 
 /- English proof (translation)
-Introduce `s`. Take `⟨U, hU, t, ht⟩` from `h s`. Take `⟨n, hn⟩` from `exists_restrict A.hom (transl x).left (Over.w _) U`. Use `⟨U, hU, _, LBxP.isGen_pullAlong L (transl x).left n _ _ _ (fun k => ?_) t ht⟩` and prove the remaining obligations. Use `fin_cases k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (_ ≫ _) ≫ _ = n ≫ _ ≫ _`. Rewrite using `[← Category.assoc n, hn, Category.assoc, Category.assoc]`. Conclude with `congrArg (fun q => _ ≫ q.left) (inv_transl hx)`. Conclude with `hn.symm`.
+A detailed English derivation is pending.
 -/
 theorem sym_transl [IsCommMonObj A] {x : 𝟙_ (Over S) ⟶ A} (hx : x * x = 1) {L : LB A.left} (h : Sym A L) :
     Sym A (L.pull (transl x).left) := by
@@ -108,13 +108,13 @@ theorem sym_transl [IsCommMonObj A] {x : 𝟙_ (Over S) ⟶ A} (hx : x * x = 1) 
   · exact hn.symm
 
 /- English proof (translation)
-Introduce `R _ t y hy`. Use `h R t y fun p => ?_` and prove the remaining obligations. Take `⟨V, hV, c, hc⟩` from `hy p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Establish `hL'` using `pull_isLB hL (transl x).left`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw` using `(isGen_iff _).1 (idIso_isGen hL')`. Set `T : Over S` to `Over.mk t`. Take `⟨n, hn⟩` from `exists_restrict (fst T A).left (T ◁ transl x).left (congrArg (fun q => q.left) (whiskerLeft_fst T (transl x))) V`. Establish `k₂ : T ◁ transl x ≫ snd T A ≫ transl x = snd T A`. Rewrite using `[whiskerLeft_snd_assoc, transl_transl hx, Category.comp_id]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k₃ : T ◁ transl x ≫ ((fst T A ≫ y) * snd T A) ≫ transl x = (fst T A ≫ y) * snd T A`. Rewrite using `[← Category.assoc, MonObj.comp_mul, whiskerLeft_fst_assoc, whiskerLeft_snd, comp_transl, comp_transl, _root_.mul_assoc, _root_.mul_assoc, toUnit_mul_self hx, _root_.mul_one]`. Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullIn (L.pull (transl x).left) _ _ _) c hc`. Take `⟨c₂, h₂, -⟩` from `exists_up hw hL hL' c₁ h₁`. Use `gen_chartPull (chartPullOut L _ _ _ _ fun k => ?_) _ (pullGen_isGen _ _ _ c₂ h₂ n)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show n ≫ (_ ≫ _) ≫ (transl x).left = _`. Rewrite using `[Category.assoc, ← Category.assoc n, hn, Category.assoc]`. Use `fin_cases k`. Use `exacts [congrArg (fun q => _ ≫ q.left) k₃, congrArg (fun q => _ ≫ q.left) k₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kTriv_transl {x : 𝟙_ (Over S) ⟶ A} (hx : x * x = 1) {L : LB A.left} (hL : L.IsLB) (h : KTriv A L) :
     KTriv A (L.pull (transl x).left) := by
@@ -141,9 +141,9 @@ theorem kTriv_transl {x : 𝟙_ (Over S) ⟶ A} (hx : x * x = 1) {L : LB A.left}
   exacts [congrArg (fun q => _ ≫ q.left) k₃, congrArg (fun q => _ ≫ q.left) k₂]
 
 /- English proof (translation)
-Introduce `K _ A x hx θ`. Establish `hL'` using `pull_isLB A.isLB (transl x).left`. Establish `hw` using `(isGen_iff _).1 (idIso_isGen hL')`. Establish `e : (transl x).left ≫ (transl x).left = 𝟙 _` using `congrArg (fun q => q.left) (transl_transl hx)`. Establish `: IsIso (transl x).left` using `⟨⟨(transl x).left, e, e⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : IsPullback (transl x).left A.A.hom A.A.hom (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨(Over.w _).trans (Category.comp_id _).symm⟩`. Take `⟨θ', hθ'⟩` from `exists_pullback_section_nonzero_locus A.isLB (transl x).left 1 θ`. Conclude with `⟨{ A := A.A, isAb := A.isAb, g := A.g, smoothDim := A.smoothDim, L := A.L.pull (transl x).left, isLB := hL' rigid := exists_gen_of_local (V := K) _ hL' (K := PUnit) (fun _ => eSec A.A) (fun _ => 1) sym := sym_transl hx A.sym ample := relAmple_pull hp A.isLB hL' hw ⊤ (isAffineOpen …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_translate : ∀ (K : Type) [Field K] (A : PolAV (Spec (CommRingCat.of K))) (x : 𝟙_ _ ⟶ A.A), x * x = 1 →
     ∀ θ : H0 A.L 1, ∃ (A' : PolAV (Spec (CommRingCat.of K))) (e : A'.A ≅ A.A) (θ' : H0 A'.L 1), IsMonHom e.hom ∧

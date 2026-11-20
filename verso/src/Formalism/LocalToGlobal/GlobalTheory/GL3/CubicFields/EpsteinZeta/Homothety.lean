@@ -8,7 +8,7 @@ open NumberField Classical
 open scoped Pointwise
 
 /- English proof (translation)
-Rewrite using `[AddSubgroup.mem_smul_pointwise_iff_exists]`. Simplify using `only [smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_smul_iff' (Λ : AddSubgroup ℂ) (c : ℂ) (w : ℂ) :
     w ∈ c • Λ ↔ ∃ x ∈ Λ, c * x = w := by
@@ -26,9 +26,9 @@ def smulEquivNZ (Λ : AddSubgroup ℂ) (c : ℂ) (hc : c ≠ 0) :
   right_inv w := by ext; simp [hc]
 
 /- English proof (translation)
-Unfold `eisG`. Rewrite using `[show (∑' w : {w : ℂ // w ∈ c • Λ ∧ w ≠ 0}, 1 / (w : ℂ) ^ (2 * k)) = ∑' w : {w : ℂ // w ∈ Λ ∧ w ≠ 0}, 1 / ((smulEquivNZ Λ c hc w : ℂ)) ^ (2 * k) from ((smulEquivNZ Λ c hc).tsum_eq (fun w => 1 / (w : ℂ) ^ (2 * k))).symm]`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `w`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show 1 / (c * w.1) ^ (2 * k) = (c ^ (2 * k))⁻¹ * (1 / w.1 ^ (2 * k))`. Rewrite using `[one_div, one_div, mul_pow, mul_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eisG_smul (Λ : AddSubgroup ℂ) (c : ℂ) (hc : c ≠ 0) (k : ℕ) :
     eisG (c • Λ) k = (c ^ (2 * k))⁻¹ * eisG Λ k := by
@@ -43,7 +43,7 @@ theorem eisG_smul (Λ : AddSubgroup ℂ) (c : ℂ) (hc : c ≠ 0) (k : ℕ) :
   rw [one_div, one_div, mul_pow, mul_inv]
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold discr; simp only [g2, g3, eisG_smul Λ c hc]; ring)`. Consider the case `(unfold discr g2 g3; done)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem discr_smul (Λ : AddSubgroup ℂ) (c : ℂ) (hc : c ≠ 0) :
     discr (c • Λ) = (c ^ 12)⁻¹ * discr Λ := by
@@ -52,9 +52,9 @@ theorem discr_smul (Λ : AddSubgroup ℂ) (c : ℂ) (hc : c ≠ 0) :
   | (unfold discr g2 g3; done)
 
 /- English proof (translation)
-Unfold `latI`. Rewrite using `[AddSubgroup.pointwise_smul_def]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w ⟨c, hc, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `AddSubgroup.mem_map.2 ⟨φ c, AddSubgroup.subset_closure ⟨c, hc, (one_mul _).symm⟩, rfl⟩`. Use `AddSubgroup.map_le_iff_le_comap.2 ?_` and prove the remaining obligations. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨c, hc, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨c, hc, show δ * (1 * φ c) = δ * φ c by rw [one_mul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem latI_eq_smul {K : Type} [Field K] [NumberField K] (φ : K →+* ℂ) (𝔞 : Ideal (𝓞 K))
     (δ : ℂ) : latI φ 𝔞 δ = δ • latI φ 𝔞 1 := by

@@ -16,7 +16,7 @@ section BargmannUnique
 variable {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-Unfold `bk`. Simplify using `only [Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bk_smul_left (c : ι → ℝ) (u : ℂ) (z₀ z : VCx ι a b) : bk c (u • z₀) z = u * bk c z₀ z := by
   unfold bk
@@ -25,7 +25,7 @@ theorem bk_smul_left (c : ι → ℝ) (u : ℂ) (z₀ z : VCx ι a b) : bk c (u 
   ring
 
 /- English proof (translation)
-Unfold `conjMono`. Conclude with `Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem conjMono_add (m m' : DVar ι a b →₀ ℕ) (z : VCx ι a b) :
     conjMono (m + m') z = conjMono m z * conjMono m' z := by
@@ -33,7 +33,7 @@ theorem conjMono_add (m m' : DVar ι a b →₀ ℕ) (z : VCx ι a b) :
   exact Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)
 
 /- English proof (translation)
-Unfold `conjMono`. Simplify using `[Finsupp.prod_single_index]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem conjMono_single_one (k : DVar ι a b) (z : VCx ι a b) :
     conjMono (Finsupp.single k 1) z = conj (z k.1 k.2.1 k.2.2) := by
@@ -43,7 +43,7 @@ abbrev monoSpan (ι : Type) [Fintype ι] (a b : ℕ) : Submodule ℂ (VCx ι a b
   Submodule.span ℂ (Set.range fun m : DVar ι a b →₀ ℕ => conjMono m)
 
 /- English proof (translation)
-Establish `h` using `Submodule.mul_mem_mul hP hQ`. Rewrite `h` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨m, rfl⟩, _, ⟨m', rfl⟩, rfl⟩`. Conclude with `⟨m + m', funext fun z => conjMono_add m m' z⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem monoSpan_mul {P Q : VCx ι a b → ℂ} (hP : P ∈ monoSpan ι a b) (hQ : Q ∈ monoSpan ι a b) :
     P * Q ∈ monoSpan ι a b := by
@@ -54,7 +54,7 @@ theorem monoSpan_mul {P Q : VCx ι a b → ℂ} (hP : P ∈ monoSpan ι a b) (hQ
   exact ⟨m + m', funext fun z => conjMono_add m m' z⟩
 
 /- English proof (translation)
-Establish `: (fun z => bk c z₀ z) = ∑ τ, ∑ i, ∑ j, ((c τ : ℂ) * z₀ τ i j) • conjMono (Finsupp.single (τ, i, j) 1)`. Use function extensionality and compare the values at `z`. Simplify using `only [bk, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, conjMono_single_one]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun τ _ => Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bk_mem_monoSpan (c : ι → ℝ) (z₀ : VCx ι a b) : (fun z => bk c z₀ z) ∈ monoSpan ι a b := by
   have : (fun z => bk c z₀ z) = ∑ τ, ∑ i, ∑ j,
@@ -66,9 +66,9 @@ theorem bk_mem_monoSpan (c : ι → ℝ) (z₀ : VCx ι a b) : (fun z => bk c z�
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `: (fun z : VCx ι a b => bk c z₀ z ^ 0) = conjMono 0` using `by funext z; simp [conjMono]`. Rewrite using `[this]`. Conclude with `Submodule.subset_span ⟨0, rfl⟩`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Use `monoSpan_mul ih (bk_mem_monoSpan c z₀)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using `[pow_succ]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bk_pow_mem_monoSpan (c : ι → ℝ) (z₀ : VCx ι a b) (n : ℕ) :
     (fun z => bk c z₀ z ^ n) ∈ monoSpan ι a b := by
@@ -82,11 +82,11 @@ theorem bk_pow_mem_monoSpan (c : ι → ℝ) (z₀ : VCx ι a b) (n : ℕ) :
     funext z; simp [pow_succ]
 
 /- English proof (translation)
-Apply the tactic sequence `have h1 : ((1 - Complex.I) * w).re = w.re + w.im := by simp [Complex.mul_re] <;> ring`. Apply the tactic sequence `have h2 : ((1 + Complex.I) * w).re = w.re + -w.im := by simp [Complex.mul_re] <;> ring`. Apply the tactic sequence `have h3 : ((-1 - Complex.I) * w).re = -w.re + w.im := by simp [Complex.mul_re] <;> ring`. Apply the tactic sequence `have h4 : ((-1 + Complex.I) * w).re = -w.re + -w.im := by simp [Complex.mul_re] <;> ring`. Rewrite using `[h1, h2, h3, h4]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `key : Real.exp ‖w‖ ≤ Real.exp |w.re| * Real.exp |w.im|`. Rewrite using `[← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (Complex.norm_le_abs_re_add_abs_im w)`. Establish `hre : Real.exp |w.re| ≤ Real.exp w.re + Real.exp (-w.re)`. Apply the tactic sequence `rcases abs_cases w.re with ⟨h, _⟩ | ⟨h, _⟩ <;> rw [h] <;> linarith [Real.exp_pos w.re, Real.exp_pos (-w.re)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `him : Real.exp |w.im| ≤ Real.exp w.im + Real.exp (-w.im)`. Apply the tactic sequence `rcases abs_cases w.im with ⟨h, _⟩ | ⟨h, _⟩ <;> rw [h] <;> linarith [Real.exp_pos w.im, Real.exp_pos (-w.im)]`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exp_norm_le_four (w : ℂ) : Real.exp ‖w‖ ≤ Real.exp ((1 - Complex.I) * w).re +
     Real.exp ((1 + Complex.I) * w).re + Real.exp ((-1 - Complex.I) * w).re + Real.exp ((-1 + Complex.I) * w).re := by
@@ -106,13 +106,13 @@ theorem exp_norm_le_four (w : ℂ) : Real.exp ‖w‖ ≤ Real.exp ((1 - Complex
     _ = _ := by simp only [add_mul, mul_add, ← Real.exp_add]; ring
 
 /- English proof (translation)
-Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, rfl⟩` from `hx`. Conclude with `⟨((GlobalTheory.T.integrable_conjMonomial_bargmann_gaussian ι a b c hc).1 m).mul_bdd hF.aestronglyMeasurable (Filter.Eventually.of_forall hM), hmom m⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Establish `e : (fun z => (x + y) z * (Real.exp (-gq c z / 2) : ℂ) * F z) = fun z => x z * (Real.exp (-gq c z / 2) : ℂ) * F z + y z * (Real.exp (-gq c z / 2) : ℂ) * F z`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `⟨hx.1.add hy.1, by rw [integral_add hx.1 hy.1, hx.2, hy.2, add_zero]⟩`. Consider the case `smul r x _ hx`. Establish `e : (fun z => (r • x) z * (Real.exp (-gq c z / 2) : ℂ) * F z) = fun z => r * (x z * (Real.exp (-gq c z / 2) : ℂ) * F z)`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `⟨hx.1.const_mul r, by rw [integral_const_mul, hx.2, mul_zero]⟩`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem integral_moment_span_eq_zero {c : ι → ℝ} (hc : ∀ τ, 0 < c τ) {F : VCx ι a b → ℂ}
     (hF : Continuous F) {M : ℝ} (hM : ∀ z, ‖F z‖ ≤ M)
@@ -140,23 +140,19 @@ theorem integral_moment_span_eq_zero {c : ι → ℝ} (hc : ∀ τ, 0 < c τ) {F
     exact ⟨hx.1.const_mul r, by rw [integral_const_mul, hx.2, mul_zero]⟩
 
 /- English proof (translation)
-Introduce `ι _ a b c hc F hF hMex hmom z₀`. Take `⟨M, hM⟩` from `hMex`. Establish `hexpR : ∀ x : ℝ, HasSum (fun n : ℕ => x ^ n / (Nat.factorial n : ℝ)) (Real.exp x)` using `fun x => by`. Rewrite using `[Real.exp_eq_exp_ℝ]`. Conclude with `NormedSpace.expSeries_div_hasSum_exp _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hexpC : ∀ x : ℂ, HasSum (fun n : ℕ => x ^ n / (Nat.factorial n : ℂ)) (Complex.exp x)` using `fun x => by`. Rewrite using `[Complex.exp_eq_exp_ℂ]`. Conclude with `NormedSpace.expSeries_div_hasSum_exp _`. Establish `hgq : Continuous (fun z : VCx ι a b => gq c z)` using `by unfold gq; fun_prop`. Establish `hbk : Continuous (fun z : VCx ι a b => bk c z₀ z)` using `by unfold bk; fun_prop`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Continuous (fun z : VCx ι a b => ((Real.exp (-gq c z / 2) : ℝ) : ℂ))` using `Complex.continuous_ofReal.comp (Real.continuous_exp.comp (hgq.neg.div_const 2))`. Establish `hsum` using `hasSum_integral_of_dominated_convergence (μ := volume) (F := fun (n : ℕ) z => bk c z₀ z ^ n / (Nat.factorial n : ℂ) * (Real.exp (-gq c z / 2) : ℂ) * F z) (f := fun z => Complex.exp (bk c z₀ z) * (Real.exp (-gq c z / 2) : ℂ) * F z) (fun n z => ‖bk c z₀ z‖ ^ n / (Nat.factorial n : …`. Simplify using `only [norm_mul, norm_div, norm_pow, Complex.norm_natCast, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Rewrite using `[mul_assoc]`. Use `gcongr`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM z)`. Use the proof step `(Filter.Eventually.of_forall fun z => (hexpR ‖bk c z₀ z‖).summable.mul_right _)`. Use the proof step `(by`. Establish `htsum : (fun z => ∑' n : ℕ, ‖bk c z₀ z‖ ^ n / (Nat.factorial n : ℝ) * (Real.exp (-gq c z / 2) * M)) = fun z => Real.exp ‖bk c z₀ z‖ * (Real.exp (-gq c z / 2) * M)`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[tsum_mul_right, (hexpR _).tsum_eq]`. Rewrite using `[htsum]`. Establish `hI : ∀ u : ℂ, Integrable fun z : VCx ι a b => ‖Complex.exp (bk c (u • z₀) z) * (Real.exp (-gq c z / 2) : ℂ)‖` using `fun u => ((GlobalTheory.T.integrable_conjMonomial_bargmann_gaussian ι a b c hc).2 (u • z₀)).norm`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 0)`. Use `Integrable.mono' ((((hI (1 - Complex.I)).add (hI (1 + Complex.I))).add (hI (-1 - Complex.I))).add (hI (-1 + Complex.I)) |>.const_mul M) ((Real.continuous_exp.comp (continuous_norm.comp hbk)).mul ((Real.continuous_exp.comp (hgq.neg.div_const 2)).mul continuous_const)).aestronglyMe …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Pi.add_apply, bk_smul_left, norm_mul, Complex.norm_exp, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Rewrite using `[abs_of_nonneg (by positivity)]`. Establish `h4` using `exp_norm_le_four (bk c z₀ z)`. Establish `he` using `Real.exp_pos (-gq c z / 2)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `(Filter.Eventually.of_forall fun z => by`. Simplify `(hexpC (bk c z₀ z)).mul_right ((Real.exp (-gq c z / 2) : ℂ) * F z))` using `only [mul_assoc]`. Establish `h0 : ∀ n : ℕ, ∫ z, bk c z₀ z ^ n / (Nat.factorial n : ℂ) * (Real.exp (-gq c z / 2) : ℂ) * F z = 0`. Introduce `n`. Use `(integral_moment_span_eq_zero hc hF hM hmom (Submodule.smul_mem _ ((Nat.factorial n : ℂ)⁻¹) (bk_pow_mem_monoSpan c z₀ n))).2` as an intermediate fact.
-
-Establish `e : (fun z => bk c z₀ z ^ n / (Nat.factorial n : ℂ) * (Real.exp (-gq c z / 2) : ℂ) * F z) = fun z => ((Nat.factorial n : ℂ)⁻¹ • fun z => bk c z₀ z ^ n) z * (Real.exp (-gq c z / 2) : ℂ) * F z`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `this`. Simplify using `only [h0] at hsum`. Conclude with `hsum.unique hasSum_zero`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_bargmann_eq_zero_of_moments : ∀ (ι : Type) [Fintype ι] (a b : ℕ) (c : ι → ℝ), (∀ τ, 0 < c τ) → ∀ F : VCx ι a b → ℂ, Continuous F → (∃ M : ℝ, ∀ z, ‖F z‖ ≤ M) → (∀ m : DVar ι a b →₀ ℕ, ∫ z, conjMono m z * (Real.exp (-gq c z / 2) : ℂ) * F z = 0) → ∀ z₀, ∫ z, Complex.exp (bk c z₀ z) * (Real.exp (-gq c z / 2) : ℂ) * F z = 0 := by
   intro ι _ a b c hc F hF hMex hmom z₀

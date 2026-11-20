@@ -15,9 +15,9 @@ variable {A E : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] [F
   (ι : E →+* A)
 
 /- English proof (translation)
-Take `⟨U, hU, hx⟩` from `h`. Use `hΩ.induction_on (p := fun s => {x : E | ι x ∈ s}.Finite) (by simp) (fun s t hst ht => ht.subset fun x hx => hst hx) (fun s t hs ht => (hs.union ht).subset fun x hx => hx) fun a _ => ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun p : A × A => p.1 - p.2) (a, a)` using `by fun_prop`. Establish `h1 : (fun p : A × A => p.1 - p.2) ⁻¹' U ∈ 𝓝 (a, a)` using `hc.preimage_mem_nhds (by simpa using hU)`. Rewrite `h1` using `[nhds_prod_eq, Filter.mem_prod_self_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨V, hV, hVU⟩` from `h1`. Use `⟨V, mem_nhdsWithin_of_mem_nhds hV, Set.Subsingleton.finite fun x hx' y hy => ?_⟩` and prove the remaining obligations. Use `sub_eq_zero.1 (hx _ ?_)` and prove the remaining obligations. Rewrite using `[map_sub]`. Conclude with `hVU (Set.mk_mem_prod hx' hy)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_isCompact (h : ∃ U ∈ 𝓝 (0 : A), ∀ x : E, ι x ∈ U → x = 0) {Ω : Set A}
     (hΩ : IsCompact Ω) : {x : E | ι x ∈ Ω}.Finite := by
@@ -36,13 +36,13 @@ theorem finite_of_isCompact (h : ∃ U ∈ 𝓝 (0 : A), ∀ x : E, ι x ∈ U �
   exact hVU (Set.mk_mem_prod hx' hy)
 
 /- English proof (translation)
-Establish `hK : IsCompact ((fun p : A × A => p.1 * p.2) '' (insert ε (Set.range fun m : ℕ => s ^ m) ×ˢ Ω))` using `(hs.isCompact_insert_range.prod hΩ).image (by fun_prop)`. Establish `hfin` using `finite_of_isCompact ι h hK`. Establish `hev : ∀ x : E, ∀ᶠ m : ℕ in atTop, ∀ ω ∈ Ω, ι x = s ^ m * ω → x = 0`. Introduce `x`. Distinguish the cases in `hx : x = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `Eventually.of_forall fun _ _ _ _ => hx`. Establish `h1 : ∀ᶠ t in 𝓝 ε, ∀ ω ∈ Ω, ι x ≠ t * ω`. Use `hΩ.eventually_forall_of_forall_eventually (P := fun t ω => ι x ≠ t * ω) fun ω _ => ?_` and prove the remaining obligations. Establish `ho : IsOpen {p : A × A | ι x ≠ p.1 * p.2}` using `isOpen_ne_fun continuous_const (by fun_prop)`. Use `ho.mem_nhds fun he => hε ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu : IsUnit (ε * ω)`. Use `(IsUnit.mk0 x hx).map ι` as an intermediate fact. Rewrite `this` using `[he]`. Then use the resulting hypothesis. Conclude with `isUnit_of_mul_isUnit_left hu`. Use `filter_upwards [hs.eventually h1] with m hm ω hω he`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `absurd he (hm ω hω)`. Take `⟨m₀, hm₀⟩` from `eventually_atTop.1 ((eventually_all_finite hfin).2 fun x _ => hev x)`. Use `⟨m₀, fun m hm ω hω x hx => hm₀ m hm x ?_ ω hω hx⟩` and prove the remaining obligations. Conclude with `⟨(s ^ m, ω), ⟨Or.inr ⟨m, rfl⟩, hω⟩, hx.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem eventually_eq_zero [T2Space A] (h : ∃ U ∈ 𝓝 (0 : A), ∀ x : E, ι x ∈ U → x = 0)
     {Ω : Set A} (hΩ : IsCompact Ω) {s ε : A} (hs : Tendsto (fun m : ℕ => s ^ m) atTop (𝓝 ε))
@@ -75,11 +75,9 @@ theorem eventually_eq_zero [T2Space A] (h : ∃ U ∈ 𝓝 (0 : A), ∀ x : E, �
 end Abstract
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun m : ℕ => (algebraMap F (Ainf F) 2⁻¹) ^ m) atTop (𝓝 0)`. Use `tendsto_pi_nhds.2 fun v => ?_` and prove the remaining obligations. Establish `h : ‖algebraMap F (Ainf F) 2⁻¹ v‖ < 1`. Rewrite using `[InfiniteAdeleRing.algebraMap_apply, InfinitePlace.Completion.norm_coe]`. Express the relevant statement in the definitionally equal form `v (2⁻¹ : F) < 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← InfinitePlace.norm_embedding_eq, map_inv₀, map_ofNat, norm_inv]`. Evaluate the numerical expressions. Conclude with `tendsto_pow_atTop_nhds_zero_of_norm_lt_one h`. Establish `h2 : Tendsto (fun m : ℕ => (1 : FiniteAdeleRing (𝓞 F) F) ^ m) atTop (𝓝 1)`. Simplify using `only [one_pow]`.
-
-Conclude with `tendsto_const_nhds`. Conclude with `h1.prodMk_nhds h2`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_halfInf_pow (F : Type) [Field F] [NumberField F] :
     Tendsto (fun m : ℕ => (halfInf F).1 ^ m) atTop (𝓝 ((0, 1) : AF F)) := by
@@ -97,15 +95,13 @@ theorem tendsto_halfInf_pow (F : Type) [Field F] [NumberField F] :
   exact h1.prodMk_nhds h2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ Ω hΩ`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: T2Space (AF F)` using `GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField _`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: T2Space (AF F ⊗[F] E)` using `e.isEmbedding.t2Space`. Establish `h` using `GlobalTheory.AdelicMatrixLattice.discrete_tensor (F := F) (E := E) (AF F) (GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero F)`. Use `⟨finite_of_isCompact _ h hΩ, eventually_eq_zero _ h hΩ (ε := algebraMap (AF F) (AF F ⊗[F] E) (0, 1)) ?_ fun hu => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous (algebraMap (AF F) (AF F ⊗[F] E))` using `IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AF F) (AF F ⊗[F] E))`. Use `(hc.tendsto _).comp (tendsto_halfInf_pow F)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.congr fun m => ?_` and prove the remaining obligations. Conclude with `map_pow (algebraMap (AF F) (AF F ⊗[F] E)) _ m`. Establish `h0 : algebraMap (AF F) (AF F ⊗[F] E) (0, 1) * algebraMap (AF F) (AF F ⊗[F] E) (1, 0) = 0`. Use `(map_mul (algebraMap (AF F) (AF F ⊗[F] E)) _ _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (algebraMap (AF F) (AF F ⊗[F] E)) ?_).trans (map_zero _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Prod.ext (zero_mul _) (mul_zero _)`. Establish `h1` using `hu.mul_right_eq_zero.1 h0`. Establish `hinj : Function.Injective (algebraMap (AF F) (AF F ⊗[F] E))` using `Algebra.TensorProduct.includeLeft_injective (S := F) (algebraMap F E).injective`. Establish `h2 : ((1, 0) : AF F) = 0` using `hinj (h1.trans (map_zero _).symm)`. Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`.
-
-Establish `h3 : (1 : v.Completion) = 0` using `congrFun (congrArg Prod.fst h2) v`. Conclude with `one_ne_zero h3`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_and_eventually_eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (Ω : Set (AF F ⊗[F] E)), IsCompact Ω → {x : E | inclR (F := F) (AF F) x ∈ Ω}.Finite ∧ ∃ m₀ : ℕ, ∀ m, m₀ ≤ m → ∀ ω ∈ Ω, ∀ x : E, inclR (F := F) (AF F) x = (halfE F E).1 ^ m * ω → x = 0 := by
   intro F E _ _ _ _ _ Ω hΩ

@@ -12,7 +12,7 @@ open scoped ContDiff Topology
 variable {g : ℕ}
 
 /- English proof (translation)
-Unfold `mD lD`. Rewrite using `[((hfh.iteratedFDeriv ℂ _).eq_of_nhds)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mD_local {f h : (Fin g → ℂ) → ℂ} (hfh : f =ᶠ[𝓝 0] h) (s : Multiset (Fin g → ℂ)) :
     mD f 0 s = mD h 0 s := by
@@ -20,7 +20,7 @@ theorem mD_local {f h : (Fin g → ℂ) → ℂ} (hfh : f =ᶠ[𝓝 0] h) (s : M
   rw [((hfh.iteratedFDeriv ℂ _).eq_of_nhds)]
 
 /- English proof (translation)
-Use extensionality with `n`. Use `show mD f 0 (dirs n + s) / fct n = mD h 0 (dirs n + s) / fct n`. Rewrite using `[mD_local hfh]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tay_local {f h : (Fin g → ℂ) → ℂ} (hfh : f =ᶠ[𝓝 0] h) (s : Multiset (Fin g → ℂ)) : tay f s = tay h s := by
   ext n
@@ -28,7 +28,7 @@ theorem tay_local {f h : (Fin g → ℂ) → ℂ} (hfh : f =ᶠ[𝓝 0] h) (s : 
   rw [mD_local hfh]
 
 /- English proof (translation)
-Unfold `mD lD`. Rewrite using `[iteratedFDeriv_add_apply (hf.of_le le_top) (hh.of_le le_top)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mD_add {f h : (Fin g → ℂ) → ℂ} (hf : ContDiffAt ℂ ω f 0) (hh : ContDiffAt ℂ ω h 0)
     (s : Multiset (Fin g → ℂ)) : mD (f + h) 0 s = mD f 0 s + mD h 0 s := by
@@ -37,7 +37,7 @@ theorem mD_add {f h : (Fin g → ℂ) → ℂ} (hf : ContDiffAt ℂ ω f 0) (hh 
   rfl
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[map_add]`. Use `show mD (f + h) 0 (dirs n + s) / fct n = mD f 0 (dirs n + s) / fct n + mD h 0 (dirs n + s) / fct n`. Rewrite using `[mD_add hf hh, add_div]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tay_add {f h : (Fin g → ℂ) → ℂ} (hf : ContDiffAt ℂ ω f 0) (hh : ContDiffAt ℂ ω h 0)
     (s : Multiset (Fin g → ℂ)) : tay (f + h) s = tay f s + tay h s := by
@@ -47,7 +47,7 @@ theorem tay_add {f h : (Fin g → ℂ) → ℂ} (hf : ContDiffAt ℂ ω f 0) (hh
   rw [mD_add hf hh, add_div]
 
 /- English proof (translation)
-Establish `key : ∀ l : List (Fin g → ℂ), l = [] → iteratedFDeriv ℂ l.length θ 0 (fun i => l.get i) = θ 0`. Introduce and unpack `l rfl`. Simplify using the standard rewrite rules. Conclude with `key _ (Multiset.toList_eq_nil.2 rfl)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mD_zero (θ : (Fin g → ℂ) → ℂ) : mD θ 0 0 = θ 0 := by
   have key : ∀ l : List (Fin g → ℂ), l = [] →
@@ -57,11 +57,11 @@ theorem mD_zero (θ : (Fin g → ℂ) → ℂ) : mD θ 0 0 = θ 0 := by
   exact key _ (Multiset.toList_eq_nil.2 rfl)
 
 /- English proof (translation)
-Distinguish the cases in `hs : s = 0`. Substitute `hs` using the available equality. Establish `key : ∀ l : List (Fin g → ℂ), l = [] → iteratedFDeriv ℂ l.length (fun _ : Fin g → ℂ => c) 0 (fun i => l.get i) = c`. Introduce and unpack `l rfl`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos rfl]`. Conclude with `key _ (Multiset.toList_eq_nil.2 rfl)`. Establish `hlen : s.toList.length ≠ 0`. Rewrite using `[Multiset.length_toList]`. Conclude with `fun h0 => hs (Multiset.card_eq_zero.1 h0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Replace the relevant objects with their definitions.
 
-Unfold `mD lD`. Rewrite using `[iteratedFDeriv_const_of_ne hlen, if_neg hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mD_const (c : ℂ) (s : Multiset (Fin g → ℂ)) :
     mD (fun _ : Fin g → ℂ => c) 0 s = if s = 0 then c else 0 := by
@@ -81,11 +81,11 @@ theorem mD_const (c : ℂ) (s : Multiset (Fin g → ℂ)) :
     rfl
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_C]`. Use `show mD (fun _ => c) 0 (dirs n + 0) / fct n = _`. Rewrite using `[add_zero, mD_const]`. Distinguish the cases in `hn : n = 0`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hn` using the available equality. Simplify using `[dirs, fct]`. Establish `hd : dirs n ≠ 0`. Introduce `h0`. Apply `hn` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : Finsupp.toMultiset n = 0` using `by simpa [dirs] using h0`. Simplify using `using congrArg Multiset.toFinsupp h1`. Rewrite using `[if_neg hd, if_neg hn, zero_div]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tay_const (c : ℂ) : tay (g := g) (fun _ => c) 0 = C c := by
   ext n
@@ -103,13 +103,13 @@ theorem tay_const (c : ℂ) : tay (g := g) (fun _ => c) 0 = C c := by
     rw [if_neg hd, if_neg hn, zero_div]
 
 /- English proof (translation)
-Establish `ht : ((t.toList : List (Fin g → ℂ)) : Multiset (Fin g → ℂ)) = t` using `Multiset.coe_toList t`. Establish `hperm : (v ::ₘ t) = ((t.toList ++ [v] : List (Fin g → ℂ)) : Multiset (Fin g → ℂ))` using `by conv_lhs => rw [← ht]`. Rewrite using `[Multiset.cons_coe, Multiset.coe_eq_coe]`. Conclude with `(List.perm_append_singleton v t.toList).symm`. Establish `hlen : (t.toList ++ [v]).length = t.toList.length + 1` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hperm, mD_coe hθ, lD_eq θ 0 (t.toList ++ [v]) hlen, iteratedFDeriv_succ_apply_right]`. Establish `hf : ContDiffAt ℂ ω (fderiv ℂ θ) 0` using `hθ.fderiv_right (by simp)`. Establish `hcomp : (fun y => fderiv ℂ θ y v) = (ContinuousLinearMap.apply ℂ ℂ v) ∘ (fderiv ℂ θ)` using `rfl`. Unfold `mD lD`. Rewrite using `[hcomp, ContinuousLinearMap.iteratedFDeriv_comp_left _ hf le_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.compContinuousMultilinearMap_coe, Function.comp_apply, ContinuousLinearMap.apply_apply]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Fin.init]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `List.getElem_append_left i.isLt`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem mD_cons_deriv {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) (v : Fin g → ℂ) (t : Multiset (Fin g → ℂ)) :
     mD θ 0 (v ::ₘ t) = mD (fun y => fderiv ℂ θ y v) 0 t := by
@@ -134,14 +134,14 @@ theorem mD_cons_deriv {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ
   · simp
 
 /- English proof (translation)
-The claim follows from `(hθ.fderiv_right (by simp)).clm_apply contDiffAt_const`.
+A detailed English derivation is pending.
 -/
 theorem deriv_analytic {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) (v : Fin g → ℂ) :
     ContDiffAt ℂ ω (fun y => fderiv ℂ θ y v) 0 :=
   (hθ.fderiv_right (by simp)).clm_apply contDiffAt_const
 
 /- English proof (translation)
-Use extensionality with `n`. Use `show mD θ 0 (dirs n + v ::ₘ s) / fct n = mD (fun y => fderiv ℂ θ y v) 0 (dirs n + s) / fct n`. Rewrite using `[Multiset.add_cons, mD_cons_deriv hθ]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tay_cons_deriv {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) (v : Fin g → ℂ) (s : Multiset (Fin g → ℂ)) :
     tay θ (v ::ₘ s) = tay (fun y => fderiv ℂ θ y v) s := by
@@ -150,13 +150,13 @@ theorem tay_cons_deriv {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω �
   rw [Multiset.add_cons, mD_cons_deriv hθ]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_pderiv]`. Use `show mD θ 0 (dirs (n + Finsupp.single ((0 : Fin 1), j) 1) + 0) / fct (n + Finsupp.single ((0 : Fin 1), j) 1) * ((n ((0 : Fin 1), j) : ℂ) + 1) = mD (fun y => fderiv ℂ θ y (Pi.single j 1)) 0 (dirs n + 0) / fct n`. Establish `hd : dirs (n + Finsupp.single ((0 : Fin 1), j) 1) = (Pi.single j 1 : Fin g → ℂ) ::ₘ dirs n`. Unfold `dirs`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.toMultiset_add, Finsupp.toMultiset_single, one_nsmul, Multiset.map_add, Multiset.map_singleton, add_comm, Multiset.singleton_add]`. Establish `hf : fct (n + Finsupp.single ((0 : Fin 1), j) 1) = fct n * ((n ((0 : Fin 1), j) : ℂ) + 1)`. Unfold `fct`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ ((0 : Fin 1), j)), ← Finset.mul_prod_erase Finset.univ (fun p => ((n p).factorial : ℂ)) (Finset.mem_univ ((0 : Fin 1), j))]`. Establish `hrest : ∏ x ∈ Finset.univ.erase ((0 : Fin 1), j), (((n + Finsupp.single ((0 : Fin 1), j) 1 : Fin 1 × Fin g →₀ ℕ) x).factorial : ℂ) = ∏ x ∈ Finset.univ.erase ((0 : Fin 1), j), ((n x).factorial : ℂ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.add_apply, Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hx), add_zero]`. Rewrite using `[hrest, Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hne : ((n ((0 : Fin 1), j) : ℂ) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero _`. Rewrite using `[add_zero, add_zero, hd, mD_cons_deriv hθ, hf, ← div_div, div_mul_cancel₀ _ hne]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) (j : Fin g) :
     pderiv ℂ ((0 : Fin 1), j) (tay θ 0) = tay (fun y => fderiv ℂ θ y (Pi.single j 1)) 0 := by
@@ -183,7 +183,7 @@ theorem pderiv_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0)
   rw [add_zero, add_zero, hd, mD_cons_deriv hθ, hf, ← div_div, div_mul_cancel₀ _ hne]
 
 /- English proof (translation)
-Use `filter_upwards [hf.eventually (by simp), hh.eventually (by simp)] with y hy1 hy2`. Rewrite using `[fderiv_mul (hy1.differentiableAt (by simp)) (hy2.differentiableAt (by simp))]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, Pi.add_apply, Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deriv_mul_ev {f h : (Fin g → ℂ) → ℂ} (hf : ContDiffAt ℂ ω f 0) (hh : ContDiffAt ℂ ω h 0) (v : Fin g → ℂ) :
     (fun y => fderiv ℂ (f * h) y v) =ᶠ[𝓝 0]
@@ -195,21 +195,19 @@ theorem deriv_mul_ev {f h : (Fin g → ℂ) → ℂ} (hf : ContDiffAt ℂ ω f 0
   ring
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `f h _ _ n hn`. Conclude with `absurd hn (Nat.not_lt_zero _)`. Consider the case `succ N ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f h hf hh n hn`. Distinguish the cases in `h0 : n = 0`. Substitute `h0` using the available equality. Simplify using `only [MvPowerSeries.coeff_zero_eq_constantCoeff_apply, map_mul]`. Simplify using `only [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `show mD (f * h) 0 (dirs 0 + 0) / fct 0 = (mD f 0 (dirs 0 + 0) / fct 0) * (mD h 0 (dirs 0 + 0) / fct 0)`. Simplify using `[dirs, fct, mD_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, n x ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `h0 (Finsupp.ext hc)`. Take `⟨i, j⟩` from `x`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Take `⟨m, hm⟩ : ∃ m, m = n - Finsupp.single ((0 : Fin 1), j) 1` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnm : n = m + Finsupp.single ((0 : Fin 1), j) 1`. Rewrite using `[hm]`. Conclude with `(tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 hx))).symm`. Establish `hmdeg : m.degree < N`. Establish `h1 : n.degree = m.degree + 1`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hnm, map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ F : MvPowerSeries (Fin 1 × Fin g) ℂ, coeff m (pderiv ℂ ((0 : Fin 1), j) F) = coeff n F * ((m ((0 : Fin 1), j) : ℂ) + 1)` using `fun F => by`. Rewrite using `[MvPowerSeries.coeff_pderiv, ← hnm]`. Establish `hc : ((m ((0 : Fin 1), j) : ℂ) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_right_cancel₀ hc` to reduce the goal to its premises. Rewrite using `[← key, ← key]`. Establish `hfh : ContDiffAt ℂ ω (f * h) 0` using `hf.mul hh`. Establish `hf'` using `deriv_analytic hf (Pi.single j 1)`. Establish `hh'` using `deriv_analytic hh (Pi.single j 1)`.
-
-Rewrite using `[pderiv_tay hfh, tay_local (deriv_mul_ev hf hh (Pi.single j 1)), tay_add (f := (fun y => fderiv ℂ f y (Pi.single j 1)) * h) (h := f * fun y => fderiv ℂ h y (Pi.single j 1)) (hf'.mul hh) (hf.mul hh'), map_add, Derivation.leibniz, pderiv_tay hf, pderiv_tay hh, ih _ _ hf' hh m hmdeg …`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem taylor_mul_coeff_low_degree (N : ℕ) : ∀ (f h : (Fin g → ℂ) → ℂ), ContDiffAt ℂ ω f 0 → ContDiffAt ℂ ω h 0 →
     ∀ n : Fin 1 × Fin g →₀ ℕ, n.degree < N → coeff n (tay (f * h) 0) = coeff n (tay f 0 * tay h 0) := by
@@ -256,7 +254,7 @@ theorem taylor_mul_coeff_low_degree (N : ℕ) : ∀ (f h : (Fin g → ℂ) → �
       ring
 
 /- English proof (translation)
-Use `⟨fun g f h hf hh => ⟨?_, tay_add hf hh 0⟩, fun g c => tay_const c, fun g f h hfh => tay_local hfh 0⟩` and prove the remaining obligations. Use extensionality with `n`. Conclude with `taylor_mul_coeff_low_degree (n.degree + 1) f h hf hh n (Nat.lt_succ_self _)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem taylor_multiplication : TaylorMulSt := by
   refine ⟨fun g f h hf hh => ⟨?_, tay_add hf hh 0⟩, fun g c => tay_const c,

@@ -24,9 +24,9 @@ structure PosCore (O Kf : Type) [CommRing O] [Field Kf] [Algebra O Kf] (p m : �
         β (((p : Kf) ^ N) • Q) P ∈ Set.range (algebraMap O Kf)
 
 /- English proof (translation)
-Take `⟨B, -, b2, b3, b4⟩` from `la_basis hinj m lam M hM`. Use `⟨(Module.Basis.span b3).map (LinearEquiv.ofEq _ _ b4), ?_⟩` and prove the remaining obligations. Rewrite using `[← b2]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show (((LinearEquiv.ofEq _ _ b4) (Module.Basis.span b3 i) : ↥(dualWeyl Kf (m + 1) (m + 1) (nuOf lam))) : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf) = _`. Rewrite using `[LinearEquiv.coe_ofEq_apply]`. Conclude with `congrArg Subtype.val (Module.Basis.span_apply b3 i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latBasis {O Kf : Type} [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
     (hinj : Function.Injective (algebraMap O Kf)) (m : ℕ) (lam : Fin (m + 1) → ℤ)
@@ -45,13 +45,13 @@ theorem latBasis {O Kf : Type} [CommRing O] [IsDomain O] [Field Kf] [Algebra O K
   exact congrArg Subtype.val (Module.Basis.span_apply b3 i)
 
 /- English proof (translation)
-Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨i, rfl⟩` from `hv`. Rewrite using `[Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨1, map_one _⟩`. Conclude with `⟨0, map_zero _⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨a1, h1⟩` from `hu`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a2, h2⟩` from `hv`. Conclude with `⟨a1 + a2, by rw [map_add, map_add, Finsupp.add_apply, h1, h2]⟩`. Consider the case `smul c v _ hv`. Take `⟨a1, h1⟩` from `hv`. Use `⟨c * a1, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul Kf c v, map_smul, Finsupp.smul_apply, map_mul, h1, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem repr_int {O Kf V : Type} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup V] [Module Kf V]
     [Module O V] [IsScalarTower O Kf V] {I : Type} (Z : Module.Basis I Kf V) (P : V)
@@ -75,7 +75,7 @@ theorem repr_int {O Kf V : Type} [CommRing O] [Field Kf] [Algebra O Kf] [AddComm
     rw [← algebraMap_smul Kf c v, map_smul, Finsupp.smul_apply, map_mul, h1, smul_eq_mul]
 
 /- English proof (translation)
-Establish `h1 : LinearIndependent Kf (fun i => ((Z i : Vs) : X))` using `Z.linearIndependent.map' Vs.subtype (Submodule.ker_subtype _)`. Conclude with `h1.restrict_scalars (by`. Introduce `a b hab`. Apply `hinj` to reduce the goal to its premises. Simplify `hab)` using `[Algebra.smul_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem li_coe {O Kf X : Type} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X] [Module Kf X]
     [Module O X] [IsScalarTower O Kf X] (hinj : Function.Injective (algebraMap O Kf)) {I : Type}
@@ -88,37 +88,31 @@ theorem li_coe {O Kf X : Type} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGr
     simpa [Algebra.smul_def] using hab)
 
 /- English proof (translation)
-Substitute `hVs` using the available equality. Establish `hinj : Function.Injective (algebraMap O Kf)` using `IsFractionRing.injective O Kf`. Establish `hanti` using `kp_lamAt_antitone lam0 hd`. Establish `hfin : ∀ s : Fin n', Finite ↥(ssIdx (m + 1) (m + 1) (nuOf (lamAt lam0 s)))` using `fun s => (sSIdxFinite (m + 1) (m + 1) (nuOf (lamAt lam0 s))).to_subtype`. Set `_ : ∀ s : Fin n', Fintype ↥(ssIdx (m + 1) (m + 1) (nuOf (lamAt lam0 s)))` to `fun s => Fintype.ofFinite _`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set V : Fin n' → Submodule Kf (MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf) := fun s => dualWeyl Kf (m + 1) (m + 1) (nuOf (lamAt lam0 s)) with hV`. Establish `hb` using `fun s : Fin n' => latBasis (O := O) hinj m (lamAt lam0 s) 1 (by simp)`. Use `choose b _ using hb`. Take `⟨Ψ, hΨ⟩` from `psi_exists V β b`. Use `⟨Ψ, fun Ms hMs => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMs' : ∀ s, IsUnit (((Ms s)⁻¹).transpose).det` using `fun s => det_invT _ (hMs s)`. Establish `hZ` using `fun s : Fin n' => latBasis (O := O) hinj m (lamAt lam0 s) (Ms s) (hMs s)`. Use `choose Z hZ using hZ`. Take `⟨z, hz⟩` from `prodBasis V Z`. Take `⟨z', hz'⟩` from `prodBasis V (fun s => dualB (β s) (Z s))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hH : ∀ Ns : Fin n' → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf, (∀ s, IsUnit (Ns s).det) → Hten O lam0 (fun s => colSpan O (Ns s)) = tensorLat O Kf (fun s => nablaLTw O Kf m (lamAt lam0 s) (Ns s))`. Introduce `Ns hNs`. Unfold `Hten`. Use `congr 1`. Use function extensionality and compare the values at `s`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[H0_eq_twisted_nabla (la_indep hinj) _ _ (hanti s) _ (hNs s)]`. Establish `hΛ : (Hten O lam0 fun s => colSpan O (Ms s)).comap ((tensorLat Kf Kf V).subtype.restrictScalars O) = Submodule.span O (Set.range z)`. Take `⟨-, oS⟩` from `tensorBasis O Kf (Fin n') (m + 1) (m + 1) _ _ (fun s i => ((Z s i : V s) : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf)) (fun s => li_coe hinj (V s) (Z s)) hZ`. Rewrite using `[hH Ms hMs, ← oS, ← comap_span_coe]`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `(hz i).symm`. Establish `hdual : dualLat O Kf (Submodule.span O (Set.range z)) = Submodule.span O (Set.range fun i => z.coord i)`. Use `dualLat_span (O := O) z (fun _ => 1) (fun _ => one_ne_zero)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hmap : (dualLat O Kf ((Hten O lam0 fun s => colSpan O (Ms s)).comap ((tensorLat Kf Kf V).subtype.restrictScalars O))).map (Ψ.toLinearMap.restrictScalars O) = Submodule.span O (Set.range z')`. Rewrite using `[hΛ, hdual, Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `hΨ Z z z' hz hz' j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap]`. Establish `hPmem : ∀ s (P : V s), (P : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf) ∈ nablaLTw O Kf m (lamAt lam0 s) (Ms s) → P ∈ Submodule.span O (Set.range (Z s))`. Introduce `s P hP`. Rewrite `hP` using `[← hZ s]`. Rewrite using `[← comap_span_coe]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hP`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `show ((z' j : tensorLat Kf Kf V) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) ∈ Hten O lam0 fun s => colSpan O ((Ms s)⁻¹).transpose`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hz', hH _ hMs']`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun s => ((dualB (β s) (Z s) (j s) : V s) : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf), fun s => ?_, rfl⟩` and prove the remaining obligations. Apply `(hβ s).up (Ms s) (hMs s)` to reduce the goal to its premises. Introduce `P hP`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[beta_dualB, Module.Basis.coord_apply]`. Conclude with `repr_int (Z s) P (hPmem s P hP) (j s)`. Introduce and unpack `_ ⟨Q, hQ, rfl⟩ show ((p : Kf) ^ (∑ s, N s)) • Q ∈ Submodule.span O (Set.range z')`. Rewrite using `[← comap_span_coe]`. Use `show ((((p : Kf) ^ (∑ s, N s)) • Q : tensorLat Kf Kf V) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) ∈ Submodule.span O (Set.range fun i => ((z' i : tensorLat Kf Kf V) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨-, oS'⟩` from `tensorBasis O Kf (Fin n') (m + 1) (m + 1) _ (fun s => Submodule.span O (Set.range fun i => ((dualB (β s) (Z s) i : V s) : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf))) (fun s i => ((dualB (β s) (Z s) i : V s) : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf)) (fun s => li_coe hinj …`. Establish `hr : (Set.range fun i => ((z' i : tensorLat Kf Kf V) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf)) = Set.range fun i : (∀ s, ↥(ssIdx (m + 1) (m + 1) (nuOf (lamAt lam0 s)))) => ∏ s, blockEmb Kf s ((dualB (β s) (Z s) (i s) : V s) : MvPolynomial (Fin (m + 1) × Fin (m + …`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `hz' i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hr, oS', Submodule.coe_smul, ← Finset.prod_pow_eq_pow_sum]`. Establish `hQ' : (Q : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) ∈ tensorLat O Kf (fun s => nablaLTw O Kf m (lamAt lam0 s) ((Ms s)⁻¹).transpose)`. Rewrite using `[← hH _ hMs']`. Conclude with `hQ`. Use `lb_tensor O Kf _ _ (fun s => (p : Kf) ^ N s) (fun s F hF => ?_) _ hQ'` and prove the remaining obligations.
-
-Establish `hFV : F ∈ V s` using `la_nablaLTw_le m (lamAt lam0 s) _ (hMs' s) F hF`. Establish `h1 : (((p : Kf) ^ N s) • (⟨F, hFV⟩ : V s)) ∈ Submodule.span O (Set.range fun i => (1 : Kf) • dualB (β s) (Z s) i)`. Apply `mem_span_of_coord (dualB (β s) (Z s)) (fun _ => 1) (fun _ => one_ne_zero)` to reduce the goal to its premises. Introduce `i`. Rewrite using `[inv_one, one_mul, Module.Basis.coord_apply, dualB_repr]`.
-
-Apply `(hβ s).low (Ms s) (hMs s) ⟨F, hFV⟩ (Z s i) hF` to reduce the goal to its premises. Rewrite using `[← hZ s]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Simplify using `only [one_smul] at h1`. Rewrite `h1` using `[← comap_span_coe]`.
-
-Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ten_side (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf] [IsFractionRing O Kf]
     (p : ℕ) {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : IsDominant lam0) (N : Fin n' → ℕ)

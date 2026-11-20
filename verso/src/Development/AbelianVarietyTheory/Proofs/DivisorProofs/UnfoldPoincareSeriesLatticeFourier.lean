@@ -11,25 +11,23 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensiona
 open MeasureTheory in
 open scoped Pointwise in
 /- English proof (translation)
-Use `set f : V → ℂ := fun v => Complex.exp (2 * Real.pi * Complex.I * (φ v : ℝ)) with hf`. Establish `hper : ∀ (g : L) (v : V), f (g +ᵥ v) = f v`. Introduce `g v`. Take `⟨z, hz⟩` from `hint g g.2`. Establish `hgv : (g +ᵥ v : V) = (g : V) + v` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf, hgv, map_add, hz]`. Use `push_cast`. Rewrite using `[mul_add, Complex.exp_add]`. Establish `: Complex.exp (2 * Real.pi * Complex.I * (z : ℂ)) = 1`. Rewrite using `[← Complex.exp_int_mul_two_pi_mul_I z]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Rewrite using `[this, one_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u, φ u ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφ (LinearMap.ext h)`. Use `set w : V := (1 / (2 * φ u)) • u with hw`. Establish `hφw : φ w = 1 / 2`. Rewrite using `[hw, map_smul, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `hshift : ∀ v, f (w + v) = -f v`. Introduce `v`. Simplify using `only [hf, map_add, hφw]`. Use `push_cast`. Rewrite using `[mul_add, Complex.exp_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Complex.exp (2 * Real.pi * Complex.I * (1 / 2 : ℂ)) = -1`. Rewrite using `[show 2 * (Real.pi : ℂ) * Complex.I * (1 / 2) = Real.pi * Complex.I by ring]`. Conclude with `Complex.exp_pi_mul_I`. Rewrite using `[this, neg_one_mul]`. Establish `hD' : IsAddFundamentalDomain L (w +ᵥ D) μ` using `hD.vadd_of_comm w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : ∫ v in D, f v ∂μ = ∫ v in w +ᵥ D, f v ∂μ` using `hD.setIntegral_eq hD' hper`. Establish `h2 : ∫ v in w +ᵥ D, f v ∂μ = ∫ v in D, f (w + v) ∂μ`. Rewrite using `[← integral_indicator (hDm.const_vadd w), ← integral_indicator hDm]`. Rewrite using `[← integral_add_left_eq_self (μ := μ) _ w]`. Use `congr 1`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use extensionality with `v`. Distinguish the cases in `hv : v ∈ D`. Rewrite using `[Set.indicator_of_mem hv, Set.indicator_of_mem (show w + v ∈ w +ᵥ D from Set.vadd_mem_vadd_set hv)]`. Rewrite using `[Set.indicator_of_notMem hv, Set.indicator_of_notMem]`. Rewrite using `[← vadd_eq_add, Set.vadd_mem_vadd_set_iff]` and apply the resulting hypothesis.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : ∫ v in D, f v ∂μ = -∫ v in D, f v ∂μ`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (2 : ℂ) * ∫ v in D, f v ∂μ = 0`. Rewrite using `[two_mul]`. Use `nth_rewrite 2 [h3]`.
-
-Expand and normalize the polynomial expressions, which then agree. Simplify using `using h4`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma setIntegral_exp_linear_fundamentalDomain_eq_zero {V : Type}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V]
@@ -88,65 +86,53 @@ open MeasureTheory in
 open scoped Pointwise in
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ _ Γ _ j hj C hfin hspan n t Q hQsupp ht hQper F hF a l ha hl0 hl hint H`. Use `set L : Submodule ℤ V := (C.map j).toIntSubmodule with hLdef`. Establish `hmemL : ∀ y, y ∈ L ↔ ∃ c ∈ C, j c = y` using `fun y => by`. Conclude with `AddSubgroup.mem_map`. Establish `hLset : (L : Set V) = j '' (C : Set Γ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `y`. Simplify using `only [SetLike.mem_coe, hmemL, Set.mem_image]`. Establish `hj0 : ∀ c, j c = 0 ↔ c = 0` using `fun c => ⟨fun h => hj (by rw [h, map_zero]), fun h => by`. Rewrite using `[h, map_zero]⟩`. Use `haveI : DiscreteTopology L := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[discreteTopology_iff_isOpen_singleton_zero, Metric.isOpen_singleton_iff]`. Use `set T : Finset ℝ := insert 1 (((hfin 1).toFinset.filter (· ≠ 0)).image fun c => ‖j c‖)`. Establish `hTne : T.Nonempty` using `Finset.insert_nonempty _ _`. Use `⟨T.min' hTne, ?_, ?_⟩` and prove the remaining obligations. Use `show 0 < T.min' hTne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.lt_min'_iff]`. Introduce `y hy`. Rewrite `hy` using `[Finset.mem_insert, Finset.mem_image]`. Break down `hy with rfl | ⟨c, hc, rfl⟩` into its components or cases. Conclude with `one_pos`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite `hc` using `[Finset.mem_filter]`. Conclude with `norm_pos_iff.2 fun h => hc.2 ((hj0 c).1 h)`. Introduce and unpack `⟨y, hy⟩ hdist`. Take `⟨c, hc, rfl⟩` from `(hmemL y).1 hy`. Establish `hlt : ‖j c‖ < T.min' hTne` using `by simpa [dist_eq_norm] using hdist`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle1 : T.min' hTne ≤ 1` using `Finset.min'_le _ _ (Finset.mem_insert_self _ _)`. Distinguish the cases in `hc0 : c = 0`. Use `ext`. Simplify using `[hc0]`. It suffices to derive a contradiction.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ‖j c‖ ∈ T` using `Finset.mem_insert_of_mem (Finset.mem_image.2 ⟨c, Finset.mem_filter.2 ⟨(Set.Finite.mem_toFinset _).2 ⟨hc, by linarith⟩, hc0⟩, rfl⟩)`. Conclude with `absurd (Finset.min'_le _ _ hmem) (not_le.2 hlt)`. Use `haveI : IsZLattice ℝ L := ⟨by rw [hLset]; exact hspan⟩`. Use `haveI : VAddInvariantMeasure L V μ := ⟨fun c s _ => measure_preimage_add μ (c : V) s⟩`. Use `set ψ : C → L := fun c => ⟨j c, (hmemL _).2 ⟨c, c.2, rfl⟩⟩ with hψ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψinj : Function.Injective ψ` using `fun c c' h => Subtype.ext (hj (congrArg Subtype.val h))`. Establish `hψsurj : Function.Surjective ψ` using `fun y => by`. Take `⟨c, hc, hcy⟩` from `(hmemL y).1 y.2`. Conclude with `⟨⟨c, hc⟩, Subtype.ext hcy⟩`. Use `haveI : Countable L := (Module.Free.chooseBasis ℤ L).repr.injective.countable`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Countable C := hψinj.countable`. Use `set D := ZSpan.fundamentalDomain ((Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L) with hDdef`. Establish `hD : IsAddFundamentalDomain L D μ` using `ZLattice.isAddFundamentalDomain _ μ`. Establish `hDfin : μ D < ⊤` using `(ZSpan.fundamentalDomain_isBounded _).measure_lt_top`. Use `⟨ZLattice.covolume L μ, ZLattice.covolume_pos L μ, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain L μ hD]`. Establish `hR : ∫ v in D, (∑' x, a x * Complex.exp (2 * Real.pi * Complex.I * (l x v : ℝ))) ∂μ = ((μ.real D : ℝ) : ℂ) * a 0`. Establish `hDm : MeasurableSet D` using `ZSpan.fundamentalDomain_measurableSet _`. Use `set E : Γ → V → ℂ := fun x v => Complex.exp (2 * Real.pi * Complex.I * (l x v : ℝ)) with hE`. Establish `hEnorm : ∀ x v, ‖E x v‖ₑ = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce `x v`. Rewrite using `[← ofReal_norm_eq_enorm]`. Simplify using `only [hE]`. Rewrite using `[show (2 * Real.pi * Complex.I * ((l x v : ℝ) : ℂ)) = ((2 * Real.pi * l x v : ℝ) : ℂ) * Complex.I by push_cast; ring, Complex.norm_exp_ofReal_mul_I, ENNReal.ofReal_one]`. Establish `hEcont : ∀ x, Continuous (E x)` using `fun x => by`.
+Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hE]`. Use `fun_prop`. Use `set s := Function.support a with hs`. Establish `hscount : s.Countable` using `ha.of_norm.countable_support`. Use `haveI : Countable s := hscount.to_subtype`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : ∀ v, ∑' x, a x * E x v = ∑' x : s, a x * E x v` using `fun v => (tsum_subtype_eq_of_support_subset fun x hx => by`. Simplify using `only [Function.mem_support] at hx ⊢`. Introduce `h; exact hx (by rw [h, zero_mul])).symm`. Establish `hchar : ∀ x, ∫ v in D, a x * E x v ∂μ = if x = 0 then ((μ.real D : ℝ) : ℂ) * a 0 else 0`. Introduce `x`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[integral_const_mul]`. Use `split_ifs with hx`. Substitute `hx` using the available equality. Simplify using `only [hE, hl0, LinearMap.zero_apply, Complex.ofReal_zero, mul_zero, Complex.exp_zero, setIntegral_const, Complex.real_smul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hax : a x = 0`. Rewrite using `[hax, zero_mul]`. Rewrite using `[setIntegral_exp_linear_fundamentalDomain_eq_zero μ L hD hDm (l x) (hl x hx) (fun y hy => by`. Take `⟨c, hc, rfl⟩` from `(hmemL y).1 hy`. Conclude with `hint x hax c hc), mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `show ∫ v in D, (∑' x, a x * E x v) ∂μ = _`. Repeatedly rewrite using `[hsub]`. Rewrite using `[integral_tsum]`. Rewrite using `[tsum_subtype_eq_of_support_subset (f := fun x => ∫ v in D, a x * E x v ∂μ)]`. Repeatedly rewrite using `[hchar]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `tsum_ite_eq 0 _`. Introduce `x hx`. Rewrite `hx` using `[Function.mem_support, hchar]`. Use `split_ifs at hx with h0`. Substitute `h0` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h; exact hx (by rw [h, mul_zero])`. Conclude with `absurd rfl hx`. Introduce `x`. Conclude with `((hEcont x).const_mul (a x) |>.aestronglyMeasurable)`. Repeatedly rewrite using `[enorm_mul, hEnorm, mul_one, lintegral_const, Measure.restrict_apply_univ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ENNReal.tsum_mul_right]`. Use `ENNReal.mul_ne_top ?_ hDfin.ne` and prove the remaining obligations. Repeatedly rewrite using `[enorm_eq_nnnorm]`. Use `ENNReal.tsum_coe_ne_top_iff_summable.2 ?_` and prove the remaining obligations. Rewrite using `[← NNReal.summable_coe]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `ha.subtype s`. Establish `hLHS : ∫ v in D, (∑' x, Q x * F (j x + v)) ∂μ = (∑ k, Q (t k)) * ∫ v, F v ∂μ`. Establish `hDm : MeasurableSet D` using `ZSpan.fundamentalDomain_measurableSet _`. Use `set e : Fin n × C → Γ := fun p => t p.1 + p.2 with he`. Establish `heinj : Function.Injective e`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨k, c⟩ ⟨k', c'⟩ h`. Simplify using `only [he] at h`. Establish `hk : k = k'` using `ht k k' (by`. Rewrite using `[show t k - t k' = c' - c by rw [sub_eq_sub_iff_add_eq_add, h, add_comm]]`. Conclude with `C.sub_mem c'.2 c.2)`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hk` using the available equality. Conclude with `Prod.ext rfl (Subtype.ext (add_left_cancel h))`. Establish `hsupp : ∀ v, Function.support (fun x => Q x * F (j x + v)) ⊆ Set.range e`. Introduce `v x hx`. Establish `hQx : Q x ≠ 0` using `fun h => hx (by simp [h])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `hQsupp x hQx`. Conclude with `⟨(k, ⟨x - t k, hk⟩), by simp [he]⟩`. Use `set g : Fin n × C → V → ℂ := fun p v => Q (t p.1) * F (j (t p.1) + (j p.2 + v)) with hg`. Establish `hrw : ∀ v, ∑' x, Q x * F (j x + v) = ∑' p, g p v`. Introduce `v`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← heinj.tsum_eq (hsupp v)]`. Use `tsum_congr fun p => ?_` and prove the remaining obligations. Simplify using `only [he, hg, map_add, hQper _ _ p.2.2, add_assoc]`. Establish `hunf : ∀ G : V → ℂ, Integrable G μ → ∫ v, G v ∂μ = ∑' c : C, ∫ v in D, G (j c + v) ∂μ`. Introduce `G hG`.
-
-Rewrite using `[hD.integral_eq_tsum' G hG, ← ((Equiv.ofBijective ψ ⟨hψinj, hψsurj⟩).trans (Equiv.neg L)).tsum_eq]`. Use `tsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[Equiv.trans_apply, Equiv.neg_apply, neg_neg]`. Both sides reduce to the same expression. Establish `hunfl : ∀ G : V → ENNReal, ∫⁻ v, G v ∂μ = ∑' c : C, ∫⁻ v in D, G (j c + v) ∂μ`.
-
-Introduce `G`. Rewrite using `[hD.lintegral_eq_tsum' G, ← ((Equiv.ofBijective ψ ⟨hψinj, hψsurj⟩).trans (Equiv.neg L)).tsum_eq]`. Use `tsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[Equiv.trans_apply, Equiv.neg_apply, neg_neg]`. Both sides reduce to the same expression.
-
-Establish `hfinite : ∑' p, ∫⁻ v in D, ‖g p v‖ₑ ∂μ ≠ ⊤`. Repeatedly rewrite using `[hg, enorm_mul]`. Repeatedly rewrite using `[lintegral_const_mul' _ _ enorm_ne_top]`. Rewrite using `[ENNReal.tsum_prod (f := fun k (c : C) => ‖Q (t k)‖ₑ * ∫⁻ v in D, ‖F (j (t k) + (j c + v))‖ₑ ∂μ), tsum_fintype]`. Use `(ENNReal.sum_lt_top.2 fun k _ => ?_).ne` and prove the remaining obligations.
-
-Rewrite using `[ENNReal.tsum_mul_left, ← hunfl (fun v => ‖F (j (t k) + v)‖ₑ)]`. Conclude with `ENNReal.mul_lt_top enorm_lt_top (hF.comp_add_left (j (t k))).hasFiniteIntegral`. Establish `hmeas : ∀ p, AEStronglyMeasurable (g p) (μ.restrict D)` using `fun p => (((hF.comp_add_left (j (t p.1))).comp_add_left (j p.2)).aestronglyMeasurable.const_mul _).restrict`. Establish `hsumm : Summable (fun p => ∫ v in D, g p v ∂μ)`. Use `Summable.of_norm_bounded (ENNReal.summable_toReal hfinite) fun p => ?_` and prove the remaining obligations.
-
-Use `(norm_integral_le_lintegral_norm _).trans_eq ?_` and prove the remaining obligations. Repeatedly rewrite using `[ofReal_norm_eq_enorm]`. Repeatedly rewrite using `[hrw]`. Rewrite using `[integral_tsum hmeas hfinite, hsumm.tsum_prod, tsum_fintype, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [hg, integral_const_mul]`. Rewrite using `[tsum_mul_left, ← hunf _ (hF.comp_add_left (j (t k))), integral_add_left_eq_self]`. Rewrite using `[← hLHS, ← hR]`. Conclude with `setIntegral_congr_fun (ZSpan.fundamentalDomain_measurableSet _) fun v _ => H v`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PoincareUnfold.unfold_poincare_fourier : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure]

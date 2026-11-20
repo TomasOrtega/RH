@@ -9,31 +9,27 @@ namespace Formalism.L2.G.Model
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.G.LatticeSystems
 
 /- English proof (translation)
-Use `set e : ℤ := lam (Fin.last m) with he`. Take `⟨b, hb, hwt⟩` from `lb_basis O (m + 1) (m + 1) (nuOf lam)`. Take `⟨k1, k2⟩` from `nablaLKBasis O Kf hinj (m + 1) (m + 1) (nuOf lam) b _ hb g hg`. Use `set ρ : ℕ := (Finset.univ.filter fun a : Fin (m + 1) => a.val < r).card with hρ`. Establish `hd : g.det ^ (-e) ≠ 0` using `zpow_ne_zero _ hg.ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set T : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf →ₗ[Kf] MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf := LinearMap.lsmul Kf _ (g.det ^ (-e)) with hT`. Establish `hTinj : Function.Injective T` using `fun x y hxy => smul_right_injective _ hd hxy`. Use `⟨fun i => T (rowAct Kf g⁻¹ (map (algebraMap O Kf) (b i))), fun i => ((∑ a : Fin (m + 1) with a.val < r, rowWt i.1 a : ℕ) : ℤ) + ρ * e, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `k1.map' T (LinearMap.ker_eq_bot.2 hTinj)`. Establish `: (Set.range fun i => T (rowAct Kf g⁻¹ (map (algebraMap O Kf) (b i)))) = T '' (Set.range fun i => rowAct Kf g⁻¹ (map (algebraMap O Kf) (b i)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, ← Submodule.map_span, k2]`. Establish `hT2 : T = (g.det ^ (-e)) • LinearMap.id`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[hT]`. Rewrite using `[hT2, Submodule.map_smul _ _ _ hd, Submodule.map_id]`. Introduce `i`. Establish `hle` using `hwt i r`. Establish `h3 : (∑ a : Fin (m + 1) with a.val < r, lam a) = ((∑ t : Fin (m + 1) with t.val < r, nuOf lam t : ℕ) : ℤ) + ρ * e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hρ]`. Use `push_cast`. Rewrite using `[Finset.card_eq_sum_ones]`. Use `push_cast`. Rewrite using `[Finset.sum_mul, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Establish `: 0 ≤ lam a - lam (Fin.last m)` using `sub_nonneg.2 (hlam (Fin.le_last a))`. Simplify using `only [nuOf, Int.toNat_of_nonneg this, he]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h3]`. Establish `: ((∑ a : Fin (m + 1) with a.val < r, rowWt i.1 a : ℕ) : ℤ) ≤ ((∑ t : Fin (m + 1) with t.val < r, nuOf lam t : ℕ) : ℤ)` using `by exact_mod_cast hle`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `c hc set t : Fin (m + 1) → Kf := fun a => if a.val < r then c⁻¹ else 1 with ht`. Establish `ht0 : ∀ a, t a ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `a`. Simplify using `only [ht]`. Use `split_ifs`. Conclude with `inv_ne_zero hc`. Conclude with `one_ne_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hD : Submodule.span O (Set.range fun i => (∏ a, t a ^ rowWt i.1 a)⁻¹ • rowAct Kf g⁻¹ (map (algebraMap O Kf) (b i))) = nablaL O Kf (m + 1) (m + 1) (fun t => (lam t - lam (Fin.last m)).toNat) (g * lb_D (m + 1) r c)` using `(nablaLDiag O Kf hinj (m + 1) (m + 1) (nuOf lam) b _ hb g t hg ht0).2`. Unfold `nablaLTw`. Rewrite using `[← hD, Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show c ^ (((∑ a : Fin (m + 1) with a.val < r, rowWt i.1 a : ℕ) : ℤ) + ρ * e) • (g.det ^ (-e) • rowAct Kf g⁻¹ (map (algebraMap O Kf) (b i))) = (g * lb_D (m + 1) r c).det ^ (-e) • ((∏ a, t a ^ rowWt i.1 a)⁻¹ • rowAct Kf g⁻¹ (map (algebraMap O Kf) (b i)))`. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Use `set π' : ℕ := ∑ a : Fin (m + 1) with a.val < r, rowWt i.1 a with hπ`. Establish `h1 : (g * lb_D (m + 1) r c).det = g.det * (c⁻¹) ^ ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_mul, lb_D, Matrix.det_diagonal, Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one]`. Establish `h2 : ∏ a, t a ^ rowWt i.1 a = (c⁻¹) ^ π'`. Rewrite using `[hπ, ← Finset.prod_pow_eq_pow_sum, Finset.prod_filter]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `a _`.
-
-Simplify using `only [ht]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h5 : ((c⁻¹) ^ ρ) ^ (-e) = c ^ ((ρ : ℤ) * e)`. Rewrite using `[inv_pow, inv_zpow, zpow_neg, inv_inv, ← zpow_natCast c ρ, ← zpow_mul]`. Establish `h6 : ((c⁻¹) ^ π')⁻¹ = c ^ π'` using `by rw [inv_pow, inv_inv]`.
-
-Rewrite using `[h1, h2, mul_zpow, h5, h6, zpow_add₀ hc, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pos_basis (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
     (hinj : Function.Injective (algebraMap O Kf)) (m r : ℕ) (lam : Fin (m + 1) → ℤ) (hlam : Antitone lam)
@@ -120,7 +116,7 @@ theorem pos_basis (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O 
     ring
 
 /- English proof (translation)
-Establish `h : (Set.range fun i => (f i : X)) = (Vs.subtype.restrictScalars O) '' Set.range f`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[h, ← Submodule.map_span, Submodule.comap_map_eq_of_injective]`. Conclude with `Subtype.val_injective`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_span_coe {O Kf X : Type} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X] [Module Kf X]
     [Module O X] [IsScalarTower O Kf X] {I : Type} (Vs : Submodule Kf X) (f : I → Vs) :
@@ -133,7 +129,7 @@ theorem comap_span_coe {O Kf X : Type} [CommRing O] [Field Kf] [Algebra O Kf] [A
   exact Subtype.val_injective
 
 /- English proof (translation)
-Unfold `scale`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem scale_span {O Kf X : Type} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X] [Module Kf X]
     [Module O X] [IsScalarTower O Kf X] {I : Type} (c : Kf) (f : I → X) :
@@ -143,21 +139,21 @@ theorem scale_span {O Kf X : Type} [CommRing O] [Field Kf] [Algebra O Kf] [AddCo
   rfl
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype I`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `φ hφ`. Establish `h1 : ∀ i, ∃ o : O, algebraMap O Kf o = φ (a i • x i)` using `fun i => hφ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `choose o ho using h1`.
+Split into cases according to the possible forms of the given data. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : φ = ∑ i, o i • ((a i)⁻¹ • x.coord i)`. Apply `x.ext` to reduce the goal to its premises. Introduce `k`. Rewrite using `[LinearMap.sum_apply, Finset.sum_eq_single k]`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_eq_same, ← algebraMap_smul Kf (o k), ho, map_smul, smul_eq_mul, smul_eq_mul, smul_eq_mul, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear denominators, using `[ha k]` for the nonvanishing conditions. Introduce `i _ hik`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_eq_of_ne (Ne.symm hik |>.symm), smul_zero, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Introduce `v hv`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨k, rfl⟩` from `hv`. Distinguish the cases in `hik : k = i`. Substitute `hik` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_eq_same, map_one, smul_eq_mul, smul_eq_mul, mul_one, inv_mul_cancel₀ (ha k)]`. Use `⟨0, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [LinearMap.smul_apply, map_smul, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_eq_of_ne (by first | exact hik | exact Ne.symm hik), map_zero, smul_zero, smul_zero]`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `add u v _ _ hu hv`. Take `⟨a1, h1⟩` from `hu`. Take `⟨a2, h2⟩` from `hv`. Conclude with `⟨a1 + a2, by rw [map_add, map_add, h1, h2]⟩`. Consider the case `smul c v _ hv`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a1, h1⟩` from `hv`. Use `⟨c * a1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h1, ← Algebra.smul_def, LinearMap.map_smul_of_tower]`.
+A detailed English derivation is pending.
 -/
 theorem dualLat_span {O Kf V : Type} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup V] [Module Kf V]
     [Module O V] [IsScalarTower O Kf V] {I : Type} [Finite I] (x : Module.Basis I Kf V) (a : I → Kf)
@@ -210,23 +206,21 @@ theorem dualLat_span {O Kf V : Type} [CommRing O] [Field Kf] [Algebra O Kf] [Add
       rw [map_mul, h1, ← Algebra.smul_def, LinearMap.map_smul_of_tower]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O Kf)` using `IsFractionRing.injective O Kf`. Establish `hanti` using `kp_lamAt_antitone lam0 hd`. Establish `hB` using `fun s : Fin n' => pos_basis O Kf hinj m r (lamAt lam0 s) (hanti s) (gs s) (hgs s)`. Use `choose X π b1 b2 b3 b4 using hB`. Establish `hV : Vsp Kf lam0 = tensorLat Kf Kf (fun s => dualWeyl Kf (m + 1) (m + 1) (nuOf (lamAt lam0 s)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Vsp`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[if_pos (hanti s)]`. Establish `hKK : IsFractionRing Kf Kf` using `jr_KK Kf`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨kL, kS⟩` from `tensorBasis Kf Kf (Fin n') (m + 1) (m + 1) _ _ X b1 b2`. Establish `hfin : ∀ s : Fin n', Finite ↥(ssIdx (m + 1) (m + 1) (nuOf (lamAt lam0 s)))` using `fun s => (sSIdxFinite (m + 1) (m + 1) (nuOf (lamAt lam0 s))).to_subtype`. Set `x : Module.Basis (∀ s, ↥(ssIdx (m + 1) (m + 1) (nuOf (lamAt lam0 s)))) Kf (Vsp Kf lam0)` to `(Module.Basis.span kL).map (LinearEquiv.ofEq _ _ (kS.trans hV.symm))`. Establish `hx : ∀ i, ((x i : Vsp Kf lam0) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) = ∏ s, blockEmb Kf s (X s (i s))`. Introduce `i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show (((LinearEquiv.ofEq _ _ (kS.trans hV.symm)) (Module.Basis.span kL i) : Vsp Kf lam0) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) = _`. Rewrite using `[LinearEquiv.coe_ofEq_apply]`. Conclude with `congrArg Subtype.val (Module.Basis.span_apply kL i)`. Use `⟨_, inferInstance, x, fun i => ∑ s, π s (i s), ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `Ar`. Conclude with `Finset.sum_le_sum fun s _ => b3 s (i s)`. Introduce `c hc`. Establish `hLI : ∀ s, LinearIndependent O (fun i => c ^ π s i • X s i)`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : LinearIndependent Kf (fun i => c ^ π s i • X s i)` using `(b1 s).units_smul (fun i => Units.mk0 (c ^ π s i) (zpow_ne_zero _ hc))`. Conclude with `h1.restrict_scalars (by`. Introduce `a b hab`. Apply `hinj` to reduce the goal to its premises. Simplify `hab)` using `[Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨-, oS⟩` from `tensorBasis O Kf (Fin n') (m + 1) (m + 1) _ _ (fun s i => c ^ π s i • X s i) hLI (fun s => b4 s c hc)`. Establish `hH : Hten O lam0 (fun s => colSpan O (gs s * lb_D (m + 1) r c)) = tensorLat O Kf (fun s => nablaLTw O Kf m (lamAt lam0 s) (gs s * lb_D (m + 1) r c))`. Unfold `Hten`. Use `congr 1`. Use function extensionality and compare the values at `s`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[H0_eq_twisted_nabla (la_indep hinj) _ _ (hanti s) _ (by rw [Matrix.det_mul]; exact (hgs s).mul (lb_D_det _ _ _ hc))]`. Unfold `toV`. Rewrite using `[hH, ← oS, ← comap_span_coe]`. Use `congr 3`. Use function extensionality and compare the values at `i`.
-
-Use `show c ^ (∑ s, π s (i s)) • ((x i : Vsp Kf lam0) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) = _`. Rewrite using `[hx]`. Simplify using `only [map_smul]`. Rewrite using `[Finset.prod_smul, lb_zpow_sum _ hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ten_basis (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf] [IsFractionRing O Kf]
     {n' m : ℕ} (r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : IsDominant lam0)
@@ -296,11 +290,9 @@ variable {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteVa
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O}
 
 /- English proof (translation)
-Introduce `h0`. Establish `hpK : (p : Kf) = algebraMap O Kf w ^ 2` using `by rw [← map_pow, h.w_sq, map_natCast]`. Establish `hpW : (p : W) ≠ 0` using `h.p_unif.ne_zero`. Use `haveI := h.frac_alt`. Establish `hpQ : (p : Qq) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (algebraMap W Qq)]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective W Qq)).2 hpW`. Establish `hpK' : (p : Kf) ≠ 0`. Rewrite using `[← map_natCast ι]`. Conclude with `(map_ne_zero ι).2 hpQ`.
-
-Conclude with `hpK' (by rw [hpK, h0]; simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem w_ne (h : HidaSetting p n' W Qq O Kf ι σ j w) : algebraMap O Kf w ≠ 0 := by
   intro h0
@@ -316,13 +308,13 @@ theorem w_ne (h : HidaSetting p n' W Qq O Kf ι σ j w) : algebraMap O Kf w ≠ 
   exact hpK' (by rw [hpK, h0]; simp)
 
 /- English proof (translation)
-Rewrite using `[← map_pow, h.w_sq, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem p_eq (h : HidaSetting p n' W Qq O Kf ι σ j w) : (p : Kf) = algebraMap O Kf w ^ 2 := by
   rw [← map_pow, h.w_sq, map_natCast]
 
 /- English proof (translation)
-The claim follows from `lb_edgeLat_of_basis (mkG h m r (fun _ _ => 0) (fun _ _ _ _ => le_rfl)) (0 : Fin 1) (restEdgeBasis _ _) e he`.
+A detailed English derivation is pending.
 -/
 theorem edgeLat (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (e : Edge W Qq (m + 1))
     (he : IsEdge p n' r e) :
@@ -334,14 +326,14 @@ theorem edgeLat (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (e : Edge
   lb_edgeLat_of_basis (mkG h m r (fun _ _ => 0) (fun _ _ _ _ => le_rfl)) (0 : Fin 1) (restEdgeBasis _ _) e he
 
 /- English proof (translation)
-Unfold `lb_D`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem lb_D_one {K : Type} [Field K] (k r : ℕ) : lb_D k r (1 : K) = 1 := by
   unfold lb_D
   simp
 
 /- English proof (translation)
-Unfold `lb_D`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp [sq, mul_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lb_D_sq {K : Type} [Field K] (k r : ℕ) (c : K) : lb_D k r c * lb_D k r c = lb_D k r (c ^ 2) := by
   unfold lb_D
@@ -351,21 +343,21 @@ theorem lb_D_sq {K : Type} [Field K] (k r : ℕ) (c : K) : lb_D k r c * lb_D k r
   split_ifs <;> simp [sq, mul_inv]
 
 /- English proof (translation)
-Use `h.frac_O` as an intermediate fact. Take `⟨gs, hgs, h1, h2, h3⟩` from `edgeLat h m r e he`. Take `⟨I, hI, x, π, hπ, hx⟩` from `ten_basis O Kf r lam0 hd (fun s : Fin n' => gs s.val) (fun s => hgs _)`. Establish `hw` using `w_ne h`. Establish `hp` using `p_eq h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (p : Kf) ≠ 0` using `by rw [hp]; exact pow_ne_zero _ hw`. Establish `hLe : Submodule.span O (Set.range fun i => (algebraMap O Kf w ^ π i) • x i) = HLe p ι σ w lam0 e`. Rewrite using `[hx _ hw]`. Unfold `HLe`. Simplify using `only [h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `⟨I, hI, x, π, ?_, ?_, hLe, fun i => sub_nonneg.2 (hπ i), ?_, ?_⟩` and prove the remaining obligations. Use `hx 1 one_ne_zero` as an intermediate fact. Simplify using `only [one_zpow, one_smul, lb_D_one, Matrix.mul_one] at this`. Unfold `HL`. Simplify using `only [h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Rewrite using `[hx _ hp0]`. Unfold `HL`. Simplify using `only [h3, Matrix.mul_assoc, lb_D_sq, ← hp]`. Unfold `Re`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hLe, scale_span]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[smul_smul, ← zpow_add₀ hw]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Unfold `order`. Expand and normalize the polynomial expressions, which then agree. Unfold `Re'`. Rewrite using `[← hLe, dualLat_span x _ (fun i => zpow_ne_zero _ hw), scale_span]`. Use `congr 2`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[smul_smul]`. Use `congr 1`. Rewrite using `[hp, ← zpow_natCast (algebraMap O Kf w) 2, ← zpow_mul, ← zpow_neg, ← zpow_add₀ hw, ← zpow_add₀ hw]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Unfold `order`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem elementary_divisor_basis (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ)
     (hd : IsDominant lam0) (e : Edge W Qq (m + 1)) (he : IsEdge p n' r e) :
@@ -421,17 +413,17 @@ theorem elementary_divisor_basis (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r
 end
 
 /- English proof (translation)
-Introduce `p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w h m r lam0 hd e he`. Take `⟨I, hI, x, π, c1, c2, c3, c4, c5, c6⟩` from `elementary_divisor_basis h m r lam0 hd e he`. Consider the cases of `nonempty_fintype I`. Establish `hcard : Fintype.card I = dimV Kf lam0` using `(Module.finrank_eq_card_basis x).symm`. Set `E : I ≃ Fin (dimV Kf lam0)` to `Fintype.equivFinOfCardEq hcard`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hr : ∀ {Y : Type} (F : I → Y), (Set.range fun a => F (E.symm a)) = Set.range F` using `fun F => E.symm.surjective.range_comp F`. Establish `hcoord : ∀ a, (x.reindex E).coord a = x.coord (E.symm a)`. Introduce `a`. Use extensionality with `v`. Simplify using `[Module.Basis.coord_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨x.reindex E, fun a => π (E.symm a), ?_, ?_, ?_, fun a => c4 _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← c1]`. Use `congr 1`. Simplify using the standard rewrite rules. Rewrite using `[← c2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `using hr (fun i => ((p : Kf) ^ π i) • x i)`. Rewrite using `[← c3]`. Use `congr 1`. Simplify using `using hr (fun i => (algebraMap O Kf w ^ π i) • x i)`.
+Reduce the equality to equality of the corresponding arguments. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← c5]`. Use `congr 1`. Simplify using `using hr (fun i => (algebraMap O Kf w ^ (-order r lam0 (π i))) • x i)`. Rewrite using `[← c6]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hcoord]`. Conclude with `hr (fun i => (algebraMap O Kf w ^ (-order r lam0 (π i)) * (p : Kf) ^ (-π i)) • x.coord i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualHeightBasis : DualHeightBasis := by
   intro p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w h m r lam0 hd e he

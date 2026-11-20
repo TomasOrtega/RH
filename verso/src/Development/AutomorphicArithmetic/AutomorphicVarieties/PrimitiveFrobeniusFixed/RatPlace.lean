@@ -10,13 +10,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Establish `hl0 : l ≠ 0` using `hl.pos.ne'`. Establish `h1` using `(Kum.radClKer ℚ ∅ l hl0 a fun v _ => h v).1 (by haveI : IsPrincipalIdealRing (𝓞 ℚ) := IsPrincipalIdealRing.of_surjective Rat.ringOfIntegersEquiv.symm Rat.ringOfIntegersEquiv.symm.surjective haveI : Subsingleton (ClassGroup (𝓞 ℚ)) := (@Fintype.card_le_one_iff_subsingleton _ (_)).1 …`. Rewrite using `[Subsingleton.elim (Kum.radCl l a) 1]`. Conclude with `one_mem _)`. Take `⟨u, hu, _, ⟨b, rfl⟩, rfl⟩` from `Subgroup.mem_sup.1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv : ∀ v : HeightOneSpectrum (𝓞 ℚ), v.valuation ℚ (u : ℚ) = 1` using `fun v => hu v (by simp)`. Take `⟨x, hx⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 ℚ) ℚ (u : ℚ) fun v => (hv v).le`. Take `⟨y, hy⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 ℚ) ℚ (u : ℚ)⁻¹ fun v => by`. Rewrite using `[map_inv₀, hv v, inv_one]`. Establish `hxy : x * y = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsFractionRing.injective (𝓞 ℚ) ℚ` to reduce the goal to its premises. Rewrite using `[map_mul, hx, hy, map_one, mul_inv_cancel₀ u.ne_zero]`. Establish `h2 : Rat.ringOfIntegersEquiv x * Rat.ringOfIntegersEquiv y = 1` using `by rw [← map_mul, hxy, map_one]`. Break down `Int.eq_one_or_neg_one_of_mul_eq_one h2 with e | e` into its components or cases. Establish `: x = 1` using `Rat.ringOfIntegersEquiv.injective (by rw [e, map_one])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨b, by simp [← hx, this]⟩`. Establish `: x = -1` using `Rat.ringOfIntegersEquiv.injective (by rw [e, map_neg, map_one])`. Conclude with `⟨-b, by simp [← hx, this, hl.neg_pow]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem rat_pow {l : ℕ} (hl : Odd l) (a : ℚˣ) (h : ∀ v : HeightOneSpectrum (𝓞 ℚ), (l : ℤ) ∣ Kum.ordv v a) :
     ∃ y : ℚ, (a : ℚ) = y ^ l := by
@@ -43,9 +43,9 @@ private theorem rat_pow {l : ℕ} (hl : Odd l) (a : ℚˣ) (h : ∀ v : HeightOn
     exact ⟨-b, by simp [← hx, this, hl.neg_pow]⟩
 
 /- English proof (translation)
-Use `⟨Rat.HeightOneSpectrum.natGenerator v, Rat.HeightOneSpectrum.prime_natGenerator v, fun w hw => ?_⟩` and prove the remaining obligations. Apply `Rat.HeightOneSpectrum.primesEquiv.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `(Nat.prime_dvd_prime_iff_eq (Rat.HeightOneSpectrum.prime_natGenerator w) (Rat.HeightOneSpectrum.prime_natGenerator v)).1 ?_` and prove the remaining obligations. Rewrite using `[Rat.HeightOneSpectrum.natGenerator_dvd_iff]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.mem_map_of_mem (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) hw` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem rat_place (v : HeightOneSpectrum (𝓞 ℚ)) :
     ∃ q : ℕ, q.Prime ∧ ∀ w : HeightOneSpectrum (𝓞 ℚ), (q : 𝓞 ℚ) ∈ w.asIdeal → w = v := by
@@ -59,17 +59,17 @@ private theorem rat_place (v : HeightOneSpectrum (𝓞 ℚ)) :
   simpa using this
 
 /- English proof (translation)
-Take `⟨β, a, ha, hβ⟩` from `Kum.radExists ℚ Ω l ζ η z hζ hη hz hc`. Take `⟨y, hy⟩` from `rat_pow hl a fun v => by`. Take `⟨q, hq, hv⟩` from `rat_place v`. Take `⟨A, hA, hA'⟩` from `hi q hq`. Take `⟨w, hw, -, hw'⟩` from `(placeBasic Ω).2.2.2.2.2.2.2.2.1 A q hq hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `hv w hw'`. Conclude with `Kum.dvdOfIne ℚ Ω l A w β a hw ha fun g hg => by rw [hβ, hA' g hg, ZMod.val_zero, pow_zero, one_mul]`. Establish `hl0 : l ≠ 0` using `hl.pos.ne'`. Establish `hy0 : algebraMap ℚ Ω y ≠ 0`. Rewrite using `[map_ne_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `a.ne_zero (by rw [hy, zero_pow hl0])`. Establish `h1 : (β / algebraMap ℚ Ω y) ^ l = 1`. Rewrite using `[div_pow, ha, hy, map_pow, div_self (pow_ne_zero _ hy0)]`. Take `⟨j, hj, hj'⟩` from `hζ.eq_pow_of_pow_eq_one h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : β = ζ ^ j * algebraMap ℚ Ω y` using `by rw [hj', div_mul_cancel₀ _ hy0]`. Establish `key : ∀ g : G ℚ Ω, η g * j = z g + j` using `fun g => by`. Establish `h2` using `hβ g`. Rewrite `h2` using `[hb, map_mul, map_pow, hη, AlgEquiv.commutes, ← mul_assoc, ← pow_mul, ← pow_add]`. Establish `h3` using `mul_right_cancel₀ hy0 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[pow_eq_pow_mod _ hζ.pow_eq_one, pow_eq_pow_mod (_ + _) hζ.pow_eq_one]`. Establish `h4` using `hζ.pow_inj (Nat.mod_lt _ hl.pos) (Nat.mod_lt _ hl.pos) h3`. Establish `h5` using `(ZMod.natCast_eq_natCast_iff' _ _ l).2 h4`. Simplify using `using h5`. Establish `hj0 : (j : ZMod l) = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `key t`. Rewrite `h2` using `[h0, zero_add]`. Assume the negation of the conclusion as `hne`. Conclude with `ht (mul_right_cancel₀ hne (by rw [h2, one_mul]))`. Simplify `(key g).symm` using `[hj0]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem kum {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (hl : Odd l)
     {ζ : Ω} (hζ : IsPrimitiveRoot ζ l) (η z : G ℚ Ω → ZMod l) (hη : ∀ g : G ℚ Ω, g ζ = ζ ^ (η g).val)
@@ -107,7 +107,7 @@ private theorem kum {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω
   simpa [hj0] using (key g).symm
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `⟨(PadicInt.toZModPow 1 (cycZ ℚ Ω l g : ℤ_[l])).val, fun x hx => cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (G ℚ Ω) Ω g) x (by rwa [pow_one]), ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, ← pow_one (l : ℤ_[l]), ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cyc_nat {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (g : G ℚ Ω) :
     ∃ n : ℕ, (∀ x : Ω, x ^ l = 1 → g x = x ^ n) ∧ (l : ℤ_[l]) ∣ (cycZ ℚ Ω l g : ℤ_[l]) - n := by
@@ -119,7 +119,7 @@ private theorem cyc_nat {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
     map_natCast, ZMod.natCast_zmod_val, sub_self]
 
 /- English proof (translation)
-Establish `h : (l : ℤ_[l]) ∈ (IsLocalRing.maximalIdeal O).comap (algebraMap ℤ_[l] O)`. Rewrite using `[IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := ℤ_[l]) (IsLocalRing.maximalIdeal O)), PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem l_mem (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     [Module.Finite ℤ_[l] O] : (l : O) ∈ IsLocalRing.maximalIdeal O := by
@@ -130,33 +130,31 @@ private theorem l_mem (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLocalR
   simpa using h
 
 /- English proof (translation)
-The claim follows from `(Module.forall_dual_apply_eq_zero_iff (ZMod l) v).1 fun f => hv f.toAddMonoidHom`.
+A detailed English derivation is pending.
 -/
 private theorem sep' (l : ℕ) [Fact l.Prime] {V : Type} [AddCommGroup V] [Module (ZMod l) V] (v : V)
     (hv : ∀ f : V →+ ZMod l, f v = 0) : v = 0 :=
   (Module.forall_dual_apply_eq_zero_iff (ZMod l) v).1 fun f => hv f.toAddMonoidHom
 
 /- English proof (translation)
-The claim follows from `@sep' l _ V _ (AddCommGroup.zmodModule h) v hv`.
+A detailed English derivation is pending.
 -/
 private theorem sep (l : ℕ) [Fact l.Prime] {V : Type} [AddCommGroup V] (h : ∀ v : V, l • v = 0) (v : V)
     (hv : ∀ f : V →+ ZMod l, f v = 0) : v = 0 :=
   @sep' l _ V _ (AddCommGroup.zmodModule h) v hv
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `hp : l.Prime` using `Fact.out`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω l`. Take `⟨⟨h1, h2⟩, h3, -, h4, h5⟩` from `hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, -, hm⟩` from `h5 A₀ hA₀`. Establish `hm0 : m = 0`. Use `hm t ht.1` as an intermediate fact. Rewrite `this` using `[h3]`. Conclude with `hu.smul_left_cancel.1 (by rw [sub_smul, one_smul, ← this, smul_zero])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `V` to `Submodule.torsionBy O W π`. Establish `kill : ∀ y : O, π ∣ y → ∀ v : V, y • v = 0`. Introduce and unpack `_ ⟨y, rfl⟩ v`. Rewrite using `[mul_comm, mul_smul, Submodule.smul_torsionBy, smul_zero]`. Set `c' : G ℚ Ω → V` to `fun g => ⟨c g, congrFun h0 g⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlc : IsLocallyConstant c'` using `IsLocallyConstant.desc c' Subtype.val h1 Subtype.val_injective`. Establish `hcc : ∀ g h, c' (g * h) = c' g + n g • c' h` using `fun g h => by`. Establish `e` using `kill _ (hα g) (c' h)`. Rewrite `e` using `[sub_smul, sub_eq_zero, Nat.cast_smul_eq_nsmul]`. Rewrite using `[← e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (h2 g h)`. Use function extensionality and compare the values at `g`. Use `congrArg Subtype.val (sep l (fun v => by rw [← Nat.cast_smul_eq_nsmul O, kill _ hπ]) (c' g) fun f => ?_)` and prove the remaining obligations. Establish `z0 : ∀ g, c g = 0 → f (c' g) = 0` using `fun g hg => by rw [show c' g = 0 from Subtype.ext hg, map_zero]`. Use `kum hl hζ (fun g => (n g : ZMod l)) (fun g => f (c' g)) (fun g => ?_) (hlc.comp f) (fun g h => ?_) (fun q hq => ?_) t ht1 (z0 t h3) g` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Rewrite using `[hn g ζ hζ.pow_eq_one, ZMod.val_natCast, ← pow_eq_pow_mod _ hζ.pow_eq_one]`. Rewrite using `[hcc, map_add, map_nsmul, nsmul_eq_mul]`. Distinguish the cases in `e : q = l`. Conclude with `⟨A₀, e ▸ hA₀, fun g hg => z0 g (by rw [hm g hg.1, hm0, smul_zero, sub_zero])⟩`. Take `⟨A, hA⟩` from `(placeBasic Ω).1 q hq`.
-
-Conclude with `⟨A, hA, fun g hg => z0 g (h4 A ((placeBasic Ω).2.2.2.1 A q l ((Nat.coprime_primes hq hp).2 e) hA) g hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem sht_pi {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (hl : Odd l)
     {O W : Type} [CommRing O] [AddCommGroup W] [Module O W] (α : G ℚ Ω →* Oˣ) (π : O) (hπ : π ∣ (l : O))
@@ -197,29 +195,25 @@ private theorem sht_pi {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ
       exact ⟨A, hA, fun g hg => z0 g (h4 A ((placeBasic Ω).2.2.2.1 A q l ((Nat.coprime_primes hq hp).2 e) hA) g hg)⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ O _ _ _ _ _ hl2 α hα hun`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `hp : l.Prime` using `Fact.out`. Establish `hl : Odd l` using `hp.odd_of_ne_two hl2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hmax : ∀ y : O, y ∈ IsLocalRing.maximalIdeal O ↔ π ∣ y` using `fun y => by`. Rewrite using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Establish `hπl : π ∣ (l : O)` using `(hmax _).1 (l_mem l O)`. Use `choose n hn hn' using cyc_nat (Ω := Ω) l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hαn : ∀ g, π ∣ (α g : O) - n g` using `fun g => by`. Establish `e1 : π ∣ (α g : O) - (chiO ℚ Ω l O g : O)` using `(hmax _).1 (hα g)`. Establish `e2` using `map_dvd (algebraMap ℤ_[l] O) (hn' g)`. Rewrite `e2` using `[map_natCast, map_sub, map_natCast]`. Use `dvd_add e1 (hπl.trans e2)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[show (chiO ℚ Ω l O g : O) = algebraMap ℤ_[l] O (cycZ ℚ Ω l g : ℤ_[l]) from rfl, sub_add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨A₀, hA₀⟩` from `(placeBasic Ω).1 l hp`. Take `⟨t, ht, htl⟩` from `(ineTau Ω l hp).1 A₀ hA₀ (-1)`. Establish `ht1 : (n t : ZMod l) ≠ 1` using `fun e => by`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `(hn t ζ hζ.pow_eq_one).symm.trans (htl ζ hζ.pow_eq_one)`. Rewrite `h3` using `[pow_eq_pow_mod _ hζ.pow_eq_one]`. Establish `h4` using `hζ.pow_inj (Nat.mod_lt _ hl.pos) (ZMod.val_lt _) h3`. Rewrite `h4` using `[← ZMod.val_natCast, e]`. Establish `h5` using `ZMod.val_injective l h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `haveI : Fact (2 < l) := ⟨lt_of_le_of_ne hp.two_le hl2.symm⟩`. Conclude with `ZMod.neg_one_ne_one (by simpa using h5.symm)`. Establish `hu : IsUnit ((α t : O) - 1)`. Assume the negation of the conclusion as `hnu`. Establish `e1 : π ∣ (α t : O) - 1` using `(hmax _).1 hnu`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : π ∣ (n t : O) - 1` using `by simpa using dvd_sub e1 (hαn t)`. Establish `e3 : IsUnit ((n t : ℤ_[l]) - 1)`. Assume the negation of the conclusion as `h`. Establish `h' : (n t : ℤ_[l]) - 1 ∈ RingHom.ker (PadicInt.toZMod (p` using `l)) := by`. Rewrite using `[PadicInt.ker_toZMod]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Conclude with `ht1 (by simpa [sub_eq_zero] using h')`. Establish `e4` using `e3.map (algebraMap ℤ_[l] O)`. Rewrite `e4` using `[map_sub, map_natCast, map_one]`. Conclude with `hπ.not_isUnit (isUnit_of_dvd_unit e2 e4)`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `shaToShT Ω l O α t hu l hp.ne_zero hun (fun A h h' => absurd h h') 0 fun a ha => by`. Establish `hb : ShT (QO l O) α t l a = ⊥`. Establish `ind : ∀ (k : ℕ), ∀ c ∈ ShT (QO l O) α t l a, π ^ k • c = 0 → c = 0` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => intro c _ h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h`. Consider the case `succ k ih`. Introduce `c hc h`. Conclude with `ih c hc (sht_pi hl α π hπl n hn hαn A₀ hA₀ t ht ht1 hu a _ (Submodule.smul_mem _ _ hc) (by rw [← mul_smul, ← pow_succ', h]))`. Take `⟨k, u, e⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hπ`.
-
-Use `(Submodule.eq_bot_iff _).2 fun c hc => ind k c hc ?_` and prove the remaining obligations. Establish `h1 : a • c = 0` using `funext hc.2.2.1`. Rewrite `h1` using `[e, mul_smul]`. Conclude with `u.isUnit.smul_left_cancel.1 (by rw [h1, smul_zero])`. Rewrite using `[hb, Module.length_bot]`.
-
-Conclude with `Submodule.subsingleton_iff_eq_bot.1 (Module.length_eq_zero_iff.1 (nonpos_iff_eq_zero.1 key))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.exc :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O], l ≠ 2 → ∀ α : G ℚ Ω →* Oˣ, (∀ g, ¬ IsUnit ((α g : O) - (chiO ℚ Ω l O g : O))) →

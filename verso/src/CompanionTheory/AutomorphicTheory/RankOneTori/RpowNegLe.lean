@@ -17,7 +17,7 @@ namespace Formalism.MainStatements.RankOne
 variable {k r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Real.rpow_neg hx.le, Real.rpow_neg hy.le, ← Real.inv_rpow hx.le, ← Real.inv_rpow hy.le, ← Real.mul_rpow hC.le (inv_nonneg.mpr hy.le)]`. Apply `Real.rpow_le_rpow (inv_nonneg.mpr hx.le) _ hb` to reduce the goal to its premises. Rewrite using `[← div_eq_mul_inv, inv_eq_one_div, div_le_div_iff₀ hx hy]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rpow_neg_le {x y C b : ℝ} (hx : 0 < x) (hy : 0 < y) (hC : 0 < C) (hb : 0 ≤ b) (h : y ≤ C * x) :
     x ^ (-b) ≤ C ^ b * y ^ (-b) := by
@@ -28,17 +28,15 @@ theorem rpow_neg_le {x y C b : ℝ} (hx : 0 < x) (hy : 0 < y) (hC : 0 < C) (hb :
   linarith
 
 /- English proof (translation)
-Take `⟨D, hz, hz'⟩` from `bsetting_of k r hk L.z L.z' L.hz L.hz'`. Use `set ζ : ℂ := ((Tz k r L.z * Tz k r L.z' + 1 : ℝ) : ℂ) with hζ`. Establish `hTT : 0 < Tz k r L.z * Tz k r L.z'` using `mul_pos L.hz.2 L.hz'.2`. Establish `hq : Tz k r D.z * Tz k r D.z' < Complex.normSq ζ`. Rewrite using `[hz, hz', hζ, Complex.normSq_ofReal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hsec` using `D.sec.2 ζ hq`. Establish `hdom` using `P.big_cell_domain k r ℂ ℂ D (c, ζ) ⟨hc, hq⟩`. Use `set d : Fin (r + 1) → ℂ := Fin.snoc c ζ with hd`. Establish `hZ` using `P.PBM.zhat_bigCell_pt D d (by simpa [hd] using hq)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hZ` using `[P.PBJ.Dens.ptMatN_bigPt, P.PBM.hMat_one]`. Establish `e1 : (fun i => d i.castSucc) = c` using `by funext i; simp [hd]`. Establish `e2 : d (Fin.last r) = ζ` using `by simp [hd]`. Rewrite `hZ` using `[e1, e2, hz, hz']`. Use `⟨D.μsec ζ, hsec.1, ⟨bigCellMem k r c _ hc hsec.1, ?_⟩, 1, d, fun a => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hdom.2.2` as an intermediate fact. Rewrite `this` using `[hz, hz']`. Conclude with `this`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => rw [e2, hζ]; exact Complex.ofReal_ne_zero.2 (by linarith)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Consider the case `cast i => simpa [hd] using hc i`. Rewrite using `[hZ]`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
-
-Simplify using `[C2.monoP]`. Simplify using `[C2.monoP, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pos (hk : 1 ≤ k) (L : LocBessel k r) (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) :
     ∃ μ₁ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ, μ₁ᴴ * Hb k * μ₁ = Hb k ∧
@@ -71,43 +69,37 @@ theorem exists_pos (hk : 1 ≤ k) (L : LocBessel k r) (c : Fin r → ℂ) (hc : 
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Take `⟨μ₁, hμ₁, hpos, hmono⟩` from `exists_pos hk L c hc`. Establish `hstd : C2.Std k r L.z L.z'` using `⟨hk, L.hz, L.hz'⟩`. Establish `hNI` using `P.norm_inverse_bound k r`. Use `set γ₁ := bigCell k r c μ₁ with hγ₁`. Use `set γ := bigCell k r c μ with hγ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγU : γ ∈ UH (Hpk k r)` using `bigCellMem k r c μ hc hμ`. Use `set T : ℝ := B.gN (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) with hT`. Establish `hT1 : 1 ≤ T` using `(hNI.2 1 WeylGroupFacts.uh_one).2`. Take `⟨ρh, hρh⟩` from `et_equiv L hstd hpos hmono T`. Establish `hR : RStab k r γ₁ = {1}` using `Lem.orbRStabBig k r c μ₁ hc hμ₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hET : ∀ n : Mt k r, Matrix.of n ∈ Nset k r → n ∈ ET (k` using `k) (r := r) L.z L.z' γ₁ T := by`. Introduce `n hn`. Take `⟨h1, h2⟩` from `hρh n hn`. Establish `h11 : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ RStab k r γ₁` using `by rw [hR]; rfl`. Establish `h3` using `(h2 (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) h11).2 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hR]`. Establish `h1' : ρh n = 1` using `h1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) * ρh n ∈ RStab k r γ₁`. Rewrite using `[h1', Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h11`. Use `show B.gN ((1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) * ρh n) ≤ T`. Rewrite using `[h1', Matrix.one_mul])`. Establish `e : (fun i j => (Matrix.of (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) * Matrix.of n) i j : Mt k r) = n`. Use function extensionality and compare the values at `i j`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ((1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) * Matrix.of n) i j = n i j`. Rewrite using `[Matrix.one_mul]`. Both sides reduce to the same expression. Rewrite `h3` using `[e]`. Then use the resulting hypothesis. Take `⟨K, hK, hbd⟩` from `pair_bound L hstd hpos hmono T hT1 b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m0` using `P.TwoByOneBlock.emb_mem_UWb (r := r) hμ`. Establish `m1` using `P.TwoByOneBlock.emb_mem_UWb (r := r) hμ₁`. Establish `w0 : B2.embWb k r μ ∈ UWset k r 0` using `⟨m0.1, m0.2, by simp⟩`. Establish `w1 : B2.embWb k r μ₁ ∈ UWset k r 0` using `⟨m1.1, m1.2, by simp⟩`. Establish `hW` using `P.weyl_subgroup_closed k r 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set ρ := (B2.embWb k r μ₁)⁻¹ * B2.embWb k r μ with hρ`. Establish `hρW : ρ ∈ UWset k r 0` using `hW.mul_mem _ (hW.inv_mem _ w1) _ w0`. Establish `hρU : ρ ∈ UH (Hpk k r)` using `hρW.1`. Establish `hρu` using `uh_isUnit hρU`. Establish `hfac : γ = γ₁ * ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hγ, hγ₁, (P.bruhat_big_cell_factorization k r c μ).1, (P.bruhat_big_cell_factorization k r c μ₁).1, hρ, Matrix.mul_assoc, ← Matrix.mul_assoc (B2.embWb k r μ₁), Matrix.mul_nonsing_inv _ (uh_isUnit w1.1), Matrix.one_mul]`. Take `⟨cW, hcW1, hcW⟩` from `P.WeakDominationMajorants.Asm.uw_bound L.z' L.hz'.1 L.hz'.2`. Use `set Γ := B.gN ρ with hΓ`. Establish `hΓ1 : 1 ≤ Γ` using `(hNI.2 ρ hρU).2`. Establish `hΓ0 : 0 < Γ` using `lt_of_lt_of_le one_pos hΓ1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : 0 < cW` using `lt_of_lt_of_le one_pos hcW1`. Establish `hA0 : 0 < cW * Γ` using `mul_pos hc0 hΓ0`. Establish `hB0 : 0 < Γ * Γ * cW` using `mul_pos (mul_pos hΓ0 hΓ0) hc0`. Use `set β : ℝ := b / (2 * (5 * (r + 1) ^ 2 : ℕ)) with hβ`. Establish `hβ0 : 0 ≤ β` using `by positivity`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(cW * Γ) ^ b * K * (Γ * Γ * cW) ^ β, mul_pos (mul_pos (Real.rpow_pos_of_pos hA0 _) hK) (Real.rpow_pos_of_pos hB0 _), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨hn, hn', hh, hh'⟩` from `hx`. Use `set n := Matrix.of x.1.2`. Use `set h := Matrix.of x.1.1`. Use `set n' := Matrix.of x.2.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set h' := Matrix.of x.2.1`. Use `set m := ρ * n' * ρ⁻¹ with hm`. Establish `hmN : m ∈ Nset k r` using `PI.QuotSetU.UnitaryGroupMassFormula.SW.uw_conj_N hρW hn'`. Establish `h1W : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ UWset k r L.z'` using `(P.weyl_subgroup_closed k r L.z').one_mem`. Establish `hb1` using `hbd (x.1, ((1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ), m)) ⟨hn, hmN, hh, h1W⟩ (hET _ hn)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2 : B.gN (h⁻¹ * n⁻¹ * γ₁ * m * 1) ^ (-b) ≤ K * (B.gN (n * h) ^ (-β) * B.gN (m * 1) ^ (-β))` using `hb1`. Rewrite `hb2` using `[Matrix.mul_one, Matrix.mul_one]`. Establish `hMU : h⁻¹ * n⁻¹ * γ * n' * h' ∈ UH (Hpk k r)` using `WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_inv hh.1) (WeylGroupFacts.uh_inv hn.1)) hγU) hn'.1) hh'.1`. Establish `hM1U : h⁻¹ * n⁻¹ * γ₁ * m ∈ UH (Hpk k r)` using `WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_inv hh.1) (WeylGroupFacts.uh_inv hn.1)) hpos.1) hmN.1`. Establish `e1 : h⁻¹ * n⁻¹ * γ₁ * m = h⁻¹ * n⁻¹ * γ * n' * h' * (h'⁻¹ * ρ⁻¹)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfac, hm]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc h' h'⁻¹, Matrix.mul_nonsing_inv _ (uh_isUnit hh'.1), Matrix.one_mul]`. Establish `e2 : n' * h' = ρ⁻¹ * m * ρ * h'`. Rewrite using `[hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ρ⁻¹ ρ h', Matrix.nonsing_inv_mul _ hρu, Matrix.one_mul, ← Matrix.mul_assoc ρ⁻¹ ρ, Matrix.nonsing_inv_mul _ hρu, Matrix.one_mul]`. Establish `g0 : ∀ y : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, 0 ≤ B.gN y` using `fun y => P.gN_nonneg_bessel_integrability y`. Establish `hh'c : B.gN h' ≤ cW` using `hcW h' hh'`. Establish `i1 : B.gN (h⁻¹ * n⁻¹ * γ₁ * m) ≤ (cW * Γ) * B.gN (h⁻¹ * n⁻¹ * γ * n' * h')`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Use `(hNI.1 _ _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `mul_le_mul_of_nonneg_right ((hNI.1 _ _).trans ?_) (g0 _)` and prove the remaining obligations. Rewrite using `[(hNI.2 _ hh'.1).1, (hNI.2 _ hρU).1]`.
-
-Conclude with `mul_le_mul_of_nonneg_right hh'c (g0 _)`. Establish `i2 : B.gN (n' * h') ≤ (Γ * Γ * cW) * B.gN m`. Rewrite using `[e2]`. Establish `j1 : B.gN (ρ⁻¹ * m) ≤ Γ * B.gN m`. Use `hNI.1 ρ⁻¹ m` as an intermediate fact.
-
-Rewrite `this` using `[(hNI.2 _ hρU).1]`. Then use the resulting hypothesis. Establish `j2 : B.gN (ρ⁻¹ * m * ρ) ≤ Γ * B.gN m * Γ` using `(hNI.1 _ _).trans (mul_le_mul_of_nonneg_right j1 (g0 _))`. Combine the equalities or inequalities in the displayed calculation. Establish `p1` using `rpow_neg_le (lt_of_lt_of_le one_pos (hNI.2 _ hMU).2) (lt_of_lt_of_le one_pos (hNI.2 _ hM1U).2) hA0 hb i1`. Establish `p2` using `rpow_neg_le (lt_of_lt_of_le one_pos (hNI.2 _ hmN.1).2) (lt_of_lt_of_le one_pos (hNI.2 _ (WeylGroupFacts.uh_mul hn'.1 hh'.1)).2) hB0 hβ0 i2`.
-
-Use `show B.gN (h⁻¹ * n⁻¹ * γ * n' * h') ^ (-b) ≤ _`. Establish `q0 : 0 ≤ B.gN (n * h) ^ (-β)` using `Real.rpow_nonneg (g0 _) _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem big_bound (hk : 1 ≤ k) (L : LocBessel k r) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (hc : ∀ a, c a ≠ 0) (hμ : μᴴ * Hb k * μ = Hb k) (b : ℝ) (hb : 0 ≤ b) :
@@ -222,17 +214,15 @@ theorem big_bound (hk : 1 ≤ k) (L : LocBessel k r) (c : Fin r → ℂ) (μ : M
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hAG : 0 ≤ ThreeDimData.AG k r` using `by unfold ThreeDimData.AG; positivity`. Establish `hb0 : 0 ≤ b` using `le_trans (by positivity) hb.le`. Take `⟨K, hK, hbound⟩` from `big_bound hk L c μ hc hμ b hb0`. Use `set β : ℝ := b / (2 * ((5 * (r + 1) ^ 2 : ℕ) : ℝ)) with hβdef`. Establish `hβ : ThreeDimData.AG k r < β`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβdef, lt_div_iff₀ (by positivity)]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hI1` using `growth_side L.hz.1 L.hz.2 L.hμW.1 L.hμW.2 h0 h1 hβ`. Establish `hI2` using `growth_side L.hz'.1 L.hz'.2 L.hμW'.1 L.hμW'.2 h0 h1 hβ`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPgood : ∀ᵐ x ∂(pairMeas L), Good L x` using `by rw [ae_iff]; exact pairMeas_bad L`. Use `⟨(measurable_pairMaj _ b).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall (pairMaj_nonneg _ b))]`. Establish `hm1 : Measurable (fun p : Mt k r × Mt k r => ENNReal.ofReal (B.gN (Matrix.of p.2 * Matrix.of p.1) ^ (-β)))` using `((P.s3dx1S_gNc.comp (PI.WUN.continuous_of.comp continuous_snd |>.matrix_mul (PI.WUN.continuous_of.comp continuous_fst))).measurable.pow_const _).ennreal_ofReal`. Establish `hfm : Measurable (fun x : PairSp k r => ENNReal.ofReal (B.gN (Matrix.of x.1.2 * Matrix.of x.1.1) ^ (-β)) * ENNReal.ofReal (B.gN (Matrix.of x.2.2 * Matrix.of x.2.1) ^ (-β)))` using `(hm1.comp measurable_fst).mul (hm1.comp measurable_snd)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ᵐ x ∂(pairMeas L), ENNReal.ofReal (Pv.AmpDD.pairMaj (bigCell k r c μ) b x) ≤ ENNReal.ofReal K * (ENNReal.ofReal (B.gN (Matrix.of x.1.2 * Matrix.of x.1.1) ^ (-β)) * ENNReal.ofReal (B.gN (Matrix.of x.2.2 * Matrix.of x.2.1) ^ (-β)))`. Use `hPgood.mono fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (Real.rpow_nonneg (P.gN_nonneg_bessel_integrability _) _), ← ENNReal.ofReal_mul hK.le]`. Conclude with `ENNReal.ofReal_le_ofReal (hbound x hx)`. Use `(lintegral_mono_ae hpt).trans_lt ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lintegral_const_mul _ hfm]`. Establish `: SFinite L.μN` using `sfin_muN L`. Establish `: SigmaFinite L.μW` using `L.hμW.1.1`. Establish `: SigmaFinite L.μW'` using `L.hμW'.1.1`. Establish `hprod : ∫⁻ x, ENNReal.ofReal (B.gN (Matrix.of x.1.2 * Matrix.of x.1.1) ^ (-β)) * ENNReal.ofReal (B.gN (Matrix.of x.2.2 * Matrix.of x.2.1) ^ (-β)) ∂(pairMeas L) = (∫⁻ p, ENNReal.ofReal (B.gN (Matrix.of p.2 * Matrix.of p.1) ^ (-β)) ∂(L.μW.prod L.μN)) * ∫⁻ p, ENNReal.ofReal (B.gN (M …` using `lintegral_prod_mul hm1.aemeasurable hm1.aemeasurable`.
-
-Rewrite using `[hprod]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.mul_lt_top hI1 hI2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem big_int (hk : 1 ≤ k) (L : LocBessel k r) (h0 : L.κN ≠ 0) (h1 : L.κN ≠ ⊤) (c : Fin r → ℂ)
     (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hc : ∀ a, c a ≠ 0) (hμ : μᴴ * Hb k * μ = Hb k) {b : ℝ}

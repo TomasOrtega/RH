@@ -5,7 +5,7 @@ open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClassFin.act_conjTranspose_of_isMinVec | exact GlobalTheory.ClassFin.act_conjTranspose_of_isMinVec | (intros; apply GlobalTheory.ClassFin.act_conjTranspose_of_isMinVec <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.minNormTensor_stabilizer_conjTranspose_invariant : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (m : ℕ) (d : Fin m → ℕ) (v : TIdx ι d → ℂ), IsMinVec d v → ∀ g : Matrix ι ι ℂ, g.det = 1 → act d v g = v → act d v gᴴ = v := by
   first | exact @GlobalTheory.ClassFin.act_conjTranspose_of_isMinVec | exact GlobalTheory.ClassFin.act_conjTranspose_of_isMinVec | (intros; apply GlobalTheory.ClassFin.act_conjTranspose_of_isMinVec <;> assumption)

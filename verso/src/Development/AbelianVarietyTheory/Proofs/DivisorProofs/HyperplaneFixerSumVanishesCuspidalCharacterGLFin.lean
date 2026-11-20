@@ -11,13 +11,13 @@ open scoped Classical
 namespace GlobalTheory.Shin.FreeCusp
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_one {F : Type} [Field F] (M : Matrix (Fin 1) (Fin 1) F) : M.charpoly = X - C (M 0 0) := by
   rw [Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]
 
 /- English proof (translation)
-Unfold `rootSum`. Rewrite using `[Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Polynomial.roots_X_sub_C]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rootSum_X_sub_C {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) (k : ℕ) (a : F) :
     rootSum θ k (X - C a) = θ (algebraMap F (AlgebraicClosure F) a) ^ k := by
@@ -26,11 +26,9 @@ theorem rootSum_X_sub_C {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) 
   simp
 
 /- English proof (translation)
-Establish `hs` using `(rootSum_isAdditive_and_pow_X_sub_one F θ k).1`. Unfold `cusp psiG`. Rewrite using `[psi_eq]`. Establish `hz : ∑ᶠ W : {W : Submodule F (Fin 1 → F) // W ≠ ⊤ ∧ ∀ v ∈ W, Matrix.toLin' (x : Matrix (Fin 1) (Fin 1) F) v ∈ W}, psi (rootSum θ k) W.1 ((Matrix.toLin' (x : Matrix (Fin 1) (Fin 1) F)).restrict W.2.2) = 0`. Use `finsum_eq_zero_of_forall_eq_zero fun W => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `Submodule.finrank_lt W.2.1`. Rewrite `h1` using `[Module.finrank_fin_fun]`. Use `haveI : Subsingleton W.1 := (Module.finrank_zero_iff (R := F)).mp (by omega)`. Conclude with `PsiPrimitive.psi_trivial _ hs _ _`. Rewrite using `[hz, sub_zero, Matrix.charpoly_toLin', charpoly_one, rootSum_X_sub_C]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cusp_one {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) (k : ℕ) (x : GL (Fin 1) F) :
     cusp θ 1 k x = θ (algebraMap F (AlgebraicClosure F) ((x : Matrix (Fin 1) (Fin 1) F) 0 0)) ^ k := by
@@ -49,17 +47,17 @@ theorem cusp_one {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) (k : �
   simp
 
 /- English proof (translation)
-Introduce `_`. Establish `hset : {x : GL (Fin 1) F | ∀ i j : Fin 1, (j : ℕ) + 1 < 1 → (x : Matrix (Fin 1) (Fin 1) F) i j = (1 : Matrix (Fin 1) (Fin 1) F) i j} = Set.univ` using `Set.eq_univ_of_forall fun x i j h => absurd h (by omega)`. Rewrite using `[hset, finsum_mem_univ]`. Use `letI := Fintype.ofFinite (GL (Fin 1) F)`. Rewrite using `[finsum_eq_sum_of_fintype]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Set `f : GL (Fin 1) F →* ℂ` to `(powMonoidHom k).comp (θ.comp ((algebraMap F (AlgebraicClosure F) : F →* AlgebraicClosure F).comp ((Units.coeHom F).comp Matrix.GeneralLinearGroup.det)))`. Establish `hf : ∀ x, f x = cusp θ 1 k x`. Introduce `x`. Rewrite using `[cusp_one]`. Simplify using `[f, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_congr rfl fun x _ => hf x]`. Use `sum_hom_units_eq_zero f ?_` and prove the remaining obligations. Introduce `h1`. Take `⟨u, hu⟩` from `IsCyclic.exists_ofOrder_eq_natCard (α := Fˣ)`. Set `x : GL (Fin 1) F` to `Matrix.GeneralLinearGroup.mk'' (Matrix.of fun _ _ => (u : F)) (by rw [Matrix.det_fin_one]; exact u.isUnit)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hx : f x = 1` using `by rw [h1]; rfl`. Establish `hx' : f x = θ (algebraMap F (AlgebraicClosure F) ((u : F) ^ k))`. Simplify using `[f, x, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_one, map_pow]`. Rewrite `hx` using `[hx', ← map_one θ]`. Establish `hne : algebraMap F (AlgebraicClosure F) ((u : F) ^ k) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[_root_.map_ne_zero]`. Conclude with `pow_ne_zero _ u.ne_zero`. Establish `h2` using `hθ _ _ hne one_ne_zero hx`. Rewrite `h2` using `[← map_one (algebraMap F (AlgebraicClosure F))]`. Establish `h3 : (u : F) ^ k = 1` using `(algebraMap F (AlgebraicClosure F)).injective h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : u ^ k = 1` using `Units.ext (by simpa using h3)`. Establish `h5` using `orderOf_dvd_iff_pow_eq_one.mpr h4`. Rewrite `h5` using `[hu, Nat.card_units]`. Conclude with `hk (Nat.modEq_zero_iff_dvd.mpr h5)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hfree_one {F : Type} [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ)
     (hθ : ∀ x y : AlgebraicClosure F, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (k : ℕ)
@@ -107,7 +105,7 @@ variable {F : Type} [Field F]
 def hyp {m : ℕ} (l : Fin m) : Submodule F (Fin m → F) := LinearMap.ker (LinearMap.proj l)
 
 /- English proof (translation)
-Simplify using `[hyp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_hyp {m : ℕ} (l : Fin m) (v : Fin m → F) : v ∈ hyp l ↔ v l = 0 := by
   simp [hyp]
@@ -115,7 +113,7 @@ theorem mem_hyp {m : ℕ} (l : Fin m) (v : Fin m → F) : v ∈ hyp l ↔ v l = 
 def dg {m : ℕ} (l : Fin m) (d : F) : Matrix (Fin m) (Fin m) F := Matrix.diagonal fun i => if i = l then d else 1
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[dg, hj]`. Simplify using `[dg, Matrix.one_apply, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dg_off {m : ℕ} (l : Fin m) (d : F) (i j : Fin m) (hj : j ≠ l) :
     dg l d i j = (1 : Matrix (Fin m) (Fin m) F) i j := by
@@ -124,11 +122,11 @@ theorem dg_off {m : ℕ} (l : Fin m) (d : F) (i j : Fin m) (hj : j ≠ l) :
   · simp [dg, Matrix.one_apply, h]
 
 /- English proof (translation)
-Use `⟨fun v => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_hyp, Matrix.toLin'_apply, Matrix.mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = l`. Substitute `hj` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[h2, zero_mul]`. Rewrite using `[h1 l j hj, zero_mul]`. Rewrite `hv` using `[mem_hyp]`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = l`. Substitute `hj` using the available equality. Rewrite using `[hv, mul_zero]`. Rewrite using `[h1 i j hj, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_nilRad_of {m : ℕ} (l : Fin m) (M : Matrix (Fin m) (Fin m) F)
     (h1 : ∀ i j, j ≠ l → M i j = 0) (h2 : M l l = 0) : Matrix.toLin' M ∈ nilRad (hyp l) := by
@@ -147,7 +145,7 @@ theorem mem_nilRad_of {m : ℕ} (l : Fin m) (M : Matrix (Fin m) (Fin m) F)
     · rw [h1 i j hj, zero_mul]
 
 /- English proof (translation)
-Use `⟨fun i j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_apply, hh.2 _ ((mem_hyp l _).2 (Pi.single_eq_of_ne (Ne.symm hj) _))]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.toMatrix'_apply]`. Conclude with `(mem_hyp l _).1 (hh.1 _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_mem_nilRad {m : ℕ} (l : Fin m) (h : Module.End F (Fin m → F)) (hh : h ∈ nilRad (hyp l)) :
     (∀ i j, j ≠ l → LinearMap.toMatrix' h i j = 0) ∧ LinearMap.toMatrix' h l l = 0 := by
@@ -158,11 +156,11 @@ theorem of_mem_nilRad {m : ℕ} (l : Fin m) (h : Module.End F (Fin m → F)) (hh
     exact (mem_hyp l _).1 (hh.1 _)
 
 /- English proof (translation)
-Establish `hlt : ∀ j : Fin m, j ≠ l → j < l` using `fun j hj => by`. Rewrite using `[Fin.lt_iff_val_lt_val]`. Use `j.2` as an intermediate fact. Establish `: (j : ℕ) ≠ l` using `fun e => hj (Fin.ext e)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_single l (fun i _ hi => ?_) (fun h' => absurd (Finset.mem_univ l) h')` and prove the remaining obligations. Rewrite using `[h i i hi, Matrix.one_apply_eq]`. Introduce `i j hij`. Establish `hj : j ≠ l` using `fun e => by subst e; exact absurd (hlt i (ne_of_gt hij)) (not_lt.2 (le_of_lt hij))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h i j hj]`. Conclude with `Matrix.one_apply_ne (ne_of_gt hij)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_of_cols {m : ℕ} (l : Fin m) (hl : (l : ℕ) + 1 = m) (M : Matrix (Fin m) (Fin m) F)
     (h : ∀ i j, j ≠ l → M i j = (1 : Matrix (Fin m) (Fin m) F) i j) : M.det = M l l := by
@@ -180,39 +178,37 @@ end GlobalTheory.Shin.FreeCusp
 namespace GlobalTheory.Shin.FreeCusp
 
 /- English proof (translation)
-Introduce `_`. Use `letI := Fintype.ofFinite F`. Set `l : Fin m` to `⟨m - 1, by omega⟩`. Establish `hl1 : (l : ℕ) + 1 = m` using `by simp only [l]; omega`. Establish `hjl : ∀ j : Fin m, (j : ℕ) + 1 < m ↔ j ≠ l` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h e`. Rewrite `h` using `[e]`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `j.2` as an intermediate fact. Establish `: (j : ℕ) ≠ m - 1` using `fun e => h (Fin.ext e)`. Use linear arithmetic over natural numbers and integers. Establish `hs : IsAdditive (rootSum θ k)` using `(rootSum_isAdditive_and_pow_X_sub_one F θ k).1`. Use `haveI : Finite (Module.End F (Fin m → F)) := Finite.of_injective _ DFunLike.coe_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (nilRad (hyp l) : Set (Module.End F (Fin m → F))).Finite` using `Set.toFinite _`. Establish `hSf : {x : GL (Fin m) F | ∀ i j : Fin m, (j : ℕ) + 1 < m → (x : Matrix (Fin m) (Fin m) F) i j = (1 : Matrix (Fin m) (Fin m) F) i j}.Finite` using `Set.toFinite _`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hSf]`. Unfold `cusp`. Rewrite using `[← Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Unfold `psiG`. Establish `hNcols : ∀ (d : F) (h : Module.End F (Fin m → F)), h ∈ nilRad (hyp l) → ∀ i j, j ≠ l → LinearMap.toMatrix' (Matrix.toLin' (dg l d) + h) i j = (1 : Matrix (Fin m) (Fin m) F) i j`. Introduce `d h hh i j hj`. Rewrite using `[map_add, LinearMap.toMatrix'_toLin', Matrix.add_apply, (of_mem_nilRad l h hh).1 i j hj, add_zero, dg_off l d i j hj]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hNll : ∀ (d : F) (h : Module.End F (Fin m → F)), h ∈ nilRad (hyp l) → LinearMap.toMatrix' (Matrix.toLin' (dg l d) + h) l l = d`. Introduce `d h hh`. Rewrite using `[map_add, LinearMap.toMatrix'_toLin', Matrix.add_apply, (of_mem_nilRad l h hh).2, add_zero]`. Simplify using `[dg]`. Establish `hxcols : ∀ x ∈ hSf.toFinset, ∀ i j, j ≠ l → (x : Matrix (Fin m) (Fin m) F) i j = (1 : Matrix (Fin m) (Fin m) F) i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx i j hj`. Conclude with `(hSf.mem_toFinset.1 hx) i j ((hjl j).2 hj)`. Establish `key : ∑ x ∈ hSf.toFinset, psi (rootSum θ k) (Fin m → F) (Matrix.toLin' (x : Matrix (Fin m) (Fin m) F)) = ∑ p ∈ (Finset.univ.filter (fun d : F => d ≠ 0)) ×ˢ hN.toFinset, psi (rootSum θ k) (Fin m → F) (Matrix.toLin' (dg l p.1) + p.2)`. Use `Finset.sum_bij' (fun x _ => ((x : Matrix (Fin m) (Fin m) F) l l, Matrix.toLin' ((x : Matrix (Fin m) (Fin m) F) - dg l ((x : Matrix (Fin m) (Fin m) F) l l)))) (fun p hp => Matrix.GeneralLinearGroup.mk'' (LinearMap.toMatrix' (Matrix.toLin' (dg l p.1) + p.2)) (by` and prove the remaining obligations. Establish `hp'` using `Finset.mem_product.1 hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(Finset.mem_filter.1 hp'.1).2`. Establish `h2` using `hN.mem_toFinset.1 hp'.2`. Rewrite using `[det_of_cols l hl1 _ (hNcols _ _ h2), hNll _ _ h2]`. Conclude with `h1.isUnit)) ?_ ?_ ?_ ?_ ?_`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hd : (x : Matrix (Fin m) (Fin m) F) l l ≠ 0`. Use `(Matrix.GeneralLinearGroup.det x).ne_zero` as an intermediate fact. Rewrite `this` using `[Matrix.GeneralLinearGroup.val_det_apply, det_of_cols l hl1 _ (hxcols x hx)]`. Then use the resulting hypothesis. Use `Finset.mem_product.2 ⟨Finset.mem_filter.2 ⟨Finset.mem_univ _, hd⟩, hN.mem_toFinset.2 ?_⟩` and prove the remaining obligations. Use `mem_nilRad_of l _ (fun i j hj => ?_) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.sub_apply, hxcols x hx i j hj, dg_off l _ i j hj, sub_self]`. Rewrite using `[Matrix.sub_apply]`. Simplify using `[dg]`. Introduce `p hp`. Establish `hp'` using `Finset.mem_product.1 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `hN.mem_toFinset.1 hp'.2`. Use `hSf.mem_toFinset.2 fun i j hj => ?_` and prove the remaining obligations. Conclude with `hNcols _ _ h2 i j ((hjl j).1 hj)`. Introduce `x hx`. Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `LinearMap.toMatrix' _ i j = _`. Rewrite using `[← map_add, add_sub_cancel, LinearMap.toMatrix'_toLin']`. Introduce `p hp`. Establish `hp'` using `Finset.mem_product.1 hp`. Establish `h2` using `hN.mem_toFinset.1 hp'.2`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `(LinearMap.toMatrix' (Matrix.toLin' (dg l p.1) + p.2) l l, Matrix.toLin' (LinearMap.toMatrix' (Matrix.toLin' (dg l p.1) + p.2) - dg l (LinearMap.toMatrix' (Matrix.toLin' (dg l p.1) + p.2) l l))) = p`. Rewrite using `[hNll _ _ h2, map_sub, Matrix.toLin'_toMatrix', add_sub_cancel_left]`. Introduce `x hx`. Use `congr 1`. Rewrite using `[map_sub, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[key, Finset.sum_product]`. Establish `hA0 : hyp (F` using `F) l ≠ ⊥ := by`. Introduce `e`. Establish `h0 : Pi.single (⟨0, by omega⟩ : Fin m) (1 : F) ∈ hyp l` using `(mem_hyp l _).2 (Pi.single_eq_of_ne (fun e' => by have := congrArg Fin.val e'; simp [l] at this; omega) _)`. Rewrite `h0` using `[e, Submodule.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr_fun h0 ⟨0, by omega⟩` as an intermediate fact. Simplify using `at this`. Establish `hA1 : hyp (F` using `F) l ≠ ⊤ := by`. Introduce `e`. Establish `h0 : Pi.single l (1 : F) ∈ hyp l` using `e ▸ Submodule.mem_top`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Rewrite `h0` using `[mem_hyp]`. Simplify using `at h0`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← finsum_mem_eq_finite_toFinset_sum]`.
-
-Use `isPrimitive_psi F _ _ hs (hyp l) hA0 hA1 _ fun v hv => ?_` and prove the remaining obligations. Rewrite `hv`, the goal using `[mem_hyp]`. Rewrite using `[Matrix.toLin'_apply, dg, Matrix.mulVec_diagonal, hv, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hfree_two_le {F : Type} [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (k m : ℕ) (hm : 2 ≤ m) :
     HFree (cusp θ m k) := by
@@ -313,9 +309,7 @@ end GlobalTheory.Shin.FreeCusp
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Introduce `F _ _ θ hθ m k h`. Break down `h with hm | hk` into its components or cases. Conclude with `FreeCusp.hfree_two_le θ k m hm`. Break down `Nat.lt_or_ge m 2 with hm | hm` into its components or cases. Use `interval_cases m`.
-
-Introduce `h0`. Conclude with `absurd h0 (lt_irrefl 0)`. Conclude with `FreeCusp.hfree_one θ hθ k hk`. Conclude with `FreeCusp.hfree_two_le θ k m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hFree_cusp : ∀ (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ),
     (∀ x y : AlgebraicClosure F, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) →

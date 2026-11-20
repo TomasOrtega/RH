@@ -8,7 +8,7 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits Opposite
 namespace GlobalTheory.HilbAff
 
 /- English proof (translation)
-Take `⟨J₀, hf, hJ⟩` from `GlobalTheory.T.exists_flat_ideal_valuationRing_pullback V K X X' p p' b h (I.ideal ⟨⊤, isAffineOpen_top X'⟩)`. Establish `e : (Scheme.IdealSheafData.ofIdealTop J₀).ideal ⟨⊤, isAffineOpen_top X⟩ = J₀` using `Scheme.IdealSheafData.equivOfIsAffine.apply_symm_apply J₀`. Use `⟨Scheme.IdealSheafData.ofIdealTop J₀, GlobalTheory.T.flat_subscheme_of_quotient_flat_affine V X p _ (by rw [e]; exact hf), ?_⟩` and prove the remaining obligations. Apply `Scheme.IdealSheafData.ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[GlobalTheory.T.idealSheafData_comap_ideal_top_of_isAffine, e, hJ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_flat_ideal_extension (V K : Type) [CommRing V] [IsDomain V] [ValuationRing V]
     [Field K] [Algebra V K] [IsFractionRing V K] (X X' : Scheme.{0}) [IsAffine X] [IsAffine X']
@@ -23,11 +23,11 @@ theorem exists_flat_ideal_extension (V K : Type) [CommRing V] [IsDomain V] [Valu
   rw [GlobalTheory.T.idealSheafData_comap_ideal_top_of_isAffine, e, hJ]
 
 /- English proof (translation)
-Establish `: IsAffine Z` using `isAffine_of_isAffineHom f`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (Z.isoSpec.inv ≫ f)`. Establish `ef : f = Z.isoSpec.hom ≫ Spec.map φ` using `by rw [hφ]; simp`. Establish `hf1 : IsFinite (Spec.map φ)` using `by rw [hφ]; infer_instance`. Establish `hf2 : Flat (Spec.map φ)` using `by rw [hφ]; infer_instance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1` using `hf1`. Establish `hr2` using `hf2`. Rewrite `hr1` using `[IsFinite.SpecMap_iff]`. Rewrite `hr2` using `[Flat.SpecMap_iff]`. Rewrite using `[ef, Scheme.Hom.finrank_comp_left_of_isIso, Scheme.Hom.finrank_SpecMap_eq_finrank hr1 hr2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `algebraize [φ.hom]`. Establish `: Module.Free V Γ(Z, ⊤)` using `Module.free_of_flat_of_isLocalRing`. Rewrite using `[← RingHom.algebraMap_toAlgebra φ.hom, RingHom.finrank_algebraMap]`. Simplify using `only [Module.rankAtStalk_eq_finrank_of_free]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finrank_const_of_isLocalRing (V : Type) [CommRing V] [IsLocalRing V] (Z : Scheme.{0})
     (f : Z ⟶ Spec (CommRingCat.of V)) (h1 : IsFinite f) (h2 : Flat f) (x y : Spec (CommRingCat.of V)) :
@@ -49,13 +49,13 @@ theorem finrank_const_of_isLocalRing (V : Type) [CommRing V] [IsLocalRing V] (Z 
   rfl
 
 /- English proof (translation)
-Take `⟨J, hJf, hJ⟩` from `exists_flat_ideal_extension V K _ _ (pullback.snd (str A B) g) (pullback.snd _ _) _ (isPullback_bc A B g _) I`. Establish `: IsFinite (str A B)`. Rewrite using `[IsFinite.SpecMap_iff]`. Conclude with `RingHom.finite_algebraMap.mpr inferInstance`. Establish `h1 : IsFinite (J.subschemeι ≫ pullback.snd (str A B) g)` using `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨J, ⟨h1, hJf, fun y => ?_⟩, hJ⟩` and prove the remaining obligations. Take `⟨_, _, h3⟩` from `hI`. Substitute `hJ` using the available equality. Use `set a := Spec.map (CommRingCat.ofHom (algebraMap V K))`. Take `⟨pt⟩ : Nonempty (Spec (CommRingCat.of K))` from `inferInstance`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[finrank_const_of_isLocalRing V _ _ h1 hJf y (a pt)]`. Establish `H : IsPullback (pullback.snd (bc A B g a) J.subschemeι) (pullback.fst (bc A B g a) J.subschemeι ≫ pullback.snd _ (a ≫ g)) (J.subschemeι ≫ pullback.snd _ g) a` using `(IsPullback.of_hasPullback (bc A B g a) J.subschemeι).flip.paste_vert (isPullback_bc A B g a)`. Establish `e : (J.comap (bc A B g a)).subschemeι ≫ pullback.snd _ (a ≫ g) = (J.comapIso (bc A B g a)).hom ≫ (pullback.fst (bc A B g a) J.subschemeι ≫ pullback.snd _ (a ≫ g))`. Rewrite using `[← Category.assoc, Scheme.IdealSheafData.comapIso_hom_fst]`. Establish `f1 : IsFinite (pullback.fst (bc A B g a) J.subschemeι ≫ pullback.snd _ (a ≫ g))` using `MorphismProperty.of_isPullback (P := @IsFinite) H h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f2 : Flat (pullback.fst (bc A B g a) J.subschemeι ≫ pullback.snd _ (a ≫ g))` using `MorphismProperty.of_isPullback (P := @Flat) H hJf`. Use `h3 pt` as an intermediate fact. Rewrite `this` using `[e, Scheme.Hom.finrank_comp_left_of_isIso, Scheme.Hom.finrank_of_isPullback _ _ _ _ H pt]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_good_extension (A B : Type) [CommRing A] [CommRing B] [Algebra A B]
     [Module.Finite A B] (r : ℕ) (V K : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field K]
@@ -92,13 +92,13 @@ theorem exists_good_extension (A B : Type) [CommRing A] [CommRing B] [Algebra A 
   exact this
 
 /- English proof (translation)
-Introduce `S`. Establish `key : ∀ {T : Scheme.{0}} (f : T ⟶ H), (R.homEquiv f).1 = f ≫ (R.homEquiv (𝟙 H)).1`. Introduce `T f`. Establish `h` using `R.homEquiv_comp f (𝟙 H)`. Rewrite `h` using `[Category.comp_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression. Use `set ι := Spec.map (CommRingCat.ofHom (algebraMap S.R S.K)) with hι`. Establish `gen : ∀ x : (functor A B r).obj (op (Spec (CommRingCat.of S.K))), x.1 = ι ≫ S.i₂ → ∃ y : (functor A B r).obj (op (Spec (CommRingCat.of S.R))), y.1 = S.i₂ ∧ (functor A B r).map ι.op y = x`. Introduce and unpack `⟨g', I, hI⟩ hx`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify by unfolding definitions.
 
-Simplify using `only at hx`. Substitute `hx` using the available equality. Take `⟨J, hJ, hJI⟩` from `exists_good_extension A B r S.R S.K S.i₂ I hI`. Substitute `hJI` using the available equality. Conclude with `⟨⟨S.i₂, J, hJ⟩, rfl, rfl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy1, hy2⟩` from `gen (R.homEquiv S.i₁) ((key S.i₁).trans S.commSq.w)`. Use `⟨⟨{ l := R.homEquiv.symm y, fac_left := ?_, fac_right := ?_ }⟩⟩` and prove the remaining obligations. Apply `R.homEquiv.injective` to reduce the goal to its premises. Rewrite using `[R.homEquiv_comp, Equiv.apply_symm_apply, hy2]`. Rewrite using `[← key, Equiv.apply_symm_apply, hy1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuativeExistence (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Module.Free A B]
     [Module.Finite A B] (r : ℕ) (H : Scheme.{0}) (R : (GlobalTheory.HilbAff.functor A B r).RepresentableBy H) :

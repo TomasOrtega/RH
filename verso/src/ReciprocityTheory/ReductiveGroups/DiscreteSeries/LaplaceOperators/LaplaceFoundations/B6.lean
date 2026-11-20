@@ -6,9 +6,9 @@ noncomputable section
 namespace ReciprocityTheory.ChartRestriction.DS.Lap.Base
 
 /- English proof (translation)
-Use `open MeasureTheory Filter Topology in`. Establish `h` using `(integrable_rpow_neg_one_add_norm_sq (μ := μ) hs).comp_smul (Real.sqrt_pos.2 ha).ne'`. Use `h.congr (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [norm_smul, Real.norm_eq_abs, abs_of_pos (Real.sqrt_pos.2 ha), mul_pow, Real.sq_sqrt ha.le]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem integrable_one_add_mul_norm_sq_rpow_neg {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E)
@@ -23,29 +23,27 @@ private theorem integrable_one_add_mul_norm_sq_rpow_neg {E : Type*} [NormedAddCo
   ring
 
 /- English proof (translation)
-Use `open MeasureTheory Filter Topology in`. Establish `hbig : ∀ᶠ t : ℕ in atTop, (Module.finrank ℝ E : ℝ) < 2 * (γ * t) ∧ (1 : ℝ) ≤ t`. Establish `h1 : Tendsto (fun t : ℕ => 2 * (γ * (t : ℝ))) atTop atTop` using `Tendsto.const_mul_atTop two_pos (Tendsto.const_mul_atTop hγ tendsto_natCast_atTop_atTop)`. Use `filter_upwards [h1.eventually_gt_atTop (Module.finrank ℝ E : ℝ), eventually_ge_atTop 1] with t ht ht1`. Conclude with `⟨ht, by exact_mod_cast ht1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, hN⟩` from `eventually_atTop.1 ((hbd.and hm).and hbig)`. Establish `hNpos : (0 : ℝ) < N` using `lt_of_lt_of_le one_pos (hN N le_rfl).2.2`. Establish `hmaj : ∀ t : ℕ, N ≤ t → ∀ w : E, ‖f t ((Real.sqrt t)⁻¹ • w)‖ ≤ (1 + c / N * ‖w‖ ^ 2) ^ (-(γ * N))`. Introduce `t ht w`. Establish `ht' : (N : ℝ) ≤ t` using `by exact_mod_cast ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htpos : (0 : ℝ) < t` using `lt_of_lt_of_le hNpos ht'`. Establish `h1` using `(hN t ht).1.1 ((Real.sqrt t)⁻¹ • w)`. Establish `hn : ‖(Real.sqrt t)⁻¹ • w‖ ^ 2 = ‖w‖ ^ 2 / t`. Rewrite using `[norm_smul, mul_pow, norm_inv, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), inv_pow, Real.sq_sqrt htpos.le]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hn]`. Use `h1.trans ?_` and prove the remaining obligations. Establish `hx : 0 ≤ c * ‖w‖ ^ 2` using `by positivity`. Establish `hmono` using `ReciprocityTheory.ChartRestriction.DS.Lap.Laplace.mono_pow hx hNpos ht'`. Establish `hA : 0 < 1 + c * ‖w‖ ^ 2 / N` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : 0 < 1 + c * ‖w‖ ^ 2 / t` using `by positivity`. Establish `key : (1 + c * ‖w‖ ^ 2 / N) ^ (γ * N) ≤ (1 + c * ‖w‖ ^ 2 / t) ^ (γ * t)`. Rewrite using `[mul_comm γ (N : ℝ), mul_comm γ (t : ℝ), Real.rpow_mul hA.le, Real.rpow_mul hB.le]`. Conclude with `Real.rpow_le_rpow (Real.rpow_nonneg hA.le _) hmono hγ.le`. Establish `e1 : c * (‖w‖ ^ 2 / t) = c * ‖w‖ ^ 2 / t` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : c / N * ‖w‖ ^ 2 = c * ‖w‖ ^ 2 / N` using `by ring`. Rewrite using `[e1, e2, Real.rpow_neg hB.le, Real.rpow_neg hA.le]`. Conclude with `inv_anti₀ (Real.rpow_pos_of_pos hA _) key`. Establish `hbint : Integrable (fun w : E => (1 + c / N * ‖w‖ ^ 2) ^ (-(γ * N))) μ` using `integrable_one_add_mul_norm_sq_rpow_neg μ (div_pos hc hNpos) (hN N le_rfl).2.1`. Establish `hgm : ∀ t : ℕ, N ≤ t → AEStronglyMeasurable (fun w => f t ((Real.sqrt t)⁻¹ • w)) μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht`. Establish `htpos : (0 : ℝ) < t` using `lt_of_lt_of_le hNpos (by exact_mod_cast ht)`. Establish `hr : (Real.sqrt t)⁻¹ ≠ 0` using `inv_ne_zero (Real.sqrt_pos.2 htpos).ne'`. Conclude with `(hN t ht).1.2.comp_quasiMeasurePreserving (Measure.quasiMeasurePreserving_smul μ hr)`. Establish `hT : Tendsto (fun t : ℕ => ∫ w, f t ((Real.sqrt t)⁻¹ • w) ∂μ) atTop (𝓝 (∫ w, Complex.exp (-(B w w)) ∂μ))` using `tendsto_integral_filter_of_dominated_convergence _ ((eventually_ge_atTop N).mono hgm) ((eventually_ge_atTop N).mono fun t ht => Eventually.of_forall (hmaj t ht)) hbint (Eventually.of_forall hlim)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hpos : ∀ v : E, v ≠ 0 → 0 < (B v v).re`. Introduce `v hv`. Establish `hle : ‖Complex.exp (-(B v v))‖ ≤ (1 + c / N * ‖v‖ ^ 2) ^ (-(γ * N))` using `le_of_tendsto (hlim v).norm (eventually_atTop.2 ⟨N, fun t ht => hmaj t ht v⟩)`. Establish `hlt : (1 + c / N * ‖v‖ ^ 2) ^ (-(γ * N)) < 1`. Apply `Real.rpow_lt_one_of_one_lt_of_neg` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hv'` using `norm_pos_iff.2 hv`. Establish `: 0 < c / N * ‖v‖ ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_pos hγ hNpos` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hle` using `[Complex.norm_exp]`. Establish `h3 : Real.exp (-(B v v)).re < 1` using `hle.trans_lt hlt`. Establish `h4` using `Real.exp_lt_exp.1 (h3.trans_eq Real.exp_zero.symm)`. Rewrite `h4` using `[Complex.neg_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : ∀ᶠ t : ℕ in atTop, ∫ w, f t ((Real.sqrt t)⁻¹ • w) ∂μ ≠ 0` using `hT.eventually_ne (ReciprocityTheory.ChartRestriction.DS.Lap.Laplace.gauss_ne_zero μ B hpos)`. Use `filter_upwards [eventually_ge_atTop N, hev] with t ht hgt`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Integrable.mono' (integrable_one_add_mul_norm_sq_rpow_neg μ hc (hN t ht).2.1) (hN t ht).1.2 (Eventually.of_forall (hN t ht).1.1)`. Introduce `h0`.
-
-Apply `hgt` to reduce the goal to its premises. Rewrite using `[Measure.integral_comp_smul μ (f t) (Real.sqrt t)⁻¹, h0, smul_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem main_lemma_2 {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E)
@@ -130,7 +128,7 @@ private theorem main_lemma_2 {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ
     rw [Measure.integral_comp_smul μ (f t) (Real.sqrt t)⁻¹, h0, smul_zero]
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ μ _ f hm B hlim c γ hc hγ hbd`. Conclude with `main_lemma_2 μ f hm B hlim hc hγ hbd`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem b6 : GaussianLimitHaar := by
   intro E _ _ _ _ _ μ _ f hm B hlim c γ hc hγ hbd

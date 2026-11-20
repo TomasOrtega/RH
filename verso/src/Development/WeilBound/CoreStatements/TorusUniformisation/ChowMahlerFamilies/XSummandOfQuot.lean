@@ -17,19 +17,17 @@ def toSub (L : AddSubgroup E) (h : ∀ a ∈ R, ∀ e ∈ L, a • e ∈ L) : Su
   smul_mem' := fun a e he => h a a.2 e he
 
 /- English proof (translation)
-Establish `h' : LocFree R r (toSub R L h.1).toAddSubgroup` using `h`. Use `⟨(LocFreeProj.main R r (toSub R L h.1) h').2.2.1, ?_⟩` and prove the remaining obligations. Take `⟨k, f, c, B, hsum, hgen, hcoord⟩` from `LocFreeProj.exists_charts h'`. Use `choose n0 hn0 using hgen`. Establish `hs : ∀ j q, ((f j : Ω) ^ (Finset.univ.sup fun i : Fin k × Fin r => n0 i.1 i.2)) • B j q ∈ toSub R L h.1` using `fun j q => LocFreeProj.pow_smul_mem (f j) (Finset.le_sup (f := fun i : Fin k × Fin r => n0 i.1 i.2) (Finset.mem_univ (j, q))) (hn0 j q)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hN0 : (Finset.univ.sup fun i : Fin k × Fin r => n0 i.1 i.2) = N0 at hs`. Establish `hP0 : ∀ (l : Fin k) (p : Fin r) (jq : Fin k × Fin r), ∃ n, (f l : Ω) ^ n * (B l).repr ((f jq.1 : Ω) ^ N0 • B jq.1 jq.2) p ∈ R` using `fun l p jq => hcoord l p _ (hs jq.1 jq.2)`. Use `choose nP hnP using hP0`. Establish `hbound : ∀ e ∈ toSub R L h.1, ∀ l p, (f l : Ω) ^ (Finset.univ.sup fun i : Fin k × Fin r × (Fin k × Fin r) => nP i.1 i.2.1 i.2.2) * (B l).repr e p ∈ R`. Introduce `e he l p`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose m hm using fun (jq : Fin k × Fin r) => hcoord jq.1 jq.2 e he`. Take `⟨d, hd⟩` from `LocFreeProj.exists_pow_cover f c hsum (Finset.univ.sup m + N0)`. Establish `hexp` using `LocFreeProj.expand f d B (Finset.univ.sup m) N0 hd e`. Establish `key : (B l).coord p e = ∑ i : Fin k × Fin r, ((d i.1 : Ω) * ((f i.1 : Ω) ^ (Finset.univ.sup m) * (B i.1).repr e i.2)) * (B l).coord p ((f i.1 : Ω) ^ N0 • B i.1 i.2)` using `by conv_lhs => rw [← hexp]`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.Basis.coord_apply, key, Finset.mul_sum]`. Use `R.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Use `R.mul_mem (R.mul_mem (d i.1).2 (LocFreeProj.pow_mul_mem (f i.1) (Finset.le_sup (Finset.mem_univ i)) (hm i))) ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.coord_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `LocFreeProj.pow_mul_mem (f l) (Finset.le_sup (f := fun i : Fin k × Fin r × (Fin k × Fin r) => nP i.1 i.2.1 i.2.2) (Finset.mem_univ (l, p, i))) (hnP l p i)`. Generalize the expression as in `(Finset.univ.sup fun i : Fin k × Fin r × (Fin k × Fin r) => nP i.1 i.2.1 i.2.2) = P at hbound`. Take `⟨d', hd'⟩` from `LocFreeProj.exists_pow_cover f c hsum (P + N0)`. Use `⟨k, fun i => ((d' i.1 : Ω) * (f i.1 : Ω) ^ P) • (B i.1).coord i.2, fun i => (f i.1 : Ω) ^ N0 • B i.1 i.2, fun i => hs i.1 i.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `i e he`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.smul_apply, Module.Basis.coord_apply, smul_eq_mul]`. Rewrite using `[mul_assoc]`. Conclude with `R.mul_mem (d' i.1).2 (hbound e he i.1 i.2)`. Introduce `e`. Establish `hx` using `LocFreeProj.expand f d' B P N0 hd' e`.
-
-Use `hx using 2 with i` and compare the differences between its conclusion and the goal. Simplify using `only [LinearMap.smul_apply, Module.Basis.coord_apply, smul_eq_mul, mul_assoc]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dual {r : ℕ} {L : AddSubgroup E} (h : LocFree R r L) :
     Module.finrank Ω E = r ∧ ∃ (k : ℕ) (φ : Fin k × Fin r → Module.Dual Ω E) (v : Fin k × Fin r → E),
@@ -80,7 +78,7 @@ theorem exists_dual {r : ℕ} {L : AddSubgroup E} (h : LocFree R r L) :
     simp only [LinearMap.smul_apply, Module.Basis.coord_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `h1` using `LocFreeProj.finite_projective (L := toSub R L hL) φ (fun i => ⟨v i, hvL i⟩) hφ hv`. Establish `h2` using `LocFreeProj.isBaseChange (L := toSub R L hL) φ (fun i => ⟨v i, hvL i⟩) hφ hv`. Conclude with `LocFreeProj.locFree_of_projective R r (toSub R L hL) h1.1 h1.2 hr h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locFree_of_dual {ι : Type} [Fintype ι] {r : ℕ} {L : AddSubgroup E}
     (hL : ∀ a ∈ R, ∀ e ∈ L, a • e ∈ L) (hr : Module.finrank Ω E = r)
@@ -94,29 +92,27 @@ end PositivityTheory.Xgn.A_summand_of_quot
 
 open PositivityTheory.Xgn.A_summand_of_quot in
 /- English proof (translation)
-Introduce `o Ω _ _ _ R V _ _ U N m L hN`. Establish `hst : ∀ a ∈ R, ∀ e ∈ L, a • e ∈ L` using `hN.1`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Take `⟨-, k, φ, v, hv, hφ, hsum⟩` from `PositivityTheory.Xgn.A_summand_of_quot.exists_dual R hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hlift : ∀ i, ∃ e ∈ L, U.mkQ e = v i` using `fun i => by`. Take `⟨e, he, hev⟩` from `AddSubgroup.mem_map.1 (hv i)`. Conclude with `⟨e, he, hev⟩`. Use `choose w hw hwv using hlift`. Establish `hkey : ∀ x : V ⧸ U, U.mkQ (∑ i, φ i x • w i) = x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, hwv]`. Conclude with `hsum x`. Use `⟨LinearMap.id - (∑ i, LinearMap.smulRight (φ i) (w i)) ∘ₗ U.mkQ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply]`. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.smulRight_apply, map_sub, hkey, sub_self]`. Introduce `u hu`. Establish `h0 : U.mkQ u = 0` using `(Submodule.Quotient.mk_eq_zero U).2 hu`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h0]`. Introduce `e he`. Establish `hme : U.mkQ e ∈ AddSubgroup.map U.mkQ.toAddMonoidHom L` using `AddSubgroup.mem_map_of_mem _ he`. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.smulRight_apply]`. Conclude with `sub_mem he (AddSubgroup.sum_mem _ fun i _ => hst _ (hφ i _ hme) _ (hw i))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨ρ, hρU, hρid, hρL⟩`. Take `⟨hrank, k, φ, v, hv, hφ, hsum⟩` from `PositivityTheory.Xgn.A_summand_of_quot.exists_dual R hN`. Establish `hfin : Module.Finite Ω V`. Use `Module.Finite.of_surjective (∑ i, LinearMap.smulRight (LinearMap.proj i : (Fin k × Fin N → Ω) →ₗ[Ω] Ω) (v i)) ?_` and prove the remaining obligations. Introduce `e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨fun i => φ i e, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.proj_apply]`. Conclude with `hsum e`. Prove the components needed by the constructor for the conclusion. Use `PositivityTheory.Xgn.A_summand_of_quot.locFree_of_dual R (fun a ha e he => hst a ha _ he) rfl (fun i => (φ i).comp U.subtype) (fun i => ⟨ρ (v i), hρU _⟩) (fun i => hρL _ (hv i)) (fun i e he => hφ i _ he) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Introduce `e`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, LinearMap.comp_apply, Submodule.subtype_apply]`. Combine the equalities or inequalities in the displayed calculation. Establish `hker : ∀ i, U ≤ LinearMap.ker ((φ i).comp (LinearMap.id - ρ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i u hu`. Simplify using `[LinearMap.mem_ker, hρid u hu]`. Use `PositivityTheory.Xgn.A_summand_of_quot.locFree_of_dual R ?_ ?_ (fun i => U.liftQ ((φ i).comp (LinearMap.id - ρ)) (hker i)) (fun i => U.mkQ (v i)) (fun i => AddSubgroup.mem_map_of_mem _ (hv i)) ?_ ?_` and prove the remaining obligations. Introduce `a ha x hx`. Take `⟨e, he, rfl⟩` from `AddSubgroup.mem_map.1 hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `AddSubgroup.mem_map.2 ⟨a • e, hst a ha e he, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[← hrank, ← Submodule.finrank_quotient_add_finrank U]`. Use linear arithmetic over natural numbers and integers. Introduce `i x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, rfl⟩` from `AddSubgroup.mem_map.1 hx`. Simplify using `only [LinearMap.toAddMonoidHom_coe, Submodule.mkQ_apply, Submodule.liftQ_apply, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply]`. Conclude with `hφ i _ (sub_mem he (hρL e he))`. Introduce `x`. Take `⟨e, rfl⟩` from `U.mkQ_surjective x`.
-
-Simplify using `only [Submodule.mkQ_apply, Submodule.liftQ_apply, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply]`. Establish `h1 : ∑ i, φ i (e - ρ e) • (Submodule.Quotient.mk (v i) : V ⧸ U) = U.mkQ (∑ i, φ i (e - ρ e) • v i)`. Simplify using `[map_sum, map_smul]`. Rewrite using `[h1, hsum, map_sub, Submodule.mkQ_apply, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero U).2 (hρU e), sub_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.summand_iff_locFree_quot : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω) {V : Type} [AddCommGroup V] [Module Ω V] (U : Submodule Ω V) (N m : ℕ) (L : AddSubgroup V), LocFree R N L → (LocFree R m (L.map U.mkQ.toAddMonoidHom) → Summand L U) ∧ (Summand L U → LocFree R (Module.finrank Ω U) (L.comap U.subtype.toAddMonoidHom) ∧ LocFree R (N - Module.finrank Ω U) (L.map U.mkQ.toAddMonoidHom)) := by
   intro o Ω _ _ _ R V _ _ U N m L hN

@@ -22,7 +22,7 @@ namespace GlobalTheory.PluckerMap
 attribute [local instance] Abelian.hasFiniteBiproducts
 
 /- English proof (translation)
-Rewrite using `[← b.det_self, show (⇑b : Fin d → N) = fun a => ∑ m, c a m • v m from funext h]`. Use `Eq.trans ?_ (b.det.toMultilinearMap.map_sum fun a m => c a m • v m).symm` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun I _ => (b.det.toMultilinearMap.map_smul_univ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_prod_mul_det {R N ι : Type} [CommRing R] [AddCommGroup N] [Module R N] [Fintype ι] {d : ℕ}
     (b : Module.Basis (Fin d) R N) (v : ι → N) (c : Fin d → ι → R) (h : ∀ a, b a = ∑ m, c a m • v m) :
@@ -33,9 +33,9 @@ theorem sum_prod_mul_det {R N ι : Type} [CommRing R] [AddCommGroup N] [Module R
   exact Finset.sum_congr rfl fun I _ => (b.det.toMultilinearMap.map_smul_univ _ _).symm
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr w]`. Rewrite using `[AlternatingMap.map_update_sum, Finset.sum_eq_single a]`. Rewrite using `[AlternatingMap.map_update_smul, Function.update_eq_self, b.det_self, smul_eq_mul, mul_one]`. Introduce `j _ hj`. Rewrite using `[AlternatingMap.map_update_smul, b.det.map_update_self _ hj.symm, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem det_update_eq_repr {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {d : ℕ}
     (b : Module.Basis (Fin d) R N) (a : Fin d) (w : N) : b.det (Function.update b a w) = b.repr w a := by
@@ -49,7 +49,7 @@ theorem det_update_eq_repr {R N : Type} [CommRing R] [AddCommGroup N] [Module R 
 variable {T : Scheme.{0}} {L Q F : T.Modules} {d : ℕ}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (he.basis h).sum_repr s]`. Rewrite using `[Fin.sum_univ_one, IsFrame.basis_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_repr_smul {U V : T.Opens} {e : Fin 1 → Γ(L, U)} (he : IsFrame e) (h : V ≤ U) (s : Γ(L, V)) :
     s = (he.basis h).repr s 0 • resM L h (e 0) := by
@@ -57,7 +57,7 @@ theorem eq_repr_smul {U V : T.Opens} {e : Fin 1 → Γ(L, U)} (he : IsFrame e) (
   rw [Fin.sum_univ_one, IsFrame.basis_apply]
 
 /- English proof (translation)
-The claim follows from `isFrame_iff.2 fun W hW => by have hu := ExMap.isUnit_resG_basicOpen _ hW rw [he.resG_det, ← Module.Basis.is_basis_iff_det] at hu simp only [resM_resM] exact ⟨hu.1, hu.2.ge⟩`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_basicOpen {U V : T.Opens} {e : Fin d → Γ(F, U)} (he : IsFrame e) (h : V ≤ U)
     (s : Fin d → Γ(F, V)) :
@@ -69,15 +69,15 @@ theorem isFrame_basicOpen {U V : T.Opens} {e : Fin d → Γ(F, U)} (he : IsFrame
     exact ⟨hu.1, hu.2.ge⟩
 
 /- English proof (translation)
-Establish `hp : Epi (biproduct.desc u)` using `Preadditive.epi_of_cancel_zero _ fun {Z} a ha => hu Z a fun j => by simpa using congrArg (biproduct.ι (fun _ : Fin (M + 1) => L) j ≫ ·) ha`. Take `⟨U₁, e', hx₁, he'⟩` from `hL x`. Take `⟨U₂, e, -, hx₂, h₂, he⟩` from `hQ.exists_affine hx₁`. Use `choose O hO hxO t ht using fun a => exists_app_eq_of_epi (biproduct.desc u) (e a) hx₂`. Set `W : T.Opens` to `U₂ ⊓ Finset.univ.inf O`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxW : x ∈ W` using `⟨hx₂, by rw [Opens.coe_finset_inf]; simpa using hxO⟩`. Establish `hW (a : Fin d) : W ≤ O a` using `inf_le_right.trans (Finset.inf_le (Finset.mem_univ a))`. Establish `hW' : W ≤ U₁` using `inf_le_left.trans h₂`. Set `B` to `he.basis (inf_le_left : W ≤ U₂)`. Establish `h1` using `sum_prod_mul_det B (fun m => (u m).app W (resM L hW' (e' 0))) (fun a m => (he'.basis hW').repr ((biproduct.π (fun _ : Fin (M + 1) => L) m).app W (resM _ (hW a) (t a))) 0) fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsFrame.basis_apply, ← resM_resM (hO a) (hW a), ← ht, ← app_resM, desc_app]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Modules.Hom.app_smul, ← eq_repr_smul he']`. Take `⟨I, -, hI⟩` from `IsLocalRing.exists_of_isUnit_sum (s := Finset.univ) (f := fun I : Fin d → Fin (M + 1) => T.presheaf.germ W x hxW (_ * B.det fun a => (u (I a)).app W (resM L hW' (e' 0)))) (by rw [← map_sum, h1, map_one]; exact isUnit_one)`. Rewrite `hI` using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hf` using `isFrame_basicOpen he (inf_le_left : W ≤ U₂) fun a => (u (I a)).app W (resM L hW' (e' 0))`. Use `⟨I, _, resM L ((T.basicOpen_le _).trans hW') (e' 0), (T.mem_basicOpen _ x hxW).2 (isUnit_of_mul_isUnit_right hI), ?_, ?_⟩` and prove the remaining obligations. Use `he'.res ((T.basicOpen_le (B.det fun a => (u (I a)).app W (resM L hW' (e' 0)))).trans hW')` as an intermediate fact. Rewrite `this` using `[show (fun i => resM L _ (e' i)) = fun _ => resM L _ (e' 0) from funext fun i => by rw [Subsingleton.elim i 0]]`. Then use the resulting hypothesis. Use `hf using 2` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← app_resM, resM_resM]`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame {M : ℕ} {u : Fin (M + 1) → (L ⟶ Q)} (hL : IsVB L 1) (hQ : IsVB Q d) (hu : JointEpi u) (x : T) :
     ∃ (I : Fin d → Fin (M + 1)) (W : T.Opens) (t : Γ(L, W)), x ∈ W ∧ (IsFrame fun _ : Fin 1 => t) ∧
@@ -114,13 +114,13 @@ def frameLocus (v : Fin d → Γ(F, ⊤)) : T.Opens :=
   ⨆ W : {W : T.Opens // IsFrame fun a => resM F (le_top : W ≤ ⊤) (v a)}, W.1
 
 /- English proof (translation)
-The claim follows from `le_iSup (fun W : {W : T.Opens // IsFrame fun a => resM F (le_top : W ≤ ⊤) (v a)} => W.1) ⟨W, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem le_frameLocus {v : Fin d → Γ(F, ⊤)} {W : T.Opens} (h : IsFrame fun a => resM F (le_top : W ≤ ⊤) (v a)) :
     W ≤ frameLocus v := le_iSup (fun W : {W : T.Opens // IsFrame fun a => resM F (le_top : W ≤ ⊤) (v a)} => W.1) ⟨W, h⟩
 
 /- English proof (translation)
-The claim follows from `isFrame_of_forall_exists fun V h x hx => by obtain ⟨W, hW⟩ := Opens.mem_iSup.1 (h hx) refine ⟨V ⊓ W.1, inf_le_left, ⟨hx, hW⟩, ?_⟩ simpa only [resM_resM] using W.2 _ inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_frameLocus (v : Fin d → Γ(F, ⊤)) : IsFrame fun a => resM F (le_top : frameLocus v ≤ ⊤) (v a) :=
   isFrame_of_forall_exists fun V h x hx => by
@@ -129,11 +129,9 @@ theorem isFrame_frameLocus (v : Fin d → Γ(F, ⊤)) : IsFrame fun a => resM F 
     simpa only [resM_resM] using W.2 _ inf_le_right
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨i, W, hx, hW⟩` from `hv x`. Conclude with `Opens.mem_iSup.2 ⟨i, le_frameLocus hW hx⟩`. Use `self i := by`. Use `((isFrame_frameLocus (v i)).basis le_rfl).det_self` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[IsFrame.coe_basis, funext fun a => resM_resM _ _ (v i a)]`. Then use the resulting hypothesis. Use `mul i j k := by`. Simplify using `only [IsFrame.resG_det, resM_resM]`. Rewrite using `[(isFrame_frameLocus (v i)).det_eq_detUnit_mul (isFrame_frameLocus (v j)) inf_le_left inf_le_right (fun a => resM F le_top (v k a)), IsFrame.val_detUnit]`. Simplify using `only [resM_resM]`.
-
-Use `basicOpen_le i j := le_frameLocus (by`. Simplify `isFrame_basicOpen (isFrame_frameLocus (v i)) le_rfl fun a => resM F le_top (v j a))` using `only [resM_resM]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCoordFamily {N : ℕ} (v : Fin (N + 1) → Fin d → Γ(F, ⊤))
     (hv : ∀ x : T, ∃ (i : Fin (N + 1)) (W : T.Opens), x ∈ W ∧ IsFrame fun a => resM F (le_top : W ≤ ⊤) (v i a)) :
@@ -165,15 +163,15 @@ def PRel (φ : T ⟶ PSpace k N) (σ : Fin (N + 1) ≃ (Fin d → Fin (M + 1))) 
         ∑ a, ProjSpace.pullRatio φ W i h (σ.symm (Function.update (σ i) a m)) • (u (σ i a)).app W t
 
 /- English proof (translation)
-Set `v (m : Fin (M + 1)) : Γ(homMod L Q, ⊤)` to `(homGlobalEquiv L Q).symm (u m)`. Set `ε {W : T.Opens} {t : Γ(L, W)} (ht : IsFrame fun _ : Fin 1 => t) (V : T.Opens) (h : V ≤ W) : Γ(homMod L Q, V) ≃ₗ[Γ(T, V)] Γ(Q, V)` to `PtNorm.homPi ht h ≪≫ₗ LinearEquiv.funUnique (Fin 1) _ _`. Establish `hε {W : T.Opens} {t : Γ(L, W)} (ht : IsFrame fun _ : Fin 1 => t) (V : T.Opens) (h : V ≤ W) (m : Fin (M + 1)) : ε ht V h (resM _ le_top (v m)) = resM Q h ((u m).app W t)` using `app_resM (u m) h t`. Set `H` to `isCoordFamily (fun i a => v (σ i a)) fun x => by`. Take `⟨I, W, t, hx, ht, hf⟩` from `exists_frame hL hQ hu x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨σ.symm I, W, hx, hf.map_of_linearEquiv (fun V h => (ε ht V h).symm) fun V h a => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_eq, resM_resM, hε, Equiv.apply_symm_apply]`. Use `⟨H.toHom f, H.toHom_str f, fun i x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[H.toHom_preimage]`. Take `⟨W, e, -, hxW, hW, he⟩` from `hL.exists_affine hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩ : ∃ t, e = fun _ => t` from `⟨e 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Establish `hv` using `isFrame_frameLocus fun a => v (σ i a)`. Use `⟨W, hW.trans (H.le_toHom_preimage f i), t, hxW, he, (hv.res hW).map_of_linearEquiv (ε he) fun V h a => by rw [resM_resM, resM_resM, hε], fun m => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (ε he W le_rfl) ((hv.basis hW).sum_repr (resM _ le_top (v m)))`. Rewrite `h1` using `[hε, resM_self, map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h1.symm.trans (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, IsFrame.basis_apply, resM_resM, hε, resM_self, ← ProjSpace.resG_pullRatio (hi := H.le_toHom_preimage f i) hW, H.pullRatio_toHom f, IsFrame.resG_det, ← det_update_eq_repr]`. Use `congr 2`. Use function extensionality and compare the values at `b`. Simplify using `only [resM_resM, Equiv.apply_symm_apply, IsFrame.coe_basis]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `(Function.apply_update (fun _ m => resM (homMod L Q) (le_top : W ≤ ⊤) (v m)) (σ i) a m b).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_prel (f : T ⟶ Sp k) (σ : Fin (N + 1) ≃ (Fin d → Fin (M + 1))) {u : Fin (M + 1) → (L ⟶ Q)}
     (hL : IsVB L 1) (hQ : IsVB Q d) (hu : JointEpi u) :
@@ -208,9 +206,9 @@ theorem exists_prel (f : T ⟶ Sp k) (σ : Fin (N + 1) ≃ (Fin d → Fin (M + 1
 variable {φ : T ⟶ PSpace k N} {σ : Fin (N + 1) ≃ (Fin d → Fin (M + 1))} {u : Fin (M + 1) → (L ⟶ Q)}
 
 /- English proof (translation)
-Introduce `i y hy`. Take `⟨W, hW, t, hx, ht, hf, hr⟩` from `h i (g y) hy`. Use `⟨g ⁻¹ᵁ W, g.preimage_mono hW, QCoh.pullbackSections g L le_rfl t, hx, ht.pullback g, ?_, fun m => ?_⟩` and prove the remaining obligations. Simplify `hf.pullback g` using `only [QCoh.pullback_map_app_pullbackSections]`. Simplify using `only [QCoh.pullback_map_app_pullbackSections]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[hr m, map_sum]`. Simplify using `only [QCoh.pullbackSections_smul]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [← ProjSpace.appLE_pullRatio]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PRel.pullback [L.IsQuasicoherent] [Q.IsQuasicoherent] (h : PRel φ σ u) {S : Scheme.{0}} (g : S ⟶ T) :
     PRel (g ≫ φ) σ fun m => (Scheme.Modules.pullback g).map (u m) := by
@@ -224,7 +222,7 @@ theorem PRel.pullback [L.IsQuasicoherent] [Q.IsQuasicoherent] (h : PRel φ σ u)
     exact Finset.sum_congr rfl fun a _ => by rw [← ProjSpace.appLE_pullRatio]
 
 /- English proof (translation)
-Introduce `i x hx`. Take `⟨W, hW, t, hx, ht, hf, hr⟩` from `h i x hx`. Establish `e (m) : (α.inv ≫ u m).app W (α.hom.app W t) = (u m).app W t`. Rewrite using `[QCoh.app_app, α.hom_inv_id_assoc]`. Conclude with `⟨W, hW, α.hom.app W t, hx, ht.map_iso α.hom, by simpa only [e] using hf, by simpa only [e] using hr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem PRel.pre (h : PRel φ σ u) {L' : T.Modules} (α : L ≅ L') : PRel φ σ fun m => α.inv ≫ u m := by
   intro i x hx
@@ -234,11 +232,11 @@ theorem PRel.pre (h : PRel φ σ u) {L' : T.Modules} (α : L ≅ L') : PRel φ �
   exact ⟨W, hW, α.hom.app W t, hx, ht.map_iso α.hom, by simpa only [e] using hf, by simpa only [e] using hr⟩
 
 /- English proof (translation)
-Take `⟨W, hW, t, hx, ht, hf, hr⟩` from `h i x hx`. Use `⟨W, hW, hx, fun V hV => ⟨fun s hs a => ?_, fun s => ?_⟩⟩` and prove the remaining obligations. Use `(hf V hV).1 (a₁ := fun a => (ht.basis hV).repr (s a) 0) (a₂ := 0) (by` as an intermediate fact. Rewrite using `[map_zero, ← hs, Fintype.linearCombination_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← app_resM, ← Scheme.Modules.Hom.app_smul, ← eq_repr_smul ht])`. Rewrite using `[eq_repr_smul ht hV (s a), congrFun this a, Pi.zero_apply, zero_smul]`. Simplify using `only [map_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_repr_smul ht hV (s m), Scheme.Modules.Hom.app_smul, app_resM, hr m, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, Scheme.Modules.Hom.app_smul, app_resM, resM_smul, ProjSpace.resG_pullRatio, smul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem PRel.exists_desc_app (h : PRel φ σ u) (i : Fin (N + 1)) (x : T) (hx : x ∈ φ ⁻¹ᵁ ProjSpace.chart k N i) :
     ∃ (W : T.Opens) (hW : W ≤ φ ⁻¹ᵁ ProjSpace.chart k N i), x ∈ W ∧ ∀ (V : T.Opens) (hV : V ≤ W),
@@ -261,13 +259,13 @@ theorem PRel.exists_desc_app (h : PRel φ σ u) (i : Fin (N + 1)) (x : T) (hx : 
       smul_comm]
 
 /- English proof (translation)
-Establish `hepi : Epi (biproduct.desc u)` using `Preadditive.epi_of_cancel_zero _ fun {Z} a ha => hu Z a fun j => by simpa using congrArg (biproduct.ι (fun _ : Fin (M + 1) => L) j ≫ ·) ha`. Use `choose i hi using fun x : T => ProjSpace.exists_mem_chart k N (φ x)`. Use `choose W hW hx H using fun x => h.exists_desc_app (i x) x (hi x)`. Use `choose W' hW' hx' H' using fun x => h'.exists_desc_app (i x) x (hi x)`. Establish `loc : ∀ (V : T.Opens) (t : Γ(⨁ fun _ : Fin (M + 1) => L, V)), (biproduct.desc u).app V t = 0 → (biproduct.desc u').app V t = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `V t h0`. Use `sec_ext_of_cover (fun x => V ⊓ W x ⊓ W' x) (fun _ => inf_le_left.trans inf_le_left) (fun y hy => Opens.mem_iSup.2 ⟨y, ⟨⟨hy, hx y⟩, hx' y⟩⟩) fun x => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (resM Q (inf_le_left.trans inf_le_left : V ⊓ W x ⊓ W' x ≤ V)) h0`. Rewrite `h1` using `[← app_resM, map_zero, desc_app, (H x _ (inf_le_left.trans inf_le_right)).2]`. Rewrite using `[← app_resM, map_zero, desc_app, (H' x _ inf_le_right).2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[(H x _ (inf_le_left.trans inf_le_right)).1 _ h1 a, map_zero]`. Establish `hk : kernel.ι (biproduct.desc u) ≫ biproduct.desc u' = 0`. Use extensionality with `V x`. Establish `h` using `congrArg (fun f => f.app V x) (kernel.condition (biproduct.desc u))`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Scheme.Modules.Hom.comp_app, Scheme.Modules.Hom.zero_app] at h ⊢`. Conclude with `loc V _ h`. Use `⟨Abelian.epiDesc _ _ hk, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← biproduct.ι_desc u j, Category.assoc, Abelian.comp_epiDesc, biproduct.ι_desc]`.
+A detailed English derivation is pending.
 -/
 theorem PRel.exists_factor {Q' : T.Modules} {u' : Fin (M + 1) → (L ⟶ Q')} (h : PRel φ σ u) (h' : PRel φ σ u')
     (hu : JointEpi u) : ∃ e : Q ⟶ Q', ∀ m, u m ≫ e = u' m := by
@@ -297,7 +295,7 @@ theorem PRel.exists_factor {Q' : T.Modules} {u' : Fin (M + 1) → (L ⟶ Q')} (h
 end Rel
 
 /- English proof (translation)
-Establish `e (c : Φ.obj (⨁ f) ⟶ Z) : c = ∑ j, Φ.map (biproduct.π f j) ≫ Φ.map (biproduct.ι f j) ≫ c`. Simplify using `only [← Functor.map_comp_assoc, ← Preadditive.sum_comp, ← Functor.map_sum, biproduct.total, Φ.map_id, Category.id_comp]`. Rewrite using `[e a, e b]`. Simplify using `only [h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hom_ext_map_biproduct {C D : Type*} [Category C] [Category D] [Preadditive C] [Preadditive D] (Φ : C ⥤ D)
     [Φ.Additive] {ι : Type} [Fintype ι] (f : ι → C) [HasBiproduct f] {Z : D} {a b : Φ.obj (⨁ f) ⟶ Z}
@@ -309,9 +307,9 @@ theorem hom_ext_map_biproduct {C D : Type*} [Category C] [Category D] [Preadditi
   simp only [h]
 
 /- English proof (translation)
-Use `hE.isFiniteQC` as an intermediate fact. Take `⟨-, A, hA⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver hq`. Take `⟨n, N, φ, hφ⟩` from `(hA.eventually_exists_epi_sigma E).exists`. Establish `hL` using `isVB_toMod (Twist.isLB_lbZPow hA.isLB (-n))`. Generalize the expression as in `LB.toMod (lbZPow A (-n)) = L at φ hφ hL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨N, L, biproduct.desc (Fin.cons 0 fun j => Sigma.ι (fun _ => L) j ≫ φ), hL, (Preadditive.epi_iff_cancel_zero _).2 fun Z b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi φ]`. Use `Sigma.hom_ext _ _ fun j => ?_` and prove the remaining obligations. Simplify using `using biproduct.ι _ j.succ ≫= hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_epi_biproduct {k : Type} [CommRing k] {B : Scheme.{0}} {q : B ⟶ Sp k} (hq : IsProjOver q)
     {E : B.Modules} {r : ℕ} (hE : IsVB E r) :
@@ -328,23 +326,21 @@ theorem exists_epi_biproduct {k : Type} [CommRing k] {B : Scheme.{0}} {q : B ⟶
   simpa using biproduct.ι _ j.succ ≫= hb
 
 /- English proof (translation)
-Introduce `k _ B q hq E n m hE _ G γ P j hP hj`. Take `⟨M, L, a, hL, ha⟩` from `exists_epi_biproduct hq hE`. Take `⟨d, hQ⟩` from `hj.isVB_cokernel`. Take `⟨N, hN⟩` from `Nat.exists_eq_succ_of_ne_zero (Fintype.card_ne_zero (α := Fin d → Fin (M + 1)))`. Set `σ : Fin (N + 1) ≃ (Fin d → Fin (M + 1))` to `(Fintype.equivFinOfCardEq hN).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `b (i : Fin (M + 1)) : L ⟶ E` to `biproduct.ι (fun _ : Fin (M + 1) => L) i ≫ a`. Establish `hext {T : Scheme.{0}} (g : T ⟶ B) {Z : T.Modules} {x y : (Scheme.Modules.pullback g).obj E ⟶ Z} (h : ∀ i, (Scheme.Modules.pullback g).map (b i) ≫ x = (Scheme.Modules.pullback g).map (b i) ≫ y) : x = y`. Rewrite using `[← cancel_epi ((Scheme.Modules.pullback g).map a)]`. Conclude with `hom_ext_map_biproduct _ _ fun i => by simpa [b] using h i`. Set `u (i : Fin (M + 1))` to `(Scheme.Modules.pullback γ).map (b i) ≫ cokernel.π j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ, hr⟩` from `exists_prel (γ ≫ q) σ (u := u) (hL.pullback γ) hQ fun Z c hc => by`. Rewrite using `[← cancel_epi (cokernel.π j)]`. Conclude with `hext γ fun i => by simpa [u] using hc i`. Use `(hL.pullback γ).isQuasicoherent` as an intermediate fact. Use `hQ.isQuasicoherent` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hj.mono` as an intermediate fact. Establish `key (T : Scheme.{0}) (g₁ g₂ : T ⟶ G) (g : T ⟶ B) (w₁ : g₁ ≫ γ = g) (w₂ : g₂ ≫ γ = g) (h : g₁ ≫ φ = g₂ ≫ φ) : ∃ e : (Scheme.Modules.pullback g₁).obj P ⟶ (Scheme.Modules.pullback g₂).obj P, e ≫ (Scheme.Modules.pullback g₂).map j ≫ (cmp g₂ γ w₂).hom.app E = (Scheme.Modules.pullback …`. Establish `hu (g' : T ⟶ G) (w : g' ≫ γ = g) (i : Fin (M + 1)) : ((cmp g' γ w).app L).inv ≫ (Scheme.Modules.pullback g').map (u i) = (Scheme.Modules.pullback g).map (b i) ≫ (cmp g' γ w).inv.app E ≫ (Scheme.Modules.pullback g').map (cokernel.π j)`. Rewrite using `[Iso.inv_comp_eq, Iso.app_hom, ← cmp_naturality_assoc, Iso.hom_inv_id_app_assoc, ← Functor.map_comp]`. Establish `h₁` using `(hr.pullback g₁).pre ((cmp g₁ γ w₁).app L)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₂` using `(hr.pullback g₂).pre ((cmp g₂ γ w₂).app L)`. Rewrite `h₁` using `[h]`. Simplify using `only [hu] at h₁ h₂`. Take `⟨e, he⟩` from `h₁.exists_factor h₂ fun Z c hc => by`. Rewrite using `[← cancel_epi ((Scheme.Modules.pullback g₁).map (cokernel.π j)), ← cancel_epi ((cmp g₁ γ w₁).inv.app E)]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hext g fun i => by simpa using hc i`. Establish `he' : (cmp g₁ γ w₁).inv.app E ≫ (Scheme.Modules.pullback g₁).map (cokernel.π j) ≫ e = (cmp g₂ γ w₂).inv.app E ≫ (Scheme.Modules.pullback g₂).map (cokernel.π j)` using `hext g fun i => by simpa using he i`. Establish `hex` using `(ShortComplex.exact_cokernel j).map_of_epi_of_preservesCokernel (Scheme.Modules.pullback g₂) (inferInstanceAs (Epi (cokernel.π j))) inferInstance`. Establish `: Mono ((ShortComplex.mk j (cokernel.π j) (cokernel.condition j)).map (Scheme.Modules.pullback g₂)).f` using `(SubPull.isSubbundle_pullback _ _ g₂ _ _ _ m hP hj).mono`. Take `⟨c, hc⟩ : ∃ c, c ≫ (Scheme.Modules.pullback g₂).map j = (Scheme.Modules.pullback g₁).map j ≫ (cmp g₁ γ w₁).hom.app E ≫ (cmp g₂ γ w₂).inv.app E` from `hex.lift' _ (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `_ ≫ (Scheme.Modules.pullback g₂).map (cokernel.π j) = 0`. Rewrite using `[Category.assoc, Category.assoc, ← he', Iso.hom_inv_id_app_assoc, ← Functor.map_comp_assoc, cokernel.condition]`. Use the proof step `simp)`. Conclude with `⟨c, by rw [reassoc_of% hc]; simp⟩`. Use `⟨N, φ, hφ, fun T g₁ g₂ g w₁ w₂ h => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `key T g₁ g₂ g w₁ w₂ h`. Take `⟨e', he'⟩` from `key T g₂ g₁ g w₂ w₁ h.symm`. Use `(SubPull.isSubbundle_pullback _ _ g₁ _ _ _ m hP hj).mono` as an intermediate fact. Use `(SubPull.isSubbundle_pullback _ _ g₂ _ _ _ m hP hj).mono` as an intermediate fact. Conclude with `⟨⟨e, e', by`.
-
-Rewrite using `[← cancel_mono ((Scheme.Modules.pullback g₁).map j ≫ (cmp g₁ γ w₁).hom.app E), Category.assoc, he', he, Category.id_comp], by`. Rewrite using `[← cancel_mono ((Scheme.Modules.pullback g₂).map j ≫ (cmp g₂ γ w₂).hom.app E), Category.assoc, he, he', Category.id_comp]⟩, he⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_toPSpace_of_isSubbundle : ∀ (k : Type) [CommRing k] (B : Scheme.{0}) (q : B ⟶ Sp k), IsProjOver q → ∀ (E : B.Modules) (n m : ℕ), IsVB E n → m ≤ n → ∀ (G : Scheme.{0}) (γ : G ⟶ B) (P : G.Modules) (j : P ⟶ (Scheme.Modules.pullback γ).obj E), IsVB P m → IsSubbundle j → ∃ (N : ℕ) (φ : G ⟶ PSpace k N), φ ≫ PSpace.str k N = γ ≫ q ∧ ∀ (T : Scheme.{0}) (g₁ g₂ : T ⟶ G) (g : T ⟶ B) (w₁ : g₁ ≫ γ = g) (w₂ : g₂ ≫ γ = g), g₁ ≫ φ = g₂ ≫ φ → ∃ e : (Scheme.Modules.pullback g₁).obj P ≅ (Scheme.Modules.pullback g₂).obj P, e.hom ≫ (Scheme.Modules.pullback g₂).map j ≫ (Scheme.Modules.pullbackComp g₂ γ).hom.app E ≫ (Scheme.Modules.pullbackCongr w₂).hom.app E = (Scheme.Modules.pullback g₁).map j ≫ (Scheme.Modules.pullbackComp g₁ γ).hom.app E ≫ (Scheme.Modules.pullbackCongr w₁).hom.app E := by
   intro k _ B q hq E n m hE _ G γ P j hP hj

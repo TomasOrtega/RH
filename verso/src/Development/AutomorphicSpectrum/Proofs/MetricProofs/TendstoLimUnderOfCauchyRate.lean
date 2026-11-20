@@ -5,13 +5,11 @@ open Filter Topology
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
 /- English proof (translation)
-Introduce `f δ t₁ ht₁ hδ hrate`. Use `set F : Filter ℝ := nhdsWithin 0 (Set.Ioi 0) with hF`. Establish `hS : ∀ ε > 0, {t | δ t < ε ∧ 0 < t ∧ t ≤ t₁} ∈ F` using `fun ε hε => Filter.inter_mem (hδ (Iio_mem_nhds hε)) (Filter.inter_mem self_mem_nhdsWithin (mem_nhdsWithin_of_mem_nhds (Iic_mem_nhds ht₁)))`. Establish `hC : Cauchy (Filter.map f F)`. Rewrite using `[Metric.cauchy_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨inferInstance, fun ε hε => ⟨f '' {t | δ t < ε ∧ 0 < t ∧ t ≤ t₁}, Filter.image_mem_map (hS ε hε), ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨h1, h2, h3⟩, rfl⟩ _ ⟨t', ⟨h1', h2', h3'⟩, rfl⟩`. Rewrite using `[Real.dist_eq]`. Break down `le_total t' t with h | h` into its components or cases. Conclude with `(hrate t t' h2' h h3).trans_lt h1`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[abs_sub_comm]`. Conclude with `(hrate t' t h2 h h3').trans_lt h1'`. Take `⟨L, hL⟩` from `CompleteSpace.complete hC`. Establish `hlim : Filter.Tendsto f F (nhds (Filter.limUnder F f))` using `tendsto_nhds_limUnder ⟨L, hL⟩`. Use `⟨hlim, fun t ht htt => ?_⟩` and prove the remaining obligations.
-
-Establish `hev : ∀ᶠ t' in F, |f t - f t'| ≤ δ t` using `by filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (Iic_mem_nhds ht)] with t' h0 h1`. Conclude with `hrate t t' h0 h1 htt`. Conclude with `le_of_tendsto (tendsto_const_nhds.sub hlim).abs hev`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_limUnder_of_cauchy_rate :
     ∀ (f δ : ℝ → ℝ) (t₁ : ℝ), 0 < t₁ → Filter.Tendsto δ (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) →

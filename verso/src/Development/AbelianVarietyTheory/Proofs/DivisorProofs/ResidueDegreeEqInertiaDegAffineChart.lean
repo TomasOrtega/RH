@@ -4,17 +4,15 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 namespace GlobalTheory.ResidueDegreeChart
 
 /- English proof (translation)
-Establish `hq' : q = RingHom.ker ψ` using `by ext s; simp [hq, RingHom.mem_ker]`. Substitute `hq'` using the available equality. Establish `: (RingHom.ker ψ).IsPrime` using `RingHom.ker_isPrime ψ`. Establish `: (RingHom.ker φ).IsPrime` using `RingHom.ker_isPrime φ`. Establish `: (RingHom.ker ψ).LiesOver (RingHom.ker φ)` using `⟨by`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `r`. Simplify using `only [RingHom.mem_ker, Ideal.under, Ideal.mem_comap, ← hc]`. Use the proof step `simp⟩`. Set `_ : Algebra R K` to `φ.toAlgebra`. Set `_ : Algebra S L` to `ψ.toAlgebra`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_ : Algebra R L` to `(ψ.comp (algebraMap R S)).toAlgebra`. Set `_ : Algebra (R ⧸ RingHom.ker φ) K` to `(RingHom.kerLift φ).toAlgebra`. Set `_ : Algebra (S ⧸ RingHom.ker ψ) L` to `(RingHom.kerLift ψ).toAlgebra`. Establish `: FaithfulSMul (R ⧸ RingHom.ker φ) K` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.kerLift_injective φ)`. Establish `: FaithfulSMul (S ⧸ RingHom.ker ψ) L` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.kerLift_injective ψ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsFractionRing (R ⧸ RingHom.ker φ) K` using `IsFractionRing.of_field _ _ fun z => by`. Take `⟨a, b, h⟩` from `hφ z`. Conclude with `⟨Ideal.Quotient.mk _ a, Ideal.Quotient.mk _ b, h⟩`. Establish `: IsFractionRing (S ⧸ RingHom.ker ψ) L` using `IsFractionRing.of_field _ _ fun z => by`. Take `⟨a, b, h⟩` from `hψ z`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Ideal.Quotient.mk _ a, Ideal.Quotient.mk _ b, h⟩`. Establish `: IsScalarTower R (R ⧸ RingHom.ker φ) K` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsScalarTower S (S ⧸ RingHom.ker ψ) L` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsScalarTower R S L` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsScalarTower R K L` using `IsScalarTower.of_algebraMap_eq fun r => (hc r).symm`.
-
-Conclude with `Ideal.inertiaDeg_eq_of_isFractionRing (RingHom.ker φ) (RingHom.ker ψ) K L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inertiaDeg_eq_finrank_of_ker {R S K L : Type*} [CommRing R] [CommRing S] [Field K] [Field L]
     [Algebra R S] [Algebra K L] (φ : R →+* K) (ψ : S →+* L) (q : Ideal S)
@@ -52,7 +50,7 @@ theorem inertiaDeg_eq_finrank_of_ker {R S K L : Type*} [CommRing R] [CommRing S]
   exact Ideal.inertiaDeg_eq_of_isFractionRing (RingHom.ker φ) (RingHom.ker ψ) K L
 
 /- English proof (translation)
-Set `_ : Algebra Γ(X, U) (X.presheaf.stalk x)` to `TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨x, hx⟩`. Use `hU.isLocalization_stalk ⟨x, hx⟩` as an intermediate fact. Rewrite using `[← IsLocalization.AtPrime.to_map_mem_maximal_iff (X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hx⟩).asIdeal s, ← IsLocalRing.residue_eq_zero_iff]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_primeIdealOf_iff {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (x : X)
     (hx : x ∈ U) (s : Γ(X, U)) :
@@ -64,9 +62,9 @@ theorem mem_primeIdealOf_iff {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U
   rfl
 
 /- English proof (translation)
-Set `_ : Algebra Γ(X, U) (X.presheaf.stalk x)` to `TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨x, hx⟩`. Use `hU.isLocalization_stalk ⟨x, hx⟩` as an intermediate fact. Take `⟨t, rfl⟩` from `X.residue_surjective x z`. Take `⟨⟨a, b⟩, h⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl (S := X.presheaf.stalk x) t`. Use `⟨a, b, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : (X.evaluation U x hx).hom b ≠ 0` using `fun h0 => b.2 ((mem_primeIdealOf_iff hU x hx b).2 h0)`. Rewrite using `[eq_div_iff hb]`. Use `congrArg (X.residue x).hom h` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_div_evaluation {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (x : X)
     (hx : x ∈ U) (z : X.residueField x) :
@@ -85,7 +83,7 @@ theorem exists_eq_div_evaluation {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOp
   exact this
 
 /- English proof (translation)
-Introduce `X Y g V hV hU w hw`. Set `_ : Algebra Γ(X, V) Γ(Y, g ⁻¹ᵁ V)` to `(g.app V).hom.toAlgebra`. Set `_ : Algebra (X.residueField (g w)) (Y.residueField w)` to `(g.residueFieldMap w).hom.toAlgebra`. Use `symm`. Conclude with `inertiaDeg_eq_finrank_of_ker (X.evaluation V (g w) hw).hom (Y.evaluation (g ⁻¹ᵁ V) w hw).hom _ (mem_primeIdealOf_iff hU w hw) (exists_eq_div_evaluation hV (g w) hw) (exists_eq_div_evaluation hU w hw) (fun r => Scheme.evaluation_naturality_apply g w hw r)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem residueDegree_eq_inertiaDeg : ∀ (X Y : Scheme.{0}) (g : Y ⟶ X) (V : X.Opens), IsAffineOpen V → ∀ (hU : IsAffineOpen (g ⁻¹ᵁ V)) (w : Y) (hw : w ∈ g ⁻¹ᵁ V), g.residueDegree w = @Ideal.inertiaDeg Γ(Y, g ⁻¹ᵁ V) _ (hU.primeIdealOf ⟨w, hw⟩).asIdeal Γ(X, V) _ (g.app V).hom.toAlgebra := by
   intro X Y g V hV hU w hw

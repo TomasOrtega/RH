@@ -9,7 +9,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace GlobalTheory.CompanionTheory.FirstChernPullback
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `hV`. Use `⟨Limits.pullback.lift ((u ∣_ V) ≫ σ) (u ⁻¹ᵁ V).ι ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hσ, morphismRestrict_ι]`. Conclude with `Limits.pullback.lift_snd _ _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_VD_pb {X X' : Scheme.{0}} (D : E.LineData X) (u : X' ⟶ X) {V : X.Opens} (hV : V ∈ 𝒱D D) :
     u ⁻¹ᵁ V ∈ 𝒱D (D.pb u) := by
@@ -19,7 +19,7 @@ theorem mem_VD_pb {X X' : Scheme.{0}} (D : E.LineData X) (u : X' ⟶ X) {V : X.O
   · exact Limits.pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Establish `hx : u x ∈ sSup 𝒲` using `by rw [h]; trivial`. Take `⟨V, hV, hxV⟩` from `TopologicalSpace.Opens.mem_sSup.1 hx`. Conclude with `TopologicalSpace.Opens.mem_sSup.2 ⟨_, ⟨V, hV, rfl⟩, hxV⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sSup_preimage {X X' : Scheme.{0}} (𝒲 : Set X.Opens) (u : X' ⟶ X) (h : sSup 𝒲 = ⊤) :
     sSup ((fun V : X.Opens => u ⁻¹ᵁ V) '' 𝒲) = ⊤ := by
@@ -29,7 +29,7 @@ theorem sSup_preimage {X X' : Scheme.{0}} (𝒲 : Set X.Opens) (u : X' ⟶ X) (h
   exact TopologicalSpace.Opens.mem_sSup.2 ⟨_, ⟨V, hV, rfl⟩, hxV⟩
 
 /- English proof (translation)
-Substitute `ea eb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem u_congr {X : Scheme.{0}} (D : E.LineData X) {A : CommRingCat.{0}} {a a' b b' : Spec A ⟶ D.Y} (ea : a = a') (eb : b = b')
     (h : a ≫ D.f = b ≫ D.f) (h' : a' ≫ D.f = b' ≫ D.f) :
@@ -42,29 +42,27 @@ end GlobalTheory.CompanionTheory.FirstChernPullback
 open GlobalTheory.CompanionTheory.FirstChernPullback in
 
 /- English proof (translation)
-Introduce `O O' R R' _ _ _ _ I I' γ γ' X X' q q' κ κ' σ m p Q Q₀ hQ h D N z z' hD hz hz'`. Set `𝒱 : Set X'.Opens` to `(fun V : X.Opens => m.u ⁻¹ᵁ V) '' 𝒱D D`. Establish `h1 : St Q₀ 𝒱 ≤ St Q₀ {⊤}` using `fun T hT => ⟨hT.1, ⊤, rfl, fun _ _ => trivial⟩`. Establish `hc : ∀ W ∈ ({⊤} : Set X'.Opens), W ≤ sSup 𝒱`. Introduce and unpack `W rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(sSup_preimage _ m.u hD).ge`. Apply `(GlobalTheory.T.cech_refinement_cohomology_bijective Q₀ hQ 𝒱 {⊤} h1 hc 2).2.2.1` to reduce the goal to its premises. Set `G' : (St Q₀ 𝒱).FullSubcategory ⥤ (St Q₀ {⊤}).FullSubcategory` to `ObjectProperty.ιOfLE h1`. Set `sm` to `m.smor Q (St Q₀ {⊤}) h`. Set `G'' : (St Q₀ 𝒱).FullSubcategory ⥤ Q.FullSubcategory` to `G' ⋙ sm.G`.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hV' : ∀ T, ∃ V ∈ 𝒱D (D.pb m.u), InU V (G'.obj T).obj`. Introduce and unpack `⟨T, -, -, ⟨V, hV, rfl⟩, hT⟩`. Conclude with `⟨_, mem_VD_pb D m.u hV, hT⟩`. Establish `hV : ∀ T, ∃ V ∈ 𝒱D D, InU V (G''.obj T).obj`. Introduce and unpack `⟨T, -, -, ⟨V, hV, rfl⟩, hT⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨V, hV, hT⟩`. Take `⟨Λ'⟩` from `GlobalTheory.T.exists_crystalline_lift (q := q') (b := nlBase R' I' γ' p) (ht := rfl) (κ := κ') (G' ⋙ (St Q₀ {⊤}).ι) (D.pb m.u) (fun T => by`. Take `⟨V, ⟨s, hs⟩, hT⟩` from `hV' T`. Establish `hr : Set.range (pt (G'.obj T).obj) ⊆ Set.range V.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hT (show x ∈ (⊤ : Scheme.Opens _) from trivial)`. Use `⟨IsOpenImmersion.lift V.ι (pt (G'.obj T).obj) hr ≫ s, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hs, IsOpenImmersion.lift_fac]`. Use the proof step `rfl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Λ : B.CLift (q` to `q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) (G'' ⋙ Q.ι) D := { p := fun T => Λ'.p T ≫ Limits.pullback.fst D.f m.u hp := fun T => by`. Establish `e` using `Λ'.hp T`. Rewrite using `[Category.assoc, Limits.pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ m.u) e`. Use `w := fun φ => Λ'.w φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hw := fun {T T'} φ hh => by`. Establish `hh' : (B.thSp ((G' ⋙ (St Q₀ {⊤}).ι).map φ) ≫ Λ'.p T) ≫ (D.pb m.u).f = Λ'.p T' ≫ (D.pb m.u).f`. Rewrite using `[Category.assoc, Λ'.hp T, Λ'.hp T']`. Conclude with `congrArg (fun y => y.1.2) ((G' ⋙ (St Q₀ {⊤}).ι).map φ).pt`. Use `(Λ'.hw φ hh').trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Conclude with `u_congr D (Category.assoc _ _ _) rfl _ hh }`. Take `⟨hz1, hcl1⟩` from `hz' _ G' hV' Λ'`. Take `⟨hz2, hcl2⟩` from `hz _ G'' hV Λ`. Set `ψ : CH.Mor (G' ⋙ CH.modF (sP (St Q₀ {⊤})).A) (CH.modF (sP (St Q₀ 𝒱)).A) (RingHom.id R')` to `{ G := 𝟭 _, τ := fun T => (incl h1).o.τ T, nat := fun φ x => (incl h1).o.nat φ x }`. Set `μ : CH.Mor (G'' ⋙ CH.modF (sP Q).A) (CH.modF (sP (St Q₀ 𝒱)).A) σ` to `{ G := 𝟭 _, τ := fun T => sm.o.τ (G'.obj T), nat := fun φ x => sm.o.nat (G'.map φ) x }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1 : (incl h1).o.pull 2 z' = ψ.pull 2 ((CH.Mor.restrict (CH.modF (sP (St Q₀ {⊤})).A) G').pull 2 z')`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ z'`. Both sides reduce to the same expression. Establish `e2 : (incl h1).o.pull 2 (sm.o.pull 2 z) = μ.pull 2 ((CH.Mor.restrict (CH.modF (sP Q).A) G'').pull 2 z)`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hE : μ.pullC 2 (Λ.coc (RingHom.id R) N) = ψ.pullC 2 (Λ'.coc (RingHom.id R') N)`. Use function extensionality and compare the values at `s`. Both sides reduce to the same expression. Establish `b1 : CH.d _ 2 (ψ.pullC 2 (Λ'.coc (RingHom.id R') N)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Rewrite using `[ψ.d_pullC, hz1, map_zero]`. Establish `b2 : CH.d _ 2 (μ.pullC 2 (Λ.coc (RingHom.id R) N)) = 0`. Rewrite using `[μ.d_pullC, hz2, map_zero]`. Establish `k1 : ψ.pull 2 ((CH.cx _).cls _ hz1) = (CH.cx _).cls _ b1` using `CrystallineSemistableComparison.P.mapH_cls ψ.hom 2 _ hz1 b1`. Establish `k2 : μ.pull 2 ((CH.cx _).cls _ hz2) = (CH.cx _).cls _ b2` using `CrystallineSemistableComparison.P.mapH_cls μ.hom 2 _ hz2 b2`.
-
-Establish `key : ∀ (a b : CH.Cn (CH.modF (sP (St Q₀ 𝒱)).A) 2) (ha : CH.d _ 2 a = 0) (hb : CH.d _ 2 b = 0), a = b → (CH.cx _).cls a ha = (CH.cx _).cls b hb`. Introduce and unpack `a _ ha hb rfl`. Both sides reduce to the same expression. Rewrite using `[e1, e2, ← hcl1, ← hcl2, k1, k2]`. Conclude with `key _ _ b2 b1 hE`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.FirstChernPullback.firstChern_pullback : ∀ {O O' R R' : Type} [CommRing O] [CommRing O'] [CommRing R] [CommRing R'] {I : Ideal R} {I' : Ideal R'}
     {γ : DividedPowers I} {γ' : DividedPowers I'} {X X' : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {q' : X' ⟶ Spec (CommRingCat.of O')}

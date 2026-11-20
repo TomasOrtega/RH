@@ -8,11 +8,11 @@ variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Local
   [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H]
 
 /- English proof (translation)
-Set `e : H ≃ᵐ H` to `MeasurableEquiv.mulRight h`. Set `T : Set H` to `(fun y => y * h⁻¹) ⁻¹' 𝓕`. Establish `hq : Measure.QuasiMeasurePreserving (fun y : H => y * h⁻¹) μ μ` using `⟨measurable_mul_const _, by`. Rewrite using `[Measure.map_right_mul_eq_modularCharacterFun_smul]`. Conclude with `Measure.smul_absolutelyContinuous⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : IsFundamentalDomain Γ T μ` using `h𝓕.preimage_of_equiv hq (e := id) Function.bijective_id (fun g x => by`. Simplify using `[Subgroup.smul_def, smul_eq_mul, mul_assoc])`. Establish `heT : e ⁻¹' T = 𝓕`. Use extensionality with `x`. Simplify using `[T, e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmap : μ.map e = Measure.modularCharacterFun h • μ` using `Measure.map_right_mul_eq_modularCharacterFun_smul μ h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmap, Measure.restrict_smul, lintegral_smul_measure]`. Both sides reduce to the same expression. Use `_ = _ := by rw [hT.setLIntegral_eq h𝓕 F (fun g x => hF g g.2 x)]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem setLIntegral_mul_right (μ : Measure H) [μ.IsHaarMeasure] (Γ : Subgroup H) [Countable Γ]
     {𝓕 : Set H} (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (F : H → ℝ≥0∞)
@@ -40,7 +40,7 @@ theorem setLIntegral_mul_right (μ : Measure H) [μ.IsHaarMeasure] (Γ : Subgrou
     _ = _ := by rw [hT.setLIntegral_eq h𝓕 F (fun g x => hF g g.2 x)]
 
 /- English proof (translation)
-Establish `h : ‖a - b‖ ^ 2 ≤ 2 * ‖a‖ ^ 2 + 2 * ‖b‖ ^ 2`. Use polynomial arithmetic with `[norm_sub_le a b, norm_nonneg a, norm_nonneg b, norm_nonneg (a - b), sq_nonneg (‖a‖ - ‖b‖)]`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_pow (norm_nonneg _)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_mul (by norm_num)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -59,7 +59,7 @@ theorem enorm_sub_sq_le (a b : ℂ) : ‖a - b‖ₑ ^ 2 ≤ 2 * ‖a‖ₑ ^ 2 
         norm_num
 
 /- English proof (translation)
-Establish `h1 : (ENNReal.ofReal a).toReal < b.toReal` using `ENNReal.toReal_strict_mono hb h`. Rewrite `h1` using `[ENNReal.toReal_ofReal']`. Conclude with `lt_of_le_of_lt (le_max_left _ _) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lt_toReal_of_ofReal_lt {a : ℝ} {b : ℝ≥0∞} (hb : b ≠ ∞) (h : ENNReal.ofReal a < b) :
     a < b.toReal := by
@@ -68,55 +68,45 @@ theorem lt_toReal_of_ofReal_lt {a : ℝ} {b : ℝ≥0∞} (hb : b ≠ ∞) (h : 
   exact lt_of_le_of_lt (le_max_left _ _) h1
 
 /- English proof (translation)
-Use `set ν := μ.restrict 𝓕 with hν`. Use `set hs : ℝ → H := fun s => γ (Multiplicative.ofAdd s) with hhs`. Establish `hsc : Continuous hs` using `hγ.comp continuous_ofAdd`. Establish `hs0 : hs 0 = 1` using `by simp [hs]`. Use `set Δ : ℝ → ℝ≥0 := fun s => Measure.modularCharacterFun (hs s) with hΔ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hΔneg : ∀ s, (Δ (-s) : ℝ) * Δ s = 1` using `fun s => by`. Establish `: hs (-s) * hs s = 1`. Simplify using `only [hs, ← map_mul, ← ofAdd_add, neg_add_cancel, ofAdd_zero, map_one]`. Establish `h2` using `Measure.modularCharacterFun_map_mul (hs (-s)) (hs s)`. Rewrite `h2` using `[this, Measure.modularCharacterFun_map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Δ]`. Conclude with `h2.symm` after adjusting the coercions. Use `set N : H → ℝ≥0∞ := fun x => ‖f₁ x‖ₑ ^ 2 with hN`. Use `set I : ℝ≥0∞ := ∫⁻ x, N x ∂ν with hIdef`. Establish `hI : I ≠ ∞`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hint.hasFiniteIntegral` as an intermediate fact. Unfold `HasFiniteIntegral at this`. Use `ne_of_lt (lt_of_le_of_lt (le_of_eq (lintegral_congr fun x => ?_)) this)` and prove the remaining obligations. Simplify using `[N, enorm_pow]`. Establish `hNm : ∀ h : H, Measurable fun x => N (x * h)` using `fun h => (hf.measurable.comp (measurable_mul_const h)).enorm.pow_const 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the argument to an intermediate assertion. Establish an intermediate fact.
 
-Establish `hnorm : ∀ s, ∫⁻ x, N (x * hs s) ∂ν = Δ s * I` using `fun s => setLIntegral_mul_right μ Γ h𝓕 N (fun g hg x => by simp only [N, hinv g hg x]) (hs s)`. Establish `hpt : ∀ x, Tendsto (fun s => f₁ (x * hs s)) (𝓝 0) (𝓝 (f₁ x))` using `fun x => by`. Establish `: Continuous fun s => f₁ (x * hs s)` using `hf.comp (continuous_const.mul hsc)`. Simplify `this.tendsto 0` using `[hs0]`. Use `set J : ℝ → ℝ≥0∞ := fun s => ∫⁻ x, ‖f₁ (x * hs s) - f₁ x‖ₑ ^ 2 ∂ν with hJdef`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-It suffices to establish `hJ : Tendsto J (𝓝 0) (𝓝 0) by`. Establish `h2 : ∀ s, eLpNorm (fun x => f₁ (x * hs s) - f₁ x) 2 ν = J s ^ (1 / 2 : ℝ)`. Introduce `s`. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num)]`. Simplify using `[J]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `((ENNReal.continuous_rpow_const (y := (1 / 2 : ℝ))).tendsto 0).comp hJ`. Rewrite `h3` using `[ENNReal.zero_rpow_of_pos (by norm_num)]`. Use `h3.congr (fun s => ?_)` and prove the remaining obligations. Conclude with `(h2 s).symm`. Establish `hBm : ∀ s, Measurable fun x => ‖f₁ (x * hs s) - f₁ x‖ₑ ^ 2` using `fun s => ((hf.measurable.comp (measurable_mul_const _)).sub hf.measurable).enorm.pow_const 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hAint : ∀ s, ∫⁻ x, (2 * N (x * hs s) + 2 * N x) ∂ν = 2 * Δ s * I + 2 * I` using `fun s => by`. Rewrite using `[lintegral_add_left ((hNm _).const_mul 2), lintegral_const_mul _ (hNm _), lintegral_const_mul _ (by simpa using hNm 1), hnorm, mul_assoc]`. Establish `hJle : ∀ s, J s ≤ 2 * Δ s * I + 2 * I` using `fun s => by`. Rewrite using `[← hAint]`. Conclude with `lintegral_mono fun x => enorm_sub_sq_le _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfin : ∀ s, 2 * (Δ s : ℝ≥0∞) * I + 2 * I ≠ ∞` using `fun s => by`. Simplify using `[ENNReal.mul_eq_top, hI, ENNReal.add_eq_top]`. Distinguish the cases in `hI0 : I = 0`. Establish `: ∀ s, J s = 0` using `fun s => le_antisymm (by simpa [hI0] using hJle s) bot_le`. Rewrite using `[show J = fun _ => 0 from funext this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `tendsto_const_nhds`. Establish `hfat1 : I ≤ liminf (fun s => (Δ s : ℝ≥0∞) * I) (𝓝 0)`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Conclude with `((((ENNReal.continuous_pow 2).tendsto _).comp (hpt x).enorm).liminf_eq).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `_ ≤ liminf (fun s => ∫⁻ x, N (x * hs s) ∂ν) (𝓝 0) := lintegral_liminf_le fun s => hNm (hs s)`. Use `_ = liminf (fun s => (Δ s : ℝ≥0∞) * I) (𝓝 0) := by simp only [hnorm]`. Establish `hlow : ∀ c : ℝ≥0, c < 1 → ∀ᶠ s in 𝓝 (0 : ℝ), c < Δ s` using `fun c hc => by`. Establish `h1 : (c : ℝ≥0∞) * I < liminf (fun s => (Δ s : ℝ≥0∞) * I) (𝓝 0)`. Use `lt_of_lt_of_le ?_ hfat1` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `filter_upwards [eventually_lt_of_lt_liminf h1] with s hs'`. Conclude with `(ENNReal.mul_lt_mul_iff_left hI0 hI).1 hs'` after adjusting the coercions. Establish `hup : ∀ η : ℝ, 0 < η → ∀ᶠ s in 𝓝 (0 : ℝ), (Δ s : ℝ) < 1 + η` using `fun η hη => by set c : ℝ≥0 := Real.toNNReal (1 + η)⁻¹ with hc`. Establish `hcr : (c : ℝ) = (1 + η)⁻¹` using `Real.coe_toNNReal _ (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc1 : c < 1`. Rewrite using `[← NNReal.coe_lt_coe, hcr, NNReal.coe_one]`. Conclude with `inv_lt_one_of_one_lt₀ (by linarith)`. Establish `hneg : Tendsto (fun s : ℝ => -s) (𝓝 0) (𝓝 0)`. Simplify using `using (continuous_neg.tendsto (0 : ℝ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `filter_upwards [hneg.eventually (hlow c hc1)] with s hs'`. Establish `h1 : (c : ℝ) < Δ (-s)` using `by exact_mod_cast hs'`. Establish `h2` using `hΔneg s`. Establish `hcpos : (0 : ℝ) < c` using `by rw [hcr]; positivity`. Establish `h3 : (c : ℝ) * (1 + η) = 1` using `by rw [hcr]; field_simp`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hD : (0 : ℝ) ≤ Δ s` using `NNReal.coe_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Establish `hN1 : Measurable N` using `(hf.measurable).enorm.pow_const 2`. Establish `hfat2 : 2 * I + 2 * I ≤ liminf (fun s => (2 * (Δ s : ℝ≥0∞) * I + 2 * I) - J s) (𝓝 0)`. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[lintegral_add_left (hN1.const_mul 2), lintegral_const_mul _ hN1]`. Use `_ = ∫⁻ x, liminf (fun s => (2 * N (x * hs s) + 2 * N x) - ‖f₁ (x * hs s) - f₁ x‖ₑ ^ 2) (𝓝 0) ∂ν := by`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hNx : Tendsto (fun s => N (x * hs s)) (𝓝 0) (𝓝 (N x))` using `((ENNReal.continuous_pow 2).tendsto _).comp (hpt x).enorm`. Establish `hA : Tendsto (fun s => 2 * N (x * hs s) + 2 * N x) (𝓝 0) (𝓝 (2 * N x + 2 * N x))` using `(ENNReal.Tendsto.const_mul hNx (Or.inr ENNReal.ofNat_ne_top)).add tendsto_const_nhds`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : Tendsto (fun s => f₁ (x * hs s) - f₁ x) (𝓝 0) (𝓝 0)`. Simplify using `using (hpt x).sub_const (f₁ x)`. Establish `hB : Tendsto (fun s => ‖f₁ (x * hs s) - f₁ x‖ₑ ^ 2) (𝓝 0) (𝓝 0)`. Use `((ENNReal.continuous_pow 2).tendsto _).comp hd.enorm` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ENNReal.Tendsto.sub hA hB (Or.inr ENNReal.zero_ne_top)` as an intermediate fact. Rewrite `this` using `[tsub_zero]`. Conclude with `this.liminf_eq.symm`. Use `_ ≤ liminf (fun s => ∫⁻ x, ((2 * N (x * hs s) + 2 * N x) - ‖f₁ (x * hs s) - f₁ x‖ₑ ^ 2) ∂ν) (𝓝 0) := lintegral_liminf_le fun s => (((hNm _).const_mul 2).add (hN1.const_mul 2)).sub (hBm s)`. Use `_ = liminf (fun s => (2 * (Δ s : ℝ≥0∞) * I + 2 * I) - J s) (𝓝 0) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[lintegral_sub (hBm s) (ne_top_of_le_ne_top (hfin s) (hJle s)) (ae_of_all _ fun x => enorm_sub_sq_le _ _), hAint]`. Rewrite using `[ENNReal.tendsto_nhds_zero]`. Introduce `ε hε`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hεt : ε = ∞`. Conclude with `Eventually.of_forall fun _ => hεt ▸ le_top`. Use `set e := ε.toReal with he_def`. Establish `he : 0 < e` using `ENNReal.toReal_pos hε.ne' hεt`. Use `set i := I.toReal with hi_def`.
-
-Establish `hi : 0 < i` using `ENNReal.toReal_pos hI0 hI`. Establish `h4 : ENNReal.ofReal (4 * i - e / 2) < 2 * I + 2 * I`. Establish `hne : 2 * I + 2 * I ≠ ∞` using `by simp [ENNReal.add_eq_top, ENNReal.mul_eq_top, hI]`. Rewrite using `[← ENNReal.ofReal_toReal hne, ENNReal.ofReal_lt_ofReal_iff (ENNReal.toReal_pos (by simp [hI0]) hne)]`. Rewrite using `[ENNReal.toReal_add (by simp [ENNReal.mul_eq_top, hI]) (by simp [ENNReal.mul_eq_top, hI]), ENNReal.toReal_mul]`.
-
-Simplify using `only [ENNReal.toReal_ofNat, ← hi_def]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv` using `eventually_lt_of_lt_liminf (lt_of_lt_of_le h4 hfat2)`. Use `filter_upwards [hv, hup (e / (4 * i)) (by positivity)] with s h1 h2`. Establish `hu` using `hfin s`.
-
-Establish `hJs` using `hJle s`. Establish `hJne : J s ≠ ∞` using `ne_top_of_le_ne_top hu hJs`. Establish `hvr` using `lt_toReal_of_ofReal_lt (ENNReal.sub_ne_top hu) h1`. Rewrite `hvr` using `[ENNReal.toReal_sub_of_le hJs hu]`. Establish `hur : (2 * (Δ s : ℝ≥0∞) * I + 2 * I).toReal = 2 * (Δ s : ℝ) * i + 2 * i`.
-
-Rewrite using `[ENNReal.toReal_add (by simp [ENNReal.mul_eq_top, hI]) (by simp [ENNReal.mul_eq_top, hI]), ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_mul]`. Simplify using `[← hi_def]`. Rewrite `hvr` using `[hur]`. Establish `key : (Δ s : ℝ) * i < i + e / 4`. Use `mul_lt_mul_of_pos_right h2 hi` as an intermediate fact.
-
-Establish `h5 : (1 + e / (4 * i)) * i = i + e / 4` using `by field_simp`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hJr : (J s).toReal ≤ e` using `by linarith`. Conclude with `(ENNReal.toReal_le_toReal hJne hεt).1 hJr`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_eLpNorm_mul_right_sub (μ : Measure H) [μ.IsHaarMeasure] (Γ : Subgroup H)
     [Countable Γ] (𝓕 : Set H) (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (γ : Multiplicative ℝ →* H)

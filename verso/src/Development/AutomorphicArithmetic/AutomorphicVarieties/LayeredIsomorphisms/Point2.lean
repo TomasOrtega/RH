@@ -6,17 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LayeredIsomorphism
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
 /- English proof (translation)
-Introduce `CK hCK hK l R c1 n0 hl c0 J Ct eps a hc0 hJ hCt heps ha`. Establish `hA : 0 ≤ (R : ℝ) * (a + (jZero l R : ℝ) + c1 + 2 * Ct * J) + 1` using `by positivity`. Establish `hB : 0 ≤ (2 * (n0 : ℝ)) ^ CK * c0` using `by positivity`. Use `⟨((R : ℝ) * (a + (jZero l R : ℝ) + c1 + 2 * Ct * J) + 1) + (2 * (n0 : ℝ)) ^ CK * c0, by positivity, ?_⟩` and prove the remaining obligations. Introduce `L₀ _ hmu hS c X Exc hc hF L₂ _ _ _ hL₂ hn x hx hXx hxX hG hD e he hex m L₁ _ _ _ hL₁ hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hX : 1 ≤ X` using `hx.trans hxX`. Establish `heZ : e ≤ ⌊X ^ Ct⌋₊` using `Nat.le_floor (hex.trans (Real.rpow_le_rpow (by linarith) hxX hCt))`. Take `⟨h1, h2⟩` from `UpperTheory.V.Win.point CK hCK hK l R c L₀ hmu hS _ Exc hF L₂ hL₂ eps Ct c0 x n0 heps hc0 hx hG hn hD e he heZ hex m L₁ hL₁`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hlog` using `UpperTheory.V.Win.logs.1 l J Ct X x hl.out.two_le hJ hCt hX hXx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hL : 0 ≤ Real.log x` using `Real.log_nonneg hx`. Establish `hcr : (c : ℝ) ≤ c1` using `by exact_mod_cast hc`. Establish `hp : 0 ≤ x ^ (3 * eps / 4)` using `by positivity`. Establish `hj : (0 : ℝ) ≤ jZero l R` using `Nat.cast_nonneg _`. Establish `hc1 : (0 : ℝ) ≤ c1` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : (0 : ℝ) ≤ R` using `Nat.cast_nonneg _`. Establish `hCJ : 0 ≤ 2 * Ct * J` using `by positivity`. Establish `hin : (m : ℝ) + jZero l R + c + Nat.log l ⌊X ^ Ct⌋₊ ≤ (a + (jZero l R : ℝ) + c1 + 2 * Ct * J) * (1 + Real.log x)`. Use polynomial arithmetic with `[mul_nonneg hj hL, mul_nonneg hc1 hL]`. Establish `hR'` using `mul_le_mul_of_nonneg_left hin hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hexp : Real.exp ((2 * (n0 : ℝ)) ^ CK * c0 * x ^ (3 * eps / 4)) ≤ Real.exp ((((R : ℝ) * (a + (jZero l R : ℝ) + c1 + 2 * Ct * J) + 1) + (2 * (n0 : ℝ)) ^ CK * c0) * x ^ (3 * eps / 4))`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right (by linarith) hp`. Unfold `ptBound`. Establish `hBL : 0 ≤ (2 * (n0 : ℝ)) ^ CK * c0 * (1 + Real.log x)` using `by positivity`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Win.point2 :
     ∀ CK : ℝ, 0 < CK → LemmaK CK → ∀ (l R c1 n0 : ℕ) [Fact l.Prime] (c0 J Ct eps a : ℝ), 0 ≤ c0 → 0 < J → 0 ≤ Ct → 0 < eps →

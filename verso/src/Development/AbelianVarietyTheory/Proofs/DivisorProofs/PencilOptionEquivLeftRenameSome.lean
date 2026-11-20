@@ -4,7 +4,7 @@ open MvPolynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C r => simp [MvPolynomial.optionEquivLeft_C]`. Consider the case `add p q hp hq => simp [map_add, hp, hq]`. Consider the case `mul_X p x hp => simp [map_mul, hp, MvPolynomial.optionEquivLeft_X_some]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pencil_optionEquivLeft_rename_some {τ : Type} (a : MvPolynomial τ ℂ) :
     MvPolynomial.optionEquivLeft ℂ τ (MvPolynomial.rename some a) = Polynomial.C a := by
@@ -14,9 +14,9 @@ theorem pencil_optionEquivLeft_rename_some {τ : Type} (a : MvPolynomial τ ℂ)
   | mul_X p x hp => simp [map_mul, hp, MvPolynomial.optionEquivLeft_X_some]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ ?_` and prove the remaining obligations. Introduce `g _`. Combine the equalities or inequalities in the displayed calculation. Break down `Int.units_eq_one_or (Equiv.Perm.sign g) with sg | sg` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[sg, one_smul]`. Rewrite using `[sg, Units.neg_smul, one_smul, Polynomial.natDegree_neg]`. Use `_ ≤ ∑ i, (M (g i) i).natDegree := Polynomial.natDegree_prod_le _ _`. Use `_ ≤ ∑ i, d (g i) := Finset.sum_le_sum fun i _ => h _ _`. Use `_ = ∑ i, d i := Equiv.sum_comp g d`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pencil_natDegree_det_le_rowSum {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
     (M : Matrix ι ι (Polynomial R)) (d : ι → ℕ) (h : ∀ i j, (M i j).natDegree ≤ d i) :
@@ -33,7 +33,7 @@ theorem pencil_natDegree_det_le_rowSum {R : Type} [CommRing R] {ι : Type} [Fint
     _ = ∑ i, d i := Equiv.sum_comp g d
 
 /- English proof (translation)
-Simplify using `[map_add, map_mul, MvPolynomial.optionEquivLeft_X_none, pencil_optionEquivLeft_rename_some]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pencil_map_entry {τ : Type} (a b : MvPolynomial τ ℂ) :
     MvPolynomial.optionEquivLeft ℂ τ
@@ -42,21 +42,19 @@ theorem pencil_map_entry {τ : Type} (a b : MvPolynomial τ ℂ) :
   simp [map_add, map_mul, MvPolynomial.optionEquivLeft_X_none, pencil_optionEquivLeft_rename_some]
 
 /- English proof (translation)
-Introduce `τ ι _ _ A B Z`. Use `set e : MvPolynomial (Option τ) ℂ →+* Polynomial (MvPolynomial τ ℂ) := (MvPolynomial.optionEquivLeft ℂ τ).toRingEquiv.toRingHom with he`. Establish `hZ : e.mapMatrix Z = (Polynomial.X : Polynomial (MvPolynomial τ ℂ)) • A.map Polynomial.C + B.map Polynomial.C`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Z, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `exact pencil_map_entry (A i j) (B i j)`. Establish `hdet : MvPolynomial.optionEquivLeft ℂ τ Z.det = ((Polynomial.X : Polynomial (MvPolynomial τ ℂ)) • A.map Polynomial.C + B.map Polynomial.C).det`. Rewrite using `[← hZ, ← RingHom.map_det]`. Both sides reduce to the same expression. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k hk`. Rewrite using `[hdet]`. Conclude with `Polynomial.coeff_eq_zero_of_natDegree_lt ((Polynomial.natDegree_det_X_add_C_le A B).trans_lt hk)`. Rewrite using `[hdet, Polynomial.coeff_det_X_add_C_card]`. Introduce `k i j hk`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hadj : MvPolynomial.optionEquivLeft ℂ τ (Z.adjugate j i) = (((Polynomial.X : Polynomial (MvPolynomial τ ℂ)) • A.map Polynomial.C + B.map Polynomial.C).updateRow i (Pi.single j 1)).det`. Use `congrFun (congrFun (RingHom.map_adjugate e Z) j) i` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply, Matrix.map_apply]`. Express the relevant statement in the definitionally equal form `e (Z.adjugate j i) = _`. Rewrite using `[this, hZ, Matrix.adjugate_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hadj]`. Apply `Polynomial.coeff_eq_zero_of_natDegree_lt` to reduce the goal to its premises. Establish `hcard : 0 < Fintype.card ι` using `Fintype.card_pos_iff.mpr ⟨i⟩`. Use `lt_of_le_of_lt (pencil_natDegree_det_le_rowSum _ (fun r => if r = i then 0 else 1) ?_) ?_` and prove the remaining obligations. Introduce `r c`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hr : r = i`. Substitute `hr` using the available equality. Simplify using `only [Matrix.updateRow_self, if_true]`. Distinguish the cases in `hc : c = j`. Substitute `hc` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hc]`. Simplify using `only [Matrix.updateRow_ne hr, if_neg hr, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul] compute_degree`. Establish `: (∑ r, if r = i then 0 else 1 : ℕ) = Fintype.card ι - 1`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, zero_add, Finset.sum_const, smul_eq_mul, mul_one, Finset.filter_ne' , Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ]`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem pencil_det_adjugate_coeff :
     ∀ {τ : Type} {ι : Type} [Fintype ι] [DecidableEq ι] (A B : Matrix ι ι (MvPolynomial τ ℂ)),

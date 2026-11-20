@@ -11,9 +11,9 @@ variable {ι : Type} [Fintype ι]
 open Classical
 
 /- English proof (translation)
-Set `f : (κ → ℤ) → lat b` to `fun c => ⟨∑ i, c i • b i, Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)⟩`. Establish `hf : Function.Surjective f`. Introduce and unpack `⟨x, hx⟩`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hx`. Conclude with `⟨c, Subtype.ext hc⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hf.countable`.
+A detailed English derivation is pending.
 -/
 theorem lat_countable {κ : Type} [Fintype κ] (b : Module.Basis κ ℝ (EuclideanSpace ℂ ι)) :
     Countable (lat b) := by
@@ -26,14 +26,14 @@ theorem lat_countable {κ : Type} [Fintype κ] (b : Module.Basis κ ℝ (Euclide
   exact hf.countable
 
 /- English proof (translation)
-Repeatedly rewrite using `[Hf_eq_inner]`. Conclude with `continuous_const.inner continuous_id`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hf_continuous (a : EuclideanSpace ℂ ι) : Continuous fun v : EuclideanSpace ℂ ι => Hf v a := by
   simp_rw [Hf_eq_inner]
   exact continuous_const.inner continuous_id
 
 /- English proof (translation)
-Unfold `paU`. Conclude with `(Complex.continuous_exp.comp ((continuous_const.mul (Hf_continuous a)).sub continuous_const)).mul ((paPoly_continuous hF).comp (continuous_id.sub continuous_const))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem paU_continuous {q c : ℕ} (a : EuclideanSpace ℂ ι) {F : EuclideanSpace ℂ ι → ℂ}
     (hF : F ∈ paPoly c) : Continuous (paU q a F) := by
@@ -42,11 +42,11 @@ theorem paU_continuous {q c : ℕ} (a : EuclideanSpace ℂ ι) {F : EuclideanSpa
     ((paPoly_continuous hF).comp (continuous_id.sub continuous_const))
 
 /- English proof (translation)
-Establish `hre : (q * Real.pi * Hf v a - q * Real.pi * Hf a a / 2 : ℂ).re = q * Real.pi * RCLike.re (inner ℂ a v) - q * Real.pi * ‖a‖ ^ 2 / 2`. Rewrite using `[Hf_eq_inner, Hf_eq_inner, inner_self_eq_norm_sq_to_K]`. Simplify using `[Complex.mul_re]`. Use `left`. Rewrite using `[← Complex.ofReal_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Complex.ofReal_re _`. Establish `hsq : ‖v - (1 / 2 : ℂ) • a‖ ^ 2 = ‖v‖ ^ 2 - RCLike.re (inner ℂ a v) + ‖a‖ ^ 2 / 4`. Rewrite using `[@norm_sub_sq ℂ, inner_smul_right, norm_smul]`. Simplify using the standard rewrite rules. Rewrite using `[← inner_conj_symm v a, Complex.conj_re]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `paU paW`. Rewrite using `[norm_mul, Complex.norm_exp, hre, hsq, mul_comm (Real.exp _) ‖F (v - a)‖, mul_assoc, ← Real.exp_add, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem paU_norm_mul (q : ℕ) (a v : EuclideanSpace ℂ ι) (F : EuclideanSpace ℂ ι → ℂ) :
     ‖paU q a F v‖ * paW q v = ‖F (v - a)‖ * (Real.exp (-(q * Real.pi) * ‖v - (1 / 2 : ℂ) • a‖ ^ 2) *
@@ -72,7 +72,7 @@ theorem paU_norm_mul (q : ℕ) (a v : EuclideanSpace ℂ ι) (F : EuclideanSpace
 def paK (q c : ℕ) (u : EuclideanSpace ℂ ι) : ℝ := (1 + ‖u‖) ^ (2 * c) * Real.exp (-(q * Real.pi) * ‖u‖ ^ 2)
 
 /- English proof (translation)
-Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Use `pa_integrable_of_le (f := paK q c) ?_ (2 * c) (b := q * Real.pi) (C := 1) (by positivity) zero_le_one fun u => ?_` and prove the remaining obligations. Unfold `paK fun_prop`. Rewrite using `[one_mul, Real.norm_eq_abs, abs_of_nonneg (by unfold paK; positivity)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem paK_integrable {q : ℕ} (hq : 1 ≤ q) (c : ℕ) : Integrable (paK (ι := ι) q c) := by
   have hq' : (0 : ℝ) < q := by exact_mod_cast hq
@@ -84,25 +84,23 @@ theorem paK_integrable {q : ℕ} (hq : 1 ≤ q) (c : ℕ) : Integrable (paK (ι 
     rfl
 
 /- English proof (translation)
-Take `⟨C1, hC1, hF1⟩` from `paPoly_growth hF`. Take `⟨C2, hC2, hG1⟩` from `paPoly_growth hG`. Establish `hK` using `paK_integrable (ι := ι) hq c`. Establish `hK0 : 0 ≤ ∫ u, paK (ι` using `ι) q c u := integral_nonneg fun u => by unfold paK; positivity`. Use `⟨C1 * C2 * ∫ u, paK q c u, by positivity, fun a => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set A : ℝ := (1 + ‖a‖) ^ (2 * c) * Real.exp (-(q * Real.pi) * ‖a‖ ^ 2 / 4) with hA`. Establish `hbound : ∀ v, ‖paU q a F v‖ * ‖G v‖ * paW q v ≤ C1 * C2 * A * paK q c (v - (1 / 2 : ℂ) • a)`. Introduce `v`. Establish `e` using `paU_norm_mul q a v F`. Rewrite using `[mul_right_comm, e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set u := v - (1 / 2 : ℂ) • a with hu`. Establish `hva : v - a = u - (1 / 2 : ℂ) • a`. Rewrite using `[hu, sub_sub, ← add_smul]`. Evaluate the numerical expressions. Establish `hv : v = u + (1 / 2 : ℂ) • a` using `by rw [hu, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hhalf : ‖(1 / 2 : ℂ) • a‖ = ‖a‖ / 2`. Rewrite using `[norm_smul]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Establish `hu0` using `norm_nonneg u`.
+Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0` using `norm_nonneg a`. Establish `h1 : 1 + ‖v - a‖ ≤ (1 + ‖u‖) * (1 + ‖a‖)`. Use `norm_sub_le u ((1 / 2 : ℂ) • a)` as an intermediate fact. Rewrite using `[hva]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 + ‖v‖ ≤ (1 + ‖u‖) * (1 + ‖a‖)`. Use `norm_add_le u ((1 / 2 : ℂ) • a)` as an intermediate fact. Rewrite using `[hv]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hE1` using `Real.exp_pos (-(q * Real.pi) * ‖u‖ ^ 2)`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hE2` using `Real.exp_pos (-(q * Real.pi) * ‖a‖ ^ 2 / 4)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hF1 _`. Conclude with `hG1 _`. Use `_ = C1 * C2 * ((1 + ‖v - a‖) ^ c * (1 + ‖v‖) ^ c) * (Real.exp (-(q * Real.pi) * ‖u‖ ^ 2) * Real.exp (-(q * Real.pi) * ‖a‖ ^ 2 / 4)) := by ring`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `_ ≤ C1 * C2 * (((1 + ‖u‖) * (1 + ‖a‖)) ^ c * ((1 + ‖u‖) * (1 + ‖a‖)) ^ c) * (Real.exp (-(q * Real.pi) * ‖u‖ ^ 2) * Real.exp (-(q * Real.pi) * ‖a‖ ^ 2 / 4)) := by gcongr`. Use `_ = C1 * C2 * A * paK q c u := by`. Rewrite using `[hA]`. Unfold `paK`. Rewrite using `[← pow_add, ← two_mul, mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcont : Continuous fun v => ‖paU q a F v‖ * ‖G v‖ * paW q v` using `((paU_continuous a hF).norm.mul (paPoly_continuous hG).norm).mul (paW_continuous q)`. Establish `hKa : Integrable fun v => C1 * C2 * A * paK q c (v - (1 / 2 : ℂ) • a)` using `(hK.comp_sub_right _).const_mul _`. Establish `hint : Integrable fun v => ‖paU q a F v‖ * ‖G v‖ * paW q v` using `hKa.mono' hcont.aestronglyMeasurable (ae_of_all _ fun v => by`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (mul_nonneg (norm_nonneg _) (norm_nonneg _)) (paW_pos q v).le)]`.
-
-Conclude with `hbound v)`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul, integral_sub_right_eq_self]`. Use `_ = C1 * C2 * (∫ u, paK q c u) * A := by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paU_int {q c : ℕ} (hq : 1 ≤ q) {F G : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c)
     (hG : G ∈ paPoly c) : ∃ C : ℝ, 0 ≤ C ∧ ∀ a : EuclideanSpace ℂ ι,
@@ -176,13 +174,13 @@ theorem paU_int {q c : ℕ} (hq : 1 ≤ q) {F G : EuclideanSpace ℂ ι → ℂ}
     _ = C1 * C2 * (∫ u, paK q c u) * A := by ring
 
 /- English proof (translation)
-Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hb : (0 : ℝ) < q * Real.pi / 4` using `by positivity`. Take `hT` from `(paTail hP hA Y hq hR0 hlat hR).1`. Use `set K : ℝ := 2 ^ (2 * c) * (2 + (2 * c).factorial * (2 / (q * Real.pi / 4)) ^ (2 * c)) with hK`. Establish `hind : Summable fun γ : lat Y.b => if (γ : EuclideanSpace ℂ ι) = 0 then (1 : ℝ) else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (hasSum_ite_eq (0 : lat Y.b) (1 : ℝ)).summable`. Use `Summable.of_nonneg_of_le (fun γ => by positivity) (fun γ => ?_) ((hT.mul_left K).add hind)` and prove the remaining obligations. Establish `hle` using `pa_pow_gauss_le (2 * c) hb (norm_nonneg (γ : EuclideanSpace ℂ ι))`. Establish `he : Real.exp (-(q * Real.pi / 4 / 2) * ‖(γ : EuclideanSpace ℂ ι)‖ ^ 2) ≤ Real.exp (-(q * Real.pi) * ‖(γ : EuclideanSpace ℂ ι)‖ ^ 2 / 16)`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: 0 ≤ q * Real.pi * ‖(γ : EuclideanSpace ℂ ι)‖ ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hform : -(q * Real.pi) * ‖(γ : EuclideanSpace ℂ ι)‖ ^ 2 / 4 = -(q * Real.pi / 4) * ‖(γ : EuclideanSpace ℂ ι)‖ ^ 2` using `by ring`. Distinguish the cases in `h0 : (γ : EuclideanSpace ℂ ι) = 0`. Simplify using `[h0]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h0, if_false, add_zero]`. Rewrite using `[hform]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lat_summable (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι) {q c : ℕ} {R0 : ℝ}
     (hq : 1 ≤ q) (hR0 : 0 < R0)
@@ -214,19 +212,17 @@ theorem lat_summable (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : G
         gcongr
 
 /- English proof (translation)
-Use `lat_countable Y.b` as an intermediate fact. Take `⟨C, hC, hU⟩` from `paU_int hq hF hG`. Use `set f : lat Y.b → EuclideanSpace ℂ ι → ℂ := fun γ v => Y.ka γ * paU q γ F v * (starRingEnd ℂ) (G v) * (paW q v : ℂ) with hf`. Establish `hnorm : ∀ γ : lat Y.b, ∀ v, ‖f γ v‖ = ‖paU q γ F v‖ * ‖G v‖ * paW q v`. Introduce `γ v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf, norm_mul, Y.ka_abs γ γ.2, one_mul, Complex.norm_conj, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (paW_pos q v)]`. Establish `hint : ∀ γ : lat Y.b, Integrable (f γ)`. Introduce `γ`. Establish `hcont : Continuous (f γ)`. Simplify using `only [hf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `((continuous_const.mul (paU_continuous _ hF)).mul (Complex.continuous_conj.comp (paPoly_continuous hG))).mul (Complex.continuous_ofReal.comp (paW_continuous q))`. Conclude with `((hU γ).1).mono' hcont.aestronglyMeasurable (ae_of_all _ fun v => (hnorm γ v).le)`. Establish `hsum : Summable fun γ : lat Y.b => ∫ v, ‖f γ v‖`. Use `Summable.of_nonneg_of_le (fun γ => integral_nonneg fun v => norm_nonneg _) (fun γ => ?_) ((lat_summable hP hA Y (c := c) hq hR0 hlat hR).mul_left C)` and prove the remaining obligations. Repeatedly rewrite using `[hnorm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hU γ).2`. Establish `key` using `hasSum_integral_of_summable_integral_norm hint hsum`. Establish `h1 : ∀ γ : lat Y.b, ∫ v, f γ v = Y.ka γ * paIP q (paU q γ F) G`. Introduce `γ`. Simplify using `only [hf, paIP, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[integral_const_mul]`. Establish `h2 : ∫ v, ∑' γ, f γ v = paIP q (paTh Y q F) G`. Simplify using `only [hf, paIP, paTh]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[tsum_mul_right, tsum_mul_right]`. Rewrite `key` using `[h2]`. Establish `hfun : (fun γ : lat Y.b => Y.ka γ * paIP q (paU q γ F) G) = fun γ => ∫ v, f γ v`. Use function extensionality and compare the values at `fun γ => (h1 γ).symm`. Rewrite using `[hfun]`.
-
-Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussianInner_theta' (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι) {q c : ℕ} {R0 : ℝ}
     (hq : 1 ≤ q) (hR0 : 0 < R0)

@@ -37,18 +37,18 @@ def ChartGenVal : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} [IsIntegral 
         (U.ι.stalkMap ⟨genericPoint X, hη⟩).hom (show X.presheaf.stalk (U.ι ⟨genericPoint X, hη⟩) from eval₂ (kHom p) w g)
 
 /- English proof (translation)
-Introduce `k _ X _ p N w i hi U hx φ hφ hη n hn f hf`. Conclude with `⟨h1 k p N w i hi U hx φ hφ hη n hn f hf, fun m g hg h => h2 k p N w i hi U hx φ hφ hη n hn f hf m g hg h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ChartGenOn_of (h1 : ChartGenMem) (h2 : ChartGenVal) : ChartGenOn := by
   intro k _ X _ p N w i hi U hx φ hφ hη n hn f hf
   exact ⟨h1 k p N w i hi U hx φ hφ hη n hn f hf, fun m g hg h => h2 k p N w i hi U hx φ hφ hη n hn f hf m g hg h⟩
 
 /- English proof (translation)
-Introduce `k _ X _ p N w i hi U hx φ hφ hη n hn f hf`. Establish `e1 : chartMor i U hx φ = U.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ) ≫ Proj.awayι _ (MvPolynomial.X i) hx zero_lt_one`. Rewrite using `[chartMor, Scheme.Opens.toSpecΓ, Category.assoc, ← Spec.map_comp_assoc]`. Both sides reduce to the same expression. Establish `e2 : chartMor i U hx φ ⁻¹ᵁ Proj.basicOpen _ f = U.ι ⁻¹ᵁ X.basicOpen (φ (HomogeneousLocalization.Away.isLocalizationElem hx hf))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[e1, Scheme.Hom.comp_preimage, Scheme.Hom.comp_preimage, Proj.awayι_preimage_basicOpen _ hx zero_lt_one hf hn, SpecMap_preimage_basicOpen, Scheme.Opens.toSpecΓ_preimage_basicOpen]`. Both sides reduce to the same expression. Rewrite using `[e2]`. Express the relevant statement in the definitionally equal form `genericPoint X ∈ X.basicOpen _ ↔ _`. Rewrite using `[Scheme.mem_basicOpen _ _ _ hη]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : (@algebraMap (X.presheaf.stalk (genericPoint X)) X.functionField CommRing.toCommSemiring _ (stalkFunctionFieldAlgebra X (genericPoint X))) (X.presheaf.germ U _ hη (φ (HomogeneousLocalization.Away.isLocalizationElem hx hf))) = eval₂ (kHom p) w f / w i ^ n`. Establish `h` using `hφ (genericPoint X) hη n (f ^ 1) (by simpa using hf)`. Conclude with `h.trans (by rw [pow_one])`. Rewrite using `[isUnit_iff_ne_zero, ← (@algebraMap (X.presheaf.stalk (genericPoint X)) X.functionField CommRing.toCommSemiring _ (stalkFunctionFieldAlgebra X (genericPoint X))).injective.ne_iff, map_zero, h']`. Simplify using `[hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ChartGenMem_pf : ChartGenMem := by
   intro k _ X _ p N w i hi U hx φ hφ hη n hn f hf

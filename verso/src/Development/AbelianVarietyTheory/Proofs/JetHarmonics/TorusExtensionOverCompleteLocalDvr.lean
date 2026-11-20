@@ -31,9 +31,9 @@ section BaseChange
 variable {S S' : Scheme.{0}} (f : S' ⟶ S)
 
 /- English proof (translation)
-Use `letI := E.free`. Use `letI := E.finite`. Establish `hN : ∀ k, (E.O (E.basis k)).L.IsLB` using `fun k => (E.O (E.basis k)).isLB`. Take `⟨G, q, u, hu⟩` from `exists_generatorScheme E.B.left _ (fun k => (E.O (E.basis k)).L) hN`. Take `⟨h₁, h₂, h₃, -, -⟩` from `generatorScheme_properties E.B.left _ (fun k => (E.O (E.basis k)).L) hN G q u hu`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨inst, hc, d, -⟩` from `exists_grpObj_gtDatum_of_generators hG S E G q u hu h₁ inferInstance h₃`. Conclude with `⟨Over.mk (q ≫ E.B.hom), inst, hc, ⟨d⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isGt (hG : GlobalFnsSt) (E : SplitExt S) :
     ∃ (H : Over S) (_ : GrpObj H), IsCommMonObj H ∧ E.IsGt H := by
@@ -62,7 +62,7 @@ def polPull [IsAffine S] (P : PolAV S) : PolAV S' :=
     ktriv := kTriv_pull h P.isLB hL' hw P.ktriv }
 
 /- English proof (translation)
-Rewrite `h₁`, `h₂` using `[← MulEtaleDvr.mulN_eq_pow]`. Establish `H` using `MulEtaleDvr.isPullback_torsion ((Over.pullback f).obj B) N`. Rewrite `H` using `[← MulEtaleDvr.pullback_map_mulN]`. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsFinite) H (MorphismProperty.overPullbackMap (P := @IsFinite) f _ h₁), MorphismProperty.of_isPullback (P := @Flat) H (MorphismProperty.overPullbackMap (P := @Flat) f _ h₂)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem torsion_pullback (B : Over S) [GrpObj B] (N : ℕ) (h₁ : IsFinite (𝟙 B ^ N).left) (h₂ : Flat (𝟙 B ^ N).left) :
     IsFinite (torsion ((Over.pullback f).obj B) N).hom ∧ Flat (torsion ((Over.pullback f).obj B) N).hom := by
@@ -76,7 +76,7 @@ theorem torsion_pullback (B : Over S) [GrpObj B] (N : ℕ) (h₁ : IsFinite (�
 variable {H : Over S} [GrpObj H]
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Establish `h` using `isGrpPullback_pullback H f`. Use `⟨MulEquiv.ofBijective (pushHom h T) ⟨fun x y e => Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w])), fun y => ?_⟩, fun x => rfl⟩` and prove the remaining obligations. Conclude with `⟨Over.homMk (h.1.lift y.left T.hom (Over.w y)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem exists_pushEquiv (T : Over S') (s : T.left ⟶ S) (hs : s = T.hom ≫ f) :
     ∃ π : (T ⟶ (Over.pullback f).obj H) ≃* (Over.mk s ⟶ H), ∀ x, (π x).left = x.left ≫ pullback.fst H.hom f := by
@@ -99,15 +99,13 @@ def actPull [IsCommMonObj H] {O : Type} [Ring O] (ρ : RingAct H O) : RingAct ((
 end BaseChange
 
 /- English proof (translation)
-Take `⟨H, _, _, hH⟩` from `exists_isGt hG (splitExt D.toPre)`. Take `⟨Φ, hΦ⟩` from `exists_points hG hH`. Take `⟨ρ, hρ⟩` from `exists_ringAct hG ιD (Φ := Φ) hΦ`. Take `⟨J, hJ⟩` from `exists_mulEquiv U hG (Φ := Φ) hΦ`. Use `choose π hπ using exists_pushEquiv f (H := H)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d⟩` from `hH`. Use `⟨(Over.pullback f).obj H, inferInstance, inferInstance, actPull f ρ, fun T s hs hT => (π T s hs).trans (J _ hT), GtBaseChange.isGt_extBC f _ H d, ?_, ?_⟩` and prove the remaining obligations. Introduce `T T' s s' hs hs' hT hT' k x`. Set `k₀ : Over.mk s' ⟶ Over.mk s` to `Over.homMk k.left (by`. Express the relevant statement in the definitionally equal form `k.left ≫ s = s'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, hs', Over.w_assoc])`. Establish `e : π T' s' hs' (k ≫ x) = k₀ ≫ π T s hs x` using `Over.OverMorphism.ext (by`. Rewrite using `[hπ, Over.comp_left, Over.comp_left, hπ, Category.assoc]`. Use the proof step `rfl)`. Use `(hJ _ hT' (k₀ ≫ π T s hs x) _).2 (((hJ _ hT (π T s hs x) _).1 rfl).pull k₀ (hΦ.1 _ _ k₀ _))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[← e]`. Conclude with `congrArg (·.left) this`. Introduce `T s hs hT x a`. Establish `e : π T s hs (x ≫ (actPull f ρ).act a) = π T s hs x ≫ ρ.act a` using `Over.OverMorphism.ext (by`. Rewrite using `[hπ, Over.comp_left, Over.comp_left, hπ, Category.assoc, Category.assoc]`.
-
-Conclude with `congrArg (x.left ≫ ·) (pullback.lift_fst _ _ _))`. Use `(hJ _ hT (π T s hs x ≫ ρ.act a) _).2 (((hJ _ hT (π T s hs x) _).1 rfl).smul hG hO a (hρ a _ _))` as an intermediate fact. Rewrite `this` using `[← e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_model (hG : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
@@ -147,7 +145,7 @@ theorem exists_model (hG : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R] {I 
     exact this
 
 /- English proof (translation)
-Use `isAdicColimit_of_factor n (Spec.map (CommRingCat.ofHom (Ideal.Quotient.lift (I ^ (n + 1)) φ fun a ha => h a (Ideal.pow_le_pow_right (Nat.le_succ n) ha)))) ?_` and prove the remaining obligations. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.lift_comp_mk]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isAdicColimit_of_pow {R A : Type} [CommRing R] [CommRing A] (I : Ideal R) (φ : R →+* A) (n : ℕ)
     (h : ∀ a ∈ I ^ n, φ a = 0) : IsAdicColimit I (Over.mk (Spec.map (CommRingCat.ofHom φ))) := by
@@ -157,7 +155,7 @@ theorem isAdicColimit_of_pow {R A : Type} [CommRing R] [CommRing A] (I : Ideal R
   rfl
 
 /- English proof (translation)
-Use `henselianLocalRing_of_le_radical (I.map f) hm` as an intermediate fact. Use `isAdicColimit_finite_henselian_of_local isAdicColimit_spec_of_isLocalRing isAdicColimit_of_disjoint_cover R I O A _ ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_map]`. Conclude with `GlobalTheory.FlatComplete.isAdicComplete_of_finite_flat O _ hO A`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdicColimit_of_finite_flat {R O : Type} [CommRing R] [CommRing O] [IsLocalRing O] (I : Ideal R)
     (f : R →+* O) (hO : IsAdicComplete (I.map f) O) (hm : ∀ a ∈ maximalIdeal O, ∃ n : ℕ, a ^ n ∈ I.map f)
@@ -170,11 +168,11 @@ theorem isAdicColimit_of_finite_flat {R O : Type} [CommRing R] [CommRing O] [IsL
   exact GlobalTheory.FlatComplete.isAdicComplete_of_finite_flat O _ hO A
 
 /- English proof (translation)
-Introduce `hL _ E _ _ _ H V _ _ _ _ t P O _ _ f _ hO hm`. Use `letI := H.starRing`. Take `⟨Gt, _, _, ρ, J, h₁, h₂, h₃⟩` from `exists_model hL.globalFns P.U.toUnifPre P.lin (spMap f)`. Establish `hs : ∀ (A : Type) [CommRing A] [Algebra O A], Spec.map (CommRingCat.ofHom ((algebraMap O A).comp f)) = (specO O A).hom ≫ spMap f` using `fun A _ _ => by`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hc : ∀ (A : Type) [CommRing A] [Algebra O A], ((Module.Finite O A ∧ Module.Free O A) ∨ ∃ n : ℕ, ∀ a ∈ maximalIdeal V ^ n, algebraMap O A (f a) = 0) → IsAdicColimit (maximalIdeal V) (Over.mk (Spec.map (CommRingCat.ofHom ((algebraMap O A).comp f))))`. Introduce and unpack `A _ _ (⟨_, _⟩ | ⟨n, hn⟩)`. Use `exacts [isAdicColimit_of_finite_flat _ f hO hm A, isAdicColimit_of_pow _ _ n hn]`. Use `⟨GtBaseChange.extBC (spMap f) (splitExt P.D.toPre), polPull (spMap f) P.D.toPre.P, rfl, HEq.rfl, Gt, inferInstance, inferInstance, ρ, fun A _ _ hA => J (specO O A) _ (hs A) (hc A hA), h₁, fun N hN => ?_, fun A A' _ _ _ _ hA hA' φ x => h₂ _ _ _ _ _ _ _ _ (ptMap φ) x, fun A _ _ hA …` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, -⟩` from `hL.mulN _ P.D.toPre.P N hN`. Conclude with `torsion_pullback (spMap f) P.D.toPre.P.A N a b`.
+A detailed English derivation is pending.
 -/
 theorem main : Laws → Laws4 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] (t : SAB H (Sp V)) (P : PELUnif (maximalIdeal V) t) (O : Type) [CommRing O] [IsLocalRing O] (f : V →+* O), IsLocalHom f → IsAdicComplete ((maximalIdeal V).map f) O → (∀ a ∈ maximalIdeal O, ∃ n : ℕ, a ^ n ∈ (maximalIdeal V).map f) → ∃ (Ex : SplitExt (Spec (CommRingCat.of O))) (B : PolAV (Spec (CommRingCat.of O))) (_ : B.A = Ex.B) (_ : HEq B.grp Ex.grpB) (Gt : Over (Spec (CommRingCat.of O))) (_ : GrpObj Gt) (_ : IsCommMonObj Gt) (ρ : RingAct Gt (𝓞 E)) (J : ∀ (A : Type) [CommRing A] [Algebra O A], ((Module.Finite O A ∧ Module.Free O A) ∨ ∃ n : ℕ, ∀ a ∈ maximalIdeal V ^ n, algebraMap O A (f a) = 0) → (specO O A ⟶ Gt) → (Over.mk (Spec.map (CommRingCat.ofHom ((algebraMap O A).comp f))) ⟶ t.G)), Ex.IsGt Gt ∧ (∀ N : ℕ, 1 ≤ N → IsFinite (torsion Ex.B N).hom ∧ Flat (torsion Ex.B N).hom) ∧ (∀ (A A' : Type) [CommRing A] [Algebra O A] [CommRing A'] [Algebra O A'] (hA : ((Module.Finite O A ∧ Module.Free O A) ∨ ∃ n : ℕ, ∀ a ∈ maximalIdeal V ^ n, algebraMap O A (f a) = 0)) (hA' : ((Module.Finite O A' ∧ Module.Free O A') ∨ ∃ n : ℕ, ∀ a ∈ maximalIdeal V ^ n, algebraMap O A' (f a) = 0)) (φ : A →ₐ[O] A') (x : specO O A ⟶ Gt), (J A' hA' (ptMap φ ≫ x)).left = Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ (J A hA x).left) ∧ ∀ (A : Type) [CommRing A] [Algebra O A] (hA : ((Module.Finite O A ∧ Module.Free O A) ∨ ∃ n : ℕ, ∀ a ∈ maximalIdeal V ^ n, algebraMap O A (f a) = 0)), (∀ x x', J A hA (x * x') = J A hA x * J A hA x') ∧ (∀ x (a : 𝓞 E), J A hA (x ≫ ρ.act a) = J A hA x ≫ t.act.act a) ∧ Function.Injective (J A hA) ∧ ((∃ n : ℕ, ∀ a ∈ maximalIdeal V ^ n, algebraMap O A (f a) = 0) → Function.Surjective (J A hA)) ∧ ∀ (I : Ideal A) (g : Over.mk (Spec.map (CommRingCat.ofHom ((algebraMap O A).comp f))) ⟶ t.G), IsNilpotent I → Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ g.left = Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ (1 : Over.mk (Spec.map (CommRingCat.ofHom ((algebraMap O A).comp f))) ⟶ t.G).left → ∃ x, J A hA x = g := by
   intro hL _ E _ _ _ H V _ _ _ _ t P O _ _ f _ hO hm

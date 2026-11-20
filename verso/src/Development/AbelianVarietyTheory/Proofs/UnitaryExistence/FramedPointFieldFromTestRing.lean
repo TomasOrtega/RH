@@ -23,13 +23,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 
 /- English proof (translation)
-Introduce `hB E _ _ _ H Dw l Xo c S _ _ y`. Set `xF : Sp S ⟶ Xo.XF c` to `pullback.lift y.x (spMap (algebraMap c.F S)) (by`. Rewrite using `[y.x_over]`. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp])`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : xF ≫ pullback.fst _ _ = y.x` using `pullback.lift_fst _ _ _`. Establish `h2 : xF ≫ pullback.snd _ _ = spMap (algebraMap c.F S)` using `pullback.lift_snd _ _ _`. Set `q : Sp S` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum S)`. Take `⟨p, j, y₀, hj, hq⟩` from `GlobalTheory.T.exists_openChart_framedPoint_testRing hB E H Dw l Xo c (xF q)`. Take `⟨g, hg, hfac⟩` from `openChart_factor_near_prime E H Dw l Xo c p.R j y₀ hj S xF h2 q hq`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg0 : g ≠ 0` using `fun h => hg (h ▸ Ideal.zero_mem _)`. Take `⟨ψ, hψ⟩` from `hfac S (AlgHom.id c.F S) (Ne.isUnit hg0)`. Establish `hid : spMap (AlgHom.id c.F S).toRingHom = 𝟙 (Sp S)` using `Spec.map_id _`. Rewrite `hψ` using `[hid, Category.id_comp]`. Establish `hx : y.x = spMap ψ.toRingHom ≫ y₀.x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, hψ, Category.assoc, hj.2.1]`. Take `⟨A, π, X, s, u, hu⟩` from `GlobalTheory.T.exists_universalFrame_testRing hB E H Dw l Xo c p y₀`. Take `⟨a, ⟨-, ha⟩, -⟩` from `GlobalTheory.T.universalFrame_classifies_framedPoints hB E H Dw l Xo c p.R A.R y₀ π X s u hu S y ψ hx`. Conclude with `⟨A, a, u, ha⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem framedPoint_field_fromTest :
     Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)

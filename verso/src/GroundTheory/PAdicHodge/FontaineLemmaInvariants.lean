@@ -14,9 +14,9 @@ section Abstract
 variable {R S T L : Type*} [CommRing R] [CommRing S] [CommRing T] [CommRing L]
 
 /- English proof (translation)
-Establish `hct : ∀ n : ℕ, f^[n] t = c ^ n * t`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', ih, map_mul, map_pow, hc, ht, pow_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[iterate_map_mul, iterate_map_pow, hct]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem iterate_pow_mul_eq_of_map_eq (f : R →+* R) {t c : R} (hc : f c = c) (ht : f t = c * t)
     (x : R) (m n : ℕ) : f^[n] (t ^ m * x) = (c ^ n * t) ^ m * f^[n] x := by
@@ -28,7 +28,7 @@ theorem iterate_pow_mul_eq_of_map_eq (f : R →+* R) {t c : R} (hc : f c = c) (h
   rw [iterate_map_mul, iterate_map_pow, hct]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', ih, map_mul, map_pow, hc, ht, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iterate_map_eq_pow_mul (f : R →+* R) {t c : R} (hc : f c = c) (ht : f t = c * t) (n : ℕ) :
     f^[n] t = c ^ n * t := by
@@ -37,9 +37,9 @@ theorem iterate_map_eq_pow_mul (f : R →+* R) {t c : R} (hc : f c = c) (ht : f 
   | succ n ih => rw [Function.iterate_succ_apply', ih, map_mul, map_pow, hc, ht, pow_succ]; ring
 
 /- English proof (translation)
-Establish `hqm : IsUnit (q ^ (m + 1))` using `hq.pow _`. Use `⟨w * ↑hqm.unit⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : c ^ (m + 1) * g ↑hqm.unit⁻¹ = 1`. Rewrite using `[← hgq, ← map_pow, ← map_mul, IsUnit.mul_val_inv, map_one]`. Establish `h2 : g w = c ^ (m + 1) * t ^ m * u` using `ht.mul_right_cancel (by rw [h]; ring)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, h2]`. Take the linear combination `t ^ m * u * h1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_map_eq_pow_mul_of_mul_eq (g : S →+* R) {t c u : R} (ht : IsUnit t) {q : S}
     (hq : IsUnit q) (hgq : g q = c) {w : S} {m : ℕ} (h : g w * t = (c * t) ^ (m + 1) * u) :
@@ -54,7 +54,7 @@ theorem exists_map_eq_pow_mul_of_mul_eq (g : S →+* R) {t c u : R} (ht : IsUnit
   linear_combination t ^ m * u * h1
 
 /- English proof (translation)
-Establish `e : a = (c' ^ n * τ) ^ (k + 1) * κ` using `hj (by rw [h]; simp only [map_mul, map_pow, hc, ht, hx])`. Rewrite using `[e, map_mul, map_pow, map_mul, hτ, mul_zero, zero_pow (Nat.succ_ne_zero k), zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_eq_zero_of_eq_pow_mul {D : Type*} [CommRing D] (ι : S →+* T) (j : D →+* T)
     (hj : Function.Injective j) (θ : D →+* L) {a : D} {c t x : S} {c' τ κ : D} {n k : ℕ}
@@ -64,9 +64,9 @@ theorem map_eq_zero_of_eq_pow_mul {D : Type*} [CommRing D] (ι : S →+* T) (j :
   rw [e, map_mul, map_pow, map_mul, hτ, mul_zero, zero_pow (Nat.succ_ne_zero k), zero_mul]
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce and unpack `x - ⟨y, hy⟩`. Conclude with `⟨y, by rw [hy, pow_zero, one_mul, Function.iterate_zero_apply]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Consider the case `succ m ih`. Introduce `x hx hex`. Take `⟨z, hz⟩` from `ih (f x) (hP x hx) (step m x hx hex)`. Conclude with `⟨z, by rw [hz, Function.iterate_succ_apply]⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_iterate_of_step (g : S →+* R) (f : R → R) (t : R) (P : R → Prop)
     (hP : ∀ x, P x → P (f x))
@@ -83,7 +83,7 @@ theorem exists_eq_iterate_of_step (g : S →+* R) (f : R → R) (t : R) (P : R �
     exact ⟨z, by rw [hz, Function.iterate_succ_apply]⟩
 
 /- English proof (translation)
-The claim follows from `hj (by rw [h, map_mul, map_pow, ht, hx, map_mul, map_pow])`.
+A detailed English derivation is pending.
 -/
 theorem eq_pow_mul_of_map_eq {D : Type*} [CommRing D] (ι : S →+* T) (j : D →+* T)
     (hj : Function.Injective j) {a : D} {t x : S} {τ κ : D} {m : ℕ} (h : j a = ι (t ^ m * x))
@@ -91,7 +91,7 @@ theorem eq_pow_mul_of_map_eq {D : Type*} [CommRing D] (ι : S →+* T) (j : D �
   hj (by rw [h, map_mul, map_pow, ht, hx, map_mul, map_pow])
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_pow, map_mul, map_pow, hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_pow_mul_pow_mul (g : S →+* R) {c : S} {c' : R} (hc : g c = c') (n m : ℕ) (t z : S) :
     g ((c ^ n * t) ^ m * z) = (c' ^ n * g t) ^ m * g z := by
@@ -101,7 +101,7 @@ def homogEval {A : Type*} [CommRing A] (f : A →+* S) (P : A[X]) (y s : S) : S 
   ∑ i ∈ Finset.range (P.natDegree + 1), f (P.coeff i) * y ^ i * s ^ (P.natDegree - i)
 
 /- English proof (translation)
-Rewrite using `[homogEval, eval₂_eq_sum_range, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ P.natDegree` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem homogEval_mul {A : Type*} [CommRing A] (f : A →+* S) (P : A[X]) (s z : S) :
     homogEval f P (s * z) s = s ^ P.natDegree * P.eval₂ f z := by
@@ -113,7 +113,7 @@ theorem homogEval_mul {A : Type*} [CommRing A] (f : A →+* S) (P : A[X]) (s z :
     _ = s ^ P.natDegree * (f (P.coeff i) * z ^ i) := by rw [pow_mul_pow_sub _ hi']; ring
 
 /- English proof (translation)
-Simplify using `only [homogEval, map_sum, map_mul, map_pow, hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_homogEval {A : Type*} [CommRing A] (f : A →+* S) (P : A[X]) (y s : S) (g : S →+* T)
     (f' : A →+* T) (hf : ∀ a, g (f a) = f' a) :
@@ -121,7 +121,7 @@ theorem map_homogEval {A : Type*} [CommRing A] (f : A →+* S) (P : A[X]) (y s :
   simp only [homogEval, map_sum, map_mul, map_pow, hf]
 
 /- English proof (translation)
-Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers t) x`. Take `⟨m, hm⟩` from `s.2`. Use `⟨m, a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, ← hm, map_pow, mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Localization.Away.exists_algebraMap_eq_pow_mul (t : R) (x : Localization.Away t) :
     ∃ (m : ℕ) (y : R), algebraMap R (Localization.Away t) y =
@@ -132,14 +132,14 @@ theorem Localization.Away.exists_algebraMap_eq_pow_mul (t : R) (x : Localization
   rw [← hs, ← hm, map_pow, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[map_pow, map_mul, map_pow, hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_pow_mul_pow (g : S →+* R) {c : S} {c' : R} (hc : g c = c') (n m : ℕ) (t : S) :
     g ((c ^ n * t) ^ m) = (c' ^ n * g t) ^ m := by
   rw [map_pow, map_mul, map_pow, hc]
 
 /- English proof (translation)
-Establish `h1` using `congrArg g h`. Rewrite `h1` using `[map_mul, map_pow, map_zero]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (pow_ne_zero _ hc)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_zero_of_pow_mul_eq_zero [IsDomain T] (g : S →+* T) {c z : S} {d : ℕ}
     (h : c ^ d * z = 0) (hc : g c ≠ 0) : g z = 0 := by
@@ -161,13 +161,13 @@ abbrev periodTCris : BCris hε :=
   algebraMap (BCrisPlus F p) (BCris hε) (algebraMap (ACris F p) (BCrisPlus F p) (periodT hε))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.algebraMap_isUnit _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_periodTCris : IsUnit (periodTCris hε) :=
   IsLocalization.Away.algebraMap_isUnit _
 
 /- English proof (translation)
-The claim follows from `((phiB_algebraMap hε _).trans (congrArg _ ((phiPlus_algebraMap _).trans (congrArg _ (phi_periodT_eq_mul hε))))).trans (by simp only [map_mul, map_natCast])`.
+A detailed English derivation is pending.
 -/
 theorem phiB_periodTCris : phiB hε (periodTCris hε) = (p : BCris hε) * periodTCris hε :=
   ((phiB_algebraMap hε _).trans
@@ -175,7 +175,7 @@ theorem phiB_periodTCris : phiB hε (periodTCris hε) = (p : BCris hε) * period
     (by simp only [map_mul, map_natCast])
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => simp only [Function.iterate_succ_apply', ih, phiB_algebraMap]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iterate_phiB_algebraMap (n : ℕ) (y : BCrisPlus F p) :
     (phiB hε)^[n] (algebraMap (BCrisPlus F p) (BCris hε) y) =
@@ -185,7 +185,7 @@ theorem iterate_phiB_algebraMap (n : ℕ) (y : BCrisPlus F p) :
   | succ n ih => simp only [Function.iterate_succ_apply', ih, phiB_algebraMap]
 
 /- English proof (translation)
-The claim follows from `(iterate_phiB_algebraMap hε n y).symm.trans ((congrArg (phiB hε)^[n] hy).trans (iterate_pow_mul_eq_of_map_eq (phiB hε) (map_natCast _ p) (phiB_periodTCris hε) x m n))`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_iterate_phiPlus_eq {x : BCris hε} {m : ℕ} {y : BCrisPlus F p}
     (hy : algebraMap (BCrisPlus F p) (BCris hε) y = periodTCris hε ^ m * x) (n : ℕ) :
@@ -195,7 +195,7 @@ theorem algebraMap_iterate_phiPlus_eq {x : BCris hε} {m : ℕ} {y : BCrisPlus F
     (iterate_pow_mul_eq_of_map_eq (phiB hε) (map_natCast _ p) (phiB_periodTCris hε) x m n))
 
 /- English proof (translation)
-The claim follows from `iterate_map_eq_pow_mul (phiPlus F p) (map_natCast _ p) ((phiPlus_algebraMap _).trans ((congrArg _ (phi_periodT_eq_mul hε)).trans (by simp only [map_mul, map_natCast]))) n`.
+A detailed English derivation is pending.
 -/
 theorem iterate_phiPlus_periodT (n : ℕ) :
     (phiPlus F p)^[n] (algebraMap (ACris F p) (BCrisPlus F p) (periodT hε)) =
@@ -205,14 +205,14 @@ theorem iterate_phiPlus_periodT (n : ℕ) :
       (by simp only [map_mul, map_natCast]))) n
 
 /- English proof (translation)
-The claim follows from `Localization.Away.exists_algebraMap_eq_pow_mul _ x`.
+A detailed English derivation is pending.
 -/
 theorem exists_algebraMap_eq_periodTCris_pow_mul (x : BCris hε) :
     ∃ (m : ℕ) (y : BCrisPlus F p), algebraMap (BCrisPlus F p) (BCris hε) y = periodTCris hε ^ m * x :=
   Localization.Away.exists_algebraMap_eq_pow_mul _ x
 
 /- English proof (translation)
-The claim follows from `iterate_map_pow _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem iterate_phiPlus_pow (n k : ℕ) (z : BCrisPlus F p) :
     (phiPlus F p)^[n] (z ^ k) = ((phiPlus F p)^[n] z) ^ k :=
@@ -225,9 +225,9 @@ include hζ in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 (phiPlus_mem_span_periodT hε hζ hθ)`. Establish `hp1 : IsUnit (p : BCrisPlus F p)`. Use `IsLocalization.Away.algebraMap_isUnit (S := BCrisPlus F p) (p : ACris F p)` as an intermediate fact. Simplify `this` using `only [map_natCast]`. Establish `h : algebraMap (BCrisPlus F p) (BCris hε) w * periodTCris hε = ((p : BCris hε) * periodTCris hε) ^ (m + 1) * phiB hε x` using `(map_mul _ w _).symm.trans ((congrArg _ hw).trans ((phiB_algebraMap hε y).symm.trans ((congrArg (phiB hε) hy).trans (iterate_pow_mul_eq_of_map_eq (phiB hε) (map_natCast _ p) (phiB_periodTCris hε) x (m + 1) 1) |>.trans (by rw [pow_one]; rfl))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `exists_map_eq_pow_mul_of_mul_eq _ (isUnit_periodTCris hε) hp1 (map_natCast _ p) h`.
+A detailed English derivation is pending.
 -/
 theorem exists_algebraMap_eq_periodTCris_pow_mul_phiB {x : BCris hε} {m : ℕ} {y : BCrisPlus F p}
     (hy : algebraMap (BCrisPlus F p) (BCris hε) y = periodTCris hε ^ (m + 1) * x)
@@ -258,7 +258,7 @@ variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
   (hζ : PreTilt.untilt ((_root_.frobeniusEquiv (PreTilt (normInteger ℂ_[p]) p) p).symm ε) ≠ 1)
 
 /- English proof (translation)
-The claim follows from `(phiB_algebraMap hε _).trans (congrArg _ (phiPlus_algebraMap_padic q))`.
+A detailed English derivation is pending.
 -/
 theorem phiB_algebraMap_padic (q : ℚ_[p]) :
     phiB hε (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) (algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q)) =
@@ -266,7 +266,7 @@ theorem phiB_algebraMap_padic (q : ℚ_[p]) :
   (phiB_algebraMap hε _).trans (congrArg _ (phiPlus_algebraMap_padic q))
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `(Normal.minpoly_eq_iff_mem_orbit (PadicAlgCl p)).1 h`. Establish `hτ' : τ β₁ = β` using `hτ`. Rewrite using `[← hτ']`. Conclude with `gal_mem_unramifiedClosure τ h₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unramifiedClosure_of_minpoly_eq {β β₁ : PadicAlgCl p}
     (h : minpoly ℚ_[p] β = minpoly ℚ_[p] β₁) (h₁ : β₁ ∈ unramifiedClosure p) :
@@ -279,7 +279,7 @@ theorem mem_unramifiedClosure_of_minpoly_eq {β β₁ : PadicAlgCl p}
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact hx`. Consider the case `succ n ih`. Conclude with `(congrArg (galB hε σ) (Function.iterate_succ_apply' _ _ _)).trans ((phiB_galB hε σ _).symm.trans ((congrArg (phiB hε) ih).trans (Function.iterate_succ_apply' _ _ _).symm))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem galB_iterate_phiB (σ : Gal(PadicAlgCl p/K)) {x : BCris hε} (hx : galB hε σ x = x)
     (n : ℕ) : galB hε σ ((phiB hε)^[n] x) = (phiB hε)^[n] x := by
@@ -291,14 +291,14 @@ theorem galB_iterate_phiB (σ : Gal(PadicAlgCl p/K)) {x : BCris hε} (hx : galB 
         (Function.iterate_succ_apply' _ _ _).symm))
 
 /- English proof (translation)
-The claim follows from `(iotaB_algebraMap hε hζ _).trans (congrArg _ (iotaPlus_algebraMap _))`.
+A detailed English derivation is pending.
 -/
 theorem iotaB_periodTCris :
     iotaB hε hζ (periodTCris hε) = algebraMap 𝔹 𝔹dR (iota ℂ_[p] p (periodT hε)) :=
   (iotaB_algebraMap hε hζ _).trans (congrArg _ (iotaPlus_algebraMap _))
 
 /- English proof (translation)
-The claim follows from `(thetaField_iota _).trans (by rw [theta_periodT]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem thetaField_iota_periodT :
     IsPerfectoidField.thetaBDeRhamPlusField (K := ℂ_[p]) p (iota ℂ_[p] p (periodT hε)) = 0 :=
@@ -308,7 +308,7 @@ include hζ in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨y', hyfix, hy'⟩` from `exists_bCrisPlus_fixed hk`. Conclude with `⟨y', hyfix, iotaB_injective hε hζ ((iotaB_algebraMap hε hζ y').trans ((congrArg _ hy').trans hx.symm))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_bCrisPlus_fixed_eq_of_mem_maxUnramified {x : BCris hε} {k : PadicAlgCl p}
     (hk : k ∈ maxUnramified p K) (hx : iotaB hε hζ x = algebraMap 𝔹 𝔹dR (algClToBdR p k)) :
@@ -324,7 +324,7 @@ include hζ in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `bCris_fixed hε hζ ((phiB hε)^[n] x) fun σ => galB_iterate_phiB hε σ (hx σ) n`. Conclude with `map_eq_zero_of_eq_pow_mul (iotaB hε hζ) (algebraMap 𝔹 𝔹dR) (IsFractionRing.injective 𝔹 𝔹dR) (IsPerfectoidField.thetaBDeRhamPlusField (K := ℂ_[p]) p) ((iotaB_algebraMap hε hζ _).symm.trans (congrArg _ (algebraMap_iterate_phiPlus_eq hε hy n))) ((map_natCast _ p).trans (map_natCast …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem thetaField_iotaPlus_iterate_eq_zero {x : BCris hε}
     (hx : ∀ σ : Gal(PadicAlgCl p/K), galB hε σ x = x) {m : ℕ} {y : BCrisPlus ℂ_[p] p}
@@ -342,7 +342,7 @@ include hζ in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-The claim follows from `exists_eq_iterate_of_step (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε)) (phiB hε) (periodTCris hε) (fun x => ∀ σ : Gal(PadicAlgCl p/K), galB hε σ x = x) (fun x hx σ => (phiB_galB hε σ x).symm.trans (congrArg (phiB hε) (hx σ))) (fun _ _ hx ⟨_, hy⟩ => exists_algebraMap_eq_periodTCris …`.
+A detailed English derivation is pending.
 -/
 theorem exists_iterate_phiB_eq (m : ℕ) (x : BCris hε)
     (hx : ∀ σ : Gal(PadicAlgCl p/K), galB hε σ x = x)
@@ -356,7 +356,7 @@ theorem exists_iterate_phiB_eq (m : ℕ) (x : BCris hε)
       (thetaField_iotaPlus_iterate_eq_zero hε hζ hx hy)) m x hx hxy
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', ih, phiPlus_algebraMap_padic]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iterate_phiPlus_algebraMap_padic (n : ℕ) (q : ℚ_[p]) :
     (phiPlus ℂ_[p] p)^[n] (algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q) =
@@ -368,7 +368,7 @@ theorem iterate_phiPlus_algebraMap_padic (n : ℕ) (q : ℚ_[p]) :
 include hζ in
 
 /- English proof (translation)
-Introduce `a b h` and use `iotaPlus_injective (K := ℂ_[p]) (p := p) (IsFractionRing.injective 𝔹 𝔹dR ((iotaB_algebraMap hε hζ a).symm.trans ((congrArg (iotaB hε hζ) h).trans (iotaB_algebraMap hε hζ b))))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem algebraMap_bCrisPlus_bCris_injective :
     Function.Injective (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε)) := fun a b h =>
@@ -379,7 +379,7 @@ theorem algebraMap_bCrisPlus_bCris_injective :
 include hζ in
 
 /- English proof (translation)
-Rewrite using `[iota_periodT]`. Conclude with `fontaineT_ne_zero hε hζ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_periodT_ne_zero : iota ℂ_[p] p (periodT hε) ≠ 0 := by
   rw [iota_periodT]
@@ -389,25 +389,21 @@ include hζ in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨t', ht'⟩ : ∃ t', algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p) (periodT hε) = t'` from `⟨_, rfl⟩`. Take `⟨τ, hτdef⟩ : ∃ τ, iota ℂ_[p] p (periodT hε) = τ` from `⟨_, rfl⟩`. Rewrite `hφy` using `[ht']`. Rewrite `hιy` using `[hτdef]`. Establish `hτ : iotaPlus ℂ_[p] p t' = τ` using `by rw [← ht', ← hτdef]; exact iotaPlus_algebraMap _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨P, hP⟩ : ∃ P, minpoly ℚ_[p] β = P` from `⟨_, rfl⟩`. Rewrite using `[hP]`. Take `⟨f, hf⟩ : ∃ f, algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) = f` from `⟨_, rfl⟩`. Take `⟨R, hR⟩ : ∃ R, homogEval f P y (t' ^ m) = R` from `⟨_, rfl⟩`. Establish `hιs : iotaPlus ℂ_[p] p (t' ^ m) = τ ^ m` using `(map_pow _ _ _).trans (congrArg (· ^ m) hτ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hιR : iotaPlus ℂ_[p] p R = 0`. Establish `e1 : iotaPlus ℂ_[p] p R = homogEval (algebraMap ℚ_[p] 𝔹) P (iotaPlus ℂ_[p] p y) (iotaPlus ℂ_[p] p (t' ^ m))`. Rewrite using `[← hR]`. Conclude with `map_homogEval f P y (t' ^ m) (iotaPlus ℂ_[p] p) (algebraMap ℚ_[p] 𝔹) (fun q => by rw [← hf]; exact iotaPlus_algebraMap_padic q)`. Establish `e2 : aeval (algClToBdR p β) P = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_algHom_apply, ← hP, minpoly.aeval, map_zero]`. Rewrite using `[e1, hιy, hιs, homogEval_mul, ← aeval_def, e2, mul_zero]`. Establish `hR0 : R = 0` using `iotaPlus_injective (K := ℂ_[p]) (p := p) (hιR.trans (map_zero _).symm)`. Take `⟨c, hc⟩ : ∃ c, ((p : BCrisPlus ℂ_[p] p) ^ m * t') ^ m = c` from `⟨_, rfl⟩`. Rewrite `hφy` using `[hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦ⟩ : ∃ Φ, phiPlus ℂ_[p] p ^ m = Φ` from `⟨_, rfl⟩`. Establish `hΦf : ∀ q, Φ (f q) = f q` using `fun q => by`. Rewrite using `[← hΦ, ← hf]`. Conclude with `(congrFun (RingHom.coe_pow (phiPlus ℂ_[p] p) m) _).trans (iterate_phiPlus_algebraMap_padic m q)`. Establish `hΦy : Φ y = c * x₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hΦ]`. Conclude with `(congrFun (RingHom.coe_pow (phiPlus ℂ_[p] p) m) y).trans hφy`. Establish `hφt : (phiPlus ℂ_[p] p)^[m] t' = (p : BCrisPlus ℂ_[p] p) ^ m * t'`. Rewrite using `[← ht']`. Conclude with `iterate_map_eq_pow_mul (phiPlus ℂ_[p] p) (map_natCast _ p) ((phiPlus_algebraMap _).trans ((congrArg _ (phi_periodT_eq_mul hε)).trans (by simp only [map_mul, map_natCast]))) m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦs : Φ (t' ^ m) = c`. Rewrite using `[← hΦ, ← hc]`. Conclude with `(congrFun (RingHom.coe_pow (phiPlus ℂ_[p] p) m) _).trans ((iterate_map_pow (phiPlus ℂ_[p] p) m t' m).trans (congrArg (· ^ m) hφt))`. Establish `hΦR : c ^ P.natDegree * P.eval₂ f x₁ = 0`. Establish `e1 : Φ R = homogEval f P (Φ y) (Φ (t' ^ m))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hR]`. Conclude with `map_homogEval f P y (t' ^ m) Φ f hΦf`. Rewrite `e1` using `[hΦy, hΦs, homogEval_mul, hR0, map_zero]`. Conclude with `e1.symm`. Establish `hιc : iotaPlus ℂ_[p] p c ≠ 0`.
-
-Rewrite using `[← hc, map_pow_mul_pow (iotaPlus ℂ_[p] p) (map_natCast _ p) m m t', hτ]`. Conclude with `pow_ne_zero _ (mul_ne_zero (pow_ne_zero _ (IsPerfectoidField.isUnit_natCast_p_bDeRhamPlus (K := ℂ_[p]) p).ne_zero) (by rw [← hτdef]; exact iota_periodT_ne_zero hε hζ))`. Establish `h1 : iotaPlus ℂ_[p] p (aeval x₁ P) = 0`. Rewrite using `[aeval_def, hf]`. Conclude with `map_eq_zero_of_pow_mul_eq_zero (iotaPlus ℂ_[p] p) hΦR hιc`.
-
-Establish `h2` using `aeval_algHom_apply (iotaPlusAlg (p := p)) x₁ P`. Rewrite `h2` using `[iotaPlusAlg_apply, iotaPlusAlg_apply, hιx₁, h1, aeval_algHom_apply]`. Conclude with `(injective_algClToBdR p) (h2.trans (map_zero _).symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_minpoly_eq_zero_of_iterate {y x₁ : BCrisPlus ℂ_[p] p} {m : ℕ}
     {β β₁ : PadicAlgCl p}
@@ -480,11 +476,11 @@ include hζ in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `bCris_fixed hε hζ x hx`. Take `⟨k₁, hk₁⟩` from `bCris_fixed hε hζ ((phiB hε)^[m] x) fun σ => galB_iterate_phiB hε σ (hx σ) m`. Establish `hk'` using `hk.trans (algebraMap_intermediateField_bDeRham K k)`. Establish `hk₁'` using `hk₁.trans (algebraMap_intermediateField_bDeRham K k₁)`. Establish `hιy : iotaPlus ℂ_[p] p y = iota ℂ_[p] p (periodT hε) ^ m * algClToBdR p k` using `eq_pow_mul_of_map_eq (iotaB hε hζ) (algebraMap 𝔹 𝔹dR) (IsFractionRing.injective 𝔹 𝔹dR) ((iotaB_algebraMap hε hζ y).symm.trans (congrArg _ hy)) (iotaB_periodTCris hε hζ) hk'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hιx₁ : iotaPlus ℂ_[p] p x₁ = algClToBdR p k₁` using `IsFractionRing.injective 𝔹 𝔹dR ((iotaB_algebraMap hε hζ x₁).symm.trans ((congrArg _ hx₁).trans hk₁'))`. Establish `hφy : (phiPlus ℂ_[p] p)^[m] y = ((p : BCrisPlus ℂ_[p] p) ^ m * algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p) (periodT hε)) ^ m * x₁` using `algebraMap_bCrisPlus_bCris_injective hε hζ ((algebraMap_iterate_phiPlus_eq hε hy m).trans ((congrArg (fun z => ((p : BCris hε) ^ m * periodTCris hε) ^ m * z) hx₁.symm).trans (map_pow_mul_pow_mul (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε)) (map_natCast _ p) m m (algebraMap (ACris …`. Establish `hroot` using `aeval_minpoly_eq_zero_of_iterate hε hζ hιy hιx₁ hφy`. Establish `hint : IsIntegral ℚ_[p] (k : PadicAlgCl p)` using `Algebra.IsIntegral.isIntegral _`. Establish `hmin : minpoly ℚ_[p] (k : PadicAlgCl p) = minpoly ℚ_[p] (k₁ : PadicAlgCl p)` using `minpoly.eq_of_irreducible_of_monic (minpoly.irreducible hint) hroot (minpoly.monic hint)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0 : (k : PadicAlgCl p) ∈ maxUnramified p K` using `mem_maxUnramified.2 ⟨k.2, mem_unramifiedClosure_of_minpoly_eq hmin (mem_unramifiedClosure_of_iotaPlus_eq hιx₁)⟩`. Conclude with `exists_bCrisPlus_fixed_eq_of_mem_maxUnramified hε hζ hk0 hk'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_bCrisPlus_fixed_eq_of_iterate {x : BCris hε}
     (hx : ∀ σ : Gal(PadicAlgCl p/K), galB hε σ x = x) {m : ℕ} {y x₁ : BCrisPlus ℂ_[p] p}
@@ -521,7 +517,7 @@ include hζ in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨m, a, hs'⟩` from `exists_algebraMap_eq_periodTCris_pow_mul hε x`. Take `⟨x₁, hx₁⟩` from `exists_iterate_phiB_eq hε hζ m x hx ⟨a, hs'⟩`. Conclude with `exists_bCrisPlus_fixed_eq_of_iterate hε hζ hx hs' hx₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_bCrisPlus_fixed_eq (x : BCris hε)
     (hx : ∀ σ : Gal(PadicAlgCl p/K), galB hε σ x = x) :
@@ -535,9 +531,9 @@ include hζ in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, hy, hyx⟩` from `exists_bCrisPlus_fixed_eq hε hζ x hx`. Conclude with `⟨y, hy, hyx⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩ σ`. Conclude with `(galB_algebraMap hε σ y).trans (congrArg _ (hy σ))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fixed_bCris_eq_image :
     {x : BCris hε | ∀ σ : Gal(PadicAlgCl p/K), galB hε σ x = x} =
@@ -555,7 +551,7 @@ include hζ in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨y, hy, hyx⟩` from `exists_bCrisPlus_fixed_eq hε hζ x hx`. Take `⟨k, hk, hyk⟩` from `bCrisPlus_fixed y hy`. Conclude with `⟨k, hk, (congrArg (iotaB hε hζ) hyx).symm.trans ((iotaB_algebraMap hε hζ y).trans (congrArg _ hyk))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bCris_fixed_mem_maxUnramified (x : BCris hε)
     (hx : ∀ σ : Gal(PadicAlgCl p/K), galB hε σ x = x) :

@@ -5,9 +5,9 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ValuationExtensionExistence.main`. Consider the case `exact _root_.GlobalTheory.ValuationExtensionExistence.main`. Consider the case `(apply _root_.GlobalTheory.ValuationExtensionExistence.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ValuationExtensionExistence.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ValuationExtensionExistence.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ValuationExtensionExistence.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finite_injective_localHom_and_extend (V R K : Type) [CommRing V] [IsDomain V] [IsLocalRing V]
     [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [IsAlgClosed K] (ρ : V →+* R) :

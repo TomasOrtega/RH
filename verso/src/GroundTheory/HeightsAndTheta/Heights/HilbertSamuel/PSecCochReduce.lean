@@ -9,7 +9,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.map_map]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem SecCochReduce.map_map_int {K : Type} {ι : K → Type} (p : ℕ) (f : MRing ι) :
     MvPolynomial.map (Int.castRingHom (ZMod p)) (MvPolynomial.map (Int.castRingHom ℤ) f) =
@@ -18,11 +18,11 @@ theorem SecCochReduce.map_map_int {K : Type} {ι : K → Type} (p : ℕ) (f : MR
   congr 1
 
 /- English proof (translation)
-Introduce `K _ _ ι _ _ Ω _ y p a s hs`. Use function extensionality and compare the values at `J`. Rewrite using `[FibreReduction.redCoch_apply]`. Distinguish the cases in `hz : ∃ k, y ⟨k, GenOnFibres.cellChart J k⟩ = 0`. Take `⟨k, h0⟩` from `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `GenOnFibres.subsingleton_loc (S := ZMod p) (GenOnFibres.cellChart_mem J k) h0` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Use `push Not at hz`. Take `⟨e, F, hF, _, heq⟩` from `GenOnFibres.secCoch_spec (S := ℤ) hs J hz`. Establish `hrep : GenOnFibres.IsRep y (ZMod p) (KH.cellMon (ZMod p) J.1) (FibreReduction.redLoc y p J.1 (GenOnFibres.secCoch y ℤ s a J)) (GenOnFibres.cellChart J) s a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e, F, hF, GenOnFibres.cmon_mem (ZMod p) (GenOnFibres.cellChart_mem J) e, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, FibreReduction.redLoc_mk, FibreReduction.redRing_mk, SecCochReduce.map_map_int]`. Use `congr 1`. Conclude with `Subtype.ext (SecCochReduce.map_map_int p _)`. Conclude with `hrep.unique (GenOnFibres.secCoch_spec hs J hz)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem SecCochReduce.proof : SecCochReduce.Statement := by
   intro K _ _ ι _ _ Ω _ y p a s hs

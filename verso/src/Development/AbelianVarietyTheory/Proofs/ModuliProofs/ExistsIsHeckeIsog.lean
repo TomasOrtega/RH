@@ -25,7 +25,7 @@ def IsHeckeIsog (o o' : Obj D l b s) (p : ℕ) (C : Subgroup (𝟙_ (Over (Sp k)
   ∀ p' : ℕ, p * p' ≡ 1 [MOD l.M'] → ∀ a, o.eta (p' • a) ≫ ψ = o'.eta a ∧ o.etaA (p' • a) ≫ ψ = o'.etaA a
 
 /- English proof (translation)
-Take `⟨m, -, hm⟩` from `Nat.exists_mul_mod_eq_of_coprime 1 ((Nat.Prime.coprime_iff_not_dvd hp).2 h) (by rintro rfl; exact h (dvd_zero p))`. Conclude with `⟨m, hm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_inv_mod {p n : ℕ} (hp : p.Prime) (h : ¬ p ∣ n) : ∃ p', p * p' ≡ 1 [MOD n] := by
   obtain ⟨m, -, hm⟩ := Nat.exists_mul_mod_eq_of_coprime 1 ((Nat.Prime.coprime_iff_not_dvd hp).2 h)
@@ -33,7 +33,7 @@ theorem exists_inv_mod {p n : ℕ} (hp : p.Prime) (h : ¬ p ∣ n) : ∃ p', p *
   exact ⟨m, hm⟩
 
 /- English proof (translation)
-Establish `h : (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `(Ideal.mul_le_inf h).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_M_mem (l : Level H) : (l.M : 𝓞 E) ∈ l.Mb := by
   have h : (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) := by
@@ -41,7 +41,7 @@ theorem natCast_M_mem (l : Level H) : (l.M : 𝓞 E) ∈ l.Mb := by
   exact (Ideal.mul_le_inf h).1
 
 /- English proof (translation)
-Establish `key : ∀ q : ℕ, f (q • a) = f ((q % n) • a)` using `fun q => by conv_lhs => rw [← Nat.mod_add_div q n, add_nsmul, hf, mul_nsmul', hn, _root_.mul_one]`. Rewrite using `[key p₁, key p₂, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_modEq {A Q : Type} [AddCommGroup A] [Group Q] (f : A → Q) (hf : ∀ a c, f (a + c) = f a * f c) {n : ℕ}
     (hn : ∀ a, f (n • a) = 1) {p₁ p₂ : ℕ} (h : p₁ ≡ p₂ [MOD n]) (a : A) : f (p₁ • a) = f (p₂ • a) := by
@@ -50,7 +50,7 @@ theorem eq_of_modEq {A Q : Type} [AddCommGroup A] [Group Q] (f : A → Q) (hf : 
   rw [key p₁, key p₂, h]
 
 /- English proof (translation)
-The claim follows from `o.eta_ker _ (by rw [← Nat.cast_smul_eq_nsmul (𝓞 E)] exact Submodule.smul_mem_smul (natCast_M_mem l) Submodule.mem_top)`.
+A detailed English derivation is pending.
 -/
 theorem eta_M (o : Obj D l b s) (a : D.La) : o.eta (l.M • a) = 1 :=
   o.eta_ker _ (by
@@ -58,7 +58,7 @@ theorem eta_M (o : Obj D l b s) (a : D.La) : o.eta (l.M • a) = 1 :=
     exact Submodule.smul_mem_smul (natCast_M_mem l) Submodule.mem_top)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem modEq_of_inv {p p₁ p₂ n : ℕ} (h₁ : p * p₁ ≡ 1 [MOD n]) (h₂ : p * p₂ ≡ 1 [MOD n]) : p₁ ≡ p₂ [MOD n] := by
   calc p₁ = p₁ * 1 := (Nat.mul_one _).symm
@@ -68,9 +68,9 @@ theorem modEq_of_inv {p p₁ p₂ n : ℕ} (h₁ : p * p₁ ≡ 1 [MOD n]) (h₂
     _ = p₂ := Nat.one_mul _
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `a.add 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[Nat.cast_zero, pow_zero, left_eq_mul.1 h, MonObj.comp_one]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih => rw [Nat.cast_succ, a.add, MonObj.comp_mul, ih, a.one, Category.comp_id, pow_succ]`.
+Treat this case separately.
 -/
 theorem comp_act_natCast {O : Type} [CommRing O] {S : Scheme.{0}} {G : Over S} [GrpObj G] (a : OAct O G) {T : Over S}
     (x : T ⟶ G) (n : ℕ) : x ≫ a.act (n : O) = x ^ n := by
@@ -84,43 +84,37 @@ theorem comp_act_natCast {O : Type} [CommRing O] {S : Scheme.{0}} {G : Over S} [
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hC : ∀ x ∈ C, x ^ p ^ 2 = 1` using `fun x hx => by`. Rewrite using `[← comp_act_natCast o.t.act]`. Use `c₃ x hx _ ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, pow_two]`. Use `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) hp𝔓` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `⟨hC, ?_⟩` and prove the remaining obligations. Take `⟨hab, hdim, -, -⟩` from `hfacts E H D l B b _ s o`. Take `⟨t', ψ, hpr, ham, hkt, hhom, hfin, het, hsur, hker, hlin, hiso⟩` from `hQuot E H k o.t _ p C hp.pos o.proper hdim o.ample o.ktriv c₁ hC c₄ c₅`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg'⟩` from `exists_dim t'`. Set `P` to `polOf o.t o.proper o.ample o.ktriv hdim`. Set `P'` to `polOf t' hpr ham hkt hg'`. Establish `hab'` using `isAbelianScheme_of_proper t' hpr`. Use `o.proper` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW` using `fun (n : ℤ) (T : Over (Sp k)) (x y : T ⟶ o.t.G) c c' => hWeil _ o.t.G t'.G ψ o.t.PP.L t'.PP.L (p ^ 2) n T x y c c' hab hab' o.t.PP.isLB t'.PP.isLB hhom hiso`. Take `⟨p₀, hp₀⟩` from `exists_inv_mod hp hpM`. Establish `hpow : IsMonHom (𝟙 o.t.G ^ p ^ 2)`. Rewrite using `[← comp_act_natCast o.t.act, Category.id_comp]`. Conclude with `o.t.act.hom _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨gm₀, hgm⟩` from `exists_fac hab.smooth ψ (𝟙 o.t.G ^ p ^ 2) fun x hx => by`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Conclude with `hC x ((hker x).1 hx)`. Establish `hgm₁ : ∀ (T : Over (Sp k)) (x : T ⟶ o.t.G), x ≫ ψ = 1 → x ^ p ^ 2 = 1` using `fun T x hx => by`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMM : l.M ∣ l.M'` using `Nat.dvd_lcm_left _ _`. Establish `hAM : l.A ∣ l.M'` using `Nat.dvd_lcm_right _ _`. Set `o' : Obj D l b s` to `{ t := t', proper := hpr, ample := ham, ktriv := hkt eta := fun a => o.eta (p₀ • a) ≫ ψ eta_add := fun a c => by rw [smul_add, o.eta_add, MonObj.mul_comp] eta_ker := fun a ha => by rw [o.eta_ker _ (nsmul_mem ha _), MonObj.one_comp] etaA := fun a => o.etaA (p₀ • a) ≫ ψ etaA_add := …`. Introduce `K _ _ x β hx`. Take `⟨hdet, I, hζ, hA, hM⟩` from `o.geom K x β hx`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨fun τ => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [← hLie _ _ _ _ ψ o.t.act t'.act hhom het hlin K x τ]`. Conclude with `hdet τ`. Establish `hK : ∀ n : ℕ, 0 < n → (n : K) ≠ 0` using `fun n hn => by`. Use `((b.unit n hn).map β).ne_zero` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Set `ψx : (Over.mk x ⟶ o.t.G) →* (Over.mk x ⟶ t'.G)` to `MonoidHom.mk' (fun z => z ≫ ψ) fun a c => MonObj.mul_comp a c ψ`. Establish `desc : ∀ (n : ℕ) (z : Over.mk x ⟶ o.t.G), 0 < n → z ^ n = 1 → ∃ z₀ : 𝟙_ (Over (Sp k)) ⟶ o.t.G, toUnit (Over.mk x) ≫ z₀ = z` using `fun n z hn hz => exists_of_torsion hL.mulN P x (Nat.cast_ne_zero.2 hn.ne') (hK n hn) z hz`. Establish `one : ∀ {G : Over (Sp k)} [GrpObj G] (z₀ : 𝟙_ (Over (Sp k)) ⟶ G), toUnit (Over.mk x) ≫ z₀ = 1 → z₀ = 1` using `fun z₀ h => toUnit_comp_injective x _ (h.trans (MonObj.comp_one _).symm)`. Establish `kerd : ∀ z : Over.mk x ⟶ o.t.G, z ≫ ψ = 1 → ∃ z₀ ∈ C, toUnit (Over.mk x) ≫ z₀ = z` using `fun z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨z₀, rfl⟩` from `desc _ z (pow_pos hp.pos 2) (hgm₁ _ z hz)`. Conclude with `⟨z₀, (hker z₀).1 (one _ ((Category.assoc _ _ _).symm.trans hz)), rfl⟩`. Establish `uniq : ∀ (n : ℕ) (z w : Over.mk x ⟶ o.t.G) (c c' : Kˣ), z ^ n = 1 → w ^ n = 1 → Out.WeilIs o.t.G o.t.PP.L n z w (unitOn c) → Out.WeilIs o.t.G o.t.PP.L n z w (unitOn c') → c = c'` using `fun n z w c c' hz hw h h' => (unitOn_bijective K).1 (((hL.weil _ P n _).1 z w hz hw).unique h h')`. Establish `iso : ∀ z w : Over.mk x ⟶ o.t.G, z ≫ ψ = 1 → w ≫ ψ = 1 → Out.WeilIs o.t.G o.t.PP.L ((p ^ 2 : ℕ) : ℤ) z w (unitOn (1 : Kˣ))` using `fun z w hz hw => by`. Establish `h₁ : Out.WeilIs t'.G t'.PP.L ((1 : ℕ) : ℤ) (1 : Over.mk x ⟶ t'.G) 1 1` using `(hL.weil _ P' 1 (Over.mk x)).2.2.1 1 (one_pow _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₀ : Out.WeilIs t'.G t'.PP.L ((1 : ℕ) : ℤ) (z ≫ ψ) (w ≫ ψ) 1` using `by rw [hz, hw]; exact h₁`. Establish `h₂` using `(hW ((1 : ℕ) : ℤ) _ z w 1 1 h₀).1`. Rewrite `h₂` using `[Nat.cast_one, _root_.one_mul]`. Conclude with `(congrArg (Out.WeilIs o.t.G o.t.PP.L ((p ^ 2 : ℕ) : ℤ) z w) unitOn_one).mpr h₂`. Take `⟨I', hζ', hev⟩` from `hTate E H D 𝔓 p K _ _ _ (fun a g => g ≫ t'.act.act a) _ (fun n g g' c => Out.WeilIs t'.G t'.PP.L n g g' (unitOn c)) I ψx h𝔓 hco hp hp𝔓 (fun y => exists_lift_pt ψ x y) (fun a z => by show (z ≫ _) ≫ ψ = (z ≫ ψ) ≫ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, hlin, Category.assoc])`. Use the proof step `(fun J hJ z hz hz' => by`. Take `⟨z₀, rfl⟩` from `desc _ z hp.pos hz`. Use `show (_ ≫ z₀) ≫ ψ = 1`. Rewrite using `[Category.assoc, (hker z₀).2 (c₂ J hJ z₀ fun a ha => one _ ((Category.assoc _ _ _).symm.trans (hz' a ha))), MonObj.comp_one])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun z hz => ⟨hgm₁ _ z hz, fun a ha => by`. Take `⟨z₀, h₀, rfl⟩` from `kerd z hz`. Use `show (_ ≫ z₀) ≫ _ = 1`. Rewrite using `[Category.assoc, c₃ z₀ h₀ a ha, MonObj.comp_one]⟩)`. Use the proof step `(fun z w hz hw => iso z w hz hw)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(by`. Rewrite using `[← c₅]`. Use `(Nat.card_congr (Equiv.ofBijective (fun z : C => (⟨toUnit (Over.mk x) ≫ z.1, by show (_ ≫ z.1) ≫ ψ = 1` and prove the remaining obligations. Rewrite using `[Category.assoc, (hker _).2 z.2, MonObj.comp_one]⟩ : ψx.ker)) ⟨fun a c h => Subtype.ext (toUnit_comp_injective x _ (congrArg Subtype.val h)), fun z => ?_⟩)).symm`. Take `⟨z₀, h₀, e⟩` from `kerd z.1 z.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨z₀, h₀⟩, Subtype.ext e⟩)`. Use the proof step `(fun n z w c c' _ hz hw h h' => uniq n z w c c' hz hw h h')`. Use the proof step `(fun n z w c hn hz hw h => by`. Take `⟨c', hc', -⟩` from `(hL.weil _ P' n (Over.mk x)).1 (z ≫ ψ) (w ≫ ψ) hz hw`. Take `⟨c', rfl⟩` from `(unitOn_bijective K).2 c'`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h₂` using `(hW n _ z w 1 _ hc').1`. Rewrite `h₂` using `[← Nat.cast_mul]`. Establish `t : ∀ u : Over.mk x ⟶ o.t.G, ψx u ^ n = 1 → u ^ (n * p ^ 2) = 1` using `fun u hu => by`. Rewrite using `[pow_mul]`. Conclude with `hgm₁ _ _ ((map_pow ψx u n).trans hu)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[uniq _ z w c c' (t z hz) (t w hw) h h₂]`. Conclude with `hc')`. Use `⟨I', by rw [hζ']; exact hζ, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[hev l.A p₀ l.A_pos (hp₀.of_dvd hAM), ← hA, ← Category.assoc]`. Both sides reduce to the same expression.
-
-Rewrite using `[hev l.M p₀ (by have := l.three_le; omega) (hp₀.of_dvd hMM), ← hM _ (nsmul_mem ha _), ← Category.assoc]; rfl }`. Use `⟨o', ψ, ⟨hhom, hlin, fun y => exists_lift_pt ψ (𝟙 _) y, hker, fun n x x' c hn h => ?_, fun p' hp' a => ?_⟩, hfin, het, hsur⟩` and prove the remaining obligations. Establish `hn₀ : 0 < n` using `Nat.pos_of_ne_zero (by`. Introduce and unpack `rfl`. Conclude with `hp.one_lt.ne' ((Nat.coprime_zero_left p).1 hn))`.
-
-Establish `: Unique (𝟙_ (Over (Sp k))).left` using `inferInstanceAs (Unique (PrimeSpectrum k))`. Take `⟨t₁, t₂⟩` from `pow_eq_one_of_weilIs hL.kerPow P hn₀ h`. Take `⟨c', hc', -⟩` from `(hL.weil _ P' n _).1 (x ≫ ψ) (x' ≫ ψ) (by rw [← MonObj.pow_comp, t₁, MonObj.one_comp]) (by rw [← MonObj.pow_comp, t₂, MonObj.one_comp])`. Establish `e` using `(hW n _ x x' _ _ hc').2 h`. Rewrite using `[unitOn_pow]`.
-
-Conclude with `e ▸ hc'`. Establish `e` using `modEq_of_inv hp' hp₀`. Conclude with `⟨congrArg (· ≫ ψ) (eq_of_modEq o.eta o.eta_add (eta_M o) (e.of_dvd hMM) a), congrArg (· ≫ ψ) (eq_of_modEq o.etaA o.etaA_add o.etaA_ker (e.of_dvd hAM) a)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isHeckeIsog [IsAlgClosed k] [CharZero k] (hL : Out.Laws)
     (hfacts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B : Type) [CommRing B] (b : Base l B) (S : Scheme.{0}) (s : S ⟶ Sp B) (o : Obj D l b s), IsAbelianScheme o.t.G ∧ SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) o.t.G.hom ∧ Out.Rigidified o.t.G o.t.PP.L ∧ Out.Sym o.t.G o.t.PP.L)

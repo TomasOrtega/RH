@@ -17,11 +17,11 @@ def convD (δ : A →ₗ[R] R) : A →ₗ[R] A :=
   (TensorProduct.rid R A).toLinearMap ∘ₗ δ.lTensor A ∘ₗ Coalgebra.comul
 
 /- English proof (translation)
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u u' hu hu' => simp only [add_mul, map_add, hu, hu']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul a b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add v v' hv hv' => simp only [mul_add, map_add, hv, hv']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul c e`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, LinearMap.lTensor_tmul, TensorProduct.rid_tmul, hδ b e, Algebra.smul_def, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma rid_convolution_derivation (δ : A →ₗ[R] R) (hδ : IsPtDer δ) (u v : A ⊗[R] A) :
     (TensorProduct.rid R A) (δ.lTensor A (u * v)) =
@@ -42,9 +42,9 @@ private lemma rid_convolution_derivation (δ : A →ₗ[R] R) (hδ : IsPtDer δ)
       ring
 
 /- English proof (translation)
-Establish `hE : ∀ a : A, (TensorProduct.rid R A) ((Coalgebra.counit (R` using `R) (A := A)).lTensor A (Coalgebra.comul a)) = a := by`. Introduce `a`. Rewrite using `[Coalgebra.lTensor_counit_comul]`. Simplify using the standard rewrite rules. Simplify using `only [convD, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, Bialgebra.comul_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[rid_convolution_derivation δ hδ, hE, hE]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma convD_mul (δ : A →ₗ[R] R) (hδ : IsPtDer δ) (f g : A) :
     convD δ (f * g) = f * convD δ g + g * convD δ f := by
@@ -56,9 +56,9 @@ lemma convD_mul (δ : A →ₗ[R] R) (hδ : IsPtDer δ) (f g : A) :
   rw [rid_convolution_derivation δ hδ, hE, hE]; ring
 
 /- English proof (translation)
-Establish `key : ∀ u : A ⊗[R] A, Coalgebra.counit (R` using `R) ((TensorProduct.rid R A) (δ.lTensor A u)) = δ ((TensorProduct.lid R A) ((Coalgebra.counit (R := R) (A := A)).rTensor A u)) := by`. Introduce `u`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a b => simp [mul_comm]`. Simplify using `only [convD, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, key, Coalgebra.rTensor_counit_comul]`. Simplify using the standard rewrite rules.
+Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma counit_convD (δ : A →ₗ[R] R) (f : A) :
     Coalgebra.counit (R := R) (convD δ f) = δ f := by
@@ -74,14 +74,14 @@ lemma counit_convD (δ : A →ₗ[R] R) (f : A) :
   simp
 
 /- English proof (translation)
-Simplify using `[convD, h.comul_eq_tmul_self]`.
+Simplify using the standard rewrite rules.
 -/
 lemma convD_groupLike (δ : A →ₗ[R] R) {χ : A} (h : IsGroupLikeElem R χ) :
     convD δ χ = δ χ • χ := by
   simp [convD, h.comul_eq_tmul_self]
 
 /- English proof (translation)
-Establish `h` using `hδ 1 1`. Simplify using `only [mul_one, Bialgebra.counit_one, one_mul] at h`. Take the linear combination `-h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma IsPtDer.map_one {δ : A →ₗ[R] R} (hδ : IsPtDer δ) : δ 1 = 0 := by
   have h := hδ 1 1
@@ -89,9 +89,9 @@ lemma IsPtDer.map_one {δ : A →ₗ[R] R} (hδ : IsPtDer δ) : δ 1 = 0 := by
   linear_combination -h
 
 /- English proof (translation)
-Rewrite `hf` using `[pow_two]`. Use `Submodule.mul_induction_on hf ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Rewrite `ha`, `hb` using `[RingHom.mem_ker, Bialgebra.counitAlgHom_apply]`. Rewrite using `[hδ, ha, hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `a b ha hb`. Rewrite using `[map_add, ha, hb, add_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma IsPtDer.map_sq {δ : A →ₗ[R] R} (hδ : IsPtDer δ) {f : A}
     (hf : f ∈ RingHom.ker (Bialgebra.counitAlgHom R A) ^ 2) : δ f = 0 := by
@@ -109,15 +109,15 @@ section Chain
 variable {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
 
 /- English proof (translation)
-Establish `h1 : D 1 = 0`. Establish `h` using `hD 1 1`. Simplify using `only [one_mul] at h`. Take the linear combination `-h`. Proceed by induction on `P using MvPolynomial.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Proceed by induction.
 
-Consider the case `C a => simp [Algebra.algebraMap_eq_smul_one, h1]`. Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ, add_mul, Finset.sum_add_distrib]`. Consider the case `mul_X P n hP`. Establish `hs : ∑ j, aeval x (pderiv j (P * X n)) * D (x j) = x n * ∑ j, aeval x (pderiv j P) * D (x j) + aeval x P * D (x n)`. Establish `: ∀ j, aeval x (pderiv j (P * X n)) * D (x j) = x n * (aeval x (pderiv j P) * D (x j)) + aeval x P * (aeval x (pderiv j (X n : MvPolynomial (Fin d) R)) * D (x j))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, aeval_X]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun j _ => this j), Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_eq_single n]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[pderiv_X_of_ne (Ne.symm hj)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hs, map_mul, aeval_X, hD, hP]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma map_aeval_of_leibniz {d : ℕ} (D : A →ₗ[R] A) (hD : ∀ f g, D (f * g) = f * D g + g * D f)
     (x : Fin d → A) (P : MvPolynomial (Fin d) R) :
@@ -157,11 +157,11 @@ def LowRed (p m : ℕ) (P : MvPolynomial (Fin d) R) : Prop :=
   ∀ β : Fin d →₀ ℕ, (∀ j, β j < p) → β.degree < m → coeff β P = 0
 
 /- English proof (translation)
-Rewrite using `[coeff_mul]`. Use `Finset.sum_eq_zero fun y hy => ?_` and prove the remaining obligations. Rewrite `hy` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Distinguish the cases in `h2 : y.2 = 0`. Rewrite using `[h2, ← congrFun constantCoeff_eq G, hG, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ∀ j, y.1 j ≤ β j` using `fun j => by rw [← hy]; simp`. Establish `h2' : y.2.degree ≠ 0` using `fun h => h2 ((Finsupp.degree_eq_zero_iff _).1 h)`. Establish `hdeg1 : y.1.degree < β.degree`. Rewrite using `[← hy, map_add]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hF y.1 (fun j => lt_of_le_of_lt (hle j) (hβ j)) (by omega), zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma lowRed_mul {m : ℕ} {F G : MvPolynomial (Fin d) R} (hF : LowRed p m F)
     (hG : constantCoeff G = 0) (β : Fin d →₀ ℕ) (hβ : ∀ j, β j < p) (hdeg : β.degree ≤ m) :
@@ -179,13 +179,13 @@ lemma lowRed_mul {m : ℕ} {F G : MvPolynomial (Fin d) R} (hF : LowRed p m F)
     rw [hF y.1 (fun j => lt_of_le_of_lt (hle j) (hβ j)) (by omega), zero_mul]
 
 /- English proof (translation)
-Introduce `γ hγ hdeg`. Rewrite using `[coeff_pderiv]`. Distinguish the cases in `hlt : γ j + 1 < p`. Rewrite using `[hP, zero_mul]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `using hlt`. Simplify `hγ i` using `[Finsupp.single_apply, Ne.symm hij]`. Rewrite using `[map_add, Finsupp.degree_single]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `h : γ j + 1 = p` using `by have := hγ j; omega`. Establish `hc : ((γ j : R) + 1) = 0`. Establish `: ((γ j + 1 : ℕ) : R) = 0` using `by rw [h, hp0]`. Conclude with `this` after adjusting the coercions.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, mul_zero]`.
+A detailed English derivation is pending.
 -/
 lemma lowRed_pderiv {m : ℕ} (hp0 : (p : R) = 0) {P : MvPolynomial (Fin d) R}
     (hP : LowRed p (m + 1) P) (j : Fin d) : LowRed p m (pderiv j P) := by
@@ -212,11 +212,11 @@ section Bialg2
 variable {R A : Type*} [CommRing R] [CommRing A] [Bialgebra R A]
 
 /- English proof (translation)
-Introduce `f g`. Use `set a := Coalgebra.counit (R := R) f`. Use `set b := Coalgebra.counit (R := R) g`. Establish `hf : f - algebraMap R A a ∈ RingHom.ker (Bialgebra.counitAlgHom R A)`. Simplify using `[RingHom.mem_ker, a]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hg : g - algebraMap R A b ∈ RingHom.ker (Bialgebra.counitAlgHom R A)`. Simplify using `[RingHom.mem_ker, b]`. Establish `hfg` using `h2 _ (by rw [pow_two]; exact Ideal.mul_mem_mul hf hg)`. Establish `e : f * g = (f - algebraMap R A a) * (g - algebraMap R A b) + a • g + b • f - (a * b) • 1`. Simplify using `only [Algebra.smul_def, map_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_sub, map_add, map_add, hfg, map_smul, map_smul, map_smul, h1, smul_eq_mul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma isPtDer_of {δ : A →ₗ[R] R} (h1 : δ 1 = 0)
     (h2 : ∀ f ∈ RingHom.ker (Bialgebra.counitAlgHom R A) ^ 2, δ f = 0) : IsPtDer δ := by
@@ -241,13 +241,11 @@ section Core
 variable {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] {d p : ℕ}
 
 /- English proof (translation)
-Rewrite using `[P.as_sum]`. Use `Ideal.sum_mem _ fun β hβ => ?_` and prove the remaining obligations. Establish `hnot : ¬ ∀ j, β j < p` using `fun h' => (mem_support_iff.1 hβ) (h β h')`. Use `push Not at hnot`. Take `⟨j, hj⟩` from `hnot`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : monomial β (coeff β P) = X j ^ p * monomial (β - Finsupp.single j p) (coeff β P)`. Establish `hs : Finsupp.single j p + (β - Finsupp.single j p) = β`. Use extensionality with `l`. Distinguish the cases in `hl : j = l`. Substitute `hl` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Simplify using `[hl]`. Rewrite using `[X_pow_eq_monomial, monomial_mul, one_mul, hs]`. Rewrite using `[e]`.
-
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨j, rfl⟩)`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_span_pow_of_coeff {P : MvPolynomial (Fin d) R}
     (h : ∀ β : Fin d →₀ ℕ, (∀ j, β j < p) → coeff β P = 0) :
@@ -272,7 +270,7 @@ lemma mem_span_pow_of_coeff {P : MvPolynomial (Fin d) R}
   exact Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Establish `hle : Ideal.span (Set.range fun j : Fin d => (X j : MvPolynomial (Fin d) R) ^ p) ≤ RingHom.ker (aeval (R` using `R) x) := by`. Rewrite using `[Ideal.span_le, Set.range_subset_iff]`. Introduce `j`. Simplify using `[RingHom.mem_ker, hxp j]`. Conclude with `hle hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma aeval_eq_zero_of_mem_span (x : Fin d → A) (hxp : ∀ j, x j ^ p = 0)
     {P : MvPolynomial (Fin d) R}
@@ -286,39 +284,35 @@ lemma aeval_eq_zero_of_mem_span (x : Fin d → A) (hxp : ∀ j, x j ^ p = 0)
   exact hle hP
 
 /- English proof (translation)
-Establish `hε : ∀ Q : MvPolynomial (Fin d) R, ε (aeval x Q) = constantCoeff Q`. Introduce `Q`. Establish `e : ε.comp (aeval x) = aeval (fun _ => (0 : R))`. Rewrite using `[comp_aeval]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Conclude with `hx i`. Rewrite using `[← AlgHom.comp_apply, e, aeval_zero']`. Both sides reduce to the same expression. Establish `Z : ∀ m, ∀ Q : MvPolynomial (Fin d) R, aeval x Q ∈ K → LowRed p m Q → ∀ α : Fin d →₀ ℕ, (∀ j, α j < p) → α.degree = m → coeff α Q = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `Q hQ _ α _ hα`. Establish `h0 : α = 0` using `(Finsupp.degree_eq_zero_iff α).1 hα`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Rewrite using `[← congrFun constantCoeff_eq Q, ← hε, hK _ hQ]`. Consider the case `succ m ih`. Introduce `Q hQ hlow α hα hdeg`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, α i ≠ 0 := by`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h0 : α = 0` using `Finsupp.ext h`. Substitute `h0` using the available equality. Simplify using `at hdeg`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set β := α - Finsupp.single i 1 with hβdef`. Establish `hαβ : α = β + Finsupp.single i 1`. Use extensionality with `j`. Simplify using `only [hβdef, Finsupp.coe_add, Pi.add_apply, Finsupp.coe_tsub, Pi.sub_apply, Finsupp.single_apply]`. Use `split_ifs with hj`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Substitute `hj` using the available equality. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use `choose T hT using fun j => hsurj (D i (x j))`. Establish `hTc : ∀ j, constantCoeff (T j) = if i = j then 1 else 0` using `fun j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hε, hT, hDx]`. Use `set Q' : MvPolynomial (Fin d) R := ∑ j, pderiv j Q * T j with hQ'def`. Establish `hQ' : aeval x Q' ∈ K`. Establish `e : aeval x Q' = D i (aeval x Q)`. Rewrite using `[map_aeval_of_leibniz (D i) (hD i), hQ'def, map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hT]`. Rewrite using `[e]`. Conclude with `hKD i _ hQ`. Establish `hsplit : ∀ j (γ : Fin d →₀ ℕ), γ.degree ≤ m → (∀ l, γ l < p) → coeff γ (pderiv j Q * T j) = coeff γ (pderiv j Q) * (if i = j then 1 else 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j γ hγd hγ`. Establish `e : T j = C (constantCoeff (T j)) + (T j - C (constantCoeff (T j)))` using `by ring`. Rewrite using `[e, mul_add, coeff_add, mul_comm (pderiv j Q) (C _), coeff_C_mul, lowRed_mul (G := T j - C (constantCoeff (T j))) (lowRed_pderiv hp0 hlow j) (by simp) γ hγ hγd, add_zero, hTc, mul_comm]`. Establish `hlow' : LowRed p m Q'`. Introduce `γ hγ hγd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hQ'def, coeff_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hsplit j γ hγd.le hγ, lowRed_pderiv hp0 hlow j γ hγ hγd, zero_mul]`. Establish `hβr : ∀ j, β j < p` using `fun j => lt_of_le_of_lt (by rw [hβdef]; exact tsub_le_self) (hα j)`. Establish `hβd : β.degree = m`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg Finsupp.degree hαβ` as an intermediate fact. Rewrite `this` using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Establish `h0` using `ih Q' hQ' hlow' β hβr hβd`. Rewrite `h0` using `[hQ'def, coeff_sum, Finset.sum_eq_single i]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[hsplit i β hβd.le hβr, if_pos rfl, mul_one, coeff_pderiv, ← hαβ]`. Establish `hb : α i = β i + 1` using `by rw [hαβ]; simp`. Establish `hu : IsUnit ((β i : R) + 1)`. Use `hunit (α i) (Nat.pos_of_ne_zero hi) (hα i)` as an intermediate fact. Rewrite `this` using `[hb]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `this` after adjusting the coercions. Conclude with `(hu.mul_left_eq_zero).1 h0`. Introduce `j _ hj`. Rewrite using `[hsplit j β hβd.le hβr, if_neg (Ne.symm hj), mul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `W : ∀ m, ∀ Q : MvPolynomial (Fin d) R, aeval x Q ∈ K → LowRed p m Q`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro Q _ β _ h`. Simplify using `at h`.
-
-Consider the case `succ m ih`. Introduce `Q hQ β hβ hd`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hd with h | h` into its components or cases. Conclude with `ih Q hQ β hβ h`. Conclude with `Z m Q hQ (ih Q hQ) β hβ h`.
-
-Introduce `β hβ`. Conclude with `W (β.degree + 1) P hP β hβ (Nat.lt_succ_self _)`.
+A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero_of_stable (ε : A →ₐ[R] R) (x : Fin d → A) (hx : ∀ i, ε (x i) = 0)
     (D : Fin d → A →ₗ[R] A) (hD : ∀ i f g, D i (f * g) = f * D i g + g * D i f)

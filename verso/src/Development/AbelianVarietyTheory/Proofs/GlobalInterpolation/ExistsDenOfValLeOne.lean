@@ -18,17 +18,17 @@ open scoped Matrix in
 variable {K : Type} [Field K] [NumberField K] in
 
 /- English proof (translation)
-Use `⟨hM, ?_⟩` and prove the remaining obligations. Establish `hcol : ∀ j, (fun i => (B : Matrix (Fin n) (Fin n) K) i j) ∈ Submodule.span K (M : Set (Fin n → K))`. Introduce `j`. Establish `h1 : (fun i => (B : Matrix (Fin n) (Fin n) K) i j) ∈ _root_.Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M`. Unfold `_root_.Formalism.L2.DIV.IsBasisAt at hB`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hB]`. Apply `_root_.Formalism.HermitianLatticesTheory.locBasic_le_locS` to reduce the goal to its premises. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Take `⟨s, hs, hsx⟩` from `(_root_.PI.LocGlobInclWork.mem_localization_iff w.asIdeal M _).1 h1`. Establish `hs0 : (s : K) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hs` to reduce the goal to its premises. Establish `hs' : s = 0` using `by exact_mod_cast h0`. Rewrite using `[hs']`. Conclude with `w.asIdeal.zero_mem`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h2` using `Submodule.smul_mem (Submodule.span K (M : Set (Fin n → K))) ((s : K)⁻¹) (Submodule.subset_span hsx)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def, hs0]`. Rewrite using `[eq_top_iff]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x _`. Establish `hx : x = ∑ j, ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).mulVec x j • (fun i => (B : Matrix (Fin n) (Fin n) K) i j)`. Establish `hBx : (B : Matrix (Fin n) (Fin n) K).mulVec (((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).mulVec x) = x`. Rewrite using `[Matrix.mulVec_mulVec]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [← hBx]`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Rewrite using `[hx]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hcol j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HAtBasis.isLattice_of_basisAt {n : ℕ} (w : HeightOneSpectrum (𝓞 K))
     {M : Submodule (𝓞 K) (Fin n → K)} (hM : M.FG)
@@ -77,7 +77,7 @@ variable {ι : Type} [Fintype ι] {a : ℕ} in
 omit [NumberField K] in
 
 /- English proof (translation)
-Establish `hg : ∀ τ, (((fun τ => _root_.Formalism.BasicNotions.inside₂ K a (B τ))⁻¹ τ : GL (Fin a) K) : Matrix (Fin a) (Fin a) K) = (B τ : Matrix (Fin a) (Fin a) K)ᵀ` using `fun τ => rfl`. Simplify using `only [_root_.Formalism.L2.DIV.actP, _root_.Formalism.L2.DIV.trAct, _root_.Formalism.L2.DIV.detTw_eq, LinearMap.smul_apply, AlgHom.toLinearMap_apply, hg, Matrix.det_transpose, Matrix.transpose_transpose]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.HAtBasis.polyAction_invTranspose_inv (lam : ι → _root_.Formalism.BasicNotions.DomWeight a)
     (B : ι → GL (Fin a) K) (F : _root_.Formalism.L2.DIV.Pol K ι a) :
@@ -94,7 +94,7 @@ open scoped Matrix in
 variable {K : Type} [Field K] [NumberField K] in
 variable {ι : Type} [Fintype ι] {a : ℕ} in
 /- English proof (translation)
-Rewrite using `[show (s : K) = algebraMap (𝓞 K) K s from rfl, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl w s).2 hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuation_coe_eq_one_of_notMem {K : Type} [Field K] [NumberField K]
     (w : HeightOneSpectrum (𝓞 K)) {s : 𝓞 K} (hs : s ∉ w.asIdeal) : w.valuation K (s : K) = 1 := by
@@ -106,11 +106,11 @@ open scoped Matrix in
 variable {K : Type} [Field K] [NumberField K] in
 variable {ι : Type} [Fintype ι] {a : ℕ} in
 /- English proof (translation)
-Establish `h1 : x ∈ (w.valuation K).valuationSubring` using `hx`. Rewrite `h1` using `[← HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring]`. Establish `h3 : x ∈ (HeightOneSpectrum.valuationSubringAtPrime K w).toSubring` using `h1`. Rewrite `h3` using `[HeightOneSpectrum.valuationSubringAtPrime_toSubring]`. Establish `h2 : x ∈ _root_.GlobalTheory.LatBasisAt.locRing w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `_root_.GlobalTheory.LatBasisAt.locRing`. Conclude with `h3`. Take `⟨c, s, hs, rfl⟩` from `(_root_.GlobalTheory.LatBasisAt.mem_locRing w x).1 h2`. Use `⟨s, hs, c, ?_⟩` and prove the remaining obligations. Establish `hs0 : algebraMap (𝓞 K) K s ≠ 0` using `_root_.GlobalTheory.LatBasisAt.algebraMap_ne_zero w hs`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K s * (algebraMap (𝓞 K) K c * (algebraMap (𝓞 K) K s)⁻¹) = algebraMap (𝓞 K) K c`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem exists_notMem_mul_eq_integer_of_valuation_le_one {K : Type} [Field K] [NumberField K]
     (w : HeightOneSpectrum (𝓞 K)) (x : K) (hx : w.valuation K x ≤ 1) :
@@ -135,25 +135,23 @@ variable {K : Type} [Field K] [NumberField K] in
 variable {ι : Type} [Fintype ι] {a : ℕ} in
 
 /- English proof (translation)
-Introduce `K _ _ w ι _ a lam M B hMB F`. Establish `hB' : ∀ τ, _root_.Formalism.L2.DIV.IsBasisAt w (_root_.Formalism.L2.DIV.dualFr (M τ)) (_root_.Formalism.BasicNotions.inside₂ K a (B τ))` using `fun τ => _root_.GlobalTheory.DualWeylDual.isBasisAt_dualFr w (hMB τ).1 (hMB τ).2`. Establish `hlat : ∀ τ, Submodule.IsLattice K (_root_.Formalism.L2.DIV.dualFr (M τ))` using `fun τ => _root_.GlobalTheory.DualLat.isLattice_dualFr _ (_root_.GlobalTheory.HAtBasis.isLattice_of_basisAt w (hMB τ).1 (hMB τ).2)`. Establish `hloc` using `(_root_.GlobalTheory.TransLoc.nabDelLoc_free_leVV.1 K ι a lam (fun τ => _root_.Formalism.L2.DIV.dualFr (M τ)) hlat w (fun τ => _root_.Formalism.BasicNotions.inside₂ K a (B τ)) hB').1`. Establish `step1 : F ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.SubstitutionAdjoint.HAt w lam M ↔ (F : _root_.Formalism.L2.DIV.Pol K ι a) ∈ _root_.Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (_root_.Formalism.L2.DIV.nabP lam fun τ => _root_.Formalism.L2.DIV.dualFr (M τ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.SubstitutionAdjoint.HAt _root_.Formalism.L2.DIV.nabK`. Rewrite using `[_root_.PI.LocGlobInclWork.mem_localization_iff, _root_.PI.LocGlobInclWork.mem_localization_iff]`. Both sides reduce to the same expression. Rewrite using `[step1, hloc, _root_.GlobalTheory.TransLoc.mem_map_actP, _root_.GlobalTheory.HAtBasis.polyAction_invTranspose_inv]`. Use `set G : _root_.Formalism.L2.DIV.Pol K ι a := (∏ τ, (B τ : Matrix (Fin a) (Fin a) K).det ^ (lam τ).detShift) • _root_.Formalism.GradedWeylDivisibility.blockAct K (fun τ => (B τ : Matrix (Fin a) (Fin a) K)) (F : _root_.Formalism.L2.DIV.Pol K ι a) with hG`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcoeff : ∀ (s : 𝓞 K) m, coeff m (s • G) = (s : K) * coeff m G`. Introduce `s m`. Use `erw [Algebra.smul_def, MvPolynomial.algebraMap_apply, coeff_C_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `hGm m`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsG⟩` from `(_root_.PI.LocGlobInclWork.mem_localization_iff _ _ _).1 hGm`. Take `⟨P, hP⟩` from `_root_.GlobalTheory.LocInt.exists_map_eq_of_mem_nabStd lam hsG`. Establish `hc : coeff m (s • G) = ((coeff m P : 𝓞 K) : K)`. Establish `h' : coeff m (_root_.Formalism.L2.DIV.toK K _ P) = coeff m (s • G)` using `congrArg (coeff m) hP`. Rewrite using `[← h']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[_root_.Formalism.L2.DIV.toK, coeff_map]`. Rewrite `hc` using `[hcoeff]`. Establish `hs0 : (s : K) ≠ 0` using `_root_.GlobalTheory.LatBasisAt.algebraMap_ne_zero w hs`. Establish `e : coeff m G = (s : K)⁻¹ * ((coeff m P : 𝓞 K) : K)`. Rewrite using `[← hc, ← mul_assoc, inv_mul_cancel₀ hs0, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, map_mul, map_inv₀, valuation_coe_eq_one_of_notMem w hs, inv_one, one_mul]`. Conclude with `HeightOneSpectrum.valuation_le_one w _`. Introduce `hint choose sf hsf c hc using fun m => exists_notMem_mul_eq_integer_of_valuation_le_one w _ (hint m)`. Use `(_root_.PI.LocGlobInclWork.mem_localization_iff _ _ _).2 ⟨∏ m ∈ G.support, sf m, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, _, hm⟩` from `Ideal.IsPrime.prod_mem_iff.1 hmem`. Conclude with `hsf m hm`. Establish `hGV : G ∈ _root_.Formalism.L2.DIV.VV K lam` using `Submodule.smul_mem _ _ (_root_.Formalism.L2.DIV.ps_blockAct_mem_VV lam _ F.2)`. Use `_root_.GlobalTheory.DetSat.mem_nabStd_of_det_mul_integral K ι a lam (fun _ => 0) _ (Submodule.smul_of_tower_mem _ _ hGV) fun m => ?_` and prove the remaining obligations. Simplify using `only [pow_zero, Finset.prod_const_one, one_mul]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsIntegral ℤ (coeff m ((∏ m ∈ G.support, sf m) • G))`. Rewrite using `[hcoeff]`. Distinguish the cases in `hm : m ∈ G.support`. Rewrite using `[← Finset.mul_prod_erase _ _ hm]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm ((sf m : 𝓞 K) : K), mul_assoc, hc m]`. Establish `hI` using `RingOfIntegers.isIntegral_coe ((∏ i ∈ G.support.erase m, sf i) * c m)`. Use `hI using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Rewrite using `[notMem_support_iff.1 hm, mul_zero]`.
-
-Conclude with `isIntegral_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HAtBasis.mem_HAt_iff : ∀ (K : Type) [Field K]
     [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (ι : Type) [Fintype ι] (a : ℕ)

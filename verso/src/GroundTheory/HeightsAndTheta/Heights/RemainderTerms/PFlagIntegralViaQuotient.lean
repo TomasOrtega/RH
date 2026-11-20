@@ -11,9 +11,9 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `f N H R hR`. Establish `hA` using `h1 f N H`. Rewrite `hA` using `[hR, h2 f N R]`. Establish `hne : (N.factorial : ℚ) ^ f ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero N))`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-hA`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem FlagIntegralViaQuotient.proof (h1 : FlagIntegralAntisymmetrize.Statement)
     (h2 : FlagIntegralVandermondeMul.Statement) : FlagIntegralViaQuotient.Statement := by

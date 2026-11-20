@@ -16,9 +16,9 @@ section Cover
 variable {O X : Type} [CommRing O] [AddCommGroup X] [Module O X]
 
 /- English proof (translation)
-Set `q` to `Fintype.equivFin ι`. Use `⟨1, fun _ => Fintype.card ι, fun _ i => f (q.symm i), fun _ i => h1 _, fun _ i => h2 _, fun B hB => ?_⟩` and prove the remaining obligations. Take `⟨e, c, hc, he⟩` from `h B hB`. Use `⟨e, 0, fun i => c (q.symm i), fun i => hc _, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(q.symm.sum_comp fun i => c i • toReal (f i)).symm`.
+A detailed English derivation is pending.
 -/
 theorem hasRedCover_of_fintype (bar : O → O) {ι : Type} [Fintype ι] (f : ι → LinearMap.BilinForm ℤ X)
     (h1 : ∀ i y z, f i y z = f i z y) (h2 : ∀ i y, 0 ≤ f i y y)
@@ -36,7 +36,7 @@ def sqForm {n : ℕ} (b : Module.Basis (Fin n) ℤ X) (l : Fin n → ℤ) : Line
   (LinearMap.mul ℤ ℤ).compl₁₂ φ φ
 
 /- English proof (translation)
-Simplify using `[sqForm, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_mul_sum, Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqForm_apply {n : ℕ} (b : Module.Basis (Fin n) ℤ X) (l : Fin n → ℤ) (y z : X) :
     sqForm b l y z = (∑ i, l i * b.repr y i) * ∑ i, l i * b.repr z i := by
@@ -44,18 +44,18 @@ theorem sqForm_apply {n : ℕ} (b : Module.Basis (Fin n) ℤ X) (l : Fin n → �
   rw [Finset.sum_mul_sum, Finset.sum_comm]
 
 /- English proof (translation)
-Simplify using `[sqForm_apply, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sqForm_basis {n : ℕ} (b : Module.Basis (Fin n) ℤ X) (l : Fin n → ℤ) (i j : Fin n) :
     sqForm b l (b i) (b j) = l i * l j := by
   simp [sqForm_apply, Finsupp.single_apply]
 
 /- English proof (translation)
-Set `g : X ≃ₗ[ℤ] X` to `b.equiv b' (Equiv.refl _)`. Establish `hg : ∀ i, g (b i) = b' i` using `fun i => by simp [g]`. Establish `key : ∀ (c : O) (x : X), g (c • x) = c • g x`. Introduce `c x`. Establish `h1 : (g.toLinearMap ∘ₗ (Module.toModuleEnd ℤ X c)) = (Module.toModuleEnd ℤ X c) ∘ₗ g.toLinearMap`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `b.ext fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g (c • b j) = c • g (b j)`. Rewrite using `[hg]`. Combine the equalities or inequalities in the displayed calculation. Use `congrFun (congrFun (congrArg (fun ρ : O →+* Matrix (Fin n) (Fin n) ℤ => ρ c) h) i) j` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `only [actMat_apply] at this`. Rewrite using `[this]`. Use `_ = c • b' j := b'.sum_repr _`. Conclude with `LinearMap.congr_fun h1 x`. Conclude with `⟨(g.toAddEquiv).toLinearEquiv key, hg⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_actMat_eq {n : ℕ} (b b' : Module.Basis (Fin n) ℤ X)
     (h : (actMat b : O →+* _) = actMat b') : ∃ e : X ≃ₗ[O] X, ∀ i, e (b i) = b' i := by
@@ -78,9 +78,9 @@ theorem exists_equiv_of_actMat_eq {n : ℕ} (b b' : Module.Basis (Fin n) ℤ X)
   exact ⟨(g.toAddEquiv).toLinearEquiv key, hg⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `e1 : B (c • b i) (b j) = ∑ k, (b.repr (c • b i) k : ℝ) * G k j`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : B (b i) (bar c • b j) = ∑ k, G i k * (b.repr (bar c • b j) k : ℝ)`. Combine the equalities or inequalities in the displayed calculation.
+By extensionality, compare the relevant components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, actMat_apply]`. Rewrite using `[← e1, ← e2]`. Conclude with `hB.2 c _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actMat_balanced {bar : O → O} {n : ℕ} (b : Module.Basis (Fin n) ℤ X) {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ}
     (hB : B ∈ realForms bar X) {G : Matrix (Fin n) (Fin n) ℝ} (hG : ∀ i j, B (b i) (b j) = G i j) (c : O) :
@@ -99,23 +99,19 @@ theorem actMat_balanced {bar : O → O} {n : ℕ} (b : Module.Basis (Fin n) ℤ 
 end Cover
 
 /- English proof (translation)
-Use `haveI : Module.Finite ℤ X := Module.Finite.trans (𝓞 E) X`. Use `haveI : Module.Projective ℤ X := by`. Take `⟨i, hi⟩` from `Module.projective_def'.1 (inferInstance : Module.Projective (𝓞 E) X)`. Conclude with `Module.Projective.of_split (i.restrictScalars ℤ) ((Finsupp.linearCombination (𝓞 E) id).restrictScalars ℤ) (LinearMap.ext fun x => LinearMap.congr_fun hi x)`. Use `haveI : Module.Free ℤ X := inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩ : ∃ n, Module.finrank ℤ X = n` from `⟨_, rfl⟩`. Take `⟨B₀, hB₀, hB₀'⟩` from `GlobalTheory.T.exists_posDef_balanced_realForm_cmField E H X`. Establish `hF` using `GlobalTheory.T.finite_balanced_cmIntegers_actions_siegelReduced E H n`. Take `⟨S, hS⟩` from `GlobalTheory.T.siegelGram_mem_cone_integer_squares n`. Use `haveI : Nonempty (Module.Basis (Fin n) ℤ X) := ⟨Module.finBasisOfFinrankEq ℤ X hn⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `ref : (𝓞 E →+* Matrix (Fin n) (Fin n) ℤ) → Module.Basis (Fin n) ℤ X` to `fun ρ => Classical.epsilon fun b => actMat b = ρ`. Set `ι` to `↥hF.toFinset × ↥S`. Use `hasRedCover_of_fintype (ι := ι) _ (fun x => sqForm (ref x.1.1) x.2.1) (fun x y z => ?_) (fun x y => ?_) fun B hB => ?_` and prove the remaining obligations. Simplify using `only [sqForm_apply, mul_comm]`. Simplify using `only [sqForm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `mul_self_nonneg _`. Take `⟨b, d, d', u, B', h1, h2, h3, h4, h5, h6⟩` from `GlobalTheory.T.exists_adapted_siegel_basis_balanced_forms E H X B₀ hB₀ hB₀' n hn B hB`. Establish `hρ : (actMat b : 𝓞 E →+* _) ∈ hF.toFinset`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨d', u, h2, h3, fun c => actMat_balanced b h4 h6 c⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `set ρ : 𝓞 E →+* Matrix (Fin n) (Fin n) ℤ := actMat b with hρdef`. Establish `href : actMat (ref ρ) = ρ` using `Classical.epsilon_spec (p := fun b => actMat b = ρ) ⟨b, rfl⟩`. Take `⟨e, he⟩` from `exists_equiv_of_actMat_eq (O := 𝓞 E) (ref ρ) b href`. Take `⟨c, hc, hG⟩` from `hS d u h1`. Use `⟨e, fun x => if x.1.1 = ρ then c x.2.1 else 0, fun x => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Use `split_ifs`. Conclude with `hc _`. Conclude with `le_rfl`. Use `(ref ρ).ext fun i => (ref ρ).ext fun j => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl : B (b i) (b j) = ∑ l ∈ S, c l * ((l i : ℝ) * (l j : ℝ))`. Rewrite using `[h5, hG]`. Simplify using `[Matrix.sum_apply, vecMulVec_apply]`. Simplify using `only [pullR_apply, LinearEquiv.coe_coe, he, hl, LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single (⟨ρ, hρ⟩ : ↥hF.toFinset)]`.
-
-Simplify using `only [if_true, sqForm_basis]`. Rewrite using `[← Finset.sum_coe_sort S]`. Use `push_cast`. Both sides reduce to the same expression. Introduce `y _ hy`.
-
-Establish `: y.1 ≠ ρ` using `fun h => hy (Subtype.ext h)`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasRedCover (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Type) [AddCommGroup X] [Module (𝓞 E) X]
     [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X] : HasRedCover H.bar X := by

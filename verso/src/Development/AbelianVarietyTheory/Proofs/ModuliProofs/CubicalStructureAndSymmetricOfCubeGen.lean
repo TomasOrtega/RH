@@ -21,11 +21,11 @@ namespace GlobalTheory.CubeGen
 open GlobalTheory.AbLaw.Cube
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∀ u : Γ(P.left, P.hom ⁻¹ᵁ ⊤), ∃ a, (P.hom.app ⊤).hom a = u`. Introduce `u`. Establish `he : e.left ≫ P.hom = 𝟙 X` using `Over.w e`. Establish `hle : (⊤ : X.Opens) ≤ e.left ⁻¹ᵁ (P.hom ⁻¹ᵁ ⊤)` using `fun _ _ => trivial`. Establish `key : ∀ (g : X ⟶ X) (hg : g = 𝟙 X) (h' : (⊤ : X.Opens) ≤ g ⁻¹ᵁ ⊤) (c : Γ(X, ⊤)), (g.appLE ⊤ ⊤ h').hom c = c`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `g rfl h' c`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app]`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (𝟙 (Opposite.op (⊤ : X.Opens)))).hom c = c`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hφψ : ∀ c : Γ(X, ⊤), (e.left.appLE (P.hom ⁻¹ᵁ ⊤) ⊤ hle).hom ((P.hom.app ⊤).hom c) = c` using `fun c => (congrArg (fun φ => CommRingCat.Hom.hom φ c) (Scheme.Hom.comp_appLE e.left P.hom ⊤ ⊤ hle)).symm.trans (key _ he hle c)`. Use `⟨(e.left.appLE (P.hom ⁻¹ᵁ ⊤) ⊤ hle).hom u, ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.eq_one_of_appLE_section_eq_one X P e.left he hs hg ⟨hr, hab⟩ ⊤ (1 + u - (P.hom.app ⊤).hom ((e.left.appLE (P.hom ⁻¹ᵁ ⊤) ⊤ hle).hom u)) hle (by rw [map_sub, map_add, map_one, hφψ]; ring)`. Take the linear combination `-h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem surjective_appTop {X : Scheme.{0}} (P : Over X) (e : 𝟙_ (Over X) ⟶ P) (hs : Smooth P.hom)
     (hg : GeometricallyIntegral P.hom) (hr : IsReduced X) (hab : genericPoints X ⊆ abLocus P) :
@@ -113,11 +113,11 @@ def cubicalOfNormalised (s₂ : Function.Surjective (A ⊗ A).hom.appTop.hom)
       abel }
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Use `gen_chartPull (A := (L.pull f).div L) (h := 𝟙 Z) { idx := fun j => (fun _ => j 0, j 1) le := fun j y hy => ?_ g := fun y j j' hj hj' => ?_ } w hw` and prove the remaining obligations. Establish `h0 : f y ∈ L.U (j 0)` using `Set.mem_iInter.1 hy 0`. Establish `h1 : y ∈ L.U (j 1)` using `Set.mem_iInter.1 hy 1`. Conclude with `⟨mem_pull.2 h0, h1⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `a0 : f y ∈ L.U (j 0)` using `Set.mem_iInter.1 hj 0`. Establish `a1 : y ∈ L.U (j 1)` using `Set.mem_iInter.1 hj 1`. Establish `b0 : f y ∈ L.U (j' 0)` using `Set.mem_iInter.1 hj' 0`. Establish `b1 : y ∈ L.U (j' 1)` using `Set.mem_iInter.1 hj' 1`. Use `(gm_linComb L _ _ (𝟙 Z) y j j' hj hj').trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (gm_div L (L.pull f) (𝟙 Z) y _ _ ⟨⟨mem_pull.2 a0, a1⟩, mem_pull.2 b0, b1⟩).symm` and prove the remaining obligations. Rewrite using `[gm_pull_g L f (𝟙 Z) y _ _ (mem_pull.2 a0) (mem_pull.2 b0)]`. Simplify using `[Fin.prod_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_gen_of_lbIso {Z : Scheme.{0}} (L : LB Z) (f : Z ⟶ Z) (h : LBIso L (L.pull f)) :
     ∃ s : LB.Gen (LB.LinComb L (K := Fin 2) ![f, 𝟙 Z] ![1, -1]), s.IsGen := by
@@ -139,11 +139,11 @@ theorem exists_gen_of_lbIso {Z : Scheme.{0}} (L : LB Z) (f : Z ⟶ Z) (h : LBIso
     simp [Fin.prod_univ_two]
 
 /- English proof (translation)
-Introduce `X G _ _ L hsa hrg`. Take `⟨hr, hab⟩` from `hrg`. Establish `hsm : Smooth G.hom` using `hsa.smooth`. Establish `hgc : GeometricallyConnected G.hom` using `hsa.geomConnected`. Establish `hgi : GeometricallyIntegral G.hom` using `GlobalTheory.grpObj_geometricallyIntegral_of_smooth X G`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun ⟨t, ht⟩ => ?_, fun hiso => ?_⟩` and prove the remaining obligations. Take `⟨t', ht', hn⟩` from `exists_normalised L.isLB t ht`. Take `⟨sm2, gi2, ab2⟩` from `GlobalTheory.smooth_geometricallyIntegral_abLocus_tensorObj X G G hsm hsm hgi hgi`. Take `⟨sm3, gi3, ab3⟩` from `GlobalTheory.smooth_geometricallyIntegral_abLocus_tensorObj X G (G ⊗ G) hsm sm2 hgi gi2`. Take `⟨sm4, gi4, ab4⟩` from `GlobalTheory.smooth_geometricallyIntegral_abLocus_tensorObj X G (G ⊗ G ⊗ G) hsm sm3 hgi gi3`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `g2 : genericPoints X ⊆ abLocus (G ⊗ G)` using `fun x hx => ab2 ⟨hab hx, hab hx⟩`. Establish `g3 : genericPoints X ⊆ abLocus (G ⊗ G ⊗ G)` using `fun x hx => ab3 ⟨hab hx, g2 hx⟩`. Establish `g4 : genericPoints X ⊆ abLocus (G ⊗ G ⊗ G ⊗ G)` using `fun x hx => ab4 ⟨hab hx, g3 hx⟩`. Conclude with `⟨cubicalOfNormalised (surjective_appTop (G ⊗ G) (lift 1 1) sm2 gi2 hr g2) (surjective_appTop (G ⊗ G ⊗ G) (lift 1 (lift 1 1)) sm3 gi3 hr g3) (surjective_appTop (G ⊗ G ⊗ G ⊗ G) (lift 1 (lift 1 (lift 1 1))) sm4 gi4 hr g4) L t' ht' hn⟩`. Conclude with `GlobalTheory.PrimNorm.isSymmetric_of_hasGen L (exists_gen_of_lbIso L.L _ hiso)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cubical_and_symmetric : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (L : RigLB G), IsSemiAbelian G → (IsReduced X ∧ genericPoints X ⊆ abLocus G) → ((∃ t : (Theta G L.L).Gen, t.IsGen) → Nonempty (CubicalStr G L)) ∧ (LBIso L.L (L.L.pull (GrpObj.inv (X := G)).left) → L.IsSymmetric) := by
   intro X G _ _ L hsa hrg

@@ -17,19 +17,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : Pl F} {n : ℕ}
 
 /- English proof (translation)
-Use `set p := pairHom (J.map τ) hJ g - 1 with hp`. Establish `hN : oneAdd (liftMat h τ) (pairHom (J.map τ) hJ g) = 1 + liftMat h τ p` using `rfl`. Rewrite using `[hN, map_one_add_cA]`. Establish `tr : ∀ {R : Type} [CommRing R] (f : AF F ⊗[F] E →+* R) (A B C : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)), (Aᵀ * B * C).map f = (A.map f)ᵀ * B.map f * C.map f` using `fun f A B C => by`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : J.map τ * (J.map τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hJ`. Establish `gi : ((g⁻¹ : GL (Fin n) (Fv F v)) : Matrix (Fin n) (Fin n) (Fv F v)) * (g : Matrix (Fin n) (Fin n) (Fv F v)) = 1` using `Units.inv_mul g`. Apply `mat_ext h τ` to reduce the goal to its premises. Introduce `w`. Rewrite using `[tr, map_one_add_of_zero _ h τ (compInf_liftPair h τ w), map_one_add_of_zero _ h τ (compInf_liftPair h τ w)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `u hu`. Rewrite using `[tr, map_one_add_of_zero _ h τ (compFin_liftPair_ne h τ hu), map_one_add_of_zero _ h τ (compFin_liftPair_ne h τ hu)]`. Simplify using the standard rewrite rules. Rewrite using `[tr, map_one_add_piW, map_one_add_piW, incM, Matrix.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJm : J.map (⇑(piW τ) ∘ ⇑(inclR (F` using `F) (AF F))) = J.map τ := Matrix.ext fun i j => piW_inclR τ (J i j)`. Rewrite using `[hJm]`. Simplify using `only [hp, Prod.fst_sub, Prod.snd_sub, Prod.swap, Prod.fst_one, Prod.snd_one, add_sub_cancel]`. Use `show (g : Matrix (Fin n) (Fin n) (Fv F v))ᵀ * J.map τ * ((J.map τ)⁻¹ * ((g⁻¹ : GL (Fin n) (Fv F v)) : Matrix (Fin n) (Fin n) (Fv F v))ᵀ * J.map τ) = J.map τ`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc _ (J.map τ), e, Matrix.mul_one, ← Matrix.transpose_mul, gi, Matrix.transpose_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[tr, map_one_add_piW_comp, map_one_add_piW_comp, incM, Matrix.map_map]`. Establish `hJm : J.map (⇑(piW (τ.comp σ)) ∘ ⇑(inclR (F` using `F) (AF F))) = algebraMap F (Fv F v) ε • (J.map τ)ᵀ := by`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Function.comp_apply, Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[piW_inclR, AlgHom.comp_apply, herm, map_mul, AlgHom.commutes]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hJm]`. Simplify using `only [hp, Prod.fst_sub, Prod.snd_sub, Prod.swap, Prod.fst_one, Prod.snd_one, add_sub_cancel]`. Use `show ((J.map τ)⁻¹ * ((g⁻¹ : GL (Fin n) (Fv F v)) : Matrix (Fin n) (Fin n) (Fv F v))ᵀ * J.map τ)ᵀ * (algebraMap F (Fv F v) ε • (J.map τ)ᵀ) * (g : Matrix (Fin n) (Fin n) (Fv F v)) = algebraMap F (Fv F v) ε • (J.map τ)ᵀ`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((J.map τ)⁻¹)ᵀ, ← Matrix.transpose_mul, e, Matrix.transpose_one, Matrix.one_mul, gi, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem unitary_eps (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matrix (Fin n) (Fin n) E) (ε : F)
     (herm : ∀ i j, σ (J j i) = algebraMap F E ε * J i j) (hJ : IsUnit (J.map τ).det) (g : GL (Fin n) (Fv F v)) :
@@ -98,7 +98,7 @@ theorem mat_liftU (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matrix (Fi
     mat (liftU h τ J ε herm hJ g) = 1 + liftMat h τ (pairHom (J.map τ) hJ g - 1) := rfl
 
 /- English proof (translation)
-Use `show At (evFin F v) (mat _ - 1)`. Rewrite using `[mat_liftU, add_sub_cancel_left]`. Conclude with `at_liftMat h τ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftU_mem_UAt (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (X : Spc F E n) (ε : F)
     (herm : ∀ i j, σ (X.J j i) = algebraMap F E ε * X.J i j) (hJ : IsUnit (X.J.map τ).det) (g : GL (Fin n) (Fv F v)) :
@@ -108,7 +108,7 @@ theorem liftU_mem_UAt (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (X : Spc F 
   exact at_liftMat h τ _
 
 /- English proof (translation)
-Rewrite using `[mat_liftU, map_one_add_piW]`. Conclude with `add_sub_cancel _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftU_piW (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matrix (Fin n) (Fin n) E) (ε : F)
     (herm : ∀ i j, σ (J j i) = algebraMap F E ε * J i j) (hJ : IsUnit (J.map τ).det) (g : GL (Fin n) (Fv F v)) :
@@ -117,7 +117,7 @@ theorem liftU_piW (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matrix (Fi
   exact add_sub_cancel _ _
 
 /- English proof (translation)
-Rewrite using `[mat_liftU, map_one_add_piW_comp]`. Conclude with `add_sub_cancel _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftU_piW_comp (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matrix (Fin n) (Fin n) E) (ε : F)
     (herm : ∀ i j, σ (J j i) = algebraMap F E ε * J i j) (hJ : IsUnit (J.map τ).det) (g : GL (Fin n) (Fv F v)) :
@@ -126,11 +126,11 @@ theorem liftU_piW_comp (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matri
   exact add_sub_cancel _ _
 
 /- English proof (translation)
-Establish `h1 : (c • J.map e).det ≠ 0`. Introduce `h0`. Take `⟨y, hy, hMy⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `hx : star y ≠ 0` using `fun h => hy (by simpa using congrArg star h)`. Use `hθ.2.2 (star y) hx` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[star_star, hMy, dotProduct_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Establish `h2 : J.det ≠ 0`. Introduce `h0`. Apply `h1` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hd : (J.map e).det = e J.det` using `(RingHom.map_det e J).symm`. Rewrite using `[Matrix.det_smul, hd, h0, map_zero, mul_zero]`. Establish `hd : (J.map τ).det = τ J.det` using `(AlgHom.map_det τ J).symm`. Rewrite using `[isUnit_iff_ne_zero, hd]`. Conclude with `(map_ne_zero τ).2 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_cartan (J : Matrix (Fin n) (Fin n) E) (τ : E →ₐ[F] Fv F v) (e : E →+* ℂ) (c : ℂ) (hc : c ≠ 0)
     (θ : Matrix (Fin n) (Fin n) ℂ) (hθ : IsCartan (c • J.map e) θ) : IsUnit (J.map τ).det := by

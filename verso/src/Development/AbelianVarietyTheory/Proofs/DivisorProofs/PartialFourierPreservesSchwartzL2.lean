@@ -14,19 +14,17 @@ noncomputable section
 namespace GlobalTheory.DblEval
 
 /- English proof (translation)
-Introduce `F _ _ κ κ' _ _ T hT hmem μ hμ`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `letI mX : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI mY : MeasurableSpace (κ' → AF F) := borel _`. Use `haveI : BorelSpace (κ' → AF F) := ⟨rfl⟩`. Use `letI mZ : MeasurableSpace (κ ⊕ κ' → AF F) := borel _`. Use `haveI : BorelSpace (κ ⊕ κ' → AF F) := ⟨rfl⟩`. Set `μ₁ : Measure (κ → AF F)` to `Measure.addHaar`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `μ₂ : Measure (κ' → AF F)` to `Measure.addHaar`. Take `⟨C₁, hC₁⟩` from `hT μ₁ inferInstance`. Use `⟨C₁, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Set `e : (κ ⊕ κ' → AF F) ≃ₜ (κ → AF F) × (κ' → AF F)` to `Homeomorph.sumArrowHomeomorphProdArrow`. Apply the tactic sequence `let eA : ((κ → AF F) × (κ' → AF F)) ≃ₜ+ (κ ⊕ κ' → AF F) := { e.symm with map_add' := fun a b => by funext i; cases i <;> rfl }`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `ν : Measure (κ ⊕ κ' → AF F)` to `(μ₁.prod μ₂).map eA`. Use `haveI : ν.IsAddHaarMeasure := eA.isAddHaarMeasure_map _`. Take `⟨c, hμν⟩ : ∃ c : ℝ≥0, μ = c • ν` from `⟨_, Measure.isAddLeftInvariant_eq_smul μ ν⟩`. Establish `key : ∀ f : (κ ⊕ κ' → AF F) → ℝ≥0∞, Measurable f → ∫⁻ z, f z ∂μ = c * ∫⁻ y, ∫⁻ x, f (Sum.elim x y) ∂μ₁ ∂μ₂`. Introduce `f hf`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hmeas : Measurable (⇑eA)` using `eA.continuous.measurable`. Rewrite using `[hμν, lintegral_smul_measure]`. Simplify using `only [ν]`. Rewrite using `[lintegral_map hf hmeas, lintegral_prod_symm (fun p => f (eA p)) (hf.comp hmeas).aemeasurable]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hc1` using `GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F (hmem Φ hΦ)`. Establish `hc2` using `GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hΦ`. Rewrite using `[key _ (hc1.measurable.enorm.pow_const 2), key _ (hc2.measurable.enorm.pow_const 2)]`. Establish `inner : ∀ y, ∫⁻ x, ‖partL T Φ (Sum.elim x y)‖ₑ ^ 2 ∂μ₁ = C₁ * ∫⁻ x, ‖Φ (Sum.elim x y)‖ₑ ^ 2 ∂μ₁` using `fun y => hC₁ _ (sliceL_mem hΦ y)`. Establish `hm : Measurable fun y => ∫⁻ x, ‖Φ (Sum.elim x y)‖ₑ ^ 2 ∂μ₁` using `Measurable.lintegral_prod_left' (f := fun p : (κ → AF F) × (κ' → AF F) => ‖Φ (eA p)‖ₑ ^ 2) ((hc2.comp eA.continuous).measurable.enorm.pow_const 2)`.
-
-Repeatedly rewrite using `[inner]`. Rewrite using `[lintegral_const_mul _ hm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lintegral_partL_eq : ∀ {F : Type} [Field F] [NumberField F] {κ κ' : Type} [Fintype κ] [Fintype κ']
     (T : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)),

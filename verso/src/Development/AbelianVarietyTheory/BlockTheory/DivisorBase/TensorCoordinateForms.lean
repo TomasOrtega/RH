@@ -109,9 +109,9 @@ def JetFrame : Prop :=
                 Formalism.DimensionVariation.liftBlock c Rc (fun τ => letter (omega (a τ) (D τ)) (ζ τ))
 
 /- English proof (translation)
-Establish `h : (π : ℝ) ≠ 0` using `Real.pi_ne_zero`. Establish `: lineForm (1 / (2 * π)) 1 1 = ((1 / π : ℝ) : ℂ)`. Establish `h' : (π : ℂ) ≠ 0` using `by exact_mod_cast h`. Simplify using `only [lineForm, map_one, mul_one]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[omega, this, Complex.ofReal_re]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 example : omega (1 / (2 * π)) 1 = 1 := by
   have h : (π : ℝ) ≠ 0 := Real.pi_ne_zero

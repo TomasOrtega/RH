@@ -13,29 +13,27 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4 
 namespace UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Establish `hpl : ¬ p ∣ N * l`. Introduce `h`. Use `Nat.Coprime.coprime_dvd_right h (by rw [mul_comm]; exact hc)` as an intermediate fact. Conclude with `hp.one_lt.ne' ((Nat.coprime_self p).1 this)`. Establish `hpN : p.Coprime N` using `Nat.Coprime.coprime_dvd_right (dvd_mul_left N l) hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpNl : p.Coprime (N * l)` using `by rw [mul_comm]; exact hc`. Establish `hD` using `Betti.isDiam_sgD (N := N) (l := l) (d := p) hN.ne' hl.ne_zero hpN`. Establish `hD'` using `Betti.isDiam_sgD (N := N * l) (l := l) (d := p) (Nat.mul_ne_zero hN.ne' hl.ne_zero) hl.ne_zero hpNl`. Use `set σ := sgD N l p with hσ`. Use `set σ' := sgD (N * l) l p with hσ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hdia : GlobalTheory.Hk.IsDia N l p σ'`. Use `⟨CongruenceSubgroup.Gamma0_mem.1 hD'.1.1, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (ZMod.castHom (dvd_mul_right N l) (ZMod N)) hD'.2`. Simplify `h2` using `[GlobalTheory.KZ.en]`. Establish `hδ : σ * σ'⁻¹ ∈ Gam N l`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, Subgroup.mul_mem _ hD.1.2 (Subgroup.inv_mem _ hD'.1.2)⟩` and prove the remaining obligations. Establish `h0` using `CongruenceSubgroup.Gamma0_mem.1 hD.1.1`. Establish `h1` using `hD.2`. Establish `h0' : (((σ' : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ℤ) : ZMod N) = 0`. Use `congrArg (ZMod.castHom (dvd_mul_right N l) (ZMod N)) (CongruenceSubgroup.Gamma0_mem.1 hD'.1.1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h1' : (((σ' : Matrix (Fin 2) (Fin 2) ℤ) 1 1 : ℤ) : ZMod N) = p`. Establish `h2` using `congrArg (ZMod.castHom (dvd_mul_right N l) (ZMod N)) hD'.2`. Simplify `h2` using `[GlobalTheory.KZ.en]`. Simplify using `only [GlobalTheory.KZ.en] at h1`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdet` using `σ.det_coe`. Establish `hdet'` using `σ'.det_coe`. Rewrite `hdet`, `hdet'` using `[Matrix.det_fin_two]`. Establish `e1` using `congrArg (Int.cast : ℤ → ZMod N) hdet`. Establish `e2` using `congrArg (Int.cast : ℤ → ZMod N) hdet'`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at e1 e2`. Rewrite `e1` using `[h0, h1]`. Rewrite `e2` using `[h0', h1']`. Use `show σ * σ'⁻¹ ∈ CongruenceSubgroup.Gamma1 N`. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons]`. Use `push_cast`. Rewrite using `[h0, h1, h0', h1']`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals first | linear_combination e1 | linear_combination e2 | ring`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨π, hπ⟩` from `GlobalTheory.HkInv.perm N l p σ' γ hp hpl hdia hγ`. Set `D : Fin (p + 1) → SL(2, ℤ)` to `fun i => if (i : ℕ) < p then 1 else σ * σ'⁻¹`. Establish `hDm : ∀ i, D i ∈ Gam N l`. Introduce `i`. Simplify using `only [D]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `one_mem _`. Conclude with `hδ`. Establish `hT : ∀ i, GlobalTheory.HeckeFamilyMatrices.tqFam p σ i = (D i : Matrix (Fin 2) (Fin 2) ℤ) * GlobalTheory.HeckeFamilyMatrices.tqFam p σ' i`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.HeckeFamilyMatrices.tqFam, D]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_assoc, ← Matrix.mul_assoc ((σ'⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ), ← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel, Matrix.SpecialLinearGroup.coe_one, Matrix.one_mul]`. Use `⟨π, fun i => ?_⟩` and prove the remaining obligations.
-
-Take `⟨γ', hγ', he⟩` from `hπ i`. Use `⟨D i * γ' * (D (π i))⁻¹, mul_mem (mul_mem (hDm i) hγ') (inv_mem (hDm _)), ?_⟩` and prove the remaining obligations. Rewrite using `[hT i, hT (π i), Matrix.mul_assoc]`. Use `erw [he]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.SpecialLinearGroup.coe_mul, ← Matrix.mul_assoc, ← Matrix.SpecialLinearGroup.coe_mul, mul_assoc (D i * γ'), inv_mul_cancel, mul_one]`.
+A detailed English derivation is pending.
 -/
 private theorem hi_perm (N l p : ℕ) (hl : l.Prime) (hN : 0 < N) (hp : p.Prime) (hc : Nat.Coprime p (l * N))
     (γ : SL(2, ℤ)) (hγ : γ ∈ Gam N l) :
@@ -107,9 +105,7 @@ private theorem hi_perm (N l p : ℕ) (hl : l.Prime) (hN : 0 < N) (hp : p.Prime)
     mul_assoc (D i * γ'), inv_mul_cancel, mul_one]
 
 /- English proof (translation)
-Unfold `GlobalTheory.HeckeFamilyMatrices.tqFam`. Use `split_ifs`. Simplify using `[Matrix.det_fin_two]`. Conclude with `hp` after adjusting the coercions. Rewrite using `[Matrix.det_mul, GlobalTheory.HeckeFamilyMatrices.mat, σ.det_coe, one_mul]`.
-
-Simplify using `[GlobalTheory.HeckeFamilyMatrices.dg, Matrix.det_fin_two]`. Conclude with `hp` after adjusting the coercions.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hi_det (p : ℕ) (hp : 0 < p) (σ : SL(2, ℤ)) (i : Fin (p + 1)) : 0 < (GlobalTheory.HeckeFamilyMatrices.tqFam p σ i).det := by
   unfold GlobalTheory.HeckeFamilyMatrices.tqFam
@@ -123,9 +119,9 @@ private theorem hi_det (p : ℕ) (hp : 0 < p) (σ : SL(2, ℤ)) (i : Fin (p + 1)
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [GlobalTheory.KZ.Tower.heckeT, LinearMap.add_apply, LinearMap.sum_apply]`. Use `congr 1`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun j => (X.act l !![1, (j : ℤ); 0, (p : ℤ)]) a)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[GlobalTheory.HeckeFamilyMatrices.tqFam]`. Simplify using `[GlobalTheory.HeckeFamilyMatrices.tqFam, GlobalTheory.HeckeFamilyMatrices.dg]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem hi_sum (N p : ℕ) (a : X.Fn l) :
     X.heckeT N l p a = ∑ i : Fin (p + 1), X.act l (GlobalTheory.HeckeFamilyMatrices.tqFam p (sgD N l p) i) a := by
@@ -138,9 +134,9 @@ private theorem hi_sum (N p : ℕ) (a : X.Fn l) :
   · simp [GlobalTheory.HeckeFamilyMatrices.tqFam, GlobalTheory.HeckeFamilyMatrices.dg]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `hi_perm N l p (Fact.out) hN hp hc γ hγ`. Use `choose g hg he using hπ`. Use `⟨π, g, hg, fun a => ?_⟩` and prove the remaining obligations. Establish `hd1 : ∀ δ : SL(2, ℤ), 0 < (δ : Matrix (Fin 2) (Fin 2) ℤ).det` using `fun δ => by rw [δ.det_coe]; exact one_pos`. Rewrite using `[hi_sum X l N p a, map_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.KZ.Tower.act_act Ω ε X l _ _ (hi_det p hp.pos _ i) (hd1 γ), GlobalTheory.KZ.Tower.act_act Ω ε X l _ _ (hd1 (g i)) (hi_det p hp.pos _ (π i)), he i]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hi_act (N p : ℕ) (hN : 0 < N) (hp : p.Prime) (hc : Nat.Coprime p (l * N))
     (γ : SL(2, ℤ)) (hγ : γ ∈ Gam N l) :
@@ -156,7 +152,7 @@ private theorem hi_act (N p : ℕ) (hN : 0 < N) (hp : p.Prime) (hc : Nat.Coprime
   rw [GlobalTheory.KZ.Tower.act_act Ω ε X l _ _ (hi_det p hp.pos _ i) (hd1 γ), GlobalTheory.KZ.Tower.act_act Ω ε X l _ _ (hd1 (g i)) (hi_det p hp.pos _ (π i)), he i]
 
 /- English proof (translation)
-Use `choose c hcA hcu using h`. Use `⟨fun k => ∑ i ∈ S, c i k, fun k => Submodule.sum_mem _ fun i _ => hcA i k, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, hcu, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hi_pol_sum (w : ℕ) {ι : Type} (S : Finset ι) (t : ι → X.Fn l) (h : ∀ i, t i ∈ X.Pol l w) :
     ∑ i ∈ S, t i ∈ X.Pol l w := by
@@ -166,13 +162,13 @@ private theorem hi_pol_sum (w : ℕ) {ι : Type} (S : Finset ι) (t : ι → X.F
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `⟨1, fun W _ => ⟨1, by simp⟩, ?_⟩` and prove the remaining obligations. Simplify using `[UpperTheory.Kd.K4.Rep, GlobalTheory.KZ.Tower.cls]`. Consider the case `insert i S hi ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨f, hf, hr⟩` from `ih`. Take `⟨f', hf', hr'⟩` from `h i`. Use `⟨f' * f, fun W hW => ?_, ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `hf W hW`. Take `⟨g', hg'⟩` from `hf' W hW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨g' * g, ?_⟩` and prove the remaining obligations. Establish `: ((f' * f : X.Kˣ) : X.K) / ((g' * g : X.Kˣ) : X.K) ^ (l ^ n) = ((f' : X.K) / (g' : X.K) ^ (l ^ n)) * ((f : X.K) / (g : X.K) ^ (l ^ n))`. Rewrite using `[Units.val_mul, Units.val_mul, mul_pow, div_mul_div_comm]`. Rewrite using `[this, map_mul, hg, hg', one_mul]`. Unfold `UpperTheory.Kd.K4.Rep at *`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_insert hi, map_add, hr, hr']`. Simplify using `only [GlobalTheory.KZ.Tower.cls, ofMul_mul, TensorProduct.tmul_add, Submodule.Quotient.mk_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hi_rep_sum (n : ℕ) {ι : Type} (S : Finset ι) (c : ι → X.Khat l)
     (h : ∀ i, ∃ f ∈ X.Un (l ^ n), UpperTheory.Kd.K4.Rep X l n f (c i)) : ∃ f ∈ X.Un (l ^ n), UpperTheory.Kd.K4.Rep X l n f (∑ i ∈ S, c i) := by
@@ -196,7 +192,7 @@ private theorem hi_rep_sum (n : ℕ) {ι : Type} (S : Finset ι) (c : ι → X.K
       simp only [GlobalTheory.KZ.Tower.cls, ofMul_mul, TensorProduct.tmul_add, Submodule.Quotient.mk_add]
 
 /- English proof (translation)
-Use `choose c hc hcu using h`. Use `⟨fun k => ∑ i ∈ S, c i k, fun k => hi_rep_sum X l n S (fun i => c i k) (fun i => hc i k), fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, hcu, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hi_polMod_sum (w n : ℕ) {ι : Type} (S : Finset ι) (t : ι → X.Fn l) (h : ∀ i, PolMod X l w n (t i)) :
     PolMod X l w n (∑ i ∈ S, t i) := by
@@ -206,11 +202,9 @@ private theorem hi_polMod_sum (w n : ℕ) {ι : Type} (S : Finset ι) (t : ι �
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `hA` using `(GlobalTheory.KZ.kmap_A_stable ε X ε.injective (by obtain ⟨φ, h1, h2⟩ := X.j_hol; exact ⟨φ, h2, h1⟩) l).1`. Establish `key : ∀ x ∈ X.BSet N l w, X.heckeT N l p x ∈ X.BSet N l w`. Introduce and unpack `x ⟨hxP, hxI⟩`. Use `⟨?_, fun γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[hi_sum X l N p x]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi_pol_sum X l w Finset.univ _ (fun i => GlobalTheory.T.intMatrixAction_mem_homogeneousPolyFunctions X l w _ (fun a ha => hA _ a ha) x hxP)`. Take `⟨π, g, hg, he⟩` from `hi_act X l N p hN hp hc γ hγ`. Rewrite using `[he x, hi_sum X l N p x]`. Combine the equalities or inequalities in the displayed calculation. Establish `hle : X.B N l w ≤ (X.B N l w).comap (X.heckeT N l p)` using `Submodule.span_le.2 (fun x hx => Submodule.subset_span (key x hx))`.
-
-Conclude with `hle hb`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem hi_B [IsAlgClosure ℚ Ω] (N w p : ℕ) (hN : 0 < N) (hp : p.Prime) (hc : Nat.Coprime p (l * N))
     (b : X.Fn l) (hb : b ∈ X.B N l w) : X.heckeT N l p b ∈ X.B N l w := by
@@ -232,15 +226,13 @@ private theorem hi_B [IsAlgClosure ℚ Ω] (N w p : ℕ) (hN : 0 < N) (hp : p.Pr
 end UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ N w n p hN hp hc a ha`. Take `⟨⟨t, hPt, hCt⟩, hinv, b, hbB, hbL⟩` from `ha`. Take `⟨hEq, -, -, hSum, -, hAct, -⟩` from `sApi Ω ε X l n`. Establish `hPolAct` using `(sInvApi Ω ε X l N w n).2.2.2.2.2.2.2`. Establish `hH : ∀ x y, CgF X l n x y → CgF X l n (X.heckeT N l p x) (X.heckeT N l p y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y hxy`. Rewrite using `[hi_sum X l N p x, hi_sum X l N p y]`. Conclude with `hSum _ Finset.univ _ _ (fun i _ => hAct _ _ _ hxy)`. Use `⟨⟨∑ i, X.act l (GlobalTheory.HeckeFamilyMatrices.tqFam p (sgD N l p) i) t, ?_, ?_⟩, fun γ hγ => ?_, X.heckeT N l p b, hi_B X l N w p hN hp hc b hbB, fun u => ?_⟩` and prove the remaining obligations. Conclude with `hi_polMod_sum X l w n Finset.univ _ (fun i => hPolAct _ t (hi_det p hp.pos _ i) hPt)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hi_sum X l N p a]`. Conclude with `hSum _ Finset.univ _ _ (fun i _ => hAct _ _ _ hCt)`. Take `⟨π, g, hg, he⟩` from `hi_act X l N p hN hp hc γ hγ`. Rewrite using `[he a]`. Establish `h2 : X.heckeT N l p a = ∑ i, X.act l (GlobalTheory.HeckeFamilyMatrices.tqFam p (sgD N l p) (π i)) a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hi_sum X l N p a]`. Conclude with `(Equiv.sum_comp π (fun i => X.act l (GlobalTheory.HeckeFamilyMatrices.tqFam p (sgD N l p) i) a)).symm`. Rewrite using `[h2]`. Conclude with `hSum _ Finset.univ _ _ (fun i _ => hAct _ _ _ (hinv (g i) (hg i)))`. Establish `hba : CgF X l n b ((l : ℤ_[l]) ^ cL X l N w • a)` using `fun u => by simpa using hbL u`.
-
-Use `hH _ _ hba u` as an intermediate fact. Simplify `this` using `[map_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sHeckeInv :
     UpperTheory.V.Z.Kato.Nb.SHeckeInv := by

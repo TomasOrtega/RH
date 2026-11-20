@@ -16,7 +16,7 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [IsAdicComplete (Ideal.span {(p : O)}) O]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ih, frobenius_eq_map_frobenius, map_teichmuller, frobenius_def, ← pow_mul, ← pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem frobenius_iterate_teichmuller (x : PreTilt O p) (n : ℕ) :
     (WittVector.frobenius : Ainf p O →+* Ainf p O)^[n] (teichmuller p x) =
@@ -28,32 +28,32 @@ theorem frobenius_iterate_teichmuller (x : PreTilt O p) (n : ℕ) :
       frobenius_def, ← pow_mul, ← pow_succ]
 
 /- English proof (translation)
-Rewrite using `[ghost, frobenius_iterate_teichmuller, fontaineTheta_teichmuller, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ghost_teichmuller (n : ℕ) (x : PreTilt O p) :
     ghost p O n (teichmuller p x) = x.untilt ^ p ^ n := by
   rw [ghost, frobenius_iterate_teichmuller, fontaineTheta_teichmuller, map_pow]
 
 /- English proof (translation)
-Rewrite using `[ghost, iterate_map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ghost_one (n : ℕ) : ghost p O n 1 = 1 := by
   rw [ghost, iterate_map_one, map_one]
 
 /- English proof (translation)
-Rewrite using `[ghost, iterate_map_sub, map_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ghost_sub (n : ℕ) (a b : Ainf p O) : ghost p O n (a - b) = ghost p O n a - ghost p O n b := by
   rw [ghost, iterate_map_sub, map_sub]; rfl
 
 /- English proof (translation)
-Rewrite using `[ghost, iterate_map_pow, map_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ghost_pow (n : ℕ) (a : Ainf p O) (k : ℕ) : ghost p O n (a ^ k) = ghost p O n a ^ k := by
   rw [ghost, iterate_map_pow, map_pow]; rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ghost_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ghost_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ghost_sum (n : ℕ) (s : Finset ℕ) (f : ℕ → Ainf p O) :
     ghost p O n (∑ i ∈ s, f i) = ∑ i ∈ s, ghost p O n (f i) := by
@@ -62,7 +62,7 @@ theorem ghost_sum (n : ℕ) (s : Finset ℕ) (f : ℕ → Ainf p O) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ghost_add, ih]
 
 /- English proof (translation)
-Use extensionality with `k`. Rewrite using `[coeff_frobenius_charP]`. Simplify using `only [ofPadic, RingHom.comp_apply, map_coeff]`. Rewrite using `[← map_pow, ZMod.pow_card]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frobenius_ofPadic (a : ℤ_[p]) : WittVector.frobenius (ofPadic p O a) = ofPadic p O a := by
   ext k
@@ -73,15 +73,13 @@ theorem frobenius_ofPadic (a : ℤ_[p]) : WittVector.frobenius (ofPadic p O a) =
 end Vals
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ ε hε`. Establish `h0 : PreTilt.untilt ε = 1` using `hε.zeta_zero`. Establish `h1 : PreTilt.untilt (root ε) ^ p = 1`. Use `zeta_succ_pow ε 0` as an intermediate fact. Rewrite `this` using `[hε.zeta_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hxi : ∀ n, ghost p O n (xi ε) = ∑ i ∈ Finset.range p, (PreTilt.untilt (root ε) ^ p ^ n) ^ i`. Introduce `n`. Rewrite using `[xi, ghost_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ghost_pow, ghost_teichmuller]`. Use `⟨fun a => rfl, fun n a => ?_, fun n => ?_, ?_, fun n => ?_, fun n a => ?_⟩` and prove the remaining obligations. Rewrite using `[ghost, Function.iterate_fixed (frobenius_ofPadic a)]`. Both sides reduce to the same expression. Rewrite using `[Sandwich.mu, ghost_sub, ghost_teichmuller, ghost_one, h0, one_pow, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp1 : IsPrimitiveRoot (zeta ε 1) p` using `by simpa using hε 1`. Rewrite using `[hxi, pow_zero, pow_one]`. Conclude with `hp1.geom_sum_eq_zero (Fact.out : p.Prime).one_lt`. Rewrite using `[hxi, pow_succ', pow_mul, h1, one_pow]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[← ghost_frobenius, GlobalTheory.Dieudonne.frobenius_phiInv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ghost_values : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), (∀ a, ghost p O 0 a = WittVector.fontaineTheta O p a) ∧ (∀ n a, ghost p O n (ofPadic p O a) = padicToO p O a) ∧ (∀ n, ghost p O n (Sandwich.mu ε) = 0) ∧ ghost p O 0 (xi ε) = 0 ∧ (∀ n, ghost p O (n + 1) (xi ε) = p) ∧ ∀ n a, ghost p O (n + 1) (phiInv p O a) = ghost p O n a := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ ε hε

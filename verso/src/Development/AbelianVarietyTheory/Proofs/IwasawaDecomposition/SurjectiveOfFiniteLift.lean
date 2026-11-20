@@ -9,13 +9,13 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 namespace GlobalTheory.ModelSurj
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l l' Xo Xo' c c' Z Z' b r π hπ hb hfin hj hr`. Establish `hsp : IsFinite (spMap b)` using `(IsFinite.SpecMap_iff _).mpr hb`. Establish `hfst : IsFinite (pullback.fst Z.s (spMap b))` using `by haveI := hsp; infer_instance`. Establish `hfac : π = pullback.lift π Z'.s hπ ≫ pullback.fst Z.s (spMap b)` using `(pullback.lift_fst _ _ _).symm`. Establish `hπf : IsFinite π` using `by rw [hfac]; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed (Set.range π)` using `π.isClosedMap.isClosed_range`. Take `⟨⟨_, _⟩, -, _⟩` from `(CoeffRings.coeff_isDedFrac E H l c).1`. Establish `hdom` using `(GlobalTheory.genericPart_dense_proOpen (𝓞 c.F) c.F Z.X _ Z.s Z.jQ Z.flat Z.proj Z.jQ_open Z.jQ_dense).2.2.2.2.2.1`. Establish `hd : Dense (Set.range Z.j)` using `hdom.denseRange`. Establish `hsub : Set.range Z.j ⊆ Set.range π`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨y, rfl⟩` from `hr x`. Use `⟨Z'.j y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hj, Scheme.Hom.comp_apply]`. Establish `huniv : Set.range π = Set.univ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hcl.closure_eq]`. Conclude with `(hd.mono hsub).closure_eq`. Conclude with `Set.range_eq_univ.mp huniv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_of_finite_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l' : Level H) (Xo : Moduli D l)
     (Xo' : Moduli D l') (c : Coeff l) (c' : Coeff l') (Z : GMod Xo c) (Z' : GMod Xo' c') (b : 𝓞 c.F →+* 𝓞 c'.F)

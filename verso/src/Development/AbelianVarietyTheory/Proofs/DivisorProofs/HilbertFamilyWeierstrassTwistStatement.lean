@@ -13,7 +13,7 @@ open GlobalTheory.LatJet (EisExp IsEis FR)
 open GlobalTheory.WpFam
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HilbFam.isFam_hfun_GL` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHilbertFamilyWeierstrassTwist.lean&line=27#L27)
 -/

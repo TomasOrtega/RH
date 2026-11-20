@@ -55,7 +55,7 @@ def IsDPModel (N : ℕ) {M : Scheme.{0}} (s : M ⟶ Sp (Localization.Away (N : �
       pullback.fst s t y ∉ V → 2 ≤ ringKrullDim ((pullback s t).presheaf.stalk y)
 
 /- English proof (translation)
-Take `⟨M, s, U, α, hfine, hsep, -, -, hflat, -, ⟨V, hV, -, -, hcod⟩, hnorm, -⟩` from `hDP F 𝔠 N hN`. Conclude with `⟨M, s, U, α, V, hfine, hsep, hflat, hV, hnorm, hcod⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isDPModel (hDP : GlobalTheory.Published.DelignePappasModel) (F : Type) [Field F] [NumberField F]
     [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ) (hN : 3 ≤ N) :

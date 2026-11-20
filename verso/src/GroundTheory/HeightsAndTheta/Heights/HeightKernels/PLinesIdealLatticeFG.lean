@@ -10,7 +10,7 @@ open scoped nonZeroDivisors
 namespace KLinesIdealLatticeFG
 
 /- English proof (translation)
-The claim follows from `(Submodule.iSup_map_single).symm`.
+A detailed English derivation is pending.
 -/
 theorem idealLattice_eq_iSup (K : Type) [Field K] [NumberField K] {n : ℕ}
     (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) :
@@ -19,7 +19,7 @@ theorem idealLattice_eq_iSup (K : Type) [Field K] [NumberField K] {n : ℕ}
   (Submodule.iSup_map_single).symm
 
 /- English proof (translation)
-Rewrite using `[idealLattice_eq_iSup]`. Conclude with `Submodule.fg_iSup _ fun x => ((a x).fg_of_isNoetherianRing le_rfl).map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg (K : Type) [Field K] [NumberField K] {n : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) :
     (idealLattice a).FG := by
@@ -28,13 +28,13 @@ theorem fg (K : Type) [Field K] [NumberField K] {n : ℕ} (a : Fin n → Fractio
     ((a x).fg_of_isNoetherianRing le_rfl).map _
 
 /- English proof (translation)
-Establish `hbot : (a x : Submodule (𝓞 K) K) ≠ ⊥`. Rewrite using `[Ne, FractionalIdeal.coeToSubmodule_eq_bot]` and apply the resulting hypothesis. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`. Establish `hmem : (Pi.single x y : Fin n → K) ∈ idealLattice a`. Rewrite using `[idealLattice, Submodule.mem_pi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _`. Distinguish the cases in `h : i = x`. Substitute `h` using the available equality. Simplify using `using hy`. Simplify using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `heq : (Pi.single x 1 : Fin n → K) = y⁻¹ • (Pi.single x y : Fin n → K)`. Use extensionality with `i`. Distinguish the cases in `h : i = x`. Substitute `h` using the available equality. Simplify using `[hy0]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Rewrite using `[heq]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_mem_span (K : Type) [Field K] [NumberField K] {n : ℕ}
     (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (x : Fin n) (hx : a x ≠ 0) :
@@ -61,9 +61,9 @@ end KLinesIdealLatticeFG
 open KLinesIdealLatticeFG in
 
 /- English proof (translation)
-Introduce `K _ _ n a ha`. Use `⟨fg K a, ?_⟩` and prove the remaining obligations. Use `eq_top_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[← (Pi.basisFun K (Fin n)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Pi.basisFun_apply]`. Conclude with `single_mem_span K a x (ha x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LinesIdealLatticeFG.proof : LinesIdealLatticeFG.Statement := by
   intro K _ _ n a ha

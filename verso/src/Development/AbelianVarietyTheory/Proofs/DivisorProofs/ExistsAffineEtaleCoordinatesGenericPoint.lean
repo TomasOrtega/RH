@@ -8,7 +8,7 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 namespace GlobalTheory.GenericCoords
 
 /- English proof (translation)
-Introduce `k _ X _ p D h`. Take `⟨U, t, hU, hη, he⟩` from `GlobalTheory.GenericEtale.exists_etale_coords h`. Conclude with `⟨U, hU, hη, t, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_affine_etale_coords : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X]
     {p : X ⟶ Sp k} {D : ℕ}, IsArithVar p D → ∃ U : X.Opens, IsAffineOpen U ∧ genericPoint X ∈ U ∧

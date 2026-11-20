@@ -10,7 +10,7 @@ namespace GlobalTheory.NeedB.KumLemma
 variable {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω]
 
 /- English proof (translation)
-Rewrite using `[ZMod.val_add, ← pow_add]`. Use `conv_rhs => rw [← Nat.mod_add_div (a.val + b.val) N]`. Rewrite using `[pow_add, pow_mul, hζ.pow_eq_one, one_pow, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_val_add {N : ℕ} [NeZero N] {ζ : Ω} (hζ : IsPrimitiveRoot ζ N) (a b : ZMod N) :
     ζ ^ (a + b).val = ζ ^ a.val * ζ ^ b.val := by
@@ -19,9 +19,9 @@ theorem pow_val_add {N : ℕ} [NeZero N] {ζ : Ω} (hζ : IsPrimitiveRoot ζ N) 
   rw [pow_add, pow_mul, hζ.pow_eq_one, one_pow, mul_one]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hN`. Establish `hg : (g θ) ^ N = θ ^ N` using `by rw [← map_pow, ← hc, AlgEquiv.commutes]`. Establish `h1 : (g θ / θ) ^ N = 1`. Rewrite using `[div_pow, hg, div_self (pow_ne_zero _ hθ)]`. Take `⟨i, hi, hi'⟩` from `hζ.eq_pow_of_pow_eq_one h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨(i : ZMod N), ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.val_cast_of_lt hi, hi', div_mul_cancel₀ _ hθ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N) (hθ : θ ≠ 0)
     (hN : θ ^ N ∈ Set.range (algebraMap K Ω)) (g : Ω ≃ₐ[K] Ω) :
@@ -35,7 +35,7 @@ theorem exists_pow {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N
   rw [ZMod.val_cast_of_lt hi, hi', div_mul_cancel₀ _ hθ]
 
 /- English proof (translation)
-Establish `h' : ζ ^ a.val = ζ ^ b.val` using `mul_right_cancel₀ hθ h`. Conclude with `ZMod.val_injective N (hζ.pow_inj (ZMod.val_lt a) (ZMod.val_lt b) h')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unique_pow {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N) (hθ : θ ≠ 0)
     {a b : ZMod N} (h : ζ ^ a.val * θ = ζ ^ b.val * θ) : a = b := by
@@ -43,7 +43,7 @@ theorem unique_pow {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N
   exact ZMod.val_injective N (hζ.pow_inj (ZMod.val_lt a) (ZMod.val_lt b) h')
 
 /- English proof (translation)
-Establish `h` using `exists_pow hζ hθ hN g`. Unfold `kum`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kum_spec {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N) (hθ : θ ≠ 0)
     (hN : θ ^ N ∈ Set.range (algebraMap K Ω)) (g : Ω ≃ₐ[K] Ω) :
@@ -54,7 +54,7 @@ theorem kum_spec {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N) 
   exact h.choose_spec
 
 /- English proof (translation)
-The claim follows from `unique_pow hζ hθ ((kum_spec hζ hθ hN g).symm.trans hi)`.
+A detailed English derivation is pending.
 -/
 theorem kum_eq {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N) (hθ : θ ≠ 0)
     (hN : θ ^ N ∈ Set.range (algebraMap K Ω)) (g : Ω ≃ₐ[K] Ω) {i : ZMod N}
@@ -62,7 +62,7 @@ theorem kum_eq {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N) (h
   unique_pow hζ hθ ((kum_spec hζ hθ hN g).symm.trans hi)
 
 /- English proof (translation)
-Apply `kum_eq hζ hθ hN` to reduce the goal to its premises. Rewrite using `[AlgEquiv.mul_apply, kum_spec hζ hθ hN h, map_mul, map_pow, hfix, kum_spec hζ hθ hN g, add_comm, pow_val_add hζ]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kum_mul {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N) (hfix : ∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ)
     (hθ : θ ≠ 0) (hN : θ ^ N ∈ Set.range (algebraMap K Ω)) (g h : Ω ≃ₐ[K] Ω) :
@@ -73,9 +73,9 @@ theorem kum_mul {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N) (
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `kum_spec hζ hθ hN g` as an intermediate fact. Rewrite `this` using `[h, ZMod.val_zero, pow_zero, one_mul]`. Then use the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `kum_eq hζ hθ hN` to reduce the goal to its premises. Rewrite using `[h, ZMod.val_zero, pow_zero, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem kum_eq_zero_iff {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N) (hθ : θ ≠ 0)
     (hN : θ ^ N ∈ Set.range (algebraMap K Ω)) (g : Ω ≃ₐ[K] Ω) :
@@ -89,13 +89,11 @@ theorem kum_eq_zero_iff {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot
     rw [h, ZMod.val_zero, pow_zero, one_mul]
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨by omega⟩`. Use `⟨?_, kum_spec hζ hθ hN, kum_mul hζ hfix hθ hN, kum_eq_zero_iff hζ hθ hN⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`. Use `haveI : FiniteDimensional K K⟮θ⟯ := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral θ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hopen : IsOpen ((K⟮θ⟯).fixingSubgroup : Set (Ω ≃ₐ[K] Ω))` using `IntermediateField.fixingSubgroup_isOpen _`. Use `⟨(fun g' => g⁻¹ * g') ⁻¹' ((K⟮θ⟯).fixingSubgroup : Set (Ω ≃ₐ[K] Ω)), hopen.preimage (continuous_const.mul continuous_id), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, inv_mul_cancel, SetLike.mem_coe]`. Conclude with `Subgroup.one_mem _`. Introduce `g' hg'`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfθ : (g⁻¹ * g') θ = θ`. Use `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg' θ (IntermediateField.mem_adjoin_simple_self K θ)` as an intermediate fact. Conclude with `this`. Establish `h0` using `(kum_eq_zero_iff hζ hθ hN _).2 hfθ`. Establish `: g' = g * (g⁻¹ * g')` using `by group`.
-
-Rewrite using `[this, kum_mul hζ hfix hθ hN, h0, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummer_character [Algebra.IsAlgebraic K Ω] (N : ℕ) (ζ θ : Ω) (hN0 : 0 < N)
     (hζ : IsPrimitiveRoot ζ N) (hfix : ∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ) (hθ : θ ≠ 0)
@@ -129,7 +127,7 @@ end GlobalTheory.NeedB.KumLemma
 open GlobalTheory.NeedB in
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ N ζ θ h0 hζ hf hθ hN` and use `GlobalTheory.NeedB.KumLemma.kummer_character N ζ θ h0 hζ hf hθ hN`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NeedB.KumLemma.kummer_character_main : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω] (N : ℕ) (ζ θ : Ω), 0 < N →
   IsPrimitiveRoot ζ N → (∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ) → θ ≠ 0 → θ ^ N ∈ Set.range (algebraMap K Ω) →

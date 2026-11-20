@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsE
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.EtC.RedChern.defect_eq_of_pow_eq`. Consider the case `exact GlobalTheory.EtC.RedChern.defect_eq_of_pow_eq`. Consider the case `(intros; apply GlobalTheory.EtC.RedChern.defect_eq_of_pow_eq <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.kummerReductionChernDefect_eq_of_pow_eq : ∀ (Q q : ℕ) [NeZero Q], q ∣ Q → ∀ (U : Scheme.{0}) (v w : (Γ(U, ⊤))ˣ), IsUnit (Q : Γ(U, ⊤)) → v ^ Q = w ^ Q → GlobalTheory.EtC.RedChern.defect Q q U v = GlobalTheory.EtC.RedChern.defect Q q U w := by
   first

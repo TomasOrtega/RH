@@ -30,7 +30,7 @@ theorem rtr_apply {n d : ℕ} (M : GL (Fin d) k) (Ψ : Matrix (Fin n) (Fin d) k 
     rtr M Ψ = fun Y => Ψ (Y * M.1) := rfl
 
 /- English proof (translation)
-Set `e : Matrix (Fin n) (Fin d) k ≃ₜ Matrix (Fin n) (Fin d) k` to `{ toFun := fun x => x * M.1 invFun := fun x => x * (M⁻¹).1 left_inv := fun x => by simp [Matrix.mul_assoc] right_inv := fun x => by simp [Matrix.mul_assoc] continuous_toFun := Continuous.matrix_mul continuous_id continuous_const continuous_invFun := Continuous.matrix_mul continuo …`. Conclude with `⟨hΨ.1.comp_continuous e.continuous, hΨ.2.comp_homeomorph e⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem sb_rtr {n d : ℕ} (M : GL (Fin d) k) {Ψ : Matrix (Fin n) (Fin d) k → ℂ}
     (hΨ : Ψ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k)) : rtr M Ψ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k) := by
@@ -44,7 +44,7 @@ theorem sb_rtr {n d : ℕ} (M : GL (Fin d) k) {Ψ : Matrix (Fin n) (Fin d) k →
   exact ⟨hΨ.1.comp_continuous e.continuous, hΨ.2.comp_homeomorph e⟩
 
 /- English proof (translation)
-Use `⟨sb_rtr M hΨ.1, fun Y hY => hΨ.2 (Y * M.1) ?_⟩` and prove the remaining obligations. Establish `hM : IsUnit (M.1).det` using `(Matrix.isUnit_iff_isUnit_det _).1 M.isUnit`. Rewrite using `[Matrix.rank_mul_eq_left_of_isUnit_det _ _ hM]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem fullRk_rtr {n d : ℕ} (M : GL (Fin d) k) {Ψ : Matrix (Fin n) (Fin d) k → ℂ}
     (hΨ : Ψ ∈ fullRk k n d) : rtr M Ψ ∈ fullRk k n d := by
@@ -53,7 +53,7 @@ theorem fullRk_rtr {n d : ℕ} (M : GL (Fin d) k) {Ψ : Matrix (Fin n) (Fin d) k
   rwa [Matrix.rank_mul_eq_left_of_isUnit_det _ _ hM]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Simplify using `[rtr_apply, lact, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rtr_lact {n d : ℕ} (ν : kˣ →* ℂˣ) (M : GL (Fin d) k) (g : GL (Fin n) k)
     (Ψ : Matrix (Fin n) (Fin d) k → ℂ) : rtr M (lact ν g Ψ) = lact ν g (rtr M Ψ) := by
@@ -64,9 +64,9 @@ def diffSp (n d : ℕ) (ν : kˣ →* ℂˣ) : Submodule ℂ (Matrix (Fin n) (Fi
     Ψ' ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k) ∧ z = lact ν g Ψ' - Ψ'}
 
 /- English proof (translation)
-Establish `: diffSp n d ν ≤ (diffSp n d ν).comap (rtr M)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨g, Ψ', hΨ', rfl⟩`. Use `Submodule.subset_span ⟨g, rtr M Ψ', sb_rtr M hΨ', ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, rtr_lact]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this hΨ`.
+A detailed English derivation is pending.
 -/
 theorem rtr_diffSp {n d : ℕ} (ν : kˣ →* ℂˣ) (M : GL (Fin d) k) {Ψ : Matrix (Fin n) (Fin d) k → ℂ}
     (hΨ : Ψ ∈ diffSp n d ν) : rtr M Ψ ∈ diffSp n d ν := by
@@ -78,7 +78,7 @@ theorem rtr_diffSp {n d : ℕ} (ν : kˣ →* ℂˣ) (M : GL (Fin d) k) {Ψ : Ma
   exact this hΨ
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨g, Ψ, hΨ, rfl⟩`. Conclude with `Submodule.subset_span ⟨g, Ψ, hΨ.1, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem augRk_le_diffSp (n d : ℕ) (ν : kˣ →* ℂˣ) : augRk n d ν ≤ diffSp (k := k) n d ν := by
   refine Submodule.span_le.2 ?_
@@ -86,7 +86,7 @@ theorem augRk_le_diffSp (n d : ℕ) (ν : kˣ →* ℂˣ) : augRk n d ν ≤ dif
   exact Submodule.subset_span ⟨g, Ψ, hΨ.1, rfl⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨g, Ψ, hΨ, rfl⟩`. Conclude with `hA g Ψ hΨ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem diffSp_le_ker {n d : ℕ} (ν : kˣ →* ℂˣ) (Λ₀ : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] ℂ)
     (hA : ∀ (g : GL (Fin n) k), ∀ Ψ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k), Λ₀ (lact ν g Ψ - Ψ) = 0) :
@@ -100,21 +100,21 @@ end GlobalTheory.FullRankCoinv.JacReduce
 open GlobalTheory.FullRankCoinv.JacReduce in
 
 /- English proof (translation)
-Introduce `hInd KP k _ _ _ _ n d ν hn hnd hs hu Λ₀ hA hB hC`. Take `⟨Z, hZ1, hZ2, hZ3, hZ4⟩` from `GlobalTheory.FullRankCoinv.fibre_coinvariants k n d ν (by omega) hs`. Establish `hker0` using `diffSp_le_ker ν Λ₀ hA`. Set `F` to `GlobalTheory.FullRankCoinv.fullRk k n d`. Set `Z' : F →ₗ[ℂ] (GL (Fin d) k → ℂ)` to `Z ∘ₗ F.subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `L' : F →ₗ[ℂ] ℂ` to `Λ₀ ∘ₗ F.subtype`. Establish `hker : LinearMap.ker Z' ≤ LinearMap.ker L'`. Introduce `Ψ hΨ`. Rewrite `hΨ`, the goal using `[LinearMap.mem_ker]`. Conclude with `hker0 (augRk_le_diffSp n d ν (hZ3 Ψ.1 Ψ.2 hΨ))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ℓ₁ : LinearMap.range Z' →ₗ[ℂ] ℂ` to `(LinearMap.ker Z').liftQ L' hker ∘ₗ Z'.quotKerEquivRange.symm.toLinearMap`. Take `⟨ℓ, hℓ⟩` from `LinearMap.exists_extend ℓ₁`. Establish `key : ∀ Ψ (hΨ : Ψ ∈ F), ℓ (Z Ψ) = Λ₀ Ψ`. Introduce `Ψ hΨ`. Establish `h1` using `LinearMap.congr_fun hℓ ⟨Z' ⟨Ψ, hΨ⟩, LinearMap.mem_range_self _ _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Z'.quotKerEquivRange.symm ⟨Z' ⟨Ψ, hΨ⟩, LinearMap.mem_range_self _ _⟩ = Submodule.Quotient.mk ⟨Ψ, hΨ⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply the tactic sequence `first | rfl | simp [LinearMap.quotKerEquivRange_apply_mk, Z']`. Simplify using `only [ℓ₁, LinearMap.comp_apply, LinearEquiv.coe_coe, h2, Submodule.liftQ_apply] at h1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Establish `hN : ∀ u : GL (Fin d) k, GlobalTheory.JacBlock₂.IsUnipStd u → ∀ f ∈ GlobalTheory.FullRankCoinv.indSp k n d ν, ℓ (fun h => f (h * u)) = ℓ f`. Introduce `u hu' f hf`. Take `⟨Ψ, hΨ, rfl⟩` from `hZ2 f hf`. Rewrite using `[← hZ4 Ψ hΨ u]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `key _ (fullRk_rtr u hΨ)` as an intermediate fact. Rewrite `this` using `[rtr_apply]`. Rewrite using `[this, key _ hΨ]`. Conclude with `hB u hu' Ψ hΨ.1`. Introduce `Ψ hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Ψ₀, hΨ₀, hdiff⟩` from `hC Ψ hΨ`. Take `⟨p, q, hpq⟩` from `hInd KP k n d ν hn hnd hs hu ℓ hN (Z Ψ₀) (hZ1 Ψ₀ hΨ₀)`. Use `⟨p, q, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hpq x, ← hZ4 Ψ₀ hΨ₀]`. Establish `h3` using `key _ (fullRk_rtr (GlobalTheory.JacBlock₂.diagFirst x) hΨ₀)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[rtr_apply]`. Rewrite using `[h3]`. Establish `h4` using `hker0 (rtr_diffSp ν (GlobalTheory.JacBlock₂.diagFirst x) hdiff)`. Rewrite `h4` using `[LinearMap.mem_ker, map_sub, map_sub, sub_eq_zero, rtr_apply, rtr_apply]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FullRankCoinv.JacReduce.jac_reduce : (GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ) (ν : kˣ →* ℂˣ), 1 ≤ n → 2 * n < d → GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν →
   ∀ ℓ : (GL (Fin d) k → ℂ) →ₗ[ℂ] ℂ,

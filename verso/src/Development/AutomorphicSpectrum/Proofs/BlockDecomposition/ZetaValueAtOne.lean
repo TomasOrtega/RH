@@ -13,11 +13,9 @@ open GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.Godem
 variable {k : Type} [Field k] [NumberField k]
 
 /- English proof (translation)
-Establish `h0 : ξ () ≠ 0` using `fun h => hξ (funext fun i => by cases i; exact h)`. Use `haveI := isHaarMeasure_ideleMeasure k`. Use `haveI := IdeleGroup.borelSpace k`. Establish `key` using `integral_mul_left_eq_self (μ := ideleMeasure k) (fun x : IdeleGroup k => Ψ₁ (fun _ => (x : 𝔸[k])) * ((ω.toIdele x : Circle) : ℂ) * ((((IdeleGroup.ideleModule k x : {r : ℝ // 0 < r}) : ℝ) : ℂ) ^ z)) (IdeleGroup.diagonal k (Units.mk0 (ξ ()) h0))`. Use `Eq.trans ?_ key` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `hx : ((x : 𝔸[k]) • ratV ξ) = fun _ => ((IdeleGroup.diagonal k (Units.mk0 (ξ ()) h0) * x : IdeleGroup k) : 𝔸[k])`. Use function extensionality and compare the values at `i`. Consider the cases of `i`. Simplify using `[ratV, IdeleGroup.diagonal, mul_comm]`.
-
-Simplify using `only [hx, map_mul, HeckeCharacter.toIdele_diagonal, IdeleGroup.ideleModule_diagonal, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lineZeta_ratV_unit (Ψ₁ : (Unit → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) (z : ℂ)
     (ξ : Unit → k) (hξ : ξ ≠ 0) : lineZeta Ψ₁ ω z (ratV ξ) = tate Ψ₁ ω z := by
@@ -38,9 +36,7 @@ theorem lineZeta_ratV_unit (Ψ₁ : (Unit → 𝔸[k]) → ℂ) (ω : HeckeChara
   simp only [hx, map_mul, HeckeCharacter.toIdele_diagonal, IdeleGroup.ideleModule_diagonal, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `l using Projectivization.ind`. Name the introduced variables `v hv`. Proceed by induction on `l' using Projectivization.ind`. Name the introduced variables `w hw`. Rewrite using `[Projectivization.mk_eq_mk_iff']`.
-
-Establish `hw0 : w () ≠ 0` using `fun h => hw (funext fun i => by cases i; exact h)`. Conclude with `⟨v () / w (), funext fun i => by cases i; simp [div_mul_cancel₀ _ hw0]⟩`.
+Proceed by induction. Proceed by induction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem proj_unit_eq (l l' : Projectivization k (Unit → k)) : l = l' := by
   induction l using Projectivization.ind
@@ -52,7 +48,7 @@ theorem proj_unit_eq (l l' : Projectivization k (Unit → k)) : l = l' := by
   exact ⟨v () / w (), funext fun i => by cases i; simp [div_mul_cancel₀ _ hw0]⟩
 
 /- English proof (translation)
-Establish `hne : (fun _ : Unit => (1 : k)) ≠ 0` using `fun h => one_ne_zero (congrFun h ())`. Unfold `epstein`. Rewrite using `[tsum_eq_single (Projectivization.mk k (fun _ : Unit => (1 : k)) hne) (fun b hb => absurd (proj_unit_eq b _) hb)]`. Simplify using `only [inv_one, Units.val_one, Matrix.one_mulVec]`. Conclude with `lineZeta_ratV_unit Ψ₁ ω z _ (Projectivization.rep_nonzero _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem epstein_unit_one (Ψ₁ : (Unit → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) (z : ℂ) :
     epstein Ψ₁ ω z 1 = tate Ψ₁ ω z := by
@@ -64,11 +60,11 @@ theorem epstein_unit_one (Ψ₁ : (Unit → 𝔸[k]) → ℂ) (ω : HeckeCharact
   exact lineZeta_ratV_unit Ψ₁ ω z _ (Projectivization.rep_nonzero _)
 
 /- English proof (translation)
-Introduce `h`. Unfold `EpMain at h`. Unfold `ZetaOne`. Introduce `k _ _ Ψ₁ ω hΨ hω`. Take `⟨V, -, hV⟩` from `h k`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨F, F', hF, -, -, -⟩` from `hV Unit Ψ₁ ω hΨ hω`. Use `⟨fun z => F z 1, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Unfold `PolyEnt`. Use `⟨hF.entire 1, fun b c => ?_⟩` and prove the remaining obligations. Take `⟨M, hM⟩` from `hF.strip b c {1} isCompact_singleton`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨M, fun z h1 h2 => hM z h1 h2 1 rfl⟩`. Use `show F z 1 = _`. Rewrite using `[hF.eq z (by simpa using hz) 1, epstein_unit_one]`. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zetaOne_of_epMain : EpMain → ZetaOne := by
   intro h

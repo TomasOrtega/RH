@@ -23,7 +23,7 @@ def prodAt (θ : InfFam D) (V : HSp D) (l : List D.what₂.Tau) (u : D.what₂.T
   (l.map fun τ => atTau θ V τ (u τ)).prod
 
 /- English proof (translation)
-Use `Subgroup.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Take `⟨τ, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `atTau_mem V τ _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prodAt_mem (θ : InfFam D) (V : HSp D) (l : List D.what₂.Tau) (u : D.what₂.Tau → Mt V.rank) :
     prodAt θ V l u ∈ GinfC V := by
@@ -32,11 +32,11 @@ theorem prodAt_mem (θ : InfFam D) (V : HSp D) (l : List D.what₂.Tau) (u : D.w
   exact atTau_mem V τ _
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rw [if_neg List.not_mem_nil]`. Conclude with `infMat_one V _`. Consider the case `cons τ l ih`. Establish `e : prodAt θ V (τ :: l) u = atTau θ V τ (u τ) * prodAt θ V l u` using `List.prod_cons`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `atTau_spec hθ V τ (hu τ)`. Rewrite `hl` using `[List.nodup_cons]`. Rewrite using `[e, infMat_mul, ih hl.2]`. Distinguish the cases in `c : ρ = τ`. Substitute `c` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs.2.1, if_neg hl.1, if_pos List.mem_cons_self, Matrix.mul_one]`. Rewrite using `[hs.2.2 ρ c, Matrix.one_mul]`. Simplify using `only [List.mem_cons, c, false_or]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem infMat_prodAt {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) {u : D.what₂.Tau → Mt V.rank}
     (hu : u ∈ UG (gramAt D V)) (ρ : D.what₂.Tau) (l : List D.what₂.Tau) (hl : l.Nodup) :
@@ -55,9 +55,9 @@ theorem infMat_prodAt {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) {u : D.wha
       simp only [List.mem_cons, c, false_or]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact continuousOn_const`. Consider the case `cons τ l ih`. Establish `e : prodAt θ V (τ :: l) = fun u => atTau θ V τ (u τ) * prodAt θ V l u` using `funext fun _ => List.prod_cons`. Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c : ContinuousOn (fun u : D.what₂.Tau → Mt V.rank => atTau θ V τ (u τ)) (UG (gramAt D V))` using `(continuousOn_atTau hθ V τ).comp (continuous_apply τ).continuousOn fun u hu => hu τ`. Rewrite using `[e]`. Conclude with `c.mul ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_prodAt {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (l : List D.what₂.Tau) :
     ContinuousOn (prodAt θ V l) (UG (gramAt D V)) := by
@@ -72,7 +72,7 @@ theorem continuousOn_prodAt {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (l :
     exact c.mul ih
 
 /- English proof (translation)
-Take `⟨θ₀, h₀⟩` from `(GlobalTheory.Member.infiniteAdele_bijective D).1`. Establish `e : θ = fun ρ => θ₀ (tauE D ρ)` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).1 _ _ hθ fun ρ => h₀ _`. Substitute `e` using the available equality. Conclude with `(GlobalTheory.Member.Arch.unit_iff _ _ _).1 (((GlobalTheory.Member.Arch.archM_spec D V θ₀ h₀).1 _).2.2.2.2 g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem archM_mem {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (g : GA D V) (τ : D.what₂.Tau) :
     archM V (θ τ) g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) := by
@@ -82,15 +82,15 @@ theorem archM_mem {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (g : GA D V) (
   exact (GlobalTheory.Member.Arch.unit_iff _ _ _).1 (((GlobalTheory.Member.Arch.archM_spec D V θ₀ h₀).1 _).2.2.2.2 g)
 
 /- English proof (translation)
-Introduce `D θ V hθ`. Take `⟨r1, -, r3, r4, -, r6, r7, -⟩` from `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V`. Set `L : (D.what₂.Tau → Mt V.rank) → GA D V` to `prodAt θ V Finset.univ.toList`. Establish `hm : ∀ u, L u ∈ GinfC V` using `prodAt_mem θ V _`. Establish `hL : ∀ u ∈ UG (gramAt D V), ∀ τ, infMat D.sp.cm.sig V.gram (θ τ) (L u) = u τ` using `fun u hu τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[infMat_prodAt hθ V hu τ _ (Finset.nodup_toList _), if_pos (Finset.mem_toList.2 (Finset.mem_univ _))]`. Use `⟨L, fun u hu => ⟨hm u, hL u hu⟩, fun u hu u' hu' => ?_, continuousOn_prodAt hθ V _, fun g τ => archM_mem hθ V g τ, fun u hu => ?_, fun τ g hg => ?_, r7, fun a ha u hu => (r6 u hu a ha).symm, fun τ => ⟨(r1 τ).1, (r1 τ).2.ne_zero⟩⟩` and prove the remaining obligations. Use `r3 _ (hm _) _ (mul_mem (hm _) (hm _)) fun τ => ?_` and prove the remaining obligations. Rewrite using `[r4, hL u hu, hL u' hu', hL (u * u') fun ρ => mul_mem_UH (hu ρ) (hu' ρ)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `r3 _ (hm _) _ hu fun τ => hL _ (fun ρ => archM_mem hθ V u ρ) τ`. Establish `hs` using `atTau_spec hθ V τ hg`. Establish `hu : (Pi.mulSingle τ g : D.what₂.Tau → Mt V.rank) ∈ UG (gramAt D V)` using `fun ρ => by`. Distinguish the cases in `c : ρ = τ`. Substitute `c` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Pi.mulSingle_eq_same]` and apply the resulting hypothesis. Rewrite using `[Pi.mulSingle_eq_of_ne c]`. Conclude with `one_mem_UH _`. Use `r3 _ hs.1 _ (hm _) fun ρ => ?_` and prove the remaining obligations. Rewrite using `[hL _ hu]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `c : ρ = τ`. Substitute `c` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, hs.2.1]`. Rewrite using `[Pi.mulSingle_eq_of_ne c, hs.2.2 ρ c]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_real_lift : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → ∃ L : (D.what₂.Tau → Mt V.rank) → GA D V, (∀ u ∈ UG (gramAt D V), L u ∈ GinfC V ∧ ∀ τ, archM V (θ τ) (L u) = u τ) ∧ (∀ u ∈ UG (gramAt D V), ∀ u' ∈ UG (gramAt D V), L (u * u') = L u * L u') ∧ ContinuousOn L (UG (gramAt D V)) ∧ (∀ g, (fun τ => archM V (θ τ) g) ∈ UG (gramAt D V)) ∧ (∀ u ∈ GinfC V, L (fun τ => archM V (θ τ) u) = u) ∧ (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), atTau θ V τ g = L (Pi.mulSingle τ g)) ∧ (∀ g, ∃ a ∈ GfC V, ∃ u ∈ GinfC V, g = a * u) ∧ (∀ a ∈ GfC V, ∀ u ∈ GinfC V, a * u = u * a) ∧ ∀ τ, (gramAt D V τ).IsHermitian ∧ (gramAt D V τ).det ≠ 0 := by
   intro D θ V hθ

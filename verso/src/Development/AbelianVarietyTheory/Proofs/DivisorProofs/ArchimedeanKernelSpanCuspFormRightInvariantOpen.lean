@@ -43,15 +43,13 @@ def openInv : Submodule ℂ (GA E a → ℂ) where
     rw [hk g]
 
 /- English proof (translation)
-Use `set y := GeneralLinearGroup.map (pInf E) h`. Use `set k := GeneralLinearGroup.map (pFin E) h`. Establish `hh : infGL E a y * finGL E a k = h` using `infGL_mul_finGL h`. Establish `hc : Continuous fun u : GL (Fin a) (Af E) => k⁻¹ * u * k` using `(continuous_const.mul continuous_id).mul continuous_const`. Set `U : Subgroup (GL (Fin a) (Af E))` to `(invSub F).comap (MulAut.conj k⁻¹).toMonoidHom`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hU : (U : Set _) = (fun u : GL (Fin a) (Af E) => k⁻¹ * u * k) ⁻¹' (invSub F : Set _)`. Use extensionality with `u`. Simplify using `[U, MulAut.conj_apply]`. Establish `hF' : IsOpen (invSub F : Set (GL (Fin a) (Af E)))` using `hF`. Use `Subgroup.isOpen_mono (H₁ := U) ?_ (by rw [hU]; exact hF'.preimage hc)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u hu g`. Establish `hu' : ∀ g, F (g * finGL E a (k⁻¹ * u * k)) = F g`. Establish `hm : k⁻¹ * u * k ∈ invSub F`. Use `Subgroup.mem_comap.1 hu` as an intermediate fact. Simplify `this` using `[MulAut.conj_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hm`. Express the relevant statement in the definitionally equal form `F (g * finGL E a u * h) = F (g * h)`. Rewrite using `[← hu' (g * h), ← hh]`. Use `congr 1`. Simplify using `only [map_mul, map_inv, mul_assoc]`.
-
-Rewrite using `[← mul_assoc (finGL E a u) (infGL E a y), ← infGL_comm, mul_assoc, mul_inv_cancel_left]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_mem_openInv {F : GA E a → ℂ} (hF : F ∈ openInv E a) (h : GA E a) :
     (fun g => F (g * h)) ∈ openInv E a := by
@@ -77,9 +75,9 @@ theorem rt_mem_openInv {F : GA E a → ℂ} (hF : F ∈ openInv E a) (h : GA E a
   rw [← mul_assoc (finGL E a u) (infGL E a y), ← infGL_comm, mul_assoc, mul_inv_cancel_left]
 
 /- English proof (translation)
-Use `Subgroup.isOpen_mono (H₁ := invSub F) ?_ (show IsOpen (invSub F : Set (GL (Fin a) (Af E))) from hF)` and prove the remaining obligations. Introduce `u hu g`. Express the relevant statement in the definitionally equal form `∫ x, k x * F (g * finGL E a u * infGL E a (γ x)) ∂ν = ∫ x, k x * F (g * infGL E a (γ x)) ∂ν`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mul_assoc, ← infGL_comm, ← mul_assoc, hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kerInf_mem_openInv {F : GA E a → ℂ} (hF : F ∈ openInv E a) {X : Type} [MeasurableSpace X]
     (ν : Measure X) (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)) : kerInf ν k γ F ∈ openInv E a := by
@@ -90,9 +88,9 @@ theorem kerInf_mem_openInv {F : GA E a → ℂ} (hF : F ∈ openInv E a) {X : Ty
   rw [mul_assoc, ← infGL_comm, ← mul_assoc, hu]
 
 /- English proof (translation)
-Establish `h` using `π.isSmooth_finPart ⟨φ, hφ⟩`. Use `show IsOpen (invSub φ.1 : Set (GL (Fin a) (Af E)))`. Establish `e : (invSub φ.1 : Set (GL (Fin a) (Af E))) = {k | π.finPart k ⟨φ, hφ⟩ = ⟨φ, hφ⟩}`. Use extensionality with `k`. Simplify using `only [SetLike.mem_coe, Set.mem_setOf_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨fun hk => Subtype.ext (Subtype.ext (funext hk)), fun hk g => congrArg (fun ψ : π.V => ψ.1.1 g) hk⟩`. Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_openInv_of_mem {π : CuspSub E a} {φ : Sm E a} (hφ : φ ∈ π.V) : φ.1 ∈ openInv E a := by
   have h := π.isSmooth_finPart ⟨φ, hφ⟩
@@ -108,7 +106,7 @@ end GlobalTheory.JSW.MirSemi.OpenInv
 open GlobalTheory.JSW.MirSemi.OpenInv in
 
 /- English proof (translation)
-Introduce `E _ _ _ a S π φ hφ F hF`. Establish `h` using `GlobalTheory.JSW.MirSemi.locSpan_le (V := openInv E a) (S := S) (mem_openInv_of_mem hφ) (fun F hF h _ => rt_mem_openInv hF h) (fun F hF X _ ν _ k γ _ => kerInf_mem_openInv hF ν k γ) hF`. Conclude with `⟨invSub F, h, fun u hu g => hu g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.JSW.MirSemi.locSpan_openInv : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (π : CuspSub E a) (φ : Sm E a), φ ∈ π.V →

@@ -36,19 +36,19 @@ noncomputable section
 namespace GlobalTheory.CovTop.DimLogTop
 
 /- English proof (translation)
-Break down `hS0.eq_or_lt with h | h` into its components or cases. Rewrite using `[← h, Real.log_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfr0 : 0 < f * r` using `by positivity`. Establish `e1 : f * r ≤ Real.exp L` using `(Real.log_le_iff_le_exp hfr0).1 hfr`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : L ≤ Real.exp L` using `by linarith [Real.add_one_le_exp L]`. Establish `e3 : kap ≤ Real.exp (2 * L)`. Break down `hk0.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Conclude with `(Real.exp_pos _).le`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Real.log_le_iff_le_exp h0).1 hk`. Establish `e4 : (7 : ℝ) ≤ Real.exp (6 * L)` using `by linarith [Real.add_one_le_exp (6 * L)]`. Establish `hE : Real.exp (6 * L) = Real.exp L ^ 2 * Real.exp L ^ 2 * Real.exp (2 * L)`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hE2 : Real.exp L ^ 2 ≤ Real.exp (6 * L)`. Rewrite using `[← Real.exp_nat_mul]; exact Real.exp_le_exp.2 (by push_cast; linarith)`. Establish `a1 : (f * r * L) ^ 2 * kap ≤ Real.exp (6 * L)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hE, mul_pow]`. Establish `: (f * r) ^ 2 ≤ Real.exp L ^ 2` using `pow_le_pow_left₀ hfr0.le e1 2`. Establish `: L ^ 2 ≤ Real.exp L ^ 2` using `pow_le_pow_left₀ (by linarith) e2 2`. Use `gcongr`. Establish `a2 : 6 * f * r ^ 2 ≤ 6 * Real.exp (6 * L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: f * r ^ 2 ≤ (f * r) ^ 2` using `by nlinarith`. Establish `: (f * r) ^ 2 ≤ Real.exp L ^ 2` using `pow_le_pow_left₀ hfr0.le e1 2`. Use the polynomial consequences of the given equalities and inequalities. Establish `a3 : S ≤ Real.exp (12 * L)`. Establish `: Real.exp (12 * L) = Real.exp (6 * L) * Real.exp (6 * L)` using `by rw [← Real.exp_add]; ring_nf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[this]`. Use `Real.exp_pos (6 * L)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `(Real.log_le_iff_le_exp h).2 a3` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_size_le (f r L kap S : ℝ) (hf : 1 ≤ f) (hr : 1 ≤ r) (hL : 1 ≤ L) (hk0 : 0 ≤ kap)
     (hk : Real.log kap ≤ 2 * L) (hfr : Real.log (f * r) ≤ L) (hS0 : 0 ≤ S)
@@ -85,7 +85,7 @@ theorem log_size_le (f r L kap S : ℝ) (hf : 1 ≤ f) (hr : 1 ≤ r) (hL : 1 �
   linarith
 
 /- English proof (translation)
-Establish `h1 : 1 ≤ Zb` using `hL1.trans hZ`. Establish `h9 : Zb ≤ Zb ^ 9` using `le_self_pow₀ h1 (by norm_num)`. Establish `h3 : 0 ≤ Zb ^ 3` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem cube_le (Cb L Zb : ℝ) (hL : Cb ≤ L) (hL1 : 1 ≤ L) (hZ : L ≤ Zb) : Cb * Zb ^ 3 ≤ Zb ^ 12 := by
   have h1 : 1 ≤ Zb := hL1.trans hZ
@@ -95,7 +95,7 @@ theorem cube_le (Cb L Zb : ℝ) (hL : Cb ≤ L) (hL1 : 1 ≤ L) (hZ : L ≤ Zb) 
     _ = Zb ^ 12 := by ring
 
 /- English proof (translation)
-Unfold `Formalism.HN.rkK`. Rewrite using `[h, finrank_top]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rkK_eq_finrank_of_span_top {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] (L : Submodule (𝓞 K) V) (h : Submodule.span K (L : Set V) = ⊤) :
@@ -104,29 +104,29 @@ theorem rkK_eq_finrank_of_span_top {K V : Type} [Field K] [NumberField K] [AddCo
   rw [h, finrank_top]
 
 /- English proof (translation)
-Introduce `hP hSz`. Take `⟨Cb, -, hB⟩` from `GlobalTheory.BergRank.berg_sup_rank hP`. Establish `hG` using `GlobalTheory.CovTop.GoodDom.goodAt_dom hP`. Establish `hQ` using `GlobalTheory.QuoWt.weights_at_point hSz`. Establish `hS` using `GlobalTheory.CovTop.CovSz.size_rows hSz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW` using `GlobalTheory.HSApp.wtBig_run`. Use `Closed.imp (Closed.and (Closed.and hQ hS) hW) ?_` and prove the remaining obligations. Introduce `eps Fm CH heps hh`. Take `⟨⟨⟨C1, -, x1, h1⟩, ⟨C2, -, x2, h2⟩⟩, ⟨C3, -, x3, h3⟩⟩` from `hh`. Use `⟨0, le_rfl, max (max (max x1 x2) x3) ((max Cb 1) ^ eps⁻¹), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx hle ι p hp i hi Y hY Z`. Establish `hle1 : max (max x1 x2) x3 ≤ x` using `(le_max_left _ _).trans hle`. Establish `hq` using `h1 x hx ((le_max_left _ _).trans ((le_max_left _ _).trans hle1)) ι p hp i hi`. Establish `hs` using `h2 x hx ((le_max_right _ _).trans ((le_max_left _ _).trans hle1)) ι p hp i hi Y hY`. Establish `hwb` using `h3 x hx ((le_max_right _ _).trans hle1) ι p hp i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hp1, hq1, hE, -, hstr, -, -⟩` from `hq`. Take `⟨hLJ, hInR, hL1, hM, hfs, hfr, -, -, hf8, hr100, -, hkap, hZ12, -, -, -, -, hwt⟩` from `hs`. Use `set PP := (Fm.parT x hx ι).PP with hPP`. Establish `hx1 : Fm.x1 < x` using `hx`. Establish `hLx : (Fm.L x ι).sc.L = x ^ eps`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Scale.L`. Rewrite using `[Fm.L_x x ι hx1, Fm.L_eps x ι]`. Establish `hLC : max Cb 1 ≤ (Fm.L x ι).sc.L`. Rewrite using `[hLx]`. Establish `h0 : (0 : ℝ) ≤ (max Cb 1) ^ eps⁻¹` using `Real.rpow_nonneg (by positivity) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hT2 : 2 ≤ GlobalTheory.FlagTan.dimFlag (dat p i) + lenT p i PP`. Establish `hT1` using `hwb.le_T`. Establish `hD1` using `hwb.one_le`. Express the relevant statement in the definitionally equal form `1 ≤ GlobalTheory.FlagTan.dimFlag (dat p i) at hD1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.FlagTan.dimFlag (dat p i) + 1 ≤ lenT p i PP at hT1`. Use linear arithmetic over natural numbers and integers. Establish `hanti` using `GlobalTheory.CompHS.WtPar.antitone_wt_gap_bar (dat p i) (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)) (lenT p i PP) (fun τ => (hstr τ).1) hT2 hp1 hq1`. Establish `hsum` using `hwt (lenT p i PP) le_rfl`. Establish `hsize : Real.log (∑ τ, ∑ k, |(((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) τ k : ℝ)|) ≤ 20 * (Fm.L x ι).sc.L`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.CovTop.DimLogTop.log_size_le ((Fm.D x ι).R.f : ℝ) ((Fm.D x ι).R.r : ℝ) (Fm.L x ι).sc.L (kap p i) _ (by exact_mod_cast (by omega : 1 ≤ (Fm.D x ι).R.f)) (by exact_mod_cast (by omega : 1 ≤ (Fm.D x ι).R.r)) hL1 (sizeK_nonneg _ _ _) hkap hfr (by positivity) ?_` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ 6 * ((Fm.D x ι).R.f : ℝ) * ((Fm.D x ι).R.r : ℝ) ^ 2` using `by positivity`. Establish `e : zBase (Fm.L x ι) = ((Fm.D x ι).R.f : ℝ) * ((Fm.D x ι).R.r : ℝ) * (Fm.L x ι).sc.L` using `by unfold zBase; ring`. Rewrite using `[← e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hBr` using `(hB (Fm.D x ι) p.T hLJ ((i : ℕ) + 1) hp1 hq1 hE hInR Y (expL (Fm.L x ι).sc.L) (391 * zBase (Fm.L x ι) ^ 2) hY.1 (Fm.L x ι).sc.L hL1 hM hfs hfr (by unfold zBase; exact le_rfl) _ (fun τ => (hanti τ).1) hsize Z).2.2`. Establish `hGd` using `(hG (Fm.D x ι) p.T hLJ ((i : ℕ) + 1) hp1 hq1 hE hInR Y (expL (Fm.L x ι).sc.L) (391 * zBase (Fm.L x ι) ^ 2) hY.1 _ (fun τ => (hanti τ).1) (fun τ => (hanti τ).2)).2 Z`. Establish `hrk : Y.rkC ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) Z = (Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).w …` using `by show ((rankOn Y.U Z _ : ℕ) : ℝ) = _`. Unfold `rankOn`. Rewrite using `[rkK_eq_finrank_of_span_top _ hGd.2.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hrk]`. Establish `hfr1 : (1 : ℝ) ≤ ((Fm.D x ι).R.f : ℝ) * ((Fm.D x ι).R.r : ℝ)`. Establish `: 1 ≤ (Fm.D x ι).R.f * (Fm.D x ι).R.r` using `Nat.one_le_iff_ne_zero.2 (by positivity)`. Conclude with `this` after adjusting the coercions. Establish `hLZ : (Fm.L x ι).sc.L ≤ zBase (Fm.L x ι)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 
-Unfold `zBase`. Use the polynomial consequences of the given equalities and inequalities. Establish `hcube` using `GlobalTheory.CovTop.DimLogTop.cube_le Cb (Fm.L x ι).sc.L (zBase (Fm.L x ι)) ((le_max_left _ _).trans hLC) hL1 hLZ`. Establish `h2 : Cb * (((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.r * (Fm.L x ι).sc.L) ^ 3 = Cb * zBase (Fm.L x ι) ^ 3`. Unfold `zBase`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem log_dim_top_le : Hypotheses2 → Size → Covers fun Fm x _ ι p i Y PP _ => ∀ Z, Real.log (Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) 0)) : ℝ) ≤ PP := by
   intro hP hSz

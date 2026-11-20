@@ -25,7 +25,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `[Ranks.N]`.
+Simplify using the standard rewrite rules.
 -/
 theorem k_eq_N (D : D7) : D.R.k = D.R.N 0 := by simp [Ranks.N]
 
@@ -40,7 +40,7 @@ def repA {X : ErrX D} (rep : ∀ u μ, (D.chTw u μ).cls 0 → UnipotentLevelSta
   fun u μ c => (ptEquiv X u).symm (rep u μ c)
 
 /- English proof (translation)
-Rewrite using `[← RingOfIntegers.coe_injective.eq_iff, map_mul, map_natCast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_iff (π : 𝓞 D.host.E) (g : ℕ) :
     π * UnipotentLevelStabilisers.conjInt D π = (g : 𝓞 D.host.E) ↔
@@ -62,14 +62,14 @@ def errOf (X₀ : ErrX D) {πg : Fin 2 → 𝓞 D.host.E} {πT : D.what₂.Word 
   norm_mem_place_ideal := X₀.norm_mem_place_ideal
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun i => by omega`.
+A detailed English derivation is pending.
 -/
 theorem typePrimesLarge_iff (D : D7) :
     UnipotentLevelStabilisers.TypePrimesLarge D ↔ ∀ i, 2 * D.R.f * D.R.k < D.host.g i - 1 :=
   forall_congr' fun i => by omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, (typePrimesLarge_iff D).mp h 0⟩`.
+Supply the required witnesses or components.
 -/
 theorem gBig_of_large (h : UnipotentLevelStabilisers.TypePrimesLarge D) : Formalism.MainNotions.StandardLattice.GBig D :=
   ⟨0, (typePrimesLarge_iff D).mp h 0⟩

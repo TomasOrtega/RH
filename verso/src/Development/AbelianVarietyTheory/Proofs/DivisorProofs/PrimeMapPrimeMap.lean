@@ -30,20 +30,20 @@ def primeMap (τ : E ≃+* E) (P : HeightOneSpectrum (𝓞 E)) : HeightOneSpectr
     rw [Submodule.mem_bot]; exact h2
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_comap`.
+A detailed English derivation is pending.
 -/
 theorem mem_primeMap (τ : E ≃+* E) (P : HeightOneSpectrum (𝓞 E)) (a : 𝓞 E) :
     a ∈ (primeMap τ P).asIdeal ↔ RingOfIntegers.mapRingEquiv τ.symm a ∈ P.asIdeal :=
   Ideal.mem_comap
 
 /- English proof (translation)
-Simplify using `[ord, FractionalIdeal.count_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ord_zero (P : HeightOneSpectrum (𝓞 E)) : ord P (0 : E) = 0 := by
   simp [ord, FractionalIdeal.count_zero]
 
 /- English proof (translation)
-Unfold `ord`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton]`. Conclude with `FractionalIdeal.count_mul E P (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hx) (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hy)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_mul (P : HeightOneSpectrum (𝓞 E)) {x y : E} (hx : x ≠ 0) (hy : y ≠ 0) :
     ord P (x * y) = ord P x + ord P y := by
@@ -53,29 +53,29 @@ theorem ord_mul (P : HeightOneSpectrum (𝓞 E)) {x y : E} (hx : x ≠ 0) (hy : 
     (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hy)
 
 /- English proof (translation)
-Unfold `ord`. Rewrite using `[← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_inv (P : HeightOneSpectrum (𝓞 E)) (x : E) : ord P x⁻¹ = - ord P x := by
   unfold ord
   rw [← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_inv]
 
 /- English proof (translation)
-Rewrite using `[div_eq_mul_inv, ord_mul P hx (inv_ne_zero hy), ord_inv, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_div (P : HeightOneSpectrum (𝓞 E)) {x y : E} (hx : x ≠ 0) (hy : y ≠ 0) :
     ord P (x / y) = ord P x - ord P y := by
   rw [div_eq_mul_inv, ord_mul P hx (inv_ne_zero hy), ord_inv, sub_eq_add_neg]
 
 /- English proof (translation)
-Simplify using `[ord, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ord_one (P : HeightOneSpectrum (𝓞 E)) : ord P (1 : E) = 0 := by
   simp [ord, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `[ord_zero]`. Conclude with `GlobalTheory.OrdTransport.count_spanSingleton_ringEquiv (𝓞 E) E (RingOfIntegers.mapRingEquiv τ) τ (fun a => rfl) P (primeMap τ P) (fun a => by`. Rewrite using `[mem_primeMap]`. Establish `: RingOfIntegers.mapRingEquiv τ.symm (RingOfIntegers.mapRingEquiv τ a) = a` using `RingOfIntegers.ext (by change τ.symm (τ (a : E)) = (a : E); exact τ.symm_apply_apply _)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]) x hx`.
+A detailed English derivation is pending.
 -/
 theorem ord_primeMap (τ : E ≃+* E) (P : HeightOneSpectrum (𝓞 E)) (x : E) :
     ord (primeMap τ P) (τ x) = ord P x := by
@@ -90,9 +90,9 @@ theorem ord_primeMap (τ : E ≃+* E) (P : HeightOneSpectrum (𝓞 E)) (x : E) :
       rw [this]) x hx
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[mem_primeMap, mem_primeMap]`. Establish `: RingOfIntegers.mapRingEquiv τ.symm (RingOfIntegers.mapRingEquiv τ.symm a) = a`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `τ.symm (τ.symm (a : E)) = (a : E)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[RingEquiv.symm_apply_eq, RingEquiv.symm_apply_eq, hτ]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem primeMap_primeMap (τ : E ≃+* E) (hτ : ∀ x, τ (τ x) = x) (P : HeightOneSpectrum (𝓞 E)) :
     primeMap τ (primeMap τ P) = P := by

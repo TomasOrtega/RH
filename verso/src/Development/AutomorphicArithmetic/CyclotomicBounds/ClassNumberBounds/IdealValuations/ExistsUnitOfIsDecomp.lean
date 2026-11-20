@@ -9,9 +9,7 @@ namespace KStar.IdealValuations
 variable {K : Type*} [Field K] [NumberField K] [IsCMField K]
 
 /- English proof (translation)
-Establish `hc : (Nat.card (Multiplicative (ZMod (l ^ M)))).Coprime h`. Establish `: Nat.card (Multiplicative (ZMod (l ^ M))) = l ^ M`. Rewrite using `[Nat.card_congr (Multiplicative.toAdd (α := ZMod (l ^ M))), Nat.card_zmod]`. Rewrite using `[this]`. Conclude with `Nat.Coprime.pow_left _ hh.symm`.
-
-Conclude with `(powCoprime hc).bijective`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_bijective_zmod {l M h : ℕ} (hh : h.Coprime l) :
     Function.Bijective (fun x : Multiplicative (ZMod (l ^ M)) => x ^ h) := by
@@ -23,15 +21,15 @@ private theorem pow_bijective_zmod {l M h : ℕ} (hh : h.Coprime l) :
   exact (powCoprime hc).bijective
 
 /- English proof (translation)
-Establish `hbij` using `pow_bijective_zmod (M := M) B.h_coprime`. Establish `hone : ∀ A : primeTo v, IsDecomp B.h B.aa (A : IdealGroup K) 1 → del A = 1`. Introduce `A hA`. Apply `hbij.1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `del A ^ B.h = 1 ^ B.h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hdel A 1 hA 1 (by simp), map_one, map_one, one_pow]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `α hα u hu`. Apply `hbij.1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `del ⟨_, hα⟩ ^ B.h = om (residueUnit v.asIdeal u) ^ B.h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← map_pow om, ← map_pow (residueUnit v.asIdeal)]`. Use `hdel ⟨_, hα⟩ (α ^ B.h) ⟨0, 1, one_mem _, by simp⟩ _ ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, Subalgebra.coe_pow, hu, Units.val_pow_eq_pow_val, map_pow, div_pow]`. Introduce `A hA`. Conclude with `hone A ⟨0, (A : IdealGroup K) ^ B.h, pow_mem hA _, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Use `hone _ ⟨Pi.single i (B.h : ℤ), 1, one_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsDel.values {l M : ℕ} (hl : l.Prime) {ι : Type*} [Fintype ι]
     {B : MinusBasis K l ι} {v : HeightOneSpectrum (𝓞 K)}

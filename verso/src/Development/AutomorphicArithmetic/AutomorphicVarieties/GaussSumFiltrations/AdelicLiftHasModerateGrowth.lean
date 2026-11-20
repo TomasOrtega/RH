@@ -11,7 +11,7 @@ open UpperHalfPlane hiding I
 open GlobalTheory.HilbertThetaSeries.SlashCocycle
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two]`. Establish `h0 : 0 ≤ H` using `(abs_nonneg _).trans (hx 0 0)`. Establish `h1 : |x 0 0 * x 1 1| ≤ H * H` using `by rw [abs_mul]; exact mul_le_mul (hx _ _) (hx _ _) (abs_nonneg _) h0`. Establish `h2 : |x 0 1 * x 1 0| ≤ H * H` using `by rw [abs_mul]; exact mul_le_mul (hx _ _) (hx _ _) (abs_nonneg _) h0`. Use `abs_sub (x 0 0 * x 1 1) (x 0 1 * x 1 0)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -24,7 +24,7 @@ theorem abs_det_le (x : Matrix (Fin 2) (Fin 2) ℝ) (H : ℝ) (hx : ∀ i j, |x 
   nlinarith
 
 /- English proof (translation)
-The claim follows from `|(x.det : ℝ)| ≤ (2 * H) ^ 2 ∧ ‖denom x UpperHalfPlane.I‖⁻¹ ≤ 2 * H ∧ (1 + ‖((x • UpperHalfPlane.I : ℍ) : ℂ)‖ ^ 2) / (x • UpperHalfPlane.I : ℍ).im ≤ (2 * H) ^ 4 := by have h0 : 0 ≤ H := (abs_nonneg _).trans (hx 0 0) have hd : 0 < ‖denom x UpperHalfPlane.I‖ := norm_pos_iff.2 (denom …`.
+A detailed English derivation is pending.
 -/
 theorem place_bound (x : GL (Fin 2) ℝ) (hp : 0 < (x.det : ℝ)) (H : ℝ) (hx : ∀ i j, |x i j| ≤ H)
     (hy : ∀ i j, |(x⁻¹ : GL (Fin 2) ℝ) i j| ≤ H) :
@@ -79,17 +79,15 @@ theorem place_bound (x : GL (Fin 2) ℝ) (hp : 0 < (x.det : ℝ)) (H : ℝ) (hx 
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨C, A, hC⟩` from `hf`. Use `set n := (Finset.univ : Finset (InfinitePlace F)).card with hnc`. Use `⟨|C|, 2 * n * k + n * k + 4 * n * A, abs_nonneg _, fun x H hp hH hx hy => ?_⟩` and prove the remaining obligations. Establish `hb` using `fun v => place_bound (cmp v x) (by rw [cmp_det]; exact hp v) H (fun i j => hx i j v) (fun i j => by rw [← map_inv]; exact hy i j v)`. Use `set K := 2 * H`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : 1 ≤ K` using `by simp only [K]; linarith`. Establish `h1 : (∏ v, |(x : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v|) ≤ (K ^ 2) ^ n`. Rewrite using `[hnc, ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun v _ => abs_nonneg _) fun v _ => by rw [← cmp_det]; exact (hb v).1`. Establish `h1' : (∏ v, |(x : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v|) ^ ((k : ℝ) / 2) ≤ K ^ (2 * n * k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖(∏ v, denom (cmp v x) (UpperHalfPlane.I))⁻¹ ^ k‖ ≤ K ^ (n * k)`. Rewrite using `[norm_pow, pow_mul, norm_inv, norm_prod, ← Finset.prod_inv_distrib]`. Use `pow_le_pow_left₀ (Finset.prod_nonneg fun v _ => by positivity) ?_ k` and prove the remaining obligations. Rewrite using `[hnc, ← Finset.prod_const]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Finset.prod_le_prod (fun v _ => by positivity) fun v _ => (hb v).2.1`. Establish `h3 : ‖f (act x fun _ => UpperHalfPlane.I)‖ ≤ |C| * K ^ (4 * n * A)`. Use `(hC _).trans ?_` and prove the remaining obligations. Establish `hn : ∀ v, 0 ≤ (1 + ‖((act x (fun _ => UpperHalfPlane.I) v : ℍ) : ℂ)‖ ^ 2) / (act x (fun _ => UpperHalfPlane.I) v).im` using `fun v => div_nonneg (by positivity) (im_pos _).le`. Use `mul_le_mul (le_abs_self _) ?_ (pow_nonneg (Finset.prod_nonneg fun v _ => hn v) _) (abs_nonneg _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_mul, pow_mul]`. Use `pow_le_pow_left₀ (Finset.prod_nonneg fun v _ => hn v) ?_ A` and prove the remaining obligations. Rewrite using `[hnc, ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun v _ => hn v) fun v _ => (hb v).2.2`. Establish `hK0 : 0 ≤ K` using `by linarith`.
-
-Simplify using `only [sl, sl0]`. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (Finset.prod_nonneg fun v _ => abs_nonneg _) _)]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sl_bound (k : ℕ) (f : Hn F → ℂ) (hf : Gr f) : ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧
     ∀ (x : GL (Fin 2) (InfinitePlace F → ℝ)) (H : ℝ), Pos x → 1 ≤ H → (∀ i j v, |x i j v| ≤ H) →
@@ -134,21 +132,21 @@ theorem sl_bound (k : ℕ) (f : Hn F → ℂ) (hf : Gr f) : ∃ (C : ℝ) (N : �
     _ = _ := by rw [pow_add, pow_add]; ring
 
 /- English proof (translation)
-Unfold `TR.height`. Combine the linear relations using `[norm_nonneg (TR.toL y.val), norm_nonneg (TR.toL (y⁻¹).val)]`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_height (y : GL (Fin 2) (InfinitePlace F → ℝ)) : 1 ≤ TR.height y := by
   unfold TR.height
   linarith [norm_nonneg (TR.toL y.val), norm_nonneg (TR.toL (y⁻¹).val)]
 
 /- English proof (translation)
-The claim follows from `|y i j v| ≤ ‖TR.toL y‖ := (norm_le_pi_norm (TR.toL y i j) v).trans ((norm_le_pi_norm (TR.toL y i) j).trans (norm_le_pi_norm (TR.toL y) i))`.
+A detailed English derivation is pending.
 -/
 theorem entry_le_norm (y : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)) (i j : Fin 2) (v : InfinitePlace F) :
     |y i j v| ≤ ‖TR.toL y‖ :=
   (norm_le_pi_norm (TR.toL y i j) v).trans ((norm_le_pi_norm (TR.toL y i) j).trans (norm_le_pi_norm (TR.toL y) i))
 
 /- English proof (translation)
-The claim follows from `|y i j v| ≤ TR.height y := by unfold TR.height linarith [entry_le_norm y.val i j v, norm_nonneg (TR.toL (y⁻¹).val)]`.
+A detailed English derivation is pending.
 -/
 theorem entry_le_height (y : GL (Fin 2) (InfinitePlace F → ℝ)) (i j : Fin 2) (v : InfinitePlace F) :
     |y i j v| ≤ TR.height y := by
@@ -156,7 +154,7 @@ theorem entry_le_height (y : GL (Fin 2) (InfinitePlace F → ℝ)) (i j : Fin 2)
   linarith [entry_le_norm y.val i j v, norm_nonneg (TR.toL (y⁻¹).val)]
 
 /- English proof (translation)
-The claim follows from `|(y⁻¹ : GL (Fin 2) (InfinitePlace F → ℝ)) i j v| ≤ TR.height y := by unfold TR.height linarith [entry_le_norm (y⁻¹).val i j v, norm_nonneg (TR.toL y.val)]`.
+A detailed English derivation is pending.
 -/
 theorem inv_entry_le_height (y : GL (Fin 2) (InfinitePlace F → ℝ)) (i j : Fin 2) (v : InfinitePlace F) :
     |(y⁻¹ : GL (Fin 2) (InfinitePlace F → ℝ)) i j v| ≤ TR.height y := by
@@ -164,7 +162,7 @@ theorem inv_entry_le_height (y : GL (Fin 2) (InfinitePlace F → ℝ)) (i j : Fi
   linarith [entry_le_norm (y⁻¹).val i j v, norm_nonneg (TR.toL y.val)]
 
 /- English proof (translation)
-The claim follows from `|(x * y : GL (Fin 2) (InfinitePlace F → ℝ)) i j v| ≤ 2 * a * b := by have e : (x * y : GL (Fin 2) (InfinitePlace F → ℝ)) i j v = x i 0 v * y 0 j v + x i 1 v * y 1 j v := by simp [Matrix.mul_apply, Fin.sum_univ_two] have ha : 0 ≤ a := (abs_nonneg _).trans (hx i j v) have h1 : |x i …`.
+A detailed English derivation is pending.
 -/
 theorem mul_entry_le (x y : GL (Fin 2) (InfinitePlace F → ℝ)) (a b : ℝ) (hx : ∀ i j v, |x i j v| ≤ a)
     (hy : ∀ i j v, |y i j v| ≤ b) (i j : Fin 2) (v : InfinitePlace F) :
@@ -178,11 +176,11 @@ theorem mul_entry_le (x y : GL (Fin 2) (InfinitePlace F → ℝ)) (a b : ℝ) (h
   linarith [abs_add_le (x i 0 v * y 0 j v) (x i 1 v * y 1 j v)]
 
 /- English proof (translation)
-Take `⟨C, N, hC, h⟩` from `sl_bound k f hf`. Establish `ht` using `one_le_height t`. Use `⟨C * (4 * TR.height t) ^ N, N, by positivity, fun y hp => ?_⟩` and prove the remaining obligations. Establish `hy` using `one_le_height y`. Use `h (t * y) (2 * TR.height t * TR.height y) hp (by nlinarith) (mul_entry_le t y _ _ (entry_le_height t) (entry_le_height y)) fun i j v => by` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_inv_rev]`. Conclude with `(mul_entry_le _ _ _ _ (inv_entry_le_height y) (inv_entry_le_height t) i j v).trans_eq (by ring)`. Use `this.trans_eq ?_` and prove the remaining obligations. Rewrite using `[mul_assoc C, ← mul_pow]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sl_mul_bound (k : ℕ) (f : Hn F → ℂ) (hf : Gr f) (t : GL (Fin 2) (InfinitePlace F → ℝ)) : ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧
     ∀ y : GL (Fin 2) (InfinitePlace F → ℝ), Pos (t * y) →
@@ -201,16 +199,16 @@ theorem sl_mul_bound (k : ℕ) (f : Hn F → ℂ) (hf : Gr f) (t : GL (Fin 2) (I
   ring
 
 /- English proof (translation)
-Rewrite using `[← cmp_det]`. Conclude with `Units.ne_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero (v : InfinitePlace F) (h : GL (Fin 2) (InfinitePlace F → ℝ)) :
     (h : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v ≠ 0 := by
   rw [← cmp_det]; exact Units.ne_zero _
 
 /- English proof (translation)
-Introduce `v`. Establish `h` using `hp v`. Rewrite `h`, the goal using `[det_mul_apply]`. Break down `pos_and_pos_or_neg_and_neg_of_mul_pos h with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Conclude with `mul_pos h1 ((hs v).1 h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_pos_of_neg_of_neg h1 (lt_of_le_of_ne (not_lt.1 fun h3 => ?_) (det_ne_zero v y'))` and prove the remaining obligations. Conclude with `lt_asymm h2 ((hs v).2 h3)`.
+A detailed English derivation is pending.
 -/
 theorem pos_of_sign (t y y' : GL (Fin 2) (InfinitePlace F → ℝ)) (hp : Pos (t * y))
     (hs : ∀ v, 0 < y.val.det v ↔ 0 < y'.val.det v) : Pos (t * y') := by
@@ -223,15 +221,13 @@ theorem pos_of_sign (t y y' : GL (Fin 2) (InfinitePlace F → ℝ)) (hp : Pos (t
     exact lt_asymm h2 ((hs v).2 h3)
 
 /- English proof (translation)
-Introduce `F _ _ _ k Ψ φ hgr hl g`. Rewrite using `[← TR.infGL_mul_finGL g]`. Use `set h := Matrix.GeneralLinearGroup.map (TR.pInf F) g`. Use `set u := Matrix.GeneralLinearGroup.map (pFin F) g`. Establish `key : ∀ s : InfinitePlace F → Prop, ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ y : GL (Fin 2) (InfinitePlace F → ℝ), (∀ v, 0 < y.val.det v ↔ s v) → ‖φ (TR.infGL F 2 h * finGL F 2 u * TR.infGL F 2 y)‖ ≤ C * TR.height y ^ N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `s`. Distinguish the cases in `hs : ∃ y₀ : GL (Fin 2) (InfinitePlace F → ℝ), ∀ v, 0 < y₀.val.det v ↔ s v`. Take `⟨y₀, h₀⟩` from `hs`. Take `⟨τ, hτ⟩` from `(GlobalTheory.T.rational_GL2_infinite_finite_factor F 1).2 (h * y₀)`. Rewrite `hτ` using `[← mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, N, hC, hb⟩` from `sl_mul_bound k (Ψ (toFin τ * u)) (hgr _) (toInf τ * h)`. Use `⟨C, N, hC, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hp : Pos (toInf τ * h * y)` using `pos_of_sign _ y₀ y hτ fun v => (h₀ v).trans (hy v).symm`. Establish `e : ratGL F 2 τ * (TR.infGL F 2 h * finGL F 2 u * TR.infGL F 2 y) = TR.infGL F 2 (toInf τ * h * y) * finGL F 2 (toFin τ * u)`. Rewrite using `[(GlobalTheory.T.rational_GL2_infinite_finite_factor F τ).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `TR.ga_ext (by simp [mul_assoc]) (by simp)`. Rewrite using `[← hl.1 τ, e, hl.2 _ hp]`. Conclude with `hb y hp`. Conclude with `⟨0, 0, le_rfl, fun y hy => absurd ⟨y, hy⟩ hs⟩`. Use `choose C N hC hb using key`.
-
-Use `⟨∑ s, C s, ∑ s, N s, fun y => (hb (fun v => 0 < y.val.det v) y fun _ => Iff.rfl).trans ?_⟩` and prove the remaining obligations. Establish `hy` using `one_le_height y`. Conclude with `mul_le_mul (Finset.single_le_sum (fun s _ => hC s) (Finset.mem_univ _)) (pow_le_pow_right₀ hy (Finset.single_le_sum (fun s _ => Nat.zero_le (N s)) (Finset.mem_univ _))) (by positivity) (Finset.sum_nonneg fun s _ => hC s)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_growth : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (Ψ : GL (Fin 2) (Af F) → Hn F → ℂ) (φ : GA F 2 → ℂ), (∀ g, Gr (Ψ g)) → IsLift k Ψ φ → ∀ g, ∃ (C : ℝ) (N : ℕ), ∀ y, ‖φ (g * TR.infGL F 2 y)‖ ≤ C * TR.height y ^ N := by
   intro F _ _ _ k Ψ φ hgr hl g
@@ -270,7 +266,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.LiftGrowth.lift_growth | exact GlobalTheory.HilbertThetaSeries.LiftGrowth.lift_growth | (intros; apply GlobalTheory.HilbertThetaSeries.LiftGrowth.lift_growth <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.adelic_lift_has_moderate_growth : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (Ψ : GL (Fin 2) (Af F) → Hn F → ℂ) (φ : GA F 2 → ℂ), (∀ g, Gr (Ψ g)) → IsLift k Ψ φ → ∀ g, ∃ (C : ℝ) (N : ℕ), ∀ y, ‖φ (g * TR.infGL F 2 y)‖ ≤ C * TR.height y ^ N := by
   first | exact @GlobalTheory.HilbertThetaSeries.LiftGrowth.lift_growth | exact GlobalTheory.HilbertThetaSeries.LiftGrowth.lift_growth | (intros; apply GlobalTheory.HilbertThetaSeries.LiftGrowth.lift_growth <;> assumption)

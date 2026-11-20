@@ -4,17 +4,15 @@ open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology
 namespace GlobalTheory.ExteriorInterpolation
 
 /- English proof (translation)
-Take `⟨P, hP⟩ : ∃ P : Polynomial ℂ, P = ∏ i, (Polynomial.X + Polynomial.C (-z i))` from `⟨_, rfl⟩`. Use `⟨fun k => P.coeff k, fun w => ?_, ?_⟩` and prove the remaining obligations. Establish `hdeg : P.natDegree < l + 1`. Establish `h1` using `Polynomial.natDegree_prod_le (s := Finset.univ) (f := fun i => Polynomial.X + Polynomial.C (-z i))`. Simplify using `only [Polynomial.natDegree_X_add_C, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one] at h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hP]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Polynomial.eval_eq_sum_range' hdeg, hP, Polynomial.eval_prod]`. Simplify using `[sub_eq_add_neg]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `k hk`. Establish `hk' : k ≤ (Finset.univ : Finset (Fin l)).card`. Simplify `hk` using `[Nat.lt_succ_iff]`. Rewrite using `[hP, Finset.prod_X_add_C_coeff _ _ hk']`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `norm_sum_le_of_le` to reduce the goal to its premises. Introduce `t _`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_le_one (fun i _ => norm_nonneg _) (fun i _ => by rw [norm_neg]; exact hz i)`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = ((l.choose (l - k) : ℕ) : ℝ) := by`. Simplify using `[Finset.card_powersetCard, Finset.card_univ]`. Use `_ = ∑ k ∈ Finset.range (l + 1), ((l.choose k : ℕ) : ℝ) := by`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k hk`.
-
-Rewrite using `[Nat.choose_symm (by simpa [Nat.lt_succ_iff] using hk)]`. Use `_ = 2 ^ l := by exact_mod_cast Nat.sum_range_choose l`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coeffs (l : ℕ) (z : Fin l → ℂ) (hz : ∀ i, ‖z i‖ ≤ 1) :
     ∃ a : ℕ → ℂ, (∀ w : ℂ, ∏ i, (w - z i) = ∑ k ∈ Finset.range (l + 1), a k * w ^ k) ∧
@@ -56,19 +54,17 @@ theorem exists_coeffs (l : ℕ) (z : Fin l → ℂ) (hz : ∀ i, ‖z i‖ ≤ 1
       _ = 2 ^ l := by exact_mod_cast Nat.sum_range_choose l
 
 /- English proof (translation)
-Take `⟨a, ha, hsum⟩` from `exists_coeffs l z hz`. Use `⟨fun j ζ => ∑ k ∈ Finset.range (l + 1), if (j : ℕ) < k then a k * ζ ^ (k - 1 - j) else 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Apply the tactic sequence `exact continuous_finsetSum _ (fun k _ => by split_ifs <;> fun_prop)`. Introduce `j ζ hζ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `norm_sum_le_of_le` to reduce the goal to its premises. Introduce `k _`. Use `split_ifs`. Rewrite using `[norm_mul, norm_pow]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mul_le_of_le_one_right (norm_nonneg _) (pow_le_one₀ (norm_nonneg _) hζ)`. Simplify using the standard rewrite rules. Use `_ ≤ 2 ^ l := hsum`. Introduce `ζ w`. Rewrite using `[ha ζ, ha w, ← Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `e1 : (∑ j : Fin l, (∑ k ∈ Finset.range (l + 1), if (j : ℕ) < k then a k * ζ ^ (k - 1 - j) else 0) * w ^ (j : ℕ)) = ∑ k ∈ Finset.range (l + 1), ∑ j ∈ Finset.range l, (if j < k then a k * ζ ^ (k - 1 - j) else 0) * w ^ j`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => (∑ k ∈ Finset.range (l + 1), if j < k then a k * ζ ^ (k - 1 - j) else 0) * w ^ j) l]`. Repeatedly rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Rewrite using `[e1, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k hk`. Establish `hkl : k ≤ l` using `by simpa [Nat.lt_succ_iff] using hk`. Establish `e2 : ∑ j ∈ Finset.range l, (if j < k then a k * ζ ^ (k - 1 - j) else 0) * w ^ j = a k * ∑ j ∈ Finset.range k, w ^ j * ζ ^ (k - 1 - j)`. Rewrite using `[Finset.mul_sum, show Finset.range k = (Finset.range l).filter (· < k) by ext j; simp; omega, Finset.sum_filter]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Apply the tactic sequence `split_ifs <;> ring`. Establish `e3 : (∑ j ∈ Finset.range k, w ^ j * ζ ^ (k - 1 - j)) * (ζ - w) = ζ ^ k - w ^ k`. Rewrite using `[← neg_sub w ζ, mul_neg, geom_sum₂_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, mul_assoc, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_divided (l : ℕ) (z : Fin l → ℂ) (hz : ∀ i, ‖z i‖ ≤ 1) :
     ∃ b : Fin l → ℂ → ℂ, (∀ j, Continuous (b j)) ∧ (∀ j ζ, ‖ζ‖ ≤ 1 → ‖b j ζ‖ ≤ 2 ^ l) ∧
@@ -117,47 +113,43 @@ theorem exists_divided (l : ℕ) (z : Fin l → ℂ) (hz : ∀ i, ‖z i‖ ≤ 
     ring
 
 /- English proof (translation)
-Establish `hS : {ζ : ℂ | r ≤ ‖ζ‖} ∈ 𝓝 w` using `Filter.mem_of_superset ((isOpen_lt continuous_const continuous_norm).mem_nhds hw) (fun ζ hζ => by simp only [Set.mem_ofPred_eq] at hζ ⊢; exact hζ.le)`. Establish `hgw : DifferentiableAt ℂ g w` using `hg.differentiableAt hS`. Take `⟨F, hF⟩ : ∃ F : ℂ → ℂ, F = dslope g w` from `⟨_, rfl⟩`. Establish `hFc : ContinuousOn F {ζ : ℂ | r ≤ ‖ζ‖}`. Rewrite using `[hF]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(continuousOn_dslope hS).mpr ⟨hg.continuousOn, hgw⟩`. Establish `main : ∀ R : ℝ, ‖w‖ < R → (∮ ζ in C(0, r), (ζ - w)⁻¹ * g ζ) = (∮ ζ in C(0, R), (ζ - w)⁻¹ * g ζ) - 2 * Real.pi * I * g w`. Introduce `R hR`. Establish `hrR : r ≤ R` using `(hw.trans hR).le`. Establish `hsub : ∀ ρ, r ≤ ρ → Metric.sphere (0 : ℂ) ρ ⊆ {ζ : ℂ | r ≤ ‖ζ‖}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ h1 ζ hζ`. Rewrite `hζ` using `[mem_sphere_zero_iff_norm]`. Use `show r ≤ ‖ζ‖`. Rewrite using `[hζ]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `split : ∀ ρ, r ≤ ρ → ‖w‖ ≠ ρ → (∮ ζ in C(0, ρ), (ζ - w)⁻¹ * g ζ) = g w * (∮ ζ in C(0, ρ), (ζ - w)⁻¹) + ∮ ζ in C(0, ρ), F ζ`. Introduce `ρ h1 hne`. Establish `hρ : 0 ≤ ρ` using `hr.le.trans h1`. Establish `hne' : ∀ ζ ∈ Metric.sphere (0 : ℂ) ρ, ζ - w ≠ 0`. Introduce `ζ hζ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hζ` using `[mem_sphere_zero_iff_norm]`. Rewrite `h` using `[sub_eq_zero]`. Rewrite `hζ` using `[h]`. Conclude with `hne hζ`. Establish `c1 : ContinuousOn (fun ζ : ℂ => (ζ - w)⁻¹) (Metric.sphere (0 : ℂ) ρ)` using `(continuousOn_id.sub continuousOn_const).inv₀ hne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← smul_eq_mul (g w), ← circleIntegral.integral_smul (g w) _ 0 ρ, ← circleIntegral.integral_add (show CircleIntegrable (fun ζ => g w • (ζ - w)⁻¹) 0 ρ from (ContinuousOn.circleIntegrable hρ (by fun_prop (disch := exact hne')))) ((hFc.mono (hsub ρ h1)).circleIntegrable hρ)]`. Apply `circleIntegral.integral_congr hρ` to reduce the goal to its premises. Introduce `ζ hζ`. Establish `hz` using `hne' ζ hζ`. Simplify using `only [hF, dslope_of_ne _ (sub_ne_zero.mp hz), slope_def_field, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hann : (∮ ζ in C(0, R), F ζ) = ∮ ζ in C(0, r), F ζ`. Apply `circleIntegral_eq_of_differentiable_on_annulus_off_countable hr hrR (Set.countable_singleton w)` to reduce the goal to its premises. Use `hFc.mono ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ζ hζ`. Use `hζ.2` as an intermediate fact. Rewrite `this` using `[Metric.mem_ball, dist_zero_right, not_lt]`. Conclude with `this`. Introduce `ζ hζ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hζ1` using `hζ.1.2`. Rewrite `hζ1` using `[Metric.mem_closedBall, dist_zero_right, not_le]`. Establish `hζw : ζ ≠ w` using `hζ.2`. Rewrite using `[hF, differentiableAt_dslope_of_ne hζw]`. Conclude with `hg.differentiableAt (Filter.mem_of_superset ((isOpen_lt continuous_const continuous_norm).mem_nhds hζ1) (fun x hx => by simp only [Set.mem_ofPred_eq] at hx ⊢; exact hx.le))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hzero : (∮ ζ in C(0, r), (ζ - w)⁻¹) = 0`. Establish `hne0 : ∀ ζ ∈ Metric.closedBall (0 : ℂ) r, ζ - w ≠ 0`. Introduce `ζ hζ h`. Rewrite `hζ` using `[Metric.mem_closedBall, dist_zero_right]`. Rewrite `h` using `[sub_eq_zero]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hζ` using `[h]`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `circleIntegral_eq_zero_of_differentiable_on_off_countable hr.le Set.countable_empty` to reduce the goal to its premises. Conclude with `(continuousOn_id.sub continuousOn_const).inv₀ hne0`. Introduce `ζ hζ`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(differentiableAt_id.sub_const w).inv (hne0 ζ (Metric.ball_subset_closedBall hζ.1))`. Establish `hone : (∮ ζ in C(0, R), (ζ - w)⁻¹) = 2 * Real.pi * I` using `circleIntegral.integral_sub_inv_of_mem_ball (by simpa using hR)`. Rewrite using `[split r le_rfl (ne_of_gt hw), split R hrR (ne_of_lt hR), hann, hzero, hone]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨S, hS'⟩ : ∃ S, S = ∮ ζ in C(0, r), (ζ - w)⁻¹ * g ζ` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hS']`. Establish `hK : ∀ ε > 0, ‖S + 2 * Real.pi * I * g w‖ ≤ 4 * Real.pi * ε`. Introduce `ε hε`. Establish `hev : ∀ᶠ ζ in cocompact ℂ, ‖g ζ‖ ≤ ε` using `by filter_upwards [h0 (Metric.closedBall_mem_nhds 0 hε)] with ζ hζ`. Simplify using `using hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨K, hKc, hKs⟩` from `(Filter.hasBasis_cocompact.eventually_iff).mp hev`. Take `⟨M, hM⟩` from `hKc.isBounded.subset_closedBall 0`. Use `set R : ℝ := max (M + 1) (2 * ‖w‖ + 1) with hRdef`. Establish `hR1 : M + 1 ≤ R` using `le_max_left _ _`. Establish `hR2 : 2 * ‖w‖ + 1 ≤ R` using `le_max_right _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hRpos : 0 < R` using `by linarith [norm_nonneg w]`. Establish `hwR : ‖w‖ < R` using `by linarith [norm_nonneg w]`. Rewrite using `[hS', main R hwR]`. Simplify using `only [sub_add_cancel]`. Establish `hb : ∀ ζ ∈ Metric.sphere (0 : ℂ) R, ‖(ζ - w)⁻¹ * g ζ‖ ≤ 2 / R * ε`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `ζ hζ`. Rewrite `hζ` using `[mem_sphere_zero_iff_norm]`. Establish `hgz : ‖g ζ‖ ≤ ε`. Apply `hKs` to reduce the goal to its premises. Introduce `hK'`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hM hK'` as an intermediate fact. Rewrite `this` using `[Metric.mem_closedBall, dist_zero_right]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : R / 2 ≤ ‖ζ - w‖`. Use `norm_sub_norm_le ζ w` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinv : ‖ζ - w‖⁻¹ ≤ 2 / R`. Rewrite using `[show 2 / R = (R / 2)⁻¹ by field_simp]`. Conclude with `inv_anti₀ (by positivity) hd`. Rewrite using `[norm_mul, norm_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_le_mul hinv hgz (norm_nonneg _) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Establish `h00 : ‖S + 2 * Real.pi * I * g w‖ = 0`. Apply `le_antisymm _ (norm_nonneg _)` to reduce the goal to its premises. Assume the negation of the conclusion as `hpos'`.
-
-Establish `hpos` using `lt_of_not_ge hpos'`. Establish `h8` using `hK (‖S + 2 * Real.pi * I * g w‖ / (8 * Real.pi)) (by positivity)`. Establish `: 4 * Real.pi * (‖S + 2 * Real.pi * I * g w‖ / (8 * Real.pi)) = ‖S + 2 * Real.pi * I * g w‖ / 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `h8` using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `norm_eq_zero.mp h00` as an intermediate fact. Take the linear combination `this`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cauchy_exterior (g : ℂ → ℂ) (r : ℝ) (hr : 0 < r)
     (hg : DifferentiableOn ℂ g {w | r ≤ ‖w‖}) (h0 : Tendsto g (Filter.cocompact ℂ) (𝓝 0))
@@ -287,7 +279,7 @@ theorem cauchy_exterior (g : ℂ → ℂ) (r : ℝ) (hr : 0 < r)
   linear_combination this
 
 /- English proof (translation)
-Simplify using `only [circleIntegral, Finset.smul_sum]`. Conclude with `intervalIntegral.integral_finsetSum (fun i hi => (hf i hi).out)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem circleIntegral_finset_sum' {ι : Type*} (s : Finset ι) (f : ι → ℂ → ℂ) (c : ℂ) (R : ℝ)
     (hf : ∀ i ∈ s, CircleIntegrable (f i) c R) :
@@ -296,41 +288,39 @@ private theorem circleIntegral_finset_sum' {ι : Type*} (s : Finset ι) (f : ι 
   exact intervalIntegral.integral_finsetSum (fun i hi => (hf i hi).out)
 
 /- English proof (translation)
-Introduce `l z g r G hr hr1 hz hg h0 hG`. Take `⟨b, hbc, hbb, hbid⟩` from `exists_divided l z (fun i => (hz i).2)`. Establish `hPne : ∀ ζ ∈ Metric.sphere (0 : ℂ) r, ∏ k, (ζ - z k) ≠ 0`. Introduce `ζ hζ`. Rewrite using `[Finset.prod_ne_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _ h`. Rewrite `hζ` using `[mem_sphere_zero_iff_norm]`. Rewrite `h` using `[sub_eq_zero]`. Use `(hz k).1` as an intermediate fact. Rewrite `this` using `[← h, hζ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ this`. Establish `hsph : Metric.sphere (0 : ℂ) r ⊆ {w : ℂ | r ≤ ‖w‖}`. Introduce `ζ hζ`. Rewrite `hζ` using `[mem_sphere_zero_iff_norm]`. Use `show r ≤ ‖ζ‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hζ]`. Establish `hcont : ∀ j, ContinuousOn (fun ζ => g ζ / (∏ k, (ζ - z k)) * b j ζ) (Metric.sphere (0 : ℂ) r)`. Introduce `j`. Use `ContinuousOn.mul ?_ (hbc j).continuousOn` and prove the remaining obligations. Conclude with `(hg.continuousOn.mono hsph).div (by fun_prop) hPne`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨c, hc⟩ : ∃ c : Fin l → ℂ, c = fun j => -(2 * (Real.pi : ℂ) * I)⁻¹ * ∮ ζ in C(0, r), g ζ / (∏ k, (ζ - z k)) * b j ζ` from `⟨_, rfl⟩`. Establish `hpi : (2 * (Real.pi : ℂ) * I) ≠ 0`. Simplify using `[Real.pi_ne_zero, I_ne_zero]`. Use `⟨c, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `hwi` using `(hz i).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1 : ∑ j, c j * z i ^ (j : ℕ) = -(2 * (Real.pi : ℂ) * I)⁻¹ * ∑ j : Fin l, ∮ ζ in C(0, r), z i ^ (j : ℕ) • (g ζ / (∏ k, (ζ - z k)) * b j ζ)`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[circleIntegral.integral_smul, hc, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, ← circleIntegral_finset_sum' Finset.univ (fun (j : Fin l) ζ => z i ^ (j : ℕ) • ((g ζ / ∏ k, (ζ - z k)) * b j ζ)) 0 r (fun j _ => ContinuousOn.circleIntegrable hr.le ((hcont j).const_smul (z i ^ (j : ℕ))))]`. Establish `e2 : (∮ ζ in C(0, r), ∑ j : Fin l, z i ^ (j : ℕ) • (g ζ / (∏ k, (ζ - z k)) * b j ζ)) = ∮ ζ in C(0, r), (ζ - z i)⁻¹ * g ζ`. Apply `circleIntegral.integral_congr hr.le` to reduce the goal to its premises. Introduce `ζ hζ`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPζ` using `hPne ζ hζ`. Establish `hzne : ζ - z i ≠ 0`. Introduce `h`. Rewrite `h` using `[sub_eq_zero]`. Rewrite `hζ` using `[mem_sphere_zero_iff_norm, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hwi` using `[hζ]`. Conclude with `lt_irrefl _ hwi`. Establish `e` using `hbid ζ (z i)`. Establish `hPz : ∏ k, (z i - z k) = 0` using `Finset.prod_eq_zero (Finset.mem_univ i) (sub_self _)`. Rewrite `e` using `[hPz, sub_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsum : ∑ j, b j ζ * z i ^ (j : ℕ) = (∏ k, (ζ - z k)) / (ζ - z i)` using `eq_div_of_mul_eq hzne e`. Establish `e3 : ∑ j : Fin l, z i ^ (j : ℕ) • (g ζ / (∏ k, (ζ - z k)) * b j ζ) = g ζ / (∏ k, (ζ - z k)) * ∑ j, b j ζ * z i ^ (j : ℕ)`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only`. Rewrite using `[e3, hsum]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2, cauchy_exterior g r hr hg h0 (z i) hwi]`. Clear the denominators using the available nonvanishing facts. Establish `hsph1 : ∀ ζ ∈ Metric.sphere (0 : ℂ) r, ‖ζ‖ = r` using `fun ζ hζ => mem_sphere_zero_iff_norm.mp hζ`. Establish `hG0 : 0 ≤ G`. Establish `hmem : ((r : ℂ)) ∈ Metric.sphere (0 : ℂ) r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[mem_sphere_zero_iff_norm, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr]`. Establish `hpos : 0 < ‖∏ k, ((r : ℂ) - z k)‖` using `norm_pos_iff.mpr (hPne _ hmem)`. Establish `h1` using `hG (r : ℂ) (hsph1 _ hmem)`. Assume the negation of the conclusion as `hneg`. Establish `hlt : G * ‖∏ k, ((r : ℂ) - z k)‖ < 0` using `mul_neg_of_neg_of_pos (lt_of_not_ge hneg) hpos`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the linear relations using `[norm_nonneg (g (r : ℂ))]`. Establish `hbound : ∀ j, ∀ ζ ∈ Metric.sphere (0 : ℂ) r, ‖g ζ / (∏ k, (ζ - z k)) * b j ζ‖ ≤ G * 2 ^ l`. Introduce `j ζ hζ`. Establish `hpos : 0 < ‖∏ k, (ζ - z k)‖` using `norm_pos_iff.mpr (hPne ζ hζ)`. Establish `hq : ‖g ζ‖ / ‖∏ k, (ζ - z k)‖ ≤ G`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hpos]`. Conclude with `hG ζ (hsph1 ζ hζ)`. Establish `hb` using `hbb j ζ (by rw [hsph1 ζ hζ]; exact hr1)`. Rewrite using `[norm_mul, norm_div]`. Conclude with `mul_le_mul hq hb (norm_nonneg _) hG0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hcj : ∀ j, ‖c j‖ ≤ 2 ^ l * (r * G)`. Introduce `j`. Establish `hI` using `circleIntegral.norm_integral_le_of_norm_le_const hr.le (hbound j)`. Establish `hn : ‖-(2 * (Real.pi : ℂ) * I)⁻¹‖ = (2 * Real.pi)⁻¹`. Rewrite using `[norm_neg, norm_inv, norm_mul, norm_mul, Complex.norm_I, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts.
 
-Evaluate the numerical expressions. Rewrite using `[hc]`. Simplify using `only`. Rewrite using `[norm_mul, hn]`. Combine the equalities or inequalities in the displayed calculation.
-
-Clear the denominators using the available nonvanishing facts. Establish `hl : (l : ℝ) ≤ 2 ^ l` using `by exact_mod_cast (Nat.lt_two_pow_self (n := l)).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (4 : ℝ) ^ l = 2 ^ l * 2 ^ l by rw [← mul_pow]; norm_num]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem interpolation : ∀ (l : ℕ) (z : Fin l → ℂ) (g : ℂ → ℂ) (r G : ℝ), 0 < r → r ≤ 1 → (∀ i, r < ‖z i‖ ∧ ‖z i‖ ≤ 1) → DifferentiableOn ℂ g {w | r ≤ ‖w‖} → Tendsto g (Filter.cocompact ℂ) (𝓝 0) → (∀ w : ℂ, ‖w‖ = r → ‖g w‖ ≤ G * ‖∏ i, (w - z i)‖) → ∃ c : Fin l → ℂ, (∀ i, ∑ j, c j * z i ^ (j : ℕ) = g (z i)) ∧ ∑ j, ‖c j‖ ≤ 4 ^ l * r * G := by
   intro l z g r G hr hr1 hz hg h0 hG

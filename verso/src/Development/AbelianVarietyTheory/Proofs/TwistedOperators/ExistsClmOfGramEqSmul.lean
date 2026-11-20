@@ -4,21 +4,21 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `Φ : (α →₀ ℂ) →ₗ[ℂ] Hs` to `Finsupp.linearCombination ℂ u`. Set `Ψ : (α →₀ ℂ) →ₗ[ℂ] E` to `Finsupp.linearCombination ℂ f`. Establish `hinner : ∀ z w : α →₀ ℂ, ⟪Ψ z, Ψ w⟫_ℂ = (K : ℂ) * ⟪Φ z, Φ w⟫_ℂ`. Introduce `z w`. Proceed by induction on `z using Finsupp.induction_linear with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add z₁ z₂ h₁ h₂ => simp only [map_add, inner_add_left, h₁, h₂]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `single a c`. Proceed by induction on `w using Finsupp.induction_linear with`.
+Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add w₁ w₂ h₁ h₂ => simp only [map_add, inner_add_right, h₁, h₂]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `single b d`. Simplify using `only [Φ, Ψ, Finsupp.linearCombination_single, inner_smul_left, inner_smul_right, hK]`.
+Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hnorm : ∀ z, ‖Ψ z‖ ^ 2 = K * ‖Φ z‖ ^ 2`. Introduce `z`. Establish `h` using `hinner z z`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Simplify using `using h`. Establish `hbound : ∀ z, ‖Ψ z‖ ≤ Real.sqrt (max K 0) * ‖Φ z‖`. Introduce `z`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : Real.sqrt (max K 0) ^ 2 = max K 0` using `Real.sq_sqrt (le_max_right _ _)`. Establish `h0 : 0 ≤ Real.sqrt (max K 0)` using `Real.sqrt_nonneg _`. Establish `h1 : ‖Ψ z‖ ^ 2 ≤ (Real.sqrt (max K 0) * ‖Φ z‖) ^ 2`. Rewrite using `[mul_pow, hs, hnorm]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (sq_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg h0 (norm_nonneg _)) two_ne_zero).1 h1`. Establish `hdense : DenseRange Φ`. Establish `hr : Set.range Φ = (Submodule.span ℂ (Set.range u) : Set Hs)`. Rewrite using `[← LinearMap.coe_range]`. Conclude with `congrArg _ (Finsupp.range_linearCombination ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[DenseRange, hr]`. Conclude with `hd`. Use `⟨Ψ.extendOfNorm Φ, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.extendOfNorm_eq hdense ⟨_, hbound⟩ (Finsupp.single a 1)`. Simplify `h` using `[Φ, Ψ, Finsupp.linearCombination_single]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_clm_of_gram_eq_smul {α Hs E : Type} [NormedAddCommGroup Hs] [InnerProductSpace ℂ Hs]
     [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E] (u : α → Hs) (f : α → E)

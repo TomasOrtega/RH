@@ -20,9 +20,9 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Eis
 
 /- English proof (translation)
-Introduce `hP D V h0 a ha hI σ hσ`. Establish `hμ : IsHeckeChar D 1` using `⟨continuous_const, fun _ => rfl⟩`. Establish `hb : ResEta D 1 0` using `⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun _ _ _ => by simp⟩`. Establish `hφ` using `sph_mem hI (σ : ℂ)`. Take `⟨k, hk⟩` from `(hP D V h0 a ha hI 1 0 hμ hb σ _ hφ).2 σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hv` using `(sphConv D V a hI).eisValueAt_flat hI hφ hμ (by simpa using hσ)`. Take `⟨r, hr, -, -, C, N, h⟩` from `hk.of_eisValueAt hv`. Conclude with `⟨C, N, fun g => hv.eisCont_eq ▸ h σ (Metric.mem_ball_self hr) g⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem modGrowth_eis_sph : GlobalTheory.Published.SiegelEisensteinContinuation → ∀ (D : D7) (V : HSp D), 0 < V.rank → ∀ a : GL (Fin V.rank) (AE D), IsMaj V a → HasIwasawa D.sp.cm.sig (dblSp V).gram (Khat V a) → ∀ σ : ℝ, (V.rank : ℝ) / 2 < σ → GlobalTheory.Grow.ModGrowth (dblSp V) (GlobalTheory.Eis.eis V (GlobalTheory.Eis.sph V a (σ : ℂ))) := by
   intro hP D V h0 a ha hI σ hσ

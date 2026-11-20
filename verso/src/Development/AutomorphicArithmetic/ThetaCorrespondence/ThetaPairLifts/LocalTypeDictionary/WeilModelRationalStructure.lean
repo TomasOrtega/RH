@@ -28,15 +28,15 @@ end GlobalTheory.RealDict.CompactCoinv
 namespace GlobalTheory.RealDict
 open GlobalTheory.RealDict.CompactCoinv
 /- English proof (translation)
-Introduce `_ D ψ θ hψ hθ ε M X A B χS χT ω eS eT hω he Xs Ws Mo ψ' χX χW om τ hP hR Φ _ hrange hΦ k hk f hf f₁ hA`. Take `⟨f₀, r, hvac, h0, hr⟩` from `hΦ`. Take `⟨hCM, -, -, -, -, -, -, -, -, -, hW, -⟩` from `hP`. Rewrite `hf` using `[← hrange]`. Take `⟨P, rfl⟩` from `hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `have hc : sgE (D := D) ε ≠ 0 := by cases ε <;> simp [sgE]`. Take `⟨g, hgk, hg⟩` from `exists_conjU M hc hR.JX k`. Take `⟨P', hP', hm⟩` from `moves_sgn hθ A B hω he hvac h0 g (mem_GinfC_of_conj g _ hg hk.1) (fun t => by`. Take `⟨t', h1, h2, -⟩` from `hR.cart (InfinitePlace.mk ((tauE D t).comp (algebraMap D.host.F D.host.E)))`. Take `rfl` from `eq_of_conj_over t t' _ h1`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[infMat_of_conj hθ hCM g _ hg _ _ h1, ← h2]`. Conclude with `hk.2 _) P`. Establish `h1 : GlobalTheory.TripleRead.toUX X (Equiv.refl (Fin X.rank)) hR.JW 1 = 1` using `Subtype.ext (Units.ext rfl)`. Establish `h2` using `hR.transp _ (hr P).1.2 g 1`. Rewrite `h2` using `[hgk, h1, (hr P).2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `thO_inj Mo hψ (Formalism.L2.Theta.gram_det_ne (sgn ε M)) (om_mem_schA hW (k, 1) (hr P).1.2) (hr P').1.2 (h2.trans (Eq.trans hP' (hr P').2.symm))`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← GlobalTheory.LieScalar.ptF_one (ψ := ψ) (θ := θ) (frSgn ε A) B f₀, ← (hr 1).2]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.TripleRead.thO, thetaSum, Darboux.rho, schr, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens]`. Establish `h4 : (f₁ : _ → ℂ) = Φ P'` using `eq_of_tens (hr P).1.1 hr0 ((hA r (hr P).1).symm.trans h3)`. Rewrite using `[DFunLike.coe_injective h4, ← map_sub]`. Conclude with `⟨_, hm, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sub_mem_map_coinv_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -93,7 +93,7 @@ open scoped ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RealDict.sub_mem_map_coinv_alt | exact _root_.GlobalTheory.RealDict.sub_mem_map_coinv_alt | (intros; apply _root_.GlobalTheory.RealDict.sub_mem_map_coinv_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.weil_model_rational_structure_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

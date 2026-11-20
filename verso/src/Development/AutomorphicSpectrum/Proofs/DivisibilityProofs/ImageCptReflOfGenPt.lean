@@ -19,7 +19,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Indep
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
 /- English proof (translation)
-Establish `: (monomial m a : Top.RPA Ψ N) = a • basisMonomials (Option (Ψ × Fin N)) ℝ m`. Rewrite using `[coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, Top.RootModel.PP, Module.Basis.constr_basis, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pp_monomial (M : Top.RootModel Ψ N) (II : IntersectionSystem) (m : Option (Ψ × Fin N) →₀ ℕ) (a : ℝ) :
     M.PP II (monomial m a) = a * limUnder (𝓝[>] (0:ℝ)) (fun t => M.arMono II t m) := by
@@ -34,9 +34,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Indep
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[F.as_sum]`. Simplify using `only [Top.toA, map_sum, rename_monomial, pp_monomial]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Take `⟨L, hL⟩` from `hconv (m.mapDomain some)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Establish `hL' : Tendsto (fun t => M'.arMono II t (m.mapDomain some)) (𝓝[>] (0:ℝ)) (𝓝 L)`. Use `hL.sub (h m)` as an intermediate fact. Simplify using `using this`. Rewrite using `[hL.limUnder_eq, hL'.limUnder_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem pp_toA_eq_of_tendsto (M M' : Top.RootModel Ψ N) (II : IntersectionSystem) (hconv : M.Converges II)
     (h : ∀ m : (Ψ × Fin N) →₀ ℕ, Tendsto (fun t => M.arMono II t (m.mapDomain some) -
@@ -57,16 +57,16 @@ end GlobalTheory.CompanionTheory.Ar.Indep
 namespace GlobalTheory.CompanionTheory.Ar.Indep
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spectrumMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (spMap β), spectrumMap_comp, ← A.cst_over, ← Y.jQ_over]`. Establish `h1 : A.ξ ≫ A.f = spMap A.fn ≫ x ≫ Y.jQ ≫ Limits.pullback.fst _ _`. Use `A.fn_over` as an intermediate fact. Unfold `GlobalTheory.CompanionTheory.Ar.Dominates at this`. Rewrite using `[this, hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2` using `h1 =≫ Y.s`. Simplify using `only [Category.assoc] at h2 ⊢`. Rewrite using `[← Limits.pullback.condition]`. Conclude with `h2.symm`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cst_of_factor {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
@@ -84,11 +84,11 @@ theorem cst_of_factor {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   exact h2.symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y S Ω Ω' _ _ K K' _ _ J J' y y' A A' hβ hgen`. Take `⟨x, hx⟩` from `GlobalTheory.T.hodge_component_factor_point E H D l Xo c O β Y S Ω K J y A hβ`. Take `⟨x', hx'⟩` from `GlobalTheory.T.hodge_component_factor_point E H D l Xo c O β Y S Ω' K' J' y' A' hβ`. Take `⟨ψ, hψ⟩` from `GlobalTheory.T.generic_point_field_iso Y.X A.Ω₀ A'.Ω₀ A.ξ₀ A'.ξ₀ A.gen₀ A'.gen₀ hgen`. Use `haveI : Mono Y.j := by haveI := hβ haveI := Y.jQ_open`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `Model.j`. Use `infer_instance`. Establish `hxx : spMap ψ.toRingHom ≫ x' = x`. Rewrite using `[← cancel_mono Y.j, Category.assoc, ← hx', ← hx, hψ]`. Use `⟨x, x', ψ, hx, hx', ?_, ?_, cst_of_factor A hβ x hx, cst_of_factor A' hβ x' hx'⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hxx]`. Conclude with `(congrArg (x ≫ ·) (Category.comp_id _)).symm`. Rewrite using `[← Category.assoc, hxx]`.
+A detailed English derivation is pending.
 -/
 theorem imageCpt_refl_of_genPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω Ω' : Type) [Field Ω] [Field Ω'] (K K' : Type) [Fintype K] [Fintype K'] (J : K → Type) (J' : K' → Type) (y : (Σ k, J k) → Ω) (y' : (Σ k, J' k) → Ω') (A : HodgeCpt Y S y) (A' : HodgeCpt Y S y'), Mono (spMap β) → genPt A.ξ₀ = genPt A'.ξ₀ → IsImageCpt (Iso.refl Xo.X) A A' := by
   intro E _ _ _ H D l Xo c O _ β Y S Ω Ω' _ _ K K' _ _ J J' y y' A A' hβ hgen

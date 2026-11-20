@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.TorusPic
 
 /- English proof (translation)
-Introduce `A _ hA X _ _ _ N hN`. Use `letI := hA.toField`. Establish `: IsAffine (splitTorus (Sp A) X).left`. Use `Diag.isAffineHom_hom (Sp A) X` as an intermediate fact. Conclude with `isAffine_of_isAffineHom (splitTorus (Sp A) X).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.SS.LiftTorus.subsingleton_pic_torus A X` as an intermediate fact. Conclude with `GlobalTheory.LB.exists_isGen_of_subsingleton_pic_top hN`.
+A detailed English derivation is pending.
 -/
 theorem triv_of_isLB_splitTorus : ∀ (A : Type) [CommRing A], IsField A → ∀ (X : Type) [AddCommGroup X]
     [Module.Free ℤ X] [Module.Finite ℤ X] (N : LB (splitTorus (Sp A) X).left), N.IsLB → Triv N := by

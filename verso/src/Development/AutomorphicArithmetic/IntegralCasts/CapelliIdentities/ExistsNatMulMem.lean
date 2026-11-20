@@ -1,15 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `F _ _ x`. Establish `hx : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ F).mpr (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨y, hy, hint⟩` from `hx.exists_integral_multiple`. Establish `h2 : IsIntegral ℤ (((y.natAbs : ℕ) : F) * x)`. Break down `Int.natAbs_eq y with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e : ((y.natAbs : ℕ) : F) * x = y • x`. Rewrite using `[zsmul_eq_mul]`. Use `congr 1`. Use `congrArg (Int.cast : ℤ → F) h` as an intermediate fact. Rewrite `this` using `[Int.cast_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Rewrite using `[e]`. Conclude with `hint`. Establish `e : ((y.natAbs : ℕ) : F) * x = -(y • x)`. Rewrite using `[zsmul_eq_mul, ← neg_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Use `congrArg (Int.cast : ℤ → F) h` as an intermediate fact. Rewrite `this` using `[Int.cast_neg, Int.cast_natCast]`. Rewrite using `[this, neg_neg]`. Rewrite using `[e]`.
-
-Conclude with `hint.neg`. Conclude with `⟨y.natAbs, Int.natAbs_pos.mpr hy, ⟨_, h2⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ExistsNatMulMem.exists_nat_mul_mem :
     ∀ (F : Type) [inst : Field F] [NumberField F] (x : F),

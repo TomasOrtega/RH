@@ -7,30 +7,30 @@ noncomputable section
 namespace GlobalTheory.CrysEval
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (C : R →+* R⟦X⟧) n, coeff_C_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem coeff_natCast_mul_ps {R : Type} [CommRing R] (n i : ℕ) (f : R⟦X⟧) :
     coeff i ((n : R⟦X⟧) * f) = n * coeff i f := by
   rw [← map_natCast (C : R →+* R⟦X⟧) n, coeff_C_mul]
 
 /- English proof (translation)
-Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ g b F hF n hn hnF`. Take `⟨w, -, hw⟩` from `hF`. Use `charZero_K (l := l) (K := K)` as an intermediate fact. Establish `key : ∀ i k, ((i.factorial * (k / e).factorial : ℕ) : Wq l a) * (b.coeff i).coeff k = n * w (i, k)`. Introduce `i k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `embK_injective (K := K) t 0` to reduce the goal to its premises. Establish `h1` using `congrArg (fun G => coeff k (coeff i (G 0))) hnF`. Simplify using `only [Pi.mul_apply, Pi.natCast_apply] at h1`. Rewrite `h1` using `[coeff_natCast_mul_ps, coeff_natCast_mul_ps, coeff_iotaP]`. Establish `h2` using `hw 0 i k`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = embK K t 0 (w (i, k)) at h2`. Rewrite using `[map_mul, map_mul, map_natCast, map_natCast]`. Move the coercions through the operations in `at h2 ⊢`. Take the linear combination `(-((i.factorial : K) * ((k / e).factorial : K))) * h1 + (n : K) * h2`. Establish `hμ` using `ϖ.theta_mu (ϖ.gal_pi a g)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `set T := ainfToAcris l ϖ.teich with hTdef`. Establish `term : ∀ i k, ainfToAcris l (wA l a ((b.coeff i).coeff k)) * T ^ k * ainfToAcris l (ϖ.mu (g : GQ l) * ϖ.teich) ^ i ∈ Ideal.span {(n : Per.Acris l)}`. Introduce `i k`. Take `⟨D, hD⟩` from `ϖ.exists_dpow_teich (k / e)`. Establish `hm` using `factorial_mul_dpow (ϖ.mu (g : GQ l)) hμ i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `congrArg (fun x => ainfToAcris l (wA l a x)) (key i k)`. Simplify using `only [map_mul, map_natCast] at hk`. Move the coercions through the operations in `at hk`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨ainfToAcris l (wA l a (w (i, k))) * D * dpow (ϖ.mu (g : GQ l)) hμ i * T ^ (k % e) * T ^ i, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hT : T ^ k = T ^ (k % e) * T ^ (e * (k / e))` using `by rw [← pow_add, Nat.mod_add_div]`. Rewrite using `[hT, ← hD, map_mul, mul_pow, ← hm]`. Take the linear combination `(-(D * dpow (ϖ.mu (g : GQ l)) hμ i * T ^ (k % e) * T ^ i)) * hk`. Establish `hmem : fP a ϖ (g : GQ l) b ∈ Ideal.span {(n : Per.Acris l)}`. Rewrite using `[fP, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_eq_sum, Polynomial.sum_def]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hev : evC a ϖ (b.coeff i) = (b.coeff i).sum fun k c => ainfToAcris l (wA l a c) * T ^ k`. Rewrite using `[evC, RingHom.comp_apply, RingHom.comp_apply, Polynomial.coeToPowerSeries.ringHom_apply, ev_coe, Polynomial.eval₂_eq_sum, Polynomial.sum_def, Polynomial.sum_def]`. Express the relevant statement in the definitionally equal form `ainfToAcris l _ = _`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Both sides reduce to the same expression. Rewrite using `[hev, Polynomial.sum_def, Finset.sum_mul]`. Conclude with `Ideal.sum_mem _ fun k _ => term i k`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hmem`. Conclude with `⟨y, by rw [mul_comm]; exact hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem dvd_fP_of_mem_PPSet : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O), ∀ (ϖ : PiSys l e) (g : ↥(GK (ϖ.field a))) (b : Bp l a) (F : ZMod a → K⟦X⟧⟦X⟧), F ∈ PPSet t K e → ∀ n : ℕ, n ≠ 0 → (n : ZMod a → K⟦X⟧⟦X⟧) * F = iotaP K t b → ∃ y : Per.Acris l, (n : Per.Acris l) * y = fP a ϖ (g : GQ l) b := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ g b F hF n hn hnF

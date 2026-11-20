@@ -7,11 +7,11 @@ open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalThe
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `n e S hS hσ T hT`. Establish `hG : Measurable fun π : Fin (e + 1) → Fin n → ℂ => matGauss π`. Unfold `matGauss`. Conclude with `(by fun_prop : Continuous fun π : Fin (e + 1) → Fin n → ℂ => Real.exp (-∑ i, ∑ j, ‖π i j‖ ^ 2)).measurable.ennreal_ofReal`. Establish `hC : Measurable (fun p : (Fin (e + 1) → Fin n → ℂ) × EuclideanSpace ℂ (Fin (e + 1)) => T (cntOver S p.1 p.2))` using `hT.comp (GlobalTheory.T.measurable_fibre_count_over n (e + 1) S hσ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : Measurable (Function.uncurry fun (π : Fin (e + 1) → Fin n → ℂ) (w : EuclideanSpace ℂ (Fin (e + 1))) => matGauss π * T (cntOver S π w))` using `(hG.comp measurable_fst).mul hC`. Establish `h1 : ∀ π : Fin (e + 1) → Fin n → ℂ, matGauss π * ∫⁻ w in (Metric.ball (0 : EuclideanSpace ℂ (Fin (e + 1))) 1), T (cntOver S π w) = ∫⁻ w in (Metric.ball (0 : EuclideanSpace ℂ (Fin (e + 1))) 1), matGauss π * T (cntOver S π w)`. Introduce `π`. Rewrite using `[lintegral_const_mul' _ _ (by unfold matGauss; exact ENNReal.ofReal_ne_top)]`. Establish `h0 : ∀ᵐ w : EuclideanSpace ℂ (Fin (e + 1)), w ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ae_iff]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[h1]`. Rewrite using `[lintegral_lintegral_swap hF.aemeasurable]`. Rewrite using `[lintegral_congr_ae ((ae_restrict_of_ae h0).mono fun w hw => GlobalTheory.T.fibre_count_rotation_invariant n e S hS w hw T), setLIntegral_const, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_xgz_chow_mahler_e0reduce : ∀ (n e : ℕ) (S : Set (EuclideanSpace ℂ (Fin n))), IsScaleStable S → IsSigmaCompact S →
   ∀ T : ℝ≥0∞ → ℝ≥0∞, Measurable T →

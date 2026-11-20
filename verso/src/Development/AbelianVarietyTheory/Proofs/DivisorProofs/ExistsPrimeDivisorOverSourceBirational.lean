@@ -14,11 +14,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ p s _ hs E`. Set `e : X.functionField ≃+* Y.functionField` to `RingEquiv.ofBijective (functionFieldMap s) hs`. Set `V : ValuationSubring Y.functionField` to `E.ring.comap e.symm.toRingHom`. Establish `hV (f : X.functionField) : f ∈ E.ring ↔ functionFieldMap s f ∈ V`. Express the relevant statement in the definitionally equal form `f ∈ E.ring ↔ e.symm (e f) ∈ E.ring`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e.symm_apply_apply]`. Set `φ : E.ring →+* V` to `((functionFieldMap s).comp E.ring.subtype).codRestrict V fun a => (hV _).1 a.2`. Establish `hφ : Function.Bijective φ` using `⟨fun _ _ h => Subtype.ext (hs.1 (congrArg Subtype.val h)), fun f => ⟨⟨e.symm f.1, f.2⟩, Subtype.ext (e.apply_symm_apply f.1)⟩⟩`. Establish `hc (a : k) : functionFieldMap s (Cartier.constFn p a) = Cartier.constFn (s ≫ p) a` using `RingHom.congr_fun (GlobalTheory.EtaleKlt.functionFieldMap_comp_constFn p s) a`. Use `⟨⟨V, fun a => hc a ▸ (hV _).1 (E.const_mem a), IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing (RingEquiv.ofBijective φ hφ), ?_⟩, hV⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `E.essFiniteType.comp (RingHom.FiniteType.of_surjective φ hφ.2).essFiniteType`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext fun a => Subtype.ext (hc a).symm`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem DivOver.exists_over : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (s : Y ⟶ X) [IsDominant s], Function.Bijective (functionFieldMap s) → ∀ E : DivOver p, ∃ E' : DivOver (s ≫ p), DivOver.Over s E' E := by
   intro k _ X Y _ _ p s _ hs E

@@ -12,15 +12,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.XiTypeProof
 
 /- English proof (translation)
-Introduce `D ρ hρ rd hF hA hL i _ j b Q M hQ s h P _ _ a x hx`. Unfold `Formalism.MainNotions.IntegralHeckeForms.Fm0`. Rewrite using `[Submodule.mem_iInf]`. Introduce `u`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hadm : (ρ.B i j b).admitted (half (ρ.ch i) (admissibleConjugatePairPlaces D.ntw i Q M))` using `GlobalTheory.ChoiceAdm.adm_half_of_good_of_split_disjoint D _ D.ntw ρ hρ i j b _ (fun _ h => isSplit_of_mem_admissibleConjugatePairPlaces h) (hQ.2.2.mono_left (admissibleConjugatePairPlaces_subset i Q M))`. Establish `hu : ρ.eG i j b u ∈ (ρ.B i j b).G.P.H` using `(hL.U_eq i j b u).2 u.2`. Take `⟨κ, hlift, hsupp, hser⟩` from `GlobalTheory.T.thetaSeries_type_under_supported_lifts D _ _ (ρ.B i j b) (hρ.base i j b) (D.sp.V_sig _) _ (hρ.weil_base i j b) _ hu`. Establish `hg` using `GlobalTheory.UnivGood.univOf_good D _ D.ntw ρ hρ D.nexp i Q M`. Establish `hdet : detChar (Wc D j) ((univOf D.nexp i (admissibleConjugatePairPlaces D.ntw i Q M) M ρ.rc).delQ (half (ρ.ch i) (admissibleConjugatePairPlaces D.ntw i Q M))) κ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `PP`. Use `GlobalTheory.T.goodTwist_detChar_eq_one_of_supported_typePlaces D _ _ (ρ.B i j b) (hρ.base i j b) (D.sp.V_sig _) _ ⟨{PP.1}, _, _⟩ (hg.2 PP.1 PP.2) (hadm.mono (by simpa using PP.2)) _ κ hlift hsupp` as an intermediate fact. Conclude with `congrArg Multiplicative.toAdd this`. Apply `(hF i j b).injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `rd i j b (D.nexp.actG i _ b u x) g = rd i j b (((D.nexp.psiU i b u : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i)) • x) g`. Rewrite using `[hA i j b u κ hlift, map_smulₛₗ, Pi.smul_apply, hx]`. Unfold `Setup.xi`. Rewrite using `[Base.xiCoef_apply, Base.xiCoef_apply, detChar_mul hg.delQ_real, hdet, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hser _ hadm _ h P g).trans ?_` and prove the remaining obligations. Rewrite using `[hL.psiU_eq i j b u hu, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xiType : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (rd : Rds D.nexp ρ), (∀ i j b, Faithful (rd i j b)) →
     (∀ i j b, ActRead (rd i j b)) → ρ.LevelOf D.nexp → XiType rd := by

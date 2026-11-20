@@ -10,7 +10,7 @@ noncomputable section
 namespace PI.HookSteps
 
 /- English proof (translation)
-Introduce `σ v f g`. Apply `(Rat.castHom ℂ).injective` to reduce the goal to its premises. Use `show ((fockQ (X v * f) g : ℚ) : ℂ) = ((fockQ f (pderiv v g) : ℚ) : ℂ)`. Rewrite using `[lfockq_cast, lfockq_cast, map_mul, map_X, Formalism.REAL.fischerInner_X_mul_left, pderiv_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulXAdj : MulXAdj := by
   intro σ v f g
@@ -20,7 +20,7 @@ theorem mulXAdj : MulXAdj := by
   rw [lfockq_cast, lfockq_cast, map_mul, map_X, Formalism.REAL.fischerInner_X_mul_left, pderiv_map]
 
 /- English proof (translation)
-Unfold `fockQ`. Use `Finset.sum_subset h fun m _ hm => ?_` and prove the remaining obligations. Establish `: f.coeff m = 0` using `by simpa using hm`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem fockQ_eq_sum_of_support_subset_of_type {σ : Type*} (f g : MvPolynomial σ ℚ) (S : Finset (σ →₀ ℕ))
     (h : f.support ⊆ S) :
@@ -32,14 +32,14 @@ private theorem fockQ_eq_sum_of_support_subset_of_type {σ : Type*} (f g : MvPol
   ring
 
 /- English proof (translation)
-Unfold `fockQ`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem fockQ_zero_left {σ : Type*} (g : MvPolynomial σ ℚ) : fockQ 0 g = 0 := by
   unfold fockQ
   simp
 
 /- English proof (translation)
-Conclude with `Finset.induction_on s (by simp [fockQ_zero_left]) fun a s ha ih => by`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, lfockq_add_left, ih]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fockQ_sum_left {σ ι : Type*} (s : Finset ι) (F : ι → MvPolynomial σ ℚ) (g : MvPolynomial σ ℚ) :
     fockQ (∑ i ∈ s, F i) g = ∑ i ∈ s, fockQ (F i) g := by
@@ -48,7 +48,7 @@ theorem fockQ_sum_left {σ ι : Type*} (s : Finset ι) (F : ι → MvPolynomial 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, lfockq_add_left, ih]
 
 /- English proof (translation)
-Unfold `fockQ`. Simplify using `only [MvPolynomial.coeff_sum, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fockQ_sum_right {σ ι : Type*} (s : Finset ι) (F : ι → MvPolynomial σ ℚ) (f : MvPolynomial σ ℚ) :
     fockQ f (∑ i ∈ s, F i) = ∑ i ∈ s, fockQ f (F i) := by
@@ -57,7 +57,7 @@ theorem fockQ_sum_right {σ ι : Type*} (s : Finset ι) (F : ι → MvPolynomial
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[← Int.cast_smul_eq_zsmul ℚ z f, fockQ_eq_sum_of_support_subset_of_type _ g f.support MvPolynomial.support_smul]`. Unfold `fockQ`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -71,7 +71,7 @@ theorem fockQ_zsmul_left {σ : Type*} (z : ℤ) (f g : MvPolynomial σ ℚ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← Int.cast_smul_eq_zsmul ℚ z g]`. Unfold `fockQ`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -85,7 +85,7 @@ theorem fockQ_zsmul_right {σ : Type*} (z : ℤ) (f g : MvPolynomial σ ℚ) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `l generalizing f g with`. Consider the case `nil => simp`. Consider the case `cons v l ih`. Simplify using `only [List.map_cons, List.prod_cons]`. Rewrite using `[mul_assoc, mul_left_comm, ih, hX σ v]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -101,9 +101,9 @@ theorem fockQ_listX (hX : MulXAdj) {σ : Type} (l : List σ) (f g : MvPolynomial
     rfl
 
 /- English proof (translation)
-Introduce `N f g`. Rewrite using `[detX, Matrix.det_apply, Finset.sum_mul, fockQ_sum_left, detD, LinearMap.sum_apply, fockQ_sum_right]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, smul_mul_assoc, fockQ_zsmul_left, LinearMap.smul_apply, fockQ_zsmul_right]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h` using `fockQ_listX hX (List.ofFn fun j : Fin N => (σ j, j)) f g`. Simplify using `only [List.map_ofFn] at h`. Rewrite `h` using `[List.prod_ofFn]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detAdj_of (hX : MulXAdj) : DetAdj := by
   intro N f g
@@ -119,7 +119,7 @@ theorem detAdj_of (hX : MulXAdj) : DetAdj := by
   exact h
 
 /- English proof (translation)
-The claim follows from `detAdj_of mulXAdj`.
+A detailed English derivation is pending.
 -/
 theorem determinant_adjugate : DetAdj := detAdj_of mulXAdj
 

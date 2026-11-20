@@ -597,9 +597,9 @@ Evaluate the decidable proposition.
 example : (List.range 4).map (skip 1 4) = [0, 2, 3, 5] := by decide
 
 /- English proof (translation)
-Use `⟨⟨rfl, Matrix.of fun _ _ => 1, ?_⟩, by simp, by simp, fun x hx => ?_⟩` and prove the remaining obligations. Use extensionality with `(i | i) (j | j)`. Simplify using `[Matrix.mul_apply, Subsingleton.elim i j]`. Apply the tactic sequence `all_goals first | exact i.elim0 | exact j.elim0`. Establish `: x 0 ≠ 0` using `fun h => hx (funext fun i => by rw [Subsingleton.elim i 0]; exact h)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `Complex.normSq_pos.2 this` using `[dotProduct, Complex.mul_conj, ← Complex.normSq_apply]`.
+A detailed English derivation is pending.
 -/
 example : HasSig (1 : Matrix (Fin 1) (Fin 1) ℂ) 1 0 ∧ IsCartan (1 : Matrix (Fin 1) (Fin 1) ℂ) 1 := by
   refine ⟨⟨rfl, Matrix.of fun _ _ => 1, ?_⟩, by simp, by simp, fun x hx => ?_⟩

@@ -22,19 +22,17 @@ variable {A : Type} [CommRing A] [Algebra ℂ A] (D : Derivation ℂ A A) {n l :
   (y : Matrix (Fin n) (Fin l) A)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose, derivation_det]`. Simplify using `only [Matrix.transpose_apply, Matrix.submatrix_apply, hD]`. Distinguish the cases in `hb : b.1 < m`. Rewrite using `[Finset.sum_eq_single (⟨b.1, hb⟩ : Fin m)]`. Establish `e : Fin.castLE h ⟨b.1, hb⟩ = b` using `rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e, if_true]`. Use `split_ifs with h1 h2`. Substitute `h1` using the available equality. Rewrite using `[one_smul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `Matrix.updateRow_eq_self _ _`. Conclude with `absurd (h1 ▸ hb) h2`. Establish `hlt : a.1 < b.1` using `lt_of_le_of_ne hab fun e => h1 (Fin.ext e)`. Establish `hne : (⟨a.1, hlt.trans hb⟩ : Fin m) ≠ ⟨b.1, hb⟩` using `fun e => by`. Rewrite `e` using `[Fin.ext_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at e`. Use linear arithmetic over natural numbers and integers. Rewrite using `[zero_smul]`. Use `Matrix.det_zero_of_row_eq hne ?_` and prove the remaining obligations. Rewrite using `[Matrix.updateRow_self, Matrix.updateRow_ne hne]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Introduce `i _ hi`. Use `Matrix.det_eq_zero_of_row_eq_zero i fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.updateRow_self, if_neg fun e : Fin.castLE h i = b => hi (Fin.ext (congrArg Fin.val e :))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Establish `h0 : (if a = b then (if a.1 < m then (1 : ℂ) else 0) else 0) = 0` using `by split_ifs with h1 h2`. Conclude with `absurd (h1 ▸ h2) hb`. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite using `[h0, zero_smul]`.
-
-Use `Finset.sum_eq_zero fun i _ => Matrix.det_eq_zero_of_row_eq_zero i fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.updateRow_self, if_neg fun e : Fin.castLE h i = b => hb (e ▸ i.2)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem der_minor {a b : Fin l} (hab : a ≤ b) (hD : ∀ c k, D (y c k) = if k = b then y c a else 0)
     {m : ℕ} (row : Fin m → Fin n) (h : m ≤ l) :
@@ -73,11 +71,11 @@ theorem der_minor {a b : Fin l} (hab : a ≤ b) (hD : ∀ c k, D (y c k) = if k 
     rw [Matrix.updateRow_self, if_neg fun e : Fin.castLE h i = b => hb (e ▸ i.2)]
 
 /- English proof (translation)
-Set `f : ℕ → ℕ` to `fun i => if h : i < l then α ⟨i, h⟩ else 0`. Establish `hf : Antitone f`. Use `antitone_nat_of_succ_le fun i => ?_` and prove the remaining obligations. Simplify using `only [f]`. Use `split_ifs with h1 h2 h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hα (by simp [Fin.le_def])`. Use linear arithmetic over natural numbers and integers. Conclude with `Nat.zero_le _`. Conclude with `le_rfl`. Establish `h` using `telescope f hf a l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : f l = 0` using `by simp [f]`. Rewrite `h` using `[if_pos a.2.le, hl, ← Fin.sum_univ_eq_sum_range (fun i => ((f i - f (i + 1) : ℕ) : ℂ) * (if a.1 < i + 1 then 1 else 0))]`. Establish `e1 : ∀ i : Fin l, f i = α i` using `fun i => by simp [f, i.2]`. Establish `e2 : ∀ i : Fin l, f (i + 1) = nextRow α i` using `fun i => rfl`. Simplify `h` using `only [e1, e2, Nat.cast_zero, sub_zero]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_rows (α : Fin l → ℕ) (hα : Antitone α) (a : Fin l) :
     ∑ i : Fin l, ((α i - nextRow α i : ℕ) : ℂ) * (if a.1 < i.1 + 1 then 1 else 0) = α a := by
@@ -99,7 +97,7 @@ theorem sum_rows (α : Fin l → ℕ) (hα : Antitone α) (a : Fin l) :
   simpa only [e1, e2, Nat.cast_zero, sub_zero] using h
 
 /- English proof (translation)
-Rewrite using `[minorProd, derivation_prod_pow D _ _ _ _ fun i => der_minor D y hab hD (row i) i.2]`. Use `congr 1`. Use `split_ifs with h`. Conclude with `sum_rows α hα a`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem der_minorProd (α : Fin l → ℕ) (hα : Antitone α) (row : ∀ i : Fin l, Fin (i.1 + 1) → Fin n)
     {a b : Fin l} (hab : a ≤ b) (hD : ∀ c k, D (y c k) = if k = b then y c a else 0) :
@@ -111,7 +109,7 @@ theorem der_minorProd (α : Fin l → ℕ) (hα : Antitone α) (row : ∀ i : Fi
   · simp
 
 /- English proof (translation)
-Rewrite using `[minorProd, derivation_prod_pow D _ _ _ (fun _ => 0) fun i => ?_]`. Simplify using the standard rewrite rules. Rewrite using `[zero_smul, derivation_det]`. Use `Finset.sum_eq_zero fun j _ => Matrix.det_eq_zero_of_row_eq_zero j fun k => ?_` and prove the remaining obligations. Rewrite using `[Matrix.updateRow_self, Matrix.submatrix_apply, hD]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem der_minorProd_zero (α : Fin l → ℕ) (row : ∀ i : Fin l, Fin (i.1 + 1) → Fin n)
     (hD : ∀ i c k, D (y (row i c) k) = 0) : D (minorProd α y row) = 0 := by
@@ -124,7 +122,7 @@ theorem der_minorProd_zero (α : Fin l → ℕ) (row : ∀ i : Fin l, Fin (i.1 +
 end General
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (lead_ne_zero (fun w : Fin (i.1 + 1) × Fin l => z (row i w.1, w.2)) (hz.comp ((hrow i).prodMap Function.injective_id)) le_rfl i.2)`.
+A detailed English derivation is pending.
 -/
 theorem minorProd_ne_zero {σ : Type} {n l : ℕ} (z : Fin n × Fin l → σ) (hz : Function.Injective z)
     (α : Fin l → ℕ) (row : ∀ i : Fin l, Fin (i.1 + 1) → Fin n) (hrow : ∀ i, Function.Injective (row i)) :
@@ -140,19 +138,19 @@ def vPlus (p q n : ℕ) : Fin p × Fin n → Ln p q n 0 := fun w => (.inl w.1, .
 def vMinus (p q n : ℕ) : Fin q × Fin n → Ln p q n 0 := fun w => (.inr w.1, .inl w.2)
 
 /- English proof (translation)
-Introduce `u w h` and use `by simpa [vPlus, Prod.ext_iff] using h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vPlus_inj : Function.Injective (vPlus p q n) := fun u w h => by
   simpa [vPlus, Prod.ext_iff] using h
 
 /- English proof (translation)
-Introduce `u w h` and use `by simpa [vMinus, Prod.ext_iff] using h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vMinus_inj : Function.Injective (vMinus p q n) := fun u w h => by
   simpa [vMinus, Prod.ext_iff] using h
 
 /- English proof (translation)
-Rewrite using `[isSide_one.1, mixedOp_apply, ← rowOp_eq_rowDer, rowOp_apply]`. Simplify using `[zA, vPlus, cPair]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_plus (i j : Fin p) (P : Pol p q n 0) :
     fockAct1 p q n 0 (Eab (.inl i) (.inl j)) P =
@@ -161,7 +159,7 @@ theorem act_plus (i j : Fin p) (P : Pol p q n 0) :
   simp [zA, vPlus, cPair]
 
 /- English proof (translation)
-Rewrite using `[isSide_one.2, mixedOp_apply, ← rowOp_eq_rowDer, rowOp_apply]`. Simplify using `[zD, vMinus, cPair, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_minus (i j : Fin q) (P : Pol p q n 0) :
     fockAct1 p q n 0 (Eab (.inr j) (.inr i)) P =
@@ -170,7 +168,7 @@ theorem act_minus (i j : Fin q) (P : Pol p q n 0) :
   simp [zD, vMinus, cPair, eq_comm]
 
 /- English proof (translation)
-Rewrite using `[delta, Derivation.leibniz, der_minorProd _ (zPlus p q n) ap hp _ hij fun c k => rowDer_X _ vPlus_inj i j k c, der_minorProd_zero _ (zMinus p q n) am _ fun _ c k => ?_]`. Simplify using `[mul_comm]`. Rewrite using `[← rowOp_eq_rowDer, rowOp_apply]`. Simplify using `[zMinus, vPlus, pderiv_X, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem der_plus (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ) (hp : Antitone ap) {i j : Fin p}
     (hij : i ≤ j) :
@@ -182,7 +180,7 @@ theorem der_plus (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ) (hp 
     simp [zMinus, vPlus, pderiv_X, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[delta, Derivation.leibniz, der_minorProd _ (zMinus p q n) am hm _ hij fun c k => rowDer_X _ vMinus_inj i j k c, der_minorProd_zero _ (zPlus p q n) ap _ fun _ c k => ?_]`. Simplify using the standard rewrite rules. Rewrite using `[← rowOp_eq_rowDer, rowOp_apply]`. Simplify using `[zPlus, vMinus, pderiv_X, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem der_minus (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ) (hm : Antitone am) {i j : Fin q}
     (hij : i ≤ j) :
@@ -194,11 +192,11 @@ theorem der_minus (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ) (hm
     simp [zPlus, vMinus, pderiv_X, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `a b`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.FockSingularValues.fockAct1_lower, neg_eq_zero, GlobalTheory.IndefiniteRowSideFullHecke.FockSingularValues.lowerOp]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Establish `h1 : pderiv ((.inr b, .inl c) : Ln p q n 0) (minorProd ap (zPlus p q n) (topRows (by omega))) = 0` using `der_minorProd_zero _ _ _ _ fun _ _ _ => pderiv_X_of_ne (by simp)`. Establish `h2 : pderiv ((.inl a, .inl c) : Ln p q n 0) (minorProd am (zMinus p q n) (botRows (by omega))) = 0` using `der_minorProd_zero _ _ _ _ fun _ _ _ => pderiv_X_of_ne (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[delta, Derivation.leibniz, h1, smul_zero, add_zero, smul_eq_mul, Derivation.leibniz, pderiv_swap, h2, map_zero, smul_zero, zero_add, smul_eq_mul]`. Distinguish the cases in `hc : c.1 < p`. Rewrite using `[der_minorProd_zero (pderiv ((.inr b, .inl c) : Ln p q n 0)) (zMinus p q n) am (botRows (by omega)) fun i d _ => pderiv_X_of_ne ?_, zero_mul]`. Use `i.2` as an intermediate fact. Simplify using `only [botRows, ne_eq, Prod.mk.injEq, Sum.inl.injEq, Fin.ext_iff]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[der_minorProd_zero (pderiv ((.inl a, .inl c) : Ln p q n 0)) (zPlus p q n) ap (topRows (by omega)) fun i d _ => pderiv_X_of_ne ?_, mul_zero]`. Use `i.2` as an intermediate fact. Use `d.2` as an intermediate fact. Simplify using `only [topRows, ne_eq, Prod.mk.injEq, Sum.inl.injEq, Fin.ext_iff]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -229,11 +227,11 @@ theorem lower (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ) :
     omega
 
 /- English proof (translation)
-Introduce `p q n hn ap am hp hm`. Use `⟨mul_ne_zero ?_ ?_, ?_, fun i j h => ?_, fun i j h => ?_, lower hn ap am⟩` and prove the remaining obligations. Conclude with `minorProd_ne_zero (fun w => vPlus p q n w.swap) (vPlus_inj.comp Prod.swap_injective) ap _ fun i c d h => by simpa [topRows, Fin.ext_iff] using h`. Conclude with `minorProd_ne_zero (fun w => vMinus p q n w.swap) (vMinus_inj.comp Prod.swap_injective) am _ fun i c d h => by simpa [botRows, Fin.ext_iff] using h`. Simplify using `only [wtSub, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, Sum.forall, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[act_plus, der_plus hn ap am hp le_rfl]`. Simplify using `[wtExt, add_smul]`. Rewrite using `[act_minus, der_minus hn ap am hm le_rfl]`. Simplify using `[wtExt, sub_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[act_plus, der_plus hn ap am hp h.le]`. Simplify using `[h.ne]`. Rewrite using `[act_minus, der_minus hn ap am hm h.le]`. Simplify using `[h.ne]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem delta_extremal : ∀ (p q n : ℕ) (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ), Antitone ap → Antitone am → delta hn ap am ≠ 0 ∧ delta hn ap am ∈ wtSub (fockAct1 p q n 0) (wtExt n ap am) ∧ (∀ i j : Fin p, i < j → fockAct1 p q n 0 (Eab (Sum.inl i) (Sum.inl j)) (delta hn ap am) = 0) ∧ (∀ i j : Fin q, i < j → fockAct1 p q n 0 (Eab (Sum.inr j) (Sum.inr i)) (delta hn ap am) = 0) ∧ KilledByLower (fockAct1 p q n 0) (delta hn ap am) := by
   intro p q n hn ap am hp hm

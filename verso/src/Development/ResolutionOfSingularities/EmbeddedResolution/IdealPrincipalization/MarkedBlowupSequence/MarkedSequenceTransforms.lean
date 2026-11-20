@@ -24,13 +24,13 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[inStrictNormalCrossingPosition_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `D hD`. Rewrite `hD` using `[List.mem_map]`. Take `⟨D', hD', rfl⟩` from `hD`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `PrincipalizationIsoTransport.isSmoothDivisor_comap_iso q e D' (h.1 D' hD')`. Introduce `x`. Take `⟨U, hxU, m, c, a, hinj, hnone, hsome⟩` from `h.2 (e.hom.base x)`. Use `⟨(TopologicalSpace.Opens.map e.hom.base).obj U, hxU, m, EtaleChart.ofIso q e c, a, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi j hj t hti htj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hinj i (by simpa using hi) j (by simpa using hj) t hti htj`. Introduce `i hi ha`. Establish `hi' : i < L.length` using `by simpa using hi`. Simplify using `only [List.getElem_map]`. Rewrite using `[restrictIdeal_comap, hnone i hi' ha, Scheme.IdealSheafData.comap_top]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi t ht`. Establish `hi' : i < L.length` using `by simpa using hi`. Simplify using `only [List.getElem_map]`. Rewrite using `[restrictIdeal_comap, hsome i hi' t ht, EtaleChart.ofIso_coordIdeal]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPosition_comap_iso {k : Type u} [Field k] {X Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) (e : X ≅ Y) (L : List Y.IdealSheafData)
@@ -63,14 +63,14 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
 /- English proof (translation)
-Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq, MarkedSequenceOfBlowups.projectionToBase_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem projectionToSpec_zero (s : MarkedSequenceOfBlowups p I m E) :
     s.projectionToSpec 0 = s.toSequenceOfBlowups.isoZero.hom ≫ p := by
   rw [MarkedSequenceOfBlowups.projectionToSpec_eq, MarkedSequenceOfBlowups.projectionToBase_zero]
 
 /- English proof (translation)
-Establish `h : s.toSequenceOfBlowups.transitionMapSucc i ≫ s.toSequenceOfBlowups.projectionToBase i = s.toSequenceOfBlowups.projectionToBase (i + 1)`. Rewrite using `[s.toSequenceOfBlowups.blowupMorphism_eq_transitionMap i]`. Conclude with `s.toSequenceOfBlowups.transitionMap_comp_projectionToBase (Nat.le_succ i)`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq, MarkedSequenceOfBlowups.projectionToSpec_eq, ← h, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projectionToSpec_succ (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     s.projectionToSpec (i + 1) = s.toSequenceOfBlowups.transitionMapSucc i ≫ s.projectionToSpec i := by
@@ -81,9 +81,9 @@ theorem projectionToSpec_succ (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
   rw [MarkedSequenceOfBlowups.projectionToSpec_eq, MarkedSequenceOfBlowups.projectionToSpec_eq, ← h, Category.assoc]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero`. Establish `: AlgebraicGeometry.IsNoetherian T.scheme` using `hT.isNoetherian`. Conclude with `isNoetherian_of_iso s.toSequenceOfBlowups.isoZero.symm`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Establish `hn : n < s.toSequenceOfBlowups.length` using `hi`. Establish `: AlgebraicGeometry.IsNoetherian (s.toSequenceOfBlowups.schemeAt n)` using `ih (le_of_lt hn)`. Conclude with `isNoetherian_of_isBlowupAlongIdealSheaf (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hn)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isNoetherian_schemeAt (_hcart : EffectiveCartierSupportContainsNoComponent.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : T.SequenceOfBlowups) (i : ℕ) (hi : i ≤ s.toSequenceOfBlowups.length) :
@@ -100,15 +100,15 @@ theorem isNoetherian_schemeAt (_hcart : EffectiveCartierSupportContainsNoCompone
 end MarkedSequenceOfBlowups
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hT.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_zero] infer_instance`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_zero, s.boundary_zero]`. Conclude with `inStrictNormalCrossingPosition_comap_iso T.structMap s.toSequenceOfBlowups.isoZero T.boundary hT.snc`. Consider the case `succ n ih`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hn`. Establish `hn' : n < s.toSequenceOfBlowups.length` using `hn`. Take `⟨hsm, hsnc⟩` from `ih (le_of_lt hn')`. Establish `: AlgebraicGeometry.Smooth (s.projectionToSpec n)` using `hsm`. Establish `: AlgebraicGeometry.IsNoetherian (s.toSequenceOfBlowups.schemeAt (n + 1))` using `MarkedSequenceOfBlowups.isNoetherian_schemeAt hcart hT s (n + 1) hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: TopologicalSpace.NoetherianSpace ↥(s.toSequenceOfBlowups.schemeAt (n + 1))` using `inferInstance`. Establish `hπ` using `s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hn'`. Establish `hZE : HasStrictNormalCrossingsWith (s.projectionToSpec n) (s.toSequenceOfBlowups.center n) (s.boundary n)`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`. Conclude with `s.center_snc n hn'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_succ]`. Conclude with `smooth_comp_of_isBlowupAlongIdealSheaf hZE hπ`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_succ, s.boundary_succ n hn']`. Conclude with `inStrictNormalCrossingPosition_strictTransform_append (s.projectionToSpec n) (s.toSequenceOfBlowups.transitionMapSucc n) (s.toSequenceOfBlowups.center n) (s.boundary n) hπ hsnc hZE`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smooth_and_inStrictNormalCrossingPosition_projectionToSpec (hcart : EffectiveCartierSupportContainsNoComponent.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : T.SequenceOfBlowups) :
@@ -146,7 +146,7 @@ private theorem smooth_and_inStrictNormalCrossingPosition_projectionToSpec (hcar
 namespace MarkedSequenceOfBlowups
 
 /- English proof (translation)
-The claim follows from `(smooth_and_inStrictNormalCrossingPosition_projectionToSpec hcart hT s i hi).1`.
+A detailed English derivation is pending.
 -/
 theorem smooth_projectionToSpec (hcart : EffectiveCartierSupportContainsNoComponent.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : T.SequenceOfBlowups) (i : ℕ) (hi : i ≤ s.toSequenceOfBlowups.length) :
@@ -154,7 +154,7 @@ theorem smooth_projectionToSpec (hcart : EffectiveCartierSupportContainsNoCompon
   (smooth_and_inStrictNormalCrossingPosition_projectionToSpec hcart hT s i hi).1
 
 /- English proof (translation)
-The claim follows from `(smooth_and_inStrictNormalCrossingPosition_projectionToSpec hcart hT s i hi).2`.
+A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPosition_projectionToSpec_boundary (hcart : EffectiveCartierSupportContainsNoComponent.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : T.SequenceOfBlowups) (i : ℕ) (hi : i ≤ s.toSequenceOfBlowups.length) :
@@ -180,42 +180,42 @@ def transformAt (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem transformAt_baseField (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).base = T.base := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem transformAt_scheme (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).scheme = s.toSequenceOfBlowups.schemeAt i := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem transformAt_structureMorphism (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).structMap = s.projectionToSpec i := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem transformAt_ideal (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).ideal = s.ideal i := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem transformAt_mult (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).mult = T.mult := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem transformAt_boundary (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).boundary = s.boundary i := rfl
@@ -228,9 +228,9 @@ theorem transformAt_dim (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowu
     (T.transformAt s i).krullDimSucc = EmbeddedResolution.krullDimSucc (s.toSequenceOfBlowups.schemeAt i) := rfl
 
 /- English proof (translation)
-Take `⟨hsm, hsnc⟩` from `smooth_and_inStrictNormalCrossingPosition_projectionToSpec hcart hT s i hi`. Establish `: AlgebraicGeometry.Smooth (s.projectionToSpec i)` using `hsm`. Establish `: AlgebraicGeometry.IsNoetherian (s.toSequenceOfBlowups.schemeAt i)` using `MarkedSequenceOfBlowups.isNoetherian_schemeAt hcart hT s i hi`. Establish `: TopologicalSpace.NoetherianSpace ↥(s.toSequenceOfBlowups.schemeAt i)` using `inferInstance`. Use `{ charZero := hT.charZero locallyOfFiniteType := ?_ nonzeroOnComponents := MarkedSequenceOfBlowups.nonzeroOnComponents_ideal_of_isAdmissible hcart hT s i hi one_le_mult := hT.one_le_mult quasiCompact := ?_ smooth := hsm snc := hsnc }` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show AlgebraicGeometry.LocallyOfFiniteType (s.projectionToSpec i) infer_instance`. Use `show AlgebraicGeometry.QuasiCompact (s.projectionToSpec i)`. Conclude with `⟨fun _ _ _ => TopologicalSpace.NoetherianSpace.isCompact _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsAdmissible.transformAt (hcart : EffectiveCartierSupportContainsNoComponent.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : T.SequenceOfBlowups) (i : ℕ) (hi : i ≤ s.toSequenceOfBlowups.length) :
@@ -254,7 +254,7 @@ theorem IsAdmissible.transformAt (hcart : EffectiveCartierSupportContainsNoCompo
     exact ⟨fun _ _ _ => TopologicalSpace.NoetherianSpace.isCompact _⟩
 
 /- English proof (translation)
-The claim follows from `hdim T hT s i hi`.
+A detailed English derivation is pending.
 -/
 theorem transformAt_dim_le (hdim : DimensionNonincreasingAlongBlowups.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (s : T.SequenceOfBlowups) (i : ℕ) (hi : i ≤ s.toSequenceOfBlowups.length) :

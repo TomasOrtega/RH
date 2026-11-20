@@ -5,21 +5,19 @@ namespace Formalism.L2.Pj.RegC
 open IsLocalRing ReciprocityTheory.ChartRestriction.G.T0
 
 /- English proof (translation)
-Use `haveI := ReciprocityTheory.ChartRestriction.G.T0.regVert_valuationRing P hP`. Take `⟨a0, b0, hb0, rfl⟩` from `IsFractionRing.div_surjective (A := A) f`. Establish `hb0' : algebraMap A (FractionRing A) b0 ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb0`. Establish `h1P : (1 : A) ∉ P` using `(Ideal.ne_top_iff_one P).1 (Ideal.IsPrime.ne_top ‹_›)`. Take `⟨c, hc | hc⟩` from `ValuationRing.cond (algebraMap A (Localization.AtPrime P) a0) (algebraMap A (Localization.AtPrime P) b0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl c`. Establish `h1 : algebraMap A (Localization.AtPrime P) (a0 * r) = algebraMap A (Localization.AtPrime P) (b0 * s)`. Rewrite using `[map_mul, map_mul, ← hc, mul_assoc, IsLocalization.mk'_spec]`. Take `⟨u, hu⟩` from `(IsLocalization.eq_iff_exists P.primeCompl (Localization.AtPrime P)).1 h1`. Establish `hK : algebraMap A (FractionRing A) (u * (a0 * r)) = algebraMap A (FractionRing A) (u * (b0 * s))` using `by rw [hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul] at hK`. Establish `ha0 : algebraMap A (FractionRing A) a0 ≠ 0`. Introduce `h0`. Apply `hno` to reduce the goal to its premises. Conclude with `⟨0, 1, h1P, by simp [h0]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hr : (u : A) * r ∈ P`. Use `⟨u * r, u * s, hr, ?_, ?_⟩` and prove the remaining obligations. Conclude with `P.primeCompl.mul_mem u.2 s.2`. Rewrite using `[map_mul, map_mul, inv_div, div_mul_eq_mul_div, div_eq_iff ha0]`. Take the linear combination `-1 * hK`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Apply `hno` to reduce the goal to its premises. Use `⟨u * s, u * r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, div_mul_eq_mul_div, div_eq_iff hb0']`. Take the linear combination `hK`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl c`. Establish `h1 : algebraMap A (Localization.AtPrime P) (b0 * r) = algebraMap A (Localization.AtPrime P) (a0 * s)`. Rewrite using `[map_mul, map_mul, ← hc, mul_assoc, IsLocalization.mk'_spec]`. Take `⟨u, hu⟩` from `(IsLocalization.eq_iff_exists P.primeCompl (Localization.AtPrime P)).1 h1`. Establish `hK : algebraMap A (FractionRing A) (u * (b0 * r)) = algebraMap A (FractionRing A) (u * (a0 * s))` using `by rw [hu]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. It suffices to derive a contradiction.
 
-Simplify using `only [map_mul] at hK`. It suffices to derive a contradiction. Apply `hno` to reduce the goal to its premises. Use `⟨u * r, u * s, P.primeCompl.mul_mem u.2 s.2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, div_mul_eq_mul_div, div_eq_iff hb0']`.
-
-Take the linear combination `-1 * hK`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem hdvr_lemma {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A]
     (P : Ideal A) [P.IsPrime] (hP : P.height = 1) (f : FractionRing A)
@@ -70,11 +68,9 @@ private theorem hdvr_lemma {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRin
     linear_combination -1 * hK
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing A := by first`. Consider the case `exact Algebra.FiniteType.isNoetherianRing O A`. Consider the case `infer_instance`. Use `Formalism.L2.Pj.RegB.mem_loc_of_heightOne qq f (fun P hP h1 hle => ?_)` and prove the remaining obligations. Use `haveI := hP`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hv : Ideal.map (algebraMap O A) (maximalIdeal O) ≤ P`. Conclude with `Formalism.L2.Pj.RegA.reg_vertical_e f e he hf P h1 hv`. Use `ReciprocityTheory.ChartRestriction.G.T0.reg_horizontal P hv ?_ e he f (hdvr_lemma P h1 f) hf` and prove the remaining obligations. Introduce `htop`. Apply `hqq` to reduce the goal to its premises.
-
-Rewrite using `[eq_top_iff, ← htop]`. Conclude with `sup_le_sup_right hle _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_centre {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [CharZero O]

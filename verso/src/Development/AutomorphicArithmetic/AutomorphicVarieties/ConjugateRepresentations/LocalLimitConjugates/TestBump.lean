@@ -16,9 +16,9 @@ private def Bp (W S : Set (GA E a)) : Prop :=
     (∀ g, 0 ≤ f g) ∧ (∀ g ∈ S, 0 < f g) ∧ ∀ g ∉ W, f g = 0
 
 /- English proof (translation)
-Introduce `g`. Set `L : Lie E a →L[ℝ] Lie E a` to `LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ (GeneralLinearGroup.map (pInf E) (g₀ * g)).val : Matrix (Fin a) (Fin a) (Cinf E) →ₗ[ℝ] Matrix (Fin a) (Fin a) (Cinf E))`. Establish `h : ContDiff ℝ (⊤ : ℕ∞) fun x => β (L x) * c (GeneralLinearGroup.map (pFin E) (g₀ * g))` using `(hβ.comp L.contDiff).mul contDiff_const`. Use `h.contDiffOn.congr fun x hx => ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl : x = toL u.val` from `hu.symm`. Rewrite using `[chart_val, ← mul_assoc, map_mul, map_mul _ (g₀ * g), pInf_infGL, pFin_infGL, mul_one]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem tens_mem (β : Lie E a → ℂ) (hβ : ContDiff ℝ (⊤ : ℕ∞) β) (c : GL (Fin a) (Af E) → ℂ) (g₀ : GA E a) :
     (fun g => β (toL (GeneralLinearGroup.map (pInf E) (g₀ * g)).val) *
@@ -36,21 +36,19 @@ private theorem tens_mem (β : Lie E a → ℂ) (hβ : ContDiff ℝ (⊤ : ℕ�
   rfl
 
 /- English proof (translation)
-Take `⟨c1, c2, c3, c4⟩` from `GlobalTheory.GLProj.continuous_proj_incl E a`. Establish `hc : Continuous fun p : GL (Fin a) (Cinf E) × GL (Fin a) (Af E) => g₀ * (infGL E a p.1 * finGL E a p.2)` using `continuous_const.mul ((c3.comp continuous_fst).mul (c4.comp continuous_snd))`. Establish `hn` using `hc.continuousAt (x := (1, 1)).preimage_mem_nhds (t := W) (by simpa using hW)`. Take `⟨N, hN, V, hV, hNV⟩` from `mem_nhds_prod_iff.1 hn`. Take `⟨U, hU, hUV⟩` from `GlobalTheory.CompanionTheory.DenseKFin.exists_openSubgroup_GLAf hV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β, b0, b1, b2, -, b3⟩` from `GlobalTheory.CompanionTheory.SmoothRep.exists_bump_conjInv E a N hN`. Establish `bs : ContDiff ℝ (⊤ : ℕ∞) fun x => (β x : ℂ)` using `b2.1`. Establish `bc : Continuous β` using `Complex.continuous_re.comp bs.continuous`. Establish `d1 : Continuous fun g : GA E a => β (toL (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)).val)` using `bc.comp ((Units.continuous_val (M := Matrix (Fin a) (Fin a) (Cinf E))).comp (c1.comp (continuous_const.mul continuous_id)))`. Establish `d2 : Continuous fun g : GA E a => GeneralLinearGroup.map (pFin E) (g₀⁻¹ * g)` using `c2.comp (continuous_const.mul continuous_id)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨{g | 0 < β (toL (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)).val)} ∩ {g | GeneralLinearGroup.map (pFin E) (g₀⁻¹ * g) ∈ U}, ?_, fun g => β (toL (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)).val) * if GeneralLinearGroup.map (pFin E) (g₀⁻¹ * g) ∈ U then 1 else 0, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `((isOpen_lt continuous_const d1).inter (hU.preimage d2)).mem_nhds ⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, inv_mul_cancel, map_one]`. Conclude with `b1`. Simplify using `only [Set.mem_preimage, inv_mul_cancel, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `U.one_mem`. Establish `h` using `tens_mem _ bs (fun k => ((if k ∈ U then 1 else 0 : ℝ) : ℂ)) g₀⁻¹`. Simplify `h` using `only [Complex.ofReal_mul]`. Use `filter_upwards [hU.mem_nhds U.one_mem] with k hk g`. Rewrite using `[← mul_assoc, map_mul, map_mul _ (g₀⁻¹ * g), pInf_finGL, pFin_finGL, mul_one]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [U.mul_mem_cancel_right hk]`. Introduce `g`. Use `mul_nonneg (b0 _) ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> norm_num`. Introduce and unpack `g ⟨h1, h2⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_pos h1 ((if_pos h2).symm ▸ one_pos)`. Introduce `g hg`. Assume the negation of the conclusion as `h`. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 h`. Establish `h3 : GeneralLinearGroup.map (pFin E) (g₀⁻¹ * g) ∈ U`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h3`. Conclude with `h2 (if_neg h3)`. Take `⟨y, hy, e⟩` from `b3 _ h1`. Take `rfl : y = GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)` from `Units.ext e`. Establish `h4` using `hNV (Set.mk_mem_prod hy (hUV h3))`.
-
-Simplify using `only [Set.mem_preimage, infGL_mul_finGL, mul_inv_cancel_left] at h4`. Conclude with `hg h4`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bp_pt {W : Set (GA E a)} {g₀ : GA E a} (hW : W ∈ 𝓝 g₀) : ∃ S ∈ 𝓝 g₀, Bp W S := by
   classical
@@ -100,13 +98,11 @@ private theorem bp_pt {W : Set (GA E a)} {g₀ : GA E a} (hW : W ∈ 𝓝 g₀) 
     exact hg h4
 
 /- English proof (translation)
-Use `hC.induction_on (p := Bp W) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `⟨0, (Sm E a).zero_mem, by simp, by simp, by simp, by simp⟩`. Introduce and unpack `s t hst ⟨f, h1, h2, h3, h4, h5⟩`. Conclude with `⟨f, h1, h2, h3, fun g hg => h4 g (hst hg), h5⟩`. Introduce and unpack `s t ⟨f, h1, h2, h3, h4, h5⟩ ⟨f', k1, k2, k3, k4, k5⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨fun g => f g + f' g, ?_, ?_, fun g => add_nonneg (h3 g) (k3 g), ?_, fun g hg => by simp only [h5 g hg, k5 g hg, add_zero]⟩` and prove the remaining obligations. Simplify using `only [Complex.ofReal_add]`. Conclude with `(Sm E a).add_mem h1 k1`. Use `filter_upwards [h2, k2] with k e1 e2 g`. Rewrite using `[e1, e2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `g (hg | hg)`. Conclude with `add_pos_of_pos_of_nonneg (h4 g hg) (k3 g)`. Conclude with `add_pos_of_nonneg_of_pos (h3 g) (k4 g hg)`. Introduce `x hx`. Take `⟨S, hS, hb⟩` from `bp_pt (hW.mem_nhds (h hx))`.
-
-Conclude with `⟨S, mem_nhdsWithin_of_mem_nhds hS, hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem bp_cpt {W C : Set (GA E a)} (hC : IsCompact C) (hW : IsOpen W) (h : C ⊆ W) : Bp W C := by
   refine hC.induction_on (p := Bp W) ?_ ?_ ?_ ?_
@@ -128,9 +124,9 @@ private theorem bp_cpt {W C : Set (GA E a)} (hC : IsCompact C) (hW : IsOpen W) (
     exact ⟨S, mem_nhdsWithin_of_mem_nhds hS, hb⟩
 
 /- English proof (translation)
-Use `isOpen_iff_mem_nhds.2 fun k₀ h₀ => ?_` and prove the remaining obligations. Establish `e : ∀ g, φ.1 (g * finGL E a k₀) = φ.1 g` using `fun g => congrFun (congrArg Subtype.val h₀) g`. Establish `ht : Tendsto (fun k => k₀⁻¹ * k) (𝓝 k₀) (𝓝 1)` using `(continuous_const.mul continuous_id).tendsto' _ _ (inv_mul_cancel _)`. Use `filter_upwards [ht.eventually h] with k hk`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `φ.1 (g * finGL E a k) = φ.1 g`. Rewrite using `[← e g, ← hk (g * finGL E a k₀), mul_assoc, ← map_mul, mul_inv_cancel_left]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lev_of (φ : Sm E a) (h : ∀ᶠ k in 𝓝 1, ∀ g, φ.1 (g * finGL E a k) = φ.1 g) : HasLev φ := by
   refine isOpen_iff_mem_nhds.2 fun k₀ h₀ => ?_
@@ -145,9 +141,7 @@ private theorem lev_of (φ : Sm E a) (h : ∀ᶠ k in 𝓝 1, ∀ g, φ.1 (g * f
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ a C W hC hW h`. Take `⟨K, hK, hCK⟩` from `exists_compact_superset hC`. Take `⟨f, h1, h2, h3, h4, h5⟩` from `bp_cpt hC (hW.inter isOpen_interior) (Set.subset_inter h hCK)`. Use `⟨⟨_, h1⟩, ⟨HasCompactSupport.intro hK fun g hg => ?_, lev_of _ ?_⟩, fun g => ⟨f g, h3 g, rfl⟩, fun g hg => Complex.ofReal_ne_zero.2 (h4 g hg).ne', fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `Complex.ofReal_eq_zero.2 (h5 g fun k => hg (interior_subset k.2))`.
-
-Use `filter_upwards [h2] with k hk g`. Conclude with `congrArg _ (hk g)`. Conclude with `Complex.ofReal_eq_zero.2 (h5 g fun k => hg k.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.testBump :
     UpperTheory.V.Cj.H.TestBump := by

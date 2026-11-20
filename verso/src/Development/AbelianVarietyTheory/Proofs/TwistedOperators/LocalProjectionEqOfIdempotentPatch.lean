@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.CompIdem
 
 /- English proof (translation)
-Introduce `D T v g k ε hε h`. Apply `GlobalTheory.AdelicU.matHom_injective _ D.sp.cm.sig T.gram` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig T.gram (proj D.sp.cm.sig T.gram v k)).1 = (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig T.gram (proj D.sp.cm.sig T.gram v g)).1`. Rewrite using `[GlobalTheory.AdelicU.matHom_proj, GlobalTheory.AdelicU.matHom_proj]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `show ((GlobalTheory.AdelicU.matHom _ D.sp.cm.sig T.gram k).1).map (compFin D.host.F D.host.E v) = ((GlobalTheory.AdelicU.matHom _ D.sp.cm.sig T.gram g).1).map (compFin D.host.F D.host.E v)`. Express the relevant statement in the definitionally equal form `(Formalism.L2.Theta.mt T k).map _ = (Formalism.L2.Theta.mt T g).map _`. Rewrite using `[h, GlobalTheory.CompStab.map_idem, hε, sub_self, zero_smul, add_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projV_eq_of_idem : ∀ {D : D7} (T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g k : GA D T) (ε : AE D), compFin D.host.F D.host.E v ε = 1 → Formalism.L2.Theta.mt T k = ε • Formalism.L2.Theta.mt T g + (1 - ε) • (1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) → projV T v k = projV T v g := by
   intro D T v g k ε hε h

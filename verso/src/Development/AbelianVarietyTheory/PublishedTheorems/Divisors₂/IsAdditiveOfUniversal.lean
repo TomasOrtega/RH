@@ -31,27 +31,27 @@ theorem cls_ev {M : LB (A ⊗ T).left} (hM : M.IsLB) (a : Y ⟶ A) (t : Y ⟶ T)
     cls _ h = evc hM a t := rfl
 
 /- English proof (translation)
-Rewrite using `[evc, ← pull_comp, ← Over.comp_left, comp_lift, evc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_evc {M : LB (A ⊗ T).left} (hM : M.IsLB) (u : Z ⟶ Y) (a : Y ⟶ A) (t : Y ⟶ T) :
     CechPic.pull u.left (evc hM a t) = evc hM (u ≫ a) (u ≫ t) := by
   rw [evc, ← pull_comp, ← Over.comp_left, comp_lift, evc]
 
 /- English proof (translation)
-The claim follows from `(cls_eq_zero_iff (pull_isLB hM _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem triv_ev_iff {M : LB (A ⊗ T).left} (hM : M.IsLB) (a : Y ⟶ A) (t : Y ⟶ T) :
     Triv (ev M a t) ↔ evc hM a t = 0 := (cls_eq_zero_iff (pull_isLB hM _)).symm
 
 /- English proof (translation)
-The claim follows from `pull_evc hM _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem evc_ev {M : LB (A ⊗ T).left} (hM : M.IsLB) {A' T' : Over S} (f : A' ⊗ T' ⟶ A) (g : A' ⊗ T' ⟶ T)
     (h : (ev M f g).IsLB) (a : Y ⟶ A') (t : Y ⟶ T') : evc h a t = evc hM (lift a t ≫ f) (lift a t ≫ g) :=
   pull_evc hM _ _ _
 
 /- English proof (translation)
-Rewrite using `[evc_ev hP, lift_fst, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evc_swap {P : LB (A ⊗ B).left} (hP : P.IsLB) (h : (swap P).IsLB) (b : Y ⟶ B) (a : Y ⟶ A) :
     evc h b a = evc hP a b := by
@@ -63,7 +63,7 @@ def IsAdditive (M : LB (A ⊗ T).left) : Prop :=
   ∀ (Y : Over S) (a a' : Y ⟶ A) (t : Y ⟶ T), LBIso (ev M (a * a') t) (tens (ev M a t) (ev M a' t))
 
 /- English proof (translation)
-The claim follows from `forall₄_congr fun _ _ _ _ ↦ (cls_eq_iff (pull_isLB hM _) (isLB_tens (pull_isLB hM _) (pull_isLB hM _))).symm`.
+A detailed English derivation is pending.
 -/
 theorem isAdditive_iff {M : LB (A ⊗ T).left} (hM : M.IsLB) : IsAdditive M ↔
     ∀ (Y : Over S) (a a' : Y ⟶ A) (t : Y ⟶ T), evc hM (a * a') t = evc hM a t + evc hM a' t :=
@@ -71,7 +71,7 @@ theorem isAdditive_iff {M : LB (A ⊗ T).left} (hM : M.IsLB) : IsAdditive M ↔
     (cls_eq_iff (pull_isLB hM _) (isLB_tens (pull_isLB hM _) (pull_isLB hM _))).symm
 
 /- English proof (translation)
-Use `(isAdditive_iff hM).2 fun Y a a' t ↦ ?_` and prove the remaining obligations. Establish `e` using `congrArg (CechPic.pull (lift a (lift a' t)).left) ((cls_eq_iff (pull_isLB hM _) (isLB_tens (pull_isLB hM _) (pull_isLB hM _))).2 h)`. Rewrite `e` using `[cls_tens (pull_isLB hM _) (pull_isLB hM _), map_add, cls_ev hM, cls_ev hM, cls_ev hM]`. Simplify `e` using `only [pull_evc, MonObj.comp_mul, lift_fst, lift_snd_assoc, lift_snd]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isAdditive_of_universal {M : LB (A ⊗ T).left} (hM : M.IsLB)
     (h : LBIso (ev M (fst A (A ⊗ T) * (snd A (A ⊗ T) ≫ fst A T)) (snd A (A ⊗ T) ≫ snd A T))
@@ -84,7 +84,7 @@ theorem isAdditive_of_universal {M : LB (A ⊗ T).left} (hM : M.IsLB)
   simpa only [pull_evc, MonObj.comp_mul, lift_fst, lift_snd_assoc, lift_snd] using e
 
 /- English proof (translation)
-Establish `e` using `(isAdditive_iff hM).1 h Y 1 1 t`. Rewrite `e` using `[_root_.mul_one]`. Conclude with `left_eq_add.1 e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsAdditive.evc_one {M : LB (A ⊗ T).left} (hM : M.IsLB) (h : IsAdditive M) (t : Y ⟶ T) :
     evc hM (1 : Y ⟶ A) t = 0 := by
@@ -111,7 +111,7 @@ structure IsPerfect (P : LB (A ⊗ B).left) : Prop where
   ker_right : ∀ (T : Over S) (x : T ⟶ B), Triv (ev P (fst A T) (snd A T ≫ x)) → x = 1
 
 /- English proof (translation)
-Establish `e` using `congrArg (CechPic.pull a.left) ((triv_ev_iff hP _ _).1 h)`. Rewrite `e` using `[pull_evc, map_zero, Category.comp_id, MonObj.comp_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem evc_one_right {P : LB (A ⊗ B).left} (hP : P.IsLB) (h : Triv (ev P (𝟙 A) (1 : A ⟶ B))) (a : Y ⟶ A) :
     evc hP a (1 : Y ⟶ B) = 0 := by
@@ -119,7 +119,7 @@ theorem evc_one_right {P : LB (A ⊗ B).left} (hP : P.IsLB) (h : Triv (ev P (�
   rwa [pull_evc, map_zero, Category.comp_id, MonObj.comp_one] at e
 
 /- English proof (translation)
-Establish `e` using `congrArg (CechPic.pull b.left) ((triv_ev_iff hP _ _).1 h)`. Rewrite `e` using `[pull_evc, map_zero, Category.comp_id, MonObj.comp_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem evc_one_left {P : LB (A ⊗ B).left} (hP : P.IsLB) (h : Triv (ev P (1 : B ⟶ A) (𝟙 B))) (b : Y ⟶ B) :
     evc hP (1 : Y ⟶ A) b = 0 := by
@@ -127,9 +127,9 @@ theorem evc_one_left {P : LB (A ⊗ B).left} (hP : P.IsLB) (h : Triv (ev P (1 : 
   rwa [pull_evc, map_zero, Category.comp_id, MonObj.comp_one] at e
 
 /- English proof (translation)
-Establish `hM : (ev P (fst A T) (snd A T ≫ x)).IsLB` using `pull_isLB h.isLB _`. Establish `e` using `(triv_ev_iff h.isLB _ _).1 hx`. Use `(h.univ T _ hM ((isAdditive_iff hM).2 fun Y a a' t ↦ ?_)).unique ((cls_eq_iff hM hM).1 rfl) ((cls_eq_iff hM (pull_isLB h.isLB _)).1 ?_)` and prove the remaining obligations. Establish `z : cls _ hM = 0` using `e`. Simplify using `only [evc, z, map_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[cls_ev h.isLB, cls_ev h.isLB, e, MonObj.comp_one, evc_one_right h.isLB h.zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsDual.eq_one {P : LB (A ⊗ B).left} (h : IsDual A B P) (x : T ⟶ B)
     (hx : Triv (ev P (fst A T) (snd A T ≫ x))) : x = 1 := by
@@ -142,7 +142,7 @@ theorem IsDual.eq_one {P : LB (A ⊗ B).left} (h : IsDual A B P) (x : T ⟶ B)
   · rw [cls_ev h.isLB, cls_ev h.isLB, e, MonObj.comp_one, evc_one_right h.isLB h.zero]
 
 /- English proof (translation)
-The claim follows from `h.isLB zero_left := (triv_ev_iff h.isLB _ _).2 (h.additive.evc_one h.isLB _) zero_right := h.zero ker_left T x hx := h'.eq_one x <| (triv_ev_iff h'.isLB _ _).2 <| by have e := congrArg (CechPic.pull (lift (snd B T) (fst B T)).left) ((triv_ev_iff h.isLB _ _).1 hx) rwa [pull_evc, m …`.
+A detailed English derivation is pending.
 -/
 theorem IsDual.isPerfect {P : LB (A ⊗ B).left} (h : IsDual A B P) (h' : IsDual B A (swap P)) :
     IsPerfect A B P where
@@ -155,9 +155,9 @@ theorem IsDual.isPerfect {P : LB (A ⊗ B).left} (h : IsDual A B P) (h' : IsDual
   ker_right _ := h.eq_one
 
 /- English proof (translation)
-Establish `hs : (AbDual.swap P).IsLB` using `pull_isLB h.isLB _`. Use `⟨hs, ?_, ?_, fun T x hx ↦ h.ker_right T x ?_, fun T x hx ↦ h.ker_left T x ?_⟩` and prove the remaining obligations. Rewrite using `[triv_ev_iff hs, evc_swap h.isLB, evc_one_right h.isLB h.zero_right]`. Rewrite using `[triv_ev_iff hs, evc_swap h.isLB, evc_one_left h.isLB h.zero_left]`. Establish `e` using `congrArg (CechPic.pull (lift (snd A T) (fst A T)).left) ((triv_ev_iff hs _ _).1 hx)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[pull_evc, map_zero, lift_fst_assoc, lift_snd, evc_swap h.isLB, ← triv_ev_iff]`. Then use the resulting hypothesis. Establish `e` using `congrArg (CechPic.pull (lift (snd T B) (fst T B)).left) ((triv_ev_iff hs _ _).1 hx)`. Rewrite `e` using `[pull_evc, map_zero, lift_snd_assoc, lift_fst, evc_swap h.isLB, ← triv_ev_iff]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsPerfect.swap {P : LB (A ⊗ B).left} (h : IsPerfect A B P) : IsPerfect B A (swap P) := by
   have hs : (AbDual.swap P).IsLB := pull_isLB h.isLB _
@@ -170,7 +170,7 @@ theorem IsPerfect.swap {P : LB (A ⊗ B).left} (h : IsPerfect A B P) : IsPerfect
     rwa [pull_evc, map_zero, lift_snd_assoc, lift_fst, evc_swap h.isLB, ← triv_ev_iff] at e
 
 /- English proof (translation)
-Rewrite using `[← IsOpenImmersion.lift_fac W.ι r (by rintro _ ⟨z, rfl⟩; rw [Scheme.Opens.range_ι]; exact hr z), pull_comp, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_eq_zero_of_mem {X X' : Scheme.{0}} (W : X.Opens) (r : X' ⟶ X) (hr : ∀ z, r z ∈ W) {c : Pic X}
     (h : CechPic.pull W.ι c = 0) : CechPic.pull r c = 0 := by
@@ -178,7 +178,7 @@ theorem pull_eq_zero_of_mem {X X' : Scheme.{0}} (W : X.Opens) (r : X' ⟶ X) (hr
     pull_comp, h, map_zero]
 
 /- English proof (translation)
-Establish `e : cls _ h = CechPic.pull ((fst T G ≫ x) * snd T G).left (cls L hL) - CechPic.pull (snd T G).left (cls L hL)`. Use `(cls_linComb hL _ _ h).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two, sub_eq_add_neg]`. Conclude with `congrArg₂ (· + ·) (one_zsmul _) (neg_one_zsmul _)`. Rewrite using `[e, map_sub, ← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, MonObj.comp_mul, lift_fst_assoc, lift_snd]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_translDiff {G : Over S} [GrpObj G] {L : LB G.left} (hL : L.IsLB) (x : T ⟶ G)
     (h : (Out.translDiff G L x).IsLB) (t : Y ⟶ T) (u : Y ⟶ G) :
@@ -193,7 +193,7 @@ theorem pull_translDiff {G : Over S} [GrpObj G] {L : LB G.left} (hL : L.IsLB) (x
     lift_snd]
 
 /- English proof (translation)
-Establish `hD : (Out.translDiff G L x).IsLB` using `LB.isLB_linComb hL _ _`. Establish `z : CechPic.pull ((fst T G).left ⁻¹ᵁ V).ι (cls _ hD) = 0` using `(cls_eq_zero_iff (pull_isLB hD _)).2 hc`. Establish `e : (lift t u).left ≫ (fst T G).left = t.left` using `by rw [← Over.comp_left, lift_fst]`. Rewrite using `[← sub_eq_zero, ← pull_translDiff hL x hD]`. Conclude with `pull_eq_zero_of_mem _ _ (fun z ↦ (congrArg (fun q ↦ q z ∈ V) e).mpr (ht z)) z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_mul_eq {G : Over S} [GrpObj G] {L : LB G.left} (hL : L.IsLB) {x : T ⟶ G} {V : T.left.Opens}
     (hc : Triv ((Out.translDiff G L x).pull ((fst T G).left ⁻¹ᵁ V).ι)) (t : Y ⟶ T) (ht : ∀ z, t.left z ∈ V)
@@ -205,13 +205,13 @@ theorem pull_mul_eq {G : Over S} [GrpObj G] {L : LB G.left} (hL : L.IsLB) {x : T
   exact pull_eq_zero_of_mem _ _ (fun z ↦ (congrArg (fun q ↦ q z ∈ V) e).mpr (ht z)) z
 
 /- English proof (translation)
-Introduce `R _ t x hx`. Use `choose V hV hc using hx`. Set `j : ∀ p, Over.mk ((V p).ι ≫ t) ⟶ Over.mk t` to `fun p ↦ Over.homMk (V p).ι rfl`. Establish `key : ∀ p (Y : Over S) (s : Y ⟶ Over.mk ((V p).ι ≫ t)) (a : Y ⟶ A) (b : Y ⟶ B), evc h.isLB ((s ≫ j p ≫ x ≫ fst A B) * a) ((s ≫ j p ≫ x ≫ snd A B) * b) = evc h.isLB a b`. Introduce `p Y s a b`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (congrArg (fun q : Y ⟶ A ⊗ B ↦ CechPic.pull q.left (cls P h.isLB)) ?_) (pull_mul_eq h.isLB (hc p) (s ≫ j p) (fun z ↦ (s.left z).2) (lift a b))` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [MonObj.mul_comp]`. Establish `k : ∀ p, j p ≫ x = 1` using `fun p ↦ by`. Establish `ka : j p ≫ x ≫ fst A B = 1` using `h.ker_left _ _ <| (triv_ev_iff h.isLB _ _).2 <| by`. Establish `e` using `key p _ (fst _ B) 1 ((fst _ B ≫ j p ≫ x ≫ snd A B)⁻¹ * snd _ B)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `e` using `[_root_.mul_one, mul_inv_cancel_left, evc_one_left h.isLB h.zero_left]`. Then use the resulting hypothesis. Establish `kb : j p ≫ x ≫ snd A B = 1` using `h.ker_right _ _ <| (triv_ev_iff h.isLB _ _).2 <| by`. Establish `e` using `key p _ (snd A _) ((snd A _ ≫ j p ≫ x ≫ fst A B)⁻¹ * fst A _) 1`. Rewrite `e` using `[_root_.mul_one, mul_inv_cancel_left, evc_one_right h.isLB h.zero_right]`. Then use the resulting hypothesis. Use `ext`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ka, MonObj.one_comp]`. Rewrite using `[Category.assoc, kb, MonObj.one_comp]`. Use `Over.OverMorphism.ext (Scheme.hom_ext_of_forall _ _ fun p ↦ ⟨V p, hV p, ?_⟩)` and prove the remaining obligations. Establish `e : j p ≫ x = j p ≫ 1` using `(k p).trans (MonObj.comp_one _).symm`. Conclude with `congrArg (fun q ↦ q.left) e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsPerfect.kTriv {P : LB (A ⊗ B).left} (h : IsPerfect A B P) : Out.KTriv (A ⊗ B) P := by
   intro R _ t x hx
@@ -238,7 +238,7 @@ theorem IsPerfect.kTriv {P : LB (A ⊗ B).left} (h : IsPerfect A B P) : Out.KTri
   exact congrArg (fun q ↦ q.left) e
 
 /- English proof (translation)
-Establish `le : ∀ j, (L.pull f).U j ≤ f ⁻¹ᵁ (L.U (j PUnit.unit) ⊓ L.U i)` using `fun j y hy ↦ ⟨mem_pull.1 hy, hi y⟩`. Use `⟨⟨fun j ↦ res (le j) (pullU f _ (L.g (j PUnit.unit) i))⟩, (isGen_iff_germ _).2 fun y j j' hj hj' ↦ ?_⟩` and prove the remaining obligations. Establish `k : ∀ j, y ∈ (L.pull f).U j → gm (𝟙 X') y _ (res (le j) (pullU f _ (L.g (j PUnit.unit) i))) = gm (𝟙 X' ≫ f) y _ (L.g (j PUnit.unit) i)` using `fun j hj ↦ (gm_res (𝟙 X') y (le j) hj _).trans (gm_pull (𝟙 X') f y _ (le j hj) _)`. Use `(k j hj).trans (Eq.trans ?_ (congrArg₂ (· * ·) (gm_pull_g L f (𝟙 X') y j j' hj hj') (k j' hj')).symm)` and prove the remaining obligations. Conclude with `(gm_cocycle hL (𝟙 X' ≫ f) y (mem_pull.1 hj) (mem_pull.1 hj') (hi y)).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem triv_pull_of_mem {X X' : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : X' ⟶ X) {i : L.ι}
     (hi : ∀ y, f y ∈ L.U i) : Triv (L.pull f) := by
@@ -251,7 +251,7 @@ theorem triv_pull_of_mem {X X' : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : X' �
   exact (gm_cocycle hL (𝟙 X' ≫ f) y (mem_pull.1 hj) (mem_pull.1 hj') (hi y)).symm
 
 /- English proof (translation)
-Take `⟨L, hL, rfl⟩` from `cls_surj c`. Take `⟨i, hi⟩` from `exists_chart hL p`. Conclude with `⟨L.U i, hi, (cls_eq_zero_iff (pull_isLB hL _)).2 (triv_pull_of_mem hL _ fun y ↦ y.2)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pull_eq_zero {X : Scheme.{0}} (c : Pic X) (p : X) :
     ∃ V : X.Opens, p ∈ V ∧ CechPic.pull V.ι c = 0 := by
@@ -260,15 +260,15 @@ theorem exists_pull_eq_zero {X : Scheme.{0}} (c : Pic X) (p : X) :
   exact ⟨L.U i, hi, (cls_eq_zero_iff (pull_isLB hL _)).2 (triv_pull_of_mem hL _ fun y ↦ y.2)⟩
 
 /- English proof (translation)
-Establish `hP : (abelian₂ A L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `e : ∀ (Y : Over S) (a b : Y ⟶ A), evc hP a b = lam (cls L hL) a b` using `fun Y a b ↦ by`. Rewrite using `[evc, show cls _ hP = lam (cls L hL) (fst A A) (snd A A) from cls_cube_two hL _ _ hP, pull_lam, lift_fst, lift_snd]`. Establish `k : ∀ (T : Over S) (x : T ⟶ A), lam (cls L hL) (fst T A ≫ x) (snd T A) = 0 → x = 1` using `fun T x hx ↦ by`. Establish `hD : (Out.translDiff A L x).IsLB` using `LB.isLB_linComb hL _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, rfl⟩` from `(memKL_iff_of_kTriv hL hK x).1 fun p ↦ by`. Take `⟨V, hV, hc⟩` from `exists_pull_eq_zero (CechPic.pull x.left (cls L hL) - CechPic.pull (1 : T ⟶ A).left (cls L hL)) p`. Use `⟨V, hV, (cls_eq_zero_iff (pull_isLB hD _)).1 ?_⟩` and prove the remaining obligations. Establish `e₁` using `pull_translDiff hL x hD (fst T A) (snd T A)`. Rewrite `e₁` using `[lift_fst_snd, Over.id_left, pull_id]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₂ : cls _ hD = CechPic.pull (fst T A).left (CechPic.pull x.left (cls L hL) - CechPic.pull (1 : T ⟶ A).left (cls L hL))`. Rewrite using `[e₁, map_sub, ← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, MonObj.comp_one, ← sub_eq_zero, ← hx, lam]`. Normalize the expressions using the abelian group laws. Rewrite using `[cls_pull hD, e₂, ← pull_comp]`. Conclude with `pull_eq_zero_of_mem V (((fst T A).left ⁻¹ᵁ V).ι ≫ (fst T A).left) (fun z ↦ z.2) hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toUnit_unique z (toUnit T)]`. Both sides reduce to the same expression. Use `⟨hP, ?_, ?_, fun T x hx ↦ k T x ?_, fun T x hx ↦ k T x ?_⟩` and prove the remaining obligations. Rewrite using `[triv_ev_iff hP, e, lam_one_left]`. Rewrite using `[triv_ev_iff hP, e, lam_one_right]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hx` using `[triv_ev_iff hP, e]`. Then use the resulting hypothesis. Establish `e'` using `congrArg (CechPic.pull (lift (snd T A) (fst T A)).left) ((triv_ev_iff hP _ _).1 hx)`. Rewrite `e'` using `[pull_evc, map_zero, lift_snd_assoc, lift_fst, e, lam_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isPerfect_lam [IsCommMonObj A] {L : LB A.left} (hL : L.IsLB) (hK : Out.KTriv A L) :
     IsPerfect A A (abelian₂ A L) := by
@@ -301,7 +301,7 @@ theorem isPerfect_lam [IsCommMonObj A] {L : LB A.left} (hL : L.IsLB) (hK : Out.K
     rwa [pull_evc, map_zero, lift_snd_assoc, lift_fst, e, lam_comm] at e'
 
 /- English proof (translation)
-The claim follows from `(WeierstrassCurve.ellPolAV W).isAb.comm IsPerfect (WeierstrassCurve.ellPolAV W).A (WeierstrassCurve.ellPolAV W).A (abelian₂ _ (WeierstrassCurve.ellPolAV W).L) := haveI := (WeierstrassCurve.ellPolAV W).isAb.comm isPerfect_lam (WeierstrassCurve.ellPolAV W).isLB (WeierstrassCurve.el …`.
+A detailed English derivation is pending.
 -/
 theorem isPerfect_ell {R : Type} [CommRing R] (W : WeierstrassCurve R) [W.IsElliptic] :
     haveI := (WeierstrassCurve.ellPolAV W).isAb.comm
@@ -311,9 +311,9 @@ theorem isPerfect_ell {R : Type} [CommRing R] (W : WeierstrassCurve R) [W.IsElli
   isPerfect_lam (WeierstrassCurve.ellPolAV W).isLB (WeierstrassCurve.ellPolAV W).ktriv
 
 /- English proof (translation)
-Establish `h0 : ∀ (Y : Over S) (a b : Y ⟶ 𝟙_ (Over S)), evc (LB.isLB_triv _) a b = 0` using `fun _ _ _ ↦ map_zero _`. Use `⟨LB.isLB_triv _, (isAdditive_iff (LB.isLB_triv _)).2 fun _ _ _ _ ↦ by simp only [h0, add_zero], (triv_ev_iff (LB.isLB_triv _) _ _).2 (h0 _ _ _), fun T M hM ha ↦ ⟨toUnit T, ?_, fun _ _ ↦ toUnit_unique _ _⟩⟩` and prove the remaining obligations. Use `(cls_eq_iff hM (pull_isLB (LB.isLB_triv _) _)).1 ?_` and prove the remaining obligations. Establish `e` using `ha.evc_one hM (snd (𝟙_ (Over S)) T)`. Rewrite `e` using `[toUnit_unique 1 (fst _ T), evc, lift_fst_snd, Over.id_left, pull_id]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, cls_ev (LB.isLB_triv _), h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isDual_unit : IsDual (𝟙_ (Over S)) (𝟙_ (Over S)) (LB.triv _) := by
   have h0 : ∀ (Y : Over S) (a b : Y ⟶ 𝟙_ (Over S)), evc (LB.isLB_triv _) a b = 0 := fun _ _ _ ↦ map_zero _

@@ -24,26 +24,26 @@ abbrev toMat {G : Set (Matrix (Fin n) (Fin n) ℂ)} {hG : IsLinRed G} (g : grp h
   ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
 
 /- English proof (translation)
-The claim follows from `g.2`.
+A detailed English derivation is pending.
 -/
 theorem toMat_mem {G : Set (Matrix (Fin n) (Fin n) ℂ)} {hG : IsLinRed G} (g : grp hG) : toMat g ∈ G := g.2
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toMat {G : Set (Matrix (Fin n) (Fin n) ℂ)} {hG : IsLinRed G} :
     Continuous (toMat : grp hG → Matrix (Fin n) (Fin n) ℂ) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (Units.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toMat_injective {G : Set (Matrix (Fin n) (Fin n) ℂ)} {hG : IsLinRed G} :
     Function.Injective (toMat : grp hG → Matrix (Fin n) (Fin n) ℂ) :=
   fun _ _ h => Subtype.ext (Units.ext h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨(hG.isUnit m hm).unit, hm⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_elt {G : Set (Matrix (Fin n) (Fin n) ℂ)} (hG : IsLinRed G) {m : Matrix (Fin n) (Fin n) ℂ} (hm : m ∈ G) :
     ∃ g : grp hG, toMat g = m :=
@@ -67,11 +67,11 @@ def kgrp {G : Set (Matrix (Fin n) (Fin n) ℂ)} (hG : IsLinRed G) : Subgroup (gr
     exact Unitary.star_mem hu
 
 /- English proof (translation)
-Establish `hUc : IsCompact (Matrix.unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ))`. Establish `hcl : IsClosed (Matrix.unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ))`. Establish `: (Matrix.unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)) = {A | Aᴴ * A = 1}`. Use extensionality with `A`. Conclude with `Matrix.mem_unitaryGroup_iff'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_id.matrix_conjTranspose.matrix_mul continuous_id) continuous_const`. Use `IsCompact.of_isClosed_subset (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall (0 : ℂ) 1) hcl ?_` and prove the remaining obligations. Introduce `A hA i _ j _`. Simplify using `using entry_norm_bound_of_unitary hA i j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hUc.of_isClosed_subset ?_ Set.inter_subset_right` and prove the remaining obligations. Use `isClosed_of_closure_subset fun g hg => ?_` and prove the remaining obligations. Establish `hgU : g ∈ (Matrix.unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ))` using `closure_minimal Set.inter_subset_right hUc.isClosed hg`. Establish `hu : IsUnit g` using `IsUnit.of_mul_eq_one _ (Matrix.mem_unitaryGroup_iff.1 hgU)`. Conclude with `⟨hG.closed g hu (closure_mono Set.inter_subset_left hg), hgU⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompact_maxCpt {G : Set (Matrix (Fin n) (Fin n) ℂ)} (hG : IsLinRed G) : IsCompact (maxCpt G) := by
   have hUc : IsCompact (Matrix.unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)) := by
@@ -140,23 +140,19 @@ def stdU (hG : IsLinRed G) {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Matrix.u
       _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨U, hU, hiwa⟩` from `hI`. Use `letI : MeasurableSpace (kgrp hG) := borel _`. Use `haveI : BorelSpace (kgrp hG) := ⟨rfl⟩`. Set `μ : Measure (kgrp hG)` to `(Measure.haar : Measure (kgrp hG)).inv`. Establish `hμ : IsFiniteMeasure μ` using `CompactSpace.isFiniteMeasure`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsc : SecondCountableTopology (kgrp hG)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hiso : ∀ g u, ‖homG hG hσ g u‖ = ‖u‖` using `fun g u => hσ.2.1 _ g.2 u`. Establish `hc : ∀ u, Continuous fun g => homG hG hσ g u` using `fun u => (hσ.2.2 u).comp_continuous continuous_toMat fun g => g.2`. Establish `hKm : ∀ k : kgrp hG, toMat k.1 ∈ maxCpt G` using `fun k => ⟨k.1.2, k.2⟩`. Take `⟨e, E, he, hfin, hE, hEv⟩` from `exists_averaging_operator (kgrp hG) μ H ((homG hG hσ).comp (kgrp hG).subtype) (fun k u => hiso k u) (fun u => (hc u).comp continuous_subtype_val) S (fun k u hu => hS _ (hKm k) u hu) v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `choose st hst using fun g : grp hG => exists_elt hG (hG.star_mem _ g.2)`. Set `Tr : Set (grp hG)` to `{s | (stdU hG hU s).BlockTriangular id}`. Establish `hgood : IsGood st Tr (stdU hG hU)`. Use `⟨(continuous_const.matrix_mul continuous_toMat).matrix_mul continuous_const, fun g => ?_, Fin.val, Fin.val_injective, fun s hs i j hij => hs hij⟩` and prove the remaining obligations. Use `show Uᴴ * toMat (st g) * U = (Uᴴ * toMat g * U)ᴴ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hst]`. Simplify using `[Matrix.mul_assoc]`. Establish `hinj : Function.Injective (stdU hG hU)`. Introduce `a b hab`. Establish `h1 : U * Uᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `key : ∀ g : grp hG, U * stdU hG hU g * Uᴴ = toMat g` using `fun g => by show U * (Uᴴ * toMat g * U) * Uᴴ = _`. Combine the equalities or inequalities in the displayed calculation. Conclude with `toMat_injective ((key a).symm.trans (hab ▸ key b))`. Establish `hKS : ∀ g : grp hG, ∃ k ∈ kgrp hG, ∃ s ∈ Tr, g = k * s`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k, hk, s, hs, hg, ht⟩` from `hiwa (toMat g) g.2`. Take `⟨k', rfl⟩` from `exists_elt hG hk.1`. Take `⟨s', rfl⟩` from `exists_elt hG hs`. Conclude with `⟨k', hk.2, s', ht, toMat_injective hg⟩`. Establish `hPI : ∀ g : Fin (Module.finrank ℂ S ^ 2 + 1) → grp hG, stdPoly E (fun i => homG hG hσ (g i)) = 0` using `fun g => transfer_holds (grp hG) (kgrp hG) μ st Tr (Fin n) (stdU hG hU) hgood hinj e he _ g (fun ι _ _ ρ hρ E' hE' => goodPI_of small_irreducible_representation (grp hG) (kgrp hG) μ st Tr hKS e _ _ he hfin (Nat.lt_succ_self _) ι ρ hρ E' hE' g) H (homG hG hσ) hc E hE`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨hfd, -⟩` from `finite_rank_of_irreducible_unitary (grp hG) H (homG hG hσ) hiso (fun S' hcl hS' => hirr S' hcl fun g hg u hu => by`. Take `⟨g, rfl⟩` from `exists_elt hG hg`. Conclude with `hS' g u hu) E _ hPI`. Use `⟨_, hfd, ⟨v, hEv⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `T hT _ ⟨u, rfl⟩`.
-
-Use `⟨T u, ?_⟩` and prove the remaining obligations. Use `show E (T u) = T (E u)`. Rewrite using `[hE, hE, ← T.integral_comp_comm]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_) show e k • σ (toMat k.1) (T u) = T (e k • σ (toMat k.1) u)` and prove the remaining obligations. Rewrite using `[map_smul, hT _ (hKm k)]`.
-
-Conclude with `(he.smul ((hc u).comp continuous_subtype_val)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stable [CompleteSpace H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G)
     (hI : ∃ U ∈ Matrix.unitaryGroup (Fin n) ℂ, ∀ g ∈ G, ∃ k ∈ maxCpt G, ∃ s ∈ G, g = k * s ∧ (Uᴴ * s * U).BlockTriangular id)
@@ -220,21 +216,19 @@ theorem exists_stable [CompleteSpace H] {σ : Matrix (Fin n) (Fin n) ℂ → (H 
 end Core
 
 /- English proof (translation)
-Use `⟨hU.1, hU.2.2, fun k hk => hU.2.1 k hk.1, ?_⟩` and prove the remaining obligations. Introduce `S hfd hS _`. Use `haveI := hfd`. Set `b` to `Module.finBasis ℂ S`. Use `choose Y hYfd hvY hY using fun i => exists_stable hG hI hU hirr S hS (b i) (b i).2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hYfd`. Establish `hsup : FiniteDimensional ℂ (⨆ i, Y i : Submodule ℂ H)` using `Submodule.finiteDimensional_iSup Y`. Use `Submodule.finiteDimensional_of_le (S₂ := ⨆ i, Y i) (sSup_le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨Θ₀, rfl, hΘ⟩`. Set `Θ : S →ₗ[ℂ] H` to `Θ₀.domRestrict S`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `T : H →L[ℂ] H` to `(LinearMap.toContinuousLinearMap Θ).comp S.orthogonalProjectionOnto`. Establish `hT : ∀ k ∈ maxCpt G, ∀ u, T (π k u) = π k (T u)`. Introduce `k hk u`. Establish `hkG` using `hk.1`. Establish `hk1 : k * k.conjTranspose = 1` using `Matrix.mem_unitaryGroup_iff.1 hk.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hks : k.conjTranspose ∈ maxCpt G` using `⟨hG.star_mem _ hkG, Unitary.star_mem hk.2⟩`. Establish `hiso : ∀ x y, ⟪π k x, π k y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun x y => (LinearIsometry.mk (π k : H →ₗ[ℂ] H) (hU.2.1 k hkG)).inner_map_map x y`. Establish `hP : ((S.orthogonalProjectionOnto (π k u) : S) : H) = π k (S.orthogonalProjectionOnto u : S)`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hS k hk _ (S.orthogonalProjectionOnto u).2) ?_` and prove the remaining obligations. Introduce `w hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hw' : π k (π k.conjTranspose w) = w`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hU.1.2 _ hkG _ hks.1, hk1, hU.1.1]`. Both sides reduce to the same expression. Rewrite using `[← hw', ← map_sub, hiso]`. Conclude with `S.starProjection_inner_eq_zero u _ (hS _ hks w hw)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `show Θ₀ ((S.orthogonalProjectionOnto (π k u) : S) : H) = π k (Θ₀ (S.orthogonalProjectionOnto u : S))`. Rewrite using `[hP]`. Conclude with `hΘ k hk _ (S.orthogonalProjectionOnto u).2`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hv2 : v = ∑ i, b.repr ⟨v, hv⟩ i • (b i : H)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `show Θ₀ v ∈ _`. Rewrite using `[hv2, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
-
-Use `Submodule.smul_mem _ _ (Submodule.mem_iSup_of_mem i ?_)` and prove the remaining obligations. Use `hY i T hT _ (hvY i)` as an intermediate fact. Simplify `this` using `[T, Θ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isAdmOn_of_iwasawa {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G)

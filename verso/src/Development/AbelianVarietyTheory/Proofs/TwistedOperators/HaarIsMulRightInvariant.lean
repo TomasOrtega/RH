@@ -17,9 +17,9 @@ variable {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mem_unipRad.1 u.2`. Rewrite using `[← det_transpose, det_of_blocks (rmat e _)ᵀ (fun p => blk e p.1.2) ?_ (fun a => {j : n // blk e j < a}) (fun _ => 1) (colEquiv e) ?_]`. Simplify using the standard rewrite rules. Introduce `p q h`. Establish `h3 : ((u : GL n R) : Matrix n n R).BlockTriangular (blk e)` using `h1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[rmat, h3 h]`. Introduce `a x y`. Conclude with `if_congr (eq_comm.trans Subtype.ext_iff.symm) (h2 a x.1 y.1) rfl`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem det_rmat_unip (u : unipRad R e) : (rmat e ((u : GL n R) : Matrix n n R)).det = 1 := by
   obtain ⟨h1, h2⟩ := mem_unipRad.1 u.2
@@ -33,7 +33,7 @@ theorem det_rmat_unip (u : unipRad R e) : (rmat e ((u : GL n R) : Matrix n n R))
     exact if_congr (eq_comm.trans Subtype.ext_iff.symm) (h2 a x.1 y.1) rfl
 
 /- English proof (translation)
-Rewrite using `[← ent_mat_mul]`. Use `show ent e ((1 + mat e x) * ((u : GL n R) : Matrix n n R)) = _`. Rewrite using `[add_mul, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unipEquiv_mul_right (u : unipRad R e) (x : Idx e → R) :
     unipEquiv e ((unipEquiv e).symm x * u) =
@@ -54,9 +54,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   (ν : Measure k) [ν.IsAddHaarMeasure]
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Establish `hΦ : Measurable (unipHomeo (R` using `k) e).symm := (unipHomeo e).symm.measurable`. Use `⟨fun u => ?_⟩` and prove the remaining obligations. Establish `hm : Measurable (rmat e ((u : GL n k) : Matrix n n k)).mulVec` using `(continuous_const.matrix_mulVec continuous_id).measurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `WeilM.smul_map_mulVec_pi ν _ 1 (det_rmat_unip e u).symm`. Rewrite `h1` using `[map_one, ENNReal.coe_one, one_smul]`. Establish `h2 : (· * u) ∘ (unipHomeo e).symm = (unipHomeo e).symm ∘ ((unipEquiv e u + ·) ∘ (rmat e ((u : GL n k) : Matrix n n k)).mulVec)`. Use function extensionality and compare the values at `fun x => (unipEquiv e).eq_symm_apply.2 (unipEquiv_mul_right e u x)`. Rewrite using `[Measure.map_map (measurable_mul_const u) hΦ, h2, ← Measure.map_map hΦ ((measurable_const_add _).comp hm), ← Measure.map_map (measurable_const_add _) hm, h1, map_add_left_eq_self]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_map :
     (Measure.map (unipHomeo e).symm (Measure.pi fun _ : Idx e => ν)).IsMulRightInvariant := by
@@ -78,9 +78,7 @@ theorem isMulRightInvariant_map :
 end Measure
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α n m _ _ _ _ _ _ e _ _ μ _`. Use `borelize k`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI : LocallyCompactSpace (unipRad k e) := (unipHomeo e).isClosedEmbedding.locallyCompactSpace`.
-
-Use `haveI : SecondCountableTopology (unipRad k e) := (unipHomeo e).secondCountableTopology`. Use `haveI := isHaarMeasure_map e (Measure.addHaar : Measure k)`. Use `haveI := isMulRightInvariant_map e (Measure.addHaar : Measure k)`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul μ (Measure.map (unipHomeo e).symm (Measure.pi fun _ : Idx e => (Measure.addHaar : Measure k)))]`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_isMulRightInvariant : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (α n : Type) (m : α → Type) [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) [MeasurableSpace (unipRad k e)] [BorelSpace (unipRad k e)] (μ : Measure (unipRad k e)) [μ.IsHaarMeasure], μ.IsMulRightInvariant := by
   intro k _ _ _ _ α n m _ _ _ _ _ _ e _ _ μ _

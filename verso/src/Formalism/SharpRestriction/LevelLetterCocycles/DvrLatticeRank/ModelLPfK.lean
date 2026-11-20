@@ -9,29 +9,27 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨τs, hIs, -⟩` from `hpt`. Take `⟨-, hIs2⟩` from `hIs`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations at hr`. Take `⟨-, -, -, -, ⟨w, hw⟩, -, -, -⟩` from `hr`. Generalize the expression as in `(HW l).W K 1 LL hG = W at hw ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Establish `hz : (D.loc l).ζQ 1 ^ l = 1`. Establish `h` using `(D.loc l).ζQ_succ 0`. Rewrite `h` using `[(D.loc l).ζQ_zero]`. Simplify using `using h`. Establish `hmem : (D.loc l).ζQ 1 ∈ Ks K 1` using `by show (D.loc l).ζQ 1 ∈ K0 K ⊔ IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `SetLike.le_def.mp le_sup_right (IntermediateField.subset_adjoin ℚ_[l] _ (by simpa using hz))`. Establish `hζ : τs ⟨_, hmem⟩ = ζ` using `hIs2 ⟨_, hmem⟩ rfl`. Establish `hζl : ζ ^ l = 1`. Establish `h1 : (⟨_, hmem⟩ : ↥(Ks K 1)) ^ l = 1` using `Subtype.ext (by simpa using hz)`. Rewrite using `[← hζ, ← map_pow, h1, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ζ ≠ 1`. Introduce `h1`. Establish `h2 : (⟨_, hmem⟩ : ↥(Ks K 1)) = 1` using `RingHom.injective (τs : ↥(Ks K 1) →+* ↥LL.1) (by simp [hζ, h1])`. Conclude with `(D.loc l).ζQ_one (by simpa using congrArg Subtype.val h2)`. Establish `hprim : IsPrimitiveRoot ζ l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `IsPrimitiveRoot.orderOf ζ`. Rewrite `h` using `[orderOf_eq_prime hζl hne]`. Then use the resulting hypothesis. Establish `hl0 : ((l : ℕ) : ↥LL.1) ≠ 0`. Introduce `h`. Establish `h'` using `(D.loc l).v_l LL`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h'` using `[h, AddValuation.map_zero]`. Simplify using `at h'`. Take `⟨F, hF0, hFd, hFπ⟩` from `W.lev_π c ζ ⟨1, by rw [(D.loc l).PD_p K, pow_one]; exact hprim⟩`. Choose the witnesses or unpack the hypotheses as in `⟨F1, hF1⟩ : PowerSeries.X ∣ F - 1 := by`. Rewrite using `[PowerSeries.X_dvd_iff, map_sub, hF0, map_one, sub_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF1c : PowerSeries.constantCoeff F1 = 1`. Establish `hd` using `congrArg (fun f => PowerSeries.constantCoeff (PowerSeries.derivative ↥LL.1 f)) hF1`. Simplify using `only [map_sub, Derivation.map_one_eq_zero, sub_zero, hFd, hF0, Derivation.leibniz, PowerSeries.derivative_X, smul_eq_mul, map_add, map_mul, map_one, PowerSeries.constantCoeff_X, zero_mul, zero_add, mul_one] at hd`. Conclude with `hd.symm`. Establish `hq : (letπ : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) * W.q = (1 + letπ) ^ ((D.loc l).PD K).p - 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `W.q₀_def`. Establish `hl1 : W.lev c ζ 1 = 1` using `map_one (W.lev c ζ)`. Establish `hadd : W.lev c ζ (1 + letπ) = 1 + W.lev c ζ letπ`. Rewrite using `[← hl1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `map_add (M := LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) (N := PowerSeries ↥LL.1) (W.lev c ζ) 1 letπ`. Establish `hlq` using `congrArg (W.lev c ζ) hq`. Rewrite `hlq` using `[map_mul (W.lev c ζ), map_sub (W.lev c ζ), map_pow (W.lev c ζ), hadd, hl1, hFπ, (D.loc l).PD_p K, mul_pow, ← map_pow PowerSeries.C ζ l, hζl, map_one PowerSeries.C, one_mul, ← mul_geom_sum, hF1, hw, map_mul (W.lev c ζ)]`. Establish `hy0 : PowerSeries.constantCoeff (W.lev c ζ letπ) ≠ 0`. Establish `h` using `congrArg PowerSeries.constantCoeff hFπ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_add, map_one, map_mul, PowerSeries.constantCoeff_C, hF0, mul_one]`. Establish `h' : PowerSeries.constantCoeff (W.lev c ζ letπ) = ζ - 1` using `by linear_combination h`. Rewrite using `[h']`. Conclude with `sub_ne_zero.mpr hne`. Take `⟨u, hu⟩ : IsUnit (W.lev c ζ letπ * W.lev c ζ ↑w)` from `(PowerSeries.isUnit_iff_constantCoeff.mpr (isUnit_iff_ne_zero.mpr hy0)).mul (w.isUnit.map (W.lev c ζ))`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hlq` using `[← mul_assoc, ← hu]`. Use `⟨↑u⁻¹ * (F1 * ∑ i ∈ Finset.range l, F ^ i), ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, Units.inv_mul, one_mul]`. Use `_ = _ := by rw [hlq]; ring`.
-
-Rewrite using `[map_mul]`. Use `mul_ne_zero ((u⁻¹).isUnit.map PowerSeries.constantCoeff).ne_zero ?_` and prove the remaining obligations. Rewrite using `[map_mul, hF1c, one_mul, map_sum]`. Simplify `hl0` using `[hF0]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lev_Eat_simple (D : D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l)
     (hG : Good K 1 LL) (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K)))

@@ -8,17 +8,17 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : a 1 * b 1 = p ^ h` using `by simpa using hab 1`. Take `⟨s, hs, hs'⟩` from `(Nat.dvd_prime_pow hp).1 (Dvd.intro _ h1)`. Take `⟨t, ht, ht'⟩` from `(Nat.dvd_prime_pow hp).1 (Dvd.intro_left _ h1)`. Establish `h0 : a 0 * b 0 = 1` using `by simpa using hab 0`. Establish `ha0 : a 0 = 1` using `Nat.eq_one_of_mul_eq_one_right h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : b 0 = 1` using `Nat.eq_one_of_mul_eq_one_left h0`. Establish `hst : s + t = h`. Rewrite `h1` using `[hs', ht', ← pow_add]`. Conclude with `Nat.pow_right_injective hp.two_le h1`. Establish `hale : ∀ n, a n ≤ p ^ (n * s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [ha0]`. Consider the case `succ n ih`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hble : ∀ n, b n ≤ p ^ (n * t)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [hb0]`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨s, fun n => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hlt : a n < p ^ (n * s)` using `lt_of_le_of_ne (hale n) hne`. Establish `hpos : 0 < p ^ (n * t)` using `pow_pos hp.pos _`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : a n * b n < p ^ (n * s) * p ^ (n * t)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `key` using `[hab n, ← pow_add, ← Nat.mul_add, hst]`. Conclude with `lt_irrefl _ key`.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natSeq_pow_of_mul_eq {p h : ℕ} (hp : p.Prime) (a b : ℕ → ℕ)
     (hab : ∀ n, a n * b n = p ^ (n * h))
@@ -60,7 +60,7 @@ theorem natSeq_pow_of_mul_eq {p h : ℕ} (hp : p.Prime) (a b : ℕ → ℕ)
   exact lt_irrefl _ key
 
 /- English proof (translation)
-Introduce `p _ k _ G u v huv h1 h2`. Conclude with `natSeq_pow_of_mul_eq (Fact.out : p.Prime) (fun n => Module.finrank k (G.A n ⧸ kerIdeal (u.app n))) (fun n => Module.finrank k (G.A n ⧸ kerIdeal (v.app n))) (GlobalTheory.T.finrank_kernelIdeal_mul_of_idempotents p k G u v huv h1 h2) (GlobalTheory.T.finrank_kernelIdeal_succ_le_mul_ …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kerIdeal_finrank_eq_pow_of_idempotent : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
     (G : PDivGroup p k) (u v : G ⟶ G), u + v = 𝟙 G → u ≫ v = 0 → v ≫ u = 0 →

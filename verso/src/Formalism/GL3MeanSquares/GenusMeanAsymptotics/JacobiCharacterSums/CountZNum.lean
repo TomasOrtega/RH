@@ -8,43 +8,41 @@ namespace Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD
 
 attribute [local irreducible] q0 pY pJ pN in
 /- English proof (translation)
-Introduce `C hC`. Establish `h3` using `(isLittleO_log_rpow_rpow_atTop (3 : ℝ) (by norm_num : (0 : ℝ) < 7 / 100)).bound (by norm_num : (0 : ℝ) < 1 / 32768)`. Establish `h2` using `(isLittleO_log_rpow_rpow_atTop (2 : ℝ) (by norm_num : (0 : ℝ) < 47 / 50)).bound (by positivity : (0 : ℝ) < 1 / (65536 * (C + 1)))`. Take `⟨Q1, hQ1⟩` from `Filter.eventually_atTop.1 (h3.and h2)`. Use `⟨max 20 Q1, 1 + 8 * C * (1048576 : ℝ) ^ (3 / 200 : ℝ), le_max_left _ _, fun Q hQ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQ20 : 20 ≤ Q` using `(le_max_left _ _).trans hQ`. Take `⟨hl3, hl2⟩` from `hQ1 Q ((le_max_right _ _).trans hQ)`. Establish `hQ0 : 0 < Q` using `by linarith`. Establish `hlogQ : 1 ≤ Real.log Q`. Rewrite using `[Real.le_log_iff_exp_le hQ0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog0 : 0 ≤ Real.log Q` using `by linarith`. Rewrite `hl3`, `hl2` using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg hlog0 _), abs_of_nonneg (Real.rpow_nonneg hQ0.le _)]`. Establish `hl3' : Real.log Q ^ 3 ≤ 1 / 32768 * Q ^ (7 / 100 : ℝ)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : Real.log Q ^ (3 : ℝ) = Real.log Q ^ 3` using `by simpa using Real.rpow_natCast (Real.log Q) 3`. Rewrite using `[← e]`. Conclude with `hl3`. Establish `hl2' : Real.log Q ^ 2 ≤ 1 / (65536 * (C + 1)) * Q ^ (47 / 50 : ℝ)`. Establish `e : Real.log Q ^ (2 : ℝ) = Real.log Q ^ 2` using `by simpa using Real.rpow_natCast (Real.log Q) 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `hl2`. Establish `hq1 : Q ≤ (q0 Q : ℝ)` using `by rw [q0]; exact Nat.le_ceil Q`. Establish `hq2 : (q0 Q : ℝ) ≤ 2 * Q`. Rewrite using `[q0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Nat.ceil_lt_add_one hQ0.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hqpos : 0 < q0 Q` using `by exact_mod_cast lt_of_lt_of_le hQ0 hq1`. Establish `hL2 : 2 ^ Nat.log 2 (q0 Q) ≤ q0 Q` using `Nat.pow_log_le_self 2 hqpos.ne'`. Establish `hJdef : pJ Q = 8 * (Nat.log 2 (q0 Q) + 1)` using `by rw [pJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYdef : pY Q = q0 Q ^ 4` using `by rw [pY]`. Establish `hLr : (Nat.log 2 (q0 Q) : ℝ) * Real.log 2 ≤ Real.log Q + Real.log 2`. Establish `h1 : ((2 ^ Nat.log 2 (q0 Q) : ℕ) : ℝ) ≤ q0 Q` using `by exact_mod_cast hL2`. Move the coercions through the operations in `at h1`. Establish `h4 : Real.log ((2 : ℝ) ^ Nat.log 2 (q0 Q)) ≤ Real.log (2 * Q)` using `Real.log_le_log (by positivity) (by linarith)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h4` using `[Real.log_pow, Real.log_mul (by norm_num) hQ0.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlt2` using `Real.log_two_gt_d9`. Establish `hlt2'` using `Real.log_two_lt_d9`. Establish `hL' : (Nat.log 2 (q0 Q) : ℝ) ≤ 3 * Real.log Q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use polynomial arithmetic with `[(Nat.cast_nonneg (Nat.log 2 (q0 Q)) : (0 : ℝ) ≤ _)]`. Establish `hJ : (pJ Q : ℝ) ≤ 32 * Real.log Q`. Rewrite using `[hJdef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hJpos : (0 : ℝ) < pJ Q` using `by rw [hJdef]; positivity`. Prove the components needed by the constructor for the conclusion. Introduce `j _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hY : Q ^ 4 ≤ ((pY Q * 2 ^ j : ℕ) : ℝ)`. Rewrite using `[hYdef]`. Use `push_cast`. Establish `h1 : (1 : ℝ) ≤ 2 ^ j` using `one_le_pow₀ (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow : ((pY Q * 2 ^ j : ℕ) : ℝ) ^ (-(197 / 200 : ℝ)) ≤ Q ^ (-(197 / 50 : ℝ))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hQ0.le]`. Evaluate the numerical expressions. Establish `hQ3 : Q ^ 3 * Q ^ (-(197 / 50 : ℝ)) = Q ^ (-(47 / 50 : ℝ))`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hQ0]`. Evaluate the numerical expressions. Establish `hQ47 : Q ^ (47 / 50 : ℝ) * Q ^ (-(47 / 50 : ℝ)) = 1`. Rewrite using `[← Real.rpow_add hQ0]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkey : 64 * C * (pJ Q : ℝ) ^ 2 ≤ Q ^ (47 / 50 : ℝ)`. Establish `hJ2 : (pJ Q : ℝ) ^ 2 ≤ 1024 * Real.log Q ^ 2` using `by nlinarith`. Establish `hC1 : C / (C + 1) ≤ 1` using `by rw [div_le_one (by linarith)]; linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[le_div_iff₀ (by positivity)]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hJ2 : (2 : ℕ) ^ pJ Q ≤ 256 * q0 Q ^ 8`. Rewrite using `[hJdef, pow_mul', pow_succ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hYJ : ((pY Q * 2 ^ pJ Q : ℕ) : ℝ) ≤ 1048576 * Q ^ 12`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : pY Q * 2 ^ pJ Q ≤ q0 Q ^ 4 * (256 * q0 Q ^ 8)`. Rewrite using `[hYdef]`. Conclude with `Nat.mul_le_mul_left _ hJ2`. Establish `h4 : ((pY Q * 2 ^ pJ Q : ℕ) : ℝ) ≤ (q0 Q : ℝ) ^ 4 * (256 * (q0 Q : ℝ) ^ 8)`. Conclude with `h1` after adjusting the coercions.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hpow : ((pY Q * 2 ^ pJ Q : ℕ) : ℝ) ^ (3 / 200 : ℝ) ≤ (1048576 : ℝ) ^ (3 / 200 : ℝ) * Q ^ (9 / 50 : ℝ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow (by norm_num) (by positivity), ← Real.rpow_natCast Q 12, ← Real.rpow_mul hQ0.le]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ3 : (pJ Q : ℝ) ^ 3 ≤ Q ^ (7 / 100 : ℝ)`. Combine the equalities or inequalities in the displayed calculation. Establish `hQ14 : 1 ≤ Q ^ (1 / 4 : ℝ)` using `Real.one_le_rpow (by linarith) (by norm_num)`. Establish `hsplit : Q ^ (7 / 100 : ℝ) * Q ^ (9 / 50 : ℝ) = Q ^ (1 / 4 : ℝ)`. Rewrite using `[← Real.rpow_add hQ0]`.
-
-Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation.
+Evaluate the numerical expressions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem numeric_constants : Num := by
   intro C hC

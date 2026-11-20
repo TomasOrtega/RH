@@ -10,13 +10,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor
 section General
 
 /- English proof (translation)
-Establish `h0 : ∀ x, σ x = x → D x = 0` using `fun x hx => by`. Take `⟨a, rfl⟩` from `hfix x hx`. Conclude with `D.map_algebraMap a`. Establish `h1 : ∀ x, D (σ x) = -D x` using `fun x => by`. Establish `h` using `h0 (x + σ x) (by rw [map_add, hσ, add_comm])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_add]`. Conclude with `eq_neg_of_add_eq_zero_right h`. Establish `h2 : ∀ x, (x - σ x) • D x = 0` using `fun x => by`. Establish `h` using `h0 (σ x * x) (by rw [map_mul, hσ, mul_comm])`. Rewrite `h` using `[D.leibniz, h1, smul_neg, ← sub_eq_add_neg, ← sub_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← neg_sub, neg_smul, h, neg_zero]`. Establish `h3 : (w - σ w) • D b + (b - σ b) • D w = 0`. Establish `h` using `h2 (w + b)`. Establish `e : w + b - σ (w + b) = (w - σ w) + (b - σ b)` using `by rw [map_add]; ring`. Rewrite `h` using `[e, map_add, add_smul, smul_add, smul_add, h2, h2, zero_add, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Establish `h4` using `congrArg (fun m => (w - σ w) • m) h3`. Simplify using `only [smul_add, smul_zero] at h4`. Rewrite `h4` using `[smul_comm (w - σ w) (b - σ b), h2, smul_zero, add_zero, ← mul_smul, ← sq]`. Conclude with `h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_sub_smul_derivation_eq_zero {A B M : Type*} [CommRing A] [CommRing B] [Algebra A B] [AddCommGroup M]
     [Module A M] [Module B M] (D : Derivation A B M) (σ : B →+* B) (hσ : ∀ b, σ (σ b) = b)
@@ -43,11 +43,11 @@ theorem sq_sub_smul_derivation_eq_zero {A B M : Type*} [CommRing A] [CommRing B]
   exact h4
 
 /- English proof (translation)
-Establish `hD : ∀ b, KaehlerDifferential.D A B b = 0` using `fun b => by`. Take `⟨u, v, huv⟩ : IsCoprime ((w₁ - σ w₁) ^ 2) ((w₂ - σ w₂) ^ 2)` from `h.pow`. Rewrite using `[← one_smul B (KaehlerDifferential.D A B b), ← huv, add_smul, mul_smul, mul_smul, sq_sub_smul_derivation_eq_zero _ σ hσ hfix, sq_sub_smul_derivation_eq_zero _ σ hσ hfix, smul_zero, smul_zero, add_zero]`. Establish `hbot : (⊤ : Submodule B (Ω[B⁄A])) = ⊥`. Rewrite using `[← KaehlerDifferential.span_range_derivation, Submodule.span_eq_bot]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `hD b`. Use `⟨⟨fun x y => ?_⟩⟩` and prove the remaining obligations. Establish `hz : ∀ z : Ω[B⁄A], z = 0` using `fun z => by`. Rewrite using `[← Submodule.mem_bot B, ← hbot]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Rewrite using `[hz x, hz y]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formallyUnramified_of_isCoprime {A B : Type*} [CommRing A] [CommRing B] [Algebra A B] (σ : B →+* B)
     (hσ : ∀ b, σ (σ b) = b) (hfix : ∀ b, σ b = b → b ∈ Set.range (algebraMap A B)) (w₁ w₂ : B)
@@ -70,7 +70,7 @@ theorem formallyUnramified_of_isCoprime {A B : Type*} [CommRing A] [CommRing B] 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `{ formallyUnramified := formallyUnramified_of_isCoprime (IsCMField.ringOfIntegersComplexConj E : 𝓞 E →+* 𝓞 E) (fun b => RingOfIntegers.ext (IsCMField.complexConj_apply_apply E (b : E))) (fun b hb => (IsCMField.ringOfIntegersComplexConj_eq_self_iff E b).1 hb) w₁ w₂ h finiteType := …`.
+A detailed English derivation is pending.
 -/
 theorem unramified_of_isCoprime (w₁ w₂ : 𝓞 E)
     (h : IsCoprime (w₁ - IsCMField.ringOfIntegersComplexConj E w₁) (w₂ - IsCMField.ringOfIntegersComplexConj E w₂)) :
@@ -81,13 +81,13 @@ theorem unramified_of_isCoprime (w₁ w₂ : 𝓞 E)
     finiteType := inferInstance }
 
 /- English proof (translation)
-Set `φ : E →+* ℂ` to `Classical.choice inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg]`. Establish `h : φ x ^ 2 = -(n : ℂ)` using `by rw [← map_pow, hx, map_neg, map_natCast]`. Establish `hre` using `congrArg Complex.re h`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `him` using `congrArg Complex.im h`. Simplify using `only [sq, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at hre him`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `h0 : (φ x).re = 0`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hi : (φ x).im = 0`. Establish `: (φ x).re * (φ x).im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left hne`. Rewrite `hre` using `[hi]`. Use `mul_self_pos.2 hne` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem complexConj_eq_neg_of_sq_eq_neg {x : E} {n : ℕ} (hx : x ^ 2 = -(n : E)) : IsCMField.complexConj E x = -x := by
   let φ : E →+* ℂ := Classical.choice inferInstance
@@ -114,16 +114,16 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun y : 𝓞 E => (y : E)) hx`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.HostModel.coe_sq_eq_neg {x : 𝓞 E} {n : ℕ} (hx : x ^ 2 = -(n : 𝓞 E)) : (x : E) ^ 2 = -(n : E) := by
   have h := congrArg (fun y : 𝓞 E => (y : E)) hx
   simpa using h
 
 /- English proof (translation)
-Establish `hx' : IsCMField.ringOfIntegersComplexConj E x = -x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `h : (x : E) ^ 2 = -(n : E)` using `coe_sq_eq_neg hx`. Conclude with `complexConj_eq_neg_of_sq_eq_neg h`. Establish `h` using `congrArg (IsCMField.ringOfIntegersComplexConj E) hw`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_mul, map_add, map_one, hx', map_ofNat]`. Apply `mul_left_cancel₀ (two_ne_zero : (2 : 𝓞 E) ≠ 0)` to reduce the goal to its premises. Take the linear combination `hw - h`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sub_complexConj_eq_of_two_mul {w x : 𝓞 E} {n : ℕ} (hx : x ^ 2 = -(n : 𝓞 E)) (hw : 2 * w = 1 + x) :
     w - IsCMField.ringOfIntegersComplexConj E w = x := by
@@ -137,7 +137,7 @@ theorem sub_complexConj_eq_of_two_mul {w x : 𝓞 E} {n : ℕ} (hx : x ^ 2 = -(n
   linear_combination hw - h
 
 /- English proof (translation)
-Apply `unramified_of_isCoprime w₁ w₂` to reduce the goal to its premises. Rewrite using `[sub_complexConj_eq_of_two_mul h₁ hw₁, sub_complexConj_eq_of_two_mul h₂ hw₂, ← IsCoprime.pow_iff (m := 2) (n := 2) two_pos two_pos, h₁, h₂, IsCoprime.neg_neg_iff]`. Conclude with `hmn.cast`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramified_of_sqrt {x₁ x₂ w₁ w₂ : 𝓞 E} {m n : ℕ} (hmn : m.Coprime n) (h₁ : x₁ ^ 2 = -(m : 𝓞 E))
     (h₂ : x₂ ^ 2 = -(n : 𝓞 E)) (hw₁ : 2 * w₁ = 1 + x₁) (hw₂ : 2 * w₂ = 1 + x₂) :
@@ -151,17 +151,17 @@ open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Set `φ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Use `set w := φ (H.rt : E) with hw`. Establish `hw2 : w ^ 2 = -(H.d : ℂ)`. Rewrite using `[hw, ← map_pow, _root_.GlobalTheory.HostModel.coe_sq_eq_neg H.rt_sq]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hre : w.re = 0`. Establish `h` using `congrArg Complex.re hw2`. Establish `h'` using `congrArg Complex.im hw2`. Simplify using `[pow_two] at h h'`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `him : w.im = 0`. Establish `h0 : w.re * w.im = 0` using `by linarith`. Break down `mul_eq_zero.mp h0 with h1 | h1` into its components or cases. Conclude with `absurd h1 hne`. Conclude with `h1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[him]`. Establish `hd : (0 : ℝ) ≤ H.d` using `Nat.cast_nonneg _`. Establish `hpos : 0 < w.re * w.re` using `mul_self_pos.mpr hne`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hconj : (starRingEnd ℂ) w = -w`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [hre]`. Establish `hfac : (H.rt0 - w) * (H.rt0 + w) = 0`. Take the linear combination `H.sqrt_neg_disc_sq - hw2`. Break down `mul_eq_zero.mp hfac with h | h` into its components or cases. Use `⟨φ, ?_⟩ show w = H.rt0` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-h`. Use `⟨(starRingEnd ℂ).comp φ, ?_⟩ show (starRingEnd ℂ) w = H.rt0` and prove the remaining obligations. Rewrite using `[hconj]`. Take the linear combination `-h`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HostModel.exists_embedding_rt_eq (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : ∃ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 := by
   let φ : E →+* ℂ := (IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom
@@ -207,13 +207,13 @@ instance isCMField_cyclotomicField21 : IsCMField E21 := IsCyclotomicExtension.Ra
 def primitiveRootCyclotomicField21 : 𝓞 E21 := (IsCyclotomicExtension.zeta_spec 21 ℚ E21).toInteger
 
 /- English proof (translation)
-The claim follows from `(IsCyclotomicExtension.zeta_spec 21 ℚ E21).toInteger_isPrimitiveRoot`.
+A detailed English derivation is pending.
 -/
 theorem isPrimitiveRoot_primitiveRootCyclotomicField21 : IsPrimitiveRoot primitiveRootCyclotomicField21 21 :=
   (IsCyclotomicExtension.zeta_spec 21 ℚ E21).toInteger_isPrimitiveRoot
 
 /- English proof (translation)
-Establish `h : IsPrimitiveRoot (primitiveRootCyclotomicField21 ^ 3) 7` using `isPrimitiveRoot_primitiveRootCyclotomicField21.pow (by norm_num) (by norm_num)`. Establish `h2` using `h.geom_sum_eq_zero (by norm_num)`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero] at h2`. Take the linear combination `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sum_zeta21_pow_multiples_of_three_eq_zero : 1 + primitiveRootCyclotomicField21 ^ 3 + primitiveRootCyclotomicField21 ^ 6 + primitiveRootCyclotomicField21 ^ 9 + primitiveRootCyclotomicField21 ^ 12 + primitiveRootCyclotomicField21 ^ 15 + primitiveRootCyclotomicField21 ^ 18 = 0 := by
   have h : IsPrimitiveRoot (primitiveRootCyclotomicField21 ^ 3) 7 := isPrimitiveRoot_primitiveRootCyclotomicField21.pow (by norm_num) (by norm_num)
@@ -228,7 +228,7 @@ def sqrtNegSeven : 𝓞 E21 := 2 * halfSqrtNegSeven - 1
 def sqrtNegThree : 𝓞 E21 := 1 + 2 * primitiveRootCyclotomicField21 ^ 7
 
 /- English proof (translation)
-Establish `h` using `isPrimitiveRoot_primitiveRootCyclotomicField21.pow_eq_one`. Unfold `halfSqrtNegSeven`. Take the linear combination `2 * sum_zeta21_pow_multiples_of_three_eq_zero + primitiveRootCyclotomicField21 ^ 3 * h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem halfSqrtNegSeven_quadratic : halfSqrtNegSeven ^ 2 - halfSqrtNegSeven + 2 = 0 := by
   have h := isPrimitiveRoot_primitiveRootCyclotomicField21.pow_eq_one
@@ -237,7 +237,7 @@ theorem halfSqrtNegSeven_quadratic : halfSqrtNegSeven ^ 2 - halfSqrtNegSeven + 2
 
 open NumberField in
 /- English proof (translation)
-The claim follows from `(IsCyclotomicExtension.zeta_spec 21 ℚ _root_.GlobalTheory.HostModel.E21).toInteger_isPrimitiveRoot`.
+A detailed English derivation is pending.
 -/
 private theorem isPrimitiveRoot_hostModel_primitiveRoot21 :
     IsPrimitiveRoot _root_.GlobalTheory.HostModel.primitiveRootCyclotomicField21 21 :=
@@ -246,9 +246,9 @@ private theorem isPrimitiveRoot_hostModel_primitiveRoot21 :
 open NumberField in
 
 /- English proof (translation)
-Establish `hz` using `isPrimitiveRoot_hostModel_primitiveRoot21`. Establish `hω : IsPrimitiveRoot (_root_.GlobalTheory.HostModel.primitiveRootCyclotomicField21 ^ 3) 7` using `hz.pow (by norm_num) (by norm_num)`. Establish `h1` using `hω.geom_sum_eq_zero (by norm_num)`. Establish `h2` using `hz.pow_eq_one`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `_root_.GlobalTheory.HostModel.sqrtNegSeven _root_.GlobalTheory.HostModel.halfSqrtNegSeven`. Use `push_cast`. Take the linear combination `8 * h1 + 4 * _root_.GlobalTheory.HostModel.primitiveRootCyclotomicField21 ^ 3 * h2`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem _root_.GlobalTheory.HostModel.sqrtNegSeven_sq : _root_.GlobalTheory.HostModel.sqrtNegSeven ^ 2 = -((7 : ℕ) : 𝓞 _root_.GlobalTheory.HostModel.E21) := by
   have hz := isPrimitiveRoot_hostModel_primitiveRoot21
@@ -262,13 +262,11 @@ theorem _root_.GlobalTheory.HostModel.sqrtNegSeven_sq : _root_.GlobalTheory.Host
 
 open NumberField in
 /- English proof (translation)
-Establish `hz` using `isPrimitiveRoot_hostModel_primitiveRoot21`. Set `φ : _root_.GlobalTheory.HostModel.E21 →+* ℂ` to `(IsAlgClosed.lift : _root_.GlobalTheory.HostModel.E21 →ₐ[ℚ] ℂ).toRingHom`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `show ((IsCMField.ringOfIntegersComplexConj _root_.GlobalTheory.HostModel.E21 _root_.GlobalTheory.HostModel.primitiveRootCyclotomicField21 : 𝓞 _root_.GlobalTheory.HostModel.E21) : _root_.GlobalTheory.HostModel.E21) = ((_root_.GlobalTheory.HostModel.primitiveRootCyclotomicField21 ^ …`. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj]`. Establish `hw : IsPrimitiveRoot (φ (_root_.GlobalTheory.HostModel.primitiveRootCyclotomicField21 : _root_.GlobalTheory.HostModel.E21)) 21` using `(hz.map_of_injective RingOfIntegers.coe_injective).map_of_injective φ.injective`. Use `set w := φ (_root_.GlobalTheory.HostModel.primitiveRootCyclotomicField21 : _root_.GlobalTheory.HostModel.E21)`. Establish `hnorm : w * (starRingEnd ℂ) w = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hw.norm'_eq_one (by norm_num)]`. Evaluate the numerical expressions. Establish `h21 : w * w ^ 20 = 1` using `by rw [← pow_succ']; exact hw.pow_eq_one`. Establish `hw0 : w ≠ 0` using `hw.ne_zero (by norm_num)`. Use `push_cast`.
-
-Rewrite using `[map_pow]`. Conclude with `mul_left_cancel₀ hw0 (hnorm.trans h21.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ringOfIntegersComplexConj_zeta21_eq_pow_twenty :
     IsCMField.ringOfIntegersComplexConj _root_.GlobalTheory.HostModel.E21 _root_.GlobalTheory.HostModel.primitiveRootCyclotomicField21 =
@@ -296,11 +294,11 @@ private theorem ringOfIntegersComplexConj_zeta21_eq_pow_twenty :
 
 open NumberField in
 /- English proof (translation)
-Establish `hroot` using `hu.isRoot_cyclotomic (by norm_num)`. Rewrite `hroot` using `[← Polynomial.mul_divByMonic_eq_iff_isRoot]`. Establish `hnpp : ∀ {p : ℕ}, Nat.Prime p → ∀ k : ℕ, p ^ k ≠ 21`. Introduce `p hp k hk`. Establish `h3 : 3 ∣ p` using `Nat.prime_three.dvd_of_dvd_pow (hk ▸ (by norm_num : 3 ∣ 21))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h7 : 7 ∣ p` using `(by norm_num : Nat.Prime 7).dvd_of_dvd_pow (hk ▸ (by norm_num : 7 ∣ 21))`. Establish `e3` using `(Nat.prime_dvd_prime_iff_eq Nat.prime_three hp).mp h3`. Establish `e7` using `(Nat.prime_dvd_prime_iff_eq (by norm_num : Nat.Prime 7) hp).mp h7`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `congrArg (Polynomial.eval 1) hroot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h1` using `[Polynomial.eval_mul, Polynomial.eval_one_cyclotomic_not_prime_pow hnpp]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at h1`. Conclude with `IsUnit.of_mul_eq_one _ h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isUnit_one_sub_of_isPrimitiveRoot_twentyOne {R : Type*} [CommRing R] [IsDomain R] {u : R}
     (hu : IsPrimitiveRoot u 21) : IsUnit (1 - u) := by
@@ -321,27 +319,23 @@ private theorem isUnit_one_sub_of_isPrimitiveRoot_twentyOne {R : Type*} [CommRin
 open NumberField in
 
 /- English proof (translation)
-Use `set ζ := _root_.GlobalTheory.HostModel.primitiveRootCyclotomicField21`. Establish `hz : IsPrimitiveRoot ζ 21` using `isPrimitiveRoot_hostModel_primitiveRoot21`. Establish `hconj` using `ringOfIntegersComplexConj_zeta21_eq_pow_twenty`. Establish `hζ21 : ζ ^ 21 = 1` using `hz.pow_eq_one`. Take `⟨t, ht⟩` from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff _root_.GlobalTheory.HostModel.E21 (ζ + ζ ^ 20)).mp (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_pow, hconj, ← pow_mul]`. Take the linear combination `(ζ ^ 379 + ζ ^ 358 + ζ ^ 337 + ζ ^ 316 + ζ ^ 295 + ζ ^ 274 + ζ ^ 253 + ζ ^ 232 + ζ ^ 211 + ζ ^ 190 + ζ ^ 169 + ζ ^ 148 + ζ ^ 127 + ζ ^ 106 + ζ ^ 85 + ζ ^ 64 + ζ ^ 43 + ζ ^ 22 + ζ) * hζ21)`. Establish `hunit : IsUnit (ζ - ζ ^ 20)`. Establish `h2 : IsPrimitiveRoot (ζ ^ 2) 21` using `hz.pow_of_coprime 2 (by norm_num)`. Establish `hu` using `(isUnit_one_sub_of_isPrimitiveRoot_twentyOne h2).neg.mul (IsUnit.pow 20 (hz.isUnit (by norm_num)))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hu using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-1 : 𝓞 _root_.GlobalTheory.HostModel.E21) * ζ * hζ21`. Set `D` to `KaehlerDifferential.D (𝓞 (maximalRealSubfield _root_.GlobalTheory.HostModel.E21)) (𝓞 _root_.GlobalTheory.HostModel.E21)`. Establish `hDζ : D ζ = 0`. Establish `hDt : D (ζ + ζ ^ 20) = 0`.
+Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht]`. Conclude with `D.map_algebraMap t`. Establish `hprod : D (ζ * ζ ^ 20) = 0`. Rewrite using `[← pow_succ', hζ21]`. Conclude with `D.map_one_eq_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hprod` using `[Derivation.leibniz]`. Rewrite `hDt` using `[map_add]`. Establish `key : (ζ - ζ ^ 20) • D ζ = 0`. Establish `e : (ζ - ζ ^ 20) • D ζ = ζ • (D ζ + D (ζ ^ 20)) - (ζ • D (ζ ^ 20) + ζ ^ 20 • D ζ)`. Rewrite using `[sub_smul, smul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e, hDt, hprod, smul_zero, sub_zero]`. Conclude with `(hunit.smul_left_cancel).mp (key.trans (smul_zero _).symm)`. Establish `hall : ∀ x, D x = 0`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Establish `hx : x ∈ Algebra.adjoin ℤ {ζ}`. Establish `htop : Algebra.adjoin ℤ {ζ} = ⊤` using `IsCyclotomicExtension.Rat.adjoin_singleton_eq_top (IsCyclotomicExtension.zeta_spec 21 ℚ _root_.GlobalTheory.HostModel.E21)`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Use `Derivation.eqOn_adjoin (D1 := D.restrictScalars ℤ) (D2 := 0) (s := {ζ}) (by intro y hy; rw [Set.mem_singleton_iff.mp hy]; exact hDζ) hx` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hsub : Subsingleton (Ω[𝓞 _root_.GlobalTheory.HostModel.E21⁄𝓞 (maximalRealSubfield _root_.GlobalTheory.HostModel.E21)])`. Establish `htop` using `KaehlerDifferential.span_range_derivation (𝓞 (maximalRealSubfield _root_.GlobalTheory.HostModel.E21)) (𝓞 _root_.GlobalTheory.HostModel.E21)`. Establish `hbot : Submodule.span (𝓞 _root_.GlobalTheory.HostModel.E21) (Set.range D) = ⊥`. Rewrite using `[Submodule.span_eq_bot]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hall x`. Rewrite `htop` using `[hbot]`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `ha : a ∈ (⊥ : Submodule (𝓞 _root_.GlobalTheory.HostModel.E21) _)` using `htop ▸ Submodule.mem_top`.
-
-Establish `hb : b ∈ (⊥ : Submodule (𝓞 _root_.GlobalTheory.HostModel.E21) _)` using `htop ▸ Submodule.mem_top`. Rewrite `ha`, `hb` using `[Submodule.mem_bot]`. Rewrite using `[ha, hb]`. Use `haveI : Algebra.FormallyUnramified (𝓞 (maximalRealSubfield _root_.GlobalTheory.HostModel.E21)) (𝓞 _root_.GlobalTheory.HostModel.E21) := ⟨hsub⟩`. Use `haveI : Algebra.FiniteType (𝓞 (maximalRealSubfield _root_.GlobalTheory.HostModel.E21)) (𝓞 _root_.GlobalTheory.HostModel.E21) := Algebra.FiniteType.of_restrictScalars_finiteType ℤ _ _`.
-
-Conclude with `⟨inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HostModel.unramified_E21_over_maximalRealSubfield : Algebra.Unramified (𝓞 (maximalRealSubfield _root_.GlobalTheory.HostModel.E21)) (𝓞 _root_.GlobalTheory.HostModel.E21) := by
   set ζ := _root_.GlobalTheory.HostModel.primitiveRootCyclotomicField21
@@ -442,21 +436,21 @@ Both sides reduce to the same expression.
 instance nonempty_host : Nonempty (Host E21) := ⟨host⟩
 
 /- English proof (translation)
-Rewrite using `[IsCyclotomicExtension.finrank E21 (Polynomial.cyclotomic.irreducible_rat (n := 21) (by norm_num))]`. Evaluate the decidable proposition.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 theorem finrank_rat_E21_eq_twelve : Module.finrank ℚ E21 = 12 := by
   rw [IsCyclotomicExtension.finrank E21 (Polynomial.cyclotomic.irreducible_rat (n := 21) (by norm_num))]
   decide
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (complexConj_eq_neg_of_sq_eq_neg (n := 7) (coe_sq_eq_neg sqrtNegSeven_sq))`.
+A detailed English derivation is pending.
 -/
 example : host.bar host.rt = -host.rt :=
   RingOfIntegers.ext (complexConj_eq_neg_of_sq_eq_neg (n := 7)
     (coe_sq_eq_neg sqrtNegSeven_sq))
 
 /- English proof (translation)
-Establish `h` using `sub_complexConj_eq_of_two_mul host.rt_sq host.two_weight_eq_one_add_root`. Express the relevant statement in the definitionally equal form `halfSqrtNegSeven - host.bar host.w0 = 2 * halfSqrtNegSeven - 1 at h`. Express the relevant statement in the definitionally equal form `halfSqrtNegSeven * host.bar host.w0 = 2`. Take the linear combination `-halfSqrtNegSeven * h - halfSqrtNegSeven_quadratic`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 -/
 example : host.w0 * host.bar host.w0 = 2 := by
   have h := sub_complexConj_eq_of_two_mul host.rt_sq host.two_weight_eq_one_add_root
@@ -465,7 +459,7 @@ example : host.w0 * host.bar host.w0 = 2 := by
   linear_combination -halfSqrtNegSeven * h - halfSqrtNegSeven_quadratic
 
 /- English proof (translation)
-The claim follows from `exists_embedding_rt_eq host`.
+A detailed English derivation is pending.
 -/
 example : ∃ τ : E21 →+* ℂ, τ (sqrtNegSeven : E21) = Complex.I * (Real.sqrt 7 : ℝ) := exists_embedding_rt_eq host
 

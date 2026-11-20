@@ -14,7 +14,7 @@ section
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Use `S.mul_mem h (S.pow_mem hi n)` as an intermediate fact. Rewrite `this` using `[_root_.mul_assoc, ← mul_pow, mul_inv_cancel₀ hd, one_pow, _root_.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_mul_pow_mem_of_inv_mem {S : Subalgebra o Ω} {d x : Ω} (hd : d ≠ 0) (hi : d⁻¹ ∈ S) {n : ℕ}
     (h : x * d ^ n ∈ S) : x ∈ S := by
@@ -22,7 +22,7 @@ theorem mem_of_mul_pow_mem_of_inv_mem {S : Subalgebra o Ω} {d x : Ω} (hd : d �
   rwa [_root_.mul_assoc, ← mul_pow, mul_inv_cancel₀ hd, one_pow, _root_.mul_one] at this
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, rfl⟩` from `h x`. Distinguish the cases in `h0 : b = 0`. Conclude with `⟨0, R.zero_mem, 1, R.one_mem, one_ne_zero, by simp [h0]⟩`. Conclude with `⟨a, ha, b, hb, h0, div_mul_cancel₀ a h0⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_mul_eq_of_eq_div {R : Subalgebra o Ω} (h : ∀ x : Ω, ∃ a ∈ R, ∃ b ∈ R, x = a / b) (x : Ω) :
     ∃ a ∈ R, ∃ b ∈ R, b ≠ 0 ∧ x * b = a := by
@@ -32,19 +32,17 @@ theorem exists_mul_eq_of_eq_div {R : Subalgebra o Ω} (h : ∀ x : Ω, ∃ a ∈
   · exact ⟨a, ha, b, hb, h0, div_mul_cancel₀ a h0⟩
 
 /- English proof (translation)
-Take `⟨d, hdR, hd0, hd⟩` from `exists_mul_pow_mem_of_fg (B ⊔ Algebra.adjoin o A) R (hB.sup (Subalgebra.fg_def.2 ⟨_, hA, rfl⟩)) hRf`. Take `⟨c, hcB, hc0, hc⟩` from `exists_mul_pow_mem_of_fg (R ⊔ Algebra.adjoin o {d⁻¹}) B (hR.sup (Subalgebra.fg_def.2 ⟨_, Set.finite_singleton _, rfl⟩)) hBf`. Take `⟨m, hm⟩` from `hd c (le_sup_left (a := B) hcB)`. Establish `ha0 : d * (c * d ^ m) ≠ 0` using `mul_ne_zero hd0 (mul_ne_zero hc0 (pow_ne_zero _ hd0))`. Use `set S := Algebra.adjoin o (insert (d * (c * d ^ m))⁻¹ (R : Set Ω)) with hS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S' := Algebra.adjoin o (insert c⁻¹ (B : Set Ω)) with hS'`. Establish `hRS : ∀ x ∈ R, x ∈ S` using `fun x hx => Algebra.subset_adjoin (Set.mem_insert_of_mem _ hx)`. Establish `haS : (d * (c * d ^ m))⁻¹ ∈ S` using `Algebra.subset_adjoin (Set.mem_insert _ _)`. Establish `hdS : d⁻¹ ∈ S`. Use `S.mul_mem haS (hRS _ hm)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Establish `hcS : c⁻¹ ∈ S`. Use `S.mul_mem haS (hRS _ (R.mul_mem hdR (R.pow_mem hdR m)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `h1 : ∀ x ∈ B ⊔ Algebra.adjoin o A, x ∈ S` using `fun x hx => by`. Take `⟨n, hn⟩` from `hd x hx`. Conclude with `mem_of_mul_pow_mem_of_inv_mem hd0 hdS (hRS _ hn)`. Establish `hcS' : c⁻¹ ∈ S'` using `Algebra.subset_adjoin (Set.mem_insert _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ∀ x ∈ R ⊔ Algebra.adjoin o {d⁻¹}, x ∈ S'` using `fun x hx => by`. Take `⟨n, hn⟩` from `hc x hx`. Conclude with `mem_of_mul_pow_mem_of_inv_mem hc0 hcS' (Algebra.subset_adjoin (Set.mem_insert_of_mem _ hn))`. Establish `hdS' : d⁻¹ ∈ S'` using `h2 _ (le_sup_right (a := R) (Algebra.subset_adjoin (Set.mem_singleton _)))`. Use `⟨_, R.mul_mem hdR hm, c, hcB, ha0, hc0, le_antisymm (Algebra.adjoin_le ?_) (Algebra.adjoin_le ?_), fun x hx => h1 x (le_sup_right (a := B) (Algebra.subset_adjoin hx))⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `x (rfl | hx)`. Conclude with `hcS`. Conclude with `h1 x (le_sup_left (a := B) hx)`. Introduce and unpack `x (rfl | hx)`. Use `S'.mul_mem hdS' (S'.mul_mem hcS' (S'.pow_mem hdS' m))` as an intermediate fact.
-
-Rewrite `this` using `[inv_pow, ← mul_inv, ← mul_inv]`. Then use the resulting hypothesis. Conclude with `h2 x (le_sup_left (a := R) hx)`.
+A detailed English derivation is pending.
 -/
 theorem exists_adjoin_inv_eq (R B : Subalgebra o Ω) (A : Set Ω) (hR : R.FG) (hB : B.FG)
     (hRf : ∀ x : Ω, ∃ a ∈ R, ∃ b ∈ R, b ≠ 0 ∧ x * b = a)
@@ -93,9 +91,9 @@ namespace RatModel
 variable {M : RatModel o Ω}
 
 /- English proof (translation)
-Use `M.lft` as an intermediate fact. Establish `h1 : (M.s.appLE ⊤ V le_top).hom.FiniteType` using `M.s.finiteType_appLE (isAffineOpen_top _) hV _`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of o)).inv.hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of o)).symm.commRingCatIsoToRingEquiv.surjective`. Establish `h3 : (M.sectionsEquiv V hne).toRingHom.FiniteType` using `RingHom.FiniteType.of_surjective _ (M.sectionsEquiv V hne).surjective`. Establish `h4` using `h3.comp (h1.comp h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (M.sectionsEquiv V hne).toRingHom.comp ((M.s.appLE ⊤ V le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of o)).inv.hom) = algebraMap o (M.ringOn V)` using `RingHom.ext fun a => Subtype.ext ((coe_sectionsEquiv V hne _).trans (M.valF_constFn hne a))`. Rewrite `h4` using `[e, RingHom.finiteType_algebraMap]`. Conclude with `(Subalgebra.fg_iff_finiteType _).2 h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_ringOn {V : M.Z.Opens} (hV : IsAffineOpen V) (hne : (V : Set M.Z).Nonempty) :
     (M.ringOn V).FG := by
@@ -114,7 +112,7 @@ theorem fg_ringOn {V : M.Z.Opens} (hV : IsAffineOpen V) (hne : (V : Set M.Z).Non
   exact (Subalgebra.fg_iff_finiteType _).2 h4
 
 /- English proof (translation)
-Rewrite using `[Set.nonempty_iff_ne_empty]`. Introduce `h`. Apply `hg` to reduce the goal to its premises. Rewrite using `[(basicOpen_eq_bot_iff g).1 (SetLike.coe_injective h), ← M.res_apply V hne, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem nonempty_basicOpen {V : M.Z.Opens} (hne : (V : Set M.Z).Nonempty) {g : Γ(M.Z, V)}
     (hg : valF M.pt V g ≠ 0) : ((M.Z.basicOpen g : M.Z.Opens) : Set M.Z).Nonempty := by
@@ -124,11 +122,11 @@ theorem nonempty_basicOpen {V : M.Z.Opens} (hne : (V : Set M.Z).Nonempty) {g : �
   rw [(basicOpen_eq_bot_iff g).1 (SetLike.coe_injective h), ← M.res_apply V hne, map_zero]
 
 /- English proof (translation)
-Establish `hg` using `nonempty_basicOpen hne hg0`. Use `le_antisymm (fun x hx => ?_) (Algebra.adjoin_le ?_)` and prove the remaining obligations. Take `⟨f, rfl⟩` from `(mem_ringOn_iff_exists hg).1 hx`. Use `hV.isLocalization_basicOpen g` as an intermediate fact. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj g f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `congrArg (M.res _ hg) ha`. Establish `h2 : ∀ t : Γ(M.Z, V), M.res _ hg (algebraMap Γ(M.Z, V) Γ(M.Z, M.Z.basicOpen g) t) = M.res V hne t` using `fun t => M.res_resG (M.Z.basicOpen_le g) hg t`. Rewrite `h1` using `[map_mul, map_pow, h2, h2, res_apply, res_apply, res_apply]`. Use `mem_of_mul_pow_mem_of_inv_mem hg0 (Algebra.subset_adjoin (Set.mem_insert _ _)) (n := n) ?_` and prove the remaining obligations. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ ((mem_ringOn_iff_exists hne).2 ⟨a, rfl⟩))`. Introduce and unpack `x (rfl | hx)`. Conclude with `mem_ringOn.2 fun z hz => ((isUnit_O_iff _).1 ((isUnit_valF_iff (M.Z.basicOpen_le g hz) g).2 hz)).2`. Conclude with `ringOn_anti (M.Z.basicOpen_le g) hx`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ringOn_basicOpen {V : M.Z.Opens} (hV : IsAffineOpen V) (hne : (V : Set M.Z).Nonempty) {g : Γ(M.Z, V)}
     (hg0 : valF M.pt V g ≠ 0) :
@@ -155,9 +153,9 @@ end RatModel
 end
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M R A hR hRf hA W ⟨w, hw⟩`. Take `⟨V, hV, hwV, hVW⟩` from `exists_isAffineOpen_mem_and_subset (U := W) hw`. Establish `hne : (V : Set M.Z).Nonempty` using `⟨w, hwV⟩`. Take `⟨a, ha, c, hc, ha0, hc0, he, hAS⟩` from `exists_adjoin_inv_eq R (M.ringOn V) A hR (RatModel.fg_ringOn hV hne) (exists_mul_eq_of_eq_div hRf) (exists_mul_eq_of_eq_div fun x => by`. Take `⟨a, b, -, h⟩` from `RatModel.exists_eq_div hV hne x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, (RatModel.mem_ringOn_iff_exists hne).2 ⟨a, rfl⟩, _, (RatModel.mem_ringOn_iff_exists hne).2 ⟨b, rfl⟩, h⟩) hA`. Take `⟨g, rfl⟩` from `(RatModel.mem_ringOn_iff_exists hne).1 hc`. Establish `h` using `(RatModel.ringOn_basicOpen hV hne hc0).trans he`. Conclude with `⟨M.Z.basicOpen g, a, (M.Z.basicOpen_le g).trans hVW, RatModel.nonempty_basicOpen hne hc0, hV.basicOpen g, ha, ha0, h, h ▸ hAS⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_affineOpen_ringOn_eq_adjoin_inv : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (R : Subalgebra o Ω) (A : Set Ω), R.FG → (∀ x : Ω, ∃ a ∈ R, ∃ b ∈ R, x = a / b) → A.Finite → ∀ W : M.Z.Opens, (W : Set M.Z).Nonempty → ∃ (U₀ : M.Z.Opens) (a : Ω), U₀ ≤ W ∧ (U₀ : Set M.Z).Nonempty ∧ IsAffineOpen U₀ ∧ a ∈ R ∧ a ≠ 0 ∧ M.ringOn U₀ = Algebra.adjoin o (insert a⁻¹ (R : Set Ω)) ∧ A ⊆ M.ringOn U₀ := by
   intro o Ω _ _ _ M R A hR hRf hA W ⟨w, hw⟩

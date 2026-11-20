@@ -18,23 +18,21 @@ namespace GlobalTheory.ThK.GrowthDiff
 open GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.ThK.RealLineGrowthDerivative
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM _ _ c Φ Φ' hΦ' hPM c₀ hc₀ φ' hφ'`. Establish `hT` using `hM.triple`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hT.base.cm`. Take `⟨c₁, hc₁, hc₁s⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ hT.base.cm`. Take `⟨T, -, m, m', f, φ, f', ψ, h1, h2, e1, e2, -⟩` from `hPM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hev : ∀ {ρ : ∀ v : Pl F, Type} (φ₀ ρ₀ : ∀ v, ρ v), (∀ v ∉ T, φ₀ v = ρ₀ v) → ∀ᶠ v in cofinite, φ₀ v = ρ₀ v` using `fun φ₀ ρ₀ h => Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => not_not.1 fun h' => hv (h v h'))`. Establish `hP : Φ ∈ PolData B G.M` using `e1 ▸ Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, (h1 i).1, φ i, (h1 i).2.1, hev _ _ (h1 i).2.2, rfl⟩`. Establish `hP' : Φ' ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁` using `⟨e2 ▸ Submodule.sum_mem _ fun j _ => Submodule.subset_span ⟨f' j, (h2 j).1, ψ j, (h2 j).2.1, hev _ _ (h2 j).2.2, rfl⟩, hΦ'⟩`. Set `e : GAd σ (c₀ • G.W.J.map σ) ≃* GAd σ (c₁ • G.W.J.map σ)` to `(toGAd hσ G.W.J hc₀).symm.trans (toGAd hσ G.W.J hc₁)`. Set `fV : GAd σ (c₁ • G.W.J.map σ) → ℂ` to `fun x => G.M.I om Φ ((toGAd hσ G.W.J hc₁).symm x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `fV' : GAd σ (c₁ • G.W.J.map σ) → ℂ` to `fun x => G.M'.I om' Φ' ((toGAd hσ G.W.J hc₁).symm x)`. Establish `hφe : φ' = fun x => (fun y => fV y - c * fV' y) (e x)`. Use function extensionality and compare the values at `x`. Use `(hφ' ((toGAd hσ G.W.J hc₀).symm x) x rfl).trans ?_` and prove the remaining obligations. Simplify using `[fV, fV', e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `sV : GlobalTheory.UAut.IsSm σ (c₁ • G.W.J.map σ) fV` using `GlobalTheory.T.theta_lift_real_line_derivative F E σ hσ B a a' G X om om' hKP hT c₁ hc₁ hc₁s Φ hP`. Establish `sV' : GlobalTheory.UAut.IsSm σ (c₁ • G.W.J.map σ) fV'` using `GlobalTheory.T.polynomial_theta_kernel_smooth F E σ hσ B a a' G X om om' hKP hT c₁ hc₁ hc₁s Φ' hP'`. Take `⟨N₁, hN₁⟩` from `GlobalTheory.T.theta_lift_lineDer_uniform_moderate_growth F E σ hσ B a a' G X om om' hKP hT c₁ hc₁ hc₁s Φ hP`. Take `⟨N₂, hN₂⟩` from `GlobalTheory.T.polynomial_theta_kernel_moderate_growth F E σ hσ B a a' G X om om' hKP hT c₁ hc₁ hc₁s Φ' hP'`. Use `⟨N₁ + N₂, fun l hl => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl' : ∀ γ ∈ l.map (fun γ t => e (γ t)), IsRealLine σ (c₁ • G.W.J.map σ) γ`. Introduce `γ' hγ'`. Take `⟨γ, hγ, rfl⟩` from `List.mem_map.1 hγ'`. Conclude with `isRealLine_move hσ G.W.J hc₀ hc₁ (hl γ hγ)`. Take `⟨C₁, hC₁⟩` from `hN₁ _ hl'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C₂, hC₂⟩` from `hN₂ _ hl'`. Use `⟨|C₁| + ‖c‖ * |C₂|, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hφe, foldr_lineDer_comp e (fun y => fV y - c * fV' y), foldr_lineDer_sub sV sV' c _ hl']`. Establish `hh : (height σ (c₁ • G.W.J.map σ) (e g) : ℝ) = height σ (c₀ • G.W.J.map σ) g` using `rfl`. Establish `h1' : (1 : ℝ) ≤ height σ (c₀ • G.W.J.map σ) g` using `by exact_mod_cast one_le_height σ _ g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set H := (height σ (c₀ • G.W.J.map σ) g : ℝ)`. Establish `p1 : H ^ N₁ ≤ H ^ (N₁ + N₂)` using `pow_le_pow_right₀ h1' (by omega)`. Establish `p2 : H ^ N₂ ≤ H ^ (N₁ + N₂)` using `pow_le_pow_right₀ h1' (by omega)`. Establish `q1` using `hC₁ (e g)`. Establish `q2` using `hC₂ (e g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `q1`, `q2` using `[hh]`. Establish `hp0 : 0 ≤ H ^ (N₁ + N₂)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
-
-Use `_ ≤ |C₁| * H ^ (N₁ + N₂) + ‖c‖ * (|C₂| * H ^ (N₁ + N₂)) := by gcongr`. Conclude with `q1.trans (mul_le_mul (le_abs_self _) p1 (by positivity) (abs_nonneg _))`. Conclude with `q2.trans (mul_le_mul (le_abs_self _) p2 (by positivity) (abs_nonneg _))`. Use `_ = (|C₁| + ‖c‖ * |C₂|) * H ^ (N₁ + N₂) := by ring`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem growth_diff : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →

@@ -12,11 +12,11 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM.ThIdeal
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨h1, h2, fun p => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, th, s1, α, τ, U, s2, w, u, k1, k2, k3, k4, k5, k6, k7, k8⟩` from `h3 p`. Establish `hu : IsUnit (V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c))` using `(hc.map _).map _`. Take `⟨u', hu'⟩ : ∃ u' : Γ((Out.overRes (T` from `Over.mk x) V).left, ⊤)ˣ, u'.val = V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c) := hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨V, hV, th, s1, α, τ, U, s2, w, u' * u, k1, k2, k3, k4, k5, k6, k7, fun i => ?_⟩` and prove the remaining obligations. Establish `e` using `k8 i`. Establish `e1 : V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (c * v i)) = V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c) * V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (v i))`. Rewrite using `[map_mul]`. Conclude with `map_mul _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, _root_.mul_assoc, hu']`. Conclude with `congrArg (fun y => V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c) * y) e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasTh_unit_mul {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBase o (N' ^ 2)}
     {S : Scheme.{0}} {s : S ⟶ Sp o} {t : TObj g (N' ^ 2) J b s} {R : Type} [CommRing R]
@@ -41,9 +41,9 @@ theorem hasTh_unit_mul {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBas
   exact congrArg (fun y => V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c) * y) e
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial d c`. Establish `hm : MvPolynomial.monomial d c ∈ MvPolynomial.homogeneousSubmodule σ R d.degree` using `MvPolynomial.isHomogeneous_monomial c rfl`. Rewrite using `[MvPolynomial.homogeneousComponent_of_mem hm]`. Establish `: MvPolynomial.eval₂Hom ((Polynomial.C : R' →+* Polynomial R').comp β) (fun i => Polynomial.X * Polynomial.C (w i)) (MvPolynomial.monomial d c) = Polynomial.C (MvPolynomial.eval₂Hom β w (MvPolynomial.monomial d c)) * Polynomial.X ^ d.degree`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [MvPolynomial.eval₂Hom_monomial, Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, map_mul, map_prod, map_pow, RingHom.comp_apply, Finsupp.degree_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Polynomial.coeff_C_mul_X_pow]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `add p q hp hq => simp only [map_add, Polynomial.coeff_add, hp, hq]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 -/
 theorem coeff_scale {R R' σ : Type} [CommRing R] [CommRing R'] (β : R →+* R') (w : σ → R')
     (F : MvPolynomial σ R) (e : ℕ) :
@@ -66,11 +66,11 @@ theorem coeff_scale {R R' σ : Type} [CommRing R] [CommRing R'] (β : R →+* R'
   | add p q hp hq => simp only [map_add, Polynomial.coeff_add, hp, hq]
 
 /- English proof (translation)
-Rewrite using `[← coeff_scale]`. Establish `: MvPolynomial.eval₂Hom ((Polynomial.C : ℂ →+* Polynomial ℂ).comp β) (fun i => Polynomial.X * Polynomial.C (w i)) F = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono (s := {0}ᶜ) (fun c hc => ?_) (Set.finite_singleton (0 : ℂ)).infinite_compl` and prove the remaining obligations. Establish `h1` using `MvPolynomial.map_eval₂Hom ((Polynomial.C : ℂ →+* Polynomial ℂ).comp β) (fun i => Polynomial.X * Polynomial.C (w i)) (Polynomial.evalRingHom c) F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_ofPred_eq, Polynomial.IsRoot.def, ← Polynomial.coe_evalRingHom, h1, ← h c hc]`. Use `congr 2`. Use extensionality with `r`. Simplify using the standard rewrite rules. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[_root_.mul_comm c]`. Rewrite using `[this, Polynomial.coeff_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem component_eq_zero {R σ : Type} [CommRing R] (β : R →+* ℂ) (w : σ → ℂ)
     (F : MvPolynomial σ R) (e : ℕ)
@@ -90,7 +90,7 @@ theorem component_eq_zero {R σ : Type} [CommRing R] (β : R →+* ℂ) (w : σ 
   rw [this, Polynomial.coeff_zero]
 
 /- English proof (translation)
-Simplify using `only [thIdeal, Ideal.mem_iInf, RingHom.mem_ker, and_imp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_thIdeal {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBase o (N' ^ 2)} (em : o →+* ℂ)
     (C : TObj g (N' ^ 2) J b (spMap em) → Prop) (F : MvPolynomial (Ix g (N' ^ 2)) o) :
@@ -98,13 +98,11 @@ theorem mem_thIdeal {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBase o
   simp only [thIdeal, Ideal.mem_iInf, RingHom.mem_ker, and_imp]
 
 /- English proof (translation)
-Introduce `o _ g N' J b em C hem`. Use `⟨fun F hF => ?_, fun F hF e => ?_, fun c F hc hF => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hF`. Rewrite `hn`, the goal using `[mem_thIdeal]`. Introduce `t v ht hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hn t v ht hv` as an intermediate fact. Rewrite `this` using `[map_pow]`. Conclude with `pow_eq_zero_iff'.mp this |>.1`. Rewrite `hF`, the goal using `[mem_thIdeal]`. Introduce `t v ht hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `component_eq_zero em v F e fun c hc => hF t _ ht (hasTh_unit_mul hv c hc.isUnit)`. Rewrite `hF`, the goal using `[mem_thIdeal]`. Introduce `t v ht hv`. Use `hF t v ht hv` as an intermediate fact. Rewrite `this` using `[map_mul, MvPolynomial.eval₂Hom_C]`.
-
-Conclude with `(mul_eq_zero.mp this).resolve_left ((map_ne_zero_iff em hem).mpr hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thIdeal_radical_homogeneous_torsionFree :
     ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (em : o →+* ℂ) (C : TObj g (N' ^ 2) J b (spMap em) → Prop), Function.Injective em → (thIdeal em C).IsRadical ∧ (∀ F ∈ thIdeal em C, ∀ e, MvPolynomial.homogeneousComponent e F ∈ thIdeal em C) ∧ ∀ (c : o) F, c ≠ 0 → MvPolynomial.C c * F ∈ thIdeal em C → F ∈ thIdeal em C := by

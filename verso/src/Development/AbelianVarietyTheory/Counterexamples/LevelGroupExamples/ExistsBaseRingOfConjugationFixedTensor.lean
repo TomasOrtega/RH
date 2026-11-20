@@ -12,15 +12,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hT : ∀ z : R ⊗[F] E, ∃ t : R, z + sigR R σ z = t ⊗ₜ 1`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul a x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨t, ht⟩` from `htr x`. Use `⟨t • a, ?_⟩` and prove the remaining obligations. Establish `: sigR R σ (a ⊗ₜ x) = a ⊗ₜ σ x` using `rfl`. Rewrite using `[this, ← TensorProduct.tmul_add, ← ht, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Consider the case `add x y hx hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨t, ht⟩` from `hx`. Take `⟨t', ht'⟩` from `hy`. Use `⟨t + t', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, TensorProduct.add_tmul, ← ht, ← ht']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨t, ht⟩` from `hT y`. Use `⟨(2 : F)⁻¹ • t, ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[hy]`. Use `show ((2 : F)⁻¹ • t) ⊗ₜ (1 : E) = y`. Rewrite using `[← TensorProduct.smul_tmul', ← ht, ← two_smul F y, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem exists_baseRing_of_conjugation_fixed_tensor {F E R : Type} [Field F] [CharZero F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) (htr : ∀ x, ∃ t, algebraMap F E t = x + σ x) (y : R ⊗[F] E) (hy : sigR R σ y = y) :
@@ -47,7 +47,7 @@ theorem exists_baseRing_of_conjugation_fixed_tensor {F E R : Type} [Field F] [Ch
   norm_num
 
 /- English proof (translation)
-Use `show a ⊗ₜ σ 1 = a ⊗ₜ 1`. Rewrite using `[map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigR_algebraMap {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) (a : R) : sigR R σ (algebraMap R (R ⊗[F] E) a) = algebraMap R (R ⊗[F] E) a := by
@@ -55,32 +55,32 @@ theorem sigR_algebraMap {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRi
   rw [map_one]
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_bc {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n : ℕ} (g : GL (Fin n) A) :
     (Formalism.UG.bc φ g).1.det = φ g.1.det := by
   rw [RingHom.map_det]; rfl
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeRight_injective (algebraMap F R).injective`.
+A detailed English derivation is pending.
 -/
 theorem inclR_injective {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     [Nontrivial R] : Function.Injective (inclR (F := F) (E := E) R) :=
   Algebra.TensorProduct.includeRight_injective (algebraMap F R).injective
 
 /- English proof (translation)
-The claim follows from `exists_baseRing_of_conjugation_fixed_tensor D.sp.cm.sig (fun x => (D.sp.cm.fixed (x + star x)).1 (by rw [star_add, star_star, add_comm])) y hy`.
+A detailed English derivation is pending.
 -/
 theorem fixed_mem_range (y : AE D) (hy : cA D y = y) : ∃ a, algebraMap (AF D.host.F) (AE D) a = y :=
   exists_baseRing_of_conjugation_fixed_tensor D.sp.cm.sig
     (fun x => (D.sp.cm.fixed (x + star x)).1 (by rw [star_add, star_star, add_comm])) y hy
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy' : cA D ((y⁻¹ : (AE D)ˣ) : AE D) = (y⁻¹ : (AE D)ˣ)`. Establish `h1 : cA D (y : AE D) * cA D ((y⁻¹ : (AE D)ˣ) : AE D) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hy]`. Conclude with `(Units.inv_eq_of_mul_eq_one_right h1).symm`. Take `⟨a, ha⟩` from `fixed_mem_range _ hy`. Take `⟨b, hb⟩` from `fixed_mem_range _ hy'`. Establish `hinj : Function.Injective (algebraMap (AF D.host.F) (AE D))` using `Algebra.TensorProduct.includeLeft_injective (S := D.host.F) (algebraMap D.host.F D.host.E).injective`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : a * b = 1` using `hinj (by rw [map_mul, ha, hb, map_one, Units.mul_inv])`. Conclude with `⟨Units.mkOfMulEqOne a b hab, Units.ext ha⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `sigR_algebraMap D.sp.cm.sig (a : AF D.host.F)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fixed_iff_idF (y : (AE D)ˣ) : cA D (y : AE D) = y ↔ ∃ a, idF D a = y := by
   constructor

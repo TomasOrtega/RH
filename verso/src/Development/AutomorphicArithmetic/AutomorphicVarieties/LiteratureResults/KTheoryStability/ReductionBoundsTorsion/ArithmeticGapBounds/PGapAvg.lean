@@ -9,13 +9,13 @@ namespace PositivityTheory.KB.SpectralGap.PGap
 variable {Λ S : Type} [Group Λ] [Group S] (j : Λ →* S)
 
 /- English proof (translation)
-Introduce `γ hγ x` and use `hu γ (h hγ) x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem linv_mono {E E' : Subgroup Λ} (h : E ≤ E') {u : S → ℝ} (hu : LInv j E' u) : LInv j E u :=
   fun γ hγ x => hu γ (h hγ) x
 
 /- English proof (translation)
-Introduce `γ hγ x`. Simplify using `only [hu γ hγ x, hv γ hγ x]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem linv_sub {E : Subgroup Λ} {u v : S → ℝ} (hu : LInv j E u) (hv : LInv j E v) :
     LInv j E (fun x => u x - v x) := by
@@ -23,7 +23,7 @@ theorem linv_sub {E : Subgroup Λ} {u v : S → ℝ} (hu : LInv j E u) (hv : LIn
   simp only [hu γ hγ x, hv γ hγ x]
 
 /- English proof (translation)
-Introduce `γ hγ x`. Simplify using `only [hu γ hγ x, hv γ hγ x]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem linv_mul {E : Subgroup Λ} {u v : S → ℝ} (hu : LInv j E u) (hv : LInv j E v) :
     LInv j E (fun x => u x * v x) := by
@@ -31,7 +31,7 @@ theorem linv_mul {E : Subgroup Λ} {u v : S → ℝ} (hu : LInv j E u) (hv : LIn
   simp only [hu γ hγ x, hv γ hγ x]
 
 /- English proof (translation)
-Introduce `γ hγ x`. Simplify using `only [hu γ hγ x]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem linv_sq {E : Subgroup Λ} {u : S → ℝ} (hu : LInv j E u) : LInv j E (fun x => u x ^ 2) := by
   intro γ hγ x
@@ -40,7 +40,7 @@ theorem linv_sq {E : Subgroup Λ} {u : S → ℝ} (hu : LInv j E u) : LInv j E (
 variable {B K : Subgroup Λ}
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (QuotientGroup.quotientRightRelEquivQuotientLeftRel (B.subgroupOf K))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_cosets :
     Nat.card (Quotient (QuotientGroup.rightRel (B.subgroupOf K))) = (B.subgroupOf K).index := by
@@ -48,14 +48,14 @@ theorem card_cosets :
   rfl
 
 /- English proof (translation)
-The claim follows from `Nat.finite_of_card_ne_zero (by rw [card_cosets]; exact h)`.
+A detailed English derivation is pending.
 -/
 theorem finite_cosets (h : (B.subgroupOf K).index ≠ 0) :
     Finite (Quotient (QuotientGroup.rightRel (B.subgroupOf K))) :=
   Nat.finite_of_card_ne_zero (by rw [card_cosets]; exact h)
 
 /- English proof (translation)
-Use `haveI := finite_cosets (B := B) (K := K) h`. Use `letI := Fintype.ofFinite (Quotient (QuotientGroup.rightRel (B.subgroupOf K)))`. Simplify using `only [avg, finsum_eq_sum_of_fintype, Finset.sum_sub_distrib, mul_sub]`.
+Equip the data with the indicated structure. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_sub (h : (B.subgroupOf K).index ≠ 0) (u v : S → ℝ) (x : S) :
     avg j B K (fun y => u y - v y) x = avg j B K u x - avg j B K v x := by
@@ -64,9 +64,9 @@ theorem avg_sub (h : (B.subgroupOf K).index ≠ 0) (u v : S → ℝ) (x : S) :
   simp only [avg, finsum_eq_sum_of_fintype, Finset.sum_sub_distrib, mul_sub]
 
 /- English proof (translation)
-Distinguish the cases in `h : (B.subgroupOf K).index = 0`. Simplify using `[avg, h]`. Use `haveI := finite_cosets (B := B) (K := K) h`. Use `letI := Fintype.ofFinite (Quotient (QuotientGroup.rightRel (B.subgroupOf K)))`. Simplify using `only [avg, finsum_eq_sum_of_fintype]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : ∀ c : Quotient (QuotientGroup.rightRel (B.subgroupOf K)), a (j (c.out : Λ) * x) * b (j (c.out : Λ) * x) = a x * b (j (c.out : Λ) * x)`. Introduce `c`. Rewrite using `[ha _ c.out.2 x]`. Simplify using `only [hc, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem avg_mul_left {a : S → ℝ} (ha : LInv j K a) (b : S → ℝ) (x : S) :
     avg j B K (fun y => a y * b y) x = a x * avg j B K b x := by
@@ -83,7 +83,7 @@ theorem avg_mul_left {a : S → ℝ} (ha : LInv j K a) (b : S → ℝ) (x : S) :
   ring
 
 /- English proof (translation)
-Unfold `avg`. Apply `mul_nonneg` to reduce the goal to its premises. Check the signs of the components of the expression. Conclude with `finsum_nonneg fun c => hu _`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem avg_nonneg {u : S → ℝ} (hu : ∀ y, 0 ≤ u y) (x : S) : 0 ≤ avg j B K u x := by
   unfold avg
@@ -92,11 +92,9 @@ theorem avg_nonneg {u : S → ℝ} (hu : ∀ y, 0 ≤ u y) (x : S) : 0 ≤ avg j
   · exact finsum_nonneg fun c => hu _
 
 /- English proof (translation)
-Use `haveI := finite_cosets (B := B) (K := K) h`. Use `letI := Fintype.ofFinite (Quotient (QuotientGroup.rightRel (B.subgroupOf K)))`. Establish `hc : (Finset.univ : Finset (Quotient (QuotientGroup.rightRel (B.subgroupOf K)))).card = (B.subgroupOf K).index`. Rewrite using `[Finset.card_univ, ← Nat.card_eq_fintype_card, card_cosets]`. Establish `hn : (0 : ℝ) < (B.subgroupOf K).index` using `by exact_mod_cast Nat.pos_of_ne_zero h`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [avg, finsum_eq_sum_of_fintype]`. Establish `key` using `sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun c : Quotient (QuotientGroup.rightRel (B.subgroupOf K)) => u (j (c.out : Λ) * x))`. Rewrite `key` using `[hc]`. Use `set n : ℝ := ((B.subgroupOf K).index : ℝ) with hn_def`. Use `set s := ∑ c : Quotient (QuotientGroup.rightRel (B.subgroupOf K)), u (j (c.out : Λ) * x)`.
-
-Use `set t := ∑ c : Quotient (QuotientGroup.rightRel (B.subgroupOf K)), u (j (c.out : Λ) * x) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem avg_sq_le (h : (B.subgroupOf K).index ≠ 0) (u : S → ℝ) (x : S) :
     avg j B K u x ^ 2 ≤ avg j B K (fun y => u y ^ 2) x := by

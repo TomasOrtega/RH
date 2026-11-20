@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-Introduce `Ω _ _ _ η D δ hD hδ hs σ hσ`. Take `⟨j, hj⟩` from `hσ`. Break down `Int.units_eq_one_or (η σ) with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h1 : σ δ = δ` using `by rw [hs σ, h]; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : j δ = starRingEnd ℂ (j δ)`. Use `hj δ` as an intermediate fact. Rewrite using `[← this]`. Conclude with `congrArg j h1.symm`. Establish `h3 : (j δ) ^ 2 = -(D : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, hδ]`. Simplify using the standard rewrite rules. Establish `him : (j δ).im = 0` using `Complex.conj_eq_iff_im.mp h2.symm`. Establish `h4` using `congrArg Complex.re h3`. Simplify using `[sq, him] at h4`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hD' : (0 : ℝ) < D` using `by exact_mod_cast hD`. Use polynomial arithmetic with `[mul_self_nonneg (j δ).re]`. Conclude with `h`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.st_eta :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (η : G ℚ Ω →* ℤˣ) (D : ℕ) (δ : Ω), 0 < D → δ ^ 2 = -(D : Ω) → (∀ s : G ℚ Ω, s δ = (η s : ℤ) • δ) → ∀ σ : G ℚ Ω, IsCC σ → η σ = -1 := by

@@ -6,9 +6,9 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.Dblock
 
 /- English proof (translation)
-Distinguish the cases in `h : Integrable (fun x => ‖f x‖ ^ 2) μ`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall fun x => by positivity) h.aestronglyMeasurable]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Apply `lintegral_congr` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Rewrite using `[integral_undef h]`. Conclude with `ENNReal.toReal_nonneg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_norm_sq_le_toReal_lintegral_enorm_sq {α : Type} [MeasurableSpace α] (μ : Measure α) (f : α → ℂ) :
     ∫ x, ‖f x‖ ^ 2 ∂μ ≤ (∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ).toReal := by

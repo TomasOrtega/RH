@@ -19,13 +19,11 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A _`. Set `Ω` to `AlgebraicClosure (FractionRing A)`. Set `φ : A →+* Ω` to `algebraMap A Ω`. Establish `hφ : Function.Injective φ`. Establish `h1 : Function.Injective (algebraMap A (FractionRing A))` using `IsFractionRing.injective A _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Function.Injective (algebraMap (FractionRing A) Ω)` using `(algebraMap (FractionRing A) Ω).injective`. Establish `: φ = (algebraMap (FractionRing A) Ω).comp (algebraMap A (FractionRing A))` using `IsScalarTower.algebraMap_eq A (FractionRing A) Ω`. Rewrite using `[this]`. Conclude with `h2.comp h1`. Use `⟨Ω, inferInstance, inferInstance, Spec.map (CommRingCat.ofHom φ), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x show Ideal.comap φ x.asIdeal = ⊥`. Rewrite using `[show x.asIdeal = ⊥ from @Ideal.eq_bot_of_prime _ _ _ (PrimeSpectrum.isPrime x)]`. Conclude with `Ideal.comap_bot_of_injective _ hφ`. Rewrite using `[isDominant_iff] show DenseRange (PrimeSpectrum.comap φ)`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot φ).1 hφ]`.
-
-Conclude with `bot_le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_geomGeneric_dominant : ∀ (A : CommRingCat.{0}) [IsDomain A], ∃ (Ω : Type) (_ : Field Ω) (_ : IsAlgClosed Ω) (y : Sp Ω ⟶ Spec A), (∀ x, (y x).asIdeal = ⊥) ∧ IsDominant y := by
   intro A _

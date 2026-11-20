@@ -13,11 +13,11 @@ namespace GlobalTheory.SnPos
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0 A hcb hcT`. Take `⟨C1, C0n, Aexp, CB, CSt, Cgs, CTs, h1, h2, h3, h4, hA, C'₀, Cl₀, h⟩` from `hc Cg cb Cw cT CT C0 A hcb hcT`. Take `⟨Cn, hCn, hK⟩` from `rowGenJoint_of hCh hMG C1 C0n Aexp CB CSt Cgs CTs h1 h2 h3 h4 hA`. Use `⟨Cn, hCn, C'₀, Cl₀, fun C' Cl a b D large₂ X Y u hTies hH hT ha => ?_⟩` and prove the remaining obligations. Take `⟨P, iP, B, cSt, e1, Irat, Ire, νL, νB, ng, _, _, hG, hdd, hN, hF, hS, hIn⟩` from `h C' Cl a b D large₂ X Y u hTies hH hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hcard` using `Formalism.MainNotions.LatticeGluingRadicals.d_card D`. Establish `key` using `hK D.host.E (TauC Y u u) _ _ _ _ (Y.tO u u) D.R.rS D.R.k (Set (TauC Y u u)) (NuC D) (NOfG Y u νL νB ng) P B large₂.sc.b (2 * D.host.v) (X.B.g : ℝ) (((Tu D u : ℕ) : ℝ) * ((Tu D u : ℕ) : ℝ)) cSt e1 Irat Ire`. Rewrite `key` using `[hcard]`. Establish `r` using `key ha hG hN hF hS hIn`. Rewrite `r` using `[hdd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `r`.
+A detailed English derivation is pending.
 -/
 theorem rowMainEqP_of_cut (hCh : PN.NGChain) (hMG : MeanAmpGen) (hc : GenCutP) : RowMainEqP := by
   intro Cg cb Cw cT CT C0 A hcb hcT
@@ -36,7 +36,7 @@ theorem rowMainEqP_of_cut (hCh : PN.NGChain) (hMG : MeanAmpGen) (hc : GenCutP) :
   exact r
 
 /- English proof (translation)
-The claim follows from `rowMainEqP_of_cut`.
+A detailed English derivation is pending.
 -/
 example : PN.NGChain → MeanAmpGen → GenCutP → GlobalTheory.SnPos.RowMainEqP := rowMainEqP_of_cut
 

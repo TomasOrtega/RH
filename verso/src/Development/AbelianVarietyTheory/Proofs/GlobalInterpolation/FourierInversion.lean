@@ -10,15 +10,15 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.SWQ
 
 /- English proof (translation)
-Introduce `F _ _ N ψ lam ν a hC Φ hΦ hFΦ hFFΦ`. Establish `hD1 : Decay (Da (-1) Φ)` using `(GlobalTheory.SWQ.decay_ops F N ψ lam ν a hC Φ hΦ).2.2.1 (-1) isUnit_one.neg`. Apply `GlobalTheory.T.eq_of_theta_heisenbergTranslates F N ψ lam ν a hC _ _ hFFΦ hD1` to reduce the goal to its premises. Introduce `x y`. Establish `iΦ` using `GlobalTheory.SWQ.weil_intertwine F N ψ lam ν a hC Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `iFΦ` using `GlobalTheory.SWQ.weil_intertwine F N ψ lam ν a hC (Fo ψ ν a Φ)`. Establish `e1 : rho ψ a (-y) x (Fo ψ ν a Φ) = Fo ψ ν a (rho ψ a (-x) (-y) Φ)`. Use `iΦ.2.2.1 (-y) x` as an intermediate fact. Simplify using `using this`. Establish `e2 : rho ψ a x y (Fo ψ ν a (Fo ψ ν a Φ)) = Fo ψ ν a (Fo ψ ν a (rho ψ a (-x) (-y) Φ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[iFΦ.2.2.1 x y, e1]`. Establish `dΨ : Decay (rho ψ a (-x) (-y) Φ)` using `(GlobalTheory.SWQ.decay_ops F N ψ lam ν a hC Φ hΦ).2.1 _ _`. Establish `dFΨ : Decay (Fo ψ ν a (rho ψ a (-x) (-y) Φ))`. Rewrite using `[← e1]`. Conclude with `(GlobalTheory.SWQ.decay_ops F N ψ lam ν a hC _ hFΦ).2.1 _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `dFFΨ : Decay (Fo ψ ν a (Fo ψ ν a (rho ψ a (-x) (-y) Φ)))`. Rewrite using `[← e2]`. Conclude with `(GlobalTheory.SWQ.decay_ops F N ψ lam ν a hC _ hFFΦ).2.1 _ _`. Rewrite using `[e2, GlobalTheory.T.poisson_summation_adelic_tuples F N ψ lam ν a hC _ dFΨ dFFΨ, GlobalTheory.T.poisson_summation_adelic_tuples F N ψ lam ν a hC _ dΨ dFΨ]`. Establish `e3 : rho ψ a x y (Da (-1) Φ) = Da (-1) (rho ψ a (-x) (-y) Φ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `iΦ.2.1 (-1) (-1) x y (by norm_num)` as an intermediate fact. Simplify using `using this`. Rewrite using `[e3]`. Establish `e4 : (Da (-1 : AF F) (rho ψ a (-x) (-y) Φ) : (Fin N → AF F) → ℂ) = Da (algebraMap F (AF F) (-1)) (rho ψ a (-x) (-y) Φ)` using `by simp`. Rewrite using `[e4, (GlobalTheory.SWQ.weil_intertwine F N ψ lam ν a hC (rho ψ a (-x) (-y) Φ)).2.2.2.2 (-1) (by norm_num)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fourier_inversion : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) (ψ : AddChar (AF F) ℂ)
     (lam : InfinitePlace F → ℝ) (ν : Measure (AF F)) (a : Fin N → F), Ctx ψ lam ν a →

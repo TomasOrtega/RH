@@ -8,9 +8,9 @@ open UpperTheory.V.Af.Bc (cPl)
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
 /- English proof (translation)
-Establish `hi : (i : ℕ) ≤ n` using `Nat.lt_succ_iff.mp i.isLt`. Establish `h` using `GlobalTheory.LFun.ConjPlace.satEig_inv_mul (q := q) hB hi`. Establish `hs' : B.map (·⁻¹) = B` using `hs`. Rewrite `h` using `[hs']`. Establish `hr : (i.rev : ℕ) = n - (i : ℕ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hr, ← h, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 private theorem satEig_rev_of_stable {q n : ℕ} {B : Multiset ℂˣ} (hB : B.card = n) (hs : inv B = B)
     (i : Fin (n + 1)) : satEig q n B (i.rev : ℕ) = satEig q n B n * satEig q n B (i : ℕ) := by
@@ -23,11 +23,11 @@ private theorem satEig_rev_of_stable {q n : ℕ} {B : Multiset ℂˣ} (hB : B.ca
   rw [hr, ← h, mul_comm]
 
 /- English proof (translation)
-Introduce `E _ _ _ w a b e he B₁ B₂ h₁ h₂ s₁ s₂`. Proceed by induction on `he with`. Consider the case `one => simp [ev2, Ex.ev]`. Consider the case `step c p`. Establish `r₁` using `satEig_rev_of_stable (q := qV E w) h₁ s₁ p.1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `r₂` using `satEig_rev_of_stable (q := qV E w) h₂ s₂ p.2`. Simplify using `only [ev2, Ex.ev, dEx, Fin.val_last, r₁, r₂]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul _ _ ih₁ ih₂`. Simplify using `only [ev2, Ex.ev] at ih₁ ih₂ ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih₁, ih₂, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.hecke_eigenvalues_unitary_one_factor :
     EvaluationAtUnitaryOne := by

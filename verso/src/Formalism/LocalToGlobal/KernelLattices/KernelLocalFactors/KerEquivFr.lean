@@ -15,15 +15,13 @@ section Frames
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Use `set γ : Sp E n ≃ₗ[E] Sp E n := a.1.1 with hγ`. Use `set F := d.1.liftFr w with hFdef`. Use `set F₁ := (a • d).1.liftFr w with hF₁def`. Establish `hF : d.1.IsLift w F` using `Deco.liftFr_spec (d.2.hasLift w)`. Establish `hF₁ : (a • d).1.IsLift w F₁` using `Deco.liftFr_spec ((a • d).2.hasLift w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hat : ∀ y, y ∈ (a • d).1.at w.1 ↔ γ.symm y ∈ d.1.at w.1` using `fun y => mem_localization_gmap _ _ _ _`. Establish `hbe : ∀ y, (a • d).1.be w y = (a.2 w).1.mulVec (d.1.be w (γ.symm y))` using `fun _ => rfl`. Establish `hκx : ∀ x, (F⁻¹ * γ⁻¹ * F₁) x = F.symm (γ.symm (F₁ x))` using `fun _ => rfl`. Establish `hmem : F⁻¹ * γ⁻¹ * F₁ ∈ GLint E n w.1`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(F⁻¹ * γ⁻¹ * F₁) x ∈ stdAt E n w.1 ↔ x ∈ stdAt E n w.1`. Rewrite using `[hκx, ← hF.1, LinearEquiv.apply_symm_apply, ← hat, hF₁.1]`. Use `⟨⟨F⁻¹ * γ⁻¹ * F₁, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F₁ = γ * F * (F⁻¹ * γ⁻¹ * F₁) group`. Introduce `x hx`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `redV w.1 ((F⁻¹ * γ⁻¹ * F₁) x) = _`. Establish `hk : (F⁻¹ * γ⁻¹ * F₁) x ∈ stdAt E n w.1` using `(hmem x).2 hx`. Establish `h1` using `hF.2 _ hk`. Rewrite `h1` using `[hκx, LinearEquiv.apply_symm_apply]`. Establish `h2` using `hF₁.2 x hx`.
-
-Rewrite `h2` using `[hbe, h1]`. Rewrite using `[hκx, ← h2, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftFr_smul {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
     (d : DecoSet E n ST SG) (a : UF E n × GLG E n SG) (w : SG) :
@@ -61,7 +59,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks}
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
 
 /- English proof (translation)
-Establish `e : (g • p).deco = ((g.1, (g.2.1 : GLG X.E (R.N j) Pr.vGs)) : UF X.E (R.N j) × GLG X.E (R.N j) Pr.vGs) • p.deco` using `rfl`. Unfold `frsF`. Rewrite using `[dif_pos hP, dif_pos hP, e]`. Conclude with `liftFr_smul p.deco (g.1, (g.2.1 : GLG X.E (R.N j) Pr.vGs)) ⟨P.1, hP⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frsF_smul {u : Pr.Word} {j : ℕ} (p : ChPt (R := R) sel mu u j)
     (Λ : LevFam X.E X.K (R.N j) Pr.vGs) (Θ : LevQFam X.E X.K (R.N j) (QE sel (mu : Chr X.F X.E X.K)))
@@ -81,13 +79,13 @@ section PhiT
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Establish `hat : ∀ (P : ST) y, y ∈ ((γ, h) • d).1.at P.1 ↔ γ.1.symm y ∈ d.1.at P.1` using `fun P y => mem_localization_gmap _ _ _ _`. Establish `hat' : ∀ (P : ST) y, y ∈ ((γ', h') • d').1.at P.1 ↔ γ'.1.symm y ∈ d'.1.at P.1` using `fun P y => mem_localization_gmap _ _ _ _`. Establish `hf : ∀ (P : ST) y, ((γ, h) • d).1.f P y = d.1.f P (γ.1.symm y)` using `fun _ _ => rfl`. Establish `hf' : ∀ (P : ST) y, ((γ', h') • d').1.f P y = d'.1.f P (γ'.1.symm y)` using `fun _ _ => rfl`. Establish `hx : ∀ y, (γ'.1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) y = γ'.1 (x (γ.1.symm y))` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (∀ P : ST, ∀ y ∈ ((γ, h) • d).1.at P.1, (γ'.1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) y ∈ ((γ', h') • d').1.at P.1 ∧ ((γ', h') • d').1.f P ((γ'.1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) y) = ((γ, h) • d).1.f P y) ↔ (∀ P : ST, ∀ y ∈ d.1.at P.1, x y ∈ d'.1.at P.1 ∧ d'.1.f …`. Prove the components needed by the constructor for the conclusion. Introduce `H P y hy`. Use `H P (γ.1 y) ((hat P _).2 (by rwa [LinearEquiv.symm_apply_apply]))` as an intermediate fact. Rewrite `this` using `[hx, hat', hf', hf, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `H P y hy`. Rewrite using `[hx, hat', hf', hf, LinearEquiv.symm_apply_apply]`. Conclude with `H P _ ((hat P y).1 hy)`. Unfold `phiT`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Conclude with `absurd (key.1 h1) h2`. Conclude with `absurd (key.2 h2) h1`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem phiT_smul (K : Type) [Field K] {a b : ℕ} {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))}
     (d : DecoSet E a ST SG) (d' : DecoSet E b ST SG') (γ : UF E a) (h : GLG E a SG) (γ' : UF E b) (h' : GLG E b SG')
@@ -118,17 +116,17 @@ theorem phiT_smul (K : Type) [Field K] {a b : ℕ} {ST SG SG' : Finset (HeightOn
   · rfl
 
 /- English proof (translation)
-Take `⟨z₀, hz₀, rfl⟩` from `Submodule.mem_map.1 hz`. Establish `hzy : ∀ (P : ST), ∀ y ∈ d.1.at P.1, ((T : 𝓞 E) • (LinearMap.id : HomE E a b →ₗ[𝓞 E] HomE E a b)) z₀ y ∈ d'.1.at P.1 ∧ d'.1.f P ((((T : 𝓞 E) • (LinearMap.id : HomE E a b →ₗ[𝓞 E] HomE E a b)) z₀) y) = 0`. Introduce `P y hy`. Establish `e : ((T : 𝓞 E) • (LinearMap.id : HomE E a b →ₗ[𝓞 E] HomE E a b)) z₀ y = (T : 𝓞 E) • z₀ y` using `rfl`. Establish `hm : z₀ y ∈ d'.1.at P.1` using `hz₀ P.1 (hS P) y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `⟨Submodule.smul_mem _ _ hm, ?_⟩` and prove the remaining obligations. Rewrite using `[d'.2.f_smul P _ _ hm, Ideal.Quotient.eq_zero_iff_mem.2 (hT P), zero_mul]`. Establish `key : (∀ P : ST, ∀ y ∈ d.1.at P.1, (x + ((T : 𝓞 E) • (LinearMap.id : HomE E a b →ₗ[𝓞 E] HomE E a b)) z₀) y ∈ d'.1.at P.1 ∧ d'.1.f P ((x + ((T : 𝓞 E) • (LinearMap.id : HomE E a b →ₗ[𝓞 E] HomE E a b)) z₀) y) = d.1.f P y) ↔ (∀ P : ST, ∀ y ∈ d.1.at P.1, x y ∈ d'.1.at P.1 ∧ d'.1.f P ( …`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `H P y hy`. Take `⟨h1, h2⟩` from `H P y hy`. Take `⟨h3, h4⟩` from `hzy P y hy`. Rewrite `h1`, `h2` using `[LinearMap.add_apply]`. Establish `hxm : x y ∈ d'.1.at P.1` using `by simpa using sub_mem h1 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hxm, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[d'.2.f_add P _ hxm _ h3, h4, add_zero]`. Conclude with `h2`. Introduce `H P y hy`. Take `⟨h1, h2⟩` from `H P y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h3, h4⟩` from `hzy P y hy`. Rewrite using `[LinearMap.add_apply]`. Use `⟨add_mem h1 h3, ?_⟩` and prove the remaining obligations. Rewrite using `[d'.2.f_add P _ h1 _ h3, h4, add_zero, h2]`. Unfold `phiT`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Conclude with `absurd (key.1 h1) h2`. Conclude with `absurd (key.2 h2) h1`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem phiT_add_mul (K : Type) [Field K] {a b : ℕ} {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))}
     (d : DecoSet E a ST SG) (d' : DecoSet E b ST SG') (S : Finset (HeightOneSpectrum (𝓞 E))) (hS : ∀ P : ST, P.1 ∈ S)

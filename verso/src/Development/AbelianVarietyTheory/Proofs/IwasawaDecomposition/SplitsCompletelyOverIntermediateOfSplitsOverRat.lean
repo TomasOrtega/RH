@@ -9,17 +9,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.SplitTower
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ p hp hcount 𝔭 hp𝔭`. Rewrite using `[GlobalTheory.Bauer.ncard_eq_finrank_iff K L 𝔭]`. Use `set P : Ideal ℤ := Ideal.span {(p : ℤ)} with hPdef`. Establish `hPmax : P.IsMaximal`. Conclude with `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := hPmax`. Use `haveI : Fintype (P.primesOver (𝓞 L)) := (IsDedekindDomain.primesOver_finite P (𝓞 L)).fintype`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank P (𝓞 L)`. Rewrite `hsum` using `[NumberField.RingOfIntegers.rank]`. Establish `h1 : (P.primesOver (𝓞 L)).ncard = ∑ _q : P.primesOver (𝓞 L), 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_const, smul_eq_mul, mul_one, Finset.card_univ, ← Nat.card_eq_fintype_card, Nat.card_coe_set_eq]`. Establish `hall : ∀ Q ∈ P.primesOver (𝓞 L), Q.ramificationIdx ℤ * Q.inertiaDeg ℤ = 1`. Rewrite `hcount` using `[← hsum, h1, Finset.sum_eq_sum_iff_of_le]`. Introduce `Q hQ`. Conclude with `(hcount ⟨Q, hQ⟩ (Finset.mem_univ _)).symm`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨Q, hQ, _⟩ -`. Conclude with `Nat.mul_pos (Ideal.ramificationIdx_pos Q _) (Ideal.inertiaDeg_pos Q _)`. Introduce `Q hQ`. Take `⟨hQp, hQ𝔭⟩` from `hQ`. Use `haveI := 𝔭.isPrime`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI h𝔭P : 𝔭.asIdeal.LiesOver P := by`. Use `⟨hPmax.eq_of_le (Ideal.IsPrime.comap _).ne_top ?_⟩` and prove the remaining obligations. Rewrite using `[hPdef, Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap]`. Simplify using `using hp𝔭`. Use `haveI : Q.LiesOver P := Ideal.LiesOver.trans Q 𝔭.asIdeal P`.
-
-Establish `h` using `hall Q ⟨hQp, inferInstance⟩`. Rewrite `h` using `[Ideal.ramificationIdx_tower 𝔭.asIdeal Q, Ideal.inertiaDeg_tower 𝔭.asIdeal Q]`. Use `Nat.eq_one_of_dvd_one ?_` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `⟨𝔭.asIdeal.ramificationIdx ℤ * 𝔭.asIdeal.inertiaDeg ℤ, by ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem splits_completely_of_intermediate :
     ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] (p : ℕ), p.Prime →

@@ -21,20 +21,20 @@ namespace GlobalTheory.PcBF
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [symplO, hO, Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplO_add_right' (S T : HSp D) (x y y' : WO S T) :
     symplO S T x (y + y') = symplO S T x y + symplO S T x y' := by
   simp only [symplO, hO, Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[symplO, hO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplO_zero_right' (S T : HSp D) (x : WO S T) : symplO S T x 0 = 0 := by
   simp [symplO, hO]
 
 /- English proof (translation)
-Use `symplO_add_right' S T x y (-y)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, symplO_zero_right']`. Conclude with `eq_neg_of_add_eq_zero_right this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplO_neg_right' (S T : HSp D) (x y : WO S T) : symplO S T x (-y) = - symplO S T x y := by
   have := symplO_add_right' S T x y (-y)
@@ -42,9 +42,9 @@ theorem symplO_neg_right' (S T : HSp D) (x y : WO S T) : symplO S T x (-y) = - s
   exact eq_neg_of_add_eq_zero_right this.symm
 
 /- English proof (translation)
-Introduce `a ha`. Proceed by induction on `ha' using AddSubgroup.closure_induction with`. Consider the case `mem b hb => exact hb.2 a ha`. Consider the case `zero => rw [map_zero, symplO_zero_right', AddChar.map_zero_eq_one]`. Consider the case `add b c _ _ hb hc => rw [map_add, symplO_add_right', AddChar.map_add_eq_mul, hb, hc, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `neg b _ hb => rw [map_neg, symplO_neg_right', AddChar.map_neg_eq_inv, hb, inv_one]`.
+Treat this case separately.
 -/
 theorem ann_of_mem {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ)
     (ψ : AddChar (AF D.host.F) ℂ) (Γ Γ' : AddSubgroup (WO V W)) {a' : Mx D W.rank ρ}
@@ -62,13 +62,13 @@ end GlobalTheory.PcBF
 namespace GlobalTheory.PcBF
 
 /- English proof (translation)
-Introduce `D hD T L μ0 hL sc G W M hM F hF ρ h`. Use `⟨⟨GlobalTheory.T.finite_lattice_standard_parabolic D hD T L μ0 hL sc G W M hM F hF ρ h, ⟨?_, (GlobalTheory.T.besselToFourierJacobi_annihilatorPiece_compactOpen D hD T L μ0 hL sc G W M hM F hF ρ h).1, (GlobalTheory.T.besselToFourierJacobi_annihilatorPiece_compactOpen D hD T L μ0 h …` and prove the remaining obligations. Introduce `a' ha'`. Proceed by induction on `ha' using AddSubgroup.closure_induction with`. Consider the case `mem b hb => exact hb.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => intro i j`. Simplify using `only [Matrix.zero_apply]`. Conclude with `zero_mem _`. Consider the case `add b c _ _ hb hc => intro i j`. Simplify using `only [Matrix.add_apply]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `add_mem (hb i j) (hc i j)`. Consider the case `neg b _ hb => intro i j`. Simplify using `only [Matrix.neg_apply]`. Conclude with `neg_mem (hb i j)`. Introduce `a ha`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨fun h1 a' h2 => ann_of_mem _ _ _ _ _ h2 a h1, GlobalTheory.T.biduality_depth_lattice_piece_bessel_step D hD T L μ0 hL sc G W M hM F hF ρ h a ha⟩`. Introduce `a' ha'`. Conclude with `⟨fun h2 a h1 => ann_of_mem _ _ _ _ _ h2 a h1, fun H => AddSubgroup.subset_closure ⟨ha', fun a h1 => H a h1⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem pieces_bf : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), (pcBF W F ρ h).Is (F.dB ρ h) (F.dJ ρ h) (xZero (F.dJ ρ h)) W.ψ ∧ Splits (F.dB ρ h) (F.dJ ρ h) (pcBF W F ρ h) (xZero (F.dJ ρ h)) (yBF F ρ h) W.ψ (latRow G (2 * ρ + 1)) := by
   intro D hD T L μ0 hL sc G W M hM F hF ρ h

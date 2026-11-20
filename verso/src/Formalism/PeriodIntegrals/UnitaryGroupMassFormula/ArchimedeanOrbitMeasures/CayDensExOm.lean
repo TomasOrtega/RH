@@ -12,7 +12,7 @@ section Lie
 variable (P Q : ℕ)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `IsClosed {X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ | Xᴴ * HcS.UG.Jpq P Q + HcS.UG.Jpq P Q * X = 0}`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).add (continuous_const.matrix_mul continuous_id)) continuous_const`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem isClosed_lieU : IsClosed ((lieU P Q : Set (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ))) := by
   change IsClosed {X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ | Xᴴ * HcS.UG.Jpq P Q + HcS.UG.Jpq P Q * X = 0}

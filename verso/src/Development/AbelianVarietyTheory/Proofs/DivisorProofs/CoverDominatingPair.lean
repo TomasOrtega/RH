@@ -17,31 +17,29 @@ open CategoryTheory.Limits TopologicalSpace
 namespace GlobalTheory.Mean4O.CoverDom
 
 /- English proof (translation)
-Establish `H₀` using `W.pb`. Use `V.ar.isIntegral` as an intermediate fact. Use `W.ar.isLocallyNoetherian` as an intermediate fact. Establish `: IsProper W.p` using `CommonModel.isProper_of_isProjOver W.ar.isProjOver`. Establish `: IsProper V.p` using `CommonModel.isProper_of_isProjOver V.ar.isProjOver`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `r` to `pullback.fst W.p V.p`. Establish `hc : W.j ≫ W.p = (k ≫ V.j) ≫ V.p`. Rewrite using `[W.pb.w, Category.assoc, Category.assoc, V.pb.w, ← hk]`. Simplify using `only [Category.assoc]`. Set `h : W.G ⟶ pullback W.p V.p` to `pullback.lift W.j (k ≫ V.j) hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hr : h ≫ r = W.j` using `pullback.lift_fst _ _ _`. Establish `hr' : h ≫ pullback.snd W.p V.p = k ≫ V.j` using `pullback.lift_snd _ _ _`. Establish `hW : IsProjOver (r ≫ W.p)` using `GlobalTheory.ProjSpace.isProjOver_pullback W.ar.isProjOver V.ar.isProjOver`. Establish `w : h ≫ r ≫ W.p = (W.π ≫ Y.str) ≫ spMap (algebraMap (𝓞 F) F)`. Rewrite using `[← Category.assoc, hr, H₀.w]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `IsPullback.of_hasPullback (r ≫ W.p) (spMap (algebraMap (𝓞 F) F))`. Set `f' : W.G ⟶ pullback (r ≫ W.p) (spMap (algebraMap (𝓞 F) F))` to `pullback.lift h (W.π ≫ Y.str) w`. Set `ρ : pullback (r ≫ W.p) (spMap (algebraMap (𝓞 F) F)) ⟶ W.G` to `H₀.lift (pullback.fst _ _ ≫ r) (pullback.snd _ _) (by rw [Category.assoc]; exact hb.w)`. Establish `hρ : ρ ≫ W.π ≫ Y.str = pullback.snd _ _` using `H₀.lift_snd _ _ _`. Establish `hfρ : f' ≫ ρ = 𝟙 W.G`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `H₀.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, H₀.lift_fst, pullback.lift_fst_assoc, hr, Category.id_comp]`. Rewrite using `[Category.assoc, hρ, pullback.lift_snd, Category.id_comp]`. Establish `: IsSeparated (ρ ≫ W.π ≫ Y.str)` using `by rw [hρ]; infer_instance`. Establish `: IsSeparated ρ` using `IsSeparated.of_comp ρ (W.π ≫ Y.str)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsClosedImmersion (f' ≫ ρ)` using `by rw [hfρ]; infer_instance`. Establish `: IsClosedImmersion f'` using `IsClosedImmersion.of_comp f' ρ`. Establish `hh : h = f' ≫ 𝟙 _ ≫ pullback.fst _ _` using `by rw [Category.id_comp, pullback.lift_fst]`. Establish `: IsAffineHom (pullback.fst (r ≫ W.p) (spMap (algebraMap (𝓞 F) F)))` using `MorphismProperty.of_isPullback hb.flip (isAffineHom_of_isAffine _)`. Establish `: IsAffineHom h` using `by rw [hh]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpb` using `GlobalTheory.isPullback_toNormalization_of_isLocalization (nonZeroDivisors (𝓞 F)) hb f' (𝟙 _) h hh`. Rewrite `hpb` using `[Category.id_comp]`. Establish `hfin : IsFinite h.fromNormalization` using `GlobalTheory.isFinite_fromNormalization_of_over_fractionRing (o := .of (𝓞 F)) h (r ≫ W.p) F (W.π ≫ Y.str) w`. Establish `: GlobalTheory.IsNormalScheme W.G` using `isNormalScheme_G W`. Establish `: GlobalTheory.IsNormalScheme h.normalization` using `GlobalTheory.IsNormalScheme.normalization_of_isIntegral h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : IsIntegral h.normalization` using `inferInstance`. Establish `: Flat (spMap (algebraMap (𝓞 F) F))` using `flat_specMap_localization (nonZeroDivisors (𝓞 F)) F`. Establish `: IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (R := 𝓞 F) (S := F) (nonZeroDivisors (𝓞 F))`. Establish `: Flat W.j` using `MorphismProperty.of_isPullback W.pb.flip ‹_›`. Establish `: IsPreimmersion W.j` using `MorphismProperty.of_isPullback W.pb.flip ‹_›`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : h.toNormalization ≫ h.fromNormalization ≫ r = W.j`. Rewrite using `[← Category.assoc, Scheme.Hom.toNormalization_fromNormalization, hr]`. Establish `e₂ : h.toNormalization ≫ h.fromNormalization ≫ pullback.snd W.p V.p = k ≫ V.j`. Rewrite using `[← Category.assoc, Scheme.Hom.toNormalization_fromNormalization, hr']`. Establish `hU` using `ModelDom.exists_isIso_restrict h.toNormalization (h.fromNormalization ≫ r) W.j e₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdim : topologicalKrullDim h.normalization = (Y.dim + 1 : ℕ)`. Take `⟨U, hne, _⟩` from `hU`. Take `⟨_, _⟩` from `birational_of_isIso_morphismRestrict (h.fromNormalization ≫ r) U hne.to_subtype`. Use `surjective_of_isDominant_of_isClosed_range (h.fromNormalization ≫ r) (h.fromNormalization ≫ r).isClosedMap.isClosed_range` as an intermediate fact. Rewrite using `[← W.ar.dim_eq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ModelDom.dim_le_of_birational (h.fromNormalization ≫ r)).antisymm (PosBaseChange.dim_le_of_isClosedMap (h.fromNormalization ≫ r).isClosedMap (h.fromNormalization ≫ r).surjective)`. Establish `hfl : Flat (h.fromNormalization ≫ r ≫ W.p)` using `GlobalTheory.flat_fromNormalization_comp h F (r ≫ W.p) (W.π ≫ Y.str) w`. Establish `hfZ : Flat (spMap (Int.castRingHom (𝓞 F)))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.mpr (inferInstance : Module.Flat ℤ (𝓞 F))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpb'` using `hpb.paste_vert hb`. Rewrite `hpb'` using `[pullback.lift_snd]`. Set `W' : Mean4O.Cover Y` to `{ X := h.normalization p := h.fromNormalization ≫ r ≫ W.p ar := ⟨W.ar.isDomain, W.ar.finite, hint, GlobalTheory.isProjOver_comp_of_finite _ _ _ _ _ hfin hW, inferInstance, hdim⟩ normal := GlobalTheory.IsNormalScheme.pred _ G := W.G j := h.toNormalization π := W.π pb := hpb' φ := …`. Use `⟨W', h.fromNormalization ≫ r, h.fromNormalization ≫ pullback.snd W.p V.p, Category.assoc _ _ _, ?_, ⟨𝟙 W.G, by rw [Category.id_comp]; exact e₁.symm, Category.id_comp _⟩, ⟨k, e₂.symm, hk⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(h.fromNormalization ≫ pullback.snd W.p V.p) ≫ V.p = h.fromNormalization ≫ r ≫ W.p`.
-
-Rewrite using `[Category.assoc, ← pullback.condition]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cover_dominating_cover (F : Type) [Field F] [NumberField F] (Y : Var F) (W V : Mean4O.Cover Y)
     (k : W.G ⟶ V.G) (hk : k ≫ V.π = W.π) :

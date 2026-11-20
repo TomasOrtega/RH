@@ -52,6 +52,8 @@ def pack_module(path, relative, counts):
     positions = utf16_offsets(source, claims)
     proofs = []
     for claim, (_, status, prose) in zip(claims, notes):
+        if "\x60" in prose or ":=" in prose:
+            raise ValueError(f"{relative}:{claim.line}: proof prose contains code")
         counts.update([status])
         proofs.append({
             "name": claim.name,

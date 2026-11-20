@@ -7,7 +7,7 @@ import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Ggeo.AdmEntInt.kernelDatum_entries_integral_away_from_d` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FKernelDatumEntriesIntegralAwayFromD.lean&line=25#L25)
 -/

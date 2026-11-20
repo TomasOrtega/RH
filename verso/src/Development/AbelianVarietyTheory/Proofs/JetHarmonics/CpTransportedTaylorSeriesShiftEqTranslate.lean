@@ -19,7 +19,7 @@ def Tr (ι : ℂ ≃+* ℂ_[q]) (ℓ : ℂ_[q]⟦X⟧) (ζ : ℂ_[q]) (p : ℂ) 
     hat ι ℓ (fun z => F (z + p)) = shiftS ζ (hat ι ℓ F)
 
 /- English proof (translation)
-Take `⟨A, hf⟩` from `hf`. Take `⟨B, hg⟩` from `hg`. Conclude with `⟨_, ((sup_norm_laws q).1 f g A B hf hg).1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma bdd_add {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) : Bdd (f + g) := by
   obtain ⟨A, hf⟩ := hf
@@ -27,7 +27,7 @@ lemma bdd_add {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) : Bdd (f + g) := 
   exact ⟨_, ((sup_norm_laws q).1 f g A B hf hg).1⟩
 
 /- English proof (translation)
-Take `⟨A, hf⟩` from `hf`. Take `⟨B, hg⟩` from `hg`. Conclude with `⟨_, ((sup_norm_laws q).1 f g A B hf hg).2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma bdd_mul {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) : Bdd (f * g) := by
   obtain ⟨A, hf⟩ := hf
@@ -38,7 +38,7 @@ section
 variable {ι : ℂ ≃+* ℂ_[q]} {ℓ : ℂ_[q]⟦X⟧} {ζ : ℂ_[q]} {p : ℂ}
 
 /- English proof (translation)
-Establish `h` using `(TaylorRead.hat_laws q ι ℓ h0).2.1 c`. Use `⟨analyticAt_const, analyticAt_const, ⟨‖ι c‖, fun n => ?_⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [h, coeff_C] split_ifs <;> simp`. Rewrite using `[h, Shift.shiftS_C]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 lemma Tr.const (h0 : constantCoeff ℓ = 0) (c : ℂ) : Tr ι ℓ ζ p (fun _ => c) := by
   have h := (TaylorRead.hat_laws q ι ℓ h0).2.1 c
@@ -48,9 +48,9 @@ lemma Tr.const (h0 : constantCoeff ℓ = 0) (c : ℂ) : Tr ι ℓ ζ p (fun _ =>
   · rw [h, Shift.shiftS_C]
 
 /- English proof (translation)
-Establish `h` using `(TaylorRead.hat_laws q ι ℓ h0).1`. Take `⟨f1, f2, f3, f4⟩` from `hF`. Take `⟨g1, g2, g3, g4⟩` from `hG`. Use `⟨f1.add g1, f2.add g2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(h _ _ f1 g1).1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bdd_add f3 g3`. Rewrite using `[(h _ _ f1 g1).1, (h _ _ f2 g2).1, f4, g4, Shift.shiftS_add hζ f3 g3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Tr.add (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) {F G : ℂ → ℂ} (hF : Tr ι ℓ ζ p F)
     (hG : Tr ι ℓ ζ p G) : Tr ι ℓ ζ p (fun z => F z + G z) := by
@@ -62,9 +62,9 @@ lemma Tr.add (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) {F G : ℂ �
   · rw [(h _ _ f1 g1).1, (h _ _ f2 g2).1, f4, g4, Shift.shiftS_add hζ f3 g3]
 
 /- English proof (translation)
-Establish `h` using `(TaylorRead.hat_laws q ι ℓ h0).1`. Take `⟨f1, f2, f3, f4⟩` from `hF`. Take `⟨g1, g2, g3, g4⟩` from `hG`. Use `⟨f1.mul g1, f2.mul g2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(h _ _ f1 g1).2.1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bdd_mul f3 g3`. Rewrite using `[(h _ _ f1 g1).2.1, (h _ _ f2 g2).2.1, f4, g4, Shift.shiftS_mul hζ f3 g3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Tr.mul (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) {F G : ℂ → ℂ} (hF : Tr ι ℓ ζ p F)
     (hG : Tr ι ℓ ζ p G) : Tr ι ℓ ζ p (fun z => F z * G z) := by
@@ -76,7 +76,7 @@ lemma Tr.mul (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) {F G : ℂ �
   · rw [(h _ _ f1 g1).2.1, (h _ _ f2 g2).2.1, f4, g4, Shift.shiftS_mul hζ f3 g3]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using Tr.const (ι := ι) (ζ := ζ) (p := p) h0 1`. Consider the case `succ n ih => simpa only [pow_succ] using Tr.mul h0 hζ ih hF`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma Tr.pow (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) {F : ℂ → ℂ} (hF : Tr ι ℓ ζ p F) (n : ℕ) :
     Tr ι ℓ ζ p (fun z => F z ^ n) := by
@@ -85,7 +85,7 @@ lemma Tr.pow (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) {F : ℂ → 
   | succ n ih => simpa only [pow_succ] using Tr.mul h0 hζ ih hF
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using Tr.const (ι := ι) (ζ := ζ) (p := p) h0 0`. Consider the case `succ n ih => simpa only [Finset.sum_range_succ] using Tr.add h0 hζ ih (hF n)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma Tr.sum (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) (F : ℕ → ℂ → ℂ) (hF : ∀ i, Tr ι ℓ ζ p (F i))
     (n : ℕ) : Tr ι ℓ ζ p (fun z => ∑ i ∈ Finset.range n, F i z) := by
@@ -94,9 +94,9 @@ lemma Tr.sum (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) (F : ℕ → 
   | succ n ih => simpa only [Finset.sum_range_succ] using Tr.add h0 hζ ih (hF n)
 
 /- English proof (translation)
-Use `⟨A.natDegree, fun z => ∑ i ∈ Finset.range (A.natDegree + 1), A.coeff i * (u z ^ i * w z ^ (A.natDegree - i)), ?_, fun z x hx => ?_⟩` and prove the remaining obligations. Conclude with `Tr.sum h0 hζ (fun i z => A.coeff i * (u z ^ i * w z ^ (A.natDegree - i))) (fun i => Tr.mul h0 hζ (Tr.const h0 _) (Tr.mul h0 hζ (hu.pow h0 hζ i) (hw.pow h0 hζ _))) _`. Rewrite using `[Polynomial.eval_eq_sum_range, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ A.natDegree` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `Nat.exists_eq_add_of_le hi'`. Rewrite using `[← hx, hj, Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma exists_homog (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) {u w : ℂ → ℂ} (hu : Tr ι ℓ ζ p u)
     (hw : Tr ι ℓ ζ p w) (A : Polynomial ℂ) :
@@ -113,23 +113,21 @@ lemma exists_homog (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) {u w : 
     ring
 
 /- English proof (translation)
-Take `⟨h, hc, hid, hcc, -⟩` from `TaylorRead.hat_laws q ι ℓ h0`. Establish `hDne : hat ι ℓ D ≠ 0`. Introduce `hz`. Establish `e : hat ι ℓ D = hat ι ℓ (fun _ => 0)` using `by rw [hz, hc]; simp`. Establish `e2` using `(h _ _ hD analyticAt_const).2.2.2 h1 e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz1, hz2⟩` from `(hD0.and (e2.filter_mono nhdsWithin_le_nhds)).exists`. Conclude with `hz1 hz2`. Establish `hpow : ∀ n : ℕ, hat ι ℓ (fun z => z ^ n) = ℓ ^ n`. Introduce `n`. Proceed by induction on `n with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using hc 1`. Consider the case `succ n ih`. Simplify using `only [pow_succ]`. Rewrite using `[(h (fun z => z ^ n) (fun z => z) (by fun_prop) (by fun_prop)).2.1, ih, hid]`. Establish `key : ∀ (n : ℕ) (g : ℂ → ℂ), AnalyticAt ℂ g 0 → (∀ᶠ z in 𝓝[≠] (0 : ℂ), g z = z ^ n * f z) → hat ι ℓ g = ℓ ^ n * S`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n g hg hge`. Apply `mul_right_cancel₀ hDne` to reduce the goal to its premises. Rewrite using `[mul_assoc, hS, ← hpow, ← (h _ _ hg hD).2.1, ← (h (fun z => z ^ n) N (by fun_prop) hN).2.1]`. Use `(h _ _ (hg.mul hD) (AnalyticAt.mul (by fun_prop) hN)).2.2.1 ?_` and prove the remaining obligations. Use `filter_upwards [hge, he] with z a b`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show g z * D z = z ^ n * N z`. Rewrite using `[a, ← b, mul_assoc]`. Establish `main : ∀ (n : ℕ) (g : ℂ → ℂ), AnalyticAt ℂ g 0 → (∀ᶠ z in 𝓝[≠] (0 : ℂ), g z = z ^ n * f z) → ∃ ψ : ℂ → ℂ, AnalyticAt ℂ ψ 0 ∧ (∀ᶠ z in 𝓝[≠] (0 : ℂ), ψ z = f z) ∧ hat ι ℓ ψ = S`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `zero`. Introduce `g hg hge`. Conclude with `⟨g, hg, by simpa using hge, by simpa using key 0 g hg hge⟩`. Consider the case `succ n ih`. Introduce `g hg hge`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg0 : g 0 = 0`. Use `congrArg constantCoeff (key _ g hg hge)` as an intermediate fact. Rewrite `this` using `[hcc]`. Simplify `this` using `[h0]`. Take `⟨s, hs⟩` from `hg`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ih (dslope g 0) ⟨_, hs.has_fpower_series_dslope_fslope⟩ ?_` and prove the remaining obligations. Use `filter_upwards [hge, self_mem_nhdsWithin] with z a hz`. Establish `hz' : z ≠ 0` using `hz`. Rewrite using `[dslope_of_ne _ hz', slope_def_field, hg0, a]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Take `⟨n, hn⟩` from `hf`. Conclude with `main n _ hn (Filter.Eventually.of_forall fun z => by simp)`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma exists_quot (h0 : constantCoeff ℓ = 0) (h1 : coeff 1 ℓ ≠ 0) {f D N : ℂ → ℂ} (S : ℂ_[q]⟦X⟧)
     (hf : MeromorphicAt f 0) (hD : AnalyticAt ℂ D 0) (hN : AnalyticAt ℂ N 0)
@@ -184,15 +182,13 @@ lemma exists_quot (h0 : constantCoeff ℓ = 0) (h1 : coeff 1 ℓ ≠ 0) {f D N :
 end
 
 /- English proof (translation)
-Take `⟨-, -, hx, -, u0, w0, du, -, hs⟩` from `uw_elliptic_flow q M hM`. Establish `hm : Meromorphic (fun z => M.x z - c)` using `fun z => (hx.1 z).sub (MeromorphicAt.const c z)`. Establish `h0 : meromorphicOrderAt (fun z => M.x z - c) 0 ≠ ⊤`. Introduce `ht`. Rewrite `ht` using `[meromorphicOrderAt_eq_top_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨au, aw, -, -, e1, e2⟩` from `hs 0 (Or.inl M.L.lattice.zero_mem)`. Establish `dw : deriv M.w 0 = 0`. Use `e2.self_of_nhds.2.2` as an intermediate fact. Simplify `this` using `[u0, w0]`. Establish `e3 : ∀ᶠ z in 𝓝[≠] (0 : ℂ), M.u z = c * M.w z` using `by filter_upwards [ht, e1] with z a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← b.2.2.1, sub_eq_zero.mp a]`. Establish `e4 : M.u =ᶠ[𝓝 0] fun z => c * M.w z`. Rewrite `e3` using `[eventually_nhdsWithin_iff]`. Use `filter_upwards [e3] with z a`. Distinguish the cases in `hz : z = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hz, u0, w0]`. Conclude with `a hz`. Use `e4.deriv_eq` as an intermediate fact. Rewrite `this` using `[du, deriv_const_mul _ aw.differentiableAt, dw, mul_zero]`. Conclude with `hM.1 this`.
-
-Establish `h1` using `hm.exists_meromorphicOrderAt_ne_top_iff_forall.1 ⟨0, h0⟩ z₀`. Break down `(hm z₀).eventually_eq_zero_or_eventually_ne_zero with h | h` into its components or cases. Conclude with `absurd (meromorphicOrderAt_eq_top_iff.2 h) h1`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma x_ne (M : Mdl q) (hM : M.Ok) (c z₀ : ℂ) : ∀ᶠ z in 𝓝[≠] z₀, M.x z - c ≠ 0 := by
   obtain ⟨-, -, hx, -, u0, w0, du, -, hs⟩ := uw_elliptic_flow q M hM
@@ -222,9 +218,7 @@ lemma x_ne (M : Mdl q) (hM : M.Ok) (c z₀ : ℂ) : ∀ᶠ z in 𝓝[≠] z₀, 
   · exact h
 
 /- English proof (translation)
-Use `tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `: Filter.Tendsto (fun z : ℂ => z + p) (𝓝 0) (𝓝 (0 + p))` using `(continuous_id.add continuous_const).tendsto 0`. Rewrite `this` using `[zero_add]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with z hz`.
-
-Simplify using `using hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma tendsto_add_punct (p : ℂ) : Filter.Tendsto (fun z : ℂ => z + p) (𝓝[≠] 0) (𝓝[≠] p) := by
   refine tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩
@@ -236,25 +230,23 @@ lemma tendsto_add_punct (p : ℂ) : Filter.Tendsto (fun z : ℂ => z + p) (𝓝[
     simpa using hz
 
 /- English proof (translation)
-Introduce `q _ M ω ζ p φ hch hat' hφ hφ0 hφb`. Establish `hM : M.Ok` using `hch.1`. Establish `h0 : constantCoeff (C ω * logS : ℂ_[q]⟦X⟧) = 0` using `hch.2.1`. Establish `hζ : ‖ζ - 1‖ < 1` using `hat'.2.1`. Take `⟨h1, v, xs, ys, -, -, bys, -, -, cys, -, hwy, -⟩` from `GlobalTheory.T.integral_weierstrass_chart_xy_unit_series q M _ hch`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨tu, tw⟩` from `GlobalTheory.T.multiplicativeShift_eq_translate_by_small_point q M ω ζ p hch hat'`. Take `⟨m, P, A, B, -, hAB⟩` from `GlobalTheory.T.exists_ellipticFunction_mul_prod_eq_xy q M φ hM hφ`. Take `⟨-, -, -, -, -, -, -, -, hs⟩` from `uw_elliptic_flow q M hM`. Take `⟨au0, aw0, -, -, e0, -⟩` from `hs 0 (Or.inl M.L.lattice.zero_mem)`. Take `⟨aup, awp, -, -, ep, -⟩` from `hs p hat'.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `htr : AnalyticAt ℂ (fun z : ℂ => z + p) 0` using `by fun_prop`. Establish `hu : Tr M.ι (C ω * logS) ζ p M.u` using `⟨au0, aup.comp_of_eq htr (zero_add p), ⟨1, hch.2.2.1⟩, tu⟩`. Establish `hw : Tr M.ι (C ω * logS) ζ p M.w`. Use `⟨aw0, awp.comp_of_eq htr (zero_add p), ⟨1, ?_⟩, tw⟩` and prove the remaining obligations. Use `(sup_norm_laws q).2.2.2.2.2 _ ys 0 1 bys cys ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_zero, one_mul, mul_comm, hwy]`. Introduce `n`. Rewrite using `[map_neg, norm_neg, coeff_X_pow]`. Apply the tactic sequence `split_ifs <;> simp`. Use `set Q : Polynomial ℂ := ∏ i, (Polynomial.X - Polynomial.C (M.x (P i))) with hQ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨a, FQ, tQ, eQ⟩` from `exists_homog h0 hζ hu hw Q`. Take `⟨b, FA, tA, eA⟩` from `exists_homog h0 hζ hu hw A`. Take `⟨c, FB, tB, eB⟩` from `exists_homog h0 hζ hu hw B`. Establish `tD : Tr M.ι (C ω * logS) ζ p (fun z => FQ z * M.w z ^ (b + c + 1))` using `tQ.mul h0 hζ (hw.pow h0 hζ _)`. Establish `tN : Tr M.ι (C ω * logS) ζ p (fun z => M.w z ^ a * (FA z * M.w z ^ (c + 1) + (-1) * (FB z * M.w z ^ b)))` using `(hw.pow h0 hζ _).mul h0 hζ ((tA.mul h0 hζ (hw.pow h0 hζ _)).add h0 hζ ((Tr.const h0 (-1)).mul h0 hζ (tB.mul h0 hζ (hw.pow h0 hζ _))))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid : ∀ z, (z ∉ M.L.lattice ∧ M.y z ≠ 0 ∧ M.x z * M.w z = M.u z ∧ M.y z * M.w z = -1) → φ z * Q.eval (M.x z) = A.eval (M.x z) + B.eval (M.x z) * M.y z → φ z * (FQ z * M.w z ^ (b + c + 1)) = M.w z ^ a * (FA z * M.w z ^ (c + 1) + (-1) * (FB z * M.w z ^ b))`. Introduce `z e1 e2`. Rewrite using `[eQ z _ e1.2.2.1, eA z _ e1.2.2.1, eB z _ e1.2.2.1, ← e1.2.2.2]`. Take the linear combination `M.w z ^ (a + b + c + 1) * e2`. Establish `h` using `(TaylorRead.hat_laws q M.ι _ h0).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_quot h0 h1 _ ?_ tD.2.1 tN.2.1 ?_ ?_ ?_` and prove the remaining obligations. Conclude with `MeromorphicAt.comp_analyticAt (f := φ) (g := fun z => z + p) (hφ.1 _) htr`. Establish `hQ0 : ∀ᶠ z in 𝓝[≠] p, ∀ i, M.x z - M.x (P i) ≠ 0` using `Filter.eventually_all.2 fun i => x_ne M hM _ p`. Use `(tendsto_add_punct p).eventually (p := fun z => FQ z * M.w z ^ (b + c + 1) ≠ 0) ?_` and prove the remaining obligations. Use `filter_upwards [hQ0, ep] with z a1 a2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw0 : M.w z ≠ 0`. Introduce `hz`. Use `a2.2.2.2` as an intermediate fact. Rewrite `this` using `[hz]`. Simplify using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eQ z _ a2.2.2.1]`. Use `mul_ne_zero (mul_ne_zero ?_ (pow_ne_zero _ hw0)) (pow_ne_zero _ hw0)` and prove the remaining obligations. Rewrite using `[hQ, Polynomial.eval_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => by simpa using a1 i`. Conclude with `(tendsto_add_punct p).eventually ((ep.and (hAB p)).mono fun z hz => hid z hz.1 hz.2)`.
-
-Rewrite using `[tD.2.2.2, tN.2.2.2, ← Shift.shiftS_mul hζ hφb tD.2.2.1, ← (h _ _ hφ0 tD.1).2.1]`. Use `congr 1`. Conclude with `(h _ _ (hφ0.mul tD.1) tN.1).2.2.1 ((e0.and (hAB 0)).mono fun z hz => hid z hz.1 hz.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem shift_eq_hat_translate : ∀ (q : ℕ) [Fact q.Prime] (M : Mdl q) (ω ζ : ℂ_[q]) (p : ℂ) (φ : ℂ → ℂ), M.MChart ω → M.At ω ζ p → Ell M.L φ → AnalyticAt ℂ φ 0 → Bdd (hat M.ι (C ω * logS) φ) → ∃ ψ : ℂ → ℂ, AnalyticAt ℂ ψ 0 ∧ (∀ᶠ z in 𝓝[≠] (0 : ℂ), ψ z = φ (z + p)) ∧ hat M.ι (C ω * logS) ψ = shiftS ζ (hat M.ι (C ω * logS) φ) := by
   intro q _ M ω ζ p φ hch hat' hφ hφ0 hφb

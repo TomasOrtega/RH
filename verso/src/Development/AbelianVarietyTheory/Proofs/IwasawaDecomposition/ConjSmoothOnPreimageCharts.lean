@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
 theorem conjV_apply (n : ℕ) (v : V n) (a : Fin n) : conjV n v a = starRingEnd ℂ (v a) := rfl
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [conjV_apply, bas, EuclideanSpace.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conjV_bas (n : ℕ) (j : Fin n) : conjV n (bas n j) = bas n j := by
   ext a
@@ -33,7 +33,7 @@ theorem conjV_bas (n : ℕ) (j : Fin n) : conjV n (bas n j) = bas n j := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [conjV_apply, bas, PiLp.smul_apply, PiLp.neg_apply, EuclideanSpace.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conjV_I_smul_bas (n : ℕ) (j : Fin n) : conjV n (Complex.I • bas n j) = -(Complex.I • bas n j) := by
   ext a
@@ -41,7 +41,7 @@ theorem conjV_I_smul_bas (n : ℕ) (j : Fin n) : conjV n (Complex.I • bas n j)
   split_ifs <;> simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `fderiv ℝ (F ∘ (conjV n).toContinuousLinearEquiv) y w = _`. Rewrite using `[ContinuousLinearEquiv.comp_right_fderiv]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fderiv_comp_conjV (n : ℕ) (F : V n → ℂ) (y w : V n) :
     fderiv ℝ (F ∘ conjV n) y w = fderiv ℝ F (conjV n y) (conjV n w) := by
@@ -50,7 +50,7 @@ theorem fderiv_comp_conjV (n : ℕ) (F : V n → ℂ) (y w : V n) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [wd, wdb, fderiv_comp_conjV, conjV_bas, conjV_I_smul_bas, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wd_comp_conjV (n : ℕ) (j : Fin n) (F : V n → ℂ) (y : V n) :
     wd n j (F ∘ conjV n) y = wdb n j F (conjV n y) := by
@@ -58,7 +58,7 @@ theorem wd_comp_conjV (n : ℕ) (j : Fin n) (F : V n → ℂ) (y : V n) :
   ring
 
 /- English proof (translation)
-Simplify using `only [wd, wdb, fderiv_comp_conjV, conjV_bas, conjV_I_smul_bas, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wdb_comp_conjV (n : ℕ) (j : Fin n) (F : V n → ℂ) (y : V n) :
     wdb n j (F ∘ conjV n) y = wd n j F (conjV n y) := by
@@ -66,11 +66,9 @@ theorem wdb_comp_conjV (n : ℕ) (j : Fin n) (F : V n → ℂ) (y : V n) :
   ring
 
 /- English proof (translation)
-Use `set G : V n → ℂ := fun v => (g v : ℂ) with hGdef`. Establish `hG : ∀ k, wd n k G = fun w => starRingEnd ℂ (wdb n k G w)` using `fun k => by`. Establish `e : G = fun w => starRingEnd ℂ (G w)` using `funext fun w => (Complex.conj_ofReal _).symm`. Use function extensionality and compare the values at `w`. Use `conv_lhs => rw [e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `ReciprocityTheory.L2DbarEstimates.ChartWirtingerDerivatives.wd_conj' n k G w`. Establish `h1 : ∀ k, wdb n k (G ∘ conjV n) = (wd n k G) ∘ conjV n` using `fun k =>`. Use function extensionality and compare the values at `fun w => wdb_comp_conjV n k G w`. Establish `h2 : ∀ j k w, wd n j (wdb n k (G ∘ conjV n)) w = starRingEnd ℂ (wd n j (wdb n k G) (conjV n w))` using `fun j k w => by`. Rewrite using `[h1, wd_comp_conjV, hG, ReciprocityTheory.L2DbarEstimates.ChartWirtingerDerivatives.wdb_conj']`.
-
-Simplify using `only [leviV, h2, map_sum, map_mul, Complex.conj_conj, Pi.star_apply, Complex.star_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviV_comp_conjV (n : ℕ) (g : V n → ℝ) (y : V n) (ξ : Fin n → ℂ) :
     leviV n ((fun v => (g v : ℂ)) ∘ conjV n) y ξ =
@@ -89,23 +87,21 @@ theorem leviV_comp_conjV (n : ℕ) (g : V n → ℝ) (y : V n) (ξ : Fin n → �
   simp only [leviV, h2, map_sum, map_mul, Complex.conj_conj, Pi.star_apply, Complex.star_def]
 
 /- English proof (translation)
-Introduce `k _ Y p d _ σ σ' j hj W φ hW hφ`. Break down `isEmpty_or_nonempty (CxPts p σ') with hE | ⟨⟨z0⟩⟩` into its components or cases. Use `⟨?_, fun c' => ?_, fun c' z => (hE.false z).elim⟩` and prove the remaining obligations. Rewrite using `[Set.eq_empty_of_isEmpty (j ⁻¹' W)]`. Conclude with `isOpen_empty`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.eq_empty_of_isEmpty (j ⁻¹' W)]`. Simplify using the standard rewrite rules. Establish `hσ : σ = (starRingEnd ℂ).comp σ'`. Establish `h1` using `(j z0).2`. Rewrite `h1` using `[hj z0, Category.assoc, z0.2, spMap, spMap, spMap, ← Spec.map_comp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`. Conclude with `h2.symm`. Take `⟨hcont, hch⟩` from `GlobalTheory.ConjChart.continuous_and_exists_conj_chart k Y p d σ σ' j hσ hj`. Establish `key : ∀ c' : AlgChart p σ' d, ∃ c : AlgChart p σ d, (∀ z, j z ∈ c.e.source ↔ z ∈ c'.e.source) ∧ (∀ z ∈ c'.e.source, c.e (j z) = conjV d (c'.e z)) ∧ ∀ v ∈ c'.e.target, j (c'.e.symm v) = c.e.symm (conjV d v)` using `fun c' => by`. Take `⟨c, hs, he⟩` from `hch c'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e1 : ∀ z ∈ c'.e.source, c.e (j z) = conjV d (c'.e z)` using `fun z hz => by`. Use extensionality with `a`. Rewrite using `[he z hz a, conjV_apply]`. Use `⟨c, hs, e1, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hz : c'.e.symm v ∈ c'.e.source` using `c'.e.map_target hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← c.e.left_inv ((hs _).2 hz), e1 _ hz, c'.e.right_inv hv]`. Use `⟨hW.preimage hcont, fun c' => ?_, fun c' z hz => ?_⟩` and prove the remaining obligations. Take `⟨c, hs, e1, e2⟩` from `key c' show ContDiffOn ℝ ∞ ((φ ∘ j) ∘ c'.e.symm) (c'.e.target ∩ c'.e.symm ⁻¹' (j ⁻¹' W))`. Establish `hc` using `hφ.chart hW c`. Use `((hc.comp (conjV d).contDiff.contDiffOn fun v hv => ?_).congr fun v hv => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : c'.e.symm v ∈ c'.e.source` using `c'.e.map_target hv.1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e3 : conjV d v = c.e (j (c'.e.symm v))` using `by rw [e1 _ hz, c'.e.right_inv hv.1]`. Rewrite using `[e3]`. Conclude with `c.e.map_source ((hs _).2 hz)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `show c.e.symm (conjV d v) ∈ W`. Rewrite using `[← e2 v hv.1]`. Conclude with `hv.2`. Use `show (φ ∘ j) (c'.e.symm v) = (φ ∘ c.e.symm) (conjV d v)`. Simplify using `only [Function.comp_apply, e2 v hv.1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hs, e1, e2⟩` from `key c'`. Use `⟨c, (hs z).2 hz, fun ψ ξ => ?_⟩` and prove the remaining obligations. Establish `h` using `leviV_comp_conjV d (fun v => ψ (c.e.symm v)) (c'.e z) ξ`. Simplify using `only [ddcForm, AlgChart.levi]`. Use `congr 1`.
-
-Rewrite using `[e1 z hz]`. Use `Eq.trans (congrArg Complex.re (ReciprocityTheory.L2DbarEstimates.leviV_congr ?_ ξ)) (Eq.trans (congrArg Complex.re h) (Complex.conj_re _))` and prove the remaining obligations. Use `eventually_of_mem (c'.e.open_target.mem_nhds (c'.e.map_source hz)) fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, e2 v hv]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothOn_comp_ddcForm_of_isConjMap : ∀ (k : Type) [Field k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (d : ℕ)
     [SmoothOfRelativeDimension d p] (σ σ' : k →+* ℂ) (j : CxPts p σ' → CxPts p σ), IsConjMap j →

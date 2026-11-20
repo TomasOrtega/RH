@@ -22,11 +22,11 @@ set_option synthInstance.maxHeartbeats 200000
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Distinguish the cases in `hne : H.MK θ a K = ⊥`. Conclude with `⟨⊤, Or.inl ⟨hne, rfl⟩⟩`. Use `haveI hF : Fact (CommOn (H.MK θ a K) (H.op A)) := ⟨((hiComm L Ω l n c _ hA A θ hθ K).2.2.2 a).1⟩`. Take `⟨hCO, -, -, hres, -, hgen⟩` from `hiAlg L Ω l n c _ hA A θ hθ a K hne`. Take `⟨D, ψ, hU⟩` from `coreDet hN L Ω l n c _ hA A θ hθ ι _ hAut lam hl hd a K`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hO` using `coreH hN L Ω l n c _ hA A θ hθ ι _ hAut lam hl hd a K D ψ hU`. Take `⟨f, h1, h2, h3⟩` from `key (H.TK θ a K) (IsScalarTower.toAlgHom c.O A _) (H.gen θ a K) hres D ψ hU.cont hU.ψ_cont hU.frob hU.ψ_unit hU.ψ_unif (fun x => H.Good θ (x.toRingHom.comp (algebraMap A _)) lam) (hO.sep lam hl hd) fun x hx => by`. Take `⟨ρ, -, -, e1, e2, e3⟩` from `hO.pt lam hl x hx.2.1`. Conclude with `⟨ρ, e1, e2, fun v => (e3 hx v).1⟩`. Establish `h2' : (fun v i => W.pushCh f.toRingHom (ψ₀ v i)) = ψ` using `funext fun v => funext fun i => h2 v i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU' : H.IsMap θ a K D₀ ψ₀ f`. Unfold `HSet.IsMap`. Rewrite using `[h1, h2']`. Conclude with `hU`. Conclude with `⟨RingHom.ker f, Or.inr ⟨hF, hCO, f, hne, hU', deformationRing_to_heckeAlgebra_surjective L Ω l n c _ hA A _ B (H.gen θ a K) D₀ ψ₀ f hU'.frob hU'.ψ_unif _ h3 hgen, h3, rfl⟩⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem absH (hN : GlobalTheory.Mem.LiteralAutomorphy.LitN) {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
     {l : ℕ} [Fact l.Prime] {n : ℕ} {c : Coef l} (H : HSet L Ω l n c) (hA : H.Ax)
@@ -72,9 +72,9 @@ private theorem absH (hN : GlobalTheory.Mem.LiteralAutomorphy.LitN) {L Ω : Type
     deformationRing_to_heckeAlgebra_surjective L Ω l n c _ hA A _ B (H.gen θ a K) D₀ ψ₀ f hU'.frob hU'.ψ_unif _ h3 hgen, h3, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `hP l _ L Ω _ _ _ _ _ _ s n hn V Q c r ι B Λ R K`. Establish `hN : GlobalTheory.Mem.LiteralAutomorphy.LitN` using `hP.litN`. Establish `hA : (hset Q R.τ₀).Ax` using `axU hN l L Ω s n hn V Q c R.m R.τ₀`. Establish `hAut` using `autU hP l L Ω s n hn V Q c r ι R.m R.τ₀ R.type`. Set `lam : Wt L l n` to `fun _ => ⟨0, fun _ _ _ => le_rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hd : (hset Q R.τ₀).DenseWt R.θ lam` using `(denseU hN l L Ω s n hn V Q c R.m R.τ₀ r Λ R.θ R.theta).2 lam`. Use `absH hN (hset Q R.τ₀) hA Λ.Λ R.θ R.isWt ι _ hAut lam (Set.mem_univ _) hd R.a K B.u.D B.u.ψ (Λ.toPair B.u) ?_` and prove the remaining obligations. Introduce `T _ _ _ φ gen hres D ψ hc hψ hfr hun huf Gd hsep hpt`. Conclude with `JEx.map_of_rel B Λ φ D ψ hc (heckeDeterminant_reduction_eq_residual l L Ω s n V Q c r ι Λ R hA T gen hres D hc hfr) (exists_ordinaryCharacters_heckeAlgebra l L Ω s n V Q c r ι Λ R hA T φ gen hres ψ hψ hun huf) (heckeDeterminant_satisfies_deformation_relations l L Ω s n hn V c r ι …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.jEx :
     Af.HypothesesH → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

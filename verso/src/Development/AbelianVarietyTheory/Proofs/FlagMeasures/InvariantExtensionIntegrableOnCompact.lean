@@ -15,13 +15,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Measu
   {D : Set G} {r : G → G}
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ γ₀ : Γ, (γ₀ : G) * x ∈ C`. Take `⟨γ₀, h₀⟩` from `h`. Establish `hsupp : ∀ γ ∉ S.image (· * γ₀), C.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x) = 0`. Introduce `γ hγ`. Assume the negation of the conclusion as `hne`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hγC : (γ : G) * x ∈ C`. Assume the negation of the conclusion as `hn`. Conclude with `hne (Set.indicator_of_notMem hn _)`. Apply `hγ` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨γ * γ₀⁻¹, hS _ ?_, by simp⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.mem_mul.2 ⟨(γ : G) * x, hγC, ((γ₀ : G) * x)⁻¹, by simpa using h₀, ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`. Rewrite using `[tsum_eq_sum hsupp]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun γ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hm : (γ : G) * x ∈ C <;> simp [hm]`. Use `_ = ((S.image (· * γ₀)).card : ℝ≥0∞) := by simp`. Use `_ ≤ S.card := by exact_mod_cast Finset.card_image_le`. Use `push_neg at h`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma card_le_of_translates_mem_mul_inv_tsum_indicator {C : Set G} (S : Finset Γ)
     (hS : ∀ γ : Γ, (γ : G) ∈ C * C⁻¹ → γ ∈ S) (x : G) :
@@ -51,11 +51,11 @@ private lemma card_le_of_translates_mem_mul_inv_tsum_indicator {C : Set G} (S : 
     simp [h]
 
 /- English proof (translation)
-Establish `hfix : ∀ᵐ x ∂μ.restrict D, ∀ γ : Γ, r ((γ : G) * x) = x` using `by filter_upwards [ae_restrict_of_ae (ae_good hD), ae_restrict_mem hDm] with x hx hxD γ`. Rewrite using `[rep_mul hr hx γ]`. Simplify `hxD)` using `using rep_eq hr hx (γ := 1) (by simpa`. Establish `hmeas : ∀ γ : Γ, AEMeasurable (fun x => C.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x) * φ x) (μ.restrict D)` using `fun γ => (((measurable_const.indicator hC).comp (measurable_const_mul (γ : G))).mul hφ).aemeasurable`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `tsum_congr fun γ => lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hfix] with x hx`. Express the relevant statement in the definitionally equal form `C.indicator (fun y => φ (r y)) ((γ : G) * x) = _`. Distinguish the cases in `hm : (γ : G) * x ∈ C`. Simplify using `[hm, hx γ]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hm]`. Use `_ = ∫⁻ x in D, ∑' γ : Γ, C.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x) * φ x ∂μ := (lintegral_tsum hmeas).symm`. Use `_ = ∫⁻ x in D, (∑' γ : Γ, C.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x)) * φ x ∂μ := lintegral_congr fun x => ENNReal.tsum_mul_right`. Use `_ ≤ ∫⁻ x in D, (S.card : ℝ≥0∞) * φ x ∂μ := lintegral_mono fun x => by gcongr; exact card_le_of_translates_mem_mul_inv_tsum_indicator S hS x`. Use `_ = S.card * ∫⁻ x in D, φ x ∂μ := lintegral_const_mul _ hφ`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_rep_le (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D) {C : Set G} (hC : MeasurableSet C)
@@ -89,15 +89,13 @@ theorem lintegral_rep_le (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet
     _ = S.card * ∫⁻ x in D, φ x ∂μ := lintegral_const_mul _ hφ
 
 /- English proof (translation)
-Use `⟨((S.card : ℝ≥0∞) ^ (1 / 2 : ℝ) * μ C ^ (1 / 2 : ℝ)).toReal, fun F => ?_⟩` and prove the remaining obligations. Use `haveI : IsFiniteMeasure (μ.restrict C) := isFiniteMeasure_restrict.2 hCf`. Establish `hFm : Measurable (F : G → ℂ)` using `(Lp.stronglyMeasurable F).measurable`. Establish `hgm : AEStronglyMeasurable (fun y => F (r y)) (μ.restrict C)` using `(aestronglyMeasurable_comp_rep hD hDm hr (Lp.stronglyMeasurable F)).restrict`. Establish `hcard : (S.card : ℝ≥0∞) ^ (1 / 2 : ℝ) ≠ ∞` using `ENNReal.rpow_ne_top_of_nonneg (by norm_num) (ENNReal.natCast_ne_top _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCr : μ C ^ (1 / 2 : ℝ) ≠ ∞` using `ENNReal.rpow_ne_top_of_nonneg (by norm_num) hCf`. Establish `h2 : eLpNorm (fun y => F (r y)) 2 (μ.restrict C) ≤ (S.card : ℝ≥0∞) ^ (1 / 2 : ℝ) * eLpNorm F 2 (μ.restrict D)`. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num), eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num)]`. Simplify using `only [ENNReal.toReal_ofNat]`. Rewrite using `[← ENNReal.mul_rpow_of_nonneg _ _ (by norm_num : (0 : ℝ) ≤ 1 / 2)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `gcongr`. Conclude with `lintegral_rep_le hD hDm hr hC S hS (φ := fun x => ‖F x‖ₑ ^ (2 : ℝ)) (by fun_prop)`. Establish `h1 : eLpNorm (fun y => F (r y)) 1 (μ.restrict C) ≤ eLpNorm (fun y => F (r y)) 2 (μ.restrict C) * μ C ^ (1 / 2 : ℝ)`. Establish `h` using `eLpNorm_le_eLpNorm_mul_rpow_measure_univ (p := 1) (q := 2) (by norm_num) hgm`. Rewrite `h` using `[Measure.restrict_apply_univ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Use `h using 3` and compare the differences between its conclusion and the goal. Evaluate the numerical expressions. Establish `hL2 : MemLp (fun y => F (r y)) 2 (μ.restrict C)` using `⟨hgm, h2.trans_lt (ENNReal.mul_lt_top hcard.lt_top (Lp.eLpNorm_lt_top F))⟩`. Use `⟨hL2.integrable (by norm_num), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[integral_norm_eq_lintegral_enorm hgm, eLpNorm_one_eq_lintegral_enorm]`. Use `_ ≤ ((S.card : ℝ≥0∞) ^ (1 / 2 : ℝ) * eLpNorm F 2 (μ.restrict D) * μ C ^ (1 / 2 : ℝ)).toReal := ENNReal.toReal_mono (ENNReal.mul_ne_top (ENNReal.mul_ne_top hcard (Lp.eLpNorm_ne_top F)) hCr) (h1.trans (by gcongr))`. Use `_ = ((S.card : ℝ≥0∞) ^ (1 / 2 : ℝ) * μ C ^ (1 / 2 : ℝ)).toReal * ‖F‖ := by`. Rewrite using `[Lp.norm_def, ← ENNReal.toReal_mul, mul_right_comm]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_rep (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D) {C : Set G} (hC : MeasurableSet C)
@@ -138,17 +136,13 @@ theorem integrableOn_rep (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet
         rw [Lp.norm_def, ← ENNReal.toReal_mul, mul_right_comm]
 
 /- English proof (translation)
-Introduce `B C hC`. Take `⟨Γ, hΓ, hΓc, hfin, hfd⟩` from `GlobalTheory.T.rationalUnitaryPoints_discrete_fundamentalDomain B.I`. Take `⟨hT2, -, hsc, -⟩` from `GlobalTheory.T.finiteAdelicUnitary_congruenceTopology B.I`. Use `haveI := hΓc`. Use `haveI := hT2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `haveI := hsc`. Establish `hD` using `hfd B.μf B.fund B.fund_spec`. Use `haveI : (B.I.muA B.μf).IsMulLeftInvariant := ⟨(GlobalTheory.T.adelicUnitaryHaar_bi_invariant B.I B.μf).1⟩`. Use `haveI : IsFiniteMeasureOnCompacts (B.I.muA B.μf) := by`. Unfold `AutInst.muA`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `infer_instance`. Establish `hDm : MeasurableSet B.fund` using `B.fund_spec.1`. Establish `hr : ∀ y, ∃ γ : Γ, B.I.rep B.fund y = (γ : B.I.GA) * y ∧ B.I.rep B.fund y ∈ B.fund`. Introduce `y`. Establish `h` using `B.fund_spec.2.1 y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨h.choose, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, hΓ]`. Conclude with `h.choose_spec.1`. Rewrite using `[AutInst.rep, dif_pos h]`. Rewrite using `[AutInst.rep, dif_pos h]`.
-
-Conclude with `h.choose_spec.2`. Establish `hK : IsCompact (C * C⁻¹)` using `hC.mul hC.inv`. Establish `hSfin : {γ : Γ | (γ : B.I.GA) ∈ C * C⁻¹}.Finite` using `((hfin _ hK).preimage Subtype.val_injective.injOn).subset fun γ hγ => ⟨hγ, by`. Rewrite using `[← hΓ]`. Conclude with `γ.2⟩`.
-
-Take `⟨M, hM⟩` from `integrableOn_rep hD hDm hr hC.measurableSet hC.measure_lt_top.ne hSfin.toFinset fun γ hγ => hSfin.mem_toFinset.2 hγ`. Conclude with `⟨M, fun F => hM F⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ext_integrableOn : ∀ (B : RowsAut) (C : Set B.I.GA), IsCompact C → ∃ M : ℝ,
     ∀ F : B.I.L2 B.μf B.fund, IntegrableOn (B.I.ext F) C (B.I.muA B.μf) ∧

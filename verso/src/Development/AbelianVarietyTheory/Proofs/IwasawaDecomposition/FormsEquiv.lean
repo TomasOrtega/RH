@@ -13,7 +13,7 @@ variable {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [Numbe
   (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n)
 
 /- English proof (translation)
-Introduce `c γ`. Establish `hγ : (γ : S.G c.1) = 1` using `hS c.1 γ (S.rp c.1 c.2) γ.2`. Use `show (S.rho emb lam c.1) (γ : S.G c.1) (x c) = x c`. Rewrite using `[hγ, map_one]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_formsK (S : GStep E K n) (hS : S.Free) (hF : (S.fam emb lam).Ok) (x : S.Cl → VV K lam) : x ∈ S.FormsK emb lam hF := by
   intro c γ
@@ -23,15 +23,13 @@ theorem mem_formsK (S : GStep E K n) (hS : S.Free) (hF : (S.fam emb lam).Ok) (x 
   rfl
 
 /- English proof (translation)
-Set `f : S.FormsK emb lam hF →ₗ[K] S'.FormsK emb lam hF'` to `{ toFun := fun x => ⟨fun c => x.1 (e0.symm c), mem_formsK emb lam S' hS' hF' _⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Set `g : S'.FormsK emb lam hF' →ₗ[K] S.FormsK emb lam hF` to `{ toFun := fun y => ⟨fun c => y.1 (e0 c), mem_formsK emb lam S hS hF _⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `⟨LinearEquiv.ofLinear f g ?_ ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `y c`. Simplify using `[f, g]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x c`. Simplify using `[f, g]`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx c`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hx (e0.symm c)`. Establish `h2` using `hL (e0.symm c)`. Rewrite `h2` using `[Equiv.apply_symm_apply]`. Use `show x.1 (e0.symm c) ∈ delAtr emb lam (S'.Lsh c.1 (S'.rep c))`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Introduce `hx c`. Establish `h1 : x.1 (e0.symm (e0 c)) ∈ delAtr emb lam (S'.Lsh (e0 c).1 (S'.rep (e0 c)))` using `hx (e0 c)`. Rewrite `h1` using `[hL c, Equiv.symm_apply_apply]`. Conclude with `h1`.
-
-Introduce `x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem forms_equiv (S S' : GStep E K n) (hS : S.Free) (hS' : S'.Free) (hF : (S.fam emb lam).Ok) (hF' : (S'.fam emb lam).Ok)
     (e0 : S.Cl ≃ S'.Cl) (hL : ∀ c, S'.Lsh _ (S'.rep (e0 c)) = S.Lsh _ (S.rep c)) :
@@ -73,9 +71,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `B X I hI l u a`. Take `⟨e, he1, he2⟩` from `forms_equiv B.fields.emb B.embLL (lamT (B.hcW u) 0) (I.stp u I.mu0 0) (I.stp u a 0) (l.lev u I.mu0).free0 (l.lev u a).free0 ((l.fmL u I.mu0).fam 0) ((l.fmL u a).fam 0) (I.eCls0 l u a) (fun c => by`. Establish `h` using `(GlobalTheory.T.cl0_bijective_and_deco_eq I hI u a (l.idx0 a).some).2 c`. Use `show ((I.stp u a 0).rep (I.cl0 u a (l.idx0 a).some c)).1.1.deco.1.Lsh = ((I.stp u I.mu0 0).rep c).1.1.deco.1.Lsh`. Rewrite using `[h])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨e, he1, fun x => he2 x⟩`.
+A detailed English derivation is pending.
 -/
 theorem law0 : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ l : I.Laws, I.Law0 l := by
   intro B X I hI l u a

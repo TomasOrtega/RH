@@ -45,13 +45,13 @@ theorem hc_loc (χ : HChar E) (hu : χ.IsUnitary) (v : HeightOneSpectrum (𝓞 E
     ((hc χ hu).localComponent v x : ℂ) = ((χ.loc v x : ℂˣ) : ℂ) := rfl
 
 /- English proof (translation)
-Rewrite using `[HeckeCharacter.not_dvd_conductor_iff]`. Establish `key : ∀ x : (v.adicCompletion E)ˣ, x ∈ (Submonoid.ofClass (v.adicCompletionIntegers E)).units ↔ Formalism.L2.Host.IsUnitAt v x` using `fun x => by`. Rewrite using `[Submonoid.mem_units_iff, Formalism.L2.Host.IsUnitAt]`. Express the relevant statement in the definitionally equal form `Valued.v (x : v.adicCompletion E) ≤ 1 ∧ Valued.v ((x⁻¹ : (v.adicCompletion E)ˣ) : v.adicCompletion E) ≤ 1 ↔ _`. Establish `h0 : Valued.v (x : v.adicCompletion E) ≠ 0` using `by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, inv_le_one₀ (zero_lt_iff.2 h0)]`. Conclude with `⟨fun h => le_antisymm h.1 h.2, fun h => ⟨h.le, h.ge⟩⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Rewrite using `[MonoidHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Circle.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((χ.loc v x : ℂˣ) : ℂ) = 1`. Rewrite using `[h x ((key x).1 hx), Units.val_one]`. Introduce `h x hx`. Establish `h1 : (hc χ hu).localComponent v x = 1` using `h ((key x).2 hx)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[← hc_loc χ hu, h1]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unr_iff (χ : HChar E) (hu : χ.IsUnitary) (v : HeightOneSpectrum (𝓞 E)) :
     χ.UnrAt v ↔ ¬ v.asIdeal ∣ (hc χ hu).conductor := by
@@ -76,9 +76,9 @@ theorem unr_iff (χ : HChar E) (hu : χ.IsUnitary) (v : HeightOneSpectrum (𝓞 
     rfl
 
 /- English proof (translation)
-Unfold `eulerFactor`. Use `split_ifs with h`. Rewrite using `[(hc χ hu).coeff_asIdeal_eq_toIdele ((unr_iff χ hu v).1 h) (unif_spec v)]`. Both sides reduce to the same expression. Rewrite using `[(hc χ hu).coeff_asIdeal_of_dvd (not_not.1 (mt (unr_iff χ hu v).2 h))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem euler_eq (χ : HChar E) (hu : χ.IsUnitary) (s : ℂ) (v : HeightOneSpectrum (𝓞 E)) :
     eulerFactor χ s v = (1 - (hc χ hu).coeff v.asIdeal * (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹ := by
@@ -90,7 +90,7 @@ theorem euler_eq (χ : HChar E) (hu : χ.IsUnitary) (s : ℂ) (v : HeightOneSpec
     simp
 
 /- English proof (translation)
-Rewrite using `[funext (euler_eq χ hu s)]`. Conclude with `(hc χ hu).LFunction_hasProd_all hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasProd_euler (χ : HChar E) (hu : χ.IsUnitary) {s : ℂ} (hs : 1 < s.re) :
     HasProd (eulerFactor χ s) ((hc χ hu).LFunction s) := by
@@ -98,11 +98,11 @@ theorem hasProd_euler (χ : HChar E) (hu : χ.IsUnitary) {s : ℂ} (hs : 1 < s.r
   exact (hc χ hu).LFunction_hasProd_all hs
 
 /- English proof (translation)
-Set `j : (∀ w : InfinitePlace E, (w.Completion)ˣ) → ∀ w : InfinitePlace E, w.Completion` to `fun x w => (x w : w.Completion)`. Establish `hj : IsInducing j` using `IsInducing.piMap fun w => (Units.isEmbedding_val₀ (G₀ := w.Completion)).isInducing`. Establish `hd : Dense (Set.range (algebraMap E (InfiniteAdeleRing E)))` using `InfiniteAdeleRing.denseRange_algebraMap E`. Establish `hU : IsOpen {y : ∀ w : InfinitePlace E, w.Completion | ∀ w, y w ≠ 0}`. Rewrite using `[Set.setOf_forall]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_iInter_of_finite fun w => isOpen_ne_fun (continuous_apply w) continuous_const`. Introduce `x`. Rewrite using `[hj.closure_eq_preimage_closure_image, Set.mem_preimage]`. Use `closure_mono ?_ (hd.open_subset_closure_inter hU fun w => (x w).ne_zero)` and prove the remaining obligations. Introduce and unpack `_ ⟨hy, k, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨w₀⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Establish `hk : k ≠ 0` using `fun h => hy w₀ (by rw [h, map_zero]; rfl)`. Conclude with `⟨_, ⟨Units.mk0 k hk, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dense_atInf : DenseRange fun (k : Eˣ) (w : InfinitePlace E) => atInf w k := by
   let j : (∀ w : InfinitePlace E, (w.Completion)ˣ) → ∀ w : InfinitePlace E, w.Completion := fun x w => (x w : w.Completion)
@@ -120,27 +120,27 @@ theorem dense_atInf : DenseRange fun (k : Eˣ) (w : InfinitePlace E) => atInf w 
   exact ⟨_, ⟨Units.mk0 k hk, rfl⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `extensionEmbedding_coe w (WithAbs.toAbs w.1 k)`.
+A detailed English derivation is pending.
 -/
 theorem ext_alg (w : InfinitePlace E) (k : E) : extensionEmbedding w (algebraMap E w.Completion k) = w.embedding k :=
   extensionEmbedding_coe w (WithAbs.toAbs w.1 k)
 
 /- English proof (translation)
-The claim follows from `(isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) a`.
+A detailed English derivation is pending.
 -/
 theorem norm_ext (w : InfinitePlace E) (a : w.Completion) : ‖extensionEmbedding w a‖ = ‖a‖ :=
   (isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) a
 
 /- English proof (translation)
-Set `A : (∀ w : InfinitePlace E, (w.Completion)ˣ) → ℂ` to `fun x => ∏ w, ((hc χ hu).infiniteComponent w (x w) : ℂ)`. Set `B : (∀ w : InfinitePlace E, (w.Completion)ˣ) → ℂ` to `fun x => ∏ w, (extensionEmbedding w (x w : w.Completion) / ((‖(x w : w.Completion)‖ : ℝ) : ℂ)) ^ m w`. Establish `hA : Continuous A` using `continuous_finsetProd _ fun w _ => continuous_subtype_val.comp (((hc χ hu).infiniteComponent w).continuous.comp (continuous_apply w))`. Establish `hn : ∀ (w : InfinitePlace E) (a : (w.Completion)ˣ), ((‖(a : w.Completion)‖ : ℝ) : ℂ) ≠ 0` using `fun w a => ofReal_ne_zero.2 (norm_ne_zero_iff.2 a.ne_zero)`. Establish `hB : Continuous B` using `continuous_finsetProd _ fun w _ => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : Continuous fun x : (∀ w : InfinitePlace E, (w.Completion)ˣ) => (x w : w.Completion)` using `Units.continuous_val.comp (continuous_apply w)`. Use `Continuous.zpow₀ (((isometry_extensionEmbedding w).continuous.comp hv).div (continuous_ofReal.comp hv.norm) fun x => hn w _) _ fun x => Or.inl ?_` and prove the remaining obligations. Conclude with `div_ne_zero ((map_ne_zero _).2 (x w).ne_zero) (hn w _)`. Establish `hAB : A = B` using `dense_atInf.equalizer hA hB (funext fun k => by`. Express the relevant statement in the definitionally equal form `A _ = B _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `e1 : ((χ.inf k : ℂˣ) : ℂ) = A fun w => atInf w k`. Simplify using `only [A, Formalism.L2.Host.HChar.inf, Formalism.L2.Host.infDiag, MonoidHom.comp_apply, MonoidHom.finsetProd_apply, map_prod, Units.coe_prod]`. Both sides reduce to the same expression. Rewrite using `[← e1, h]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : ((atInf w k : (w.Completion)ˣ) : w.Completion) = algebraMap E w.Completion k` using `rfl`. Rewrite using `[e2, ← norm_ext, ext_alg])`. Use `((hc χ hu).infiniteParams_unique w (p := (m w, 0)) (fun hw => absurd hw (not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w))) fun a => ?_).symm` and prove the remaining obligations. Establish `h1` using `congrFun hAB (Pi.mulSingle w a)`. Simplify using `only [A, B] at h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Finset.prod_eq_single w (fun u _ hu' => by rw [Pi.mulSingle_eq_of_ne hu', map_one]; rfl) (by simp), Finset.prod_eq_single w (fun u _ hu' => by rw [Pi.mulSingle_eq_of_ne hu']; simp) (by simp), Pi.mulSingle_eq_same]`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem params_of (χ : HChar E) (hu : χ.IsUnitary) [IsTotallyComplex E] (m : InfinitePlace E → ℤ)
     (h : ∀ k : Eˣ, ((χ.inf k : ℂˣ) : ℂ) = ∏ w : InfinitePlace E, (w.embedding k / ((‖w.embedding k‖ : ℝ) : ℂ)) ^ m w)
@@ -180,19 +180,19 @@ theorem params_of (χ : HChar E) (hu : χ.IsUnitary) [IsTotallyComplex E] (m : I
   simp
 
 /- English proof (translation)
-Establish `hb : Function.Bijective fun i => InfinitePlace.mk (φ i)`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Use `(hφ (φ j)).unique ?_ (Or.inl rfl)` and prove the remaining obligations. Break down `mk_eq_iff.1 hij with h | h` into its components or cases.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl h.symm`. Conclude with `Or.inr h.symm`. Introduce `w`. Take `⟨i, hi, -⟩` from `hφ w.embedding`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+Prove the first alternative. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mk_embedding w]`. Break down `hi with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h]`. Conclude with `(mk_conjugate_eq _).symm`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e` to `Equiv.ofBijective _ hb`. Use `⟨e, fun w => if w.embedding = φ (e.symm w) then n (e.symm w) else -n (e.symm w), fun i => ?_, fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply] split_ifs`. Both sides reduce to the same expression. Conclude with `abs_neg _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hn k, ← e.prod_comp]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply]`. Use `split_ifs with h`. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (e i).embedding = ComplexEmbedding.conjugate (φ i)` using `(embedding_mk_eq (φ i)).resolve_left h`. Establish `hz : φ i k ≠ 0` using `(map_ne_zero _).2 k.ne_zero`. Establish `hr : ((‖φ i k‖ : ℝ) : ℂ) ≠ 0` using `ofReal_ne_zero.2 (norm_ne_zero_iff.2 hz)`. Rewrite using `[h2, ComplexEmbedding.conjugate_coe_eq, Complex.norm_conj, zpow_neg, ← inv_zpow]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[inv_div, div_eq_div_iff hr ((map_ne_zero _).2 hz), Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_weights {I : Type} [Fintype I] {φ : I → E →+* ℂ} (hφ : IsCMType φ) {χ : HChar E} {n : I → ℤ}
     (hn : χ.HasInf φ n) : ∃ (e : I ≃ InfinitePlace E) (m : InfinitePlace E → ℤ), (∀ i, |m (e i)| = |n i|) ∧
@@ -233,21 +233,21 @@ theorem exists_weights {I : Type} [Fintype I] {φ : I → E →+* ℂ} (hφ : Is
       ring
 
 /- English proof (translation)
-Take `⟨e, m, hm, hk⟩` from `exists_weights hφ hn`. Use `set μ := hc χ hu with hμ`. Establish `hp` using `params_of χ hu m hk`. Establish `hw : ∀ w, μ.infiniteWeight w = m w` using `fun w => congrArg Prod.fst (hp w)`. Establish `ht : ∀ w, μ.infiniteTau w = 0` using `fun w => congrArg Prod.snd (hp w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : ∀ w : InfinitePlace E, w.IsComplex` using `IsTotallyComplex.isComplex`. Take `⟨i₀, hi₀⟩` from `h0`. Establish `hm0 : m (e i₀) ≠ 0` using `fun h => hi₀ (abs_eq_zero.1 (by rw [← hm, h, abs_zero]))`. Establish `h1 : ¬ ∃ τ : ℝ, ∀ x : IdeleGroup E, (μ.toIdele x : ℂ) = ((ideleModule E x : ℝ) : ℂ) ^ ((τ : ℂ) * Complex.I)` using `fun ⟨τ, hτ⟩ => hm0 ((hw _).symm.trans (HeckeCharacter.infiniteWeight_of_forall hτ _))`. Establish `h2 : ¬ ∃ τ : ℝ, ∀ x : IdeleGroup E, (μ⁻¹.toIdele x : ℂ) = ((ideleModule E x : ℝ) : ℂ) ^ ((τ : ℂ) * Complex.I)` using `fun ⟨τ, hτ⟩ => hm0 (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `HeckeCharacter.infiniteWeight_of_forall hτ (e i₀)` as an intermediate fact. Rewrite `this` using `[μ.infiniteWeight_inv_of_isComplex (hc' _), hw]`. Use the proof step `omega)`. Set `G : HeckeCharacter E → ℂ → ℂ` to `fun ν s => (ν.discrNormConductor : ℂ) ^ (-(s / 2)) * (ν.gammaFactor s)⁻¹ * ν.completedLFunction s`. Establish `hG1 : Differentiable ℂ (G μ)` using `μ.differentiable_cpow_mul_gammaFactor_inv.mul (μ.differentiable_completedLFunction h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG2 : Differentiable ℂ (G μ⁻¹)` using `μ⁻¹.differentiable_cpow_mul_gammaFactor_inv.mul (μ⁻¹.differentiable_completedLFunction h2)`. Establish `hL : ∀ (ν : HeckeCharacter E) (s : ℂ), 1 < s.re → G ν s = ν.LFunction s` using `fun ν s hs => (ν.LFunction_eq_mul_completedLFunction hs).symm`. Use `⟨G μ, ⟨hG1, fun s hs => by rw [hL μ s hs]; exact hasProd_euler χ hu hs⟩, fun z hz => ?_⟩` and prove the remaining obligations. Break down `le_or_gt 1 z with hz1 | hz1` into its components or cases. Conclude with `μ.continuation_ne_zero_of_one_le_re h1 hG1 (hL μ) (by simpa using (by exact_mod_cast hz1 : (1 : ℝ) ≤ z))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : G μ⁻¹ (1 - z) ≠ 0` using `μ⁻¹.continuation_ne_zero_of_one_le_re h2 hG2 (hL μ⁻¹) (by`. Establish `: (z : ℝ) ≤ 0` using `by exact_mod_cast (by omega : z ≤ 0)`. Simplify using `only [sub_re, one_re, intCast_re]`. Use the proof step `linarith)`. Establish `hW : μ.rootNumber ≠ 0` using `left_ne_zero_of_mul_eq_one μ.rootNumber_mul_rootNumber_inv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_ne_zero (mul_ne_zero (μ.discrNormConductor_cpow_ne_zero _) (inv_ne_zero ?_)) ?_` and prove the remaining obligations. Use `Finset.prod_ne_zero_iff.2 fun w _ => ?_` and prove the remaining obligations. Rewrite using `[HeckeCharacter.infiniteGamma, if_neg (not_isReal_iff_isComplex.2 (hc' w)), ht, hw, Gammaℂ_def]`. Use `mul_ne_zero (mul_ne_zero two_ne_zero ?_) (Gamma_ne_zero_of_re_pos ?_)` and prove the remaining obligations. Rewrite using `[Ne, cpow_eq_zero_iff, not_and_or]`.
+Rewrite the conclusion using the stated equalities. Prove the first alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Or.inl (mul_ne_zero two_ne_zero (ofReal_ne_zero.2 Real.pi_ne_zero))`. Establish `h4` using `hz (e.symm w)`. Rewrite `h4` using `[← hm, e.apply_symm_apply, ← Int.natCast_natAbs]`. Establish `h5 : (0 : ℝ) < 2 * z + ((m w).natAbs : ℝ)`. Establish `h6` using `(Int.cast_lt (R := ℝ)).2 h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h6` using `[Int.cast_zero, Int.cast_add, Int.cast_mul, Int.cast_natCast, Int.cast_ofNat]`. Then use the resulting hypothesis. Simplify using `only [ofReal_zero, zero_mul, add_zero, add_re, intCast_re, div_ofNat_re, natCast_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[μ.completedLFunction_eq_rootNumber_mul_of_not h1]`. Conclude with `mul_ne_zero hW (right_ne_zero_of_mul h3)`.
+A detailed English derivation is pending.
 -/
 theorem heckeL_ne_zero [IsTotallyComplex E] {I : Type} [Fintype I] {φ : I → E →+* ℂ} (hφ : IsCMType φ)
     {χ : HChar E} {n : I → ℤ} (hu : χ.IsUnitary) (hn : χ.HasInf φ n) (h0 : ∃ i, n i ≠ 0) :

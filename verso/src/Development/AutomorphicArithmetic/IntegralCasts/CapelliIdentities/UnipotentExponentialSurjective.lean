@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hy`. Establish `h2 : y ^ (k + 2) = 0` using `by rw [pow_add, hk, zero_mul]`. Use `⟨∑ i ∈ Finset.range k, (((i + 2).factorial : ℚ)⁻¹) • y ^ i, ?_⟩` and prove the remaining obligations. Rewrite using `[IsNilpotent.exp_eq_sum h2, Finset.sum_range_succ', Finset.sum_range_succ', Finset.mul_sum]`. Establish `h : ∀ i ∈ Finset.range k, (((i + 1 + 1).factorial : ℚ)⁻¹) • y ^ (i + 1 + 1) = y ^ 2 * ((((i + 2).factorial : ℚ)⁻¹) • y ^ i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i _`. Rewrite using `[mul_smul_comm, ← pow_add, add_comm 2 i]`. Rewrite using `[Finset.sum_congr rfl h]`. Simplify using `only [zero_add, Nat.factorial_one, Nat.factorial_zero, Nat.cast_one, inv_one, one_smul, pow_one, pow_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem exp_second_order {A : Type} [CommRing A] [Algebra ℚ A] {y : A}
     (hy : IsNilpotent y) : ∃ d : A, IsNilpotent.exp y = 1 + y + y ^ 2 * d := by
@@ -21,9 +21,9 @@ private theorem exp_second_order {A : Type} [CommRing A] [Algebra ℚ A] {y : A}
   ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, -1, IsNilpotent.zero, by rw [IsNilpotent.exp_zero]; ring⟩`. Consider the case `succ k ih`. Take `⟨x, c, hx, he⟩` from `ih`. Establish `hy : IsNilpotent (n * (-(n ^ k * c)))` using `(Commute.all _ _).isNilpotent_mul_right hn`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `exp_second_order hy`. Use `⟨x + n * (-(n ^ k * c)), -c - n ^ k * c ^ 2 + (1 + n + n ^ (k + 1) * c) * (n ^ k * c ^ 2 * d), (Commute.all _ _).isNilpotent_add hx hy, ?_⟩` and prove the remaining obligations. Rewrite using `[IsNilpotent.exp_add_of_commute (Commute.all _ _) hx hy, he, hd]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem exp_approx {A : Type} [CommRing A] [Algebra ℚ A] {n : A}
     (hn : IsNilpotent n) (k : ℕ) :
@@ -42,7 +42,7 @@ private theorem exp_approx {A : Type} [CommRing A] [Algebra ℚ A] {n : A}
     ring
 
 /- English proof (translation)
-Introduce `A _ _ n hn`. Take `⟨k, hk⟩` from `id hn`. Take `⟨x, c, hx, he⟩` from `exp_approx hn k`. Conclude with `⟨x, hx, by rw [he, pow_succ, hk, zero_mul, zero_mul, add_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.UnipotentExponentialSurjective.ul_exp_onto :
     ∀ {A : Type} [inst : CommRing A] [inst_1 : Algebra ℚ A] {n : A},

@@ -9,11 +9,11 @@ section
 variable {S : Type u_1} {V : Type u_2} [Ring S] [AddCommGroup V] [Module S V]
 
 /- English proof (translation)
-Set `N : Submodule S A` to `D.submoduleOf A`. Establish `hex` using `Module.length_eq_add_of_exact N.subtype N.mkQ N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N)`. Establish `hN : Module.length S N = relLength D ⊥`. Use `relLength_submoduleOf h (⊥ : Submodule S V)` as an intermediate fact. Establish `hb : (⊥ : Submodule S V).submoduleOf A = ⊥`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[Submodule.submoduleOf]`. Rewrite `this` using `[hb, relLength_bot_right]`. Conclude with `this`. Rewrite using `[relLength_bot_right, hex, hN, add_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem relLength_bot_add {A D : Submodule S V} (h : D ≤ A) :
     relLength A ⊥ = relLength A D + relLength D ⊥ := by
@@ -30,7 +30,7 @@ theorem relLength_bot_add {A D : Submodule S V} (h : D ≤ A) :
   rfl
 
 /- English proof (translation)
-Establish `hb : C.map C.mkQ = ⊥` using `Submodule.mkQ_map_self C`. Rewrite using `[← relLength_map_mkQ le_rfl A, ← relLength_map_mkQ hCD A, ← relLength_map_mkQ le_rfl D, hb]`. Conclude with `relLength_bot_add (Submodule.map_mono hDA)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLength_add {A C D : Submodule S V} (hCD : C ≤ D) (hDA : D ≤ A) :
     relLength A C = relLength A D + relLength D C := by
@@ -39,15 +39,15 @@ theorem relLength_add {A C D : Submodule S V} (hCD : C ≤ D) (hDA : D ≤ A) :
   exact relLength_bot_add (Submodule.map_mono hDA)
 
 /- English proof (translation)
-Introduce `S V _ _ _ A B C hCA hCB m n hm hn`. Establish `hCD : C ≤ A ⊓ B` using `le_inf hCA hCB`. Establish `h1` using `relLength_add hCD (inf_le_left : A ⊓ B ≤ A)`. Establish `h2` using `relLength_add hCD (inf_le_right : A ⊓ B ≤ B)`. Rewrite `h1` using `[relLength_inf_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[relLength_inf_right']`. Rewrite `h1` using `[hm]`. Rewrite `h2` using `[hn]`. Establish `ha : relLength A B ≠ ⊤` using `fun h => by simp [h] at h1`. Establish `hb : relLength B A ≠ ⊤` using `fun h => by simp [h] at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : relLength (A ⊓ B) C ≠ ⊤` using `fun h => by simp [h] at h1`. Use `⟨⟨ha, hb⟩, ?_⟩` and prove the remaining obligations. Take `⟨a, ha'⟩` from `ENat.ne_top_iff_exists.mp ha`. Take `⟨b, hb'⟩` from `ENat.ne_top_iff_exists.mp hb`. Take `⟨k, hk'⟩` from `ENat.ne_top_iff_exists.mp hk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[← ha', ← hk']`. Rewrite `h2` using `[← hb', ← hk']`. Establish `e1 : m = a + k` using `by exact_mod_cast h1`. Establish `e2 : n = b + k` using `by exact_mod_cast h2`. Rewrite using `[signedLength_eq_of_relLength_eq ha'.symm hb'.symm, e1, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem signedLength_of_common_lower : ∀ {S : Type u_1} {V : Type u_2} [inst : Ring S] [inst_1 : AddCommGroup V]
     [inst_2 : Module S V] {A B C : Submodule S V}, C ≤ A → C ≤ B → ∀ {m n : ℕ},
@@ -80,6 +80,6 @@ end
 end GlobalTheory.RelativeLengthAdditivity
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.RelativeLengthAdditivity.signedLength_of_common_lower`.
+A detailed English derivation is pending.
 -/
 example : ∀ {S : Type u_1} {V : Type u_2} [inst : Ring S] [inst_1 : AddCommGroup V] [inst_2 : Module S V] {A B C : Submodule S V}, C ≤ A → C ≤ B → ∀ {m n : ℕ}, GlobalTheory.relLength A C = (↑m : ℕ∞) → GlobalTheory.relLength B C = (↑n : ℕ∞) → GlobalTheory.LengthCommensurable A B ∧ GlobalTheory.signedLength A B = (↑m : ℤ) - (↑n : ℤ) := @GlobalTheory.RelativeLengthAdditivity.signedLength_of_common_lower

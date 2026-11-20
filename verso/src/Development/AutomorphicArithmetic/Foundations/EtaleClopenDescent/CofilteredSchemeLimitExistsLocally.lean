@@ -29,9 +29,9 @@ private def q (U : (D.obj j₀).Opens) : opensDiagram D j₀ U ⟶ (Functor.cons
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `t` using `(isPullback_morphismRestrict (D.map j.hom) U).flip`. Establish `s` using `(isPullback_morphismRestrict (D.map j.hom) V).flip`. Use `IsPullback.of_right (h₁₂ := (D.map j.hom ⁻¹ᵁ U).ι) (h₂₂ := U.ι) ?_ ?_ t` and prove the remaining obligations. Apply the tactic sequence `convert s using 1 all_goals first`. Consider the case `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately.
 
-Consider the case `simp [res]`. Rewrite using `[← cancel_mono U.ι]`. Simplify using `[res, q]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma isPullback_res {V U : (D.obj j₀).Opens} (h : V ≤ U) (j : Over j₀) :
     IsPullback ((res D j₀ h).app j) ((q D j₀ V).app j) ((q D j₀ U).app j) ((D.obj j₀).homOfLE h) := by
@@ -50,7 +50,7 @@ private abbrev T : Over j₀ := Over.mk (𝟙 j₀)
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `f : j ⟶ T j₀` using `Over.homMk j.hom`. Establish `h1` using `c.w f`. Establish `h2` using `(q D j₀ U).naturality f`. Rewrite using `[← h1, Category.assoc, h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma cone_q {U : (D.obj j₀).Opens} (c : Cone (opensDiagram D j₀ U)) (j : Over j₀) :
     c.π.app j ≫ (q D j₀ U).app j = c.π.app (T j₀) ≫ (q D j₀ U).app (T j₀) := by
@@ -65,15 +65,15 @@ attribute [local instance] CategoryTheory.isConnected_of_hasTerminal
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `hU : ∀ j, limit.π (opensDiagram D j₀ U) j ≫ (q D j₀ U).app j = limit.π (opensDiagram D j₀ U) (T j₀) ≫ (q D j₀ U).app (T j₀)` using `fun j => cone_q D j₀ (limit.cone _) j`. Establish `hV : ∀ j, limit.π (opensDiagram D j₀ V) j ≫ (q D j₀ V).app j = limit.π (opensDiagram D j₀ V) (T j₀) ≫ (q D j₀ V).app (T j₀)` using `fun j => cone_q D j₀ (limit.cone _) j`. Establish `w : limMap (res D j₀ h) ≫ limit.π _ (T j₀) ≫ (q D j₀ U).app (T j₀) = (limit.π _ (T j₀) ≫ (q D j₀ V).app (T j₀)) ≫ (D.obj j₀).homOfLE h`. Rewrite using `[limMap_π_assoc, Category.assoc, (isPullback_res D j₀ h (T j₀)).w]`. Use `⟨⟨w⟩, ⟨PullbackCone.IsLimit.mk w (fun s => limit.lift _ { pt := s.pt π := { app := fun j => (isPullback_res D j₀ h j).lift (s.fst ≫ limit.π _ j) s.snd (by rw [Category.assoc, hU j]; exact s.condition) naturality := fun j k f => by` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `(isPullback_res D j₀ h k).hom_ext` to reduce the goal to its premises. Simplify using `only [Functor.const_obj_map, Category.id_comp, Category.assoc, IsPullback.lift_fst, (res D j₀ h).naturality f, IsPullback.lift_fst_assoc, limit.w]`. Simplify using the standard rewrite rules. Simplify using `only [Functor.const_obj_map, Category.id_comp, Category.assoc, IsPullback.lift_snd, (q D j₀ V).naturality f, Category.comp_id]`. Simplify using `} }) ?_ ?_ ?_⟩⟩`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `s`. Use `limit.hom_ext fun j => ?_` and prove the remaining obligations. Simplify using `[limMap_π]`. Introduce `s`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `s m h1 h2`. Use `limit.hom_ext fun j => ?_` and prove the remaining obligations. Apply `(isPullback_res D j₀ h j).hom_ext` to reduce the goal to its premises. Simplify using `only [limit.lift_π, IsPullback.lift_fst, Category.assoc]`. Rewrite using `[← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [limit.lift_π, IsPullback.lift_snd, Category.assoc]`. Rewrite using `[hV j, ← Category.assoc]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isPullback_limMap {V U : (D.obj j₀).Opens} (h : V ≤ U) [HasLimit (opensDiagram D j₀ V)]
     [HasLimit (opensDiagram D j₀ U)] :
@@ -161,7 +161,7 @@ private def glπ (j : Over j₀) : (gd D j₀).glued ⟶ D.obj j.left :=
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Simplify using `[glπ]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma ι_glπ (U : (D.obj j₀).directedAffineCover.I₀) (j : Over j₀) :
     colimit.ι (gd D j₀).functor U ≫ glπ D j₀ j =
@@ -171,7 +171,7 @@ private lemma ι_glπ (U : (D.obj j₀).directedAffineCover.I₀) (j : Over j₀
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Use `colimit.hom_ext fun U => ?_` and prove the remaining obligations. Rewrite using `[ι_glπ]`. Use `Eq.trans ?_ ((gd D j₀).ι_toBase U).symm` and prove the remaining obligations. Simplify using `[gd, pr, q, morphismRestrict_ι]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma gluing_projection_T_eq_base : glπ D j₀ (T j₀) = (gd D j₀).toBase := by
   refine colimit.hom_ext fun U => ?_
@@ -198,11 +198,11 @@ private def glCone : Cone (Over.forget j₀ ⋙ D) where
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `hp` using `(gd D j₀).isPullback_natTrans_ι_toBase U`. Establish `ea : a = hp.lift c a ha ≫ colimit.ι _ U` using `(hp.lift_snd _ _ _).symm`. Establish `eb : b = hp.lift c b hb ≫ colimit.ι _ U` using `(hp.lift_snd _ _ _).symm`. Establish `e : hp.lift c a ha = hp.lift c b hb`. Use `limit.hom_ext fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← cancel_mono ((opensDiagramι D j₀ U.1).app j)]`. Simplify using `only [Category.assoc]`. Rewrite using `[← ι_glπ]`. Simplify using `only [← Category.assoc]`. Rewrite using `[← ea, ← eb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h j`. Rewrite using `[ea, eb, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma gl_local_ext {Z : Scheme.{0}} (U : (D.obj j₀).directedAffineCover.I₀)
     (a b : Z ⟶ (gd D j₀).glued) (c : Z ⟶ (U.1 : Scheme.{0}))
@@ -224,11 +224,11 @@ private lemma gl_local_ext {Z : Scheme.{0}} (U : (D.obj j₀).directedAffineCove
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `hab : a ≫ (gd D j₀).toBase = b ≫ (gd D j₀).toBase`. Rewrite using `[← gluing_projection_T_eq_base]`. Conclude with `h (T j₀)`. Use `Scheme.Cover.hom_ext ((D.obj j₀).directedAffineCover.pullback₁ (a ≫ (gd D j₀).toBase)) _ _ fun U => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pullback.fst _ _ ≫ a = pullback.fst _ _ ≫ b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `gl_local_ext D j₀ U _ _ (pullback.snd _ _) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `pullback.condition.symm`. Rewrite using `[Category.assoc, ← hab]`. Conclude with `pullback.condition.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Simplify using `only [Category.assoc]`. Rewrite using `[h j]`.
+A detailed English derivation is pending.
 -/
 private lemma gl_hom_ext {Y : Scheme.{0}} (a b : Y ⟶ (gd D j₀).glued)
     (h : ∀ j, a ≫ glπ D j₀ j = b ≫ glπ D j₀ j) : a = b := by
@@ -256,7 +256,7 @@ private abbrev sT : s.pt ⟶ D.obj j₀ := s.π.app (T j₀)
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-The claim follows from `s.w (Over.homMk j.hom : j ⟶ T j₀)`.
+A detailed English derivation is pending.
 -/
 private lemma s_w (j : Over j₀) : s.π.app j ≫ D.map j.hom = sT D j₀ s :=
   s.w (Over.homMk j.hom : j ⟶ T j₀)
@@ -277,7 +277,7 @@ private def leg (U : (D.obj j₀).Opens) (j : Over j₀) :
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-The claim follows from `(isPullback_morphismRestrict (D.map j.hom) U).lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 private lemma leg_ι (U : (D.obj j₀).Opens) (j : Over j₀) :
     leg D j₀ s U j ≫ (opensDiagramι D j₀ U).app j = pullback.fst _ _ ≫ s.π.app j :=
@@ -305,7 +305,7 @@ private def locLift (U : (D.obj j₀).directedAffineCover.I₀) :
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Rewrite using `[locLift, Category.assoc, ι_glπ, limit.lift_π_assoc]`. Conclude with `leg_ι D j₀ s U.1 j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma locLift_glπ (U : (D.obj j₀).directedAffineCover.I₀) (j : Over j₀) :
     locLift D j₀ s U ≫ glπ D j₀ j = pullback.fst _ _ ≫ s.π.app j := by
@@ -326,7 +326,7 @@ private def glLift : s.pt ⟶ (gd D j₀).glued :=
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Use `Scheme.Cover.hom_ext ((D.obj j₀).directedAffineCover.pullback₁ (sT D j₀ s)) _ _ fun U => ?_` and prove the remaining obligations. Rewrite using `[glLift, Scheme.Cover.ι_glueMorphisms_assoc, locLift_glπ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma glLift_glπ (j : Over j₀) : glLift D j₀ s ≫ glπ D j₀ j = s.π.app j := by
   refine Scheme.Cover.hom_ext ((D.obj j₀).directedAffineCover.pullback₁ (sT D j₀ s)) _ _
@@ -348,7 +348,7 @@ end Glue
 end UpperTheory.Cb.GluingProjections
 
 /- English proof (translation)
-Introduce `_ _ _ J _ _ D j₀ _ hlim`. Use `haveI : ∀ U : (D.obj j₀).directedAffineCover.I₀, HasLimit (opensDiagram D j₀ U.1) := fun U => hlim U.1 U.2`. Conclude with `⟨⟨⟨UpperTheory.Cb.GluingProjections.glCone D j₀, UpperTheory.Cb.GluingProjections.isLimitGlCone D j₀⟩⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.cofiltered_scheme_limit_exists_locally :
     LateralTheory.E.BuildCut.LimInt → LateralTheory.E.t_E2Cut.Cont → LateralTheory.E.t_E2Cut.MV → LateralTheory.E.HasLimPf.Loc := by

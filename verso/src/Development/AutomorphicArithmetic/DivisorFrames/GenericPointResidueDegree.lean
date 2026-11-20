@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ConsGeo
 
 /- English proof (translation)
-Use `⟨?_, IsLocalRing.residue_surjective⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Rewrite `ha` using `[IsLocalRing.residue_eq_zero_iff, (IsLocalRing.isField_iff_maximalIdeal_eq).1 h]`. Simplify using `using ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem residue_bijective_of_isField {R : Type} [CommRing R] [IsLocalRing R] (h : IsField R) :
     Function.Bijective (IsLocalRing.residue R) := by
@@ -18,9 +18,9 @@ private theorem residue_bijective_of_isField {R : Type} [CommRing R] [IsLocalRin
   simpa using ha
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite `h` using `[← Scheme.SpecMap_stalkMap_fromSpecStalk, cancel_mono]`. Establish `h' : f.stalkMap w = ψ` using `Spec.map_injective h`. Substitute `h'` using the available equality. Use `letI := (f.stalkMap w).hom.toAlgebra`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Equip the data with the indicated structure.
 
-Use `letI := (f.residueFieldMap w).hom.toAlgebra`. Use `symm`. Use `Algebra.finrank_eq_of_equiv_equiv (RingEquiv.ofBijective (X.residue (f w)).hom (residue_bijective_of_isField hx)) (RingEquiv.ofBijective (W.residue w).hom (residue_bijective_of_isField hw)) ?_` and prove the remaining obligations. Use extensionality with `a`. Conclude with `congrArg (fun g => CommRingCat.Hom.hom g a) (Scheme.residue_residueFieldMap f w)`.
+Equip the data with the indicated structure. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem residueDegree_eq_of_isField {X W : Scheme.{0}} (f : W ⟶ X) (w : W) (x : X) (e : f w = x)
     (ψ : X.presheaf.stalk x ⟶ W.presheaf.stalk w)
@@ -42,9 +42,9 @@ private theorem residueDegree_eq_of_isField {X W : Scheme.{0}} (f : W ⟶ X) (w 
   exact congrArg (fun g => CommRingCat.Hom.hom g a) (Scheme.residue_residueFieldMap f w)
 
 /- English proof (translation)
-Introduce `X W _ _ f ψ h`. Establish `h' : W.fromSpecStalk (genericPoint W) ≫ f = Spec.map (CommRingCat.ofHom ψ) ≫ X.fromSpecStalk (genericPoint X)` using `h`. Establish `e : f (genericPoint W) = genericPoint X`. Establish `h1` using `congrArg (fun g : Spec (W.presheaf.stalk (genericPoint W)) ⟶ X => g (closedPoint (W.presheaf.stalk (genericPoint W)))) h'`. Establish `h0 : f (W.fromSpecStalk (genericPoint W) (closedPoint (W.presheaf.stalk (genericPoint W)))) = X.fromSpecStalk (genericPoint X) (Spec.map (CommRingCat.ofHom ψ) (closedPoint (W.presheaf.stalk (genericPoint W))))` using `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((congrArg f Scheme.fromSpecStalk_closedPoint).symm.trans h0).trans ?_` and prove the remaining obligations. Establish `h2 : Spec.map (CommRingCat.ofHom ψ) (closedPoint (W.presheaf.stalk (genericPoint W))) = closedPoint (X.presheaf.stalk (genericPoint X))` using `Subsingleton.elim (α := PrimeSpectrum X.functionField) _ _`. Conclude with `(congrArg (X.fromSpecStalk (genericPoint X)) h2).trans Scheme.fromSpecStalk_closedPoint`. Conclude with `⟨e, residueDegree_eq_of_isField f _ _ e (CommRingCat.ofHom ψ) h' (Field.toIsField X.functionField) (Field.toIsField W.functionField)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.generic_point_residueDegree :
     ∀ (X W : Scheme.{0}) [IsIntegral X] [IsIntegral W] (f : W ⟶ X) (ψ : X.functionField →+* W.functionField), gpt W ≫ f = spMap ψ ≫ gpt X → f (genericPoint W) = genericPoint X ∧ f.residueDegree (genericPoint W) = embDeg ψ := by

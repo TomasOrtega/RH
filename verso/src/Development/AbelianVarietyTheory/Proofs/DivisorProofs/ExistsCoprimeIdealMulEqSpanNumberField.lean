@@ -4,7 +4,7 @@ open scoped NumberField
 namespace GlobalTheory.IdealPrincipalCoprime
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `h.map (Algebra.norm ℤ (S := 𝓞 F))`. Rewrite `h1` using `[← map_natCast (algebraMap ℤ (𝓞 F)), Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast]`. Conclude with `hp.ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_prime_not_isUnit (F : Type) [Field F] [NumberField F] {p : ℕ} (hp : p.Prime) :
     ¬ IsUnit (p : 𝓞 F) := by
@@ -15,19 +15,17 @@ theorem natCast_prime_not_isUnit (F : Type) [Field F] [NumberField F] {p : ℕ} 
   exact hp.ne_one h1
 
 /- English proof (translation)
-Introduce `F _ _ p hp w hw`. Use `set N : Ideal (𝓞 F) := Ideal.span {(p : 𝓞 F)} * w with hN`. Establish `hp0 : (p : 𝓞 F) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `hN0 : N ≠ ⊥`. Rewrite using `[hN, Ne, Ideal.mul_eq_bot, not_or, Ideal.span_singleton_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hp0, hw⟩`. Take `⟨g, hg⟩` from `IsDedekindDomain.exists_sup_span_eq (I := w * N) (J := w) Ideal.mul_le_left (mul_ne_zero hw hN0)`. Establish `hgw : Ideal.span {g} ≤ w` using `hg ▸ le_sup_right`. Take `⟨𝔟, h𝔟⟩` from `Ideal.dvd_iff_le.mpr hgw`. Establish `hsup : N ⊔ 𝔟 = ⊤`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_left_cancel₀ (show w ≠ 0 from hw)` to reduce the goal to its premises. Rewrite using `[Ideal.mul_sup, ← h𝔟, hg, Ideal.mul_top]`. Establish `hNp : N ≤ Ideal.span {(p : 𝓞 F)}` using `Ideal.mul_le_left`. Establish `hNw : N ≤ w` using `Ideal.mul_le_right`. Establish `hbp : 𝔟 ⊔ Ideal.span {(p : 𝓞 F)} = ⊤`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : N ⊔ 𝔟 ≤ 𝔟 ⊔ Ideal.span {(p : 𝓞 F)}` using `sup_le (le_sup_of_le_right hNp) le_sup_left`. Rewrite `h` using `[hsup]`. Conclude with `eq_top_iff.mpr h`. Establish `hwb : w ⊔ 𝔟 = ⊤`. Establish `h : N ⊔ 𝔟 ≤ w ⊔ 𝔟` using `sup_le (le_sup_of_le_left hNw) le_sup_right`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hsup]`. Conclude with `eq_top_iff.mpr h`. Establish `h1 : (1 : 𝓞 F) ∈ w ⊔ 𝔟` using `by rw [hwb]; exact Submodule.mem_top`. Take `⟨e, he, f, hf, hef⟩` from `Submodule.mem_sup.mp h1`. Use `⟨g, e, 𝔟, ?_, he, ?_, h𝔟.symm, hbp⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hg0`. Establish `hb0 : 𝔟 = ⊥`. Establish `: w * 𝔟 = ⊥` using `by rw [← h𝔟, hg0, Ideal.span_singleton_eq_bot.mpr rfl]`. Break down `Ideal.mul_eq_bot.mp this with h | h` into its components or cases. Conclude with `absurd h hw`.
-
-Conclude with `h`. Rewrite `hbp` using `[hb0, bot_sup_eq]`. Conclude with `natCast_prime_not_isUnit F hp (Ideal.span_singleton_eq_top.mp hbp)`. Rewrite using `[← hef, add_sub_cancel_left]`. Conclude with `hf`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_span_coprime : ∀ (F : Type) [Field F] [NumberField F] (p : ℕ), p.Prime →
     ∀ (w : Ideal (𝓞 F)), w ≠ ⊥ → ∃ (g e : 𝓞 F) (𝔟 : Ideal (𝓞 F)), g ≠ 0 ∧ e ∈ w ∧ 1 - e ∈ 𝔟 ∧

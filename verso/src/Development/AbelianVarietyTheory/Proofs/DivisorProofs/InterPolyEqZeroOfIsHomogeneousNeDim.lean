@@ -7,9 +7,9 @@ open Classical
 namespace GlobalTheory.ProjVar.Var
 
 /- English proof (translation)
-Rewrite using `[P.as_sum, map_sum]`. Use `Finset.sum_eq_zero fun d hd => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight 1 d = k` using `hP (mem_support_iff.mp hd)`. Establish `e : monomial d (coeff d P) = coeff d P • basisMonomials κ ℝ d`. Rewrite using `[coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_smul, interPoly, Module.Basis.constr_basis, dif_neg, smul_zero]`. Introduce and unpack `⟨s, hs⟩`. Apply `hk` to reduce the goal to its premises. Rewrite using `[← hw, ← hs, map_sum]`. Simplify using `[Finsupp.weight_apply, Finsupp.sum_single_index]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem interPoly_eq_zero_of_isHomogeneous (F : Type) [Field F] (Y : Var F) (κ : Type) (gr : κ → Y.Dv) (k : ℕ)
     (P : MvPolynomial κ ℝ) (hP : P.IsHomogeneous k) (hk : k ≠ Y.dim) : Y.interPoly gr P = 0 := by

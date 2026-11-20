@@ -14,19 +14,15 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ act hact 𝔗`. Set `f₂ : Sp 𝔗.X₂.Ω₁ ⟶ Sp 𝔗.X₂.S.R` to `spMap 𝔗.X₂.S.R.val.toRingHom`. Set `P₀` to `GlobalTheory.StrictPull.polPull 𝔗.X₂.ρ.P f₂`. Set `a' : P₀.A.left ⟶ 𝔗.X₂.ρ.P.A.left` to `pullback.fst 𝔗.X₂.ρ.P.A.hom f₂`. Establish `hring : (algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁).comp X₁.S.R.val.toRingHom = 𝔗.X₂.S.R.val.toRingHom.comp 𝔗.om`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `x`. Conclude with `(𝔗.om_eq x).symm`. Establish `hsp : spMap ((algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁).comp X₁.S.R.val.toRingHom) = f₂ ≫ spMap 𝔗.om`. Rewrite using `[hring]`. Conclude with `Spec.map_comp (CommRingCat.ofHom 𝔗.om) (CommRingCat.ofHom 𝔗.X₂.S.R.val.toRingHom)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : IsGrpPullback P₀.A 𝔗.X₂.ρ.P.A f₂ a'` using `isGrpPullback_pullback _ _`. Establish `hr : LBIso P₀.L (𝔗.X₂.ρ.P.L.pull a')` using `⟨idIso _, idIso_isGen P₀.isLB⟩`. Use `⟨P₀, a' ≫ 𝔗.φ, a', fun E => (Over.pullback f₂).map (𝔗.act₂ E), ?_, ha', ?_, hr, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(ha'.comp 𝔗.cart).congr hsp.symm rfl`. Conclude with `LBIso.trans P₀.isLB (pull_isLB 𝔗.X₂.ρ.P.isLB _) (pull_isLB X₁.ρ.P.isLB _) hr (lbIso_pull_comp 𝔗.lb a')`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `E`. Establish `h1 : ((Over.pullback f₂).map (𝔗.act₂ E)).left ≫ a' = a' ≫ (𝔗.act₂ E).left` using `pullback.lift_fst _ _ _`. Use `⟨?_, h1⟩` and prove the remaining obligations. Establish `h2 : (a' ≫ (𝔗.act₂ E).left) ≫ 𝔗.φ = a' ≫ 𝔗.φ ≫ (act E).left`. Rewrite using `[Category.assoc, 𝔗.act_eq]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ 𝔗.φ) h1).trans h2)`. Introduce `x`. Establish `hc : (f₂ ≫ (𝔗.X₂.ρ.pt (𝔗.lam x)).left) ≫ 𝔗.X₂.ρ.P.A.hom = 𝟙 _ ≫ f₂`. Rewrite using `[Category.assoc, Over.w (𝔗.X₂.ρ.pt (𝔗.lam x))]`. Simplify using `[baseOver]`.
-
-Use `⟨pullback.lift (f₂ ≫ (𝔗.X₂.ρ.pt (𝔗.lam x)).left) (𝟙 _) hc, ?_, ?_⟩` and prove the remaining obligations. Establish `hw : pullback.lift (f₂ ≫ (𝔗.X₂.ρ.pt (𝔗.lam x)).left) (𝟙 _) hc ≫ a' = f₂ ≫ (𝔗.X₂.ρ.pt (𝔗.lam x)).left` using `pullback.lift_fst _ _ _`. Establish `h3 : (f₂ ≫ (𝔗.X₂.ρ.pt (𝔗.lam x)).left) ≫ 𝔗.φ = spMap ((algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁).comp X₁.S.R.val.toRingHom) ≫ (X₁.ρ.pt x).left`. Rewrite using `[Category.assoc, 𝔗.lam_pt, hsp, Category.assoc]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ 𝔗.φ) hw).trans h3)`.
-
-Conclude with `pullback.lift_fst _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tower.same : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsAct X₁ act → ∀ 𝔗 : Tower X₁ act, GlobalTheory.Poinc.Same X₁.ρ act 𝔗.X₂.ρ 𝔗.act₂ 𝔗.lam (algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁) := by
   intro g n F W Z i X₁ act hact 𝔗

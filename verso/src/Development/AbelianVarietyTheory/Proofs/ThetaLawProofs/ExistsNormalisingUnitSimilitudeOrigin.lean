@@ -32,7 +32,7 @@ variable {L} {F F' : ∀ (U : Type) [CommGroup U], ((Y ⟶ X) → U) → U}
   {v v' : ∀ y : Y, ((Y ⟶ X) → L.ι) → (Y.presheaf.stalk y)ˣ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨K, inferInstance, _, ε, LB.pullGen L φ ε t r, DVR.pullGen_isGen _ _ _ _ ht _, fun _ _ _ => rfl, fun y J hJ => by rw [val_pull hJ, Category.id_comp]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsVal.pull {K : Type} [Fintype K] {φ : K → (Y' ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
     (ht : t.IsGen) (r : Y ⟶ Y') :
@@ -41,7 +41,7 @@ theorem IsVal.pull {K : Type} [Fintype K] {φ : K → (Y' ⟶ X)} {ε : K → �
     fun y J hJ => by rw [val_pull hJ, Category.id_comp]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PEmpty, inferInstance, _, _, LB.oneGen L, fun i j => by refine (map_one _).trans (Eq.symm ?_) exact (congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _), fun _ _ _ => Fintype.prod_empty _, fun _ _ _ => val_one _⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsVal.one : IsVal L (Y := Y) (fun _ _ _ => 1) (fun _ _ => 1) :=
   ⟨PEmpty, inferInstance, _, _, LB.oneGen L, fun i j => by
@@ -49,7 +49,7 @@ theorem IsVal.one : IsVal L (Y := Y) (fun _ _ _ => 1) (fun _ _ => 1) :=
     exact (congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _), fun _ _ _ => Fintype.prod_empty _, fun _ _ _ => val_one _⟩
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, hF, hv⟩` from `a`. Take `⟨K', _, φ', ε', t', ht', hF', hv'⟩` from `b`. Use `⟨K ⊕ K', inferInstance, _, _, LB.mulGen L _ _ _ _ t t', DVR.mulGen_isGen _ _ _ _ _ _ _ ht ht', fun U _ h => ?_, fun y J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (hF U h) (hF' U h))`. Rewrite using `[val_mul hJ, hv y J hJ, hv' y J hJ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsVal.mul (a : IsVal L F v) (b : IsVal L F' v') :
     IsVal L (fun U _ h => F U h * F' U h) (fun y J => v y J * v' y J) := by
@@ -61,7 +61,7 @@ theorem IsVal.mul (a : IsVal L F v) (b : IsVal L F' v') :
   · rw [val_mul hJ, hv y J hJ, hv' y J hJ]
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, hF, hv⟩` from `a`. Use `⟨K, inferInstance, _, _, LB.invGen L _ _ t, DVR.invGen_isGen _ _ _ _ ht, fun U _ h => ?_, fun y J hJ => ?_⟩` and prove the remaining obligations. Simplify using `only [zpow_neg, Finset.prod_inv_distrib, hF]`. Rewrite using `[val_inv, hv y J hJ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsVal.inv (a : IsVal L F v) : IsVal L (fun U _ h => (F U h)⁻¹) (fun y J => (v y J)⁻¹) := by
   obtain ⟨K, _, φ, ε, t, ht, hF, hv⟩ := a
@@ -71,7 +71,7 @@ theorem IsVal.inv (a : IsVal L F v) : IsVal L (fun U _ h => (F U h)⁻¹) (fun y
   · rw [val_inv, hv y J hJ]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa only [pow_zero] using IsVal.one`. Consider the case `succ n ih => simpa only [pow_succ] using ih.mul a`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem IsVal.pow (a : IsVal L F v) (n : ℕ) : IsVal L (fun U _ h => F U h ^ n) (fun y J => v y J ^ n) := by
   induction n with
@@ -79,7 +79,7 @@ theorem IsVal.pow (a : IsVal L F v) (n : ℕ) : IsVal L (fun U _ h => F U h ^ n)
   | succ n ih => simpa only [pow_succ] using ih.mul a
 
 /- English proof (translation)
-Take `⟨k, rfl | rfl⟩` from `n.eq_nat_or_neg`. Simplify `a.pow k` using `only [zpow_natCast]`. Simplify `(a.pow k).inv` using `only [zpow_neg, zpow_natCast]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsVal.zpow (a : IsVal L F v) (n : ℤ) : IsVal L (fun U _ h => F U h ^ n) (fun y J => v y J ^ n) := by
   obtain ⟨k, rfl | rfl⟩ := n.eq_nat_or_neg
@@ -87,7 +87,7 @@ theorem IsVal.zpow (a : IsVal L F v) (n : ℤ) : IsVal L (fun U _ h => F U h ^ n
   · simpa only [zpow_neg, zpow_natCast] using (a.pow k).inv
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa only [Finset.prod_empty] using IsVal.one`. Consider the case `insert d s hd ih => simpa only [Finset.prod_insert hd] using (a d).mul ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem IsVal.prod {I : Type} {G : I → ∀ (U : Type) [CommGroup U], ((Y ⟶ X) → U) → U}
     {u : I → ∀ y : Y, ((Y ⟶ X) → L.ι) → (Y.presheaf.stalk y)ˣ} (a : ∀ i, IsVal L (G i) (u i)) (s : Finset I) :
@@ -98,9 +98,9 @@ theorem IsVal.prod {I : Type} {G : I → ∀ (U : Type) [CommGroup U], ((Y ⟶ X
   | insert d s hd ih => simpa only [Finset.prod_insert hd] using (a d).mul ih
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, hF, hv⟩` from `a`. Take `⟨t', -, hv'⟩` from `exists_gen hL (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => ((hF U h).trans (h1 U h)).trans (Fintype.prod_empty _).symm) t ht`. Establish `le : (⊤ : Y.Opens) ≤ LB.wchart L (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨res le (t'.s PEmpty.elim), fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hv y J hJ, ← hv' _ _ y J hJ, val_of t' _ y J PEmpty.elim (fun k => k.elim)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg Units.val (gm_res _ y le trivial _)).symm.trans (gs_unit _ y ⊤ trivial _).symm`.
+A detailed English derivation is pending.
 -/
 theorem IsVal.exists_unit (hL : L.IsLB) (a : IsVal L F v)
     (h1 : ∀ (U : Type) [CommGroup U] (h : (Y ⟶ X) → U), F U h = 1) :
@@ -117,15 +117,13 @@ theorem IsVal.exists_unit (hL : L.IsLB) (a : IsVal L F v)
 end Rep
 
 /- English proof (translation)
-Establish `hm' : (m : ℤ) ≠ 0` using `Int.natCast_ne_zero.2 hm`. Establish `hd : al.det ≠ 0` using `fun h0 => by`. Use `congrArg Matrix.det hal` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_smul, Matrix.det_one, _root_.mul_one]`. Conclude with `pow_ne_zero _ hm' this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : al * al.transpose = (m : ℤ) • (1 : Matrix I I ℤ)`. Establish `e : (al * al.transpose) * al = ((m : ℤ) • (1 : Matrix I I ℤ)) * al`. Rewrite using `[Matrix.mul_assoc, hal, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]`. Establish `e'` using `congrArg (· * al.adjugate) e`. Simplify using `only [Matrix.mul_assoc (_ : Matrix I I ℤ) al al.adjugate, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one] at e'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `smul_right_injective _ hd e'`. Establish `e : ∏ c, (∏ r', ξ r' ^ al r' c) ^ al r c = ξ r ^ m`. Simplify using `only [← Finset.prod_zpow, ← zpow_mul]`. Rewrite using `[Finset.prod_comm]`. Establish `: ∀ r', ∏ c, ξ r' ^ (al r' c * al r c) = ξ r' ^ (if r' = r then (m : ℤ) else 0)` using `fun r' => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrFun (congrFun h2 r') r` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, _root_.mul_one, mul_zero] at this`. Rewrite using `[← this]`. Conclude with `(map_prod (zpowersHom A (ξ r')) (fun c => Multiplicative.ofAdd (al r' c * al r c)) Finset.univ).symm`. Simplify using `only [this, pow_ite, zpow_zero, Finset.prod_ite_eq', Finset.mem_univ, if_true, zpow_natCast]`.
-
-Rewrite using `[← e]`. Simplify using `only [hk, one_zpow, Finset.prod_const_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_similitude {A I : Type} [CommGroup A] [Fintype I] [DecidableEq I] (m : ℕ) (hm : m ≠ 0)
     (al : Matrix I I ℤ) (hal : al.transpose * al = (m : ℤ) • (1 : Matrix I I ℤ)) (ξ : I → A)
@@ -155,17 +153,17 @@ theorem pow_eq_one_of_similitude {A I : Type} [CommGroup A] [Fintype I] [Decidab
   simp only [hk, one_zpow, Finset.prod_const_one]
 
 /- English proof (translation)
-Introduce `R _ x m al ξ mu w hm hal hk hmu hw`. Use `haveI := x.P.isAb.comm`. Establish `hξ : ∀ r, ξ r ^ m = 1` using `pow_eq_one_of_similitude m hm al hal ξ fun c => by`. Simplify `hk c` using `only [List.prod_ofFn]`. Establish `e₁ : ∀ c, eSec (Out.powObj x.P.A 4) ≫ (Out.powPr x.P.A c).left = eSec x.P.A` using `fun c => congrArg CommaMorphism.left (IsMonHom.one_hom (Out.powPr x.P.A c))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : ∀ r, eSec (Out.powObj x.P.A 4) ≫ (alMap x al r (ξ r)).left = (ξ r).left` using `fun r => by`. Establish `h1 : ∀ c, η[Out.powObj x.P.A 4] ≫ Out.powPr x.P.A c = 1` using `fun c => by`. Rewrite using `[IsMonHom.one_hom, Hom.one_def, toUnit_unit, Category.id_comp]`. Establish `: η[Out.powObj x.P.A 4] ≫ alMap x al r (ξ r) = ξ r`. Simplify using `only [alMap, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, MonObj.comp_mul, GrpObj.comp_zpow, MonObj.comp_one, h1, one_zpow, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, toUnit_unique (η[_] ≫ toUnit _) (𝟙 _), Category.id_comp]`. Conclude with `congrArg CommaMorphism.left this`. Establish `e₃ : ∀ r, (ξ r).left ≫ ((𝟙 x.P.A) ^ m).left = eSec x.P.A` using `fun r => by`. Establish `: ξ r ≫ (𝟙 x.P.A) ^ m = η[x.P.A]`. Rewrite using `[MonObj.comp_pow, Category.comp_id, hξ, Hom.one_def, toUnit_unit, Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg CommaMorphism.left this`. Take `⟨u, hu⟩` from `((((IsVal.pull hw (eSec (Out.powObj x.P.A 4))).pow (m ^ 2)).mul (IsVal.prod (fun r => IsVal.pull hmu (ξ r).left) Finset.univ)).mul ((IsVal.pull x.rig_gen (𝟙 _)).zpow (4 - 4 * (m : ℤ) ^ 3)).inv).exists_unit x.P.isLB (fun U _ h => by`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, e₁, e₂, Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, e₃, Category.comp_id, Category.id_comp, Fintype.prod_unique, zpow_one, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Fi …`. Generalize the expression as in `h (eSec x.P.A) = a`. Generalize the expression as in `(∏ r, h (ξ r).left) = b`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_zpow, ofMul_one]`. Use the proof step `module)`. Set `E` to `RingEquiv.ofBijective _ (cst_bijective (𝟙 (Sp R)) (W := ⊤) rfl)`. Use `⟨Units.map E.symm.toMonoidHom u, fun p J hJ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : cst (𝟙 (Sp R)) ⊤ (Units.map E.symm.toMonoidHom u : Rˣ) = u.val` using `E.apply_symm_apply u.val`. Rewrite using `[e]`. Use `hu p J hJ` as an intermediate fact. Rewrite `this` using `[Units.val_mul, Units.mul_inv_eq_iff_eq_mul]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_normalising_unit : ∀ (R : Type) [CommRing R] (x : KeyIn R) (m : ℕ) (al : Matrix (Fin 4) (Fin 4) ℤ) (ξ : Fin 4 → Pt x) (mu : LB.Gen (LB.LinComb x.P.L (K := Fin 2) ![((𝟙 x.P.A) ^ m).left, 𝟙 x.P.A.left] ![1, -(m : ℤ) ^ 2])) (w : LB.Gen (LB.LinComb x.P.L (K := Fin 4 ⊕ Fin 4) (Sum.elim (fun r => (alMap x al r (ξ r)).left) (fun c => (Out.powPr x.P.A c).left)) (Sum.elim (fun _ => 1) (fun _ => -(m : ℤ))))), m ≠ 0 → al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) → (∀ c, (List.ofFn fun r : Fin 4 => ξ r ^ al r c).prod = 1) → mu.IsGen → w.IsGen → ∃ rho : Rˣ, ∀ (p : (𝟙_ (Over (Sp R))).left) J, Good x.P.L p J → (val w (eSec (Out.powObj x.P.A 4)) p J ^ (m ^ 2) * ∏ r, val mu (ξ r).left p J).val = gs (𝟙_ (Over (Sp R))).hom p ⊤ (cst (𝟙 (Sp R)) ⊤ rho) * (val x.rig (𝟙 _) p J ^ (4 - 4 * (m : ℤ) ^ 3)).val := by
   intro R _ x m al ξ mu w hm hal hk hmu hw

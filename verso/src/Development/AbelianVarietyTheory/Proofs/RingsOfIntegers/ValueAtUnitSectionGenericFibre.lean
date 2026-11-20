@@ -22,13 +22,13 @@ namespace GlobalTheory.GenericUnitValue
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Establish `hj : ∀ q : K ⊕ K', Sum.elim (fun k => J (r ≫ φ₁ k)) (fun k => J ((r ≫ h) ≫ φ₂ k)) q = J (r ≫ Sum.elim φ₁ (fun k => h ≫ φ₂ k) q)`. Introduce `q`. Consider the cases of `q with`. Consider the case `inl q => rfl`. Consider the case `inr q => exact congrArg J (Category.assoc _ _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `key` using `H (fun k => J (r ≫ φ₁ k)) (fun k => J ((r ≫ h) ≫ φ₂ k)) (fun q₁ q₂ hq => by rw [hj, hj, hq])`. Establish `m₂` using `hJ.mem φ₂ (r ≫ h)`. Establish `m : r z ∈ L.wchart φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ L.wchart (fun k => h ≫ φ₂ k) (fun k => J ((r ≫ h) ≫ φ₂ k))`. Use `⟨hJ.mem φ₁ r, ?_⟩` and prove the remaining obligations. Establish `e₃ : (fun k => J ((r ≫ h) ≫ φ₂ k)) = (fun k => J (r ≫ (fun k => h ≫ φ₂ k) k))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun k => congrArg J (Category.assoc _ _ _)`. Rewrite using `[e₃]`. Conclude with `hJ.mem (fun k => h ≫ φ₂ k) r`. Establish `e` using `congrArg (gs r z _) key`. Rewrite `e` using `[gs_mul r z _ m]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `resTop at e`. Rewrite `e` using `[gs_res r z _ m, gs_res r z _ m]`. Establish `p` using `gs_pull r h z _ m₂ (s₂.f fun k => J ((r ≫ h) ≫ φ₂ k))`. Conclude with `p.symm.trans (e.trans (congrArg (gs r z ⊤ c * ·) (gs_res r z _ m _)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sval_of_secScal {X Y Y' Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
     {φ₁ : K → (Y' ⟶ X)} {ε₁ : K → ℤ} {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)} {φ₂ : K' → (Y ⟶ X)} {ε₂ : K' → ℤ}
@@ -59,7 +59,7 @@ theorem sval_of_secScal {X Y Y' Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintyp
   exact p.symm.trans (e.trans (congrArg (gs r z ⊤ c * ·) (gs_res r z _ m _)))
 
 /- English proof (translation)
-Establish `hK : IsUnit (algebraMap V (FractionRing V) c)` using `(IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hc)).isUnit`. Take `⟨w, hw⟩` from `hK`. Rewrite using `[show cst (jK V) y c = cst (𝟙 _) y (algebraMap V (FractionRing V) c) from H1.gs_spec _ y c, ← hw]`. Conclude with `⟨⟨cst (𝟙 _) y (w : FractionRing V), cst (𝟙 _) y (↑w⁻¹ : FractionRing V), by rw [← H1.cst_mul, Units.mul_inv, H1.cst_one], by rw [← H1.cst_mul, Units.inv_mul, H1.cst_one]⟩, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isUnit_cst_generic {V : Type} [CommRing V] [IsDomain V] (y : Spec (CommRingCat.of (FractionRing V)))
     {c : V} (hc : c ≠ 0) : IsUnit (cst (jK V) y c) := by
@@ -76,13 +76,13 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {G : Over (Spec (CommRingCat.of V))} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Simplify using `only [unitK, pullback.lift_fst]`.
+Simplify using the standard rewrite rules.
 -/
 lemma unitK_fst : (unitK (G := G)) ≫ pullback.fst G.hom (jK V) = jK V ≫ eSec G := by
   simp only [unitK, pullback.lift_fst]
 
 /- English proof (translation)
-Establish `hsec : (unitK (G` using `G)) ≫ pullback.snd G.hom (jK V) = 𝟙 _ := by`. Simplify using `only [unitK, pullback.lift_snd]`. Unfold `scal cst`. Use `(gs_pull (unitK (G := G)) (pullback.snd G.hom (jK V) ≫ jK V) y ⊤ trivial _).trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hsec, Category.id_comp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma gs_unitK_scal (y : Spec (CommRingCat.of (FractionRing V))) (c : V) :
     gs (unitK (G := G)) y ⊤ (scal (pullback.snd G.hom (jK V) ≫ jK V) c) = cst (jK V) y c := by
@@ -95,11 +95,11 @@ lemma gs_unitK_scal (y : Spec (CommRingCat.of (FractionRing V))) (c : V) :
 end
 
 /- English proof (translation)
-Introduce `hL V _ _ _ E _ _ _ H t P a N hN hN0`. Introduce `k s F u F' hs hu hpull y J hJ`. Set `_` to `H.starRing`. Take `⟨uΨ, huΨ, -, -⟩` from `P.w0`. Take `⟨X, hX, hXc⟩` from `exists_XB P.D P.D.toPre.P.isLB P.oD H.w0 uΨ huΨ a N hN hN0 1`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, σ'', τ, hc, hsτ, huσ, hth⟩` from `GlobalTheory.PullExpInt.main hL.globalFns V E H t P a N hN hN0 X hX hXc k s F u F' hs hu hpull`. Establish `hv` using `GlobalTheory.UnitValue.value_at_unit_section V E H t P a N hN hN0 X hX hXc k σ'' τ hth _ (jK V) y J hJ`. Establish `e₁` using `sval_of_secScal huσ unitK y hJ`. Establish `e₂` using `sval_of_secScal hsτ unitK y hJ`. Rewrite `e₁`, `e₂` using `[unitK_fst, gs_unitK_scal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[e₁, e₂]`. Apply `(isUnit_cst_generic y hc).mul_left_cancel` to reduce the goal to its premises. Rewrite using `[hv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem value_at_generic_unit : Laws → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Geo.Tor.Host E) (t : Geo.Tor.SAB H (Spec (CommRingCat.of V))) (P : Geo.Tor.PELUnif (maximalIdeal V) t) (a : NumberField.RingOfIntegers E) (N : ℕ), (letI := H.starRing; a * star a = (N : NumberField.RingOfIntegers E)) → 0 < N → letI := H.starRing;  ∀ (k : ℕ) (s : P.U.SecK k) (F : Fam P.D.toPre (FractionRing V) k) (u : P.U.SecK (k * N)) (F' : Fam P.D.toPre (FractionRing V) (k * N)), P.U.Expands k s F → P.U.Expands (k * N) u F' → PullAl P.D (FractionRing V) P.oD a k N F F' → ∀ (y : Spec (CommRingCat.of (FractionRing V))) (J), Geo.Tor.Good P.U.LG.L y J → Geo.Tor.sval u unitK y J = (Geo.Tor.val (L := P.U.LG.L) P.U.LG.rig (jK V) y J ^ (k * (N - 1))).val * Geo.Tor.sval s unitK y J := by
   intro hL V _ _ _ E _ _ _ H t P a N hN hN0

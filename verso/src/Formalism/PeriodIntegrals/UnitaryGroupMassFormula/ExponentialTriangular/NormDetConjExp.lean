@@ -14,21 +14,21 @@ namespace HornW
 variable {n : ℕ}
 
 /- English proof (translation)
-Conclude with `Unitary.star_mul_self_of_mem hW`.
+A detailed English derivation is pending.
 -/
 lemma unit_star_mul {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n) ℂ) :
     Wᴴ * W = 1 := by
   exact Unitary.star_mul_self_of_mem hW
 
 /- English proof (translation)
-Conclude with `Unitary.mul_star_self_of_mem hW`.
+A detailed English derivation is pending.
 -/
 lemma unit_mul_star {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n) ℂ) :
     W * Wᴴ = 1 := by
   exact Unitary.mul_star_self_of_mem hW
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[unit_star_mul hW, Matrix.mul_one, diagonal_mul_diagonal]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 lemma conj_mul_conj {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n) ℂ)
     (d e : Fin n → ℂ) :
@@ -39,7 +39,7 @@ lemma conj_mul_conj {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (F
       rw [unit_star_mul hW, Matrix.mul_one, diagonal_mul_diagonal]
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, diagonal_conjTranspose, Matrix.mul_assoc]`. Use `congr 3`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma conj_herm (W : Matrix (Fin n) (Fin n) ℂ) (r : Fin n → ℝ) :
     (W * diagonal (fun i => (r i : ℂ)) * Wᴴ)ᴴ = W * diagonal (fun i => (r i : ℂ)) * Wᴴ := by
@@ -50,9 +50,9 @@ lemma conj_herm (W : Matrix (Fin n) (Fin n) ℂ) (r : Fin n → ℝ) :
   simp
 
 /- English proof (translation)
-Establish `hinv : W⁻¹ = Wᴴ` using `Matrix.inv_eq_left_inv (unit_star_mul hW)`. Establish `hu : IsUnit W` using `(Matrix.isUnit_iff_isUnit_det W).mpr (Matrix.isUnit_det_of_right_inverse (unit_mul_star hW))`. Rewrite using `[← hinv, Matrix.exp_conj W _ hu, Matrix.exp_diagonal, Pi.exp_def]`. Use `congr 3`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Complex.ofReal_exp, Complex.exp_eq_exp_ℂ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma exp_conj {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n) ℂ) (d : Fin n → ℝ) :
     NormedSpace.exp (W * diagonal (fun i => (d i : ℂ)) * Wᴴ) =
@@ -66,7 +66,7 @@ lemma exp_conj {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n)
   rw [Complex.ofReal_exp, Complex.exp_eq_exp_ℂ]
 
 /- English proof (translation)
-Rewrite using `[conj_mul_conj hW]`. Use `congr 3`. Use function extensionality and compare the values at `i`. Simplify using `only [two_mul, Real.exp_add, Complex.ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma sq_conj {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n) ℂ) (d : Fin n → ℝ) :
     (W * diagonal (fun i => (Real.exp (d i) : ℂ)) * Wᴴ) *
@@ -78,7 +78,7 @@ lemma sq_conj {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n) 
   simp only [two_mul, Real.exp_add, Complex.ofReal_mul]
 
 /- English proof (translation)
-Establish `h : W.det * Wᴴ.det = 1` using `by rw [← Matrix.det_mul, unit_mul_star hW, Matrix.det_one]`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal]`. Take the linear combination `(∏ i, d i) * h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma det_conj {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n) ℂ) (d : Fin n → ℂ) :
     (W * diagonal d * Wᴴ).det = ∏ i, d i := by
@@ -87,7 +87,7 @@ lemma det_conj {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n)
   linear_combination (∏ i, d i) * h
 
 /- English proof (translation)
-Rewrite using `[det_conj hW, norm_prod, Real.exp_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_det_conj_exp {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n) ℂ)
     (d : Fin n → ℝ) :
@@ -100,9 +100,9 @@ def emb {k : ℕ} (hk : k ≤ n) : Matrix (Fin n) (Fin k) ℂ :=
   Matrix.of fun i j => if i = Fin.castLE hk j then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [emb, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, diagonal_apply]`. Simplify using `[Finset.sum_ite_eq', Finset.sum_ite_eq, (Fin.castLE_injective hk).eq_iff]`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[h, h.symm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma emb_compress {k : ℕ} (hk : k ≤ n) (f : Fin n → ℂ) :
     (emb hk)ᴴ * diagonal f * emb hk = diagonal (fun i => f (Fin.castLE hk i)) := by
@@ -114,14 +114,14 @@ lemma emb_compress {k : ℕ} (hk : k ≤ n) (f : Fin n → ℂ) :
   · simp [h, h.symm]
 
 /- English proof (translation)
-Establish `h` using `emb_compress hk (fun _ => 1)`. Simplify `h` using `[Matrix.diagonal_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma emb_isom {k : ℕ} (hk : k ≤ n) : (emb hk)ᴴ * emb hk = 1 := by
   have h := emb_compress hk (fun _ => 1)
   simpa [Matrix.diagonal_one] using h
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[unit_star_mul hW, Matrix.one_mul, Matrix.mul_one, emb_compress]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 lemma compress_conj {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n) ℂ) {k : ℕ}
     (hk : k ≤ n) (f : Fin n → ℂ) :
@@ -134,11 +134,11 @@ lemma compress_conj {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (F
       rw [unit_star_mul hW, Matrix.one_mul, Matrix.mul_one, emb_compress]
 
 /- English proof (translation)
-Unfold `psum`. Use `symm`. Apply `Finset.sum_nbij (fun i : Fin k => Fin.castLE hk i)` to reduce the goal to its premises. Introduce `a _`. Simplify using `[a.isLt]`.
+Replace the relevant objects with their definitions. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a _ b _ h`. Conclude with `Fin.castLE_injective hk h`. Introduce `b hb`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hb`. Conclude with `⟨⟨b.val, hb⟩, by simp, Fin.ext (by simp)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma psum_eq {k : ℕ} (hk : k ≤ n) (f : Fin n → ℝ) :
     psum f k = ∑ i : Fin k, f (Fin.castLE hk i) := by
@@ -156,14 +156,14 @@ lemma psum_eq {k : ℕ} (hk : k ≤ n) (f : Fin n → ℝ) :
     rfl
 
 /- English proof (translation)
-Simplify using `only [psum, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma psum_add (k : ℕ) (f g : Fin n → ℝ) :
     psum (fun i => f i + g i) k = psum f k + psum g k := by
   simp only [psum, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_diagonal, norm_prod]`. Simplify using `only [Complex.norm_real, Real.norm_eq_abs, Real.abs_exp]`. Rewrite using `[psum_eq hk, Finset.mul_sum, Real.exp_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_det_diag_exp {k : ℕ} (hk : k ≤ n) (f : Fin n → ℝ) :
     ‖(diagonal (fun i : Fin k => (Real.exp (2 * f (Fin.castLE hk i)) : ℂ))).det‖ =
@@ -173,20 +173,20 @@ lemma norm_det_diag_exp {k : ℕ} (hk : k ≤ n) (f : Fin n → ℝ) :
   rw [psum_eq hk, Finset.mul_sum, Real.exp_sum]
 
 /- English proof (translation)
-Rewrite using `[psum_eq hk, Finset.mul_sum, Real.exp_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma prod_exp_eq {k : ℕ} (hk : k ≤ n) (f : Fin n → ℝ) :
     ∏ i : Fin k, Real.exp (2 * f (Fin.castLE hk i)) = Real.exp (2 * psum f k) := by
   rw [psum_eq hk, Finset.mul_sum, Real.exp_sum]
 
 /- English proof (translation)
-Introduce `i j hij` and use `Real.exp_le_exp.mpr (by have := hd hij; linarith)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma anti_exp {d : Fin n → ℝ} (hd : Antitone d) : Antitone (fun i => Real.exp (2 * d i)) :=
   fun i j hij => Real.exp_le_exp.mpr (by have := hd hij; linarith)
 
 /- English proof (translation)
-Rewrite using `[det_conj hW]`. Conclude with `isUnit_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun i _ => Complex.ofReal_ne_zero.mpr (Real.exp_pos _).ne')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isUnit_conj_exp {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n) ℂ)
     (d : Fin n → ℝ) : IsUnit (W * diagonal (fun i => (Real.exp (d i) : ℂ)) * Wᴴ).det := by
@@ -195,21 +195,19 @@ lemma isUnit_conj_exp {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup 
     Complex.ofReal_ne_zero.mpr (Real.exp_pos _).ne')
 
 /- English proof (translation)
-Establish `hG : (Bᴴ * B).PosDef` using `Matrix.PosDef.conjTranspose_mul_self B hB`. Establish `hspec` using `hG.1.spectral_theorem`. Rewrite `hspec` using `[Unitary.conjStarAlgAut_apply]`. Establish `hU1` using `Unitary.star_mul_self_of_mem hG.1.eigenvectorUnitary.2`. Establish `hU2` using `Unitary.mul_star_self_of_mem hG.1.eigenvectorUnitary.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.star_eq_conjTranspose] at hspec hU1 hU2`. Establish `hg : ∀ i, 0 < hG.1.eigenvalues i` using `hG.eigenvalues_pos`. Use `set U : Matrix (Fin k) (Fin k) ℂ := (hG.1.eigenvectorUnitary : Matrix (Fin k) (Fin k) ℂ) with hU`. Use `set g := hG.1.eigenvalues with hgdef`. Set `s : Fin k → ℂ` to `fun i => (((Real.sqrt (g i))⁻¹ : ℝ) : ℂ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `t : Fin k → ℂ` to `fun i => ((Real.sqrt (g i) : ℝ) : ℂ)`. Establish `hst : (fun i => s i * t i) = fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `i`. Simplify using `only [s, t]`. Rewrite using `[← Complex.ofReal_mul, inv_mul_cancel₀ (Real.sqrt_pos.mpr (hg i)).ne', Complex.ofReal_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsgs : (fun i => star s i * (RCLike.ofReal ∘ g) i * s i) = fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `i`. Establish `hs` using `Real.sqrt_pos.mpr (hg i)`. Establish `hsq : Real.sqrt (g i) * Real.sqrt (g i) = g i` using `Real.mul_self_sqrt (hg i).le`. Simplify using `only [s, Pi.star_apply, Function.comp_apply, Complex.star_def, Complex.conj_ofReal]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (Real.sqrt (g i))⁻¹ * g i * (Real.sqrt (g i))⁻¹ = 1`. Rewrite using `[mul_comm _ (g i), mul_assoc, ← mul_inv, hsq, mul_inv_cancel₀ (hg i).ne']`. Use `show (((Real.sqrt (g i))⁻¹ : ℝ) : ℂ) * ((g i : ℝ) : ℂ) * (((Real.sqrt (g i))⁻¹ : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, ← Complex.ofReal_mul, key, Complex.ofReal_one]`. Use `⟨B * U * diagonal s, diagonal t * Uᴴ, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conjTranspose_mul, conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hspec]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU1, Matrix.one_mul, Matrix.mul_one, diagonal_conjTranspose, diagonal_mul_diagonal, diagonal_mul_diagonal, hsgs, diagonal_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hst, diagonal_one, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = B * U * diagonal s * (diagonal t * Uᴴ) := by`. Rewrite using `[← diagonal_mul_diagonal]`.
-
-Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma key_lemma' {k : ℕ} (B : Matrix (Fin n) (Fin k) ℂ) (hB : Function.Injective B.mulVec) :
     ∃ (V : Matrix (Fin n) (Fin k) ℂ) (P : Matrix (Fin k) (Fin k) ℂ), Vᴴ * V = 1 ∧ B = V * P := by
@@ -253,11 +251,11 @@ private lemma key_lemma' {k : ℕ} (B : Matrix (Fin n) (Fin k) ℂ) (hB : Functi
           rw [← diagonal_mul_diagonal]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨V, P, hV, rfl⟩` from `key_lemma' B hB`. Establish `h` using `hK n k hk p W V hp hp0 hW hV`. Establish `e1 : (V * P)ᴴ * (W * diagonal (fun i => (p i : ℂ)) * Wᴴ) * (V * P) = Pᴴ * (Vᴴ * (W * diagonal (fun i => (p i : ℂ)) * Wᴴ) * V) * P`. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : (V * P)ᴴ * (V * P) = Pᴴ * P`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, e2, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, norm_mul, norm_mul, norm_mul]`. Establish `h0 : 0 ≤ ‖Pᴴ.det‖ * ‖P.det‖` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private lemma inv_smul_apply_smul_eq_of_smul_mem (hK : KyFanDet) {k : ℕ} (hk : k ≤ n) {p : Fin n → ℝ} (hp : Antitone p)
     (hp0 : ∀ i, 0 < p i) {W : Matrix (Fin n) (Fin n) ℂ} (hW : W ∈ unitaryGroup (Fin n) ℂ)
@@ -281,7 +279,7 @@ private lemma inv_smul_apply_smul_eq_of_smul_mem (hK : KyFanDet) {k : ℕ} (hk :
         mul_le_mul_of_nonneg_right h h0
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `h1` using `congrArg L.mulVec hxy`. Simplify using `only [Matrix.mulVec_mulVec, hL, Matrix.one_mulVec] at h1`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma key_lemma_3 {k : ℕ} {B : Matrix (Fin n) (Fin k) ℂ} (L : Matrix (Fin k) (Fin n) ℂ)
     (hL : L * B = 1) : Function.Injective B.mulVec := by
@@ -291,17 +289,17 @@ private lemma key_lemma_3 {k : ℕ} {B : Matrix (Fin n) (Fin k) ℂ} (L : Matrix
   exact h1
 
 /- English proof (translation)
-Establish `hV : (Wz * emb hk)ᴴ * (Wz * emb hk) = 1`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [unit_star_mul hWz, Matrix.mul_one, emb_isom]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective ((Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ) * (Wz * emb hk)).mulVec`. Apply `key_lemma_3 ((Wz * emb hk)ᴴ * (Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ)⁻¹)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [Matrix.nonsing_inv_mul _ (isUnit_conj_exp hWy η), Matrix.mul_one, hV]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ‖((Wz * emb hk)ᴴ * ((Wz * diagonal (fun i => (Real.exp (ζ i) : ℂ)) * Wzᴴ) * (Wz * diagonal (fun i => (Real.exp (ζ i) : ℂ)) * Wzᴴ)) * (Wz * emb hk)).det‖ = Real.exp (2 * psum ζ k)`. Rewrite using `[sq_conj hWz, compress_conj hWz hk, norm_det_diag_exp hk]`. Rewrite `hA` using `[hcc]`. Establish `e1 : (Wz * emb hk)ᴴ * ((Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ) * ((Wx * diagonal (fun i => (Real.exp (ξ i) : ℂ)) * Wxᴴ) * (Wx * diagonal (fun i => (Real.exp (ξ i) : ℂ)) * Wxᴴ)) * (Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ)) * (Wz * emb hk) = ((Wy * diagona …`. Rewrite using `[conjTranspose_mul (Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ), conj_herm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite `hA` using `[e1, sq_conj hWx]`. Establish `h2` using `inv_smul_apply_smul_eq_of_smul_mem hK hk (anti_exp hξ) (fun i => Real.exp_pos _) hWx _ hinj`. Rewrite `h2` using `[hA]`. Establish `e2 : ((Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ) * (Wz * emb hk))ᴴ * ((Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ) * (Wz * emb hk)) = (Wz * emb hk)ᴴ * ((Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ) * (Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[conjTranspose_mul (Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ), conj_herm]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite `h2` using `[e2, sq_conj hWy]`. Establish `h3` using `hK n k hk _ Wy (Wz * emb hk) (anti_exp hη) (fun i => Real.exp_pos _) hWy hV`. Rewrite `h2` using `[prod_exp_eq hk]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[prod_exp_eq hk]`. Establish `h4 : Real.exp (2 * psum ζ k) ≤ Real.exp (2 * psum ξ k) * Real.exp (2 * psum η k)` using `h2.trans (mul_le_mul_of_nonneg_left h3 (Real.exp_pos _).le)`. Rewrite `h4` using `[← Real.exp_add, Real.exp_le_exp]`. Rewrite using `[psum_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma key (hK : KyFanDet) {Wx Wy Wz : Matrix (Fin n) (Fin n) ℂ}
     (hWx : Wx ∈ unitaryGroup (Fin n) ℂ) (hWy : Wy ∈ unitaryGroup (Fin n) ℂ)
@@ -350,15 +348,13 @@ end HornW
 open HornW in
 
 /- English proof (translation)
-Introduce `n X Y Z U ξ η ζ hX hY hZ hU hE`. Take `⟨hξ, Wx, hWx, rfl⟩` from `hX`. Take `⟨hη, Wy, hWy, rfl⟩` from `hY`. Take `⟨hζ, Wz, hWz, rfl⟩` from `hZ`. Rewrite `hE` using `[exp_conj hWx, exp_conj hWy, exp_conj hWz]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcc : (Wz * diagonal (fun i => (Real.exp (ζ i) : ℂ)) * Wzᴴ) * (Wz * diagonal (fun i => (Real.exp (ζ i) : ℂ)) * Wzᴴ) = (Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ) * ((Wx * diagonal (fun i => (Real.exp (ξ i) : ℂ)) * Wxᴴ) * (Wx * diagonal (fun i => (Real.exp (ξ i) : ℂ)) * …`. Establish `h1 : ((Wx * diagonal (fun i => (Real.exp (ξ i) : ℂ)) * Wxᴴ) * (Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ))ᴴ * ((Wx * diagonal (fun i => (Real.exp (ξ i) : ℂ)) * Wxᴴ) * (Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ)) = (U * (Wz * diagonal (fun i => (Real.exp (ζ i) …` using `by rw [hE]`. Rewrite `h1` using `[conjTranspose_mul (Wx * diagonal (fun i => (Real.exp (ξ i) : ℂ)) * Wxᴴ) (Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ), conjTranspose_mul U (Wz * diagonal (fun i => (Real.exp (ζ i) : ℂ)) * Wzᴴ), conj_herm, conj_herm, conj_herm]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨fun k hk => key hK hWx hWy hWz hξ hη hcc k hk, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : ‖((Wx * diagonal (fun i => (Real.exp (ξ i) : ℂ)) * Wxᴴ) * (Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ)).det‖ = ‖(U * (Wz * diagonal (fun i => (Real.exp (ζ i) : ℂ)) * Wzᴴ)).det‖` using `by rw [hE]`. Establish `hUd : ‖U.det‖ = 1`. Establish `h2 : ‖star U.det * U.det‖ = 1`. Rewrite using `[← Matrix.det_conjTranspose, ← Matrix.det_mul, unit_star_mul hU, Matrix.det_one, norm_one]`. Rewrite `h2` using `[norm_mul, norm_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `mul_self_eq_one_iff.mp h2 with h | h` into its components or cases. Conclude with `h`. Combine the linear relations using `[norm_nonneg U.det]`. Rewrite `hd` using `[Matrix.det_mul (Wx * diagonal (fun i => (Real.exp (ξ i) : ℂ)) * Wxᴴ) (Wy * diagonal (fun i => (Real.exp (η i) : ℂ)) * Wyᴴ), Matrix.det_mul U (Wz * diagonal (fun i => (Real.exp (ζ i) : ℂ)) * Wzᴴ), norm_mul, norm_mul, norm_det_conj_exp hWx, norm_det_conj_exp hWy, norm_det_conj_exp …`. Rewrite using `[Finset.sum_add_distrib]`.
-
-Conclude with `(Real.exp_injective hd).symm`.
+Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem horn_of (hK : KyFanDet) : Horn := by
   intro n X Y Z U ξ η ζ hX hY hZ hU hE

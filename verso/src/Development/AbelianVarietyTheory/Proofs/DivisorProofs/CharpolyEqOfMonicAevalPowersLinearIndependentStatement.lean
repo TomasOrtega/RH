@@ -8,7 +8,7 @@ open Matrix NumberField IsDedekindDomain GlobalTheory.LKTrip GlobalTheory.LKMid 
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.charpoly_eq_of_monic_aeval_linearIndependent) | (exact GlobalTheory.charpoly_eq_of_monic_aeval_linearIndependent) | (intros; apply GlobalTheory.charpoly_eq_of_monic_aeval_linearIndependent <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.charpoly_eq_of_monic_aeval_powers_linearIndependent : ∀ (K : Type) [CommRing K] (n : ℕ) (X : Matrix (Fin n) (Fin n) K) (P : Polynomial K), P.Monic → P.natDegree = n → Polynomial.aeval X P = 0 → LinearIndependent K (fun i : Fin n => X ^ (i : ℕ)) → X.charpoly = P := by
   first | (exact @GlobalTheory.charpoly_eq_of_monic_aeval_linearIndependent) | (exact GlobalTheory.charpoly_eq_of_monic_aeval_linearIndependent) | (intros; apply GlobalTheory.charpoly_eq_of_monic_aeval_linearIndependent  <;> assumption)

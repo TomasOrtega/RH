@@ -11,9 +11,9 @@ namespace PI.LPI
 open Formalism.UG
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ Lb` using `Module.Finite.trans (𝓞 E) Lb`. Take `⟨k, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ) (M := Lb)`. Use `⟨k, fun i => (s i : Fin n → E), fun i => (s i).2, fun l hl => ?_⟩` and prove the remaining obligations. Establish `hmem : (⟨l, hl⟩ : Lb) ∈ Submodule.span ℤ (Set.range s)` using `hs ▸ Submodule.mem_top`. Take `⟨z, hz⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hmem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Subtype.val hz`. Simplify using `only [Submodule.coe_sum] at h2`. Conclude with `h2.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gen {E : Type} [Field E] [NumberField E] {n : ℕ}
     (Lb : Submodule (𝓞 E) (Fin n → E)) (hfin : Module.Finite (𝓞 E) Lb) :
@@ -30,7 +30,7 @@ theorem exists_gen {E : Type} [Field E] [NumberField E] {n : ℕ}
   exact h2.symm
 
 /- English proof (translation)
-Simplify using `[prV, evalV, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem prV_tmul {F E : Type} [Field F] [NumberField F] [CommRing E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (e : E) (a : FiniteAdeleRing (𝓞 F) F) :
@@ -39,7 +39,7 @@ theorem prV_tmul {F E : Type} [Field F] [NumberField F] [CommRing E] [Algebra F 
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => prV_tmul v (e i) (a i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prV_sum_tmul {F E : Type} [Field F] [NumberField F] [CommRing E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) {k : ℕ} (e : Fin k → E) (a : Fin k → FiniteAdeleRing (𝓞 F) F) :
@@ -61,18 +61,18 @@ theorem adOf_apply {F : Type} [Field F] [NumberField F]
     adOf a ha v = a v := rfl
 
 /- English proof (translation)
-Introduce `v` and use `ha v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem adOf_mem {F : Type} [Field F] [NumberField F]
     (a : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletion F)
     (ha : ∀ v, a v ∈ v.adicCompletionIntegers F) : adOf a ha ∈ intAd F := fun v => ha v
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n Lb hfin y hy`. Take `⟨k, m, hm, hgen⟩` from `exists_gen Lb hfin`. Establish `hloc` using `fun v : HeightOneSpectrum (𝓞 F) => (hG F E (v.adicCompletion F) (v.adicCompletionIntegers F).toSubring n k Lb m hm hgen (fun j => prV (E := E) v (y j))).1 (hy v)`. Use `choose a ha hya using hloc`. Set `A : Fin k → FiniteAdeleRing (𝓞 F) F` to `fun i => adOf (fun v => a v i) (fun v => ha v i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hyA : (fun j => ∑ i, m i j ⊗ₜ[F] A i) ∈ latA F Lb` using `(hG F E (FiniteAdeleRing (𝓞 F) F) (intAd F) n k Lb m hm hgen _).2 ⟨A, fun i => adOf_mem _ _, rfl⟩`. Establish `hyy : y = fun j => ∑ i, m i j ⊗ₜ[F] A i`. Use function extensionality and compare the values at `j`. Use `sub_eq_zero.1 (hI F E _ fun v => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero, prV_sum_tmul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (hya v) j`. Rewrite using `[hyy]`. Conclude with `hyA`.
+A detailed English derivation is pending.
 -/
 theorem plUp_of (hG : PLGen) (hI : PLInj) : PLUp := by
   intro F E _ _ _ _ _ n Lb hfin y hy

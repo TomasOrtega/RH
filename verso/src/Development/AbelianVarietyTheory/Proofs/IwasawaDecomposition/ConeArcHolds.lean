@@ -20,25 +20,21 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.ConeArc
 
 /- English proof (translation)
-Introduce `E _ _ _ H D h1 Xo l c hg X ψ k DX htame hpol`. Take `⟨-, hPI⟩` from `GlobalTheory.partI_closed`. Take `⟨Ys, hYs, -⟩` from `hPI E H D h1 Xo`. Rewrite using `[arcChart_iff]`. Introduce `O' _ _ _ b ϖ a hbase`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, W, hp, hW, bV, b', hbV, rfl⟩` from `GlobalTheory.ArcBaseFactor.factor E H l c O' b ϖ hbase`. Establish `hN4` using `((hYs p W hp hW).2 ⟨l, c, hg p hp⟩).2.2`. Rewrite `hN4` using `[arcChart_iff]`. Take `⟨χ₀, hχ₀, hsp₀⟩` from `hN4 O' b' ϖ (GlobalTheory.PolArc.moveV bV hbV b' a) hbase`. Establish `hc₀` using `(hχ₀ χ₀).1 rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x₀, hx₀⟩` from `GlobalTheory.PolArc.generic_factors_open E H D l (Xo l) c W _ O' b' χ₀ hc₀.1 hc₀.2.1`. Take `⟨χ, hχ⟩` from `GlobalTheory.T.pullback_model_arc_phi_divisor E H D l (Xo l) c p W hp hW X _ bV hbV ψ k DX htame.1 hpol O' b' ϖ a χ₀ hbase hc₀ x₀ hx₀`. Establish `hc` using `GlobalTheory.T.pullback_model_arc_integral E H D l (Xo l) c p W hp hW X _ bV hbV O' b' ϖ a χ₀ hbase hc₀ x₀ hx₀ χ hχ`. Use `⟨χ, fun χ' => ⟨?_, fun h => ?_⟩, fun hirr y' ev hy' hgen hdata hev hevX => GlobalTheory.T.arc_base_uniformizer E H D l (Xo l) c W X _ bV hbV O' b' ϖ a χ₀ hbase hc₀ hsp₀ x₀ hx₀ χ hχ hirr y' ev hy' hgen hdata hev hevX⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hc`. Establish `hϖ : ϖ ≠ 0`. Break down `hbase with ⟨-, rfl⟩ | ⟨-, hi, -⟩` into its components or cases. Conclude with `one_ne_zero`. Conclude with `hi.ne_zero`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure.
 
-Establish `hR : AdmBase (PowerSeries O') (Ideal.span {PowerSeries.X})`. Break down `hbase with ⟨hf, -⟩ | ⟨hd, -, -⟩` into its components or cases. Use `letI := hf.toField`. Conclude with `GlobalTheory.ArcPull.admissibleBase_powerSeries_span_X O'`. Conclude with `GlobalTheory.ArcPull.admissibleBase_powerSeries_span_X O'`.
+Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hloc : IsLocalRing (PowerSeries O') := by`. Break down `hbase with ⟨hf, -⟩ | ⟨hd, -, -⟩` into its components or cases. Use `letI := hf.toField infer_instance`. Use `infer_instance`. Establish `: CharZero (PowerSeries O')` using `charZero_of_injective_ringHom (PowerSeries.C_injective (R := O'))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hI : Ideal.span {(PowerSeries.X : PowerSeries O')} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `PowerSeries.X_prime.not_unit`. Establish `hgen : ∀ χ₁ : Sp (PowerSeries O') ⟶ X.X, IsArcChart X a ϖ χ₁ → Set.range (Out.jK (PowerSeries O') ≫ χ₁) ⊆ Set.range X.j`. Introduce and unpack `χ₁ h₁ _ ⟨z, rfl⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Scheme.Hom.comp_apply]`. Use `h₁.2.2.1 _ ?_` and prove the remaining obligations. Establish `hz : (Out.jK (PowerSeries O') z).asIdeal = ⊥`. Establish `hz' : z.asIdeal = ⊥` using `by haveI := z.isPrime; exact Ideal.eq_bot_of_prime _`. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap (PowerSeries O') (FractionRing (PowerSeries O'))) z.asIdeal = ⊥`.
-
-Rewrite using `[hz']`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective _ _)`. Rewrite using `[hz, Ideal.mem_bot]`. Use `mul_ne_zero (fun h => hϖ ?_) PowerSeries.X_ne_zero` and prove the remaining obligations. Simplify using `using congrArg (fun q : PowerSeries O' => PowerSeries.coeff 0 q) h`.
-
-Conclude with `GlobalTheory.T.arc_admissible_base E H D l (Xo l) c X O' (b'.comp bV) a (PowerSeries O') _ PowerSeries.C PowerSeries.X hR hI PowerSeries.C_injective χ' χ (hgen χ' h) (hgen χ hc) h.1 hc.1 h.2.2.2 hc.2.2.2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coneArc : ConeArcSt := by
   intro E _ _ _ H D h1 Xo l c hg X ψ k DX htame hpol

@@ -14,7 +14,7 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   [∀ c, Algebra (𝓞 B.KO) (A c)] {𝒜 : (c : ι) → WT → Submodule (Ω c) (A c)}
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.Gaps.HeightData.lN`. Use `div_nonneg (Real.log_nonneg ?_) (Nat.cast_nonneg _)` and prove the remaining obligations. Establish `h0 : Ideal.absNorm la.asIdeal ≠ 0` using `fun h => la.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Conclude with `Nat.one_le_iff_ne_zero.2 h0` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lN_nonneg' (K : Type) [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) :
     0 ≤ Formalism.MainNotions.Gaps.HeightData.lN K la := by
@@ -24,15 +24,13 @@ theorem lN_nonneg' (K : Type) [Field K] [NumberField K] (la : HeightOneSpectrum 
   exact_mod_cast Nat.one_le_iff_ne_zero.2 h0
 
 /- English proof (translation)
-Take `⟨hfin, hsum, hineq, heta⟩` from `h`. Establish `hle : ∀ la : HeightOneSpectrum (𝓞 B.KO), (((toHtData G Qf Gc PH Prw Pet).Ila la).toNat : ℝ) * Formalism.MainNotions.Gaps.HeightData.lN B.KO la ≤ (((d.htOf hd hs).Ila la).toNat : ℝ) * Formalism.MainNotions.Gaps.HeightData.lN B.KO la` using `fun la => mul_le_mul_of_nonneg_right (by exact_mod_cast ENat.toNat_le_toNat (hI la) (hfin la)) (lN_nonneg' _ la)`. Establish `hsum' : Summable fun la : HeightOneSpectrum (𝓞 B.KO) => (((toHtData G Qf Gc PH Prw Pet).Ila la).toNat : ℝ) * Formalism.MainNotions.Gaps.HeightData.lN B.KO la` using `Summable.of_nonneg_of_le (fun la => mul_nonneg (Nat.cast_nonneg _) (lN_nonneg' _ la)) hle hsum`. Establish `hDr : ((d.htOf hd hs).D : ℝ) = (WeightFamilies.dimY D j : ℝ)` using `by exact_mod_cast hD`. Establish `hδr : ((d.htOf hd hs).δ : ℝ) = (G.del : ℝ)` using `by exact_mod_cast hδ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hir : ((d.htOf hd hs).i : ℝ) = (G.iet : ℝ)` using `by exact_mod_cast hi`. Use `⟨fun la => ne_top_of_le_ne_top (hfin la) (hI la), hsum', ?_, fun he => ?_⟩` and prove the remaining obligations. Establish `ht` using `Summable.tsum_le_tsum hle hsum' hsum`. Establish `hineq' : 2 * ∑' la : HeightOneSpectrum (𝓞 B.KO), (((d.htOf hd hs).Ila la).toNat : ℝ) * Formalism.MainNotions.Gaps.HeightData.lN B.KO la ≤ (G.del : ℝ) * Real.log G.del + 2 * ∑ k, (d.htOf hd hs).S k + 8 / 3 * (WeightFamilies.dimY D j : ℝ) * ((WeightFamilies.dimY D j : ℝ) + 4) * G.d …`. Rewrite `hineq` using `[hDr, hδr, hL, hG, hPH, hPrw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hineq`. Use `show 2 * ∑' la : HeightOneSpectrum (𝓞 B.KO), (((toHtData G Qf Gc PH Prw Pet).Ila la).toNat : ℝ) * Formalism.MainNotions.Gaps.HeightData.lN B.KO la ≤ (G.del : ℝ) * Real.log G.del + 2 * ∑ k, WeightFamilies.meanLogSup B (G.th' k) + 8 / 3 * (WeightFamilies.dimY D j : ℝ) * ((WeightFam …`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hsN, hbN⟩` from `heta trivial`. Rewrite `hbN` using `[hir, hg0, hDr, hδr, hG, hPH, hL, hPrw, hPet]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun la : HeightOneSpectrum (𝓞 B.KO) => (toHtData G Qf Gc PH Prw Pet).Net la * Formalism.MainNotions.Gaps.HeightData.lN B.KO la) = fun la : HeightOneSpectrum (𝓞 B.KO) => (d.htOf hd hs).Net la * Formalism.MainNotions.Gaps.HeightData.lN B.KO la`. Use function extensionality and compare the values at `fun la => by rw [hN la]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show Summable fun la : HeightOneSpectrum (𝓞 B.KO) => (toHtData G Qf Gc PH Prw Pet).Net la * Formalism.MainNotions.Gaps.HeightData.lN B.KO la`. Rewrite using `[e]`.
-
-Conclude with `hsN`. Use `show (∑' la : HeightOneSpectrum (𝓞 B.KO), (toHtData G Qf Gc PH Prw Pet).Net la * Formalism.MainNotions.Gaps.HeightData.lN B.KO la) / (G.iet : ℝ) ≤ (g0 D : ℝ) * (((WeightFamilies.dimY D j : ℝ) + 1) * G.del * (2 * Gc + 6 * PH) * wL.size + 4 / 3 * (WeightFamilies.dimY D j : ℝ) * G.d …`. Rewrite using `[e]`. Conclude with `hbN`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htConcl_toHtData_of (d : Data B.KO ι Ω WT A) (hd : d.AxH 𝒜) (hs : d.S1)
     (G : GlobalFamilyData X ka wL wF) (Qf : ∀ la, LocalPointData G la) (Gc PH Prw Pet : ℝ)

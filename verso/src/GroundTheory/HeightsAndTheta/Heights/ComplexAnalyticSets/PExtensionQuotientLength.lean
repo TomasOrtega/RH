@@ -5,33 +5,31 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Introduce `R B _ _ _ r hinj hr hfin`. Use `set a := Algebra.linearMap R B`. Use `set P : Submodule R B := LinearMap.range a`. Use `set rP : Submodule R B := Submodule.map a (Ideal.span {r})`. Use `set rB : Submodule R B := (Ideal.span {algebraMap R B r}).restrictScalars R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hrPP : rP ≤ P`. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `⟨y, rfl⟩`. Establish `hrPrB : rP ≤ rB`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Conclude with `Ideal.mem_span_singleton'.2 ⟨algebraMap R B c, by simp [a]⟩`. Establish `hPr : P ≤ rP.comap (r • LinearMap.id)`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨r * x, Ideal.mem_span_singleton'.2 ⟨x, mul_comm _ _⟩, by simp [a, Algebra.smul_def]⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Set `f₁` to `(Ideal.span {r}).mapQ rP a (Submodule.le_comap_map _ _)`. Set `g₁` to `rP.mapQ P LinearMap.id hrPP`. Establish `hf₁ : Function.Injective f₁`. Use `(injective_iff_map_eq_zero _).2 fun q hq ↦ ?_` and prove the remaining obligations. Proceed by induction on `q using Submodule.Quotient.induction_on with | _ x => ?_`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Proceed by induction.
 
-Simplify using `only [f₁, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hq ⊢`. Take `⟨y, hy, hyx⟩` from `hq`. Rewrite using `[← hinj hyx]` and apply the resulting hypothesis. Establish `hg₁ : Function.Surjective g₁` using `fun q ↦ by`. Proceed by induction on `q using Submodule.Quotient.induction_on with | _ b => exact ⟨Submodule.Quotient.mk b, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `he₁ : Function.Exact f₁ g₁`. Introduce `q`. Proceed by induction on `q using Submodule.Quotient.induction_on with | _ b => ?_`. Simplify using `only [g₁, f₁, Submodule.mapQ_apply, LinearMap.id_apply, Submodule.Quotient.mk_eq_zero, Set.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Proceed by induction. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Introduce and unpack `⟨q, hq⟩`. Proceed by induction on `q using Submodule.Quotient.induction_on with | _ x => ?_`. Rewrite `hq` using `[Submodule.mapQ_apply, Submodule.Quotient.eq]`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using P.sub_mem (hrPP hq) ⟨x, rfl⟩`. Set `f₂` to `P.mapQ rP (r • LinearMap.id) hPr`. Set `g₂` to `rP.mapQ rB LinearMap.id hrPrB`. Establish `hf₂ : Function.Injective f₂`. Use `(injective_iff_map_eq_zero _).2 fun q hq ↦ ?_` and prove the remaining obligations.
+Proceed by induction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `q using Submodule.Quotient.induction_on with | _ b => ?_`. Simplify using `only [f₂, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, LinearMap.smul_apply, LinearMap.id_apply] at hq ⊢`. Take `⟨y, hy, hyb⟩` from `hq`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Use `⟨c, (mul_cancel_left_mem_nonZeroDivisors hr).1 ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Proceed by induction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hyb` using `[a, Algebra.smul_def, mul_comm]`. Establish `hg₂ : Function.Surjective g₂` using `fun q ↦ by`. Proceed by induction on `q using Submodule.Quotient.induction_on with | _ b => exact ⟨Submodule.Quotient.mk b, rfl⟩`. Establish `he₂ : Function.Exact f₂ g₂`. Introduce `q`.
+Proceed by induction. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `q using Submodule.Quotient.induction_on with | _ b => ?_`. Simplify using `only [g₂, f₂, Submodule.mapQ_apply, LinearMap.id_apply, Submodule.Quotient.mk_eq_zero, Set.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 (show b ∈ Ideal.span {algebraMap R B r} from hb)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Proceed by induction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨Submodule.Quotient.mk c, by simp [Algebra.smul_def, mul_comm]⟩`. Introduce and unpack `⟨q, hq⟩`. Proceed by induction on `q using Submodule.Quotient.induction_on with | _ c => ?_`. Rewrite `hq` using `[Submodule.mapQ_apply, Submodule.Quotient.eq]`. Establish `hc : r • c ∈ rB` using `Ideal.mem_span_singleton'.2 ⟨c, by simp [Algebra.smul_def, mul_comm]⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using rB.sub_mem hc (hrPrB hq)`. Establish `h₁` using `Module.length_eq_add_of_exact f₁ g₁ hf₁ hg₁ he₁`. Establish `h₂` using `Module.length_eq_add_of_exact f₂ g₂ hf₂ hg₂ he₂`. Rewrite using `[← (Submodule.Quotient.restrictScalarsEquiv R (Ideal.span {algebraMap R B r})).length_eq]`. Rewrite `h₂` using `[h₁, add_comm]`.
-
-Conclude with `(WithTop.add_left_inj hfin).1 h₂`.
+A detailed English derivation is pending.
 -/
 theorem ExtensionQuotientLength.proof : ExtensionQuotientLength.Statement := by
   intro R B _ _ _ r hinj hr hfin

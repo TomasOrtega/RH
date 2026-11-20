@@ -33,9 +33,7 @@ def EmbedAffine : Prop := ∀ (A : Type) [CommRing A] [IsLocalRing A] {Z : Schem
   IsIntegral Z → (rA p ⊤).IsIntegral → IsAffineOpen (⊤ : Z.Opens) → Concl p
 
 /- English proof (translation)
-Introduce `A _ _ Z p hIL hZ`. Establish `hI : IsIntegral Z` using `hZ.1`. Establish `hTop` using `hT A p hIL`. Break down `hL A p hIL hZ with h | h` into its components or cases. Conclude with `hE A p hI hTop h`.
-
-Conclude with `hN A p hI hTop h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem GeoData_of (hT : TopInt) (hL : LineOpens) (hN : EmbedNonDeg) (hE : EmbedAffine) : GeoData := by
   intro A _ _ Z p hIL hZ

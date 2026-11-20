@@ -13,17 +13,17 @@ def HSUse : Prop :=
   ArithKleiman.Statement ∧ G7.Statement ∧ ArithmeticVolumeNef.Statement
 
 /- English proof (translation)
-The claim follows from `h.2.1`.
+A detailed English derivation is pending.
 -/
 theorem HSUse.g7 (h : HSUse) : G7.Statement := h.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2`.
+A detailed English derivation is pending.
 -/
 theorem HSUse.g7p (h : HSUse) : ReciprocityTheory.ChartRestriction.G.Geo.ArithmeticHilbertSamuelUpperBound := h.2.2
 
 /- English proof (translation)
-The claim follows from `G5.proof' h.1 CurvePointsFinite.proof`.
+A detailed English derivation is pending.
 -/
 theorem HSUse.z1 (h : HSUse) : ReciprocityTheory.ChartRestriction.G.Geo.SuccessiveMinimaLowerBound :=
   G5.proof' h.1 CurvePointsFinite.proof

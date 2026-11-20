@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.AbCoh.CohBaseChange
 
 /- English proof (translation)
-Establish `hk : LinearMap.ker f = LinearMap.ker g`. Use extensionality with `z`. Conclude with `h z`. Use `⟨(f.quotKerEquivOfSurjective hf).symm ≪≫ₗ Submodule.quotEquivOfEq _ _ hk ≪≫ₗ g.quotKerEquivOfSurjective hg, fun z ↦ ?_⟩` and prove the remaining obligations. Establish `: (f.quotKerEquivOfSurjective hf).symm (f z) = Submodule.Quotient.mk z`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [LinearEquiv.trans_apply, this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_ker {S M A B : Type} [CommRing S] [AddCommGroup M] [Module S M] [AddCommGroup A]
     [Module S A] [AddCommGroup B] [Module S B] (f : M →ₗ[S] A) (g : M →ₗ[S] B) (hf : Function.Surjective f)
@@ -30,7 +30,7 @@ theorem exists_equiv_of_ker {S M A B : Type} [CommRing S] [AddCommGroup M] [Modu
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem dB_ext (K : CochainComplex (ModuleCat.{0} R) ℕ) {R' R'' : Type} [CommRing R'] [Algebra R R']
     [CommRing R''] [Algebra R R''] (α : R' →ₐ[R] R'') (i j : ℕ) (y : R' ⊗[R] K.X i) :
@@ -41,14 +41,14 @@ theorem dB_ext (K : CochainComplex (ModuleCat.{0} R) ℕ) {R' R'' : Type} [CommR
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, α.comp_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_algHom_algebraMap {R' R'' : Type} [CommRing R'] [Algebra R R'] [CommRing R''] [Algebra R R'']
     (α : R' →ₐ[R] R'') : spMap (α : R' →+* R'') ≫ spMap (algebraMap R R') = spMap (algebraMap R R'') := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, α.comp_algebraMap]
 
 /- English proof (translation)
-Establish `: spMap (algebraMap R R) = 𝟙 (Sp R)` using `Spec.map_id _`. Rewrite using `[this]`. Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_self {X : Scheme.{0}} (s : X ⟶ Sp R) : IsPullback (𝟙 X) s s (spMap (algebraMap R R)) := by
   have : spMap (algebraMap R R) = 𝟙 (Sp R) := Spec.map_id _
@@ -56,9 +56,9 @@ theorem isPullback_self {X : Scheme.{0}} (s : X ⟶ Sp R) : IsPullback (𝟙 X) 
   exact IsPullback.of_horiz_isIso ⟨by simp⟩
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨x, hx⟩` from `hp (θ₀ ⟨z, hz⟩)`. Take `⟨y, rfl⟩` from `hθ x`. Establish `hy' : ext α _ y.1 ∈ LinearMap.ker (dB K k i (i + 1))`. Rewrite using `[LinearMap.mem_ker, dB_ext, LinearMap.mem_ker.1 y.2, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `nat y ⟨_, hy'⟩ rfl`. Take `⟨b, hb⟩` from `(hθ₀ (⟨z, hz⟩ - ⟨_, hy'⟩)).1 (by rw [map_sub, h1, hx, sub_self])`. Use `⟨y.1, b, y.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem liftsAt_of (K : CochainComplex (ModuleCat.{0} R) ℕ) {R' k : Type} [CommRing R'] [Algebra R R']
     [CommRing k] [Algebra R k] (α : R' →ₐ[R] k) (i : ℕ) {H H₀ : Type} [AddCommGroup H] [Module R' H]
@@ -78,9 +78,9 @@ theorem liftsAt_of (K : CochainComplex (ModuleCat.{0} R) ℕ) {R' k : Type} [Com
   simp
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_equiv_of_ker θ u hθ hu h`. Take `⟨e', he'⟩` from `exists_equiv_of_ker v θ' hv hθ' h'`. Use `⟨e.baseChange R R' _ _ ≪≫ₗ e', fun c ↦ ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hθ c`. Take `⟨z', h1, h2⟩` from `nat z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.baseChange_tmul, he, ← h1, he', h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_of {R' : Type} [CommRing R'] [Algebra R R'] {Z Z' P H H' : Type} [AddCommGroup Z] [Module R Z]
     [AddCommGroup Z'] [Module R' Z'] [AddCommGroup P] [Module R P] [AddCommGroup H] [Module R H]
@@ -99,13 +99,13 @@ theorem bc_of {R' : Type} [CommRing R'] [Algebra R R'] {Z Z' P H H' : Type} [Add
 variable {X : Scheme.{0}} {s : X ⟶ Sp R} {K : CochainComplex (ModuleCat.{0} R) ℕ}
 
 /- English proof (translation)
-Introduce `z hz`. Establish `h'` using `IsPullback.of_hasPullback s (spMap (algebraMap R R'))`. Establish `h₀` using `IsPullback.of_hasPullback s (spMap (algebraMap R k))`. Take `⟨e', -⟩` from `M.θ0_one h'`. Take `⟨e₀, he₀⟩` from `M.θ0_one h₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, -⟩` from `hU k _ _ _ h₀ (M.θ0 h₀ ⟨z, hz⟩).1 (M.θ0 h₀ ⟨z, hz⟩).2`. Establish `hz' : (⟨z, hz⟩ : LinearMap.ker (dB K k 0 1)) = r • ⟨_, e₀⟩`. Apply `(M.θ0 h₀).injective` to reduce the goal to its premises. Rewrite using `[map_smul]`. Use `Subtype.ext (funext fun T ↦ ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hr T, Algebra.algebraMap_eq_smul_one, ← he₀ T]`. Both sides reduce to the same expression. Take `⟨r', rfl⟩` from `hα r`. Use `⟨r' • ((1 : R') ⊗ₜ[R] M.one), 0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (r' • ·) (LinearMap.mem_ker.1 e')).trans (smul_zero _)`. Use `congrArg Subtype.val hz'` as an intermediate fact. Simplify using `only [Submodule.coe_smul] at this`. Rewrite using `[this, map_zero, add_zero, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftsAt_zero (M : Model s K) (hU : UConst s) {R' k : Type} [CommRing R'] [Algebra R R']
     [CommRing k] [Algebra R k] (α : R' →ₐ[R] k) (hα : Function.Surjective α) : LiftsAt K α 0 := by
@@ -131,21 +131,19 @@ theorem liftsAt_zero (M : Model s K) (hU : UConst s) {R' k : Type} [CommRing R']
     simp
 
 /- English proof (translation)
-Introduce `R _ _ X s hp hf hU hl`. Take `⟨K, hK, hb, ⟨M⟩⟩` from `hex R X s hp hf`. Establish `hproj` using `halg R K hK hb (by`. Introduce `i hi R' _ _ _ _ k _ _ α hα`. Establish `h'` using `IsPullback.of_hasPullback s (spMap (algebraMap R R'))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `w` using `IsPullback.of_hasPullback (pullback.snd s (spMap (algebraMap R R'))) (spMap (α : R' →+* k))`. Establish `h₀` using `w.paste_horiz h'`. Rewrite `h₀` using `[spMap_algHom_algebraMap]`. Take `⟨s1, s2⟩` from `hl R' k α hα _ _ _ _ _ _ h' w`. Take `⟨n1, n2⟩` from `M.nat h' h₀ α _ w.w rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, -, a2, -⟩` from `M.exact h'`. Take `⟨-, b1, -, b2⟩` from `M.exact h₀`. Use `interval_cases i`. Conclude with `liftsAt_zero M hU α hα`. Conclude with `liftsAt_of K α 1 (M.θ1 h') (M.θ1 h₀) _ a1 b1 n1 s1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `liftsAt_of K α 2 (M.θ2 h') (M.θ2 h₀) _ a2 b2 n2 s2)`. Establish `hid` using `isPullback_self s`. Take `⟨a1, b1, a2, b2⟩` from `M.exact hid`. Establish `hz : ∀ (R' : Type) [CommRing R'] [Algebra R R'] (i : ℕ) (z : LinearMap.ker (dB K R i (i + 1))),`. Use extensionality with `(Algebra.ofId R R') _ z.1 ∈ LinearMap.ker (dB K R' i (i + 1)) := fun R' _ _ i z ↦ by`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearMap.mem_ker, dB_ext, LinearMap.mem_ker.1 z.2, map_zero]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨P, _, _, _, _, u, v, hu, -, ku, -⟩` from `hsplit R K hK hproj 1 le_rfl (by norm_num) R`. Take `⟨e, -⟩` from `exists_equiv_of_ker u (M.θ1 hid) hu a1 fun z ↦ (ku z).trans (b1 z).symm`. Conclude with `⟨Module.Finite.equiv e, Module.Projective.of_equiv e⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P, _, _, _, _, u, v, hu, -, ku, -⟩` from `hsplit R K hK hproj 2 (by norm_num) le_rfl R`. Take `⟨e, -⟩` from `exists_equiv_of_ker u (M.θ2 hid) hu a2 fun z ↦ (ku z).trans (b2 z).symm`. Conclude with `⟨Module.Finite.equiv e, Module.Projective.of_equiv e⟩`. Introduce `R' _ _ X' s' φ h`. Take `⟨P, _, _, _, _, u, v, hu, hv, ku, kv, hn⟩` from `hsplit R K hK hproj 1 le_rfl (by norm_num) R'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, d1, -, -⟩` from `M.exact h`. Take `⟨n1, -⟩` from `M.nat hid h (Algebra.ofId R R') φ h.w (Category.comp_id _)`. Conclude with `bc_of u v (M.θ1 hid) (M.θ1 h) _ hu hv a1 c1 (fun z ↦ (b1 z).trans (ku z).symm) (fun z ↦ (kv z).trans (d1 z).symm) fun z ↦ ⟨⟨_, hz R' 1 z⟩, hn _ _ rfl, n1 _ _ rfl⟩`. Introduce `R' _ _ X' s' φ h`. Take `⟨P, _, _, _, _, u, v, hu, hv, ku, kv, hn⟩` from `hsplit R K hK hproj 2 (by norm_num) le_rfl R'`.
-
-Take `⟨-, -, c2, d2⟩` from `M.exact h`. Take `⟨-, n2⟩` from `M.nat hid h (Algebra.ofId R R') φ h.w (Category.comp_id _)`. Conclude with `bc_of u v (M.θ2 hid) (M.θ2 h) _ hu hv a2 c2 (fun z ↦ (b2 z).trans (ku z).symm) (fun z ↦ (kv z).trans (d2 z).symm) fun z ↦ ⟨⟨_, hz R' 2 z⟩, hn _ _ rfl, n2 _ _ rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem of_parts (hex : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X : Scheme.{0}) (s : X ⟶ Sp R), IsProper s → Flat s → ∃ (K : CochainComplex (ModuleCat.{0} R) ℕ), (∀ p, Module.Finite R (K.X p) ∧ Module.Projective R (K.X p)) ∧ (∃ n, ∀ p, n < p → IsZero (K.X p)) ∧ Nonempty (Model s K))
     (halg : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (K : CochainComplex (ModuleCat.{0} R) ℕ), (∀ p, Module.Finite R (K.X p) ∧ Module.Projective R (K.X p)) → (∃ n, ∀ p, n < p → IsZero (K.X p)) → (∀ i, i ≤ 2 → ∀ (R' : Type) [CommRing R'] [Algebra R R'] [IsArtinianRing R'] [IsLocalRing R'] (k : Type) [Field k] [Algebra R k] (α : R' →ₐ[R] k), Function.Surjective α → LiftsAt K α i) → ∀ i, i ≤ 2 → Module.Projective R (K.X (i + 1) ⧸ LinearMap.range (K.d i (i + 1)).hom))

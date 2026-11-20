@@ -10,11 +10,11 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.PullSupp
 
 /- English proof (translation)
-Use `Scheme.Modules.SupportedIn.of_isZero_restrict fun U hU => ?_` and prove the remaining obligations. Set `V : X.Opens` to `⟨T₀ᶜ, hT.isOpen_compl⟩`. Establish `hr : Set.range (U.ι ≫ φ) ⊆ Set.range V.ι`. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx`. Conclude with `Set.disjoint_left.1 hU u.2 hx`. Set `g` to `IsOpenImmersion.lift V.ι (U.ι ≫ φ) hr`. Establish `hg : g ≫ V.ι = U.ι ≫ φ` using `IsOpenImmersion.lift_fac _ _ _`. Establish `h0 : IsZero ((Scheme.Modules.restrictFunctor V.ι).obj C)` using `h.isZero_restrict V disjoint_compl_left`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsZero ((Scheme.Modules.pullback g).obj ((Scheme.Modules.restrictFunctor V.ι).obj C))` using `Functor.map_isZero _ h0`. Use `h1.of_iso ?_` and prove the remaining obligations. Conclude with `(Scheme.Modules.restrictFunctorIsoPullback U.ι).app _ ≪≫ (Scheme.Modules.pullbackComp U.ι φ).app C ≪≫ (Scheme.Modules.pullbackCongr hg.symm).app C ≪≫ ((Scheme.Modules.pullbackComp g V.ι).app C).symm ≪≫ (Scheme.Modules.pullback g).mapIso ((Scheme.Modules.restrictFunctorIsoPullback …`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem supportedIn_pullback {X Z : Scheme.{0}} (φ : Z ⟶ X) {C : X.Modules} {T₀ : Set X}
     (hT : IsClosed T₀) (h : Scheme.Modules.SupportedIn C T₀) :
@@ -43,9 +43,9 @@ end GlobalTheory.CompanionTheory.GE.PullSupp
 namespace GlobalTheory.CompanionTheory.GE.PullSupp
 
 /- English proof (translation)
-Set `f` to `(Scheme.Modules.pullback φ).map (S 0).arrow`. Establish `hle : imageSubobject f ≤ pullSys I φ E S 0` using `le_sup_left`. Establish `w : f ≫ cokernel.π (pullSys I φ E S 0).arrow = 0`. Rewrite using `[← imageSubobject_arrow_comp f, ← Subobject.ofLE_arrow hle, Category.assoc, Category.assoc, cokernel.condition, comp_zero, comp_zero]`. Establish `hd : Epi (cokernel.desc f _ w)` using `epi_of_epi_fac (cokernel.π_desc f _ w)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Scheme.Modules.SupportedIn (cokernel f) (φ.base ⁻¹' T₀)` using `(supportedIn_pullback φ hT h).of_iso (PreservesCokernel.iso (Scheme.Modules.pullback φ) (S 0).arrow)`. Conclude with `Scheme.Modules.SupportedIn.of_epi (cokernel.desc f _ w) h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem supportedIn_cokernel_pullSys {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
     {X Z : Scheme.{0}} [Z.Over (Spec (.of A))] (φ : Z ⟶ X) (E : X.Modules) (S : ℕ → Subobject E)
@@ -62,17 +62,17 @@ theorem supportedIn_cokernel_pullSys {A : Type} [CommRing A] [IsNoetherianRing A
   exact Scheme.Modules.SupportedIn.of_epi (cokernel.desc f _ w) h1
 
 /- English proof (translation)
-Set `p` to `pullback.fst φ T.subschemeι`. Set `q` to `pullback.snd φ T.subschemeι`. Establish `hpc : IsClosedImmersion p` using `inferInstance`. Set `T' : Z.IdealSheafData` to `p.ker`. Establish `hk1 : p.ker ≤ T'.subschemeι.ker` using `by rw [Scheme.IdealSheafData.ker_subschemeι]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hk2 : T'.subschemeι.ker ≤ p.ker` using `by rw [Scheme.IdealSheafData.ker_subschemeι]`. Set `u` to `IsClosedImmersion.lift p T'.subschemeι hk1`. Set `v` to `IsClosedImmersion.lift T'.subschemeι p hk2`. Establish `hu : u ≫ p = T'.subschemeι` using `IsClosedImmersion.lift_fac _ _ _`. Establish `hv : v ≫ T'.subschemeι = p` using `IsClosedImmersion.lift_fac _ _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨T', ?_, ?_⟩` and prove the remaining obligations. Establish `hq : IsProper q` using `by haveI := hφ; infer_instance`. Establish `huc : IsClosedImmersion u`. Establish `: IsClosedImmersion (u ≫ p)` using `by rw [hu]; infer_instance`. Conclude with `IsClosedImmersion.of_comp u p`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : T'.subschemeι ≫ (Z ↘ Spec (.of A)) = u ≫ q ≫ (T.subschemeι ≫ (X ↘ Spec (.of A)))`. Rewrite using `[← hu, ← hc, Category.assoc, ← Category.assoc p, pullback.condition]`. Simplify using `only [Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `infer_instance`. Introduce `z hz`. Take `⟨w, hw⟩` from `T.range_subschemeι.ge hz`. Take `⟨t, ht, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := φ) (g := T.subschemeι) z w hw.symm`. Rewrite using `[← T'.range_subschemeι]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨v t, ?_⟩` and prove the remaining obligations. Establish `hv' : v ≫ T'.subschemeι = pullback.fst φ T.subschemeι` using `hv`. Rewrite using `[← ht, ← hv']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_proper_preimage {A : Type} [CommRing A] {X Z : Scheme.{0}} [X.Over (Spec (.of A))]
     [Z.Over (Spec (.of A))] (φ : Z ⟶ X) (hφ : IsProper φ)
@@ -111,7 +111,7 @@ theorem exists_proper_preimage {A : Type} [CommRing A] {X Z : Scheme.{0}} [X.Ove
     rfl
 
 /- English proof (translation)
-Introduce `A _ _ I X Z _ _ _ φ hφ hc E _ S _ hS`. Take `⟨T, hTp, hTs⟩` from `hS`. Take `⟨T', hT'p, hT's⟩` from `exists_proper_preimage φ hφ hc T hTp`. Conclude with `⟨T', hT'p, (supportedIn_cokernel_pullSys I φ E S T.support.isClosed hTs).mono hT's⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem propSupp_pullSys : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X Z : Scheme.{0}}
     [X.Over (Spec (.of A))] [Z.Over (Spec (.of A))] [IsLocallyNoetherian X] (φ : Z ⟶ X), IsProper φ →

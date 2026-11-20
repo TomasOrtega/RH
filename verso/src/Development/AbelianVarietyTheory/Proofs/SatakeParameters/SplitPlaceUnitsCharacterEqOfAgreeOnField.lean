@@ -10,7 +10,7 @@ namespace GlobalTheory.ConjDense
 open Filter Topology
 
 /- English proof (translation)
-Use `(s.v.denseRange_algebraMap (maximalRealSubfield L)).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨algebraMap (maximalRealSubfield L) L y, s.i.commutes y⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem denseRange_i {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L) :
     DenseRange (s.i : L → s.v.adicCompletion (maximalRealSubfield L)) := by
@@ -19,19 +19,17 @@ theorem denseRange_i {L : Type} [Field L] [NumberField L] [IsCMField L] (s : Spl
   exact ⟨algebraMap (maximalRealSubfield L) L y, s.i.commutes y⟩
 
 /- English proof (translation)
-Introduce `L _ _ _ s c hc hci μ ξ hμ ⟨N, hN⟩ hglob d`. Take `⟨z, hz⟩` from `s.v.valuedAdicCompletion_surjective (maximalRealSubfield L) (WithZero.exp (-(N : ℤ)))`. Establish `hξo : GlobalTheory.SmGL.IsSmoothChar ξ`. Establish `hU : IsOpen {x : (s.v.adicCompletion (maximalRealSubfield L))ˣ | Valued.v ((x : s.v.adicCompletion (maximalRealSubfield L)) - 1) < Valued.v z}`. Establish `h1` using `(Valued.isOpen_ball (s.v.adicCompletion (maximalRealSubfield L)) (Valued.v.restrict z)).preimage (Units.continuous_val.sub (continuous_const (y := (1 : s.v.adicCompletion (maximalRealSubfield L)))))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h1` using `only [Set.preimage_setOf_eq, Valuation.restrict_lt_iff, Pi.sub_apply]`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (hU.mem_nhds ?_) fun x hx => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Units.val_one, sub_self, map_zero, hz]`. Conclude with `WithZero.exp_pos`. Establish `hx' : Valued.v ((x : s.v.adicCompletion (maximalRealSubfield L)) - 1) < Valued.v z` using `hx`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hN x (by rw [← hz]; exact hx'.le)`. Establish `hcu : Continuous (Units.map c.toMonoidHom : (s.v.adicCompletion (maximalRealSubfield L))ˣ → (s.w.adicCompletion L)ˣ)`. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨hc.comp Units.continuous_val, hc.comp Units.continuous_coe_inv⟩`. Establish `hs` using `hξo.mul (hμ.comp _ hcu).inv`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcl` using `Subgroup.isClosed_of_isOpen _ hs`. Use `mul_inv_eq_one.1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hy`. Take `⟨U, hU, hU'⟩` from `Units.isEmbedding_val₀.isInducing.isOpen_iff.1 hcl.isOpen_compl`. Establish `hyU : (d : s.v.adicCompletion (maximalRealSubfield L)) ∈ U`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: d ∈ Units.val ⁻¹' U` using `by rw [hU']; exact hy`. Conclude with `this`. Take `⟨k, hk1, hk2⟩` from `(denseRange_i s).exists_mem_open (hU.inter isOpen_ne (t := {z | z ≠ 0})) ⟨d, hyU, d.ne_zero⟩`. Establish `hk0 : k ≠ 0` using `fun e => hk2 (by rw [e, map_zero])`. Establish `h3 : Units.map (s.i : L →* s.v.adicCompletion (maximalRealSubfield L)) (Units.mk0 k hk0) ∈ Units.val ⁻¹' U` using `hk1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h3` using `[hU']`. Use `h3 ?_` and prove the remaining obligations. Establish `hm : Units.map c.toMonoidHom (Units.map (s.i : L →* s.v.adicCompletion (maximalRealSubfield L)) (Units.mk0 k hk0)) = Units.map (algebraMap L (s.w.adicCompletion L)).toMonoidHom (Units.mk0 k hk0)` using `Units.ext (hci k)`. Use `show ξ _ * (μ (Units.map c.toMonoidHom _))⁻¹ = 1`. Rewrite using `[hm, ← hglob]`.
-
-Conclude with `mul_inv_cancel _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_agree : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L) (c : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L), Continuous c → (∀ x : L, c (s.i x) = algebraMap L (s.w.adicCompletion L) x) → ∀ (μ : (s.w.adicCompletion L)ˣ →* ℂˣ) (ξ : (s.v.adicCompletion (maximalRealSubfield L))ˣ →* ℂˣ), GlobalTheory.SmGL.IsSmoothChar μ → (∃ N : ℕ, ∀ u : (s.v.adicCompletion (maximalRealSubfield L))ˣ, Valued.v ((u : s.v.adicCompletion (maximalRealSubfield L)) - 1) ≤ WithZero.exp (-(N : ℤ)) → ξ u = 1) → (∀ k : Lˣ, ξ (Units.map (s.i : L →* s.v.adicCompletion (maximalRealSubfield L)) k) = μ (Units.map (algebraMap L (s.w.adicCompletion L)).toMonoidHom k)) → ∀ u : (s.v.adicCompletion (maximalRealSubfield L))ˣ, ξ u = μ (Units.map c.toMonoidHom u) := by
   intro L _ _ _ s c hc hci μ ξ hμ ⟨N, hN⟩ hglob d

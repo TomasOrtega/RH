@@ -12,21 +12,19 @@ open Matrix CompanionTheory.Bmu CompanionTheory.D.gk.admitted.CholeskyDecomposit
 open scoped ComplexOrder MatrixOrder
 
 /- English proof (translation)
-Use `set A := dp p 0 c with hAdef`. Establish `hA : A * A = 1` using `h.mul_self`. Establish `hAH : Aᴴ = A` using `h.herm`. Establish `hg' : g * A * gᴴ = A` using `flip hA hg`. Establish `hgu : IsUnit g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨g, A * gᴴ * A, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Take `⟨B, a, hB, ha, hBd, hBS⟩` from `exists_cholesky (PosDef.conjTranspose_mul_self g (mulVec_injective_of_isUnit hgu))`. Establish `hBdet : IsUnit B.det`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_of_isUpperTriangular hB]`. Conclude with `IsUnit.mk0 _ (Finset.prod_ne_zero_iff.2 fun i _ => by`. Rewrite using `[hBd i]`. Conclude with `RCLike.ofReal_ne_zero.2 (ha i).ne')`. Establish `hBi : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul _ hBdet`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBi' : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hBdet`. Establish `hBiH : B⁻¹ᴴ * Bᴴ = 1` using `by rw [← conjTranspose_mul, hBi', conjTranspose_one]`. Establish `hS : Bᴴ * B * A * (Bᴴ * B) = A`. Rewrite using `[hBS]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hS1 : A * (Bᴴ * B) * A * Bᴴ * B = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hu : B * (A * (Bᴴ * B) * A * Bᴴ) = 1` using `mul_eq_one_comm.1 hS1`. Establish `hw : (B * (A * Bᴴ * A))ᴴ * (B * (A * Bᴴ * A)) = 1`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hAH]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hu, Matrix.mul_one, hA]`. Establish `hw1 : B * (A * Bᴴ * A) = 1` using `eq_one_of_posSemidef hw (h.posSemidef hB ha hBd fun i j hij => eq_zero_of_unitary_blockTriangular hw ((h.tri hB).mul (h.conj_tri hB)) hij)`. Establish `hw2 : (A * Bᴴ * A) * B = 1` using `mul_eq_one_comm.1 hw1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hBA : Bᴴ * A * B = A`. Combine the equalities or inequalities in the displayed calculation. Use `⟨g * B⁻¹, B, ?_, ?_, hBA, ?_, hB⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, hBi, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adapted_dec_one {n : ℕ} {p : Fin n → Fin n} {b : Fin n → ℤ} {c : Fin n → ℂ} (h : Adapted p b c)
     (g : Matrix (Fin n) (Fin n) ℂ) (hg : gᴴ * dp p 0 c * g = dp p 0 c) :
@@ -86,7 +84,7 @@ theorem adapted_dec_one {n : ℕ} {p : Fin n → Fin n} {b : Fin n → ℤ} {c :
   · rw [Matrix.mul_assoc, hBi, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hAH]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_mem {n : ℕ} {A g : Matrix (Fin n) (Fin n) ℂ} (hA : A * A = 1) (hAH : Aᴴ = A)
     (hg : gᴴ * A * g = A) : (A * gᴴ * A)ᴴ * A * (A * gᴴ * A) = A := by
@@ -95,7 +93,7 @@ theorem conj_mem {n : ℕ} {A g : Matrix (Fin n) (Fin n) ℂ} (hA : A * A = 1) (
     _ = A := by rw [hA, Matrix.mul_one, CompanionTheory.D.gk.admitted.CholeskyDecomposition.flip hA hg, hA, Matrix.one_mul]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_mul {n : ℕ} {A g : Matrix (Fin n) (Fin n) ℂ} (hA : A * A = 1)
     (hg : gᴴ * A * g = A) : (A * gᴴ * A) * g = 1 := by
@@ -103,13 +101,11 @@ theorem conj_mul {n : ℕ} {A g : Matrix (Fin n) (Fin n) ℂ} (hA : A * A = 1)
     _ = 1 := by rw [hg, hA]
 
 /- English proof (translation)
-Establish `hA` using `h.mul_self`. Establish `hAH` using `h.herm`. Take `⟨k, B, hk, hkA, hBA, hg, hB⟩` from `adapted_dec_one h _ (conj_mem hA hAH hx)`. Use `set A := dp p 0 c`. Establish `hBl` using `conj_mul hA hBA`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk' : k * kᴴ = 1` using `mul_eq_one_comm.1 hk`. Use `⟨A * Bᴴ * A, kᴴ, conj_mem hA hAH hBA, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_conjTranspose]`. Conclude with `CompanionTheory.D.gk.admitted.CholeskyDecomposition.flip hA hkA`. Set `_ : Invertible B` to `invertibleOfLeftInverse B _ hBl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inv_eq_left_inv hBl]`. Conclude with `blockTriangular_inv_of_blockTriangular hB`. Rewrite using `[conjTranspose_conjTranspose]`. Conclude with `hk'`. Establish `h1 : k * B * x = 1` using `by rw [← hg]; exact conj_mul hA hx`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem adapted_dec_left {n : ℕ} {p : Fin n → Fin n} {b : Fin n → ℤ} {c : Fin n → ℂ} (h : Adapted p b c)
     (x : Matrix (Fin n) (Fin n) ℂ) (hx : xᴴ * dp p 0 c * x = dp p 0 c) :
@@ -138,7 +134,7 @@ def pq (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) := if outer k
 def bq (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℤ := if outer k r i then 2 * (i.val : ℤ) - (2 * r + k) else 0
 
 /- English proof (translation)
-Unfold `pq`. Distinguish the cases in `h : outer k r i`. Rewrite using `[if_pos h, if_pos (show i.val ≤ r ∨ r + k ≤ i.val from h), Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h, if_neg (show ¬ (i.val ≤ r ∨ r + k ≤ i.val) from h)]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem pq_val (k r : ℕ) (i : Fin (2 * r + k + 1)) :
     (pq k r i).val = if i.val ≤ r ∨ r + k ≤ i.val then 2 * r + k - i.val else i.val := by
@@ -148,7 +144,7 @@ theorem pq_val (k r : ℕ) (i : Fin (2 * r + k + 1)) :
   · rw [if_neg h, if_neg (show ¬ (i.val ≤ r ∨ r + k ≤ i.val) from h)]
 
 /- English proof (translation)
-Unfold `bq`. Distinguish the cases in `h : outer k r i`. Rewrite using `[if_pos h, if_pos (show i.val ≤ r ∨ r + k ≤ i.val from h)]`. Rewrite using `[if_neg h, if_neg (show ¬ (i.val ≤ r ∨ r + k ≤ i.val) from h)]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bq_eq (k r : ℕ) (i : Fin (2 * r + k + 1)) :
     bq k r i = if i.val ≤ r ∨ r + k ≤ i.val then 2 * (i.val : ℤ) - (2 * r + k) else 0 := by
@@ -158,17 +154,15 @@ theorem bq_eq (k r : ℕ) (i : Fin (2 * r + k + 1)) :
   · rw [if_neg h, if_neg (show ¬ (i.val ≤ r ∨ r + k ≤ i.val) from h)]
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Use `i.2` as an intermediate fact. Rewrite using `[pq_val, pq_val]`. Apply the tactic sequence `split_ifs <;> omega`. Use `mono i j hij := by`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h : i.val ≤ j.val` using `hij`. Rewrite using `[bq_eq, bq_eq]`. Apply the tactic sequence `split_ifs <;> omega`. Use `neg i := by`. Use `i.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[bq_eq, bq_eq, pq_val]`. Apply the tactic sequence `split_ifs <;> omega`. Use `fix i hi := by`. Apply `Fin.ext` to reduce the goal to its premises. Use `i.2` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hi` using `[bq_eq]`. Rewrite using `[pq_val]`. Apply the tactic sequence `split_ifs at hi ⊢ <;> omega`. Use `inj i j hi hij := by`. Apply `Fin.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Use symmetry to reverse the relation.
 
-Rewrite `hi` using `[bq_eq]`. Rewrite `hij` using `[bq_eq, bq_eq]`. Apply the tactic sequence `split_ifs at hi hij <;> omega`. Use `sq _ := by simp`. Use `star_eq _ := by simp`.
-
-Use symmetry as in `_ := rfl`. Use `mid _ _ _ _ := rfl`.
+A detailed English derivation is pending.
 -/
 theorem adapted_pq (k r : ℕ) : Adapted (pq k r) (bq k r) (fun _ => 1) where
   invol i := by
@@ -201,9 +195,9 @@ theorem adapted_pq (k r : ℕ) : Adapted (pq k r) (bq k r) (fun _ => 1) where
   mid _ _ _ _ := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Simplify using `only [Hq, dp, Matrix.of_apply, Pi.zero_apply, ite_self, zero_add, Fin.ext_iff, pq_val]`. Distinguish the cases in `h : outer k r i`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos (show i.val ≤ r ∨ r + k ≤ i.val from h)]`. Conclude with `if_congr (by omega) rfl rfl`. Rewrite using `[if_neg h, if_neg (show ¬ (i.val ≤ r ∨ r + k ≤ i.val) from h)]`. Conclude with `if_congr eq_comm rfl rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hq_eq_dp (k r : ℕ) : Hq k r = dp (pq k r) 0 (fun _ => 1) := by
   ext i j
@@ -217,9 +211,9 @@ theorem Hq_eq_dp (k r : ℕ) : Hq k r = dp (pq k r) 0 (fun _ => 1) := by
     exact if_congr eq_comm rfl rfl
 
 /- English proof (translation)
-Introduce `k r _ x hx`. Establish `hx' : xᴴ * Hq k r * x = Hq k r` using `hx`. Rewrite `hx'` using `[Hq_eq_dp]`. Take `⟨s, κ, hs, hκ, h1, h2, h3⟩` from `adapted_dec_left (adapted_pq k r) x hx'`. Rewrite `hs`, `hκ` using `[← Hq_eq_dp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨s, hs, κ, hκ, h1, h2, h3⟩`.
+Supply the required witnesses or components.
 -/
 theorem iwaQ : IwaQ := by
   intro k r _ x hx

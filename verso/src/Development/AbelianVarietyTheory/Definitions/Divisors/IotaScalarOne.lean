@@ -74,7 +74,7 @@ structure FreeForm {ε : PreTilt O p} {h : ℕ} (D : Datum ε h Λ) (N : ℕ)
   Ψ_mul : Ψ * Ψ' = (inA (xi ε) : RL p O Λ) • (1 : Matrix (Fin N) (Fin N) (RL p O Λ))
 
 /- English proof (translation)
-Introduce `x y _ h2`. Establish `: y = x` using `funext fun i => by simpa using h2 i (Nat.zero_le _)`. Simplify using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem iotaScalar_one {C : Type} [Field C] (N : ℕ) :
     IotaScalar (1 : Matrix (Fin N) (Fin N) C) 0 0 1 := by
@@ -83,7 +83,7 @@ theorem iotaScalar_one {C : Type} [Field C] (N : ℕ) :
   simp [this]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 1, by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem lead_pow {R C : Type} [CommRing R] [Field C] (f : R →+* C) (ξ : R) (n : ℕ) :
     Lead f ξ (ξ ^ n) n 1 := ⟨1, 1, by simp, by simp, by simp⟩

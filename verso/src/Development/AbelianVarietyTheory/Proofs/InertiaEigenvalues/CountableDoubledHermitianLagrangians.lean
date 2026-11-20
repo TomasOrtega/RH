@@ -12,18 +12,16 @@ open GlobalTheory.RawLift
 namespace GlobalTheory.RawLift
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℚ K`. Conclude with `(b.equivFun.toEquiv.injective).countable`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem countable_numberField_type (K : Type) [Field K] [NumberField K] : Countable K := by
   let b := Module.finBasis ℚ K
   exact (b.equivFun.toEquiv.injective).countable
 
 /- English proof (translation)
-Introduce `D W`. Use `haveI : Countable D.host.E := countable_numberField_type D.host.E`. Set `M` to `(Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)`. Use `haveI : Countable (Submodule D.host.E M) := by`. Establish `hs : Function.Surjective (fun s : Finset M => Submodule.span D.host.E (s : Set M))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `N`. Take `⟨s, hs⟩` from `(IsNoetherian.noetherian N : N.FG)`. Conclude with `⟨s, hs⟩`. Conclude with `hs.countable`. Unfold `Lag`.
-
-Use `infer_instance`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lag_countable : ∀ (D : D7) (W : HSp D), Countable (Lag W) := by
   intro D W

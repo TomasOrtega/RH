@@ -6,19 +6,19 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set d := Module.finrank ℝ V`. Set `e : Module.Basis (Fin d) ℝ V` to `Module.finBasis ℝ V`. Establish `hinj : Function.Injective β.flip`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `q hq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hβ q (fun x => by simpa using LinearMap.congr_fun hq x)`. Establish `hsurj : Function.Surjective β.flip` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq (K := ℝ) (V := V)).symm).1 hinj`. Use `choose q hq using fun i : Fin d => hsurj (e.coord i)`. Establish `hqx : ∀ x i, β x (q i) = e.repr x i`. Introduce `x i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun (hq i) x` as an intermediate fact. Simplify using `using this`. Establish `hexp : ∀ x t, M t x x = ∑ i, ∑ j, ((e.repr x i : ℂ) * (e.repr x j : ℂ)) * M t (e i) (e j)`. Introduce `x t`. Use `conv_lhs => rw [← e.sum_repr x]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Finset.mul_sum, Complex.real_smul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Set `c : Fin d × Fin d → ℂ` to `fun p => deriv (fun t => M t (e p.1) (e p.2)) 0`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨d * d, fun k => q (finProdFinEquiv.symm k).1, fun k => q (finProdFinEquiv.symm k).2, fun k => c (finProdFinEquiv.symm k), fun x => ?_⟩` and prove the remaining obligations. Establish `hfun : (fun t => M t x x) = fun t => ∑ i, ∑ j, ((e.repr x i : ℂ) * (e.repr x j : ℂ)) * M t (e i) (e j)` using `funext (hexp x)`. Rewrite using `[hfun]`. Establish `hd : HasDerivAt (fun t => ∑ i, ∑ j, ((e.repr x i : ℂ) * (e.repr x j : ℂ)) * M t (e i) (e j)) (∑ i, ∑ j, ((e.repr x i : ℂ) * (e.repr x j : ℂ)) * c (i, j)) 0`. Apply `HasDerivAt.fun_sum` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Introduce `i _`. Apply `HasDerivAt.fun_sum` to reduce the goal to its premises. Introduce `j _`. Conclude with `((hM (e i) (e j)).hasDerivAt).const_mul _`. Use `hd using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hqx]`. Rewrite using `[← Fintype.sum_prod_type']`. Rewrite using `[← (finProdFinEquiv (m := d) (n := d)).symm.sum_comp]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_diag_sum_prod_pairing
     {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]

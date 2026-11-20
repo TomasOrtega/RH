@@ -15,7 +15,7 @@ namespace GlobalTheory.TorCls.Borel
 variable {N : ℕ} {S : Set (MvPolynomial (Fin N × Fin N) ℚ)} (hS : HeckeCharacterZeroLocus.IsGroupLocus S)
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem aeval_map_entries {R R' : Type} [CommRing R] [Algebra ℚ R] [CommRing R'] [Algebra ℚ R']
     (f : R →ₐ[ℚ] R') (M : Matrix (Fin N) (Fin N) R) (P : MvPolynomial (Fin N × Fin N) ℚ) :
@@ -27,7 +27,7 @@ theorem aeval_map_entries {R R' : Type} [CommRing R] [Algebra ℚ R] [CommRing R
   | mul_X p i hp => simp [hp]
 
 /- English proof (translation)
-Introduce `P hP`. Establish `h` using `g.2 P hP`. Use `show MvPolynomial.aeval (fun ij : Fin N × Fin N => f (((g : GL (Fin N) R) : Matrix (Fin N) (Fin N) R) ij.1 ij.2)) P = 0`. Rewrite using `[aeval_map_entries, h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_locus_map {R R' : Type} [CommRing R] [Algebra ℚ R] [CommRing R'] [Algebra ℚ R'] (f : R →ₐ[ℚ] R')
     (g : HeckeCharacterZeroLocus.locusSubgroup S hS R) :
@@ -51,7 +51,7 @@ theorem locMap_comp {R R' R'' : Type} [CommRing R] [Algebra ℚ R] [CommRing R']
     locMap hS f (locMap hS f' g) = locMap hS (f.comp f') g := rfl
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `(Continuous.units_map _ ?_).comp continuous_subtype_val` and prove the remaining obligations. Conclude with `Continuous.matrix_map continuous_id hf`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_locMap {R R' : Type} [CommRing R] [Algebra ℚ R] [TopologicalSpace R] [CommRing R']
     [Algebra ℚ R'] [TopologicalSpace R'] (f : R →ₐ[ℚ] R') (hf : Continuous f) :
@@ -61,7 +61,7 @@ theorem continuous_locMap {R R' : Type} [CommRing R] [Algebra ℚ R] [Topologica
   exact Continuous.matrix_map continuous_id hf
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul q d`. Rewrite using `[starT_tmul, Algebra.TensorProduct.lid_tmul, Algebra.TensorProduct.lid_tmul, map_rat_smul, MulOpposite.unop_smul]`. Consider the case `add x y hx hy => simp only [map_add, MulOpposite.unop_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem lid_starT {D : Type} [Ring D] [Algebra ℚ D] (σ : D →+* Dᵐᵒᵖ) (x : ℚ ⊗[ℚ] D) :
     Algebra.TensorProduct.lid ℚ D (starT σ ℚ x).unop = (σ (Algebra.TensorProduct.lid ℚ D x)).unop := by
@@ -73,7 +73,7 @@ theorem lid_starT {D : Type} [Ring D] [Algebra ℚ D] (σ : D →+* Dᵐᵒᵖ) 
   | add x y hx hy => simp only [map_add, MulOpposite.unop_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul q d`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.lid_tmul, Algebra.TensorProduct.includeRight_apply, TensorProduct.tmul_smul, TensorProduct.smul_tmul', AlgHom.id_apply, Algebra.ofId_apply, Algebra.algebraMap_eq_smul_one]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem map_ofId_eq {D B : Type} [Ring D] [Algebra ℚ D] [CommRing B] [Algebra ℚ B] (x : ℚ ⊗[ℚ] D) :
     Algebra.TensorProduct.map (Algebra.ofId ℚ B) (AlgHom.id ℚ D) x =
@@ -87,9 +87,9 @@ theorem map_ofId_eq {D B : Type} [Ring D] [Algebra ℚ D] [CommRing B] [Algebra 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Prove the components needed by the constructor for the conclusion. Use `congrArg (Algebra.TensorProduct.lid ℚ D) h1` as an intermediate fact. Simplify using `only [map_mul, lid_starT] at this`. Simplify `this` using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_eq_smul_one]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h2.map (Algebra.TensorProduct.lid ℚ D)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tc_rat {D : Type} [Ring D] [Algebra ℚ D] (σ : D →+* Dᵐᵒᵖ) (β y : D) (z : (ℚ ⊗[ℚ] D)ˣ × ℚˣ)
     (h : GlobalTheory.TorCls.TC D σ β y ℚ z) :
@@ -111,51 +111,43 @@ namespace GlobalTheory.TorCls.Borel
 open IsDedekindDomain
 
 /- English proof (translation)
-Introduce `hbr hB D _ _ _ σ β y p _`. Take `⟨N, S, hS, φ, hiso, hnat, hcont⟩` from `hbr D σ β y`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] D) := moduleTopology (AfP p) (AfP p ⊗[ℚ] D)`. Use `letI : TopologicalSpace (ℚ_[p] ⊗[ℚ] D) := moduleTopology ℚ_[p] (ℚ_[p] ⊗[ℚ] D)`. Introduce `U hUO`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨O, hO, h1O, hOU⟩` from `hUO`. Take `⟨π₁, π₂, hc₁, hc₂, hbij⟩` from `GlobalTheory.CentTorus.AdelicSplit.adele_split p`. Set `Φ : HeckeCharacterZeroLocus.locusSubgroup S hS (FiniteAdeleRing (𝓞 ℚ) ℚ) →* ((AfP p ⊗[ℚ] D)ˣ × (AfP p)ˣ) × ((ℚ_[p] ⊗[ℚ] D)ˣ × ℚ_[p]ˣ)` to `((φ (AfP p)).comp (locMap hS π₁)).prod ((φ ℚ_[p]).comp (locMap hS π₂))`. Establish `hφ₁ : Continuous (φ (AfP p))` using `hcont (AfP p)`. Establish `hφ₂ : Continuous (φ ℚ_[p])` using `hcont ℚ_[p]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦc : Continuous Φ` using `(hφ₁.comp (continuous_locMap hS π₁ hc₁)).prodMk (hφ₂.comp (continuous_locMap hS π₂ hc₂))`. Establish `hTC : ∀ g, GlobalTheory.TorCls.TC D σ β y (AfP p) (Φ g).1 ∧ GlobalTheory.TorCls.TC D σ β y ℚ_[p] (Φ g).2` using `fun g => ⟨((hiso (AfP p)).2 _).2 ⟨_, rfl⟩, ((hiso ℚ_[p]).2 _).2 ⟨_, rfl⟩⟩`. Establish `hsurj : ∀ z : ((AfP p ⊗[ℚ] D)ˣ × (AfP p)ˣ) × ((ℚ_[p] ⊗[ℚ] D)ˣ × ℚ_[p]ˣ), GlobalTheory.TorCls.TC D σ β y (AfP p) z.1 → GlobalTheory.TorCls.TC D σ β y ℚ_[p] z.2 → ∃ g, Φ g = z`. Introduce `z h1 h2`. Take `⟨g₁, hg₁⟩` from `((hiso (AfP p)).2 z.1).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g₂, hg₂⟩` from `((hiso ℚ_[p]).2 z.2).1 h2`. Set `s` to `Function.surjInv hbij.2`. Establish `hs : ∀ x, (π₁ (s x), π₂ (s x)) = x` using `Function.surjInv_eq hbij.2`. Establish `hs₁ : ∀ a b, π₁ (s (a, b)) = a` using `fun a b => congrArg Prod.fst (hs (a, b))`. Establish `hs₂ : ∀ a b, π₂ (s (a, b)) = b` using `fun a b => congrArg Prod.snd (hs (a, b))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : ∀ a a' : FiniteAdeleRing (𝓞 ℚ) ℚ, π₁ a = π₁ a' → π₂ a = π₂ a' → a = a'` using `fun a a' h h' => hbij.1 (Prod.ext h h')`. Establish `hinjM : ∀ X Y : Matrix (Fin N) (Fin N) (FiniteAdeleRing (𝓞 ℚ) ℚ), π₁.toRingHom.mapMatrix X = π₁.toRingHom.mapMatrix Y → π₂.toRingHom.mapMatrix X = π₂.toRingHom.mapMatrix Y → X = Y`. Introduce `X Y h h'`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `hinj _ _ (congrFun (congrFun h i) j) (congrFun (congrFun h' i) j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `G₁ : GL (Fin N) (AfP p)` to `g₁`. Set `G₂ : GL (Fin N) ℚ_[p]` to `g₂`. Set `M : Matrix (Fin N) (Fin N) (FiniteAdeleRing (𝓞 ℚ) ℚ)` to `Matrix.of fun i j => s ((G₁ : Matrix (Fin N) (Fin N) (AfP p)) i j, (G₂ : Matrix (Fin N) (Fin N) ℚ_[p]) i j)`. Set `M' : Matrix (Fin N) (Fin N) (FiniteAdeleRing (𝓞 ℚ) ℚ)` to `Matrix.of fun i j => s (((G₁⁻¹ : GL (Fin N) (AfP p)) : Matrix (Fin N) (Fin N) (AfP p)) i j, ((G₂⁻¹ : GL (Fin N) ℚ_[p]) : Matrix (Fin N) (Fin N) ℚ_[p]) i j)`. Establish `hM₁ : π₁.toRingHom.mapMatrix M = (G₁ : Matrix (Fin N) (Fin N) (AfP p))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `hs₁ _ _`. Establish `hM₂ : π₂.toRingHom.mapMatrix M = (G₂ : Matrix (Fin N) (Fin N) ℚ_[p])`. Use extensionality with `i j`. Conclude with `hs₂ _ _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hM'₁ : π₁.toRingHom.mapMatrix M' = ((G₁⁻¹ : GL (Fin N) (AfP p)) : Matrix (Fin N) (Fin N) (AfP p))`. Use extensionality with `i j`. Conclude with `hs₁ _ _`. Establish `hM'₂ : π₂.toRingHom.mapMatrix M' = ((G₂⁻¹ : GL (Fin N) ℚ_[p]) : Matrix (Fin N) (Fin N) ℚ_[p])`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hs₂ _ _`. Establish `hMM' : M * M' = 1` using `hinjM _ _ (by rw [map_mul, map_one, hM₁, hM'₁]; simp) (by rw [map_mul, map_one, hM₂, hM'₂]; simp)`. Establish `hM'M : M' * M = 1` using `hinjM _ _ (by rw [map_mul, map_one, hM₁, hM'₁]; simp) (by rw [map_mul, map_one, hM₂, hM'₂]; simp)`. Set `G : GL (Fin N) (FiniteAdeleRing (𝓞 ℚ) ℚ)` to `⟨M, M', hMM', hM'M⟩`. Establish `hG : G ∈ HeckeCharacterZeroLocus.locusSubgroup S hS (FiniteAdeleRing (𝓞 ℚ) ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `P hP`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, ← aeval_map_entries]`. Establish `e : (fun ij : Fin N × Fin N => π₁ ((G : Matrix (Fin N) (Fin N) (FiniteAdeleRing (𝓞 ℚ) ℚ)) ij.1 ij.2)) = fun ij => (G₁ : Matrix (Fin N) (Fin N) (AfP p)) ij.1 ij.2`. Use function extensionality and compare the values at `ij`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs₁ _ _`. Rewrite using `[e]`. Conclude with `g₁.2 P hP`. Rewrite using `[map_zero, ← aeval_map_entries]`. Establish `e : (fun ij : Fin N × Fin N => π₂ ((G : Matrix (Fin N) (Fin N) (FiniteAdeleRing (𝓞 ℚ) ℚ)) ij.1 ij.2)) = fun ij => (G₂ : Matrix (Fin N) (Fin N) ℚ_[p]) ij.1 ij.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `ij`. Conclude with `hs₂ _ _`. Rewrite using `[e]`. Conclude with `g₂.2 P hP`. Use `⟨⟨G, hG⟩, Prod.ext ?_ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Use `show φ (AfP p) (locMap hS π₁ ⟨G, hG⟩) = z.1`. Rewrite using `[← hg₁]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hM₁`. Use `show φ ℚ_[p] (locMap hS π₂ ⟨G, hG⟩) = z.2`. Rewrite using `[← hg₂]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `hM₂`. Set `U' : Subgroup (HeckeCharacterZeroLocus.locusSubgroup S hS (FiniteAdeleRing (𝓞 ℚ) ℚ))` to `U.comap Φ`. Establish `hU'o : IsOpen (U' : Set (HeckeCharacterZeroLocus.locusSubgroup S hS (FiniteAdeleRing (𝓞 ℚ) ℚ)))`. Apply `Subgroup.isOpen_of_mem_nhds U' (g := 1)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : (1 : HeckeCharacterZeroLocus.locusSubgroup S hS (FiniteAdeleRing (𝓞 ℚ) ℚ)) ∈ Φ ⁻¹' O` using `by show Φ 1 ∈ O; rw [map_one]; exact h1O`. Use `Filter.mem_of_superset ((hO.preimage hΦc).mem_nhds h1) ?_` and prove the remaining obligations. Introduce `g hg`. Conclude with `hOU _ hg (hTC g).1 (hTC g).2`. Establish `hU'c : IsClosed (U' : Set (HeckeCharacterZeroLocus.locusSubgroup S hS (FiniteAdeleRing (𝓞 ℚ) ℚ)))` using `U'.isClosed_of_isOpen hU'o`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨K, hKo, hKc⟩` from `GlobalTheory.LocusOpenCompact.exists_isOpen_isCompact ℚ N S hS`. Take `⟨T₀, hT₀⟩` from `hB ℚ N S hS (U' ⊓ K) (by rw [Subgroup.coe_inf]; exact hU'o.inter hKo) (by`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hKc.inter_left hU'c)`. Use `⟨T₀.image Φ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `z h1 h2`. Take `⟨g, rfl⟩` from `hsurj z h1 h2`. Take `⟨γ, hγ, s, hs, u, hu, hx⟩` from `hT₀ g`. Set `γL : HeckeCharacterZeroLocus.locusSubgroup S hS ℚ` to `⟨γ, hγ⟩`. Establish `hg : g = locMap hS (Algebra.ofId ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ)) γL * s * u` using `Subtype.ext hx`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `w` to `φ ℚ γL`. Establish `hw : GlobalTheory.TorCls.TC D σ β y ℚ w` using `((hiso ℚ).2 w).2 ⟨γL, rfl⟩`. Take `⟨hw1, hw2⟩` from `tc_rat σ β y w hw`. Set `γ' : Dˣ × ℚˣ` to `(Units.map (Algebra.TensorProduct.lid ℚ D).toAlgHom.toRingHom.toMonoidHom w.1, w.2)`. Establish `hcomp₁ : π₁.comp (Algebra.ofId ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ)) = Algebra.ofId ℚ (AfP p)` using `AlgHom.ext fun q => by simp`.
-
-Establish `hcomp₂ : π₂.comp (Algebra.ofId ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ)) = Algebra.ofId ℚ ℚ_[p]` using `AlgHom.ext fun q => by simp`. Establish `hΦγ : Φ (locMap hS (Algebra.ofId ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ)) γL) = GlobalTheory.TorCls.dg D p γ'`. Use `Prod.ext (Prod.ext ?_ ?_) (Prod.ext ?_ ?_)` and prove the remaining obligations. Use `show (φ (AfP p) (locMap hS π₁ (locMap hS _ γL))).1 = _`. Rewrite using `[locMap_comp, hcomp₁, hnat ℚ (AfP p) (Algebra.ofId ℚ (AfP p)) γL _ rfl]`.
-
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `map_ofId_eq _`. Use `show (φ (AfP p) (locMap hS π₁ (locMap hS _ γL))).2 = _`. Rewrite using `[locMap_comp, hcomp₁, hnat ℚ (AfP p) (Algebra.ofId ℚ (AfP p)) γL _ rfl]`. Both sides reduce to the same expression.
-
-Use `show (φ ℚ_[p] (locMap hS π₂ (locMap hS _ γL))).1 = _`. Rewrite using `[locMap_comp, hcomp₂, hnat ℚ ℚ_[p] (Algebra.ofId ℚ ℚ_[p]) γL _ rfl]`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `map_ofId_eq _`. Use `show (φ ℚ_[p] (locMap hS π₂ (locMap hS _ γL))).2 = _`.
-
-Rewrite using `[locMap_comp, hcomp₂, hnat ℚ ℚ_[p] (Algebra.ofId ℚ ℚ_[p]) γL _ rfl]`. Both sides reduce to the same expression. Use `⟨γ', hw1, hw2, Φ s, Finset.mem_image_of_mem _ hs, Φ u, (Subgroup.mem_inf.1 hu).1, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, map_mul, map_mul, hΦγ]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classes_finite : (∀ (D : Type) [Ring D] [Algebra ℚ D] [FiniteDimensional ℚ D] (σ : D →+* Dᵐᵒᵖ) (β y : D),
   ∃ (N : ℕ) (S : Set (MvPolynomial (Fin N × Fin N) ℚ)) (hS : HeckeCharacterZeroLocus.IsGroupLocus S)

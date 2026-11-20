@@ -9,19 +9,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Introduce `A M M' ι ι' _ _ _ _ _ Y Y' op op' _ _ φ j hφ hop`. Establish `uniq : ∀ (t : Module.End A Y') (s s' : heckeAlg Y op), (∀ y : Y, φ ((s : Module.End A Y) y) = t (φ y)) → (∀ y : Y, φ ((s' : Module.End A Y) y) = t (φ y)) → s = s'`. Introduce `t s s' h h'`. Conclude with `Subtype.ext (LinearMap.ext fun y => hφ ((h y).trans (h' y).symm))`. Establish `ex : ∀ t : heckeAlg Y' op', ∃ s : heckeAlg Y op, ∀ y : Y, φ ((s : Module.End A Y) y) = (t : Module.End A Y') (φ y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨t, ht⟩`. Express the relevant statement in the definitionally equal form `∃ s : heckeAlg Y op, ∀ y : Y, φ ((s : Module.End A Y) y) = t (φ y)`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, hi⟩` from `hx`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨heckeGen Y op (j i), fun y => Subtype.ext ((hop i y).trans (hi (φ y)).symm)⟩`. Consider the case `algebraMap r`. Use `⟨algebraMap A _ r, fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (r • y) = r • φ y`. Conclude with `map_smul φ r y`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨s, hs⟩` from `ha`. Take `⟨s', hs'⟩` from `hb`. Use `⟨s + s', fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ ((s : Module.End A Y) y + (s' : Module.End A Y) y) = a (φ y) + b (φ y)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add, hs, hs']`. Consider the case `mul a b _ _ ha hb`. Take `⟨s, hs⟩` from `ha`. Take `⟨s', hs'⟩` from `hb`. Use `⟨s * s', fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `φ ((s : Module.End A Y) ((s' : Module.End A Y) y)) = a (b (φ y))`. Rewrite using `[hs, hs']`. Use `choose f hf using ex`. Use `⟨{ toFun := f map_one' := uniq _ _ _ (hf 1) fun y => rfl map_mul' := fun a b => uniq _ _ _ (hf (a * b)) fun y => ?_ map_zero' := uniq _ _ _ (hf 0) fun y => map_zero φ map_add' := fun a b => uniq _ _ _ (hf (a + b)) fun y => ?_ commutes' := fun r => uniq _ _ _ (hf (algebraMap A _ r …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ ((f a : Module.End A Y) ((f b : Module.End A Y) y)) = (a : Module.End A Y') ((b : Module.End A Y') (φ y))`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, hf]`. Express the relevant statement in the definitionally equal form `φ ((f a : Module.End A Y) y + (f b : Module.End A Y) y) = (a : Module.End A Y') (φ y) + (b : Module.End A Y') (φ y)`. Rewrite using `[map_add, hf, hf]`. Conclude with `uniq _ _ _ (hf (heckeGen Y' op' i)) fun y => Subtype.ext (hop i y)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.levelUR2HeckeMap :
     ∀ (A M M' ι ι' : Type) [CommRing A] [AddCommGroup M] [Module A M] [AddCommGroup M'] [Module A M'] (Y : Submodule A M) (Y' : Submodule A M') (op : ι → Module.End A M) (op' : ι' → Module.End A M') [Fact (CommOn Y op)] [Fact (CommOn Y' op')] (φ : Y →ₗ[A] Y') (j : ι' → ι), Function.Injective φ → (∀ i (y : Y), ((φ ((heckeGen Y op (j i) : Module.End A Y) y) : Y') : M') = op' i (φ y)) → ∃ ψ : heckeAlg Y' op' →ₐ[A] heckeAlg Y op, (∀ i, ψ (heckeGen Y' op' i) = heckeGen Y op (j i)) ∧ ∀ (t : heckeAlg Y' op') (y : Y), φ ((ψ t : Module.End A Y) y) = (t : Module.End A Y') (φ y) := by

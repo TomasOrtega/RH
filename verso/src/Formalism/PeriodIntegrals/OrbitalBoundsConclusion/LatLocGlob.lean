@@ -2,6 +2,6 @@ import Formalism.PeriodIntegrals.LatLocGlob
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalGlobalLattice.ExistsSmulMemOfLocal
 
 /- English proof (translation)
-The claim follows from `PI.LatLocGlob.Proof.latLocGlob_core`.
+A detailed English derivation is pending.
 -/
 theorem latLocGlob : PI.LatLocGlob.LatLocGlob := PI.LatLocGlob.Proof.latLocGlob_core

@@ -22,7 +22,7 @@ section Abstract
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_, fun g hg => h.2 g ?_⟩` and prove the remaining obligations. Take `⟨k₁, h₁, k₂, h₂, rfl⟩` from `h.1 a ha`. Conclude with `⟨⟨k₁, h₁⟩, ⟨k₂, h₂⟩, rfl⟩`. Take `⟨k₁, k₂, rfl⟩` from `hg`. Conclude with `⟨k₁, k₁.2, k₂, k₂.2, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isDC_of_reps {K : Subgroup G} {x : G} {A : Finset G} (h : GlobalTheory.SphLabelOps.Reps K x A) :
     Formalism.IndefR.Bridge.IsDC K x A := by
@@ -33,13 +33,13 @@ theorem isDC_of_reps {K : Subgroup G} {x : G} {A : Finset G} (h : GlobalTheory.S
     exact ⟨k₁, k₁.2, k₂, k₂.2, rfl⟩
 
 /- English proof (translation)
-Establish `memL : ∀ {z : G} {R : Finset G}, GlobalTheory.SphLabelOps.Reps K z R → z ∈ L → ∀ a ∈ R, a ∈ L`. Introduce `z R hR hz a ha`. Take `⟨k₁, h₁, k₂, h₂, rfl⟩` from `hR.1 a ha`. Conclude with `mul_mem (mul_mem (hKL h₁) hz) (hKL h₂)`. Establish `hθ : ∃ θ : G → G, (∀ g ∈ L, θ g ∈ L) ∧ (∀ x ∈ L, ∀ y ∈ L, θ (x * y) = θ y * θ x) ∧ (∀ x ∈ L, θ (θ x) = x) ∧ (∀ k ∈ K ⊓ L, θ k ∈ K) ∧ ∀ g ∈ L, ∃ a ∈ K ⊓ L, ∃ b ∈ K ⊓ L, θ g = a * g * b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨θ, t1, t2, t3, fun k hk => t4 k hk.1, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, e⟩` from `t5 g hg`. Conclude with `⟨a, ⟨ha, hKL ha⟩, b, ⟨hb, hKL hb⟩, e⟩`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF : ∀ (k : K) (h : G), (fun g => φ (π g u)) (h * k) = ((1 : K →* ℂˣ) k : ℂ) • (fun g => φ (π g u)) h`. Introduce `k h`. Simplify using `[map_mul, Module.End.mul_apply, hu k k.2]`. Establish `key` using `(GlobalTheory.DoubleCosetComm.dcOp_comm_and_card (W := ℂ) K L 1 x y A B A' (fun g => φ (π g u)) (fun k hk => ⟨k, hk, 1, one_mem _, hKL hk, (mul_one k).symm, fun l _ => Commute.one_left l⟩) (fun k _ => rfl) hθ (memL hA hx) (memL hB hy) (memL hA' (inv_mem hx)) (isDC_of_reps hA) (is …`. Establish `e` using `congrFun key 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.IndefR.Bridge.dcOp, one_mul, map_mul, Module.End.mul_apply] at e`. Simplify using `only [map_sub, map_sum, LinearMap.zero_apply]`. Rewrite using `[sub_eq_zero]`. Conclude with `e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_comm_of_antiInv (K L : Subgroup G) (hKL : K ≤ L) (θ : G → G)
     (t1 : ∀ g ∈ L, θ g ∈ L) (t2 : ∀ x ∈ L, ∀ y ∈ L, θ (x * y) = θ y * θ x) (t3 : ∀ x ∈ L, θ (θ x) = x)
@@ -73,7 +73,7 @@ theorem sum_comm_of_antiInv (K L : Subgroup G) (hKL : K ≤ L) (θ : G → G)
   exact e
 
 /- English proof (translation)
-Simplify using `only [Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h i j, smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_comm {ι M : Type} [AddCommGroup M] [Module ℂ M] (S : ι → Module.End ℂ M) (u : M)
     (h : ∀ i j, S i (S j u) = S j (S i u)) (c c' : ι →₀ ℂ) :
@@ -89,23 +89,21 @@ end Abstract
 open GlobalTheory.IdemSupport in
 
 /- English proof (translation)
-Introduce `D V P c c' M _ _ π u hu`. Take `⟨K, hK⟩` from `GlobalTheory.SphLabelOps.exists_hyp V P`. Take `⟨e, f, h⟩` from `(supported_group_and_prime_idempotents V).2.1 P`. Establish `h0` using `(supported_group_and_prime_idempotents V).2.2.1 P e f h`. Take `⟨L, hL⟩` from `((supported_group_and_prime_idempotents V).1 f h0.1 h0.2.1).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `memK : ∀ k, k ∈ K ↔ k ∈ KsphC V ∅ ∧ SuppF V f k` using `fun k => by`. Rewrite using `[← SetLike.mem_coe, ← hK, GlobalTheory.SphLabelOps.hyp_eq h]`. Both sides reduce to the same expression. Establish `hKL : K ≤ L` using `fun k hk => (hL k).2 ((memK k).1 hk).2`. Choose the witnesses or unpack the hypotheses as in `⟨θ, t1, t2, t3, t4, t5⟩ : ∃ θ : GA D V → GA D V, (∀ g ∈ L, θ g ∈ L) ∧ (∀ x ∈ L, ∀ y ∈ L, θ (x * y) = θ y * θ x) ∧ (∀ x ∈ L, θ (θ x) = x) ∧ (∀ k ∈ K, θ k ∈ K) ∧ ∀ g ∈ L, ∃ a ∈ K, ∃ b ∈ K, θ g = a * g * b := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `id h with ⟨hs, rfl⟩ | ⟨rfl, -⟩` into its components or cases. Take `⟨θ, s1, s2, s3, s4, s5⟩` from `(GlobalTheory.SplitPlace.split_local V P e hs).1`. Use `⟨θ, fun g hg => (hL _).2 (s1 g ((hL g).1 hg)), fun x hx y hy => s2 x y ((hL x).1 hx) ((hL y).1 hy), fun x hx => s3 x ((hL x).1 hx), fun k hk => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hk'` using `(memK k).1 hk`. Conclude with `(memK _).2 ⟨s4 k hk', s1 k hk'.2⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, hb, eq⟩` from `s5 g ((hL g).1 hg)`. Conclude with `⟨a, (memK a).2 ha, b, (memK b).2 hb, eq⟩`. Use `⟨fun g => g⁻¹, fun g hg => inv_mem hg, fun x _ y _ => mul_inv_rev x y, fun x _ => inv_inv x, fun k hk => inv_mem hk, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨a, b, ha, ha', hb, hb', eq⟩` from `(GlobalTheory.InertDoubleCoset.inert_double_cosets V P _ h (GlobalTheory.SphLabelOps.exists_real_unif D P) g ((hL g).1 hg)).1`. Conclude with `⟨a, (memK a).2 ⟨ha, ha'⟩, b, (memK b).2 ⟨hb, hb'⟩, eq⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `reps : ∀ d, IsLab V P d → ∃ x ∈ L, GlobalTheory.SphLabelOps.Reps K x (rep V P d) ∧ ∃ A', GlobalTheory.SphLabelOps.Reps K x⁻¹ A'`. Introduce `d hd`. Establish `hR` using `GlobalTheory.SphLabelOps.sphOp_rep hd`. Take `⟨e', f', ϖ, α, -, h', h1, h2, -, -, -, hα, hD, -⟩` from `id hR`. Take `⟨rfl, rfl⟩` from `h0.2.2.2.1 e' f' h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hαL : α ∈ L` using `(hL α).2 hα`. Use `⟨α, hαL, GlobalTheory.SphLabelOps.reps_of_sphOp hK h' h1 h2 hα hD hR, ?_⟩` and prove the remaining obligations. Take `⟨R', hR', -⟩` from `GlobalTheory.SphLabelOps.exists_dual hR`. Establish `he` using `(GlobalTheory.HeckeDual.idem_of_isPrimeIdem h').1`. Conclude with `⟨R', GlobalTheory.SphLabelOps.reps_of_sphOp hK h' h1 h2 ((hL _).1 (inv_mem hαL)) (GlobalTheory.DivDual.divAt_inv_and_mul V _ _ d α he (GlobalTheory.SphLabelOps.unif_ne_zero h2) hD).1 hR'⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `key : ∀ d d', (∑ γ ∈ rep V P d, π γ) ((∑ δ ∈ rep V P d', π δ) u) = (∑ δ ∈ rep V P d', π δ) ((∑ γ ∈ rep V P d, π γ) u)`. Introduce `d d'`. Distinguish the cases in `hd : IsLab V P d`. Use `swap`. Simplify using `[Hk3.rep, dif_neg hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hd' : IsLab V P d'`. Use `swap`. Simplify using `[Hk3.rep, dif_neg hd']`. Take `⟨x, hx, rA, A', rA'⟩` from `reps d hd`. Take `⟨y, hy, rB, -⟩` from `reps d' hd'`.
-
-Simplify using `only [LinearMap.sum_apply]`. Conclude with `sum_comm_of_antiInv K L hKL θ t1 t2 t3 t4 t5 hx hy rA rB rA' π u (fun k hk => hu k (by rw [hK]; exact hk))`. Conclude with `comb_comm (fun d => ∑ γ ∈ rep V P d, π γ) u key c c'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem label_ops_comm : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E), ∀ c c', ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ hyp V P, π k u = u) → opOf π P c (opOf π P c' u) = opOf π P c' (opOf π P c u) := by
   intro D V P c c' M _ _ π u hu

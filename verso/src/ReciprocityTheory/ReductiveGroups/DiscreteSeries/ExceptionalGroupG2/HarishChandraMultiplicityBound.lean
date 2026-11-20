@@ -14,11 +14,11 @@ namespace ReciprocityTheory.ChartRestriction.DS.G2
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `n ε lam hlam h hh hmax`. Take `⟨T⟩` from `HW.kType_exists ε lam hlam`. Distinguish the cases in `hpq : pOf ε = 0 ∨ qOf ε = 0`. Take `⟨σ, hDS, -⟩` from `isDS_compact hpq hlam T`. Conclude with `⟨T.V, inferInstance, inferInstance, σ, hDS⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hmax'` using `hmax.resolve_left hpq push_neg at hpq`. Establish `hq : 1 ≤ S7.q0 ε` using `by show 1 ≤ min (pOf ε) (qOf ε)`. Use linear arithmetic over natural numbers and integers. Establish `hgap : StdGap ε lam` using `⟨hlam.1, h, hh, (le_max_left _ _).trans_lt hmax'⟩`. Take `⟨Ψ, hP, -⟩` from `exists_isPsiFor S7.psiExists T hlam hh hq ((le_max_right _ _).trans_lt hmax')`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, inferInstance, inferInstance, sigLam ε Ψ T.w, isDS_sigLam hgap hP (HW.KType.w_ne_zero T)⟩`.
+Supply the required witnesses or components.
 -/
 theorem discrete_series_exists_large_gap :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →
@@ -41,7 +41,7 @@ theorem discrete_series_exists_large_gap :
     exact ⟨_, inferInstance, inferInstance, sigLam ε Ψ T.w, isDS_sigLam hgap hP (HW.KType.w_ne_zero T)⟩
 
 /- English proof (translation)
-The claim follows from `isDS_props_of_gap`.
+A detailed English derivation is pending.
 -/
 theorem discrete_series_props_large_gap :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →

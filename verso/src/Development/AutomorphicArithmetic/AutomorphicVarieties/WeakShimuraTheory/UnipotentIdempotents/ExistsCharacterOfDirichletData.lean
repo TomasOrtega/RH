@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω n`. Establish `h1 : s ζ = ζ` using `hs ζ (by obtain ⟨k, rfl⟩ := h; rw [pow_mul, hζ.pow_eq_one, one_pow])`. Establish `h2` using `Chr.cls_spec (k := ℚ) n s ζ hζ.pow_eq_one`. Rewrite `h2` using `[h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ζ ^ ((Chr.cls ℚ Ω n s : ZMod n)).val = ζ ^ (1 : ℕ)` using `by rw [pow_one]; exact h2.symm`. Establish `hfin : IsOfFinOrder ζ` using `isOfFinOrder_iff_pow_eq_one.2 ⟨n, NeZero.pos n, hζ.pow_eq_one⟩`. Rewrite `h3` using `[hfin.pow_eq_pow_iff_modEq, ← hζ.eq_orderOf]`. Use `ext`. Rewrite using `[Units.val_one, ← ZMod.natCast_zmod_val ((Chr.cls ℚ Ω n s : ZMod n)), (ZMod.natCast_eq_natCast_iff _ _ _).2 h3, Nat.cast_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cls_one {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {n M : ℕ} [NeZero n] (h : n ∣ M) {s : G ℚ Ω}
     (hs : ∀ ζ : Ω, ζ ^ M = 1 → s ζ = ζ) : Chr.cls ℚ Ω n s = 1 := by
@@ -24,11 +24,11 @@ private theorem cls_one {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
     Nat.cast_one]
 
 /- English proof (translation)
-Take `⟨a, m, hlm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn l hl.one_lt.ne'`. Establish `hcop : l.Coprime m` using `(Nat.Prime.coprime_iff_not_dvd hl).2 hlm`. Establish `hcop2 : (l ^ a).Coprime m` using `Nat.Coprime.pow_left a hcop`. Set `k` to `Nat.chineseRemainder hcop2 0 1`. Establish `hk0 : k ≡ 0 [MOD l ^ a]` using `k.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hk1 : k ≡ 1 [MOD m]` using `k.2.2`. Use `⟨k, m, hcop, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.mul_dvd_mul (Nat.modEq_zero_iff_dvd.1 hk0) dvd_rfl`. Introduce `m' hm'`. Use `Nat.ModEq.of_dvd ?_ hk1` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg : (Nat.gcd (l ^ a * m) m').Coprime (l ^ a)` using `Nat.Coprime.coprime_dvd_left (Nat.gcd_dvd_right _ _) (Nat.Coprime.pow_right a hm'.symm)`. Conclude with `hg.dvd_of_dvd_mul_left (Nat.gcd_dvd_left _ _)`.
+A detailed English derivation is pending.
 -/
 private theorem exp_ex {l n : ℕ} (hl : l.Prime) (hn : n ≠ 0) :
     ∃ k m : ℕ, l.Coprime m ∧ n ∣ k * m ∧ ∀ m' : ℕ, l.Coprime m' → k ≡ 1 [MOD Nat.gcd n m'] := by
@@ -47,9 +47,9 @@ private theorem exp_ex {l n : ℕ} (hl : l.Prime) (hn : n ≠ 0) :
     exact hg.dvd_of_dvd_mul_left (Nat.gcd_dvd_left _ _)
 
 /- English proof (translation)
-Establish `key : ∀ {ρ : G ℚ Ω}, IsCC ρ → ∀ ζ : Ω, ζ ^ N = 1 → ρ ζ = ζ⁻¹`. Introduce and unpack `ρ ⟨j, hj⟩ ζ hζ`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, map_inv₀, Complex.inv_eq_conj]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hζ, map_one]) (NeZero.ne N)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Chr.cls ℚ Ω N (τ⁻¹ * σ) = 1` using `cls_one (dvd_refl N) (fun ζ hζ => by`. Rewrite using `[AlgEquiv.mul_apply, key hσ ζ hζ, ← key hτ ζ hζ]`. Conclude with `AlgEquiv.aut_inv τ ▸ τ.symm_apply_apply ζ)`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h1.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cyclotomicClass_eq_of_isComplexConj {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] {σ τ : G ℚ Ω}
     (hσ : IsCC σ) (hτ : IsCC τ) : Chr.cls ℚ Ω N σ = Chr.cls ℚ Ω N τ := by
@@ -65,41 +65,37 @@ private theorem cyclotomicClass_eq_of_isComplexConj {Ω : Type} [Field Ω] [Char
   exact h1.symm
 
 /- English proof (translation)
-Take `⟨-, hpsi, -, hp1, ξ', ξ₀, -, -, -, hxi⟩` from `hO`. Use `haveI := hp1`. Establish `hlp : l.Prime` using `hl.out`. Use `haveI : NeZero l := ⟨hlp.ne_zero⟩`. Establish `hl2 : l ≠ 2` using `hD.l_odd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hn0 : Fintype.card (ZMod N)ˣ ≠ 0` using `Fintype.card_ne_zero`. Take `⟨k, m, hlm, hnkm, hk⟩` from `exp_ex hlp hn0`. Establish `hom : IsOmT c D.om` using `⟨hD.om_pow, fun σ => Ideal.Quotient.eq.1 (hD.om_bar σ)⟩`. Take `⟨hker1, hker2, -, -, hcc, hunr, -, -⟩` from `(omT Ω l c).2 D.om hom`. Take `⟨mξ, hlξ, hξm⟩` from `hD.xi_ord`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψn : ∀ g, D.ψ g ^ Fintype.card (ZMod N)ˣ = 1`. Introduce `g`. Rewrite using `[hpsi]`. Use `show (MulChar.toUnitHom ψ) (Chr.cls ℚ Ω N g) ^ Fintype.card (ZMod N)ˣ = 1`. Rewrite using `[← map_pow, pow_card_eq_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hψk : ∀ g, (∃ m' : ℕ, l.Coprime m' ∧ D.ψ g ^ m' = 1) → D.ψ g ^ k = D.ψ g`. Introduce and unpack `g ⟨m', hm', hg⟩`. Establish `hd : orderOf (D.ψ g) ∣ Nat.gcd (Fintype.card (ZMod N)ˣ) m'` using `Nat.dvd_gcd (orderOf_dvd_of_pow_eq_one (hψn g)) (orderOf_dvd_of_pow_eq_one hg)`. Use `conv_rhs => rw [← pow_one (D.ψ g)]`. Conclude with `pow_eq_pow_iff_modEq.2 ((hk m' hm').of_dvd hd)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ1 : D.ψ ^ Fintype.card (ZMod N)ˣ = 1` using `MonoidHom.ext fun g => by rw [MonoidHom.pow_apply, hψn g, MonoidHom.one_apply]`. Use `⟨D.om ^ (D.e + 3) * D.ξ * D.ψ ^ k, l * N * p₁ * 2 ^ n', (l - 1) * mξ * m, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.pos_of_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero hlp.ne_zero (NeZero.ne N)) (NeZero.ne p₁)) (pow_ne_zero _ two_ne_zero))`. Introduce `s hs`. Establish `hl' : Chr.cls ℚ Ω l s = 1` using `cls_one ⟨N * p₁ * 2 ^ n', by ring⟩ hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hN' : Chr.cls ℚ Ω N s = 1` using `cls_one ⟨l * p₁ * 2 ^ n', by ring⟩ hs`. Establish `hp' : Chr.cls ℚ Ω p₁ s = 1` using `cls_one ⟨l * N * 2 ^ n', by ring⟩ hs`. Establish `hq' : Chr.cls ℚ Ω (2 ^ n') s = 1` using `cls_one ⟨l * N * p₁, by ring⟩ hs`. Establish `h1 : D.om s = 1`. Establish `: s ∈ (Chr.cls ℚ Ω l).ker` using `hl'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← hker2]`. Conclude with `this`. Establish `h2 : D.ξ s = 1`. Rewrite using `[hxi, MonoidHom.mul_apply]`. Simplify using `only [Chr.dirG, MonoidHom.comp_apply, hp', hq', map_one, mul_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : D.ψ s = 1`. Rewrite using `[hpsi]`. Simplify using `only [Chr.dirG, MonoidHom.comp_apply, hN', map_one]`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.pow_apply, h1, h2, h3, one_pow, mul_one]`. Establish `h : l.Coprime (l - 1)` using `(Nat.Prime.coprime_iff_not_dvd hlp).2 (Nat.not_dvd_of_pos_of_lt (Nat.sub_pos_of_lt hlp.one_lt) (Nat.sub_lt hlp.pos one_pos))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Nat.Coprime.mul_right (Nat.Coprime.mul_right h hlξ) hlm`. Take `⟨t, ht⟩` from `hnkm`. Establish `a1 : (D.om ^ (D.e + 3)) ^ ((l - 1) * mξ * m) = 1`. Rewrite using `[← pow_mul, show (D.e + 3) * ((l - 1) * mξ * m) = (l - 1) * ((D.e + 3) * mξ * m) by ring, pow_mul, hD.om_pow, one_pow]`. Establish `a2 : D.ξ ^ ((l - 1) * mξ * m) = 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (l - 1) * mξ * m = mξ * ((l - 1) * m) by ring, pow_mul, hξm, one_pow]`. Establish `a3 : (D.ψ ^ k) ^ ((l - 1) * mξ * m) = 1`. Rewrite using `[← pow_mul, show k * ((l - 1) * mξ * m) = Fintype.card (ZMod N)ˣ * (t * ((l - 1) * mξ)) by`. Rewrite using `[show Fintype.card (ZMod N)ˣ * (t * ((l - 1) * mξ)) = (Fintype.card (ZMod N)ˣ * t) * ((l - 1) * mξ) by ring, ← ht]`. Use the proof step `ring, pow_mul, hψ1, one_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, mul_pow, a1, a2, a3, mul_one, mul_one]`. Introduce `σ hσ`. Establish `ho : D.om σ = -1` using `hcc σ hσ hl2`. Establish `hx : D.ξ σ = -1`. Rewrite using `[← hD.xi_odd, hxi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [MonoidHom.mul_apply, Chr.dirG, MonoidHom.comp_apply, cyclotomicClass_eq_of_isComplexConj _ hσ hD.isCC]`. Establish `hchi : chiO ℚ Ω l c.O D.cc = -1`. Establish `h` using `IsConjOm.cyc (E := ℚ) (l := l) (σ := MulSemiringAction.toRingAut (G ℚ Ω) Ω D.cc) hD.isCC`. Use `show Units.map _ (cycZ ℚ Ω l D.cc) = -1`. Rewrite using `[show cycZ ℚ Ω l D.cc = -1 from h]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using the standard rewrite rules. Establish `hP` using `hD.Psi_even`. Simplify using `only [Raw.Psi, Chr.Psi, MonoidHom.mul_apply] at hP`. Rewrite `hP` using `[show (chiO ℚ Ω l c.O ^ (D.e : ℤ)) D.cc = (chiO ℚ Ω l c.O D.cc) ^ (D.e : ℤ) from rfl, hchi, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψσ : D.ψ σ = (-1) ^ D.e`. Rewrite `hP`, the goal using `[hpsi]`. Establish `: Chr.dirG ℚ Ω ψ σ = Chr.dirG ℚ Ω ψ D.cc`. Simplify using `only [Chr.dirG, MonoidHom.comp_apply, cyclotomicClass_eq_of_isComplexConj _ hσ hD.isCC]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← mul_right_inj ((-1 : c.Oˣ) ^ D.e), hP, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]`. Establish `hsq : D.ψ σ ^ k = D.ψ σ` using `hψk σ ⟨2, (Nat.coprime_primes hlp Nat.prime_two).2 hl2, by rw [hψσ, ← pow_mul, mul_comm, pow_mul, neg_one_sq, one_pow]⟩`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.pow_apply]`. Rewrite using `[ho, hx, hsq, hψσ, ← pow_succ, ← pow_add]`. Conclude with `Even.neg_one_pow ⟨D.e + 2, by ring⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A hA`. Establish `h1 : Ine A ≤ D.om.ker` using `hunr A (hA l hD.l_mem)`. Establish `h2` using `hD.xi_unr A hA`. Establish `h3` using `hD.psi_unr A hA`. Introduce `x hx`.
-
-Establish `a1 : D.om x = 1` using `h1 hx`. Establish `a2 : D.ξ x = 1` using `h2 hx`. Establish `a3 : D.ψ x = 1` using `h3 hx`. Rewrite using `[MonoidHom.mem_ker]`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.pow_apply, a1, a2, a3, one_pow, mul_one]`.
-
-Introduce `g hg`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.pow_apply]`. Rewrite using `[hψk g hg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_character_of_dirichlet_data {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [hl : Fact l.Prime] {c : Coef l}
     {D : Raw Ω c} (hD : D.Good) {e N : ℕ} [NeZero N] {ψ : DirichletCharacter c.O N} {n' p₁ m₀ : ℕ}
@@ -202,13 +198,13 @@ private theorem exists_character_of_dirichlet_data {Ω : Type} [Field Ω] [CharZ
     rw [hψk g hg]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hC`. Establish `key : ∃ (χ : G ℚ Ω →* c.Oˣ) (N m : ℕ), 1 ≤ N ∧ Af.KillsMu N χ ∧ l.Coprime m ∧ χ ^ m = 1 ∧ (∀ σ, IsCC σ → χ σ = 1) ∧ (∀ A, Raw.Away D.S A → Ine (F` using `ℚ) A ≤ χ.ker) ∧ ∀ g, (∃ m' : ℕ, l.Coprime m' ∧ D.ψ g ^ m' = 1) → χ g = (D.om ^ (D.e + 3) * D.ξ * D.ψ) g := by`. Break down `hC with ⟨hD, h, t, e, ψ, -, -, -, -, -, hO⟩ | ⟨hD, h, t, e, ψ, -, -, -, -, -, hO⟩` into its components or cases. Conclude with `exists_character_of_dirichlet_data hD hO`. Conclude with `exists_character_of_dirichlet_data hD hO`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨χ, N, m, hN, hK, hm, hχm, hcc, hA, hg⟩` from `key`. Establish `hval : ∀ g, (toQ χ)⁻¹ g = (Units.map (algebraMap c.O (PadicAlgCl l) : c.O →* PadicAlgCl l) (χ g))⁻¹` using `fun g => rfl`. Use `⟨(toQ χ)⁻¹, N, m, hN, ?_, hm, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Rewrite using `[hval, hK s hs, map_one, inv_one]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `g`. Rewrite using `[MonoidHom.pow_apply, hval, inv_pow, ← map_pow, ← MonoidHom.pow_apply, hχm]`. Simplify using the standard rewrite rules. Introduce `σ hσ`. Rewrite using `[hval, hcc σ hσ, map_one, inv_one]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `A hAw x hx`. Establish `h1 : χ x = 1` using `hA A hAw hx`. Rewrite using `[MonoidHom.mem_ker, hval, h1, map_one, inv_one]`. Introduce `g hg'`. Rewrite using `[hval, show toQ (D.om ^ (D.e + 3) * D.ξ * D.ψ) g = Units.map (algebraMap c.O (PadicAlgCl l) : c.O →* PadicAlgCl l) ((D.om ^ (D.e + 3) * D.ξ * D.ψ) g) from rfl, ← hg g hg', inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lk.etaEx :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c}, (Ctx2 D ∨ Ctx3 D) → ∃ (η : G ℚ Ω →* (PadicAlgCl l)ˣ) (N m : ℕ), 1 ≤ N ∧ Af.KillsMu N η ∧ l.Coprime m ∧ η ^ m = 1 ∧ (∀ σ, IsCC σ → η σ = 1) ∧ (∀ A, Raw.Away D.S A → Ine (F := ℚ) A ≤ η.ker) ∧ ∀ g, (∃ m' : ℕ, l.Coprime m' ∧ D.ψ g ^ m' = 1) → η g * toQ (D.om ^ (D.e + 3) * D.ξ * D.ψ) g = 1 := by

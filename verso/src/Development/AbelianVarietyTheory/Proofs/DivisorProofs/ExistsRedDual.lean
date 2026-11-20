@@ -17,7 +17,7 @@ namespace GlobalTheory.Dieu.EtFromConn
 variable {p : ℕ} [Fact p.Prime] (B : Base p (fun _ _ G => G.IsConn))
 
 /- English proof (translation)
-The claim follows from `PDivGroup.dual_isConn_of_isEt p k G hG`.
+A detailed English derivation is pending.
 -/
 theorem dual_conn {k : Type} [Field k] [CharP k p] [PerfectRing k p] {G : PDivGroup p k}
     (hG : G.IsEt) : G.dual.IsConn :=
@@ -45,7 +45,7 @@ def tr {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k
   if h : ∃ l', IsTr B σ hG' hG s l l' then Classical.choose h else 0
 
 /- English proof (translation)
-Rewrite using `[tr, dif_pos h]`. Conclude with `Classical.choose_spec h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_spec {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p]
     [PerfectRing k' p] {σ : k →+* k'} {G' : PDivGroup p k'} {G : PDivGroup p k} (hG' : G'.IsEt)
@@ -59,7 +59,7 @@ section Red
 variable {k : Type} [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) (hG : G.IsEt)
 
 /- English proof (translation)
-Use `haveI := B.free G.dual (dual_conn hG)`. Use `haveI := B.finite G.dual (dual_conn hG)`. Conclude with `wittDual_reduction p k _ _ (B.red G.dual (dual_conn hG)) (B.red_surjective G.dual (dual_conn hG)) (B.red_eq_zero G.dual (dual_conn hG))`.
+A detailed English derivation is pending.
 -/
 theorem exists_redDual : ∃ r' : Mod B G hG →ₛₗ[(WittVector.constantCoeff : WittVector p k →+* k)]
       Module.Dual k G.dual.RigExt,
@@ -75,7 +75,7 @@ def redDual : Mod B G hG →ₛₗ[(WittVector.constantCoeff : WittVector p k �
   Classical.choose (exists_redDual B G hG)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_redDual B G hG)`.
+A detailed English derivation is pending.
 -/
 theorem redDual_spec :
     (∀ l m, redDual B G hG l (B.red G.dual (dual_conn hG) m) = WittVector.constantCoeff (l m)) ∧
@@ -90,7 +90,7 @@ def red : Mod B G hG →ₛₗ[(WittVector.constantCoeff : WittVector p k →+* 
   (rigLie G hG).symm.toLinearMap.comp (G.dual.rigOfOmega.dualMap.comp (redDual B G hG))
 
 /- English proof (translation)
-The claim follows from `(rigLie G hG).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem rigToLie_red (l : Mod B G hG) :
     G.rigToLie (p_eq_zero p k) (red B G hG l) = G.dual.rigOfOmega.dualMap (redDual B G hG l) :=

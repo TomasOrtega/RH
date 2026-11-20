@@ -12,14 +12,14 @@ section Gen
 variable {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-The claim follows from `(blockActTensor K K S k n g).1 s F`.
+A detailed English derivation is pending.
 -/
 theorem tr_bA_emb (K : Type) [CommRing K] {k n : ℕ} (g : S → Matrix (Fin k) (Fin k) K) (s : S)
     (F : MvPolynomial (Fin k × Fin n) K) : blockAct K g (blockEmb K s F) = blockEmb K s (rowAct K (g s) F) :=
   (blockActTensor K K S k n g).1 s F
 
 /- English proof (translation)
-Rewrite using `[smul_eq_C_mul, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_prod_smul (K : Type) [CommRing K] {k n : ℕ} (c : S → K) (F : S → MvPolynomial (Fin k × Fin n) K) :
     (∏ s, c s) • ∏ s, blockEmb K s (F s) = ∏ s, blockEmb K s (c s • F s) := by
@@ -28,7 +28,7 @@ theorem tr_prod_smul (K : Type) [CommRing K] {k n : ℕ} (c : S → K) (F : S �
   rw [map_smul, smul_eq_C_mul]
 
 /- English proof (translation)
-Unfold `blockEmb`. Conclude with `map_rename f _ P`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tr_map_emb {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {k n : ℕ} (s : S)
     (P : MvPolynomial (Fin k × Fin n) R) : map f (blockEmb R s P) = blockEmb R' s (map f P) := by
@@ -36,9 +36,9 @@ theorem tr_map_emb {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {k 
   exact map_rename f _ P
 
 /- English proof (translation)
-Establish `key : (map f).comp (Th0 R m vec).toRingHom = (Th0 R' m vec).toRingHom.comp (map f)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[Th0]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_X, Th0, aeval_X]`. Rewrite using `[tr_map_emb, map_Nv]`. Conclude with `RingHom.congr_fun key P`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_letter_substitution {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (m : ℕ) (vec : S → Bool)
     (P : MvPolynomial (S × Fin (m + 1)) R) : map f (Th0 R m vec P) = Th0 R' m vec (map f P) := by
@@ -52,7 +52,7 @@ theorem map_letter_substitution {R R' : Type} [CommRing R] [CommRing R'] (f : R 
   exact RingHom.congr_fun key P
 
 /- English proof (translation)
-Use `congrArg (fun f => f x) (rowActMul K k n g g⁻¹)` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`. Rewrite using `[this, Matrix.nonsing_inv_mul g hg, fl_rowAct_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_rowAct_inv (K : Type) [Field K] {k n : ℕ} (g : Matrix (Fin k) (Fin k) K) (hg : IsUnit g.det)
     (x : MvPolynomial (Fin k × Fin n) K) : rowAct K g (rowAct K g⁻¹ x) = x := by
@@ -61,11 +61,11 @@ theorem tr_rowAct_inv (K : Type) [Field K] {k n : ℕ} (g : Matrix (Fin k) (Fin 
   rw [this, Matrix.nonsing_inv_mul g hg, fl_rowAct_one]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.G.Pol at hG`. Rewrite `hG` using `[restrictSupport_eq_span]`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨μ, hμ, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `beta_reduce`. Rewrite using `[mono_factor, map_prod, map_prod, map_prod, map_prod]`. Simplify using `only [Th0_emb, Lin_emb, tr_bA_emb]`. Rewrite using `[tr_prod_smul]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[twist_theta K m hm (d s) (vec s) (M s) (hM s) _ (partS_Hd K d μ hμ s)]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `smul a x _ hx => simp only [map_smul]`. Rewrite using `[smul_comm, hx]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_multi_twist (K : Type) [Field K] (m : ℕ) (hm : 1 ≤ m) (vec : S → Bool) (d : S → ℕ)
     (M : S → Matrix (Fin (m + 1)) (Fin (m + 1)) K) (hM : ∀ s, IsUnit (M s).det)
@@ -88,15 +88,15 @@ theorem tr_multi_twist (K : Type) [Field K] (m : ℕ) (hm : 1 ≤ m) (vec : S �
   | smul a x _ hx => simp only [map_smul]; rw [smul_comm, hx]
 
 /- English proof (translation)
-Unfold `tensorLat at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`. Establish `h1` using `fun s => (nablaLTwMem O Kf m (lam s) (M s) (hM s) (F s)).1 (hF s)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose G _ hG2 using h1`. Use `⟨∏ s, blockEmb O s (G s), ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod, map_prod]`. Simplify using `only [tr_bA_emb]`. Rewrite using `[tr_prod_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[tr_map_emb, ← hG2 s]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨R1, h1⟩` from `hx`. Take `⟨R2, h2⟩` from `hy`. Conclude with `⟨R1 + R2, by rw [map_add, smul_add, h1, h2, map_add]⟩`. Consider the case `smul a x _ hx`. Take `⟨R1, h1⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a • R1, ?_⟩` and prove the remaining obligations. Rewrite using `[fl_map_smul, ← h1, ← algebraMap_smul Kf a x, map_smul, smul_comm, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_tens_int (O Kf : Type) [CommRing O] [Field Kf] [Algebra O Kf] (m : ℕ) (lam : S → Fin (m + 1) → ℤ)
     (M : S → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hM : ∀ s, IsUnit (M s).det)
@@ -128,17 +128,17 @@ theorem tr_tens_int (O Kf : Type) [CommRing O] [Field Kf] [Algebra O Kf] (m : �
     rw [fl_map_smul, ← h1, ← algebraMap_smul Kf a x, map_smul, smul_comm, algebraMap_smul]
 
 /- English proof (translation)
-Unfold `tensorLat at h`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨G, hG, rfl⟩` from `hx`. Establish `key : ∀ s, (M s).det ^ (lam s (Fin.last m)) • rowAct Kf (M s) (((M s).det ^ (lam s (Fin.last m)))⁻¹ • rowAct Kf (M s)⁻¹ (map (algebraMap O Kf) (G s))) = map (algebraMap O Kf) (G s)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `s`. Rewrite using `[map_smul, smul_smul, mul_inv_cancel₀ (zpow_ne_zero _ (hM s).ne_zero), one_smul, tr_rowAct_inv _ _ (hM s)]`. Use `⟨∏ s, blockEmb Kf s (((M s).det ^ (lam s (Fin.last m)))⁻¹ • rowAct Kf (M s)⁻¹ (map (algebraMap O Kf) (G s))), ?_, ?_⟩` and prove the remaining obligations. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨_, fun s => ?_, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[nablaLTwMem O Kf m (lam s) (M s) (hM s), key s]`. Conclude with `⟨G s, hG s, rfl⟩`. Rewrite using `[map_prod, map_prod]`. Simplify using `only [tr_bA_emb]`. Rewrite using `[tr_prod_smul]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[tr_map_emb, key s]`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨y1, m1, h1⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y2, m2, h2⟩` from `hy`. Conclude with `⟨y1 + y2, Submodule.add_mem _ m1 m2, by rw [map_add, smul_add, h1, h2, map_add]⟩`. Consider the case `smul a x _ hx`. Take `⟨y1, m1, h1⟩` from `hx`. Use `⟨a • y1, Submodule.smul_mem _ _ m1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fl_map_smul, ← h1, ← algebraMap_smul Kf a y1, map_smul, smul_comm, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_tens_lift (O Kf : Type) [CommRing O] [Field Kf] [Algebra O Kf] (m : ℕ) (lam : S → Fin (m + 1) → ℤ)
     (M : S → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hM : ∀ s, IsUnit (M s).det)
@@ -177,11 +177,11 @@ theorem tr_tens_lift (O Kf : Type) [CommRing O] [Field Kf] [Algebra O Kf] (m : �
     rw [fl_map_smul, ← h1, ← algebraMap_smul Kf a y1, map_smul, smul_comm, algebraMap_smul]
 
 /- English proof (translation)
-Unfold `tensorLat at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨F, fun s => ?_, rfl⟩` and prove the remaining obligations. Take `⟨x, hx, hxF⟩` from `hF s`. Rewrite using `[← hxF]`. Conclude with `Submodule.smul_mem _ _ (nablaLLe O Kf (m + 1) (m + 1) _ (M s) (hM s) x hx)`. Consider the case `zero => exact Submodule.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[← algebraMap_smul Kf a x]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_tens_le (O Kf : Type) [CommRing O] [Field Kf] [Algebra O Kf] (m : ℕ) (lam : S → Fin (m + 1) → ℤ)
     (M : S → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hM : ∀ s, IsUnit (M s).det)

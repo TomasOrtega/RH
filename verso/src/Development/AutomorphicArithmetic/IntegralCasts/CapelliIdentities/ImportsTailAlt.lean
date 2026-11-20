@@ -1,15 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `F _ r a M hM`. Establish `hinj : Function.Injective M.mulVecLin`. Rewrite using `[← LinearMap.ker_eq_bot, Matrix.ker_mulVecLin_eq_bot_iff]`. Conclude with `hM`. Establish `hrank : M.rank = a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.rank, LinearMap.finrank_range_of_inj hinj, Module.finrank_fin_fun]`. Take `⟨κ, f, hf, hsp, hli⟩` from `exists_linearIndependent' F M.row`. Use `haveI : Finite κ := Finite.of_injective f hf`. Use `letI : Fintype κ := Fintype.ofFinite κ`. Establish `hcard : Fintype.card κ = a`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← finrank_span_eq_card hli, hsp, ← Matrix.rank_eq_finrank_span_row, hrank]`. Set `eqv : κ ≃ Fin a` to `Fintype.equivFinOfCardEq hcard`. Use `⟨f ∘ eqv.symm, ?_⟩` and prove the remaining obligations. Establish `hli2 : LinearIndependent F (M.submatrix (f ∘ eqv.symm) id).row`. Use `hli.comp eqv.symm eqv.symm.injective` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h : (M.submatrix (f ∘ eqv.symm) id).row = (M.row ∘ f) ∘ eqv.symm`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `this`.
-
-Establish `hu` using `Matrix.linearIndependent_rows_iff_isUnit.mp hli2`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yra1.main.{u_1} :
     ∀ {F : Type u_1} [inst : Field F] {r a : ℕ} (M : Matrix (Fin r) (Fin a) F),

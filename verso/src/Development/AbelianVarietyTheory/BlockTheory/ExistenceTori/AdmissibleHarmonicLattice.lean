@@ -28,16 +28,16 @@ structure Lat (E : Type) [Field E] (n : ℕ) where
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Simplify using `only [stdMod, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stdMod {x : Fin n → E} : x ∈ stdMod E n ↔ ∀ j, ∃ a : 𝓞 E, (a : E) = x j := by
   simp only [stdMod, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[mem_stdMod]`. Introduce `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Conclude with `⟨1, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨0, by simp [h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem single_mem_stdMod (j : Fin n) : (Pi.single j 1 : Fin n → E) ∈ stdMod E n := by
   rw [mem_stdMod]
@@ -168,13 +168,11 @@ def ClassesFinite {H : Host E} (l : Level H) : Prop :=
           ∀ (x : Λ.L) (y : t.1.L), γ x = y → φ x = t.2 y
 
 /- English proof (translation)
-Introduce `x`. Express the relevant statement in the definitionally equal form `x ∈ stdMod E n ↔ ∀ y ∈ stdMod E n, _`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Rewrite `hx`, `hy` using `[mem_stdMod]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose a ha using hx`. Use `choose b hb using hy`. Use `⟨∑ j, a j * IsCMField.ringOfIntegersComplexConj E (b j), ?_⟩` and prove the remaining obligations. Simplify using `[stdForm, ← ha, ← hb]`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_stdMod]`. Introduce `j`. Take `⟨a, ha⟩` from `h _ (single_mem_stdMod j)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`.
-
-Simplify using `[stdForm, Pi.single_apply, apply_ite]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem std_selfDual : (Lat.std E n).SelfDual := by
   intro x
@@ -196,7 +194,7 @@ theorem std_selfDual : (Lat.std E n).SelfDual := by
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Introduce `p hp _`. Establish `h1 : ¬ p ∣ 1` using `fun h => hp.one_lt.ne' (Nat.dvd_one.1 h)`. Conclude with `⟨fun x hx => ⟨1, h1, by rw [one_smul]; exact hx⟩, fun x hx => ⟨1, h1, by rw [one_smul]; exact hx⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem std_stdAt (s : ℕ) : (Lat.std E n).StdAt s := by
   intro p hp _
@@ -204,9 +202,9 @@ theorem std_stdAt (s : ℕ) : (Lat.std E n).StdAt s := by
   exact ⟨fun x hx => ⟨1, h1, by rw [one_smul]; exact hx⟩, fun x hx => ⟨1, h1, by rw [one_smul]; exact hx⟩⟩
 
 /- English proof (translation)
-Use `⟨l.odd, dvd_rfl, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ stdMod E n ⊓ stdMod E n`. Rewrite using `[inf_idem]`. Rewrite `hx` using `[mulStd, Submodule.mem_smul_pointwise_iff_exists]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `(stdMod E n).smul_mem _ hy`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem std_admissible {H : Host E} (l : Level H) : (Lat.std E n).Admissible l.M l.M := by
   refine ⟨l.odd, dvd_rfl, ?_⟩

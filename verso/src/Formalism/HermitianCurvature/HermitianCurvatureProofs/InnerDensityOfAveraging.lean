@@ -9,9 +9,9 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.C6
 
 /- English proof (translation)
-Introduce and unpack `⟨C0, hI⟩ hAvg`. Use `⟨C0, ?_⟩` and prove the remaining obligations. Introduce `CV hCV k r Wp Wq _ _ _ _ _ _ D A ε mm F' γ H hrel hG hc hMore`. Take `⟨S, hS⟩` from `hI CV hCV k r Wp Wq D A ε mm F' γ H hrel hG hc`. Take `⟨C', x₁, hb⟩` from `hS hMore`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `S.tie (hAvg S.β S.β_ne S.V S.p S.s S.w S.a C' x₁ S.w_inj hb S.k₀)`.
+A detailed English derivation is pending.
 -/
 theorem inner_density_of_averaging : Formalism.FourierDecayAlt.DensityAveraging.DensStepJOfAvg := by
   rintro ⟨C0, hI⟩ hAvg
@@ -22,9 +22,9 @@ theorem inner_density_of_averaging : Formalism.FourierDecayAlt.DensityAveraging.
   exact S.tie (hAvg S.β S.β_ne S.V S.p S.s S.w S.a C' x₁ S.w_inj hb S.k₀)
 
 /- English proof (translation)
-Introduce and unpack `⟨C0, hI⟩ hAvg`. Use `⟨C0, ?_⟩` and prove the remaining obligations. Introduce `CV hCV k r Wp Wq _ _ _ _ _ _ D A ε mm F' γ H hrel hG hc hMore`. Take `⟨S, hS⟩` from `hI CV hCV k r Wp Wq D A ε mm F' γ H hrel hG hc`. Take `⟨C', x₁, hb⟩` from `hS hMore`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `S.tie (hAvg S.β S.β_ne S.V S.p S.s S.w S.a C' x₁ S.w_inj hb S.k₀)`.
+A detailed English derivation is pending.
 -/
 theorem top_density_of_averaging : Formalism.FourierDecayAlt.DensityAveraging.DensStepTopOfAvg := by
   rintro ⟨C0, hI⟩ hAvg

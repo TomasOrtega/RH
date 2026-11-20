@@ -7,7 +7,7 @@ namespace GlobalTheory.Col.Model
 open GlobalTheory.Col
 
 /- English proof (translation)
-The claim follows from `inferInstance prime := (WittVector.irreducible p).prime complete := inferInstance frob := by intro x rw [WittVector.mem_span_p_iff_coeff_zero_eq_zero] have : (WittVector.constantCoeff : WittVector p k →+* k) (WittVector.frobeniusEquiv p k x - x ^ p) = 0 := by rw [map_sub, map_pow …`.
+A detailed English derivation is pending.
 -/
 theorem frobLift_witt (p : ℕ) [hp : Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] :
     FrobLift (WittVector p k) p (WittVector.frobeniusEquiv p k) where
@@ -32,7 +32,7 @@ theorem frobLift_witt (p : ℕ) [hp : Fact p.Prime] (k : Type) [Field k] [CharP 
     simpa using this
 
 /- English proof (translation)
-The claim follows from `frobLift_witt p _`.
+A detailed English derivation is pending.
 -/
 theorem frobLift_witt_closure (p : ℕ) [hp : Fact p.Prime] :
     FrobLift (WittVector p (AlgebraicClosure (ZMod p))) p (WittVector.frobeniusEquiv p (AlgebraicClosure (ZMod p))) :=
@@ -44,9 +44,9 @@ variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime]
 abbrev om : PowerSeries R := (1 + X) ^ p - 1
 
 /- English proof (translation)
-Use `haveI : CharP (R ⧸ Ideal.span {(p : R)}) p := CharP.quotient R p hu`. Use `haveI : Nontrivial (R ⧸ Ideal.span {(p : R)}) := CharP.nontrivial_of_char_ne_one (R := R ⧸ Ideal.span {(p : R)}) hp.out.ne_one`. Use `haveI : CharP (PowerSeries (R ⧸ Ideal.span {(p : R)})) p := charP_of_injective_ringHom (f := PowerSeries.C) PowerSeries.C_injective p`. Establish `: (om p : PowerSeries R).map (Ideal.Quotient.mk (Ideal.span {(p : R)})) = X ^ p`. Simplify using `only [om, map_sub, map_pow, map_add, map_one, PowerSeries.map_X]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_pow_char]`. Simplify using the standard rewrite rules. Rewrite using `[this, order_X_pow]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem om_order (hu : (p : R) ∈ nonunits R) :
     ((om p : PowerSeries R).map (Ideal.Quotient.mk (Ideal.span {(p : R)}))).order.toNat = p := by
@@ -60,9 +60,9 @@ theorem om_order (hu : (p : R) ∈ nonunits R) :
   rw [this, order_X_pow]; simp
 
 /- English proof (translation)
-Unfold `IsWeierstrassDivisorAt`. Rewrite using `[om_order p hu]`. Establish `h : ((1 + X) ^ p : PowerSeries R) = (((1 + Polynomial.X) ^ p : Polynomial R) : PowerSeries R)` using `by simp`. Establish `: coeff p (om p : PowerSeries R) = 1`. Rewrite using `[om, map_sub, h, Polynomial.coeff_coe, Polynomial.coeff_one_add_X_pow, coeff_one, if_neg hp.out.ne_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `isUnit_one`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_div (hu : (p : R) ∈ nonunits R) : (om p : PowerSeries R).IsWeierstrassDivisorAt (Ideal.span {(p : R)}) := by
   unfold IsWeierstrassDivisorAt
@@ -73,7 +73,7 @@ theorem om_div (hu : (p : R) ∈ nonunits R) : (om p : PowerSeries R).IsWeierstr
   rw [this]; exact isUnit_one
 
 /- English proof (translation)
-Rewrite using `[map_add, map_mul, phi_X]`. Use `congr 1`. Conclude with `(phi (R := R) p hp.out.pos).commutes c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem phi_split (c : R) (g : PowerSeries R) : phi p hp.out.pos (C c + X * g) = C c + om p * phi p hp.out.pos g := by
   rw [map_add, map_mul, phi_X]
@@ -81,7 +81,7 @@ theorem phi_split (c : R) (g : PowerSeries R) : phi p hp.out.pos (C c + X * g) =
   exact (phi (R := R) p hp.out.pos).commutes c
 
 /- English proof (translation)
-Use extensionality with `n`. Conclude with `(X_pow_dvd_iff.1 (h (n + 1))) n (Nat.lt_succ_self n)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_X_pow_dvd (f : PowerSeries R) (h : ∀ n, X ^ n ∣ f) : f = 0 := by
   ext n
@@ -92,9 +92,7 @@ variable [IsAdicComplete (Ideal.span {(p : R)}) R]
 open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 /- English proof (translation)
-Establish `h : ∀ n, ∃ c : R, coeff n g = p * c` using `fun n => by`. Use `congrArg (coeff n) hg` as an intermediate fact. Rewrite `this` using `[coeff_map, map_zero, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `this`. Use `choose c hc using h`.
-
-Conclude with `⟨PowerSeries.mk c, by ext n; simp [hc]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma exists_eq_smul_of_map_quotient_eq_zero (g : R⟦X⟧)
     (hg : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {(p : R)})) g = 0) :
@@ -109,11 +107,11 @@ private lemma exists_eq_smul_of_map_quotient_eq_zero (g : R⟦X⟧)
 open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 /- English proof (translation)
-Establish `h : ((1 : PowerSeries R) + X) ^ p = (((1 + Polynomial.X) ^ p : Polynomial R) : PowerSeries R)`. Simplify using the standard rewrite rules. Rewrite using `[h, map_sub, map_sub, Polynomial.coeff_coe, Polynomial.coeff_one_add_X_pow, coeff_one, coeff_X_pow]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[hp.out.ne_zero.symm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hnp : n = p`. Substitute `hnp` using the available equality. Simplify using `[hp.out.ne_zero]`. Distinguish the cases in `hlt : n < p`. Rewrite using `[if_neg hn.ne', if_neg hnp, sub_zero, sub_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.cast_dvd_cast (Nat.Prime.dvd_choose_self hp.out hn.ne' hlt)`. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega), if_neg hn.ne', if_neg hnp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma prime_dvd_coeff_one_add_X_pow_sub_one_sub_X_pow (n : ℕ) :
     (p : R) ∣ coeff n (((1 : PowerSeries R) + X) ^ p - 1 - X ^ p) := by
@@ -133,7 +131,7 @@ private lemma prime_dvd_coeff_one_add_X_pow_sub_one_sub_X_pow (n : ℕ) :
 open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_map, coeff_map, Ideal.Quotient.eq, Ideal.mem_span_singleton, ← map_sub]`. Conclude with `prime_dvd_coeff_one_add_X_pow_sub_one_sub_X_pow p n`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma map_quotient_one_add_X_pow_sub_one :
     PowerSeries.map (Ideal.Quotient.mk (Ideal.span {(p : R)})) ((1 + X) ^ p - 1 : R⟦X⟧) =
@@ -145,9 +143,9 @@ private lemma map_quotient_one_add_X_pow_sub_one :
 open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.Col.phi`. Rewrite using `[PowerSeries.coe_substAlgHom, expand_apply]`. Establish `h1` using `map_subst (_root_.GlobalTheory.Col.hasSubst_om (R := R) p hp.out.pos) (h := Ideal.Quotient.mk (Ideal.span {(p : R)})) f`. Establish `h2` using `map_subst (HasSubst.X_pow (R := R) hp.out.ne_zero) (h := Ideal.Quotient.mk (Ideal.span {(p : R)})) f`. Express the relevant statement in the definitionally equal form `MvPowerSeries.map _ _ = MvPowerSeries.map _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, h2]`. Use `congr 1`. Conclude with `map_quotient_one_add_X_pow_sub_one p`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private lemma map_quotient_phi_eq_map_expand (f : R⟦X⟧) :
     PowerSeries.map (Ideal.Quotient.mk (Ideal.span {(p : R)})) (_root_.GlobalTheory.Col.phi p hp.out.pos f) =
@@ -166,7 +164,7 @@ private lemma map_quotient_phi_eq_map_expand (f : R⟦X⟧) :
 open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 /- English proof (translation)
-The claim follows from `exists_eq_smul_of_map_quotient_eq_zero p _ (by rw [map_sub, map_quotient_phi_eq_map_expand, sub_self])`.
+A detailed English derivation is pending.
 -/
 private lemma exists_phi_sub_expand_eq_smul (f : R⟦X⟧) :
     ∃ d : R⟦X⟧, _root_.GlobalTheory.Col.phi p hp.out.pos f - expand p hp.out.ne_zero f = (p : R) • d :=
@@ -175,9 +173,9 @@ private lemma exists_phi_sub_expand_eq_smul (f : R⟦X⟧) :
 open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 /- English proof (translation)
-Use `choose d hd using fun i => exists_phi_sub_expand_eq_smul p (g i)`. Use `⟨∑ i, d i * X ^ (i : ℕ), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_mul_assoc, ← hd i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private lemma exists_sum_phi_eq_sum_expand_add_smul (g : Fin p → R⟦X⟧) :
     ∃ D : R⟦X⟧, ∑ i, _root_.GlobalTheory.Col.phi p hp.out.pos (g i) * X ^ (i : ℕ) =
@@ -192,11 +190,11 @@ private lemma exists_sum_phi_eq_sum_expand_add_smul (g : Fin p → R⟦X⟧) :
 open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 /- English proof (translation)
-Introduce `hdvd`. Establish `h1 : (p : ℤ) ∣ ((p * n + j - i : ℕ) : ℤ)` using `Int.natCast_dvd_natCast.mpr hdvd`. Move the coercions through the operations in `[Nat.cast_sub hle] at h1`. Establish `h2 : (p : ℤ) ∣ (j : ℤ) - i`. Establish `h3 : (j : ℤ) - i = (p * n + j - i) - p * n` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Conclude with `dvd_sub h1 (dvd_mul_right _ _)`. Establish `h4` using `Int.eq_zero_of_abs_lt_dvd h2 (by`. Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [abs_lt]; constructor <;> omega)`. Conclude with `hij (Fin.ext (by omega))`.
+A detailed English derivation is pending.
 -/
 private lemma not_dvd_mul_add_sub_of_ne {n : ℕ} {i j : Fin p} (hij : i ≠ j) (hle : (i : ℕ) ≤ p * n + j) :
     ¬ p ∣ p * n + j - i := by
@@ -215,9 +213,9 @@ private lemma not_dvd_mul_add_sub_of_ne {n : ℕ} {i j : Fin p} (hij : i ≠ j) 
 open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 /- English proof (translation)
-Rewrite using `[map_sum, Finset.sum_eq_single j]`. Rewrite using `[coeff_mul_X_pow, coeff_expand_mul]`. Introduce `i _ hij`. Rewrite using `[coeff_mul_X_pow']`. Use `split_ifs with hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `coeff_expand_of_not_dvd p hp.out.ne_zero _ (not_dvd_mul_add_sub_of_ne p hij hle)`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma coeff_sum_expand_mul_X_pow (g : Fin p → R⟦X⟧) (n : ℕ) (j : Fin p) :
     coeff (p * n + j) (∑ i, expand p hp.out.ne_zero (g i) * X ^ (i : ℕ)) = coeff n (g j) := by
@@ -233,7 +231,7 @@ private lemma coeff_sum_expand_mul_X_pow (g : Fin p → R⟦X⟧) (n : ℕ) (j :
 open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 /- English proof (translation)
-Use extensionality with `m`. Establish `hm` using `coeff_sum_expand_mul_X_pow p (fun i : Fin p => PowerSeries.mk fun n => coeff (p * n + i) h) (m / p) ⟨m % p, Nat.mod_lt _ hp.out.pos⟩`. Simplify using `only [Nat.div_add_mod, coeff_mk] at hm`. Rewrite using `[hm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma sum_expand_mk_coeff_mul_X_pow_eq (h : R⟦X⟧) :
     ∑ i : Fin p, expand p hp.out.ne_zero (PowerSeries.mk fun n => coeff (p * n + i) h) * X ^ (i : ℕ) = h := by
@@ -246,7 +244,7 @@ private lemma sum_expand_mk_coeff_mul_X_pow_eq (h : R⟦X⟧) :
 open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[← coeff_sum_expand_mul_X_pow p g n j, hg, map_zero, map_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private lemma eq_zero_of_sum_expand_mul_X_pow_eq_zero (g : Fin p → R⟦X⟧)
     (hg : ∑ i, expand p hp.out.ne_zero (g i) * X ^ (i : ℕ) = 0) (j : Fin p) : g j = 0 := by
@@ -257,15 +255,15 @@ open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 variable [IsAdicComplete (Ideal.span {(p : R)}) R] in
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, ∃ w : Fin p → R⟦X⟧, ∀ i, g i = ((p : R) ^ k) • w i`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨g, fun i => by simp⟩`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨w, hw⟩` from `ih`. Take `⟨D, hD⟩` from `exists_sum_phi_eq_sum_expand_add_smul p w`. Establish `hψ : ((p : R) ^ k) • ∑ i, _root_.GlobalTheory.Col.phi p hp.out.pos (w i) * X ^ (i : ℕ) = 0`. Rewrite using `[← hg, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hw i, map_smul, smul_mul_assoc]`. Rewrite `hψ` using `[hD, smul_add, smul_smul, ← pow_succ]`. Establish `h0 : ∑ i, expand p hp.out.ne_zero (g i + ((p : R) ^ (k + 1)) • PowerSeries.mk fun n => coeff (p * n + i) D) * X ^ (i : ℕ) = 0`. Simplify using `only [map_add, map_smul, add_mul, smul_mul_assoc, Finset.sum_add_distrib, ← Finset.smul_sum, sum_expand_mk_coeff_mul_X_pow_eq, hw]`. Conclude with `hψ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => -PowerSeries.mk fun n => coeff (p * n + i) D, fun i => ?_⟩` and prove the remaining obligations. Use `eq_zero_of_sum_expand_mul_X_pow_eq_zero p _ h0 i` as an intermediate fact. Rewrite using `[smul_neg, eq_neg_iff_add_eq_zero]`. Conclude with `this`. Use extensionality with `n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero]`. Use `IsHausdorff.haus' (I := Ideal.span {(p : R)}) (coeff n (g i)) fun k => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `key k`. Rewrite using `[SModEq.sub_mem, sub_zero, hw i, coeff_smul]`. Conclude with `Submodule.smul_mem_smul (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) k) Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Col.Model.indep (hu : (p : R) ∈ nonunits R) (g : Fin p → PowerSeries R)
     (hg : ∑ i, _root_.GlobalTheory.Col.phi p hp.out.pos (g i) * X ^ (i : ℕ) = 0) (i : Fin p) : g i = 0 := by
@@ -300,9 +298,9 @@ theorem _root_.GlobalTheory.Col.Model.indep (hu : (p : R) ∈ nonunits R) (g : F
 open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 /- English proof (translation)
-Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, by rw [← hc, mul_comm]⟩`. Introduce and unpack `⟨c, hc⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨c, by rw [hc, mul_comm]⟩`.
+Supply the required witnesses or components.
 -/
 private lemma mem_span_pow_smul_univ_iff_eq_pow_mul (K : ℕ) (x : R) :
     x ∈ ((Ideal.span {(p : R)}) ^ K • ⊤ : Submodule R R) ↔ ∃ c, x = (p : R) ^ K * c := by
@@ -317,31 +315,29 @@ open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] in
 variable [IsAdicComplete (Ideal.span {(p : R)}) R] in
 /- English proof (translation)
-Use `set ψ : (Fin p → R⟦X⟧) → R⟦X⟧ := fun g => ∑ i, _root_.GlobalTheory.Col.phi p hp.out.pos (g i) * X ^ (i : ℕ) with hψdef`. Establish `ψ_add : ∀ a b, ψ (a + b) = ψ a + ψ b` using `fun a b => by`. Simplify using `only [hψdef, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`. Establish `ψ_smul : ∀ (c : R) a, ψ (c • a) = c • ψ a` using `fun c a => by`. Simplify using `only [hψdef, Pi.smul_apply, map_smul, smul_mul_assoc, Finset.smul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ψ_zero : ψ 0 = 0` using `by simp [hψdef]`. Establish `step : ∀ h : R⟦X⟧, ∃ g : Fin p → R⟦X⟧, ∃ h' : R⟦X⟧, h = ψ g + (p : R) • h'`. Introduce `h`. Take `⟨D, hD⟩` from `exists_sum_phi_eq_sum_expand_add_smul p (fun i => PowerSeries.mk fun n => coeff (p * n + i) h)`. Rewrite `hD` using `[sum_expand_mk_coeff_mul_X_pow_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => PowerSeries.mk fun n => coeff (p * n + i) h, -D, ?_⟩` and prove the remaining obligations. Simplify using `only [hψdef]`. Rewrite using `[hD, smul_neg]`. Normalize the expressions using the abelian group laws. Use `choose G H hGH using step`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `hs : ℕ → R⟦X⟧` to `fun k => Nat.rec h (fun _ x => H x) k`. Establish `hs_succ : ∀ k, hs (k + 1) = H (hs k)` using `fun k => rfl`. Set `A : ℕ → Fin p → R⟦X⟧` to `fun K => ∑ k ∈ Finset.range K, ((p : R) ^ k) • G (hs k)`. Establish `hA : ∀ K, h = ψ (A K) + ((p : R) ^ K) • hs K`. Introduce `K`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `K with`. Consider the case `zero => show h = ψ (∑ k ∈ Finset.range 0, ((p : R) ^ k) • G (hs k)) + ((p : R) ^ 0) • h`. Rewrite using `[Finset.sum_range_zero, ψ_zero, pow_zero, one_smul, zero_add]`. Consider the case `succ K ih => conv_lhs => rw [ih]`. Rewrite using `[show A (K + 1) = A K + ((p : R) ^ K) • G (hs K) from Finset.sum_range_succ _ _, ψ_add, ψ_smul, hs_succ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `conv_lhs => rw [hGH (hs K)]`. Rewrite using `[smul_add, smul_smul, ← pow_succ]`. Normalize the expressions using the abelian group laws. Establish `hcauchy : ∀ (i : Fin p) (n : ℕ) {a b : ℕ}, a ≤ b → coeff n (A a i) ≡ coeff n (A b i) [SMOD ((Ideal.span {(p : R)}) ^ a • ⊤ : Submodule R R)]`. Introduce `i n a b hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[SModEq.sub_mem, mem_span_pow_smul_univ_iff_eq_pow_mul]`. Establish `hsplit : A b = A a + ∑ k ∈ Finset.Ico a b, ((p : R) ^ k) • G (hs k)`. Simplify using `only [A]`. Rewrite using `[Finset.sum_range_add_sum_Ico _ hab]`. Rewrite using `[hsplit]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.smul_apply, map_add, map_sum, coeff_smul, smul_eq_mul, sub_add_cancel_left]`. Use `⟨-∑ k ∈ Finset.Ico a b, (p : R) ^ (k - a) * coeff n (G (hs k) i), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_neg, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc, ← pow_add, Nat.add_sub_cancel' (Finset.mem_Ico.1 hk).1]`. Establish `hlim : ∀ (i : Fin p) (n : ℕ), ∃ L : R, ∀ K, coeff n (A K i) ≡ L [SMOD ((Ideal.span {(p : R)}) ^ K • ⊤ : Submodule R R)]` using `fun i n => IsPrecomplete.prec' _ (hcauchy i n)`. Use `choose L hL using hlim`. Use `⟨fun i => PowerSeries.mk (L i), ?_⟩` and prove the remaining obligations. Use `show h = ψ (fun i => PowerSeries.mk (L i))`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Use extensionality with `m`. Rewrite using `[map_zero]`. Use `IsHausdorff.haus' (I := Ideal.span {(p : R)}) _ fun K => ?_` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, sub_zero, mem_span_pow_smul_univ_iff_eq_pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hΔ : ∀ (i : Fin p) (n : ℕ), ∃ c, coeff n (A K i) - L i n = (p : R) ^ K * c` using `fun i n => (mem_span_pow_smul_univ_iff_eq_pow_mul p K _).1 (SModEq.sub_mem.1 (hL i n K))`. Use `choose c hc using hΔ`. Establish `hdiff : A K - (fun i => PowerSeries.mk (L i)) = ((p : R) ^ K) • (fun i => PowerSeries.mk (c i))`. Use function extensionality and compare the values at `i`. Use extensionality with `n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Simplify using `[hc]`. Establish `e1 : ψ (A K) = ψ (fun i => PowerSeries.mk (L i)) + ((p : R) ^ K) • ψ (fun i => PowerSeries.mk (c i))`. Rewrite using `[← ψ_smul, ← ψ_add, ← hdiff, add_sub_cancel]`. Establish `e2 : h - ψ (fun i => PowerSeries.mk (L i)) = ((p : R) ^ K) • (hs K + ψ (fun i => PowerSeries.mk (c i)))` using `by conv_lhs => rw [hA K]`. Rewrite using `[e1, smul_add]`.
-
-Normalize the expressions using the abelian group laws. Rewrite using `[e2, coeff_smul]`. Conclude with `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Col.Model.spans (hu : (p : R) ∈ nonunits R) (h : PowerSeries R) :
     ∃ g : Fin p → PowerSeries R, h = ∑ i, _root_.GlobalTheory.Col.phi p hp.out.pos (g i) * X ^ (i : ℕ) := by
@@ -452,7 +448,7 @@ def basis (hu : (p : R) ∈ nonunits R) : Module.Basis (Fin p) (PowerSeries R) (
       exact ⟨g, hg.symm⟩)
 
 /- English proof (translation)
-Use `Algebra.norm_algebraMap_of_basis (basis p hu) g` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normOp_phi (hu : (p : R) ∈ nonunits R) (g : PowerSeries R) : normOp p (phi p hp.out.pos g) = g ^ p := by
   have := Algebra.norm_algebraMap_of_basis (basis p hu) g
@@ -460,7 +456,7 @@ theorem normOp_phi (hu : (p : R) ∈ nonunits R) (g : PowerSeries R) : normOp p 
   exact this
 
 /- English proof (translation)
-Use `Algebra.trace_algebraMap_of_basis (basis p hu) g` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trOp_phi (hu : (p : R) ∈ nonunits R) (g : PowerSeries R) : trOp p (phi p hp.out.pos g) = p • g := by
   have := Algebra.trace_algebraMap_of_basis (basis p hu) g
@@ -470,7 +466,7 @@ theorem trOp_phi (hu : (p : R) ∈ nonunits R) (g : PowerSeries R) : trOp p (phi
 end Basis
 
 /- English proof (translation)
-Use `haveI := F.complete`. Conclude with `⟨normOp_phi p F.prime.not_isUnit g, trOp_phi p F.prime.not_isUnit g⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frobLift_ops {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] (σ : R ≃+* R) (F : FrobLift R p σ)
     (g : PowerSeries R) : normOp p (phi p hp.out.pos g) = g ^ p ∧ trOp p (phi p hp.out.pos g) = p • g := by
@@ -507,13 +503,13 @@ open PowerSeries in
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] (m : ℕ) (hm : 1 ≤ m) in
 variable [IsAdicComplete (Ideal.span {(p : R)}) R] in
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (_root_.GlobalTheory.Col.ev R p m)` using `Ideal.Quotient.mk_surjective`. Use `choose g hg using fun i => hsurj (x i)`. Establish `hzero : _root_.GlobalTheory.Col.ev R p (m + 1) (∑ i, _root_.GlobalTheory.Col.phi p hp.out.pos (g i) * X ^ (i : ℕ)) = 0`. Rewrite using `[map_sum, ← hx]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ← _root_.GlobalTheory.Col.Model.up_ev p m hm, hg]`. Take `⟨k, hk⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 hzero)`. Take `⟨d, hd⟩` from `_root_.GlobalTheory.Col.Model.spans p hu k`. Establish `hdiff : ∑ i, _root_.GlobalTheory.Col.phi p hp.out.pos (g i - d i * _root_.GlobalTheory.Col.cyc R p m) * X ^ (i : ℕ) = 0`. Simplify using `only [map_sub, map_mul, sub_mul, Finset.sum_sub_distrib]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_zero, ← hk, hd, Finset.sum_mul, ← _root_.GlobalTheory.Col.phi_cyc p m hm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hgi` using `_root_.GlobalTheory.Col.Model.indep p hu _ hdiff i`. Rewrite `hgi` using `[sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg, hgi, map_mul, _root_.GlobalTheory.Col.ev_cyc_self, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Col.Model.indepL (hu : (p : R) ∈ nonunits R) (x : Fin p → _root_.GlobalTheory.Col.lev R p m)
     (hx : ∑ i, _root_.GlobalTheory.Col.up p m hm (x i) * _root_.GlobalTheory.Col.ev R p (m + 1) (X ^ (i : ℕ)) = 0) (i : Fin p) : x i = 0 := by
@@ -553,15 +549,15 @@ variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] (m : ℕ) (hm : 1
 variable [IsAdicComplete (Ideal.span {(p : R)}) R] in
 
 /- English proof (translation)
-Establish `hN1 : _root_.GlobalTheory.Col.normOp p h = Algebra.norm (PowerSeries R) (_root_.GlobalTheory.Col.Model.toUp p h)` using `rfl`. Establish `hN2 : _root_.GlobalTheory.Col.nrm p m hm (_root_.GlobalTheory.Col.ev R p (m + 1) h) = Algebra.norm (_root_.GlobalTheory.Col.lev R p m) (_root_.GlobalTheory.Col.Model.toUpL p m hm (_root_.GlobalTheory.Col.ev R p (m + 1) h))` using `rfl`. Rewrite using `[hN1, hN2, Algebra.norm_eq_matrix_det (_root_.GlobalTheory.Col.Model.basis p hu), Algebra.norm_eq_matrix_det (_root_.GlobalTheory.Col.Model.basisL p m hm hu), RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul]`. Use `set c : Fin p → PowerSeries R := fun k => (_root_.GlobalTheory.Col.Model.basis p hu).repr (_root_.GlobalTheory.Col.Model.toUp p h * _root_.GlobalTheory.Col.Model.basis p hu j) k with hcdef`. Establish `hb : ∀ k : Fin p, _root_.GlobalTheory.Col.Model.basis p hu k = _root_.GlobalTheory.Col.Model.toUp p (X ^ (k : ℕ))` using `fun k => by`. Unfold `_root_.GlobalTheory.Col.Model.basis`. Rewrite using `[Module.Basis.mk_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hc : _root_.GlobalTheory.Col.Model.toUp p h * _root_.GlobalTheory.Col.Model.basis p hu j = ∑ k, c k • _root_.GlobalTheory.Col.Model.basis p hu k` using `((_root_.GlobalTheory.Col.Model.basis p hu).sum_repr _).symm`. Establish `hc' : h * X ^ (j : ℕ) = ∑ k, _root_.GlobalTheory.Col.phi p hp.out.pos (c k) * X ^ (k : ℕ)`. Simplify using `only [Algebra.smul_def, hb] at hc`. Conclude with `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : _root_.GlobalTheory.Col.Model.toUpL p m hm (_root_.GlobalTheory.Col.ev R p (m + 1) h) * _root_.GlobalTheory.Col.Model.basisL p m hm hu j = ∑ k, _root_.GlobalTheory.Col.ev R p m (c k) • _root_.GlobalTheory.Col.Model.basisL p m hm hu k`. Simplify using `only [_root_.GlobalTheory.Col.Model.basisL, Module.Basis.mk_apply, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `_root_.GlobalTheory.Col.ev R p (m + 1) h * _root_.GlobalTheory.Col.ev R p (m + 1) (X ^ (j : ℕ)) = ∑ k, _root_.GlobalTheory.Col.up p m hm (_root_.GlobalTheory.Col.ev R p m (c k)) * _root_.GlobalTheory.Col.ev R p (m + 1) (X ^ (k : ℕ))`. Rewrite using `[← map_mul, hc', map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, _root_.GlobalTheory.Col.Model.up_ev]`. Rewrite using `[key, Module.Basis.repr_sum_self]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Col.Model.nrm_ev (hu : (p : R) ∈ nonunits R) (h : PowerSeries R) :
     _root_.GlobalTheory.Col.nrm p m hm (_root_.GlobalTheory.Col.ev R p (m + 1) h) = _root_.GlobalTheory.Col.ev R p m (_root_.GlobalTheory.Col.normOp p h) := by
@@ -606,9 +602,9 @@ theorem _root_.GlobalTheory.Col.Model.nrm_ev (hu : (p : R) ∈ nonunits R) (h : 
 end Level
 
 /- English proof (translation)
-Use `Ideal.Quotient.nontrivial_iff.2 ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.span_singleton_eq_top, isUnit_iff_constantCoeff]`. Establish `: constantCoeff (cyc R p (m + 1)) = (p : R)`. Unfold `cyc`. Rewrite using `[Polynomial.hom_eval₂]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `: (constantCoeff : PowerSeries R →+* R).comp C = RingHom.id R` using `by ext; simp`. Rewrite using `[this]`. Simplify using `[Polynomial.eval₂_id, Polynomial.eval_one_cyclotomic_prime_pow]`. Rewrite using `[this]`. Conclude with `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_nontrivial {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] (hu : (p : R) ∈ nonunits R) (m : ℕ) :
     Nontrivial (lev R p (m + 1)) := by
@@ -623,7 +619,7 @@ theorem lev_nontrivial {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] (hu
   rw [this]; exact hu
 
 /- English proof (translation)
-Establish `h1 : dd (1 + X : PowerSeries R) = 1 + X` using `by simp [dd]`. Rewrite using `[h1, phi_one_add_X]`. Take `⟨n, rfl⟩ : ∃ n, p = n + 1` from `⟨p - 1, by omega⟩`. Simplify using `[dd, Derivation.leibniz_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dd_test {R : Type} [CommRing R] (p : ℕ) (hp : 0 < p) :
     dd (phi (R := R) p hp (1 + X)) = (p : PowerSeries R) * phi (R := R) p hp (dd (1 + X : PowerSeries R)) := by

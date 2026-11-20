@@ -7,9 +7,9 @@ open IsLocalRing RingTheory.Sequence
 variable {R : Type*} [CommRing R] [IsLocalRing R]
 
 /- English proof (translation)
-Establish `hd : Module.supportDim R R = ringKrullDim R` using `Module.supportDim_self_eq_ringKrullDim R`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, n, hn, h2⟩`. Conclude with `⟨h1, Module.Finite.self R, n, hd.trans hn, h2⟩`. Introduce and unpack `⟨h1, -, n, hn, h2⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1, n, hd.symm.trans hn, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCM_iff_isCMMod : IsCM R ↔ IsCMMod R R := by
   have hd : Module.supportDim R R = ringKrullDim R := Module.supportDim_self_eq_ringKrullDim R
@@ -20,7 +20,7 @@ theorem isCM_iff_isCMMod : IsCM R ↔ IsCMMod R R := by
     exact ⟨h1, n, hd.symm.trans hn, h2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rs, h1, h2, h3⟩`. Conclude with `⟨rs, h1, h2, (e.isRegular_congr rs).mp h3⟩`. Introduce and unpack `⟨rs, h1, h2, h3⟩`. Conclude with `⟨rs, h1, h2, (e.isRegular_congr rs).mpr h3⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem modDepthGE_congr {M N : Type*} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (e : M ≃ₗ[R] N) (n : ℕ) : ModDepthGE R M n ↔ ModDepthGE R N n := by
@@ -31,9 +31,9 @@ theorem modDepthGE_congr {M N : Type*} [AddCommGroup M] [Module R M] [AddCommGro
     exact ⟨rs, h1, h2, (e.isRegular_congr rs).mpr h3⟩
 
 /- English proof (translation)
-Establish `hs : Module.support R M = Module.support R N` using `(Module.support_subset_of_injective e.toLinearMap e.injective).antisymm (Module.support_subset_of_surjective e.toLinearMap e.surjective)`. Establish `hd : Module.supportDim R M = Module.supportDim R N`. Unfold `Module.supportDim`. Rewrite using `[hs]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2, n, hn, h3⟩`. Conclude with `⟨h1, Module.Finite.equiv e, n, hd.symm.trans hn, (modDepthGE_congr e n).mp h3⟩`. Introduce and unpack `⟨h1, h2, n, hn, h3⟩`. Conclude with `⟨h1, Module.Finite.equiv e.symm, n, hd.trans hn, (modDepthGE_congr e n).mpr h3⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isCMMod_congr {M N : Type*} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (e : M ≃ₗ[R] N) : IsCMMod R M ↔ IsCMMod R N := by
@@ -50,15 +50,15 @@ theorem isCMMod_congr {M N : Type*} [AddCommGroup M] [Module R M] [AddCommGroup 
     exact ⟨h1, Module.Finite.equiv e.symm, n, hd.trans hn, (modDepthGE_congr e n).mpr h3⟩
 
 /- English proof (translation)
-Use `open Pointwise in`. Establish `key : ∀ l : List R, ((Ideal.ofList (l.map (algebraMap R S))) • (⊤ : Submodule S M)).restrictScalars R = Ideal.ofList l • (⊤ : Submodule R M)`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cons r l ih`. Establish `ih' : ∀ y : M, y ∈ (Ideal.ofList (l.map (algebraMap R S))) • (⊤ : Submodule S M) ↔ y ∈ Ideal.ofList l • (⊤ : Submodule R M)` using `fun y => by rw [← ih, Submodule.restrictScalars_mem]`. Establish `hr : ∀ y : M, y ∈ (algebraMap R S r) • (⊤ : Submodule S M) ↔ y ∈ r • (⊤ : Submodule R M)` using `fun y => by`. Simplify using `[Submodule.mem_smul_pointwise_iff_exists, algebraMap_smul]`. Use extensionality with `m`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_cons, Ideal.ofList_cons, Submodule.sup_smul, Submodule.ideal_span_singleton_smul, Submodule.restrictScalars_mem, Submodule.mem_sup, ih', hr]`. Rewrite using `[RingTheory.Sequence.isRegular_iff, RingTheory.Sequence.isRegular_iff, RingTheory.Sequence.isWeaklyRegular_map_algebraMap_iff]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h h'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Apply `Submodule.restrictScalars_injective R S M` to reduce the goal to its premises. Rewrite using `[key, Submodule.restrictScalars_top]`. Conclude with `h'`. Introduce `h h'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[← key, ← h', Submodule.restrictScalars_top]`.
+A detailed English derivation is pending.
 -/
 lemma isRegular_map_algebraMap_iff' {S M : Type*} [CommRing S] [Algebra R S] [AddCommGroup M]
     [Module R M] [Module S M] [IsScalarTower R S M] (rs : List R) :
@@ -94,13 +94,11 @@ lemma isRegular_map_algebraMap_iff' {S M : Type*} [CommRing S] [Algebra R S] [Ad
     rw [← key, ← h', Submodule.restrictScalars_top]
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective v`. Establish `h1 : r * s - 1 ∈ I`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq, map_mul, hv, map_one]`. Establish `h2 : r * s - 1 ∉ maximalIdeal R`. Introduce `h`. Establish `h' : r * s - (r * s - 1) ∈ maximalIdeal R` using `(maximalIdeal R).sub_mem ((maximalIdeal R).mul_mem_right s hr) h`. Rewrite `h'` using `[sub_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Ideal.ne_top_iff_one _).mp (Ideal.IsMaximal.ne_top inferInstance) h'`. Establish `h3 : IsUnit (r * s - 1)`. Assume the negation of the conclusion as `h`. Conclude with `h2 ((IsLocalRing.mem_maximalIdeal _).mpr h)`. Establish `h4 : IsUnit (Ideal.Quotient.mk I (r * s - 1))` using `h3.map _`.
-
-Rewrite `h4` using `[Ideal.Quotient.eq_zero_iff_mem.mpr h1]`. Conclude with `not_isUnit_zero h4`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mk_mem_maximalIdeal_quot (I : Ideal R) [IsLocalRing (R ⧸ I)] {r : R}
     (hr : r ∈ maximalIdeal R) : Ideal.Quotient.mk I r ∈ maximalIdeal (R ⧸ I) := by
@@ -124,15 +122,15 @@ lemma mk_mem_maximalIdeal_quot (I : Ideal R) [IsLocalRing (R ⧸ I)] {r : R}
   exact not_isUnit_zero h4
 
 /- English proof (translation)
-Establish `key : ∀ rs : List R, RingTheory.Sequence.IsRegular (R ⧸ I) (rs.map (Ideal.Quotient.mk I)) ↔ RingTheory.Sequence.IsRegular (R ⧸ I) rs` using `fun rs => by`. Use `isRegular_map_algebraMap_iff' (S := R ⧸ I) (M := R ⧸ I) rs` as an intermediate fact. Rewrite `this` using `[Ideal.Quotient.algebraMap_eq]`. Then use the resulting hypothesis. Establish `hs : Function.Surjective (Ideal.Quotient.mk I)` using `Ideal.Quotient.mk_surjective`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨rs, hlen, hmem, hreg⟩`. Use `⟨rs.map (Function.surjInv hs), by simp [hlen], ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `List.mem_map.mp hx`. Establish `hy'` using `hmem y hy`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hy'` using `[← Function.surjInv_eq hs y]`. Rewrite `hy'`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu => hy' (hu.map _)`. Establish `hl : (rs.map (Function.surjInv hs)).map (Ideal.Quotient.mk I) = rs`. Simplify using `[Function.comp_def, Function.surjInv_eq hs]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← key, hl]`. Conclude with `hreg`. Introduce and unpack `⟨rs, hlen, hmem, hreg⟩`. Use `⟨rs.map (Ideal.Quotient.mk I), by simp [hlen], ?_, (key rs).mpr hreg⟩` and prove the remaining obligations. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, rfl⟩` from `List.mem_map.mp hx`. Conclude with `mk_mem_maximalIdeal_quot I (hmem y hy)`.
+A detailed English derivation is pending.
 -/
 theorem depthGE_quotient_iff (I : Ideal R) [IsLocalRing (R ⧸ I)] (n : ℕ) :
     DepthGE (R ⧸ I) n ↔ ModDepthGE R (R ⧸ I) n := by
@@ -161,9 +159,9 @@ theorem depthGE_quotient_iff (I : Ideal R) [IsLocalRing (R ⧸ I)] (n : ℕ) :
     exact mk_mem_maximalIdeal_quot I (hmem y hy)
 
 /- English proof (translation)
-Establish `hfin : Module.Finite R (R ⧸ I)` using `Module.Finite.of_surjective (Submodule.mkQ I) (Submodule.mkQ_surjective I)`. Establish `hd : Module.supportDim R (R ⧸ I) = ringKrullDim (R ⧸ I)`. Rewrite using `[Module.supportDim_eq_ringKrullDim_quotient_annihilator, Ideal.annihilator_quotient]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, n, hn, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨inferInstance, hfin, n, hd.trans hn, (depthGE_quotient_iff I n).mp h⟩`. Introduce and unpack `⟨-, -, n, hn, h⟩`. Conclude with `⟨inferInstance, n, hd.symm.trans hn, (depthGE_quotient_iff I n).mpr h⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isCM_quotient_iff [IsNoetherianRing R] (I : Ideal R) [IsLocalRing (R ⧸ I)] :
     IsCM (R ⧸ I) ↔ IsCMMod R (R ⧸ I) := by
@@ -178,11 +176,11 @@ theorem isCM_quotient_iff [IsNoetherianRing R] (I : Ideal R) [IsLocalRing (R ⧸
     exact ⟨inferInstance, n, hd.symm.trans hn, (depthGE_quotient_iff I n).mpr h⟩
 
 /- English proof (translation)
-Take `⟨rs, hlen, hmem, hreg⟩` from `h`. Use `⟨rs.map (e : R →+* S), by simp [hlen], ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `List.mem_map.mp hx`. Establish `hy'` using `hmem y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hy'`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Apply `hy'` to reduce the goal to its premises. Simplify using `using hu.map (e.symm : S →+* R)`. Use `haveI h1 : RingHomInvPair (e : R →+* S) (e.symm : S →+* R) := ⟨by ext; simp, by ext; simp⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : RingHomInvPair (e.symm : S →+* R) (e : R →+* S)` using `⟨by ext; simp, by ext; simp⟩`. Conclude with `(LinearEquiv.isRegular_congr' (σ' := (e.symm : S →+* R)) e.toSemilinearEquiv rs).mp hreg`.
+A detailed English derivation is pending.
 -/
 theorem DepthGE.of_ringEquiv {S : Type*} [CommRing S] [IsLocalRing S] (e : R ≃+* S) {n : ℕ}
     (h : DepthGE R n) : DepthGE S n := by
@@ -200,7 +198,7 @@ theorem DepthGE.of_ringEquiv {S : Type*} [CommRing S] [IsLocalRing S] (e : R ≃
     exact (LinearEquiv.isRegular_congr' (σ' := (e.symm : S →+* R)) e.toSemilinearEquiv rs).mp hreg
 
 /- English proof (translation)
-Take `⟨hN, n, hn, hd⟩` from `h`. Conclude with `⟨isNoetherianRing_of_ringEquiv R e, n, (ringKrullDim_eq_of_ringEquiv e).symm.trans hn, hd.of_ringEquiv e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsCM.of_ringEquiv {S : Type*} [CommRing S] [IsLocalRing S] (e : R ≃+* S)
     (h : IsCM R) : IsCM S := by

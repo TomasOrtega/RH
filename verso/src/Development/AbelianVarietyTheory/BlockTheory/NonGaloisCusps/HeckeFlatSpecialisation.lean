@@ -187,7 +187,7 @@ variable (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 variable {F : Type} [Field F] [Algebra O F] [IsFractionRing O F]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Finite.of_equiv _ (PadicInt.residueField (p := p)).symm.toEquiv, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 example (p : ℕ) [Fact p.Prime] : Finite (ResidueField ℤ_[p]) ∧ IsFractionRing ℤ_[p] ℚ_[p] :=
   ⟨Finite.of_equiv _ (PadicInt.residueField (p := p)).symm.toEquiv, inferInstance⟩

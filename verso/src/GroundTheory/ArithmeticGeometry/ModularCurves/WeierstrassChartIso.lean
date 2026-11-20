@@ -27,7 +27,7 @@ noncomputable def liftHom : HomRing W →+* T :=
 
 include hψ1 in
 /- English proof (translation)
-The claim follows from `hψ1`.
+A detailed English derivation is pending.
 -/
 theorem liftHom_var : liftHom W ψ hψF (var W j) = 1 := hψ1
 
@@ -37,7 +37,7 @@ noncomputable def awayTo : Away (homGrading W) (var W j) →+* T :=
     (algebraMap (Away (homGrading W) (var W j)) (Localization.Away (var W j)))
 
 /- English proof (translation)
-Use `Localization.awayLift_mk (liftHom W ψ hψF) (var W j) (π W P) 1 (by rw [liftHom_var W ψ hψ1 hψF, one_mul]) m` as an intermediate fact. Simplify using `only [awayTo, RingHom.comp_apply, HomogeneousLocalization.algebraMap_apply, Away.val_mk]`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[one_pow, mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem awayTo_mk (m : ℕ) (P : MvPolynomial (Fin 3) R) (hP : π W P ∈ homGrading W (m • 1)) :
     awayTo W ψ hψ1 hψF (Away.mk (homGrading W) (var_mem W j) m (π W P) hP) = ψ P := by
@@ -49,9 +49,9 @@ theorem awayTo_mk (m : ℕ) (P : MvPolynomial (Fin 3) R) (hP : π W P ∈ homGra
   rfl
 
 /- English proof (translation)
-Introduce `t`. Take `⟨P, rfl⟩` from `hsurj t`. Use `⟨∑ m ∈ Finset.range (P.totalDegree + 1), Away.mk (homGrading W) (var_mem W j) m (π W (homogeneousComponent m P)) (mk_mem_quotGrading _ _ (by simpa using homogeneousComponent_mem m P)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `conv_rhs => rw [← sum_homogeneousComponent P]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => awayTo_mk W ψ hψ1 hψF m _ _`.
+A detailed English derivation is pending.
 -/
 theorem awayTo_surjective (hsurj : Function.Surjective ψ) :
     Function.Surjective (awayTo W ψ hψ1 hψF) := by
@@ -66,7 +66,7 @@ theorem awayTo_surjective (hsurj : Function.Surjective ψ) :
   exact Finset.sum_congr rfl fun m _ => awayTo_mk W ψ hψ1 hψF m _ _
 
 /- English proof (translation)
-Rewrite using `[Away.val_mk, Localization.mk_eq_mk', IsLocalization.mk'_eq_iff_eq_mul]`. Conclude with `(scale_homog (π W) j hP).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq_scale (m : ℕ) (P : MvPolynomial (Fin 3) R) (hP : P.IsHomogeneous m)
     (hP' : π W P ∈ homGrading W (m • 1)) :
@@ -118,12 +118,12 @@ noncomputable def dehomZ : MvPolynomial (Fin 3) R →+* W.toAffine.CoordinateRin
   eval₂Hom (algebraMap R _) ![xC W, yC W, 1]
 
 /- English proof (translation)
-Simplify using `[dehomZ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dehomZ_X_two : dehomZ W (X 2) = 1 := by simp [dehomZ]
 
 /- English proof (translation)
-Simplify using `only [dehomZ, WeierstrassCurve.Projective.polynomial, map_sub, map_add, map_mul, map_pow, coe_eval₂Hom, eval₂_X, eval₂_C]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]`. Take the linear combination `equation_xC_yC W`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dehomZ_cubic : dehomZ W W.toProjective.polynomial = 0 := by
   simp only [dehomZ, WeierstrassCurve.Projective.polynomial, map_sub, map_add, map_mul, map_pow,
@@ -133,15 +133,15 @@ theorem dehomZ_cubic : dehomZ W W.toProjective.polynomial = 0 := by
   linear_combination equation_xC_yC W
 
 /- English proof (translation)
-Introduce `t`. Take `⟨q, rfl⟩` from `AdjoinRoot.mk_surjective t`. Proceed by induction on `q using Polynomial.induction_on with`. Consider the case `C a`. Proceed by induction on `a using Polynomial.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `C r => exact ⟨C r, by simp [dehomZ]; rfl⟩`. Consider the case `add p q hp hq`. Take `⟨P, hP⟩` from `hp`. Take `⟨Q, hQ⟩` from `hq`. Conclude with `⟨P + Q, by rw [map_add, hP, hQ, Polynomial.C_add, map_add]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `monomial n r _`. Use `⟨C r * X 0 ^ (n + 1), ?_⟩` and prove the remaining obligations. Simplify using `only [dehomZ, map_mul, map_pow, coe_eval₂Hom, eval₂_C, eval₂_X]`. Simplify using `only [Matrix.cons_val_zero, xC, ← Polynomial.C_mul_X_pow_eq_monomial, Polynomial.C_mul, Polynomial.C_pow, map_mul, map_pow]`. Both sides reduce to the same expression.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `add p q hp hq`. Take `⟨P, hP⟩` from `hp`. Take `⟨Q, hQ⟩` from `hq`. Conclude with `⟨P + Q, by rw [map_add, hP, hQ, map_add]⟩`. Consider the case `monomial n a hp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨P, hP⟩` from `hp`. Use `⟨P * X 1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hP, pow_succ, ← mul_assoc, map_mul (AdjoinRoot.mk _)]`. Simplify using `[dehomZ, yC]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dehomZ_surjective : Function.Surjective (dehomZ W) := by
   intro t
@@ -171,11 +171,9 @@ theorem dehomZ_surjective : Function.Surjective (dehomZ W) := by
     simp [dehomZ, yC]
 
 /- English proof (translation)
-Establish `h0` using `scale_eq_zero_of_mem W (j := 2)`. Establish `hu : algebraMap (HomRing W) (Localization.Away (var W 2)) (var W 2) * vinv W 2 = 1` using `IsLocalization.Away.mul_invSelf _`. Rewrite using `[← HomogeneousLocalization.algebraMap_apply, Polynomial.hom_eval₂, HomogeneousLocalization.algebraMap_apply, val_frac]`. Simplify using `only [WeierstrassCurve.Affine.polynomial, Polynomial.eval₂_sub, Polynomial.eval₂_add, Polynomial.eval₂_pow, Polynomial.eval₂_mul, Polynomial.eval₂_X, Polynomial.eval₂_C, RingHom.comp_apply, Polynomial.coe_eval₂RingHom, HomogeneousLocalization.algebraMap_apply, HomogeneousLocaliza …`. Simplify using `only [scale, WeierstrassCurve.Projective.polynomial, map_sub, map_add, map_mul, map_pow, coe_eval₂Hom, eval₂_X, eval₂_C, RingHom.comp_apply, π_C] at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `set u := vinv W 2`. Use `set x := algebraMap (HomRing W) (Localization.Away (var W 2)) (var W 0)`. Use `set y := algebraMap (HomRing W) (Localization.Away (var W 2)) (var W 1)`. Use `set s := algebraMap (HomRing W) (Localization.Away (var W 2)) (var W 2) * u`. Establish `hs : s = 1` using `hu`.
-
-Take the linear combination `h0 - ((y * u) ^ 2 + algebraMap (HomRing W) _ (algebraMap R _ W.a₁) * (x * u) * (y * u) + algebraMap (HomRing W) _ (algebraMap R _ W.a₃) * (y * u) * (s + 1) - algebraMap (HomRing W) _ (algebraMap R _ W.a₂) * (x * u) ^ 2 - algebraMap (HomRing W) _ (algebraMap R _ W.a₄) * (x * u) * …`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem val_scale_eq_zero_z :
     (W.toAffine.polynomial.eval₂ (Polynomial.eval₂RingHom (scalarAway W 2) (frac W 2 0))
@@ -208,13 +206,13 @@ noncomputable def coordToAwayZ : W.toAffine.CoordinateRing →+* Away (homGradin
     (HomogeneousLocalization.val_injective _ (by rw [val_scale_eq_zero_z, val_zero]))
 
 /- English proof (translation)
-Establish `hu : algebraMap (HomRing W) (Localization.Away (var W 2)) (var W 2) * vinv W 2 = 1` using `IsLocalization.Away.mul_invSelf _`. Express the relevant statement in the definitionally equal form `((algebraMap (Away (homGrading W) (var W 2)) (Localization.Away (var W 2))).comp ((coordToAwayZ W).comp (dehomZ W))) P = scale (π W) 2 P`. Use `congr 1`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, dehomZ, coe_eval₂Hom, eval₂_C, scale]`. Rewrite using `[show algebraMap R W.toAffine.CoordinateRing r = AdjoinRoot.of _ (Polynomial.C r) from rfl, coordToAwayZ, AdjoinRoot.lift_of, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_C, HomogeneousLocalization.algebraMap_apply, val_scalarAway]`. Both sides reduce to the same expression. Introduce `k fin_cases k`. Simplify using `only [RingHom.comp_apply, dehomZ, coe_eval₂Hom, eval₂_X, scale]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero, xC]`. Rewrite using `[show AdjoinRoot.mk W.toAffine.polynomial (Polynomial.C Polynomial.X) = AdjoinRoot.of _ Polynomial.X from rfl, coordToAwayZ, AdjoinRoot.lift_of, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X, HomogeneousLocalization.algebraMap_apply, val_frac]`. Simplify using `only [RingHom.comp_apply, dehomZ, coe_eval₂Hom, eval₂_X, scale]`. Simplify using `only [Fin.mk_one, Fin.isValue, Matrix.cons_val_one, Matrix.cons_val_zero, yC]`. Rewrite using `[coordToAwayZ, AdjoinRoot.lift_root, HomogeneousLocalization.algebraMap_apply, val_frac]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.comp_apply, dehomZ, coe_eval₂Hom, eval₂_X, scale]`. Simplify using `only [Fin.reduceFinMk, Fin.isValue, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons, map_one]`. Conclude with `hu.symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_coordToAwayZ_dehomZ (P : MvPolynomial (Fin 3) R) :
     (coordToAwayZ W (dehomZ W P)).val = scale (π W) 2 P := by
@@ -266,12 +264,12 @@ noncomputable def dehomY : MvPolynomial (Fin 3) R →+* InfChart W :=
   eval₂Hom (algebraMap R _) ![xI W, 1, zI W]
 
 /- English proof (translation)
-Simplify using `[dehomY]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dehomY_X_one : dehomY W (X 1) = 1 := by simp [dehomY]
 
 /- English proof (translation)
-Simplify using `only [dehomY, WeierstrassCurve.Projective.polynomial, map_sub, map_add, map_mul, map_pow, coe_eval₂Hom, eval₂_X, eval₂_C]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]`. Take the linear combination `(-1 : InfChart W) * equation_xI_zI W`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dehomY_cubic : dehomY W W.toProjective.polynomial = 0 := by
   simp only [dehomY, WeierstrassCurve.Projective.polynomial, map_sub, map_add, map_mul, map_pow,
@@ -281,15 +279,15 @@ theorem dehomY_cubic : dehomY W W.toProjective.polynomial = 0 := by
   linear_combination (-1 : InfChart W) * equation_xI_zI W
 
 /- English proof (translation)
-Introduce `t`. Take `⟨q, rfl⟩` from `AdjoinRoot.mk_surjective t`. Proceed by induction on `q using Polynomial.induction_on with`. Consider the case `C a`. Proceed by induction on `a using Polynomial.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `C r => exact ⟨C r, by simp [dehomY]; rfl⟩`. Consider the case `add p q hp hq`. Take `⟨P, hP⟩` from `hp`. Take `⟨Q, hQ⟩` from `hq`. Conclude with `⟨P + Q, by rw [map_add, hP, hQ, Polynomial.C_add, map_add]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `monomial n r _`. Use `⟨C r * X 2 ^ (n + 1), ?_⟩` and prove the remaining obligations. Simplify using `only [dehomY, map_mul, map_pow, coe_eval₂Hom, eval₂_C, eval₂_X]`. Simplify using `only [Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons, zI]`. Both sides reduce to the same expression.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `add p q hp hq`. Take `⟨P, hP⟩` from `hp`. Take `⟨Q, hQ⟩` from `hq`. Conclude with `⟨P + Q, by rw [map_add, hP, hQ, map_add]⟩`. Consider the case `monomial n a hp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨P, hP⟩` from `hp`. Use `⟨P * X 0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hP, pow_succ, ← mul_assoc, map_mul (AdjoinRoot.mk _)]`. Simplify using `[dehomY, xI]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dehomY_surjective : Function.Surjective (dehomY W) := by
   intro t
@@ -318,11 +316,9 @@ theorem dehomY_surjective : Function.Surjective (dehomY W) := by
     simp [dehomY, xI]
 
 /- English proof (translation)
-Establish `h0` using `scale_eq_zero_of_mem W (j := 1)`. Establish `hu : algebraMap (HomRing W) (Localization.Away (var W 1)) (var W 1) * vinv W 1 = 1` using `IsLocalization.Away.mul_invSelf _`. Rewrite using `[← HomogeneousLocalization.algebraMap_apply, Polynomial.hom_eval₂, HomogeneousLocalization.algebraMap_apply, val_frac]`. Simplify using `only [infPolynomial, Polynomial.eval₂_sub, Polynomial.eval₂_add, Polynomial.eval₂_pow, Polynomial.eval₂_mul, Polynomial.eval₂_X, Polynomial.eval₂_C, RingHom.comp_apply, Polynomial.coe_eval₂RingHom, HomogeneousLocalization.algebraMap_apply, HomogeneousLocalization.val_add, Homogen …`. Simplify using `only [scale, WeierstrassCurve.Projective.polynomial, map_sub, map_add, map_mul, map_pow, coe_eval₂Hom, eval₂_X, eval₂_C, RingHom.comp_apply, π_C] at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `set u := vinv W 1`. Use `set x := algebraMap (HomRing W) (Localization.Away (var W 1)) (var W 0)`. Use `set z := algebraMap (HomRing W) (Localization.Away (var W 1)) (var W 2)`. Use `set s := algebraMap (HomRing W) (Localization.Away (var W 1)) (var W 1) * u`. Establish `hs : s = 1` using `hu`.
-
-Take the linear combination `-h0 + ((s + 1) * (z * u) + algebraMap (HomRing W) _ (algebraMap R _ W.a₁) * (x * u) * (z * u) + algebraMap (HomRing W) _ (algebraMap R _ W.a₃) * (z * u) ^ 2) * hs`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem val_scale_eq_zero_y :
     ((infPolynomial W).eval₂ (Polynomial.eval₂RingHom (scalarAway W 1) (frac W 1 2))
@@ -353,13 +349,13 @@ noncomputable def infToAwayY : InfChart W →+* Away (homGrading W) (var W 1) :=
     (HomogeneousLocalization.val_injective _ (by rw [val_scale_eq_zero_y, val_zero]))
 
 /- English proof (translation)
-Establish `hu : algebraMap (HomRing W) (Localization.Away (var W 1)) (var W 1) * vinv W 1 = 1` using `IsLocalization.Away.mul_invSelf _`. Express the relevant statement in the definitionally equal form `((algebraMap (Away (homGrading W) (var W 1)) (Localization.Away (var W 1))).comp ((infToAwayY W).comp (dehomY W))) P = scale (π W) 1 P`. Use `congr 1`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, dehomY, coe_eval₂Hom, eval₂_C, scale]`. Rewrite using `[show algebraMap R (InfChart W) r = AdjoinRoot.of _ (Polynomial.C r) from rfl, infToAwayY, AdjoinRoot.lift_of, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_C, HomogeneousLocalization.algebraMap_apply, val_scalarAway]`. Both sides reduce to the same expression. Introduce `k fin_cases k`. Simplify using `only [RingHom.comp_apply, dehomY, coe_eval₂Hom, eval₂_X, scale]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero, xI]`. Rewrite using `[infToAwayY, AdjoinRoot.lift_root, HomogeneousLocalization.algebraMap_apply, val_frac]`. Simplify using `only [RingHom.comp_apply, dehomY, coe_eval₂Hom, eval₂_X, scale]`. Simplify using `only [Fin.mk_one, Fin.isValue, Matrix.cons_val_one, Matrix.cons_val_zero, map_one]`. Conclude with `hu.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, dehomY, coe_eval₂Hom, eval₂_X, scale]`. Simplify using `only [Fin.reduceFinMk, Fin.isValue, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons, zI]`. Rewrite using `[infToAwayY, AdjoinRoot.lift_of, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X, HomogeneousLocalization.algebraMap_apply, val_frac]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_infToAwayY_dehomY (P : MvPolynomial (Fin 3) R) :
     (infToAwayY W (dehomY W P)).val = scale (π W) 1 P := by
@@ -406,7 +402,7 @@ variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
 section Charts
 
 /- English proof (translation)
-Simplify using `only [awayTo, RingHom.comp_apply, HomogeneousLocalization.algebraMap_apply, val_scalarAway]`. Rewrite using `[Localization.awayLift, IsLocalization.Away.lift_eq]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem awayTo_scalarAway {j : Fin 3} {T : Type u} [CommRing T] (ψ : MvPolynomial (Fin 3) R →+* T)
     (hψ1 : ψ (X j) = 1) (hψF : ψ W.toProjective.polynomial = 0) (r : R) :
@@ -416,21 +412,21 @@ theorem awayTo_scalarAway {j : Fin 3} {T : Type u} [CommRing T] (ψ : MvPolynomi
   rfl
 
 /- English proof (translation)
-Rewrite using `[chartZEquiv, awayEquiv_apply, awayTo_scalarAway]`. Simplify using `[dehomZ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chartZEquiv_scalarAway (r : R) : chartZEquiv W (scalarAway W 2 r) = algebraMap R _ r := by
   rw [chartZEquiv, awayEquiv_apply, awayTo_scalarAway]
   simp [dehomZ]
 
 /- English proof (translation)
-Rewrite using `[chartYEquiv, awayEquiv_apply, awayTo_scalarAway]`. Simplify using `[dehomY]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chartYEquiv_scalarAway (r : R) : chartYEquiv W (scalarAway W 1 r) = algebraMap R _ r := by
   rw [chartYEquiv, awayEquiv_apply, awayTo_scalarAway]
   simp [dehomY]
 
 /- English proof (translation)
-Rewrite using `[toSpec, Proj.awayι_toSpecZero_assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chartι_toSpec (j : Fin 3) :
     Proj.awayι (homGrading W) (var W j) (var_mem W j) one_pos ≫ toSpec W =

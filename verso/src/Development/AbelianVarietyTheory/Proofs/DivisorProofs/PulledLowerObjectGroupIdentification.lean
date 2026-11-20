@@ -11,17 +11,17 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `E _ _ _ H D' l c L V _ _ Q _ oQ iw I _ s ε e hDiv K _ ev o' m₁ B' _ π₁ hπ`. Take `⟨g, hD, -, hxe, -⟩` from `hDiv`. Establish `hsp : spMap ev ≫ specOf iw = spMap (ev.comp iw)`. Simplify using `[spMap, specOf, ← Spec.map_comp]`. Establish `hii : IsGrpPullback Q.P.A L.D.P.A (specOf iw) (hD.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw))` using `GlobalTheory.UnifPullCompare.isGrpPullback_of_bc hD.e hD.e_hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h₂ : IsGrpPullback B' L.D.P.A (spMap (ev.comp iw)) (π₁ ≫ hD.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw))` using `(IsGrpPullback.comp hπ hii).congr hsp rfl`. Establish `h₁ : IsGrpPullback o'.t.G L.D.P.A (spMap (ev.comp iw)) (m₁.toSABMap.φ ≫ L.φB)` using `(IsGrpPullback.comp m₁.cart L.ab.1).congr (Category.comp_id _) rfl`. Take `⟨θe, hθm, hθ⟩` from `grpPullback_iso h₁ h₂`. Use `⟨θe.hom.left, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hθm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `isGrpPullback_of_iso θe`. Establish `A : LBIso o'.t.PP.L (L.o.t.PP.L.pull m₁.toSABMap.φ)` using `GlobalTheory.LN.GenericPoint.lbIso_of_sabMap m₁.toSABMap`. Establish `B : LBIso (L.o.t.PP.L.pull m₁.toSABMap.φ) (L.D.P.L.pull (m₁.toSABMap.φ ≫ L.φB))` using `GlobalTheory.LN.GenericPoint.lbIso_pull L.ab.2.2 _ rfl`. Establish `C : LBIso Q.P.L (L.D.P.L.pull (hD.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw)))` using `⟨hD.w, hD.w_gen⟩`. Establish `C' : LBIso (Q.P.L.pull (θe.hom.left ≫ π₁)) (L.D.P.L.pull (m₁.toSABMap.φ ≫ L.φB))` using `GlobalTheory.LN.GenericPoint.lbIso_pull C _ (by rw [← hθ]; simp only [Category.assoc])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `LBIso.trans o'.t.PP.isLB (pull_isLB L.D.P.isLB _) (pull_isLB Q.P.isLB _) (LBIso.trans o'.t.PP.isLB (pull_isLB L.o.t.PP.isLB _) (pull_isLB L.D.P.isLB _) A B) C'.symm`. Introduce `x a hx hc`. Apply `hii.1.hom_ext` to reduce the goal to its premises. Establish `hcp : (Q.c a).left ≫ hD.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw) = specOf iw ≫ (L.D.c (l.M' • e a)).left`. Use `hD.c_pr a` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hxe a]`. Conclude with `this`. Simplify using `only [Category.assoc]`. Rewrite using `[hθ, hc, hcp, ← Category.assoc, hsp]`. Establish `hq : (Q.c a).left ≫ Q.P.A.hom = 𝟙 _` using `Over.w (Q.c a)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hB : θe.hom.left ≫ B'.hom = o'.t.G.hom` using `Over.w θe.hom`. Simplify using `only [Category.assoc]`. Rewrite using `[hπ.1.w, ← Category.assoc θe.hom.left, hB, ← Category.assoc x, hx, hq]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UCanon.pulled_lowObj_grp_ident : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) {V : Type} [CommRing V] [IsDomain V] (Q : DegPre V) [Module (𝓞 E) Q.X] (oQ : letI := H.starRing; Q.OAct (𝓞 E)) (iw : L.W →+* V) {I : Type} [Fintype I] (s : I → V) (ε : I → LinearMap.BilinForm ℤ L.D.X) (e : Q.X ≃ₗ[𝓞 E] L.D.X), DivFrom L Q oQ iw s ε e → ∀ (K : Type) [Field K] (ev : V →+* K), ∀ (o' : LowObj D' c ((ev.comp iw).comp L.b)) (m₁ : ObjMap o' L.o (spMap (ev.comp iw))), ∀ (B' : Over (Sp K)) [GrpObj B'] (π₁ : B'.left ⟶ Q.P.A.left), IsGrpPullback B' Q.P.A (spMap ev) π₁ → ∃ θ : o'.t.G.left ⟶ B'.left, IsGrpPullback o'.t.G B' (𝟙 _) θ ∧ LBIso o'.t.PP.L (Q.P.L.pull (θ ≫ π₁)) ∧ (∀ (x : Sp K ⟶ o'.t.G.left) (a : Q.X), x ≫ o'.t.G.hom = 𝟙 _ → x ≫ m₁.toSABMap.φ ≫ L.φB = spMap (ev.comp iw) ≫ (L.D.c (l.M' • e a)).left → x ≫ θ ≫ π₁ = spMap ev ≫ (Q.c a).left) := by
   intro E _ _ _ H D' l c L V _ _ Q _ oQ iw I _ s ε e hDiv K _ ev o' m₁ B' _ π₁ hπ

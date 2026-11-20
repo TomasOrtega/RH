@@ -25,13 +25,11 @@ section General
 variable {D : D7} {Ω : Type} [Field Ω] [Algebra D.host.E Ω]
 
 /- English proof (translation)
-Establish `e : ((descend φ).ker : Set (Gab D.host.E Ω)) = (toAb D.host.E Ω) '' (φ.ker : Set (G D.host.E Ω))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨σ, rfl⟩` from `QuotientGroup.mk'_surjective _ g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨σ, ?_, rfl⟩` and prove the remaining obligations. Establish `h1 : descend φ (toAb D.host.E Ω σ) = 1` using `hg`. Rewrite `h1` using `[descend_toAb h]`. Conclude with `h1`. Introduce and unpack `⟨σ, hσ, rfl⟩ show descend φ (toAb D.host.E Ω σ) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[descend_toAb h]`. Conclude with `hσ`. Establish `ho : IsOpen ((descend φ).ker : Set (Gab D.host.E Ω))`. Rewrite using `[e]`. Conclude with `QuotientGroup.isOpenMap_coe _ h`.
-
-Establish `hc : Continuous (a.sym)` using `ha.artin.quot.continuous.comp (Continuous.units_map _ ha.cont)`. Conclude with `ho.preimage hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_pull {a : Recip D Ω} (ha : a.Good) {A : Type} [CommGroup A] {φ : G D.host.E Ω →* A}
     (h : IsOpen (φ.ker : Set (G D.host.E Ω))) : IsOpen ((a.pull φ).ker : Set (AE D)ˣ) := by
@@ -55,9 +53,9 @@ theorem isOpen_ker_pull {a : Recip D Ω} (ha : a.Good) {A : Type} [CommGroup A] 
   exact ho.preimage hc
 
 /- English proof (translation)
-Establish `hk : Neutral.B1.diagUnits D.host.E x ∈ a.art.ker`. Rewrite using `[ha.artin.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left ⟨x, rfl⟩)`. Establish `e : Units.map a.κ.toMonoidHom (Units.map (incA D).toMonoidHom x) = Neutral.B1.diagUnits D.host.E x` using `Units.ext (ha.rat x)`. Establish `h1 : a.sym (Units.map (incA D).toMonoidHom x) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `a.art (Units.map a.κ.toMonoidHom (Units.map (incA D).toMonoidHom x)) = 1`. Rewrite using `[e]`. Conclude with `hk`. Express the relevant statement in the definitionally equal form `descend φ (a.sym _) = 1`. Rewrite using `[h1, map_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_rat {a : Recip D Ω} (ha : a.Good) {A : Type} [CommGroup A] (φ : G D.host.E Ω →* A) (x : D.host.Eˣ) :
     a.pull φ (Units.map (incA D).toMonoidHom x) = 1 := by
@@ -74,15 +72,15 @@ theorem pull_rat {a : Recip D Ω} (ha : a.Good) {A : Type} [CommGroup A] (φ : G
   rw [h1, map_one]
 
 /- English proof (translation)
-Take `⟨χ, hχ⟩` from `GlobalTheory.ToricDistribution.exists_corr ha.artin hr`. Establish `hu` using `GlobalTheory.ToricDistribution.isUnitary_of_pow hm (hχ.pow hp)`. Set `u : (AE D)ˣ →* Neutral.B1.Ideles D.host.E` to `Units.map a.κ.toMonoidHom`. Establish `hcu : Continuous u` using `Continuous.units_map _ ha.cont`. Set `c : (AE D)ˣ →* Circle` to `{ toFun := fun x => ⟨((χ.1 (u x) : ℂˣ) : ℂ), mem_sphere_zero_iff_norm.2 (hu _)⟩ map_one' := Circle.ext (by simp) map_mul' := fun x y => Circle.ext (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `((χ.1 (u (x * y)) : ℂˣ) : ℂ) = ((χ.1 (u x) : ℂˣ) : ℂ) * ((χ.1 (u y) : ℂˣ) : ℂ)`. Rewrite using `[map_mul, map_mul, Units.val_mul]) }`. Establish `hcoe : ∀ x, ((c x : Circle) : ℂ) = ((χ.1 (u x) : ℂˣ) : ℂ)` using `fun x => rfl`. Use `⟨c, χ, ⟨⟨?_, fun x => Circle.ext ?_⟩, fun P e he k x hx => ?_⟩, hχ, fun x => ?_⟩` and prove the remaining obligations. Conclude with `Continuous.subtype_mk (Units.continuous_val.comp (χ.2.1.comp hcu)) _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: u (Units.map (incA D).toMonoidHom x) = Neutral.B1.diagUnits D.host.E x` using `Units.ext (ha.rat x)`. Rewrite using `[hcoe, this, χ.2.2]`. Both sides reduce to the same expression. Establish `: u x = Neutral.B1.localIdele D.host.E P (Formalism.L2.Host.atFin P k)`. Use `Units.ext ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `a.κ (x : AE D) = _`. Rewrite using `[hx, ha.loc P e he k]`. Rewrite using `[hcoe, this]`. Both sides reduce to the same expression. Take `⟨σ, hσ⟩` from `a.exists_sym x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoe, a.pull_eq hr hσ, hχ (u x) σ hσ]`.
+A detailed English derivation is pending.
 -/
 theorem exists_chrEq_pull {a : Recip D Ω} (ha : a.Good) {r : G D.host.E Ω →* ℂˣ}
     (hr : IsOpen (r.ker : Set (G D.host.E Ω))) {m : ℕ} (hm : m ≠ 0) (hp : ∀ σ, r σ ^ m = 1) :
@@ -114,7 +112,7 @@ theorem exists_chrEq_pull {a : Recip D Ω} (ha : a.Good) {r : G D.host.E Ω →*
     rw [hcoe, a.pull_eq hr hσ, hχ (u x) σ hσ]
 
 /- English proof (translation)
-Take `⟨c, χ, hc, hχ, hcr⟩` from `exists_chrEq_pull ha hr (pow_ne_zero n hl.ne_zero) hp`. Establish `ht : χ.TameAt PP` using `GlobalTheory.ToricDistribution.levelLe_one_of_pow hl (hχ.pow hp) hlP`. Take `⟨ρ, hρ⟩` from `GlobalTheory.exists_isRes_of_tameAt D χ PP ht`. Conclude with `⟨ρ, fun x hx hi u hu => Units.ext ((hcr x).symm.trans (GlobalTheory.ConjTwist.eq_res_of_chrEq hc hPP ht hρ x hx hi u hu))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_res_pull {a : Recip D Ω} (ha : a.Good) {r : G D.host.E Ω →* ℂˣ}
     (hr : IsOpen (r.ker : Set (G D.host.E Ω))) {l n : ℕ} (hl : l.Prime) (hp : ∀ σ, r σ ^ (l ^ n) = 1)
@@ -129,7 +127,7 @@ theorem exists_res_pull {a : Recip D Ω} (ha : a.Good) {r : G D.host.E Ω →* �
     Units.ext ((hcr x).symm.trans (GlobalTheory.ConjTwist.eq_res_of_chrEq hc hPP ht hρ x hx hi u hu))⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Take `⟨f, hf⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity H ℂ hz`. Conclude with `hf (h f)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_one_of_forall_char {H : Type} [CommGroup H] [Finite H] {z : H} (h : ∀ f : H →* ℂˣ, f z = 1) : z = 1 := by
   by_contra hz
@@ -139,7 +137,7 @@ theorem eq_one_of_forall_char {H : Type} [CommGroup H] [Finite H] {z : H} (h : �
 variable [IsTopologicalGroup (G D.host.E Ω)] [CompactSpace (G D.host.E Ω)]
 
 /- English proof (translation)
-Use `haveI := Subgroup.quotient_finite_of_isOpen φ.ker h`. Conclude with `Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange φ).toEquiv`.
+A detailed English derivation is pending.
 -/
 theorem finite_range {A : Type} [CommGroup A] {φ : G D.host.E Ω →* A} (h : IsOpen (φ.ker : Set (G D.host.E Ω))) :
     Finite φ.range := by
@@ -147,9 +145,9 @@ theorem finite_range {A : Type} [CommGroup A] {φ : G D.host.E Ω →* A} (h : I
   exact Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange φ).toEquiv
 
 /- English proof (translation)
-Use `haveI := finite_range hφ`. Establish `h0 : IsOpen (φ.rangeRestrict.ker : Set (G D.host.E Ω))` using `by rw [MonoidHom.ker_rangeRestrict]; exact hφ`. Establish `e1 : φ = φ.range.subtype.comp φ.rangeRestrict` using `MonoidHom.ext fun _ => rfl`. Establish `e : a.pull φ = φ.range.subtype.comp (a.pull φ.rangeRestrict)` using `by conv_lhs => rw [e1]`. Conclude with `a.pull_comp h0 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : a.pull φ.rangeRestrict x * (a.pull φ.rangeRestrict y)⁻¹ = 1` using `eq_one_of_forall_char fun f => by`. Rewrite using `[map_mul, map_inv, ← MonoidHom.comp_apply, ← MonoidHom.comp_apply, ← a.pull_comp h0, h f, mul_inv_cancel]`. Rewrite using `[e, MonoidHom.comp_apply, MonoidHom.comp_apply, mul_inv_eq_one.1 key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_eq_of_chars (a : Recip D Ω) {A : Type} [CommGroup A] {φ : G D.host.E Ω →* A}
     (hφ : IsOpen (φ.ker : Set (G D.host.E Ω))) {x y : (AE D)ˣ}
@@ -167,11 +165,11 @@ theorem pull_eq_of_chars (a : Recip D Ω) {A : Type} [CommGroup A] {φ : G D.hos
   rw [e, MonoidHom.comp_apply, MonoidHom.comp_apply, mul_inv_eq_one.1 key]
 
 /- English proof (translation)
-Use `haveI := finite_range hφ`. Use `haveI := Fintype.ofFinite φ.range`. Use `⟨Subgroup.isOpen_mono (H₁ := φ.ker) (fun g hg => ?_) hφ, ?_⟩` and prove the remaining obligations. Establish `: φ.rangeRestrict g = 1` using `Subtype.ext (MonoidHom.mem_ker.1 hg)`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, this, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg : ∀ g : φ.range, ∃ n : ℕ, g ^ (l ^ n) = 1` using `fun g => by`. Take `⟨σ, hσ⟩` from `g.2`. Take `⟨n, hn⟩` from `hpow σ`. Conclude with `⟨n, Subtype.ext (by rw [SubmonoidClass.coe_pow, ← hσ, hn]; rfl)⟩`. Use `choose n hn using hg`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Finset.univ.sup n, fun σ => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le (Finset.le_sup (f := n) (Finset.mem_univ (φ.rangeRestrict σ)))`. Rewrite using `[MonoidHom.comp_apply, ← map_pow, hk, pow_add, pow_mul, hn, one_pow, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem char_props {A : Type} [CommGroup A] {φ : G D.host.E Ω →* A} (hφ : IsOpen (φ.ker : Set (G D.host.E Ω))) {l : ℕ}
     (hpow : ∀ σ, ∃ n : ℕ, φ σ ^ (l ^ n) = 1) (f : φ.range →* ℂˣ) :
@@ -199,19 +197,17 @@ end GlobalTheory.TwistPull
 namespace GlobalTheory.TwistPull
 
 /- English proof (translation)
-Introduce `D N X art ha r m hm hp hanti c χ hc hcorr y`. Establish `: IsCMField D.host.E` using `D.host.isCMField_hostE`. Establish `hpw` using `hcorr.pow hp`. Take `⟨j, hj⟩` from `X.cc_cm.1`. Establish `hT : χ.TrivOn D.host.F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.ToricDistribution.resFin_of_anti (IsCMField.complexConj D.host.E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one _) GlobalTheory.ToricDistribution.host_unram (cc := X.cc) (fun x => j.injective ?_) (fun x => j.injective ?_) ha hcorr h …` and prove the remaining obligations. Rewrite using `[hj]`. Conclude with `(IsCMField.complexEmbedding_complexConj D.host.E (j.comp (algebraMap D.host.E N.Om)) x).symm`. Rewrite using `[hj, hj, Complex.conj_conj]`. Rewrite using `[Formalism.L2.Host.HChar.resInf_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Finset.prod_eq_one fun w' _ => GlobalTheory.ToricDistribution.locInf_of_pow hm hpw w' _`. Set `ψ : Neutral.B1.Ideles D.host.F →* Circle` to `c.comp (Formalism.L2.Theta.idF D)`. Establish `hcI : Continuous (algebraMap (AF D.host.F) (AE D))` using `by haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Conclude with `(continuous_id.smul continuous_const).congr fun a => (Algebra.algebraMap_eq_smul_one a).symm`. Establish `hcont : Continuous ψ` using `hc.1.1.comp (Continuous.units_map _ hcI)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e : ∀ k : D.host.F, algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) k) = incA D (algebraMap D.host.F D.host.E k)`. Introduce `k`. Express the relevant statement in the definitionally equal form `(algebraMap D.host.F (AF D.host.F) k) ⊗ₜ[D.host.F] (1 : D.host.E) = (1 : AF D.host.F) ⊗ₜ (algebraMap _ _ k)`. Conclude with `Algebra.TensorProduct.tmul_one_eq_one_tmul k`. Establish `hdiag : ∀ k, ψ (Neutral.B1.diagUnits D.host.F k) = 1` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Formalism.L2.Theta.idF D (Neutral.B1.diagUnits D.host.F k) = Units.map (incA D).toMonoidHom (Units.map (algebraMap D.host.F D.host.E).toMonoidHom k)` using `Units.ext (e k)`. Express the relevant statement in the definitionally equal form `c (Formalism.L2.Theta.idF D _) = 1`. Rewrite using `[this]`. Conclude with `hc.1.2 _`. Establish `hloc : ∀ v ∉ (∅ : Finset (HeightOneSpectrum (𝓞 D.host.F))), ∀ x, ψ (Neutral.B1.localIdele D.host.F v x) = 1` using `fun v _ x => by`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.BaseIdeleTriv.finite_idele_base_trivial D c χ hc hT _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom (((Neutral.B1.localIdele D.host.F v x : Neutral.B1.Ideles D.host.F) : AF D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)) = 1`. Rewrite using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul]`. Establish `h1 : fstA D.host.F ((Neutral.B1.localIdele D.host.F v x : Neutral.B1.Ideles D.host.F) : AF D.host.F) = 1` using `rfl`. Rewrite using `[h1]`.
-
-Both sides reduce to the same expression. Conclude with `DFunLike.congr_fun (GlobalTheory.FrobDense.eq_one_of_away ψ hcont hdiag ∅ hloc) y`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem real_C : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (art : Neutral.B1.Ideles D.host.E →* GlobalTheory.HeckeGal.Gab D.host.E N.Om), GlobalTheory.HeckeGal.IsGlobalArtin art → ∀ (r : G D.host.E N.Om →* ℂˣ) (m : ℕ), m ≠ 0 → (∀ σ, r σ ^ m = 1) → AntiHom X.cc r → ∀ (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E), ChrEq c χ → GlobalTheory.ToricDistribution.Corr art r χ → ∀ y : (AF D.host.F)ˣ, c (Formalism.L2.Theta.idF D y) = 1 := by
   intro D N X art ha r m hm hp hanti c χ hc hcorr y
@@ -259,27 +255,25 @@ end GlobalTheory.TwistPull
 namespace GlobalTheory.TwistPull
 
 /- English proof (translation)
-Introduce `D N X a ha A _ φ l hl hpow hφ hanti Q hQ hQl hunr`. Establish `hr` using `fun f => char_props (D := D) hφ hpow f`. Establish `hanti' : ∀ f : φ.range →* ℂˣ, AntiHom X.cc (f.comp φ.rangeRestrict)` using `fun f g g' hg => by`. Establish `e : φ.rangeRestrict g' = (φ.rangeRestrict g)⁻¹` using `Subtype.ext (hanti g g' hg)`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, e, map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨isOpen_ker_pull ha hφ, fun x => pull_rat ha φ x, fun y => ?_, hQ, ?_, fun PP hPP => isResAt_resOf ?_⟩` and prove the remaining obligations. Use `(pull_eq_of_chars a hφ (y := 1) fun f => ?_).trans (map_one _)` and prove the remaining obligations. Take `⟨h1, n, h2⟩` from `hr f`. Establish `hm` using `pow_ne_zero n hl.ne_zero`. Take `⟨c, χ, hc, hχ, hcr⟩` from `exists_chrEq_pull ha h1 hm h2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_one]`. Use `Units.ext ((hcr _).symm.trans ?_)` and prove the remaining obligations. Rewrite using `[real_C D N X a.art ha.artin _ _ hm h2 (hanti' f) c χ hc hχ y]`. Simplify using the standard rewrite rules. Introduce `x h1 h2 h3 h4`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(pull_eq_of_chars a hφ (y := 1) fun f => ?_).trans (map_one _)` and prove the remaining obligations. Take `⟨o1, n, o2⟩` from `hr f`. Take `⟨c, χ, hc, hχ, hcr⟩` from `exists_chrEq_pull ha o1 (pow_ne_zero n hl.ne_zero) o2`. Rewrite using `[map_one]`. Use `Units.ext ((hcr _).symm.trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.T.heckeChar_unramified_outside_of_lPower_galois_char D N a.art ha.artin _ l n hl o2 c χ hc hχ Q hQ hQl (fun v hv hc' B hB σ hσ => by`. Rewrite using `[MonoidHom.comp_apply, show φ.rangeRestrict σ = 1 from Subtype.ext (hunr v hv hc' B hB σ hσ), map_one]) x h1 h2 h3 h4]`. Simplify using the standard rewrite rules. Establish `hPP` using `hQ.isIdemAt hPP`. Establish `same : ∀ (x x' : (AE D)ˣ) (u : (kP PP)ˣ), (1 - idemAt PP) * (x : AE D) = 1 - idemAt PP → (1 - idemAt PP) * (x' : AE D) = 1 - idemAt PP → ∀ (hi : toEAf D (x : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (hi' : toEAf D (x' : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x x' u hx hx' hi hi' hu hu'`. Use `pull_eq_of_chars a hφ fun f => ?_` and prove the remaining obligations. Take `⟨o1, n, o2⟩` from `hr f`. Take `⟨ρ, hρ⟩` from `exists_res_pull ha o1 hl o2 hPP (hQl PP ‹_›)`. Rewrite using `[hρ x hx hi u hu, hρ x' hx' hi' u hu']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hlift` using `fun u => GlobalTheory.ConjTwist.exists_isLocUnit hPP u`. Use `choose xs hxs using hlift`. Establish `hmul : ∀ u v, a.pull φ (xs (u * v)) = a.pull φ (xs u * xs v)` using `fun u v => by`. Take `⟨hi, hu⟩` from `(hxs (u * v)).res`. Take `⟨hi1, hu1⟩` from `(hxs u).res`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hi2, hu2⟩` from `(hxs v).res`. Establish `hi3 : toEAf D ((xs u * xs v : (AE D)ˣ) : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[Units.val_mul, map_mul]`. Conclude with `mul_mem hi1 hi2`. Use `same _ _ (u * v) (hxs (u * v)).off ?_ hi hi3 hu ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, ← mul_assoc, (hxs u).off, (hxs v).off]`. Establish `: (⟨_, hi3⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ⟨_, hi1⟩ * ⟨_, hi2⟩` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `toEAf D ((xs u * xs v : (AE D)ˣ) : AE D) = toEAf D (xs u : AE D) * toEAf D (xs v : AE D)`. Rewrite using `[Units.val_mul, map_mul])`. Rewrite using `[this, map_mul, hu1, hu2, Units.val_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨MonoidHom.mk' (fun u => a.pull φ (xs u)) (fun u v => ?_), ?_⟩` and prove the remaining obligations. Use `show a.pull φ (xs (u * v)) = a.pull φ (xs u) * a.pull φ (xs v)`. Rewrite using `[hmul, map_mul]`. Introduce `x hx hi u hu show a.pull φ x = a.pull φ (xs u)`. Take `⟨hi', hu'⟩` from `(hxs u).res`.
-
-Conclude with `same x (xs u) u hx (hxs u).off hi hi' hu hu'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_pull : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (a : Recip D N.Om), a.Good → ∀ (A : Type) [CommGroup A] (φ : G D.host.E N.Om →* A) (l : ℕ), l.Prime → (∀ σ, ∃ n : ℕ, φ σ ^ (l ^ n) = 1) → IsOpen (φ.ker : Set (G D.host.E N.Om)) → AntiHom X.cc φ → ∀ Q : Finset (Pl D.host.E), SplitSet Q → (∀ P ∈ Q, ((l : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal) → (∀ v : Pl D.host.E, v ∉ Q → (∀ P ∈ Q, ¬ Formalism.BasicNotions.IsConjPl D.host P v) → ∀ B : ValuationSubring N.Om, IsPlaceOver B v → ∀ σ ∈ Ine (F := D.host.E) B, φ σ = 1) → (⟨Q, a.pull φ, resOf (a.pull φ)⟩ : Twist D A).Good := by
   intro D N X a ha A _ φ l hl hpow hφ hanti Q hQ hQl hunr

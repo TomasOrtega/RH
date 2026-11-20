@@ -11,13 +11,11 @@ open UpperTheory.V.Af.Bc (res)
 open UpperTheory.Gal.Int.Core
 
 /- English proof (translation)
-Use `haveI : Finite k := Nat.finite_of_card_ne_zero (by rw [hk]; exact hp.ne_zero)`. Use `haveI : Nontrivial k := by`. Rewrite using `[← Finite.one_lt_card_iff_nontrivial, hk]`. Conclude with `hp.one_lt`. Establish `htop : AddSubgroup.zmultiples (1 : k) = ⊤`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply `AddSubgroup.eq_top_of_card_eq` to reduce the goal to its premises. Establish `hdvd` using `AddSubgroup.card_addSubgroup_dvd_card (AddSubgroup.zmultiples (1 : k))`. Rewrite `hdvd`, the goal using `[hk]`. Break down `(Nat.dvd_prime hp).mp hdvd with h | h` into its components or cases. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[AddSubgroup.card_eq_one]`. Establish `: (1 : k) ∈ AddSubgroup.zmultiples (1 : k)` using `AddSubgroup.mem_zmultiples 1`. Rewrite `this` using `[h]`. Conclude with `one_ne_zero this`. Conclude with `h`.
-
-Establish `hy : y ∈ AddSubgroup.zmultiples (1 : k)` using `by rw [htop]; trivial`. Take `⟨n, hn⟩` from `AddSubgroup.mem_zmultiples_iff.mp hy`. Conclude with `⟨n, by simpa using hn⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_intCast_eq_of_card_prime (k : Type) [Ring k] (p : ℕ) (hp : Nat.Prime p) (hk : Nat.card k = p)
     (y : k) : ∃ n : ℤ, (n : k) = y := by
@@ -40,11 +38,11 @@ private theorem exists_intCast_eq_of_card_prime (k : Type) [Ring k] (p : ℕ) (h
   exact ⟨n, by simpa using hn⟩
 
 /- English proof (translation)
-Take `⟨φ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg]`. Establish `h2 : (φ x) ^ 2 = -(d : ℂ)` using `by rw [← map_pow, hx]; simp`. Establish `hre : (φ x).re = 0`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `him` using `congrArg Complex.im h2`. Establish `hre2` using `congrArg Complex.re h2`. Simplify using `[pow_two] at him hre2`. Establish `hm : (φ x).re * (φ x).im = 0` using `by linarith`. Break down `mul_eq_zero.mp hm with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Rewrite `hre2` using `[h]`. Establish `: (0:ℝ) < d` using `by exact_mod_cast hd0`. Use polynomial arithmetic with `[sq_nonneg (φ x).re]`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem complexConj_eq_neg_of_sq_eq_neg_natCast (E : Type) [Field E] [NumberField E] [IsCMField E] (d : ℕ) (hd0 : 0 < d)
     (x : E) (hx : x ^ 2 = -(d : E)) : IsCMField.complexConj E x = -x := by
@@ -65,9 +63,9 @@ private theorem complexConj_eq_neg_of_sq_eq_neg_natCast (E : Type) [Field E] [Nu
   apply Complex.ext <;> simp [hre]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hirr : Irreducible (q : ℤ)` using `(Nat.prime_iff_prime_int.mp hq).irreducible`. Take `⟨a, b, hab⟩` from `(Irreducible.coprime_iff_not_dvd hirr).mpr h`. Establish `h1 : ((a * q + b * m : ℤ) : R) ∈ P`. Use `push_cast`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `P.add_mem (P.mul_mem_left _ hqP) (P.mul_mem_left _ hm)`. Rewrite `h1` using `[hab, Int.cast_one]`. Conclude with `(Ideal.IsPrime.ne_top inferInstance) ((Ideal.eq_top_iff_one P).mpr h1)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prime_dvd_of_intCast_mem_of_natCast_mem {R : Type} [CommRing R] (P : Ideal R) [P.IsPrime] (q : ℕ)
     (hq : Nat.Prime q) (hqP : (q : R) ∈ P) (m : ℤ) (hm : (m : R) ∈ P) : (q : ℤ) ∣ m := by
@@ -81,15 +79,13 @@ private theorem prime_dvd_of_intCast_mem_of_natCast_mem {R : Type} [CommRing R] 
   exact (Ideal.IsPrime.ne_top inferInstance) ((Ideal.eq_top_iff_one P).mpr h1)
 
 /- English proof (translation)
-Establish `hnorm : ‖(Polynomial.X ^ 2 + Polynomial.C d : Polynomial ℤ).aeval (n : ℤ_[q])‖ < ‖(Polynomial.X ^ 2 + Polynomial.C d : Polynomial ℤ).derivative.aeval (n : ℤ_[q])‖ ^ 2`. Establish `e1 : (Polynomial.X ^ 2 + Polynomial.C d : Polynomial ℤ).aeval (n : ℤ_[q]) = ((n ^ 2 + d : ℤ) : ℤ_[q])`. Simplify using the standard rewrite rules. Establish `e2 : (Polynomial.X ^ 2 + Polynomial.C d : Polynomial ℤ).derivative.aeval (n : ℤ_[q]) = ((2 * n : ℤ) : ℤ_[q])`. Simplify using `[Polynomial.derivative_X_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `left`. Conclude with `map_ofNat _ 2`. Rewrite using `[e1, e2]`. Establish `a1 : ‖((n ^ 2 + d : ℤ) : ℤ_[q])‖ < 1` using `(PadicInt.norm_int_lt_one_iff_dvd _).mpr h1`. Establish `a2 : ‖((2 * n : ℤ) : ℤ_[q])‖ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ‖((2 * n : ℤ) : ℤ_[q])‖ ≤ 1` using `PadicInt.norm_le_one _`. Establish `hnlt : ¬ ‖((2 * n : ℤ) : ℤ_[q])‖ < 1` using `fun h => h2 ((PadicInt.norm_int_lt_one_iff_dvd _).mp h)`. Combine the linear relations using `[not_lt.mp hnlt]`. Rewrite using `[a2]`. Simplify using `using a1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz, -⟩` from `hensels_lemma hnorm`. Use `⟨(z : ℚ_[q]), ?_⟩` and prove the remaining obligations. Establish `hz' : z ^ 2 + (d : ℤ_[q]) = 0` using `by simpa using hz`. Establish `hz'' : ((z ^ 2 + (d : ℤ_[q]) : ℤ_[q]) : ℚ_[q]) = 0` using `by rw [hz']; simp`. Move the coercions through the operations in `at hz''`.
-
-Take the linear combination `-hz''`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem isSquare_neg_padic_of_dvd_sq_add_of_not_dvd (q : ℕ) [Fact q.Prime] (d n : ℤ) (h1 : (q : ℤ) ∣ n ^ 2 + d)
     (h2 : ¬ (q : ℤ) ∣ 2 * n) : IsSquare (-(d : ℚ_[q])) := by
@@ -120,43 +116,39 @@ private theorem isSquare_neg_padic_of_dvd_sq_add_of_not_dvd (q : ℕ) [Fact q.Pr
   linear_combination -hz''
 
 /- English proof (translation)
-Unfold `OneUs`. Introduce `E _ _ _ d hd`. Take `⟨hd0, x, hx⟩` from `hd`. Establish `hint : IsIntegral ℤ x`. Apply `IsIntegral.of_pow (n := 2) (by norm_num)` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hx]`. Apply `IsIntegral.neg` to reduce the goal to its premises. Use `isIntegral_algebraMap (R := ℤ) (A := E) (x := (d:ℤ))` as an intermediate fact. Simplify using `using this`. Set `xo : 𝓞 E` to `⟨x, hint⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hxo : xo ^ 2 = -(d : 𝓞 E)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `push_cast`. Conclude with `hx`. Set `cO` to `RingOfIntegers.mapAlgEquiv (IsCMField.complexConj E)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcxo : cO xo = -xo`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `IsCMField.complexConj E x = -x`. Conclude with `complexConj_eq_neg_of_sq_eq_neg_natCast E d hd0 x hx`. Establish `hne : Ideal.span {((2 * d : ℕ) : 𝓞 E)} ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(by omega : 2 * d ≠ 0)` after adjusting the coercions. Rewrite using `[Filter.eventually_cofinite]`. Use `(Ideal.finite_factors hne).subset ?_` and prove the remaining obligations. Introduce `w hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [Set.mem_setOf_eq] at hw ⊢`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Assume the negation of the conclusion as `h2d`. Apply `hw` to reduce the goal to its premises. Introduce `hprime`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `exists_intCast_eq_of_card_prime (𝓞 E ⧸ w.asIdeal) (normV w) hprime rfl (Ideal.Quotient.mk _ xo)`. Establish `hxn : xo - n ∈ w.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, ← hn]`. Simplify using the standard rewrite rules. Unfold `UsPl`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Introduce a local definition for the expression.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `IsSplitAt`. Set `u : HeightOneSpectrum (𝓞 E)` to `{ asIdeal := w.asIdeal.comap (cO.toRingEquiv : 𝓞 E →+* 𝓞 E) isPrime := Ideal.comap_isPrime _ _ ne_bot := by`. Introduce `h`. Apply `w.ne_bot` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.map_comap_of_surjective (cO.toRingEquiv : 𝓞 E →+* 𝓞 E) cO.surjective w.asIdeal` as an intermediate fact. Rewrite `this` using `[h, Ideal.map_bot]`. Conclude with `this.symm }`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations. Introduce `huw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ a, a ∈ w.asIdeal → cO a ∈ w.asIdeal`. Introduce `a ha`. Establish `: a ∈ u.asIdeal` using `by rw [huw]; exact ha`. Conclude with `this`. Establish `h1` using `hmem _ hxn`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h1` using `[map_sub, hcxo, map_intCast]`. Establish `h2 : 2 * xo ∈ w.asIdeal`. Use `w.asIdeal.sub_mem hxn h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `h2d` to reduce the goal to its premises. Establish `h3` using `w.asIdeal.mul_mem_right (-xo) h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Establish `: ((2 * d : ℕ) : 𝓞 E) = -2 * (-(d : 𝓞 E))` using `by push_cast; ring`. Rewrite using `[this, ← hxo]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) (Ideal.comap (cO.toRingEquiv : 𝓞 E →+* 𝓞 E) w.asIdeal) = Ideal.comap (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) w.asIdeal`. Rewrite using `[Ideal.comap_comap]`. Use `congr 1`.
+By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `y`. Conclude with `congrArg Subtype.val (cO.commutes y)`. Introduce `q hq hqw haveI := Fact.mk hq`. Unfold `SqAt`. Establish `hm : ((n ^ 2 + d : ℤ) : 𝓞 E) ∈ w.asIdeal`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((n ^ 2 + d : ℤ) : 𝓞 E) = (xo - n) * (-(xo + n))`. Use `push_cast`. Take the linear combination `hxo`. Rewrite using `[this]`. Conclude with `w.asIdeal.mul_mem_right _ hxn`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hdiv` using `prime_dvd_of_intCast_mem_of_natCast_mem w.asIdeal q hq hqw _ hm`. Establish `hq2d : ¬ (q : ℤ) ∣ 2 * d`. Introduce and unpack `⟨k, hk⟩`. Apply `h2d` to reduce the goal to its premises. Establish `: ((2 * d : ℕ) : 𝓞 E) = (q : 𝓞 E) * (k : 𝓞 E)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congrArg (fun z : ℤ => (z : 𝓞 E)) hk` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Conclude with `this`. Rewrite using `[this]`. Conclude with `w.asIdeal.mul_mem_right _ hqw`.
-
-Establish `h2n : ¬ (q : ℤ) ∣ 2 * n`. Introduce `h`. Apply `hq2d` to reduce the goal to its premises. Establish `e : (2 * d : ℤ) = 2 * (n ^ 2 + d) - (2 * n) * n` using `by ring`. Rewrite using `[e]`.
-
-Conclude with `dvd_sub (dvd_mul_of_dvd_right hdiv 2) (dvd_mul_of_dvd_left h n)`. Conclude with `isSquare_neg_padic_of_dvd_sq_add_of_not_dvd q (d : ℤ) n hdiv h2n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Core.oneUs_holds :
     OneUs := by

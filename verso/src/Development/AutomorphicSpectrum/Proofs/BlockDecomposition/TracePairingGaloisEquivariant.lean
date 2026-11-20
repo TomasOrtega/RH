@@ -6,9 +6,9 @@ open TensorProduct CrystallineSemistableComparison.Pb.Psi
 namespace GlobalTheory.CompanionTheory.FrobPairing
 
 /- English proof (translation)
-Use `TensorProduct.induction_on z ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [map_zero]`. Introduce `a y`. Rewrite using `[hg]`. Simplify using `only [T, TensorProduct.liftAddHom_tmul, AddMonoidHom.coe_mk, ZeroHom.coe_mk, map_mul, hσ, hσk]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x y hx hy`. Simplify using `only [map_add, hx, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem T_gal {W A C₀ : Type} [CommRing W] [CommRing A] [CommRing C₀] [Algebra W A] {K₀ : Type} [Field K₀]
     [Algebra W K₀] {L : Type 1} [AddCommGroup L] [Module W L] (c : A →+* C₀) (k : K₀ →+* C₀)

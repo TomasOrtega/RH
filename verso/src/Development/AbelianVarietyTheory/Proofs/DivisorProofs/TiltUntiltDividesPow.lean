@@ -6,11 +6,11 @@ open Ideal WittVector
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hn : ∀ n, IsUnit (Perfection.coeff R p n x)` using `fun n => by`. Establish `e : Perfection.coeff R p n x ^ p ^ n = Perfection.coeff R p 0 x` using `Perfection.coeffMonoidHom_pow_p_pow_self x n`. Rewrite `h` using `[← e]`. Conclude with `(isUnit_pow_iff (pow_ne_zero _ hp.out.ne_zero)).1 h`. Set `y : Perfection R p` to `⟨fun n => ((hn n).unit⁻¹ : Rˣ), fun n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : (hn (n + 1)).unit ^ p = (hn n).unit` using `Units.ext (by simp [Perfection.coeff_pow_p' x n])`. Rewrite using `[← Units.val_pow_eq_pow_val, inv_pow, e]⟩`. Establish `hy : ∀ n, Perfection.coeff R p n x * Perfection.coeff R p n y = 1` using `fun n => by`. Rewrite using `[Perfection.coeff_mk]`. Conclude with `(hn n).mul_val_inv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨⟨x, y, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Use extensionality with `n`. Rewrite using `[map_mul, hy, map_one]`. Use extensionality with `n`. Rewrite using `[map_mul, mul_comm, hy, map_one]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma perfection_isUnit_of_coeff_zero {p : ℕ} [hp : Fact p.Prime] {R : Type*}
     [CommRing R] [CharP R p]
@@ -32,7 +32,7 @@ private lemma perfection_isUnit_of_coeff_zero {p : ℕ} [hp : Fact p.Prime] {R :
   · ext n; rw [map_mul, mul_comm, hy, map_one]
 
 /- English proof (translation)
-Establish `h : Ideal.Quotient.mk (span {(p : O)}) (x - 1).untilt = Ideal.Quotient.mk (span {(p : O)}) (x.untilt - 1)`. Rewrite using `[PreTilt.mk_untilt_eq_coeff_zero, map_sub, map_sub, PreTilt.mk_untilt_eq_coeff_zero, map_one, map_one]`. Take `⟨t, ht⟩` from `mem_span_singleton'.1 (Ideal.Quotient.eq.1 h)`. Conclude with `⟨t, by linear_combination -ht⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma untilt_sub_one_congr {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O]
     [Fact ¬IsUnit (p : O)] [IsAdicComplete (span {(p : O)}) O] (x : PreTilt O p) :
@@ -45,23 +45,21 @@ private lemma untilt_sub_one_congr {p : ℕ} [Fact p.Prime] {O : Type} [CommRing
   exact ⟨t, by linear_combination -ht⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hass`. Take `⟨t, ht⟩` from `untilt_sub_one_congr f`. Use `set a : R := PreTilt.untilt f - 1 with ha`. Establish `h2` using `hp.out.two_le`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M, p * (p - 1) = M + 2 := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p * (p - 1) - 2, ?_⟩` and prove the remaining obligations. Establish `: 2 * 1 ≤ p * (p - 1)` using `Nat.mul_le_mul h2 (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `hpJ : (p : R) ∈ jacobson (⊥ : Ideal R)` using `IsAdicComplete.le_jacobson_bot (span {(p : R)}) (mem_span_singleton_self _)`. Establish `haJ : a ∈ jacobson (⊥ : Ideal R)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.isRadical_jacobson ⊥ ⟨p * (p - 1), ?_⟩` and prove the remaining obligations. Establish `: a ^ (p * (p - 1)) = (p : R) * ((w⁻¹ : Rˣ) : R)`. Rewrite using `[← hw, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ hpJ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (a * (a ^ M * w * t) + 1)` using `mem_jacobson_bot.1 haJ _`. Establish `h1 : (f - 1).untilt = a * (a * (a ^ M * w * t) + 1)`. Rewrite using `[ht, ← hw, hM]`. Expand and normalize the polynomial expressions, which then agree. Establish `hg : (f ^ p - 1) ^ (p - 1) = (f - 1) ^ (p * (p - 1))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_mul, sub_pow_char (p := p) f 1, one_pow]`. Establish `hu' : IsUnit (((w⁻¹ : Rˣ) : R) * (a * (a ^ M * w * t) + 1) ^ (p * (p - 1)))` using `(Units.isUnit _).mul (hu.pow _)`. Use `set u : R := ((w⁻¹ : Rˣ) : R) * (a * (a ^ M * w * t) + 1) ^ (p * (p - 1)) with hudef`. Establish `hunt : ((f ^ p - 1) ^ (p - 1)).untilt = (p : R) * u`. Rewrite using `[hg, PreTilt.untilt.map_pow, h1, mul_pow, hudef, ← hw, mul_assoc (a ^ (p * (p - 1))) (w : R), Units.mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h0 : PreTilt.coeff 0 ((f ^ p - 1) ^ (p - 1)) = 0`. Rewrite using `[← PreTilt.mk_untilt_eq_coeff_zero, hunt]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_right _ _ (mem_span_singleton_self _))`. Take `⟨d, hd⟩` from `hker _ h0`. Establish `hdu : d.untilt = u`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hreg` to reduce the goal to its premises. Use `hunt` as an intermediate fact. Rewrite `this` using `[hd, map_mul, hpf]`. Simplify `this` using `[smul_eq_mul]`. Establish `hdunit : IsUnit d`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `perfection_isUnit_of_coeff_zero d` to reduce the goal to its premises. Establish `: IsUnit (PreTilt.coeff 0 d)`. Rewrite using `[← PreTilt.mk_untilt_eq_coeff_zero, hdu]`. Conclude with `hu'.map _`. Conclude with `this`.
-
-Rewrite using `[hd, hdunit.mul_right_dvd]`. Conclude with `hker c hc`.
+A detailed English derivation is pending.
 -/
 theorem preTilt_pow_sub_one_pow_dvd_of_associated (p : ℕ) [hp : Fact p.Prime] (R : Type)
     [CommRing R] [Fact ¬IsUnit (p : R)] [IsAdicComplete (Ideal.span {(p : R)}) R]

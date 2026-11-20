@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.StableExt
 
 /- English proof (translation)
-Use `haveI : (⊥ : Subgroup G).FiniteIndex := inferInstance`. Apply `GlobalTheory.FiniteIndexSemisimple.isSSRep_of_finiteIndex ρ (⊥ : Subgroup G)` to reduce the goal to its premises. Introduce `W _`. Take `⟨W', hW'⟩` from `Submodule.exists_isCompl W`. Use `⟨W', fun g v hv => ?_, hW'⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg : (g : G) = 1` using `Subgroup.mem_bot.mp g.2`. Simplify using `only [MonoidHom.comp_apply, Subgroup.coe_subtype, hg, map_one, Units.val_one, Matrix.one_mulVec]`. Conclude with `hv`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSSRep_of_finite {G : Type} [Group G] [Finite G] {d : ℕ} (ρ : G →* GL (Fin d) ℂ) :
     Formalism.MainNotions.N.IsSSRep ρ := by
@@ -28,7 +28,7 @@ theorem isSSRep_of_finite {G : Type} [Group G] [Finite G] {d : ℕ} (ρ : G →*
   exact hv
 
 /- English proof (translation)
-Rewrite using `[aeval_eq_sum_range]`. Conclude with `Commute.sum_right _ _ _ fun i _ => (h.pow_right i).smul_right _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_aeval {n : ℕ} {M B : Matrix (Fin n) (Fin n) ℂ} (h : Commute M B) (p : ℂ[X]) :
     Commute M (aeval B p) := by
@@ -36,37 +36,31 @@ theorem commute_aeval {n : ℕ} {M B : Matrix (Fin n) (Fin n) ℂ} (h : Commute 
   exact Commute.sum_right _ _ _ fun i _ => (h.pow_right i).smul_right _
 
 /- English proof (translation)
-Introduce `G Γ _ _ _ _ φ s hs Y hY hYs`. Take `⟨d, ρ, hρ⟩` from `(GlobalTheory.BI.matrixChar_iff_isChar G Y).mpr hY`. Set `ρ' : G →* GL (Fin d) ℂ` to `ρ.comp (φ s).toMonoidHom`. Take `⟨A, hA⟩` from `GlobalTheory.TraceConj.conj_of_trace_eq G ℂ d ρ ρ' (isSSRep_of_finite ρ) (isSSRep_of_finite ρ') (fun g => by show _ = Matrix.trace ((ρ (φ s g) : GL (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ)`. Rewrite using `[← hρ, ← hρ, hYs])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hA' : ∀ g, ρ (φ s g) = A * ρ g * A⁻¹` using `fun g => hA g`. Establish `hAk : ∀ k : ℕ, ∀ g, ρ (((φ s) ^ k) g) = A ^ k * ρ g * (A ^ k)⁻¹`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih => intro g`. Rewrite using `[pow_succ', MulAut.mul_apply, hA', ih]`. Use `group`. Use `set l := orderOf s with hl_def`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : 0 < l` using `orderOf_pos s`. Establish `hφl : (φ s) ^ l = 1` using `by rw [← map_pow, pow_orderOf_eq_one, map_one]`. Establish `hB : ∀ g, A ^ l * ρ g = ρ g * A ^ l`. Introduce `g`. Use `hAk l g` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `this` using `[hφl, MulAut.one_apply]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨p, hp⟩` from `GlobalTheory.T.exists_poly_pow_mul_eq_one' d l ((A ^ l : GL (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ) hl (Units.isUnit _)`. Use `set Bm : Matrix (Fin d) (Fin d) ℂ := ((A ^ l : GL (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ) with hBm`. Use `set C : Matrix (Fin d) (Fin d) ℂ := aeval Bm p with hC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hCA : Commute ((A : GL (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ) C`. Apply `commute_aeval` to reduce the goal to its premises. Rewrite using `[hBm, Units.val_pow_eq_pow_val]`. Conclude with `(Commute.refl _).pow_right l`. Establish `hCρ : ∀ g, Commute ((ρ g : GL (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ) C`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g`. Apply `commute_aeval` to reduce the goal to its premises. Use `congrArg (fun x : GL (Fin d) ℂ => (x : Matrix (Fin d) (Fin d) ℂ)) (hB g)` as an intermediate fact. Simplify using `only [Units.val_mul] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl1 : l - 1 + 1 = l` using `Nat.sub_add_cancel hl`. Establish `h1 : C * (C ^ (l - 1) * Bm) = 1`. Rewrite using `[← mul_assoc, ← pow_succ', hl1]`. Conclude with `hp`. Set `Cu : GL (Fin d) ℂ` to `⟨C, C ^ (l - 1) * Bm, h1, mul_eq_one_comm.mp h1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hCuA : A * Cu = Cu * A` using `Units.ext (hCA.eq)`. Establish `hCuρ : ∀ g, Cu * ρ g = ρ g * Cu` using `fun g => Units.ext ((hCρ g).eq.symm)`. Establish `hCuB : Cu ^ l * A ^ l = 1` using `Units.ext (by`. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val, Units.val_one]`. Conclude with `hp)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set A' : GL (Fin d) ℂ := A * Cu with hA'def`. Establish `hA'l : A' ^ l = 1`. Rewrite using `[hA'def, (show Commute A Cu from hCuA).mul_pow, ((show Commute A Cu from hCuA).pow_pow l l).eq]`. Conclude with `hCuB`. Establish `hA's : ∀ g, ρ (φ s g) = A' * ρ g * A'⁻¹`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[hA', hA'def, mul_inv_rev]`. Combine the equalities or inequalities in the displayed calculation. Set `σ : Γ →* GL (Fin d) ℂ` to `monoidHomOfForallMemZpowers hs (orderOf_dvd_of_pow_eq_one hA'l)`. Establish `hσs : σ s = A'` using `monoidHomOfForallMemZpowers_apply_gen hs _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Set `H : Subgroup Γ` to `{ carrier := {t | ∀ g, ρ (φ t g) = σ t * ρ g * (σ t)⁻¹} mul_mem' := by`. Introduce `a b ha hb g`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[map_mul, MulAut.mul_apply, ha, hb, map_mul]`. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use the proof step `one_mem' := by intro g; simp`. Use the proof step `inv_mem' := by`. Introduce `a ha g`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `ha ((φ a⁻¹) g)` as an intermediate fact.
-
-Rewrite `this` using `[← MulAut.mul_apply, ← map_mul, mul_inv_cancel, map_one, MulAut.one_apply]`. Rewrite using `[map_inv σ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsH : s ∈ H` using `fun g => by rw [hσs]; exact hA's g`. Establish `hall : ∀ t, ∀ g, ρ (φ t g) = σ t * ρ g * (σ t)⁻¹` using `fun t => (Subgroup.zpowers_le.mpr hsH) (hs t)`.
-
-Set `Λ : G ⋊[φ] Γ →* GL (Fin d) ℂ` to `SemidirectProduct.lift ρ σ (fun t => by`. Use extensionality with `g : 1`. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Conclude with `hall t g)`. Use `⟨fun x => Matrix.trace ((Λ x : GL (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ), ?_, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(GlobalTheory.BI.matrixChar_iff_isChar _ _).mp ⟨d, Λ, fun x => rfl⟩`. Introduce `g`. Simplify using `only [Λ, SemidirectProduct.lift_inl]`. Conclude with `(hρ g).symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ext : ∀ (G Γ : Type) [Group G] [Finite G] [Group Γ] [Fintype Γ] (φ : Γ →* MulAut G) (s : Γ),
     (∀ t : Γ, t ∈ Subgroup.zpowers s) → ∀ Y : G → ℂ, IsChar ℂ ℂ Y → (∀ g, Y (φ s g) = Y g) →

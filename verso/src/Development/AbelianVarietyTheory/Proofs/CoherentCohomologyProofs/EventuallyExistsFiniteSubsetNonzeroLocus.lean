@@ -19,15 +19,13 @@ universe v
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hst : s ⊆ t` using `fun x hx => have ⟨_, hy, _, hyx⟩ := h x hx`. Use the proof step `hyx.mem_closed ht hy`. Establish `hi : Topology.IsInducing (Set.inclusion hst)` using `(Topology.IsEmbedding.inclusion hst).isInducing`. Establish `key : ∀ Z : IrreducibleCloseds s, ∃ Z' : IrreducibleCloseds t, IrreducibleCloseds.map _ hi.continuous Z < Z'`. Introduce `Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hs.isClosedEmbedding_subtypeVal.quasiSober` as an intermediate fact. Take `⟨x, hx⟩` from `QuasiSober.sober Z.isIrreducible Z.isClosed`. Take `⟨y, hy, hys, hyx⟩` from `h x x.2`. Use `⟨⟨closure {⟨y, hy⟩}, isIrreducible_singleton.closure, isClosed_closure⟩, ?_, fun hle => ?_⟩` and prove the remaining obligations. Use `closure_minimal ?_ isClosed_closure` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `specializes_iff_mem_closure.1 ((subtype_specializes_iff _ _).2 (hyx.trans ((subtype_specializes_iff _ _).1 (hx.specializes hz))))`. Establish `hc : IsClosed (Subtype.val ⁻¹' s : Set t)` using `hs.preimage continuous_subtype_val`. Conclude with `hys (closure_minimal (t := Subtype.val ⁻¹' s) (by rintro _ ⟨z, -, rfl⟩; exact z.2) hc (hle (subset_closure rfl)))`. Break down `isEmpty_or_nonempty (IrreducibleCloseds s) with _ | hne` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[topologicalKrullDim, Order.krullDim_eq_bot, WithBot.bot_add]`. Conclude with `bot_le`. Use `choose g hg using key`. Establish `: Nonempty (IrreducibleCloseds t)` using `hne.map g`. Rewrite using `[topologicalKrullDim, topologicalKrullDim, Order.krullDim_eq_iSup_height_of_nonempty, Order.krullDim_eq_iSup_height_of_nonempty, ← WithBot.coe_one, ← WithBot.coe_add, WithBot.coe_le_coe, ENat.iSup_add]`.
-
-Use `iSup_le fun Z => le_iSup_of_le (g Z) (le_trans ?_ (Order.height_add_one_le (hg Z)))` and prove the remaining obligations. Use `gcongr`. Conclude with `Order.height_le_height_apply_of_strictMono _ (IrreducibleCloseds.map_strictMono_of_isInducing hi) Z`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_add_one_le {T : Type*} [TopologicalSpace T] [QuasiSober T]
     {s t : Set T} (hs : IsClosed s) (ht : IsClosed t)
@@ -71,7 +69,7 @@ def IsMulBy (φ : G ⟶ F) (s : L.Sec) : Prop :=
     ∀ t, φ.app V t = resG X h (s.f i) • e t
 
 /- English proof (translation)
-Introduce `i _ h` and use `⟨(chartEquiv hL i h).symm, fun t => (chartEquiv hL i h).injective (by rw [chartEquiv_secHom_app, map_smul, LinearEquiv.apply_symm_apply])⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isMulBy_secHom (F : X.Modules) (hL : L.IsLB) (s : L.Sec) : IsMulBy (secHom F s) s :=
   fun i _ h => ⟨(chartEquiv hL i h).symm, fun t => (chartEquiv hL i h).injective (by
@@ -82,7 +80,7 @@ namespace IsMulBy
 variable {φ : G ⟶ F} {s : L.Sec}
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `H i V h`. Conclude with `⟨fun ⟨u, hu⟩ => ⟨e u, (he u).symm.trans hu⟩, fun ⟨u, hu⟩ => ⟨e.symm u, by rw [he, e.apply_symm_apply, hu]⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_range_app_iff (H : IsMulBy φ s) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i) (t : Γ(F, V)) :
     t ∈ Set.range (φ.app V) ↔ ∃ u, resG X h (s.f i) • u = t := by
@@ -91,11 +89,11 @@ theorem mem_range_app_iff (H : IsMulBy φ s) (i : L.ι) {V : X.Opens} (h : V ≤
     fun ⟨u, hu⟩ => ⟨e.symm u, by rw [he, e.apply_symm_apply, hu]⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Take `⟨V, hV, hxV, u, rfl⟩` from `exists_germ_eq_of_mem hx u`. Take `⟨w, hw⟩` from `(H.mem_range_app_iff i hV _).1 ⟨u, rfl⟩`. Use `⟨F.presheaf.germ V x hxV w, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[stalkLinear_germ, ← hw, QCoh.germ_smul]`. Conclude with `congrArg (· • _) (Cartier.germ_resG hV x hxV _).symm`. Introduce and unpack `⟨u, rfl⟩`. Take `⟨V, hV, hxV, u, rfl⟩` from `exists_germ_eq_of_mem hx u`. Take `⟨w, hw⟩` from `(H.mem_range_app_iff i hV _).2 ⟨u, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨G.presheaf.germ V x hxV w, ?_⟩` and prove the remaining obligations. Rewrite using `[stalkLinear_germ, hw, QCoh.germ_smul]`. Conclude with `congrArg (· • _) (Cartier.germ_resG hV x hxV _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_stalkLinear_iff (H : IsMulBy φ s) (i : L.ι) {x : X} (hx : x ∈ L.U i)
     (t : (F.presheaf.stalk x :)) :
@@ -115,7 +113,7 @@ theorem mem_range_stalkLinear_iff (H : IsMulBy φ s) (i : L.ι) {x : X} (hx : x 
     exact congrArg (· • _) (Cartier.germ_resG hV x hxV _)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `H i V h`. Rewrite using `[show ⇑(φ.app V) = (resG X h (s.f i) • ·) ∘ e from funext he]`. Conclude with `⟨fun h' => Function.Injective.of_comp_right h' e.surjective, fun h' => h'.comp e.injective⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem injective_app_iff (H : IsMulBy φ s) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i) :
     Function.Injective (φ.app V) ↔ IsSMulRegular Γ(F, V) (resG X h (s.f i)) := by
@@ -124,9 +122,9 @@ theorem injective_app_iff (H : IsMulBy φ s) (i : L.ι) {V : X.Opens} (h : V ≤
   exact ⟨fun h' => Function.Injective.of_comp_right h' e.surjective, fun h' => h'.comp e.injective⟩
 
 /- English proof (translation)
-Establish `hb : ∀ (i : L.ι) (V : X.Opens) (h : V ≤ L.U i) (x : X), x ∈ V → (x ∈ X.basicOpen (resG X h (s.f i)) ↔ x ∈ nonzeroLocus s)` using `fun i V h x hx => by`. Rewrite using `[Cartier.mem_nonzeroLocus_iff s i (h hx), X.mem_basicOpen _ x hx, X.mem_basicOpen _ x (h hx)]`. Conclude with `iff_of_eq (congrArg IsUnit (Cartier.germ_resG h x hx _))`. Use `⟨fun _ x hx => ?_, fun h => mono_of_locally_app_injective φ fun W x hx => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_mem_chart hL x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, hxV, hle⟩` from `exists_affine_mem_le x hi`. Conclude with `(hb i V hle x hxV).1 ((isSMulRegular_sections_iff hV _).1 ((H.injective_app_iff i hle).1 (injective_app_of_mono φ V)) ⟨hx, hxV⟩)`. Take `⟨i, hi⟩` from `exists_mem_chart hL x`. Take `⟨V, hV, hxV, hle⟩` from `exists_affine_mem_le (U := W ⊓ L.U i) x ⟨hx, hi⟩`. Conclude with `⟨V, hxV, hle.trans inf_le_left, (H.injective_app_iff i (hle.trans inf_le_right)).2 ((isSMulRegular_sections_iff hV _).2 fun y hy => (hb i V _ y hy.2).2 (h hy.1))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mono_iff [IsLocallyNoetherian X] [F.IsQuasicoherent] (H : IsMulBy φ s) (hL : L.IsLB) :
     Mono φ ↔ assPoints F ⊆ nonzeroLocus s := by
@@ -146,7 +144,7 @@ theorem mono_iff [IsLocallyNoetherian X] [F.IsQuasicoherent] (H : IsMulBy φ s) 
       ((isSMulRegular_sections_iff hV _).2 fun y hy => (hb i V _ y hy.2).2 (h hy.1))⟩
 
 /- English proof (translation)
-The claim follows from `((exact_iff_stalkLinear _).1 (ShortComplex.exact_cokernel φ) x t).trans (H.mem_range_stalkLinear_iff i hx t)`.
+A detailed English derivation is pending.
 -/
 theorem stalkLinear_π_eq_zero_iff (H : IsMulBy φ s) (i : L.ι) {x : X} (hx : x ∈ L.U i)
     (t : (F.presheaf.stalk x :)) :
@@ -155,7 +153,7 @@ theorem stalkLinear_π_eq_zero_iff (H : IsMulBy φ s) (i : L.ι) {x : X} (hx : x
     (H.mem_range_stalkLinear_iff i hx t)
 
 /- English proof (translation)
-Introduce `x hx` and use `by refine ⟨support_subset_of_epi (cokernel.π φ) hx, fun hs => notMem_support_iff.2 ?_ hx⟩ obtain ⟨i, hi⟩ := exists_chart_of_mem_nonzeroLocus hs obtain ⟨u, hu⟩ := (X.mem_basicOpen _ x hi).1 ((Cartier.mem_nonzeroLocus_iff s i hi).1 hs) refine subsingleton_of_forall_eq 0 fun t => ?_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem support_cokernel_subset (H : IsMulBy φ s) :
     support (cokernel φ) ⊆ support F \ nonzeroLocus s := fun x hx => by
@@ -168,9 +166,9 @@ theorem support_cokernel_subset (H : IsMulBy φ s) :
     rw [← hu, ← Units.smul_def, smul_inv_smul]⟩
 
 /- English proof (translation)
-Use `H.support_cokernel_subset.antisymm fun x ⟨hx, hs⟩ => by_contra fun h => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_mem_chart hL x`. Use `notMem_support_iff.1 h` as an intermediate fact. Establish `h₁ : X.presheaf.germ _ x hi (s.f i) ∈ IsLocalRing.maximalIdeal _` using `fun hu => hs ((Cartier.mem_nonzeroLocus_iff s i hi).2 ((X.mem_basicOpen _ x hi).2 hu))`. Establish `h₂` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal _) (⊤ : Submodule (X.presheaf.stalk x) (F.presheaf.stalk x :)) Module.Finite.fg_top (fun t _ => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, rfl⟩` from `(H.stalkLinear_π_eq_zero_iff i hi t).1 (Subsingleton.elim _ _)`. Conclude with `Submodule.smul_mem_smul h₁ trivial) (IsLocalRing.maximalIdeal_le_jacobson _)`. Conclude with `notMem_support_iff.2 (subsingleton_of_forall_eq 0 fun t => h₂.le trivial) hx`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem support_cokernel [IsFiniteQC F] (H : IsMulBy φ s) (hL : L.IsLB) :
     support (cokernel φ) = support F \ nonzeroLocus s := by
@@ -187,7 +185,7 @@ theorem support_cokernel [IsFiniteQC F] (H : IsMulBy φ s) (hL : L.IsLB) :
   exact notMem_support_iff.2 (subsingleton_of_forall_eq 0 fun t => h₂.le trivial) hx
 
 /- English proof (translation)
-Unfold `suppDim`. Rewrite using `[H.support_cokernel hL]`. Use `topologicalKrullDim_add_one_le ((isClosed_support F).sdiff (nonzeroLocus s).isOpen) (isClosed_support F) fun x hx => ?_` and prove the remaining obligations. Take `⟨y, hy, hyx⟩` from `exists_mem_assPoints_specializes hx.1`. Conclude with `⟨y, assPoints_subset_support F hy, fun h => h.2 ((H.mono_iff hL).1 inferInstance hy), hyx⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem suppDim_cokernel_add_one_le [IsLocallyNoetherian X] [IsFiniteQC F] (H : IsMulBy φ s)
     (hL : L.IsLB) [Mono φ] : suppDim (cokernel φ) + 1 ≤ suppDim F := by
@@ -207,14 +205,14 @@ section Ideal
 variable {X : Scheme.{0}} {L : LB X} {F G : X.Modules}
 
 /- English proof (translation)
-The claim follows from `EffCartierData.ideal_locIdeal _ _ _ _ W i h`.
+A detailed English derivation is pending.
 -/
 theorem ideal_secIdeal (hL : L.IsLB) (s : L.Sec) (W : X.affineOpens) (i : L.ι) (h : W.1 ≤ L.U i) :
     (secIdeal hL s).ideal W = Ideal.span {resG X h (s.f i)} :=
   EffCartierData.ideal_locIdeal _ _ _ _ W i h
 
 /- English proof (translation)
-Take `⟨V, hxV, hV⟩` from `EffCartierData.exists_affine_le hi`. Rewrite using `[← ReciprocityTheory.AnForm.R.ds_stalkId_eq_map _ W x hx, ReciprocityTheory.AnForm.R.ds_stalkId_eq_map _ V x hxV, ideal_secIdeal hL s V i hV, Ideal.map_span, Set.image_singleton, Cartier.germ_resG]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_germ_ideal_secIdeal (hL : L.IsLB) (s : L.Sec) (W : X.affineOpens) {x : X}
     (hx : x ∈ W.1) (i : L.ι) (hi : x ∈ L.U i) :
@@ -225,7 +223,7 @@ theorem map_germ_ideal_secIdeal (hL : L.IsLB) (s : L.Sec) (W : X.affineOpens) {x
     ideal_secIdeal hL s V i hV, Ideal.map_span, Set.image_singleton, Cartier.germ_resG]
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨i, hi⟩` from `exists_mem_chart hL x`. Take `⟨V, hxV, hV⟩` from `EffCartierData.exists_affine_le hi`. Use `(ReciprocityTheory.AnForm.R.mem_support_iff_stalkId _ x).trans ?_` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.AnForm.R.ds_stalkId_eq_map _ V x hxV, map_germ_ideal_secIdeal hL s V hxV i hi, Ne, Ideal.span_singleton_eq_top, ← X.mem_basicOpen _ x hi, ← Cartier.mem_nonzeroLocus_iff s i hi]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -240,17 +238,15 @@ theorem coe_support_secIdeal (hL : L.IsLB) (s : L.Sec) :
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ (x : W.1) (t : (F.presheaf.stalk (x : X) :)), stalkLinear (cokernel.π φ) x t = 0 ↔ t ∈ (secIdeal hL s).ideal W • (⊤ : Submodule Γ(X, W.1) (F.presheaf.stalk (x : X) :))`. Introduce `x t`. Take `⟨i, hi⟩` from `exists_mem_chart hL x`. Rewrite using `[H.stalkLinear_π_eq_zero_iff i hi, ← Submodule.restrictScalars_top Γ(X, W.1) (X.presheaf.stalk (x : X)), ← Ideal.smul_restrictScalars, Submodule.restrictScalars_mem]`. Use `Iff.trans ?_ (iff_of_eq (congrArg (fun I : Ideal _ => t ∈ I • (⊤ : Submodule _ _)) (map_germ_ideal_secIdeal hL s W x.2 i hi).symm))` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using the standard rewrite rules. Use `le_antisymm (fun t ht => ?_) fun t ht => section_eq_zero_of_germ _ fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal (((secIdeal hL s).ideal W • ⊤ : Submodule Γ(X, W.1) Γ(F, W.1)).comap (LinearMap.toSpanSingleton _ _ t)) fun h => hn (by simpa using (Ideal.eq_top_iff_one _).1 h)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `isLocalizedModule_germLinear_pointOfPrime F W.2 P` as an intermediate fact. It suffices to establish `germLinear F (pointOfPrime W.2 ⟨P, hP.isPrime⟩) t ∈ ((secIdeal hL s).ideal W • ⊤ : Submodule Γ(X, W.1) Γ(F, W.1)).localized₀ P.primeCompl (germLinear F (pointOfPrime W.2 ⟨P, hP.isPrime⟩)) by`. Take `⟨m, hm, r, hr⟩` from `this`. Rewrite `hr` using `[IsLocalizedModule.mk'_eq_iff, ← LinearMap.map_smul_of_tower]`. Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := P.primeCompl) hr`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(c * r).2 (hle ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(c * r) • t ∈ (secIdeal hL s).ideal W • (⊤ : Submodule Γ(X, W.1) Γ(F, W.1))`. Rewrite using `[mul_smul, ← hc]`. Conclude with `Submodule.smul_mem _ _ hm`. Rewrite using `[Submodule.localized₀_smul, Submodule.localized₀_top, ← key, germLinear_apply, stalkLinear_germ, show (cokernel.π φ).app W.1 t = 0 from ht, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩ : ∃ x' : W.1, x' = x` from `⟨⟨x, hx⟩, rfl⟩`. Rewrite using `[appLinear_apply, ← stalkLinear_germ]`. Use `(key x _).2 ?_` and prove the remaining obligations. Use `Submodule.mem_map_of_mem (f := germLinear F x) ht` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`.
-
-Conclude with `Submodule.smul_mono le_rfl le_top this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsMulBy.ker_π_app [F.IsQuasicoherent] {φ : G ⟶ F} {s : L.Sec} (H : IsMulBy φ s)
     (hL : L.IsLB) (W : X.affineOpens) :
@@ -291,9 +287,9 @@ theorem IsMulBy.ker_π_app [F.IsQuasicoherent] {φ : G ⟶ F} {s : L.Sec} (H : I
     exact Submodule.smul_mono le_rfl le_top this
 
 /- English proof (translation)
-Set `e : (A ⧸ RingHom.ker (algebraMap A B)) ≃ₗ[A] B` to `(Ideal.quotientKerAlgEquivOfSurjective (f := Algebra.ofId A B) h).toLinearEquiv`. Establish `e₁ : l = (hl.equiv.restrictScalars A).toLinearMap ∘ₗ (e.rTensor M).toLinearMap ∘ₗ TensorProduct.mk A (A ⧸ RingHom.ker (algebraMap A B)) M 1`. Use extensionality with `m`. Establish `: e 1 = 1` using `map_one (Ideal.quotientKerAlgEquivOfSurjective (f := Algebra.ofId A B) h)`. Simplify using `[this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[e₁]`. Conclude with `hl.equiv.surjective.comp ((e.rTensor M).surjective.comp (TensorProduct.mk_surjective A M _ Ideal.Quotient.mk_surjective))`. Rewrite using `[e₁, LinearEquiv.ker_comp, LinearEquiv.ker_comp, LinearMap.ker_tensorProductMk]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_and_ker_of_isBaseChange {A B M N : Type*} [CommRing A] [CommRing B]
     [Algebra A B] [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N] [Module B N]
@@ -314,11 +310,11 @@ theorem surjective_and_ker_of_isBaseChange {A B M N : Type*} [CommRing A] [CommR
   · rw [e₁, LinearEquiv.ker_comp, LinearEquiv.ker_comp, LinearMap.ker_tensorProductMk]
 
 /- English proof (translation)
-Establish `e : I.subschemeι ⁻¹ᵁ W.1 ≤ I.subschemeι ⁻¹ᵁ W.1` using `le_rfl`. Use `letI := appLEAlgebra I.subschemeι e`. Use `letI := appLEModule I.subschemeι ((Scheme.Modules.pullback I.subschemeι).obj F) e`. Use `appLE_isScalarTower I.subschemeι ((Scheme.Modules.pullback I.subschemeι).obj F) e` as an intermediate fact. Establish `e₀ : algebraMap Γ(X, W.1) Γ(I.subscheme, I.subschemeι ⁻¹ᵁ W.1) = (I.subschemeι.app W.1).hom` using `congrArg CommRingCat.Hom.hom (I.subschemeι.appLE_eq_app)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h₁, h₂⟩` from `surjective_and_ker_of_isBaseChange (isBaseChange_pullbackSections I.subschemeι F (W.2.preimage I.subschemeι) W.2 e) (e₀ ▸ I.subschemeι_app_surjective W)`. Establish `e₁ : ∀ t, pullbackSections I.subschemeι F e t = ((Scheme.Modules.pullbackPushforwardAdjunction I.subschemeι).unit.app F).app W.1 t` using `fun t => resM_self _ _`. Use `⟨fun u => (h₁ u).imp fun t ht => (e₁ t).symm.trans ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← I.ker_subschemeι_app W, ← e₀, ← h₂]`. Use extensionality with `t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `iff_of_eq (congrArg (· = 0) (e₁ t).symm)`.
+A detailed English derivation is pending.
 -/
 theorem surjective_and_ker_unit_subschemeι (I : X.IdealSheafData) (F : X.Modules)
     [F.IsQuasicoherent] (W : X.affineOpens) :
@@ -345,7 +341,7 @@ theorem surjective_and_ker_unit_subschemeι (I : X.IdealSheafData) (F : X.Module
   exact iff_of_eq (congrArg (· = 0) (e₁ t).symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨I.subschemeι_app_surjective W, (I.ker_subschemeι_app W).trans ((Ideal.mul_top _).symm.trans (Ideal.smul_eq_mul _ _).symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem surjective_and_ker_unitToPush_subschemeι (I : X.IdealSheafData) (W : X.affineOpens) :
     Function.Surjective ((unitToPush I.subschemeι).app W.1) ∧
@@ -354,7 +350,7 @@ theorem surjective_and_ker_unitToPush_subschemeι (I : X.IdealSheafData) (W : X.
     (I.ker_subschemeι_app W).trans ((Ideal.mul_top _).symm.trans (Ideal.smul_eq_mul _ _).symm)⟩
 
 /- English proof (translation)
-Establish `key : ∀ W : X.Opens, IsAffineOpen W → Function.Exact (φ.app W) (η.app W)` using `fun W hW t => (SetLike.ext_iff.1 ((h ⟨W, hW⟩).2.trans (H.ker_π_app hL ⟨W, hW⟩).symm) t).trans (exact_cokernel_π_app φ hW t)`. Establish `w : φ ≫ η = 0` using `(hom_eq_zero_iff_affineCover (fun W : X.affineOpens => W.1) (iSup_affineOpens_eq_top X) (fun W => W.2) _).2 fun W t => (key W.1 W.2).apply_apply_eq_zero t`. Establish `hS : (ShortComplex.mk φ η w).Exact` using `(exact_iff_forall_affine _).2 key`. Establish `: Epi (ShortComplex.mk φ η w).g` using `(epi_iff_forall_affine η).2 fun W hW => (h ⟨W, hW⟩).1`. Conclude with `⟨(cokernelIsCokernel φ).coconePointUniqueUpToIso hS.gIsCokernel, (cokernelIsCokernel φ).comp_coconePointUniqueUpToIso_hom hS.gIsCokernel .one⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem IsMulBy.exists_cokernel_iso [F.IsQuasicoherent] [G.IsQuasicoherent] {φ : G ⟶ F} {s : L.Sec}
     (H : IsMulBy φ s) (hL : L.IsLB) {E : X.Modules} [E.IsQuasicoherent] (η : F ⟶ E)
@@ -385,7 +381,7 @@ def cut : X.Modules := cokernel (cutHom F hL s)
 def cutπ : F ⟶ cut F hL s := cokernel.π (cutHom F hL s)
 
 /- English proof (translation)
-Establish `e : ∀ u : Γ(F, V), zchartEquiv hL 0 i h ((twistZZeroIso F hL).hom.app V u) = u` using `fun u => by`. Rewrite using `[zchartEquiv_apply, zcoord_twistZZeroIso_hom_app, resM_resM, resM_self]`. Rewrite using `[← e ((cutHom F hL s).app V t), app_app, cutHom, Category.assoc, Iso.inv_hom_id, Category.comp_id, zchartEquiv_mulSecOfEq_app, zfun_zofSec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cutHom_app (i : L.ι) {V : X.Opens} (h : V ≤ L.U i) (t : Γ(twistZ F L (-1), V)) :
     (cutHom F hL s).app V t = resG X h (s.f i) • zchartEquiv hL (-1) i h t := by
@@ -395,7 +391,7 @@ theorem cutHom_app (i : L.ι) {V : X.Opens} (h : V ≤ L.U i) (t : Γ(twistZ F L
     Category.comp_id, zchartEquiv_mulSecOfEq_app, zfun_zofSec]
 
 /- English proof (translation)
-Introduce `i _ h` and use `⟨zchartEquiv hL (-1) i h, cutHom_app F hL s i h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isMulBy_cutHom : IsMulBy (cutHom F hL s) s :=
   fun i _ h => ⟨zchartEquiv hL (-1) i h, cutHom_app F hL s i h⟩
@@ -414,7 +410,7 @@ def cutComplex : ShortComplex X.Modules :=
   .mk (cutHom F hL s) (cutπ F hL s) (cokernel.condition _)
 
 /- English proof (translation)
-The claim follows from `ShortComplex.exact_cokernel _ mono_f := h epi_g := epi_cutπ F hL s`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_cutComplex [h : Mono (cutHom F hL s)] : (cutComplex F hL s).ShortExact where
   exact := ShortComplex.exact_cokernel _
@@ -422,7 +418,7 @@ theorem shortExact_cutComplex [h : Mono (cutHom F hL s)] : (cutComplex F hL s).S
   epi_g := epi_cutπ F hL s
 
 /- English proof (translation)
-The claim follows from `(isMulBy_cutHom F hL s).mono_iff hL`.
+A detailed English derivation is pending.
 -/
 theorem mono_cutHom_iff [IsLocallyNoetherian X] [F.IsQuasicoherent] :
     Mono (cutHom F hL s) ↔ assPoints F ⊆ nonzeroLocus s := (isMulBy_cutHom F hL s).mono_iff hL
@@ -430,7 +426,7 @@ theorem mono_cutHom_iff [IsLocallyNoetherian X] [F.IsQuasicoherent] :
 include hL in
 
 /- English proof (translation)
-Use `isQuasicoherent_twist (F := F) hL` as an intermediate fact. Rewrite using `[(isMulBy_secHom F hL s).mono_iff hL, assPoints_twist hL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mono_secHom_iff [IsLocallyNoetherian X] [F.IsQuasicoherent] :
     Mono (secHom F s) ↔ assPoints F ⊆ nonzeroLocus s := by
@@ -438,33 +434,33 @@ theorem mono_secHom_iff [IsLocallyNoetherian X] [F.IsQuasicoherent] :
   rw [(isMulBy_secHom F hL s).mono_iff hL, assPoints_twist hL]
 
 /- English proof (translation)
-The claim follows from `(isMulBy_cutHom F hL s).support_cokernel hL`.
+A detailed English derivation is pending.
 -/
 theorem support_cut [IsFiniteQC F] : support (cut F hL s) = support F \ nonzeroLocus s :=
   (isMulBy_cutHom F hL s).support_cokernel hL
 
 /- English proof (translation)
-Rewrite using `[support_cut, coe_support_secIdeal, Set.diff_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem support_cut_eq_inter [IsFiniteQC F] :
     support (cut F hL s) = support F ∩ (secIdeal hL s).support := by
   rw [support_cut, coe_support_secIdeal, Set.diff_eq]
 
 /- English proof (translation)
-The claim follows from `surjective_app_of_epi _ W.2`.
+A detailed English derivation is pending.
 -/
 theorem surjective_cutπ_app [F.IsQuasicoherent] (W : X.affineOpens) :
     Function.Surjective ((cutπ F hL s).app W.1) := surjective_app_of_epi _ W.2
 
 /- English proof (translation)
-The claim follows from `(isMulBy_cutHom F hL s).ker_π_app hL W`.
+A detailed English derivation is pending.
 -/
 theorem ker_cutπ_app [F.IsQuasicoherent] (W : X.affineOpens) :
     LinearMap.ker (appLinear (cutπ F hL s) W.1) = (secIdeal hL s).ideal W • ⊤ :=
   (isMulBy_cutHom F hL s).ker_π_app hL W
 
 /- English proof (translation)
-The claim follows from `have := isQuasicoherent_twist (F := F) (isLB_lbZPow hL (-1)) (isMulBy_cutHom F hL s).exists_cokernel_iso hL (E := (Scheme.Modules.pushforward _).obj ((Scheme.Modules.pullback _).obj F)) _ (surjective_and_ker_unit_subschemeι _ F)`.
+A detailed English derivation is pending.
 -/
 theorem exists_cut_iso_pushforward_pullback [F.IsQuasicoherent] :
     ∃ e : cut F hL s ≅ (Scheme.Modules.pushforward (secIdeal hL s).subschemeι).obj
@@ -477,7 +473,7 @@ theorem exists_cut_iso_pushforward_pullback [F.IsQuasicoherent] :
     (surjective_and_ker_unit_subschemeι _ F)
 
 /- English proof (translation)
-The claim follows from `have := isQuasicoherent_twist (F := structureModule X) (isLB_lbZPow hL (-1)) (isMulBy_cutHom _ hL s).exists_cokernel_iso hL _ (surjective_and_ker_unitToPush_subschemeι _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_cut_structureModule_iso :
     ∃ e : cut (structureModule X) hL s ≅ (Scheme.Modules.pushforward
@@ -491,20 +487,20 @@ section Dim
 variable [IsLocallyNoetherian X] [IsFiniteQC F] [Mono (cutHom F hL s)]
 
 /- English proof (translation)
-The claim follows from `(isMulBy_cutHom F hL s).suppDim_cokernel_add_one_le hL`.
+A detailed English derivation is pending.
 -/
 theorem suppDim_cut_add_one_le : suppDim (cut F hL s) + 1 ≤ suppDim F :=
   (isMulBy_cutHom F hL s).suppDim_cokernel_add_one_le hL
 
 /- English proof (translation)
-The claim follows from `ENat.WithBot.add_le_add_one_right_iff.1 ((suppDim_cut_add_one_le F hL s).trans (h.trans_eq (Nat.cast_succ d)))`.
+A detailed English derivation is pending.
 -/
 theorem suppDim_cut_le {d : ℕ} (h : suppDim F ≤ (d + 1 : ℕ)) : suppDim (cut F hL s) ≤ d :=
   ENat.WithBot.add_le_add_one_right_iff.1
     ((suppDim_cut_add_one_le F hL s).trans (h.trans_eq (Nat.cast_succ d)))
 
 /- English proof (translation)
-Rewrite using `[← suppDim_lt_zero_iff]`. Use `by_contra! h'`. Conclude with `absurd ((add_le_add_left h' 1).trans ((suppDim_cut_add_one_le F hL s).trans h)) (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZero_cut (h : suppDim F ≤ 0) : IsZero (cut F hL s) := by
   rw [← suppDim_lt_zero_iff]
@@ -519,13 +515,13 @@ variable {k : Type v} [Field k] [Algebra k Γ(X, ⊤)] [Mono (cutHom F hL s)] {F
   {d : ℕ} {P : Fin d → LB X}
 
 /- English proof (translation)
-The claim follows from `FiniteCohTwists.of_shortExact₃ (shortExact_cutComplex F hL s) (h.twist (isLB_lbZPow hL (-1))) h`.
+A detailed English derivation is pending.
 -/
 theorem FiniteCohTwists.cut (h : FiniteCohTwists k F) : FiniteCohTwists k (cut F hL s) :=
   FiniteCohTwists.of_shortExact₃ (shortExact_cutComplex F hL s) (h.twist (isLB_lbZPow hL (-1))) h
 
 /- English proof (translation)
-The claim follows from `(interNum_cons k F hL hP).trans (interNum_cokernel _ hP (h.twist (isLB_lbZPow hL (-1))) h).symm`.
+A detailed English derivation is pending.
 -/
 theorem interNum_cons_eq_interNum_cut (hP : ∀ i, (P i).IsLB) (h : FiniteCohTwists k F) :
     interNum k F (Fin.cons L P : Fin (d + 1) → LB X) = interNum k (cut F hL s) P :=
@@ -535,7 +531,7 @@ theorem interNum_cons_eq_interNum_cut (hP : ∀ i, (P i).IsLB) (h : FiniteCohTwi
 omit [Mono (cutHom F hL s)] in
 
 /- English proof (translation)
-Take `⟨e, -⟩` from `exists_cut_structureModule_iso hL s`. Rewrite using `[interNum_cons_eq_interNum_cut hL s hP h, interNum_congr k e]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem interNum_cons_eq_interNumSub [Mono (cutHom (structureModule X) hL s)]
     (hP : ∀ i, (P i).IsLB) (h : FiniteCohTwists k (structureModule X)) :
@@ -554,11 +550,9 @@ section Exists
 variable {X : Scheme.{0}} {L : LB X} {k : Type v} [Field k] [Infinite k] [Algebra k Γ(X, ⊤)]
 
 /- English proof (translation)
-Use `hS.to_subtype` as an intermediate fact. Set `p : S → Submodule k W` to `fun x => { carrier := {w | x.1 ∉ nonzeroLocus (φ w)} add_mem' := fun {a b} ha hb hx => by`. Rewrite `hx` using `[map_add]`. Conclude with `(nonzeroLocus_add_le _ _ hx).elim ha hb`. Use the proof step `zero_mem' := fun hx => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[map_zero]`. Conclude with `nonzeroLocus_secZero.le hx`. Use the proof step `smul_mem' := fun c a ha hx => by`. Rewrite `hx` using `[φ.map_smulₛₗ]`. Conclude with `ha ((nonzeroLocus_secScale _ _).le hx).2 }`.
-
-Take `⟨w, hw⟩` from `Submodule.exists_forall_notMem_of_forall_ne_top p fun x hx =>`. Establish `⟨w, hw⟩` using `h x x.2`. Use the proof step `(hx.ge (Submodule.mem_top (x := w)) :) hw`. Conclude with `⟨w, fun x hx => not_not.1 (hw ⟨x, hx⟩)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_subset_nonzeroLocus {W : Type*} [AddCommGroup W] [Module k W]
     (φ : W →ₛₗ[algebraMap k Γ(X, ⊤)] L.Sec) {S : Set X} (hS : S.Finite)
@@ -581,7 +575,7 @@ theorem exists_finite_subset_nonzeroLocus {W : Type*} [AddCommGroup W] [Module k
   exact ⟨w, fun x hx => not_not.1 (hw ⟨x, hx⟩)⟩
 
 /- English proof (translation)
-The claim follows from `have ⟨w, hw⟩ := exists_finite_subset_nonzeroLocus (k := k) (W := W) ⟨⟨Subtype.val, fun _ _ => rfl⟩, fun c w => (algebraMap_smul Γ(X, ⊤) c w.1).symm⟩ hS fun x hx => have ⟨s, hs, hx⟩ := h x hx; ⟨⟨s, hs⟩, hx⟩ ⟨w, w.2, hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_finite_subset_nonzeroLocus [Module k L.Sec] [IsScalarTower k Γ(X, ⊤) L.Sec]
     (W : Submodule k L.Sec) {S : Set X} (hS : S.Finite)
@@ -592,9 +586,9 @@ theorem exists_mem_finite_subset_nonzeroLocus [Module k L.Sec] [IsScalarTower k 
   ⟨w, w.2, hw⟩
 
 /- English proof (translation)
-Use `exists_finite_subset_nonzeroLocus (k := k) (W := ι → k) ⟨⟨fun c => ∑ i, algebraMap k Γ(X, ⊤) (c i) • s i, fun a b => ?_⟩, fun c a => ?_⟩ hS fun x hx => ?_` and prove the remaining obligations. Simplify using `[add_smul, Finset.sum_add_distrib]`. Simplify using `[mul_smul, Finset.smul_sum]`. Take `⟨i, hi⟩` from `h x hx`. Use `⟨Pi.single i 1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `x ∈ nonzeroLocus (∑ j, _)`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same, map_one, one_smul]` and apply the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_sum_finite_subset_nonzeroLocus {ι : Type*} [Fintype ι] (s : ι → L.Sec) {S : Set X}
     (hS : S.Finite) (h : ∀ x ∈ S, ∃ i, x ∈ nonzeroLocus (s i)) :
@@ -614,7 +608,7 @@ theorem exists_sum_finite_subset_nonzeroLocus {ι : Type*} [Fintype ι] (s : ι 
 variable [AlgebraicGeometry.IsNoetherian X] (F : X.Modules) [IsFiniteQC F]
 
 /- English proof (translation)
-The claim follows from `have ⟨s, hs, h'⟩ := exists_mem_finite_subset_nonzeroLocus W (finite_assPoints F) fun x _ => h x ⟨s, hs, (mono_cutHom_iff F hL s).2 h'⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_mono_cutHom (hL : L.IsLB) [Module k L.Sec] [IsScalarTower k Γ(X, ⊤) L.Sec]
     (W : Submodule k L.Sec) (h : ∀ x : X, ∃ s ∈ W, x ∈ nonzeroLocus s) :
@@ -623,7 +617,7 @@ theorem exists_mem_mono_cutHom (hL : L.IsLB) [Module k L.Sec] [IsScalarTower k �
   ⟨s, hs, (mono_cutHom_iff F hL s).2 h'⟩
 
 /- English proof (translation)
-The claim follows from `have ⟨c, hc⟩ := exists_sum_finite_subset_nonzeroLocus (k := k) s (finite_assPoints F) fun x _ => Opens.mem_iSup.1 (h.ge (Set.mem_univ x)) ⟨c, (mono_cutHom_iff F hL _).2 hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_sum_mono_cutHom (hL : L.IsLB) {ι : Type*} [Fintype ι] (s : ι → L.Sec)
     (h : ⨆ i, nonzeroLocus (s i) = ⊤) :
@@ -636,7 +630,7 @@ variable (k) in
 include k in
 
 /- English proof (translation)
-The claim follows from `have ⟨_, s, hs⟩ := h have ⟨_, hc⟩ := exists_sum_mono_cutHom (k := k) F h.isLB s hs ⟨_, hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsGenerated.exists_mono_cutHom (h : IsGenerated L) : ∃ s, Mono (cutHom F h.isLB s) :=
   have ⟨_, s, hs⟩ := h
@@ -646,7 +640,7 @@ theorem IsGenerated.exists_mono_cutHom (h : IsGenerated L) : ∃ s, Mono (cutHom
 omit [AlgebraicGeometry.IsNoetherian X] in
 
 /- English proof (translation)
-The claim follows from `have := h.compactSpace have ⟨n, hn, s, h₁, _, h₂⟩ := h.exists_affine_finite_subset (finite_assPoints F) (U := ⊤) (Set.subset_univ _) ⟨n, hn, s, (mono_cutHom_iff F _ s).2 h₁, h₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.exists_mono_cutHom [IsLocallyNoetherian X] (h : IsAmpleLB L) :
     ∃ n, 1 ≤ n ∧ ∃ s : (lbPow L n).Sec, Mono (cutHom F (isLB_lbPow h.isLB n) s) ∧
@@ -665,11 +659,11 @@ open CechPic
 variable {X : Scheme.{0}} {L M : LB X} [IsLocallyNoetherian X]
 
 /- English proof (translation)
-Set `I` to `Scheme.IdealSheafData.vanishingIdeal U.compl`. Establish `hI : ∀ y, y ∉ I.support ↔ y ∈ U` using `fun y => by`. Rewrite using `[← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Conclude with `not_not`. Use `isFiniteQC_twist (F := idealModule I) hM` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h.eventually_isGloballyGenerated_twistZ (twist (idealModule I) M)).mono fun n hg N hN e => ?_` and prove the remaining obligations. Take `⟨e⟩` from `nonempty_twist_twist_iso_of_cls_eq (idealModule I) hM (isLB_lbZPow h.isLB n) hN (by rw [e, cls_lbZPow h.isLB])`. Take `⟨m, a, ha⟩` from `isGloballyGenerated_iff_spanStalks.1 (hg.of_epi e.hom)`. Take `⟨t, ht⟩` from `exists_idealModuleι_app_eq_one I fun y => (hI y).2`. Take `⟨i, hi⟩` from `exists_mem_nonzeroLocus_secOfTwist hN _ ha hx t ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hi, iSup_le fun c y hy => (hI y).1 ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[secOfTwist_f]`. Conclude with `notMem_support_of_mem_basicOpen I _ ((X.basicOpen_res _ (homOfLE _).op).le hy).2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.eventually_exists_mem_nonzeroLocus_le (h : IsAmpleLB L) (hM : M.IsLB) {x : X}
     {U : X.Opens} (hx : x ∈ U) : ∀ᶠ n : ℤ in atTop, ∀ (N : LB X) (hN : N.IsLB),
@@ -691,15 +685,13 @@ theorem IsAmpleLB.eventually_exists_mem_nonzeroLocus_le (h : IsAmpleLB L) (hM : 
   exact notMem_support_of_mem_basicOpen I _ ((X.basicOpen_res _ (homOfLE _).op).le hy).2
 
 /- English proof (translation)
-Use `lift S to Finset X using hS`. Proceed by induction on `S using Finset.strongInduction with`. Consider the case `H S ih`. Break down `S.eq_empty_or_nonempty with rfl | hne` into its components or cases. Conclude with `.of_forall fun _ _ _ _ => ⟨0, by simp⟩`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI := specializationPreorder X`. Take `⟨x, hx, hmax⟩` from `S.exists_maximal hne`. Establish `hcl : IsClosed (⋃ y ∈ S.erase x, closure ({y} : Set X))` using `isClosed_biUnion_finset fun _ _ => isClosed_closure`. Use `((ih (S.erase x) (Finset.erase_ssubset hx)).and (h.eventually_exists_mem_nonzeroLocus_le hM (x := x) (U := ⟨_, hcl.isOpen_compl⟩) fun h => ?_)).mono fun n ⟨h₁, h₂⟩ N hN e => ?_` and prove the remaining obligations. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.1 h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : y ⤳ x` using `specializes_iff_mem_closure.2 hxy`. Establish `h₂ : x ⤳ y` using `hmax (Finset.mem_of_mem_erase hy) h₁`. Conclude with `Finset.ne_of_mem_erase hy (h₁.antisymm h₂).eq`. Take `⟨s, hs⟩` from `h₁ N hN e`. Take `⟨t, hxt, ht⟩` from `h₂ N hN e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Distinguish the cases in `hxs : x ∈ nonzeroLocus s`. Use `⟨s, fun y hy => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne y x with rfl | hyx` into its components or cases. Use `exacts [hxs, hs (Finset.mem_erase.2 ⟨hyx, hy⟩)]`. Use `⟨s + t, fun y hy => ?_⟩` and prove the remaining obligations.
-
-Break down `eq_or_ne y x with rfl | hyx` into its components or cases. Conclude with `((add_comm t s ▸ nonzeroLocus_le_add_sup t s) hxt).resolve_right hxs`. Establish `hy' : y ∈ S.erase x` using `Finset.mem_erase.2 ⟨hyx, hy⟩`. Conclude with `(nonzeroLocus_le_add_sup s t (hs hy')).resolve_right fun h => ht h (Set.mem_iUnion₂.2 ⟨y, hy', subset_closure rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.eventually_exists_finite_subset_nonzeroLocus (h : IsAmpleLB L) (hM : M.IsLB)
     {S : Set X} (hS : S.Finite) : ∀ᶠ n : ℤ in atTop, ∀ (N : LB X) (hN : N.IsLB),
@@ -734,7 +726,7 @@ theorem IsAmpleLB.eventually_exists_finite_subset_nonzeroLocus (h : IsAmpleLB L)
         ht h (Set.mem_iUnion₂.2 ⟨y, hy', subset_closure rfl⟩)
 
 /- English proof (translation)
-The claim follows from `have := h.compactSpace (h.eventually_exists_finite_subset_nonzeroLocus hM (finite_assPoints F)).mono fun _ hn N hN e => (hn N hN e).imp fun t ht => (mono_cutHom_iff F hN t).2 ht`.
+A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.eventually_exists_mono_cutHom (h : IsAmpleLB L) (hM : M.IsLB) (F : X.Modules)
     [IsFiniteQC F] : ∀ᶠ n : ℤ in atTop, ∀ (N : LB X) (hN : N.IsLB),
@@ -744,7 +736,7 @@ theorem IsAmpleLB.eventually_exists_mono_cutHom (h : IsAmpleLB L) (hM : M.IsLB) 
     (hn N hN e).imp fun t ht => (mono_cutHom_iff F hN t).2 ht
 
 /- English proof (translation)
-The claim follows from `(tendsto_natCast_atTop_atTop.eventually (h.eventually_exists_mono_cutHom (LB.isLB_triv X) F)).mono fun n hn => hn _ _ (by rw [cls_triv, zero_add]; exact cls_lbZPow h.isLB n _)`.
+A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.eventually_exists_mono_cutHom_pow (h : IsAmpleLB L) (F : X.Modules)
     [IsFiniteQC F] :
@@ -754,9 +746,9 @@ theorem IsAmpleLB.eventually_exists_mono_cutHom_pow (h : IsAmpleLB L) (F : X.Mod
       hn _ _ (by rw [cls_triv, zero_add]; exact cls_lbZPow h.isLB n _)
 
 /- English proof (translation)
-Take `⟨M, hM, rfl⟩` from `cls_surj c`. Take `⟨n, h₁, h₂⟩` from `((h.eventually_exists_mono_cutHom hM F).and (h.eventually_exists_mono_cutHom (LB.isLB_triv X) F)).exists`. Take `⟨A, hA, eA⟩` from `cls_surj (cls M hM + n • cls L h.isLB)`. Take `⟨B, hB, eB⟩` from `cls_surj (cls _ (LB.isLB_triv X) + n • cls L h.isLB)`. Take `⟨s, hs⟩` from `h₁ A hA eA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `h₂ B hB eB`. Conclude with `⟨A, B, hA, hB, s, t, hs, ht, by rw [eA, eB, cls_triv, zero_add, add_sub_cancel_right]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsAmpleLB.exists_sub_of_mono_cutHom (h : IsAmpleLB L) (F : X.Modules) [IsFiniteQC F]
     (c : Pic X) : ∃ (A B : LB X) (hA : A.IsLB) (hB : B.IsLB) (s : A.Sec) (t : B.Sec),
@@ -773,7 +765,7 @@ theorem IsAmpleLB.exists_sub_of_mono_cutHom (h : IsAmpleLB L) (F : X.Modules) [I
 end Twists
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun s => ⟨fun i _ h => cutHom_app F hL s i h, mono_cutHom_iff F hL s, isFiniteQC_cut F hL s, support_cut F hL s, coe_support_secIdeal hL s, ideal_secIdeal hL s, fun W => ⟨surjective_cutπ_app F hL s W, ker_cutπ_app F hL s W⟩, (exists_cut_iso_pushforward_pullback F hL s).elim fun …`.
+Supply the required witnesses or components.
 -/
 theorem cut_by_regular_section {X : Scheme.{0}} [AlgebraicGeometry.IsNoetherian X] (F : X.Modules)
     [IsFiniteQC F] {L : LB X} (hL : L.IsLB) :
@@ -818,11 +810,9 @@ theorem cut_by_regular_section {X : Scheme.{0}} [AlgebraicGeometry.IsNoetherian 
       h.eventually_exists_mono_cutHom_pow F⟩⟩
 
 /- English proof (translation)
-Rewrite using `[mono_cutHom_iff]`. Use `⟨fun h => h (mem_assPoints_of_forall_specializes (support_structureModule.ge trivial) fun y _ hy => (hy.antisymm (genericPoint_specializes y)).eq), fun h x hx => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_mem_chart hL x`. Establish `hg : genericPoint X ∈ L.U i` using `(genericPoint_specializes x).mem_open (L.U i).isOpen hi`. Establish `h₀ : s.f i ≠ 0` using `fun e => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Cartier.mem_nonzeroLocus_iff s i hg).1 h` as an intermediate fact. Rewrite `this` using `[e, Scheme.basicOpen_zero]`. Conclude with `this`. Use `basicOpen_le_nonzeroLocus s i ((isSMulRegular_stalk_iff (s.f i)).1 (fun y hy => ?_) ⟨hx, hi⟩)` and prove the remaining obligations. Use `Cartier.isRegularFn_iff_germ.1 (Cartier.isRegularFn_of_ne_zero h₀) y hy` as an intermediate fact.
-
-Conclude with `((structureModuleStalkEquiv y).isSMulRegular_congr _).2 (isSMulRegular_iff_right_eq_zero_of_smul.2 fun b hb => this.1 b hb)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_cutHom_structureModule_iff {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     {L : LB X} (hL : L.IsLB) (s : L.Sec) :

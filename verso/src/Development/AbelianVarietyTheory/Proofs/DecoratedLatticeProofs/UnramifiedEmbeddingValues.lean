@@ -14,9 +14,9 @@ namespace GlobalTheory.NfKur
 variable {M : Type} [Field M] [NumberField M] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hx : IsIntegral ℤ (φ (a : M))`. Use `map_isIntegral_int φ a.isIntegral_coe` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`. Establish `h1 : IsIntegral (NormedField.valuation (K` using `ℂ_[l])).integer (φ (a : M)) := hx.tower_top`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := ℂ_[l]))).mem_of_integral h1`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ‖φ (a : M)‖₊ ≤ 1` using `h2`. Conclude with `h3` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem norm_int_le (φ : M →+* ℂ_[l]) (a : 𝓞 M) : ‖φ (a : M)‖ ≤ 1 := by
   have hx : IsIntegral ℤ (φ (a : M)) := by
@@ -37,12 +37,12 @@ def primeAt (φ : M →+* ℂ_[l]) : Ideal (𝓞 M) where
     exact mul_lt_one_of_nonneg_of_lt_one_right (norm_int_le φ c) (norm_nonneg _) ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_primeAt (φ : M →+* ℂ_[l]) (a : 𝓞 M) : a ∈ primeAt φ ↔ ‖φ (a : M)‖ < 1 := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => le_antisymm (norm_int_le φ a) (not_lt.1 h), fun h h' => absurd h (ne_of_lt h')⟩`.
+Supply the required witnesses or components.
 -/
 theorem notMem_primeAt (φ : M →+* ℂ_[l]) (a : 𝓞 M) : a ∉ primeAt φ ↔ ‖φ (a : M)‖ = 1 :=
   ⟨fun h => le_antisymm (norm_int_le φ a) (not_lt.1 h), fun h h' => absurd h (ne_of_lt h')⟩
@@ -59,7 +59,7 @@ Simplify using the standard rewrite rules.
 theorem norm_l (φ : M →+* ℂ_[l]) : ‖φ ((l : 𝓞 M) : M)‖ = ‖(l : ℂ_[l])‖ := by simp
 
 /- English proof (translation)
-Establish `: (l : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (l : ℚ_[l])` using `by simp`. Rewrite using `[this, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_l_lt_one : ‖(l : ℂ_[l])‖ < 1 := by
   have : (l : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (l : ℚ_[l]) := by simp
@@ -67,13 +67,13 @@ theorem norm_l_lt_one : ‖(l : ℂ_[l])‖ < 1 := by
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Rewrite using `[mem_primeAt, norm_l]`. Conclude with `norm_l_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_mem_primeAt (φ : M →+* ℂ_[l]) : (l : 𝓞 M) ∈ primeAt φ := by
   rw [mem_primeAt, norm_l]; exact norm_l_lt_one
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := l_mem_primeAt φ rw [h, Ideal.mem_bot] at h1 exact (Fact.out : l.Prime).ne_zero (by exact_mod_cast h1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem primeAt_ne_bot (φ : M →+* ℂ_[l]) : primeAt φ ≠ ⊥ := fun h => by
   have h1 := l_mem_primeAt φ
@@ -81,9 +81,9 @@ theorem primeAt_ne_bot (φ : M →+* ℂ_[l]) : primeAt φ ≠ ⊥ := fun h => b
   exact (Fact.out : l.Prime).ne_zero (by exact_mod_cast h1)
 
 /- English proof (translation)
-Take `⟨n, d, h | h⟩` from `(⟨primeAt φ, inferInstance, primeAt_ne_bot φ⟩ : IsDedekindDomain.HeightOneSpectrum (𝓞 M)).exists_primeCompl_mul_eq_or_mul_eq (K := M) x`. Conclude with `⟨d, n, (notMem_primeAt φ _).1 d.2, by rw [mul_comm]; exact h⟩`. Use `⟨n, d, le_antisymm (norm_int_le φ n) ?_, by rw [mul_comm]; exact h⟩` and prove the remaining obligations. Establish `h1 : ‖φ x‖ * ‖φ (n : M)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, ← (notMem_primeAt φ _).1 d.2]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun y => ‖φ y‖) h`. Use polynomial arithmetic with `[norm_nonneg (φ (n : M)), norm_nonneg (φ x)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_denom (φ : M →+* ℂ_[l]) (x : M) (hx : ‖φ x‖ ≤ 1) :
     ∃ s n : 𝓞 M, ‖φ (s : M)‖ = 1 ∧ (s : M) * x = n := by
@@ -97,11 +97,11 @@ theorem exists_denom (φ : M →+* ℂ_[l]) (x : M) (hx : ‖φ x‖ ≤ 1) :
     nlinarith [norm_nonneg (φ (n : M)), norm_nonneg (φ x)]
 
 /- English proof (translation)
-Establish `hle : Ideal.span {a} ≤ P` using `(Ideal.span_singleton_le_iff_mem _).2 ha`. Take `⟨J, hJ⟩` from `(Ideal.dvd_iff_le).2 hle`. Establish `hJP : ¬ J ≤ P`. Introduce `h`. Apply `hP` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : a ∈ P * J` using `hJ ▸ Ideal.mem_span_singleton_self a`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mono_right h h1`. Take `⟨s, hsJ, hsP⟩` from `SetLike.not_le_iff_exists.1 hJP`. Use `⟨s, hsP, fun b hb => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: s * b ∈ Ideal.span {a}`. Rewrite using `[hJ, mul_comm s b]`. Conclude with `Ideal.mul_mem_mul hb hsJ`. Conclude with `Ideal.mem_span_singleton.1 this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_dvd_of_notMem_sq {R : Type} [CommRing R] [IsDedekindDomain R] (P : Ideal R) (a : R)
     (ha : a ∈ P) (hP : a ∉ P ^ 2) : ∃ s : R, s ∉ P ∧ ∀ b ∈ P, a ∣ s * b := by
@@ -120,11 +120,11 @@ theorem exists_mul_dvd_of_notMem_sq {R : Type} [CommRing R] [IsDedekindDomain R]
   exact Ideal.mem_span_singleton.1 this
 
 /- English proof (translation)
-Take `⟨t, n, ht, hn⟩` from `exists_denom φ x hx.le`. Establish `hnx : ‖φ (n : M)‖ = ‖φ x‖` using `by rw [← hn, map_mul, norm_mul, ht, one_mul]`. Take `⟨s, hs, hdvd⟩` from `exists_mul_dvd_of_notMem_sq _ _ (l_mem_primeAt φ) hP`. Take `⟨c, hc⟩` from `hdvd n ((mem_primeAt φ n).2 (hnx ▸ hx))`. Establish `hs1` using `(notMem_primeAt φ s).1 hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ‖φ (n : M)‖ = ‖(l : ℂ_[l])‖ * ‖φ (c : M)‖`. Use `congrArg (fun y : 𝓞 M => ‖φ (y : M)‖) hc` as an intermediate fact. Simplify using `only [map_mul, norm_mul, hs1, one_mul] at this`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hnx, h1]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (norm_int_le φ c)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_lt_one (φ : M →+* ℂ_[l]) (hP : (l : 𝓞 M) ∉ primeAt φ ^ 2) (x : M) (hx : ‖φ x‖ < 1) :
     ‖φ x‖ ≤ ‖(l : ℂ_[l])‖ := by
@@ -141,11 +141,9 @@ theorem norm_le_of_lt_one (φ : M →+* ℂ_[l]) (hP : (l : 𝓞 M) ∉ primeAt 
   exact mul_le_of_le_one_right (norm_nonneg _) (norm_int_le φ c)
 
 /- English proof (translation)
-Use `haveI : P.IsMaximal := hP.isMaximal h0`. Use `letI : Field (𝓞 M ⧸ P) := Ideal.Quotient.field P`. Use `haveI : Finite (𝓞 M ⧸ P) := Ideal.finiteQuotientOfFreeOfNeBot P h0`. Use `letI : Fintype (𝓞 M ⧸ P) := Fintype.ofFinite _`. Establish `hl0 : (l : 𝓞 M ⧸ P) = 0`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_natCast (Ideal.Quotient.mk P), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hl`. Use `haveI : CharP (𝓞 M ⧸ P) l := (CharP.charP_iff_prime_eq_zero Fact.out).2 hl0`. Take `⟨N, -, hN⟩` from `FiniteField.card (𝓞 M ⧸ P) l`. Use `⟨N, N.pos, fun s n hs => ?_⟩` and prove the remaining obligations.
-
-Establish `hs0 : Ideal.Quotient.mk P s ≠ 0` using `fun h => hs (Ideal.Quotient.eq_zero_iff_mem.1 h)`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, map_pow, map_pow, ← hN, FiniteField.pow_card, FiniteField.pow_card_sub_one_eq_one _ hs0, one_mul, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mem (P : Ideal (𝓞 M)) [hP : P.IsPrime] (h0 : P ≠ ⊥) (hl : (l : 𝓞 M) ∈ P) :
     ∃ N : ℕ, 0 < N ∧ ∀ s n : 𝓞 M, s ∉ P → n ^ (l ^ N) - s ^ (l ^ N - 1) * n ∈ P := by
@@ -164,9 +162,9 @@ theorem exists_pow_mem (P : Ideal (𝓞 M)) [hP : P.IsPrime] (h0 : P ≠ ⊥) (h
     FiniteField.pow_card_sub_one_eq_one _ hs0, one_mul, sub_self]
 
 /- English proof (translation)
-Take `⟨N, hN, h⟩` from `exists_pow_mem (primeAt φ) (primeAt_ne_bot φ) (l_mem_primeAt φ)`. Use `⟨N, hN, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨s, n, hs, hn⟩` from `exists_denom φ x hx`. Establish `h1` using `(mem_primeAt φ _).1 (h s n ((notMem_primeAt φ s).2 hs))`. Establish `hq : l ^ N ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : φ (n : M) = φ (s : M) * φ x` using `by rw [← hn, map_mul]`. Establish `h2 : φ ((n ^ (l ^ N) - s ^ (l ^ N - 1) * n : 𝓞 M) : M) = φ (s : M) ^ (l ^ N) * (φ x ^ (l ^ N) - φ x)`. Establish `h3 : φ ((n ^ (l ^ N) - s ^ (l ^ N - 1) * n : 𝓞 M) : M) = φ (n : M) ^ (l ^ N) - φ (s : M) ^ (l ^ N - 1) * φ (n : M)` using `by simp`. Rewrite using `[h3, hn', ← mul_assoc, pow_sub_one_mul hq, mul_pow, mul_sub]`. Rewrite `h1` using `[h2, norm_mul, norm_pow, hs, one_pow, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_norm_pow_sub (φ : M →+* ℂ_[l]) :
     ∃ N : ℕ, 0 < N ∧ ∀ x : M, ‖φ x‖ ≤ 1 → ‖φ x ^ (l ^ N) - φ x‖ < 1 := by
@@ -184,9 +182,9 @@ theorem exists_norm_pow_sub (φ : M →+* ℂ_[l]) :
   rwa [h2, norm_mul, norm_pow, hs, one_pow, one_mul] at h1
 
 /- English proof (translation)
-Introduce `M _ _ l _ hM φ x`. Take `⟨N, hN, h⟩` from `exists_norm_pow_sub φ`. Establish `hP` using `hM (primeAt φ) inferInstance (l_mem_primeAt φ)`. Use `GlobalTheory.T.unramified_subfield_criterion l φ.fieldRange N hN ?_ ?_ (φ.mem_fieldRange_self x)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `norm_le_of_lt_one φ hP y hy`. Introduce and unpack `_ ⟨y, rfl⟩ hy`. Conclude with `h y hy`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem map_mem_Kur : ∀ (M : Type) [Field M] [NumberField M] (l : ℕ) [Fact l.Prime],
     (∀ P : Ideal (𝓞 M), P.IsPrime → (l : 𝓞 M) ∈ P → (l : 𝓞 M) ∉ P ^ 2) →

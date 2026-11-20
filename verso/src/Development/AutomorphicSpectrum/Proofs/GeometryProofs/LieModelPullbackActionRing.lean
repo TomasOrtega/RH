@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.FlagStep
 
 /- English proof (translation)
-Introduce `_ ha ha' hj a e`. Establish `hcanc : ∀ v w : epsAt ξ' ⟶ t'.G, v.left ≫ m.φ = w.left ≫ m.φ → v = w`. Introduce `v w h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `m.cart.1.hom_ext h ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Over.w v, Over.w w]`. Apply `M'.inj` to reduce the goal to its premises. Use `hcanc _ _ ?_` and prove the remaining obligations. Rewrite using `[ha' a (j e), hj, ha a e, Over.comp_left, Over.comp_left, Category.assoc, m.act a]`. Establish `h2` using `congrArg (· ≫ (t.act.act a).left) (hj e)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Category.assoc] at h2 ⊢`. Conclude with `h2.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lieMap_act_pull (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X X' : Scheme.{0}) (t : SAB H X)
     (t' : SAB H X') (f : X' ⟶ X) (m : SABMap t' t f) (Ω Ω' : Type) [Field Ω] [Field Ω']

@@ -29,7 +29,7 @@ open GroundTheory.Heights₂.Heights.PtsSheetOnlyNull (ratio inv_smul_eq_cons ra
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ}
 
 /- English proof (translation)
-Use `⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Use `⟨i, mul_ne_zero ?_ hi⟩` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [hc]`. Conclude with `ReciprocityTheory.AnForm.R.eval_eq_zero_of_smul hQ (fun k => if k = k0 then c else 1) z hz.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mem_conePts (Q : Ideal (MRingOver ℂ ι)) (hQ : IsMultiHomogIdeal Q) (k0 : K) {c : ℂ}
     (hc : c ≠ 0) {z : (Σ k, ι k) → ℂ} (hz : z ∈ conePts Q) : scaleBlock k0 c z ∈ conePts Q := by
@@ -40,7 +40,7 @@ theorem mem_conePts (Q : Ideal (MRingOver ℂ ι)) (hQ : IsMultiHomogIdeal Q) (k
   · exact ReciprocityTheory.AnForm.R.eval_eq_zero_of_smul hQ (fun k => if k = k0 then c else 1) z hz.2
 
 /- English proof (translation)
-Take `⟨k0⟩` from `‹Nonempty K›`. Use `⟨scaleBlock k0 (Ψ' (segre z) 0)⁻¹ z, mem_conePts Q hQh k0 (inv_ne_zero h0) hz, segre_scaleBlock _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `inv_smul_eq_cons _ h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_fibre {Q : Ideal (MRingOver ℂ ι)} (hQh : IsMultiHomogIdeal Q) [Nonempty K] {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ conePts Q) (Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (h0 : Ψ' (segre z) 0 ≠ 0) :
@@ -51,7 +51,7 @@ theorem smul_mem_fibre {Q : Ideal (MRingOver ℂ ι)} (hQh : IsMultiHomogIdeal Q
   exact inv_smul_eq_cons _ h0
 
 /- English proof (translation)
-Introduce `z hz h`. Apply `hΨ' z hz` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun h (Equiv.swap 0 j i)` as an intermediate fact. Simplify `this` using `[swapProj_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isGoodProj_swapProj {Q : Ideal (MRingOver ℂ ι)} {Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)}
     (hΨ' : IsSetGoodProj (conePts Q) Ψ') (j : Fin (e + 1)) : IsSetGoodProj (conePts Q) (swapProj j Ψ') := by
@@ -62,13 +62,13 @@ theorem isGoodProj_swapProj {Q : Ideal (MRingOver ℂ ι)} {Ψ' : (((k : K) → 
   simpa [swapProj_apply] using this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Establish `: Nonempty K` using `hP.1`. Take `⟨t, ht⟩` from `hC e e V (fun y' => ratio (Ψ' (segre (γ y')))) hV hVne (fun y hy => (differentiableAt_ratio Ψ' (hγ y hy).1 (h0 y hy)).differentiableWithinAt) hall`. Use `(GlobalTheory.CompanionTheory.Ar.Pub.CxFib.setFibre_finite K ι Q e Ψ' hP hΨ' t).not_infinite ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinj : Set.InjOn (fun y => (Ψ' (segre (γ y)) 0)⁻¹ • segre (γ y)) {y | y ∈ V ∧ ratio (Ψ' (segre (γ y))) = t}`. Introduce and unpack `y1 ⟨hy1, -⟩ y2 ⟨hy2, -⟩ h`. Establish `h'` using `congrArg Ψ h`. Simplify using `only [map_smul, (hγ y1 hy1).2.2, (hγ y2 hy2).2.2] at h'`. Establish `e0` using `congrFun h' 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, Fin.cons_zero, smul_eq_mul, mul_one] at e0`. Use function extensionality and compare the values at `i`. Establish `ei` using `congrFun h' i.succ`. Simplify using `only [Pi.smul_apply, Fin.cons_succ, smul_eq_mul] at ei`. Rewrite `ei` using `[e0]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_left_cancel₀ (inv_ne_zero (h0 y2 hy2)) ei`. Use `(Set.Infinite.image hinj ht).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, ⟨hy, hty⟩, rfl⟩`. Use `smul_mem_fibre hP.2.1.2.1 (hγ y hy).2.1 Ψ' (h0 y hy)` as an intermediate fact. Rewrite `this` using `[hty]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_injective (hC : GroundTheory.Heights₂.Heights.CriticalFibreInfinite.Statement) {Q : Ideal (MRingOver ℂ ι)} (hP : IsCxVar Q e)
     {Ψ Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hΨ' : IsSetGoodProj (conePts Q) Ψ')
@@ -100,13 +100,11 @@ theorem exists_injective (hC : GroundTheory.Heights₂.Heights.CriticalFibreInfi
   rwa [hty] at this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Establish `hne : Ψ' (segre (γ y)) ≠ 0` using `hΨ' _ (hγ y hy).2.1`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hne`. Establish `hj0 : j ≠ 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hj (hall y hy)`. Establish `hcont : ContinuousOn (fun y' => Ψ' (segre (γ y')) j) V` using `fun y' hy' => (differentiableAt_pi.1 (differentiableAt_proj_segre Ψ' (hγ y' hy').1) j).continuousAt.continuousWithinAt`. Establish `hV'o : IsOpen (V ∩ (fun y' => Ψ' (segre (γ y')) j) ⁻¹' {0}ᶜ)` using `hcont.isOpen_inter_preimage hV isOpen_compl_singleton`. Establish `h0' : ∀ y' ∈ V ∩ (fun y' => Ψ' (segre (γ y')) j) ⁻¹' {0}ᶜ, swapProj j Ψ' (segre (γ y')) 0 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `y' hy'`. Simplify `hy'.2` using `[swapProj_apply]`. Take `⟨y1, hy1, hinj⟩` from `exists_injective hC hP (isGoodProj_swapProj hΨ' j) hV'o ⟨y, hy, hj⟩ (fun y' hy' => hγ y' hy'.1) h0'`. Use `not_injective_of_coord_eventually_const (j.pred hj0) 0 (differentiableAt_ratio _ (hγ y1 hy1.1).1 (h0' y1 hy1)) ?_ hinj` and prove the remaining obligations. Use `filter_upwards [hV'o.mem_nhds hy1] with y' hy'`.
-
-Simplify using `[ratio, swapProj_apply, hall y' hy'.1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_proj_ne_zero (hC : GroundTheory.Heights₂.Heights.CriticalFibreInfinite.Statement) {Q : Ideal (MRingOver ℂ ι)}
     (hP : IsCxVar Q e) {Ψ Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hΨ' : IsSetGoodProj (conePts Q) Ψ')
@@ -135,39 +133,31 @@ theorem exists_proj_ne_zero (hC : GroundTheory.Heights₂.Heights.CriticalFibreI
   simp [ratio, swapProj_apply, hall y' hy'.1]
 
 /- English proof (translation)
-Establish `hK : Nonempty K` using `hP.1`. Take `⟨k0⟩` from `hP.1`. Establish `hQh : IsMultiHomogIdeal Q` using `hP.2.1.2.1`. Use `set τ : (Fin e → ℂ) → Fin e → ℂ := fun y' => ratio (Ψ' (segre (γ y'))) with hτdef`. Establish `hcont0 : ContinuousOn (fun y' => Ψ' (segre (γ y')) 0) B` using `fun y' hy' => (differentiableAt_pi.1 (differentiableAt_proj_segre Ψ' (hγ y' hy').1) 0).continuousAt.continuousWithinAt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D := B ∩ (fun y' => Ψ' (segre (γ y')) 0) ⁻¹' {0}ᶜ with hDdef`. Establish `hDo : IsOpen D` using `hcont0.isOpen_inter_preimage hB isOpen_compl_singleton`. Establish `hyD : y ∈ D` using `⟨hyB, h0⟩`. Establish `hτd : DifferentiableOn ℂ τ D` using `fun y' hy' => (differentiableAt_ratio Ψ' (hγ y' hy'.1).1 hy'.2).differentiableWithinAt`. Establish `hτa : AnalyticAt ℂ τ y` using `GroundTheory.Heights₂.Heights.SheetOnlyNull.analyticOnNhd_of_differentiableOn hDo hτd y hyD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτc : ContDiffAt ℂ 1 τ y` using `hτa.contDiffAt`. Use `set L := (LinearEquiv.ofInjectiveEndo (fderiv ℂ τ y : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) hinj).toContinuousLinearEquiv with hLdef`. Establish `hτL : HasFDerivAt τ (L : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) y` using `hτa.differentiableAt.hasFDerivAt.congr_fderiv (ContinuousLinearMap.ext fun v => rfl)`. Use `set φ := hτc.toOpenPartialHomeomorph τ hτL one_ne_zero with hφdef`. Establish `hφτ : ∀ y', φ y' = τ y'` using `fun y' => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hysrc : y ∈ φ.source` using `hτc.mem_toOpenPartialHomeomorph_source hτL one_ne_zero`. Establish `hytgt : τ y ∈ φ.target` using `hτc.image_mem_toOpenPartialHomeomorph_target hτL one_ne_zero`. Establish `hsymm_y : φ.symm (τ y) = y` using `φ.left_inv hysrc`. Establish `hsymmc : ContDiffAt ℂ 1 φ.symm (τ y)` using `φ.contDiffAt_symm (f₀' := L) hytgt (by rw [hsymm_y]; exact hτL) (by rw [hsymm_y]; exact hτc)`. Establish `hev_D : ∀ᶠ t in 𝓝 (τ y), φ.symm t ∈ D` using `hsymmc.continuousAt.preimage_mem_nhds (by rw [hsymm_y]; exact hDo.mem_nhds hyD)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hev_d : ∀ᶠ t in 𝓝 (τ y), DifferentiableAt ℂ φ.symm t` using `(hsymmc.eventually (by simp)).mono fun t ht => ht.differentiableAt one_ne_zero`. Establish `hev_t : ∀ᶠ t in 𝓝 (τ y), t ∈ φ.target` using `φ.open_target.mem_nhds hytgt`. Use `set γ' : (Fin e → ℂ) → (Σ k, ι k) → ℂ := fun t => scaleBlock k0 (Ψ' (segre (γ (φ.symm t))) 0)⁻¹ (γ (φ.symm t)) with hγ'def`. Establish `hγ'd : ∀ t, φ.symm t ∈ D → DifferentiableAt ℂ φ.symm t → DifferentiableAt ℂ γ' t`. Introduce `t ht hdt`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg : DifferentiableAt ℂ (fun t => γ (φ.symm t)) t` using `(hγ _ ht.1).1.comp t hdt`. Establish `hc : DifferentiableAt ℂ (fun t => (Ψ' (segre (γ (φ.symm t))) 0)⁻¹) t` using `((differentiableAt_pi.1 (differentiableAt_proj_segre Ψ' (hγ _ ht.1).1) 0).fun_inv ht.2).comp t hdt`. Use `differentiableAt_pi.2 fun p => ?_` and prove the remaining obligations. Simplify using `only [hγ'def, scaleBlock]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc.fun_mul (differentiableAt_pi.1 hg p)`. Conclude with `(differentiableAt_const _).fun_mul (differentiableAt_pi.1 hg p)`. Establish `hsheet : IsSetSheet (conePts Q) Ψ' (τ y) ((Ψ' (segre (γ y)) 0)⁻¹ • segre (γ y)) γ'`. Use `⟨by simp only [hγ'def, hsymm_y, segre_scaleBlock], ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev_D, hev_d, hev_t] with t h1 h2 h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨hγ'd t h1 h2, mem_conePts Q hQh k0 (inv_ne_zero h1.2) (hγ _ h1.1).2.1, ?_⟩` and prove the remaining obligations. Simplify using `only [hγ'def, segre_scaleBlock, map_smul]`. Rewrite using `[inv_smul_eq_cons _ h1.2]`. Conclude with `congrArg _ (φ.right_inv h3)`. Establish `hΨc : Continuous Ψ` using `LinearMap.continuous_of_finiteDimensional Ψ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set w' := (Ψ' (segre (γ y)) 0)⁻¹ • segre (γ y) with hw'def`. Establish `hΨw' : Ψ w' = (Ψ' (segre (γ y)) 0)⁻¹ • (Fin.cons 1 y : Fin (e + 1) → ℂ)`. Rewrite using `[hw'def, map_smul, (hγ y hyB).2.2]`. Establish `hw'0 : Ψ w' 0 ≠ 0`. Rewrite using `[hΨw']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using h0`. Set `m : (Fin e → ℂ) × (((k : K) → ι k) → ℂ) → (Fin e → ℂ) × (((k : K) → ι k) → ℂ)` to `fun q => (ratio (Ψ q.2), (Ψ q.2 0)⁻¹ • q.2)`. Establish `hm0 : m (τ y, w') = (y, segre (γ y))`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show ratio (Ψ w') = y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hΨw', ratio_smul_cons (inv_ne_zero h0)]`. Use `show (Ψ w' 0)⁻¹ • w' = segre (γ y)`. Rewrite using `[hΨw', hw'def]`. Simplify using `[h0]`. Establish `h2 : Continuous fun q : (Fin e → ℂ) × (((k : K) → ι k) → ℂ) => Ψ q.2` using `hΨc.comp continuous_snd`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h20 : ContinuousAt (fun q : (Fin e → ℂ) × (((k : K) → ι k) → ℂ) => Ψ q.2 0) (τ y, w')` using `((continuous_apply 0).comp h2).continuousAt`. Establish `hmc : ContinuousAt m (τ y, w')`. Use `ContinuousAt.prodMk ?_ ?_` and prove the remaining obligations. Use `continuousAt_pi.2 fun i => ?_` and prove the remaining obligations. Conclude with `ContinuousAt.div (f := fun q : (Fin e → ℂ) × (((k : K) → ι k) → ℂ) => Ψ q.2 i.succ) ((continuous_apply i.succ).comp h2).continuousAt h20 hw'0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h20.inv₀ hw'0).smul continuous_snd.continuousAt`. Establish `hm : Tendsto m (𝓝 (τ y, w')) (𝓝 (y, segre (γ y)))` using `hm0 ▸ hmc.tendsto`. Establish `hev1` using `hm.eventually huniq`. Establish `hev2 : ∀ᶠ q in 𝓝 (τ y, w'), (m q).1 ∈ φ.source` using `((continuous_fst.tendsto _).comp hm).eventually (φ.open_source.mem_nhds hysrc)`. Establish `hev3 : ∀ᶠ q in 𝓝 (τ y, w'), Ψ q.2 0 ≠ 0` using `h20.eventually_ne hw'0`.
-
-Use `⟨τ y, γ', hsheet, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev1, hev2, hev3] with q hq1 hq2 hq3 hqf`. Take `⟨z, hz, hzs, hΨ'z⟩` from `hqf`. Establish `hfib : (m q).2 ∈ setFibre (conePts Q) Ψ (m q).1`. Use `smul_mem_fibre hQh hz Ψ (by rw [hzs]; exact hq3)` as an intermediate fact.
-
-Rewrite `this` using `[hzs]`. Conclude with `this`. Establish `hE : (Ψ q.2 0)⁻¹ • q.2 = segre (γ (ratio (Ψ q.2)))` using `hq1 hfib`. Establish `hs' : Ψ' (segre (γ (ratio (Ψ q.2)))) = (Ψ q.2 0)⁻¹ • (Fin.cons 1 q.1 : Fin (e + 1) → ℂ)`. Rewrite using `[← hE, map_smul, hΨ'z]`.
-
-Establish `hτs : τ (ratio (Ψ q.2)) = q.1` using `by show ratio (Ψ' (segre (γ (ratio (Ψ q.2))))) = q.1`. Rewrite using `[hs', ratio_smul_cons (inv_ne_zero hq3)]`. Establish `hsymm_q : φ.symm q.1 = ratio (Ψ q.2)`. Rewrite using `[← hτs]`. Conclude with `φ.left_inv hq2`.
-
-Use `show q.2 = segre (scaleBlock k0 (Ψ' (segre (γ (φ.symm q.1))) 0)⁻¹ (γ (φ.symm q.1)))`. Rewrite using `[hsymm_q, segre_scaleBlock, hs', ← hE]`. Simplify using `[hq3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSimpleSheetPt_of_injective {Q : Ideal (MRingOver ℂ ι)} (hP : IsCxVar Q e)
     {Ψ Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {γ : (Fin e → ℂ) → (Σ k, ι k) → ℂ}
@@ -277,21 +267,19 @@ theorem isSimpleSheetPt_of_injective {Q : Ideal (MRingOver ℂ ι)} (hP : IsCxVa
   simp [hq3]
 
 /- English proof (translation)
-Use `set τ : (Fin e → ℂ) → Fin e → ℂ := fun y' => ratio (Ψ' (segre (γ y'))) with hτdef`. Use `set B := Prod.fst '' O with hBdef`. Establish `hBo : IsOpen B` using `isOpenMap_fst O hOo`. Establish `hγB : ∀ y ∈ B, DifferentiableAt ℂ γ y ∧ γ y ∈ conePts Q ∧ Ψ (segre (γ y)) = Fin.cons 1 y`. Introduce and unpack `_ ⟨q, hq, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hO q hq).1`. Establish `hgc : ContinuousOn (fun y => (y, segre (γ y))) B` using `fun y hy => (continuousAt_id.prodMk (segre_differentiableAt (hγB y hy).1).continuousAt).continuousWithinAt`. Use `set D := B ∩ (fun y => (y, segre (γ y))) ⁻¹' O with hDdef`. Establish `hDo : IsOpen D` using `hgc.isOpen_inter_preimage hBo hOo`. Establish `hcont0 : ContinuousOn (fun y' => Ψ' (segre (γ y')) 0) B` using `fun y' hy' => (differentiableAt_pi.1 (differentiableAt_proj_segre Ψ' (hγB y' hy').1) 0).continuousAt.continuousWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hsub : {y | (y, segre (γ y)) ∈ O ∧ ¬ cxSimple (conePts Q) Ψ' ((Ψ' (segre (γ y)) 0)⁻¹ • segre (γ y))} ⊆ {y | y ∈ D ∧ Ψ' (segre (γ y)) 0 = 0} ∪ {y | y ∈ D ∧ Ψ' (segre (γ y)) 0 ≠ 0 ∧ ¬ Function.Injective (fderiv ℂ τ y)}`. Introduce and unpack `y ⟨hyO, hns⟩`. Establish `hyD : y ∈ D` using `⟨⟨_, hyO, rfl⟩, hyO⟩`. Distinguish the cases in `h0 : Ψ' (segre (γ y)) 0 = 0`. Conclude with `Or.inl ⟨hyD, h0⟩`.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Or.inr ⟨hyD, h0, fun hinj => hns ?_⟩` and prove the remaining obligations. Establish `huniq : ∀ᶠ q in 𝓝 (y, segre (γ y)), q.2 ∈ setFibre (conePts Q) Ψ q.1 → q.2 = segre (γ q.1)` using `Filter.mem_of_superset (hOo.mem_nhds hyO) fun q hq => (hO q hq).2`. Conclude with `isSimpleSheetPt_of_injective hP hBo hγB hyD.1 huniq h0 hinj`. Use `measure_mono_null hsub (measure_union_null ?_ ?_)` and prove the remaining obligations. Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y ⟨hyD, -⟩`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 hDo y hyD`. Use `⟨Metric.ball y r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball y r).isPreconnected, fun y' => Ψ' (segre (γ y')) 0, ?_, ?_, fun y' hy' => hy'.1.2⟩` and prove the remaining obligations. Conclude with `(osgood e D _ hDo (fun y' hy' => (differentiableAt_pi.1 (differentiableAt_proj_segre Ψ' (hγB y' hy'.1).1) 0).differentiableWithinAt)).mono hball`. Conclude with `exists_proj_ne_zero hC hP hΨ' Metric.isOpen_ball (fun y' hy' => hγB y' (hball hy').1) (Metric.mem_ball_self hr)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `y ⟨hyD, hy0, -⟩`. Establish `hD'o : IsOpen (D ∩ (fun y' => Ψ' (segre (γ y')) 0) ⁻¹' {0}ᶜ)` using `(hcont0.mono Set.inter_subset_left).isOpen_inter_preimage hDo isOpen_compl_singleton`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 hD'o y ⟨hyD, hy0⟩`. Establish `hτd : DifferentiableOn ℂ τ (D ∩ (fun y' => Ψ' (segre (γ y')) 0) ⁻¹' {0}ᶜ)` using `fun y' hy' => (differentiableAt_ratio Ψ' (hγB y' hy'.1.1).1 hy'.2).differentiableWithinAt`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨Metric.ball y r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball y r).isPreconnected, fun y' => (ReciprocityTheory.AnForm.A.jacC τ y').det, (GroundTheory.Heights₂.Heights.SheetOnlyNull.analyticOnNhd_det_jacC hD'o hτd).mono hball, ?_, ?_⟩` and prove the remaining obligations. Take `⟨y1, hy1, hinj⟩` from `exists_injective hC hP hΨ' Metric.isOpen_ball ⟨y, Metric.mem_ball_self hr⟩ (fun y' hy' => hγB y' (hball hy').1.1) (fun y' hy' => (hball hy').2)`. Use `⟨y1, hy1, ?_⟩` and prove the remaining obligations. Use `show (ReciprocityTheory.AnForm.A.jacC τ y1).det ≠ 0`. Rewrite using `[ReciprocityTheory.AnForm.A.det_jacC]`.
-
-Conclude with `(GroundTheory.Heights₂.Heights.SheetOnlyNull.injective_iff_det_ne_zero _).1 hinj`. Introduce and unpack `y' ⟨⟨-, -, hni⟩, -⟩ show (ReciprocityTheory.AnForm.A.jacC τ y').det = 0`. Rewrite using `[ReciprocityTheory.AnForm.A.det_jacC]`. Assume the negation of the conclusion as `hne`. Conclude with `hni ((GroundTheory.Heights₂.Heights.SheetOnlyNull.injective_iff_det_ne_zero _).2 hne)`.
+A detailed English derivation is pending.
 -/
 theorem piece_null (hC : GroundTheory.Heights₂.Heights.CriticalFibreInfinite.Statement) {Q : Ideal (MRingOver ℂ ι)} (hP : IsCxVar Q e)
     {Ψ Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hΨ' : IsSetGoodProj (conePts Q) Ψ')
@@ -356,17 +344,15 @@ theorem piece_null (hC : GroundTheory.Heights₂.Heights.CriticalFibreInfinite.S
       exact hni ((GroundTheory.Heights₂.Heights.SheetOnlyNull.injective_iff_det_ne_zero _).2 hne)
 
 /- English proof (translation)
-Introduce `K _ ι _ Q e Ψ Ψ' hP hΨ hΨ'`. Establish `hloc : ∀ p : (Fin e → ℂ) × (((k : K) → ι k) → ℂ), ∃ (γ : (Fin e → ℂ) → (Σ k, ι k) → ℂ) (O : Set ((Fin e → ℂ) × (((k : K) → ι k) → ℂ))), IsOpen O ∧ (∀ q ∈ O, (DifferentiableAt ℂ γ q.1 ∧ γ q.1 ∈ conePts Q ∧ Ψ (segre (γ q.1)) = Fin.cons 1 q.1) ∧ (q.2 ∈ setFibre (conePts Q) Ψ q.1 → q …`. Introduce `p`. Distinguish the cases in `hp : p.2 ∈ setFibre (conePts Q) Ψ p.1 ∧ cxSimple (conePts Q) Ψ p.2`. Take `⟨hpf, y0, γ, ⟨hseg, hsh⟩, hun⟩` from `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hy0 : y0 = p.1`. Take `⟨z, -, -, hΨz⟩` from `hpf`. Establish `h1` using `hsh.self_of_nhds.2.2`. Rewrite `h1` using `[hseg, hΨz]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hi` using `congrFun h1 i.succ`. Simplify using `only [Fin.cons_succ] at hi`. Conclude with `hi.symm`. Substitute `hy0` using the available equality. Establish `hev : ∀ᶠ q in 𝓝 (p.1, p.2), (DifferentiableAt ℂ γ q.1 ∧ γ q.1 ∈ conePts Q ∧ Ψ (segre (γ q.1)) = Fin.cons 1 q.1) ∧ (q.2 ∈ setFibre (conePts Q) Ψ q.1 → q.2 = segre (γ q.1))` using `((continuous_fst.tendsto (p.1, p.2)).eventually hsh).and hun`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨O, hO, hOo, hpO⟩` from `eventually_nhds_iff.1 hev`. Conclude with `⟨γ, O, hOo, hO, fun _ _ => hpO⟩`. Conclude with `⟨fun _ _ => 0, ∅, isOpen_empty, by simp, fun h1 h2 => absurd ⟨h1, h2⟩ hp⟩`. Use `choose γ O hOo hO hpO using hloc`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable O hOo`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `measure_mono_null ?_ ((measure_biUnion_null_iff hTc).2 fun p _ => piece_null GroundTheory.Heights₂.Heights.CriticalFibreInfinite.proof hP hΨ' (hOo p) (hO p))` and prove the remaining obligations. Introduce and unpack `y ⟨w, hwf, hws, hwn⟩`. Establish `hmem : (y, w) ∈ ⋃ p ∈ T, O p` using `hTU ▸ Set.mem_iUnion.2 ⟨(y, w), hpO (y, w) hwf hws⟩`. Take `⟨p, hpT, hyw⟩` from `Set.mem_iUnion₂.1 hmem`. Establish `hw : w = segre (γ p y)` using `((hO p) (y, w) hyw).2 hwf`.
-
-Substitute `hw` using the available equality. Conclude with `Set.mem_biUnion hpT ⟨hyw, hwn⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cxSimple_only_null : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e : ℕ) (Ψ Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)),

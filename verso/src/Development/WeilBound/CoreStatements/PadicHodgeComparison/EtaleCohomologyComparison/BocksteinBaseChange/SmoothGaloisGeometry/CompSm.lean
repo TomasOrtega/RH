@@ -14,7 +14,7 @@ namespace CrystallineSemistableComparison
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Take `⟨⟨N, i, hi, hcomp⟩, ϖ, hϖ, hss⟩` from `hM`. Establish `: IsClosedImmersion U.ι` using `.of_isPreimmersion _ (by rw [Scheme.Opens.range_ι]; exact hU)`. Use `⟨⟨N, U.ι ≫ i, inferInstance, by rw [Category.assoc, hcomp]⟩, ϖ, hϖ, ?_⟩` and prove the remaining obligations. Conclude with `isStrictlySemistable_comp_openImmersion ϖ M.p hss U.ι`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Model.good_sub (M : Model l K) (hM : M.Good) (U : M.X.Opens) (hU : IsClosed (U : Set M.X)) :
     (M.sub U).Good := by
@@ -24,7 +24,7 @@ theorem Model.good_sub (M : Model l K) (hM : M.Good) (U : M.X.Opens) (hU : IsClo
   exact isStrictlySemistable_comp_openImmersion ϖ M.p hss U.ι
 
 /- English proof (translation)
-Use `hM.2` as an intermediate fact. Conclude with `⟨M.good_sub hM.1 U hU, inferInstanceAs (Smooth (U.ι ≫ M.p))⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Model.sm_sub (M : Model l K) (hM : M.Sm) (U : M.X.Opens) (hU : IsClosed (U : Set M.X)) :
     (M.sub U).Sm := by
@@ -32,9 +32,9 @@ theorem Model.sm_sub (M : Model l K) (hM : M.Sm) (U : M.X.Opens) (hU : IsClosed 
   exact ⟨M.good_sub hM.1 U hU, inferInstanceAs (Smooth (U.ι ≫ M.p))⟩
 
 /- English proof (translation)
-Use `OK_dvr (l := l) (K := K)` as an intermediate fact. Take `⟨⟨N, i, hi, hcomp⟩, -⟩` from `hM`. Establish `: IsProper (PSpace.str (OK l K) N)` using `isProper_str _ N`. Establish `: IsLocallyNoetherian M.X`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian (i ≫ PSpace.str (OK l K) N)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace M.X`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str (OK l K) N)`. Establish `: IsNoetherian M.X` using `{}`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Model.noetherianSpace [FiniteDimensional ℚ_[l] K] (M : Model l K) (hM : M.Good) :
     NoetherianSpace M.X := by
@@ -49,7 +49,7 @@ theorem Model.noetherianSpace [FiniteDimensional ℚ_[l] K] (M : Model l K) (hM 
   infer_instance
 
 /- English proof (translation)
-Use `OK_dvr (l := l) (K := K)` as an intermediate fact. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (OK l K)`. Use `OK_away hϖ` as an intermediate fact. Conclude with `IsOpenImmersion.of_isLocalization (S := K) ϖ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_gen [FiniteDimensional ℚ_[l] K] :
     IsOpenImmersion (Spec.map (CommRingCat.ofHom (OK l K).subtype)) := by
@@ -59,9 +59,9 @@ theorem isOpenImmersion_gen [FiniteDimensional ℚ_[l] K] :
   exact IsOpenImmersion.of_isLocalization (S := K) ϖ
 
 /- English proof (translation)
-Introduce `l _ K _`. Use `OK_dvr (l := l) (K := K)` as an intermediate fact. Use `compM_of _ isOpenImmersion_gen (fun M hM U hU ↦ M.sm_sub hM U hU) (fun M hM ↦ M.noetherianSpace hM.1) ?_` and prove the remaining obligations. Introduce `M hM`. Use `hM.2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hS : GlobalTheory.IsNormalScheme (Spec (CommRingCat.of (OK l K)))` using `inferInstance`. Use `⟨GlobalTheory.isNormalScheme_of_smooth M.p, LocallyOfFiniteType.isLocallyNoetherian M.p, Flat.generalizingMap M.p, inferInstance⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem compSm : ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K],
     CompM (Model.Sm (l := l) (K := K)) := by

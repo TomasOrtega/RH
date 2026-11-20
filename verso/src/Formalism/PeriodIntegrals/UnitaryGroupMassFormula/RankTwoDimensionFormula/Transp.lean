@@ -15,13 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Conclude with `(X.ιE.apply_symm_apply (X.bas.repr y i)).symm`.
+A detailed English derivation is pending.
 -/
 theorem tr_repr_eq (y : (VS D).V) (i : Fin X.B.I.n) : X.bas.repr y i = X.ιE (X.crd y i) := by
   exact (X.ιE.apply_symm_apply (X.bas.repr y i)).symm
 
 /- English proof (translation)
-Introduce `a b h`. Apply `X.bas.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[tr_repr_eq X a i, tr_repr_eq X b i, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_crd_injective : Function.Injective X.crd := by
   intro a b h
@@ -33,9 +33,9 @@ def trLin (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) : (VS D).V →ₗ[D.h
   Matrix.toLin X.bas X.bas (M.map X.ιE)
 
 /- English proof (translation)
-Establish `h` using `LinearMap.toMatrix_mulVec_repr X.bas X.bas (Matrix.toLin X.bas X.bas (M.map X.ιE)) y`. Rewrite `h` using `[LinearMap.toMatrix_toLin]`. Use function extensionality and compare the values at `i`. Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[← tr_repr_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show X.bas.repr (Matrix.toLin X.bas X.bas (M.map X.ιE) y) i = _`. Rewrite using `[← h]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply, tr_repr_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tr_crd_lin (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (y : (VS D).V) :
     X.crd (trLin X M y) = M *ᵥ X.crd y := by
@@ -49,7 +49,7 @@ theorem tr_crd_lin (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (y : (VS D).
   simp only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply, tr_repr_eq]
 
 /- English proof (translation)
-Establish `hm : (M * N).map X.ιE = M.map X.ιE * N.map X.ιE`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, map_mul]`. Unfold `trLin`. Rewrite using `[hm, Matrix.toLin_mul X.bas X.bas X.bas]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_lin_mul (M N : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
     (trLin X M).comp (trLin X N) = trLin X (M * N) := by
@@ -60,7 +60,7 @@ theorem tr_lin_mul (M N : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
   rw [hm, Matrix.toLin_mul X.bas X.bas X.bas]
 
 /- English proof (translation)
-Unfold `trLin`. Rewrite using `[Matrix.map_one _ (map_zero X.ιE) (map_one X.ιE), Matrix.toLin_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_lin_one : trLin X 1 = LinearMap.id := by
   unfold trLin
@@ -72,15 +72,15 @@ def trEquiv (M : GL (Fin X.B.I.n) X.B.I.E) : (VS D).V ≃ₗ[D.host.E] (VS D).V 
     (by rw [tr_lin_mul, Units.inv_mul, tr_lin_one])
 
 /- English proof (translation)
-The claim follows from `tr_crd_lin X _ y`.
+A detailed English derivation is pending.
 -/
 theorem tr_crd (M : GL (Fin X.B.I.n) X.B.I.E) (y : (VS D).V) :
     X.crd (trEquiv X M y) = (M : Matrix _ _ _) *ᵥ X.crd y := tr_crd_lin X _ y
 
 /- English proof (translation)
-Take `⟨p, hp0, hp⟩` from `Ring.not_isField_iff_exists_prime.mp (NumberField.RingOfIntegers.not_isField F)`. Set `v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)` to `⟨p, hp, hp0⟩`. Use `haveI : Nonempty (IsDedekindDomain.HeightOneSpectrum (𝓞 F)) := ⟨v⟩`. Use `first`. Consider the case `infer_instance`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (RestrictedProduct.evalRingHom _ v).domain_nontrivial`. Consider the case `exact ⟨⟨0, 1, fun h => zero_ne_one (congrArg (fun x => x.1 v) h)⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem tr_af_nontrivial (F : Type) [Field F] [NumberField F] : Nontrivial (IsDedekindDomain.FiniteAdeleRing (𝓞 F) F) := by
   obtain ⟨p, hp0, hp⟩ := Ring.not_isField_iff_exists_prime.mp (NumberField.RingOfIntegers.not_isField F)
@@ -94,15 +94,15 @@ theorem tr_af_nontrivial (F : Type) [Field F] [NumberField F] : Nontrivial (IsDe
 attribute [local instance] tr_af_nontrivial
 
 /- English proof (translation)
-The claim follows from `(Formalism.BasicNotions.bridge_star_holds D.R D.host _).trans (X.ιE_conj a).symm`.
+A detailed English derivation is pending.
 -/
 theorem tr_star (a : X.B.I.E) : star (X.ιE a) = X.ιE (star a) :=
   (Formalism.BasicNotions.bridge_star_holds D.R D.host _).trans (X.ιE_conj a).symm
 
 /- English proof (translation)
-Use `conv_lhs => rw [← X.bas.sum_repr x, ← X.bas.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, tr_repr_eq, tr_star, ← X.J_eq, dotProduct, Matrix.mulVec, Pi.star_apply, map_mul]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tr_hT (x y : (VS D).V) :
     (VS D).hT x y = X.ιE (star (X.crd x) ⬝ᵥ (X.B.I.J *ᵥ X.crd y)) := by
@@ -117,9 +117,9 @@ theorem tr_hT (x y : (VS D).V) :
   ring
 
 /- English proof (translation)
-Establish `hM' : Formalism.UG.cT (starRingEnd X.B.I.E) (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) * X.B.I.J * (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = X.B.I.J` using `hM`. Establish `hH : (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)ᴴ = Formalism.UG.cT (starRingEnd X.B.I.E) (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)`. Use extensionality with `i j`. Both sides reduce to the same expression. Use `show ∀ a b, (VS D).hT (trEquiv X M a) (trEquiv X M b) = (VS D).hT a b`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Rewrite using `[tr_hT, tr_hT, tr_crd, tr_crd]`. Use `congr 1`. Rewrite using `[Matrix.star_mulVec, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hH, hM']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_isom (M : GL (Fin X.B.I.n) X.B.I.E) (hM : M ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J) :
     trEquiv X M ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT := by
@@ -137,23 +137,21 @@ theorem tr_isom (M : GL (Fin X.B.I.n) X.B.I.E) (hM : M ∈ Formalism.UG.UJ (star
     ← Matrix.mul_assoc, hH, hM']
 
 /- English proof (translation)
-Introduce `D X u γ`. Establish `hG : (γ : X.B.I.GA) ∈ X.B.I.GFset` using `(Subgroup.mem_inf.1 γ.2).1`. Take `⟨M, hM, -, hf⟩` from `hG`. Establish `hH : ∀ y ∈ fixSet X u, X.B.I.fmat (iotaF X u γ : X.B.I.Gf) *ᵥ incl X.B.I y = incl X.B.I y` using `(iotaF X u γ).2`. Establish `hcoe : ((iotaF X u γ : Hfin X u) : X.B.I.Gf) = (γ : X.B.I.GA).2` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinc : ∀ v, X.B.I.fmat (γ : X.B.I.GA).2 *ᵥ incl X.B.I v = incl X.B.I ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ v)`. Introduce `v`. Rewrite using `[hf]`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec _ _ _ i).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hfixc : ∀ y ∈ fixSet X u, (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ y = y`. Introduce `y hy`. Establish `h1` using `hH y hy`. Rewrite `h1` using `[hcoe, hinc]`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `Formalism.UG.P.inclE_injective _ _ _ (congrFun h1 i)`. Establish `hfix : ∀ y, X.crd y ∈ fixSet X u → trEquiv X M y = y`. Introduce `y hy`. Apply `tr_crd_injective X` to reduce the goal to its premises. Rewrite using `[tr_crd, hfixc _ hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨trEquiv X M, ⟨tr_isom X M hM, fun j => ?_, ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Use `show Submodule.map _ (Submodule.span _ _) = Submodule.span _ _`. Rewrite using `[Submodule.map_span, Set.image_image, X.Fu_e]`. Use `congr 1`. Apply `Set.image_congr` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Introduce `a _`. Conclude with `hfix _ (Or.inl (Or.inl ⟨a, rfl⟩))`. Rewrite using `[X.flagZVector]`. Conclude with `hfix _ (Or.inr rfl)`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : X.B.I.fmat ((iotaF X u γ : X.B.I.Gf))⁻¹ *ᵥ incl X.B.I (X.crd y) = incl X.B.I (X.crd ((trEquiv X M).symm y))`. Establish `e1 : incl X.B.I (X.crd y) = X.B.I.fmat (iotaF X u γ : X.B.I.Gf) *ᵥ incl X.B.I (X.crd ((trEquiv X M).symm y))`. Rewrite using `[hcoe, hinc, ← tr_crd, LinearEquiv.apply_symm_apply]`. Rewrite using `[e1, Matrix.mulVec_mulVec]`. Establish `e2 : X.B.I.fmat ((iotaF X u γ : X.B.I.Gf))⁻¹ * X.B.I.fmat (iotaF X u γ : X.B.I.Gf) = X.B.I.fmat (((iotaF X u γ : X.B.I.Gf))⁻¹ * (iotaF X u γ : X.B.I.Gf))` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, inv_mul_cancel]`. Conclude with `Matrix.one_mulVec _`. Establish `e : ((iotaF X u γ : X.B.I.Gf) * h * X.xu u)⁻¹ = (h * X.xu u)⁻¹ * (iotaF X u γ : X.B.I.Gf)⁻¹` using `by group`. Rewrite using `[LinearEquiv.image_eq_preimage_symm]`. Simplify using `only [latS, Set.mem_ofPred_eq, Set.mem_preimage]`.
-
-Rewrite using `[e]`. Establish `ef : X.B.I.fmat ((h * X.xu u)⁻¹ * (iotaF X u γ : X.B.I.Gf)⁻¹) = X.B.I.fmat (h * X.xu u)⁻¹ * X.B.I.fmat ((iotaF X u γ : X.B.I.Gf))⁻¹` using `rfl`. Rewrite using `[ef, ← Matrix.mulVec_mulVec, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport_holds : Transport := by
   intro D X u γ

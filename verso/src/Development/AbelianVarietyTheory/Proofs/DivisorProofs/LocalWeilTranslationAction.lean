@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.ThK.LemF.RhoConj
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v h hh z hz φ hφ`. Establish `hA` using `GlobalTheory.T.theta_action_exists hPr`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Establish `hw : At (evFin F v) (z * (mat h⁻¹)ᵀ)` using `fun u hu => by rw [← Matrix.smul_mul, hz u hu, Matrix.zero_mul]`. Establish `h1 : (1 : UA σ X.J) ∈ UAt σ X (evFin F v)` using `by show At (evFin F v) (mat (1 : UA σ X.J) - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u _`. Rewrite using `[GlobalTheory.StabHaar.mat_one, sub_self, smul_zero]`. Establish `hact : actAB (cA σ) ((1 : UA σ X.J), h) (z * (mat h⁻¹)ᵀ) = z` using `by show mat (1 : UA σ X.J) * (z * (mat h⁻¹)ᵀ) * (mat h)ᵀ = z`. Rewrite using `[GlobalTheory.StabHaar.mat_one, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, GlobalTheory.StabHaar.mat_mul_inv, Matrix.transpose_one, Matrix.mul_one]`. Establish `aom : ∀ ψ ∈ SB (Fin n × Fin d → Fv F v), Acts (evFin F v) (om (1, h)) ψ (locOp v (om (1, h)) ψ)` using `fun ψ hψ => acts_locOp_om hA hP h1 hh hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `arho : ∀ u, At (evFin F v) u → ∀ ψ ∈ SB (Fin n × Fin d → Fv F v), Acts (evFin F v) (M.co.rho B.ψ u) ψ (locOp v (M.co.rho B.ψ u) ψ)` using `fun u hu ψ hψ => acts_locOp ((hA F E σ B n d X W M χX χW om r s r' s' hP v).2.1 u hu ψ hψ).exists`. Take `⟨R, h0, hR⟩` from `GlobalTheory.RestWitness.exists_rest (Fin n × Fin d) v`. Establish `key : tens (evFin F v) (locOp v (M.co.rho B.ψ z) (locOp v (om (1, h)) φ)) R = tens (evFin F v) (locOp v (om (1, h)) (locOp v (M.co.rho B.ψ (z * (mat h⁻¹)ᵀ)) φ)) R`. Rewrite using `[← arho z hz _ (locOp_mem _ _ _) R (hR _ (locOp_mem _ _ _)), ← aom _ (locOp_mem _ _ _) R (hR _ (locOp_mem _ _ _)), ← aom φ hφ R (hR φ hφ), ← arho _ hw φ hφ R (hR φ hφ), hS.impl _ _ _ (hR φ hφ).2, hact]`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hzL : At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (t i))` using `fun u hu => funext fun i => GlobalTheory.LatVac.at_liftV v _ u hu`. Establish `hrz : R (fun i => GlobalTheory.LatVac.liftV v (t i)) = R 0` using `by simpa using (hR φ hφ).1 0 _ hzL`. Establish `e` using `congrFun key fun i => GlobalTheory.LatVac.liftV v (t i)`. Simplify using `only [tens, GlobalTheory.LatVac.evFin_liftV, hrz] at e`. Conclude with `mul_right_cancel₀ h0 e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rho_om_comm : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E)

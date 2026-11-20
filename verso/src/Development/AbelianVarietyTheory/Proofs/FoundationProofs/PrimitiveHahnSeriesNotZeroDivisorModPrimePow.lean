@@ -8,9 +8,9 @@ open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisens
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `r`. Rewrite using `[HahnSeries.coeff_mul]`. Use `Finset.sum_induction _ (fun x => ∃ z ∈ A, x = c * z) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `x y ⟨z, hz, rfl⟩ ⟨w, hw, rfl⟩`. Conclude with `⟨z + w, A.add_mem _ _ hz hw, by ring⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨0, A.zero_mem, by simp⟩`. Introduce `ij _`. Take `⟨z, hz, e⟩` from `hb ij.2`. Conclude with `⟨a.coeff ij.1 * z, A.mul_mem _ _ (ha _) hz, by rw [e]; ring⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem primCan_mul_dvd {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (c : Ω) (a b : HahnSeries ℚ Ω)
     (ha : ∀ r, a.coeff r ∈ A) (hb : ∀ r, ∃ z ∈ A, b.coeff r = c * z) :
@@ -26,13 +26,13 @@ theorem primCan_mul_dvd {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (c : Ω
     exact ⟨a.coeff ij.1 * z, A.mul_mem _ _ (ha _) hz, by rw [e]; ring⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ A hl n L P φ hL hP hden hφ hφP`. Take `⟨Q, hQ, -, hQP⟩` from `GlobalTheory.T.primitive_hahnSeries_invertible_mod_prime_pow l A hl n L P hL hP hden`. Establish `h1 : ∀ r, ∃ z ∈ A, (Q * P - 1).coeff r = (l : Ω) ^ n * z`. Introduce `r`. Take `⟨z, hz, e⟩` from `hQP r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, hz, by rw [HahnSeries.coeff_sub]; exact e⟩`. Establish `h2` using `primCan_mul_dvd A _ φ _ hφ h1`. Establish `h3 : ∀ r, ∃ z ∈ A, (Q * (φ * P)).coeff r = (l : Ω) ^ n * z`. Use `primCan_mul_dvd A _ Q _ hQ ?_` and prove the remaining obligations. Introduce `r`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz, e⟩` from `hφP r`. Conclude with `⟨z, hz, by rw [← e, sub_zero]⟩`. Introduce `r`. Take `⟨z, hz, ez⟩` from `h3 r`. Take `⟨w, hw, ew⟩` from `h2 r`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hid : φ = Q * (φ * P) - φ * (Q * P - 1)` using `by ring`. Use `⟨z - w, sub_mem hz hw, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_zero, hid, HahnSeries.coeff_sub, ez, ew]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem primCan : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω),
     ((l : ℕ) : Ω) ∈ A.nonunits → ∀ (n L : ℕ) (P φ : HahnSeries ℚ Ω), 0 < L → Prim A P →

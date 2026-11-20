@@ -7,15 +7,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hZ : irreducibleComponent s ∈ irreducibleComponents S` using `irreducibleComponent_mem_irreducibleComponents s`. Establish `hZo : IsOpen (irreducibleComponent s)` using `GlobalTheory.IsNormalScheme.isOpen_of_mem_irreducibleComponents hZ`. Take `⟨_, hu, ⟨u, rfl⟩⟩` from `hj.inter_open_nonempty _ hZo ⟨s, mem_irreducibleComponent⟩`. Establish `hg` using `hZ.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ hZ)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgs : hZ.1.genericPoint ⤳ s` using `hg.specializes mem_irreducibleComponent`. Establish `hgr : hZ.1.genericPoint ∈ Set.range (S.fromSpecStalk s)`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `hgs`. Take `⟨p, hp⟩` from `hgr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxp : (ReciprocityTheory.ChartRestriction.G.Out.jK (S.presheaf.stalk s)) x ⤳ p`. Use `(PrimeSpectrum.le_iff_specializes (R := S.presheaf.stalk s) _ _).mp ?_` and prove the remaining obligations. Use `show Ideal.comap _ x.asIdeal ≤ p.asIdeal`. Establish `hx0 : x.asIdeal = ⊥` using `@Ideal.eq_bot_of_prime (FractionRing (S.presheaf.stalk s)) _ x.asIdeal x.isPrime`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ha` using `[Ideal.mem_comap, hx0, Ideal.mem_bot]`. Establish `ha0 : a = 0` using `IsFractionRing.injective (S.presheaf.stalk s) (FractionRing (S.presheaf.stalk s)) (by simpa using ha)`. Rewrite using `[ha0]`. Conclude with `Ideal.zero_mem _`. Establish `h1 : (ReciprocityTheory.ChartRestriction.G.Out.jK (S.presheaf.stalk s) ≫ S.fromSpecStalk s) x ⤳ hZ.1.genericPoint`.
-
-Rewrite using `[Scheme.Hom.comp_apply, ← hp]`. Conclude with `hxp.map (S.fromSpecStalk s).continuous`. Establish `h2 : hZ.1.genericPoint ⤳ j u` using `hg.specializes hu`. Conclude with `(h1.trans h2).mem_open j.isOpenEmbedding.isOpen_range ⟨u, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem range_jK_fromSpecStalk_subset_of_dense_range {U S : Scheme.{0}} [GlobalTheory.IsNormalScheme S]
     [IsLocallyNoetherian S] (j : U ⟶ S) [IsOpenImmersion j] (hj : Dense (Set.range j)) (s : S) :

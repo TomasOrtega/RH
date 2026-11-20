@@ -22,37 +22,31 @@ namespace GlobalTheory.PolKerFin
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.WeilM GlobalTheory.AdelicU Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM v h hh Φ hΦ`. Take `⟨T, hXT, m, f, φ, hf, rfl, hz⟩` from `hΦ`. Establish `hP` using `GlobalTheory.ThK.RealUniq.isPair_V hM.triple`. Establish `h1 : (1 : UA σ G.V.J) ∈ UAt σ G.V (evFin F v)`. Introduce `u _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show u • ((1 : UA σ G.V.J).1.1 - 1) = 0`. Simplify using the standard rewrite rules. Establish `hex : ∀ φ₀ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∃ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, h)) φ₀ φ₁` using `fun φ₀ hφ₀ => GlobalTheory.ThK.LocalOps.acts_exists hP v (1, h) h1 hh φ₀ hφ₀`. Use `choose D hDSB hDA using hex`. Establish `hex' : ∀ φ₀ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∃ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, h)) φ₀ φ₁` using `fun φ₀ hφ₀ => ⟨D φ₀ hφ₀, hDSB φ₀ hφ₀, hDA φ₀ hφ₀⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Set `Dl : SB (Fin a × Fin (a + a') → Fv F v) →ₗ[ℂ] SB (Fin a × Fin (a + a') → Fv F v)` to `{ toFun := fun x => ⟨D x.1 x.2, hDSB x.1 x.2⟩ map_add' := fun x y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hl` using `GlobalTheory.ThK.LocalOps.acts_lin v (om (1, h)) hex' x.2 y.2 (hDA x.1 x.2) (hDA y.1 y.2) 1 1`. Simplify using `only [one_smul] at hl`. Conclude with `GlobalTheory.ThK.LocalOps.acts_unique v _ (x + y).2 (hDA _ (x + y).2) hl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun c x => by`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hl` using `GlobalTheory.ThK.LocalOps.acts_lin v (om (1, h)) hex' x.2 x.2 (hDA x.1 x.2) (hDA x.1 x.2) c 0`. Simplify using `only [zero_smul, add_zero] at hl`. Conclude with `GlobalTheory.ThK.LocalOps.acts_unique v _ (c • x).2 (hDA _ (c • x).2) hl }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `π : SB (Fin a × Fin (a + a') → Fv F v) →ₗ[ℂ] Rf.Pi v` to `(Rf.p v).comp (SB _).subtype`. Establish `hsurj : Function.Surjective π`. Introduce `y`. Establish `hy : y ∈ (SB _).map (Rf.p v)` using `(hM.fin.onto v).symm ▸ Submodule.mem_top`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `⟨⟨x, hx⟩, rfl⟩`. Establish `hA0 : Acts (evFin F v) (om' (1, h)) (0 : (Fin a' × Fin (a + a') → Fv F v) → ℂ) 0`. Introduce `r _`. Establish `e : tens (evFin F v) (0 : (Fin a' × Fin (a + a') → Fv F v) → ℂ) r = 0`. Use function extensionality and compare the values at `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[tens]`. Rewrite using `[e, map_zero]`. Establish `hD : ∀ x, π x = 0 → π (Dl x) = 0`. Introduce `x hx`. Establish `e` using `hM.fin.equiv v h hh x.1 x.2 0 (zero_mem _) (D x.1 x.2) (hDSB x.1 x.2) 0 (zero_mem _) (hDA x.1 x.2) hA0 (by rw [map_zero]; exact hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `e` using `[map_zero]`. Conclude with `e`. Set `L : Rf.Pi v →ₗ[ℂ] Rf.Pi v` to `GlobalTheory.ThK.RealUniq.induced π hsurj Dl hD`. Set `ψ : Fin m → (Fin a × Fin (a + a') → Fv F v) → ℂ` to `fun i => D (φ i v) ((hf i).2.1 v)`. Establish `hL : ∀ i, L (Rf.p v (φ i v)) = Rf.p v (ψ i)` using `fun i => GlobalTheory.ThK.RealUniq.induced_apply π hsurj Dl hD ⟨φ i v, (hf i).2.1 v⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ₂ : Fin m → ∀ w : Pl F, (Fin a × Fin (a + a') → Fv F w) → ℂ` to `fun i => Function.update (φ i) v (ψ i)`. Establish `hstd : ∀ i, ∀ᶠ w in Filter.cofinite, φ i w = Set.indicator {x | ∀ j, x j ∈ w.adicCompletionIntegers F} 1`. Introduce `i`. Use `filter_upwards [hM.triple.geo.hM.std, T.finite_toSet.compl_mem_cofinite] with w hw hwT`. Rewrite using `[(hf i).2.2 w hwT, hw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hpure : ∀ i, om (1, h) (pure (f i) (φ i)) = pure (f i) (φ₂ i)` using `fun i => GlobalTheory.ThK.LocalOps.acts_pure v (om (1, h)) (f i) (φ i) (ψ i) (GlobalTheory.TensUniq.pure_mem_schA _ _ (hf i).2.1 (hstd i)) (fun x => GlobalTheory.PureFactor.mulSupport_finite _ (hstd i) x) (hDA _ _)`. Establish `hv : v ∈ insert v T` using `Finset.mem_insert_self _ _`. Establish `hTS : T ⊆ insert v T` using `Finset.subset_insert _ _`. Use `⟨insert v T, hXT.trans hTS, m, f, φ₂, fun i => ⟨(hf i).1, fun w => ?_, fun w hw => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwv : w = v`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `hwv` using the available equality. Simplify using `only [φ₂, Function.update_self]`. Conclude with `hDSB _ _`. Simplify using `only [φ₂, Function.update_of_ne hwv]`. Conclude with `(hf i).2.1 w`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hw` using `[Finset.mem_insert, not_or]`. Simplify using `only [φ₂, Function.update_of_ne hw.1]`. Conclude with `(hf i).2.2 w hw.2`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hpure i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `hz'` using `GlobalTheory.PolMatchLin.transport Bs G Xc om om' R Rf hM.fin hXT hTS f φ (fun j : Fin 0 => j.elim0 : Fin 0 → SInf F (Fin a' × Fin (a + a'))) (fun j : Fin 0 => j.elim0 : Fin 0 → ∀ w : Pl F, (Fin a' × Fin (a + a') → Fv F w) → ℂ) (fun i => (hf i).2.2) (fun j => j.elim0) (by rw [hz] …`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty] at hz'`. Set `Lw : ∀ u : (insert v T : Finset (Pl F)), Rf.Pi u →ₗ[ℂ] Rf.Pi u` to `Function.update (fun _ => LinearMap.id) ⟨v, hv⟩ L`. Establish `key` using `congrArg (LinearMap.lTensor R.Pi (PiTensorProduct.map Lw)) hz'`. Rewrite `key` using `[map_zero, map_sum]`.
-
-Rewrite using `[← key]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.lTensor_tmul, PiTensorProduct.map_tprod]`. Use `congr 2`. Use function extensionality and compare the values at `u`.
-
-Distinguish the cases in `hu : u = ⟨v, hv⟩`. Substitute `hu` using the available equality. Simplify using `only [Lw, φ₂, Function.update_self]`. Conclude with `(hL i).symm`. Establish `hu' : u.1 ≠ v` using `fun e => hu (Subtype.ext e)`.
-
-Simplify using `only [Lw, φ₂, Function.update_of_ne hu, Function.update_of_ne hu', LinearMap.id_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polZero_om_fin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

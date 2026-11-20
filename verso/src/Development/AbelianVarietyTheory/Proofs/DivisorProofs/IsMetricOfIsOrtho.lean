@@ -13,25 +13,25 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT GlobalTh
 namespace GlobalTheory.SupFull
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU k x W Wu hx`. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨hp0, hty⟩` from `hU.2.1 k`. Take `⟨f, hf⟩` from `GlobalTheory.FrameUnif.exists_letter_equiv (U.X k).Ψ (U.X k).cmType Dw.p Dw.q r hU.1 (relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Establish `hper : ∀ (v : Fin r → E) j, perFr (U.X k) x.1 v (relab c σ (W.e j).1) (W.e j).2 = if (((W.e.trans f) j).2 : ℕ) < (U.X k).p0 then FD.hermC ((W.e.trans f) j).1.1 (U.X k).Gm (FD.col (FD.mat x.1 ((W.e.trans f) j).1) ((W.e.trans f) j).2) (FD.Data.emb ((W.e.trans f) j).1.1 v) else ((FD …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v j`. Establish `h` using `hf (W.e j)`. Rewrite using `[Equiv.trans_apply]`. Generalize the expression as in `f (W.e j) = t at h ⊢`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Generalize the expression as in `((W.e j).2 : ℕ) = i at h ⊢`. Simplify using `only at h ⊢`. Rewrite `h` using `[← hp0]`. Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by omega)]`.
+Replace the chosen expression with an arbitrary variable. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Unfold `perFr`. Rewrite using `[dif_pos a, dif_pos hn]`. Rewrite using `[if_pos (by omega)]`. Unfold `perFr`. Rewrite using `[dif_neg a, dif_pos (show conjEmb (relab c σ (W.e j).1) ∈ (U.X k).Ψ from hτ), dif_pos hn]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hcc : FD.cc (-(U.X k).ξ0) = -(-(U.X k).ξ0)`. Establish `h` using `(U.X k).ξ0_im`. Unfold `FD.cc at h ⊢`. Rewrite using `[map_neg, h]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `key : Wu.Hm = Matrix.diagonal fun j => ((2 * (((W.e.trans f) j).1.1 (-(U.X k).ξ0)).im : ℝ) : ℂ)`. Use `PullbackSections.UH.herm_eq_of_im W.Pm W.per.2.2.2.1 _ _ fun a b => ?_` and prove the remaining obligations. Rewrite using `[Wu.c1, OrthoHerm.im_diag_eq_trace (U.X k).p0 _ (U.X k).Gm (U.X k).Ψ (U.X k).cmType (W.e.trans f) hcc x.1 hx (W.φ k a) (W.φ k b) _ _ (fun j => (W.pm_eq a j).trans (hper _ j)) (fun j => (W.pm_eq b j).trans (hper _ j)), ← W.isom, Rat.cast_intCast]`. Establish `hd : ∀ j, (((W.e.trans f) j).1.1 (-(U.X k).ξ0)).im = ‖relab c σ (W.e j).1 (U.X k).ξ0‖`. Introduce `j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn : ‖relab c σ (W.e j).1 (U.X k).ξ0‖ = ‖((W.e.trans f) j).1.1 (U.X k).ξ0‖`. Break down `hf (W.e j) with ⟨-, h, -⟩ | ⟨-, h, -⟩` into its components or cases. Rewrite using `[Equiv.trans_apply, h]`. Rewrite using `[Equiv.trans_apply, h]`. Conclude with `(Complex.norm_conj _).symm`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn]`. Use `clear hn`. Establish `hpos` using `Wu.pos (Pi.single j 1) (by simp)`. Rewrite `hpos` using `[key, hermForm, single_dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, Pi.single_eq_same, star_one, _root_.one_mul, _root_.mul_one, Complex.ofReal_re]`. Generalize the expression as in `((W.e.trans f) j).1.1 = τ at hpos ⊢`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre : (τ (-(U.X k).ξ0)).re = 0`. Establish `h` using `congrArg τ hcc`. Rewrite `h` using `[FD.cc, IsCMField.complexEmbedding_complexConj, map_neg τ (-(U.X k).ξ0)]`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `only [Complex.conj_re, Complex.neg_re] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp : 0 < (τ (-(U.X k).ξ0)).im` using `by linarith`. Rewrite using `[← norm_neg, ← map_neg, ← Complex.abs_im_eq_norm.mpr hre, abs_of_pos hp]`. Rewrite using `[key]`. Simplify using `only [hd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hm_eq_diagonal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → ∀ (k : U.Comp) (x : (U.X k).dom) (W : PullbackSections.UnfAt U k x) (Wu : PullbackSections.UnitAt W), (U.X k).IsOrtho x.1 → Wu.Hm = Matrix.diagonal fun j => ((2 * ‖relab c σ (W.e j).1 (U.X k).ξ0‖ : ℝ) : ℂ) := by
   intro E _ _ _ H Dw l Xo c σ r U hσ hU k x W Wu hx
@@ -97,13 +97,13 @@ theorem hm_eq_diagonal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   simp only [hd]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU hpq k x hx`. Take `⟨W⟩` from `PullbackSections.nonempty_unfAt hU k x`. Take `⟨Wu⟩` from `PullbackSections.nonempty_unitAt W (PullbackSections.PfSupAtUnit.dmin_ortho _ hx)`. Establish `hH` using `hm_eq_diagonal E H Dw l Xo c σ r U hσ hU k x W Wu hx`. Take `⟨Φ₀⟩` from `nonempty_fibKey E H Dw l Xo ℂ (U.un k x).x hpq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, h₁, h₂⟩` from `SecTieEx.secTie_exists_unique E H Dw l Xo ℂ (U.un k x).x Φ₀.T.t Φ₀.m`. Take `⟨th, ht⟩` from `h₁ (U.un k x).s`. Establish `hne` using `(h₂ th _ ht).2.1 (secNZ_of_secGen lawsFieldsSeparately.2.1 E H Dw l Xo ℂ _ _ (U.un k x).gen)`. Set `Φ : FibKey Xo ℂ (U.un k x).x` to `{ Φ₀ with th := th, th_ne := hne }`. Take `⟨u, χ, hΛ, hA, hR, hF, hg, hD⟩` from `exists_unif W.F (W.ik k) W.per W.pt Φ ht Wu.herm Wu.pos Wu.c2 Wu.c3 Wu.c4 Wu.c5 Wu.c6 Wu.c7`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `choose w hw using fun τ i => hD _ _ ((U.un k x).tan τ i) (W.der τ i)`. Establish `hFd : IsAddFundamentalDomain u.Λ Wu.Fd volume` using `hΛ ▸ Wu.c8`. Establish `hN` using `Wu.c9.symm`. Establish `hG : ∀ (b : E →+* ℂ) (i j : Fin (Dw.mult b)), (((2 * Real.pi * ‖relab c σ b (U.X k).ξ0‖ : ℝ) : ℂ) • (1 : Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) ℂ)) i j = Real.pi * hermForm Wu.Hm (Pi.single (W.e.symm ⟨b, j⟩) 1) (Pi.single (W.e.symm ⟨b, i⟩) 1)`. Introduce `b i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hH]`. Simplify using `[hermForm, Matrix.mulVec_diagonal, Pi.single_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp_all <;> ring`. Conclude with `isMetricAt_of Φ hg u Wu.Hm χ Wu.θ Wu.Fd w (fun b i => Pi.single (W.e.symm ⟨b, i⟩) 1) ⟨ht, hA, hR, hF, hFd, hN, hw, hG⟩`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isMetric_of_isOrtho : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → 1 ≤ Dw.p + Dw.q → ∀ (k : U.Comp) (x : (U.X k).dom), (U.X k).IsOrtho x.1 → IsMetric (U.un k x) 1 (fun b => ((2 * Real.pi * ‖relab c σ b (U.X k).ξ0‖ : ℝ) : ℂ) • 1) := by
   intro E _ _ _ H Dw l Xo c σ r U hσ hU hpq k x hx
@@ -131,25 +131,23 @@ theorem isMetric_of_isOrtho : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     ⟨ht, hA, hR, hF, hFd, hN, hw, hG⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U U' hσ hU hU' hpq a n hd f hf hb k'`. Establish `hB : Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`. Take `⟨-, -, -, -, -, -, hwt⟩` from `GlobalTheory.Frames.algebraic_laws hB E H Dw l Xo c`. Establish `hs'` using `hU'.2.2.2.2.1 a n hd f hf k'`. Use `choose C hC using fun k => (hb k).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : ∀ (X : FD.Data E r) (b : E →+* ℂ), 0 < 2 * Real.pi * ‖relab c σ b X.ξ0‖` using `fun X b => mul_pos (by positivity) (norm_pos_iff.2 ((map_ne_zero _).2 X.ξ0_ne))`. Set `κ : U.Comp → (E →+* ℂ) → ℝ` to `fun k b => 2 * Real.pi * ‖relab c σ b (U.X k).ξ0‖ / (2 * Real.pi * ‖relab c σ b (U'.X k').ξ0‖)`. Set `B : U.Comp → ℝ` to `fun k => (∏ p : Σ τ : E →+* ℂ, Fin (Dw.mult τ), (Real.sqrt (κ k p.1))⁻¹ ^ a (p.1, p.2)) * |C k|`. Use `⟨hs', ∑ k, B k, fun x₁ hx₁ => ?_⟩` and prove the remaining obligations. Take `⟨b, hbB, ho⟩` from `(FD.orthonormalFlagTranslate_holds r (U'.X k')).1 x₁ hx₁`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx'` using `FD.OrthogonalFrameDomain.rmul_mem_dom (U'.X k') hx₁ hbB`. Rewrite using `[← (FD.orthonormalFlagTranslate_holds r (U'.X k')).2.1 _ _ hs'.2.1 x₁ hx₁ b hbB, PullbackSections.PfSupAtUnit.pnorm_unit _ _ _ (PullbackSections.PfSupAtUnit.dmin_ortho _ ho)]`. Establish `hN` using `isMetric_of_isOrtho E H Dw l Xo c σ r U' hσ hU' hpq k' ⟨_, hx'⟩ ho`. Establish `hrd' : ‖rdU U' f k' (FD.rmul x₁ b)‖ = cabs (evR Xo c f (U'.un k' ⟨_, hx'⟩))`. Establish `e : rdU U' f k' (FD.rmul x₁ b) = toC (evR Xo c f (U'.un k' ⟨_, hx'⟩))` using `dif_pos hx'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite using `[hrd']`. Generalize the expression as in `U'.un k' ⟨_, hx'⟩ = y at hN ⊢`. Take `⟨k, x, t, hx, ht⟩` from `GlobalTheory.T.exists_orthonormalFrame_borelChange_complexFramedPoint E H Dw l Xo c σ r U hU y`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg0, hgd, hchg⟩` from `((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) (U.un k x) y y).1 t).1 ht`. Establish `hm0` using `isMetric_of_isOrtho E H Dw l Xo c σ r U hσ hU hpq k x hx`. Establish `hm1` using `GlobalTheory.T.metric_change_of_frame E H Dw l Xo c σ (U.un k x) y 1 _ (fun b => Matrix.transpose (show Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) ℂ from g b)) (show ℂ from (t none : CAt σ)) (Units.ne_zero (M₀ := ℂ) (t none)) hchg hm0`. Take `⟨hNN, hG⟩` from `GlobalTheory.T.metric_data_unique E H Dw l Xo c σ y _ _ _ _ hN hm1`. Establish `hnone : cabs (t none : CAt σ) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hNN` using `[_root_.mul_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 hNN.symm`. Establish `hsome : ∀ p : Σ τ : E →+* ℂ, Fin (Dw.mult τ), cabs (t (some p) : CAt σ) = (Real.sqrt (κ k p.1))⁻¹`. Introduce and unpack `⟨τ, i⟩`. Rewrite using `[← hgd τ i]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `OrthoBound.norm_diag_of_triangular (Matrix.transpose (show Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ from g τ)) _ (div_pos (hpos _ _) (hpos _ _)) (fun i j hij => hg0 τ j i hij) ?_ i` and prove the remaining obligations. Establish `h1` using `(congrFun hG τ).symm`. Establish `h2 : ((2 * Real.pi * ‖relab c σ τ (U'.X k').ξ0‖ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (hpos _ _).ne'`. Simplify using `only at h1`. Rewrite using `[Complex.ofReal_div, div_eq_inv_mul, mul_smul, Matrix.mul_smul, Matrix.smul_mul, h1, smul_smul, inv_mul_cancel₀ h2, one_smul]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev` using `hwt (CAt σ) (GlobalTheory.FrameNorm.Comparison₂.isReduced_cAt σ) a n f hf t _ _ ht`. Establish `hw : cabs (wchar (ex Dw a n) t) = ∏ p : Σ τ : E →+* ℂ, Fin (Dw.mult τ), (Real.sqrt (κ k p.1))⁻¹ ^ a (p.1, p.2)`. Rewrite using `[GlobalTheory.FrameNorm.Comparison₂.cabs_wchar, Fintype.prod_option, hnone, one_pow, _root_.one_mul]`. Conclude with `Finset.prod_congr rfl fun p _ => by rw [hsome p]; rfl`. Establish `hrd : ‖rdU U f k x.1‖ = cabs (evR Xo c f (U.un k x))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : rdU U f k x.1 = toC (evR Xo c f (U.un k x))` using `dif_pos x.2`. Rewrite using `[e]`. Both sides reduce to the same expression. Establish `hle` using `hC k x.1 x.2`. Rewrite `hle` using `[PullbackSections.PfSupAtUnit.pnorm_unit _ _ _ (PullbackSections.PfSupAtUnit.dmin_ortho _ hx), hrd]`.
-
-Establish `hB0 : ∀ k, 0 ≤ B k` using `fun k => mul_nonneg (Finset.prod_nonneg fun p _ => by positivity) (abs_nonneg _)`. Rewrite using `[hev, GlobalTheory.FrameNorm.Comparison₂.cabs_mul, hw]`. Conclude with `(mul_le_mul_of_nonneg_left (hle.trans (le_abs_self _)) (Finset.prod_nonneg fun p _ => by positivity)).trans (Finset.single_le_sum (f := B) (fun k _ => hB0 k) (Finset.mem_univ k))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBddSec_of_isUnf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U U' : Unf Xo c σ r), GoodEmb c σ → IsUnf U → IsUnf U' → 1 ≤ Dw.p + Dw.q → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → ∀ f ∈ sec Xo c a n, (∀ k, (U.X k).IsBddSec (laU U a n k) (rdU U f k)) → ∀ k, (U'.X k).IsBddSec (laU U' a n k) (rdU U' f k) := by
   intro E _ _ _ H Dw l Xo c σ r U U' hσ hU hU' hpq a n hd f hf hb k'

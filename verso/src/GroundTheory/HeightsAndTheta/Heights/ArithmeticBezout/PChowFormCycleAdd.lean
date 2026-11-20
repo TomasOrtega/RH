@@ -7,21 +7,19 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `F _ n k Z₁ Z₂ f₁ f₂ ⟨c₁, hc₁, g₁, hg₁, hf₁⟩ ⟨c₂, hc₂, g₂, hg₂, hf₂⟩`. Substitute `hf₁ hf₂` using the available equality. Set `g : Ideal (MvPolynomial (Fin n) F) → MvPolynomial (Fin k × Fin n) F` to `fun W => if W ∈ Z₁.support then g₁ W else g₂ W`. Establish `hd : ∀ W, ∃ d : F, d ≠ 0 ∧ (W ∈ Z₂.support → g₂ W = C d * g W)`. Introduce `W`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hW1 : W ∈ Z₁.support`. Distinguish the cases in `hW2 : W ∈ Z₂.support`. Take `⟨d, hd, he⟩` from `h1 F n k W (g₁ W) (g₂ W) (hg₁ W hW1) (hg₂ W hW2)`. Conclude with `⟨d, hd, fun _ => by simp only [g, if_pos hW1, he]⟩`. Conclude with `⟨1, one_ne_zero, fun h => absurd h hW2⟩`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨1, one_ne_zero, fun _ => by simp only [g, if_neg hW1, map_one, one_mul]⟩`. Use `choose d hd0 hdg using hd`. Establish `hsupp : (Z₁ + Z₂).support = Z₁.support ∪ Z₂.support`. Use extensionality with `W`. Simplify using `only [Finsupp.mem_support_iff, Finset.mem_union, Finsupp.coe_add, Pi.add_apply, ne_eq, Nat.add_eq_zero_iff, not_and_or]`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c₁ * c₂ * ∏ W ∈ Z₂.support, d W ^ Z₂ W, ?_, g, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (mul_ne_zero hc₁ hc₂) (Finset.prod_ne_zero_iff.mpr fun W _ => pow_ne_zero _ (hd0 W))`. Introduce `W hW`. Rewrite `hW` using `[hsupp, Finset.mem_union]`. Distinguish the cases in `hW1 : W ∈ Z₁.support`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hg₁ W hW1` using `only [g, if_pos hW1]`. Simplify `hg₂ W (hW.resolve_left hW1)` using `only [g, if_neg hW1]`. Establish `e1 : ∏ W ∈ Z₁.support, g₁ W ^ Z₁ W = ∏ W ∈ Z₁.support ∪ Z₂.support, g W ^ Z₁ W`. Rewrite using `[← Finset.prod_subset Finset.subset_union_left (f := fun W => g W ^ Z₁ W)]`. Conclude with `Finset.prod_congr rfl fun W hW => by simp only [g, if_pos hW]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `W _ hW`. Rewrite `hW` using `[Finsupp.mem_support_iff, not_not]`. Simplify using `[hW]`. Establish `e2 : ∏ W ∈ Z₂.support, g₂ W ^ Z₂ W = C (∏ W ∈ Z₂.support, d W ^ Z₂ W) * ∏ W ∈ Z₁.support ∪ Z₂.support, g W ^ Z₂ W`. Rewrite using `[← Finset.prod_subset Finset.subset_union_right (f := fun W => g W ^ Z₂ W)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun W hW => by rw [hdg W hW, mul_pow, map_pow]`. Introduce `W _ hW`. Rewrite `hW` using `[Finsupp.mem_support_iff, not_not]`. Simplify using `[hW]`.
-
-Rewrite using `[hsupp, e1, e2]`. Simplify using `only [Finsupp.coe_add, Pi.add_apply, pow_add, Finset.prod_mul_distrib, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ChowFormCycleAdd.proof (h1 : ChowFormAssoc.Statement) : ChowFormCycleAdd.Statement := by
   classical

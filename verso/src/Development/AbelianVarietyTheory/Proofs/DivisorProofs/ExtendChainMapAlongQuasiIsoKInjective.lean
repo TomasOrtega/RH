@@ -9,9 +9,7 @@ namespace GlobalTheory.EtC.ExtHom
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Rewrite using `[Cochain.zero_v]`. Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Conclude with `(I.isZero_of_isStrictlyGE 0 q (by omega)).eq_of_tgt _ _`.
-
-Conclude with `(HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 F p hp).eq_of_src _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cochain_sgl_neg_one_eq_zero (F : Shv R) (I : Cx R) [I.IsStrictlyGE 0]
     (β : Cochain (sgl F) I (-1)) : β = 0 := by
@@ -23,7 +21,7 @@ theorem cochain_sgl_neg_one_eq_zero (F : Shv R) (I : Cx R) [I.IsStrictlyGE 0]
   · exact (HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 F p hp).eq_of_src _ _
 
 /- English proof (translation)
-Rewrite `h` using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (-1) (by omega)]`. Take `⟨β, hβ⟩` from `h`. Use `⟨β, ?_⟩` and prove the remaining obligations. Rewrite using `[hβ]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ofHom_eq_of_cls {T I : Cx R} {f g : T ⟶ I}
     (h : CohomologyClass.mk (Cocycle.ofHom f) = CohomologyClass.mk (Cocycle.ofHom g)) :
@@ -40,15 +38,15 @@ end GlobalTheory.EtC.ExtHom
 open GlobalTheory.EtC.ExtHom in
 
 /- English proof (translation)
-Introduce `R _ F T I _ _ ε _`. Establish `hb` using `GlobalTheory.EtC.cpull_bijective_of_quasiIso R ε I 0`. Use `⟨fun a => ?_, fun m m' h => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hb.2 (CohomologyClass.mk (Cocycle.ofHom a))`. Take `⟨z, rfl⟩` from `y.mk_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Cocycle.homOf z, ?_⟩` and prove the remaining obligations. Establish `hz : Cocycle.ofHom (ε ≫ Cocycle.homOf z) = zcomp (Cocycle.ofHom ε) z (zero_add 0)`. Apply `Cocycle.ext` to reduce the goal to its premises. Simplify using `[zcomp, Cochain.ofHom_comp]`. Establish `h2 : CohomologyClass.mk (Cocycle.ofHom (ε ≫ Cocycle.homOf z)) = CohomologyClass.mk (Cocycle.ofHom a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hz]`. Conclude with `hy`. Take `⟨β, hβ⟩` from `ofHom_eq_of_cls h2`. Rewrite `hβ` using `[cochain_sgl_neg_one_eq_zero F I β, δ_zero, zero_add]`. Conclude with `(Cocycle.equivHom _ _).injective (Cocycle.ext hβ)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : cpull ε I 0 (CohomologyClass.mk (Cocycle.ofHom m)) = cpull ε I 0 (CohomologyClass.mk (Cocycle.ofHom m'))`. Simplify using `only [cpull, cpre_mk]`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Cochain.ofHom ε).comp (Cochain.ofHom m) (zero_add 0) = (Cochain.ofHom ε).comp (Cochain.ofHom m') (zero_add 0)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Cochain.ofHom_comp, ← Cochain.ofHom_comp, h]`. Take `⟨β, hβ⟩` from `ofHom_eq_of_cls (hb.1 h1)`. Conclude with `⟨(Cochain.equivHomotopy m m').symm ⟨β, hβ⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.extHom_of_quasiIso : ∀ (R : Type) [CommRing R] (F : Shv R) (T I : Cx R) [I.IsKInjective] [I.IsStrictlyGE 0] (ε : sgl F ⟶ T) [QuasiIso ε], (∀ a : sgl F ⟶ I, ∃ m : T ⟶ I, ε ≫ m = a) ∧ ∀ m m' : T ⟶ I, ε ≫ m = ε ≫ m' → Nonempty (Homotopy m m') := by
   intro R _ F T I _ _ ε _

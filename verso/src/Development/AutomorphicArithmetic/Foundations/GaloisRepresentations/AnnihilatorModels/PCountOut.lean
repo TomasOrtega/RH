@@ -6,45 +6,43 @@ noncomputable section
 namespace UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `k H _ _ _ _ _ C hC E`. Take `⟨s0, hs0⟩` from `Module.projective_lifting_property C.mkQ E.subtype (Submodule.mkQ_surjective C)`. Establish `hsec : ∀ (s : E →ₗ[k] H), C.mkQ ∘ₗ s = E.subtype → ∀ e : E, C.mkQ (s e) = e`. Introduce `s hs e`. Conclude with `LinearMap.congr_fun hs e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `S` to `{s : E →ₗ[k] H // C.mkQ ∘ₗ s = E.subtype}`. Establish `hF : ∀ s : S, ¬C ≤ LinearMap.range s.1 ∧ Submodule.map C.mkQ (LinearMap.range s.1) = E`. Introduce `s`. Prove the components needed by the constructor for the conclusion. Introduce `hle haveI : Nontrivial C := Module.nontrivial_of_finrank_eq_succ hC`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_ne (0 : C)`. Take `⟨e, he⟩` from `LinearMap.mem_range.1 (hle c.2)`. Establish `h1 : C.mkQ (s.1 e) = e` using `hsec s.1 s.2 e`. Establish `h2 : C.mkQ (c : H) = 0` using `(Submodule.Quotient.mk_eq_zero C).2 c.2`. Rewrite `h1` using `[he, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e0 : e = 0` using `Subtype.ext h1.symm`. Apply `hc` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← he, e0, map_zero]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.range_comp, s.2, Submodule.range_subtype]`. Set `F : S → {D : Submodule k H // ¬C ≤ D ∧ Submodule.map C.mkQ D = E}` to `fun s => ⟨LinearMap.range s.1, hF s⟩`. Establish `hFb : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce `s t h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : LinearMap.range s.1 = LinearMap.range t.1` using `congrArg Subtype.val h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `e`. Establish `hm : s.1 e ∈ LinearMap.range t.1` using `h' ▸ LinearMap.mem_range_self s.1 e`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e', he'⟩` from `LinearMap.mem_range.1 hm`. Establish `h1` using `hsec t.1 t.2 e'`. Rewrite `h1` using `[he', hsec s.1 s.2 e]`. Establish `: e' = e` using `Subtype.ext h1.symm`. Rewrite using `[← he', this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨D, hnot, hmap⟩`. Establish `hdisj : ∀ x ∈ D, x ∈ C → x = 0`. Introduce `x hxD hxC`. Assume the negation of the conclusion as `hx`. Apply `hnot` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `hx' : (⟨x, hxC⟩ : C) ≠ 0` using `fun h => hx (congrArg Subtype.val h)`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' _ hx').1 hC ⟨y, hy⟩`. Establish `: a • x = y` using `congrArg Subtype.val ha`. Rewrite using `[← this]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `D.smul_mem a hxD`. Set `f : D →ₗ[k] H ⧸ C` to `C.mkQ ∘ₗ D.subtype`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `d hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hdisj d.1 d.2 ((Submodule.Quotient.mk_eq_zero C).1 hd)`. Establish `hr : LinearMap.range f = E`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype, hmap]`. Set `φ : D ≃ₗ[k] E` to `(LinearEquiv.ofInjective f hf).trans (LinearEquiv.ofEq _ _ hr)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ d : D, ((φ d : E) : H ⧸ C) = C.mkQ d` using `fun d => rfl`. Set `s : E →ₗ[k] H` to `D.subtype ∘ₗ (φ.symm : E →ₗ[k] D)`. Establish `hs : C.mkQ ∘ₗ s = E.subtype`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `e`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hφ (φ.symm e)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Conclude with `h1.symm`. Use `⟨⟨s, hs⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show LinearMap.range s = D`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.range_comp_of_range_eq_top _ (LinearEquiv.range φ.symm), Submodule.range_subtype]`. Set `G : (E →ₗ[k] C) → S` to `fun g => ⟨s0 + C.subtype ∘ₗ g, by`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `e`. Establish `h1` using `LinearMap.congr_fun hs0 e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `h2 : C.mkQ (g e : H) = 0` using `(Submodule.Quotient.mk_eq_zero C).2 (g e).2`. Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, map_add, Submodule.subtype_apply] at h1 ⊢`. Rewrite using `[h2, add_zero, h1]⟩`. Establish `hGb : Function.Bijective G`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `g g' h`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `e`. Apply `Subtype.ext` to reduce the goal to its premises. Use `LinearMap.congr_fun (congrArg Subtype.val h) e` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `this` using `[G]`. Introduce and unpack `⟨s, hs⟩`. Establish `hmem : ∀ e, s e - s0 e ∈ C`. Introduce `e`. Apply `(Submodule.Quotient.mk_eq_zero C).1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hsec s hs e`. Establish `h2` using `hsec s0 hs0 e`. Simplify using `only [Submodule.mkQ_apply] at h1 h2`. Rewrite using `[Submodule.Quotient.mk_sub, h1, h2, sub_self]`. Use `⟨LinearMap.codRestrict C (s - s0) hmem, Subtype.ext ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `e`. Simplify using `[G]`. Establish `hcard : Nat.card (E →ₗ[k] C) = Nat.card k ^ Module.finrank k E` using `by haveI : Fintype k := Fintype.ofFinite k haveI : Finite (E →ₗ[k] C) := Module.finite_of_finite k haveI : Fintype (E →ₗ[k] C) := Fintype.ofFinite _`. Rewrite using `[Nat.card_eq_fintype_card (α := E →ₗ[k] C), Nat.card_eq_fintype_card (α := k), Module.card_eq_pow_finrank (K := k) (V := E →ₗ[k] C), Module.finrank_linearMap k k E C, hC, mul_one]`.
-
-Rewrite using `[← Nat.card_eq_of_bijective F hFb, ← Nat.card_eq_of_bijective G hGb, hcard]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countOut_of : CountOut := by
   intro k H _ _ _ _ _ C hC E

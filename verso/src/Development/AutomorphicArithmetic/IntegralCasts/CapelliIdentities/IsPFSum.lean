@@ -2,11 +2,11 @@ import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsPF
 
 /- English proof (translation)
-Introduce `A _ _ ι s f h`. Unfold `UpperTheory.Reformulated.B.PolynomialFunction₂.IsPF at h ⊢`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, fun Y => by simp⟩`. Consider the case `insert a s ha ih`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨p, hp⟩` from `h a (Finset.mem_insert_self a s)`. Take `⟨q, hq⟩` from `ih (fun i hi => h i (Finset.mem_insert_of_mem hi))`. Use `⟨p + q, fun Y => ?_⟩` and prove the remaining obligations. Establish `h1 : (∑ i ∈ s, f i Y) = Polynomial.eval ((algebraMap ℂ A) Y) q` using `hq Y`. Use `show (∑ i ∈ insert a s, f i Y) = Polynomial.eval ((algebraMap ℂ A) Y) (p + q)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha, hp, h1, Polynomial.eval_add]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IsPFSum.isPF_sum :
     ∀ {A : Type} [inst : Ring A] [inst_1 : Algebra ℂ A] {ι : Type} (s : Finset ι) {f : ι → ℂ → A},

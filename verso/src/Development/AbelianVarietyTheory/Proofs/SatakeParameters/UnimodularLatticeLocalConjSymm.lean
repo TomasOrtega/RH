@@ -10,7 +10,7 @@ namespace GlobalTheory.GO.UniExt
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `localization₂ locS`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_localization_iff_exists_smul_mem {N : Submodule (𝓞 E) (Sp E n)} (Q : HeightOneSpectrum (𝓞 E))
     (x : Sp E n) : x ∈ localization₂ Q.asIdeal N ↔ ∃ s ∉ Q.asIdeal, s • x ∈ N := by
@@ -18,7 +18,7 @@ private theorem mem_localization_iff_exists_smul_mem {N : Submodule (𝓞 E) (Sp
   exact Iff.rfl
 
 /- English proof (translation)
-Unfold `IsUnimodular dual at hu`. Use `conv_lhs => rw [← hu]`. Simplify using `only [Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_iff_hStd_integral_of_isUnimodular {N : Submodule (𝓞 E) (Sp E n)}
     (hu : IsUnimodular (hStd E n) N) (x : Sp E n) :
@@ -29,7 +29,7 @@ private theorem mem_iff_hStd_integral_of_isUnimodular {N : Submodule (𝓞 E) (S
     LinearMap.restrictScalars_apply, Submodule.mem_one]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul E a y, LinearMap.map_smulₛₗ₂, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem hStd_smul_left (a : 𝓞 E) (y z : Sp E n) :
     hStd E n (a • y) z = algebraMap (𝓞 E) E (cO E a) * hStd E n y z := by
@@ -37,14 +37,14 @@ private theorem hStd_smul_left (a : 𝓞 E) (y z : Sp E n) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul E a z, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hStd_smul_right (a : 𝓞 E) (y z : Sp E n) :
     hStd E n y (a • z) = algebraMap (𝓞 E) E a * hStd E n y z := by
   rw [← algebraMap_smul E a z, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `conjPrime₂`. Use `show cO E t ∈ Ideal.comap (cO E) P.asIdeal ↔ _`. Rewrite using `[Ideal.mem_comap]`. Establish `htt : cO E (cO E t) = t` using `RingOfIntegers.ext (star_star (t : E))`. Rewrite using `[htt]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cO_mem_conjP_iff (P : HeightOneSpectrum (𝓞 E)) (t : 𝓞 E) :
     cO E t ∈ (conjPrime₂ P).asIdeal ↔ t ∈ P.asIdeal := by
@@ -55,23 +55,23 @@ private theorem cO_mem_conjP_iff (P : HeightOneSpectrum (𝓞 E)) (t : 𝓞 E) :
   rw [htt]
 
 /- English proof (translation)
-Rewrite using `[mem_localization_iff_exists_smul_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsx⟩ y hy`. Take `⟨t, ht, hty⟩` from `(mem_localization_iff_exists_smul_mem P y).1 hy`. Take `⟨r, hr⟩` from `(mem_iff_hStd_integral_of_isUnimodular hu (s • x)).1 hsx (t • y) hty`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Unfold `IntAt`. Use `⟨r, cO E t * s, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`. Break down `(conjPrime₂ P).isPrime.mem_or_mem hmem with h | h` into its components or cases. Conclude with `ht ((cO_mem_conjP_iff P t).1 h)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs h`. Rewrite using `[hr, hStd_smul_left, hStd_smul_right, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `H classical`. Take `⟨S, hS⟩` from `hl`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hloc : ∀ y ∈ S, ∃ s : 𝓞 E, s ∉ (conjPrime₂ P).asIdeal ∧ ∃ r : 𝓞 E, algebraMap (𝓞 E) E s * hStd E n y x = algebraMap (𝓞 E) E r`. Introduce `y hy`. Establish `hyN : y ∈ N` using `hS ▸ Submodule.subset_span hy`. Establish `hyl : y ∈ localization₂ P.asIdeal N` using `(mem_localization_iff_exists_smul_mem P y).2 ⟨1, (Ideal.ne_top_iff_one _).1 P.isPrime.ne_top, by rwa [one_smul]⟩`. Establish `hint` using `H y hyl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Unfold `IntAt at hint`. Take `⟨r, s, hs, h⟩` from `hint`. Conclude with `⟨s, hs, r, h⟩`. Use `choose! u hu0 w hw using hloc`. Use `⟨∏ y ∈ S, u y, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hmem`. Take `⟨y, hy, hyu⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := (conjPrime₂ P).isPrime)).1 hmem`. Conclude with `hu0 y hy hyu`. Rewrite using `[mem_iff_hStd_integral_of_isUnimodular hu]`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hy` using `[← hS]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Use `⟨(∏ y ∈ S.erase z, u y) * w z, ?_⟩` and prove the remaining obligations. Rewrite using `[hStd_smul_right, ← Finset.mul_prod_erase S u hz, map_mul, map_mul, ← hw z hz]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨ra, hra⟩` from `ha`. Take `⟨rb, hrb⟩` from `hb`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨ra + rb, by rw [map_add, hra, hrb, map_add, LinearMap.add_apply]⟩`. Consider the case `smul a z _ hz`. Take `⟨rz, hrz⟩` from `hz`. Conclude with `⟨cO E a * rz, by rw [hStd_smul_left, map_mul, hrz]⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_localization_conj_iff {N : Submodule (𝓞 E) (Sp E n)} (hl : N.FG) (hu : IsUnimodular (hStd E n) N)
     (P : HeightOneSpectrum (𝓞 E)) (x : Sp E n) :
@@ -125,9 +125,9 @@ theorem mem_localization_conj_iff {N : Submodule (𝓞 E) (Sp E n)} (hl : N.FG) 
         exact ⟨cO E a * rz, by rw [hStd_smul_left, map_mul, hrz]⟩
 
 /- English proof (translation)
-Unfold `conjPrime₂`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Simplify using `only [Ideal.comap_comap]`. Unfold `cO`. Establish `hid : (RingOfIntegers.mapRingHom (starRingEnd E)).comp (RingOfIntegers.mapRingHom (starRingEnd E)) = RingHom.id (𝓞 E)` using `RingHom.ext fun x => RingOfIntegers.ext (star_star (x : E))`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[hid, Ideal.comap_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conjP_involutive (Q : HeightOneSpectrum (𝓞 E)) : conjPrime₂ (conjPrime₂ Q) = Q := by
   unfold conjPrime₂
@@ -140,13 +140,13 @@ theorem conjP_involutive (Q : HeightOneSpectrum (𝓞 E)) : conjPrime₂ (conjPr
   rw [hid, Ideal.comap_id]
 
 /- English proof (translation)
-Introduce `x hx`. Assume the negation of the conclusion as `hnx`. Set `I : Ideal (𝓞 E)` to `N'.comap (LinearMap.toSpanSingleton (𝓞 E) (Sp E n) x)`. Establish `hI : I ≠ ⊤`. Introduce `htop`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hnx` to reduce the goal to its premises. Establish `h1 : (1 : 𝓞 E) ∈ I` using `htop ▸ Submodule.mem_top`. Simplify `h1` using `[I]`. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I hI`. Establish `hMb : M ≠ ⊥`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `RingOfIntegers.not_isField (K := E) (Ring.isField_iff_maximal_bot.2 hM)`. Set `Q : HeightOneSpectrum (𝓞 E)` to `⟨M, hM.isPrime, hMb⟩`. Establish `hxQ : x ∈ localization₂ Q.asIdeal N'`. Rewrite using `[← h Q]`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(mem_localization_iff_exists_smul_mem Q x).2 ⟨1, (Ideal.ne_top_iff_one _).1 hM.ne_top, by rwa [one_smul]⟩`. Take `⟨s, hs, hsx⟩` from `(mem_localization_iff_exists_smul_mem Q x).1 hxQ`. Conclude with `hs (hIM (by simpa [I] using hsx))`.
+A detailed English derivation is pending.
 -/
 theorem le_of_forall_localized_eq {N N' : Submodule (𝓞 E) (Sp E n)}
     (h : ∀ Q : HeightOneSpectrum (𝓞 E), localization₂ Q.asIdeal N = localization₂ Q.asIdeal N') : N ≤ N' := by
@@ -170,11 +170,11 @@ theorem le_of_forall_localized_eq {N N' : Submodule (𝓞 E) (Sp E n)}
   exact hs (hIM (by simpa [I] using hsx))
 
 /- English proof (translation)
-Introduce `E _ _ _ n N N' hl hu hl' hu'`. Establish `part1 : ∀ Q : HeightOneSpectrum (𝓞 E), localization₂ Q.asIdeal N = localization₂ Q.asIdeal N' → localization₂ (conjPrime₂ Q).asIdeal N = localization₂ (conjPrime₂ Q).asIdeal N'`. Introduce `Q hQ`. Use extensionality with `x`. Rewrite using `[mem_localization_conj_iff hl.fg hu Q x, mem_localization_conj_iff hl'.fg hu' Q x, hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨part1, fun hor => ?_⟩` and prove the remaining obligations. Establish `hall : ∀ Q : HeightOneSpectrum (𝓞 E), localization₂ Q.asIdeal N = localization₂ Q.asIdeal N'`. Introduce `Q`. Break down `hor Q with h | h` into its components or cases. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h'` using `part1 (conjPrime₂ Q) h`. Rewrite `h'` using `[conjP_involutive]`. Then use the resulting hypothesis. Conclude with `le_antisymm (le_of_forall_localized_eq hall) (le_of_forall_localized_eq fun Q => (hall Q).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem unimodular_ext : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) (N N' : Submodule (𝓞 E) (Sp E n)), Submodule.IsLattice E N → IsUnimodular (hStd E n) N → Submodule.IsLattice E N' → IsUnimodular (hStd E n) N' → (∀ Q : HeightOneSpectrum (𝓞 E), localization₂ Q.asIdeal N = localization₂ Q.asIdeal N' → localization₂ (conjPrime₂ Q).asIdeal N = localization₂ (conjPrime₂ Q).asIdeal N') ∧ ((∀ Q : HeightOneSpectrum (𝓞 E), localization₂ Q.asIdeal N = localization₂ Q.asIdeal N' ∨ localization₂ (conjPrime₂ Q).asIdeal N = localization₂ (conjPrime₂ Q).asIdeal N') → N = N') := by
   intro E _ _ _ n N N' hl hu hl' hu'

@@ -14,9 +14,7 @@ open Formalism.BasicNotions Formalism.FrobeniusOrbits
 variable {R : Ranks} (H : Formalism.BasicNotions.Host R)
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hnd (dvd_mul_of_dvd_left (dvd_mul_of_dvd_left H.two_dvd_QS _) _)`. Introduce and unpack `rfl`. Conclude with `hnd (dvd_mul_of_dvd_left (dvd_mul_left _ _) _)`.
-
-Introduce and unpack `rfl`. Conclude with `hnd (dvd_mul_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_two_and_ne_q_and_ne_d_of_not_dvd_condN (p : ℕ) (hnd : ¬ p ∣ H.condN) : p ≠ 2 ∧ p ≠ H.q ∧ p ≠ H.d := by
   refine ⟨?_, ?_, ?_⟩
@@ -28,13 +26,13 @@ theorem ne_two_and_ne_q_and_ne_d_of_not_dvd_condN (p : ℕ) (hnd : ¬ p ∣ H.co
     exact hnd (dvd_mul_left _ _)
 
 /- English proof (translation)
-Conclude with `(Ideal.span_singleton_prime (by exact_mod_cast hp.out.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp.out)`.
+A detailed English derivation is pending.
 -/
 theorem span_isPrime (p : ℕ) [hp : Fact p.Prime] : (span {(p : ℤ)}).IsPrime := by
   exact (Ideal.span_singleton_prime (by exact_mod_cast hp.out.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp.out)
 
 /- English proof (translation)
-The claim follows from `(H.der.frob p hnd P).2.2.2 σ`.
+A detailed English derivation is pending.
 -/
 theorem inertia_trivial (p : ℕ) [Fact p.Prime] (hnd : ¬ p ∣ H.condN)
     (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})] (σ : H.E ≃ₐ[ℚ] H.E) :
@@ -42,11 +40,9 @@ theorem inertia_trivial (p : ℕ) [Fact p.Prime] (hnd : ¬ p ∣ H.condN)
   (H.der.frob p hnd P).2.2.2 σ
 
 /- English proof (translation)
-Use `haveI : IsGalois ℚ H.E := H.hostE_isGalois`. Establish `hne : (span {(p : ℤ)}) ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions. Use `haveI : (span {(p : ℤ)}).IsPrime := span_isPrime p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : (span {(p : ℤ)}).IsMaximal := Ideal.IsPrime.isMaximal inferInstance hne`. Take `⟨Q, hQm, hQl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 H.E) (span {(p : ℤ)})`. Use `haveI := hQm.isPrime`. Rewrite using `[Ideal.ramificationIdxIn_eq_ramificationIdx (span {(p : ℤ)}) Q (H.E ≃ₐ[ℚ] H.E), ← Formalism.TwoAdicCyclotomicDecomposition.odd_card H.E p Q]`. Establish `hbot : Q.inertia (H.E ≃ₐ[ℚ] H.E) = ⊥`.
-
-Use extensionality with `σ`. Rewrite using `[Subgroup.mem_bot]`. Conclude with `AddSubgroup.mem_inertia.trans (inertia_trivial H p hnd Q σ)`. Rewrite using `[hbot, Subgroup.card_bot]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramificationIdxIn_eq_one (p : ℕ) [Fact p.Prime] (hnd : ¬ p ∣ H.condN) :
     (span {(p : ℤ)}).ramificationIdxIn (𝓞 H.E) = 1 := by
@@ -67,9 +63,7 @@ theorem ramificationIdxIn_eq_one (p : ℕ) [Fact p.Prime] (hnd : ¬ p ∣ H.cond
   rw [hbot, Subgroup.card_bot]
 
 /- English proof (translation)
-Use `haveI : IsGalois ℚ H.E := H.hostE_isGalois`. Establish `hbot : P.inertia (H.E ≃ₐ[ℚ] H.E) = ⊥`. Use extensionality with `σ`. Rewrite using `[Subgroup.mem_bot]`. Conclude with `AddSubgroup.mem_inertia.trans (inertia_trivial H p hnd P σ)`.
-
-Rewrite using `[← Formalism.TwoAdicCyclotomicDecomposition.odd_card H.E p P, hbot, Subgroup.card_bot]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramificationIdx_eq_one (p : ℕ) [Fact p.Prime] (hnd : ¬ p ∣ H.condN)
     (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})] : P.ramificationIdx ℤ = 1 := by
@@ -81,14 +75,14 @@ theorem ramificationIdx_eq_one (p : ℕ) [Fact p.Prime] (hnd : ¬ p ∣ H.condN)
   rw [← Formalism.TwoAdicCyclotomicDecomposition.odd_card H.E p P, hbot, Subgroup.card_bot]
 
 /- English proof (translation)
-Conclude with `ramificationIdx_eq_one H p hnd P`.
+A detailed English derivation is pending.
 -/
 theorem ramificationIdx_eq_one_of_not_dvd (p : ℕ) [Fact p.Prime] (hnd : ¬ p ∣ H.condN)
     (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})] : P.ramificationIdx ℤ = 1 := by
   exact ramificationIdx_eq_one H p hnd P
 
 /- English proof (translation)
-Establish `hne : (span {(p : ℤ)}) ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions. Rewrite using `[Ideal.ramificationIdx'_eq_ramificationIdx (span {(p : ℤ)}) P hne]`. Conclude with `ramificationIdx_eq_one H p hnd P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramificationIdx'_eq_one (p : ℕ) [Fact p.Prime] (hnd : ¬ p ∣ H.condN)
     (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})] :
@@ -100,9 +94,9 @@ theorem ramificationIdx'_eq_one (p : ℕ) [Fact p.Prime] (hnd : ¬ p ∣ H.condN
   exact ramificationIdx_eq_one H p hnd P
 
 /- English proof (translation)
-Establish `hle : (span {(p : ℤ)}).map (algebraMap ℤ (𝓞 H.E)) ≤ P`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Conclude with `le_of_eq (Ideal.LiesOver.over)`. Take `⟨I, hI⟩` from `(Ideal.dvd_iff_le).2 hle`. Use `⟨I, hI, fun hIP => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `ramificationIdx'_eq_one H p hnd P`. Establish `h2 : (span {(p : ℤ)}).map (algebraMap ℤ (𝓞 H.E)) ≤ P ^ 2`. Rewrite using `[hI, pow_two]`. Conclude with `Ideal.mul_mono_right hIP`. Conclude with `(Ideal.ramificationIdx'_ne_one_iff hle).2 h2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_mul_coprime (p : ℕ) [Fact p.Prime] (hnd : ¬ p ∣ H.condN)
     (P : Ideal (𝓞 H.E)) [hP : P.IsPrime] [P.LiesOver (span {(p : ℤ)})] :

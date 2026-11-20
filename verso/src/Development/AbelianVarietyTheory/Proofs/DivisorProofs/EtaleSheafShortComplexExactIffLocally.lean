@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Conclude with `⟨S, hS, fun V g hg => hPQ V g (hP V g hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exactIff_loc_mono {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P)
     (hPQ : ∀ V g, P V g → Q V g) : Loc U Q := by
@@ -20,7 +20,7 @@ theorem exactIff_map_comp {R : Type} [CommRing R] {F G K : Shv R} (φ : F ⟶ G)
     (x : Sec F U) : Sec.map (φ ≫ ψ) x = Sec.map ψ (Sec.map φ x) := rfl
 
 /- English proof (translation)
-Use `congrArg (fun m => m.hom x) (φ.hom.naturality g.op)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exactIff_map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U)
     (x : Sec F U) : Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) := by
@@ -28,9 +28,9 @@ theorem exactIff_map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V
   simpa using this
 
 /- English proof (translation)
-Set `Φ : Shv R ⥤ ModuleCat.{1} (ULift.{1} R)` to `sheafToPresheaf Scheme.etaleTopology _ ⋙ (evaluation _ _).obj (op U)`. Set `T : ShortComplex (Shv R)` to `ShortComplex.mk (kernel.ι ψ) ψ (kernel.condition ψ)`. Establish `hT : T.Exact` using `ShortComplex.exact_of_f_is_kernel T (kernelIsKernel ψ)`. Establish `hTm : Mono T.f` using `inferInstanceAs (Mono (kernel.ι ψ))`. Establish `hP : PreservesLimit (parallelPair T.g 0) Φ` using `inferInstanceAs (PreservesLimit (parallelPair ψ 0) Φ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(ShortComplex.moduleCat_exact_iff _).1 (hT.map_of_mono_of_preservesKernel Φ hTm hP) b hb`. Take `⟨k, hk⟩` from `h2`. Conclude with `⟨k, hk⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exactIff_kernel_sec {R : Type} [CommRing R] {G K : Shv R} (ψ : G ⟶ K) {U : Scheme.{0}}
     (b : Sec G U) (hb : Sec.map ψ b = 0) : ∃ k : Sec (kernel ψ) U, Sec.map (kernel.ι ψ) k = b := by
@@ -45,13 +45,13 @@ theorem exactIff_kernel_sec {R : Type} [CommRing R] {G K : Shv R} (ψ : G ⟶ K)
   exact ⟨k, hk⟩
 
 /- English proof (translation)
-Introduce `R _ S`. Establish `hME : ∀ {F G : Shv R} (φ : F ⟶ G), _` using `fun {F G} φ => GlobalTheory.T.bigEtaleModuleSheaf_mono_epi_iff_sections R φ`. Rewrite using `[ShortComplex.exact_iff_epi_kernel_lift, (hME (kernel.lift S.g S.f S.zero)).2.2.1]`. Establish `hinj : ∀ U, Function.Injective (Sec.map (kernel.ι S.g) (U` using `U)) := ((hME (kernel.ι S.g)).1).1 inferInstance`. Establish `hfac : ∀ {V : Scheme.{0}} (a : Sec S.X₁ V), Sec.map (kernel.ι S.g) (Sec.map (kernel.lift S.g S.f S.zero) a) = Sec.map S.f a` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← exactIff_map_comp, kernel.lift_ι]`. Prove the components needed by the constructor for the conclusion. Introduce `h U b hb`. Take `⟨k, rfl⟩` from `exactIff_kernel_sec S.g b hb`. Use `exactIff_loc_mono (h U k) fun V g ⟨a, ha⟩ => ⟨a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hfac, ha, exactIff_map_res]`. Introduce `h U k`. Establish `hk : Sec.map S.g (Sec.map (kernel.ι S.g) k) = 0`. Rewrite using `[← exactIff_map_comp, kernel.condition]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `exactIff_loc_mono (h U _ hk) fun V g ⟨a, ha⟩ => ⟨a, hinj V ?_⟩` and prove the remaining obligations. Rewrite using `[hfac, ha, exactIff_map_res]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exactIff : ∀ (R : Type) [CommRing R] (S : ShortComplex (Shv R)), S.Exact ↔ ∀ U (b : Sec S.X₂ U), Sec.map S.g b = 0 → Loc U fun V g => ∃ a : Sec S.X₁ V, Sec.map S.f a = Sec.res g b := by
   intro R _ S

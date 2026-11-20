@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `: Fintype X` using `Fintype.ofFinite X`. Set `f : Function.End (MulAction.fixedBy X (x ^ p ^ k))` to `fun y => ⟨x • (y : X), by`. Establish `hy : (x ^ p ^ k) • (y : X) = y` using `y.2`. Use `show (x ^ p ^ k) • x • (y : X) = x • (y : X)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_smul, ← pow_succ, pow_succ', mul_smul, hy]⟩`. Establish `hf : ∀ (n : ℕ) (y : MulAction.fixedBy X (x ^ p ^ k)), (((f ^ n) y : MulAction.fixedBy X (x ^ p ^ k)) : X) = x ^ n • (y : X)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero, pow_zero, one_smul]`. Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `y`. Rewrite using `[pow_succ', pow_succ', mul_smul, ← ih y]`.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h1 : f ^ p ^ k = 1`. Use function extensionality and compare the values at `y`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `y.2`. Establish `h2` using `Equiv.Perm.card_fixedPoints_modEq (f := f) (p := p) (n := k) h1`. Establish `e : (Function.fixedPoints f) ≃ MulAction.fixedBy X x` using `{ toFun := fun y => ⟨(y.1 : X), congrArg Subtype.val y.2⟩ invFun := fun y => ⟨⟨y.1, MulAction.fixedBy_subset_fixedBy_zpow X x ((p ^ k : ℕ) : ℤ) y.2 |> fun h => by`. Rewrite using `[zpow_natCast] at h⟩, Subtype.ext y.2⟩` and apply the resulting hypothesis. Use `left_inv := fun _ => rfl`.
-
-Use `right_inv := fun _ => rfl }`. Rewrite using `[← Nat.card_congr e, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Use `h2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem card_fixedBy_pow_prime_pow_modEq (G : Type) [Group G] (X : Type) [Finite X] [MulAction G X]
     (x : G) (p k : ℕ) (hp : p.Prime) :

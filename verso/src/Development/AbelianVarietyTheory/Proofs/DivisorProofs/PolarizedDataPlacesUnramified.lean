@@ -19,7 +19,7 @@ open scoped Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Simplify using `only [truncMat, Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.sub_mul, h]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem truncMat_mul_sub {n : ℕ} (e : AF F) {A B : Matrix (Fin n) (Fin n) (AE F E)} (h : B * A = 1) :
     truncMat e B * A - 1 = (1 - e) • (A - 1) := by
@@ -27,7 +27,7 @@ theorem truncMat_mul_sub {n : ℕ} (e : AF F) {A B : Matrix (Fin n) (Fin n) (AE 
   module
 
 /- English proof (translation)
-Simplify using `only [truncMat, Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, Matrix.mul_sub, h]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_truncMat_sub {n : ℕ} (e : AF F) {A B : Matrix (Fin n) (Fin n) (AE F E)} (h : B * A = 1) :
     B * truncMat e A - 1 = (1 - e) • (B - 1) := by
@@ -35,7 +35,7 @@ theorem mul_truncMat_sub {n : ℕ} (e : AF F) {A B : Matrix (Fin n) (Fin n) (AE 
   module
 
 /- English proof (translation)
-Rewrite using `[show mat ((truncU S l)⁻¹ * l) = mat (truncU S l)⁻¹ * mat l from rfl, mat_truncU_inv]`. Conclude with `truncMat_mul_sub _ (Units.inv_mul l.1)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_compl {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (S : Finset (Pl F)) (l : UA σ J) :
     mat ((truncU S l)⁻¹ * l) - 1 = (1 - idem S) • (mat l - 1) := by
@@ -43,7 +43,7 @@ theorem mat_compl {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (S : Finset (Pl F)) (
   exact truncMat_mul_sub _ (Units.inv_mul l.1)
 
 /- English proof (translation)
-Rewrite using `[mul_inv_rev, inv_inv, show mat (l⁻¹ * truncU S l) = mat l⁻¹ * mat (truncU S l) from rfl, mat_truncU]`. Conclude with `mul_truncMat_sub _ (Units.inv_mul l.1)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_compl_inv {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (S : Finset (Pl F)) (l : UA σ J) :
     mat ((truncU S l)⁻¹ * l)⁻¹ - 1 = (1 - idem S) • (mat l⁻¹ - 1) := by
@@ -51,7 +51,7 @@ theorem mat_compl_inv {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (S : Finset (Pl F
   exact mul_truncMat_sub _ (Units.inv_mul l.1)
 
 /- English proof (translation)
-Establish `h0 : evI F ((0 : InfiniteAdeleRing F), (1 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F)) = 0` using `map_zero _`. Establish `h1` using `congrArg Prod.snd (h _ h0)`. Express the relevant statement in the definitionally equal form `(1 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F) * a.2 = 0 at h1`. Rewrite `h1` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem snd_eq_zero {a : AF F} (h : At (evI F) a) : a.2 = 0 := by
   have h0 : evI F ((0 : InfiniteAdeleRing F), (1 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F)) = 0 := map_zero _
@@ -60,7 +60,7 @@ theorem snd_eq_zero {a : AF F} (h : At (evI F) a) : a.2 = 0 := by
   rwa [one_mul] at h1
 
 /- English proof (translation)
-Establish `h` using `hu (1 - idem S) (by rw [map_sub, map_one, evFin_idem, if_pos hw, sub_self])`. Rewrite `h` using `[smul_eq_mul, mul_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_one_sub_idem {S : Finset (Pl F)} {w : Pl F} (hw : w ∈ S) {u : AF F} (hu : At (evFin F w) u) :
     u * (1 - idem S) = 0 := by
@@ -69,9 +69,9 @@ theorem mul_one_sub_idem {S : Finset (Pl F)} {w : Pl F} (hw : w ∈ S) {u : AF F
   rwa [smul_eq_mul, mul_comm] at h
 
 /- English proof (translation)
-Establish `hs : (1 - idem S) * GlobalTheory.UnitaryPlaceSplit.idemAt w = GlobalTheory.UnitaryPlaceSplit.idemAt w`. Establish `h0 : GlobalTheory.UnitaryPlaceSplit.idemAt w * idem S = 0` using `liftV_mul_idem hw`. Rewrite using `[sub_mul, one_mul, mul_comm, h0, sub_zero]`. Use `GlobalTheory.AdelicPlaceDecomp.mul_transpose_mem_iff X Y w hs (mat_compl S l) (mat_compl_inv S l) (Units.inv_mul ((truncU S l)⁻¹ * l).1) (fun δ hδ => (hl δ).2 hδ) (fun δ hδ => (hl _).1 ?_) γ` and prove the remaining obligations. Establish `h1 : mat l * mat l⁻¹ = 1` using `Units.mul_inv l.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, h1, Matrix.transpose_one, Matrix.mul_one]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem lat_compl {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) {S : Finset (Pl F)} {w : Pl F} (hw : w ∉ S) (l : UA σ Y.J)
     (hl : ∀ γ, γ * (mat l)ᵀ ∈ latAtV X Y w ↔ γ ∈ latAtV X Y w) (γ : Matrix (Fin n) (Fin d) (AE F E)) :
@@ -85,15 +85,15 @@ theorem lat_compl {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) {S : Finset (Pl F)
   rwa [Matrix.mul_assoc, ← Matrix.transpose_mul, h1, Matrix.transpose_one, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT Ψ hΨ`. Take `⟨S₀, hS₀⟩` from `GlobalTheory.T.compact_open_places_stable hKP F E σ B a a' G X om om' hT`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, -, φ, hSB, hvac, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hfin` using `Filter.eventually_cofinite.1 hvac`. Use `⟨S₀ ∪ hfin.toFinset, fun S hS l hl hlat => ?_⟩` and prove the remaining obligations. Establish `hfix` using `(hS₀ S hfin.toFinset ((truncU S l)⁻¹ * l) (Finset.subset_union_left.trans hS) (Finset.subset_union_right.trans hS) (fun u hu => by`. Rewrite using `[mat_compl, smul_comm, hl u (snd_eq_zero hu), smul_zero])`. Use the proof step `(fun w hw u hu => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mat_compl, smul_smul, mul_one_sub_idem hw hu, zero_smul])`. Use the proof step `(fun w hw => lat_compl G.V G.W hw l fun γ => (hlat w γ 0).1)`. Use the proof step `(fun w hw => lat_compl G.V' G.W hw l fun γ => (hlat w 0 γ).2)).2 f φ hSB`. Use the proof step `(fun w hw => by_contra fun h => hw (hfin.mem_toFinset.2 h))`. Use `conv_rhs => rw [← hfix]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, mul_inv_cancel_left]`. Consider the case `zero => exact ⟨∅, fun S _ l _ _ => by rw [map_zero, map_zero]⟩`. Consider the case `add x y _ _ ihx ihy`. Take `⟨S₁, h₁⟩` from `ihx`. Take `⟨S₂, h₂⟩` from `ihy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨S₁ ∪ S₂, fun S hS l hl hlat => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, h₁ S (Finset.subset_union_left.trans hS) l hl hlat, h₂ S (Finset.subset_union_right.trans hS) l hl hlat]`. Consider the case `smul c x _ ih`. Take `⟨S₁, h₁⟩` from `ih`. Conclude with `⟨S₁, fun S hS l hl hlat => by rw [map_smul, map_smul, h₁ S hS l hl hlat]⟩`.
+A detailed English derivation is pending.
 -/
 theorem act_eq_trunc : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' → ∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M', ∃ S₁ : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F), ∀ S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F), S₁ ⊆ S → ∀ l : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J, l ∈ GlobalTheory.ThKAdm.FinPt σ G.W → (∀ (w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (γ : Matrix (Fin a) (Fin (a + a')) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) (γ' : Matrix (Fin a') (Fin (a + a')) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)), (γ * Matrix.transpose (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat l) ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV G.V G.W w ↔ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV G.V G.W w) ∧ (γ' * Matrix.transpose (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat l) ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV G.V' G.W w ↔ γ' ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV G.V' G.W w)) → om' (1, l) Ψ = om' (1, GlobalTheory.TruncFix.truncU S l) Ψ := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT Ψ hΨ

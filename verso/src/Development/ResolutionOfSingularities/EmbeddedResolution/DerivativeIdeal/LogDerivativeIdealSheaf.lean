@@ -9,11 +9,11 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Introduce `U f`. Establish `hUaff : IsAffineOpen U.1` using `U.2`. Set `algU : Algebra k Γ(X, U.1)` to `sectionsAlgebra k p U.1`. Set `algV : Algebra k Γ(X, X.basicOpen f)` to `sectionsAlgebra k p (X.basicOpen f)`. Set `algUV : Algebra Γ(X, U.1) Γ(X, X.basicOpen f)` to `(X.presheaf.map (homOfLE (X.basicOpen_le f)).op).hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `tower : IsScalarTower k Γ(X, U.1) Γ(X, X.basicOpen f)` using `isScalarTower_sections k p U.1 f rfl rfl rfl`. Establish `loc : IsLocalization.Away f Γ(X, X.basicOpen f)` using `hUaff.isLocalization_basicOpen f`. Establish `fp : Module.FinitePresentation Γ(X, U.1) (KaehlerDifferential k Γ(X, U.1))` using `finitePresentation_kaehlerDifferential_sections k p U rfl`. Establish `noeth : IsNoetherianRing Γ(X, U.1)` using `isNoetherianRing_sections k p U rfl`. Establish `hP : (P.ideal U).FG` using `IsNoetherian.noetherian _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `logDerivIdeal_map_away (S' := Γ(X, X.basicOpen f)) k f hP (I.ideal U)`. Rewrite using `[← P.map_ideal_basicOpen U f, ← I.map_ideal_basicOpen U f]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_logDerivIdeal_basicOpen (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -57,7 +57,7 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-Introduce `I J h U`. Conclude with `@logDerivIdeal_le_logDerivIdeal k _ _ _ (sectionsAlgebra k p U.1) (P.ideal U) (I.ideal U) (J.ideal U) (h U)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem logDerivIdealSheaf_mono (k : Type u) [CommRing k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (P : X.IdealSheafData) :
@@ -67,7 +67,7 @@ theorem logDerivIdealSheaf_mono (k : Type u) [CommRing k] [IsNoetherianRing k] {
     (I.ideal U) (J.ideal U) (h U)
 
 /- English proof (translation)
-Introduce `U`. Conclude with `@logDerivIdeal_le_derivIdeal k _ _ _ (sectionsAlgebra k p U.1) (P.ideal U) (I.ideal U)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem logDerivIdealSheaf_le_derivIdealSheaf (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -110,9 +110,9 @@ theorem logDerivIdealSheafIterate_one (k : Type u) [CommRing k] [IsNoetherianRin
   rfl
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Rewrite using `[Nat.zero_add, logDerivIdealSheafIterate_zero]`. Consider the case `succ r ih`. Establish `hrs : r + 1 + s = (r + s) + 1` using `by omega`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[hrs, logDerivIdealSheafIterate_succ, logDerivIdealSheafIterate_succ, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem logDerivIdealSheafIterate_add (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -127,7 +127,7 @@ theorem logDerivIdealSheafIterate_add (k : Type u) [CommRing k] [IsNoetherianRin
       rw [hrs, logDerivIdealSheafIterate_succ, logDerivIdealSheafIterate_succ, ih]
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Rewrite using `[logDerivIdealSheafIterate_zero, @logDerivIdealIterate_zero k _ _ _ (sectionsAlgebra k p U.1) (P.ideal U) (I.ideal U)]`. Consider the case `succ r ih`. Rewrite using `[logDerivIdealSheafIterate_succ, logDerivIdealSheaf_ideal, ih, @logDerivIdealIterate_succ k _ _ _ (sectionsAlgebra k p U.1) (P.ideal U) r (I.ideal U)]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem logDerivIdealSheafIterate_ideal (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -143,9 +143,9 @@ Proceed by induction on `r with`. Consider the case `zero`. Rewrite using `[logD
         @logDerivIdealIterate_succ k _ _ _ (sectionsAlgebra k p U.1) (P.ideal U) r (I.ideal U)]
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Introduce `I J h`. Rewrite using `[logDerivIdealSheafIterate_zero, logDerivIdealSheafIterate_zero]`. Conclude with `h`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ r ih`. Introduce `I J h`. Rewrite using `[logDerivIdealSheafIterate_succ, logDerivIdealSheafIterate_succ]`. Conclude with `logDerivIdealSheaf_mono k p P (ih h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logDerivIdealSheafIterate_mono (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -162,9 +162,7 @@ theorem logDerivIdealSheafIterate_mono (k : Type u) [CommRing k] [IsNoetherianRi
       exact logDerivIdealSheaf_mono k p P (ih h)
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Conclude with `le_of_eq ((logDerivIdealSheafIterate_zero k p P I).trans (derivIdealSheafIterate_zero k p I).symm)`. Consider the case `succ r ih`. Rewrite using `[logDerivIdealSheafIterate_succ, derivIdealSheafIterate_succ]`.
-
-Conclude with `le_trans (logDerivIdealSheaf_le_derivIdealSheaf k p P (logDerivIdealSheafIterate k p P r I)) (derivIdealSheaf_mono k p ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logDerivIdealSheafIterate_le_derivIdealSheafIterate (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]

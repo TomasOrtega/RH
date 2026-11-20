@@ -98,7 +98,7 @@ def Transport : Prop :=
       TransportFor d φK ΛK t 𝔞 Λ φ s κ 𝔣
 
 /- English proof (translation)
-Unfold `nrm`. Establish `: FractionalIdeal.absNorm (𝔞 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0` using `fun h => 𝔞.ne_zero (FractionalIdeal.absNorm_eq_zero_iff.1 h)`. Conclude with `this` after adjusting the coercions.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nrm_ne_zero {K : Type} [Field K] [NumberField K] (𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     nrm (𝔞 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0 := by
@@ -108,9 +108,7 @@ theorem nrm_ne_zero {K : Type} [Field K] [NumberField K] (𝔞 : (FractionalIdea
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `h : 0 < modF y`. Unfold `modF`. Use `finprod_induction (fun x : ℝ => 0 < x) one_pos (fun _ _ => mul_pos) fun v => zpow_pos ?_ _` and prove the remaining obligations. Establish `: Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions.
-
-Conclude with `mul_ne_zero (Units.ne_zero _) (by exact_mod_cast (pow_pos h s).ne')`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lamF_ne_zero {E : Type} [Field E] [NumberField E] (s : ℕ) (χ : HChar E) (y : (Af E)ˣ) : lamF s χ y ≠ 0 := by
   have h : 0 < modF y := by
@@ -121,7 +119,7 @@ theorem lamF_ne_zero {E : Type} [Field E] [NumberField E] (s : ℕ) (χ : HChar 
   exact mul_ne_zero (Units.ne_zero _) (by exact_mod_cast (pow_pos h s).ne')
 
 /- English proof (translation)
-Rewrite using `[beta_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 example {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] (d s : ℕ) (κ : I → ℕ) (Λ : PeriodPair) (n l T : ℂ) :
     ((C0 E d (2 * s) κ : ℂ) * n * l * T) ^ 12 / latDisc Λ ^ (2 * s * Fintype.card I + 2 * ∑ i, κ i) =
@@ -129,7 +127,7 @@ example {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] (d s : ℕ) 
   rw [beta_eq]; ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => rfl, h⟩`.
+Supply the required witnesses or components.
 -/
 example {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] (φ : I → E →+* ℂ) (s : ℕ) (κ : I → ℕ) (χ : HChar E)
     (h : HasInf χ φ fun i => (κ i : ℤ) + s) : IsConjChar φ s κ (RingEquiv.refl ℂ) χ χ := ⟨fun _ => rfl, h⟩

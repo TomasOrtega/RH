@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 set_option autoImplicit false
 
 /- English proof (translation)
-Introduce `h D O hc p _ h2 hu hl W hW jc hpin z`. Take `⟨o, -, hper, himp⟩` from `exists_period_localFin_imp_local D p`. Conclude with `himp _ _ _ (GlobalTheory.T.local_finite_of_chain _ _ _ _ _ _ _ _ _ hW z jc o hper (h D O hc p h2 hu hl W hW jc hpin z o))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MixedLocalChains.localSt_of_chainSt : ChainSt → LocalSt := by
   intro h D O hc p _ h2 hu hl W hW jc hpin z

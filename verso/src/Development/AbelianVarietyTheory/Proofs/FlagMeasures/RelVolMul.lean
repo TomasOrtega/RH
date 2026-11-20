@@ -10,11 +10,11 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.ContAut
 
 /- English proof (translation)
-Establish `hCY : (B ⊓ Y).relIndex Y ≠ 0` using `by rwa [AddSubgroup.inf_relIndex_right]`. Establish `hCX : (B ⊓ Y).relIndex X ≠ 0` using `AddSubgroup.relIndex_ne_zero_trans hCY hYX`. Establish `e1` using `ContModel.relVol_of_le (W0 := X) (inf_le_left : B ⊓ Y ≤ B) hCX`. Establish `e2` using `ContModel.relVol_of_le (W0 := X) (inf_le_right : B ⊓ Y ≤ Y) hCX`. Establish `e3` using `ContModel.relVol_of_le (W0 := Y) (inf_le_left : B ⊓ Y ≤ B) hCY`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : relVol Y (B ⊓ Y) = 1 / ((B ⊓ Y).relIndex Y : ℝ)`. Unfold `relVol`. Rewrite using `[AddSubgroup.relIndex_eq_one.2 (inf_le_right : B ⊓ Y ≤ Y)]`. Simplify using the standard rewrite rules. Establish `c : ((B ⊓ Y).relIndex Y : ℝ) ≠ 0` using `by exact_mod_cast hCY`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, e3, e4]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem relVol_mul {W : Type} [AddCommGroup W] {X Y B : AddSubgroup W}
     (hYX : Y.relIndex X ≠ 0) (hBY : B.relIndex Y ≠ 0) :
@@ -33,11 +33,11 @@ theorem relVol_mul {W : Type} [AddCommGroup W] {X Y B : AddSubgroup W}
   field_simp
 
 /- English proof (translation)
-Use `⟨QuotientAddGroup.map A (A.map φ.toAddMonoidHom) φ.toAddMonoidHom (AddSubgroup.le_comap_map _ _), ?_, ?_⟩` and prove the remaining obligations. Introduce `u v`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective u`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective v`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[QuotientAddGroup.map_mk, QuotientAddGroup.map_mk, QuotientAddGroup.eq]`. Take `⟨a, ha, hh⟩` from `h`. Rewrite using `[QuotientAddGroup.eq]`. Establish `: a = -x + y` using `φ.injective (by simpa using hh)`. Rewrite using `[← this]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Set.image_image, Set.image_image]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem image_mk {W : Type} [AddCommGroup W] (A : AddSubgroup W) (φ : W ≃+ W) (S : Set W) :
     ∃ f : W ⧸ A → W ⧸ A.map φ.toAddMonoidHom, Function.Injective f ∧
@@ -58,13 +58,13 @@ theorem image_mk {W : Type} [AddCommGroup W] (A : AddSubgroup W) (φ : W ≃+ W)
     rfl
 
 /- English proof (translation)
-Introduce `W _ W0 φ h1 h2 S ⟨A, hA⟩`. Establish `hi : Function.Injective φ.toAddMonoidHom` using `φ.injective`. Establish `m1` using `AddSubgroup.relIndex_map_map_of_injective A W0 hi`. Establish `m2` using `AddSubgroup.relIndex_map_map_of_injective W0 A hi`. Take `⟨f, hf, him⟩` from `image_mk A φ S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `a1 : (A.map φ.toAddMonoidHom).relIndex (W0.map φ.toAddMonoidHom) ≠ 0` using `m1 ▸ hA.1`. Establish `a2 : (W0.map φ.toAddMonoidHom).relIndex (A.map φ.toAddMonoidHom) ≠ 0` using `m2 ▸ hA.2.1`. Establish `hG : GoodSub W0 (A.map φ.toAddMonoidHom) (φ '' S)`. Use `⟨AddSubgroup.relIndex_ne_zero_trans a1 h1, AddSubgroup.relIndex_ne_zero_trans h2 a2, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨a, ha, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x + a, hA.2.2.1 x hx a ha, by simp⟩`. Rewrite using `[him]`. Conclude with `hA.2.2.2.image f`. Use `⟨⟨_, hG⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[ContModel.cont_eq hG, ContModel.cont_eq hA, him, Set.ncard_image_of_injective _ hf, relVol_mul h1 a1]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: relVol (W0.map φ.toAddMonoidHom) (A.map φ.toAddMonoidHom) = relVol W0 A`. Unfold `relVol`. Rewrite using `[m1, m2]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cont_image : ∀ {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) (φ : W ≃+ W), (W0.map φ.toAddMonoidHom).relIndex W0 ≠ 0 → W0.relIndex (W0.map φ.toAddMonoidHom) ≠ 0 → ∀ S, IsCO W0 S → IsCO W0 (φ '' S) ∧ cont W0 (φ '' S) = relVol W0 (W0.map φ.toAddMonoidHom) * cont W0 S := by
   intro W _ W0 φ h1 h2 S ⟨A, hA⟩

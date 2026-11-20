@@ -14,19 +14,19 @@ private abbrev Mt (d : ℕ) := Matrix (Fin d) (Fin d) ℂ
 private abbrev uu {d : ℕ} (p q : Fin d) : Mt d := Matrix.single p q 1
 
 /- English proof (translation)
-Simplify using `[uu, Matrix.single_mul_single_same]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem uu_same (a b c : Fin d) : uu a b * uu b c = uu a c := by
   simp [uu, Matrix.single_mul_single_same]
 
 /- English proof (translation)
-Simplify using `[uu, Matrix.single_mul_single_of_ne _ _ _ _ h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem uu_ne {a b b' c : Fin d} (h : b ≠ b') : uu a b * uu b' c = 0 := by
   simp [uu, Matrix.single_mul_single_of_ne _ _ _ _ h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[uu, Matrix.single_apply, Matrix.sum_apply]`. Simplify using `[uu, Matrix.single_apply, Matrix.sum_apply, h, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem uu_sum : ∑ a : Fin d, uu a a = 1 := by
   ext i j
@@ -35,7 +35,7 @@ private theorem uu_sum : ∑ a : Fin d, uu a a = 1 := by
   · simp [uu, Matrix.single_apply, Matrix.sum_apply, h, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [uu, Matrix.single_apply, Matrix.mul_apply, Matrix.smul_apply]`. Apply the tactic sequence `rcases eq_or_ne a i with rfl | h1 <;> rcases eq_or_ne a j with rfl | h2 <;> simp [*]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem uu_sandwich (a : Fin d) (b : Mt d) : uu a a * b * uu a a = b a a • uu a a := by
   ext i j
@@ -53,16 +53,16 @@ variable (r : Fin (m + 1) → (Mt d →ₐ[ℂ] Module.End ℂ W))
     (hc : ∀ i j, i ≠ j → ∀ a b, Commute (r i a) (r j b))
 
 /- English proof (translation)
-Conclude with `(MonoidHom.noncommPiCoprod_mulSingle (N := fun _ => Mt d) (fun i => MonoidHomClass.toMonoidHom (r i)) i x).trans rfl`.
+A detailed English derivation is pending.
 -/
 private theorem RR_single (i : Fin (m + 1)) (x : Mt d) : RR r hc (Pi.mulSingle i x) = r i x := by
   exact (MonoidHom.noncommPiCoprod_mulSingle (N := fun _ => Mt d)
     (fun i => MonoidHomClass.toMonoidHom (r i)) i x).trans rfl
 
 /- English proof (translation)
-Rewrite using `[← RR_single r hc i x, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem RR_update (a : Fin (m + 1) → Mt d) (i : Fin (m + 1)) (x : Mt d) :
     RR r hc (Function.update a i x) = r i x * RR r hc (Function.update a i 1) := by
@@ -74,7 +74,7 @@ private theorem RR_update (a : Fin (m + 1) → Mt d) (i : Fin (m + 1)) (x : Mt d
   · simp [h]
 
 /- English proof (translation)
-Unfold `RR`. Simplify using `only [MonoidHom.noncommPiCoprod, MonoidHom.coe_mk, OneHom.coe_mk]`. Conclude with `Submonoid.noncommProd_mem _ _ _ _ (fun i _ => h i)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem RR_mem (Q : Submonoid (Module.End ℂ W)) (a : Fin (m + 1) → Mt d)
     (h : ∀ i, r i (a i) ∈ Q) : RR r hc a ∈ Q := by
@@ -99,17 +99,17 @@ Both sides reduce to the same expression.
 private theorem RM_apply (a : Fin (m + 1) → Mt d) : RM r hc a = RR r hc a := rfl
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (Fin (m + 1)), Ue * RR r hc (fun i => if i ∈ s then a i else 1) = RR r hc (fun i => if i + 1 ∈ s then a (i + 1) else 1) * Ue`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h1 : (fun i : Fin (m + 1) => if i ∈ (∅ : Finset (Fin (m + 1))) then a i else 1) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `h2 : (fun i : Fin (m + 1) => if i + 1 ∈ (∅ : Finset (Fin (m + 1))) then a (i + 1) else 1) = 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules. Consider the case `insert i s hi ih`. Establish `h1 : (fun j => if j ∈ insert i s then a j else 1) = Pi.mulSingle i (a i) * fun j => if j ∈ s then a j else 1`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[hi]`. Simplify using `[h, Finset.mem_insert]`. Establish `h2 : (fun j => if j + 1 ∈ insert i s then a (j + 1) else 1) = Pi.mulSingle (i - 1) (a i) * fun j => if j + 1 ∈ s then a (j + 1) else 1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i - 1`. Substitute `h` using the available equality. Simplify using `[hi]`. Establish `h' : j + 1 ≠ i` using `fun e => h (eq_sub_of_add_eq e)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h, h', Finset.mem_insert]`. Establish `h3` using `hU (i - 1) (a i)`. Rewrite `h3` using `[sub_add_cancel]`. Rewrite using `[h1, h2, map_mul, map_mul, RR_single, RR_single, ← mul_assoc, h3, mul_assoc, ih, mul_assoc]`. Simplify using `using key Finset.univ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem RR_shift (Ue : Module.End ℂ W)
     (hU : ∀ i a, Ue * r (i + 1) a = r i a * Ue) (a : Fin (m + 1) → Mt d) :
@@ -147,7 +147,7 @@ private theorem RR_shift (Ue : Module.End ℂ W)
 private def FF (p : Fin (m + 1) → Fin d) : Module.End ℂ W := RR r hc (fun i => uu (p i) (p i))
 
 /- English proof (translation)
-Establish `h` using `(RM r hc).map_sum (fun (_ : Fin (m + 1)) (a : Fin d) => uu a a)`. Simplify using `only [uu_sum, RM_apply] at h`. Establish `h1 : (fun _ : Fin (m + 1) => (1 : Mt d)) = 1` using `rfl`. Rewrite `h` using `[h1, map_one]`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem FF_sum : ∑ p : Fin (m + 1) → Fin d, FF r hc p = 1 := by
   have h := (RM r hc).map_sum (fun (_ : Fin (m + 1)) (a : Fin d) => uu a a)
@@ -157,7 +157,7 @@ private theorem FF_sum : ∑ p : Fin (m + 1) → Fin d, FF r hc p = 1 := by
   exact h.symm
 
 /- English proof (translation)
-Unfold `FF`. Rewrite using `[← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[uu_same]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem FF_idem (p : Fin (m + 1) → Fin d) : FF r hc p * FF r hc p = FF r hc p := by
   unfold FF
@@ -167,9 +167,9 @@ private theorem FF_idem (p : Fin (m + 1) → Fin d) : FF r hc p * FF r hc p = FF
   simp [uu_same]
 
 /- English proof (translation)
-Unfold `FF`. Rewrite using `[← RR_single r hc j, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[uu_same]`. Simplify using `[h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem FF_right (p : Fin (m + 1) → Fin d) (j : Fin (m + 1)) :
     FF r hc p * r j (uu (p j) (p j)) = FF r hc p := by
@@ -182,9 +182,9 @@ private theorem FF_right (p : Fin (m + 1) → Fin d) (j : Fin (m + 1)) :
   · simp [h]
 
 /- English proof (translation)
-Unfold `FF`. Rewrite using `[← RR_single r hc j, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[uu_same]`. Simplify using `[h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem FF_left (p : Fin (m + 1) → Fin d) (j : Fin (m + 1)) :
     r j (uu (p j) (p j)) * FF r hc p = FF r hc p := by
@@ -198,19 +198,19 @@ private theorem FF_left (p : Fin (m + 1) → Fin d) (j : Fin (m + 1)) :
 
 open Fin.NatCast Fin.CommRing in
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, k ≤ m → p (i₀ + 1 + (k : Fin (m + 1))) = p (i₀ + 1)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `hk`. Establish `hne : i₀ + 1 + (k : Fin (m + 1)) ≠ i₀`. Introduce `e`. Establish `h0 : ((k + 1 : ℕ) : Fin (m + 1)) = 0`. Establish `: i₀ + ((k + 1 : ℕ) : Fin (m + 1)) = i₀ + 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[add_zero]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `add_left_cancel this`. Rewrite `h0` using `[Fin.natCast_eq_zero]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Nat.le_of_dvd (by omega) h0` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[← ih (by omega), h _ hne]`. Use `congr 1`. Use `push_cast`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `key ((i - i₀ - 1 : Fin (m + 1)).val) (by have := (i - i₀ - 1 : Fin (m + 1)).isLt; omega)`. Establish `h2` using `key m le_rfl`. Establish `e1 : i₀ + 1 + (((i - i₀ - 1 : Fin (m + 1)).val : ℕ) : Fin (m + 1)) = i`. Rewrite using `[Fin.cast_val_eq_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : i₀ + 1 + (m : Fin (m + 1)) = i₀`. Establish `: ((m + 1 : ℕ) : Fin (m + 1)) = 0` using `Fin.natCast_self _`. Move the coercions through the operations in `at this`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2]`. Rewrite using `[h1, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem const_of {α : Type} (i₀ : Fin (m + 1)) (p : Fin (m + 1) → α)
     (h : ∀ j, j ≠ i₀ → p j = p (j + 1)) (i : Fin (m + 1)) : p i = p i₀ := by
@@ -251,13 +251,11 @@ private theorem const_of {α : Type} (i₀ : Fin (m + 1)) (p : Fin (m + 1) → �
   rw [h1, h2]
 
 /- English proof (translation)
-Use `set q : Fin (m + 1) → Fin d := fun i => p (i + 1) with hq`. Establish `hUF : Ue * FF r hc p = FF r hc q * Ue` using `RR_shift r hc Ue hU _`. Establish `hz : FF r hc p * S * FF r hc q = 0`. Establish `h1 : FF r hc p * S * FF r hc q = FF r hc p * (r j (uu (p j) (p j)) * S * r j (uu (q j) (q j))) * FF r hc q`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FF_right, FF_left]`. Use `_ = _ := by simp only [mul_assoc]`. Establish `h2 : r j (uu (p j) (p j)) * S * r j (uu (q j) (q j)) = 0`. Rewrite using `[← (hS _).eq, mul_assoc, ← map_mul, uu_ne hne, map_zero, mul_zero]`. Rewrite using `[h1, h2, mul_zero, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc (FF r hc p) (FF r hc p), FF_idem]`. Use `_ = LinearMap.trace ℂ W (FF r hc p * (S * Ue) * FF r hc p) := by`. Rewrite using `[LinearMap.trace_mul_comm]`. Use `_ = LinearMap.trace ℂ W (FF r hc p * S * (Ue * FF r hc p)) := by`.
-
-Simplify using `only [mul_assoc]`. Use `_ = 0 := by`. Rewrite using `[hUF, ← mul_assoc, hz, zero_mul, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tr_nonconst [FiniteDimensional ℂ W] (Ue : Module.End ℂ W)
     (hU : ∀ i a, Ue * r (i + 1) a = r i a * Ue) (S : Module.End ℂ W) (j : Fin (m + 1))
@@ -286,21 +284,19 @@ private theorem tr_nonconst [FiniteDimensional ℂ W] (Ue : Module.End ℂ W)
         rw [hUF, ← mul_assoc, hz, zero_mul, map_zero]
 
 /- English proof (translation)
-Use `set X := RR r hc (fun j => if j = i₀ then 1 else uu (p i₀) (p j)) with hX`. Use `set Y := RR r hc (fun j => if j = i₀ then 1 else uu (p j) (p i₀)) with hY`. Establish `h1 : X * FF r hc p * Y = FF r hc (fun _ => p i₀)`. Unfold `FF`. Rewrite using `[hX, hY, ← map_mul, ← map_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i₀`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h, uu_same]`. Establish `h2 : FF r hc p * (Y * X) = FF r hc p`. Unfold `FF`. Rewrite using `[hX, hY, ← map_mul, ← map_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i₀`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `only [Pi.mul_apply, h, if_false]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[uu_same, uu_same]`. Establish `h3 : Commute S X`. Establish `: X ∈ Submonoid.centralizer ({S} : Set (Module.End ℂ W))`. Use `RR_mem r hc _ _ (fun j => ?_)` and prove the remaining obligations. Rewrite using `[Submonoid.mem_centralizer_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `g rfl`. Distinguish the cases in `h : j = i₀`. Simplify using `[h]`. Simplify `(hS j h _).eq` using `[h]`. Conclude with `(Submonoid.mem_centralizer_iff.1 this S rfl)`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc (FF r hc p * Y) S X, h3.eq]`. Simplify using `only [mul_assoc]`. Use `_ = LinearMap.trace ℂ W (X * (FF r hc p * Y * S)) := by rw [LinearMap.trace_mul_comm]`. Use `_ = LinearMap.trace ℂ W (FF r hc (fun _ => p i₀) * S) := by`.
-
-Rewrite using `[← h1]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tr_fib [FiniteDimensional ℂ W] (i₀ : Fin (m + 1)) (S : Module.End ℂ W)
     (hS : ∀ j, j ≠ i₀ → ∀ a, Commute S (r j a)) (p : Fin (m + 1) → Fin d) :
@@ -343,7 +339,7 @@ private theorem tr_fib [FiniteDimensional ℂ W] (i₀ : Fin (m + 1)) (S : Modul
         rw [← h1]; simp only [mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← Fintype.sum_equiv (Fin.insertNthEquiv (fun _ => Fin d) i₀) (fun x => g x.1) (fun p => g (p i₀)) (fun x => by simp)]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `[Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sum_fib {β : Type} [AddCommMonoid β] (i₀ : Fin (m + 1)) (g : Fin d → β) :
     ∑ p : Fin (m + 1) → Fin d, g (p i₀) = (d ^ m) • ∑ a, g a := by
@@ -353,7 +349,7 @@ private theorem sum_fib {β : Type} [AddCommMonoid β] (i₀ : Fin (m + 1)) (g :
   simp [Finset.smul_sum]
 
 /- English proof (translation)
-Unfold `FF`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[uu_same]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem FF_conj (p : Fin (m + 1) → Fin d) (o : Fin d) :
     FF r hc p = RR r hc (fun i => uu (p i) o) * FF r hc (fun _ => o) * RR r hc (fun i => uu o (p i)) := by
@@ -364,37 +360,31 @@ private theorem FF_conj (p : Fin (m + 1) → Fin d) (o : Fin d) :
   simp [uu_same]
 
 /- English proof (translation)
-Use `set f : Module.End ℂ W := FF r hc (fun _ => o) with hf`. Use `set Ue : Module.End ℂ W := (U : W →ₗ[ℂ] W) with hUe`. Establish `hf0 : f ≠ 0`. Introduce `h0`. Establish `h1 : (1 : Module.End ℂ W) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← FF_sum r hc]`. Use `Finset.sum_eq_zero (fun p _ => ?_)` and prove the remaining obligations. Rewrite using `[FF_conj r hc p o, ← hf, h0]`. Simplify using the standard rewrite rules. Conclude with `one_ne_zero h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hidem : f * f = f` using `FF_idem r hc _`. Establish `hcomm : Ue * f = f * Ue` using `RR_shift r hc Ue hU _`. Establish `hinv : ∀ x ∈ LinearMap.range f, Ue x ∈ LinearMap.range f`. Introduce and unpack `_ ⟨y, rfl⟩`. Use `⟨Ue y, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(LinearMap.congr_fun hcomm y).symm`. Use `haveI : Nontrivial (LinearMap.range f) := (Submodule.nontrivial_iff_ne_bot).2 (fun h => hf0 (LinearMap.range_eq_bot.1 h))`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue (Ue.restrict hinv)`. Take `⟨v, hv⟩` from `hμ.exists_hasEigenvector`. Establish `hv1 : Ue (v : W) = μ • (v : W)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg Subtype.val hv.apply_eq_smul` as an intermediate fact. Simplify using `using this`. Establish `hw0 : (v : W) ≠ 0`. Use `hv.2` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfw : f (v : W) = v`. Take `⟨y, hy⟩` from `v.2`. Rewrite using `[← hy]`. Conclude with `LinearMap.congr_fun hidem y`. Use `set w : W := (v : W) with hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Set `P : Submodule ℂ W` to `Submodule.span ℂ (Set.range fun b : Fin (m + 1) → Mt d => RR r hc b w)`. Establish `hP : P = ⊤`. Establish `hinvP : ∀ i a, ∀ x ∈ P, r i a x ∈ P`. Introduce `i a x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x h`. Take `⟨b, rfl⟩` from `h`. Conclude with `Submodule.subset_span ⟨Pi.mulSingle i a * b, by`. Express the relevant statement in the definitionally equal form `RR r hc (Pi.mulSingle i a * b) w = r i a (RR r hc b w)`. Rewrite using `[map_mul, RR_single]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `P.add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `P.smul_mem c hx`. Break down `hirr P hinvP with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hwP : w ∈ P` using `Submodule.subset_span ⟨1, by simp⟩`. Rewrite `hwP` using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hw0 (by simpa using hwP)`. Conclude with `h`. Establish `hall : ∀ x, Ue (f x) = μ • f x`. Establish `hle : P ≤ LinearMap.ker (Ue * f - μ • f)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨b, rfl⟩`. Establish `h1 : f * RR r hc b * f = (∏ i, b i o o) • f`. Establish `h` using `(RM r hc).map_smul_univ (fun i => b i o o) (fun _ => uu o o)`. Simplify using `only [RM_apply] at h`. Rewrite using `[hf]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `FF`. Rewrite using `[← h, ← map_mul, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `uu_sandwich o (b i)`.
-
-Establish `h2 : f (RR r hc b w) = (∏ i, b i o o) • w`. Establish `h` using `LinearMap.congr_fun h1 w`. Simplify `h` using `[Module.End.mul_apply, hfw]`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, Module.End.mul_apply, LinearMap.smul_apply, h2, map_smul, hv1]`. Rewrite using `[smul_comm, sub_self]`.
-
-Introduce `x`. Establish `hx : x ∈ P` using `hP ▸ Submodule.mem_top`. Establish `h` using `hle hx`. Simplify `h` using `[sub_eq_zero, Module.End.mul_apply]`. Use `⟨μ, ?_, LinearMap.ext hall⟩` and prove the remaining obligations.
-
-Introduce and unpack `rfl`. Rewrite `hv1` using `[zero_smul]`. Conclude with `hw0 (U.injective (by simpa [hUe] using hv1))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_scalar [FiniteDimensional ℂ W] [Nontrivial W] (o : Fin d)
     (hirr : ∀ P : Submodule ℂ W, (∀ i a, ∀ w ∈ P, r i a w ∈ P) → P = ⊥ ∨ P = ⊤)
@@ -483,21 +473,19 @@ private theorem exists_scalar [FiniteDimensional ℂ W] [Nontrivial W] (o : Fin 
 
 include hc in
 /- English proof (translation)
-Use `set Ue : Module.End ℂ W := (U : W →ₗ[ℂ] W) with hUe`. Establish `hU' : ∀ i a, Ue * r (i + 1) a = r i a * Ue` using `fun i a => LinearMap.ext (fun w => hU i a w)`. Take `⟨μ, hμ0, hμ⟩` from `exists_scalar r hc o hirr U hU'`. Establish `hd : (d : ℂ) ≠ 0`. Use `o.pos` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.ne'` after adjusting the coercions. Establish `hF : ∀ a : Fin d, Ue * FF r hc (fun _ => a) = μ • FF r hc (fun _ => a)`. Introduce `a`. Establish `h2 : Ue * RR r hc (fun _ => uu a o) = RR r hc (fun _ => uu a o) * Ue` using `RR_shift r hc Ue hU' _`. Rewrite using `[FF_conj r hc (fun _ => a) o, ← mul_assoc, ← mul_assoc, h2, mul_assoc _ Ue, hμ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_smul_comm, smul_mul_assoc]`. Use `⟨μ / (d : ℂ) ^ m, div_ne_zero hμ0 (pow_ne_zero _ hd), fun i₀ S hS => ?_⟩` and prove the remaining obligations. Establish `hone : ∀ T : Module.End ℂ W, LinearMap.trace ℂ W T = ∑ p : Fin (m + 1) → Fin d, LinearMap.trace ℂ W (FF r hc p * T)`. Introduce `T`. Rewrite using `[← map_sum, ← Finset.sum_mul, FF_sum, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1 : LinearMap.trace ℂ W (S * Ue) = ∑ a : Fin d, LinearMap.trace ℂ W (FF r hc (fun _ => a) * (S * Ue))`. Rewrite using `[hone (S * Ue)]`. Establish `hinj : Function.Injective (fun (a : Fin d) (_ : Fin (m + 1)) => a)` using `fun a b h => congrFun h 0`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.image fun (a : Fin d) (_ : Fin (m + 1)) => a)), Finset.sum_image (fun a _ b _ h => hinj h)]`. Introduce `p _ hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne`. Apply `hp` to reduce the goal to its premises. Establish `hcst : ∀ j, j ≠ i₀ → p j = p (j + 1)`. Introduce `j hj`. Assume the negation of the conclusion as `hpj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hne (tr_nonconst r hc Ue hU' S j (hS j hj) p hpj)`. Use `Finset.mem_image.2 ⟨p i₀, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `(const_of i₀ p hcst i).symm`. Establish `h2 : LinearMap.trace ℂ W S = (d : ℂ) ^ m * ∑ a : Fin d, LinearMap.trace ℂ W (FF r hc (fun _ => a) * S)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hone S, Finset.sum_congr rfl (fun p _ => tr_fib r hc i₀ S hS p), sum_fib i₀ (fun a => LinearMap.trace ℂ W (FF r hc (fun _ => a) * S))]`. Simplify using `[nsmul_eq_mul]`. Establish `h3 : ∀ a : Fin d, LinearMap.trace ℂ W (FF r hc (fun _ => a) * (S * Ue)) = μ * LinearMap.trace ℂ W (FF r hc (fun _ => a) * S)`. Introduce `a`. Combine the equalities or inequalities in the displayed calculation.
-
-Express the relevant statement in the definitionally equal form `LinearMap.trace ℂ W (S * Ue) = _`. Rewrite using `[h1, h2, Finset.sum_congr rfl (fun a _ => h3 a), ← Finset.mul_sum]`. Clear the denominators using the available nonvanishing facts.
+Chain the equalities or inequalities of the calculation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem core [FiniteDimensional ℂ W] [Nontrivial W] (o : Fin d)
     (hirr : ∀ P : Submodule ℂ W, (∀ i a, ∀ w ∈ P, r i a w ∈ P) → P = ⊥ ∨ P = ⊤)
@@ -561,13 +549,13 @@ end Units
 end UpperTheory.ConvolutionTheory.L1
 
 /- English proof (translation)
-Introduce `W _ _ _ m d r hc hirr U hU`. Break down `subsingleton_or_nontrivial W with hW | hW` into its components or cases. Use `⟨1, one_ne_zero, fun i₀ S _ => ?_⟩` and prove the remaining obligations. Establish `h0 : S = 0` using `LinearMap.ext (fun x => Subsingleton.elim _ _)`. Establish `h1 : S ∘ₗ (U : W →ₗ[ℂ] W) = 0` using `LinearMap.ext (fun x => Subsingleton.elim _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h0]`. Simplify using the standard rewrite rules. Establish `hd : 0 < d`. Break down `Nat.eq_zero_or_pos d with rfl | h` into its components or cases. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `h1 : (1 : Module.End ℂ W) = 0`. Establish `e1` using `map_one (r 0)`. Establish `e2` using `map_zero (r 0)`. Rewrite `e1` using `[Subsingleton.elim (1 : Matrix (Fin 0) (Fin 0) ℂ) 0]`. Rewrite using `[← e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero h1`. Conclude with `h`. Conclude with `core r hc ⟨0, hd⟩ hirr U hU`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.unitsTrace :
     UpperTheory.ConvolutionTheory.L1.UnitsTrace := by

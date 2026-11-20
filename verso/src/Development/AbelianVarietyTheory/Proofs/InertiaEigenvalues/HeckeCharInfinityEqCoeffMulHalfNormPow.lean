@@ -17,13 +17,13 @@ open GlobalTheory.LevelSeries
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Establish `hN : ((‖z‖ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 hz)`. Establish `hc : starRingEnd ℂ z ≠ 0` using `(map_ne_zero _).2 hz`. Establish `hsq : ((‖z‖ : ℝ) : ℂ) ^ 2 = z * starRingEnd ℂ z`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2b : ((‖z‖ : ℝ) : ℂ) ^ (2 * b) = z ^ b * (starRingEnd ℂ z) ^ b`. Rewrite using `[_root_.zpow_mul, show ((‖z‖ : ℝ) : ℂ) ^ (2 : ℤ) = ((‖z‖ : ℝ) : ℂ) ^ (2 : ℕ) from zpow_ofNat _ 2, hsq, mul_zpow]`. Establish `hzn : z ^ (2 * b + (r : ℤ)) = z ^ b * z ^ (b + (r : ℤ))`. Rewrite using `[← zpow_add₀ hz]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[div_zpow, zpow_add₀ hN, h2b, hzn, zpow_natCast]`. Establish `h1 : z ^ b ≠ 0` using `zpow_ne_zero _ hz`. Establish `h2 : (starRingEnd ℂ z) ^ b ≠ 0` using `zpow_ne_zero _ hc`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((‖z‖ : ℝ) : ℂ) ^ r ≠ 0` using `pow_ne_zero _ hN`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem phase_zpow_eq (z : ℂ) (hz : z ≠ 0) (b : ℤ) (r : ℕ) :
     (z / ((‖z‖ : ℝ) : ℂ)) ^ (2 * b + (r : ℤ)) =
@@ -43,9 +43,9 @@ theorem phase_zpow_eq (z : ℂ) (hz : z ≠ 0) (b : ℤ) (r : ℕ) :
   field_simp
 
 /- English proof (translation)
-Rewrite using `[← Real.finset_prod_rpow _ _ (fun i _ => by positivity)]`. Use `push_cast`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast_mul (norm_nonneg _)]`. Rewrite using `[show ((2 : ℕ) : ℝ) * (-(r : ℝ) / 2) = -(r : ℝ) by push_cast; ring, Real.rpow_neg (norm_nonneg _), Real.rpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem prod_norm_inv_pow {ι : Type} [Fintype ι] (z : ι → ℂ) (r : ℕ) :
     ∏ i, (((‖z i‖ : ℝ) : ℂ) ^ r)⁻¹ = (((∏ i, ‖z i‖ ^ 2) ^ (-(r : ℝ) / 2) : ℝ) : ℂ) := by
@@ -63,9 +63,9 @@ end GlobalTheory.LevelSeries
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Introduce `h`. Establish `e` using `DFunLike.congr_fun h D.host.sqrtMinusD`. Rewrite `e` using `[NumberField.ComplexEmbedding.conjugate_coe_eq, Formalism.L2.Theta.tauE_sqrtMinusD, Formalism.L2.Theta.tauE_sqrtMinusD]`. Establish `e2` using `congrArg Complex.im e`. Simplify using `at e2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: 0 < Real.sqrt D.host.d` using `Real.sqrt_pos.2 (by exact_mod_cast D.host.hyp.2.1.pos)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem conjugate_tauE_ne_tauE (D : D7) (τ τ' : D.what₂.Tau) :
     NumberField.ComplexEmbedding.conjugate (tauE D τ) ≠ tauE D τ' := by
@@ -79,7 +79,7 @@ theorem conjugate_tauE_ne_tauE (D : D7) (τ τ' : D.what₂.Tau) :
   linarith
 
 /- English proof (translation)
-Use `⟨fun τ τ' h => ?_, fun w => GlobalTheory.CharInfPlace.exists_mk_tauE D w⟩` and prove the remaining obligations. Break down `InfinitePlace.mk_eq_iff.1 h with e | e` into its components or cases. Conclude with `D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 e))`. Conclude with `absurd e (conjugate_tauE_ne_tauE D τ τ')`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mk_tauE_bij (D : D7) : Function.Bijective (fun τ : D.what₂.Tau => InfinitePlace.mk (tauE D τ)) := by
   refine ⟨fun τ τ' h => ?_, fun w => GlobalTheory.CharInfPlace.exists_mk_tauE D w⟩
@@ -88,7 +88,7 @@ theorem mk_tauE_bij (D : D7) : Function.Bijective (fun τ : D.what₂.Tau => Inf
   · exact absurd e (conjugate_tauE_ne_tauE D τ τ')
 
 /- English proof (translation)
-Rewrite using `[InfinitePlace.isReal_mk_iff, NumberField.ComplexEmbedding.isReal_iff]`. Conclude with `conjugate_tauE_ne_tauE D τ τ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_tauE_complex (D : D7) (τ : D.what₂.Tau) : ¬ (InfinitePlace.mk (tauE D τ)).IsReal := by
   rw [InfinitePlace.isReal_mk_iff, NumberField.ComplexEmbedding.isReal_iff]
@@ -99,15 +99,15 @@ end GlobalTheory.LevelSeries
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hvp χ hc k _ σ hσ a`. Use `choose b hb using hvp.1.expW`. Take `⟨n, hn, hinf⟩` from `GlobalTheory.HeckeInfExp.hasInfQ_of_hasInfExp D χW χ _ hc hb`. Establish `hn' : ∀ τ, n τ = 2 * b τ + (W.rank : ℤ)` using `fun τ => by`. Establish `: (n τ : ℚ) = ((2 * b τ + (W.rank : ℤ) : ℤ) : ℚ)` using `by rw [hn]; push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hnorm : ∏ τ, ‖tauE D τ (a : D.host.E)‖ ^ 2 = |((Algebra.norm ℚ (a : D.host.E) : ℚ) : ℝ)|`. Rewrite using `[← Rat.cast_abs, ← NumberField.InfinitePlace.prod_eq_abs_norm]`. Use `(Fintype.prod_bijective _ (mk_tauE_bij D) _ _ (fun τ => ?_))` and prove the remaining obligations. Rewrite using `[NumberField.InfinitePlace.mult, if_neg (mk_tauE_complex D τ)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hA : ∏ τ, (tauE D τ (a : D.host.E) ^ ((b τ : ℤ) + (W.rank : ℤ)) * ((starRingEnd ℂ (tauE D τ (a : D.host.E))) ^ (b τ : ℤ))⁻¹) ∈ σ.fieldRange`. Use `prod_mem fun τ _ => mul_mem (zpow_mem ?_ _) (inv_mem (zpow_mem ?_ _))` and prove the remaining obligations. Take `⟨y, hy⟩` from `hσ (tauE D τ) a`. Conclude with `⟨y, hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy⟩` from `hσ ((starRingEnd ℂ).comp (tauE D τ)) a`. Conclude with `⟨y, hy⟩`. Take `⟨y, hy⟩` from `hA`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[hinf a, hy, ← hnorm, ← prod_norm_inv_pow, ← Finset.prod_mul_distrib]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hn' τ]`. Conclude with `phase_zpow_eq _ ((map_ne_zero _).2 a.ne_zero) _ W.rank`.
+A detailed English derivation is pending.
 -/
 theorem inf_eq_mul_normPow : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → ∀ (χ : Formalism.L2.Host.HChar D.host.E), ChrEq χW χ → ∀ (k : Type) [Field k] (σ : k →+* ℂ), ConjIn D σ → ∀ a : D.host.Eˣ, ∃ y : k, ((χ.inf a : ℂˣ) : ℂ) = σ y * ((|((Algebra.norm ℚ (a : D.host.E) : ℚ) : ℝ)| ^ (-(W.rank : ℝ) / 2) : ℝ) : ℂ) := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hvp χ hc k _ σ hσ a

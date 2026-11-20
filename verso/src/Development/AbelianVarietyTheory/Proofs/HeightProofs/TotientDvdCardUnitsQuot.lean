@@ -9,9 +9,9 @@ namespace GlobalTheory.FieldSize
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj GlobalTheory.Mem GlobalTheory.FinalJoin GlobalTheory.FinalJoin2 GlobalTheory.FieldSize
 
 /- English proof (translation)
-Establish `: NeZero N` using `⟨hN.ne'⟩`. Establish `hc : CharP (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)}) N`. Use `⟨fun m => ?_⟩` and prove the remaining obligations. Establish `h1 : Ideal.comap (algebraMap ℤ (𝓞 E)) (Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(N : ℤ)})) = Ideal.span {(N : ℤ)}` using `Ideal.comap_map_eq_self_of_faithfullyFlat _`. Rewrite `h1` using `[Ideal.map_span, Set.image_singleton, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {(N : 𝓞 E)})), Ideal.Quotient.eq_zero_iff_mem, ← Int.natCast_dvd_natCast, ← Ideal.mem_span_singleton (x := (m : ℤ)), ← h1, Ideal.mem_comap, map_natCast]`. Establish `hi : Function.Injective (ZMod.castHom (dvd_refl N) (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)}))` using `ZMod.castHom_injective _`. Use `Subgroup.card_dvd_of_injective _ (Units.map_injective (f := (ZMod.castHom (dvd_refl N) (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})).toMonoidHom) hi)` as an intermediate fact. Rewrite `this` using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem totient_dvd_card_units_quot (E : Type) [Field E] [NumberField E] (N : ℕ) (hN : 0 < N) :
     N.totient ∣ Nat.card (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})ˣ := by
@@ -32,21 +32,19 @@ theorem totient_dvd_card_units_quot (E : Type) [Field E] [NumberField E] (N : �
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `X F hR hF p hp'`. Take `rfl : F = FO X.toD7` from `SetLike.ext fun z => (hF z).trans (mem_FO_assembled_iff X z).symm`. Establish `hp : p = X.B.host.pde ∨ p = X.B.host.pde'` using `hp'`. Establish `hp0 : p.Prime`. Break down `hp with rfl | rfl` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `exacts [X.B.host.pde_prime, X.B.host.pde'_prime]`. Establish `key : FieldOK0 X.toD7 p`. Use `⟨hp, hermitianCodeWordStages_ringOfIntegers_full _, hermitianCodeWordStages_has_rootOfUnity _, ?_, ?_, TypeNormPin.hermitianCodeWordStages_typeNorms_principal _, fun h => Nat.not_prime_zero (X.B.toPre.level_cond 0 h).1, ?_⟩` and prove the remaining obligations. Break down `hp with rfl | rfl exacts [hR.roots _ (by simp), hR.roots _ (by simp)]` into its components or cases. Conclude with `curveOver_of_weberSet X.toD7 _ (Nat.mul_pos (Nat.mul_pos (X.B.host.g_prime 0).pos (X.B.host.g_prime 1).pos) hp0.pos) (hR.host _) fun L hL => hR.weber L hL p (by simpa using hp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hp with rfl | rfl exacts [X.B.toPre.level_split _ X.B.host.pde_level.1, X.B.toPre.level_split _ X.B.host.pde_level.2]` into its components or cases. Use `⟨key, ?_⟩` and prove the remaining obligations. Establish `hN : 0 < X.B.host.g 0 * X.B.host.g 1 * p` using `Nat.mul_pos (Nat.mul_pos (X.B.host.g_prime 0).pos (X.B.host.g_prime 1).pos) hp0.pos`. Establish `hroot : Complex.exp (2 * Real.pi * Complex.I / (xiOrd X.B.host (X.B.host.g 0 * X.B.host.g 1 * p) : ℕ)) ∈ FO X.toD7`. Break down `hp with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hR.roots (xiOrd X.B.host (X.B.host.g 0 * X.B.host.g 1 * X.B.host.pde)) (by simp)`. Conclude with `hR.roots (xiOrd X.B.host (X.B.host.g 0 * X.B.host.g 1 * X.B.host.pde')) (by simp)`. Establish `hI : Ideal.span {((X.B.host.g 0 * X.B.host.g 1 * p : ℕ) : 𝓞 X.B.host.E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.2 hN.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `: Finite (𝓞 X.B.host.E ⧸ Ideal.span {((X.B.host.g 0 * X.B.host.g 1 * p : ℕ) : 𝓞 X.B.host.E)})` using `Ideal.finiteQuotientOfFreeOfNeBot _ hI`. Establish `ho : 0 < xiOrd X.B.host (X.B.host.g 0 * X.B.host.g 1 * p)` using `Nat.mul_pos (Nat.mul_pos two_pos (classNumber_pos _)) Nat.card_pos`. Establish `h15 : 15 ∣ p - 1`. Use `X.B.host.pde_mod` as an intermediate fact. Apply the tactic sequence `rcases hp with rfl | rfl <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hd : 15 * classNumber X.B.host.E ∣ xiOrd X.B.host (X.B.host.g 0 * X.B.host.g 1 * p)`. Establish `h1` using `(h15.trans ((Nat.totient_prime hp0).symm.dvd.trans (Nat.totient_dvd_of_dvd (Dvd.intro_left _ rfl)))).trans (totient_dvd_card_units_quot X.B.host.E _ hN)`. Rewrite using `[mul_comm]`. Conclude with `Nat.mul_dvd_mul (Dvd.intro_left _ rfl) h1`. Use `GlobalTheory.NormOneChar.mem_of_pow_eq_one ho hroot ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `hd`. Establish `hh : 15 * classNumber X.B.host.E ≠ 0` using `mul_ne_zero (by norm_num) (classNumber_ne_zero _)`. Rewrite using `[hc, pow_mul]`. Use `(Complex.isPrimitiveRoot_exp _ hh).pow_eq_one` as an intermediate fact. Express the relevant statement in the definitionally equal form `(Complex.exp (2 * Real.pi * Complex.I / (15 * classNumber X.B.host.E : ℕ)) ^ _) ^ c = 1`.
-
-Rewrite using `[this, one_pow]`.
+A detailed English derivation is pending.
 -/
 theorem fieldOK0_and_zeta_mem : ∀ (X : Stages) (F : IntermediateField ℚ ℂ), Rich X.B.toPre F → (∀ z, z ∈ F ↔ ∃ x ∈ X.B.Ks, X.B.embLL x = z) → ∀ p : ℕ, (p = X.toD7.host.pde ∨ p = X.toD7.host.pde') → FieldOK0 X.toD7 p ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta (15 * classNumber X.toD7.host.E) ∈ FO X.toD7 := by
   intro X F hR hF p hp'

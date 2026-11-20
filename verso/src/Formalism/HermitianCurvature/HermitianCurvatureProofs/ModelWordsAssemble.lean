@@ -7,20 +7,20 @@ open Matrix Finset Formalism.YangianSpanCharacter.T Formalism.FourierDecayAlt.R 
 namespace Mx9
 
 /- English proof (translation)
-The claim follows from `Complex.ext (by simp) (by simp [h])`.
+A detailed English derivation is pending.
 -/
 theorem eq_ofReal {z : ℂ} (h : z.im = 0) : z = ((z.re : ℝ) : ℂ) := Complex.ext (by simp) (by simp [h])
 
 /- English proof (translation)
-Conclude with `Complex.conj_eq_iff_im.mpr h`.
+A detailed English derivation is pending.
 -/
 theorem star_eq {z : ℂ} (h : z.im = 0) : star z = z := by
   exact Complex.conj_eq_iff_im.mpr h
 
 /- English proof (translation)
-Introduce `heq`. Establish `h1` using `congrArg Complex.re heq`. Simplify using `only [Complex.sub_re, Complex.intCast_re] at h1`. Rewrite `h` using `[h1]`. Establish `h2 : ((|n| : ℤ) : ℝ) ≤ 2` using `by exact_mod_cast hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Int.cast_abs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem far {z z' : ℂ} (h : 2 < |z.re - z'.re|) (n : ℤ) (hn : |n| ≤ 2) : z - z' ≠ (n : ℂ) := by
   intro heq
@@ -34,7 +34,7 @@ theorem far {z z' : ℂ} (h : 2 < |z.re - z'.re|) (n : ℤ) (hn : |n| ≤ 2) : z
 noncomputable def ty0 (P : Par) : Ty P := fun _ => 0
 
 /- English proof (translation)
-Introduce `h0`. Rewrite `h0` using `[(hR P π Y).1]`. Establish `h1 : I.xpoly P.k (rho P π) Y = 0` using `by exact_mod_cast h0`. Rewrite `h` using `[h1, mul_zero]`. Conclude with `lt_irrefl _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xC_ne (hR : RealPoints) (P : Par) (π : Ty P) (n : ℕ) (Y : ℝ)
     (h : 0 < (-1 : ℝ) ^ n * I.xpoly P.k (rho P π) Y) : xC P π (Y : ℂ) ≠ 0 := by
@@ -45,7 +45,7 @@ theorem xC_ne (hR : RealPoints) (P : Par) (π : Ty P) (n : ℕ) (Y : ℝ)
   exact lt_irrefl _ h
 
 /- English proof (translation)
-Introduce `h0`. Rewrite `h0` using `[(hR P (ty0 P) Y).2]`. Establish `h1 : I.qpoly P.k P.T P.T' P.u P.u' Y = 0` using `by exact_mod_cast h0`. Rewrite `h` using `[h1]`. Conclude with `lt_irrefl _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qC_ne (hR : RealPoints) (P : Par) (Y : ℝ)
     (h : 0 < I.qpoly P.k P.T P.T' P.u P.u' Y) : qC P (Y : ℂ) ≠ 0 := by
@@ -56,14 +56,14 @@ theorem qC_ne (hR : RealPoints) (P : Par) (Y : ℝ)
   exact lt_irrefl _ h
 
 /- English proof (translation)
-Unfold `ypt`. Apply the tactic sequence `split_ifs <;> simp [h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ypt_im {S : Type} (a : Letter ℂ S) (h : a.pt.im = 0) : (ypt a).im = 0 := by
   unfold ypt
   split_ifs <;> simp [h]
 
 /- English proof (translation)
-Simplify using `[sitesFrom, List.mem_ofFn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem site_mem (P : Par) (i : Fin P.r) : siteA P i ∈ sitesFrom P 0 := by
   simp [sitesFrom, List.mem_ofFn]
@@ -73,11 +73,9 @@ end Mx9
 open Mx9
 
 /- English proof (translation)
-Introduce `hW hLS hSO hCh hLC P hP l S _ _ w hw`. Use `⟨fun i hi => hW.1 ℂ (A P) S (QQlev P l i) (qC P) w (hLS P hP l i hi) hw, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Establish `hσ` using `((hSO P l).1 (siteA P i) (site_mem P i))`. Use `hW.2.1 ℂ (A P) S (siteA P i) (QQlev P l (i + 1)) (QQlev P l i) w hσ.1 (hLC P l i) ?_ hw` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Y hY`. Establish `h` using `(hCh P l).2 i Y`. Rewrite `h` using `[hY]`. Conclude with `h`. Introduce `Y hY hs z`.
-
-Conclude with `hW.2.2.2.1 ℂ (A P) S _ _ w Y (hSO P l) hw hY hs z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem model_words_assemble : Formalism.FourierDecayAlt.M.ModelWordsAssemble := by
   intro hW hLS hSO hCh hLC P hP l S _ _ w hw
@@ -93,15 +91,13 @@ theorem model_words_assemble : Formalism.FourierDecayAlt.M.ModelWordsAssemble :=
     exact hW.2.2.2.1 ℂ (A P) S _ _ w Y (hSO P l) hw hY hs z
 
 /- English proof (translation)
-Introduce `hIS hQP hQS hTy hR P hP l hl1 hlk S _ _ w hw`. Take `⟨hnd, hpt, hpw⟩` from `hw`. Establish `key : ∀ (Y : ℝ), I.OnCut P.u P.u' l Y → ∀ e ∈ ({-1, 0, 1} : Finset ℝ), ((Y + e : ℝ) : ℂ) ∈ (startM P l).inv`. Introduce `Y hY e he`. Use `show ∀ π, xC P π _ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `π`. Conclude with `xC_ne hR P π (P.k - l) (Y + e) (hIS P.k P.u P.u' (rho P π) l Y hl1 hlk (hTy P hP π) hY e he)`. Establish `qpos : ∀ (Y : ℝ), I.OnCut P.u P.u' l Y → (startM P l).q (Y : ℂ) ≠ 0`. Introduce `Y hY`. Conclude with `qC_ne hR P Y (hQP P.k P.u P.u' (rho P (ty0 P)) l Y P.T P.T' hl1 hlk (hTy P hP (ty0 P)) hY hP.T_pos hP.T'_pos)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `qsh : ∀ (Y : ℝ), I.OnCut P.u P.u' l Y → (startM P l).q ((Y : ℂ) - 1) ≠ 0`. Introduce `Y hY`. Establish `h` using `qC_ne hR P (Y - 1) (hQS P.k P.u P.u' (rho P (ty0 P)) l Y P.T P.T' hl1 hlk (hTy P hP (ty0 P)) hY hP.T_pos hP.T'_pos)`. Move the coercions through the operations in `at h`. Conclude with `h`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hnd, fun a ha => star_eq (hpt a ha).1, fun a ha => ?_, hpw.imp fun h n hn => far h n hn⟩` and prove the remaining obligations. Take `⟨him, hcut⟩` from `hpt a ha`. Establish `hz : a.pt = ((a.pt.re : ℝ) : ℂ)` using `eq_ofReal him`. Rewrite using `[hz]`. Use `⟨?_, ?_, ?_, qpos _ hcut, qsh _ hcut⟩` and prove the remaining obligations.
-
-Apply the tactic sequence `convert key _ hcut 0 (by norm_num) using 1 <;> push_cast <;> ring`. Apply the tactic sequence `convert key _ hcut 1 (by norm_num) using 1 <;> push_cast <;> ring`. Apply the tactic sequence `convert key _ hcut (-1) (by norm_num) using 1 <;> push_cast <;> ring`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cut_admissible : Formalism.FourierDecayAlt.M.CutAdm := by
   intro hIS hQP hQS hTy hR P hP l hl1 hlk S _ _ w hw
@@ -132,19 +128,17 @@ theorem cut_admissible : Formalism.FourierDecayAlt.M.CutAdm := by
   · convert key _ hcut (-1) (by norm_num) using 1 <;> push_cast <;> ring
 
 /- English proof (translation)
-Introduce `hIS hIS2 hQP hQS hTy hR P hP l hl1 hlk S _ _ w hw`. Take `⟨hnd, hpt, hpw⟩` from `hw`. Establish `key : ∀ (Y : ℝ), I.OnCut P.u P.u' l Y → ∀ e ∈ ({-1, 0, 1} : Finset ℝ), ((Y + e : ℝ) : ℂ) ∈ (startM P l).inv`. Introduce `Y hY e he`. Use `show ∀ π, xC P π _ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `π`. Conclude with `xC_ne hR P π (P.k - l) (Y + e) (hIS P.k P.u P.u' (rho P π) l Y hl1 hlk (hTy P hP π) hY e he)`. Establish `qpos : ∀ (Y : ℝ), I.OnCut P.u P.u' l Y → (startM P l).q (Y : ℂ) ≠ 0`. Introduce `Y hY`. Conclude with `qC_ne hR P Y (hQP P.k P.u P.u' (rho P (ty0 P)) l Y P.T P.T' hl1 hlk (hTy P hP (ty0 P)) hY hP.T_pos hP.T'_pos)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `qsh : ∀ (Y : ℝ), I.OnCut P.u P.u' l Y → (startM P l).q ((Y : ℂ) - 1) ≠ 0`. Introduce `Y hY`. Establish `h` using `qC_ne hR P (Y - 1) (hQS P.k P.u P.u' (rho P (ty0 P)) l Y P.T P.T' hl1 hlk (hTy P hP (ty0 P)) hY hP.T_pos hP.T'_pos)`. Move the coercions through the operations in `at h`. Conclude with `h`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key2 : ∀ (Y : ℝ), I.OnCut P.u P.u' l Y → ((Y + 2 : ℝ) : ℂ) ∈ (startM P l).inv`. Introduce `Y hY`. Use `show ∀ π, xC P π _ ≠ 0`. Introduce `π`. Conclude with `xC_ne hR P π (P.k - l) (Y + 2) (hIS2 P.k P.u P.u' (rho P π) l Y hl1 hlk (hTy P hP π) hY 2 (by norm_num))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hnd, fun a ha => star_eq (hpt a ha).1, fun a ha => ?_, hpw.imp fun h n hn => far h n hn⟩` and prove the remaining obligations. Take `⟨him, hcut⟩` from `hpt a ha`. Establish `hz : ypt a = (((ypt a).re : ℝ) : ℂ)` using `eq_ofReal (ypt_im a him)`. Rewrite using `[hz]`. Break down `hcut with hc | hc` into its components or cases.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨?_, ?_, fun _ => ?_, qpos _ hc⟩` and prove the remaining obligations. Apply the tactic sequence `convert key _ hc 0 (by norm_num) using 1 <;> push_cast <;> ring`. Apply the tactic sequence `convert key _ hc 1 (by norm_num) using 1 <;> push_cast <;> ring`. Apply the tactic sequence `convert key2 _ hc using 1 <;> push_cast <;> ring`. Use `⟨?_, ?_, fun _ => ?_, ?_⟩` and prove the remaining obligations.
-
-Apply the tactic sequence `convert key _ hc (-1) (by norm_num) using 1 <;> push_cast <;> ring`. Apply the tactic sequence `convert key _ hc 0 (by norm_num) using 1 <;> push_cast <;> ring`. Apply the tactic sequence `convert key _ hc 1 (by norm_num) using 1 <;> push_cast <;> ring`. Apply the tactic sequence `convert qsh _ hc using 2 <;> push_cast <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cut_admissible_base : Formalism.FourierDecayAlt.M.CutAdmBase := by
   intro hIS hIS2 hQP hQS hTy hR P hP l hl1 hlk S _ _ w hw
@@ -186,11 +180,11 @@ theorem cut_admissible_base : Formalism.FourierDecayAlt.M.CutAdmBase := by
     · convert qsh _ hc using 2 <;> push_cast <;> ring
 
 /- English proof (translation)
-Introduce `hIS hQP hQS hCP hCPC hFA hFW hCD hLE hLS hSO hTy hR hCA P hP l hl1 hlk`. Take `⟨L, hL⟩` from `hLE P`. Establish `hst` using `hLS P L hL`. Establish `hstart` using `hSO P hP l L hL`. Use `⟨L, hL, hst, hstart, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S _ _ w hw`. Establish `hAdm` using `hCA hIS hQP hQS hTy hR P hP l hl1 hlk S w hw`. Take `⟨_, _, h3, h4, h5⟩` from `hFW (A P) S P.r L (startM P l) w hst hstart hAdm`. Use `⟨hFA (A P) S P.r L (startM P l) w hst hstart hAdm, h3, h4, h5, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hCD (A P) S P.r L (startM P l) (Ty P) (kap P) (fun π Y => x0 P l π Y) (fun Y => rfl) (fun Y => rfl) w).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e π`. Conclude with `hCPC hIS hQP hQS hCP S P.k P.u P.u' (rho P π) l P.T P.T' w hl1 hlk (hTy P hP π) hP.T_pos hP.T'_pos hw.2.1 hw.2.2 e`.
+A detailed English derivation is pending.
 -/
 theorem model_assemble : Formalism.FourierDecayAlt.M.ModelAssemble := by
   intro hIS hQP hQS hCP hCPC hFA hFW hCD hLE hLS hSO hTy hR hCA P hP l hl1 hlk
@@ -209,15 +203,13 @@ theorem model_assemble : Formalism.FourierDecayAlt.M.ModelAssemble := by
       hP.T_pos hP.T'_pos hw.2.1 hw.2.2 e
 
 /- English proof (translation)
-Introduce `hIS hIS2 hQP hQS hCPB hCPCB hFAR hARB hWJ hCD hLE hLS hSO hTy hR hCAB P hP l hl1 hlk`. Take `⟨L, hL⟩` from `hLE P`. Establish `hst` using `hLS P L hL`. Establish `hstart` using `hSO P hP l L hL`. Use `⟨L, hL, hst, hstart, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S _ _ w hw`. Establish `hAB` using `hCAB hIS hIS2 hQP hQS hTy hR P hP l hl1 hlk S w hw`. Establish `hAR` using `hARB (A P) S P.r L (startM P l) w hAB`. Establish `hF` using `hFAR (A P) S P.r L (startM P l) w hst hstart hAR`. Take `⟨jRR, jTT, _, jN, jreg⟩` from `hWJ (A P) S P.r L (startM P l) w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨hF, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← jRR, hF.form, FrameData.d, jN]`. Introduce `Y hY`. Establish `h` using `hF.frame_τ Y (by rw [jreg]; exact hY)`. Rewrite `h` using `[jTT]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `Y hY hY1`. Establish `h` using `hF.frame_l Y hY hY1`. Rewrite `h` using `[jTT, FrameData.l]`. Then use the resulting hypothesis. Conclude with `(hCD (A P) S P.r L (startM P l) (Ty P) (kap P) (fun π Y => x0 P l π Y) (fun Y => rfl) (fun Y => rfl) w).2.2`. Introduce `e π`.
-
-Conclude with `hCPCB hIS hQP hQS hCPB S P.k P.u P.u' (rho P π) l P.T P.T' w hl1 hlk (hTy P hP π) hP.T_pos hP.T'_pos hw.2.1 hw.2.2 e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem model_assemble_base : Formalism.FourierDecayAlt.M.ModelAssembleBase := by
   intro hIS hIS2 hQP hQS hCPB hCPCB hFAR hARB hWJ hCD hLE hLS hSO hTy hR hCAB P hP l hl1 hlk

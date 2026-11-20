@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrep
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.formOrd_api | exact GlobalTheory.FieldPair.formOrd_api | (intros; apply GlobalTheory.FieldPair.formOrd_api <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.dvrPlace_topForm_orders_api : ∀ {k K : Type} [Field k] [CharZero k] [Field K] (c : k →+* K) (n : ℕ) (x : Fin n → K), TrBasis c x →
   IsFreeGen K (dForm c x) ∧

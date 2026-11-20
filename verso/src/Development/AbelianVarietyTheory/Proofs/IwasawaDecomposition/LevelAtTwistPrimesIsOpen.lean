@@ -14,27 +14,23 @@ open Classical in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S mu cst L G m2 hL hQg j b P`. Establish `hc : cst.Ok` using `hL.cst_ok`. Set `P' : rowSG Pr sel mu` to `⟨P.1, Finset.mem_union_right _ P.2⟩`. Set `h : AutY X R j` to `L.h j b P'`. Establish `hPg` using `hQg P.1 P.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq` using `ciQ_mem P.1`. Establish `hq0 : ((qOf P.1 : ℕ) : X.E) ≠ 0`. Rewrite using `[Nat.cast_ne_zero]`. Introduce `h0`. Conclude with `P.1.ne_bot ((Ideal.absNorm_eq_zero_iff).1 h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `qth_bound P.1 ((toGLm X.E (R.N j + cOf R j) h : GL (Fin (R.N j + cOf R j)) X.E) : Matrix (Fin (R.N j + cOf R j)) (Fin (R.N j + cOf R j)) X.E)`. Take `⟨b', hb⟩` from `qth_bound P.1 ((toGLm X.E (R.N j + cOf R j) h⁻¹ : GL (Fin (R.N j + cOf R j)) X.E) : Matrix (Fin (R.N j + cOf R j)) (Fin (R.N j + cOf R j)) X.E)`. Take `⟨e, he⟩` from `qth_exists_e P.1 hq0`. Use `⟨a + b' + e + 1, by omega, fun g hg => ?_⟩` and prove the remaining obligations. Set `r : AutY X R j` to `twZrExt (c := cOf R j) g.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr` using `qth_ext_close (c := cOf R j) P.1 g.1 _ hg`. Establish `hrinv : r⁻¹ = twZrExt (c` using `cOf R j) (g⁻¹ : ↥(GLint X.E (R.N j) P.1)).1 := LinearEquiv.ext fun v => rfl`. Establish `hr'` using `qth_ext_close (c := cOf R j) P.1 (g⁻¹ : ↥(GLint X.E (R.N j) P.1)).1 _ (qth_princ_inv P.1 g hg)`. Establish `hy : QClose P.1 (qOf P.1) (h⁻¹ * r * h)` using `qth_conj_close P.1 (qOf P.1) h r a b' _ e ha hb hr he (by omega)`. Establish `hy' : QClose P.1 (qOf P.1) (h⁻¹ * r * h)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (h⁻¹ * r * h)⁻¹ = h⁻¹ * r⁻¹ * h` using `by simp only [_root_.mul_inv_rev, inv_inv, mul_assoc]`. Rewrite using `[e3, hrinv]`. Conclude with `qth_conj_close P.1 (qOf P.1) h _ a b' _ e ha hb hr' he (by omega)`. Establish `hJ : h⁻¹ * r * h ∈ Jat (Pr` using `Pr) (R := R) cst.sharp j P.1 := by`. Rewrite using `[twJat_Q cst.sharp j hPg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `qth_mem_JQ P.1 (qOf P.1) hq0 (R.k + j) _ hy hy'`. Establish `hC : r ∈ Loc.Cbe (Jat (Pr` using `Pr) (R := R) cst.sharp j P.1) h := by`. Use `⟨zeroExtension_mem_R1 g.1, ?_⟩` and prove the remaining obligations. Use `show (MulAut.conj h⁻¹) r ∈ Jat (Pr := Pr) (R := R) cst.sharp j P.1`. Simplify `hJ` using `[MulAut.conj_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : g.1 ∈ prCat (Pr` using `Pr) cst.sharp j P.1 h := ⟨r, hC, twZrExt_inX g.1⟩`. Establish `hH : g ∈ (L.levQ j b P).H`. Rewrite using `[hL.grpQ j b P]`. Conclude with `Subgroup.mem_subgroupOf.2 hmem`. Use `⟨hH, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hL.chrQ j b P ⟨g, hH⟩ r hC (fun x => twZrExt_inX g.1 x)]`. Establish `hstd : r ∈ stabL X.E (R.N j + cOf R j) (stdAt X.E (R.N j + cOf R j) P.1)` using `twZrExt_stab P.1 _ (fun v => ciMem_stdAt P.1 v) g.2`. Establish `hint : IntAt P.1 (Loc.n1Arg r)`. Unfold `Loc.n1Arg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Use `ciIntAt_sum _ _ fun i _ => ?_` and prove the remaining obligations. Establish `hv : r (Loc.eN X.E (R.N j + cOf R j) (R.N j + i + 1)) ∈ stdAt X.E (R.N j + cOf R j) P.1` using `(hstd _).2 (twZr_eN_mem P.1 _ _)`. Rewrite `hv` using `[ciMem_stdAt]`. Unfold `Loc.atN`. Use `split_ifs`.
-
-Conclude with `hv _`. Conclude with `ciIntAt_zero`. Unfold `chiInv`. Rewrite using `[hc.psi_int P' _ hint, inv_one, one_mul]`. Unfold `lamRow`.
-
-Rewrite using `[if_neg hPg]`. Conclude with `qth_lamQB_one hq hq0 _ _ hy`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaOpen_levQ : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}, L.Ok Ch sel mu cst G m2 → (∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) → ∀ (j : ℕ) (b : L.β j), ThetaOpen (L.levQ j b) := by
   intro X Pr R Ch sel S mu cst L G m2 hL hQg j b P

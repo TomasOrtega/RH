@@ -9,7 +9,7 @@ namespace Formalism.L2.Col
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV
 
 /- English proof (translation)
-Establish `hdiv : p ≤ p' → (p - (k₀ + m - 1)) / t ≤ (p' - (k₀ + m - 1)) / t` using `fun h => Nat.div_le_div_right (by omega)`. Unfold `ocbAllow symIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ocbPhi_forb_iff {k₀ m t a p p' : ℕ} (hk : 1 ≤ k₀) (hm : 4 ≤ m) (hra : k₀ + m - 1 ≤ a) (hne : p ≠ p') (hp' : p' < a) :
     (a ≤ p ∨ (p' < k₀ + m - 1 ∧ p < a ∧ (k₀ + m - 1 ≤ p ∨ symIdx k₀ (m / 2 - 1) p' < symIdx k₀ (m / 2 - 1) p ∨
@@ -21,28 +21,28 @@ theorem ocbPhi_forb_iff {k₀ m t a p p' : ℕ} (hk : 1 ≤ k₀) (hm : 4 ≤ m)
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `LocE.fPos LocE.fIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ocbPhi_fIdx_fPos {k₀ c n l : ℕ} (hk : k₀ ≤ n) (hl : l < n + c) : LocE.fIdx k₀ c n (LocE.fPos k₀ c n l) = l := by
   unfold LocE.fPos LocE.fIdx
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `LocE.fPos`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ocbPhi_fPos_lt {k₀ c n l : ℕ} (_hk : k₀ ≤ n) (hl : l < n + c) : LocE.fPos k₀ c n l < n + c := by
   unfold LocE.fPos
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `LocE.fIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ocbPhi_fIdx_lt {k₀ c n p : ℕ} (_hk : k₀ ≤ n) (hp : p < n + c) : LocE.fIdx k₀ c n p < n + c := by
   unfold LocE.fIdx
   split_ifs <;> omega
 
 /- English proof (translation)
-Take `⟨h1, -, h4, hj, hjm, hc, hn', hn⟩` from `hr`. Establish `hjt : (j - 1) * t ≤ j * t` using `Nat.mul_le_mul_right t (Nat.sub_le j 1)`. Use `⟨by omega, by omega, by omega, by omega, h1, h4⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ocbPhi_ranks {k₀ m t j n' c n : ℕ} (hr : ocbRanks k₀ m t j n' c n) :
     k₀ ≤ n' ∧ k₀ ≤ n ∧ k₀ + m - 1 + (j - 1) * t ≤ n + c ∧ k₀ + m - 1 + (j - 1) * t = n' + (c + 1) ∧ 1 ≤ k₀ ∧ 4 ≤ m := by
@@ -51,7 +51,7 @@ theorem ocbPhi_ranks {k₀ m t j n' c n : ℕ} (hr : ocbRanks k₀ m t j n' c n)
   refine ⟨by omega, by omega, by omega, by omega, h1, h4⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩ : ∃ a, k₀ = a + 1` from `⟨k₀ - 1, by omega⟩`. Establish `hs : r - 1 = (a + 1) + (r - (a + 1) - 1)` using `by omega`. Rewrite using `[hs, Finset.sum_range_add, Finset.sum_range_succ]`. Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ocbPhi_sum_split {R : Type} [CommRing R] (k₀ r : ℕ) (hk : 1 ≤ k₀) (hr : k₀ + 1 ≤ r) (M : ℕ → ℕ → R) :
     ∑ i ∈ Finset.range (r - 1), M i (i + 1) =
@@ -67,11 +67,11 @@ section Loc
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Use `letI := resField P`. Unfold `LocE.unitV ocbChiV`. Distinguish the cases in `hx : redP P a = 0`. Establish `hnu : ¬ IsUnit (redP P a)`. Rewrite using `[hx]`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_isUnit_zero`. Rewrite using `[dif_neg hnu, dif_pos hx, map_zero]`. Establish `hu : IsUnit (redP P a)` using `isUnit_iff_ne_zero.mpr hx`. Rewrite using `[dif_pos hu, dif_neg hx]`. Rewrite using `[show hu.unit = Units.mk0 _ hx from Units.ext rfl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ocbPhi_unitV (σ : K →+* ℂ) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E) :
     σ (LocE.unitV χ a) = @ocbChiV (𝓞 E ⧸ P.asIdeal) (resField P) ((Units.map (σ : K →* ℂ)).comp χ) (redP P a) := by
@@ -88,11 +88,9 @@ theorem ocbPhi_unitV (σ : K →+* ℂ) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
     rfl
 
 /- English proof (translation)
-Introduce `l s hl hs`. Take `⟨hk', hk, -, hsrc, -, -⟩` from `ocbPhi_ranks hr`. Substitute `hc'` using the available equality. Unfold `LocE.PhiGS at h`. Simplify using `only at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Use `split_ifs at h with hc`. Establish `hp` using `ocbPhi_fPos_lt hk hl`. Establish `hp'` using `ocbPhi_fPos_lt hk' hs`. Establish `e` using `hc.1 (LocE.fPos k₀ c n l) (LocE.fPos k₀ (c + 1) n' s) hp (by omega)`. Rewrite `e` using `[ocbBEnt_entB, ocbPhi_fIdx_fPos hk hl, ocbPhi_fIdx_fPos hk' hs]`.
-
-Conclude with `e`. Conclude with `absurd rfl h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ocbPhiGS_supp (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ m t j n' c' c n : ℕ}
     (hr : ocbRanks k₀ m t j n' c n) (hc' : c' = c + 1) (y : HomE E (n' + c') (n + c))
@@ -112,9 +110,7 @@ theorem ocbPhiGS_supp (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (
   · exact absurd rfl h
 
 /- English proof (translation)
-Establish `h` using `redP_prod (P := Q) (Finset.univ : Finset (Fin 2)) ![a, b] (by`. Introduce `i _`. Use `fin_cases i`. Conclude with `ha`. Conclude with `hb)`.
-
-Simplify `h` using `[Fin.prod_univ_two]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem redP_mul_of_intAt_of_intAt {F : Type} [Field F] [NumberField F] {Q : HeightOneSpectrum (𝓞 F)} {a b : F}
     (ha : IntAt Q a) (hb : IntAt Q b) : redP Q (a * b) = redP Q a * redP Q b := by
@@ -126,9 +122,7 @@ private theorem redP_mul_of_intAt_of_intAt {F : Type} [Field F] [NumberField F] 
   simpa [Fin.prod_univ_two] using h
 
 /- English proof (translation)
-Establish `h` using `redP_sum (P := Q) (Finset.univ : Finset (Fin 2)) ![a, b] (by`. Introduce `i _`. Use `fin_cases i`. Conclude with `ha`. Conclude with `hb)`.
-
-Simplify `h` using `[Fin.sum_univ_two]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem redP_add_of_intAt {F : Type} [Field F] [NumberField F] {Q : HeightOneSpectrum (𝓞 F)} {a b : F}
     (ha : IntAt Q a) (hb : IntAt Q b) : redP Q (a + b) = redP Q a + redP Q b := by
@@ -140,51 +134,43 @@ private theorem redP_add_of_intAt {F : Type} [Field F] [NumberField F] {Q : Heig
   simpa [Fin.sum_univ_two] using h
 
 /- English proof (translation)
-Take `⟨hk', hk, haN, hsrc, hk1, hm4⟩` from `ocbPhi_ranks hr`. Substitute `hc'` using the available equality. Use `letI := resField P`. Establish `hqn : q ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Equip the data with the indicated structure. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hu (by simp)`. Establish `hq0 : ((q : ℕ) : E) ≠ 0` using `Nat.cast_ne_zero.mpr hqn`. Establish `hF : ∀ p p', p < n + c → p' < n' + (c + 1) → ocbEnt k₀ (c + 1) n' c n ybar p p' = redP P (LocE.entB q k₀ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) y p p')`. Introduce `p p' hp hp'`. Rewrite using `[ocbBEnt_entB]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hred _ _ (ocbPhi_fIdx_lt hk hp) (ocbPhi_fIdx_lt hk' hp')`. Establish `hI : ∀ p p', p < n + c → p' < n' + (c + 1) → IntAt P (LocE.entB q k₀ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) y p p')`. Introduce `p p' hp hp'`. Rewrite using `[ocbBEnt_entB]`. Conclude with `hint _ _ (ocbPhi_fIdx_lt hk hp) (ocbPhi_fIdx_lt hk' hp')`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `hz : ∀ x : E, IntAt P x → (redP P x = 0 ↔ IntAt P (x / (q : E)))`. Introduce `x hx`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Conclude with `ciIntAt_div hq hu hx h0`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Introduce `hb`. Establish `e : x = (q : E) * (x / (q : E))`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, redP_mul_of_intAt_of_intAt ciIntAt_q hb, redP_natCast_eq_zero hq, zero_mul]`. Unfold `LocE.PhiGS ocbPhiS`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Use `split_ifs with h1 h2 h2`. Rewrite using `[map_mul, map_inv₀, ocbPhi_unitV]`. Unfold `LocE.lamGvS`. Rewrite using `[map_mul, map_prod]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Repeatedly rewrite using `[ocbPhi_unitV]`. Establish `h0 : ocbEnt k₀ (c + 1) n' c n ybar (k₀ - 1) k₀ = 0`. Assume the negation of the conclusion as `hnz`. Establish `ha` using `h2.2 (k₀ - 1) k₀ (by omega) (by omega) (by omega) hnz`. Unfold `ocbAllow at ha`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs at ha <;> omega`. Establish `e1 : ∑ i ∈ Finset.range (k₀ - 1), redP P (LocE.entB q k₀ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) y i (i + 1)) = ∑ i ∈ Finset.range (k₀ - 1), ocbEnt k₀ (c + 1) n' c n ybar i (i + 1)`. Use `Finset.sum_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Use `Finset.mem_range.mp hi` as an intermediate fact. Conclude with `(hF _ _ (by omega) (by omega)).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : ∑ i ∈ Finset.range (k₀ + m - 1 - k₀ - 1), redP P (LocE.entB q k₀ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) y (k₀ + i) (k₀ + i + 1)) = ∑ i ∈ Finset.range (k₀ + m - 1 - k₀ - 1), ocbEnt k₀ (c + 1) n' c n ybar (k₀ + i) (k₀ + i + 1)`. Use `Finset.sum_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Use `Finset.mem_range.mp hi` as an intermediate fact. Conclude with `(hF _ _ (by omega) (by omega)).symm`. Establish `hS : redP P (∑ i ∈ Finset.range (k₀ - 1), LocE.entB q k₀ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) y i (i + 1) + ∑ i ∈ Finset.range (k₀ + m - 1 - k₀ - 1), LocE.entB q k₀ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) y (k₀ + i) (k₀ + i + 1)) = ∑ i ∈ Finset.range (k₀ + m …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `i1 : ∀ i ∈ Finset.range (k₀ - 1), IntAt P (LocE.entB q k₀ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) y i (i + 1))`. Introduce `i hi`. Use `Finset.mem_range.mp hi` as an intermediate fact. Conclude with `hI _ _ (by omega) (by omega)`. Establish `i2 : ∀ i ∈ Finset.range (k₀ + m - 1 - k₀ - 1), IntAt P (LocE.entB q k₀ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) y (k₀ + i) (k₀ + i + 1))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i hi`. Use `Finset.mem_range.mp hi` as an intermediate fact. Conclude with `hI _ _ (by omega) (by omega)`. Rewrite using `[redP_add_of_intAt (ciIntAt_sum _ _ i1) (ciIntAt_sum _ _ i2), redP_sum _ _ i1, redP_sum _ _ i2, e1, e2, ocbPhi_sum_split k₀ (k₀ + m - 1) hk1 (by omega), h0, add_zero]`. Establish `hB : ∀ i ∈ Finset.range (j - 1), redP P (Matrix.of fun (s s' : Fin t) => LocE.entB q k₀ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) y (k₀ + m - 1 + i * t + ↑s) (k₀ + m - 1 + i * t + ↑s')).det = (Matrix.of fun (s s' : Fin t) => ocbEnt k₀ (c + 1) n' c n ybar (k₀ + m - 1 + i * …`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `i hi`. Establish `hi'` using `Finset.mem_range.mp hi`. Establish `hmul : (i + 1) * t ≤ (j - 1) * t` using `Nat.mul_le_mul_right t hi'`. Rewrite `hmul` using `[Nat.add_mul, one_mul]`. Establish `hlt : ∀ s : Fin t, k₀ + m - 1 + i * t + ↑s < k₀ + m - 1 + (j - 1) * t` using `fun s => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `s.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[redP_det (Matrix.of fun (s s' : Fin t) => LocE.entB q k₀ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) y (k₀ + m - 1 + i * t + ↑s) (k₀ + m - 1 + i * t + ↑s')) (fun (s s' : Fin t) => hI (k₀ + m - 1 + i * t + ↑s) (k₀ + m - 1 + i * t + ↑s') (by have := hlt s; omega) (by have := …`. Use `congr 1`. Use extensionality with `s s'`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. It suffices to derive a contradiction.
 
-Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Conclude with `(hF _ _ (by have := hlt s; omega) (by have := hlt s'; omega)).symm`. Establish `hT : redP P (Matrix.of fun (s s' : Fin (k₀ + m - 1 + (j - 1) * t)) => LocE.entB q k₀ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) y ↑s ↑s').det = (Matrix.of fun (s s' : Fin (k₀ + m - 1 + (j - 1) * t)) => ocbEnt k₀ (c + 1) n' c n ybar ↑s ↑s').det`. Rewrite using `[redP_det (Matrix.of fun (s s' : Fin (k₀ + m - 1 + (j - 1) * t)) => LocE.entB q k₀ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) y ↑s ↑s') (fun (s s' : Fin (k₀ + m - 1 + (j - 1) * t)) => hI (↑s) (↑s') (by have := s.isLt; omega) (by have := s'.isLt; omega))]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `s s'`. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Conclude with `(hF _ _ (by have := s.isLt; omega) (by have := s'.isLt; omega)).symm`. Rewrite using `[hS, hT, Finset.prod_congr rfl (fun i hi => by rw [hB i hi])]`. Both sides reduce to the same expression.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-It suffices to derive a contradiction. Apply `h2` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `p' hp'`. Rewrite using `[hF p' p' (by omega) (by omega)]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(h1.2.2.1 p' hp').1`. Introduce `p p' hp hp' hne hnz`. Assume the negation of the conclusion as `hna`. Apply `hnz` to reduce the goal to its premises. Rewrite using `[hF p p' hp (by omega)]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hd` using `(ocbPhi_forb_iff (a := k₀ + m - 1 + (j - 1) * t) (t := t) hk1 hm4 (by omega) hne hp').mpr hna`. Break down `hd with hd | ⟨h3, h4, h5⟩ | ⟨h3, h4, h5⟩` into its components or cases. Conclude with `(hz _ (hI p p' hp (by omega))).mpr (h1.2.1 p p' hd hp hp')`. Conclude with `(h1.2.2.1 p' h3).2 p h4 hne h5`. Conclude with `h1.2.2.2 p p' h3 hp' h4 h5`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-It suffices to derive a contradiction. Apply `h1` to reduce the goal to its premises. Use `⟨fun p p' hp hp' => hI p p' hp (by omega), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p p' hap hp hp'`. Apply `(hz _ (hI p p' hp (by omega))).mp` to reduce the goal to its premises.
-
-Rewrite using `[← hF p p' hp (by omega)]`. Assume the negation of the conclusion as `hnz`. Conclude with `(ocbPhi_forb_iff (a := k₀ + m - 1 + (j - 1) * t) (t := t) hk1 hm4 (by omega) (by omega) hp').mp (Or.inl hap) (h2.2 p p' hp hp' (by omega) hnz)`. Introduce `p' hp'`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hF p' p' (by omega) (by omega)]`. Conclude with `h2.1 p' hp'`. Introduce `p hp hne h5`. Rewrite using `[← hF p p' (by omega) (by omega)]`. Assume the negation of the conclusion as `hnz`.
-
-Conclude with `(ocbPhi_forb_iff (a := k₀ + m - 1 + (j - 1) * t) (t := t) hk1 hm4 (by omega) hne (by omega)).mp (Or.inr (Or.inl ⟨hp', hp, h5⟩)) (h2.2 p p' (by omega) (by omega) hne hnz)`. Introduce `p p' h3 hp' hp h5`. Rewrite using `[← hF p p' (by omega) (by omega)]`. Assume the negation of the conclusion as `hnz`. Establish `hne : p ≠ p'`.
-
-Introduce and unpack `rfl`. Conclude with `lt_irrefl _ h5`. Conclude with `(ocbPhi_forb_iff (a := k₀ + m - 1 + (j - 1) * t) (t := t) hk1 hm4 (by omega) hne hp').mp (Or.inr (Or.inr ⟨h3, hp, h5⟩)) (h2.2 p p' (by omega) hp' hne hnz)`. Conclude with `map_zero σ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ocbPhiGS_red (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (σ : K →+* ℂ)
     (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ m t j n' c' c n : ℕ}

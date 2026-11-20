@@ -20,15 +20,15 @@ section Alg
 open TensorProduct
 
 /- English proof (translation)
-Establish `hx : ∀ x : DirectSum ℤ A, ∃ N : ℕ, ∀ N' : ℕ, N ≤ N' → x ∈ ⨆ j : Fin N', LinearMap.range (DirectSum.lof F ℤ A ((j : ℕ) : ℤ))` using `fun x => by`. Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => exact ⟨0, fun _ _ => zero_mem _⟩`. Consider the case `of i z`. Break down `lt_or_ge i 0 with hi | hi` into its components or cases.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Use `haveI := hneg i hi`. Use `⟨0, fun _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim z 0, map_zero]`. Conclude with `zero_mem _`. Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `⟨k + 1, fun N' hN' => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem (⟨k, by omega⟩ : Fin N') ⟨z, rfl⟩`. Consider the case `add a b ha hb`. Take `⟨Na, ha⟩` from `ha`. Take `⟨Nb, hb⟩` from `hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Proceed by induction. Treat this case separately.
 
-Conclude with `⟨max Na Nb, fun N' h => add_mem (ha N' (le_trans (le_max_left _ _) h)) (hb N' (le_trans (le_max_right _ _) h))⟩`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, fun _ _ => zero_mem _⟩`. Consider the case `tmul t x`. Take `⟨N, hN⟩` from `hx x`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, fun N' h => Submodule.tmul_mem_baseChange_of_mem t (hN N' h)⟩`. Consider the case `add a b ha hb`. Take `⟨Na, ha⟩` from `ha`. Take `⟨Nb, hb⟩` from `hb`. Conclude with `⟨max Na Nb, fun N' h => add_mem (ha N' (le_trans (le_max_left _ _) h)) (hb N' (le_trans (le_max_right _ _) h))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem deg_bound {F L : Type*} [Field F] [Field L] [Algebra F L] {A : ℤ → Type*} [∀ n, AddCommGroup (A n)]
     [∀ n, Module F (A n)] (hneg : ∀ n : ℤ, n < 0 → Subsingleton (A n)) (y : L ⊗[F] DirectSum ℤ A) :
@@ -62,7 +62,7 @@ private theorem deg_bound {F L : Type*} [Field F] [Field L] [Algebra F L] {A : �
     exact ⟨max Na Nb, fun N' h => add_mem (ha N' (le_trans (le_max_left _ _) h)) (hb N' (le_trans (le_max_right _ _) h))⟩
 
 /- English proof (translation)
-Use `choose w hw using hy`. Use `⟨Fintype.linearCombination L w, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [Fintype.linearCombination_apply, map_sum, map_smul, hw]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_lin {F L : Type*} [Field F] [Field L] [Algebra F L] {V W : Type*} [AddCommGroup V] [Module F V]
     [AddCommGroup W] [Module F W] (Φ : V →ₗ[F] W) {a : ℕ} (y : Fin a → L ⊗[F] W)
@@ -73,7 +73,7 @@ private theorem exists_lin {F L : Type*} [Field F] [Field L] [Algebra F L] {V W 
   simp only [Fintype.linearCombination_apply, map_sum, map_smul, hw]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero b).2 fun x hx => ?_` and prove the remaining obligations. Establish `h0 : ∑ i, x i • y i = 0` using `by rw [← hb, hx, map_zero]`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hl x h0 i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem lin_inj {F L : Type*} [Field F] [Field L] [Algebra F L] {V W : Type*} [AddCommGroup V] [Module F V]
     [AddCommGroup W] [Module F W] (Φ : V →ₗ[F] W) {a : ℕ} (y : Fin a → L ⊗[F] W) (hl : LinearIndependent L y)
@@ -84,9 +84,9 @@ private theorem lin_inj {F L : Type*} [Field F] [Field L] [Algebra F L] {V W : T
   exact Fintype.linearIndependent_iff.1 hl x h0 i
 
 /- English proof (translation)
-Apply `hΦ` to reduce the goal to its premises. Establish `h1 : Φ.baseChange L (r.baseChange L (b x)) = g.baseChange L (Φ.baseChange L (b x))`. Use `LinearMap.congr_fun (congrArg (LinearMap.baseChange L) hc) (b x)` as an intermediate fact. Rewrite `this` using `[LinearMap.baseChange_comp, LinearMap.baseChange_comp]`. Conclude with `this.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hb, hb, map_sum]`. Simplify using `only [map_smul, hR, Matrix.mulVec, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lin_equiv {F L : Type*} [Field F] [Field L] [Algebra F L] {V W : Type*} [AddCommGroup V] [Module F V]
     [AddCommGroup W] [Module F W] (Φ : V →ₗ[F] W) (hΦ : Function.Injective (Φ.baseChange L)) {a : ℕ} (y : Fin a → L ⊗[F] W)
@@ -105,11 +105,11 @@ private theorem lin_equiv {F L : Type*} [Field F] [Field L] [Algebra F L] {V W :
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [mul_comm]
 
 /- English proof (translation)
-Apply `hΦ` to reduce the goal to its premises. Establish `h1 : h.baseChange L (Φ.baseChange L (b x)) = (m : L) • Φ.baseChange L (t.baseChange L (b x))`. Use `LinearMap.congr_fun (congrArg (LinearMap.baseChange L) hc) (b x)` as an intermediate fact. Rewrite `this` using `[LinearMap.baseChange_comp, LinearMap.baseChange_smul, LinearMap.baseChange_comp]`. Rewrite `this` using `[LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.comp_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Establish `h2 : h.baseChange L (Φ.baseChange L (b x)) = θ • Φ.baseChange L (b x)`. Rewrite using `[hb, map_sum]`. Simplify using `only [map_smul, hy, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, hθ, mul_smul]`. Establish `hm' : (m : L) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Rewrite using `[map_smul]`. Conclude with `(smul_right_injective _ hm' h1).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lin_eig {F L : Type*} [Field F] [Field L] [Algebra F L] [CharZero L] {V W : Type*} [AddCommGroup V] [Module F V]
     [AddCommGroup W] [Module F W] (Φ : V →ₗ[F] W) (hΦ : Function.Injective (Φ.baseChange L)) {a : ℕ} (y : Fin a → L ⊗[F] W)
@@ -133,7 +133,7 @@ private theorem lin_eig {F L : Type*} [Field F] [Field L] [Algebra F L] [CharZer
   exact (smul_right_injective _ hm' h1).symm
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.proj_apply, map_sum, ht, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by`. Use `LinearMap.congr_fun (hc i) (x i)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem sum_comp {F : Type*} [Field F] {I : Type*} [Fintype I] [DecidableEq I] {U : I → Type*} [∀ i, AddCommGroup (U i)]
     [∀ i, Module F (U i)] {W : Type*} [AddCommGroup W] [Module F W] (φ : ∀ i, U i →ₗ[F] W) (h : W →ₗ[F] W)
@@ -163,17 +163,17 @@ section Alg2
 open TensorProduct
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero e).2 fun x hx => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `h1 : DirectSum.component F ℤ A ((i : ℕ) : ℤ) (e x) = (β i).equivFun.symm (x i)`. Rewrite using `[he]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, map_sum]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[DirectSum.component.lof_self]`. Introduce `k _ hk`. Establish `hne : ((i : ℕ) : ℤ) ≠ ((k : ℕ) : ℤ)` using `fun h => hk (Fin.ext (by exact_mod_cast h.symm))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[DirectSum.component.of, hne]`. Introduce `h`. Conclude with `absurd (Fin.ext h) hk`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hx, map_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(β i).equivFun.symm.injective (h1.symm.trans (map_zero _).symm)` as an intermediate fact. Simplify using `using this`. Use `iSup_le fun j => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Use `⟨Pi.single j ((β j).equivFun v), ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem e_facts {F : Type*} [Field F] {A : ℤ → Type*} [∀ n, AddCommGroup (A n)] [∀ n, Module F (A n)] (N : ℕ)
     (d : Fin N → ℕ) (β : ∀ i : Fin N, Module.Basis (Fin (d i)) F (A ((i : ℕ) : ℤ)))
@@ -210,13 +210,11 @@ private theorem e_facts {F : Type*} [Field F] {A : ℤ → Type*} [∀ n, AddCom
     · simp
 
 /- English proof (translation)
-Establish `hc : (p ∘ₗ e).baseChange L = p.baseChange L ∘ₗ e.baseChange L` using `LinearMap.baseChange_comp _ _`. Use `⟨?_, fun P hP z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Establish `h2 : Function.Injective (e.baseChange L)`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Module.Flat.lTensor_preserves_injective_linearMap e he`. Conclude with `hp.comp h2`. Establish `h3 : z ∈ LinearMap.range (e.baseChange L)`. Establish `h4 : P.baseChange L ≤ LinearMap.range (e.baseChange L)`. Rewrite using `[Submodule.baseChange_eq_span, Submodule.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨v, rfl⟩` from `hP hx`. Conclude with `⟨(1 : L) ⊗ₜ[F] v, by simp⟩`. Conclude with `h4 hz`. Take `⟨w, rfl⟩` from `h3`.
-
-Conclude with `⟨w, by rw [hc]; rfl⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem comp_facts {F L : Type*} [Field F] [Field L] [Algebra F L] {V D W : Type*} [AddCommGroup V] [Module F V]
     [AddCommGroup D] [Module F D] [AddCommGroup W] [Module F W] (e : V →ₗ[F] D) (he : Function.Injective e)
@@ -248,17 +246,15 @@ section Core
 open TensorProduct
 
 /- English proof (translation)
-Use `choose z hz using hy`. Use `choose Nf hNf using fun i => deg_bound (F := F) (L := L) hneg (z i)`. Use `⟨Finset.univ.sup Nf, fun d β => ?_⟩` and prove the remaining obligations. Establish `hle : ∀ i, Nf i ≤ Finset.univ.sup Nf` using `fun i => Finset.le_sup (f := Nf) (Finset.mem_univ i)`. Generalize the expression as in `Finset.univ.sup Nf = N at d β hle`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `e : (∀ i : Fin N, Fin (d i) → F) →ₗ[F] DirectSum ℤ A` to `∑ i : Fin N, (DirectSum.lof F ℤ A ((i : ℕ) : ℤ)) ∘ₗ (β i).equivFun.symm.toLinearMap ∘ₗ LinearMap.proj i`. Take `⟨heI, heR⟩` from `e_facts N d β e rfl`. Take `⟨hΦ, hR⟩` from `comp_facts (L := L) e heI p hp`. Set `φ : ∀ i : Fin N, (Fin (d i) → F) →ₗ[F] W` to `fun i => p ∘ₗ (DirectSum.lof F ℤ A ((i : ℕ) : ℤ)) ∘ₗ (β i).equivFun.symm.toLinearMap`. Establish `hφ : p ∘ₗ e = ∑ i : Fin N, φ i ∘ₗ LinearMap.proj i`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[e, φ, map_sum]`. Establish `hy' : ∀ i, y i ∈ LinearMap.range ((p ∘ₗ e).baseChange L)` using `fun i => by`. Rewrite using `[← hz i]`. Conclude with `hR _ heR _ (hNf i N (hle i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `exists_lin (L := L) (p ∘ₗ e) y hy'`. Use `⟨b, lin_inj (p ∘ₗ e) y hl b hb, fun r r' hr g hg R hRg x => ?_, fun t t' ht h m hm hh θ ϑ hθ hyh x => ?_⟩` and prove the remaining obligations. Establish `hc : g ∘ₗ (p ∘ₗ e) = (p ∘ₗ e) ∘ₗ r'`. Use `sum_comp φ g (1 : F) r r' hr (fun i => LinearMap.ext fun u => by` as an intermediate fact. Simplify `hg i u)` using `[φ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[one_smul, ← hφ]`. Conclude with `this`. Conclude with `lin_equiv (p ∘ₗ e) hΦ y b hb r' g hc R hRg x`. Establish `hc : h ∘ₗ (p ∘ₗ e) = (m : F) • ((p ∘ₗ e) ∘ₗ t')`. Use `sum_comp φ h (m : F) t t' ht (fun i => LinearMap.ext fun u => by` as an intermediate fact.
-
-Simplify `hh i u)` using `[φ]`. Rewrite `this` using `[← hφ]`. Conclude with `this`. Conclude with `lin_eig (p ∘ₗ e) hΦ y b hb t' h m hm hc θ ϑ hθ hyh x`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem core {F L : Type*} [Field F] [Field L] [Algebra F L] [CharZero L] {A : ℤ → Type*} [∀ n, AddCommGroup (A n)]
     [∀ n, Module F (A n)] (hneg : ∀ n : ℤ, n < 0 → Subsingleton (A n)) {W : Type*} [AddCommGroup W] [Module F W]
@@ -314,7 +310,7 @@ private theorem core {F L : Type*} [Field F] [Field L] [Algebra F L] [CharZero L
 end Core
 
 /- English proof (translation)
-Establish `h1` using `h (β.equivFun.symm u)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[h1, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem basis_rel {F V : Type*} [Field F] [AddCommGroup V] [Module F V] {d : ℕ} (β : Module.Basis (Fin d) F V)
     (r : (Fin d → F) →ₗ[F] (Fin d → F)) (s : V →ₗ[F] V) (h : ∀ v, r (β.equivFun v) = β.equivFun (s v)) (u : Fin d → F) :
@@ -324,7 +320,7 @@ private theorem basis_rel {F V : Type*} [Field F] [AddCommGroup V] [Module F V] 
   rw [h1, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `DirectSum.lmap_lof _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem gal_inTot {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (M : Model l K) (j : ℕ)
     (g : K.fixingSubgroup) (v : M.V j) :
@@ -332,21 +328,19 @@ private theorem gal_inTot {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l
   DirectSum.lmap_lof _ _ _
 
 /- English proof (translation)
-Introduce `hF hCr l _ P AI hT K _ _ f hf hc H θ hN C hOn n ϑ hCg a ρ₁ hMat`. Use `haveI : FiniteDimensional ℚ_[l] K.1 := K.2`. Take `⟨hinj, hle, heq⟩` from `UpperTheory.Gal.Seam.pieceIn_holds l K.1 (Om l) H θ hN C hOn`. Establish `hSm : (mod C).Sm` using `⟨goodOf l K.1 (mod C) C.smooth C.proj, C.smooth⟩`. Establish `hfin : ∀ j, FiniteDimensional ℚ_[l] ((mod C).V j)` using `fun j => (UpperTheory.Gal.KunnethLefschetz.Top.etSide_sm_holds l K.1).fin (mod C) hSm j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, Tc, γ, m, hϖ, hPt, hTc⟩` from `hCg`. Establish `hr : ∀ i, (Tc i).r ≫ (mod C).p = (Tc i).p ≫ (mod C).p` using `fun i => (hTc i).1`. Establish `hA : ∀ i, ∃ A : ∀ j : ℕ, (mod C).V j →ₗ[ℚ_[l]] (mod C).V j, ∀ j, IsHk (mod C) (Tc i) (hr i) j (A j) ∧ ∀ v, hop l H (PadicAlgCl l) (γ i) (pullTot l (sch.map (toMod C)) (Br.inTot (mod C) j v)) = (m i : ℚ_[l]) • pullTot l (sch.map (toMod C)) (Br.inTot (mod C) j (A j v))` using `fun i => by`. Take `⟨d, hd⟩` from `hN.2.2 (γ i)`. Conclude with `Br.heckeCl l K.1 (Om l) H θ C (Tc i) (hr i) (γ i) (m i) d hd (hTc i).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose A hAk using hA`. Take `⟨b₀, hb₀⟩` from `hMat`. Take `⟨N, hcore⟩` from `core (F := ℚ_[l]) (L := Om l) (A := fun n : ℤ => HQ l (mod C).spc n 0) (fun n hn => negVan l _ n hn) (pullTot l (sch.map (toMod C))) hinj (fun i => (b₀ i).1) (b₀.linearIndependent.map' (Submodule.subtype _) (Submodule.ker_subtype _)) (fun i => hle (b₀ i).2)`. Take `⟨d, ⟨β⟩⟩ : ∃ d : Fin N → ℕ, Nonempty (∀ i : Fin N, Module.Basis (Fin (d i)) ℚ_[l] ((mod C).V i))` from `⟨fun i => Module.finrank ℚ_[l] ((mod C).V i), ⟨fun i => haveI := hfin i; Module.finBasis ℚ_[l] ((mod C).V i)⟩⟩`. Establish `hcr` using `fun i : Fin N => crysCopy hCr l P AI hT K (mod C) hSm i (d i) (β i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose ρc hρ hcrys using hcr`. Take `⟨Tk, hTk⟩ : ∃ Tk : ∀ i : Fin N, ℕ → End ℚ_[l] (Fin (d i) → ℚ_[l]), ∀ (i : Fin N) (k : Fin (n + 1)), Tk i k = (β i).equivFun.toLinearMap ∘ₗ A k i ∘ₗ (β i).equivFun.symm.toLinearMap` from `⟨fun i k => if h : k ≤ n then (β i).equivFun.toLinearMap ∘ₗ A ⟨k, Nat.lt_succ_of_le h⟩ i ∘ₗ (β i).equivFun.symm.toLinearMap else 0, fun i k => dif_pos (Nat.le_of_lt_succ k.2)⟩`. Establish `hTv : ∀ (i : Fin N) (k : Fin (n + 1)) v, Tk i k ((β i).equivFun v) = (β i).equivFun (A k i v)` using `fun i k v => by`. Rewrite using `[hTk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hann : ∀ i : Fin N, AnnD (σCr P K) (ψCr P f) (l ^ f) n (ρc i) (Tk i)` using `fun i => Br.annModel hF l P AI hT K f hf hc ϖ hϖ (mod C) hSm n i Tc hr hPt (fun k => A k i) (fun k => (hAk k i).1) _ (β i).equivFun (ρc i) (hρ i) (Tk i) (fun k v => hTv i k v)`. Take `⟨ρ', hρ'⟩ : ∃ ρ' : Representation ℚ_[l] ↥(GK K) (∀ i : Fin N, Fin (d i) → ℚ_[l]), ∀ g x i, ρ' g x i = ρc i g (x i)` from `⟨piRep ρc, fun _ _ _ => rfl⟩`. Take `⟨T', hT'⟩ : ∃ T' : ℕ → End ℚ_[l] (∀ i : Fin N, Fin (d i) → ℚ_[l]), ∀ j x i, T' j x i = Tk i j (x i)` from `⟨fun k => LinearMap.pi fun i => Tk i k ∘ₗ LinearMap.proj i, fun _ _ _ => rfl⟩`. Establish `hPi` using `annPi l P K (Fin N) (fun i => Fin (d i) → ℚ_[l]) ρc f (l ^ f) n Tk ρ' T' hρ' hT'`. Take `⟨b, hbI, hbG, hbT⟩` from `hcore d β`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨∀ i : Fin N, Fin (d i) → ℚ_[l], inferInstance, inferInstance, inferInstance, ρ', T', b, hPi.1 hcrys, hPi.2 hann, hbI, fun g x => ?_, fun j hj x => ?_⟩` and prove the remaining obligations. Use `hbG (fun i => ρc i g) (ρ' g) (hρ' g) (galTot l (PadicAlgCl l) H.q (IntermediateField.fixingSubgroupEquiv K.1 g)) (fun i u => ?_) _ (fun j => hb₀ _ j) x` and prove the remaining obligations. Establish `h2` using `basis_rel (β i) (ρc i g) ((mod C).act i g) (hρ i g) u`. Establish `h3` using `gal_inTot (mod C) i g ((β i).equivFun.symm u)`. Rewrite `h3` using `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(LinearMap.congr_fun (heq (IntermediateField.fixingSubgroupEquiv K.1 g)) _).trans (congrArg (pullTot l (sch.map (toMod C))) h3)`. Establish `hk : j < n + 1` using `Nat.lt_succ_of_le hj`. Use `hbT (fun i => Tk i j) (T' j) (hT' j) (hop l H (PadicAlgCl l) (γ ⟨j, hk⟩)) (m ⟨j, hk⟩) (hTc ⟨j, hk⟩).2.1.1.ne' (fun i u => ?_) (θ (γ ⟨j, hk⟩)) (ϑ j) (hTc ⟨j, hk⟩).2.2 (fun i => ?_) x` and prove the remaining obligations. Establish `h2` using `basis_rel (β i) (Tk i j) (A ⟨j, hk⟩ i) (hTv i ⟨j, hk⟩) u`. Establish `h1` using `(hAk ⟨j, hk⟩ i).2 ((β i).equivFun.symm u)`.
-
-Rewrite `h1` using `[h2]`. Conclude with `h1`. Conclude with `Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 (b₀ i).2 (γ ⟨j, hk⟩))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ru.crystallineComparison.geoLoc :
     UpperTheory.Ru.crystallineComparison.GeoLoc := by

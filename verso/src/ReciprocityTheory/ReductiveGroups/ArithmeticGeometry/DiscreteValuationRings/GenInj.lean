@@ -13,46 +13,40 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.SecondBlockLemmaO.goal1 .. | (apply Bl.SecondBlockLemmaO.goal1 <;> assumption) | (intros; apply Bl.SecondBlockLemmaO.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem away_fractionRing {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
     (hϖ : Irreducible ϖ) : IsLocalization.Away ϖ (FractionRing V) := by
   first | exact Bl.SecondBlockLemmaO.goal1 .. | (apply Bl.SecondBlockLemmaO.goal1 <;> assumption) | (intros; apply Bl.SecondBlockLemmaO.goal1 <;> assumption)
 
 /- English proof (translation)
-Apply the tactic sequence `unfold gs; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gs_zero' {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y U 0 = 0 := by
   unfold gs; split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Set `ϖ' : Γ(Sp V, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom ϖ`. Establish `hrange : ∀ t' : Sp V, t' ∈ (Sp V).basicOpen ϖ' → t' ∈ Set.range t.base`. Introduce `t' ht`. Establish `ht' : t' ∈ (PrimeSpectrum.basicOpen ϖ : Set (PrimeSpectrum V))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `basicOpen_eq_of_affine (R := CommRingCat.of V) ϖ` as an intermediate fact. Rewrite using `[← this]`. Conclude with `ht`. Establish `hbot : PrimeSpectrum.asIdeal (R` using `V) t' = ⊥ := by`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hmax` using `Ideal.IsPrime.isMaximal (PrimeSpectrum.isPrime (R := V) t') hne`. Establish `hm` using `IsLocalRing.eq_maximalIdeal hmax`. Apply `(PrimeSpectrum.mem_basicOpen _ _).1 ht'` to reduce the goal to its premises. Rewrite using `[hm]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 hϖ.not_isUnit`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y⟩` from `‹Nonempty T›`. Establish `hle : PrimeSpectrum.asIdeal (R` using `V) t' ≤ PrimeSpectrum.asIdeal (R := V) (t.base y) := by`. Rewrite using `[hbot]`. Conclude with `bot_le`. Establish `hsp : t' ⤳ t.base y` using `(PrimeSpectrum.le_iff_specializes (R := V) _ _).1 ((PrimeSpectrum.asIdeal_le_asIdeal _ _).1 hle)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Conclude with `hsp.mem_open t.isOpenEmbedding.isOpen_range ⟨y, rfl⟩`. Set `O : X.Opens` to `p ⁻¹ᵁ (Sp V).basicOpen ϖ'`. Set `q` to `IsOpenImmersion.lift t (O.ι ≫ p) (by`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hrange _ a.2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `s : O.toScheme ⟶ pullback p t` to `pullback.lift O.ι q (IsOpenImmersion.lift_fac _ _ _).symm`. Establish `hs : s ≫ pullback.fst p t = O.ι` using `pullback.lift_fst _ _ _`. Establish `hO : ∀ x ∈ W, x ∈ O → gs (𝟙 X) x W d = 0`. Introduce `x hxW hxO`. Establish `hm : (s ≫ pullback.fst p t) ⟨x, hxO⟩ ∈ W` using `by rw [hs]; exact hxW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : gs O.ι ⟨x, hxO⟩ W d = 0`. Rewrite using `[← hs, ← gs_pull s (pullback.fst p t) ⟨x, hxO⟩ W hm, h]`. Conclude with `gs_zero' _ _ _`. Rewrite `e1` using `[gs_stalkMap O.ι ⟨x, hxO⟩ W hxW]`. Establish `: IsIso (O.ι.stalkMap ⟨x, hxO⟩)` using `(IsOpenImmersion.iff_isIso_stalkMap.1 inferInstance).2 _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `(ConcreteCategory.bijective_of_isIso (O.ι.stalkMap ⟨x, hxO⟩)).1 (e1.trans (map_zero _).symm)`. Use `fn_ext fun x hx => ?_` and prove the remaining obligations. Rewrite using `[gs_zero']`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUW⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hx W.2`. Establish `hU' : IsAffineOpen (U : X.Opens)` using `hU`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : Γ(X, U)` to `constFn p U ϖ`. Set `dU : Γ(X, U)` to `(X.presheaf.map (homOfLE hUW).op).hom d`. Establish `hgs : ∀ x' ∈ U, gs (𝟙 X) x' U g = cst p x' ϖ` using `fun x' hx' => (gs_constFn p U (𝟙 X) x' hx' ϖ).trans (by rw [Category.id_comp])`. Use `(exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isCompact X hU'.isCompact dU g ?_).elim fun n hn => ?_` and prove the remaining obligations. Use `fn_ext fun x' hx' => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx'U : x' ∈ U` using `X.basicOpen_le g hx'`. Establish `hunit : IsUnit (X.presheaf.germ U x' hx'U g)` using `(X.mem_basicOpen g x' hx'U).1 hx'`. Establish `h2 : IsUnit (cst p x' ϖ)`. Rewrite using `[← hgs x' hx'U, gs_eq (𝟙 X) x' U hx'U]`. Conclude with `hunit`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : IsUnit (gs (𝟙 (Sp V)) (p x') ⊤ ϖ')`. Rewrite `h2` using `[cst, gs_stalkMap p x' ⊤ trivial]`. Conclude with `(isUnit_map_iff (p.stalkMap x').hom _).1 h2`. Establish `hxO : x' ∈ O` using `by show p x' ∈ (Sp V).basicOpen ϖ'`. Rewrite `h3` using `[gs_eq (𝟙 (Sp V)) (p x') ⊤ trivial]`.
-
-Conclude with `((Sp V).mem_basicOpen ϖ' (p x') trivial).2 h3`. Express the relevant statement in the definitionally equal form `gs (𝟙 X) x' _ ((X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom dU) = gs (𝟙 X) x' _ 0`. Rewrite using `[gs_zero', gs_res (𝟙 X) x' (X.basicOpen_le g) hx']`. Conclude with `(gs_res (𝟙 X) x' hUW hx'U d).trans (hO x' (hUW hx'U) hxO)`. Establish `e` using `congrArg (gs (𝟙 X) x U) hn`.
-
-Establish `hdU : gs (𝟙 X) x U dU = gs (𝟙 X) x W d` using `gs_res (𝟙 X) x hUW hxU d`. Rewrite `e` using `[gs_zero', gs_mul (𝟙 X) x U hxU, hdU]`. Establish `hpow : gs (𝟙 X) x U (g ^ n) = cst p x ϖ ^ n`. Rewrite using `[gs_eq (𝟙 X) x U hxU, map_pow, map_pow, ← gs_eq (𝟙 X) x U hxU, hgs x hxU]`. Rewrite `e` using `[hpow]`.
-
-Conclude with `((cst_regular p x hϖ.ne_zero).pow n) (e.trans (mul_zero _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_app_fst_open {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {X T : AlgebraicGeometry.Scheme.{0}} (p : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp V) [AlgebraicGeometry.Flat p]
@@ -127,7 +121,7 @@ theorem eq_zero_of_app_fst_open {V : Type} [CommRing V] [IsDomain V] [IsDiscrete
     exact ((cst_regular p x hϖ.ne_zero).pow n) (e.trans (mul_zero _).symm)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `away_fractionRing hϖ` as an intermediate fact. Establish `: IsOpenImmersion (ReciprocityTheory.ChartRestriction.G.Out.jK V)` using `IsOpenImmersion.of_isLocalization ϖ`. Establish `: Nonempty (Spec (CommRingCat.of (FractionRing V)))` using `⟨IsLocalRing.closedPoint _⟩`. Conclude with `eq_zero_of_app_fst_open p (ReciprocityTheory.ChartRestriction.G.Out.jK V) W d h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_app_fst_jK {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {X : AlgebraicGeometry.Scheme.{0}} (p : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp V) [AlgebraicGeometry.Flat p]

@@ -14,7 +14,7 @@ namespace RootClassCount
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[DualFamily.herm_one_eq]`. Simplify using `only [cc, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isIntegral_herm_iff {n : ℕ} (x y : Fin n → E) :
     IsIntegral ℤ (herm 1 y x) ↔ IsIntegral ℤ (∑ i, IsCMField.complexConj E (x i) * y i) := by
@@ -22,9 +22,9 @@ theorem isIntegral_herm_iff {n : ℕ} (x y : Fin n → E) :
   simp only [cc, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[mul_eq_one_comm]`. Use extensionality with `i j`. Use `h (Pi.single j 1) (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[DualFamily.herm_one_eq, DualFamily.herm_one_eq]`. Simplify using `only [Matrix.mulVec_single_one, Matrix.col_apply, cc] at this`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, mul_comm, Matrix.one_apply]`. Rewrite using `[this]`. Simplify using `[Pi.single_apply, eq_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_conjTranspose_eq_one {n : ℕ} (γ : Matrix (Fin n) (Fin n) E)
     (h : ∀ x y, herm 1 (γ.mulVec x) (γ.mulVec y) = herm 1 x y) :
@@ -46,18 +46,18 @@ theorem rdE_eq : rdE E = |(discr E : ℝ)| ^ ((1 : ℝ) / (finrank ℚ E : ℝ))
 
 omit [IsCMField E] in
 /- English proof (translation)
-Use `Real.one_le_rpow ?_ (by positivity)` and prove the remaining obligations. Conclude with `Int.one_le_abs (discr_ne_zero E)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem one_le_rootDiscr : 1 ≤ |(discr E : ℝ)| ^ ((1 : ℝ) / (finrank ℚ E : ℝ)) := by
   refine Real.one_le_rpow ?_ (by positivity)
   exact_mod_cast Int.one_le_abs (discr_ne_zero E)
 
 /- English proof (translation)
-Take `⟨v, hv, hli, -, hle⟩` from `exists_short_vectors L hfg hint hdual`. Take `⟨s, hs1, hs2, -⟩` from `euclidean_basis_exists E (Fin n → E) _ v hli (by`. Simplify using `[ShortVectors.finrank_eq])`. Establish `hsr : s.card = n` using `by simpa using hs1`. Set `e : Fin n ≃ s` to `(s.equivFinOfCardEq hsr).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h3 : ((fdeg E : ℝ) ^ ((3 : ℝ) / 2)) ^ 2 = (fdeg E : ℝ) ^ 3`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg _), ← Real.rpow_natCast]`. Evaluate the numerical expressions. Use `⟨fun i => v (e i), fun i => hv _, hs2.comp e e.injective, fun σ i k => ?_⟩` and prove the remaining obligations. Use `(SelfDualClasses.norm_herm_le σ _ _ _ (hle _ σ) (hle _ σ)).trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_pow, mul_pow, mul_pow, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_bounded_basis {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG)
     (hint : ∀ x ∈ L, ∀ y ∈ L, IsIntegral ℤ (herm 1 x y))
@@ -79,13 +79,13 @@ theorem exists_bounded_basis {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (h
   ring
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Establish `hf' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Use `set p : ℝ := ((2 * f : ℕ) : ℝ) ^ 2 * (n : ℝ) ^ 4 * r ^ 2 with hp`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp' : p = 4 * (f : ℝ) ^ 2 * (n : ℝ) ^ 4 * r ^ 2` using `by rw [hp]; push_cast; ring`. Establish `hB : 4 * (f : ℝ) ^ 3 * n ^ 4 * r ^ 2 = f * p` using `by rw [hp']; ring`. Establish `h1 : (f : ℝ) ^ 2 * n ≤ p`. Rewrite using `[hp']`. Establish `h2 : (n : ℝ) ≤ n ^ 4` using `le_self_pow₀ hn' (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 1 ≤ r ^ 2` using `one_le_pow₀ hr`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : 1 ≤ (f : ℝ) ^ 2 * n` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ hf') hn'`. Establish `h5 : 1 ≤ p` using `h4.trans h1`. Establish `h6 : 1 ≤ f * p` using `one_le_mul_of_one_le_of_one_le hf' h5`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB, ← mul_pow, mul_assoc 3, pow_mul _ 3]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bound_le (f n : ℕ) {r : ℝ} (hf : 0 < f) (hr : 1 ≤ r) :
     (1 + 2 * (4 * (f : ℝ) ^ 3 * n ^ 4 * r ^ 2)) ^ (2 * f * n ^ 2) *
@@ -120,11 +120,9 @@ end RootClassCount
 open RootClassCount in
 
 /- English proof (translation)
-Introduce `E _ _ _ n`. Take `⟨R, -, h2, h3⟩` from `ClassCount.exists_finset_classes (K := E) (r := n) (G := 1) {L | L.FG ∧ ∀ y, y ∈ L ↔ ∀ x ∈ L, IsIntegral ℤ (herm 1 y x)} (B := 4 * (fdeg E : ℝ) ^ 3 * n ^ 4 * rdE E ^ 2) (by positivity) fun L hL => ⟨by simp, fun x hx => (hL.2 x).1 hx, exists_bounded_basis L hL.1 (fun x hx => (hL.2 …`. Use `⟨R, h3.trans ?_, fun L hfg _ hsd => ?_⟩` and prove the remaining obligations. Establish `h` using `bound_le (fdeg E) n ClassCount.fdeg_pos (one_le_rootDiscr (E := E))`. Rewrite `h` using `[← ShortVectors.finrank_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[rdE_eq, ← ShortVectors.finrank_eq]`. Conclude with `h`. Take `⟨L₀, hL₀, γ, hγ, hm⟩` from `h2 L ⟨hfg, fun y => by`. Simplify using `only [isIntegral_herm_iff]`. Conclude with `hsd y⟩`.
-
-Conclude with `⟨L₀, hL₀, γ, mul_conjTranspose_eq_one _ hγ, hm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finset_selfDual_classes_rootDiscr :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ),

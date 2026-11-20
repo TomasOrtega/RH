@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.FrobeniusOrbi
 open Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.Mem.Col2.SplitChar
 
 /- English proof (translation)
-Unfold `HChar.resFin`. Rewrite using `[MonoidHom.finsetProd_apply]`. Unfold `locF`. Rewrite using `[map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun Q _ => congrArg χ.1 (GlobalTheory.Mem.KerDet.finPartI_localIdele Q _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_finPartI_locF {L F : Type} [Field L] [NumberField L] [Field F] [NumberField F] [Algebra F L] (χ : HChar L)
     (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) : χ.1 (finPartI L (locF F v k)) = χ.resFin v k := by
@@ -23,29 +23,25 @@ theorem map_finPartI_locF {L F : Type} [Field L] [NumberField L] [Field F] [Numb
   exact Finset.prod_congr rfl fun Q _ => congrArg χ.1 (GlobalTheory.Mem.KerDet.finPartI_localIdele Q _)
 
 /- English proof (translation)
-Take `⟨c, hc, hcm, hu, -⟩` from `GlobalTheory.Mem.HostCM.host_cm D.R D.host`. Establish `ec : c.toRingEquiv = D.host.conj.toRingEquiv` using `RingEquiv.ext hc`. Use `set a : Ideles D.host.E := finIdl D (x * sgU D x) with ha_def`. Establish `ha : a ∈ balanced (L` using `D.host.E) D.host.F := norm_balanced x`. Set `T : Finset (HeightOneSpectrum (𝓞 D.host.F))` to `(finite_valAt_ne_one a).toFinset.image fun w => w.under (𝓞 D.host.F)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `m : HeightOneSpectrum (𝓞 D.host.F) → ℤ` to `fun v => if h : ∃ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v then -WithZero.log (valAt h.choose a) else 0`. Set `b : Ideles D.host.E` to `∏ v ∈ T, locF (L := D.host.E) D.host.F v (unif v) ^ m v`. Establish `hm : ∀ w : HeightOneSpectrum (𝓞 D.host.E), m (w.under (𝓞 D.host.F)) = -WithZero.log (valAt w a)` using `fun w => by`. Establish `hex : ∃ w' : HeightOneSpectrum (𝓞 D.host.E), w'.under (𝓞 D.host.F) = w.under (𝓞 D.host.F)` using `⟨w, rfl⟩`. Simplify using `only [m]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hex, ha w hex.choose hex.choose_spec]`. Establish `hval : ∀ w, valAt w b = valAt w a` using `fun w => by`. Establish `h1 : ∀ v, v ≠ w.under (𝓞 D.host.F) → valAt w (locF (L` using `D.host.E) D.host.F v (unif v) ^ m v) = 1 := fun v hv => by rw [map_zpow, valAt_locF, if_neg hv.symm, one_zpow]`. Simplify using `only [b]`. Rewrite using `[map_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w.under (𝓞 D.host.F) ∈ T`. Rewrite using `[Finset.prod_eq_single_of_mem _ hw (fun v _ hv => h1 v hv), map_zpow, valAt_locF, if_pos rfl, hu, ordF_unif_self, ← WithZero.exp_zsmul, hm]`. Simplify using `only [smul_eq_mul, mul_neg, neg_neg, mul_one]`. Conclude with `WithZero.exp_log (valAt_ne_zero w a)`. Rewrite using `[Finset.prod_eq_one (fun v hv => h1 v (fun e => hw (e ▸ hv)))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hw (Finset.mem_image_of_mem _ (by simpa using fun e => hne e.symm))`. Establish `hu' : b⁻¹ * a ∈ unitIdl D.host.E` using `fun w => by`. Rewrite using `[← valAt_apply, map_mul, map_inv, hval]`. Conclude with `inv_mul_cancel₀ (valAt_ne_zero w a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : χ.1 (finPartI D.host.E (b⁻¹ * a)) = 1` using `GlobalTheory.Mem.LocTriv.eq_one_of_local _ χ.1 χ.2.1 _ (finPartI_mem_unitIdl.2 hu') (fun _ => rfl) fun v y hy => hχ.unr v y (by`. Unfold `IsUnitAt`. Rewrite using `[hy]`. Conclude with `hu' v)`. Establish `h2 : χ.1 (finPartI D.host.E b) = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [b]`. Rewrite using `[map_prod, map_prod]`. Use `Finset.prod_eq_one fun v hv => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, map_zpow, map_finPartI_locF, hχ.res.1 v, etaFin]`. Use `split_ifs with hcard`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ordF_unif_self, zpow_one]`. Take `⟨w, -, rfl⟩` from `Finset.mem_image.1 hv`. Rewrite using `[hm]`. Take `⟨w', hw', -⟩` from `existsUnique_conjPl D.host.conj.toRingEquiv w`. Establish `hund : w'.under (𝓞 D.host.F) = w.under (𝓞 D.host.F)` using `(under_eq_iff_conjPl c hcm.rank hcm.ne w w').2 (Or.inr (by rw [ec]; exact hw'))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hmem : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), Q.under (𝓞 D.host.F) = w.under (𝓞 D.host.F) → Q ∈ aboveF (L` using `D.host.E) D.host.F (w.under (𝓞 D.host.F)) := fun Q hQ => by`. Simplify using `[aboveF, hQ]`. Establish `hww : w' = w` using `Finset.card_le_one.1 hcard.le _ (hmem w' hund) _ (hmem w rfl)`. Substitute `hww` using the available equality. Establish `e1 : valAt w' a = vl D w' (x : AE D) * vl D w' (x : AE D)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `vl D w' ((x : AE D) * sgA D x) = _`. Rewrite using `[map_mul, vl_sgA hw' x]`. Establish `h0 : vl D w' (x : AE D) ≠ 0`. Introduce `h`. Use `valAt_ne_zero w' a` as an intermediate fact.
-
-Rewrite `this` using `[e1, h, zero_mul]`. Conclude with `this rfl`. Rewrite using `[e1, WithZero.log_mul h0 h0]`. Conclude with `Even.neg_one_zpow (Even.add_self _).neg`. Conclude with `one_zpow _`.
-
-Establish `e : a = b * (b⁻¹ * a)` using `(mul_inv_cancel_left b a).symm`. Establish `e2 : finPartI D.host.E a = a` using `by rw [ha_def]; exact finPartI_finIdl D _`. Rewrite using `[← e2, e, map_mul, map_mul, h1, h2, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one (D : D7) (χ : HChar D.host.E) (hχ : IsEtaT D.host χ) (x : (AE D)ˣ) :
     χ.1 (finIdl D (x * sgU D x)) = 1 := by
@@ -131,7 +127,7 @@ open GlobalTheory.ChiGrid GlobalTheory.LeafRestExamples GlobalTheory.FunObj.SqNu
 open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 
 /- English proof (translation)
-Introduce `D χ hχ x` and use `GlobalTheory.EtaTildeNorm.eq_one D χ hχ x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtaTildeNorm.map_finIdl_norm : ∀ (D : D7) (χ : HChar D.host.E), Formalism.L2.Host.IsEtaT D.host χ →
     ∀ x : (AE D)ˣ, χ.1 (finIdl D (x * sgU D x)) = 1 :=

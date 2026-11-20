@@ -52,9 +52,9 @@ namespace GlobalTheory.MinorFrame
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Unfold `minorAt`. Rewrite using `[AlgHom.map_det]`. Establish `hM : (colSub g : Pol ι d a →ₐ[ℂ] Pol ι d a).mapMatrix (Matrix.of fun i i' : Fin a => (X (τ, s i, i') : Pol ι d a)) = (Matrix.of fun i i' : Fin a => (X (τ, s i, i') : Pol ι d a)) * (g τ).map C`. Use extensionality with `i i'`. Simplify using `[colSub, Matrix.mul_apply, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hM, Matrix.det_mul, show ((g τ).map C).det = C (g τ).det from ((C : ℂ →+* Pol ι d a).map_det (g τ)).symm, smul_eq_C_mul, mul_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem colSub_minorAt {a d : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) (τ : ι) (s : Fin a → Fin d) :
     colSub g (minorAt τ s) = (g τ).det • minorAt τ s := by
@@ -67,7 +67,7 @@ theorem colSub_minorAt {a d : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) (τ :
   rw [hM, Matrix.det_mul, show ((g τ).map C).det = C (g τ).det from ((C : ℂ →+* Pol ι d a).map_det (g τ)).symm, smul_eq_C_mul, mul_comm]
 
 /- English proof (translation)
-Unfold `prodMinors detChar`. Simplify using `only [map_prod, colSub_minorAt, smul_eq_C_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, map_prod, map_pow]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem colSub_prodMinors {a d : ℕ} {n : ι → ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) (T : Tup ι a d n) :
     colSub g (prodMinors T) = detChar n g • prodMinors T := by
@@ -76,15 +76,15 @@ theorem colSub_prodMinors {a d : ℕ} {n : ι → ℕ} (g : ι → Matrix (Fin a
     Fintype.card_fin, map_prod, map_pow]
 
 /- English proof (translation)
-Introduce `g` and use `colSub_prodMinors _ T`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prodMinors_mem_inv {a d : ℕ} {n : ι → ℕ} (T : Tup ι a d n) : prodMinors T ∈ inv a d n :=
   fun g => colSub_prodMinors _ T
 
 /- English proof (translation)
-Establish `: (colSub g).comp (rowSub κ) = (rowSub κ).comp (colSub g)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `y`. Simplify using `only [AlgHom.comp_apply, rowSub, colSub, aeval_X, map_sum, map_mul, algHom_C, algebraMap_eq, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `congrArg (fun φ : Pol ι d a →ₐ[ℂ] Pol ι d a => φ P) this`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem colSub_rowSub {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) (κ : ι → Matrix (Fin d) (Fin d) ℂ) (P : Pol ι d a) :
     colSub g (rowSub κ P) = rowSub κ (colSub g P) := by
@@ -98,7 +98,7 @@ theorem colSub_rowSub {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) (κ : 
   exact congrArg (fun φ : Pol ι d a →ₐ[ℂ] Pol ι d a => φ P) this
 
 /- English proof (translation)
-Introduce `g`. Rewrite using `[colSub_rowSub, hP g, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowSub_mem_inv {a d : ℕ} {n : ι → ℕ} (κ : ι → Matrix (Fin d) (Fin d) ℂ) {P : Pol ι d a} (hP : P ∈ inv a d n) :
     rowSub κ P ∈ inv a d n := by
@@ -114,7 +114,7 @@ open Classical
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.DIV.fockS_eq_sum f g (f.support ∪ g.support) Finset.subset_union_left, Formalism.L2.DIV.fockS_eq_sum g f (f.support ∪ g.support) Finset.subset_union_right, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_natCast, RCLike.star_def, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockS_conj {σ : Type} (f g : MvPolynomial σ ℂ) :
     Formalism.L2.DIV.fockS f g = starRingEnd ℂ (Formalism.L2.DIV.fockS g f) := by
@@ -125,11 +125,11 @@ theorem fockS_conj {σ : Type} (f g : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `Formalism.L2.DIV.fockS`. Rewrite using `[Complex.re_sum]`. Take `⟨m, hm⟩` from `MvPolynomial.ne_zero_iff.1 hf`. Establish `hms : m ∈ f.support` using `MvPolynomial.mem_support_iff.2 hm`. Establish `key : ∀ k ∈ f.support, (star (f.coeff k) * f.coeff k * (Formalism.L2.DIV.mfact k : ℂ)).re = ‖f.coeff k‖ ^ 2 * (Formalism.L2.DIV.mfact k : ℝ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k _`. Rewrite using `[RCLike.star_def, mul_comm (starRingEnd ℂ _), Complex.mul_conj, ← Complex.ofReal_natCast, ← Complex.ofReal_mul, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Rewrite using `[Finset.sum_congr rfl key]`. Establish `hpos : 0 < ‖f.coeff m‖ ^ 2 * (Formalism.L2.DIV.mfact m : ℝ)`. Establish `: (0 : ℝ) < Formalism.L2.DIV.mfact m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.L2.DIV.mfact`. Conclude with `Finset.prod_pos fun k _ => Nat.factorial_pos _` after adjusting the coercions. Check the signs of the components of the expression. Conclude with `lt_of_lt_of_le hpos (Finset.single_le_sum (f := fun k => ‖f.coeff k‖ ^ 2 * (Formalism.L2.DIV.mfact k : ℝ)) (fun k _ => by positivity) hms)`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem fockS_self_re_pos {σ : Type} {f : MvPolynomial σ ℂ} (hf : f ≠ 0) : 0 < (Formalism.L2.DIV.fockS f f).re := by
   unfold Formalism.L2.DIV.fockS

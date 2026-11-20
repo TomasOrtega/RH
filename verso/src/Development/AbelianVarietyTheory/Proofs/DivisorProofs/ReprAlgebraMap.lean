@@ -10,22 +10,22 @@ open NumberField GlobalTheory.RealMult GlobalTheory.CMVal GlobalTheory.LatVal
 namespace GlobalTheory.LatJet
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, ← J.one, map_smul, Module.Basis.repr_self, Finsupp.smul_single_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem JetRing.repr_algebraMap {R : Type} [CommRing R] {I : Type} [Fintype I] {n : ℕ} (J : JetRing R I n) (a : R) :
     J.b.repr (algebraMap R J.B a) = Finsupp.single ⟨0, by simp⟩ a := by
   rw [Algebra.algebraMap_eq_smul_one, ← J.one, map_smul, Module.Basis.repr_self, Finsupp.smul_single_one]
 
 /- English proof (translation)
-Take `⟨ε, hε⟩` from `h4`. Use `⟨ε, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ I _ 𝔠 hf R₀ s r hs R _ _ _ _ _ X₀ δ₀ N hN κ`. Take `⟨J⟩` from `h1 R I (∑ i, κ i)`. Take `⟨Y⟩` from `h2 (FR E) 𝔠 R I (∑ i, κ i) J X₀ δ₀ N hN`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra R₀ J.B := ((algebraMap R J.B).comp (algebraMap R₀ R)).toAlgebra`. Set `ν : Idx I (∑ i, κ i)` to `⟨κ, Nat.le_succ _⟩`. Use `⟨J.b.repr (r.val J.B Y.X' trivial Y.δ') ν, ?_⟩` and prove the remaining obligations. Introduce `σ hσ φ c y m hφ hc hr T hT g u hg hu`. Take `⟨J'⟩` from `h1 ℂ I (∑ i, κ i)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Y', τ, q, hτ, hq, hd⟩` from `h3 E I 𝔠 φ (lattice c y) R σ _ J J' X₀ δ₀ N Y T hT`. Use `letI : Algebra R₀ J'.B := ((algebraMap ℂ J'.B).comp R₀.subtype).toAlgebra`. Establish `hcomm : ∀ a : R₀, τ (algebraMap R₀ J.B a) = algebraMap R₀ J'.B a`. Introduce `a`. Apply `J'.b.repr.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `μ`. Rewrite using `[hτ]`. Express the relevant statement in the definitionally equal form `σ (J.b.repr (algebraMap R J.B (algebraMap R₀ R a)) μ) = J'.b.repr (algebraMap ℂ J'.B (a : ℂ)) μ`. Rewrite using `[J.repr_algebraMap, J'.repr_algebraMap, Finsupp.single_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp [hσ]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hbc` using `r.baseChange J.B J'.B ⟨τ, hcomm⟩ Y.X' trivial Y'.X' trivial q Y.δ' Y'.δ' hq hd`. Establish `key` using `hε E I 𝔠 φ c y hf hφ hc R₀ s r m hs hr T _ J' Y' (fun _ => rfl) g ν u hg hu`. Rewrite `key` using `[hbc]`. Rewrite using `[← key]`. Conclude with `congrArg (T.C ^ (2 * s) * ·) (hτ _ ν).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetCore_of (h1 : JetRingEx) (h2 : JetLift) (h3 : JetBC) (h4 : JetAnalytic) : JetCore := by
   obtain ⟨ε, hε⟩ := h4

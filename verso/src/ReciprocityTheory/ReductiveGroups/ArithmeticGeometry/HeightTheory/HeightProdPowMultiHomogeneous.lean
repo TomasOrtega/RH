@@ -6,7 +6,7 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open NumberField ReciprocityTheory.MultiplicativeHeights
 
 /- English proof (translation)
-Unfold `IsMultiHomogeneous at *`. Introduce `s hs b`. Take `⟨s1, hs1, s2, hs2, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul f g hs)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf s1 hs1 b, hg s2 hs2 b]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomogeneous_mul' {R : Type*} [CommSemiring R] {B n : ℕ} {a a' : Fin B → ℕ}
     {f g : MvPolynomial (Fin B × Fin n) R} (hf : IsMultiHomogeneous a f)
@@ -18,9 +18,9 @@ theorem isMultiHomogeneous_mul' {R : Type*} [CommSemiring R] {B n : ℕ} {a a' :
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf s1 hs1 b, hg s2 hs2 b]
 
 /- English proof (translation)
-Unfold `IsMultiHomogeneous`. Introduce `s hs b`. Rewrite `hs` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`. Use `split_ifs at hs with h`. Substitute `h` using the available equality.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `absurd rfl hs`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomogeneous_one {R : Type*} [CommSemiring R] {B n : ℕ} :
     IsMultiHomogeneous (0 : Fin B → ℕ) (1 : MvPolynomial (Fin B × Fin n) R) := by
@@ -34,7 +34,7 @@ theorem isMultiHomogeneous_one {R : Type*} [CommSemiring R] {B n : ℕ} :
   · exact absurd rfl hs
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [h0, gaussAbs, blockSphereMean]`. Consider the case `simp [h0, gaussAbs, blockSphereMean, MvPolynomial.support_one]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem height_one_eq_zero {K : Type} [Field K] [NumberField K] {B n : ℕ} (hn : 0 < n) :
     h0 (1 : MvPolynomial (Fin B × Fin n) K) = 0 := by
@@ -44,9 +44,9 @@ theorem height_one_eq_zero {K : Type} [Field K] [NumberField K] {B n : ℕ} (hn 
     | simp [h0, gaussAbs, blockSphereMean, MvPolynomial.support_one]
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp [height_one_eq_zero hn, isMultiHomogeneous_one]`. Consider the case `succ e ih`. Take `⟨h1, h2, h3⟩` from `ih`. Use `⟨pow_ne_zero _ hg0, ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `isMultiHomogeneous_mul' h2 hg`. Rewrite using `[pow_succ, (ReciprocityTheory.MultiplicativeHeights.Closed.gauss_height_additivity K B n _ _ _ _ hn h1 hg0 h2 hg).1, h3] push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem height_pow_multiHomogeneous {K : Type} [Field K] [NumberField K] {B n : ℕ} (hn : 0 < n)
     {g : MvPolynomial (Fin B × Fin n) K} {a : Fin B → ℕ} (hg0 : g ≠ 0)
@@ -62,9 +62,9 @@ theorem height_pow_multiHomogeneous {K : Type} [Field K] [NumberField K] {B n : 
       push_cast; ring
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp [height_one_eq_zero hn]`. Conclude with `⟨0, isMultiHomogeneous_one⟩`. Consider the case `insert q T hq ih`. Take `⟨h1, ⟨a1, h2⟩, h3⟩` from `ih fun i hi => hg i (Finset.mem_insert_of_mem hi)`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨hq0, aq, hqa⟩` from `hg q (Finset.mem_insert_self q T)`. Take `⟨p1, p2, p3⟩` from `height_pow_multiHomogeneous hn hq0 hqa (e q)`. Rewrite using `[Finset.prod_insert hq, Finset.sum_insert hq]`. Use `⟨mul_ne_zero p1 h1, ⟨_, isMultiHomogeneous_mul' p2 h2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[(ReciprocityTheory.MultiplicativeHeights.Closed.gauss_height_additivity K B n _ _ _ _ hn p1 h1 p2 h2).1, p3, h3]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem height_prod_pow_multiHomogeneous {K : Type} [Field K] [NumberField K] {B n : ℕ} (hn : 0 < n) {ι' : Type*}
     (T : Finset ι') (g : ι' → MvPolynomial (Fin B × Fin n) K) (e : ι' → ℕ)
@@ -94,7 +94,7 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Establish `hex : ∃ b : Ω', f = b • g` using `⟨a, h⟩`. Unfold `ratio`. Rewrite using `[dif_pos hex]`. Establish `hc` using `hex.choose_spec`. Conclude with `smul_left_injective Ω' hg (hc.symm.trans h)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma ratio_eq_of_eq_smul' {Ω' V : Type*} [Field Ω'] [AddCommGroup V] [Module Ω' V] {f g : V} {a : Ω'}
     (hg : g ≠ 0) (h : f = a • g) : ratio f g = a := by
@@ -105,13 +105,13 @@ private lemma ratio_eq_of_eq_smul' {Ω' V : Type*} [Field Ω'] [AddCommGroup V] 
   exact smul_left_injective Ω' hg (hc.symm.trans h)
 
 /- English proof (translation)
-Use `haveI := hd.tower c`. Establish `hg : d.w (d.jc c) c ≠ 0` using `hd.w_base c`. Establish `hspan : ∀ f ∈ 𝒜 c d.wL, ∃ a : Ω c, f = a • d.w (d.jc c) c`. Introduce `f hf`. Establish `hne : (⟨d.w (d.jc c) c, hd.w_mem _ c⟩ : 𝒜 c d.wL) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Conclude with `hg (congrArg Subtype.val h0)`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' _ hne).mp (hd.finrank_one c d.wL) ⟨f, hf⟩`. Conclude with `⟨a, (congrArg Subtype.val ha).symm⟩`. Use `choose r hr using fun j => hspan (d.w j c) (hd.w_mem j c)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hrat : ∀ j, ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c) = r j := fun j => ratio_eq_of_eq_smul' hg (hr j)`. Simplify using `only [hrat]`. Apply `ratio_eq_of_eq_smul' hg` to reduce the goal to its premises. Rewrite using `[Finset.sum_smul]`. Unfold `Data.wx`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[Pi.smul_apply, mul_smul, algebraMap_smul]`. Use `conv_lhs => rw [hr j]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_linearCombination_expand (hd : d.AxH 𝒜) (x : Fin (d.N + 1) → K) (c : ι) :
     ratio (Ω := Ω c) (d.wx x c) (d.w (d.jc c) c) =
@@ -138,7 +138,7 @@ theorem ratio_linearCombination_expand (hd : d.AxH 𝒜) (x : Fin (d.N + 1) → 
   conv_lhs => rw [hr j]
 
 /- English proof (translation)
-Use `lift u to ℤ using hu`. Use `lift v to ℤ using hv`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem untopD_le_untopD {u v : WithTop ℤ} (hu : u ≠ ⊤) (hv : v ≠ ⊤) (h : u ≤ v) :
     u.untopD 0 ≤ v.untopD 0 := by
@@ -147,13 +147,11 @@ theorem untopD_le_untopD {u v : WithTop ℤ} (hu : u ≠ ⊤) (hv : v ≠ ⊤) (
   simpa using h
 
 /- English proof (translation)
-Break down `d.PlaceTrivialOrPositive hd h c p hp w hw.1 with htr | ⟨hA, htriv, j0, hj0, hint, _⟩` into its components or cases. Take `⟨a, ha, hne⟩` from `hw.2`. Conclude with `absurd (htr a ha) hne`. Establish `hmem` using `d.linearCombination_mem_section hd x c`. Rewrite using `[d.ordMinMax_eq_ratio_untop_sub hd c _ hA j0 hj0 hint hmem hx, sub_nonneg]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set v := d.Wres c w`. Establish `hb` using `hd.w_base c`. Establish `hm` using `hd.w_mem (d.jc c) c`. Apply `untopD_le_untopD (hA.1.1 _ (d.ratio_base_ne_zero hd c (hd.w_mem j0 c) hj0)) (hA.1.1 _ (d.ratio_base_ne_zero hd c hmem hx))` to reduce the goal to its premises. Rewrite using `[d.ratio_linearCombination_expand hd x c]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `AddValuation.map_le_sum` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `hxj : x j = 0`. Rewrite using `[hxj, map_zero, zero_mul, v.map_zero]`. Conclude with `le_top`.
-
-Rewrite using `[v.map_mul, htriv _ hxj, zero_add, d.ratio_mul_ratio_height hd c (hd.w_mem j c) (hd.w_mem j0 c) hm hj0 hb, v.map_mul]`. Conclude with `le_add_of_nonneg_left (hint j)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordMinMax_nonneg (hd : d.AxH 𝒜) (h : d.S1) (x : Fin (d.N + 1) → K) (c : ι)
     (hx : d.wx x c ≠ 0) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne)
@@ -179,9 +177,9 @@ theorem ordMinMax_nonneg (hd : d.AxH 𝒜) (h : d.S1) (x : Fin (d.N + 1) → K) 
   exact le_add_of_nonneg_left (hint j)
 
 /- English proof (translation)
-Unfold `Data.nPMM`. Apply `finsum_nonneg` to reduce the goal to its premises. Introduce `w`. Apply `finsum_nonneg` to reduce the goal to its premises. Introduce `hw`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mul_nonneg ?_ (d.ordMinMax_nonneg hd h x c hx hp hw)` and prove the remaining obligations. Use `first`. Consider the case `positivity`. Consider the case `exact Nat.cast_nonneg _`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem multiplicity_nonneg (hd : d.AxH 𝒜) (h : d.S1) (x : Fin (d.N + 1) → K) (c : ι)
     (hx : d.wx x c ≠ 0) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) :
@@ -197,25 +195,23 @@ theorem multiplicity_nonneg (hd : d.AxH 𝒜) (h : d.S1) (x : Fin (d.N + 1) → 
     | exact Nat.cast_nonneg _
 
 /- English proof (translation)
-Establish `hmem` using `d.linearCombination_mem_section hd x c`. Take `⟨κ1, hκ1, e1⟩` from `d.SpecialFibreFactorization hd h c F hF x (hx c)`. Establish `hS` using `(d.good_primes_properties hd h c).2.2.2 _ hmem (hx c)`. Use `set T := hS.toFinset`. Use `set n : Ideal (KTp K d.D d.N) → ℤ := fun p => d.nPMM h c (d.wx x c) p with hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ p, p ∈ T ↔ p ∈ d.HtOne ∧ n p ≠ 0` using `fun p => by rw [Set.Finite.mem_toFinset]; rfl`. Establish `hgood : ∀ p ∈ T, d.gen p ≠ 0 ∧ ∃ a, IsMultiHomogeneous a (d.gen p)`. Introduce `p hpT`. Take `⟨hp, hnp⟩` from `(hT p).mp hpT`. Use `⟨d.gen_ne_zero_of_htOne hp, _, (d.good_primes_properties hd h c).2.1 p hp ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w, hw, _⟩` from `exists_ne_zero_of_finsum_mem_ne_zero' hnp`. Conclude with `⟨w, hw⟩`. Use `set e : Ideal (KTp K d.D d.N) → ℕ := fun p => (n p).toNat with he`. Establish `hne : ∀ p ∈ d.HtOne, n p = (e p : ℤ)` using `fun p hp => (Int.toNat_of_nonneg (d.multiplicity_nonneg hd h x c (hx c) hp)).symm`. Take `⟨P0, ⟨aP, hPm⟩, hPh⟩` from `height_prod_pow_multiHomogeneous (K := K) (Nat.succ_pos d.N) T (fun p => d.gen p) e hgood`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hprod : (∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ n p) = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (∏ p ∈ T, d.gen p ^ e p)`. Rewrite using `[finprod_mem_eq_prod_of_inter_mulSupport_eq _ (t := T), map_prod]`. Use `Finset.prod_congr rfl fun p hpT => ?_` and prove the remaining obligations. Rewrite using `[hne p ((hT p).mp hpT).1, zpow_natCast, map_pow]`. Use extensionality with `p`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_inter_iff, Function.mem_mulSupport, Finset.mem_coe, hT]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hp, h1⟩`. Use `⟨⟨hp, fun h0 => h1 ?_⟩, h1⟩` and prove the remaining obligations. Rewrite using `[h0, zpow_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨hp, _⟩, h1⟩`. Conclude with `⟨hp, h1⟩`. Establish `hFx : d.translatedForm x F = MvPolynomial.C κ1 * ∏ p ∈ T, d.gen p ^ e p`. Apply `IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N)` to reduce the goal to its premises. Unfold `translatedForm`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hprod, map_mul, ← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply K (KTp K d.D d.N) (KTf K d.D d.N)]`. Use `⟨by rw [hFx]; exact mul_ne_zero (MvPolynomial.C_ne_zero.mpr hκ1) P0, ?_⟩` and prove the remaining obligations. Rewrite using `[hFx, (ReciprocityTheory.MultiplicativeHeights.Closed.gauss_height_additivity K (d.D + 1) (d.N + 1) aP aP _ _ (Nat.succ_pos _) P0 P0 hPm hPm).2 κ1 hκ1, hPh]`. Rewrite using `[finsum_mem_eq_sum_of_inter_support_eq _ (t := T)]`. Use `Finset.sum_congr rfl fun p hpT => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Rewrite using `[show ((d.nPMM h c (d.wx x c) p : ℤ) : ℝ) = ((e p : ℤ) : ℝ) from congrArg _ (hne p ((hT p).mp hpT).1)]`. Simplify using the standard rewrite rules. Use extensionality with `p`. Simplify using `only [Set.mem_inter_iff, Function.mem_support, Finset.mem_coe, hT]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨hp, h1⟩`. Use `⟨⟨hp, fun h0 => h1 ?_⟩, h1⟩` and prove the remaining obligations. Simplify using `only [hn] at h0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
-
-Introduce and unpack `⟨⟨hp, _⟩, h1⟩`. Conclude with `⟨hp, h1⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem height_substituted_eq_finsum (hd : d.AxH 𝒜) (h : d.S1) (x : Fin (d.N + 1) → K)
     (hx : ∀ c, d.wx x c ≠ 0) (c : ι) (F : KTp K d.D d.N)
@@ -276,9 +272,9 @@ theorem height_substituted_eq_finsum (hd : d.AxH 𝒜) (h : d.S1) (x : Fin (d.N 
     · rintro ⟨⟨hp, _⟩, h1⟩; exact ⟨hp, h1⟩
 
 /- English proof (translation)
-Establish `hne` using `(d.height_substituted_eq_finsum hd h x hx c F hF).1`. Use `⟨fun h0 => hne ?_, hne⟩` and prove the remaining obligations. Rewrite using `[h0]`. Use `first`. Consider the case `simp [Data.translatedForm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem fZ_and_substituted_ne_zero (hd : d.AxH 𝒜) (h : d.S1) (x : Fin (d.N + 1) → K)
     (hx : ∀ c, d.wx x c ≠ 0) (c : ι) (F : KTp K d.D d.N)

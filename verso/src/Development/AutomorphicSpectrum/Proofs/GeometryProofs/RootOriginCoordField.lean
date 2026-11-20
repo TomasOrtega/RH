@@ -19,13 +19,11 @@ section Gen
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
 /- English proof (translation)
-Take `⟨h0, e⟩` from `h`. Take `⟨h0', e'⟩` from `h'`. Establish `m1 : s' ∈ Submodule.span (regAt ξ p) {s}`. Rewrite using `[← e, e']`. Conclude with `Submodule.mem_span_singleton_self s'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `m2 : s ∈ Submodule.span (regAt ξ p) {s'}`. Rewrite using `[← e', e]`. Conclude with `Submodule.mem_span_singleton_self s`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 m1`. Take `⟨r', hr'⟩` from `Submodule.mem_span_singleton.1 m2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : (r : Ω) * s = s'` using `hr`. Establish `hr2 : (r' : Ω) * s' = s` using `hr'`. Use `⟨div_ne_zero h0' h0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(div_eq_iff h0).2 hr1.symm]`. Conclude with `r.2`.
-
-Rewrite using `[inv_div, (div_eq_iff h0').2 hr2.symm]`. Conclude with `r'.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_div_of_isGenAt {Λ : Lat ξ Ω} {p : Cpt ξ} {s s' : Ω} (h : Λ.IsGenAt p s) (h' : Λ.IsGenAt p s') :
     unitAt ξ p (s' / s) := by
@@ -44,11 +42,11 @@ theorem unitAt_div_of_isGenAt {Λ : Lat ξ Ω} {p : Cpt ξ} {s s' : Ω} (h : Λ.
   · rw [inv_div, (div_eq_iff h0').2 hr2.symm]; exact r'.2
 
 /- English proof (translation)
-Use `⟨Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (h i).1, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s', hs', rfl⟩`. Establish `hu : unitAt ξ p (∏ i, (s' i / s i) ^ a i)` using `unitAt.prod _ fun i _ => (unitAt_div_of_isGenAt (h i) (hs' i)).zpow _`. Establish `e : ∏ i, s' i ^ a i = (∏ i, (s' i / s i) ^ a i) * ∏ i, s i ^ a i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, div_mul_cancel₀ _ (h i).1]`. Rewrite using `[e]`. Conclude with `Submodule.mem_span_singleton.2 ⟨⟨_, hu.2.1⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `⟨s, h, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tens_isGenAt {I : Type} [Fintype I] {Λ : I → Lat ξ Ω} (a : I → ℤ) {p : Cpt ξ} {s : I → Ω}
     (h : ∀ i, (Λ i).IsGenAt p (s i)) : (Lat.tens Λ a).IsGenAt p (∏ i, s i ^ a i) := by
@@ -68,9 +66,9 @@ theorem tens_isGenAt {I : Type} [Fintype I] {Λ : I → Lat ξ Ω} (a : I → �
     exact ⟨s, h, rfl⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `hE : {t | ∃ s : I → Ω, (∀ i, (Λ i).IsGenAt p (s i)) ∧ t = ∏ i, s i ^ a i} = ∅` using `Set.eq_empty_of_forall_notMem fun _ ⟨s, hs, _⟩ => hn ⟨s, hs⟩`. Establish `m : t ∈ (Lat.tens Λ a) p`. Rewrite using `[h.2]`. Conclude with `Submodule.mem_span_singleton_self t`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `m' : t ∈ Submodule.span (regAt ξ p) (∅ : Set Ω)`. Rewrite using `[← hE]`. Conclude with `m`. Rewrite `m'` using `[Submodule.span_empty, Submodule.mem_bot]`. Conclude with `h.1 m'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_tens {I : Type} [Fintype I] {Λ : I → Lat ξ Ω} {a : I → ℤ} {p : Cpt ξ} {t : Ω}
     (h : (Lat.tens Λ a).IsGenAt p t) : ∃ s : I → Ω, ∀ i, (Λ i).IsGenAt p (s i) := by
@@ -85,9 +83,9 @@ theorem exists_gen_of_tens {I : Type} [Fintype I] {Λ : I → Lat ξ Ω} {a : I 
   exact h.1 m'
 
 /- English proof (translation)
-Establish `ha : a ≠ 0` using `left_ne_zero_of_mul hab.1`. Use `⟨ha, ?_, ?_⟩` and prove the remaining obligations. Establish `e : a = a * b * b⁻¹` using `by field_simp [hb.1]`. Rewrite using `[e]`. Conclude with `mul_mem hab.2.1 hb.2.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : a⁻¹ = (a * b)⁻¹ * b` using `by field_simp [hb.1]`. Rewrite using `[e]`. Conclude with `mul_mem hab.2.2 hb.2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_of_mul {p : Cpt ξ} {a b : Ω} (hab : unitAt ξ p (a * b)) (hb : unitAt ξ p b) : unitAt ξ p a := by
   have ha : a ≠ 0 := left_ne_zero_of_mul hab.1
@@ -105,11 +103,9 @@ variable {X X₀ : Scheme.{0}} {Ω Ω₀ : Type} [Field Ω] [Field Ω₀] {ξ : 
   {ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ X₀}
 
 /- English proof (translation)
-Establish `hx : x a ≠ 0` using `fun e => h.1 (by simp [e])`. Establish `hu : unitAt ξ₀ p₀ (x a / x a₀)`. Use `hU _ (h₀.2 a) ⟨(map_ne_zero i).2 (div_ne_zero hx h₀.1), hR _ (h₀.2 a), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv₀, inv_div, map_div₀]`. Conclude with `h.2 a₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hx, fun c => ?_⟩` and prove the remaining obligations. Establish `e : x c / x a = x c / x a₀ * (x a / x a₀)⁻¹`. Use `h₀.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
-
-Conclude with `mul_mem (h₀.2 c) hu.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inChart_below {p : Cpt ξ} {p₀ : Cpt ξ₀} (i : Ω₀ →+* Ω)
     (hU : ∀ a : Ω₀, a ∈ regAt ξ₀ p₀ → unitAt ξ p (i a) → unitAt ξ₀ p₀ a)
@@ -130,7 +126,7 @@ theorem inChart_below {p : Cpt ξ} {p₀ : Cpt ξ₀} (i : Ω₀ →+* Ω)
 end Below
 
 /- English proof (translation)
-Use `tens_isGenAt (I := Unit) (Λ := fun _ => (𝔐.V (HodgeCpt.rootIdx D r).1).gr (Fl.b (HodgeCpt.rootIdx D r).1) (HodgeCpt.rootIdx D r).2) (fun _ => HodgeCpt.rootSgn D r) (p := p) (s := fun _ => g) fun _ => hg` as an intermediate fact. Simplify `this` using `[HodgeCpt.Flag.rootLat]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rootLat_isGenAt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
@@ -144,21 +140,19 @@ theorem rootLat_isGenAt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   simpa [HodgeCpt.Flag.rootLat] using this
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y Sys Fx R S₀ S o Ω _ K _ J _ y bk bx 𝔐 i h hd Fl xdeg e hy hG hL hU hR hab p hp a t hch ht`. Establish `hp0 : ∀ r : ℕ, r.Prime → ¬ InFibre o.𝔐.ξ r (pushCpt hd p)`. Introduce `r hr hf`. Apply `hf` to reduce the goal to its premises. Establish `u : unitAt 𝔐.ξ p (r : Ω)` using `not_not.1 (hp r hr)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `hU p (r : R.Ω) (natCast_mem _ r) (by rw [map_natCast]; exact u)`. Take `⟨c₀, hc₀⟩` from `o.𝔐.tie.cover (pushCpt hd p)`. Establish `hprod : ∀ k, R.y ⟨k, c₀ k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.1 hc₀.1) k (Finset.mem_univ k)`. Establish `ya₀ : o.g (Fx.yf (o.ix.symm (c₀ o.k₀))) = R.y ⟨o.k₀, c₀ o.k₀⟩`. Rewrite using `[← o.y_eq, Equiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hch₀ : InChart o.𝔐.ξ (fun i' => o.g (Fx.yf i')) (o.ix.symm (c₀ o.k₀)) (pushCpt hd p)`. Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations. Use `show o.g (Fx.yf (o.ix.symm (c₀ o.k₀))) ≠ 0`. Rewrite using `[ya₀]`. Conclude with `hprod _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show o.g (Fx.yf j) / o.g (Fx.yf (o.ix.symm (c₀ o.k₀))) ∈ _`. Rewrite using `[ya₀, ← o.y_eq]`. Conclude with `Lat.block_ratio_mem hc₀ o.k₀ (o.ix j)`. Establish `hcha : InChart o.𝔐.ξ (fun i' => o.g (Fx.yf i')) a (pushCpt hd p)` using `inChart_below i (hU p) (hR p) hch₀ hch`. Establish `gens : ∀ r : RootIx D, ∃ g : R.Ω, ((o.𝔐.V (HodgeCpt.rootIdx D r).1).gr (o.Fl.b (HodgeCpt.rootIdx D r).1) (HodgeCpt.rootIdx D r).2).IsGenAt (pushCpt hd p) g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `r`. Establish `hgen : (o.Fl.rootLat r).IsGenAt (pushCpt hd p) ((∏ k, R.y ⟨k, c₀ k⟩ ^ R.xdeg r k) • o.e r)` using `⟨smul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hprod k)) (o.lines r).1, (o.lines r).2 _ trivial c₀ hc₀⟩`. Take `⟨s, hs⟩` from `exists_gen_of_tens hgen`. Conclude with `⟨s (), hs ()⟩`. Use `choose g hg using gens`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht₀` using `tens_isGenAt (fun r => -Fx.n r) fun r => rootLat_isGenAt o.Fl r (hg r)`. Establish `ht₁ : (Lat.tens Fl.rootLat fun r => -Fx.n r).IsGenAt p (i (∏ r, (g r ^ HodgeCpt.rootSgn D r) ^ (-Fx.n r)))`. Use `tens_isGenAt (Λ := Fl.rootLat) (fun r => -Fx.n r) fun r => rootLat_isGenAt Fl r (hG p hp _ _ _ (hg r))` as an intermediate fact. Simplify `this` using `only [map_prod, map_zpow₀]`. Establish `hv` using `unitAt_div_of_isGenAt ht ht₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨hreg, hnu⟩` from `o.eff (pushCpt hd p) hp0 a _ hcha ht₀`. Establish `key : (i.comp o.g) Fx.sE * (i.comp o.g) (Fx.yf a) ^ Fx.q' / t = i (o.g Fx.sE * o.g (Fx.yf a) ^ Fx.q' / ∏ r, (g r ^ HodgeCpt.rootSgn D r) ^ (-Fx.n r)) * (i (∏ r, (g r ^ HodgeCpt.rootSgn D r) ^ (-Fx.n r)) / t)`. Establish `h1` using `ht₁.1`. Establish `h2` using `ht.1`. Rewrite using `[map_div₀ i (o.g Fx.sE * o.g (Fx.yf a) ^ Fx.q'), div_mul_div_cancel₀ h1, map_mul, map_pow]`.
-
-Both sides reduce to the same expression. Rewrite using `[key]`. Use `⟨mul_mem (hR p _ hreg) hv.2.1, fun hnab hu => ?_⟩` and prove the remaining obligations. Conclude with `hnu (fun hm => hnab ((hab p.1).2 hm)) (hU p _ hreg (unitAt_of_mul hu hv))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem section_on_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (Sys : PB.AnSys (Top.dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))) (Fx : FixedData Y Sys) (R : Top.RootModel (CMType H) (D.p + D.q)) (S₀ S : Finset ℕ) (o : RootOrigin Y S₀ R Fx) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (bk : R.K → K) (bx : ∀ k, R.ι k ≃ J (bk k)) (𝔐 : HodgeCpt Y S y) (i : R.Ω →+* Ω) (h : 𝔐.X ⟶ o.𝔐.X) (hd : GlobalTheory.CompanionTheory.Ar.Dominates 𝔐.ξ o.𝔐.ξ h i) (Fl : 𝔐.Flag) (xdeg : RootIx D → K → ℤ) (e : RootIx D → Ω), (∀ k a, y ⟨bk k, bx k a⟩ = i (R.y ⟨k, a⟩)) → GenPull o.Fl Fl i hd → Fl.RootLines xdeg e → (∀ (p : Cpt 𝔐.ξ) (a : R.Ω), a ∈ regAt o.𝔐.ξ (pushCpt hd p) → unitAt 𝔐.ξ p (i a) → unitAt o.𝔐.ξ (pushCpt hd p) a) → (∀ (p : Cpt 𝔐.ξ) (a : R.Ω), a ∈ regAt o.𝔐.ξ (pushCpt hd p) → i a ∈ regAt 𝔐.ξ p) → (∀ x : 𝔐.X, x ∈ abLocus 𝔐.t.G ↔ h x ∈ abLocus o.𝔐.t.G) → ∀ p : Cpt 𝔐.ξ, (∀ r : ℕ, r.Prime → ¬ InFibre 𝔐.ξ r p) → ∀ (a : Fin (Fx.m + 1)) (t : Ω), InChart 𝔐.ξ (fun i' => (i.comp o.g) (Fx.yf i')) a p → (Lat.tens Fl.rootLat fun r => -Fx.n r).IsGenAt p t → (i.comp o.g) Fx.sE * (i.comp o.g) (Fx.yf a) ^ Fx.q' / t ∈ regAt 𝔐.ξ p ∧ (p.1 ∉ abLocus 𝔐.t.G → ¬ unitAt 𝔐.ξ p ((i.comp o.g) Fx.sE * (i.comp o.g) (Fx.yf a) ^ Fx.q' / t)) := by
   intro E _ _ _ H D l Xo c O _ β Y Sys Fx R S₀ S o Ω _ K _ J _ y bk bx 𝔐 i h hd Fl xdeg e hy hG hL hU hR hab p hp a t

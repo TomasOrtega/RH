@@ -19,11 +19,11 @@ namespace GlobalTheory.LevNorm
 attribute [local instance] Formalism.BasicNotions.Host.cmStar kField
 
 /- English proof (translation)
-Establish `key : ∀ (J : Matrix (Fin n) (Fin n) A) (β w : GL (Fin n) A), w ∈ UJ σ J → β⁻¹ * w * β ∈ UJ σ (cT σ (β : Matrix (Fin n) (Fin n) A) * J * (β : Matrix (Fin n) (Fin n) A))` using `fun J β w h => by show cT σ ((β⁻¹).1 * w.1 * β.1) * _ * ((β⁻¹).1 * w.1 * β.1) = _`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [cT_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [Units.mul_inv, cT_one, Matrix.one_mul, Matrix.mul_one, show cT σ w.1 * J * w.1 = J from h]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `key _ β⁻¹ w h` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Use `this using 2` and compare the differences between its conclusion and the goal. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `key J β _ h` as an intermediate fact. Rewrite `this` using `[show β⁻¹ * (β * w * β⁻¹) * β = w by group]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_UJ_conj {A : Type} [CommRing A] (σ : A →+* A) {n : ℕ} (J : Matrix (Fin n) (Fin n) A) (β w : GL (Fin n) A) :
     w ∈ UJ σ (cT σ (β : Matrix (Fin n) (Fin n) A) * J * (β : Matrix (Fin n) (Fin n) A)) ↔ β * w * β⁻¹ ∈ UJ σ J := by
@@ -51,41 +51,37 @@ theorem frGL_eq (I : AutInst) (β : GL (Fin I.n) (I.E ⊗[I.F] Formalism.MainNot
     frGL β x = β * bc (Formalism.L2.Herm.intAf I.F I.E).subtype x * β⁻¹ := rfl
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `GlobalTheory.T.unitary_group_conjugate_transpose_matrix I β hβ`. Establish `hσ` using `sigA_sigA I`. Establish `hS : ∀ s ∈ Formalism.L2.Herm.intAf I.F I.E, sigA I s ∈ Formalism.L2.Herm.intAf I.F I.E` using `fun s hs => sigA_mem I hs`. Establish `hJ : cT (sigA I) (I.J.map (inclE (F` using `I.F) (Formalism.MainNotions.S.Af I.F))) = I.J.map (inclE (F := I.F) (Formalism.MainNotions.S.Af I.F)) := by`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `(sigA_inclE I _).trans (congrArg _ (congrFun (congrFun I.J_herm i) j))`. Establish `hcc : ∀ M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F), cT (sigA I) (cT (sigA I) M) = M` using `fun M => by`. Use extensionality with `i j`. Conclude with `hσ _`. Establish `hU : ∀ w, w ∈ UJ (sigA I) ((bc (Formalism.L2.Herm.intAf I.F I.E).subtype G).1) ↔ β * w * β⁻¹ ∈ UPts I.cm.sig I.J (Formalism.MainNotions.S.Af I.F)` using `fun w => by rw [hG]; exact mem_UJ_conj _ _ _ _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `keeps : ∀ y : I.Gf, (∀ x ∈ K, y * x * y⁻¹ ∈ K ∧ χ (y * x * y⁻¹) = χ x) → Keeps (fun Q : Pl I.E => resS I.F Q) (sigA I) ρ κ G Pg ψ a (β⁻¹ * y.1 * β)`. Introduce `y hy x hx`. Set `X : I.Gf` to `⟨frGL β x, (hU _).1 hx.1⟩`. Establish `hX : X ∈ K` using `(hK X).1.2 ⟨⟨x, rfl⟩, fun PP hPP => by show redFn β PP (frGL β x) ∈ _`. Rewrite using `[redFn_frGL]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hx.2 PP hPP⟩`. Take `⟨h1, h2⟩` from `hy X hX`. Take `⟨⟨x', hx'⟩, h3⟩` from `(hK _).1.1 h1`. Rewrite `h2` using `[(hK _).2 h1, (hK _).2 hX, ← hx']`. Rewrite `h3` using `[← hx']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `⟨x', ?_, ⟨(hU _).2 (by rw [← frGL_eq, hx']; exact (y * X * y⁻¹).2), fun PP hPP => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : β * bc (Formalism.L2.Herm.intAf I.F I.E).subtype x' * β⁻¹ = y.1 * (β * bc (Formalism.L2.Herm.intAf I.F I.E).subtype x * β⁻¹) * y.1⁻¹` using `hx'`. Combine the equalities or inequalities in the displayed calculation. Use `h3 PP hPP` as an intermediate fact. Rewrite `this` using `[redFn_frGL]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [X, redFn_frGL] at h2`. Conclude with `h2`. Take `⟨z, c, x₁, hz, hc, hsup, hm, hred⟩` from `normaliser_core Z hσ hS hn hρ hκ (by rw [hG, cT_mul, cT_mul, hcc, hJ, Matrix.mul_assoc]) hT hun hψ ha (m := β⁻¹ * y.1 * β) ((hU _).2 (by rw [show β * (β⁻¹ * y.1 * β) * β⁻¹ = y.1 by group]; exact y.2)) (keeps y fun x hx => ⟨(hy x).1.1 hx, (hy x).2 hx⟩) (by`. Use `keeps y⁻¹ fun x hx => by` as an intermediate fact. Establish `e : y * (y⁻¹ * x * y⁻¹⁻¹) * y⁻¹ = x` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1 : y⁻¹ * x * y⁻¹⁻¹ ∈ K` using `(hy _).1.2 (by rw [e]; exact hx)`. Conclude with `⟨h1, by rw [← (hy _).2 h1, e]⟩`. Rewrite using `[show β⁻¹ * (y⁻¹).1 * β = (β⁻¹ * y.1 * β)⁻¹ by rw [Subgroup.coe_inv]; group] at this)` and apply the resulting hypothesis. Establish `hz' : sigA I z * z = 1` using `by rw [mul_comm, hz]`. Set `zG : GL (Fin I.n) (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)` to `⟨z • 1, sigA I z • 1, by rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hz, Matrix.one_mul, one_smul], by rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hz', Matrix.one_mul, one_smul]⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzc : ∀ w, zG * w = w * zG` using `fun w => Units.ext (by show z • 1 * w.1 = w.1 * z • 1`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one])`. Establish `hzU : zG ∈ UPts I.cm.sig I.J (Formalism.MainNotions.S.Af I.F)`. Establish `e : cT (sigA I) (z • (1 : Matrix (Fin I.n) (Fin I.n) _)) = sigA I z • 1`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, map_mul, eq_comm (a := i)]`. Apply the tactic sequence `split_ifs <;> simp`. Use `show cT (sigA I) (z • 1) * _ * (z • 1) = _`. Rewrite using `[e, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, hz, one_smul]`. Establish `hm' : β⁻¹ * y.1 * β = zG * bc (Formalism.L2.Herm.intAf I.F I.E).subtype x₁` using `Units.ext (by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm]`. Use `show _ = z • 1 * _`. Rewrite using `[Matrix.smul_mul, Matrix.one_mul])`. Establish `hpg : ∀ PP ∈ Pg, (g : kP PP) = 0` using `fun PP hPP => by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk PP.asIdeal)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hdiv PP hPP)`. Use `⟨⟨zG, hzU⟩, Subgroup.mem_center_iff.2 fun w => Subtype.ext (hzc _).symm, c, Subtype.ext hc, fun N hN => ?_, fun d x hx hd => ?_⟩` and prove the remaining obligations. Establish `hN' : ∀ Q ∈ Pg, (N : kP Q) ≠ 0` using `fun Q hQ h0 => by`. Take `⟨u, v, huv⟩` from `(Nat.isCoprime_iff_coprime.2 hN).intCast (R := kP Q)`. Rewrite `huv` using `[Int.cast_natCast, Int.cast_natCast, h0, hpg Q hQ, mul_zero, mul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `zero_ne_one huv`. Establish `hN0 : (N : I.F) ≠ 0` using `Nat.cast_ne_zero.2 fun e => hg (by rwa [e, Nat.coprime_zero_left] at hN)`. Set `b : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F` to `algebraMap I.F _ (N : I.F)⁻¹`. Establish `hb : (N : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) * b = 1`. Rewrite using `[← map_natCast (algebraMap I.F (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)), ← map_mul, mul_inv_cancel₀ hN0, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb' : (N : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) * sigA I b = 1`. Simplify using `using congrArg (sigA I) hb`. Establish `key : ∀ b', (N : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) * b' = 1 → ∀ Q ∈ Pg, Z.p Q b' ∈ Z.O Q` using `fun b' h Q hQ => by`. Establish `h1` using `(Z.r_ker Q N).not.1 (by rw [map_natCast]; exact hN' Q hQ)`. Establish `h2` using `congrArg (fun t => (Z.O Q).valuation (Z.p Q t)) h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [map_mul, map_one] at h2`. Rewrite using `[← ValuationSubring.valuation_le_one_iff, ← h2]`. Conclude with `le_mul_of_one_le_left' (not_lt.1 h1)`. Use `⟨_, hsup b fun Q hQ => ⟨key b hb Q hQ, key _ hb' Q hQ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm, hb, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e : ((d⁻¹ * ((⟨zG, hzU⟩ : I.Gf)⁻¹ * y) : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)) = frGL β (x⁻¹ * x₁)` using `by show d.1⁻¹ * (zG⁻¹ * y.1) = _`. Rewrite using `[map_mul, map_inv, hx, frGL_eq]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Use `(hK _).1.2 ⟨⟨_, e.symm⟩, fun PP hPP => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Take `⟨h, hh, e2⟩` from `hred PP hPP`. Establish `e3 : (bc (resS I.F PP) x).1 = midDiag I.n ρ κ 1 (resS I.F PP c)`. Use extensionality with `i j`. Use `map_eq_zero_of_zmod I (resS I.F PP) (hpg PP hPP) (hd i j)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`.
-
-Use `this.trans ?_` and prove the remaining obligations. Simplify using `only [midDiag, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `e4 : bc (resS I.F PP) x₁ = bc (resS I.F PP) x * h` using `Units.ext (by rw [Units.val_mul, e3]; exact e2)`. Rewrite using `[e, redFn_frGL, map_mul, map_inv, e4, inv_mul_cancel_left]`.
-
-Conclude with `hh`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_normaliser (I : AutInst) (g : ℕ) (hg : g ≠ 1) {ρ κ : ℕ} (hn : I.n = 2 * ρ + κ + 1) (hρ : 1 ≤ ρ) (hκ : 2 ≤ κ)
     (β : GL (Fin I.n) (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)) (hβ : IsFrame β I.L)
@@ -208,16 +204,16 @@ theorem frame_normaliser (I : AutInst) (g : ℕ) (hg : g ≠ 1) {ρ κ : ℕ} (h
     exact hh
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((sigA_inclE I _).trans (congrArg (inclE (F := I.F) (Formalism.MainNotions.S.Af I.F)) h.symm))`.
+A detailed English derivation is pending.
 -/
 theorem sigInt_oToS (I : AutInst) {c c' : 𝓞 I.E} (h : (c' : I.E) = star (c : I.E)) :
     sigInt I (oToS I.F I.E c) = oToS I.F I.E c' :=
   Subtype.ext ((sigA_inclE I _).trans (congrArg (inclE (F := I.F) (Formalism.MainNotions.S.Af I.F)) h.symm))
 
 /- English proof (translation)
-Introduce `c hc`. Take `⟨c', hc'⟩` from `star_intOE I (a := (c : I.E)) ⟨c, rfl⟩`. Use `⟨c', ?_, hc'⟩` and prove the remaining obligations. Establish `h1 : resS I.F Q' (sigInt I (oToS I.F I.E c)) = 0` using `Z.r_conj (σ := sigA I) (sigA_sigA I) (fun s hs => sigA_mem I hs) h (oToS I.F I.E c) ((resS_oToS Q c).trans (Ideal.Quotient.eq_zero_iff_mem.2 hc))`. Rewrite `h1` using `[sigInt_oToS I hc', resS_oToS]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h1`.
+A detailed English derivation is pending.
 -/
 theorem conj_of_idem (I : AutInst)
     (Z : PlaceSys (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) (Formalism.L2.Herm.intAf I.F I.E) (Pl I.E) (fun Q => kP Q) (fun Q => resS I.F Q))
@@ -232,7 +228,7 @@ theorem conj_of_idem (I : AutInst)
   exact Ideal.Quotient.eq_zero_iff_mem.1 h1
 
 /- English proof (translation)
-Take `⟨δ, δ', h1, h2⟩` from `h`. Use `⟨oToS I.F I.E δ, fun h0 => h2 ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[sigInt_oToS I h1, ← map_sub, resS_oToS]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_res_ne (I : AutInst) (Q : Pl I.E) (h : ∃ δ δ' : 𝓞 I.E, (δ' : I.E) = star (δ : I.E) ∧ δ - δ' ∉ Q.asIdeal) :
     ∃ δ : Formalism.L2.Herm.intAf I.F I.E, resS I.F Q (δ - sigInt I δ) ≠ 0 := by
@@ -242,21 +238,19 @@ theorem exists_res_ne (I : AutInst) (Q : Pl I.E) (h : ∃ δ δ' : 𝓞 I.E, (δ
   exact Ideal.Quotient.eq_zero_iff_mem.1 h0
 
 /- English proof (translation)
-Substitute `hI hg'` using the available equality. Take `⟨Pg, hPg⟩` from `GlobalTheory.Core.Mi.PinModel.exists_isTypePlaces (D := D)`. Establish `hnc` using `GlobalTheory.T.genus_type_places_pairwise_not_conjugate D Pg hPg`. Establish `key : ∀ PP : Pl D.host.E, ∃ ψ : AddChar (kP PP) ℂ, ψ ≠ 1` using `fun PP => by`. Take `⟨ψ, hψ⟩` from `(AddChar.exists_apply_ne_zero (α := kP PP) (a := 1)).2 one_ne_zero`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ψ, fun h => hψ (by rw [h]; rfl)⟩`. Use `choose ψ0 hψ0 using key`. Establish `hψ : IsGenericPsi Pg ψ0` using `fun PP _ => hψ0 PP`. Establish `hg : D.host.g 0 * D.host.g 1 ≠ 0` using `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Establish `hg1 : D.host.g 0 * D.host.g 1 ≠ 1` using `fun e => (D.host.g_prime 0).ne_one (Nat.eq_one_of_mul_eq_one_right e)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : (instOf D).n = 2 * D.R.rS + D.R.k + 1`. Rewrite using `[hn]`. Take `⟨c, hc⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r Ranks.rS`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hk : 2 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Take `⟨hs1, hs2⟩` from `GlobalTheory.T.flagVec_mem_Lf_and_inMod (instOf D) _ e0 f0 z0 bw bwd ew hF hn'`. Take `⟨β₀, hβ₀⟩` from `GlobalTheory.T.exists_latticeFrame_lifting_spanning_vectors_mod D _ hg _ hs1 hs2`. Establish `hN : ∀ s : Formalism.L2.Herm.intAf D.host.F D.host.E, (∀ PP ∈ Pg, resS D.host.F PP s = 0 ∧ resS D.host.F PP (sigInt (instOf D) s) = 0) → ZMod' (instOf D) (D.host.g 0 * D.host.g 1) s.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Use `GlobalTheory.T.integralAdele_congr_zero_of_residues_squarefree (instOf D) _ hg (GlobalTheory.T.typePrimes_product_not_mem_sq_place D) s fun Q hQ => ?_` and prove the remaining obligations. Take `⟨PP, hPP, rfl | h⟩` from `GlobalTheory.T.typePrimePlace_mem_or_conj_genusTypePlaceSet D Pg hPg Q hQ`. Conclude with `(hs _ hPP).1`. Conclude with `(h s).2 (hs _ hPP).2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a₁, a₂, ha, hχ⟩` from `GlobalTheory.T.character_residueFields_eq_prod_genericShift D.host.E (Formalism.L2.Herm.intAf D.host.F D.host.E) Pg (fun PP => resS D.host.F PP) (fun PP => (resS D.host.F PP).comp (sigInt (instOf D))) (fun s => star (psiEf (divN (instOf D) (D.host.g 0 * D.host.g 1) s.1))) ψ0 hψ ( …`. Take `⟨t, ht, e⟩` from `hN s hs`. Establish `: divN (instOf D) (D.host.g 0 * D.host.g 1) s.1 = t` using `(congrArg _ e).trans (Formalism.L2.SG.Pf.unitaryCongruence.divN_gmul _ _ hg t)`. Use `show star (psiEf (divN (instOf D) (D.host.g 0 * D.host.g 1) s.1)) = 1`. Rewrite using `[this, hint t ht, star_one])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(GlobalTheory.T.exists_integralAdele_prescribed_residues_and_conj D Pg hnc)`. Use the proof step `(GlobalTheory.T.residueSupport_single_place_to_conjugatePair_position D Pg hPg.1 hnc (fun s => star (psiEf (divN (instOf D) (D.host.g 0 * D.host.g 1) s.1)) ≠ 1) fun Q hQ => by`. Take `⟨s, h1, h2⟩` from `GlobalTheory.T.exists_finiteAdditiveChar_ne_one_at_each_prime D psiEf hadd hint hrat Q hQ`. Conclude with `⟨s, h1, fun h => h2 (by simpa using congrArg star h)⟩)`. Take `⟨a, ha1, hK⟩` from `read_in_frame (instOf D) _ hg e0 f0 z0 bw bwd ew hF hn' β₀ hβ₀ Pg hPg.1 hN psiEf hadd hint ψ0 a₁ a₂ ha hχ`.
-
-Conclude with `⟨β₀, hβ₀, frame_normaliser (instOf D) _ hg1 hn' hρ hk β₀ hβ₀.1 (adPlaces D) Pg hPg.1 (fun Q hQ Q' hQ' h => hnc Q hQ Q' hQ' (conj_of_idem (instOf D) (adPlaces D) h)) (fun Q h => exists_res_ne (instOf D) Q (GlobalTheory.T.exists_integer_sub_conj_notMem_self_conjugate_place D Q (con …`.
+A detailed English derivation is pending.
 -/
 theorem inst_normaliser (D : D7) (hρ : 1 ≤ D.R.rS) (I : AutInst) (hI : I = instOf D) (g : ℕ) (hg' : g = D.host.g 0 * D.host.g 1)
     (e0 f0 : Fin D.R.rS → VA I) (z0 : VA I) (bw bwd : Fin D.R.k → VA I) (ew : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)
@@ -323,7 +317,7 @@ theorem inst_normaliser (D : D7) (hρ : 1 ≤ D.R.rS) (I : AutInst) (hI : I = in
 open Formalism.L2.SG.PoincareInHH.PoincareSetting in
 
 /- English proof (translation)
-Take `⟨β, hβ, z, hz, c, hc, hs, hd⟩` from `inst_normaliser D hρ X.B.I h X.B.g X.g_eq X.e0 X.f0 X.z0 X.bw X.bwd X.ew (isRefFrame_setting X) X.n_eq X.psiEf X.psiEf_add X.psiEf_int X.psiEf_rat y hy`. Take `⟨w, hw, hw', x, hx, hx'⟩` from `GlobalTheory.T.scalar_complement_frame_diag_mod_conductor D X u β hβ c hc hs`. Use `⟨z, hz, w, hw, hw', _, hd _ x hx hx', ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_center_iff.1 hz]`. Use `group`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setting_normaliser {D : D7} (X : HidaSetting D) (h : X.B.I = instOf D) (hρ : 1 ≤ D.R.rS) (u : D.what₂.Word) (y : X.B.I.Gf)
     (hy : ∀ x, (x ∈ X.K2 ↔ y * x * y⁻¹ ∈ X.K2) ∧ (x ∈ X.K2 → star (X.chi2 (y * x * y⁻¹)) = star (X.chi2 x))) :

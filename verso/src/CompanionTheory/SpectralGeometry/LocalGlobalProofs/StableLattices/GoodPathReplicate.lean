@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.RgPath
 variable {n : ℕ}
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype ι`. Distinguish the cases in `hS : (Finset.univ.filter fun i => 0 < g i).Nonempty`. Take `⟨i, hi, hmin⟩` from `Finset.exists_min_image _ g hS`. Conclude with `⟨g i, (Finset.mem_filter.1 hi).2, fun j hj => hmin j (Finset.mem_filter.2 ⟨Finset.mem_univ _, hj⟩)⟩`. Conclude with `⟨1, one_pos, fun j hj => (hS ⟨j, Finset.mem_filter.2 ⟨Finset.mem_univ _, hj⟩⟩).elim⟩`.
+Split into cases according to the possible forms of the given data. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_pos_lower {ι : Type*} [Finite ι] (g : ι → ℝ) :
     ∃ e : ℝ, 0 < e ∧ ∀ i, 0 < g i → e ≤ g i := by
@@ -21,11 +21,11 @@ theorem exists_pos_lower {ι : Type*} [Finite ι] (g : ι → ℝ) :
   · exact ⟨1, one_pos, fun j hj => (hS ⟨j, Finset.mem_filter.2 ⟨Finset.mem_univ _, hj⟩⟩).elim⟩
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset (Fin n), ∃ l : List (Fin n), l.Pairwise (fun a b => f b < f a) ∧ ∀ a, a ∈ l ↔ a ∈ S`. Introduce `S`. Proceed by induction on `S using Finset.induction_on_max_value f with`. Consider the case `empty => exact ⟨[], List.Pairwise.nil, by simp⟩`. Consider the case `insert a s ha hmax ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨l, hl, hm⟩` from `ih`. Use `⟨a :: l, List.pairwise_cons.2 ⟨fun b hb => ?_, hl⟩, fun b => by simp [hm]⟩` and prove the remaining obligations. Establish `hbs` using `(hm b).1 hb`. Use `lt_of_le_of_ne (hmax b hbs) fun h => ha ?_` and prove the remaining obligations. Rewrite using `[← hf h]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨l, hl, hm⟩` from `key Finset.univ`. Conclude with `⟨l, hl, fun a => (hm a).2 (Finset.mem_univ a)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sorted (f : Fin n → ℝ) (hf : Function.Injective f) :
     ∃ l : List (Fin n), l.Pairwise (fun a b => f b < f a) ∧ ∀ a, a ∈ l := by
@@ -45,7 +45,7 @@ theorem exists_sorted (f : Fin n → ℝ) (hf : Function.Injective f) :
   exact ⟨l, hl, fun a => (hm a).2 (Finset.mem_univ a)⟩
 
 /- English proof (translation)
-Proceed by induction on `l generalizing χ with`. Consider the case `nil => rfl`. Consider the case `cons s l ih => exact ih _`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pathEnd_append (χ : Fin n → ℂ) (l l' : List (Fin n)) :
     pathEnd χ (l ++ l') = pathEnd (pathEnd χ l) l' := by
@@ -54,7 +54,7 @@ theorem pathEnd_append (χ : Fin n → ℂ) (l l' : List (Fin n)) :
   | cons s l ih => exact ih _
 
 /- English proof (translation)
-Proceed by induction on `l generalizing χ with`. Consider the case `nil => exact h'`. Consider the case `cons s l ih => exact ⟨h.1, ih _ h.2 h'⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem goodPath_append (χ : Fin n → ℂ) (l l' : List (Fin n)) (h : GoodPath χ l)
     (h' : GoodPath (pathEnd χ l) l') : GoodPath χ (l ++ l') := by
@@ -63,11 +63,11 @@ theorem goodPath_append (χ : Fin n → ℂ) (l l' : List (Fin n)) (h : GoodPath
   | cons s l ih => exact ⟨h.1, ih _ h.2 h'⟩
 
 /- English proof (translation)
-Proceed by induction on `k generalizing χ with`. Consider the case `zero => funext r`. Simplify using `[pathEnd]`. Consider the case `succ k ih`. Rewrite using `[List.replicate_succ, pathEnd, ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `r`. Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pathEnd_replicate (χ : Fin n → ℂ) (s : Fin n) (k : ℕ) :
     pathEnd χ (List.replicate k s) = χ + Pi.single s (k : ℂ) := by
@@ -81,11 +81,11 @@ theorem pathEnd_replicate (χ : Fin n → ℂ) (s : Fin n) (k : ℕ) :
     · simp [Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing χ with`. Consider the case `zero => trivial`. Consider the case `succ k ih`. Rewrite using `[List.replicate_succ]`. Use `⟨fun r => ?_, ih _ fun j hj r hr => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hr : r = s`. Substitute `hr` using the available equality. Simplify using the standard rewrite rules. Simplify using `using h 0 (Nat.succ_pos k) r hr`. Use `h (j + 1) (Nat.succ_lt_succ hj) r hr` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Pi.single_eq_of_ne hr, Pi.single_eq_same, add_zero]`. Introduce `he`. Apply `this` to reduce the goal to its premises. Rewrite using `[he]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -110,27 +110,25 @@ def blocks (m : Fin n → ℕ) (l : List (Fin n)) : List (Fin n) :=
   l.flatMap fun a => List.replicate (m a) a
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Introduce `χ' _ _ h2 _`. Conclude with `⟨trivial, funext fun r => h2 r (by simp)⟩`. Consider the case `cons a l ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `χ' hp h1 h2 h3`. Take `⟨hlt, hp'⟩` from `List.pairwise_cons.1 hp`. Establish `hb : blocks m (a :: l) = List.replicate (m a) a ++ blocks m l`. Simplify using `[blocks, List.flatMap_cons]`. Establish `hχa : χ' a = χ a` using `h1 a (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : ∀ r ∈ l, r ≠ a` using `fun r hr h => by`. Use `hlt r hr` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `lt_irrefl _ this`. Establish `hI` using `ih (χ' + Pi.single a (m a : ℂ)) hp' (fun r hr => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne (hne r hr), h1 r (List.mem_cons_of_mem _ hr)])`. Use the proof step `(fun r hr => by`. Distinguish the cases in `h : r = a`. Substitute `h` using the available equality. Simplify using `[hχa]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: r ∉ a :: l` using `by simp [h, hr]`. Simplify using `[Pi.single_eq_of_ne h, h2 r this])`. Use the proof step `(fun r hr b hbl => by`. Distinguish the cases in `h : r = a`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hlt b hbl`. Conclude with `h3 r (by simp [h, hr]) b (List.mem_cons_of_mem _ hbl))`. Rewrite using `[hb, pathEnd_append, pathEnd_replicate]`. Use `⟨goodPath_append _ _ _ (goodPath_replicate _ _ _ fun j hj r hr => ?_) ?_, hI.2⟩` and prove the remaining obligations. Introduce `he`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hrl : r ∈ l`. Rewrite `he` using `[h1 r (List.mem_cons_of_mem _ hrl), hχa]`. Establish `hre : (χ r).re = (χ a).re + j + 1`. Use `congrArg Complex.re he` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hj0 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Establish `hm` using `hmono a r (by linarith)`. Establish `hm' : (m a : ℝ) ≤ m r` using `by exact_mod_cast hm`. Use `hlt r hrl` as an intermediate fact. Rewrite `this` using `[hf, hf]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnot : r ∉ a :: l` using `by simp [hr, hrl]`. Rewrite `he` using `[h2 r hnot, hχa]`. Establish `hre : (χ r).re + m r = (χ a).re + j + 1`. Use `congrArg Complex.re he` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `using this`. Establish `hjm : (j : ℝ) + 1 ≤ m a` using `by exact_mod_cast hj`. Use `h3 r hnot a (by simp)` as an intermediate fact. Rewrite `this` using `[hf, hf]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite using `[pathEnd_replicate]`. Conclude with `hI.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blocks_good (χ : Fin n → ℂ) (m : Fin n → ℕ) (f : Fin n → ℝ)
     (hf : ∀ a, f a = (χ a).re + m a)
@@ -191,67 +189,59 @@ theorem blocks_good (χ : Fin n → ℂ) (m : Fin n → ℕ) (f : Fin n → ℝ)
       exact hI.1
 
 /- English proof (translation)
-Use `set x : Fin n → ℝ := fun a => (χ a).re with hx`. Use `set M : ℝ := ∑ a, ‖χ a‖ with hM`. Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hnorm : ∀ a, ‖χ a‖ ≤ M` using `fun a => Finset.single_le_sum (f := fun a => ‖χ a‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ a)`. Establish `hxM : ∀ a, |x a| ≤ M` using `fun a => (Complex.abs_re_le_norm _).trans (hnorm a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hiM : ∀ a, |(χ a).im| ≤ M` using `fun a => (Complex.abs_im_le_norm _).trans (hnorm a)`. Take `⟨e1, he1, hE1⟩` from `exists_pos_lower (fun p : Fin n × Fin n => x p.2 - x p.1)`. Take `⟨κ, hκ, hK⟩` from `exists_pos_lower (fun p : Finset (Fin n) × Finset (Fin n) => -(∑ i ∈ p.1, x i - ∑ i ∈ p.2, x i))`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, hε1, hε2⟩ : ∃ ε : ℝ, 0 < ε ∧ ε * (n + 1) ≤ e1 ∧ ε * (2 * n ^ 2 + 2) ≤ κ := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨min (e1 / (n + 1)) (κ / (2 * n ^ 2 + 2)), lt_min (by positivity) (by positivity), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(le_div_iff₀ (by positivity)).1 (min_le_left _ _)`. Conclude with `(le_div_iff₀ (by positivity)).1 (min_le_right _ _)`. Establish `hidx : ∀ a : Fin n, (0 : ℝ) ≤ ((a : ℕ) : ℝ) ∧ ((a : ℕ) : ℝ) ≤ n` using `fun a => ⟨Nat.cast_nonneg _, by exact_mod_cast a.2.le⟩`. Use `set c : Fin n → ℝ := fun a => x a + ε * ((a : ℕ) : ℝ) + M + 1 with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hc1 : ∀ a, 1 ≤ c a` using `fun a => by`. Establish `h1` using `(abs_le.1 (hxM a)).1`. Establish `h2 : 0 ≤ ε * ((a : ℕ) : ℝ)` using `mul_nonneg hε.le (hidx a).1`. Simplify using `only [hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hc2 : ∀ a, c a ≤ 2 * M + 1 + ε * n` using `fun a => by`. Establish `h1` using `(abs_le.1 (hxM a)).2`. Establish `h2 : ε * ((a : ℕ) : ℝ) ≤ ε * n` using `mul_le_mul_of_nonneg_left (hidx a).2 hε.le`. Simplify using `only [hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmonoc : ∀ a b, x a < x b → c a ≤ c b` using `fun a b h => by`. Establish `h1 : e1 ≤ x b - x a` using `hE1 (a, b) (sub_pos.2 h)`. Establish `h2 : ε * ((a : ℕ) : ℝ) ≤ ε * n` using `mul_le_mul_of_nonneg_left (hidx a).2 hε.le`. Establish `h3 : 0 ≤ ε * ((b : ℕ) : ℝ)` using `mul_nonneg hε.le (hidx b).1`. Simplify using `only [hc]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hgapc : ∀ a b, a ≠ b → ε ≤ c a - c b ∨ ε ≤ c b - c a`. Establish `hlt : ∀ a b, x a < x b → ε ≤ c b - c a` using `fun a b h => by`. Establish `h1 : e1 ≤ x b - x a` using `hE1 (a, b) (sub_pos.2 h)`. Establish `h2 : ε * ((a : ℕ) : ℝ) ≤ ε * n` using `mul_le_mul_of_nonneg_left (hidx a).2 hε.le`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 ≤ ε * ((b : ℕ) : ℝ)` using `mul_nonneg hε.le (hidx b).1`. Simplify using `only [hc]`. Use the polynomial consequences of the given equalities and inequalities. Establish `heq : ∀ a b : Fin n, x a = x b → (a : ℕ) < (b : ℕ) → ε ≤ c b - c a` using `fun a b h hab => by`. Establish `h1 : ((a : ℕ) : ℝ) + 1 ≤ ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2` using `mul_le_mul_of_nonneg_left h1 hε.le`. Simplify using `only [hc, h]`. Use the polynomial consequences of the given equalities and inequalities. Introduce `a b hab`. Break down `lt_trichotomy (x a) (x b) with h | h | h` into its components or cases.
+Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative. Prove the first alternative.
 
-Conclude with `Or.inr (hlt a b h)`. Break down `lt_or_gt_of_ne (fun e => hab (Fin.ext e) : (a : ℕ) ≠ (b : ℕ)) with h' | h'` into its components or cases. Conclude with `Or.inr (heq a b h h')`. Conclude with `Or.inl (heq b a h.symm h')`. Conclude with `Or.inl (hlt b a h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨3 * M + 2 + ε * n, ε / 2, by positivity, fun N₀ => ?_⟩` and prove the remaining obligations. Use `set N : ℝ := max (max N₀ 2) (max (2 * (2 * M + 1) / ε * 2) (2 * (n + |B| + 1) / κ)) with hN`. Establish `hNN₀ : N₀ ≤ N` using `(le_max_left _ _).trans (le_max_left _ _)`. Establish `hN2 : 2 ≤ N` using `(le_max_right _ _).trans (le_max_left _ _)`. Establish `hNa : 2 * (2 * M + 1) / ε * 2 ≤ N` using `(le_max_left _ _).trans (le_max_right _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hNb : 2 * (n + |B| + 1) / κ ≤ N` using `(le_max_right _ _).trans (le_max_right _ _)`. Establish `hNε : 2 * M + 1 ≤ ε / 2 * N`. Establish `: 2 * (2 * M + 1) / ε ≤ N / 2` using `by linarith`. Rewrite `this` using `[div_le_iff₀ hε]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNκ : (n : ℝ) + B < κ / 2 * N`. Rewrite `hNb` using `[div_le_iff₀ hκ]`. Use `le_abs_self B` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set m : Fin n → ℕ := fun a => ⌊N * c a⌋₊ with hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hNc : ∀ a, 0 ≤ N * c a` using `fun a => mul_nonneg (by linarith) (by linarith [hc1 a])`. Establish `hfl : ∀ a, (m a : ℝ) ≤ N * c a` using `fun a => Nat.floor_le (hNc a)`. Establish `hfu : ∀ a, N * c a < m a + 1` using `fun a => Nat.lt_floor_add_one _`. Use `⟨m, N, hNN₀, ?_, ?_, by linarith, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b h`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Nat.floor_mono (mul_le_mul_of_nonneg_left (hmonoc a b h) (by linarith))`. Introduce `a`. Use `Nat.le_floor ?_` and prove the remaining obligations. Use `hc1 a` as an intermediate fact. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `I I' _ hcard hv`. Establish `hvx : (∑ i ∈ I, χ i - ∑ i ∈ I', χ i).re = ∑ i ∈ I, x i - ∑ i ∈ I', x i`. Simplify using `[hx, Complex.re_sum]`. Rewrite `hv` using `[hvx]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKv : κ ≤ -(∑ i ∈ I, x i - ∑ i ∈ I', x i)` using `hK (I, I') (by simpa using hv)`. Establish `hsumc : ∀ S : Finset (Fin n), ∑ i ∈ S, c i = ∑ i ∈ S, x i + ε * ∑ i ∈ S, ((i : ℕ) : ℝ) + S.card * (M + 1)` using `fun S => by`. Simplify using `only [hc, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hup : ∑ i ∈ I, (m i : ℝ) ≤ N * ∑ i ∈ I, c i`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun i _ => hfl i`. Establish `hlo : N * ∑ i ∈ I', c i - I'.card ≤ ∑ i ∈ I', (m i : ℝ)`. Establish `: ∑ i ∈ I', N * c i ≤ ∑ i ∈ I', ((m i : ℝ) + 1)` using `Finset.sum_le_sum fun i _ => (hfu i).le`. Rewrite `this` using `[Finset.sum_add_distrib, ← Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `only [Finset.sum_const, nsmul_eq_mul, mul_one] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : ∑ i ∈ I, ((i : ℕ) : ℝ) ≤ (n : ℝ) ^ 2`. Establish `h1 : ∑ i ∈ I, ((i : ℕ) : ℝ) ≤ I.card • (n : ℝ)` using `Finset.sum_le_card_nsmul _ _ _ fun i _ => (hidx i).2`. Establish `h2 : (I.card : ℝ) ≤ n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Finset.card_le_univ I` as an intermediate fact. Simplify using `only [Fintype.card_fin] at this`. Conclude with `this` after adjusting the coercions. Rewrite `h1` using `[nsmul_eq_mul]`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA' : 0 ≤ ∑ i ∈ I', ((i : ℕ) : ℝ)` using `Finset.sum_nonneg fun i _ => (hidx i).1`. Establish `hk : (I'.card : ℝ) ≤ n`. Use `Finset.card_le_univ I'` as an intermediate fact. Simplify using `only [Fintype.card_fin] at this`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hend : (∑ i ∈ I, (χ i + (m i : ℂ)) - ∑ i ∈ I', (χ i + (m i : ℂ))).re = (∑ i ∈ I, x i + ∑ i ∈ I, (m i : ℝ)) - (∑ i ∈ I', x i + ∑ i ∈ I', (m i : ℝ))`. Simplify using `[hx, Complex.re_sum, Finset.sum_add_distrib]`. Use `show (∑ i ∈ I, (χ i + (m i : ℂ)) - ∑ i ∈ I', (χ i + (m i : ℂ))).re < -B`. Rewrite using `[hend]`. Rewrite `hup` using `[hsumc]`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hlo` using `[hsumc]`. Rewrite `hup` using `[hcard]`. Use `set X := ∑ i ∈ I, x i`. Use `set X' := ∑ i ∈ I', x i`. Use `set A := ∑ i ∈ I, ((i : ℕ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `set A' := ∑ i ∈ I', ((i : ℕ) : ℝ)`. Use `set k : ℝ := (I'.card : ℝ)`. Establish `hinner : X - X' + ε * (A - A') ≤ -(κ / 2)`. Establish `h1 : ε * (A - A') ≤ ε * (n : ℝ) ^ 2` using `mul_le_mul_of_nonneg_left (by linarith) hε.le`. Establish `h2 : 0 ≤ ε * (n : ℝ) ^ 2` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hmul : N * (X - X' + ε * (A - A')) ≤ N * (-(κ / 2))` using `mul_le_mul_of_nonneg_left hinner (by linarith)`. Use the polynomial consequences of the given equalities and inequalities. Introduce `a b hab`. Establish `hxa` using `abs_le.1 (hxM a)`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxb` using `abs_le.1 (hxM b)`. Establish `h1` using `hfl a`. Establish `h2` using `hfl b`. Establish `h3` using `hfu a`. Establish `h4` using `hfu b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNp : 0 ≤ N` using `by linarith`. Break down `hgapc a b hab with h | h` into its components or cases. Establish `hh` using `mul_le_mul_of_nonneg_left h hNp`. Use `le_abs.2 (Or.inl ?_)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish `hh` using `mul_le_mul_of_nonneg_left h hNp`. Use `le_abs.2 (Or.inr ?_)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Introduce `a`. Establish `hNp : 0 ≤ N` using `by linarith`.
-
-Establish `hεn : 0 ≤ ε * n` using `by positivity`. Use `⟨?_, (hiM a).trans (by linarith)⟩` and prove the remaining obligations. Establish `hxa` using `abs_le.1 (hxM a)`. Establish `h1` using `hfl a`. Establish `h2 : N * c a ≤ N * (2 * M + 1 + ε * n)` using `mul_le_mul_of_nonneg_left (hc2 a) hNp`.
-
-Establish `hm0 : (0 : ℝ) ≤ m a` using `Nat.cast_nonneg _`. Establish `h3 : M ≤ N * M` using `by nlinarith`. Use `abs_le.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Use `show x a + m a ≤ _`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem num (χ : Fin n → ℂ) (B : ℝ) : ∃ C δ : ℝ, 0 < δ ∧ ∀ N₀ : ℝ, ∃ (m : Fin n → ℕ) (N : ℝ),
     N₀ ≤ N ∧ (∀ a b, (χ a).re < (χ b).re → m a ≤ m b) ∧ (∀ a, 1 ≤ m a) ∧ 0 < N ∧
@@ -414,17 +404,17 @@ theorem num (χ : Fin n → ℂ) (B : ℝ) : ∃ C δ : ℝ, 0 < δ ∧ ∀ N₀
       nlinarith
 
 /- English proof (translation)
-Introduce `n χ B`. Take `⟨C, δ, hδ, h⟩` from `num χ B`. Use `⟨C, δ, hδ, fun N₀ => ?_⟩` and prove the remaining obligations. Take `⟨m, N, hN₀, hmono, hpos, hN, hfar, hgap, hb⟩` from `h N₀`. Establish `hinj : Function.Injective (fun a => (χ a).re + (m a : ℝ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hgap a b hne`. Establish `h2 : ((χ a).re + (m a : ℝ)) - ((χ b).re + (m b : ℝ)) = 0` using `sub_eq_zero.2 hab`. Rewrite `h1` using `[h2, abs_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mul_pos hδ hN` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨l, hl, hmem⟩` from `exists_sorted _ hinj`. Take `⟨hg, he⟩` from `blocks_good χ m _ (fun _ => rfl) hmono l χ hl (fun _ _ => rfl) (fun r hr => (hr (hmem r)).elim) (fun r hr => (hr (hmem r)).elim)`. Use `⟨blocks m l, N, hN₀, hg, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he]`. Conclude with `hfar`. Introduce `s`. Use `List.mem_flatMap.2 ⟨s, hmem s, List.mem_replicate.2 ⟨?_, rfl⟩⟩` and prove the remaining obligations. Use `hpos s` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `a b hab`. Rewrite using `[he]`. Simplify using `using hgap a b hab`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Simplify using `using hb a`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pathExists : CompanionTheory.RgExh.Fin.PathExists := by
   intro n χ B

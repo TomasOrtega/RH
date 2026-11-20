@@ -13,15 +13,15 @@ def rhoB (k r : ℕ) (j : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if j.val < r ∨ r + k < j.val then ⟨2 * r + k - j.val, by omega⟩ else j
 
 /- English proof (translation)
-Unfold `bigCell rhoB tv esI`. Break down `lt_or_ge j.val r with h1 | h1` into its components or cases. Establish `ho : j.val < r ∨ r + k < j.val` using `Or.inl h1`. Rewrite using `[dif_pos h1, if_pos ho, dif_pos h1]`. Break down `le_or_gt j.val (r + k) with h2 | h2` into its components or cases.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `ho : ¬ (j.val < r ∨ r + k < j.val)` using `by omega`. Rewrite using `[dif_neg (show ¬ (j.val < r) by omega), dif_pos h2, if_neg ho, dif_neg (show ¬ (j.val < r) by omega), dif_pos h2]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[dif_pos ⟨h1, h2⟩, if_pos rfl, Matrix.one_apply, if_pos rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hij] split_ifs with hi`. Rewrite using `[Matrix.one_apply, if_neg]`. Introduce `h`. Apply `hij` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish `ho : j.val < r ∨ r + k < j.val` using `Or.inr h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[dif_neg (show ¬ (j.val < r) by omega), dif_neg (show ¬ (j.val ≤ r + k) by omega), if_pos ho, dif_neg (show ¬ (j.val < r) by omega), dif_neg (show ¬ (j.val ≤ r + k) by omega)]`. Distinguish the cases in `hi : i.val = 2 * r + k - j.val`. Rewrite using `[if_pos hi, if_pos (Fin.ext hi)]`. Rewrite using `[if_neg hi, if_neg (fun h => hi (congrArg Fin.val h))]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bigCell_one_apply (k r : ℕ) (c : Fin r → ℂ) (i j : Fin (2 * r + k + 1)) :
     bigCell k r c 1 i j = if i = rhoB k r j then tv k r c j else 0 := by
@@ -53,9 +53,9 @@ theorem bigCell_one_apply (k r : ℕ) (c : Fin r → ℂ) (i j : Fin (2 * r + k 
       · rw [if_neg hi, if_neg (fun h => hi (congrArg Fin.val h))]
 
 /- English proof (translation)
-Establish `hv : ∀ x : Fin (2 * r + k + 1), (rhoB k r x).val = if x.val < r ∨ r + k < x.val then 2 * r + k - x.val else x.val`. Introduce `x`. Unfold `rhoB`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `hi` using `i.isLt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hj` using `j.isLt`. Unfold `Hpk`. Simplify using `only [Fin.ext_iff, hv]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_rhoB (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     Hpk k r (rhoB k r i) (rhoB k r j) = Hpk k r i j := by
@@ -71,15 +71,15 @@ theorem Hpk_rhoB (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Distinguish the cases in `hz : Hpk k r i j = 0`. Simplify using `[hz]`. Establish `key : (i.val < r ∧ i.val + j.val = 2 * r + k) ∨ (j.val < r ∧ i.val + j.val = 2 * r + k) ∨ (r ≤ i.val ∧ i.val ≤ r + k ∧ i = j)`. Unfold `Hpk at hz`. Apply the tactic sequence `split_ifs at hz <;> first | tauto | simp at hz`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Break down `key with ⟨h1, h2⟩ | ⟨h1, h2⟩ | ⟨h1, h2, rfl⟩` into its components or cases. Establish `hH : Hpk k r i j = 1` using `by unfold Hpk; rw [if_pos ⟨h1, h2⟩]`. Establish `hti : tv k r c i = c ⟨i.val, h1⟩` using `by unfold tv; rw [dif_pos h1]`. Establish `htj : tv k r c j = (star (c ⟨i.val, h1⟩))⁻¹`. Establish `e : (⟨2 * r + k - j.val, by omega⟩ : Fin r) = ⟨i.val, h1⟩` using `Fin.ext (show 2 * r + k - j.val = i.val by omega)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `tv`. Rewrite using `[dif_neg (show ¬ (j.val < r) by omega), dif_neg (show ¬ (j.val ≤ r + k) by omega), e]`. Rewrite using `[hti, htj, hH, mul_one, mul_inv_cancel₀ (star_ne_zero.mpr (hc _))]`. Establish `hH : Hpk k r i j = 1` using `by unfold Hpk; rw [if_neg (by omega), if_pos ⟨h1, h2⟩]`. Establish `htj : tv k r c j = c ⟨j.val, h1⟩` using `by unfold tv; rw [dif_pos h1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hti : tv k r c i = (star (c ⟨j.val, h1⟩))⁻¹`. Establish `e : (⟨2 * r + k - i.val, by omega⟩ : Fin r) = ⟨j.val, h1⟩` using `Fin.ext (show 2 * r + k - i.val = j.val by omega)`. Unfold `tv`. Rewrite using `[dif_neg (show ¬ (i.val < r) by omega), dif_neg (show ¬ (i.val ≤ r + k) by omega), e]`. Rewrite using `[hti, htj, hH]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hc]`. Establish `hti : tv k r c i = 1` using `by unfold tv; rw [dif_neg (by omega), dif_pos h2]`. Rewrite using `[hti]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tv_Hpk_tv (k r : ℕ) (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) (i j : Fin (2 * r + k + 1)) :
     star (tv k r c i) * Hpk k r i j * tv k r c j = Hpk k r i j := by
@@ -112,7 +112,7 @@ theorem tv_Hpk_tv (k r : ℕ) (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) (i j :
     simp
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, hg]`. Simplify using `[apply_ite star, Finset.sum_ite_eq', ite_mul, mul_ite, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem conjTranspose_mul_mul_monomial {n : Type*} [Fintype n] [DecidableEq n]
     (g H : Matrix n n ℂ) (ρ : n → n) (v : n → ℂ)
@@ -122,7 +122,7 @@ theorem conjTranspose_mul_mul_monomial {n : Type*} [Fintype n] [DecidableEq n]
   simp [apply_ite star, Finset.sum_ite_eq', ite_mul, mul_ite, Finset.sum_mul]
 
 /- English proof (translation)
-Introduce `k r c hc`. Use `show (bigCell k r c 1)ᴴ * Hpk k r * bigCell k r c 1 = Hpk k r`. Use extensionality with `i j`. Rewrite using `[conjTranspose_mul_mul_monomial _ _ (rhoB k r) (tv k r c) (bigCell_one_apply k r c), Hpk_rhoB, tv_Hpk_tv k r c hc]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bigCellG : BigCellG := by
   intro k r c hc

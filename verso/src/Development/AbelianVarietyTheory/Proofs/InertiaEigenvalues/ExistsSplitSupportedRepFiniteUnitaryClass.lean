@@ -12,9 +12,9 @@ namespace GlobalTheory.RankReps
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D ρ hρ i j b h hh`. Take `⟨N₀, hN₀, hK⟩` from `GlobalTheory.LevFinCong.exists_finCong_lev D (Vc D j) (ρ.B i j b).F.βS ((ρ.B i j b).levS (ρ.tw i b 0 ∅ 1))`. Establish `hbad : 0 < ρ.bad i` using `Nat.pos_of_ne_zero (hρ.bad_ne i)`. Establish `hK' : ∀ k ∈ GfC (Vc D j), GlobalTheory.Member.FinCong (Vc D j) N₀ k → FWT.fin (Vc D j) k ∈ (ρ.B i j b).levJ (ρ.tw i b 0 ∅ 1)` using `fun k hk hc => ((ρ.B i j b).finPt_mem_levJ _ hk).2 (hK k hk hc).1`. Take `⟨h', ⟨hh', hs⟩, γ, k, e⟩` from `GlobalTheory.SplitReps.exists_split_rep (Vc D j) hN₀ hK' hbad (finPt (Vc D j) h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsb` using `GlobalTheory.SplitReps.splitOffBad_of_suppSplit (Vc D j) (ρ.bad i) h' hh' hs`. Take `⟨-, e', P, hP, hoff, hsupp⟩` from `hsb`. Use `⟨γ, P, h', k, ⟨e', hP⟩, hoff, hh', ?_, e⟩` and prove the remaining obligations. Rewrite using `[idem_eq hP]`. Conclude with `hsupp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep_split_levJ : ∀ (D : D7) (ρ : Setup D.ntw), ρ.Good → ∀ (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool), ∀ h ∈ GfC (Vc D j), ∃ (γ : GQ (Vc D j)) (s : Finset (Pl D.host.E)) (h' : GA D (Vc D j)) (k : (ρ.B i j b).levJ (ρ.tw i b 0 ∅ 1)), SplitSet s ∧ (∀ v ∈ s, ((ρ.bad i : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal) ∧ h' ∈ GfC (Vc D j) ∧ SuppAt (idem s) (Vc D j) h' ∧ finPt (Vc D j) h = Bridge.ratF (Vc D j) γ * finPt (Vc D j) h' * (k : Bridge.Gf (Vc D j)) := by
   intro D ρ hρ i j b h hh

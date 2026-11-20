@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.Svd.LinkStd
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Svd
 /- English proof (translation)
-Consider the cases of `e`. Conclude with `StdTie.intro h.std`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem stdTie_of_eq_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : WPt p.s K) (R' : _root_.Formalism.L2.RecTAlt q.O.ex)
     (h : _root_.GlobalTheory.Mem.Top.Bl.RecordCompatibleExtended q R') {D : D7} {O : Obj D} {c : ℝ} (R : _root_.GlobalTheory.Mem.Top.Bl.BoundaryReciprocity D O c)
@@ -21,7 +21,7 @@ theorem stdTie_of_eq_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _roo
   cases e
   exact StdTie.intro h.std
 /- English proof (translation)
-The claim follows from `RowE.of_all fun _ _ _ _ R _ _ hl => by obtain ⟨q, R', h, e⟩ := hl exact _root_.GlobalTheory.Svd.LinkStd.stdTie_of_eq_alt q R' h R e`.
+A detailed English derivation is pending.
 -/
 theorem linkR_stdTie_entry {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) (Q : V4.Slot) :
     RowE (Bd := _root_.GlobalTheory.Mem.Top.Bl.BoundaryReciprocity) Q (_root_.GlobalTheory.Mem.Top.Bl.ReciprocityLinkage p) fun _ D O _ R => StdTie D O R.T.ker :=

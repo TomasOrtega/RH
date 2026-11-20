@@ -14,9 +14,9 @@ abbrev eS {τ : Type*} (f : MvPowerSeries τ K) : MvPowerSeries τ K :=
   PowerSeries.subst f (PowerSeries.exp K)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h0, h1⟩`. Use extensionality with `i`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> simp [h0, h1]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fin_two_vector_eq_matrixVecCons (e : Fin 2 →₀ ℕ) (k j : ℕ) :
     e = Finsupp.single 0 k + Finsupp.single 1 j ↔ e 0 = k ∧ e 1 = j := by
@@ -28,15 +28,15 @@ theorem fin_two_vector_eq_matrixVecCons (e : Fin 2 →₀ ℕ) (k j : ℕ) :
     fin_cases i <;> simp [h0, h1]
 
 /- English proof (translation)
-Rewrite using `[add_pow, map_sum]`. Establish `hterm : ∀ m ∈ Finset.range (n + 1), coeff e ((X 0 : MvPowerSeries (Fin 2) K) ^ m * X 1 ^ (n - m) * (n.choose m : MvPowerSeries (Fin 2) K)) = if e 0 = m ∧ e 1 = n - m then (n.choose m : K) else 0`. Introduce `m _`. Rewrite using `[mul_comm, ← nsmul_eq_mul, map_nsmul, X_pow_eq, X_pow_eq, monomial_mul_monomial, coeff_monomial, mul_one, nsmul_eq_mul]`. Simplify using `only [fin_two_vector_eq_matrixVecCons]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl hterm]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single (e 0)]`. Rewrite using `[if_pos ⟨rfl, by omega⟩]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, _⟩`. Conclude with `hb h1.symm`. Introduce `hb`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Apply `hb` to reduce the goal to its premises. Rewrite using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Rewrite `hm` using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem coeff_X_add_X_pow (n : ℕ) (e : Fin 2 →₀ ℕ) :
     coeff e ((X 0 + X 1 : MvPowerSeries (Fin 2) K) ^ n) =
@@ -70,19 +70,19 @@ theorem coeff_X_add_X_pow (n : ℕ) (e : Fin 2 →₀ ℕ) :
     omega
 
 /- English proof (translation)
-Simplify using `[PowerSeries.coeff_exp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_exp_K (n : ℕ) : PowerSeries.coeff n (PowerSeries.exp K) = ((n.factorial : K))⁻¹ := by
   simp [PowerSeries.coeff_exp]
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero (by simp))]`. Simplify using `only [coeff_X_pow, coeff_exp_K, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Use `split_ifs with h`. Rewrite using `[finsum_eq_single _ (e i)]`. Rewrite using `[if_pos h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd`. Rewrite using `[if_neg]`. Introduce `h'`. Apply `hd` to reduce the goal to its premises. Rewrite using `[h']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `d`. Rewrite using `[if_neg]`. Introduce `h'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[h']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma coeff_eS_X (i : Fin 2) (e : Fin 2 →₀ ℕ) :
     coeff e (eS (X i : MvPowerSeries (Fin 2) K)) =
@@ -107,21 +107,21 @@ private lemma coeff_eS_X (i : Fin 2) (e : Fin 2 →₀ ℕ) :
     simp
 
 /- English proof (translation)
-Use extensionality with `e`. Establish `hL : coeff e (eS (X 0 + X 1 : MvPowerSeries (Fin 2) K)) = ((e 0 + e 1).factorial : K)⁻¹ * ((e 0 + e 1).choose (e 0) : K)`. Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero (by simp))]`. Rewrite using `[finsum_eq_single _ (e 0 + e 1)]`. Rewrite using `[coeff_exp_K, coeff_X_add_X_pow, if_pos rfl, smul_eq_mul]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `d hd`. Rewrite using `[coeff_X_add_X_pow, if_neg (fun h => hd h.symm), smul_zero]`. Rewrite using `[hL, MvPowerSeries.coeff_mul, Finset.sum_eq_single (Finsupp.single 0 (e 0), Finsupp.single 1 (e 1))]`. Rewrite using `[coeff_eS_X, coeff_eS_X, if_pos (by simp), if_pos (by simp)]`. Simplify using `only [Finsupp.single_eq_same]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `Nat.choose_mul_factorial_mul_factorial (Nat.le_add_right (e 0) (e 1))`. Rewrite `h1` using `[Nat.add_sub_cancel_left]`. Establish `h2 : ((e 0 + e 1).choose (e 0) : K) * (e 0).factorial * (e 1).factorial = (e 0 + e 1).factorial` using `by exact_mod_cast h1`. Establish `f0 : ((e 0).factorial : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `f1 : ((e 1).factorial : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ((e 0 + e 1).choose (e 0) : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.choose_pos (Nat.le_add_right _ _)).ne'`. Rewrite using `[← h2]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨p1, p2⟩ hp hne`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[coeff_eS_X, coeff_eS_X]`. Distinguish the cases in `h1 : p1 = Finsupp.single 0 (p1 0)`. Distinguish the cases in `h2 : p2 = Finsupp.single 1 (p2 1)`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e0 : e 0 = p1 0`. Rewrite using `[← hp, Finsupp.add_apply, h2]`. Simplify using the standard rewrite rules. Establish `e1 : e 1 = p2 1`. Rewrite using `[← hp, Finsupp.add_apply, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, h2, e0, e1]`. Rewrite using `[if_neg h2, mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`. Introduce `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.HasAntidiagonal.mem_antidiagonal.mpr ((fin_two_vector_eq_matrixVecCons e (e 0) (e 1)).mpr ⟨rfl, rfl⟩).symm) h`.
+A detailed English derivation is pending.
 -/
 theorem eS_X_add_X : eS (X 0 + X 1 : MvPowerSeries (Fin 2) K) = eS (X 0) * eS (X 1) := by
   ext e
@@ -168,7 +168,7 @@ theorem eS_X_add_X : eS (X 0 + X 1 : MvPowerSeries (Fin 2) K) = eS (X 0) * eS (X
 variable {τ υ : Type*}
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst_def, PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.const ha) hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_psubst {b : τ → MvPowerSeries υ K} (hb : HasSubst b) {a : MvPowerSeries τ K}
     (ha : PowerSeries.HasSubst a) (φ : PowerSeries K) :
@@ -177,9 +177,9 @@ theorem subst_psubst {b : τ → MvPowerSeries υ K} (hb : HasSubst b) {a : MvPo
     MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.const ha) hb]
 
 /- English proof (translation)
-Set `b : Fin 2 → MvPowerSeries τ K` to `![f, g]`. Apply the tactic sequence `have hb : HasSubst b := hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> simp [b, hf, hg]`. Establish `h1 : subst b (eS (X 0 + X 1 : MvPowerSeries (Fin 2) K)) = eS (f + g)`. Rewrite using `[subst_psubst hb (PowerSeries.HasSubst.of_constantCoeff_zero (by simp)), subst_add hb, subst_X hb, subst_X hb]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : subst b (eS (X 0 : MvPowerSeries (Fin 2) K) * eS (X 1)) = eS f * eS g`. Rewrite using `[subst_mul hb, subst_psubst hb (PowerSeries.HasSubst.of_constantCoeff_zero (by simp)), subst_psubst hb (PowerSeries.HasSubst.of_constantCoeff_zero (by simp)), subst_X hb, subst_X hb]`. Both sides reduce to the same expression. Rewrite using `[← h1, eS_X_add_X, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem eS_add (f g : MvPowerSeries τ K) (hf : constantCoeff f = 0) (hg : constantCoeff g = 0) :
     eS (f + g) = eS f * eS g := by
@@ -197,7 +197,7 @@ theorem eS_add (f g : MvPowerSeries τ K) (hf : constantCoeff f = 0) (hg : const
   rw [← h1, eS_X_add_X, h2]
 
 /- English proof (translation)
-Use extensionality with `e`. Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero (by simp)), finsum_eq_single _ 0]`. Simplify using `[coeff_exp_K]`. Introduce `d hd`. Simplify using `[zero_pow hd]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem eS_zero : eS (0 : MvPowerSeries τ K) = 1 := by
   ext e
@@ -207,11 +207,9 @@ theorem eS_zero : eS (0 : MvPowerSeries τ K) = 1 := by
     simp [zero_pow hd]
 
 /- English proof (translation)
-Use `revert hf`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_`. Simplify using `only [Finset.sum_empty, Finset.prod_empty]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `eS_zero`. Consider the case `@insert a s ha ih`. Introduce `hf`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, eS_add _ _ (hf a (Finset.mem_insert_self a s)) ?_, ih (fun i hi => hf i (Finset.mem_insert_of_mem hi))]`. Rewrite using `[map_sum]`.
-
-Conclude with `Finset.sum_eq_zero fun i hi => hf i (Finset.mem_insert_of_mem hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eS_sum {ι : Type*} (s : Finset ι) (f : ι → MvPowerSeries τ K)
     (hf : ∀ i ∈ s, constantCoeff (f i) = 0) : eS (∑ i ∈ s, f i) = ∏ i ∈ s, eS (f i) := by
@@ -231,14 +229,14 @@ theorem eS_sum {ι : Type*} (s : Finset ι) (f : ι → MvPowerSeries τ K)
     exact Finset.sum_eq_zero fun i hi => hf i (Finset.mem_insert_of_mem hi)
 
 /- English proof (translation)
-Conclude with `subst_psubst hb (PowerSeries.HasSubst.of_constantCoeff_zero hf) _`.
+A detailed English derivation is pending.
 -/
 theorem subst_eS {b : τ → MvPowerSeries υ K} (hb : HasSubst b) (f : MvPowerSeries τ K)
     (hf : constantCoeff f = 0) : subst b (eS f) = eS (subst b f) := by
   exact subst_psubst hb (PowerSeries.HasSubst.of_constantCoeff_zero hf) _
 
 /- English proof (translation)
-Rewrite using `[rename_eq_subst, rename_eq_subst]`. Conclude with `subst_eS (HasSubst.X_comp e) f hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_eS (e : τ → υ) [Filter.TendstoCofinite e] (f : MvPowerSeries τ K) (hf : constantCoeff f = 0) :
     rename e (eS f) = eS (rename e f) := by

@@ -16,7 +16,7 @@ namespace GlobalTheory.AscFin.SplitVac
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[← add_mul, ← map_add]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem symplO_eq_halves (x y : WO S T) : symplO S T x y = symplOH S T x y + symplOH S T x y := by
   unfold symplOH
@@ -24,7 +24,7 @@ theorem symplO_eq_halves (x y : WO S T) : symplO S T x y = symplOH S T x y + sym
   norm_num
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.OrientedHeis.heisO_heisO (ψ := ψ) w w' f`. Rewrite `e` using `[h', h, hc, one_smul]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisO_add_fix {f : WO S T → ℂ} {w w' : WO S T} (h : heisO ψ S T w f = f) (h' : heisO ψ S T w' f = f)
     (hc : ψ (symplOH S T w w') = 1) : heisO ψ S T (w + w') f = f := by
@@ -33,13 +33,13 @@ theorem heisO_add_fix {f : WO S T → ℂ} {w w' : WO S T} (h : heisO ψ S T w f
   exact e.symm
 
 /- English proof (translation)
-Rewrite using `[AddChar.map_add_eq_mul, h, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_four {t : AF D.host.F} (h : ψ (t + t) = 1) : ψ ((t + t) + (t + t)) = 1 := by
   rw [AddChar.map_add_eq_mul, h, one_mul]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[symplO_eq_halves]`. Rewrite using `[two_nsmul, GlobalTheory.OrientedHeis.symplOH_add_right]`. Conclude with `psi_four h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_symplO_two {x y : WO S T} (h : ψ (symplO S T x y) = 1) : ψ (symplO S T x (2 • y)) = 1 := by
   rw [symplO_eq_halves] at h ⊢
@@ -47,7 +47,7 @@ theorem psi_symplO_two {x y : WO S T} (h : ψ (symplO S T x y) = 1) : ψ (symplO
   exact psi_four h
 
 /- English proof (translation)
-Rewrite `h` using `[symplO_eq_halves]`. Rewrite using `[two_nsmul, two_nsmul, GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_add_right]`. Conclude with `psi_four h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_symplOH_two {x y : WO S T} (h : ψ (symplO S T x y) = 1) : ψ (symplOH S T (2 • x) (2 • y)) = 1 := by
   rw [symplO_eq_halves] at h
@@ -57,28 +57,28 @@ theorem psi_symplOH_two {x y : WO S T} (h : ψ (symplO S T x y) = 1) : ψ (sympl
 variable {m n k : ℕ} {e : AE D}
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.add_apply, mul_add, hx i j, hy i j]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_add' {x y : Mx D m n} (hx : IsHalf e x) (hy : IsHalf e y) : IsHalf e (x + y) := fun i j => by
   rw [Matrix.add_apply, mul_add, hx i j, hy i j]
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.mul_apply, Finset.mul_sum, ← mul_assoc, hx i]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_mul_right' {x : Mx D m n} (hx : IsHalf e x) (M : Mx D n k) : IsHalf e (x * M) := fun i j => by
   simp only [Matrix.mul_apply, Finset.mul_sum, ← mul_assoc, hx i]
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.mul_apply, Finset.mul_sum] exact Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, hx l j]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_mul_left' (M : Mx D k m) {x : Mx D m n} (hx : IsHalf e x) : IsHalf e (M * x) := fun i j => by
   simp only [Matrix.mul_apply, Finset.mul_sum]
   exact Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, hx l j]
 
 /- English proof (translation)
-Establish `h0 : hO S T x y = 0`. Unfold `hO`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← hx d a, ← hy c b, map_mul]`. Take the linear combination `(incA D (S.gram⁻¹ a b) * cA D (y c b) * incA D (T.gram c d) * x d a) * he`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Unfold `symplOH symplO`. Rewrite using `[h0, mul_zero, map_zero, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_half (he : e * cA D e = 0) {x y : WO S T} (hx : IsHalf e x) (hy : IsHalf e y) :
     symplOH S T x y = 0 := by
@@ -99,17 +99,15 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {V V₀ W W₀ : HSp D} {ρ �
   {p : Pieces V₀ W W₀ ρ σ} {x : Mx D W.rank ρ} {y : Mx D V₀.rank σ} {Γ : AddSubgroup (WO V W)} {Φ : WO V W → ℂ}
 
 /- English proof (translation)
-Take `⟨hθ, hA1, hA2, hB1, hB2, hvac⟩` from `hΦ`. Take `⟨a, ha, a', ha', ξ, hξ, η, hη, w, hw, rfl, hx', hy'⟩` from `hs.comp u hu`. Establish `e1 : 2 • (dV.extX W a + dV.extY W a' + dV.ext0 W (dW.incX V₀ ξ + dW.incY V₀ η + dW.inc0 V₀ w)) = dV.extX W (2 • a) + (dV.extY W (2 • a') + (dV.ext0 W (dW.incX V₀ (2 • ξ)) + (dV.ext0 W (dW.incY V₀ (2 • η)) + dV.ext0 W (dW.inc0 V₀ (2 • w)))))`. Simplify using `only [map_nsmul, map_add, nsmul_add]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Use `show heisO ψ V W _ Φ = Φ`. Rewrite using `[e1]`. Establish `fX : heisO ψ V W (dV.extX W (2 • a)) Φ = Φ` using `hA1 _ (nsmul_mem ha 2)`. Establish `fY : heisO ψ V W (dV.extY W (2 • a')) Φ = Φ`. Rewrite using `[hA2 _ (nsmul_mem ha' 2), map_nsmul, psi_symplO_two hx', one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `fP : heisO ψ V W (dV.ext0 W (dW.incX V₀ (2 • ξ))) Φ = Φ`. Rewrite using `[hB1 _ (nsmul_mem hξ 2), map_nsmul, psi_symplO_two hy', one_smul]`. Establish `fQ : heisO ψ V W (dV.ext0 W (dW.incY V₀ (2 • η))) Φ = Φ` using `hB2 _ (nsmul_mem hη 2)`. Establish `fR : heisO ψ V W (dV.ext0 W (dW.inc0 V₀ (2 • w))) Φ = Φ`. Establish `h` using `hvac.1 _ (AddSubgroup.mem_map_of_mem ((dV.ext0 W).comp (dW.inc0 V₀)) hw)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[AddMonoidHom.comp_apply, ← map_nsmul, ← map_nsmul]`. Conclude with `h`. Establish `cAB : ψ (symplO V W (dV.extX W a) (dV.extY W a')) = 1` using `(hp.dualA a (hp.a₁.fin a ha)).1 ha a' ha'`. Establish `cXY : ψ (symplO V₀ W (dW.incX V₀ ξ) (dW.incY V₀ η)) = 1` using `(hp.dualB ξ (hp.b₁.fin ξ hξ)).1 hξ η hη`. Use `heisO_add_fix fX (heisO_add_fix fY (heisO_add_fix fP (heisO_add_fix fQ fR ?_) ?_) ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HypDec.wittDecomp_sympl_extAnisotropic_extAnisotropic, HypDec.wittDecomp_sympl_inclDual_inclAnisotropic, AddChar.map_zero_eq_one]`. Rewrite using `[GlobalTheory.OrientedHeis.symplOH_add_right, HypDec.wittDecomp_sympl_extAnisotropic_extAnisotropic, HypDec.wittDecomp_sympl_extAnisotropic_extAnisotropic, HypDec.wittDecomp_sympl_inclIsotropic_inclAnisotropic, add_zero, map_nsmul, map_nsmul]`. Conclude with `psi_symplOH_two cXY`. Simplify using `only [GlobalTheory.OrientedHeis.symplOH_add_right, HypDec.wittDecomp_sympl_extDual_extAnisotropic, add_zero, AddChar.map_zero_eq_one]`. Rewrite using `[GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, HypDec.wittDecomp_sympl_extIsotropic_extAnisotropic, HypDec.wittDecomp_sympl_extIsotropic_extAnisotropic, HypDec.wittDecomp_sympl_extIsotropic_e …`.
-
-Conclude with `psi_symplOH_two cAB`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_two (hp : p.Is dV dW x ψ) (hs : Splits dV dW p x y ψ Γ) (hΦ : Φ ∈ cls dV dW p x y ψ) (u : WO V W) (hu : u ∈ Γ) :
     heisO ψ V W (2 • u) Φ = Φ := by
@@ -146,29 +144,25 @@ theorem fix_two (hp : p.Is dV dW x ψ) (hs : Splits dV dW p x y ψ Γ) (hΦ : Φ
     exact psi_symplOH_two cAB
 
 /- English proof (translation)
-Take `⟨hθ, hA1, hA2, hB1, hB2, hvac⟩` from `hΦ`. Take `⟨a, ha, a', ha', ξ, hξ, η, hη, w, hw, rfl, hx', hy'⟩` from `hs.comp u hu`. Establish `he0 : e * cA D e = 0` using `he.2.1`. Establish `e1 : dV.extX W a + dV.extY W a' + dV.ext0 W (dW.incX V₀ ξ + dW.incY V₀ η + dW.inc0 V₀ w) = dV.extX W a + (dV.extY W a' + (dV.ext0 W (dW.incX V₀ ξ) + (dV.ext0 W (dW.incY V₀ η) + dV.ext0 W (dW.inc0 V₀ w))))`. Rewrite using `[map_add, map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Take `⟨z, hz⟩ : ∃ z, dW.incX V₀ ξ + dW.incY V₀ η + dW.inc0 V₀ w = z` from `⟨_, rfl⟩`. Take `⟨U, hU⟩ : ∃ U, dV.extX W a + dV.extY W a' + dV.ext0 W z = U` from `⟨_, rfl⟩`. Rewrite `hh` using `[hz, hU]`. Establish `hUa : U * dV.jX = a`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hU]`. Simplify using `only [HypDec.extX_apply, HypDec.extY_apply, HypDec.matrixExtendByZero_apply, Matrix.add_mul, Matrix.mul_assoc, HypDec.pX_jX, HypDec.pY_jX, HypDec.p0_jX, Matrix.mul_one, Matrix.mul_zero, add_zero]`. Establish `hUa' : U * dV.jY = a'`. Rewrite using `[← hU]`. Simplify using `only [HypDec.extX_apply, HypDec.extY_apply, HypDec.matrixExtendByZero_apply, Matrix.add_mul, Matrix.mul_assoc, HypDec.pX_jY, HypDec.pY_jY, HypDec.p0_jY, Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hUz : U * dV.j0 = z`. Rewrite using `[← hU]`. Simplify using `only [HypDec.extX_apply, HypDec.extY_apply, HypDec.matrixExtendByZero_apply, Matrix.add_mul, Matrix.mul_assoc, HypDec.pX_j0, HypDec.pY_j0, HypDec.p0_j0, Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add]`. Establish `hzξ : dW.pX * z = ξ`. Rewrite using `[← hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [HypDec.incX_apply, HypDec.incY_apply, HypDec.wittDecomp_inclAnisotropicHom_apply, Matrix.mul_add, ← Matrix.mul_assoc, HypDec.pX_jX, HypDec.pX_jY, HypDec.pX_j0, Matrix.one_mul, Matrix.zero_mul, add_zero]`. Establish `hzη : dW.pY * z = η`. Rewrite using `[← hz]`. Simplify using `only [HypDec.incX_apply, HypDec.incY_apply, HypDec.wittDecomp_inclAnisotropicHom_apply, Matrix.mul_add, ← Matrix.mul_assoc, HypDec.pY_jX, HypDec.pY_jY, HypDec.pY_j0, Matrix.one_mul, Matrix.zero_mul, add_zero, zero_add]`. Establish `hzw : dW.p0 * z = w`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hz]`. Simplify using `only [HypDec.incX_apply, HypDec.incY_apply, HypDec.wittDecomp_inclAnisotropicHom_apply, Matrix.mul_add, ← Matrix.mul_assoc, HypDec.p0_jX, HypDec.p0_jY, HypDec.p0_j0, Matrix.one_mul, Matrix.zero_mul, add_zero, zero_add]`. Establish `hzh : IsHalf e z` using `hUz ▸ isHalf_mul_right' hh _`. Establish `hX : IsHalf e (dV.extX W a)`. Rewrite using `[HypDec.extX_apply, ← hUa]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isHalf_mul_right' (isHalf_mul_right' hh _) _`. Establish `hY : IsHalf e (dV.extY W a')`. Rewrite using `[HypDec.extY_apply, ← hUa']`. Conclude with `isHalf_mul_right' (isHalf_mul_right' hh _) _`. Establish `hP : IsHalf e (dV.ext0 W (dW.incX V₀ ξ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[HypDec.matrixExtendByZero_apply, HypDec.incX_apply, ← hzξ]`. Conclude with `isHalf_mul_right' (isHalf_mul_left' _ (isHalf_mul_left' _ hzh)) _`. Establish `hQ : IsHalf e (dV.ext0 W (dW.incY V₀ η))`. Rewrite using `[HypDec.matrixExtendByZero_apply, HypDec.incY_apply, ← hzη]`. Conclude with `isHalf_mul_right' (isHalf_mul_left' _ (isHalf_mul_left' _ hzh)) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : IsHalf e (dV.ext0 W (dW.inc0 V₀ w))`. Rewrite using `[HypDec.matrixExtendByZero_apply, HypDec.wittDecomp_inclAnisotropicHom_apply, ← hzw]`. Conclude with `isHalf_mul_right' (isHalf_mul_left' dW.j0 (isHalf_mul_left' dW.p0 hzh)) dV.p0`. Establish `fX : heisO ψ V W (dV.extX W a) Φ = Φ` using `hA1 _ ha`. Establish `fY : heisO ψ V W (dV.extY W a') Φ = Φ` using `by rw [hA2 _ ha', hx', one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `fP : heisO ψ V W (dV.ext0 W (dW.incX V₀ ξ)) Φ = Φ` using `by rw [hB1 _ hξ, hy', one_smul]`. Establish `fQ : heisO ψ V W (dV.ext0 W (dW.incY V₀ η)) Φ = Φ` using `hB2 _ hη`. Establish `fR : heisO ψ V W (dV.ext0 W (dW.inc0 V₀ w)) Φ = Φ`. Establish `h` using `hvac.2 e he ((dV.ext0 W).comp (dW.inc0 V₀) w) (AddSubgroup.mem_map_of_mem ((dV.ext0 W).comp (dW.inc0 V₀)) hw) (by rw [AddMonoidHom.comp_apply]; exact hR)`. Rewrite `h` using `[AddMonoidHom.comp_apply]`.
-
-Conclude with `h`. Establish `z0 : ∀ {s t : WO V W}, IsHalf e s → IsHalf e t → ψ (symplOH V W s t) = 1` using `fun hs ht => by`. Rewrite using `[symplOH_half he0 hs ht, AddChar.map_zero_eq_one]`. Use `show heisO ψ V W _ Φ = Φ`. Rewrite using `[e1]`.
-
-Conclude with `heisO_add_fix fX (heisO_add_fix fY (heisO_add_fix fP (heisO_add_fix fQ fR (z0 hQ hR)) (z0 hP (isHalf_add' hQ hR))) (z0 hY (isHalf_add' hP (isHalf_add' hQ hR)))) (z0 hX (isHalf_add' hY (isHalf_add' hP (isHalf_add' hQ hR))))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_half (hs : Splits dV dW p x y ψ Γ) (hΦ : Φ ∈ cls dV dW p x y ψ) (e : AE D) (he : IsSplitIdem D e) (u : WO V W)
     (hu : u ∈ Γ) (hh : IsHalf e u) : heisO ψ V W u Φ = Φ := by
@@ -239,7 +233,7 @@ theorem fix_half (hs : Splits dV dW p x y ψ Γ) (hΦ : Φ ∈ cls dV dW p x y �
     (z0 hX (isHalf_add' hY (isHalf_add' hP (isHalf_add' hQ hR))))
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hp hs _ hΦ` and use `⟨hΦ.1, fun u hu => fix_two hp hs hΦ u hu, fun e he u hu hh => fix_half hs hΦ e he u hu hh⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem cls_vac : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V₀ W W₀ : HSp D) (ρ σ : ℕ)
     (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (p : Pieces V₀ W W₀ ρ σ) (x : Mx D W.rank ρ) (y : Mx D V₀.rank σ)

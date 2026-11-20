@@ -9,48 +9,48 @@ namespace Cx
 variable {R : Type u} [CommRing R] {A B C : Cx R}
 
 /- English proof (translation)
-Rewrite using `[← φ.comm, hx, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hom.d_f_eq_zero (φ : Hom A B) {n : ℕ} {x : A.X n} (hx : A.d n x = 0) :
     B.d n (φ.f n x) = 0 := by
   rw [← φ.comm, hx, map_zero]
 
 /- English proof (translation)
-Rewrite using `[map_add, hx, hy, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_add_eq_zero {n : ℕ} {x y : A.X n} (hx : A.d n x = 0) (hy : A.d n y = 0) :
     A.d n (x + y) = 0 := by
   rw [map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Rewrite using `[map_sub, hx, hy, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_sub_eq_zero {n : ℕ} {x y : A.X n} (hx : A.d n x = 0) (hy : A.d n y = 0) :
     A.d n (x - y) = 0 := by
   rw [map_sub, hx, hy, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[map_neg, hx, neg_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_neg_eq_zero {n : ℕ} {x : A.X n} (hx : A.d n x = 0) : A.d n (-x) = 0 := by
   rw [map_neg, hx, neg_zero]
 
 /- English proof (translation)
-Rewrite using `[map_smul, hx, smul_zero]`. Use the proof step `@[elab_as_elim]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_smul_eq_zero {n : ℕ} (r : R) {x : A.X n} (hx : A.d n x = 0) : A.d n (r • x) = 0 := by
   rw [map_smul, hx, smul_zero]
 
 @[elab_as_elim]
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Conclude with `h z.1 z.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem H_ind {n : ℕ} {P : A.H n → Prop} (h : ∀ x hx, P (A.cls n x hx)) (c : A.H n) : P c := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ c
   exact h z.1 z.2
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Conclude with `⟨z.1, z.2, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cls {n : ℕ} (c : A.H n) : ∃ x hx, c = A.cls n x hx := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ c
@@ -86,7 +86,7 @@ Both sides reduce to the same expression.
     r • A.cls n x hx = A.cls n (r • x) (d_smul_eq_zero r hx) := rfl
 
 /- English proof (translation)
-Unfold `cls`. Rewrite using `[Submodule.Quotient.eq]`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem cls_eq_iff {n : ℕ} {x y : A.X n} (hx : A.d n x = 0) (hy : A.d n y = 0) :
     A.cls n x hx = A.cls n y hy ↔ x - y ∈ A.B n := by
@@ -95,7 +95,7 @@ theorem cls_eq_iff {n : ℕ} {x y : A.X n} (hx : A.d n x = 0) (hy : A.d n y = 0)
   exact Iff.rfl
 
 /- English proof (translation)
-Unfold `cls`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem cls_eq_zero_iff {n : ℕ} {x : A.X n} (hx : A.d n x = 0) :
     A.cls n x hx = 0 ↔ x ∈ A.B n := by
@@ -104,7 +104,7 @@ Unfold `cls`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `If
   exact Iff.rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cls_congr {n : ℕ} {x y : A.X n} (hx : A.d n x = 0) (hy : A.d n y = 0) (h : x = y) :
     A.cls n x hx = A.cls n y hy := by
@@ -112,9 +112,9 @@ theorem cls_congr {n : ℕ} {x y : A.X n} (hx : A.d n x = 0) (hy : A.d n y = 0) 
   rfl
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `x ∈ (⊥ : Submodule R (A.X 0)) at h`. Rewrite using `[(Submodule.mem_bot R).1 h, map_zero]`. Consider the case `succ n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `x ∈ LinearMap.range (A.d n) at h`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.1 h`. Conclude with `A.dd n y`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem d_eq_zero_of_mem_B {n : ℕ} {x : A.X n} (h : x ∈ A.B n) : A.d n x = 0 := by
   cases n with
@@ -127,21 +127,21 @@ theorem d_eq_zero_of_mem_B {n : ℕ} {x : A.X n} (h : x ∈ A.B n) : A.d n x = 0
     exact A.dd n y
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `x ∈ LinearMap.range (A.d n) ↔ _`. Conclude with `LinearMap.mem_range`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem mem_B_succ {n : ℕ} {x : A.X (n + 1)} : x ∈ A.B (n + 1) ↔ ∃ y, A.d n y = x := by
   change x ∈ LinearMap.range (A.d n) ↔ _
   exact LinearMap.mem_range
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `x ∈ (⊥ : Submodule R (A.X 0)) ↔ _`. Conclude with `Submodule.mem_bot R`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem mem_B_zero {x : A.X 0} : x ∈ A.B 0 ↔ x = 0 := by
   change x ∈ (⊥ : Submodule R (A.X 0)) ↔ _
   exact Submodule.mem_bot R
 
 /- English proof (translation)
-Rewrite using `[cls_eq_zero_iff, mem_B_succ]`. Conclude with `⟨y, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 @[simp] theorem cls_d {n : ℕ} (y : A.X n) (h : A.d (n + 1) (A.d n y) = 0) :
     A.cls (n + 1) (A.d n y) h = 0 := by
@@ -171,7 +171,7 @@ Both sides reduce to the same expression.
     (ψ.comp φ).f n x = ψ.f n (φ.f n x) := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun c => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 @[simp] theorem Hom.id_H (n : ℕ) : (Hom.id A).H n = LinearMap.id := by
   refine LinearMap.ext fun c => ?_
@@ -179,7 +179,7 @@ Use `LinearMap.ext fun c => ?_` and prove the remaining obligations. Take `⟨z,
   rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun c => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem Hom.comp_H (ψ : Hom B C) (φ : Hom A B) (n : ℕ) : (ψ.comp φ).H n = (ψ.H n).comp (φ.H n) := by
   refine LinearMap.ext fun c => ?_
@@ -187,7 +187,7 @@ theorem Hom.comp_H (ψ : Hom B C) (φ : Hom A B) (n : ℕ) : (ψ.comp φ).H n = 
   rfl
 
 /- English proof (translation)
-Rewrite using `[Hom.comp_H]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Hom.comp_H_apply (ψ : Hom B C) (φ : Hom A B) (n : ℕ) (c : A.H n) :
     (ψ.comp φ).H n c = ψ.H n (φ.H n c) := by
@@ -195,7 +195,7 @@ theorem Hom.comp_H_apply (ψ : Hom B C) (φ : Hom A B) (n : ℕ) (c : A.H n) :
   rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun c => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Conclude with `h z.1 z.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem H_hom_ext {M : Type*} [AddCommGroup M] [Module R M] {n : ℕ} {f g : A.H n →ₗ[R] M}
     (h : ∀ x hx, f (A.cls n x hx) = g (A.cls n x hx)) : f = g := by
@@ -207,7 +207,7 @@ end Cx
 
 open Cx in
 /- English proof (translation)
-Introduce `R _ A B C φ ψ n`. Conclude with `⟨Hom.id_H n, Hom.comp_H ψ φ n, exists_cls, fun x hx => cls_eq_zero_iff hx, fun x hx => ⟨_, Hom.H_cls φ x hx⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem basic_holds : BasicStatement.{u} := by
   intro R _ A B C φ ψ n

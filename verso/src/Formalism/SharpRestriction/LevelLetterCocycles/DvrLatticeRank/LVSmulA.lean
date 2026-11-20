@@ -24,7 +24,7 @@ def LV (K : ℕ) (x : W.DD T) : T.V ⊗[Qp] BdR :=
   if h : W.Q ^ K • W.φD T x ∈ W.N T then W.levN T c ζ ⟨_, h⟩ K else 0
 
 /- English proof (translation)
-Unfold `LV`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem LV_eq (K : ℕ) (x : W.DD T) (h : W.Q ^ K • W.φD T x ∈ W.N T) :
     LV W T c ζ K x = W.levN T c ζ ⟨_, h⟩ K := by
@@ -32,9 +32,9 @@ theorem LV_eq (K : ℕ) (x : W.DD T) (h : W.Q ^ K • W.φD T x ∈ W.N T) :
   rw [dif_pos h]
 
 /- English proof (translation)
-Establish `hxy : W.Q ^ K • W.φD T (x + y) ∈ W.N T`. Rewrite using `[map_add, smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Rewrite using `[LV_eq W T c ζ K _ hxy, LV_eq W T c ζ K _ hx, LV_eq W T c ζ K _ hy]`. Rewrite using `[show (⟨_, hxy⟩ : ↥(W.N T)) = ⟨_, hx⟩ + ⟨_, hy⟩ from Subtype.ext (by simp only [map_add, smul_add, Submodule.coe_add]), map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem LV_add (K : ℕ) (x y : W.DD T) (hx : W.Q ^ K • W.φD T x ∈ W.N T)
     (hy : W.Q ^ K • W.φD T y ∈ W.N T) : LV W T c ζ K (x + y) = LV W T c ζ K x + LV W T c ζ K y := by
@@ -47,9 +47,9 @@ theorem LV_add (K : ℕ) (x y : W.DD T) (hx : W.Q ^ K • W.φD T x ∈ W.N T)
   rfl
 
 /- English proof (translation)
-Establish `e : W.Q ^ K • W.φD T (a • x) = W.φA a • (W.Q ^ K • W.φD T x)`. Rewrite using `[Formalism.MainNotions.LiftingTheory.wmap_φD_smul, smul_comm]`. Establish `hax : W.Q ^ K • W.φD T (a • x) ∈ W.N T` using `e ▸ Submodule.smul_mem _ _ hx`. Use `⟨hax, ?_⟩` and prove the remaining obligations. Rewrite using `[LV_eq W T c ζ K _ hax, LV_eq W T c ζ K _ hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : (⟨_, hax⟩ : ↥(W.N T)) = W.φA a • (⟨_, hx⟩ : ↥(W.N T))` using `Subtype.ext e`. Rewrite using `[hs, levN_eq_serMul, serMul_eq_sum _ _ K hv K 1 (by omega), Finset.sum_range_one, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem LV_smulA (K : ℕ) (a : LetA O n) (x : W.DD T) (hx : W.Q ^ K • W.φD T x ∈ W.N T)
     (hv : ∀ j : ℤ, j < K → W.levN T c ζ ⟨_, hx⟩ j = 0) :
@@ -66,11 +66,11 @@ theorem LV_smulA (K : ℕ) (a : LetA O n) (x : W.DD T) (hx : W.Q ^ K • W.φD T
   simp
 
 /- English proof (translation)
-Establish `e : W.Q ^ K • W.φD T (o • x) = algebraMap O (LetA O n) o • (W.Q ^ K • W.φD T x)`. Rewrite using `[map_smul, smul_comm, algebraMap_smul]`. Establish `hox : W.Q ^ K • W.φD T (o • x) ∈ W.N T` using `e ▸ Submodule.smul_mem _ _ hx`. Use `⟨hox, ?_⟩` and prove the remaining obligations. Rewrite using `[LV_eq W T c ζ K _ hox, LV_eq W T c ζ K _ hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : (⟨_, hox⟩ : ↥(W.N T)) = algebraMap O (LetA O n) o • (⟨_, hx⟩ : ↥(W.N T))` using `Subtype.ext e`. Establish `hC : algebraMap O (PowerSeries LL) o = PowerSeries.C (algebraMap O LL o)`. Rewrite using `[IsScalarTower.algebraMap_apply O LL (PowerSeries LL)]`. Both sides reduce to the same expression. Rewrite using `[hs, levN_eq_serMul, AlgHom.commutes, hC]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Unfold `serMul`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `j hj`. Rewrite using `[PowerSeries.coeff_C, if_neg hj, zero_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem LV_smulO (K : ℕ) (o : O) (x : W.DD T) (hx : W.Q ^ K • W.φD T x ∈ W.N T) :
     W.Q ^ K • W.φD T (o • x) ∈ W.N T ∧
@@ -94,15 +94,15 @@ theorem LV_smulO (K : ℕ) (o : O) (x : W.DD T) (hx : W.Q ^ K • W.φD T x ∈ 
 variable {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop}
 
 /- English proof (translation)
-Establish `hex : ∃ k, W.Q ^ k • W.φD T x ∈ W.N T` using `⟨k, hk⟩`. Unfold `valAt`. Rewrite using `[dif_pos hex]`. Establish `hk0 : Nat.find hex ≤ k` using `Nat.find_min' hex hk`. Establish `hk0m` using `Nat.find_spec hex`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ j : ℤ, j < (Nat.find hex : ℤ) → W.levN T c ζ ⟨_, hk0m⟩ j = 0` using `fun j hj => ((hp4.2 c ζ τ hPt).1.1 ⟨x, hxN⟩ _ hk0m j).2 hj`. Establish `hs : (⟨_, hk⟩ : ↥(W.N T)) = W.Q ^ (k - Nat.find hex) • (⟨_, hk0m⟩ : ↥(W.N T))` using `Subtype.ext (by show W.Q ^ k • W.φD T x = W.Q ^ (k - Nat.find hex) • W.Q ^ Nat.find hex • W.φD T x`. Rewrite using `[smul_smul, ← pow_add, Nat.sub_add_cancel hk0])`. Take `⟨B', hB'⟩` from `PowerSeries.X_dvd_iff.2 hc0`. Establish `hB0 : PowerSeries.constantCoeff B' = PowerSeries.coeff 1 (W.lev c ζ W.Q)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hB', PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Rewrite using `[hs, levN_eq_serMul, serMul_eq_sum _ _ _ hv k (k - Nat.find hex + 1) (by omega), Finset.sum_eq_single (k - Nat.find hex)]`. Establish `e1 : (k : ℤ) - ((k - Nat.find hex : ℕ) : ℤ) = (Nat.find hex : ℤ)`. Rewrite using `[Nat.cast_sub hk0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcoef : PowerSeries.coeff (k - Nat.find hex) ((W.lev c ζ W.Q) ^ (k - Nat.find hex)) = PowerSeries.coeff 1 (W.lev c ζ W.Q) ^ (k - Nat.find hex)`. Rewrite using `[hB', mul_pow, PowerSeries.coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Rewrite using `[e1, map_pow, hcoef, smul_smul, ← pow_sub₀ _ hc1 hk0]`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[map_pow, pow_vanish' _ hc0 _ j h, zero_smul]`. Rewrite using `[hv _ (by omega), smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 (by omega)) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem levN_val (hp4 : Formalism.MainNotions.DeltaInvariantLattices.p4 W Pt T) {τ : K →ₐ[Qp] LL} (hPt : Pt c ζ τ)
     (hc0 : PowerSeries.constantCoeff (W.lev c ζ W.Q) = 0) (hc1 : PowerSeries.coeff 1 (W.lev c ζ W.Q) ≠ 0)

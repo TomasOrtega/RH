@@ -21,7 +21,7 @@ namespace GlobalTheory.CompanionTheory.ConeHaar.Fin
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `hOf`. Use `continuous_finset_sum _ fun p _ => ?_` and prove the remaining obligations. Conclude with `(Complex.continuous_ofReal.comp (continuous_apply p)).smul continuous_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_hOf : Continuous (hOf (n := n)) := by
   unfold hOf
@@ -29,31 +29,31 @@ theorem continuous_hOf : Continuous (hOf (n := n)) := by
   exact (Complex.continuous_ofReal.comp (continuous_apply p)).smul continuous_const
 
 /- English proof (translation)
-The claim follows from `Complex.continuous_re.comp (continuous_hOf.matrix_det)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_detRe : Continuous fun v : Fin n × Fin n → ℝ => (hOf v).det.re :=
   Complex.continuous_re.comp (continuous_hOf.matrix_det)
 
 /- English proof (translation)
-Establish `h : 0 < (hOf v).det` using `Matrix.PosDef.det_pos hv`. Conclude with `(Complex.pos_iff.1 h).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem detRe_pos {v : Fin n × Fin n → ℝ} (hv : v ∈ cone n) : 0 < (hOf v).det.re := by
   have h : 0 < (hOf v).det := Matrix.PosDef.det_pos hv
   exact (Complex.pos_iff.1 h).1
 
 /- English proof (translation)
-Unfold `coneW`. Conclude with `ENNReal.measurable_ofReal.comp ((continuous_detRe.measurable.pow_const n).inv)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_coneW : Measurable (coneW n) := by
   unfold coneW
   exact ENNReal.measurable_ofReal.comp ((continuous_detRe.measurable.pow_const n).inv)
 
 /- English proof (translation)
-Use `⟨fun p => ((1 * hb p : Mat n).trace).re, ?_⟩` and prove the remaining obligations. Establish `hre : ∀ p : Fin n × Fin n, ((((1 * hb p : Mat n).trace).re : ℝ) : ℂ) = (1 * hb p : Mat n).trace`. Introduce `p`. Apply `Complex.conj_eq_iff_re.1` to reduce the goal to its premises. Establish `h1 : star (hb p : Mat n).trace = (hb p : Mat n).trace`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.trace_conjTranspose, GlobalTheory.CompanionTheory.TwistHomotopy.hb_conjTranspose]`. Simplify using `using h1`. Establish `h` using `(GlobalTheory.CompanionTheory.TopClass.hbB n).sum_repr (1 : Mat n)`. Simplify using `only [GlobalTheory.CompanionTheory.TopClass.hbB_repr, GlobalTheory.CompanionTheory.TopClass.hbB_apply] at h`. Use `conv_rhs => rw [← h]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hOf, hre]`.
+A detailed English derivation is pending.
 -/
 theorem exists_hOf_eq_one : ∃ v : Fin n × Fin n → ℝ, hOf v = 1 := by
   refine ⟨fun p => ((1 * hb p : Mat n).trace).re, ?_⟩
@@ -69,7 +69,7 @@ theorem exists_hOf_eq_one : ∃ v : Fin n × Fin n → ℝ, hOf v = 1 := by
   simp only [hOf, hre]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_hOf_eq_one (n := n)`. Use `⟨v, ?_⟩` and prove the remaining obligations. Use `show (hOf v).PosDef`. Rewrite using `[hv]`. Conclude with `Matrix.PosDef.one`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cone_nonempty : (cone n).Nonempty := by
   obtain ⟨v, hv⟩ := exists_hOf_eq_one (n := n)
@@ -79,7 +79,7 @@ theorem cone_nonempty : (cone n).Nonempty := by
   exact Matrix.PosDef.one
 
 /- English proof (translation)
-Unfold `coneW`. Establish `: 0 < ((hOf v).det.re ^ n)⁻¹` using `inv_pos.2 (pow_pos (detRe_pos hv) n)`. Conclude with `(ENNReal.ofReal_pos.2 this).ne'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coneW_pos {v : Fin n × Fin n → ℝ} (hv : v ∈ cone n) : coneW n v ≠ 0 := by
   unfold coneW
@@ -87,9 +87,9 @@ theorem coneW_pos {v : Fin n × Fin n → ℝ} (hv : v ∈ cone n) : coneW n v �
   exact (ENNReal.ofReal_pos.2 this).ne'
 
 /- English proof (translation)
-Introduce `h0`. Establish `hz` using `(withDensity_eq_zero measurable_coneW.aemeasurable h0)`. Establish `hopen : IsOpen (cone n)` using `GlobalTheory.T.positive_cone_isOpen n`. Establish `hvol : 0 < volume (cone n)` using `hopen.measure_pos volume cone_nonempty`. Rewrite `hz` using `[Filter.EventuallyEq, ae_restrict_iff' hopen.measurableSet]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hnull : volume (cone n) = 0`. Use `measure_mono_null (t := {v | ¬ (v ∈ cone n → coneW n v = (0 : (Fin n × Fin n → ℝ) → ℝ≥0∞) v)}) ?_ hz` and prove the remaining obligations. Introduce `v hv`. Simplify using `using ⟨hv, coneW_pos hv⟩`. Conclude with `hvol.ne' hnull`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coneMeas_ne_zero : coneMeas n ≠ 0 := by
   intro h0
@@ -104,9 +104,9 @@ theorem coneMeas_ne_zero : coneMeas n ≠ 0 := by
   exact hvol.ne' hnull
 
 /- English proof (translation)
-Establish `hcont : ContinuousOn (fun v : Fin n × Fin n → ℝ => ((hOf v).det.re ^ n)⁻¹) C` using `ContinuousOn.inv₀ (continuous_detRe.pow n).continuousOn fun v hv => (pow_pos (detRe_pos (hCc hv)) n).ne'`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn hcont`. Establish `hle : ∀ v ∈ C, coneW n v ≤ ENNReal.ofReal M` using `fun v hv => ENNReal.ofReal_le_ofReal ((le_abs_self _).trans (hM v hv))`. Unfold `coneMeas`. Rewrite using `[withDensity_apply _ hC.measurableSet]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `Measure.restrict_le_self`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hC.measure_lt_top`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coneMeas_lt_top (C : Set (Fin n × Fin n → ℝ)) (hC : IsCompact C) (hCc : C ⊆ cone n) :
     coneMeas n C < ⊤ := by
@@ -128,7 +128,7 @@ theorem coneMeas_lt_top (C : Set (Fin n × Fin n → ℝ)) (hC : IsCompact C) (h
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hC.measure_lt_top
 
 /- English proof (translation)
-Introduce `_` and use `⟨coneMeas_ne_zero, coneMeas_lt_top⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem coneMeas_ne_zero_and_lt_top : ∀ n : ℕ, coneMeas n ≠ 0 ∧ ∀ C : Set (Fin n × Fin n → ℝ), IsCompact C →
     C ⊆ PositivityTheory.RgBcC.cone n → coneMeas n C < ⊤ :=

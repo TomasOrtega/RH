@@ -8,19 +8,17 @@ namespace GlobalTheory.TwBridge
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `hP : P.1 ∈ twQOff (Pr := Pr) sel mu`. Set `P₀ : twQOff (Pr` to `Pr) sel mu := ⟨P.1, hP⟩`. Set `d'' : (twNext Ch sel mu cst st).β` to `⟨Function.update d.1 P₀ (d'.1 P₀), d.2⟩`. Establish `hall : ∀ Q : rowSG Pr sel mu, SameDC (Pr` using `Pr) cst.sharp (i + 1) Q.1 ((twNext Ch sel mu cst st).h d Q) ((twNext Ch sel mu cst st).h d'' Q) := by`. Introduce `Q`.
+Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hQ : Q.1 ∈ twQOff (Pr := Pr) sel mu`. Distinguish the cases in `e : (⟨Q.1, hQ⟩ : twQOff (Pr := Pr) sel mu) = P₀`. Establish `hQP1 : Q.1 = P.1` using `congrArg (fun x : twQOff (Pr := Pr) sel mu => x.1) e`. Establish `hQP : Q = P` using `Subtype.ext hQP1`. Rewrite using `[hQP]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (twNext Ch sel mu cst st).h d'' P = (twNext Ch sel mu cst st).h d' P`. Simplify using `only [twNext, dif_pos hP, d'']`. Rewrite using `[Function.update_self]`. Rewrite using `[e1]`. Conclude with `hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (twNext Ch sel mu cst st).h d'' Q = (twNext Ch sel mu cst st).h d Q`. Simplify using `only [twNext, dif_pos hQ, d'']`. Rewrite using `[Function.update_of_ne e]`. Rewrite using `[e1]`. Conclude with `twDC_refl _ _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : (twNext Ch sel mu cst st).h d'' Q = (twNext Ch sel mu cst st).h d Q`. Simplify using `only [twNext, dif_neg hQ]`. Rewrite using `[e1]`. Conclude with `twDC_refl _ _ _ _`. Establish `hdd` using `hinj d d'' hall`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : d.1 P₀ = d'.1 P₀`. Use `congrArg (fun x : (twNext Ch sel mu cst st).β => x.1 P₀) hdd` as an intermediate fact. Simplify `this` using `[d'']`. Simplify using `only [twNext, dif_pos hP]`. Conclude with `congrArg (fun D => twRep Ch sel mu cst st P₀ D.1) hc`.
-
-Simplify using `only [twNext, dif_neg hP]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twNext_rep_eq_of_sameDC {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S₀ : Set ℕ} (mu : Tup X.F X.E X.K S₀)
@@ -61,13 +59,11 @@ theorem twNext_rep_eq_of_sameDC {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : C
   · simp only [twNext, dif_neg hP]
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S₀ mu cst m2 G hok j b b' P hs`. Break down `j with _ | i` into its components or cases. Both sides reduce to the same expression. Distinguish the cases in `hi : i + 1 ≤ m2`. Establish `key : ∀ st' : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) (i + 1), st' = twNext Ch sel mu cst (twSt Ch sel mu cst m2 i) → ∀ b b' : st'.β, (∀ b b' : st'.β, (∀ P : rowSG Pr sel mu, SameDC (Pr` using `Pr) cst.sharp (i + 1) P.1 (st'.h b P) (st'.h b' P)) → b = b') → SameDC (Pr := Pr) cst.sharp (i + 1) P.1 (st'.h b P) (st'.h b' P) → st'.h b P = st'.h b' P := by`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce and unpack `st' rfl b b' hinj hs`. Conclude with `twNext_rep_eq_of_sameDC Ch sel mu cst _ hinj b b' P hs`. Conclude with `key (twSt Ch sel mu cst m2 (i + 1)) (by rw [twSt, if_pos hi]) b b' (hok.inj i (by omega)) hs`. Distinguish the cases in `hi2 : i + 1 = m2 + 1`. Establish `key : ∀ st' : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) (i + 1), st' = twUnitSt _ (i + 1) → ∀ b b' : st'.β, st'.h b P = st'.h b' P`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Introduce and unpack `st' rfl b b'`. Both sides reduce to the same expression. Conclude with `key (twSt Ch sel mu cst m2 (i + 1)) (by rw [twSt, if_neg hi, if_pos hi2]) b b'`. Establish `key : ∀ st' : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) (i + 1), st' = twEmptySt _ (i + 1) → ∀ b b' : st'.β, st'.h b P = st'.h b' P`. Introduce and unpack `st' rfl b`.
-
-Conclude with `b.elim`. Conclude with `key (twSt Ch sel mu cst m2 (i + 1)) (by rw [twSt, if_neg hi, if_neg hi2]) b b'`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem idxProd_twIdx : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (m2 : ℕ) (G : ChGlob X R.m), (twIdx Ch sel mu cst m2).Ok Ch sel mu cst G m2 → IdxProd sel mu cst (twIdx Ch sel mu cst m2) := by
   intro X Pr R Ch sel S₀ mu cst m2 G hok j b b' P hs

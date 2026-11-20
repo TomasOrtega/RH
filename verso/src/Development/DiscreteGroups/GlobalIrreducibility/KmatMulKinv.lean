@@ -22,17 +22,17 @@ def Kinv (jj : Fin (m + 1)) (a : Fin (m + 1) → k) : Matrix (Fin (m + 1)) (Fin 
   Kinv2 jj (a, (a jj)⁻¹)
 
 /- English proof (translation)
-Use extensionality with `p q`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hp : p = jj`. Substitute `hp` using the available equality. Establish `hs : ∀ r, Kmat p a p r * Kinv p a r q = a r * (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r q + (if r = p then a p * (Kinv p a p q - (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) p q) else 0)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Introduce `r`. Distinguish the cases in `hr : r = p`. Rewrite using `[hr, if_pos rfl]`. Simplify using `only [Kmat, Matrix.of_apply, ↓reduceIte]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_neg hr, add_zero]`. Simplify using `only [Kmat, Kinv, Kinv2, Matrix.of_apply, ↓reduceIte, if_neg hr]`. Rewrite using `[Finset.sum_congr rfl (fun r _ => hs r), Finset.sum_add_distrib, Finset.sum_ite_eq']`. Simplify using `only [Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Distinguish the cases in `hq : q = p`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hq` using the available equality. Simplify using `only [Kinv, Kinv2, Matrix.of_apply, ↓reduceIte]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Kinv, Kinv2, Matrix.of_apply, ↓reduceIte, if_neg hq, if_neg (Ne.symm hq)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_eq_single p]`. Simplify using `only [Kmat, Kinv, Kinv2, Matrix.of_apply, if_neg hp, Matrix.one_apply_eq, one_mul]`. Introduce `r _ hr`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Kmat, Matrix.of_apply, if_neg hp, Matrix.one_apply_ne (Ne.symm hr), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ p) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Kmat_mul_Kinv (jj : Fin (m + 1)) (a : Fin (m + 1) → k) (ha : a jj ≠ 0) :
     Kmat jj a * Kinv jj a = 1 := by
@@ -64,14 +64,14 @@ theorem Kmat_mul_Kinv (jj : Fin (m + 1)) (a : Fin (m + 1) → k) (ha : a jj ≠ 
     · intro h; exact absurd (Finset.mem_univ p) h
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.1 (Kmat_mul_Kinv jj a ha)`.
+A detailed English derivation is pending.
 -/
 theorem Kinv_mul_Kmat (jj : Fin (m + 1)) (a : Fin (m + 1) → k) (ha : a jj ≠ 0) :
     Kinv jj a * Kmat jj a = 1 :=
   mul_eq_one_comm.1 (Kmat_mul_Kinv jj a ha)
 
 /- English proof (translation)
-Use extensionality with `p q`. Distinguish the cases in `hp : p = jj`. Substitute `hp` using the available equality. Simplify using `[Kmat, Matrix.one_apply, Pi.single_apply, eq_comm]`. Simplify using `[Kmat, hp]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Kmat_single (jj : Fin (m + 1)) : Kmat jj (Pi.single jj (1 : k)) = 1 := by
   ext p q
@@ -80,9 +80,9 @@ theorem Kmat_single (jj : Fin (m + 1)) : Kmat jj (Pi.single jj (1 : k)) = 1 := b
   · simp [Kmat, hp]
 
 /- English proof (translation)
-Use extensionality with `p q`. Distinguish the cases in `hp : p = jj`. Substitute `hp` using the available equality. Distinguish the cases in `hq : q = p`. Substitute `hq` using the available equality.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Kinv, Kinv2]`. Simplify using `[Kinv, Kinv2, hq, Matrix.one_apply, Pi.single_apply, Ne.symm hq]`. Simplify using `[Kinv, Kinv2, hp]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Kinv_single (jj : Fin (m + 1)) : Kinv jj (Pi.single jj (1 : k)) = 1 := by
   ext p q

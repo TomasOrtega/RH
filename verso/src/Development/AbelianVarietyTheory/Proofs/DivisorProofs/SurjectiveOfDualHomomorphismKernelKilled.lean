@@ -14,21 +14,19 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.DualHomSurj
 
 /- English proof (translation)
-Introduce `S A B _ _ Q la d hA hB hd _ hla hd0 hk`. Use `hA.proper` as an intermediate fact. Use `hB.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hB.smooth` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType (la.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: LocallyOfFiniteType la.left` using `locallyOfFiniteType_of_comp _ B.hom`. Establish `: QuasiCompact (la.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: QuasiCompact la.left` using `QuasiCompact.of_comp _ B.hom`. Establish `hSA` using `GlobalTheory.isSemiAbelian_of_isAbelianScheme A hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLQF : LocallyQuasiFinite la.left` using `GlobalTheory.locallyQuasiFinite_of_finite_geometric_ker _ A B la hla inferInstance inferInstance fun Ω _ _ t => by`. Use `GlobalTheory.HomExt.finite_torsion_points hSA t hd0` as an intermediate fact. Conclude with `Finite.of_injective (β := {x : Over.mk t ⟶ A // x ^ d = 1}) (fun x => ⟨x.1, hk _ x.1 x.2⟩) fun a b e => Subtype.ext (congrArg (fun z : {x : Over.mk t ⟶ A // x ^ d = 1} => z.1) e)`. Use `haveI : IsMonHom la := hla`. Use `GlobalTheory.AbLaw.MulN.surjective_of_geomFibres la fun K _ _ s => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA'` using `GlobalTheory.isAbelianScheme_pullback_obj s A hA`. Establish `hB'` using `GlobalTheory.isAbelianScheme_pullback_obj s B hB`. Take `⟨gA, hgA⟩` from `GlobalTheory.AbelianDim.exists_relDim K ((Over.pullback s).obj A) hA'`. Take `⟨gB, hgB⟩` from `GlobalTheory.AbelianDim.exists_relDim K ((Over.pullback s).obj B) hB'`. Set `Ak : GlobalTheory.AV.AbVar K` to `{ X := (Over.pullback s).obj A, ab := hA', dim := gA, smooth := hgA }`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Bk : GlobalTheory.AV.AbVar K` to `{ X := (Over.pullback s).obj B, ab := hB', dim := gB, smooth := hgB }`. Establish `key : ∀ {X Y : Over S} (a : X ⟶ Y), ((Over.pullback s).map a).left ≫ pullback.fst Y.hom s = pullback.fst X.hom s ≫ a.left` using `fun a ↦ pullback.lift_fst _ _ _`. Set `h : ((Over.pullback s).obj A ⊗ (Over.pullback s).obj B).left ⟶ (A ⊗ B).left` to `(Functor.LaxMonoidal.μ (Over.pullback s) A B).left ≫ pullback.fst (A ⊗ B).hom s`. Establish `h₁ : h ≫ (fst A B).left = (fst ((Over.pullback s).obj A) ((Over.pullback s).obj B)).left ≫ pullback.fst A.hom s`. Simplify using `only [h, Category.assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key, ← Category.assoc, ← Over.comp_left]`. Rewrite using `[show Functor.LaxMonoidal.μ (Over.pullback s) A B ≫ (Over.pullback s).map (fst A B) = fst _ _ by simp]`. Establish `h₂ : h ≫ (snd A B).left = (snd ((Over.pullback s).obj A) ((Over.pullback s).obj B)).left ≫ pullback.fst B.hom s`. Simplify using `only [h, Category.assoc]`. Rewrite using `[← key, ← Category.assoc, ← Over.comp_left]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show Functor.LaxMonoidal.μ (Over.pullback s) A B ≫ (Over.pullback s).map (snd A B) = snd _ _ by simp]`. Establish `hP' : (Q.pull h).IsLB` using `pull_isLB hd.isLB _`. Establish `hd' : IsDual Ak.X Bk.X (Q.pull h)` using `IsDual.baseChange (isGrpPullback_pullback A s) (isGrpPullback_pullback B s) h₁ h₂ hP' ((cls_eq_iff hP' hP').1 rfl) hd`. Establish `hdim : gB = gA` using `GlobalTheory.DualTower.dim_eq_of_isDual Ak Bk (Q.pull h) hd'`. Establish `: LocallyQuasiFinite ((Over.pullback s).map la).left` using `MorphismProperty.of_isPullback (P := @LocallyQuasiFinite) (GlobalTheory.AbLaw.MulN.isPullback_baseChange s la) inferInstance`.
-
-Conclude with `(GlobalTheory.IsogenyQuasiInverse.flat_surjective_of_field _ _ gA hA' hB' hgA (hdim ▸ hgB) _).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_of_ker_killed : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B] (Q : LB (A ⊗ B).left) (la : A ⟶ B) (d : ℕ), IsAbelianScheme A → IsAbelianScheme B → IsDual A B Q → IsDual B A (swap Q) → IsMonHom la → 0 < d → (∀ (T : Over S) (x : T ⟶ A), x ≫ la = 1 → x ^ d = 1) → Surjective la.left := by
   intro S A B _ _ Q la d hA hB hd _ hla hd0 hk

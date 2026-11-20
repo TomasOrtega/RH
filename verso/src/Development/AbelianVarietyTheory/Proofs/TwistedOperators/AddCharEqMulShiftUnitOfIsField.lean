@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.Twist
 
 /- English proof (translation)
-Introduce `κf _ _ hF ψ φ hψ _`. Set `_ : Field κf` to `hF.toField`. Establish `_ : Fintype κf` using `Fintype.ofFinite κf`. Establish `hinj : Function.Injective ψ.mulShift` using `AddChar.to_mulShift_inj_of_isPrimitive (AddChar.IsPrimitive.of_ne_one hψ)`. Establish `hbij : Function.Bijective ψ.mulShift` using `(Fintype.bijective_iff_injective_and_card _).mpr ⟨hinj, AddChar.card_eq.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `hbij.2 φ`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `‹φ ≠ 1› (by rw [← ha, AddChar.mulShift_zero])`. Use `⟨Units.mk0 a ha0, fun t => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha, AddChar.mulShift_apply, Units.val_mk0]`.
+A detailed English derivation is pending.
 -/
 theorem addChar_eq_mulShift_unit_of_isField :
     ∀ {κf : Type} [CommRing κf] [Finite κf], IsField κf → ∀ ψ φ : AddChar κf ℂ, ψ ≠ 1 → φ ≠ 1 →

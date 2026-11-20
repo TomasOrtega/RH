@@ -19,7 +19,7 @@ variable {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [NormedField K] [Alg
   [NormedAlgebra ℚ_[l] K] {G : Type} [Group G] [TopologicalSpace G]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, smul_zero]`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `tmul b x => simp [TWincl, TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem TWincl_smul {R R' : Type} [CommRing R] [CommRing R'] [Algebra O R] [Algebra O R']
     (f : R →ₐ[O] R') (T : LocLat G ℚ_[l] K O) (r : R) (z : TW R T) :
@@ -30,7 +30,7 @@ theorem TWincl_smul {R R' : Type} [CommRing R] [CommRing R'] [Algebra O R] [Alge
   | tmul b x => simp [TWincl, TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Use `haveI : Module.Free O ↥T.L.T := T.L.free`. Conclude with `Module.Flat.rTensor_preserves_injective_linearMap (M := ↥T.L.T) f.toLinearMap hf`.
+A detailed English derivation is pending.
 -/
 theorem TWincl_inj {R R' : Type} [CommRing R] [CommRing R'] [Algebra O R] [Algebra O R']
     (f : R →ₐ[O] R') (hf : Function.Injective f) (T : LocLat G ℚ_[l] K O) :
@@ -39,7 +39,7 @@ theorem TWincl_inj {R R' : Type} [CommRing R] [CommRing R'] [Algebra O R] [Algeb
   exact Module.Flat.rTensor_preserves_injective_linearMap (M := ↥T.L.T) f.toLinearMap hf
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hr`. Establish `h2` using `congrArg (fun y => ((u⁻¹ : Rˣ) : R) • y) h`. Simplify using `only [← map_smul, smul_smul, Units.inv_mul, one_smul] at h2`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fix_of_unit {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (f : M →ₗ[R] M) (r : R)
     (hr : IsUnit r) (m : M) (h : f (r • m) = r • m) : f m = m := by
@@ -60,14 +60,14 @@ Both sides reduce to the same expression.
 theorem inclV_apply (c : ι → OA l O) (i : ι) : inclV l O ι c i = inclO l O (c i) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [inclV_apply, Pi.smul_apply, smul_eq_mul, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem inclV_smul (r : OA l O) (c : ι → OA l O) : inclV l O ι (r • c) = inclO l O r • inclV l O ι c := by
   funext i
   simp only [inclV_apply, Pi.smul_apply, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Introduce `c d h` and use `funext fun i => inclO_injective (congrFun h i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inclV_inj [Module.Free ℤ_[l] O] : Function.Injective (inclV l O ι) := fun c d h =>
   funext fun i => inclO_injective (congrFun h i)
@@ -83,59 +83,53 @@ open GlobalTheory.DeRhamIdent
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I`. Take `⟨⟨ε, hε⟩, hεall⟩` from `GlobalTheory.T.teichmullerSubOneAinf_properties_compatibleRoots l`. Use `set δ : OCb l := (frobeniusEquiv (OCb l) l).symm ε with hδdef`. Establish `hδ : δ ^ l = ε` using `frobeniusEquiv_symm_pow_p (OCb l) l ε`. Take `⟨-, -, hθ, -⟩` from `hεall ε δ hε hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨α, β, hα, hβ⟩` from `P.exists_exponents`. Take `⟨hK1, hK2, -, -⟩` from `GlobalTheory.T.breuilKisin_lattice_exponents_ainf_comparison l a e O K t ϖ ι P T I α β hα hβ ε δ hε hδ`. Use `set ν : OA l O := (1 : O) ⊗ₜ[ℤ_[l]] muOf δ with hν`. Establish `hpow : ∀ k : ℕ, (1 : O) ⊗ₜ[ℤ_[l]] (muOf δ ^ k) = ν ^ k` using `fun k => by`. Rewrite using `[hν, Algebra.TensorProduct.tmul_pow, one_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hpow] at hK1 hK2`. Establish `hu : IsUnit (toOD l O ν)`. Establish `h1 : IsUnit (ainfToBdRp l (muOf δ))` using `(GlobalTheory.MemLoc.thetaD_props l).2.2.1 _ (by`. Express the relevant statement in the definitionally equal form `Per.θD l (GlobalTheory.MemLoc.aDp l (muOf δ)) ≠ 0`. Rewrite using `[(GlobalTheory.MemLoc.thetaD_props l).2.2.2.1]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `hθ (Subtype.ext h))`. Establish `h2 : toOD l O ν = (Algebra.TensorProduct.includeRight : Per.BdRp l →ₐ[ℤ_[l]] OD l O) (ainfToBdRp l (muOf δ))`. Simplify using `[hν, toOD]`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.map _`. Use `set u : (OD l O)ˣ := hu.unit with hudef`. Establish `hu' : (u : OD l O) = toOD l O ν` using `hu.unit_spec`. Establish `hV` using `inclV_inj l O ι`. Use `choose z hz using fun i => hK2 (inclV l O ι (Pi.single i 1)) ⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ c : ι → OA l O, inclV l O ι c = ∑ i, inclO l O (c i) • inclV l O ι (Pi.single i 1)`. Introduce `c`. Use function extensionality and compare the values at `j`. Simplify using `[inclV_apply, Finset.sum_apply, Pi.single_apply]`. Establish `hJ0 : ∀ (c : ι → OA l O) (z' : TW (OA l O) T), I.j (inclV l O ι c) = TWincl (inclO l O) T z' → ν ^ α • z' = ∑ i, c i • z i`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c z' h`. Apply `TWincl_inj (inclO l O) inclO_injective T` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[TWincl_smul, h]`. Use `_ = ∑ i, inclO l O (c i) • I.j (inclO l O (ν ^ α) • inclV l O ι (Pi.single i 1)) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← I.j.map_smul, hsum c, Finset.smul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, I.j.map_smul]`. Use `_ = TWincl (inclO l O) T (∑ i, c i • z i) := by`. Rewrite using `[map_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hz i, TWincl_smul]`. Set `w : ι → TW (OD l O) T` to `fun i => ((u⁻¹ : (OD l O)ˣ) : OD l O) ^ α • TWincl (toOD l O) T (z i)`. Set `jD : (ι → OD l O) →ₗ[OD l O] TW (OD l O) T` to `∑ i, (LinearMap.proj i).smulRight (w i)`. Establish `hjD : ∀ d, jD d = ∑ i, d i • w i` using `fun d => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `[jD, LinearMap.sum_apply]`. Establish `hJ : ∀ (c : ι → OA l O) (z' : TW (OA l O) T), I.j (inclV l O ι c) = TWincl (inclO l O) T z' → jD (fun i => toOD l O (c i)) = TWincl (toOD l O) T z'`. Introduce `c z' h`. Establish `h2 : toOD l O (ν ^ α) • TWincl (toOD l O) T z' = ∑ i, toOD l O (c i) • TWincl (toOD l O) T (z i)`. Rewrite using `[← TWincl_smul, hJ0 c z' h, map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `only [TWincl_smul]`. Rewrite using `[hjD]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `_ = ((u⁻¹ : (OD l O)ˣ) : OD l O) ^ α • (toOD l O (ν ^ α) • TWincl (toOD l O) T z') := by rw [h2]`. Use `_ = TWincl (toOD l O) T z' := by`. Rewrite using `[smul_smul, map_pow, ← hu', ← mul_pow, Units.inv_mul, one_pow, one_smul]`. Establish `hK1' : ∀ x, ∃ y, inclV l O ι y = inclO l O (ν ^ β) • I.ofT x` using `fun x => LinearMap.mem_range.1 (hK1 x)`. Use `choose Cx hC using hK1'`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `C : ↥T.L.T →ₗ[O] (ι → OA l O)` to `{ toFun := Cx map_add' := fun x y => hV (by rw [map_add, hC, hC, hC, map_add, smul_add]) map_smul' := fun o x => hV (by rw [map_smul, hC, hC, map_smul, RingHom.id_apply, smul_comm]) }`. Set `CA : TW (OA l O) T →ₗ[OA l O] (ι → OA l O)` to `LinearMap.liftBaseChange (OA l O) C`. Establish `hP1 : ∀ z' : TW (OA l O) T, inclV l O ι (CA z') = inclO l O (ν ^ β) • I.j.symm (TWincl (inclO l O) T z')`. Introduce `z'`. Proceed by induction on `z' using TensorProduct.induction_on with`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add, smul_add]`. Consider the case `tmul b x`. Establish `e1 : TWincl (inclO l O) T (b ⊗ₜ[O] x) = inclO l O b • ((1 : OW l O) ⊗ₜ[O] x)`. Simplify using `[TWincl, TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `e2 : I.j.symm ((1 : OW l O) ⊗ₜ[O] x) = I.ofT x` using `rfl`. Rewrite using `[e1, I.j.symm.map_smul, e2, LinearMap.liftBaseChange_tmul, inclV_smul]`. Express the relevant statement in the definitionally equal form `inclO l O b • inclV l O ι (Cx x) = _`. Rewrite using `[hC, smul_comm]`. Set `ψ : TW (OD l O) T →ₗ[OD l O] (ι → OD l O)` to `((u⁻¹ : (OD l O)ˣ) : OD l O) ^ β • LinearMap.liftBaseChange (OD l O) (((toOD l O).toLinearMap.compLeft ι) ∘ₗ C)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hP2 : ∀ z' : TW (OA l O) T, ψ (TWincl (toOD l O) T z') = ((u⁻¹ : (OD l O)ˣ) : OD l O) ^ β • fun i => toOD l O (CA z' i)`. Introduce `z'`. Proceed by induction on `z' using TensorProduct.induction_on with`. Consider the case `zero`. Simplify using `only [map_zero]`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy, ← smul_add]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `tmul b x`. Simplify using `only [ψ, CA, TWincl, LinearMap.smul_apply, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_apply, LinearMap.liftBaseChange_tmul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[C, LinearMap.compLeft, map_mul]`. Establish `hΨ : ∀ (c : ι → OA l O) (z' : TW (OA l O) T), I.j (inclV l O ι c) = TWincl (inclO l O) T z' → ψ (TWincl (toOD l O) T z') = fun i => toOD l O (c i)`. Introduce `c z' h`. Establish `h1 : CA z' = ν ^ β • c` using `hV (by rw [hP1, ← h, I.j.symm_apply_apply, inclV_smul])`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hP2, h1]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, map_pow, ← hu', ← mul_assoc, ← mul_pow, Units.inv_mul, one_pow, one_mul]`. Establish `h1 : jD ∘ₗ ψ = LinearMap.id`. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `d x`. Establish `e0 : d ⊗ₜ[O] x = d • ((1 : OD l O) ⊗ₜ[O] x)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e0, map_smul, map_smul]`. Use `congr 1`. Establish `hx : I.j (inclV l O ι (Cx x)) = TWincl (inclO l O) T ((ν ^ β) ⊗ₜ[O] x)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hC, I.j.map_smul, I.j_ofT]`. Simplify using `[TWincl, TensorProduct.smul_tmul']`. Establish `e3 : TWincl (toOD l O) T ((ν ^ β) ⊗ₜ[O] x) = ((u : OD l O) ^ β) • ((1 : OD l O) ⊗ₜ[O] x)`. Simplify using `[TWincl, TensorProduct.smul_tmul', hu']`. Use `fix_of_unit (jD ∘ₗ ψ) ((u : OD l O) ^ β) ((Units.isUnit u).pow β) _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← e3, LinearMap.comp_apply, hΨ _ _ hx, hJ _ _ hx]`. Establish `h2 : ψ ∘ₗ jD = LinearMap.id`. Apply `LinearMap.pi_ext'` to reduce the goal to its premises. Introduce `i`. Apply `LinearMap.ext_ring` to reduce the goal to its premises.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply]`. Establish `hc : inclV l O ι (Pi.single i (ν ^ α)) = inclO l O (ν ^ α) • inclV l O ι (Pi.single i 1)`. Rewrite using `[← inclV_smul]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
-
-Simplify using `[Pi.single_apply]`. Establish `hzi : I.j (inclV l O ι (Pi.single i (ν ^ α))) = TWincl (inclO l O) T (z i)` using `by rw [hc, hz i]`. Establish `e4 : (fun j => toOD l O ((Pi.single i (ν ^ α) : ι → OA l O) j)) = ((u : OD l O) ^ α) • (LinearMap.single (OD l O) (fun _ => OD l O) i 1)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
-
-Substitute `hj` using the available equality. Simplify using `[hu', map_pow]`. Simplify using `[Pi.single_apply, hj]`. Use `fix_of_unit (ψ ∘ₗ jD) ((u : OD l O) ^ α) ((Units.isUnit u).pow α) _ ?_` and prove the remaining obligations. Rewrite using `[← e4, LinearMap.comp_apply, hJ _ _ hzi, hΨ _ _ hzi]`.
-
-Conclude with `⟨LinearEquiv.ofLinear jD ψ h1 h2, fun c z' h => hJ c z' h⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (T : LocLat (Gl l) ℚ_[l] K O) (I : Ident t ϖ P T), ∃ jD : (ι → OD l O) ≃ₗ[OD l O] TW (OD l O) T, ∀ (c : ι → OA l O) (z : TW (OA l O) T), I.j (inclV l O ι c) = TWincl (inclO l O) T z → jD (fun i => toOD l O (c i)) = TWincl (toOD l O) T z := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I

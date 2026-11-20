@@ -7,7 +7,7 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.GaugeEx.ProdScale
 
 /- English proof (translation)
-Use `(hr.preimage (f := (Subtype.val : {v // p v} → ι)) Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations. Introduce `v hv h`. Conclude with `hv (by simp [h])`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_mulSupport_sub {ι : Type} (r : ι → ℝ≥0) (hr : (Function.mulSupport r).Finite)
     (p : ι → Prop) : (Function.mulSupport fun v : {v // p v} => (r v.1 : ℝ)).Finite := by
@@ -16,7 +16,7 @@ theorem finite_mulSupport_sub {ι : Type} (r : ι → ℝ≥0) (hr : (Function.m
   exact hv (by simp [h])
 
 /- English proof (translation)
-Use `hf.congr_cofinite ?_` and prove the remaining obligations. Use `filter_upwards [hr.compl_mem_cofinite] with v hv`. Establish `: r v = 1` using `by simpa using hv`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem summable_scale {ι : Type} (f : ι → ℝ) (r : ι → ℝ≥0) (hf : Summable fun v => |f v - 1|)
     (hr : (Function.mulSupport r).Finite) : Summable fun v => |r v * f v - 1| := by
@@ -26,7 +26,7 @@ theorem summable_scale {ι : Type} (f : ι → ℝ) (r : ι → ℝ≥0) (hf : S
   simp [this]
 
 /- English proof (translation)
-Establish `h0 : (Function.mulSupport fun v => (r v : ℝ)).Finite` using `hr.subset fun v hv h => hv (by simp [h])`. Establish `h1 : ((∏ᶠ v, r v : ℝ≥0) : ℝ) = ∏ᶠ v, (r v : ℝ)` using `NNReal.toRealHom.toMonoidHom.map_finprod hr`. Rewrite using `[h1, ← tprod_eq_finprod (L := SummationFilter.unconditional ι) h0, ← Finset.tprod_subtype' S (fun v => (r v : ℝ))]`. Conclude with `(Multipliable.tprod_mul_tprod_compl (f := fun v => (r v : ℝ)) (s := (S : Set ι)) (multipliable_of_finite_mulSupport (finite_mulSupport_sub r hr _)) (multipliable_of_finite_mulSupport (finite_mulSupport_sub r hr _))).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_eq {ι : Type} (r : ι → ℝ≥0) (hr : (Function.mulSupport r).Finite) (S : Finset ι) :
     ((∏ᶠ v, r v : ℝ≥0) : ℝ) = (∏ v ∈ S, (r v : ℝ)) * ∏' v : {v // v ∉ S}, (r v.1 : ℝ) := by
@@ -40,7 +40,7 @@ theorem finprod_eq {ι : Type} (r : ι → ℝ≥0) (hr : (Function.mulSupport r
     (multipliable_of_finite_mulSupport (finite_mulSupport_sub r hr _))).symm
 
 /- English proof (translation)
-Use `Multipliable.tprod_mul (multipliable_of_finite_mulSupport (finite_mulSupport_sub r hr _)) ?_` and prove the remaining obligations. Establish `h` using `multipliable_one_add_of_summable (f := fun v : {v // v ∉ S} => f v.1 - 1) (hf.subtype {v | v ∉ S})`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tprod_scale {ι : Type} (f : ι → ℝ) (r : ι → ℝ≥0) (hf : Summable fun v => |f v - 1|)
     (hr : (Function.mulSupport r).Finite) (S : Finset ι) :
@@ -53,9 +53,9 @@ theorem tprod_scale {ι : Type} (f : ι → ℝ) (r : ι → ℝ≥0) (hf : Summ
   simpa using h
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ ∏' v : {v // v ∉ S}, (r v.1 : ℝ)`. Rewrite using `[tprod_eq_finprod (finite_mulSupport_sub r hr _)]`. Conclude with `finprod_nonneg fun v => (r v.1).2`. Take `⟨c, hc⟩ : ∃ c : ℝ≥0, (c : ℝ) = ∏' v : {v // v ∉ S}, (r v.1 : ℝ)` from `⟨⟨_, h0⟩, rfl⟩`. Use `⟨c, ?_, hc⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[finprod_eq r hr S, ← hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finprod_ennreal {ι : Type} (r : ι → ℝ≥0) (hr : (Function.mulSupport r).Finite)
     (S : Finset ι) :
@@ -70,13 +70,13 @@ theorem finprod_ennreal {ι : Type} (r : ι → ℝ≥0) (hr : (Function.mulSupp
   simp
 
 /- English proof (translation)
-Take `⟨⟨hi, hv, hs⟩, hf⟩` from `h`. Establish `key : ∀ v, ((r v • mv v) (latV b v)).toReal = r v * (mv v (latV b v)).toReal`. Introduce `v`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, ENNReal.toReal_mul, ENNReal.coe_toReal]`. Use `⟨⟨inferInstance, fun v => inferInstance, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [key]`. Conclude with `summable_scale _ r hs hr`. Introduce `S fi fv hfi hfv`. Take `⟨c, hc, hc'⟩` from `finprod_ennreal r hr S`. Establish `ht : tailProd b (fun v => r v • mv v) S = c * tailProd b mv S`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `tailProd`. Simplify using `only [key]`. Rewrite using `[tprod_scale (fun v => (mv v (latV b v)).toReal) r hs hr S, ← hc', ENNReal.ofReal_mul c.coe_nonneg, ENNReal.ofReal_coe_nnreal]`. Rewrite using `[Measure.restrict_smul, lintegral_smul_measure, hf S fi fv hfi hfv, ht, hc]`. Simplify using `only [lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isProd_smul (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ)

@@ -34,19 +34,19 @@ def mapLat (e : V ≃ₗ[LL] W) (he : ∀ g x, e (ρ g x) = σ g (e x)) (L : Lat
 variable {E M : Type} [AddCommGroup E] [Module O E] [AddCommGroup M] [Module O M]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he⟩`. Set `Φ` to `p.quotKerEquivOfSurjective hp`. Use `⟨(Φ.toLinearMap.comp e.symm.toLinearMap).comp (L₂.T.comap L₁.T.subtype).mkQ, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Φ.surjective.comp (e.symm.surjective.comp (Submodule.mkQ_surjective _))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g y`. Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (e.symm (Submodule.Quotient.mk y))`. Establish `h1 : e (Submodule.Quotient.mk x) = Submodule.Quotient.mk y`. Rewrite using `[hx, LinearEquiv.apply_symm_apply]`. Establish `h3 : latRep L₁ g y = ⟨ρ g y, L₁.stable g y y.2⟩` using `Subtype.ext (latRep_apply L₁ g y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Submodule.mkQ_apply]`. Rewrite using `[h3, ← he g x y h1, LinearEquiv.symm_apply_apply, ← hx]`. Simplify using `only [Φ, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Conclude with `hact g x`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Submodule.mkQ_apply, LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype]`. Introduce and unpack `⟨q, hq, hqe, hqk⟩`. Establish `hker : LinearMap.ker q = L₂.T.comap L₁.T.subtype`. Use extensionality with `y`. Simplify using `only [LinearMap.mem_ker, Submodule.mem_comap, Submodule.coe_subtype, hqk]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : M ≃ₗ[O] (↥L₁.T ⧸ L₂.T.comap L₁.T.subtype)` to `(q.quotKerEquivOfSurjective hq).symm.trans (Submodule.quotEquivOfEq _ _ hker)`. Establish `hψ : ∀ y, ψ (q y) = Submodule.Quotient.mk y`. Introduce `y`. Simplify using `only [ψ, LinearEquiv.trans_apply]`. Rewrite using `[(LinearEquiv.symm_apply_eq _).2 (LinearMap.quotKerEquivOfSurjective_apply_mk q hq y).symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hΦ : ∀ x, p.quotKerEquivOfSurjective hp (Submodule.Quotient.mk x) = p x` using `LinearMap.quotKerEquivOfSurjective_apply_mk p hp`. Use `⟨(p.quotKerEquivOfSurjective hp).trans ψ, fun g x y h => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.trans_apply, hΦ] at h ⊢`. Establish `hxy : p x = q y` using `ψ.injective (h.trans (hψ y).symm)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : latRep L₁ g y = ⟨ρ g y, L₁.stable g y y.2⟩` using `Subtype.ext (latRep_apply L₁ g y)`. Rewrite using `[hact, hxy, ← hqe, h3, hψ]`.
+A detailed English derivation is pending.
 -/
 theorem quot_equiv_iff (L₁ L₂ : Lattice (O := O) ρ) (act : G → E → E) (π : Representation O G M)
     (p : E →ₗ[O] M) (hp : Function.Surjective p) (hact : ∀ g x, p (act g x) = π g (p x)) :
@@ -125,13 +125,13 @@ def toFull (A : GRep G Qp LL O) (h : tableLineDegreeTwo.IsFull PD emb lam jT cT 
   full := h
 
 /- English proof (translation)
-Set `s : ↥L₁.T ≃ₗ[O] ↥(mapLat e he L₁).T` to `(e.restrictScalars O).submoduleMap L₁.T`. Establish `hsx : ∀ x, (s x : W) = e x` using `fun x => rfl`. Use `⟨q.comp s.symm.toLinearMap, hq.comp s.symm.surjective, ?_, ?_⟩` and prove the remaining obligations. Introduce `g y`. Take `⟨x, rfl⟩` from `s.surjective y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hs : latRep (mapLat e he L₁) g (s x) = s (latRep L₁ g x)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[latRep_apply, hsx, hsx, latRep_apply, he]`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hs, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Conclude with `hqe g x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨x, rfl⟩` from `s.surjective y`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, hqk, hsx]`. Express the relevant statement in the definitionally equal form `(x : V) ∈ L₂.T ↔ e x ∈ L₂.T.map ((e.restrictScalars O : V ≃ₗ[O] W) : V →ₗ[O] W)`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨x, h, rfl⟩`. Introduce and unpack `⟨z, hz, hze⟩`. Establish `hzx : z = (x : V)` using `e.injective hze`. Rewrite using `[← hzx]` and apply the resulting hypothesis.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem mapLattice_quotient_of_equivariant_equiv {G LL O V W M : Type} [Group G] [Field LL] [CommRing O] [Algebra O LL]
     [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
@@ -168,9 +168,9 @@ private theorem mapLattice_quotient_of_equivariant_equiv {G LL O V W M : Type} [
 omit [IsTopologicalRing LL] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, F, L₁, L₂, hle, e, he⟩`. Take `⟨q, hq, hqe, hqk⟩` from `(quot_equiv_iff L₁ L₂ act π p hp hact).1 ⟨e, he⟩`. Conclude with `⟨m, fun j => ofFull (F j), sumFull F, LinearEquiv.refl LL _, L₁, L₂, q, fun j => (F j).full, fun g x j => rfl, hle, hq, hqe, hqk⟩`. Introduce and unpack `⟨μ, F, A, e, L₁, L₂, q, hF, he, hle, hq, hqe, hqk⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Set `F' : Fin μ → tableLineDegreeTwo.FullRep PD emb lam jT cT` to `fun j => toFull (F j) (hF j)`. Set `e' : A.V ≃ₗ[LL] (∀ j, (F' j).V)` to `e`. Establish `he' : ∀ g x, e' (A.ρ g x) = tableLineDegreeTwo.piRep F' g (e' x)` using `fun g x => funext fun j => he g x j`. Take `⟨q', hq', hqe', hqk'⟩` from `mapLattice_quotient_of_equivariant_equiv π e' he' L₁ L₂ q hq hqe hqk`. Conclude with `⟨μ, F', mapLat e' he' L₁, mapLat e' he' L₂, Submodule.map_mono hle, (quot_equiv_iff _ _ act π p hp hact).2 ⟨q', hq', hqe', hqk'⟩⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissible_quotient_ker_iff_full_lattices {E M : Type} [AddCommGroup E] [Module O E] [AddCommGroup M] [Module O M]
     (act : G → E → E) (π : Representation O G M)
@@ -196,11 +196,11 @@ theorem admissible_quotient_ker_iff_full_lattices {E M : Type} [AddCommGroup E] 
 omit [TopologicalSpace G] [TopologicalSpace LL] [IsTopologicalRing LL] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [tableLineDegreeTwo.resPoly]`. Use `congr 1`. Use `symm`. Use `Finset.prod_bij (fun (c : Fin t) _ => c.val + 1) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c _`. Simplify using `only [Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Introduce `a _ b _ hab`. Conclude with `Fin.ext (by simpa using hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Simplify using `only [Finset.mem_Icc] at hb`. Conclude with `⟨⟨b - 1, by omega⟩, Finset.mem_univ _, by simp only; omega⟩`. Introduce `c _`. Simplify using `[tableLineDegreeTwo.charL]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem resPoly_eq {V : Type} [AddCommGroup V] [Module LL V] [FiniteDimensional LL V]
     (ρ : Representation LL G V) (χ : ℕ → G →* Oˣ) (t : ℕ) :
@@ -227,7 +227,7 @@ end Sum
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P)
 
 /- English proof (translation)
-Unfold `tableLineDegreeTwo.IsFull PolyFull`. Rewrite using `[resPoly_eq]`. Simplify using `only [tableLineDegreeTwo.Over, AlgHom.ext_iff, AlgHom.comp_apply, IsScalarTower.coe_toAlgHom']`. Conclude with `⟨fun h => ⟨h.2.1, h.2.2.1, h.2.2.2⟩, fun h => ⟨A.cont, h.1, h.2.1, h.2.2⟩⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isFull_iff_polyFull (jT : ZMod S.n → ℤ → ℤ) (A : GRep S.G ℚ_[l] ↥S.LL.1 S.O) :
     tableLineDegreeTwo.IsFull (P.PD S.K) S.emb S.Γ.lam jT (tableLineDegreeTwo.resPoly S.Γ.T₀.ρ S.Γ.chi S.D.t) A.ρ ↔ PolyFull S jT A := by
@@ -237,9 +237,9 @@ theorem isFull_iff_polyFull (jT : ZMod S.n → ℤ → ℤ) (A : GRep S.G ℚ_[l
   exact ⟨fun h => ⟨h.2.1, h.2.2.1, h.2.2.2⟩, fun h => ⟨A.cont, h.1, h.2.1, h.2.2⟩⟩
 
 /- English proof (translation)
-Introduce `l _ P S jT hj E M _ _ _ _ act π p hp hact`. Use `(admissible_quotient_ker_iff_full_lattices act π p hp hact).trans (Iff.trans ?_ (admissibleModule_iff_lattice_quotients S hj π).symm)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨μ, F, A, e, L₁, L₂, q, hF, h⟩`. Conclude with `⟨μ, F, A, e, L₁, L₂, q, fun j => (isFull_iff_polyFull S jT (F j)).1 (hF j), h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨μ, F, A, e, L₁, L₂, q, hF, h⟩`. Conclude with `⟨μ, F, A, e, L₁, L₂, q, fun j => (isFull_iff_polyFull S jT (F j)).2 (hF j), h⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem admissibleQuotient_iff_admissible_module : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P) (jT : ZMod S.n → ℤ → ℤ), (∀ i a, ((S.D.Ut i).count a : ℤ) = jT i a) → ∀ (E M : Type) [AddCommGroup E] [Module S.O E] [AddCommGroup M] [Module S.O M] (act : S.G → E → E) (π : Representation S.O S.G M) (p : E →ₗ[S.O] M), Function.Surjective p → (∀ g x, p (act g x) = π g (p x)) → (tableLineDegreeTwo.AdmQ (P.PD S.K) S.emb S.Γ.lam jT (tableLineDegreeTwo.resPoly S.Γ.T₀.ρ S.Γ.chi S.D.t) act (LinearMap.ker p) ↔ S.admitted π) := by
   intro l _ P S jT hj E M _ _ _ _ act π p hp hact

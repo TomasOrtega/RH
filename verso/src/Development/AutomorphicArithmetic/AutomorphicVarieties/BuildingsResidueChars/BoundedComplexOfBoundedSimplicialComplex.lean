@@ -13,9 +13,9 @@ private noncomputable def cxK (L : Type) [Field L] [NumberField L] (N : ℕ) : C
   smul := fun g t ht => KT.smul_mem_simp g ht
 
 /- English proof (translation)
-Introduce `H L _ _ _ N`. Use `H (KT.Gm L N) (KT.Vx L N) (cxK L N) (fun m => ConeExtensionAcyclic.sx_exact L N m) (fun p => ?_) (fun t => ?_)` and prove the remaining obligations. Use `haveI : Finite (MulAction.orbitRel.Quotient (KT.Gm L N) ((cxK L N).Tup p)) := (KT.orb L N p).1`. Use `⟨Set.range (fun c : MulAction.orbitRel.Quotient (KT.Gm L N) ((cxK L N).Tup p) => Quotient.out c), Set.finite_range _, fun x => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `MulAction.orbitRel_apply.1 (Quotient.exact (Quotient.out_eq (Quotient.mk (MulAction.orbitRel (KT.Gm L N) ((cxK L N).Tup p)) x)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨g, _, hg.symm⟩`. Use `haveI := KT.stabfin L N (t.1 0)`. Use `Finite.of_injective (fun g : MulAction.stabilizer (KT.Gm L N) t => (⟨g.1, congrFun (congrArg Subtype.val g.2) 0⟩ : MulAction.stabilizer (KT.Gm L N) (t.1 0))) fun g k e => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (Subtype.mk.inj e)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.bounded_complex_of_bounded_simplicial_complex :
     UpperTheory.V.Af.BA.BddCx → UpperTheory.V.Af.BA.BddComplex := by

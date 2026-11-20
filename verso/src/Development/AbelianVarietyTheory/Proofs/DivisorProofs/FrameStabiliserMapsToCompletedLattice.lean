@@ -6,11 +6,11 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hF x hx v hv`. Take `⟨y, rfl⟩` from `hx`. Establish `hw` using `(hF v).1 hv`. Use `(hF _).2 fun i => ?_` and prove the remaining obligations. Use `set Y : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) := (y : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)).map (Formalism.L2.Herm.intAf F E).subtype with hY`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hval : ((Formalism.L2.DIV.frGL β y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) _) = (β : Matrix (Fin n) (Fin n) _) * Y * ((β⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _)`. Simplify using `only [Formalism.L2.DIV.frGL, Formalism.L2.DIV.intGL, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, Units.val_mul]`. Both sides reduce to the same expression. Establish `hmv : ((β⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ (((Formalism.L2.DIV.frGL β y : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ v) = Y *ᵥ (((β⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ v)`. Rewrite using `[hval, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmv]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Subring.sum_mem _ fun j _ => Subring.mul_mem _ ?_ (hw j)` and prove the remaining obligations. Simplify using `only [hY, Matrix.map_apply]`. Conclude with `(y : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)) i j |>.2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stab_hatL_mapsTo {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (Λ : Submodule (𝓞 E) (Fin n → E)) :

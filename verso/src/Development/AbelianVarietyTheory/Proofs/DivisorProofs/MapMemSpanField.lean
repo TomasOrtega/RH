@@ -7,9 +7,9 @@ open NumberField
 variable {E E' : Type} [Field E] [Field E'] (f : E ≃+* E') {n : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Establish `h1 : IsIntegral ℤ (f a)` using `hc ▸ c.isIntegral_coe`. Establish `h2 : IsIntegral ℤ (f.symm (f a))` using `map_isIntegral_int (f.symm : E' →+* E) h1`. Rewrite `h2` using `[f.symm_apply_apply]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨⟨a, h2⟩, rfl⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨⟨f (algebraMap _ _ c), map_isIntegral_int (f : E →+* E') c.isIntegral_coe⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_range_iff (a : E) :
     f a ∈ (algebraMap (𝓞 E') E').range ↔ a ∈ (algebraMap (𝓞 E) E).range := by
@@ -24,13 +24,13 @@ theorem mem_range_iff (a : E) :
     exact ⟨⟨f (algebraMap _ _ c), map_isIntegral_int (f : E →+* E') c.isIntegral_coe⟩, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact hy`. Consider the case `zero => exact ⟨0, L.zero_mem, by ext i; simp⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, rfl⟩` from `hy`. Take `⟨b, hb, rfl⟩` from `hz`. Conclude with `⟨a + b, L.add_mem ha hb, by ext i; simp⟩`. Consider the case `smul c y _ hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨a, ha, rfl⟩` from `hy`. Take `⟨d, hd⟩` from `(mem_range_iff f (f.symm (algebraMap (𝓞 E') E' c))).1 ⟨c, by rw [f.apply_symm_apply]⟩`. Use `⟨d • a, L.smul_mem d ha, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul, hd, RingEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_span_iff (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E') :
     y ∈ Submodule.span (𝓞 E') ((fun (x : Fin n → E) (i : Fin n) ↦ f (x i)) '' (L : Set (Fin n → E)))
@@ -55,13 +55,11 @@ theorem mem_span_iff (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E') :
     exact Submodule.subset_span ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero`. Establish `: (fun i ↦ f ((0 : Fin n → E) i)) = 0` using `by ext i; simp`. Rewrite using `[this]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz`. Establish `: (fun i ↦ f ((y + z) i)) = (fun i ↦ f (y i)) + (fun i ↦ f (z i))` using `by ext i; simp`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hy hz`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c y _ hy`. Take `⟨d, hd⟩` from `(mem_range_iff f (algebraMap (𝓞 E) E c)).2 ⟨c, rfl⟩`. Establish `: (fun i ↦ f ((c • y) i)) = d • (fun i ↦ f (y i))`. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul, hd]`.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_span_int (s : Set (Fin n → E)) {x : Fin n → E}
     (hx : x ∈ Submodule.span (𝓞 E) s) :
@@ -83,13 +81,11 @@ theorem map_mem_span_int (s : Set (Fin n → E)) {x : Fin n → E}
     rw [this]; exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero`. Establish `: (fun i ↦ f ((0 : Fin n → E) i)) = 0` using `by ext i; simp`. Rewrite using `[this]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz`. Establish `: (fun i ↦ f ((y + z) i)) = (fun i ↦ f (y i)) + (fun i ↦ f (z i))` using `by ext i; simp`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hy hz`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul c y _ hy`. Establish `: (fun i ↦ f ((c • y) i)) = f c • (fun i ↦ f (y i))`. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ _ hy`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_span_field (s : Set (Fin n → E)) {x : Fin n → E}
     (hx : x ∈ Submodule.span E s) :
@@ -110,7 +106,7 @@ theorem map_mem_span_field (s : Set (Fin n → E)) {x : Fin n → E}
     rw [this]; exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Simplify using `only [Formalism.BasicNotions.stdH, map_sum, map_mul, hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stdH_map [StarRing E] [StarRing E'] (hf : ∀ x : E, f (star x) = star (f x))
     (x y : Fin n → E) :
@@ -118,17 +114,15 @@ theorem stdH_map [StarRing E] [StarRing E'] (hf : ∀ x : E, f (star x) = star (
   simp only [Formalism.BasicNotions.stdH, map_sum, map_mul, hf]
 
 /- English proof (translation)
-Take `⟨⟨s, hs⟩, htop, hdual⟩` from `hL`. Establish `surj : ∀ y : Fin n → E', ∃ x : Fin n → E, (fun i ↦ f (x i)) = y` using `fun y => ⟨fun i => f.symm (y i), by ext i; simp⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.fg_def]`. Use `⟨(fun (x : Fin n → E) (i : Fin n) ↦ f (x i)) '' (s : Set (Fin n → E)), s.finite_toSet.image _, le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Submodule.span_mono` to reduce the goal to its premises. Apply `Set.image_mono` to reduce the goal to its premises. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span`. Rewrite using `[Submodule.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `map_mem_span_int f _ (hs ▸ hx)`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Take `⟨x, rfl⟩` from `surj y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : x ∈ Submodule.span E (L : Set (Fin n → E))` using `htop ▸ Submodule.mem_top`. Conclude with `Submodule.span_mono Submodule.subset_span (map_mem_span_field f _ hx)`. Introduce `y`. Take `⟨y, rfl⟩` from `surj y`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `hy x hx`. Take `⟨y', hy', e⟩` from `(mem_span_iff f L _).1 hy`. Take `⟨x, hx', rfl⟩` from `(mem_span_iff f L _).1 hx`. Rewrite using `[← e, stdH_map f hf, mem_range_iff]`. Conclude with `(hdual y').1 hy' x hx'`.
-
-Introduce `h`. Use `(mem_span_iff f L _).2 ⟨y, (hdual y).2 fun x hx => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← mem_range_iff f, ← stdH_map f hf]`. Conclude with `h _ ((mem_span_iff f L _).2 ⟨x, hx, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSDLat_map {E E' : Type} [Field E] [Field E'] (f : E ≃+* E') {n : ℕ}
     [NumberField E] [NumberField E'] [StarRing E] [StarRing E']

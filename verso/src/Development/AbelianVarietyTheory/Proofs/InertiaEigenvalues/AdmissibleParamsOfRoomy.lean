@@ -8,9 +8,9 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory.HTW
 
 /- English proof (translation)
-Take `⟨-, h1, h2, h3, h4, h5⟩` from `h`. Establish `he` using `L.etaSz_pos`. Establish `hS` using `L.Sc_pos`. Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `hL : (0 : ℝ) ≤ (D.host.Lw : ℝ)` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (0 : ℝ) ≤ L.sc.b'` using `by linarith`. Establish `hm : (0 : ℝ) ≤ (D.host.Lw : ℝ) * L.sc.b'` using `mul_nonneg hL hb`. Establish `h6 : 100 * L.sc.b' ≤ L.sc.b` using `by nlinarith`. Use `⟨⟨by linarith, h3, h6, h4, P.t_le_eta⟩, by linarith⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem admissible_params_of_roomy {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (h : Roomy L 100) :
     (L.etaSz + D.R.t + L.Sc + 2 < L.sc.w'' D.R.n ∧ L.sc.w'' D.R.n ≤ L.sc.b' ∧ 100 * L.sc.b' ≤ L.sc.b ∧
@@ -27,7 +27,7 @@ theorem admissible_params_of_roomy {D : D7} (L : SizeData₂ D) (P : ParameterCh
   refine ⟨⟨by linarith, h3, h6, h4, P.t_le_eta⟩, by linarith⟩
 
 /- English proof (translation)
-Introduce `eps A heps`. Take `⟨x0, hx0⟩` from `GlobalTheory.T.roomy_of_large_scale eps 100 A heps le_rfl`. Conclude with `⟨x0, fun D L P h1 h2 h3 => admissible_params_of_roomy L P (hx0 D L P h1 h2 h3)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissible_params_large : ∀ eps A : ℝ, 0 < eps → ∃ x0 : ℝ, ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L), L.sc.eps = eps → P.CLw ≤ A → x0 ≤ L.sc.x → (L.etaSz + D.R.t + L.Sc + 2 < L.sc.w'' D.R.n ∧ L.sc.w'' D.R.n ≤ L.sc.b' ∧ 100 * L.sc.b' ≤ L.sc.b ∧ (∀ t, (L.bT t : ℝ) + L.sc.b' / L.sc.x ≤ 3 / 2 * L.sc.b') ∧ (D.R.t : ℝ) ≤ L.etaSz) ∧ L.Sc + L.etaSz + D.R.t + 2 ≤ L.sc.b := by
   intro eps A heps

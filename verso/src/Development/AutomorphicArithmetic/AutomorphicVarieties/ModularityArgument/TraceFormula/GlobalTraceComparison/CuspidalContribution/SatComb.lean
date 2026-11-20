@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Matrix Filter Topology
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.LFun UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp
 
 /- English proof (translation)
-Rewrite using `[← smul_eq_mul, Multiset.pow_smul_esymm]`. Simplify using `[Multiset.map_map, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sc_scale (A : Multiset ℂˣ) (c : ℂˣ) (k : ℕ) :
     ((A.map (· * c)).map fun b : ℂˣ => (b : ℂ)).esymm k =
@@ -15,7 +15,7 @@ private theorem sc_scale (A : Multiset ℂˣ) (c : ℂˣ) (k : ℕ) :
   simp [Multiset.map_map, mul_comm]
 
 /- English proof (translation)
-Use `⟨(q : ℂ) ^ (((i : ℂ) * ((n : ℂ) - i)) / 2), fun hq => ?_, fun B => by rw [satEig]⟩` and prove the remaining obligations. Establish `hq' : (q : ℂ) ≠ 0` using `by exact_mod_cast hq`. Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`. Conclude with `fun h => hq' h.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem sc_const (q n i : ℕ) : ∃ a : ℂ, (q ≠ 0 → a ≠ 0) ∧
     ∀ B : Multiset ℂˣ, satEig q n B i = a * (B.map fun b : ℂˣ => (b : ℂ)).esymm i := by
@@ -25,7 +25,7 @@ private theorem sc_const (q n i : ℕ) : ∃ a : ℂ, (q ≠ 0 → a ≠ 0) ∧
   exact fun h => hq' h.1
 
 /- English proof (translation)
-Take `⟨a, ha, e⟩` from `sc_const q n i`. Use `(h i).const_mul a⁻¹` as an intermediate fact. Simplify `this` using `only [e, inv_mul_cancel_left₀ (ha hq)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sc_lim {q n : ℕ} (hq : q ≠ 0) {B : ℕ → Multiset ℂˣ} {C : Multiset ℂˣ} (h : STo q n B C) (i : ℕ) :
     Tendsto (fun k => ((B k).map fun b : ℂˣ => (b : ℂ)).esymm i) atTop
@@ -35,9 +35,9 @@ private theorem sc_lim {q n : ℕ} (hq : q ≠ 0) {B : ℕ → Multiset ℂˣ} {
   simpa only [e, inv_mul_cancel_left₀ (ha hq)] using this
 
 /- English proof (translation)
-Use `⟨fun q n B c c₀ hc i => ?_, fun q r s B₁ B₂ C₁ C₂ α β hq h₁ h₂ j => ?_⟩` and prove the remaining obligations. Take `⟨a, -, e⟩` from `sc_const q n i`. Simplify using `only [e, sc_scale]`. Conclude with `((hc.pow i).mul_const _).const_mul a`. Take `⟨a, -, e⟩` from `sc_const q (r + s) j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, Multiset.map_add, GlobalTheory.ResW.SatWordAt.esymm_add, sc_scale]`. Conclude with `(tendsto_finset_sum _ fun p _ => ((sc_lim hq h₁ p.1).const_mul _).mul ((sc_lim hq h₂ p.2).const_mul _)).const_mul a`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp.satComb :
     SatComb := by

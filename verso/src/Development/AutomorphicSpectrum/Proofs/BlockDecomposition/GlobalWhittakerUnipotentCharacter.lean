@@ -23,7 +23,7 @@ namespace GlobalTheory.CompanionTheory.GlobalWhittakerPsi
 abbrev eC (x : ℝ) : ℂ := Complex.exp (2 * Real.pi * Complex.I * (x : ℂ))
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unipotent_mul_val_real (x : ℝ) (g : GL (Fin 2) ℝ) :
     (uni2 x * g).val = !![g.val 0 0 + x * g.val 1 0, g.val 0 1 + x * g.val 1 1; g.val 1 0, g.val 1 1] := by
@@ -31,11 +31,11 @@ theorem unipotent_mul_val_real (x : ℝ) (g : GL (Fin 2) ℝ) :
   fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `hstd : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`. Establish `hχc : Continuous ((GP.psiF v)⁻¹ : AddChar (Qv v) Circle)`. Establish `: (((GP.psiF v)⁻¹ : AddChar (Qv v) Circle) : Qv v → Circle) = fun x => (GP.psiF v x)⁻¹`. Use function extensionality and compare the values at `x`. Conclude with `AddChar.inv_apply' _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hstd.1.inv`. Establish `hχ1 : (GP.psiF v)⁻¹ ≠ 1` using `inv_ne_one.mpr hstd.2.1`. Consider the cases of `M with`. Consider the case `@sp w₁ w₂ i₁ i₂ Φ`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.CompanionTheory.WeilSplit.SplitAdditiveCharacter.sPsi (Qv v) _ hχc hχ1 _ _ Φ x g`. Consider the case `@ns w i σ η Φ => haveI := i`. Take `⟨-, hσ, hη, -⟩` from `hok`. Conclude with `GlobalTheory.CompanionTheory.WeilPsi.wPsi (Qv v) _ hχc hχ1 (Kv K w) (GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl K h2 v w i σ hσ) (continuous_adicCompletionMap v w) σ hσ η hη _ Φ x g`.
+A detailed English derivation is pending.
 -/
 theorem local_whittaker_unipotent_character {K : Type} [Field K] [NumberField K] (h2 : Module.finrank ℚ K = 2)
     {c : HeckeCharacter K} {v : Pl} (M : LM c v) (hok : M.ok) (x : Qv v) (g : GL (Fin 2) (Qv v)) :
@@ -58,9 +58,9 @@ theorem local_whittaker_unipotent_character {K : Type} [Field K] [NumberField K]
       (continuous_adicCompletionMap v w) σ hσ η hη _ Φ x g
 
 /- English proof (translation)
-Use `GlobalTheory.CompanionTheory.StdSph.stdTh_sphN K h2 c v hU _ ?_` and prove the remaining obligations. Consider the cases of `M with`. Consider the case `@sp w₁ w₂ i₁ i₂ Φ`. Take `rfl : Φ = _` from `hs`. Conclude with `Or.inl ⟨w₁, w₂, i₁, i₂, hok.1, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Prove the first alternative.
 
-Consider the case `@ns w i σ η Φ`. Take `rfl : Φ = _` from `hs`. Conclude with `Or.inr ⟨w, i, hok.1, σ, η, hok.2.1, hok.2.2.1, rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Prove the second alternative.
 -/
 theorem LM_W_sph {K : Type} [Field K] [NumberField K] (h2 : Module.finrank ℚ K = 2)
     {c : HeckeCharacter K} {v : Pl} (M : LM c v) (hok : M.ok) (hU : Unr c v) (hs : M.std) :
@@ -75,14 +75,14 @@ theorem LM_W_sph {K : Type} [Field K] [NumberField K] (h2 : Module.finrank ℚ K
     exact Or.inr ⟨w, i, hok.1, σ, η, hok.2.1, hok.2.2.1, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, GroundTheory.Automorphic.Reduction.finAt_apply] <;> rfl`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem finiteComponent_unipotent (v : Pl) (x : 𝔸[ℚ]) : finAt v (uni2 x) = uni2 (x.2 v) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [uni2, GroundTheory.Automorphic.Reduction.finAt_apply] <;> rfl
 
 /- English proof (translation)
-Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `RationalIdeles.realEquiv ((uni2 x : GL (Fin 2) 𝔸[ℚ]) i j).1 = _`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2]`. Apply the tactic sequence `all_goals first | exact (GlobalTheory.CompanionTheory.GL2Factorization.PT.eR_eq _).symm | exact Prod.fst_one | rfl`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem realPart_unipotent_adele (x : 𝔸[ℚ]) :
     GL2Classical.realPart (uni2 x) = uni2 (GP.eR (x.1 GP.wR)) := by

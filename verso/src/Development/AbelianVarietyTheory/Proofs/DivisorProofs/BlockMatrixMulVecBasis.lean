@@ -47,15 +47,13 @@ def MonicFactorFiniteMod : Prop :=
     ∀ v ∈ M', FinMod K (Algebra.adjoin ℂ (Set.range c)) v → FinMod K (Algebra.adjoin ℂ (Set.range p)) v
 
 /- English proof (translation)
-Use `set W := Submodule.span ℂ (Set.range p)`. Establish `hdual : ∀ f : Module.Dual ℂ (M ⧸ W), f (W.mkQ (a i)) = 0`. Introduce `f`. Set `P : Polynomial ℂ` to `∑ j ∈ Finset.range (d + 1), Polynomial.C (f (W.mkQ (a j))) * Polynomial.X ^ j`. Establish `hP : P = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `u`. Establish `h0 : W.mkQ (p u) = 0` using `(Submodule.Quotient.mk_eq_zero W).2 (Submodule.subset_span ⟨u, rfl⟩)`. Establish `h1 : f (W.mkQ (p u)) = ∑ j ∈ Finset.range (d + 1), u ^ j * f (W.mkQ (a j))`. Rewrite using `[hp u, map_sum, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, smul_eq_mul]`. Rewrite `h1` using `[h0, map_zero]`. Simplify using `only [P, Polynomial.eval_finsetSum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_zero]`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hc` using `congrArg (fun q : Polynomial ℂ => q.coeff i) hP`. Simplify using `only [P, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_zero] at hc`. Rewrite `hc` using `[Finset.sum_ite_eq]`. Simplify `hc` using `[Finset.mem_range.2 hi]`.
-
-Establish `hq : W.mkQ (a i) = 0` using `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 hdual`. Conclude with `(Submodule.Quotient.mk_eq_zero W).1 hq`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coeff_mem_span {d : ℕ} {a : ℕ → M} {p : ℂ → M} (hp : ∀ u, p u = ∑ i ∈ Finset.range (d + 1), u ^ i • a i)
     {i : ℕ} (hi : i < d + 1) : a i ∈ Submodule.span ℂ (Set.range p) := by
@@ -100,7 +98,7 @@ def SmG : Submodule ℂ (GAd σ J → ℂ) where
   smul_mem' := fun a _ h => isSm_smul a h
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_SmG {f : GAd σ J → ℂ} : f ∈ SmG σ J ↔ IsSm σ J f := Iff.rfl
 
@@ -119,7 +117,7 @@ def IsDer {w : InfinitePlace F} (τ : EmbOver E w)
 variable {w : InfinitePlace F} {τ : EmbOver E w} {Z : Matrix (Fin n) (Fin n) ℂ} {γ : ℝ → GAd σ J}
 
 /- English proof (translation)
-Apply `GlobalTheory.LineDerSum.skew_of_exp_unitary` to reduce the goal to its premises. Introduce `t`. Take `⟨y, -, hy⟩` from `hγ t`. Rewrite using `[← hy, GlobalTheory.Orb.archMat_eq_archEquiv J h τ y]`. Conclude with `(archEquiv J h τ y).2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLineOf.skew (h : IsCMExt F E σ) (hγ : IsLineOf σ J τ Z γ) : Zᴴ * J.map τ.1 + J.map τ.1 * Z = 0 := by
   apply GlobalTheory.LineDerSum.skew_of_exp_unitary
@@ -129,14 +127,14 @@ theorem IsLineOf.skew (h : IsCMExt F E σ) (hγ : IsLineOf σ J τ Z γ) : Zᴴ 
   exact (archEquiv J h τ y).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨w, τ, Z, hγ.skew h, hγ⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLineOf.isRealLine (h : IsCMExt F E σ) (hγ : IsLineOf σ J τ Z γ) : IsRealLine σ J γ := ⟨w, τ, Z, hγ.skew h, hγ⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Take `⟨y, hy1, hy2⟩` from `hγ t`. Take `⟨y', hy1', hy2'⟩` from `hδ t`. Establish `hyy : y = y'`. Apply `(archEquiv J h τ).injective` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← GlobalTheory.Orb.archMat_eq_archEquiv J h τ y, ← GlobalTheory.Orb.archMat_eq_archEquiv J h τ y', hy2, hy2']`. Rewrite using `[hy1, hy1', hyy]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLineOf.unique (h : IsCMExt F E σ) {δ : ℝ → GAd σ J} (hγ : IsLineOf σ J τ Z γ) (hδ : IsLineOf σ J τ Z δ) :
     γ = δ := by
@@ -151,7 +149,7 @@ theorem IsLineOf.unique (h : IsCMExt F E σ) {δ : ℝ → GAd σ J} (hγ : IsLi
   rw [hy1, hy1', hyy]
 
 /- English proof (translation)
-Introduce `t`. Take `⟨y, h1, h2⟩` from `hγ (t * c)`. Conclude with `⟨y, h1, by rw [h2, smul_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsLineOf.smul (hγ : IsLineOf σ J τ Z γ) (c : ℝ) : IsLineOf σ J τ (c • Z) fun t => γ (t * c) := by
   intro t
@@ -159,7 +157,7 @@ theorem IsLineOf.smul (hγ : IsLineOf σ J τ Z γ) (c : ℝ) : IsLineOf σ J τ
   exact ⟨y, h1, by rw [h2, smul_smul]⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply]`. Rewrite using `[← h.2.2.2 τ, hJ.1 i j]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem conjTranspose_map_eq_of_isHermND (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : E →+* ℂ) :
     (J.map τ)ᴴ = J.map τ := by
@@ -168,7 +166,7 @@ private theorem conjTranspose_map_eq_of_isHermND (h : IsCMExt F E σ) (hJ : IsHe
   rw [← h.2.2.2 τ, hJ.1 i j]
 
 /- English proof (translation)
-Establish `hd : (M.map τ).det = τ M.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[isUnit_iff_ne_zero, hd]`. Conclude with `(map_ne_zero τ).2 hM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_det_map_of_det_ne_zero {K : Type} [Field K] {m : ℕ} {M : Matrix (Fin m) (Fin m) K}
     (hM : M.det ≠ 0) (τ : K →+* ℂ) : IsUnit (M.map τ).det := by
@@ -179,13 +177,13 @@ private theorem isUnit_det_map_of_det_ne_zero {K : Type} [Field K] {m : ℕ} {M 
   exact (map_ne_zero τ).2 hM
 
 /- English proof (translation)
-Use `set A := J.map τ.1 with hAdef`. Establish `hA : Aᴴ = A` using `conjTranspose_map_eq_of_isHermND h hJ τ.1`. Establish `hd : IsUnit A.det` using `isUnit_det_map_of_det_ne_zero hJ.2 τ.1`. Establish `hAu : IsUnit A` using `(Matrix.isUnit_iff_isUnit_det A).2 hd`. Establish `hZ' : Zᴴ = -(A * Z * A⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : Zᴴ * A = -(A * Z)` using `eq_neg_of_add_eq_zero_left hZ`. Combine the equalities or inequalities in the displayed calculation. Establish `hunit : ∀ t : ℝ, (NormedSpace.exp (t • Z))ᴴ * A * NormedSpace.exp (t • Z) = A`. Introduce `t`. Establish `hconj : t • -(A * Z * A⁻¹) = A * (-(t • Z)) * A⁻¹`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, smul_neg, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hc : NormedSpace.exp (-(t • Z)) * NormedSpace.exp (t • Z) = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ ((Commute.refl (t • Z)).neg_left), neg_add_cancel, NormedSpace.exp_zero]`. Rewrite using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, star_trivial, hZ', hconj, Matrix.exp_conj A _ hAu]`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left A _ hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, Matrix.mul_one]`. Establish `hmem : ∀ t : ℝ, (Matrix.isUnit_exp (t • Z)).unit ∈ Formalism.UG.UJ (starRingEnd ℂ) A` using `fun t => hunit t`. Use `⟨fun t => embArch σ J w ((archEquiv J h τ).symm ⟨_, hmem t⟩), fun t => ⟨_, rfl, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Orb.archMat_eq_archEquiv J h τ, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isLineOf (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hZ : Zᴴ * J.map τ.1 + J.map τ.1 * Z = 0) :
     ∃ γ, IsLineOf σ J τ Z γ := by
@@ -215,26 +213,26 @@ theorem exists_isLineOf (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hZ : Zᴴ * J
   rfl
 
 /- English proof (translation)
-The claim follows from `conjTranspose_map_eq_of_isHermND h hJ τ`.
+A detailed English derivation is pending.
 -/
 theorem conjTranspose_map (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : E →+* ℂ) : (J.map τ)ᴴ = J.map τ := conjTranspose_map_eq_of_isHermND h hJ τ
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-The claim follows from `isUnit_det_map_of_det_ne_zero hJ.2 τ`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_map (hJ : IsHermND σ J) (τ : E →+* ℂ) : IsUnit (J.map τ).det := isUnit_det_map_of_det_ne_zero hJ.2 τ
 
 def adj (A X : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ := A⁻¹ * Xᴴ * A
 
 /- English proof (translation)
-Establish `h1 : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A hd`. Establish `h2 : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hd`. Establish `e1 : (adj A X)ᴴ * A = A * X`. Simplify using `only [adj, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_nonsing_inv, hA, Matrix.mul_assoc, h1, Matrix.mul_one]`. Establish `e2 : A * adj A X = Xᴴ * A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [adj, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `s1 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Establish `s2 : star (-Complex.I / 2 : ℂ) = Complex.I / 2`. Rewrite using `[Complex.star_def, map_div₀, map_neg, Complex.conj_I, neg_neg, map_ofNat]`. Establish `s3 : Complex.I * (-Complex.I / 2) = 1 / 2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_div_assoc', mul_neg, Complex.I_mul_I, neg_neg]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.smul_mul, Matrix.sub_mul, e1, Matrix.mul_smul, Matrix.mul_sub, e2, s1] module`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.smul_mul, Matrix.add_mul, e1, Matrix.mul_smul, Matrix.mul_add, e2, s2]`. Establish `: (-Complex.I / 2 : ℂ) = -(Complex.I / 2)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, neg_smul]`. Use `module`. Rewrite using `[smul_smul, s3] module`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skew_parts {A : Matrix (Fin n) (Fin n) ℂ} (hA : Aᴴ = A) (hd : IsUnit A.det) (X : Matrix (Fin n) (Fin n) ℂ) :
     (((1 / 2 : ℂ) • (X - adj A X))ᴴ * A + A * ((1 / 2 : ℂ) • (X - adj A X)) = 0) ∧
@@ -265,7 +263,7 @@ theorem skew_parts {A : Matrix (Fin n) (Fin n) ℂ} (hA : Aᴴ = A) (hd : IsUnit
     module
 
 /- English proof (translation)
-Take `⟨s1, s2, s3⟩` from `skew_parts (conjTranspose_map h hJ τ.1) (isUnit_det_map hJ τ.1) X`. Take `⟨γ₁, h1⟩` from `exists_isLineOf (τ := τ) h hJ s1`. Take `⟨γ₂, h2⟩` from `exists_isLineOf (τ := τ) h hJ s2`. Conclude with `⟨γ₁, γ₂, h1, h2, s3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lines (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : EmbOver E w) (X : Matrix (Fin n) (Fin n) ℂ) :
     ∃ γ₁ γ₂, IsLineOf σ J τ ((1 / 2 : ℂ) • (X - adj (J.map τ.1) X)) γ₁ ∧
@@ -287,34 +285,34 @@ def blk (n₁ : ℕ) : Fin (1 + n₁ + 1) → ℕ := Fin.addCases (Fin.addCases 
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `[frame]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_alt (H : Plane E n n₁) (r : Fin n) (a : Fin 1) : frame H r (Fin.castAdd 1 (Fin.castAdd n₁ a)) = H.x r := by simp [frame]
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `[frame, mid]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_mid (H : Plane E n n₁) (r : Fin n) (k : Fin n₁) : frame H r (mid k) = H.ι r k := by simp [frame, mid]
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `[frame]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_y (H : Plane E n n₁) (r : Fin n) (a : Fin 1) : frame H r (Fin.natAdd (1 + n₁) a) = H.y r := by simp [frame]
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_matrix_mulVec_basis (a : Fin 1) : blk n₁ (Fin.castAdd 1 (Fin.castAdd n₁ a)) = 0 := by simp [blk]
 
 /- English proof (translation)
-Simplify using `[blk, mid]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_mid (k : Fin n₁) : blk n₁ (mid k) = 1 := by simp [blk, mid]
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_y (a : Fin 1) : blk n₁ (Fin.natAdd (1 + n₁) a) = 2 := by simp [blk]
 

@@ -21,9 +21,9 @@ def chartM (n : ℕ) : (Fin n → Fin n → ℂ) ≃L[ℝ] Matrix (Fin n) (Fin n
   (Matrix.ofLinearEquiv ℝ).toContinuousLinearEquiv
 
 /- English proof (translation)
-Establish `: CompleteSpace (Matrix (Fin n) (Fin n) ℂ)` using `FiniteDimensional.complete ℝ _`. Introduce `M hM`. Take `⟨u, hu⟩` from `hM`. Establish `h1 : ContDiffAt ℝ ∞ (Ring.inverse : Matrix (Fin n) (Fin n) ℂ → _) (chartM n M)`. Rewrite using `[← hu]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `contDiffAt_ringInverse ℝ u`. Establish `h2 : ContDiffAt ℝ ∞ (fun M => (chartM n).symm (Ring.inverse (chartM n M))) M` using `(chartM n).symm.contDiff.contDiffAt.comp M (h1.comp M (chartM n).contDiff.contDiffAt)`. Conclude with `h2.contDiffWithinAt`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffOn_invPi (n : ℕ) :
     ContDiffOn ℝ ∞ (fun M : Fin n → Fin n → ℂ => (chartM n).symm (Ring.inverse (chartM n M)))
@@ -45,7 +45,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `(contDiffOn_invPi n).mono ?_` and prove the remaining obligations. Introduce `M hM`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hM)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem contDiffOn_inverse : ContDiffOn ℝ ∞ (Ring.inverse : Mat n → Mat n) (GLs n) := by
   refine (contDiffOn_invPi n).mono ?_
@@ -65,7 +65,7 @@ def coordL (p : Bool × Fin n × Fin n) : CLof (Mat n) ℝ :=
       (GlobalTheory.CompanionTheory.SobGL.HaarDom.cmE n).symm.toLinearMap)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CompanionTheory.SobGL.HaarDom.cmE n).apply_symm_apply M`.
+A detailed English derivation is pending.
 -/
 theorem sum_coordL (M : Mat n) : ∑ p, coordL p M • bs p = M :=
   (GlobalTheory.CompanionTheory.SobGL.HaarDom.cmE n).apply_symm_apply M
@@ -74,18 +74,18 @@ def frameA (p : Bool × Fin n × Fin n) (z : Mat n) : CLof (Mat n) ℝ :=
   (coordL p).comp (mulB n (Ring.inverse z))
 
 /- English proof (translation)
-The claim follows from `((ContinuousLinearMap.compL ℝ (Mat n) (Mat n) ℝ (coordL p)).comp (mulB n)).contDiff.comp_contDiffOn contDiffOn_inverse`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_frameA (p : Bool × Fin n × Fin n) : ContDiffOn ℝ ∞ (frameA p) (GLs n) :=
   ((ContinuousLinearMap.compL ℝ (Mat n) (Mat n) ℝ (coordL p)).comp
     (mulB n)).contDiff.comp_contDiffOn contDiffOn_inverse
 
 /- English proof (translation)
-Establish `hu : IsUnit z` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hz)`. Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `v`. Establish `hv : z * (Ring.inverse z * v) = v`. Rewrite using `[← mul_assoc, Ring.mul_inverse_cancel z hu, one_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `sum_coordL (Ring.inverse z * v)`. Establish `h0 : v = ∑ p, coordL p (Ring.inverse z * v) • (z * bs p)` using `by conv_lhs => rw [← hv, ← hs]`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => Matrix.mul_smul _ _ _`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smulRight_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [h0]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => D.map_smul _ _`.
+A detailed English derivation is pending.
 -/
 theorem frame_eq {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (D : CLof (Mat n) V)
     {z : Mat n} (hz : z ∈ GLs n) : D = ∑ p, (frameA p z).smulRight (D (z * bs p)) := by
@@ -105,7 +105,7 @@ theorem frame_eq {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (D : CLof
   exact Finset.sum_congr rfl fun p _ => D.map_smul _ _
 
 /- English proof (translation)
-Introduce `_` and use `⟨frameA, contDiffOn_frameA, fun _ _ _ D _ hz => frame_eq D hz⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem frame :
     ∀ n : ℕ, ∃ A : (Bool × Fin n × Fin n) → Mat n → CLof (Mat n) ℝ,

@@ -6,23 +6,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
 /- English proof (translation)
-Introduce `E _ _ N _ H hlev`. Take `⟨j, ζ, hζ, hj⟩` from `hlev`. Use `haveI : NeZero ((N : ℕ) : ℚ) := ⟨by exact_mod_cast NeZero.ne N⟩`. Use `haveI : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension N ℚ`. Use `haveI : IsAbelianGalois ℚ (CyclotomicField N ℚ) := IsCyclotomicExtension.isAbelianGalois {N} ℚ (CyclotomicField N ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Replace the relevant objects with their definitions.
 
-Establish `hfs : KStar.TotallyRealRoots.fieldSubgroup N (CyclotomicField N ℚ) j.fieldRange = H`. Use extensionality with `u`. Unfold `KStar.TotallyRealRoots.fieldSubgroup`. Rewrite using `[Subgroup.mem_map_equiv]`. Use `set τ := (IsCyclotomicExtension.Rat.galEquivZMod N (CyclotomicField N ℚ)).symm u with hτdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsCyclotomicExtension.Rat.galEquivZMod N (CyclotomicField N ℚ) τ = u`. Rewrite using `[hτdef]`. Conclude with `MulEquiv.apply_symm_apply _ u`. Establish `hτ : τ ζ = ζ ^ (u : ZMod N).val`. Rewrite using `[IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq N _ τ hζ.pow_eq_one, hu]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← hj τ u hτ, IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Conclude with `h (j x) ⟨x, rfl⟩`. Introduce and unpack `h _ ⟨x, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `h x`. Establish `hfr : Module.finrank ℚ j.fieldRange = Module.finrank ℚ E`. Rewrite using `[(AlgEquiv.ofInjectiveField j).toLinearEquiv.finrank_eq]`. Both sides reduce to the same expression. Establish `hfin : Module.finrank ℚ E = H.index`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hfr, IntermediateField.finrank_eq_fixingSubgroup_index, ← hfs]`. Unfold `KStar.TotallyRealRoots.fieldSubgroup`. Conclude with `(Subgroup.index_map_of_bijective (MulEquiv.bijective _) _).symm`. Use `⟨IsAbelianGalois.of_algHom j, hfin, ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsScalarTower ℚ E Ω := inferInstance`. Use `haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) E⟩`. Establish `heq : galOf ℚ E Ω = levH ℚ Ω H`. Use extensionality with `σ`. Rewrite using `[mem_galOf]`.
-
-Unfold `levH`. Rewrite using `[Subgroup.mem_comap, ← hfs]`. Conclude with `LDataCardLeFinrank.classFix E Ω N (CyclotomicField N ℚ) j σ.toRingEquiv (cls ℚ Ω N σ) (fun z hz => cls_spec N σ z hz)`. Take `⟨-, hopen, hidx⟩` from `galEmbTop ℚ E Ω`. Use `⟨heq, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← heq, hidx, hfin]`. Rewrite using `[← heq]`. Conclude with `hopen`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Chr.levGal :
     ∀ (E : Type) [Field E] [NumberField E] (N : ℕ) [NeZero N] (H : Subgroup (ZMod N)ˣ), HasLevel E N H → IsAbelianGalois ℚ E ∧ Module.finrank ℚ E = H.index ∧

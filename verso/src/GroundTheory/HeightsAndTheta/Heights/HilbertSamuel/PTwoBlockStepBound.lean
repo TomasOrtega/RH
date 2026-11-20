@@ -17,11 +17,11 @@ namespace TwoBlockStepBound
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ (AddSubgroup.toIntSubmodule K.toAddSubgroup)` using `‹Module.Finite ℤ K›`. Establish `: Module.Free ℤ (AddSubgroup.toIntSubmodule K.toAddSubgroup)` using `Module.free_of_finite_type_torsion_free'`. Establish `key` using `AddSubgroup.relIndex_map_nsmul N K.toAddSubgroup`. Establish `hsub : K.toAddSubgroup.map (nsmulAddMonoidHom (α` using `Ω) N) ≤ H.toAddSubgroup := by`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify `hNK y hy` using `[nsmul_eq_mul]`. Establish `hne : (K.toAddSubgroup.map (nsmulAddMonoidHom (α` using `Ω) N)).relIndex K.toAddSubgroup ≠ 0 := by`. Rewrite using `[key]`. Conclude with `pow_ne_zero _ hN.ne'`. Use `⟨fun h0 => hne (AddSubgroup.relIndex_eq_zero_of_le_left hsub h0), ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem relIndex_le_pow {H K : Submodule ℤ Ω} [Module.Finite ℤ K] {N : ℕ} (hN : 0 < N)
     (hNK : ∀ u ∈ K, (N : Ω) * u ∈ H) :
@@ -41,7 +41,7 @@ theorem relIndex_le_pow {H K : Submodule ℤ Ω} [Module.Finite ℤ K] {N : ℕ}
     _ = N ^ finrank ℤ K := key
 
 /- English proof (translation)
-The claim follows from `| 0, s, hs => by rw [sec_zero'] at hs ⊢ simpa using hs | n + 1, s, hs => by rw [← sec_mul_sec] at hs ⊢ induction hs using Submodule.mul_induction_on' with | mem_mul_mem u hu v hv => have := Submodule.mul_mem_mul (pow_mul_mem_sec hM n u hu) (hM v hv) convert this using 1 ring | ad …`.
+A detailed English derivation is pending.
 -/
 theorem pow_mul_mem_sec {x x' : Ix κ → Ω} {M : ℕ} (hM : ∀ s ∈ sec ℤ x' 1, (M : Ω) * s ∈ sec ℤ x 1) :
     ∀ n : ℕ, ∀ s ∈ sec ℤ x' n, (M : Ω) ^ n * s ∈ sec ℤ x n
@@ -60,15 +60,13 @@ theorem pow_mul_mem_sec {x x' : Ix κ → Ω} {M : ℕ} (hM : ∀ s ∈ sec ℤ 
       exact add_mem hu hv
 
 /- English proof (translation)
-Take `⟨hqP, hqd⟩` from `GenericFibre.proof Ω κ x D hX`. Take `⟨C, hC⟩` from `hRank κ _ D hqP hqd`. Use `set δ : ℝ := (GroundTheory.Heights₂.Heights.NumbersDVR.intNum ℚ ((coordIdeal ℤ x).map (MvPolynomial.map (Int.castRingHom ℚ))) (fun _ : Fin D => fun _ => (1 : ℤ)) : ℝ)`. Use `⟨|δ| + |C| * 2 ^ D, by positivity, fun m hm => ?_⟩` and prove the remaining obligations. Establish `e : (GroundTheory.Heights₂.Heights.NumbersDVR.hilbFn (ι` using `GlobalTheory κ) ((coordIdeal ℤ x).map (MvPolynomial.map (Int.castRingHom ℚ))) (fun _ => (m : ℤ)) : ℝ) = (finrank ℤ (sec ℤ x m) : ℝ) := by exact_mod_cast SectionsRank.proof Ω κ x m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(abs_le.mp (hC m)).2`. Rewrite `h` using `[e]`. Establish `ht : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hp : (0 : ℝ) ≤ (m : ℝ) ^ D` using `by positivity`. Establish `h1 : ((m : ℝ) + 1) ^ ((D : ℝ) - 1) ≤ ((m : ℝ) + 1) ^ D`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Establish `h2 : ((m : ℝ) + 1) ^ D ≤ 2 ^ D * (m : ℝ) ^ D`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by linarith) (by linarith) D`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : δ * (m : ℝ) ^ D / D.factorial ≤ |δ| * (m : ℝ) ^ D`. Establish `hf : (1 : ℝ) ≤ D.factorial` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero D)`. Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : C * ((m : ℝ) + 1) ^ ((D : ℝ) - 1) ≤ |C| * (2 ^ D * (m : ℝ) ^ D)` using `(mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity)).trans (mul_le_mul_of_nonneg_left (h1.trans h2) (abs_nonneg C))`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_finrank_sec_le (hRank : RankOfSections.Statement) {x : Ix κ → Ω} {D : ℕ}
     (hX : IsArithVar (ι := GlobalTheory κ) (coordIdeal ℤ x) (D + 1)) :
@@ -106,19 +104,17 @@ end TwoBlockStepBound
 open TwoBlockStepBound in
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ x B hX _ _ hsp`. Use `set x' := matAct B x`. Take `⟨M, hM0, hM⟩` from `ChangeOfLatticeNested.exists_mul_mem_sec_one x B`. Take `⟨R, hR0, hR⟩` from `exists_finrank_sec_le hRank hX`. Establish `hlogM : 0 ≤ Real.log M` using `Real.log_nonneg (by exact_mod_cast hM0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨R * Real.log M, fun a b => ?_⟩` and prove the remaining obligations. Establish `hsp1 : sec ℤ x 1 ≤ sec ℤ x' 1`. Rewrite using `[sec_one', sec_one']`. Conclude with `hsp`. Establish `eH : sec ℤ x (a + 1) * sec ℤ x' b = sec ℤ x a * sec ℤ x' b * sec ℤ x 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sec_mul_sec x a 1, mul_right_comm]`. Establish `eK : sec ℤ x a * sec ℤ x' (b + 1) = sec ℤ x a * sec ℤ x' b * sec ℤ x' 1`. Rewrite using `[← sec_mul_sec x' b 1, mul_assoc]`. Establish `hKQ : sec ℤ x a * sec ℤ x' (b + 1) ≤ sec ℤ x' (a + b + 1)`. Rewrite using `[add_assoc, ← sec_mul_sec x' a (b + 1)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_le_mul' (ChangeOfLattice.sec_mono hsp a) le_rfl`. Establish `: Module.Finite ℤ (sec ℤ x a * sec ℤ x' (b + 1))` using `Module.Finite.iff_fg.mpr ((sec_fg x a).mul (sec_fg x' (b + 1)))`. Take `⟨hne, hle⟩` from `relIndex_le_pow (H := sec ℤ x (a + 1) * sec ℤ x' b) (K := sec ℤ x a * sec ℤ x' (b + 1)) hM0 (by rw [eH, eK]; exact mul_mem_of_forall hM _)`. Establish `hMn : ((M : Ω) ^ (a + b + 1)) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr hM0.ne')`. Set `f` to `(LinearMap.mulLeft ℤ ((M : Ω) ^ (a + b + 1))).restrict (pow_mul_mem_sec hM (a + b + 1))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Function.Injective f` using `fun s t hst => Subtype.ext (mul_left_cancel₀ hMn (congrArg Subtype.val hst))`. Establish `hrk : finrank ℤ (sec ℤ x a * sec ℤ x' (b + 1)) ≤ finrank ℤ (sec ℤ x (a + b + 1))` using `(Submodule.finrank_mono hKQ).trans (LinearMap.finrank_le_finrank_of_injective hf)`. Establish `hpos : (0 : ℝ) ≤ twoBlockStep x x' a b` using `Real.log_nonneg (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hne)`. Establish `ht : ((a + b : ℝ) + 1) = ((a + b + 1 : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[abs_of_nonneg hpos, ht]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Move the embeddings inside the algebraic operations.
 
-Unfold `twoBlockStep`. Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Rewrite using `[Real.log_pow]`. Use `_ ≤ finrank ℤ (sec ℤ x (a + b + 1)) * Real.log M := mul_le_mul_of_nonneg_right (by exact_mod_cast hrk) hlogM`.
-
-Use `_ ≤ R * ((a + b + 1 : ℕ) : ℝ) ^ D * Real.log M := mul_le_mul_of_nonneg_right (hR _ (by omega)) hlogM`. Use `_ = R * Real.log M * ((a + b + 1 : ℕ) : ℝ) ^ D := by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TwoBlockStepBound.proof (hRank : RankOfSections.Statement) : TwoBlockStepBound.Statement := by
   intro D Ω _ _ κ _ x B hX _ _ hsp

@@ -17,17 +17,15 @@ noncomputable section
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ _ hLev _ _ _ _ _ i _`. Establish `hxi : R.toLevCh.xi A.μ0 = 1` using `MonoidHom.ext fun x => by`. Establish `h` using `hLev.xi A.μ0`. Rewrite `h` using `[hLev.xi_base]`. Conclude with `GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one h x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (Lift.chrTh (R.toLevCh.mu A.μ0) R.eta ((i : ℕ) + 1)).2 = R.toLevCh.mu0 ((i : ℕ) + 1) * R.eta⁻¹`. Simplify using `only [Lift.chrTh, LevCh.mu, Lift.tup, hxi, mul_one]`. Rewrite using `[e]`. Use `⟨?_, fun Q hQ => ?_, fun Q hQ k => ?_⟩` and prove the remaining obligations. Establish `ha` using `hLev.mu0 i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `hLev.eta`. Use `⟨⟨ha.1.1.mul hc.1.1.inv, fun x => ?_⟩, fun P e he k x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, ha.1.2, hc.1.2, inv_one, one_mul]`. Use `show ((R.toLevCh.mu0 ((i : ℕ) + 1) x * (R.eta x)⁻¹ : Circle) : ℂ) = (((R.C.mu0 i).locK P k * (R.C.eta.locK P k)⁻¹ : ℂˣ) : ℂ)`. Rewrite using `[Circle.coe_mul, Circle.coe_inv, ha.2 P e he k x hx, hc.2 P e he k x hx, Units.val_mul, Units.val_inv_eq_inv_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hg : ∀ k, ¬ Formalism.L2.Host.OverP D.host (D.host.g k) Q` using `fun k hk => hQ (by`. Rewrite using `[Nat.cast_mul]`. Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ hk)`. Rewrite using `[Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, (R.C.isMu0 i).unr Q hg x hx, R.C.isEta.unr Q x hx, inv_one, one_mul]`. Establish `hcard : (Formalism.L2.Host.aboveF (L` using `D.host.E) D.host.F (Q.under (𝓞 D.host.F))).card ≠ 1 := by`. Use `ne_of_gt (Finset.one_lt_card.2 ⟨Q, ?_, GlobalTheory.IdemSupport.cP Q, ?_, hQ.symm⟩)` and prove the remaining obligations. Rewrite using `[Formalism.L2.Host.aboveF, Set.Finite.mem_toFinset]`.
-
-Both sides reduce to the same expression. Rewrite using `[Formalism.L2.Host.aboveF, Set.Finite.mem_toFinset]`. Conclude with `GlobalTheory.IdemSupport.under_cP Q`. Rewrite using `[Formalism.L2.Host.HChar.resFin_mul, Formalism.L2.Host.HChar.resFin_inv, (R.C.isMu0 i).triv.1, R.C.isEta.res.1, Formalism.L2.Host.etaFin, if_neg hcard, inv_one, one_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiData_chrTh_base : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), LawsJ T → R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsFam → R.IsModels → R.IsThP → TieIn T R κ v₀ → ∀ (i : Fin D.R.m), VStd D i → ChiData (Lift.chrTh (R.toLevCh.mu A.μ0) R.eta ((i : ℕ) + 1)).2 (R.C.mu0 i * R.C.eta⁻¹) (D.host.g 0 * D.host.g 1) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ _ hLev _ _ _ _ _ i _

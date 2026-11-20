@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.PrincDegZero
 
 /- English proof (translation)
-Distinguish the cases in `h : Module.Finite κ V`. Establish `: Finite V` using `Module.finite_of_finite κ`. Rewrite using `[Module.natCard_eq_pow_finrank (K := κ)]`. Use `push_cast`. Rewrite using `[Real.log_pow]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.finrank_of_not_finite h]`. Establish `: Infinite V`. Assume the negation of the conclusion as `h'`. Use `not_infinite_iff_finite.1 h'` as an intermediate fact. Conclude with `h (Module.Finite.of_finite)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Nat.card_eq_zero_of_infinite]`.
+A detailed English derivation is pending.
 -/
 theorem log_card_eq (κ : Type) [Field κ] [Finite κ] (V : Type) [AddCommGroup V] [Module κ V] :
     Real.log (Nat.card V) = Module.finrank κ V * Real.log (Nat.card κ) := by
@@ -33,17 +33,17 @@ theorem log_card_eq (κ : Type) [Field κ] [Finite κ] (V : Type) [AddCommGroup 
     simp [Nat.card_eq_zero_of_infinite]
 
 /- English proof (translation)
-Establish `hdim` using `VdmRec.CutSec.dim_closure_of_coheight_field (strHom κ Y) hd hz`. Take `⟨W, j, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint z`. Establish `hrange : Set.range j = closure {j (genericPoint W)}`. Rewrite using `[← Set.image_singleton, j.isClosedEmbedding.closure_image_eq, (genericPoint_spec _).def, Set.image_univ]`. Use `letI := algebraΓAlong κ j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Establish `hW : topologicalKrullDim W = (0 : ℕ)` using `(topologicalKrullDim_eq_of_isEmbedding j.isClosedEmbedding.isEmbedding hrange).symm.trans hdim`. Rewrite using `[InterModel.interNumRed_eq_interNumOn _ j _ hrange, interNumOn_eq_interNum_pull (appTop_algebraMap_along κ j) (fun i => i.elim0), interNum_of_isEmpty]`. Establish `hu (w : W) : w = genericPoint W`. Use `Order.krullDim_nonpos_iff_forall_isMax.1 (show Order.krullDim (IrreducibleCloseds W) ≤ 0 from hW.le) ⟨closure {w}, isIrreducible_singleton.closure, isClosed_closure⟩` as an intermediate fact. Conclude with `IsGenericPoint.eq (Set.eq_univ_of_univ_subset (@this ⟨Set.univ, IrreducibleSpace.isIrreducible_univ W, isClosed_univ⟩ (Set.subset_univ _))) (genericPoint_spec W)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : ({genericPoint W} : Set W) = Set.univ` using `Set.eq_univ_of_forall hu`. Establish `hc : IsClosed ({genericPoint W} : Set W)` using `hZ ▸ isClosed_univ`. Use `isClosed_singleton_iff_isClosedImmersion.1 hc` as an intermediate fact. Establish `: Surjective (W.fromSpecResidueField (genericPoint W))` using `⟨fun w => ⟨IsLocalRing.closedPoint _, (hu _).trans (hu w).symm⟩⟩`. Use `isIso_of_isClosedImmersion_of_surjective (W.fromSpecResidueField (genericPoint W))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsAffine W` using `.of_isIso (inv (W.fromSpecResidueField (genericPoint W)))`. Establish `: IsIso (W.fromSpecResidueField (genericPoint W)).appTop` using `inferInstanceAs (IsIso (Scheme.Hom.app _ ⊤))`. Establish `b₁ : Function.Bijective (j.residueFieldMap (genericPoint W))`. Use `⟨RingHom.injective _, fun a => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `W.residue_surjective _ a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `j.stalkMap_surjective _ a`. Conclude with `⟨Y.residue _ b, by rw [← CommRingCat.comp_apply, Scheme.residue_residueFieldMap, CommRingCat.comp_apply]⟩`. Establish `b₂ : Function.Bijective ((W.fromSpecResidueField (genericPoint W)).appTop ≫ (Scheme.ΓSpecIso (W.residueField (genericPoint W))).hom)` using `ConcreteCategory.bijective_of_isIso _`. Establish `e : Γ(W, ⊤) ≃ Y.residueField (j (genericPoint W))` using `(Equiv.ofBijective _ b₂).trans (Equiv.ofBijective _ b₁).symm`. Rewrite using `[← Nat.card_congr e, chi_structureModule_of_isAffine, log_card_eq κ]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_card_residueField {κ : Type} [Field κ] [Finite κ] {Y : Scheme.{0}} [IsIntegral Y] [Algebra κ Γ(Y, ⊤)]
     [LocallyOfFiniteType (strHom κ Y)] (hd : topologicalKrullDim Y = (0 + 1 : ℕ)) {z : Y}
@@ -91,19 +91,19 @@ end GlobalTheory.PrincDegZero
 namespace GlobalTheory.PrincDegZero
 
 /- English proof (translation)
-Introduce `k _ Y _ _ q hA hd l _ _ f hf`. Establish `: Module.Finite ℤ k` using `hA.finite`. Establish `: AlgebraicGeometry.IsNoetherian Y` using `hA.isNoetherian`. Establish `: NeZero l` using `⟨(Fact.out : l.Prime).ne_zero⟩`. Take `⟨hpr, H, hH⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver hA.isProjOver`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp : IsProjOver (strHom (ZMod l) Y)`. Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := k)).2 inferInstance`. Establish `e : strHom (ZMod l) Y ≫ spMap (Int.castRingHom (ZMod l)) = q ≫ spMap (Int.castRingHom k)` using `specZIsTerminal.hom_ext _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper (strHom (ZMod l) Y ≫ spMap (Int.castRingHom (ZMod l)))` using `by rw [e]; infer_instance`. Establish `: IsProper (strHom (ZMod l) Y)` using `IsProper.of_comp _ (spMap (Int.castRingHom (ZMod l)))`. Conclude with `(isProjOver_iff_isProper_and_exists_isAmpleLB _).2 ⟨this, H, hH⟩`. Establish `: IsProper (strHom (ZMod l) Y)` using `(isProper_and_exists_isAmpleLB_of_isProjOver hp).1`. Establish `hd' : topologicalKrullDim Y = (0 + 1 : ℕ)` using `hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `r : (LB.triv Y).ι → Y.functionFieldˣ` to `fun _ => Units.mk0 f hf`. Establish `hr : IsRatSec (LB.triv Y) r` using `fun _ _ h => by simp [r]`. Establish `hM` using `LB.isLB_triv Y`. Establish `key` using `GlobalTheory.ratSec_cycle_formula (ZMod l) Y hp 0 hd.le (LB.triv Y) hM Fin.elim0 (fun i => i.elim0) r hr`. Rewrite `key` using `[interNum_eq_zero_of_cls_eq_zero (ZMod l) _ (isLB_cons hM fun i => i.elim0) 0 (cls_triv _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm (z : Y) : (divOfRatSec hM hr).mult z = Scheme.ord f z` using `((presents_divOfRatSec hM hr).isEqn PUnit.unit z trivial).mult_eq`. Establish `hfin : Function.HasFiniteSupport fun w => (divOfRatSec hM hr).mult w * interNumRed (ZMod l) (⟨closure {w}, isClosed_closure⟩ : Closeds _) (Fin.elim0 : Fin 0 → LB Y)` using `(CartierDiv.finite_support_mult _).subset (Function.support_mul_subset_left _ _)`. Establish `em` using `(AddMonoidHom.mulRight (Real.log (Nat.card (ZMod l)))).comp (Int.castAddHom ℝ) |>.map_finsum hfin`. Rewrite `em` using `[← key]`. Simplify using `only [map_zero] at em`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(finsum_congr fun z => ?_).trans em.symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Scheme.ord f z : ℝ) * _ = (((divOfRatSec hM hr).mult z * _ : ℤ) : ℝ) * _`. Rewrite using `[hm]`. Distinguish the cases in `hz : Scheme.ord f z = 0`. Simplify using `[hz]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hc : Order.coheight z = 1`. Assume the negation of the conclusion as `h`. Conclude with `hz (Scheme.ord_eq_zero_of_coheight_neq_one h f)`. Rewrite using `[Int.cast_mul, mul_assoc, log_card_residueField (κ := ZMod l) hd' hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_ord_mul_log_card_eq_zero : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k), IsAmb q → topologicalKrullDim Y = (1 : ℕ) → ∀ (l : ℕ) [Fact l.Prime] [Algebra (ZMod l) Γ(Y, ⊤)] (f : Y.functionField), f ≠ 0 → ∑ᶠ z, (Scheme.ord f z : ℝ) * Real.log (Nat.card (Y.residueField z)) = 0 := by
   intro k _ Y _ _ q hA hd l _ _ f hf

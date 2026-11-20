@@ -62,9 +62,9 @@ theorem archKerEquiv_apply (w : InfinitePlace F) (p : GArch σ J w × (projArch 
 variable {σ J}
 
 /- English proof (translation)
-Rewrite using `[Orb.mem_cent, Orb.mem_cent]`. Use `⟨fun h => by simpa using congrArg (projArch σ J w) h, fun h => GAd_ext σ J (fun u => ?_) fun v => by simp⟩` and prove the remaining obligations. Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[projArch_embArch_ne σ J hu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embArch_mem_cent_iff {w : InfinitePlace F} (a : GArch σ J w) (γ : GAd σ J) :
     embArch σ J w a ∈ Orb.cent γ ↔ a ∈ Orb.cent (projArch σ J w γ) := by
@@ -75,11 +75,11 @@ theorem embArch_mem_cent_iff {w : InfinitePlace F} (a : GArch σ J w) (γ : GAd 
   · simp [projArch_embArch_ne σ J hu]
 
 /- English proof (translation)
-Use `⟨⟨fun s t => Subtype.ext (GAd_ext σ J (fun u => ?_) fun v => ?_)⟩⟩` and prove the remaining obligations. Establish `hc` using `Orb.isMulCommutative_cent_HA (isRegSS_projArch_ratEmb hγ u)`. Establish `hs : projArch σ J u s ∈ Orb.cent (projArch σ J u (ratEmb σ J γ))`. Rewrite using `[Orb.mem_cent, ← map_mul, ← map_mul, Orb.mem_cent.1 s.2]`. Establish `ht : projArch σ J u t ∈ Orb.cent (projArch σ J u (ratEmb σ J γ))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Orb.mem_cent, ← map_mul, ← map_mul, Orb.mem_cent.1 t.2]`. Simplify using `using congrArg Subtype.val (hc.1.1 ⟨_, hs⟩ ⟨_, ht⟩)`. Establish `hc` using `Orb.isMulCommutative_cent_HA (isRegSS_proj_ratEmb hγ v)`. Establish `hs : proj σ J v s ∈ Orb.cent (proj σ J v (ratEmb σ J γ))`. Rewrite using `[Orb.mem_cent, ← map_mul, ← map_mul, Orb.mem_cent.1 s.2]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : proj σ J v t ∈ Orb.cent (proj σ J v (ratEmb σ J γ))`. Rewrite using `[Orb.mem_cent, ← map_mul, ← map_mul, Orb.mem_cent.1 t.2]`. Simplify using `using congrArg Subtype.val (hc.1.1 ⟨_, hs⟩ ⟨_, ht⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isMulCommutative_cent_ratEmb {γ : GRat σ J} (hγ : IsRegSS γ.1.1) :
     IsMulCommutative (Orb.cent (ratEmb σ J γ)) := by
@@ -98,18 +98,18 @@ theorem isMulCommutative_cent_ratEmb {γ : GRat σ J} (hγ : IsRegSS γ.1.1) :
     simpa using congrArg Subtype.val (hc.1.1 ⟨_, hs⟩ ⟨_, ht⟩)
 
 /- English proof (translation)
-The claim follows from `Orb.isMulCommutative_cent_HA (isRegSS_projArch_ratEmb hγ w)`.
+A detailed English derivation is pending.
 -/
 theorem isMulCommutative_cent_projArch_ratEmb {γ : GRat σ J} (hγ : IsRegSS γ.1.1) (w : InfinitePlace F) :
     IsMulCommutative (Orb.cent (projArch σ J w (ratEmb σ J γ))) :=
   Orb.isMulCommutative_cent_HA (isRegSS_projArch_ratEmb hγ w)
 
 /- English proof (translation)
-Establish `hz : projArch σ J w z.1 = 1` using `z.2`. Rewrite using `[archKerEquiv_apply, Subgroup.mem_comap, Subgroup.coe_subtype]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `ha : a ∈ Orb.cent (projArch σ J w γ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (projArch σ J w) (Orb.mem_cent.1 h)` as an intermediate fact. Rewrite using `[Orb.mem_cent]`. Simplify `this` using `[hz]`. Use `⟨ha, ?_⟩` and prove the remaining obligations. Simplify using `using mul_mem (inv_mem ((embArch_mem_cent_iff a _).2 ha)) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨ha, hz'⟩`. Conclude with `mul_mem ((embArch_mem_cent_iff a _).2 ha) hz'`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem archKerEquiv_mem_cent_iff (w : InfinitePlace F) (γ : GAd σ J) (a : GArch σ J w)
     (z : (projArch σ J w).ker) :
@@ -128,9 +128,9 @@ theorem archKerEquiv_mem_cent_iff (w : InfinitePlace F) (γ : GAd σ J) (a : GAr
     exact mul_mem ((embArch_mem_cent_iff a _).2 ha) hz'
 
 /- English proof (translation)
-Establish `hz : projArch σ J w z.1 = 1` using `z.2`. Use `⟨(∏ u ∈ Finset.univ.erase w, fa u (projArch σ J u (z.1⁻¹ * γ * z))) * ∏ᶠ v, ff v (proj σ J v (z.1⁻¹ * γ * z)), fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [archKerEquiv_apply, Orb.tensor]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w)]`. Establish `h1 : projArch σ J w ((embArch σ J w a * z)⁻¹ * γ * (embArch σ J w a * z)) = a⁻¹ * projArch σ J w γ * a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hz]`. Establish `h2 : ∀ u ∈ Finset.univ.erase w, fa u (projArch σ J u ((embArch σ J w a * z)⁻¹ * γ * (embArch σ J w a * z))) = fa u (projArch σ J u (z.1⁻¹ * γ * z))` using `fun u hu => by simp [projArch_embArch_ne σ J (Finset.ne_of_mem_erase hu)]`. Establish `h3 : ∀ v, proj σ J v ((embArch σ J w a * z)⁻¹ * γ * (embArch σ J w a * z)) = proj σ J v (z.1⁻¹ * γ * z)` using `fun v => by simp`. Rewrite using `[h1, Finset.prod_congr rfl h2]`. Simplify using `only [h3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -158,7 +158,7 @@ theorem exists_tensor_conj_archKerEquiv (fa : ∀ w, GArch σ J w → ℂ) (ff :
 open Orb in
 
 /- English proof (translation)
-Establish `hB : IsClosed ((projArch σ J w).ker : Set (GAd σ J))`. Rewrite using `[MonoidHom.coe_ker]`. Conclude with `isClosed_singleton.preimage (continuous_projArch σ J w)`. Use `haveI : LocallyCompactSpace (projArch σ J w).ker := hB.locallyCompactSpace`. Conclude with `GlobalTheory.T.quotient_measure_fibration (GArch σ J w) (projArch σ J w).ker (GAd σ J) (archKerEquiv σ J w) _ _ (cent γ) (archKerEquiv_mem_cent_iff w γ) (isClosed_cent γ) hcomm dh dt da ds φ hi hint h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotInt_cent_eq_zero_of_arch (w : InfinitePlace F) (γ : GAd σ J) (hcomm : IsMulCommutative (cent γ))
     (dh : Measure (GAd σ J)) [dh.IsHaarMeasure] (dt : Measure (cent γ)) [dt.IsHaarMeasure]
@@ -184,19 +184,17 @@ namespace GlobalTheory.ArchVanish
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D V S M μa fa ff hμa hfa hff γ hγ w hnc b hb hbl hbw μ _ dt _`. Establish `hcm` using `isCMExt_host D`. Establish `hJ` using `GlobalTheory.Doubling.isHermND_gram V`. Establish `hcomm : IsMulCommutative (cent (rat V γ))` using `isMulCommutative_cent_ratEmb hγ`. Use `haveI : dt.IsMulRightInvariant := isMulRightInvariant_cent hcomm dt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : IsClosed (cent (rat V γ) : Set (GA D V))` using `isClosed_cent _`. Establish `hten` using `continuous_of_mem_ccAd (tensor_mem_ccAd hfa.mem hff)`. Establish `hφi : LeftInv (cent (rat V γ)) fun x => b x * conjFn (rat V γ) (tensor D.sp.cm.sig V.gram fa ff) x` using `fun t ht x => by dsimp only; rw [hbl t ht x, leftInv_conjFn le_rfl _ t ht x]`. Establish `hint : Integrable (descend (cent (rat V γ)) fun x => b x * conjFn (rat V γ) (tensor D.sp.cm.sig V.gram fa ff) x) (quotMeas (cent (rat V γ)) dt μ)`. Take `⟨C, hC, h0⟩` from `isProperOrbit_ratEmb hcm hJ hγ _ hten.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `integrable_descend hT hφi (hb.mul (hten.1.comp (by fun_prop))) hC fun x hx => h0 x ?_` and prove the remaining obligations. Conclude with `subset_tsupport _ (right_ne_zero_of_mul hx)`. Establish `horb : ∀ (ds : Measure (cent (projArch D.sp.cm.sig V.gram w (rat V γ)))) [ds.IsHaarMeasure] [ds.IsMulRightInvariant], HasOrbInt (μa w) (projArch D.sp.cm.sig V.gram w (rat V γ)) ds (fa w) 0`. Take `⟨ρ, rfl⟩` from `(placeOf_bijective D).2 w`. Introduce `ds _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := (M.ds ρ).1`. Establish `hs : IsRegSS (matAt V ρ (projArch D.sp.cm.sig V.gram (placeOf D ρ) (rat V γ)))` using `(isRegSS_archMat_iff hcm (embOverOf D ρ)).2 (isRegSS_projArch_ratEmb hγ _)`. Establish `h` using `(hfa ρ).orb_noncompact _ hs hnc`. Conclude with `h ds`. Use `haveI := hμa w`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ds, hds1, hds2⟩ : ∃ ds : Measure (cent (projArch D.sp.cm.sig V.gram w (rat V γ))), ds.IsHaarMeasure ∧ ds.IsMulRightInvariant` from `by haveI : LocallyCompactSpace (cent (projArch D.sp.cm.sig V.gram w (rat V γ))) := (isClosed_cent _).locallyCompactSpace`. Conclude with `⟨Measure.haar, inferInstance, isMulRightInvariant_cent (isMulCommutative_cent_projArch_ratEmb (σ := D.sp.cm.sig) (J := V.gram) hγ w) _⟩`. Use `⟨hint, quotInt_cent_eq_zero_of_arch (σ := D.sp.cm.sig) (J := V.gram) w (rat V γ) hcomm μ dt (μa w) ds _ hφi hint fun z => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `exists_tensor_conj_archKerEquiv (σ := D.sp.cm.sig) (J := V.gram) fa ff w (rat V γ) z`. Establish `e1 : (fun a => (fun x => b x * conjFn (rat V γ) (tensor D.sp.cm.sig V.gram fa ff) x) (archKerEquiv D.sp.cm.sig V.gram w (a, z))) = fun a => (b z * K) * conjFn (projArch D.sp.cm.sig V.gram w (rat V γ)) (fa w) a` using `funext fun a => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [conjFn]`. Rewrite using `[hK a, archKerEquiv_apply, hbw]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Establish `e2` using `(horb ds).2`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem hasQuotInt_weighted_eq_zero : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)) (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ), (∀ w, (μa w).IsHaarMeasure) → IsTestArchG M μa fa → IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff → ∀ γ : GF V, IsRegSS γ.1.1 → ∀ w, ¬ IsCompact (cent (projArch D.sp.cm.sig V.gram w (rat V γ)) : Set (GArch D.sp.cm.sig V.gram w)) → ∀ b : GA D V → ℂ, Continuous b → LeftInv (cent (rat V γ)) b → (∀ g x, b (embArch D.sp.cm.sig V.gram w g * x) = b x) → ∀ (μ : Measure (GA D V)) [μ.IsHaarMeasure] (dt : Measure (cent (rat V γ))) [dt.IsHaarMeasure], HasQuotInt (cent (rat V γ)) dt μ (fun x => b x * conjFn (rat V γ) (tensor D.sp.cm.sig V.gram fa ff) x) 0 := by
   intro D V S M μa fa ff hμa hfa hff γ hγ w hnc b hb hbl hbw μ _ dt _

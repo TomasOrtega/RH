@@ -8,27 +8,25 @@ open ReciprocityTheory.ChartRestriction.G.FD NumberField GlobalTheory.UnipKill
 namespace GlobalTheory.UnipKill
 
 /- English proof (translation)
-Introduce `E _ _ _ N X hE φ ξ s hξ hiso hs hsint γ hγ`. Distinguish the cases in `h0 : ξ = 0`. Substitute `h0` using the available equality. Establish `h1 : ((γ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) = 1`. Rewrite using `[hγ]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Simplify using `[transvMat, Matrix.one_apply]`. Establish `: γ = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using h1`. Rewrite using `[this, map_one]`. Take `⟨u, hu0, hureal, hkill⟩` from `GlobalTheory.T.character_trivial_on_unit_transvections E N X hE φ ξ hξ h0 hiso`. Take `⟨c, hc0, u', hu'⟩` from `GlobalTheory.T.exists_int_multiple_of_integer E u hu0`. Establish `hcE : (c : E) = (u : E) * (u' : E)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (fun x : 𝓞 E => (x : E)) hu'` as an intermediate fact. Simplify using `using this`. Establish `huE : (u : E) ≠ 0`. Introduce `h`. Conclude with `hu0 (RingOfIntegers.coe_eq_zero_iff.mp h)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu'real : cc (u' : E) = u'`. Establish `e : (u' : E) = (c : E) * (u : E)⁻¹`. Rewrite using `[hcE]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, cc_mul, cc_inv, cc_intCast, hureal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu'int : IsIntegral ℤ (u' : E)` using `RingOfIntegers.isIntegral_coe u'`. Use `set n := c.natAbs with hn`. Establish `hnpos : n ≠ 0` using `Int.natAbs_ne_zero.mpr hc0`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht, htint, hut⟩ : ∃ t : E, cc t = t ∧ IsIntegral ℤ t ∧ (u : E) * t = (n : E) * s := by`. Break down `Int.natAbs_eq c with h | h` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(u' : E) * s, by rw [cc_mul, hu'real, hs], hu'int.mul hsint, ?_⟩` and prove the remaining obligations. Establish `: ((n : ℤ) : E) = (c : E)` using `by rw [← h]`. Rewrite using `[← Int.cast_natCast, this, hcE]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨-((u' : E) * s), by rw [cc_neg, cc_mul, hu'real, hs], (hu'int.mul hsint).neg, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((n : ℤ) : E) = -(c : E)` using `by rw [h, Int.cast_neg, neg_neg]`. Rewrite using `[← Int.cast_natCast, this, hcE]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmat : ((γ ^ n : X.Γ) : GL (Fin N) E) = (γ : GL (Fin N) E) ^ n` using `Subgroup.coe_pow _ _ _`. Establish `hγn : (((γ ^ n : X.Γ) : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) = transvMat X.Gm ξ (X.m * (u * t) * X.κ0)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hmat, Units.val_pow_eq_pow_val, hγ, transvMat_pow X.Gm ξ hiso, hut]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hk` using `hkill t ht htint (γ ^ n) hγn`. Rewrite `hk` using `[map_pow]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : n • Multiplicative.toAdd (φ γ) = 0`. Rewrite using `[← toAdd_pow, hk, toAdd_one]`. Rewrite `h2` using `[nsmul_eq_mul, mul_eq_zero]`. Break down `h2 with h2 | h2` into its components or cases. Conclude with `absurd (by exact_mod_cast h2) hnpos`.
-
-Conclude with `Multiplicative.toAdd.injective (by rw [h2, toAdd_one])`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem killsTransv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) (X : Data E N),
     1 < Module.finrank ℚ E / 2 → ∀ (φ : X.Γ →* Multiplicative ℝ) (ξ : Fin N → E) (s : E),

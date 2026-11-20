@@ -15,7 +15,7 @@ open GlobalTheory.AbDual GlobalTheory.CechPic GlobalTheory.AbLaw
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G]
 
 /- English proof (translation)
-Establish `e` using `congrArg (CechPic.pull (lift b a).left) ((cls_eq_iff hP (pull_isLB hP _)).2 hs)`. Rewrite `e` using `[cls_pull hP _ (pull_isLB hP _), ← pull_comp, ← Over.comp_left, comp_lift, lift_fst, lift_snd]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evc_symm {P : LB (G ⊗ G).left} (hP : P.IsLB) (hs : LBIso P (P.pull (lift (snd G G) (fst G G)).left))
     {Y : Over S} (a b : Y ⟶ G) : evc hP a b = evc hP b a := by
@@ -24,7 +24,7 @@ theorem evc_symm {P : LB (G ⊗ G).left} (hP : P.IsLB) (hs : LBIso P (P.pull (li
   exact e.symm
 
 /- English proof (translation)
-Establish `e` using `congrArg (CechPic.pull (lift w t).left) ((triv_ev_iff hP _ _).1 hx)`. Rewrite `e` using `[pull_evc, map_zero, lift_snd_assoc, lift_fst]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem evc_eq_zero_of_triv {P : LB (G ⊗ G).left} (hP : P.IsLB) {T : Over S} {x : T ⟶ G}
     (hx : Triv (P.pull (lift (snd G T ≫ x) (fst G T)).left)) {Y : Over S} (t : Y ⟶ T) (w : Y ⟶ G) :
@@ -33,11 +33,11 @@ theorem evc_eq_zero_of_triv {P : LB (G ⊗ G).left} (hP : P.IsLB) {T : Over S} {
   rwa [pull_evc, map_zero, lift_snd_assoc, lift_fst] at e
 
 /- English proof (translation)
-Establish `hL : (P.pull (lift (𝟙 G) (𝟙 G)).left).IsLB` using `pull_isLB hP _`. Establish `hD : (Out.translDiff G (P.pull (lift (𝟙 G) (𝟙 G)).left) x).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hdiag : ∀ {Y : Over S} (y : Y ⟶ G), CechPic.pull y.left (cls _ hL) = evc hP y y` using `fun y => by`. Rewrite using `[cls_pull hP _ hL, ← pull_comp, ← Over.comp_left, comp_lift, Category.comp_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `z : cls _ hD = 0`. Establish `e₁` using `pull_translDiff hL x hD (fst T G) (snd T G)`. Rewrite `e₁` using `[lift_fst_snd, Over.id_left, pull_id, hdiag, hdiag]`. Rewrite using `[e₁, (isAdditive_iff hP).1 a₁, (GlobalTheory.BirigidLift.isAdditive_swap_iff hP).1 a₂, (GlobalTheory.BirigidLift.isAdditive_swap_iff hP).1 a₂, evc_eq_zero_of_triv hP hx, evc_eq_zero_of_triv hP hx, evc_symm hP hs (snd T G) (fst T G ≫ x), evc_eq_zero_of_triv hP hx]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `p`. Use `⟨⊤, trivial, (cls_eq_zero_iff (pull_isLB hD _)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[cls_pull hD, z, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem memKL_of_triv {P : LB (G ⊗ G).left} (hP : P.IsLB) (hs : LBIso P (P.pull (lift (snd G G) (fst G G)).left))
     (a₁ : IsAdditive P) (a₂ : IsAdditive (AbDual.swap P)) {T : Over S} {x : T ⟶ G}
@@ -66,23 +66,21 @@ namespace GlobalTheory.KernelNear
 open GlobalTheory.AbDual GlobalTheory.CechPic GlobalTheory.AbLaw
 
 /- English proof (translation)
-Introduce `S' _ G _ _ P hG hP h₁ h₂ hs W hW s hsW`. Take `⟨V₀, hV₀, hsV, hVW⟩` from `exists_isAffineOpen_mem_and_subset (X := S') (U := W) hsW`. Take `⟨D, _, Q, h, hDab, q, -, hh, e⟩` from `GlobalTheory.DualHomPull.exists_dual_hom S' G G (𝟙 G) P hG hG inferInstance hP h₁ h₂`. Take `⟨a₁, a₂⟩` from `GlobalTheory.CubeAxes.additive_of_triv_axes hG hP h₁ h₂`. Establish `hD : ∀ {Y : Over S'} (a b : Y ⟶ G), evc hP a b = evc q.isLB a (b ≫ h)` using `fun a b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e'` using `(cls_eq_iff (pull_isLB hP _) (pull_isLB q.isLB _)).2 e`. Rewrite `e'` using `[MonoidalCategory.id_tensorHom_id, Over.id_left, cls_pull hP _ (pull_isLB hP _), pull_id, cls_pull q.isLB _ (pull_isLB q.isLB _)]`. Rewrite using `[evc, e', ← pull_comp, ← Over.comp_left, comp_lift, lift_fst, ← Category.assoc, lift_snd]`. Both sides reduce to the same expression. Establish `K : ∀ {T : Over S'} (x : T ⟶ G), Triv (P.pull (lift (snd G T ≫ x) (fst G T)).left) ↔ x ≫ h = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `T x`. Rewrite using `[triv_ev_iff hP, evc_symm hP hs, hD, Category.assoc]`. Use `⟨fun hx => q.eq_one _ ((triv_ev_iff q.isLB _ _).2 hx), fun hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hx, MonObj.comp_one]`. Conclude with `evc_one_right q.isLB q.zero _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Mono (η[D])` using `⟨fun _ _ _ => toUnit_unique _ _⟩`. Establish `kerh : ∀ {T : Over S'} (z : T ⟶ pullback h (η[D])), (z ≫ pullback.fst h (η[D])) ≫ h = 1` using `fun z => by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, toUnit_unique (z ≫ pullback.snd _ _) (toUnit _)]`. Both sides reduce to the same expression. Establish `fac : ∀ {T : Over S'} (x : T ⟶ G), x ≫ h = 1 → ∃ z : T ⟶ pullback h (η[D]), z ≫ pullback.fst h (η[D]) = x` using `fun x hx => ⟨pullback.lift x (toUnit _) (by rw [hx]; rfl), pullback.lift_fst _ _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosedImmersion (pullback.fst h (η[D])).left`. Establish `hpb` using `(IsPullback.of_hasPullback h (η[D])).map (Over.forget S')`. Use `hDab.proper` as an intermediate fact. Establish `: IsClosedImmersion ((η[D]).left ≫ D.hom)`. Rewrite using `[Over.w (η[D])]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(inferInstance : IsClosedImmersion (𝟙 S'))`. Establish `: IsClosedImmersion (η[D]).left` using `IsClosedImmersion.of_comp _ D.hom`. Conclude with `MorphismProperty.of_isPullback (P := @IsClosedImmersion) hpb.flip this`. Use `⟨V₀, pullback h (η[D]), pullback.fst h (η[D]), hsV, inferInstance, GlobalTheory.T.relatively_ample_closed_immersion S' G P hG hP V₀ hV₀ (hW V₀ fun _ hx => hVW hx) _ _ hcl (fun T z _ => memKL_of_triv hP hs a₁ a₂ ((K _).2 (kerh z))), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fac 1 (MonObj.one_comp h)`. Introduce `T a b _`. Use `fac _ ?_` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, kerh, kerh, _root_.mul_one]`. Introduce `T a _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fac _ ?_` and prove the remaining obligations. Rewrite using `[GrpObj.inv_comp, kerh, inv_one]`. Introduce `T x _ hx`. Conclude with `fac x ((K x).1 hx)`. Introduce `T z _ p`.
-
-Use `⟨⊤, trivial, (K _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← Category.assoc z, kerh, MonObj.comp_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_kernel_near : ∀ (S' : Scheme.{0}) [IsLocallyNoetherian S'] (G : Over S') [GrpObj G] [IsCommMonObj G] (P : LB (G2 G).left), IsAbelianScheme G → P.IsLB → (∃ s : (P.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, s.IsGen) → (∃ s : (P.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, s.IsGen) → LBIso P (P.pull (lift (snd G G) (fst G G)).left) → ∀ W : S'.Opens, (∀ V : S'.Opens, V ≤ W → Out.RelAmple ((Over.pullback V.ι).obj G) ((P.pull (Pdiv.PullbackComparison.pφ₂ V.ι G)).pull (lift (𝟙 ((Over.pullback V.ι).obj G)) (𝟙 ((Over.pullback V.ι).obj G))).left)) → ∀ s ∈ W, ∃ (V₀ : S'.Opens) (Z : Over S') (i : Z ⟶ G), s ∈ V₀ ∧ Mono i ∧ IsFinite (Z.hom ∣_ V₀) ∧ (∀ T : Over S', Set.range T.hom.base ⊆ (V₀ : Set S') → ∃ z : T ⟶ Z, z ≫ i = 1) ∧ (∀ (T : Over S') (a b : T ⟶ Z), Set.range T.hom.base ⊆ (V₀ : Set S') → ∃ c : T ⟶ Z, c ≫ i = (a ≫ i) * (b ≫ i)) ∧ (∀ (T : Over S') (a : T ⟶ Z), Set.range T.hom.base ⊆ (V₀ : Set S') → ∃ c : T ⟶ Z, c ≫ i = (a ≫ i)⁻¹) ∧ (∀ (T : Over S') (x : T ⟶ G), Set.range T.hom.base ⊆ (V₀ : Set S') → (∃ c : (P.pull (lift (snd G T ≫ x) (fst G T)).left).Gen, c.IsGen) → ∃ z : T ⟶ Z, z ≫ i = x) ∧ (∀ (T : Over S') (z : T ⟶ Z), Set.range T.hom.base ⊆ (V₀ : Set S') → ∀ p : T.left, ∃ U : T.left.Opens, p ∈ U ∧ ∃ c : (P.pull (lift (snd G (Over.mk (U.ι ≫ T.hom)) ≫ (Over.homMk U.ι : Over.mk (U.ι ≫ T.hom) ⟶ T) ≫ z ≫ i) (fst G (Over.mk (U.ι ≫ T.hom)))).left).Gen, c.IsGen) := by
   intro S' _ G _ _ P hG hP h₁ h₂ hs W hW s hsW

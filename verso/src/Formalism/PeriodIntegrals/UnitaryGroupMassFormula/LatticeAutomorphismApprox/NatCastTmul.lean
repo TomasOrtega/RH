@@ -9,7 +9,7 @@ open scoped TensorProduct
 open Formalism.MainNotions.S PI.ScRefExists
 
 /- English proof (translation)
-Rewrite using `[← map_mul, Rf.ew_idem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_idem {I : AutInst} {g r k : ℕ} {e f : Fin r → Fin I.n → I.E} (Rf : RefData I g r k e f)
     (v : HeightOneSpectrum (𝓞 I.F)) :
@@ -17,7 +17,7 @@ theorem eps_idem {I : AutInst} {g r k : ℕ} {e f : Fin r → Fin I.n → I.E} (
   rw [← map_mul, Rf.ew_idem]
 
 /- English proof (translation)
-Rewrite using `[← PI.UnitaryGroupMassFormula.AdIndexEq.psiV_sigR, ← map_mul]`. Establish `h` using `Rf.ew_orth`. Establish `h' : Rf.ew * Formalism.UG.sigR I.cm.sig (Af I.F) Rf.ew = 0` using `h`. Rewrite using `[h', map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_orth {I : AutInst} {g r k : ℕ} {e f : Fin r → Fin I.n → I.E} (Rf : RefData I g r k e f)
     (v : HeightOneSpectrum (𝓞 I.F)) :
@@ -28,14 +28,14 @@ theorem eps_orth {I : AutInst} {g r k : ℕ} {e f : Fin r → Fin I.n → I.E} (
   rw [h', map_zero]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem incl_mem_Lf (I : AutInst) (l : Fin I.n → I.E) (hl : l ∈ I.L) :
     (fun i => Formalism.UG.inclE (F := I.F) (Af I.F) (l i)) ∈ I.Lf :=
   Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [PI.FinKW.vecV, PI.FinKW.LocTo.psiV_inclE]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem vecV_incl (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (l : Fin I.n → I.E) :
     PI.FinKW.vecV I v (fun i => Formalism.UG.inclE (F := I.F) (Af I.F) (l i)) =
@@ -45,7 +45,7 @@ theorem vecV_incl (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (l : Fin I.n 
   rfl
 
 /- English proof (translation)
-Use `map_natCast (Algebra.TensorProduct.includeLeftRingHom (R := I.F) (A := KV I v) (B := I.E)) m` as an intermediate fact. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem natCast_tmul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (m : ℕ) :
     ((m : KV I v) ⊗ₜ[I.F] (1 : I.E)) = (m : RV I v) := by
@@ -54,13 +54,13 @@ theorem natCast_tmul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (m : ℕ) 
   rfl
 
 /- English proof (translation)
-Use `set c := (1 - PI.FinKW.psiV I v Rf.ew - PI.UnitaryGroupMassFormula.AdIndexEq.sigV I v (PI.FinKW.psiV I v Rf.ew)) with hc`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l, hl, rfl⟩` from `hy`. Establish `hy` using `Rf.ew_full _ (incl_mem_Lf I l hl)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hw'⟩` from `vecV_mL I v g _ hy`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw', vecV_smul', vecV_incl, map_sub, map_sub, map_one]`. Establish `: PI.FinKW.psiV I v (sigA I Rf.ew) = PI.UnitaryGroupMassFormula.AdIndexEq.sigV I v (PI.FinKW.psiV I v Rf.ew)` using `PI.UnitaryGroupMassFormula.AdIndexEq.psiV_sigR I v Rf.ew`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨w1, hw1, h1⟩` from `hx`. Take `⟨w2, hw2, h2⟩` from `hy`. Conclude with `⟨w1 + w2, Submodule.add_mem _ hw1 hw2, by rw [smul_add, h1, h2, smul_add]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul o x _ hx`. Take `⟨w, hw, h⟩` from `hx`. Use `⟨o • w, Submodule.smul_mem _ o hw, ?_⟩` and prove the remaining obligations. Rewrite using `[PI.FinKW.LocTo.ov_smul_vec, PI.FinKW.LocTo.ov_smul_vec, smul_comm, h, smul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem full_loc {I : AutInst} {g r k : ℕ} {e f : Fin r → Fin I.n → I.E} (Rf : RefData I g r k e f)
     (v : HeightOneSpectrum (𝓞 I.F)) (x : Fin I.n → RV I v)
@@ -90,21 +90,19 @@ theorem full_loc {I : AutInst} {g r k : ℕ} {e f : Fin r → Fin I.n → I.E} (
     rw [PI.FinKW.LocTo.ov_smul_vec, PI.FinKW.LocTo.ov_smul_vec, smul_comm, h, smul_comm]
 
 /- English proof (translation)
-Establish `hL : (I.L.restrictScalars ℤ).FG` using `I.L_fg.restrictScalars`. Take `⟨S, hS⟩` from `hL`. Establish `hSL : ∀ s ∈ S, s ∈ I.L`. Introduce `s hs`. Establish `: s ∈ I.L.restrictScalars ℤ` using `hS ▸ Submodule.subset_span hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this`. Use `⟨S.image (Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v)), ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.coe_image] at hy`. Take `⟨s, hs, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨s, hSL s hs, rfl⟩`. Rewrite using `[Formalism.L2.SG.Sub.latLoc, Submodule.span_le]`. Introduce and unpack `_ ⟨l, hl, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl' : l ∈ Submodule.span ℤ (S : Set (Fin I.n → I.E))`. Rewrite using `[hS]`. Conclude with `hl`. Use `clear hl`. Proceed by induction on `hl' using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `mem s hs => exact Submodule.subset_span (by simp only [Finset.coe_image]; exact ⟨s, hs, rfl⟩)`. Consider the case `zero`. Establish `: Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) (0 : Fin I.n → I.E) = 0 := by`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.L2.SG.Sub.ratV]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `: Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) (x + y) = Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) x + Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMass …`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Formalism.L2.SG.Sub.ratV]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Establish `: Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) (a • x) = a • Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) x := by`.
-
-Use function extensionality and compare the values at `i`. Simplify using `[Formalism.L2.SG.Sub.ratV]`. Rewrite using `[this]`. Conclude with `Submodule.smul_of_tower_mem _ a hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latLoc_fg (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) :
     (Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))).FG := by

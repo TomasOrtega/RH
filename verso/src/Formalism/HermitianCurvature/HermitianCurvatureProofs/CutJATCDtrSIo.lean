@@ -15,7 +15,7 @@ def eP (k r : ℕ) (z' ν v : Fin (2 * r + k + 1) → ℂ) : Fin (2 * r + k + 1)
   SSn.prWv k r z' v - herm (Hpk k r) (SSn.prWv k r z' v) ν • ν
 
 /- English proof (translation)
-Unfold `eP`. Rewrite using `[PRhoCut.FL.prWv_add, DU.hadd_l, add_smul]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem eP_add (z' ν x y : Fin (2 * r + k + 1) → ℂ) : eP k r z' ν (x + y) = eP k r z' ν x + eP k r z' ν y := by
   unfold eP
@@ -23,7 +23,7 @@ theorem eP_add (z' ν x y : Fin (2 * r + k + 1) → ℂ) : eP k r z' ν (x + y) 
   abel
 
 /- English proof (translation)
-Unfold `eP`. Rewrite using `[PRhoCut.FL.prWv_smul, DU.hsmul_l, smul_sub, smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eP_smul (z' ν : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (x : Fin (2 * r + k + 1) → ℂ) :
     eP k r z' ν (c • x) = c • eP k r z' ν x := by
@@ -37,7 +37,7 @@ def ioLin (k r : ℕ) (μ : B.Mat k r) (z' ν : Fin (2 * r + k + 1) → ℂ) :
   map_smul' c x := by rw [eP_smul, Matrix.mulVec_smul]; rfl
 
 /- English proof (translation)
-Establish `e : SSn.io0 k r z z' μsec ζ = LinearMap.toMatrix' (ioLin k r (NF.muZ k r μsec ζ) z' (SSn.nu0' k r z z' μsec ζ))`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix'_apply]`. Both sides reduce to the same expression. Rewrite using `[e, ← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

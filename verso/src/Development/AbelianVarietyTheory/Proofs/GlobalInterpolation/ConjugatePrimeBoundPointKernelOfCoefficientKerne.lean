@@ -11,11 +11,11 @@ namespace GlobalTheory.LvT.Built.BarPass
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Establish `h : ∀ v, (g • p).2 v = p.2 v`. Introduce `v`. Establish `h1` using `M.smul_snd g p v`. Rewrite `h1` using `[hg v]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LocF.Raw.ext` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `using (h1 x).1`. Use function extensionality and compare the values at `x`. Simplify using `using (h1 x).2`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `PtModel.Coord.valB`. Simplify using `only [h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem valB_smul_eq {X : Ch D u} {i : ℕ} {M : PtModel X i} (Co : M.Coord) (w : D.what₂.places.Pl) (V : Finset X.A.vT)
     (g : M.G) (hg : ∀ v, M.loc v g = 1) (p : M.Pt) : Co.valB w V (g • p) = Co.valB w V p := by
@@ -35,13 +35,13 @@ theorem valB_smul_eq {X : Ch D u} {i : ℕ} {M : PtModel X i} (Co : M.Coord) (w 
 variable {B : Built.Dat D u} {i : ℕ}
 
 /- English proof (translation)
-The claim follows from `LinearMap.map_smulₛₗ (evV B.emb (1 : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) B.E) (B.lam i) D.what₂.embLL) c F`.
+A detailed English derivation is pending.
 -/
 theorem ev_smul (c : D.what₂.LL) (F : B.V i) : B.ev i (c • F) = D.what₂.embLL c • B.ev i F :=
   LinearMap.map_smulₛₗ (evV B.emb (1 : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) B.E) (B.lam i) D.what₂.embLL) c F
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `(isOfFinOrder_iff_pow_eq_one).1 ((CommGroup.mem_torsion _).1 ζ.2)`. Use `IsIntegral.of_pow hn ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, h]`. Conclude with `isIntegral_one`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_torsion {L : Type} [Field L] (ζ : CommGroup.torsion Lˣ) : IsIntegral ℤ ((ζ.1 : Lˣ) : L) := by
   obtain ⟨n, hn, h⟩ := (isOfFinOrder_iff_pow_eq_one).1 ((CommGroup.mem_torsion _).1 ζ.2)
@@ -50,7 +50,7 @@ theorem isIntegral_torsion {L : Type} [Field L] (ζ : CommGroup.torsion Lˣ) : I
   exact isIntegral_one
 
 /- English proof (translation)
-Take `⟨F, hF, hyF⟩` from `(hV.dual w hw b d y).1 hy`. Use `(hV.dual w hw b d _).2 ⟨((ζ.1 : (D.what₂.LL)ˣ) : D.what₂.LL) • F, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(B.valAt w i _).smul_mem (⟨_, isIntegral_torsion ζ⟩ : 𝓞 D.what₂.LL) hF`. Rewrite using `[R.act_zeta, ev_smul, ← hyF]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem act_zeta_mem {sp : Split (B.J.A i) B.J.T} {M : PtModel B.ch i} (R : B.Real i sp M) {Co : M.Coord}
     (hV : R.ValIs Co) {w : D.what₂.places.Pl} (hw : OverT B.ch w) (b) (d : (B.I.S i).D b) (ζ) (y : M.Val)
@@ -62,15 +62,15 @@ theorem act_zeta_mem {sp : Split (B.J.A i) B.J.T} {M : PtModel B.ch i} (R : B.Re
     rfl
 
 /- English proof (translation)
-Introduce `D u B i sp sp' M M' R R' k Co Co' K hT hK _ _ hV hV' hb w hw hs p p' y hy`. Take `⟨ζ, b, d, rfl⟩` from `R.surj p`. Take `⟨ζ', b', d', rfl⟩` from `R'.surj p'`. Rewrite `hy` using `[valB_smul_eq Co w ∅ _ (R.loc_zeta ζ)]`. Rewrite using `[valB_smul_eq Co' w ∅ _ (R'.loc_zeta ζ')]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hy0` using `act_zeta_mem R hV hw b d ζ⁻¹ y hy`. Establish `hyy : y = M.act (R.zeta ζ) (M.act (R.zeta ζ⁻¹) y)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← map_mul, mul_inv_cancel, map_one, map_one, Module.End.one_apply]`. Generalize the expression as in `M.act (R.zeta ζ⁻¹) y = y₀ at hy0 hyy`. Take `⟨F, hF, hyF⟩` from `(hV.dual w hw b d y₀).1 hy0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨F', hF', hk⟩` from `hb w hw hs b b' d d' F hF`. Establish `hm : B.ev (i + 1) F' ∈ M'.Val`. Rewrite using `[R'.val_eq]`. Conclude with `evV_mem_ValC B.emb 1 _ D.what₂.embLL F'`. Establish `h1 : (⟨_, hm⟩ : M'.Val) ∈ Co'.valB w ∅ (R'.pt b' d')` using `(hV'.dual w hw b' d' _).2 ⟨F', hF', rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, act_zeta_mem R' hV' hw b' d' ζ' _ h1, ?_⟩` and prove the remaining obligations. Rewrite using `[hyy, K.src, hT, ← map_smul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hK b b' d d' F y₀ hyF, hk, ev_smul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem intBar_of_kerBar : ∀ (D : D7) (u : D.what₂.Word) (B : Built.Dat D u) (i : ℕ) (sp : Split (B.J.A i) B.J.T) (sp' : Split (B.J.A (i + 1)) B.J.T) (M : PtModel B.ch i) (M' : PtModel B.ch (i + 1)) (R : B.Real i sp M) (R' : B.Real (i + 1) sp' M') (k : B.Ker i) (Co : M.Coord) (Co' : M'.Coord) (K : KerPt M M'), K.TgtEq → Built.Dat.KerIs R R' K k → Co.Ok → Co'.Ok → R.ValIs Co → R'.ValIs Co' → Built.Dat.KerBar k → K.IntBar Co Co' := by
   intro D u B i sp sp' M M' R R' k Co Co' K hT hK _ _ hV hV' hb w hw hs p p' y hy

@@ -27,9 +27,9 @@ attribute [local instance] GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAd
 variable {F : Type} [Field F] [NumberField F] {ι κ : Type} [Fintype ι] [Fintype κ]
 
 /- English proof (translation)
-Unfold `pureA`. Apply the tactic sequence `congr 2 <;> funext k`. Use `((map_sum ((InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (RingHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))) (fun i => algebraMap F (AF F) (D k i) * glue p i) Finset.univ)).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `(map_mul _ _ _).trans ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F (algebraMap F (InfiniteAdeleRing F) (D k i)) * InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (eI F ι p.1 i)) = _`. Rewrite using `[RingEquiv.apply_symm_apply, InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Conclude with `(map_sum (RingHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) (fun i => algebraMap F (AF F) (D k i) * glue p i) Finset.univ)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pureA_mulVec_glue (D : Matrix κ ι F) (f : (κ → mixedEmbedding.mixedSpace F) → ℂ)
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (p : Vi F ι × Vf F ι) :
@@ -50,13 +50,13 @@ theorem pureA_mulVec_glue (D : Matrix κ ι F) (f : (κ → mixedEmbedding.mixed
         (fun i => algebraMap F (AF F) (D k i) * glue p i) Finset.univ)
 
 /- English proof (translation)
-The claim follows from `hg.1.continuous.integrable_of_hasCompactSupport hg.2`.
+A detailed English derivation is pending.
 -/
 theorem integrable_SB {g : Vf F ι → ℂ} (hg : g ∈ SB (Vf F ι)) : Integrable g Measure.addHaar :=
   hg.1.continuous.integrable_of_hasCompactSupport hg.2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Rewrite using `[pureA_mulVec_glue, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, hT]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem pureA_glue_eq (D : Matrix κ ι F)
     (T : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ] SchwartzMap (ι → mixedEmbedding.mixedSpace F) ℂ)
@@ -70,9 +70,9 @@ theorem pureA_glue_eq (D : Matrix κ ι F)
   rw [pureA_mulVec_glue, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, hT]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `GlobalTheory.ArchPull.exists_pull F ι κ D hD`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Rewrite using `[pureA_glue_eq D T hT f g]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (eI F ι) (T f)).integrable.mul_prod (integrable_SB (GlobalTheory.FinPull.pullback_mem_SB F ι κ D hD g hg))`. Consider the case `zero => exact integrable_zero _ _ _`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.smul c`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem integrable_glue (D : Matrix κ ι F) (hD : ∀ z : ι → F, D *ᵥ z = 0 → z = 0)
     {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
@@ -95,15 +95,13 @@ namespace GlobalTheory
 open GlobalTheory.DiagForm GlobalTheory.DiagUniq GlobalTheory.HaarPull
 
 /- English proof (translation)
-Introduce `F _ _ ι κ _ _ D hD ν hν`. Use `letI : MeasurableSpace (ι → AF F) := borel _`. Use `haveI : BorelSpace (ι → AF F) := ⟨rfl⟩`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := hν`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : ((mu F ι).map (glueE F ι)).IsAddHaarMeasure := (glueE F ι).isAddHaarMeasure_map _`. Establish `h` using `Measure.isAddLeftInvariant_eq_smul ν ((mu F ι).map (glueE F ι))`. Use `set c := Measure.addHaarScalarFactor ν ((mu F ι).map (glueE F ι))`. Establish `me` using `(glueE F ι).toHomeomorph.measurableEmbedding`. Use `⟨fun Φ hΦ => ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Use `Integrable.smul_measure_nnreal ?_` and prove the remaining obligations. Conclude with `me.integrable_map_iff.2 (integrable_glue D hD hΦ)`. Take `⟨T, hT⟩` from `GlobalTheory.ArchPull.exists_pull F ι κ D hD`. Use `⟨(((c : ℝ) : ℂ) * ∫ v, g (D.map (algebraMap F (FiniteAdeleRing (𝓞 F) F)) *ᵥ v) ∂(Measure.addHaar : Measure (Vf F ι))) • ((SchwartzMap.integralCLM ℂ (volume : Measure (Vi F ι))).comp ((SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (eI F ι)).comp T)), fun f => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[h, integral_smul_nnreal_measure]`. Express the relevant statement in the definitionally equal form `c • ∫ x, pureA F f g (D.map (algebraMap F (AF F)) *ᵥ x) ∂((mu F ι).map (glueE F ι).toHomeomorph) = _`. Rewrite using `[me.integral_map]`. Establish `e` using `pureA_glue_eq D T hT f g`. Express the relevant statement in the definitionally equal form `c • ∫ p, (fun p : Vi F ι × Vf F ι => pureA F f g (D.map (algebraMap F (AF F)) *ᵥ glue p)) p ∂(mu F ι) = _`.
-
-Rewrite using `[e, mu, integral_prod_mul (fun u : Vi F ι => SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (eI F ι) (T f) u) (fun v : Vf F ι => g (D.map (algebraMap F (FiniteAdeleRing (𝓞 F) F)) *ᵥ v))]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, SchwartzMap.integralCLM_apply, smul_eq_mul, NNReal.smul_def, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_pull_injective : ∀ (F : Type) [Field F] [NumberField F] (ι κ : Type) [Fintype ι] [Fintype κ] (D : Matrix κ ι F),
     (∀ z : ι → F, D *ᵥ z = 0 → z = 0) →

@@ -18,7 +18,7 @@ section Dot
 variable {k : Type} [Field k] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [dotj, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [mul_add]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dotj_add (j : ℕ) (ξ c d : Fin n → k) : dotj j ξ (c + d) = dotj j ξ c + dotj j ξ d := by
   simp only [dotj, ← Finset.sum_add_distrib]
@@ -26,7 +26,7 @@ theorem dotj_add (j : ℕ) (ξ c d : Fin n → k) : dotj j ξ (c + d) = dotj j �
   split_ifs <;> simp [mul_add]
 
 /- English proof (translation)
-Rewrite using `[dotj, Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dotj_single (j : ℕ) (ξ : Fin n → k) (a : Fin n) (x : k) :
     dotj j ξ (Pi.single a x) = if a.val < j then ξ a * x else 0 := by
@@ -36,7 +36,7 @@ theorem dotj_single (j : ℕ) (ξ : Fin n → k) (a : Fin n) (x : k) :
   · simp
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `[hc]`. Rewrite using `[Function.update_of_ne hi]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dotj_update (j : ℕ) (ξ c : Fin n → k) (a : Fin n) (x : k) (hc : c a = 0) :
     dotj j (Function.update ξ a x) c = dotj j ξ c := by
@@ -52,9 +52,9 @@ variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 variable (π : Representation ℂ (GL (Fin n) k) V) (ψ : AddChar k Circle)
 
 /- English proof (translation)
-Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, v, rfl⟩`. Establish `: c = 0` using `funext fun r => hc r (Finset.notMem_empty r)`. Substitute `this` using the available equality. Apply the tactic sequence `have h0 : dotj j ξ (0 : Fin n → k) = 0 := Finset.sum_eq_zero fun i _ => by split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[colU_zero, h0, AddChar.map_zero_eq_one, Circle.coe_one, one_smul, map_one, Module.End.one_apply, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem KUS_empty (j : ℕ) (ξ : Fin n → k) : KUS π ψ j ∅ ξ = ⊥ := by
   refine Submodule.span_eq_bot.2 ?_
@@ -65,11 +65,11 @@ theorem KUS_empty (j : ℕ) (ξ : Fin n → k) : KUS π ψ j ∅ ξ = ⊥ := by
   rw [colU_zero, h0, AddChar.map_zero_eq_one, Circle.coe_one, one_smul, map_one, Module.End.one_apply, sub_self]
 
 /- English proof (translation)
-Distinguish the cases in `ha : a.val < j`. Establish `hne : a ≠ (⟨j, hj⟩ : Fin n)` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hU : {g : GL (Fin n) k | π g v = v} ∈ nhds (1 : GL (Fin n) k)` using `(hs v).mem_nhds (by simp)`. Establish `h0 : GlobalTheory.RootUp.elem hne (0 : k) = 1` using `Units.ext (by simp [GlobalTheory.RootUp.val_elem])`. Establish `hpre : (GlobalTheory.RootUp.elem hne) ⁻¹' {g : GL (Fin n) k | π g v = v} ∈ nhds (0 : k)` using `(GlobalTheory.RootUp.continuous_elem hne).continuousAt.preimage_mem_nhds (by rw [h0]; exact hU)`. Take `⟨s, hs'⟩` from `exists_cball_subset hpre`. Use `⟨s, fun h hh => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[colU_single_of_lt j hj ha]`. Conclude with `hs' hh`. Conclude with `⟨1, fun h _ => by rw [colU_single_of_ge j (by omega), map_one, Module.End.one_apply]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smooth_col (hs : IsSmooth π) (j : ℕ) (hj : j < n) (a : Fin n) (v : V) :
     ∃ s : kˣ, ∀ h ∈ ball s, π (colU j (Pi.single a h)) v = v := by

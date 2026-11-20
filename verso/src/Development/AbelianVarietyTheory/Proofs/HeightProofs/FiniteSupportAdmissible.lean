@@ -22,15 +22,13 @@ open NumberField in
 open scoped TensorProduct in
 attribute [local instance] _root_.ReciprocityTheory.ChartRestriction.G.T0.resAlg in
 /- English proof (translation)
-Use `set E := IntermediateField.adjoin k s`. Use `set s' : Set E := Subtype.val ⁻¹' s`. Establish `himg : E.val '' s' = s`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hz`. Conclude with `⟨⟨z, IntermediateField.subset_adjoin k s hz⟩, hz, rfl⟩`. Establish `hmem : ∀ x : E, x ∈ IntermediateField.adjoin k s'`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Establish `hmap : (IntermediateField.adjoin k s').map E.val = E`. Rewrite using `[IntermediateField.adjoin_map, himg]`. Establish `hx : (x : L) ∈ (IntermediateField.adjoin k s').map E.val`. Rewrite using `[hmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Conclude with `x.2`. Take `⟨y, hy, hyx⟩` from `hx`. Establish `hyx' : y = x` using `Subtype.ext hyx`. Rewrite using `[← hyx']` and apply the resulting hypothesis. Rewrite using `[← IntermediateField.isAlgebraic_adjoin_iff_top]`.
-
-Conclude with `⟨fun x => isAlgebraic_algebraMap (⟨x, hmem x⟩ : IntermediateField.adjoin k s')⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma isAlgebraic_adjoin_adjoin_preimage {k L : Type} [Field k] [Field L] [Algebra k L]
     (s : Set L) :
@@ -62,9 +60,9 @@ open NumberField in
 open scoped TensorProduct in
 attribute [local instance] _root_.ReciprocityTheory.ChartRestriction.G.T0.resAlg in
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `top => exact absurd h (by simp)`. Consider the case `coe z`. Establish `hz : z < 0` using `by exact_mod_cast h`. Establish `hneg : (-(z : WithTop ℤ)) = ((-z : ℤ) : WithTop ℤ)` using `rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hneg]`. Conclude with `(by omega : (0 : ℤ) ≤ -z)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma withTop_int_neg_nonneg_of_neg {a : WithTop ℤ} (h : a < 0) : 0 ≤ -a := by
   induction a with
@@ -79,29 +77,27 @@ open NumberField in
 open scoped TensorProduct in
 attribute [local instance] _root_.ReciprocityTheory.ChartRestriction.G.T0.resAlg in
 /- English proof (translation)
-Use `set F := IntermediateField.adjoin K (Set.range x)`. Set `x' : Fin n → F` to `fun i => ⟨x i, IntermediateField.subset_adjoin K _ (Set.mem_range_self i)⟩`. Establish `hx' : AlgebraicIndependent K x'` using `AlgebraicIndependent.of_comp F.val hx`. Establish `hrange : Set.range x' = Subtype.val ⁻¹' Set.range x`. Use extensionality with `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨i, rfl⟩`. Introduce and unpack `⟨i, hi⟩`. Conclude with `⟨i, Subtype.ext hi⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hbasis : IsTranscendenceBasis K x'` using `isTranscendenceBasis_iff_algebraicIndependent_isAlgebraic.2 ⟨hx', by rw [hrange]; exact isAlgebraic_adjoin_adjoin_preimage _⟩`. Establish `hKF : Algebra.trdeg K F = n` using `by rw [← hbasis.cardinalMk_eq_trdeg]; simp`. Establish `hsum` using `trdeg_add_eq K F (A := Ω)`. Rewrite `hsum` using `[hKF, htr, ← hD]`. Establish `hFΩ : Algebra.trdeg F Ω = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : Algebra.trdeg F Ω < Cardinal.aleph0`. Establish `h` using `Cardinal.nat_lt_aleph0 (n + 1)`. Rewrite `h` using `[← hsum]`. Conclude with `lt_of_le_of_lt le_add_self h`. Take `⟨m, hm⟩` from `Cardinal.lt_aleph0.1 hlt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Rewrite `hsum`, the goal using `[hm]`. Normalize the coercions in `at hsum ⊢`. Use linear arithmetic over natural numbers and integers. Use `haveI : CharZero F := charZero_of_injective_algebraMap (algebraMap K F).injective`. Establish `hfgF : (⊤ : IntermediateField F Ω).FG` using `IntermediateField.FG.of_restrictScalars (K := K) (by rw [IntermediateField.restrictScalars_top]; exact hfg)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hnalg : ¬ Algebra.IsAlgebraic F Ω`. Rewrite using `[← trdeg_eq_zero_iff, hFΩ]`. Conclude with `one_ne_zero`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : Ω, Transcendental F t := by`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `push_neg at h`. Conclude with `hnalg ⟨fun a => not_not.1 (h a)⟩`. Establish `htinv : Transcendental F t⁻¹` using `fun h => ht (by simpa using h.inv)`. Use `((H2 F Ω t hfgF hFΩ ht g hg).union (H2 F Ω t⁻¹ hfgF hFΩ htinv g hg)).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hdisc, hvg, htriv, hxv, hind⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hpoly : ∀ P : MvPolynomial (Fin n) K, MvPolynomial.aeval x P ≠ 0 → v (MvPolynomial.aeval x P) = 0`. Introduce `P hP`. Establish `hP0 : P ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hcv⟩` from `_root_.ReciprocityTheory.ChartRestriction.G.T0.ValuationResidueLemmas.exists_val_coeff v x hxv hind P hP0`. Rewrite using `[hcv, htriv c hc]`. Establish `hF : _root_.ReciprocityTheory.ChartRestriction.G.T0.IsTrivOn F v`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.T0.IsTrivOn`. Introduce `a ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, Q, hPQ⟩` from `(IntermediateField.mem_adjoin_range_iff K x a).1 a.2`. Establish `ha' : (a : Ω) ≠ 0` using `by exact_mod_cast ha`. Rewrite `ha'` using `[hPQ]`. Establish `hQ : MvPolynomial.aeval x Q ≠ 0` using `fun h => ha' (by rw [h, div_zero])`. Establish `hP : MvPolynomial.aeval x P ≠ 0` using `fun h => ha' (by rw [h, zero_div])`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show v (a : Ω) = 0`. Rewrite using `[hPQ, div_eq_mul_inv, v.map_mul, v.map_inv, hpoly P hP, hpoly Q hQ]`. Simplify using the standard rewrite rules. Distinguish the cases in `hvt : 0 ≤ v t`. Conclude with `Or.inl ⟨hdisc, hF, hvt, hvg⟩`.
-
-Use `right`. Use `⟨hdisc, hF, ?_, hvg⟩` and prove the remaining obligations. Rewrite using `[v.map_inv]`. Use `push_neg at hvt`. Conclude with `withTop_int_neg_nonneg_of_neg hvt`.
+A detailed English derivation is pending.
 -/
 private lemma case_two_finite_lemma
     (H2 : ∀ (F Ω : Type) [Field F] [CharZero F] [Field Ω] [Algebra F Ω] (t : Ω), (⊤ : IntermediateField F Ω).FG → Algebra.trdeg F Ω = 1 → Transcendental F t → ∀ g : Ω, g ≠ 0 → {v : AddValuation Ω (WithTop ℤ) | _root_.ReciprocityTheory.ChartRestriction.G.T0.IsNormDiscrete v ∧ _root_.ReciprocityTheory.ChartRestriction.G.T0.IsTrivOn F v ∧ 0 ≤ v t ∧ v g ≠ 0}.Finite)
@@ -182,17 +178,17 @@ open NumberField in
 open scoped TensorProduct in
 attribute [local instance] _root_.ReciprocityTheory.ChartRestriction.G.T0.resAlg in
 /- English proof (translation)
-Use `set E := IntermediateField.adjoin k s`. Use `set s' : Set E := Subtype.val ⁻¹' s`. Establish `himg : E.val '' s' = s`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hz`. Conclude with `⟨⟨z, IntermediateField.subset_adjoin k s hz⟩, hz, rfl⟩`. Establish `hmem : ∀ x : E, x ∈ IntermediateField.adjoin k s'`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Establish `hmap : (IntermediateField.adjoin k s').map E.val = E`. Rewrite using `[IntermediateField.adjoin_map, himg]`. Establish `hx : (x : L) ∈ (IntermediateField.adjoin k s').map E.val`. Rewrite using `[hmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Conclude with `x.2`. Take `⟨y, hy, hyx⟩` from `hx`. Establish `hyx' : y = x` using `Subtype.ext hyx`. Rewrite using `[← hyx']` and apply the resulting hypothesis. Establish `hE : Algebra.IsAlgebraic (Algebra.adjoin k s') E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← IntermediateField.isAlgebraic_adjoin_iff_top]`. Conclude with `⟨fun x => isAlgebraic_algebraMap (⟨x, hmem x⟩ : IntermediateField.adjoin k s')⟩`. Take `⟨t, hts, ht⟩` from `exists_isTranscendenceBasis_subset (R := k) s'`. Establish `hcard` using `ht.cardinalMk_eq_trdeg`. Rewrite `hcard` using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : Finite t` using `Cardinal.lt_aleph0_iff_finite.1 (by rw [hcard]; exact Cardinal.nat_lt_aleph0 D)`. Establish `hnc : Nat.card t = D` using `by simp [Nat.card, hcard]`. Set `e : Fin D ≃ t` to `(finCongr hnc.symm).trans (Finite.equivFin t).symm`. Use `⟨fun i => ((e i : E) : L), fun i => hts (e i).2, ?_⟩` and prove the remaining obligations. Conclude with `(ht.1.comp e e.injective).map' (f := E.val) Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 private lemma exists_algebraicIndependent_fin_of_trdeg_adjoin_eq {k L : Type} [Field k] [Field L] [Algebra k L] (s : Set L) (D : ℕ)
     (h : Algebra.trdeg k (IntermediateField.adjoin k s) = D) :
@@ -233,7 +229,7 @@ open NumberField in
 open scoped TensorProduct in
 attribute [local instance] _root_.ReciprocityTheory.ChartRestriction.G.T0.resAlg in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.T0.vRing`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private lemma mem_vRing_iff_nonneg {Ω : Type} [Field Ω] (v : AddValuation Ω (WithTop ℤ)) (x : Ω) :
     x ∈ _root_.ReciprocityTheory.ChartRestriction.G.T0.vRing v ↔ 0 ≤ v x := by
@@ -244,9 +240,9 @@ open NumberField in
 open scoped TensorProduct in
 attribute [local instance] _root_.ReciprocityTheory.ChartRestriction.G.T0.resAlg in
 /- English proof (translation)
-Rewrite using `[← mem_vRing_iff_nonneg]`. Establish `hint : IsIntegral ℤ (algebraMap K Ω a)` using `(a.2.map (IsScalarTower.toAlgHom ℤ K Ω))`. Establish `h2 : IsIntegral (_root_.ReciprocityTheory.ChartRestriction.G.T0.vRing v) (algebraMap K Ω a)` using `hint.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Rewrite using `[← hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `y.2`.
+A detailed English derivation is pending.
 -/
 private lemma addValuation_algebraMap_ringOfIntegers_nonneg {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω]
     (v : AddValuation Ω (WithTop ℤ)) (a : 𝓞 K) : 0 ≤ v (algebraMap K Ω a) := by
@@ -261,7 +257,7 @@ open NumberField in
 open scoped TensorProduct in
 attribute [local instance] _root_.ReciprocityTheory.ChartRestriction.G.T0.resAlg in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `lt_of_lt_of_le (lt_min (h a (Finset.mem_insert_self a s)) (ih fun m hm => h m (Finset.mem_insert_of_mem hm))) (v.map_add _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma addValuation_sum_pos_of_forall_pos {Ω α : Type} [Field Ω] (v : AddValuation Ω (WithTop ℤ)) (g : α → Ω)
     (s : Finset α) (h : ∀ m ∈ s, 0 < v (g m)) : 0 < v (∑ m ∈ s, g m) := by
@@ -277,21 +273,19 @@ open NumberField in
 open scoped TensorProduct in
 attribute [local instance] _root_.ReciprocityTheory.ChartRestriction.G.T0.resAlg in
 /- English proof (translation)
-Establish `hsum` using `MvPolynomial.eval₂_eq' ((algebraMap K Ω).comp (algebraMap (𝓞 K) K)) x p`. Establish `hmono : ∀ m : Fin D →₀ ℕ, 0 ≤ v (∏ i, x i ^ m i)` using `fun m => by`. Rewrite using `[← mem_vRing_iff_nonneg]`. Conclude with `prod_mem fun i _ => pow_mem (hx i) _`. Use `⟨?_, ⟨fun hpos => ?_, fun hcoeff => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, ← mem_vRing_iff_nonneg]`. Use `sum_mem fun m _ => mul_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mem_vRing_iff_nonneg]`. Conclude with `addValuation_algebraMap_ringOfIntegers_nonneg v _`. Rewrite using `[mem_vRing_iff_nonneg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hmono m`. Assume the negation of the conclusion as `hnot push_neg at hnot`. Take `⟨m, hm⟩` from `hnot`. Use `set a := p.coeff m`. Establish `ha0 : v (algebraMap K Ω a) = 0` using `le_antisymm (not_lt.1 fun h => hm ((hla a).1 h)) (addValuation_algebraMap_ringOfIntegers_nonneg v a)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hane : (a : K) ≠ 0`. Introduce `h`. Apply `hm` to reduce the goal to its premises. Establish `: a = 0` using `by exact_mod_cast h`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Use `set P : MvPolynomial (Fin D) K := MvPolynomial.C (a : K)⁻¹ * MvPolynomial.map (algebraMap (𝓞 K) K) p`. Establish `hcoeffP : ∀ β, MvPolynomial.coeff β P = (a : K)⁻¹ * p.coeff β` using `fun β => by`. Simplify using `[P, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_map]`. Establish `hnn : ∀ β, 0 ≤ v (algebraMap K Ω (MvPolynomial.coeff β P))` using `fun β => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoeffP, map_mul, v.map_mul, map_inv₀, v.map_inv, ha0, neg_zero, zero_add]`. Conclude with `addValuation_algebraMap_ringOfIntegers_nonneg v _`. Establish `h1 : MvPolynomial.coeff m P = 1` using `by rw [hcoeffP]; exact inv_mul_cancel₀ hane`. Establish `hzero` using `_root_.ReciprocityTheory.ChartRestriction.G.T0.ValuationResidueLemmas.val_eval_eq_zero v x hx hind P hnn m h1`. Establish `heval : MvPolynomial.eval₂ ((algebraMap K Ω).comp (algebraMap (𝓞 K) K)) x p = algebraMap K Ω a * MvPolynomial.aeval x P`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [P, map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_map_algebraMap]`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hane, map_one, one_mul]`. Both sides reduce to the same expression. Rewrite `hpos` using `[heval, v.map_mul, ha0, hzero, add_zero]`. Conclude with `lt_irrefl _ hpos`.
-
-Rewrite using `[hsum]`. Use `addValuation_sum_pos_of_forall_pos v _ _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[v.map_mul]`. Conclude with `lt_of_lt_of_le ((hla _).2 (hcoeff m)) (le_add_of_nonneg_right (hmono m))`.
+A detailed English derivation is pending.
 -/
 private lemma polynomial_value_over_prime_lemma_4 {K Ω : Type} [Field K] [NumberField K] [Field Ω]
     [Algebra K Ω] {D : ℕ} (v : AddValuation Ω (WithTop ℤ))
@@ -350,29 +344,25 @@ open scoped TensorProduct in
 attribute [local instance] _root_.ReciprocityTheory.ChartRestriction.G.T0.resAlg in
 
 /- English proof (translation)
-Introduce `H1 H2 K _ _ ι _ Ω _ _ WT _ A _ _ _ _ 𝒜 d c hD hfg htr hrk hwL hjc hT`. Establish `hfin : ∀ g : Ω c, g ≠ 0 → {v | d.admitted c v ∧ v g ≠ 0}.Finite`. Introduce `g hg`. Use `set r : Fin (d.N + 1) → Fin (d.N + 1) → Ω c := fun j j0 => _root_.ReciprocityTheory.ChartRestriction.G.T0.ratio (d.w j c) (d.w j0 c)`. Establish `hfin1` using `Set.finite_iUnion fun j0 : Fin (d.N + 1) => Set.finite_iUnion fun σ : Fin d.D → Fin (d.N + 1) => H1 K (Ω c) d.D (fun i => r (σ i) j0) hfg htr g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin2` using `Set.finite_iUnion fun p : {p : Fin (d.N + 1) × (Fin (d.D - 1) → Fin (d.N + 1)) // AlgebraicIndependent K fun i => r (p.2 i) p.1} => case_two_finite_lemma H2 (Nat.sub_add_cancel hD) hfg htr _ p.2 g hg`. Use `(hfin1.union hfin2).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hv, hvg⟩`. Establish `hv'` using `hv`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.T0.Data.admitted at hv'`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨hdisc, ⟨la, hla, hres⟩ | ⟨htriv, hres⟩⟩` from `hv'`. Use `left`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.T0.Data.ResCond at hres`. Take `⟨-, j0, -, hint, htd⟩` from `hres`. Take `⟨y, hy, hind⟩` from `exists_algebraicIndependent_fin_of_trdeg_adjoin_eq _ _ htd`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose σ hσ hyσ using hy`. Use `Set.mem_iUnion.2 ⟨j0, Set.mem_iUnion.2 ⟨σ, hdisc, hvg, la, ?_⟩⟩` and prove the remaining obligations. Establish `hx : ∀ i, r (σ i) j0 ∈ _root_.ReciprocityTheory.ChartRestriction.G.T0.vRing v` using `fun i => (mem_vRing_iff_nonneg v _).2 (hint (σ i))`. Establish `hind' : AlgebraicIndependent (IsLocalRing.ResidueField ((_root_.ReciprocityTheory.ChartRestriction.G.T0.vRing v).comap (algebraMap K (Ω c)))) fun i => IsLocalRing.residue (_root_.ReciprocityTheory.ChartRestriction.G.T0.vRing v) ⟨r (σ i) j0, hx i⟩`. Establish `hfun : (fun i => IsLocalRing.residue (_root_.ReciprocityTheory.ChartRestriction.G.T0.vRing v) ⟨r (σ i) j0, hx i⟩) = y`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `fun i => by rw [hyσ i]`. Rewrite using `[hfun]`. Conclude with `hind`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.T0.IsOver at hla`. Conclude with `polynomial_value_over_prime_lemma_4 v la hla _ hx hind'`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `right`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.T0.Data.ResCond at hres`. Take `⟨-, j0, -, hint, htd⟩` from `hres`. Take `⟨y, hy, hind⟩` from `exists_algebraicIndependent_fin_of_trdeg_adjoin_eq _ _ htd`. Use `choose σ hσ hyσ using hy`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : ∀ i, r (σ i) j0 ∈ _root_.ReciprocityTheory.ChartRestriction.G.T0.vRing v` using `fun i => (mem_vRing_iff_nonneg v _).2 (hint (σ i))`. Establish `hind' : AlgebraicIndependent (IsLocalRing.ResidueField ((_root_.ReciprocityTheory.ChartRestriction.G.T0.vRing v).comap (algebraMap K (Ω c)))) fun i => IsLocalRing.residue (_root_.ReciprocityTheory.ChartRestriction.G.T0.vRing v) ⟨r (σ i) j0, hx i⟩`. Establish `hfun : (fun i => IsLocalRing.residue (_root_.ReciprocityTheory.ChartRestriction.G.T0.vRing v) ⟨r (σ i) j0, hx i⟩) = y`. Use function extensionality and compare the values at `fun i => by rw [hyσ i]`. Rewrite using `[hfun]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hind`. Establish `hxK : AlgebraicIndependent K fun i => r (σ i) j0` using `_root_.ReciprocityTheory.MultiplicativeHeights.algebraicIndependent_of_residue_lift (_root_.ReciprocityTheory.ChartRestriction.G.T0.vRing v) (fun i => ⟨r (σ i) j0, hx i⟩) hind'`. Use `Set.mem_iUnion.2 ⟨⟨(j0, σ), hxK⟩, hdisc, hvg, ?_, hx, hind'⟩` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.T0.IsTrivOn at htriv`. Conclude with `htriv`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hfin, fun G e S he he0 hscale hzero f hf hf0 => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨a, rfl⟩ : ∃ a : Ω c, a • e = f := by`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨e, he⟩ : 𝒜 c G) (by simpa using he0)).1 (hrk G) ⟨f, hf⟩`. Conclude with `⟨a, congrArg Subtype.val ha⟩`. Establish `ha : a ≠ 0` using `by rintro rfl; simp at hf0`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hneg : ∀ s, {v | d.admitted c v ∧ v s < 0}.Finite` using `fun s => by`. Distinguish the cases in `hs : s = 0`. Simplify using `[hs]`. Conclude with `(hfin s hs).subset fun v hv => ⟨hv.1, hv.2.ne⟩`. Use `((hfin a ha).union (S.finite_toSet.biUnion fun s _ => hneg s)).subset ?_` and prove the remaining obligations.
-
-Introduce and unpack `v ⟨hv, hord⟩`. Distinguish the cases in `hva : v a = 0`. Use `right`. Assume the negation of the conclusion as `hS`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Finset.mem_coe, not_exists, not_and, not_lt] at hS`.
-
-Establish `h1` using `hscale v hv a ha`. Rewrite `h1` using `[hva, zero_add, hzero v hv fun s hs => hS s hs hv]`. Conclude with `hord (by exact_mod_cast h1)`. Conclude with `Or.inl ⟨hv, hva⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.finite_support_admissible :
     (∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (D : ℕ) (x : Fin D → Ω), (⊤ : IntermediateField K Ω).FG → Algebra.trdeg K Ω = D → ∀ g : Ω, g ≠ 0 → {v : AddValuation Ω (WithTop ℤ) | _root_.ReciprocityTheory.ChartRestriction.G.T0.IsNormDiscrete v ∧ v g ≠ 0 ∧ ∃ la : IsDedekindDomain.HeightOneSpectrum (𝓞 K), ∀ p : MvPolynomial (Fin D) (𝓞 K), 0 ≤ v (MvPolynomial.eval₂ ((algebraMap K Ω).comp (algebraMap (𝓞 K) K)) x p) ∧ (0 < v (MvPolynomial.eval₂ ((algebraMap K Ω).comp (algebraMap (𝓞 K) K)) x p) ↔ ∀ m, p.coeff m ∈ la.asIdeal)}.Finite) → (∀ (F Ω : Type) [Field F] [CharZero F] [Field Ω] [Algebra F Ω] (t : Ω), (⊤ : IntermediateField F Ω).FG → Algebra.trdeg F Ω = 1 → Transcendental F t → ∀ g : Ω, g ≠ 0 → {v : AddValuation Ω (WithTop ℤ) | _root_.ReciprocityTheory.ChartRestriction.G.T0.IsNormDiscrete v ∧ _root_.ReciprocityTheory.ChartRestriction.G.T0.IsTrivOn F v ∧ 0 ≤ v t ∧ v g ≠ 0}.Finite) → ∀ (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] (Ω : ι → Type) [∀ c, Field (Ω c)] [∀ c, Algebra K (Ω c)] (WT : Type) [AddCommGroup WT] (A : ι → Type) [∀ c, CommRing (A c)] [∀ c, Algebra (Ω c) (A c)] [∀ c, Algebra K (A c)] [∀ c, Algebra (𝓞 K) (A c)] (𝒜 : (c : ι) → WT → Submodule (Ω c) (A c)) (d : _root_.ReciprocityTheory.ChartRestriction.G.T0.Data K ι Ω WT A), ∀ c : ι, 1 ≤ d.D → (⊤ : IntermediateField K (Ω c)).FG → Algebra.trdeg K (Ω c) = d.D → (∀ G, Module.finrank (Ω c) (𝒜 c G) = 1) → (∀ j, d.w j c ∈ 𝒜 c d.wL) → d.w (d.jc c) c ≠ 0 → _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.TrdegD d c → (∀ g : Ω c, g ≠ 0 → {v | d.admitted c v ∧ v g ≠ 0}.Finite) ∧ ∀ (G : WT) (e : A c) (S : Finset (Ω c)), e ∈ 𝒜 c G → e ≠ 0 → (∀ v, d.admitted c v → ∀ a : Ω c, a ≠ 0 → ((d.ord c v G (a • e) : ℤ) : WithTop ℤ) = v a + (d.ord c v G e : WithTop ℤ)) → (∀ v, d.admitted c v → (∀ s ∈ S, 0 ≤ v s) → d.ord c v G e = 0) → ∀ f ∈ 𝒜 c G, f ≠ 0 → {v | d.admitted c v ∧ d.ord c v G f ≠ 0}.Finite := by

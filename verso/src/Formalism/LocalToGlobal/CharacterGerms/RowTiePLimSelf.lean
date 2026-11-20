@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.L2.FormalSeriesBounds
 
 /- English proof (translation)
-Unfold `LimSelfSt AllSelf`. Introduce `C _ _ V O _ _ dd Y d _ I0 _ p g x x' hx hlim`. Conclude with `LimTy.lim_mem (Y.rawSelf p) V.l_prime.two_le (fun i => FBChart.self_chart_log_constantCoeff (Y := Y) (p := p) i) (fun i => FBChart.self_chart_exp_constantCoeff (Y := Y) (p := p) i) (fun i => FBChart.rawSelf_lgex (Y := Y) (p := p) i) (fun i => FBChart.rawSelf_exlg (Y := Y) (p := p …`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem limSelf_holds : LimSelfSt := by
   unfold LimSelfSt AllSelf

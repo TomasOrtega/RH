@@ -14,9 +14,9 @@ open GlobalTheory.SS.ArcInf
 namespace GlobalTheory.SS.ArcInf
 
 /- English proof (translation)
-Establish `hf` using `IsOpenImmersion.lift_fac j.left a.left hr`. Set `l : algOver k B ⟶ algOver k A` to `Over.homMk (IsOpenImmersion.lift j.left a.left hr) (by`. Rewrite using `[← Over.w j, ← Category.assoc, hf, Over.w a])`. Take `⟨χ, hχ⟩` from `algOverHom_surjective l`. Use `⟨χ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hχ]`. Use `ext1`. Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_of_range_subset {k : Type} [CommRing k] {G : Over (Sp k)} {A B : Type} [CommRing A]
     [Algebra k A] [CommRing B] [Algebra k B] (j : algOver k A ⟶ G) (hj : IsOpenImmersion j.left)
@@ -32,21 +32,21 @@ theorem exists_factor_of_range_subset {k : Type} [CommRing k] {G : Over (Sp k)} 
   exact hf
 
 /- English proof (translation)
-Introduce `k _ G O K F _ _ _ _ _ _ em σ L hL hem hsub a b' hab`. Set `x0 : (Sp L)` to `IsLocalRing.closedPoint L`. Take `⟨R, i, hi, hx, -⟩` from `Scheme.exists_affine_mem_range_and_range_subset (X := G.left) (x := b'.left x0) (U := ⊤) trivial`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (i ≫ G.hom : Spec R ⟶ Spec (CommRingCat.of k))`. Use `letI : Algebra k R := φ.hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Set `j : algOver k R ⟶ G` to `Over.homMk i hφ.symm`. Establish `hj : IsOpenImmersion j.left` using `hi`. Establish `hrb : Set.range b'.left ⊆ Set.range j.left`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hs : y ⤳ x0` using `IsLocalRing.specializes_closedPoint (R := L) y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hs'` using `hs.map b'.left.continuous`. Conclude with `hs'.mem_open j.left.isOpenEmbedding.isOpen_range hx`. Establish `hra : Set.range a.left ⊆ Set.range j.left`. Introduce and unpack `_ ⟨y, rfl⟩`. Set `p : (Sp F)` to `IsLocalRing.closedPoint F`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy : y = (algOverHom σ).left p` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Establish `hl : (algOverHom σ).left ≫ a.left = (algOverHom L.val).left ≫ b'.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, hab]`. Apply `hrb` to reduce the goal to its premises. Use `⟨(algOverHom L.val).left p, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hl]`. Take `⟨χL, hχL⟩` from `exists_factor_of_range_subset j hj b' hrb`. Take `⟨χK, hχK⟩` from `exists_factor_of_range_subset j hj a hra`. Establish `hc : σ.comp χK = L.val.comp χL`. Apply `eq_of_comp_eq hj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[algOverHom_comp, algOverHom_comp, Category.assoc, Category.assoc, hχK, hχL, hab]`. Establish `hmem : ∀ x, χK x ∈ em.range` using `fun x => by`. Apply `hsub` to reduce the goal to its premises. Establish `: σ (χK x) = (χL x : F)` using `DFunLike.congr_fun hc x`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(χL x).2`. Set `χO : R →ₐ[k] O` to `((AlgEquiv.ofInjective em hem).symm : em.range →ₐ[k] O).comp (χK.codRestrict em.range hmem)`. Establish `hO : em.comp χO = χK`. Use extensionality with `x`. Use `AlgEquiv.ofInjective_apply em hem ((AlgEquiv.ofInjective em hem).symm ⟨χK x, hmem x⟩)` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[AlgEquiv.apply_symm_apply]`. Conclude with `this.symm`. Use `⟨algOverHom χO ≫ j, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← algOverHom_comp, hO, hχK]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend_of_localSubring : ∀ (k : Type) [CommRing k] (G : Over (Sp k)) (O K F : Type) [CommRing O] [Algebra k O] [Field K] [Algebra k K] [Field F] [Algebra k F] (em : O →ₐ[k] K) (σ : K →ₐ[k] F) (L : Subalgebra k F), IsLocalRing L → Function.Injective em → (∀ x, σ x ∈ L → x ∈ Set.range em) → ∀ (a : algOver k K ⟶ G) (b' : algOver k L ⟶ G), algOverHom σ ≫ a = algOverHom L.val ≫ b' → ∃ b : algOver k O ⟶ G, algOverHom em ≫ b = a := by
   intro k _ G O K F _ _ _ _ _ _ em σ L hL hem hsub a b' hab

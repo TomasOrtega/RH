@@ -10,9 +10,9 @@ open Formalism.CohomologicalDescent Formalism.CohomologicalDescent.LogSmallConst
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hC P X' A hH hL hR hB ι _ _ W hW hcard hSp T hT Q hQ`. Establish `hs` using `Formalism.CohomologicalDescent.E.recursion_sum_exceptional (Formalism.CohomologicalDescent.E.exIntervalLt_of_exCut hC) hC Formalism.CohomologicalDescent.Top.prime_count_bound_rs P hH hL ι W hW hcard hSp Q hQ`. Establish `hTf : W.T2.card ≤ P.f` using `by rw [← hcard]; exact Finset.card_le_univ _`. Establish `ht` using `LargeParameterEstimates.tail_bound_holds P X' A _ hH hR hB hTf`. Establish `F` using `LargeParameterEstimates.large_parameter_facts_of_hyp hH hR hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : 0 ≤ P.b` using `F.b_pos.le`. Establish `hm : (0 : ℝ) ≤ (P.m : ℝ) * P.b * P.L ^ 2` using `by positivity`. Establish `hTT : (W.T2.card : ℝ) ≤ (T : ℝ)` using `by exact_mod_cast hT`. Establish `key : 30 * (W.T2.card : ℝ) * (P.m : ℝ) * P.b * P.L ^ 2 ≤ 30 * (T : ℝ) * (P.m : ℝ) * P.b * P.L ^ 2`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

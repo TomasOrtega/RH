@@ -43,7 +43,7 @@ def lequiv (g : GL (Fin (r + t)) F) : (Fin (r + t) → F) ≃ₗ[F] (Fin (r + t)
   LinearMap.GeneralLinearGroup.generalLinearEquiv F _ (Matrix.GeneralLinearGroup.toLin g)
 
 /- English proof (translation)
-Rewrite using `[lequiv, LinearMap.GeneralLinearGroup.generalLinearEquiv_to_linearMap, Matrix.GeneralLinearGroup.coe_toLin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lequiv_coe (g : GL (Fin (r + t)) F) :
     ((lequiv F r t g : (Fin (r + t) → F) ≃ₗ[F] (Fin (r + t) → F)) :
@@ -53,24 +53,22 @@ theorem lequiv_coe (g : GL (Fin (r + t)) F) :
     Matrix.GeneralLinearGroup.coe_toLin]
 
 /- English proof (translation)
-Rewrite using `[smul_def, ← lequiv_coe, LinearEquiv.finrank_map_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_smul (g : GL (Fin (r + t)) F) (W : Submodule F (Fin (r + t) → F)) :
     finrank F (g • W : Submodule F (Fin (r + t) → F)) = finrank F W := by
   rw [smul_def, ← lequiv_coe, LinearEquiv.finrank_map_eq]
 
 /- English proof (translation)
-Rewrite using `[MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hi hj`. Establish `hmem : (Pi.single j (1 : F) : Fin (r + t) → F) ∈ firstBlock F r t`. Introduce `k hk`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hkj : k ≠ j`. Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Simplify using `[hkj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Establish `h2 : Matrix.mulVecLin (g : Matrix (Fin (r + t)) (Fin (r + t)) F) (Pi.single j 1) ∈ firstBlock F r t`. Rewrite using `[← h, smul_def]`. Conclude with `Submodule.mem_map_of_mem hmem`. Establish `h3` using `h2 i hi`. Simplify `h3` using `[Matrix.mulVecLin_apply, Matrix.mulVec_single_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[smul_def]`. Introduce and unpack `_ ⟨v, hv, rfl⟩ i hi`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `hj : (j : ℕ) < r`. Simplify using `[hg i j hi hj]`. Simplify using `[hv j (by omega)]`.
-
-Conclude with `finrank_smul F r t g _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_stabilizer_iff (g : GL (Fin (r + t)) F) :
     g ∈ MulAction.stabilizer (GL (Fin (r + t)) F) (firstBlock F r t) ↔

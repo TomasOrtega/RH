@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.Admi
 import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.NilToPhi
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Conclude with `⟨c, fun g => hc (f g)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.Ru.crystallineComparison.isGr_comp {Γ Γ' L : Type} [Group Γ] [Group Γ'] [Field L] {d : ℕ}
     {ρ₀ ρ : Γ →* GL (Fin d) L} (f : Γ' →* Γ) (h : UpperTheory.Gal.Int.Geo.IsGr ρ₀ ρ) :
@@ -11,11 +11,11 @@ private theorem UpperTheory.Ru.crystallineComparison.isGr_comp {Γ Γ' L : Type}
   exact ⟨c, fun g => hc (f g)⟩
 
 /- English proof (translation)
-Introduce `hGeo E Ω _ _ _ _ _ l _ ι H θ hN dd ρ hc hP w hw n ϑ R hcong hR`. Take `⟨ρ₀, hmat, hgr⟩` from `hP`. Take `⟨h0, hroot⟩` from `hR`. Introduce `P AI hT A hA O _ _ _ Bw hj`. Establish `hcr` using `hGeo E Ω l H θ hN dd ρ₀ hmat w hw n ϑ hcong P AI hT A hA O Bw hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcont : Continuous (ρ.comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype) := hc.comp continuous_subtype_val`. Take `⟨LL, r', ϑ', hmod, hcrE, hag, hnil⟩` from `UpperTheory.Ru.crystallineComparison.joinQ l P AI hT E Ω _ O Bw _ _ n ϑ dd _ _ hcont (UpperTheory.Ru.crystallineComparison.isGr_comp _ hgr) hcr`. Use `UpperTheory.Ru.crystallineComparison.nilToPhi l P AI hT ι E Ω A w hA O Bw hj dd _ LL r' hmod hcrE _ hnil R (ι (ϑ 0)) ((map_ne_zero ι).2 h0) ?_` and prove the remaining obligations. Rewrite using `[← hroot, UpperTheory.Gal.crystallineComparison.heckePol_map, UpperTheory.Gal.crystallineComparison.heckePol_map]`. Unfold `UpperTheory.Gal.crystallineComparison.heckePol`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_congr rfl fun j hj' => ?_` and prove the remaining obligations. Establish `hjn : j ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hj')`. Simplify using `only [RingHom.comp_apply]`. Use `hag j hjn` as an intermediate fact. Rewrite using `[show algebraMap ↥LL.1 (Formalism.ConjugateSelfDual.Qbar l) (ϑ' j) = ϑ j from this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Ru.crystallineComparison.phiStep_of :
     UpperTheory.Ru.crystallineComparison.GeoSide → UpperTheory.Gal.Int.Geo.PhiStep := by

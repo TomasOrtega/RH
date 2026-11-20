@@ -6,11 +6,9 @@ open scoped Matrix
 namespace GlobalTheory.Ord2.SelPerp
 
 /- English proof (translation)
-Use `haveI : Module.IsTorsionFree ℤ_[l] c.O := by`. Use `Module.IsTorsionFree.of_smul_eq_zero fun a x h => ?_` and prove the remaining obligations. Establish `h' : a • (x : Qbar l) = 0` using `by rw [← Subalgebra.coe_smul, h]; rfl`. Rewrite `h'` using `[Algebra.smul_def, mul_eq_zero]`. Break down `h' with h' | h'` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `left`. Use `congrArg norm h'` as an intermediate fact. Rewrite `this` using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), norm_algebraMap', norm_zero]`. Establish `h2 : ((a : ℤ_[l]) : ℚ_[l]) = 0` using `norm_eq_zero.1 this`. Conclude with `PadicInt.coe_eq_zero.1 h2`.
-
-Use `right`. Conclude with `Subtype.ext h'`. Use `infer_instance`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coef_free_pairSurj (l : ℕ) [Fact l.Prime] (c : Coef l) : Module.Free ℤ_[l] c.O := by
   haveI : Module.IsTorsionFree ℤ_[l] c.O := by
@@ -28,13 +26,13 @@ theorem coef_free_pairSurj (l : ℕ) [Fact l.Prime] (c : Coef l) : Module.Free �
   infer_instance
 
 /- English proof (translation)
-Use `haveI := coef_free_pairSurj l c`. Set `e` to `Module.Free.chooseBasis ℤ_[l] c.O`. Set `f : c.O →ₗ[ℤ_[l]] ℤ_[l]` to `e.constr ℤ_[l] fun i => (((φ (red c n (e i))).val : ℕ) : ℤ_[l])`. Establish `hf : ∀ x : c.O, PadicInt.toZModPow n (f x) = φ (red c n x)`. Introduce `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx : x ∈ Submodule.span ℤ_[l] (Set.range e)` using `by rw [e.span_eq]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Simplify using `only [f, Module.Basis.constr_basis]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast, ZMod.natCast_zmod_val]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]`. Consider the case `smul a x _ hx`. Rewrite using `[map_smul, smul_eq_mul, map_mul, hx, red_smul, map_nsmul, nsmul_eq_mul, ZMod.natCast_zmod_val]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, -⟩` from `tau_spec c f`. Use `⟨red c n b, fun a => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `red_surjective c n a`. Rewrite using `[← hf, hb, ← map_mul, tbA_red, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_tbA_mul (l : ℕ) [Fact l.Prime] (c : Coef l) (n : ℕ) (φ : Qn c n →+ ZMod (l ^ n)) :
     ∃ b : Qn c n, ∀ a : Qn c n, φ a = GlobalTheory.Ord2.SelPerp.tbA c n (a * b) := by

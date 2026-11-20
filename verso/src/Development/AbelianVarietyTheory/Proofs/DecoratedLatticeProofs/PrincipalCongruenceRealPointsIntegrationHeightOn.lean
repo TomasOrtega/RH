@@ -30,7 +30,7 @@ namespace GlobalTheory.Core.Rk.PrinMeas
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D A β (frameLat A) hfr g).1 (Formalism.L2.DIV.parLev_St (Formalism.L2.DIV.lev_le_parLev hg)) v`.
+A detailed English derivation is pending.
 -/
 theorem proj_mem_stabLoc_of_mem_prinInf (A : HSp D) (β : GL (Fin A.rank) (Formalism.IndefR.Lev.EAf D))
     (Z : Finset (Formalism.L2.DIV.Pl D.host.E)) (hfr : Formalism.L2.DIV.IsFrame β (frameLat A)) {g : GA D A}
@@ -39,7 +39,7 @@ theorem proj_mem_stabLoc_of_mem_prinInf (A : HSp D) (β : GL (Fin A.rank) (Forma
   (GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D A β (frameLat A) hfr g).1 (Formalism.L2.DIV.parLev_St (Formalism.L2.DIV.lev_le_parLev hg)) v
 
 /- English proof (translation)
-Establish `h3` using `h.maj_eq τ`. Rewrite `h3` using `[Matrix.mul_one]`. Rewrite using `[frameInv, Matrix.mul_assoc]`. Conclude with `mul_eq_one_comm.1 h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameInv_eq_one {θ : InfFam D} {A : HSp D} {cA : CptF A} {a : GL (Fin A.rank) (AE D)} (h : Defin θ A cA a)
     (τ : D.what₂.Tau) : frameInv θ A a τ = 1 := by
@@ -49,21 +49,19 @@ theorem frameInv_eq_one {θ : InfFam D} {A : HSp D} {cA : CptF A} {a : GL (Fin A
   exact mul_eq_one_comm.1 h3
 
 /- English proof (translation)
-Introduce `D θ A cA a hD β Z hfr m hm`. Use `haveI := hm`. Use `set K := prin A β Z`. Set `S : Subgroup (GA D A)` to `(Formalism.L2.DIV.lev D.sp.cm A.gram β (prinDat A Z)).comap (Formalism.IndefR.Lev.finE A)`. Establish `hSset : (S : Set (GA D A)) = prinInf A β Z` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hstab : ∀ g ∈ S, ∀ v, proj D.sp.cm.sig A.gram v g ∈ stabLoc D.sp.cm.sig A.gram (frameLat A) v` using `fun g hg v => proj_mem_stabLoc_of_mem_prinInf A β Z hfr hg v`. Take `⟨U, hU, hUk⟩` from `GlobalTheory.T.exists_open_principal_congruence_finitely_many_primes D A β Z`. Establish `hUS : U ≤ S` using `fun k hk => by`. Use `Subgroup.mem_comap.2 (GlobalTheory.LevSplit.mem_lev_of_red D.sp.cm A.gram β (prinDat A Z) _ (GlobalTheory.LevSplit.finE_mem_UA A k) (hUk k hk).1 fun PP hPP => ?_)` and prove the remaining obligations. Break down `hPP with h | h` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hUk k hk).2 PP h`. Conclude with `absurd h (Finset.notMem_empty PP)`. Establish `hSopen : IsOpen (S : Set (GA D A))` using `Subgroup.isOpen_mono hUS hU`. Establish `hfinK : ∀ g ∈ S, (GlobalTheory.AutMult.toFin A g : GA D A) ∈ K` using `fun g hg => ⟨(GlobalTheory.AutMult.toFin A g).2, Subgroup.mem_comap.2 (by`. Rewrite using `[GlobalTheory.ChainOnto.HaarInf.finE_toFin]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `Subgroup.mem_comap.1 hg)⟩`. Establish `hker : {g : GA D A | g ∈ S ∧ GlobalTheory.AutMult.toInf A g = 1} = (K : Set (GA D A))`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, GlobalTheory.ChainOnto.HaarInf.toInf_eq_one_iff]`. Conclude with `⟨fun h => ⟨h.2, h.1⟩, fun h => ⟨h.2, h.1⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hKc : IsCompact (K : Set (GA D A))` using `GlobalTheory.T.isCompact_finite_adelic_subgroup_integral_open D A (frameLat A) (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) K inf_le_left (fun k hk v => hstab k hk.2 v) ⟨U, hU, fun k hk hkf => ⟨hkf, hUS hk⟩⟩`. Establish `hpi : ∀ b : GinfC A, GlobalTheory.AutMult.toInf A ((GinfC A).subtype b) = b` using `fun b => GlobalTheory.AutMult.toInf_coe b`. Establish `hiS : ∀ b : GinfC A, (GinfC A).subtype b ∈ S` using `fun b => by`. Use `Subgroup.mem_comap.2 ?_` and prove the remaining obligations. Rewrite using `[Subgroup.subtype_apply, GlobalTheory.ChainOnto.HaarInf.finE_of_mem_ginfC A b.2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Establish `hHaar : (Measure.map (GlobalTheory.AutMult.toInf A) (m.restrict (S : Set (GA D A)))).IsHaarMeasure` using `GlobalTheory.T.map_restrict_isHaar_of_open_product_compact (GA D A) (GinfC A) m S (GinfC A).subtype (GlobalTheory.AutMult.toInf A) hSopen continuous_subtype_val (GlobalTheory.AutMult.continuous_toInf A) hpi hiS (hker ▸ hKc)`. Use `⟨hSopen.measurableSet, fun g hg v _ => hstab g hg v, fun g hg => ?_, _, hHaar, fun F hF hinv => ?_⟩` and prove the remaining obligations. Establish `hK : g ∈ Kmax A a`. Use `(hD.maj.mem_Kmax_iff hD.inf g).2 ⟨mem_levelOpen.2 (hstab g hg), fun τ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[frameInv_eq_one hD τ]`. Conclude with `Commute.one_right _`. Use `hgt_mul A a 1 ((io_mem_Khat A a).2 ⟨hK, one_mem _⟩)` as an intermediate fact. Express the relevant statement in the definitionally equal form `hgt A a (io A (g, 1)) = 1`. Simplify using `using this`.
-
-Establish `hmeas : AEMeasurable (GlobalTheory.AutMult.toInf A) (m.restrict (S : Set (GA D A)))` using `(GlobalTheory.AutMult.continuous_toInf A).measurable.aemeasurable`. Establish `hFA : ∀ g ∈ (S : Set (GA D A)), F g = (fun b : GinfC A => F b) (GlobalTheory.AutMult.toInf A g)` using `fun g hg => by conv_lhs => rw [← GlobalTheory.AutMult.toInf_mul_toFin g]`. Conclude with `hinv _ _ (hfinK g hg)`. Establish `hf : AEStronglyMeasurable (fun b : GinfC A => F b) (Measure.map (GlobalTheory.AutMult.toInf A) (m.restrict (S : Set (GA D A))))` using `(hF.comp continuous_subtype_val).aestronglyMeasurable`. Rewrite using `[← hSset, setIntegral_congr_fun hSopen.measurableSet hFA, integral_map hmeas hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prinInf_props : ∀ (D : D7) (θ : InfFam D) (A : HSp D) (cA : CptF A) (a : GL (Fin A.rank) (AE D)), Defin θ A cA a → ∀ (β : GL (Fin A.rank) (Formalism.IndefR.Lev.EAf D)) (Z : Finset (Formalism.L2.DIV.Pl D.host.E)), Formalism.L2.DIV.IsFrame β (frameLat A) → ∀ m : Measure (GA D A), m.IsHaarMeasure → MeasurableSet (prinInf A β Z) ∧ prinInf A β Z ⊆ openOff A (frameLat A) (under Z) ∧ (∀ g ∈ prinInf A β Z, hgtL A (frameLat A) a g = 1) ∧ ∃ mR : Measure (GinfC A), mR.IsHaarMeasure ∧ ∀ F : GA D A → ℂ, Continuous F → (∀ (b : GinfC A), ∀ κ ∈ prin A β Z, F ((b : GA D A) * κ) = F b) → ∫ g in prinInf A β Z, F g ∂m = ∫ b : GinfC A, F b ∂mR := by
   intro D θ A cA a hD β Z hfr m hm

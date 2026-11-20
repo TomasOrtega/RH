@@ -12,19 +12,17 @@ open scoped Formalism.Per
 namespace GlobalTheory.PSer
 
 /- English proof (translation)
-Introduce `l _ h d r y hh hr0 hr1 hy hdet c hc`. Establish `h1 : 1 ≤ h` using `by omega`. Use `GlobalTheory.T.indep_over_padic_of_indep_mod_prime l d (Fin 2) (fun a i => abelian₂ h i (y a)) (fun i => gam l h i r) ?_ ?_ c ?_` and prove the remaining obligations. Introduce `a i`. Conclude with `(GlobalTheory.T.untiltFrobeniusDoubleSeries_hasSum_and_norm_bounds l h i r (y a) h1 hr1 (hy a)).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn`. Apply `hdet n` to reduce the goal to its premises. Establish `hls` using `fun j => GlobalTheory.T.untiltFrobeniusLaurentSeries_natCombination_approx l h j d r (fun a => y a 0) n h1 hr0 hr1 (fun a => hy a 0)`. Establish `hρ0 : 0 ≤ r ^ l ^ h` using `pow_nonneg hr0 _`. Establish `hρ1 : r ^ l ^ h < 1` using `pow_lt_one₀ hr0 hr1 (pow_pos (Fact.out : l.Prime).pos h).ne'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.norm_tiltUntilt_le_of_frobeniusSeries_size_le l h (r ^ l ^ h) (∑ a, n a • y a 0) hh hρ0 hρ1 (lt_of_le_of_lt (hls 0).1 hr1) ?_` and prove the remaining obligations. Introduce `j hj`. Establish `hG` using `GlobalTheory.T.untiltFrobeniusSeriesRadiusSize_laws l h j r h1 hr0 hr1`. Rewrite using `[hG.2.2.2.2.1]`. Establish `hnn : 0 ≤ ‖(l : ℂ_[l])‖ * gam l h j r` using `mul_nonneg (norm_nonneg _) hG.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `(hls j).2`. Establish `hB : ‖∑ a, (n a : ℂ_[l]) * (lam h j (y a 0) - abelian₂ h j (y a))‖ ≤ ‖(l : ℂ_[l])‖ * gam l h j r`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hnn fun a _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Establish `hb` using `(GlobalTheory.T.untiltFrobeniusDoubleSeries_hasSum_and_norm_bounds l h j r (y a) h1 hr1 (hy a)).2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[norm_sub_rev]`. Combine the equalities or inequalities in the displayed calculation. Establish `hC : ‖∑ a, (n a : ℂ_[l]) * abelian₂ h j (y a)‖ ≤ ‖(l : ℂ_[l])‖ * gam l h j r` using `hn ⟨j, hj⟩`. Establish `heq : lam h j (∑ a, n a • y a 0) = (lam h j (∑ a, n a • y a 0) - ∑ a, (n a : ℂ_[l]) * lam h j (y a 0)) + (∑ a, (n a : ℂ_[l]) * (lam h j (y a 0) - abelian₂ h j (y a)) + ∑ a, (n a : ℂ_[l]) * abelian₂ h j (y a))`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hA ?_)` and prove the remaining obligations. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hB hC)`. Introduce `i`.
-
-Conclude with `hc i.1 i.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Lam_indep_of_first_terms : ∀ (l : ℕ) [Fact l.Prime] (h d : ℕ) (r : ℝ) (y : Fin d → ℕ → Fl l), 2 ≤ h → 0 ≤ r → r < 1 → (∀ a k, ‖sh (y a k)‖ ≤ r) → (∀ n : Fin d → ℕ, ‖sh (∑ a, n a • y a 0)‖ ≤ r ^ l ^ h → ∀ a, l ∣ n a) → ∀ c : Fin d → ℚ_[l], (∀ j : ℕ, j < 2 → ∑ a, algebraMap ℚ_[l] ℂ_[l] (c a) * abelian₂ h j (y a) = 0) → c = 0 := by
   intro l _ h d r y hh hr0 hr1 hy hdet c hc

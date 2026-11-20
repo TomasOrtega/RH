@@ -19,7 +19,7 @@ section
 variable (A R : Type) [CommRing A] [IsDomain A] [CommRing R] [Algebra A R]
 
 /- English proof (translation)
-Establish `h : IsSMulRegular R a` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero ha)`. Use `mem_nonZeroDivisors_iff_right.mpr fun x hx => h ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def, smul_zero]`. Rewrite using `[mul_comm, mul_zero]`. Conclude with `hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_nonZeroDivisors [Module.Flat A R] {a : A} (ha : a ≠ 0) :
     algebraMap A R a ∈ nonZeroDivisors R := by
@@ -30,7 +30,7 @@ theorem algebraMap_mem_nonZeroDivisors [Module.Flat A R] {a : A} (ha : a ≠ 0) 
   rw [mul_comm, mul_zero]; exact hx
 
 /- English proof (translation)
-Apply `IsLocalization.injective (M := Algebra.algebraMapSubmonoid R (nonZeroDivisors A))` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `algebraMap_mem_nonZeroDivisors A R (nonZeroDivisors.ne_zero ha)`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem genFib_injective [Module.Flat A R] : Function.Injective (algebraMap R (GenFib A R)) := by
   apply IsLocalization.injective (M := Algebra.algebraMapSubmonoid R (nonZeroDivisors A))
@@ -38,7 +38,7 @@ theorem genFib_injective [Module.Flat A R] : Function.Injective (algebraMap R (G
   exact algebraMap_mem_nonZeroDivisors A R (nonZeroDivisors.ne_zero ha)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.map_units (M := Algebra.algebraMapSubmonoid R (nonZeroDivisors A)) (GenFib A R) ⟨algebraMap A R a, ⟨a, mem_nonZeroDivisors_of_ne_zero ha, rfl⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_genFib {a : A} (ha : a ≠ 0) :
     IsUnit (algebraMap R (GenFib A R) (algebraMap A R a)) :=
@@ -57,7 +57,7 @@ theorem baseHom_apply (r : R) :
     baseHom A R D r = algebraMap (GenFib A R) D (algebraMap R (GenFib A R) r) := rfl
 
 /- English proof (translation)
-Use `letI := (baseHom A R D).toAlgebra`. Use `haveI : IsScalarTower R (GenFib A R) D := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Conclude with `IsIntegral.map (σ.restrictScalars R) (show IsIntegral R d from hd)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem map_mem (σ : D →ₐ[GenFib A R] D) {d : D} (hd : d ∈ closure A R D) :
     σ d ∈ closure A R D := by
@@ -90,9 +90,7 @@ variable {A R D : Type} [CommRing A] [CommRing R] [Algebra A R] [CommRing D]
   [Algebra (GenFib A R) D]
 
 /- English proof (translation)
-Apply `hIC` to reduce the goal to its premises. Use `letI := (baseHom A R D).toAlgebra`. Use `haveI : IsScalarTower R (GenFib A R) D := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Rewrite using `[← isIntegral_algHom_iff (IsScalarTower.toAlgHom R (GenFib A R) D) hinj]`. Use `show IsIntegral R (algebraMap (GenFib A R) D (τ c))`.
-
-Rewrite using `[hτ]`. Conclude with `(sum_mem fun g _ => map_mem (act g).toAlgHom hc : ∑ g, act g c ∈ GlobalTheory.KeyOriginNoeth.closure A R D)`.
+Reduce the claim to the hypotheses of an applicable result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_mem (hIC : ∀ f : GenFib A R, IsIntegral R f → ∃ r : R, algebraMap R (GenFib A R) r = f)
     (hinj : Function.Injective (algebraMap (GenFib A R) D))
@@ -109,7 +107,7 @@ theorem trace_mem (hIC : ∀ f : GenFib A R, IsIntegral R f → ∃ r : R, algeb
   exact (sum_mem fun g _ => map_mem (act g).toAlgHom hc : ∑ g, act g c ∈ GlobalTheory.KeyOriginNoeth.closure A R D)
 
 /- English proof (translation)
-Use `letI := closureAlg A R D`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem smul_coe (r : R) (c : closure A R D) :
     ((letI := closureAlg A R D; r • c : closure A R D) : D) =
@@ -120,33 +118,29 @@ theorem smul_coe (r : R) (c : closure A R D) :
 end
 
 /- English proof (translation)
-Introduce `A R _ _ _ _ _ _ _ _ hHart hIC q _ D _ _ act hT`. Use `letI := closureAlg A R D`. Take `⟨hinj, ⟨τ, hτ⟩, n, x, y, hxy⟩` from `GlobalTheory.TorsorTrace.injective_trace_galoisData _ D q act hT`. Establish `hRinj` using `genFib_injective A R`. Establish `htr : ∀ c ∈ closure A R D, ∃ r : R, algebraMap R (GenFib A R) r = τ c` using `fun c hc => trace_mem hIC hinj τ q act hτ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.Finite (GenFib A R) D := hT.1`. Take `⟨a, ha, hmem⟩` from `GlobalTheory.T.exists_mul_mem_integralClosureOverGenericFibre A R D (Finset.univ.image x ∪ Finset.univ.image y)`. Use `set b := baseHom A R D (algebraMap A R a) with hbdef`. Establish `hb : ∀ g, act g b = b` using `fun g => (act g).commutes _`. Set `x' : Fin n → closure A R D` to `fun i => ⟨b * x i, hmem _ (by simp)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `y' : Fin n → closure A R D` to `fun i => ⟨b * y i, hmem _ (by simp)⟩`. Set `act' : Multiplicative (ZMod q) →* (closure A R D ≃ₐ[R] closure A R D)` to `{ toFun := fun g => restr (act g) map_one' := by ext c; simp map_mul' := fun g h => by ext c; simp [map_mul] }`. Establish `hact' : ∀ g c, ((act' g c : closure A R D) : D) = act g c` using `fun _ _ => rfl`. Set `Tf : closure A R D → R` to `fun c => Classical.choose (htr c c.2)`. Establish `hT' : ∀ c, algebraMap R (GenFib A R) (Tf c) = τ c` using `fun c => Classical.choose_spec (htr c c.2)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `T : closure A R D →ₗ[R] R` to `{ toFun := Tf map_add' := fun c c' => hRinj (by simp [hT']) map_smul' := fun r c => hRinj (by`. Rewrite using `[hT', smul_coe, map_smul, smul_eq_mul, RingHom.id_apply, smul_eq_mul, map_mul, hT']) }`. Establish `key : ∀ g, ∑ i, (x' i : D) * act g (y' i) = b * b * ∑ i, x i * act g (y i)`. Introduce `g`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show b * x i * act g (b * y i) = _`. Rewrite using `[map_mul, hb]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∀ g, ∑ i, (x' i : D) * act g (y' i) = if g = 1 then b * b else 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `intro g; rw [key, hxy]; split_ifs <;> simp`. Establish `hbb : b * b = baseHom A R D (algebraMap A R (a * a))` using `by simp [hbdef, map_mul]`. Use `⟨act', T, ?_, ⟨a * a, mul_ne_zero ha ha, n, x', y', ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show baseHom A R D (Tf c) = _`. Rewrite using `[baseHom_apply, hT', hτ]`. Simplify using `[hact']`. Introduce `g`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hg`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Subring.coe_mul, hact']`. Rewrite using `[h1, if_pos hg, hbb]`. Both sides reduce to the same expression. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Subring.coe_mul, hact']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[h1, if_neg hg]`. Both sides reduce to the same expression. Introduce `a' ha' c hc`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `congrArg Subtype.val hc`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[smul_coe, Algebra.smul_def]`. Simplify using `using ((isUnit_genFib A R ha').map (algebraMap (GenFib A R) D)).mul_right_eq_zero.mp h1`. Use `GlobalTheory.T.integralClosureOverGenericFibre_hartogs A R hHart hRinj D τ htr (a * a) (mul_ne_zero ha ha) n (fun i => (x' i : D)) (fun i => (y' i : D)) (fun i => (y' i).2) ?_` and prove the remaining obligations. Introduce `d`. Establish `e1 : ∀ i, algebraMap (GenFib A R) D (τ ((y' i : D) * d)) = ∑ g, act g (y' i) * act g d`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[hτ]`. Simplify using `[map_mul]`. Simplify using `only [e1, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∀ g, ∑ i, (x' i : D) * (act g (y' i) * act g d) = (if g = 1 then b * b else 0) * act g d`. Introduce `g`. Rewrite using `[← h1, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[Finset.sum_congr rfl fun g _ => e2 g]`.
-
-Simplify using `[hbb]`. Use `⟨fun c => ?_⟩` and prove the remaining obligations. Use `letI := (baseHom A R D).toAlgebra`. Set `f : closure A R D →ₐ[R] D` to `{ (closure A R D).subtype with commutes' := fun _ => rfl }`. Conclude with `(isIntegral_algHom_iff f Subtype.val_injective).mp c.2`.
-
-Use `haveI : Nontrivial (GenFib A R) := hRinj.nontrivial haveI : Nontrivial D := hinj.nontrivial`. Conclude with `⟨⟨0, 1, fun h => zero_ne_one (α := D) (by simpa using congrArg Subtype.val h)⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem closureData : ∀ (A R : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [CommRing R] [Algebra A R]
     [Nontrivial R] [Module.Flat A R] [IsNoetherianRing R],

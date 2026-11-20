@@ -24,15 +24,13 @@ namespace GlobalTheory.BottomPairData
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `hV τ`. Establish `h1 : (V.gram.map τ).reindex e e = 1`. Rewrite using `[hg, Matrix.map_one _ (map_zero τ) (map_one τ)]`. Conclude with `Matrix.submatrix_one_equiv _`. Rewrite `hP` using `[h1, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hP' : (P.1)ᴴ * P.1 = Formalism.UG.Jpq (V.sig τ).1 (V.sig τ).2` using `hP`. Establish `hq : (V.sig τ).2 = 0`. Assume the negation of the conclusion as `hq`. Set `k : Fin (V.sig τ).2` to `⟨0, Nat.pos_of_ne_zero hq⟩`. Establish `hk` using `congrArg (fun M => (M (Sum.inr k) (Sum.inr k)).re) hP'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.UG.Jpq, Matrix.fromBlocks_apply₂₂, Matrix.neg_apply, Matrix.one_apply_eq, Complex.neg_re, Complex.one_re] at hk`. Establish `: 0 ≤ (((P.1)ᴴ * P.1) (Sum.inr k) (Sum.inr k)).re`. Rewrite using `[Matrix.mul_apply, Complex.re_sum]`. Conclude with `Finset.sum_nonneg fun l _ => by`. Rewrite using `[Matrix.conjTranspose_apply, Complex.star_def, ← Complex.normSq_eq_conj_mul_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Complex.normSq_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hq, ?_⟩` and prove the remaining obligations. Use `Fintype.card_congr e` as an intermediate fact. Simplify using `only [Fintype.card_fin, Fintype.card_sum, hq] at this`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sig_of_gram_one {V : HSp D} (hg : V.gram = 1) (hV : V.SigOK) (τ : D.host.E →+* ℂ) :
     (V.sig τ).2 = 0 ∧ (V.sig τ).1 = V.rank := by
@@ -78,9 +76,9 @@ theorem negFrame_inr (A : HSp D) (τ : D.what₂.Tau) (k : Fin ((neg A).sig (tau
 
 open GlobalTheory.Grid (neg neg_gram) in
 /- English proof (translation)
-Use extensionality with `r c`. Break down `r with a | b` into its components or cases. Rewrite using `[Matrix.neg_apply, show negFrame A τ (Sum.inl a) c = 0 from rfl, neg_zero, Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun x _ => by`. Break down `x with x | x` into its components or cases.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show negFrame A τ (Sum.inl x) c = 0 from rfl, mul_zero]`. Simplify using `[Formalism.UG.Jpq]`. Simplify using `only [Formalism.UG.Jpq, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, negFrame_inl, negFrame_inr, mul_zero, Finset.sum_const_zero, Matrix.neg_apply, Matrix.zero_apply, zero_mul, zero_add, Matrix.one_apply, neg_mul, ite_mul, one_mul, …`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jpq_mul_negFrame (A : HSp D) (τ : D.what₂.Tau) :
     Formalism.UG.Jpq ((neg A).sig (tauE D τ)).1 ((neg A).sig (tauE D τ)).2 * negFrame A τ = -negFrame A τ := by
@@ -97,15 +95,15 @@ theorem jpq_mul_negFrame (A : HSp D) (τ : D.what₂.Tau) :
 
 open GlobalTheory.Grid (neg neg_gram) in
 /- English proof (translation)
-Take `⟨hq, hp⟩` from `sig_of_gram_one hg hA (tauE D τ)`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`. Simplify using `only [Matrix.conjTranspose_apply]`. Establish `e1 : ∀ x, star (negFrame A τ (Sum.inl x) a) * negFrame A τ (Sum.inl x) b = 0` using `fun x => by`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[show negFrame A τ (Sum.inl x) a = 0 from rfl, star_zero, zero_mul]`. Establish `e2 : ∀ x : Fin ((neg A).sig (tauE D τ)).2, star (negFrame A τ (Sum.inr x) a) * negFrame A τ (Sum.inr x) b = if (x : ℕ) = a ∧ (x : ℕ) = b then 1 else 0` using `fun x => by`. Rewrite using `[negFrame_inr, negFrame_inr]`. Apply the tactic sequence `by_cases h1 : (x : ℕ) = a <;> by_cases h2 : (x : ℕ) = b <;> simp [h1, h2]`. Rewrite using `[Finset.sum_eq_zero fun x _ => e1 x, zero_add, Finset.sum_congr rfl fun x _ => e2 x]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : (a : ℕ) < ((neg A).sig (tauE D τ)).2` using `by show (a : ℕ) < (A.sig (tauE D τ)).1`. Rewrite using `[hp]`. Conclude with `a.2`. Rewrite using `[Finset.sum_eq_single ⟨a, hk⟩]`. Distinguish the cases in `h : a = b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Rewrite using `[if_neg h, if_neg]`. Introduce and unpack `⟨-, h2⟩`. Conclude with `h (Fin.ext h2)`. Introduce `x _ hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, -⟩`. Conclude with `hx (Fin.ext h1)`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem negFrame_conj_mul (A : HSp D) (hg : A.gram = 1) (hA : A.SigOK) (τ : D.what₂.Tau) :
     (negFrame A τ)ᴴ * negFrame A τ = 1 := by
@@ -132,7 +130,7 @@ theorem negFrame_conj_mul (A : HSp D) (hg : A.gram = 1) (hA : A.SigOK) (τ : D.w
 
 open GlobalTheory.Grid (neg neg_gram) in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gramAt, neg_gram, hg, Matrix.map_apply, Matrix.neg_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramAt_neg_of_gram_one {A : HSp D} (hg : A.gram = 1) (τ : D.what₂.Tau) : gramAt D (neg A) τ = -1 := by
   ext a b
@@ -142,13 +140,13 @@ theorem gramAt_neg_of_gram_one {A : HSp D} (hg : A.gram = 1) (τ : D.what₂.Tau
 open GlobalTheory.Grid (neg neg_gram sigOK_sgn isCartanInv_sgn) in
 
 /- English proof (translation)
-Take `⟨ν, 𝓕, hν⟩` from `GlobalTheory.Size.exists_isCovolOne (neg A) WW`. Establish `hg` using `hstd.1`. Establish `hgn : ∀ τ, gramAt D (neg A) τ = -1` using `gramAt_neg_of_gram_one hg`. Establish `hs : ∀ τ, X.rA.s τ = 1` using `fun τ => (hstd.2.2 τ).1`. Use `⟨negFrame A, 1, ν, 𝓕, ⟨⟨h1, h1', ?_, h.isVac.2.inf, sigOK_sgn true hA, fun τ => ?_, fun τ => isCartanInv_sgn true _ τ (h.rigA.2.2 τ).1, fun τ => (h.rigW.2.2 τ).1, fun τ => ?_⟩, ?_, fun τ => ?_, h.weil t, hν⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h.rank.symm`. Rewrite using `[Matrix.mul_assoc, jpq_mul_negFrame, Matrix.mul_neg, negFrame_conj_mul A hg hA, hgn]`. Use `show negFrame A τ * -X.rA.s τ = _`. Rewrite using `[hs, jpq_mul_negFrame, Matrix.mul_neg, Matrix.mul_one]`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨fun _ => false, ?_⟩` and prove the remaining obligations. Simplify using `only [JR, neg_gram, hg]`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.mul_apply, Matrix.one_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hgn, hs]`. Simplify using `[compAt]`.
+A detailed English derivation is pending.
 -/
 theorem exists_pair {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     {α β : T → ((AE D)ˣ →* Circle)} {νH : T → Formalism.L2.Host.HChar D.host.E} {S}
@@ -177,11 +175,11 @@ theorem exists_pair {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) {ψ : AddCh
 open GlobalTheory.Grid (neg) in
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `D.R.t_odd`. Establish `h2 : D.R.m ≤ D.R.r` using `by have := D.R.m_add_three_le_k; unfold Ranks.r; omega`. Establish `hr : Odd D.R.r`. Use `GlobalTheory.ChiGrid.odd_sLen D` as an intermediate fact. Simplify using `only [GlobalTheory.ChiGrid.sLen] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(Nat.odd_add.1 this).2 (by decide)`. Take `⟨w, hw⟩` from `hr`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Simplify using `only [botBig, botSmall, rankV, GlobalTheory.ChiGrid.sLen]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> omega`.
+A detailed English derivation is pending.
 -/
 theorem one_le_bot (i j : Fin D.R.m) : 1 ≤ botBig D i j ∧ 1 ≤ botSmall D i j := by
   obtain ⟨u, hu⟩ := D.R.t_odd
@@ -201,7 +199,7 @@ end GlobalTheory.BottomPairData
 open GlobalTheory.BottomPairData in
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ _ G => ?_⟩⟩` and prove the remaining obligations. Introduce `W i j A A' WW X hX hA t`. Establish `hb` using `one_le_bot (D := D) i j`. Conclude with `exists_pair X (GlobalTheory.BottomIPData.isBottomTri_is hX) hX.std hA (hX.rank ▸ hb.1) (hX.rank' ▸ hb.2) t`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BottomPairData.pair_data : GBig fun {D} T Lc _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW),
   IsBottomTri W i j X → A.SigOK → ∀ t : T, ∃ (cA : CptF (GlobalTheory.Grid.neg A)) (a : GL (Fin (GlobalTheory.Grid.neg A).rank) (AE D)) (νW : Measure (WO (GlobalTheory.Grid.neg A) WW)) (𝓕W : Set (WO (GlobalTheory.Grid.neg A) WW)), Pair W.ψ W.θ (GlobalTheory.Grid.neg A) WW (GlobalTheory.BottomIPData.betaB G i j) (GlobalTheory.BottomIPData.betaB G i j / GlobalTheory.BottomIPData.alphaB Lc i j t) (fun τ => -X.rA.s τ) X.rW.s A'.rank cA a ((X.ω t).toSgn true) νW 𝓕W := by

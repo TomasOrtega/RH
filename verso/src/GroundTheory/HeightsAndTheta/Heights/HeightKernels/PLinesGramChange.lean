@@ -13,7 +13,7 @@ noncomputable def colMatrix {K : Type*} [Field K] {n : ℕ} (σ : K →+* ℂ) {
   Matrix.of fun j a => σ (u a j)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gramAt, embVec, colMatrix, Matrix.mul_apply, dotProduct, mulVec, conjTranspose_apply, Matrix.of_apply, Pi.star_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gramAt_eq {K : Type*} [Field K] {n : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (σ : K →+* ℂ)
     {ι : Type*} [Fintype ι] (u : ι → Fin n → K) :
@@ -26,7 +26,7 @@ theorem gramAt_eq {K : Type*} [Field K] {n : ℕ} (h : Matrix (Fin n) (Fin n) �
   ring
 
 /- English proof (translation)
-Use extensionality with `j a`. Simplify using `only [colMatrix, Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem colMatrix_transform {K : Type*} [Field K] {n : ℕ} (σ : K →+* ℂ) {ι : Type*} [Fintype ι]
     (u : ι → Fin n → K) (P : Matrix ι ι K) :
@@ -42,7 +42,7 @@ end KLinesGramChange
 open KLinesGramChange in
 
 /- English proof (translation)
-Introduce `K _ n h σ ι _ u P`. Rewrite using `[gramAt_eq, gramAt_eq, colMatrix_transform, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem LinesGramChange.proof : LinesGramChange.Statement := by
   intro K _ n h σ ι _ u P

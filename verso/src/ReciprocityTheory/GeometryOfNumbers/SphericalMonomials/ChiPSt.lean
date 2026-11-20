@@ -5,9 +5,7 @@ namespace ReciprocityTheory.GeometryOfNumbersTheory
 open Finset
 
 /- English proof (translation)
-Unfold `monoNormSq`. Apply `div_pos` to reduce the goal to its premises. Apply `mul_pos` to reduce the goal to its premises. Conclude with `(Finset.prod_pos fun i _ => Nat.factorial_pos (a i))` after adjusting the coercions. Conclude with `Nat.factorial_pos D` after adjusting the coercions.
-
-Conclude with `Nat.factorial_pos _` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem monoNormSq_pos {D : ℕ} (a : Fin (D + 1) → ℕ) : 0 < monoNormSq a := by
   unfold monoNormSq
@@ -18,7 +16,7 @@ theorem monoNormSq_pos {D : ℕ} (a : Fin (D + 1) → ℕ) : 0 < monoNormSq a :=
   · exact_mod_cast Nat.factorial_pos _
 
 /- English proof (translation)
-Establish `h1 : (∏ i, (a i).factorial) ∣ (∑ i, a i).factorial` using `by first`. Consider the case `exact Nat.prod_factorial_dvd_factorial_sum _ _`. Consider the case `exact Nat.prod_factorial_dvd_factorial_sum`. Establish `h2 : (∑ i, a i).factorial * D.factorial ∣ ((∑ i, a i) + D).factorial` using `Nat.factorial_mul_factorial_dvd_factorial_add _ _`. Conclude with `Nat.le_of_dvd (Nat.factorial_pos _) (dvd_trans (mul_dvd_mul_right h1 _) h2)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chiPAux_prod_fact_mul_fact_le {D : ℕ} (a : Fin (D + 1) → ℕ) :
     (∏ i, (a i).factorial) * D.factorial ≤ ((∑ i, a i) + D).factorial := by
@@ -31,9 +29,9 @@ theorem chiPAux_prod_fact_mul_fact_le {D : ℕ} (a : Fin (D + 1) → ℕ) :
   exact Nat.le_of_dvd (Nat.factorial_pos _) (dvd_trans (mul_dvd_mul_right h1 _) h2)
 
 /- English proof (translation)
-Unfold `monoNormSq`. Establish `hF : (0 : ℝ) < (((∑ i, a i) + D).factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Establish `hle : ((∏ i, (a i).factorial : ℕ) : ℝ) * (D.factorial : ℝ) ≤ (((∑ i, a i) + D).factorial : ℝ)`. Conclude with `chiPAux_prod_fact_mul_fact_le a` after adjusting the coercions. Use `first`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (div_le_one hF).mpr hle`. Consider the case `exact (div_le_one₀ hF).mpr hle`. Consider the case `exact div_le_one_of_le₀ hle hF.le`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem monoNormSq_le_one {D : ℕ} (a : Fin (D + 1) → ℕ) : monoNormSq a ≤ 1 := by
   unfold monoNormSq
@@ -46,9 +44,9 @@ theorem monoNormSq_le_one {D : ℕ} (a : Fin (D + 1) → ℕ) : monoNormSq a ≤
     | exact div_le_one_of_le₀ hle hF.le
 
 /- English proof (translation)
-Establish `key` using `Finset.sum_pow_eq_sum_piAntidiag (Finset.univ : Finset (Fin (D + 1))) (fun _ => (1 : ℕ)) (∑ i, a i)`. Simplify using `only [one_pow, Finset.prod_const_one, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at key`. Rewrite using `[key]`. Apply `Finset.single_le_sum (f := fun k => Nat.multinomial Finset.univ k) (fun _ _ => Nat.zero_le _)` to reduce the goal to its premises. Rewrite using `[Finset.mem_piAntidiag]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨rfl, fun i _ => Finset.mem_univ i⟩`.
+Supply the required witnesses or components.
 -/
 theorem chiPAux_multinomial_univ_le {D : ℕ} (a : Fin (D + 1) → ℕ) :
     Nat.multinomial Finset.univ a ≤ (D + 1) ^ (∑ i, a i) := by
@@ -61,7 +59,7 @@ theorem chiPAux_multinomial_univ_le {D : ℕ} (a : Fin (D + 1) → ℕ) :
   exact ⟨rfl, fun i _ => Finset.mem_univ i⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[← Nat.add_assoc, Nat.factorial_succ, pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem factorial_add_le_mul_pow (n k : ℕ) : (n + k).factorial ≤ n.factorial * (n + k) ^ k := by
   induction k with
@@ -75,7 +73,7 @@ private theorem factorial_add_le_mul_pow (n k : ℕ) : (n + k).factorial ≤ n.f
       _ = n.factorial * ((n + k + 1) ^ k * (n + k + 1)) := by ring
 
 /- English proof (translation)
-Establish `hspec` using `Nat.multinomial_spec (Finset.univ : Finset (Fin (D + 1))) a`. Establish `hm` using `chiPAux_multinomial_univ_le a`. Establish `h1 : (∑ i, a i).factorial ≤ (D + 1) ^ (∑ i, a i) * ∏ i, (a i).factorial`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem factorial_sum_add_le {D : ℕ} (a : Fin (D + 1) → ℕ) :
     ((∑ i, a i) + D).factorial ≤ (D + 1) ^ (∑ i, a i) * ((∑ i, a i) + D) ^ D * ∏ i, (a i).factorial := by
@@ -91,9 +89,9 @@ theorem factorial_sum_add_le {D : ℕ} (a : Fin (D + 1) → ℕ) :
     _ = (D + 1) ^ (∑ i, a i) * ((∑ i, a i) + D) ^ D * ∏ i, (a i).factorial := by ring
 
 /- English proof (translation)
-Break down `hQ.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0, inv_zero]`. Conclude with `div_nonneg (mul_nonneg hA.le (by linarith)) hF.le`. Establish `key : Q⁻¹ * F ≤ A * E`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately.
 
-Use `first`. Consider the case `exact (le_div_iff₀ hF).mpr key`. Consider the case `exact (le_div_iff hF).mpr key`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem inv_le_mul_div_of_le_mul {Q A E F : ℝ} (hF : 0 < F) (hA : 0 < A) (hE : 1 ≤ E) (hQ : 0 ≤ Q)
     (h : F ≤ Q * A) : Q⁻¹ ≤ A * E / F := by
@@ -109,7 +107,7 @@ private theorem inv_le_mul_div_of_le_mul {Q A E F : ℝ} (hF : 0 < F) (hA : 0 < 
       | exact (le_div_iff hF).mpr key
 
 /- English proof (translation)
-Unfold `monoNormSq`. Apply `inv_le_mul_div_of_le_mul (by exact_mod_cast Nat.factorial_pos _) (by exact_mod_cast (Finset.prod_pos fun i _ => Nat.factorial_pos (a i))) (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero D)) (by positivity)` to reduce the goal to its premises. Conclude with `factorial_sum_add_le a` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem le_monoNormSq {D : ℕ} (a : Fin (D + 1) → ℕ) :
     (((D + 1 : ℝ) ^ (∑ i, a i)) * ((∑ i, a i : ℕ) + D : ℝ) ^ D)⁻¹ ≤ monoNormSq a := by
@@ -120,7 +118,7 @@ theorem le_monoNormSq {D : ℕ} (a : Fin (D + 1) → ℕ) :
   exact_mod_cast factorial_sum_add_le a
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succ]`. Simplify using `[Function.update_apply, Fin.succ_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chiPAux_sum_update_zero {D : ℕ} (a : Fin (D + 1) → ℕ) (v : ℕ) :
     ∑ i, Function.update a 0 v i = v + ∑ i : Fin D, a i.succ := by
@@ -128,13 +126,13 @@ theorem chiPAux_sum_update_zero {D : ℕ} (a : Fin (D + 1) → ℕ) (v : ℕ) :
   simp [Function.update_apply, Fin.succ_ne_zero]
 
 /- English proof (translation)
-Establish `e0 : Function.update a 0 (a 0 + 1) 0 = a 0 + 1` using `by simp`. Establish `es : ∀ i : Fin D, Function.update a 0 (a 0 + 1) i.succ = a i.succ` using `fun i => by`. Simplify using `[Function.update_apply, Fin.succ_ne_zero]`. Establish `hs : ∑ i, Function.update a 0 (a 0 + 1) i = (∑ i, a i) + 1`. Rewrite using `[chiPAux_sum_update_zero, Fin.sum_univ_succ a]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hp : (∏ i, (Function.update a 0 (a 0 + 1) i).factorial) = (a 0 + 1) * ∏ i, (a i).factorial`. Simplify using `only [Fin.prod_univ_succ, e0, es, Nat.factorial_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hf : ((∑ i, a i) + 1 + D).factorial = ((∑ i, a i) + D + 1) * ((∑ i, a i) + D).factorial`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[show (∑ i, a i) + 1 + D = (∑ i, a i) + D + 1 by ring]`. Conclude with `Nat.factorial_succ _`. Unfold `monoNormSq`. Rewrite using `[hs, hp, hf]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hF : (((∑ i, a i) + D).factorial : ℝ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `hg : (∑ i, (a i : ℝ)) + D + 1 ≠ 0` using `by positivity`. Use `first`. Consider the case `(rw [div_mul_div_comm, div_eq_div_iff (mul_ne_zero hg hF) (mul_ne_zero hF hg)]; ring)`. Consider the case `(field_simp; ring)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem monoNormSq_succ {D : ℕ} (a : Fin (D + 1) → ℕ) :
     monoNormSq (Function.update a 0 (a 0 + 1)) =
@@ -161,7 +159,7 @@ theorem monoNormSq_succ {D : ℕ} (a : Fin (D + 1) → ℕ) :
     | (field_simp; ring)
 
 /- English proof (translation)
-Unfold `chiP`. Establish `h : ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) n, Real.log (monoNormSq a) ≤ 0` using `Finset.sum_nonpos fun a _ => Real.log_nonpos (monoNormSq_pos a).le (monoNormSq_le_one a)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem chiP_nonneg (D n : ℕ) : 0 ≤ chiP D n := by
   unfold chiP
@@ -170,13 +168,13 @@ theorem chiP_nonneg (D n : ℕ) : 0 ≤ chiP D n := by
   linarith
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card_of_injOn (fun b i => b i.succ)` to reduce the goal to its premises. Introduce `b hb`. Establish `hb'` using `Finset.Nat.mem_antidiagonalTuple.mp hb`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_range]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `i`. Establish `: b i.succ ≤ ∑ j, b j` using `Finset.single_le_sum (fun j _ => Nat.zero_le (b j)) (Finset.mem_univ _)`. Use linear arithmetic over natural numbers and integers. Introduce `b hb c hc hbc`. Establish `hb'` using `Finset.Nat.mem_antidiagonalTuple.mp hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc'` using `Finset.Nat.mem_antidiagonalTuple.mp hc`. Establish `hs : ∀ i : Fin k, b i.succ = c i.succ` using `fun i => congrFun hbc i`. Rewrite `hb'`, `hc'` using `[Fin.sum_univ_succ]`. Establish `hsum : ∑ i : Fin k, b i.succ = ∑ i : Fin k, c i.succ` using `Finset.sum_congr rfl (fun i _ => hs i)`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Fin.cases ?_ (fun i => hs i) j` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Use `_ = (m + 1) ^ k := by simp`.
+Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem chiPAux_card_adt_le (k m : ℕ) : (Finset.Nat.antidiagonalTuple (k + 1) m).card ≤ (m + 1) ^ k := by
   calc (Finset.Nat.antidiagonalTuple (k + 1) m).card
@@ -202,11 +200,11 @@ theorem chiPAux_card_adt_le (k m : ℕ) : (Finset.Nat.antidiagonalTuple (k + 1) 
     _ = (m + 1) ^ k := by simp
 
 /- English proof (translation)
-Apply `Finset.card_le_card_of_injOn (fun b i => b i.succ)` to reduce the goal to its premises. Introduce `b hb`. Establish `h0 : b 0 = 0` using `(Finset.mem_filter.mp hb).2`. Establish `h1` using `Finset.Nat.mem_antidiagonalTuple.mp (Finset.mem_filter.mp hb).1`. Rewrite `h1` using `[Fin.sum_univ_succ, h0, zero_add]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.Nat.mem_antidiagonalTuple.mpr h1`. Introduce `b hb c hc hbc`. Establish `hb0 : b 0 = 0` using `(Finset.mem_filter.mp hb).2`. Establish `hc0 : c 0 = 0` using `(Finset.mem_filter.mp hc).2`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun i => congrFun hbc i) j` and prove the remaining obligations. Rewrite using `[hb0, hc0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiPAux_card_filter_zero_le (D n : ℕ) :
     ((Finset.Nat.antidiagonalTuple (D + 1) (n + 1)).filter (fun b => b 0 = 0)).card ≤
@@ -225,7 +223,7 @@ theorem chiPAux_card_filter_zero_le (D n : ℕ) :
     rw [hb0, hc0]
 
 /- English proof (translation)
-Rewrite using `[Finset.filter_eq_empty_iff]`. Introduce `b hb h0`. Establish `h1` using `Finset.Nat.mem_antidiagonalTuple.mp hb`. Apply the tactic sequence `simp [Fin.sum_univ_succ, h0] at h1 <;> omega`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chiPAux_filter_zero_eq_empty (n : ℕ) :
     (Finset.Nat.antidiagonalTuple (0 + 1) (n + 1)).filter (fun b => b 0 = 0) = ∅ := by
@@ -235,19 +233,19 @@ theorem chiPAux_filter_zero_eq_empty (n : ℕ) :
   simp [Fin.sum_univ_succ, h0] at h1 <;> omega
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter_add_sum_filter_not (Finset.Nat.antidiagonalTuple (D + 1) (n + 1)) (fun b : Fin (D + 1) → ℕ => b 0 = 0)]`. Establish `key : ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) n, g (Function.update a 0 (a 0 + 1)) = ∑ b ∈ (Finset.Nat.antidiagonalTuple (D + 1) (n + 1)).filter (fun b => ¬ b 0 = 0), g b`. Apply `Finset.sum_nbij' (fun a => Function.update a 0 (a 0 + 1)) (fun b => Function.update b 0 (b 0 - 1))` to reduce the goal to its premises. Introduce `a ha`. Establish `ha'` using `Finset.Nat.mem_antidiagonalTuple.mp ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `ha'` using `[Fin.sum_univ_succ]`. Use `Finset.mem_filter.mpr ⟨Finset.Nat.mem_antidiagonalTuple.mpr ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[chiPAux_sum_update_zero]`. Use linear arithmetic over natural numbers and integers. Simplify using `[Function.update_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Introduce `b hb`. Establish `h1` using `Finset.Nat.mem_antidiagonalTuple.mp (Finset.mem_filter.mp hb).1`. Establish `h2 : b 0 ≠ 0` using `(Finset.mem_filter.mp hb).2`. Rewrite `h1` using `[Fin.sum_univ_succ]`. Apply `Finset.Nat.mem_antidiagonalTuple.mpr` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[chiPAux_sum_update_zero]`. Use linear arithmetic over natural numbers and integers. Introduce `a _`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = 0`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using `[Function.update_apply]`. Simplify using `[Function.update_apply, hi]`. Introduce `b hb`. Establish `h2 : b 0 ≠ 0` using `(Finset.mem_filter.mp hb).2`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Apply the tactic sequence `simp [Function.update_apply] <;> omega`. Simplify using `[Function.update_apply, hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Introduce `a _`. Both sides reduce to the same expression. Combine the linear relations using `[key]`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem chiPAux_sum_split (D n : ℕ) (g : (Fin (D + 1) → ℕ) → ℝ) :
     ∑ b ∈ Finset.Nat.antidiagonalTuple (D + 1) (n + 1), g b =
@@ -290,9 +288,9 @@ theorem chiPAux_sum_split (D n : ℕ) (g : (Fin (D + 1) → ℕ) → ℝ) :
   linarith [key]
 
 /- English proof (translation)
-Unfold `chiP`. Rewrite using `[chiPAux_sum_split D n (fun b => Real.log (monoNormSq b))]`. Establish `hstep : ∀ a ∈ Finset.Nat.antidiagonalTuple (D + 1) n, Real.log (monoNormSq (Function.update a 0 (a 0 + 1))) = Real.log (monoNormSq a) + Real.log ((a 0 + 1 : ℝ) / ((n : ℝ) + D + 1))`. Introduce `a ha`. Establish `ha'` using `Finset.Nat.mem_antidiagonalTuple.mp ha`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[monoNormSq_succ, ha', Real.log_mul (monoNormSq_pos a).ne' (by positivity)]`. Rewrite using `[Finset.sum_congr rfl hstep, Finset.sum_add_distrib]`. Simplify using `only [Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chiP_succ_sub_eq (D n : ℕ) :
     chiP D (n + 1) - chiP D n = (1 / 2) *
@@ -312,15 +310,13 @@ theorem chiP_succ_sub_eq (D n : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `ha'` using `Finset.Nat.mem_antidiagonalTuple.mp ha`. Establish `h0 : a 0 ≤ n`. Rewrite using `[← ha']`. Conclude with `Finset.single_le_sum (fun i _ => Nat.zero_le (a i)) (Finset.mem_univ 0)`. Establish `h0' : (a 0 : ℝ) ≤ n` using `by exact_mod_cast h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : (0 : ℝ) ≤ D` using `Nat.cast_nonneg D`. Establish `ha0 : (0 : ℝ) ≤ a 0` using `Nat.cast_nonneg _`. Establish `hden : (0 : ℝ) < (n : ℝ) + D + 1` using `by positivity`. Establish `hpos : (0 : ℝ) < (a 0 + 1 : ℝ) / ((n : ℝ) + D + 1)` using `by positivity`. Establish `hle1 : (a 0 + 1 : ℝ) / ((n : ℝ) + D + 1) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnum : (a 0 + 1 : ℝ) ≤ (n : ℝ) + D + 1` using `by linarith`. Use `first`. Consider the case `exact (div_le_one hden).mpr hnum`. Consider the case `exact (div_le_one₀ hden).mpr hnum`. Consider the case `exact div_le_one_of_le₀ hnum hden.le`.
+Treat this case separately. Treat this case separately. Treat this case separately. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `Real.log_nonpos hpos.le hle1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.log_div (by positivity) (by positivity)]`. Establish `: 0 ≤ Real.log ((a 0 : ℝ) + 1)` using `Real.log_nonneg (by linarith)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem chiPAux_neg_log_step_mem (D n : ℕ) (a : Fin (D + 1) → ℕ) (ha : a ∈ Finset.Nat.antidiagonalTuple (D + 1) n) :
     0 ≤ -Real.log ((a 0 + 1 : ℝ) / ((n : ℝ) + D + 1)) ∧
@@ -348,11 +344,11 @@ theorem chiPAux_neg_log_step_mem (D n : ℕ) (a : Fin (D + 1) → ℕ) (ha : a �
     linarith
 
 /- English proof (translation)
-Establish `hQ` using `le_monoNormSq b`. Establish `hA : (0 : ℝ) < (D + 1 : ℝ) ^ (∑ i, b i)` using `by positivity`. Establish `hB : (0 : ℝ) < ((∑ i, b i : ℕ) + D : ℝ) ^ D`. Break down `Nat.eq_zero_or_pos D with hD | hD` into its components or cases. Substitute `hD` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Apply `pow_pos` to reduce the goal to its premises. Establish `h1 : (0 : ℝ) < D` using `by exact_mod_cast hD`. Establish `h2 : (0 : ℝ) ≤ ((∑ i, b i : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hQpos : 0 < (D + 1 : ℝ) ^ (∑ i, b i) * ((∑ i, b i : ℕ) + D : ℝ) ^ D` using `mul_pos hA hB`. Establish `hlog : Real.log (((D + 1 : ℝ) ^ (∑ i, b i)) * ((∑ i, b i : ℕ) + D : ℝ) ^ D)⁻¹ ≤ Real.log (monoNormSq b)` using `by first`. Consider the case `exact Real.log_le_log (inv_pos.mpr hQpos) hQ`. Consider the case `exact (Real.log_le_log_iff (inv_pos.mpr hQpos) (monoNormSq_pos b)).mpr hQ`. Rewrite `hlog` using `[Real.log_inv, Real.log_mul hA.ne' hB.ne', Real.log_pow, Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -379,14 +375,14 @@ theorem chiPAux_neg_log_monoNormSq_le {D : ℕ} (b : Fin (D + 1) → ℕ) :
   linarith
 
 /- English proof (translation)
-Use `Real.log_nonpos (monoNormSq_pos b).le (monoNormSq_le_one b)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem chiPAux_neg_log_monoNormSq_nonneg {D : ℕ} (b : Fin (D + 1) → ℕ) : 0 ≤ -Real.log (monoNormSq b) := by
   have := Real.log_nonpos (monoNormSq_pos b).le (monoNormSq_le_one b)
   linarith
 
 /- English proof (translation)
-Rewrite using `[chiP_succ_sub_eq]`. Establish `h1 : 0 ≤ ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) n, -Real.log ((a 0 + 1 : ℝ) / ((n : ℝ) + D + 1))` using `Finset.sum_nonneg fun a ha => (chiPAux_neg_log_step_mem D n a ha).1`. Establish `h2 : 0 ≤ ∑ b ∈ (Finset.Nat.antidiagonalTuple (D + 1) (n + 1)).filter (fun b => b 0 = 0), -Real.log (monoNormSq b)` using `Finset.sum_nonneg fun b _ => chiPAux_neg_log_monoNormSq_nonneg b`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem chiP_succ_sub_nonneg (D n : ℕ) : 0 ≤ chiP D (n + 1) - chiP D n := by
   rw [chiP_succ_sub_eq]
@@ -399,29 +395,29 @@ theorem chiP_succ_sub_nonneg (D n : ℕ) : 0 ≤ chiP D (n + 1) - chiP D n := by
   linarith
 
 /- English proof (translation)
-Take `⟨K, hKe⟩ : ∃ K : ℝ, K = Real.log ((D : ℝ) + 1) + D * (1 + D)` from `⟨_, rfl⟩`. Establish `hD0 : (0 : ℝ) ≤ D` using `Nat.cast_nonneg D`. Establish `hK : 0 ≤ K`. Establish `h1 : 0 ≤ Real.log ((D : ℝ) + 1)` using `Real.log_nonneg (by linarith)`. Establish `h2 : (0 : ℝ) ≤ D * (1 + D)` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hKe]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨2 ^ D * K, fun n => ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Establish `hz : chiP D 0 = 0`. Unfold `chiP`. Establish `hsum0 : ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) 0, Real.log (monoNormSq a) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a ha`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs` using `Finset.Nat.mem_antidiagonalTuple.mp ha`. Establish `hz : ∀ i, a i = 0` using `fun i => (Finset.sum_eq_zero_iff.mp hs) i (Finset.mem_univ i)`. Establish `hm : monoNormSq a = 1`. Unfold `monoNormSq`. Rewrite using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hz, Nat.factorial_zero, Finset.prod_const_one, Nat.cast_one, one_mul, zero_add]`. Conclude with `div_self (by exact_mod_cast Nat.factorial_ne_zero D)`. Rewrite using `[hm, Real.log_one]`. Rewrite using `[hsum0]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Simplify using the standard rewrite rules. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hn0 : (0 : ℝ) ≤ n` using `by linarith`. Establish `hterm : ∀ a ∈ Finset.Nat.antidiagonalTuple (D + 1) n, -Real.log (monoNormSq a) ≤ n * K`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Establish `hs` using `Finset.Nat.mem_antidiagonalTuple.mp ha`. Establish `h1` using `chiPAux_neg_log_monoNormSq_le a`. Rewrite `h1` using `[hs]`. Establish `hlog : Real.log ((n : ℝ) + D) ≤ (n : ℝ) + D`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < (n : ℝ) + D by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (D : ℝ) * Real.log ((n : ℝ) + D) ≤ D * ((n : ℝ) + D)` using `mul_le_mul_of_nonneg_left hlog hD0`. Establish `h3 : (D : ℝ) * ((n : ℝ) + D) ≤ n * (D * (1 + D))`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr hn1) (sq_nonneg (D : ℝ))]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hKe]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : chiP D n ≤ (1 / 2) * (((Finset.Nat.antidiagonalTuple (D + 1) n).card : ℝ) * (n * K))`. Unfold `chiP`. Establish `h` using `Finset.sum_le_sum hterm`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Finset.sum_const, nsmul_eq_mul, Finset.sum_neg_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcard : ((Finset.Nat.antidiagonalTuple (D + 1) n).card : ℝ) ≤ 2 ^ D * (n : ℝ) ^ D`. Establish `h1 : ((Finset.Nat.antidiagonalTuple (D + 1) n).card : ℝ) ≤ ((n : ℝ) + 1) ^ D`. Conclude with `chiPAux_card_adt_le D n` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : ((n : ℝ) + 1) ^ D ≤ (2 * (n : ℝ)) ^ D` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h2` using `[mul_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnK : 0 ≤ (n : ℝ) * K` using `mul_nonneg hn0 hK`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hc0 : (0 : ℝ) ≤ ((Finset.Nat.antidiagonalTuple (D + 1) n).card : ℝ)` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[mul_nonneg hc0 hnK]`. Use `_ ≤ (2 ^ D * (n : ℝ) ^ D) * (n * K) := mul_le_mul_of_nonneg_right hcard hnK`. Use `_ = 2 ^ D * K * (n : ℝ) ^ (D + 1) := by ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_chiP_le (D : ℕ) : ∃ C : ℝ, ∀ n : ℕ, chiP D n ≤ C * (n : ℝ) ^ (D + 1) := by
   obtain ⟨K, hKe⟩ : ∃ K : ℝ, K = Real.log ((D : ℝ) + 1) + D * (1 + D) := ⟨_, rfl⟩
@@ -488,15 +484,15 @@ theorem exists_chiP_le (D : ℕ) : ∃ C : ℝ, ∀ n : ℕ, chiP D n ≤ C * (n
       _ = 2 ^ D * K * (n : ℝ) ^ (D + 1) := by ring
 
 /- English proof (translation)
-Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hn0 : (0 : ℝ) ≤ n` using `by linarith`. Establish `hD0 : (0 : ℝ) ≤ D` using `Nat.cast_nonneg D`. Establish `hcard : ((((Finset.Nat.antidiagonalTuple (D + 1) (n + 1)).filter (fun b => b 0 = 0)).card : ℕ) : ℝ) * n ≤ 3 ^ D * (n : ℝ) ^ D`. Break down `Nat.eq_zero_or_pos D with hD | hD` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hD` using the available equality. Rewrite using `[chiPAux_filter_zero_eq_empty]`. Simplify using the standard rewrite rules. Take `⟨k, rfl⟩ : ∃ k, D = k + 1` from `⟨D - 1, by omega⟩`. Establish `h1 : ((((Finset.Nat.antidiagonalTuple (k + 1 + 1) (n + 1)).filter (fun b => b 0 = 0)).card : ℕ) : ℝ) ≤ ((n : ℝ) + 1 + 1) ^ k`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(chiPAux_card_filter_zero_le (k + 1) n).trans (chiPAux_card_adt_le k (n + 1))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `h2 : ((n : ℝ) + 1 + 1) ^ k ≤ (3 * (n : ℝ)) ^ k` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (0 : ℝ) ≤ 3 ^ k * (n : ℝ) ^ (k + 1)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e : (3 : ℝ) ^ (k + 1) = 3 * 3 ^ k` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum` using `Finset.sum_le_sum hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsum` using `[Finset.sum_const, nsmul_eq_mul]`. Establish `hP0 : 0 ≤ (2 + (D : ℝ)) * P` using `mul_nonneg (by linarith) hP`. Use `hsum.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem chiPAux_sum_filter_zero_le (D n : ℕ) (hn : 1 ≤ n) (P : ℝ) (hP : 0 ≤ P)
     (hb : ∀ b ∈ (Finset.Nat.antidiagonalTuple (D + 1) (n + 1)).filter (fun b => b 0 = 0),
@@ -540,9 +536,9 @@ theorem chiPAux_sum_filter_zero_le (D n : ℕ) (hn : 1 ≤ n) (P : ℝ) (hP : 0 
     _ = 3 ^ D * (2 + (D : ℝ)) * P * (n : ℝ) ^ D := by ring
 
 /- English proof (translation)
-Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hD : (0 : ℝ) ≤ D` using `Nat.cast_nonneg D`. Rewrite using `[← Real.log_mul (by positivity) (by positivity)]`. Establish `hle : (n : ℝ) + D + 1 ≤ ((n : ℝ) + 1) * ((D : ℝ) + 1)` using `by nlinarith [mul_nonneg hn hD]`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact Real.log_le_log (by positivity) hle`. Consider the case `exact (Real.log_le_log_iff (by positivity) (by positivity)).mpr hle`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem log_add_add_one_le_log_add_log (n D : ℕ) :
     Real.log ((n : ℝ) + D + 1) ≤ Real.log ((n : ℝ) + 1) + Real.log ((D : ℝ) + 1) := by
@@ -555,33 +551,31 @@ private theorem log_add_add_one_le_log_add_log (n D : ℕ) :
     | exact (Real.log_le_log_iff (by positivity) (by positivity)).mpr hle
 
 /- English proof (translation)
-Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hD0 : (0 : ℝ) ≤ D` using `Nat.cast_nonneg D`. Take `⟨c₀, hc₀⟩ : ∃ c : ℝ, c = Real.log ((D : ℝ) + 1)` from `⟨_, rfl⟩`. Establish `hc0 : 0 ≤ c₀`. Rewrite using `[hc₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.log_nonneg (by linarith)`. Take `⟨L, hL⟩ : ∃ L : ℝ, L = c₀ / Real.log 2` from `⟨_, rfl⟩`. Establish `hL0 : 0 ≤ L`. Rewrite using `[hL]`. Conclude with `div_nonneg hc0 hl2.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcL : ∀ t : ℝ, Real.log 2 ≤ t → c₀ ≤ L * t`. Introduce `t ht`. Establish `e : c₀ = L * Real.log 2`. Rewrite using `[hL]`. Use `first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact (div_mul_cancel₀ c₀ hl2.ne').symm`. Consider the case `field_simp`. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_left ht hL0`. Use `⟨(1 / 2) * (2 ^ D + 3 ^ D * (2 + (D : ℝ))) * (1 + L), fun n hn => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hn0 : (0 : ℝ) ≤ n` using `by linarith`. Take `⟨ℓ, hℓ⟩ : ∃ t : ℝ, t = Real.log ((n : ℝ) + 1)` from `⟨_, rfl⟩`. Establish `hℓ2 : Real.log 2 ≤ ℓ`. Rewrite using `[hℓ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `first`. Consider the case `exact Real.log_le_log (by norm_num) (by linarith)`. Consider the case `exact (Real.log_le_log_iff (by norm_num) (by linarith)).mpr (by linarith)`. Establish `hℓ0 : 0 ≤ ℓ` using `by linarith`. Establish `hc : c₀ ≤ L * ℓ` using `hcL ℓ hℓ2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogND : Real.log ((n : ℝ) + D + 1) ≤ ℓ + c₀`. Rewrite using `[hℓ, hc₀]`. Conclude with `log_add_add_one_le_log_add_log n D`. Establish `hX : 0 ≤ (1 + L) * ℓ` using `mul_nonneg (by linarith) hℓ0`. Establish `hS1 : ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) n, -Real.log ((a 0 + 1 : ℝ) / ((n : ℝ) + D + 1)) ≤ 2 ^ D * (n : ℝ) ^ D * ((1 + L) * ℓ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ∀ a ∈ Finset.Nat.antidiagonalTuple (D + 1) n, -Real.log ((a 0 + 1 : ℝ) / ((n : ℝ) + D + 1)) ≤ (1 + L) * ℓ`. Introduce `a ha`. Use `(chiPAux_neg_log_step_mem D n a ha).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `Finset.sum_le_sum h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Finset.sum_const, nsmul_eq_mul]`. Establish `hcard : ((Finset.Nat.antidiagonalTuple (D + 1) n).card : ℝ) ≤ 2 ^ D * (n : ℝ) ^ D`. Establish `h3 : ((Finset.Nat.antidiagonalTuple (D + 1) n).card : ℝ) ≤ ((n : ℝ) + 1) ^ D`. Conclude with `chiPAux_card_adt_le D n` after adjusting the coercions. Establish `h4 : ((n : ℝ) + 1) ^ D ≤ (2 * (n : ℝ)) ^ D` using `by gcongr`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h4` using `[mul_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h2.trans (mul_le_mul_of_nonneg_right hcard hX)`. Establish `hS2 : ∑ b ∈ (Finset.Nat.antidiagonalTuple (D + 1) (n + 1)).filter (fun b => b 0 = 0), -Real.log (monoNormSq b) ≤ 3 ^ D * (2 + (D : ℝ)) * ((1 + L) * ℓ) * (n : ℝ) ^ D`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `chiPAux_sum_filter_zero_le D n hn ((1 + L) * ℓ) hX` to reduce the goal to its premises. Introduce `b hb`. Establish `hs` using `Finset.Nat.mem_antidiagonalTuple.mp (Finset.mem_filter.mp hb).1`. Establish `h1` using `chiPAux_neg_log_monoNormSq_le b`. Rewrite `h1` using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h1`. Establish `e : (n : ℝ) + 1 + D = (n : ℝ) + D + 1` using `by ring`. Rewrite `h1` using `[e, ← hc₀]`. Establish `h2 : (D : ℝ) * Real.log ((n : ℝ) + D + 1) ≤ D * (ℓ + c₀)` using `mul_le_mul_of_nonneg_left hlogND hD0`. Establish `h3 : ((n : ℝ) + 1) * c₀ ≤ ((n : ℝ) + 1) * (L * ℓ)` using `mul_le_mul_of_nonneg_left hc (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (D : ℝ) * c₀ ≤ D * (L * ℓ)` using `mul_le_mul_of_nonneg_left hc hD0`. Establish `hLl : 0 ≤ L * ℓ` using `mul_nonneg hL0 hℓ0`. Establish `h5 : 0 ≤ ((n : ℝ) - 1) * (L * ℓ)` using `mul_nonneg (by linarith) hLl`. Establish `h6 : 0 ≤ (D : ℝ) * ℓ * ((n : ℝ) - 1)` using `mul_nonneg (mul_nonneg hD0 hℓ0) (by linarith)`. Establish `h7 : 0 ≤ (D : ℝ) * (L * ℓ) * ((n : ℝ) - 1)` using `mul_nonneg (mul_nonneg hD0 hLl) (by linarith)`.
-
-Establish `h8 : 0 ≤ (n : ℝ) * ℓ` using `mul_nonneg hn0 hℓ0`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[chiP_succ_sub_eq, ← hℓ]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_chiP_succ_sub_le (D : ℕ) :
     ∃ C : ℝ, ∀ n : ℕ, 1 ≤ n → chiP D (n + 1) - chiP D n ≤ C * (n : ℝ) ^ D * Real.log (n + 1) := by

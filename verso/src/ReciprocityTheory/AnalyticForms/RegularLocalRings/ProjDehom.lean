@@ -11,7 +11,7 @@ noncomputable section
 variable {K : Type} [Fintype K] [Nonempty K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Simplify using `using segreW_mem P p`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem segreW_mem_one_smul (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k) :
     segreW P p ∈ segreGrading P (1 • 1) := by
@@ -54,11 +54,11 @@ def polyToAway {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIde
   eval₂Hom ((algebraMap (segreGrading P 0) _).comp (algebraMap ℂ (segreGrading P 0))) (awayCoord hP p)
 
 /- English proof (translation)
-Use `letI := segreGraded hP`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c`. Simplify using `only [polyToAway, coe_eval₂Hom, eval₂_C, RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[HomogeneousLocalization.algebraMap_eq]`.
+Equip the data with the indicated structure. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply ℂ (MvPolynomial ((k : K) → ι k) ℂ ⧸ segreIdeal P) (Localization.Away (segreW P p)), ← Localization.mk_one_eq_algebraMap]`. Both sides reduce to the same expression. Consider the case `add f g hf hg`. Simplify using `only [map_add, HomogeneousLocalization.val_add, hf, hg, eval₂_add]`. Consider the case `mul_X f q hf`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[map_mul, HomogeneousLocalization.val_mul, hf, eval₂_mul, eval₂_X]`. Use `congr 1`. Simplify using `only [polyToAway, coe_eval₂Hom, eval₂_X, awayCoord, HomogeneousLocalization.Away.val_mk]`. Rewrite using `[mk_pow_eq_mul_invW, pow_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_polyToAway {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (p : (k : K) → ι k) (f : MvPolynomial (Σ k, ι k) ℂ) :
@@ -82,13 +82,13 @@ theorem val_polyToAway {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMulti
     rw [mk_pow_eq_mul_invW, pow_one]
 
 /- English proof (translation)
-Use `letI := segreGraded hP`. Use `sup_le ?_ ?_` and prove the remaining obligations. Take `⟨S, hS, hPS⟩` from `id hP`. Use `hPS.le.trans (Ideal.span_le.mpr fun s hs => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `hS s hs`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hsP : s ∈ P` using `hPS ▸ Ideal.subset_span hs`. Use `show polyToAway hP p s = 0`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Rewrite using `[val_polyToAway, HomogeneousLocalization.val_zero, eval₂_mul_const_of_isHomogeneous _ _ _ (isHomogeneous_of_isMultiHomog ha)]`. Establish `hmem : aeval (fun q => (X (chartUpd p q) : MvPolynomial ((k : K) → ι k) ℂ)) s ∈ segreIdeal P` using `by show segreMap _ ∈ P`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [chartUpd]`. Rewrite using `[segreMap_aeval_update p ha]`. Conclude with `Ideal.mul_mem_left _ _ hsP`. Rewrite using `[eval₂_mk_one (segreIdeal P) _ (fun q => (X (chartUpd p q) : MvPolynomial ((k : K) → ι k) ℂ)), Ideal.Quotient.eq_zero_iff_mem.mpr hmem, Localization.mk_zero, zero_mul]`. Rewrite using `[Ideal.span_le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Use `show polyToAway hP p _ = 0`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Establish `hu : chartUpd p ⟨k, p k⟩ = p` using `by simp [chartUpd]`. Rewrite using `[val_polyToAway, HomogeneousLocalization.val_zero, eval₂_sub, eval₂_X, eval₂_one, hu, mk_one_mul_invW, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartIdeal_le_ker_polyToAway {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (p : (k : K) → ι k) :
@@ -135,35 +135,31 @@ theorem chartToAway_mk {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMulti
   rfl
 
 /- English proof (translation)
-Use `letI := segreGraded hP`. Establish `hX1 : ∀ k, Ideal.Quotient.mk (chartIdeal P p) (X ⟨k, p k⟩) = 1` using `fun k => by`. Rewrite using `[← map_one (Ideal.Quotient.mk (chartIdeal P p)), Ideal.Quotient.eq]`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩)`. Set `ψA : (MvPolynomial ((k : K) → ι k) ℂ ⧸ segreIdeal P) →+* chartRing P p` to `Ideal.Quotient.lift _ ((Ideal.Quotient.mk (chartIdeal P p)).comp segreMap.toRingHom) (fun a ha => Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left ha))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψA : ∀ g, ψA (Ideal.Quotient.mk _ g) = Ideal.Quotient.mk _ (segreMap g)` using `fun g => rfl`. Establish `hψAW : ∀ p', ψA (segreW P p') = ∏ k, Ideal.Quotient.mk (chartIdeal P p) (X ⟨k, p' k⟩)`. Introduce `p'`. Rewrite using `[hψA, segreMap_X, map_prod]`. Establish `hw : ψA (segreW P p) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψAW]`. Conclude with `Finset.prod_eq_one fun k _ => hX1 k`. Establish `hu : IsUnit (ψA (segreW P p))` using `hw ▸ isUnit_one`. Set `ψL : Localization.Away (segreW P p) →+* chartRing P p` to `IsLocalization.Away.lift (segreW P p) hu`. Establish `hψL : ∀ a (s : Submonoid.powers (segreW P p)), ψL (Localization.mk a s) = ψA a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a s`. Establish `hs : ψA (s : MvPolynomial ((k : K) → ι k) ℂ ⧸ segreIdeal P) = 1`. Take `⟨_, n, rfl⟩` from `s`. Rewrite using `[map_pow, hw, one_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, mul_one]`. Use `_ = ψL (Localization.mk a s * algebraMap _ (Localization.Away (segreW P p)) (s : MvPolynomial ((k : K) → ι k) ℂ ⧸ segreIdeal P)) := by`. Rewrite using `[map_mul, IsLocalization.Away.lift_eq]`. Use `_ = ψL (algebraMap _ (Localization.Away (segreW P p)) a) := by`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Localization.mk_eq_mk']`. Conclude with `IsLocalization.mk'_spec _ a s`. Use `_ = ψA a := IsLocalization.Away.lift_eq _ _ _`. Set `ψ : HomogeneousLocalization.Away (segreGrading P) (segreW P p) →+* chartRing P p` to `ψL.comp (algebraMap _ (Localization.Away (segreW P p)))`. Establish `hψ : ∀ z, ψ z = ψL z.val` using `fun z => rfl`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hleft : ∀ x, ψ (chartToAway hP p x) = x`. Establish `h : ψ.comp (chartToAway hP p) = RingHom.id _`. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, RingHom.id_apply, chartToAway_mk, hψ, val_polyToAway, eval₂_C]`. Rewrite using `[IsScalarTower.algebraMap_apply ℂ (MvPolynomial ((k : K) → ι k) ℂ ⧸ segreIdeal P), IsLocalization.Away.lift_eq]`. Use `show Ideal.Quotient.mk _ (segreMap (C c)) = _`. Rewrite using `[← MvPolynomial.algebraMap_eq, AlgHom.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `q`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply, chartToAway_mk, hψ, val_polyToAway, eval₂_X, map_mul, hψL, map_one, mul_one, hψAW, chartUpd]`. Rewrite using `[prod_update_eq (fun q => Ideal.Quotient.mk (chartIdeal P p) (X q)) p q.1 q.2, Finset.prod_eq_one fun k _ => hX1 k, mul_one]`. Conclude with `fun x => RingHom.congr_fun h x`. Establish `hright : ∀ z, chartToAway hP p (ψ z) = z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Take `⟨n, a, ha, rfl⟩` from `HomogeneousLocalization.Away.mk_surjective (segreGrading P) (segreW_mem P p) z`. Take `⟨h, hh, rfl⟩` from `Submodule.mem_map.mp ha`. Establish `hhom : h.IsHomogeneous n`. Simplify `(mem_homogeneousSubmodule _ h).mp hh` using `[smul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Rewrite using `[hψ, HomogeneousLocalization.Away.val_mk, hψL]`. Simplify using `only [AlgHom.toLinearMap_apply, Ideal.Quotient.mkₐ_eq_mk]`. Rewrite using `[hψA, chartToAway_mk, val_polyToAway, mk_pow_eq_mul_invW]`. Establish `hseg : ∀ p' : (k : K) → ι k, eval₂ (algebraMap ℂ (Localization.Away (segreW P p))) (fun q => Localization.mk (segreW P (chartUpd p q)) 1 * invW P p) (segreMap (X p' : MvPolynomial ((k : K) → ι k) ℂ)) = Localization.mk (segreW P p') 1 * invW P p`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `p'`. Establish `E` using `congrArg (algebraMap (MvPolynomial ((k : K) → ι k) ℂ ⧸ segreIdeal P) (Localization.Away (segreW P p))) (segreW_prod_update P p p')`. Simplify using `only [map_mul, map_prod, map_pow] at E`. Establish `ht` using `mk_one_mul_invW P p`. Simplify using `only [Localization.mk_one_eq_algebraMap] at ht ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[segreMap_X, eval₂_prod]`. Simplify using `only [eval₂_X, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Conclude with `mul_pow_inv_eq _ _ _ _ _ E ht`. Establish `hc : (aeval (fun q => Localization.mk (segreW P (chartUpd p q)) 1 * invW P p)).comp segreMap = aeval (fun p' => Localization.mk (segreW P p') 1 * invW P p)` using `MvPolynomial.algHom_ext fun p' => by`. Rewrite using `[AlgHom.comp_apply, aeval_X, aeval_def]`.
-
-Conclude with `hseg p'`. Establish `hc'` using `congrArg (fun φ => φ h) hc`. Simplify using `only [AlgHom.comp_apply] at hc'`. Rewrite using `[← aeval_def, hc', aeval_def, eval₂_mul_const_of_isHomogeneous _ _ _ hhom]`. Use `congr 1`.
-
-Rewrite using `[eval₂_mk_one (segreIdeal P) _ X h, aeval_X_left_apply]`. Conclude with `⟨fun x y hxy => by rw [← hleft x, ← hleft y, hxy], fun z => ⟨ψ z, hright z⟩⟩`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chartToAway_bijective {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (p : (k : K) → ι k) :
@@ -275,13 +271,11 @@ def chartCoord {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIde
   (gammaChart hP p).symm (Ideal.Quotient.mk _ (X q))
 
 /- English proof (translation)
-Use `letI := segreGraded hP`. Establish `hk` using `toSpecZero_appLE_basicOpen (segreGrading P) (segreW_mem P p) one_pos`. Establish `hC : (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ (toSpecC hP).appLE ⊤ (chartOpen hP p).1 le_top = CommRingCat.ofHom (algebraMap ℂ (segreGrading P 0)) ≫ CommRingCat.ofHom (HomogeneousLocalization.fromZeroRingHom (segreGrading P) (Submonoid.powers (segreW P p))) ≫ Proj.awayToSection …`. Establish `h3` using `Scheme.Hom.comp_appLE (Proj.toSpecZero (segreGrading P)) (Spec.map (CommRingCat.ofHom (algebraMap ℂ (segreGrading P 0)))) ⊤ (Proj.basicOpen (segreGrading P) (segreW P p)) le_top`. Use `show (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ Scheme.Hom.appLE (Proj.toSpecZero (segreGrading P) ≫ Spec.map (CommRingCat.ofHom (algebraMap ℂ (segreGrading P 0)))) ⊤ (Proj.basicOpen (segreGrading P) (segreW P p)) le_top = _`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap ℂ (segreGrading P 0)))`. Rewrite using `[h3, ← Category.assoc]`. Use `(congrArg (· ≫ _) h4.symm).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans (congrArg (CommRingCat.ofHom (algebraMap ℂ (segreGrading P 0)) ≫ ·) hk)`. Establish `hl : (gammaChart hP p).symm (Ideal.Quotient.mk _ (C c)) = (Proj.awayToSection (segreGrading P) (segreW P p)).hom (HomogeneousLocalization.fromZeroRingHom (segreGrading P) (Submonoid.powers (segreW P p)) (algebraMap ℂ (segreGrading P 0) c))` using `by show (Proj.awayToSection (segreGrading P) (segreW P p)).hom (polyToAway hP p (C c)) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [polyToAway, coe_eval₂Hom, eval₂_C, RingHom.comp_apply]`. Both sides reduce to the same expression. Rewrite using `[hl]`. Use `show _ = ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ (toSpecC hP).appLE ⊤ (chartOpen hP p).1 le_top).hom c`. Rewrite using `[hC]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gammaChart_symm_C {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (p : (k : K) → ι k) (c : ℂ) :
@@ -315,9 +309,9 @@ theorem gammaChart_symm_C {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMu
   rfl
 
 /- English proof (translation)
-Establish `h : (gammaChart hP p).symm.toRingHom.comp (Ideal.Quotient.mk (chartIdeal P p)) = eval₂Hom (constSec (toSpecC hP) (chartOpen hP p).1) (chartCoord hP p)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, coe_eval₂Hom, eval₂_C]`. Conclude with `gammaChart_symm_C hP p c`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, coe_eval₂Hom, eval₂_X]`. Both sides reduce to the same expression. Conclude with `RingHom.congr_fun h f`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gammaChart_symm_mk {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (p : (k : K) → ι k) (f : MvPolynomial (Σ k, ι k) ℂ) :
@@ -337,13 +331,13 @@ theorem gammaChart_symm_mk {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsM
   exact RingHom.congr_fun h f
 
 /- English proof (translation)
-Use `letI := segreGraded hP`. Establish `hcc : ∀ p₀ q₀, chartCoord hP p₀ q₀ = (Proj.awayToSection (segreGrading P) (segreW P p₀)).hom (awayCoord hP p₀ q₀)`. Introduce `p₀ q₀`. Use `show (Proj.awayToSection (segreGrading P) (segreW P p₀)).hom (polyToAway hP p₀ (X q₀)) = _`. Simplify using `only [polyToAway, coe_eval₂Hom, eval₂_X]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∀ (V : (projX P hP).Opens) (h1 : V ≤ (chartOpen hP p).1) (h2 : V ≤ (chartOpen hP p').1), V = Proj.basicOpen (segreGrading P) (segreW P p * segreW P p') → (projX P hP).presheaf.map (homOfLE h1).op (chartCoord hP p q) * (projX P hP).presheaf.map (homOfLE h2).op (chartCoord hP …`. Introduce and unpack `V h1 h2 rfl`. Establish `e1 : ∀ a, (projX P hP).presheaf.map (homOfLE h1).op ((Proj.awayToSection (segreGrading P) (segreW P p)).hom a) = (Proj.awayToSection (segreGrading P) (segreW P p * segreW P p')).hom (HomogeneousLocalization.awayMap (segreGrading P) (segreW_mem P p') rfl a)` using `fun a => (congrArg (fun φ => φ.hom a) (Proj.awayMap_awayToSection (𝒜 := segreGrading P) (f := segreW P p) (segreW_mem P p') (hx := rfl))).symm`. Establish `e2 : ∀ a, (projX P hP).presheaf.map (homOfLE h2).op ((Proj.awayToSection (segreGrading P) (segreW P p')).hom a) = (Proj.awayToSection (segreGrading P) (segreW P p * segreW P p')).hom (HomogeneousLocalization.awayMap (segreGrading P) (segreW_mem P p) (mul_comm _ _) a)` using `fun a => (congrArg (fun φ => φ.hom a) (Proj.awayMap_awayToSection (𝒜 := segreGrading P) (f := segreW P p') (segreW_mem P p) (hx := mul_comm _ _))).symm`. Rewrite using `[hcc, hcc, hcc, e1, e2, e2]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(map_mul (Proj.awayToSection (segreGrading P) (segreW P p * segreW P p')).hom _ _).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Establish `E` using `segreW_exchange P p p' q`. Simplify using `only [HomogeneousLocalization.val_mul, awayCoord, HomogeneousLocalization.awayMap_mk, HomogeneousLocalization.Away.val_mk, Localization.mk_mul]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [chartUpd, Submonoid.coe_mul, OneMemClass.coe_one, pow_one, one_mul]`. Take the linear combination `(segreW P p * segreW P p' * segreW P p' * segreW P p) * E`. Conclude with `key _ inf_le_left inf_le_right (Proj.basicOpen_mul _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem chartCoord_overlap {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (p p' : (k : K) → ι k) (q : Σ k, ι k) :

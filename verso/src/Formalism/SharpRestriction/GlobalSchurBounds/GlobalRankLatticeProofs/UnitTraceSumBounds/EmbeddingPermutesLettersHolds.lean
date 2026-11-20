@@ -6,32 +6,32 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.EmbTraceSum
 namespace Formalism.MainNotions.Ext
 
 /- English proof (translation)
-The claim follows from `embedding_permutation`.
+A detailed English derivation is pending.
 -/
 theorem permEmb_holds : PermEmb := embedding_permutation
 
 /- English proof (translation)
-The claim follows from `embedding_permutes_letters permEmb_holds D`.
+A detailed English derivation is pending.
 -/
 theorem embedding_permutes_letters_holds (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.StandardLatticesGL3.EmbeddingPermutesTypes D := embedding_permutes_letters permEmb_holds D
 
 /- English proof (translation)
-The claim follows from `PI.character_extension_exists`.
+A detailed English derivation is pending.
 -/
 theorem charExt_holds : CharExt := PI.character_extension_exists
 
 /- English proof (translation)
-The claim follows from `sumEqTrace_holds`.
+A detailed English derivation is pending.
 -/
 theorem traceSum_holds : TraceSum := sumEqTrace_holds
 
 /- English proof (translation)
-The claim follows from `trace_sum_over_letters traceSum_holds D`.
+A detailed English derivation is pending.
 -/
 theorem trace_sum_over_letters_holds (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.StandardLatticesGL3.TraceMapNormalisation D := trace_sum_over_letters traceSum_holds D
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.MainNotions.GL3Theta.induced_cm_type D, trace_sum_over_letters_holds D⟩`.
+Supply the required witnesses or components.
 -/
 theorem induced_type_from_K_holds (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.StandardLatticesGL3.admG1 D := ⟨Formalism.MainNotions.GL3Theta.induced_cm_type D, trace_sum_over_letters_holds D⟩
 

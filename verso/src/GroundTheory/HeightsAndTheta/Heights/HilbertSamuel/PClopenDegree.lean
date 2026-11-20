@@ -13,7 +13,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e L A hP hL hA hcl`. Take `⟨S, hS, hAS, hI⟩` from `h₁ K ι P e A hP hA hcl`. Rewrite using `[hI, hAS, h₃ K ι P e L S hP hL hS, h₄ K ι P e _ S hP hS]`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun W hW => h₂ K ι P e L W hP hL (hS W hW)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem ClopenDegree.proof (h₁ : ClopenComponents.Statement) (h₂ : ComponentDegree.Statement)
     (h₃ : ComponentsAdditive.Statement) (h₄ : IntNumComponents.Statement) : ClopenDegree.Statement := by

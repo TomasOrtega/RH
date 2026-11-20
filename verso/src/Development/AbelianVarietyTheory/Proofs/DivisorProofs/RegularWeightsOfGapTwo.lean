@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 def Sep (S : SPar) : Prop := ∀ x ∈ S, ∀ y ∈ S, y.1 < x.1 → y.1 + 2 ≤ x.1
 
 /- English proof (translation)
-Introduce `x hx y hy hxy`. Take `⟨x', hx', rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨y', hy', rfl⟩` from `Finset.mem_image.1 hy`. Use `h y' hy' x' hx' (by simpa using hxy)` as an intermediate fact. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

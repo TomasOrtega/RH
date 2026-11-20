@@ -17,7 +17,7 @@ variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 namespace RestrictedLevelComparison
 
 /- English proof (translation)
-Apply the tactic sequence `refine (CrystallineSemistableComparison.cr_pull_eq (B.pullMorC (okToOC l K) (B.schMap (𝟙 M.X) (Category.id_comp M.p)) false n) (CH.Mor.id _) (fun T => CrystallineSemistableComparison.crHom (RingHom.id T.B) (fun _ => rfl) (DPMorphism.id T.δ).isDPMorphism (fun h => (CrystallineSemi …`. Conclude with `(CrystallineSemistableComparison.P.pull_comp (CH.Mor.id _) (CH.Mor.id _) j x).2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pullHc_id (M : Model l K) (n j : ℕ) (x : M.Hc false n j) :
     B.pullHc (okToOC l K) (B.schMap (𝟙 M.X) (Category.id_comp _)) false n j x = x := by
@@ -33,7 +33,7 @@ variable (S : LevSys (per l K)) (hS : S.Good) (hC : ∀ m, (S.L m).CrisOK)
 namespace RestrictedLevelComparison
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `((RL.base_acr (PAlg.base l) PAlg.isBase_base).2 n).1 y`. Rewrite using `[hcOf, hcOf, ← hS.dlam m c]`. Conclude with `Ideal.quotientMap_mk.symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dOf_lev (m n : ℕ) (y : (PAlg.base l).Acr n) :
     (dOf S hS hC m n).ρ y = lnMap (S.dA m) l le_rfl ((dOf S hS hC (m + 1) n).ρ y) := by
@@ -44,7 +44,7 @@ theorem dOf_lev (m n : ℕ) (y : (PAlg.base l).Acr n) :
 end RestrictedLevelComparison
 
 /- English proof (translation)
-Establish `hcomp` using `RestrictedLevelComparison.dOf_lev S hS hC m n`. Establish `e : nmHM (nmLevA S hS m M) l s none n j (rHof (dOf S hS hC (m + 1)) (hcOf S hS hC (m + 1)) M s n j x) = rHof (dOf S hS hC m) (hcOf S hS hC m) M s n j (B.pullHc (okToOC l K) (B.schMap (𝟙 M.X) (Category.id_comp _)) false n j x)` using `(red_nm (dOf S hS hC (m + 1) n) (dOf S hS hC m n) s (nmLevA S hS m M) _ _ _ _ _ (hcOf S hS hC (m + 1) n) (hcOf S hS hC m n) _ _ (fun _ _ => rfl) hcomp none j x).symm`. Conclude with `e.trans (congrArg (rHof (dOf S hS hC m) (hcOf S hS hC m) M s n j) (RestrictedLevelComparison.pullHc_id M n j x))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rHof_lev (M : Model l K) (m s n j : ℕ) (x : M.Hc false n j) :
     nmHM (nmLevA S hS m M) l s none n j (rHof (dOf S hS hC (m + 1)) (hcOf S hS hC (m + 1)) M s n j x) =

@@ -19,9 +19,9 @@ namespace GlobalTheory.CurveIndep
 variable {Y : Scheme.{0}} [IsIntegral Y] {L : LB Y}
 
 /- English proof (translation)
-Take `⟨i₀, h₀⟩` from `exists_chart hL (genericPoint Y)`. Use `⟨(r i₀)⁻¹ * r' i₀, fun i hi => Units.ext ?_⟩` and prove the remaining obligations. Establish `e` using `hr i i₀ ⟨hi, h₀⟩`. Establish `e'` using `hr' i i₀ ⟨hi, h₀⟩`. Establish `h0 : (r i₀ : Y.functionField) ≠ 0` using `(r i₀).ne_zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Rewrite using `[e', e]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_ratio (hL : L.IsLB) {r r' : L.ι → Y.functionFieldˣ} (hr : IsRatSec L r)
     (hr' : IsRatSec L r') : ∃ f : Y.functionFieldˣ, ∀ i, genericPoint Y ∈ L.U i → r' i = r i * f := by
@@ -35,7 +35,7 @@ theorem exists_ratio (hL : L.IsLB) {r r' : L.ι → Y.functionFieldˣ} (hr : IsR
   field_simp
 
 /- English proof (translation)
-The claim follows from `(presents_divOfRatSec hL hr').unique ⟨hL, hr', fun i x hx => by rw [hf i (gen_mem hx)] exact ((presents_divOfRatSec hL hr).add_principal f).isEqn i x hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem div_eq_add_principal (hL : L.IsLB) {r r' : L.ι → Y.functionFieldˣ} (hr : IsRatSec L r)
     (hr' : IsRatSec L r') (f : Y.functionFieldˣ) (hf : ∀ i, genericPoint Y ∈ L.U i → r' i = r i * f) :
@@ -45,7 +45,7 @@ theorem div_eq_add_principal (hL : L.IsLB) {r r' : L.ι → Y.functionFieldˣ} (
     exact ((presents_divOfRatSec hL hr).add_principal f).isEqn i x hx⟩
 
 /- English proof (translation)
-Rewrite using `[div_eq_add_principal hL hr hr' f hf, CartierDiv.mult_add, (CartierDiv.isEqn_principal f z).mult_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mult_eq_add_ord [IsLocallyNoetherian Y] (hL : L.IsLB) {r r' : L.ι → Y.functionFieldˣ}
     (hr : IsRatSec L r) (hr' : IsRatSec L r') (f : Y.functionFieldˣ)
@@ -61,7 +61,7 @@ namespace GlobalTheory.CurveIndep
 open Classical in
 
 /- English proof (translation)
-Establish `h (n : Fin 0 → ℤ) : (comb L n).archInt N 0 hr = (HermLB.triv q).archInt N 0 hr`. Establish `e : comb L n = HermLB.triv q` using `by simp [comb]`. Rewrite using `[e]`. Establish `e (S : Finset (Fin 0)) : S.card = 0` using `by simp [Subsingleton.elim S ∅]`. Simplify using `[mixArch, FibreProj.pol, h, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mixArch_zero {k : Type} [CommRing k] {Y : Scheme.{0}} [IsIntegral Y] {q : Y ⟶ Sp k}
     (L : Fin 0 → HermLB q) (N : HermLB q) {r : N.B.ι → Y.functionFieldˣ} (hr : IsRatSec N.B r) :
@@ -73,7 +73,7 @@ theorem mixArch_zero {k : Type} [CommRing k] {Y : Scheme.{0}} [IsIntegral Y] {q 
   simp [mixArch, FibreProj.pol, h, e]
 
 /- English proof (translation)
-Unfold `HermLB.archInt`. Use `finsum_eq_zero_of_forall_eq_zero fun σ => ?_` and prove the remaining obligations. Use `haveI := hq σ`. Simplify using `[Weight.chernInt, MeasureTheory.integral_of_isEmpty]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem archInt_eq_zero {k : Type} [CommRing k] {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp k}
     (hq : ∀ σ : k →+* ℂ, IsEmpty (CxPts q σ)) (L M : HermLB q) (e : ℕ)
@@ -84,23 +84,21 @@ theorem archInt_eq_zero {k : Type} [CommRing k] {Z : Scheme.{0}} [IsIntegral Z] 
   simp [Weight.chernInt, MeasureTheory.integral_of_isEmpty]
 
 /- English proof (translation)
-Introduce `k _ Y _ _ q hA hd N L r hr r' hr'`. Take `⟨f, hf⟩` from `exists_ratio N.isLB hr hr'`. Use `hA.isNoetherian` as an intermediate fact. Use `set c : Y → ℝ := fun z => Real.log (Nat.card (Y.residueField z)) with hc`. Establish `hfin (D : CartierDiv Y) : (Function.support fun z => (D.mult z : ℝ) * c z).Finite` using `(CartierDiv.finite_support_mult D).subset fun z hz h0 => hz (by simp [h0])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hord (z : Y) : Scheme.ord (f : Y.functionField) z = (CartierDiv.principal f).mult z` using `((CartierDiv.isEqn_principal f z).mult_eq).symm`. Establish `hsum : ∑ᶠ z, ((N.div hr').mult z : ℝ) * c z = ∑ᶠ z, ((N.div hr).mult z : ℝ) * c z + ∑ᶠ z, (Scheme.ord (f : Y.functionField) z : ℝ) * c z`. Repeatedly rewrite using `[hord]`. Rewrite using `[← finsum_add_distrib (hfin _) (hfin _)]`. Use `finsum_congr fun z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HermLB.div, HermLB.div, mult_eq_add_ord N.isLB hr hr' f hf z, hord]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `recVal`. Rewrite using `[hsum, mixArch_zero, mixArch_zero]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `GlobalTheory.T.projArithAmbient_vertical_or_arithmeticVariety k Y q hA (0 + 1) hd with ⟨l, hl, ⟨alg⟩, hemp⟩ | ⟨e, he, hq⟩` into its components or cases. Establish `h0 : ∑ᶠ z, (Scheme.ord (f : Y.functionField) z : ℝ) * c z = 0` using `@GlobalTheory.T.principalDivisor_degree_zero_finiteField_curve k _ Y _ _ q hA hd l hl alg (f : Y.functionField) f.ne_zero`. Rewrite using `[h0, archInt_eq_zero hemp, archInt_eq_zero hemp]`. Expand and normalize the polynomial expressions, which then agree. Take `rfl : e = 0` from `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hq.finite_emb` as an intermediate fact. Rewrite using `[GlobalTheory.ArchDimZero.main k Y q hq N (HermLB.triv q) r hr, GlobalTheory.ArchDimZero.main k Y q hq N (HermLB.triv q) r' hr', GlobalTheory.T.productFormula_arithmeticCurve_rationalFunction k Y q hq (f : Y.functionField) f.ne_zero]`. Establish `hlog (σ : k →+* ℂ) (y : CxPts q σ) : logNorm (N.φ σ) r' y = Real.log ‖ratVal (f : Y.functionField) y‖ + logNorm (N.φ σ) r y`. Establish `hy` using `GlobalTheory.TwistTop.under_eq_genericPoint hq y`. Establish `hreg (g : Y.functionField) : RegAt (under y) g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Conclude with `regAt_genericPoint g`. Establish `hunit (g : Y.functionFieldˣ) : UnitAt (under y) (g : Y.functionField)`. Rewrite using `[hy]`. Conclude with `unitAt_genericPoint g.ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : genericPoint Y ∈ N.B.U (pick (N.φ σ).isLB y)` using `gen_mem (mem_ptsIn.1 (mem_pick (N.φ σ).isLB y))`. Simplify using `only [logNorm]`. Rewrite using `[hf _ hi, Units.val_mul, ratVal_mul (hreg _) (hreg _), norm_mul, Real.log_mul (norm_ne_zero_iff.2 (ratVal_ne_zero (hunit _))) (norm_ne_zero_iff.2 (ratVal_ne_zero (hunit f)))]`. Expand and normalize the polynomial expressions, which then agree. Establish `hσ (σ : k →+* ℂ) : ∑ᶠ y : CxPts q σ, logNorm (N.φ σ) r' y = ∑ᶠ y : CxPts q σ, Real.log ‖ratVal (f : Y.functionField) y‖ + ∑ᶠ y : CxPts q σ, logNorm (N.φ σ) r y`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `GlobalTheory.ArchDimZero.finite_cxPts hq σ` as an intermediate fact. Repeatedly rewrite using `[hlog σ]`. Conclude with `finsum_add_distrib (Set.toFinite _) (Set.toFinite _)`. Repeatedly rewrite using `[hσ]`. Rewrite using `[finsum_add_distrib (Set.toFinite _) (Set.toFinite _)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k), IsAmb q → topologicalKrullDim Y = (0 + 1 : ℕ) → ∀ (N : HermLB q) (L : Fin 0 → HermLB q) (r : N.B.ι → Y.functionFieldˣ) (hr : IsRatSec N.B r) (r' : N.B.ι → Y.functionFieldˣ) (hr' : IsRatSec N.B r'), recVal (fun z => Real.log (Nat.card (Y.residueField z))) L N hr = recVal (fun z => Real.log (Nat.card (Y.residueField z))) L N hr' := by
   intro k _ Y _ _ q hA hd N L r hr r' hr'

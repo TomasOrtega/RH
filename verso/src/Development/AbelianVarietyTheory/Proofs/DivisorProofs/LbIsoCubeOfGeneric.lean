@@ -20,25 +20,21 @@ namespace GlobalTheory.Mum.EFixCube
 open GlobalTheory.CechPic GlobalTheory.ZH.EndoExtend
 
 /- English proof (translation)
-Introduce `R _ _ _ J hR D₁ A₁ G₁ _ _ U₁ hS x₁ y₁ x₂ y₂ cx₁ cy₁ cx₂ cy₂ hx₁ hy₁ hx₂ hy₂ hA`. Use `haveI : IsNoetherianRing R := hR.1`. Use `haveI : IsIntegrallyClosed R := hR.2.2.1`. Use `haveI := hS.smooth`. Use `haveI := hS.geomConnected`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := GlobalTheory.smooth_tensorObj_hom G₁ G₁`. Use `haveI := GlobalTheory.geometricallyIntegral_tensorObj_hom G₁ G₁`. Set `δ` to `CartesianMonoidalCategory.prodComparison (Over.pullback (jK R)) G₁ G₁`. Set `u` to `lift (fst ((Over.pullback (jK R)).obj G₁) ((Over.pullback (jK R)).obj G₁) ≫ U₁.gen.hom) (snd ((Over.pullback (jK R)).obj G₁) ((Over.pullback (jK R)).obj G₁) ≫ U₁.gen.hom)`. Establish `key : ∀ (x y : G₁ ⟶ G₁) (cx cy : A₁.A ⟶ A₁.A), Gen₀ U₁ U₁ x cx → Gen₀ U₁ U₁ y cy → CechPic.pull (pullback.fst (G₁ ⊗ G₁).hom (jK R)) (cubeCls G₁ ![fst G₁ G₁ ≫ x, snd G₁ G₁ ≫ y] (cls U₁.LG.L U₁.LG.isLB)) = CechPic.pull δ.left (CechPic.pull u.left (cubeCls A₁.A ![fst A₁.A A₁.A ≫ cx, …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `x y cx cy hx hy`. Establish `hL` using `U₁.LG.isLB`. Establish `hA` using `A₁.isLB`. Establish `hgen` using `U₁.gen_hom`. Establish `hc' : CechPic.pull (pullback.fst G₁.hom (jK R)) (cls U₁.LG.L hL) = CechPic.pull U₁.gen.hom.left (cls A₁.L hA)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `U₁.ext`. Rewrite using `[← cls_pull hL _ (pull_isLB hL _), ← cls_pull hA _ (pull_isLB hA _)]`. Conclude with `((cls_eq_iff _ _).2 ⟨w, hw⟩).symm`. Establish `Aw : ∀ {Y Z : Over (Sp R)} (q : Y ⟶ Z), ((Over.pullback (jK R)).map q).left ≫ pullback.fst Z.hom (jK R) = pullback.fst Y.hom (jK R) ≫ q.left` using `fun q => pullback.lift_fst _ _ _`. Establish `hu : u.left ≫ (A₁.A ⊗ A₁.A).hom = ((Over.pullback (jK R)).obj G₁ ⊗ (Over.pullback (jK R)).obj G₁).hom ≫ 𝟙 _`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Category.comp_id]`. Conclude with `Over.w u`. Establish `e'` using `push_cubeCls (isGrpPullback_pullback G₁ (jK R)) (T' := (Over.pullback (jK R)).obj (G₁ ⊗ G₁)) (T := G₁ ⊗ G₁) (fun i => (Over.pullback (jK R)).map (![fst G₁ G₁ ≫ x, snd G₁ G₁ ≫ y] i)) ![fst G₁ G₁ ≫ x, snd G₁ G₁ ≫ y] (pullback.fst (G₁ ⊗ G₁).hom (jK R)) pullback.condition (fun i => A …`. Use `e'.trans ((pull_cubeCls _ ![fst _ _ ≫ (Over.pullback (jK R)).map x, snd _ _ ≫ (Over.pullback (jK R)).map y] _ δ (fun i => ?_) _).symm.trans ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [δ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc']`. Use `congrArg (CechPic.pull δ.left) (push_cubeCls (isGrpPullback_of_iso U₁.gen) _ _ u.left hu (fun i => ?_) _).symm` and prove the remaining obligations. Use `fin_cases i`. Use `show ((fst _ _ ≫ (Over.pullback (jK R)).map x) ≫ U₁.gen.hom).left = (u ≫ fst A₁.A A₁.A ≫ cx).left`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [u, Category.assoc, lift_fst_assoc]`. Rewrite using `[hx]`. Use `show ((snd _ _ ≫ (Over.pullback (jK R)).map y) ≫ U₁.gen.hom).left = (u ≫ snd A₁.A A₁.A ≫ cy).left`. Use `congr 1`. Simplify using `only [u, Category.assoc, lift_snd_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Establish `hL₁` using `U₁.LG.isLB`. Establish `hA₁` using `A₁.isLB`. Establish `l₁ : (cubeLB G₁ ![fst G₁ G₁ ≫ x₁, snd G₁ G₁ ≫ y₁] U₁.LG.L).IsLB` using `LB.isLB_linComb hL₁ _ _`. Establish `l₂ : (cubeLB G₁ ![fst G₁ G₁ ≫ x₂, snd G₁ G₁ ≫ y₂] U₁.LG.L).IsLB` using `LB.isLB_linComb hL₁ _ _`.
-
-Establish `m₁ : (cubeLB A₁.A ![fst A₁.A A₁.A ≫ cx₁, snd A₁.A A₁.A ≫ cy₁] A₁.L).IsLB` using `LB.isLB_linComb hA₁ _ _`. Establish `m₂ : (cubeLB A₁.A ![fst A₁.A A₁.A ≫ cx₂, snd A₁.A A₁.A ≫ cy₂] A₁.L).IsLB` using `LB.isLB_linComb hA₁ _ _`. Establish `eA : cubeCls A₁.A ![fst A₁.A A₁.A ≫ cx₁, snd A₁.A A₁.A ≫ cy₁] (cls _ hA₁) = cubeCls A₁.A ![fst A₁.A A₁.A ≫ cx₂, snd A₁.A A₁.A ≫ cy₂] (cls _ hA₁)` using `(cls_cubeLB _ _ hA₁).symm.trans (((cls_eq_iff m₁ m₂).2 hA).trans (cls_cubeLB _ _ hA₁))`. Use `GlobalTheory.Mum.lbIso_of_generic_local R (G₁ ⊗ G₁) (η[G₁ ⊗ G₁]).left (Over.w _) _ _ l₁ l₂ ?_` and prove the remaining obligations. Use `(cls_eq_iff (pull_isLB l₁ _) (pull_isLB l₂ _)).1 ?_` and prove the remaining obligations.
-
-Rewrite using `[cls_pull l₁ _ (pull_isLB l₁ _), cls_pull l₂ _ (pull_isLB l₂ _), cls_cubeLB _ _ hL₁, cls_cubeLB _ _ hL₁, key x₁ y₁ cx₁ cy₁ hx₁ hy₁, key x₂ y₂ cx₂ cy₂ hx₂ hy₂, eA]`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_cube_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (J : Ideal R), AdmBase R J →
     ∀ (D : DegData R J) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
@@ -108,9 +104,9 @@ theorem lbIso_cube_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoca
     key x₁ y₁ cx₁ cy₁ hx₁ hy₁, key x₂ y₂ cx₂ cy₂ hx₂ hy₂, eA]
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ U hS O _ _ _ ιD ιA ιG hl a`. Establish `g₁ : Gen₀ U U (𝟙 G) (𝟙 A.A)`. Unfold `Gen₀`. Rewrite using `[CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]`. Establish `hA` using `GlobalTheory.AdjPolLocal.lbIso_of_rosatiAdj_local (FractionRing R) A.A A.L (ιA.act a) (ιA.act (star a)) A.isLB (ιA.rosati a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `lbIso_cube_of_generic R _ hR D A G U hS (ιG.act a) (𝟙 G) (𝟙 G) (ιG.act (star a)) (ιA.act a) (𝟙 A.A) (𝟙 A.A) (ιA.act (star a)) (hl.ext a) g₁ g₁ (hl.ext (star a)) (by simpa only [Category.comp_id] using hA)` as an intermediate fact. Simplify `this` using `only [Category.comp_id]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cube_adj_of_oLinear : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]

@@ -18,21 +18,19 @@ open scoped GlobalTheory.VacAny
 namespace GlobalTheory.ThK.AdaptEv.VacuumBlock
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W r s r' s' ι κ₁ _ _ co eq hX hW hrat v`. Take `⟨hOpen, hCpt⟩` from `GlobalTheory.LatOpenCpt.main σ B X W r s r' s' hX hW (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model.mk co (fun _ => 0) 0 ∅) hrat v`. Use `set Λ := (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV X W v).map (GlobalTheory.LatVac.locCo co v) with hΛ`. Set `π : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v) → (ι → Fv F v)` to `fun w i => w.1 (eq.symm (Sum.inl i))`. Establish `hπc : Continuous π` using `by fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπo : IsOpenMap π`. Establish `h1 : IsOpenMap (fun w : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v) => w.1)` using `isOpenMap_fst`. Establish `h2 : IsOpenMap (fun x : (Fin n × Fin d → Fv F v) => (blockHomeo (R` using `Fv F v) eq x).1) := isOpenMap_fst.comp (blockHomeo (R := Fv F v) eq).isOpenMap`. Conclude with `h2.comp h1`. Establish `hset : ((latPos X W co eq v : AddSubgroup (ι → Fv F v)) : Set (ι → Fv F v)) = π '' (Λ : Set _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [latPos, AddSubgroup.coe_map]`. Both sides reduce to the same expression. Establish `ho : IsOpen ((latPos X W co eq v : AddSubgroup (ι → Fv F v)) : Set (ι → Fv F v))`. Rewrite using `[hset]`. Conclude with `hπo _ hOpen`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : IsCompact ((latPos X W co eq v : AddSubgroup (ι → Fv F v)) : Set (ι → Fv F v))`. Rewrite using `[hset]`. Conclude with `hCpt.image hπc`. Establish `hc : IsClosed ((latPos X W co eq v : AddSubgroup (ι → Fv F v)) : Set (ι → Fv F v))` using `AddSubgroup.isClosed_of_isOpen _ ho`. Generalize the expression as in `((latPos X W co eq v : AddSubgroup (ι → Fv F v)) : Set (ι → Fv F v)) = U at ho hk hc ⊢`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `⟨IsLocallyConstant.iff_isOpen_fiber.2 fun y => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : (1 : ℂ) = y`. Establish `: U.indicator 1 ⁻¹' {y} = U`. Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx, ← h1]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[this]`. Conclude with `ho`. Distinguish the cases in `h0 : (0 : ℂ) = y`. Establish `: U.indicator 1 ⁻¹' {y} = Uᶜ`. Use extensionality with `x`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx, ← h0]`. Rewrite using `[this]`. Conclude with `hc.isOpen_compl`. Establish `: U.indicator 1 ⁻¹' {y} = ∅`. Use extensionality with `x`.
-
-Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx] <;> assumption`. Rewrite using `[this]`. Conclude with `isOpen_empty`. Conclude with `hk.of_isClosed_subset (isClosed_tsupport _) (closure_minimal Set.support_indicator_subset hc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latPos_indicator_mem_SB : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ) {ι κ₁ : Type} [Fintype ι] [Fintype κ₁]

@@ -34,7 +34,7 @@ theorem emb_apply (b : Basis (Fin (finrank K V)) K V) (x : V) (i : Fin (finrank 
 
 omit [StarRing K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Introduce `x y hxy`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Conclude with `mixedEmbedding_injective K (congrFun hxy i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem emb_injective (b : Basis (Fin (finrank K V)) K V) : Function.Injective (emb b) := by
   intro x y hxy
@@ -44,7 +44,7 @@ theorem emb_injective (b : Basis (Fin (finrank K V)) K V) : Function.Injective (
 
 omit [StarRing K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Rewrite using `[psi_apply, emb_apply, mixedEmbedding_apply_isComplex]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_emb [IsEmpty {w : InfinitePlace K // w.IsReal}] (b : Basis (Fin (finrank K V)) K V)
     (x : V) (w : {w : InfinitePlace K // w.IsComplex}) (i : Fin (finrank K V)) :
@@ -57,18 +57,18 @@ def lat (b : Basis (Fin (finrank K V)) K V) (L : Submodule (𝓞 K) V) :
 
 omit [StarRing K] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lat {b : Basis (Fin (finrank K V)) K V} {L : Submodule (𝓞 K) V}
     {y : Fin (finrank K V) → mixedSpace K} : y ∈ lat b L ↔ ∃ x ∈ L, emb b x = y := Iff.rfl
 
 omit [StarRing K] in
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_span_piBasis, mem_lat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ i`. Take `⟨a, ha⟩` from `(b.mem_span_iff_repr_mem (𝓞 K) x).1 hx i`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, by rw [ha]; rfl⟩`. Introduce `hy choose a ha using hy`. Establish `hr : ∀ i, b.repr (b.equivFun.symm fun i => algebraMap (𝓞 K) K (a i)) i = algebraMap (𝓞 K) K (a i)`. Introduce `i`. Rewrite using `[← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b.equivFun.symm fun i => algebraMap (𝓞 K) K (a i), (b.mem_span_iff_repr_mem (𝓞 K) _).2 fun i => ⟨a i, (hr i).symm⟩, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[emb_apply, hr, ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lat_span (b : Basis (Fin (finrank K V)) K V) :
     lat b (Submodule.span (𝓞 K) (Set.range b)) =
@@ -99,7 +99,7 @@ variable [IsEmpty {w : InfinitePlace K // w.IsReal}] {h : V →ₗ⋆[K] V →�
 
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-The claim follows from `((isClosed_set_pi fun _ _ => isClosed_ell _).preimage (psi K (Fin (finrank K V))).toContinuousLinearEquiv.continuous).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_ballSet : MeasurableSet (ballSet h b) :=
   ((isClosed_set_pi fun _ _ => isClosed_ell _).preimage
@@ -107,7 +107,7 @@ theorem measurableSet_ballSet : MeasurableSet (ballSet h b) :=
 
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-The claim follows from `(convex_pi fun w _ => convex_ell (hA w)).linear_preimage (psi K (Fin (finrank K V))).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem convex_ballSet
     (hA : ∀ (w : {w : InfinitePlace K // w.IsComplex}) i, 0 < (w.1.embedding (h (b i) (b i))).re) :
@@ -116,7 +116,7 @@ theorem convex_ballSet
 
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Establish `h1 : ballSet h b = (psi K (Fin (finrank K V))).toContinuousLinearEquiv.symm '' Set.pi Set.univ fun w => ell fun i => (w.1.embedding (h (b i) (b i))).re` using `((psi K (Fin (finrank K V))).toContinuousLinearEquiv.image_symm_eq_preimage _).symm`. Rewrite using `[h1]`. Conclude with `(psi K (Fin (finrank K V))).toContinuousLinearEquiv.symm.lipschitz.isBounded_image (Bornology.IsBounded.pi fun w => isBounded_ell (hA w))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBounded_ballSet
     (hA : ∀ (w : {w : InfinitePlace K // w.IsComplex}) i, 0 < (w.1.embedding (h (b i) (b i))).re) :
@@ -130,9 +130,9 @@ theorem isBounded_ballSet
 
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Establish `hm : MeasurableSet (Set.pi Set.univ fun w : {w : InfinitePlace K // w.IsComplex} => ell fun i => (w.1.embedding (h (b i) (b i))).re)` using `(isClosed_set_pi fun _ _ => isClosed_ell _).measurableSet`. Rewrite using `[measureReal_def, ballSet, (measurePreserving_psi K (Fin (finrank K V))).measure_preimage hm.nullMeasurableSet, volume_pi_pi, ENNReal.toReal_prod]`. Establish `h1 : ∀ w : {w : InfinitePlace K // w.IsComplex}, (volume (ell fun i => (w.1.embedding (h (b i) (b i))).re)).toReal = Real.pi ^ finrank K V / ((finrank K V).factorial : ℝ) / ∏ i, (w.1.embedding (h (b i) (b i))).re`. Introduce `w`. Rewrite using `[volume_ell (hA w), ENNReal.toReal_ofReal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_nonneg (by positivity) (Finset.prod_nonneg fun i _ => (hA w i).le)`. Simplify using `only [h1]`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_ballSet
     (hA : ∀ (w : {w : InfinitePlace K // w.IsComplex}) i, 0 < (w.1.embedding (h (b i) (b i))).re) :
@@ -156,15 +156,15 @@ theorem volume_ballSet
   rw [Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ]
 
 /- English proof (translation)
-Establish `hj' : (0 : ℝ) < j` using `by exact_mod_cast hj`. Establish `key : ∀ x : V, (j : ℝ)⁻¹ • emb b x ∈ ballSet h b ↔ ∀ φ : K →+* ℂ, (φ (h x x)).re ≤ (j : ℝ) ^ 2`. Introduce `x`. Rewrite using `[forall_embedding_iff hK b ho x]`. Simplify using `only [ballSet, Set.mem_preimage, Set.mem_pi, Set.mem_univ, forall_true_left, mem_ell, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `forall_congr' fun w => ?_` and prove the remaining obligations. Establish `h1 : ∀ i, Complex.normSq (((j : ℝ)⁻¹ • psi K (Fin (finrank K V)) (emb b x)) w i) = ((j : ℝ) ^ 2)⁻¹ * Complex.normSq (w.1.embedding (b.repr x i))`. Introduce `i`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, psi_emb, Complex.real_smul, map_mul, Complex.normSq_ofReal]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [h1]`. Establish `h2 : ∑ i, (w.1.embedding (h (b i) (b i))).re * (((j : ℝ) ^ 2)⁻¹ * Complex.normSq (w.1.embedding (b.repr x i))) = (∑ i, (w.1.embedding (h (b i) (b i))).re * Complex.normSq (w.1.embedding (b.repr x i))) / (j : ℝ) ^ 2`. Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[h2, div_le_one (by positivity)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `ballCount`. Use `Nat.card_congr (Equiv.ofBijective (fun x => ⟨(j : ℝ)⁻¹ • emb b x.1, (key x.1).2 x.2.2, Set.smul_mem_smul_set ⟨x.1, x.2.1, rfl⟩⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `x y hxy`. Establish `h1 : (j : ℝ)⁻¹ • emb b x.1 = (j : ℝ)⁻¹ • emb b y.1` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (emb_injective b (smul_right_injective _ (inv_ne_zero hj'.ne') h1))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨y, hy1, hy2⟩`. Take `⟨z, ⟨x, hx, rfl⟩, rfl⟩` from `hy2`. Conclude with `⟨⟨x, hx, (key x).1 hy1⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0)
     (L : Submodule (𝓞 K) V) {j : ℕ} (hj : 0 < j) :

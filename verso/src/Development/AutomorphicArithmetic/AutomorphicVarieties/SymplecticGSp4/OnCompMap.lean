@@ -9,21 +9,21 @@ section
 variable {R R' : Type} [CommRing R] [CommRing R']
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[adj_apply, RingHom.mapMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem adj_map' (f : R →+* R') (X : M4 R) : adj (f.mapMatrix X) = f.mapMatrix (adj X) := by
   ext i j
   simp [adj_apply, RingHom.mapMatrix_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[RingHom.mapMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem smul_map' (f : R →+* R') (a : R) (X : M4 R) : f.mapMatrix (a • X) = f a • f.mapMatrix X := by
   ext i j
   simp [RingHom.mapMatrix_apply]
 
 /- English proof (translation)
-Unfold `IsGSp at h ⊢`. Establish `h2` using `congrArg f.mapMatrix h`. Rewrite `h2` using `[map_mul, smul_map', map_one, ← adj_map']`. Conclude with `h2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isGSp_map (f : R →+* R') {ν : R} {g : M4 R} (h : IsGSp ν g) : IsGSp (f ν) (f.mapMatrix g) := by
   unfold IsGSp at h ⊢
@@ -32,9 +32,9 @@ private theorem isGSp_map (f : R →+* R') {ν : R} {g : M4 R} (h : IsGSp ν g) 
   exact h2
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [Polynomial.map_add, map_add, map_add, hp, hq, map_add]`. Consider the case `monomial n a`. Rewrite using `[Polynomial.map_monomial, Polynomial.aeval_monomial, Polynomial.aeval_monomial, map_mul, map_pow]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.algebraMap_matrix_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem aeval_map' (f : R →+* R') (X : M4 R) (p : Polynomial R) :
     Polynomial.aeval (f.mapMatrix X) (p.map f) = f.mapMatrix (Polynomial.aeval X p) := by
@@ -48,7 +48,7 @@ private theorem aeval_map' (f : R →+* R') (X : M4 R) (p : Polynomial R) :
     split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [prj]`. Rewrite using `[← aeval_map']`. Use `congr 1`. Simplify using `[Polynomial.map_prod]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private theorem prj_map (f : R →+* R') (c : Fin 4 → R) (X : M4 R) (i : Fin 4) :
     prj (fun a => f (c a)) (f.mapMatrix X) i = f.mapMatrix (prj c X i) := by
@@ -58,11 +58,11 @@ private theorem prj_map (f : R →+* R') (c : Fin 4 → R) (X : M4 R) (i : Fin 4
   simp [Polynomial.map_prod]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hr, hps]`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.charpoly_map, h.charpoly, Polynomial.map_prod]`. Simplify using the standard rewrite rules. Introduce `g i j hij`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hr, hps]`. Rewrite using `[prj_map, prj_map, ← map_mul, ← map_mul, h.stable g i j hij, map_zero]`. Introduce `s hs i`. Simplify using `only [hr, hps]`. Establish `e : f.mapMatrix (r s) - f (ps i s) • (1 : M4 R') = f.mapMatrix (r s - ps i s • 1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_sub, smul_map', map_one]`. Rewrite using `[prj_map, e, ← map_mul, ← map_mul, h.inert s hs i, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ord_map {H : Type} [Group H] (f : R →+* R') {I : Subgroup H} {ps : Fin 4 → H → R} {s₀ : H}
     {r : H →* M4 R} {r' : H →* M4 R'} (hr : ∀ g, r' g = f.mapMatrix (r g)) {ps' : Fin 4 → H → R'}
@@ -88,9 +88,9 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [F
   {R : Type} [CommRing R] [Algebra c.O R] [IsCO c.O R] {R' : Type} [CommRing R'] [Algebra c.O R'] [IsCO c.O R']
 
 /- English proof (translation)
-Unfold `Raw.condL at h ⊢`. Take `⟨h1, h2⟩` from `h`. Establish `hr : ∀ g, (ρ.map f).hom g = (f : R →+* R').mapMatrix (ρ.hom g)`. Introduce `g`. Use extensionality with `a b`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[Lift.map_hom]`. Both sides reduce to the same expression. Use `⟨fun g => ?_, ord_map (f : R →+* R') hr (fun i g => (f.commutes _).symm) h2⟩` and prove the remaining obligations. Rewrite using `[hr, ← f.commutes]`. Conclude with `isGSp_map (f : R →+* R') (h1 g)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem condL_map (f : R →ₐ[c.O] R') (ρ : Lift c.O (D.rbarAt l) R) (h : D.condL R ρ) :
     D.condL R' (ρ.map f) := by
@@ -106,9 +106,7 @@ private theorem condL_map (f : R →ₐ[c.O] R') (ρ : Lift c.O (D.rbarAt l) R) 
   exact isGSp_map (f : R →+* R') (h1 g)
 
 /- English proof (translation)
-Use `⟨fun g => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `isGSp_map (f : R →+* R') (h.1 g)` as an intermediate fact. Rewrite `this` using `[RingHom.coe_coe, f.commutes]`. Conclude with `this`. Use `show (f : R →+* R').mapMatrix (ρ.hom g) = 1`.
-
-Rewrite using `[h.2 g hg, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem condP_map (p : ℕ) (f : R →ₐ[c.O] R') (ρ : Lift c.O (D.rbarAt p) R) (h : D.condP p R ρ) :
     D.condP p R' (ρ.map f) := by
@@ -120,9 +118,9 @@ private theorem condP_map (p : ℕ) (f : R →ₐ[c.O] R') (ρ : Lift c.O (D.rba
     rw [h.2 g hg, map_one]
 
 /- English proof (translation)
-Introduce `g`. Establish `hr : (ρ.map f).hom g = (f : R →+* R').mapMatrix (ρ.hom g)`. Use extensionality with `a b`. Rewrite using `[Lift.map_hom]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hr, ← f.commutes]`. Conclude with `isGSp_map (f : R →+* R') (h g)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mult_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (h : D.Mult ρ.hom) : D.Mult (ρ.map f).hom := by
   intro g
@@ -134,7 +132,7 @@ private theorem mult_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (h : D.
   exact isGSp_map (f : R →+* R') (h g)
 
 /- English proof (translation)
-Introduce `A hA g hg h1`. Use `show (f : R →+* R').mapMatrix (ρ.hom g) = 1`. Rewrite using `[h A hA g hg h1, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unr_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (h : D.UnrT ρ.hom 1) :
     D.UnrT (ρ.map f).hom 1 := by
@@ -143,14 +141,14 @@ private theorem unr_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (h : D.U
   rw [h A hA g hg h1, map_one]
 
 /- English proof (translation)
-Simplify using `[Raw.hEl, Lift.map_hom, map_add, map_mul, f.commutes]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hEl_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (i j : Fin 4) :
     D.hEl (ρ.map f).hom i j = f (D.hEl ρ.hom i j) := by
   simp [Raw.hEl, Lift.map_hom, map_add, map_mul, f.commutes]
 
 /- English proof (translation)
-Apply `Lift.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 private theorem loc_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (v : ℕ) :
     D.loc (ρ.map f) v = (D.loc ρ v).map f := by
@@ -158,7 +156,7 @@ private theorem loc_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (v : ℕ
   rfl
 
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Lift.map_hom, h.1 i j hij, map_zero]`. Rewrite using `[hEl_map, h.2.1, map_zero]`. Rewrite using `[hEl_map, h.2.2, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem nrm_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (h : D.Nrm ρ.hom) : D.Nrm (ρ.map f).hom := by
   refine ⟨fun i j hij => ?_, ?_, ?_⟩
@@ -169,9 +167,9 @@ private theorem nrm_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (h : D.N
 end
 
 /- English proof (translation)
-Take `⟨B, i1, i2, i3, i4, ρ', hP, hρ, y, hy⟩` from `h`. Use `⟨B, i1, i2, i3, i4, ρ', hP, hρ, f.comp y, ?_⟩` and prove the remaining obligations. Substitute `hy` using the available equality. Apply `Lift.ext` to reduce the goal to its premises. Use extensionality with `g a b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `[Lift.map_hom]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem onComp_map {O : Type} [CommRing O] [IsLocalRing O] {Γ ι : Type} [Group Γ] [TopologicalSpace Γ]
     [Fintype ι] [DecidableEq ι] {rbar : Γ →* Matrix ι ι (ResidueField O)} {P : Cond O rbar} {ρ₀ : Γ →* Matrix ι ι O}
@@ -187,13 +185,11 @@ private theorem onComp_map {O : Type} [CommRing O] [IsLocalRing O] {Γ ι : Type
 end UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D _ R _ _ _ ρ`. Establish `hL : ∀ {S : Type} [CommRing S] [Algebra c.O S] [IsCO c.O S] (r : Lift c.O (D.rbarAt l) S), OnComp D.condL (D.r0At l) r → D.condL S r`. Introduce `S _ _ _ r hr`. Take `⟨B, i1, i2, i3, i4, ρ', hP, _, y, rfl⟩` from `hr`. Conclude with `condL_map D y ρ' hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP : ∀ (p : ℕ) {S : Type} [CommRing S] [Algebra c.O S] [IsCO c.O S] (r : Lift c.O (D.rbarAt p) S), OnComp (D.condP p) (D.r0At p) r → D.condP p S r`. Introduce `p S _ _ _ r hr`. Take `⟨B, i1, i2, i3, i4, ρ', hQ, _, y, rfl⟩` from `hr`. Conclude with `condP_map D p y ρ' hQ`. Use `⟨fun h => ⟨h.mult, h.unr, h.nrm, hL _ h.atL, fun p hp => hP p _ (h.atP p hp)⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `R' _ _ _ f`. Use `⟨fun h => ⟨mult_map D f ρ h.mult, unr_map D f ρ h.unr, nrm_map D f ρ h.nrm, ?_, fun p hp => ?_⟩, fun h => ⟨mult_map D f ρ h.mult, unr_map D f ρ h.unr, nrm_map D f ρ h.nrm, ?_, fun p hp => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[loc_map]`. Conclude with `onComp_map f h.atL`. Rewrite using `[loc_map]`.
-
-Conclude with `onComp_map f (h.atP p hp)`. Rewrite using `[loc_map]`. Conclude with `condL_map D f _ h.atL`. Rewrite using `[loc_map]`. Conclude with `condP_map D p f _ (h.atP p hp)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.ptMap :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (R : Type) [CommRing R] [Algebra c.O R] [IsCO c.O R] (ρ : Lift c.O D.rbar R), (D.IsPt ρ → D.IsEq ρ) ∧ ∀ (R' : Type) [CommRing R'] [Algebra c.O R'] [IsCO c.O R'] (f : R →ₐ[c.O] R'), (D.IsPt ρ → D.IsPt (ρ.map f)) ∧ (D.IsEq ρ → D.IsEq (ρ.map f)) := by

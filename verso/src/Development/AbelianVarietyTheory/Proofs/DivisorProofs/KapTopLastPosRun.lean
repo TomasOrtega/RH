@@ -14,13 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LiftWeight
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Establish `hk : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hi : (i : ℕ) < D.R.m` using `i.isLt`. Establish `hlt : n < D.R.k + (i : ℕ)` using `by omega`. Establish `h1 : ¬ n < D.R.k - 1` using `by omega`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : n - (D.R.k - 1) < D.R.m` using `by omega`. Establish `hidx : (⟨n - (D.R.k - 1), h2⟩ : Fin D.R.m) = i` using `Fin.ext (by simp only; omega)`. Establish `hlam : Formalism.L2.NTheta.lamAt (D.hc τ) n = -(D.hc τ).b i`. Unfold `Formalism.L2.NTheta.lamAt`. Rewrite using `[dif_neg h1, dif_pos h2, hidx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hg` using `(D.hc τ).gap_be i`. Establish `hq : ((D.R.k + (i : ℕ) : ℕ) : ℚ) = (n : ℚ) + 1`. Rewrite using `[← hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [aPl, if_pos hlt]`. Rewrite using `[hlam, hq]`. Establish `hfl : (1 : ℤ) ≤ ⌊-(D.hc τ).b i + (D.hc τ).e i - ((n : ℚ) + 1 - ((n : ℚ) + 1)) - ((D.R.t : ℚ) + 1) / 2⌋`. Rewrite using `[Int.le_floor]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers.
 -/
@@ -48,11 +48,9 @@ theorem one_le_aPl_last (D : D7) (i : Fin D.R.m) (τ : D.what₂.Tau) (p n : ℕ
   omega
 
 /- English proof (translation)
-Introduce `τ k hk`. Establish `hi : (i : ℕ) < D.R.m` using `i.isLt`. Establish `hW` using `D.sp.W_sigval ((i : ℕ) + 1) (by omega) (by omega) (tauE D τ)`. Establish `hs : ((Wc D i).sig (tauE D τ)).1 = D.R.k + (i : ℕ)` using `by show ((D.sp.W ((i : ℕ) + 1)).sig (tauE D τ)).1 = D.R.k + (i : ℕ)`. Rewrite using `[hW]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show D.R.k + ((i : ℕ) + 1) - 1 = D.R.k + (i : ℕ)`. Use linear arithmetic over natural numbers and integers. Establish `hk' : (k : ℕ) + 1 = D.R.k + (i : ℕ)`. Establish `hsw : (D.R.sigW ((i : ℕ) + 1)).1 = D.R.k + ((i : ℕ) + 1) - 1` using `rfl`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `one_le_aPl_last D i τ _ k hs (hk'.trans hs.symm)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem kapTop_lastPos (D : D7) (i : Fin D.R.m) : (kapTop D i).LastPos := by
   intro τ k hk

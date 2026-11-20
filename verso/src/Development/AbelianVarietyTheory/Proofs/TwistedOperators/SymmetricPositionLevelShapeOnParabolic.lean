@@ -8,7 +8,7 @@ open MeasureTheory ValuativeRel Matrix Topology GlobalTheory.SplitWeil GlobalThe
 namespace GlobalTheory.SymShape
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, GlobalTheory.RootEx.Radical.embX_val, ← Matrix.fromBlocks_toBlocks u.val, Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₁₁, GlobalTheory.RootEx.Radical.toBlocks₁₁_of_mem hu]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem block_mul_embX {F : Type} [Field F] {κ l p : ℕ} {u : GL (Fin κ ⊕ Fin l) F} (hu : u ∈ N F (Fin κ) l p)
     (γ : GL (Fin κ) F) : (u * embX l γ).val.toBlocks₁₁ = γ.val := by
@@ -17,7 +17,7 @@ theorem block_mul_embX {F : Type} [Field F] {κ l p : ℕ} {u : GL (Fin κ ⊕ F
   simp
 
 /- English proof (translation)
-Apply `GlobalTheory.RootEx.Radical.simpleSum_eq_zero` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[GlobalTheory.RootEx.Radical.embX_val, Matrix.fromBlocks_apply₂₂]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem simpleSum_embX {F : Type} [Field F] {κ l : ℕ} (γ : GL (Fin κ) F) : simpleSum (embX l γ) = 0 := by
   apply GlobalTheory.RootEx.Radical.simpleSum_eq_zero
@@ -25,21 +25,19 @@ theorem simpleSum_embX {F : Type} [Field F] {κ l : ℕ} (γ : GL (Fin κ) F) : 
   rw [GlobalTheory.RootEx.Radical.embX_val, Matrix.fromBlocks_apply₂₂]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ ϖ ρ κ l P hP`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu γ hm`. Take `⟨u', hu', γ', hγ', g₀, hg₀, hr₀⟩` from `(hP.1 _).1 hm`. Establish `key : ∀ {F : Type} [Field F] (f : 𝒪[k] →+* F) (x : GL (Fin κ ⊕ Fin l) F) (y : GL (Fin κ) F), Matrix.GeneralLinearGroup.map f g₀ = x → x.val.toBlocks₁₁ = y.val → (g₀.val.toBlocks₁₁).map f = y.val`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `F _ f x y h1 h2`. Rewrite using `[← h2, ← h1]`. Both sides reduce to the same expression. Establish `hBk` using `key (algebraMap 𝒪[k] k) _ γ hg₀ (block_mul_embX hu γ)`. Establish `hBr` using `key (IsLocalRing.residue 𝒪[k]) _ γ' hr₀ (block_mul_embX hu' γ')`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : IsUnit (g₀.val.toBlocks₁₁).det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Express the relevant statement in the definitionally equal form `((g₀.val.toBlocks₁₁).map (IsLocalRing.residue 𝒪[k])).det ≠ 0`. Rewrite using `[hBr]`. Conclude with `(Matrix.isUnits_det_units γ').ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨γ', ⟨((Matrix.isUnit_iff_isUnit_det _).mpr hdet).unit, ?_, ?_⟩, hγ'⟩` and prove the remaining obligations. Conclude with `Units.ext (by rw [← hBk]; rfl)`. Conclude with `Units.ext (by rw [← hBr]; rfl)`. Introduce `γ gb hred hgb`. Take `⟨γ₀, h1, h2⟩` from `hred`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `g₀ : GL (Fin κ ⊕ Fin l) 𝒪[k]` to `⟨Matrix.fromBlocks γ₀.val 0 0 1, Matrix.fromBlocks (γ₀⁻¹).val 0 0 1, by rw [Matrix.fromBlocks_multiply]; simp, by rw [Matrix.fromBlocks_multiply]; simp⟩`. Establish `hemb : ∀ {F : Type} [Field F] (f : 𝒪[k] →+* F), Matrix.GeneralLinearGroup.map f g₀ = embX l (Matrix.GeneralLinearGroup.map f γ₀)`. Introduce `F _ f`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RootEx.Radical.embX_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(Matrix.fromBlocks γ₀.val 0 0 1).map f = _`. Rewrite using `[Matrix.fromBlocks_map]`. Simplify using the standard rewrite rules. Establish `hm : embX l γ ∈ P.J` using `(hP.1 _).2 ⟨1, one_mem _, gb, hgb, g₀, by rw [hemb, h1], by rw [hemb, h2, one_mul]⟩`. Use `⟨hm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hblk : (embX l γ).val.toBlocks₁₁ = γ.val`. Rewrite using `[GlobalTheory.RootEx.Radical.embX_val, Matrix.toBlocks_fromBlocks₁₁]`. Rewrite using `[hP.2 ⟨_, hm⟩]`. Simplify using `only [simpleSum_embX, hblk, mul_zero, AddChar.map_zero_eq_one, Circle.coe_one, one_mul]`. Introduce `u hu hm`.
-
-Rewrite using `[hP.2 ⟨u, hm⟩]`. Simplify using `only [GlobalTheory.RootEx.Radical.toBlocks₁₁_of_mem hu, GlobalTheory.GenericShape.superSum_one, mul_zero, AddChar.map_zero_eq_one, Circle.coe_one, mul_one]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sym_shape : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (ϖ : kˣ) (ρ κ l : ℕ) (P : TypeDatum k (Fin κ ⊕ Fin l)), IsSymLevel ψ ϖ ρ P → ((∀ u ∈ N k (Fin κ) l 1, ∀ γ : GL (Fin κ) k, u * embX l γ ∈ P.J → ∃ gb, Reduces γ gb ∧ IsUpperUnip Fin.val gb.val) ∧ (∀ (γ : GL (Fin κ) k) (gb : GL (Fin κ) 𝓀[k]), Reduces γ gb → IsUpperUnip Fin.val gb.val → ∃ hm : embX l γ ∈ P.J, (P.lam ⟨_, hm⟩ : ℂ) = ψ ((ϖ⁻¹ : kˣ) * superSum Fin.val γ.val)) ∧ ∀ u ∈ N k (Fin κ) l 1, ∀ hm : u ∈ P.J, (P.lam ⟨u, hm⟩ : ℂ) = ψ ((ϖ⁻¹ : kˣ) * simpleSum u)) := by
   intro k _ _ _ _ ψ ϖ ρ κ l P hP

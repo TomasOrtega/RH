@@ -14,13 +14,13 @@ open UpperTheory.V.UnitaryThreeInertia.TorStep
 variable {O A D : Type} [CommRing O] [CommRing A] [IsLocalRing A] [Algebra O A] [Group D]
 
 /- English proof (translation)
-Establish `h0 : psi Ψ 0 x = (Ψ x : O)` using `by simp [psi, wt1]`. Establish `h1 : psi Ψ 1 x = 1` using `by simp [psi, wt1]`. Establish `h2 : psi Ψ 2 x = ((Ψ x)⁻¹ : Oˣ)` using `by simp [psi, wt1]`. Establish `hi : (Ψ x : O) * ((Ψ x)⁻¹ : Oˣ) = 1` using `Units.mul_inv _`. Establish `e01 : IsUnit (psi Ψ 0 x - psi Ψ 1 x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0, h1]`. Conclude with `isUnit_of_mul_isUnit_left (y := (Ψ x : O) + 1) (by convert hx using 1; ring)`. Establish `e12 : IsUnit (psi Ψ 1 x - psi Ψ 2 x)`. Rewrite `e01` using `[h0, h1]`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `e01.mul ((Ψ x)⁻¹).isUnit using 1` and compare the differences between its conclusion and the goal. Take the linear combination `-hi`. Establish `e02 : IsUnit (psi Ψ 0 x - psi Ψ 2 x)`. Rewrite using `[h0, h2]`. Use `hx.mul ((Ψ x)⁻¹).isUnit using 1` and compare the differences between its conclusion and the goal.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-(Ψ x : O) * hi`. Establish `neg : ∀ {u w : O}, IsUnit (u - w) → IsUnit (w - u)` using `fun h => by rw [← neg_sub]; exact h.neg`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first | exact absurd rfl hab | assumption | (apply neg; assumption)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem psi_diff (Ψ : D →* Oˣ) (x : D) (hx : IsUnit ((Ψ x : O) ^ 2 - 1)) (a b : Fin 3) (hab : a ≠ b) :
     IsUnit (psi Ψ a x - psi Ψ b x) := by
@@ -44,7 +44,7 @@ private theorem psi_diff (Ψ : D →* Oˣ) (x : D) (hx : IsUnit ((Ψ x : O) ^ 2 
   fin_cases a <;> fin_cases b <;> first | exact absurd rfl hab | assumption | (apply neg; assumption)
 
 /- English proof (translation)
-Rewrite using `[← residue_ne_zero_iff_isUnit, h, residue_ne_zero_iff_isUnit]`. Conclude with `hu.map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unit_of_res {y : A} {u : O} (hu : IsUnit u) (h : residue A y = residue A (algebraMap O A u)) :
     IsUnit y := by
@@ -52,9 +52,9 @@ private theorem unit_of_res {y : A} {u : O} (hu : IsUnit u) (h : residue A y = r
   exact hu.map _
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Establish `h` using `(residue_eq_zero_iff _).2 (hr.red g a b)`. Rewrite `h` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Establish `h2 : GeneralLinearGroup.map (algebraMap O A) (tor O (Ψ g)) = tor A (chr Ψ A g)` using `map_tor _ _`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h2]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem res_left [IsLocalRing O] {η : D →* ℤˣ} {Ψ : D →* Oˣ} {r : D →* GG 3 A} (hr : Red η Ψ r) (g : D) :
     GeneralLinearGroup.map (residue A) (r g).left = GeneralLinearGroup.map (residue A) (tor A (chr Ψ A g)) := by
@@ -67,11 +67,11 @@ private theorem res_left [IsLocalRing O] {η : D →* ℤˣ} {Ψ : D →* Oˣ} {
   exact h
 
 /- English proof (translation)
-Establish `h1 : GG.map (residue A) (GG.ofGL h) = 1`. Use `SemidirectProduct.ext (Units.ext ?_) rfl` and prove the remaining obligations. Use extensionality with `a b`. Establish `h` using `(residue_eq_zero_iff _).2 (hh a b)`. Rewrite `h` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h.trans ?_` and prove the remaining obligations. Use `show _ = (1 : Matrix (Fin 3) (Fin 3) _) a b`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : GG.map (residue A) (conjBy h⁻¹ r g) = GG.map (residue A) (r g)` using `by show GG.map (residue A) (GG.ofGL h⁻¹ * r g * (GG.ofGL h⁻¹)⁻¹) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_inv, h1, inv_one, one_mul, mul_one]`. Conclude with `congrArg SemidirectProduct.left h2`.
+A detailed English derivation is pending.
 -/
 private theorem res_conj {h : GL (Fin 3) A} (hh : InHat h) (r : D →* GG 3 A) (g : D) :
     GeneralLinearGroup.map (residue A) (conjBy h⁻¹ r g).left = GeneralLinearGroup.map (residue A) (r g).left := by
@@ -90,19 +90,19 @@ private theorem res_conj {h : GL (Fin 3) A} (hh : InHat h) (r : D →* GG 3 A) (
   exact congrArg SemidirectProduct.left h2
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or (η g) with hg | hg` into its components or cases. Conclude with `hd g hg`. Establish `hη2 : η (g * x * g⁻¹) = 1` using `by rw [map_mul, map_mul, hηx, mul_one, map_inv, mul_inv_cancel]`. Establish `hΨ2 : chr Ψ A (g * x * g⁻¹) = chr Ψ A x`. Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : t (g * x * g⁻¹) * t g = t g * t x` using `by rw [← map_mul, ← map_mul, inv_mul_cancel_right]`. Establish `e1 : (t (g * x * g⁻¹)).mat * (t g).mat = (t g).mat * (theta (t x).left).val`. Use `congrArg (fun z : GG 3 A => z.left.val) e` as an intermediate fact. Simplify `this` using `only [GG.mat, SemidirectProduct.mul_left, hm _, hη2, hg, sgnAct_one, sgnAct_neg_one, Units.val_mul]`. Establish `d1` using `hd _ hη2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d2 : (theta (t x).left).val.IsDiag`. Introduce `a b hab`. Rewrite using `[theta_apply]`. Conclude with `isDiag_inv (hd x hηx) fun e => hab (Fin.rev_injective e).symm`. Establish `r1 : ∀ a, residue A ((t (g * x * g⁻¹)).mat a a) = residue A (algebraMap O A (psi Ψ a x))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Use `congrArg (fun z : GL (Fin 3) _ => z.val a a) (hres (g * x * g⁻¹))` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `show residue A ((tor A _).val a a) = _`. Rewrite using `[hΨ2, tor_chr_apply, Matrix.diagonal_apply_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `r2 : ∀ a, residue A ((theta (t x).left).val a a) = residue A (algebraMap O A (psi Ψ a x))`. Introduce `a`. Establish `h3 : GeneralLinearGroup.map (residue A) (theta (t x).left) = GeneralLinearGroup.map (residue A) (tor A (chr Ψ A x))`. Rewrite using `[map_theta, hres, ← map_theta, theta_tor]`. Use `congrArg (fun z : GL (Fin 3) _ => z.val a a) h3` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `this.trans ?_` and prove the remaining obligations. Use `show residue A ((tor A _).val a a) = _`. Rewrite using `[tor_chr_apply, Matrix.diagonal_apply_eq]`. Introduce `a b hab`. Establish `hu : IsUnit ((t (g * x * g⁻¹)).mat a a - (theta (t x).left).val b b)` using `unit_of_res (psi_diff Ψ x hx a b hab) (by rw [map_sub, map_sub, map_sub, r1, r2])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `e2` using `congrFun (congrFun e1 a) b`. Rewrite `e2` using `[← d1.diagonal_diag, ← d2.diagonal_diag, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Simplify using `only [Matrix.diag_apply] at e2`. Take the linear combination `e2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem diag_all [Finite A] {η : D →* ℤˣ} {Ψ : D →* Oˣ} (t : D →* GG 3 A) (hm : HasMult η t)
     (hres : ∀ g, GeneralLinearGroup.map (residue A) (t g).left =
@@ -150,39 +150,31 @@ private theorem diag_all [Finite A] {η : D →* ℤˣ} {Ψ : D →* Oˣ} (t : D
 end
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hF _ R R' _ _ _ _ _ _ 𝒜 _ p j hp hS v hv r' hred hloc hlc hgr`. Use `haveI : Finite R := hS.fin`. Use `haveI : Finite R' := Finite.of_surjective p hp`. Use `haveI : IsLocalHom (p : R →+* R') := IsLocalHom.of_surjective _ hp`. Establish `hvT : v ∈ F.Tb` using `Set.mem_insert_of_mem _ hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcont : Continuous (F.loc v)` using `hF.π_cont.comp continuous_subtype_val`. Take `⟨x, hηx, hx⟩` from `hF.x v hvT`. Take `⟨φ, hφ, hd⟩` from `hF.frob v`. Take `⟨X, hXg, hX⟩` from `hgr x`. Establish `hXp : ∀ a b, (p : R →+* R') (X a b) = (r' x).mat a b` using `fun a b => congrFun (congrFun hX a) b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrx : ∀ a b, residue R' ((r' x).mat a b) = residue R' (diagonal (fun a => algebraMap O R' (psi (F.Ψv v) a x)) a b)` using `fun a b => by`. Rewrite using `[← TorStep.tor_chr_apply]`. Conclude with `congrArg (fun z : GL (Fin 3) _ => z.val a b) (res_left hred x)`. Establish `hXu : ∀ a b, a ≠ b → IsUnit (X a a - X b b)` using `fun a b hab => by`. Apply `IsUnit.of_map (p : R →+* R')` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `unit_of_res (psi_diff _ x hx a b hab) ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, map_sub, map_sub, hXp, hXp, hrx, hrx, Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq]`. Establish `hXm : ∀ a b, a ≠ b → X a b ∈ maximalIdeal R` using `fun a b hab hu => by`. Establish `h1` using `hu.map (p : R →+* R')`. Rewrite `h1` using `[hXp, ← residue_ne_zero_iff_isUnit, hrx, Matrix.diagonal_apply_ne _ hab, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1 rfl`. Take `⟨h, hh⟩` from `exists_canon X hXu hXm`. Take `⟨hg1, hg2⟩` from `canon_graded 𝒜 X h hXu hXg hh`. Establish `hh'` using `canon_map.1 (p : R →+* R') X h hh`. Rewrite `hh'` using `[show X.map (p : R →+* R') = (r' x).mat from hX]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set h' := GeneralLinearGroup.map (p : R →+* R') h with hh'def`. Establish `hD : DiagIn (F.ηv v) (F.Ψv v) (F.Iv v) r' h'` using `(cond_iff_canon _ _ _ r' x h' hred hηx hx hh').2.1 (hloc.2.1 hv)`. Establish `hconj : ∀ {A : Type} [CommRing A] (k : GL (Fin 3) A) (r : F.D v →* GG 3 A) (g : F.D v), conjBy k r g = GG.ofGL k * r g * GG.ofGL k⁻¹` using `fun k r g => by rw [map_inv]; rfl`. Establish `hmap : ∀ k : GL (Fin 3) R, GG.map (p : R →+* R') (GG.ofGL k) = GG.ofGL (GeneralLinearGroup.map (p : R →+* R') k)` using `fun k => rfl`. Establish `hm : HasMult (F.ηv v) (conjBy h'⁻¹ r')` using `fun g => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hconj]`. Simplify using `[hred.mult g]`. Establish `hdiag : ∀ g, (conjBy h'⁻¹ r' g).mat.IsDiag`. Use `diag_all (Ψ := F.Ψv v) _ hm (fun g => (res_conj hh'.hat r' g).trans (res_left hred g)) ?_ x hηx hx` and prove the remaining obligations. Introduce `g hg a b hab`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Break down `lt_trichotomy (wt a b) 0 with h0 | h0 | h0` into its components or cases. Conclude with `hD.tri g hg a b h0`. Conclude with `absurd (Fin.ext (by unfold wt wt1 at h0; omega)) hab`. Conclude with `hD.low g hg a b h0`. Establish `hlc' : IsLocallyConstant r'` using `TorStep.isLocallyConstant_GG (F.ηv v) (hF.η_cont.comp_continuous hcont) r' hred.mult hlc`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨t, ht1, ht2, ht3, ht4, ht5⟩` from `TorStep.exists_torus_lift 𝒜 p (F.Iv v) φ hφ hd (F.Ψv v) (fun n => (hF.Ψ_cont n).comp_continuous hcont) (conjBy h'⁻¹ r') (hlc'.comp (MulAut.conj (GG.ofGL h'⁻¹))) hdiag (fun s hs => by`. Use `SemidirectProduct.ext (Units.ext ?_) ((hm s).trans (hF.η_I v hvT s hs))` and prove the remaining obligations. Use `show (conjBy h'⁻¹ r' s).mat = (tor R' _).val`. Rewrite using `[TorStep.tor_chr_apply, ← (hdiag s).diagonal_diag]`. Use `congr 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Conclude with `hD.ine s hs (hF.η_I v hvT s hs) a)`. Use the proof step `(fun a => by`. Take `⟨W, hW1, hW2⟩` from `hgr φ`. Establish `hWu : IsUnit W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Apply `IsUnit.of_map (p : R →+* R')` to reduce the goal to its premises. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, show W.map (p : R →+* R') = (r' φ).mat from hW2]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (r' φ).left.isUnit`. Take `⟨W, rfl⟩` from `hWu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `w : GG 3 R` to `⟨W, (r' φ).right⟩`. Establish `hw : GG.map (p : R →+* R') w = r' φ` using `SemidirectProduct.ext (Units.ext hW2) rfl`. Establish `h1 : GrMat 𝒜 (GG.ofGL h⁻¹ * w * GG.ofGL h).mat` using `TorStep.grMat_GG_mul 𝒜 (TorStep.grMat_GG_mul 𝒜 hg2 hW1) hg1`. Establish `h2 : GG.map (p : R →+* R') (GG.ofGL h⁻¹ * w * GG.ofGL h) = conjBy h'⁻¹ r' φ`. Rewrite using `[hconj, map_mul, map_mul, hw, hmap, hmap, map_inv, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(GG.ofGL h⁻¹ * w * GG.ofGL h).mat a a, ?_, ?_⟩` and prove the remaining obligations. Use `h1 a a` as an intermediate fact. Rewrite `this` using `[show wt a a = 0 from sub_self _]`. Then use the resulting hypothesis. Rewrite using `[← h2]`. Use the proof step `rfl)`.
-
-Establish `hback : conjBy h⁻¹ (conjBy h t) = t` using `MonoidHom.ext fun g => by`. Rewrite using `[hconj, hconj, inv_inv, map_inv]`. Use `group`. Use `⟨conjBy h t, MonoidHom.ext fun g => ?_, ⟨fun e => absurd (e ▸ hv) hF.vl_notMem, fun _ => ⟨h, hh.hat, ?_⟩, fun e => absurd hvT e⟩, (ht2.comp (MulAut.conj (GG.ofGL h))).comp GG.mat, fun g => ?_⟩` and prove the remaining obligations. Use `show GG.map _ (conjBy h t g) = r' g`.
-
-Establish `: GG.map (p : R →+* R') (t g) = conjBy h'⁻¹ r' g` using `DFunLike.congr_fun ht1 g`. Rewrite using `[hconj, map_mul, map_mul, this, hconj, hmap, hmap]`. Simplify using `only [map_inv, ← hh'def]`. Use `group`. Use `⟨⟨fun g _ a b h0 => ?_, fun s hs _ a => ?_⟩, fun g _ a b h0 => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hback]`. Conclude with `ht3 g fun e => by subst e; simp [wt] at h0`. Rewrite using `[hback, ht4 s hs] show (tor R _).val a a = _`. Rewrite using `[TorStep.tor_chr_apply, Matrix.diagonal_apply_eq]`. Rewrite using `[hback]`.
-
-Conclude with `ht3 g fun e => by subst e; simp [wt] at h0`. Rewrite using `[hconj]`. Conclude with `TorStep.grMat_GG_mul 𝒜 (TorStep.grMat_GG_mul 𝒜 hg1 (ht5 g)) hg2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.exists_lift_d :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]

@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.WittMajorant
 variable {n : ℕ}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = U * (D * E) * V := by`. Rewrite using `[h]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conj_mul (U V D E : Matrix (Fin n) (Fin n) ℂ) (h : V * U = 1) :
     (U * D * V) * (U * E * V) = U * (D * E) * V := by
@@ -18,21 +18,19 @@ private theorem conj_mul (U V D E : Matrix (Fin n) (Fin n) ℂ) (h : V * U = 1) 
         rw [h]; simp only [Matrix.mul_one, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `set U : Matrix (Fin n) (Fin n) ℂ := (hR.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Establish `hUU : Uᴴ * U = 1`. Use `Unitary.star_mul_self_of_mem hR.eigenvectorUnitary.2` as an intermediate fact. Simplify `this` using `[star_eq_conjTranspose]`. Establish `hspec : R = U * diagonal (fun i => ((hR.eigenvalues i : ℝ) : ℂ)) * Uᴴ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hR.spectral_theorem` as an intermediate fact. Simplify `this` using `[Unitary.conjStarAlgAut_apply, star_eq_conjTranspose, Function.comp_def]`. Use `set d : Fin n → ℂ := fun i => ((hR.eigenvalues i : ℝ) : ℂ) with hd`. Use `set a : Fin n → ℂ := fun i => ((|hR.eigenvalues i| : ℝ) : ℂ) with ha`. Use `set s : Fin n → ℂ := fun i => (((SignType.sign (hR.eigenvalues i) : SignType) : ℝ) : ℂ) with hs`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsd : ∀ i, s i * d i = a i`. Introduce `i`. Simplify using `only [hs, hd, ha]`. Rewrite using `[← Complex.ofReal_mul, sign_mul_self]`. Establish `hds : ∀ i, d i * s i = a i` using `fun i => by rw [mul_comm, hsd]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hssd : ∀ i, s i * s i * d i = d i`. Introduce `i`. Simplify using `only [hs, hd]`. Break down `lt_trichotomy (hR.eigenvalues i) 0 with h | h | h` into its components or cases. Simplify using `[sign_neg h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[h]`. Simplify using `[sign_pos h]`. Use `⟨U * diagonal a * Uᴴ, U * diagonal s * Uᴴ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : (diagonal a).PosSemidef`. Rewrite using `[posSemidef_diagonal_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i`. Simplify using `only [ha]`. Conclude with `abs_nonneg _` after adjusting the coercions. Use `h0.conjTranspose_mul_mul_same Uᴴ` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [hspec]`. Rewrite using `[conj_mul _ _ _ _ hUU, diagonal_mul_diagonal]`. Simplify using `only [hsd]`. Use `conv_rhs => rw [hspec]`. Rewrite using `[conj_mul _ _ _ _ hUU, diagonal_mul_diagonal]`.
-
-Simplify using `only [hds]`. Use `conv_lhs => rw [hspec]`. Rewrite using `[conj_mul _ _ _ _ hUU, conj_mul _ _ _ _ hUU, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Simplify using `only [hssd]`. Conclude with `hspec.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_abs_sign {R : Matrix (Fin n) (Fin n) ℂ} (hR : R.IsHermitian) :
     ∃ A S : Matrix (Fin n) (Fin n) ℂ,
@@ -79,37 +77,35 @@ theorem exists_abs_sign {R : Matrix (Fin n) (Fin n) ℂ} (hR : R.IsHermitian) :
     exact hspec.symm
 
 /- English proof (translation)
-Establish `hJi : J⁻¹ * J = 1` using `nonsing_inv_mul J hdet`. Establish `hJi' : J * J⁻¹ = 1` using `mul_nonsing_inv J hdet`. Establish `hYX : Yᴴ * J * X = 1`. Use `congrArg conjTranspose hXY` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hJ.eq, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `xx : Xᴴ * (J * X) = 0` using `by rw [← Matrix.mul_assoc]; exact hXX`. Establish `yy : Yᴴ * (J * Y) = 0` using `by rw [← Matrix.mul_assoc]; exact hYY`. Establish `xy : Xᴴ * (J * Y) = 1` using `by rw [← Matrix.mul_assoc]; exact hXY`. Establish `yx : Yᴴ * (J * X) = 1` using `by rw [← Matrix.mul_assoc]; exact hYX`. Use `set R : Matrix (Fin n) (Fin n) ℂ := J⁻¹ - X * Yᴴ - Y * Xᴴ with hRdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRh : R.IsHermitian`. Establish `hi : (J⁻¹)ᴴ = J⁻¹` using `(IsHermitian.inv hJ).eq`. Unfold `IsHermitian`. Rewrite using `[hRdef, conjTranspose_sub, conjTranspose_sub, hi, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_conjTranspose]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hRX : R * (J * X) = 0`. Rewrite using `[hRdef, Matrix.sub_mul, Matrix.sub_mul, Matrix.mul_assoc X, Matrix.mul_assoc Y, yx, xx, ← Matrix.mul_assoc J⁻¹, hJi]`. Simplify using the standard rewrite rules. Establish `hRY : R * (J * Y) = 0`. Rewrite using `[hRdef, Matrix.sub_mul, Matrix.sub_mul, Matrix.mul_assoc X, Matrix.mul_assoc Y, yy, xy, ← Matrix.mul_assoc J⁻¹, hJi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hRJR : R * (J * R) = R`. Establish `e : J * R = 1 - (J * X) * Yᴴ - (J * Y) * Xᴴ`. Rewrite using `[hRdef, Matrix.mul_sub, Matrix.mul_sub, hJi', Matrix.mul_assoc, Matrix.mul_assoc]`. Establish `e1 : R * (J * X * Yᴴ) = (R * (J * X)) * Yᴴ` using `(Matrix.mul_assoc _ _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : R * (J * Y * Xᴴ) = (R * (J * Y)) * Xᴴ` using `(Matrix.mul_assoc _ _ _).symm`. Rewrite using `[e, Matrix.mul_sub, Matrix.mul_sub, e1, e2, hRX, hRY]`. Simplify using the standard rewrite rules. Take `⟨A, S, hA, hAS, hAR, hSSR⟩` from `exists_abs_sign hRh`. Establish `hAh : Aᴴ = A` using `hA.isHermitian.eq`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAX : A * (J * X) = 0`. Rewrite using `[hAS, Matrix.mul_assoc, hRX, Matrix.mul_zero]`. Establish `hAY : A * (J * Y) = 0`. Rewrite using `[hAS, Matrix.mul_assoc, hRY, Matrix.mul_zero]`. Establish `hXA : Xᴴ * (J * A) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg conjTranspose hAX` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hJ.eq, hAh, Matrix.mul_assoc]`. Establish `hYA : Yᴴ * (J * A) = 0`. Use `congrArg conjTranspose hAY` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hJ.eq, hAh, Matrix.mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hAJA : A * (J * A) = R`. Combine the equalities or inequalities in the displayed calculation. Use `set T : Matrix (Fin n) (Fin n) ℂ := X * Xᴴ + Y * Yᴴ + A with hTdef`. Establish `hTX : T * (J * X) = Y`. Rewrite using `[hTdef, Matrix.add_mul, Matrix.add_mul, Matrix.mul_assoc X, Matrix.mul_assoc Y, xx, yx, hAX]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hTY : T * (J * Y) = X`. Rewrite using `[hTdef, Matrix.add_mul, Matrix.add_mul, Matrix.mul_assoc X, Matrix.mul_assoc Y, xy, yy, hAY]`. Simplify using the standard rewrite rules. Establish `hTA : T * (J * A) = R`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hTdef, Matrix.add_mul, Matrix.add_mul, Matrix.mul_assoc X, Matrix.mul_assoc Y, hXA, hYA, hAJA]`. Simplify using the standard rewrite rules. Establish `hTJT : T * (J * T) = J⁻¹`. Establish `e : J * T = (J * X) * Xᴴ + (J * Y) * Yᴴ + J * A`. Rewrite using `[hTdef, Matrix.mul_add, Matrix.mul_add, Matrix.mul_assoc, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : T * (J * X * Xᴴ) = (T * (J * X)) * Xᴴ` using `(Matrix.mul_assoc _ _ _).symm`. Establish `e2 : T * (J * Y * Yᴴ) = (T * (J * Y)) * Yᴴ` using `(Matrix.mul_assoc _ _ _).symm`. Rewrite using `[e, Matrix.mul_add, Matrix.mul_add, e1, e2, hTX, hTY, hTA, hRdef]`. Normalize the expressions using the abelian group laws. Establish `hTpsd : T.PosSemidef` using `((posSemidef_self_mul_conjTranspose X).add (posSemidef_self_mul_conjTranspose Y)).add hA`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTunit : IsUnit T`. Establish `h1 : T * (J * T * J) = 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(Matrix.isUnit_iff_isUnit_det T).2 (Matrix.isUnit_det_of_right_inverse h1)`. Establish `hTpd : T.PosDef` using `hTpsd.posDef_iff_isUnit.2 hTunit`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hJinj : Function.Injective J.mulVec` using `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det J).2 hdet)`. Use `⟨J * T * J, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hTpd.conjTranspose_mul_mul_same hJinj` as an intermediate fact. Rewrite `this` using `[hJ.eq]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : J * T * J * J⁻¹ = J * T`. Rewrite using `[Matrix.mul_assoc (J * T), hJi', Matrix.mul_one]`. Rewrite using `[h2]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [hTJT, hJi', Matrix.one_mul]`.
-
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hTX]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adapted_majorant (n r : ℕ) (J : Matrix (Fin n) (Fin n) ℂ)
     (X Y : Matrix (Fin n) (Fin r) ℂ) (hJ : J.IsHermitian) (hdet : IsUnit J.det)

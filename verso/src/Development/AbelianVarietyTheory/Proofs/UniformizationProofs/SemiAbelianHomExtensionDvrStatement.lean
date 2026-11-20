@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LN
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.homExtension_semiAbelian_dvr_unconditional` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FSemiAbelianHomExtensionDvr.lean&line=21#L21)
 -/

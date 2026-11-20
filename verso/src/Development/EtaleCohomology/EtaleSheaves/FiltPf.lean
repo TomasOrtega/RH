@@ -19,7 +19,7 @@ def RelY (Y : ℤ → D) (n : ℤ) {A B : D} (g : A ⟶ B) : Prop :=
 
 omit [HasZeroObject D] [HasShift D ℤ] [∀ (n : ℤ), (CategoryTheory.shiftFunctor D n).Additive] [Pretriangulated D] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x hx; exact h (by simpa using hx)`. Introduce `h x y hxy`. Use `h (x - y) (by simp only [Preadditive.comp_sub]; exact sub_eq_zero.2 hxy)` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inj_iff {A B X : D} (g : A ⟶ B) :
     Function.Injective (fun x : B ⟶ X => g ≫ x) ↔ ∀ x : B ⟶ X, g ≫ x = 0 → x = 0 := by
@@ -30,23 +30,23 @@ theorem inj_iff {A B X : D} (g : A ⟶ B) :
     exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Establish `hci` using `(inj_iff _).1 hc.2`. Establish `hai` using `(inj_iff _).1 ha.2`. Use `⟨fun x => ?_, (inj_iff _).2 fun d hd => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `ha.1 (T₁.mor₁ ≫ x)`. Simplify using `only at hy`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `ho : T₂.mor₃ ≫ (CategoryTheory.shiftFunctor D (1 : ℤ)).map y ≫ (e n).inv = 0`. Apply `hci` to reduce the goal to its premises. Rewrite using `[← Category.assoc, ← φ.comm₃, Category.assoc, ← Functor.map_comp_assoc, hy, Functor.map_comp_assoc, ← Category.assoc, comp_distTriang_mor_zero₃₁ T₁ h₁, zero_comp]`. Establish `ho' : T₂.rotate.mor₂ ≫ (CategoryTheory.shiftFunctor D (1 : ℤ)).map y = 0`. Use `congrArg (· ≫ (e n).hom) ho` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id, zero_comp] at this`. Conclude with `this`. Take `⟨g, hg⟩` from `Triangle.yoneda_exact₃ _ (rot_of_distTriang _ h₂) _ ho'`. Take `⟨(z : T₂.obj₂ ⟶ Y (n - 1)), rfl⟩` from `(CategoryTheory.shiftFunctor D (1 : ℤ)).map_surjective g`. Establish `hyz : y = T₂.mor₁ ≫ (-z)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(CategoryTheory.shiftFunctor D (1 : ℤ)).map_injective` to reduce the goal to its premises. Rewrite using `[hg]`. Simplify using `only [Triangle.rotate_mor₃, Functor.map_comp, Functor.map_neg, Preadditive.comp_neg]`. Conclude with `Preadditive.neg_comp _ _`. Establish `hw : T₁.mor₁ ≫ (x - φ.hom₂ ≫ (-z)) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Preadditive.comp_sub, ← hy, hyz, ← Category.assoc, ← φ.comm₁, Category.assoc, sub_self]`. Take `⟨w, hw⟩` from `Triangle.yoneda_exact₂ _ h₁ _ hw`. Take `⟨w', hw'⟩` from `hc.1 w`. Simplify using `only at hw'`. Use `⟨-z + T₂.mor₂ ≫ w', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[Preadditive.comp_add, ← Category.assoc, ← φ.comm₂, Category.assoc, hw', ← hw]`. Normalize the expressions using the abelian group laws. Establish `h1 : T₂.mor₁ ≫ d = 0`. Apply `hai` to reduce the goal to its premises.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Category.assoc, ← φ.comm₁, Category.assoc, hd, comp_zero]`. Take `⟨h, rfl⟩` from `Triangle.yoneda_exact₂ _ h₂ _ h1`. Establish `h3 : T₁.mor₂ ≫ φ.hom₃ ≫ h = 0`. Rewrite using `[← Category.assoc, φ.comm₂, Category.assoc, hd]`. Take `⟨k, hk⟩` from `Triangle.yoneda_exact₃ _ h₁ _ h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k', hk'⟩` from `(CategoryTheory.shiftFunctor D (1 : ℤ)).map_surjective (k ≫ (e n).hom)`. Take `⟨k'', hk''⟩` from `ha.1 k'`. Simplify using `only at hk''`. Establish `hm : h = T₂.mor₃ ≫ (CategoryTheory.shiftFunctor D (1 : ℤ)).map k'' ≫ (e n).inv`. Rewrite using `[← sub_eq_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hci` to reduce the goal to its premises. Rewrite using `[Preadditive.comp_sub, hk, ← Category.assoc φ.hom₃, ← φ.comm₃, Category.assoc, ← Functor.map_comp_assoc, hk'', hk', Category.assoc, Iso.hom_inv_id, Category.comp_id, sub_self]`. Rewrite using `[hm, ← Category.assoc, comp_distTriang_mor_zero₂₃ _ h₂, zero_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relY_mid (T₁ T₂ : Triangle D) (h₁ : T₁ ∈ distTriang D) (h₂ : T₂ ∈ distTriang D) (φ : T₁ ⟶ T₂)
     (Y : ℤ → D) (e : ∀ n, Y n ≅ (Y (n - 1))⟦(1 : ℤ)⟧) (n : ℤ)
@@ -107,7 +107,7 @@ abbrev Yres (F : Shv R) (m : ℤ) : HomotopyCategory (Shv R) (ComplexShape.up �
   (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).obj ((res R F)⟦m⟧)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, CohomologyClass.homAddEquiv_apply, LateralTheory.E.E8.ExciseCut.ConeZeroPf.pull_toHom]`. Use `congr 1`. Conclude with `(CohomologyClass.homAddEquiv.apply_symm_apply g).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pull_eq_comp {K L : Cx R} (f : K ⟶ L) (F : Shv R) (m : ℤ) :
     (fun g : (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).obj L ⟶ Yres R F m =>
@@ -119,9 +119,9 @@ theorem pull_eq_comp {K L : Cx R} (f : K ⟶ L) (F : Shv R) (m : ℤ) :
   exact (CohomologyClass.homAddEquiv.apply_symm_apply g).symm
 
 /- English proof (translation)
-Unfold `Tri.RelY RelK`. Rewrite using `[pull_eq_comp, pull_eq_comp, EquivLike.comp_surjective, EquivLike.surjective_comp, EquivLike.comp_injective, EquivLike.injective_comp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩; exact ⟨h1 (n - 1) (by omega), h2⟩`. Introduce and unpack `⟨h1, h2⟩; refine ⟨fun m hm => ?_, h2⟩; obtain rfl : m = n - 1 := (by omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem relK_iff {K L : Cx R} (f : K ⟶ L) (F : Shv R) (n : ℤ) :
     RelK R F n f ↔ Tri.RelY (Yres R F) n ((HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).map f) := by
@@ -159,7 +159,7 @@ def Trunc : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) {K L : Cx R} (f : K 
     (RelK R F n f' → RelK R F n f)
 
 /- English proof (translation)
-Introduce `R _ F K L f n hz hp`. Take `⟨P, K', L', f', hz', hpp, hback⟩` from `hT R F f n hz`. Conclude with `hback (hB R F f' n P hz' (hpp hp))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tower_of (hB : TowerFin) (hT : Trunc) : Tower := by
   intro R _ F K L f n hz hp
@@ -167,7 +167,7 @@ theorem tower_of (hB : TowerFin) (hT : Trunc) : Tower := by
   exact hback (hB R F f' n P hz' (hpp hp))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `IsZero ((((chainsN R).obj U).extend ComplexShape.embeddingDownNat).X i)`. Apply `HomologicalComplex.isZero_extend_X` to reduce the goal to its premises. Introduce `j hj`. Establish `e : ComplexShape.embeddingDownNat.f j = -(j : ℤ)` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem chains_X_isZero (R : Type) [CommRing R] (U : Spc) (i : ℤ) (hi : 0 < i) : IsZero (((chains R).obj U).X i) := by
   change IsZero ((((chainsN R).obj U).extend ComplexShape.embeddingDownNat).X i)
@@ -180,7 +180,7 @@ end LateralTheory.E.FiltPf
 
 open LateralTheory.E.FiltPf in
 /- English proof (translation)
-Introduce `R _ F U E u n h`. Conclude with `hT R F ((chains R).map u) n (fun i hi => ⟨chains_X_isZero R U i hi, chains_X_isZero R E i hi⟩) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.TruncationPieces.Filt_of_tower (hT : Tower) : LateralTheory.E.TruncationPieces.Filt := by
   intro R _ F U E u n h
@@ -188,7 +188,7 @@ theorem LateralTheory.E.TruncationPieces.Filt_of_tower (hT : Tower) : LateralThe
 
 open LateralTheory.E.FiltPf in
 /- English proof (translation)
-The claim follows from `LateralTheory.E.TruncationPieces.Filt_of_tower (tower_of hB hT)`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.TruncationPieces.Filt_of (hB : TowerFin) (hT : Trunc) : LateralTheory.E.TruncationPieces.Filt :=
   LateralTheory.E.TruncationPieces.Filt_of_tower (tower_of hB hT)

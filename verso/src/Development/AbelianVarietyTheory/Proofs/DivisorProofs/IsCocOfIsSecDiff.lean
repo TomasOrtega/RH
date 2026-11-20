@@ -14,9 +14,9 @@ set_option autoImplicit false
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `R _ A _ _ n hR b _ S _ u hu D _ _ D' _ _ D'' _ _ φ ψ x _`. Take `⟨E, _, _, χ, z, hχ, hz⟩` from `hR D'' (spOver ψ ≫ spOver φ ≫ x)`. Apply `hχ.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `χ _ = χ (ψ _ + _)`. Rewrite using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hu D D'' (ψ.comp φ) x E χ z (by rw [hz, ← spOver_comp, Category.assoc])`. Establish `h2` using `hu D D' φ x E (χ.comp ψ) z (by rw [hz, ← spOver_comp, Category.assoc])`. Establish `h3` using `hu D' D'' ψ (spOver φ ≫ x) E χ z hz`. Rewrite `h2` using `[AlgHom.comp_apply]`. Rewrite using `[h1, h2, h3, ← spOver_comp, Category.assoc, AlgHom.comp_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/

@@ -12,7 +12,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `h` using `cx_XE_scal (R.toCx3 F) F.cr (zeroLam R F c) b fun p hp j v => by`. Distinguish the cases in `he : R.EEp3 p = ⊥`. Conclude with `absurd (partPr_of_bot _ _ _ (qp_bot R F hC hP hOk hsep he b)) hp`. Conclude with `zeroLam_of_ne R F c (hZ p he j).1 fun hv => (hZ p he j).2 v hv`. Conclude with `(by with_unfolding_all exact (h :))`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem XE_updS_zeroLam (R : RealDat3 D A3 Ks) (F : Face3 D A3) (c : Fin D.R.m → ℝ)
     (hC : R.WeakCharacterisation F) (hP : PrimRows3 R F) (hOk : A3.fam3.Ok3 1) (hsep : A3.fam3.TypesSep3)
@@ -36,7 +36,7 @@ def scalReadL (R : RealDat3 D A3 Ks) (F : Face3 D A3) (lam : type_of% R.lam3)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨reFaceRead (R.updS R.kap lam) F Dc Sp Zsc err X0 Y, reFaceReadL (R.updS R.kap lam) F Dc Sp Zsc err X0 Y (scalReadL R F lam hX X0 Y Z), rfl, rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem read_updS (R : RealDat3 D A3 Ks) (F : Face3 D A3) (lam : type_of% R.lam3)
     (Dc : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 F.P1 F.ψ1 Zs)) (Sp : ∀ Zs, SPer (Dc Zs))

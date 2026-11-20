@@ -17,7 +17,7 @@ open GlobalTheory GlobalTheory.WeierstrassCurve GlobalTheory.AddLaw
 namespace GlobalTheory.WeierstrassCurve
 
 /- English proof (translation)
-Take `⟨hrig, hsym, hamp, hk⟩` from `GlobalTheory.T.originLineBundle_polarisation R W hc hη`. Conclude with `⟨isAbelianScheme_schemeOver R W hΔ hc, smoothOfRelativeDimension_toSpec_of_isUnit W hΔ, originLB_isLB W, hrig, hsym, hamp, hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem polarised_of_grpObj (R : Type) [CommRing R] (W : _root_.WeierstrassCurve R)
     (hΔ : IsUnit W.Δ) [GrpObj (schemeOver W)] (hc : IsCommMonObj (schemeOver W))
@@ -31,7 +31,7 @@ theorem polarised_of_grpObj (R : Type) [CommRing R] (W : _root_.WeierstrassCurve
     originLB_isLB W, hrig, hsym, hamp, hk⟩
 
 /- English proof (translation)
-Take `⟨inst, hc, hη, hadd, hneg⟩` from `GlobalTheory.T.exists_commGrpObj_weierstrassScheme R W hΔ`. Conclude with `⟨inst, hc, hη, hadd, hneg, polarised_of_grpObj R W hΔ hc hη, GlobalTheory.WeierstrassLie.isLieBasis_eps R W hη⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_grpObj_polarised (R : Type) [CommRing R] (W : _root_.WeierstrassCurve R)
     (hΔ : IsUnit W.Δ) :
@@ -60,9 +60,9 @@ theorem exists_grpObj_polarised (R : Type) [CommRing R] (W : _root_.WeierstrassC
     GlobalTheory.WeierstrassLie.isLieBasis_eps R W hη⟩
 
 /- English proof (translation)
-Introduce `R _ W hΔ`. Take `⟨inst, hc, hη, -, -, ⟨hab, hsm, hlb, hrig, hsym, hamp, hk⟩, v, ⟨h, hv⟩, hbasis⟩` from `exists_grpObj_polarised R W hΔ`. Set `P : Out.PolAV (Sp R)` to `{ A := schemeOver W grp := inst isAb := hab g := 1 smoothDim := hsm L := originLB W isLB := hlb rigid := hrig sym := hsym ample := hamp ktriv := hk }`. Use `⟨P, 𝟙 _, v, rfl, inferInstance, ?_, ?_, ⟨h, ?_⟩, hbasis⟩` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Category.comp_id]`. Conclude with `hη`. Rewrite using `[Category.comp_id]`. Conclude with `hv`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_polAV : ∀ (R : Type) [CommRing R] (W : _root_.WeierstrassCurve R), IsUnit W.Δ →
     ∃ (P : Out.PolAV (Sp R)) (ψ : P.A.left ⟶ scheme W) (v : epsR R ⟶ P.A), P.g = 1 ∧ IsIso ψ ∧

@@ -15,9 +15,9 @@ namespace GlobalTheory.CompanionTheory.CechSerre.RowKer
 variable {R : Type} [CommRing R] (K : DCx.{w} R)
 
 /- English proof (translation)
-Consider the cases of `q with`. Consider the case `zero`. Apply the tactic sequence `have h : K.Dv W p 0 = 0 := by cases p <;> rfl`. Rewrite using `[h]`. Conclude with `Submodule.zero_mem _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ q => exact ⟨W p q, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem Dv_mem (W : ∀ p q, K.X p q) (p q : ℕ) : K.Dv W p q ∈ (K.col p).B q := by
   cases q with
@@ -28,9 +28,9 @@ theorem Dv_mem (W : ∀ p q, K.X p q) (p q : ℕ) : K.Dv W p q ∈ (K.col p).B q
   | succ q => exact ⟨W p q, rfl⟩
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun hD k) (q + 1)`. Rewrite `h1` using `[DCx.D_apply, hx]`. Establish `h2 : K.Dh W k (q + 1) = 0`. Consider the cases of `k with`. Consider the case `zero => rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ k => show K.dh k (q + 1) (W k (q + 1)) = 0`. Rewrite using `[h0 k _ (by omega), map_zero]`. Rewrite `h1` using `[h2, zero_add]`. Conclude with `Auxfb.zsm_cancel k _ h1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_low (W x : ∀ p q, K.X p q) (hD : K.D W = x) (k q : ℕ) (h0 : ∀ p q, p < k → W p q = 0)
     (hx : x k (q + 1) = 0) : K.dv k q (W k q) = 0 := by
@@ -46,13 +46,13 @@ theorem dv_low (W x : ∀ p q, K.X p q) (hD : K.D W = x) (k q : ℕ) (h0 : ∀ p
   exact Auxfb.zsm_cancel k _ h1
 
 /- English proof (translation)
-Establish `hB : W k q ∈ (K.col k).B q` using `((P.cls_surj (K.col k) q).2.1 _ hv).1 (Subsingleton.elim _ _)`. Take `⟨q, rfl⟩ : ∃ r, q = r + 1` from `⟨q - 1, by omega⟩`. Take `⟨y, hy⟩` from `hB`. Establish `hy' : K.dv k q y = W k (q + 1)` using `hy`. Establish `hsq : ((-1 : ℤ) ^ k * (-1) ^ k) = 1` using `by rw [← mul_pow]; simp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDY : K.D (K.sgl k q ((-1 : ℤ) ^ k • y)) = K.sgl (k + 1) q (K.dh k q ((-1 : ℤ) ^ k • y)) + K.sgl k (q + 1) (W k (q + 1))`. Rewrite using `[K.D_sgl, map_zsmul (K.dv k q), hy', map_zsmul (K.sgl k (q + 1)), smul_smul, hsq, one_smul]`. Use `⟨W - K.D (K.sgl k q ((-1 : ℤ) ^ k • y)), fun p r h => ?_, ?_, fun p r hp => ?_⟩` and prove the remaining obligations. Rewrite using `[hDY, Pi.sub_apply, Pi.sub_apply, Pi.add_apply, Pi.add_apply, hs p r h, K.sgl_ne _ (by omega : p ≠ k + 1 ∨ r ≠ q), K.sgl_ne _ (by omega : p ≠ k ∨ r ≠ q + 1)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, K.DD, sub_zero]`. Rewrite using `[hDY, Pi.sub_apply, Pi.sub_apply, Pi.add_apply, Pi.add_apply, K.sgl_ne _ (by omega : p ≠ k + 1 ∨ r ≠ q), zero_add]`. Distinguish the cases in `h : p = k ∧ r = q + 1`. Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[K.sgl_self, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[K.sgl_ne _ (by omega : p ≠ k ∨ r ≠ q + 1), sub_zero]`. Distinguish the cases in `hpk : p < k`. Conclude with `h0 p r hpk`. Conclude with `hs p r (by omega)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem push_step (n k q : ℕ) (hkq : k + q + 1 = n) (W : ∀ p q, K.X p q)
     (hs : ∀ p q, p + q + 1 ≠ n → W p q = 0) (h0 : ∀ p q, p < k → W p q = 0)
@@ -84,9 +84,9 @@ theorem push_step (n k q : ℕ) (hkq : k + q + 1 = n) (W : ∀ p q, K.X p q)
       · exact hs p r (by omega)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨W, hs, rfl, fun p q hp => absurd hp (Nat.not_lt_zero p)⟩`. Consider the case `succ k ih`. Take `⟨W₁, hs₁, hD₁, h₁⟩` from `ih (by omega)`. Establish `hv : K.dv k (a + i - k) (W₁ k (a + i - k)) = 0` using `dv_low K W₁ _ rfl k _ h₁ (by rw [hD₁]; exact hx k _ (by omega))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨W₂, hs₂, hD₂, h₂⟩` from `push_step K n k (a + i - k) (by omega) W₁ hs₁ h₁ hv (hac k _ (by omega)) (by omega)`. Conclude with `⟨W₂, hs₂, hD₂.trans hD₁, h₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem push (n a i : ℕ) (hn : n = a + (i + 1)) (W : ∀ p q, K.X p q)
     (hs : ∀ p q, p + q + 1 ≠ n → W p q = 0) (hx : ∀ p q, p < i + 1 → K.D W p q = 0)
@@ -104,9 +104,9 @@ theorem push (n a i : ℕ) (hn : n = a + (i + 1)) (W : ∀ p q, K.X p q)
     exact ⟨W₂, hs₂, hD₂.trans hD₁, h₂⟩
 
 /- English proof (translation)
-Establish `hB : z.1 ∈ K.tot.B n` using `((P.cls_surj K.tot n).2.1 _ _).1 hz`. Consider the cases of `n with`. Consider the case `zero`. Establish `h : z.1 = 0` using `(Submodule.mem_bot R).1 hB`. Use `⟨0, fun _ _ _ => rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h, map_zero]`. Both sides reduce to the same expression. Consider the case `succ m`. Take `⟨u, hu⟩` from `hB`. Conclude with `⟨u.1, fun p q h => u.2 p q (by omega), congrArg Subtype.val hu⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_prim {n : ℕ} (z : K.tot.Z n) (hz : K.tot.cls z.1 z.2 = 0) :
     ∃ W : ∀ p q, K.X p q, (∀ p q, p + q + 1 ≠ n → W p q = 0) ∧ K.D W = z.1.1 := by
@@ -122,21 +122,17 @@ theorem exists_prim {n : ℕ} (z : K.tot.Z n) (hz : K.tot.cls z.1 z.2 = 0) :
     exact ⟨u.1, fun p q h => u.2 p q (by omega), congrArg Subtype.val hu⟩
 
 /- English proof (translation)
-Introduce `R _ K a j hac z hz`. Take `⟨W, hs, hD⟩` from `exists_prim K z.1 hz`. Establish `hv : (K.col j).d a (z.1.1.1 j a) = 0` using `dv_lead K _ (D_zero K z.1) j a z.2`. It suffices to establish `h : leadC K j a z ∈ (colH K a).B j by`. Rewrite using `[leadE_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((P.cls_surj (colH K a) j).2.1 _ _).2 h`. Consider the cases of `j with`. Consider the case `zero`. Establish `h1 : z.1.1.1 0 a ∈ (K.col 0).B a`. Rewrite using `[← hD, DCx.D_apply]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : K.Dh W 0 a = 0` using `rfl`. Rewrite using `[h2, zero_add, pow_zero, one_smul]`. Conclude with `Dv_mem K W 0 a`. Use `show _ ∈ (⊥ : Submodule R _)`. Rewrite using `[Submodule.mem_bot, leadC_eq K 0 a z hv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `((P.cls_surj _ a).2.1 _ hv).2 h1`. Consider the case `succ i`. Take `⟨W', -, hD', h0⟩` from `push K (a + (i + 1)) a i rfl W hs (fun p q hp => by rw [hD]; exact z.2 p q hp) hac i le_rfl`. Establish `hD'' : K.D W' = z.1.1.1` using `hD'.trans hD`. Establish `hy : K.dv i a (W' i a) = 0` using `dv_low K W' _ hD'' i a h0 (z.2 i _ (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : (K.col (i + 1)).d a ((colMap K i).f a (W' i a)) = 0`. Rewrite using `[(colMap K i).comm]`. Conclude with `(congrArg _ hy).trans (map_zero _)`. Use `⟨(K.col i).cls _ hy, ?_⟩` and prove the remaining obligations. Use `show (colMap K i).mapH a _ = leadC K (i + 1) a z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[P.mapH_cls _ a _ hy hb, leadC_eq K (i + 1) a z hv]`. Use `((P.cls_surj _ a).2.2.1 _ _ hb hv).2 ?_` and prove the remaining obligations. Establish `h2 : z.1.1.1 (i + 1) a = K.dh i a (W' i a) + (-1 : ℤ) ^ (i + 1) • K.Dv W' (i + 1) a`. Rewrite using `[← hD'', DCx.D_apply]`. Both sides reduce to the same expression.
-
-Establish `e : (colMap K i).f a (W' i a) - z.1.1.1 (i + 1) a = -((-1 : ℤ) ^ (i + 1) • K.Dv W' (i + 1) a)`. Rewrite using `[h2]`. Use `show K.dh i a (W' i a) - _ = _`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
-
-Conclude with `Submodule.neg_mem _ (zsmul_mem (Dv_mem K W' (i + 1) a) _)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leadE_eq_zero : ∀ {R : Type} [CommRing R] (K : DCx.{w} R) (a j : ℕ),
     (∀ p q, a < q → Subsingleton ((K.col p).H q)) →

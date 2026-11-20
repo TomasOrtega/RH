@@ -23,7 +23,7 @@ theorem mat_mul {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g
     mat (g * h) = mat g * mat h := rfl
 
 /- English proof (translation)
-Use `show ((g⁻¹ : UA σ J).1.1) * g.1.1 = 1`. Rewrite using `[← Units.val_mul]`. Use `show (((g⁻¹ * g : UA σ J) : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mat_inv_mul {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) :
     mat g⁻¹ * mat g = 1 := by
@@ -63,7 +63,7 @@ def carrierSub (σ : E →ₐ[F] E) {d d₁ : ℕ} (W : Spc F E d) (H' : Plane E
     exact h1
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(Subgroup.closure_le _).2 fun u hu => hu`. Introduce `u hu`. Conclude with `Subgroup.subset_closure hu`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unip_eq (σ : E →ₐ[F] E) {d d₁ : ℕ} (W : Spc F E d) (H' : Plane E d d₁) :
     unip σ W H' = carrierSub σ W H' := by
@@ -77,17 +77,15 @@ section Top
 variable [T2Space (AE F E)] [IsTopologicalRing (AE F E)]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Establish `: {w : Fin d → AE F E | ∃ a : AE F E, w = a • incV F x} = {0}`. Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Establish `h0 : incV F x = 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[incV, hx]`. Simplify using `[h0]`. Rewrite using `[this]`. Conclude with `isClosed_singleton`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (funext h)`. Establish `hinv : incV F x i * inclR (F` using `F) (AF F) (x i)⁻¹ = 1 := by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [incV, ← map_mul, mul_inv_cancel₀ hi, map_one]`. Establish `: {w : Fin d → AE F E | ∃ a : AE F E, w = a • incV F x} = {w | w = (w i * inclR (F` using `F) (AF F) (x i)⁻¹) • incV F x} := by`. Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨a, rfl⟩`. Use `congr 1`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc, hinv, mul_one]`. Introduce `h`. Conclude with `⟨_, h⟩`.
-
-Rewrite using `[this]`. Conclude with `isClosed_eq continuous_id (((continuous_apply i).mul continuous_const).smul continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_line {d : ℕ} (x : Fin d → E) : IsClosed {w : Fin d → AE F E | ∃ a : AE F E, w = a • incV F x} := by
   by_cases hx : x = 0
@@ -124,11 +122,11 @@ end Top
 
 variable [T2Space (AE F E)] [IsTopologicalRing (AE F E)] in
 /- English proof (translation)
-Establish `hm : Continuous fun u : UA σ W.J => mat u` using `Units.continuous_val.comp continuous_subtype_val`. Establish `h1 : IsClosed {u : UA σ W.J | mat u *ᵥ incV F H'.x = incV F H'.x}` using `isClosed_eq (hm.matrix_mulVec continuous_const) continuous_const`. Establish `h2 : ∀ z : Fin d₁ → AE F E, IsClosed {u : UA σ W.J | ∃ a : AE F E, mat u *ᵥ (incM F H'.ι *ᵥ z) = incM F H'.ι *ᵥ z + a • incV F H'.x}`. Introduce `z`. Establish `: {u : UA σ W.J | ∃ a : AE F E, mat u *ᵥ (incM F H'.ι *ᵥ z) = incM F H'.ι *ᵥ z + a • incV F H'.x} = (fun u : UA σ W.J => mat u *ᵥ (incM F H'.ι *ᵥ z) - incM F H'.ι *ᵥ z) ⁻¹' {w | ∃ a : AE F E, w = a • incV F H'.x}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `u`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, sub_eq_iff_eq_add']`. Rewrite using `[this]`. Conclude with `(isClosed_line H'.x).preimage ((hm.matrix_mulVec continuous_const).sub continuous_const)`. Establish `: carrierSet σ W H' = {u : UA σ W.J | mat u *ᵥ incV F H'.x = incV F H'.x} ∩ ⋂ z : Fin d₁ → AE F E, {u : UA σ W.J | ∃ a : AE F E, mat u *ᵥ (incM F H'.ι *ᵥ z) = incM F H'.ι *ᵥ z + a • incV F H'.x}`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `u`. Simplify using `[carrierSet]`. Rewrite using `[this]`. Conclude with `h1.inter (isClosed_iInter h2)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_carrierSet (σ : E →ₐ[F] E) {d d₁ : ℕ} (W : Spc F E d) (H' : Plane E d d₁) :
     IsClosed (carrierSet σ W H') := by
@@ -154,9 +152,7 @@ theorem isClosed_carrierSet (σ : E →ₐ[F] E) {d d₁ : ℕ} (W : Spc F E d) 
   exact h1.inter (isClosed_iInter h2)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d d₁ W H'`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
-
-Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Rewrite using `[unip_eq]`. Conclude with `isClosed_carrierSet σ W H'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_unip : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (d d₁ : ℕ) (W : Spc F E d) (H' : Plane E d d₁), IsClosed ((unip σ W H' : Subgroup (UA σ W.J)) : Set (UA σ W.J)) := by

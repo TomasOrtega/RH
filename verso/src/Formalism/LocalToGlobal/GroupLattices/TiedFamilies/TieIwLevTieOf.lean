@@ -22,7 +22,7 @@ def tieIw {L : ColLevel R F E sp gp C A clsLat} (t : Formalism.L2.Herm.GLevTie L
     (((RingHom.fst _ _).comp (t.spl _ (t.pl v).2).toRingHom).comp (inclE (F := F) ((t.pl v).1.adicCompletion F)))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem tieIw_levTieOf {L L' : ColLevel R F E sp gp C A clsLat} (h : L' = L) (t : Formalism.L2.Herm.GLevTie L G) :
     tieIw (levTieOf h t) = tieIw t := by
@@ -45,7 +45,7 @@ variable (D : D7) (sc : Scale) (Ce : ℝ)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `show tieIw ((hermitianLevelZeroOfRecursion D sc Ce Lc I ψ hd H0 hL).g u w hg) v x = _`. Simplify using `only [hermitianLevelZeroOfRecursion]`. Use `erw [tieIw_levTieOf]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem locAt_iw_C (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (B : GL (Fin D.R.k) D.host.E) (u : D.what₂.Word) (w : D.what₂.places.Pl)
@@ -60,13 +60,13 @@ theorem locAt_iw_C (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Rewrite using `[locAt_iw_C D sc Ce Lc I ψ hd H0 hL B u w hg v x]`. Apply `(iK u w hg).injective` to reduce the goal to its premises. Establish `h1` using `hK u w hg (Cmp.tEL D (D.eTau.symm (posG (zPsi D.R.toFrame (D.R.iota (hP D (D.what₂.places.resChar w)))) ⟨v, s⟩)) (if Even s.val then x else sigD D x))`. Establish `h2` using `hPos u w hg v s x`. Establish `h3 : sigD D x = D.host.conj x` using `bridge_star_holds D.R D.host x`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : D.what₂.embLL (Cmp.tEL D (D.eTau.symm (posG (zPsi D.R.toFrame (D.R.iota (hP D (D.what₂.places.resChar w)))) ⟨v, s⟩)) (if Even s.val then x else sigD D x)) = D.host.emb (((posG (zPsi D.R.toFrame (D.R.iota (hP D (D.what₂.places.resChar w)))) ⟨v, s⟩ : D.R.Psi) : D.R.GG) * D.R.c …`. Rewrite using `[Cmp.tEL_emb, emb_conj_pow]`. Unfold `embT`. Rewrite using `[Equiv.apply_symm_apply, h3]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `hs : s.val % 2 = 1`. Establish `: ¬ Even s.val` using `by rw [Nat.not_even_iff_odd, Nat.odd_iff]; exact hs`. Simplify using `[hs, this]`. Establish `: Even s.val` using `by rw [Nat.even_iff]; omega`. Simplify using `[hs, this]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h4]`. Conclude with `h1.trans h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pos_C (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (B : GL (Fin D.R.k) D.host.E) (hBs : Cmp.StdB (recC D sc Ce Lc I ψ hd) B)

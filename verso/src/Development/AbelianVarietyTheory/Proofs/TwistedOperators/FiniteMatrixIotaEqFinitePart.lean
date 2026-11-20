@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.SeeConjGroup
 
 /- English proof (translation)
-Introduce `D κ`. Establish `e : (Formalism.IndefR.RationalEmbedding.iota D).symm (Formalism.IndefR.RationalEmbedding.iota D κ) = κ` using `(Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply κ`. Establish `hf` using `Formalism.L2.SG.EvalTIota.finE_brg_i (Formalism.IndefR.RationalEmbedding.iota D κ)`. Rewrite `hf` using `[e]`. Establish `hv` using `congrArg Units.val hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hv.symm ▸ rfl`.
+A detailed English derivation is pending.
 -/
 theorem fmat_iota_eq_finE : ∀ {D : D7} (κ : GA D (Yc D 0)), (GlobalTheory.SeeConjGroup.II D).fmat ((Formalism.IndefR.RationalEmbedding.iota D) κ).2 = (finE (Yc D 0) κ).val := by
   intro D κ

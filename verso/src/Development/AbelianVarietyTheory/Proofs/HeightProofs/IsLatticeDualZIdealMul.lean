@@ -11,15 +11,13 @@ section General
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨d, hd, hx⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hy⟩` from `hy`. Use `⟨d * e, mul_ne_zero hd he, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.smul_mem _ hx`. Rewrite using `[mul_smul]`. Conclude with `M.smul_mem _ hy`. Consider the case `smul a x _ hx`. Take `⟨d, hd, hx⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨e, he⟩, b, hb⟩` from `IsLocalization.exists_integer_multiple (nonZeroDivisors (𝓞 K)) a`. Use `⟨d * e, mul_ne_zero hd (nonZeroDivisors.ne_zero he), ?_⟩` and prove the remaining obligations. Establish `hb' : algebraMap (𝓞 K) K b = e • a` using `hb`. Establish `: (d * e) • a • x = b • d • x`. Rewrite using `[mul_smul, ← smul_assoc e a x, ← hb', algebraMap_smul, smul_comm]`.
-
-Rewrite using `[this]`. Conclude with `M.smul_mem _ hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
     [IsScalarTower (𝓞 K) K W] {M : Submodule (𝓞 K) W}
@@ -47,11 +45,9 @@ theorem exists_smul_mem {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K
     exact M.smul_mem _ hx
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hM`. Take `⟨⟨d, hd⟩, hy⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 K)) ((S ×ˢ (Finset.univ : Finset (Fin n))).image fun p => p.1 p.2)`. Use `⟨d, nonZeroDivisors.ne_zero hd, fun x hx i => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Conclude with `Submodule.mem_one.2 (hy _ (Finset.mem_image.2 ⟨(y, i), by simpa using h, rfl⟩))`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [Pi.add_apply, smul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy => rw [Pi.smul_apply, smul_comm]`.
-
-Conclude with `Submodule.smul_mem _ _ hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_den {n : ℕ} {M : Submodule (𝓞 K) (Fin n → K)} (hM : M.FG) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ ∀ x ∈ M, ∀ i, d • x i ∈ (1 : Submodule (𝓞 K) K) := by
@@ -72,19 +68,17 @@ end General
 variable {R : Ranks} {H : Host R} {n : ℕ}
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `choose c hc hcY using h1`. Set `J : Fin n → FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E` to `fun i => FractionalIdeal.dual ℤ ℚ (FractionalIdeal.spanSingleton _ (c i))`. Establish `hfg : (Submodule.pi Set.univ fun i => (J i : Submodule (𝓞 H.E) H.E)).FG` using `Submodule.fg_pi fun i => FractionalIdeal.fg_of_isNoetherianRing le_rfl (J i)`. Use `Submodule.FG.of_le hfg fun y hy i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `y i ∈ J i`. Rewrite using `[FractionalIdeal.mem_dual (FractionalIdeal.spanSingleton_ne_zero_iff.2 (hc i))]`. Introduce `a ha`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 ha`. Take `⟨z, hz⟩` from `hy _ (Y.smul_mem o (hcY i))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[← Pi.single_smul, dotProduct_single]`. Rewrite using `[Algebra.traceForm_apply, hz]`. Simplify using the standard rewrite rules. Take `⟨d, hd, h⟩` from `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd' : algebraMap (𝓞 H.E) H.E d ≠ 0` using `by simpa using hd`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[← Finset.univ_sum_single x]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm : (Pi.single i (algebraMap (𝓞 H.E) H.E d) : V H n) ∈ dualZ Y`. Introduce `y hy`. Take `⟨b, hb⟩` from `Submodule.mem_one.1 (h y hy i)`. Rewrite using `[single_dotProduct, ← Algebra.smul_def, ← hb]`. Establish `hi : IsIntegral ℤ (Algebra.trace ℚ H.E (algebraMap (𝓞 H.E) H.E b))` using `Algebra.isIntegral_trace b.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Conclude with `⟨z, by rw [← hz]; simp⟩`. Establish `: (Pi.single i (x i) : V H n) = (x i / algebraMap (𝓞 H.E) H.E d) • (Pi.single i (algebraMap (𝓞 H.E) H.E d) : V H n)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, div_mul_cancel₀ _ hd']`. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hm)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_dualZ (Y : Submodule (𝓞 H.E) (V H n))
     (h1 : ∀ i, ∃ c : H.E, c ≠ 0 ∧ (Pi.single i c : V H n) ∈ Y)
@@ -128,15 +122,15 @@ theorem isLattice_dualZ (Y : Submodule (𝓞 H.E) (V H n))
     exact Submodule.smul_mem _ _ (Submodule.subset_span hm)
 
 /- English proof (translation)
-Use `isLattice_dualZ _ (fun i => ?_) ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, ha0⟩ : ∃ a ∈ 𝔞, a ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h𝔞 (FractionalIdeal.eq_zero_iff.2 hc)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd, hv⟩` from `hs (Pi.single i 1)`. Establish `hd' : algebraMap (𝓞 H.E) H.E d ≠ 0` using `by simpa using hd`. Use `⟨a * algebraMap (𝓞 H.E) H.E d, mul_ne_zero ha0 hd', Submodule.subset_span ⟨a, ha, _, hv, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Pi.single_smul, ← Pi.single_smul, Algebra.smul_def d, mul_one, smul_eq_mul]`. Take `⟨d, hd, h⟩` from `exists_den hN`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, he, hA⟩` from `𝔞.isFractional`. Use `⟨e * d, mul_ne_zero (nonZeroDivisors.ne_zero he) hd, fun x hx i => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, v, hv, rfl⟩` from `hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hA a ha`. Take `⟨b', hb'⟩` from `Submodule.mem_one.1 (h v hv i)`. Use `Submodule.mem_one.2 ⟨b * b', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hb, hb', Pi.smul_apply, smul_eq_mul, smul_mul_smul_comm]`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => rw [Pi.add_apply, smul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy => rw [Pi.smul_apply, smul_comm]`. Conclude with `Submodule.smul_mem _ _ hy`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_dualZ_idealMul (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E) (h𝔞 : 𝔞 ≠ 0)
     (N : Submodule (𝓞 H.E) (V H n)) (hN : N.FG)
@@ -168,9 +162,9 @@ theorem isLattice_dualZ_idealMul (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 
     | smul a y _ hy => rw [Pi.smul_apply, smul_comm]; exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Use `mul_ne_zero ?_ (inv_ne_zero ?_)` and prove the remaining obligations. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`. Introduce `h`. Conclude with `H.ccK_ne_bot ((Ideal.map_eq_bot_iff_of_injective (RingOfIntegers.algebraMap.injective _ _)).1 h)`. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1` using `H.𝔟_spec.1`. Rewrite `h1` using `[h, Ideal.bot_mul]`. Conclude with `differentIdeal_ne_bot h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem host_AA_ne_zero (H : Host R) : H.AA ≠ 0 := by
   refine mul_ne_zero ?_ (inv_ne_zero ?_)
@@ -184,11 +178,9 @@ theorem host_AA_ne_zero (H : Host R) : H.AA ≠ 0 := by
     exact differentIdeal_ne_bot h1
 
 /- English proof (translation)
-Introduce `D j c`. Use `letI := D.host.cmStar`. Establish `hl` using `c.lat_lat`. Use `isLattice_dualZ_idealMul _ (host_AA_ne_zero D.host) c.N ?_ fun v => ?_` and prove the remaining obligations. Use `Submodule.fg_of_fg_map_injective (c.frame.restrictScalars (𝓞 D.host.E)) c.frame_inj ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.FG.of_le hl.fg (Submodule.map_comap_le _ _)`. Take `⟨d, hd, h⟩` from `exists_smul_mem (M := c.lat) (x := c.frame v) (by rw [hl.span_eq_top]; trivial)`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(c.frame.restrictScalars (𝓞 D.host.E)) (d • v) ∈ c.lat`. Rewrite using `[map_smul]`.
-
-Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_X : ∀ (D : Formalism.BasicNotions.D7) (j : GlobalTheory.IndefiniteRowSideFullHecke.ThetaWeightHeightConstants.Lift D.R) (c : GlobalTheory.IndefiniteRowSideFullHecke.CuspFormFieldDegree.CuspGeom D j),
     Submodule.IsLattice D.host.E c.X := by

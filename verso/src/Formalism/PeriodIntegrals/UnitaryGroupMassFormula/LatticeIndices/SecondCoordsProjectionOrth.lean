@@ -25,7 +25,7 @@ abbrev adqZ : Fin X.B.I.n → TpX X p :=
   ratV (F := X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.zu u))
 
 /- English proof (translation)
-Rewrite using `[pair1 X p θ Q hθ, adq_hR_ratV]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adq_pairR (hθ : IsSplitEquiv X p θ) (x y : Fin X.B.I.n → X.B.I.E) :
     crd2 X p θ Q (ratV (F := X.B.I.F) (Fv X.B.I.F p.1) x) ⬝ᵥ crd1 X p θ Q (ratV (F := X.B.I.F) (Fv X.B.I.F p.1) y) =
@@ -33,7 +33,7 @@ theorem adq_pairR (hθ : IsSplitEquiv X p θ) (x y : Fin X.B.I.n → X.B.I.E) :
   rw [pair1 X p θ Q hθ, adq_hR_ratV]
 
 /- English proof (translation)
-Rewrite using `[pair1 X p θ Q hθ, pair1 X p θ Q hθ, adq_hR]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adq_pairM (hθ : IsSplitEquiv X p θ) (v w : Fin X.B.I.n → TpX X p) :
     crd2 X p θ Q (adqM X hb u p *ᵥ v) ⬝ᵥ crd1 X p θ Q (adqM X hb u p *ᵥ w) =
@@ -41,13 +41,13 @@ theorem adq_pairM (hθ : IsSplitEquiv X p θ) (v w : Fin X.B.I.n → TpX X p) :
   rw [pair1 X p θ Q hθ, pair1 X p θ Q hθ, adq_hR]
 
 /- English proof (translation)
-The claim follows from `MassDataLevelSSteps.FrameW.frameOf_isStd X u`.
+A detailed English derivation is pending.
 -/
 theorem adq_std : (frameOf X u).IsStd X.B.I.cm.sig X.B.I.J (((D.mem u).A.T : ℕ) : X.B.I.F) :=
   MassDataLevelSSteps.FrameW.frameOf_isStd X u
 
 /- English proof (translation)
-Establish `h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE X.B.I.cm.sig X.B.I.J (crdOf X.B.I X.ιE X.bas (X.eX b)) (crdOf X.B.I X.ιE X.bas (X.eX a)) = 0` using `(adq_std X u).1 b a`. Rewrite using `[adq_pairR X p θ Q hθ, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adq_ee (u : D.what₂.Word) (hθ : IsSplitEquiv X p θ) (b a : Fin D.R.rS) :
     crd2 X p θ Q (adqE X p b) ⬝ᵥ crd1 X p θ Q (adqE X p a) = 0 := by
@@ -56,7 +56,7 @@ theorem adq_ee (u : D.what₂.Word) (hθ : IsSplitEquiv X p θ) (b a : Fin D.R.r
   simp
 
 /- English proof (translation)
-Establish `h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE X.B.I.cm.sig X.B.I.J (crdOf X.B.I X.ιE X.bas (X.eX b)) (crdOf X.B.I X.ιE X.bas (X.fY a)) = if b = a then 1 else 0` using `(adq_std X u).2.2.1 b a`. Rewrite using `[adq_pairR X p θ Q hθ, h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adq_ef (u : D.what₂.Word) (hθ : IsSplitEquiv X p θ) (b a : Fin D.R.rS) :
     crd2 X p θ Q (adqE X p b) ⬝ᵥ crd1 X p θ Q (adqF X p a) = if b = a then 1 else 0 := by
@@ -65,7 +65,7 @@ theorem adq_ef (u : D.what₂.Word) (hθ : IsSplitEquiv X p θ) (b a : Fin D.R.r
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE X.B.I.cm.sig X.B.I.J (crdOf X.B.I X.ιE X.bas (X.eX b)) (crdOf X.B.I X.ιE X.bas (X.zu u)) = 0` using `(adq_std X u).2.2.2.1 b`. Rewrite using `[adq_pairR X p θ Q hθ, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adq_ez (hθ : IsSplitEquiv X p θ) (b : Fin D.R.rS) :
     crd2 X p θ Q (adqE X p b) ⬝ᵥ crd1 X p θ Q (adqZ X u p) = 0 := by
@@ -74,7 +74,7 @@ theorem adq_ez (hθ : IsSplitEquiv X p θ) (b : Fin D.R.rS) :
   simp
 
 /- English proof (translation)
-Establish `h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE X.B.I.cm.sig X.B.I.J (crdOf X.B.I X.ιE X.bas (X.eX a)) (crdOf X.B.I X.ιE X.bas (X.zu u)) = 0` using `(adq_std X u).2.2.2.1 a`. Rewrite using `[adq_pairR X p θ Q hθ, MassDataMassesW.NRatW.hE_swap X, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adq_ze (hθ : IsSplitEquiv X p θ) (a : Fin D.R.rS) :
     crd2 X p θ Q (adqZ X u p) ⬝ᵥ crd1 X p θ Q (adqE X p a) = 0 := by
@@ -83,7 +83,7 @@ theorem adq_ze (hθ : IsSplitEquiv X p θ) (a : Fin D.R.rS) :
   simp
 
 /- English proof (translation)
-Establish `h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE X.B.I.cm.sig X.B.I.J (crdOf X.B.I X.ιE X.bas (X.fY a)) (crdOf X.B.I X.ιE X.bas (X.zu u)) = 0` using `(adq_std X u).2.2.2.2.1 a`. Rewrite using `[adq_pairR X p θ Q hθ, MassDataMassesW.NRatW.hE_swap X, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adq_zf (hθ : IsSplitEquiv X p θ) (a : Fin D.R.rS) :
     crd2 X p θ Q (adqZ X u p) ⬝ᵥ crd1 X p θ Q (adqF X p a) = 0 := by
@@ -98,7 +98,7 @@ def adqProj (y : IdxD D → FpX X p) : IdxD D → FpX X p :=
     ((adqTau X u p θ Q)⁻¹ * (crd2 X p θ Q (adqZ X u p) ⬝ᵥ y)) • crd1 X p θ Q (adqZ X u p)
 
 /- English proof (translation)
-Establish `hef` using `adq_ef X p θ Q u hθ b`. Establish `hez` using `adq_ez X u p θ Q hθ b`. Simplify using `only [adqProj, dotProduct_sub, dotProduct_sum, dotProduct_smul, smul_eq_mul, hef, hez, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem adq_proj_e (hθ : IsSplitEquiv X p θ) (b : Fin D.R.rS) (y : IdxD D → FpX X p) :
     crd2 X p θ Q (adqE X p b) ⬝ᵥ adqProj X u p θ Q y = 0 := by
@@ -108,7 +108,7 @@ theorem adq_proj_e (hθ : IsSplitEquiv X p θ) (b : Fin D.R.rS) (y : IdxD D → 
     mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self, sub_zero]
 
 /- English proof (translation)
-Establish `hzf` using `adq_zf X u p θ Q hθ`. Establish `ht : crd2 X p θ Q (adqZ X u p) ⬝ᵥ crd1 X p θ Q (adqZ X u p) = adqTau X u p θ Q` using `rfl`. Simplify using `only [adqProj, dotProduct_sub, dotProduct_sum, dotProduct_smul, smul_eq_mul, hzf, mul_zero, Finset.sum_const_zero, sub_zero, ht]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem secondCoords_projection_orth (hθ : IsSplitEquiv X p θ) (hτ : adqTau X u p θ Q ≠ 0) (y : IdxD D → FpX X p) :
     crd2 X p θ Q (adqZ X u p) ⬝ᵥ adqProj X u p θ Q y = 0 := by
@@ -120,20 +120,18 @@ theorem secondCoords_projection_orth (hθ : IsSplitEquiv X p θ) (hτ : adqTau X
   ring
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `h`. Conclude with `(OvA X p).mul_mem _ _ (natCast_mem (OvA X p) _) y.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem adq_inG_int {z : FpX X p} (h : InG X p z) : z ∈ OvA X p := by
   obtain ⟨y, rfl⟩ := h
   exact (OvA X p).mul_mem _ _ (natCast_mem (OvA X p) _) y.2
 
 /- English proof (translation)
-Establish `key : ∀ z w : FpX X p, InG X p z → w ∈ OvA X p → InG X p (z * w)`. Introduce and unpack `z w ⟨y, rfl⟩ hw`. Use `⟨⟨(y : FpX X p) * w, (OvA X p).mul_mem _ _ y.2 hw⟩, ?_⟩` and prove the remaining obligations. Use `show _ = _ * ((y : FpX X p) * w)`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hadd : ∀ z w : FpX X p, InG X p z → InG X p w → InG X p (z + w)`. Introduce and unpack `z w ⟨y, rfl⟩ ⟨y', rfl⟩`. Use `⟨y + y', ?_⟩` and prove the remaining obligations. Use `show _ = _ * ((y : FpX X p) + y')`. Expand and normalize the polynomial expressions, which then agree.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzero : InG X p 0` using `⟨0, by simp⟩`. Establish `hsplit : a ⬝ᵥ b - a' ⬝ᵥ b' = ∑ i, (a i - a' i) * b i + ∑ i, (b i - b' i) * a' i`. Simplify using `only [dotProduct, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hsplit]`. Conclude with `hadd _ _ (Finset.sum_induction _ (InG X p) hadd hzero fun i _ => key _ _ (hda i) (hb' i)) (Finset.sum_induction _ (InG X p) hadd hzero fun i _ => key _ _ (hdb i) (ha i))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adq_dotG {a a' b b' : IdxD D → FpX X p} (ha : ∀ i, a' i ∈ OvA X p) (hb' : ∀ i, b i ∈ OvA X p)
     (hda : ∀ i, InG X p (a i - a' i)) (hdb : ∀ i, InG X p (b i - b' i)) :
@@ -158,7 +156,7 @@ theorem adq_dotG {a a' b b' : IdxD D → FpX X p} (ha : ∀ i, a' i ∈ OvA X p)
     (Finset.sum_induction _ (InG X p) hadd hzero fun i _ => key _ _ (hdb i) (ha i))
 
 /- English proof (translation)
-Simplify using `only [crd1, ← Matrix.mulVec_sub]`. Use `congr 1`. Use extensionality with `i`. Simplify using `[pr1, Function.comp_def]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem firstCoords_sub_adapted (v w : Fin X.B.I.n → TpX X p) :
     crd1 X p θ Q v - crd1 X p θ Q w = crd1 X p θ Q (v - w) := by
@@ -168,7 +166,7 @@ theorem firstCoords_sub_adapted (v w : Fin X.B.I.n → TpX X p) :
   simp [pr1, Function.comp_def]
 
 /- English proof (translation)
-Simplify using `only [crd2, ← Matrix.mulVec_sub]`. Use `congr 2`. Use extensionality with `i`. Simplify using `[pr2, Function.comp_def]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem secondCoords_sub_adapted (v w : Fin X.B.I.n → TpX X p) :
     crd2 X p θ Q v - crd2 X p θ Q w = crd2 X p θ Q (v - w) := by
@@ -178,7 +176,7 @@ theorem secondCoords_sub_adapted (v w : Fin X.B.I.n → TpX X p) :
   simp [pr2, Function.comp_def]
 
 /- English proof (translation)
-Establish `h` using `add_mem hw (Submodule.smul_le_right hd)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem adq_lat_of (v w : Fin X.B.I.n → TpX X p)
     (hw : w ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))) (hd : v - w ∈ gLam X p) :

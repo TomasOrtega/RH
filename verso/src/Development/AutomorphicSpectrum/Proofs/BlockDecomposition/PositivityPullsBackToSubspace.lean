@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilSiegel.NoFrame
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_form_eq {m n : ℕ} (G : Matrix (Fin m) (Fin m) ℂ) (y : Matrix (Fin m) (Fin n) ℂ)
     (w : Fin n → ℂ) :
@@ -20,15 +20,13 @@ theorem gram_form_eq {m n : ℕ} (G : Matrix (Fin m) (Fin m) ℂ) (y : Matrix (F
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]
 
 /- English proof (translation)
-Establish `key : ∀ w ∈ S, w ≠ 0 → 0 < ε * (star (y.mulVec w) ⬝ᵥ G.mulVec (y.mulVec w)).re`. Introduce `w hw hw0`. Establish `hpos` using `h w hw hw0`. Rewrite `hpos` using `[gram_form_eq]`. Then use the resulting hypothesis. Establish `hinj : Function.Injective ((Matrix.mulVecLin y).domRestrict S)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Assume the negation of the conclusion as `hne`. Establish `hw0 : (w : Fin n → ℂ) ≠ 0` using `fun h0 => hne (Subtype.ext h0)`. Establish `h1` using `key w w.2 hw0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : y.mulVec (w : Fin n → ℂ) = 0` using `by simpa using hw`. Simplify using `[h2] at h1`. Use `⟨S.map (Matrix.mulVecLin y), ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv hv0`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.mp hv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Conclude with `hv0 (map_zero _)`. Rewrite using `[Matrix.mulVecLin_apply]`. Conclude with `key w hw hw0`.
-
-Rewrite using `[← LinearMap.range_domRestrict, LinearMap.finrank_range_of_inj hinj]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_posOn_of_gram (m n : ℕ) (G : Matrix (Fin m) (Fin m) ℂ)
     (y : Matrix (Fin m) (Fin n) ℂ) (ε : ℝ) (S : Submodule ℂ (Fin n → ℂ))

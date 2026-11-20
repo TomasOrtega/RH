@@ -9,9 +9,7 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.FlagEmb
 
 /- English proof (translation)
-Establish `h : Smooth (spMap (MvPolynomial.C : Γ(X, U.1) →+* CR m U))`. Use `(HasRingHomProperty.Spec_iff (P := @Smooth)).2 ?_` and prove the remaining obligations. Conclude with `RingHom.smooth_algebraMap.2 (⟨inferInstance, inferInstance⟩ : Algebra.Smooth Γ(X, U.1) (MvPolynomial (CellVar m) Γ(X, U.1)))`. Establish `h' : IsOpenImmersion U.2.fromSpec` using `IsAffineOpen.isOpenImmersion_fromSpec U.2`. Establish `h'' : Smooth U.2.fromSpec` using `inferInstance`.
-
-Conclude with `MorphismProperty.comp_mem @Smooth _ _ h h''`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_cbase {X : Scheme.{0}} {T : Type} [Finite T] (m : T → ℕ) (U : X.affineOpens) : Smooth (cbase m U) := by
   have h : Smooth (spMap (MvPolynomial.C : Γ(X, U.1) →+* CR m U)) := by
@@ -22,7 +20,7 @@ theorem smooth_cbase {X : Scheme.{0}} {T : Type} [Finite T] (m : T → ℕ) (U :
   exact MorphismProperty.comp_mem @Smooth _ _ h h''
 
 /- English proof (translation)
-Introduce `X _ T _ m U hX`. Use `smooth_cbase m U` as an intermediate fact. Conclude with `⟨this, forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth (cbase m U) hX⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem cell_smooth_normal : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (T : Type) [Finite T] (m : T → ℕ) (U : X.affineOpens), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → Smooth (cbase m U) ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp (CR m U)) := by
   intro X _ T _ m U hX

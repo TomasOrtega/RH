@@ -17,13 +17,13 @@ def fix (π : Representation E G V) (K : Subgroup G) : Submodule E V :=
 variable (π : Representation E G V) {K : Subgroup G}
 
 /- English proof (translation)
-Rewrite using `[fix, Representation.mem_invariants]`. Conclude with `⟨fun h k hk => h ⟨k, hk⟩, fun h k => h k k.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_fix {v : V} : v ∈ fix π K ↔ ∀ k ∈ K, π k v = v :=
   by rw [fix, Representation.mem_invariants]; exact ⟨fun h k hk => h ⟨k, hk⟩, fun h k => h k k.2⟩
 
 /- English proof (translation)
-Rewrite `h` using `[QuotientGroup.eq]`. Rewrite using `[show y = x * (x⁻¹ * y) by group, map_mul, Module.End.mul_apply, (mem_fix π).1 hv _ h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem apply_eq_of_coset {v : V} (hv : v ∈ fix π K) {x y : G} (h : (x : G ⧸ K) = y) :
     π x v = π y v := by
@@ -31,9 +31,9 @@ theorem apply_eq_of_coset {v : V} (hv : v ∈ fix π K) {x y : G} (h : (x : G �
   rw [show y = x * (x⁻¹ * y) by group, map_mul, Module.End.mul_apply, (mem_fix π).1 hv _ h]
 
 /- English proof (translation)
-Rewrite using `[mem_fix]`. Introduce `k hk`. Set `F : G ⧸ K → V` to `fun y => π y.out v`. Establish `hF : ∀ x : G, π x v = F (x : G ⧸ K)` using `fun x => apply_eq_of_coset π hv (QuotientGroup.out_eq' (x : G ⧸ K)).symm`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, hF]`. Use `_ = ∑ i, F ((z i : G) : G ⧸ K) := sum_heckeFam hz F hk`. Use `_ = ∑ i, π (z i) v := Finset.sum_congr rfl fun i _ => (hF _).symm`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mem_fix {n : ℕ} {z : Fin n → G} (hz : IsHeckeFam K z) {v : V} (hv : v ∈ fix π K) :
     (∑ i, π (z i) v) ∈ fix π K := by
@@ -54,14 +54,14 @@ def op {n : ℕ} {z : Fin n → G} (hz : IsHeckeFam K z) : Module.End E (fix π 
     rw [LinearMap.sum_apply]; exact sum_mem_fix π hz hv
 
 /- English proof (translation)
-Simplify using `[op, LinearMap.restrict_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_op {n : ℕ} {z : Fin n → G} (hz : IsHeckeFam K z) (v : fix π K) :
     ((op π hz v : fix π K) : V) = ∑ i, π (z i) v := by
   simp [op, LinearMap.restrict_apply]
 
 /- English proof (translation)
-Introduce `k hk`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [mul_one]`. Conclude with `QuotientGroup.eq.2 (by simpa using hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHeckeFam_one (K : Subgroup G) : IsHeckeFam K (fun _ : Fin 1 => (1 : G)) := by
   intro k hk
@@ -70,7 +70,7 @@ theorem isHeckeFam_one (K : Subgroup G) : IsHeckeFam K (fun _ : Fin 1 => (1 : G)
   exact QuotientGroup.eq.2 (by simpa using hk)
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[coe_op]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem op_one : op π (isHeckeFam_one K) = LinearMap.id := by
   ext v
@@ -105,14 +105,14 @@ def part (π : Representation E G V) (K : Subgroup G) (R : HeckeRel E K M) :
 variable {π : Representation E G V} {K : Subgroup G} {R : HeckeRel E K M}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_part {φ : fix π K →ₗ[E] M} : φ ∈ part π K R ↔
     ∀ ⦃n : ℕ⦄ (z : Fin n → G) (hz : IsHeckeFam K z) (T : Module.End E M), R z hz T → φ ∘ₗ op π hz = T ∘ₗ φ :=
   Iff.rfl
 
 /- English proof (translation)
-Use `⟨fun h n z hz T hT v => LinearMap.congr_fun (h z hz T hT) v, fun h n z hz T hT => ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Conclude with `h z hz T hT v`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mem_part_iff_apply {φ : fix π K →ₗ[E] M} : φ ∈ part π K R ↔
     ∀ ⦃n : ℕ⦄ (z : Fin n → G) (hz : IsHeckeFam K z) (T : Module.End E M), R z hz T →
@@ -122,14 +122,14 @@ theorem mem_part_iff_apply {φ : fix π K →ₗ[E] M} : φ ∈ part π K R ↔
   exact h z hz T hT v
 
 /- English proof (translation)
-The claim follows from `mem_part_iff_apply.1 φ.2 z hz T hT v`.
+A detailed English derivation is pending.
 -/
 theorem part_apply_op (φ : part π K R) {n : ℕ} {z : Fin n → G} {hz : IsHeckeFam K z} {T : Module.End E M}
     (hT : R z hz T) (v : fix π K) : (φ : fix π K →ₗ[E] M) (op π hz v) = T ((φ : fix π K →ₗ[E] M) v) :=
   mem_part_iff_apply.1 φ.2 z hz T hT v
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ z hz => h z hz _ rfl, fun h _ z hz _ hT => hT ▸ h z hz⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_part_ofFun {t : ∀ {n : ℕ} (z : Fin n → G), IsHeckeFam K z → Module.End E M} {φ : fix π K →ₗ[E] M} :
     φ ∈ part π K (HeckeRel.ofFun t) ↔ ∀ ⦃n : ℕ⦄ (z : Fin n → G) (hz : IsHeckeFam K z), φ ∘ₗ op π hz = t z hz ∘ₗ φ :=
@@ -140,7 +140,7 @@ def Intertw (R : HeckeRel E K M) (R' : HeckeRel E K M') (f : M →ₗ[E] M') : P
     ∃ T, R z hz T ∧ f ∘ₗ T = T' ∘ₗ f
 
 /- English proof (translation)
-Introduce `n z hz T'' hT''`. Take `⟨T', hT', e'⟩` from `hg z hz T'' hT''`. Take `⟨T, hT, e⟩` from `hf z hz T' hT'`. Use `⟨T, hT, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_assoc, e, ← LinearMap.comp_assoc, e', LinearMap.comp_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Intertw.comp {R : HeckeRel E K M} {R' : HeckeRel E K M'} {R'' : HeckeRel E K M''} {f : M →ₗ[E] M'}
     {g : M' →ₗ[E] M''} (hf : Intertw R R' f) (hg : Intertw R' R'' g) : Intertw R R'' (g ∘ₗ f) := by
@@ -170,7 +170,7 @@ def Commutes (R : HeckeRel E K M) (f : Module.End E M) : Prop :=
   ∀ ⦃n : ℕ⦄ (z : Fin n → G) (hz : IsHeckeFam K z) (T : Module.End E M), R z hz T → f ∘ₗ T = T ∘ₗ f
 
 /- English proof (translation)
-Introduce `_ z hz T hT` and use `⟨T, hT, hf z hz T hT⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Commutes.intertw {f : Module.End E M} (hf : Commutes R f) : Intertw R R f :=
   fun _ z hz T hT => ⟨T, hT, hf z hz T hT⟩
@@ -299,13 +299,13 @@ def zeroRel (M : Type) [AddCommGroup M] [Module E M] : HeckeRel E K M :=
   fun _ _ _ T => T = 0
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun v _ => (mem_fix _).2 fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem fix_trivial : fix (Representation.trivial E G E) K = ⊤ :=
   eq_top_iff.2 fun v _ => (mem_fix _).2 fun _ _ => rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[coe_op, Finset.sum_const, Finset.card_univ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem op_trivial {n : ℕ} {z : Fin n → G} (hz : IsHeckeFam K z) :
     op (Representation.trivial E G E) hz = (n : E) • LinearMap.id := by
@@ -313,7 +313,7 @@ theorem op_trivial {n : ℕ} {z : Fin n → G} (hz : IsHeckeFam K z) :
   simp [coe_op, Finset.sum_const, Finset.card_univ]
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun φ _ => mem_part.2 fun n z hz T hT => ?_` and prove the remaining obligations. Rewrite using `[op_trivial, show T = (n : E) • LinearMap.id from hT]`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem part_trivial_mulRel : part (Representation.trivial E G E) K (mulRel E K M) = ⊤ := by
   refine eq_top_iff.2 fun φ _ => mem_part.2 fun n z hz T hT => ?_
@@ -322,7 +322,7 @@ theorem part_trivial_mulRel : part (Representation.trivial E G E) K (mulRel E K 
   simp
 
 /- English proof (translation)
-Rewrite using `[part_trivial_mulRel, finrank_top, Module.finrank_linearMap, fix_trivial, finrank_top, Module.finrank_self, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_part_trivial_mulRel :
     Module.finrank E (part (Representation.trivial E G E) K (mulRel E K E)) = 1 := by
@@ -330,7 +330,7 @@ theorem finrank_part_trivial_mulRel :
     Module.finrank_self, one_mul]
 
 /- English proof (translation)
-Use `eq_bot_iff.2 fun φ hφ => ?_` and prove the remaining obligations. Establish `h` using `mem_part.1 hφ (fun _ : Fin 1 => (1 : G)) (isHeckeFam_one K) 0 rfl`. Rewrite `h` using `[op_one, LinearMap.comp_id, LinearMap.zero_comp]`. Conclude with `(Submodule.mem_bot E).2 h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part_zeroRel {V : Type} [AddCommGroup V] [Module E V] (π : Representation E G V) :
     part π K (zeroRel E K M) = ⊥ := by
@@ -340,24 +340,24 @@ theorem part_zeroRel {V : Type} [AddCommGroup V] [Module E V] (π : Representati
   exact (Submodule.mem_bot E).2 h
 
 /- English proof (translation)
-Rewrite using `[op_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example (v : fix (Representation.trivial ℚ G ℚ) K) : op (Representation.trivial ℚ G ℚ) (isHeckeFam_one K) v = v := by
   rw [op_one]; rfl
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : FiniteDimensional ℚ (part (Representation.trivial ℚ G ℚ) K (mulRel ℚ K ℚ)) := inferInstance
 
 /- English proof (translation)
-The claim follows from `finrank_part_trivial_mulRel K`.
+A detailed English derivation is pending.
 -/
 example : Module.finrank ℚ (part (Representation.trivial ℚ G ℚ) K (mulRel ℚ K ℚ)) = 1 :=
   finrank_part_trivial_mulRel K
 
 /- English proof (translation)
-The claim follows from `part_zeroRel K _`.
+A detailed English derivation is pending.
 -/
 example : part (Representation.trivial ℚ G ℚ) K (zeroRel ℚ K ℚ) = ⊥ := part_zeroRel K _
 

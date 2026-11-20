@@ -35,15 +35,15 @@ def DivPlus : Prop :=
         (∀ j g, (ρ g : Mat K N) * T' j = T' j * (r g : Mat K n)) ∧ ∑ j, T' j * T j = 1
 
 /- English proof (translation)
-Introduce `Γ _ _ _ _ K K' _ _ _ _ _ _ _ _ _ N n ρ hρ hss S hS P hP hk X hX he ψ hψ hψS`. Take `⟨e, -, hL, hr⟩` from `he`. Take `⟨X₀, e₀, hX₀, hL₀, hr₀⟩` from `hSpec Γ K K' N n ρ X e hX hL hr`. Establish `hd : ∀ g, Deg n (ρ g : Mat K N)` using `hDeg Γ K N n ρ hρ S hS fun s hs => ⟨P s, (hP s hs).1.ne_zero, (hP s hs).2.le, hk s hs⟩`. Take `⟨p, hG⟩` from `hStruct Γ K N n ρ X₀ e₀ hss hd hX₀ hL₀ hr₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key` using `hKey Γ K N n ρ e₀ p hd hL₀ hG`. Take `⟨hsys, -, hC, -, hN, hK, -⟩` from `hG`. Take `⟨R, hR, hRC, hRN, hRK⟩` from `hBig Γ K N n ρ (env ρ) p hC hN hK fun g => (key ⊤ inferInstance inferInstance g).2`. Take `⟨E, hE⟩` from `hMU K N n R p hsys hRC (hSemis Γ K N ρ R hss hRN hRK)`. Take `⟨r, A, B, hsub⟩` from `hRep Γ K N n ρ R p E hsys hE hR`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3, h4⟩` from `hSub Γ K N n ρ r A B hsub hss`. Establish `hc : Continuous (fun g => (r g : Mat K n))`. Simplify using `only [h3]`. Conclude with `(continuous_const.matrix_mul hρ).matrix_mul continuous_const`. Take `⟨ho, hD⟩` from `hFD Γ K n r hc fun U hU hf g => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hE⟩` from `(key U hU hf g).1`. Conclude with `hDA Γ K N n ρ r A B hsub U g m hm hE`. Establish `hkr : ∀ s ∈ S, Polynomial.aeval (r s : Mat K n) (P s) = 0` using `fun s hs => (h4 s _).1 (hk s hs)`. Establish `hsep : ∀ s ∈ S, (r s : Mat K n).charpoly.Separable → (r s : Mat K n).charpoly = P s` using `fun s hs => (hFP K n _ _ (hP s hs).1 (hP s hs).2 (hkr s hs)).1`. Establish `hdet : ∀ g, (r g : Mat K n).det = ((ψ g : Kˣ) : K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Continuous.ext_on (hS.inter_of_isOpen_right hD ho) hc.matrix_det hψ (fun s hs => by show (r s : Mat K n).det = _` as an intermediate fact. Rewrite using `[hψS s hs.1, Matrix.det_eq_sign_charpoly_coeff, hsep s hs.1 hs.2, Fintype.card_fin])`. Conclude with `fun g => congrFun this g`. Use `⟨r, hc, h1, ⟨A, h2, hsub.2.1⟩, fun g => (h4 g _).2 (Matrix.aeval_self_charpoly _), hkr, hdet, ho, hD, hsep, fun s hs hg => (hFP K n _ _ (hP s hs).1 (hP s hs).2 (hkr s hs)).2 hg ?_, hEm Γ K N n ρ r A B hsub hss h1⟩` and prove the remaining obligations. Rewrite using `[hdet, hψS s hs]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plus_of (hSpec : SpecLie) (hDeg : DegAll) (hStruct : Struct) (hKey : Key) (hBig : BigCorner)
     (hSemis : Semis) (hMU : MatrixUnits₂) (hRep : Rep) (hDA : DenseAlg) (hSub : FinSub) (hFD : FinDense)

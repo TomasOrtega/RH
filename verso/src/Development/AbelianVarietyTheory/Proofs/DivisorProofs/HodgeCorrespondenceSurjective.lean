@@ -14,15 +14,13 @@ open GlobalTheory.QCoh (pullbackSections)
 namespace GlobalTheory.HodgeSubSurj
 
 /- English proof (translation)
-Establish `e` using `hV.fromSpec_preimage_self.ge`. Use `letI := QCoh.appLEAlgebra hV.fromSpec e`. Use `letI := QCoh.appLEModule hV.fromSpec ((Scheme.Modules.pullback hV.fromSpec).obj F) e`. Use `haveI := QCoh.appLE_isScalarTower hV.fromSpec ((Scheme.Modules.pullback hV.fromSpec).obj F) e`. Establish `H` using `QCoh.isBaseChange_pullbackSections hV.fromSpec F (isAffineOpen_top _) hV e`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Function.Surjective (hV.fromSpec.appLE V ⊤ e)`. Establish `: hV.fromSpec.appLE V ⊤ e = (Scheme.ΓSpecIso Γ(T, V)).inv`. Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `(congrArg (_ ≫ ·) (CategoryTheory.Functor.map_id _ _)).trans (Category.comp_id _)`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Conclude with `(ConcreteCategory.bijective_of_isIso _).2`. Proceed by induction on `t using H.inductionOn with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul s => exact ⟨s, rfl⟩`. Consider the case `smul r t ih`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, rfl⟩` from `ih`. Take `⟨r, rfl⟩` from `hs r`. Conclude with `⟨r • s, QCoh.pullbackSections_smul _ _ _ _ _⟩`. Consider the case `add t t' ih ih'`. Take `⟨s, rfl⟩` from `ih`.
-
-Take `⟨s', rfl⟩` from `ih'`. Conclude with `⟨s + s', map_add _ _ _⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pullbackSections_fromSpec_surjective {T : Scheme.{0}} (F : T.Modules) [F.IsQuasicoherent]
     {V : T.Opens} (hV : IsAffineOpen V) (t : Γ((Scheme.Modules.pullback hV.fromSpec).obj F, ⊤)) :
@@ -55,9 +53,7 @@ section Affine
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => congrArg Over.Hom.left (epsZero_comp (G := G) ⟨v, h⟩)⟩` and prove the remaining obligations. Establish `h' : (toUnit (Pdiv.specO R R)).left = 𝟙 (Sp R)`. Rewrite using `[Over.toUnit_left]`. Conclude with `Spec.map_id _`. Use `ext1`.
-
-Simplify using `only [Over.comp_left, h']`. Conclude with `h.trans (Category.id_comp _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isTangent_iff_ptMap (v : epsR R ⟶ G) : IsTangent v ↔
     Pdiv.ptMap (TrivSqZeroExt.fstHom R R R) ≫ (v : Pdiv.specO R (DualNumber R) ⟶ G) =
@@ -71,7 +67,7 @@ theorem isTangent_iff_ptMap (v : epsR R ⟶ G) : IsTangent v ↔
   exact h.trans (Category.id_comp _).symm
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `(OmegaGlobal.toOmega_bijective R G ⟨tangent_injective _ _, TangentSurj.tangent_surjective _ _⟩).2 ⟨fun x => tanVal (A := G) x.1 f, fun x y _ => tanVal_mul ((isTangent_iff_ptMap _).2 x.2) ((isTangent_iff_ptMap _).2 y.2) f, fun a x _ => tanVal_epsScale a x.1 f⟩`. Conclude with `⟨w, fun x => (congrArg (fun u => u.1 x) hw).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_omega [QuasiSeparated G.hom] [Smooth G.hom] (f : Cris.Form (G.hom ≫ 𝟙 _)) :
     ∃ w : Γ(omega G, ⊤), ∀ x : Pdiv.LieG G, tanVal (A := G) x.1 f =
@@ -84,9 +80,9 @@ theorem exists_omega [QuasiSeparated G.hom] [Smooth G.hom] (f : Cris.Form (G.hom
   exact ⟨w, fun x => (congrArg (fun u => u.1 x) hw).symm⟩
 
 /- English proof (translation)
-Use `Eq.trans ?_ (Category.assoc _ _ _)` and prove the remaining obligations. Use `congrArg (· ≫ (epsIso R).hom) ?_` and prove the remaining obligations. Use `Conormal.pullback_hom_ext (sec_hom η[A]) fun W a => ?_` and prove the remaining obligations. Establish `k₁` using `Conormal.le_of_sq (unitSec_comp h) (le_refl (unitSec A ⁻¹ᵁ W)) le_rfl`. Establish `k₂` using `Conormal.le_of_sq we (le_refl (unitSec A ⁻¹ᵁ W)) le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Conormal.baseMap_d (sec_hom η[A]) _ w we le_rfl le_rfl k₂ le_rfl a).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(congrArg ((cotMap x.1 (epsZero_comp x)).app _) (omegaBase_dUnit h le_rfl le_rfl k₁ le_rfl a)).trans ?_` and prove the remaining obligations. Use `(cotMap_d x.1 (epsZero_comp x) k₁ k₂ le_rfl _).trans ?_` and prove the remaining obligations. Conclude with `congrArg _ (Conormal.appLE_appLE rfl _ _ _ a)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem form_eq {T : Scheme.{0}} {A : Over T} [GrpObj A] {b : Sp R ⟶ T} {φ : G.left ⟶ A.left}
     (h : IsGrpPullback G A b φ) (x : Pdiv.LieG G)
@@ -105,9 +101,9 @@ theorem form_eq {T : Scheme.{0}} {A : Over T} [GrpObj A] {b : Sp R ⟶ T} {φ : 
   exact congrArg _ (Conormal.appLE_appLE rfl _ _ _ a)
 
 /- English proof (translation)
-Establish `: QuasiSeparated G.hom` using `MorphismProperty.of_isPullback h.1 ‹_›`. Establish `: Smooth G.hom` using `MorphismProperty.of_isPullback h.1 ‹_›`. Take `⟨u, hu⟩` from `exists_omega f`. Use `isIso_omegaBase h` as an intermediate fact. Take `⟨t, rfl⟩` from `(ConcreteCategory.bijective_of_isIso ((omegaBase h).app ⊤)).2 u`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨t, fun v hv w we => ?_⟩` and prove the remaining obligations. Set `x : Pdiv.LieG G` to `⟨v, (isTangent_iff_ptMap v).1 hv⟩`. Establish `e` using `form_eq h x w we`. Use `(hu x).trans (congrArg (fun a : Γ(Sp R, ⊤) => (Scheme.ΓSpecIso (.of R)).hom a) ?_)` and prove the remaining obligations. Conclude with `(congr(($e).app ⊤ t)).symm`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pullback_omega {T : Scheme.{0}} {A : Over T} [GrpObj A] [QuasiSeparated A.hom]
     [Smooth A.hom] {b : Sp R ⟶ T} {φ : G.left ⟶ A.left} (h : IsGrpPullback G A b φ)
@@ -128,7 +124,7 @@ theorem exists_pullback_omega {T : Scheme.{0}} {A : Over T} [GrpObj A] [QuasiSep
   exact (congr(($e).app ⊤ t)).symm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `c.1 ∈ Cris.F1 _ at hc`. Rewrite `hc` using `[Cris.hodgeFiltration_eq_range]`. Take `⟨c, hc'⟩` from `c`. Take `⟨f, rfl⟩` from `hc`. Conclude with `⟨f, fun v k hk => hk.2 f hc'⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_form {c : primDR G} (hc : c ∈ PrimitiveSubmodule G) : ∃ f : Cris.Form (G.hom ≫ 𝟙 _),
     ∀ (v : epsR R ⟶ G) (k : HdR G), IsLieImage k v → k c = tanVal v f := by
@@ -141,9 +137,9 @@ theorem exists_form {c : primDR G} (hc : c ∈ PrimitiveSubmodule G) : ∃ f : C
 end Affine
 
 /- English proof (translation)
-Establish `h : IsGrpPullback (onAff A hV) A hV.fromSpec (pullback.fst A.hom hV.fromSpec)` using `isGrpPullback_pullback A hV.fromSpec`. Take `⟨f, hf⟩` from `exists_form hc`. Take `⟨t, ht⟩` from `exists_pullback_omega h f`. Take `⟨s, hs⟩` from `pullbackSections_fromSpec_surjective (omega A) hV t`. Use `⟨s, fun v k hk w we => (hf v k hk).trans ((ht v hk.1 w we).trans ?_)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_corr {T : Scheme.{0}} (A : Over T) [GrpObj A] [QuasiSeparated A.hom] [Smooth A.hom]
     {V : T.Opens} (hV : IsAffineOpen V) (c : primDR (onAff A hV)) (hc : c ∈ PrimitiveSubmodule (onAff A hV)) :
@@ -158,7 +154,7 @@ theorem exists_corr {T : Scheme.{0}} (A : Over T) [GrpObj A] [QuasiSeparated A.h
   rfl
 
 /- English proof (translation)
-Introduce `_ T A _ g hA hg V hV c hc`. Use `hA.proper` as an intermediate fact. Establish `: Smooth A.hom` using `SmoothOfRelativeDimension.smooth g _`. Conclude with `exists_corr A hV c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.CovTop.Hypotheses2 → ∀ (T : Scheme.{0}) (A : Over T) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →

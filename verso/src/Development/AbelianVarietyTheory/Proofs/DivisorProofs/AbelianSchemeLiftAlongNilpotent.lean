@@ -13,11 +13,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R R₀ _ _ π s hs A₀ _ g hA hg`. Establish `hAs` using `isGrpPullback_pullback A₀ (spMap s)`. Establish `hid : spMap π ≫ spMap s = 𝟙 (Sp R₀)`. Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hs]`. Conclude with `Spec.map_id _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBA` using `isGrpPullback_pullback ((Over.pullback (spMap s)).obj A₀) (spMap π)`. Establish `hB0` using `(hBA.comp hAs).congr hid rfl`. Take `⟨e, he, -⟩` from `grpPullback_iso hB0 (GlobalTheory.CrysConn.isGrpPullback_refl A₀)`. Use `haveI : IsMonHom e.symm.hom := inferInstanceAs (IsMonHom e.inv)`. Establish `h0B` using `isGrpPullback_of_iso e.symm`.
-
-Use `⟨(Over.pullback (spMap s)).obj A₀, inferInstance, _, (h0B.comp hBA).congr (Category.id_comp _) rfl, PolPull.isAbelianScheme_of_isGrpPullback hA hAs, ?_⟩` and prove the remaining obligations. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem abelianScheme_constLift : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀) (s : R₀ →+* R), π.comp s = RingHom.id R₀ →
     ∀ (A₀ : Over (Sp R₀)) [GrpObj A₀] (g : ℕ), IsAbelianScheme A₀ → SmoothOfRelativeDimension g A₀.hom →

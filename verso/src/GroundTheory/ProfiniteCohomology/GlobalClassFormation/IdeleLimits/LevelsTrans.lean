@@ -14,7 +14,7 @@ variable {K F E M : FiniteSubfield} [Fact (K ≤ F)] [Fact (K ≤ E)] [Fact (K �
   [M.1.fixingSubgroup.Normal]
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `h1` using `congrArg Subtype.val (coe_levelRestrict_apply (K := K) (F := F) (E := E) (levelRestrict K E M τ) x)`. Establish `h2` using `congrArg Subtype.val (coe_levelRestrict_apply (K := K) (F := E) (E := M) τ (algebraMap F.1 E.1 x))`. Establish `h3` using `congrArg Subtype.val (coe_levelRestrict_apply (K := K) (F := F) (E := M) τ x)`. Conclude with `h1.trans (h2.trans h3.symm)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levelRestrict_levelRestrict (τ : M.1 ≃ₐ[K.1] M.1) :
     levelRestrict K F E (levelRestrict K E M τ) = levelRestrict K F M τ := by
@@ -29,9 +29,9 @@ theorem levelRestrict_levelRestrict (τ : M.1 ≃ₐ[K.1] M.1) :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Unfold `levelTransition cohomologyMapAlong`. Use `(HomologicalComplex.homologyMap_comp _ _ n).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `m x : 3`. Apply `Subtype.ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `Additive.ofMul (ideleMap (Fact.out : E ≤ M) (ideleMap (Fact.out : F ≤ E) ((x.1 fun i => levelRestrict K F E (levelRestrict K E M (g i))).toMul))) = Additive.ofMul (ideleMap (Fact.out : F ≤ M) ((x.1 fun i => levelRestrict K F M (g i)).toMul))`. Establish `hfun : (fun i => levelRestrict K F E (levelRestrict K E M (g i))) = fun i => levelRestrict K F M (g i)` using `funext fun i => levelRestrict_levelRestrict (g i)`. Use `(congrArg Additive.ofMul (ideleMap_ideleMap (Fact.out : F ≤ E) (Fact.out : E ≤ M) _)).trans ?_` and prove the remaining obligations. Rewrite using `[hfun]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem levelTransition_comp_levelTransition (n : ℕ) :
     levelTransition K F E n ≫ levelTransition K E M n = levelTransition K F M n := by

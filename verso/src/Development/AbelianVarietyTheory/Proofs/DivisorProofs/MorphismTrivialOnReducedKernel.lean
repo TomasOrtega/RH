@@ -11,15 +11,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.KernelKill
 
 /- English proof (translation)
-Introduce `A Y Y' Z _ _ _ _ u f i hk _ _ h T x hx`. Establish `hiu : i ≫ u = 1` using `hk.w`. Establish `key : i ≫ f = 1`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Establish `: JacobsonSpace Z.left` using `LocallyOfFiniteType.jacobsonSpace Z.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ext_of_fromSpecResidueField_eq _ _ Y'.hom (closedPoints Z.left) ?_ (fun z hz => ?_) ((Over.w _).trans (Over.w _).symm)` and prove the remaining obligations. Rewrite using `[dense_iff_closure_eq, closure_closedPoints]`. Establish `hz' : IsClosed ({z} : Set Z.left)` using `hz`. Set `q : 𝟙_ (Over (Sp ℂ)) ⟶ Z` to `Over.homMk (pointOfClosedPoint Z.hom z hz') (pointOfClosedPoint_comp _ _ _)`. Establish `hq : q ≫ i ≫ f = q ≫ 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_one, ← Category.assoc]`. Apply `h` to reduce the goal to its premises. Rewrite using `[Category.assoc, hiu, MonObj.comp_one]`. Establish `e` using `congrArg CommaMorphism.left hq`. Simplify using `only [Over.comp_left] at e`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hp : Z.left.fromSpecResidueField z = Spec.map (residueFieldIsoBase Z.hom z hz').inv ≫ pointOfClosedPoint Z.hom z hz'`. Simplify using `only [pointOfClosedPoint, ← Spec.map_comp_assoc, Iso.hom_inv_id, Spec.map_id, Category.id_comp]`. Rewrite using `[hp, Category.assoc, Category.assoc]`. Use `congr 1`. Establish `hx' : x ≫ u = toUnit T ≫ η[Y]` using `hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← hk.lift_fst x (toUnit T) hx', Category.assoc, key, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_eq_one_of_kill_closedPoints : ∀ (A Y Y' Z : Over (Sp ℂ)) [GrpObj A] [GrpObj Y] [GrpObj Y'] [IsSeparated Y'.hom] (u : A ⟶ Y) (f : A ⟶ Y')
     (i : Z ⟶ A), IsPullback i (toUnit Z) u η[Y] → ∀ [AlgebraicGeometry.IsReduced Z.left] [LocallyOfFiniteType Z.hom],

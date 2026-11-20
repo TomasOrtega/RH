@@ -14,32 +14,30 @@ section Lagrange
 variable {LL O : Type} [Field LL] [CommRing O] [Algebra O LL] (v : AddValuation LL (WithTop ℚ))
 
 /- English proof (translation)
-Establish `h1 : (((a : ℚ)) : WithTop ℚ) ≤ (((b : ℚ)) : WithTop ℚ)` using `by simpa using h`. Conclude with `WithTop.coe_le_coe.1 h1` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCast_le_withTop {a b : ℕ} (h : ((a : ℕ) : WithTop ℚ) ≤ ((b : ℕ) : WithTop ℚ)) : a ≤ b := by
   have h1 : (((a : ℚ)) : WithTop ℚ) ≤ (((b : ℚ)) : WithTop ℚ) := by simpa using h
   exact_mod_cast WithTop.coe_le_coe.1 h1
 
 /- English proof (translation)
-Rewrite using `[AddValuation.map_pow, hvp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem v_pow_nat {p : ℕ} (hvp : v (p : LL) = 1) (k : ℕ) : v ((p : LL) ^ k) = ((k : ℕ) : WithTop ℚ) := by
   rw [AddValuation.map_pow, hvp]; simp
 
 /- English proof (translation)
-Establish `hk : ((k : ℕ) : WithTop ℚ) ≠ ⊤`. Establish `: ((k : ℕ) : WithTop ℚ) = (((k : ℚ)) : WithTop ℚ)` using `by simp`. Rewrite using `[this]`. Conclude with `WithTop.coe_ne_top`. Establish `hp0 : ((p : LL) ^ k) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Use `v_pow_nat v hvp k` as an intermediate fact. Rewrite `this` using `[h0, AddValuation.map_zero]`. Conclude with `hk this.symm`. Use `set y : LL := algebraMap O LL x / (p : LL) ^ k with hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyx : y * (p : LL) ^ k = algebraMap O LL x` using `by rw [hy]; field_simp`. Establish `hvy : v y = 0`. Establish `h1 : v y + ((k : ℕ) : WithTop ℚ) = 0 + ((k : ℕ) : WithTop ℚ)`. Rewrite using `[← v_pow_nat v hvp k, ← AddValuation.map_mul, hyx, hx, v_pow_nat v hvp k, zero_add]`. Conclude with `(WithTop.add_right_inj hk).1 h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy0 : y ≠ 0`. Introduce `h0`. Rewrite `hvy` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_zero hvy`. Establish `hvyi : v y⁻¹ = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : v y⁻¹ + v y = 0`. Rewrite using `[← AddValuation.map_mul, inv_mul_cancel₀ hy0, AddValuation.map_one]`. Rewrite `h1` using `[hvy, add_zero]`. Then use the resulting hypothesis. Take `⟨u, hu⟩` from `hO y hvy.ge`. Take `⟨w, hw⟩` from `hO y⁻¹ hvyi.ge`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `huw : u * w = 1` using `hinj (by rw [map_mul, hu, hw, map_one, mul_inv_cancel₀ hy0])`. Establish `hxu : x = (p : O) ^ k * u` using `hinj (by`. Rewrite using `[map_mul, map_pow, map_natCast, hu, ← hyx, mul_comm])`. Establish `hunit : IsUnit u` using `IsUnit.of_mul_eq_one w huw`. Take `⟨uu, rfl⟩` from `hunit`.
-
-Conclude with `(Associated.symm ⟨uu, hxu.symm⟩)`.
+A detailed English derivation is pending.
 -/
 theorem assoc_of_v {p : ℕ} (hinj : Function.Injective (algebraMap O LL)) (hvp : v (p : LL) = 1)
     (hO : ∀ x : LL, 0 ≤ v x → ∃ a : O, algebraMap O LL a = x) (x : O) (k : ℕ)
@@ -76,7 +74,7 @@ theorem assoc_of_v {p : ℕ} (hinj : Function.Injective (algebraMap O LL)) (hvp 
   exact (Associated.symm ⟨uu, hxu.symm⟩)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, map_mul, AddValuation.map_mul, h a (Finset.mem_insert_self a s), ih (fun b hb => h b (Finset.mem_insert_of_mem hb))]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -92,13 +90,13 @@ theorem v_prod (S : Finset ℤ) (f : ℤ → O) (k : ℤ → ℕ)
     push_cast; rfl
 
 /- English proof (translation)
-Establish `hL` using `Formalism.ZetaNonvanishing.LIFTV.lagrangeIdealSg_proof p O sg S₁ S₂ c hd (fun a ha b hb hab => assoc_of_v v hinj hvp hO _ _ (hc a (Finset.mem_union_left _ ha) b hb hab))`. Use `set Em : ℕ := S₁.sup fun a => (∑ b ∈ S₂, (sg + padicValInt p (a - b))) + ∑ a' ∈ S₁.erase a, (sg + padicValInt p (a - a')) with hEm`. Establish `hle : Em ≤ E`. Use `Finset.sup_le fun a ha => ?_` and prove the remaining obligations. Establish `h1 : (∏ b ∈ S₂, (Polynomial.X - Polynomial.C (c b))).eval (c a) = ∏ b ∈ S₂, (c a - c b)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.eval_prod]`. Simplify using the standard rewrite rules. Establish `h2 : (Polynomial.derivative (∏ b ∈ S₁, (Polynomial.X - Polynomial.C (c b)))).eval (c a) = ∏ b ∈ S₁.erase a, (c a - c b)`. Use `Lagrange.eval_nodal_derivative_eval_node_eq (s := S₁) (v := c) ha` as an intermediate fact. Rewrite `this` using `[Lagrange.nodal, Lagrange.nodal]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Polynomial.eval_prod]`. Simplify using the standard rewrite rules. Establish `h3` using `hE a ha`. Rewrite `h3` using `[h1, h2, v_prod v S₂ (fun b => c a - c b) (fun b => sg + padicValInt p (a - b)) (fun b hb => hc a (Finset.mem_union_left _ ha) b (Finset.mem_union_right _ hb) (fun hab => (Finset.disjoint_left.1 hd ha) (hab ▸ hb))), v_prod v (S₁.erase a) (fun b => c a - c b) (fun b => sg + padicV …`. Conclude with `natCast_le_withTop h3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite using `[pow_add, mul_comm, Polynomial.C_mul]`. Conclude with `Ideal.mul_mem_left _ _ hL`.
+A detailed English derivation is pending.
 -/
 theorem lagrange_of_val (p : ℕ) [Fact p.Prime] [IsDomain O]
     (hinj : Function.Injective (algebraMap O LL)) (hvp : v (p : LL) = 1)
@@ -145,7 +143,7 @@ theorem lagrange_of_val (p : ℕ) [Fact p.Prime] [IsDomain O]
 end Lagrange
 
 /- English proof (translation)
-Introduce `l _ K s LL h S₁ S₂ sg c hd hc E hE`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `: Fact ((D.loc l).PD K).p.Prime` using `⟨((D.loc l).PD K).hp⟩`. Use `lagrange_of_val ((D.loc l).v LL) ((D.loc l).PD K).p Subtype.val_injective (by rw [hp]; exact (D.loc l).v_l LL) (fun x hx => ⟨⟨x, ((D.loc l).v_O LL x).1 hx⟩, rfl⟩) S₁ S₂ sg c hd hc E hE` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_pos_const_Lagrange_condition (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : adm5 D HW F := by
   intro l _ K s LL h S₁ S₂ sg c hd hc E hE
@@ -166,9 +164,9 @@ Both sides reduce to the same expression.
 theorem aR_eq (l H : ℕ) : aR l H = Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR l H := rfl
 
 /- English proof (translation)
-Unfold `lam`. Establish `: 0 ≤ Real.logb (l : ℝ) (2 * (H : ℝ))`. Break down `Nat.eq_zero_or_pos H with rfl | hH` into its components or cases. Simplify using the standard rewrite rules. Use `Real.logb_nonneg (by exact_mod_cast hl) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (1 : ℝ) ≤ H` using `by exact_mod_cast hH`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_lam (l H : ℕ) (hl : 2 ≤ l) : 1 ≤ lam l H := by
   unfold lam
@@ -181,9 +179,9 @@ theorem one_le_lam (l H : ℕ) (hl : 2 ≤ l) : 1 ≤ lam l H := by
   linarith
 
 /- English proof (translation)
-Unfold `aR`. Establish `h1` using `one_le_lam l H hl`. Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h2 : 0 ≤ (H : ℝ) * (2 * (l : ℝ) - 1) / ((l : ℝ) - 1) ^ 2`. Apply `div_nonneg _ (sq_nonneg _)` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `mul_nonneg (Nat.cast_nonneg H) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem aR_nonneg (l H : ℕ) (hl : 2 ≤ l) : 0 ≤ aR l H := by
   unfold aR
@@ -195,7 +193,7 @@ theorem aR_nonneg (l H : ℕ) (hl : 2 ≤ l) : 0 ≤ aR l H := by
   linarith
 
 /- English proof (translation)
-Establish `h1 : ((⌊aR l H⌋₊ : ℕ) : ℝ) ≤ aR l H` using `Nat.floor_le (aR_nonneg l H hl)`. Establish `h2 : ((2 * ⌊aR l H⌋₊ + η + 1 : ℕ) : ℝ) ≤ (bi : ℝ)` using `by push_cast; linarith`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem floor_a_le (l H η bi : ℕ) (hl : 2 ≤ l) (h : 2 * aR l H + (η : ℝ) + 1 ≤ (bi : ℝ)) :
     2 * ⌊aR l H⌋₊ + η + 1 ≤ bi := by
@@ -204,14 +202,14 @@ theorem floor_a_le (l H η bi : ℕ) (hl : 2 ≤ l) (h : 2 * aR l H + (η : ℝ)
   exact_mod_cast h2
 
 /- English proof (translation)
-The claim follows from `Nat.add_le_add_right (Finset.le_sup (f := b) (Finset.mem_univ i)) S`.
+A detailed English derivation is pending.
 -/
 theorem add_le_hpar (n : ℕ) [NeZero n] (b : ZMod n → ℕ) (S : ℕ) (i : ZMod n) :
     b i + S ≤ hpar n b S :=
   Nat.add_le_add_right (Finset.le_sup (f := b) (Finset.mem_univ i)) S
 
 /- English proof (translation)
-Establish `h1` using `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.ramified_coefficient_chain_bounds.2.1 l hl h η S b a s₁ E e₂ hb ha hs₁ hE he₂`. Establish `h2` using `one_le_lam l (h + η) (by omega)`. Establish `h3 : t ≤ t * lam l (h + η)` using `le_mul_of_one_le_right ht h2`. Unfold `eBd`. Rewrite `h1` using `[← lam_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -231,11 +229,11 @@ theorem eBd_parts (l : ℕ) (hl : 11 ≤ l) (h η S b a : ℕ) (s₁ E e₂ t : 
   linarith
 
 /- English proof (translation)
-Establish `h1` using `eBd_parts l hl h η S b a s₁ E e₂ 1 zero_le_one hb ha hs₁ hE he₂`. Evaluate the numerical expressions using `at h1`. Use `set x := s₁ + 2 * Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig l h η + e₂ + (S : ℝ) + E + Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂ l (h + η) with hx`. Use `⟨⌈x⌉₊, Nat.le_ceil x, ?_⟩` and prove the remaining obligations. Break down `le_or_gt 0 x with h0 | h0` into its components or cases.
+Establish an intermediate fact. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.ceil_lt_add_one h0).le.trans h1`. Rewrite using `[Nat.ceil_eq_zero.2 h0.le]`. Establish `h2` using `one_le_lam l (h + η) (by omega)`. Establish `hl' : (11 : ℝ) ≤ l` using `by exact_mod_cast hl`. Unfold `eBd`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : 0 ≤ 32 * (((h + η : ℕ) : ℝ)) / (l : ℝ) ^ 2` using `by positivity`. Establish `t2 : 0 ≤ 10 * (η : ℝ) / ((l : ℝ) - 1)` using `div_nonneg (by positivity) (by linarith)`. Establish `t3 : 0 ≤ 4 * (S : ℝ)` using `by positivity`. Move the coercions through the operations in `at t1 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_e (l : ℕ) (hl : 11 ≤ l) (h η S b a : ℕ) (s₁ E e₂ : ℝ) (hb : b ≤ h)
     (ha : (a : ℝ) ≤ aR l (h + η) + 1)
@@ -267,9 +265,9 @@ section MassData
 variable {O : Type} [CommRing O] [IsDomain O]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨e, he⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ha hϖ`. Establish `h1 : Ideal.span {a} = Ideal.span {ϖ ^ e}` using `Ideal.span_singleton_eq_span_singleton.2 he`. Establish `h2` using `Formalism.WachCohomologyFacts.PLenBound.length_quot_pow_le ϖ e`. Establish `h3 : IsSimpleModule O (O ⧸ Ideal.span {ϖ})`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[isSimpleModule_iff_isCoatom, ← hϖ.maximalIdeal_eq]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).out`. Rewrite `h2` using `[Module.length_eq_one (R := O) (M := O ⧸ Ideal.span {ϖ}), mul_one, ← h1]`. Establish `h4 : Module.length O (O ⧸ Ideal.span {a}) ≠ ⊤` using `ne_top_of_le_ne_top (ENat.natCast_ne_top e) h2`. Conclude with `⟨_, (ENat.natCast_toNat h4).symm⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem len_quot_nat [IsDiscreteValuationRing O] (a : O) (ha : a ≠ 0) :
     ∃ k : ℕ, Module.length O (O ⧸ Ideal.span {a}) = k := by
@@ -288,13 +286,13 @@ variable [IsPrincipalIdealRing O] {M : Type} [AddCommGroup M] [Module O M] [Modu
   [Module.Finite O M]
 
 /- English proof (translation)
-Establish `h1` using `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.ramified_coefficient_chain_bounds.2.2.2.2.2.2.2.2.1 O M P k Fl hF0 hF`. Establish `h2` using `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.ramified_coefficient_chain_bounds.2.2.2.2.2.2.2.2.2.1 O M a e (Fl k) P hlast`. Rewrite `h2` using `[hk]`. Establish `hA : ∑ i ∈ gen, Module.length O (↥(Fl i) ⧸ (Fl (i + 1) ⊔ P).comap (Fl i).subtype) ≤ gen.card • ((m * e' * kO : ℕ) : ℕ∞)`. Use `Finset.sum_le_card_nsmul _ _ _ fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hc, hsF, hle⟩` from `hgs i hi`. Establish `hZ : Submodule.span O (↑s : Set M) ⊔ Fl (i + 1) = Fl i` using `le_antisymm (sup_le (Submodule.span_le.2 hsF) (hF i (Finset.mem_range.1 (hgen hi)))) hle`. Use `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.ColAsm.len_bound a m e' (Fl i) (Fl (i + 1)) (Fl (i + 1) ⊔ P) s hc hZ le_sup_left (fun p _ => Submodule.mem_sup_right (hkill p))` as an intermediate fact. Rewrite `this` using `[hk]`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : ∑ i ∈ Finset.range k \ gen, Module.length O (↥(Fl i) ⧸ (Fl (i + 1) ⊔ P).comap (Fl i).subtype) ≤ (Finset.range k \ gen).card • (L : ℕ∞)`. Use `Finset.sum_le_card_nsmul _ _ _ fun i hi => ?_` and prove the remaining obligations. Take `⟨hi1, hi2⟩` from `Finset.mem_sdiff.1 hi`. Conclude with `hlen i (Finset.mem_range.1 hi1) hi2`. Rewrite `hB` using `[Finset.card_sdiff_of_subset hgen, Finset.card_range]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h1` using `[← Finset.sum_sdiff hgen]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem length_le_of_filtration (a : O) (P : Submodule O M) (k : ℕ) (Fl : ℕ → Submodule O M) (gen : Finset ℕ)
     (m e e' L kO : ℕ) (hk : Module.length O (O ⧸ Ideal.span {a}) = kO)
@@ -368,31 +366,27 @@ def MassData (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat G Qp LL O} 
     ∀ x ∈ Fl k, ((PD.p : O) ^ e) • (g x : G → T₂.V) ∈ F.ImF PD
 
 /- English proof (translation)
-Take `⟨FF, _, _, _, _, g, k, Fl, gen, hg, hr, hg4, hk3, hF0, hF, hgen, hgs, hlen, hlast⟩` from `hB`. Take `⟨kO, hkO⟩` from `len_quot_nat ((PD.p : ℕ) : O) hp0`. Use `set c : ℝ := (r : ℝ) * (S : ℝ) + 2 * (m : ℝ) * cD PD.p H with hc`. Establish `hc0 : 0 ≤ c`. Establish `hl' : (2 : ℝ) ≤ PD.p` using `by exact_mod_cast hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ cD PD.p H`. Unfold `cD`. Establish `: 0 ≤ ((H : ℝ) + 1) / ((PD.p : ℝ) - 1)` using `div_nonneg (by positivity) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `hcol : F.col PD ≤ Module.length O (FF ⧸ preIm PD F g)`. Set `I' : Submodule O ↥(latticeFiniteCocycles PD T₂.L)` to `(F.ImF PD).comap (latticeFiniteCocycles PD T₂.L).subtype`. Set `ψ : FF →ₗ[O] (↥(latticeFiniteCocycles PD T₂.L) ⧸ I')` to `I'.mkQ.comp g`. Establish `hker : preIm PD F g ≤ LinearMap.ker ψ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `(Submodule.Quotient.mk_eq_zero I').2 hx`. Establish `hs : Function.Surjective ((preIm PD F g).liftQ ψ hker)`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ y`. Take `⟨x, hx⟩` from `hg z`. Use `⟨Submodule.Quotient.mk x, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.liftQ_apply]`. Use `((Submodule.Quotient.eq I').2 ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Submodule.mem_sup_right hx`. Conclude with `Module.length_le_of_surjective _ hs`. Establish `hb` using `length_le_of_filtration ((PD.p : ℕ) : O) (preIm PD F g) k Fl gen m e e' ⌊c * kO⌋₊ kO hkO hF0 hF hgen hgs (fun x => by`. Express the relevant statement in the definitionally equal form `((g (((PD.p : ℕ) : O) ^ e' • x) : ↥(latticeFiniteCocycles PD T₂.L)) : G → T₂.V) ∈ F.ImF PD`. Rewrite using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `hLift _ (g x).2)`. Use the proof step `(fun i hi hig => by`. Take `⟨L, kO', h1, h2, h3⟩` from `hlen i hi hig`. Establish `hkk : kO' = kO`. Establish `: (kO' : ℕ∞) = kO` using `by rw [← h2, ← hkO]; rfl`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Substitute `hkk` using the available equality. Use `h1.trans ?_` and prove the remaining obligations. Conclude with `Nat.le_floor h3)` after adjusting the coercions. Use the proof step `(fun x hx => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((g (((PD.p : ℕ) : O) ^ e • x) : ↥(latticeFiniteCocycles PD T₂.L)) : G → T₂.V) ∈ F.ImF PD`. Rewrite using `[map_smul]`. Conclude with `hlast x hx)`. Establish `htot` using `hcol.trans hb`. Establish `hne : F.col PD ≠ ⊤` using `ne_top_of_le_ne_top (ENat.natCast_ne_top _) htot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(F.col PD).toNat, kO, (ENat.natCast_toNat hne).symm, hkO, ?_⟩` and prove the remaining obligations. Establish `hnat : (F.col PD).toNat ≤ Module.finrank O FF * e * kO + gen.card * (m * e' * kO) + (k - gen.card) * ⌊c * kO⌋₊`. Use `htot` as an intermediate fact. Rewrite `this` using `[← ENat.natCast_toNat hne]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreal : (((F.col PD).toNat : ℕ) : ℝ) ≤ (Module.finrank O FF : ℝ) * e * kO + (gen.card : ℝ) * (m * e' * kO) + ((k - gen.card : ℕ) : ℝ) * (⌊c * kO⌋₊ : ℝ)` using `by exact_mod_cast hnat`. Establish `hfl : ((⌊c * kO⌋₊ : ℕ) : ℝ) ≤ c * kO` using `Nat.floor_le (by positivity)`. Establish `h1 : (Module.finrank O FF : ℝ) ≤ ((n : ℝ) + 1) * r` using `by exact_mod_cast hr`. Establish `h2 : (gen.card : ℝ) ≤ 4 * n` using `by exact_mod_cast hg4`. Establish `h3 : ((k - gen.card : ℕ) : ℝ) ≤ 3 / 2 * n`.
-
-Establish `: ((k - gen.card : ℕ) : ℝ) ≤ ((3 * n / 2 : ℕ) : ℝ)` using `by exact_mod_cast hk3`. Establish `h' : ((3 * n / 2 : ℕ) : ℝ) ≤ ((3 * n : ℕ) : ℝ) / 2` using `by exact_mod_cast Nat.cast_div_le`. Move the coercions through the operations in `at h'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `t1 : (Module.finrank O FF : ℝ) * e * kO ≤ ((n : ℝ) + 1) * r * e * kO` using `by gcongr`.
-
-Establish `t2 : (gen.card : ℝ) * (m * e' * kO) ≤ 4 * n * (m * e' * kO)` using `by gcongr`. Establish `t3 : ((k - gen.card : ℕ) : ℝ) * (⌊c * kO⌋₊ : ℝ) ≤ 3 / 2 * n * (c * kO)` using `by gcongr`. Unfold `colBd`. Rewrite using `[← hc]`. Use polynomial arithmetic with `[t1, t2, t3, hreal]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem colLeR_of_lengthCount [IsDomain O] [IsDiscreteValuationRing O] (hp0 : ((PD.p : ℕ) : O) ≠ 0)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (n r m S H e e' : ℕ) (hl : 2 ≤ PD.p)
@@ -477,11 +471,11 @@ def OpenC [NeZero n] (W : LocWach PD LL O v n) (R : ℕ → Prop) (C : ℝ) : Pr
         (m = 0 → F.LiftF PD (e + 3 * S))
 
 /- English proof (translation)
-Introduce `d T₁ T₂ F b S η m hS hR`. Take `⟨e, he, hB, h0⟩` from `h d T₁ T₂ F b S η m hS hR`. Establish `hJ` using `jumpsLet_win W hS`. Take `⟨hCA, h11, -, ⟨hdom, hdvr, -⟩, -, hSur, -⟩` from `hS`. Establish `hp0 : ((PD.p : ℕ) : O) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0'`. Establish `h1 : ((PD.p : ℕ) : LL) = 0`. Use `congrArg (algebraMap O LL) h0'` as an intermediate fact. Simplify using `using this`. Establish `h2` using `W.v_l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_one h2`. Conclude with `⟨e, he, colLeR_of_lengthCount hp0 F n _ m S _ e _ (by omega) (hA hCA T₁ T₂ F (MiW d b S η) (hiW d b S η) hSur hJ) hB, h0⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem thmCKR_of_open [NeZero n] (W : LocWach PD LL O v n) (R : ℕ → Prop) (C : ℝ)
     (hA : Formalism.MainNotions.LiftingTheory.coreLiftA W) (h : OpenC W R C) : ThmCKR W R 32 4 10 4 (3 / 2) C := by
@@ -506,7 +500,7 @@ def openKR (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (R : ℕ → P
     [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))], OpenC ((HW l).W K 1 LL hg) R C
 
 /- English proof (translation)
-Introduce `l _ K LL hg _`. Conclude with `thmCKR_of_open _ R C (h10.1 l K 1 LL hg) (h l K LL hg)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Theorem_C_range_of_open (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (R : ℕ → Prop) (C CA CB CK : ℝ) (h10 : adm10 D HW F CA CB CK)
     (h : openKR D HW F R C) : TheoremCConstantsRange D HW F R 32 4 10 4 (3 / 2) C := by
@@ -514,7 +508,7 @@ theorem Theorem_C_range_of_open (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.lo
   exact thmCKR_of_open _ R C (h10.1 l K 1 LL hg) (h l K LL hg)
 
 /- English proof (translation)
-The claim follows from `Theorem_C_range_of_open D HW F _ C CA CB CK h10 h`.
+A detailed English derivation is pending.
 -/
 theorem Theorem_C_of_open (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C CA CB CK : ℝ) (h10 : adm10 D HW F CA CB CK)
     (h : openKR D HW F (fun _ => True) C) : aux₃ D HW F C :=

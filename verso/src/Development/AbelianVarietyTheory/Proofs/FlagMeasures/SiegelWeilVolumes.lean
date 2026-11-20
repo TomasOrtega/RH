@@ -9,7 +9,7 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory.St
 
 /- English proof (translation)
-Introduce `hSW F E _ _ _ _ _ σ hσ n J hJ`. Conclude with `hSW F E σ hσ n J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem siegelWeil_volumes : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → Formalism.MainNotions.UnusedSlot34.SWa1 F E σ n J ∧ Formalism.L2.SG.Pf.NcWeil.StabilizerFirstChernCompatibility F E σ n J := by
   intro hSW F E _ _ _ _ _ σ hσ n J hJ

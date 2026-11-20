@@ -20,13 +20,13 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `H R _ A B _ _ g hA hB hgA hgB P hP φ hφ`. Take `⟨Fr, -, BC⟩` from `GlobalTheory.T.abelianSchemeDeRham_free_hodgeSequence_baseChange H`. Take `⟨fA, pA, -⟩` from `Published.AbelianDeRham.Free.prim Fr hA hgA`. Take `⟨fB, pB, -⟩` from `Published.AbelianDeRham.Free.prim Fr hB hgB`. Use `GlobalTheory.T.isPerfectPair_of_geometric_fibres R (primDR A) (primDR B) φ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Ω _ _ _`. Establish `iA` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_pullback A (spMap (algebraMap R Ω))`. Establish `iB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_pullback B (spMap (algebraMap R Ω))`. Take `⟨h, h₁, h₂⟩` from `AbDual.exists_prod_pullback iA iB`. Establish `hP'` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB hP.isLB h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `perf'` using `AbDual.IsPerfect.baseChange iA iB h₁ h₂ hP' (Cris.ChernExists.lbIso_refl hP') hP`. Take `⟨φ', hφ', hcorr⟩` from `hφ.pull hP.isLB (Published.AbelianDeRham.bcMor iA) (Published.AbelianDeRham.bcMor iB) h₁ h₂ hP' (Cris.ChernExists.lbIso_refl hP')`. Establish `hA'` using `isAbelianScheme_pullback_obj (spMap (algebraMap R Ω)) A hA`. Establish `hB'` using `isAbelianScheme_pullback_obj (spMap (algebraMap R Ω)) B hB`. Establish `hgA' : SmoothOfRelativeDimension g ((Over.pullback (spMap (algebraMap R Ω))).obj A).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) hgA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgB' : SmoothOfRelativeDimension g ((Over.pullback (spMap (algebraMap R Ω))).obj B).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) hgB`. Conclude with `⟨primDR _, primDR _, inferInstance, inferInstance, inferInstance, inferInstance, (Published.AbelianDeRham.bcMor iA).pull, (Published.AbelianDeRham.bcMor iB).pull, φ', (BC R A g hA hgA Ω _ _ iA).1, (BC R B g hB hgB Ω _ _ iB).1, GlobalTheory.T.de_rham_polarization_perfect_pairing H …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.AbDual.isPerfPair_of_abelianHodgeDeRham : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ P : LB (A ⊗ B).left, AbDual.IsPerfect A B P → ∀ φ : HdR A →ₗ[R] HdR B →ₗ[R] R, AbDual.IsCorrForm (dp0 R) (𝟙 _) A B P φ → φ.IsPerfPair := by
   intro H R _ A B _ _ g hA hB hgA hgB P hP φ hφ

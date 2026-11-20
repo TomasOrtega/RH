@@ -10,9 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Deg
 
 /- English proof (translation)
-Use `⟨fun h c => ?_, fun h => ?_⟩` and prove the remaining obligations. Introduce `Cg cb Cu cT CT h1 h2`. Take `⟨a, b, H⟩` from `h Cg cb Cu cT CT c h1 h2`. Use `⟨max a b, fun C0 hC0 C' Cl hC' hCl D large₂ X Y hF hI u _ t r s d e => ?_⟩` and prove the remaining obligations. Rewrite `hC0` using `[Set.mem_singleton_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hC0` using the available equality. Conclude with `H C' Cl (le_trans (le_max_left _ _) hC') (le_trans (le_max_right _ _) hCl) D large₂ X Y hF hI u t r s d e`. Introduce `Cg cb Cu cT CT h1 h2`. Take `⟨a, b, H⟩` from `h Cg cb Cu cT CT h1 h2`. Conclude with `⟨max a b, fun C' Cl hC' hCl D large₂ X Y hF hI u _ t r s n d e => H C' Cl (le_trans (le_max_left _ _) hC') (le_trans (le_max_right _ _) hCl) D large₂ X Y hF hI u t r s n d e⟩`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vanishingGramBound_uniformWindow_and_weightData : (VanishingGramTermsBoundWindow → ∀ c : ℝ, On {c} VanishingGramTermsBound) ∧ (VanishingGramTermsBoundParams → Led1 VanishingGramTermsBound) := by
   refine ⟨fun h c => ?_, fun h => ?_⟩

@@ -4,29 +4,27 @@ open NumberField IsDedekindDomain ValuativeRel PositivityTheory.Rg.Tf.Loc Ground
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ v w hw`. Establish `hfix : ∀ τ : E ≃ₐ[F] E, w.1 = τ • w.1` using `fun τ => (congrArg Subtype.val (hw (τ • w))).symm`. Establish `hrk : Module.finrank (v.adicCompletion F) (w.1.adicCompletion E) = Module.finrank F E`. Rewrite using `[← sum_finrank_eq E v, Finset.sum_eq_single w (fun b _ hb => absurd (hw b) hb) (by simp)]`. Establish `hfin : FiniteDimensional (v.adicCompletion F) (w.1.adicCompletion E)` using `Module.finite_of_finrank_pos (hrk ▸ Module.finrank_pos)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he0 : w.1.asIdeal.ramificationIdx (𝓞 F) ≠ 0` using `(Ideal.ramificationIdx_pos w.1.asIdeal (𝓞 F)).ne'`. Establish `hle : ∀ x y : w.1.adicCompletion E, valuation _ x ≤ valuation _ y ↔ Valued.v x ≤ Valued.v y` using `fun x y => ValuativeRel.isEquiv (valuation (w.1.adicCompletion E)) Valued.v x y`. Establish `hlt : ∀ x : w.1.adicCompletion E, valuation _ x < 1 ↔ Valued.v x < 1` using `fun x => (ValuativeRel.isEquiv (valuation (w.1.adicCompletion E)) Valued.v).lt_one_iff_lt_one`. Establish `hval : ValuativeExtension (v.adicCompletion F) (w.1.adicCompletion E)` using `⟨fun a b => by`. Express the relevant statement in the definitionally equal form `Valued.v (completionMap v w.1 a) ≤ Valued.v (completionMap v w.1 b) ↔ Valued.v a ≤ Valued.v b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[valued_completionMap, valued_completionMap]`. Conclude with `pow_le_pow_iff_left₀ zero_le zero_le he0⟩`. Set `Φ : (E ≃ₐ[F] E) →* (w.1.adicCompletion E ≃ₐ[v.adicCompletion F] w.1.adicCompletion E)` to `MonoidHom.mk' (fun τ => galEquiv v τ w.1 w.1 (hfix τ)) fun a b => AlgEquiv.ext fun y => by`. Use `congrFun ((HeightOneSpectrum.denseRange_algebraMap E w.1).equalizer (continuous_galEquiv v (a * b) w.1 w.1 (hfix _)) ((continuous_galEquiv v a w.1 w.1 (hfix _)).comp (continuous_galEquiv v b w.1 w.1 (hfix _))) ?_) y` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, galEquiv_algebraMap, AlgEquiv.mul_apply]`. Establish `hinj : Function.Injective Φ` using `fun a b h => AlgEquiv.ext fun x => by`. Establish `h1` using `DFunLike.congr_fun h (algebraMap E (w.1.adicCompletion E) x)`. Express the relevant statement in the definitionally equal form `galEquiv v a w.1 w.1 (hfix _) _ = galEquiv v b w.1 w.1 (hfix _) _ at h1`. Rewrite `h1` using `[galEquiv_algebraMap, galEquiv_algebraMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(algebraMap E (w.1.adicCompletion E)).injective h1`. Establish `hc : Nat.card (w.1.adicCompletion E ≃ₐ[v.adicCompletion F] w.1.adicCompletion E) = Nat.card (E ≃ₐ[F] E)`. Use `le_antisymm ?_ (Nat.card_le_card_of_injective Φ hinj)` and prove the remaining obligations. Rewrite using `[IsGalois.card_aut_eq_finrank F E, ← hrk, Nat.card_eq_fintype_card]`. Conclude with `AlgEquiv.card_le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgal : IsGalois (v.adicCompletion F) (w.1.adicCompletion E)` using `IsGalois.of_card_aut_eq_finrank _ _ (by rw [hc, IsGalois.card_aut_eq_finrank F E, hrk])`. Establish `hsurj : Function.Surjective Φ` using `((Nat.bijective_iff_injective_and_card Φ).2 ⟨hinj, hc.symm⟩).2`. Use `⟨inferInstance, hval, hfin, hgal, Φ σ, fun τ => ?_, hrk, fun x => rfl, fun y => ?_, fun hu => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hsurj τ`. Take `⟨j, rfl⟩` from `hσ a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨j, (map_zpow Φ σ j).symm⟩`. Take `⟨t, rfl⟩` from `(tensorEquiv' E v).surjective y`. Establish `h1 : galFin σ v (tensorEquiv' E v t) = tensorEquiv' E v (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F (v.adicCompletion F)) t)`. Simplify using `[galFin, galOf]`. Rewrite using `[h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `clear h1`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb]`. Consider the case `tmul x a`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, tensorEquiv'_tmul, tensorEquiv'_tmul, Pi.mul_apply, Pi.mul_apply, map_mul]`. Use `congr 1`. Conclude with `(galEquiv_algebraMap v σ w.1 w.1 (hfix σ) x).symm`. Conclude with `((Φ σ).commutes a).symm`. Use `w.1.isPrime` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `he : w.1.asIdeal.ramificationIdx (𝓞 F) = 1` using `Ideal.ramificationIdx_eq_one_iff.2 hu`. Take `⟨π, hπ⟩` from `valued_adicCompletion_surjective (K := F) v (WithZero.exp (-1 : ℤ))`. Establish `h1 : Valued.v (algebraMap (v.adicCompletion F) (w.1.adicCompletion E) π) = WithZero.exp (-1 : ℤ)`. Rewrite using `[algebraMap_completion_eq, valued_completionMap, he, pow_one, hπ]`. Use `⟨π, (hlt _).2 (by rw [h1, ← WithZero.exp_zero, WithZero.exp_lt_exp]; omega), fun x hx => (hle _ _).2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1]`. Establish `h2` using `(hlt x).1 hx`. Distinguish the cases in `h0 : Valued.v x = 0`. Rewrite using `[h0]`. Conclude with `zero_le`.
-
-Rewrite `h2`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h2` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.placeData :
     UpperTheory.V.Z.Tf.Orb.PlaceData := by

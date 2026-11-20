@@ -9,9 +9,9 @@ open Matrix
 namespace PSymplMinBound
 
 /- English proof (translation)
-Establish `hnn : 0 ≤ ∏ i, Real.sqrt (lam i)` using `Finset.prod_nonneg fun i _ => Real.sqrt_nonneg _`. Establish `hsq : (∏ i, Real.sqrt (lam i)) ^ 2 = 1`. Rewrite using `[← Finset.prod_pow]`. Repeatedly rewrite using `[Real.sq_sqrt (hlam _).le]`. Conclude with `hprod`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hsq, hnn]`.
+A detailed English derivation is pending.
 -/
 theorem prod_sqrt_eq_one {ι : Type} [Fintype ι] (lam : ι → ℝ) (hlam : ∀ i, 0 < lam i)
     (hprod : ∏ i, lam i = 1) : ∏ i, Real.sqrt (lam i) = 1 := by
@@ -23,13 +23,13 @@ theorem prod_sqrt_eq_one {ι : Type} [Fintype ι] (lam : ι → ℝ) (hlam : ∀
   nlinarith [hsq, hnn]
 
 /- English proof (translation)
-Establish `hc0 : 0 < c` using `by linarith`. Establish `ha : ∀ i, 0 < c / Real.sqrt (lam i)` using `fun i => div_pos hc0 (Real.sqrt_pos.2 (hlam i))`. Establish `hpa : 1 < ∏ i, c / Real.sqrt (lam i)`. Rewrite using `[Finset.prod_div_distrib, prod_sqrt_eq_one lam hlam hprod, div_one, Finset.prod_const, Finset.card_univ]`. Conclude with `one_lt_pow₀ hc Fintype.card_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, hbox⟩` from `h2 ι O (fun i => c / Real.sqrt (lam i)) hO ha hpa`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Establish `hlt : ∀ i ∈ (Finset.univ : Finset ι), lam i * (O *ᵥ intVec v) i ^ 2 < c ^ 2`. Introduce `i _`. Establish `hs` using `Real.sqrt_pos.2 (hlam i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : |(O *ᵥ intVec v) i| * Real.sqrt (lam i) < c` using `(lt_div_iff₀ hs).1 (hbox i)`. Establish `h2' : (|(O *ᵥ intVec v) i| * Real.sqrt (lam i)) ^ 2 < c ^ 2` using `pow_lt_pow_left₀ h1 (mul_nonneg (abs_nonneg _) hs.le) two_ne_zero`. Rewrite `h2'` using `[mul_pow, sq_abs, Real.sq_sqrt (hlam i).le]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_lt (h2 : SymplMinkowskiBox.Statement) {ι : Type} [Fintype ι] [DecidableEq ι]
     [Nonempty ι] (O : Matrix ι ι ℝ) (lam : ι → ℝ) (hlam : ∀ i, 0 < lam i) (hO : |O.det| = 1)
@@ -60,17 +60,17 @@ theorem exists_lt (h2 : SymplMinkowskiBox.Statement) {ι : Type} [Fintype ι] [D
 end PSymplMinBound
 
 /- English proof (translation)
-Introduce `ι _ _ G hG hdet m hm`. Take `⟨w, hw, -⟩` from `hm.1`. Establish `hne : Nonempty ι`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hw (funext fun i => (IsEmpty.false i).elim)`. Take `⟨O, lam, hlam, hO, hprod, hq⟩` from `h1 ι G hG`. Rewrite `hprod` using `[hdet]`. Establish `hN : (0 : ℝ) < Fintype.card ι` using `by exact_mod_cast Fintype.card_pos`. Establish `key : ∀ c : ℝ, 1 < c → m < (Fintype.card ι : ℝ) * c ^ 2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Take `⟨v, hv, hlt⟩` from `PSymplMinBound.exists_lt h2 O lam hlam hO hprod c hc`. Establish `hmv : m ≤ qf G (intVec v)` using `hm.2 ⟨v, hv, rfl⟩`. Rewrite `hmv` using `[hq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_le]`. Use `set N : ℝ := (Fintype.card ι : ℝ) with hNdef`. Use `set t : ℝ := (m / N + 1) / 2 with htdef`. Establish `hmN : 1 < m / N` using `by rw [lt_div_iff₀ hN]; linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : 1 < t` using `by rw [htdef]; linarith`. Establish `hsqrt : 1 < Real.sqrt t`. Rewrite using `[Real.lt_sqrt zero_le_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk` using `key (Real.sqrt t) hsqrt`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hk` using `[Real.sq_sqrt (by linarith)]`. Establish `: N * t = (m + N) / 2`. Rewrite using `[htdef]`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem SymplMinBound.proof (h1 : SymplQuadDiag.Statement) (h2 : SymplMinkowskiBox.Statement) :
     SymplMinBound.Statement := by

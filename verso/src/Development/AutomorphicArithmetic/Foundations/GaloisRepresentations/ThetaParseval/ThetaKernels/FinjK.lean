@@ -17,29 +17,27 @@ end PositivityTheory.ThKW.LagrangianProjectionFormula
 end
 open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.ModulusDerivativeNormalisation PositivityTheory.ThKW.PhaseFourierInjectivity PositivityTheory.ThKW.LagrangianProjectionFormula in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 N₁ N₂ c₁ c₂ i₁ i₂ hN`. Establish `hψ : IsStd B.ψ` using `hB.std`. Establish `hψn : ∀ a, ‖B.ψ a‖ = 1` using `GlobalTheory.StdCharWeilDatum.norm_psi hB.std`. Establish `hcc : ∀ z : AF F ⊗[F] E, cAF σ (cAF σ z) = z`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [cAF, sigR, GlobalTheory.DblSiegelChar.invol hB.cm]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `he : Continuous (vecE F E nS nT)` using `by show Continuous fun (w : WOF F E nS nT) (k : Fin (nT * nS)) => w (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm k).2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `continuous_pi fun k => continuous_id.matrix_elem _ _`. Establish `he' : Continuous (vecE F E nS nT).symm` using `by show Continuous fun (u : Fin (nT * nS) → AF F ⊗[F] E) => ((fun i j => u (finProdFinEquiv (i, j))) : WOF F E nS nT) first`. Consider the case `exact continuous_pi fun i => continuous_pi fun j => continuous_apply _`. Consider the case `fun_prop`. Use `haveI : IsTopologicalAddGroup (AF F ⊗[F] E) := IsModuleTopology.topologicalAddGroup (AF F) (AF F ⊗[F] E)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Set `E' : WOF F E nS nT ≃ₜ+ (Fin (nT * nS) → AF F ⊗[F] E)` to `{ toAddEquiv := vecE F E nS nT, continuous_toFun := he, continuous_invFun := he' }`. Use `letI : MeasurableSpace (Fin (nT * nS) → AF F ⊗[F] E) := borel _`. Use `haveI : BorelSpace (Fin (nT * nS) → AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`. Set `em : WOF F E nS nT ≃ᵐ (Fin (nT * nS) → AF F ⊗[F] E)` to `E'.toHomeomorph.toMeasurableEquiv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hν`. Establish `hμ : (ν.map em).IsAddHaarMeasure` using `ContinuousAddEquiv.isAddHaarMeasure_map ν E'`. Establish `hpc : ∀ a : WOF F E nS nT, Continuous (pr σ JS ξ₀ a)` using `fun a => IsModuleTopology.continuous_of_linearMap _`. Establish `hph : ∀ a, Continuous (phase σ JS JT ξ₀ B.ψ a)`. Introduce `a`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : phase σ JS JT ξ₀ B.ψ a = fun v => B.ψ (pr σ JS ξ₀ a (vecE F E nS nT v))`. Use function extensionality and compare the values at `fun v => phase_eq σ JS JT hT.2 ξ₀ B.ψ a v`. Rewrite using `[e]`. Conclude with `hψ.1.comp ((hpc a).comp he)`. Establish `hint : ∀ a (N : WOF F E nS nT → ℂ), Integrable N ν → Integrable (fun v => phase σ JS JT ξ₀ B.ψ a v * N v) ν`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a N hNi`. Use `hNi.bdd_mul (c := 1) (hph a).aestronglyMeasurable (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Rewrite using `[phase_eq σ JS JT hT.2, hψn]`. Use `set N : (Fin (nT * nS) → AF F ⊗[F] E) → ℂ := fun u => N₁ ((vecE F E nS nT).symm u) - N₂ ((vecE F E nS nT).symm u) with hNdef`. Establish `hNc : Continuous N` using `(c₁.comp he').sub (c₂.comp he')`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hNi : Integrable N (ν.map em)`. Rewrite using `[integrable_map_equiv em N]`. Establish `: N ∘ em = fun v => N₁ v - N₂ v`. Use function extensionality and compare the values at `v`. Simplify using `only [hNdef, Function.comp_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show (vecE F E nS nT).symm (em v) = v from (vecE F E nS nT).symm_apply_apply v]`. Rewrite using `[this]`. Conclude with `i₁.sub i₂`. Establish `key : ∀ a, ∫ u, B.ψ (pr σ JS ξ₀ a u) * N u ∂(ν.map em) = 0`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[integral_map_equiv em]`. Establish `hx : ∀ v, B.ψ (pr σ JS ξ₀ a (em v)) * N (em v) = phase σ JS JT ξ₀ B.ψ a v * N₁ v - phase σ JS JT ξ₀ B.ψ a v * N₂ v`. Introduce `v`. Establish `h1 : (vecE F E nS nT).symm (em v) = v` using `(vecE F E nS nT).symm_apply_apply v`. Establish `h2 : em v = vecE F E nS nT v` using `rfl`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [hNdef, h2, AddEquiv.symm_apply_apply]`. Rewrite using `[phase_eq σ JS JT hT.2]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hx]`. Rewrite using `[integral_sub (hint a N₁ i₁) (hint a N₂ i₂), hN a, sub_self]`.
-
-Establish `h0` using `GlobalTheory.T.eq_zero_of_adelicFourier_separatingChars_vanish F E B.ψ hψ (nT * nS) (WOF F E nS nT) (pr σ JS ξ₀) (pr_add σ JS ξ₀) (fun u hu => pr_sep σ hcc hψ JS hS.2 ξ₀ hξ₀ u hu) (ν.map em) hμ N hNc hNi key`. Use function extensionality and compare the values at `v`. Use `congrFun h0 (vecE F E nS nT v)` as an intermediate fact. Simplify using `only [hNdef, AddEquiv.symm_apply_apply, Pi.zero_apply] at this`. Conclude with `sub_eq_zero.1 this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.ThKW.PhaseFourierInjectivity.finj_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

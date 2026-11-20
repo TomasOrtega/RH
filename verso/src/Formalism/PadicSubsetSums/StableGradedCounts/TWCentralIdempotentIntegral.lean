@@ -5,15 +5,15 @@ open Polynomial
 namespace Formalism.IrreducibleCountingLemmas.TW
 
 /- English proof (translation)
-Set `L` to `AlgebraicClosure K`. Set `φ : Matrix n n K →ₐ[ℤ] Matrix n n L` to `((algebraMap K L).mapMatrix).toIntAlgHom`. Establish `hM' : IsIntegral ℤ (φ M)` using `hM.map φ`. Establish `htr : algebraMap K L M.trace = (φ M).trace`. Simplify using `only [Matrix.trace, Matrix.diag, map_sum]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[← isIntegral_algebraMap_iff (A := K) (B := L) (algebraMap K L).injective, htr, Matrix.trace_eq_sum_roots_charpoly]`. Use `IsIntegral.multiset_sum fun μ hμ => ?_` and prove the remaining obligations. Establish `hroot : IsRoot (φ M).charpoly μ` using `(mem_roots'.1 hμ).2`. Establish `hspec : μ ∈ spectrum L (φ M)` using `Matrix.mem_spectrum_iff_isRoot_charpoly.2 hroot`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, hp, hp0⟩` from `hM'`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Establish `h1` using `spectrum.subset_polynomial_aeval (φ M) (p.map (algebraMap ℤ L)) ⟨μ, hspec, rfl⟩`. Establish `h2 : aeval (φ M) (p.map (algebraMap ℤ L)) = 0`. Rewrite using `[aeval_map_algebraMap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `hp0` using `[aeval_def]`. Establish `: Nontrivial (Matrix n n L)`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Rewrite `hspec` using `[spectrum.of_subsingleton]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hspec`. Rewrite `h1` using `[h2, spectrum.zero_eq, Set.mem_singleton_iff]`. Simplify `h1` using `[eval_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isIntegral_trace_of_isIntegral {K n : Type} [Field K] [Fintype n] [DecidableEq n]
     (M : Matrix n n K) (hM : IsIntegral ℤ M) : IsIntegral ℤ M.trace := by
@@ -42,17 +42,15 @@ theorem isIntegral_trace_of_isIntegral {K n : Type} [Field K] [Fintype n] [Decid
   simpa [eval_map] using h1
 
 /- English proof (translation)
-Introduce `K _ _ G _ _ e he hc g`. Use `set x : MonoidAlgebra K G := e * MonoidAlgebra.single g⁻¹ 1 with hx`. Establish `hpow : ∀ k : ℕ, x ^ (k + 1) = e * MonoidAlgebra.single (g⁻¹ ^ (k + 1)) 1`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp [hx]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, hx, mul_assoc, ← mul_assoc (MonoidAlgebra.single _ _) e, ← hc, mul_assoc, ← mul_assoc e e, he, MonoidAlgebra.single_mul_single, ← pow_succ, one_mul]`. Establish `hcard : 0 < Fintype.card G` using `Fintype.card_pos`. Establish `hxe : x ^ Fintype.card G = e`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero hcard.ne'`. Rewrite using `[hk, Nat.succ_eq_add_one, hpow, ← Nat.succ_eq_add_one, ← hk, pow_card_eq_one, ← MonoidAlgebra.one_def, mul_one]`. Establish `hei : IsIntegral ℤ e`. Use `⟨X ^ 2 - X, monic_X_pow_sub (by simp), ?_⟩` and prove the remaining obligations. Simplify using `[pow_two, he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hxi : IsIntegral ℤ x` using `IsIntegral.of_pow hcard (hxe ▸ hei)`. Establish `hMi : IsIntegral ℤ (Algebra.leftMulMatrix (MonoidAlgebra.basis G K) x)` using `hxi.map (A := K) (Algebra.leftMulMatrix (MonoidAlgebra.basis G K))`. Establish `htr : (Algebra.leftMulMatrix (MonoidAlgebra.basis G K) x).trace = (Fintype.card G : K) * e.coeff g`. Establish `: ∀ i : G, Algebra.leftMulMatrix (MonoidAlgebra.basis G K) x i i = e.coeff g`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, MonoidAlgebra.basis_apply]`. Express the relevant statement in the definitionally equal form `(x * MonoidAlgebra.single i 1).coeff i = _`. Simplify using `[hx]`. Simplify using `[Matrix.trace, this]`. Rewrite using `[← htr]`.
-
-Conclude with `isIntegral_trace_of_isIntegral _ hMi`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem central_idempotent_integral_twist : CentralIdempotentIntegral := by
   intro K _ _ G _ _ e he hc g

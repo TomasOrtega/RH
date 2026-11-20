@@ -6,11 +6,11 @@ open scoped InnerProductSpace
 namespace GlobalTheory.HolDS
 
 /- English proof (translation)
-Establish `hpow : ∀ (n : ℕ) (v : V), φ ((T ^ n) v) = c ^ n * φ v`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro v`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `v`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, h]`. Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `f using Polynomial.induction_on' with`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Proceed by induction.
 
-Consider the case `add p q hp hq => simp [hp, hq, add_mul]`. Consider the case `monomial n a`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.eval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul, hpow, smul_eq_mul, mul_assoc]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_aeval_of_left_eigen {V : Type} [AddCommGroup V] [Module ℂ V] (T : Module.End ℂ V)
     (φ : V →ₗ[ℂ] ℂ) (c : ℂ) (h : ∀ v, φ (T v) = c * φ v) (f : Polynomial ℂ) (v : V) :
@@ -29,33 +29,29 @@ theorem form_aeval_of_left_eigen {V : Type} [AddCommGroup V] [Module ℂ V] (T :
       Module.algebraMap_end_apply, map_smul, hpow, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `H _ _ _ U hU E lam hinj hfin heig hdense W hW hst`. Establish `hinner : ∀ a b : H, ⟪U a, U b⟫_ℂ = ⟪a, b⟫_ℂ` using `fun a b => (⟨(U : H →ₗ[ℂ] H), hU⟩ : H →ₗᵢ[ℂ] H).inner_map_map a b`. Establish `hleft : ∀ m, ∀ e ∈ E m, ∀ y, ⟪e, U y⟫_ℂ = lam m * ⟪e, y⟫_ℂ`. Introduce `m e he y`. Distinguish the cases in `h0 : e = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h0]`. Establish `h1 : ‖lam m‖ = 1`. Use `hU e` as an intermediate fact. Rewrite `this` using `[heig m e he, norm_smul]`. Establish `hne : ‖e‖ ≠ 0` using `norm_ne_zero_iff.mpr h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ hne (by rw [this, one_mul])`. Establish `h2 : lam m * (starRingEnd ℂ) (lam m) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, h1]`. Simplify using the standard rewrite rules. Establish `h3` using `hinner e y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[heig m e he, inner_smul_left]`. Rewrite using `[← h3, ← mul_assoc, h2, one_mul]`. Set `T : Module.End ℂ W` to `(U : H →ₗ[ℂ] H).restrict hst`. Set `f : Polynomial ℂ` to `LinearMap.charpoly T`. Establish `hf0 : f ≠ 0` using `(LinearMap.charpoly_monic T).ne_zero`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfT : Polynomial.aeval T f = 0` using `LinearMap.aeval_self_charpoly T`. Establish `hsfin : (lam ⁻¹' {z | f.IsRoot z}).Finite` using `(Polynomial.finite_setOf_isRoot hf0).preimage hinj.injOn`. Set `s : Finset ℕ` to `hsfin.toFinset`. Establish `hout : ∀ m, m ∉ s → ∀ e ∈ E m, ∀ y ∈ W, ⟪e, y⟫_ℂ = 0`. Introduce `m hm e he y hy`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : f.eval (lam m) ≠ 0`. Introduce `h`. Conclude with `hm (hsfin.mem_toFinset.mpr h)`. Use `form_aeval_of_left_eigen T (((innerₛₗ ℂ e : H →ₗ[ℂ] ℂ)).comp W.subtype) (lam m) (fun v => hleft m e he v) f ⟨y, hy⟩` as an intermediate fact. Rewrite `this` using `[hfT]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [LinearMap.zero_apply, map_zero] at this`. Conclude with `(mul_eq_zero.mp this.symm).resolve_left hne`. Set `F : Submodule ℂ H` to `⨆ m ∈ s, E m`. Use `haveI hF : FiniteDimensional ℂ F := by`. Establish `: F = s.sup E` using `by simp [F, Finset.sup_eq_iSup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Use `infer_instance`. Establish `hFle : F ≤ ⨆ m, E m` using `iSup₂_le fun m _ => le_iSup E m`. Establish `hForth : ∀ m, m ∉ s → F ≤ (E m)ᗮ`. Introduce `m hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `iSup₂_le fun k hk x hx => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `e he`. Establish `h1` using `hleft m e he x`. Rewrite `h1` using `[heig k x hx, inner_smul_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : lam k - lam m ≠ 0`. Introduce `h`. Use `hinj (sub_eq_zero.mp h)` as an intermediate fact. Conclude with `hm (this ▸ hk)`. Establish `: (lam k - lam m) * ⟪e, x⟫_ℂ = 0` using `by rw [sub_mul, h1, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp this).resolve_left hne`. Introduce `y hy`. Establish `hz : y - F.starProjection y ∈ (⨆ m, E m)ᗮ`. Rewrite using `[← Submodule.iInf_orthogonal, Submodule.mem_iInf]`. Introduce `m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hm : m ∈ s`. Establish `hle : E m ≤ F` using `le_iSup₂_of_le (f := fun m (_ : m ∈ s) => E m) m hm le_rfl`. Conclude with `Submodule.orthogonal_le hle (Submodule.sub_starProjection_mem_orthogonal y)`. Use `Submodule.sub_mem _ ?_ (hForth m hm (F.starProjection_apply_mem y))` and prove the remaining obligations. Rewrite using `[Submodule.mem_orthogonal]`.
-
-Introduce `e he`. Conclude with `hout m hm e he y hy`. Establish `hz0 : y - F.starProjection y = 0`. Establish `htop : (⨆ m, E m : Submodule ℂ H).topologicalClosure = ⊤` using `Submodule.dense_iff_topologicalClosure_eq_top.mp hdense`. Rewrite `htop` using `[Submodule.topologicalClosure_eq_top_iff]`.
-
-Rewrite `hz` using `[htop]`. Conclude with `(Submodule.mem_bot ℂ).mp hz`. Rewrite using `[sub_eq_zero.mp hz0]`. Conclude with `hFle (F.starProjection_apply_mem y)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_stable_le_iSup_eigen :
     ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (U : H →L[ℂ] H), (∀ v, ‖U v‖ = ‖v‖) → ∀ (E : ℕ → Submodule ℂ H) (lam : ℕ → ℂ), Function.Injective lam → (∀ m, FiniteDimensional ℂ (E m)) → (∀ m, ∀ e ∈ E m, U e = lam m • e) → Dense ((⨆ m, E m : Submodule ℂ H) : Set H) → ∀ (W : Submodule ℂ H), FiniteDimensional ℂ W → (∀ w ∈ W, U w ∈ W) → W ≤ ⨆ m, E m := by

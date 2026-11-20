@@ -8,15 +8,13 @@ open scoped NNReal ENNReal
 open MeasureTheory Topology
 
 /- English proof (translation)
-Use `by_contra! h`. Set `T : A → Set A` to `fun x => (fun a => -x + a) ⁻¹' V`. Establish `bd : ∀ s : Finset A, (s : Set A) ⊆ X → (s : Set A).PairwiseDisjoint T → s.card * ν V ≤ ν Z` using `fun s h1 h2 => by`. Use `measure_biUnion_finset (μ := ν) h2 fun b _ => measurable_const_add _ hV` as an intermediate fact. Simplify using `only [T, measure_preimage_add, Finset.sum_const, nsmul_eq_mul] at this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `measure_mono (Set.iUnion₂_subset fun x hx a ha => by simpa using hXZ x (h1 hx) _ ha)`. Take `⟨v₀, hv₀⟩` from `nonempty_of_measure_ne_zero h0`. Establish `key : ∀ k : ℕ, ∃ s : Finset A, s.card = k ∧ (s : Set A) ⊆ X ∧ (s : Set A).PairwiseDisjoint T` using `fun k => by`. Proceed by induction on `k with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨∅, rfl, by simp, by simp⟩`. Consider the case `succ k ih`. Take `⟨s, rfl, h1, h2⟩` from `ih`. Take `⟨x, hx, hx'⟩` from `h s (bd s h1 h2)`. Use `⟨insert x s, Finset.card_insert_of_notMem fun hs => hx' x hs v₀ hv₀ v₀ hv₀ (by simp), ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.coe_insert]`. Conclude with `Set.insert_subset hx h1`. Rewrite using `[Finset.coe_insert]`. Conclude with `h2.insert fun y hy _ => Set.disjoint_left.2 fun a ha hb => hx' y hy (-y + a) hb (-x + a) ha (by rw [add_sub_add_right_eq_sub, neg_sub_neg])`. Take `⟨N, hN⟩` from `ENNReal.exists_nat_mul_gt h0 hZ`.
-
-Take `⟨s, rfl, h1, h2⟩` from `key N`. Conclude with `hN.not_ge (bd s h1 h2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_cover {A : Type} [AddCommGroup A] [MeasurableSpace A] [MeasurableAdd A] (ν : Measure A) [ν.IsAddLeftInvariant]
     {X V Z : Set A} (hV : MeasurableSet V) (h0 : ν V ≠ 0) (hZ : ν Z ≠ ⊤) (hXZ : ∀ x ∈ X, ∀ v ∈ V, x + v ∈ Z) :
@@ -45,19 +43,19 @@ theorem exists_cover {A : Type} [AddCommGroup A] [MeasurableSpace A] [Measurable
   exact hN.not_ge (bd s h1 h2)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (show (0 : ℝ) < 1 / (b + 1) by positivity) (show (1 / 2 : ℝ) < 1 by norm_num)`. Use `⟨k, fun t ht => ⟨(hf.pow_const t).aestronglyMeasurable, ?_⟩⟩` and prove the remaining obligations. Establish `t0 : 0 ≤ t` using `(Nat.cast_nonneg k).trans ht`. Set `P : ℕ → Set G` to `fun j => {g | (1 / 2) ^ j ≤ f g ∧ f g ≤ 2 * R * (1 / 2) ^ j}`. Establish `hP : ⋃ j, P j = Set.univ` using `Set.eq_univ_of_forall fun g => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ex : ∃ j : ℕ, (1 / 2 : ℝ) ^ j ≤ f g` using `(exists_pow_lt_of_lt_one (h0 g) (by norm_num)).imp fun _ => le_of_lt`. Use `Set.mem_iUnion.2 ⟨Nat.find ex, Nat.find_spec ex, ?_⟩` and prove the remaining obligations. Break down `e : Nat.find ex with _ | j` into its components or cases. Use `hR g` as an intermediate fact. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `Nat.find_min ex (m := j) (by omega)` as an intermediate fact. Establish `p : (0 : ℝ) < (1 / 2) ^ j` using `by positivity`. Rewrite using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `set ρ : ℝ≥0∞ := ENNReal.ofReal ((1 / 2) ^ t) * b`. Establish `hρ : ρ < 1`. Establish `: ((1 / 2 : ℝ)) ^ t ≤ (1 / 2) ^ k`. Rewrite using `[← Real.rpow_natCast]; exact Real.rpow_le_rpow_of_exponent_ge (by norm_num) (by norm_num) ht`. Rewrite `hk` using `[lt_div_iff₀ (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `p : (0 : ℝ) < (1 / 2) ^ t` using `by positivity`. Rewrite using `[show ρ = ENNReal.ofReal ((1 / 2) ^ t * b) by rw [ENNReal.ofReal_mul p.le, ENNReal.ofReal_coe_nnreal], ENNReal.ofReal_lt_one]`. Use polynomial arithmetic with `[b.2, show (0 : ℝ) ≤ b from b.2]`. Combine the equalities or inequalities in the displayed calculation. Use `(setLIntegral_mono (g := fun _ => ENNReal.ofReal ((2 * R) ^ t) * ENNReal.ofReal ((1 / 2) ^ t) ^ j) measurable_const fun g hg => ?_).trans ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.enorm_eq_ofReal (Real.rpow_nonneg (h0 g).le _), ← ENNReal.ofReal_pow (by positivity), ← ENNReal.ofReal_mul (by positivity), ← Real.rpow_mul_natCast (by norm_num), mul_comm t, Real.rpow_natCast_mul (by norm_num), ← Real.mul_rpow (by positivity) (by positivity)]`. Conclude with `ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow (h0 g).le hg.2 t0)`. Rewrite using `[setLIntegral_const]`. Use `(mul_le_mul_right ((measure_mono fun g hg => hg.1).trans (h j)) _).trans_eq ?_` and prove the remaining obligations. Simplify using `only [ρ, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ < ⊤ := by`. Rewrite using `[ENNReal.tsum_mul_left, ENNReal.tsum_geometric]`. Conclude with `ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hC.lt_top) (ENNReal.inv_lt_top.2 (tsub_pos_of_lt hρ))`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_count {G : Type} [MeasurableSpace G] (μ : Measure G) {f : G → ℝ} (hf : Measurable f) (h0 : ∀ g, 0 < f g)
     {R : ℝ} (h1 : 1 ≤ R) (hR : ∀ g, f g ≤ R) {C : ℝ≥0∞} (hC : C ≠ ⊤) (b : ℝ≥0)
@@ -101,15 +99,15 @@ theorem integrable_of_count {G : Type} [MeasurableSpace G] (μ : Measure G) {f :
         (ENNReal.inv_lt_top.2 (tsub_pos_of_lt hρ))
 
 /- English proof (translation)
-Set `W' : Set ((κ → R) × (κ → R))` to `(Set.univ.pi fun _ => W) ×ˢ Set.univ.pi fun _ => W`. Set `Ω' : Set B` to `(fun y : B × (κ → R) × (κ → R) => 1 + y.1 * c.symm (y.2.1 - y.2.2)) '' Ω ×ˢ W'`. Establish `hΩ' : IsCompact Ω'` using `(hΩ.prod ((isCompact_univ_pi fun _ => hW).prod (isCompact_univ_pi fun _ => hW))).image (by fun_prop)`. Establish `em : IsClosedEmbedding (fun k : H => Units.embedProduct B k.1)` using `Units.isClosedEmbedding_embedProduct.comp hH.isClosedEmbedding_subtypeVal`. Use `⟨⋃ k, (fun y => c y k) '' Ω, _, isCompact_iUnion fun k => hΩ.image (by fun_prop), em.isCompact_preimage (hΩ'.prod (hΩ'.image MulOpposite.continuous_op)), fun l s hs _ _ μ _ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `S : (κ → R) → Set H` to `fun y => {g | l.1 • (g⁻¹).1.1 ∈ Ω ∧ ∀ k, ∃ w ∈ W, c (l.1 • g.1.1) k - y k = l * l * w}`. Establish `key : ∀ y, ∀ g ∈ S y, ∀ g' ∈ S y, (g⁻¹ * g').1.1 ∈ Ω'` using `fun y g hg g' hg' => by choose w hw e using hg.2 choose w' hw' e' using hg'.2`. Use `⟨(_, w', w), ⟨hg.1, fun k _ => hw' k, fun k _ => hw k⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : g'.1.1 - g.1.1 = l.1 • c.symm (w' - w)`. Use `c.injective (funext fun k => l.isUnit.mul_left_cancel ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `e k` as an intermediate fact. Use `e' k` as an intermediate fact. Simplify using `only [map_smul, map_sub, LinearEquiv.apply_symm_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul] at *`. Take the linear combination `e' k - e k`. Express the relevant statement in the definitionally equal form `1 + l.1 • (g.1⁻¹).1 * c.symm (w' - w) = (g.1⁻¹).1 * g'.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[smul_mul_assoc, ← mul_smul_comm, ← e1, mul_sub, Units.inv_mul, add_sub_cancel]`. Use `(measure_mono (t := ⋃ y ∈ Fintype.piFinset fun _ : κ => s, S y) fun g hg => ?_).trans ((measure_biUnion_finset_le _ _).trans ((Finset.sum_le_card_nsmul _ _ (μ ((fun k : H => Units.embedProduct B k.1) ⁻¹' Ω' ×ˢ (MulOpposite.op '' Ω'))) fun y _ => ?_).trans_eq (by simp)))` and prove the remaining obligations. Use `choose y hy hy' using fun k => hs _ (Set.mem_iUnion.2 ⟨k, _, hg.1, rfl⟩)`. Conclude with `Set.mem_iUnion₂.2 ⟨y, Fintype.mem_piFinset.2 hy, hg.2, hy'⟩`. Break down `(S y).eq_empty_or_nonempty with e | ⟨g, hg⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[e]`. Use `(measure_mono ?_).trans_eq (measure_preimage_mul μ g⁻¹ _)` and prove the remaining obligations. Conclude with `fun g' hg' => ⟨key y g hg g' hg', _, key y g' hg' g hg, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem count_grp {R B κ : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [Ring B] [Algebra R B] [TopologicalSpace B]
     [IsTopologicalRing B] [T2Space B] [Fintype κ] (c : B ≃ₗ[R] (κ → R)) (hc : Continuous c) (hc' : Continuous c.symm)

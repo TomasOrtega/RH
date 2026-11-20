@@ -12,7 +12,7 @@ variable {R S : Type} [CommRing R] [CommRing S] [Algebra R S]
   {ι : Type} [Preorder ι] [IsDirected ι (· ≤ ·)] [Nonempty ι]
 
 /- English proof (translation)
-Use `choose idx hidx using hcov`. Take `⟨M, hM⟩` from `Finset.exists_le (T.image idx)`. Conclude with `⟨M, fun t ht => hmono (hM _ (Finset.mem_image_of_mem idx ht)) (hidx t)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_mem_of_finset (Si : ι → Subalgebra R S) (hmono : Monotone Si)
     (hcov : ∀ s : S, ∃ i, s ∈ Si i) (T : Finset S) : ∃ i, ∀ t ∈ T, t ∈ Si i := by
@@ -22,11 +22,9 @@ lemma exists_mem_of_finset (Si : ι → Subalgebra R S) (hmono : Monotone Si)
   exact ⟨M, fun t ht => hmono (hM _ (Finset.mem_image_of_mem idx ht)) (hidx t)⟩
 
 /- English proof (translation)
-Establish `: NoZeroDivisors S`. Use `⟨fun {x y} hxy => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_mem_of_finset Si hmono hcov {x, y}`. Establish `hx : x ∈ Si i` using `hi x (by simp)`. Establish `hy : y ∈ Si i` using `hi y (by simp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hdom i`. Establish `h0 : (⟨x, hx⟩ : Si i) * ⟨y, hy⟩ = 0` using `Subtype.ext (by simpa using hxy)`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `Or.inl (congrArg Subtype.val h)`. Conclude with `Or.inr (congrArg Subtype.val h)`.
-
-Conclude with `NoZeroDivisors.to_isDomain S`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 lemma isDomain [Nontrivial S] (Si : ι → Subalgebra R S) (hmono : Monotone Si)
     (hcov : ∀ s : S, ∃ i, s ∈ Si i) (hdom : ∀ i, IsDomain (Si i)) : IsDomain S := by
@@ -44,19 +42,19 @@ lemma isDomain [Nontrivial S] (Si : ι → Subalgebra R S) (hmono : Monotone Si)
   exact NoZeroDivisors.to_isDomain S
 
 /- English proof (translation)
-Rewrite using `[isIntegrallyClosed_iff (FractionRing S)]`. Introduce `x hx`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := S) x`. Take `⟨p, hpm, hp⟩` from `hx`. Take `⟨i, hi⟩` from `exists_mem_of_finset Si hmono hcov (insert a (insert b p.coeffs))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := (hic i).1`. Use `haveI := (hic i).2`. Establish `ha : a ∈ Si i` using `hi a (by simp)`. Establish `hb' : b ∈ Si i` using `hi b (by simp)`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set g : Si i →+* FractionRing S := (algebraMap S (FractionRing S)).comp (algebraMap (Si i) S) with hg_def`. Establish `hg : Function.Injective g` using `(IsFractionRing.injective S (FractionRing S)).comp Subtype.val_injective`. Set `φ : FractionRing (Si i) →+* FractionRing S` to `IsFractionRing.lift hg`. Establish `hφ : ∀ c : Si i, φ (algebraMap (Si i) (FractionRing (Si i)) c) = g c` using `fun c => IsFractionRing.lift_algebraMap hg c`. Establish `hlift : p ∈ Polynomial.lifts (algebraMap (Si i) S)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Distinguish the cases in `hn : p.coeff n = 0`. Conclude with `⟨0, by simp [hn]⟩`. Conclude with `⟨⟨p.coeff n, hi _ (by simp [Polynomial.coeff_mem_coeffs hn])⟩, rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hlift hpm`. Use `set y : FractionRing (Si i) := algebraMap (Si i) (FractionRing (Si i)) ⟨a, ha⟩ / algebraMap (Si i) (FractionRing (Si i)) ⟨b, hb'⟩ with hy_def`. Establish `hφy : φ y = algebraMap S (FractionRing S) a / algebraMap S (FractionRing S) b`. Rewrite using `[hy_def, map_div₀, hφ, hφ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyint : IsIntegral (Si i) y`. Use `⟨q, hqm, φ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.hom_eval₂, map_zero, hφy]`. Establish `: φ.comp (algebraMap (Si i) (FractionRing (Si i))) = g` using `RingHom.ext hφ`. Rewrite using `[this, hg_def, ← Polynomial.eval₂_map, hq]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hp`. Take `⟨c, hc⟩` from `(isIntegrallyClosed_iff (FractionRing (Si i))).mp (hic i).2 hyint`. Use `⟨(c : S), ?_⟩` and prove the remaining obligations. Rewrite using `[← hφy, ← hc, hφ]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma isIntegrallyClosed [IsDomain S] (Si : ι → Subalgebra R S) (hmono : Monotone Si)
     (hcov : ∀ s : S, ∃ i, s ∈ Si i)
@@ -106,9 +104,9 @@ lemma isIntegrallyClosed [IsDomain S] (Si : ι → Subalgebra R S) (hmono : Mono
 end IndEtaleNormal
 
 /- English proof (translation)
-Introduce `R S _ _ _ _ _ _ h`. Take `⟨ι, _, _, _, Si, hmono, hcov, hloc⟩` from `h`. Establish `hic : ∀ i, IsDomain (Si i) ∧ IsIntegrallyClosed (Si i)`. Introduce `i`. Take `⟨A, _, _, _, q, _, ⟨e⟩⟩` from `hloc i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `etale_localization_atPrime_isDomain_isIntegrallyClosed R A q`. Conclude with `⟨MulEquiv.isDomain (Localization.AtPrime q) e.symm.toMulEquiv, IsIntegrallyClosed.of_equiv e.toRingEquiv⟩`. Use `haveI := IndEtaleNormal.isDomain Si hmono hcov (fun i => (hic i).1)`. Conclude with `⟨inferInstance, IndEtaleNormal.isIntegrallyClosed Si hmono hcov hic⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem indEtale_isDomain_isIntegrallyClosed :
     ∀ (R S : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [CommRing S] [Algebra R S]

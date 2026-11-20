@@ -31,11 +31,9 @@ def chartPullComp {X Y Y' : Scheme.{0}} (L : LB X) {Ix : Type} [Fintype Ix] (φ 
     simp only [Category.id_comp]
 
 /- English proof (translation)
-Establish `hj : ∀ k, J ((spMap σ ≫ x) ≫ φ k) = (fun k => J (x ≫ φ k)) k` using `fun k => by`. Simplify using `only [Category.assoc, hφ k]`. Rewrite using `[sval_of s (spMap σ ≫ x) z J _ hj]`. Establish `hm : x z ∈ LB.wchart L φ (fun k => J (x ≫ φ k))` using `hJ.mem φ x`. Establish `hm' : (spMap σ ≫ x) z ∈ LB.wchart L φ (fun k => J (x ≫ φ k))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hJ.mem φ (spMap σ ≫ x)` as an intermediate fact. Establish `e : (fun k => J ((spMap σ ≫ x) ≫ φ k)) = fun k => J (x ≫ φ k)` using `funext hj`. Rewrite `this` using `[e]`. Conclude with `this`. Use `(toStk_valF_gs (spMap σ ≫ x) _ z hm' _).symm.trans ?_` and prove the remaining obligations.
-
-Conclude with `congrArg (toStk z) (valF_spMap_comp σ x _ ((top_le_iff_mem x _ z).2 hm) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sval_spMap {K : Type} [Field K] {X Y : Scheme.{0}} {L : LB X} {Ix : Type} [Fintype Ix] {φ : Ix → (Y ⟶ X)}
     {ε : Ix → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (σ : K →+* K) (x : Sp K ⟶ Y) (z : Sp K) {J : (Sp K ⟶ X) → L.ι}
@@ -54,7 +52,7 @@ theorem sval_spMap {K : Type} [Field K] {X Y : Scheme.{0}} {L : LB X} {Ix : Type
   exact congrArg (toStk z) (valF_spMap_comp σ x _ ((top_le_iff_mem x _ z).2 hm) _)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sval_cast {X Y Z : Scheme.{0}} {L : LB X} {Ix : Type} [Fintype Ix] {φ φ' : Ix → (Y ⟶ X)} {ε : Ix → ℤ}
     (e : φ' = φ) (p : LB.Sec (LB.LinComb L φ' ε)) (x : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) :
@@ -62,17 +60,17 @@ theorem sval_cast {X Y Z : Scheme.{0}} {L : LB X} {Ix : Type} [Fintype Ix] {φ �
   subst e; rfl
 
 /- English proof (translation)
-Set `v : (Sp K ⟶ Y) → ((Sp K ⟶ X) → L.ι) → K` to `fun x J => valF x (LB.wchart L φ (fun k => J (x ≫ φ k))) (s.f (fun k => J (x ≫ φ k)))`. Establish `hv : ∀ x z J, Good L z J → sval s x z J = toStk z (v x J)` using `fun x z J hJ => (toStk_valF_gs x _ z (hJ.mem φ x) _).symm`. Establish `key : ∀ σ : K ≃+* K, (∀ a ∈ k₀, σ a = a) → ∃ c : K, ∀ x, R x → ∀ z J, Good L z J → σ (v x J) = c * v x J`. Introduce `σ hσ`. Take `⟨σt, hφ, hx⟩` from `h2 σ hσ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e : (fun k => σt ≫ φ k) = φ` using `funext hφ`. Take `⟨c, hc⟩` from `h1 (e ▸ ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.pullSec s σt)`. Use `⟨c, fun x hR z J hJ => ?_⟩` and prove the remaining obligations. Establish `a1` using `hc x hR z J hJ`. Rewrite `a1` using `[sval_cast, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_pullSec s σt x z hJ, hx x hR, sval_spMap s σ.toRingHom x z hJ (fun k => by rw [← Category.assoc, ← hx x hR, Category.assoc, hφ]), hv x z J hJ, ← map_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(toStk z).injective a1`. Distinguish the cases in `hex : ∃ x J z, R x ∧ Good L z J ∧ v x J ≠ 0`. Take `⟨x₀, J₀, z₀, hR₀, hJ₀, hne⟩` from `hex`. Use `⟨v x₀ J₀, hne, fun x hR z J hJ => ⟨v x J / v x₀ J₀, ?_, ?_⟩⟩` and prove the remaining obligations. Apply `mem_of_finite_conj k₀ hk₀` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(Set.finite_singleton (v x J / v x₀ J₀)).subset` to reduce the goal to its premises. Introduce and unpack `b ⟨σ, hσ, rfl⟩`. Take `⟨c, hc⟩` from `key σ hσ`. Establish `h0` using `hc x₀ hR₀ z₀ J₀ hJ₀`. Establish `h1'` using `hc x hR z J hJ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `h0` using `[zero_mul]`. Conclude with `hne (σ.injective (h0.trans (map_zero σ).symm))`. Use `show σ (v x J / v x₀ J₀) = v x J / v x₀ J₀`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_div₀, h0, h1', mul_div_mul_left _ _ hc0]`. Rewrite using `[hv x z J hJ, mul_div_cancel₀ _ hne]`. Use `push Not at hex`. Use `⟨1, one_ne_zero, fun x hR z J hJ => ⟨0, k₀.zero_mem, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hv x z J hJ, hex x J z hR hJ, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galois_values {K : Type} [Field K] [IsAlgClosed K] (k₀ : Subfield K) (hk₀ : IsAlgClosed k₀)
     {X Y : Scheme.{0}} {L : LB X} {Ix : Type} [Fintype Ix] (φ : Ix → (Y ⟶ X)) (ε : Ix → ℤ)
@@ -122,7 +120,7 @@ theorem galois_values {K : Type} [Field K] [IsAlgClosed K] (k₀ : Subfield K) (
 variable {V V₁ : Type} [CommRing V] [IsDomain V] [CommRing V₁] [IsDomain V₁]
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Conclude with `hσ _ (hf a)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem spMap_conj {K : Type} [Field K] (k₀ : Subfield K) {R : Type} [CommRing R] (f : R →+* K) (hf : ∀ a, f a ∈ k₀)
     (σ : K ≃+* K) (hσ : ∀ a ∈ k₀, σ a = a) : spMap σ.toRingHom ≫ spMap f = spMap f := by
@@ -132,21 +130,19 @@ theorem spMap_conj {K : Type} [Field K] (k₀ : Subfield K) {R : Type} [CommRing
   exact hσ _ (hf a)
 
 /- English proof (translation)
-Use `set E := Over.mk (spMap ev) with hE`. Use `set fK := (fst E D.P.A).left with hfK`. Use `set q := (snd E D.P.A).left with hq`. Establish `hw : q ≫ D.P.A.hom = fK ≫ spMap ev` using `(Over.w (snd E D.P.A)).trans (Over.w (fst E D.P.A)).symm`. Establish `hf : ∀ a, ((ev.comp ρ).comp ib) a ∈ k₀` using `hk`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨Φ₀, hΦ₀⟩` from `exists_points_equiv ρ ib Q D pr hpr huniv B₀ β hβ (fK ≫ spMap ev) (fK ≫ spMap ((ev.comp ρ).comp ib)) (by rw [Category.assoc, spMap_three])`. Take `⟨Φ₁, hΦ₁⟩` from `exists_points_equiv ρ ib Q D pr hpr huniv B₀ β hβ (fK ≫ spMap σ.toRingHom ≫ spMap ev) (fK ≫ spMap ((ev.comp ρ).comp ib)) (by rw [Category.assoc, Category.assoc, spMap_three, spMap_conj k₀ _ hf σ hσ])`. Set `qpt : Over.mk (fK ≫ spMap ev) ⟶ D.P.A` to `Over.homMk q hw`. Set `σD` to `Φ₁.symm (Φ₀ qpt)`. Set `a0 : Over.mk (fK ≫ spMap σ.toRingHom ≫ spMap ev) ⟶ E` to `Over.homMk (fK ≫ spMap σ.toRingHom) (Category.assoc _ _ _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `σt : (E ⊗ D.P.A).left ⟶ (E ⊗ D.P.A).left` to `(lift a0 σD).left`. Establish `hfst : σt ≫ fK = fK ≫ spMap σ.toRingHom` using `congrArg (fun z => z.left) (lift_fst a0 σD)`. Establish `hsnd : σt ≫ q = σD.left` using `congrArg (fun z => z.left) (lift_snd a0 σD)`. Establish `hproj : ∀ a, σt ≫ q ≫ (pr a).left ≫ pullback.fst Q.B.hom (spMap ρ) ≫ β = q ≫ (pr a).left ≫ pullback.fst Q.B.hom (spMap ρ) ≫ β`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[reassoc_of% hsnd, ← hΦ₁ σD a, MulEquiv.apply_symm_apply, hΦ₀]`. Both sides reduce to the same expression. Use `⟨σt, hproj, fun x hx hdef => ?_⟩` and prove the remaining obligations. Establish `hEh : (E ⊗ D.P.A).hom = fK ≫ spMap ev` using `(Over.w (fst E D.P.A)).symm`. Set `T : Over (Sp V₁)` to `Over.mk (spMap σ.toRingHom ≫ spMap ev)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `m1 : T ⟶ E ⊗ D.P.A` to `Over.homMk (x ≫ σt) (by show (x ≫ σt) ≫ (E ⊗ D.P.A).hom = spMap σ.toRingHom ≫ spMap ev`. Rewrite using `[hEh, Category.assoc, reassoc_of% hfst, reassoc_of% hx])`. Set `m2 : T ⟶ E ⊗ D.P.A` to `Over.homMk (spMap σ.toRingHom ≫ x) (by show (spMap σ.toRingHom ≫ x) ≫ (E ⊗ D.P.A).hom = spMap σ.toRingHom ≫ spMap ev`. Rewrite using `[hEh, Category.assoc, reassoc_of% hx])`. Establish `hm : m1 = m2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Apply `Over.OverMorphism.ext show (x ≫ σt) ≫ fK = (spMap σ.toRingHom ≫ x) ≫ fK` to reduce the goal to its premises. Rewrite using `[Category.assoc, hfst, reassoc_of% hx, Category.assoc, hx, Category.comp_id]`. Take `⟨Φ₂, hΦ₂⟩` from `exists_points_equiv ρ ib Q D pr hpr huniv B₀ β hβ (spMap σ.toRingHom ≫ spMap ev) (spMap ((ev.comp ρ).comp ib)) (by rw [Category.assoc, spMap_three, spMap_conj k₀ _ hf σ hσ])`. Apply `Φ₂.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hΦ₂, hΦ₂]`. Use `show (x ≫ σt) ≫ q ≫ (pr a).left ≫ pullback.fst Q.B.hom (spMap ρ) ≫ β = (spMap σ.toRingHom ≫ x) ≫ q ≫ (pr a).left ≫ pullback.fst Q.B.hom (spMap ρ) ≫ β`. Take `⟨P₀, hP₀⟩` from `hdef a`.
-
-Rewrite using `[Category.assoc, hproj, Category.assoc, ← hP₀, ← Category.assoc, spMap_conj k₀ k₀.subtype (fun a => a.2) σ hσ]`. Conclude with `congrArg (fun m => m.left) hm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_fibre {W₀ : Type} [CommRing W₀] (ρ : V →+* V₁) (ib : W₀ →+* V) (Q : Data V) (D : DegPre V₁)
     (pr : Fin 8 → (D.P.A ⟶ (Over.pullback (spMap ρ)).obj Q.B)) (hpr : ∀ a, IsMonHom (pr a))
@@ -212,9 +208,7 @@ theorem exists_conj_fibre {W₀ : Type} [CommRing W₀] (ρ : V →+* V₁) (ib 
   exact congrArg (fun m => m.left) hm
 
 /- English proof (translation)
-Establish `e1` using `gs_pull x f z ⊤ trivial r`. Use `erw [e1, hx, gs_eq _ z ⊤ trivial]`. Use `show _ = ((Sp K).presheaf.germ ⊤ z trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom r))`. Rewrite using `[Iso.hom_inv_id_apply]`. Simplify using the standard rewrite rules.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gs_appTop_of_section {K : Type} [Field K] {Y : Scheme.{0}} (x : Sp K ⟶ Y) (f : Y ⟶ Sp K) (hx : x ≫ f = 𝟙 _)
     (z : Sp K) (r : Γ(Sp K, ⊤)) :
@@ -228,9 +222,9 @@ theorem gs_appTop_of_section {K : Type} [Field K] {Y : Scheme.{0}} (x : Sp K ⟶
   rfl
 
 /- English proof (translation)
-Establish `hy : r z ∈ M.U i ⊓ L.U k` using `⟨hi, hk⟩`. Establish `e` using `congrArg (gs r z (M.U i ⊓ L.U k)) (h i k)`. Rewrite `e` using `[gs_res _ z _ hy, gs_mul _ z _ hy, gs_res _ z _ hy]`. Rewrite using `[e]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `gs_unit _ z _ hy _`.
+A detailed English derivation is pending.
 -/
 theorem gs_isoRel_at {Y Z : Scheme.{0}} {L M : LB Y} {w : LB.Iso L M} {s : LB.Sec L} {s' : LB.Sec M}
     (h : ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.IsoRel w s s') (i : M.ι) (k : L.ι) (r : Z ⟶ Y) (z : Z) (hi : r z ∈ M.U i)
@@ -244,21 +238,17 @@ theorem gs_isoRel_at {Y Z : Scheme.{0}} {L M : LB Y} {w : LB.Iso L M} {s : LB.Se
   exact gs_unit _ z _ hy _
 
 /- English proof (translation)
-Set `E` to `Over.mk (spMap ev)`. Set `q` to `(snd E D.P.A).left`. Establish `hL : D.P.L.IsLB` using `D.P.isLB`. Establish `hA : (LB.LinComb D.P.L (fun i => q ≫ D.famφB 0 i) (DegPre.famε 1)).IsLB` using `DVR.linComb_isLB _ hL _ _`. Establish `hB : (LB.LinComb L₂ (fun k => q ≫ φ k) ε).IsLB` using `DVR.linComb_isLB _ hL₂ _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `u'` to `GlobalTheory.PolDeg.TautFrom.isoPull (chartPullComp D.P.L (D.famφB 0) (DegPre.famε 1) q) (chartPullComp L₂ φ ε q) u`. Establish `hu' : u'.IsGen` using `GlobalTheory.PolDeg.TautFrom.isoPull_isGen _ _ u hu`. Take `⟨a, ha⟩` from `GlobalTheory.MBLow.lbIso_sec_onto _ _ _ u' hA hB hu' s₂`. Establish `ha' : ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.IsoRel u' a s₂` using `fun i k => ha (i, k)`. Take `⟨r, hr, -⟩` from `hθ (GlobalTheory.Poinc.ThetaOne.pullTo D ev θ) (GlobalTheory.Poinc.ThetaOne.isPullSecLC_pullTo D ev θ) a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨(Scheme.ΓSpecIso (CommRingCat.of K)).hom (r 0), fun x hx z J hJ => ?_⟩` and prove the remaining obligations. Use `choose I hI using fun χ : Sp K ⟶ D.P.A.left => exists_chart hL (χ z)`. Establish `hIg : Good D.P.L z I` using `hI`. Set `jA : Fin 4 → D.P.L.ι` to `fun i => I (x ≫ q ≫ D.famφB 0 i)`. Set `jB : Ix → L₂.ι` to `fun k => J (x ≫ q ≫ φ k)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmA : x z ∈ LB.wchart D.P.L (fun i => q ≫ D.famφB 0 i) jA` using `hIg.mem _ x`. Establish `hmB : x z ∈ LB.wchart L₂ (fun k => q ≫ φ k) jB` using `hJ.mem _ x`. Establish `hmA₀ : (x ≫ q) z ∈ LB.wchart D.P.L (D.famφB 0) jA` using `(chartPullComp D.P.L (D.famφB 0) (DegPre.famε 1) q).le jA hmA`. Establish `hmB₀ : (x ≫ q) z ∈ LB.wchart L₂ φ jB` using `(chartPullComp L₂ φ ε q).le jB hmB`. Establish `lhs1` using `gs_isoRel_at ha' jB jA x z hmB hmA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lhs2` using `GlobalTheory.PolDeg.TautFrom.gm_isoPull (chartPullComp D.P.L (D.famφB 0) (DegPre.famε 1) q) (chartPullComp L₂ φ ε q) u x z (jB, jA) ⟨hmB, hmA⟩`. Establish `rhs1` using `gs_isoRel_at hs jB jA (x ≫ q) z hmB₀ hmA₀`. Establish `hrA` using `hr jA`. Rewrite `hrA` using `[Fin.sum_univ_one]`. Establish `mid : gs x z (LB.wchart D.P.L (fun i => q ≫ D.famφB 0 i) jA) (a.f jA) = toStk z ((Scheme.ΓSpecIso (CommRingCat.of K)).hom (r 0)) * gs (x ≫ q) z (LB.wchart D.P.L (D.famφB 0) jA) (θ.f jA)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (gs x z _) hrA).trans ((gs_mul x z _ hmA _ _).trans ?_)` and prove the remaining obligations. Use `congr 1`. Use `(gs_res x z _ hmA _).trans ?_` and prove the remaining obligations. Conclude with `gs_appTop_of_section x _ hx z (r 0)`. Conclude with `(gs_res _ z _ hmA _).trans (gs_pull x q z _ hmA₀ _)`.
-
-Use `show gs x z _ (s₂.f jB) = _`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_pullSec s q x z hJ, sval_of s (x ≫ q) z J jB (fun k => by simp only [jB, Category.assoc])]`. Rewrite using `[lhs1]`. Use `erw [lhs2]`. Use `erw [mid, rhs1]`.
-
-Conclude with `mul_left_comm _ _ _`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_one_dim (D : DegPre V₁) {K : Type} [Field K] (ev : V₁ →+* K)
     (θ : LB.Sec (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)))
@@ -313,7 +303,7 @@ theorem fibre_one_dim (D : DegPre V₁) {K : Type} [Field K] (ev : V₁ →+* K)
   exact mul_left_comm _ _ _
 
 /- English proof (translation)
-Rewrite using `[hsq.1]`. Use `show (lift (pushPt (isGrpPullback_pullback Q.B (spMap ρ)).1.w (pr a)) (pushPt (isGrpPullback_pullback Q.B (spMap ρ)).1.w (pr b)) ≫ fst Q.B Q.B).left ≫ β = _`. Rewrite using `[lift_fst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sharpPair_fst {W₀ : Type} [CommRing W₀] (ρ : V →+* V₁) (Q : Data V) (D : DegPre V₁)
     (pr : Fin 8 → (D.P.A ⟶ (Over.pullback (spMap ρ)).obj Q.B)) (B₀ : Over (Sp W₀)) [GrpObj B₀] [IsCommMonObj B₀]
@@ -326,7 +316,7 @@ theorem sharpPair_fst {W₀ : Type} [CommRing W₀] (ρ : V →+* V₁) (Q : Dat
   rfl
 
 /- English proof (translation)
-Rewrite using `[hsq.2]`. Use `show (lift (pushPt (isGrpPullback_pullback Q.B (spMap ρ)).1.w (pr a)) (pushPt (isGrpPullback_pullback Q.B (spMap ρ)).1.w (pr b)) ≫ snd Q.B Q.B).left ≫ β = _`. Rewrite using `[lift_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sharpPair_snd {W₀ : Type} [CommRing W₀] (ρ : V →+* V₁) (Q : Data V) (D : DegPre V₁)
     (pr : Fin 8 → (D.P.A ⟶ (Over.pullback (spMap ρ)).obj Q.B)) (B₀ : Over (Sp W₀)) [GrpObj B₀] [IsCommMonObj B₀]
@@ -339,19 +329,17 @@ theorem sharpPair_snd {W₀ : Type} [CommRing W₀] (ρ : V →+* V₁) (Q : Dat
   rfl
 
 /- English proof (translation)
-Establish `hLam : (abelian₂ B₀ M₀).IsLB` using `DVR.linComb_isLB _ hM₀ _ _`. Establish `hL : (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)).IsLB` using `DVR.linComb_isLB _ D.P.isLB _ _`. Establish `hM : (LB.LinComb (abelian₂ B₀ M₀) (K` using `Fin 8 × Fin 8) (fun p => sharpPair ρ Q D pr p.1 p.2 ≫ β₂) (fun p => W p.1 p.2)).IsLB := DVR.linComb_isLB _ hLam _ _`. Take `⟨s, hs⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.exists_isoRel hL hM hu θ`. Set `E` to `Over.mk (spMap ev)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `q` to `(snd E D.P.A).left`. Set `R : (Sp K ⟶ (E ⊗ D.P.A).left) → Prop` to `fun x => x ≫ (fst E D.P.A).left = 𝟙 _ ∧ ∀ a, DefOver k₀ (x ≫ q ≫ (pr a).left ≫ pullback.fst Q.B.hom (spMap ρ) ≫ β)`. Take `⟨κ, hκ, hval⟩` from `galois_values k₀ hk₀ (fun p : Fin 8 × Fin 8 => q ≫ sharpPair ρ Q D pr p.1 p.2 ≫ β₂) (fun p => W p.1 p.2) (ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.pullSec s q) R (fun t => by`. Take `⟨c, hc⟩` from `fibre_one_dim D ev θ (hθ K ev) (fun p : Fin 8 × Fin 8 => sharpPair ρ Q D pr p.1 p.2 ≫ β₂) (fun p => W p.1 p.2) hLam u hu s hs t`. Conclude with `⟨c, fun x hR z J hJ => hc x hR.1 z J hJ⟩)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(fun σ hσ => by`. Take `⟨σt, hproj, hfix⟩` from `exists_conj_fibre ρ ib Q D pr hpr huniv B₀ β hβ K ev k₀ hk σ hσ`. Use `⟨σt, fun p => ?_, fun x hR => hfix x hR.1 hR.2⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (σt ≫ q ≫ sharpPair ρ Q D pr p.1 p.2 ≫ β₂) ≫ (fst B₀ B₀).left = (q ≫ sharpPair ρ Q D pr p.1 p.2 ≫ β₂) ≫ (fst B₀ B₀).left`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[sharpPair_fst ρ Q D pr B₀ β β₂ hsq]`. Conclude with `hproj p.1`. Use `show (σt ≫ q ≫ sharpPair ρ Q D pr p.1 p.2 ≫ β₂) ≫ (snd B₀ B₀).left = (q ≫ sharpPair ρ Q D pr p.1 p.2 ≫ β₂) ≫ (snd B₀ B₀).left`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[sharpPair_snd ρ Q D pr B₀ β β₂ hsq]`. Conclude with `hproj p.2)`. Use `⟨κ, hκ, fun r hr hdef z J J₀ hJ hJ₀ => ?_⟩` and prove the remaining obligations. Set `a1 : Over.mk (spMap ev) ⟶ E` to `Over.homMk (𝟙 (Sp K)) (Category.id_comp _)`. Set `b1 : Over.mk (spMap ev) ⟶ D.P.A` to `Over.homMk r hr`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `x : Sp K ⟶ (E ⊗ D.P.A).left` to `(lift a1 b1).left`. Establish `hxf : x ≫ (fst E D.P.A).left = 𝟙 _` using `congrArg (fun m : Over.mk (spMap ev) ⟶ E => m.left) (lift_fst a1 b1)`. Establish `hxq : x ≫ q = r` using `congrArg (fun m : Over.mk (spMap ev) ⟶ D.P.A => m.left) (lift_snd a1 b1)`. Establish `hRx : R x` using `⟨hxf, fun a => by show DefOver k₀ (x ≫ q ≫ (pr a).left ≫ pullback.fst Q.B.hom (spMap ρ) ≫ β)`. Rewrite using `[reassoc_of% hxq]`.
-
-Conclude with `hdef a⟩`. Take `⟨c, hc, he⟩` from `hval x hRx z J₀ hJ₀`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← he, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_pullSec s q x z hJ₀, hxq]`. Conclude with `(gs_isoRel_at hs _ _ r z (hJ₀.mem _ r) (hJ.mem _ r)).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kzero_theta_of_iso {W₀ : Type} [CommRing W₀] (W : Matrix (Fin 8) (Fin 8) ℤ) (ρ : V →+* V₁) (ib : W₀ →+* V)
     (Q : Data V) (D : DegPre V₁)
@@ -422,9 +410,9 @@ theorem kzero_theta_of_iso {W₀ : Type} [CommRing W₀] (W : Matrix (Fin 8) (Fi
   exact (gs_isoRel_at hs _ _ r z (hJ₀.mem _ r) (hJ.mem _ r)).symm
 
 /- English proof (translation)
-Establish `hL : D.P.L.IsLB` using `D.P.isLB`. Establish `h1 : toUnit D.P.A ≫ D.c 0 = toUnit D.P.A ≫ η[D.P.A]`. Rewrite using `[GlobalTheory.Poinc.ThetaOne.c_zero D, MonObj.comp_one]`. Both sides reduce to the same expression. Establish `h2 : padd D.P.A (𝟙 D.P.A) (toUnit D.P.A ≫ η[D.P.A]) = 𝟙 D.P.A` using `mul_one (𝟙 D.P.A)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hc : LBIso (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)) (D.P.L.pull (𝟙 D.P.A.left))`. Use `(GlobalTheory.PrimNorm.lbIso_iff hL _ _ _ _).2 ?_` and prove the remaining obligations. Simplify using `only [DegPre.famφB, DegPre.famε, Fin.prod_univ_four, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, h1, h2, Fintype.prod_unique]`. Simplify using the standard rewrite rules. Conclude with `((GlobalTheory.TripleCompare.lbIso_iff_pull_id D.P.L _).2 hc).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_bundle_lbIso (D : DegPre V₁) : LBIso (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)) D.P.L := by
   have hL : D.P.L.IsLB := D.P.isLB
@@ -440,7 +428,7 @@ theorem theta_bundle_lbIso (D : DegPre V₁) : LBIso (LB.LinComb D.P.L (D.famφB
   exact ((GlobalTheory.TripleCompare.lbIso_iff_pull_id D.P.L _).2 hc).symm
 
 /- English proof (translation)
-Establish `hLam : (abelian₂ B₀ M₀).IsLB` using `DVR.linComb_isLB _ hM₀ _ _`. Establish `hL : (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)).IsLB` using `DVR.linComb_isLB _ D.P.isLB _ _`. Establish `hM : (LB.LinComb (abelian₂ B₀ M₀) (K` using `Fin 8 × Fin 8) (fun p => sharpPair ρ Q D pr p.1 p.2 ≫ β₂) (fun p => W p.1 p.2)).IsLB := DVR.linComb_isLB _ hLam _ _`. Take `⟨u, hu⟩` from `LBIso.trans hL D.P.isLB hM (theta_bundle_lbIso D) (sharp_bundle W ρ Q D pr w hw B₀ M₀ hM₀ β₂ w₀ hw₀)`. Conclude with `⟨u, hu, kzero_theta_of_iso W ρ ib Q D pr hpr huniv B₀ M₀ hM₀ β β₂ hβ hsq θ hθ u hu K ev k₀ hk₀ hk⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem kzero_theta {W₀ : Type} [CommRing W₀] (W : Matrix (Fin 8) (Fin 8) ℤ) (ρ : V →+* V₁) (ib : W₀ →+* V)
     (Q : Data V) (D : DegPre V₁)
@@ -475,7 +463,7 @@ theorem kzero_theta {W₀ : Type} [CommRing W₀] (W : Matrix (Fin 8) (Fin 8) �
   exact ⟨u, hu, kzero_theta_of_iso W ρ ib Q D pr hpr huniv B₀ M₀ hM₀ β β₂ hβ hsq θ hθ u hu K ev k₀ hk₀ hk⟩
 
 /- English proof (translation)
-Take `⟨pr, w, hpr, huniv, hw, -, -⟩` from `h₁`. Take `⟨B₀, iG, iC, M₀, -, -, β, β₂, w₀, -, hM₀, hβ, hsq, hw₀, -, -, -⟩` from `h₂`. Take `⟨θ, hθ, hnz, -, -, -⟩` from `GlobalTheory.Poinc.ThetaOne.main hV D`. Take `⟨u, hu, rest⟩` from `kzero_theta W ρ ib Q D pr hpr huniv w hw B₀ M₀ hM₀ β β₂ hβ hsq w₀ hw₀ θ hθ K ev k₀ hk₀ hk`. Conclude with `⟨θ, pr, B₀, iG, iC, M₀, β, β₂, u, hnz K ev, hu, rest⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example {W₀ : Type} [CommRing W₀] [IsLocalRing V₁] (hV : IsCN V₁) (W : Matrix (Fin 8) (Fin 8) ℤ) (Q : Data V)
     (ρ : V →+* V₁) (D : DegPre V₁) (e : (Fin 8 → Q.X) ≃+ D.X) (τ₀ : Gens Q) (ib : W₀ →+* V)

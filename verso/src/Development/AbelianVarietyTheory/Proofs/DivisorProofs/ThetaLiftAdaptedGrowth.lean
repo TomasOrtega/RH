@@ -16,9 +16,9 @@ namespace GlobalTheory.ThK.DescB.CTAdd
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf => exact hS f hf`. Consider the case `zero => exact ⟨continuous_const, fun _ _ _ => rfl⟩`. Consider the case `add f g _ _ ihf ihg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `⟨ihf.1.add ihg.1, fun γ hγ h => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, ihf.2 γ hγ h, ihg.2 γ hγ h]`. Consider the case `smul r f _ ihf`. Use `⟨ihf.1.const_smul r, fun γ hγ h => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, ihf.2 γ hγ h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem span_contInv {n : ℕ} {W : Spc F E n} (S : Set (UA σ W.J → ℂ))
     (hS : ∀ f ∈ S, Continuous f ∧ ∀ γ ∈ ratU σ W.J, ∀ h, f (γ * h) = f h) :
@@ -40,17 +40,13 @@ open GlobalTheory.ThK.DescB.CTAdd in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM d₁ W₁ H' i₀ i₁ hH' f hf g hg c d hc hd μ 𝓕 hμ hF h1 h`. Establish `hT` using `hM.triple`. Establish `hPol : ∀ Φ Φ', PolMatch B G X R Rf Φ Φ' → Φ ∈ PolData B G.M ∧ Φ' ∈ PolData B G.M'`. Introduce `Φ Φ' hPM`. Take `⟨T, -, m, m', f, φ, f', φ', hf, hf', e1, e2, -⟩` from `hPM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨e1 ▸ Submodule.sum_mem _ fun i _ => Submodule.subset_span ?_, e2 ▸ Submodule.sum_mem _ fun j _ => Submodule.subset_span ?_⟩` and prove the remaining obligations. Conclude with `⟨f i, (hf i).1, φ i, (hf i).2.1, Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by_contra fun hT => hv ((hf i).2.2 v hT)), rfl⟩`. Conclude with `⟨f' j, (hf' j).1, φ' j, (hf' j).2.1, Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by_contra fun hT => hv ((hf' j).2.2 v hT)), rfl⟩`. Establish `hfC` using `span_contInv _ (by`. Introduce and unpack `_ ⟨Φ, Φ', hΦ', hPM, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `GlobalTheory.T.continuous_left_invariant_theta hK F E σ B a a' G X om om' hT Φ (hPol Φ Φ' hPM).1) f hf`. Establish `hgC` using `span_contInv _ (by`. Introduce and unpack `_ ⟨Φ, Φ', hΦ', hPM, rfl⟩`. Conclude with `GlobalTheory.T.continuous_left_invariant_dual hK F E σ B a a' G X om om' hT Φ' ⟨(hPol Φ Φ' hPM).2, hΦ'⟩) g hg`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hfin : μ 𝓕 ≠ ⊤` using `by rw [h1]; exact ENNReal.one_ne_top`. Establish `hint : ∀ k : UA σ G.W.J → ℂ, Continuous k → (∀ γ ∈ ratU σ G.W.J, ∀ h, k (γ * h) = k h) → IntegrableOn (fun u : unip σ G.W H' => k (u.1 * h)) 𝓕 μ`. Introduce `k hk hki`.
-
-Take `⟨C, hC⟩` from `GlobalTheory.T.automorphic_function_bounded_on_unipotent F E σ B (a + a') d₁ G.W W₁ H' i₀ i₁ _ _ hT.base hT.geo.hW hH' k hk hki h`. Conclude with `Measure.integrableOn_of_bounded (M := C) hfin (hk.comp (continuous_subtype_val.mul continuous_const)).aestronglyMeasurable (ae_of_all _ fun u => hC u.1 u.2)`. Establish `e1` using `hc μ 𝓕 hμ hF h1 h`. Establish `e2` using `hd μ 𝓕 hμ hF h1 h`. Use `show c h + d h = ∫ u in 𝓕, (f (u.1 * h) + g (u.1 * h)) ∂μ`.
-
-Rewrite using `[integral_add (hint f hfC.1 hfC.2) (hint g hgC.1 hgC.2), ← e1, ← e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.DescB.isCT_add_thetaSpan : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),

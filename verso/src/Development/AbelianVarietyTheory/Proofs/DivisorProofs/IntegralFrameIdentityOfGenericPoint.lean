@@ -20,19 +20,17 @@ open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.Poinc.Sep.Frames Glob
 namespace GlobalTheory.Poinc.Sep.FrameInt
 
 /- English proof (translation)
-Introduce `V _ _ D N b hbN t ht κ hκn hgen Z r z J hJ`. Establish `G` using `((SymFrame.grep_gen t ht (𝟙 _)).pow (N ^ 2)).mul (SymFrame.grep_kap κ hκn.1 b)`. Take `⟨s, hs, vs⟩` from `G.out D.P.isLB (K := PEmpty) PEmpty.elim PEmpty.elim (fun U _ h => Eq.trans (by`. Rewrite using `[Fin.prod_univ_two, hbN, ← SymFrame.eta_eq]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, DegPre.lineε, Category.comp_id, Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, ofMul_one]`. Rewrite using `[← natCast_zsmul]`. Use `push_cast`. Use the proof step `module) (Fintype.prod_empty _).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ⟩` from `exists_ratio D.P.isLB rfl s (LB.oneGen D.P.L) hs (oneGen_gen _)`. Establish `hρ1 : ρ = 1`. Take `⟨z₀⟩` from `exists_pt (R := V) (F := FractionRing V)`. Take `⟨J₀, hJ₀⟩` from `exists_good' D.P.isLB z₀`. Establish `a` using `vs _ (toUnit (TF (R := V) (FractionRing V))) z₀ J₀ hJ₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a` using `[hρ _ _ z₀ J₀ hJ₀, val_one, _root_.mul_one]`. Simplify using `only [Category.comp_id] at a`. Establish `a1 : gm (toUnit (TF (R` using `V) (FractionRing V))).left z₀ ⊤ ρ = 1 := a.trans (hgen z₀ J₀ hJ₀)`. Establish `c` using `gm_top_eq ρ z₀`. Rewrite `c` using `[a1, Units.val_one, cst_eq, ← map_one (cstH z₀)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `d` using `cstH_inj z₀ c`. Rewrite `d` using `[← map_one (algebraMap V (FractionRing V))]`. Establish `e` using `IsFractionRing.injective V (FractionRing V) d`. Apply `Units.ext` to reduce the goal to its premises. Establish `hinj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom` using `(Scheme.ΓSpecIso (CommRingCat.of V)).commRingCatIsoToRingEquiv.injective`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[Units.val_one, map_one]`. Conclude with `e.symm`. Establish `a` using `vs (Over.mk r) (toUnit _) z J hJ`. Rewrite `a` using `[hρ _ _ z J hJ, val_one, _root_.mul_one, hρ1, map_one]`.
-
-Simplify using `only [Category.comp_id] at a`. Conclude with `a.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kap_of_generic : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (N : ℕ) (b : 𝟙_ (Over (Sp V)) ⟶ D.P.A), b ^ N = 1 → ∀ (t : LB.Gen (LB.LinComb D.P.L ![(η[D.P.A]).left, b.left] (DegPre.lineε 1))), t.IsGen → ∀ (κ : LB.Gen (kapLB D (𝟙 D.P.A ^ N) (N ^ 2) 1)), Normd κ → (∀ z J, Good D.P.L z J → val t (toUnit (TF (R := V) (FractionRing V))).left z J ^ (N ^ 2) * val κ ((toUnit (TF (R := V) (FractionRing V))).left ≫ b.left) z J = 1) → ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp V) (z : Z) J, Good D.P.L z J → val t r z J ^ (N ^ 2) * val κ (r ≫ b.left) z J = 1 := by
   intro V _ _ D N b hbN t ht κ hκn hgen Z r z J hJ

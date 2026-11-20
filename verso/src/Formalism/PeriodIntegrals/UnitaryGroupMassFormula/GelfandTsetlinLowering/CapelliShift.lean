@@ -10,13 +10,13 @@ namespace PI.WGL
 open Formalism.BasicNotions Formalism.GradedWeylDivisibility MvPolynomial
 
 /- English proof (translation)
-Establish `key : ∀ (p : Prop) [Decidable p] (y : A), (if p then algebraMap ℂ A c else 0) * y = y * (if p then algebraMap ℂ A c else 0)`. Introduce `p _ y`. Use `split_ifs`. Conclude with `Algebra.commutes c y`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i j k l`. Simplify using `only`. Establish `h1` using `key (i = j) (E k l)`. Establish `h2` using `key (k = l) (E i j)`. Establish `h3` using `key (i = j) (if k = l then algebraMap ℂ A c else 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Apply the first step, then apply the next step to every resulting obligation.
 
-Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `by_cases hjk : j = k <;> by_cases hli : l = i`. Substitute `hjk` using the available equality. Substitute `hli` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hil : ¬ i = l` using `fun h => hli h.symm`. Simplify using `[hjk, hli, hil]`. Establish `hkj : ¬ k = j` using `fun h => hjk h.symm`. Simplify using `[hjk, hli, hkj]`. Simplify using `[hjk, hli]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glRel_shift {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A)
     (hE : Formalism.REAL.GlRel E) (c : ℂ) :
@@ -57,9 +57,9 @@ def capE {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (a b : Fin n) :
     if a = b then algebraMap ℂ _ (lam.detShift : ℂ) else 0
 
 /- English proof (translation)
-Establish `hP` using `pol_glRel N N`. Establish `hR : Formalism.REAL.GlRel (fun a b : Fin n => (pol ℂ (Fin.castLE (by omega : n ≤ N) a) (Fin.castLE (by omega : n ≤ N) b) : Module.End ℂ (MvPolynomial (Fin N × Fin N) ℂ)))`. Introduce `i j k l`. Use `hP (Fin.castLE (by omega) i) (Fin.castLE (by omega) j) (Fin.castLE (by omega) k) (Fin.castLE (by omega) l)` as an intermediate fact. Simplify using `only [Fin.castLE_inj] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Conclude with `glRel_shift _ hR _`.
+A detailed English derivation is pending.
 -/
 theorem capE_glRel {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) : Formalism.REAL.GlRel (capE h lam) := by
   have hP := pol_glRel N N
@@ -74,7 +74,7 @@ theorem capE_glRel {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) : Formalism.R
   exact glRel_shift _ hR _
 
 /- English proof (translation)
-Unfold `capE`. Use `split_ifs`. Rewrite using `[LinearMap.add_apply, Module.algebraMap_end_apply]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem capE_apply {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (a b : Fin n) (x : MvPolynomial (Fin N × Fin N) ℂ) :
     capE h lam a b x = pol ℂ (Fin.castLE (by omega) a) (Fin.castLE (by omega) b) x +

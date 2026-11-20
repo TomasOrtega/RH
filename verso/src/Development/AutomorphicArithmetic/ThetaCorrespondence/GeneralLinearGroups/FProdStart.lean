@@ -10,15 +10,15 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.GeneralLinearGroups
 open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult UpperTheory.Lit.Cas UpperTheory.Lit.Red
 
 /- English proof (translation)
-Establish `hne : C ≠ 0`. Introduce `h0`. Rewrite `ep` using `[h0, map_zero]`. Conclude with `one_ne_zero ((MvPolynomial.monomial_eq_zero).1 ep.symm)`. Take `⟨w, hw⟩ : ∃ w, w ∈ C.support` from `Finsupp.support_nonempty_iff.2 hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw'` using `Finsupp.mem_support_iff.1 hw`. Establish `h1 : C = C w • Finsupp.single w (1 : ℤ)`. Use extensionality with `x`. Rewrite using `[Finsupp.smul_apply, Finsupp.single_apply]`. Use `split_ifs with hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, smul_eq_mul, mul_one]`. Rewrite using `[smul_zero]`. Assume the negation of the conclusion as `hx0`. Conclude with `hx (hU w x hw' hx0).symm`. Establish `h2 : C w * MvPolynomial.coeff m (Ψ (Finsupp.single w 1)) = 1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun p => MvPolynomial.coeff m (Ψ p)) h1`. Simplify using `only [map_zsmul, ep, MvPolynomial.coeff_monomial, if_true, MvPolynomial.coeff_smul, smul_eq_mul] at h3`. Conclude with `h3.symm`. Establish `h4 : C w = 1`. Use `hnn w` as an intermediate fact.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Break down `Int.eq_one_or_neg_one_of_mul_eq_one' h2 with h | h` into its components or cases. Conclude with `h.1`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[h4, one_smul]`. Conclude with `⟨w, h1⟩`.
+A detailed English derivation is pending.
 -/
 private theorem eq_single_of_monomial {ι σ : Type*} (Ψ : (ι →₀ ℤ) ≃+ MvPolynomial σ ℤ) (C : ι →₀ ℤ) (m : σ →₀ ℕ)
     (ep : Ψ C = MvPolynomial.monomial m 1) (hnn : ∀ w, 0 ≤ C w) (hU : ∀ w x, C w ≠ 0 → C x ≠ 0 → x = w) :
@@ -52,11 +52,9 @@ private theorem eq_single_of_monomial {ι σ : Type*} (Ψ : (ι →₀ ℤ) ≃+
 
 open GlobalTheory.LocGL.SupportRing in
 /- English proof (translation)
-Take `⟨n, c⟩` from `w`. Choose the witnesses or unpack the hypotheses as in `rfl : n = N := by`. Assume the negation of the conclusion as `hne`. Use `hw ?_` and prove the remaining obligations. Rewrite using `[clsGL, Finsupp.mapDomain_notin_range]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨c', h'⟩`. Conclude with `hne (congrArg Sigma.fst h').symm`. Use `⟨rfl, fun _ => ?_⟩` and prove the remaining obligations. Conclude with `isSubquotient_of_clsGL_ne hB c.rep.smooth c.rep.irr (by`. Establish `e : IrrGL.of c.rep.ρ c.rep.smooth c.rep.irr = (⟨n, c⟩ : IrrGL k)` using `IrrGL.of_rep ⟨n, c⟩`.
-
-Rewrite using `[e]`. Conclude with `hw)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem occ_of_cls {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {V : Type} [AddCommGroup V] [Module ℂ V] {N : ℕ} {B : Representation ℂ (GL (Fin N) k) V}
@@ -82,7 +80,7 @@ open GlobalTheory.LocGL.SupportRing
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨n, c⟩` from `y`. Take `rfl : D.len * D.d = n` from `hy.deg_eq`. Establish `e : c = Z D` using `c.cl_rep.symm.trans (IsZSeg.cl_eq hS (π := c.rep) hy)`. Rewrite using `[← hX D, e]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem bas_of_isZSeg {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k)}
     {Ψ : GrothGL k ≃+ MvPolynomial (Segment k) ℤ} (hS : IsSegmentClass k Z)
@@ -95,7 +93,7 @@ private theorem bas_of_isZSeg {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * 
   rfl
 
 /- English proof (translation)
-Use `Finset.prod_induction _ (fun p => ∃ m, p = MvPolynomial.monomial m (1 : ℤ)) ?_ ⟨0, rfl⟩ fun i _ => ?_` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, rfl⟩ ⟨b, rfl⟩`. Conclude with `⟨a + b, by rw [MvPolynomial.monomial_mul, one_mul]⟩`. Conclude with `⟨_, hf i⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 private theorem prod_X_monomial {σ : Type*} {h : ℕ} (Δ : Fin h → σ) (f : Fin h → MvPolynomial σ ℤ)
     (hf : ∀ i, f i = MvPolynomial.X (Δ i)) : ∃ m, ∏ i, f i = MvPolynomial.monomial m (1 : ℤ) := by
@@ -105,7 +103,7 @@ private theorem prod_X_monomial {σ : Type*} {h : ℕ} (Δ : Fin h → σ) (f : 
   · exact ⟨_, hf i⟩
 
 /- English proof (translation)
-Take `⟨e, h1⟩` from `occ_of_cls hp w hw`. Substitute `e` using the available equality. Conclude with `⟨hd, h1 rfl⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem occ_prodIrr {h N : ℕ} (z : Fin h → IrrGL k) (hd : ∑ i, (z i).1 = N)
     (hp : HasFiniteLength (prodIrr z hd)) (w : IrrGL k) (hw : clsGL (prodIrr z hd) hp w ≠ 0) :
@@ -118,13 +116,13 @@ end
 
 open GlobalTheory.LocGL.SupportRing in
 /- English proof (translation)
-Introduce `hG hBZ hZ k _ _ _ _ ρ h N Δ z hd hρ hf hz`. Take `⟨Z, Ψ, hS, hΨ, hX⟩` from `hZ k`. Take `⟨hp, ep⟩` from `prodIrr_cls hΨ z hd`. Take `⟨m, hm⟩` from `prod_X_monomial Δ _ fun i => bas_of_isZSeg hS hX _ _ (hz i)`. Establish `hF : ∀ i, FirstIn (z i) {ρ}` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hf i]`. Conclude with `(UpperTheory.Lit.Full.zfirst hG hBZ hZ k (Δ i)).2 (z i) (hz i)`. Establish `key : ∀ w : IrrGL k, clsGL (prodIrr z hd) hp w ≠ 0 → HasSupport w.rep (∑ i, (Δ i).ms) ∧ FirstIn w {ρ}`. Introduce `w hw`. Take `⟨hc, h1⟩` from `occ_prodIrr z hd hp w hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨hasSupport_of_isSubquotient_prodIrr hΨ (fun i => (hz i).hasSupport) w.2.rep.irr h1, UpperTheory.Lit.Full.firstProd hG hBZ k {ρ} h z w hc hF (jhMult_ne_zero_iff.2 h1)⟩`. Establish `hup : ∀ y ∈ ∑ i, (Δ i).ms, y ∈ up ρ`. Introduce `y hy`. Take `⟨i, -, hi⟩` from `Multiset.mem_sum.1 hy`. Take `⟨a, -, ha⟩` from `Segment.mem_carrier.1 (Segment.mem_ms.1 hi)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, by rw [← ha, hf i]⟩`. Take `⟨w, h1⟩` from `eq_single_of_monomial Ψ _ m (ep.trans hm) (clsGL_nonneg _ hp) fun w x hw hx => (UpperTheory.Lit.Full.redUnique hG hBZ hZ k ρ hρ _ hup w (key w hw).1 (key w hw).2).2 x (key x hx).1 (key x hx).2`. Conclude with `GlobalTheory.CompanionTheory.Hypotheses₂.RankOne.isIrreducible_of_clsGL_eq_single hp (isSmooth_prodIrr z hd) h1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Full.prodStart :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ρ : IrrGL k) (h N : ℕ) (Δ : Fin h → Segment k) (z : Fin h → IrrGL k) (hd : ∑ i, (z i).1 = N), ρ.IsCusp → (∀ i, (Δ i).first = ρ) → (∀ i, IsZSeg (Δ i) (z i).rep) → (prodIrr z hd).IsIrreducible := by

@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Use `letI : Field (C ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite E (C ⧸ m) := finite_of_finite_type_of_isJacobsonRing E (C ⧸ m)`. Set `ι : (C ⧸ m) →ₐ[E] K` to `IsAlgClosed.lift`. Conclude with `⟨ι, ι.toRingHom.injective⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem et_point (E K C : Type) [Field E] [Field K] [Algebra E K] [IsAlgClosed K] [CommRing C] [Algebra E C]
     [Algebra.FiniteType E C] (m : Ideal C) [m.IsMaximal] :
@@ -14,25 +14,23 @@ private theorem et_point (E K C : Type) [Field E] [Field K] [Algebra E K] [IsAlg
   exact ⟨ι, ι.toRingHom.injective⟩
 
 /- English proof (translation)
-Establish `key : ∀ m : Ideal C, m.IsMaximal → (⊤ : Submodule C Ω[C⁄O]) ≤ m • ⊤`. Introduce `m hm x _`. Assume the negation of the conclusion as `hx`. Use `letI : Field (C ⧸ m) := Ideal.Quotient.field m`. Take `⟨ι, hι⟩` from `hp m hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Establish `hq : Submodule.Quotient.mk (p` using `m • (⊤ : Submodule C Ω[C⁄O])) x ≠ 0 := by`. Rewrite using `[Ne, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual (C ⧸ m) (Ω[C⁄O] ⧸ m • (⊤ : Submodule C Ω[C⁄O])), φ (Submodule.Quotient.mk x) ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Conclude with `hq ((Module.forall_dual_apply_eq_zero_iff (C ⧸ m) _).mp hall)`. Set `f : Ω[C⁄O] →ₗ[C] C ⧸ m` to `(φ.restrictScalars C).comp (m • (⊤ : Submodule C Ω[C⁄O])).mkQ`. Set `D : Derivation O C (C ⧸ m)` to `f.compDer (KaehlerDifferential.D O C)`. Set `ξ : C →ₐ[O] K` to `ι.comp (Ideal.Quotient.mkₐ O m)`. Set `L : C →ₗ[O] K` to `ι.toLinearMap.comp (D : C →ₗ[O] C ⧸ m)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL : L ∈ PtDer ξ K`. Introduce `a b`. Use `show ι (D (a * b)) = ι (Ideal.Quotient.mk m a) • ι (D b) + ι (Ideal.Quotient.mk m b) • ι (D a)`. Rewrite using `[Derivation.leibniz, Algebra.smul_def, Algebra.smul_def, map_add, map_mul, map_mul, smul_eq_mul, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hL` using `[hD ξ, Submodule.mem_bot]`. Establish `hDz : ∀ c, D c = 0`. Introduce `c`. Apply `hι` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `LinearMap.congr_fun hL c`. Establish `hf : f = 0`. Apply `LinearMap.ext_on_range (KaehlerDifferential.span_range_derivation O C)` to reduce the goal to its premises. Introduce `c`. Simplify `hDz c` using `[D]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `hφ` to reduce the goal to its premises. Establish `h2` using `LinearMap.congr_fun hf x`. Simplify `h2` using `[f]`. Establish `hfg : (⊤ : Submodule C Ω[C⁄O]).FG` using `Module.finite_def.mp inferInstance`. Establish `hann : Module.annihilator C Ω[C⁄O] = ⊤`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨r, hr1, hr⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul m ⊤ hfg (key m hm)`. Establish `hrJ : r ∈ Module.annihilator C Ω[C⁄O]` using `Module.mem_annihilator.mpr (fun n => hr n trivial)`. Establish `h3` using `m.sub_mem (hle hrJ) hr1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[sub_sub_cancel]`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one m).mpr h3)`. Establish `h1 : (1 : C) ∈ Module.annihilator C Ω[C⁄O]`. Rewrite using `[hann]`. Conclude with `Submodule.mem_top`.
-
-Establish `h0 : ∀ n : Ω[C⁄O], n = 0`. Introduce `n`. Rewrite using `[← one_smul C n]`. Conclude with `Module.mem_annihilator.mp h1 n`. Conclude with `⟨⟨fun a b => (h0 a).trans (h0 b).symm⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem et_unram (O K C : Type) [CommRing O] [Field K] [Algebra O K] [CommRing C] [Algebra O C]
     [Algebra.FiniteType O C]
@@ -93,27 +91,21 @@ private theorem et_unram (O K C : Type) [CommRing O] [Field K] [Algebra O K] [Co
   exact ⟨⟨fun a b => (h0 a).trans (h0 b).symm⟩⟩
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ C _ _ _ hunit hD`. Establish `huC : ∀ y : nonZeroDivisors O, IsUnit (algebraMap O C y)` using `fun y => hunit y (nonZeroDivisors.ne_zero y.2)`. Establish `hinjK : Function.Injective (algebraMap O K)` using `FaithfulSMul.algebraMap_injective O K`. Establish `huK : ∀ y : nonZeroDivisors O, IsUnit (algebraMap O K y)`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `isUnit_iff_ne_zero.mpr (fun h0 => nonZeroDivisors.ne_zero y.2 (hinjK ?_))` and prove the remaining obligations. Rewrite using `[h0, map_zero]`. Use `letI : Algebra (FractionRing O) C := (IsLocalization.lift (M := nonZeroDivisors O) (S := FractionRing O) huC).toAlgebra`. Use `letI : Algebra (FractionRing O) K := (IsLocalization.lift (M := nonZeroDivisors O) (S := FractionRing O) huK).toAlgebra`. Use `haveI : IsScalarTower O (FractionRing O) C := IsScalarTower.of_algebraMap_eq (fun r => (IsLocalization.lift_eq (M := nonZeroDivisors O) (S := FractionRing O) huC r).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower O (FractionRing O) K := IsScalarTower.of_algebraMap_eq (fun r => (IsLocalization.lift_eq (M := nonZeroDivisors O) (S := FractionRing O) huK r).symm)`. Use `haveI : Algebra.FiniteType (FractionRing O) C := Algebra.FiniteType.of_restrictScalars_finiteType O (FractionRing O) C`. Establish `hpt : ∀ m : Ideal C, m.IsMaximal → ∃ ι : (C ⧸ m) →ₐ[O] K, Function.Injective ι`. Introduce `m hm`. Use `haveI := hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨ι, hι⟩` from `et_point (FractionRing O) K C m`. Conclude with `⟨ι.restrictScalars O, hι⟩`. Use `haveI : Algebra.FormallyUnramified O C := et_unram O K C hpt hD`. Use `haveI : Algebra.FormallyUnramified (FractionRing O) C := Algebra.FormallyUnramified.of_restrictScalars O (FractionRing O) C`. Use `haveI : Module.Finite (FractionRing O) C := Algebra.FormallyUnramified.finite_of_free (FractionRing O) C`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsReduced C := Algebra.FormallyUnramified.isReduced_of_field (FractionRing O) C`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hcompat : ∀ ξ : C →ₐ[O] K, ∀ r : FractionRing O, ξ (algebraMap (FractionRing O) C r) = algebraMap (FractionRing O) K r`. Introduce `ξ r`. Establish `hc : ξ.toRingHom.comp (algebraMap (FractionRing O) C) = algebraMap (FractionRing O) K`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Apply `IsLocalization.ringHom_ext (nonZeroDivisors O)` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Conclude with `ξ.commutes a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `RingHom.congr_fun hc r`. Set `up : (C →ₐ[O] K) → (C →ₐ[FractionRing O] K)` to `fun ξ => { ξ.toRingHom with commutes' := hcompat ξ }`. Establish `hup : Function.Injective up`. Introduce `ξ₁ ξ₂ h`. Use extensionality with `c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `AlgHom.congr_fun h c`. Use `haveI : Finite (C →ₐ[FractionRing O] K) := (linearIndependent_toLinearMap (FractionRing O) C K).finite`. Conclude with `Finite.of_injective up hup`. Introduce `h hh haveI : IsJacobsonRing C := isJacobsonRing_of_finiteType (A := FractionRing O)`. Establish `hrad : (⊥ : Ideal C).IsRadical`.
-
-Introduce `x hx`. Take `⟨n, hn⟩` from `hx`. Rewrite `hn`, the goal using `[Ideal.mem_bot]`. Conclude with `IsNilpotent.eq_zero ⟨n, hn⟩`. Establish `hj` using `IsJacobsonRing.out' (⊥ : Ideal C) hrad`.
-
-Rewrite using `[← Ideal.mem_bot, ← hj, Ideal.jacobson, Ideal.mem_sInf]`. Introduce and unpack `J ⟨-, hJ⟩`. Use `haveI := hJ`. Take `⟨ι, hι⟩` from `hpt J hJ`. Establish `h5` using `hh (ι.comp (Ideal.Quotient.mkₐ O J))`.
-
-Rewrite `h5` using `[AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, ← map_zero ι]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp (hι h5)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.et_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

@@ -11,11 +11,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `X Y a ha hinj`. Use `haveI := ha`. Assume the negation of the conclusion as `hne`. Simplify using `only [Function.Surjective, not_forall] at hne`. Take `⟨y, hy⟩` from `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcl : IsClosed (Set.range a)`. Simplify using `using a.isClosedMap _ isClosed_univ`. Set `V : Y.Opens` to `⟨(Set.range a)ᶜ, hcl.isOpen_compl⟩`. Use `haveI : Nonempty V := ⟨⟨y, fun ⟨p, hp⟩ => hy ⟨p, hp⟩⟩⟩`. Establish `hV : a ⁻¹ᵁ V = ⊥`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `p`. Simplify using `[V]`. Use `haveI : Subsingleton Γ(X, a ⁻¹ᵁ V) := CommRingCat.subsingleton_of_isTerminal (X.sheaf.isTerminalOfEqEmpty hV)`. Establish `: Subsingleton Γ(Y, V)` using `(hinj V).subsingleton`. Conclude with `not_subsingleton Γ(Y, V) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_of_isProper_of_app_injective : ∀ (X Y : Scheme.{0}) (a : X ⟶ Y), IsProper a → (∀ V : Y.Opens, Function.Injective (a.app V).hom) → Function.Surjective a := by
   intro X Y a ha hinj
@@ -36,17 +36,15 @@ theorem surjective_of_isProper_of_app_injective : ∀ (X Y : Scheme.{0}) (a : X 
   exact not_subsingleton Γ(Y, V) this
 
 /- English proof (translation)
-Introduce `R _ _ _ hR S X π U a b g τ c hπp hπs hπΓ hUf hUs hap haV hτ hc1 hc2 hc x hxc hxR hinj hsurj`. Use `set F := pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π with hF`. Establish `hw : (a.fiberι x ≫ c) ≫ F = (a.fiberToSpecResidueField x ≫ Spec.map (τ.residueFieldMap x)) ≫ (𝔸(Fin g; Sp R)).fromSpecResidueField (τ x)`. Rewrite using `[Category.assoc, hF, hc1, ← Category.assoc, Scheme.Hom.fiber_fac, Category.assoc, Category.assoc, Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField]`. Set `φ : a.fiber x ⟶ F.fiber (τ x)` to `pullback.lift _ _ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ1 : φ ≫ F.fiberι (τ x) = a.fiberι x ≫ c` using `pullback.lift_fst _ _ _`. Establish `hφ2 : φ ≫ F.fiberToSpecResidueField (τ x) = a.fiberToSpecResidueField x ≫ Spec.map (τ.residueFieldMap x)` using `pullback.lift_snd _ _ _`. Establish `hUO` using `GlobalTheory.T.proper_surjective_affine_chart_bijective_sections R hR S X π U a b g τ c hπp hπs hπΓ hUf hUs hap haV hτ hc1 hc2 hc x hxc hxR hinj hsurj φ hφ1 hφ2`. Use `haveI : IsPreimmersion (F.fiberι (τ x)) := inferInstance`. Take `⟨W, hW⟩` from `GlobalTheory.T.exists_open_range_eq_inter_preimage_etale_univOpen X _ _ _ c (F.fiberι (τ x)) (a.fiberι x) φ hc inferInstance hUO hφ1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hW` using `[Scheme.Hom.range_fiberι, Scheme.Hom.range_fiberι]`. Establish `hs` using `surjective_of_isProper_of_app_injective X U.left a hap (fun V => (haV V).1)`. Use `haveI := hap`. Use `⟨⟨(a '' (W : Set X)ᶜ)ᶜ, (a.isClosedMap _ W.isOpen.isClosed_compl).isOpen_compl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨p, hp, hpx⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: p ∈ a ⁻¹' {x}` using `hpx`. Rewrite `this` using `[hW]`. Conclude with `hp this.1`. Introduce `u hu hτu`. Take `⟨p, rfl⟩` from `hs u`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hp : p ∈ W`. Establish `: p ∈ (W : Set X) ∩ c ⁻¹' (F ⁻¹' {τ x})`. Use `⟨hp, ?_⟩` and prove the remaining obligations. Use `show F (c p) = τ x`. Rewrite using `[← Scheme.Hom.comp_apply, hF, hc1, Scheme.Hom.comp_apply, hτu]`.
-
-Rewrite `this` using `[← hW]`. Conclude with `this`. Conclude with `absurd ⟨p, hp, rfl⟩ hu`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isolated_in_coordinate_fibre : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (S X : Scheme.{0}) (π : S ⟶ Sp R) (U : Over (Sp R)) (a : X ⟶ U.left) (b : X ⟶ S) (g : ℕ) (τ : U.left ⟶ 𝔸(Fin g; Sp R)) (c : X ⟶ pullback (𝔸(Fin g; Sp R) ↘ Sp R) π), IsProper π → Surjective π → Function.Bijective π.appTop.hom → LocallyOfFiniteType U.hom → IsSeparated U.hom → IsProper a → (∀ V : U.left.Opens, Function.Bijective (a.app V).hom) → τ ≫ (𝔸(Fin g; Sp R) ↘ Sp R) = U.hom → c ≫ pullback.fst _ _ = a ≫ τ → c ≫ pullback.snd _ _ = b → Etale c → ∀ x : U.left, IsClosed ({x} : Set U.left) → U.hom x = closedPoint R → (∀ (Ω : Type) [Field Ω] (p p' : Sp Ω ⟶ X), Set.range (p ≫ a) = {x} → p ≫ a = p' ≫ a → p ≫ b = p' ≫ b → p = p') → (∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (ξ : Sp Ω ⟶ U.left) (s : Sp Ω ⟶ S), Set.range ξ = {x} → ξ ≫ U.hom = s ≫ π → ∃ p : Sp Ω ⟶ X, p ≫ a = ξ ∧ p ≫ b = s) → ∃ O : U.left.Opens, x ∈ O ∧ ∀ u ∈ O, τ u = τ x → u = x := by
   intro R _ _ _ hR S X π U a b g τ c hπp hπs hπΓ hUf hUs hap haV hτ hc1 hc2 hc x hxc hxR hinj hsurj

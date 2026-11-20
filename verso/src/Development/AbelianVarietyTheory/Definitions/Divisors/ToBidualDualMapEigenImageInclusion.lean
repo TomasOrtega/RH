@@ -25,7 +25,7 @@ variable {X Y : Scheme.{0}} {F G H : X.Modules} {O : Type} [CommRing O]
 variable (F) in
 
 /- English proof (translation)
-Use extensionality with `V l : 3`. Conclude with `dual_ext fun W h s => congrArg (dualApp l h) (resM_self _ s)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem toBidual_dual_comp_dualMap :
     cartierDualToBidual (dual F) ≫ dualMap (cartierDualToBidual F) = 𝟙 _ := by
@@ -36,13 +36,13 @@ instance mono_toBidual_dual : Mono (cartierDualToBidual (dual F)) :=
   mono_of_mono_fac (toBidual_dual_comp_dualMap F)
 
 /- English proof (translation)
-The claim follows from `mono_of_mono_fac (toBidual_naturality_dualSheafTranspose i).symm`.
+A detailed English derivation is pending.
 -/
 theorem mono_toBidual_of_mono (i : G ⟶ F) [Mono i] [Mono (cartierDualToBidual F)] : Mono (cartierDualToBidual G) :=
   mono_of_mono_fac (toBidual_naturality_dualSheafTranspose i).symm
 
 /- English proof (translation)
-The claim follows from `have := h.isIso_toBidual_of_local_frames inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem mono_toBidual_of_isVectorBundle {r : ℕ} (h : IsVB F r) : Mono (cartierDualToBidual F) :=
   have := h.isIso_toBidual_of_local_frames
@@ -52,15 +52,15 @@ def IsRegularFn (D : Γ(X, ⊤)) : Prop :=
   ∀ (V : X.Opens) (a : Γ(X, V)), resG X (le_top : V ≤ ⊤) D * a = 0 → a = 0
 
 /- English proof (translation)
-Introduce `_ _ e` and use `(h.map _).mul_right_eq_zero.1 e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRegularFn_of_isUnit {D : Γ(X, ⊤)} (h : IsUnit D) : IsRegularFn D :=
   fun _ _ e => (h.map _).mul_right_eq_zero.1 e
 
 /- English proof (translation)
-Introduce `V a e`. Break down `eq_or_ne V ⊥ with rfl | hV` into its components or cases. Conclude with `Subsingleton.elim _ _`. Take `⟨x, hx⟩` from `(Opens.ne_bot_iff_nonempty _).1 hV`. Establish `: Nonempty V` using `⟨⟨x, hx⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mul_eq_zero.1 e).resolve_left fun h0 => h ?_` and prove the remaining obligations. Conclude with `map_injective_of_isIntegral X (homOfLE le_top) (h0.trans (map_zero _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem isRegularFn_of_ne_zero [IsIntegral X] {D : Γ(X, ⊤)} (h : D ≠ 0) : IsRegularFn D := by
   intro V a e
@@ -72,7 +72,7 @@ theorem isRegularFn_of_ne_zero [IsIntegral X] {D : Γ(X, ⊤)} (h : D ≠ 0) : I
     exact map_injective_of_isIntegral X (homOfLE le_top) (h0.trans (map_zero _).symm)
 
 /- English proof (translation)
-Use `QCoh.injective_app_of_mono (cartierDualToBidual F) V (Eq.trans ?_ (map_zero _).symm)` and prove the remaining obligations. Use `dual_ext fun W hW l => h W _ ?_` and prove the remaining obligations. Use `congrArg (fun t => dualApp l le_rfl (resM F hW t)) e` as an intermediate fact. Simplify using `only [resM_smul, map_smul, resG_resG, map_zero] at this`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsRegularFn.eq_zero_of_smul {D : Γ(X, ⊤)} (h : IsRegularFn D) [Mono (cartierDualToBidual F)]
     {V : X.Opens} {s : Γ(F, V)} (e : resG X (le_top : V ≤ ⊤) D • s = 0) : s = 0 := by
@@ -83,7 +83,7 @@ theorem IsRegularFn.eq_zero_of_smul {D : Γ(X, ⊤)} (h : IsRegularFn D) [Mono (
   exact this
 
 /- English proof (translation)
-Use extensionality with `V s : 3`. Conclude with `h.eq_zero_of_smul congr(($e).app V s)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem IsRegularFn.hom_eq_zero {D : Γ(X, ⊤)} (h : IsRegularFn D) [Mono (cartierDualToBidual F)]
     {φ : G ⟶ F} (e : D • φ = 0) : φ = 0 := by
@@ -91,11 +91,9 @@ theorem IsRegularFn.hom_eq_zero {D : Γ(X, ⊤)} (h : IsRegularFn D) [Mono (cart
   exact h.eq_zero_of_smul congr(($e).app V s)
 
 /- English proof (translation)
-Use `IsTorsionFree.of_mono (fun V hV l hl => dual_ext fun W h s => ?_) (cartierDualToBidual F)` and prove the remaining obligations. Break down `eq_or_ne W ⊥ with rfl | hW'` into its components or cases. Conclude with `Subsingleton.elim _ _`. Take `⟨x, hx⟩` from `(Opens.ne_bot_iff_nonempty _).1 hW'`. Establish `hW` using `genericPoint_mem hx`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT, i₁, i₂, e⟩` from `(dual (dual F)).presheaf.germ_eq _ hW hW (resM _ h l) 0 (by rw [Twist.germ_resM, hl, map_zero])`. Establish `: Nonempty T` using `⟨⟨_, hT⟩⟩`. Use `map_injective_of_isIntegral X i₁ ?_` and prove the remaining obligations. Establish `e' : resM _ i₁.le (resM _ h l) = 0` using `e.trans (map_zero _)`. Use `congrArg (fun m => dualApp m le_rfl (resM _ i₁.le s)) e'` as an intermediate fact.
-
-Conclude with `(dualApp_resM l h i₁.le s).symm.trans (this.trans (map_zero _).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isTorsionFree_of_mono_toBidual [IsIntegral X] [Mono (cartierDualToBidual F)] : IsTorsionFree F := by
   refine IsTorsionFree.of_mono (fun V hV l hl => dual_ext fun W h s => ?_) (cartierDualToBidual F)
@@ -125,7 +123,7 @@ theorem dualApp_eigenEval {V W : X.Opens} (s : Γ(F, V)) (h : W ≤ V)
       dualApp ((eigenι (dualAct ρ) σ).app W l) le_rfl (resM F h s) := rfl
 
 /- English proof (translation)
-Rewrite using `[toBidual_naturality_dualSheafTranspose_assoc, ← dualMap_comp, ← dualQuotIso_hom_ι, Iso.inv_hom_id_assoc, eigenEval]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eigenEval_eq : eigenEval ρ σ =
     eigenπ ρ σ ≫ cartierDualToBidual _ ≫ dualMap (dualQuotIso ρ σ).inv := by
@@ -143,7 +141,7 @@ instance epi_eigenImπ : Epi (eigenImπ ρ σ) := inferInstanceAs (Epi (factorTh
 instance mono_eigenImι : Mono (eigenImι ρ σ) := inferInstanceAs (Mono (image.ι _))
 
 /- English proof (translation)
-The claim follows from `image.fac _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem eigenImπ_ι : eigenImπ ρ σ ≫ eigenImι ρ σ = eigenEval ρ σ :=
   image.fac _
@@ -152,13 +150,13 @@ instance mono_toBidual_eigenImage : Mono (cartierDualToBidual (eigenIm ρ σ)) :
   mono_toBidual_of_mono (eigenImι ρ σ)
 
 /- English proof (translation)
-The claim follows from `isTorsionFree_of_mono_toBidual`.
+A detailed English derivation is pending.
 -/
 theorem isTorsionFree_eigenIm [IsIntegral X] : IsTorsionFree (eigenIm ρ σ) :=
   isTorsionFree_of_mono_toBidual
 
 /- English proof (translation)
-Establish `e : (eigenImι ρ σ).app V ((eigenImπ ρ σ).app V s) = (eigenEval ρ σ).app V s` using `congr(($(eigenImπ_ι ρ σ)).app V s)`. Rewrite using `[← map_eq_zero_iff _ (QCoh.injective_app_of_mono (eigenImι ρ σ) V), e]`. Conclude with `⟨fun H W h l hl => congrArg (dualApp · h ((eigenSub _ σ).mkSec l hl)) H, fun H => dual_ext fun W h l => H W h _ ((eigenSub _ σ).incl_app_mem l)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem eigenImπ_app_eq_zero_iff {V : X.Opens} {s : Γ(F, V)} : (eigenImπ ρ σ).app V s = 0 ↔
     ∀ (W : X.Opens) (h : W ≤ V) (l : Γ(dual F, W)), l ∈ (eigenSub (dualAct ρ) σ).sec W →
@@ -170,14 +168,14 @@ theorem eigenImπ_app_eq_zero_iff {V : X.Opens} {s : Γ(F, V)} : (eigenImπ ρ �
     fun H => dual_ext fun W h l => H W h _ ((eigenSub _ σ).incl_app_mem l)⟩
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (eigenImι ρ σ), Category.assoc, Linear.smul_comp, eigenImπ_ι, eigenEval_eq, ← Category.assoc, act_eigenπ, Linear.smul_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_eigenImπ (a : O) : act ρ a ≫ eigenImπ ρ σ = σ a • eigenImπ ρ σ := by
   rw [← cancel_mono (eigenImι ρ σ), Category.assoc, Linear.smul_comp, eigenImπ_ι, eigenEval_eq,
     ← Category.assoc, act_eigenπ, Linear.smul_comp]
 
 /- English proof (translation)
-Introduce `a` and use `act_eigenImπ ρ σ a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isEquivariant_eigenImπ : IsEquivariant ρ (scalarAct (eigenIm ρ σ) σ) (eigenImπ ρ σ) :=
   fun a => act_eigenImπ ρ σ a
@@ -185,7 +183,7 @@ theorem isEquivariant_eigenImπ : IsEquivariant ρ (scalarAct (eigenIm ρ σ) σ
 def quotToIm : eigenQuot ρ σ ⟶ eigenIm ρ σ := eigenDesc (eigenImπ ρ σ) (act_eigenImπ ρ σ)
 
 /- English proof (translation)
-The claim follows from `eigenπ_desc _ _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem eigenπ_quotToIm : eigenπ ρ σ ≫ quotToIm ρ σ = eigenImπ ρ σ :=
   eigenπ_desc _ _ _ _
@@ -193,7 +191,7 @@ The claim follows from `eigenπ_desc _ _ _ _`.
 instance epi_quotToIm : Epi (quotToIm ρ σ) := epi_of_epi_fac (eigenπ_quotToIm ρ σ)
 
 /- English proof (translation)
-Rewrite using `[← cancel_epi (eigenπ ρ σ), eigenπ_quotToIm_assoc, eigenImπ_ι, eigenEval_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[reassoc] theorem quotToIm_ι : quotToIm ρ σ ≫ eigenImι ρ σ =
     cartierDualToBidual _ ≫ dualMap (dualQuotIso ρ σ).inv := by
@@ -202,7 +200,7 @@ Rewrite using `[← cancel_epi (eigenπ ρ σ), eigenπ_quotToIm_assoc, eigenIm�
 variable {ρ σ}
 
 /- English proof (translation)
-Establish `h' (a : O) : dualMap φ ≫ act (dualAct ρ) a = σ a • dualMap φ`. Rewrite using `[act_dualAct, ← dualMap_comp, h, dualMap_smul]`. Rewrite using `[← cancel_mono (cartierDualToBidual G), Category.assoc, toBidual_naturality_dualSheafTranspose, ← eigenLift_ι _ _ _ h', dualMap_comp, zero_comp, ← Category.assoc (cartierDualToBidual F), ← eigenEval, ← eigenImπ_ι, Category.assoc, reassoc_of% hk, zero_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_eq_zero_of_comp_eigenImπ [Mono (cartierDualToBidual G)] {φ : F ⟶ G}
     (h : ∀ a, act ρ a ≫ φ = σ a • φ) {k : H ⟶ F} (hk : k ≫ eigenImπ ρ σ = 0) : k ≫ φ = 0 := by
@@ -217,7 +215,7 @@ def eigenImDesc [Mono (cartierDualToBidual G)] (φ : F ⟶ G) (h : ∀ a, act ρ
   Abelian.epiDesc (eigenImπ ρ σ) φ (comp_eq_zero_of_comp_eigenImπ h (kernel.condition _))
 
 /- English proof (translation)
-The claim follows from `Abelian.comp_epiDesc _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem eigenImπ_desc [Mono (cartierDualToBidual G)] (φ : F ⟶ G)
     (h : ∀ a, act ρ a ≫ φ = σ a • φ) : eigenImπ ρ σ ≫ eigenImDesc φ h = φ :=
@@ -230,20 +228,20 @@ def eigenImMap {φ : F ⟶ G} (h : IsEquivariant ρ ρ' φ) : eigenIm ρ σ ⟶ 
     rw [← Category.assoc, h a, Category.assoc, act_eigenImπ, Linear.comp_smul]
 
 /- English proof (translation)
-The claim follows from `eigenImπ_desc _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem eigenImπ_eigenImMap {φ : F ⟶ G} (h : IsEquivariant ρ ρ' φ) :
     eigenImπ ρ σ ≫ eigenImMap σ h = φ ≫ eigenImπ ρ' σ := eigenImπ_desc _ _
 
 /- English proof (translation)
-Rewrite using `[← cancel_epi (eigenπ ρ σ)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 @[reassoc] theorem quotToIm_eigenImMap {φ : F ⟶ G} (h : IsEquivariant ρ ρ' φ) :
     quotToIm ρ σ ≫ eigenImMap σ h = eigenQuotMap σ h ≫ quotToIm ρ' σ := by
   rw [← cancel_epi (eigenπ ρ σ)]; simp
 
 /- English proof (translation)
-Rewrite using `[← cancel_epi (eigenImπ ρ σ), eigenImπ_eigenImMap_assoc, eigenImπ_ι, eigenImπ_ι_assoc, eigenEval, eigenEval, toBidual_naturality_dualSheafTranspose_assoc, Category.assoc, ← dualMap_comp, ← dualMap_comp, eigenMap_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[reassoc] theorem eigenImMap_ι {φ : F ⟶ G} (h : IsEquivariant ρ ρ' φ) :
     eigenImMap σ h ≫ eigenImι ρ' σ = eigenImι ρ σ ≫ dualMap (eigenMap σ h.dual) := by
@@ -275,14 +273,14 @@ def eigenImConjIso {c : O →+* O} (hc : Function.Involutive c) :
   inv_hom_id := by rw [← cancel_epi (eigenImπ _ _)]; simp
 
 /- English proof (translation)
-Simplify using `only [eigenImConjIso, eigenImπ_desc]`.
+Simplify using the standard rewrite rules.
 -/
 @[reassoc (attr := simp)] theorem eigenImπ_eigenImConjIso_hom {c : O →+* O}
     (hc : Function.Involutive c) : eigenImπ _ _ ≫ (eigenImConjIso ρ σ hc).hom = eigenImπ _ _ := by
   simp only [eigenImConjIso, eigenImπ_desc]
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, ← dualMap_comp, eigenImπ_ι, eigenEval, dualMap_comp, ← toBidual_naturality_dualSheafTranspose_assoc, toBidual_dual_comp_dualMap, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toBidual_dualMap_eigenImage_inclusion : (cartierDualToBidual _ ≫ dualMap (eigenImι ρ σ)) ≫
     dualMap (eigenImπ ρ σ) = eigenι (dualAct ρ) σ := by
@@ -307,14 +305,14 @@ Both sides reduce to the same expression.
     (dualImIso ρ σ).hom ≫ eigenι _ _ = dualMap (eigenImπ ρ σ) := rfl
 
 /- English proof (translation)
-Rewrite using `[← cancel_epi (eigenImπ ρ σ), eigenImπ_ι, toBidual_naturality_dualSheafTranspose_assoc, ← dualMap_comp, ← dualImIso_hom_ι, Iso.inv_hom_id_assoc, eigenEval]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eigenImι_eq : eigenImι ρ σ = cartierDualToBidual _ ≫ dualMap (dualImIso ρ σ).inv := by
   rw [← cancel_epi (eigenImπ ρ σ), eigenImπ_ι, toBidual_naturality_dualSheafTranspose_assoc, ← dualMap_comp,
     ← dualImIso_hom_ι, Iso.inv_hom_id_assoc, eigenEval]
 
 /- English proof (translation)
-Use `h.isIso_toBidual_of_local_frames` as an intermediate fact. Rewrite using `[eigenImι_eq]`. Conclude with `inferInstanceAs (IsIso (_ ≫ (dualIso (dualImIso ρ σ).symm).hom))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_eigenImι {r : ℕ} (h : IsVB (eigenIm ρ σ) r) : IsIso (eigenImι ρ σ) := by
   have := h.isIso_toBidual_of_local_frames
@@ -322,13 +320,13 @@ theorem isIso_eigenImι {r : ℕ} (h : IsVB (eigenIm ρ σ) r) : IsIso (eigenIm�
   exact inferInstanceAs (IsIso (_ ≫ (dualIso (dualImIso ρ σ).symm).hom))
 
 /- English proof (translation)
-The claim follows from `h.dual.of_iso (dualImIso ρ σ)`.
+A detailed English derivation is pending.
 -/
 theorem isVB_eigen_dualAct {r : ℕ} (h : IsVB (eigenIm ρ σ) r) : IsVB (eigen (dualAct ρ) σ) r :=
   h.dual.of_iso (dualImIso ρ σ)
 
 /- English proof (translation)
-The claim follows from `have := h.isIso_toBidual_of_local_frames have : Epi (eigenEval ρ σ) := epi_comp _ _ have := epi_of_epi_fac (eigenImπ_ι ρ σ) isIso_of_mono_of_epi _`.
+A detailed English derivation is pending.
 -/
 theorem isIso_eigenImι_of_epi {r : ℕ} (h : IsVB F r) [Epi (dualMap (eigenι (dualAct ρ) σ))] :
     IsIso (eigenImι ρ σ) :=
@@ -338,7 +336,7 @@ theorem isIso_eigenImι_of_epi {r : ℕ} (h : IsVB F r) [Epi (dualMap (eigenι (
   isIso_of_mono_of_epi _
 
 /- English proof (translation)
-Use `⟨fun _ => mono_toBidual_of_mono (quotToIm ρ σ), fun _ => ?_⟩` and prove the remaining obligations. Establish `: Mono (cartierDualToBidual _ ≫ dualMap (dualQuotIso ρ σ).inv)` using `mono_comp _ _`. Use `mono_of_mono_fac (quotToIm_ι ρ σ)` as an intermediate fact. Conclude with `isIso_of_mono_of_epi _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_quotToIm_iff : IsIso (quotToIm ρ σ) ↔ Mono (cartierDualToBidual (eigenQuot ρ σ)) := by
   refine ⟨fun _ => mono_toBidual_of_mono (quotToIm ρ σ), fun _ => ?_⟩
@@ -347,20 +345,20 @@ theorem isIso_quotToIm_iff : IsIso (quotToIm ρ σ) ↔ Mono (cartierDualToBidua
   exact isIso_of_mono_of_epi _
 
 /- English proof (translation)
-The claim follows from `(isIso_quotToIm_iff ρ σ).2 (mono_toBidual_of_isVectorBundle h)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_quotToIm {r : ℕ} (h : IsVB (eigenQuot ρ σ) r) : IsIso (quotToIm ρ σ) :=
   (isIso_quotToIm_iff ρ σ).2 (mono_toBidual_of_isVectorBundle h)
 
 /- English proof (translation)
-The claim follows from `(isIso_quotToIm_iff ρ σ).2 (mono_toBidual_of_mono (inv (eigenι ρ σ ≫ eigenπ ρ σ) ≫ eigenι ρ σ))`.
+A detailed English derivation is pending.
 -/
 theorem isIso_quotToIm_of_isIso [Mono (cartierDualToBidual F)] [IsIso (eigenι ρ σ ≫ eigenπ ρ σ)] :
     IsIso (quotToIm ρ σ) :=
   (isIso_quotToIm_iff ρ σ).2 (mono_toBidual_of_mono (inv (eigenι ρ σ ≫ eigenπ ρ σ) ≫ eigenι ρ σ))
 
 /- English proof (translation)
-Use `hτ.isIso_eigenι_eigenπ ρ j` as an intermediate fact. Conclude with `isIso_quotToIm_of_isIso _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_quotToIm_of_split {k κ : Type} [Field k] [Algebra k Γ(X, ⊤)] [Fintype κ]
     {τ : κ → (O →+* k)} (hτ : IsSplitBy τ) [Mono (cartierDualToBidual F)] (j : κ) :
@@ -370,7 +368,7 @@ theorem isIso_quotToIm_of_split {k κ : Type} [Field k] [Algebra k Γ(X, ⊤)] [
   exact isIso_quotToIm_of_isIso _ _
 
 /- English proof (translation)
-Use `hτ.isIso_eigenι_eigenπ ρ j` as an intermediate fact. Use `isIso_quotToIm_of_split ρ hτ j` as an intermediate fact. Rewrite using `[← eigenπ_quotToIm, ← Category.assoc]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_eigenι_eigenImπ_of_split {k κ : Type} [Field k] [Algebra k Γ(X, ⊤)] [Fintype κ]
     {τ : κ → (O →+* k)} (hτ : IsSplitBy τ) [Mono (cartierDualToBidual F)] (j : κ) :
@@ -384,14 +382,14 @@ theorem isIso_eigenι_eigenImπ_of_split {k κ : Type} [Field k] [Algebra k Γ(X
 variable {ρ σ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨eigenDesc (𝟙 F) fun a => by rw [Category.comp_id, h a, smulHom_eq_smul_id], eigenπ_desc _ _ _ _, by rw [← cancel_epi (eigenπ ρ σ)]; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIso_eigenπ_of_actsThrough (h : ActsThrough ρ σ) : IsIso (eigenπ ρ σ) :=
   ⟨eigenDesc (𝟙 F) fun a => by rw [Category.comp_id, h a, smulHom_eq_smul_id],
     eigenπ_desc _ _ _ _, by rw [← cancel_epi (eigenπ ρ σ)]; simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨eigenImDesc (𝟙 F) fun a => by rw [Category.comp_id, h a, smulHom_eq_smul_id], eigenImπ_desc _ _, by rw [← cancel_epi (eigenImπ ρ σ)]; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIso_eigenImπ_of_actsThrough [Mono (cartierDualToBidual F)] (h : ActsThrough ρ σ) :
     IsIso (eigenImπ ρ σ) :=
@@ -399,7 +397,7 @@ theorem isIso_eigenImπ_of_actsThrough [Mono (cartierDualToBidual F)] (h : ActsT
     eigenImπ_desc _ _, by rw [← cancel_epi (eigenImπ ρ σ)]; simp⟩
 
 /- English proof (translation)
-Use `IsZero.of_epi_eq_zero (eigenImπ ρ σ) (ha.hom_eq_zero ?_)` and prove the remaining obligations. Rewrite using `[sub_smul, ← act_eigenImπ, h a, smulHom_comp]`. Conclude with `sub_self _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZero_eigenIm_of_actsThrough {τ : O →+* Γ(X, ⊤)} (h : ActsThrough ρ τ) {a : O}
     (ha : IsRegularFn (τ a - σ a)) : IsZero (eigenIm ρ σ) := by
@@ -423,11 +421,11 @@ structure IsEigenProj (ε : F ⟶ F) (D : Γ(X, ⊤)) : Prop where
 variable {ρ σ}
 
 /- English proof (translation)
-Establish `e : x * (1 ⊗ₜ a) = (χ a ⊗ₜ 1) * x`. Rewrite using `[mul_comm, hx, Algebra.smul_def]`. Both sides reduce to the same expression. Use `congrArg t e` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `act t _ ≫ act t x = act t x ≫ act t _ at this`. Rewrite `this` using `[ht, ht, map_one, one_smul, Linear.comp_smul, act, act, act, map_one]`. Conclude with `this.trans (congrArg _ (Category.comp_id _))`. Use `exists_sum := by`. Take `⟨n, c, b, rfl⟩` from `TensorProduct.exists_sum_tmul_eq x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨n, fun i => β (c i), b, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(map_sum t _ _).trans (Finset.sum_congr rfl fun i _ => ht _ _)`. Simplify using `[hv]`.
+A detailed English derivation is pending.
 -/
 theorem isEigenProj_of_tensor {R : Type} [CommRing R] (β : R →+* Γ(X, ⊤)) (χ : O →+* R)
     (t : R ⊗[ℤ] O →+* End F) (ht : ∀ c a, act t (c ⊗ₜ a) = β c • act ρ a) (v : R ⊗[ℤ] O →+ R)
@@ -448,7 +446,7 @@ theorem isEigenProj_of_tensor {R : Type} [CommRing R] (β : R →+* Γ(X, ⊤)) 
     · simp [hv]
 
 /- English proof (translation)
-The claim follows from `letI : Algebra ℤ (End F) := Ring.toIntAlgebra _ ⟨_, isEigenProj_of_tensor β χ (Algebra.TensorProduct.lift ((smulEnd F).comp β).toIntAlgHom ρ.toIntAlgHom fun _ a => (smulHom_comp (act ρ a) _).symm).toRingHom (fun _ _ => rfl) v hv hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isEigenProj_of_tensor (ρ : O →+* End F) {R : Type} [CommRing R] (β : R →+* Γ(X, ⊤))
     (χ : O →+* R) (v : R ⊗[ℤ] O →+ R) (hv : ∀ c a, v (c ⊗ₜ a) = c * χ a) {x : R ⊗[ℤ] O}
@@ -458,7 +456,7 @@ theorem exists_isEigenProj_of_tensor (ρ : O →+* End F) {R : Type} [CommRing R
     ρ.toIntAlgHom fun _ a => (smulHom_comp (act ρ a) _).symm).toRingHom (fun _ _ => rfl) v hv hx⟩
 
 /- English proof (translation)
-Use `isEigenProj_of_tensor (ρ := ρ) (algebraMap k Γ(X, ⊤)) (τ j) (tensorAct k ρ) (act_tensorAct_tmul ρ) ((Pi.evalAddMonoidHom _ j).comp (splitMap τ).toAddMonoidHom) (fun _ _ => rfl) (x := hτ.idem j) fun a => by` as an intermediate fact. Rewrite using `[hτ.tmul_mul_idem, Algebra.smul_def]`. Both sides reduce to the same expression. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isEigenProj_idem {k κ : Type} [Field k] [Algebra k Γ(X, ⊤)] [DecidableEq κ]
     {τ : κ → (O →+* k)} (hτ : IsSplitBy τ) (j : κ) :
@@ -475,21 +473,21 @@ variable {ε : F ⟶ F} {D : Γ(X, ⊤)} (h : IsEigenProj ρ σ ε D)
 include h
 
 /- English proof (translation)
-Take `⟨n, c, b, rfl, rfl⟩` from `h.exists_sum`. Simplify using `only [Preadditive.sum_comp, Linear.smul_comp, hφ, Finset.sum_smul, mul_smul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem comp_eq_smul {φ : F ⟶ G} (hφ : ∀ a, act ρ a ≫ φ = σ a • φ) : ε ≫ φ = D • φ := by
   obtain ⟨n, c, b, rfl, rfl⟩ := h.exists_sum
   simp only [Preadditive.sum_comp, Linear.smul_comp, hφ, Finset.sum_smul, mul_smul]
 
 /- English proof (translation)
-Take `⟨n, c, b, rfl, rfl⟩` from `h.exists_sum`. Simplify using `only [Preadditive.comp_sum, Linear.comp_smul, hφ, Finset.sum_smul, mul_smul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem comp_eq_smul' {φ : G ⟶ F} (hφ : ∀ a, φ ≫ act ρ a = σ a • φ) : φ ≫ ε = D • φ := by
   obtain ⟨n, c, b, rfl, rfl⟩ := h.exists_sum
   simp only [Preadditive.comp_sum, Linear.comp_smul, hφ, Finset.sum_smul, mul_smul]
 
 /- English proof (translation)
-Introduce `a` and use `by obtain ⟨n, c, b, rfl, -⟩ := h.exists_sum have e (x : O) : act ρ a ≫ act ρ x = act ρ x ≫ act ρ a := (map_mul ρ x a).symm.trans ((congrArg ρ (mul_comm x a)).trans (map_mul ρ a x)) simp only [Preadditive.comp_sum, Preadditive.sum_comp, Linear.comp_smul, Linear.smul_comp, e]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isEquivariant : IsEquivariant ρ ρ ε := fun a => by
   obtain ⟨n, c, b, rfl, -⟩ := h.exists_sum
@@ -498,17 +496,17 @@ theorem isEquivariant : IsEquivariant ρ ρ ε := fun a => by
   simp only [Preadditive.comp_sum, Preadditive.sum_comp, Linear.comp_smul, Linear.smul_comp, e]
 
 /- English proof (translation)
-The claim follows from `(h.isEquivariant a).symm.trans (h.act_comp a)`.
+A detailed English derivation is pending.
 -/
 theorem comp_act (a : O) : ε ≫ act ρ a = σ a • ε := (h.isEquivariant a).symm.trans (h.act_comp a)
 
 /- English proof (translation)
-The claim follows from `h.comp_eq_smul h.act_comp`.
+A detailed English derivation is pending.
 -/
 theorem comp_self : ε ≫ ε = D • ε := h.comp_eq_smul h.act_comp
 
 /- English proof (translation)
-Rewrite using `[act_dualAct, ← dualMap_comp, h.comp_act, dualMap_smul] exists_sum := by`. Take `⟨n, c, b, rfl, e⟩` from `h.exists_sum`. Use `⟨n, c, b, (map_sum (AddMonoidHom.mk' (fun φ : F ⟶ F => dualMap φ) dualMap_add) _ _).trans (Finset.sum_congr rfl fun i _ => dualMap_smul _ _), e⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem dual : IsEigenProj (dualAct ρ) σ (dualMap ε) D where
   act_comp a := by rw [act_dualAct, ← dualMap_comp, h.comp_act, dualMap_smul]
@@ -518,7 +516,7 @@ theorem dual : IsEigenProj (dualAct ρ) σ (dualMap ε) D where
       (Finset.sum_congr rfl fun i _ => dualMap_smul _ _), e⟩
 
 /- English proof (translation)
-Rewrite using `[act_pullAct, ← Functor.map_comp, h.act_comp, pullback_map_smul]; rfl exists_sum := by`. Take `⟨n, c, b, rfl, rfl⟩` from `h.exists_sum`. Use `⟨n, fun i => f.appTop (c i), b, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[Functor.map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => pullback_map_smul _ _ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullback (f : Y ⟶ X) : IsEigenProj (pullAct ρ f) (f.appTop.hom.comp σ)
     ((Scheme.Modules.pullback f).map ε) (f.appTop D) where
@@ -530,7 +528,7 @@ theorem pullback (f : Y ⟶ X) : IsEigenProj (pullAct ρ f) (f.appTop.hom.comp �
     exact Finset.sum_congr rfl fun i _ => pullback_map_smul _ _ _
 
 /- English proof (translation)
-Rewrite using `[reassoc_of% isEquivariant_inv hφ a, reassoc_of% h.act_comp a, Linear.smul_comp, Linear.comp_smul]`. Use `exists_sum := by`. Take `⟨n, c, b, rfl, e⟩` from `h.exists_sum`. Use `⟨n, c, b, ?_, e⟩` and prove the remaining obligations. Simplify using `only [Preadditive.comp_sum, Preadditive.sum_comp, Linear.comp_smul, Linear.smul_comp, hφ _, Iso.inv_hom_id_assoc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem of_iso {ρ' : O →+* End G} {φ : F ≅ G} (hφ : IsEquivariant ρ ρ' φ.hom) :
     IsEigenProj ρ' σ (φ.inv ≫ ε ≫ φ.hom) D where
@@ -544,7 +542,7 @@ theorem of_iso {ρ' : O →+* End G} {φ : F ≅ G} (hφ : IsEquivariant ρ ρ' 
       hφ _, Iso.inv_hom_id_assoc]
 
 /- English proof (translation)
-The claim follows from `hD.hom_eq_zero (by rw [← Linear.comp_smul, ← h.comp_eq_smul (act_eigenImπ ρ σ), reassoc_of% hk, zero_comp])`.
+A detailed English derivation is pending.
 -/
 theorem comp_eigenImπ_eq_zero (hD : IsRegularFn D) {k : G ⟶ F} (hk : k ≫ ε = 0) :
     k ≫ eigenImπ ρ σ = 0 :=
@@ -559,27 +557,27 @@ def imToSub : eigenIm ρ σ ⟶ eigen ρ σ :=
       h.comp_act]
 
 /- English proof (translation)
-The claim follows from `eigenImπ_desc _ h.act_comp`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem eigenImπ_imToSub_ι :
     eigenImπ ρ σ ≫ h.imToSub ≫ eigenι ρ σ = ε := eigenImπ_desc _ h.act_comp
 
 /- English proof (translation)
-Rewrite using `[← cancel_epi (eigenImπ ρ σ), eigenImπ_imToSub_ι_assoc, h.comp_eq_smul (act_eigenImπ ρ σ), Linear.comp_smul, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem imToSub_ι_eigenImπ : h.imToSub ≫ eigenι ρ σ ≫ eigenImπ ρ σ = D • 𝟙 _ := by
   rw [← cancel_epi (eigenImπ ρ σ), eigenImπ_imToSub_ι_assoc, h.comp_eq_smul (act_eigenImπ ρ σ),
     Linear.comp_smul, Category.comp_id]
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (eigenι ρ σ), Category.assoc, Category.assoc, eigenImπ_imToSub_ι, h.comp_eq_smul' (eigenι_act ρ σ), Linear.smul_comp, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ι_eigenImπ_imToSub : eigenι ρ σ ≫ eigenImπ ρ σ ≫ h.imToSub = D • 𝟙 _ := by
   rw [← cancel_mono (eigenι ρ σ), Category.assoc, Category.assoc, eigenImπ_imToSub_ι,
     h.comp_eq_smul' (eigenι_act ρ σ), Linear.smul_comp, Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[← cancel_epi (eigenπ ρ σ), eigenπ_quotToIm_assoc, eigenImπ_imToSub_ι_assoc, h.comp_eq_smul (act_eigenπ ρ σ), Linear.comp_smul, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quotToIm_imToSub_ι_eigenπ :
     quotToIm ρ σ ≫ h.imToSub ≫ eigenι ρ σ ≫ eigenπ ρ σ = D • 𝟙 _ := by
@@ -590,13 +588,13 @@ variable (hD : IsRegularFn D)
 include hD
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨comp_eq_zero_of_comp_eigenImπ h.act_comp, h.comp_eigenImπ_eq_zero hD⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_eigenImπ_eq_zero_iff {k : G ⟶ F} : k ≫ eigenImπ ρ σ = 0 ↔ k ≫ ε = 0 :=
   ⟨comp_eq_zero_of_comp_eigenImπ h.act_comp, h.comp_eigenImπ_eq_zero hD⟩
 
 /- English proof (translation)
-Use `⟨fun e => ?_, fun e => hD.eq_zero_of_smul ?_⟩` and prove the remaining obligations. Use `congr(($(h.eigenImπ_imToSub_ι)).app V s).symm.trans ?_` and prove the remaining obligations. Conclude with `(congrArg ((h.imToSub ≫ eigenι ρ σ).app V) e).trans (map_zero _)`. Use `congr(($(h.comp_eq_smul (act_eigenImπ ρ σ))).app V s).symm.trans ?_` and prove the remaining obligations. Conclude with `(congrArg ((eigenImπ ρ σ).app V) e).trans (map_zero _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eigenImπ_app_eq_zero_iff {V : X.Opens} {s : Γ(F, V)} :
     (eigenImπ ρ σ).app V s = 0 ↔ ε.app V s = 0 := by
@@ -607,7 +605,7 @@ theorem eigenImπ_app_eq_zero_iff {V : X.Opens} {s : Γ(F, V)} :
     exact (congrArg ((eigenImπ ρ σ).app V) e).trans (map_zero _)
 
 /- English proof (translation)
-Use `⟨fun e => ?_, fun e => hD.eq_zero_of_smul ?_⟩` and prove the remaining obligations. Use `congr(($(h.quotToIm_imToSub_ι_eigenπ)).app V s).symm.trans ?_` and prove the remaining obligations. Conclude with `(congrArg ((h.imToSub ≫ eigenι ρ σ ≫ eigenπ ρ σ).app V) e).trans (map_zero _)`. Rewrite using `[← Scheme.Modules.Hom.app_smul, e, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotToIm_app_eq_zero_iff {V : X.Opens} {s : Γ(eigenQuot ρ σ, V)} :
     (quotToIm ρ σ).app V s = 0 ↔ resG X (le_top : V ≤ ⊤) D • s = 0 := by
@@ -617,14 +615,14 @@ theorem quotToIm_app_eq_zero_iff {V : X.Opens} {s : Γ(eigenQuot ρ σ, V)} :
   · rw [← Scheme.Modules.Hom.app_smul, e, map_zero]
 
 /- English proof (translation)
-The claim follows from `Preadditive.mono_of_cancel_zero _ fun g hg => hD.hom_eq_zero (by rw [← Category.comp_id g, ← Linear.comp_smul, ← h.imToSub_ι_eigenImπ, reassoc_of% hg, zero_comp])`.
+A detailed English derivation is pending.
 -/
 theorem mono_imToSub : Mono h.imToSub :=
   Preadditive.mono_of_cancel_zero _ fun g hg => hD.hom_eq_zero (by
     rw [← Category.comp_id g, ← Linear.comp_smul, ← h.imToSub_ι_eigenImπ, reassoc_of% hg, zero_comp])
 
 /- English proof (translation)
-The claim follows from `have := mono_toBidual_of_mono (eigenι ρ σ) Preadditive.mono_of_cancel_zero _ fun g hg => hD.hom_eq_zero (by rw [← Category.comp_id g, ← Linear.comp_smul, ← h.ι_eigenImπ_imToSub, reassoc_of% hg, zero_comp])`.
+A detailed English derivation is pending.
 -/
 theorem mono_ι_eigenImπ : Mono (eigenι ρ σ ≫ eigenImπ ρ σ) :=
   have := mono_toBidual_of_mono (eigenι ρ σ)
@@ -637,7 +635,7 @@ def imIsoImage : eigenIm ρ σ ≅ image ε :=
   image.isoStrongEpiMono (eigenImπ ρ σ) (h.imToSub ≫ eigenι ρ σ) h.eigenImπ_imToSub_ι
 
 /- English proof (translation)
-The claim follows from `have := h.mono_imToSub hD have := strongEpi_of_epi (eigenImπ ρ σ) image.isoStrongEpiMono_hom_comp_ι _ _ h.eigenImπ_imToSub_ι`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem imIsoImage_hom_ι :
     (h.imIsoImage hD).hom ≫ image.ι ε = h.imToSub ≫ eigenι ρ σ :=
@@ -646,14 +644,14 @@ The claim follows from `have := h.mono_imToSub hD have := strongEpi_of_epi (eige
   image.isoStrongEpiMono_hom_comp_ι _ _ h.eigenImπ_imToSub_ι
 
 /- English proof (translation)
-The claim follows from `have := h.mono_imToSub hD QCoh.isQuasicoherent_of_epi_of_mono (eigenImπ ρ σ) (h.imToSub ≫ eigenι ρ σ)`.
+A detailed English derivation is pending.
 -/
 theorem isQuasicoherent_eigenIm [F.IsQuasicoherent] : (eigenIm ρ σ).IsQuasicoherent :=
   have := h.mono_imToSub hD
   QCoh.isQuasicoherent_of_epi_of_mono (eigenImπ ρ σ) (h.imToSub ≫ eigenι ρ σ)
 
 /- English proof (translation)
-The claim follows from `have := h.isQuasicoherent_eigenIm hD .of_epi (eigenImπ ρ σ)`.
+A detailed English derivation is pending.
 -/
 theorem isFiniteQC_eigenIm [IsFiniteQC F] : IsFiniteQC (eigenIm ρ σ) :=
   have := h.isQuasicoherent_eigenIm hD
@@ -670,7 +668,7 @@ def pullbackImHom : (Scheme.Modules.pullback f).obj (eigenIm ρ σ) ⟶
       rw [← h.eigenImπ_imToSub_ι, Functor.map_comp, kernel.condition_assoc, zero_comp]))
 
 /- English proof (translation)
-The claim follows from `Abelian.comp_epiDesc _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem map_eigenImπ_pullbackImHom :
     (Scheme.Modules.pullback f).map (eigenImπ ρ σ) ≫ h.pullbackImHom f hf = eigenImπ _ _ :=
@@ -682,7 +680,7 @@ instance epi_pullbackImHom : Epi (h.pullbackImHom f hf) :=
 variable [Mono (cartierDualToBidual ((Scheme.Modules.pullback f).obj F))]
 
 /- English proof (translation)
-Rewrite using `[← cancel_epi ((Scheme.Modules.pullback f).map (eigenImπ ρ σ)), map_eigenImπ_pullbackImHom_assoc, eigenImπ_imToSub_ι_assoc, ← Functor.map_comp, h.comp_eq_smul (act_eigenImπ ρ σ), pullback_map_smul, Linear.comp_smul, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pullbackImHom_comp : h.pullbackImHom f hf ≫ (h.pullback f).imToSub ≫ eigenι _ _ ≫
     (Scheme.Modules.pullback f).map (eigenImπ ρ σ) = (f.appTop D : Γ(Y, ⊤)) • 𝟙 _ := by
@@ -691,7 +689,7 @@ theorem pullbackImHom_comp : h.pullbackImHom f hf ≫ (h.pullback f).imToSub ≫
     h.comp_eq_smul (act_eigenImπ ρ σ), pullback_map_smul, Linear.comp_smul, Category.comp_id]
 
 /- English proof (translation)
-Use `⟨fun e => ?_, fun e => hf.eq_zero_of_smul ?_⟩` and prove the remaining obligations. Use `congr(($(h.pullbackImHom_comp f hf)).app V s).symm.trans ?_` and prove the remaining obligations. Conclude with `(congrArg (((h.pullback f).imToSub ≫ eigenι _ _ ≫ (Scheme.Modules.pullback f).map (eigenImπ ρ σ)).app V) e).trans (map_zero _)`. Rewrite using `[← Scheme.Modules.Hom.app_smul, e, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullbackImHom_app_eq_zero_iff {V : Y.Opens}
     {s : Γ((Scheme.Modules.pullback f).obj (eigenIm ρ σ), V)} :
@@ -703,7 +701,7 @@ theorem pullbackImHom_app_eq_zero_iff {V : Y.Opens}
   · rw [← Scheme.Modules.Hom.app_smul, e, map_zero]
 
 /- English proof (translation)
-The claim follows from `have := mono_toBidual_of_isVectorBundle (hr.pullback f) have : Mono (h.pullbackImHom f hf) := Preadditive.mono_of_cancel_zero _ fun g hg => hf.hom_eq_zero (by rw [← Category.comp_id g, ← Linear.comp_smul, ← h.pullbackImHom_comp f hf, reassoc_of% hg, zero_comp]) isIso_of_mono_of_e …`.
+A detailed English derivation is pending.
 -/
 theorem isIso_pullbackImHom {r : ℕ} (hr : IsVB (eigenIm ρ σ) r) : IsIso (h.pullbackImHom f hf) :=
   have := mono_toBidual_of_isVectorBundle (hr.pullback f)
@@ -731,7 +729,7 @@ variable (X) in
 def zeroChar : ℤ[X] →+* Γ(X, ⊤) := (Int.castRingHom _).comp constantCoeff
 
 /- English proof (translation)
-The claim follows from `eval₂_X (S := End (F ⊞ G)) _ _`.
+A detailed English derivation is pending.
 -/
 theorem act_twoAct_X : act (twoAct F G) Polynomial.X = 2 • (biprod.snd ≫ biprod.inr) :=
   eval₂_X (S := End (F ⊞ G)) _ _
@@ -739,7 +737,7 @@ theorem act_twoAct_X : act (twoAct F G) Polynomial.X = 2 • (biprod.snd ≫ bip
 variable {F G} in
 
 /- English proof (translation)
-Establish `e : act ρ a = act ρ a.divX ≫ act ρ Polynomial.X + smulHom F (zeroChar X a)` using `by conv_lhs => rw [← X_mul_divX_add a, act, map_add, map_mul]`. Conclude with `congrArg _ congr($(RingHom.ext_int (ρ.comp C) (scalarAct F (Int.castRingHom _))) (a.coeff 0))`. Rewrite using `[e, Preadditive.add_comp, Category.assoc, h, Limits.comp_zero, zero_add, smulHom_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem act_comp_of_X {ρ : ℤ[X] →+* End F} {φ : F ⟶ G} (h : act ρ Polynomial.X ≫ φ = 0)
     (a : ℤ[X]) : act ρ a ≫ φ = zeroChar X a • φ := by
@@ -751,7 +749,7 @@ theorem act_comp_of_X {ρ : ℤ[X] →+* End F} {φ : F ⟶ G} (h : act ρ Polyn
   rfl
 
 /- English proof (translation)
-The claim follows from `act_comp_of_X (by simp [act_twoAct_X]) exists_sum := ⟨2, ![2, -1], ![1, Polynomial.X], by have e : act (twoAct F G) 1 = 𝟙 _ := map_one (twoAct F G) simp only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, act_twoAct_X, e, two_smul, neg_smul, one_smul, ← biprod.tota …`.
+A detailed English derivation is pending.
 -/
 theorem isEigenProj_twoAct :
     IsEigenProj (twoAct F G) (zeroChar X) (2 • (biprod.fst ≫ biprod.inl)) 2 where
@@ -773,7 +771,7 @@ def eigenImTwoIso [Mono (cartierDualToBidual F)] (h : IsRegularFn (2 : Γ(X, ⊤
   inv_hom_id := by simp
 
 /- English proof (translation)
-Introduce `a` and use `by have := act_comp_of_X (ρ := pullAct (twoAct F G) f) (φ := 𝟙 _) (by rw [act_pullAct, act_twoAct_X, Functor.map_nsmul, Category.comp_id, ← Nat.cast_smul_eq_nsmul Γ(Y, ⊤), Nat.cast_ofNat, hY, zero_smul]) a rw [Category.comp_id] at this rw [this, smulHom_eq_smul_id] simp [zeroChar …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem actsThrough_pull_twoAct (f : Y ⟶ X) (hY : (2 : Γ(Y, ⊤)) = 0) :
     ActsThrough (pullAct (twoAct F G) f) (f.appTop.hom.comp (zeroChar X)) := fun a => by
@@ -787,7 +785,7 @@ theorem actsThrough_pull_twoAct (f : Y ⟶ X) (hY : (2 : Γ(Y, ⊤)) = 0) :
 variable {F G} in
 
 /- English proof (translation)
-Introduce `_` and use `by have := mono_toBidual_of_isVectorBundle hF have := isIso_eigenπ_of_actsThrough (actsThrough_pull_twoAct F G f hY) have h₁ := ((hF.of_iso (asIso (quotToIm _ _) ≪≫ eigenImTwoIso F G h).symm).pullback f).of_iso (asIso (eigenπ _ _) ≪≫ pullbackQuotIso _ _ f).symm have := h₁.rank_un …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isIso_quotToIm_twoAct {r s : ℕ} (hF : IsVB F r) (hG : IsVB G (s + 1))
     (h : IsRegularFn (2 : Γ(X, ⊤))) (f : Y ⟶ X) [Nonempty Y] (hY : (2 : Γ(Y, ⊤)) = 0) :
@@ -800,9 +798,9 @@ theorem not_isIso_quotToIm_twoAct {r s : ℕ} (hF : IsVB F r) (hG : IsVB G (s + 
   omega
 
 /- English proof (translation)
-Introduce `L`. Establish `hL : IsVB L 1` using `(isFrame_one ⊤).isVB`. Use `mono_toBidual_of_isVectorBundle hL` as an intermediate fact. Establish `h : IsRegularFn (2 : Γ(Spec (.of ℤ), ⊤))` using `isRegularFn_of_ne_zero fun e => by`. Use `congrArg (Scheme.ΓSpecIso (.of ℤ)).hom.hom e` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_ofNat, map_zero]`. Conclude with `absurd (show (2 : ℤ) = 0 from this) (by decide)`. Use `⟨hL.of_iso (eigenImTwoIso L L h).symm, not_isIso_quotToIm_twoAct hL hL h (Spec.map (CommRingCat.ofHom (Int.castRingHom (ZMod 2)))) ?_⟩` and prove the remaining obligations. Conclude with `(map_ofNat (Scheme.ΓSpecIso (.of (ZMod 2))).inv.hom 2).symm.trans (map_zero _)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 example : let L := structureModule (Spec (.of ℤ))
     IsVB (eigenIm (twoAct L L) (zeroChar _)) 1 ∧ ¬IsIso (quotToIm (twoAct L L) (zeroChar _)) := by

@@ -42,7 +42,7 @@ def IsBand (N : Set G) (H : G → ℝ) (h : G → ℂ) : Prop :=
   Continuous h ∧ (∃ C, ∀ g, ‖h g‖ ≤ C) ∧ (∀ g, ∀ m ∈ N, h (g * m) = h g) ∧ ∃ R : ℝ, ∀ g, h g ≠ 0 → |H g| ≤ R
 
 /- English proof (translation)
-The claim follows from `continuous_ofAdd add := fun _ _ => rfl norm := fun t m hm => by simp_all contH := continuous_toAdd inv := fun g m hm => by simp_all move := fun _ _ => rfl bdd := fun D hD => by obtain ⟨c, hc⟩ := (hD.image (continuous_toAdd.abs)).bddAbove exact ⟨c, fun g hg x => by simpa using hc …`.
+A detailed English derivation is pending.
 -/
 example : IsRay ({1} : Set (Multiplicative ℝ)) Multiplicative.ofAdd Multiplicative.toAdd where
   cont := continuous_ofAdd

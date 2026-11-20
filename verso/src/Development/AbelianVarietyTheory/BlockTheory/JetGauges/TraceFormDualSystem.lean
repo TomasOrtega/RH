@@ -9,7 +9,7 @@ variable (E : Type) [Field E] [NumberField E] [IsCMField E]
 noncomputable abbrev bar (a : 𝓞 E) : 𝓞 E := IsCMField.ringOfIntegersComplexConj E a
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `[bar]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem bar_bar (a : 𝓞 E) : bar E (bar E a) = a := by
   apply RingOfIntegers.ext
@@ -56,7 +56,7 @@ structure Exponent where
 variable {E Y}
 
 /- English proof (translation)
-Establish `hmul : ∀ b c : 𝓞 E, bar E (b * c) = bar E b * bar E c` using `fun b c => map_mul (IsCMField.ringOfIntegersComplexConj E) b c`. Rewrite using `[l.hermitian (a • y') y, l.smul_left, l.hermitian y y', hmul, bar_bar]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Exponent.smul_right (l : Exponent E Y) (a : 𝓞 E) (y y' : Module.Dual (𝓞 E) Y) :
     l.form y (a • y') = bar E a * l.form y y' := by
@@ -76,7 +76,7 @@ structure DualSystem where
   expand : ∀ x, ∑ j, y j x • e j = x
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' (𝓞 E) Y`. Take `⟨s, hs⟩` from `Module.projective_lifting_property f LinearMap.id hf`. Use `⟨⟨n, fun j => f (fun k => if j = k then 1 else 0), fun j => LinearMap.proj j ∘ₗ s, fun x => ?_⟩⟩` and prove the remaining obligations. Establish `hx : f (s x) = x` using `LinearMap.congr_fun hs x`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem nonempty_dualSystem [Module.Finite (𝓞 E) Y] [Module.Projective (𝓞 E) Y] :
     Nonempty (DualSystem E Y) := by
@@ -95,9 +95,9 @@ noncomputable def DualSystem.pairing (D : DualSystem E Y) (l : Exponent E Y)
   (∑ j, ∑ k, β.1 (l.form (D.y j) (D.y k) • D.e j) (D.e k)) / 2
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `β.2`. Establish `key : ∀ (a b : 𝓞 E) (u v : Y), β.1 (a • u) (b • v) = β.1 ((a * bar E b) • u) v`. Introduce `a b u v`. Rewrite using `[mul_comm, mul_smul, h2 (bar E b) (a • u) v, bar_bar]`. Use `conv_lhs => rw [← D.expand x, ← D.expand x']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, AddMonoidHom.finsetSum_apply, key]`. Conclude with `Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem DualSystem.apply_eq (D : DualSystem E Y) (β : balancedForms E Y) (x x' : Y) :
     β.1 x x' = ∑ j, ∑ k, β.1 ((D.y j x * bar E (D.y k x')) • D.e j) (D.e k) := by
@@ -110,9 +110,9 @@ theorem DualSystem.apply_eq (D : DualSystem E Y) (β : balancedForms E Y) (x x' 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use `show (∑ j, ∑ k, β.1 (l.form (D.y j) (D.y k) • D.e j) (D.e k)) / 2 = _`. Use `congr 1`. Establish `hr : ∑ i, β.1 (x i) (x' i) = ∑ i, ∑ j, ∑ k, β.1 ((D.y j (x i) * bar E (D.y k (x' i))) • D.e j) (D.e k)` using `Finset.sum_congr rfl fun i _ => D.apply_eq β (x i) (x' i)`. Rewrite using `[hr]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[h, Finset.sum_smul, map_sum, AddMonoidHom.finsetSum_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DualSystem.pairing_of_sum (D : DualSystem E Y) (l : Exponent E Y)
     (β : balancedForms E Y) {ι : Type} [Fintype ι] (x x' : ι → Y)
@@ -131,7 +131,7 @@ theorem DualSystem.pairing_of_sum (D : DualSystem E Y) (l : Exponent E Y)
   rw [h, Finset.sum_smul, map_sum, AddMonoidHom.finsetSum_apply]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← D.expand x]`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DualSystem.dual_expand (D : DualSystem E Y) (y : Module.Dual (𝓞 E) Y) :
     y = ∑ j, y (D.e j) • D.y j := by
@@ -142,7 +142,7 @@ theorem DualSystem.dual_expand (D : DualSystem E Y) (y : Module.Dual (𝓞 E) Y)
   rw [map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Use `conv_lhs => rw [D.dual_expand y, D.dual_expand y']`. Simplify using `only [map_sum, AddMonoidHom.finsetSum_apply, l.smul_left, l.smul_right, map_smul, smul_eq_mul, Fintype.sum_prod_type]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem DualSystem.form_eq (D : DualSystem E Y) (l : Exponent E Y) (y y' : Module.Dual (𝓞 E) Y) :
     l.form y y' = ∑ p : Fin D.n × Fin D.n,
@@ -155,7 +155,7 @@ theorem DualSystem.form_eq (D : DualSystem E Y) (l : Exponent E Y) (y y' : Modul
   ring
 
 /- English proof (translation)
-Rewrite using `[D'.pairing_of_sum l β (fun p : Fin D.n × Fin D.n => l.form (D.y p.1) (D.y p.2) • D.e p.1) (fun p => D.e p.2) (D.form_eq l), Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem DualSystem.pairing_eq (D D' : DualSystem E Y) (l : Exponent E Y)
     (β : balancedForms E Y) : D.pairing l β = D'.pairing l β := by
@@ -169,7 +169,7 @@ noncomputable def pairing (l : Exponent E Y) (β : balancedForms E Y) : ℝ :=
   (Classical.choice (nonempty_dualSystem E Y)).pairing l β
 
 /- English proof (translation)
-Unfold `pairing`. Conclude with `(Classical.choice (nonempty_dualSystem E Y)).pairing_eq D l β`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pairing_eq_dualSystem (D : DualSystem E Y) (l : Exponent E Y) (β : balancedForms E Y) :
     pairing l β = D.pairing l β := by
@@ -177,7 +177,7 @@ theorem pairing_eq_dualSystem (D : DualSystem E Y) (l : Exponent E Y) (β : bala
   exact (Classical.choice (nonempty_dualSystem E Y)).pairing_eq D l β
 
 /- English proof (translation)
-Take `⟨D⟩` from `nonempty_dualSystem E Y`. Rewrite using `[pairing_eq_dualSystem D]`. Conclude with `D.pairing_of_sum l β x x' h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_of_sum (l : Exponent E Y) (β : balancedForms E Y) {ι : Type} [Fintype ι]
     (x x' : ι → Y) (h : ∀ y y', l.form y y' = ∑ i, y (x i) * bar E (y' (x' i))) :
@@ -194,7 +194,7 @@ noncomputable def phiC (β : balancedForms E Y) (_hβ : IsPosSemidef β) : ℝ :
   sInf (pairingValues β)
 
 /- English proof (translation)
-Unfold `phiC`. Conclude with `IsLeast.csInf_eq h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem IsPhiC.phiC_eq {β : balancedForms E Y} (hβ : IsPosSemidef β) {r : ℝ} (h : IsPhiC β r) :
     phiC β hβ = r := by
@@ -242,7 +242,7 @@ noncomputable def Exponent.ofFamily {ι : Type} [Fintype ι] (x : ι → Y)
     exact Subtype.ext hi
 
 /- English proof (translation)
-Simplify using `only [quad]`. Rewrite using `[pairing_of_sum _ β x x (fun _ _ => rfl), Finset.sum_div]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing_ofFamily (β : balancedForms E Y) {ι : Type} [Fintype ι] (x : ι → Y)
     (hx : ∀ y : Module.Dual (𝓞 E) Y, (∀ i, y (x i) = 0) → y = 0) :
@@ -251,7 +251,7 @@ theorem pairing_ofFamily (β : balancedForms E Y) {ι : Type} [Fintype ι] (x : 
   rw [pairing_of_sum _ β x x (fun _ _ => rfl), Finset.sum_div]
 
 /- English proof (translation)
-Take `⟨D⟩` from `nonempty_dualSystem E Y`. Use `⟨_, Exponent.ofFamily D.e fun y hy => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[D.dual_expand y]`. Simplify using `[hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pairingValues_nonempty (β : balancedForms E Y) : (pairingValues β).Nonempty := by
   obtain ⟨D⟩ := nonempty_dualSystem E Y
@@ -260,9 +260,9 @@ theorem pairingValues_nonempty (β : balancedForms E Y) : (pairingValues β).Non
   simp [hy]
 
 /- English proof (translation)
-Establish `hz : ∀ l : Exponent E Y, pairing l (0 : balancedForms E Y) = 0`. Introduce `l`. Take `⟨D⟩` from `nonempty_dualSystem E Y`. Rewrite using `[pairing_eq_dualSystem D]`. Use `show (∑ j, ∑ k, (0 : balancedForms E Y).1 (l.form (D.y j) (D.y k) • D.e j) (D.e k)) / 2 = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨_, l, -⟩` from `pairingValues_nonempty (0 : balancedForms E Y)`. Use `⟨⟨l, hz l⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨l', rfl⟩`. Conclude with `(hz l').ge`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isPhiC_zero : IsPhiC (0 : balancedForms E Y) 0 := by
   have hz : ∀ l : Exponent E Y, pairing l (0 : balancedForms E Y) = 0 := by
@@ -277,17 +277,17 @@ theorem isPhiC_zero : IsPhiC (0 : balancedForms E Y) 0 := by
   exact (hz l').ge
 
 /- English proof (translation)
-Take `⟨D⟩` from `nonempty_dualSystem E Y`. Establish `hmul : ∀ b c : 𝓞 E, bar E (b * c) = bar E b * bar E c` using `fun b c => map_mul (IsCMField.ringOfIntegersComplexConj E) b c`. Establish `hsum : ∀ (s : Finset (Fin D.n × Fin D.n)) (f : Fin D.n × Fin D.n → 𝓞 E), bar E (∑ p ∈ s, f p) = ∑ p ∈ s, bar E (f p)` using `fun s f => map_sum (IsCMField.ringOfIntegersComplexConj E) f s`. Establish `key : ∀ u v : Fin D.n × Fin D.n → Y, (∀ y y', l.form y y' = ∑ p, (y (u p) * bar E (y' (v p)) + y (v p) * bar E (y' (u p)))) → ∀ β : balancedForms E Y, pairing l β = ∑ p, (quad β (u p + v p) - quad β (u p) - quad β (v p))`. Introduce `u v hu β`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS : ∀ y y', l.form y y' = ∑ s, y (Sum.elim u v s) * bar E (y' (Sum.elim v u s))`. Introduce `y y'`. Simplify using `only [hu, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Finset.sum_add_distrib]`. Rewrite using `[pairing_of_sum l β (Sum.elim u v) (Sum.elim v u) hS, Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, quad, map_add, AddMonoidHom.add_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_add_distrib, Finset.sum_div]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hdec : ∀ y y', l.form y y' = ∑ p : Fin D.n × Fin D.n, (y (w • (l.form (D.y p.1) (D.y p.2) • D.e p.1)) * bar E (y' (D.e p.2)) + y (D.e p.2) * bar E (y' (w • (l.form (D.y p.1) (D.y p.2) • D.e p.1))))`. Introduce `y y'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : l.form y y' = ∑ p : Fin D.n × Fin D.n, y (l.form (D.y p.1) (D.y p.2) • D.e p.1) * bar E (y' (D.e p.2))` using `D.form_eq l y y'`. Establish `h2 : l.form y y' = ∑ p : Fin D.n × Fin D.n, y (D.e p.2) * bar E (y' (l.form (D.y p.1) (D.y p.2) • D.e p.1))`. Rewrite using `[l.hermitian y' y, D.form_eq l y' y, hsum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hmul, bar_bar, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← add_mul, hw, one_mul]`. Use `_ = w * (∑ p : Fin D.n × Fin D.n, y (l.form (D.y p.1) (D.y p.2) • D.e p.1) * bar E (y' (D.e p.2))) + bar E w * (∑ p : Fin D.n × Fin D.n, y (D.e p.2) * bar E (y' (l.form (D.y p.1) (D.y p.2) • D.e p.1))) := by`. Rewrite using `[← h1, ← h2]`. Use `_ = _ := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [map_smul, smul_eq_mul, hmul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨D.n, fun p => w • (l.form (D.y p.1) (D.y p.2) • D.e p.1), fun p => D.e p.2, hdec, key _ _ hdec⟩`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sum_of_add_bar_eq_one (w : 𝓞 E) (hw : w + bar E w = 1) (l : Exponent E Y) :
     ∃ (n : ℕ) (u v : Fin n × Fin n → Y),
@@ -360,13 +360,13 @@ noncomputable def traceForm : balancedForms E (𝓞 E) :=
       ring⟩
 
 /- English proof (translation)
-Simplify using `[traceForm, NumberField.Embeddings.card]`.
+Simplify using the standard rewrite rules.
 -/
 theorem traceForm_one_one : (traceForm E).1 1 1 = Module.finrank ℚ E := by
   simp [traceForm, NumberField.Embeddings.card]
 
 /- English proof (translation)
-Introduce `x`. Simplify using `only [traceForm, AddMonoidHom.mk'_apply]`. Conclude with `Finset.sum_nonneg fun τ _ => by`. Rewrite using `[Complex.mul_conj, Complex.ofReal_re]`. Conclude with `Complex.normSq_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceForm_posSemidef : IsPosSemidef (traceForm E) := by
   intro x
@@ -376,7 +376,7 @@ theorem traceForm_posSemidef : IsPosSemidef (traceForm E) := by
     exact Complex.normSq_nonneg _
 
 /- English proof (translation)
-Use `⟨Exponent.ofFamily (fun _ : Unit => (1 : 𝓞 E)) fun y hy => ?_, ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.ext_ring (by simpa using hy ())`. Use `show pairing _ _ = _`. Rewrite using `[pairing_ofFamily]`. Simplify using `[quad, traceForm_one_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem half_finrank_mem_pairingValues :
     ((Module.finrank ℚ E : ℝ) / 2) ∈ pairingValues (traceForm E) := by

@@ -10,7 +10,7 @@ section Group
 variable {G : Type*} [Group G] {M : Type*} [Group M] [IsMulCommutative M]
 
 /- English proof (translation)
-Rewrite using `[commutator, Subgroup.commutator_le]`. Introduce `a _ b _`. Rewrite using `[MonoidHom.mem_ker, map_commutatorElement, commutatorElement_eq_one_iff_mul_comm]`. Conclude with `mul_comm' _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commutator_le_ker_of_isMulCommutative (f : G →* M) : commutator G ≤ f.ker := by
   rw [commutator, Subgroup.commutator_le]
@@ -31,7 +31,7 @@ def topSubtype : ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K
   Subgroup.subtype _
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_topSubtype : Continuous (topSubtype K Ω) :=
   continuous_subtype_val
@@ -44,7 +44,7 @@ def topSubtypeInv : (Ω ≃ₐ[K] Ω) →* ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_id.subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_topSubtypeInv : Continuous (topSubtypeInv K Ω) :=
   continuous_id.subtype_mk _
@@ -74,7 +74,7 @@ theorem topAbelianizationEquiv_mk (g : ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) :
   rfl
 
 /- English proof (translation)
-The claim follows from `continuous_topologicalAbelianizationMap (topSubtype K Ω) continuous_topSubtype`.
+A detailed English derivation is pending.
 -/
 theorem continuous_topAbelianizationEquiv : Continuous (topAbelianizationEquiv K Ω) :=
   continuous_topologicalAbelianizationMap (topSubtype K Ω) continuous_topSubtype
@@ -87,11 +87,11 @@ variable (L : IntermediateField K Ω) [FiniteDimensional K L] [IsGalois K L]
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 /- English proof (translation)
-Use extensionality with `σ`. Establish `hc : ∀ y : L, (((σ.restrictNormal L) y : L) : Ω) = σ y` using `fun y => AlgEquiv.restrictNormal_commutes _ _ y`. Rewrite using `[MonoidHom.mem_ker, IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun τ : L ≃ₐ[K] L => ((τ ⟨x, hx⟩ : L) : Ω)) h` as an intermediate fact. Simplify using `only [AlgEquiv.restrictNormalHom_apply, hc, AlgEquiv.one_apply] at this`. Conclude with `this`. Introduce `h`. Use extensionality with `x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgEquiv.restrictNormalHom_apply, hc, AlgEquiv.one_apply]`. Conclude with `h x x.2`.
+A detailed English derivation is pending.
 -/
 theorem ker_restrictNormalHom :
     (AlgEquiv.restrictNormalHom (F := K) (K₁ := Ω) L).ker = L.fixingSubgroup := by
@@ -113,7 +113,7 @@ variable [IsMulCommutative (L ≃ₐ[K] L)]
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 /- English proof (translation)
-Use `Subgroup.topologicalClosure_minimal _ (commutator_le_ker_of_isMulCommutative _) ?_` and prove the remaining obligations. Rewrite using `[ker_restrictNormalHom]`. Conclude with `Subgroup.isClosed_of_isOpen _ (L.fixingSubgroup_isOpen)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalClosure_commutator_le_ker_restrictNormalHom :
     (commutator (Ω ≃ₐ[K] Ω)).topologicalClosure ≤
@@ -136,7 +136,7 @@ theorem abelianRestrict_mk (σ : Ω ≃ₐ[K] Ω) :
   rfl
 
 /- English proof (translation)
-Use `⟨le_top, ?_⟩` and prove the remaining obligations. Rewrite using `[← ker_restrictTop]`. Conclude with `commutator_le_ker_of_isMulCommutative _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAbelianExtension_fixingOpenSubgroup : IsAbelianExtension ⊤ (fixingOpenSubgroup L) := by
   refine ⟨le_top, ?_⟩
@@ -144,7 +144,7 @@ theorem isAbelianExtension_fixingOpenSubgroup : IsAbelianExtension ⊤ (fixingOp
   exact commutator_le_ker_of_isMulCommutative _
 
 /- English proof (translation)
-Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H g => rfl`.
+Proceed by induction. Treat this case separately.
 -/
 theorem abelianRestrict_topAbelianizationEquiv
     (y : TopologicalAbelianization ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))) :
@@ -166,7 +166,7 @@ noncomputable def localReciprocityLimit : Kˣ →* TopologicalAbelianization (Ω
       (baseUnitsEquiv (K := K) (Ω := Ω)).symm.toMonoidHom)
 
 /- English proof (translation)
-The claim follows from `isDiscreteModule_units (K := K) (Ω := Ω) localReciprocityLimit K Ω (baseUnitsEquiv a) = topAbelianizationEquiv K Ω ((localClassFieldData K Ω).reciprocityLimit (classFieldAxiom_units K Ω) ⊤ a) := by simp only [localReciprocityLimit, MonoidHom.comp_apply, MulEquiv.toMonoidHom_eq_co …`.
+A detailed English derivation is pending.
 -/
 theorem localReciprocityLimit_baseUnitsEquiv
     (a : fixedModule Ωˣ ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))) :
@@ -177,9 +177,9 @@ theorem localReciprocityLimit_baseUnitsEquiv
     MonoidHom.coe_coe, MulEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `haveI := isDiscreteModule_units (K := K) (Ω := Ω)`. Take `⟨a, rfl⟩` from `(baseUnitsEquiv (K := K) (Ω := Ω)).surjective x`. Establish `hM` using `isAbelianExtension_fixingOpenSubgroup L`. Rewrite using `[localReciprocityLimit_baseUnitsEquiv, abelianRestrict_topAbelianizationEquiv, (localClassFieldData K Ω).abelianizationRestrict_reciprocityLimit _ hM, localReciprocity_symm_mk_baseUnitsEquiv]`. Use `set q := ((localClassFieldData K Ω).reciprocityAbelianEquiv (classFieldAxiom_units K Ω) hM).symm (a : tateZero Ωˣ _ _) with hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((localClassFieldData K Ω).reciprocityAbEquiv (le_top : fixingOpenSubgroup L ≤ ⊤) (classFieldAxiom_units K Ω)).symm (a : tateZero Ωˣ _ _) = Abelianization.of q`. Rewrite using `[MulEquiv.symm_apply_eq, ClassFieldData.reciprocityAbEquiv_of, hq, ← (localClassFieldData K Ω).reciprocityAbelianEquiv_apply (classFieldAxiom_units K Ω) hM, MulEquiv.apply_symm_apply]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem of_abelianRestrict_localReciprocityLimit (L : IntermediateField K Ω) [FiniteDimensional K L]
     [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)] (x : Kˣ) :
@@ -203,9 +203,9 @@ theorem of_abelianRestrict_localReciprocityLimit (L : IntermediateField K Ω) [F
 
 omit [IsSepClosure K Ω] in
 /- English proof (translation)
-Use `haveI : (L.fixingSubgroup.subgroupOf ⊤).FiniteIndex := inferInstanceAs (((fixingOpenSubgroup L : Subgroup (Ω ≃ₐ[K] Ω)).subgroupOf ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))).FiniteIndex)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨_, (baseUnitsEquiv_norm L b).symm⟩`. Introduce and unpack `⟨b, hb⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(fixedModuleUnitsEquiv L).symm b, baseUnitsEquiv.injective ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `baseUnitsEquiv (Abstract.norm Ωˣ ⊤ L.fixingSubgroup _) = _`. Rewrite using `[baseUnitsEquiv_norm, MulEquiv.apply_symm_apply, hb]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_norm_top_iff (L : IntermediateField K Ω) [IsGalois K Ω] [FiniteDimensional K L]
     (a : fixedModule Ωˣ ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))) :
@@ -224,7 +224,7 @@ theorem mem_range_norm_top_iff (L : IntermediateField K Ω) [IsGalois K Ω] [Fin
     rw [baseUnitsEquiv_norm, MulEquiv.apply_symm_apply, hb]
 
 /- English proof (translation)
-The claim follows from `L.2 (normUnits K L.1).range := by haveI := isDiscreteModule_units (K := K) (Ω := Ω) ext x obtain ⟨a, rfl⟩ := (baseUnitsEquiv (K := K) (Ω := Ω)).surjective x rw [MonoidHom.mem_ker, localReciprocityLimit_baseUnitsEquiv, map_eq_one_iff _ (topAbelianizationEquiv K Ω).injective, ← Mon …`.
+A detailed English derivation is pending.
 -/
 theorem ker_localReciprocityLimit :
     (localReciprocityLimit K Ω).ker =
@@ -250,9 +250,9 @@ theorem ker_localReciprocityLimit :
     exact h'
 
 /- English proof (translation)
-Use `haveI := isDiscreteModule_units (K := K) (Ω := Ω)`. Establish `hd` using `(localClassFieldData K Ω).denseRange_reciprocityLimit (classFieldAxiom_units K Ω) (K := (⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)))`. Establish `hd' : DenseRange (((localClassFieldData K Ω).reciprocityLimit (classFieldAxiom_units K Ω) ⊤) ∘ (baseUnitsEquiv (K` using `K) (Ω := Ω)).symm) := by`. Unfold `DenseRange`. Rewrite using `[Function.Surjective.range_comp (MulEquiv.surjective _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hd`. Use `DenseRange.comp (topAbelianizationEquiv K Ω).surjective.denseRange hd' continuous_topAbelianizationEquiv` as an intermediate fact. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem denseRange_localReciprocityLimit : DenseRange (localReciprocityLimit K Ω) := by
   haveI := isDiscreteModule_units (K := K) (Ω := Ω)
@@ -280,7 +280,7 @@ noncomputable def unramifiedOpenSubgroup (n : ℕ+) : OpenSubgroup (Ω ≃ₐ[K]
   isOpen' := (isOpen_multiples n).preimage (continuous_toAdd.comp continuous_unramifiedDegree)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unramifiedOpenSubgroup {n : ℕ+} {σ : Ω ≃ₐ[K] Ω} :
     σ ∈ (unramifiedOpenSubgroup K Ω n : Subgroup (Ω ≃ₐ[K] Ω)) ↔
@@ -288,19 +288,17 @@ theorem mem_unramifiedOpenSubgroup {n : ℕ+} {σ : Ω ≃ₐ[K] Ω} :
   Iff.rfl
 
 /- English proof (translation)
-Use `haveI := isDiscreteModule_units (K := K) (Ω := Ω)`. Take `⟨a, rfl⟩` from `(baseUnitsEquiv (K := K) (Ω := Ω)).surjective x`. Rewrite `hg` using `[localReciprocityLimit_baseUnitsEquiv]`. Establish `hg' : ((⟨g, Subgroup.mem_top g⟩ : ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))) : TopologicalAbelianization _) = (localClassFieldData K Ω).reciprocityLimit (classFieldAxiom_units K Ω) ⊤ a` using `(topAbelianizationEquiv K Ω).injective (by rw [← hg]; rfl)`. Take `⟨φ, hφ⟩` from `unramifiedDegree_surjective (K := K) (Ω := Ω) (Multiplicative.ofAdd 1)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set φ' : ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) := ⟨φ, Subgroup.mem_top φ⟩`. Establish `hφ' : (localClassFieldData K Ω).relDeg ⊤ φ' = Multiplicative.ofAdd 1`. Rewrite using `[ClassFieldData.relDeg_eq_iff, localClassFieldData_deg, inertiaDegree_top_unramifiedDegree, pow_one]`. Conclude with `hφ`. Establish `hv` using `valuation_top_localClassFieldData a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `multiplicative_ext fun n => ?_` and prove the remaining obligations. Establish `hu : ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) ⊓ (localClassFieldData K Ω).deg.ker ≤ (unramifiedOpenSubgroup K Ω n : Subgroup (Ω ≃ₐ[K] Ω))`. Introduce `σ hσ`. Rewrite using `[mem_unramifiedOpenSubgroup, (MonoidHom.mem_ker.1 hσ.2 : unramifiedDegree K Ω σ = 1), toAdd_one]`. Conclude with `(multiples n).zero_mem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hL : IsAbelianExtension ⊤ (unramifiedOpenSubgroup K Ω n)`. Use `⟨le_top, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h` using `commutator_le_ker_of_isMulCommutative ((unramifiedDegree K Ω).comp (Subgroup.subtype _)) hy`. Rewrite `h` using `[MonoidHom.mem_ker, MonoidHom.comp_apply, Subgroup.coe_subtype]`. Rewrite using `[Subgroup.mem_subgroupOf, mem_unramifiedOpenSubgroup, h, toAdd_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(multiples n).zero_mem`. Use `haveI := hL.normal`. Establish `h1` using `(localClassFieldData K Ω).reciprocity_abelianizationRestrict_reciprocityLimit (classFieldAxiom_units K Ω) hL a`. Rewrite `h1` using `[← hg', abelianizationRestrict_mk]`. Establish `h2` using `(localClassFieldData K Ω).reciprocityAbEquiv_symm_of_unramified_of_valuation hL.le (classFieldAxiom_units K Ω) hu hφ' a _ hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[MulEquiv.symm_apply_eq, ← map_zpow, ClassFieldData.reciprocityAbEquiv_of, ← QuotientGroup.mk_zpow]`. Establish `h3` using `(localClassFieldData K Ω).reciprocity_injective (classFieldAxiom_units K Ω) hL (h1.trans h2)`. Rewrite `h3` using `[QuotientGroup.eq, Subgroup.mem_subgroupOf, mem_unramifiedOpenSubgroup]`. Rewrite `h3` using `[← proj_eq_zero_iff]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_zpow, map_mul, map_inv, map_zpow, toAdd_mul, toAdd_inv, toAdd_zpow, map_add, map_neg, map_zsmul] at h3`.
-
-Rewrite `h3` using `[show (φ' : Ω ≃ₐ[K] Ω) = φ from rfl, hφ, toAdd_ofAdd, map_one, zsmul_one, neg_add_eq_zero]`. Rewrite using `[toAdd_ofAdd, map_intCast]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramifiedDegree_of_mk_eq_localReciprocityLimit {x : Kˣ} {g : Ω ≃ₐ[K] Ω}
     (hg : (g : TopologicalAbelianization (Ω ≃ₐ[K] Ω)) = localReciprocityLimit K Ω x) :
@@ -353,7 +351,7 @@ theorem unramifiedDegree_of_mk_eq_localReciprocityLimit {x : Kˣ} {g : Ω ≃ₐ
   exact h3
 
 /- English proof (translation)
-Rewrite using `[restrictNormal_eq_maximalUnramifiedExtensionFrobenius_iff, unramifiedDegree_of_mk_eq_localReciprocityLimit hg, hπ, Int.cast_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictNormal_eq_frobenius_of_mk_eq_localReciprocityLimit {π : Kˣ}
     (hπ : ord (π : K) = 1) {g : Ω ≃ₐ[K] Ω}
@@ -372,7 +370,7 @@ variable (L : IntermediateField K Ω) [FiniteDimensional K L] [IsGalois K L]
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSepClosure K Ω]
   [FiniteDimensional K L] [IsGalois K L] in
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_one _).2 fun σ hσ => ?_, QuotientGroup.mk_surjective⟩` and prove the remaining obligations. Rewrite `hσ` using `[← MonoidHom.mem_ker, Abelianization.ker_of, commutator, Subgroup.commutator_eq_bot_iff_le_centralizer.2 (fun x _ y _ => mul_comm' y x)]`. Conclude with `hσ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_abelianizationOf :
     Function.Bijective (Abelianization.of : (L ≃ₐ[K] L) →* Abelianization (L ≃ₐ[K] L)) := by
@@ -385,7 +383,7 @@ noncomputable def localReciprocityAbelian : (L ≃ₐ[K] L) ≃* Kˣ ⧸ (normUn
   (MulEquiv.ofBijective _ (bijective_abelianizationOf L)).trans (localReciprocity L)
 
 /- English proof (translation)
-Rewrite using `[MulEquiv.eq_symm_apply]`. Conclude with `(localReciprocityAbelian L).apply_symm_apply x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_localReciprocityAbelian_symm (x : Kˣ ⧸ (normUnits K L).range) :
     Abelianization.of ((localReciprocityAbelian L).symm x) = (localReciprocity L).symm x := by
@@ -393,7 +391,7 @@ theorem of_localReciprocityAbelian_symm (x : Kˣ ⧸ (normUnits K L).range) :
   exact (localReciprocityAbelian L).apply_symm_apply x
 
 /- English proof (translation)
-Apply `(bijective_abelianizationOf L).1` to reduce the goal to its premises. Rewrite using `[of_abelianRestrict_localReciprocityLimit, of_localReciprocityAbelian_symm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem abelianRestrict_localReciprocityLimit (x : Kˣ) :
     abelianRestrict L (localReciprocityLimit K Ω x) =

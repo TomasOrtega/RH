@@ -7,11 +7,11 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.QLog
 
 /- English proof (translation)
-Introduce `i`. Take `⟨N, a, ha⟩` from `c.nil n i`. Take `⟨a', ha'⟩` from `hF.surj (t.pt n a)`. Establish `hw : θ (z i ^ N - p * a') = 0`. Rewrite using `[map_sub, map_pow, hz, map_mul, map_natCast, ha', ← map_pow, ha, map_mul, map_natCast, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, -, hw'⟩` from `hF.pd _ hw`. Use `⟨N * p, ?_⟩` and prove the remaining obligations. Establish `h1 : (p : B) * a' ∣ (z i ^ N) ^ p - (z i ^ N - p * a') ^ p`. Use `sub_dvd_pow_sub_pow (z i ^ N) (z i ^ N - p * a') p` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[pow_mul]`. Establish `h2 : (p : B) ∣ (z i ^ N) ^ p - (z i ^ N - p * a') ^ p` using `dvd_trans (dvd_mul_right _ _) h1`. Establish `h3 : (p : B) ∣ (z i ^ N - p * a') ^ p` using `hw' ▸ dvd_mul_right _ _`. Use `dvd_add h2 h3` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lift_topNil {p : ℕ} [Fact p.Prime] {O B Q : Type} [CommRing O] [CommRing B] [CommRing Q]
     [Algebra B Q] {θ : B →+* O} (hF : IsFrame p Q θ) {G : PDivGroup p O} {d : ℕ} (c : Chart G d)
@@ -38,9 +38,9 @@ end GlobalTheory.QLog
 namespace GlobalTheory.QLog
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `h 0`. Take `⟨b, hb⟩` from `hN N le_rfl`. Establish `hE : (MvPolynomial.eval fun i => algebraMap B Q (z i)) (trunc' Q (Finsupp.equivFunOnFinite.symm fun _ => N) (map (algebraMap B Q) s)) = algebraMap B Q (MvPolynomial.eval z (trunc' B (Finsupp.equivFunOnFinite.symm fun _ => N) s))`. Rewrite using `[trunc'_map, MvPolynomial.eval_map, MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨MvPolynomial.eval z (trunc' B (Finsupp.equivFunOnFinite.symm fun _ => N) s) + b, ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[hE, pow_zero, one_mul, sub_eq_iff_eq_add']`. Rewrite using `[hb, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_integral {p : ℕ} {σ B Q : Type} [Fintype σ] [DecidableEq σ] [CommRing B] [CommRing Q]
     [Algebra B Q] (z : σ → B) (s : MvPowerSeries σ B) (q : Q)
@@ -62,9 +62,9 @@ end GlobalTheory.QLog
 namespace GlobalTheory.QLog
 
 /- English proof (translation)
-Rewrite `hf`, `hg`, the goal using `[c.hasPeriod_iff hF]`. Introduce `n z hz`. Take `⟨q, hq, b1, hb1⟩` from `hf n z hz`. Take `⟨r, hr, b2, hb2⟩` from `hg n z hz`. Establish `h1` using `(GlobalTheory.QLog.ValLin.hasVal_add_smul_map p B O Q θ hF (Fin d) z g g r r hr).2.1 (algebraMap B Q b)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `(GlobalTheory.QLog.ValLin.hasVal_add_smul_map p B O Q θ hF (Fin d) z _ _ q _ hq).1 h1`. Use `⟨_, h2, b1 + b * b2, ?_⟩` and prove the remaining obligations. Establish `e : (p : Q) ^ n * (q + algebraMap B Q b * r) = (p : Q) ^ n * q + algebraMap B Q b * ((p : Q) ^ n * r)` using `by ring`. Rewrite using `[e, hb1, hb2, ← map_mul, ← map_add]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -87,9 +87,9 @@ theorem hasPeriod_add_smul {p : ℕ} [Fact p.Prime] {O B Q : Type} [CommRing O] 
   ring
 
 /- English proof (translation)
-Rewrite using `[c.hasPeriod_iff hF]`. Introduce `n z hz`. Establish `hD : DIn (⊤ : Ideal B) (map (algebraMap B Q) s)` using `fun α i => ⟨(α i : B) * coeff α s, trivial, by rw [coeff_map, map_mul, map_natCast]⟩`. Take `⟨q, hq, -⟩` from `GlobalTheory.QLog.existsUnique_hasVal_of_dIn p B O Q θ hF (Fin d) z (lift_topNil hF c t n z hz) _ hD`. Take `⟨e, he⟩` from `val_integral z s q hq`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨q, hq, e, by rw [he, zero_add, map_mul, map_pow, map_natCast]⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasPeriod_integral {p : ℕ} [Fact p.Prime] {O B Q : Type} [CommRing O] [CommRing B]
     [CommRing Q] [Algebra B Q] {θ : B →+* O} (hF : IsFrame p Q θ) {G : PDivGroup p O} {d : ℕ}
@@ -105,9 +105,9 @@ theorem hasPeriod_integral {p : ℕ} [Fact p.Prime] {O B Q : Type} [CommRing O] 
 
 open MvPowerSeries in
 /- English proof (translation)
-Take `⟨w, hw⟩` from `ha`. Take `⟨b, hb⟩` from `hθ.surj w`. Take `⟨y, -, hy⟩` from `hθ.pd (z ^ N - p * b) (by simp [hza, hb, hw])`. Use `⟨N * p, ?_⟩` and prove the remaining obligations. Establish `h1 : (p : B) ∣ (z ^ N) ^ p - (z ^ N - p * b) ^ p` using `(dvd_mul_right (p : B) b).trans (by simpa using sub_dvd_pow_sub_pow (z ^ N) (z ^ N - p * b) p)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (z ^ N) ^ p = ((z ^ N) ^ p - (z ^ N - p * b) ^ p) + p * y` using `by rw [← hy]; ring`. Rewrite using `[pow_mul, h2]`. Conclude with `dvd_add h1 (dvd_mul_right _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_pow_dvd_of_theta_eq_of_isFrame {p : ℕ} {B O Q : Type} [CommRing B] [CommRing Q]
     [CommRing O] [Algebra B Q] {θ : B →+* O} (hθ : _root_.GlobalTheory.QLog.IsFrame p Q θ)
@@ -126,7 +126,7 @@ private lemma exists_pow_dvd_of_theta_eq_of_isFrame {p : ℕ} {B O Q : Type} [Co
 
 open MvPowerSeries in
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.trunc'_map, MvPolynomial.eval_map, MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left, RingHom.comp_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma eval_algebraMap_trunc'_map_eq_algebraMap_eval {B Q : Type} [CommRing B] [CommRing Q] [Algebra B Q]
     {d : ℕ} (s : MvPowerSeries (Fin d) B) (z : Fin d → B) (N : ℕ) :
@@ -140,19 +140,19 @@ private lemma eval_algebraMap_trunc'_map_eq_algebraMap_eval {B Q : Type} [CommRi
 open MvPowerSeries in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ ε _ F G d c μ' _ _ f g t y y' b hf hg`. Establish `hF` using `F.frame`. Rewrite `hf`, `hg` using `[c.hasPeriod_iff hF]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[c.hasPeriod_iff hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `n z hz`. Take `⟨q, hq, b₁, hb₁⟩` from `hf n z hz`. Take `⟨r, hr, b₂, hb₂⟩` from `hg n z hz`. Establish `hbr` using `(_root_.GlobalTheory.QLog.ValLin.hasVal_add_smul_map p _ O _ F.θ hF (Fin d) z g f r q hr).2.1 (algebraMap _ _ b)`. Use `⟨q + algebraMap _ _ b * r, (_root_.GlobalTheory.QLog.ValLin.hasVal_add_smul_map p _ O _ F.θ hF (Fin d) z f _ q _ hq).1 hbr, b₁ + b * b₂, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add, map_mul, map_pow, map_natCast] at hb₁ hb₂ ⊢`. Take the linear combination `hb₁ + algebraMap _ _ b * hb₂`. Introduce `s _`. Rewrite using `[c.hasPeriod_iff hF]`. Introduce `n z hz`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz' : ∀ i, ∃ M, (p : F.B) ∣ z i ^ M` using `fun i => by`. Take `⟨N, hN⟩` from `c.nil n i`. Use `exists_pow_dvd_of_theta_eq_of_isFrame hF (hz i) (N := N) ?_` and prove the remaining obligations. Simplify `map_dvd (t.pt n) hN` using `[map_pow, map_natCast]`. Establish `hd : _root_.GlobalTheory.QLog.DIn (⊤ : Ideal F.B) (map (algebraMap F.B F.Q) s)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `α i`. Conclude with `⟨(α i : F.B) * coeff α s, Submodule.mem_top, by simp⟩`. Take `⟨q, hq, -⟩` from `_root_.GlobalTheory.QLog.existsUnique_hasVal_of_dIn p _ O _ F.θ hF (Fin d) z hz' _ hd`. Establish `hq'` using `hq`. Unfold `_root_.GlobalTheory.QLog.HasVal at hq'`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨N, hN⟩` from `hq' 0`. Take `⟨e, he⟩` from `hN N le_rfl`. Use `⟨q, hq, MvPolynomial.eval z (trunc' F.B (Finsupp.equivFunOnFinite.symm fun _ ↦ N) s) + e, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[eval_algebraMap_trunc'_map_eq_algebraMap_eval, pow_zero, one_mul]`. Establish `hq2 : q = algebraMap _ F.Q (MvPolynomial.eval z (trunc' F.B (Finsupp.equivFunOnFinite.symm fun _ ↦ N) s) + e)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add, ← he]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hq2, zero_add, map_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.QLog.hasPeriod_linear : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : _root_.GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.IsPrimitiveSystem ε), ∀ F : _root_.GlobalTheory.QLog.BFrame ε, ∀ (G : _root_.GlobalTheory.PDivGroup p O) (d : ℕ) (c : _root_.GlobalTheory.QLog.Chart G d) (μ' : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.B), _root_.GlobalTheory.QLog.IsLift F.θ μ' → (∀ i, map F.θ (μ' i) = c.μ i) → ∀ (f g : MvPowerSeries (Fin d) F.Q) (t : G.Tate) (y y' b : F.B), c.HasPeriod F.θ t f y → c.HasPeriod F.θ t g y' → c.HasPeriod F.θ t (f + algebraMap F.B F.Q b • g) (y + b * y') ∧ (∀ s : MvPowerSeries (Fin d) F.B, constantCoeff s = 0 → c.HasPeriod F.θ t (map (algebraMap F.B F.Q) s) 0) := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ ε _ F G d c μ' _ _ f g t y y' b hf hg

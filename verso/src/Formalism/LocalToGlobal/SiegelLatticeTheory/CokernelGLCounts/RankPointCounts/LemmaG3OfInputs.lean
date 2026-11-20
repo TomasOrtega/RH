@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Unfold `Hp Hsp`. Rewrite using `[UUE_eq_Asp Λ hΛ _ _ hL hL']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hp_eq_Hsp (t : TauC Y u u') (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Submodule.IsLattice D.host.E Λ)
     (hL : IsLift Λ (lf D (X.Fu u))) (hL' : IsLift Λ t.frame) :
@@ -27,49 +27,45 @@ theorem Hp_eq_Hsp (t : TauC Y u u') (Λ : Submodule (𝓞 D.host.E) (VS D).V) (h
   rw [UUE_eq_Asp Λ hΛ _ _ hL hL']
 
 /- English proof (translation)
-Take `⟨⟨l1, -⟩, ⟨l1', -⟩⟩` from `line_occ Y t0 t1 h0 h1 hR1 hG1 hT hT'`. Take `⟨⟨l2, -⟩, ⟨l2', -⟩⟩` from `line_occ Y t0 t2 h0 h2 hR2 hG2 hT hT'`. Establish `hy : yT Y u u' t2 - yT Y u u' t1 ∈ (X.Fu u).X`. Use `Submodule.sub_mem _ l2 l1` as an intermediate fact. Rewrite `this` using `[← ha]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hy' : yT' Y u u' t2 - yT' Y u u' t1 ∈ (X.Fu u').X`. Use `Submodule.sub_mem _ l2' l1'` as an intermediate fact. Rewrite `this` using `[← ha']`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Take `⟨o1, o2, o3, o4⟩` from `omp_terms Y t1 t2 σ s' hσ hs' he`. Establish `hTE : ((Tu D u : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hTE' : ((Tu D u' : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs'i` using `SRat_inv (lf D (X.Fu u')) hs'`. Establish `hσm` using `hσ`. Take `⟨hσi, hσf, hσz⟩` from `hσm`. Take `⟨hsi', hsf', hsz'⟩` from `hs'i`. Establish `hsymm : ∀ v, t2.lin.symm (σ v) = s'.symm (t1.lin.symm v)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v`. Apply `t2.lin.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, he]`. Use `show σ v = σ (t1.lin (s' (s'.symm (t1.lin.symm v))))`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : yT Y u u' t2 - yT Y u u' t1 = ((Tu D u : ℕ) : D.host.E) • (σ (omp (X.Fu u) t1.frame.fl) - omp (X.Fu u) t1.frame.fl)`. Simplify using `only [yT, yv, o1, o2, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite `hy` using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Submodule.smul_mem_iff _ hTE).1 hy`. Use `set ω := omp t1.frame.fl (X.Fu u) with hω`. Establish `e : yT' Y u u' t2 - yT' Y u u' t1 = ((Tu D u' : ℕ) : D.host.E) • (s'.symm (t1.lin.symm ω) - t1.lin.symm ω)`. Simplify using `only [yT', yv, o3, o4, frame_z_eq_lin_zu, map_add, map_smul, LinearEquiv.symm_apply_apply, hsymm, smul_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hy'` using `[e]`. Establish `hv` using `(Submodule.smul_mem_iff _ hTE').1 hy'`. Use `(mem_frameX Y t1 _).2 ?_` and prove the remaining obligations. Use `hv using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show t1.lin.symm (t1.lin (s'.symm (t1.lin.symm ω))) - t1.lin.symm ω = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Take `⟨hl1, hl2, hTh⟩` from `th21 Y t0 t1 t2 h0 h1 h2 hR1 hR2`. Establish `hlat : Submodule.IsLattice D.host.E t0.lam` using `((Y.rowsOK u).1 t0.lam t0.mem).2.1.1`. Establish `hLF : IsLift t0.lam (lf D (X.Fu u))` using `((Y.rowsOK u).1 t0.lam t0.mem).2.1.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1 : IsLift t0.lam t1.frame` using `by rw [← hl1]; exact t1.rep.2.2.2.2.1`. Establish `hL2 : IsLift t0.lam t2.frame` using `by rw [← hl2]; exact t2.rep.2.2.2.2.1`. Establish `hH1` using `Hp_eq_Hsp Y t1 t0.lam hlat hLF hL1`. Establish `hH2` using `Hp_eq_Hsp Y t2 t0.lam hlat hLF hL2`. Establish `hX1A : t1.frame.fl.X ≤ Asp (X.Fu u) t1.frame.fl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Asp_symm]`. Conclude with `X_le_Asp _ _`. Establish `hz1A : t1.frame.fl.z ∈ Asp (X.Fu u) t1.frame.fl`. Rewrite using `[← Asp_symm]`. Conclude with `z_mem_Asp _ _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hAsp : Asp (X.Fu u) t2.frame.fl ≤ (Asp (X.Fu u) t1.frame.fl).map (σ : (VS D).V →ₗ[D.host.E] (VS D).V)`. Rewrite using `[Asp, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Consider the cases of `i with`. Consider the case `inl a`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨σ.symm ((X.Fu u).fvec a), ?_, by simp⟩` and prove the remaining obligations. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Establish `e : σ.symm ((X.Fu u).fvec (Fin.last _)) = (X.Fu u).z + (σ.symm (X.Fu u).z - (X.Fu u).z)`. Simplify using `[FlagG.fvec, Fin.snoc_last]`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (z_mem_Asp _ _) (X_le_Asp _ _ (SRat_inv (lf D (X.Fu u)) hσ).2.2)`. Consider the case `cast a`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`. Use `X_le_Asp _ _ (X_pres (lf D (X.Fu u)) (SRat_inv (lf D (X.Fu u)) hσ).2.1 _ ?_)` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Consider the case `inr b`. Use `⟨t1.lin (s' ((X.Fu u').fvec b)), ?_, ?_⟩` and prove the remaining obligations. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : t1.lin (s' ((X.Fu u').fvec (Fin.last _))) = t1.frame.fl.z + t1.lin (s' (X.Fu u').z - (X.Fu u').z)`. Rewrite using `[frame_z_eq_lin_zu, map_sub]`. Simplify using `[FlagG.fvec, Fin.snoc_last]`. Rewrite using `[e]`. Use `Submodule.add_mem _ hz1A (hX1A ((mem_frameX Y t1 _).2 ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `hs'.2.2`. Consider the case `cast b`. Use `hX1A ((mem_frameX Y t1 _).2 ?_)` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`. Conclude with `X_pres (lf D (X.Fu u')) hs'.2.1 _ (Submodule.subset_span ⟨b, rfl⟩)`. Use `show σ (t1.lin (s' ((X.Fu u').fvec b))) = t2.frame.fl.fvec b`. Rewrite using `[frame_fvec, he]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Establish `hσw : σ w ∈ Hp t0.lam (lf D (X.Fu u)) t2.frame`. Rewrite using `[hH2]`. Use `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth _).2 fun y hy => ?_` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `hAsp hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.coe_coe, hσi]`. Conclude with `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth _).1 hw a ha`. Rewrite `hσw` using `[← hTh]`. Take `⟨p, hp, hp1⟩` from `Submodule.mem_map.1 hσw`. Take `⟨-, hp2, hp12, hpβ⟩` from `(CorankRelation.mem_ThPairs t0.lam _ t2.frame t1.frame _ p).1 hp`.
-
-Simplify using `only [LinearMap.fst_apply] at hp1`. Use `⟨p.2, by rw [← hH1]; exact hp2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp1]`. Conclude with `hp12`. Establish `e : (t1.lin * t2.lin⁻¹) p.1 = (t1.lin * s'⁻¹ * t1.lin⁻¹) w`.
-
-Rewrite using `[hp1]`. Use `show t1.lin (t2.lin.symm (σ w)) = t1.lin (s'.symm (t1.lin.symm w))`. Rewrite using `[hsymm]`. Rewrite using `[← e]`. Conclude with `hpβ`.
+A detailed English derivation is pending.
 -/
 theorem lemmaG3_of_inputs (hT : 3 ≤ Tu D u) (hT' : 3 ≤ Tu D u') (t0 t1 t2 : TauC Y u u') (h0 : Gt t0 ≠ 0) (h1 : Gt t1 ≠ 0)
     (h2 : Gt t2 ≠ 0) (hR1 : RelC Y u u' t0 t1) (hR2 : RelC Y u u' t0 t2) (hG1 : t1.G = t0.G) (hG2 : t2.G = t0.G)

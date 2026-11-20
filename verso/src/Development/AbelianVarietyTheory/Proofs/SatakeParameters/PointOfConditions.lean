@@ -9,13 +9,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.RowPointLoc
 
 /- English proof (translation)
-Establish `hm : Ideal.map (f : A →+* B) (IsLocalRing.maximalIdeal A) ≤ IsLocalRing.maximalIdeal B`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Simplify using `only [Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff] at hx ⊢`. Introduce `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx` to reduce the goal to its premises. Use `hu.map (f.symm : B →+* A)` as an intermediate fact. Simplify using `using this`. Use `continuous_of_continuousAt_zero (f : A →+ B) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Take `⟨n, hn⟩` from `((isAdic_iff.1 hB).2 s hs)`. Establish `hopen` using `(isAdic_iff.1 hA).1 n`. Use `Filter.mem_map.2 (Filter.mem_of_superset (hopen.mem_nhds (Ideal.zero_mem _)) ?_)` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hn` to reduce the goal to its premises. Establish `h1 : f x ∈ Ideal.map (f : A →+* B) (IsLocalRing.maximalIdeal A ^ n)` using `Ideal.mem_map_of_mem _ hx`. Rewrite `h1` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hm n h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_adic {A B : Type} [CommRing A] [IsLocalRing A] [TopologicalSpace A] [IsTopologicalRing A]
     [CommRing B] [IsLocalRing B] [TopologicalSpace B] [IsTopologicalRing B]
@@ -42,9 +42,9 @@ theorem continuous_of_adic {A B : Type} [CommRing A] [IsLocalRing A] [Topologica
   exact Ideal.pow_right_mono hm n h1
 
 /- English proof (translation)
-Introduce `hL D P h42 _ i σ hne`. Take `⟨Q, hQ⟩` from `((h42 i) σ hne).1.2`. Take `⟨i', hi', P', x', hth, hx⟩` from `GlobalTheory.T.theta_lift_has_point_at_localisation_same_place D P.M P.H.hecke P.H.av P.H.cover (GlobalTheory.T.hecke_standard_twist hL D P) i σ Q hQ`. Take `⟨hj, hw⟩` from `(D.nd.locs_mem _ _ i').1 hi'`. Establish `hl : D.nd.l i' = D.nd.l i` using `by rw [← D.nd.w_l i', ← D.nd.w_l i, hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩` from `P.H.hecke.sameO i' i hj hw`. Use `⟨i', hj, hl, fun w _ => P.locW_eq i' i σ w, ⟨φ, ?_, fun z => (hφ z).symm⟩, P', x', hth, hx⟩` and prove the remaining obligations. Conclude with `continuous_of_adic (D.nd.O_adic i') (D.nd.O_adic i) φ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), Formalism.MainNotions.SumRepresentations.Conclusion42 D → Formalism.MainNotions.SumRepresentations.Conclusion41 D → RowPoint D.nd D.naut := by
   intro hL D P h42 _ i σ hne

@@ -4,17 +4,17 @@ open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `f p hf hne`. Establish `htop : analyticOrderAt f p ≠ ⊤`. Rewrite using `[Ne, analyticOrderAt_eq_top]`. Conclude with `hne`. Take `⟨g, hg, hg0, hfg⟩` from `(hf.analyticOrderNatAt_eq_iff htop (n := analyticOrderNatAt f p)).mp rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set m := analyticOrderNatAt f p with hm`. Use `⟨fun s => deriv g s / g s, hg.deriv.div hg hg0, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ᶠ s in 𝓝 p, g s ≠ 0` using `hg.continuousAt.eventually_ne hg0`. Establish `h2 : ∀ᶠ s in 𝓝 p, AnalyticAt ℂ g s` using `hg.eventually_analyticAt`. Establish `h3` using `hfg.eventually_nhds`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ∀ᶠ s in 𝓝[≠] p, s ≠ p` using `self_mem_nhdsWithin`. Use `filter_upwards [h4, nhdsWithin_le_nhds h1, nhdsWithin_le_nhds h2, nhdsWithin_le_nhds h3] with s hsp hs1 hs2 hs3`. Establish `hsub : s - p ≠ 0` using `sub_ne_zero.mpr hsp`. Establish `hev : f =ᶠ[𝓝 s] fun z => (z - p) ^ m * g z` using `by filter_upwards [hs3] with z hz`. Rewrite using `[hz, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfs : f s = (s - p) ^ m * g s` using `hev.eq_of_nhds`. Establish `hd : HasDerivAt (fun z => (z - p) ^ m * g z) ((m : ℂ) * (s - p) ^ (m - 1) * 1 * g s + (s - p) ^ m * deriv g s) s` using `(((hasDerivAt_id s).sub_const p).pow m).mul hs2.differentiableAt.hasDerivAt`. Establish `hdf : deriv f s = (m : ℂ) * (s - p) ^ (m - 1) * 1 * g s + (s - p) ^ m * deriv g s`. Rewrite using `[hev.deriv_eq, hd.deriv]`. Use `⟨by rw [hfs]; exact mul_ne_zero (pow_ne_zero _ hsub) hs1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdf, hfs]`. Break down `Nat.eq_zero_or_pos m with h0 | h0` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Take `⟨k, hk⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hk, Nat.add_sub_cancel]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem logDeriv_eq_order_div_add_analytic :
     ∀ (f : ℂ → ℂ) (p : ℂ), AnalyticAt ℂ f p → (¬ ∀ᶠ s in 𝓝 p, f s = 0) →

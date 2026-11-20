@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Definitions.MembershipCriteria.GoodChar
 open GlobalTheory.CompanionTheory.VacLoc GlobalTheory.CompanionTheory.FinHeis GlobalTheory.WeilM MeasureTheory Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.CosetMod.indicator_mem_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMembershipProofs%2FSchrodingerModelSelfDualLattice.lean&line=44#L44)
 -/

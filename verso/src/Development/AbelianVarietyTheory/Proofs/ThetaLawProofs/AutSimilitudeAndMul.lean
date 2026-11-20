@@ -32,9 +32,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 open Matrix in
 /- English proof (translation)
-Establish `h1 : ∑ r, al r c * al r c = m`. Use `congrFun (congrFun hal c) c` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Establish `h2 : Even (∑ r, al r c * (al r c - 1))` using `Finset.even_sum _ fun r _ => Int.even_mul_pred_self _`. Take `⟨s, hs⟩` from `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨-s, ?_⟩` and prove the remaining obligations. Establish `: ∑ r, al r c * (al r c - 1) = ∑ r, al r c * al r c - ∑ r, al r c`. Simplify using `[mul_sub, Finset.sum_sub_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma exists_column_sum_eq_add_two_mul (m : ℕ) (al : Matrix (Fin 4) (Fin 4) ℤ) (hal : al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ)) (c : Fin 4) :
     ∃ s : ℤ, ∑ r, al r c = m + 2 * s := by
@@ -52,7 +52,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 open Matrix in
 /- English proof (translation)
-Use `⟨∑ i, if a i = 0 then 0 else k i, ?_⟩` and prove the remaining obligations. Simplify using `only [dotProduct, Finset.mul_sum, Int.cast_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases ha i with h | h <;> simp [h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma exists_int_two_mul_dotProduct_of_half_integral {g : ℕ} (a : Fin g → ℂ) (ha : ∀ i, a i = 0 ∨ a i = 1 / 2) (k : Fin g → ℤ) :
     ∃ t : ℤ, 2 * (a ⬝ᵥ fun i => (k i : ℂ)) = t := by
@@ -65,7 +65,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 open Matrix in
 /- English proof (translation)
-Use `congrFun (congrFun hal c) c'` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] at this`. Apply the tactic sequence `split_ifs at this ⊢ with h <;> [skip; skip] <;> exact_mod_cast (by simpa using this)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma sum_intCast_mul_column_eq_of_transpose_mul_eq_smul (m : ℕ) (al : Matrix (Fin 4) (Fin 4) ℤ) (hal : al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ)) (c c' : Fin 4) :
     ∑ r, (al r c : ℂ) * al r c' = if c = c' then (m : ℂ) else 0 := by
@@ -77,11 +77,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 open Matrix in
 /- English proof (translation)
-Establish `hm0 : (m : ℂ) ≠ 0` using `by exact_mod_cast (by omega : m ≠ 0)`. Unfold `_root_.GlobalTheory.SimilTheta.tors`. Simplify using `only [← Int.cast_smul_eq_zsmul ℂ, smul_add, Finset.smul_sum, smul_smul, Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_comm (f := fun r c' => ((al r c : ℂ) * al r c') • y c')]`. Simplify using `only [← Finset.sum_smul, sum_intCast_mul_column_eq_of_transpose_mul_eq_smul m al hal]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ x x_1, (↑(al x c) * ((↑m)⁻¹ * ↑(al x x_1)) : ℂ) = (↑m)⁻¹ * (↑(al x c) * ↑(al x x_1))` using `fun _ _ => by ring`. Establish `h3 : ∑ x, ∑ x_1, (↑(al x c) * ((↑m)⁻¹ * ↑(al x x_1)) : ℂ) • _root_.GlobalTheory.SimilTheta.lat τ (k x_1) (n x_1) = _root_.GlobalTheory.SimilTheta.lat τ (k c) (n c)`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [h2, ← Finset.sum_smul, ← Finset.mul_sum, sum_intCast_mul_column_eq_of_transpose_mul_eq_smul m al hal]`. Simplify using `[mul_ite, inv_mul_cancel₀ hm0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma sum_column_smul_add_tors_eq {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (m : ℕ) (hm : 1 ≤ m) (al : Matrix (Fin 4) (Fin 4) ℤ) (hal : al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ)) (k n : Fin 4 → Fin g → ℤ) (y : Fin 4 → Fin g → ℂ) (c : Fin 4) :
     ∑ r, (al r c : ℂ) • (∑ c', al r c' • y c' + _root_.GlobalTheory.SimilTheta.tors τ al m k n r) = (m : ℂ) • y c + _root_.GlobalTheory.SimilTheta.lat τ (k c) (n c) := by
@@ -102,7 +102,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 open Matrix in
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma intCast_zsmul_vector {g : ℕ} (α : ℤ) (v : Fin g → ℤ) :
     (fun i => (((α • v) i : ℤ) : ℂ)) = (α : ℂ) • fun i => (v i : ℂ) := by
@@ -112,23 +112,21 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 open Matrix in
 /- English proof (translation)
-Introduce `g m τ a b al hab hτ hm hal`. Use `⟨fun k n y c k₀ n₀ => ?_, fun k₀ n₀ z => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_column_sum_eq_add_two_mul m al hal c`. Take `⟨ta, hta⟩` from `exists_int_two_mul_dotProduct_of_half_integral a hab.1 k₀`. Take `⟨tb, htb⟩` from `exists_int_two_mul_dotProduct_of_half_integral b hab.2 n₀`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hV` using `sum_column_smul_add_tors_eq τ m hm al hal k n y c`. Unfold `_root_.GlobalTheory.SimilTheta.aut`. Simplify using `only [intCast_zsmul_vector, smul_dotProduct, dotProduct_smul, mulVec_smul, smul_eq_mul]`. Rewrite using `[← Complex.exp_sum, ← Complex.exp_add, ← Complex.exp_nat_mul, Complex.exp_eq_exp_iff_exists_int]`. Use `set K₀ : Fin g → ℂ := fun i => (k₀ i : ℂ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set N₀ : Fin g → ℂ := fun i => (n₀ i : ℂ)`. Use `set Kc : Fin g → ℂ := fun i => (k c i : ℂ)`. Use `set Nc : Fin g → ℂ := fun i => (n c i : ℂ)`. Establish `hterm : ∀ x, (2 * ↑Real.pi * Complex.I * (((↑(al x c) * a ⬝ᵥ K₀) - ↑(al x c) * b ⬝ᵥ N₀) - ↑(al x c) * (↑(al x c) * N₀ ⬝ᵥ τ *ᵥ N₀) / 2 - ↑(al x c) * N₀ ⬝ᵥ (∑ c', al x c' • y c' + _root_.GlobalTheory.SimilTheta.tors τ al m k n x)) : ℂ) = 2 * ↑Real.pi * Complex.I * ((al x c : ℂ) * ( …`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dotProduct_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hterm]`. Rewrite using `[← Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_sub_distrib, ← Finset.sum_mul, ← Finset.sum_mul, ← dotProduct_sum, hV, sum_intCast_mul_column_eq_of_transpose_mul_eq_smul m al hal c c, if_pos rfl]`. Establish `hs' : ∑ x, (al x c : ℂ) = m + 2 * s` using `by exact_mod_cast hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs']`. Establish `hsym : Nc ⬝ᵥ τ *ᵥ N₀ = N₀ ⬝ᵥ τ *ᵥ Nc`. Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, hτ.eq, dotProduct_comm]`. Establish `hNK : Nc ⬝ᵥ K₀ = ((n c ⬝ᵥ k₀ : ℤ) : ℂ)` using `by simp [Nc, K₀, dotProduct]`. Establish `hNK' : N₀ ⬝ᵥ Kc = ((n₀ ⬝ᵥ k c : ℤ) : ℂ)` using `by simp [N₀, Kc, dotProduct]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Unfold `_root_.GlobalTheory.SimilTheta.lat`. Simplify using `only [dotProduct_add, dotProduct_smul, smul_eq_mul]`. Use `⟨s * (ta - tb) + (n c ⬝ᵥ k₀ - n₀ ⬝ᵥ k c), ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← hNK, ← hNK', ← hta, ← htb]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take the linear combination `(2 * ↑Real.pi * Complex.I) * hsym`. Take `⟨ta, hta⟩` from `exists_int_two_mul_dotProduct_of_half_integral a hab.1 k₀`. Take `⟨tb, htb⟩` from `exists_int_two_mul_dotProduct_of_half_integral b hab.2 n₀`. Unfold `_root_.GlobalTheory.SimilTheta.aut`. Simplify using `only [intCast_zsmul_vector, smul_dotProduct, dotProduct_smul, mulVec_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Complex.exp_nat_mul, Complex.exp_eq_exp_iff_exists_int]`. Take `⟨u, hu⟩` from `Int.even_mul_pred_self (m : ℤ)`. Establish `hmu : (m : ℂ) * (m - 1) = u + u` using `by exact_mod_cast hu`. Use `⟨-u * (ta - tb), ?_⟩` and prove the remaining obligations. Simplify using `only [zsmul_eq_mul, Int.cast_natCast]`.
-
-Use `push_cast`. Rewrite using `[← hta, ← htb]`. Take the linear combination `(-(2 * ↑Real.pi * Complex.I) * ((a ⬝ᵥ fun i ↦ (k₀ i : ℂ)) - b ⬝ᵥ fun i ↦ (n₀ i : ℂ))) * hmu`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SimilTheta.aut_similitude_and_mul : ∀ (g m : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (al : Matrix (Fin 4) (Fin 4) ℤ), _root_.GlobalTheory.KeyPow.charHalf g a b → τ.IsSymm → 1 ≤ m → al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) → (∀ (k n : Fin 4 → Fin g → ℤ) (y : Fin 4 → Fin g → ℂ) (c : Fin 4) (k₀ n₀ : Fin g → ℤ), (∏ r, _root_.GlobalTheory.SimilTheta.aut τ a b (al r c • k₀) (al r c • n₀) (∑ c', al r c' • y c' + _root_.GlobalTheory.SimilTheta.tors τ al m k n r)) * Complex.exp (2 * Real.pi * Complex.I * ((fun i => (n c i : ℂ)) ⬝ᵥ _root_.GlobalTheory.SimilTheta.lat τ k₀ n₀)) = _root_.GlobalTheory.SimilTheta.aut τ a b k₀ n₀ (y c) ^ m) ∧ ∀ (k₀ n₀ : Fin g → ℤ) (z : Fin g → ℂ), _root_.GlobalTheory.SimilTheta.aut τ a b ((m : ℤ) • k₀) ((m : ℤ) • n₀) ((m : ℤ) • z) = _root_.GlobalTheory.SimilTheta.aut τ a b k₀ n₀ z ^ (m ^ 2) := by
   intro g m τ a b al hab hτ hm hal

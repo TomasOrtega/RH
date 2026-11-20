@@ -19,29 +19,25 @@ noncomputable section
 namespace GlobalTheory.JacMean
 
 /- English proof (translation)
-Introduce `D ψ σ J B s vL χ χz omz homz φ Φ₀ Φ hφ hΦ₀ hΦ`. Use `haveI : ∀ V : HSp D, SecondCountableTopology (GA D V) := fun V => (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.1`. Use `haveI : ∀ V : HSp D, BorelSpace (GA D V) := fun V => ⟨rfl⟩`. Establish `hfin : J.v0.μ J.v0.𝓕 < ⊤` using `GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol J.W₀ _ _ J.v0.haar J.v0.fund`. Use `haveI : IsFiniteMeasure (J.v0.μ.restrict J.v0.𝓕) := isFiniteMeasure_restrict.2 hfin.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨K, hK⟩ : ∃ K : GA D B.V → GA D J.W₀ → GA D B.A → ℂ, K = fun h h₀ h₁ => contractT B.o J.W₀ vL.μ vL.𝓕 (s.om₀ (h₀, B.o.emb (h₁, 1)) (flFB s (s.om (1, h) Φ))) (omz (h₀, 1) Φ₀) 0` from `⟨_, rfl⟩`. Establish `hKc : Continuous fun q : GA D B.V × GA D J.W₀ × GA D B.A => K q.1 q.2.1 q.2.2`. Substitute `hK` using the available equality. Conclude with `GlobalTheory.T.continuous_pairedKernel_flatMap_weilTranslate D ψ σ J B s vL χ χz omz homz Φ₀ Φ hΦ₀ hΦ`. Choose the witnesses or unpack the hypotheses as in `⟨C, a, hKp⟩ : ∃ (C : ℝ) (a : ℕ), ∀ h h₀ h₁, ‖K h h₀ h₁‖ ≤ C * (height J.W₀ h₀ * height B.A h₁ * height B.V h) ^ a := by`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hK` using the available equality. Conclude with `GlobalTheory.T.fourierJacobiToBessel_pairedKernel_heightBound D ψ σ J B s vL χ χz omz homz Φ₀ Φ hΦ₀ hΦ`. Establish `hKi : ∀ h, (∀ γ ∈ GQ J.W₀, ∀ h₀ h₁, K h (γ * h₀) h₁ = K h h₀ h₁) ∧ ∀ γ ∈ GQ B.A, ∀ h₀ h₁, K h h₀ (γ * h₁) = K h h₀ h₁`. Substitute `hK` using the available equality. Conclude with `GlobalTheory.T.flatKernelPairing_rationalPoints_invariant D ψ σ J B s vL χ χz omz homz Φ₀ Φ hΦ₀ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hKq : ∀ h h₀ h₁, ‖K h h₀ h₁‖ ≤ |C| * 4 ^ a * (quotHeight J.W₀ h₀ * (quotHeight B.A h₁ * height B.V h)) ^ a`. Introduce `h h₀ h₁`. Take `⟨γ, hγ, e1⟩` from `exists_height_le_two_mul_quotHeight J.W₀ h₀`. Take `⟨δ, hδ, e2⟩` from `exists_height_le_two_mul_quotHeight B.A h₁`. Establish `k1 : K h h₀ h₁ = K h (γ * h₀) (δ * h₁)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(hKi h).2 δ hδ (γ * h₀) h₁, (hKi h).1 γ hγ h₀ h₁]`. Rewrite using `[k1]`. Establish `p1` using `height_pos J.W₀ (γ * h₀)`. Establish `p2` using `height_pos B.A (δ * h₁)`. Establish `p3` using `height_pos B.V h`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `q0` using `quotHeight_pos J.W₀ h₀`. Establish `q1` using `quotHeight_pos B.A h₁`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show 2 * quotHeight J.W₀ h₀ * (2 * quotHeight B.A h₁) * height B.V h = 4 * (quotHeight J.W₀ h₀ * (quotHeight B.A h₁ * height B.V h)) by ring, mul_pow]; ring`. Take `⟨Cφ, hCφ⟩` from `hφ.decay a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hpt : ∀ h h₀ h₁, ‖φ h₀ * K h h₀ h₁‖ ≤ |Cφ| * (|C| * 4 ^ a) * (quotHeight B.A h₁ * height B.V h) ^ a`. Introduce `h h₀ h₁`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ |Cφ| * (|C| * 4 ^ a) * (quotHeight B.A h₁ * height B.V h) ^ a := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right ((hCφ h₀).trans (le_abs_self _)) (by positivity)) (pow_pos (mul_pos (quotHeight_pos B.A h₁) (height_pos B.V h)) a).le`. Establish `hPeq : ∀ h h₁, handP s vL omz φ Φ₀ (flFB s (s.om (1, h) Φ)) h₁ = ∫ h₀ in J.v0.𝓕, φ h₀ * K h h₀ h₁ ∂J.v0.μ`. Substitute `hK` using the available equality. Introduce `_ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Both sides reduce to the same expression. Use `⟨⟨|Cφ| * (|C| * 4 ^ a) * (J.v0.μ J.v0.𝓕).toReal, a, fun h h₁ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hPeq]`. Use `norm_setIntegral_le_of_norm_le_const hfin fun h₀ _ => hpt h h₀ h₁` as an intermediate fact. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Measure.real]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmeas : ∀ q : GA D B.V × GA D B.A, AEStronglyMeasurable (fun h₀ => φ h₀ * K q.1 h₀ q.2) (J.v0.μ.restrict J.v0.𝓕)` using `fun q => (hφ.continuous.mul (hKc.comp ((continuous_const.prodMk (continuous_id.prodMk continuous_const))))).aestronglyMeasurable`. Establish `hc2 : Continuous fun q : GA D B.V × GA D B.A => (height B.A q.2 * height B.V q.1) ^ a` using `(((continuous_height B.A).comp continuous_snd).mul ((continuous_height B.V).comp continuous_fst)).pow a`. Use `(continuous_congr fun q : GA D B.V × GA D B.A => hPeq q.1 q.2).2 ?_` and prove the remaining obligations.
-
-Use `continuous_iff_continuousAt.2 fun q₀ => ?_` and prove the remaining obligations. Use `continuousAt_of_dominated (bound := fun _ => |Cφ| * (|C| * 4 ^ a) * ((height B.A q₀.2 * height B.V q₀.1) ^ a + 1)) (.of_forall hmeas) ?_ (integrable_const _) ?_` and prove the remaining obligations. Use `filter_upwards [hc2.continuousAt.eventually (gt_mem_nhds (lt_add_one _))] with q hq`. Use `.of_forall fun h₀ => (hpt q.1 h₀ q.2).trans (mul_le_mul_of_nonneg_left ?_ (by positivity))` and prove the remaining obligations. Conclude with `(pow_le_pow_left₀ (mul_pos (quotHeight_pos B.A q.2) (height_pos B.V q.1)).le (mul_le_mul_of_nonneg_right (quotHeight_le_height B.A q.2) (height_pos B.V q.1).le) a).trans hq.le`.
-
-Conclude with `.of_forall fun h₀ => (continuous_const.mul (hKc.comp (continuous_fst.prodMk (continuous_const.prodMk continuous_snd)))).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem handP_law : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacL D (σ + 1)) (B : BesL D σ) (s : StFB ψ J B)
     (vL : VolM D B.L.rank J.W₀.rank) (χ χz : (AE D)ˣ →* Circle) (omz : Om J.W₀ B.L), IsWeilDatumO ψ J.W₀ B.L χ χz omz →
@@ -115,29 +111,23 @@ theorem handP_law : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J 
     · exact .of_forall fun h₀ => (continuous_const.mul (hKc.comp (continuous_fst.prodMk (continuous_const.prodMk continuous_snd)))).continuousAt
 
 /- English proof (translation)
-Introduce `D ψ σ J B s vL χ χz omz homz φ G Φ₀ Φ hφ hG hΦ₀ hΦ`. Establish `hψ` using `homz.std`. Use `haveI : ∀ V : HSp D, SecondCountableTopology (GA D V) := fun V => (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.1`. Use `haveI : ∀ V : HSp D, BorelSpace (GA D V) := fun V => ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (B.vA.μ.restrict B.vA.𝓕) := isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol B.A _ _ B.vA.haar B.vA.fund).ne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsFiniteMeasure (B.vN.ν.restrict B.vN.𝓝) := isFiniteMeasure_restrict.2 (by rw [B.vN.unit.2.2]; exact ENNReal.one_ne_top)`. Take `⟨⟨C, a, hP⟩, hPc⟩` from `handP_law D ψ σ J B s vL χ χz omz homz φ Φ₀ Φ hφ hΦ₀ hΦ`. Use `set P : GA D B.V → GA D B.A → ℂ := fun h h₁ => handP s vL omz φ Φ₀ (flFB s (s.om (1, h) Φ)) h₁ with hPdef`. Take `⟨C1, a1, h1⟩` from `GlobalTheory.T.unitaryQuotientHeight_comparable_wittDecomposition D B.V B.V₀ σ B.d`. Take `⟨C2, a2, h2⟩` from `GlobalTheory.T.unitaryQuotientHeight_orthogonalSum_comparable D B.V₀ B.A B.L B.o`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C3, h3⟩` from `(GlobalTheory.RTransDecay.rapidDec_rTrans D B.V G hG).2 (a1 * a2 * a)`. Use `set bd : GA D B.V → ℝ := fun h => |C| * height B.V h ^ a * ((|C2| * |C1| ^ a2) ^ a * (|C3| * height B.V h ^ (a1 * a2 * a))) with hbd`. Establish `hbound : ∀ h (h₁ : GA D B.A) (n : flagN B.d), ‖besFun ψ 1 B.d B.o B.ζ (P h) (rTrans h G) h₁ n‖ ≤ bd h`. Introduce `h h₁ n`. Establish `hg` using `h1 n.1 n.2 (B.o.emb (h₁, 1))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `(h2 h₁).1`. Use `set g : GA D B.V := n.1 * embA B.d B.o h₁ with hgdef`. Establish `hge : n.1 * B.d.emb0 (B.o.emb (h₁, 1)) = g` using `rfl`. Rewrite `hg` using `[hge]`. Establish `q0` using `quotHeight_pos B.V₀ (B.o.emb (h₁, 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `qg` using `quotHeight_pos B.V g`. Establish `qa` using `quotHeight_pos B.A h₁`. Establish `ht` using `height_pos B.V h`. Establish `hA : quotHeight B.A h₁ ≤ |C2| * |C1| ^ a2 * quotHeight B.V g ^ (a1 * a2)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hGg` using `h3 g h`. Establish `hPb` using `hP h h₁`. Establish `hnpsi : ‖psiBes ψ B.d 1 (vecB B.o B.ζ) n.1‖ = 1` using `hψ.1.2.1 _`. Establish `e1 : ‖besFun ψ 1 B.d B.o B.ζ (P h) (rTrans h G) h₁ n‖ = ‖P h h₁‖ * ‖G (g * h)‖`. Simplify using `only [besFun, rTrans, norm_mul, norm_star, hnpsi, mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ ≤ bd h := mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (hGg.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (pow_pos ht _).le)) (by positivity)) (mul_nonneg (abs_nonneg _) (pow_pos ht a).le)`. Establish `hcont : Continuous fun q : GA D B.V × (GA D B.A × flagN B.d) => besFun ψ 1 B.d B.o B.ζ (P q.1) (rTrans q.1 G) q.2.1 q.2.2`. Establish `hn : Continuous fun q : GA D B.V × (GA D B.A × flagN B.d) => (q.2.2 : GA D B.V)` using `continuous_subtype_val.comp (continuous_snd.comp continuous_snd)`. Conclude with `((hPc.comp (continuous_fst.prodMk (continuous_fst.comp continuous_snd))).mul (hG.continuous.comp ((hn.mul (B.d.continuous_embed.comp (B.o.continuous_emb.comp ((continuous_fst.comp continuous_snd).prodMk continuous_const)))).mul continuous_fst))).mul (continuous_star.comp ((Global …`. Establish `hint : ∀ h, AbsConv B.vA.μ B.vA.𝓕 B.vN.ν B.vN.𝓝 (besFun ψ 1 B.d B.o B.ζ (P h) (rTrans h G))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h`. Use `Integrable.of_bound ?_ (bd h) (.of_forall fun p => hbound h p.1 p.2)` and prove the remaining obligations. Conclude with `(hcont.comp (continuous_const.prodMk continuous_id)).aestronglyMeasurable`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `heq : ∀ h, B.per ψ (P h) (rTrans h G) = ∫ p, Function.uncurry (besFun ψ 1 B.d B.o B.ζ (P h) (rTrans h G)) p ∂((B.vA.μ.restrict B.vA.𝓕).prod (B.vN.ν.restrict B.vN.𝓝))` using `fun h => by`.
-
-Rewrite using `[integral_prod _ (hint h)]`. Both sides reduce to the same expression. Use `(continuous_congr heq).2 ?_` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun h₀ => ?_` and prove the remaining obligations. Establish `hbc : Continuous bd`.
-
-Conclude with `(continuous_const.mul ((continuous_height B.V).pow a)).mul (continuous_const.mul (continuous_const.mul ((continuous_height B.V).pow _)))`. Use `continuousAt_of_dominated (bound := fun _ => bd h₀ + 1) ?_ ?_ (integrable_const _) ?_` and prove the remaining obligations. Conclude with `.of_forall fun h => (hcont.comp (continuous_const.prodMk continuous_id)).aestronglyMeasurable`. Use `filter_upwards [hbc.continuousAt.eventually (gt_mem_nhds (lt_add_one (bd h₀)))] with h hh`. Conclude with `.of_forall fun p => (hbound h p.1 p.2).trans hh.le`.
-
-Conclude with `.of_forall fun p => (hcont.comp (continuous_id.prodMk continuous_const)).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conclusion₂ : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacL D (σ + 1)) (B : BesL D σ) (s : StFB ψ J B), ∀ (vL : VolM D B.L.rank J.W₀.rank) (χ χz : (AE D)ˣ →* Circle) (omz : Om J.W₀ B.L), IsWeilDatumO ψ J.W₀ B.L χ χz omz → ∀ (φ : GA D J.W₀ → ℂ) (G : GA D B.V → ℂ) (Φ₀ : WO J.W₀ B.L → ℂ) (Φ : WO J.W B.V → ℂ), RapidDec J.W₀ φ → RapidDec B.V G → IsThetaFunO ψ J.W₀ B.L Φ₀ → IsThetaFunO ψ J.W B.V Φ → (∀ h, AbsConv B.vA.μ B.vA.𝓕 B.vN.ν B.vN.𝓝 (besFun ψ 1 B.d B.o B.ζ (handP s vL omz φ Φ₀ (flFB s (s.om (1, h) Φ))) (rTrans h G))) ∧ Continuous fun h => B.per ψ (handP s vL omz φ Φ₀ (flFB s (s.om (1, h) Φ))) (rTrans h G) := by
   intro D ψ σ J B s vL χ χz omz homz φ G Φ₀ Φ hφ hG hΦ₀ hΦ

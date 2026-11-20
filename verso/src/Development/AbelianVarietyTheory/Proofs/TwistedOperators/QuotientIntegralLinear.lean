@@ -13,9 +13,9 @@ variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchi
   {n : Type*} [Fintype n] [DecidableEq n] {c p : ℕ}
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `e : (N k n c p : Set (GL (n ⊕ Fin c) k)) = ⋂ r, ⋂ s, ⋂ (_ : lev p s ≤ lev p r), {g : GL (n ⊕ Fin c) k | g.val r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Radical.mem_N_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Use `isClosed_iInter fun r => isClosed_iInter fun s => isClosed_iInter fun _ => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Use `Units.continuous_val (M := Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)` as an intermediate fact. Use `fun_prop`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_N : IsClosed (N k n c p : Set (GL (n ⊕ Fin c) k)) := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
@@ -31,7 +31,7 @@ theorem isClosed_N : IsClosed (N k n c p : Set (GL (n ⊕ Fin c) k)) := by
   fun_prop
 
 /- English proof (translation)
-Rewrite using `[SplitFlip.isEmbedding_val_GL.continuous_iff]`. Express the relevant statement in the definitionally equal form `Continuous fun x : GL n k => (fromBlocks x.val 0 0 1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)`. Conclude with `Continuous.matrix_fromBlocks Units.continuous_val continuous_const continuous_const continuous_const`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_embX : Continuous (embX c : GL n k → GL (n ⊕ Fin c) k) := by
   rw [SplitFlip.isEmbedding_val_GL.continuous_iff]
@@ -39,13 +39,13 @@ theorem continuous_embX : Continuous (embX c : GL n k → GL (n ⊕ Fin c) k) :=
   exact Continuous.matrix_fromBlocks Units.continuous_val continuous_const continuous_const continuous_const
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Set `φ : GL (n ⊕ Fin c) k → Matrix n n k × (Matrix n n k)ᵐᵒᵖ` to `fun g => (g.val.toBlocks₁₁, MulOpposite.op (g⁻¹).val.toBlocks₁₁)`. Establish `hb : Continuous fun M : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k => M.toBlocks₁₁` using `continuous_matrix fun i j => continuous_id.matrix_elem _ _`. Establish `hφ : Continuous φ` using `(hb.comp Units.continuous_val).prodMk (MulOpposite.continuous_op.comp (hb.comp Units.continuous_coe_inv))`. Establish `hA` using `(Units.isClosedEmbedding_embedProduct (α := Matrix n n k)).isCompact_preimage (hK.image hφ)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `(isClosed_N (k := k) (n := n) (c := c) (p := p)).isClosedEmbedding_subtypeVal.isCompact_preimage ((hA.image (continuous_embX (c := c))).inv.mul hK)`. Use `⟨_, _, hA, hB, fun x u h => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ (Units.embedProduct (Matrix n n k)) ⁻¹' (φ '' K)`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Establish `e : (embX c x * (u : GL (n ⊕ Fin c) k))⁻¹ = embX c x⁻¹ * (embX c x * (u : GL (n ⊕ Fin c) k)⁻¹ * (embX c x)⁻¹)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_inv]`. Use `group`. Simplify using `only [φ]`. Rewrite using `[e, Radical.toBlocks₁₁_embX_mul x u.2, Radical.toBlocks₁₁_embX_mul x⁻¹ (Radical.conj_mem x (inv_mem u.2))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hx, ?_⟩` and prove the remaining obligations. Use `⟨(embX c x)⁻¹, ?_, _, h, by simp⟩` and prove the remaining obligations. Rewrite using `[Set.mem_inv, inv_inv]`. Conclude with `⟨x, hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_compact_prod {K : Set (GL (n ⊕ Fin c) k)} (hK : IsCompact K) :
     ∃ (A : Set (GL n k)) (B : Set (N k n c p)), IsCompact A ∧ IsCompact B ∧
@@ -79,9 +79,9 @@ theorem exists_compact_prod {K : Set (GL (n ⊕ Fin c) k)} (hK : IsCompact K) :
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Unfold `volN`. Rewrite using `[(Model.coord_embedding (k := k) (n := n) (c := c) p).1.comap_apply]`. Use `(hK.image ?_).measure_lt_top` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.continuous_val (M := Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)` as an intermediate fact. Use `fun_prop`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteOnCompacts_volN (ν : Measure k) [ν.IsAddHaarMeasure] :
     IsFiniteMeasureOnCompacts (volN ν n c p) := by
@@ -95,11 +95,9 @@ theorem finiteOnCompacts_volN (ν : Measure k) [ν.IsAddHaarMeasure] :
   fun_prop
 
 /- English proof (translation)
-Use `haveI := finiteOnCompacts_volN (n := n) (c := c) (p := p) ν`. Use `haveI : LocallyCompactSpace (N k n c p) := (isClosed_N (k := k) (n := n) (c := c) (p := p)).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (N k n c p) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : IsLocallyFiniteMeasure (volN ν n c p) := isLocallyFiniteMeasure_of_isFiniteMeasureOnCompacts`. Use `haveI : SigmaFinite (volN ν n c p) := sigmaFinite_of_locallyFinite`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hK : IsCompact ((fun g => g * h⁻¹) '' tsupport F)` using `hF.2.isCompact.image (by fun_prop)`. Take `⟨A, B, hA, hB, hAB⟩` from `exists_compact_prod (p := p) hK`. Establish `hz : ∀ (x : GL n k) (u : N k n c p), ¬ (x ∈ A ∧ u ∈ B) → F (embX c x * (u : GL (n ⊕ Fin c) k) * h) = 0` using `fun x u hn => by`. Assume the negation of the conclusion as `h0`. Conclude with `hn (hAB x u ⟨_, subset_tsupport _ h0, by simp⟩)`.
-
-Establish `hc : Continuous fun z : GL n k × N k n c p => F (embX c z.1 * (z.2 : GL (n ⊕ Fin c) k) * h)` using `hF.1.continuous.comp (((continuous_embX.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)).mul continuous_const)`. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hc.comp (Continuous.prodMk_right x)).integrable_of_hasCompactSupport (HasCompactSupport.intro hB fun u hu => hz x u fun h => hu h.2)`. Establish `hi : Integrable (fun z : GL n k × N k n c p => F (embX c z.1 * (z.2 : GL (n ⊕ Fin c) k) * h)) (μX.prod (volN ν n c p))` using `hc.integrable_of_hasCompactSupport (HasCompactSupport.intro (hA.prod hB) fun z hz' => hz z.1 z.2 hz')`. Conclude with `hi.integral_prod_left`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_average (ν : Measure k) [ν.IsAddHaarMeasure] (μX : Measure (GL n k)) [μX.IsHaarMeasure]
     {F : GL (n ⊕ Fin c) k → ℂ} (hF : F ∈ SB (GL (n ⊕ Fin c) k)) (h : GL (n ⊕ Fin c) k) :
@@ -130,11 +128,11 @@ theorem integrable_average (ν : Measure k) [ν.IsAddHaarMeasure] (μX : Measure
     exact hi.integral_prod_left
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c p _ _ ν _ μX _ μG _ f f' a z z' ⟨F, hF, h1, h2⟩ ⟨F', hF', h1', h2'⟩`. Use `⟨a • F + F', add_mem (Submodule.smul_mem _ a hF) hF', fun h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i1, i2⟩` from `integrable_average (p := p) ν μX hF h`. Take `⟨j1, j2⟩` from `integrable_average (p := p) ν μX hF' h`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h1', ← integral_const_mul, ← integral_add (i2.const_mul a) j2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integral_add ((i1 x).const_mul a) (j1 x), integral_const_mul]`. Establish `i : Integrable F μG` using `hF.1.continuous.integrable_of_hasCompactSupport hF.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `j : Integrable F' μG` using `hF'.1.continuous.integrable_of_hasCompactSupport hF'.2`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_add (i.const_mul a) j, integral_const_mul, h2, h2']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isQuotInt_linear : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ) (_ : 1 ≤ p) (_ : p ≤ c) (ν : Measure k) [ν.IsAddHaarMeasure] (μX : Measure (GL n k)) [μX.IsHaarMeasure] (μG : Measure (GL (n ⊕ Fin c) k)) [μG.IsHaarMeasure] (f f' : GL (n ⊕ Fin c) k → ℂ) (a z z' : ℂ), IsQuotInt ν μX μG p f z → IsQuotInt ν μX μG p f' z' → IsQuotInt ν μX μG p (fun h => a * f h + f' h) (a * z + z') := by
   intro k _ _ _ _ _ _ n _ _ c p _ _ ν _ μX _ μG _ f f' a z z' ⟨F, hF, h1, h2⟩ ⟨F', hF', h1', h2'⟩

@@ -5,13 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Use `IsAlgClosed.of_exists_root _ (fun P hP hirr => ?_)` and prove the remaining obligations. Establish `hl : P ∈ Polynomial.lifts (IsLocalRing.residue A)`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Conclude with `IsLocalRing.residue_surjective (P.coeff n)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ, hdeg, hQm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl hP`. Establish `hQdeg : (Q.map (algebraMap A Ω)).degree ≠ 0`. Rewrite using `[Polynomial.degree_map_eq_of_injective (IsFractionRing.injective A Ω), hdeg]`. Conclude with `(Polynomial.degree_pos_of_irreducible hirr).ne'`. Take `⟨r, hr⟩` from `IsAlgClosed.exists_root (Q.map (algebraMap A Ω)) hQdeg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hint : IsIntegral A r` using `⟨Q, hQm, by rw [← Polynomial.eval_map]; exact hr⟩`. Take `⟨a, rfl⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint`. Use `⟨IsLocalRing.residue A a, ?_⟩` and prove the remaining obligations. Establish `h0 : Q.eval a = 0`. Apply `IsFractionRing.injective A Ω` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, ← Polynomial.eval₂_at_apply, ← Polynomial.eval_map]`. Conclude with `hr`. Rewrite using `[← hQ, Polynomial.eval_map, Polynomial.eval₂_at_apply, h0, map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem isAlgClosed_residueField_valuationSubring {Ω : Type} [Field Ω] [IsAlgClosed Ω] (A : ValuationSubring Ω) : IsAlgClosed (IsLocalRing.ResidueField A) := by
   refine IsAlgClosed.of_exists_root _ (fun P hP hirr => ?_)
@@ -34,7 +34,7 @@ private theorem isAlgClosed_residueField_valuationSubring {Ω : Type} [Field Ω]
   rw [← hQ, Polynomial.eval_map, Polynomial.eval₂_at_apply, h0, map_zero]
 
 /- English proof (translation)
-Introduce `c`. Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `succ c ih => rw [Nat.mul_succ, pow_add, pow_mul, ih, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem pow_prime_pow_mul_eq_self_of_pow_eq_self {K : Type} [Field K] (p m : ℕ) (y : K) (hy : y ^ (p ^ m) = y) :
     ∀ c : ℕ, y ^ (p ^ (m * c)) = y := by
@@ -44,33 +44,31 @@ private theorem pow_prime_pow_mul_eq_self_of_pow_eq_self {K : Type} [Field K] (p
   | succ c ih => rw [Nat.mul_succ, pow_add, pow_mul, ih, hy]
 
 /- English proof (translation)
-Use `letI : Algebra (ZMod p) k := ZMod.algebra k p`. Establish `hp1 : 1 < p` using `(Fact.out : p.Prime).one_lt`. Establish `hN : m * n ≠ 0` using `Nat.pos_iff_ne_zero.1 (Nat.mul_pos hm hn)`. Use `letI : Fintype (GaloisField p (m * n)) := Fintype.ofFinite _`. Set `φ : GaloisField p (m * n) →ₐ[ZMod p] k` to `IsAlgClosed.lift`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hφinj : Function.Injective φ` using `φ.toRingHom.injective`. Establish `hcardL : Fintype.card (GaloisField p (m * n)) = p ^ (m * n)`. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `GaloisField.card p (m * n) hN`. Establish `hpN : 1 < p ^ (m * n)` using `Nat.one_lt_pow hN hp1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hroot : ∀ z : k, z ^ (p ^ (m * n)) = z → ∃ x, φ x = z`. Introduce `z hz`. Establish `hP0 : (Polynomial.X ^ (p ^ (m * n)) - Polynomial.X : Polynomial k) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero k hpN`. Establish `hmem : ∀ w : k, w ^ (p ^ (m * n)) = w → w ∈ (Polynomial.X ^ (p ^ (m * n)) - Polynomial.X : Polynomial k).roots.toFinset`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hP0]`. Simplify using `[hw]`. Establish `hTsub : Finset.univ.image φ ⊆ (Polynomial.X ^ (p ^ (m * n)) - Polynomial.X : Polynomial k).roots.toFinset`. Introduce `w hw`. Take `⟨x, _, rfl⟩` from `Finset.mem_image.1 hw`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hmem` to reduce the goal to its premises. Rewrite using `[← map_pow, ← hcardL, FiniteField.pow_card]`. Establish `hTcard : (Finset.univ.image φ).card = p ^ (m * n)`. Rewrite using `[Finset.card_image_of_injective _ hφinj, Finset.card_univ, hcardL]`. Establish `hle : (Polynomial.X ^ (p ^ (m * n)) - Polynomial.X : Polynomial k).roots.toFinset.card ≤ (Finset.univ.image φ).card`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTcard]`. Combine the equalities or inequalities in the displayed calculation. Establish `hEq` using `Finset.eq_of_subset_of_card_le hTsub hle`. Establish `hz' : z ∈ Finset.univ.image φ` using `hEq ▸ hmem z hz`. Take `⟨x, _, hx⟩` from `Finset.mem_image.1 hz'`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx⟩`. Establish `hstab : ∀ x, ∃ x', φ x' = σ (φ x)`. Introduce `x`. Apply `hroot` to reduce the goal to its premises. Rewrite using `[← map_pow, ← map_pow, ← hcardL, FiniteField.pow_card]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose τf hτf using hstab`. Establish `hσalg : ∀ r : ZMod p, σ (algebraMap (ZMod p) k r) = algebraMap (ZMod p) k r`. Introduce `r`. Take `⟨t, rfl⟩` from `ZMod.natCast_zmod_surjective r`. Simplify using `only [map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `τ : GaloisField p (m * n) →ₐ[ZMod p] GaloisField p (m * n)` to `{ toFun := τf map_one' := hφinj (by simp [hτf]) map_mul' := fun a b => hφinj (by simp [hτf]) map_zero' := hφinj (by simp [hτf]) map_add' := fun a b => hφinj (by simp [hτf]) commutes' := fun r => hφinj (by simp [hτf, hσalg]) }`. Establish `hτ : ∀ x, φ (τ x) = σ (φ x)` using `hτf`. Establish `hiter : ∀ j x, φ ((τ^[j]) x) = (σ^[j]) (φ x)`. Introduce `j`. Proceed by induction on `j with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ j ih => intro x`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', hτ, ih]`. Establish `hτn : τ ^ n = 1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Rewrite using `[AlgHom.coe_pow, AlgHom.one_apply]`. Apply `hφinj` to reduce the goal to its premises. Rewrite using `[hiter, hσ]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : ℕ, FiniteField.frobeniusAlgHom (ZMod p) (GaloisField p (m * n)) ^ a = τ := by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `(FiniteField.bijective_frobeniusAlgHom_pow (ZMod p) (GaloisField p (m * n))).2 τ`. Conclude with `⟨a.1, ha⟩`. Establish `hfr : (FiniteField.frobeniusAlgHom (ZMod p) (GaloisField p (m * n))) ^ (a * n) = 1`. Rewrite using `[pow_mul, ha, hτn]`. Establish `hdvd : m * n ∣ a * n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `orderOf_dvd_of_pow_eq_one hfr` as an intermediate fact. Rewrite `this` using `[FiniteField.orderOf_frobeniusAlgHom, GaloisField.finrank p hN]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `Nat.dvd_of_mul_dvd_mul_right hn hdvd`. Establish `hyN : y ^ (p ^ (m * n)) = y` using `pow_prime_pow_mul_eq_self_of_pow_eq_self p m y hy n`. Take `⟨x0, rfl⟩` from `hroot y hyN`.
-
-Rewrite using `[← hτ, ← ha, AlgHom.coe_pow, FiniteField.coe_frobeniusAlgHom, pow_iterate, ZMod.card, map_pow, hc]`. Conclude with `pow_prime_pow_mul_eq_self_of_pow_eq_self p m _ hy c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frobenius_fixed_of_iterate_fixed_pow_prime {k : Type} [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (σ : k →+* k) (n m : ℕ) (hn : 0 < n) (hm : 0 < m) (hσ : ∀ z, (σ^[n]) z = z) (y : k) (hy : y ^ (p ^ m) = y) : σ y = y := by
   letI : Algebra (ZMod p) k := ZMod.algebra k p
@@ -155,7 +153,7 @@ private theorem frobenius_fixed_of_iterate_fixed_pow_prime {k : Type} [Field k] 
   exact pow_prime_pow_mul_eq_self_of_pow_eq_self p m _ hy c
 
 /- English proof (translation)
-Rewrite using `[CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)]`. Rewrite using `[← map_natCast (IsLocalRing.residue A) p, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Simplify using `using hp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem charP_residueField_of_valuation_lt_one {Ω : Type} [Field Ω] (p : ℕ) [Fact p.Prime] (A : ValuationSubring Ω) (hp : A.valuation (p : Ω) < 1) : CharP (IsLocalRing.ResidueField A) p := by
   rw [CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)]
@@ -163,31 +161,25 @@ private theorem charP_residueField_of_valuation_lt_one {Ω : Type} [Field Ω] (p
   simpa using hp
 
 /- English proof (translation)
-Use `haveI := charP_residueField_of_valuation_lt_one p A hp`. Establish `hpr : p.Prime` using `Fact.out`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := Algebra.IsAlgebraic.trans ℚ F Ω`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxQ : IsAlgebraic ℚ (x : Ω)` using `Algebra.IsAlgebraic.isAlgebraic _`. Establish `hxZ : IsAlgebraic ℤ (x : Ω)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ Ω).2 hxQ`. Take `⟨P, hP0, hPx⟩` from `hxZ`. Use `set Q := P.primPart with hQ`. Establish `hQx : Q.eval₂ (Int.castRingHom Ω) (x : Ω) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : (P.content : Ω) ≠ 0`. Rewrite using `[Int.cast_ne_zero]`. Conclude with `fun h => hP0 (Polynomial.content_eq_zero_iff.1 h)`. Establish `h1 : P.eval₂ (Int.castRingHom Ω) (x : Ω) = 0`. Rewrite `hPx` using `[Polynomial.aeval_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hPx]`. Use `congr 1`. Rewrite `h1` using `[Polynomial.eq_C_content_mul_primPart P, Polynomial.eval₂_mul, Polynomial.eval₂_C]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (by simpa using hc)`. Establish `hQA : Q.eval₂ (Int.castRingHom A) x = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Subtype.val_injective` to reduce the goal to its premises. Use `Polynomial.hom_eval₂ Q (Int.castRingHom A) A.subtype x` as an intermediate fact. Rewrite `this` using `[show A.subtype.comp (Int.castRingHom A) = Int.castRingHom Ω from Subsingleton.elim _ _]`. Simplify using `only [ValuationSubring.coe_subtype] at this`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using hQx`. Use `set r := IsLocalRing.residue A x with hr`. Establish `hQr : Q.eval₂ (Int.castRingHom (IsLocalRing.ResidueField A)) r = 0`. Use `Polynomial.hom_eval₂ Q (Int.castRingHom A) (IsLocalRing.residue A) x` as an intermediate fact. Rewrite `this` using `[show (IsLocalRing.residue A).comp (Int.castRingHom A) = Int.castRingHom (IsLocalRing.ResidueField A) from Subsingleton.elim _ _]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← this, hQA, map_zero]`. Establish `hQk : Q.map (Int.castRingHom (IsLocalRing.ResidueField A)) ≠ 0`. Introduce `h0`. Establish `hdvd : Polynomial.C (p : ℤ) ∣ Q`. Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `congrArg (fun f => Polynomial.coeff f i) h0` as an intermediate fact. Simplify using `only [Polynomial.coeff_map, Polynomial.coeff_zero, eq_intCast] at this`. Conclude with `(CharP.intCast_eq_zero_iff (IsLocalRing.ResidueField A) p _).1 this`. Establish `hu` using `Polynomial.isPrimitive_primPart P (p : ℤ) hdvd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `hu` using `[Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast]`. Conclude with `hpr.one_lt.ne' hu`. Establish `hfrob : ∀ s : IsLocalRing.ResidueField A, Q.eval₂ (Int.castRingHom (IsLocalRing.ResidueField A)) s = 0 → Q.eval₂ (Int.castRingHom (IsLocalRing.ResidueField A)) (s ^ p) = 0`. Introduce `s hs`. Use `Polynomial.hom_eval₂ Q (Int.castRingHom (IsLocalRing.ResidueField A)) (frobenius (IsLocalRing.ResidueField A) p) s` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[show (frobenius (IsLocalRing.ResidueField A) p).comp (Int.castRingHom (IsLocalRing.ResidueField A)) = Int.castRingHom (IsLocalRing.ResidueField A) from Subsingleton.elim _ _, hs, map_zero, frobenius_def]`. Conclude with `this.symm`. Establish `hall : ∀ j : ℕ, r ^ (p ^ j) ∈ {s | (Q.map (Int.castRingHom (IsLocalRing.ResidueField A))).IsRoot s}`. Introduce `j`. Simplify using `only [Set.mem_setOf_eq, Polynomial.IsRoot, Polynomial.eval_map]`.
-
-Proceed by induction on `j with`. Consider the case `zero => simpa using hQr`. Consider the case `succ j ih`. Rewrite using `[pow_succ, pow_mul]`. Conclude with `hfrob _ ih`.
-
-Take `⟨i, j, hij, heq⟩` from `Set.Finite.exists_lt_map_eq_of_forall_mem hall (Polynomial.finite_setOf_isRoot hQk)`. Use `⟨j - i, Nat.sub_pos_of_lt hij, ?_⟩` and prove the remaining obligations. Apply `(iterateFrobenius (IsLocalRing.ResidueField A) p i).injective` to reduce the goal to its premises. Simplify using `only [iterateFrobenius_def]`. Rewrite using `[← pow_mul, ← pow_add, Nat.sub_add_cancel hij.le]`.
-
-Conclude with `heq.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_residue_pow_prime_pow_eq_self {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (p : ℕ) [Fact p.Prime] (A : ValuationSubring Ω) (hp : A.valuation (p : Ω) < 1) (x : A) : ∃ m, 0 < m ∧ (IsLocalRing.residue A x) ^ (p ^ m) = IsLocalRing.residue A x := by
   haveI := charP_residueField_of_valuation_lt_one p A hp
@@ -253,21 +245,19 @@ private theorem exists_residue_pow_prime_pow_eq_self {F Ω : Type} [Field F] [Nu
   exact heq.symm
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ p _ A hp g hg n hn hgn`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI := isAlgClosed_residueField_valuationSubring A`. Use `haveI := charP_residueField_of_valuation_lt_one p A hp`. Establish `hgD : g ∈ A.decompositionSubgroup F` using `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `g' : A.decompositionSubgroup F` to `⟨g, hgD⟩`. Establish `key : ∀ (h : A.decompositionSubgroup F) (a : A), h • IsLocalRing.residue A a = IsLocalRing.residue A a ↔ A.valuation ((h : G F Ω) (a : Ω) - a) < 1`. Introduce `h a`. Rewrite using `[← IsLocalRing.ResidueField.residue_smul, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `σ : IsLocalRing.ResidueField A →+* IsLocalRing.ResidueField A` to `MulSemiringAction.toRingHom (A.decompositionSubgroup F) _ g'`. Establish `hσ : ∀ z, (σ^[n]) z = z`. Introduce `z`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective z`. Establish `hit : ∀ k z, (σ^[k]) z = (g' ^ k) • z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro z`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `z`. Rewrite using `[Function.iterate_succ_apply', ih, pow_succ', mul_smul]`. Both sides reduce to the same expression. Rewrite using `[hit, key]`. Establish `hI` using `hgn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Ine] at hI`. Establish `h2` using `hI.2 a (A.valuation_le_one a)`. Simplify `h2` using `[g']`. Establish `hfix : ∀ a : A, σ (IsLocalRing.residue A a) = IsLocalRing.residue A a`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨m, hm, hy⟩` from `exists_residue_pow_prime_pow_eq_self (F := F) p A hp a`. Conclude with `frobenius_fixed_of_iterate_fixed_pow_prime p σ n m hn hm hσ _ hy`. Use `show g ∈ Inertia (F := F) A`. Use `⟨hgD, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxA : x ∈ A` using `(A.valuation_le_one_iff x).1 hx`.
-
-Use `(key g' ⟨x, hxA⟩).1 (hfix ⟨x, hxA⟩)` as an intermediate fact. Simplify `this` using `[g']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Rq.powIne :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (p : ℕ) [Fact p.Prime] (A : ValuationSubring Ω),

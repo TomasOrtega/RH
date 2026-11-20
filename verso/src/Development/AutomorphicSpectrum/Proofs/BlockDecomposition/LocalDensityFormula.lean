@@ -12,13 +12,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.RankOne
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hσ hJ hli hlam hμ hF hmi hm S φ A hT`. Take `⟨hφ, hφc, hφ0, hφU, hA, -⟩` from `hT`. Establish `: BorelSpace (Ainf F)` using `⟨rfl⟩`. Take `⟨c1, c2, -, c4⟩` from `GlobalTheory.CompanionTheory.SW.ArchFibre.fibre_integral (Ainf F) (GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hσ.1) hσ hJ b li hli.1 mi hmi φ hφ hφc hφ0 hφU`. Establish `hv : ∀ v ∈ S, Continuous (fun s : Fv F v => (m v (hermScal (Fv F v) σ s) (A v)).toReal) ∧ HasCompactSupport (fun s : Fv F v => (m v (hermScal (Fv F v) σ s) (A v)).toReal) ∧ ENNReal.ofReal (∫ s, (m v (hermScal (Fv F v) σ s) (A v)).toReal ∂(lam v)) = coordW (Fv F v) b (lam v) 1 1 ( …` using `fun v hvS => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: BorelSpace (Fv F v)` using `⟨rfl⟩`. Conclude with `GlobalTheory.CompanionTheory.SW.FibreCpt.masses_field (Fv F v) (GlobalTheory.T.completion_is_local_ring F v) hσ hJ b (lam v) (hlam v).1 (m v) (hm v) (A v) (hA v hvS).1 (hA v hvS).2.1 (hA v hvS).2.2`. Use `⟨c1, c2, fun v hvS => ⟨continuous_const.mul (hv v hvS).1, (hv v hvS).2.1.mul_left⟩, ?_⟩` and prove the remaining obligations. Establish `hI0 : 0 ≤ ∫ y, Gi mi φ y ∂li` using `integral_nonneg fun s => integral_nonneg fun X => hφ0 X`. Establish `hJ0 : ∀ v ∈ S, 0 ≤ ∫ s, gv m A v s ∂(lam v)` using `fun v _ => integral_nonneg fun s => mul_nonneg (NNReal.coe_nonneg _) ENNReal.toReal_nonneg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc : ∀ v ∈ S, ENNReal.ofReal (∫ s, gv m A v s ∂(lam v)) = (cfac E v : ℝ≥0∞) * coordW (Fv F v) b (lam v) 1 1 (A v)` using `fun v hvS => by`. Establish `e : ∫ s, gv m A v s ∂(lam v) = (cfac E v : ℝ) * ∫ s, (m v (hermScal (Fv F v) σ s) (A v)).toReal ∂(lam v)` using `integral_const_mul _ _`. Rewrite using `[e, ENNReal.ofReal_mul (NNReal.coe_nonneg _), ENNReal.ofReal_coe_nnreal, (hv v hvS).2.2]`. Rewrite using `[ENNReal.ofReal_mul hI0, ENNReal.ofReal_prod_of_nonneg hJ0, Finset.prod_congr rfl hloc, Finset.prod_mul_distrib]`. Establish `e0 : ENNReal.ofReal (∫ y, Gi mi φ y ∂li) = ∫⁻ X, ENNReal.ofReal (φ X) ∂(coordW (Ainf F) b li 1 1)` using `c4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0, vol]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dens : Dens := by
   intro F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hσ hJ hli hlam hμ hF hmi hm S φ A hT

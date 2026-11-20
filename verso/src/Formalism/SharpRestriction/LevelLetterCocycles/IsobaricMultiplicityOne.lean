@@ -32,13 +32,11 @@ namespace Formalism.MainNotions.N.T2
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations in
 
 /- English proof (translation)
-Introduce `l _ LL`. Use `haveI : FiniteDimensional ℚ_[l] LL.1 := LL.2`. Use `⟨⟨inferInstance, inferInstance, inferInstance⟩, LL.2, isModuleTopologyOfFiniteDimensional, inferInstance, ?_⟩` and prove the remaining obligations. Establish `hr : Set.range (algebraMap (OL LL) LL.1) = ((OL LL).toSubring.toAddSubgroup : Set LL.1)`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hr]`. Use `AddSubgroup.isOpen_of_mem_nhds _ (g := 0) (Filter.mem_of_superset (Metric.ball_mem_nhds 0 one_pos) ?_)` and prove the remaining obligations. Introduce `x hx`. Use `show x ∈ OL LL`. Rewrite using `[Formalism.BasicNotions.Examples₂.LB.mem_OL]`.
-
-Establish `: ‖x‖ < 1` using `by simpa using hx`. Conclude with `le_of_lt this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem litGoodO : Formalism.MainNotions.N.LitGoodO := by
   intro l _ LL

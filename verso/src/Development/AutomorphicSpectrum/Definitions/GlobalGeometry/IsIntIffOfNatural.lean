@@ -28,11 +28,11 @@ def periodForm {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] 
       exact congrArg _ (GlobalTheory.TorsionFactsCompare.bOf_balance P.D hϖ P.oD hQ x a b)⟩
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`. Use `choose Q hQ using QForm.exists_QVal hϖ P.D`. Establish `he : (e : ℝ) ≠ 0` using `by exact_mod_cast ho.1.ne'`. Establish `h2 : ∀ a, (periodForm P hϖ hQ : P.D.toPre.X →ₗ[ℤ] P.D.toPre.X →ₗ[ℤ] ℝ) a a = 2 * (Q a : ℝ)` using `fun a => by show ((QForm.bOf P.D.toPre Q a a : ℤ) : ℝ) = _`. Rewrite using `[← QForm.two_Q_eq hϖ P.D hQ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression. Use `⟨phiC (cjE E) (periodForm P hϖ hQ) / e, e, ho, I, P, ϖ, Q, periodForm P hϖ hQ, hP, hϖ, hQ, fun _ _ => rfl, h2, fun a => ?_, by field_simp⟩` and prove the remaining obligations. Rewrite using `[h2]`. Distinguish the cases in `ha : a = 0`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, QForm.Q_zero hϖ P.D hQ]`. Simplify using the standard rewrite rules. Establish `: (1 : ℝ) ≤ Q a` using `by exact_mod_cast QForm.Q_pos hϖ P.D hQ ha`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_isPhiAt {la : HeightOneSpectrum (𝓞 c.F)} {T : CDVR} {io : c.F →+* T.Fr} {e : ℕ}
     (ho : OverLa la T.V io e) (y : IntFr Xo c T io) (I : IntData Xo c T io y.1)
@@ -52,7 +52,7 @@ theorem exists_isPhiAt {la : HeightOneSpectrum (𝓞 c.F)} {T : CDVR} {io : c.F 
     linarith
 
 /- English proof (translation)
-Take `⟨G, t', m1, m2, ⟨ub, h1, h2, h3, h4⟩, θ, h5, w1, w2, σ, s1, θ2, r1, r2, k1, k2, k3, k4⟩` from `y.2.2`. Conclude with `⟨⟨G, t', m1, m2, ub, h1, h2, h3, h4, θ, h5, w1, w2, σ, s1, θ2, r1, r2, k1, k2, k3, k4⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_intData {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) : Nonempty (IntData Xo c T io y.1) := by
   obtain ⟨G, t', m1, m2, ⟨ub, h1, h2, h3, h4⟩, θ, h5, w1, w2, σ, s1, θ2, r1, r2, k1, k2, k3, k4⟩ := y.2.2
@@ -61,9 +61,9 @@ theorem nonempty_intData {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) 
 variable (Xo c) in
 
 /- English proof (translation)
-Introduce `la T io e ho y hy`. Take `⟨T', φV, φ, -, z, hi, hl, hf, hc, -, -, hz, hm, hU⟩` from `GlobalTheory.IntegralPull.exists_finite_ext_all_models_uniformised Xo c T io y e la ho hy`. Take `⟨r, hr, hv⟩` from `GlobalTheory.IntegralPull.exists_index (V' := T'.V) φV φ (RingHom.congr_fun hc)`. Take `⟨I⟩` from `nonempty_intData z`. Take `⟨P, hP⟩` from `hU I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `exists_isPhiAt (ho.bc φ hr hv) z I P hP`. Conclude with `⟨T', φV, φ, r, z, t, ⟨hi, hl, hf, hc, hr, hv⟩, hm, hz, ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unifAll_holds : UnifAll Xo c := by
   intro la T io e ho y hy

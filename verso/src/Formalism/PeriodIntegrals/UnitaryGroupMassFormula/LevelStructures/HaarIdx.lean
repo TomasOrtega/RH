@@ -7,23 +7,23 @@ namespace MassDataLevelSSteps
 open MeasureTheory
 
 /- English proof (translation)
-Establish `hrel : H.relIndex K = (H.subgroupOf K).index` using `rfl`. Establish `hAK : ∀ k : K, (fun x => ((k : G))⁻¹ * x) ⁻¹' (H : Set G) ⊆ K`. Introduce `k y hy`. Establish `hy' : ((k : G))⁻¹ * y ∈ K` using `hle hy`. Establish `h2` using `K.mul_mem k.2 hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h2`. Establish `hAdisj : ∀ k k' : K, (QuotientGroup.mk k : K ⧸ H.subgroupOf K) ≠ QuotientGroup.mk k' → Disjoint ((fun x => ((k : G))⁻¹ * x) ⁻¹' (H : Set G)) ((fun x => ((k' : G))⁻¹ * x) ⁻¹' (H : Set G))`. Introduce `k k' hne`. Rewrite using `[Set.disjoint_left]`. Introduce `y h1 h2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `h1' : ((k : G))⁻¹ * y ∈ H` using `h1`. Establish `h2' : ((k' : G))⁻¹ * y ∈ H` using `h2`. Establish `h3` using `H.mul_mem h1' (H.inv_mem h2')`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h3` using `[mul_assoc]`. Break down `Nat.eq_zero_or_pos (H.relIndex K) with h0 | hpos'` into its components or cases. Rewrite using `[h0, Nat.cast_zero, zero_mul]`. Establish `hinf : Infinite (K ⧸ H.subgroupOf K)` using `Subgroup.index_eq_zero_iff_infinite.mp (hrel ▸ h0)`. Set `f : ℕ ↪ K ⧸ H.subgroupOf K` to `Infinite.natEmbedding _`.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU` using `measure_iUnion (μ := μ) (f := fun n => (fun x => (((f n).out : K) : G)⁻¹ * x) ⁻¹' (H : Set G)) (fun n m hnm => hAdisj _ _ (by`. Rewrite using `[QuotientGroup.out_eq', QuotientGroup.out_eq']`. Conclude with `fun h => hnm (f.injective h)))`. Use the proof step `(fun n => (measurable_const_mul _) hH)`. Simplify using `only [measure_preimage_mul, ENNReal.tsum_const_eq_top_of_ne_zero hpos] at hU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `htop : μ K = ⊤` using `top_unique (hU ▸ measure_mono (Set.iUnion_subset fun n => hAK _))`. Rewrite using `[htop, ENNReal.toReal_top]`. Establish `hfin : Finite (K ⧸ H.subgroupOf K)` using `Subgroup.index_ne_zero_iff_finite.mp (hrel ▸ hpos'.ne') haveI := Fintype.ofFinite (K ⧸ H.subgroupOf K)`. Establish `hU : (K : Set G) = ⋃ q : K ⧸ H.subgroupOf K, (fun x => ((q.out : K) : G)⁻¹ * x) ⁻¹' (H : Set G)`. Apply `Set.Subset.antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Use `Set.mem_iUnion.mpr ⟨QuotientGroup.mk ⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `QuotientGroup.eq.mp (QuotientGroup.out_eq' (QuotientGroup.mk ⟨y, hy⟩ : K ⧸ H.subgroupOf K))`. Rewrite `h1` using `[Subgroup.mem_subgroupOf]`. Use `show _ ∈ H`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h1`. Conclude with `Set.iUnion_subset fun q => hAK _`. Establish `hμK : μ K = ∑ q : K ⧸ H.subgroupOf K, μ H`. Rewrite using `[hU, measure_iUnion (fun q q' hqq => hAdisj _ _ (by`. Rewrite using `[QuotientGroup.out_eq', QuotientGroup.out_eq']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hqq)) (fun q => (measurable_const_mul _) hH), tsum_fintype]`. Conclude with `Finset.sum_congr rfl fun q _ => measure_preimage_mul μ _ _`. Establish `hc : (H.relIndex K : ℝ) = (Fintype.card (K ⧸ H.subgroupOf K) : ℝ)`. Rewrite using `[hrel, Subgroup.index, Nat.card_eq_fintype_card]`. Rewrite using `[hμK, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_natCast, hc]`.
+A detailed English derivation is pending.
 -/
 theorem toReal_eq_relIndex_mul {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G]
     (μ : Measure G) [μ.IsMulLeftInvariant] (H K : Subgroup G) (hle : H ≤ K)
@@ -87,7 +87,7 @@ theorem toReal_eq_relIndex_mul {G : Type} [Group G] [MeasurableSpace G] [Measura
       ENNReal.toReal_natCast, hc]
 
 /- English proof (translation)
-Establish `hK : IsOpen (K : Set G)` using `Subgroup.isOpen_mono hle hH`. Conclude with `toReal_eq_relIndex_mul μ H K hle hK.measurableSet hH.measurableSet (hH.measure_ne_zero μ ⟨1, H.one_mem⟩)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toReal_eq_relIndex_mul_of_open {G : Type} [Group G] [TopologicalSpace G] [ContinuousMul G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsOpenPosMeasure]
@@ -98,7 +98,7 @@ theorem toReal_eq_relIndex_mul_of_open {G : Type} [Group G] [TopologicalSpace G]
     (hH.measure_ne_zero μ ⟨1, H.one_mem⟩)
 
 /- English proof (translation)
-Use `haveI := hc`. Use `haveI := hB`. Use `haveI := hμ`. Conclude with `toReal_eq_relIndex_mul_of_open μ H K hle hH`.
+A detailed English derivation is pending.
 -/
 theorem toReal_eq_relIndex_mul_of_haar {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     (hc : ContinuousMul G) (hB : BorelSpace G) (μ : Measure G) (hμ : μ.IsHaarMeasure)

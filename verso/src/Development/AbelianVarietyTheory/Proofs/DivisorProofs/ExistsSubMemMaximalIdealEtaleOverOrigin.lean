@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.OriginResidue
 
 /- English proof (translation)
-Use `⟨fun p hp => ?_⟩` and prove the remaining obligations. Establish `h` using `IsSepClosed.splits_domain (f := e.toRingHom) (p.map e.symm.toRingHom) hp.map`. Rewrite `h` using `[Polynomial.map_map, show e.toRingHom.comp e.symm.toRingHom = RingHom.id _ from by ext; simp, Polynomial.map_id]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isSepClosed_of_ringEquiv {K L : Type} [Field K] [Field L] (e : K ≃+* L) [IsSepClosed K] :
     IsSepClosed L := by
@@ -24,7 +24,7 @@ def constToResidue [(GlobalTheory.KeyOriginCut.originIdeal A).IsPrime] :
   (algebraMap (Polynomial A) (GlobalTheory.KeyOriginCut.originIdeal A).ResidueField).comp Polynomial.C
 
 /- English proof (translation)
-Simplify using `only [constToResidue, RingHom.comp_apply]`. Rewrite using `[Ideal.algebraMap_residueField_eq_zero, GlobalTheory.LocalStage.mem_originIdeal_iff]`. Simplify using `using ha`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem constToResidue_eq_zero [(GlobalTheory.KeyOriginCut.originIdeal A).IsPrime] {a : A}
     (ha : a ∈ maximalIdeal A) : constToResidue a = 0 := by
@@ -40,7 +40,7 @@ instance [(GlobalTheory.KeyOriginCut.originIdeal A).IsPrime] : IsLocalHom (const
   exact not_isUnit_zero ha
 
 /- English proof (translation)
-Simplify using `only [constToResidue, RingHom.comp_apply]`. Rewrite using `[← sub_eq_zero, ← map_sub, Ideal.algebraMap_residueField_eq_zero, GlobalTheory.LocalStage.mem_originIdeal_iff]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem algebraMap_eq_constToResidue [(GlobalTheory.KeyOriginCut.originIdeal A).IsPrime] (f : Polynomial A) :
     algebraMap (Polynomial A) (GlobalTheory.KeyOriginCut.originIdeal A).ResidueField f =
@@ -51,11 +51,9 @@ theorem algebraMap_eq_constToResidue [(GlobalTheory.KeyOriginCut.originIdeal A).
   simp
 
 /- English proof (translation)
-Use `set p := GlobalTheory.KeyOriginCut.originIdeal A`. Introduce `x`. Take `⟨z, rfl⟩` from `residue_surjective x`. Take `⟨⟨f, s⟩, rfl⟩` from `IsLocalization.mk'_surjective p.primeCompl z`. Establish `hs : algebraMap (Polynomial A) p.ResidueField s ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Ideal.algebraMap_residueField_eq_zero]`. Conclude with `s.2`. Establish `key : residue _ (IsLocalization.mk' (Localization.AtPrime p) f s) * algebraMap (Polynomial A) p.ResidueField s = algebraMap (Polynomial A) p.ResidueField f`. Rewrite using `[IsScalarTower.algebraMap_apply (Polynomial A) (Localization.AtPrime p) p.ResidueField, IsScalarTower.algebraMap_apply (Polynomial A) (Localization.AtPrime p) p.ResidueField f, ResidueField.algebraMap_eq, ← map_mul, IsLocalization.mk'_spec]`. Use `⟨residue A (f.coeff 0) / residue A ((s : Polynomial A).coeff 0), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_div₀, ResidueField.lift_residue_apply, ResidueField.lift_residue_apply, ← algebraMap_eq_constToResidue, ← algebraMap_eq_constToResidue, ← key, mul_div_cancel_right₀ _ hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_surjective [(GlobalTheory.KeyOriginCut.originIdeal A).IsPrime] :
     Function.Surjective (ResidueField.lift (constToResidue (A := A))) := by
@@ -75,11 +73,9 @@ theorem lift_surjective [(GlobalTheory.KeyOriginCut.originIdeal A).IsPrime] :
     ← algebraMap_eq_constToResidue, ← algebraMap_eq_constToResidue, ← key, mul_div_cancel_right₀ _ hs]
 
 /- English proof (translation)
-Introduce `A _ _ _ E _ _ _ Q _ hQ y`. Use `set p := GlobalTheory.KeyOriginCut.originIdeal A with hp`. Use `haveI : p.IsPrime := hQ ▸ Ideal.comap_isPrime _ Q`. Use `haveI : Q.LiesOver p := ⟨hQ.symm⟩`. Use `letI := Localization.AtPrime.algebraOfLiesOver p Q`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsSepClosed p.ResidueField := isSepClosed_of_ringEquiv (RingEquiv.ofBijective _ ⟨(ResidueField.lift (constToResidue (A := A))).injective, lift_surjective⟩)`. Take `⟨x, hx⟩` from `IsSepClosed.algebraMap_surjective p.ResidueField Q.ResidueField (residue (Localization.AtPrime Q) y)`. Take `⟨c, rfl⟩` from `lift_surjective x`. Take `⟨c, rfl⟩` from `residue_surjective c`. Use `⟨Polynomial.C c, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← residue_eq_zero_iff, map_sub, ← hx, ResidueField.lift_residue_apply]`. Simplify using `only [constToResidue, RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (Polynomial A) (Localization.AtPrime Q) Q.ResidueField, ResidueField.algebraMap_eq, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_origin : ∀ (A : Type) [CommRing A] [IsLocalRing A] [IsSepClosed (ResidueField A)] (E : Type) [CommRing E] [Algebra (Polynomial A) E] [Algebra.Etale (Polynomial A) E] (Q : Ideal E) [Q.IsPrime],
     Q.comap (algebraMap (Polynomial A) E) = GlobalTheory.KeyOriginCut.originIdeal A →

@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaC
 open IsLocalRing UpperTheory.V.Hi
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `r hr y hy`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul hr (hf y hy)`. Introduce `a b ha hb`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+A detailed English derivation is pending.
 -/
 private theorem map_mem_smul {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
     (J : Ideal A) (L : Submodule A M) (f : Module.End A M) (hf : ∀ y ∈ L, f y ∈ L) {x : M}
@@ -22,7 +22,7 @@ private theorem map_mem_smul {A M : Type} [CommRing A] [AddCommGroup M] [Module 
     exact Submodule.add_mem _ ha hb
 
 /- English proof (translation)
-Use `monotone_nat_of_le_succ fun n x hx => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, pow_succ', Module.End.mul_apply]`. Conclude with `map_mem_smul J L f hf hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mono_comap {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
     (J : Ideal A) (L : Submodule A M) (f : Module.End A M) (hf : ∀ y ∈ L, f y ∈ L) :
@@ -32,15 +32,13 @@ private theorem mono_comap {A M : Type} [CommRing A] [AddCommGroup M] [Module A 
   exact map_mem_smul J L f hf hx
 
 /- English proof (translation)
-Establish `hmono` using `mono_comap J (⊤ : Submodule A N) (j u) (fun _ _ => trivial)`. Take `⟨n, hn⟩` from `monotone_stabilizes_iff_noetherian.2 (inferInstance : IsNoetherian A N) ⟨_, hmono⟩`. Establish `hr : LinearMap.range (j (u ^ n)) ≤ J • (⊤ : Submodule A N)`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨k, hk⟩` from `h x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `h1 : x ∈ (J • (⊤ : Submodule A N)).comap (j u ^ (max n k))` using `hmono (le_max_right n k) hk`. Establish `h2` using `hn (max n k) (le_max_left n k)`. Express the relevant statement in the definitionally equal form `(J • (⊤ : Submodule A N)).comap (j u ^ n) = (J • (⊤ : Submodule A N)).comap (j u ^ (max n k)) at h2`. Rewrite `h1` using `[← h2]`. Rewrite using `[map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Take `⟨p, hp, -, hc, h0⟩` from `LinearMap.exists_monic_and_coeff_mem_pow_and_aeval_eq_zero_of_range_le_smul A (j (u ^ n)) J hr`. Rewrite `h0` using `[Polynomial.aeval_algHom_apply]`. Establish `h1 : Polynomial.aeval (u ^ n) p = 0` using `hj (by rw [h0, map_zero])`. Use `⟨n * p.natDegree, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Polynomial.aeval_eq_sum_range, Finset.sum_range_succ, hp.coeff_natDegree, one_smul, ← pow_mul, add_eq_zero_iff_neg_eq]`. Rewrite using `[← h1]`. Use `neg_mem (Ideal.sum_mem _ fun k hk => ?_)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Use `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ?_)` and prove the remaining obligations.
-
-Conclude with `Ideal.pow_le_self (by have := Finset.mem_range.1 hk; omega) (hc k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem pow_mem_map {A N T : Type} [CommRing A] [IsNoetherianRing A] [AddCommGroup N]
     [Module A N] [Module.Finite A N] [CommRing T] [Algebra A T] (J : Ideal A)
@@ -74,9 +72,9 @@ private theorem pow_mem_map {A N T : Type} [CommRing A] [IsNoetherianRing A] [Ad
   exact Ideal.pow_le_self (by have := Finset.mem_range.1 hk; omega) (hc k)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro y`. Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `y`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, h, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem restr_pow {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
     {L : Submodule A M} (t : Module.End A L) (f : Module.End A M) (h : Restr t f) (n : ℕ) :
@@ -88,43 +86,39 @@ private theorem restr_pow {A M : Type} [CommRing A] [AddCommGroup M] [Module A M
     rw [pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, h, ih]
 
 /- English proof (translation)
-Introduce `A M ι _ _ _ _ Y _ op a hcomm hne T _ _ j hj hrange`. Take `⟨hcL, hidem, hfinL, -, -⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.locFree A M ι Y op a hcomm`. Establish `hLY : locPart Y op a ≤ Y` using `inf_le_left`. Generalize the expression as in `locPart Y op a = L at *`. Use `haveI : Module.Finite A T := Module.Finite.of_injective j.toLinearMap hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nontrivial L := Submodule.nontrivial_iff_ne_bot.2 hne`. Use `haveI : Nontrivial T := j.toRingHom.domain_nontrivial`. Take `⟨-, hmax, n, hn1, hn2⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.finMax A T`. Establish `hle : ∀ P : Ideal T, P.IsMaximal → (maximalIdeal A).map (algebraMap A T) ≤ P` using `fun P hP => Ideal.map_le_iff_le_comap.2 (hmax P hP).1.ge`. Establish `h1 : ∀ i s, Restr (j s) (op i) → ∀ P : Ideal T, P.IsMaximal → s - algebraMap A T (a i) ∈ P`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i s hs P hP`. Establish `hr : Restr (j (s - algebraMap A T (a i))) (op i - algebraMap A _ (a i))`. Introduce `y`. Rewrite using `[map_sub, AlgHom.commutes]`. Simplify using `[hs y]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hpres : ∀ y ∈ L, (op i - algebraMap A _ (a i)) y ∈ L` using `fun y hy => by`. Rewrite using `[← hr ⟨y, hy⟩]`. Conclude with `Subtype.mem _`. Take `⟨k, hk⟩` from `pow_mem_map (maximalIdeal A) j hj (s - algebraMap A T (a i)) (fun x => by`. Establish `hx : (x : M) ∈ locPart L op a` using `by rw [hidem]; exact x.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hx2` using `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hx.2 i) 1`. Take `⟨k, hk⟩` from `(Submodule.mem_iSup_of_directed _ (mono_comap _ L _ hpres).directed_le).1 hx2`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_smul_top_iff, restr_pow _ _ hr k x]`. Rewrite `hk` using `[pow_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `hk)`. Conclude with `hP.isPrime.mem_of_pow_mem k (hle P hP hk)`. Establish `h2 : ∀ s : T, ∃ c : A, ∀ P : Ideal T, P.IsMaximal → s - algebraMap A T c ∈ P`. Establish `key : ∀ φ ∈ heckeAlg L op, ∀ s, j s = φ → ∃ c : A, ∀ P : Ideal T, P.IsMaximal → s - algebraMap A T c ∈ P`. Introduce `φ hφ`.
+Treat this case separately. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Treat this case separately.
 
-Proceed by induction on `hφ using Algebra.adjoin_induction with`. Consider the case `mem φ hφ`. Take `⟨i, hi⟩` from `hφ`. Introduce and unpack `s rfl`. Conclude with `⟨a i, h1 i s hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `algebraMap r`. Introduce `s hs`. Use `⟨r, fun P _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hj (hs.trans (j.commutes r).symm), sub_self]`. Conclude with `P.zero_mem`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `add φ ψ hφ hψ ihφ ihψ`. Introduce `s hs`. Take `⟨x, hx⟩ : φ ∈ j.range` from `hrange ▸ hφ`. Take `⟨y, hy⟩ : ψ ∈ j.range` from `hrange ▸ hψ`. Take `⟨c, hc⟩` from `ihφ x hx`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Take `⟨d, hd⟩` from `ihψ y hy`. Take `rfl : s = x + y` from `hj (by rw [hs, map_add, ← hx, ← hy]; rfl)`. Use `⟨c + d, fun P hP => ?_⟩` and prove the remaining obligations. Use `P.add_mem (hc P hP) (hd P hP) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `mul φ ψ hφ hψ ihφ ihψ`. Introduce `s hs`. Take `⟨x, hx⟩ : φ ∈ j.range` from `hrange ▸ hφ`. Take `⟨y, hy⟩ : ψ ∈ j.range` from `hrange ▸ hψ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨c, hc⟩` from `ihφ x hx`. Take `⟨d, hd⟩` from `ihψ y hy`. Take `rfl : s = x * y` from `hj (by rw [hs, map_mul, ← hx, ← hy]; rfl)`. Use `⟨c * d, fun P hP => ?_⟩` and prove the remaining obligations. Use `P.add_mem (P.mul_mem_right y (hc P hP)) (P.mul_mem_left (algebraMap A T c) (hd P hP)) using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `s`. Conclude with `key (j s) (hrange ▸ ⟨s, rfl⟩) s rfl`. Use `haveI hloc : IsLocalRing T := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨P, hP⟩` from `Ideal.exists_maximal T`. Use `IsLocalRing.of_unique_max_ideal ⟨P, hP, fun Q hQ => hQ.eq_of_le hP.ne_top fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h2 s`. Establish `h3 : algebraMap A T c ∈ Q`. Use `Q.sub_mem hs (hc Q hQ)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h4 : c ∈ P.comap (algebraMap A T)`. Rewrite using `[(hmax P hP).1, ← (hmax Q hQ).1]`. Conclude with `h3`. Use `P.add_mem (hc P hP) h4` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hm` using `maximalIdeal.isMaximal T`. Use `haveI : IsNoetherianRing T := IsNoetherianRing.of_finite A T`. Rewrite `hn1`, `hn2` using `[jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Establish `hcomp : IsAdicComplete (maximalIdeal T) T` using `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.cofinalCompl T T _ _ n hn1 hn2 ((IsAdicComplete.map_algebraMap_iff _ _).2 (UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.finCompl A T (maximalIdeal A)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `⟨{ complete := hcomp, finite := (hmax _ hm).2 inferInstance }, inferInstance, ?_, fun s => (h2 s).imp fun c hc => hc _ hm, fun i s hs => h1 i s hs _ hm, fun c hc => ?_⟩` and prove the remaining obligations. Use `⟨fun c hc => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `: c ∈ (maximalIdeal T).comap (algebraMap A T)`. Rewrite using `[(hmax _ hm).1]`.
-
-Conclude with `h`. Conclude with `this hc`. Rewrite using `[mem_nonZeroDivisors_iff_left]`. Introduce `s hs`. Apply `hj` to reduce the goal to its premises.
-
-Rewrite using `[map_zero]`. Use extensionality with `y`. Establish `h3` using `congrArg (fun t => ((j t y : L) : M)) hs`. Simplify using `only [map_mul, AlgHom.commutes, map_zero] at h3`. Simplify `h3)` using `using hc _ (hLY (j s y).2) (by simpa`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.heckeLocal :
     ∀ (A M ι : Type) [CommRing A] [IsCNL A] [AddCommGroup M] [Module A M] (Y : Submodule A M) [Module.Finite A Y] (op : ι → Module.End A M) (a : ι → A), CommOn Y op → locPart Y op a ≠ ⊥ → ∀ (T : Type) [CommRing T] [Algebra A T] (j : T →ₐ[A] Module.End A (locPart Y op a)), Function.Injective j → j.range = heckeAlg (locPart Y op a) op → ∃ _ : IsCNL T, Module.Finite A T ∧ IsLocalHom (algebraMap A T) ∧ (∀ s : T, ∃ c : A, s - algebraMap A T c ∈ maximalIdeal T) ∧ (∀ i s, Restr (j s) (op i) → s - algebraMap A T (a i) ∈ maximalIdeal T) ∧ ∀ c : A, (∀ y ∈ Y, c • y = 0 → y = 0) → algebraMap A T c ∈ nonZeroDivisors T := by

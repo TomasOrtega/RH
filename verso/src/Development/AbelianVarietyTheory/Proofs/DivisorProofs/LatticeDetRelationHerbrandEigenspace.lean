@@ -17,7 +17,7 @@ namespace GlobalTheory.HerbrandBridge
 open GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference (freeLattice unif IsFiltration filSpace eigenSub eigenQuot lie quotMap addVal)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mem_filtrationPreimage_iff_eval_mem`.
+A detailed English derivation is pending.
 -/
 theorem filPre_mem : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (v : AddValuation C (WithTop ℝ))
     (hv : ∀ x, x ∈ Int0 v ↔ x ∈ w.valuationSubring) (S : Type) [Fintype S] [DecidableEq S]
@@ -27,7 +27,7 @@ theorem filPre_mem : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (v : Add
   GlobalTheory.T.mem_filtrationPreimage_iff_eval_mem
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mem_polynomialEvalFreeLattice_iff_exists_eval`.
+A detailed English derivation is pending.
 -/
 theorem evalVec_range : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (v : AddValuation C (WithTop ℝ))
     (hv : ∀ x, x ∈ Int0 v ↔ x ∈ w.valuationSubring) (S : Type) [Fintype S] [DecidableEq S]
@@ -36,7 +36,7 @@ theorem evalVec_range : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (v : 
   GlobalTheory.T.mem_polynomialEvalFreeLattice_iff_exists_eval
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.evalQuotientRingVectorAtPoints_injective`.
+A detailed English derivation is pending.
 -/
 theorem evalVec_injective : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (v : AddValuation C (WithTop ℝ))
     (hv : ∀ x, x ∈ Int0 v ↔ x ∈ w.valuationSubring) (S : Type) [Fintype S] [DecidableEq S]
@@ -45,7 +45,7 @@ theorem evalVec_injective : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (
   GlobalTheory.T.evalQuotientRingVectorAtPoints_injective
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.eigenSublattice_freeLattice_iff_eval`.
+A detailed English derivation is pending.
 -/
 theorem eigenSub_iff : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (v : AddValuation C (WithTop ℝ))
     (hv : ∀ x, x ∈ Int0 v ↔ x ∈ w.valuationSubring) (S : Type) [Fintype S] [DecidableEq S]
@@ -58,7 +58,7 @@ theorem eigenSub_iff : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (v : A
   GlobalTheory.T.eigenSublattice_freeLattice_iff_eval
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mem_filtration_of_components_mem_eigenSpan`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_components : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (S : Type) [Fintype S]
     [DecidableEq S] (a : S → w.valuationSubring) (N : ℕ)
@@ -67,7 +67,7 @@ theorem mem_of_components : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (
   GlobalTheory.T.mem_filtration_of_components_mem_eigenSpan
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.lieEigenSublattice_iff_eval_flat`.
+A detailed English derivation is pending.
 -/
 theorem lie_iff : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (v : AddValuation C (WithTop ℝ))
     (hv : ∀ x, x ∈ Int0 v ↔ x ∈ w.valuationSubring) (S : Type) [Fintype S] [DecidableEq S]
@@ -93,17 +93,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference (freeLattic
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Set `gh : E' →+ W` to `AddMonoidHom.mk' g hadd`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(hX _).2 ⟨xs i, by rw [hxs i]; exact (b i).2, rfl⟩`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨x, hxM, rfl⟩` from `(hX y).1 hy`. Establish `hrep` using `b.sum_repr ⟨π x, hxM⟩`. Establish `hπ : π x = π (∑ i, b.repr ⟨π x, hxM⟩ i • xs i)`. Establish `h2 : π x = ∑ i, b.repr ⟨π x, hxM⟩ i • (b i : E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Subtype.val hrep` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at this`. Conclude with `this.symm`. Rewrite using `[map_sum]`. Use `conv_lhs => rw [h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hxs i]`. Rewrite using `[hwd _ _ hπ]`. Establish `: g (∑ i, b.repr ⟨π x, hxM⟩ i • xs i) = ∑ i, ((b.repr ⟨π x, hxM⟩ i : Int0 v) : C) • g (xs i)`. Express the relevant statement in the definitionally equal form `gh _ = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hsmul _ _`. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hc : ((b.repr ⟨π x, hxM⟩ i : Int0 v) : C) ∈ w.valuationSubring` using `(hv _).1 (Subtype.prop _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((b.repr ⟨π x, hxM⟩ i : Int0 v) : C) • g (xs i) = (⟨_, hc⟩ : w.valuationSubring) • g (xs i)`. Rewrite using `[algebra_compatible_smul C (⟨_, hc⟩ : w.valuationSubring) (g (xs i))]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_eq_of_basis {w : Valuation C ℝ≥0} {v : AddValuation C (WithTop ℝ)}
     (hv : ∀ x, x ∈ Int0 v ↔ x ∈ w.valuationSubring) {E E' W : Type} [AddCommGroup E]
@@ -146,17 +146,17 @@ theorem span_eq_of_basis {w : Valuation C ℝ≥0} {v : AddValuation C (WithTop 
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Establish `hli` using `Matrix.linearIndependent_rows_of_det_ne_zero hdet`. Establish `hli' : LinearIndependent C (Fin.append u m)` using `hli`. Establish `hmli : LinearIndependent C m`. Use `hli'.comp (Fin.natAdd p) (Fin.natAdd_injective q p)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `hspan : Submodule.span C (Set.range m) = F`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Conclude with `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hm i)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finrank_span_eq_card hmli, Fintype.card_fin, hF]`. Rewrite using `[linearIndependent_iff']`. Introduce `s c hs i hi`. Establish `h1 : ∑ j ∈ s, c j • u j ∈ F`. Establish `: F.mkQ (∑ j ∈ s, c j • u j) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Conclude with `hs`. Conclude with `(Submodule.Quotient.mk_eq_zero F).1 this`. Rewrite `h1` using `[← hspan, Submodule.mem_span_range_iff_exists_fun]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `h1`. Set `c' : Fin (p + q) → C` to `Fin.append (fun j => if j ∈ s then c j else 0) (fun k => - d k)`. Establish `hsum : ∑ k, c' k • Fin.append u m k = 0`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [c', Fin.append_left, Fin.append_right, neg_smul, Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Simplify using `only [ite_smul, zero_smul]`. Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter, add_neg_cancel]`. Use `(Fintype.linearIndependent_iff.1 hli') c' hsum (Fin.castAdd q i)` as an intermediate fact. Simplify `this` using `[c', hi]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem linearIndependent_mkQ {p q : ℕ} (F : Submodule C (Fin (p + q) → C))
     (hF : Module.finrank C F = q) (u : Fin p → Fin (p + q) → C) (m : Fin q → Fin (p + q) → C)
@@ -199,9 +199,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference (freeLattic
 variable {C : Type} [Field C] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨z, hz⟩` from `(hrange x).1 (hle hx)`. Use `⟨comp (liftA hv a) N s z, ⟨z, (hmem z).2 (hz ▸ hx), rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[comp_coe, hz]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨_, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `⟨_, (hmem z).1 hz, rfl⟩`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem eigenQuot_iff {w : Valuation C ℝ≥0} {v : AddValuation C (WithTop ℝ)}
     (hv : ∀ x, x ∈ Int0 v ↔ x ∈ w.valuationSubring) (a : S → w.valuationSubring) (N : ℕ)
@@ -220,9 +220,9 @@ theorem eigenQuot_iff {w : Valuation C ℝ≥0} {v : AddValuation C (WithTop ℝ
     exact ⟨_, (hmem z).1 hz, rfl⟩
 
 /- English proof (translation)
-Establish `: ((fun (x : Fin N → Int0 v) (i : Fin N) => (x i : C)) '' (eigQuot (liftA hv a) (filPre (liftA hv a) F) s : Set (Fin N → Int0 v))) = (eigenQuot (W` using `fun _ => Fin N → C) F s : Set (Fin N → C)) := by`. Use extensionality with `y`. Simplify using `only [Set.mem_image, SetLike.mem_coe]`. Rewrite using `[eigenQuot_iff hv a N F hle hrange hmem s y]`. Unfold `eigRank filSpace`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eigRank_eq {w : Valuation C ℝ≥0} {v : AddValuation C (WithTop ℝ)}
     (hv : ∀ x, x ∈ Int0 v ↔ x ∈ w.valuationSubring) (a : S → w.valuationSubring) (N : ℕ)
@@ -248,11 +248,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference (freeLattic
 variable {C : Type} [Field C] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Unfold `yExp`. Rewrite using `[WithTop.coe_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[hrk s]`. Establish `hne : (a s : C) - (a τ : C) ≠ 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `(Finset.ne_of_mem_erase hs) (ha (Subtype.ext (sub_eq_zero.1 h)))`. Express the relevant statement in the definitionally equal form `_ • toAddVal w ℓ h0 h1 ((a s : C) - (a τ : C)) = _`. Rewrite using `[toAddVal_of_ne _ _ _ _ hne, ← WithTop.coe_nsmul, nsmul_eq_mul]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Unfold `addVal`. Rewrite using `[w.map_sub_swap]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yExp_eq (w : Valuation C ℝ≥0) (ℓ : C) (h0 : 0 < w ℓ) (h1 : w ℓ < 1)
     (hv : ∀ x, x ∈ Int0 (toAddVal w ℓ h0 h1) ↔ x ∈ w.valuationSubring)
@@ -282,41 +282,37 @@ open GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference (freeLattic
   DetRel IsLatticeBasis HasVal)
 
 /- English proof (translation)
-Introduce `C _ w ℓ h0 h1 S _ _ a p q Fil τ ha hF hq`. Establish `hv` using `mem_addValuationIntegerRing_normalized_iff w ℓ h0 h1`. Establish `ha' : Function.Injective (liftA hv a)` using `fun s t h => ha (Subtype.ext (congrArg (fun z : Int0 (toAddVal w ℓ h0 h1) => (z : C)) h))`. Establish `hmem` using `filPre_mem C w _ hv S a (p + q) Fil hF.stable`. Establish `hrange` using `evalVec_range C w _ hv S a (p + q)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `evalVec_injective C w _ hv S a (p + q) ha`. Establish `hcomp` using `mem_of_components C w S a (p + q) Fil ha hF`. Establish `hsat : ∀ (c : Int0 (toAddVal w ℓ h0 h1)) (x : Fin (p + q) → RS (liftA hv a)), c ≠ 0 → c • x ∈ filPre (liftA hv a) Fil → x ∈ filPre (liftA hv a) Fil`. Introduce `c x hc hcx`. Rewrite `hcx`, the goal using `[hmem]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hc' : (c : C) ∈ w.valuationSubring` using `(hv _).1 c.2`. Use `hF.saturated _ ((hrange _).2 ⟨x, rfl⟩) ⟨(c : C), hc'⟩ ?_ ?_` and prove the remaining obligations. Introduce `h`. Apply `hc` to reduce the goal to its premises. Conclude with `Subtype.ext (congrArg (fun z : w.valuationSubring => (z : C)) h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hcx using 1` and compare the differences between its conclusion and the goal. Rewrite using `[evalVec_smul]`. Both sides reduce to the same expression. Establish `hrk` using `eigRank_eq hv a (p + q) Fil hF.le hrange hmem`. Take `⟨⟨p', hp', ⟨h⟩, ⟨l⟩, ⟨f⟩, hDet⟩, -, -⟩` from `GlobalTheory.T.herbrandQuotient_eigen_det C (toAddVal w ℓ h0 h1) S (liftA hv a) ha' (p + q) (filPre (liftA hv a) Fil) hsat τ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq' : eigRank (toAddVal w ℓ h0 h1) (liftA hv a) (filPre (liftA hv a) Fil) τ = q` using `(hrk τ).trans hq`. Establish `hpp : p = p'` using `by omega`. Substitute `hpp` using the available equality. Use `choose x hx using fun i => Submodule.Quotient.mk_surjective (filPre (liftA hv a) Fil) (l i : (Fin (p + q) → RS (liftA hv a)) ⧸ (filPre (liftA hv a) Fil))`. Set `e : Fin (p + q) ≃ Fin p ⊕ Fin (eigRank (toAddVal w ℓ h0 h1) (liftA hv a) (filPre (liftA hv a) Fil) τ)` to `finSumFinEquiv.symm.trans (Equiv.sumCongr (Equiv.refl _) (finCongr hq'.symm))`.
+Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨c, hc, hne, hdet⟩` from `hDet h l x hx f e`. Set `X : Fin (p + q) → Fin (p + q) → C` to `fun k i => ((comp (liftA hv a) (p + q) τ (h k : Fin (p + q) → RS (liftA hv a)) i : Int0 (toAddVal w ℓ h0 h1)) : C)`. Set `U : Fin p → Fin (p + q) → C` to `fun k i => ((comp (liftA hv a) (p + q) τ (x k) i : Int0 (toAddVal w ℓ h0 h1)) : C)`. Set `fb` to `f.reindex (finCongr hq')`. Set `M : Fin q → Fin (p + q) → C` to `fun k i => ((fb k : Fin (p + q) → Int0 (toAddVal w ℓ h0 h1)) i : C)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXmat : Matrix.of X = (Matrix.of fun k => comp (liftA hv a) (p + q) τ (h k : Fin (p + q) → RS (liftA hv a))).map (Int0 (toAddVal w ℓ h0 h1)).subtype` using `rfl`. Establish `hAmat : Matrix.of (Fin.append U M) = (Matrix.of fun k => Sum.elim (fun i => comp (liftA hv a) (p + q) τ (x i)) (fun i => (f i : Fin (p + q) → Int0 (toAddVal w ℓ h0 h1))) (e k)).map (Int0 (toAddVal w ℓ h0 h1)).subtype`. Use extensionality with `k j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) k` and prove the remaining obligations. Simplify using `[e, U]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[e, M, fb, Module.Basis.reindex_apply]`. Establish `hdet' : (Matrix.of X).det = c * (Matrix.of (Fin.append U M)).det`. Rewrite using `[hXmat, hAmat, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← RingHom.map_det]`. Conclude with `hdet`. Establish `hy` using `yExp_eq w ℓ h0 h1 hv a ha (filPre (liftA hv a) Fil) (filSpace Fil) hrk τ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc0 : c ≠ 0`. Introduce `h0'`. Rewrite `hc` using `[h0', AddValuation.map_zero, hy]`. Conclude with `WithTop.top_ne_coe hc`. Establish `hAne : (Matrix.of (Fin.append U M)).det ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hAmat, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Introduce `h'`. Conclude with `hne (Subtype.ext h')`. Establish `hXne : (Matrix.of X).det ≠ 0`. Rewrite using `[hdet']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `mul_ne_zero hc0 hAne`. Establish `hli : LinearIndependent C (Fin.append U M)` using `Matrix.linearIndependent_rows_of_det_ne_zero hAne`. Establish `hMli : LinearIndependent C M`. Use `hli.comp (Fin.natAdd p) (Fin.natAdd_injective q p)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `hMq : ∀ k, M k ∈ eigenQuot (W` using `fun _ => Fin (p + q) → C) Fil τ := fun k => (eigenQuot_iff hv a (p + q) Fil hF.le hrange hmem τ (M k)).2 ⟨_, (fb k).2, rfl⟩`. Establish `hMF : ∀ k, M k ∈ filSpace Fil τ` using `fun k => Submodule.subset_span (hMq k)`. Use `⟨X, U, M, c, ⟨Matrix.linearIndependent_rows_of_det_ne_zero hXne, ?_⟩, ⟨linearIndependent_mkQ (filSpace Fil τ) hq U M hMF hAne, ?_⟩, ⟨hMli, ?_⟩, hMF, ⟨hc0, ?_⟩, hdet'⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `span_eq_of_basis hv (eigSub (liftA hv a) τ (Fin (p + q) → RS (liftA hv a))) h LinearMap.id (fun z i => ((comp (liftA hv a) (p + q) τ z i : Int0 (toAddVal w ℓ h0 h1)) : C)) (fun z z' => by funext i; simp only [map_add, Pi.add_apply]; rfl) (fun c z => by funext i; simp only [map_sm …` and prove the remaining obligations. Rewrite using `[eigenSub_iff C w _ hv S a (p + q) τ ha hinj hrange y]`. Simplify using `only [LinearMap.id_apply]`. Use `span_eq_of_basis hv (eigSub (liftA hv a) τ ((Fin (p + q) → RS (liftA hv a)) ⧸ filPre (liftA hv a) Fil)) l (proj (liftA hv a) (filPre (liftA hv a) Fil)) (fun z => quotMap (w := w) (filSpace Fil τ) (fun i => ((comp (liftA hv a) (p + q) τ z i : Int0 (toAddVal w ℓ h0 h1)) : C))) (fun …` and prove the remaining obligations. Rewrite using `[← map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [map_add, Pi.add_apply]`. Use the proof step `rfl)`. Use the proof step `(fun c z => by show (filSpace Fil τ).mkQ _ = (c : C) • (filSpace Fil τ).mkQ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Use the proof step `rfl)`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun z z' hz => ?_) x hx _ (fun y => ?_)`. Use `show (filSpace Fil τ).mkQ _ = (filSpace Fil τ).mkQ _`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Establish `h2 : z - z' ∈ filPre (liftA hv a) Fil` using `(Submodule.Quotient.eq (filPre (liftA hv a) Fil)).1 hz`. Rewrite `h2` using `[hmem, evalVec_sub]`.
-
-Use `Submodule.subset_span ⟨_, h2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Both sides reduce to the same expression. Conclude with `lie_iff C w _ hv S a (p + q) Fil τ ha hF hinj hrange hmem hcomp y`. Use `span_eq_of_basis hv (eigQuot (liftA hv a) (filPre (liftA hv a) Fil) τ) fb LinearMap.id (fun z i => ((z i : Int0 (toAddVal w ℓ h0 h1)) : C)) (fun z z' => by funext i; rfl) (fun c z => by funext i; rfl) (fun z z' hz => by rw [show z = z' from hz]) (fun k => (fb k : Fin (p + q) → In …` and prove the remaining obligations.
-
-Rewrite using `[eigenQuot_iff hv a (p + q) Fil hF.le hrange hmem τ y]`. Simplify using `only [LinearMap.id_apply]`. Rewrite `hc` using `[hy, toAddVal_of_ne _ _ _ _ hc0]`. Conclude with `WithTop.coe_injective hc`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exForm : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (ℓ : C), 0 < w ℓ → w ℓ < 1 →
     ∀ (S : Type) [Fintype S] [DecidableEq S] (a : S → w.valuationSubring) (p q : ℕ)

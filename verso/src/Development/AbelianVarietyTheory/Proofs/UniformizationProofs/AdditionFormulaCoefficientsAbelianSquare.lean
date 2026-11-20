@@ -20,9 +20,9 @@ namespace GlobalTheory.AddCoeff
 open ReciprocityTheory.ChartRestriction.G.DVR
 
 /- English proof (translation)
-Establish `e : (2 : ℤ) • a = (2 : ℤ) • a'`. Rewrite using `[two_smul, two_smul]`. Combine the equalities or inequalities in the displayed calculation. Establish `ha : a = a'` using `smul_right_injective X two_ne_zero e`. Substitute `ha` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨rfl, add_left_cancel h₁⟩`.
+Supply the required witnesses or components.
 -/
 theorem sum_diff_inj {X : Type} [AddCommGroup X] [Module.Free ℤ X] {a b a' b' : X} (h₁ : a + b = a' + b')
     (h₂ : a - b = a' - b') : a = a' ∧ b = b' := by
@@ -35,13 +35,13 @@ theorem sum_diff_inj {X : Type} [AddCommGroup X] [Module.Free ℤ X] {a b a' b' 
   exact ⟨rfl, add_left_cancel h₁⟩
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_product', ← Finset.sum_product']`. Use `symm`. Use `Finset.sum_of_injOn (fun p : X × X => (p.1 + p.2, p.1 - p.2)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p _ q _ h`. Take `⟨h₁, h₂⟩` from `Prod.mk.inj h`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Prod.ext (sum_diff_inj h₁ h₂).1 (sum_diff_inj h₁ h₂).2`. Introduce `p hp`. Take `⟨h₁, h₂⟩` from `Finset.mem_product.1 hp`. Conclude with `Finset.mem_product.2 (hs _ h₁ _ h₂)`. Introduce and unpack `⟨α, β⟩ _ hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : ∃ a b, α = a + b ∧ β = a - b`. Take `⟨a, b, rfl, rfl⟩` from `h`. Establish `: a ∉ s₀ ∨ b ∉ s₀`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hp ⟨(a, b), Finset.mem_coe.2 (Finset.mem_product.2 hc), rfl⟩`. Simplify using `only [g₁, hF a b this, zero_mul]`. Simplify using `only [g₀ α β h, zero_mul]`. Introduce `p _`. Simplify using `only [g₁]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reindex {X R : Type} [AddCommGroup X] [Module.Free ℤ X] [CommRing R] (s₀ s : Finset X)
     (hs : ∀ a ∈ s₀, ∀ b ∈ s₀, a + b ∈ s ∧ a - b ∈ s) (F g c : X → X → R)
@@ -74,7 +74,7 @@ section
 variable {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
 
 /- English proof (translation)
-Use `(congrArg (gs r z (LB.wchart L φ (fun k => J (r ≫ φ k)))) (h _)).trans ((gs_eq r z _ (hJ.mem φ r) _).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg _ (map_zero _)).trans (map_zero _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sval_zero_of (s : LB.Sec (LB.LinComb L φ ε)) (h : ∀ j, s.f j = 0) (r : Z ⟶ Y) (z : Z) {J} (hJ : Good L z J) :
     sval s r z J = 0 := by
@@ -82,7 +82,7 @@ theorem sval_zero_of (s : LB.Sec (LB.LinComb L φ ε)) (h : ∀ j, s.f j = 0) (r
   exact (congrArg _ (map_zero _)).trans (map_zero _)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem gs_scal {R : Type} [CommRing R] (p : Y ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ Y) (z : Z) (c : R) :
     gs r z ⊤ (scal p c) = gs (𝟙 _) z ⊤ (scal (r ≫ p) c) := by
@@ -91,9 +91,9 @@ theorem gs_scal {R : Type} [CommRing R] (p : Y ⟶ Spec (CommRingCat.of R)) (r :
     _ = gs (𝟙 _) z ⊤ (scal (r ≫ p) c) := rfl
 
 /- English proof (translation)
-Use `⟨SecOps.secAdd s (SecOps.secNeg (SecOps.secScale c t)), fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Establish `hm` using `hJ.mem φ r`. Establish `e : sval (SecOps.secScale c t) r z J = gs r z ⊤ c * sval t r z J` using `(gs_mul r z _ hm _ _).trans (congrArg (· * _) (gs_res r z le_top hm c))`. Establish `e' : ∀ u : LB.Sec (LB.LinComb L φ ε), sval (SecOps.secNeg u) r z J = - sval u r z J` using `fun u => (gs_eq r z _ hm _).trans (((congrArg _ (map_neg _ _)).trans (map_neg _ _)).trans (congrArg Neg.neg (gs_eq r z _ hm _).symm))`. Use `(gs_add r z _ hm _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_eq_add_neg, ← e, ← e']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_sub_scale (s t : LB.Sec (LB.LinComb L φ ε)) (c : Γ(Y, ⊤)) : ∃ d : LB.Sec (LB.LinComb L φ ε),
     ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good L z J →
@@ -111,21 +111,19 @@ theorem exists_sub_scale (s t : LB.Sec (LB.LinComb L φ ε)) (c : Γ(Y, ⊤)) : 
 end
 
 /- English proof (translation)
-Introduce `hGF V _ _ _ hV D A G _ _ U θ f₀ r n σ σ' f f' hA hθ hσ`. Establish `hlev` using `GlobalTheory.addition_formula_expanded_at_level hGF V hV D A G U θ f₀ r n σ σ' f f' hA hθ hσ`. Establish `hbox` using `GlobalTheory.UU.BoxSec.main V D (𝟙_ _) (toUnit _)`. Establish `hd : ∀ p : D.X × D.X, ∃ d : LB.Sec (LB.LinComb D.P.L (K` using `Fin 4 ⊕ Fin 4) (Sum.elim (fun i => (fst D.P.A D.P.A).left ≫ D.famφB p.1 i) (fun i => (snd D.P.A D.P.A).left ≫ D.famφB p.2 i)) (Sum.elim (DegPre.famε 2) (DegPre.famε 2))), ∀ (T : Over (Spec (CommRingCat.of V))) (x y : T ⟶ D.P.A) (z : T.left) (J), Good D.P.L z J → (∀ a b, p.1 = a + …`. Introduce and unpack `⟨α, β⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨d₁, h₁⟩` from `(hbox α β).1 n (fun i => f i α) (fun i => f' i β)`. Simplify using `only [comp_toUnit] at h₁`. Distinguish the cases in `h : ∃ a b, α = a + b ∧ β = a - b`. Take `⟨a, b, ha, hb⟩` from `h`. Take `⟨d₂, h₂⟩` from `(hbox α β).2 a b (f₀ a) (f₀ b) ha hb`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [comp_toUnit] at h₂`. Take `⟨d, hd⟩` from `exists_sub_scale d₁ d₂ (scal (D.P.A ⊗ D.P.A).hom r)`. Use `⟨d, fun T x y z J hJ => ⟨fun a' b' ha' hb' => ?_, fun h => absurd ⟨a, b, ha, hb⟩ h⟩⟩` and prove the remaining obligations. Take `⟨rfl, rfl⟩` from `sum_diff_inj (ha.symm.trans ha') (hb.symm.trans hb')`. Rewrite using `[hd _ _ z J hJ, h₁ T x y z J hJ, h₂ T x y z J hJ, gs_scal, Over.w, _root_.mul_assoc]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨d₁, fun T x y z J hJ => ⟨fun a b ha hb => absurd ⟨a, b, ha, hb⟩ h, fun _ => h₁ T x y z J hJ⟩⟩`. Use `choose d hd using hd`. Establish `h0` using `GlobalTheory.WeightTwo.main V hV D A G U 2 2 d (fun e => by`. Take `⟨s₀, H⟩` from `hlev e`. Use `⟨s₀ ∪ Finset.image₂ (· + ·) s₀ s₀ ∪ Finset.image₂ (· - ·) s₀ s₀, fun s hs T x y xe ye hx hy hxy z J hJ => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨H₁, H₂⟩` from `H T x y xe ye hx hy hxy z J hJ`. Establish `hs₀ : s₀ ⊆ s` using `(Finset.subset_union_left.trans Finset.subset_union_left).trans hs`. Establish `R` using `reindex s₀ s (fun a ha b hb => ⟨hs (Finset.mem_union_left _ (Finset.mem_union_right _ (Finset.mem_image₂_of_mem ha hb))), hs (Finset.mem_union_right _ (Finset.mem_image₂_of_mem ha hb))⟩) (fun a b => gs (𝟙 _) z ⊤ (scal T.hom r) * (kapV D a b z J x y).val * (sval (f₀ a) (lift (toUn …`. Introduce and unpack `a b (h | h)`. Rewrite using `[(H₁ a h).1, zero_mul, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(H₁ b h).2, mul_zero, mul_zero])`. Use the proof step `(fun a b => by rw [(hd (a + b, a - b) T x y z J hJ).1 a b rfl rfl, sub_sub_cancel])`. Use the proof step `(fun α β h => by rw [(hd (α, β) T x y z J hJ).2 h, sub_self])`. Rewrite `R` using `[← H₂ s hs₀]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib] at R`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_eq_self.1 R)`. Introduce `T ρ x y z J hJ`. Take `rfl : ρ = toUnit T` from `toUnit_unique _ _`. Use `⟨fun a b α β hα hβ => ?_, fun α β h => ?_⟩` and prove the remaining obligations. Conclude with `sub_eq_zero.1 (((hd (α, β) T x y z J hJ).1 a b hα hβ).symm.trans (sval_zero_of _ (h0 _) _ z hJ))`.
-
-Conclude with `((hd (α, β) T x y z J hJ).2 h).symm.trans (sval_zero_of _ (h0 _) _ z hJ)`.
+A detailed English derivation is pending.
 -/
 theorem main : GlobalFnsSt → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ (θ : U.SecGT (𝟙_ _) 1) (f₀ : ∀ α, SecBT D (𝟙_ _) 1 α) (r : V) (n : ℕ) (σ σ' : Fin n → U.SecGT (𝟙_ _) 2) (f f' : Fin n → ∀ α, SecBT D (𝟙_ _) 2 α), U.AddG θ r σ σ' → U.ExpT (𝟙_ _) 1 θ f₀ → (∀ i, U.ExpT (𝟙_ _) 2 (σ i) (f i) ∧ U.ExpT (𝟙_ _) 2 (σ' i) (f' i)) → AddB D (𝟙_ _) f₀ r f f') := by
   classical

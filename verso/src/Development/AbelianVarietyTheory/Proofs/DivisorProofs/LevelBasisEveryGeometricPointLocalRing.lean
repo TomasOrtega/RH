@@ -16,11 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LevelSpread
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AbelianDim.connectedSpace_spec_of_isLocalRing O`. Establish `hn' : IsUnit (n : Γ(Sp O, ⊤))`. Use `hn.map (Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom` as an intermediate fact. Simplify using `using this`. Take `⟨⟨-, het⟩, -⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion (hG := hA) A hn'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hA.proper`. Use `haveI : IsSeparated ((mulN A n).left ≫ A.hom) := by`. Rewrite using `[Over.w (mulN A n)]`. Use `infer_instance`. Use `haveI : IsSeparated (mulN A n).left := IsSeparated.of_comp _ A.hom`.
-
-Establish `hab : s ≫ mulN A n = (1 : 𝟙_ (Over (Sp O)) ⟶ A) ≫ mulN A n`. Rewrite using `[GlobalTheory.GrpTangent.mulN_eq_pow, MonObj.comp_pow, MonObj.comp_pow, Category.comp_id, Category.comp_id, hs, one_pow]`. Establish `hj : toUnit (Over.mk x) ≫ s = toUnit (Over.mk x) ≫ (1 : 𝟙_ (Over (Sp O)) ⟶ A)`. Rewrite using `[hx, MonObj.comp_one]`. Conclude with `Over.OverMorphism.ext (GlobalTheory.eq_of_connected_of_unramified_of_point (T := Sp O) (mulN A n).left (congrArg (·.left) hab) x (congrArg (·.left) hj))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_point (O : Type) [CommRing O] [IsLocalRing O] (A : Over (Sp O)) [GrpObj A]
     (hA : IsAbelianScheme A) (n : ℕ) (hn : IsUnit (n : O)) (s : 𝟙_ (Over (Sp O)) ⟶ A)
@@ -48,17 +46,15 @@ end GlobalTheory.LevelSpread
 namespace GlobalTheory.LevelSpread
 
 /- English proof (translation)
-Use `haveI : NeZero n := ⟨hn⟩`. Set `F : (I → ZMod n) → {u : G // u ^ n = 1}` to `fun c => ⟨f fun i => (c i).val, tors _⟩`. Establish `hF : Function.Injective F` using `fun c c' e => by`. Establish `e₁ : f (fun i => (c i).val) = f fun i => (c' i).val` using `congrArg Subtype.val e`. Establish `e₂` using `add ((fun i => ((c i).val : ℤ)) - fun i => ((c' i).val : ℤ)) fun i => (c' i).val`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₂` using `[sub_add_cancel, e₁]`. Take `⟨b, hb⟩` from `(ker _).1 (mul_eq_right.1 e₂.symm)`. Use function extensionality and compare the values at `i`. Use `congrArg (fun z : ℤ => (z : ZMod n)) (congrFun hb i)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hS : Function.Surjective F`. Introduce and unpack `⟨u, hu⟩`. Take `⟨a, rfl⟩` from `onto u hu`. Use `⟨fun i => (a i : ZMod n), Subtype.ext ?_⟩` and prove the remaining obligations. Use `show f (fun i => ((a i : ZMod n).val : ℤ)) = f a`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∃ b, (fun i => ((a i : ZMod n).val : ℤ)) - a = n • b`. Establish `: ∀ i, (n : ℤ) ∣ ((a i : ZMod n).val : ℤ) - a i` using `fun i => by`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val, sub_self]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose b hb using this`. Conclude with `⟨b, funext fun i => by simpa using hb i⟩`. Establish `e` using `add ((fun i => ((a i : ZMod n).val : ℤ)) - a) a`. Rewrite `e` using `[sub_add_cancel, (ker _).2 hd, _root_.one_mul]`. Conclude with `e`.
-
-Rewrite using `[← Nat.card_congr (Equiv.ofBijective F ⟨hF, hS⟩), Nat.card_fun, Nat.card_zmod, Nat.card_eq_fintype_card]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_of_basis {I G : Type} [Fintype I] [Group G] {n : ℕ} (hn : n ≠ 0) (f : (I → ℤ) → G)
     (add : ∀ a b, f (a + b) = f a * f b) (tors : ∀ a, f a ^ n = 1)
@@ -93,17 +89,15 @@ theorem card_of_basis {I G : Type} [Fintype I] [Group G] {n : ℕ} (hn : n ≠ 0
     Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Introduce `O _ _ _ A _ _ hA g n hn lev add tors k₀ _ _ x₀ ker₀ onto₀ k _ _ x`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `not_isUnit_zero (M₀ := O) (by simpa using hn)`. Establish `lev0 : lev 0 = 1` using `mul_eq_left.1 ((add 0 0).symm.trans (by rw [add_zero]))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pw : ∀ (b : Fin g ⊕ Fin g → ℤ) (m : ℕ), lev (m • b) = lev b ^ m` using `fun b m => by`. Proceed by induction on `m with`. Consider the case `zero => rw [zero_smul, pow_zero, lev0]`. Consider the case `succ m ih => rw [succ_nsmul, add, ih, pow_succ]`. Establish `hunit : ∀ (F : Type) [Field F] (p : Sp F ⟶ Sp O), (n : F) ≠ 0` using `fun F _ p => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, rfl⟩` from `Spec.map_surjective p`. Use `(hn.map φ.hom).ne_zero` as an intermediate fact. Simplify using `using this`. Establish `ker : ∀ a, toUnit (Over.mk x) ≫ lev a = 1 ↔ ∃ b, a = n • b` using `fun a => by`. Use `⟨fun h => (ker₀ a).1 ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.LevelSpread.eq_one_of_point O A hA n hn (lev a) (tors a) k x h, MonObj.comp_one]`. Introduce and unpack `⟨b, rfl⟩`. Rewrite using `[pw, tors, MonObj.comp_one]`. Use `⟨ker, fun u hu => ?_⟩` and prove the remaining obligations. Use `haveI := hA.proper`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `GlobalTheory.AbelianDim.exists_relDim O A hA`. Establish `hsa` using `GlobalTheory.isSemiAbelian_of_isAbelianScheme A hA`. Establish `c₀` using `GlobalTheory.FibreTorsion.card_torsion_of_proper_fibre (Sp O) A hsa d hd k₀ x₀ inferInstance n (hunit k₀ x₀)`. Establish `c` using `GlobalTheory.FibreTorsion.card_torsion_of_proper_fibre (Sp O) A hsa d hd k x inferInstance n (hunit k x)`. Establish `b₀` using `card_of_basis hn0 (fun a => toUnit (Over.mk x₀) ≫ lev a) (fun a b => by rw [add, MonObj.comp_mul]) (fun a => by rw [← MonObj.comp_pow, tors, MonObj.comp_one]) ker₀ onto₀`.
-
-Conclude with `GlobalTheory.SiegelOfPolarised.onto_torsion hn0 (fun a => toUnit (Over.mk x) ≫ lev a) (fun a b => by rw [add, MonObj.comp_mul]) (fun a => by rw [← MonObj.comp_pow, tors, MonObj.comp_one]) (fun a => (ker a).1) (c.trans (c₀.symm.trans b₀)) u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem basis_at_every_point : ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] (A : Over (Sp O)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (g n : ℕ), IsUnit (n : O) → ∀ (lev : (Fin g ⊕ Fin g → ℤ) → (𝟙_ (Over (Sp O)) ⟶ A)), (∀ a b, lev (a + b) = lev a * lev b) → (∀ a, lev a ^ n = 1) → ∀ (k₀ : Type) [Field k₀] [IsAlgClosed k₀] (x₀ : Sp k₀ ⟶ Sp O), (∀ a, (toUnit (Over.mk x₀) ≫ lev a = 1 ↔ ∃ b, a = n • b)) → (∀ u : Over.mk x₀ ⟶ A, u ^ n = 1 → ∃ a, toUnit _ ≫ lev a = u) → ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Sp O), (∀ a, (toUnit (Over.mk x) ≫ lev a = 1 ↔ ∃ b, a = n • b)) ∧ (∀ u : Over.mk x ⟶ A, u ^ n = 1 → ∃ a, toUnit _ ≫ lev a = u) := by
   intro O _ _ _ A _ _ hA g n hn lev add tors k₀ _ _ x₀ ker₀ onto₀ k _ _ x

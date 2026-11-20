@@ -7,7 +7,7 @@ open Ad3.LR
 namespace GlobalTheory.CompanionTheory.GodementNull
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Det.volume_det_fin_two_eq_zero`.
+A detailed English derivation is pending.
 -/
 theorem dNull : Ad3.LR.DNull :=
   GlobalTheory.CompanionTheory.Det.volume_det_fin_two_eq_zero

@@ -13,7 +13,7 @@ open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatFamily.flatZetaHolomorphic | exact GlobalTheory.FlatFamily.flatZetaHolomorphic | (intros; apply GlobalTheory.FlatFamily.flatZetaHolomorphic <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.flatFamilyZeta_convergence_holomorphy : GlobalTheory.IndefiniteRowSideFullHecke.FlatZetaIntegral.FlatZetaHolomorphic := by
   first | exact @GlobalTheory.FlatFamily.flatZetaHolomorphic | exact GlobalTheory.FlatFamily.flatZetaHolomorphic | (intros; apply GlobalTheory.FlatFamily.flatZetaHolomorphic <;> assumption)

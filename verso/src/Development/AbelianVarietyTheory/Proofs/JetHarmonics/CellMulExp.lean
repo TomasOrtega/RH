@@ -27,14 +27,14 @@ Both sides reduce to the same expression.
 theorem esI_val (a : Fin r) : (esI k r a).val = 2 * r + k - a.val := rfl
 
 /- English proof (translation)
-Rewrite using `[PI.QnWCellW.wCell_last, PI.QnWCellW.Wm_mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cell_apply (c : Fin r → ℂ) (g : Mx k r) (p q : Fin (2 * r + k + 1)) :
     (wCell k r (Fin.last r) c * g) p q = PI.QnWCellW.cf k r c p * g (PI.QnWCellW.swp k r p) q := by
   rw [PI.QnWCellW.wCell_last, PI.QnWCellW.Wm_mul_apply]
 
 /- English proof (translation)
-Use `a.isLt` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[PI.QnWCellW.swp_val, if_neg (by rw [eI_val]; omega), eI_val, esI_val]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem swp_e (a : Fin r) : PI.QnWCellW.swp k r (eI k r a) = esI k r a := by
   have := a.isLt
@@ -42,19 +42,19 @@ theorem swp_e (a : Fin r) : PI.QnWCellW.swp k r (eI k r a) = esI k r a := by
   rw [PI.QnWCellW.swp_val, if_neg (by rw [eI_val]; omega), eI_val, esI_val]
 
 /- English proof (translation)
-Rewrite using `[← swp_e, PI.QnWCellW.swp_swp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem swp_es (a : Fin r) : PI.QnWCellW.swp k r (esI k r a) = eI k r a := by
   rw [← swp_e, PI.QnWCellW.swp_swp]
 
 /- English proof (translation)
-Simplify using `[PI.QnWCellW.cf, eI]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cf_e (c : Fin r → ℂ) (a : Fin r) : PI.QnWCellW.cf k r c (eI k r a) = (star (c a))⁻¹ := by
   simp [PI.QnWCellW.cf, eI]
 
 /- English proof (translation)
-Use `a.isLt` as an intermediate fact. Unfold `PI.QnWCellW.cf`. Rewrite using `[if_neg (by rw [esI_val]; omega), if_neg (by rw [esI_val]; omega), esI_val, show 2 * r + k - (2 * r + k - a.val) = a.val by omega, PI.QnWCellW.cN_val]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem cf_es (c : Fin r → ℂ) (a : Fin r) : PI.QnWCellW.cf k r c (esI k r a) = c a := by
   have := a.isLt
@@ -63,7 +63,7 @@ theorem cf_es (c : Fin r → ℂ) (a : Fin r) : PI.QnWCellW.cf k r c (esI k r a)
     PI.QnWCellW.cN_val]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Rewrite using `[PI.QnWCellW.swp_swp]`. Introduce and unpack `rfl`. Rewrite using `[PI.QnWCellW.swp_swp]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem swp_eq_iff (p q : Fin (2 * r + k + 1)) : PI.QnWCellW.swp k r p = q ↔ p = PI.QnWCellW.swp k r q := by
   constructor
@@ -73,7 +73,7 @@ theorem swp_eq_iff (p q : Fin (2 * r + k + 1)) : PI.QnWCellW.swp k r p = q ↔ p
 variable {g : Mx k r}
 
 /- English proof (translation)
-Rewrite using `[cell_apply, WeylGroupFacts.col_of_fix (hg.2 a a.isLt).1]`. Simplify using `only [swp_eq_iff, swp_e]`. Use `split_ifs with h`. Rewrite using `[h, cf_es, mul_one]`. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_e (hg : g ∈ Glev k r (Fin.last r)) (c : Fin r → ℂ) (a : Fin r) (p : Fin (2 * r + k + 1)) :
     (wCell k r (Fin.last r) c * g) p (eI k r a) = if p = esI k r a then c a else 0 := by
@@ -84,7 +84,7 @@ theorem col_e (hg : g ∈ Glev k r (Fin.last r)) (c : Fin r → ℂ) (a : Fin r)
   · rw [mul_zero]
 
 /- English proof (translation)
-Rewrite using `[cell_apply, WeylGroupFacts.col_of_fix (hg.2 a a.isLt).2]`. Simplify using `only [swp_eq_iff, swp_es]`. Use `split_ifs with h`. Rewrite using `[h, cf_e, mul_one]`. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_es (hg : g ∈ Glev k r (Fin.last r)) (c : Fin r → ℂ) (a : Fin r) (p : Fin (2 * r + k + 1)) :
     (wCell k r (Fin.last r) c * g) p (esI k r a) = if p = eI k r a then (star (c a))⁻¹ else 0 := by
@@ -95,7 +95,7 @@ theorem col_es (hg : g ∈ Glev k r (Fin.last r)) (c : Fin r → ℂ) (a : Fin r
   · rw [mul_zero]
 
 /- English proof (translation)
-Use `WeylGroupFacts.row_of_fixed_col hg.1 (eI k r a) (WeylGroupFacts.col_of_fix (hg.2 a a.isLt).1)` as an intermediate fact. Rewrite `this` using `[Qx3.tau_e]`. Rewrite using `[cell_apply, swp_e, cf_e, this]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem row_e (hg : g ∈ Glev k r (Fin.last r)) (c : Fin r → ℂ) (a : Fin r) (q : Fin (2 * r + k + 1)) :
     (wCell k r (Fin.last r) c * g) (eI k r a) q = if esI k r a = q then (star (c a))⁻¹ else 0 := by
@@ -105,7 +105,7 @@ theorem row_e (hg : g ∈ Glev k r (Fin.last r)) (c : Fin r → ℂ) (a : Fin r)
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `WeylGroupFacts.row_of_fixed_col hg.1 (esI k r a) (WeylGroupFacts.col_of_fix (hg.2 a a.isLt).2)` as an intermediate fact. Rewrite `this` using `[Qx3.tau_es]`. Rewrite using `[cell_apply, swp_es, cf_es, this]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem row_es (hg : g ∈ Glev k r (Fin.last r)) (c : Fin r → ℂ) (a : Fin r) (q : Fin (2 * r + k + 1)) :
     (wCell k r (Fin.last r) c * g) (esI k r a) q = if eI k r a = q then c a else 0 := by
@@ -115,7 +115,7 @@ theorem row_es (hg : g ∈ Glev k r (Fin.last r)) (c : Fin r → ℂ) (a : Fin r
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `Qx3.glev_mul (Qx3.wlist_glev hc _) (Qx3.glev_mono (Fin.zero_le _) hg)`.
+A detailed English derivation is pending.
 -/
 theorem cell_mem (hg : g ∈ Glev k r (Fin.last r)) {c : Fin r → ℂ} (hc : c ∈ OmX r) :
     wCell k r (Fin.last r) c * g ∈ Glev k r 0 :=
@@ -125,7 +125,7 @@ def hX (k : ℕ) {r : ℕ} (a b : Fin r) (s : ℂ) : Mx k r :=
   s • Matrix.single (eI k r a) (eI k r b) (1 : ℂ) - star s • Matrix.single (esI k r b) (esI k r a) (1 : ℂ)
 
 /- English proof (translation)
-Unfold `hpart1 hX`. Rewrite using `[Qx2.hpk_inv, SingleEntryHermitianProducts.single_conjT, star_one, SingleEntryHermitianProducts.hpk_mul_single_eI, LevelPointCoordinates.single_mul_hpk_eI, smul_sub]`. Establish `h2 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpart1_eq (a b : Fin r) :
     hpart1 (Hpk k r) (Matrix.single (eI k r a) (eI k r b) (1 : ℂ)) = hX k a b (1 / 2) := by
@@ -135,7 +135,7 @@ theorem hpart1_eq (a b : Fin r) :
   rw [h2]
 
 /- English proof (translation)
-Unfold `hpart2 hX`. Rewrite using `[Qx2.hpk_inv, SingleEntryHermitianProducts.single_conjT, star_one, SingleEntryHermitianProducts.hpk_mul_single_eI, LevelPointCoordinates.single_mul_hpk_eI, smul_add, CutHL.half_I]`. Establish `h2 : star (-Complex.I / 2 : ℂ) = -(-Complex.I / 2)`. Apply the tactic sequence `apply Complex.ext <;> simp <;> norm_num`. Rewrite using `[h2, neg_smul, sub_neg_eq_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpart2_eq (a b : Fin r) :
     hpart2 (Hpk k r) (Matrix.single (eI k r a) (eI k r b) (1 : ℂ)) = hX k a b (-Complex.I / 2) := by
@@ -147,7 +147,7 @@ theorem hpart2_eq (a b : Fin r) :
   rw [h2, neg_smul, sub_neg_eq_add]
 
 /- English proof (translation)
-Unfold `QRR.dag hX`. Rewrite using `[Qx2.hpk_inv, Matrix.conjTranspose_sub, Matrix.conjTranspose_smul, Matrix.conjTranspose_smul, SingleEntryHermitianProducts.single_conjT, SingleEntryHermitianProducts.single_conjT, star_one, star_star, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_m …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dag_hX (a b : Fin r) (s : ℂ) : QRR.dag k r (hX k a b s) = -hX k a b s := by
   unfold QRR.dag hX
@@ -157,23 +157,23 @@ theorem dag_hX (a b : Fin r) (s : ℂ) : QRR.dag k r (hX k a b s) = -hX k a b s 
     SingleEntryHermitianProducts.hpk_mul_single_esI, LevelPointCoordinates.single_mul_hpk_eI, LevelPointCoordinates.single_mul_hpk_esI, neg_sub]
 
 /- English proof (translation)
-Establish `ha` using `hc a`. Establish `hb` using `hc b`. Establish `ha' : star (c a) ≠ 0` using `star_ne_zero.2 ha`. Establish `hb' : star (c b) ≠ 0` using `star_ne_zero.2 hb`. Use `set x := wCell k r (Fin.last r) c * g with hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : x * Matrix.single (eI k r a) (eI k r b) (1 : ℂ) = (c a / c b) • (Matrix.single (esI k r a) (esI k r b) (1 : ℂ) * x)`. Use extensionality with `p q`. Distinguish the cases in `hq : q = eI k r b`. Substitute `hq` using the available equality. Rewrite using `[Matrix.mul_single_apply_same, hx, col_e hg, Matrix.smul_apply]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hp : p = esI k r a`. Substitute `hp` using the available equality. Rewrite using `[Matrix.single_mul_apply_same, row_es hg]`. Simplify using `[hb]`. Rewrite using `[Matrix.single_mul_apply_of_ne _ _ _ _ _ hp]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hp]`. Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ hq, Matrix.smul_apply]`. Distinguish the cases in `hp : p = esI k r a`. Substitute `hp` using the available equality. Rewrite using `[Matrix.single_mul_apply_same, hx, row_es hg]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Ne.symm hq]`. Rewrite using `[Matrix.single_mul_apply_of_ne _ _ _ _ _ hp]`. Simplify using the standard rewrite rules. Establish `e2 : x * Matrix.single (esI k r b) (esI k r a) (1 : ℂ) = star (c a / c b) • (Matrix.single (eI k r b) (eI k r a) (1 : ℂ) * x)`. Use extensionality with `p q`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hq : q = esI k r a`. Substitute `hq` using the available equality. Rewrite using `[Matrix.mul_single_apply_same, hx, col_es hg, Matrix.smul_apply]`. Distinguish the cases in `hp : p = eI k r b`. Substitute `hp` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.single_mul_apply_same, row_e hg, star_div₀]`. Simplify using `only [if_true, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Matrix.single_mul_apply_of_ne _ _ _ _ _ hp]`. Simplify using `[hp]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ hq, Matrix.smul_apply]`. Distinguish the cases in `hp : p = eI k r b`. Substitute `hp` using the available equality. Rewrite using `[Matrix.single_mul_apply_same, hx, row_e hg]`. Simplify using `[Ne.symm hq]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.single_mul_apply_of_ne _ _ _ _ _ hp]`. Simplify using the standard rewrite rules. Unfold `hX`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, e1, e2, smul_smul, smul_smul, star_neg, star_star, star_mul', neg_smul, neg_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cell_mul_hX (hg : g ∈ Glev k r (Fin.last r)) {c : Fin r → ℂ} (hc : c ∈ OmX r) (a b : Fin r) (s : ℂ) :
     wCell k r (Fin.last r) c * g * hX k a b s =
@@ -221,11 +221,11 @@ theorem cell_mul_hX (hg : g ∈ Glev k r (Fin.last r)) {c : Fin r → ℂ} (hc :
   abel
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `ha` using `a.isLt`. Distinguish the cases in `h1 : eI k r b = i ∧ eI k r a = j`. Take `⟨rfl, rfl⟩` from `h1 left`. Rewrite using `[eI_val, eI_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h2 : esI k r a = i ∧ esI k r b = j`. Take `⟨rfl, rfl⟩` from `h2 right`. Rewrite using `[esI_val, esI_val]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-It suffices to derive a contradiction. Apply `hij` to reduce the goal to its premises. Simplify using `[hX, Matrix.single_apply, h1, h2]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem pat_hX {a b : Fin r} (hab : b.val < a.val) (s : ℂ) : QRR.Pat k r b (hX k b a s) := by
   intro i j hij
@@ -240,13 +240,13 @@ theorem pat_hX {a b : Fin r} (hab : b.val < a.val) (s : ℂ) : QRR.Pat k r b (hX
   simp [hX, Matrix.single_apply, h1, h2]
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `hrow : ∀ (l : Fin r) q, hX k b a s (eI k r l) q = if l = b ∧ eI k r a = q then s else 0`. Introduce `l q`. Establish `h1 : esI k r a ≠ eI k r l`. Use `l.isLt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [eI, esI, ne_eq, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : (eI k r b = eI k r l) ↔ l = b`. Simplify using `only [eI, Fin.ext_iff]`. Conclude with `eq_comm`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hX, Matrix.single_apply, h1, h2]`. Unfold `ell`. Rewrite using `[Finset.sum_eq_single b]`. Rewrite using `[dif_pos (by omega), hrow]`. Simplify using `[eI, Fin.ext_iff]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _ hl split_ifs with h`. Rewrite using `[hrow, if_neg (fun h => hl h.1)]`. Simplify using `only [Matrix.mulVec, dotProduct, hrow]`. Simplify using `[hl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ell_hX {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {a b : Fin r} (hab : b.val < a.val) (s : ℂ) :
     ell k r z (hX k b a s) = if a.val = b.val + 1 then s else 0 := by
@@ -273,13 +273,13 @@ theorem ell_hX {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {a b : Fin r}
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Establish `hxG` using `cell_mem hg hc`. Establish `hconj` using `cell_mul_hX hg hc a b s`. Use `set x := wCell k r (Fin.last r) c * g with hx`. Establish `hdet : IsUnit x.det` using `WeylGroupFacts.isUnit_of_uh hxG.1`. Establish `hu : IsUnit x` using `(Matrix.isUnit_iff_isUnit_det x).2 hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `HeadLetterLemmas.rdV_of_eq z hz (fun y => Ψ (y * x)) 1 (fun n hn => by simpa using hΨ n hn) b _ (pat_hX hab (-star (s * (c a / c b)))) (dag_hX _ _ _)`. Establish `h2 : RdV (hX k a b s) Ψ x = RdV (hX k b a (-star (s * (c a / c b)))) (fun y => Ψ (y * x)) 1`. Unfold `RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `e : (t : ℂ) • hX k b a (-star (s * (c a / c b))) = x * ((t : ℂ) • hX k a b s) * x⁻¹`. Rewrite using `[Matrix.mul_smul, hconj, Matrix.smul_mul, Matrix.mul_nonsing_inv_cancel_right _ _ hdet]`. Rewrite using `[e, Matrix.exp_conj _ _ hu, Matrix.one_mul, Matrix.nonsing_inv_mul_cancel_right _ _ hdet]`. Rewrite using `[h2, h1, ell_hX hz hab, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `split_ifs`. Rewrite using `[star_neg, star_star]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rdV_left {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hg : g ∈ Glev k r (Fin.last r)) {c : Fin r → ℂ}
     (hc : c ∈ OmX r) (Ψ : Mx k r → E)
@@ -311,9 +311,9 @@ theorem rdV_left {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hg : g ∈
   · simp
 
 /- English proof (translation)
-Use `show EabH (Hpk k r) _ _ Ψ _ = _`. Unfold `EabH`. Rewrite using `[hpart1_eq, hpart2_eq, rdV_left hz hg hc Ψ hΨ hab, rdV_left hz hg hc Ψ hΨ hab, smul_smul, ← add_smul]`. Use `congr 1`. Use `split_ifs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Generalize the expression as in `c a / c b = w`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem left_rule {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hg : g ∈ Glev k r (Fin.last r)) {c : Fin r → ℂ}
     (hc : c ∈ OmX r) (Ψ : Mx k r → E)
@@ -332,11 +332,11 @@ theorem left_rule {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hg : g �
   · simp
 
 /- English proof (translation)
-Establish `hne : eI k r a ≠ esI k r a` using `PI.QnWCellW.eI_ne_esI k r a`. Use extensionality with `p q`. Simplify using `only [hX, Matrix.sub_apply, Matrix.smul_apply, Matrix.single_apply, Matrix.diagonal_apply, smul_eq_mul]`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h1 : p = eI k r a`. Substitute `h1` using the available equality. Simplify using `[hne.symm]`. Distinguish the cases in `h2 : p = esI k r a`. Substitute `h2` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hne, hne.symm]`. Simplify using `[h1, h2, Ne.symm h1, Ne.symm h2]`. Rewrite using `[if_neg hpq, if_neg (fun h => hpq (h.1.symm.trans h.2)), if_neg (fun h => hpq (h.1.symm.trans h.2))]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hX_diag (a : Fin r) (s : ℂ) :
     hX k a a s = Matrix.diagonal fun q => if q = eI k r a then s else if q = esI k r a then -star s else 0 := by
@@ -354,11 +354,11 @@ theorem hX_diag (a : Fin r) (s : ℂ) :
     simp
 
 /- English proof (translation)
-Establish `h1' : p.val ≠ a.val` using `fun h => h1 (Fin.ext h)`. Establish `h2' : p.val ≠ 2 * r + k - a.val` using `fun h => h2 (Fin.ext h)`. Establish `hp` using `p.isLt`. Establish `hN : ∀ j, j ≠ a.val → PI.QnWCellW.cN r (Function.update c a v) j = PI.QnWCellW.cN r c j`. Introduce `j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `PI.QnWCellW.cN`. Use `split_ifs with h`. Rewrite using `[Function.update_of_ne (fun e => hj (congrArg Fin.val e))]`. Both sides reduce to the same expression. Unfold `PI.QnWCellW.cf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN _ h1', hN _ (by omega)]`.
+A detailed English derivation is pending.
 -/
 theorem cf_update (c : Fin r → ℂ) (a : Fin r) (v : ℂ) {p : Fin (2 * r + k + 1)} (h1 : p ≠ eI k r a)
     (h2 : p ≠ esI k r a) : PI.QnWCellW.cf k r (Function.update c a v) p = PI.QnWCellW.cf k r c p := by
@@ -375,15 +375,15 @@ theorem cf_update (c : Fin r → ℂ) (a : Fin r) (v : ℂ) {p : Fin (2 * r + k 
   rw [hN _ h1', hN _ (by omega)]
 
 /- English proof (translation)
-Establish `hne : eI k r a ≠ esI k r a` using `PI.QnWCellW.eI_ne_esI k r a`. Rewrite using `[hX_diag, ← Matrix.diagonal_smul, Matrix.exp_diagonal]`. Use extensionality with `p q`. Rewrite using `[Matrix.mul_diagonal, Pi.coe_exp, ← Complex.exp_eq_exp_ℂ]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h1 : q = eI k r a`. Substitute `h1` using the available equality. Rewrite using `[col_e hg, col_e hg]`. Apply the tactic sequence `split_ifs <;> simp_all`. Distinguish the cases in `h2 : q = esI k r a`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Substitute `h2` using the available equality. Rewrite using `[col_es hg, col_es hg, if_neg h1, if_pos rfl]`. Use `split_ifs`. Rewrite using `[Function.update_self, star_mul', mul_inv, mul_neg, Complex.exp_neg]`. Simplify using `[← Complex.exp_conj]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg h1, if_neg h2, mul_zero, Complex.exp_zero, mul_one]`. Distinguish the cases in `h3 : p = eI k r a`. Substitute `h3` using the available equality. Rewrite using `[row_e hg, row_e hg, if_neg (Ne.symm h2), if_neg (Ne.symm h2)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h4 : p = esI k r a`. Substitute `h4` using the available equality. Rewrite using `[row_es hg, row_es hg, if_neg (Ne.symm h1), if_neg (Ne.symm h1)]`. Rewrite using `[cell_apply, cell_apply, cf_update c a _ h3 h4]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_mul_exp (hg : g ∈ Glev k r (Fin.last r)) (c : Fin r → ℂ) (a : Fin r) (s : ℂ) (t : ℝ) :
     wCell k r (Fin.last r) c * g * NormedSpace.exp ((t : ℂ) • hX k a a s) =
@@ -414,7 +414,7 @@ theorem cell_mul_exp (hg : g ∈ Glev k r (Fin.last r)) (c : Fin r → ℂ) (a :
         · rw [cell_apply, cell_apply, cf_update c a _ h3 h4]
 
 /- English proof (translation)
-Simplify using `only [Fin.val_last, Fin.is_lt, if_true]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ a), ← Finset.mul_prod_erase _ _ (Finset.mem_univ a), Function.update_self, norm_mul, Complex.norm_exp, mul_pow, Real.exp_nat_mul, ← mul_assoc, mul_comm (‖c a‖ ^ _)]`. Use `congr 1`. Use `Finset.prod_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.mem_erase.1 hl).1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gauge_update (c : Fin r → ℂ) (a : Fin r) (w : ℂ) :
     (∏ l : Fin r, (if l.val < (Fin.last r).val then ‖Function.update c a (c a * Complex.exp w) l‖ ^ (Mdim k r l - 1)
@@ -431,23 +431,21 @@ theorem gauge_update (c : Fin r → ℂ) (a : Fin r) (w : ℂ) :
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `hxG` using `cell_mem hg hc`. Establish `hd : DifferentiableAt ℝ (fun c' => resG k r (Fin.last r) Ψ c' g) c`. Take `⟨U, F, hU, hxU, hF, hFU⟩` from `P5.Rad.sf_resG hS (c, g) ⟨hc, hx⟩ hg`. Establish `h1 : DifferentiableAt ℝ F (c, g)` using `(hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hxU)`. Establish `h2 : DifferentiableAt ℝ (fun c' : Fin r → ℂ => F (c', g)) c` using `h1.comp c (differentiableAt_id.prodMk (differentiableAt_const g))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hm : ∀ᶠ c' in 𝓝 c, (c', g) ∈ U` using `(Continuous.prodMk_left g).continuousAt.preimage_mem_nhds (hU.mem_nhds hxU)`. Use `filter_upwards [hm] with c' h using hFU (c', g) h hg`. Establish `hcurve : HasDerivAt (fun t : ℝ => Function.update c a (c a * Complex.exp (t * s))) (Pi.single a (s * c a)) 0`. Use `hasDerivAt_pi.2 fun l => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hl : l = a`. Substitute `hl` using the available equality. Simplify using `only [Function.update_self, Pi.single_eq_same]`. Establish `h0 : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 0` using `by simpa using (hasDerivAt_id (0 : ℝ)).ofReal_comp`. Use `((h0.mul_const s).cexp).const_mul (c l)` as an intermediate fact.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.congr_deriv ?_` and prove the remaining obligations. Simplify using `[mul_comm]`. Simplify using `only [Function.update_of_ne hl, Pi.single_eq_of_ne hl]`. Conclude with `hasDerivAt_const _ _`. Establish `h1` using `hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hcurve (by simp)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hΨ : HasDerivAt (fun t : ℝ => Ψ (wCell k r (Fin.last r) c * g * NormedSpace.exp ((t : ℂ) • hX k a a s))) (RdV (hX k a a s) Ψ (wCell k r (Fin.last r) c * g)) 0`. Take `⟨U, F, hU, hxU, hF, hFU⟩` from `hS _ ⟨hxG, hx⟩`. Establish `hd' : DifferentiableAt ℝ F (wCell k r (Fin.last r) c * g)` using `(hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hxU)`. Establish `hlie : inLieLev k r 0 (hX k a a s)`. Use `⟨?_, fun _ ha => absurd ha (Nat.not_lt_zero _)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `hX`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_smul, Matrix.conjTranspose_smul, SingleEntryHermitianProducts.single_conjT, SingleEntryHermitianProducts.single_conjT, star_one, star_star, Matrix.sub_mul, Matrix.smul_mul, Matrix.smul_mul, LevelPointCoordinates.single_mul_hpk_eI, L …`. Normalize the expressions using the abelian group laws. Conclude with `(Qx2.hasDeriv_ext hU hxU hxG hlie hd' hFU).differentiableAt.hasDerivAt`. Use `set n : ℝ := ((Mdim k r a - 1 : ℕ) : ℝ) with hn`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set γ : ℝ := ∏ l : Fin r, (if l.val < (Fin.last r).val then ‖c l‖ ^ (Mdim k r l - 1) else 1) with hγ`. Establish `hγd : HasDerivAt (fun t : ℝ => ((Real.exp (n * (t * s.re)) * γ : ℝ) : ℂ)) ((n * s.re * γ : ℝ) : ℂ) 0`. Use `((((hasDerivAt_id (0 : ℝ)).mul_const s.re).const_mul n).exp.mul_const γ).ofReal_comp` as an intermediate fact. Simplify using `using this`. Establish `h2` using `hγd.smul hΨ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ((fun c' => resG k r (Fin.last r) Ψ c' g) ∘ fun t : ℝ => Function.update c a (c a * Complex.exp (t * s))) = (fun t : ℝ => ((Real.exp (n * (t * s.re)) * γ : ℝ) : ℂ)) • fun t : ℝ => Ψ (wCell k r (Fin.last r) c * g * NormedSpace.exp ((t : ℂ) • hX k a a s))`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp, resG, Pi.smul_apply']`. Rewrite using `[gauge_update, cell_mul_exp hg, Complex.re_ofReal_mul]`. Rewrite `h1` using `[e]`.
-
-Rewrite using `[h1.unique h2]`. Simplify using `only [resG, ← hγ, smul_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fderiv_resG {D : Set (Mx k r)} {Ψ : Mx k r → E} (hS : SmoothLev k r 0 D Ψ) (hg : g ∈ Glev k r (Fin.last r))
     {c : Fin r → ℂ} (hc : c ∈ OmX r) (hx : wCell k r (Fin.last r) c * g ∈ D) (a : Fin r) (s : ℂ) :
@@ -508,15 +506,15 @@ theorem fderiv_resG {D : Set (Mx k r)} {Ψ : Mx k r → E} (hS : SmoothLev k r 0
   simp
 
 /- English proof (translation)
-Establish `h1` using `fderiv_resG hS hg hc hx a (1 / 2)`. Establish `h2` using `fderiv_resG hS hg hc hx a (-Complex.I / 2)`. Establish `h3` using `CutHL.torus_id ((fderiv ℝ (fun c' => resG k r (Fin.last r) Ψ c' g) c).comp (ContinuousLinearMap.single ℝ (fun _ : Fin r => ℂ) a)) (c a)`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.single_apply] at h3`. Unfold `pOp wirt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos hc, ← h3, h1, h2]`. Establish `hM : ((Mdim k r a - 1 : ℕ) : ℂ) = 2 * ((r : ℂ) - (a.val : ℂ)) + k`. Unfold `Mdim`. Rewrite using `[Nat.add_sub_cancel]`. Move the coercions through the operations in `[Nat.cast_sub a.isLt.le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ((((Mdim k r a - 1 : ℕ) : ℝ) * (1 / 2 : ℂ).re : ℝ) : ℂ) = ((r : ℂ) - (a.val : ℂ)) + (k : ℂ) / 2`. Establish `: (1 / 2 : ℂ).re = 1 / 2` using `by norm_num`. Rewrite using `[this]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hM]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ((((Mdim k r a - 1 : ℕ) : ℝ) * (-Complex.I / 2 : ℂ).re : ℝ) : ℂ) = 0` using `by simp`. Rewrite using `[e1, e2, zero_smul, add_zero]`. Simplify using `only [resG, EH, EabH, hpart1_eq, hpart2_eq]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem torus_rule {D : Set (Mx k r)} {Ψ : Mx k r → E} (hS : SmoothLev k r 0 D Ψ) (hg : g ∈ Glev k r (Fin.last r))
     {c : Fin r → ℂ} (hc : c ∈ OmX r) (hx : wCell k r (Fin.last r) c * g ∈ D) (a : Fin r) :

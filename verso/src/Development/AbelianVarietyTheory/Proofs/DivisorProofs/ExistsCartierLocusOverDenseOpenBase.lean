@@ -18,13 +18,13 @@ set_option autoImplicit false
 namespace GlobalTheory.DivStart
 
 /- English proof (translation)
-Introduce `R _ _ _ _ A _ hA V hV hsurj`. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Establish `: GeometricallyIntegral A.hom` using `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hA.smooth hA.geomConnected`. Establish `: IsLocallyNoetherian (Sp R)` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegral A.left` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian A.hom`. Establish `: IsLocallyNoetherian A.left` using `LocallyOfFiniteType.isLocallyNoetherian A.hom`. Establish `: A.left.IsSeparated` using `⟨by rw [← terminal.comp_from A.hom]; infer_instance⟩`. Set `s₀ : Sp R` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R)`. Take `⟨x₀, hx₀, -⟩` from `hsurj s₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨W₀, hVW, hufd, c₀, hc₀⟩` from `GlobalTheory.FactorialLocus.exists_isLocus A.left V hV ⟨x₀, hx₀⟩`. Establish `hfib : ∀ x, A.hom x = s₀ → x ∈ W₀` using `fun x hx => hufd x (GlobalTheory.GenericFibreFactorial.ufd_stalk_of_generic R A.left A.hom x (by rw [hx]))`. Take `⟨U, -, hsU, hUW⟩` from `GlobalTheory.Tube.exists_affine_preimage_le A.left (Sp R) A.hom s₀ W₀ hfib`. Establish `hle : A.hom ⁻¹ᵁ U ⊔ V ≤ W₀` using `sup_le hUW hVW`. Use `⟨U, GlobalTheory.CechPic.pull (A.left.homOfLE hle) c₀, ⟨s₀, hsU⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `GlobalTheory.LocusPull.isLocus_pull (A.left.homOfLE hle) hc₀`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(A.hom ⁻¹ᵁ U ⊔ V).ι x ∈ V ↔ W₀.ι (A.left.homOfLE hle x) ∈ V`. Rewrite using `[← Scheme.Hom.comp_apply, Scheme.homOfLE_ι]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_locus_over_dense_open : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] [IsDomain R] [IsIntegrallyClosed R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ V : A.left.Opens, IsAffineOpen V → (∀ s : Sp R, ∃ x ∈ V, A.hom x = s) → ∃ (U : (Sp R).Opens) (c : Pic (A.hom ⁻¹ᵁ U ⊔ V).toScheme), (U : Set (Sp R)).Nonempty ∧ IsLocus c ((A.hom ⁻¹ᵁ U ⊔ V).ι ⁻¹ᵁ V) := by
   intro R _ _ _ _ A _ hA V hV hsurj

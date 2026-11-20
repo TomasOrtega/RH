@@ -19,19 +19,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UPoinc.GoodRedU
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c C X₁ Y U₀ EE out _ T ξ hξ ⟨ξ₀, hξ₀, hlies⟩`. Use `haveI : IsDiscreteValuationRing T.V := T.cdvr.1`. Establish `hr : Set.range ξ ⊆ Set.range U₀.ι` using `by rw [Scheme.Opens.range_ι]; exact hξ`. Set `ξ' : Sp T.V ⟶ U₀.toScheme` to `IsOpenImmersion.lift U₀.ι ξ hr`. Establish `hξ' : ξ' ≫ U₀.ι = ξ` using `IsOpenImmersion.lift_fac _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : jK T.V ≫ ξ' = ξ₀`. Rewrite using `[← cancel_mono U₀.ι, Category.assoc, hξ', hξ₀]`. Set `q : Sp T.V ⟶ Sp X₁.S.R` to `ξ' ≫ out.u₀`. Establish `hB` using `GlobalTheory.isAbelianScheme_pullback_obj q X₁.ρ.P.A X₁.ρ.P.isAb`. Take `⟨g, hg⟩` from `Spec.map_surjective (ξ₀ ≫ out.u₀)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : X₁.Lies (spMap g.hom) T.y` using `by show X₁.Lies (Spec.map (CommRingCat.ofHom g.hom)) T.y`. Rewrite using `[CommRingCat.ofHom_hom, hg]`. Conclude with `hlies`. Take `⟨G, _, α, β, hα, hβ, -⟩` from `hf.uOver`. Take `⟨tK, ⟨m₁⟩, ⟨m₂⟩⟩` from `T.gen`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₁, he₁, -⟩` from `grpPullback_iso m₂.cart hβ`. Take `⟨e₂, he₂, -⟩` from `grpPullback_iso (isGrpPullback_pullback T.t.G (jK T.V)) m₁.cart`. Use `haveI := he₁`. Use `haveI := he₂`. Establish `hq : spMap g.hom = jK T.V ≫ q` using `by show Spec.map (CommRingCat.ofHom g.hom) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[CommRingCat.ofHom_hom, hg, ← hK, Category.assoc]`. Establish `h₁` using `((isGrpPullback_of_iso e₂).comp ((isGrpPullback_of_iso e₁).comp hα)).congr (by rw [Category.id_comp, Category.id_comp, hq]) rfl`. Establish `h₂` using `(isGrpPullback_pullback ((Over.pullback q).obj X₁.ρ.P.A) (jK T.V)).comp (isGrpPullback_pullback X₁.ρ.P.A q)`. Take `⟨e, he, -⟩` from `grpPullback_iso h₁ h₂`. Take `⟨Eiso, -, -⟩` from `TraitUniq.extIso T.t.semi (GlobalTheory.isSemiAbelian_of_isAbelianScheme _ hB) e he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : IsProper T.t.G.hom`. Use `hB.proper` as an intermediate fact. Establish `: IsIso Eiso.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map Eiso.hom))`. Rewrite using `[← Over.w Eiso.hom]`. Use `infer_instance`.
-
-Establish `hc : (closedPoint T.V : Sp T.V) ∈ abLocus T.t.G` using `fun _ _ _ _ _ => inferInstance`. Conclude with `ChartNotAb.subsingleton_of_closed_mem_abLocus T.P hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_lattice_of_range_subset : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (Y : RatModel X₁.o₁ X₁.Ω₁) (U₀ : Y.Z.Opens) (EE : Y.Lat X₁.S.J) (out : ZHOut X₁.ρ Y U₀ EE), X₁.S.admitted Y U₀ → ∀ (T : UTrait Xo c) (ξ : Sp T.V ⟶ Y.Z), Set.range ξ ⊆ (U₀ : Set Y.Z) → (∃ ξ₀ : Sp (FractionRing T.V) ⟶ U₀.toScheme, ξ₀ ≫ U₀.ι = jK T.V ≫ ξ ∧ X₁.Lies (ξ₀ ≫ out.u₀) T.y) → Subsingleton T.P.D.toPre.X := by
   intro E _ _ _ H Dw l Xo c C X₁ Y U₀ EE out _ T ξ hξ ⟨ξ₀, hξ₀, hlies⟩

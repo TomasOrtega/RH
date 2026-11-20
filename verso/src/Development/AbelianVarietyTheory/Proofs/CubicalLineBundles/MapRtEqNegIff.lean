@@ -8,13 +8,13 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory.CM
 
 /- English proof (translation)
-Establish `h1 : (τ H.rt) ^ 2 = (β ρ) ^ 2`. Rewrite using `[← map_pow, ← map_pow, H.rt_sq, hρ]`. Simplify using the standard rewrite rules. Establish `h2 : β (-ρ) ≠ β ρ`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : -ρ = ρ` using `hβ h`. Establish `h4 : ((2 * H.d : ℕ) : R) = 0`. Use `push_cast`. Take the linear combination `2 * hρ + ρ * h3`. Establish `h5 : 2 * H.d = 0` using `Nat.cast_eq_zero.mp h4`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `H.d_prime.pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Introduce `h h'`. Conclude with `h2 (h.symm.trans h')`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[map_neg]`. Conclude with `(sq_eq_sq_iff_eq_or_eq_neg.mp h1).resolve_left h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_rt_eq_neg_iff {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {R : Type} [CommRing R]
     [CharZero R] {ρ : R} (hρ : ρ ^ 2 = -(H.d : R)) {k : Type} [Field k] (β : R →+* k) (hβ : Function.Injective β)
@@ -38,9 +38,9 @@ theorem map_rt_eq_neg_iff {E : Type} [Field E] [NumberField E] [IsCMField E] (H 
     exact (sq_eq_sq_iff_eq_or_eq_neg.mp h1).resolve_left h
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ G _ act ρ p q hρ`. Unfold `HasType`. Use `forall_congr' fun k => forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun β => forall_congr' fun hβ => forall_congr' fun τ => ?_` and prove the remaining obligations. Establish `h` using `map_rt_eq_neg_iff H hρ β hβ τ`. Rewrite using `[ne_eq (τ H.rt) (β (-ρ)), h, not_not]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `and_comm`.
+A detailed English derivation is pending.
 -/
 theorem hasType_neg_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [CharZero R] (G : Over (Sp R)) [GrpObj G] (act : OAct (𝓞 E) G) (ρ : R) (p q : ℕ), ρ ^ 2 = -(H.d : R) → (HasType H act ρ p q ↔ HasType H act (-ρ) q p) := by
   intro E _ _ _ H R _ _ G _ act ρ p q hρ

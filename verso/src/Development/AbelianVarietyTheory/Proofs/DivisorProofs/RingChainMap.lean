@@ -24,7 +24,7 @@ def tiltHom (σ : O →+* O') : PreTilt O p →+* PreTilt O' p :=
     exact Ideal.subset_span rfl))
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun z => Ideal.quotientMap (Ideal.span {(p : O')}) σ (by rw [Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_natCast] exact Ideal.subset_span rfl) z) h :)`.
+A detailed English derivation is pending.
 -/
 theorem coeff_tiltHom (σ : O →+* O') (x : PreTilt O p) (n : ℕ) (y : O)
     (h : PreTilt.coeff n x = Ideal.Quotient.mk (Ideal.span {(p : O)}) y) :
@@ -36,9 +36,9 @@ theorem coeff_tiltHom (σ : O →+* O') (x : PreTilt O p) (n : ℕ) (y : O)
 variable [IsAdicComplete (Ideal.span {(p : O)}) O] [IsAdicComplete (Ideal.span {(p : O')}) O']
 
 /- English proof (translation)
-Use `Perfection.teichmuller_spec (I := Ideal.span {(p : O')}) fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (I := Ideal.span {(p : O)}) (PreTilt.coeff n x)`. Use `⟨σ y, (coeff_tiltHom p σ x n y hy.symm).symm, ?_⟩` and prove the remaining obligations. Establish `h1` using `(Perfection.teichmuller_sModEq (I := Ideal.span {(p : O)}) (x := x) hy).symm`. Rewrite `h1`, the goal using `[SModEq.sub_mem, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h2` using `map_dvd σ h1`. Rewrite `h2` using `[map_pow, map_natCast, map_sub, map_pow]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untilt_tiltHom (σ : O →+* O') (x : PreTilt O p) : (tiltHom p σ x).untilt = σ x.untilt := by
   refine Perfection.teichmuller_spec (I := Ideal.span {(p : O')}) fun n => ?_
@@ -51,9 +51,7 @@ theorem untilt_tiltHom (σ : O →+* O') (x : PreTilt O p) : (tiltHom p σ x).un
   exact h2
 
 /- English proof (translation)
-Use `(IsHausdorff.eq_iff_smodEq (I := Ideal.span {(p : O')})).2 fun n => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, Ideal.mul_top, SModEq.sub_mem, ← Ideal.Quotient.eq]`. Establish `key` using `WittVector.eq_of_apply_teichmuller_eq ((Ideal.Quotient.mk (Ideal.span {(p : O')} ^ n)).comp ((fontaineTheta O' p).comp (WittVector.map (tiltHom p σ)))) ((Ideal.Quotient.mk (Ideal.span {(p : O')} ^ n)).comp (σ.comp (fontaineTheta O p))) ⟨n, by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {(p : O')} ^ n)), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) n⟩`.
-
-Use the proof step `(fun x => by simp only [RingHom.comp_apply, map_teichmuller, fontaineTheta_teichmuller, untilt_tiltHom])`. Conclude with `RingHom.congr_fun key a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fontaineTheta_tiltHom (σ : O →+* O') (a : Ainf p O) :
     fontaineTheta O' p (WittVector.map (tiltHom p σ) a) = σ (fontaineTheta O p a) := by
@@ -69,7 +67,7 @@ theorem fontaineTheta_tiltHom (σ : O →+* O') (a : Ainf p O) :
   exact RingHom.congr_fun key a
 
 /- English proof (translation)
-Rewrite using `[zeta, PreTilt.mk_untilt_eq_coeff_zero]`. Express the relevant statement in the definitionally equal form `_ = PreTilt.coeff 0 ((_root_.frobeniusEquiv (PreTilt O p) p).symm^[n] ε)`. Rewrite using `[PreTilt.coeff_iterate_frobeniusEquiv_symm, zero_add]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_eq_mk_zeta (ε : PreTilt O p) (n : ℕ) :
     PreTilt.coeff n ε = Ideal.Quotient.mk (Ideal.span {(p : O)}) (zeta ε n) := by
@@ -80,9 +78,9 @@ theorem coeff_eq_mk_zeta (ε : PreTilt O p) (n : ℕ) :
 end Tilt
 
 /- English proof (translation)
-Use `⟨WittVector.map (tiltHom p (algebraMap S.R S'.R)), fontaineTheta_tiltHom p _, fun a => ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Simplify using `[coeff_frobenius_charP]`. Rewrite using `[map_teichmuller]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Perfection.ext (R := ModP S'.R p) (p := p) fun n => ?_` and prove the remaining obligations. Conclude with `(coeff_tiltHom p _ _ n _ (coeff_eq_mk_zeta p _ n)).trans (by rw [← hz]; exact (coeff_eq_mk_zeta p _ n).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_over {p : ℕ} [Fact p.Prime] (S S' : CycPerfd p) [Algebra S.R S'.R]
     (hz : ∀ n, zeta S'.ε n = algebraMap S.R S'.R (zeta S.ε n)) : ∃ α, S.Over S' α := by
@@ -111,7 +109,7 @@ theorem tr_apply (σ : A →+* B) (x : Fin a → A) (j : Fin b) :
     tr e e' M σ x j = ∑ i, (M (Fin.cast e' j) i : B) * σ (x (Fin.cast e.symm i)) := rfl
 
 /- English proof (translation)
-The claim follows from `funext fun j => by simp [tr_apply, k]`.
+A detailed English derivation is pending.
 -/
 theorem piMap_tr {σ : A →+* B} {σ' : A' →+* B'} {u : A →+* A'} {v : B →+* B'} (k : ∀ x, v (σ x) = σ' (u x))
     (x : Fin a → A) : piMap v _ (tr e e' M σ x) = tr e e' M σ' (piMap u _ x) :=
@@ -124,9 +122,9 @@ section Lat
 variable {p : ℕ} [Fact p.Prime] (D : PrismData p) {S S' : CycPerfd p} {h : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `h1` using `hf (Fin.cast e' j)`. Express the relevant statement in the definitionally equal form `D.eCoord S (D.map S _ _ (constHom _ (c'.t' j)) (D.map S _ _ (dualHom G G' f) m)) = _`. Rewrite using `[← LinearMap.comp_apply, ← D.map_comp, LatticeBaseChange.constHom_comp]`. Express the relevant statement in the definitionally equal form `tateMap _ _ S.R (dualHom _ G' f) (c'.t' j) = _ at h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, tr_apply]`. Simplify using `only [map_sum, map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply, coord_apply, RingHom.id_apply, zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coord_covMap {G G' : PDivGroup p S.R} (c : ConstTate (eps S) G) (c' : ConstTate (eps S) G') (e : G.height = h)
     (e' : G'.height = h) (f : G ⟶ G') (M : Matrix (Fin h) (Fin h) ℤ)
@@ -146,7 +144,7 @@ variable [Algebra S.R S'.R] {α : Ainf p S.R →+* Ainf p S'.R} {G : PDivGroup p
   {M : Matrix (Fin h) (Fin h) ℤ}
 
 /- English proof (translation)
-Establish `h1` using `muRoot_eps_of_over hα n`. Rewrite `h1` using `[muRoot_eps, muRoot_eps]`. Rewrite using `[map_sub, map_one, h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_zeta_sub_one (hα : S.Over S' α) (n : ℕ) : algebraMap S.R S'.R (zeta S.ε n - 1) = zeta S'.ε n - 1 := by
   have h1 := muRoot_eps_of_over hα n
@@ -154,7 +152,7 @@ theorem map_zeta_sub_one (hα : S.Over S' α) (n : ℕ) : algebraMap S.R S'.R (z
   rw [map_sub, map_one, h1]
 
 /- English proof (translation)
-Rewrite using `[piMap_tr e e' M hα.1, ← map_zeta_sub_one hα, ← map_zeta_sub_one hα, ← (tr e e' M _).map_smulₛₗ, ← (tr e e' M _).map_smulₛₗ, hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_theta (hα : S.Over S' α) {n n' : ℕ} {k : Fin G.height → Ainf p S.R} {x : Fin G.height → S.R}
     (hk : (zeta S.ε n - 1) • piMap (fontaineTheta S.R p) _ k = (zeta S.ε n' - 1) • x) :
@@ -164,7 +162,7 @@ theorem tr_theta (hα : S.Over S' α) {n n' : ℕ} {k : Fin G.height → Ainf p 
     ← (tr e e' M _).map_smulₛₗ, hk]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `(mem_base S x).1 hx`. Conclude with `(mem_base S' _).2 ⟨_, by rw [map_smulₛₗ, map_zeta_sub_one hα]⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tr_mem_base (hα : S.Over S' α) {x : Fin G.height → S.R} (hx : x ∈ base S G.height) :
     tr e e' M (algebraMap S.R S'.R) x ∈ base S' G'.height := by
@@ -174,7 +172,7 @@ theorem tr_mem_base (hα : S.Over S' α) {x : Fin G.height → S.R} (hx : x ∈ 
 variable {D}
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => obtain ⟨m, rfl⟩ := hx`. Conclude with `hT m`. Consider the case `succ n ih => rw [mem_K_succ, piMap_tr e e' M fun a => (hα.2.1 a).symm]`. Conclude with `ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tr_mem_K (hα : S.Over S' α) (hT : ∀ m, ∃ m', coord D c' m' = tr e e' M α (coord D c m)) (n : ℕ)
     {x : Fin G.height → Ainf p S.R} (hx : x ∈ K D c n) : tr e e' M α x ∈ K D c' n := by
@@ -183,7 +181,7 @@ theorem tr_mem_K (hα : S.Over S' α) (hT : ∀ m, ∃ m', coord D c' m' = tr e 
   | succ n ih => rw [mem_K_succ, piMap_tr e e' M fun a => (hα.2.1 a).symm]; exact ih hx
 
 /- English proof (translation)
-Take `⟨k, hk, h1⟩` from `(mem_H D c n x).1 hx`. Conclude with `(mem_H D c' n _).2 ⟨_, tr_mem_K hα hT _ hk, tr_theta hα h1⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tr_mem_H (hα : S.Over S' α) (hT : ∀ m, ∃ m', coord D c' m' = tr e e' M α (coord D c m)) (n : ℕ)
     {x : Fin G.height → S.R} (hx : x ∈ H D c n) : tr e e' M (algebraMap S.R S'.R) x ∈ H D c' n := by
@@ -191,16 +189,16 @@ theorem tr_mem_H (hα : S.Over S' α) (hT : ∀ m, ∃ m', coord D c' m' = tr e 
   exact (mem_H D c' n _).2 ⟨_, tr_mem_K hα hT _ hk, tr_theta hα h1⟩
 
 /- English proof (translation)
-The claim follows from `(congrArg (piMap (fontaineTheta S'.R p) _) hm).trans (piMap_tr e e' M hα.1 _)`.
+A detailed English derivation is pending.
 -/
 theorem b_eq_tr (hα : S.Over S' α) {m : D.Cov G} {m' : D.Cov G'} (hm : coord D c' m' = tr e e' M α (coord D c m)) :
     b D c' m' = tr e e' M (algebraMap S.R S'.R) (b D c m) :=
   (congrArg (piMap (fontaineTheta S'.R p) _) hm).trans (piMap_tr e e' M hα.1 _)
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `b_eq_unit_smul_alDual p D S`. Take `⟨u', hu'⟩` from `b_eq_unit_smul_alDual p D S'`. Take `⟨m, rfl⟩` from `D.toLie_surjective G y`. Take `⟨m', hm⟩` from `hT m`. Use `⟨algebraMap S.R S'.R (u⁻¹ : S.Rˣ) • (u' : S'.R) • D.toLie G' m', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, map_smul, ← (hu' G' c').1, b_eq_tr hα hm, ← map_smulₛₗ, (hu G c).1, smul_smul, Units.inv_mul, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_alDual (hα : S.Over S' α) (hT : ∀ m, ∃ m', coord D c' m' = tr e e' M α (coord D c m)) (y : G.Lie) :
     ∃ y', c'.alDual y' = tr e e' M (algebraMap S.R S'.R) (c.alDual y) := by
@@ -214,17 +212,17 @@ theorem tr_alDual (hα : S.Over S' α) (hT : ∀ m, ∃ m', coord D c' m' = tr e
 end Lat
 
 /- English proof (translation)
-Substitute `e` using the available equality. Simplify using `only [Fin.cast_refl, id] at hL ⊢`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem _ hy`. Take `⟨y, hy, rfl⟩` from `hy`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `choose x w hw using fun j => hπ.1 (y j)`. Use `⟨_, Submodule.subset_span ⟨x, hL x ?_, rfl⟩, fun j => ⟨σ (w j), ?_⟩⟩` and prove the remaining obligations. Use `H.sub_mem hy (hH w) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.sub_apply, Pi.smul_apply, smul_eq_mul, ← hw, sub_sub_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[piMap_apply, piMap_apply, ← hφ, ← hφ, ← map_sub, hw, map_mul]`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, fun j => by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, h1⟩` from `hx`. Take `⟨b, hb, h2⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a + b, Submodule.add_mem _ ha hb, fun j => ?_⟩` and prove the remaining obligations. Use `(h1 j).add (h2 j) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.add_apply, map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul r x _ hx`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, h1⟩` from `hx`. Take `⟨s, hs⟩` from `hπ'.1 r`. Use `⟨s • a, Submodule.smul_mem _ _ ha, fun j => ?_⟩` and prove the remaining obligations. Use `((h1 j).mul_left r).add (hs.mul_right (algebraMap A' R' (a j))) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_congr_of_mem_span {A A' R R' : Type} [CommRing A] [CommRing A'] [CommRing R] [CommRing R'] [Algebra A R]
     [Algebra A' R'] (φ : A →+* A') (σ : R →+* R') (hφ : ∀ a, σ (algebraMap A R a) = algebraMap A' R' (φ a)) {k h : ℕ}
@@ -260,33 +258,29 @@ theorem exists_congr_of_mem_span {A A' R R' : Type} [CommRing A] [CommRing A'] [
     simp only [Pi.smul_apply, smul_eq_mul, map_mul]; ring
 
 /- English proof (translation)
-Introduce `p _ D S S' _ G G' c c' A A' _ _ _ _ φ h o e e' π π' γ γ' Lie Om Lie' Om' _ _ _ _ _ _ _ _ iL iO iL' iO' C C' f M l m hC hC' hφ hz hf hl hm`. Take `⟨α, hα⟩` from `exists_over S S' hz`. Take `⟨⟨bc, -, hbc⟩, hsp⟩` from `LatticeBaseChange.baseChange_lattices p D S S' α hα G c`. Establish `hcov` using `coord_covMap D (c.baseChange S'.R (muRoot_eps_of_over hα)) c' e e' f M hf`. Establish `hT : ∀ m, ∃ m', coord D c' m' = tr e e' M α (coord D c m)` using `fun m => ⟨_, (hcov (bc m)).trans (funext fun j => by simp only [tr_apply, hbc, RingHom.id_apply])⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : ∀ {x : Fin h → A} {x' : Fin h → A'}, x' = mv φ M x → toR e' x' = tr e e' M (algebraMap S.R S'.R) (toR e x)`. Introduce and unpack `x _ rfl`. Use function extensionality and compare the values at `j`. Simplify using `[toR, tr_apply, mv, Matrix.mulVec, dotProduct, hφ]`. Establish `hl' : ∀ y, c'.alDual (iL' (l y)) = tr e e' M (algebraMap S.R S'.R) (c.alDual (iL y))` using `fun y =>`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun j => hl y (Fin.cast e' j)`. Establish `hmem : ∀ n, ∀ x ∈ C.L n, mv φ M x ∈ C'.L n` using `fun n x hx => (hC'.mem n _).2 (hR rfl ▸ tr_mem_H hα hT n ((hC.mem n x).1 hx))`. Use `⟨⟨hmem, fun y x x' hx k => ?_, fun w x x' hx k => ?_, fun n hn x x' y y' hx hy k => ?_, fun n hn x x' y hx k => ?_⟩, fun hi hM hπ h1 h2 n => ?_⟩` and prove the remaining obligations. Rewrite using `[hC'.j, hR hx, hl', ← map_sub]`. Conclude with `tr_mem_base hα ((hC.j y x).1 k)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, h0, h1, h2⟩` from `(hC.ρ w x).1 k`. Use `(hC'.ρ _ _).2 ⟨_, tr_mem_H hα hT 0 h0, hm w x₀ h1, ?_⟩` and prove the remaining obligations. Take `⟨u, hu, _, ⟨v, rfl⟩, h3⟩` from `Submodule.mem_sup.1 h2`. Rewrite using `[hR hx, ← map_sub, ← h3, map_add]`. Conclude with `Submodule.add_mem_sup (tr_mem_base hα hu) (tr_alDual hα hT v)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k₀, h0, h1, y₀, h2, h3⟩` from `(hC.ψ n hn x y).1 k`. Use `(hC'.ψ n hn _ _).2 ⟨_, tr_mem_K hα hT _ h0, hR hx ▸ tr_theta hα h1, tr e e' M (algebraMap S.R S'.R) y₀, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[piMap_tr e e' M fun a => (hα.2.1 a).symm]`. Conclude with `tr_theta hα h2`. Rewrite using `[hR hy, ← map_sub]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `tr_mem_base hα h3`. Take `⟨m₀, h0, y₀, h1, h2⟩` from `(hC.κ n hn x y).1 k`. Take `⟨m', hm'⟩` from `hT m₀`. Take `⟨z, -, hz'⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 h2`. Take `⟨z', h3⟩` from `tr_alDual hα hT z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(hC'.κ n hn _ _).2 ⟨m', ?_, iL' (l y) - (p : S'.R) • z', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hR hx, ← tr_theta (e := e) (e' := e') (M := M) hα h0, hm']`. Use `congr 2`. Use function extensionality and compare the values at `j`. Simplify using `only [tr_apply, LatticeBaseChange.map_phiInv hα]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Simplify using `only [← RingHom.coe_pow, map_sum, map_mul, map_intCast]`. Rewrite using `[map_sub, map_smul, hl', h3, ← map_natCast (algebraMap S.R S'.R), ← map_smulₛₗ, ← map_sub, ← map_smul, ← map_sub, hz', sub_sub_cancel, h1, b_eq_tr hα hm']`. Rewrite using `[sub_sub_cancel]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ Submodule.mem_top`. Substitute `hM hπ` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hmv : ∀ x, mv φ (1 : Matrix (Fin h) (Fin h) ℤ) x = piMap φ _ x` using `fun x => by`. Rewrite using `[mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]`. Both sides reduce to the same expression. Use `le_antisymm (fun x' hx' => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Use `swap`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hmv x ▸ hmem n x hx`. Establish `hone : ∀ {B : Type} [CommRing B] {a b : ℕ} (u : a = h) (v : b = h) (x : Fin a → B) (j : Fin b), tr u v 1 (RingHom.id B) x j = x (Fin.cast u.symm (Fin.cast v j))` using `fun u v x j => congrFun (mv_id _) _`. Establish `hT' : ∀ m', ∃ m₀, coord D (c.baseChange S'.R (muRoot_eps_of_over hα)) m₀ = tr (b` using `(G.baseChange S'.R).height) e' e 1 (RingHom.id _) (coord D c' m') := fun m' => by`. Use `⟨D.covMap _ _ (inv f) m', funext fun j => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h3 : D.covMap _ _ f (D.covMap _ _ (inv f) m') = m'`. Express the relevant statement in the definitionally equal form `D.map S' _ _ (dualHom _ _ f) (D.map S' _ _ (dualHom _ _ (inv f)) m') = m'`. Rewrite using `[← LinearMap.comp_apply, ← D.map_comp, ← dualHom_comp, IsIso.inv_hom_id, dualHom_id, D.map_id, LinearMap.id_apply]`. Use `conv_rhs => rw [← h3, hcov, hone, hone]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `tr_mem_H S'.over_refl hT' n ((hC'.mem n x').1 hx')`. Rewrite `h3` using `[hsp]`. Take `⟨a, ha, h4⟩` from `exists_congr_of_mem_span φ _ hφ e π h1 h2 (H D c n) (fun y => base_le_H D c n ((mem_base S _).2 ⟨y, by rw [hC.pi_eq]⟩)) (C.L n) (fun x hx => (hC.mem n x).2 hx) h3`. Establish `h5 : ∀ j, φ π ∣ x' j - a j` using `fun j => h2.2 _ (by`. Rewrite using `[map_sub]`.
-
-Conclude with `(congrArg (fun t => algebraMap A' S'.R (φ π) ∣ t - algebraMap A' S'.R (a j)) (hone e' e (toR e' x') (Fin.cast e.symm j))).mp (h4 j))`. Use `choose w hw using h5`. Establish `h6 : x' = a + ∑ j, w j • piMap φ _ (π • Pi.single j (1 : A))` using `funext fun j => by`. Simplify using `[Finset.sum_apply, Pi.single_apply, apply_ite φ, mul_comm (w j), ← hw]`. Rewrite using `[h6]`.
-
-Conclude with `Submodule.add_mem _ ha (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, C.base_le n (Submodule.smul_mem_pointwise_smul _ _ _ Submodule.mem_top), rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem mapSt : MapSt := by
   intro p _ D S S' _ G G' c c' A A' _ _ _ _ φ h o e e' π π' γ γ' Lie Om Lie' Om' _ _ _ _ _ _ _ _ iL iO iL' iO' C C' f M l m

@@ -8,7 +8,7 @@ open Matrix NumberField ComplexConjugate
 open scoped ComplexOrder
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, S.c_invol, S.G_herm, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_cGP {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (P : Matrix (Fin r) (Fin r) K) (a b : Fin r) :
@@ -19,7 +19,7 @@ theorem herm_cGP {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K 
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Establish `h` using `herm_cGP S P i i`. Rewrite `h` using `[hJ]`. Simplify `h` using `[wittMat, Matrix.of_apply, not_lt.2 h1, h1, h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem g_fix {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (P : Matrix (Fin r) (Fin r) K) (m : ℕ) (g : Fin r → K)
@@ -30,41 +30,37 @@ theorem g_fix {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
   simpa [wittMat, Matrix.of_apply, not_lt.2 h1, h1, h2] using h
 
 /- English proof (translation)
-Establish `hPu : IsUnit P.det` using `isUnit_iff_ne_zero.2 hP`. Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hPu`. Establish `hPP' : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hPu`. Establish `hG : S.G = ((P⁻¹).map S.c)ᵀ * wittMat r m g * P⁻¹`. Rewrite using `[← hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((P⁻¹).map S.c)ᵀ * (P.map S.c)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, hPP, Matrix.map_one _ (map_zero S.c) (map_one S.c), Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, hPP, Matrix.one_mul, Matrix.mul_one]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ σ : K →+* ℂ,`. Set `A` to `(P⁻¹).map σ`. Set `D` to `diagMet (adMet r m g dd) σ`. Use the proof step `(Aᴴ * D * A).PosDef ∧ Aᴴ * D * A * (S.G.map σ)⁻¹ * (Aᴴ * D * A) = S.G.map σ := by`. Introduce `σ A D`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set Ai := P.map σ with hAi`. Establish `e1 : A * Ai = 1`. Simplify using `only [A, Ai]`. Rewrite using `[← Matrix.map_mul, hPP', Matrix.map_one _ (map_zero σ) (map_one σ)]`. Establish `e2 : Ai * A = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [A, Ai]`. Rewrite using `[← Matrix.map_mul, hPP, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Establish `e3 : Aiᴴ * Aᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, e1, Matrix.conjTranspose_one]`. Establish `e4 : Aᴴ * Aiᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, e2, Matrix.conjTranspose_one]`. Establish `hpos : ∀ i, 0 < adMet r m g dd σ i` using `adMet_pos r m g dd hdd hg σ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `Dinv : Matrix (Fin r) (Fin r) ℂ` to `diagonal fun i => (((adMet r m g dd σ i : ℝ) : ℂ))⁻¹`. Establish `e5 : D * Dinv = 1`. Simplify using `only [D, Dinv, diagMet, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `: ((adMet r m g dd σ i : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (hpos i).ne'`. Conclude with `mul_inv_cancel₀ this`. Establish `hGσ : S.G.map σ = Aᴴ * (wittMat r m g).map σ * A`. Rewrite using `[hG, Matrix.map_mul, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 2`. Use extensionality with `a b`. Simplify using `[A, Matrix.conjTranspose_apply, S.c_emb]`. Establish `hreal : ∀ i : Fin r, m ≤ (i : ℕ) → (i : ℕ) + m < r → conj (σ (g i)) = σ (g i)`. Introduce `i h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← S.c_emb, g_fix S P m g hJ i h1 h2]`. Establish `hKey : (wittMat r m g).map σ * Dinv * (wittMat r m g).map σ = D`. Rewrite using `[wittMat_map_mul]`. Simplify using `only [D, diagMet]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `wVal_adMet r m g dd h2m hg σ hreal i`. Use `set Y := S.G.map σ with hY`. Use `set Jσ := (wittMat r m g).map σ with hJσ`. Use `set H := Aᴴ * D * A with hH`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set Hinv := Ai * Dinv * Aiᴴ with hHinv`. Establish `hHH : H * Hinv = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hHH' : Hinv * H = 1` using `mul_eq_one_comm.1 hHH`. Establish `hYHY : Y * Hinv * Y = H`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hGσ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Hinv, Matrix.mul_assoc]`. Use `_ = Aᴴ * (Jσ * Dinv * Jσ) * A := by`. Rewrite using `[e1, e3, Matrix.mul_one, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by rw [hKey]`. Establish `hYinv : Y⁻¹ = Hinv * Y * Hinv`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hD : D.PosDef`. Simplify using `only [D, diagMet]`. Conclude with `Matrix.posDef_diagonal_iff.2 fun i => by exact_mod_cast hpos i`. Establish `hAu : IsUnit A` using `(Matrix.isUnit_iff_isUnit_det A).2 (Matrix.isUnit_det_of_right_inverse e1)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hD.conjTranspose_mul_mul_same (Matrix.mulVec_injective_of_isUnit hAu)`. Rewrite using `[hYinv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Y := by rw [hHH, hHH', Matrix.one_mul, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨⟨fun σ => ((P⁻¹).map σ)ᴴ * diagMet (adMet r m g dd) σ * (P⁻¹).map σ, fun σ => (key σ).1, fun σ => (key σ).2, ?_⟩, fun σ => rfl⟩` and prove the remaining obligations. Introduce `σ`. Establish `hmap : (P⁻¹).map ((starRingEnd ℂ).comp σ) = ((P⁻¹).map σ).map (starRingEnd ℂ)`. Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression.
-
-Establish `hDc : diagMet (adMet r m g dd) ((starRingEnd ℂ).comp σ) = (diagMet (adMet r m g dd) σ).map (starRingEnd ℂ)`. Simplify using `only [diagMet, adMet_conj]`. Rewrite using `[Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
-
-Simplify using the standard rewrite rules. Use `show ((P⁻¹).map ((starRingEnd ℂ).comp σ))ᴴ * diagMet (adMet r m g dd) ((starRingEnd ℂ).comp σ) * (P⁻¹).map ((starRingEnd ℂ).comp σ) = (((P⁻¹).map σ)ᴴ * diagMet (adMet r m g dd) σ * (P⁻¹).map σ).map (starRingEnd ℂ)`. Rewrite using `[hmap, hDc, Matrix.map_mul, Matrix.map_mul, Matrix.conjTranspose_map]`. Introduce `x`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_adapted_majorant {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (P : Matrix (Fin r) (Fin r) K) (m : ℕ) (g : Fin r → K) (dd : Fin r → ℝ)

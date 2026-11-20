@@ -25,7 +25,7 @@ noncomputable abbrev rootsRepGal (i : ℕ) :
   (cohomologyConjRep (gsRootsZMod S ℓ) (PP hL) i).comp (gsQuotientGalEquiv hL).symm.toMonoidHom
 
 /- English proof (translation)
-The claim follows from `compactSpace_openSubgroup (gsOpenSubgroup S hL)`.
+A detailed English derivation is pending.
 -/
 theorem compactSpace_PP : CompactSpace (PP hL) :=
   compactSpace_openSubgroup (gsOpenSubgroup S hL)
@@ -38,7 +38,7 @@ noncomputable abbrev rootsZModEquiv (i : ℕ) :
     (zmodRepOfTorsionEquiv ℓ (gsRoots S ℓ) (nsmul_galRootsOfUnity_eq_zero ℓ)) (fun _ _ => rfl) i
 
 /- English proof (translation)
-Establish `hq : (gsQuotientGalEquiv hL).symm (gsRestrictGal hL g) = (QuotientGroup.mk g : galUnramifiedOutside K.1 ℚ̄ S ⧸ PP hL)`. Rewrite using `[MulEquiv.symm_apply_eq, gsQuotientGalEquiv_mk]`. Simplify using `only [rootsRepGal, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, hq, cohomologyConjRep_mk]`. Conclude with `(cohomologyAddEquivOfEquiv_cohomologyConj (A := gsRoots S ℓ) (A' := gsRootsZMod S ℓ) (zmodRepOfTorsionEquiv ℓ (gsRoots S ℓ) (nsmul_galRootsOfUnity_eq_zero ℓ)) (fun _ _ => rfl) (PP hL) i g y).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rootsRepGal_rootsZModEquiv (i : ℕ) (g : galUnramifiedOutside K.1 ℚ̄ S)
     (y : cohomology (Rep.res (PP hL).subtype (gsRoots S ℓ)) i) :
@@ -53,7 +53,7 @@ theorem rootsRepGal_rootsZModEquiv (i : ℕ) (g : galUnramifiedOutside K.1 ℚ̄
     (PP hL) i g y).symm
 
 /- English proof (translation)
-Establish `h1` using `rootsRepGal_rootsZModEquiv hL i g ((rootsZModEquiv hL i).symm x)`. Conclude with `(AddEquiv.symm_apply_eq _).2 ((congrArg (fun z => rootsRepGal hL i (gsRestrictGal hL g) z) ((rootsZModEquiv hL i).apply_symm_apply x)).symm.trans h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rootsZModEquiv_symm_conj (i : ℕ) (g : galUnramifiedOutside K.1 ℚ̄ S)
     (x : cohomology (Rep.res (PP hL).subtype (gsRootsZMod S ℓ)) i) :
@@ -65,11 +65,9 @@ theorem rootsZModEquiv_symm_conj (i : ℕ) (g : galUnramifiedOutside K.1 ℚ̄ S
       ((rootsZModEquiv hL i).apply_symm_apply x)).symm.trans h1)
 
 /- English proof (translation)
-Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `: NeZero ℓ` using `⟨hℓ.ne_zero⟩`. Take `⟨f⟩` from `nonempty_addEquiv_gsRoots_of_mem S (n := ℓ) fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hℓS v h hv`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hcard : Nat.card (Rep.res (PP hL).subtype (gsRoots S ℓ)) = ℓ` using `(Nat.card_congr f.toEquiv).trans (Nat.card_zmod ℓ)`. Establish `: Finite (Rep.res (PP hL).subtype (gsRoots S ℓ))` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact hℓ.ne_zero)`. Establish `h` using `finite_cohomology_openSubgroup K S (gsOpenSubgroup S hL) (Rep.res (PP hL).subtype (gsRoots S ℓ)) (fun v hv => by`. Rewrite `hv` using `[hcard]`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hℓS v h hv) i hi`. Conclude with `Finite.of_equiv _ (rootsZModEquiv hL i).toEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem finite_cohomology_rootsZMod [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (i : ℕ) (hi : i ≤ 2) : Finite (cohomology (Rep.res (PP hL).subtype (gsRootsZMod S ℓ)) i) := by
@@ -90,7 +88,7 @@ theorem finite_cohomology_rootsZMod [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ
   exact Finite.of_equiv _ (rootsZModEquiv hL i).toEquiv
 
 /- English proof (translation)
-Use `haveI := compactSpace_PP hL`. Conclude with `toFun_eq_torsN_zero (PP hL) (gsRestrictGal hL) (gsRestrictGal_surjective hL) (ker_gsRestrictGal_le hL) (gsKummer_shortExact S ℓ hℓS) d (rootsRepGal hL 0) (rootsZModEquiv hL 0).symm (rootsZModEquiv_symm_conj hL 0)`.
+A detailed English derivation is pending.
 -/
 theorem toFun_rootsRepGal_zero (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (d : AdditiveFunction.{0} ℓ (L.1 ≃ₐ[K.1] L.1))
@@ -103,7 +101,7 @@ theorem toFun_rootsRepGal_zero (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) �
     (rootsZModEquiv hL 0).symm (rootsZModEquiv_symm_conj hL 0)
 
 /- English proof (translation)
-Establish `h : Representation.tprod (ρ.comp e) (σ.comp e) = (Representation.tprod ρ σ).comp e` using `rfl`. Rewrite using `[h, invariants_comp_of_surjective _ _ he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_tprod_comp_eq {Γ₁ Γ₂ V W : Type*} [Group Γ₁] [Group Γ₂] [AddCommGroup V]
     [Module (ZMod ℓ) V] [AddCommGroup W] [Module (ZMod ℓ) W] (ρ : Representation (ZMod ℓ) Γ₁ V)
@@ -114,7 +112,7 @@ theorem finrank_tprod_comp_eq {Γ₁ Γ₂ V W : Type*} [Group Γ₁] [Group Γ�
   rw [h, invariants_comp_of_surjective _ _ he]
 
 /- English proof (translation)
-The claim follows from `AdditiveFunction.invariantsTensor_apply _ _ _ _ X ρX`.
+A detailed English derivation is pending.
 -/
 theorem dN_toFun' {X : Type} [AddCommGroup X] [Module (ZMod ℓ) X] [Finite X]
     (ρX : Representation (ZMod ℓ) (L.1 ≃ₐ[K.1] L.1) X) :
@@ -122,9 +120,9 @@ theorem dN_toFun' {X : Type} [AddCommGroup X] [Module (ZMod ℓ) X] [Finite X]
   AdditiveFunction.invariantsTensor_apply _ _ _ _ X ρX
 
 /- English proof (translation)
-Establish `hlp : ℓ.Prime` using `Fact.out`. Establish `hTr : Module.finrank (ZMod ℓ) (gsRootsZMod S ℓ) = 1` using `finrank_gsRootsZMod ℓ hℓS`. Establish `hP : (((gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index : ℕ) : ZMod ℓ) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hlp).1 hcop.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkey` using `finrank_cohomology_eq_finrank_invariants (gsOpenSubgroup S hL) (gsRootsZMod S ℓ) M (roots_trivial hL hζ) hM hTr hP i`. Establish `h3` using `finrank_tprod_comp_eq (cohomologyConjRep (gsRootsZMod S ℓ) (PP hL) i) (quotientRep (PP hL) (homRep (gsRootsZMod S ℓ) M) (homRep_ρ_of_mem (gsOpenSubgroup S hL) (gsRootsZMod S ℓ) M (roots_trivial hL hζ) hM)) (gsQuotientGalEquiv hL).symm.toMonoidHom (gsQuotientGalEquiv hL).symm.surj …`. Conclude with `(congrArg (fun n : ℕ => (n : ℤ)) (hkey.trans h3.symm)).trans (dN_toFun' hL hζ M hM hΓ (rootsRepGal hL i)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_eq_toFun' (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (hcop : Nat.Coprime (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index ℓ)
@@ -146,7 +144,7 @@ theorem finrank_eq_toFun' (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.a
     (dN_toFun' hL hζ M hM hΓ (rootsRepGal hL i)).symm
 
 /- English proof (translation)
-Use `haveI := compactSpace_PP hL`. Establish `h` using `toFun_eq_modN_add_torsN (PP hL) (gsRestrictGal hL) (gsRestrictGal_surjective hL) (ker_gsRestrictGal_le hL) (gsKummer_shortExact S ℓ hℓS) d 0 (rootsRepGal hL 1) (rootsZModEquiv hL 1).symm (rootsZModEquiv_symm_conj hL 1)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toFun_rootsRepGal_one (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (d : AdditiveFunction.{0} ℓ (L.1 ≃ₐ[K.1] L.1))
@@ -160,7 +158,7 @@ theorem toFun_rootsRepGal_one (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉
   exact h
 
 /- English proof (translation)
-Use `finite_cohomology_rootsZMod hL hℓS 0 (by norm_num)` as an intermediate fact. Conclude with `(finrank_eq_toFun' hL hζ M hM hΓ hℓS hcop 0).trans (toFun_rootsRepGal_zero hL hℓS _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem h0_eq [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (hcop : Nat.Coprime (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index ℓ)
@@ -170,7 +168,7 @@ theorem h0_eq [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.as
   exact (finrank_eq_toFun' hL hζ M hM hΓ hℓS hcop 0).trans (toFun_rootsRepGal_zero hL hℓS _)
 
 /- English proof (translation)
-Use `finite_cohomology_rootsZMod hL hℓS 1 (by norm_num)` as an intermediate fact. Conclude with `(finrank_eq_toFun' hL hζ M hM hΓ hℓS hcop 1).trans (toFun_rootsRepGal_one hL hℓS _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_H1_euler_formula [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (hcop : Nat.Coprime (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index ℓ)

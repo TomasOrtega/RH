@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K _ _ v α s f B hB h`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hB`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(NumberField.FinitePlace.add_le v _ _).trans (max_le (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb)))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.FinitePlaceSumBound.finitePlace_sum_le.{u_1, u_2} :
     ∀ {K : Type u_1} [inst : Field K] [inst_1 : NumberField K] (v : NumberField.FinitePlace K) {α : Type u_2} (s : Finset α)

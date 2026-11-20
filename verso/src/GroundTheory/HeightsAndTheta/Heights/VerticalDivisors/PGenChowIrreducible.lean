@@ -14,9 +14,9 @@ namespace GenChowIrreducible
 variable {n e : ℕ}
 
 /- English proof (translation)
-Unfold `specRest`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [eval₂_add, hp, hq]`. Consider the case `mul_X p ij hp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨i, j⟩` from `ij`. Apply the tactic sequence `induction i using Fin.cases <;> simp [eval₂_mul, hp]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_specRest {R S T : Type*} [CommRing R] [CommRing S] [CommRing T] (φ : R →+* S)
     (ψ : S →+* T) (f : MvPolynomial (Fin (e + 1) × Fin n) R) (y : Par e n → S) :
@@ -30,13 +30,13 @@ theorem map_specRest {R S T : Type*} [CommRing R] [CommRing S] [CommRing T] (φ 
     induction i using Fin.cases <;> simp [eval₂_mul, hp]
 
 /- English proof (translation)
-Unfold `specRest`. Rewrite using `[← coe_eval₂Hom, ← RingHom.comp_apply, MvPolynomial.comp_eval₂Hom]`. Rewrite using `[coe_eval₂Hom, eval₂_eq']`. Use `Finset.sum_eq_zero fun d hd => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, d (0, j) ≠ 0 := by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h0` using `congrFun (hf (mem_support_iff.mp hd)) 0`. Rewrite `h0` using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Finset.sum_eq_zero]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨i, j'⟩ _`. Simplify using `only [groupWeight, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Simplify using `[hcon j']`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Ne.symm hi]`. Use `mul_eq_zero_of_right _ (Finset.prod_eq_zero (i := (0, j)) (Finset.mem_univ _) ?_)` and prove the remaining obligations. Simplify using `[zero_pow hj]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_specRest {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {δ : ℕ}
     (hδ : 1 ≤ δ) {f : MvPolynomial (Fin (e + 1) × Fin n) R} (hf : IsMultiHomog δ f)
@@ -63,16 +63,16 @@ def parVar (e n : ℕ) (ij : Fin (e + 1) × Fin n) : Fin n ⊕ Par e n :=
   Fin.cases (motive := fun _ => Fin n ⊕ Par e n) (.inl ij.2) (fun i => .inr (.inl (i, ij.2))) ij.1
 
 /- English proof (translation)
-Introduce and unpack `⟨i, j⟩ ⟨i', j'⟩ h`. Apply the tactic sequence `induction i using Fin.cases <;> induction i' using Fin.cases <;> simp_all [parVar]`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem parVar_injective : Function.Injective (parVar e n) := by
   rintro ⟨i, j⟩ ⟨i', j'⟩ h
   induction i using Fin.cases <;> induction i' using Fin.cases <;> simp_all [parVar]
 
 /- English proof (translation)
-Unfold `specRest`. Rewrite using `[MvPolynomial.algebraMap_eq]`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [sumAlgEquiv_C_inl]`. Consider the case `add p q hp hq => simp [eval₂_add, hp, hq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p ij hp`. Take `⟨i, j⟩` from `ij`. Apply the tactic sequence `induction i using Fin.cases <;>`. Simplify using `[eval₂_mul, hp, parVar, sumAlgEquiv_X_inl, sumAlgEquiv_X_inr]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem specRest_X {k : Type*} [Field k] (f : MvPolynomial (Fin (e + 1) × Fin n) k) :
     specRest (algebraMap k (MvPolynomial (Par e n) k)) f X =
@@ -88,23 +88,21 @@ theorem specRest_X {k : Type*} [Field k] (f : MvPolynomial (Fin (e + 1) × Fin n
       simp [eval₂_mul, hp, parVar, sumAlgEquiv_X_inl, sumAlgEquiv_X_inr]
 
 /- English proof (translation)
-Introduce `k _ n e Q g hQ hg`. Establish `hspan : GroundTheory.Heights₂.Heights.incIdeal Q (e + 1) = Ideal.span {g}`. Use extensionality with `p`. Rewrite using `[Ideal.mem_span_singleton, ← hg.2 p]`. Simplify using `[GroundTheory.Heights₂.Heights.incIdeal, Submodule.mem_iInf, RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hprime : Prime g`. Use `h1 k n (e + 1) Q hQ.isPrime hQ.isRelevant` as an intermediate fact. Rewrite `this` using `[hspan]`. Conclude with `(Ideal.span_singleton_prime hg.1).mp this`. Take `⟨δ, hδ, hhom⟩` from `h2 k n (e + 1) Q g hQ hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hren : Prime (rename (parVar e n) g)`. Establish `e1 : rename (parVar e n) g = rename ((↑) : Set.range (parVar e n) → _) (rename (Equiv.ofInjective _ parVar_injective) g)`. Rewrite using `[rename_rename]`. Both sides reduce to the same expression. Rewrite using `[e1, prime_rename_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(MulEquiv.prime_iff (renameEquiv k (Equiv.ofInjective _ parVar_injective))).mpr hprime`. Establish `hpP : Prime (specRest (algebraMap k (MvPolynomial (Par e n) k)) g X)`. Rewrite using `[specRest_X]`. Conclude with `(MulEquiv.prime_iff (sumAlgEquiv k (Fin n) (Par e n))).mpr hren`. Use `set p := specRest (algebraMap k (MvPolynomial (Par e n) k)) g X with hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `hq : specRest (algebraMap k (GenParField k e n)) g (genPar k e n) = p.map (algebraMap (MvPolynomial (Par e n) k) (GenParField k e n))`. Rewrite using `[hp, map_specRest, ← IsScalarTower.algebraMap_eq]`. Both sides reduce to the same expression. Set `_ : Algebra (MvPolynomial (Fin n) (MvPolynomial (Par e n) k)) (MvPolynomial (Fin n) (GenParField k e n))` to `algebraMvPolynomial`. Establish `hc0 : constantCoeff p = 0` using `constantCoeff_specRest _ hδ hhom _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdisj : Disjoint (((nonZeroDivisors (MvPolynomial (Par e n) k)).map (C (σ` using `Fin n)) : Submonoid _) : Set (MvPolynomial (Fin n) (MvPolynomial (Par e n) k))) ↑(Ideal.span {p}) := by`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨r, hr, rfl⟩ hmem`. Rewrite `hmem` using `[SetLike.mem_coe, Ideal.mem_span_singleton]`. Take `⟨s, hs⟩` from `hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg constantCoeff hs` as an intermediate fact. Rewrite `this` using `[constantCoeff_C, map_mul, hc0, zero_mul]`. Conclude with `nonZeroDivisors.ne_zero hr this`. Establish `hpr` using `IsLocalization.isPrime_of_isPrime_disjoint ((nonZeroDivisors (MvPolynomial (Par e n) k)).map (C (σ := Fin n))) (MvPolynomial (Fin n) (GenParField k e n)) (Ideal.span {p}) ((Ideal.span_singleton_prime hpP.ne_zero).mpr hpP) hdisj`. Rewrite `hpr` using `[Ideal.map_span, Set.image_singleton, algebraMap_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hq0 : p.map (algebraMap (MvPolynomial (Par e n) k) (GenParField k e n)) ≠ 0`. Introduce `h`. Apply `hpP.ne_zero` to reduce the goal to its premises. Apply `map_injective _ (IsFractionRing.injective (MvPolynomial (Par e n) k) (GenParField k e n))` to reduce the goal to its premises. Rewrite using `[h, map_zero]`.
-
-Rewrite using `[hq]`. Conclude with `((Ideal.span_singleton_prime hq0).mp hpr).irreducible`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof (h1 : GroundTheory.Heights₂.Heights.IncIdealPrime.Statement)
     (h2 : GroundTheory.Heights₂.Heights.ChowFormMultiHomog.Statement) : GenChowIrreducible.Statement := by

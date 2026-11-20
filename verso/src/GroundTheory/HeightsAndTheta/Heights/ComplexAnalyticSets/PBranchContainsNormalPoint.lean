@@ -12,7 +12,7 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open MvPolynomial Filter Topology
 
 /- English proof (translation)
-Take `⟨U, hUo, hzU, F, hF, hFeq⟩` from `hf z hz`. Establish `hc : ContinuousWithinAt F S z` using `(hF.differentiableAt (hUo.mem_nhds hzU)).continuousAt.continuousWithinAt`. Use `hc.congr_of_eventuallyEq ?_ (hFeq ⟨hz, hzU⟩)` and prove the remaining obligations. Use `filter_upwards [inter_mem_nhdsWithin S (hUo.mem_nhds hzU)] with y hy`. Conclude with `hFeq hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HolomorphicOnSubset.continuousWithinAt {σ : Type*} [Fintype σ] {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℂ E] {f : (σ → ℂ) → E} {S : Set (σ → ℂ)}
@@ -25,29 +25,27 @@ theorem HolomorphicOnSubset.continuousWithinAt {σ : Type*} [Fintype σ] {E : Ty
   exact hFeq hy
 
 /- English proof (translation)
-Introduce `σ _ I h w k r φ B hI hIc hh hw hφd hφi hφZ hB hfill`. Take `⟨B', hB'o, hwB', hB'B, -, hdense⟩` from `hirr σ I h w hI hIc hh hw B hB`. Use `set P := (zeroSetIn I ∩ B') \ {z | eval z h = 0} with hP`. Establish `hPfill : P ⊆ φ '' Metric.ball 0 r` using `fun z hz => hfill ⟨⟨hz.1.1, hB'B hz.1.2⟩, hz.2⟩`. Establish `hPsub : P ⊆ zeroSetIn I ∩ B'` using `fun y hy => hy.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwcl : w ∈ closure P` using `hdense ⟨hw, hwB'⟩`. Take `⟨ψ, hψ, hψφ⟩` from `hinv σ I h w k r φ B hI hIc hh hw hφd hφi hφZ hB hfill`. Establish `hPψ : ∀ z ∈ P, ψ z ∈ Metric.ball (0 : Fin k → ℂ) r ∧ φ (ψ z) = z`. Introduce `z hz`. Take `⟨t, ht, rfl⟩` from `hPfill hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψφ t ht]`. Conclude with `⟨ht, rfl⟩`. Establish `hPlt : ∀ z ∈ P, ∀ j, ‖ψ z j‖ < r` using `fun z hz j => (norm_le_pi_norm (ψ z) j).trans_lt (mem_ball_zero_iff.mp (hPψ z hz).1)`. Establish `hcoord : ∀ j : Fin k, ∃ g : (σ → ℂ) → ℂ, HolomorphicOnSubset g (zeroSetIn I ∩ B') ∧ Set.EqOn g (fun z => ψ z j) P`. Introduce `j`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hext σ I h B' (fun z => ψ z j) hI hIc hh hB'o ?_ ?_` and prove the remaining obligations. Introduce `z hz`. Take `⟨U, hUo, hzU, F, hF, hFeq⟩` from `hψ z (hPfill hz)`. Conclude with `⟨U, hUo, hzU, fun y => F y j, differentiableOn_pi.mp hF j, fun y hy => congrFun (hFeq ⟨hPfill hy.1, hy.2⟩) j⟩`. Use `(Metric.isBounded_closedBall (x := (0 : ℂ)) (r := r)).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `(hPlt z hz j).le`. Use `choose g hg hgeq using hcoord`. Establish `hgle : ∀ j, ∀ z ∈ zeroSetIn I ∩ B', ‖g j z‖ ≤ r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j z hz`. Establish `hcl` using `(((hg j).continuousWithinAt hz).mono hPsub).mem_closure_image (hdense hz)`. Establish `hsub : g j '' P ⊆ Metric.closedBall 0 r`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[Metric.mem_closedBall, dist_zero_right, hgeq j hy]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `(hPlt y hy j).le`. Use `closure_minimal hsub Metric.isClosed_closedBall hcl` as an intermediate fact. Rewrite `this` using `[Metric.mem_closedBall, dist_zero_right]`. Then use the resulting hypothesis. Establish `hglt : ∀ j, ‖g j w‖ < r`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hlt`. Establish `heq : ‖g j w‖ = r` using `le_antisymm (hgle j w ⟨hw, hwB'⟩) (not_lt.mp hlt)`. Establish `hev` using `hmax σ I w B' (g j) hI hIc hw (hB'o.mem_nhds hwB') (hg j) (fun z hz => (hgle j z hz).trans heq.ge)`. Take `⟨z, hz, hzP⟩` from `mem_closure_iff_nhds.mp hwcl _ hev`. Establish `h1 : ‖g j z‖ < r` using `(congrArg norm (hgeq j hzP)).trans_lt (hPlt z hzP j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[hz hzP.1.1, heq]`. Conclude with `lt_irrefl r h1`. Establish `hr : 0 < r`. Take `⟨z, -, hzP⟩` from `mem_closure_iff_nhds.mp hwcl _ Filter.univ_mem`. Conclude with `(norm_nonneg _).trans_lt (mem_ball_zero_iff.mp (hPψ z hzP).1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t₀ : Fin k → ℂ := fun j => g j w with ht₀`. Establish `ht₀Δ : t₀ ∈ Metric.ball (0 : Fin k → ℂ) r` using `mem_ball_zero_iff.mpr ((pi_norm_lt_iff hr).mpr hglt)`. Use `⟨t₀, ht₀Δ, ?_⟩` and prove the remaining obligations. Establish `: (𝓝[P] w).NeBot` using `mem_closure_iff_nhdsWithin_neBot.mp hwcl`. Establish `hG : Tendsto (fun z => fun j => g j z) (𝓝[P] w) (𝓝 t₀)` using `tendsto_pi_nhds.mpr fun j => (((hg j).continuousWithinAt ⟨hw, hwB'⟩).mono hPsub).tendsto`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hφc : ContinuousAt φ t₀` using `(hφd.differentiableAt (Metric.isOpen_ball.mem_nhds ht₀Δ)).continuousAt`. Establish `h1 : Tendsto (fun z => φ (fun j => g j z)) (𝓝[P] w) (𝓝 (φ t₀))` using `hφc.tendsto.comp hG`. Establish `h2 : Tendsto (fun z => φ (fun j => g j z)) (𝓝[P] w) (𝓝 w)`. Use `(tendsto_id.mono_left nhdsWithin_le_nhds).congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with z hz`.
-
-Establish `hgz : (fun j => g j z) = ψ z` using `funext fun j => hgeq j hz`. Rewrite using `[hgz, (hPψ z hz).2]`. Both sides reduce to the same expression. Conclude with `tendsto_nhds_unique h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem BranchContainsNormalPoint.proof (hirr : NormalLocallyIrreducible.Statement)
     (hinv : BranchInverseHolomorphic.Statement) (hext : NormalRiemannExtension.Statement)

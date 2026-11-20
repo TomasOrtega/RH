@@ -6,7 +6,7 @@ open Matrix
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.LKLoc.exists_finset_inv_mul_mem_KintK) | (exact GlobalTheory.LKLoc.exists_finset_inv_mul_mem_KintK) | (intros; apply GlobalTheory.LKLoc.exists_finset_inv_mul_mem_KintK <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bounded_subgroup_finite_cosets : ∀ (p : ℕ) [Fact p.Prime] (L : IntermediateField ℚ_[p] (PadicAlgCl p)), FiniteDimensional ℚ_[p] L →
     ∀ (n : ℕ) (B : Subgroup (GL (Fin n) L)) (c : ℝ),

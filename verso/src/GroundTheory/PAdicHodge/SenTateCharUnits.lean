@@ -28,28 +28,28 @@ def unitsOneAdd (k : ℕ) : Subgroup ℤ_[p]ˣ where
 variable {p}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unitsOneAdd {k : ℕ} {u : ℤ_[p]ˣ} :
     u ∈ unitsOneAdd p k ↔ (p : ℤ_[p]) ^ k ∣ (u : ℤ_[p]) - 1 := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ _ h _ hu` and use `(pow_dvd_pow _ h).trans hu @[simp]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitsOneAdd_antitone : Antitone (unitsOneAdd p) := fun _ _ h _ hu =>
   (pow_dvd_pow _ h).trans hu
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `u`. Simplify using `[mem_unitsOneAdd]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem unitsOneAdd_zero : unitsOneAdd p 0 = ⊤ := by
   ext u; simp [mem_unitsOneAdd]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h0 : (u : ℤ_[p]) - 1 ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use `ext`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify `h` using `[sub_eq_zero]`. Establish `h` using `(PadicInt.mem_span_pow_iff_le_valuation _ h0 (((u : ℤ_[p]) - 1).valuation + 1)).1 (Ideal.mem_span_singleton.2 (hu _))`. Use linear arithmetic over natural numbers and integers.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eq_one_of_forall_mem_unitsOneAdd {u : ℤ_[p]ˣ} (hu : ∀ k, u ∈ unitsOneAdd p k) : u = 1 := by
   by_contra hne
@@ -60,16 +60,16 @@ theorem eq_one_of_forall_mem_unitsOneAdd {u : ℤ_[p]ˣ} (hu : ∀ k, u ∈ unit
   omega
 
 /- English proof (translation)
-Rewrite using `[mem_unitsOneAdd, PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_unitsOneAdd_iff_norm {k : ℕ} {u : ℤ_[p]ˣ} :
     u ∈ unitsOneAdd p k ↔ ‖(u : ℤ_[p]) - 1‖ ≤ (p : ℝ) ^ (-(k : ℤ)) := by
   rw [mem_unitsOneAdd, PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Establish `hr : (p : ℝ) ^ (-(k : ℤ)) ≠ 0` using `zpow_ne_zero _ (by exact_mod_cast hp.out.ne_zero)`. Establish `hset : (unitsOneAdd p k : Set ℤ_[p]ˣ) = (fun u : ℤ_[p]ˣ => (u : ℤ_[p])) ⁻¹' Metric.closedBall (1 : ℤ_[p]) ((p : ℝ) ^ (-(k : ℤ)))`. Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, Set.mem_preimage, Metric.mem_closedBall, dist_eq_norm]`. Conclude with `mem_unitsOneAdd_iff_norm`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset]`. Conclude with `(IsUltrametricDist.isOpen_closedBall _ hr).preimage Units.continuous_val`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_unitsOneAdd (k : ℕ) : IsOpen (unitsOneAdd p k : Set ℤ_[p]ˣ) := by
   have hr : (p : ℝ) ^ (-(k : ℤ)) ≠ 0 := zpow_ne_zero _ (by exact_mod_cast hp.out.ne_zero)
@@ -82,15 +82,15 @@ theorem isOpen_unitsOneAdd (k : ℕ) : IsOpen (unitsOneAdd p k : Set ℤ_[p]ˣ) 
   exact (IsUltrametricDist.isOpen_closedBall _ hr).preimage Units.continuous_val
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hx`. Establish `hp2 : 2 ≤ p` using `hp.out.two_le`. Rewrite using `[add_comm (1 : ℤ_[p]), add_pow]`. Establish `hsplit : ∑ m ∈ Finset.range (p + 1), ((p : ℤ_[p]) ^ k * c) ^ m * 1 ^ (p - m) * (p.choose m : ℤ_[p]) = 1 + p * ((p : ℤ_[p]) ^ k * c) + ∑ m ∈ Finset.Ico 2 (p + 1), ((p : ℤ_[p]) ^ k * c) ^ m * (p.choose m : ℤ_[p])`. Rewrite using `[Finset.range_eq_Ico, ← Finset.sum_Ico_consecutive _ (show 0 ≤ 2 by omega) (by omega : 2 ≤ p + 1)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_pow, mul_one]`. Rewrite using `[show Finset.Ico 0 2 = {0, 1} by decide, Finset.sum_pair (by norm_num)]`. Simplify using `[Nat.choose_one_right]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e : 1 + ↑p * (↑p ^ k * c) + ∑ m ∈ Finset.Ico 2 (p + 1), (↑p ^ k * c) ^ m * (p.choose m : ℤ_[p]) - 1 - ↑p * (↑p ^ k * c) = ∑ m ∈ Finset.Ico 2 (p + 1), ((p : ℤ_[p]) ^ k * c) ^ m * (p.choose m : ℤ_[p])`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Finset.dvd_sum fun m hm => ?_` and prove the remaining obligations. Rewrite `hm` using `[Finset.mem_Ico]`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_pow, ← pow_mul]`. Break down `lt_or_eq_of_le (Nat.lt_succ_iff.1 hm.2) with hmp | hmp` into its components or cases. Establish `hch : (p : ℤ_[p]) ∣ (p.choose m : ℤ_[p])`. Conclude with `Nat.cast_dvd_cast (hp.out.dvd_choose_self (by omega : m ≠ 0) hmp)`. Establish `h1 : (p : ℤ_[p]) ^ (k + 1) ∣ (p : ℤ_[p]) ^ (k * m)` using `pow_dvd_pow _ (by nlinarith)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmp]`. Establish `h1 : (p : ℤ_[p]) ^ (k + 2) ∣ (p : ℤ_[p]) ^ (k * p)` using `pow_dvd_pow _ (by nlinarith)`. Conclude with `(h1.mul_right _).mul_right _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dvd_one_add_pow_sub {k : ℕ} (hk : 2 ≤ k) {x : ℤ_[p]} (hx : (p : ℤ_[p]) ^ k ∣ x) :
     (p : ℤ_[p]) ^ (k + 2) ∣ (1 + x) ^ p - 1 - p * x := by
@@ -131,11 +131,11 @@ theorem dvd_one_add_pow_sub {k : ℕ} (hk : 2 ≤ k) {x : ℤ_[p]} (hx : (p : �
     exact (h1.mul_right _).mul_right _
 
 /- English proof (translation)
-Establish `hx : (p : ℤ_[p]) ^ k ∣ (u : ℤ_[p]) - 1` using `hu`. Establish `h` using `dvd_one_add_pow_sub hk hx`. Rewrite `h` using `[add_sub_cancel]`. Establish `hpow : ((u ^ p : ℤ_[p]ˣ) : ℤ_[p]) - 1 = ((u : ℤ_[p]) ^ p - 1 - p * ((u : ℤ_[p]) - 1)) + p * ((u : ℤ_[p]) - 1)` using `by push_cast; ring`. Establish `hp0 : (p : ℤ_[p]) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(p : ℤ_[p]) ^ (k + 1) ∣ _`. Rewrite using `[hpow]`. Use `dvd_add ((pow_dvd_pow _ (by omega)).trans h) ?_` and prove the remaining obligations. Rewrite using `[pow_succ, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_dvd_mul_left _ hx`. Express the relevant statement in the definitionally equal form `(p : ℤ_[p]) ^ (k + 2) ∣ _ ↔ (p : ℤ_[p]) ^ (k + 1) ∣ _`. Rewrite using `[hpow, dvd_add_right h]`. Rewrite using `[show (p : ℤ_[p]) ^ (k + 2) = p * p ^ (k + 1) by ring]`. Conclude with `mul_dvd_mul_iff_left hp0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_prime_mem_iff {k : ℕ} (hk : 2 ≤ k) {u : ℤ_[p]ˣ} (hu : u ∈ unitsOneAdd p k) :
     u ^ p ∈ unitsOneAdd p (k + 1) ∧ (u ^ p ∈ unitsOneAdd p (k + 2) ↔ u ∈ unitsOneAdd p (k + 1)) := by
@@ -161,14 +161,14 @@ def levelQuot {k : ℕ} (u : unitsOneAdd p k) : ℤ_[p] :=
   Classical.choose (mem_unitsOneAdd.1 u.2)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (mem_unitsOneAdd.1 u.2)`.
+A detailed English derivation is pending.
 -/
 theorem levelQuot_spec {k : ℕ} (u : unitsOneAdd p k) :
     ((u : ℤ_[p]ˣ) : ℤ_[p]) - 1 = (p : ℤ_[p]) ^ k * levelQuot u :=
   Classical.choose_spec (mem_unitsOneAdd.1 u.2)
 
 /- English proof (translation)
-Establish `hp0 : (p : ℤ_[p]) ^ k ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hp.out.ne_zero)`. Conclude with `mul_left_cancel₀ hp0 ((levelQuot_spec u).symm.trans hc)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levelQuot_eq {k : ℕ} (u : unitsOneAdd p k) {c : ℤ_[p]}
     (hc : ((u : ℤ_[p]ˣ) : ℤ_[p]) - 1 = (p : ℤ_[p]) ^ k * c) : levelQuot u = c := by
@@ -176,7 +176,7 @@ theorem levelQuot_eq {k : ℕ} (u : unitsOneAdd p k) {c : ℤ_[p]}
   exact mul_left_cancel₀ hp0 ((levelQuot_spec u).symm.trans hc)
 
 /- English proof (translation)
-Rewrite using `[map_pow, map_natCast, ZMod.natCast_self, zero_pow (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toZMod_natCast_prime_pow {k : ℕ} (hk : 1 ≤ k) :
     PadicInt.toZMod ((p : ℤ_[p]) ^ k) = 0 := by
@@ -209,7 +209,7 @@ theorem levelHom_apply {k : ℕ} (hk : 1 ≤ k) (u : unitsOneAdd p k) :
     levelHom p k hk u = Multiplicative.ofAdd (PadicInt.toZMod (levelQuot u)) := rfl
 
 /- English proof (translation)
-Rewrite using `[levelHom_apply, ← ofAdd_zero, EmbeddingLike.apply_eq_iff_eq, ← RingHom.mem_ker, PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton, mem_unitsOneAdd, levelQuot_spec, pow_succ]`. Establish `hp0 : (p : ℤ_[p]) ^ k ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hp.out.ne_zero)`. Conclude with `(mul_dvd_mul_iff_left hp0).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levelHom_eq_one_iff {k : ℕ} (hk : 1 ≤ k) (u : unitsOneAdd p k) :
     levelHom p k hk u = 1 ↔ (u : ℤ_[p]ˣ) ∈ unitsOneAdd p (k + 1) := by
@@ -220,9 +220,9 @@ theorem levelHom_eq_one_iff {k : ℕ} (hk : 1 ≤ k) (u : unitsOneAdd p k) :
   exact (mul_dvd_mul_iff_left hp0).symm
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simpa using ⟨ha, ha'⟩`. Consider the case `succ i ih`. Establish `h` using `pow_prime_mem_iff (by omega : 2 ≤ s + i) ih.1`. Rewrite using `[pow_succ, pow_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by simpa [add_assoc] using h.1, fun hc => ih.2 (h.2.1 ?_)⟩` and prove the remaining obligations. Simplify `hc` using `[add_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pow_prime_pow_mem_not_mem {s : ℕ} (hs : 2 ≤ s) {a : ℤ_[p]ˣ} (ha : a ∈ unitsOneAdd p s)
     (ha' : a ∉ unitsOneAdd p (s + 1)) (i : ℕ) :
@@ -236,9 +236,9 @@ theorem pow_prime_pow_mem_not_mem {s : ℕ} (hs : 2 ≤ s) {a : ℤ_[p]ˣ} (ha :
     simpa [add_assoc] using hc
 
 /- English proof (translation)
-Use `⟨pow_mem ha m, fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : levelHom p s hs (⟨a, ha⟩ ^ m) = 1` using `(levelHom_eq_one_iff hs _).2 (by simpa using h)`. Establish `h2 : levelHom p s hs ⟨a, ha⟩ ≠ 1` using `fun h' => ha' ((levelHom_eq_one_iff hs _).1 h')`. Rewrite `h1` using `[map_pow, levelHom_apply, ← ofAdd_nsmul, ← ofAdd_zero, EmbeddingLike.apply_eq_iff_eq, nsmul_eq_mul]`. Rewrite `h2` using `[levelHom_apply, ← ofAdd_zero, Ne, EmbeddingLike.apply_eq_iff_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm' : (m : ZMod p) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]` and apply the resulting hypothesis. Conclude with `h2 ((mul_eq_zero.1 h1).resolve_left hm')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pow_not_mem_of_not_dvd {s : ℕ} (hs : 1 ≤ s) {a : ℤ_[p]ˣ} (ha : a ∈ unitsOneAdd p s)
     (ha' : a ∉ unitsOneAdd p (s + 1)) {m : ℕ} (hm : ¬ p ∣ m) :
@@ -254,15 +254,11 @@ theorem pow_not_mem_of_not_dvd {s : ℕ} (hs : 1 ≤ s) {a : ℤ_[p]ˣ} (ha : a 
   exact h2 ((mul_eq_zero.1 h1).resolve_left hm')
 
 /- English proof (translation)
-Establish `hex : ∃ k, a ∉ unitsOneAdd p k`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `ha (eq_one_of_forall_mem_unitsOneAdd h)`. Use `⟨Nat.find hex - 1, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `Nat.find_min hex (show Nat.find hex - 1 < Nat.find hex by` as an intermediate fact. Establish `: Nat.find hex ≠ 0`. Introduce `h0`. Use `Nat.find_spec hex` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, unitsOneAdd_zero]`. Conclude with `this (Subgroup.mem_top _)`. Use the proof step `omega)`. Conclude with `this h`. Establish `h0 : Nat.find hex ≠ 0`.
-
-Introduce `h0`. Use `Nat.find_spec hex` as an intermediate fact. Rewrite `this` using `[h0, unitsOneAdd_zero]`. Conclude with `this (Subgroup.mem_top _)`. Rewrite using `[Nat.sub_add_cancel (by omega)]`.
-
-Conclude with `Nat.find_spec hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level {a : ℤ_[p]ˣ} (ha : a ≠ 1) :
     ∃ s, a ∈ unitsOneAdd p s ∧ a ∉ unitsOneAdd p (s + 1) := by
@@ -290,19 +286,15 @@ theorem exists_level {a : ℤ_[p]ˣ} (ha : a ≠ 1) :
     exact Nat.find_spec hex
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ k ih`. Take `⟨j, hj⟩` from `ih`. Distinguish the cases in `hks : k + 1 ≤ s`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨0, by simpa using unitsOneAdd_antitone hks hb⟩`. Use `push Not at hks`. Take `⟨hc, hc'⟩` from `pow_prime_pow_mem_not_mem hs ha ha' (k - s)`. Rewrite `hc`, `hc'` using `[Nat.add_sub_cancel' (by omega)]`. Establish `hk1 : 1 ≤ k` using `by omega`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := a ^ p ^ (k - s)`. Use `set d := b * (a ^ j)⁻¹`. Use `set φ := levelHom p k hk1`. Establish `hcφ : Multiplicative.toAdd (φ ⟨c, hc⟩) ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc' ((levelHom_eq_one_iff hk1 ⟨c, hc⟩).1 (Multiplicative.toAdd.injective (h.trans toAdd_one.symm)))`. Use `set r : ℕ := (Multiplicative.toAdd (φ ⟨d, hj⟩) / Multiplicative.toAdd (φ ⟨c, hc⟩)).val`. Use `⟨j + p ^ (k - s) * r, ?_⟩` and prove the remaining obligations. Establish `hmem : d * (c ^ r)⁻¹ ∈ unitsOneAdd p k` using `mul_mem hj (inv_mem (pow_mem hc r))`. Establish `hφ : φ ⟨d * (c ^ r)⁻¹, hmem⟩ = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (⟨d * (c ^ r)⁻¹, hmem⟩ : unitsOneAdd p k) = ⟨d, hj⟩ * (⟨c, hc⟩ ^ r)⁻¹` using `rfl`. Rewrite using `[e, map_mul, map_inv, map_pow]`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_mul, toAdd_inv, toAdd_pow, toAdd_one, nsmul_eq_mul]`. Simplify using `only [r, ZMod.natCast_val, ZMod.cast_id', id]`.
-
-Rewrite using `[div_mul_cancel₀ _ hcφ, add_neg_cancel]`. Establish `h` using `(levelHom_eq_one_iff hk1 _).1 hφ`. Establish `e2 : b * (a ^ (j + p ^ (k - s) * r))⁻¹ = d * (c ^ r)⁻¹`. Simplify using `only [d, c, pow_add, pow_mul, mul_inv_rev]`. Use `group`.
-
-Rewrite using `[e2]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_inv_pow_mem {s : ℕ} (hs : 2 ≤ s) {a : ℤ_[p]ˣ} (ha : a ∈ unitsOneAdd p s)
     (ha' : a ∉ unitsOneAdd p (s + 1)) {b : ℤ_[p]ˣ} (hb : b ∈ unitsOneAdd p s) (k : ℕ) :
@@ -343,13 +335,13 @@ theorem exists_mul_inv_pow_mem {s : ℕ} (hs : 2 ≤ s) {a : ℤ_[p]ˣ} (ha : a 
     exact h
 
 /- English proof (translation)
-Use `set S := unitsOneAdd p k ⊓ R`. Set `φ : S →* Multiplicative (ZMod p)` to `(levelHom p k hk).comp (Subgroup.inclusion inf_le_left)`. Establish `hker : φ.ker = (unitsOneAdd p (k + 1) ⊓ R).subgroupOf S`. Use extensionality with `u`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf, Subgroup.mem_inf]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `levelHom p k hk _ = 1 ↔ _`. Rewrite using `[levelHom_eq_one_iff]`. Conclude with `⟨fun h => ⟨h, u.2.2⟩, fun h => h.1⟩`. Establish `hrange : φ.range = ⊤`. Establish `hne : φ ⟨c, hc, hcR⟩ ≠ 1`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `levelHom p k hk _ ≠ 1`. Rewrite using `[Ne, levelHom_eq_one_iff]`. Conclude with `hc'`. Establish `hcard : Nat.card (Multiplicative (ZMod p)) = p`. Rewrite using `[Nat.card_congr Multiplicative.toAdd, Nat.card_zmod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `Subgroup.eq_bot_or_eq_top_of_prime_card φ.range (hp := ⟨by rw [hcard]; exact hp.out⟩)` as an intermediate fact. Break down `this with h | h` into its components or cases. Conclude with `absurd (h ▸ φ.mem_range.2 ⟨_, rfl⟩ : φ ⟨c, hc, hcR⟩ ∈ (⊥ : Subgroup _)) (by rw [Subgroup.mem_bot]; exact hne)`. Conclude with `h`. Rewrite using `[Subgroup.relIndex, ← hker, Subgroup.index_ker, hrange, Subgroup.card_top, Nat.card_congr Multiplicative.toAdd, Nat.card_zmod]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_unitsOneAdd_inf_succ {k : ℕ} (hk : 1 ≤ k) (R : Subgroup ℤ_[p]ˣ) {c : ℤ_[p]ˣ}
     (hcR : c ∈ R) (hc : c ∈ unitsOneAdd p k) (hc' : c ∉ unitsOneAdd p (k + 1)) :
@@ -379,9 +371,9 @@ theorem relIndex_unitsOneAdd_inf_succ {k : ℕ} (hk : 1 ≤ k) (R : Subgroup ℤ
     Nat.card_congr Multiplicative.toAdd, Nat.card_zmod]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Take `⟨h1, h2⟩` from `pow_prime_pow_mem_not_mem hs ha ha' i`. Establish `hstep` using `relIndex_unitsOneAdd_inf_succ (by omega : 1 ≤ s + i) R (pow_mem haR _) h1 h2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← add_assoc, ← Subgroup.relIndex_mul_relIndex _ _ _ (inf_le_inf_right _ (unitsOneAdd_antitone (show s + i ≤ s + i + 1 by omega))) (inf_le_inf_right _ (unitsOneAdd_antitone (show s ≤ s + i by omega))), hstep, ih, pow_succ, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_unitsOneAdd_inf {s : ℕ} (hs : 2 ≤ s) (R : Subgroup ℤ_[p]ˣ) {a : ℤ_[p]ˣ}
     (haR : a ∈ R) (ha : a ∈ unitsOneAdd p s) (ha' : a ∉ unitsOneAdd p (s + 1)) (i : ℕ) :

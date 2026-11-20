@@ -18,7 +18,7 @@ variable {P : M.Par} {Wp Wq Wq' : Type}
   {u u' : ℕ → ℝ}
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(unfold fpmSh; rfl)`. Consider the case `unfold fpmSh`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fpmSh_eq_fpm (q : KB.Pl (shP P u u') Wp Wq') (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (A : B.Mat P.k P.r → (Wq' →L[ℂ] Wq)) (p₀ : ℕ) :
@@ -29,9 +29,9 @@ theorem fpmSh_eq_fpm (q : KB.Pl (shP P u u') Wp Wq') (f : B.Mat P.k P.r → (Wq 
   | unfold fpmSh
 
 /- English proof (translation)
-Introduce `m`. Establish `h` using `shifted_decay P Wp Wq Wq' u u' q f A A₀ d 0 hf hA m`. Simplify using `only [mul_zero, Nat.cast_zero, sub_zero] at h`. Use `first`. Consider the case `exact h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `(convert h using 2; rw [fpmSh_eq_fpm]; simp [TBBx4.fpm])`. Consider the case `(convert h using 2; rw [fpmSh_eq_fpm]; unfold TBBx4.fpm)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inCC_compSh (q : KB.Pl (shP P u u') Wp Wq') {f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)}
     {A : B.Mat P.k P.r → (Wq' →L[ℂ] Wq)} {A₀ : ℝ} {d : ℕ} (hf : ∀ m : ℕ, B.InCC A₀ m f) (hA : PolyOp d A) :
@@ -49,9 +49,9 @@ end sh
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Take `⟨C₂, hC₂, hPt⟩` from `ptBound_dec_all hA`. Take `⟨c₃, hc₃⟩` from `limTopN_cut_of_inCC`. Take `⟨Cc, hCc⟩` from `limZeroN_of_formLimit Cb`. Take `⟨Cc', hE⟩` from `limE_of_limEvT hA Cb`. Use `⟨C₂, c₃, Cc, Cc', hC₂, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Wp Wq _ _ _ _ _ _ P q F Λ A χ nn Y K N hΛ hK hKN hχ hnn hCb hF hFA hth1 hth2 hth3 hWG hLG hI5 hLim hBd`. Conclude with `hPt Wp Wq P q F Λ 1 χ nn Y K N Cb hΛ one_pos hK hKN hχ hnn hCb hF hWG hLG hI5 (hc₃ Wp Wq P q nn χ F A hth1 hχ hFA hF) (fun ε hε => hCc Wp Wq P q F χ ε A N nn Y hCb hχ hε hF hFA hth2) (hE Wp Wq P q F χ nn A N Y hCb hχ (fun y => (hnn y).le) hF hFA hth3 hLim hBd) (lemB_one q F)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ptBound_main_limEvT (hA : P5.ThmPActual) (Cb : ℝ) : ∃ C₂ c₃ Cc Cc' : ℝ, 0 < C₂ ∧
     ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -81,9 +81,9 @@ theorem ptBound_main_limEvT (hA : P5.ThmPActual) (Cb : ℝ) : ∃ C₂ c₃ Cc C
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Take `⟨C₂, c₃, Cc, Cc', hC₂, hPt⟩` from `ptBound_main_limEvT hA Cb`. Take `⟨C₄, hC₄⟩` from `thmBpOfPartsSh C₃ CΛ C₀ C₂ 0 hC₃ hCΛ hC₀ hC₂`. Use `⟨C₄, c₃, Cc, Cc', ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq Wqp Wqm _ _ _ _ _ _ _ _ _ _ _ _ up up' um um' p pp pm f Ap Am ApPt AmPt b Λ A₁ n₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ hzp hzp' hzm hzm' hK hKN hχ hnnp hnnm hDDp hDDm hf hAp hAm hdp hdm hth1 hth2 hth3 hAms hexp hWGp hLGp hWGm hLGm hI5p hI5m hDp hDm hBdp hBdm`. Establish `hNorm` using `hN P Wp Wq Wqp Wqm up up' um um' p pp pm f Ap Am ApPt AmPt b n₀ p₀ hzp hzp' hzm hzm' hAms`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hReg` using `Formalism.FourierDecayAlt.P.regularity_at_place p f b C₃ (2 * p₀ + n₀) (by linarith) hexp`. Establish `hPp` using `hPt Wp Wqp (shP P up up') pp (fpmSh pp f Ap p₀) Λ A₁ χ nnp Yp K N hΛ hK hKN hχ hnnp hDDp (ckOn_fpmSh pp p₀ hf hAp) hdp hth1 hth2 hth3 hWGp hLGp hI5p hDp hBdp`. Establish `hPm` using `hPt Wp Wqm (shP P um um') pm (fpmSh pm f Am p₀) Λ A₁ χ nnm Ym K N hΛ hK hKN hχ hnnm hDDm (ckOn_fpmSh pm p₀ hf hAm) hdm hth1 hth2 hth3 hWGm hLGm hI5m hDm hBdm`. Conclude with `hC₄ P Wp Wq Wqp Wqm up up' um um' p pp pm f _ _ b Λ 1 n₀ p₀ hb hΛ hΛb one_pos (by simp) hT hn₀ hp₀ (ttp_eq p pp hzp hzp') (ttp_eq p pm hzm hzm') hNorm hPp hPm hReg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thmBpAt_eq_limEvT (hA : P5.ThmPActual) (hN : NormAtShOfAmaps) (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ)
     (hC₀ : 1 / 2 ≤ C₀) :
@@ -135,11 +135,11 @@ theorem thmBpAt_eq_limEvT (hA : P5.ThmPActual) (hN : NormAtShOfAmaps) (Cb C₃ C
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Take `⟨C₄, c₃, Cc, Cc', h⟩` from `thmBpAt_eq_limEvT hA Formalism.FourierDecayAlt.P.CutBP2.normaliser_across_places Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Take `⟨Cn, hn⟩` from `limEvT_fpm_of_NF hA h1 h2 h3 h4 Cb`. Use `⟨C₄, c₃, Cc, Cc', Cn, ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq _ _ _ _ _ _ p f b n₀ S Λ A₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ hK hKN hχ hnnp hnnm hDDp hDDm hf hfA hth1 hth2 hth3 hth4 hN2 hexp hWGp hLGp hWGm hLGm hI5p hI5m hBdp hBdm`. Establish `hth4' : Cn * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ (A₀ - n₀) - (((2 * P.r + 2) * p₀ : ℕ) : ℝ)` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hLp : LimEvT S.pp χ (fpmSh S.pp f S.Ap p₀) Yp N`. Establish `e` using `fpmSh_eq_fpm S.pp f S.Ap p₀`. Establish `k` using `hn Wp S.Wqp (shP P S.up S.up') S.pp (fun g => (f g).comp (S.Ap g)) (A₀ - n₀) p₀ χ Yp N ⟨hχ, hDDp, ckOn_compSh hf (ckOn_of_polyOp S.polyP), inCC_compSh S.pp hfA S.polyP, hth4', hN2⟩`. Conclude with `Eq.mpr (congrArg (fun F => LimEvT S.pp χ F Yp N) e) k`. Establish `hLm : LimEvT S.pm χ (fpmSh S.pm f S.Am p₀) Ym N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `fpmSh_eq_fpm S.pm f S.Am p₀`. Establish `k` using `hn Wp S.Wqm (shP P S.um S.um') S.pm (fun g => (f g).comp (S.Am g)) (A₀ - n₀) p₀ χ Ym N ⟨hχ, hDDm, ckOn_compSh hf (ckOn_of_polyOp S.polyM), inCC_compSh S.pm hfA S.polyM, hth4', hN2⟩`. Conclude with `Eq.mpr (congrArg (fun F => LimEvT S.pm χ F Ym N) e) k`. Conclude with `h P Wp Wq S.Wqp S.Wqm S.up S.up' S.um S.um' p S.pp S.pm f S.Ap S.Am S.ApPt S.AmPt b Λ (A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) - n₀) n₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ S.hzp S.hzp' S.hzm S.hzm' hK hKN hχ hnnp hnnm hDDp hDDm hf (ckOn_of_polyOp S.polyP) (ckOn_of_polyOp S.po …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thmBpAt_eq_NF (hA : P5.ThmPActual) (h1 : NFTopFormAll) (h2 : NFTopPtwAll) (h3 : NFTopDomAll)
     (h4 : NFTopIdAll) (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :

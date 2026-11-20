@@ -11,9 +11,9 @@ open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formal
 namespace GlobalTheory.RowLaw
 
 /- English proof (translation)
-Introduce `i`. Establish `hc : ∀ n, PowerSeries.coeff n (δ i) = PowerSeries.coeff (m * n) (γ i)`. Introduce `n`. Rewrite using `[← h i, Formalism.L2.FormalSeriesBounds.coeff_subst_X_pow hm]`. Use `⟨?_, fun n => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, hc, mul_zero, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `(hγ i).1`. Rewrite using `[hc]`. Conclude with `(hγ i).2 _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCv_of_subst_X_pow {C : Type} [Field C] (V : VF C) {σ : Type} {m : ℕ} (hm : 0 < m)
     (δ γ : σ → PowerSeries C) (hγ : IsCv V γ)
@@ -30,7 +30,7 @@ theorem isCv_of_subst_X_pow {C : Type} [Field C] (V : VF C) {σ : Type} {m : ℕ
     exact (hγ i).2 _
 
 /- English proof (translation)
-Unfold `alongCv`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero hf) (MvPowerSeries.hasSubst_of_constantCoeff_zero hγ)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cvRoot_alongCv_comp {C : Type} [Field C] {σ τ : Type} [Finite σ] [Finite τ] {γ : τ → PowerSeries C}
     (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0) {f : σ → MvPowerSeries τ C}
@@ -41,7 +41,7 @@ theorem cvRoot_alongCv_comp {C : Type} [Field C] {σ τ : Type} [Finite σ] [Fin
     (MvPowerSeries.hasSubst_of_constantCoeff_zero hγ)]
 
 /- English proof (translation)
-Unfold `alongCv`. Conclude with `MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hγ) i`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cvRoot_alongCv_X {C : Type} [Field C] {τ : Type} [Finite τ] {γ : τ → PowerSeries C}
     (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0) (i : τ) :
@@ -50,17 +50,17 @@ theorem cvRoot_alongCv_X {C : Type} [Field C] {τ : Type} [Finite τ] {γ : τ �
   exact MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hγ) i
 
 /- English proof (translation)
-Introduce `C _ V d _ I _ κ _ X H g m hm a ha`. Take `⟨γ, lam, hγ, hlam, h1, h2⟩` from `ha`. Establish `hγ0 : ∀ i, PowerSeries.constantCoeff (γ i) = 0` using `fun i => (hγ i).1`. Establish `hτ : PowerSeries.constantCoeff ((PowerSeries.X : PowerSeries C) ^ m) = 0` using `by simp [hm.ne']`. Establish `hS` using `PowerSeries.HasSubst.of_constantCoeff_zero' hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlg : ∀ i, MvPowerSeries.constantCoeff (X.lg i) = 0`. Introduce `i`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, H.lin i 0 (by simp)]`. Simplify using the standard rewrite rules. Establish `h1' : ∀ i, alongCv γ (X.lg i) = PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ m) (a.1 i)` using `h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2' : ∀ q, PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ m) (a.2 q) = lam q - alongCv γ (X.sg (X.u (1 - g) q))` using `h2`. Establish `ha0 : ∀ i, PowerSeries.constantCoeff (a.1 i) = 0`. Introduce `i`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, ← Formalism.L2.FormalSeriesBounds.coeff_subst_X_pow hm, ← h1' i, mul_zero, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `Formalism.L2.FormalSeriesBounds.constantCoeff_subst_zero (τ := Unit) hγ0 (hlg i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : ∀ i, PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ m) (alongCv a.1 (X.ex i)) = γ i`. Introduce `i`. Rewrite using `[← alongCv_repar ha0 hτ]`. Establish `: (fun i => PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ m) (a.1 i)) = fun i => alongCv γ (X.lg i)` using `funext fun i => (h1' i).symm`. Rewrite using `[this, cvRoot_alongCv_comp hγ0 hlg, H.exlg, cvRoot_alongCv_X hγ0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcv : IsCv V (fun i => alongCv a.1 (X.ex i))` using `isCv_of_subst_X_pow V hm _ γ hγ hsub`. Use `⟨fun i => alongCv a.1 (X.ex i), fun q => a.2 q + alongCv (fun i => alongCv a.1 (X.ex i)) (X.sg (X.u (1 - g) q)), hcv, isCv_of_subst_X_pow V hm _ lam hlam ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q`. Rewrite using `[PowerSeries.subst_add hS, h2', ← alongCv_repar (fun i => (hcv i).1) hτ, funext hsub, sub_add_cancel]`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cvRoot_alongCv_comp ha0 H.exc, H.lgex, cvRoot_alongCv_X ha0]`. Introduce `q`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_Cv_of_subst_X_pow : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (κ : Type) [Fintype κ] (X : RawChart C d I κ), RLaw X V → ∀ g (m : ℕ), 0 < m → ∀ a : ((κ → PowerSeries C) × (JJ I g → PowerSeries C)), ((fun i => PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ m) (a.1 i), fun q => PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ m) (a.2 q)) : ((κ → PowerSeries C) × (JJ I g → PowerSeries C))) ∈ Cv X V g → a ∈ Cv X V g := by
   intro C _ V d _ I _ κ _ X H g m hm a ha

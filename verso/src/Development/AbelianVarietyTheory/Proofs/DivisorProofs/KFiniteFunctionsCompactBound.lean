@@ -26,7 +26,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Introduce `k hk m γ hγ hγK`. Apply the tactic sequence `have hH := hs k hk (m + 1) (Fin.snoc (α := fun _ => ℝ → GAd σ J) γ ζ) (fun i => by induction i using Fin.lastCases <;> simp [hζ, hγ]) (fun i s => by induction i using Fin.lastCases <;> simp [hζK, hγK])`. Use `contDiff_partial_last hH` as an intermediate fact. Simplify using `only [prod_ofFn_snoc, ← mul_assoc] at this`. Simplify `this` using `only [lineDer]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smooth_lineDer {K : Subgroup (GAd σ J)} {S : Set (GAd σ J)} {f : GAd σ J → ℂ}
     (hs : ∀ k ∈ S, ∀ (m : ℕ) (γ : Fin m → ℝ → GAd σ J), (∀ j, IsRealLine σ J (γ j)) → (∀ j s, γ j s ∈ K) →
@@ -43,9 +43,9 @@ theorem smooth_lineDer {K : Subgroup (GAd σ J)} {S : Set (GAd σ J)} {f : GAd �
   simpa only [lineDer] using this
 
 /- English proof (translation)
-Introduce `k hk`. Establish `h` using `(hs k hk 1 (fun _ => ζ) (fun _ => hζ) (fun _ => hζK)).comp (contDiff_pi.2 fun _ => contDiff_id : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t : ℝ => fun _ : Fin 1 => t)`. Establish `h'` using `(h.differentiable (by simp)) 0`. Establish `e : (fun t => f (k * ζ t)) = ((fun s : Fin 1 → ℝ => f (k * (List.ofFn fun i => (fun _ => ζ) i (s i)).prod)) ∘ fun t : ℝ => fun _ : Fin 1 => t)`. Use function extensionality and compare the values at `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `h'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableAt_of_smooth {K : Subgroup (GAd σ J)} {S : Set (GAd σ J)} {f : GAd σ J → ℂ}
     (hs : ∀ k ∈ S, ∀ (m : ℕ) (γ : Fin m → ℝ → GAd σ J), (∀ j, IsRealLine σ J (γ j)) → (∀ j s, γ j s ∈ K) →
@@ -62,9 +62,9 @@ theorem differentiableAt_of_smooth {K : Subgroup (GAd σ J)} {S : Set (GAd σ J)
   rw [e]; exact h'
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Use `⟨c, fun k hk => ?_⟩` and prove the remaining obligations. Use `congrFun hc ⟨k, hk⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[Finset.sum_apply, eq_comm]`. Introduce and unpack `⟨c, hc⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply, hc x x.2]`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mem_span_iff {S : Set (GAd σ J)} {e : ℕ} (b : Fin e → GAd σ J → ℂ) (g : GAd σ J → ℂ) :
     (fun x : S => g x) ∈ Submodule.span ℂ (Set.range fun j (x : S) => b j x) ↔
@@ -81,15 +81,13 @@ theorem mem_span_iff {S : Set (GAd σ J)} {e : ℕ} (b : Fin e → GAd σ J → 
     simp [Finset.sum_apply, hc x x.2]
 
 /- English proof (translation)
-Use `set V : Submodule ℂ (S → ℂ) := Submodule.span ℂ (Set.range fun j (x : S) => b j x) with hV`. Establish `hshift : ∀ t, (fun x : S => f (x * ζ t)) ∈ V`. Introduce `t`. Take `⟨c, hc⟩` from `hf`. Establish `hbj : ∀ j, (fun x : S => b j (x * ζ t)) ∈ V` using `fun j => (mem_span_iff b (fun x => b j (x * ζ t))).2 (hb j _ (hζK t))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (fun x : S => f (x * ζ t)) = ∑ j, c j • fun x : S => b j (x * ζ t)`. Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply, hc _ (hSK x x.2 _ (hζK t))]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hbj j)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ V := by`. Rewrite using `[hV]`. Apply the tactic sequence `first | exact FiniteDimensional.span_of_finite ℂ (Set.finite_range _) | exact Module.Finite.span_of_finite ℂ (Set.finite_range _)`. Establish `hclosed : IsClosed ((V.restrictScalars ℝ : Submodule ℝ (S → ℂ)) : Set (S → ℂ))` using `Submodule.closed_of_finiteDimensional V`. Establish `hslope : ∀ t : ℝ, (fun x : S => slope (fun t => f (x * ζ t)) 0 t) ∈ V.restrictScalars ℝ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `t`. Establish `: (fun x : S => slope (fun t => f (x * ζ t)) 0 t) = (t - 0)⁻¹ • ((fun x : S => f (x * ζ t)) - fun x : S => f (x * ζ 0))`. Use function extensionality and compare the values at `x`. Simplify using `[slope_def_module]`. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (hshift t) (hshift 0))`. Establish `hlim : Filter.Tendsto (fun t : ℝ => fun x : S => slope (fun t => f (x * ζ t)) 0 t) (𝓝[≠] (0 : ℝ)) (𝓝 fun x : S => lineDer ζ f x)` using `tendsto_pi_nhds.2 fun x => hasDerivAt_iff_tendsto_slope.1 (hd x x.2).hasDerivAt`. Establish `hmem : (fun x : S => lineDer ζ f x) ∈ V` using `hclosed.mem_of_tendsto hlim (Filter.Eventually.of_forall hslope)`. Conclude with `(mem_span_iff b _).1 hmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_lineDer {K : Subgroup (GAd σ J)} {S : Set (GAd σ J)} (hSK : ∀ k ∈ S, ∀ k' ∈ K, k * k' ∈ S)
     {e : ℕ} {b : Fin e → GAd σ J → ℂ} (hb : ∀ j, ∀ k' ∈ K, ∃ c : Fin e → ℂ, ∀ k ∈ S, b j (k * k') = ∑ l, c l * b l k)
@@ -124,13 +122,13 @@ theorem span_lineDer {K : Subgroup (GAd σ J)} {S : Set (GAd σ J)} (hSK : ∀ k
   exact (mem_span_iff b _).1 hmem
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ n J K S hS hSK e b hbc hb a ha hsa`. Establish `good : ∀ l : List (ℝ → GAd σ J), (∀ ζ ∈ l, IsRealLine σ J ζ ∧ ∀ s, ζ s ∈ K) → (∃ c : Fin e → ℂ, ∀ k ∈ S, l.foldr lineDer a k = ∑ j, c j * b j k) ∧ ∀ k ∈ S, ∀ (m : ℕ) (γ : Fin m → ℝ → GAd σ J), (∀ j, IsRealLine σ J (γ j)) → (∀ j s, γ j s ∈ K) → ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f …`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `⟨ha, hsa⟩`. Consider the case `cons ζ l ih`. Introduce `hl`. Take `⟨hζ, hζK⟩` from `hl ζ List.mem_cons_self`. Take `⟨h1, h2⟩` from `ih fun ζ' h => hl ζ' (List.mem_cons_of_mem _ h)`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨span_lineDer hSK hb h1 hζK (differentiableAt_of_smooth h2 hζ hζK), smooth_lineDer h2 hζ hζK⟩`. Introduce `l hl`. Take `⟨⟨c, hc⟩, hs⟩` from `good l hl`. Use `⟨?_, fun ζ hζ hζK k hk => differentiableAt_of_smooth hs hζ hζK k hk⟩` and prove the remaining obligations. Establish `hcont : ContinuousOn (fun k => ∑ j, c j * b j k) S` using `continuousOn_finset_sum _ fun j _ => continuousOn_const.mul (hbc j)`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `hS.exists_bound_of_continuousOn hcont`. Conclude with `⟨C, fun k hk => by rw [hc k hk]; exact hC k hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bounded_differentiable_foldr_lineDer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (K : Subgroup (GAd σ J)) (S : Set (GAd σ J)), IsCompact S → (∀ k ∈ S, ∀ k' ∈ K, k * k' ∈ S) →

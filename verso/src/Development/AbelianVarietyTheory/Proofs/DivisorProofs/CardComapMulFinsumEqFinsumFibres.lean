@@ -6,17 +6,17 @@ open scoped Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : Fintype G₀ := Fintype.ofFinite G₀`. Use `haveI : Fintype G := Fintype.ofFinite G`. Establish `inner : ∀ k : G₀, ∑ᶠ p : H, T (ι k * p) = ∑ y : G, if (ι k)⁻¹ * y ∈ H then T y else 0`. Introduce `k`. Rewrite using `[finsum_eq_sum_of_fintype]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft (ι k))]`. Simplify using `only [Equiv.coe_mulLeft, inv_mul_cancel_left]`. Rewrite using `[← Finset.sum_filter]`. Conclude with `Finset.sum_subtype (Finset.univ.filter (fun x : G => x ∈ H)) (by simp) (fun x => T (ι k * x))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcount : ∀ y, T y ≠ 0 → ∑ k : G₀, (if (ι k)⁻¹ * y ∈ H then (1 : ℂ) else 0) = Nat.card (H.comap ι)`. Introduce `y hy`. Take `⟨k₀, p₀, hp₀, rfl⟩` from `hT y hy`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft k₀)]`. Simplify using `only [Equiv.coe_mulLeft, map_mul, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ m : G₀, ((ι m)⁻¹ * p₀ ∈ H ↔ m ∈ H.comap ι)`. Introduce `m`. Rewrite using `[Subgroup.mem_comap, ← H.inv_mem_iff (x := ι m), H.mul_mem_cancel_right hp₀]`. Simplify using `only [key]`. Rewrite using `[Finset.sum_boole, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Simplify using `only [inner]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun y _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : T y = 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hy]`. Rewrite using `[← hcount y hy, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fibre_count_comap_mul (G₀ G : Type) [Group G₀] [Group G] [Finite G₀] [Finite G]
     (ι : G₀ →* G) (H : Subgroup G) (T : G → ℂ)

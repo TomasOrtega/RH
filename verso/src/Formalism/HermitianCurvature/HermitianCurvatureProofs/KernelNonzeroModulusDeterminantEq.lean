@@ -15,17 +15,17 @@ variable {V W : Type} [AddCommGroup V] [AddCommGroup W]
 def gi (A B : AddSubgroup V) : ℝ := (B.relIndex A : ℝ) / (A.relIndex B : ℝ)
 
 /- English proof (translation)
-Simplify using `[gi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gi_self (A : AddSubgroup V) : gi A A = 1 := by
   simp [gi]
 
 /- English proof (translation)
-Establish `e1 : D.relIndex (A ⊓ B) * B.relIndex A = D.relIndex A`. Establish `h` using `AddSubgroup.relIndex_inf_mul_relIndex (H := D) (K := B) (L := A)`. Rewrite `h` using `[inf_eq_left.mpr hB, inf_comm]`. Conclude with `h`. Establish `e2 : D.relIndex (A ⊓ B) * A.relIndex B = D.relIndex B`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `AddSubgroup.relIndex_inf_mul_relIndex (H := D) (K := A) (L := B)`. Rewrite `h` using `[inf_eq_left.mpr hA]`. Conclude with `h`. Establish `hc : D.relIndex (A ⊓ B) ≠ 0` using `fun h0 => hDA (by rw [← e1, h0, zero_mul])`. Unfold `gi`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← e1, ← e2]`. Use `push_cast`. Rewrite using `[mul_div_mul_left _ _ (Nat.cast_ne_zero.mpr hc)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gi_of_le {A B D : AddSubgroup V} (hA : D ≤ A) (hB : D ≤ B) (hDA : D.relIndex A ≠ 0)
     (hDB : D.relIndex B ≠ 0) : gi A B = (D.relIndex A : ℝ) / (D.relIndex B : ℝ) := by
@@ -44,7 +44,7 @@ theorem gi_of_le {A B D : AddSubgroup V} (hA : D ≤ A) (hB : D ≤ B) (hDA : D.
   rw [mul_div_mul_left _ _ (Nat.cast_ne_zero.mpr hc)]
 
 /- English proof (translation)
-Unfold `gi`. Rewrite using `[← AddSubgroup.relIndex_comap, ← AddSubgroup.relIndex_comap, AddSubgroup.comap_map_eq_self_of_injective hf, AddSubgroup.comap_map_eq_self_of_injective hf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gi_map {f : V →+ W} (hf : Function.Injective f) (A B : AddSubgroup V) :
     gi (A.map f) (B.map f) = gi A B := by
@@ -53,9 +53,9 @@ theorem gi_map {f : V →+ W} (hf : Function.Injective f) (A B : AddSubgroup V) 
     AddSubgroup.comap_map_eq_self_of_injective hf, AddSubgroup.comap_map_eq_self_of_injective hf]
 
 /- English proof (translation)
-Establish `e : H.addSubgroupOf K = H'.addSubgroupOf K`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_addSubgroupOf]`. Conclude with `h x x.2`. Unfold `AddSubgroup.relIndex`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`.
+A detailed English derivation is pending.
 -/
 private theorem relIndex_eq_of_mem_iff {H H' K : AddSubgroup V} (h : ∀ v ∈ K, v ∈ H ↔ v ∈ H') :
     H.relIndex K = H'.relIndex K := by
@@ -67,9 +67,9 @@ private theorem relIndex_eq_of_mem_iff {H H' K : AddSubgroup V} (h : ∀ v ∈ K
   rw [e]
 
 /- English proof (translation)
-Substitute `h3 h4` using the available equality. Unfold `gi`. Rewrite using `[← AddSubgroup.relIndex_comap, ← AddSubgroup.relIndex_comap]`. Establish `k1 : ((L.map f).comap f).relIndex A = L.relIndex A` using `relIndex_eq_of_mem_iff fun v hv => by rw [AddSubgroup.mem_comap, h2 v hv]`. Establish `k2 : ((A.map f).comap f).relIndex L = A.relIndex L` using `relIndex_eq_of_mem_iff fun v hv => by rw [AddSubgroup.mem_comap, h1 v hv]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[k1, k2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gi_comap (f : V →+ W) (A L : AddSubgroup V) (A' L' : AddSubgroup W)
     (h1 : ∀ v ∈ L, v ∈ A ↔ f v ∈ A') (h2 : ∀ v ∈ A, v ∈ L ↔ f v ∈ L')
@@ -90,7 +90,7 @@ structure Lat (A : AddSubgroup V) : Prop where
   cp : IsCompact (A : Set V)
 
 /- English proof (translation)
-Use `haveI : CompactSpace A := isCompact_iff_compactSpace.mp hA`. Establish `ho : IsOpen ((U.addSubgroupOf A : AddSubgroup A) : Set A)` using `hU.preimage continuous_subtype_val`. Use `haveI := AddSubgroup.quotient_finite_of_isOpen (U.addSubgroupOf A) ho`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero {U A : AddSubgroup V} (hU : IsOpen (U : Set V))
     (hA : IsCompact (A : Set V)) : U.relIndex A ≠ 0 := by
@@ -101,7 +101,7 @@ theorem relIndex_ne_zero {U A : AddSubgroup V} (hU : IsOpen (U : Set V))
   exact AddSubgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Unfold `gi`. Establish `h1 : B.relIndex A ≠ 0` using `relIndex_ne_zero hB.op hA.cp`. Establish `h2 : A.relIndex B ≠ 0` using `relIndex_ne_zero hA.op hB.cp`. Conclude with `div_pos (Nat.cast_pos.mpr (Nat.pos_of_ne_zero h1)) (Nat.cast_pos.mpr (Nat.pos_of_ne_zero h2))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gi_pos {A B : AddSubgroup V} (hA : Lat A) (hB : Lat B) : 0 < gi A B := by
   unfold gi
@@ -110,9 +110,9 @@ theorem gi_pos {A B : AddSubgroup V} (hA : Lat A) (hB : Lat B) : 0 < gi A B := b
   exact div_pos (Nat.cast_pos.mpr (Nat.pos_of_ne_zero h1)) (Nat.cast_pos.mpr (Nat.pos_of_ne_zero h2))
 
 /- English proof (translation)
-Establish `hD : IsOpen ((A ⊓ B ⊓ C : AddSubgroup V) : Set V)`. Simplify using `only [AddSubgroup.coe_inf]`. Conclude with `(hA.op.inter hB.op).inter hC.op`. Rewrite using `[gi_of_le (D := A ⊓ B ⊓ C) (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right) (relIndex_ne_zero hD hA.cp) (relIndex_ne_zero hD hB.cp), gi_of_le (D := A ⊓ B ⊓ C) (inf_le_left.trans inf_le_right) inf_le_right (relIndex_ne_zero hD hB.cp) (relIndex_ne_zero hD hC.cp), gi …`. Establish `hb : ((A ⊓ B ⊓ C).relIndex B : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (relIndex_ne_zero hD hB.cp)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_div_comm, mul_comm ((A ⊓ B ⊓ C).relIndex B : ℝ), mul_div_mul_right _ _ hb]`.
+A detailed English derivation is pending.
 -/
 theorem gi_trans {A B C : AddSubgroup V} (hA : Lat A) (hB : Lat B) (hC : Lat C) :
     gi A B * gi B C = gi A C := by
@@ -140,7 +140,7 @@ Both sides reduce to the same expression.
 theorem modK_eq (x : K) : modK R x = gi (mulR R x) R.toAddSubgroup := rfl
 
 /- English proof (translation)
-Establish `h : mulR R (1 : K) = R.toAddSubgroup`. Use extensionality with `x`. Simplify using `[mulR]`. Rewrite using `[modK_eq, h, gi_self]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem modK_one : modK R (1 : K) = 1 := by
   have h : mulR R (1 : K) = R.toAddSubgroup := by
@@ -149,9 +149,9 @@ theorem modK_one : modK R (1 : K) = 1 := by
   rw [modK_eq, h, gi_self]
 
 /- English proof (translation)
-Establish `h : mulR R (-x) = mulR R x`. Use extensionality with `y`. Simplify using `only [mulR, AddSubgroup.mem_map, AddMonoidHom.coe_mulLeft, Subring.mem_toAddSubgroup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨-r, R.neg_mem hr, by ring⟩`. Introduce and unpack `⟨r, hr, rfl⟩`. Conclude with `⟨-r, R.neg_mem hr, by ring⟩`. Simplify using `only [modK_eq, h]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem modK_neg (x : K) : modK R (-x) = modK R x := by
   have h : mulR R (-x) = mulR R x := by
@@ -167,18 +167,16 @@ theorem modK_neg (x : K) : modK R (-x) = modK R x := by
 variable [TopologicalSpace K] [IsTopologicalRing K]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ho, hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem lat_R (ho : IsOpen (R : Set K)) (hc : IsCompact (R : Set K)) : Lat R.toAddSubgroup := ⟨ho, hc⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h : ((mulR R (x : K)) : Set K) = (fun y => ((x⁻¹ : Kˣ) : K) * y) ⁻¹' (R : Set K)`. Use extensionality with `y`. Simplify using `only [mulR, AddSubgroup.coe_map, Set.mem_image, Set.mem_preimage, SetLike.mem_coe, AddMonoidHom.coe_mulLeft, Subring.coe_toAddSubgroup]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨r, hr, rfl⟩`. Simplify using `using hr`. Introduce `hy`. Conclude with `⟨_, hy, by simp⟩`. Rewrite using `[h]`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ho.preimage (continuous_mul_left _)`. Establish `h : ((mulR R (x : K)) : Set K) = (fun y => (x : K) * y) '' (R : Set K)`. Use extensionality with `y`. Simplify using `[mulR]`. Rewrite using `[h]`.
-
-Conclude with `hc.image (continuous_mul_left _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_mulR (ho : IsOpen (R : Set K)) (hc : IsCompact (R : Set K)) (x : Kˣ) :
     Lat (mulR R (x : K)) := by
@@ -201,7 +199,7 @@ theorem lat_mulR (ho : IsOpen (R : Set K)) (hc : IsCompact (R : Set K)) (x : Kˣ
     exact hc.image (continuous_mul_left _)
 
 /- English proof (translation)
-Rewrite using `[modK_eq]`. Conclude with `gi_pos (lat_mulR ho hc x) (lat_R ho hc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modK_pos (ho : IsOpen (R : Set K)) (hc : IsCompact (R : Set K)) (x : Kˣ) :
     0 < modK R (x : K) := by
@@ -209,9 +207,9 @@ theorem modK_pos (ho : IsOpen (R : Set K)) (hc : IsCompact (R : Set K)) (x : Kˣ
   exact gi_pos (lat_mulR ho hc x) (lat_R ho hc)
 
 /- English proof (translation)
-Establish `hf : Function.Injective (AddMonoidHom.mulLeft (x : K))` using `fun a b h => (Units.mul_right_inj x).mp h`. Establish `e1 : (mulR R (y : K)).map (AddMonoidHom.mulLeft (x : K)) = mulR R ((x : K) * (y : K))`. Use extensionality with `z`. Simplify using `[mulR, mul_assoc]`. Establish `h1` using `gi_trans (lat_mulR ho hc (x * y)) (lat_mulR ho hc x) (lat_R ho hc)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[Units.val_mul]`. Establish `h2 : gi (mulR R ((x : K) * (y : K))) (mulR R (x : K)) = gi (mulR R (y : K)) R.toAddSubgroup`. Rewrite using `[← e1, show mulR R (x : K) = R.toAddSubgroup.map (AddMonoidHom.mulLeft (x : K)) from rfl, gi_map hf]`. Simplify using `only [modK_eq]`. Rewrite using `[← h1, h2, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem modK_mul (ho : IsOpen (R : Set K)) (hc : IsCompact (R : Set K)) (x y : Kˣ) :
     modK R ((x : K) * (y : K)) = modK R (x : K) * modK R (y : K) := by
@@ -246,7 +244,7 @@ def LL (R : Subring K) (ι : Type) : AddSubgroup (ι → K) :=
   AddSubgroup.pi Set.univ (fun _ => R.toAddSubgroup)
 
 /- English proof (translation)
-Simplify using `[LL, AddSubgroup.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_LL {v : ι → K} : v ∈ LL R ι ↔ ∀ i, v i ∈ R := by
   simp [LL, AddSubgroup.mem_pi]
@@ -254,7 +252,7 @@ theorem mem_LL {v : ι → K} : v ∈ LL R ι ↔ ∀ i, v i ∈ R := by
 def dl (R : Subring K) (M : Matrix ι ι K) : ℝ := gi ((LL R ι).map (mv M)) (LL R ι)
 
 /- English proof (translation)
-Introduce `v w hvw`. Establish `h' : M *ᵥ v = M *ᵥ w` using `by simpa using hvw`. Establish `h''` using `congrArg (fun u => M⁻¹ *ᵥ u) h'`. Simplify `h''` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mv_injective {M : Matrix ι ι K} (h : IsUnit M.det) : Function.Injective (mv M) := by
   intro v w hvw
@@ -263,7 +261,7 @@ theorem mv_injective {M : Matrix ι ι K} (h : IsUnit M.det) : Function.Injectiv
   simpa [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ h] using h''
 
 /- English proof (translation)
-Rewrite using `[AddSubgroup.map_map]`. Use `congr 1`. Use `AddMonoidHom.ext fun v => ?_` and prove the remaining obligations. Simplify using `[Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem map_mv_mul (M N : Matrix ι ι K) (A : AddSubgroup (ι → K)) :
     A.map (mv (M * N)) = (A.map (mv N)).map (mv M) := by
@@ -273,9 +271,9 @@ theorem map_mv_mul (M N : Matrix ι ι K) (A : AddSubgroup (ι → K)) :
   simp [Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨v, hv, rfl⟩` from `AddSubgroup.mem_map.mp hx`. Rewrite `hv`, the goal using `[mem_LL]`. Introduce `i`. Simplify using `only [mv_apply, Matrix.mulVec, dotProduct]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `R.sum_mem fun j _ => R.mul_mem (hM i j) (hv j)`.
+A detailed English derivation is pending.
 -/
 theorem map_le_of_int {M : Matrix ι ι K} (hM : ∀ i j, M i j ∈ R) :
     (LL R ι).map (mv M) ≤ LL R ι := by
@@ -287,9 +285,9 @@ theorem map_le_of_int {M : Matrix ι ι K} (hM : ∀ i j, M i j ∈ R) :
   exact R.sum_mem fun j _ => R.mul_mem (hM i j) (hv j)
 
 /- English proof (translation)
-Establish `h1` using `map_le_of_int (ι := ι) hM`. Establish `h2 : LL R ι ≤ (LL R ι).map (mv M)`. Introduce `v hv`. Use `AddSubgroup.mem_map.mpr ⟨N *ᵥ v, ?_, ?_⟩` and prove the remaining obligations. Conclude with `map_le_of_int hN (AddSubgroup.mem_map.mpr ⟨v, hv, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec_mulVec, hMN]`. Unfold `dl`. Rewrite using `[le_antisymm h1 h2, gi_self]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dl_eq_one {M N : Matrix ι ι K} (hMN : M * N = 1) (hM : ∀ i j, M i j ∈ R)
     (hN : ∀ i j, N i j ∈ R) : dl R M = 1 := by
@@ -305,9 +303,9 @@ theorem dl_eq_one {M N : Matrix ι ι K} (hMN : M * N = 1) (hM : ∀ i j, M i j 
 variable [TopologicalSpace K] [IsTopologicalRing K]
 
 /- English proof (translation)
-Establish `e : ((LL R ι : AddSubgroup (ι → K)) : Set (ι → K)) = Set.pi Set.univ (fun _ => (R : Set K))`. Use extensionality with `v`. Simplify using `[mem_LL]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => ho`. Rewrite using `[e]`. Conclude with `isCompact_univ_pi fun _ => hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_LL (ho : IsOpen (R : Set K)) (hc : IsCompact (R : Set K)) : Lat (LL R ι) := by
   have e : ((LL R ι : AddSubgroup (ι → K)) : Set (ι → K)) = Set.pi Set.univ (fun _ => (R : Set K)) := by
@@ -320,13 +318,11 @@ theorem lat_LL (ho : IsOpen (R : Set K)) (hc : IsCompact (R : Set K)) : Lat (LL 
     exact isCompact_univ_pi fun _ => hc
 
 /- English proof (translation)
-Establish `ht : ((A.map (mv M) : AddSubgroup (ι → K)) : Set (ι → K)) = (fun v => M⁻¹ *ᵥ v) ⁻¹' (A : Set (ι → K))`. Use extensionality with `v`. Simplify using `only [AddSubgroup.coe_map, Set.mem_image, Set.mem_preimage, SetLike.mem_coe, mv_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify `hu` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ h]`. Introduce `hv`. Conclude with `⟨_, hv, by simp [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ h]⟩`. Establish `hi : ((A.map (mv M) : AddSubgroup (ι → K)) : Set (ι → K)) = (fun v => M *ᵥ v) '' (A : Set (ι → K))`. Use extensionality with `v`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[mv_apply]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[ht]`. Conclude with `hA.op.preimage (continuous_const.matrix_mulVec continuous_id)`. Rewrite using `[hi]`.
-
-Conclude with `hA.cp.image (continuous_const.matrix_mulVec continuous_id)`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_map {M : Matrix ι ι K} (h : IsUnit M.det) {A : AddSubgroup (ι → K)} (hA : Lat A) :
     Lat (A.map (mv M)) := by
@@ -350,7 +346,7 @@ theorem lat_map {M : Matrix ι ι K} (h : IsUnit M.det) {A : AddSubgroup (ι →
     exact hA.cp.image (continuous_const.matrix_mulVec continuous_id)
 
 /- English proof (translation)
-Unfold `dl`. Rewrite using `[map_mv_mul, ← gi_trans (lat_map hM (lat_map hN hL)) (lat_map hM hL) hL, gi_map (mv_injective hM), mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dl_mul (hL : Lat (LL R ι)) {M N : Matrix ι ι K} (hM : IsUnit M.det) (hN : IsUnit N.det) :
     dl R (M * N) = dl R M * dl R N := by
@@ -359,7 +355,7 @@ theorem dl_mul (hL : Lat (LL R ι)) {M N : Matrix ι ι K} (hM : IsUnit M.det) (
     gi_map (mv_injective hM), mul_comm]
 
 /- English proof (translation)
-Unfold `dl`. Conclude with `gi_pos (lat_map hM hL) hL`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dl_pos (hL : Lat (LL R ι)) {M : Matrix ι ι K} (hM : IsUnit M.det) : 0 < dl R M := by
   unfold dl
@@ -383,7 +379,7 @@ def evR : (ι ⊕ Unit → K) →+ K where
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Simplify using `[Matrix.fromBlocks_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockL_mulVec (S : Matrix ι ι K) (w : ι ⊕ Unit → K) :
     fromBlocks S 0 0 (1 : Matrix Unit Unit K) *ᵥ w =
@@ -391,9 +387,9 @@ theorem blockL_mulVec (S : Matrix ι ι K) (w : ι ⊕ Unit → K) :
   simp [Matrix.fromBlocks_mulVec]
 
 /- English proof (translation)
-Rewrite using `[Matrix.fromBlocks_mulVec]`. Simplify using `only [Matrix.one_mulVec, Matrix.zero_mulVec, add_zero, zero_add]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Consider the cases of `u`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Simplify using `[Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockR_mulVec (D : Matrix Unit Unit K) (w : ι ⊕ Unit → K) :
     fromBlocks (1 : Matrix ι ι K) 0 0 D *ᵥ w =
@@ -406,35 +402,31 @@ theorem blockR_mulVec (D : Matrix Unit Unit K) (w : ι ⊕ Unit → K) :
   simp [Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Unfold `dl`. Establish `hB : ∀ w : ι ⊕ Unit → K, mv (fromBlocks S 0 0 (1 : Matrix Unit Unit K)) w = Sum.elim (S *ᵥ (w ∘ Sum.inl)) (w ∘ Sum.inr)` using `fun w => by`. Rewrite using `[mv_apply, blockL_mulVec]`. Establish `hres : ∀ w : ι ⊕ Unit → K, resL w = w ∘ Sum.inl` using `fun w => rfl`. Use `gi_comap resL _ _ _ _ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Rewrite `hv` using `[mem_LL]`. Prove the components needed by the constructor for the conclusion. Introduce `hA`. Take `⟨x, hx, rfl⟩` from `AddSubgroup.mem_map.mp hA`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `AddSubgroup.mem_map.mpr ⟨x ∘ Sum.inl, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_LL]`. Introduce `i`. Conclude with `hx (Sum.inl i)`. Rewrite using `[hres, hB, Sum.elim_comp_inl, mv_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hA`. Take `⟨y, hy, hyv⟩` from `AddSubgroup.mem_map.mp hA`. Use `AddSubgroup.mem_map.mpr ⟨Sum.elim y (v ∘ Sum.inr), ?_, ?_⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[mem_LL]`. Introduce and unpack `(i | u)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy i`. Conclude with `hv (Sum.inr u)`. Rewrite using `[hB]`. Use function extensionality and compare the values at `j`. Break down `j with i | u` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `congrFun hyv i`. Rewrite `h` using `[mv_apply, hres]`. Simplify using `using h`. Both sides reduce to the same expression. Introduce `v hA`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, rfl⟩` from `AddSubgroup.mem_map.mp hA`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h`, the goal using `[mem_LL]`. Introduce `i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h (Sum.inl i)`. Introduce `h`. Rewrite `h`, `hx`, the goal using `[mem_LL]`. Introduce and unpack `(i | u)`. Conclude with `h i`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hB]`. Conclude with `hx (Sum.inr u)`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨w, hw, rfl⟩` from `AddSubgroup.mem_map.mp hu`. Rewrite `hw`, the goal using `[mem_LL]`. Introduce `i`. Conclude with `hw (Sum.inl i)`. Introduce `hu`.
+Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `AddSubgroup.mem_map.mpr ⟨Sum.elim u 0, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hu`, the goal using `[mem_LL]`. Introduce and unpack `(i | j)`. Conclude with `hu i`. Conclude with `R.zero_mem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Take `⟨w, hw, rfl⟩` from `AddSubgroup.mem_map.mp hu`. Take `⟨x, hx, rfl⟩` from `AddSubgroup.mem_map.mp hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `AddSubgroup.mem_map.mpr ⟨x ∘ Sum.inl, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_LL]`. Introduce `i`. Conclude with `hx (Sum.inl i)`. Rewrite using `[hres, hB, Sum.elim_comp_inl, mv_apply]`.
-
-Introduce `hu`. Take `⟨y, hy, rfl⟩` from `AddSubgroup.mem_map.mp hu`. Use `AddSubgroup.mem_map.mpr ⟨mv (fromBlocks S 0 0 (1 : Matrix Unit Unit K)) (Sum.elim y 0), AddSubgroup.mem_map.mpr ⟨Sum.elim y 0, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[mem_LL]`. Introduce and unpack `(i | j)`.
-
-Conclude with `hy i`. Conclude with `R.zero_mem`. Rewrite using `[hres, hB, Sum.elim_comp_inl, Sum.elim_comp_inl, mv_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dl_blockL (S : Matrix ι ι K) :
     dl R (fromBlocks S 0 0 (1 : Matrix Unit Unit K)) = dl R S := by
@@ -516,27 +508,23 @@ theorem dl_blockL (S : Matrix ι ι K) :
       · rw [hres, hB, Sum.elim_comp_inl, Sum.elim_comp_inl, mv_apply]
 
 /- English proof (translation)
-Unfold `dl`. Rewrite using `[modK_eq]`. Establish `hB : ∀ w : ι ⊕ Unit → K, mv (fromBlocks (1 : Matrix ι ι K) 0 0 D) w = Sum.elim (w ∘ Sum.inl) (fun _ => D () () * w (Sum.inr ()))` using `fun w => by`. Rewrite using `[mv_apply, blockR_mulVec]`. Establish `hev : ∀ w : ι ⊕ Unit → K, evR w = w (Sum.inr ())` using `fun w => rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `gi_comap evR _ _ _ _ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `v hv`. Rewrite `hv` using `[mem_LL]`. Prove the components needed by the constructor for the conclusion. Introduce `hA`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, rfl⟩` from `AddSubgroup.mem_map.mp hA`. Rewrite using `[hev, hB]`. Conclude with `AddSubgroup.mem_map.mpr ⟨x (Sum.inr ()), mem_LL.mp hx _, rfl⟩`. Introduce `hA`. Take `⟨r, hr, hrv⟩` from `AddSubgroup.mem_map.mp hA`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `AddSubgroup.mem_map.mpr ⟨Sum.elim (v ∘ Sum.inl) (fun _ => r), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_LL]`. Introduce and unpack `(i | u)`. Conclude with `hv _`. Conclude with `hr`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hB]`. Use function extensionality and compare the values at `j`. Break down `j with i | u` into its components or cases. Both sides reduce to the same expression. Conclude with `hrv`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hA`. Take `⟨x, hx, rfl⟩` from `AddSubgroup.mem_map.mp hA`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(mem_LL.mp h) (Sum.inr ())`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Introduce `h`. Rewrite using `[mem_LL]`. Introduce and unpack `(i | u)`. Rewrite using `[hB]`. Conclude with `mem_LL.mp hx (Sum.inl i)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `h`. Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce `hr`. Take `⟨w, hw, rfl⟩` from `AddSubgroup.mem_map.mp hr`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `mem_LL.mp hw (Sum.inr ())`. Introduce `hr`. Conclude with `AddSubgroup.mem_map.mpr ⟨fun _ => r, mem_LL.mpr fun _ => hr, rfl⟩`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `hz`. Take `⟨w, hw, rfl⟩` from `AddSubgroup.mem_map.mp hz`. Take `⟨x, hx, rfl⟩` from `AddSubgroup.mem_map.mp hw`. Apply the tactic sequence `exact AddSubgroup.mem_map.mpr ⟨x (Sum.inr ()), mem_LL.mp hx _, by rw [hev, hB] <;> rfl⟩`. Introduce `hz`.
-
-Take `⟨r, hr, rfl⟩` from `AddSubgroup.mem_map.mp hz`. Apply the tactic sequence `exact AddSubgroup.mem_map.mpr ⟨mv (fromBlocks (1 : Matrix ι ι K) 0 0 D) (fun _ => r), AddSubgroup.mem_map.mpr ⟨fun _ => r, mem_LL.mpr fun _ => hr, rfl⟩, by rw [hev, hB] <;> rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dl_blockR (D : Matrix Unit Unit K) :
     dl R (fromBlocks (1 : Matrix ι ι K) 0 0 D) = modK R (D () ()) := by
@@ -596,19 +584,17 @@ theorem dl_blockR (D : Matrix Unit Unit K) :
         AddSubgroup.mem_map.mpr ⟨fun _ => r, mem_LL.mpr fun _ => hr, rfl⟩, by rw [hev, hB] <;> rfl⟩
 
 /- English proof (translation)
-Unfold `dl`. Set `f : (ι → K) →+ (κ → K)` to `{ toFun := fun u => u ∘ e.symm, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hf_apply : ∀ u, f u = u ∘ e.symm` using `fun u => rfl`. Establish `hf : Function.Injective f` using `fun a b h => by`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun h (e i)` as an intermediate fact. Simplify `this` using `[hf_apply]`. Establish `hL : (LL R ι).map f = LL R κ`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hv`. Take `⟨u, hu, rfl⟩` from `AddSubgroup.mem_map.mp hv`. Rewrite `hu`, the goal using `[mem_LL]`. Introduce `k`. Rewrite using `[hf_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu _`. Introduce `hv`. Use `AddSubgroup.mem_map.mpr ⟨v ∘ e, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[mem_LL]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv _`. Rewrite using `[hf_apply]`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Establish `hM : ((LL R ι).map (mv M)).map f = (LL R κ).map (mv (reindex e e M))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hL, AddSubgroup.map_map, AddSubgroup.map_map]`. Use `congr 1`. Use `AddMonoidHom.ext fun u => ?_` and prove the remaining obligations. Simplify using `only [AddMonoidHom.comp_apply, mv_apply, hf_apply]`. Apply the tactic sequence `rw [Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv] <;> simp [Function.comp_assoc]`.
-
-Rewrite using `[← hM, ← hL, gi_map hf]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dl_reindex (e : ι ≃ κ) (M : Matrix ι ι K) : dl R (reindex e e M) = dl R M := by
   unfold dl
@@ -651,15 +637,15 @@ section Elim
 variable {K : Type} [CommRing K]
 
 /- English proof (translation)
-Take `⟨n, y, hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd a (1 : K)`. Establish `hy' : a ^ (n + 1) * y = a ^ n` using `by simpa using hy`. Establish `hz : a * a * y = a`. Establish `h1 : a ^ n * (a * (1 - a * y)) = 0`. Establish `e : a ^ n * (a * (1 - a * y)) = a ^ (n + 1) - a * (a ^ (n + 1) * y)` using `by ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, hy']`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (a * (1 - a * y)) ^ (n + 1) = 0`. Establish `e : (a * (1 - a * y)) ^ (n + 1) = a ^ n * (a * (1 - a * y)) * (1 - a * y) ^ n`. Rewrite using `[mul_pow, pow_succ, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, h1, zero_mul]`. Establish `h3 : a * (1 - a * y) = 0` using `IsReduced.eq_zero _ ⟨n + 1, h2⟩`. Take the linear combination `(-1 : K) * h3`. Use `⟨1 - a * y, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : a + (1 - a * y) * b = a + 1 - a * y`. Establish `hb : b = 1 - a * x` using `by linear_combination h`. Rewrite using `[hb]`. Take the linear combination `x * hz`. Rewrite using `[key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨a + 1 - a * y, a * y * y + 1 - a * y, by linear_combination (2 * y - y ^ 2 - 1) * hz, by linear_combination (2 * y - y ^ 2 - 1) * hz⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem sr1 [IsArtinianRing K] [IsReduced K] (a b x : K) (h : a * x + b = 1) :
     ∃ c, IsUnit (a + c * b) := by
@@ -687,9 +673,7 @@ theorem sr1 [IsArtinianRing K] [IsReduced K] (a b x : K) (h : a * x + b = 1) :
     by linear_combination (2 * y - y ^ 2 - 1) * hz⟩, rfl⟩
 
 /- English proof (translation)
-Use `choose g hg using fun a => h (f a)`. Use `⟨∑ a, g a, fun a => ?_⟩` and prove the remaining obligations. Establish `hle : g a ≤ ∑ b, g b` using `Finset.single_le_sum (fun b _ => Nat.zero_le (g b)) (Finset.mem_univ a)`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite using `[hk, pow_add, mul_comm (ϖ ^ g a) (ϖ ^ k), mul_assoc]`.
-
-Conclude with `R.mul_mem (R.pow_mem hϖ k) (hg a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mem {R : Subring K} {ϖ : K} (hϖ : ϖ ∈ R) (h : ∀ x : K, ∃ m : ℕ, ϖ ^ m * x ∈ R)
     {α : Type} [Fintype α] (f : α → K) : ∃ m : ℕ, ∀ a, ϖ ^ m * f a ∈ R := by
@@ -703,7 +687,7 @@ theorem exists_pow_mem {R : Subring K} {ϖ : K} (hϖ : ϖ ∈ R) (h : ∀ x : K,
 variable {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] {R : Subring K}
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Apply the tactic sequence `simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.one_apply, Matrix.zero_apply] <;>`. Apply the tactic sequence `(try split_ifs) <;>`. Apply the tactic sequence `first | exact R.one_mem | exact R.zero_mem | exact hs _`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem int_lower {s : Matrix Unit ι K} (hs : ∀ i, s () i ∈ R) (a b : ι ⊕ Unit) :
     (fromBlocks (1 : Matrix ι ι K) 0 s (1 : Matrix Unit Unit K)) a b ∈ R := by
@@ -714,7 +698,7 @@ theorem int_lower {s : Matrix Unit ι K} (hs : ∀ i, s () i ∈ R) (a b : ι �
     first | exact R.one_mem | exact R.zero_mem | exact hs _
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Apply the tactic sequence `simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.one_apply, Matrix.zero_apply] <;>`. Apply the tactic sequence `(try split_ifs) <;>`. Apply the tactic sequence `first | exact R.one_mem | exact R.zero_mem | exact hs _`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem int_upper {s : Matrix ι Unit K} (hs : ∀ i, s i () ∈ R) (a b : ι ⊕ Unit) :
     (fromBlocks (1 : Matrix ι ι K) s 0 (1 : Matrix Unit Unit K)) a b ∈ R := by
@@ -727,7 +711,7 @@ theorem int_upper {s : Matrix ι Unit K} (hs : ∀ i, s i () ∈ R) (a b : ι �
 variable [TopologicalSpace K] [IsTopologicalRing K] {ψ : AddChar K ℂ}
 
 /- English proof (translation)
-Use `modK_mul hd.isOpen hd.isCompact hx.unit hy.unit` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem modK_mul' (hd : LocalDatum K R ψ) {x y : K} (hx : IsUnit x) (hy : IsUnit y) :
     modK R (x * y) = modK R x * modK R y := by
@@ -735,19 +719,19 @@ theorem modK_mul' (hd : LocalDatum K R ψ) {x y : K} (hx : IsUnit x) (hy : IsUni
   simpa using this
 
 /- English proof (translation)
-Take `⟨ϖ, hϖR, hϖ⟩` from `hd.unif`. Take `⟨m, hm⟩` from `exists_pow_mem hϖR hϖ (fun i => r () i)`. Establish `hL : Lat (LL R (ι ⊕ Unit))` using `lat_LL hd.isOpen hd.isCompact`. Use `set u : Kˣ := ϖ ^ m with hu`. Use `set D : Matrix Unit Unit K := Matrix.diagonal fun _ => (u : K) with hD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Di : Matrix Unit Unit K := Matrix.diagonal fun _ => ((u⁻¹ : Kˣ) : K) with hDi`. Establish `hDD : Di * D = 1`. Rewrite using `[hD, hDi, Matrix.diagonal_mul_diagonal]`. Simplify using the standard rewrite rules. Use `set s : Matrix Unit ι K := D * r with hs_def`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hs : ∀ i, s () i ∈ R`. Introduce `i`. Rewrite using `[hs_def, hD, Matrix.diagonal_mul]`. Simplify `hm i` using `[hu]`. Establish `hfac : fromBlocks (1 : Matrix ι ι K) 0 r (1 : Matrix Unit Unit K) = fromBlocks (1 : Matrix ι ι K) 0 0 Di * fromBlocks (1 : Matrix ι ι K) 0 s 1 * fromBlocks (1 : Matrix ι ι K) 0 0 D`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add]`. Rewrite using `[hs_def, ← Matrix.mul_assoc, hDD, Matrix.one_mul]`. Establish `hdet1 : IsUnit (fromBlocks (1 : Matrix ι ι K) 0 0 Di).det`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁, hDi, Matrix.det_diagonal]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hdet2 : IsUnit (fromBlocks (1 : Matrix ι ι K) 0 s (1 : Matrix Unit Unit K)).det`. Rewrite using `[Matrix.det_fromBlocks_zero₁₂]`. Simplify using the standard rewrite rules. Establish `hdet3 : IsUnit (fromBlocks (1 : Matrix ι ι K) 0 0 D).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_fromBlocks_zero₂₁, hD, Matrix.det_diagonal]`. Simplify using the standard rewrite rules. Establish `h12 : IsUnit (fromBlocks (1 : Matrix ι ι K) 0 0 Di * fromBlocks (1 : Matrix ι ι K) 0 s (1 : Matrix Unit Unit K)).det`. Rewrite using `[Matrix.det_mul]`. Conclude with `hdet1.mul hdet2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hone : dl R (fromBlocks (1 : Matrix ι ι K) 0 s (1 : Matrix Unit Unit K)) = 1` using `dl_eq_one (N := fromBlocks (1 : Matrix ι ι K) 0 (-s) 1) (by rw [Matrix.fromBlocks_multiply]; simp) (int_lower hs) (int_lower fun i => by simpa using R.neg_mem (hs i))`. Rewrite using `[hfac, dl_mul hL h12 hdet3, dl_mul hL hdet1 hdet2, hone, dl_blockR, dl_blockR, mul_one, hDi, hD]`. Simplify using `only [Matrix.diagonal_apply_eq]`. Rewrite using `[← modK_mul' hd (Units.isUnit _) (Units.isUnit _)]`. Simplify using `[modK_one]`.
+A detailed English derivation is pending.
 -/
 theorem dl_lower (hd : LocalDatum K R ψ) (r : Matrix Unit ι K) :
     dl R (fromBlocks (1 : Matrix ι ι K) 0 r (1 : Matrix Unit Unit K)) = 1 := by
@@ -794,19 +778,19 @@ theorem dl_lower (hd : LocalDatum K R ψ) (r : Matrix Unit ι K) :
   simp [modK_one]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖR, hϖ⟩` from `hd.unif`. Take `⟨m, hm⟩` from `exists_pow_mem hϖR hϖ (fun i => r i ())`. Establish `hL : Lat (LL R (ι ⊕ Unit))` using `lat_LL hd.isOpen hd.isCompact`. Use `set u : Kˣ := ϖ ^ m with hu`. Use `set D : Matrix Unit Unit K := Matrix.diagonal fun _ => (u : K) with hD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Di : Matrix Unit Unit K := Matrix.diagonal fun _ => ((u⁻¹ : Kˣ) : K) with hDi`. Establish `hDD : D * Di = 1`. Rewrite using `[hD, hDi, Matrix.diagonal_mul_diagonal]`. Simplify using the standard rewrite rules. Use `set s : Matrix ι Unit K := r * D with hs_def`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hs : ∀ i, s i () ∈ R`. Introduce `i`. Rewrite using `[hs_def, hD, Matrix.mul_diagonal, mul_comm]`. Simplify `hm i` using `[hu]`. Establish `hfac : fromBlocks (1 : Matrix ι ι K) r 0 (1 : Matrix Unit Unit K) = fromBlocks (1 : Matrix ι ι K) 0 0 D * fromBlocks (1 : Matrix ι ι K) s 0 1 * fromBlocks (1 : Matrix ι ι K) 0 0 Di`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add]`. Rewrite using `[hs_def, Matrix.mul_assoc, hDD, Matrix.mul_one]`. Establish `hdet1 : IsUnit (fromBlocks (1 : Matrix ι ι K) 0 0 D).det`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁, hD, Matrix.det_diagonal]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hdet2 : IsUnit (fromBlocks (1 : Matrix ι ι K) s 0 (1 : Matrix Unit Unit K)).det`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules. Establish `hdet3 : IsUnit (fromBlocks (1 : Matrix ι ι K) 0 0 Di).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_fromBlocks_zero₂₁, hDi, Matrix.det_diagonal]`. Simplify using the standard rewrite rules. Establish `h12 : IsUnit (fromBlocks (1 : Matrix ι ι K) 0 0 D * fromBlocks (1 : Matrix ι ι K) s 0 (1 : Matrix Unit Unit K)).det`. Rewrite using `[Matrix.det_mul]`. Conclude with `hdet1.mul hdet2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hone : dl R (fromBlocks (1 : Matrix ι ι K) s 0 (1 : Matrix Unit Unit K)) = 1` using `dl_eq_one (N := fromBlocks (1 : Matrix ι ι K) (-s) 0 1) (by rw [Matrix.fromBlocks_multiply]; simp) (int_upper hs) (int_upper fun i => by simpa using R.neg_mem (hs i))`. Rewrite using `[hfac, dl_mul hL h12 hdet3, dl_mul hL hdet1 hdet2, hone, dl_blockR, dl_blockR, mul_one, hDi, hD]`. Simplify using `only [Matrix.diagonal_apply_eq]`. Rewrite using `[← modK_mul' hd (Units.isUnit _) (Units.isUnit _)]`. Simplify using `[modK_one]`.
+A detailed English derivation is pending.
 -/
 theorem dl_upper (hd : LocalDatum K R ψ) (r : Matrix ι Unit K) :
     dl R (fromBlocks (1 : Matrix ι ι K) r 0 (1 : Matrix Unit Unit K)) = 1 := by
@@ -856,21 +840,19 @@ def Good (R : Subring K) (ι : Type) [Fintype ι] [DecidableEq ι] : Prop :=
   ∀ M : Matrix ι ι K, IsUnit M.det → dl R M = modK R M.det
 
 /- English proof (translation)
-Establish `hL : Lat (LL R (ι ⊕ Unit))` using `lat_LL hd.isOpen hd.isCompact`. Use `set A := M.toBlocks₁₁ with hA`. Use `set B := M.toBlocks₁₂ with hB`. Use `set C := M.toBlocks₂₁ with hC`. Use `set D := M.toBlocks₂₂ with hD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hDd : D.det = D () ()` using `Matrix.det_unique D`. Establish `hc1 : IsUnit (D () ())` using `hc`. Establish `hDdet : IsUnit D.det` using `by rw [hDd]; exact hc1`. Use `letI := Matrix.invertibleOfIsUnitDet D hDdet`. Establish `hMeq : M = fromBlocks A B C D` using `(Matrix.fromBlocks_toBlocks M).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfac` using `Matrix.fromBlocks_eq_of_invertible₂₂ A B C D`. Establish `hdet` using `Matrix.det_fromBlocks₂₂ A B C D`. Rewrite `hfac`, `hdet` using `[← hMeq]`. Use `set S := A - B * ⅟D * C with hS`. Establish `hSdet : IsUnit S.det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h : IsUnit (D.det * S.det)` using `hdet ▸ hM`. Conclude with `isUnit_of_mul_isUnit_right h`. Establish `hU : IsUnit (fromBlocks (1 : Matrix ι ι K) (B * ⅟D) 0 (1 : Matrix Unit Unit K)).det`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLw : IsUnit (fromBlocks (1 : Matrix ι ι K) 0 (⅟D * C) (1 : Matrix Unit Unit K)).det`. Rewrite using `[Matrix.det_fromBlocks_zero₁₂]`. Simplify using the standard rewrite rules. Establish `hDg : IsUnit (fromBlocks S 0 0 D).det`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hSdet.mul hDdet`. Establish `hDg' : fromBlocks S 0 0 D = fromBlocks S 0 0 (1 : Matrix Unit Unit K) * fromBlocks (1 : Matrix ι ι K) 0 0 D`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Establish `hS1 : IsUnit (fromBlocks S 0 0 (1 : Matrix Unit Unit K)).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`. Simplify using `using hSdet`. Establish `hD1 : IsUnit (fromBlocks (1 : Matrix ι ι K) 0 0 D).det`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`. Simplify using `using hDdet`.
-
-Establish `hUD : IsUnit (fromBlocks (1 : Matrix ι ι K) (B * ⅟D) 0 (1 : Matrix Unit Unit K) * fromBlocks S 0 0 D).det`. Rewrite using `[Matrix.det_mul]`. Conclude with `hU.mul hDg`. Use `conv_lhs => rw [hfac]`. Rewrite using `[dl_mul hL hUD hLw, dl_mul hL hU hDg, dl_upper hd, dl_lower hd, hDg', dl_mul hL hS1 hD1, dl_blockL, dl_blockR, hG S hSdet, hdet, one_mul, mul_one, hDd, modK_mul' hd hc1 hSdet, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_corner (hd : LocalDatum K R ψ) (hG : Good R ι) (M : Matrix (ι ⊕ Unit) (ι ⊕ Unit) K)
     (hM : IsUnit M.det) (hc : IsUnit (M (Sum.inr ()) (Sum.inr ()))) : dl R M = modK R M.det := by
@@ -919,19 +901,17 @@ theorem good_corner (hd : LocalDatum K R ψ) (hG : Good R ι) (M : Matrix (ι �
     dl_blockL, dl_blockR, hG S hSdet, hdet, one_mul, mul_one, hDd, modK_mul' hd hc1 hSdet, mul_comm]
 
 /- English proof (translation)
-Introduce `M hM`. Use `haveI := hd.artin`. Use `haveI := hd.red`. Establish `hL : Lat (LL R (ι ⊕ Unit))` using `lat_LL hd.isOpen hd.isCompact`. Establish `hinv : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrow : (∑ i : ι, M (Sum.inr ()) (Sum.inl i) * M⁻¹ (Sum.inl i) (Sum.inr ())) + M (Sum.inr ()) (Sum.inr ()) * M⁻¹ (Sum.inr ()) (Sum.inr ()) = 1`. Establish `h` using `congrFun (congrFun hinv (Sum.inr ())) (Sum.inr ())`. Rewrite `h` using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `using h`. Take `⟨c', hc'⟩` from `sr1 (M (Sum.inr ()) (Sum.inr ())) (∑ i : ι, M (Sum.inr ()) (Sum.inl i) * M⁻¹ (Sum.inl i) (Sum.inr ())) (M⁻¹ (Sum.inr ()) (Sum.inr ())) (by rw [add_comm]; exact hrow)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set q : Matrix ι Unit K := fun i _ => c' * M⁻¹ (Sum.inl i) (Sum.inr ()) with hq`. Establish `hE : IsUnit (fromBlocks (1 : Matrix ι ι K) q 0 (1 : Matrix Unit Unit K)).det`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules. Establish `hME : IsUnit (M * fromBlocks (1 : Matrix ι ι K) q 0 (1 : Matrix Unit Unit K)).det`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_mul]`. Conclude with `hM.mul hE`. Establish `hcorner : IsUnit ((M * fromBlocks (1 : Matrix ι ι K) q 0 (1 : Matrix Unit Unit K)) (Sum.inr ()) (Sum.inr ()))`. Establish `e : (M * fromBlocks (1 : Matrix ι ι K) q 0 (1 : Matrix Unit Unit K)) (Sum.inr ()) (Sum.inr ()) = M (Sum.inr ()) (Sum.inr ()) + c' * ∑ i : ι, M (Sum.inr ()) (Sum.inl i) * M⁻¹ (Sum.inl i) (Sum.inr ())`. Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : ∑ u : Unit, M (Sum.inr ()) (Sum.inr u) * (fromBlocks (1 : Matrix ι ι K) q 0 (1 : Matrix Unit Unit K)) (Sum.inr u) (Sum.inr ()) = M (Sum.inr ()) (Sum.inr ())`. Simplify using the standard rewrite rules. Rewrite using `[h1, add_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.fromBlocks_apply₁₂, hq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hc'`. Establish `key` using `good_corner hd hG _ hME hcorner`.
-
-Rewrite `key` using `[dl_mul hL hM hE, dl_upper hd, mul_one, Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁]`. Simplify using `using key`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem good_step (hd : LocalDatum K R ψ) (hG : Good R ι) : Good R (ι ⊕ Unit) := by
   intro M hM
@@ -976,9 +956,9 @@ theorem good_step (hd : LocalDatum K R ψ) (hG : Good R ι) : Good R (ι ⊕ Uni
   simpa using key
 
 /- English proof (translation)
-Introduce `M hM`. Establish `h1 : reindex e e (reindex e.symm e.symm M) = M`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `h2 : IsUnit (reindex e.symm e.symm M).det`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_reindex_self]` and apply the resulting hypothesis. Rewrite using `[← h1, dl_reindex, hG _ h2]`. Simplify using `only [Matrix.det_reindex_self]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem good_equiv (e : ι ≃ κ) (hG : Good R ι) : Good R κ := by
   intro M hM
@@ -991,7 +971,7 @@ theorem good_equiv (e : ι ≃ κ) (hG : Good R ι) : Good R κ := by
   simp only [Matrix.det_reindex_self]
 
 /- English proof (translation)
-The claim follows from `| 0 => by intro M _ rw [det_isEmpty, modK_one] exact dl_eq_one (N := 1) (Subsingleton.elim _ _) (fun i => i.elim0) (fun i => i.elim0) | n + 1 => good_equiv (Fintype.equivOfCardEq (by simp)) (good_step hd (good_fin hd n))`.
+A detailed English derivation is pending.
 -/
 theorem good_fin (hd : LocalDatum K R ψ) : ∀ n : ℕ, Good R (Fin n)
   | 0 => by
@@ -1002,21 +982,19 @@ theorem good_fin (hd : LocalDatum K R ψ) : ∀ n : ℕ, Good R (Fin n)
     good_equiv (Fintype.equivOfCardEq (by simp)) (good_step hd (good_fin hd n))
 
 /- English proof (translation)
-Establish `hL` using `lat_LL (ι := Fin n) hd.isOpen hd.isCompact`. Establish `hgood` using `good_fin hd n Z hdet`. Establish `hle` using `map_le_of_int (ι := Fin n) (R := R) (M := Z) hZ`. Use `set A := (LL R (Fin n)).map (mv Z) with hA`. Establish `hne : A.relIndex (LL R (Fin n)) ≠ 0` using `relIndex_ne_zero (lat_map hdet hL).op hL.cp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : (LL R (Fin n)).relIndex A = 1` using `AddSubgroup.relIndex_eq_one.mpr hle`. Establish `hdl : dl R Z = 1 / (A.relIndex (LL R (Fin n)) : ℝ)`. Unfold `dl`. Rewrite using `[← hA]`. Unfold `gi`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hone, Nat.cast_one]`. Establish `hrange : (coeLin R : (Fin n → R) →ₗ[R] (Fin n → K)).toAddMonoidHom.range = LL R (Fin n)`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `AddMonoidHom.mem_range.mp hv`. Rewrite using `[mem_LL]`. Introduce `i`. Conclude with `(y i).2`. Introduce `hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hv` using `[mem_LL]`. Conclude with `AddMonoidHom.mem_range.mpr ⟨fun i => ⟨v i, hv i⟩, rfl⟩`. Establish `hlat : (latZ R Z).toAddSubgroup = A.comap (coeLin R : (Fin n → R) →ₗ[R] (Fin n → K)).toAddMonoidHom`. Use extensionality with `x`. Rewrite using `[Submodule.mem_toAddSubgroup, Formalism.DoubleCosetMeasures.P.mem_latZ, AddSubgroup.mem_comap, hA]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `AddSubgroup.mem_map.mpr ⟨coeLin R y, mem_LL.mpr fun i => (y i).2, hy⟩`. Introduce `hx`. Take `⟨v, hv, hvx⟩` from `AddSubgroup.mem_map.mp hx`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hv` using `[mem_LL]`. Conclude with `⟨fun i => ⟨v i, hv i⟩, hvx⟩`. Establish `hcard : Nat.card (coker R Z) = A.relIndex (LL R (Fin n))`. Establish `h : Nat.card (coker R Z) = (latZ R Z).toAddSubgroup.index` using `rfl`. Rewrite using `[h, hlat, AddSubgroup.index_comap, hrange]`.
-
-Use `⟨Nat.finite_of_card_ne_zero (by rw [hcard]; exact hne), ?_⟩` and prove the remaining obligations. Rewrite using `[hcard, ← hgood, hdl, one_div, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cokernel_finite_card_eq_inv_modulus (hd : LocalDatum K R ψ) (n : ℕ) (Z : Matrix (Fin n) (Fin n) K)
     (hZ : IsInt R Z) (hdet : IsUnit Z.det) :
@@ -1067,7 +1045,7 @@ section Kern
 variable {K : Type} [CommRing K] {R : Subring K}
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `p.1.2`. Establish `h2 : IsUpUni ((p.2 : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K)` using `p.2.2`. Unfold `orbZ`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, isLowUni_det _ h1, isUpUni_det _ h2, one_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_orbZ (w : Point K) (p : lowW K w.1 w.2 × upUniG K w.1.sum) :
     (orbZ w p).det = (pt w.1 w.2).det := by
@@ -1077,16 +1055,14 @@ theorem det_orbZ (w : Point K) (p : lowW K w.1 w.2 × upUniG K w.1.sum) :
   rw [Matrix.det_mul, Matrix.det_mul, isLowUni_det _ h1, isUpUni_det _ h2, one_mul, mul_one]
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_right_inverse (Formalism.DoubleCosetMeasures.P.Phase.pt_mul_ptI s t)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_pt (s : List ℕ) (t : ℕ → Kˣ) : IsUnit (pt s t).det := Matrix.isUnit_det_of_right_inverse (Formalism.DoubleCosetMeasures.P.Phase.pt_mul_ptI s t)
 
 /- English proof (translation)
-Use `set σ : Equiv.Perm (Fin s.sum) := Function.Involutive.toPerm (Formalism.DoubleCosetMeasures.P.Phase.revF s) (show Function.Involutive (Formalism.DoubleCosetMeasures.P.Phase.revF s) from Formalism.DoubleCosetMeasures.P.Phase.revF_revF s) with hσ`. Establish `hpt : pt s t = Matrix.diagonal (fun a : Fin s.sum => ((t (blk s a) : Kˣ) : K)) * (σ.toPEquiv.toMatrix : Matrix (Fin s.sum) (Fin s.sum) K)`. Use extensionality with `a b`. Simplify using `only [Formalism.DoubleCosetMeasures.pt, Matrix.diagonal_mul, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, hσ, Function.Involutive.coe_toPerm]`. Use `split_ifs with h1 h2 h2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `absurd (Fin.ext (by simp only [Function.Involutive.coe_toPerm, Formalism.DoubleCosetMeasures.P.Phase.revF_val]; exact h1.symm)) h2`. Conclude with `absurd (by rw [← h2]; simp only [Function.Involutive.coe_toPerm, Formalism.DoubleCosetMeasures.P.Phase.revF_val]) h1`. Simplify using the standard rewrite rules. Rewrite using `[hpt, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_permutation]`.
-
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> rw [h] <;> simp [modK_neg]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem modK_det_pt (s : List ℕ) (t : ℕ → Kˣ) :
     modK R (pt s t).det = modK R (∏ a : Fin s.sum, ((t (blk s a) : Kˣ) : K)) := by
@@ -1107,7 +1083,7 @@ theorem modK_det_pt (s : List ℕ) (t : ℕ → Kˣ) :
   rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> rw [h] <;> simp [modK_neg]
 
 /- English proof (translation)
-The claim follows from `| [], j, h => by simp at h | a :: s, j, h => by simp only [blk, List.length_cons] split_ifs with hj · omega · have := blk_lt s (j - a) (by simp only [List.sum_cons] at h; omega) omega`.
+A detailed English derivation is pending.
 -/
 theorem blk_lt : ∀ (s : List ℕ) (j : ℕ), j < s.sum → blk s j < s.length
   | [], j, h => by simp at h
@@ -1119,7 +1095,7 @@ theorem blk_lt : ∀ (s : List ℕ) (j : ℕ), j < s.sum → blk s j < s.length
       omega
 
 /- English proof (translation)
-The claim follows from `| [], k, j, h => by simp at h | a :: s, k, j, h => by simp only [List.cons_append, blk] split_ifs with hj · rfl · rw [blk_append_lt s k (j - a) (by simp only [List.sum_cons] at h; omega)]`.
+A detailed English derivation is pending.
 -/
 theorem blk_append_lt : ∀ (s : List ℕ) (k j : ℕ), j < s.sum → blk (s ++ [k]) j = blk s j
   | [], k, j, h => by simp at h
@@ -1130,7 +1106,7 @@ theorem blk_append_lt : ∀ (s : List ℕ) (k j : ℕ), j < s.sum → blk (s ++ 
     · rw [blk_append_lt s k (j - a) (by simp only [List.sum_cons] at h; omega)]
 
 /- English proof (translation)
-The claim follows from `| [], k, j, h => by simp [blk, h] | a :: s, k, j, h => by simp only [List.cons_append, blk, List.sum_cons, List.length_cons] rw [if_neg (by omega)] have : a + s.sum + j - a = s.sum + j := by omega rw [this, blk_append_ge s k j h]; omega`.
+A detailed English derivation is pending.
 -/
 theorem blk_append_ge : ∀ (s : List ℕ) (k j : ℕ), j < k → blk (s ++ [k]) (s.sum + j) = s.length
   | [], k, j, h => by simp [blk, h]
@@ -1141,11 +1117,11 @@ theorem blk_append_ge : ∀ (s : List ℕ) (k j : ℕ), j < k → blk (s ++ [k])
     rw [this, blk_append_ge s k j h]; omega
 
 /- English proof (translation)
-Establish `e1 : (∏ a : Fin (addBlock h s t).1.sum, (((addBlock h s t).2 (blk (addBlock h s t).1 a) : Kˣ) : K)) = ∏ i ∈ Finset.range (addBlock h s t).1.sum, (((addBlock h s t).2 (blk (addBlock h s t).1 i) : Kˣ) : K)` using `Fin.prod_univ_eq_prod_range (fun i => (((addBlock h s t).2 (blk (addBlock h s t).1 i) : Kˣ) : K)) _`. Establish `e2 : (∏ a : Fin h.1.sum, ((h.2 (blk h.1 a) : Kˣ) : K)) = ∏ i ∈ Finset.range h.1.sum, ((h.2 (blk h.1 i) : Kˣ) : K)` using `Fin.prod_univ_eq_prod_range (fun i => ((h.2 (blk h.1 i) : Kˣ) : K)) _`. Rewrite using `[e1, e2]`. Simplify using `only [addBlock]`. Rewrite using `[List.sum_append, List.sum_singleton, Finset.prod_range_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[blk_append_lt h.1 s i hi, Function.update_of_ne (blk_lt h.1 i hi).ne]`. Establish `e : ∀ j ∈ Finset.range s, (((Function.update h.2 h.1.length t) (blk (h.1 ++ [s]) (h.1.sum + j)) : Kˣ) : K) = (t : K)` using `fun j hj => by`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hj` using `[Finset.mem_range]`. Rewrite using `[blk_append_ge h.1 s j hj, Function.update_self]`. Rewrite using `[Finset.prod_congr rfl e, Finset.prod_const, Finset.card_range]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_addBlock (h : Point K) (s : ℕ) (t : Kˣ) :
     (∏ a : Fin (addBlock h s t).1.sum,
@@ -1174,7 +1150,7 @@ theorem prod_addBlock (h : Point K) (s : ℕ) (t : Kˣ) :
     rw [Finset.prod_congr rfl e, Finset.prod_const, Finset.card_range]
 
 /- English proof (translation)
-Rewrite using `[← Units.coe_prod]`. Conclude with `Units.isUnit _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_prod {n : ℕ} (f : Fin n → Kˣ) : IsUnit (∏ a : Fin n, ((f a : Kˣ) : K)) := by
   rw [← Units.coe_prod]
@@ -1183,17 +1159,15 @@ theorem isUnit_prod {n : ℕ} (f : Fin n → Kˣ) : IsUnit (∏ a : Fin n, ((f a
 variable [TopologicalSpace K] [IsTopologicalRing K] {ψ : AddChar K ℂ}
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q, pairTerm R ψ w w' q ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h (finsum_eq_zero_of_forall_eq_zero hc)`. Unfold `pairTerm at hq`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hc : IsInt R (orbZ w (rep R q.1)) ∧ IsInt R (orbZ w' (rep R q.2))`. Use `swap`. Rewrite `hq` using `[if_neg hc, zero_mul, zero_mul]`. Conclude with `absurd rfl hq`. Rewrite `hq` using `[if_pos hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Nat.card (isoZZ R (orbZ w (rep R q.1)) (orbZ w' (rep R q.2))) ≠ 0`. Introduce `h0`. Apply `hq` to reduce the goal to its premises. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨⟨φ, -⟩⟩` from `(Nat.card_ne_zero.mp hcard).1`. Establish `hZ : IsUnit (orbZ w (rep R q.1)).det`. Rewrite using `[det_orbZ]`. Conclude with `isUnit_det_pt _ _`. Establish `hZ' : IsUnit (orbZ w' (rep R q.2)).det`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[det_orbZ]`. Conclude with `isUnit_det_pt _ _`. Establish `e1` using `(cokernel_finite_card_eq_inv_modulus hd _ _ hc.1 hZ).2`. Establish `e2` using `(cokernel_finite_card_eq_inv_modulus hd _ _ hc.2 hZ').2`. Establish `e3 : Nat.card (coker R (orbZ w (rep R q.1))) = Nat.card (coker R (orbZ w' (rep R q.2)))` using `Nat.card_congr φ.toEquiv`.
-
-Rewrite `e1` using `[e3, e2, det_orbZ, det_orbZ]`. Conclude with `(inv_inj.mp e1).symm`.
+A detailed English derivation is pending.
 -/
 theorem kernel_nonzero_modulus_determinant_eq (hd : LocalDatum K R ψ) (w w' : Point K) (h : Kp R ψ w w' ≠ 0) :
     modK R (pt w.1 w.2).det = modK R (pt w'.1 w'.2).det := by
@@ -1227,11 +1201,11 @@ theorem kernel_nonzero_modulus_determinant_eq (hd : LocalDatum K R ψ) (w w' : P
   exact (inv_inj.mp e1).symm
 
 /- English proof (translation)
-Establish `hK : Kp R ψ (addBlock h s t) (addBlock h' s t) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Unfold `Ns`. Rewrite using `[h0, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `kernel_nonzero_modulus_determinant_eq hd _ _ hK`. Rewrite `e` using `[modK_det_pt, modK_det_pt, prod_addBlock, prod_addBlock]`. Rewrite using `[modK_det_pt, modK_det_pt]`. Establish `hu : IsUnit ((t : K) ^ s)` using `(Units.isUnit t).pow s`. Rewrite `e` using `[modK_mul' hd (isUnit_prod _) hu, modK_mul' hd (isUnit_prod _) hu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < modK R ((t : K) ^ s)`. Use `modK_pos hd.isOpen hd.isCompact (t ^ s)` as an intermediate fact. Simplify using `using this`. Conclude with `mul_right_cancel₀ hpos.ne' e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem added_block_kernel_modulus_det_eq (hd : LocalDatum K R ψ) (h h' : Point K) (s : ℕ) (t : Kˣ)
     (hne : Ns R ψ s h h' t t ≠ 0) :
@@ -1260,28 +1234,28 @@ namespace Formalism.FourierDecayAlt.P
 open A5x5
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hd x y`. Conclude with `⟨modK_pos hd.isOpen hd.isCompact x, modK_mul hd.isOpen hd.isCompact x y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem modulus_positive_multiplicative : Formalism.FourierDecayAlt.A5.ModMul := by
   intro K _ _ _ R ψ hd x y
   exact ⟨modK_pos hd.isOpen hd.isCompact x, modK_mul hd.isOpen hd.isCompact x y⟩
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hd n Z hZ hdet`. Conclude with `cokernel_finite_card_eq_inv_modulus hd n Z hZ hdet`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cokernel_card_inverse_modulus : Formalism.FourierDecayAlt.A5.CokerCard := by
   intro K _ _ _ R ψ hd n Z hZ hdet
   exact cokernel_finite_card_eq_inv_modulus hd n Z hZ hdet
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hd w w' h`. Conclude with `kernel_nonzero_modulus_determinant_eq hd w w' h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kernel_block_diagonal_by_modulus : Formalism.FourierDecayAlt.A5.KpBlockDiag := by
   intro K _ _ _ R ψ hd w w' h
   exact kernel_nonzero_modulus_determinant_eq hd w w' h
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hd h h' _`. Conclude with `⟨fun h0 => kernel_nonzero_modulus_determinant_eq hd h h' h0, fun s t hne => added_block_kernel_modulus_det_eq hd h h' s t hne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem added_block_kernel_block_diagonal : Formalism.FourierDecayAlt.A5.NsBlockDiag := by
   intro K _ _ _ R ψ hd h h' _

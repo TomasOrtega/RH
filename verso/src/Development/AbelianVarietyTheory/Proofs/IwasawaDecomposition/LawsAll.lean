@@ -18,9 +18,9 @@ namespace GlobalTheory.Mem.Col2
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `E K ι _ _ _ _ _ _ _ R I J emb σ hc hF hI hJ Q hQ Pl`. Establish `hd` using `GlobalTheory.T.levelPrimeDiamond_representation I J emb σ hc hF hI hJ`. Establish `hfam : ∀ i, ((I.S i).fam emb (lamT hc i)).Ok` using `fun i => GlobalTheory.T.hermitianLatticeChartFamily_fam_ok (I.S i) emb σ (lamT hc i) hF (hI.step i)`. Establish `hfamP : (Q.S'.fam emb Q.sgT).Ok` using `GlobalTheory.T.hermitianLatticeChartFamily_fam_ok Q.S' emb σ Q.sgT hF hQ.step`. Use `⟨⟨hd.1, hd.2, GlobalTheory.T.complexForms_finiteDimensional (I.S 0) emb σ (lamT hc 0) hF (hI.step 0), GlobalTheory.T.levelPrimeDiamond_preserves_complexForms I J emb σ hc hF hI hJ⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `{ fam := hfam famP := hfamP lev := fun i => GlobalTheory.T.tDat_laws_of_ok (J.A i) J.T (hI.step i) (hJ.lev i) good := fun i => GlobalTheory.T.weight_law_good_of_field_embedding (I.S i) emb σ (lamT hc i) hF (hI.step i) _ basis := fun i => GlobalTheory.T.hermitianLatticeChartFamily …`.
+A detailed English derivation is pending.
 -/
 theorem laws_all : ∀ {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι] {R : Ranks} (I : ChainIn E K ι R) (J : AtIn I) (emb : ι → E →+* K) (σ : K →+* ℂ) (hc : ι → HCParam R), FOk emb σ → ∀ (hI : I.Ok), J.Ok → ∀ (Q : PerIn I) (hQ : Q.Ok) (Pl : Rows.Places K), J.Laws emb σ hc ∧ FmLaws J Q emb σ hc Pl hI hQ := by
   intro E K ι _ _ _ _ _ _ _ R I J emb σ hc hF hI hJ Q hQ Pl

@@ -15,9 +15,9 @@ namespace GlobalTheory.CompanionTheory.DefiniteForm
 open CompanionTheory.Rg.Fl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT s Qi * (Formalism.UG.cT s Q * J * Q) * Qi := by rw [h1, h2]`. Use `_ = Formalism.UG.cT s (Q * Qi) * J * (Q * Qi) := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [hQ, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem cT_congr {R : Type} [CommRing R] (s : R →+* R) {n : ℕ}
     (Q Qi D J J' Δ : Matrix (Fin n) (Fin n) R) (hQ : Q * Qi = 1)
@@ -32,19 +32,17 @@ theorem cT_congr {R : Type} [CommRing R] (s : R →+* R) {n : ℕ}
     _ = J := by rw [hQ, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use `set M : ℕ := Ideal.absNorm v.asIdeal with hM`. Establish `hM0 : M ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hM1 : M ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Establish `hM2 : 1 < M` using `by omega`. Establish `hmem : ((M : ℕ) : 𝓞 F) ∈ v.asIdeal` using `Ideal.absNorm_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : Valued.v ((M : ℕ) : v.adicCompletion F) < 1`. Establish `e : ((M : ℕ) : v.adicCompletion F) = algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F ((M : ℕ) : 𝓞 F))` using `by simp`. Establish `e2 : ∀ y : F, Valued.v (algebraMap F (v.adicCompletion F) y) = v.valuation F y` using `fun y => v.valuedAdicCompletion_eq_valuation' y`. Rewrite using `[e, e2]`. Conclude with `(v.valuation_lt_one_iff_mem _).2 hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Valued.v (4 : v.adicCompletion F) ≠ 0` using `(Valuation.ne_zero_iff _).2 (by`. Establish `h : algebraMap F (v.adicCompletion F) 4 ≠ 0` using `(map_ne_zero _).2 (by norm_num)`. Rewrite using `[map_ofNat] at h)` and apply the resulting hypothesis. Establish `hA : ∀ i, algebraMap F (v.adicCompletion F) (a i) ≠ 0` using `fun i => (map_ne_zero _).2 (ha i)`. Establish `hev : ∀ i, ∀ᶠ k : ℕ in atTop, Valued.v ((M : ℕ) : v.adicCompletion F) ^ k < Valued.v (4 : v.adicCompletion F) * Valued.v (algebraMap F (v.adicCompletion F) (a i))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `hne : Valued.v (4 : v.adicCompletion F) * Valued.v (algebraMap F (v.adicCompletion F) (a i)) ≠ 0` using `mul_ne_zero h4 ((Valuation.ne_zero_iff _).2 (hA i))`. Take `⟨K, hK⟩` from `exists_pow_lt₀ hval (Units.mk0 _ hne)`. Conclude with `eventually_atTop.2 ⟨K, fun k hk => lt_of_le_of_lt (pow_le_pow_right_of_le_one' hval.le hk) hK⟩`. Establish `hbig : ∀ᶠ k : ℕ in atTop, B < ((M ^ k : ℕ) : ℝ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result.
 
-Establish `: Tendsto (fun k : ℕ => ((M : ℝ)) ^ k) atTop atTop` using `tendsto_pow_atTop_atTop_of_one_lt (by exact_mod_cast hM2)`. Use `filter_upwards [this.eventually_gt_atTop B] with k hk`. Use `push_cast`. Conclude with `hk`. Take `⟨k, hk1, hk2⟩` from `(hbig.and (eventually_all.2 hev)).exists`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨M ^ k, hk1, fun i => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `GlobalTheory.LocalQuad.isSquare_of_valued_sub_one_lt F v (1 + ((M : ℕ) : v.adicCompletion F) ^ k / algebraMap F (v.adicCompletion F) (a i)) (by`. Rewrite using `[add_sub_cancel_left, map_div₀, map_pow]`. Conclude with `(div_lt_iff₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (hA i)))).2 (hk2 i))`. Use `⟨c, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hc, map_add, map_natCast]`. Use `hA i` as an intermediate fact. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_large_sq {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {n : ℕ}
     (a : Fin n → F) (ha : ∀ i, a i ≠ 0) (B : ℝ) :
@@ -97,9 +95,9 @@ section Forms
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[diagonal_apply_ne _ h, diagonal_apply_ne _ (Ne.symm h), map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => (map_ne_zero _).2 (he i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermND_diagonal (e : Fin n → F) (he : ∀ i, e i ≠ 0) :
     IsHermND σ (diagonal fun i => algebraMap F E (e i)) := by
@@ -112,11 +110,11 @@ theorem isHermND_diagonal (e : Fin n → F) (he : ∀ i, e i ≠ 0) :
     exact Finset.prod_ne_zero_iff.2 fun i _ => (map_ne_zero _).2 (he i)
 
 /- English proof (translation)
-Introduce `x hx τ`. Establish `hre : ∀ i, (τ (σ (x i) * (algebraMap F E (e i) * x i))).re = Complex.normSq (τ (x i)) * (τ (algebraMap F E (e i))).re`. Introduce `i`. Rewrite using `[map_mul, map_mul, hσ τ]`. Establish `: star (τ (x i)) * (τ (algebraMap F E (e i)) * τ (x i)) = ((Complex.normSq (τ (x i)) : ℝ) : ℂ) * τ (algebraMap F E (e i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.normSq_eq_conj_mul_self, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.re_ofReal_mul]`. Simplify using `only [dotProduct, mulVec_diagonal, map_sum, Complex.re_sum, hre]`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_pos' (fun j _ => mul_nonneg (Complex.normSq_nonneg _) (he τ j).le) ⟨i, Finset.mem_univ _, mul_pos (Complex.normSq_pos.2 ?_) (he τ i)⟩` and prove the remaining obligations. Simplify using `using hi`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isPosDef_diagonal (hσ : ∀ (τ : E →+* ℂ) (x : E), τ (σ x) = star (τ x)) (e : Fin n → F)
     (he : ∀ (τ : E →+* ℂ) i, 0 < (τ (algebraMap F E (e i))).re) :
@@ -144,7 +142,7 @@ section Tensor
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Simplify using `[sigR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_includeLeft (x : R) :
     sigR R σ (Algebra.TensorProduct.includeLeft (S := F) (R := F) (A := R) (B := E) x) =
@@ -152,13 +150,13 @@ theorem sigR_includeLeft (x : R) :
   simp [sigR]
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (x : E) : sigR R σ (inclR R x) = inclR R (σ x) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.includeRight (algebraMap F E f) = _`. Rewrite using `[AlgHom.commutes, AlgHom.commutes]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem inclR_algebraMap (f : F) :
     inclR R (algebraMap F E f) =
@@ -169,31 +167,27 @@ theorem inclR_algebraMap (f : F) :
 end Tensor
 
 /- English proof (translation)
-Use `set φ : E →+* Fv F v ⊗[F] E := inclR (Fv F v) with hφ`. Use `set s : Fv F v ⊗[F] E →+* Fv F v ⊗[F] E := sigR (Fv F v) σ with hs`. Set `ι : Fv F v →ₐ[F] Fv F v ⊗[F] E` to `Algebra.TensorProduct.includeLeft`. Establish `hsι : ∀ x, s (ι x) = ι x` using `sigR_includeLeft σ (Fv F v)`. Establish `hsφ : ∀ x, s (φ x) = φ (σ x)` using `sigR_inclR σ (Fv F v)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφι : ∀ f : F, φ (algebraMap F E f) = ι (algebraMap F (Fv F v) f)` using `inclR_algebraMap (Fv F v)`. Use `set Q : Matrix (Fin n) (Fin n) E := P.map σ with hQdef`. Establish `hQdet : Q.det ≠ 0`. Establish `h` using `RingHom.map_det (σ : E →+* E) P`. Rewrite `h` using `[RingHom.mapMatrix_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Q.det ≠ 0 at *`. Establish `h' : Q.det = σ P.det` using `h.symm`. Rewrite using `[h']`. Conclude with `(map_ne_zero (σ : E →+* E)).2 hP`. Establish `hQ : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q (isUnit_iff_ne_zero.2 hQdet)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hQ' : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul Q (isUnit_iff_ne_zero.2 hQdet)`. Use `set D : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := diagonal fun i => ι (c i)⁻¹ with hD`. Use `set D' : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := diagonal fun i => ι (c i) with hD'`. Establish `hDD : D * D' = 1`. Rewrite using `[hD, hD', diagonal_mul_diagonal, ← diagonal_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i`. Rewrite using `[← map_mul, inv_mul_cancel₀ (hc0 i), map_one]`. Establish `hDD' : D' * D = 1`. Rewrite using `[hD, hD', diagonal_mul_diagonal, ← diagonal_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `i`. Rewrite using `[← map_mul, mul_inv_cancel₀ (hc0 i), map_one]`. Establish `hm : ∀ A B : Matrix (Fin n) (Fin n) E, (A * B).map φ = A.map φ * B.map φ` using `fun A B => Matrix.map_mul`. Establish `hone : (1 : Matrix (Fin n) (Fin n) E).map φ = 1` using `Matrix.map_one _ (map_zero φ) (map_one φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hQr : Q.map φ * Q⁻¹.map φ = 1` using `by rw [← hm, hQ, hone]`. Establish `hQr' : Q⁻¹.map φ * Q.map φ = 1` using `by rw [← hm, hQ', hone]`. Establish `h1 : Formalism.UG.cT s (Q.map φ) * JR (F` using `F) (Fv F v) J * Q.map φ = diagonal fun i => φ (algebraMap F E (a i)) := by`. Establish `e1 : Formalism.UG.cT s (Q.map φ) = Pᵀ.map φ`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Formalism.UG.cT, hQdef, hsφ, hinv]`. Establish `e2 : JR (F` using `F) (Fv F v) J = J.map φ := rfl`. Rewrite using `[e1, e2, ← hm, ← hm, hPd, Matrix.diagonal_map (map_zero φ)]`. Establish `h2 : Formalism.UG.cT s D * JR (F` using `F) (Fv F v) (diagonal fun i => algebraMap F E (e i)) * D = diagonal fun i => φ (algebraMap F E (a i)) := by`. Establish `e1 : Formalism.UG.cT s D = D`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Formalism.UG.cT, hD, hsι]`. Simplify using `[Formalism.UG.cT, hD, diagonal_apply_ne _ h, diagonal_apply_ne _ (Ne.symm h)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : JR (F` using `F) (Fv F v) (diagonal fun i => algebraMap F E (e i)) = diagonal fun i => ι (algebraMap F (Fv F v) (e i)) := by`. Express the relevant statement in the definitionally equal form `(diagonal fun i => algebraMap F E (e i)).map φ = _`. Rewrite using `[Matrix.diagonal_map (map_zero φ)]`. Use `congr 1`. Use extensionality with `i`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `hφι _`. Rewrite using `[e1, e2, hD, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`. Use extensionality with `i`. Rewrite using `[hφι, ← map_mul, ← map_mul, ← hc i]`.
-
-Use `congr 1`. Clear denominators, using `[hc0 i]` for the nonvanishing conditions. Take `⟨Φ, -⟩` from `GlobalTheory.LocIsoConj.exists_locIso σ J (diagonal fun i => algebraMap F E (e i)) v (D * Q⁻¹.map φ) (Q.map φ * D') (by`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc _ (Q.map φ), hQr', Matrix.one_mul, hDD]) (by`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc D', hDD', Matrix.one_mul, hQr])`.
-
-Use the proof step `(cT_congr s _ _ _ _ _ _ hQr h1 h2)`. Conclude with `⟨Φ⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locIso {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hinv : ∀ x, σ (σ x) = x) {n : ℕ} (J P : Matrix (Fin n) (Fin n) E) (hP : P.det ≠ 0) (a e : Fin n → F)
@@ -270,17 +264,15 @@ theorem locIso {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
   exact ⟨Φ⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hc n J hJ v`. Take `⟨hinv, hfix⟩` from `GlobalTheory.CMConjInvol.cm_conj_invol_fixed F E σ hc`. Take `⟨P, d, hP, hPd, hdf, hd0⟩` from `GlobalTheory.HermDiag.exists_congr_diagonal (c := (σ : E →+* E)) (G := J) two_ne_zero (fun t => hinv t) (fun a b => hJ.1 b a)`. Use `choose a ha using fun i => hfix (d i) (hdf i)`. Establish `had : d = fun i => algebraMap F E (a i)` using `funext fun i => (ha i).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : ∀ i, a i ≠ 0` using `fun i h => hd0 hJ.2 i (by rw [← ha i, h, map_zero])`. Take `⟨N, hN, hsq⟩` from `exists_large_sq v a ha0 (∑ i, ∑ τ : E →+* ℂ, |(τ (d i)).re|)`. Establish `hpos : ∀ (τ : E →+* ℂ) i, 0 < (τ (algebraMap F E (a i + N))).re`. Introduce `τ i`. Establish `hle : |(τ (d i)).re| ≤ ∑ i, ∑ τ : E →+* ℂ, |(τ (d i)).re|` using `(Finset.single_le_sum (f := fun τ : E →+* ℂ => |(τ (d i)).re|) (fun _ _ => abs_nonneg _) (Finset.mem_univ τ)).trans (Finset.single_le_sum (f := fun i => ∑ τ : E →+* ℂ, |(τ (d i)).re|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.mem_univ i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `neg_abs_le (τ (d i)).re`. Rewrite using `[map_add, map_add, ha i, map_natCast, map_natCast, Complex.add_re, Complex.natCast_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `he0 : ∀ i, a i + N ≠ 0`. Introduce `i h`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `hpos τ i` as an intermediate fact. Rewrite `this` using `[h, map_zero, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Use `choose c hc' using hsq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc0 : ∀ i, c i ≠ 0`. Introduce `i h`. Use `hc' i` as an intermediate fact. Rewrite `this` using `[h, zero_mul, zero_mul]`. Conclude with `(map_ne_zero _).2 (he0 i) this.symm`.
-
-Use `⟨diagonal fun i => algebraMap F E (a i + N), isHermND_diagonal σ _ he0, isPosDef_diagonal σ hc.2.2.2 _ hpos, ?_⟩` and prove the remaining obligations. Rewrite `hPd` using `[had]`. Conclude with `locIso σ hinv J P hP a _ hPd v c hc0 hc'`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stDefinite : StDefinite := by
   intro F E _ _ _ _ _ σ hc n J hJ v

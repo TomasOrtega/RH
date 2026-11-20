@@ -8,32 +8,28 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.Cartier GlobalTheory.CxPts Glo
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← zsmul_eq_mul, map_zsmul, zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem addMonoidHom_intCast_mul_real {A : Type} [CommRing A] (θ : A →+ ℝ) (k : ℤ) (z : A) :
     θ ((k : A) * z) = (k : ℝ) * θ z := by
   rw [← zsmul_eq_mul, map_zsmul, zsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `A _ θ ι _ x D Φ h n`. Use `set Y : MvPolynomial (Option ι) ℝ := MvPolynomial.X none with hY`. Use `set L : MvPolynomial (Option ι) ℝ := rename some (lin fun i => (n i : ℝ)) with hL`. Use `set y : A := ∑ i, n i • x (some i) with hy`. Use `set P : Polynomial ℝ := ∑ a ∈ Finset.range (D + 2), Polynomial.C (Φ (Y ^ a * L ^ (D + 1 - a)) * ((D + 1).choose a : ℝ)) * Polynomial.X ^ a with hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q : Polynomial ℝ := ∑ a ∈ Finset.range (D + 2), Polynomial.C (θ (x none ^ a * y ^ (D + 1 - a)) * ((D + 1).choose a : ℝ)) * Polynomial.X ^ a with hQ`. Establish `key : ∀ t : ℤ, P.eval (t : ℝ) = Q.eval (t : ℝ)`. Introduce `t`. Establish `ht` using `h (fun o => Option.elim o t n)`. Establish `hlin : lin (fun o => ((Option.elim o t n : ℤ) : ℝ)) = MvPolynomial.C (t : ℝ) * Y + L`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [lin, Fintype.sum_option, Option.elim, hY, hL, map_sum, map_mul, rename_C, rename_X]`. Establish `hsum : (∑ o, (Option.elim o t n) • x o) = (t : A) * x none + y`. Simplify using `only [Fintype.sum_option, Option.elim, hy, zsmul_eq_mul]`. Rewrite `ht` using `[hlin, hsum, add_pow, add_pow, map_sum, map_sum]`. Simplify using `only [hP, hQ, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : ∀ a : ℕ, Φ ((MvPolynomial.C (t : ℝ) * Y) ^ a * L ^ (D + 1 - a) * (((D + 1).choose a : ℕ) : MvPolynomial (Option ι) ℝ)) = Φ (Y ^ a * L ^ (D + 1 - a)) * ((D + 1).choose a : ℝ) * (t : ℝ) ^ a`. Introduce `a`. Establish `: (MvPolynomial.C (t : ℝ) * Y) ^ a * L ^ (D + 1 - a) * (((D + 1).choose a : ℕ) : MvPolynomial (Option ι) ℝ) = ((t : ℝ) ^ a * ((D + 1).choose a : ℝ)) • (Y ^ a * L ^ (D + 1 - a))`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, map_pow, mul_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ a : ℕ, θ (((t : A) * x none) ^ a * y ^ (D + 1 - a) * (((D + 1).choose a : ℕ) : A)) = θ (x none ^ a * y ^ (D + 1 - a)) * ((D + 1).choose a : ℝ) * (t : ℝ) ^ a`. Introduce `a`. Establish `: ((t : A) * x none) ^ a * y ^ (D + 1 - a) * (((D + 1).choose a : ℕ) : A) = (((t ^ a * ((D + 1).choose a : ℤ)) : ℤ) : A) * (x none ^ a * y ^ (D + 1 - a))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, addMonoidHom_intCast_mul_real]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Simplify using `only [e1, e2] at ht`. Conclude with `ht`. Establish `hPQ : P = Q`. Apply `Polynomial.eq_of_infinite_eval_eq` to reduce the goal to its premises. Apply `Set.Infinite.mono (s := Set.range (fun t : ℤ => (t : ℝ)))` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `key t`. Conclude with `Set.infinite_range_of_injective Int.cast_injective`. Establish `hc` using `congrArg (fun p => Polynomial.coeff p 1) hPQ`. Simplify using `only [hP, hQ, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow] at hc`.
-
-Simplify using `only [Finset.sum_ite_eq, Finset.mem_range] at hc`. Rewrite `hc` using `[if_pos (by omega), if_pos (by omega)]`. Simplify using `only [pow_one, Nat.choose_one_right, Nat.add_sub_cancel] at hc`. Establish `hD : ((D + 1 : ℕ) : ℝ) ≠ 0` using `by positivity`. Move the coercions through the operations in `at hc hD`.
-
-Use `mul_right_cancel₀ hD hc` as an intermediate fact. Rewrite using `[mul_comm (y ^ D)]`. Conclude with `this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polarisation_mixed_term_of_powers : ∀ (A : Type) [CommRing A] (θ : A →+ ℝ) (ι : Type) [Fintype ι] (x : Option ι → A) (D : ℕ) (Φ : MvPolynomial (Option ι) ℝ →ₗ[ℝ] ℝ), (∀ n : Option ι → ℤ, Φ (lin (fun o => (n o : ℝ)) ^ (D + 1)) = θ ((∑ o, n o • x o) ^ (D + 1))) → ∀ n : ι → ℤ, Φ (MvPolynomial.X none * rename some (lin fun i => (n i : ℝ)) ^ D) = θ ((∑ i, n i • x (some i)) ^ D * x none) := by
   intro A _ θ ι _ x D Φ h n

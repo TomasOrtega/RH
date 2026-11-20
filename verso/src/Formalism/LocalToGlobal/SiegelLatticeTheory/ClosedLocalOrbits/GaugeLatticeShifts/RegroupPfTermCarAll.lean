@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 namespace Formalism.L2.SG.Pf.RegroupPf
 
 /- English proof (translation)
-The claim follows from `termCarC_of rational_isomorphism_holds reduction_mod_g_holds frame_congruence_holds`.
+A detailed English derivation is pending.
 -/
 theorem term_carrier_holds : TermCarC :=
   termCarC_of rational_isomorphism_holds reduction_mod_g_holds frame_congruence_holds

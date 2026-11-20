@@ -10,13 +10,11 @@ noncomputable section
 namespace GlobalTheory.LvT.Built.KerExt
 
 /- English proof (translation)
-Establish `key : ∀ g ζ b d ζ' b' d', g • zeta ζ • pt b d = zeta ζ' • pt b' d' → ρ (zeta ζ') (φ b' d') = ρ g (ρ (zeta ζ) (φ b d))`. Introduce `g ζ b d ζ' b' d' h`. Take `⟨ζ₀, g₀, rfl⟩` from `gen b g`. Establish `e : zeta (ζ'⁻¹ * ζ₀ * ζ) * hom b g₀ = (zeta ζ')⁻¹ * (zeta ζ₀ * hom b g₀ * zeta ζ)`. Rewrite using `[map_mul, map_mul, map_inv, mul_assoc, comm ζ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Establish `h1 : zeta (ζ'⁻¹ * ζ₀ * ζ) • pt b (g₀ • d) = pt b' d'`. Rewrite using `[pt_smul, ← mul_smul, e, mul_smul, mul_smul, h, inv_smul_smul]`. Take `rfl` from `idx _ _ _ _ _ h1`. Take `⟨g₁, rfl, hg⟩` from `inj _ _ _ _ h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hφ, hg, hφ, ← ρm, ← ρm, ← ρm, mul_assoc, e, mul_inv_cancel_left]`. Use `choose z i d hp using surj`. Use `⟨fun p => ρ (zeta (z p)) (φ (i p) (d p)), fun b x => ?_, fun g p => ?_⟩` and prove the remaining obligations. Use `key 1 1 b x (z (pt b x)) (i (pt b x)) (d (pt b x)) (by rw [← hp, map_one, one_smul, one_smul])` as an intermediate fact. Conclude with `this.trans (by rw [map_one, ρ1, ρ1])`.
-
-Conclude with `key g (z p) (i p) (d p) _ _ _ (by rw [← hp, ← hp])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ext {G P T β X : Type} [Group G] [MulAction G P] [Group T] {H D : β → Type} [∀ b, Group (H b)]
     [∀ b, MulAction (H b) (D b)] (ρ : G → X → X) (ρ1 : ∀ x, ρ 1 x = x) (ρm : ∀ g h x, ρ (g * h) x = ρ g (ρ h x))
@@ -48,15 +46,13 @@ theorem exists_ext {G P T β X : Type} [Group G] [MulAction G P] [Group T] {H D 
   · exact key g (z p) (i p) (d p) _ _ _ (by rw [← hp, ← hp])
 
 /- English proof (translation)
-Use `set b := Module.Basis.ofVectorSpace K V`. Establish `hmem : ∀ F, e F ∈ Submodule.span ℂ (Set.range fun j => e (b j))`. Introduce `F`. Establish `hF : F ∈ Submodule.span K (Set.range b)` using `by rw [b.span_eq]; trivial`. Proceed by induction on `hF using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => obtain ⟨j, rfl⟩ := hx`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `sp' : ⊤ ≤ Submodule.span ℂ (Set.range fun j => e (b j))`. Rewrite using `[← sp, Submodule.span_le]`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨F, rfl⟩`. Conclude with `hmem F`. Set `c` to `Module.Basis.mk li sp'`. Use `⟨c.constr ℂ fun j => e' (f (b j)), fun F => ?_⟩` and prove the remaining obligations. Establish `h : (c.constr ℂ fun j => e' (f (b j))).comp e = e'.comp f`.
-
-Use `b.ext fun j => ?_` and prove the remaining obligations. Establish `: e (b j) = c j` using `by simp [c]`. Simplify using `only [LinearMap.comp_apply, this, Module.Basis.constr_basis]`. Conclude with `LinearMap.congr_fun h F`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cplx {K V V' W W' : Type} [Field K] (σ : K →+* ℂ) [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V']
     [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (e : V →ₛₗ[σ] W) (e' : V' →ₛₗ[σ] W')
@@ -94,7 +90,7 @@ def evM : B.V i →ₛₗ[D.what₂.embLL] M.Val :=
     fun F => by rw [R.val_eq]; exact evV_mem_ValC _ _ _ _ F
 
 /- English proof (translation)
-The claim follows from `LinearIndependent.of_comp M.Val.subtype (evV_linearIndependent B.emb 1 (B.lam i) D.what₂.embLL (fr0 B.emb D.what₂.embLL _) _ (Module.Basis.ofVectorSpace D.what₂.LL (B.V i)).linearIndependent)`.
+A detailed English derivation is pending.
 -/
 theorem evM_li : LinearIndependent ℂ fun j => evM R (Module.Basis.ofVectorSpace D.what₂.LL (B.V i) j) :=
   LinearIndependent.of_comp M.Val.subtype
@@ -102,7 +98,7 @@ theorem evM_li : LinearIndependent ℂ fun j => evM R (Module.Basis.ofVectorSpac
       (Module.Basis.ofVectorSpace D.what₂.LL (B.V i)).linearIndependent)
 
 /- English proof (translation)
-Apply `Submodule.map_injective_of_injective M.Val.subtype_injective` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Conclude with `(span_evV B.emb 1 (B.lam i) D.what₂.embLL).trans R.val_eq.symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evM_span : Submodule.span ℂ (Set.range (evM R)) = ⊤ := by
   apply Submodule.map_injective_of_injective M.Val.subtype_injective
@@ -110,7 +106,7 @@ theorem evM_span : Submodule.span ℂ (Set.range (evM R)) = ⊤ := by
   exact (span_evV B.emb 1 (B.lam i) D.what₂.embLL).trans R.val_eq.symm
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[R.act_hom]`. Conclude with `GStep.evV_rho_eq_tr _ _ _ _ b g F`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evM_rho (b) (g : (B.I.S i).G b) (F : B.V i) :
     evM R ((B.I.S i).rho B.emb (B.lam i) b g F) = M.act (R.hom b g) (evM R F) := by
@@ -119,9 +115,9 @@ theorem evM_rho (b) (g : (B.I.S i).G b) (F : B.V i) :
   exact GStep.evV_rho_eq_tr _ _ _ _ b g F
 
 /- English proof (translation)
-Take `⟨g, h1, h2, h3⟩` from `(R.inj ζ b d d').1 h`. Use `⟨g, h3, LinearMap.ext fun y => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[R.act_hom, R.act_zeta]`. Use function extensionality and compare the values at `x`. Use `(trFr_apply B.emb D.what₂.embLL ((B.I.S i).gam b g) ((B.I.S i).chr b g) y.1 x).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, h2, inv_one, frMul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inj_act (ζ b d d') (h : R.zeta ζ • R.pt b d = R.pt b d') :
     ∃ g : (B.I.S i).G b, g • d = d' ∧ M.act (R.hom b g) = M.act (R.zeta ζ) := by
@@ -134,7 +130,7 @@ theorem inj_act (ζ b d d') (h : R.zeta ζ • R.pt b d = R.pt b d') :
   rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, mul_inv_cancel, map_one, mul_one]`. Use `_ = _ := by rw [← h, ← mul_assoc, ← map_mul, inv_mul_cancel, map_one, one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_act_inv (ζ b) (g : (B.I.S i).G b) (h : M.act (R.hom b g) = M.act (R.zeta ζ)) :
     M.act (R.hom b g)⁻¹ = M.act (R.zeta ζ)⁻¹ := by
@@ -143,7 +139,7 @@ theorem inj_act_inv (ζ b) (g : (B.I.S i).G b) (h : M.act (R.hom b g) = M.act (R
     _ = _ := by rw [← h, ← mul_assoc, ← map_mul, inv_mul_cancel, map_one, one_mul]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext_on_range (evM_span R) h`.
+A detailed English derivation is pending.
 -/
 theorem ext_evM {W : Type} [AddCommGroup W] [Module ℂ W] {f g : M.Val →ₗ[ℂ] W} (h : ∀ F, f (evM R F) = g (evM R F)) :
     f = g :=
@@ -152,31 +148,29 @@ theorem ext_evM {W : Type} [AddCommGroup W] [Module ℂ W] {f g : M.Val →ₗ[�
 end Real
 
 /- English proof (translation)
-Introduce `D u B i sp sp' M M' R R' k hk`. Use `choose kC hkC using fun b b' d d' => exists_cplx D.what₂.embLL (evM R) (evM R') (evM_li R) (evM_span R) (k b b' d d')`. Establish `hequiv : ∀ b b' (g : (B.I.S i).G b) (g' : (B.I.S (i + 1)).G b') d d', kC b b' (g • d) (g' • d') = M'.act (R'.hom b' g') ∘ₗ kC b b' d d' ∘ₗ M.act (R.hom b g)⁻¹`. Introduce `b b' g g' d d'`. Use `ext_evM R fun F => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hkC, hk.equiv, ← map_inv]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[evM_rho, ← evM_rho R, hkC]`. Establish `h1 : ∀ b d, ∃ Φ : M'.Pt → (M.Val →ₗ[ℂ] M'.Val), (∀ b' d', Φ (R'.pt b' d') = kC b b' d d') ∧ ∀ (g : M'.G) p, Φ (g • p) = M'.act g ∘ₗ Φ p`. Introduce `b d`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_ext (fun (g : M'.G) (x : M.Val →ₗ[ℂ] M'.Val) => M'.act g ∘ₗ x) ?_ ?_ R'.pt R'.hom R'.zeta R'.pt_smul R'.gen R'.comm R'.surj (fun ζ b b' d d' h => R'.idx ζ b b' d d' (congrArg Prod.fst h)) ?_ (fun b' d' => kC b b' d d') ?_` and prove the remaining obligations. Introduce `x`. Simplify using `only [map_one]`. Both sides reduce to the same expression. Introduce `g h x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul]`. Both sides reduce to the same expression. Introduce `ζ b' d₁ d₂ h`. Take `⟨g, h1, h2⟩` from `inj_act R' ζ b' d₁ d₂ h`. Conclude with `⟨g, h1, fun x => by simp only [h2]⟩`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b' g d'`. Use `hequiv b b' 1 g d d'` as an intermediate fact. Rewrite `this` using `[one_smul, map_one, inv_one, map_one]`. Conclude with `this`. Use `choose Φ hΦ hΦe using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Choose the witnesses or unpack the hypotheses as in `⟨Ψ, hΨ, hΨe⟩ : ∃ Ψ : M.Pt → M'.Pt → (M.Val →ₗ[ℂ] M'.Val), (∀ b d, Ψ (R.pt b d) = Φ b d) ∧ ∀ (g : M.G) p, Ψ (g • p) = fun p' => Ψ p p' ∘ₗ M.act g⁻¹ := by`. Use `exists_ext (fun (g : M.G) (x : M'.Pt → (M.Val →ₗ[ℂ] M'.Val)) p' => x p' ∘ₗ M.act g⁻¹) ?_ ?_ R.pt R.hom R.zeta R.pt_smul R.gen R.comm R.surj (fun ζ b b' d d' h => R.idx ζ b b' d d' (congrArg Prod.fst h)) ?_ Φ ?_` and prove the remaining obligations. Introduce `x`. Simplify using `only [inv_one, map_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Introduce `g h x`. Simplify using `only [mul_inv_rev, map_mul]`. Both sides reduce to the same expression. Introduce `ζ b d₁ d₂ h`. Take `⟨g, h1, h2⟩` from `inj_act R ζ b d₁ d₂ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `⟨g, h1, fun x => by simp only [inj_act_inv R ζ b g h2]⟩`. Introduce `b g d`. Use function extensionality and compare the values at `p'`. Take `⟨ζ, b', d', rfl⟩` from `R'.surj p'`. Use `hequiv b b' g 1 d d'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite `this` using `[one_smul, map_one, map_one]`. Simplify using `only [hΦe, hΦ, this]`. Both sides reduce to the same expression. Establish `hpt : ∀ b b' d d', Ψ (R.pt b d) (R'.pt b' d') = kC b b' d d'` using `fun b b' d d' => by rw [hΨ, hΦ]`. Use `⟨⟨Ψ, fun g p p' y => ?_, fun c c' y => ?_⟩, fun g' p p' y => ?_, fun b b' d d' F y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hΨe] show Ψ p p' ((M.act g⁻¹ * M.act g) y) = _`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Rewrite using `[R.rep_eq, R'.rep_eq, hpt]`. Establish `: B.ch.C.Kmap i c c' ∘ₗ M.Val.subtype = M'.Val.subtype ∘ₗ kC c.1 c'.1 ((B.I.S i).rep c) ((B.I.S (i + 1)).rep c')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `ext_evM R fun F => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hkC]`. Conclude with `hk.kmap c c' F`. Conclude with `LinearMap.congr_fun this y`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ζ, b, d, rfl⟩` from `R.surj p show Ψ _ _ y = M'.act g' (Ψ _ _ y)`. Simplify using `only [hΨe, hΨ, hΦe]`. Both sides reduce to the same expression. Take `rfl : y = evM R F` from `Subtype.ext hy show (Ψ _ _ _).1 = _`. Rewrite using `[hpt, hkC]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_kerPt : ∀ (D : D7) (u : D.what₂.Word) (B : Built.Dat D u) (i : ℕ) (sp : Split (B.J.A i) B.J.T) (sp' : Split (B.J.A (i + 1)) B.J.T) (M : PtModel B.ch i) (M' : PtModel B.ch (i + 1)) (R : B.Real i sp M) (R' : B.Real (i + 1) sp' M') (k : B.Ker i) , Built.Dat.KerEq k → ∃ K : KerPt M M', K.TgtEq ∧ Built.Dat.KerIs R R' K k := by
   intro D u B i sp sp' M M' R R' k hk

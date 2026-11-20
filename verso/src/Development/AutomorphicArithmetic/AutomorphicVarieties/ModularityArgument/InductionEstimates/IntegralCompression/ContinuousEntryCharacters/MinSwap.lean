@@ -9,15 +9,15 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.Invariant
 open scoped ComplexConjugate Classical InnerProductSpace
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ σ D CF CE hC μ _ θ hθ τ₁ τ₂ hτ s u n q hmin`. Take `⟨hnorm, -, hint⟩` from `UpperTheory.ConvolutionTheory.Dp.twUnitary E 2 μ θ`. Establish `htw` using `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coTw F E σ D CF CE hC μ θ hθ`. Set `L : LL μ →ₗᵢ[ℂ] LL μ` to `⟨(θ.U : LL μ →ₗ[ℂ] LL μ), hnorm⟩`. Establish `hL : ∀ v, L v = θ.U v` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ n' q' v, θ.U (CE.Pi μ (s, u) n' q' v) = CE.Pi μ (s + 1, u) n' q' (θ.U v)`. Introduce `n' q' v`. Unfold `Co.Pi`. Rewrite using `[← hL, ← L.integral_comp_comm]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `m`. Rewrite using `[map_smul, hL, hint, htw]`. Substitute `hτ` using the available equality. Take `⟨⟨v, hv, hne⟩, hz⟩` from `hmin`. Use `⟨⟨θ.U v, Submodule.mem_map_of_mem hv, fun h => hne ?_⟩, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[← key]`. Rewrite using `[← norm_eq_zero, ← hnorm, h, norm_zero]`. Introduce and unpack `n' q' hn _ ⟨w, hw, rfl⟩`. Use `key n' q' w` as an intermediate fact. Rewrite `this` using `[hz n' q' hn w hw, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.minSwap :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex F] [IsTotallyComplex E] (σ : E ≃ₐ[F] E) (D : InfD σ 1) (CF : Co F (InfinitePlace F)) (CE : Co E (Fin 2 × InfinitePlace F)),

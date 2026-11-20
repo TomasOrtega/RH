@@ -35,7 +35,7 @@ def rootFix (n : ℕ) : Subgroup (G F Ω) where
     exact a.apply_symm_apply ζ
 
 /- English proof (translation)
-Establish `h1 : ((g⁻¹ : G F Ω) ζ) ^ n = 1` using `by rw [← map_pow, h, map_one]`. Use `show g (a ((g⁻¹ : G F Ω) ζ)) = ζ`. Rewrite using `[ha _ h1]`. Conclude with `ReciprocityTheory.Gal.mul_inv_apply ζ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normal_rootFix (n : ℕ) : (rootFix F Ω n).Normal where
   conj_mem a ha g ζ h := by
@@ -46,11 +46,11 @@ theorem normal_rootFix (n : ℕ) : (rootFix F Ω n).Normal where
 
 omit [NumberField F] in
 /- English proof (translation)
-Establish `hfin : ({ζ : Ω | ζ ^ n = 1}).Finite`. Use `(Polynomial.nthRoots n (1 : Ω)).toFinset.finite_toSet.subset ?_` and prove the remaining obligations. Introduce `ζ hζ`. Simplify `hζ` using `[Polynomial.mem_nthRoots (Nat.pos_of_ne_zero hn)]`. Establish `: Finite {ζ : Ω | ζ ^ n = 1}` using `hfin.to_subtype`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Set `L : IntermediateField F Ω` to `IntermediateField.adjoin F {ζ : Ω | ζ ^ n = 1}`. Establish `: FiniteDimensional F L` using `IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Use `Subgroup.isOpen_mono ?_ (IntermediateField.fixingSubgroup_isOpen L)` and prove the remaining obligations. Introduce `g hg`. Use `show ∀ ζ : Ω, ζ ^ n = 1 → g ζ = ζ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ζ hζ`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff L g).mp hg ζ (IntermediateField.subset_adjoin F _ hζ)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_rootFix [IsAlgClosure F Ω] {n : ℕ} (hn : n ≠ 0) : IsOpen (rootFix F Ω n : Set (G F Ω)) := by
   classical
@@ -71,7 +71,7 @@ theorem isOpen_rootFix [IsAlgClosure F Ω] {n : ℕ} (hn : n ≠ 0) : IsOpen (ro
   exact (IntermediateField.mem_fixingSubgroup_iff L g).mp hg ζ (IntermediateField.subset_adjoin F _ hζ)
 
 /- English proof (translation)
-Establish `hN : ¬ A.valuation (n : Ω) < 1`. Simplify using `using ReciprocityTheory.Gal.not_valuation_lt_one_of_isPlaceOver (A := A) hn hA 1`. Use `ReciprocityTheory.Gal.eq_of_pow_eq_one A hN ?_ ?_ (hσ ζ (ReciprocityTheory.Gal.valuation_eq_one_of_pow_eq_one A hn0 hζ).le)` and prove the remaining obligations. Rewrite using `[← map_pow, hζ, map_one]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ, one_pow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_root {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A v) {n : ℕ} (hn0 : n ≠ 0)
     (hn : ((n : ℕ) : 𝓞 F) ∉ v.asIdeal) {σ : G F Ω} {q : ℕ}
@@ -85,7 +85,7 @@ theorem apply_root {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (h
   · rw [← pow_mul, mul_comm, pow_mul, hζ, one_pow]
 
 /- English proof (translation)
-Introduce `τ hτ`. Establish `hτ'` using `(ReciprocityTheory.Gal.mem_Ine.mp hτ).2`. Use `show ∀ ζ : Ω, ζ ^ n = 1 → τ ζ = ζ`. Introduce `ζ hζ`. Simplify `hτ' x hx) hζ` using `using apply_root hA hn0 hn (σ := τ) (q := 1) (fun x hx => by simpa`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ine_le_rootFix {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A v) {n : ℕ}
     (hn0 : n ≠ 0) (hn : ((n : ℕ) : 𝓞 F) ∉ v.asIdeal) : Ine (F := F) A ≤ rootFix F Ω n := by
@@ -97,13 +97,13 @@ theorem ine_le_rootFix {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)
   simpa using apply_root hA hn0 hn (σ := τ) (q := 1) (fun x hx => by simpa using hτ' x hx) hζ
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0` using `by omega`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `: NeZero (n : Ω)` using `⟨Nat.cast_ne_zero.mpr hn0⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : σ ζ = ζ ^ q` using `apply_root hA hn0 hn hσ.2 hζ.pow_eq_one`. Establish `h2 : σ ζ = ζ` using `(show ∀ ζ : Ω, ζ ^ n = 1 → σ ζ = ζ from h) ζ hζ.pow_eq_one`. Establish `h3 : ζ ^ q = ζ ^ 1` using `by rw [← h1, h2, pow_one]`. Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero hn0`. Break down `Nat.eq_zero_or_pos q with hq | hq` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hq` using the available equality. Establish `hd : n ∣ 1` using `(hζ.pow_eq_one_iff_dvd 1).mp (by rw [← h3, pow_zero])`. Use `Nat.le_of_dvd one_pos hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h4 : ζ ^ (q - 1) = 1`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Apply `mul_right_cancel₀ hζ0` to reduce the goal to its premises. Rewrite using `[← pow_succ, Nat.sub_add_cancel hq, h3, pow_one, one_mul]`. Establish `h5 : 1 ≡ q [MOD n]` using `(Nat.modEq_iff_dvd' hq).mpr ((hζ.pow_eq_one_iff_dvd _).mp h4)`. Rewrite `h5` using `[Nat.ModEq, Nat.mod_eq_of_lt hn1]`. Conclude with `h5.symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mod [IsAlgClosure F Ω] {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A v)
     {n : ℕ} (hn1 : 1 < n) (hn : ((n : ℕ) : 𝓞 F) ∉ v.asIdeal) {σ : G F Ω} {q : ℕ} (hσ : IsFrob A q σ)
@@ -131,11 +131,11 @@ theorem norm_mod [IsAlgClosure F Ω] {A : ValuationSubring Ω} {v : HeightOneSpe
     exact h5.symm
 
 /- English proof (translation)
-Establish `hcl` using `GlobalTheory.TameQuot.closure_frob_sup_Ine F Ω A v hA ⟨σ, hσ.1⟩ hσ`. Set `K : Subgroup (Dec (F` to `F) A) := H.subgroupOf (Dec (F := F) A)`. Establish `hKo : IsOpen (K : Set (Dec (F` using `F) A)) := hH.preimage continuous_subtype_val`. Establish `hKc : IsClosed (K : Set (Dec (F` using `F) A)) := Subgroup.isClosed_of_isOpen K hKo`. Establish `hle : Subgroup.zpowers (⟨σ, hσ.1⟩ : Dec (F` using `F) A) ⊔ (Ine (F := F) A).subgroupOf (Dec (F := F) A) ≤ K := by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.zpowers_le]`. Conclude with `h`. Introduce `x hx`. Conclude with `hI hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htop` using `Subgroup.topologicalClosure_minimal _ hle hKc`. Rewrite `htop` using `[hcl]`. Introduce `x hx`. Conclude with `htop (Subgroup.mem_top (⟨x, hx⟩ : Dec (F := F) A))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dec_le [IsAlgClosure F Ω] {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A v)
     {H : Subgroup (G F Ω)} (hH : IsOpen (H : Set (G F Ω))) (hI : Ine (F := F) A ≤ H) {σ : G F Ω}
@@ -155,7 +155,7 @@ theorem dec_le [IsAlgClosure F Ω] {A : ValuationSubring Ω} {v : HeightOneSpect
   exact htop (Subgroup.mem_top (⟨x, hx⟩ : Dec (F := F) A))
 
 /- English proof (translation)
-Set `Hc : ClosedSubgroup (G F Ω)` to `⟨H, Subgroup.isClosed_of_isOpen H hH⟩`. Establish `hfix : (IntermediateField.fixedField Hc.1).fixingSubgroup = H` using `InfiniteGalois.fixingSubgroup_fixedField Hc`. Establish `: FiniteDimensional F (IntermediateField.fixedField Hc.1)` using `(InfiniteGalois.isOpen_iff_finite _).mp (by rw [hfix]; exact hH)`. Use `GlobalTheory.InertiaAlmostAll.finite_ramified F Ω (IntermediateField.fixedField Hc.1)` as an intermediate fact. Rewrite `this` using `[hfix]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finite_ram [IsAlgClosure F Ω] {H : Subgroup (G F Ω)} (hH : IsOpen (H : Set (G F Ω))) :
     {v : HeightOneSpectrum (𝓞 F) | ∃ B : ValuationSubring Ω, IsPlaceOver B v ∧ ¬ Ine (F := F) B ≤ H}.Finite := by
@@ -169,7 +169,7 @@ theorem finite_ram [IsAlgClosure F Ω] {H : Subgroup (G F Ω)} (hH : IsOpen (H :
   rwa [hfix] at this
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.InertiaAlmostAll.finite_mem F (c := (n : ℤ)) (by exact_mod_cast hn)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finite_mem {n : ℕ} (hn : n ≠ 0) : {v : HeightOneSpectrum (𝓞 F) | ((n : ℕ) : 𝓞 F) ∈ v.asIdeal}.Finite := by
   have h := GlobalTheory.InertiaAlmostAll.finite_mem F (c := (n : ℤ)) (by exact_mod_cast hn)
@@ -178,17 +178,17 @@ theorem finite_mem {n : ℕ} (hn : n ≠ 0) : {v : HeightOneSpectrum (𝓞 F) | 
 end General
 
 /- English proof (translation)
-Introduce `R`. Proceed by induction on `R with`. Consider the case `zero => intro p _`. Conclude with `⟨fun a => a.elim0, fun a => a.elim0, fun a => a.elim0⟩`. Consider the case `succ R ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `p hp`. Take `⟨P, hP, hPr⟩` from `ih (fun a => p a.castSucc) (fun a T hT => hp a.castSucc T hT)`. Take `⟨x, hx, hxr⟩` from `hp (Fin.last R) (Set.range P) (Set.finite_range P)`. Use `⟨Fin.snoc (α := fun _ => α) P x, fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using Fin.lastCases with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `last => simpa using hx`. Consider the case `cast a => simpa using hP a`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `last => rfl`. Consider the case `cast b`. Simplify using `only [Fin.snoc_last, Fin.snoc_castSucc] at hab`. Conclude with `absurd ⟨b, rfl⟩ (hxr _ hab)`. Consider the case `cast a`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Simplify using `only [Fin.snoc_last, Fin.snoc_castSucc] at hab`. Conclude with `absurd ⟨a, rfl⟩ (hxr _ (hs _ _ hab))`. Consider the case `cast b`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.snoc_castSucc] at hab`. Rewrite using `[hPr a b hab]`.
+A detailed English derivation is pending.
 -/
 theorem exists_seq {α : Type} (r : α → α → Prop) (hs : ∀ a b, r a b → r b a) :
     ∀ (R : ℕ) (p : Fin R → α → Prop), (∀ a (T : Set α), T.Finite → ∃ x, p a x ∧ ∀ y, r x y → y ∉ T) →
@@ -222,11 +222,11 @@ theorem exists_seq {α : Type} (r : α → α → Prop) (hs : ∀ a b, r a b →
           rw [hPr a b hab]
 
 /- English proof (translation)
-Use `choose g hgV hg1 hg2 using h`. Establish `key : ∀ s : Finset ι, ∃ γ ∈ V, ∀ b, d b γ = if b ∈ s then t b else 1`. Introduce `s`. Use `Finset.induction_on s ⟨1, V.one_mem, fun b => by simp⟩ ?_` and prove the remaining obligations. Introduce `a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγV, hγ⟩` from `ih`. Use `⟨γ * g a (t a), V.mul_mem hγV (hgV a (t a)), fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hγ b]`. Distinguish the cases in `hba : b = a`. Substitute `hba` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[ha, hg1]`. Rewrite using `[hg2 a (t a) b hba]`. Simplify using `[Finset.mem_insert, hba]`. Take `⟨γ, hγV, hγ⟩` from `key Finset.univ`. Conclude with `⟨γ, hγV, fun b => by simpa using hγ b⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_values {Γ C ι : Type} [Group Γ] [CommGroup C] [Fintype ι] (V : Subgroup Γ) (d : ι → (Γ →* C))
     (h : ∀ b c, ∃ γ ∈ V, d b γ = c ∧ ∀ b', b' ≠ b → d b' γ = 1) (t : ι → C) : ∃ γ ∈ V, ∀ b, d b γ = t b := by
@@ -255,9 +255,7 @@ def Pick (N : NData D.R D.host D.what₂) (V : Subgroup (GE N)) (g : GE N) (T : 
     ∀ σ : GE N, IsFrob (N.plOm.1 P) (normV P) σ → ∃ k : GE N, k * σ * k⁻¹ * g⁻¹ ∈ V
 
 /- English proof (translation)
-Use `choose c hc using fun v : PlE D.host => GlobalTheory.TwistDet.exists_isConjPl (D := D) v`. Use `(hT.union (hT.image c)).subset ?_` and prove the remaining obligations. Introduce and unpack `P ⟨v, hv, h | h⟩`. Use `left`. Rewrite using `[h]`.
-
-Conclude with `hv`. Use `right`. Conclude with `⟨v, hv, GlobalTheory.TwistDet.isConjPl_unique (hc v) h⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_over {T : Set (PlE D.host)} (hT : T.Finite) : {P | ∃ v ∈ T, Over v P}.Finite := by
 
@@ -268,15 +266,15 @@ theorem finite_over {T : Set (PlE D.host)} (hT : T.Finite) : {P | ∃ v ∈ T, O
   · right; exact ⟨v, hv, GlobalTheory.TwistDet.isConjPl_unique (hc v) h⟩
 
 /- English proof (translation)
-Take `⟨P, hPA, hdeg, -, B, hB, hBV, σ₀, hσ₀, hσ₀g⟩` from `hC D.host.E N.Om V hV hN g (finite_over hT).toFinset`. Establish `hnorm : ∀ w : PlE D.host, Ideal.absNorm w.asIdeal = normV w` using `fun w => by`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Establish `hiff` using `(GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified D.host.E).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `⟨P, ?_⟩` and prove the remaining obligations. Unfold `Pick`. Use `⟨fun w hw => ⟨?_, ?_⟩, fun σ hσ => ?_⟩` and prove the remaining obligations. Introduce `hwT`. Apply `hPA` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨w, hwT, GlobalTheory.TwistDet.over_symm hw⟩`. Break down `hw with rfl | hw` into its components or cases. Conclude with `hdeg`. Rewrite using `[← hiff, hnorm, GlobalTheory.TwistDet.normV_conj hw, ← hnorm, hiff]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hdeg`. Take `⟨k, hk⟩` from `ReciprocityTheory.Gal.exists_smul_eq_of_isPlaceOver hB (N.plOm.2 P)`. Rewrite `hσ` using `[← hk]`. Establish `h1` using `GlobalTheory.TwistDet.isFrob_smul hσ k⁻¹`. Rewrite `h1` using `[inv_smul_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : σ₀⁻¹ * (k⁻¹ * σ * k⁻¹⁻¹) ∈ V` using `hBV (ReciprocityTheory.Gal.inv_mul_mem_Ine_of_isFrob hσ₀ h1)`. Use `⟨k⁻¹, ?_⟩` and prove the remaining obligations. Establish `h3` using `V.mul_mem (hN.conj_mem _ h2 σ₀) hσ₀g`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_pick (hC : Cheb) {V : Subgroup (GE N)} (hV : IsOpen (V : Set (GE N))) (hN : V.Normal) (g : GE N)
     {T : Set (PlE D.host)} (hT : T.Finite) : ∃ P, Pick N V g T P := by
@@ -309,7 +307,7 @@ theorem exists_pick (hC : Cheb) {V : Subgroup (GE N)} (hV : IsOpen (V : Set (GE 
     group
 
 /- English proof (translation)
-Use `exists_seq (fun P v => Over P v) (fun a b h => GlobalTheory.TwistDet.over_symm h) R (fun a x => Pick N V (g a) T x) ?_` and prove the remaining obligations. Introduce `a T' hT'`. Take `⟨x, hx1, hx2⟩` from `exists_pick hC hV hN (g a) (hT.union hT')`. Conclude with `⟨x, ⟨fun w hw => ⟨fun hwT => (hx1 w hw).1 (Or.inl hwT), (hx1 w hw).2⟩, hx2⟩, fun y hy hyT' => (hx1 y hy).1 (Or.inr hyT')⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_picks (hC : Cheb) {V : Subgroup (GE N)} (hV : IsOpen (V : Set (GE N))) (hN : V.Normal) {R : ℕ}
     (g : Fin R → GE N) {T : Set (PlE D.host)} (hT : T.Finite) :
@@ -325,13 +323,11 @@ theorem exists_picks (hC : Cheb) {V : Subgroup (GE N)} (hV : IsOpen (V : Set (GE
 variable (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw)
 
 /- English proof (translation)
-Establish `key : ∀ p : ℕ, p.Prime → p ≠ 2 → p ≠ X.l i → ((p : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal → ((2 * X.l i ^ M : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal`. Introduce `p hp h2 hl hpv hmem`. Establish `hcop : Nat.Coprime p (2 * X.l i ^ M)` using `Nat.Coprime.mul_right ((Nat.coprime_primes hp Nat.prime_two).mpr h2) (Nat.Coprime.pow_right _ ((Nat.coprime_primes hp (X.lPrime i).out).mpr hl))`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.mpr hcop`. Establish `hab'` using `congrArg (Int.cast : ℤ → 𝓞 D.host.E) hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hab'` using `[Int.cast_add, Int.cast_mul, Int.cast_mul, Int.cast_natCast, Int.cast_natCast, Int.cast_one]`. Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab']`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hpv) (v.asIdeal.mul_mem_left _ hmem)`. Establish `hv' : v ∈ ((X.pD i : Finset _) : Set (HeightOneSpectrum (𝓞 D.host.E)))` using `hv`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv'` using `[X.pD_eq i]`. Establish `h15` using `D.host.pde_mod`. Distinguish the cases in `h : X.l i = D.host.pde`. Rewrite `hv'` using `[if_pos h]`. Conclude with `key _ D.host.pde'_prime (by omega) (fun e => D.host.pde_ne (h ▸ e).symm) hv'`.
-
-Rewrite `hv'` using `[if_neg h]`. Conclude with `key _ D.host.pde_prime (by omega) (fun e => h e.symm) hv'`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_of_pD {v : PlE D.host} (hv : v ∈ X.pD i) (M : ℕ) :
     ((2 * X.l i ^ M : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal := by
@@ -358,49 +354,43 @@ theorem not_mem_of_pD {v : PlE D.host} (hv : v ∈ X.pD i) (M : ℕ) :
     exact key _ D.host.pde_prime (by omega) (fun e => h e.symm) hv'
 
 /- English proof (translation)
-Introduce `hC D N X i`. Unfold `StepAB`. Introduce `M hM H S d hAdm z hz U hUo hUn A R h hh`. Establish `hl` using `(X.lPrime i).out`. Establish `hn1 : 1 < 2 * X.l i ^ M`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 ≤ X.l i ^ M` using `Nat.one_le_pow _ _ hl.pos`. Use linear arithmetic over natural numbers and integers. Establish `hn0 : 2 * X.l i ^ M ≠ 0` using `by omega`. Take `⟨hHo, hHn, hpDH, hgood⟩` from `hAdm`. Use `hUn` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hHn` as an intermediate fact. Use `normal_rootFix (F := D.host.E) (Ω := N.Om) (2 * X.l i ^ M)` as an intermediate fact. Set `W : Subgroup (GE N)` to `U ⊓ H ⊓ rootFix D.host.E N.Om (2 * X.l i ^ M)`. Establish `hWo : IsOpen (W : Set (GE N))` using `(hUo.inter hHo).inter (isOpen_rootFix hn0)`. Establish `hWn : W.Normal` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨A0, hA0f, hA0⟩` from `GlobalTheory.FrobDense.exists_finite_split D.host`. Establish `hram` using `(GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified D.host.E).2`. Set `T : Set (PlE D.host)` to `↑A ∪ ↑S ∪ ↑(X.S0 i) ∪ A0 ∪ {v | v.asIdeal.ramificationIdx ℤ ≠ 1} ∪ {v | ∃ B : ValuationSubring N.Om, IsPlaceOver B v ∧ ¬ Ine (F := D.host.E) B ≤ U} ∪ {v | ∃ B : ValuationSubring N.Om, IsPlaceOver B v ∧ ¬ Ine (F := D.host.E) B ≤ H} ∪ {v | ((2 * X.l i ^ M : ℕ) : 𝓞 D.host.E) ∈ v.asI …`. Establish `hT : T.Finite` using `((((((A.finite_toSet.union S.finite_toSet).union (X.S0 i).finite_toSet).union hA0f).union hram).union (finite_ram hUo)).union (finite_ram hHo)).union (finite_mem hn0)`. Establish `hTmem : ∀ w, w ∉ T → w ∉ A ∧ w ∉ S ∧ w ∉ X.S0 i ∧ w ∉ A0 ∧ w.asIdeal.ramificationIdx ℤ = 1 ∧ (∀ B : ValuationSubring N.Om, IsPlaceOver B w → Ine (F` using `D.host.E) B ≤ U) ∧ (∀ B : ValuationSubring N.Om, IsPlaceOver B w → Ine (F := D.host.E) B ≤ H) ∧ ((2 * X.l i ^ M : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Simplify using `only [T, Set.mem_union, Finset.mem_coe, Set.mem_ofPred_eq, not_or, not_exists, not_and, not_not] at hw`. Take `⟨⟨⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩, h6⟩, h7⟩, h8⟩` from `hw`. Conclude with `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩`. Establish `hgoodP : ∀ P : PlE D.host, (∀ w, Over P w → w ∉ T ∧ w.asIdeal.inertiaDeg ℤ = 1) → (∀ σ : GE N, IsFrob (N.plOm.1 P) (normV P) σ → σ ∈ H ⊓ rootFix D.host.E N.Om (2 * X.l i ^ M)) → (∀ w, Over P w → IsSplitPl D.host w ∧ w.asIdeal.inertiaDeg ℤ = 1 ∧ Formalism.BasicNotions.eWL D.host.E …` using `D.host.E) B ≤ U) ∧ (∀ B : ValuationSubring N.Om, IsPlaceOver B P → Ine (F := D.host.E) B ≤ W) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `P hP hfr`. Establish `hPT` using `hTmem P (hP P (Or.inl rfl)).1`. Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob (N.plOm.2 P)`. Establish `hσW` using `hfr σ hσ`. Establish `hnorm : normV P % (2 * X.l i ^ M) = 1` using `norm_mod (N.plOm.2 P) hn1 hPT.2.2.2.2.2.2.2 hσ hσW.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdec : DecV N P ≤ H` using `dec_le (N.plOm.2 P) hHo (hPT.2.2.2.2.2.2.1 _ (N.plOm.2 P)) hσ hσW.1`. Use `⟨fun w hw => ?_, hgood P hPT.2.1 ?_ hdec, fun w hw B hB => (hTmem w (hP w hw).1).2.2.2.2.2.1 B hB, fun B hB => ?_⟩` and prove the remaining obligations. Establish `hwT` using `hTmem w (hP w hw).1`. Establish `hdeg` using `(hP w hw).2`. Use `⟨hA0 w hwT.2.2.2.1 hdeg, hdeg, hwT.2.2.2.2.1, hwT.2.2.1, hwT.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hw with rfl | hw` into its components or cases. Conclude with `hnorm`. Rewrite using `[GlobalTheory.TwistDet.normV_conj hw]`. Conclude with `hnorm`. Conclude with `hA0 P hPT.2.2.2.1 (hP P (Or.inl rfl)).2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `le_inf (le_inf (hPT.2.2.2.2.2.1 B hB) (hPT.2.2.2.2.2.2.1 B hB)) (ine_le_rootFix hB hn0 hPT.2.2.2.2.2.2.2)`. Establish `hconjmem : ∀ (K : Subgroup (GE N)), K.Normal → ∀ σ k g : GE N, k * σ * k⁻¹ * g⁻¹ ∈ K → g ∈ K → σ ∈ K`. Introduce `K hK σ k g h1 h2`. Establish `h3 : k * σ * k⁻¹ ∈ K` using `by simpa using K.mul_mem h1 h2`. Establish `h4` using `hK.conj_mem _ h3 k⁻¹`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify `h4` using `[mul_assoc]`. Establish `hzHR : z ∈ H ⊓ rootFix D.host.E N.Om (2 * X.l i ^ M)`. Take `⟨v, hv, B, hB, hzB, -, -⟩` from `hz`. Conclude with `⟨hpDH v hv B hB hzB, ine_le_rootFix hB hn0 (not_mem_of_pD X i hv M) hzB⟩`. Take `⟨P1, hP1, hP1d⟩` from `exists_picks hC hWo hWn (fun _ : Fin R => z) hT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP1good` using `fun a => hgoodP (P1 a) (hP1 a).1 (fun σ hσ => by`. Take `⟨k, hk⟩` from `(hP1 a).2 σ hσ`. Conclude with `hconjmem _ inferInstance σ k z ⟨hk.1.2, hk.2⟩ hzHR)`. Establish `hsurj : ∀ (b : Fin R) (c : Multiplicative (ZMod (X.l i ^ M))), ∃ γ ∈ W, d (P1 b) γ = c ∧ ∀ b', b' ≠ b → d (P1 b') γ = 1`. Introduce `b c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨-, hgc, -, hB⟩` from `hP1good b`. Take `⟨γ, hγI, hγc⟩` from `hgc.2.2.2.2 (P1 b) (Or.inl rfl) (N.plOm.1 (P1 b)) (N.plOm.2 (P1 b)) c`. Use `⟨γ, hB _ (N.plOm.2 (P1 b)) hγI, hγc, fun b' hb' => ?_⟩` and prove the remaining obligations. Take `⟨-, hgc', -, -⟩` from `hP1good b'`. Conclude with `hgc'.2.2.2.1 (P1 b) (fun hov => hb' (hP1d b' b hov)) (N.plOm.1 (P1 b)) (N.plOm.2 (P1 b)) γ hγI`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `choose ε hεW hε using fun a : Fin R => exists_values W (fun b => d (P1 b)) hsurj (fun b => Multiplicative.ofAdd (if a = b then (1 : ZMod (X.l i ^ M)) else 0) * (d (P1 b) (h a))⁻¹)`. Set `γ : Fin R → GE N` to `fun a => h a * ε a`. Establish `hγd : ∀ a b, d (P1 b) (γ a) = Multiplicative.ofAdd (if a = b then (1 : ZMod (X.l i ^ M)) else 0)`. Introduce `a b`. Establish `h1` using `hε a b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [γ]`. Rewrite using `[map_mul, h1, mul_comm _ (d (P1 b) (h a))⁻¹, mul_inv_cancel_left]`. Establish `hγHR : ∀ a, γ a ∈ H ⊓ rootFix D.host.E N.Om (2 * X.l i ^ M)` using `fun a => (H ⊓ rootFix D.host.E N.Om (2 * X.l i ^ M)).mul_mem ⟨(hh a).1, (hh a).2⟩ ⟨(hεW a).1.2, (hεW a).2⟩`. Set `V2 : Subgroup (GE N)` to `W ⊓ ⨅ b, (d (P1 b)).ker`. Establish `hV2o : IsOpen (V2 : Set (GE N))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsOpen (⋂ b, ((d (P1 b)).ker : Set (GE N)))` using `isOpen_iInter_of_finite (fun b => (hP1good b).2.1.1)`. Use `show IsOpen ((W : Set (GE N)) ∩ ((⨅ b, (d (P1 b)).ker : Subgroup (GE N)) : Set (GE N)))`. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `hWo.inter this`. Establish `hV2n : V2.Normal`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: (⨅ b, (d (P1 b)).ker).Normal` using `Subgroup.normal_iInf_normal (fun b => inferInstance)`. Use `infer_instance`. Take `⟨P2, hP2, hP2d⟩` from `exists_picks hC hV2o hV2n γ (hT.union (Set.finite_range P1))`. Establish `hP2good` using `fun a => hgoodP (P2 a) (fun w hw => ⟨fun h' => ((hP2 a).1 w hw).1 (Or.inl h'), ((hP2 a).1 w hw).2⟩) (fun σ hσ => by`. Take `⟨k, hk⟩` from `(hP2 a).2 σ hσ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hconjmem _ inferInstance σ k (γ a) ⟨hk.1.1.2, hk.1.2⟩ (hγHR a))`. Establish `hall : ∀ q, (∀ w, Over (Sum.elim P1 P2 q) w → IsSplitPl D.host w ∧ w.asIdeal.inertiaDeg ℤ = 1 ∧ Formalism.BasicNotions.eWL D.host.E w = 1 ∧ w ∉ X.S0 i ∧ w ∉ A ∧ normV w % (2 * X.l i ^ M) = 1) ∧ GoodChar X i M (Sum.elim P1 P2 q) (d (Sum.elim P1 P2 q)) ∧ (∀ w, Over (Sum.elim P1 P2 …` using `D.host.E) B ≤ U) := by`. Introduce and unpack `(a | a)`. Conclude with `⟨(hP1good a).1, (hP1good a).2.1, (hP1good a).2.2.1⟩`. Conclude with `⟨(hP2good a).1, (hP2good a).2.1, (hP2good a).2.2.1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hpair : ∀ q q' : Fin R ⊕ Fin R, Over (Sum.elim P1 P2 q) (Sum.elim P1 P2 q') → q = q'`. Introduce and unpack `(a | a) (b | b) hov`. Conclude with `congrArg Sum.inl (hP1d a b hov)`. Conclude with `absurd (Or.inr ⟨a, rfl⟩) ((hP2 b).1 (P1 a) (GlobalTheory.TwistDet.over_symm hov)).1`. Conclude with `absurd (Or.inr ⟨b, rfl⟩) ((hP2 a).1 (P1 b) hov).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Sum.inr (hP2d a b hov)`. Establish `hsteps2 : ∀ a b (σ : GE N), IsFrob (N.plOm.1 (P2 a)) (normV (P2 a)) σ → d (P1 b) σ = Multiplicative.ofAdd (if a = b then (1 : ZMod (X.l i ^ M)) else 0)`. Introduce `a b σ hσ`. Take `⟨k, hk⟩` from `(hP2 a).2 σ hσ`. Establish `hker : d (P1 b) (k * σ * k⁻¹ * (γ a)⁻¹) = 1` using `(Subgroup.mem_iInf.mp hk.2) b`.
-
-Rewrite `hker` using `[map_mul, map_inv, map_mul, map_mul, map_inv, mul_inv_eq_one, mul_comm (d (P1 b) k), mul_assoc, mul_inv_cancel, mul_one]`. Rewrite using `[hker, hγd]`. Use `⟨Sum.elim P1 P2, And.intro (fun q => (hall q).1) (And.intro hpair (fun q => (hall q).2.1)), And.intro (fun a σ hσ => ?_) (fun a b σ hσ => hsteps2 a b σ hσ), fun q w hw B hB => (hall q).2.2 w hw B hB, fun a => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `(hP1 a).2 σ hσ`. Conclude with `⟨k, hk.1.1⟩`.
-
-Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob (N.plOm.2 (P2 a))`. Take `⟨k, hk⟩` from `(hP2 a).2 σ hσ`. Use `⟨σ, k, hσ, ?_⟩` and prove the remaining obligations. Establish `h1 : k * σ * k⁻¹ * (γ a)⁻¹ ∈ U` using `hk.1.1.1`. Establish `h2 : h a * ε a * (h a)⁻¹ ∈ U` using `hUn.conj_mem _ (hεW a).1.1 (h a)`.
-
-Use `U.mul_mem h1 h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [γ]`. Use `group`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stepAB : Cheb → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw),
     StepAB X i := by

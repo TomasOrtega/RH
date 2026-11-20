@@ -18,7 +18,7 @@ namespace GlobalTheory.CompactAvgSchwartz
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_inv]`. Conclude with `Units.mul_inv _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mt_mul_inv_self (V : HSp D) (g : GA D V) : Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V g⁻¹ = 1 := by
   unfold Formalism.L2.Theta.mt
@@ -26,35 +26,31 @@ theorem mt_mul_inv_self (V : HSp D) (g : GA D V) : Formalism.L2.Theta.mt V g * F
   exact Units.mul_inv _
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, mt_mul_inv_self, Matrix.map_one _ (map_zero φ) (map_one φ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_cancel {R : Type} [CommRing R] (φ : AE D →+* R) (V : HSp D) (g : GA D V) :
     (Formalism.L2.Theta.mt V g).map φ * (Formalism.L2.Theta.mt V g⁻¹).map φ = 1 := by
   rw [← Matrix.map_mul, mt_mul_inv_self, Matrix.map_one _ (map_zero φ) (map_one φ)]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_mul_entry {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {m n : ℕ} (M : Matrix (Fin m) (Fin m) R)
     (x : Matrix (Fin m) (Fin n) R) : (fun i j => φ ((M * x) i j)) = fun i j => ∑ c, φ (M i c) * φ (x c j) := by
   simp only [Matrix.mul_apply, map_sum, map_mul]
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero`. Use `⟨fun x => integrable_zero _ _ _, ?_⟩` and prove the remaining obligations. Establish `e : projS ν (0 : Mx D T.rank n → ℂ) = 0` using `funext fun x => integral_zero _ _`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add Φ Ψ _ _ h1 h2`. Use `⟨fun x => (h1.1 x).add (h2.1 x), ?_⟩` and prove the remaining obligations. Establish `e : projS ν (Φ + Ψ) = projS ν Φ + projS ν Ψ` using `funext fun x => integral_add (h1.1 x) (h2.1 x)`. Rewrite using `[e]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ h1.2 h2.2`. Consider the case `smul c Φ _ h1`. Use `⟨fun x => (h1.1 x).smul c, ?_⟩` and prove the remaining obligations. Establish `e : projS ν (c • Φ) = c • projS ν Φ` using `funext fun x => integral_smul c _`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.smul_mem _ c h1.2`. Consider the case `mem Φ hΦ`. Take `⟨f, g, hg, rfl⟩` from `hΦ`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Use `haveI : IsModuleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalRing (Af D.host.F ⊗[D.host.F] D.host.E) := IsModuleTopology.isTopologicalRing (Af D.host.F) _`. Use `haveI : OpensMeasurableSpace K := Subtype.opensMeasurableSpace (K : Set (GA D T))`. Establish `c1 : Continuous fun k : K => Formalism.L2.Theta.mt T (k : GA D T)` using `(GlobalTheory.RealWeil.continuous_mt T).1.comp continuous_subtype_val`. Establish `c2 : Continuous fun k : K => Formalism.L2.Theta.mt T (k : GA D T)⁻¹` using `(GlobalTheory.RealWeil.continuous_mt T).2.comp continuous_subtype_val`. Take `⟨hint, t, F, ht, hF⟩` from `integral_tensor_matrix (n := n) ν (fun (k : K) τ => compAt θ τ (Formalism.L2.Theta.mt T (k : GA D T)⁻¹)) (fun (k : K) τ => compAt θ τ (Formalism.L2.Theta.mt T (k : GA D T))) (fun τ => (GlobalTheory.RealWeil.continuous_compAt hθ τ _ _).comp c2) (fun τ => (GlobalTheory.RealWeil.con …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : ∀ (M : Mx D T.rank T.rank) (x : Mx D T.rank n), f (fun τ i j => compAt θ τ (M ⬝ x) i j) * g (fun i j => finPart D ((M ⬝ x) i j)) = f (fun τ i j => ∑ c, compAt θ τ M i c * compAt θ τ x c j) * g (fun i j => ∑ c, M.map (finPart D) i c * finPart D (x c j))` using `fun M x => by`. Apply the tactic sequence `have e1 := fun τ => map_mul_entry ((θ τ).comp (infPart D)) M x`. Apply the tactic sequence `have e2 := map_mul_entry (finPart D) M x`. Conclude with `congrArg₂ (· * ·) (congrArg f (funext e1)) (congrArg g e2)`. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [e]`. Conclude with `hint (fun τ i j => compAt θ τ x i j) (fun i j => finPart D (x i j))`. Establish `e2 : projS ν (fun x : Mx D T.rank n => f (fun τ i j => compAt θ τ x i j) * g (fun i j => finPart D (x i j))) = ∑ g' ∈ t, fun x : Mx D T.rank n => F g' (fun τ i j => compAt θ τ x i j) * g' (fun i j => finPart D (x i j))`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`.
-
-Simplify using `only [projS, e]`. Conclude with `hF (fun τ i j => compAt θ τ x i j) (fun i j => finPart D (x i j))`. Rewrite using `[e2]`. Conclude with `Submodule.sum_mem _ fun g' hg' => Submodule.subset_span ⟨F g', g', ht g' hg', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_and_projS_mem {θ : InfFam D} (hθ : IsInfFam θ) {T : HSp D} {n : ℕ} {K : Subgroup (GA D T)}
     (hK : IsCompact (K : Set (GA D T))) (ν : Measure K) [IsFiniteMeasure ν] {Φ : Mx D T.rank n → ℂ}
@@ -117,7 +113,7 @@ theorem integrable_and_projS_mem {θ : InfFam D} (hθ : IsInfFam θ) {T : HSp D}
       exact Submodule.sum_mem _ fun g' hg' => Submodule.subset_span ⟨F g', g', ht g' hg', rfl⟩
 
 /- English proof (translation)
-Introduce `_ _ hθ _ _ _ hK ν _ _ hΦ` and use `(integrable_and_projS_mem hθ hK ν hΦ).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem projS_mem : ∀ (D : D7), ∀ θ : InfFam D, IsInfFam θ → ∀ (T : HSp D) (n : ℕ) (K : Subgroup (GA D T)),
     IsCompact (K : Set (GA D T)) → ∀ ν : Measure K, IsProbabilityMeasure ν → ∀ Φ ∈ schwartzA θ T.rank n,

@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.LevInv
 
 /- English proof (translation)
-Take `⟨p, φ, w, hw⟩` from `GlobalTheory.TransferCompare.allTest_framed Xo c k y`. Establish `hact : actLev c lev γ g ∈ sec Xo c a n` using `Formalism.L2.Pj.actL_mem _ _ _ _ hL.total hL.nat hL.bor _ γ hg`. Rewrite using `[GlobalTheory.FlatLine.evR_of_frMap_test hact.1 hw]`. Establish `hm` using `Formalism.L2.Pj.mvPt_spec hL.total γ w`. Establish `hw'` using `hL.nat γ p.R k φ w _ y y' hw hm h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.FlatLine.evR_of_frMap_test hg.1 hw']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evR_actLev {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {G : Type} [Group G]
@@ -37,17 +37,15 @@ theorem evR_actLev {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Ho
   rfl
 
 /- English proof (translation)
-Introduce `D j H Dw l Xo c d hpq hlev hA hB lift hlift a n g hg`. Take `⟨hd, -, -, -, -, -, -, -, -⟩` from `id hlev`. Establish `hOB : GlobalTheory.ClsVal.Cmp.OverBase d`. Break down `hB with ⟨hne, hA'⟩ | h` into its components or cases. Conclude with `GlobalTheory.ClsVal.Cmp.overBase_of_ne hne hA' d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hO : GlobalTheory.CoverSec.AllOver d` using `GlobalTheory.CoverSec.allOver_of_overBase d hd.2.2 hOB`. Establish `hq : ∀ (γ : Gam Dw d.l₂) (x : Dw.La), (Submodule.Quotient.mk (lift γ x) : LaQ Dw d.l₂) = γ (Submodule.Quotient.mk x)` using `fun γ x => by`. Establish `e` using `congrArg (fun f => f x) (hlift γ)`. Simplify using `using e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ x, lift 1 x - x ∈ d.l₂.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)` using `fun x => (Submodule.Quotient.eq _).1 ((hq 1 x).trans rfl)`. Establish `hm : ∀ γ δ x, lift (γ * δ) x - lift γ (lift δ x) ∈ d.l₂.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)` using `fun γ δ x => (Submodule.Quotient.eq _).1 (by rw [hq, hq, LinearEquiv.mul_apply, ← hq])`. Establish `hL` using `GlobalTheory.LevelActionOfLifts.actLev_of_lifts_of_eq_one D H Dw d.l₂ d.Xo₂ d.c₂ (Gam Dw d.l₂) lift hpq hA h1 hm`. Establish `hact : ∀ γ, actLev d.c₂ (fun γ => (lift γ, (LinearMap.id : Dw.La →ₗ[𝓞 D.host.E] Dw.La))) γ g ∈ sec d.Xo₂ d.c₂ a n` using `fun γ => Formalism.L2.Pj.actL_mem _ _ _ _ hL.total hL.nat hL.bor _ γ hg`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hF γ hγ`. Use `GlobalTheory.CoverSec.eq_of_geometric (hact γ).1 hg.1 fun k _ _ _ y₂ => ?_` and prove the remaining obligations. Use `letI := GlobalTheory.CoverSec.algBelow d k`. Establish `hk : ∀ t : c.F, algebraMap d.c₂.F k (d.eF t) = algebraMap c.F k t` using `fun _ => rfl`. Take `⟨y₂', hy₂'⟩` from `hL.total γ k y₂`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `GlobalTheory.CoverSec.exists_frOver_below d hk y₂ (hO k hk y₂)`. Establish `ho` using `(GlobalTheory.LevOrbit.fibre_torsor D.host.E H Dw l Xo c d hpq hlev hA hOB lift hlift k hk y₂ y₂' y hy).1.2 ⟨γ, hγ, hy₂'⟩`. Rewrite using `[evR_actLev hL hg γ y₂ y₂' hy₂']`. Conclude with `(hF k hk y₂ y₂' y hy ho).symm`. Introduce `hI k _ _ _ _ hk y₂ y₂' y hy hy'`.
-
-Take `⟨γ, hγ, hr⟩` from `(GlobalTheory.LevOrbit.fibre_torsor D.host.E H Dw l Xo c d hpq hlev hA hOB lift hlift k hk y₂ y₂' y hy).1.1 hy'`. Rewrite using `[← evR_actLev hL hg γ y₂ y₂' hr, hI γ hγ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibConst_iff_invariant : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (d : DeltaDat Xo c 0), 1 ≤ Dw.p + Dw.q → d.IsLev → d.l₂.A = 1 → ((Dw.p ≠ Dw.q ∧ l.A = 1) ∨ GlobalTheory.ClsVal.Cmp.OverBase d) → ∀ (lift : Gam Dw d.l₂ → Dw.La →ₗ[𝓞 D.host.E] Dw.La), IsLift lift → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ g ∈ sec d.Xo₂ d.c₂ a n, (FibConst d g ↔ ∀ γ, CongMod l.Mb (lift γ) LinearMap.id → actLev d.c₂ (fun γ => (lift γ, (LinearMap.id : Dw.La →ₗ[𝓞 D.host.E] Dw.La))) γ g = g) := by
   intro D j H Dw l Xo c d hpq hlev hA hB lift hlift a n g hg

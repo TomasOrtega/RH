@@ -19,11 +19,11 @@ variable {k k' : Type} [CommRing k] [CommRing k'] {Y Y' : Scheme.{0}} {p : Y ⟶
   {σ : k →+* ℂ} {σ' : k' →+* ℂ}
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `r.stalkMap_surjective w (Y'.presheaf.germ U w hw g)`. Take `⟨V₀, hV₀, g₀, rfl⟩` from `Y.presheaf.exists_germ_eq a`. Rewrite `ha` using `[Scheme.Hom.germ_stalkMap_apply]`. Take `⟨T, hT, i₁, i₂, e⟩` from `Y'.presheaf.germ_eq w _ _ _ _ ha`. Take `⟨V₁, hV₁, e₁⟩` from `r.isEmbedding.isInducing.isOpen_iff.1 T.isOpen`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hle : r ⁻¹ᵁ (V₀ ⊓ ⟨V₁, hV₁⟩) ≤ T` using `fun x hx => by`. Establish `: x ∈ r ⁻¹' V₁` using `hx.2`. Rewrite `this` using `[e₁]`. Then use the resulting hypothesis. Establish `hw₁ : w ∈ r ⁻¹' V₁` using `by rw [e₁]; exact hT`. Use `⟨V₀ ⊓ ⟨V₁, hV₁⟩, resG Y inf_le_left g₀, hle.trans i₂.le, ⟨hV₀, hw₁⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₂` using `congrArg (resG Y' hle) e`. Establish `e₃ : r.app (V₀ ⊓ ⟨V₁, hV₁⟩) (resG Y inf_le_left g₀) = resG Y' (hle.trans i₁.le) (r.app V₀ g₀)` using `congr($(r.naturality (homOfLE (inf_le_left : V₀ ⊓ ⟨V₁, hV₁⟩ ≤ V₀)).op) g₀)`. Conclude with `e₃.trans ((LB.resG_resG _ _ _).symm.trans (e₂.trans (LB.resG_resG _ _ _)))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_app_eq (r : Y' ⟶ Y) [IsPreimmersion r] {U : Y'.Opens} (g : Γ(Y', U)) {w : Y'} (hw : w ∈ U) :
     ∃ (V : Y.Opens) (g₀ : Γ(Y, V)) (h : r ⁻¹ᵁ V ≤ U), w ∈ r ⁻¹ᵁ V ∧ r.app V g₀ = resG Y' h g := by
@@ -45,9 +45,9 @@ theorem exists_app_eq (r : Y' ⟶ Y) [IsPreimmersion r] {U : Y'.Opens} (g : Γ(Y
 variable {r : Y' ⟶ Y} [IsPreimmersion r] {L : CxPts p σ → CxPts p' σ'}
 
 /- English proof (translation)
-Take `⟨V, g₀, h, hw, e⟩` from `exists_app_eq r g (mem_ptsIn.1 hz)`. Establish `key (w : CxPts p σ) : L w ∈ ptsIn p' σ' (r ⁻¹ᵁ V) ↔ w ∈ ptsIn p σ V`. Express the relevant statement in the definitionally equal form `_ ↔ ⊤ ≤ w.1 ⁻¹ᵁ V`. Rewrite using `[← hL w]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨V, g₀, (key z).1 (mem_ptsIn.2 hw), fun w hw => ⟨ptsIn_mono h ((key w).2 hw), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← ev_res h ((key w).2 hw), ← e, ev, ev, ← hL w]`. Conclude with `(Points.valR_comp _ _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ev_lift (hL : ∀ z, (L z).1 ≫ r = z.1) {U : Y'.Opens} (g : Γ(Y', U)) {z : CxPts p σ}
     (hz : L z ∈ ptsIn p' σ' U) : ∃ (V : Y.Opens) (g₀ : Γ(Y, V)), z ∈ ptsIn p σ V ∧
@@ -62,7 +62,7 @@ theorem exists_ev_lift (hL : ∀ z, (L z).1 ≫ r = z.1) {U : Y'.Opens} (g : Γ(
   exact (Points.valR_comp _ _ _ _).symm
 
 /- English proof (translation)
-Use `CxPts.continuous_iff.2 fun U => ⟨isOpen_iff_mem_nhds.2 fun z hz => ?_, fun g z hz => ?_⟩` and prove the remaining obligations. Take `⟨V, g₀, h₁, h₂⟩` from `exists_ev_lift hL (0 : Γ(Y', U)) hz filter_upwards [(isOpen_ptsIn V).mem_nhds h₁] with w hw using (h₂ w hw).1`. Take `⟨V, g₀, h₁, h₂⟩` from `exists_ev_lift hL g hz`. Use `(((continuousOn_ev g₀).continuousAt ((isOpen_ptsIn V).mem_nhds h₁)).congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn V).mem_nhds h₁] with w hw using (h₂ w hw).2.symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_lift (hL : ∀ z, (L z).1 ≫ r = z.1) : Continuous L := by
   refine CxPts.continuous_iff.2 fun U => ⟨isOpen_iff_mem_nhds.2 fun z hz => ?_, fun g z hz => ?_⟩
@@ -73,9 +73,7 @@ theorem continuous_lift (hL : ∀ z, (L z).1 ≫ r = z.1) : Continuous L := by
     filter_upwards [(isOpen_ptsIn V).mem_nhds h₁] with w hw using (h₂ w hw).2.symm
 
 /- English proof (translation)
-Take `⟨U, ι, _, g, Φ, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Establish `hg : VInfAt (fun w a => ev p' σ' U (g a) (L w)) z` using `vInfAt_pi fun a => by`. Take `⟨V, g₀, h₁, h₂⟩` from `exists_ev_lift hL (g a) h₁`. Use `(vInfAt_ev g₀ h₁).congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn V).mem_nhds h₁] with w hw using (h₂ w hw).2`.
-
-Conclude with `(hg.comp h₂ h₃ h₄).congr ((continuous_lift hL).continuousAt.eventually h₅)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vInfAt_lift (hL : ∀ z, (L z).1 ≫ r = z.1) {G : Type} [NormedAddCommGroup G] [NormedSpace ℝ G]
     {f : CxPts p' σ' → G} {z : CxPts p σ} (h : VInfAt f (L z)) : VInfAt (fun w => f (L w)) z := by
@@ -89,7 +87,7 @@ theorem vInfAt_lift (hL : ∀ z, (L z).1 ≫ r = z.1) {G : Type} [NormedAddCommG
 omit [IsPreimmersion r] in
 
 /- English proof (translation)
-Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `⟨r ⁻¹ᵁ W, ι, inferInstance, fun a => r.app W (g a), F, O, (mem_ptsIn_preimage hm).2 h₁, h₂, ?_, h₄, ?_⟩` and prove the remaining obligations. Simplify `h₃` using `only [ev_of_comp hm]`. Simplify using `only [← ev_of_comp hm]`. Conclude with `(continuous_of_comp hm).continuousAt.eventually h₅`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vInfAt_comp {m : CxPts p' σ' → CxPts p σ} (hm : ∀ z, (m z).1 = z.1 ≫ r) {G : Type} [NormedAddCommGroup G]
     [NormedSpace ℝ G] {f : CxPts p σ → G} {z : CxPts p' σ'} (h : VInfAt f (m z)) : VInfAt (fun w => f (m w)) z := by
@@ -102,7 +100,7 @@ theorem vInfAt_comp {m : CxPts p' σ' → CxPts p σ} (hm : ∀ z, (m z).1 = z.1
 omit [IsPreimmersion r] in
 
 /- English proof (translation)
-Use `((vInfAt_iff_cInfAt.2 h₁).prodMk (vInfAt_iff_cInfAt.2 h₂)).comp_contDiff Complex.equivRealProdCLM.symm.contDiff` as an intermediate fact. Conclude with `this.congr (.of_forall fun w => by simp [Complex.equivRealProdCLM_symm_apply])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vInfAt_of_re_im {f : CxPts p σ → ℂ} {z : CxPts p σ} (h₁ : CInfAt (fun w => (f w).re) z)
     (h₂ : CInfAt (fun w => (f w).im) z) : VInfAt f z := by
@@ -113,9 +111,9 @@ theorem vInfAt_of_re_im {f : CxPts p σ → ℂ} {z : CxPts p σ} (h₁ : CInfAt
 end Lift
 
 /- English proof (translation)
-Establish `hi : Function.Injective σ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker, ← RingHom.injective_iff_ker_eq_bot]`. Conclude with `RingHom.injective_int _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IsFractionRing.lift (A := 𝓞 F) (K := F) hi, RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend {F : Type} [Field F] [NumberField F] (σ : 𝓞 F →+* ℂ) :
     ∃ σ' : F →+* ℂ, σ'.comp (algebraMap (𝓞 F) F) = σ := by
@@ -137,9 +135,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {β : Oz →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
 
 /- English proof (translation)
-Establish `key (τ' : E →+* ℂ) : IsEigBasis Z φ x τ' (Function.update f.v τ u τ')`. Break down `eq_or_ne τ' τ with rfl | h` into its components or cases. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne h]`. Conclude with `⟨fun i => ⟨f.tan τ' i, f.eig τ' i⟩, fun w hw => f.basis τ' w hw.1 hw.2⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨Function.update f.v τ u, fun τ' i => ((key τ').1 i).1, fun τ' i => ((key τ').1 i).2, fun τ' w h₁ h₂ => (key τ').2 w ⟨h₁, h₂⟩⟩, Function.update_self τ u f.v⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_frame_replace {K : Type} [CommRing K] {φ : c.F →+* K} {x : Sp K ⟶ Z.X} (f : EigFrame Z φ x)
     (τ : E →+* ℂ) {u : Fin (Dw.mult τ) → (Sp (DualNumber K) ⟶ Z.t.G.left)} (hu : IsEigBasis Z φ x τ u) :
@@ -156,7 +154,7 @@ theorem exists_frame_replace {K : Type} [CommRing K] {φ : c.F →+* K} {x : Sp 
 variable {F : Type} [Field F] (e : F ≃+* c.F) {X W : Scheme.{0}} (jB : W ⟶ X) (πB : W ⟶ gen Z)
 
 /- English proof (translation)
-Establish `h1 : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext e.apply_symm_apply))`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap, ← h]`. Simplify using `only [Category.assoc, h1, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem over_symm {K : Type} [CommRing K] {x : Sp K ⟶ W} {ψ : F →+* K}
     (h : x ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap ψ) :
@@ -171,25 +169,25 @@ def down {σ : F →+* ℂ} (w : CxPts (πB ≫ genStr Z ≫ spMap e.toRingHom) 
     CxPts (genStr Z) (σ.comp e.symm.toRingHom) := ⟨w.1 ≫ πB, over_symm e πB w.2⟩
 
 /- English proof (translation)
-Take `⟨U, hU, φ, Φ, hzU, hφ, -⟩` from `EigSpread.exists_stable_eigFrame E H Dw l Xo c Oz β Z ((down e πB w₀).1 (IsLocalRing.closedPoint ℂ))`. Set `V : (gen Z).affineOpens` to `⟨U, hU⟩`. Establish `hφ' : LogKS.chart V ≫ genStr Z = spMap φ` using `hφ`. Establish `hm : ∀ w : CxPts (πB ≫ genStr Z ≫ spMap e.toRingHom) σ, (down e πB w).1 = w.1 ≫ πB` using `fun _ => rfl`. Establish `hyV : down e πB w₀ ∈ ptsIn (genStr Z) _ V.1` using `mem_ptsIn.2 hzU`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨A, hA, hwA, hAle⟩` from `Opens.isBasis_iff_nbhd.1 W.isBasis_affineOpens (mem_ptsIn.1 (mem_ptsIn_inf.2 ⟨h₀, (mem_ptsIn_preimage hm).2 hyV⟩))`. Set `A' : W.affineOpens` to `⟨A, hA⟩`. Establish `hA₁ : A ≤ jB ⁻¹ᵁ ch.U` using `hAle.trans inf_le_left`. Establish `hA₂ : A ≤ πB ⁻¹ᵁ U` using `hAle.trans inf_le_right`. Set `x : Sp Γ(W, A) ⟶ W` to `LogKS.chart A'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ρ : Γ(gen Z, U) →+* Γ(W, A)` to `(πB.appLE U A hA₂).hom`. Establish `hρ : spMap ρ ≫ LogKS.chart V = x ≫ πB` using `IsAffineOpen.SpecMap_appLE_fromSpec πB hU hA hA₂`. Set `ψ : F →+* Γ(W, A)` to `(Spec.preimage (x ≫ πB ≫ genStr Z ≫ spMap e.toRingHom)).hom`. Establish `hψ : x ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap ψ` using `(Spec.map_preimage _).symm`. Establish `hxU : ⊤ ≤ (x ≫ jB) ⁻¹ᵁ ch.U` using `fun t _ => hA₁ (hA.range_fromSpec.le ⟨t, rfl⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφρ : ψ.comp e.symm.toRingHom = ρ.comp φ` using `EigLoc.spMap_inj (by`. Rewrite using `[← over_symm e πB hψ, ← hρ, Category.assoc, hφ', ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap])`. Take `⟨Φ', hΦ'⟩` from `Φ.exists_isMap ρ hφρ (x' := x ≫ πB ≫ genι Z) (by`. Rewrite using `[← Category.assoc, ← hρ, Category.assoc]`. Use the proof step `rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `exists_frame_replace Φ' τ (hu.1 ch.U ch.e ch.isFrame _ x hxU ψ hψ)`. Use `choose γ hre him hγ using fun a b => hG V φ Φ τ a b hφ'`. Establish `hT : IsOpen (Set.univ ∩ ptsIn (genStr Z) (σ.comp e.symm.toRingHom) V.1)` using `isOpen_univ.inter (isOpen_ptsIn _)`. Establish `hγ' (a b) : VInfAt (fun w => γ a b (down e πB w)) w₀` using `vInfAt_comp hm (vInfAt_of_re_im ((cInfAt_iff_smoothOn _ hT).2 (hre a b) _ ⟨trivial, hyV⟩) ((cInfAt_iff_smoothOn _ hT).2 (him a b) _ ⟨trivial, hyV⟩))`. Use `⟨fun w => HermFrame.chg (of fun a b => ev _ σ A (Φ'.co g τ a b) w) (of fun a b => γ b a (down e πB w)), MInfAt.chg (fun a b => vInfAt_ev _ (mem_ptsIn.2 hwA)) fun a b => hγ' b a, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [(isOpen_ptsIn A).mem_nhds (mem_ptsIn.2 hwA)] with w hw`. Establish `hwx : spMap (evHom hw) ≫ x = w.1` using `spMap_evHom (V := A') hw`. Establish `hwV : down e πB w ∈ ptsIn (genStr Z) _ V.1` using `(mem_ptsIn_preimage hm).1 (ptsIn_mono hA₂ hw)`. Establish `h₁ : σ.comp e.symm.toRingHom = (evHom hw).comp (ψ.comp e.symm.toRingHom)` using `EigLoc.spMap_inj (by`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap (evHom hw), ← over_symm e πB hψ, ← (down e πB w).2, hm, ← hwx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc])`. Establish `h₂ : (down e πB w).1 ≫ genι Z = spMap (evHom hw) ≫ x ≫ πB ≫ genι Z`. Rewrite using `[hm, ← hwx]`. Simplify using `only [Category.assoc]`. Take `⟨f', hf'⟩` from `Φ'.exists_isMap (evHom hw) h₁ h₂`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g', hg'⟩` from `g.exists_isMap (evHom hw) h₁ h₂`. Establish `h₃ : evHom hwV = (evHom hw).comp ρ` using `RingHom.ext fun a => by`. Rewrite using `[RingHom.comp_apply, ← ev_eq, ← ev_eq]`. Conclude with `(ev_of_comp hm U a w).trans (ev_res hA₂ hw _).symm`. Establish `hf'' : Φ.IsMap (evHom hwV) f'` using `fun τ' i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hf' τ' i, hΦ' τ' i, h₃, GlobalTheory.GradedPieces.dual_comp]`. Establish `hx : ⊤ ≤ (w.1 ≫ jB) ⁻¹ᵁ ch.U` using `ptsIn_mono hA₁ hw`. Use `⟨hx, g', fun i => ?_, ?_⟩` and prove the remaining obligations. Use `hu.2.2 ch.U ch.e ch.isFrame _ ℂ (evHom hw) x hxU (hwx ▸ hx) i` as an intermediate fact. Rewrite using `[hg' τ i, hg, ← this]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[G.change _ f' g', hf'.co τ hg' h₂, HermFrame.chg, transpose_mul, transpose_mul, Matrix.mul_assoc]`. Establish `e₁ : (of fun a b => ev _ σ A (Φ'.co g τ a b) w) = (Φ'.co g τ).map (evHom hw)` using `Matrix.ext fun a b => ev_eq hw _`. Establish `e₂ : (of fun a b => γ b a (down e πB w)) = (G.gram _ f' τ)ᵀ` using `Matrix.ext fun a b => (hγ b a _ trivial hwV f' hf'').symm`. Rewrite using `[e₁, e₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gram [SmoothOfRelativeDimension Dw.dim (genStr Z)] {M : X.Modules} {τ : E →+* ℂ} {dual : Bool}
     {uu : FrAssign Z M (Dw.mult τ) jB} (hu : IsLieFrames Z e jB πB M _ τ dual uu) {σ : F →+* ℂ}
@@ -270,17 +268,15 @@ open GlobalTheory.ArLieBase
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W _ q jB πB hP M r τ dual hr uu G h hu hG hh σ₀`. Substitute `hr` using the available equality. Take `⟨σ, rfl⟩` from `MetSmooth.exists_extend σ₀`. Establish `h1 : IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))`. Establish `: IsPreimmersion jB` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) hP.flip h1`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw (z : CxPts q (σ.comp (algebraMap (𝓞 F) F))) : z.1 ≫ q = spMap σ ≫ spMap (algebraMap (𝓞 F) F)` using `z.2.trans (ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap _ _).symm`. Set `L (z : CxPts q (σ.comp (algebraMap (𝓞 F) F))) : CxPts (πB ≫ genStr Z ≫ spMap e.toRingHom) σ` to `⟨hP.lift z.1 (spMap σ) (hw z), hP.lift_snd _ _ _⟩`. Establish `hL : ∀ z, (L z).1 ≫ jB = z.1` using `fun z => hP.lift_fst _ _ _`. Introduce `ch z hz`. Take `⟨N, hN, hev⟩` from `MetSmooth.exists_gram e jB πB hu (hG _) ch (w₀ := L z) (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `⊤ ≤ ((L z).1 ≫ jB) ⁻¹ᵁ ch.U`. Rewrite using `[hL]`. Conclude with `hz)`. Establish `hN' : CxPts.MInfAt (fun w => N (L w)) z` using `fun a b => MetSmooth.vInfAt_lift hL (hN a b)`. Establish `hev'` using `(MetSmooth.continuous_lift hL).continuousAt.eventually hev`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `dual with`. Consider the case `false`. Use `hN'.congr ?_` and prove the remaining obligations. Use `filter_upwards [hev'] with w ⟨hx, g, h₁, h₂⟩`. Conclude with `(hh σ w (L w).1 (MetSmooth.down e πB (L w)) (hL w) rfl ch hx g h₁).trans h₂`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `true`. Take `⟨-, g₀, -, hg₀⟩` from `hev.self_of_nhds`. Use `(hN'.dualGram ?_).congr ?_` and prove the remaining obligations. Rewrite using `[← hg₀, Matrix.det_transpose]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 ((G _).pos _ _ _).isUnit`.
-
-Use `filter_upwards [hev'] with w ⟨hx, g, h₁, h₂⟩`. Rewrite using `[hh σ w (L w).1 (MetSmooth.down e πB (L w)) (hL w) rfl ch hx g h₁, ← h₂, HermFrame.dualGram, ← Matrix.transpose_nonsing_inv, Matrix.transpose_transpose]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ArLieBase.isCInf_of_isLieMet : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Oz : Type) [CommRing Oz] (β : Oz →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (X W : Scheme.{0}) [SmoothOfRelativeDimension Dw.dim (genStr Z)] (q : X ⟶ Sp (𝓞 F)) (jB : W ⟶ X) (πB : W ⟶ gen Z), IsPullback jB (πB ≫ genStr Z ≫ spMap e.toRingHom) q (spMap (algebraMap (𝓞 F) F)) → ∀ (M : X.Modules) (r : ℕ) (τ : E →+* ℂ) (dual : Bool) (hr : r = Dw.mult τ) (uu : FrAssign Z M r jB) (G : ∀ σ', EigMet Z σ') (h : VMetric q M r), IsLieFrames Z e jB πB M r τ dual uu → (∀ σ', (G σ').SmoothOn (manifold Z σ') Set.univ) → IsLieMet Z e q jB πB M r τ dual hr G h uu → h.IsCInf := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W _ q jB πB hP M r τ dual hr uu G h hu hG hh σ₀

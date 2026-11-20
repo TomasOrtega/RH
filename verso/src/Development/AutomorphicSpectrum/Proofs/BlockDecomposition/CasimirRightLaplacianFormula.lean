@@ -11,9 +11,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.WaveSpd
 
 /- English proof (translation)
-Take `⟨b, i, j⟩` from `p`. Establish `hc : ∀ (a b : Fin n) (c : ℂ), (Matrix.single a b c)ᴴ = Matrix.single b a (star c)`. Introduce `a b c`. Use extensionality with `x y`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.single_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases h1 : a = y <;> by_cases h2 : b = x <;> simp [h1, h2]`. Consider the cases of `b`. Simplify using `[sk, Matrix.conjTranspose_add, hc, Matrix.single_neg, add_comm]`. Simplify using `[sk, Matrix.conjTranspose_sub, hc]`.
+Apply the first step, then apply the next step to every resulting obligation. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sk_skew {n : ℕ} (p : Ix n) : (sk p)ᴴ = -sk p := by
   obtain ⟨b, i, j⟩ := p
@@ -27,11 +27,11 @@ theorem sk_skew {n : ℕ} (p : Ix n) : (sk p)ᴴ = -sk p := by
   · simp [sk, Matrix.conjTranspose_sub, hc]
 
 /- English proof (translation)
-Establish `hnhds : GLs n ∈ nhds g` using `isOpen_GLs.mem_nhds hg`. Establish `hev : Rd Y f =ᶠ[nhds g] (B.restrictScalars ℝ) ∘ f` using `by filter_upwards [hnhds] with y hy`. Simplify using `using hB f hf y hy`. Establish `hd : DifferentiableAt ℝ f g` using `(hf.1.contDiffAt hnhds).differentiableAt (by simp)`. Establish `hfd : fderiv ℝ (Rd Y f) g = (B.restrictScalars ℝ).comp (fderiv ℝ f g)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hev.fderiv_eq]`. Conclude with `((B.restrictScalars ℝ).hasFDerivAt.comp g hd.hasFDerivAt).fderiv`. Establish `h1 : Rd Y (Rd Y f) g = B (Rd Y f g)`. Express the relevant statement in the definitionally equal form `fderiv ℝ (Rd Y f) g (g * Y) = B (fderiv ℝ f g (g * Y))`. Rewrite using `[hfd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h1, hB f hf g hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rd_Rd_of_act {n : ℕ} (E : KMod n) (Y : Mat n) (B : E.V →L[ℂ] E.V)
     (hB : ∀ f ∈ CE E, ∀ g ∈ GLs n, Rd Y f g = B (f g)) (f : Mat n → E.V) (hf : f ∈ CE E)
@@ -52,9 +52,9 @@ theorem Rd_Rd_of_act {n : ℕ} (E : KMod n) (Y : Mat n) (B : E.V →L[ℂ] E.V)
   rw [h1, hB f hf g hg]
 
 /- English proof (translation)
-Use `choose B hB using fun p : Ix n => rd_skew_eq_const E (sk p) (sk_skew p)`. Use `⟨-(1 / 4 : ℂ) • ∑ p, B p * B p, fun f hf g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[OmDec.Om_eq_squares f hf.1 g hg, sub_eq_add_neg]`. Use `congr 1`. Establish `h : ∀ p, Rd (sk p) (Rd (sk p) f) g = B p (B p (f g))` using `fun p => Rd_Rd_of_act E (sk p) (B p) (hB p) f hf g hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.neg_apply, neg_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem om_section {n : ℕ} (E : KMod n) : ∃ A : E.V →L[ℂ] E.V, ∀ f ∈ CE E, ∀ g ∈ GLs n,
     Om f g = (1 / 4 : ℂ) • ∑ p : Ix n, Rd (hm p) (Rd (hm p) f) g + A (f g) := by

@@ -26,9 +26,9 @@ theorem seqProd_succ (F : ℕ → Γ) (r : ℕ) : seqProd F (r + 1) = seqProd F 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => exact Fin.partialProd_zero _`. Consider the case `succ r ih`. Establish `h1` using `Fin.partialProd_succ (seqTuple n F) ⟨r, by omega⟩`. Simplify using `only [Fin.succ_mk, Fin.castSucc_mk] at h1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, ih (by omega), seqProd_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem partialProd_seqTuple {n : ℕ} (F : ℕ → Γ) (r : ℕ) (hr : r < n + 1) :
     Fin.partialProd (seqTuple n F) ⟨r, hr⟩ = seqProd F r := by
@@ -41,7 +41,7 @@ theorem partialProd_seqTuple {n : ℕ} (F : ℕ → Γ) (r : ℕ) (hr : r < n + 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => rfl`. Consider the case `succ r ih`. Rewrite using `[seqProd_succ, seqProd_succ, ih (by omega)]`. Simplify using `only [prismSeq, if_pos (show r < i by omega)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem seqProd_prismSeq_of_ge (g : Γ) {i r : ℕ} (hr : r ≤ i) (F : ℕ → Γ) :
     seqProd (prismSeq g i F) r = seqProd F r := by
@@ -52,11 +52,11 @@ theorem seqProd_prismSeq_of_ge (g : Γ) {i r : ℕ} (hr : r ≤ i) (F : ℕ → 
     simp only [prismSeq, if_pos (show r < i by omega)]
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Take `rfl : i = 0` from `by omega`. Simplify using `[seqProd, prismSeq]`. Consider the case `succ r ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Break down `Nat.lt_or_ge i (r + 1) with h | h` into its components or cases. Rewrite using `[seqProd_succ, ih (by omega), seqProd_succ]`. Simplify using `only [prismSeq, if_neg (show ¬ r + 1 < i by omega), if_neg (show r + 1 ≠ i by omega), Nat.add_sub_cancel]`. Use `group`. Take `rfl : i = r + 1` from `by omega`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[seqProd_succ, seqProd_prismSeq_of_ge g le_rfl, seqProd_succ]`. Simplify using `[prismSeq]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem seqProd_prismSeq_of_le (g : Γ) {i r : ℕ} (hi : i ≤ r) (F : ℕ → Γ) :
     seqProd (prismSeq g i F) (r + 1) = seqProd F r * g := by
@@ -81,7 +81,7 @@ section Cup
 variable {k Γ : Type u} [CommRing k] [Group Γ] {A B : Rep.{u} k Γ}
 
 /- English proof (translation)
-Rewrite using `[cupCochain_apply, partialProd_seqTuple]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cupCochain_seqTuple {r s n : ℕ} (h : r + s = n) (F : (Fin r → Γ) → A)
     (E : (Fin s → Γ) → B) (Y : ℕ → Γ) :
@@ -91,9 +91,9 @@ theorem cupCochain_seqTuple {r s n : ℕ} (h : r + s = n) (F : (Fin r → Γ) �
   rfl
 
 /- English proof (translation)
-Rewrite using `[cupCochain_seqTuple, seqProd_prismSeq_of_le g hi, map_mul, Module.End.mul_apply]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `B.ρ g (E _) = B.ρ g (E _)`. Use `congr 2`. Use function extensionality and compare the values at `l`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `prismSeq g i Y (r + 1 + l) = g⁻¹ * Y (r + l) * g`. Simplify using `only [prismSeq, if_neg (show ¬ r + 1 + l < i by omega), if_neg (show r + 1 + (l : ℕ) ≠ i by omega)]`. Use `congr 3`. Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cupCochain_seqTuple_prismSeq_of_le (g : Γ) {r s n : ℕ} (h : r + 1 + s = n)
     (F : (Fin (r + 1) → Γ) → A) (E : (Fin s → Γ) → B) (Y : ℕ → Γ) {i : ℕ} (hi : i ≤ r) :
@@ -112,9 +112,9 @@ theorem cupCochain_seqTuple_prismSeq_of_le (g : Γ) {r s n : ℕ} (h : r + 1 + s
   omega
 
 /- English proof (translation)
-Rewrite using `[cupCochain_seqTuple, seqProd_prismSeq_of_ge g (by omega)]`. Use `congr 1`. Use `congr 1`. Conclude with `seqTuple_congr fun l hl => by simp only [prismSeq, if_pos (show l < r + j by omega)]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `seqTuple_congr fun l hl => ?_` and prove the remaining obligations. Simplify using `only [prismSeq]`. Use `split_ifs with h1 h2 h3 h4 h5 h6`. Apply the tactic sequence `all_goals first | omega | rfl | (rw [show r + l - 1 = r + (l - 1) by omega])`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cupCochain_seqTuple_prismSeq_add (g : Γ) {r s n : ℕ} (h : r + (s + 1) = n)
     (F : (Fin r → Γ) → A) (E : (Fin (s + 1) → Γ) → B) (Y : ℕ → Γ) (j : ℕ) :
@@ -138,11 +138,11 @@ section Leibniz
 variable {k Γ : Type u} [CommRing k] [Group Γ] {A B : Rep.{u} k Γ}
 
 /- English proof (translation)
-Take `rfl : m = r + 1 + s` from `by omega`. Use function extensionality and compare the values at `γ`. Rewrite using `[← seqTuple_tupleSeq γ]`. Use `set Y := tupleSeq γ`. Rewrite using `[Pi.add_apply, Pi.smul_apply, conjHomotopyFun_seqTuple, cupCochain_seqTuple, cupCochain_seqTuple, conjHomotopyFun_seqTuple, conjHomotopyFun_seqTuple, show range (r + 1 + s + 1) = range ((r + 1) + (s + 1)) from rfl, sum_range_add]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[sum_tmul]`. Use `sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[cupCochain_seqTuple_prismSeq_of_le g h F E Y (by simp at hi; omega), smul_tmul']`. Rewrite using `[map_sum, tmul_sum, smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[cupCochain_seqTuple_prismSeq_add g h F E Y j, map_smul, tmul_smul, smul_smul, pow_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjHomotopyFun_cupCochain (g : Γ) {r s m : ℕ} (h : r + 1 + (s + 1) = m + 1)
     (F : (Fin (r + 1) → Γ) → A) (E : (Fin (s + 1) → Γ) → B) :
@@ -165,9 +165,9 @@ theorem conjHomotopyFun_cupCochain (g : Γ) {r s m : ℕ} (h : r + 1 + (s + 1) =
     rw [cupCochain_seqTuple_prismSeq_add g h F E Y j, map_smul, tmul_smul, smul_smul, pow_add]
 
 /- English proof (translation)
-Take `rfl : m = s` from `by omega`. Use function extensionality and compare the values at `γ`. Rewrite using `[← seqTuple_tupleSeq γ]`. Use `set Y := tupleSeq γ`. Rewrite using `[conjHomotopyFun_seqTuple, cupCochain_seqTuple, conjHomotopyFun_seqTuple, map_sum, tmul_sum]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e` using `cupCochain_seqTuple_prismSeq_add g h F E Y j`. Rewrite `e` using `[zero_add]`. Rewrite using `[e, map_smul, tmul_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjHomotopyFun_cupCochain_zero_left (g : Γ) {s m : ℕ} (h : 0 + (s + 1) = m + 1)
     (F : (Fin 0 → Γ) → A) (E : (Fin (s + 1) → Γ) → B) :
@@ -184,9 +184,9 @@ theorem conjHomotopyFun_cupCochain_zero_left (g : Γ) {s m : ℕ} (h : 0 + (s + 
   rw [e, map_smul, tmul_smul]
 
 /- English proof (translation)
-Take `rfl : m = r` from `by omega`. Use function extensionality and compare the values at `γ`. Rewrite using `[← seqTuple_tupleSeq γ]`. Use `set Y := tupleSeq γ`. Rewrite using `[conjHomotopyFun_seqTuple, cupCochain_seqTuple, conjHomotopyFun_seqTuple, sum_tmul]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[cupCochain_seqTuple_prismSeq_of_le g h F E Y (by simp at hi; omega), smul_tmul']`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjHomotopyFun_cupCochain_zero_right (g : Γ) {r m : ℕ} (h : r + 1 + 0 = m + 1)
     (F : (Fin (r + 1) → Γ) → A) (E : (Fin 0 → Γ) → B) :

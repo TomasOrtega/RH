@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.ConeInt
 
 /- English proof (translation)
-Establish `hsub : D ⊆ ⋃ g : Γ, (g • S ∩ D)`. Introduce `x hx`. Take `⟨g, hg⟩` from `hS x`. Use `Set.mem_iUnion.2 ⟨g⁻¹, ⟨g • x, hg, by simp⟩, hx⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem setLIntegral_le_of_cover {Γ α : Type*} [Group Γ] [MulAction Γ α] [MeasurableSpace α] {μ : Measure α}
     [MeasurableConstSMul Γ α] [SMulInvariantMeasure Γ α μ] [Countable Γ] {D S : Set α}
@@ -31,11 +31,9 @@ theorem setLIntegral_le_of_cover {Γ α : Type*} [Group Γ] [MulAction Γ α] [M
     _ = ∫⁻ x in S, f x ∂μ := (hD.setLIntegral_eq_tsum' f S).symm
 
 /- English proof (translation)
-Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.toEquiv.injective.countable`. Use `haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))`. Use `haveI : Countable (GL (Fin n) E) := Function.Injective.countable (f := fun g : GL (Fin n) E => (g : Matrix (Fin n) (Fin n) E)) fun x y hxy => Units.ext hxy`. Establish `hmem : ∀ q : Q, ∃ γ : GL (Fin n) E, Matrix.GeneralLinearGroup.map (n` using `Fin n) (inclR (F := F) (E := E) (AF F)) γ = (q.1 : GL (Fin n) (AE F E)) := by`. Introduce `q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `hQ q.1 q.2` as an intermediate fact. Simplify `this` using `[ratU, Subgroup.mem_subgroupOf]`. Use `choose f hf using hmem`. Use `Function.Injective.countable (f := f) ?_` and prove the remaining obligations. Introduce `x y hxy`.
-
-Establish `: (x.1 : GL (Fin n) (AE F E)) = y.1` using `by rw [← hf x, ← hf y, hxy]`. Conclude with `Subtype.ext (Subtype.ext this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countable_of_le_ratU {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (Q : Subgroup (UA σ J)) (hQ : ∀ q ∈ Q, q ∈ ratU σ J) : Countable Q := by
@@ -55,11 +53,9 @@ theorem countable_of_le_ratU {F E : Type} [Field F] [NumberField F] [Field E] [N
   exact Subtype.ext (Subtype.ext this)
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hev Φ hΦ h Q hQ D hD`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : G.M.μ.IsHaarMeasure := hT.geo.hM.haar`. Use `haveI : MeasurableConstSMul Q (UA σ G.V.J) := ⟨fun q => (continuous_const.mul continuous_id : Continuous fun x : UA σ G.V.J => (q : UA σ G.V.J) * x).measurable⟩`. Use `haveI : SMulInvariantMeasure Q (UA σ G.V.J) G.M.μ := ⟨fun q s _ => measure_preimage_mul G.M.μ (q : UA σ G.V.J) s⟩`. Use `haveI : Countable Q := countable_of_le_ratU Q fun q hq => ((hQ q).1 hq).1`. Take `⟨S, hS, hfin⟩` from `GlobalTheory.T.triple_config_b_theta_unfolding hKP F E σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hev Φ hΦ h Q hQ`.
-
-Establish `hinv` using `GlobalTheory.T.triple_config_b_theta_integral hKP F E σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hev Φ hΦ h Q hQ`. Use `lt_of_le_of_lt (setLIntegral_le_of_cover hD (fun g => ?_) _ (fun q g => ?_)) hfin` and prove the remaining obligations. Take `⟨q, hq, hqg⟩` from `hS g`. Conclude with `⟨⟨q, hq⟩, hqg⟩`. Conclude with `hinv q.1 q.2 g`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lintegral_lt_top : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' → ∀ (V₂ : Spc F E a) (n₁ : ℕ) (X₁ : Spc F E n₁) (H₀ : Plane E a n₁) (j₀ j₁ : ℕ) (M₂ : Model σ X₁ G₁.W) (e₂ : Fn F a (a + (b + 2)) →ₗ[ℂ] Fn F n₁ (a + b)), (reS G.V V₂).IsHerm σ B (a - G.p) G.p → H₀.IsAdapted σ B (reS G.V V₂) X₁ j₀ j₁ → M₂.IsGood B.ψ → IsEv B G.M M₂ H₀.ι H'.ι (isoA H₀ H') e₂ → ∀ Φ ∈ PolData B G.M, ∀ h, ∀ Q : Subgroup (UA σ G.V.J), (∀ q, q ∈ Q ↔ q ∈ ratU σ G.V.J ∧ mat q *ᵥ incV F H₀.x = incV F H₀.x) → ∀ D : Set (UA σ G.V.J), IsFundamentalDomain Q D G.M.μ → ∫⁻ g in D, ‖thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (g, h) Φ)))‖ₑ ∂G.M.μ < ⊤ := by
   intro hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hev Φ hΦ h Q hQ D hD

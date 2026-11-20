@@ -16,17 +16,15 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `E _ _ _ n μ _ V hV w hne`. Take `⟨π, h, -⟩` from `exCusp E n μ V hV`. Take `⟨J, hi, hd, -, hJ'⟩` from `UpperTheory.ConvolutionTheory.Dp.locEmb E n μ π V h`. Establish `hρ : ∀ g v, ‖locOn h.summand w g v‖ = ‖v‖` using `fun g v => by`. Express the relevant statement in the definitionally equal form `‖RG μ (finGL E n (locGL E n w g)) (v : LL μ)‖ = ‖(v : LL μ)‖`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `UnitaryRep.norm_map _ _ _`. Establish `hK` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n).2`. Establish `hdense` using `UpperTheory.ConvolutionTheory.Dp.fixedDense _ _ _ (locOn h.summand w) (π.locRep w) J (GlobalTheory.LFun.KGL w n) hK hρ (π.isSmooth_locRep w) (hJ' w) hd`. Take `⟨v, hv, h0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `hfix : ∀ u ∈ GlobalTheory.LFun.KGL w n, locOn h.summand w u ⟨v, hv.1⟩ = ⟨v, hv.1⟩` using `fun u hu => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `localRepresentationL2 μ w u v = v`. Rewrite using `[← rhoLoc E n μ w u v]`. Establish `h2` using `hv.2`. Simplify using `only [UpperTheory.ConvolutionTheory.fixL, UpperTheory.ConvolutionTheory.fixF, SetLike.mem_coe, Submodule.mem_iInf] at h2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h2 _ ⟨u, by exact (PositivityTheory.JacquetShalikaLocal.SatakeEigenvalues.KGL_eq w n).le hu, rfl⟩`. Establish `hs : GlobalTheory.LGrp.IsSpherical (π.locRep w) (GlobalTheory.LFun.KGL w n)`. Use `(Submodule.ne_bot_iff _).2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : J '' {x | ∀ u ∈ GlobalTheory.LFun.KGL w n, π.locRep w u x = x} ⊆ {0}`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[hno x (GlobalTheory.LGrp.mem_fixed.2 hx), map_zero]`. Both sides reduce to the same expression. Conclude with `h0 (congrArg Subtype.val (closure_minimal hsub isClosed_singleton (hdense _ hfix)))`.
-
-Take `⟨B, hB⟩` from `GlobalTheory.CompanionTheory.SatAe.exists_hasSatGL_locRep π w hs`. Conclude with `⟨_, (tsphVec E n μ w V hV B).1 ((satIff E n μ π V h w B).1 hB)⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.sSatEx :
     UpperTheory.ConvolutionTheory.Dp.SSatEx := by

@@ -5,15 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Introduce `N k Φ hN hΦ`. Establish `hNr : (0 : ℝ) < N` using `by exact_mod_cast hN`. Use `set C : ℝ := 4 * (k.factorial : ℝ) / (2 * Real.pi) ^ k with hC`. Establish `hterm : ∀ a ∈ Icc 1 N, ‖Φ (a : ZMod N) * algebraMap ℚ ℂ (bcoef N k a)‖ ≤ (N : ℝ) ^ ((k : ℤ) - 1) * C`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[Finset.mem_Icc]`. Establish `hx0 : (0 : ℚ) ≤ (a : ℚ) / N` using `by positivity`. Establish `hx1 : (a : ℚ) / N ≤ 1`. Rewrite using `[div_le_one (by exact_mod_cast hN)]`. Conclude with `ha.2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ‖algebraMap ℚ ℂ (bcoef N k a)‖ = (N : ℝ) ^ ((k : ℤ) - 1) * |((Polynomial.eval ((a : ℚ) / N) (Polynomial.bernoulli k) : ℚ) : ℝ)|`. Rewrite using `[eq_ratCast, ← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs, bcoef]`. Use `push_cast`. Rewrite using `[abs_mul, abs_of_pos (zpow_pos hNr _)]`. Rewrite using `[norm_mul, hb]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hp` using `b_polybound k ((a : ℚ) / N) hx0 hx1`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (hΦ _) _ (by positivity) zero_le_one` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hp (zpow_pos hNr _).le`. Use `_ = (N : ℝ) ^ ((k : ℤ) - 1) * C := one_mul _`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Nat.card_Icc, Nat.add_sub_cancel, nsmul_eq_mul, zpow_sub_one₀ hNr.ne', zpow_natCast, hC]`. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Bern.b_upper :
     ∀ {N : ℕ} (k : ℕ) (Φ : ZMod N → ℂ), 0 < N → (∀ a, ‖Φ a‖ ≤ 1) → ‖genB k Φ‖ ≤ 4 * (N : ℝ) ^ k * (k.factorial : ℝ) / (2 * Real.pi) ^ k := by

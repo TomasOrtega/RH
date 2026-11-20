@@ -20,16 +20,16 @@ def heckeVec (ρ : Representation ℂ G V) (K : Subgroup G) (h : G → ℂ) (x :
 variable {ρ : Representation ℂ G V} {K : Subgroup G} {h : G → ℂ} {x : V}
 
 /- English proof (translation)
-The claim follows from `(Formalism.UG.P.finite_support_cosets hK hh.2).subset fun c hc h0 => hc (by simp [h0])`.
+A detailed English derivation is pending.
 -/
 theorem finite_heckeVec (hK : IsCommensurated K) (hh : h ∈ Hecke ℂ K) (ρ : Representation ℂ G V) (x : V) :
     (Function.support fun c : G ⧸ K => h c.out • ρ c.out x).Finite :=
   (Formalism.UG.P.finite_support_cosets hK hh.2).subset fun c hc h0 => hc (by simp [h0])
 
 /- English proof (translation)
-Use `finsum_congr fun c => ?_` and prove the remaining obligations. Establish `hk : (c.out)⁻¹ * s c ∈ K` using `QuotientGroup.eq.1 (c.out_eq'.trans (hs c).symm)`. Establish `e : s c = c.out * ((c.out)⁻¹ * s c)` using `by group`. Establish `e1` using `hh 1 ⟨_, hk⟩ c.out`. Simplify using `only [OneMemClass.coe_one, one_mul] at e1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, e1, map_mul, Module.End.mul_apply, GlobalTheory.LGrp.mem_fixed.1 hx _ hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeVec_eq_of_section (hh : IsBiInv K h) (hx : x ∈ fixed ρ K) (s : G ⧸ K → G)
     (hs : ∀ c, (s c : G ⧸ K) = c) : heckeVec ρ K h x = ∑ᶠ c, h (s c) • ρ (s c) x := by
@@ -41,9 +41,9 @@ theorem heckeVec_eq_of_section (hh : IsBiInv K h) (hx : x ∈ fixed ρ K) (s : G
   rw [e, e1, map_mul, Module.End.mul_apply, GlobalTheory.LGrp.mem_fixed.1 hx _ hk]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.DoubleCosetIndicatorSum.main`. Consider the case `exact _root_.GlobalTheory.DoubleCosetIndicatorSum.main`. Consider the case `(apply _root_.GlobalTheory.DoubleCosetIndicatorSum.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DoubleCosetIndicatorSum.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.DoubleCosetIndicatorSum.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DoubleCosetIndicatorSum.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem heckeVec_dosetInd (hx : x ∈ fixed ρ K) {a : G} {R : Finset G}
     (hR : ∀ γ ∈ R, γ ∈ DoubleCoset.doubleCoset a (K : Set G) K)
@@ -58,7 +58,7 @@ theorem heckeVec_dosetInd (hx : x ∈ fixed ρ K) {a : G} {R : Finset G}
   | (intros; exact _root_.GlobalTheory.DoubleCosetIndicatorSum.main ..)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Conclude with `(LinearMap.proj (R := ℂ) (φ := fun _ : G => W) g).toAddMonoidHom.map_finsum (finite_heckeVec hK hh _ φ)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem heckeVec_rightReg (hK : IsCommensurated K) (hh : h ∈ Hecke ℂ K) (φ : G → W) :
     heckeVec (rightReg ℂ G W) K h φ = hAct K h φ := by
@@ -66,7 +66,7 @@ theorem heckeVec_rightReg (hK : IsCommensurated K) (hh : h ∈ Hecke ℂ K) (φ 
   exact (LinearMap.proj (R := ℂ) (φ := fun _ : G => W) g).toAddMonoidHom.map_finsum (finite_heckeVec hK hh _ φ)
 
 /- English proof (translation)
-Use `(f.toAddMonoidHom.map_finsum (finite_heckeVec hK hh ρ x)).trans (finsum_congr fun c => ?_)` and prove the remaining obligations. Simplify using `[hf]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem map_heckeVec (hK : IsCommensurated K) (hh : h ∈ Hecke ℂ K) {ρ' : Representation ℂ G W} (f : V →ₗ[ℂ] W)
     (hf : ∀ g y, f (ρ g y) = ρ' g (f y)) (x : V) : f (heckeVec ρ K h x) = heckeVec ρ' K h (f x) := by
@@ -74,9 +74,9 @@ theorem map_heckeVec (hK : IsCommensurated K) (hh : h ∈ Hecke ℂ K) {ρ' : Re
   simp [hf]
 
 /- English proof (translation)
-Set `q : G ⧸ K ≃ H ⧸ K'` to `Quotient.congr e.toEquiv fun a b => by`. Rewrite using `[QuotientGroup.leftRel_apply, QuotientGroup.leftRel_apply, hK]`. Simplify using the standard rewrite rules. Establish `hx' : x ∈ fixed (ρ.comp e.symm.toMonoidHom) K'` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => GlobalTheory.LGrp.mem_fixed.1 hx _ ((hK _).2 (by simpa using hk))`. Rewrite using `[heckeVec_eq_of_section hh hx' (fun c => e (q.symm c).out) fun c => by conv_rhs => rw [← q.apply_symm_apply c, ← (q.symm c).out_eq'] rfl, ← finsum_comp_equiv q]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[heckeVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeVec_comp_symm (e : G ≃* H) {K' : Subgroup H} (hK : ∀ g, g ∈ K ↔ e g ∈ K') {h' : H → ℂ}
     (hh : IsBiInv K' h') (hx : x ∈ fixed ρ K) :
@@ -91,7 +91,7 @@ theorem heckeVec_comp_symm (e : G ≃* H) {K' : Subgroup H} (hK : ∀ g, g ∈ K
   simp [heckeVec]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.LGrp.mem_fixed]`. Conclude with `⟨fun h k hk => by simpa using h _ ((hK k).1 hk), fun h k hk => h _ ((hK _).2 (by simpa using hk))⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_fixed_comp_symm (e : G ≃* H) {K' : Subgroup H} (hK : ∀ g, g ∈ K ↔ e g ∈ K') :
     x ∈ fixed (ρ.comp e.symm.toMonoidHom) K' ↔ x ∈ fixed ρ K := by
@@ -99,9 +99,9 @@ theorem mem_fixed_comp_symm (e : G ≃* H) {K' : Subgroup H} (hK : ∀ g, g ∈ 
   exact ⟨fun h k hk => by simpa using h _ ((hK k).1 hk), fun h k hk => h _ ((hK _).2 (by simpa using hk))⟩
 
 /- English proof (translation)
-Establish `hK' : ∀ g, g ∈ K ↔ e' g ∈ K'` using `fun g => by`. Rewrite using `[hK, he, K'.mul_mem_cancel_right hk, K'.mul_mem_cancel_left (inv_mem hk)]`. Rewrite using `[heckeVec_comp_symm e hK hh hx, heckeVec_comp_symm e' hK' hh hx]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(congrArg h' (he g)).trans (hh ⟨_, inv_mem hk⟩ ⟨_, hk⟩ _)`.
+A detailed English derivation is pending.
 -/
 theorem heckeVec_comp_symm_congr (e e' : G ≃* H) {K' : Subgroup H} (hK : ∀ g, g ∈ K ↔ e g ∈ K') {k : H} (hk : k ∈ K')
     (he : ∀ g, e' g = k⁻¹ * e g * k) {h' : H → ℂ} (hh : IsBiInv K' h') (hx : x ∈ fixed ρ K) :
@@ -119,9 +119,9 @@ def satEig (q n : ℕ) (B : Multiset ℂˣ) (j : ℕ) : ℂ :=
   (q : ℂ) ^ (((j : ℂ) * ((n : ℂ) - j)) / 2) * (B.map fun b : ℂˣ => (b : ℂ)).esymm j
 
 /- English proof (translation)
-Establish `h1 : ∀ j ≤ n, (B.map fun b : ℂˣ => (b : ℂ)).esymm j = (B'.map fun b : ℂˣ => (b : ℂ)).esymm j` using `fun j hj => mul_left_cancel₀ (fun h0 => hq (by exact_mod_cast ((Complex.cpow_eq_zero_iff _ _).1 h0).1)) (h j hj)`. Establish `h2 : ((B.map fun b : ℂˣ => (b : ℂ)).map fun r => Polynomial.X + Polynomial.C r).prod = ((B'.map fun b : ℂˣ => (b : ℂ)).map fun r => Polynomial.X + Polynomial.C r).prod`. Rewrite using `[Multiset.prod_X_add_C_eq_sum_esymm, Multiset.prod_X_add_C_eq_sum_esymm, Multiset.card_map, Multiset.card_map, hB, hB']`. Conclude with `Finset.sum_congr rfl fun j hj => by rw [h1 j (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))]`. Establish `h3 : ∀ A : Multiset ℂˣ, ((A.map fun b : ℂˣ => (b : ℂ)).map fun r => Polynomial.X + Polynomial.C r).prod.roots = A.map fun b : ℂˣ => -(b : ℂ)` using `fun A => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.roots_multiset_prod_X_sub_C (A.map fun b : ℂˣ => -(b : ℂ))]`. Simplify using `[Multiset.map_map]`. Establish `h4` using `congrArg Polynomial.roots h2`. Rewrite `h4` using `[h3, h3]`. Conclude with `Multiset.map_injective (fun a b e => Units.ext (neg_injective e)) h4`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_satEig_eq {q n : ℕ} (hq : q ≠ 0) {B B' : Multiset ℂˣ} (hB : B.card = n) (hB' : B'.card = n)
     (h : ∀ j ≤ n, satEig q n B j = satEig q n B' j) : B = B' := by
@@ -157,19 +157,19 @@ def HasSatGL (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) (B : 
   GlobalTheory.LGrp.IsSpherical ρ (KGL w n) ∧ ∀ x ∈ fixed ρ (KGL w n), x ≠ 0 → IsSatVecGL w ρ x B
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, Formalism.L2.Host.unif_spec w⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isUnifV : ∃ ϖ, IsUnifV E w ϖ := ⟨_, Formalism.L2.Host.unif_spec w⟩
 
 /- English proof (translation)
-The claim follows from `(one_lt_absNorm w).ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem qV_ne_zero : qV E w ≠ 0 := (one_lt_absNorm w).ne_bot
 
 variable {w}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Valued.v ϖ ≤ 1`. Rewrite using `[h]`. Conclude with `(by decide : ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) ≤ 1)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Ov_of_isUnifV {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) : ϖ ∈ Ov E w := by
   change Valued.v ϖ ≤ 1
@@ -177,7 +177,7 @@ theorem mem_Ov_of_isUnifV {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) : ϖ �
   exact (by decide : ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) ≤ 1)
 
 /- English proof (translation)
-The claim follows from `Final.TjMem _ _ ϖ ℂ n j fun h0 => by simp [IsUnifV, h0] at h`.
+A detailed English derivation is pending.
 -/
 theorem Tj_mem_hecke {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) (j : ℕ) :
     Tj ℂ n (Ov E w) ϖ j ∈ Hecke ℂ (KGL w n) :=
@@ -186,7 +186,7 @@ theorem Tj_mem_hecke {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) (j : ℕ) :
 variable {ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V} {x : V} {B B' : Multiset ℂˣ}
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `exists_isUnifV w`. Conclude with `eq_of_satEig_eq (qV_ne_zero w) h.2.2.1 h'.2.2.1 fun j hj => smul_left_injective ℂ h.1 ((h.2.2.2 ϖ hϖ j hj).symm.trans (h'.2.2.2 ϖ hϖ j hj))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsSatVecGL.unique (h : IsSatVecGL w ρ x B) (h' : IsSatVecGL w ρ x B') : B = B' := by
   obtain ⟨ϖ, hϖ⟩ := exists_isUnifV w
@@ -194,28 +194,28 @@ theorem IsSatVecGL.unique (h : IsSatVecGL w ρ x B) (h' : IsSatVecGL w ρ x B') 
     smul_left_injective ℂ h.1 ((h.2.2.2 ϖ hϖ j hj).symm.trans (h'.2.2.2 ϖ hϖ j hj))
 
 /- English proof (translation)
-Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 h.1`. Conclude with `⟨x, h.2 x hx h0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasSatGL.exists_vec (h : HasSatGL w ρ B) : ∃ x, IsSatVecGL w ρ x B := by
   obtain ⟨x, hx, h0⟩ := (Submodule.ne_bot_iff _).1 h.1
   exact ⟨x, h.2 x hx h0⟩
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `h.exists_vec`. Conclude with `hx.unique (h'.2 x hx.2.1 hx.1)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem HasSatGL.unique (h : HasSatGL w ρ B) (h' : HasSatGL w ρ B') : B = B' := by
   obtain ⟨x, hx⟩ := h.exists_vec
   exact hx.unique (h'.2 x hx.2.1 hx.1)
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `h.exists_vec`. Conclude with `hx.2.2.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem HasSatGL.card (h : HasSatGL w ρ B) : B.card = n := by
   obtain ⟨x, hx⟩ := h.exists_vec
   exact hx.2.2.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h0, GlobalTheory.LGrp.mem_fixed.2 fun k hk => by rw [← hf, GlobalTheory.LGrp.mem_fixed.1 h.2.1 k hk], h.2.2.1, fun ϖ hϖ j hj => by rw [← map_heckeVec (Final.GLintComm E w n) (Tj_mem_hecke hϖ j) f hf, h.2.2.2 ϖ hϖ j hj, map_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsSatVecGL.map (h : IsSatVecGL w ρ x B) {ρ' : Representation ℂ (GL (Fin n) (w.adicCompletion E)) W}
     (f : V →ₗ[ℂ] W) (hf : ∀ g y, f (ρ g y) = ρ' g (f y)) (h0 : f x ≠ 0) : IsSatVecGL w ρ' (f x) B :=
@@ -223,7 +223,7 @@ theorem IsSatVecGL.map (h : IsSatVecGL w ρ x B) {ρ' : Representation ℂ (GL (
     rw [← map_heckeVec (Final.GLintComm E w n) (Tj_mem_hecke hϖ j) f hf, h.2.2.2 ϖ hϖ j hj, map_smul]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h0 => h.1 (by rw [h0, map_zero]), GlobalTheory.LGrp.mem_fixed.2 fun k hk => hi (by rw [hf, GlobalTheory.LGrp.mem_fixed.1 h.2.1 k hk]), h.2.2.1, fun ϖ hϖ j hj => hi (by rw [map_heckeVec (Final.GLintComm E w n) (Tj_mem_hecke hϖ j) f hf, h.2.2.2 ϖ hϖ j hj, map_smul])⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsSatVecGL.of_map {ρ' : Representation ℂ (GL (Fin n) (w.adicCompletion E)) W}
     (f : V →ₗ[ℂ] W) (hf : ∀ g y, f (ρ g y) = ρ' g (f y)) (hi : Function.Injective f) (h : IsSatVecGL w ρ' (f x) B) :
@@ -233,20 +233,20 @@ theorem IsSatVecGL.of_map {ρ' : Representation ℂ (GL (Fin n) (w.adicCompletio
     rw [map_heckeVec (Final.GLintComm E w n) (Tj_mem_hecke hϖ j) f hf, h.2.2.2 ϖ hϖ j hj, map_smul])⟩
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Matrix.one_apply_ne (ne_of_gt h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUpperB_one : IsUpperB E w (1 : GL (Fin n) (w.adicCompletion E)) := fun _ _ h =>
   Matrix.one_apply_ne (ne_of_gt h)
 
 /- English proof (translation)
-Establish `: ordV E w 1 = 0` using `by simp [ordV]; rfl`. Simplify using `[chiDelta, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chiDelta_one (α : Fin n → ℂ) : chiDelta E w α (1 : GL (Fin n) (w.adicCompletion E)) = 1 := by
   have : ordV E w 1 = 0 := by simp [ordV]; rfl
   simp [chiDelta, this]
 
 /- English proof (translation)
-Use `⟨h0, GlobalTheory.LGrp.mem_fixed.2 fun k hk => funext fun g => ?_, by simp, fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (g * k) = φ g`. Simplify `h 1 g k isUpperB_one hk` using `[chiDelta_one]`. Rewrite using `[heckeVec_rightReg (Final.GLintComm E w n) (Tj_mem_hecke hϖ j), Final.SatakeTj E w n ϖ (mem_Ov_of_isUnifV hϖ) hϖ _ (fun i => (α i).ne_zero) φ h j hj, satEig, Multiset.map_map]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isSatVecGL_of_isSpherical {α : Fin n → ℂˣ} {φ : GL (Fin n) (w.adicCompletion E) → ℂ}
     (h : Formalism.UG.IsSpherical E w (fun i => (α i : ℂ)) φ) (h0 : φ ≠ 0) :
@@ -273,9 +273,9 @@ def psFunGL (α : Fin n → ℂˣ) : Representation ℂ (GL (Fin n) (w.adicCompl
     simpa [rightReg, LinearMap.funLeft, mul_assoc] using h b (y * g) hb
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Take `⟨φ, h, h1, -⟩` from `Final.SphericalExists E w n (fun i => (α i : ℂ)) fun i => (α i).ne_zero`. Use `(Submodule.ne_bot_iff _).2 ⟨⟨φ, fun b g hb => by simpa using h b g 1 hb (one_mem _)⟩, GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext (funext fun g => ?_), fun h0 => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (g * k) = φ g`. Simplify `h 1 g k isUpperB_one hk` using `[chiDelta_one]`.
+Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun (congrArg Subtype.val h0) 1` as an intermediate fact. Simplify using `[h1] at this`. Introduce `φ hφ h0`. Use `IsSatVecGL.of_map (psSpaceGL w α).subtype (fun _ _ => rfl) Subtype.val_injective (isSatVecGL_of_isSpherical (fun b g k hb hk => ?_) fun h => h0 (Subtype.ext h))` and prove the remaining obligations. Conclude with `(congrFun (congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hφ k hk)) (b * g)).trans (φ.2 b g hb)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasSatGL_psFunGL (α : Fin n → ℂˣ) : HasSatGL w (psFunGL w α) (Finset.univ.val.map α) := by
   constructor
@@ -308,14 +308,14 @@ def HasSatU (ϖ : L) (q : ℕ) (ρ : Representation ℂ (GU σ n) V) (α : Fin (
 variable {ϖ ϖ' : L} {q : ℕ} {ρ : Representation ℂ (GU σ n) V} {x : V} {α : Fin (n / 2) → ℂˣ}
 
 /- English proof (translation)
-Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 h.1`. Conclude with `⟨x, h.2 x hx h0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasSatU.exists_vec (h : HasSatU ϖ q ρ α) : ∃ x, IsSatVecU ϖ q ρ x α := by
   obtain ⟨x, hx, h0⟩ := (Submodule.ne_bot_iff _).1 h.1
   exact ⟨x, h.2 x hx h0⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h0, GlobalTheory.LGrp.mem_fixed.2 fun k hk => by rw [← hf, GlobalTheory.LGrp.mem_fixed.1 h.2.1 k hk], fun t ht => by rw [← map_heckeVec (P.isCommensurated_integral_unitary_of_unramified hU n) ht f hf, h.2.2 t ht, map_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsSatVecU.map (hU : IsUnramInv ϖ σ q) (h : IsSatVecU ϖ q ρ x α) {ρ' : Representation ℂ (GU σ n) W}
     (f : V →ₗ[ℂ] W) (hf : ∀ g y, f (ρ g y) = ρ' g (f y)) (h0 : f x ≠ 0) : IsSatVecU ϖ q ρ' (f x) α :=
@@ -323,7 +323,7 @@ theorem IsSatVecU.map (hU : IsUnramInv ϖ σ q) (h : IsSatVecU ϖ q ρ x α) {ρ
     rw [← map_heckeVec (P.isCommensurated_integral_unitary_of_unramified hU n) ht f hf, h.2.2 t ht, map_smul]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h0 => h.1 (by rw [h0, map_zero]), GlobalTheory.LGrp.mem_fixed.2 fun k hk => hi (by rw [hf, GlobalTheory.LGrp.mem_fixed.1 h.2.1 k hk]), fun t ht => hi (by rw [map_heckeVec (P.isCommensurated_integral_unitary_of_unramified hU n) ht f hf, h.2.2 t ht, map_smul])⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsSatVecU.of_map (hU : IsUnramInv ϖ σ q) {ρ' : Representation ℂ (GU σ n) W}
     (f : V →ₗ[ℂ] W) (hf : ∀ g y, f (ρ g y) = ρ' g (f y)) (hi : Function.Injective f)
@@ -334,12 +334,12 @@ theorem IsSatVecU.of_map (hU : IsUnramInv ϖ σ q) {ρ' : Representation ℂ (GU
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Introduce `_ _ h` and use `Matrix.one_apply_ne (ne_of_gt h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isBorelU_one : IsBorelU (1 : GU σ n) := fun _ _ h => Matrix.one_apply_ne (ne_of_gt h)
 
 /- English proof (translation)
-Establish `: ordL (1 : L) = 0` using `by simp [ordL]; rfl`. Simplify using `[chiDeltaU, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chiDeltaU_one {m : ℕ} (q : ℕ) (α : Fin m → ℂ) : chiDeltaU q α (1 : GU σ n) = 1 := by
   have : ordL (1 : L) = 0 := by simp [ordL]; rfl
@@ -348,7 +348,7 @@ theorem chiDeltaU_one {m : ℕ} (q : ℕ) (α : Fin m → ℂ) : chiDeltaU q α 
 variable [CompleteSpace L]
 
 /- English proof (translation)
-Take `⟨φ, hφ, h1, -⟩` from `Final.SphericalExistsU L ϖ σ q n (n / 2) hU (by omega) (by omega) (fun i => (α i : ℂ)) fun i => (α i).ne_zero`. Establish `e` using `(Final.SatakeInert L ϖ σ q n (n / 2) hU (by omega) (by omega) _ (fun i => (α i).ne_zero) h hh φ hφ).symm.trans (Final.SatakeInert L ϖ' σ q n (n / 2) hU' (by omega) (by omega) _ (fun i => (α i).ne_zero) h hh φ hφ)`. Simplify `congrFun e 1` using `[h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem satU_indep (hU : IsUnramInv ϖ σ q) (hU' : IsUnramInv ϖ' σ q) {h : GU σ n → ℂ} (hh : h ∈ Hecke ℂ (KU σ n))
     (α : Fin (n / 2) → ℂˣ) : SatU ϖ q h (fun i => (α i : ℂ)) = SatU ϖ' q h (fun i => (α i : ℂ)) := by
@@ -359,13 +359,13 @@ theorem satU_indep (hU : IsUnramInv ϖ σ q) (hU' : IsUnramInv ϖ' σ q) {h : GU
   simpa [h1] using congrFun e 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, fun t ht => by rw [h.2.2 t ht, satU_indep hU hU' ht]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsSatVecU.of_unif (hU : IsUnramInv ϖ σ q) (hU' : IsUnramInv ϖ' σ q) (h : IsSatVecU ϖ q ρ x α) :
     IsSatVecU ϖ' q ρ x α := ⟨h.1, h.2.1, fun t ht => by rw [h.2.2 t ht, satU_indep hU hU' ht]⟩
 
 /- English proof (translation)
-Use `⟨h0, GlobalTheory.LGrp.mem_fixed.2 fun k hk => funext fun g => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (g * k) = φ g`. Simplify `h 1 g k isBorelU_one hk` using `[chiDeltaU_one]`. Rewrite using `[heckeVec_rightReg (P.isCommensurated_integral_unitary_of_unramified hU n) ht, Final.SatakeInert L ϖ σ q n (n / 2) hU (by omega) (by omega) _ (fun i => (α i).ne_zero) t ht φ h]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSatVecU_of_isSphericalU (hU : IsUnramInv ϖ σ q) {φ : GU σ n → ℂ}
     (h : IsSphericalU q (fun i => (α i : ℂ)) φ) (h0 : φ ≠ 0) : IsSatVecU ϖ q (rightReg ℂ _ ℂ) φ α := by
@@ -390,9 +390,9 @@ def psFunU (q : ℕ) (α : Fin (n / 2) → ℂˣ) : Representation ℂ (GU σ n)
     simpa [rightReg, LinearMap.funLeft, mul_assoc] using h b (y * g) hb
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Take `⟨φ, h, h1, -⟩` from `Final.SphericalExistsU L ϖ σ q n (n / 2) hU (by omega) (by omega) (fun i => (α i : ℂ)) fun i => (α i).ne_zero`. Use `(Submodule.ne_bot_iff _).2 ⟨⟨φ, fun b g hb => by simpa using h b g 1 hb (one_mem _)⟩, GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext (funext fun g => ?_), fun h0 => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (g * k) = φ g`. Simplify `h 1 g k isBorelU_one hk` using `[chiDeltaU_one]`.
+Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun (congrArg Subtype.val h0) 1` as an intermediate fact. Simplify using `[h1] at this`. Introduce `φ hφ h0`. Use `IsSatVecU.of_map hU (psSpaceU σ q α).subtype (fun _ _ => rfl) Subtype.val_injective (isSatVecU_of_isSphericalU hU (fun b g k hb hk => ?_) fun h => h0 (Subtype.ext h))` and prove the remaining obligations. Conclude with `(congrFun (congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hφ k hk)) (b * g)).trans (φ.2 b g hb)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasSatU_psFunU (hU : IsUnramInv ϖ σ q) (α : Fin (n / 2) → ℂˣ) : HasSatU ϖ q (psFunU σ q α) α := by
   constructor
@@ -412,7 +412,7 @@ theorem hasSatU_psFunU (hU : IsUnramInv ϖ σ q) (α : Fin (n / 2) → ℂˣ) : 
 end U
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Simplify using `[satEig, Multiset.esymm, Multiset.powersetCard_cons, Multiset.powersetCard_one]`. Simplify using `[satEig, Multiset.esymm, Multiset.powersetCard_one]`. Evaluate the numerical expressions using `[add_comm]`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example (q : ℕ) (a b : ℂˣ) :
     satEig q 2 {a, b} 2 = a * b ∧ satEig q 2 {a, b} 1 = (q : ℂ) ^ (1 / 2 : ℂ) * (a + b) := by

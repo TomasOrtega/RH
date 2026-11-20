@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (resG)
 namespace GlobalTheory.Vert.Model
 
 /- English proof (translation)
-Introduce `O _ _ _ p hp _ B`. Establish `hpO : ((p : ℕ) : O) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Establish `h1 : B.const ((p : ℕ) : O) ≠ 0` using `(B.isRegularFn_const hpO).ne_zero`. Establish `hx : genericPoint B.X ∈ (⊤ : B.X.Opens)` using `trivial`. Establish `h2 : (B.X.presheaf.germ ⊤ (genericPoint B.X) hx).hom (B.const ((p : ℕ) : O)) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `h1 ((germ_injective_of_isIntegral B.X (genericPoint B.X) hx) (h.trans (map_zero _).symm))`. Establish `h3 : (algebraMap B.X.functionField (Kbar B.X)) ((B.X.presheaf.germ ⊤ (genericPoint B.X) hx).hom (B.const ((p : ℕ) : O))) ≠ 0` using `(map_ne_zero _).2 h2`. Simplify `h3` using `only [const, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem natCast_prime_ne_zero_kbar : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] (B : GlobalTheory.Vert.Model O), ((p : ℕ) : Kbar B.X) ≠ 0 := by
   intro O _ _ _ p hp _ B

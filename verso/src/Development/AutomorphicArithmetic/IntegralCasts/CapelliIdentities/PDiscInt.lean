@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DiscriminantMulIntegralMem
 
 /- English proof (translation)
-Introduce `E _ _ _ A y hy`. Establish `h1` using `congrArg (fun x : NumberField.RingOfIntegers E => (x : E)) A.tr_eq`. Establish `h2` using `congrArg (fun x : NumberField.RingOfIntegers E => (x : E)) A.nm_eq`. Simplify using `only [map_add, map_mul, map_intCast] at h1 h2`. Take `⟨a, b, h⟩` from `UpperTheory.discriminant_mul_integral_mem E (UpperTheory.Gal.W2.Seed.cj E) (A.ω : E) (y : E) A.tr A.nm (by rw [← h1]; exact congrArg _ (A.bar_eq _).symm) (by rw [← h2]; exact congrArg _ (A.bar_eq _).symm) (NumberField.RingOfIntegers.isIntegral_coe y) hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨a, b, NumberField.RingOfIntegers.coe_injective ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_intCast]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk39.pDiscInt :
     UpperTheory.Gal.G1.DiscInt := by

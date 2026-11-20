@@ -21,13 +21,11 @@ def extAll : PtExt (recPJ h j hj) where
   vAt'_mul la y := vG_mul deg (cutR T.C j) (isVal_valSet la y.1 y.2).zero (isVal_valSet la y.1 y.2).mul
 
 /- English proof (translation)
-Establish `hinc : ∀ m, ((recPJ h j hj).inc w F).coeff m = if deg w = m then F.1 else 0`. Introduce `m`. Use `show (AddMonoidAlgebra.single (deg w) _).coeff m = _`. Rewrite using `[AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Establish `h0 : y.1 0 = ⊤` using `by first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact (isVal_valSet la y.1 y.2).zero`. Consider the case `simpa using (isVal_valSet la y.1 y.2).zero`. Use `show vG y.1 ((recPJ h j hj).inc w F) = y.1 F.1`. Unfold `vG`. Simplify using `only [hinc]`.
+Treat this case separately. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iInf_le_of_le (deg w) (by simp)`. Use `le_iInf fun m => ?_ split_ifs with hm` and prove the remaining obligations. Conclude with `le_rfl`. Rewrite using `[h0]`.
-
-Conclude with `le_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extAll_vAt_inc (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : (extAll h j hj).Pt' la) (w : WeightFamilies.Wt D j)
     (F : (recB h.toLawsCore).Cusp j w) : (extAll h j hj).vAt' la y ((recPJ h j hj).inc w F) = y.1 F.1 := by
@@ -52,7 +50,7 @@ theorem extAll_vAt_inc (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : (extAll h j 
       exact le_top
 
 /- English proof (translation)
-Introduce `w F hF la y`. Rewrite using `[extAll_vAt_inc]`. Conclude with `(h.reg j hj).int (dom_wtA w) (cutR_le T.C j w F.2) hF la y.1 y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAtExt_extAll : IntAtExt _ (extAll h j hj) := by
   intro w F hF la y

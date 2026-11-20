@@ -15,9 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UCanon
 
 /- English proof (translation)
-Use `letI := ψ.toAlgebra`. Use `haveI : Module.Flat A R := h`. Use `(injective_iff_map_eq_zero ψ).2 fun a ha => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `hr` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := R) (mem_nonZeroDivisors_of_ne_zero h0)`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : a • (1 : R) = a • (0 : R)`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, mul_zero, _root_.mul_one]`. Conclude with `ha`. Conclude with `one_ne_zero (hr h1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_of_flat_of_isDomain {A R : Type} [CommRing A] [IsDomain A] [CommRing R] [Nontrivial R] (ψ : A →+* R)
     (h : ψ.Flat) : Function.Injective ψ := by
@@ -31,23 +31,23 @@ theorem injective_of_flat_of_isDomain {A R : Type} [CommRing A] [IsDomain A] [Co
   exact one_ne_zero (hr h1)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ V _ _ _ hV hk C hn`. Take `⟨D', L, θ₀, N, ε, e, s, hp, hq, hθ₀, hb, hδ, hs, hu, hdiv⟩` from `GlobalTheory.T.degeneratingFamily_data_from_base_algClosed_residue Xo c φ V hV hk C hn`. Establish `hC₀ : (MvPolynomial.eval₂Hom θ₀ s).comp MvPolynomial.C = θ₀` using `RingHom.ext fun a => MvPolynomial.eval₂Hom_C _ _ _`. Establish `hsm : ∀ i, s (.inl i) ∈ maximalIdeal V` using `fun i => by`. Take `⟨u, hu⟩` from `(hs i).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hu]`. Conclude with `Ideal.mul_mem_right _ _ (C.s_mem i)`. Establish `hs0 : ∀ i, s (.inl i) ≠ 0` using `fun i h => C.s_ne_zero i ((hs i).eq_zero_iff.1 h)`. Take `⟨k, _, e', ψ, θ, hcompl, hθ, hθψ, hψ, hbd⟩` from `GlobalTheory.T.exists_toricChartRing_factorisation_localHom L.W ⟨L.b.comp (algebraMap ℚ c.F)⟩ C.m N V hV.1.2.2.2 (MvPolynomial.eval₂Hom θ₀ s) (by rw [hC₀]; exact hθ₀) (fun i => by rw [MvPolynomial.eval₂Hom_X']; exact hsm i)`. Establish `hθX : ∀ j, θ (ψ (MvPolynomial.X j)) = s j` using `fun j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.comp_apply, hθψ, MvPolynomial.eval₂Hom_X']`. Establish `hθC : θ.comp (ψ.comp MvPolynomial.C) = θ₀` using `by rw [← RingHom.comp_assoc, hθψ, hC₀]`. Establish `hinj : Function.Injective (ψ.comp MvPolynomial.C)` using `(injective_of_flat_of_isDomain ψ hcompl.2.2.1).comp (MvPolynomial.C_injective _ _)`. Set `b₁ : c.F →+* ChartRing k C.m e'` to `(ψ.comp MvPolynomial.C).comp L.b`. Establish `hR : GlobalTheory.Mum.Base (ChartRing k C.m e')` using `⟨GlobalTheory.MumfordChart.admissibleBase_chartRing k C.m e', (b₁.charZero_iff b₁.injective).1 inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htor : ∀ j, IsUnit (ψ (MvPolynomial.X (.inr j)))` using `fun j => hθ.map_nonunit _ (by rw [hθX]; exact hu j)`. Establish `hmem : ∀ i, ψ (MvPolynomial.X (.inl i)) ∈ maximalIdeal (ChartRing k C.m e')` using `fun i hi => hsm i (by rw [← hθX]; exact hi.map θ)`. Establish `hne : ∀ i, θ (ψ (MvPolynomial.X (.inl i))) ≠ 0` using `fun i => by rw [hθX]; exact hs0 i`. Establish `hval : ∀ i y, (ε (.inl i) : LinearMap.BilinForm ℤ L.D.X) y y = C.δ i (e.symm y) (e.symm y)` using `fun i y => by`. Rewrite using `[hδ i]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (ε (.inl i) : LinearMap.BilinForm ℤ L.D.X) (e (e.symm y)) (e (e.symm y))`. Rewrite using `[e.apply_symm_apply]`. Establish `hnn : ∀ i y, 0 ≤ (ε (.inl i) : LinearMap.BilinForm ℤ L.D.X) y y` using `fun i y => by`. Rewrite using `[hval]`. Conclude with `C.cone.nonneg i _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos : ∀ y, y ≠ 0 → 0 < ∑ i, (ε (.inl i) : LinearMap.BilinForm ℤ L.D.X) y y` using `fun y hy => by`. Take `⟨i, hi⟩` from `C.mono.exists_pos (maximalIdeal.isMaximal V).ne_top (y := e.symm y) (by simpa using hy)`. Use `Finset.sum_pos' (fun j _ => hnn j y) ⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Conclude with `pos_of_mul_pos_left (by rw [mul_comm]; exact hi) (Int.natCast_nonneg l.M')`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t₁, P₁, e₁, hdiv₁, hmono⟩` from `GlobalTheory.T.mumford_family_from_regular_base_coordinates L (ChartRing k C.m e') hR (ψ.comp MvPolynomial.C) hinj C.m N (fun j => ψ (MvPolynomial.X j)) (fun j => (ε j : LinearMap.BilinForm ℤ L.D.X)) (fun j => (ε j).2) (fun i => ⟨hmem i, fun h => hne i (by rw [h, map_zero])⟩) hto …`. Take `⟨y₁, yo, κ, h₁, h₂, h₃, h₄, h₅⟩` from `GlobalTheory.T.classified_on_open_of_specialises_to_classified Xo c φ D' L (ChartRing k C.m e') V hR hV C.toFam t₁ P₁ (ψ.comp MvPolynomial.C) θ hθ (by rw [← RingHom.comp_assoc, hθC, hb]) C.m N (fun j => ψ (MvPolynomial.X j)) (fun j => (ε j : LinearMap.BilinForm ℤ L.D.X)) e₁ e (fu …`. Establish `hrk : Module.finrank (𝓞 E) P₁.D.toPre.X = Module.finrank (𝓞 E) C.P.D.toPre.X` using `(e₁.trans e.symm).finrank_eq`. Establish `hcone : IsCone H.bar φ fun i => pull e₁.toLinearMap (ε (.inl i) : LinearMap.BilinForm ℤ L.D.X)`. Establish `h` using `C.cone.pull_equiv (e₁.trans e.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : (fun i => pull (e₁.trans e.symm).toLinearMap (C.δ i)) = fun i => pull e₁.toLinearMap (ε (.inl i) : LinearMap.BilinForm ℤ L.D.X)`. Use function extensionality and compare the values at `i`. Rewrite using `[hδ i]`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Use `show (ε (.inl i) : LinearMap.BilinForm ℤ L.D.X) (e (e.symm (e₁ a))) (e (e.symm (e₁ b))) = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Rewrite using `[e.apply_symm_apply, e.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite `h` using `[he]`. Then use the resulting hypothesis. Set `C₁ : MonoFam Xo c φ (ChartRing k C.m e')` to `⟨⟨b₁, t₁, P₁, y₁, h₁, h₂⟩, C.m, fun i => ψ (MvPolynomial.X (.inl i)), hmem, fun i => pull e₁.toLinearMap (ε (.inl i) : LinearMap.BilinForm ℤ L.D.X), hcone, hrk.le.trans C.rank, hmono⟩`. Conclude with `⟨k, _, C.m, e', C₁, θ, ⟨⟨D', by rw [← hp, ← hrk], by rw [← hq, ← hrk], L, N, ε, e₁, fun _ => rfl, ψ, hcompl, hψ, rfl, fun _ => rfl, htor, hdiv₁⟩⟩, ⟨rfl, hbd⟩, hθ, yo, κ, h₃, h₄, h₅⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_canon_through : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.Mum.Base V → IsAlgClosed (ResidueField V) → ∀ (C : MonoFam Xo c φ V), Nontrivial C.P.D.toPre.X → ∃ (k : Type) (_ : Field k) (m e : ℕ) (C₁ : MonoFam Xo c φ (ChartRing k m e)) (θ : ChartRing k m e →+* V), Nonempty (Canon C₁) ∧ (∃ hm : C₁.m = m, ∀ i, C₁.s i = bdParam k m e (Fin.cast hm i)) ∧ IsLocalHom θ ∧ Through C C₁ θ := by
   intro E _ _ _ H Dw l Xo c φ V _ _ _ hV hk C hn

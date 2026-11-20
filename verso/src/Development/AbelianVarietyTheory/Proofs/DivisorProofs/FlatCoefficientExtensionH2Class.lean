@@ -23,13 +23,13 @@ def tau : I ⊗[R] B →ₗ[R] B := TensorProduct.lid R B ∘ₗ I.subtype.rTens
 def sig : TrivSqZeroExt R I ⊗[R] B →ₗ[R] B := tau I B ∘ₗ (TrivSqZeroExt.sndHom R I).rTensor B
 
 /- English proof (translation)
-Simplify using `[tau]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tau_tmul (i : I) (b : B) : tau I B (i ⊗ₜ b) = (i : R) • b := by
   simp [tau]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul i b => simp [sig, iota]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sig_iota (y : I ⊗[R] B) : sig I B (iota I B y) = tau I B y := by
   induction y using TensorProduct.induction_on with
@@ -38,9 +38,9 @@ theorem sig_iota (y : I ⊗[R] B) : sig I B (iota I B y) = tau I B y := by
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul i b`. Rewrite using `[tau_tmul, Algebra.smul_def]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ i.2)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Ideal.add_mem _ hx hy`.
+A detailed English derivation is pending.
 -/
 theorem tau_mem (y : I ⊗[R] B) : tau I B y ∈ I.map (algebraMap R B) := by
   induction y using TensorProduct.induction_on with
@@ -51,12 +51,12 @@ theorem tau_mem (y : I ⊗[R] B) : tau I B y ∈ I.map (algebraMap R B) := by
   | add x y hx hy => rw [map_add]; exact Ideal.add_mem _ hx hy
 
 /- English proof (translation)
-The claim follows from `tau_mem I B _`.
+A detailed English derivation is pending.
 -/
 theorem sig_mem (x : TrivSqZeroExt R I ⊗[R] B) : sig I B x ∈ I.map (algebraMap R B) := tau_mem I B _
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul i c => simp [tau_tmul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add u v hu hv => simp only [map_add, hu, hv, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 theorem tau_mulLeft (b : B) (y : I ⊗[R] B) : tau I B ((LinearMap.mulLeft R b).lTensor I y) = b • tau I B y := by
   induction y using TensorProduct.induction_on with
@@ -65,11 +65,11 @@ theorem tau_mulLeft (b : B) (y : I ⊗[R] B) : tau I B ((LinearMap.mulLeft R b).
   | add u v hu hv => simp only [map_add, hu, hv, smul_add]
 
 /- English proof (translation)
-Rewrite `hx` using `[Ideal.map, Ideal.span]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨i, hi, rfl⟩` from `h`. Conclude with `⟨⟨i, hi⟩ ⊗ₜ 1, by simp [tau_tmul, Algebra.smul_def]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add x x' _ _ hx hx'`. Take `⟨y, rfl⟩` from `hx`. Take `⟨y', rfl⟩` from `hx'`. Conclude with `⟨y + y', map_add _ _ _⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul b x _ hx`. Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨(LinearMap.mulLeft R b).lTensor I y, tau_mulLeft I B b y⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_tau {x : B} (hx : x ∈ I.map (algebraMap R B)) : ∃ y, tau I B y = x := by
   rw [Ideal.map, Ideal.span] at hx
@@ -86,7 +86,7 @@ theorem exists_tau {x : B} (hx : x ∈ I.map (algebraMap R B)) : ∃ y, tau I B 
     exact ⟨(LinearMap.mulLeft R b).lTensor I y, tau_mulLeft I B b y⟩
 
 /- English proof (translation)
-The claim follows from `(TensorProduct.lid R B).injective.comp (Module.Flat.rTensor_preserves_injective_linearMap (M := B) I.subtype Subtype.val_injective)`.
+A detailed English derivation is pending.
 -/
 theorem tau_injective (hB : Module.Flat R B) : Function.Injective (tau I B) :=
   (TensorProduct.lid R B).injective.comp
@@ -95,7 +95,7 @@ theorem tau_injective (hB : Module.Flat R B) : Function.Injective (tau I B) :=
 variable {B} {B' : Type} [CommRing B'] [Algebra R B'] (φ : B →ₐ[R] B')
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul i b => simp [iota]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem iota_nat (y : I ⊗[R] B) :
     extHom (TrivSqZeroExt R I) φ (iota I B y) = iota I B' (φ.toLinearMap.lTensor I y) := by
@@ -105,7 +105,7 @@ theorem iota_nat (y : I ⊗[R] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul i b => simp [tau_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tau_nat (y : I ⊗[R] B) : tau I B' (φ.toLinearMap.lTensor I y) = φ (tau I B y) := by
   induction y using TensorProduct.induction_on with
@@ -114,7 +114,7 @@ theorem tau_nat (y : I ⊗[R] B) : tau I B' (φ.toLinearMap.lTensor I y) = φ (t
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sig, tau_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sig_nat (x : TrivSqZeroExt R I ⊗[R] B) :
     sig I B' (extHom (TrivSqZeroExt R I) φ x) = φ (sig I B x) := by
@@ -130,23 +130,21 @@ end GlobalTheory.PrimIdeal
 namespace GlobalTheory.PrimIdeal
 
 /- English proof (translation)
-Introduce `R _ I`. Use `⟨TrivSqZeroExt R I, inferInstance, inferInstance, TrivSqZeroExt.fstHom R R I, ?_, ?_⟩` and prove the remaining obligations. Introduce `y y' hy hy'`. Establish `h1 : y.fst = 0` using `hy`. Establish `h2 : y'.fst = 0` using `hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext`. Simplify using `[h1, h2]`. Simplify using `[h1, h2]`. Introduce `D T _ _ F F' n₀ n₁ n₂ hF hF' hc z f hz hf hrel`. Use `choose y hy using fun (t t' t'' : D) (a : t ⟶ t') (b : t' ⟶ t'') ↦ exists_tau I (F.obj t'') (hz t t' t'' a b)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `choose y' hy' using fun (t t' : T) (a : t ⟶ t') ↦ exists_tau I (F'.obj t') (hf t t' a)`. Set `zh : C2 (ext (TrivSqZeroExt R I) F)` to `fun t t' t'' a b ↦ iota I (F.obj t'') (y t t' t'' a b)`. Establish `hzc : zh ∈ Z2 (ext (TrivSqZeroExt R I) F)`. Introduce `t t' t'' t''' φ ψ χ`. Establish `key : (mp F χ).toLinearMap.lTensor I (y _ _ _ φ ψ) + y _ _ _ (φ ≫ ψ) χ = y _ _ _ φ (ψ ≫ χ) + y _ _ _ ψ χ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `tau_injective I (F.obj t''') (hF t''')` to reduce the goal to its premises. Simplify using `only [map_add, AlgHom.toLinearMap_apply, tau_nat, hy]`. Conclude with `z.2 φ ψ χ`. Use `congrArg (iota I _) key` as an intermediate fact. Simplify using `only [map_add, ← iota_nat] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Take `⟨g, hg⟩` from `H2.mk_eq_zero.1 (hc (H2.mk _ ⟨zh, hzc⟩) (by show H2.mk _ ((extMap _ n₀).pullbackTwoCocycle ⟨zh, hzc⟩) = H2.mk _ ((extMap _ n₁).pullbackTwoCocycle ⟨zh, hzc⟩) + H2.mk _ ((extMap _ n₂).pullbackTwoCocycle ⟨zh, hzc⟩)`. Rewrite using `[← LinearMap.map_add (H2.mk _), H2.mk_eq_mk]`. Use `⟨fun t t' a ↦ iota I (F'.obj t') (y' t t' a), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t t' t'' a b`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [d1_apply, Submodule.coe_sub, Submodule.coe_add, Pi.sub_apply, Pi.add_apply, CoefMap.pullCocycleTwo_apply]`. Establish `e` using `congrFun (congrFun (congrFun (congrFun (congrFun hrel t) t') t'') a) b`. Simplify using `only [d1_apply, Pi.sub_apply, CoefMap.pullCocycleTwo_apply] at e`. Establish `key : (mp F' b).toLinearMap.lTensor I (y' _ _ a) - y' _ _ (a ≫ b) + y' _ _ b = (coefHom n₀ t'').toLinearMap.lTensor I (y _ _ _ (n₀.G.map a) (n₀.G.map b)) - ((coefHom n₁ t'').toLinearMap.lTensor I (y _ _ _ (n₁.G.map a) (n₁.G.map b)) + (coefHom n₂ t'').toLinearMap.lTensor I (y _ _ …`. Apply `tau_injective I (F'.obj t'') (hF' t'')` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [map_add, map_sub, AlgHom.toLinearMap_apply, tau_nat, hy, hy']`. Rewrite using `[e]`. Rewrite using `[sub_sub]`. Both sides reduce to the same expression. Use `congrArg (iota I _) key` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_sub, ← iota_nat] at this`. Conclude with `this))`. Use `⟨fun t t' a ↦ sig I (F.obj t') (g t t' a), fun t t' a ↦ sig_mem I _ _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t t' t'' a b`. Establish `e` using `congrFun (congrFun (congrFun (congrFun (congrFun hg t) t') t'') a) b`.
-
-Simplify using `only [d1_apply] at e ⊢`. Rewrite using `[← sig_nat, ← map_sub, ← map_add]`. Express the relevant statement in the definitionally equal form `sig I (F.obj t'') (mp (ext (TrivSqZeroExt R I) F) b (g t t' a) - g t t'' (a ≫ b) + g t' t'' b) = _`. Rewrite using `[e]`. Conclude with `(sig_iota I _ _).trans (hy t t' t'' a b)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primI_of_ext : ∀ (R : Type) [CommRing R] (I : Ideal R), ∃ (R₁ : Type) (_ : CommRing R₁) (_ : Algebra R R₁)
     (q : R₁ →ₐ[R] R), (∀ y y', q y = 0 → q y' = 0 → y * y' = 0) ∧

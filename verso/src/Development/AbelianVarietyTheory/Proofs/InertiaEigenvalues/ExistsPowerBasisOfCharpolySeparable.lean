@@ -13,13 +13,13 @@ open Matrix MeasureTheory in
 open Polynomial in
 
 /- English proof (translation)
-Use `set L := AlgebraicClosure E`. Establish `hinj : Function.Injective (algebraMap E L)` using `(algebraMap E L).injective`. Rewrite using `[← map_dvd_map (algebraMap E L) hinj (LinearMap.charpoly_monic f)]`. Establish `hm0 : (minpoly E f).map (algebraMap E L) ≠ 0` using `Polynomial.map_ne_zero (minpoly.ne_zero (Algebra.IsIntegral.isIntegral f))`. Establish `hroot : ∀ r ∈ ((LinearMap.charpoly f).map (algebraMap E L)).roots, r ∈ ((minpoly E f).map (algebraMap E L)).roots`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr`. Rewrite using `[mem_roots hm0]`. Rewrite `hr` using `[mem_roots (Polynomial.map_ne_zero (LinearMap.charpoly_monic f).ne_zero), ← LinearMap.charpoly_baseChange, ← Module.End.hasEigenvalue_iff_isRoot_charpoly]`. Take `⟨v, hv⟩` from `hr.exists_hasEigenvector`. Establish `hzero : aeval (f.baseChange L) ((minpoly E f).map (algebraMap E L)) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_map_algebraMap]`. Establish `hφ` using `Polynomial.aeval_algHom_apply (Module.End.baseChangeHom E L V) f (minpoly E f)`. Rewrite `hφ` using `[minpoly.aeval, map_zero]`. Conclude with `hφ`. Establish `hv'` using `Module.End.aeval_apply_of_hasEigenvector (p := (minpoly E f).map (algebraMap E L)) hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hv'` using `[hzero, LinearMap.zero_apply, eq_comm, smul_eq_zero]`. Conclude with `hv'.resolve_right hv.2`. Establish `hsplit` using `IsAlgClosed.splits ((LinearMap.charpoly f).map (algebraMap E L))`. Rewrite using `[hsplit.eq_prod_roots_of_monic ((LinearMap.charpoly_monic f).map _), Multiset.prod_X_sub_C_dvd_iff_le_roots hm0, Multiset.le_iff_subset (nodup_roots h.map)]`. Conclude with `hroot`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnitLemma.charpoly_dvd_minpoly_of_separable {E V : Type} [Field E] [AddCommGroup V] [Module E V]
     [Module.Finite E V] (f : Module.End E V) (h : (LinearMap.charpoly f).Separable) :
@@ -54,11 +54,9 @@ open Matrix MeasureTheory in
 open Polynomial in
 
 /- English proof (translation)
-Introduce `K B hsep`. Use `set g := B.g`. Establish `hmin : minpoly K.E (LinearMap.mulLeft K.E g) = minpoly K.E g` using `minpoly.algHom_eq (Algebra.lmul K.E B.A) (fun x y hxy => by simpa using congrArg (fun φ => φ 1) hxy) g`. Establish `hdvd` using `_root_.GlobalTheory.UnitLemma.charpoly_dvd_minpoly_of_separable _ hsep`. Rewrite `hdvd` using `[hmin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdeg : (minpoly K.E g).natDegree = Module.finrank K.E B.A`. Apply `le_antisymm (minpoly.natDegree_le g)` to reduce the goal to its premises. Rewrite using `[← LinearMap.charpoly_natDegree (LinearMap.mulLeft K.E g)]`. Conclude with `natDegree_le_of_dvd hdvd (minpoly.ne_zero (Algebra.IsIntegral.isIntegral g))`. Establish `hli : LinearIndependent K.E (fun i : Fin (Module.finrank K.E B.A) => g ^ (i : ℕ))` using `(linearIndependent_pow g).comp (Fin.cast hdeg.symm) (Fin.cast_injective _)`.
-
-Conclude with `⟨basisOfLinearIndependentOfCardEqFinrank' _ hli (Fintype.card_fin _), fun i => by rw [coe_basisOfLinearIndependentOfCardEqFinrank']⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnitLemma.exists_basis_pow_of_separable : ∀ (K : _root_.GlobalTheory.UnitLemma.UQ)
     (B : _root_.GlobalTheory.UnitLemma.InvAlg K), B.P.Separable →

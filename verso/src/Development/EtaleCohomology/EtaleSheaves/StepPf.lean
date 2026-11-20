@@ -6,13 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 namespace LateralTheory.E.StepPf
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hfne : (Set.range f).Nonempty`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Set.not_nonempty_iff_eq_empty]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hne.2 (by simpa [h] using hc)`. Establish `hgne : (Set.range g).Nonempty`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Set.not_nonempty_iff_eq_empty]`. Conclude with `hne.1 (by simpa [h] using hc)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hirr : IsPreirreducible (Set.univ : Set X)` using `(IrreducibleSpace.isIrreducible_univ X).isPreirreducible`. Take `⟨x, -, hxf, hxg⟩` from `hirr _ _ f.isOpenEmbedding.isOpen_range g.isOpenEmbedding.isOpen_range (by simpa using hfne) (by simpa using hgne)`. Take `⟨u, rfl⟩` from `hxf`. Take `⟨v, hv⟩` from `hxg`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := f) (g := g) u v hv.symm`.
-
-Conclude with `hW ⟨z⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem empty_case {U V X : Scheme.{0}} (f : U ⟶ X) (g : V ⟶ X) [IsOpenImmersion f] [IsOpenImmersion g]
     (hc : Set.range f ∪ Set.range g = Set.univ) [IrreducibleSpace X] (hW : ¬ Nonempty ↥(pullback f g : Scheme.{0})) :
@@ -36,7 +34,7 @@ theorem empty_case {U V X : Scheme.{0}} (f : U ⟶ X) (g : V ⟶ X) [IsOpenImmer
   exact hW ⟨z⟩
 
 /- English proof (translation)
-Establish `: Surjective g` using `⟨Set.range_eq_univ.mp hg⟩`. Establish `: IsIso g` using `(isIso_iff_isOpenImmersion_and_surjective g).mpr ⟨inferInstance, inferInstance⟩`. Conclude with `acyc_of_iso q (asIso g).symm h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem acyc_of_surj (q : ℕ) {V X : Scheme.{0}} (g : V ⟶ X) [IsOpenImmersion g] (hg : Set.range g = Set.univ)
     (h : Acyc q (sch.obj V)) : Acyc q (sch.obj X) := by
@@ -45,19 +43,19 @@ theorem acyc_of_surj (q : ℕ) {V X : Scheme.{0}} (g : V ⟶ X) [IsOpenImmersion
   exact acyc_of_iso q (asIso g).symm h
 
 /- English proof (translation)
-Introduce `hyp hMV hZ q U V X f g _ _ hc hX hU hV hq hAU hAV hAW`. Establish `hXi : IsIntegral X` using `hX.1`. Distinguish the cases in `hW : Nonempty ↥(pullback f g : Scheme.{0})`. Establish `hAW'` using `hAW hW`. Establish `: IsIntegral U` using `hU.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hW` as an intermediate fact. Establish `: IsIntegral (pullback f g : Scheme.{0})` using `isIntegral_of_isOpenImmersion (pullback.fst f g ≫ f)`. Establish `hqU : IsUnit (q : Γ(U, ⊤))`. Use `hq.map f.appTop.hom` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `n i hn`. Take `⟨δ, hex, -⟩` from `hMV hyp (ZMod q) (tw q i)`. Take `⟨m, rfl⟩ : ∃ m : ℤ, n = m + 1` from `⟨n - 1, by ring⟩`. Establish `hsU` using `hAU (m + 1) i hn`. Establish `hsV` using `hAV (m + 1) i hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, h2, h3⟩` from `hex f g hc m`. Prove the components needed by the constructor for the conclusion. It suffices to establish `h0 : ∀ x : Ht q (sch.obj X) (m + 1) i, x = 0 by`. Introduce `a b`. Rewrite using `[h0 a, h0 b]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Take `⟨w, hw⟩` from `(h3 x).mp ⟨Subsingleton.elim _ _, Subsingleton.elim _ _⟩`. Rewrite using `[← hw]`. Break down `lt_or_eq_of_le (show (0 : ℤ) ≤ m by omega) with hm | hm` into its components or cases. Establish `hsW` using `hAW' m i hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim w 0, map_zero]`. Substitute `hm` using the available equality. Rewrite using `[h2]`. Take `⟨a, ha⟩` from `(hZ hyp q (pullback.fst f g) hU inferInstance hqU i).2 w`. Conclude with `⟨a, 0, by rw [map_zero, sub_zero]; exact ha.symm⟩`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Break down `empty_case f g hc hW with h | h` into its components or cases. Conclude with `acyc_of_surj q f h hAU`. Conclude with `acyc_of_surj q g h hAV`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem Step_of : Step := by
   intro hyp hMV hZ q U V X f g _ _ hc hX hU hV hq hAU hAV hAW

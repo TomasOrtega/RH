@@ -12,21 +12,21 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.LeviIso.MapRadial
 
 /- English proof (translation)
-Unfold `Formalism.REAL.hs`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_hs {n : ℕ} : Continuous (Formalism.REAL.hs : Matrix (Fin n) (Fin n) ℂ → ℝ) := by
   unfold Formalism.REAL.hs
   fun_prop
 
 /- English proof (translation)
-Unfold `Formalism.REAL.hs`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem hs_nonneg' {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ Formalism.REAL.hs g := by
   unfold Formalism.REAL.hs
   positivity
 
 /- English proof (translation)
-Establish `: Continuous fun g : Formalism.REAL.UJ ε => uMat g` using `Units.continuous_val.comp continuous_subtype_val`. Conclude with `(continuous_hs.comp (this.sub continuous_const)).measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_hs_uMat {n : ℕ} (ε : Fin n → Bool) :
     Measurable fun g : Formalism.REAL.UJ ε => Formalism.REAL.hs (uMat g - 1) := by
@@ -35,9 +35,9 @@ theorem measurable_hs_uMat {n : ℕ} (ε : Fin n → Bool) :
   exact (continuous_hs.comp (this.sub continuous_const)).measurable
 
 /- English proof (translation)
-Establish `h0 : Continuous fun x : Fin j → Fin j → ℂ => Matrix.of x` using `continuous_id`. Establish `h1 : Measurable fun x : Fin j → Fin j → ℂ => (Matrix.of x).det` using `h0.matrix_det.measurable`. Establish `h2 : ∀ r s, Measurable fun x : Fin j → Fin j → ℂ => (Matrix.of x).adjugate r s` using `fun r s => (h0.matrix_adjugate.matrix_elem r s).measurable`. Use `(continuous_hs.comp (h0.sub continuous_const)).measurable.add ?_` and prove the remaining obligations. Unfold `Formalism.REAL.hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `Finset.measurable_sum _ fun r _ => Finset.measurable_sum _ fun s _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `(((h1.inv.mul (h2 r s)).sub measurable_const).norm).pow_const 2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_hs_loc (j : ℕ) : Measurable fun x : Fin j → Fin j → ℂ =>
     Formalism.REAL.hs (Matrix.of x - 1) + Formalism.REAL.hs ((Matrix.of x)⁻¹ - 1) := by
@@ -52,17 +52,15 @@ theorem measurable_hs_loc (j : ℕ) : Measurable fun x : Fin j → Fin j → ℂ
   exact (((h1.inv.mul (h2 r s)).sub measurable_const).norm).pow_const 2
 
 /- English proof (translation)
-Introduce `n n₀ a j ε ε₀ B B₀ hF θ hθ hθe c hc`. Establish `hG : IsRadial (ENNReal.ofReal c • Formalism.REAL.muG ε₀) (fun g => Formalism.REAL.hs (uMat g - 1)) (n₀ ^ 2)`. Use `((GlobalTheory.GaugeWhole.gauge_whole n₀ ε₀).1 c hc).2.2.2` as an intermediate fact. Simplify `this` using `[IsRadial]`. Use `haveI : SigmaFinite (Formalism.REAL.muG ε₀) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.REAL.muG`. Use `infer_instance`. Establish `hP` using `GlobalTheory.T.euclideanBallAsymptotics_finite_pi a (fun i => Fin (j i) → Fin (j i) → ℂ) (fun i => ENNReal.ofReal (2 ^ (j i ^ 2)) • haarLoc (j i)) _ (fun i => 2 * j i ^ 2) (fun i => measurable_hs_loc (j i)) (fun i x => add_nonneg (hs_nonneg' _) (hs_nonneg' _)) (fun i => GlobalThe …`. Establish `h2` using `GlobalTheory.T.hasEuclideanBallVolumeSublevelAsymptotics_prod _ _ _ _ _ _ _ _ (Finset.measurable_sum _ fun i _ => (measurable_hs_loc (j i)).comp (measurable_pi_apply i)) (measurable_hs_uMat ε₀) (fun x => Finset.sum_nonneg fun i _ => add_nonneg (hs_nonneg' _) (hs_nonneg' _)) (fun …`. Establish `hd : n₀ ^ 2 + 2 * ∑ i, j i ^ 2 = ∑ i, 2 * j i ^ 2 + n₀ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, add_comm]`. Rewrite using `[hd]`. Establish `hae1 : ∀ᵐ x ∂(Measure.pi fun i => ENNReal.ofReal (2 ^ (j i ^ 2)) • haarLoc (j i)), ∀ i, (Matrix.of (x i)).det ≠ 0`. Use `ae_all_iff.2 fun i => ?_` and prove the remaining obligations. Establish `h0 : ∀ᵐ y ∂(haarLoc (j i)), (Matrix.of y).det ≠ 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[ae_iff]`. Simplify using `using (haarLoc_conj_and_null (j i)).2`. Conclude with `(Measure.quasiMeasurePreserving_eval (fun i => ENNReal.ofReal (2 ^ (j i ^ 2)) • haarLoc (j i)) i).ae (Measure.ae_smul_measure h0 _)`. Establish `hae` using `(Measure.quasiMeasurePreserving_fst (ν := ENNReal.ofReal c • Formalism.REAL.muG ε₀)).ae hae1`. Unfold `IsRadial at h2 ⊢`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `h2.congr fun r => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hθ (measurableSet_le (measurable_hs_uMat ε).sqrt measurable_const)]`. Use `congr 1`. Use `measure_congr ?_` and prove the remaining obligations. Use `filter_upwards [hae] with z hz`.
-
-Establish `e` using `hs_lev_sub_one n n₀ a j ε ε₀ B B₀ hF (fun i => Matrix.of (z.1 i)) (uMat z.2)`. Rewrite `e` using `[← hθe z hz]`. Conclude with `congrArg (fun t => Real.sqrt t ≤ r) e.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRadial_map_lev : ∀ (n n₀ a : ℕ) (j : Fin a → ℕ) (ε : Fin n → Bool) (ε₀ : Fin n₀ → Bool) (B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (B₀ : Matrix (Fin n) (Fin n₀) ℂ), IsFrame ε ε₀ B B₀ → ∀ θ : (∀ i, Fin (j i) → Fin (j i) → ℂ) × Formalism.REAL.UJ ε₀ → Formalism.REAL.UJ ε, Measurable θ → (∀ z, (∀ i, (Matrix.of (z.1 i)).det ≠ 0) → uMat (θ z) = lev ε B B₀ (fun i => Matrix.of (z.1 i)) (uMat z.2)) → ∀ c : ℝ, IsGauge ε₀ c → IsRadial (((Measure.pi fun i => ENNReal.ofReal (2 ^ (j i ^ 2)) • haarLoc (j i)).prod (ENNReal.ofReal c • Formalism.REAL.muG ε₀)).map θ) (fun g => Formalism.REAL.hs (uMat g - 1)) (n₀ ^ 2 + 2 * ∑ i, j i ^ 2) := by
   intro n n₀ a j ε ε₀ B B₀ hF θ hθ hθe c hc

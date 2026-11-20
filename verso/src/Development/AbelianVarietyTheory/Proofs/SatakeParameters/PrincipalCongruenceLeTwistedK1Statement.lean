@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PhiTopTargetTwis
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker GlobalTheory.Mem.Col2 GlobalTheory.TopStep
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PrincipalCongruenceLevelK1.principal_congruence_le_level_k1` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FPrincipalCongruenceLeTwistedK1.lean&line=89#L89)
 -/

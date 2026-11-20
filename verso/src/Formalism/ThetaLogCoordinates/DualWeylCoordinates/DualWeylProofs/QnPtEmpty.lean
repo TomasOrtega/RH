@@ -17,13 +17,13 @@ def qn_IntS (n : ℕ) : Subring (MvPolynomial (Fin n × Fin n) ℚ) :=
   (MvPolynomial.map (σ := Fin n × Fin n) (Int.castRingHom ℚ)).range
 
 /- English proof (translation)
-Establish `h : (aeval (qn_pt n (insert (a, s) D))).toRingHom = (Polynomial.eval₂RingHom (aeval (qn_pt n D)).toRingHom (X (a, s))).comp (rowGen ℚ s a).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[rowGen, algebraMap_eq, Polynomial.algebraMap_apply]`. Introduce and unpack `⟨b, c⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rowGen, aeval_X, Polynomial.coe_eval₂RingHom]`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Distinguish the cases in `hc : c = s`. Substitute `hc` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[qn_pt, hw, hs]`. Establish `h1 : (b, c) ≠ (b, s)` using `by simp [hc]`. Establish `h2 : s ≠ c` using `fun h => hc h.symm`. Simplify using `[qn_pt, hs, h1, h2, hc]`. Establish `h1 : (b, c) ≠ (a, s)` using `by simp [hb]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[qn_pt, h1, hb]`. Conclude with `congrArg (fun φ => φ F) h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qn_pt_step (n : ℕ) (D : Finset (Fin n × Fin n)) (a s : Fin n) (hw : (a, s) ∉ D)
     (hs : ∀ c, (s, c) ∉ D) (F : MvPolynomial (Fin n × Fin n) ℚ) :
@@ -51,11 +51,11 @@ theorem qn_pt_step (n : ℕ) (D : Finset (Fin n × Fin n)) (a s : Fin n) (hw : (
   exact congrArg (fun φ => φ F) h
 
 /- English proof (translation)
-Establish `h : (aeval (qn_pt n ∅)).toRingHom = (C : ℚ →+* MvPolynomial (Fin n × Fin n) ℚ).comp (eval (idFrame ℚ n n))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[algebraMap_eq]`. Introduce and unpack `⟨b, c⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `hbc : b = c`. Substitute `hbc` using the available equality. Simplify using `[qn_pt, idFrame]`. Establish `: b.val ≠ c.val` using `fun h => hbc (Fin.ext h)`. Simplify using `[qn_pt, idFrame, hbc, this]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun φ => φ F) h`.
+A detailed English derivation is pending.
 -/
 theorem qn_pt_empty (n : ℕ) (F : MvPolynomial (Fin n × Fin n) ℚ) :
     aeval (qn_pt n ∅) F = C (eval (idFrame ℚ n n) F) := by
@@ -71,19 +71,19 @@ theorem qn_pt_empty (n : ℕ) (F : MvPolynomial (Fin n × Fin n) ℚ) :
   exact congrArg (fun φ => φ F) h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X v, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem qn_X_mem (n : ℕ) (v : Fin n × Fin n) : (X v : MvPolynomial (Fin n × Fin n) ℚ) ∈ qn_IntS n :=
   ⟨X v, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `D using Finset.induction_on_min_value (fun x : Fin n × Fin n => x.1) with`. Consider the case `empty`. Introduce `_ F hF`. Take `⟨z, hz⟩` from `hev F hF`. Rewrite using `[qn_pt_empty, hz]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨C z, by simp⟩`. Consider the case `insert w D hw hmin ih`. Take `⟨a, s⟩` from `w`. Introduce `hD F hF`. Establish `hsa : s < a` using `hD (a, s) (Finset.mem_insert_self _ _)`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : ∀ c, (s, c) ∉ D`. Introduce `c hc`. Use `hmin (s, c) hc` as an intermediate fact. Conclude with `absurd hsa (not_lt.mpr this)`. Establish `ih'` using `ih (fun x hx => hD x (Finset.mem_insert_of_mem hx))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qn_pt_step n D a s hw hs, Polynomial.eval₂_eq_sum, Polynomial.sum_def]`. Use `Subring.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Conclude with `Subring.mul_mem _ (ih' _ (hW F hF s a k (ne_of_lt hsa))) (Subring.pow_mem _ (qn_X_mem n _) _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qn_int_pt (n : ℕ) (W : Set (MvPolynomial (Fin n × Fin n) ℚ))
     (hW : ∀ F ∈ W, ∀ (a b : Fin n) (k : ℕ), a ≠ b → rowDiv ℚ a b k F ∈ W)
@@ -114,13 +114,13 @@ def qn_low (n : ℕ) : Finset (Fin n × Fin n) := Finset.univ.filter fun v => v.
 def qn_off {n : ℕ} (m : Fin n × Fin n →₀ ℕ) : Fin n × Fin n →₀ ℕ := m.filter fun v => v.2 < v.1
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (by simp)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨a, c⟩` from `i`. Break down `lt_trichotomy a c with hac | hac | hac` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h0 : m (a, c) = 0` using `h a c hac`. Establish `h1 : ¬ c < a` using `not_lt.mpr hac.le`. Simplify using `[h0, qn_off, Finsupp.filter_apply, h1]`. Substitute `hac` using the available equality. Simplify using `[qn_pt, qn_low, qn_off, Finsupp.filter_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : a ≠ c` using `ne_of_gt hac`. Simplify using `[qn_pt, qn_low, qn_off, Finsupp.filter_apply, hac, h1]`. Unfold `LowerTri at h push Not at h`. Take `⟨a, c, hac, hne⟩` from `h`. Use `Finset.prod_eq_zero (Finset.mem_univ (a, c)) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hac' : a < c` using `hac`. Establish `h1 : ¬ c < a` using `not_lt.mpr hac'.le`. Establish `h2 : a ≠ c` using `ne_of_lt hac'`. Simplify using `[qn_pt, qn_low, h1, h2, hne]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qn_prod_pt (n : ℕ) (m : Fin n × Fin n →₀ ℕ) :
     (∏ i, qn_pt n (qn_low n) i ^ m i) = open Classical in if LowerTri m then monomial (qn_off m) 1 else 0 := by
@@ -147,11 +147,11 @@ theorem qn_prod_pt (n : ℕ) (m : Fin n × Fin n →₀ ℕ) :
     simp [qn_pt, qn_low, h1, h2, hne]
 
 /- English proof (translation)
-Establish `hoff : ∀ a c : Fin n, a ≠ c → m (a, c) = e (a, c)`. Introduce `a c hac`. Break down `lt_or_gt_of_ne hac with h1 | h1` into its components or cases. Rewrite using `[hm a c h1, he a c h1]`. Use `DFunLike.congr_fun h (a, c)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[qn_off, Finsupp.filter_apply, h1]`. Use extensionality with `⟨a, c⟩`. Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Establish `h1` using `hmc a`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h2` using `hec a`. Rewrite `h1`, `h2` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ a)]`. Establish `h3 : ∑ x ∈ Finset.univ.erase a, m (x, a) = ∑ x ∈ Finset.univ.erase a, e (x, a)` using `Finset.sum_congr rfl fun x hx => hoff x a (Finset.ne_of_mem_erase hx)`. Use linear arithmetic over natural numbers and integers. Conclude with `hoff a c hac`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem qn_off_inj {n : ℕ} (ν : Fin n → ℕ) (m e : Fin n × Fin n →₀ ℕ) (hm : LowerTri m) (he : LowerTri e)
     (hmc : ∀ t : Fin n, ∑ a : Fin n, m (a, t) = ν t) (hec : ∀ t : Fin n, ∑ a : Fin n, e (a, t) = ν t)
@@ -175,11 +175,11 @@ theorem qn_off_inj {n : ℕ} (ν : Fin n → ℕ) (m e : Fin n × Fin n →₀ �
   · exact hoff a c hac
 
 /- English proof (translation)
-Rewrite using `[aeval_def, eval₂_eq', coeff_sum]`. Simplify using `only [algebraMap_eq, coeff_C_mul, qn_prod_pt]`. Rewrite using `[Finset.sum_eq_single e]`. Rewrite using `[if_pos he, coeff_monomial, if_pos rfl, mul_one]`. Introduce `m hm hne split_ifs with hl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coeff_monomial, if_neg, mul_zero]`. Introduce `hoff`. Apply `hne` to reduce the goal to its premises. Use `qn_off_inj ν m e hl he ?_ hec hoff` and prove the remaining obligations. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← lhwline_weight_col, hF (mem_support_iff.mp hm)]`. Simplify using the standard rewrite rules. Introduce `h`. Rewrite using `[notMem_support_iff.mp h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem qn_coeff_pt (n : ℕ) (ν : Fin n → ℕ) (F : MvPolynomial (Fin n × Fin n) ℚ)
     (hF : IsWeightedHomogeneous (colW n n) F ν) (e : Fin n × Fin n →₀ ℕ) (he : LowerTri e)
@@ -203,11 +203,11 @@ theorem qn_coeff_pt (n : ℕ) (ν : Fin n → ℕ) (F : MvPolynomial (Fin n × F
     rw [notMem_support_iff.mp h, zero_mul]
 
 /- English proof (translation)
-Introduce `F hF e he`. Distinguish the cases in `hec : ∀ t : Fin n, ∑ a : Fin n, e (a, t) = ν t`. Rewrite using `[← qn_coeff_pt n ν F (hcol F hF) e he hec]`. Take `⟨G, hG⟩` from `qn_int_pt n W hW hev (qn_low n) (fun x hx => (Finset.mem_filter.mp hx).2) F hF`. Use `⟨coeff (qn_off e) G, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hG, coeff_map]`. Both sides reduce to the same expression. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[Int.cast_zero]`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hec` to reduce the goal to its premises. Introduce `t`. Rewrite using `[← lhwline_weight_col, hcol F hF hne]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem qn_tri (n : ℕ) (ν : Fin n → ℕ) (W : Set (MvPolynomial (Fin n × Fin n) ℚ))
     (hW : ∀ F ∈ W, ∀ (a b : Fin n) (k : ℕ), a ≠ b → rowDiv ℚ a b k F ∈ W)

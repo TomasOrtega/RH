@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Formalism.MainNotions.N ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Use `(QuotientGroup.eq_one_iff t).2 (Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_))` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨v, hv, A, hA, ht⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem ine_dies {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algebra k Ω]
     {S : Set (HeightOneSpectrum (𝓞 k))} {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 k)} (hv : v ∉ S)
@@ -13,9 +13,9 @@ private theorem ine_dies {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Alg
   exact ⟨v, hv, A, hA, ht⟩
 
 /- English proof (translation)
-Establish `hne : v.asIdeal.map (algebraMap (𝓞 k) (𝓞 L)) ≠ ⊥`. Rewrite using `[Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective (𝓞 k) (𝓞 L))]`. Conclude with `v.ne_bot`. Use `(Ideal.finite_factors hne).subset fun w hw => ?_` and prove the remaining obligations. Establish `hw' : w.under (𝓞 k) = v` using `hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show w.asIdeal ∣ _`. Rewrite using `[Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← hw']`. Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 private theorem fiber_fin {k L : Type} [Field k] [NumberField k] [Field L] [NumberField L] [Algebra k L]
     (v : HeightOneSpectrum (𝓞 k)) : {w : HeightOneSpectrum (𝓞 L) | w.under (𝓞 k) = v}.Finite := by
@@ -29,9 +29,9 @@ private theorem fiber_fin {k L : Type} [Field k] [NumberField k] [Field L] [Numb
   exact le_rfl
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s V`. Use `⟨(fun w : HeightOneSpectrum (𝓞 L) => w.under (𝓞 (W.Lp L))) ⁻¹' V.S', V.fin.preimage' fun v _ => fiber_fin v, fun w hw => ⟨fun hl => hw (V.sub (Or.inl ?_)), fun A hA g hg => ?_⟩⟩` and prove the remaining obligations. Use `show algebraMap (𝓞 (W.Lp L)) (𝓞 L) _ ∈ w.asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Establish `hv : IsPlaceOver A (w.under (𝓞 (W.Lp L)))` using `fun x => hA (algebraMap (𝓞 (W.Lp L)) (𝓞 L) x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : W.resP L Ω g ∈ Ine (F` using `W.Lp L) A := hg`. Establish `hw' : w.under (𝓞 (W.Lp L)) ∉ V.S'` using `hw`. Conclude with `Subtype.ext (ine_dies hw' hv hg')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pu.levFin :
     ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} (V : s.Lev), ∃ Z : Set (HeightOneSpectrum (𝓞 L)), Z.Finite ∧ ∀ w ∉ Z, ((l : ℕ) : 𝓞 L) ∉ w.asIdeal ∧

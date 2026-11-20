@@ -12,7 +12,7 @@ variable {G Γ W : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProdu
   (ι : Γ →* G) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ)
 
 /- English proof (translation)
-Use `Nat.card_congr ((MulAut.conj γ⁻¹).toEquiv.subtypeEquiv fun δ => ?_)` and prove the remaining obligations. Rewrite using `[Bridge.mem_stab, Bridge.mem_stab]`. Establish `e : (ι γ * y * k)⁻¹ * ι δ * (ι γ * y * k) = (k : G)⁻¹ * (y⁻¹ * ι ((MulAut.conj γ⁻¹).toEquiv δ) * y) * k`. Simplify using `[mul_assoc]`. Rewrite using `[e, J.mul_mem_cancel_right k.2, J.mul_mem_cancel_left (J.inv_mem k.2)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_stab (γ : Γ) (y : G) (k : J) :
     Nat.card (Bridge.stab ι J (ι γ * y * k)) = Nat.card (Bridge.stab ι J y) := by
@@ -24,15 +24,15 @@ theorem card_stab (γ : Γ) (y : G) (k : J) :
   rw [e, J.mul_mem_cancel_right k.2, J.mul_mem_cancel_left (J.inv_mem k.2)]
 
 /- English proof (translation)
-Introduce `hρ hχ I I' _ _ y y' hy hy' F hF F' hF'`. Use `choose σ hσ using fun i => (hy' (y i)).exists`. Establish `hinj : Function.Injective σ`. Introduce `i j hij`. Take `⟨γ, k, h1⟩` from `hσ i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ', k', h2⟩` from `hσ j`. Use `(hy (y i)).unique ⟨1, 1, by simp⟩ ⟨γ * γ'⁻¹, k'⁻¹ * k, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2, hij]`. Simplify using `[mul_assoc]`. Establish `hsurj : Function.Surjective σ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Take `⟨i, γ, k, h1⟩` from `(hy (y' j)).exists`. Take `⟨γ', k', h2⟩` from `hσ i`. Use `⟨i, (hy' (y' j)).unique ⟨γ * γ', k' * k, ?_⟩ ⟨1, 1, by simp⟩⟩` and prove the remaining obligations. Rewrite using `[h1, h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_assoc]`. Unfold `Bridge.adInner`. Use `Fintype.sum_bijective σ ⟨hinj, hsurj⟩ _ _ fun i => ?_` and prove the remaining obligations. Take `⟨γ, k, h⟩` from `hσ i`. Rewrite using `[h, card_stab, hF γ _ k, hF' γ _ k, inner_smul_left, inner_smul_right, hρ, ← mul_assoc (starRingEnd ℂ _), Complex.conj_mul', hχ]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem adInnerIndep : Bridge.AdInnerIndep ι ρ J χ := by
   intro hρ hχ I I' _ _ y y' hy hy' F hF F' hF'
@@ -58,7 +58,7 @@ theorem adInnerIndep : Bridge.AdInnerIndep ι ρ J χ := by
 
 variable {J} in
 /- English proof (translation)
-Use extensionality with `δ`. Rewrite using `[Bridge.mem_stab, Bridge.mem_stab, ← hκ (y⁻¹ * ι δ * y)]`. Simplify using `[mul_assoc]`.
+By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stab_mul {κ : G} (hκ : ∀ k, κ⁻¹ * k * κ ∈ J ↔ k ∈ J) (y : G) :
     Bridge.stab ι J (y * κ) = Bridge.stab ι J y := by
@@ -68,11 +68,11 @@ theorem stab_mul {κ : G} (hκ : ∀ k, κ⁻¹ * k * κ ∈ J ↔ k ∈ J) (y :
 
 variable {J} in
 /- English proof (translation)
-Introduce `h`. Use `(existsUnique_congr fun i => ?_).1 (hy (h * κ⁻¹))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, k, e⟩`. Use `⟨γ, ⟨_, (hκ k).2 k.2⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e` using `[mul_inv_eq_iff_eq_mul]`. Rewrite using `[e]`. Simplify using `[mul_assoc]`. Introduce and unpack `⟨γ, k, e⟩`. Use `⟨γ, ⟨κ * k * κ⁻¹, (hκ _).1 (by simpa [mul_assoc] using k.2)⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isReps_mul {κ : G} (hκ : ∀ k, κ⁻¹ * k * κ ∈ J ↔ k ∈ J) {I : Type} {y : I → G}
     (hy : Bridge.IsReps ι J y) : Bridge.IsReps ι J fun i => y i * κ := by
@@ -88,13 +88,13 @@ theorem isReps_mul {κ : G} (hκ : ∀ k, κ⁻¹ * k * κ ∈ J ↔ k ∈ J) {I
     rw [e]; simp [mul_assoc]
 
 /- English proof (translation)
-Establish `hκ : ∀ k, (κ : G)⁻¹ * k * κ ∈ l.J ↔ k ∈ l.J` using `fun k => ⟨fun h => by simpa [mul_assoc] using hn _ (l.Q.inv_mem κ.2) _ h, hn _ κ.2 _⟩`. Prove the components needed by the constructor for the conclusion. Introduce `γ h k`. Establish `e` using `hF γ (h * κ) ⟨_, (hκ k).2 k.2⟩`. Establish `e2 : l.χ ⟨_, (hκ k).2 k.2⟩ = l.χ k`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← l.ch_J, ← l.ch_J]`. Establish `: (⟨(κ : G)⁻¹ * k * κ, l.J_le ((hκ k).2 k.2)⟩ : l.Q) = κ⁻¹ * ⟨k, l.J_le k.2⟩ * κ` using `rfl`. Simplify using `only`. Rewrite using `[this, map_mul, map_mul, map_inv, mul_comm, mul_inv_cancel_left]`. Rewrite `e` using `[e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only`. Rewrite using `[map_smul, smul_comm, ← e]`. Simplify using `[mul_assoc]`. Rewrite using `[adInnerIndep ι ρ l.J l.χ hρ (fun k => by rw [← l.ch_J]; exact hch _) I I y _ hy (isReps_mul ι hκ hy) F hF F hF]`. Unfold `Bridge.adInner`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[stab_mul ι hκ, inner_smul_left, inner_smul_right, ← mul_assoc (starRingEnd ℂ _), Complex.conj_mul', norm_inv, hch]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem translate (l : Bridge.LevDatG G) (hρ : ∀ γ x x', inner ℂ (ρ γ x) (ρ γ x') = inner ℂ x x')
     (hn : ∀ q ∈ l.Q, ∀ k ∈ l.J, q⁻¹ * k * q ∈ l.J) (hch : ∀ q, ‖(l.ch q : ℂ)‖ = 1)
@@ -126,11 +126,11 @@ theorem translate (l : Bridge.LevDatG G) (hρ : ∀ γ x x', inner ℂ (ρ γ x)
     simp
 
 /- English proof (translation)
-Establish `hx : M.e x ∈ Bridge.AdForms ι ρ l.J l.χ`. Rewrite using `[← hM.2.1]`. Conclude with `⟨x, rfl⟩`. Take `⟨h1, h2⟩` from `translate ι ρ l hρ hn hch hy κ hx`. Rewrite `h1` using `[← hM.2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x', hx'⟩` from `h1`. Use `⟨x', fun h => congrFun hx' h, ?_⟩` and prove the remaining obligations. Establish `h3 : inner ℂ x' x' = inner ℂ x x`. Rewrite using `[hM.2.2, hM.2.2, hx']`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ _ _ _ _ x, h3]`.
+A detailed English derivation is pending.
 -/
 theorem translate_model (l : Bridge.LevDatG G) (hρ : ∀ γ x x', inner ℂ (ρ γ x) (ρ γ x') = inner ℂ x x')
     (hn : ∀ q ∈ l.Q, ∀ k ∈ l.J, q⁻¹ * k * q ∈ l.J) (hch : ∀ q, ‖(l.ch q : ℂ)‖ = 1)
@@ -150,7 +150,7 @@ theorem translate_model (l : Bridge.LevDatG G) (hρ : ∀ γ x x', inner ℂ (ρ
 end Generic
 
 /- English proof (translation)
-Establish `h : IsOfFinOrder (((Units.coeHom ℂ).comp c) x)` using `MonoidHom.isOfFinOrder _ (isOfFinOrder_of_finite x)`. Conclude with `h.norm_eq_one`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_char {M : Type} [Group M] [Finite M] (c : M →* ℂˣ) (x : M) : ‖(c x : ℂ)‖ = 1 := by
   have h : IsOfFinOrder (((Units.coeHom ℂ).comp c) x) := MonoidHom.isOfFinOrder _ (isOfFinOrder_of_finite x)
@@ -159,9 +159,9 @@ theorem norm_char {M : Type} [Group M] [Finite M] (c : M →* ℂˣ) (x : M) : �
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h2 : ext1 (flagL L).P.H (flagL L).P.chi (rTup β (flagL L) x) = 1` using `subgroupCharExtension_one_apply _ _`. Apply the tactic sequence `have hf : ∀ PP : Pl D.host.E, Finite (kP PP) := fun PP => by first | infer_instance | exact Ideal.finiteQuotientOfFreeOfNeBot _ PP.ne_bot`. Unfold `levFn`. Rewrite using `[h2, one_mul, Units.val_mul, norm_mul, Units.coe_prod, Units.coe_prod, norm_prod, norm_prod, Finset.prod_eq_one, Finset.prod_eq_one, one_mul]`. Introduce `PP _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `norm_char _ _`. Introduce `PP _`. Rewrite using `[Units.coe_prod, norm_prod]`. Conclude with `Finset.prod_eq_one fun c _ => norm_char _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_levFn (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (x : GL (Fin V.rank) (Lev.EAf D)) : ‖((levFn β (flagL L) x : ℂˣ) : ℂ)‖ = 1 := by
@@ -178,9 +178,9 @@ theorem norm_levFn (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.
     exact Finset.prod_eq_one fun c _ => norm_char _ _
 
 /- English proof (translation)
-Establish `hq' : q ∈ parLev D.sp.cm V.gram β L` using `hq.1`. Establish `hk' : k ∈ parLev D.sp.cm V.gram β L` using `hk.1`. Establish `hk2 : rTup β L k ∈ (⊥ : Subgroup (G0 L.Pg L.r))` using `hk.2`. Establish `h1 : q⁻¹ * k * q ∈ parLev D.sp.cm V.gram β L` using `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ hq') hk') hq'`. Establish `h2 : rTup β L (q⁻¹ * k * q) ∈ (⊥ : Subgroup (G0 L.Pg L.r))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hk2`, the goal using `[Subgroup.mem_bot]`. Rewrite using `[rTup_mul (Subgroup.mul_mem _ (Subgroup.inv_mem _ hq') hk') hq', rTup_mul (Subgroup.inv_mem _ hq') hk', rTup_inv hq', hk2, mul_one, inv_mul_cancel]`. Conclude with `⟨h1, h2⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem lev_conj (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     {q k : GL (Fin V.rank) (Lev.EAf D)} (hq : q ∈ lev D.sp.cm V.gram β (flagL L))
@@ -197,7 +197,7 @@ theorem lev_conj (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.ho
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `q hq k hk`. Rewrite using `[Subgroup.mem_comap, map_mul, map_mul, map_inv]`. Conclude with `h _ hq _ hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_conj {G H : Type} [Group G] [Group H] (f : G →* H) {Q J : Subgroup H}
     (h : ∀ q ∈ Q, ∀ k ∈ J, q⁻¹ * k * q ∈ J) : ∀ q ∈ Q.comap f, ∀ k ∈ J.comap f, q⁻¹ * k * q ∈ J.comap f := by
@@ -206,14 +206,14 @@ theorem comap_conj {G H : Type} [Group G] [Group H] (f : G →* H) {Q J : Subgro
   exact h _ hq _ hk
 
 /- English proof (translation)
-The claim follows from `comap_conj (finHom V).range.subtype (comap_conj (Formalism.UG.bc (swapAE D)) fun _ hq _ hk => lev_conj V β L hq hk)`.
+A detailed English derivation is pending.
 -/
 theorem levEnv_normal (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) :
     ∀ q ∈ (levEnv V β L).Q, ∀ k ∈ (levEnv V β L).J, q⁻¹ * k * q ∈ (levEnv V β L).J :=
   comap_conj (finHom V).range.subtype (comap_conj (Formalism.UG.bc (swapAE D)) fun _ hq _ hk => lev_conj V β L hq hk)
 
 /- English proof (translation)
-Establish `hq : (finHom V).rangeRestrict κ ∈ (levEnv V β L).Q` using `⟨hκ.2.1, Subgroup.mem_top _⟩`. Conclude with `translate_model (W := c.W) (Bridge.ratF V) (c.ρ.comp (GQ V).subtype) (levEnv V β L) (fun γ u v => hc.2.1 _ u v) (levEnv_normal V β L) (fun q => norm_levFn V β L _) hy M hM ⟨_, hq⟩ x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem model (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (c : CoefA V) (hc : c.Is)
     (M : HMod (Bridge.Gf V → c.W)) {I : Type} [Fintype I] (y : I → Bridge.Gf V)
@@ -230,7 +230,7 @@ theorem model (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.
 end ClassSumTranslate
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R _ hH hc i t g0 κ hκ y`. Conclude with `ClassSumTranslate.model _ _ _ _ (hc i) _ _ (R.B.L i t).pres.reps (hH i t) g0 κ hκ y`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem translate_unitary_lifts : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.models_HV → R.models_cV → ∀ i t g0 κ, IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) g0 κ → ∀ y : (R.HV i t).H, ∃ y' : (R.HV i t).H, (∀ h, (R.HV i t).e y' h = (levChi _ (R.βV i) (flagL (R.datVt i t)) κ)⁻¹ • (R.HV i t).e y (h * (finHom _).rangeRestrict κ)) ∧ ‖y'‖ = ‖y‖ := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R _ hH hc i t g0 κ hκ y

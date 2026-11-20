@@ -9,11 +9,9 @@ open IsLocalRing
 universe u
 
 /- English proof (translation)
-Establish `: IsDomain R` using `IsRegularLocalRing.isDomain`. Establish `hreg` using `(isRegularLocalRing_iff R).mp inferInstance`. Establish `hle : (maximalIdeal R).spanFinrank ≤ 1`. Rewrite `h` using `[← hreg]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.le_one_iff_eq_zero_or_eq_one.mp hle with h0 | h1` into its components or cases. Establish `hbot : maximalIdeal R = ⊥` using `(Submodule.spanFinrank_eq_zero_iff_eq_bot (maximalIdeal R).fg_of_isNoetherianRing).mp h0`. Set `` to `((isField_iff_maximalIdeal_eq).mpr hbot).toField`. Use `infer_instance`. Establish `: IsDiscreteValuationRing R` using `IsLocalRing.finrank_CotangentSpace_eq_one_iff.mp (by`.
-
-Rewrite using `[← spanFinrank_maximalIdeal_eq_finrank_cotangentSpace]`. Conclude with `h1)`. Use `infer_instance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRegularLocalRing.isPrincipalIdealRing_of_ringKrullDim_le_one {R : Type*} [CommRing R]
     [IsRegularLocalRing R] (h : ringKrullDim R ≤ 1) : IsPrincipalIdealRing R := by
@@ -31,7 +29,7 @@ theorem IsRegularLocalRing.isPrincipalIdealRing_of_ringKrullDim_le_one {R : Type
     infer_instance
 
 /- English proof (translation)
-The claim follows from `have : IsDomain R := IsRegularLocalRing.isDomain have := IsRegularLocalRing.isPrincipalIdealRing_of_ringKrullDim_le_one h inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem IsRegularLocalRing.uniqueFactorizationMonoid_of_ringKrullDim_le_one {R : Type*}
     [CommRing R] [IsRegularLocalRing R] (h : ringKrullDim R ≤ 1) : UniqueFactorizationMonoid R :=
@@ -40,7 +38,7 @@ theorem IsRegularLocalRing.uniqueFactorizationMonoid_of_ringKrullDim_le_one {R :
   inferInstance
 
 /- English proof (translation)
-The claim follows from `have : IsDomain R := IsRegularLocalRing.isDomain have := IsRegularLocalRing.uniqueFactorizationMonoid_of_ringKrullDim_le_one h inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem IsRegularLocalRing.isIntegrallyClosed_of_ringKrullDim_le_one {R : Type*}
     [CommRing R] [IsRegularLocalRing R] (h : ringKrullDim R ≤ 1) : IsIntegrallyClosed R :=
@@ -49,11 +47,11 @@ theorem IsRegularLocalRing.isIntegrallyClosed_of_ringKrullDim_le_one {R : Type*}
   inferInstance
 
 /- English proof (translation)
-Set `p` to `Q.under P`. Set `` to `Localization.AtPrime.algebraOfLiesOver p Q`. Establish `: IsNoetherianRing B` using `Algebra.FiniteType.isNoetherianRing P B`. Establish `: IsNoetherianRing (Localization.AtPrime Q)` using `IsLocalization.isNoetherianRing Q.primeCompl _ inferInstance`. Establish `hun : Algebra.IsUnramifiedAt P Q` using `inferInstance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap` using `((Algebra.isUnramifiedAt_iff_map_eq P p Q).mp hun).2`. Establish `h : (maximalIdeal (Localization.AtPrime p)).map (algebraMap (Localization.AtPrime p) (Localization.AtPrime Q)) = maximalIdeal (Localization.AtPrime Q)`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, ← IsScalarTower.algebraMap_eq]`. Conclude with `hmap`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `Ideal.spanFinrank_map_le_of_fg _ (maximalIdeal (Localization.AtPrime p)).fg_of_isNoetherianRing` after adjusting the coercions. Use `_ = ringKrullDim (Localization.AtPrime p) := (isRegularLocalRing_iff (Localization.AtPrime p)).mp inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_localization_le_of_etale {P B : Type*} [CommRing P] [CommRing B]
     [Algebra P B] [Algebra.Etale P B] [IsRegularRing P] (Q : Ideal B) [Q.IsPrime] :
@@ -84,15 +82,13 @@ theorem ringKrullDim_localization_le_of_etale {P B : Type*} [CommRing P] [CommRi
 open AlgebraicGeometry CategoryTheory
 
 /- English proof (translation)
-Take `⟨U, hU, V, hV, hx, e, hf⟩` from `SmoothOfRelativeDimension.exists_isStandardSmoothOfRelativeDimension (n := n) (f := f) x`. Establish `: Subsingleton (Spec (.of k))` using `inferInstanceAs (Subsingleton (PrimeSpectrum k))`. Establish `hUtop : U = ⊤` using `eq_top_iff.mpr fun y _ ↦ Subsingleton.elim (f.base x) y ▸ e hx`. Substitute `hUtop` using the available equality. Set `eΓ` to `(Scheme.ΓSpecIso (.of k)).commRingCatIsoToRingEquiv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression.
 
-Establish `: IsRegularRing Γ(Spec (.of k), ⊤)` using `IsRegularRing.of_ringEquiv eΓ.symm`. Establish `: IsNoetherianRing Γ(Spec (.of k), ⊤)` using `isNoetherianRing_of_ringEquiv k eΓ.symm`. Establish `hdim0 : ringKrullDim Γ(Spec (.of k), ⊤) = 0`. Rewrite using `[ringKrullDim_eq_of_ringEquiv eΓ, ringKrullDim_eq_zero_of_field]`. Use `algebraize [(f.appLE ⊤ V e).hom]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `Algebra.IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial n Γ(Spec (.of k), ⊤) Γ(X, V)`. Use `algebraize [g.toRingHom]`. Use `set P := (hV.primeIdealOf ⟨x, hx⟩).asIdeal`. Set `` to `TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨x, hx⟩`. Establish `hloc : IsLocalization.AtPrime (X.presheaf.stalk x) P` using `hV.isLocalization_stalk ⟨x, hx⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ringKrullDim_eq_of_ringEquiv (IsLocalization.algEquiv (R := Γ(X, V)) P.primeCompl (Localization.AtPrime P) (X.presheaf.stalk x)).toRingEquiv]`. Use `(ringKrullDim_localization_le_of_etale (P := MvPolynomial (Fin n) Γ(Spec (.of k), ⊤)) P).trans ?_` and prove the remaining obligations. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height (P.under (MvPolynomial (Fin n) Γ(Spec (.of k), ⊤))) (Localization.AtPrime _)]`. Use `(Ideal.height_le_ringKrullDim_of_isPrime).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, hdim0]`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_stalk_le_of_smoothOfRelativeDimension {X : Scheme.{u}} {k : Type u} [Field k]
     (n : ℕ) (f : X ⟶ Spec (.of k)) [SmoothOfRelativeDimension n f] (x : X) :

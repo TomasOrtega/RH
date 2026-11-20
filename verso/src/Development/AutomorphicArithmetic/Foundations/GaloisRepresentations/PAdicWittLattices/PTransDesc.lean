@@ -8,7 +8,7 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Use `haveI : Etale a := MorphismProperty.of_isPullback (P := @Etale) ha.1.flip ‹Etale c›`. Use `haveI : Surjective a := MorphismProperty.of_isPullback (P := @Surjective) ha.1.flip ‹Surjective c›`. Conclude with `AlgebraicGeometry.Flat.epi_of_flat_of_surjective a`.
+A detailed English derivation is pending.
 -/
 private theorem epi_of_isGrpPullback_etale_surjective {S S' : Scheme} (c : S' ⟶ S) [Etale c] [Surjective c] (A : Over S)
     (A' : Over S') [GrpObj A] [GrpObj A'] (a : A'.left ⟶ A.left) (ha : IsGrpPullback A' A c a) : Epi a := by
@@ -17,9 +17,9 @@ private theorem epi_of_isGrpPullback_etale_surjective {S S' : Scheme} (c : S' �
   exact AlgebraicGeometry.Flat.epi_of_flat_of_surjective a
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_epi a]`. Establish `e3 : Over.Hom.left u' ≫ Over.Hom.left f' = Over.Hom.left f' ≫ Over.Hom.left v'`. Rewrite using `[← Over.comp_left, h', Over.comp_left]`. Simplify using `only [Over.comp_left]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem comp_eq_comp_of_over_left_comm {S S' : Scheme} {A B : Over S} {A' B' : Over S'}
     (a : A'.left ⟶ A.left) (b : B'.left ⟶ B.left) [Epi a] (u : A ⟶ A) (v : B ⟶ B) (u' : A' ⟶ A')
@@ -38,21 +38,19 @@ private theorem comp_eq_comp_of_over_left_comm {S S' : Scheme} {A B : Over S} {A
     _ = a ≫ Over.Hom.left f ≫ Over.Hom.left v := by rw [hv, reassoc_of% hf]
 
 /- English proof (translation)
-Introduce `hIsog hTate hHom hPol p _ D G L R _ _ gb S S' _ s s' c _ _ _ hcs N₁ N₂ o₁ o₂ o₁' o₂' m₁ m₂ ψ ψ' h hsq hT`. Take `⟨hmon', hact', ⟨χ', d, hχmon', hχact', hd1', hd2', hdp⟩, ⟨e, hep, hpol', hint⟩, hgeo'⟩` from `hT`. Use `haveI : Epi m₁.φ := epi_of_isGrpPullback_etale_surjective c o₁.A o₁'.A m₁.φ m₁.cart`. Use `haveI : Epi m₂.φ := epi_of_isGrpPullback_etale_surjective c o₂.A o₂'.A m₂.φ m₂.cart`. Establish `hH` using `hHom S S' c o₁.A o₂.A o₁'.A o₂'.A o₁.ab o₂.ab o₂'.ab m₁.φ m₂.φ m₁.cart m₂.cart ψ ψ' hsq hmon'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmon : IsMonHom ψ` using `hH.1`. Establish `hdpos : 0 < d` using `Nat.pos_of_ne_zero (by`. Introduce and unpack `rfl`. Conclude with `(Fact.out : p.Prime).one_lt.ne' ((Nat.coprime_zero_left p).mp hdp))`. Take `⟨hfin, -, hsurj⟩` from `hIsog R S' s' o₁'.A o₂'.A o₁'.ab o₂'.ab ψ' χ' d hdpos hmon' hχmon' hd1' hd2'`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨χ, hχsq, hd1, hd2⟩` from `hH.2 χ' d hχmon' hsurj hfin hd1' hd2'`. Establish `hχmon : IsMonHom χ` using `(hHom S S' c o₂.A o₁.A o₂'.A o₁'.A o₂.ab o₁.ab o₁'.ab m₂.φ m₁.φ m₂.cart m₁.cart χ χ' hχsq hχmon').1`. Use `⟨hmon, fun b => comp_eq_comp_of_over_left_comm m₁.φ m₂.φ _ _ _ _ ψ ψ' hsq (m₁.act b) (m₂.act b) (hact' b), ⟨χ, d, hχmon, fun b => comp_eq_comp_of_over_left_comm m₂.φ m₁.φ _ _ _ _ χ χ' hχsq (m₂.act b) (m₁.act b) (hχact' b), hd1, hd2, hdp⟩, ⟨e, hep, hPol D.toG R gb S S' s s' c N₁ N …` and prove the remaining obligations. Introduce `k _ _ t β htβ`. Take `⟨v, hv⟩` from `‹Surjective c›.surj (UpperTheory.Gal.TranscendenceTraces.pt t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Take `⟨z, hz, -⟩` from `UpperTheory.Gal.TranscendenceTraces.ptLift_holds c k t v hv`. Substitute `hz` using the available equality. Establish `hz' : z ≫ s' = spMap β`. Rewrite using `[← hcs, ← Category.assoc]`. Conclude with `htβ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨I₁', I₂', hI₁', hI₂', hiff'⟩` from `hgeo' k z β hz'`. Take `⟨-, hT1⟩` from `hTate p D R gb S S' s s' c N₁ o₁ o₁' m₁ k z`. Take `⟨-, hT2⟩` from `hTate p D R gb S S' s s' c N₂ o₂ o₂' m₂ k z`. Take `⟨I₁, hInd₁, hev₁⟩` from `hT1 I₁'`. Take `⟨I₂, hInd₂, hev₂⟩` from `hT2 I₂'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨I₁, I₂, hInd₁ hI₁', hInd₂ hI₂', fun n hn hnp x y => ?_⟩` and prove the remaining obligations. Establish `e1 : Over.Hom.left (I₁'.ev n x) ≫ m₁.φ = Over.Hom.left (I₁.ev n x)` using `hev₁ n x`. Establish `e2 : Over.Hom.left (I₂'.ev n y) ≫ m₂.φ = Over.Hom.left (I₂.ev n y)` using `hev₂ n y`. Rewrite using `[← hiff' n hn hnp x y]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hxy`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m₂.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, hsq, ← Category.assoc, e1, ← Over.comp_left, hxy, e2]`. Rewrite using `[Over.w, Over.w]`.
-
-Introduce `hxy`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, ← e1, ← e2, Category.assoc, ← hsq, ← Category.assoc, ← Over.comp_left, hxy]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pTransDesc :
     IsogFEt → TatePull → HomDesc → PolDesc → TransDesc := by

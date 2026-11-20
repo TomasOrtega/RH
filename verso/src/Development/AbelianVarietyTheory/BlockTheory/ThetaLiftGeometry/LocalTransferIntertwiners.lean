@@ -90,9 +90,9 @@ def HeckeOpsNamed : Prop :=
 def HeckeLiftsNamed : Prop := R.Char F → HeckeOpsNamed R
 
 /- English proof (translation)
-Establish `h0` using `congrArg (fun f : ℂ[X] => f.coeff 0) (h P)`. Simplify using `only [Formalism.L2.Col.heckePolyOf, finset_sum_coeff, coeff_C_mul_X_pow, coeff_map] at h0`. Rewrite using `[← h0, Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (Ne.symm hb)]`. Introduce `hb`. Simplify using `at hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem HasResC.zero {j : Fin D.R.m} {Sg : Pl0 → D.what₂.LL[X]} {x : SphIx A j A.μ0 → ℂ} (h : HasResC A j Sg x) (P : A.ok A.μ0) :
     x (Sum.inl (P, 0)) = D.what₂.embLL ((Sg P * (A.fam.L j A.μ0).blockProd P).coeff 0) := by

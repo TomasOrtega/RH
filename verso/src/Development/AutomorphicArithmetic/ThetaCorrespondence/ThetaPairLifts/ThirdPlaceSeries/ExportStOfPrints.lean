@@ -25,7 +25,7 @@ set_option autoImplicit false
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 namespace GlobalTheory.BigOn.Exp
 /- English proof (translation)
-The claim follows from `have tA := _root_.GlobalTheory.T.twist_admissible' have tC := _root_.GlobalTheory.T.twist_character_of_artin' hA tA have row := _root_.GlobalTheory.T.at_statement_of_low_weight_twAdm hC hA hR hS _root_.GlobalTheory.T.lowAt tA _root_.GlobalTheory.BigOn.Exp.InductionConditions.expo …`.
+A detailed English derivation is pending.
 -/
 theorem exportSt_of_hypotheses_alt (hC : GlobalTheory.Published.CuspRapidDecay) (hA : GlobalTheory.Published.GlobalArtinReciprocity)
     (hR : GlobalTheory.Published.RayClassFieldSt) (hD : GlobalTheory.Published.DiscreteSeriesCover) (hW : GlobalTheory.Published.CasselmanWallach)

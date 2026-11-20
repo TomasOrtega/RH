@@ -43,28 +43,28 @@ theorem d_apply_zero (ς : ℤˣ) (k : ℕ) (C : Cx.{1} K) {n : ℕ} (y : (Sh ς
     (Sh ς k C).d n y ⟨0, h'⟩ = 0 := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or ς with rfl | rfl <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unit_smul_eq_zero (ς : ℤˣ) {M : Type*} [AddCommGroup M] {x : M} : (ς : ℤ) • x = 0 ↔ x = 0 := by
   rcases Int.units_eq_one_or ς with rfl | rfl <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or ς with rfl | rfl <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unit_smul_smul (ς : ℤˣ) {M : Type*} [AddCommGroup M] (x : M) : (ς : ℤ) • (ς : ℤ) • x = x := by
   rcases Int.units_eq_one_or ς with rfl | rfl <;> simp
 
 /- English proof (translation)
-The claim follows from `(ev ς k C h).injective e`.
+A detailed English derivation is pending.
 -/
 theorem ext_at (ς : ℤˣ) (k : ℕ) (C : Cx.{1} K) {m n : ℕ} (h : m + k = n) {y z : (Sh ς k C).X n}
     (e : y ⟨m, h⟩ = z ⟨m, h⟩) : y = z :=
   (ev ς k C h).injective e
 
 /- English proof (translation)
-Establish `h' : m + 1 + k = n + 1` using `by omega`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Use `congrFun e ⟨m + 1, h'⟩` as an intermediate fact. Rewrite `this` using `[d_apply_succ ς k C h y h']`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(unit_smul_eq_zero ς).1 this`. Introduce `e`. Use `ext_at ς k C h' ?_` and prove the remaining obligations. Rewrite using `[d_apply_succ ς k C h y h', e, smul_zero]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_Z_iff (ς : ℤˣ) (k : ℕ) (C : Cx.{1} K) {m n : ℕ} (h : m + k = n) (y : (Sh ς k C).X n) :
     (Sh ς k C).d n y = 0 ↔ C.d m (y ⟨m, h⟩) = 0 := by
@@ -80,21 +80,19 @@ theorem mem_Z_iff (ς : ℤˣ) (k : ℕ) (C : Cx.{1} K) {m n : ℕ} (h : m + k =
     rfl
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Take `rfl : m = 0` from `by omega`. Prove the components needed by the constructor for the conclusion. Introduce `e`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e' : y = 0` using `e`. Rewrite using `[e']`. Conclude with `Submodule.zero_mem _`. Introduce `e`. Establish `e' : y ⟨0, h⟩ = 0` using `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: y = 0` using `ext_at ς k C h e'`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ n`. Consider the cases of `m with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Prove the components needed by the constructor for the conclusion.
 
-Consider the case `zero`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Rewrite using `[d_apply_zero ς k C x h]`. Conclude with `Submodule.zero_mem _`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e`. Establish `e' : y ⟨0, h⟩ = 0` using `e`. Establish `: y = 0` using `ext_at ς k C h e'`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Consider the case `succ m`. Establish `h0 : m + k = n` using `by omega`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Rewrite using `[d_apply_succ ς k C h0 x h]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(ς : ℤ) • x ⟨m, h0⟩, by rw [map_zsmul]⟩`. Introduce and unpack `⟨z, hz⟩`. Use `⟨(ev ς k C h0).symm ((ς : ℤ) • z), ext_at ς k C h ?_⟩` and prove the remaining obligations. Rewrite using `[d_apply_succ ς k C h0 _ h]`. Express the relevant statement in the definitionally equal form `(ς : ℤ) • C.d m ((ev ς k C h0) ((ev ς k C h0).symm ((ς : ℤ) • z))) = _`.
-
-Rewrite using `[LinearEquiv.apply_symm_apply, map_zsmul, unit_smul_smul, hz]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_B_iff (ς : ℤˣ) (k : ℕ) (C : Cx.{1} K) {m n : ℕ} (h : m + k = n) (y : (Sh ς k C).X n) :
     y ∈ (Sh ς k C).B n ↔ y ⟨m, h⟩ ∈ C.B m := by
@@ -148,7 +146,7 @@ def evZ (ς : ℤˣ) (k : ℕ) (C : Cx.{1} K) {m n : ℕ} (h : m + k = n) : C.Z 
       exact ⟨ev ς k C h y, (mem_Z_iff ς k C h y).1 hy, (ev ς k C h).symm_apply_apply y⟩)
 
 /- English proof (translation)
-The claim follows from `(ev ς k C h).apply_symm_apply x.1`.
+A detailed English derivation is pending.
 -/
 theorem evZ_coe (ς : ℤˣ) (k : ℕ) (C : Cx.{1} K) {m n : ℕ} (h : m + k = n) (x : C.Z m) :
     ev ς k C h (evZ ς k C h x).1 = x.1 :=
@@ -176,9 +174,9 @@ def evH (ς : ℤˣ) (k : ℕ) (C : Cx.{1} K) {m n : ℕ} (h : m + k = n) : C.H 
       exact (mem_B_iff ς k C h _).1 hy')
 
 /- English proof (translation)
-Introduce `K _ ς k C n`. Use `⟨fun hn => ?_, fun m h => ⟨evH ς k C h, fun y hy hy' => ?_⟩⟩` and prove the remaining obligations. Establish `: IsEmpty {m : ℕ // m + k = n}` using `⟨fun x => by have := x.2; omega⟩`. Establish `hX : Subsingleton ((Sh ς k C).X n)` using `inferInstanceAs (Subsingleton (∀ m : {m : ℕ // m + k = n}, C.X m.1))`. Establish `hZ : Subsingleton ((Sh ς k C).Z n)` using `⟨fun a b => Subtype.ext (hX.elim _ _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Quotient.instSubsingletonQuotient _`. Use `congrArg (Submodule.Quotient.mk (p := ((Sh ς k C).B n).submoduleOf ((Sh ς k C).Z n))) (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `(ev ς k C h).symm_apply_apply y`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type} [Field K] (ς : ℤˣ) (k : ℕ) (C : Cx.{1} K) (n : ℕ), (n < k → Subsingleton ((Sh ς k C).H n)) ∧ ∀ (m : ℕ) (h : m + k = n), ∃ e : C.H m ≃ₗ[K] (Sh ς k C).H n, ∀ (y : (Sh ς k C).X n) (hy : (Sh ς k C).d n y = 0) (hy' : C.d m (y ⟨m, h⟩) = 0), e (C.cls (y ⟨m, h⟩) hy') = (Sh ς k C).cls y hy := by
   intro K _ ς k C n

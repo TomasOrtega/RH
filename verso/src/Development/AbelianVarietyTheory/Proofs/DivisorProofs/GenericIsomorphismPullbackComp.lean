@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ f g _ _ φ` and use `GlobalTheory.Vert.Model.GenIso.pull_pull_hom' f.comp_str g.comp_str (g.comp f).comp_str φ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Vert.Model.GenIso.pull_pull_comp_hom : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Z Z₁ Z₂ : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom Z₁ Z) (g : GlobalTheory.Vert.Model.Hom Z₂ Z₁) (E E' : Z.X.Modules) (φ : Z.GenIso E E'), ((φ.pull f.comp_str).pull g.comp_str).hom ≫ Z₂.genRes.map ((Scheme.Modules.pullbackComp g.f f.f).app E').hom = Z₂.genRes.map ((Scheme.Modules.pullbackComp g.f f.f).app E).hom ≫ (φ.pull (g.comp f).comp_str).hom :=
   fun _ _ _ _ _ _ _ f g _ _ φ =>

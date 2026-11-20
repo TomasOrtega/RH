@@ -19,7 +19,7 @@ variable {K L V : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Al
 
 omit [IsGalois K L] in
 /- English proof (translation)
-The claim follows from `((norm_absNorm_cpow_neg_le v le_rfl).trans (absNorm_rpow_neg_le_half v hs.le)).trans_lt (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem norm_absNorm_cpow_neg_lt_one (v : HeightOneSpectrum (𝓞 K)) {s : ℂ} (hs : 1 < s.re) :
     ‖(Ideal.absNorm v.asIdeal : ℂ) ^ (-s)‖ < 1 :=
@@ -27,13 +27,13 @@ theorem norm_absNorm_cpow_neg_lt_one (v : HeightOneSpectrum (𝓞 K)) {s : ℂ} 
     (by norm_num)
 
 /- English proof (translation)
-Establish `hx` using `fun v : HeightOneSpectrum (𝓞 K) => norm_absNorm_cpow_neg_lt_one v hs`. Establish `hne : ∀ v : HeightOneSpectrum (𝓞 K), 1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s) ≠ 0` using `fun v h => by`. Establish `h1` using `hx v`. Rewrite `h1` using `[← sub_eq_zero.1 h, norm_one]`. Conclude with `lt_irrefl _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 K), artinLocalLog K L (1 : Gal(L/K) → ℂ) s v = -Complex.log (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))` using `fun v => by`. Rewrite using `[artinLocalLog]`. Simplify using `only [artinTerm, localAverage_one, one_mul]`. Conclude with `(Complex.hasSum_taylorSeries_neg_log (hx v)).tsum_eq`. Establish `h1 : HasProd (fun v : HeightOneSpectrum (𝓞 K) => (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹) (artinL K L (1 : Gal(L/K) → ℂ) s)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[artinL]`. Use `(hasSum_artinLocalLog_artinLogL (1 : Gal(L/K) → ℂ) hs).cexp using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Rewrite using `[Function.comp_apply, hloc, Complex.exp_neg, Complex.exp_log (hne v)]`. Establish `h2 : HasProd (fun v : HeightOneSpectrum (𝓞 K) => (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹) (dedekindZeta K s)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[← HeckeCharacter.LFunction_one]`. Use `(1 : HeckeCharacter K).LFunction_hasProd_all hs using 3 with v` and compare the differences between its conclusion and the goal. Rewrite using `[HeckeCharacter.coeff_one v.ne_bot, one_mul]`. Conclude with `h1.unique h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem artinL_one {s : ℂ} (hs : 1 < s.re) :
     artinL K L (1 : Gal(L/K) → ℂ) s = dedekindZeta K s := by

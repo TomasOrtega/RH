@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
 theorem headL_apply {n : ℕ} (v : V (n + 1)) (a : Fin n) : headL n v a = v (Fin.castSucc a) := rfl
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[fibL, EuclideanSpace.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fibL_apply {n : ℕ} (v : V 1) : fibL n v = EuclideanSpace.single (Fin.last n) (v 0) := by
   ext a; simp [fibL, EuclideanSpace.single_apply]

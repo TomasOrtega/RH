@@ -4,7 +4,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.HeadWeightAt
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `head_top_of_radial_exhaustion hU5 hPic head_weight_at`.
+A detailed English derivation is pending.
 -/
 theorem pb_headTop_of (hU5 : PBI.HighestUnipotentIntegral) (hPic : PBI.ExhPic) : KB.HeadTop :=
   head_top_of_radial_exhaustion hU5 hPic head_weight_at

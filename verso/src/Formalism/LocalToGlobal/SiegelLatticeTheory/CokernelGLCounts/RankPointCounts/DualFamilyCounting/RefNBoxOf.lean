@@ -13,23 +13,21 @@ open Formalism.L2.SG.HidaSetting Formalism.L2.SG.RealObj Formalism.L2.SG.RealObj
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D X u w`. Use `choose L hL hdet using fun v => hF X u w v`. Establish `hTu` using `Formalism.L2.SG.RealObj.InfCut.ProductExactness.Tw_pos (D := D) u`. Establish `hTw` using `Formalism.L2.SG.RealObj.InfCut.ProductExactness.Tw_pos (D := D) w`. Establish `hdet0 : ∀ v, LinearMap.det (L v) ≠ 0` using `fun v h0 => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hdet v`. Rewrite `h1` using `[h0, abs_zero]`. Conclude with `(pow_pos (div_pos hTw hTu) _).ne' h1.symm`. Establish `key : ∀ (s : X.B.I.Ginf) v i, LsNc5.kapV X w v s i = L v (kapL (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (s v)) i` using `fun s v i => by`. Establish `h1` using `congrFun (hL v s) i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[kapV_eq (X := X) u v s]`. Conclude with `h1`. Establish `hbox : LsNc5.boxN X w = X.NinfU w ∩ Set.univ.pi (fun v => (fun g => L v (kapL (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) g)) ⁻¹' Set.univ.pi (fun _ => Set.Ico (0 : ℝ) 1))`. Rewrite using `[LsNc5.boxN_eq]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `s`. Simplify using `only [Set.mem_preimage, Set.mem_univ_pi]`. Prove the components needed by the constructor for the conclusion. Introduce `h v i`. Rewrite using `[← key s v i]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h (v, i)`. Introduce and unpack `h ⟨v, i⟩ show LsNc5.kapV X w v s i ∈ _`. Rewrite using `[key s v i]`. Conclude with `h v i`. Establish `hv : ∀ v, refNX X u v ((fun g => L v (kapL (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) g)) ⁻¹' Set.univ.pi (fun _ => Set.Ico (0 : ℝ) 1)) = ENNReal.ofReal ((2 : ℝ) ^ (D.R.rS ^ 2 + D.R.rS * D.R.k) * (Tw w ^ D.R.rS)⁻¹)` using `fun v => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hae, hmap⟩` from `refN_map_kapL (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) hTu (fX_ee (X := X) (v := v)) (fX_ff (X := X) (v := v)) (fX_ef (X := X) (v := v)) (fX_ww (X := X) (u := u) (v := v)) (fX_ew (X := X) (u := u) (v := v)) (fX_fw (X := X) (u : …`. Establish `hmeas : MeasurableSet ((L v) ⁻¹' Set.univ.pi (fun _ => Set.Ico (0 : ℝ) 1))` using `(L v).continuous_of_finiteDimensional.measurable (MeasurableSet.univ_pi fun _ => measurableSet_Ico)`. Establish `hpre : (fun g => L v (kapL (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) g)) ⁻¹' Set.univ.pi (fun _ => Set.Ico (0 : ℝ) 1) = kapL (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) ⁻¹' ((L v) ⁻¹' Set.univ …` using `rfl`. Rewrite using `[hpre, show refNX X u v = refNg (nX X) _ _ _ _ _ from rfl, ← Measure.map_apply_of_aemeasurable hae hmeas, hmap, Measure.smul_apply, smul_eq_mul, Measure.addHaar_preimage_linearMap _ (hdet0 v), Real.volume_pi_Ico]`. Simplify using `only [sub_zero, ENNReal.ofReal_one, Finset.prod_const_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_inv, hdet v, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Use `haveI : ∀ v, SigmaFinite (refNX X u v) := fun v => (refNg_isHaarLoc (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (ProductExactness.zV X u v) hTu (fX_ee (X := X) (v := v)) (fX_ff (X := X) (v := v)) (fX_ef (X := X) (v := v)) (fX_ww ( …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hbox, Set.inter_comm, measure_inter_conull (refNX_haar X u w).2.2.1, Measure.pi_pi]`. Simplify using `only [hv, Finset.prod_const, Finset.card_univ]`. Rewrite using `[← ENNReal.ofReal_pow (by positivity)]`. Use `congr 1`. Rewrite using `[inv_pow, ← inv_pow]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem refNBox_of (hF : FrameRow) : RefNBox := by
   intro D X u w

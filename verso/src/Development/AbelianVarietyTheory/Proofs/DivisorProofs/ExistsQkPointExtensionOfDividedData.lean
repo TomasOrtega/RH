@@ -18,9 +18,9 @@ open GlobalTheory.TorusExt
 attribute [local instance] gtGroup
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Units.map f.toMonoidHom)` using `Units.map_injective f.injective`. Establish `: NeZero k` using `⟨hk⟩`. Establish `hr : ∀ x, t x ∈ (Units.map f.toMonoidHom).range` using `fun x => by`. Establish `h1 : ((t x : Fˣ) : F) ^ k = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← MonoidHom.pow_apply, ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨i, -, hi⟩` from `(hζ.map_of_injective f.injective).eq_pow_of_pow_eq_one h1`. Conclude with `⟨(hζ.isUnit hk).unit ^ i, Units.ext (by simpa using hi)⟩`. Use `⟨(MonoidHom.ofInjective hinj).symm.toMonoidHom.comp (t.codRestrict _ hr), MonoidHom.ext fun x => ?_⟩` and prove the remaining obligations. Conclude with `MonoidHom.apply_ofInjective_symm hinj _`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_char_descend {X K F : Type} [Group X] [Field K] [Field F] (f : K →+* F) {k : ℕ} (hk : k ≠ 0) {ζ : K}
     (hζ : IsPrimitiveRoot ζ k) (t : X →* Fˣ) (ht : t ^ k = 1) :
@@ -36,13 +36,13 @@ theorem exists_char_descend {X K F : Type} [Group X] [Field K] [Field F] (f : K 
   exact MonoidHom.apply_ofInjective_symm hinj _
 
 /- English proof (translation)
-Establish `hb' : p.g.b = (gtExt Q f hf q.g).b` using `(Over.OverMorphism.ext hb).trans (gtExt_b f hf _).symm`. Establish `np : k • p.g = 0` using `by rw [qk_nsmul hB, hp, map_zero]`. Establish `nq : k • q.g = 0` using `by rw [qk_nsmul hB, hq, map_zero]`. Take `⟨t, ht⟩` from `exists_torusPt_eq (g := p.g + -(gtExt Q f hf q.g)) (by rw [add_b, neg_b, hb', mul_inv_cancel])`. Establish `tk : t ^ k = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: torusPt Q F (Additive.ofMul (t ^ k)) = torusPt Q F (Additive.ofMul 1)`. Rewrite using `[ofMul_pow, map_nsmul, ← ht, nsmul_add, smul_neg, ← map_nsmul, np, nq, ofMul_one, map_zero, map_zero, neg_zero, add_zero]`. Conclude with `torusPt_injective this`. Take `⟨t₀, rfl⟩` from `exists_char_descend f hk hζ t tk`. Establish `t0 : t₀ ^ k = 1` using `MonoidHom.ext fun x => Units.map_injective (f := f.toMonoidHom) f.injective (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `DFunLike.congr_fun tk x` as an intermediate fact. Rewrite using `[MonoidHom.pow_apply, map_pow, MonoidHom.one_apply, map_one]`. Conclude with `this)`. Use `⟨qkMk hB 0 (q.g + torusPt Q K (Additive.ofMul t₀)) ?_, (qkExt_iff hB f hf _ _).2 (qk_ext hp ?_)⟩` and prove the remaining obligations. Rewrite using `[nsmul_add, nq, ← map_nsmul, ← ofMul_pow, t0, ofMul_one, map_zero, map_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `show p.g = gtExt Q f hf (q.g + torusPt Q K (Additive.ofMul t₀))`. Rewrite using `[map_add, GlobalTheory.QkNumberField.gtExt_torusPt, ← ht]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem exists_qkExt_of_b {V : Type} [CommRing V] [IsDomain V] {Q : DegPre V} (hB : Q.TauBimult) {K F : Type} [Field K]
     [Field F] [Algebra (FractionRing V) K] [Algebra (FractionRing V) F] (f : K →+* F)
@@ -70,7 +70,7 @@ theorem exists_qkExt_of_b {V : Type} [CommRing V] [IsDomain V] {Q : DegPre V} (h
     abel
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Use `⟨MulEquiv.ofBijective (pushHom gp T) ⟨fun x y e => ?_, fun y => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `Over.OverMorphism.ext (gp.1.hom_ext (congrArg (fun q => q.left) e) ((Over.w x).trans (Over.w y).symm))`. Conclude with `⟨Over.homMk (gp.1.lift y.left T.hom (Over.w y)) (gp.1.lift_snd _ _ _), Over.OverMorphism.ext (gp.1.lift_fst _ _ _)⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ptEquiv {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {F : G'.left ⟶ G.left} (gp : IsGrpPullback G' G f F) (T : Over S') (b : T.left ⟶ S) (hb : b = T.hom ≫ f) :
@@ -82,7 +82,7 @@ theorem exists_ptEquiv {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G
       Over.OverMorphism.ext (gp.1.lift_fst _ _ _)⟩
 
 /- English proof (translation)
-Take `⟨-, I, -, h, -⟩` from `o.geom F (spMap j) (j.comp σ) (by`. Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp])`. Take `⟨a, ha⟩` from `(I.onto l.A l.A_pos x).1 hx`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, ← h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -98,15 +98,15 @@ theorem exists_etaA {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ H D' l c L R _ _ _ _ t P iw I _ s ε e hε hs ⟨g, hD, hdiv⟩ p hp`. Establish `hB` using `P.D.tau_bimult`. Establish `hM : 0 < l.M'` using `(LowDat.lowLevel l).A_pos`. Set `K` to `FractionRing R`. Set `F` to `AlgebraicClosure K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `j : L.W →+* F` to `(algebraMap K F).comp ((algebraMap R K).comp iw)`. Establish `hj : spMap j = (TF (R` using `R) F).hom ≫ spMap iw := by show _ = (jFK (R := R) F ≫ jK R) ≫ spMap iw`. Simplify using `only [j, jFK, jK, spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Establish `gp : IsGrpPullback P.D.toPre.P.A L.D.P.A (spMap iw) (hD.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw))` using `pull_grp hD`. Take `⟨ρ₁, h₁⟩` from `exists_ptEquiv gp (TF (R := R) F) (spMap j) hj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ₂, h₂⟩` from `exists_ptEquiv L.ab.1 (Over.mk (spMap j)) (spMap j) (Category.comp_id _).symm`. Establish `hbk : p.g.b ^ l.M' = 1` using `by rw [← nsmul_b, qk_nsmul hB, hp, map_zero, zero_b]`. Take `⟨a, ha⟩` from `exists_etaA L.o j (ρ₂.symm (ρ₁ p.g.b)) (by show _ ^ l.M' = 1`. Rewrite using `[← map_pow, ← map_pow, hbk, map_one, map_one])`. Take `⟨q, hq, hqb⟩` from `GlobalTheory.T.exists_levelPoint_lift_zero_first_coordinate L P.D.toPre P.oD iw s ε e g hD hε hs hdiv a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hζ : IsPrimitiveRoot (⟨zeta l.M', c.zeta_mem⟩ : c.F) l.M'` using `IsPrimitiveRoot.of_map_of_injective (f := c.F.val.toRingHom) (Complex.isPrimitiveRoot_exp l.M' hM.ne') Subtype.val_injective`. Use `exists_qkExt_of_b hB (algebraMap K F) (RingHom.comp_id _) hM.ne' (hζ.map_of_injective ((algebraMap R K).comp (iw.comp L.b)).injective) p hp q hq ?_` and prove the remaining obligations. Establish `e₂` using `h₂ (ρ₂.symm (ρ₁ p.g.b))`. Rewrite `e₂` using `[ρ₂.apply_symm_apply, ha, h₁]`. Use `gp.1.hom_ext (e₂.trans (Eq.symm ((Category.assoc _ _ _).trans ((congrArg (spMap (algebraMap K F) ≫ ·) hqb).trans ?_)))) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hj] show _ = (((spMap (algebraMap K F) ≫ jK R) ≫ _) ≫ _) ≫ _`. Simplify using `only [Category.assoc]`. Conclude with `(Over.w p.g.b).trans ((Over.w (extMap (R := R) (algebraMap K F) (RingHom.comp_id _) ≫ q.g.b)).symm)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_qkExt_of_divFrom : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (iw : L.W →+* R) {I : Type} [Fintype I] (s : I → R) (ε : I → LinearMap.BilinForm ℤ L.D.X) (e : P.D.toPre.X ≃ₗ[𝓞 E] L.D.X), (∀ k, ε k ∈ balForms H.bar L.D.X) → (∀ k, s k ≠ 0) → DivFrom L P.D.toPre P.oD iw s ε e → ∀ p : QkPt P.D.toPre (AlgebraicClosure (FractionRing R)) l.M', p.y = 0 → ∃ p₀ : QkPt P.D.toPre (FractionRing R) l.M', QkExt (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))) p₀ p := by
   intro E _ _ _ H D' l c L R _ _ _ _ t P iw I _ s ε e hε hs ⟨g, hD, hdiv⟩ p hp

@@ -18,16 +18,14 @@ def act (i : X.Tw) (j : ℕ) (b : Bool) :=
     (LinearEquiv.automorphismGroup.toLinearMapMonoidHom.comp (Y.actG i j b))
 
 /- English proof (translation)
-Simplify using `[act]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_single (i : X.Tw) (j : ℕ) (b : Bool) (g : G0g N) (x : Y.Fm i j b) :
     act Y i j b (MonoidAlgebra.single g 1) x = Y.actG i j b g x := by
   simp [act]
 
 /- English proof (translation)
-Proceed by induction on `z using MonoidAlgebra.induction_on with`. Consider the case `of g => simpa [act] using hW g x hx`. Consider the case `add f g hf hg => rw [map_add]`. Conclude with `W.add_mem hf hg`. Consider the case `smul r f hf => rw [map_smul]`.
-
-Conclude with `W.smul_mem r hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem act_mem (i : X.Tw) (j : ℕ) (b : Bool) (W : Submodule (FractionRing (X.O i)) (Y.Fm i j b))
     (hW : GStable Y i j b W) (z : MonoidAlgebra (FractionRing (X.O i)) (G0g N)) (x : Y.Fm i j b) (hx : x ∈ W) :
@@ -38,15 +36,13 @@ theorem act_mem (i : X.Tw) (j : ℕ) (b : Bool) (W : Submodule (FractionRing (X.
   | smul r f hf => rw [map_smul]; exact W.smul_mem r hf
 
 /- English proof (translation)
-Establish `he : eG Y i j b = act Y i j b (Y.eAlg i b)` using `rfl`. Establish `hcomm : ∀ g x, eG Y i j b (Y.actG i j b g x) = Y.actG i j b g (eG Y i j b x)`. Introduce `g x`. Rewrite using `[he, ← act_single, ← act_single, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Y.eAlg_central]`. Establish `hid : ∀ x, eG Y i j b (eG Y i j b x) = eG Y i j b x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[he, ← Module.End.mul_apply, ← map_mul, Y.eAlg_idem]`. Take `⟨-, hst, hmin⟩` from `hW`. Break down `hmin (W ⊓ LinearMap.ker (eG Y i j b)) inf_le_left (fun g x hx => ⟨hst g x hx.1, by` into its components or cases. Establish `h2 : eG Y i j b x = 0` using `hx.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `show eG Y i j b _ = 0`. Rewrite using `[hcomm, h2, map_zero]⟩) with h | h`. Use `left`. Introduce `x hx`. Establish `: x - eG Y i j b x ∈ W ⊓ LinearMap.ker (eG Y i j b)` using `⟨W.sub_mem hx (act_mem Y i j b W hst _ x hx), by show eG Y i j b _ = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub, hid, sub_self]⟩`. Rewrite `this` using `[h, Submodule.mem_bot, sub_eq_zero]`. Conclude with `this.symm`. Use `right`. Introduce `x hx`.
-
-Rewrite `hx` using `[← h]`. Conclude with `hx.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eG_on_irred (i : X.Tw) (j : ℕ) (b : Bool) (W : Submodule (FractionRing (X.O i)) (Y.Fm i j b))
     (hW : GIrred Y i j b W) : (∀ x ∈ W, eG Y i j b x = x) ∨ (∀ x ∈ W, eG Y i j b x = 0) := by
@@ -78,7 +74,7 @@ theorem eG_on_irred (i : X.Tw) (j : ℕ) (b : Bool) (W : Submodule (FractionRing
     exact hx.2
 
 /- English proof (translation)
-Proceed by induction on `z using MonoidAlgebra.induction_on with`. Consider the case `of g => simpa [act] using hT g x`. Consider the case `add f g hf hg => simp only [map_add, LinearMap.add_apply, hf, hg]`. Consider the case `smul r f hf => simp only [map_smul, LinearMap.smul_apply, hf]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_comm (i : X.Tw) (j : ℕ) (b : Bool) (T : Module.End (FractionRing (X.O i)) (Y.Fm i j b))
     (hT : ∀ g x, Y.actG i j b g (T x) = T (Y.actG i j b g x))
@@ -90,7 +86,7 @@ theorem act_comm (i : X.Tw) (j : ℕ) (b : Bool) (T : Module.End (FractionRing (
   | smul r f hf => simp only [map_smul, LinearMap.smul_apply, hf]
 
 /- English proof (translation)
-Establish `he : eG Y i j b = act Y i j b (Y.eAlg i b)` using `rfl`. Rewrite using `[he, ← act_single, ← act_single, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Y.eAlg_central]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eG_actG (i : X.Tw) (j : ℕ) (b : Bool) (g : G0g N) (x : Y.Fm i j b) :
     eG Y i j b (Y.actG i j b g x) = Y.actG i j b g (eG Y i j b x) := by
@@ -99,14 +95,14 @@ theorem eG_actG (i : X.Tw) (j : ℕ) (b : Bool) (g : G0g N) (x : Y.Fm i j b) :
     Y.eAlg_central]
 
 /- English proof (translation)
-Simplify using `[Fm0, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_typeSubspace_iff_unipotent_character (i : X.Tw) (j : ℕ) (b : Bool) (x : Y.Fm i j b) : x ∈ Fm0 Y i j b ↔ ∀ u : Y.U,
     Y.actG i j b u x = ((Y.psiU i b u : (FractionRing (X.O i))ˣ) : FractionRing (X.O i)) • x := by
   simp [Fm0, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[mem_typeSubspace_iff_unipotent_character]`. Introduce `u`. Rewrite using `[← eG_actG, (mem_typeSubspace_iff_unipotent_character Y i j b x).1 hx u, map_smul]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem goodPart_le_typeSubspace (i : X.Tw) (j : ℕ) (b : Bool) : V0 Y i j b ≤ Fm0 Y i j b := by
   rintro _ ⟨x, hx, rfl⟩
@@ -115,17 +111,13 @@ theorem goodPart_le_typeSubspace (i : X.Tw) (j : ℕ) (b : Bool) : V0 Y i j b �
   rw [← eG_actG, (mem_typeSubspace_iff_unipotent_character Y i j b x).1 hx u, map_smul]
 
 /- English proof (translation)
-Take `⟨h1, h2, -, h4, h5, h6, h7, h8⟩` from `h`. Rewrite `h2` using `[Finset.disjoint_union_right]`. Use `set ψ := ψ'.comp (X.art i Q)`. Establish `hu : UnrG ψ`. Introduce `k v hv A' hA σ hσ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `hQ : v ∈ (Q : Set (PlE D.host))` using `(h7 v A' hA).1 ⟨σ, hσ, hne⟩`. Conclude with `Finset.disjoint_left.1 h2.1 hQ (X.placesOver_subset_exceptional i k hv)`. Consider the cases of `b`. Establish `hk : (ψ⁻¹).ker = ψ.ker` using `by ext g; simp [MonoidHom.mem_ker]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨fun P hP => (h1 P hP).1, h2.1, ?_, ?_, ?_, ?_, ?_⟩, ?_, h2.2⟩` and prove the remaining obligations. Use `show IsOpen (((ψ⁻¹).ker : Subgroup (G D.host.E N.Om)) : Set (G D.host.E N.Om))`. Rewrite using `[hk]`. Conclude with `h4`. Introduce `g g' hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show (ψ g')⁻¹ = ((ψ g)⁻¹)⁻¹`. Rewrite using `[h5 g g' hg]`. Introduce `g`. Conclude with `Subgroup.inv_mem _ (h6 g)`. Introduce `v A' hA`.
-
-Rewrite using `[← h7 v A' hA]`. Conclude with `exists_congr fun σ => and_congr_right fun _ => inv_ne_one`. Introduce `v hv A' hA σ hσ`. Conclude with `inv_eq_one.2 (h8 v hv A' hA σ hσ)`. Introduce `k v hv A' hA σ hσ`.
-
-Conclude with `inv_eq_one.2 (hu k v hv A' hA σ hσ)`. Conclude with `⟨⟨fun P hP => (h1 P hP).1, h2.1, h4, h5, h6, h7, h8⟩, hu, h2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twOK_of_psiOk (i : X.Tw) (A Q : Finset (PlE D.host)) (k' : ℕ) (ψ' : X.RCG i Q →* (X.Ok i k')ˣ)
     (h : Formalism.MainNotions.BlochKatoReduction.Gen.PsiOk i A Q k' ψ') (b : Bool) :
@@ -154,7 +146,7 @@ theorem twOK_of_psiOk (i : X.Tw) (A Q : Finset (PlE D.host)) (k' : ℕ) (ψ' : X
   · exact ⟨⟨fun P hP => (h1 P hP).1, h2.1, h4, h5, h6, h7, h8⟩, hu, h2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h i hi b => ⟨(h i hi b).1, fun j hj => ((h i hi b).2 j hj).1⟩, fun h i hi b => ⟨(h i hi b).1, fun j hj => ⟨(h i hi b).2 j hj, fun _ W _ hW => eG_on_irred Y i j b W hW⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissibleGoodIdempotent_iff_reduced : GroupAlgebraIntegrality Y ↔ ∀ (i : X.Tw), X.NonzeroIndexPlace i → ∀ (b : Bool),
     (∃ c : MonoidAlgebra (X.O i) (G0g N),

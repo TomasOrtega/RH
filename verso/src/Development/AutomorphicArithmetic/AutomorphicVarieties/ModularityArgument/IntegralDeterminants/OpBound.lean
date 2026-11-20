@@ -58,36 +58,36 @@ section Nu
 variable {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
 
 /- English proof (translation)
-Simplify using `[nu]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem nu_mul (x y : ℂ) : nu ι (x * y) = nu ι x * nu ι y := by
   simp [nu]
 
 /- English proof (translation)
-Simplify using `[nu]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem nu_one : nu ι 1 = 1 := by
   simp [nu]
 
 /- English proof (translation)
-Simplify using `[nu]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem nu_zero : nu ι 0 = 0 := by
   simp [nu]
 
 /- English proof (translation)
-The claim follows from `norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 private theorem nu_nonneg (x : ℂ) : 0 ≤ nu ι x := norm_nonneg _
 
 /- English proof (translation)
-The claim follows from `map_prod (⟨⟨nu ι, nu_one ι⟩, nu_mul ι⟩ : ℂ →* ℝ) f t`.
+A detailed English derivation is pending.
 -/
 private theorem nu_prod {α : Type*} (t : Finset α) (f : α → ℂ) : nu ι (∏ a ∈ t, f a) = ∏ a ∈ t, nu ι (f a) :=
   map_prod (⟨⟨nu ι, nu_one ι⟩, nu_mul ι⟩ : ℂ →* ℝ) f t
 
 /- English proof (translation)
-The claim follows from `map_pow (⟨⟨nu ι, nu_one ι⟩, nu_mul ι⟩ : ℂ →* ℝ) x m`.
+A detailed English derivation is pending.
 -/
 private theorem nu_pow (x : ℂ) (m : ℕ) : nu ι (x ^ m) = nu ι x ^ m :=
   map_pow (⟨⟨nu ι, nu_one ι⟩, nu_mul ι⟩ : ℂ →* ℝ) x m
@@ -95,17 +95,15 @@ private theorem nu_pow (x : ℂ) (m : ℕ) : nu ι (x ^ m) = nu ι x ^ m :=
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `set p : w.adicCompletion E := ((atFin w (unif w) : (w.adicCompletion E)ˣ) : w.adicCompletion E) with hp`. Establish `hv : Valued.v p = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Establish `hτ : ψ p = τ (unif w : E)` using `hψ _`. Establish `hp0 : p ≠ 0` using `Units.ne_zero _`. Establish `hpm : Valued.v (p ^ m) = WithZero.exp (-(m : ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, hv, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `set y : w.adicCompletion E := x * (p ^ m)⁻¹ with hy`. Establish `hy1 : Valued.v y = 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy, map_mul, map_inv₀, hpm, hx]`. Conclude with `mul_inv_cancel₀ (WithZero.exp_ne_zero)`. Establish `hy0 : y ≠ 0` using `fun h => by`. Rewrite `hy1` using `[h, map_zero]`. Conclude with `zero_ne_one hy1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : nu ι (ψ y) ≤ 1` using `(hi y).2 hy1.le`. Establish `h2 : nu ι (ψ y⁻¹) ≤ 1` using `(hi _).2 (by rw [map_inv₀, hy1, inv_one])`. Establish `h3 : nu ι (ψ y) * nu ι (ψ y⁻¹) = 1`. Rewrite using `[← nu_mul, ← map_mul, mul_inv_cancel₀ hy0, map_one, nu_one]`. Establish `h4 : nu ι (ψ y) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `a0` using `nu_nonneg ι (ψ y)`. Establish `b0` using `nu_nonneg ι (ψ y⁻¹)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hxy : x = y * p ^ m`. Rewrite using `[hy, mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hp0), mul_one]`.
-
-Rewrite using `[hxy, map_mul, nu_mul, h4, one_mul, map_pow, nu_pow, hτ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nu_of_val (w : HeightOneSpectrum (𝓞 E)) (ψ : w.adicCompletion E →+* ℂ) (τ : E →+* ℂ)
     (hψ : ∀ x : E, ψ (algebraMap E _ x) = τ x) (hi : ∀ x, nu ι (ψ x) ≤ 1 ↔ Valued.v x ≤ 1)
@@ -148,7 +146,7 @@ private def IntDet (w : HeightOneSpectrum (𝓞 E)) (m : ℕ) (g : GL (Fin n) (w
   (∀ a b, Valued.v (g.val a b) ≤ 1) ∧ Valued.v g.val.det = WithZero.exp (-(m : ℤ))
 
 /- English proof (translation)
-Use `⟨fun a b => ?_, by simp⟩` and prove the remaining obligations. Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem intDet_one (w : HeightOneSpectrum (𝓞 E)) :
     IntDet w 0 (1 : GL (Fin n) (w.adicCompletion E)) := by
@@ -157,9 +155,9 @@ private theorem intDet_one (w : HeightOneSpectrum (𝓞 E)) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hg.1 i k) (hh.1 k j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Matrix.det_mul, map_mul, hg.2, hh.2, ← WithZero.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem intDet_mul {w : HeightOneSpectrum (𝓞 E)} {a b : ℕ} {g h : GL (Fin n) (w.adicCompletion E)}
     (hg : IntDet w a g) (hh : IntDet w b h) : IntDet w (a + b) (g * h) := by
@@ -174,7 +172,7 @@ private theorem intDet_mul {w : HeightOneSpectrum (𝓞 E)} {a b : ℕ} {g h : G
     ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((GlobalTheory.BCT.GlobLev.mem_KGL_iff_val w g).1 hg).1, by simpa using GlobalTheory.HenQ.valued_det_of_KGL hg⟩`.
+Supply the required witnesses or components.
 -/
 private theorem intDet_of_KGL {w : HeightOneSpectrum (𝓞 E)} {g : GL (Fin n) (w.adicCompletion E)}
     (hg : g ∈ GlobalTheory.LFun.KGL w n) : IntDet w 0 g :=
@@ -188,15 +186,13 @@ section Places
 variable {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Set `φ : InfinitePlace E → (E →+* ℂ)` to `fun v => if h : ∃ τ ∈ Ov ι w, InfinitePlace.mk τ = v then h.choose else v.embedding`. Establish `hφ : ∀ v, InfinitePlace.mk (φ v) = v` using `fun v => by`. Distinguish the cases in `h : ∃ τ ∈ Ov ι w, InfinitePlace.mk τ = v`. Simplify using `only [φ, dif_pos h]`. Conclude with `h.choose_spec.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ, dif_neg h]`. Conclude with `InfinitePlace.mk_embedding v`. Establish `hφw : ∀ v, (∃ τ ∈ Ov ι w, InfinitePlace.mk τ = v) → φ v ∈ Ov ι w` using `fun v h => by`. Simplify using `only [φ, dif_pos h]`. Conclude with `h.choose_spec.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP` using `fun v => placeHom _ ι E (φ v)`. Use `choose u ψ h1 h2 h3 using hP`. Use `⟨φ, u, ψ, hφ, h1, h2, fun v => (h3 v w).trans eq_comm, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ hτ`. Establish `hv` using `hφw _ ⟨τ, hτ, rfl⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `InfinitePlace.mk_eq_iff.1 (hφ (InfinitePlace.mk τ)) with h | h` into its components or cases. Conclude with `h`. Establish `h' : ComplexEmbedding.conjugate (φ (InfinitePlace.mk τ)) ∈ Ov ι w`. Rewrite using `[h]`. Conclude with `hτ`.
-
-Conclude with `absurd h' ((placeConj _ ι E w hw _).1 hv)`. Introduce `v hne heq`. Establish `h4` using `(placeConj _ ι E w hw (φ v)).2 (u v) ((h3 v _).2 rfl) hne heq`. Establish `h5` using `hφw v ⟨_, h4, by rw [InfinitePlace.mk_conjugate_eq, hφ]⟩`. Conclude with `hne ((h3 v w).1 h5).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_places (w : HeightOneSpectrum (𝓞 E)) (hw : IsSplitAt w) :
     ∃ (φ : InfinitePlace E → (E →+* ℂ)) (u : InfinitePlace E → HeightOneSpectrum (𝓞 E))
@@ -256,7 +252,7 @@ private theorem mv_apply {u : HeightOneSpectrum (𝓞 E)} (ψ : u.adicCompletion
     mv ψ lam e g = LinearMap.toMatrix e e (GlobalTheory.Branching.sqRep ℂ n lam (GeneralLinearGroup.map ψ (cLoc u g.1))) := rfl
 
 /- English proof (translation)
-Establish `h : ∀ v, T v (e v (i v)) = ∑ b, LinearMap.toMatrix (e v) (e v) (T v) b (i v) • e v b` using `fun v => by`. Simplify using `only [LinearMap.toMatrix_apply]`. Conclude with `((e v).sum_repr _).symm`. Rewrite using `[show (fun v => T v (e v (i v))) = fun v => ∑ b, LinearMap.toMatrix (e v) (e v) (T v) b (i v) • e v b from funext h, MultilinearMap.map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => f.map_smul_univ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem expand {V : Type} [Fintype V] {W : V → Type} [∀ v, AddCommGroup (W v)] [∀ v, Module ℂ (W v)]
     {N : Type} [AddCommGroup N] [Module ℂ N] {d : V → ℕ} (f : MultilinearMap ℂ W N)
@@ -271,9 +267,9 @@ private theorem expand {V : Type} [Fintype V] {W : V → Type} [∀ v, AddCommGr
   exact Finset.sum_congr rfl fun j _ => f.map_smul_univ _ _
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.BCT.TrKer.eq_splitFin_mul_splitInf (k.1 * g.1)`. Establish `h1 : GlobalTheory.BCT.TrKer.splitFin E n (k.1 * g.1) = g`. Rewrite using `[map_mul, GlobalTheory.BCT.TrKer.splitFin_inf, GlobalTheory.BCT.TrKer.splitFin_fin, one_mul]`. Establish `h2 : GlobalTheory.BCT.TrKer.splitInf E n (k.1 * g.1) = k`. Establish `a1 : GlobalTheory.BCT.TrKer.splitInf E n g.1 = 1` using `by simpa using GlobalTheory.BCT.TrKer.splitInf_mul g 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : GlobalTheory.BCT.TrKer.splitInf E n k.1 = k` using `by simpa using GlobalTheory.BCT.TrKer.splitInf_mul 1 k`. Rewrite using `[map_mul, a1, a2, mul_one]`. Rewrite `h` using `[h1, h2]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inf_comm (k : infU E n) (g : finU E n) : k.1 * g.1 = g.1 * k.1 := by
   have h := GlobalTheory.BCT.TrKer.eq_splitFin_mul_splitInf (k.1 * g.1)
@@ -287,9 +283,9 @@ private theorem inf_comm (k : infU E n) (g : finU E n) : k.1 * g.1 = g.1 * k.1 :
   exact h
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_cEmb_entry_eq hr (k := r) rfl i j`. Establish `h1` using `hx (InfinitePlace.mk τ).embedding`. Rewrite `h1` using `[hre]`. Establish `h2 : x = γ₀.1.val i j` using `((InfinitePlace.mk τ).embedding.injective h1).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx τ, h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cEmb_rat {γ₀ : GlobalTheory.BCT.UE E n} {r : UA E n} (hr : r ∈ ratU E n)
     (hre : ∀ v : InfinitePlace E, cEmb v.embedding r = GeneralLinearGroup.map v.embedding γ₀.1) (τ : E →+* ℂ) :
@@ -303,7 +299,7 @@ private theorem cEmb_rat {γ₀ : GlobalTheory.BCT.UE E n} {r : UA E n} (hr : r 
   rfl
 
 /- English proof (translation)
-Establish `h : cLoc u (GlobalTheory.BCT.finPt γ₀).1 = GeneralLinearGroup.map (pLoc E u) (GlobalTheory.BCT.FinPart.pU (GlobalTheory.BCT.finPt γ₀))` using `rfl`. Rewrite using `[h, GlobalTheory.BCT.FinPart.pU_finPt]`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 private theorem cLoc_finPt (γ₀ : GlobalTheory.BCT.UE E n) (u : HeightOneSpectrum (𝓞 E)) :
     cLoc u (GlobalTheory.BCT.finPt γ₀).1 = GeneralLinearGroup.map (algebraMap E (u.adicCompletion E)) γ₀.1 := by
@@ -319,11 +315,11 @@ section Forms
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : ∀ (g : finU E n) x, f x g.1 = 0`. Introduce `g x`. Establish `h2 : (LinearMap.proj g.1 : (UA E n → ℂ) →ₗ[ℂ] ℂ).compMultilinearMap f = 0` using `Module.Basis.ext_multilinear e fun i => congrFun (congrFun h g) i`. Conclude with `congrArg (fun m => m x) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hf0 (MultilinearMap.ext fun x => funext fun g => ?_)` and prove the remaining obligations. Establish `hg` using `GlobalTheory.BCT.TrKer.eq_splitFin_mul_splitInf g`. Establish `h3` using `congrFun (hinf _ (GlobalTheory.BCT.TrKer.splitInf E n g).2 x) (GlobalTheory.BCT.TrKer.splitFin E n g).1`. Establish `h4 : RU E n (GlobalTheory.BCT.TrKer.splitInf E n g).1 (f x) (GlobalTheory.BCT.TrKer.splitFin E n g).1 = f x g` using `by conv_rhs => rw [hg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h4, ← h3, h1]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem F_ne {V : Type} [Fintype V] {lamv : V → DomWeight n} {φ : V → (E →+* ℂ)} {d : V → ℕ}
     (e : ∀ v, Module.Basis (Fin (d v)) ℂ (nablaSq ℂ n (lamv v)))
@@ -346,17 +342,15 @@ private theorem F_ne {V : Type} [Fintype V] {lamv : V → DomWeight n} {φ : V �
   rfl
 
 /- English proof (translation)
-Take `⟨γ₀, rfl⟩` from `((GlobalTheory.BCT.FinPart.finPt_props E n).2.2 γ).1 hγ`. Take `⟨r, hr, hsf, hre⟩` from `GlobalTheory.BCT.RatPt.ratPt E n γ₀`. Use `set k := GlobalTheory.BCT.TrKer.splitInf E n r with hk`. Establish `hrk : r = (GlobalTheory.BCT.finPt γ₀).1 * k.1`. Rewrite using `[← hsf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.BCT.TrKer.eq_splitFin_mul_splitInf r`. Establish `hm : ∀ v, GeneralLinearGroup.map (ψ v) (cLoc (u v) (GlobalTheory.BCT.finPt γ₀).1) = cEmb (φ v) k.1`. Introduce `v`. Establish `h1 : cEmb (φ v) r = cEmb (φ v) k.1`. Rewrite using `[hrk, map_mul, GlobalTheory.BCT.TrKer.cEmb_fin, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1, cEmb_rat hr hre, cLoc_finPt]`. Conclude with `Units.ext (Matrix.ext fun i j => hψ v _)`. Establish `hmi : ∀ v, GeneralLinearGroup.map (ψ v) (cLoc (u v) ((GlobalTheory.BCT.finPt γ₀)⁻¹).1) = cEmb (φ v) (k⁻¹).1` using `fun v => by`. Establish `a1 : cLoc (u v) ((GlobalTheory.BCT.finPt γ₀)⁻¹).1 = (cLoc (u v) (GlobalTheory.BCT.finPt γ₀).1)⁻¹` using `map_inv _ _`. Establish `a2 : cEmb (φ v) (k⁻¹).1 = (cEmb (φ v) k.1)⁻¹` using `map_inv _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[a1, a2, map_inv, hm]`. Use function extensionality and compare the values at `i`. Establish `hx : (GlobalTheory.BCT.finPt γ₀ * g).1 = r * ((k⁻¹).1 * g.1)`. Establish `a3 : (k⁻¹).1 = k.1⁻¹` using `rfl`. Rewrite using `[hrk, a3, mul_assoc, mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `key : f (fun v => e v (i v)) (GlobalTheory.BCT.finPt γ₀ * g).1 = RU E n (k⁻¹).1 (f fun v => e v (i v)) g.1`. Rewrite using `[hx, hleft _ r hr, inf_comm k⁻¹ g]`. Both sides reduce to the same expression. Rewrite using `[key, ← hinf _ (k⁻¹).2, expand f e (fun v => GlobalTheory.Branching.sqRep ℂ n (lamv v) (cEmb (φ v) (k⁻¹).1)) i]`.
-
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, tens_apply, mv_apply, hmi]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem F_aut {V : Type} [Fintype V] {lamv : V → DomWeight n} {φ : V → (E →+* ℂ)}
     {u : V → HeightOneSpectrum (𝓞 E)} (ψ : ∀ v, (u v).adicCompletion E →+* ℂ)
@@ -412,39 +406,35 @@ private def RB {u : HeightOneSpectrum (𝓞 E)} (ψ : u.adicCompletion E →+* �
         C * nu ι (ψ g.val.det) ^ (-hi)
 
 /- English proof (translation)
-Take `⟨φ, u, ψ, hφ, hψ, hint, hOv, hmk, hund⟩` from `exists_places ι w hw`. Take `⟨f, K, hf0, hfσ, hfinf, hKo, hKl, hKf, hwf⟩` from `vecForm E n hn σ hσ φ hφ (fun v => lam (φ v)) (fun v => hlam (φ v)) w hU`. Set `d : InfinitePlace E → ℕ` to `fun v => Module.finrank ℂ (nablaSq ℂ n (lam (φ v)))`. Set `e : ∀ v, Module.Basis (Fin (d v)) ℂ (nablaSq ℂ n (lam (φ v)))` to `fun v => Module.finBasis ℂ _`. Establish `hrep` using `fun v => repBound _ ι E (u v) (ψ v) (fun x hx => (hint v x).2 hx) n (lam (φ v)) (d v) (e v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose C0 hC0 hC using hrep`. Establish `hRB : ∀ v, RB ι (ψ v) (lam (φ v)) (e v) (C0 v)` using `hC`. Set `D : InfinitePlace E → ℝ` to `fun v => max (C0 v) 1`. Establish `hD1 : ∀ v, 1 ≤ D v` using `fun v => le_max_right _ _`. Establish `hD0 : ∀ v, 0 ≤ D v` using `fun v => zero_le_one.trans (hD1 v)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `M` to `fun v => mv (ψ v) (lam (φ v)) (e v)`. Use `letI : DecidableEq (∀ v, Fin (d v)) := fun a b => Classical.propDecidable (a = b)`. Set `F : finU E n → (∀ v, Fin (d v)) → ℂ` to `fun g i => f (fun v => e v (i v)) g.1`. Establish `hsF : ∀ x ∈ s, x ∈ finU E n` using `fun x hx => (Subgroup.mem_inf.1 (hsU x hx)).1`. Establish `hleft : ∀ x, ∀ γ ∈ ratU E n, ∀ g, f x (γ * g) = f x g` using `fun x => (hσ.aut (f x) (hfσ x)).left`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ (u' : HeightOneSpectrum (𝓞 E)) (y : finU E n), cLoc u' (y⁻¹).1 = (cLoc u' y.1)⁻¹` using `fun _ _ => map_inv _ _`. Establish `hKb : ∀ k ∈ K, ∀ i j, nu ι (tens M k i j) ≤ ∏ v, D v`. Introduce `k hk i j`. Rewrite using `[tens_apply, nu_prod]`. Use `Finset.prod_le_prod (fun _ _ => nu_nonneg _ _) fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg` using `intDet_of_KGL (hKl k hk (u v))`. Establish `h0 : nu ι (ψ v (cLoc (u v) k.1).val.det) = 1`. Establish `h1` using `nu_of_val ι (u v) (ψ v) (φ v) (hψ v) (hint v) _ 0 hg.2`. Simplify using `using h1`. Establish `h2` using `(hRB v (lo (φ v)) (hi (φ v)) (hlh _) _ hg.1 (j v) (i v)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h0, _root_.one_zpow, mul_one]`. Simplify using `only [M, mv_apply, hinv]`. Conclude with `h2.trans (le_max_left _ _)`. Establish `himg : Ov ι w = (Finset.univ.filter fun v => u v = w).image φ`. Use extensionality with `τ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `hτ`. Conclude with `⟨InfinitePlace.mk τ, (hOv _).1 (by rw [hmk τ hτ]; exact hτ), hmk τ hτ⟩`. Introduce and unpack `⟨v, hv, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hOv v).2 hv`. Establish `hinj : Function.Injective φ` using `fun a b h => by rw [← hφ a, ← hφ b, h]`. Establish `hprod : ∀ m : ℕ, (∏ τ ∈ Ov ι w, B τ) ^ m = ∏ v, if u v = w then B (φ v) ^ m else 1`. Introduce `m`. Rewrite using `[← Finset.prod_pow, himg, Finset.prod_image hinj.injOn, Finset.prod_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hLb : ∀ L : List (finU E n), (∀ x ∈ L, x ∈ s.subtype (· ∈ finU E n)) → ∀ i j, nu ι (tens M L.prod i j) ≤ (∏ v, D v) * (∏ τ ∈ Ov ι w, B τ) ^ L.length`. Introduce `L hL i j`. Establish `hL' : ∀ x ∈ L.map Subtype.val, x ∈ s`. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_subtype.1 (hL y hy)`. Establish `hp : (L.prod).1 = (L.map Subtype.val).prod` using `map_list_prod (finU E n).subtype L`. Establish `hloc : (L.prod).1 ∈ locU n w`. Rewrite using `[hp]`. Conclude with `Subgroup.list_prod_mem _ fun x hx => hsU x (hL' x hx)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[tens_apply, nu_prod, hprod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun _ _ => nu_nonneg _ _) fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : u v = w`. Establish `h1` using `hW _ hL' (u v) h (φ v) ((hOv v).2 h) (ψ v) (hψ v) (hint v) (d v) (e v) (C0 v) (hRB v) (j v) (i v)`. Rewrite `h1` using `[← hp, List.length_map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos h]`. Simplify using `only [M, mv_apply, hinv]`. Use `(by simpa only [map_inv] using h1 : _ ≤ C0 v * B (φ v) ^ L.length).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg (hB _) _)`. Establish `h1 : cLoc (u v) (L.prod).1 = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `(Subgroup.mem_inf.1 hloc).2`. Rewrite `h2` using `[Subgroup.mem_iInf]`. Establish `h3` using `h2 (u v)`. Rewrite `h3` using `[Subgroup.mem_iInf]`. Conclude with `MonoidHom.mem_ker.1 (h3 (hund v h))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg h, mul_one]`. Simplify using `only [M, mv_apply, hinv, h1, inv_one, map_one]`. Rewrite using `[show (1 : Module.End ℂ _) = LinearMap.id from rfl, LinearMap.toMatrix_id, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[nu_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hD1 v`. Rewrite using `[nu_zero]`. Conclude with `hD0 v`. Use `absBound _ ι (finU E n) (GlobalTheory.BCT.ratFinU E n) K (∀ v, Fin (d v)) (tens M) F (s.subtype (· ∈ finU E n)) a (∏ τ ∈ Ov ι w, B τ) (∏ v, D v) (Finset.prod_nonneg fun τ _ => hB τ) (GlobalTheory.BCT.finite_doubleCoset_ratFinU_isOpen E n K hKo) (F_ne e f hf0 hfinf) (fun γ hγ g => …` and prove the remaining obligations. Introduce `k hk g`.
-
-Use function extensionality and compare the values at `i`. Conclude with `congrFun (hKf k hk _) g.1`. Introduce `g`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun (hs (f fun v => e v (i v)) (hfσ _) fun y h1 h2 => hwf y h1 h2 _) g.1`.
-
-Rewrite `h1` using `[Finset.sum_apply]`. Rewrite using `[Finset.sum_apply]`. Conclude with `(Finset.sum_subtype_of_mem (fun x => RU E n x (f fun v => e v (i v)) g.1) hsF).trans h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem core (hn : 1 ≤ n) (σ : Submodule ℂ (UA E n → ℂ)) (hσ : IsAutRepU σ) (lam : (E →+* ℂ) → DomWeight n)
     (hlam : ∀ τ, HasWeightAt σ τ (lam τ)) (w : HeightOneSpectrum (𝓞 E)) (hw : IsSplitAt w) (hU : IsUnramU σ w)
@@ -554,9 +544,9 @@ section Words2
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simpa using intDet_one w`. Consider the case `cons x L ih`. Establish `h1` using `intDet_mul (h x List.mem_cons_self) (ih fun y hy => h y (List.mem_cons_of_mem _ hy))`. Rewrite using `[List.prod_cons, map_mul, List.length_cons, Nat.mul_succ, Nat.add_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private theorem intDet_prod {w : HeightOneSpectrum (𝓞 E)} {j : ℕ} (L : List (UA E n))
     (h : ∀ x ∈ L, IntDet w j (cLoc w x)) : IntDet w (j * L.length) (cLoc w L.prod) := by
@@ -568,9 +558,9 @@ private theorem intDet_prod {w : HeightOneSpectrum (𝓞 E)} {j : ℕ} (L : List
     exact h1
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simpa using intDet_one w`. Consider the case `cons x L ih`. Establish `h1` using `intDet_mul (ih fun y hy => h y (List.mem_cons_of_mem _ hy)) (h x List.mem_cons_self)`. Rewrite using `[List.prod_cons, _root_.mul_inv_rev, map_mul, List.length_cons, Nat.mul_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private theorem intDet_prod_inv {w : HeightOneSpectrum (𝓞 E)} {j : ℕ} (L : List (UA E n))
     (h : ∀ x ∈ L, IntDet w j (cLoc w x⁻¹)) : IntDet w (j * L.length) (cLoc w L.prod⁻¹) := by
@@ -582,7 +572,7 @@ private theorem intDet_prod_inv {w : HeightOneSpectrum (𝓞 E)} {j : ℕ} (L : 
     exact h1
 
 /- English proof (translation)
-Rewrite using `[← pow_mul, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem zpow_pow_pow (x : ℝ) (z : ℤ) (j m : ℕ) : ((x ^ z) ^ j) ^ m = (x ^ (j * m)) ^ z := by
   rw [← pow_mul, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm]
@@ -592,13 +582,13 @@ end Words2
 end UpperTheory.V.Z.Int
 
 /- English proof (translation)
-Introduce `l _ ι E _ _ _ n hn σ hσ lam hlam w hw hU lo hi hlh j s a hs`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow]`. Use `core ι hn σ hσ lam hlam w hw hU lo hi hlh s a hs (fun x hx => (h x hx).1) _ (fun τ => pow_nonneg (zpow_nonneg (nu_nonneg ι _) _) _) ?_` and prove the remaining obligations. Introduce `L hL u hu τ _ ψ hψ hint d e C hR a b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hu` using the available equality. Establish `hI : IntDet u (j * L.length) (cLoc u L.prod)` using `intDet_prod L fun x hx => (h x (hL x hx)).2`. Establish `hb` using `(hR (lo τ) (hi τ) (hlh τ) (cLoc u L.prod) hI.1 a b).2`. Rewrite `hb` using `[nu_of_val ι u ψ τ hψ hint _ _ hI.2]`. Rewrite using `[map_inv, zpow_pow_pow]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`. Rewrite using `[← Finset.prod_pow]`. Use `core ι hn σ hσ lam hlam w hw hU lo hi hlh s a hs (fun x hx => (h x hx).1) _ (fun τ => pow_nonneg (zpow_nonneg (nu_nonneg ι _) _) _) ?_` and prove the remaining obligations. Introduce `L hL u hu τ _ ψ hψ hint d e C hR a b`. Substitute `hu` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hI : IntDet u (j * L.length) (cLoc u L.prod⁻¹)` using `intDet_prod_inv L fun x hx => (h x (hL x hx)).2`. Establish `hb` using `(hR (lo τ) (hi τ) (hlh τ) (cLoc u L.prod⁻¹) hI.1 a b).1`. Rewrite `hb` using `[nu_of_val ι u ψ τ hψ hint _ _ hI.2]`. Rewrite using `[zpow_pow_pow]`. Conclude with `hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Int.opBound :
     UpperTheory.V.Z.Int.OpBound := by

@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.GeometricProductPowers.GaussianProductPowerBoun
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GeometricProductBound.OneSubSumLeProd
 
 /- English proof (translation)
-The claim follows from `GeoProdPow.main`.
+A detailed English derivation is pending.
 -/
 theorem geometric_product_power : ConditionalKappaBounds.G2.GaussianProductPowerBound := GeoProdPow.main

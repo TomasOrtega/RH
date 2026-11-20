@@ -20,9 +20,9 @@ namespace GlobalTheory.DblSiegelX
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `actB zs`. Rewrite using `[Matrix.vecMulVec_mul, Matrix.vecMul_transpose, Matrix.mulVec_mulVec]`. Use `congr 1`. Use `congrArg (· *ᵥ v) hpt using 1` and compare the differences between its conclusion and the goal. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Matrix.mulVec_mulVec]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem actB_zs {n n₁ d : ℕ} {σ : E →ₐ[F] E} {J : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)} (H : Plane E n n₁)
     (p : UG (cA σ) J) (t : GL (Fin d) (AE F E))
@@ -37,29 +37,27 @@ theorem actB_zs {n n₁ d : ℕ} {σ : E →ₐ[F] E} {J : Matrix (Fin d ⊕ Fin
     congr 1
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he hne dd dd₁ hdd hdd₁ omd omd₁ homd homd₁ ed hmap hheis hinv hadm hnz p t hpt a ha`. Take `⟨μ, hμ, l₁, hl₁, hl₁inv, Φ₀, hΦ₀, hLΦ₀⟩` from `GlobalTheory.T.adapted_plane_pair_vacuum hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he hne dd dd₁ hdd hdd₁ ed hmap hheis hinv hadm hnz`. Take `⟨hint, hLadm⟩` from `GlobalTheory.T.adapted_plane_pair_restriction_alt hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he hne dd dd₁ hdd hdd₁ ed hmap hheis hinv hadm hnz l₁ hl₁ hl₁inv μ hμ`. Establish `hLinv` using `GlobalTheory.T.adapted_plane_pair_equivariance hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he hne dd dd₁ hdd hdd₁ ed hmap hheis hinv hadm hnz l₁ hl₁inv μ hμ hint`. Use `set L := avgL dd B.ψ (zs H) (l₁ ∘ₗ ed) μ with hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `homd.2.2 L hLadm hLinv p t hpt Φ₀ hΦ₀`. Establish `hstd` using `hP.base.std`. Establish `hpres : ∀ w, ∀ Φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d), dd.rho B.ψ w Φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d)` using `fun w Φ hΦ => GlobalTheory.HeisSchA.schr_mem_schA B.ψ hstd (dd.e w) Φ hΦ`. Take `⟨m, hm⟩ : ∃ m : ℝ, m = (distribHaarChar (AF F) (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t)) : ℝ)` from `⟨_, rfl⟩`. Take `⟨m', hm'⟩ : ∃ m' : ℝ, m' = (distribHaarChar (AF F) (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t⁻¹)) : ℝ)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmm : m * m' = 1`. Rewrite using `[hm, hm', ← NNReal.coe_mul, ← map_mul, ← map_mul, ← map_mul, mul_inv_cancel, map_one, map_one, map_one, NNReal.coe_one]`. Establish `hm0 : 0 < m`. Break down `(show (0:ℝ) ≤ m from hm ▸ NNReal.coe_nonneg _).lt_or_eq with h | h` into its components or cases. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmm` using `[← h, zero_mul]`. Conclude with `absurd hmm zero_ne_one`. Establish `hS₁` using `homd₁.2.2 l₁ hl₁ hl₁inv p t hpt`. Simplify using `only [adeleClass] at hS₁`. Rewrite `hS₁` using `[← hm]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set c₁ : ℂ := (χX (Matrix.GeneralLinearGroup.det t) : ℂ) * (((m ^ ((Fintype.card (Fin n₁) : ℝ) / 2) : ℝ)) : ℂ) with hc₁`. Establish `hpt' : ∀ u : Fin d → AE F E, actB (cA σ) p (zs H (((t⁻¹ : GL (Fin d) (AE F E)) : Matrix _ _ _) *ᵥ u)) = zs H u`. Introduce `u`. Rewrite using `[actB_zs H p t hpt, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hfun : avgFun dd B.ψ (zs H) (l₁ ∘ₗ ed) (omd p Φ₀) = fun u => (a * c₁) * avgFun dd B.ψ (zs H) (l₁ ∘ₗ ed) Φ₀ (((t⁻¹ : GL (Fin d) (AE F E)) : Matrix _ _ _) *ᵥ u)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `u`. Establish `hΨ` using `hpres (zs H (((t⁻¹ : GL (Fin d) (AE F E)) : Matrix _ _ _) *ᵥ u)) Φ₀ hΦ₀`. Simplify using `only [avgFun, LinearMap.comp_apply]`. Rewrite using `[← hpt' u, ← homd.2.1.impl p _ Φ₀ hΦ₀, ha _ hΨ, map_smul, hS₁ _ (hmap _ hΨ), smul_eq_mul, hc₁]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcalc : L (omd p Φ₀) = a * c₁ * (m : ℂ) * L Φ₀`. Rewrite using `[hL, avgL_apply _ _ _ _ _ _ (hint _ (homd.2.1.pres p Φ₀ hΦ₀)), avgL_apply _ _ _ _ _ _ (hint _ hΦ₀), hfun, integral_const_mul, GlobalTheory.T.integral_adelicGL_mulVec_haar_eq_modulus_det F E d t⁻¹ μ hμ]`. Establish `: m'⁻¹ = m` using `(eq_inv_of_mul_eq_one_left hmm).symm`. Rewrite using `[← hm', this]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite `hS` using `[hcalc]`. Establish `hcard : ((Fintype.card (Fin n) : ℝ) / 2) = ((Fintype.card (Fin n₁) : ℝ) / 2) + 1`. Simplify using `only [Fintype.card_fin, hH.rank]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpow : (m ^ ((Fintype.card (Fin n) : ℝ) / 2) : ℝ) = m ^ ((Fintype.card (Fin n₁) : ℝ) / 2) * m`. Rewrite using `[hcard, Real.rpow_add hm0, Real.rpow_one]`. Simplify using `only [adeleClass] at hS`. Rewrite `hS` using `[← hm, hpow]`. Establish `hχ : (χX (Matrix.GeneralLinearGroup.det t) : ℂ) ≠ 0` using `Circle.coe_ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hp0 : ((m ^ ((Fintype.card (Fin n₁) : ℝ) / 2) : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.rpow_pos_of_pos hm0 _).ne'` after adjusting the coercions. Establish `hm0' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm0.ne'`. Rewrite `hS` using `[hc₁]`. Move the coercions through the operations in `at hS`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (a - 1) * ((χX (Matrix.GeneralLinearGroup.det t) : ℂ) * ((m ^ ((Fintype.card (Fin n₁) : ℝ) / 2) : ℝ) : ℂ) * m * L Φ₀) = 0`. Take the linear combination `hS`. Establish `hne : (χX (Matrix.GeneralLinearGroup.det t) : ℂ) * ((m ^ ((Fintype.card (Fin n₁) : ℝ) / 2) : ℝ) : ℂ) * m * L Φ₀ ≠ 0`. Use `mul_ne_zero (mul_ne_zero (mul_ne_zero hχ hp0) hm0') ?_` and prove the remaining obligations. Rewrite using `[hL, avgL_apply _ _ _ _ _ _ (hint _ hΦ₀)]`.
-
-Conclude with `hLΦ₀`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp key).resolve_right hne)`.
+A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

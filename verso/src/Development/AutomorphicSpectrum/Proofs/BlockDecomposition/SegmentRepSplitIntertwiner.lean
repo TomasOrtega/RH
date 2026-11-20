@@ -20,9 +20,9 @@ namespace GlobalTheory.CompanionTheory.SegQuotTwo
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hcont, hP, -, hPK⟩` from `GlobalTheory.SmGL.LeviInt.levi_integral_facts k α n m e`. Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Set `σ₀ : Representation ℂ (parab k e) V` to `(twist ρ (deltaHalf k m)).comp (leviProj k e)`. Set `z : Representation.IntertwiningMap σ₀ σ₀` to `{ toLinearMap := 0, isIntertwining' := fun _ => by ext; simp }`. Use `(GlobalTheory.SmGL.IndCoinv.smInd_coinvariants (GL n k) (parab k e) (KO k n) hP SplitFlip.isCompact_KO hPK (GlobalTheory.SmGL.exists_open_normalised_subgroup_subset k n) _ _ _ _ (isSmooth_comp (isSmooth_twist hρ (isSmoothChar_deltaHalf k)) _ hcont) (compMap (twistMap f _) _) Unit …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x _`. Use `Submodule.subset_span ⟨(), -x, ?_⟩` and prove the remaining obligations. Use `show x = (0 : _) - -x`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem parIndMap_surjective {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) {V W : Type} [AddCommGroup V]
@@ -44,9 +44,9 @@ theorem parIndMap_surjective {α n : Type} {m : α → Type} [Fintype α] [Linea
   simp
 
 /- English proof (translation)
-Establish `hσ' : IsSmooth σ'` using `(IsSubquotient.of_surjective f hf).isSmooth hσ`. Establish `hc : Continuous fun h : Levi k (Two (Fin r) (Fin t)) => (h false, h true)` using `(continuous_apply false).prodMk (continuous_apply true)`. Establish `h1 : Function.Surjective (GlobalTheory.ParIndExact.extTensorMapLeft ρ f)` using `LinearMap.rTensor_surjective W hf`. Establish `h2 : Function.Surjective (GlobalTheory.ParIndExact.extTensorMapRight σ' g)` using `LinearMap.lTensor_surjective U' hg`. Establish `h1' : Function.Surjective (compMap (GlobalTheory.ParIndExact.extTensorMapLeft ρ f) (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom)` using `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : Function.Surjective (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ' g) (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom)` using `h2`. Establish `s1` using `parIndMap_surjective (two (stdSum (rfl : r + t = r + t))) _ (isSmooth_comp (isSmooth_extTensor hσ hρ) _ hc) h1'`. Establish `s2` using `parIndMap_surjective (two (stdSum (rfl : r + t = r + t))) _ (isSmooth_comp (isSmooth_extTensor hσ' hρ) _ hc) h2'`. Conclude with `⟨(parIndMap (two (stdSum (rfl : r + t = r + t))) (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ' g) (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom)).comp (parIndMap (two (stdSum (rfl : r + t = r + t))) (compMap (GlobalTheory.ParIndExact.extTensorMapLeft ρ f) (leviTwo k (Fin …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem prod₂_map_surjective {r t : ℕ} {U U' W W' : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup U'] [Module ℂ U']
     [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] {σ : Representation ℂ (GL (Fin r) k) U}
@@ -72,7 +72,7 @@ theorem prod₂_map_surjective {r t : ℕ} {U U' W W' : Type} [AddCommGroup U] [
       (compMap (GlobalTheory.ParIndExact.extTensorMapLeft ρ f) (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom)), s2.comp s1⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : x = x'` from `funext fun i => by simpa using hx i`. Conclude with `⟨.refl _⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_prodIrr_equiv_of_cast {c c' N : ℕ} (h : c = c') (x : Fin c → IrrGL k) (x' : Fin c' → IrrGL k)
     (hx : ∀ i, x i = x' (Fin.cast h i)) (hd : ∑ a, (x a).1 = N) (hd' : ∑ a, (x' a).1 = N) :
@@ -82,11 +82,9 @@ theorem nonempty_prodIrr_equiv_of_cast {c c' N : ℕ} (h : c = c') (x : Fin c �
   exact ⟨.refl _⟩
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Rewrite using `[Fin.append_left]`. Both sides reduce to the same expression. Consider the case `right j`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Rewrite using `[Fin.append_right]`. Use `show (Δ.first.nu ((a : ℕ) : ℂ)).nu ((j : ℕ) : ℂ) = Δ.first.nu (((segLow Δ a h0).len + (j : ℕ) : ℕ) : ℂ)`. Rewrite using `[IrrGL.nu_nu]`. Use `show _ = Δ.first.nu ((a + (j : ℕ) : ℕ) : ℂ)`. Use `push_cast`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem append_term (Δ : Segment k) (a : ℕ) (h0 : 0 < a) (h1 : a < Δ.len)
     (hlen : (segLow Δ a h0).len + (segHigh Δ a h1).len = Δ.len)
@@ -105,7 +103,7 @@ theorem append_term (Δ : Segment k) (a : ℕ) (h0 : 0 < a) (h1 : a < Δ.len)
     rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.BZInd.inductionFiniteLength k _ _ _ _ _ _ (isSmooth_piTensor fun a => (x a).2.rep.smooth) (hasFiniteLength_of_isIrreducible (GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor hA x))`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_prodIrr (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h N : ℕ} (x : Fin h → IrrGL k)
     (hd : ∑ a, (x a).1 = N) : HasFiniteLength (prodIrr x hd) :=
@@ -113,7 +111,7 @@ theorem hasFiniteLength_prodIrr (hA : GlobalTheory.Published.IrreducibleAdmissib
     (hasFiniteLength_of_isIrreducible (GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor hA x))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SocleJm.nontrivial_indSp _ (GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor hA x) (isSmooth_piTensor fun a => (x a).2.rep.smooth)`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_prodIrr (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h N : ℕ} (x : Fin h → IrrGL k)
     (hd : ∑ a, (x a).1 = N) : Nontrivial (IndSp (stdBlocks (fun a => (x a).1) hd) (piTensor fun a => (x a).rep)) :=
@@ -121,7 +119,7 @@ theorem nontrivial_prodIrr (hA : GlobalTheory.Published.IrreducibleAdmissibleGL)
     (isSmooth_piTensor fun a => (x a).2.rep.smooth)
 
 /- English proof (translation)
-Take `⟨E⟩` from `E`. Take `⟨F, hF⟩` from `F`. Take `⟨H⟩` from `H`. Conclude with `⟨H.toIntertwiningMap.comp (F.comp E.symm.toIntertwiningMap), H.toLinearEquiv.surjective.comp (hF.comp E.symm.toLinearEquiv.surjective)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_surjective_of_equiv {G A B C D : Type} [Group G] [AddCommGroup A] [Module ℂ A] [AddCommGroup B]
     [Module ℂ B] [AddCommGroup C] [Module ℂ C] [AddCommGroup D] [Module ℂ D] {α : Representation ℂ G A}
@@ -135,7 +133,7 @@ theorem exists_surjective_of_equiv {G A B C D : Type} [Group G] [AddCommGroup A]
     H.toLinearEquiv.surjective.comp (hF.comp E.symm.toLinearEquiv.surjective)⟩
 
 /- English proof (translation)
-The claim follows from `exists_surjective_of_equiv E (prod₂_map_surjective hσ hρ f g hf hg) H`.
+A detailed English derivation is pending.
 -/
 theorem exists_surjective_of_prod₂_equiv {r t : ℕ} {U U' W W' A D : Type} [AddCommGroup U] [Module ℂ U]
     [AddCommGroup U'] [Module ℂ U'] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] [AddCommGroup A]
@@ -149,7 +147,7 @@ theorem exists_surjective_of_prod₂_equiv {r t : ℕ} {U U' W W' A D : Type} [A
   exists_surjective_of_equiv E (prod₂_map_surjective hσ hρ f g hf hg) H
 
 /- English proof (translation)
-The claim follows from `exists_surjective_of_prod₂_equiv (isSmooth_prodIrr x hx) (isSmooth_prodIrr y hy) fu fv hfu hfv (GlobalTheory.T.product_irreducible_append_equiv k p q u.1 v.1 x y hx hy h) (nonempty_prod₂_equiv_prodIrr_pair u v hd)`.
+A detailed English derivation is pending.
 -/
 theorem exists_surjective_append {p q : ℕ} (x : Fin p → IrrGL k) (y : Fin q → IrrGL k) (u v : IrrGL k)
     (hx : ∑ a, (x a).1 = u.1) (hy : ∑ a, (y a).1 = v.1) (h : ∑ a, (Fin.append x y a).1 = u.1 + v.1)
@@ -161,7 +159,7 @@ theorem exists_surjective_append {p q : ℕ} (x : Fin p → IrrGL k) (y : Fin q 
     (GlobalTheory.T.product_irreducible_append_equiv k p q u.1 v.1 x y hx hy h) (nonempty_prod₂_equiv_prodIrr_pair u v hd)
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `hf`. Conclude with `GlobalTheory.T.cosocle_surjection_factor σ P Q hc hfl f hf hQ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quotient_of_quotient {G V W X : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup X] [Module ℂ X] (σ : Representation ℂ G W) (P : Representation ℂ G V) (Q : Representation ℂ G X)
@@ -171,11 +169,11 @@ theorem quotient_of_quotient {G V W X : Type} [Group G] [AddCommGroup V] [Module
   exact GlobalTheory.T.cosocle_surjection_factor σ P Q hc hfl f hf hQ
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA Δ N V _ _ π hπ a h0 h1 u v hu hv hd`. Establish `hN : u.1 + v.1 = N` using `hd.symm ▸ (Fin.sum_univ_two (fun i => (![u, v] i).1)).symm`. Substitute `hN` using the available equality. Take `⟨hx, -, fu, hfu, -⟩` from `hu`. Take `⟨hy, -, fv, hfv, -⟩` from `hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hΔ, hc⟩` from `hπ`. Establish `hlen : (segLow Δ a h0).len + (segHigh Δ a h1).len = Δ.len` using `by show a + (Δ.len - a) = Δ.len`. Use linear arithmetic over natural numbers and integers. Establish `hsum : ∑ i, (Fin.append (segLow Δ a h0).term (segHigh Δ a h1).term i).1 = u.1 + v.1`. Rewrite using `[Fin.sum_univ_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.append_left, Fin.append_right]`. Conclude with `congrArg₂ (· + ·) hx hy`. Conclude with `quotient_of_quotient π _ _ hc (hasFiniteLength_prodIrr hA _ hΔ) (exists_surjective_of_equiv (nonempty_prodIrr_equiv_of_cast hlen _ Δ.term (append_term Δ a h0 h1 hlen) hsum hΔ) (exists_surjective_append _ _ u v hx hy hsum hd fu hfu fv hfv) ⟨.refl _⟩) (nontrivial_prodIrr hA _ hd)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quottwo : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]

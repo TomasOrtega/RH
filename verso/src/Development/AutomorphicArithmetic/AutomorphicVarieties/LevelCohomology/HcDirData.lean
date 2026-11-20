@@ -9,9 +9,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.Th
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.X
 
 /- English proof (translation)
-Establish `h : ((-1 : ℤ) : ZMod N) ^ 2 = 1`. Use `push_cast`. Conclude with `neg_one_sq`. Use `first`. Consider the case `rw [← map_pow, h, map_one]`.
-
-Consider the case `rw [sq, ← χ.map_mul, ← sq, h, χ.map_one]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem sq_neg_one {O : Type} [CommRing O] {N : ℕ} (χ : DirichletCharacter O N) :
     χ ((-1 : ℤ) : ZMod N) ^ 2 = 1 := by
@@ -23,7 +21,7 @@ private theorem sq_neg_one {O : Type} [CommRing O] {N : ℕ} (χ : DirichletChar
     | rw [sq, ← χ.map_mul, ← sq, h, χ.map_one]
 
 /- English proof (translation)
-Take `⟨u, v, huv⟩` from `ha`. Establish `h` using `congrArg (fun x : ℤ => (x : ZMod N)) huv`. Simplify using `only [Int.cast_add, Int.cast_mul, Int.cast_natCast, ZMod.natCast_self, mul_zero, add_zero, Int.cast_one] at h`. Rewrite using `[← show ((⟨_, _, (mul_comm _ _).trans h, h⟩ : (ZMod N)ˣ) : ZMod N) = ((a : ℤ) : ZMod N) from rfl]`. Conclude with `MulChar.pow_apply_coe χ k _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_app {O : Type} [CommRing O] {N : ℕ} (χ : DirichletCharacter O N) (k : ℕ) (a : ℤ)
     (ha : IsCoprime a (N : ℤ)) : (χ ^ k) (a : ZMod N) = χ a ^ k := by
@@ -35,31 +33,29 @@ private theorem pow_app {O : Type} [CommRing O] {N : ℕ} (χ : DirichletCharact
   exact MulChar.pow_apply_coe χ k _
 
 /- English proof (translation)
-Introduce `l hl c N iN e ψ o₁ hD q hX ω hω`. Establish `hl2 : l ≠ 2` using `hD.l_odd`. Establish `h4l : 4 ≤ c2 ψ` using `hD.four_le`. Use `haveI : NeZero l := ⟨hl.out.ne_zero⟩`. Take `⟨hq0, hq, hb⟩` from `hX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hcod, hf0, hfour, hth, hl1⟩` from `UpperTheory.V.X.th1Facts c.O N ψ l hl.out hl2`. Take `⟨-, -, -, h2c, h2N, -⟩` from `UpperTheory.V.HV.compCond c.O N ψ 2 Nat.prime_two`. Take `⟨ξ, hξp, hξ⟩` from `UpperTheory.V.X.xiSq c.O two_ne_zero N (psi2 ψ) (c2 ψ) h4l h2c.symm`. Take `⟨f, φ, hφp, hfd, hφo, hφ⟩` from `UpperTheory.V.X.primProd c.O l N ((ω ^ e) ^ 2) (th1 l ψ ^ 2)`. Establish `hdiv : f * 2 ^ (c2 ψ - 1) ∣ l * N * N` using `mul_dvd_mul (dvd_trans hfd (mul_dvd_mul_left l (DirichletCharacter.conductor_dvd_level _))) (dvd_trans (pow_dvd_pow 2 (Nat.sub_le _ 1)) h2N)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `unitOf : ∀ (m : ℕ) (a : ℤ), IsCoprime a (m : ℤ) → IsUnit ((a : ZMod m))`. Introduce and unpack `m a ⟨u, v, huv⟩`. Establish `h` using `congrArg (fun x : ℤ => (x : ZMod m)) huv`. Simplify using `only [Int.cast_add, Int.cast_mul, Int.cast_natCast, ZMod.natCast_self, mul_zero, add_zero, Int.cast_one] at h`. Conclude with `⟨⟨_, _, (mul_comm _ _).trans h, h⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f0 l ψ, f, c2 ψ - 1, φ, ξ, ?_, hdiv, ?_⟩` and prove the remaining obligations. Establish `hT : ((ω ^ e) ^ 2) ^ (l ^ f0 l ψ - 1) = 1`. Take `⟨t, ht⟩` from `hl1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ht, ← pow_mul, ← pow_mul, ← pow_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by rw [hω, one_pow]`. Establish `hT2 : (th1 l ψ ^ 2) ^ (l ^ f0 l ψ - 1) = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hth, one_pow]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hf0, hfour, ?_, hφp, orderOf_dvd_of_pow_eq_one (hφo _ hT hT2), hξp, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Odd.of_dvd_nat ((hl.out.odd_of_ne_two hl2).mul hcod) hfd`. Establish `hfle : f ≤ l * q` using `Nat.le_of_dvd (Nat.mul_pos hl.out.pos hq0) (dvd_trans hfd (mul_dvd_mul_left l hq))`. Establish `h2 : 2 ^ c2 ψ = 2 * 2 ^ (c2 ψ - 1)`. Rewrite using `[← pow_succ']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hb' : 2 * (l * q * 4 ^ (l ^ f0 l ψ - 1).factorization 2) ≤ 2 * 2 ^ (c2 ψ - 1)`. Rewrite using `[← mul_assoc, ← h2]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_trans (Nat.mul_le_mul_right _ hfle) (Nat.le_of_mul_le_mul_left hb' two_pos)`. Establish `hc1 : IsCoprime (-1 : ℤ) ((l * N : ℕ) : ℤ)` using `isCoprime_one_left.neg_left`. Establish `hc2 : IsCoprime (-1 : ℤ) (N : ℤ)` using `isCoprime_one_left.neg_left`. Establish `hm1 : IsCoprime (-1 : ℤ) (l : ℤ)` using `isCoprime_one_left.neg_left`. Establish `e1` using `hφ (-1) hc1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `hξ (-1) hc2`. Rewrite `e1` using `[pow_app _ _ _ hm1, pow_app _ _ _ hm1, pow_app _ _ _ hc2]`. Establish `hw : (ω ((-1 : ℤ) : ZMod l) ^ e) ^ 2 = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, sq_neg_one, one_pow]`. Rewrite `e1` using `[hw, sq_neg_one, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite `e2` using `[sq_neg_one, one_mul]`. Establish `h4 : ZMod.χ₄ ((-1 : ℤ) : ZMod 4) = -1` using `by first`. Consider the case `decide`. Consider the case `rfl`. Consider the case `simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `n1 : (-1 : ZMod f) = ((-1 : ℤ) : ZMod f)` using `by simp`. Establish `n2 : (-1 : ZMod (2 ^ (c2 ψ - 1))) = ((-1 : ℤ) : ZMod (2 ^ (c2 ψ - 1)))` using `by simp`. Rewrite using `[n1, n2, e1, e2, h4]`. Simplify using the standard rewrite rules. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `haN : IsCoprime a (N : ℤ)` using `ha.of_isCoprime_of_dvd_right (Int.natCast_dvd_natCast.2 (dvd_mul_left N (l * N)))`. Establish `halN : IsCoprime a ((l * N : ℕ) : ℤ)` using `ha.of_isCoprime_of_dvd_right (Int.natCast_dvd_natCast.2 (dvd_mul_right (l * N) N))`. Establish `hal : IsCoprime a (l : ℤ)` using `ha.of_isCoprime_of_dvd_right (Int.natCast_dvd_natCast.2 (dvd_trans (dvd_mul_right l N) (dvd_mul_right (l * N) N)))`. Establish `had : IsCoprime a ((f * 2 ^ (c2 ψ - 1) : ℕ) : ℤ)` using `ha.of_isCoprime_of_dvd_right (Int.natCast_dvd_natCast.2 hdiv)`. Take `⟨u, hu⟩` from `unitOf _ a had`.
-
-Rewrite using `[UpperTheory.V.X.prodX, MulChar.coeToFun_mul, Pi.mul_apply, ← hu, DirichletCharacter.changeLevel_eq_cast_of_dvd, DirichletCharacter.changeLevel_eq_cast_of_dvd, hu, ZMod.cast_intCast (R := ZMod f) (Dvd.intro _ rfl : f ∣ f * 2 ^ (c2 ψ - 1)) a, ZMod.cast_intCast (R := ZMod (2 ^ (c2 …`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.dirData :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (N : ℕ) [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (o₁ : ℕ), UnitaryThreeInertia.HostData l e ψ o₁ → ∀ q : ℕ, UnitaryThreeInertia.XData l ψ q → ∀ ω : DirichletCharacter c.O l, ω ^ (l - 1) = 1 → ∃ (d f n : ℕ) (φ : DirichletCharacter c.O f) (ξ : DirichletCharacter c.O (2 ^ n)), XData l d φ ξ ∧ f * 2 ^ n ∣ l * N * N ∧ ∀ a : ℤ, IsCoprime a (l * N * N : ℕ) → prodX φ ξ a = (ω a ^ e * psi2 ψ a * th1 l ψ a) ^ 2 * ((ZMod.χ₄ a : ℤ) : c.O) := by

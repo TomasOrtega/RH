@@ -15,18 +15,18 @@ open PositivityTheory.RgEis PositivityTheory.RgEis.TF GroundTheory.Global Ground
 variable {k : Type} [Field k] [NumberField k]
 
 /- English proof (translation)
-The claim follows from `_root_.natCast_mem (OH k) M`.
+A detailed English derivation is pending.
 -/
 theorem natC_mem (M : ℕ) : (M : FiniteAdeleRing (𝓞 k) k) ∈ OH k := _root_.natCast_mem (OH k) M
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, zero_mem _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem inM_zero (M : ℕ) : InM M (0 : FiniteAdeleRing (𝓞 k) k) :=
   ⟨0, zero_mem _, by simp⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a + b, add_mem ha hb, by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inM_add {M : ℕ} {x y : FiniteAdeleRing (𝓞 k) k} (hx : InM M x) (hy : InM M y) :
     InM M (x + y) := by
@@ -35,14 +35,14 @@ theorem inM_add {M : ℕ} {x y : FiniteAdeleRing (𝓞 k) k} (hx : InM M x) (hy 
   exact ⟨a + b, add_mem ha hb, by ring⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨-a, neg_mem ha, by ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inM_neg {M : ℕ} {x : FiniteAdeleRing (𝓞 k) k} (hx : InM M x) : InM M (-x) := by
   obtain ⟨a, ha, rfl⟩ := hx
   exact ⟨-a, neg_mem ha, by ring⟩
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `inM_add hx (inM_neg hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inM_sub {M : ℕ} {x y : FiniteAdeleRing (𝓞 k) k} (hx : InM M x) (hy : InM M y) :
     InM M (x - y) := by
@@ -50,7 +50,7 @@ theorem inM_sub {M : ℕ} {x y : FiniteAdeleRing (𝓞 k) k} (hx : InM M x) (hy 
   exact inM_add hx (inM_neg hy)
 
 /- English proof (translation)
-Take `⟨b, hb, rfl⟩` from `hx`. Conclude with `⟨a * b, mul_mem ha hb, by ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inM_mul {M : ℕ} {a x : FiniteAdeleRing (𝓞 k) k} (ha : a ∈ OH k) (hx : InM M x) :
     InM M (a * x) := by
@@ -58,7 +58,7 @@ theorem inM_mul {M : ℕ} {a x : FiniteAdeleRing (𝓞 k) k} (ha : a ∈ OH k) (
   exact ⟨a * b, mul_mem ha hb, by ring⟩
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Take `⟨b, hb, rfl⟩` from `hx`. Conclude with `⟨(c : FiniteAdeleRing (𝓞 k) k) * b, mul_mem (natC_mem c) hb, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inM_dvd {M₀ M : ℕ} (h : M₀ ∣ M) {x : FiniteAdeleRing (𝓞 k) k} (hx : InM M x) :
     InM M₀ x := by
@@ -67,14 +67,14 @@ theorem inM_dvd {M₀ M : ℕ} (h : M₀ ∣ M) {x : FiniteAdeleRing (𝓞 k) k}
   exact ⟨(c : FiniteAdeleRing (𝓞 k) k) * b, mul_mem (natC_mem c) hb, by push_cast; ring⟩
 
 /- English proof (translation)
-Take `⟨b, hb, rfl⟩` from `hx`. Conclude with `mul_mem (natC_mem M) hb`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_inM {M : ℕ} {x : FiniteAdeleRing (𝓞 k) k} (hx : InM M x) : x ∈ OH k := by
   obtain ⟨b, hb, rfl⟩ := hx
   exact mul_mem (natC_mem M) hb
 
 /- English proof (translation)
-Introduce `v` and use `((mem_finiteIntegralUnits k).1 hu v).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unit_mem {u : (FiniteAdeleRing (𝓞 k) k)ˣ} (hu : u ∈ finiteIntegralUnits k) :
     (u : FiniteAdeleRing (𝓞 k) k) ∈ OH k :=
@@ -83,28 +83,28 @@ theorem unit_mem {u : (FiniteAdeleRing (𝓞 k) k)ˣ} (hu : u ∈ finiteIntegral
 def val (ω : HeckeCharacter k) (u : (FiniteAdeleRing (𝓞 k) k)ˣ) : ℂ := (ω.toIdele (ofFinite u) : ℂ)
 
 /- English proof (translation)
-Simplify using `[val, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_mul (ω : HeckeCharacter k) (u u' : (FiniteAdeleRing (𝓞 k) k)ˣ) :
     val ω (u * u') = val ω u * val ω u' := by
   simp [val, map_mul]
 
 /- English proof (translation)
-The claim follows from `Circle.coe_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem val_ne_zero (ω : HeckeCharacter k) (u : (FiniteAdeleRing (𝓞 k) k)ˣ) : val ω u ≠ 0 :=
   Circle.coe_ne_zero _
 
 /- English proof (translation)
-The claim follows from `Circle.norm_coe _`.
+A detailed English derivation is pending.
 -/
 theorem norm_val (ω : HeckeCharacter k) (u : (FiniteAdeleRing (𝓞 k) k)ˣ) : ‖val ω u‖ = 1 :=
   Circle.norm_coe _
 
 /- English proof (translation)
-Establish `hw : u * u'⁻¹ ∈ finiteIntegralUnits k` using `mul_mem hu (inv_mem hu')`. Establish `h1 : InM M₀ (((u * u'⁻¹ : (FiniteAdeleRing (𝓞 k) k)ˣ) : FiniteAdeleRing (𝓞 k) k) - 1)`. Establish `e : ((u * u'⁻¹ : (FiniteAdeleRing (𝓞 k) k)ˣ) : FiniteAdeleRing (𝓞 k) k) - 1 = ((u'⁻¹ : (FiniteAdeleRing (𝓞 k) k)ˣ) : FiniteAdeleRing (𝓞 k) k) * ((u : FiniteAdeleRing (𝓞 k) k) - (u' : FiniteAdeleRing (𝓞 k) k))`. Rewrite using `[mul_sub, Units.val_mul, mul_comm, Units.inv_mul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inM_mul (unit_mem (inv_mem hu')) h`. Establish `h2 : val ω (u * u'⁻¹) = 1` using `by simp only [val]; rw [hc _ hw h1]; simp`. Establish `h3 : val ω (u * u'⁻¹) * val ω u' = val ω u`. Rewrite using `[← val_mul, inv_mul_cancel_right]`. Rewrite using `[← h3, h2, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq_of_inM {ω : HeckeCharacter k} {M₀ : ℕ}
     (hc : ∀ u ∈ finiteIntegralUnits k, InM M₀ ((u : FiniteAdeleRing (𝓞 k) k) - 1) →
@@ -136,9 +136,9 @@ structure Lvl (ω : HeckeCharacter k) (M₀ M : ℕ) : Prop where
     ω.toIdele (ofFinite u) = 1
 
 /- English proof (translation)
-Establish `hex : ∃ u ∈ finiteIntegralUnits k, InM M (a - (u : FiniteAdeleRing (𝓞 k) k))` using `⟨u, hu, h⟩`. Rewrite using `[chi, dif_pos hex]`. Take `⟨h1, h2⟩` from `hex.choose_spec`. Use `val_eq_of_inM hL.cond h1 hu (inM_dvd hL.dvd ?_)` and prove the remaining obligations. Use `inM_sub h h2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem chi_eq {ω : HeckeCharacter k} {M₀ M : ℕ} (hL : Lvl ω M₀ M)
     {a : FiniteAdeleRing (𝓞 k) k} {u : (FiniteAdeleRing (𝓞 k) k)ˣ}
@@ -152,7 +152,7 @@ theorem chi_eq {ω : HeckeCharacter k} {M₀ M : ℕ} (hL : Lvl ω M₀ M)
   rwa [sub_sub_sub_cancel_left] at this
 
 /- English proof (translation)
-Rewrite using `[chi, dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_eq_zero {ω : HeckeCharacter k} {M : ℕ} {a : FiniteAdeleRing (𝓞 k) k}
     (h : ¬ ∃ u ∈ finiteIntegralUnits k, InM M (a - (u : FiniteAdeleRing (𝓞 k) k))) :
@@ -160,7 +160,7 @@ theorem chi_eq_zero {ω : HeckeCharacter k} {M : ℕ} {a : FiniteAdeleRing (𝓞
   rw [chi, dif_neg h]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Conclude with `h (chi_eq_zero hn)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_of_chi_ne_zero {ω : HeckeCharacter k} {M : ℕ} {a : FiniteAdeleRing (𝓞 k) k}
     (h : chi ω M a ≠ 0) :
@@ -169,7 +169,7 @@ theorem exists_of_chi_ne_zero {ω : HeckeCharacter k} {M : ℕ} {a : FiniteAdele
   exact h (chi_eq_zero hn)
 
 /- English proof (translation)
-Take `⟨u, hu, hM⟩` from `exists_of_chi_ne_zero h`. Use `add_mem (mem_of_inM hM) (unit_mem hu)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_chi_ne_zero {ω : HeckeCharacter k} {M : ℕ} {a : FiniteAdeleRing (𝓞 k) k}
     (h : chi ω M a ≠ 0) : a ∈ OH k := by
@@ -178,11 +178,11 @@ theorem mem_of_chi_ne_zero {ω : HeckeCharacter k} {M : ℕ} {a : FiniteAdeleRin
   rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ u ∈ finiteIntegralUnits k, InM M (a - (u : FiniteAdeleRing (𝓞 k) k))`. Take `⟨u, hu, hM⟩` from `hex`. Rewrite using `[chi_eq hL hu hM, chi_eq hL hu (a := a + h)]`. Use `inM_add hM hh` as an intermediate fact. Rewrite `this` using `[sub_add_eq_add_sub]`. Then use the resulting hypothesis.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[chi_eq_zero hex, chi_eq_zero]`. Introduce and unpack `⟨u, hu, hM⟩`. Use `hex ⟨u, hu, ?_⟩` and prove the remaining obligations. Use `inM_sub hM hh` as an intermediate fact. Establish `e : a + h - (u : FiniteAdeleRing (𝓞 k) k) - h = a - u` using `by ring`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem chi_add {ω : HeckeCharacter k} {M₀ M : ℕ} (hL : Lvl ω M₀ M)
     (a : FiniteAdeleRing (𝓞 k) k) {h : FiniteAdeleRing (𝓞 k) k} (hh : InM M h) :
@@ -200,7 +200,7 @@ theorem chi_add {ω : HeckeCharacter k} {M₀ M : ℕ} (hL : Lvl ω M₀ M)
     rwa [e] at this
 
 /- English proof (translation)
-Take `⟨u, hu, hu'⟩` from `exists_of_chi_ne_zero h`. Take `⟨u₁, h1, h2⟩` from `hU k M hM a ha b hb u hu hu'`. Rewrite using `[chi_eq hL h1 h2]`. Conclude with `val_ne_zero ω u₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift {ω : HeckeCharacter k} {M₀ M : ℕ} (hL : Lvl ω M₀ M) (hM : M ≠ 0) (hU : LiftUnit)
     {a b : FiniteAdeleRing (𝓞 k) k} (ha : a ∈ OH k) (hb : b ∈ OH k) (h : chi ω M (a * b) ≠ 0) :
@@ -211,13 +211,13 @@ theorem lift {ω : HeckeCharacter k} {M₀ M : ℕ} (hL : Lvl ω M₀ M) (hM : M
   exact val_ne_zero ω u₁
 
 /- English proof (translation)
-Distinguish the cases in `h1 : chi ω M a = 0`. Rewrite using `[h1, zero_mul]`. Assume the negation of the conclusion as `hn`. Conclude with `lift hL hM hU ha hb hn h1`. Distinguish the cases in `h2 : chi ω M b = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, mul_zero]`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[mul_comm]`. Conclude with `lift hL hM hU hb ha hn h2`. Take `⟨u, hu, hu'⟩` from `exists_of_chi_ne_zero h1`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw, hw'⟩` from `exists_of_chi_ne_zero h2`. Rewrite using `[chi_eq hL hu hu', chi_eq hL hw hw', ← val_mul]`. Use `chi_eq hL (mul_mem hu hw) ?_` and prove the remaining obligations. Establish `e : a * b - ((u * w : (FiniteAdeleRing (𝓞 k) k)ˣ) : FiniteAdeleRing (𝓞 k) k) = a * (b - (w : FiniteAdeleRing (𝓞 k) k)) + (w : FiniteAdeleRing (𝓞 k) k) * (a - (u : FiniteAdeleRing (𝓞 k) k))`. Rewrite using `[Units.val_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `inM_add (inM_mul ha hw') (inM_mul (unit_mem hw) hu')`.
+A detailed English derivation is pending.
 -/
 theorem chi_mul {ω : HeckeCharacter k} {M₀ M : ℕ} (hL : Lvl ω M₀ M) (hM : M ≠ 0) (hU : LiftUnit)
     {a b : FiniteAdeleRing (𝓞 k) k} (ha : a ∈ OH k) (hb : b ∈ OH k) :
@@ -243,11 +243,11 @@ theorem chi_mul {ω : HeckeCharacter k} {M₀ M : ℕ} (hL : Lvl ω M₀ M) (hM 
   exact inM_add (inM_mul ha hw') (inM_mul (unit_mem hw) hu')
 
 /- English proof (translation)
-Use `(GJMatrix.mem_finiteSchwartzBruhatPi k).2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `(IsLocallyConstant.iff_exists_open f).2 fun x => ?_` and prove the remaining obligations. Use `⟨Set.pi Set.univ fun j => {y | InM M (y - x j)}, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `isOpen_set_pi Set.finite_univ fun j _ => ?_` and prove the remaining obligations. Conclude with `hO.preimage (continuous_id.sub continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _`. Simplify using `using inM_zero (k := k) M`. Introduce `y hy`. Use `hinv x (y - x) fun j => hy j (Set.mem_univ j)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasCompactSupport.of_support_subset_isCompact (K := Set.pi Set.univ fun _ : ι => (OH k : Set (FiniteAdeleRing (𝓞 k) k))) (isCompact_univ_pi fun _ => isCompact_integralFiniteAdeles k) ?_` and prove the remaining obligations. Introduce `x hx j _`. Conclude with `hs x hx j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_schwartzBruhat {ι : Type} [Fintype ι] {M : ℕ}
     (hO : IsOpen {x : FiniteAdeleRing (𝓞 k) k | InM M x}) {f : (ι → FiniteAdeleRing (𝓞 k) k) → ℂ}
@@ -273,11 +273,11 @@ def gFun {ι : Type} (ω : HeckeCharacter k) (M : ℕ) (i₀ : ι) (x : ι → F
   if (∀ j, x j ∈ OH k) ∧ (∀ j, j ≠ i₀ → InM M (x j)) then chi ω M (x i₀) else 0
 
 /- English proof (translation)
-Establish `e : ((∀ j, (x + h) j ∈ OH k) ∧ (∀ j, j ≠ i₀ → InM M ((x + h) j))) ↔ ((∀ j, x j ∈ OH k) ∧ (∀ j, j ≠ i₀ → InM M (x j)))`. Use `and_congr (forall_congr' fun j => ?_) (forall_congr' fun j => imp_congr_right fun _ => ?_)` and prove the remaining obligations. Use `⟨fun H => ?_, fun H => add_mem H (mem_of_inM (hh j))⟩` and prove the remaining obligations. Use `sub_mem H (mem_of_inM (hh j))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨fun H => ?_, fun H => inM_add H (hh j)⟩` and prove the remaining obligations. Use `inM_sub H (hh j)` as an intermediate fact. Simplify using `using this`. Unfold `gFun`. Simplify using `only [e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `chi_add hL _ (hh i₀)`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gFun_add {ι : Type} {ω : HeckeCharacter k} {M₀ M : ℕ} (hL : Lvl ω M₀ M) (i₀ : ι)
     (x h : ι → FiniteAdeleRing (𝓞 k) k) (hh : ∀ j, InM M (h j)) :
@@ -298,7 +298,7 @@ theorem gFun_add {ι : Type} {ω : HeckeCharacter k} {M₀ M : ℕ} (hL : Lvl ω
   · rfl
 
 /- English proof (translation)
-Unfold `gFun at h`. Use `split_ifs at h with hc`. Conclude with `⟨hc.1, hc.2, h⟩`. Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gFun_supp {ι : Type} {ω : HeckeCharacter k} {M : ℕ} {i₀ : ι}
     {x : ι → FiniteAdeleRing (𝓞 k) k} (h : gFun ω M i₀ x ≠ 0) :
@@ -309,9 +309,9 @@ theorem gFun_supp {ι : Type} {ω : HeckeCharacter k} {M : ℕ} {i₀ : ι}
   · exact absurd rfl h
 
 /- English proof (translation)
-Use `⟨fun H => ?_, inM_mul ht'⟩` and prove the remaining obligations. Establish `h1 : InM M (t * y - y * (t - (u : FiniteAdeleRing (𝓞 k) k)))` using `inM_sub H (inM_mul hy ht)`. Establish `h2` using `inM_mul (unit_mem (inv_mem hu)) h1`. Establish `e : ((u⁻¹ : (FiniteAdeleRing (𝓞 k) k)ˣ) : FiniteAdeleRing (𝓞 k) k) * (t * y - y * (t - (u : FiniteAdeleRing (𝓞 k) k))) = y`. Establish `: t * y - y * (t - (u : FiniteAdeleRing (𝓞 k) k)) = (u : FiniteAdeleRing (𝓞 k) k) * y` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, Units.inv_mul_cancel_left]`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem inM_mul_iff {M : ℕ} {t y : FiniteAdeleRing (𝓞 k) k} {u : (FiniteAdeleRing (𝓞 k) k)ˣ}
     (hu : u ∈ finiteIntegralUnits k) (ht : InM M (t - (u : FiniteAdeleRing (𝓞 k) k)))
@@ -326,7 +326,7 @@ theorem inM_mul_iff {M : ℕ} {t y : FiniteAdeleRing (𝓞 k) k} {u : (FiniteAde
   rwa [e] at h2
 
 /- English proof (translation)
-Take `⟨c, hc, hs⟩` from `hv.2`. Establish `e : t = ∑ j, c j * (t * v j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `sum_mem fun j _ => mul_mem (hc j) (h j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_prim {ι : Type} [Fintype ι] {v : ι → FiniteAdeleRing (𝓞 k) k} (hv : Prim v)
     {t : FiniteAdeleRing (𝓞 k) k} (h : ∀ j, t * v j ∈ OH k) : t ∈ OH k := by
@@ -338,13 +338,11 @@ theorem mem_of_prim {ι : Type} [Fintype ι] {v : ι → FiniteAdeleRing (𝓞 k
   exact sum_mem fun j _ => mul_mem (hc j) (h j)
 
 /- English proof (translation)
-Distinguish the cases in `h0 : chi ω M t = 0`. Rewrite using `[h0, zero_mul]`. Assume the negation of the conclusion as `hn`. Take `⟨h1, -, h3⟩` from `gFun_supp hn`. Establish `ht : t ∈ OH k` using `mem_of_prim hv h1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `lift hL hM hU ht (hv.1 i₀) h3 h0`. Establish `ht` using `mem_of_chi_ne_zero h0`. Take `⟨u, hu, hu'⟩` from `exists_of_chi_ne_zero h0`. Establish `e : ((∀ j, (t • v) j ∈ OH k) ∧ (∀ j, j ≠ i₀ → InM M ((t • v) j))) ↔ ((∀ j, v j ∈ OH k) ∧ (∀ j, j ≠ i₀ → InM M (v j)))`. Use `and_congr ?_ (forall_congr' fun j => imp_congr_right fun _ => inM_mul_iff hu hu' (hv.1 j) ht)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨fun _ => hv.1, fun _ j => mul_mem ht (hv.1 j)⟩`. Unfold `gFun`. Simplify using `only [e]`. Use `split_ifs`. Conclude with `chi_mul hL hM hU ht (hv.1 i₀)`.
-
-Rewrite using `[mul_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gFun_smul {ι : Type} [Fintype ι] {ω : HeckeCharacter k} {M₀ M : ℕ} (hL : Lvl ω M₀ M)
     (hM : M ≠ 0) (hU : LiftUnit) (i₀ : ι) {v : ι → FiniteAdeleRing (𝓞 k) k} (hv : Prim v)
@@ -369,27 +367,25 @@ theorem gFun_smul {ι : Type} [Fintype ι] {ω : HeckeCharacter k} {M₀ M : ℕ
   · rw [mul_zero]
 
 /- English proof (translation)
-Introduce `k _ _ ω`. Take `⟨M₀, hM₀, hc⟩` from `hC k ω`. Use `⟨M₀, hM₀, fun M hM hd ι _ _ i₀ => ?_⟩` and prove the remaining obligations. Establish `hL : Lvl ω M₀ M` using `⟨hd, hc⟩`. Establish `hO` using `((hT k).1 M hM).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : chi ω M 1 = 1`. Use `chi_eq hL (a := 1) (u := 1) (one_mem _) (by simpa using inM_zero (k := k) M)` as an intermediate fact. Rewrite using `[this]`. Simplify using `[val]`. Use `⟨gFun ω M i₀, fun x => chi ω M (x ()), ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mem_schwartzBruhat hO (fun x h hh => gFun_add hL i₀ x h hh) fun x hx => (gFun_supp hx).1`. Use `mem_schwartzBruhat hO (fun x h hh => chi_add hL _ (hh ())) fun x hx j => ?_` and prove the remaining obligations. Conclude with `mem_of_chi_ne_zero hx`. Unfold `gFun`. Rewrite using `[if_pos]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hone`. Use `⟨fun j => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : j = i₀`. Substitute `h` using the available equality. Simplify using `using one_mem (OH k)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[Pi.single_eq_of_ne h, zero_mem]`. Simplify `inM_zero (k := k) M` using `[Pi.single_eq_of_ne hj]`. Introduce `u hu`. Conclude with `chi_eq hL hu (by simpa using inM_zero (k := k) M)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `⟨?_, mem_of_chi_ne_zero⟩` and prove the remaining obligations. Distinguish the cases in `h : chi ω M t = 0`. Simplify using `[h]`. Take `⟨u, hu, hu'⟩` from `exists_of_chi_ne_zero h show ‖chi ω M t‖ ≤ 1`. Rewrite using `[chi_eq hL hu hu', norm_val]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Introduce and unpack `rfl t`. Distinguish the cases in `h : chi (1 : HeckeCharacter k) M t = 0`. Conclude with `⟨0, le_rfl, by simp [h]⟩`. Take `⟨u, hu, hu'⟩` from `exists_of_chi_ne_zero h`. Use `⟨1, zero_le_one, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show chi (1 : HeckeCharacter k) M t = ((1 : ℝ) : ℂ)`. Rewrite using `[chi_eq hL hu hu']`. Establish `: (1 : HeckeCharacter k).toIdele (ofFinite u) = 1` using `rfl`. Simplify using `[val, this]`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Use `⟨fun t => gFun_smul hL hM hU i₀ hv t, fun h j hj => (gFun_supp h).2.1 j hj, fun h => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : gFun ω M i₀ v = 0`. Conclude with `Or.inl h0`. Use `right`. Take `⟨h1, h2, h3⟩` from `gFun_supp h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, hu'⟩` from `exists_of_chi_ne_zero h3`. Establish `hval : gFun ω M i₀ v = chi ω M (v i₀)`. Unfold `gFun`. Rewrite using `[if_pos ⟨h1, h2⟩]`. Rewrite using `[hval, chi_eq hL hu hu']`.
-
-Establish `e : (u : FiniteAdeleRing (𝓞 k) k) - 1 = (v i₀ - 1) - (v i₀ - u)` using `by ring`. Establish `h4 : InM M₀ ((u : FiniteAdeleRing (𝓞 k) k) - 1)`. Rewrite using `[e]`. Conclude with `inM_sub h (inM_dvd hd hu')`. Simplify using `[val, hc u hu h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finFun (hC : CondM) (hU : LiftUnit) (hT : InMTop) : FinFun := by
   intro k _ _ ω

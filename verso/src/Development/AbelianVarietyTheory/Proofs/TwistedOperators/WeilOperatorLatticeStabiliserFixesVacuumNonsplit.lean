@@ -16,17 +16,15 @@ variable {D : D7} {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (
   {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F}
 
 /- English proof (translation)
-Take `⟨β, rfl, h1, h0⟩` from `hε`. Establish `hβα : ∀ α : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F, (∀ w, ¬ w = v → evalV D.host.F w α = 0) → β * α = α`. Introduce `α hα`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show β w * α w = α w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Establish `: β w = 1` using `h1`. Rewrite using `[this, one_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: α w = 0` using `hα w hw`. Rewrite using `[this, mul_zero]`. Unfold `latO at hu`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨α, -, hα, a, -, s, -, t, -, rfl⟩` from `hw`. Use function extensionality and compare the values at `i j`. Use `show algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 β) * _ = _`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Simplify using `only [Matrix.of_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `show ((0 * 0, β * α) : AF D.host.F) = (0, α)`. Rewrite using `[mul_zero, hβα α hα]`. Consider the case `zero => exact smul_zero _`. Consider the case `add x y _ _ hx hy => rw [smul_add, hx, hy]`.
-
-Consider the case `neg x _ hx => rw [smul_neg, hx]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem idem_smul_eq (hε : IsPlaceIdem D v ε) {u : WO S T} (hu : u ∈ latO S T LS LT fun w => w = v) :
     algebraMap (AF D.host.F) (AE D) ε • u = u := by
@@ -58,9 +56,9 @@ theorem idem_smul_eq (hε : IsPlaceIdem D v ε) {u : WO S T} (hu : u ∈ latO S 
   | neg x _ hx => rw [smul_neg, hx]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Conclude with `⟨GlobalTheory.PlaceModel.latO_le_top _ hu, idem_smul_eq hε hu⟩`. Introduce and unpack `⟨hu, he⟩`. Use `GlobalTheory.PlaceModel.placeIdem_smul_mem hε hu` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `this` using `[he]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_place_iff (hε : IsPlaceIdem D v ε) (u : WO S T) :
     u ∈ (latO S T LS LT fun w => w = v) ↔
@@ -73,13 +71,11 @@ theorem mem_place_iff (hε : IsPlaceIdem D v ε) (u : WO S T) :
     rwa [he] at this
 
 /- English proof (translation)
-Introduce `x y hxy`. Unfold `actO at hxy`. Establish `hT : Formalism.L2.Theta.mt T h⁻¹ * Formalism.L2.Theta.mt T h = 1`. Rewrite using `[← GlobalTheory.AdelicLatMove.mt_mul, inv_mul_cancel, GlobalTheory.AdelicLatMove.mt_one]`. Establish `hS : Formalism.L2.Theta.mt S g⁻¹ * Formalism.L2.Theta.mt S g = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.AdelicLatMove.mt_mul, inv_mul_cancel, GlobalTheory.AdelicLatMove.mt_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hT, hS, Matrix.one_mul, Matrix.mul_one]`. Use `_ = Formalism.L2.Theta.mt T h⁻¹ * (Formalism.L2.Theta.mt T h * x * Formalism.L2.Theta.mt S g⁻¹) * Formalism.L2.Theta.mt S g := by`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Formalism.L2.Theta.mt T h⁻¹ * (Formalism.L2.Theta.mt T h * y * Formalism.L2.Theta.mt S g⁻¹) * Formalism.L2.Theta.mt S g := by`. Rewrite using `[hxy]`. Use `_ = (Formalism.L2.Theta.mt T h⁻¹ * Formalism.L2.Theta.mt T h) * y * (Formalism.L2.Theta.mt S g⁻¹ * Formalism.L2.Theta.mt S g) := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = y := by`.
-
-Rewrite using `[hT, hS, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_injective (g : GA D S) (h : GA D T) : Function.Injective (actO S T g h) := by
   intro x y hxy
@@ -100,17 +96,17 @@ theorem act_injective (g : GA D S) (h : GA D T) : Function.Injective (actO S T g
         rw [hT, hS, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `D ψ S T ΛS ΛT χS χT om hW hS hT hη v ε hns hχS hχT g h hg hh hlat f hf hvac`. Establish `hε : IsPlaceIdem D v ε` using `hns.1`. Establish `key` using `GlobalTheory.T.weilDatum_fixes_vacuum_nonSplitPlace_unramified D ψ hW.std S T ΛS ΛT hS hT χS χT om hη hW v ε hns hχS hχT`. Establish `hc : ∀ (c : AE D) (x : WO S T), actO S T g h (c • x) = c • actO S T g h x`. Introduce `c x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `actO`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use `key g h hg hh ?_ f hf ?_` and prove the remaining obligations. Introduce `u`. Rewrite using `[mem_place_iff hε, mem_place_iff hε]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(hlat u).1 h1, by rw [← hc, h2]⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨(hlat u).2 h1, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Apply `act_injective g h` to reduce the goal to its premises. Rewrite using `[hc]`. Conclude with `h2`. Introduce `u hu`. Take `⟨a, ha, h2a⟩` from `GlobalTheory.FinWeilO.exists_half_of_nonSplit hns`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu'` using `(mem_place_iff hε u).1 hu`. Establish `hau` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ a ha u hu'.1`. Establish `e2 : 2 • (a • u) = u`. Rewrite using `[two_nsmul, ← add_smul, ← two_mul, h2a]`. Conclude with `hu'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hvac.1 (a • u) hau` as an intermediate fact. Rewrite `this` using `[e2]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem om_fixes_vacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → IsSelfDualC S ΛS → IsSelfDualC T ΛT → (∃ η, IsEtaTilde D η) → ∀ v ε, NonSplitAt D v ε → UnramAt ε χS → UnramAt ε χT → ∀ g h, SuppPl ε S g → SuppPl ε T h → (∀ u, u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) ↔ actO S T g h u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True)) → ∀ f, IsThetaFunO ψ S T f → IsLatVac (heisO ψ S T) (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) f → om (g, h) f = f := by
   intro D ψ S T ΛS ΛT χS χT om hW hS hT hη v ε hns hχS hχT g h hg hh hlat f hf hvac

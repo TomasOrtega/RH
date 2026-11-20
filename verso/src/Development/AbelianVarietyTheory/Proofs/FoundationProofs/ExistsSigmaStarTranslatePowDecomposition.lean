@@ -18,21 +18,21 @@ namespace GlobalTheory.ThetaTranslDecomp
 variable {Λ : AddSubgroup ℂ}
 
 /- English proof (translation)
-Simplify using `only [U1, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma u1_apply_eq_mul_u1_one (ω : ℂ) (G : ℂ → ℂ) (z : ℂ) :
     U1 Λ ω G z = G (z + ω) * U1 Λ ω (fun _ => (1 : ℂ)) z := by
   simp only [U1, one_mul]
 
 /- English proof (translation)
-Simplify using `only [U1, one_mul]`. Conclude with `Complex.exp_ne_zero _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma u1_one_ne_zero (ω z : ℂ) : U1 Λ ω (fun _ => (1 : ℂ)) z ≠ 0 := by
   simp only [U1, one_mul]
   exact Complex.exp_ne_zero _
 
 /- English proof (translation)
-Simplify using `only [U1, one_mul, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma u1_one_add_mul_comm_cexp (a b z : ℂ) :
     U1 Λ a (fun _ => (1 : ℂ)) (z + b) * U1 Λ b (fun _ => (1 : ℂ)) z =
@@ -43,7 +43,7 @@ private lemma u1_one_add_mul_comm_cexp (a b z : ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [U1, one_mul, ← Complex.exp_add, map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma u1_one_add_mul_eq_u1_one_add_mul_cexp (a b z : ℂ) :
     U1 Λ a (fun _ => (1 : ℂ)) (z + b) * U1 Λ b (fun _ => (1 : ℂ)) z =
@@ -54,15 +54,13 @@ private lemma u1_one_add_mul_eq_u1_one_add_mul_cexp (a b z : ℂ) :
   ring
 
 /- English proof (translation)
-Take `⟨z0, hz0⟩` from `hΛ.dense_compl.nonempty`. Establish `hs0 : sgStar Λ z0 ≠ 0` using `fun h0 => hz0 ((hΛ.sg_eq_zero z0).1 h0)`. Establish `hsq : ∀ c : ℂ, (if c / 2 ∈ Λ then (1 : ℂ) else -1) ^ 2 = 1`. Introduce `c`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `l1` using `hΛ.sg_law (add_mem ha hb) z0`. Establish `l2` using `hΛ.sg_law ha (z0 + b)`. Establish `l3` using `hΛ.sg_law hb z0`. Rewrite `l1`, `l2`, `l3` using `[u1_apply_eq_mul_u1_one]`. Establish `key : (if (a + b) / 2 ∈ Λ then (1 : ℂ) else -1) * Complex.exp ((Real.pi : ℂ) * (a * (starRingEnd ℂ) b - b * (starRingEnd ℂ) a) / (2 * (area Λ : ℂ))) = (if a / 2 ∈ Λ then (1 : ℂ) else -1) * (if b / 2 ∈ Λ then (1 : ℂ) else -1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `mul_right_cancel₀ hs0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[l1]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = sgStar Λ (z0 + b + a) * (U1 Λ a (fun _ => (1 : ℂ)) (z0 + b) * U1 Λ b (fun _ => (1 : ℂ)) z0) := by`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[u1_one_add_mul_eq_u1_one_add_mul_cexp, show z0 + b + a = z0 + (a + b) by ring]; ring`. Use `_ = _ := by rw [← mul_assoc, l2, mul_assoc, l3]; ring`. Establish `h2 : Complex.exp ((Real.pi : ℂ) * (a * (starRingEnd ℂ) b - b * (starRingEnd ℂ) a) / (2 * (area Λ : ℂ))) ^ 2 = 1`. Use `congrArg (· ^ 2) key` as an intermediate fact. Simplify using `only [mul_pow, hsq, one_mul] at this`.
-
-Conclude with `this`. Rewrite using `[show (Real.pi : ℂ) * (a * (starRingEnd ℂ) b - b * (starRingEnd ℂ) a) / (area Λ : ℂ) = (Real.pi : ℂ) * (a * (starRingEnd ℂ) b - b * (starRingEnd ℂ) a) / (2 * (area Λ : ℂ)) + (Real.pi : ℂ) * (a * (starRingEnd ℂ) b - b * (starRingEnd ℂ) a) / (2 * (area Λ : ℂ)) by ring, Complex.exp_ …`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma cexp_pi_mul_conj_sub_div_area_eq_one_of_mem (hΛ : IsLat Λ) {a b : ℂ} (ha : a ∈ Λ) (hb : b ∈ Λ) :
     Complex.exp ((Real.pi : ℂ) * (a * (starRingEnd ℂ) b - b * (starRingEnd ℂ) a) / (area Λ : ℂ)) = 1 := by
@@ -96,17 +94,17 @@ private lemma cexp_pi_mul_conj_sub_div_area_eq_one_of_mem (hΛ : IsLat Λ) {a b 
     Complex.exp_add, ← sq, h2]
 
 /- English proof (translation)
-Distinguish the cases in `hz : z ∈ Λ`. Establish `h1 : sgStar Λ z = 0` using `(hΛ.sg_eq_zero z).2 hz`. Establish `h2 : sgStar Λ (z + l) = 0` using `(hΛ.sg_eq_zero _).2 (add_mem hz hl)`. Rewrite using `[h1, h2, div_zero, div_zero]`. Establish `hs : sgStar Λ z ≠ 0` using `fun h0 => hz ((hΛ.sg_eq_zero z).1 h0)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzl : z + l ∉ Λ` using `fun h' => hz (by simpa using sub_mem h' hl)`. Establish `hsl : sgStar Λ (z + l) ≠ 0` using `fun h0 => hzl ((hΛ.sg_eq_zero _).1 h0)`. Apply the tactic sequence `have hsn : (if l / 2 ∈ Λ then (1 : ℂ) else -1) ≠ 0 := by split_ifs <;> norm_num`. Establish `la` using `hΛ.sg_law hl (z + t)`. Establish `lb` using `hΛ.sg_law hl z`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `la`, `lb` using `[u1_apply_eq_mul_u1_one]`. Establish `hK` using `u1_one_add_mul_comm_cexp (Λ := Λ) t l z`. Establish `e3` using `u1_one_ne_zero (Λ := Λ) l z`. Establish `e4` using `u1_one_ne_zero (Λ := Λ) l (z + t)`. Establish `hA : sgStar Λ (z + l + t) = (if l / 2 ∈ Λ then (1 : ℂ) else -1) * sgStar Λ (z + t) / U1 Λ l (fun _ => (1 : ℂ)) (z + t)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eq_div_iff e4, show z + l + t = z + t + l by ring]`. Conclude with `la`. Establish `hB : sgStar Λ (z + l) = (if l / 2 ∈ Λ then (1 : ℂ) else -1) * sgStar Λ z / U1 Λ l (fun _ => (1 : ℂ)) z`. Rewrite using `[eq_div_iff e3]`. Conclude with `lb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hF : U1 Λ t (fun _ => (1 : ℂ)) (z + l) = U1 Λ t (fun _ => (1 : ℂ)) z * U1 Λ l (fun _ => (1 : ℂ)) (z + t) * Complex.exp ((Real.pi : ℂ) * (t * (starRingEnd ℂ) l - l * (starRingEnd ℂ) t) / (area Λ : ℂ)) / U1 Λ l (fun _ => (1 : ℂ)) z`. Rewrite using `[eq_div_iff e3]`. Conclude with `hK`. Establish `hbase : U1 Λ t (sgStar Λ) (z + l) / sgStar Λ (z + l) = U1 Λ t (sgStar Λ) z / sgStar Λ z * Complex.exp ((Real.pi : ℂ) * (t * (starRingEnd ℂ) l - l * (starRingEnd ℂ) t) / (area Λ : ℂ))`. Rewrite using `[u1_apply_eq_mul_u1_one, u1_apply_eq_mul_u1_one t (sgStar Λ) z, hA, hF, hB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hbase, mul_pow, ← Complex.exp_nat_mul, show (N : ℂ) * ((Real.pi : ℂ) * (t * (starRingEnd ℂ) l - l * (starRingEnd ℂ) t) / (area Λ : ℂ)) = (Real.pi : ℂ) * ((N : ℂ) * t * (starRingEnd ℂ) l - l * (starRingEnd ℂ) ((N : ℂ) * t)) / (area Λ : ℂ) by`. Rewrite using `[map_mul, map_natCast]`. Use the proof step `ring,`. Use `cexp_pi_mul_conj_sub_div_area_eq_one_of_mem hΛ ht hl, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem ratio_pow_add (hΛ : IsLat Λ) {t : ℂ} {N : ℕ} (hN : 0 < N) (ht : (N : ℂ) * t ∈ Λ)
     (z : ℂ) {l : ℂ} (hl : l ∈ Λ) :
@@ -150,11 +148,11 @@ theorem ratio_pow_add (hΛ : IsLat Λ) {t : ℂ} {N : ℕ} (hN : 0 < N) (ht : (N
       cexp_pi_mul_conj_sub_div_area_eq_one_of_mem hΛ ht hl, mul_one]
 
 /- English proof (translation)
-Establish `hU : IsOpen (L.lattice : Set ℂ)ᶜ` using `L.isClosed_lattice.isOpen_compl`. Establish `hzL : z ∉ L.lattice` using `fun hz' => hz ((h z).2 hz')`. Establish `hev : sqTh Λ v =ᶠ[𝓝 z] fun w => sgStar Λ w ^ 2 * (L.weierstrassP w - L.weierstrassP v)` using `by filter_upwards [hU.mem_nhds hzL] with w hw`. Establish `hwΛ : w ∉ Λ` using `fun h' => hw ((h w).1 h')`. Rewrite using `[hΛ.sqTh_eq hv hwΛ, GlobalTheory.OddTheta.wpF_eq L Λ h, GlobalTheory.OddTheta.wpF_eq L Λ h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsg : HasDerivAt (sgStar Λ) (deriv (sgStar Λ) z) z` using `(hΛ.differentiable z).hasDerivAt`. Establish `hwp : HasDerivAt L.weierstrassP (L.derivWeierstrassP z) z`. Establish `hd : DifferentiableAt ℂ L.weierstrassP z` using `(L.analyticOnNhd_weierstrassP z hzL).differentiableAt`. Use `hd.hasDerivAt` as an intermediate fact. Rewrite `this` using `[L.deriv_weierstrassP]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hD : HasDerivAt (fun w => sgStar Λ w ^ 2 * (L.weierstrassP w - L.weierstrassP v)) _ z` using `(hsg.pow 2).mul (hwp.sub_const (L.weierstrassP v))`. Unfold `sqThD`. Rewrite using `[hev.deriv_eq, hD.deriv, hΛ.sqTh_eq hv hz, GlobalTheory.OddTheta.wpF_eq L Λ h, GlobalTheory.OddTheta.wpF_eq L Λ h]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sqThD_eq (hΛ : IsLat Λ) (L : PeriodPair) (h : ∀ z, z ∈ Λ ↔ z ∈ L.lattice) {v z : ℂ}
     (hv : v ∉ Λ) (hz : z ∉ Λ) : sqThD Λ v z = sgStar Λ z ^ 3 * L.derivWeierstrassP z := by
@@ -179,33 +177,31 @@ theorem sqThD_eq (hΛ : IsLat Λ) (L : PeriodPair) (h : ∀ z, z ∈ Λ ↔ z �
   ring
 
 /- English proof (translation)
-Introduce `Λ hΛ t N hN ht v hv`. Take `⟨L, hL⟩` from `GlobalTheory.OddTheta.exists_periodPair Λ hΛ`. Establish `hσ : Differentiable ℂ (sgStar Λ)` using `hΛ.differentiable`. Establish `hσ0 : ∀ w, sgStar Λ w = 0 ↔ w ∈ Λ` using `hΛ.sg_eq_zero`. Establish `hU : Differentiable ℂ (U1 Λ t (sgStar Λ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `U1`. Use `fun_prop`. Establish `hmer : Meromorphic (fun z => (U1 Λ t (sgStar Λ) z / sgStar Λ z) ^ N)` using `fun x => ((hU.analyticAt x).meromorphicAt.div (hσ.analyticAt x).meromorphicAt).pow N`. Establish `hcont : ∀ a, a ∉ Λ → ContinuousAt (fun z => (U1 Λ t (sgStar Λ) z / sgStar Λ z) ^ N) a` using `fun a ha => ((hU a).continuousAt.div (hσ a).continuousAt (fun h0 => ha ((hσ0 a).1 h0))).pow N`. Establish `hd : ∀ a ∉ L.lattice, ∃ c, Tendsto (fun z => (U1 Λ t (sgStar Λ) z / sgStar Λ z) ^ N) (𝓝[≠] a) (𝓝 c)` using `fun a ha => ⟨_, (hcont a (fun h' => ha ((hL a).1 h'))).tendsto.mono_left nhdsWithin_le_nhds⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ z, ∀ l ∈ L.lattice, (fun z => (U1 Λ t (sgStar Λ) z / sgStar Λ z) ^ N) (z + l) = (fun z => (U1 Λ t (sgStar Λ) z / sgStar Λ z) ^ N) z` using `fun z l hl => ratio_pow_add hΛ hN ht z ((hL l).2 hl)`. Take `⟨A, B, hAB⟩` from `GlobalTheory.EllipticPoles.no_pole_case L hmer hd hp`. Establish `hpt : ∀ z, z ∉ Λ → (U1 Λ t (sgStar Λ) z / sgStar Λ z) ^ N = A.eval (L.weierstrassP z) + B.eval (L.weierstrassP z) * L.derivWeierstrassP z`. Introduce `z hzΛ`. Establish `hz : z ∉ L.lattice` using `fun h' => hzΛ ((hL z).2 h')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1` using `(hcont z hzΛ).tendsto.mono_left (nhdsWithin_le_nhds (s := {z}ᶜ))`. Establish `hc2 : ContinuousAt (fun w => A.eval (L.weierstrassP w) + B.eval (L.weierstrassP w) * L.derivWeierstrassP w) z` using `(A.continuous.continuousAt.comp (L.analyticOnNhd_weierstrassP z hz).continuousAt).add ((B.continuous.continuousAt.comp (L.analyticOnNhd_weierstrassP z hz).continuousAt).mul (L.analyticOnNhd_derivWeierstrassP z hz).continuousAt)`. Conclude with `tendsto_nhds_unique (t1.congr' (hAB z)) (hc2.tendsto.mono_left nhdsWithin_le_nhds)`. Establish `hS : Differentiable ℂ (sqTh Λ v)` using `hΛ.differentiable_sqTh v`. Establish `hdS : Continuous (deriv (sqTh Λ v))` using `(hS.contDiff (n := 1)).continuous_deriv le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdσ : Continuous (deriv (sgStar Λ))` using `(hσ.contDiff (n := 1)).continuous_deriv le_rfl`. Establish `hT : Continuous (sqThD Λ v)`. Unfold `sqThD`. Conclude with `(hσ.continuous.mul hdS).sub ((continuous_const.mul hdσ).mul hS.continuous)`. Use `set P := A.comp (Polynomial.X + Polynomial.C (L.weierstrassP v)) with hP`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `set Q := B.comp (Polynomial.X + Polynomial.C (L.weierstrassP v)) with hQ`. Use `⟨max (max P.natDegree Q.natDegree) N, fun i => P.coeff i, fun j => Q.coeff j, ?_, ?_⟩` and prove the remaining obligations. Use `le_max_right (max P.natDegree Q.natDegree) N` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hIP : P.natDegree < max (max P.natDegree Q.natDegree) N + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_max_left (max P.natDegree Q.natDegree) N` as an intermediate fact. Use `le_max_left P.natDegree Q.natDegree` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hIQ : Q.natDegree < max (max P.natDegree Q.natDegree) N + 1`. Use `le_max_left (max P.natDegree Q.natDegree) N` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `le_max_right P.natDegree Q.natDegree` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hNI : N ≤ 2 * max (max P.natDegree Q.natDegree) N + 3`. Use `le_max_right (max P.natDegree Q.natDegree) N` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Generalize the expression as in `max (max P.natDegree Q.natDegree) N = I at hIP hIQ hNI ⊢`. Establish `heq : (fun z => sgStar Λ z ^ (2 * I + 3 - N) * U1 Λ t (sgStar Λ) z ^ N) = fun z => ∑ i ∈ Finset.range (I + 1), P.coeff i * (sgStar Λ z ^ (2 * (I - i) + 3) * sqTh Λ v z ^ i) + ∑ j ∈ Finset.range (I + 1), Q.coeff j * (sgStar Λ z ^ (2 * (I - j)) * sqTh Λ v z ^ j * sqThD Λ v z)`. Use `Continuous.ext_on hΛ.dense_compl ((hσ.continuous.pow _).mul (hU.continuous.pow _)) ((continuous_finsetSum _ fun i _ => continuous_const.mul ((hσ.continuous.pow _).mul (hS.continuous.pow _))).add (continuous_finsetSum _ fun j _ => continuous_const.mul (((hσ.continuous.pow _).mul ( …` and prove the remaining obligations. Introduce `z hz`. Establish `hzΛ : z ∉ Λ` using `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : sgStar Λ z ≠ 0` using `fun h0 => hzΛ ((hσ0 z).1 h0)`. Establish `hz' : z ∉ L.lattice` using `fun h' => hzΛ ((hL z).2 h')`. Establish `hq` using `hpt z hzΛ`. Establish `hApt : A.eval (L.weierstrassP z) = P.eval (L.weierstrassP z - L.weierstrassP v)`. Rewrite using `[hP, Polynomial.eval_comp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hBpt : B.eval (L.weierstrassP z) = Q.eval (L.weierstrassP z - L.weierstrassP v)`. Rewrite using `[hQ, Polynomial.eval_comp]`. Simplify using the standard rewrite rules. Rewrite `hq` using `[hApt, hBpt, Polynomial.eval_eq_sum_range' hIP, Polynomial.eval_eq_sum_range' hIQ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hUN : U1 Λ t (sgStar Λ) z ^ N = sgStar Λ z ^ N * (U1 Λ t (sgStar Λ) z / sgStar Λ z) ^ N`. Rewrite using `[div_pow, mul_div_cancel₀ _ (pow_ne_zero _ hs)]`. Simplify using `only`. Rewrite using `[hUN, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hNI, hq, sqThD_eq hΛ L hL hv hzΛ, hΛ.sqTh_eq hv hzΛ, GlobalTheory.OddTheta.wpF_eq L Λ hL, GlobalTheory.OddTheta.wpF_eq L Λ hL, mul_add, Finset.mul_sum, Finset.sum_mul, Finset.mul_sum]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ I` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Rewrite using `[mul_pow, ← pow_mul, show 2 * I + 3 = (2 * (I - i) + 3) + 2 * i by omega]`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
-
-Establish `hj' : j ≤ I` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`. Rewrite using `[mul_pow, ← pow_mul, show 2 * I + 3 = 2 * (I - j) + 2 * j + 3 by omega]`. Expand and normalize the polynomial expressions, which then agree. Introduce `z`. Conclude with `congrFun heq z`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_decomp : ∀ (Λ : AddSubgroup ℂ), IsLat Λ → ∀ (t : ℂ) (N : ℕ), 0 < N → (N : ℂ) * t ∈ Λ →
     ∀ v : ℂ, v ∉ Λ → ∃ (I : ℕ) (a b : ℕ → ℂ), N ≤ 2 * I + 3 ∧

@@ -12,15 +12,15 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.Per.DirectSumHT
 
 /- English proof (translation)
-Set `f : S →ₗ[L] S₁ × S₂` to `(p₁.restrict b₁).prod (p₂.restrict b₂)`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : p₁ x = 0` using `congrArg (fun y : S₁ × S₂ => (y.1 : A₁)) hx`. Establish `e2 : p₂ x = 0` using `congrArg (fun y : S₁ × S₂ => (y.2 : A₂)) hx`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hs x` as an intermediate fact. Rewrite `this` using `[e1, e2, map_zero, map_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Introduce and unpack `⟨y₁, y₂⟩`. Use `⟨⟨i₁ y₁ + i₂ y₂, S.add_mem (a₁ _ y₁.2) (a₂ _ y₂.2)⟩, ?_⟩` and prove the remaining obligations. Apply `Prod.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `p₁ (i₁ y₁ + i₂ y₂) = y₁`. Rewrite using `[map_add, h11, h12, add_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `p₂ (i₁ y₁ + i₂ y₂) = y₂`. Rewrite using `[map_add, h21, h22, zero_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(LinearEquiv.ofBijective f hf).finrank_eq, Module.finrank_prod]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_split {L A A₁ A₂ : Type} [Field L] [AddCommGroup A] [Module L A] [AddCommGroup A₁] [Module L A₁]
     [AddCommGroup A₂] [Module L A₂] (i₁ : A₁ →ₗ[L] A) (i₂ : A₂ →ₗ[L] A) (p₁ : A →ₗ[L] A₁) (p₂ : A →ₗ[L] A₂)
@@ -63,7 +63,7 @@ noncomputable def ext (R : Type) [AddCommGroup R] [Module Qp R] (f : V →ₗ[LL
   AlgebraTensorModule.map f (LinearMap.id : R →ₗ[Qp] R)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [ext, h]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ext_comm {R R' : Type} [AddCommGroup R] [Module Qp R] [AddCommGroup R'] [Module Qp R']
     (f : V →ₗ[LL] V') (u : V →ₗ[LL] V) (u' : V' →ₗ[LL] V') (h : ∀ v, f (u v) = u' (f v))
@@ -78,19 +78,19 @@ variable {V₁ : Type} [AddCommGroup V₁] [Module LL V₁] [Module Qp V₁] [Is
     {V₂ : Type} [AddCommGroup V₂] [Module LL V₂] [Module Qp V₂] [IsScalarTower Qp LL V₂]
 
 /- English proof (translation)
-Use `finrank_split _ _ _ _ ?_ ?_ ?_ ?_ ?_ S S₁ S₂ a₁ a₂ b₁ b₂` and prove the remaining obligations. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [ext]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [ext]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [ext]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_zero]`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [ext]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_zero]`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [ext, AlgebraTensorModule.map_tmul, LinearMap.id_apply, ← TensorProduct.add_tmul]`. Use `congr 1`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.inl_apply, LinearMap.inr_apply, LinearMap.fst_apply, LinearMap.snd_apply, ← map_add, Prod.mk_add_mk, add_zero, zero_add, Prod.mk.eta, LinearEquiv.symm_apply_apply]`. Consider the case `add a b ha hb`. Simplify using `only [map_add]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_add_add_comm, ha, hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_split_tensor (R : Type) [AddCommGroup R] [Module Qp R] (e : V ≃ₗ[LL] V₁ × V₂)
     (S : Submodule LL (V ⊗[Qp] R)) (S₁ : Submodule LL (V₁ ⊗[Qp] R)) (S₂ : Submodule LL (V₂ ⊗[Qp] R))
@@ -150,9 +150,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {ρ : Representation LL G V} {ρ' : Representation LL G V'}
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx ⊢`. Introduce `g`. Use `ext_comm f (ρ g) (ρ' g) (h g) (((PD.actB g).toAlgHom.toLinearMap).restrictScalars Qp) x` as an intermediate fact. Rewrite using `[actVB, ← this]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (hx g)`.
+A detailed English derivation is pending.
 -/
 theorem ext_Dcris (f : V →ₗ[LL] V') (h : ∀ g v, f (ρ g v) = ρ' g (f v)) :
     ∀ x ∈ Dcris PD ρ, ext B f x ∈ Dcris PD ρ' := by
@@ -165,9 +165,9 @@ theorem ext_Dcris (f : V →ₗ[LL] V') (h : ∀ g v, f (ρ g v) = ρ' g (f v)) 
   exact congrArg _ (hx g)
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx ⊢`. Introduce `g`. Use `ext_comm f (ρ g) (ρ' g) (h g) (((PD.actdR g).toAlgHom.toLinearMap).restrictScalars Qp) x` as an intermediate fact. Rewrite using `[actVdR, ← this]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (hx g)`.
+A detailed English derivation is pending.
 -/
 theorem ext_DdR (f : V →ₗ[LL] V') (h : ∀ g v, f (ρ g v) = ρ' g (f v)) :
     ∀ x ∈ DdR PD ρ, ext BdR f x ∈ DdR PD ρ' := by
@@ -180,9 +180,9 @@ theorem ext_DdR (f : V →ₗ[LL] V') (h : ∀ g v, f (ρ g v) = ρ' g (f v)) :
   exact congrArg _ (hx g)
 
 /- English proof (translation)
-Introduce and unpack `x ⟨⟨h1, h2⟩, y, hy⟩`. Use `⟨⟨ext_DdR PD f h x h1, ?_⟩, ext _ f y, ?_⟩` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at h2 ⊢`. Introduce `c`. Use `ext_comm f LinearMap.id LinearMap.id (fun _ => rfl) (LinearMap.mulLeft Qp (algebraMap K BdR c)) x` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mulVdR, ← this, ← map_smul]`. Conclude with `congrArg _ (h2 c)`. Rewrite using `[← hy]`. Conclude with `(ext_comm f LinearMap.id LinearMap.id (fun _ => rfl) _ y).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_FildR (f : V →ₗ[LL] V') (h : ∀ g v, f (ρ g v) = ρ' g (f v)) (τ : K →ₐ[Qp] LL) (a : ℤ) :
     ∀ x ∈ FildR PD ρ τ a, ext BdR f x ∈ FildR PD ρ' τ a := by
@@ -205,9 +205,9 @@ variable {V₁ : Type} [AddCommGroup V₁] [Module LL V₁] [Module Qp V₁] [Is
 omit [Module Qp V] [IsScalarTower Qp LL V] [Module Qp V₁] [IsScalarTower Qp LL V₁]
   [Module Qp V₂] [IsScalarTower Qp LL V₂] in
 /- English proof (translation)
-Use `⟨fun g v => ?_, fun g v => ?_, fun g v => ?_, fun g v => ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Simplify using `[he]`. Apply `e.injective` to reduce the goal to its premises. Simplify using `[he]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[he]`. Simplify using `[he]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem equivariant (e : V ≃ₗ[LL] V₁ × V₂) (he : ∀ g v, e (ρ g v) = (ρ₁ g (e v).1, ρ₂ g (e v).2)) :
     (∀ g v, (e.symm.toLinearMap ∘ₗ LinearMap.inl LL V₁ V₂) (ρ₁ g v) =
@@ -227,7 +227,7 @@ theorem equivariant (e : V ≃ₗ[LL] V₁ × V₂) (he : ∀ g v, e (ρ g v) = 
   · simp [he]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `equivariant e he`. Conclude with `finrank_split_tensor B e _ _ _ (ext_Dcris PD _ h1) (ext_Dcris PD _ h2) (ext_Dcris PD _ h3) (ext_Dcris PD _ h4)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finrank_Dcris_add (e : V ≃ₗ[LL] V₁ × V₂)
     (he : ∀ g v, e (ρ g v) = (ρ₁ g (e v).1, ρ₂ g (e v).2))
@@ -238,7 +238,7 @@ theorem finrank_Dcris_add (e : V ≃ₗ[LL] V₁ × V₂)
     (ext_Dcris PD _ h4)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `equivariant e he`. Conclude with `finrank_split_tensor BdR e _ _ _ (ext_DdR PD _ h1) (ext_DdR PD _ h2) (ext_DdR PD _ h3) (ext_DdR PD _ h4)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finrank_DdR_add (e : V ≃ₗ[LL] V₁ × V₂)
     (he : ∀ g v, e (ρ g v) = (ρ₁ g (e v).1, ρ₂ g (e v).2))
@@ -249,7 +249,7 @@ theorem finrank_DdR_add (e : V ≃ₗ[LL] V₁ × V₂)
     (ext_DdR PD _ h4)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `equivariant e he`. Use `haveI : FiniteDimensional LL (FildR PD ρ₁ τ a) := Submodule.finiteDimensional_of_le (S₂ := DdR PD ρ₁) (fun x hx => hx.1.1)`. Use `haveI : FiniteDimensional LL (FildR PD ρ₂ τ a) := Submodule.finiteDimensional_of_le (S₂ := DdR PD ρ₂) (fun x hx => hx.1.1)`. Conclude with `finrank_split_tensor BdR e _ _ _ (ext_FildR PD _ h1 τ a) (ext_FildR PD _ h2 τ a) (ext_FildR PD _ h3 τ a) (ext_FildR PD _ h4 τ a)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finrank_FildR_add (e : V ≃ₗ[LL] V₁ × V₂)
     (he : ∀ g v, e (ρ g v) = (ρ₁ g (e v).1, ρ₂ g (e v).2))
@@ -268,9 +268,9 @@ end Per
 open GlobalTheory.Per.FontaineBound in
 
 /- English proof (translation)
-Use `isDomain_cris (P.PD K) (isField_of_tied T)` as an intermediate fact. Use `(P.PD K).finK₀` as an intermediate fact. Use `LL.2` as an intermediate fact. Use `finite_finrank_le (P.PD K).actB (fun b b' hb h => GlobalTheory.Per.FracInv.tied_frac_invariant l P AI T K b' b hb fun g hg => ?_) ρ` and prove the remaining obligations. Establish `h1` using `h ⟨g, hg⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[P.PD_actB, P.PD_actB]`. Rewrite using `[mul_comm, h1, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dcris_finite_le {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
     (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V]
@@ -287,13 +287,13 @@ private theorem dcris_finite_le {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : 
   rw [mul_comm, h1, mul_comm]
 
 /- English proof (translation)
-Introduce `l _ P AI T K LL V _ _ _ _ _ ρ V₁ _ _ _ _ _ ρ₁ V₂ _ _ _ _ _ ρ₂ e he`. Take `⟨d1, d1'⟩` from `GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL V₁ ρ₁`. Take `⟨d2, d2'⟩` from `GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL V₂ ρ₂`. Take `⟨f1, c1⟩` from `dcris_finite_le T K LL V₁ ρ₁`. Take `⟨f2, c2⟩` from `dcris_finite_le T K LL V₂ ρ₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hV : finrank ↥LL.1 V = finrank ↥LL.1 V₁ + finrank ↥LL.1 V₂`. Rewrite using `[e.finrank_eq, Module.finrank_prod]`. Use `⟨?_, ?_, fun τ a => ?_⟩` and prove the remaining obligations. Unfold `IsDR`. Rewrite using `[finrank_DdR_add (P.PD K) e he, hV, mul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Unfold `IsCrys`. Rewrite using `[finrank_Dcris_add (P.PD K) e he, hV, mul_add]`. Use linear arithmetic over natural numbers and integers. Unfold `multV`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Rewrite using `[finrank_FildR_add (P.PD K) e he, finrank_FildR_add (P.PD K) e he τ (a + 1)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem directSum_hodgeTate : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V) (V₁ : Type) [AddCommGroup V₁] [Module ↥LL.1 V₁] [Module ℚ_[l] V₁] [IsScalarTower ℚ_[l] ↥LL.1 V₁] [FiniteDimensional ↥LL.1 V₁] (ρ₁ : Representation ↥LL.1 ↥(GK K) V₁) (V₂ : Type) [AddCommGroup V₂] [Module ↥LL.1 V₂] [Module ℚ_[l] V₂] [IsScalarTower ℚ_[l] ↥LL.1 V₂] [FiniteDimensional ↥LL.1 V₂] (ρ₂ : Representation ↥LL.1 ↥(GK K) V₂) (e : V ≃ₗ[↥LL.1] (V₁ × V₂)), (∀ g v, e (ρ g v) = (ρ₁ g (e v).1, ρ₂ g (e v).2)) → (IsDR (P.PD K) ρ ↔ IsDR (P.PD K) ρ₁ ∧ IsDR (P.PD K) ρ₂) ∧ (IsCrys (P.PD K) ρ ↔ IsCrys (P.PD K) ρ₁ ∧ IsCrys (P.PD K) ρ₂) ∧ ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ), multV (P.PD K) ρ τ a = multV (P.PD K) ρ₁ τ a + multV (P.PD K) ρ₂ τ a := by
   intro l _ P AI T K LL V _ _ _ _ _ ρ V₁ _ _ _ _ _ ρ₁ V₂ _ _ _ _ _ ρ₂ e he

@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.ThetaPosIso
 
 /- English proof (translation)
-Establish `hd` using `GroundTheory.Global.discreteTopology_principalSubgroup F`. Establish `ho : IsOpen ({0} : Set (AdeleRing.principalSubgroup (𝓞 F) F))` using `isOpen_discrete _`. Take `⟨t, ht, hpre⟩` from `isOpen_induced_iff.mp ho`. Use `⟨Set.pi Set.univ fun _ => t, set_pi_mem_nhds Set.finite_univ fun _ _ => ht.mem_nhds ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : ((0 : AdeleRing.principalSubgroup (𝓞 F) F) : AF F) ∈ t`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (0 : AdeleRing.principalSubgroup (𝓞 F) F) ∈ Subtype.val ⁻¹' t` using `by rw [hpre]; rfl`. Conclude with `this`. Simplify using `using h0`. Introduce `ξ hξ`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hm : algebraMap F (AF F) (ξ i) ∈ AdeleRing.principalSubgroup (𝓞 F) F` using `⟨ξ i, rfl⟩`. Establish `: (⟨_, hm⟩ : AdeleRing.principalSubgroup (𝓞 F) F) ∈ Subtype.val ⁻¹' t` using `hξ i (Set.mem_univ _)`. Rewrite `this` using `[hpre]`. Establish `h2 : algebraMap F (AF F) (ξ i) = 0` using `congrArg Subtype.val this`. Conclude with `(NumberField.AdeleRing.algebraMap_injective (𝓞 F) F) (h2.trans (map_zero _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem disc (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     ∃ D ∈ nhds (0 : κ → AF F), ∀ ξ : κ → F, (fun i => algebraMap F (AF F) (ξ i)) ∈ D → ξ = 0 := by
@@ -43,45 +43,39 @@ theorem disc (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ S hiso hspan`. Take `⟨P, Q, hP, hQ, hker⟩` from `GlobalTheory.T.exists_rational_projection_section_isotropicSpan F κ S hspan`. Take `⟨D, hD, hDξ⟩` from `disc F κ`. Use `set PA := P.map (algebraMap F (AF F)) with hPA`. Use `set QA := Q.map (algebraMap F (AF F)) with hQA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hgdef⟩ : ∃ g : (κ → AF F) → ℂ, g = fun x => ψ (⅟(2 : AF F) * (x ⬝ᵥ (QA *ᵥ x)))` from `⟨_, rfl⟩`. Establish `hg : Continuous g`. Rewrite using `[hgdef]`. Conclude with `hψ.1.comp (continuous_const.mul (continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_id)))`. Establish `hg0 : 0 < (g 0).re` using `by simp [hgdef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨V₀, hV₀, hq⟩` from `exists_nhds_zero_quarter hD`. Choose the witnesses or unpack the hypotheses as in `⟨V, hV, hVm⟩ : ∃ V ∈ nhds (0 : κ → AF F), ∀ x ∈ V, x ∈ V₀ ∧ -x ∈ V₀ ∧ PA *ᵥ x ∈ D ∧ 0 < (g x).re := by`. Use `⟨((V₀ ∩ -V₀) ∩ (fun x => PA *ᵥ x) ⁻¹' D) ∩ {x | 0 < (g x).re}, ?_, fun x hx => ⟨hx.1.1.1, Set.mem_neg.mp hx.1.1.2, hx.1.2, hx.2⟩⟩` and prove the remaining obligations. Use `Filter.inter_mem (Filter.inter_mem (Filter.inter_mem hV₀ (neg_mem_nhds_zero _ hV₀)) ?_) ?_` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mulVec continuous_id).tendsto' (0 : κ → AF F) 0 (by simp) hD`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `((Complex.continuous_re.comp hg).tendsto 0).eventually (lt_mem_nhds hg0)`. Take `⟨Φ, hΦS, hΦc, hΦV, hΦr, hΦ0⟩` from `GlobalTheory.T.exists_nonneg_adelicSchwartz_bump_test F κ V hV`. Establish `hsub : ∀ ξ ξ' : κ → F, (fun i => algebraMap F (AF F) ((ξ - ξ') i)) = (fun i => algebraMap F (AF F) (ξ i)) - (fun i => algebraMap F (AF F) (ξ' i))`. Introduce `ξ ξ'`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[map_sub]`. Establish `KEY : ∀ ξ : κ → F, ∀ v₁ ∈ V, ∀ v₂ ∈ V, ∀ v₃ ∈ V, ∀ v₄ ∈ V, (fun i => algebraMap F (AF F) (ξ i)) = v₁ - v₂ - (v₃ - v₄) → ξ = 0`. Introduce `ξ v₁ h₁ v₂ h₂ v₃ h₃ v₄ h₄ he`. Apply `hDξ` to reduce the goal to its premises. Rewrite using `[he, show v₁ - v₂ - (v₃ - v₄) = v₁ + -v₂ + -v₃ + v₄ by abel]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `hq (hVm _ h₁).1 (hVm _ h₂).2.1 (hVm _ h₃).2.1 (hVm _ h₄).1`. Establish `hV0 : (0 : κ → AF F) ∈ V` using `mem_of_mem_nhds hV`. Establish `LOC : ∀ a₀ : κ → AF F, ∃ ξ₀ : κ → F, ∀ᶠ a in nhds a₀, ∀ ξ : κ → F, ξ ≠ ξ₀ → Φ ((fun i => algebraMap F (AF F) (ξ i)) + a) = 0`. Introduce `a₀`. Establish `hnear : ∀ᶠ a in nhds a₀, a - a₀ ∈ V` using `(continuous_id.sub continuous_const).tendsto' a₀ 0 (sub_self a₀) hV`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : ∃ ξ₀ : κ → F, ∃ v₁ ∈ V, ∃ v₂ ∈ V, (fun i => algebraMap F (AF F) (ξ₀ i)) + a₀ = v₁ - v₂`. Take `⟨ξ₀, v₁, h₁, v₂, h₂, he⟩` from `h`. Use `⟨ξ₀, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hnear] with a ha ξ hne`. Assume the negation of the conclusion as `hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero]`. Use `KEY _ _ (hΦV _ hz) _ ha _ h₁ _ h₂ ?_` and prove the remaining obligations. Rewrite using `[hsub, ← he]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨0, ?_⟩ filter_upwards [hnear] with a ha ξ _` and prove the remaining obligations. Assume the negation of the conclusion as `hz`. Conclude with `h ⟨ξ, _, hΦV _ hz, _, ha, by abel⟩`. Establish `THETA : ∀ w : (κ → AF F) × (κ → AF F), ∃ ξ₀ : κ → F, ∀ᶠ w' in nhds w, thetaSum F (schr ψ w' Φ) = ψ ((fun i => algebraMap F (AF F) (ξ₀ i)) ⬝ᵥ w'.2 + ⅟(2 : AF F) * (w'.1 ⬝ᵥ w'.2)) * Φ ((fun i => algebraMap F (AF F) (ξ₀ i)) + w'.1)`. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ξ₀, h⟩` from `LOC w.1`. Use `⟨ξ₀, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(continuous_fst.tendsto w).eventually h] with w' hw'`. Conclude with `tsum_eq_single ξ₀ fun ξ hne => mul_eq_zero_of_right _ (hw' ξ hne)`. Establish `htwo : ⅟(2 : AF F) = algebraMap F (AF F) (2⁻¹ : F)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `invOf_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul, mul_inv_cancel₀ two_ne_zero, map_one]`. Use `⟨Φ, hΦS, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun w => ?_` and prove the remaining obligations. Take `⟨ξ₀, h⟩` from `THETA w`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `ContinuousAt.congr ?_ (h.mono fun _ h => h.symm)` and prove the remaining obligations. Use `Continuous.continuousAt ?_` and prove the remaining obligations. Conclude with `(hψ.1.comp ((continuous_const.dotProduct continuous_snd).add (continuous_const.mul (continuous_fst.dotProduct continuous_snd)))).mul (hΦc.comp (continuous_const.add continuous_fst))`. Introduce `s hs`. Take `⟨ξ₀, h⟩` from `THETA s`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[h.self_of_nhds]`. Use `set e : κ → AF F := fun i => algebraMap F (AF F) (ξ₀ i) with he`. Distinguish the cases in `hz : Φ (e + s.1) = 0`. Simplify using `[hz]`. Establish `hx : e + s.1 ∈ V` using `hΦV _ hz`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : P *ᵥ ξ₀ = 0`. Apply `hDξ` to reduce the goal to its premises. Establish `h1` using `(hVm _ hx).2.2.1`. Simplify using `only [Set.mem_preimage, Matrix.mulVec_add, hP s hs, add_zero] at h1`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ _ _ _`. Use `set f : κ → AF F := fun i => algebraMap F (AF F) ((Q *ᵥ ξ₀) i) with hf`. Establish `hef : (e, f) ∈ S` using `hker ξ₀ hP0`. Establish `hac : (s.1, QA *ᵥ s.1) ∈ S` using `hQ s hs`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hQe : QA *ᵥ e = f`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec _ _ _ _).symm`. Establish `h1` using `hiso s hs _ hac`. Establish `h2` using `hiso _ hef s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hiso _ hef _ hac`. Simplify using `only at h1 h2 h3`. Establish `hrat : e ⬝ᵥ f = algebraMap F (AF F) (ξ₀ ⬝ᵥ (Q *ᵥ ξ₀))` using `(RingHom.map_dotProduct _ _ _).symm`. Establish `hinv : ⅟(2 : AF F) * 2 = 1` using `invOf_mul_self _`. Establish `phase : e ⬝ᵥ s.2 + ⅟(2 : AF F) * (s.1 ⬝ᵥ s.2) = ⅟(2 : AF F) * ((e + s.1) ⬝ᵥ (QA *ᵥ (e + s.1))) + algebraMap F (AF F) (-(2⁻¹ * (ξ₀ ⬝ᵥ (Q *ᵥ ξ₀))))`.
-
-Rewrite using `[Matrix.mulVec_add, hQe, add_dotProduct, dotProduct_add, dotProduct_add, map_neg, map_mul, ← htwo, ← hrat]`. Take the linear combination `h2 - ⅟(2 : AF F) * h3 - ⅟(2 : AF F) * h1 - (s.1 ⬝ᵥ f) * hinv`. Rewrite using `[phase, AddChar.map_add_eq_mul, hψ.2.1, mul_one, Complex.mul_re, (hΦr _).1, mul_zero, sub_zero]`. Establish `hpos` using `(hVm _ hx).2.2.2`. Rewrite `hpos` using `[hgdef]`.
-
-Conclude with `mul_nonneg (le_of_lt hpos) (hΦr _).2`. Establish `hz : ∀ ξ : κ → F, ξ ≠ 0 → Φ ((fun i => algebraMap F (AF F) (ξ i)) + (0 : (κ → AF F) × (κ → AF F)).1) = 0`. Introduce `ξ hne`. Assume the negation of the conclusion as `hz`. Conclude with `hne (KEY ξ _ (hΦV _ hz) 0 hV0 0 hV0 0 hV0 (by simp))`.
-
-Establish `e0 : (fun i => algebraMap F (AF F) ((0 : κ → F) i)) = 0` using `by funext i; simp`. Establish `hsum : thetaSum F (schr ψ 0 Φ) = schr ψ 0 Φ (fun i => algebraMap F (AF F) ((0 : κ → F) i))` using `tsum_eq_single 0 fun ξ hne => mul_eq_zero_of_right _ (hz ξ hne)`. Rewrite using `[hsum, e0]`. Simplify using `only [schr, Prod.fst_zero, Prod.snd_zero, dotProduct_zero, mul_zero, add_zero, AddChar.map_zero_eq_one, one_mul, hΦ0, Complex.one_re]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem exists_theta_re_nonneg : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     (S : Submodule (AF F) ((κ → AF F) × (κ → AF F))),

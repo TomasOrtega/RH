@@ -10,7 +10,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.LeibOrd
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(GlobalTheory.LocGL.multiProdTwistEquiv (two (stdSum rfl)) (twoRep A.ρ B.ρ) (GlobalTheory.LocGL.isSmoothChar_absPow (k := k) (s : ℂ))).trans (GlobalTheory.LocGL.multiProdEquiv _ fun x => match x with | false => Representation.Equiv.refl _ | true => Representation.Equiv.refl _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem giso_tw_prod (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (r t : ℕ) (A : GRep k r) (B : GRep k t) (s : ℝ) : GIso ((A.prod B).tw s) ((A.tw s).prod (B.tw s)) :=

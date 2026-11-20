@@ -5,11 +5,11 @@ open UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit Upper
 open scoped TensorProduct
 
 /- English proof (translation)
-Consider the cases of `q with`. Consider the case `zero`. Introduce `z hz`. Use `beta_reduce`. Rewrite using `[h z hz, map_zero]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ q`. Take `⟨b, b1, b2⟩` from `h`. Use `⟨fun z => P (b z), fun γ z hz => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[b1 γ z hz, hP]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `beta_reduce`. Rewrite using `[b2 z hz]`. Simplify using `only [hd, map_sum, map_zsmul]`.
+A detailed English derivation is pending.
 -/
 private theorem cob_map {Γ M N : Type} [Group Γ] [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
     (ρ : Representation ℂ Γ M) (ρ' : Representation ℂ Γ N) (P : M →ₗ[ℂ] N) (hP : ∀ γ m, P (ρ γ m) = ρ' γ (P m))
@@ -29,9 +29,9 @@ private theorem cob_map {Γ M N : Type} [Group Γ] [AddCommGroup M] [Module ℂ 
       simp only [hd, map_sum, map_zsmul]
 
 /- English proof (translation)
-Establish `wd : ∀ y y' : G, (QuotientGroup.leftRel U') y y' → ((y * x : G) : G ⧸ U) = ((y' * x : G) : G ⧸ U)`. Introduce `y y' hy`. Establish `h1` using `hx _ (QuotientGroup.leftRel_apply.1 hy)`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `group`. Use `⟨Quotient.lift _ wd, fun _ => rfl, fun g s => ?_⟩` and prove the remaining obligations. Proceed by induction on `s using QuotientGroup.induction_on with | H y => ?_`. Express the relevant statement in the definitionally equal form `((g * y * x : G) : G ⧸ U) = ((g * (y * x) : G) : G ⧸ U)`. Rewrite using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coset_map {G : Type} [Group G] {U U' : Subgroup G} {x : G} (hx : ∀ u ∈ U', x⁻¹ * u * x ∈ U) :
     ∃ f : G ⧸ U' → G ⧸ U, (∀ y : G, f y = ((y * x : G) : G ⧸ U)) ∧ ∀ (g : G) s, f (g • s) = g • f s := by
@@ -47,9 +47,9 @@ private theorem coset_map {G : Type} [Group G] {U U' : Subgroup G} {x : G} (hx :
   rw [mul_assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ a U U' x hx σ Ξ Ξ' h q α β ⟨hα, hβ, c, c', p, p', hc⟩`. Take `⟨f, f1, f2⟩` from `coset_map hx`. Take `⟨a1, -, a2⟩` from `perNat E a U U' x hx Ξ q α hα`. Take `⟨b1, -, b2⟩` from `perNat E a U U' x hx Ξ' q β hβ`. Use `⟨a1, b1, fun z s => c z (f s), fun z s => c' z (f s), a2 c _ (fun z y => by rw [f1]) p, b2 c' _ (fun z y => by rw [f1]) p', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `cob_map (levelRep ⊤ U (ratC Ξ')) (levelRep ⊤ U' (ratC Ξ')) (LinearMap.funLeft ℂ _ f) (fun γ m => ?_) q _ hc` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `_ *ᵥ m (_ • f s) = _ *ᵥ m (f (_ • s))`. Rewrite using `[f2]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Cj.relPull :
     UpperTheory.V.Cj.RelPull := by

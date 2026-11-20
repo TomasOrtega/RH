@@ -9,29 +9,25 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ P A O _ _ _ Bw Bw' hK hj hL a r`. Take `⟨Kw', j', jE', jd', e', ec', esc', ecomm', LL0', hs', eO', h1', h2', h3'⟩` from `Bw'`. Simplify using `only at hK hj hL`. Substitute `hK hj hL` using the available equality. Use `set Bw' : LocBridge l K Ω (Dec (F := K) A) O := ⟨Bw.Kw, Bw.j, jE', jd', e', ec', esc', ecomm', Bw.LL, hs', eO', h1', h2', h3'⟩ with hBw'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `key : ∀ (LL' : FinExt l) (r'' : ↥(Dec (F` using `K) A) →* GL (Fin a) ↥LL'.1), IsModel Bw' ((r.comp (res F Ω K)).comp (Dec (F := K) A).subtype) LL' r'' → IsModel Bw (r.comp (Dec (F := F) A).subtype) LL' (r''.comp (Bw.e.trans e'.symm).toMonoidHom) ∧ Bw.repE LL' (r''.comp (Bw.e.trans e'.symm).toMonoidHom) = Bw'.repE LL' r'' := by`. Introduce `LL' r'' ⟨hle, hmap⟩`. Use `⟨⟨hle, ?_⟩, ?_⟩` and prove the remaining obligations. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Establish `h1` using `DFunLike.congr_fun hmap (e'.symm (Bw.e g))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : AlgEquiv.restrictScalarsHom F ((e'.symm (Bw.e g) : ↥(Dec (F` using `K) A)) : Ω ≃ₐ[K] Ω) = ((g : ↥(Dec (F := F) A)) : Ω ≃ₐ[F] Ω) := by`. Use `AlgEquiv.ext fun x => Bw.j.injective ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Bw.j (((e'.symm (Bw.e g) : ↥(Dec (F := K) A)) : Ω ≃ₐ[K] Ω) x) = _`. Rewrite using `[← ecomm', MulEquiv.apply_symm_apply, Bw.e_comm]`. Conclude with `h1.trans (congrArg r h2)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Simplify using `only [LocBridge.repE, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.trans_apply, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨LL', r'', hm, hd⟩`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hm2, he⟩` from `key LL' r'' hm`. Use `⟨LL', _, hm2, ?_⟩` and prove the remaining obligations. Unfold `LocBridge.IsdRE at hd ⊢`. Rewrite using `[he]`. Conclude with `hd`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨LL', r'', hm, hd⟩`. Take `⟨hm2, he⟩` from `key LL' r'' hm`. Use `⟨LL', _, hm2, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `hd`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Introduce and unpack `⟨LL', r'', hm, hd⟩`. Take `⟨hm2, he⟩` from `key LL' r'' hm`. Use `⟨LL', _, hm2, ?_⟩` and prove the remaining obligations. Unfold `LocBridge.IsCrysE at hd ⊢`. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd`. Introduce and unpack `⟨LL', r'', hm, hd⟩`. Take `⟨hm2, he⟩` from `key LL' r'' hm`. Use `⟨LL', _, hm2, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd`. Introduce and unpack `τ J ⟨LL', r'', hm, hd, τ', hind, hc⟩`. Take `⟨hm2, he⟩` from `key LL' r'' hm`. Use `⟨LL', _, hm2, ?_, τ', ?_, ?_⟩` and prove the remaining obligations. Unfold `LocBridge.IsdRE at hd ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[he]`. Conclude with `hd`. Introduce `x`. Use `hind (algebraMap F K x)` as an intermediate fact. Simplify using `only [RingHom.comp_apply]`.
-
-Rewrite using `[this]`. Use `congr 3`. Conclude with `congrArg Bw.j (IsScalarTower.algebraMap_apply F K Ω x).symm`. Introduce `n`. Rewrite using `[hc n]`.
-
-Unfold `LocBridge.multE`. Rewrite using `[he]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RealGal.dRSstCrysPstJumps_descend : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (P : LocPrime l) (A : ValuationSubring Ω) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (Bw' : LocBridge l K Ω (Dec (F := K) A) O), Bw'.Kw = Bw.Kw → Bw'.j = Bw.j → Bw'.LL = Bw.LL → ∀ (a : ℕ) (r : G F Ω →* GL (Fin a) (Qbar l)), (IsdRAt P Bw' ((r.comp (res F Ω K)).comp (Dec (F := K) A).subtype) → IsdRAt P Bw (r.comp (Dec (F := F) A).subtype)) ∧ (IsSstAt P Bw' ((r.comp (res F Ω K)).comp (Dec (F := K) A).subtype) → IsSstAt P Bw (r.comp (Dec (F := F) A).subtype)) ∧ (IsCrysAt P Bw' ((r.comp (res F Ω K)).comp (Dec (F := K) A).subtype) → IsCrysAt P Bw (r.comp (Dec (F := F) A).subtype)) ∧ (IsPstAt P Bw' ((r.comp (res F Ω K)).comp (Dec (F := K) A).subtype) → IsPstAt P Bw (r.comp (Dec (F := F) A).subtype)) ∧ ∀ (τ : K →+* Qbar l) (J : Multiset ℤ), IsJumpsAt P Bw' ((r.comp (res F Ω K)).comp (Dec (F := K) A).subtype) τ J → IsJumpsAt P Bw (r.comp (Dec (F := F) A).subtype) (τ.comp (algebraMap F K)) J := by
   intro F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ P A O _ _ _ Bw Bw' hK hj hL a r

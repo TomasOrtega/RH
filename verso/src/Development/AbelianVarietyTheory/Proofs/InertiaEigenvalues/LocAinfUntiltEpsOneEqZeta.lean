@@ -12,7 +12,7 @@ namespace GlobalTheory.TiedMu
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, Nat.add_right_comm, AI.ζ_succ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zeta_pow (AI : LocAinf l P) (k n : ℕ) : AI.ζ (n + k) ^ l ^ n = AI.ζ k := by
   induction n with
@@ -20,7 +20,7 @@ theorem zeta_pow (AI : LocAinf l P) (k n : ℕ) : AI.ζ (n + k) ^ l ^ n = AI.ζ 
   | succ n ih => rw [pow_succ', pow_mul, Nat.add_right_comm, AI.ζ_succ, ih]
 
 /- English proof (translation)
-Use `Perfection.teichmuller_spec (I := Ideal.span {(l : Per.OC l)}) fun n => ?_` and prove the remaining obligations. Use `⟨AI.ζ n, (AI.ε_coeff n).symm, ?_⟩` and prove the remaining obligations. Establish `h` using `zeta_pow AI 0 n`. Rewrite `h` using `[add_zero, AI.ζ_zero]`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem untilt_eps (AI : LocAinf l P) : AI.ε.untilt = 1 := by
   refine Perfection.teichmuller_spec (I := Ideal.span {(l : Per.OC l)}) fun n => ?_
@@ -30,9 +30,9 @@ theorem untilt_eps (AI : LocAinf l P) : AI.ε.untilt = 1 := by
   rw [h]
 
 /- English proof (translation)
-Use `Perfection.teichmuller_spec (I := Ideal.span {(l : Per.OC l)}) fun n => ?_` and prove the remaining obligations. Use `⟨AI.ζ (n + 1), ?_, ?_⟩` and prove the remaining obligations. Use `(AI.ε_coeff (n + 1)).symm.trans ?_` and prove the remaining obligations. Establish `h : AI.ε = AI.ε1 ^ l` using `by rw [LocAinf.ε1, frobeniusEquiv_symm_pow_p]`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Perfection.coeff_pow_p _ _`. Rewrite using `[zeta_pow AI 1 n]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locAinf_untilt_epsOne_eq_zeta (AI : LocAinf l P) : AI.ε1.untilt = AI.ζ 1 := by
   refine Perfection.teichmuller_spec (I := Ideal.span {(l : Per.OC l)}) fun n => ?_
@@ -44,7 +44,7 @@ theorem locAinf_untilt_epsOne_eq_zeta (AI : LocAinf l P) : AI.ε1.untilt = AI.ζ
   · rw [zeta_pow AI 1 n]
 
 /- English proof (translation)
-Introduce `h`. Apply `AI.ζ_one` to reduce the goal to its premises. Rewrite using `[← locAinf_untilt_epsOne_eq_zeta, LocAinf.ε1, h, map_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_ne_one (AI : LocAinf l P) : AI.ε ≠ 1 := by
   intro h
@@ -52,9 +52,9 @@ theorem eps_ne_one (AI : LocAinf l P) : AI.ε ≠ 1 := by
   rw [← locAinf_untilt_epsOne_eq_zeta, LocAinf.ε1, h, map_one, map_one]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simpa using eps_ne_one AI`. Consider the case `succ j ih`. Introduce `h`. Apply `ih` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(frobeniusEquiv (OCb l) l).injective` to reduce the goal to its premises. Rewrite using `[frobeniusEquiv_apply, frobeniusEquiv_apply, frobenius_def, frobenius_def, ← pow_mul, ← pow_succ, h, one_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_pow_ne_one (AI : LocAinf l P) (j : ℕ) : AI.ε ^ l ^ j ≠ 1 := by
   induction j with
@@ -67,7 +67,7 @@ theorem eps_pow_ne_one (AI : LocAinf l P) (j : ℕ) : AI.ε ^ l ^ j ≠ 1 := by
       ← pow_succ, h, one_pow]
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simp [LocAinf.εroot]`. Consider the case `succ s ih`. Rewrite using `[LocAinf.εroot, Function.iterate_succ_apply', pow_succ', pow_mul, frobeniusEquiv_symm_pow_p]`. Conclude with `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_root_pow (AI : LocAinf l P) (s : ℕ) : AI.εroot s ^ l ^ s = AI.ε := by
   induction s with
@@ -77,14 +77,14 @@ theorem eps_root_pow (AI : LocAinf l P) (s : ℕ) : AI.εroot s ^ l ^ s = AI.ε 
     exact ih
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CrisLoc.unit_of_root_aB l e he hne`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_aB (e : Per.Fl l) (he : e.untilt = 1) (hne : e ≠ 1) :
     IsUnit (Per.aB l (Per.tm e - 1)) :=
   GlobalTheory.CrisLoc.unit_of_root_aB l e he hne
 
 /- English proof (translation)
-Rewrite `h` using `[← T.ιA]`. Establish `h'` using `h.map T.eB.symm`. Rewrite `h'` using `[RingEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_of_aB {AI : LocAinf l P} (T : LocTied l P AI) (a : Ainf l) (h : IsUnit (Per.aB l a)) :
     IsUnit (AI.ιA a) := by
@@ -93,11 +93,11 @@ theorem isUnit_of_aB {AI : LocAinf l P} (T : LocTied l P AI) (a : Ainf l) (h : I
   rwa [RingEquiv.symm_apply_apply] at h'
 
 /- English proof (translation)
-Introduce `l _ P AI T`. Establish `hj : ∀ j : ℕ, IsUnit (AI.ιA (WittVector.teichmuller l (AI.ε ^ l ^ j) - 1))` using `fun j => isUnit_of_aB T _ (isUnit_aB (AI.ε ^ l ^ j) (by rw [map_pow, untilt_eps, one_pow]) (eps_pow_ne_one AI j))`. Establish `hμ : IsUnit (AI.ιA AI.μ)` using `by simpa [LocAinf.μ] using hj 0`. Use `⟨fun s => ?_, hj, ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `h` using `geom_sum_mul (WittVector.teichmuller l (AI.εroot s)) (l ^ s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[← map_pow, eps_root_pow]`. Rewrite `hμ` using `[LocAinf.μ, ← h, map_mul]`. Conclude with `isUnit_of_mul_isUnit_right hμ`. Rewrite `hμ` using `[AI.μ_eq, map_mul]`. Conclude with `isUnit_of_mul_isUnit_right hμ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `T.eB.injective` to reduce the goal to its premises. Rewrite using `[T.ιA, T.zB]`. Conclude with `GlobalTheory.RingIface.aB_algebraMap_padicInt l z`.
+A detailed English derivation is pending.
 -/
 theorem tied_mu_units : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → (∀ s : ℕ, IsUnit (AI.ιA (WittVector.teichmuller l (AI.εroot s) - 1))) ∧ (∀ j : ℕ, IsUnit (AI.ιA (WittVector.teichmuller l (AI.ε ^ l ^ j) - 1))) ∧ IsUnit (AI.ιA AI.ξ) ∧ ∀ z : ℤ_[l], AI.ιA (algebraMap ℤ_[l] (Ainf l) z) = algebraMap ℚ_[l] P.R.B (z : ℚ_[l]) := by
   intro l _ P AI T

@@ -20,7 +20,7 @@ section Gen
 variable {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
 
 /- English proof (translation)
-Distinguish the cases in `hf : (Function.support φ).Finite`. Rewrite using `[finsum_eq_sum _ hf]`. Conclude with `Commute.sum_right _ _ _ fun i _ => h i`. Rewrite using `[finsum_of_infinite_support hf]`. Conclude with `Commute.zero_right _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comm_finsum {ι : Type} {T : Module.End A M} {φ : ι → Module.End A M} (h : ∀ i, Commute T (φ i)) :
     Commute T (∑ᶠ i, φ i) := by
@@ -31,11 +31,11 @@ private theorem comm_finsum {ι : Type} {T : Module.End A M} {φ : ι → Module
     exact Commute.zero_right _
 
 /- English proof (translation)
-Use `Submodule.iSup_induction (fun n => S.comap (P n)) (motive := fun y => T y ∈ ⨆ n, S.comap (P n)) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `n y hy`. Apply `Submodule.mem_iSup_of_mem n` to reduce the goal to its premises. Rewrite `hy`, the goal using `[Submodule.mem_comap]`. Establish `e : P n (T y) = T (P n y)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `(LinearMap.congr_fun (hc n).eq y).symm` using `[Module.End.mul_apply]`. Rewrite using `[e]`. Conclude with `hS _ hy`. Simplify using the standard rewrite rules. Introduce `y z hy hz`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+A detailed English derivation is pending.
 -/
 private theorem iSup_pres {T : Module.End A M} {P : ℕ → Module.End A M} {S : Submodule A M} (hc : ∀ n, Commute T (P n))
     (hS : ∀ x ∈ S, T x ∈ S) {x : M} (hx : x ∈ ⨆ n, S.comap (P n)) : T x ∈ ⨆ n, S.comap (P n) := by
@@ -64,7 +64,7 @@ variable (A m) in
 private abbrev R (g : Ga) : Module.End A (X.Fn A m) := rtr A (Ga × Gp) (Fin m → A) (g, 1)
 
 /- English proof (translation)
-Establish `hc : Commute ((g, 1) : Ga × Gp) (1, p)` using `by show ((g, 1) : Ga × Gp) * (1, p) = (1, p) * (g, 1)`. Apply the tactic sequence `ext <;> simp`. Conclude with `hc.map (rtr A (Ga × Gp) (Fin m → A))`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem comm_rp (g : Ga) (p : Gp) : Commute (R X A m g) (X.rp A m p) := by
   have hc : Commute ((g, 1) : Ga × Gp) (1, p) := by
@@ -73,14 +73,14 @@ private theorem comm_rp (g : Ga) (p : Gp) : Commute (R X A m g) (X.rp A m p) := 
   exact hc.map (rtr A (Ga × Gp) (Fin m → A))
 
 /- English proof (translation)
-Unfold `Frame.U Iwa.uOp`. Conclude with `comm_finsum fun q => comm_rp X g _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem comm_U (g : Ga) (a : Gp) : Commute (R X A m g) (X.U A m a) := by
   unfold Frame.U Iwa.uOp
   exact comm_finsum fun q => comm_rp X g _
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun x => ?_` and prove the remaining obligations. Establish `e : ((g, 1) : Ga × Gp) * ((u : Ga), 1) = ((u : Ga), 1) * (g, 1)`. Apply the tactic sequence `ext <;> simp [h.eq]`. Simplify using `only [Module.End.mul_apply, Frame.ra_apply, R, rtr, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.funLeft_apply, mul_assoc, e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem comm_ra (τ : X.Ub →* GL (Fin m) A) {g : Ga} {u : X.Ub} (h : Commute g (u : Ga)) :
     Commute (R X A m g) (X.ra τ u) := by
@@ -91,7 +91,7 @@ private theorem comm_ra (τ : X.Ub →* GL (Fin m) A) {g : Ga} {u : X.Ub} (h : C
     LinearMap.funLeft_apply, mul_assoc, e]
 
 /- English proof (translation)
-Simplify using `only [Frame.valIn, Submodule.mem_pi, Set.mem_univ, true_implies] at hf ⊢`. Introduce `x i`. Conclude with `hf _ i`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem valIn_pres [IsLocalRing A] (g : Ga) (k : ℕ) {f : X.Fn A m} (hf : f ∈ X.valIn A m k) :
     R X A m g f ∈ X.valIn A m k := by
@@ -102,13 +102,13 @@ private theorem valIn_pres [IsLocalRing A] (g : Ga) (k : ℕ) {f : X.Fn A m} (hf
 variable [IsLocalRing A]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hf`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ x show f (X.glob γ * x * (g, 1)) = f (x * (g, 1))`. Rewrite using `[mul_assoc]`. Conclude with `h1 γ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Establish `e : X.rp A m u (R X A m g f) = R X A m g (X.rp A m u f)` using `(LinearMap.congr_fun (comm_rp X g u).eq f).symm`. Rewrite using `[e, h2 u hu]`. Introduce `t`. Establish `e : X.rp A m t (R X A m g f) = R X A m g (X.rp A m t f)` using `(LinearMap.congr_fun (comm_rp X g t).eq f).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, h3 t, map_smul]`. Introduce `k`. Take `⟨c, hc⟩` from `h4 k`. Use `⟨c, fun y hy x i => ?_⟩` and prove the remaining obligations. Use `show f (x * (1, y) * (g, 1)) i - f (x * (g, 1)) i ∈ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `ex : x * (1, y) * (g, 1) = x * (g, 1) * (1, y)`. Apply the tactic sequence `ext <;> simp [mul_assoc]`. Rewrite using `[ex]`. Conclude with `hc y hy _ i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem amb_pres (θ : X.I.T →* Aˣ) (g : Ga) {f : X.Fn A m} (hf : f ∈ X.Amb m θ) : R X A m g f ∈ X.Amb m θ := by
   obtain ⟨h1, h2, h3, h4⟩ := hf
@@ -135,9 +135,9 @@ private theorem amb_pres (θ : X.I.T →* Aˣ) (g : Ga) {f : X.Fn A m} (hf : f �
     exact hc y hy _ i
 
 /- English proof (translation)
-Introduce `u hu`. Take `⟨u', hu', e1, e2⟩` from `hU u hu`. Use function extensionality and compare the values at `x`. Establish `hfx` using `congrFun (hf u' hu') (x * (g, 1))`. Establish `ex : x * (g, 1) * ((u' : Ga), 1) = x * ((u : Ga), 1) * (g, 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [e1]; ext <;> simp [mul_assoc]`. Rewrite `hfx` using `[Frame.ra_apply, ex, e2]`. Rewrite using `[Frame.ra_apply]`. Conclude with `hfx`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fix_pres (τ : X.Ub →* GL (Fin m) A) (U : Subgroup X.Ub) {g : Ga}
     (hU : ∀ u ∈ U, ∃ u' ∈ U, (u' : Ga) = g⁻¹ * u * g ∧ τ u' = τ u) {f : X.Fn A m} (hf : f ∈ fixd (X.ra τ) U) :
@@ -153,7 +153,7 @@ private theorem fix_pres (τ : X.Ub →* GL (Fin m) A) (U : Subgroup X.Ub) {g : 
   exact hfx
 
 /- English proof (translation)
-Simplify using `only [Frame.Ord, Frame.Sp, Submodule.mem_inf, Submodule.mem_iInf] at hf ⊢`. Take `⟨⟨h1, h2⟩, h3⟩` from `hf`. Use `⟨⟨amb_pres X θ g h1, fix_pres X τ U hU h2⟩, fun k => ?_⟩` and prove the remaining obligations. Use `iSup_pres (fun n => ?_) (fun x hx => valIn_pres X g k hx) (h3 k)` and prove the remaining obligations. Conclude with `((comm_U X g X.I.z).pow_right (n + 1)).sub_right (Commute.one_right _)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem ord_pres (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ) (U : Subgroup X.Ub) {g : Ga}
     (hU : ∀ u ∈ U, ∃ u' ∈ U, (u' : Ga) = g⁻¹ * u * g ∧ τ u' = τ u) {f : X.Fn A m} (hf : f ∈ X.Ord τ θ U) :
@@ -172,9 +172,9 @@ variable {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAl
   {c : Coef l} (H : HSet L Ω l n c) (A : Type) [CommRing A] [Algebra c.O A]
 
 /- English proof (translation)
-Break down `i with x | x` into its components or cases. Express the relevant statement in the definitionally equal form `Commute (R H.X A H.m g) (sphOp ((H.X.ra (H.τA A)).comp (H.sec x.1)) (x.2 + 1))`. Unfold `sphOp dc`. Use `comm_finsum fun q => ?_` and prove the remaining obligations. Conclude with `comm_ra H.X (H.τA A) (hg.sph x.1 x.1.2 _)`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Commute (R H.X A H.m g) (H.X.U A H.m _)`. Conclude with `comm_U H.X g _`.
+A detailed English derivation is pending.
 -/
 private theorem tr_op {g : H.Ga} (hg : Norm H g) (i : H.Op) : Commute (trA H A g) (H.op A i) := by
   rcases i with x | x
@@ -188,7 +188,7 @@ private theorem tr_op {g : H.Ga} (hg : Norm H g) (i : H.Op) : Commute (trA H A g
 variable {A} [IsLocalRing A] (θ : H.X.I.T →* Aˣ)
 
 /- English proof (translation)
-The claim follows from `ord_pres H.X (H.τA A) θ (H.lev K) (fun u hu => by obtain ⟨u', h1, h2, h3⟩ := hg.lev K u hu exact ⟨u', h1, h2, congrArg (Matrix.GeneralLinearGroup.map (algebraMap c.O A)) h3⟩) hf`.
+A detailed English derivation is pending.
 -/
 private theorem tr_Ord {g : H.Ga} (hg : Norm H g) (K : H.Lev) {f : H.X.Fn A H.m} (hf : f ∈ H.X.Ord (H.τA A) θ (H.lev K)) :
     trA H A g f ∈ H.X.Ord (H.τA A) θ (H.lev K) :=
@@ -197,13 +197,13 @@ private theorem tr_Ord {g : H.Ga} (hg : Norm H g) (K : H.Lev) {f : H.X.Fn A H.m}
     exact ⟨u', h1, h2, congrArg (Matrix.GeneralLinearGroup.map (algebraMap c.O A)) h3⟩) hf
 
 /- English proof (translation)
-Unfold `HSet.MK locPart at hf ⊢`. Rewrite `hf` using `[Submodule.mem_inf, Submodule.mem_iInf]`. Rewrite using `[Submodule.mem_inf, Submodule.mem_iInf]`. Take `⟨h1, h2⟩` from `hf`. Use `⟨tr_Ord H θ hg K h1, fun i => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.mem_iInf _).mpr fun k => ?_` and prove the remaining obligations. Establish `h2'` using `(Submodule.mem_iInf _).mp (h2 i) k`. Establish `hle : ∀ x ∈ maximalIdeal A ^ k • H.X.Ord (H.τA A) θ (H.lev K), trA H A g x ∈ maximalIdeal A ^ k • H.X.Ord (H.τA A) θ (H.lev K)`. Introduce `x hx`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r hr y hy`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul hr (tr_Ord H θ hg K hy)`. Introduce `y z hy hz`. Rewrite using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.add_mem _ hy hz`. Use `iSup_pres (fun n => ?_) hle h2'` and prove the remaining obligations. Use `Commute.pow_right ?_ n` and prove the remaining obligations. Use `(tr_op H A hg i).sub_right ?_` and prove the remaining obligations. Conclude with `(Algebra.commutes _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem tr_MK {g : H.Ga} (hg : Norm H g) (a : H.Op → c.O) (K : H.Lev) {f : H.X.Fn A H.m} (hf : f ∈ H.MK θ a K) :
     trA H A g f ∈ H.MK θ a K := by
@@ -230,11 +230,11 @@ private theorem tr_MK {g : H.Ga} (hg : Norm H g) (a : H.Op → c.O) (K : H.Lev) 
   exact (Algebra.commutes _ _).symm
 
 /- English proof (translation)
-Take `⟨u, hu, e1, e2⟩` from `h`. Simplify using `only [Frame.Ord, Frame.Sp, Submodule.mem_inf] at hf`. Establish `hmem : u ∈ H.lev K`. Unfold `HSet.lev`. Conclude with `Subgroup.mem_sup_left hu`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hfix` using `hf.1.2 u hmem`. Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun hfix x`. Express the relevant statement in the definitionally equal form `((H.τA A u : GL (Fin H.m) A) : Matrix (Fin H.m) (Fin H.m) A) *ᵥ f (x * ((u : H.Ga), 1)) = f x at hx`. Establish `hτ' : H.τA A u = 1` using `by show Matrix.GeneralLinearGroup.map (algebraMap c.O A) (H.τ u) = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, map_one]`. Rewrite `hx` using `[hτ', Units.val_one, Matrix.one_mulVec, e1]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tr_fix {g : H.Ga} (h : ∃ u ∈ H.UQ, (u : H.Ga) = g ∧ H.τ u = 1) (K : H.Lev) {f : H.X.Fn A H.m}
     (hf : f ∈ H.X.Ord (H.τA A) θ (H.lev K)) : trA H A g f = f := by
@@ -256,7 +256,7 @@ private theorem tr_fix {g : H.Ga} (h : ∃ u ∈ H.UQ, (u : H.Ga) = g ∧ H.τ u
 end Set
 
 /- English proof (translation)
-Simplify using `[opE, Finsupp.sum, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem opE_eq {G R W : Type} [Group G] [CommRing R] [AddCommGroup W] [Module R W] (ρ : Representation R G W) (a : G →₀ ℤ)
     (x : W) : opE ρ a x = ∑ g ∈ a.support, a g • ρ g x := by
@@ -267,23 +267,19 @@ end UpperTheory.V.Z.Desc.V0
 open UpperTheory.V.Z.Desc.V0
 
 /- English proof (translation)
-Unfold `EEx`. Introduce `L Ω _ _ _ _ _ l _ n c H hAx A _ _ _ θ hθ K a₀ _ G _ K₀ K₁ β a N hK hE hN`. Set `ρ : Representation A G (H.X.Fn A H.m)` to `(trA H A).comp β`. Set `E : Module.End A (H.X.Fn A H.m)` to `opE ρ a`. Establish `hMOrd : ∀ f ∈ H.MK θ a₀ K, f ∈ H.X.Ord (H.τA A) θ (H.lev K)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `f hf`. Unfold `HSet.MK locPart at hf`. Conclude with `(Submodule.mem_inf.mp hf).1`. Establish `hρM : ∀ g ∈ K₀, ∀ f ∈ H.MK θ a₀ K, ρ g f ∈ H.MK θ a₀ K` using `fun g hg f hf => tr_MK H θ (hK.norm g hg) a₀ K hf`. Establish `hEM : ∀ f ∈ H.MK θ a₀ K, E f ∈ H.MK θ a₀ K`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Use `show opE ρ a f ∈ H.MK θ a₀ K`. Rewrite using `[opE_eq]`. Use `Submodule.sum_mem _ fun g hg => ?_` and prove the remaining obligations. Conclude with `zsmul_mem (hρM g (hE.supp g hg) f hf) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfixM : ∀ f ∈ H.MK θ a₀ K, f ∈ fixd ρ K₁`. Introduce `f hf g hg`. Conclude with `tr_fix H θ (hK.triv g hg) K (hMOrd f hf)`. Establish `hsq : ∀ f ∈ H.MK θ a₀ K, E (E f) = N • E f` using `fun f hf => hE.sq A (H.X.Fn A H.m) ρ f (hfixM f hf)`. Establish `hcomm : ∀ i f, E (H.op A i f) = H.op A i (E f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i f`. Use `show opE ρ a (H.op A i f) = H.op A i (opE ρ a f)`. Rewrite using `[opE_eq, opE_eq, map_sum]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Conclude with `LinearMap.congr_fun (tr_op H A (hK.norm g (hE.supp g hg)) i).eq f`. Take `⟨u, hu⟩` from `hN`. Set `e : Module.End A (H.MK θ a₀ K)` to `(↑u⁻¹ : A) • E.restrict hEM`. Use `⟨e, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m show N • ((↑u⁻¹ : A) • E m) = E m`. Rewrite using `[← Nat.cast_smul_eq_nsmul A, ← hu, smul_smul, Units.mul_inv, one_smul]`. Use `LinearMap.ext fun m => Subtype.ext ?_ show (↑u⁻¹ : A) • E ((↑u⁻¹ : A) • E m) = (↑u⁻¹ : A) • E m` and prove the remaining obligations. Rewrite using `[map_smul, hsq m m.2, ← Nat.cast_smul_eq_nsmul A, ← hu, smul_smul, smul_smul, mul_assoc, Units.inv_mul, mul_one]`. Introduce `t`.
-
-Use `Algebra.commute_of_mem_adjoin_of_forall_mem_commute t.2 ?_` and prove the remaining obligations. Introduce and unpack `t' ⟨i, hi⟩`. Use `LinearMap.ext fun m => Subtype.ext ?_` and prove the remaining obligations. Use `show (↑u⁻¹ : A) • E ↑(t' m) = ↑(t' (e m))`. Rewrite using `[hi m, hi (e m), hcomm]`.
-
-Use `show (↑u⁻¹ : A) • H.op A i (E m) = H.op A i ((↑u⁻¹ : A) • E m)`. Rewrite using `[map_smul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Desc.V0.eEx :
     EEx := by

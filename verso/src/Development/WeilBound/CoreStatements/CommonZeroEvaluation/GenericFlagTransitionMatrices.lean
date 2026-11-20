@@ -11,13 +11,11 @@ open scoped Matrix
 namespace ModelDimension
 
 /- English proof (translation)
-Introduce `K L _ _ _ E₀ F _ _ _ _ j S _ r V b d hg e he hli`. Establish `hj : ∀ (a : K) x, j (a • x) = algebraMap K L a • j x`. Take `⟨_, _, -, h, -⟩` from `hg`. Conclude with `h`. Establish `hli₀ : ∀ s, LinearIndependent K (e s)` using `fun s => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.linearIndependent_iff.2 fun g hg0 k => ?_` and prove the remaining obligations. Establish `h1 : ∑ l, algebraMap K L (g l) • j (e s l) = 0`. Use `congrArg j hg0` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Simplify `this` using `only [hj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `Fintype.linearIndependent_iff.1 (hli s) _ h1 k`. Conclude with `(map_eq_zero_iff _ (algebraMap K L).injective).1 h2`. Take `⟨v, Tm, h1, h0, hi, hd, hb, hT0, hTd⟩` from `GlobalTheory.CompanionTheory.Ar.Rec.ReadEx.lin_core j V b d hg e hli₀ he hli`. Use `⟨v, Tm, h1, h0, hi, ?_, hb, hT0, hTd⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.CompanionTheory.Ar.Rec.ReadEx.adjoin_all_eq_strict v h1 h0]`.
-
-Conclude with `hd`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generic_flag_transition_matrices : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] (E₀ F : Type) [AddCommGroup E₀] [Module K E₀] [AddCommGroup F] [Module L F] (j : E₀ →+ F) (S : Type) [Finite S] (r : S → ℕ) (V : S → Submodule K E₀) (b : ∀ s, Fin (r s) → F) (d : ℕ), GlobalTheory.CompanionTheory.Ar.IsGenericFlag (Ω := K) (Ω' := L) j V b d → ∀ (e : ∀ s, Fin (r s) → E₀), (∀ s l, e s l ∈ V s) → (∀ s, LinearIndependent L fun l => j (e s l)) → ∃ v Tm : ∀ s, Matrix (Fin (r s)) (Fin (r s)) L, (∀ s k, v s k k = 1) ∧ (∀ s l k, l < k → v s l k = 0) ∧ AlgebraicIndependent K (fun q : Σ s, {lk : Fin (r s) × Fin (r s) // lk.2 < lk.1} => v q.1 q.2.1.1 q.2.1.2) ∧ Module.finrank (IntermediateField.adjoin K (Set.range fun q : Σ s, {lk : Fin (r s) × Fin (r s) // lk.2 < lk.1} => v q.1 q.2.1.1 q.2.1.2)) L = d ∧ (∀ s i, b s i = ∑ m, Tm s i m • ∑ l, v s l m • j (e s l)) ∧ (∀ s i m, i < m → Tm s i m = 0) ∧ ∀ s i, Tm s i i ≠ 0 := by
   intro K L _ _ _ E₀ F _ _ _ _ j S _ r V b d hg e he hli

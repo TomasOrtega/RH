@@ -5,25 +5,23 @@ open scoped ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set m : Measure R := (μ.restrict H).map ψ with hm`. Establish `happ : ∀ s, MeasurableSet s → m s = μ (ψ ⁻¹' s ∩ H)`. Introduce `s hs'`. Rewrite using `[hm, Measure.map_apply hψ hs', Measure.restrict_apply (hψ hs')]`. Establish `hL : m.IsMulLeftInvariant`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← forall_measure_preimage_mul_iff]`. Introduce `t s hs'`. Take `⟨h, hh, rfl⟩` from `hs t`. Rewrite using `[happ _ hs', happ _ (measurable_const_mul _ hs'), ← measure_preimage_mul μ h (ψ ⁻¹' s ∩ H)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Simplify using `[H.mul_mem_cancel_left hh]`. Establish `hR : m.IsMulRightInvariant`. Rewrite using `[← forall_measure_preimage_mul_right_iff]`. Introduce `t s hs'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, rfl⟩` from `hs t`. Rewrite using `[happ _ hs', happ _ (measurable_mul_const _ hs'), ← measure_preimage_mul_right μ h (ψ ⁻¹' s ∩ H)]`. Use `congr 1`. Use extensionality with `g`. Simplify using `[H.mul_mem_cancel_right hh]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hF : IsLocallyFiniteMeasure m`. Use `⟨fun t => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, hW'⟩` from `hf t`. Use `⟨interior W, interior_mem_nhds.2 hW, ?_⟩` and prove the remaining obligations. Rewrite using `[happ _ isOpen_interior.measurableSet]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_lt (measure_mono ?_) (lt_top_iff_ne_top.2 hW')` and prove the remaining obligations. Introduce `g hg`. Conclude with `⟨hg.2, interior_subset (s := W) hg.1⟩`. Establish `h0 : m ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `happ Set.univ MeasurableSet.univ` as an intermediate fact. Rewrite `this` using `[h]`. Apply `hμ` to reduce the goal to its premises. Simplify using `using this.symm`. Establish `hκ` using `Measure.isMulLeftInvariant_eq_smul m ν`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := Measure.haarScalarFactor m ν`. Establish `hc : c ≠ 0`. Introduce `h`. Rewrite `hκ` using `[h, zero_smul]`. Conclude with `h0 hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc' : (c : ℝ≥0∞) ≠ 0` using `by exact_mod_cast hc`. Establish `hκ' : m = (c : ℝ≥0∞) • ν` using `hκ`. Use `⟨c, hc', ENNReal.coe_ne_top, hκ', ?_⟩` and prove the remaining obligations. Establish `: ν = (c : ℝ≥0∞)⁻¹ • m`. Rewrite using `[hκ', smul_smul, ENNReal.inv_mul_cancel hc' ENNReal.coe_ne_top, one_smul]`.
-
-Rewrite using `[this]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_restrict_subgroup_eq_smul_haar (G : Type) [Group G] [MeasurableSpace G]
     [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant]
@@ -83,21 +81,19 @@ theorem map_restrict_subgroup_eq_smul_haar (G : Type) [Group G] [MeasurableSpace
   infer_instance
 
 /- English proof (translation)
-Introduce `G _ _ _ μ _ _ H hH hμ ι R _ _ _ _ _ _ _ _ ν _ ψ hψ hs hf hc`. Use `choose κ h0 htop hκ hR using fun k => map_restrict_subgroup_eq_smul_haar G μ H hH hμ (R k) (ν k) (ψ k) (hψ k) (hs k) (hf k)`. Establish `key : ∀ k k', κ k = κ k'`. Introduce `k k'`. Take `⟨e, α, u, he, hα, hψe, hαα⟩` from `hc k k'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hR k` as an intermediate fact. Establish `h1 : κ k' • ν k' = (κ k • (ν k).map α).map e`. Rewrite using `[← hκ k', ← Measure.map_smul, ← hκ k, Measure.map_map hα (hψ k), Measure.map_map e.measurable (hα.comp (hψ k))]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `hψe g`. Establish `h2 : κ k' • ν k = κ k • (ν k).map α`. Use `congrArg (Measure.map e.symm) h1` as an intermediate fact. Rewrite `this` using `[Measure.map_smul, (he.symm e).map_eq, MeasurableEquiv.map_symm_map]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ((ν k).map α).map α = ν k`. Rewrite using `[Measure.map_map hα hα]`. Establish `: α ∘ α = (fun t => t * u) ∘ (fun t => u⁻¹ * t)` using `funext hαα`. Rewrite using `[this, ← Measure.map_map (measurable_mul_const u) (measurable_const_mul u⁻¹), map_mul_left_eq_self, map_mul_right_eq_self]`. Establish `h4 : κ k' • (ν k).map α = κ k • ν k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (Measure.map α) h2` as an intermediate fact. Rewrite `this` using `[Measure.map_smul, Measure.map_smul, h3]`. Conclude with `this`. Establish `h5 : (κ k' * κ k') • ν k = (κ k * κ k) • ν k`. Rewrite using `[mul_smul, h2, smul_comm, h4, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts (R k))` from `inferInstance`. Establish `hK0 : ν k K ≠ 0` using `(Measure.measure_pos_of_nonempty_interior (ν k) K.interior_nonempty).ne'`. Establish `hKt : ν k K ≠ ⊤` using `K.isCompact.measure_ne_top`. Establish `h6` using `congrArg (fun m : Measure (R k) => m K) h5`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at h6`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `h7 : κ k' * κ k' = κ k * κ k` using `(ENNReal.mul_left_inj hK0 hKt).1 h6`. Break down `lt_trichotomy (κ k) (κ k') with h | h | h` into its components or cases. Conclude with `absurd h7 (ENNReal.mul_lt_mul h h).ne'`. Conclude with `h`. Conclude with `absurd h7 (ENNReal.mul_lt_mul h h).ne`.
-
-Break down `isEmpty_or_nonempty ι with hι | ⟨⟨k₀⟩⟩` into its components or cases. Conclude with `⟨1, one_ne_zero, ENNReal.one_ne_top, fun k => hι.elim k⟩`. Conclude with `⟨κ k₀, h0 k₀, htop k₀, fun k => by rw [hκ k, key k k₀]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_restrict_subgroup_eq_common_smul_haar : ∀ (G : Type) [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] (H : Subgroup G), MeasurableSet (H : Set G) → μ H ≠ 0 → ∀ (ι : Type) (R : ι → Type) [∀ k, Group (R k)] [∀ k, TopologicalSpace (R k)] [∀ k, IsTopologicalGroup (R k)] [∀ k, T2Space (R k)] [∀ k, LocallyCompactSpace (R k)] [∀ k, SecondCountableTopology (R k)] [∀ k, MeasurableSpace (R k)] [∀ k, BorelSpace (R k)] (ν : ∀ k, Measure (R k)) [∀ k, (ν k).IsHaarMeasure] (ψ : ∀ k, G →* R k), (∀ k, Measurable (ψ k)) → (∀ k t, ∃ h ∈ H, ψ k h = t) → (∀ k t, ∃ W ∈ 𝓝 t, μ ((H : Set G) ∩ ψ k ⁻¹' W) ≠ ⊤) → (∀ k k', ∃ (e : R k ≃ᵐ R k') (α : R k → R k) (u : R k), MeasurePreserving e (ν k) (ν k') ∧ Measurable α ∧ (∀ g, ψ k' g = e (α (ψ k g))) ∧ ∀ t, α (α t) = u⁻¹ * t * u) → ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ ⊤ ∧ ∀ k, (μ.restrict H).map (ψ k) = κ • ν k := by
   intro G _ _ _ μ _ _ H hH hμ ι R _ _ _ _ _ _ _ _ ν _ ψ hψ hs hf hc

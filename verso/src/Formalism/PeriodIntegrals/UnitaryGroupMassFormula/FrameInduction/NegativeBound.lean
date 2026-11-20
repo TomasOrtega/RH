@@ -7,7 +7,7 @@ noncomputable section
 namespace PI.FrameInd
 
 /- English proof (translation)
-Introduce `k r S hS` and use `NegB.negBound k r S hS`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem negative_bound : NegBound := fun k r S hS => NegB.negBound k r S hS
 

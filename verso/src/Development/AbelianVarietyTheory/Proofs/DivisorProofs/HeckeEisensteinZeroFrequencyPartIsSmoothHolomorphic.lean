@@ -18,7 +18,7 @@ namespace GlobalTheory.HeckeTwo
 namespace BZeroGood
 
 /- English proof (translation)
-Rewrite using `[← Embeddings.card F ℂ]`. Use `Fintype.card_of_bijective (f := fun τ : F →+* ℝ => Complex.ofRealHom.comp τ) ⟨fun τ τ' h => ?_, fun φ => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `Complex.ofReal_injective (RingHom.congr_fun h x)`. Conclude with `⟨(IsTotallyReal.complexEmbedding_isReal φ).embedding, RingHom.ext fun x => (IsTotallyReal.complexEmbedding_isReal φ).coe_embedding_apply x⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_emb_totReal (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     Fintype.card (Emb F) = Module.finrank ℚ F := by
@@ -30,7 +30,7 @@ theorem card_emb_totReal (F : Type) [Field F] [NumberField F] [IsTotallyReal F] 
       (IsTotallyReal.complexEmbedding_isReal φ).coe_embedding_apply x⟩
 
 /- English proof (translation)
-Use `(isOpen_lt continuous_const Complex.continuous_re).mem_nhds ?_` and prove the remaining obligations. Use `show (-1 / 2 : ℝ) < (0 : ℂ).re`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem halfPlane_mem_nhds_zero : halfPlane ∈ nhds (0 : ℂ) := by
   refine (isOpen_lt continuous_const Complex.continuous_re).mem_nhds ?_
@@ -38,23 +38,21 @@ theorem halfPlane_mem_nhds_zero : halfPlane ∈ nhds (0 : ℂ) := by
   norm_num
 
 /- English proof (translation)
-Use `set f := Fintype.card (Emb F) with hfdef`. Establish `hf2 : 2 ≤ f` using `by rw [hfdef, card_emb_totReal F]; exact hf`. Use `set E : ℂ → ℂ := fun σ => if σ = 0 then 0 else kFac F σ * (omegaFactor 𝔞 : ℂ) * ((nrm 𝔟 : ℝ) : ℂ) ^ (-1 - 2 * σ) * Zb (1 + 2 * σ) * cConst σ ^ f with hE`. Use `set G : ℂ → ℂ := fun σ => kFac F σ * (omegaFactor 𝔞 : ℂ) * ((nrm 𝔟 : ℝ) : ℂ) ^ (-1 - 2 * σ) * (R (1 + 2 * σ) / 2) * dslope cConst 0 σ * cConst σ ^ (f - 1) with hG`. Establish `hEG : E = G`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Use function extensionality and compare the values at `σ`. Simplify using `only [hE, hG]`. Use `split_ifs with h0`. Substitute `h0` using the available equality. Rewrite using `[GlobalTheory.T.heckePhiFourierConstantAtZero_zero, zero_pow (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[dslope_of_ne _ h0, slope_def_field, GlobalTheory.T.heckePhiFourierConstantAtZero_zero, hZ _ (by`. Introduce `h`. Apply `h0` to reduce the goal to its premises. Take the linear combination `h / 2)]`. Establish `hf1 : f = (f - 1) + 1` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hf1, pow_succ]`. Simplify using `only [Nat.add_sub_cancel]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hGd : DifferentiableOn ℂ G halfPlane`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `σ hσ`. Establish `hσ' : -1 - 2 * σ ≠ 0`. Introduce `h`. Establish `: σ.re = -1 / 2`. Use `congrArg Complex.re h` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [halfPlane, Set.mem_setOf_eq] at hσ`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : DifferentiableAt ℂ (fun σ : ℂ => ((nrm 𝔟 : ℝ) : ℂ) ^ (-1 - 2 * σ)) σ` using `DifferentiableAt.const_cpow ((differentiableAt_const _).sub (differentiableAt_id.const_mul _)) (Or.inr hσ')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : DifferentiableAt ℂ (fun σ : ℂ => R (1 + 2 * σ)) σ` using `(hR _).comp σ ((differentiableAt_const _).add (differentiableAt_id.const_mul _))`. Establish `h3 : DifferentiableWithinAt ℂ (dslope cConst 0) halfPlane σ` using `((differentiableOn_dslope halfPlane_mem_nhds_zero).2 GlobalTheory.T.heckePhiFourierConstantAtZero_differentiableOn) σ hσ`. Establish `h4 : DifferentiableWithinAt ℂ cConst halfPlane σ` using `GlobalTheory.T.heckePhiFourierConstantAtZero_differentiableOn σ hσ`. Conclude with `((((kFac_differentiable σ).differentiableWithinAt.mul (differentiableWithinAt_const _)).mul h1.differentiableWithinAt).mul (h2.differentiableWithinAt.div_const _)).mul h3 |>.mul (h4.pow _)`. Establish `hB : bZero Zb 𝔞 𝔟 = fun σ z => E σ * ∏ τ : Emb F, (((z τ).im : ℝ) : ℂ) ^ (-1 - 2 * σ)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `σ z`. Simplify using `only [bZero, hE]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hB]`. Conclude with `GlobalTheory.HeckeTwoMul.isGood_mul F E _ (hEG ▸ hGd) ⟨fun σ _ => GlobalTheory.T.upperHalfPlaneProduct_prod_im_rpow_contDiffOn F σ, fun w z hz => GlobalTheory.T.prodIm_iteratedWirtingerDerivWord_differentiableOn F w z hz⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HeckeTwo.bZero_isGood (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F] (hf : 2 ≤ Module.finrank ℚ F)
     (𝔞 𝔟 : Frac F) (Zb R : ℂ → ℂ) (hR : Differentiable ℂ R) (hZ : ∀ s : ℂ, s ≠ 1 → Zb s = R s / (s - 1)) :

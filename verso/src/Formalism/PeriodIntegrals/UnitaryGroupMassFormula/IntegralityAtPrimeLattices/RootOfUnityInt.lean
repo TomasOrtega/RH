@@ -37,11 +37,11 @@ def UpLatLoc0 (T : Forms0 D u) : Prop :=
             atInf (embT D) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ)
 
 /- English proof (translation)
-Establish `: Fact (D.mem u).A.T.Prime` using `⟨(D.mem u).A.T_prime⟩`. Establish `hL` using `bwB_clsCrd_lat D u 0 (Nat.zero_le _) c`. Take `⟨d, hd, hle⟩` from `dual_le_bnd (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)) (bwB_gramN_det D 0 (Nat.zero_le _)) _ hL`. Take `⟨d0, hd0, hle0⟩` from `exists_le_bnd _ hL`. Establish `hLd : Ld D u 0 (Nat.zero_le _) c ≤ bnd d` using `hle`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLd_sp` using `dual_span (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)) _ hL`. Use `⟨exists_isLocBasis _ _ _ (fg_of_le_bnd hd hLd) hLd_sp, fun v => exists_isLocBasis _ _ _ ?_ ?_⟩` and prove the remaining obligations. Use `fg_of_le_bnd (mul_ne_zero hd hd0) (sup_le (hle0.trans (bnd_mono d0 d)) ?_)` and prove the remaining obligations. Use `(Submodule.smul_le_right.trans hLd).trans ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bnd_mono d d0`. Conclude with `eq_top_iff.2 (hL.span_eq_top ▸ Submodule.span_mono (SetLike.coe_subset_coe.2 le_sup_left))`.
+A detailed English derivation is pending.
 -/
 theorem bases0 (T : Forms0 D u) (c : (D.mem u).C.cls 0) :
     (∃ B : GL (Fin (D.R.N 0)) D.host.E, IsLocBasis (D.mem u).A.T (Ld D u 0 (Nat.zero_le _) c : Set _) B) ∧
@@ -62,11 +62,11 @@ theorem bases0 (T : Forms0 D u) (c : (D.mem u).C.cls 0) :
   · exact eq_top_iff.2 (hL.span_eq_top ▸ Submodule.span_mono (SetLike.coe_subset_coe.2 le_sup_left))
 
 /- English proof (translation)
-Use `show 0 ≤ (D.what₂.places.val w) r`. Establish `h1` using `congrArg (D.what₂.places.val w) hr`. Rewrite `h1` using `[AddValuation.map_pow, AddValuation.map_one]`. Generalize the expression as in `hv : (D.what₂.places.val w) r = x at h1 ⊢`. Consider the cases of `x with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `top => exact le_top`. Consider the case `coe a`. Establish `h2 : ((n • a : ℤ) : WithTop ℤ) = ((0 : ℤ) : WithTop ℤ)`. Rewrite using `[WithTop.coe_nsmul, WithTop.coe_zero]`. Conclude with `h1`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : n • a = 0` using `WithTop.coe_injective h2`. Establish `ha : a = 0` using `(smul_eq_zero.mp h3).resolve_left hn.ne'`. Conclude with `WithTop.coe_nonneg.mpr ha.ge`.
+A detailed English derivation is pending.
 -/
 theorem rootOfUnity_int (w : D.what₂.places.Pl) (r : D.what₂.LL) {n : ℕ} (hn : 0 < n) (hr : r ^ n = 1) :
     r ∈ intW D.what₂.places w := by
@@ -85,9 +85,9 @@ theorem rootOfUnity_int (w : D.what₂.places.Pl) (r : D.what₂.LL) {n : ℕ} (
     exact WithTop.coe_nonneg.mpr ha.ge
 
 /- English proof (translation)
-Take `⟨n, hn, H⟩` from `hC`. Take `⟨hpow, r, hr⟩` from `H 0 (Nat.zero_le _) rfl κ`. Establish `hrn : r ^ n = 1`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[map_pow, hr, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpow`. Use `⟨r⁻¹, rootOfUnity_int w r⁻¹ hn (by rw [inv_pow, hrn, inv_one]), ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, hr, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chi_inv_int (T : Forms0 D u) (hC : LocalLatticeBases.ChiFin0 T) (w : D.what₂.places.Pl) (κ : T.cls0.lev.U) :
     ∃ r ∈ intW D.what₂.places w, D.what₂.embLL r = ((((T.cls0.lev.chi κ)⁻¹ : ℂˣ)) : ℂ) := by
@@ -102,13 +102,13 @@ theorem chi_inv_int (T : Forms0 D u) (hC : LocalLatticeBases.ChiFin0 T) (w : D.w
   rfl
 
 /- English proof (translation)
-Unfold `ValSc at hh ⊢`. Unfold `Formalism.L2.Forms.IntSpan at hh ⊢`. Introduce `B hB`. Take `⟨P, hP, hz⟩` from `hh B hB`. Use `⟨D.what₂.embLL r • P, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `clear hz`. Proceed by induction on `hP using AddSubgroup.closure_induction with`. Consider the case `mem p hp`. Take `⟨r', f, hr', hf, rfl⟩` from `hp`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Conclude with `⟨r * r', f, (intW D.what₂.places w).mul_mem hr hr', hf, by rw [map_mul, mul_smul]⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`. Introduce `z show D.what₂.embLL r * h z = _`. Rewrite using `[hz z]`. Simplify using `[map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valSc_smul (T : Forms0 D u) (w : D.what₂.places.Pl) (c : (D.mem u).C.cls 0) (h : (D.mem u).C.Y 0 → ℂ)
     (r : D.what₂.LL) (hr : r ∈ intW D.what₂.places w) (hh : ValSc T w c h) :
@@ -133,7 +133,7 @@ theorem valSc_smul (T : Forms0 D u) (w : D.what₂.places.Pl) (c : (D.mem u).C.c
     simp [map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `fnOf frameTranslate`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk, Subtype.coe_mk, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem fnOf_tr (s : D.what₂.Tau → ℤ) (M : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ)
     (P : MvPolynomial (D.what₂.Tau × Fin (D.R.N 0) × Fin (D.R.N 0)) ℂ) (g : GL (Fin (D.R.N 0)) D.host.E)
@@ -145,11 +145,9 @@ theorem fnOf_tr (s : D.what₂.Tau → ℤ) (M : D.what₂.Tau → Matrix (Fin (
   simp only [LinearMap.coe_mk, AddHom.coe_mk, Subtype.coe_mk, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `B hB`. Take `⟨M, P, hP, hPe, hN⟩` from `H B hB`. Use `choose N' hNN' hNw hN'w using hN`. Use `set N : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ := fun τ => M τ * atInf (embT D) (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ * atInf (embT D) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ with hNdef`. Use `⟨MvPolynomial.C (∏ τ, (N τ).det ^ shiftOf (lamT u 0) τ) * subP N P, bwG_intSpan_allSubP D w _ N _ (fun τ q hq => local_GL_stabilises_lattice D w _ _ _ (N τ) (N' τ) (hNN' τ) (hNw τ) (hN'w τ) q hq) P hP, fun z => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show h _ = _`. Rewrite using `[hPe, Equiv.apply_symm_apply, fnOf_tr, ← LocalLatticeBases.fnOf_mul]`. Establish `hM : (fun τ => M τ * atInf (embT D) (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ) = fun τ => N τ * atInf (embT D) ((B⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ`. Use function extensionality and compare the values at `τ`. Simplify using `only [hNdef, Matrix.mul_assoc]`.
-
-Rewrite using `[LocalLatticeBases.at_infinity_mul_inv, Matrix.mul_one]`. Rewrite using `[hM]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valSc_tr (T : Forms0 D u) (w : D.what₂.places.Pl) (c : (D.mem u).C.cls 0) (h : (D.mem u).C.Y 0 → ℂ)
     (g : GL (Fin (D.R.N 0)) D.host.E) (hg : g ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)))
@@ -179,11 +177,11 @@ theorem valSc_tr (T : Forms0 D u) (w : D.what₂.places.Pl) (c : (D.mem u).C.cls
   rw [hM]
 
 /- English proof (translation)
-Introduce `w hw hs v c x hx h hh`. Take `⟨z, rfl⟩` from `T.lv0.pr_surj v c x`. Take `⟨γ, η, κ, h1, h2, h3, h4, -, h6⟩` from `T.up_natural_level_zero v c z hx`. Establish `e : (D.fm u).upT 0 v c (T.lv0.pr v c z) h = fun s => ((((T.cls0.lev.chi κ)⁻¹ : ℂˣ)) : ℂ) * h (T.val0.eY.symm (frameTranslate (embT D) (fun τ x => embedding_conj_compat D τ x) γ.1⁻¹ ((UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))).inv_mem γ.2) (T.val0.eY s)))`. Use function extensionality and compare the values at `fun s => h6 h s _ (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0.is_translate_inverse T γ s)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Take `⟨r, hr, her⟩` from `chi_inv_int T hC w κ`. Rewrite using `[← her]`. Use `valSc_smul T w c _ r hr (valSc_tr T w c h _ _ fun B hB => ?_)` and prove the remaining obligations. Take `⟨B₂, hB₂⟩` from `(bases0 T ((D.fm u).up 0 v c (T.lv0.pr v c z))).1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨B', hB'⟩` from `(bases0 T ((D.fm u).up 0 v c (T.lv0.pr v c z))).2 v`. Take `⟨P, hP, hPe⟩` from `hh B₂ B' hB₂ hB'`. Conclude with `⟨_, P, hP, hPe, fun τ => hL w hw hs v c z hx γ η κ h1 h2 h3 h4 B B₂ B' hB hB₂ hB' τ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem upIncInt0_of (T : Forms0 D u) (hC : LocalLatticeBases.ChiFin0 T) (hL : UpLatLoc0 T) : UpIncInt0 T := by
   intro w hw hs v c x hx h hh

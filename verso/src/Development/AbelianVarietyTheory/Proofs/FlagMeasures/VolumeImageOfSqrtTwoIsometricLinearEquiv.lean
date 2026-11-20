@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.CellDens.ScaledVol
 
 /- English proof (translation)
-Establish `hs : (√2 : ℝ)⁻¹ ≠ 0` using `by positivity`. Establish `hfin : Module.finrank ℝ (Fin r → ℂ) = 2 * r`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨by fun_prop, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_addHaar_smul _ hs, hfin, inv_pow, inv_inv, pow_mul, Real.sq_sqrt (by norm_num), abs_of_pos (by positivity), ENNReal.ofReal_pow (by norm_num)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem measurePreserving_inv_sqrt_two_smul (r : ℕ) :
     MeasurePreserving (fun y : Fin r → ℂ => (√2 : ℝ)⁻¹ • y) volume
@@ -26,13 +26,13 @@ theorem measurePreserving_inv_sqrt_two_smul (r : ℕ) :
   simp
 
 /- English proof (translation)
-Establish `hc : (√2 : ℝ)⁻¹ ≠ 0` using `by positivity`. Set `Ψ : WithLp 2 (WithLp 2 (A × A) × WithLp 2 (EuclideanSpace ℂ (Fin r) × B)) ≃ₗ[ℝ] ((A × A) × ((Fin r → ℂ) × B))` to `(WithLp.linearEquiv 2 ℝ _).trans (LinearEquiv.prodCongr (WithLp.linearEquiv 2 ℝ (A × A)) ((WithLp.linearEquiv 2 ℝ _).trans (LinearEquiv.prodCongr ((WithLp.linearEquiv 2 ℝ (Fin r → ℂ)).trans (LinearEquiv.smulOfNeZero ℝ (Fin r → ℂ) (√2 : ℝ)⁻¹ hc)) (LinearEquiv.refl ℝ B))))`. Establish `hΨ : ∀ x, Ψ x = (x.ofLp.1.ofLp, ((√2 : ℝ)⁻¹ • x.ofLp.2.ofLp.1.ofLp, x.ofLp.2.ofLp.2))` using `fun _ => rfl`. Set `G : WithLp 2 (WithLp 2 (A × A) × WithLp 2 (EuclideanSpace ℂ (Fin r) × B)) ≃ₗᵢ[ℝ] F` to `{ Ψ.trans L.toLinearEquiv with norm_map' := fun x => by`. Express the relevant statement in the definitionally equal form `‖L (Ψ x)‖ = ‖x‖`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _), hL, hΨ, WithLp.prod_norm_sq_eq_of_L2, WithLp.prod_norm_sq_eq_of_L2, WithLp.prod_norm_sq_eq_of_L2, EuclideanSpace.norm_sq_eq]`. Simplify using `[norm_smul, mul_pow, Finset.mul_sum, ← mul_assoc, add_assoc] }`. Establish `h0` using `(measurePreserving_inv_sqrt_two_smul r).comp (GlobalTheory.volume_preserving_ofLp_complex (Fin r))`. Use `haveI : SFinite (((2 : ℝ≥0∞) ^ r) • (volume : Measure (Fin r → ℂ))) := inferInstance`. Establish `h1` using `(h0.prod (MeasurePreserving.id (volume : Measure B))).comp (WithLp.volume_preserving_ofLp (EuclideanSpace ℂ (Fin r)) B)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `((WithLp.volume_preserving_ofLp A A).prod h1).comp (WithLp.volume_preserving_ofLp (WithLp 2 (A × A)) (WithLp 2 (EuclideanSpace ℂ (Fin r) × B)))`. Establish `h3` using `h2.measure_preimage hs.nullMeasurableSet`. Rewrite `h3` using `[Measure.prod_smul_left, Measure.prod_smul_right, Measure.smul_apply, smul_eq_mul, ← Measure.volume_eq_prod, ← Measure.volume_eq_prod]`. Establish `hm : MeasurableSet (L '' s)` using `L.toHomeomorph.toMeasurableEquiv.measurableEmbedding.measurableSet_image.2 hs`. Rewrite using `[← h3, ← G.measurePreserving.measure_preimage hm.nullMeasurableSet]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `L (Ψ x) ∈ L '' s ↔ Ψ x ∈ s`. Conclude with `L.injective.mem_set_image`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem volume_image_eq (A B F : Type) [NormedAddCommGroup A] [InnerProductSpace ℝ A]
     [FiniteDimensional ℝ A] [MeasurableSpace A] [BorelSpace A] [NormedAddCommGroup B]

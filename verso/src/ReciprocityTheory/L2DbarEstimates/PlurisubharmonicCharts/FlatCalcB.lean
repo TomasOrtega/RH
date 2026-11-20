@@ -11,11 +11,11 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Establish `secS : ∀ k i j y, y ∈ (A.chart i).source → y ∈ (A.chart j).source → s k i y = A.g L i j y * s k j y`. Introduce `k i j y hi hj`. Establish `hs` using `hD.sec_s k`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hs`. Conclude with `hs.2 i j y trivial hi hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `secW : ∀ i j y, y ∈ (A.chart i).source → y ∈ (A.chart j).source → w0 i y = A.g L i j y * w0 j y`. Introduce `i j y hi hj`. Establish `hs` using `hD.isSection_denom`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hs`. Conclude with `hs.2 i j y trivial hi hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hy : (A.chart i).symm v ∈ (A.chart i).source` using `(A.chart i).map_target hv`. Unfold `WeightedAtlas.zLoc WeightedAtlas.zmap`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[secS k i (A.pick _) _ hy (A.mem_pick _), secW i (A.pick _) _ hy (A.mem_pick _), mul_div_mul_left _ _ (A.g_ne L i (A.pick _) _ hy (A.mem_pick _))]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fc_zLoc_eq {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} (hD : A.D0 L w w0 s) (i : ι) (v : V n)
     (hv : v ∈ (A.chart i).target) :
@@ -40,9 +40,9 @@ theorem fc_zLoc_eq {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Seco
     mul_div_mul_left _ _ (A.g_ne L i (A.pick _) _ hy (A.mem_pick _))]
 
 /- English proof (translation)
-Establish `secW : ∀ i j y, y ∈ (A.chart i).source → y ∈ (A.chart j).source → w0 i y = A.g L i j y * w0 j y`. Introduce `i j y hi hj`. Establish `hs` using `hD.isSection_denom`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hs`. Conclude with `hs.2 i j y trivial hi hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[secW i (A.pick y) y hi (A.mem_pick y)]`. Conclude with `mul_ne_zero (A.g_ne L i (A.pick y) y hi (A.mem_pick y)) hy.1`.
+A detailed English derivation is pending.
 -/
 theorem denominator_ne_zero_on_set {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) {y : Y}
     (hy : y ∈ A.Mset w0 s De) (i : ι) (hi : y ∈ (A.chart i).source) : w0 i y ≠ 0 := by
@@ -56,25 +56,23 @@ theorem denominator_ne_zero_on_set {n : ℕ} {Y : Type u} [TopologicalSpace Y] [
   exact mul_ne_zero (A.g_ne L i (A.pick y) y hi (A.mem_pick y)) hy.1
 
 /- English proof (translation)
-Establish `secS : ∀ k i j y, y ∈ (A.chart i).source → y ∈ (A.chart j).source → s k i y = A.g L i j y * s k j y`. Introduce `k i j y hi hj`. Establish `hs` using `hD.sec_s k`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hs`. Conclude with `hs.2 i j y trivial hi hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `secW : ∀ i j y, y ∈ (A.chart i).source → y ∈ (A.chart j).source → w0 i y = A.g L i j y * w0 j y`. Introduce `i j y hi hj`. Establish `hs` using `hD.isSection_denom`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hs`. Conclude with `hs.2 i j y trivial hi hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : DifferentiableOn ℂ (w0 i ∘ (A.chart i).symm) (A.chart i).target`. Establish `hs` using `hD.isSection_denom`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hs`. Simplify using `using hs.1 i`. Establish `hsk : ∀ k, DifferentiableOn ℂ (s k i ∘ (A.chart i).symm) (A.chart i).target`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Establish `hs` using `hD.sec_s k`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hs`. Simplify using `using hs.1 i`. Use `set O1 := (A.chart i).target ∩ (fun v => w0 i ((A.chart i).symm v)) ⁻¹' {0}ᶜ with hO1def`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hO1 : IsOpen O1` using `hw.continuousOn.isOpen_inter_preimage (A.chart i).open_target isOpen_compl_singleton`. Establish `hzd : ∀ k, DifferentiableOn ℂ (fun v => (A.zLoc w0 s i v).ofLp k) O1`. Introduce `k`. Establish `h1 : DifferentiableOn ℂ (fun v => s k i ((A.chart i).symm v)) O1` using `(hsk k).mono Set.inter_subset_left`. Establish `h2 : DifferentiableOn ℂ (fun v => w0 i ((A.chart i).symm v)) O1` using `hw.mono Set.inter_subset_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h3` using `h1.mul (h2.inv fun v (hv : v ∈ O1) => hv.2)`. Use `h3.congr fun v _ => ?_` and prove the remaining obligations. Simplify using `[WeightedAtlas.zLoc, div_eq_mul_inv]`. Establish `hset : (A.chart i).target ∩ (A.chart i).symm ⁻¹' A.Mset w0 s De = O1 ∩ (fun v => MvPolynomial.eval (fun k => A.zLoc w0 s i v k) De) ⁻¹' {0}ᶜ`. Use extensionality with `v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, hM⟩`. Use `⟨⟨hv, denominator_ne_zero_on_set A hD hM i ((A.chart i).map_target hv)⟩, ?_⟩` and prove the remaining obligations. Use `show MvPolynomial.eval _ De ≠ 0`. Rewrite using `[fc_zLoc_eq A hD i v hv]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hM.2`. Introduce and unpack `⟨⟨hv, hw0⟩, hev⟩`. Use `⟨hv, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hw0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show w0 i ((A.chart i).symm v) = 0`. Rewrite using `[secW i (A.pick _) _ ((A.chart i).map_target hv) (A.mem_pick _), h0, mul_zero]`. Establish `h1 : MvPolynomial.eval (fun k => A.zLoc w0 s i v k) De ≠ 0` using `hev`. Rewrite `h1` using `[fc_zLoc_eq A hD i v hv]`. Conclude with `h1`.
-
-Rewrite using `[hset]`. Establish `hc : ContinuousOn (fun v => fun k => A.zLoc w0 s i v k) O1` using `continuousOn_pi.mpr fun k => (hzd k).continuousOn`. Conclude with `((MvPolynomial.continuous_eval De).comp_continuousOn hc).isOpen_inter_preimage hO1 isOpen_compl_singleton`.
+A detailed English derivation is pending.
 -/
 theorem fc_isOpen_O {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (i : ι) :
     IsOpen ((A.chart i).target ∩ (A.chart i).symm ⁻¹' A.Mset w0 s De) := by
@@ -136,19 +134,17 @@ theorem fc_isOpen_O {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Sec
     isOpen_compl_singleton
 
 /- English proof (translation)
-Establish `secS : ∀ k i j y, y ∈ (A.chart i).source → y ∈ (A.chart j).source → s k i y = A.g L i j y * s k j y`. Introduce `k i j y hi hj`. Establish `hs` using `hD.sec_s k`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hs`. Conclude with `hs.2 i j y trivial hi hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `secW : ∀ i j y, y ∈ (A.chart i).source → y ∈ (A.chart j).source → w0 i y = A.g L i j y * w0 j y`. Introduce `i j y hi hj`. Establish `hs` using `hD.isSection_denom`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hs`. Conclude with `hs.2 i j y trivial hi hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : DifferentiableOn ℂ (w0 i ∘ (A.chart i).symm) (A.chart i).target`. Establish `hs` using `hD.isSection_denom`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hs`. Simplify using `using hs.1 i`. Establish `hsk : ∀ k, DifferentiableOn ℂ (s k i ∘ (A.chart i).symm) (A.chart i).target`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Establish `hs` using `hD.sec_s k`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hs`. Simplify using `using hs.1 i`. Use `set O1 := (A.chart i).target ∩ (fun v => w0 i ((A.chart i).symm v)) ⁻¹' {0}ᶜ with hO1def`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hO1 : IsOpen O1` using `hw.continuousOn.isOpen_inter_preimage (A.chart i).open_target isOpen_compl_singleton`. Establish `hzd : ∀ k, DifferentiableOn ℂ (fun v => (A.zLoc w0 s i v).ofLp k) O1`. Introduce `k`. Establish `h1 : DifferentiableOn ℂ (fun v => s k i ((A.chart i).symm v)) O1` using `(hsk k).mono Set.inter_subset_left`. Establish `h2 : DifferentiableOn ℂ (fun v => w0 i ((A.chart i).symm v)) O1` using `hw.mono Set.inter_subset_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h3` using `h1.mul (h2.inv fun v (hv : v ∈ O1) => hv.2)`. Use `h3.congr fun v _ => ?_` and prove the remaining obligations. Simplify using `[WeightedAtlas.zLoc, div_eq_mul_inv]`. Establish `hsub : (A.chart i).target ∩ (A.chart i).symm ⁻¹' A.Mset w0 s De ⊆ O1` using `fun v hv => ⟨hv.1, denominator_ne_zero_on_set A hD hv.2 i ((A.chart i).map_target hv.1)⟩`. Establish `hopen` using `fc_isOpen_O A (De := De) hD i`.
-
-Rewrite using `[contDiffOn_euclidean]`. Introduce `k`. Conclude with `ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn n _ _ hopen ((hzd k).mono hsub)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fc_zLoc_contDiffOn {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (i : ι) :
     ContDiffOn ℂ ∞ (A.zLoc w0 s i) ((A.chart i).target ∩ (A.chart i).symm ⁻¹' A.Mset w0 s De) := by
@@ -193,15 +189,13 @@ theorem fc_zLoc_contDiffOn {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space 
   exact ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn n _ _ hopen ((hzd k).mono hsub)
 
 /- English proof (translation)
-Establish `hT : (A.chart j ∘ (A.chart i).symm) (A.chart i y) = A.chart j y`. Simplify using `only [Function.comp, (A.chart i).left_inv hi]`. Establish `hov : IsOpen (ovl A.chart i j)` using `(A.chart i).isOpen_inter_preimage_symm (A.chart j).open_source`. Establish `hx0ov : A.chart i y ∈ ovl A.chart i j`. Use `⟨(A.chart i).map_source hi, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (A.chart i).symm (A.chart i y) ∈ (A.chart j).source`. Rewrite using `[(A.chart i).left_inv hi]`. Conclude with `hj`. Establish `hev : A.zLoc w0 s i =ᶠ[𝓝 (A.chart i y)] A.zLoc w0 s j ∘ (A.chart j ∘ (A.chart i).symm)` using `by filter_upwards [hov.mem_nhds hx0ov] with v hv`. Simplify using `only [Function.comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[fc_zLoc_eq A hD i v hv.1, fc_zLoc_eq A hD j _ ((A.chart j).map_source hv.2), (A.chart j).left_inv hv.2]`. Establish `hdT : DifferentiableAt ℂ (A.chart j ∘ (A.chart i).symm) (A.chart i y)` using `(A.holo_trans i j).differentiableAt (hov.mem_nhds hx0ov)`. Establish `hdz : DifferentiableAt ℂ (A.zLoc w0 s j) ((A.chart j ∘ (A.chart i).symm) (A.chart i y))`. Rewrite using `[hT]`. Establish `hO` using `fc_isOpen_O A (De := De) hD j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : A.chart j y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' A.Mset w0 s De`. Use `⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm (A.chart j y) ∈ A.Mset w0 s De`. Rewrite using `[(A.chart j).left_inv hj]`. Conclude with `hy`.
-
-Conclude with `((fc_zLoc_contDiffOn A hD j).differentiableOn (by simp)).differentiableAt (hO.mem_nhds hm)`. Rewrite using `[hev.fderiv_eq, fderiv_comp (A.chart i y) hdz hdT, hT, A.g_kap i j y hi hj]`. Express the relevant statement in the definitionally equal form `LinearMap.det (((fderiv ℂ (A.zLoc w0 s j) (A.chart j y)).comp (fderiv ℂ (A.chart j ∘ (A.chart i).symm) (A.chart i y)) : V n →L[ℂ] V n) : V n →ₗ[ℂ] V n) = LinearMap.det ((fderiv ℂ (A.zLoc w0 s j) (A.chart j y)) : V n →ₗ[ℂ] V n) * LinearMap.det ((fderiv ℂ (A.chart j ∘ (A.chart i).s …`. Conclude with `LinearMap.det_comp ((fderiv ℂ (A.zLoc w0 s j) (A.chart j y)) : V n →ₗ[ℂ] V n) ((fderiv ℂ (A.chart j ∘ (A.chart i).symm) (A.chart i y)) : V n →ₗ[ℂ] V n)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem fc_det_jz {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) {y : Y}
     (hy : y ∈ A.Mset w0 s De) (i j : ι) (hi : y ∈ (A.chart i).source)
@@ -241,7 +235,7 @@ theorem fc_det_jz {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Secon
     ((fderiv ℂ (A.chart j ∘ (A.chart i).symm) (A.chart i y)) : V n →ₗ[ℂ] V n)
 
 /- English proof (translation)
-Rewrite using `[fc_det_jz A hD hy i (A.pick y) hi (A.mem_pick y)]`. Conclude with `mul_ne_zero (hF.deriv_ne y hy) (A.g_ne A.kap i (A.pick y) y hi (A.mem_pick y))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fc_jz_det_ne {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s)
     (hF : A.Flat w0 s De) {y : Y} (hy : y ∈ A.Mset w0 s De) (i : ι)
@@ -250,15 +244,13 @@ theorem fc_jz_det_ne {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Se
   exact mul_ne_zero (hF.deriv_ne y hy) (A.g_ne A.kap i (A.pick y) y hi (A.mem_pick y))
 
 /- English proof (translation)
-Establish `hO` using `fc_isOpen_O A (De := De) hD i`. Establish `hmO : A.chart i x ∈ (A.chart i).target ∩ (A.chart i).symm ⁻¹' A.Mset w0 s De`. Use `⟨(A.chart i).map_source hxi, ?_⟩` and prove the remaining obligations. Use `show (A.chart i).symm (A.chart i x) ∈ A.Mset w0 s De`. Rewrite using `[(A.chart i).left_inv hxi]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `x.2`. Take `⟨U, hU, hUe⟩` from `isOpen_induced_iff.mp e.open_source`. Establish `hxU : (x : Y) ∈ U`. Establish `hx : x ∈ Subtype.val ⁻¹' U` using `by rw [hUe]; exact hxe`. Conclude with `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hcont : ∀ᶠ v in 𝓝 (A.chart i x), (A.chart i).symm v ∈ U`. Apply `((A.chart i).continuousAt_symm ((A.chart i).map_source hxi)).preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[(A.chart i).left_inv hxi]`. Conclude with `hU.mem_nhds hxU`. Use `filter_upwards [hO.mem_nhds hmO, hcont] with v hvO hvU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : (⟨(A.chart i).symm v, hvO.2⟩ : A.Mset w0 s De) ∈ e.source`. Rewrite using `[← hUe]`. Conclude with `hvU`. Establish `hz : A.zLoc w0 s i v = e ⟨(A.chart i).symm v, hvO.2⟩`. Rewrite using `[fc_zLoc_eq A hD i v hvO.1]`.
-
-Conclude with `he hp`. Rewrite using `[hz, e.left_inv hp]`.
+A detailed English derivation is pending.
 -/
 theorem fc_chart_fwd {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s)
     (e : OpenPartialHomeomorph (A.Mset w0 s De) (V n)) (he : IsChart n (fun y : A.Mset w0 s De => A.zmap w0 s y) e)
@@ -289,7 +281,7 @@ theorem fc_chart_fwd {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Se
   rw [hz, e.left_inv hp]
 
 /- English proof (translation)
-Rewrite using `[fc_zLoc_eq A hD i _ ((A.chart i).map_source hxi), (A.chart i).left_inv hxi]`. Conclude with `he hxe`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fc_zLoc_chart {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s)
     (e : OpenPartialHomeomorph (A.Mset w0 s De) (V n)) (he : IsChart n (fun y : A.Mset w0 s De => A.zmap w0 s y) e)
@@ -299,7 +291,7 @@ theorem fc_zLoc_chart {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [S
   exact he hxe
 
 /- English proof (translation)
-Use `⟨(A.chart i).map_source hxi, ?_⟩` and prove the remaining obligations. Use `show (A.chart i).symm (A.chart i x) ∈ A.Mset w0 s De`. Rewrite using `[(A.chart i).left_inv hxi]`. Conclude with `x.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fc_mem_O {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (x : A.Mset w0 s De) (i : ι)
     (hxi : (x : Y) ∈ (A.chart i).source) :
@@ -310,21 +302,19 @@ theorem fc_mem_O {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Second
   exact x.2
 
 /- English proof (translation)
-Establish `hO` using `fc_isOpen_O A (De := De) hD i`. Establish `hmO` using `fc_mem_O A x i hxi`. Establish `hcd : ContDiffAt ℂ ∞ (A.zLoc w0 s i) (A.chart i x)` using `(fc_zLoc_contDiffOn A hD i).contDiffAt (hO.mem_nhds hmO)`. Establish `hdet` using `fc_jz_det_ne A hD hF x.2 i hxi`. Set `f' : V n ≃L[ℂ] V n` to `(fderiv ℂ (A.zLoc w0 s i) (A.chart i x)).toContinuousLinearEquivOfDetNeZero hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hn : ((⊤ : ℕ∞) : WithTop ℕ∞) ≠ 0` using `WithTop.coe_ne_zero.mpr (by simp)`. Establish `hf' : HasFDerivAt (A.zLoc w0 s i) (f' : V n →L[ℂ] V n) (A.chart i x)`. Simplify using `only [f', ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero]`. Conclude with `(hcd.differentiableAt hn).hasFDerivAt`. Establish `hs : HasStrictFDerivAt (A.zLoc w0 s i) (f' : V n →L[ℂ] V n) (A.chart i x)` using `hcd.hasStrictFDerivAt' hf' hn`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc` using `hcd.to_localInverse hf' hn`. Establish `hzx : A.zLoc w0 s i (A.chart i x) = e x` using `fc_zLoc_chart A hD e he x hxe i hxi`. Establish `hsymmc : ContinuousAt (fun w => ((e.symm w : A.Mset w0 s De) : Y)) (e x)` using `continuous_subtype_val.continuousAt.comp (e.continuousAt_symm (e.map_source hxe))`. Establish `hGc : Filter.Tendsto (fun w => A.chart i (e.symm w : Y)) (𝓝 (e x)) (𝓝 (A.chart i x))`. Establish `h` using `((A.chart i).continuousAt hxi).comp_of_eq hsymmc (by simp [e.left_inv hxe])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ContinuousAt at h`. Simplify using `only [Function.comp_apply, e.left_inv hxe] at h`. Conclude with `h`. Establish `hGx : A.chart i (e.symm (e x) : Y) = A.chart i x` using `by rw [e.left_inv hxe]`. Establish `hev1 : ∀ᶠ w in 𝓝 (e x), e.symm w ∈ e.source ∧ (e.symm w : Y) ∈ (A.chart i).source`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ᶠ w in 𝓝 (e x), w ∈ e.target` using `e.open_target.mem_nhds (e.map_source hxe)`. Establish `h2 : ∀ᶠ w in 𝓝 (e x), ((e.symm w : A.Mset w0 s De) : Y) ∈ (A.chart i).source`. Apply `hsymmc.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `only [e.left_inv hxe]`. Conclude with `(A.chart i).open_source.mem_nhds hxi`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [h1, h2] with w hw1 hw2`. Conclude with `⟨e.map_target hw1, hw2⟩`. Establish `hright : ∀ᶠ w in 𝓝 (e x), A.zLoc w0 s i (A.chart i (e.symm w : Y)) = w` using `by filter_upwards [hev1, e.open_target.mem_nhds (e.map_source hxe)] with w hw hwt`. Rewrite using `[fc_zLoc_chart A hD e he (e.symm w) hw.1 i hw.2, e.right_inv hwt]`. Establish `hleft` using `hGc.eventually hs.eventually_left_inverse`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun w => A.chart i (e.symm w : Y), ?_, hGx, ?_⟩` and prove the remaining obligations. Establish `heq : (fun w => A.chart i (e.symm w : Y)) =ᶠ[𝓝 (e x)] hcd.localInverse hf' hn` using `by filter_upwards [hleft, hright] with w h1 h2`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`. Rewrite `hloc` using `[hzx]`.
-
-Conclude with `hloc.congr_of_eventuallyEq heq`. Use `filter_upwards [hev1] with w hw`. Rewrite using `[(A.chart i).left_inv hw.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fc_chart_inv {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s)
     (hF : A.Flat w0 s De)

@@ -28,11 +28,11 @@ namespace GlobalTheory.Core.Rk.DoubleSpan
 variable {D : D7}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `φ ⟨f₁, f₂, h₁, h₂, rfl⟩`. Use `Submodule.subset_span ⟨f₁, fun x => starRingEnd ℂ (f₂ (-x)), h₁, GlobalTheory.CjNeg.theta_negS hψ (GlobalTheory.NegWeil.theta_refl h₂), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(GlobalTheory.DoublingTheta.boxS_apply A W f₁ (fun x => starRingEnd ℂ (f₂ (-x))) x).symm`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `φ ⟨g₁, g₂, h₁, h₂, rfl⟩`. Use `Submodule.subset_span ⟨g₁, fun x => starRingEnd ℂ (g₂ (-x)), h₁, GlobalTheory.NegWeil.theta_refl (GlobalTheory.CjNeg.theta_negS' hψ h₂), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `((GlobalTheory.DoublingTheta.boxS_apply A W g₁ g₂ x).trans ?_)` and prove the remaining obligations. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta, neg_neg, Complex.conj_conj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_delta_eq {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (A W : HSp D) :
     (Submodule.span ℂ {φ | ∃ f₁ f₂, IsThetaFunO ψ A W f₁ ∧ IsThetaFunO ψ A W f₂ ∧ φ = delta A W f₁ f₂} :
@@ -55,19 +55,17 @@ theorem span_delta_eq {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1
     simp only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta, neg_neg, Complex.conj_conj]
 
 /- English proof (translation)
-Use `⟨fun g hg => ?_, fun g hg w => ?_⟩` and prove the remaining obligations. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨fA, fB, hA, hB, rfl⟩` from `hf`. Conclude with `o.isThetaFunO_boxS hA hB`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact Formalism.IndefR.Fock.CCR.theta_zero ψ S W`. Consider the case `add a b _ _ ha hb => exact Formalism.IndefR.Fock.CCR.theta_add ha hb`. Consider the case `smul c a _ ha => exact Formalism.IndefR.Fock.CCR.theta_smul ha c`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem f hf`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨fA, fB, hA, hB, rfl⟩` from `hf`. Use `Submodule.subset_span ⟨_, _, GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hA (o.resS W w).1, GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hB (o.resS W w).2, ?_⟩` and prove the remaining obligations. Conclude with `o.heisO_boxS ψ W fA fB w`. Consider the case `zero`. Establish `: heisO ψ S W w 0 = 0` using `by funext x; simp [heisO]`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: heisO ψ S W w (a + b) = heisO ψ S W w a + heisO ψ S W w b`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [heisO, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: heisO ψ S W w (c • a) = c • heisO ψ S W w a`. Use function extensionality and compare the values at `x`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ c ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodSpan_theta_heis {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S A B : HSp D}
     (o : GlobalTheory.MixModel.OrthDec S A B) (W : HSp D) :
@@ -101,7 +99,7 @@ theorem prodSpan_theta_heis {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D 
       rw [this]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Introduce `D ψ A W hψ M`. Establish `hM : M = GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.prodSpan ((GlobalTheory.DoublingTheta.sumDec A (negSp A)).resS W) (IsThetaFunO ψ A W) (IsThetaFunO ψ (negSp A) W)` using `span_delta_eq hψ A W`. Take `⟨h1, h2⟩` from `prodSpan_theta_heis hψ (GlobalTheory.DoublingTheta.sumDec A (negSp A)) W`. Rewrite using `[hM]`. Conclude with `⟨h1, h2, fun f hf => GlobalTheory.DenseSum.unifLimit_prodSpan D ψ hψ _ A (negSp A) W (GlobalTheory.DoublingTheta.sumDec A (negSp A)) f hf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A W : HSp D), IsStdChar D ψ (-1) → let M : Submodule ℂ (WO (dblSp A) W → ℂ) := Submodule.span ℂ {φ | ∃ f₁ f₂, IsThetaFunO ψ A W f₁ ∧ IsThetaFunO ψ A W f₂ ∧ φ = delta A W f₁ f₂}; (∀ g ∈ M, IsThetaFunO ψ (dblSp A) W g) ∧ (∀ g ∈ M, ∀ w, heisO ψ (dblSp A) W w g ∈ M) ∧ ∀ f, IsThetaFunO ψ (dblSp A) W f → GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.UnifLimit M f := by
   intro D ψ A W hψ M

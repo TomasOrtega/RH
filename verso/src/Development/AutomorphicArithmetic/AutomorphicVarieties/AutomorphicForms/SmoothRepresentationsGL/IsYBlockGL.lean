@@ -12,7 +12,7 @@ open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open GroundTheory.Automorphic.FourierWhittaker in
 
 /- English proof (translation)
-Introduce `i hi`. Establish `hik : ¬ i.val < k` using `by omega`. Use `⟨?_, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_blockGL, blockMat_apply, dif_neg hik, if_pos rfl]`. Rewrite using `[coe_blockGL, blockMat_apply, dif_neg hik, if_neg hj.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isY_blockGL {K : Type} [Field K] {n k : ℕ} (hk : k < n) (γ : GL (Fin k) K) :
     IsY (n - 1) (blockGL hk.le γ : GL (Fin n) K).val := by
@@ -26,21 +26,19 @@ open GroundTheory.Automorphic.FourierWhittaker in
 open scoped NumberField.AdeleRing in
 
 /- English proof (translation)
-Take `⟨δ, hδ, hδV⟩` from `exists_integer_colGL_mem (n := n) k V (AdelicGLn.prodEquiv K n g).2`. Establish `hδK : (algebraMap (𝓞 K) K δ) ≠ 0`. Simplify using `using (RingOfIntegers.coe_ne_zero_iff).2 hδ`. Use `set u : Kˣ := Units.mk0 _ hδK`. Use `set D := AdelicGLn.diagonal K n (blockGL hk.le (scalarGL k u⁻¹)) with hD`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hconj : ∀ w : Fin k → 𝔸[K], colGL k w * D = D * colGL k (fun i => algebraMap K 𝔸[K] u * w i)`. Introduce `w`. Simplify using `only [D]`. Rewrite using `[diagonal_blockGL, colGL_mul_blockGL hk, mulVec_map_inv, ← map_inv, inv_inv, coe_scalarGL, matVec_scalar]`. Use `set F : (Fin k → 𝔸[K]) → ℂ := fun x => partialCoeff ϕ (k + 1) (colGL k x * (D * g))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hip : IsIntegralPeriodic F`. Use `⟨(continuous_partialCoeff hc _).comp ((continuous_colGL k).mul continuous_const), fun ξ hξ x => ?_, fun x z hz => ?_⟩` and prove the remaining obligations. Take `⟨η, rfl⟩` from `mem_vecLattice.1 hξ`. Simplify using `only [F]`. Rewrite using `[colGL_add, mul_assoc, ← diagonal_colGL, partialCoeff_succ_diagonal_colGL hl hk]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (fun i => algebraMap K 𝔸[K] (u : K) * GroundTheory.Global.finiteAdeleInr (z i)) = fun i => GroundTheory.Global.finiteAdeleInr (algebraMap K (FiniteAdeleRing (𝓞 K) K) (algebraMap (𝓞 K) K δ) * z i)`. Use function extensionality and compare the values at `i`. Rewrite using `[GroundTheory.Global.algebraMap_mul_finiteAdeleInr]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `partialCoeff ϕ (k + 1) (colGL k (x + fun i => GroundTheory.Global.finiteAdeleInr (z i)) * (D * g)) = partialCoeff ϕ (k + 1) (colGL k x * (D * g))`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[colGL_add, mul_assoc (colGL k x), ← mul_assoc (colGL k fun i => GroundTheory.Global.finiteAdeleInr (z i)), hconj, e1, colGL_finiteAdeleInr, mul_assoc D, finEmb_mul_eq, ← mul_assoc, ← mul_assoc, partialCoeff_mul_finEmb hV _ _ (hδV z hz), mul_assoc]`. Establish `hcoeff : vecCoeff F = 0`. Use function extensionality and compare the values at `ξ`. Distinguish the cases in `hξ : ξ = 0`. Rewrite using `[hξ]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `vecCoeff_zero_of_isCuspidal hc hl hcusp hk0 hk (D * g)`. Establish `h1` using `partialCoeff_diagonal_blockGL_eq_vecCoeff hl hk (rowCompletion ξ) (D * g)`. Rewrite `h1` using `[vecMul_rowCompletion hξ]`. Use `h1.symm.trans ?_` and prove the remaining obligations. Rewrite using `[hD, ← mul_assoc, ← map_mul, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0 _`. Establish `H` using `hip.hasSum_vecCoeff (hcoeff ▸ summable_zero) 0`. Simplify using `only [hcoeff, Pi.zero_apply, zero_mul] at H`. Establish `hF0 : F 0 = 0` using `(hasSum_zero.unique H).symm`. Rewrite using `[← partialCoeff_succ_diagonal_blockGL hl hk (scalarGL k u⁻¹) g]`.
-
-Express the relevant statement in the definitionally equal form `partialCoeff ϕ (k + 1) (D * g) = 0`. Simplify `hF0` using `[F, colGL_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem step {K : Type} [Field K] [NumberField K] {n : ℕ} {ϕ : AdelicGLn.AdelicGL K n → ℂ}
     (hc : Continuous ϕ) (hl : IsLeftInvariant ϕ) (hcusp : AutomorphicForm.IsCuspidal ϕ)
@@ -98,11 +96,11 @@ private theorem step {K : Type} [Field K] [NumberField K] {n : ℕ} {ϕ : Adelic
 
 open GroundTheory.Automorphic.FourierWhittaker in
 /- English proof (translation)
-Introduce `E _ _ n hn f hf X hX hW`. Take `⟨V, hV⟩` from `hf.level`. Rewrite `hV` using `[← Fb.finEmb_eq]`. Establish `key : ∀ k, k < n → ∀ g ∈ X, partialCoeff f (k + 1) g = 0`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `_ g hg`. Conclude with `(whittaker_eq_partialCoeff hf.cont hn g).symm.trans (hW g hg)`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hm g hg`. Conclude with `step hf.cont hf.left hf.cusp hV (Nat.succ_pos m) hm g fun γ => ih (by omega) _ (hX _ (isY_blockGL hm γ) g hg)`. Introduce `g hg`. Use `key (n - 1) (by omega) g hg` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel hn, partialCoeff_self]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.injP :
     UpperTheory.V.Af.Smo.InjP := by

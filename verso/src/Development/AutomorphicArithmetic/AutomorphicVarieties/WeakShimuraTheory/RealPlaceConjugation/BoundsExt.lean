@@ -22,16 +22,16 @@ private def sigEquiv {ι R : Type} {X : ι → Type} [CommRing R] (p : ∀ v, Su
   right_inv _ := rfl
 
 /- English proof (translation)
-Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem phi_mul {k₀ k : Type} [Field k₀] [Field k] [Algebra k₀ k] (φ : k →ₗ[k₀] k₀) (x : k₀) (y : k) :
     φ (algebraMap k₀ k x * y) = x * φ y := by
   rw [← Algebra.smul_def, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hz`. Use `⟨h1.comp φ, fun g h => ?_, fun g h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `show φ (z (g * h)) = φ (z g) + _ * φ (z h)`. Rewrite using `[h2, map_add, RingHom.comp_apply, phi_mul]`. Use `show φ (z g) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3 g h, map_zero]`. Use `show φ (z Φ.g0) = 0`. Rewrite using `[h4 h, map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem zgl_phi {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] (Φ : Fr O Γ) {k₀ k : Type} [Field k₀]
     [Field k] [Algebra k₀ k] (a₀ : O →+* k₀) (w : ℤ × ℤ) (z : Γ → k) (hz : z ∈ Φ.Zgl ((algebraMap k₀ k).comp a₀) w)
@@ -46,15 +46,13 @@ private theorem zgl_phi {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace 
     rw [h4 h, map_zero]
 
 /- English proof (translation)
-Introduce `O Γ _ _ _ Φ k₀ k _ _ a₀ j d C hB`. Use `letI : Algebra k₀ k := j.toAlgebra`. Express the relevant statement in the definitionally equal form `Φ.Bounds ((algebraMap k₀ k).comp a₀) d C`. Use `⟨hB.card, fun w hw => ?_, fun w hw => ?_, fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `rank_le_of_linearForm_comp_mem_of_rank_le Γ k₀ k _ _ C (hB.str w hw) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `z ⟨hz, n, hn⟩ φ`. Use `⟨zgl_phi Φ a₀ w z hz φ, fun v => φ (n v), fun v s hs => ?_⟩` and prove the remaining obligations. Use `show φ (z s) = φ (n v) - _ * φ (n v)`. Rewrite using `[hn v s hs, map_sub, RingHom.comp_apply, phi_mul]`. Conclude with `rank_le_of_linearForm_comp_mem_of_rank_le Γ k₀ k _ _ C (hB.even w hw) fun z hz φ => zgl_phi Φ a₀ w z hz φ`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `rank_le_of_linearForm_comp_mem_of_rank_le Γ k₀ k _ _ (d + C) (by exact_mod_cast hB.odd w hw) fun z hz φ => zgl_phi Φ a₀ w z hz φ` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `h0` using `hB.loc w hw`. Rewrite `h0`, the goal using `[(sigEquiv _).rank_eq]`. Use `rank_le_of_linearForm_comp_mem_of_rank_le _ k₀ k _ (sigSub fun v => Φ.Zloc ((algebraMap k₀ k).comp a₀) (Φ.Gv v) w) (d + C) (by exact_mod_cast h0) (by` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz φ v`. Take `⟨h1, h2⟩` from `hz v`. Use `⟨h1.comp φ, fun g h => ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg φ (h2 g h)`. Rewrite `h3` using `[map_add, RingHom.comp_apply, phi_mul]`.
-
-Conclude with `h3)`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.cocycleBounds_of_ringHom_comp :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] (Φ : Fr O Γ) (k₀ k : Type) [Field k₀] [Field k] (a₀ : O →+* k₀) (j : k₀ →+* k) (d C : ℕ), Φ.Bounds a₀ d C → Φ.Bounds (j.comp a₀) d C := by

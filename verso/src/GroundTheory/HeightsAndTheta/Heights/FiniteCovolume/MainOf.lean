@@ -49,7 +49,7 @@ variable (hTE' : TorusEmbedding.Statement h v) (hLE' : LineEigenvalue.Statement 
 include hTE hLE hTM hSH hUI hCP hUH hUZ hTE' hLE' hTM' hSH' hCP' hUH' hUZ'
 
 /- English proof (translation)
-The claim follows from `UnfoldingIntegral.of_open (fun _ _ _ _ h _ v => ArchUnimodular.proof h v) (fun _ _ _ _ h _ v => MajorantStabCompact.proof h v) (fun W _ _ _ h n v => LineStabHaar.proof h v (WittPartner.full h) (VecAtNeZero.full v) (hTE W h n v) (hLE W h n v) (hTM W h n v) (hSH W h n v) hUI) (fun …`.
+A detailed English derivation is pending.
 -/
 theorem UnfoldingIntegral.of_remaining : UnfoldingIntegral.Statement h v :=
   UnfoldingIntegral.of_open
@@ -68,7 +68,7 @@ theorem UnfoldingIntegral.of_remaining : UnfoldingIntegral.Statement h v :=
     (LineStabHaar.proof h v (WittPartner.full h) (VecAtNeZero.full v) hTE' hLE' hTM' hSH' hUI)
 
 /- English proof (translation)
-The claim follows from `ScalingLaw.of_open (fun _ _ _ _ h _ v => ArchUnimodular.proof h v) (fun _ _ _ _ h _ v => MajorantStabCompact.proof h v) (fun W _ _ _ h n v => LineStabHaar.proof h v (WittPartner.full h) (VecAtNeZero.full v) (hTE W h n v) (hLE W h n v) (hTM W h n v) (hSH W h n v) hUI) (fun _ _ _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem ScalingLaw.of_remaining : ScalingLaw.Statement h v :=
   ScalingLaw.of_open
@@ -87,7 +87,7 @@ theorem ScalingLaw.of_remaining : ScalingLaw.Statement h v :=
     (LineStabHaar.proof h v (WittPartner.full h) (VecAtNeZero.full v) hTE' hLE' hTM' hSH' hUI)
 
 /- English proof (translation)
-The claim follows from `ArithmeticCovolumeFinite.of_open (fun _ _ _ _ h _ v => ArchUnimodular.proof h v) (fun _ _ _ _ h _ v => MajorantStabCompact.proof h v) (fun W _ _ _ h n v => LineStabHaar.proof h v (WittPartner.full h) (VecAtNeZero.full v) (hTE W h n v) (hLE W h n v) (hTM W h n v) (hSH W h n v) hUI …`.
+A detailed English derivation is pending.
 -/
 theorem ArithmeticCovolumeFinite.of_remaining : ArithmeticCovolumeFinite.Statement h v :=
   ArithmeticCovolumeFinite.of_open
@@ -106,7 +106,7 @@ theorem ArithmeticCovolumeFinite.of_remaining : ArithmeticCovolumeFinite.Stateme
     (LineStabHaar.proof h v (WittPartner.full h) (VecAtNeZero.full v) hTE' hLE' hTM' hSH' hUI)
 
 /- English proof (translation)
-The claim follows from `AdelicCovolumeFinite.of_open (fun _ _ _ _ h _ v => ArchUnimodular.proof h v) (fun _ _ _ _ h _ v => MajorantStabCompact.proof h v) (fun W _ _ _ h n v => LineStabHaar.proof h v (WittPartner.full h) (VecAtNeZero.full v) (hTE W h n v) (hLE W h n v) (hTM W h n v) (hSH W h n v) hUI) (f …`.
+A detailed English derivation is pending.
 -/
 theorem AdelicCovolumeFinite.of_remaining : AdelicCovolumeFinite.Statement h v :=
   AdelicCovolumeFinite.of_open

@@ -13,13 +13,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo (IsMultiHomog IsArithVar mCoordIde
 noncomputable section
 
 /- English proof (translation)
-Establish `hdeg : ∀ m : (Σ k, ι k) →₀ ℕ, ∑ i, m ⟨(), i⟩ = Finsupp.weight 1 m`. Introduce `m`. Establish `h1 : m.degree = Finsupp.weight 1 m`. Rewrite using `[Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h1, Finsupp.degree_eq_sum, Fintype.sum_sigma]`. Conclude with `(Fintype.sum_unique (fun u : Unit ↦ ∑ y : ι u, m ⟨u, y⟩)).symm`. Simplify using `only [IsMultiHomog, IsHomogeneous, IsWeightedHomogeneous, mem_support_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h d hd`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hdeg]`. Conclude with `h d hd ()`. Introduce `h m hm k`. Consider the cases of `k`. Rewrite using `[hdeg]`.
-
-Conclude with `h hm`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_unit_iff {R : Type*} [CommRing R] {ι : Unit → Type*} [∀ k, Fintype (ι k)]
     (f : MvPolynomial (Σ k, ι k) R) (N : ℕ) :
@@ -42,19 +40,17 @@ theorem isMultiHomog_unit_iff {R : Type*} [CommRing R] {ι : Unit → Type*} [�
     exact h hm
 
 /- English proof (translation)
-Take `⟨hne, ⟨hprime, ⟨S, hS, hPS⟩, hrel⟩, hhor, hdim⟩` from `hP`. Set `E : MRing ι ≃+* MRing ι'` to `(renameEquiv ℤ e).toRingEquiv`. Establish `hQ : P.comap (rename e.symm : MRing ι' →ₐ[ℤ] MRing ι) = P.map E`. Rewrite using `[← Ideal.comap_symm]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨hne, ⟨?_, ⟨E '' S, ?_, ?_⟩, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `hprime` as an intermediate fact. Conclude with `Ideal.comap_isPrime _ _`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨a, ha⟩` from `hS g hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha' : a = fun _ ↦ a ()` using `funext fun k ↦ by cases k; rfl`. Rewrite `ha` using `[ha', isMultiHomog_unit_iff]`. Use `⟨fun _ ↦ a (), ?_⟩` and prove the remaining obligations. Rewrite using `[isMultiHomog_unit_iff]`. Conclude with `ha.rename_isHomogeneous`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hQ, hPS, Ideal.map_span]`. Introduce `k`. Consider the cases of `k`. Take `⟨i, hi⟩` from `hrel ()`. Break down `hp : e ⟨(), i⟩ with ⟨⟨⟩, j⟩` into its components or cases.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨j, fun hj ↦ hi ?_⟩` and prove the remaining obligations. Establish `hs : e.symm ⟨(), j⟩ = ⟨(), i⟩` using `(Equiv.symm_apply_eq e).mpr hp.symm`. Rewrite `hj` using `[Ideal.mem_comap, rename_X, hs]`. Conclude with `hj`. Establish `h : Ideal.comap (C : ℤ →+* MRing ι') (P.comap (rename e.symm : MRing ι' →ₐ[ℤ] MRing ι)) = Ideal.comap (C : ℤ →+* MRing ι) P`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use extensionality with `x`. Simplify using `only [Ideal.mem_comap, rename_C]`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.IsHorizontal`. Rewrite using `[h]`. Conclude with `hhor`.
-
-Rewrite using `[← hdim]`. Conclude with `(ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv P _ E hQ)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isArithVar_comap_rename {ι ι' : Unit → Type*} [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)]
     (e : (Σ k, ι k) ≃ (Σ k, ι' k)) {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P d) :
@@ -104,9 +100,9 @@ def affEval : MvPolynomial (Fin (i + 1)) (𝓞 K) →+* FractionRing (MvPolynomi
   eval₂Hom ((algebraMap K (FractionRing (MvPolynomial (Fin i) K))).comp (algebraMap (𝓞 K) K)) (affGen K i)
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp only [eval₂_C, oneBlockLin, eval₂Hom_C, Int.coe_castRingHom, map_intCast]`. Consider the case `add p q hp hq => simp only [eval₂_add, map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [eval₂_mul, map_mul, hp, eval₂_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `[oneBlockLin, affEval, oneBlockPt]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem eval₂_oneBlockPt [NumberField K] (g : MvPolynomial (Σ _ : Unit, Fin d × Fin (i + 1)) ℤ) :
     eval₂ (Int.castRingHom _) (oneBlockPt om i) g = affEval i (oneBlockLin om i g) := by
@@ -119,9 +115,7 @@ theorem eval₂_oneBlockPt [NumberField K] (g : MvPolynomial (Σ _ : Unit, Fin d
     simp [oneBlockLin, affEval, oneBlockPt]
 
 /- English proof (translation)
-Establish `h : (eval₂ (Int.castRingHom (MvPolynomial (Fin (i + 1)) (𝓞 K))) (fun p ↦ C (om p.2.1) * X p.2.2) g).IsHomogeneous (1 * N)` using `hg.eval₂ _ _ (fun r ↦ ?_) (fun p ↦ ?_)`. Rewrite `h` using `[one_mul]`. Conclude with `h`. Use `show ((r : MvPolynomial (Fin (i + 1)) (𝓞 K))).IsHomogeneous 0`. Rewrite using `[← map_intCast (C : 𝓞 K →+* MvPolynomial (Fin (i + 1)) (𝓞 K)) r]`.
-
-Conclude with `isHomogeneous_C _ _`. Simplify using `using (isHomogeneous_C (Fin (i + 1)) (om p.2.1)).mul (isHomogeneous_X (𝓞 K) p.2.2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem oneBlockLin_isHomogeneous {g : MvPolynomial (Σ _ : Unit, Fin d × Fin (i + 1)) ℤ} {N : ℕ}
     (hg : g.IsHomogeneous N) : (oneBlockLin om i g).IsHomogeneous N := by
@@ -138,14 +132,14 @@ def linForm (c : 𝓞 K) (j : Fin (i + 1)) : MvPolynomial (Σ _ : Unit, Fin d ×
   ∑ a, C (om.repr c a) * X ⟨(), (a, j)⟩
 
 /- English proof (translation)
-Use `IsHomogeneous.sum _ _ _ fun a _ ↦ ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_C _ (om.repr c a)).mul (isHomogeneous_X ℤ (⟨(), (a, j)⟩ : Σ _ : Unit, Fin d × Fin (i + 1)))`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem linForm_isHomogeneous (c : 𝓞 K) (j : Fin (i + 1)) : (linForm om i c j).IsHomogeneous 1 := by
   refine IsHomogeneous.sum _ _ _ fun a _ ↦ ?_
   simpa using (isHomogeneous_C _ (om.repr c a)).mul (isHomogeneous_X ℤ (⟨(), (a, j)⟩ : Σ _ : Unit, Fin d × Fin (i + 1)))
 
 /- English proof (translation)
-Use `conv_rhs => rw [← om.sum_repr c]`. Simplify using `only [linForm, oneBlockLin, map_sum, map_mul, eval₂Hom_C, eval₂Hom_X', Int.coe_castRingHom, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul, map_mul, map_intCast, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneBlockLin_linForm (c : 𝓞 K) (j : Fin (i + 1)) :
     oneBlockLin om i (linForm om i c j) = C c * X j := by
@@ -159,7 +153,7 @@ def powForm (β : Fin (i + 1) →₀ ℕ) : MvPolynomial (Σ _ : Unit, Fin d × 
   β.prod fun j n ↦ linForm om i 1 j ^ n
 
 /- English proof (translation)
-Establish `h` using `IsHomogeneous.prod β.support (fun j ↦ linForm om i 1 j ^ β j) (fun j ↦ 1 * β j) (fun j _ ↦ (linForm_isHomogeneous om i 1 j).pow (β j))`. Simplify using `only [one_mul] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem powForm_isHomogeneous (β : Fin (i + 1) →₀ ℕ) : (powForm om i β).IsHomogeneous β.degree := by
   have h := IsHomogeneous.prod β.support (fun j ↦ linForm om i 1 j ^ β j) (fun j ↦ 1 * β j)
@@ -168,7 +162,7 @@ theorem powForm_isHomogeneous (β : Fin (i + 1) →₀ ℕ) : (powForm om i β).
   exact h
 
 /- English proof (translation)
-Rewrite using `[powForm, map_finsuppProd]`. Simplify using `only [map_pow, oneBlockLin_linForm, map_one, one_mul]`. Conclude with `prod_X_pow_eq_monomial`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem oneBlockLin_powForm (β : Fin (i + 1) →₀ ℕ) : oneBlockLin om i (powForm om i β) = monomial β 1 := by
   rw [powForm, map_finsuppProd]
@@ -176,11 +170,9 @@ theorem oneBlockLin_powForm (β : Fin (i + 1) →₀ ℕ) : oneBlockLin om i (po
   exact prod_X_pow_eq_monomial
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, α j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hα (Finsupp.ext h)`. Establish `hle : Finsupp.single j 1 ≤ α` using `Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hj)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsplit : α = Finsupp.single j 1 + (α - Finsupp.single j 1)` using `(add_tsub_cancel_of_le hle).symm`. Use `⟨linForm om i c j * powForm om i (α - Finsupp.single j 1), ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(linForm_isHomogeneous om i c j).mul (powForm_isHomogeneous om i (α - Finsupp.single j 1))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `conv_lhs => rw [hsplit]`.
-
-Rewrite using `[map_add, Finsupp.degree_single]`. Rewrite using `[map_mul, oneBlockLin_linForm, oneBlockLin_powForm, C_mul_X_eq_monomial, monomial_mul, mul_one, ← hsplit]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_oneBlockLin_monomial (α : Fin (i + 1) →₀ ℕ) (hα : α ≠ 0) (c : 𝓞 K) :
     ∃ g, g.IsHomogeneous α.degree ∧ oneBlockLin om i g = monomial α c := by
@@ -199,21 +191,21 @@ theorem exists_oneBlockLin_monomial (α : Fin (i + 1) →₀ ℕ) (hα : α ≠ 
       ← hsplit]
 
 /- English proof (translation)
-Establish `hev : ∀ F : MvPolynomial (Fin (i + 1)) (𝓞 K), eval₂ ((algebraMap K (FractionRing (MvPolynomial (Fin i) K))).comp (algebraMap (𝓞 K) K)) (affGen K i) F = affEval i F` using `fun _ ↦ rfl`. Simplify using `only [hev]`. Rewrite using `[secM, Submodule.mem_toAddSubgroup]`. Prove the components needed by the constructor for the conclusion. Introduce `hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, hg, rfl⟩` from `hx`. Rewrite `hg` using `[isMultiHomog_unit_iff]`. Use `⟨oneBlockLin om i g, oneBlockLin_isHomogeneous om i hg, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `eval₂_oneBlockPt om i g`. Consider the case `zero => exact ⟨0, isHomogeneous_zero _ _ _, (map_zero (affEval i)).symm⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨F, hF, rfl⟩` from `hx`. Take `⟨G, hG, rfl⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨F + G, hF.add hG, (map_add (affEval i) F G).symm⟩`. Consider the case `smul n x _ hx`. Take `⟨F, hF, rfl⟩` from `hx`. Use `⟨n • F, ?_, (map_zsmul (affEval i) n F).symm⟩` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul, ← map_intCast (C : 𝓞 K →+* MvPolynomial (Fin (i + 1)) (𝓞 K)) n]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hF.C_mul (n : 𝓞 K)`. Introduce and unpack `⟨F, hF, rfl⟩`. Rewrite using `[F.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun α hα ↦ ?_` and prove the remaining obligations. Establish `hdeg : α.degree = N`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hF (mem_support_iff.mp hα)`. Rewrite using `[← h, Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression. Establish `hα0 : α ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `at hdeg`. Use linear arithmetic over natural numbers and integers. Take `⟨g, hg, hgα⟩` from `exists_oneBlockLin_monomial om i α hα0 (coeff α F)`. Rewrite `hg` using `[hdeg]`. Use `Submodule.subset_span ⟨g, (isMultiHomog_unit_iff g N).mpr hg, ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hgα]`. Conclude with `eval₂_oneBlockPt om i g`.
+A detailed English derivation is pending.
 -/
 theorem mem_secM_oneBlockPt_iff [NumberField K] (N : ℕ) (hN : 1 ≤ N) (s : FractionRing (MvPolynomial (Fin i) K)) :
     s ∈ secM (oneBlockPt om i) (fun _ ↦ N) ↔
@@ -270,9 +262,9 @@ def oneBlockReindexEquiv (e r : ℕ) :
   right_inv p := by rcases p with ⟨⟨⟩, q⟩; simp [oneBlockReindex, oneBlockReindexInv]
 
 /- English proof (translation)
-Introduce `K _ _ d om i`. Use `⟨?_, fun N hN s ↦ mem_secM_oneBlockPt_iff om i N hN s⟩` and prove the remaining obligations. Consider the cases of `d with`. Consider the case `zero => exact ((om.index_nonempty).elim fun x ↦ x.elim0)`. Consider the case `succ e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Take `⟨hstd, hideal, -⟩` from `Heights.OneBlockStandard.proof K e i om`. Establish `h` using `(hA K i (oneBlockSize e i) (HermLattice.standard K (i + 1)) (oneBlockForms om) hstd).2.2.1`. Rewrite `h` using `[hideal]`. Rewrite using `[mCoordIdeal_eq_comap om]`. Conclude with `isArithVar_comap_rename (oneBlockReindexEquiv e i) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OneBlockModel.imp (hA : Heights.OneBlockModel.Statement) : OneBlockModel.Statement := by
   intro K _ _ d om i

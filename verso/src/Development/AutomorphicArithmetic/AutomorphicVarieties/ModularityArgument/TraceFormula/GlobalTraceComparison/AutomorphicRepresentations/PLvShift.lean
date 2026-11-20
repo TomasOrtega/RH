@@ -11,9 +11,9 @@ section SlopeTestRemainingChoices
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy k hk`. Use `hy ⟨k, hk⟩` as an intermediate fact. Simplify using `using this`. Introduce `hy k`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hy k k.2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mem_fixed_iff (ρ : Representation ℂ G V) (K : Subgroup G) (y : V) :
     y ∈ fixed ρ K ↔ ∀ k ∈ K, ρ k y = y := by
@@ -25,9 +25,9 @@ private theorem mem_fixed_iff (ρ : Representation ℂ G V) (K : Subgroup G) (y 
     simpa using hy k k.2
 
 /- English proof (translation)
-Establish `hs : (Function.support fun q : G ⧸ K => f q.out • (ρ q.out ∘ₗ (LinearMap.id : V →ₗ[ℂ] V))).Finite` using `hf.subset (by`. Introduce `q hq hz`. Apply `hq` to reduce the goal to its premises. Simplify using `[hz])`. Simplify using `only [Lv, levOp, Subgroup.relIndex_self, Nat.cast_one, inv_one, one_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `map_finsum (LinearMap.applyₗ y : (V →ₗ[ℂ] V) →ₗ[ℂ] V) hs` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem lv_apply (ρ : Representation ℂ G V) (K : Subgroup G) (f : G → ℂ) (y : V)
     (hf : (Function.support fun q : G ⧸ K => f q.out).Finite) :
@@ -42,9 +42,9 @@ private theorem lv_apply (ρ : Representation ℂ G V) (K : Subgroup G) (f : G �
   simpa using this
 
 /- English proof (translation)
-Use `(finsum_comp_equiv σ (f := fun q : G ⧸ K => ψ₁ q.out)).symm.trans (finsum_congr fun q => ?_)` and prove the remaining obligations. Establish `e : ((a q.out : G) : G ⧸ K) = ((σ q).out : G)`. Rewrite using `[← hσ, QuotientGroup.out_eq', QuotientGroup.out_eq']`. Establish `hk : (a q.out)⁻¹ * (σ q).out ∈ K` using `QuotientGroup.eq.1 e`. Use `show ψ₁ (σ q).out = ψ₂ q.out`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha, ← hi (a q.out) _ hk, mul_inv_cancel_left]`.
+A detailed English derivation is pending.
 -/
 private theorem reindex (K : Subgroup G) (σ : G ⧸ K ≃ G ⧸ K) (a : G → G)
     (hσ : ∀ g : G, σ (g : G ⧸ K) = (a g : G ⧸ K)) (ψ₁ ψ₂ : G → V)
@@ -85,9 +85,9 @@ private def rEquiv (K : Subgroup G) (u : G) (h₁ : ∀ x ∈ K, u * x * u⁻¹ 
       rw [inv_mul_cancel_right]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hf.isCompact.elim_finite_subcover (fun x : G => (fun y => x⁻¹ * y) ⁻¹' (K : Set G)) (fun x => hK.preimage (continuous_const.mul continuous_id)) (fun x _ => Set.mem_iUnion.2 ⟨x, by simp [K.one_mem]⟩)`. Use `(t.finite_toSet.image (fun x : G => (x : G ⧸ K))).subset ?_` and prove the remaining obligations. Introduce `q hq`. Establish `hm : q.out ∈ tsupport f` using `subset_tsupport _ hq`. Take `⟨x, hx, hxq⟩` from `Set.mem_iUnion₂.1 (ht hm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, hx, (QuotientGroup.eq.2 hxq).trans (QuotientGroup.out_eq' q)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem fin_supp [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G)
     (hK : IsOpen (K : Set G)) (f : G → ℂ) (hf : HasCompactSupport f) :
@@ -105,37 +105,31 @@ private theorem fin_supp [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgro
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ ρ K hKo hKc u hu h hh`. Establish `hc : ∀ x ∈ K, u * x * u⁻¹ ∈ K` using `fun x hx => (hu x).1 hx`. Establish `hc' : ∀ x ∈ K, u⁻¹ * x * u ∈ K` using `fun x hx => (hu _).2 (by`. Establish `e : u * (u⁻¹ * x * u) * u⁻¹ = x` using `by group`. Rewrite using `[e])` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `H1 : IsHecke K (fun g => h (g * u⁻¹))`. Use `⟨hh.1.comp_homeomorph (Homeomorph.mulRight u⁻¹), fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show h (k * x * u⁻¹) = h (x * u⁻¹)`. Rewrite using `[mul_assoc]`. Conclude with `(hh.2 k hk _).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show h (x * k * u⁻¹) = h (x * u⁻¹)`. Establish `e : x * k * u⁻¹ = x * u⁻¹ * (u * k * u⁻¹)` using `by group`. Rewrite using `[e]`. Conclude with `(hh.2 _ (hc k hk) _).2`. Establish `H2 : IsHecke K (fun g => h (u⁻¹ * g))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hh.1.comp_homeomorph (Homeomorph.mulLeft u⁻¹), fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show h (u⁻¹ * (k * x)) = h (u⁻¹ * x)`. Establish `e : u⁻¹ * (k * x) = u⁻¹ * k * u * (u⁻¹ * x)` using `by group`. Rewrite using `[e]`. Conclude with `(hh.2 _ (hc' k hk) _).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show h (u⁻¹ * (x * k)) = h (u⁻¹ * x)`. Rewrite using `[← mul_assoc]`. Conclude with `(hh.2 k hk _).2`. Establish `H3 : IsHecke K ((K : Set G).indicator 1)`. Use `⟨?_, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : Function.support ((K : Set G).indicator (1 : G → ℂ)) = (K : Set G)`. Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ (K : Set G) <;> simp [hx]`. Use `show IsCompact (closure (Function.support ((K : Set G).indicator (1 : G → ℂ))))`. Rewrite using `[e, (K.isClosed_of_isOpen hKo).closure_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hKc`. Establish `: k * x ∈ (K : Set G) ↔ x ∈ (K : Set G)` using `K.mul_mem_cancel_left hk`. Distinguish the cases in `hx : x ∈ (K : Set G)`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (this.2 hx)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun c => hx (this.1 c))]`. Establish `: x * k ∈ (K : Set G) ↔ x ∈ (K : Set G)` using `K.mul_mem_cancel_right hk`. Distinguish the cases in `hx : x ∈ (K : Set G)`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (this.2 hx)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun c => hx (this.1 c))]`. Use `⟨H1, H2, H3, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy'` using `(mem_fixed_iff ρ K y).1 hy`. Establish `hm : ∀ (a b : G) (v : V), ρ (a * b) v = ρ a (ρ b v)` using `fun a b v => by`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hinv : ∀ (f : G → ℂ), (∀ k ∈ K, ∀ x, f (x * k) = f x) → ∀ g, ∀ k ∈ K, f (g * k) • ρ (g * k) y = f g • ρ g y` using `fun f hf g k hk => by`. Rewrite using `[hf k hk, hm, hy' k hk]`. Use `⟨(mem_fixed_iff ρ K _).2 fun k hk => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : k * u = u * (u⁻¹ * k * u)` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hm, e, hm, hy' _ (hc' k hk)]`. Rewrite using `[lv_apply ρ K _ y (fin_supp K hKo _ H1.1), lv_apply ρ K h _ (fin_supp K hKo _ hh.1)]`. Use `reindex K (rEquiv K u hc hc') (· * u) (fun g => rfl) (fun g => h (g * u⁻¹) • ρ g y) (fun g => h g • ρ g (ρ u y)) (hinv (fun g => h (g * u⁻¹)) fun k hk x => (H1.2 k hk x).2) fun g => ?_` and prove the remaining obligations. Use `show h (g * u * u⁻¹) • ρ (g * u) y = h g • ρ g (ρ u y)`. Rewrite using `[mul_inv_cancel_right, hm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : (Function.support fun q : G ⧸ K => h q.out • ρ q.out y).Finite` using `(fin_supp K hKo _ hh.1).subset (by`. Introduce `q hq hz`. Apply `hq` to reduce the goal to its premises. Simplify using `[hz])`. Rewrite using `[lv_apply ρ K _ y (fin_supp K hKo _ H2.1), lv_apply ρ K h y (fin_supp K hKo _ hh.1), map_finsum (ρ u) hs]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul]`. Use `reindex K (MulAction.toPerm u) (u * ·) (fun g => rfl) (fun g => h (u⁻¹ * g) • ρ g y) (fun g => h g • ρ u (ρ g y)) (hinv (fun g => h (u⁻¹ * g)) fun k hk x => (H2.2 k hk x).2) fun g => ?_` and prove the remaining obligations. Use `show h (u⁻¹ * (u * g)) • ρ (u * g) y = h g • ρ u (ρ g y)`. Rewrite using `[inv_mul_cancel_left, hm]`. Rewrite using `[lv_apply ρ K _ y (fin_supp K hKo _ H3.1)]`.
-
-Establish `h1 : ((1 : G) : G ⧸ K).out ∈ (K : Set G)`. Establish `: ((((1 : G) : G ⧸ K).out : G) : G ⧸ K) = ((1 : G) : G ⧸ K)` using `QuotientGroup.out_eq' _`. Use `QuotientGroup.eq.1 this` as an intermediate fact. Simplify using `using this`. Rewrite using `[finsum_eq_single _ ((1 : G) : G ⧸ K)]`.
-
-Rewrite using `[Set.indicator_of_mem h1, hy' _ h1]`. Simplify using the standard rewrite rules. Introduce `q hq`. Establish `: q.out ∉ (K : Set G)` using `fun c => hq (by`. Rewrite using `[← QuotientGroup.out_eq' q]`.
-
-Conclude with `QuotientGroup.eq.2 (by simpa using K.inv_mem c))`. Rewrite using `[Set.indicator_of_notMem this, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lvShift_pf : LvShift := by
   intro G V _ _ _ _ _ ρ K hKo hKc u hu h hh

@@ -8,13 +8,13 @@ open scoped ContDiff Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨-, -, hsnc, -⟩` from `hB i`. Take `⟨ψ', -, hx, -, σ, -, hW, u, -, hu0, hs⟩` from `hsnc y0`. Rewrite using `[hs y0 hx]`. Use `mul_ne_zero (hu0 y0 hx) ?_` and prove the remaining obligations. Use `Finset.prod_ne_zero_iff.mpr fun k _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hk : σ k with _ | j` into its components or cases. Simplify using the standard rewrite rules. Simplify using `only`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Pi.single_eq_same, pow_one]`. Introduce `h0`. Establish `: y0 ∈ D k ∩ ψ'.source`. Rewrite using `[hW k]`. Conclude with `⟨hx, j, hk, h0⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hy0 this.1`. Simplify using `[Pi.single_eq_of_ne hki]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isBoundary_sec_ne_zero {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     {m : ℕ} (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (D : Fin m → Set X)
@@ -37,17 +37,15 @@ theorem isBoundary_sec_ne_zero {e : ℕ} {X : Type} [TopologicalSpace X] (A : Fi
     · simp [Pi.single_eq_of_ne hki]
 
 /- English proof (translation)
-Use `set y0 := ψ.symm z with hy0def`. Take `⟨hpot, hsec, -, -⟩` from `hB i`. Establish `hne : s i y0 y0 ≠ 0` using `isBoundary_sec_ne_zero A L s D hB i y0 hzD`. Establish `hΦ : ContDiffAt ℝ ∞ ((L i).φ y0 ∘ ψ.symm) z` using `GlobalTheory.T.potential_smooth_in_chart A (L i) hpot ψ hψ z hz`. Take `⟨j, hj⟩` from `A.cover y0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : AnalyticAt ℂ (A.chart j ∘ ψ.symm) z` using `(hψ j).2 z ⟨hz, hj⟩`. Establish `h1 : AnalyticAt ℂ (s i y0 ∘ (A.chart j).symm) ((A.chart j ∘ ψ.symm) z)`. Use `hsec.1 y0 j _ ⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Set.mem_preimage, ← hy0def, (A.chart j).left_inv hj]`. Conclude with `(L i).mem_U _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ y in 𝓝 z, ψ.symm y ∈ (A.chart j).source` using `(ψ.continuousAt_symm hz).eventually ((A.chart j).open_source.mem_nhds hj)`. Establish `hS : ContDiffAt ℝ ∞ (s i y0 ∘ ψ.symm) z`. Use `((h1.comp h2).contDiffAt (n := ∞)).restrict_scalars ℝ |>.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hev] with y hy`. Simplify using `only [Function.comp_apply, (A.chart j).left_inv hy]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSz : (s i y0 ∘ ψ.symm) z ≠ 0` using `hne`. Establish `hG : ContDiffAt ℝ ∞ (fun y => Real.exp 1 - Real.log ((‖(s i y0 ∘ ψ.symm) y‖ * Real.exp (-((L i).φ y0 ∘ ψ.symm) y)) ^ 2)) z`. Use `contDiffAt_const.sub (ContDiffAt.log ?_ ?_)` and prove the remaining obligations. Conclude with `((hS.norm ℝ hSz).mul hΦ.neg.exp).pow 2`. Establish `: 0 < ‖(s i y0 ∘ ψ.symm) z‖` using `norm_pos_iff.mpr hSz`.
+Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Use `hG.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hevU : ∀ᶠ y in 𝓝 z, ψ.symm y ∈ (L i).U y0` using `(ψ.continuousAt_symm hz).eventually (((L i).isOpen_U y0).mem_nhds ((L i).mem_U y0))`. Use `filter_upwards [hevU] with y hy`. Establish `hg` using `hsec.2 (ψ.symm y) y0 (ψ.symm y) ⟨(L i).mem_U _, hy⟩`.
-
-Simplify using `only [Function.comp_apply, rComp, normSec]`. Rewrite using `[hg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rComp_contDiffAt_compatChart {e : ℕ} {X : Type} [TopologicalSpace X]
     (A : FinHolAtlas e X) {m : ℕ} (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ)

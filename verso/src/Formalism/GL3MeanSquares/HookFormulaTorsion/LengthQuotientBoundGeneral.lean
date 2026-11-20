@@ -8,17 +8,15 @@ namespace Formalism.HermitianLattices.RamifiedHeckeModels
 open Formalism.HermitianLattices.LocalLatticeBases Finset ComplexConjugate
 
 /- English proof (translation)
-Introduce `V _ _ y y' T ε hT hy hy'`. Establish `he : ‖y'‖ = ‖y‖` using `(pow_left_inj₀ (norm_nonneg y') (norm_nonneg y) two_ne_zero).1 (hy'.trans hy.symm)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hT.le]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `hε h`. Establish `hT0 : (T : ℂ) ≠ 0` using `by exact_mod_cast hT.ne'`. Break down `hε with rfl | rfl` into its components or cases. Establish `hi : inner ℂ y y' = ((1 / T : ℝ) : ℂ)` using `by push_cast; field_simp; rw [mul_comm]; exact h`. Establish `hi' : inner ℂ y' y = ((1 / T : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← inner_conj_symm, hi, Complex.conj_ofReal]`. Establish `h0 : ‖y' - y‖ ^ 2 = 0`. Rewrite using `[@norm_sub_sq ℂ, hi', hy, hy']`. Simplify using `only [RCLike.re_to_complex, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[one_smul]`. Conclude with `sub_eq_zero.1 (norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 h0))`. Establish `hi : inner ℂ y y' = ((-(1 / T) : ℝ) : ℂ)` using `by push_cast; field_simp; rw [mul_comm]; exact h`. Establish `hi' : inner ℂ y' y = ((-(1 / T) : ℝ) : ℂ)`. Rewrite using `[← inner_conj_symm, hi, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ‖y' + y‖ ^ 2 = 0`. Rewrite using `[@norm_add_sq ℂ, hi', hy, hy']`. Simplify using `only [RCLike.re_to_complex, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[neg_one_smul, ← sub_eq_zero, sub_neg_eq_add]`.
-
-Conclude with `norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 h0)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cauchy_schwarz_bound : CauchySchwarzUnitModulus := by
   intro V _ _ y y' T ε hT hy hy'
@@ -55,13 +53,13 @@ theorem cauchy_schwarz_bound : CauchySchwarzUnitModulus := by
       exact norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 h0)
 
 /- English proof (translation)
-Introduce `μ T j`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card_of_injOn (fun c => c.2)` to reduce the goal to its premises. Introduce `c hc`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, YoungDiagram.mem_cells] at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Rewrite using `[← YoungDiagram.mem_iff_lt_rowLen]`. Conclude with `μ.up_left_mem (Nat.zero_le _) le_rfl hc.1`. Introduce and unpack `⟨a, k⟩ hc ⟨b, k'⟩ hd (hk : k = k')`. Substitute `hk` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, YoungDiagram.mem_cells] at hc hd`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Use `T.col_strict hab hd.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `T.col_strict hab hc.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `_ = μ.rowLen 0 := Finset.card_range _`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exponent_bounds : TableauExponentRange := by
   intro μ T j
@@ -87,9 +85,9 @@ theorem exponent_bounds : TableauExponentRange := by
     _ = μ.rowLen 0 := Finset.card_range _
 
 /- English proof (translation)
-Introduce `q _ n n' w ph hph fW`. Simplify using `only [kerK, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[Matrix.smul_vecMul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← Finset.mul_sum, hph, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ramified_decomposition : HeckeKernelPreservesRamified := by
   intro q _ n n' w ph hph fW
@@ -100,7 +98,7 @@ theorem ramified_decomposition : HeckeKernelPreservesRamified := by
   rw [← Finset.mul_sum, hph, mul_zero]
 
 /- English proof (translation)
-Introduce `q hq`. Establish `h3 : (3 : ℝ) ≤ q` using `by exact_mod_cast hq`. Rewrite using `[div_le_one (by linarith)]`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < q - 1 by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem logarithmic_bound : LogRatioAtMostOne := by
   intro q hq
@@ -110,7 +108,7 @@ theorem logarithmic_bound : LogRatioAtMostOne := by
   linarith
 
 /- English proof (translation)
-Introduce `z g hz`. Establish `hc : conj z ≠ 0` using `(map_ne_zero _).2 hz`. Use `⟨by rw [norm_pow, norm_div, Complex.norm_conj, div_self (norm_ne_zero_iff.mpr hz), one_pow], ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_pow, pow_mul, Complex.normSq_eq_conj_mul_self]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -123,15 +121,15 @@ theorem coprime_case_decomposition : ConjRatioPowUnitModulus := by
   field_simp
 
 /- English proof (translation)
-Introduce `q _ n f e xz he hl ⟨z, hz, hz1⟩`. Use `⟨fun hall => ?_, fun j => ?_⟩` and prove the remaining obligations. Use `choose a ha using hall`. Establish `hz' : (z : ℚ) = ((q * ∑ j, a j * e j : ℤ) : ℚ)`. Rewrite using `[← hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Simplify using `[ha]`. Establish `hz'' : z = q * ∑ j, a j * e j` using `by exact_mod_cast hz'`. Rewrite `hz1` using `[hz'']`. Move the coercions through the operations in `at hz1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Simplify using `at hz1`. Establish `h` using `hl (Pi.single j (q : ℤ)) ?_`. Establish `hs : (∑ i, xz i * ((Pi.single j (q : ℤ) : Fin n → ℤ) i : ℚ)) = (q : ℚ) * xz j`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hs]`. Then use the resulting hypothesis. Rewrite using `[Finset.sum_eq_single j]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem imprimitive_case_count : ImprimitiveOrbitCondition := by
   intro q _ n f e xz he hl ⟨z, hz, hz1⟩
@@ -161,15 +159,15 @@ theorem imprimitive_case_count : ImprimitiveOrbitCondition := by
       · simp
 
 /- English proof (translation)
-Introduce `n p hp A hA h1`. Use `haveI := Fact.mk hp`. Establish `hint : IsIntegral ℚ A` using `Algebra.IsIntegral.isIntegral A`. Establish `hm0 : minpoly ℚ A ≠ 0` using `minpoly.ne_zero hint`. Establish `hdvd : minpoly ℚ A ∣ Polynomial.cyclotomic p ℚ * (Polynomial.X - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.cyclotomic_prime_mul_X_sub_one ℚ p]`. Apply `minpoly.dvd` to reduce the goal to its premises. Simplify using `[hA]`. Establish `hirr : Irreducible (Polynomial.cyclotomic p ℚ)` using `Polynomial.cyclotomic.irreducible_rat hp.pos`. Establish `hcd : Polynomial.cyclotomic p ℚ ∣ minpoly ℚ A`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hnd`. Establish `hcop : IsCoprime (Polynomial.cyclotomic p ℚ) (minpoly ℚ A)` using `hirr.coprime_iff_not_dvd.2 hnd`. Establish `hX : minpoly ℚ A ∣ Polynomial.X - 1` using `hcop.symm.dvd_of_dvd_mul_left hdvd`. Apply `h1` to reduce the goal to its premises. Establish `h0` using `Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero hX (minpoly.aeval ℚ A)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h0` using `[sub_eq_zero]`. Establish `hle1` using `Polynomial.natDegree_le_of_dvd hcd hm0`. Establish `hle2 : (minpoly ℚ A).natDegree ≤ n`. Use `Polynomial.natDegree_le_of_dvd (Matrix.minpoly_dvd_charpoly A) (Matrix.charpoly_monic A).ne_zero` as an intermediate fact. Rewrite `this` using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle1` using `[Polynomial.natDegree_cyclotomic, Nat.totient_prime hp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem prime_order_element : RationalMatrixPrimeOrderBound := by
   intro n p hp A hA h1
@@ -198,27 +196,27 @@ theorem prime_order_element : RationalMatrixPrimeOrderBound := by
   omega
 
 /- English proof (translation)
-Introduce `O L _ _ _ M _ _ _ _ S U K c ϖ e1 w h1 h2 h3`. Use `set ϖL := algebraMap O L ϖ with hϖL`. Establish `hsm : ∀ (i k : ℕ) (x : M i), ϖ ^ k • x = (ϖL ^ k) • x`. Introduce `i k x`. Rewrite using `[hϖL, ← map_pow, algebraMap_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hG : ∀ m (x : M 0), U m (chainK L M K m x) = (∏ j ∈ range m, (c j : L)) • chainK L M K m (U 0 x)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro x`. Simplify using `[chainK]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ m ih`. Introduce `x`. Establish `h` using `LinearMap.congr_fun (h1 m) (chainK L M K m x)`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply] at h`. Use `show U (m + 1) (K m (chainK L M K m x)) = _ • K m (chainK L M K m (U 0 x))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, ih, map_smul, smul_smul, Finset.prod_range_succ, mul_comm]`. Establish `hQ : ∀ m, ∀ s ∈ S 0, ((ϖL ^ (m * e1)) * ∏ j ∈ range m, (c j : L) ^ (m - j)) • chainK L M K m ((U 0 ^ m) s) ∈ S m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify `hs` using `[chainK]`. Consider the case `succ m ih`. Introduce `s hs`. Establish `h` using `h2 m _ (ih s hs)`. Rewrite `h` using `[hsm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hstep : ∀ y, U (m + 1) (K m (chainK L M K m y)) = (∏ j ∈ range (m + 1), (c j : L)) • chainK L M K (m + 1) (U 0 y)` using `fun y => hG (m + 1) y`. Rewrite `h` using `[map_smul, map_smul, hstep, smul_smul, smul_smul]`. Use `h using 2` and compare the differences between its conclusion and the goal. Establish `hP : ∏ j ∈ range (m + 1), (c j : L) ^ (m + 1 - j) = (∏ j ∈ range m, (c j : L) ^ (m - j)) * ∏ j ∈ range (m + 1), (c j : L)`. Rewrite using `[Finset.prod_range_succ (fun j => (c j : L) ^ (m + 1 - j)), Finset.prod_range_succ (fun j => (c j : L))]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hh : ∏ j ∈ range m, (c j : L) ^ (m + 1 - j) = (∏ j ∈ range m, (c j : L) ^ (m - j)) * ∏ j ∈ range m, (c j : L)`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_range]`. Rewrite using `[show m + 1 - j = (m - j) + 1 by omega, pow_succ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hh, show m + 1 - m = 1 by omega, pow_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hP]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m s hs`. Use `choose r hr using h3`. Establish `hfin` using `(S m).smul_mem (∏ j ∈ range m, r j ^ (m - j)) (hQ m s hs)`. Use `hfin using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hsm, ← algebraMap_smul L (∏ j ∈ range m, r j ^ (m - j)), smul_smul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[map_prod]`. Simplify using `only [map_pow, hr]`. Rewrite using `[pow_add, ← Finset.prod_pow_eq_pow_sum]`. Establish `hh : (∏ j ∈ range m, ((((c j)⁻¹ : Lˣ) : L) * ϖL ^ w j) ^ (m - j)) * ∏ j ∈ range m, (c j : L) ^ (m - j) = ∏ j ∈ range m, ϖL ^ ((m - j) * w j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, mul_right_comm, ← mul_pow, Units.inv_mul, one_pow, one_mul, ← pow_mul, mul_comm (w j)]`. Rewrite using `[← hh]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem column_decomposition : LatticeColumnOperatorBound := by
   intro O L _ _ _ M _ _ _ _ S U K c ϖ e1 w h1 h2 h3
@@ -295,23 +293,19 @@ variable {M : Type} [AddCommGroup M] [Module R M]
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `set T1 : Submodule R S := (S0.map U).comap S.subtype with hT1`. Use `set T2 : Submodule R S := (B.map U).comap S.subtype with hT2`. Establish `h12 : T1 ≤ T2` using `Submodule.comap_mono (Submodule.map_mono hSB)`. Use `set Q : Submodule R (S ⧸ T1) := T2.map T1.mkQ with hQ`. Establish `hsplit : Module.length R (S ⧸ T1) = Module.length R Q + Module.length R ((S ⧸ T1) ⧸ Q)` using `Module.length_eq_add_of_exact Q.subtype Q.mkQ Q.injective_subtype Q.mkQ_surjective (LinearMap.exact_subtype_mkQ Q)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hsplit` using `[(Submodule.quotientQuotientEquivQuotient T1 T2 h12).length_eq]`. Establish `hlen2 : Module.length R (S ⧸ T2) ≤ (e * Module.finrank R S : ℕ)`. Apply `length_quot_le_of_pow_smul ϖ hϖ S T2 e` to reduce the goal to its premises. Introduce `x`. Rewrite using `[hT2, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `⟨D x, hD (Submodule.mem_map_of_mem x.2), hUD x x.2⟩`. Establish `hlen1 : Module.length R Q ≤ Module.length R (B ⧸ S0.comap B.subtype)`. Set `uB : B →ₗ[R] S` to `(U.domRestrict B).codRestrict S (fun b => hU (Submodule.mem_map_of_mem b.2))`. Establish `huB : ∀ b : B, uB b ∈ T2` using `fun b => by`. Rewrite using `[hT2, Submodule.mem_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨b, b.2, rfl⟩`. Set `ψ : B →ₗ[R] Q` to `(T1.mkQ ∘ₗ uB).codRestrict Q (fun b => Submodule.mem_map_of_mem (huB b))`. Establish `hψ : Function.Surjective ψ`. Introduce and unpack `⟨y, hy⟩`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx` using `[hT2, Submodule.mem_comap]`. Take `⟨b, hb, hbx⟩` from `Submodule.mem_map.1 hx`. Use `⟨⟨b, hb⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show T1.mkQ (uB ⟨b, hb⟩) = T1.mkQ x`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Subtype.ext hbx`. Establish `hker : S0.comap B.subtype ≤ LinearMap.ker ψ`. Introduce `b hb`. Rewrite using `[LinearMap.mem_ker]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show T1.mkQ (uB b) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, hT1, Submodule.mem_comap]`. Conclude with `Submodule.mem_map_of_mem hb`. Set `φ` to `(S0.comap B.subtype).liftQ ψ hker`. Establish `hφ : Function.Surjective φ`.
-
-Introduce `y`. Take `⟨b, rfl⟩` from `hψ y`. Conclude with `⟨Submodule.Quotient.mk b, rfl⟩`. Conclude with `Module.length_le_of_surjective φ hφ`. Rewrite using `[hsplit]`.
-
-Conclude with `add_le_add hlen1 hlen2`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quotient_bound_general (ϖ : R) (hϖ : Irreducible ϖ) (S S0 B : Submodule R M) (U D : M →ₗ[R] M)
     (e : ℕ) (hSB : S0 ≤ B) (hU : B.map U ≤ S) (hD : S.map D ≤ B)
@@ -369,9 +363,9 @@ theorem length_quotient_bound_general (ϖ : R) (hϖ : Irreducible ϖ) (S S0 B : 
 end
 
 /- English proof (translation)
-Introduce `R _ _ _ ϖ hϖ M _ _ S B U D e b hSB hU hD hUD _ _`. Establish `hmap : (S.map ((ϖ ^ b) • (LinearMap.id : M →ₗ[R] M))).map U = S.map ((ϖ ^ b) • U)`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[← hmap]`. Conclude with `length_quotient_bound_general ϖ hϖ S _ B U D e hSB hU hD hUD`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lemma_c_under_twist : LemmaC_twist := by
   intro R _ _ _ ϖ hϖ M _ _ S B U D e b hSB hU hD hUD _ _

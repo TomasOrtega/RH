@@ -12,9 +12,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
 
 /- English proof (translation)
-Use `⟨fun v' _ => ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [OneMemClass.coe_one, map_one]`. Conclude with `(levelVL σ J v S.Lb).one_mem`. Use `⟨by simp only [OneMemClass.coe_one, map_one]; exact (stabGL _).one_mem, fun x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_smul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem is_diamond_one (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F))
     (hv : (T : 𝓞 F) ∈ v.asIdeal) : IsDia S v hv 1 1 := by
@@ -28,11 +28,11 @@ theorem is_diamond_one (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (
     simp
 
 /- English proof (translation)
-Take `⟨h1, h2, hg, h3⟩` from `h`. Take `⟨h1', h2', hg', h3'⟩` from `h'`. Use `⟨fun v' hv' => ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Subgroup.coe_mul, map_mul, h1 v' hv', h1' v' hv']`. Simplify `(levelVL σ J v S.Lb).mul_mem h2 h2'` using `[Subgroup.coe_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hgg : bc (prV (E` using `E) v) (δ * δ').1 ∈ stabGL (latS (F := F) (v.adicCompletion F) (intV E v) (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) J S.Lb))) := by`. Simplify `(stabGL _).mul_mem hg hg'` using `[Subgroup.coe_mul, map_mul]`. Use `⟨hgg, fun x => ?_⟩` and prove the remaining obligations. Establish `e : (⟨(bc (prV (E` using `E) v) (δ * δ').1).1 *ᵥ x.1, (hgg x.1).1 x.2⟩ : latS (F := F) (v.adicCompletion F) (intV E v) (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) J S.Lb))) = ⟨(bc (prV (E := E) v) δ.1).1 *ᵥ ((bc (prV (E := E) v) δ'.1).1 *ᵥ x.1), (hg _).1 ((hg' x.1).1 x.2)⟩ := by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[Subgroup.coe_mul, map_mul, Matrix.mulVec_mulVec]`. Rewrite using `[e, mul_comm, mul_smul, h3 ⟨_, (hg' x.1).1 x.2⟩, h3' x]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem is_diamond_mul (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F))
     (hv : (T : 𝓞 F) ∈ v.asIdeal) {k k' : ℤ} {δ δ' : UPts σ J (FiniteAdeleRing (𝓞 F) F)}
@@ -55,15 +55,15 @@ theorem is_diamond_mul (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (
     rw [e, mul_comm, mul_smul, h3 ⟨_, (hg' x.1).1 x.2⟩, h3' x]
 
 /- English proof (translation)
-Take `⟨h1, h2, hg, h3⟩` from `h`. Establish `hκ` using `(S.U_eq κ.1).1 κ.2`. Rewrite using `[S.U_eq]`. Use `⟨(UPts σ J _).mul_mem ((UPts σ J _).mul_mem ((UPts σ J _).inv_mem δ.2) hκ.1) δ.2, fun v' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv' : v' = v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hv'` using the available equality. Establish `hk` using `hκ.2 v'`. Rewrite `hk`, the goal using `[S.UlocAlt v' hv]`. Take `⟨hkL, hkF, hkf⟩` from `hk`. Simplify using `only [map_mul, map_inv]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨(levelVL σ J v' S.Lb).mul_mem ((levelVL σ J v' S.Lb).mul_mem ((levelVL σ J v' S.Lb).inv_mem h2) hkL) h2, ?_⟩` and prove the remaining obligations. Establish `hgg : (bc (prV (E` using `E) v') δ.1)⁻¹ * bc (prV (E := E) v') κ.1 * bc (prV (E := E) v') δ.1 ∈ stabGL (latS (F := F) (v'.adicCompletion F) (intV E v') (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) J S.Lb))) := (stabGL _).mul_mem ((stabGL _).mul_mem ((stabGL _).inv_mem hg) hkF) hg`. Use `⟨hgg, fun x => ?_⟩` and prove the remaining obligations. Use `set y : latS (F := F) (v'.adicCompletion F) (intV E v') (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) J S.Lb)) := ⟨((bc (prV (E := E) v') δ.1)⁻¹ * bc (prV (E := E) v') κ.1 * bc (prV (E := E) v') δ.1).1 *ᵥ x.1, (hgg x.1).1 x.2⟩ with hy`. Establish `e1 : (⟨(bc (prV (E` using `E) v') δ.1).1 *ᵥ y.1, (hg y.1).1 y.2⟩ : latS (F := F) (v'.adicCompletion F) (intV E v') (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) J S.Lb))) = ⟨(bc (prV (E := E) v') κ.1).1 *ᵥ ((bc (prV (E := E) v') δ.1).1 *ᵥ x.1), (hkF _).1 ((hg x.1).1 x.2)⟩ := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hy, Matrix.mulVec_mulVec, Units.val_mul, ← Matrix.mul_assoc]`. Rewrite using `[Units.mul_inv, Matrix.one_mul]`. Establish `A` using `h3 y`. Rewrite `A` using `[e1, hkf ⟨_, (hg x.1).1 x.2⟩, h3 x]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `A.symm`. Establish `hk` using `hκ.2 v'`. Simplify `hk` using `[map_mul, map_inv, h1 v' hv']`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem diamond_conj_mem_level (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F))
     (hv : (T : 𝓞 F) ∈ v.asIdeal) {k : ℤ} {δ : UPts σ J (FiniteAdeleRing (𝓞 F) F)}
@@ -103,9 +103,9 @@ theorem diamond_conj_mem_level (S : StepLevel F E σ J T f bad) (v : HeightOneSp
     simpa [map_mul, map_inv, h1 v' hv'] using hk
 
 /- English proof (translation)
-Establish `h1` using `h.1`. Establish `key : S.chi (κ⁻¹ * ⟨δ.1⁻¹ * κ.1 * δ.1, diamond_conj_mem_level S v hv h κ⟩) = 1`. Apply `S.chi_triv` to reduce the goal to its premises. Introduce `v'' hv''`. Establish `hne : v'' ≠ v` using `fun e => hb (e ▸ hv'')`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Subgroup.coe_mul, map_mul, map_inv, h1 v'' hne]`. Rewrite `key` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `key.symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_character_conj_diamond (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F))
     (hv : (T : 𝓞 F) ∈ v.asIdeal) (hb : v ∉ bad) {k : ℤ} {δ : UPts σ J (FiniteAdeleRing (𝓞 F) F)}
@@ -121,9 +121,9 @@ theorem level_character_conj_diamond (S : StepLevel F E σ J T f bad) (v : Heigh
   exact key.symm
 
 /- English proof (translation)
-Introduce `γ hγ x x' κ hx y y' hy`. Establish `e : (x' * δ).1 = bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ * (x * δ).1 * (⟨δ.1⁻¹ * κ.1 * δ.1, diamond_conj_mem_level S v hv h κ⟩ : S.U).1 := by`. Simplify using `only [Subgroup.coe_mul, hx]`. Use `group`. Use `hg γ hγ (x * δ) (x' * δ) ⟨δ.1⁻¹ * κ.1 * δ.1, diamond_conj_mem_level S v hv h κ⟩ e y y' hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[level_character_conj_diamond S v hv hb h κ]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem adelic_function_right_translate_diamond {ι : Type} [Fintype ι] (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ)
     (v : HeightOneSpectrum (𝓞 F)) (hv : (T : 𝓞 F) ∈ v.asIdeal) (hb : v ∉ bad) {k : ℤ}
@@ -148,17 +148,17 @@ def DiamondElementsExist (Tf : FormsTied D u) : Prop :=
     ∃ δ, IsDia (Tf.cls i hi).lev (Tf.atT.eV v).1 (Tf.atT.eV v).2 k δ
 
 /- English proof (translation)
-Introduce `i hi v φ hφ`. Take `⟨g, hg, hgφ⟩` from `((Tf.val i hi).Fi φ).1 hφ`. Establish `hval : ∀ c, φ c = fun z => g ((Tf.cls i hi).y c) ((Tf.val i hi).eY z)`. Introduce `c`. Use function extensionality and compare the values at `z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun (congrFun hgφ c) ((Tf.val i hi).eY z)` as an intermediate fact. Simplify using `only [Equiv.symm_apply_apply] at this`. Conclude with `this.symm`. Establish `hgA : g ∈ AdFun (Tf.cls i hi).lev (embT D)` using `(Submodule.mem_inf.1 hg).1`. Establish `hdia : ∀ a c, Formalism.MainNotions.product_first_zeroth_parts.dia D u i v a φ c = (D.fm u).dilT i v a c (φ ((D.fm u).dil i v a c))` using `fun a c => rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun a b => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Rewrite using `[hdia, hval ((D.fm u).dil i v 1 c), (Tf.val i hi).dilT v 1 1 (by simp) c 1 (is_diamond_one _ _ _) g hgA, mul_one, hval c]`. Use function extensionality and compare the values at `c`. Take `⟨ka, hka, δa, hδa⟩` from `hE i hi v a`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨kb, hkb, δb, hδb⟩` from `hE i hi v b`. Establish `hab : ((ka * kb : ℤ) : (D.mem u).A.Fv v) = ((a * b : ((D.mem u).A.Fv v)ˣ) : (D.mem u).A.Fv v)`. Rewrite using `[Int.cast_mul, hka, hkb, Units.val_mul]`. Establish `h1 : Formalism.MainNotions.product_first_zeroth_parts.dia D u i v b φ ((D.fm u).dil i v a c) = fun z => g ((Tf.cls i hi).y ((D.fm u).dil i v a c) * δb) ((Tf.val i hi).eY z)`. Rewrite using `[hdia, hval, (Tf.val i hi).dilT v b kb hkb _ δb hδb g hgA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg'` using `adelic_function_right_translate_diamond (Tf.cls i hi).lev (embT D) _ _ (hb v) hδb hgA`. Establish `h2` using `(Tf.val i hi).dilT v a ka hka c δa hδa _ hg'`. Rewrite using `[hdia (a * b) c, hval ((D.fm u).dil i v (a * b) c), (Tf.val i hi).dilT v (a * b) (ka * kb) hab c (δa * δb) (is_diamond_mul _ _ _ hδa hδb) g hgA,`. Use the proof step `] show _ = (D.fm u).dilT i v a c (Formalism.MainNotions.product_first_zeroth_parts.dia D u i v b φ ((D.fm u).dil i v a c))`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem diamond_mul_of_elements_prime_to_bad (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) (hb : ∀ v, (Tf.atT.eV v).1 ∉ badG D) :
     Formalism.MainNotions.product_first_zeroth_parts.DiaMul D u := by
@@ -195,23 +195,21 @@ theorem diamond_mul_of_elements_prime_to_bad (Tf : FormsTied D u) (hE : DiamondE
     simp only [mul_assoc]
 
 /- English proof (translation)
-Introduce `hTg`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 A.piU_cong`. Establish `hdiv : D.host.g j ∣ D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2`. Apply `Dvd.dvd.mul_left` to reduce the goal to its premises. Use `fin_cases j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Conclude with `Dvd.dvd.pow (Dvd.intro _ rfl) two_ne_zero`. Conclude with `Dvd.dvd.pow (Dvd.intro_left _ rfl) two_ne_zero`. Take `⟨M, hM⟩` from `hdiv`. Use `set N : ℕ := D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2 with hN`. Establish `hpi : ((A.piU : 𝓞 D.host.E) : D.host.E) = 1 + (r : D.host.E) * (N : D.host.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `congrArg (fun x : 𝓞 D.host.E => (x : D.host.E)) hr` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `-this`. Establish `hcpi : D.host.conj ((A.piU : 𝓞 D.host.E) : D.host.E) = 1 + D.host.conj (r : D.host.E) * (N : D.host.E)`. Rewrite using `[hpi, map_add, map_one, map_mul, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hNM : (N : D.host.E) = (D.host.g j : D.host.E) * (M : D.host.E)`. Rewrite using `[hM]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `A.piU_norm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `h0` using `[hcpi, hpi, hTg]`. Use `set r' := D.host.conj (r : D.host.E)`. Establish `key : (D.host.g j : D.host.E) * (1 - (M : D.host.E) * ((r : D.host.E) + r' + (r : D.host.E) * r' * N)) = 1`. Take the linear combination `(-1 : D.host.E) * h0 + ((r : D.host.E) + r' + (r : D.host.E) * r' * N) * hNM`. Establish `hr' : IsIntegral ℤ r'` using `map_isIntegral_int D.host.conj (RingOfIntegers.isIntegral_coe r)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hrI : IsIntegral ℤ (r : D.host.E)` using `RingOfIntegers.isIntegral_coe r`. Establish `hint : IsIntegral ℤ (1 - (M : D.host.E) * ((r : D.host.E) + r' + (r : D.host.E) * r' * N))`. Use `isIntegral_one.sub (IsIntegral.mul ?_ ((hrI.add hr').add ((hrI.mul hr').mul ?_)))` and prove the remaining obligations. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := (M : ℤ)))`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := (N : ℤ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg0 : (D.host.g j : D.host.E) ≠ 0`. Conclude with `(D.host.g_prime j).ne_zero` after adjusting the coercions. Establish `hinv : (1 - (M : D.host.E) * ((r : D.host.E) + r' + (r : D.host.E) * r' * N)) = algebraMap ℚ D.host.E ((D.host.g j : ℚ)⁻¹)`. Rewrite using `[map_inv₀, map_natCast]`. Conclude with `(eq_inv_of_mul_eq_one_right key)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hint` using `[hinv]`. Establish `hq : IsIntegral ℤ ((D.host.g j : ℚ)⁻¹)` using `(isIntegral_algebraMap_iff (algebraMap ℚ D.host.E).injective).1 hint`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hq`. Establish `hy' : (y : ℚ) * (D.host.g j : ℚ) = 1`. Rewrite using `[show (y : ℚ) = algebraMap ℤ ℚ y from rfl, hy]`.
-
-Conclude with `inv_mul_cancel₀ (by exact_mod_cast (D.host.g_prime j).ne_zero)`. Establish `hyz : y * (D.host.g j : ℤ) = 1` using `by exact_mod_cast hy'`. Establish `hd : ((D.host.g j : ℕ) : ℤ) ∣ ((1 : ℕ) : ℤ)` using `⟨y, by rw [Nat.cast_one, ← hyz, mul_comm]⟩`. Conclude with `(D.host.g_prime j).not_dvd_one (Int.natCast_dvd_natCast.1 hd)`.
+A detailed English derivation is pending.
 -/
 theorem level_prime_ne_type_prime (A : AtTTied u) (j : Fin 2) : (D.mem u).A.T ≠ D.host.g j := by
   intro hTg
@@ -261,11 +259,11 @@ theorem level_prime_ne_type_prime (A : AtTTied u) (j : Fin 2) : (D.mem u).A.T �
   exact (D.host.g_prime j).not_dvd_one (Int.natCast_dvd_natCast.1 hd)
 
 /- English proof (translation)
-Establish `hT` using `(A.eV v).2`. Establish `hTp` using `(D.mem u).A.T_prime`. Establish `key : ∀ j : Fin 2, (D.host.g j : 𝓞 D.host.F) ∉ (A.eV v).1.asIdeal`. Introduce `j hj`. Establish `hcop : Nat.Coprime (D.mem u).A.T (D.host.g j)` using `(Nat.coprime_primes hTp (D.host.g_prime j)).2 (level_prime_ne_type_prime A j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hcop`. Establish `h1 : ((a * (D.mem u).A.T + b * D.host.g j : ℤ) : 𝓞 D.host.F) ∈ (A.eV v).1.asIdeal`. Use `push_cast`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hT) (Ideal.mul_mem_left _ _ hj)`. Rewrite `h1` using `[hab, Int.cast_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(A.eV v).1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Introduce and unpack `(h | h)`. Conclude with `key 0 h`. Conclude with `key 1 h`.
+A detailed English derivation is pending.
 -/
 theorem level_places_not_bad (A : AtTTied u) (v : (D.mem u).A.vT) : (A.eV v).1 ∉ badG D := by
   have hT := (A.eV v).2
@@ -285,7 +283,7 @@ theorem level_places_not_bad (A : AtTTied u) (v : (D.mem u).A.vT) : (A.eV v).1 �
   · exact key 1 h
 
 /- English proof (translation)
-The claim follows from `diamond_mul_of_elements_prime_to_bad Tf hE (level_places_not_bad Tf.atT)`.
+A detailed English derivation is pending.
 -/
 theorem diamond_mul_of_diamond_elements (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) : Formalism.MainNotions.product_first_zeroth_parts.DiaMul D u :=
   diamond_mul_of_elements_prime_to_bad Tf hE (level_places_not_bad Tf.atT)

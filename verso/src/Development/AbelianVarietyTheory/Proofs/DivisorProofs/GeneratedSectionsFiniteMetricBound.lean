@@ -17,7 +17,7 @@ open SmallSec
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨P, hP, hIP, hd⟩` from `Ideal.exists_le_prime_disjoint I ((nonZeroDivisors O).map ρ) (Set.disjoint_left.2 fun _ hI ⟨a, ha, e⟩ => hne ⟨a, nonZeroDivisors.ne_zero ha, e ▸ hI⟩)`. Use `h P hP (eq_bot_iff.2 fun a ha => ?_) hIP` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `Set.disjoint_left.1 hd ha ⟨a, mem_nonZeroDivisors_of_ne_zero h0, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_mem {O R : Type} [CommRing O] [IsDomain O] [CommRing R] (ρ : O →+* R) (I : Ideal R)
     (h : ∀ P : Ideal R, P.IsPrime → P.comap ρ = ⊥ → ¬ I ≤ P) : ∃ a : O, a ≠ 0 ∧ ρ a ∈ I := by
@@ -29,11 +29,9 @@ theorem exists_mem {O R : Type} [CommRing O] [IsDomain O] [CommRing R] (ρ : O �
   exact Set.disjoint_left.1 hd ha ⟨a, mem_nonZeroDivisors_of_ne_zero h0, rfl⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `h₁ (j) : e.O.valuation (c j * b j : e.O) < e.O.valuation (∑ j, c j * b j : e.O)`. Establish `h₂ : e.w ((b j : AlgebraicClosure F) / (∑ j, c j * b j : e.O)) < 1`. Rewrite using `[map_div₀, div_lt_one (e.w.pos h0)]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hne j`. Rewrite `h₂` using `[← valuation_lt_one_iff, map_div₀, div_lt_one₀ ((Valuation.pos_iff _).2 h0)]`. Rewrite using `[MulMemClass.coe_mul, map_mul]`. Conclude with `(mul_le_of_le_one_left' (e.O.valuation_le_one _)).trans_lt h₂`. Establish `h₃` using `e.O.valuation.map_sum_lt ((Valuation.ne_zero_iff _).2 h0) (s := Finset.univ) fun j _ => h₁ j`.
-
-Rewrite `h₃` using `[← AddSubmonoidClass.coe_finset_sum]`. Conclude with `h₃.false`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_w_le {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) {ι : Type} [Fintype ι] (c b : ι → e.O)
     (h0 : ((∑ j, c j * b j : e.O) : AlgebraicClosure F) ≠ 0) :
@@ -52,21 +50,19 @@ theorem exists_w_le {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) {ι : Type} [Fi
   exact h₃.false
 
 /- English proof (translation)
-Set `ρ` to `Spec.preimage (hW.fromSpec ≫ p)`. Establish `hρ : Spec.map ρ = hW.fromSpec ≫ p` using `Spec.map_preimage _`. Establish `hP (P : PrimeSpectrum Γ(X, W)) : (p (hW.fromSpec P)).asIdeal = P.asIdeal.comap ρ.hom` using `congrArg (fun q : Spec Γ(X, W) ⟶ Sp (𝓞 F) => (q P).asIdeal) hρ.symm`. Establish `hPW (P : PrimeSpectrum Γ(X, W)) : hW.fromSpec P ∈ W` using `hW.range_fromSpec.le ⟨P, rfl⟩`. Establish `hbo (P : PrimeSpectrum Γ(X, W)) (b : Γ(X, W)) : UnitAt (hW.fromSpec P) (fnOf W (gen_mem hxW) b) ↔ b ∉ P.asIdeal`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[unitAt_fnOf_iff (hPW P)]`. Conclude with `iff_of_eq (congrArg (P ∈ ·) (hW.fromSpec_preimage_basicOpen b))`. Use `choose a ha b hab using fun j => BddFin.exists_denom ρ.hom (fnOf W (gen_mem hxW)) (h j) fun P hPp hP0 => by`. Take `⟨c, hc⟩` from `(hgen _ (hPW ⟨P, hPp⟩) ((hP ⟨P, hPp⟩).trans hP0)).1 j`. Rewrite using `[← hc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `` to `X.presheaf.algebra_section_stalk (⟨_, hPW ⟨P, hPp⟩⟩ : W)`. Use `hW.isLocalization_stalk' ⟨P, hPp⟩ (hPW ⟨P, hPp⟩)` as an intermediate fact. Take `⟨⟨b, a⟩, e⟩` from `@IsLocalization.surj _ _ P.primeCompl _ _ _ this c`. Use `⟨a, a.2, b, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_germ (hPW ⟨P, hPp⟩), ← algebraMap_germ (hPW ⟨P, hPp⟩), ← map_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg _ e`. Take `⟨d, hd, hdI⟩` from `exists_mem ρ.hom (Ideal.span (Set.range b)) fun P hPp hP0 hle => by`. Take `⟨j, hj⟩` from `(hgen _ (hPW ⟨P, hPp⟩) ((hP ⟨P, hPp⟩).trans hP0)).2`. Establish `h₁` using `((hbo ⟨P, hPp⟩ (ρ.hom (a j))).2 fun hm => ha j (hP0.le hm)).mul hj`. Rewrite `h₁` using `[hab]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hbo ⟨P, hPp⟩ _).1 h₁ (hle (Ideal.subset_span ⟨j, rfl⟩))`. Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hdI`. Use `⟨d, hd, fun v e yt hy hr hyt => ?_⟩` and prove the remaining obligations. Establish `h₁ : below (spMap e.O.subtype ≫ yt) ∈ W` using `hyt (x := spMap e.O.subtype (IsLocalRing.closedPoint _)) trivial`. Establish `h₂` using `(Points.le_preimage_iff _ _).2 h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₃ (a : 𝓞 F) : valAt (spMap e.O.subtype ≫ yt) (fnOf W (gen_mem hxW) (ρ.hom a)) = algebraMap F (AlgebraicClosure F) a`. Rewrite using `[valAt_fnOf h₁, Points.valR_eq _ _ h₂]`. Establish `h₄` using `Points.specMap_valMap_fromSpec hW _ h₂`. Rewrite `hy` using `[← h₄, Category.assoc, ← hρ, ← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg (fun q => q.hom a) (Spec.map_injective hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₄ (b : Γ(X, W)) : valAt (spMap e.O.subtype ≫ yt) (fnOf W (gen_mem hxW) b) = ((Points.valMap yt W hyt).hom b : e.O)`. Rewrite using `[valAt_fnOf h₁, Points.valR_spMap_comp _ _ _ hyt, Points.valR_eq _ _ hyt]`. Both sides reduce to the same expression. Establish `h₅ : algebraMap F (AlgebraicClosure F) d = (∑ j, (Points.valMap yt W hyt).hom (c j) * (Points.valMap yt W hyt).hom (b j) : e.O)`. Rewrite using `[← h₃, h₄, ← hc, map_sum]`.
-
-Simplify using `only [map_mul]`. Take `⟨j, hj⟩` from `exists_w_le e _ _ (h₅.symm.trans_ne (by simpa using hd))`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite `hj` using `[← h₅, ← h₄, ← hab, valAt_mul (regAt_fnOf h₁ _ _) (hr j), h₃, map_mul, e.w_alg, e.w_alg]`. Conclude with `hj.trans (mul_le_of_le_one_left (e.w.nonneg _) (v.adicAbv_coe_le_one (K := F) (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) _))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_affine {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp (𝓞 F)) {W : X.Opens} (hW : IsAffineOpen W)
     {x : X} (hxW : x ∈ W) {κ : Type} [Fintype κ] (h : κ → X.functionField)
@@ -125,11 +121,9 @@ theorem exists_bound_affine {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp (𝓞 
     (v.adicAbv_coe_le_one (K := F) (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) _))
 
 /- English proof (translation)
-Use `choose i hi using hU`. Use `choose W hW hxW hWU using fun x => Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (hi x)`. Use `choose a ha hb using fun x => exists_bound_affine p (hW x) (hxW x) (h (i x)) fun z hz => hgen _ z (hWU x hz)`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x => (W x : Set X)) (fun x => (W x).isOpen) fun x _ => Set.mem_iUnion.2 ⟨x, hxW x⟩`. Use `⟨∏ x ∈ t, a x, Finset.prod_ne_zero_iff.2 fun x _ => ha x, fun v e yt hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx, hm⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ (yt (IsLocalRing.closedPoint e.O))))`. Establish `h₁` using `(Points.le_preimage_iff yt (W x)).2 hm`. Use `⟨i x, h₁.trans (Scheme.Hom.preimage_mono _ (hWU x)), fun hr => (hb x v e yt hy hr h₁).imp fun j hj => le_trans ?_ hj⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem a hx`. Rewrite using `[hc, show ((a x * c : 𝓞 F) : F) = a x * c from map_mul (algebraMap (𝓞 F) F) _ _, map_mul]`.
-
-Conclude with `mul_le_of_le_one_right (AbsoluteValue.nonneg _ _) (v.adicAbv_coe_le_one (K := F) (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) c)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound {X : Scheme.{0}} [IsIntegral X] [CompactSpace X] (p : X ⟶ Sp (𝓞 F)) {ι : Type}
     (U : ι → X.Opens) (hU : ∀ x, ∃ i, x ∈ U i) {κ : Type} [Fintype κ] (h : ι → κ → X.functionField)
@@ -157,25 +151,23 @@ theorem exists_bound {X : Scheme.{0}} [IsIntegral X] [CompactSpace X] (p : X ⟶
     (v.adicAbv_coe_le_one (K := F) (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) c)
 
 /- English proof (translation)
-Introduce `F _ _ C Y A M L k ⟨_, r, hr, _, hfin⟩ N s hs hg`. Use `M.ar.isIntegral` as an intermediate fact. Use `isPreimmersion_j M` as an intermediate fact. Establish `: QuasiCompact M.p`. Take `⟨N, c, hc, h⟩` from `M.ar.isProjOver`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `isProper_str (𝓞 F) N` as an intermediate fact. Rewrite using `[← h]`. Use `infer_instance`. Use `QuasiCompact.compactSpace_of_compactSpace M.p` as an intermediate fact. Establish `hη` using `j_gen_specializes M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose t ht using fun (i : L.B.ι) (j : Fin N) => fnMap_surjective M.j hη (s j * (r fun _ => i))`. Establish `hmem {x : Y.X} {i : L.B.ι} (h : M.j x ∈ L.B.U i) : x ∈ (L.B.pull M.j).U fun _ => i` using `Set.mem_iInter.2 fun _ => h`. Establish `hreg (x : Y.X) (i : L.B.ι) (h : M.j x ∈ L.B.U i) (j) : RegAt (M.j x) (t i j)`. Rewrite using `[← regAt_fnMap_iff M.j hη, ht]`. Conclude with `(hr.isEqn _ x (hmem h)).regularAt_iff.1 (Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 (hs j) _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hb⟩` from `exists_bound M.p L.B.U (exists_chart L.isLB) t fun i z hz h => by`. Take `⟨z, rfl⟩` from `mem_range_j M h`. Take `⟨j, hj⟩` from `hg z`. Establish `h₁` using `(hr.isEqn _ z (hmem hz)).generatesAt_iff.1 hj`. Rewrite `h₁` using `[← ht]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hreg z i hz, j, (unitAt_iff fun h0 => h₁.ne_zero (by rw [h0, map_zero])).2 ⟨hreg z i hz j, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← regAt_fnMap_iff M.j hη, map_inv₀]`. Conclude with `h₁.inv.regAt`. Establish `h0 (v : HeightOneSpectrum (𝓞 F)) : 0 < NumberField.HeightOneSpectrum.adicAbv F v a` using `AbsoluteValue.pos _ (by simpa using ha)`. Use `⟨fun v => -Real.log (NumberField.HeightOneSpectrum.adicAbv F v a), ?_, fun v e y => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Ideal.finite_factors (I := Ideal.span {a}) (by simpa using ha)).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h₁`. Establish `h₄ : 1 ≤ NumberField.HeightOneSpectrum.adicAbv F v a` using `not_lt.1 fun h' => h₁ (Ideal.dvd_span_singleton.2 ((v.adicAbv_coe_lt_one_iff (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) a).1 h'))`. Establish `h₅ : NumberField.HeightOneSpectrum.adicAbv F v a = 1` using `le_antisymm (v.adicAbv_coe_le_one (K := F) (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) a) h₄`. Conclude with `hv (by simp only [h₅, Real.log_one, neg_zero])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨yt, h⟩` from `exists_lift M e y`. Take `⟨i, hi, h₁⟩` from `hb v e yt (by rw [h, Category.assoc, M.pb.w, ← Category.assoc, y.2])`. Establish `h₂ : M.j (below y.1) ∈ L.B.U i`. Express the relevant statement in the definitionally equal form `below (y.1 ≫ M.j) ∈ _`. Rewrite using `[← h]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hi (x := spMap e.O.subtype (IsLocalRing.closedPoint _)) trivial`. Rewrite `h₁` using `[h]`. Take `⟨j, hj⟩` from `h₁ (hreg _ i h₂)`. Use `⟨j, ?_⟩` and prove the remaining obligations. Establish `hu : A.D.IsEqn _ (eqn A.D (below y.1))` using `Base.isEqn_eqn _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hw` using `unitAt_quot hu (hr.isEqn _ _ (hmem h₂))`. Establish `hb` using `((hu.nsmul k).regularAt_iff).1 (Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 (hs j) _)`. Establish `hl` using `hfin v e y yt (fun _ => i) h hi`. Rewrite `hb` using `[Units.val_pow_eq_pow_val]`. Rewrite `hl` using `[Units.val_mul, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, Pi.zero_apply, mul_zero, sub_zero]`.
-
-Establish `h₃` using `mul_pow_eq (s j) (eqn A.D (below y.1)) (r fun _ => i) k 1`. Rewrite `h₃` using `[pow_one, pow_one, one_mul]`. Rewrite using `[neg_neg, Real.exp_log (h0 v), hl, Real.exp_log (e.w.pos (valAt_ne_zero hw)), ← map_mul, ← valAt_mul hb hw.regAt, ← h₃, ← ht, valAt_fnMap _ _ _ (hreg _ i h₂ j)]`. Conclude with `hj`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (M : Model Y)
     (L : GlobalTheory.HermLB M.p) (k : ℕ+), A.Induced M L k 0 → ∀ (N : ℕ) (s : Fin N → Y.Fn),

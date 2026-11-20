@@ -22,7 +22,7 @@ def iota (j : Ω →+* Om v) : GQ v →* G ℚ Ω :=
       map_mul' := fun _ _ => rfl }
 
 /- English proof (translation)
-Use `letI : Algebra Ω (Om v) := j.toAlgebra`. Use `haveI : IsScalarTower ℚ Ω (Om v) := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Conclude with `AlgEquiv.restrictNormal_commutes (σ.restrictScalars ℚ) Ω y`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem iota_spec (j : Ω →+* Om v) (σ : GQ v) (y : Ω) : j (iota j σ y) = σ (j y) := by
   letI : Algebra Ω (Om v) := j.toAlgebra
@@ -30,7 +30,7 @@ theorem iota_spec (j : Ω →+* Om v) (σ : GQ v) (y : Ω) : j (iota j σ y) = �
   exact AlgEquiv.restrictNormal_commutes (σ.restrictScalars ℚ) Ω y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(IsAlgClosed.lift (R := ℚ) (S := Ω) (M := Om v)).toRingHom⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_emb : Nonempty (Ω →+* Om v) := ⟨(IsAlgClosed.lift (R := ℚ) (S := Ω) (M := Om v)).toRingHom⟩
 

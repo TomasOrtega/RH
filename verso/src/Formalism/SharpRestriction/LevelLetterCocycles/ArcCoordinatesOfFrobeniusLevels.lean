@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.UnusedSlot80
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup
 
 /- English proof (translation)
-Introduce `hA` and use `arc_coordinates_of_levels D HW F Cm (lev0MpL_of D HW F Cm hA h4 h9) h2 hA`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem arc_coordinates_of_frobenius (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h4 : Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F)
@@ -17,7 +17,7 @@ theorem arc_coordinates_of_frobenius (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc
   arc_coordinates_of_levels D HW F Cm (lev0MpL_of D HW F Cm hA h4 h9) h2 hA
 
 /- English proof (translation)
-The claim follows from `arc_coordinates_of_frobenius D HW F Cm h4 h9 h2 hA`.
+A detailed English derivation is pending.
 -/
 theorem arc_coordinates_of_frobenius_levels (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (hA : AdmArcA D HW F Cm) (h4 : Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm)
@@ -25,7 +25,7 @@ theorem arc_coordinates_of_frobenius_levels (D : D7) (HW : HWOf D.loc) (F : FonO
   arc_coordinates_of_frobenius D HW F Cm h4 h9 h2 hA
 
 /- English proof (translation)
-The claim follows from `splitting_of_literature_exactness D HW F Cm hA h6 hH hTr hWX hFont (splitShapeL_rec D HW F Cm hArc (lev0MpL_of D HW F Cm hArc h4 h9) h2 h23 h17)`.
+A detailed English derivation is pending.
 -/
 theorem split_case_A_of_hypotheses (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (hA : AdmSplitA D HW F Cm) (hArc : AdmArcA D HW F Cm)

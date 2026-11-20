@@ -28,12 +28,12 @@ open PositivityTheory.Rg.Rsw.L
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[mat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mat_mul (g h : G D n) : mat (g * h) = mat g * mat h := by simp [mat]
 
 /- English proof (translation)
-Simplify using `[mat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mat_mul_inv (g : G D n) : mat g * mat g⁻¹ = 1 := by simp [mat]
 
@@ -45,7 +45,7 @@ theorem mat_proj (g : G D n) (v : Pl D) :
       (mat g).map (cv D v) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => rw [map_add, hx, hy, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compInf_eq (w : InfinitePlace D.host.F) (x : AE D) :
     compInf D.host.F D.host.E w x = Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id D.host.F D.host.E)
@@ -56,11 +56,11 @@ theorem compInf_eq (w : InfinitePlace D.host.F) (x : AE D) :
   | add x y hx hy => rw [map_add, hx, hy, map_add, map_add]
 
 /- English proof (translation)
-Establish `h1` using `(mem_levelOff.1 hg).1`. Establish `h2 : (mat g).map (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom = 1`. Conclude with `congrArg Units.val (MonoidHom.mem_ker.1 h1)`. Establish `h3` using `congrFun (congrFun h2 i) j`. Simplify using `only [Matrix.map_apply] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[compInf_eq]`. Express the relevant statement in the definitionally equal form `_ = (1 : Matrix (Fin (n + n)) (Fin (n + n)) _) i j`. Rewrite using `[show Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (mat g i j) = _ from h3]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kOff_inf {S : Finset (Pl D)} {g : G D n} (hg : g ∈ KOff D n S) (w : InfinitePlace D.host.F) (i j : Fin (n + n)) :
     compInf D.host.F D.host.E w (mat g i j) = (1 : Matrix (Fin (n + n)) (Fin (n + n)) _) i j := by
@@ -77,7 +77,7 @@ theorem kOff_inf {S : Finset (Pl D)} {g : G D n} (hg : g ∈ KOff D n S) (w : In
   · simp [Matrix.one_apply_ne e]
 
 /- English proof (translation)
-Establish `h` using `(mem_levelOff.1 hg).2.1 v hv`. Use `congrArg (fun x => ((matHom (Fv D.host.F v) D.sp.cm.sig (Jst D n) x).1 : Matrix _ _ _)) h` as an intermediate fact. Simplify using `only [mat_proj, map_one, Units.val_one] at this`. Use `congrFun (congrFun this i) j` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kOff_at {S : Finset (Pl D)} {g : G D n} (hg : g ∈ KOff D n S) {v : Pl D} (hv : v ∈ S) (i j : Fin (n + n)) :
     cv D v (mat g i j) = (1 : Matrix (Fin (n + n)) (Fin (n + n)) _) i j := by
@@ -88,15 +88,15 @@ theorem kOff_at {S : Finset (Pl D)} {g : G D n} (hg : g ∈ KOff D n S) {v : Pl 
   simpa using this
 
 /- English proof (translation)
-Establish `h` using `(mem_levelOff.1 hg).2.2 v hv`. Establish `hs : ∀ y, y ∈ latLoc D.host.F (stdLattice D.host.E (n + n)) v ↔ (mat g).map (cv D v) *ᵥ y ∈ latLoc D.host.F (stdLattice D.host.E (n + n)) v` using `h`. Establish `he : ∀ k : Fin (n + n), (Pi.single k 1 : Fin (n + n) → Fv D.host.F v ⊗[D.host.F] D.host.E) ∈ latLoc D.host.F (stdLattice D.host.E (n + n)) v` using `fun k => by`. Rewrite using `[mem_latLoc_stdLattice]`. Introduce `l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `e : l = k`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne e]`. Establish `hM : (mat g).map (cv D v) * (mat g⁻¹).map (cv D v) = 1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(RingHom.mapMatrix (cv D v)).map_mul (mat g) (mat g⁻¹)` as an intermediate fact. Rewrite `this` using `[mat_mul_inv, map_one]`. Conclude with `this.symm`. Prove the components needed by the constructor for the conclusion. Use `mem_latLoc_stdLattice.1 ((hs _).1 (he j)) i` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Matrix.mulVec_single_one]`. Establish `h2 : (mat g⁻¹).map (cv D v) *ᵥ Pi.single j 1 ∈ latLoc D.host.F (stdLattice D.host.E (n + n)) v`. Use `(hs _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, hM, Matrix.one_mulVec]`. Conclude with `he j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `mem_latLoc_stdLattice.1 h2 i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`.
+A detailed English derivation is pending.
 -/
 theorem kOff_int {S : Finset (Pl D)} {g : G D n} (hg : g ∈ KOff D n S) {v : Pl D} (hv : v ∉ S) (i j : Fin (n + n)) :
     cv D v (mat g i j) ∈ intLoc D.host.F D.host.E v ∧ cv D v (mat g⁻¹ i j) ∈ intLoc D.host.F D.host.E v := by

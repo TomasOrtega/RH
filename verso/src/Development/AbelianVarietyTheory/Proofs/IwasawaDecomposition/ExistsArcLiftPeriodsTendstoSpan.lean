@@ -15,15 +15,13 @@ namespace GlobalTheory.ShFam.PerLim
 open scoped CategoryTheory.MonObj in
 
 /- English proof (translation)
-Substitute `hy hy0` using the available equality. Set `ex' : (Fin g → ℂ) → (Over.mk q ⟶ G')` to `fun z => Over.homMk (h0.1.lift (ex0 z).left q (Over.w (ex0 z))) (h0.1.lift_snd _ _ _)`. Establish `e0 : ∀ z, pushHom h0 (Over.mk q) (ex' z) = ex0 z` using `fun z => Over.OverMorphism.ext (h0.1.lift_fst _ _ _)`. Establish `e0' : ∀ z, (ex' z).left ≫ φ0 = (ex0 z).left` using `fun z => h0.1.lift_fst _ _ _`. Establish `e1 : ∀ z, (ex' z).left ≫ G'.hom = q` using `fun z => Over.w (ex' z)`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj0 : Function.Injective (pushHom h0 (Over.mk q))` using `fun a b hab => Over.OverMorphism.ext (h0.1.hom_ext (congrArg (·.left) hab) ((Over.w a).trans (Over.w b).symm))`. Establish `inj : Function.Injective (pushHom h (Over.mk q))` using `fun a b hab => Over.OverMorphism.ext (h.1.hom_ext (congrArg (·.left) hab) ((Over.w a).trans (Over.w b).symm))`. Establish `hA : ∀ t, HolHom.HolAt (fun z => (show Sp ℂ ⟶ G'.left from (ex' z).left)) t` using `fun t => HolHom.holAt_of_isPullback h0.1 (by simp only [e0']; exact HolHom.holAt_of_isHolTo hol (Set.mem_univ t)) (by simp only [e1]; exact HolHom.holAt_const _ _)`. Use `⟨fun z => pushHom h (Over.mk q) (ex' z), fun z w => ?_, ?_, fun d w hw hd => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `: ex' (z + w) = ex' z * ex' w` using `inj0 (by rw [map_mul, e0, e0, e0]; exact hadd z w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(congrArg _ this).trans (map_mul _ _ _)`. Conclude with `HolHom.isHolTo_of_holAt isOpen_univ fun t _ => (hA t).comp φ`. Take `⟨v, hv⟩` from `(hA 0).exists_isDerivAt d`. Establish `h1` using `hv.comp φ0`. Simplify using `only [e0'] at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `h2 : v = w` using `h0.1.hom_ext (h1.unique ((HolHom.isDerivAt0_iff _ _ _).1 hd)) ((HolHom.IsDerivAt.over (a := ex') hv).trans hw.symm)`. Substitute `h2` using the available equality. Conclude with `(HolHom.isDerivAt0_iff _ _ _).2 (hv.comp φ)`. Establish `: ex' z = 1` using `inj (hz.trans (map_one _).symm)`. Rewrite using `[← e0, this]`.
-
-Conclude with `map_one _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_transfer {S S' S0 : Scheme.{0}} {G : Over S} {G' : Over S'} {G0 : Over S0} [GrpObj G] [GrpObj G']
     [GrpObj G0] {f : S' ⟶ S} {f0 : S' ⟶ S0} {φ : G'.left ⟶ G.left} {φ0 : G'.left ⟶ G0.left}
@@ -68,27 +66,21 @@ theorem exists_transfer {S S' S0 : Scheme.{0}} {G : Over S} {G' : Over S'} {G0 :
     exact map_one _
 
 /- English proof (translation)
-Set `L : Submodule ℤ V` to `(P b₀).range.toIntSubmodule`. Use `haveI : DiscreteTopology L := hd`. Use `haveI : IsZLattice ℝ L := ⟨hs⟩`. Set `bz` to `Module.Free.chooseBasis ℤ L`. Set `bR` to `bz.ofZLatticeBasis ℝ L`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ i, ∃ c, P b₀ c = bR i` using `fun i => by`. Rewrite using `[Module.Basis.ofZLatticeBasis_apply]`. Conclude with `(bz i).2`. Use `choose c hc using hc`. Set `T : B → V →L[ℝ] V` to `fun b => ∑ i, (LinearMap.toContinuousLinearMap (bR.coord i)).smulRight (P b (c i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hT : ∀ b x, T b x = ∑ i, bR.repr x i • P b (c i)` using `fun b x => by simp [T]`. Establish `hTc : Continuous T` using `continuous_finset_sum _ fun i _ => (ContinuousLinearMap.smulRightL ℝ V V (LinearMap.toContinuousLinearMap (bR.coord i))).continuous.comp (hP _)`. Establish `hT0 : T b₀ = ContinuousLinearMap.id ℝ V`. Use extensionality with `x`. Rewrite using `[hT]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [hc]`. Conclude with `bR.sum_repr x`. Establish `hTP : ∀ b x, T b (P b₀ x) = P b x` using `fun b x => by`. Set `xl : L` to `⟨P b₀ x, x, rfl⟩`. Establish `h1 : ∀ i, bR.repr (P b₀ x) i = (bz.repr xl i : ℝ)` using `fun i => bz.ofZLatticeBasis_repr_apply ℝ L xl i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : x = ∑ i, bz.repr xl i • c i` using `hinj (by`. Rewrite using `[map_sum]`. Simplify using `only [map_zsmul, hc]`. Rewrite using `[← bR.sum_repr (P b₀ x)]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [h1, Int.cast_smul_eq_zsmul])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hT]`. Use `conv_rhs => rw [h2, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [h1, Int.cast_smul_eq_zsmul, map_zsmul]`. Take `⟨ε, hε, hb⟩` from `Metric.isOpen_iff.1 (isOpen_discrete ({0} : Set L)) 0 rfl`. Establish `h1 : ∀ᶠ b in 𝓝 b₀, ‖T b - T b₀‖ < 1 / 2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `: Tendsto (fun b => ‖T b - T b₀‖) (𝓝 b₀) (𝓝 0)` using `tendsto_iff_norm_sub_tendsto_zero.1 (hTc.tendsto b₀)`. Conclude with `this.eventually (gt_mem_nhds (by norm_num))`. Establish `h2 : ∀ᶠ b in 𝓝 b₀, ‖P b (a b) - P b (a b₀)‖ < ε / 2`. Establish `: Tendsto (fun b => ‖P b (a b) - P b (a b₀)‖) (𝓝 b₀) (𝓝 ‖P b₀ (a b₀) - P b₀ (a b₀)‖)` using `((ha.sub (hP _)).norm.tendsto b₀)`. Rewrite `this` using `[sub_self, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.eventually (gt_mem_nhds (half_pos hε))`. Use `filter_upwards [h1, h2] with b h1 h2`. Rewrite `h2` using `[← map_sub, ← hTP]`. Use `set x := P b₀ (a b - a b₀) with hx`. Establish `h3 : ‖T b x - x‖ ≤ 1 / 2 * ‖x‖`.
-
-Use `(T b - T b₀).le_of_opNorm_le h1.le x` as an intermediate fact. Rewrite `this` using `[hT0]`. Then use the resulting hypothesis. Establish `h4 : ‖x‖ ≤ ‖T b x‖ + ‖T b x - x‖`. Use `norm_sub_le (T b x) (T b x - x)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
-
-Establish `h5 : (⟨x, _, rfl⟩ : L) ∈ Metric.ball (0 : L) ε`. Rewrite using `[mem_ball_zero_iff]`. Use `show ‖x‖ < ε`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6 : x = 0` using `congrArg Subtype.val (hb h5)`.
-
-Conclude with `sub_eq_zero.1 (hinj (h6.trans (map_zero _).symm))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_eq_of_lattice {B La V : Type} [TopologicalSpace B] [AddCommGroup La] [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (P : B → (La →+ V)) (hP : ∀ a, Continuous fun b => P b a)
@@ -150,9 +142,9 @@ theorem eventually_eq_of_lattice {B La V : Type} [TopologicalSpace B] [AddCommGr
   exact sub_eq_zero.1 (hinj (h6.trans (map_zero _).symm))
 
 /- English proof (translation)
-Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `h : (fun w => ‖eTwoPi w‖) = fun w : ℂ => Real.exp (-(2 * Real.pi * w.im))` using `funext fun w => by`. Rewrite using `[eTwoPi, Complex.norm_exp]`. Simplify using the standard rewrite rules. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.tendsto_exp_neg_atTop_nhds_zero.comp ((tendsto_comap (f := Complex.im) (x := atTop)).const_mul_atTop (by positivity))`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_eTwoPi : Tendsto eTwoPi imTop (𝓝 0) := by
   rw [tendsto_zero_iff_norm_tendsto_zero]
@@ -164,7 +156,7 @@ theorem tendsto_eTwoPi : Tendsto eTwoPi imTop (𝓝 0) := by
     ((tendsto_comap (f := Complex.im) (x := atTop)).const_mul_atTop (by positivity))
 
 /- English proof (translation)
-Establish `: (fun j i => lam j (s i)) = LinearMap.funLeft ℂ ℂ s ∘ lam` using `rfl`. Rewrite using `[this, Set.range_comp, ← Submodule.map_span, h, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `LinearMap.funLeft_surjective_of_injective ℂ ℂ s hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_proj {n g m : ℕ} (lam : Fin n → Fin g → ℂ) (h : Submodule.span ℂ (Set.range lam) = ⊤) (s : Fin m → Fin g)
     (hs : Function.Injective s) : Submodule.span ℂ (Set.range fun j i => lam j (s i)) = ⊤ := by
@@ -173,11 +165,9 @@ theorem span_proj {n g m : ℕ} (lam : Fin n → Fin g → ℂ) (h : Submodule.s
   exact LinearMap.funLeft_surjective_of_injective ℂ ℂ s hs
 
 /- English proof (translation)
-Establish `hm : ∀ t, Continuous fun b => mat (x b) t` using `fun t => (continuous_apply t).comp hc`. Unfold `perFr`. Use `split_ifs with h1 h2 h3 h4`. Use `(continuous_apply (⟨X.p0 + i, h2⟩ : Fin r)).comp (Continuous.matrix_mulVec (A := fun b => (mat (x b) ⟨τ, h1⟩)⁻¹) ?_ continuous_const)` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun b => (continuousAt_matrix_inv _ ?_).comp (hm _).continuousAt` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ (hx b _).1`. Conclude with `continuous_const`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.hermC]`. Conclude with `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun c _ => (((hm _).matrix_elem _ _).mul continuous_const).mul continuous_const`.
-
-Conclude with `continuous_const`. Conclude with `continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_perFr {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) {B : Type}
     [TopologicalSpace B] {x : B → Frame X.Ψ r} (hx : ∀ b, x b ∈ X.dom) (hc : Continuous x) (v : Fin r → E)
@@ -198,31 +188,25 @@ theorem continuous_perFr {E : Type} [Field E] [NumberField E] [IsCMField E] {r :
   · exact continuous_const
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ N U A _ φ x fr ψ r y k T M γ xx hσ hU harc hm horb hlift`. Take `⟨hN, hX, -, -, -, g, e, F, ik, φL, -, hfr⟩` from `hU`. Take `⟨ρ, n, lam, hρ, hρr, hcont, hspan, hker⟩` from `GlobalTheory.T.exists_continuous_lattice_vectors_along_arc E H Dw l Xo c O β Z σ A φ x fr ψ r g e harc`. Take `⟨-, -, hxd, hxm, -⟩` from `horb`. Choose the witnesses or unpack the hypotheses as in `⟨T₁, hT₁⟩ : ∃ T₁ : ℝ, ∀ w : ℂ, T₁ < w.im → T < w.im ∧ eTwoPi w ∈ Metric.ball (0 : ℂ) ρ := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ∀ᶠ w in imTop, eTwoPi w ∈ Metric.ball (0 : ℂ) ρ` using `tendsto_eTwoPi.eventually (Metric.ball_mem_nhds 0 hρ)`. Take `⟨a, ha⟩` from `eventually_atTop.1 (eventually_comap.1 h1)`. Conclude with `⟨max a T, fun w hw => ⟨(le_max_right _ _).trans_lt hw, ha _ ((le_max_left _ _).trans hw.le) w rfl⟩⟩`. Set `B` to `{w : ℂ // w ∈ {w : ℂ | T₁ < w.im}}`. Use `haveI : PreconnectedSpace B := Subtype.preconnectedSpace (convex_halfSpace_im_gt T₁).isPreconnected`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdom : ∀ b : B, xx b ∈ (U.X k).dom` using `fun b => hxm b (hT₁ b b.2).1`. Use `choose Pm hPm hper hpt hder hrest using fun b : B => hfr k ⟨xx b, hdom b⟩`. Use `clear hrest`. Establish `key : ∀ (b : B) j, lam j (eTwoPi b) ∈ (Pm b).range` using `fun b j => by`. Establish `hb` using `(hT₁ b b.2).2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, hx1, hx2⟩` from `hlift b (hT₁ b b.2).1`. Take `⟨hm1, hm2⟩` from `hm _ (Metric.ball_subset_ball hρr hb) (Complex.exp_ne_zero _)`. Establish `h0 : GlobalTheory.AllWt.ptF (y (eTwoPi b)) ≫ pullback.fst _ _ = (y (eTwoPi b)).x` using `pullback.lift_fst _ _ _`. Take `⟨ex, a1, a2, a3, a4⟩` from `exists_transfer Z.m.cart Z.m0.toSABMap.cart (GlobalTheory.AllWt.ptF (S := CAt σ) (y (eTwoPi b)) :) (y := spMap (ψ (eTwoPi b)) ≫ x ≫ genι Z) (y0 := F.u (ik k) (Pm b)) ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ genι Z) hm1).trans (Category.assoc _ _ _))) (h0.trans (hx1.symm …`. Use `(F.ex_ker _ _ (hper b) _).1 (a4 _ (hker _ hb ex a1 a2 (fun jj => ?_) j))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, w1, w2, w3⟩` from `hm2 (e jj).1 (e jj).2`. Establish `hd` using `hder b (e jj).1 (e jj).2`. Rewrite `hd` using `[hx2, ← w2, Sigma.eta, Equiv.symm_apply_apply]`. Conclude with `w3 ▸ a3 _ w w1 hd`. Use `choose a ha using key`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hxc : Continuous fun b : B => xx b` using `(hxd.continuousOn.mono fun w hw => (hT₁ w hw).1).restrict`. Establish `hPc : ∀ z, Continuous fun b : B => Pm b z` using `fun z => continuous_pi fun jj => by`. Simplify using `only [hPm]`. Conclude with `continuous_perFr _ hdom hxc _ _ _`. Establish `hec : Continuous eTwoPi` using `by unfold eTwoPi; fun_prop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `b₀ : B` to `⟨(T₁ + 1 : ℝ) * Complex.I, by simp⟩`. Establish `hconst : ∀ j b, a b j = a b₀ j` using `fun j b => by`. Use `IsLocallyConstant.apply_eq_of_preconnectedSpace (f := fun b => a b j) ((IsLocallyConstant.iff_eventually_eq _).2 fun b' => ?_) b b₀` and prove the remaining obligations. Use `eventually_eq_of_lattice Pm hPc b' (hper b').2.1 (hper b').2.2.1 (hper b').2.2.2.1 (fun b => a b j) ?_` and prove the remaining obligations. Simplify using `only [ha]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hcont j).comp_continuous (hec.comp continuous_subtype_val) fun b => (hT₁ b b.2).2`. Establish `hlim : ∀ j jj, Tendsto (fun w => perFr (U.X k) (xx w) (φL k (a b₀ j) : Fin N → E) (relab c σ (e jj).1) (e jj).2) imTop (𝓝 (lam j 0 jj))` using `fun j jj => by`. Establish `h1 : Tendsto (fun w => lam j (eTwoPi w) jj) imTop (𝓝 (lam j 0 jj))` using `((continuous_apply jj).tendsto _).comp ((((hcont j).continuousAt (Metric.ball_mem_nhds 0 hρ)).tendsto).comp tendsto_eTwoPi)`. Use `h1.congr' ?_` and prove the remaining obligations. Use `filter_upwards [(tendsto_comap (f := Complex.im) (x := atTop)).eventually (eventually_gt_atTop T₁)] with w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ha ⟨w, hw⟩ j, hconst, hPm]`. Establish `hidx : ∀ (τ : E →+* ℂ) (m : ℕ), m = (if τ (H.rt : E) = H.rt0 then Dw.p else Dw.q) → ∃ s : Fin m → Fin g, Function.Injective s ∧ ∀ i, relab c σ (e (s i)).1 = τ ∧ ((e (s i)).2 : ℕ) = i`. Introduce `τ m hmτ`. Take `⟨τ', rfl⟩` from `Finite.injective_iff_surjective.1 (ReciprocityTheory.ChartRestriction.G.PullbackSections.UH.relab_injective c σ) τ`. Establish `h1 : m = Dw.mult τ'`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmτ, Datum.mult]`. Conclude with `if_congr (ReciprocityTheory.ChartRestriction.G.PullbackSections.UH.relab_rt c σ hσ τ') rfl rfl`. Substitute `h1` using the available equality. Use `⟨fun i => e.symm ⟨τ', i⟩, fun i i' h => ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `eq_of_heq (Sigma.mk.inj (e.symm.injective h)).2`.
-
-Rewrite using `[Equiv.apply_symm_apply]`. Conclude with `⟨rfl, rfl⟩`. Use `choose sp hsp hsp' using fun τ : (U.X k).Ψ => hidx τ.1 (N - (U.X k).p0) (by`. Rewrite using `[if_pos (((hX k).2 _).1 τ.2), (hX k).1, hN, Nat.add_sub_cancel])`. Use `choose sm hsm hsm' using fun τ : (U.X k).Ψ => hidx (conjEmb τ.1) (U.X k).p0 (by`.
-
-Rewrite using `[if_neg fun h => ((U.X k).cmType τ.1).1 τ.2 (((hX k).2 (conjEmb τ.1)).2 h), (hX k).1])`. Use `⟨n, fun j => φL k (a b₀ j), fun j τ i => lam j 0 (sp τ i), fun j τ i => lam j 0 (sm τ i), fun j τ i => ?_, fun j τ i => ?_, fun τ => ⟨span_proj _ hspan _ (hsp τ), span_proj _ hspan _ (hsm τ)⟩⟩` and prove the remaining obligations. Use `hlim j (sp τ i)` as an intermediate fact. Rewrite `this` using `[(hsp' τ i).1, (hsp' τ i).2]`. Then use the resulting hypothesis. Use `hlim j (sm τ i)` as an intermediate fact.
-
-Rewrite `this` using `[(hsm' τ i).1, (hsm' τ i).2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_periods_tendsto_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (N : ℕ) (U : Unf Xo c σ N) (A : Type) [CommRing A] (φ : c.F →+* A) (x : Sp A ⟶ gen Z) (fr : EigFrame Z φ (x ≫ genι Z)) (ψ : ℂ → (A →+* ℂ)) (r : ℝ) (y : ℂ → FrPt Xo c (CAt σ)) (k : U.Comp) (T : ℝ) (M : ℕ) (γ : GL (Fin N) E) (xx : ℂ → Frame (U.X k).Ψ N), GoodEmb c σ → IsUnf U → IsArc Z σ φ x ψ r → (∀ u ∈ Metric.ball (0 : ℂ) r, u ≠ 0 → Matches fr (ψ u) (y u)) → IsOrbit (U.X k) T M γ xx → IsLift U k y T xx → ∃ (n : ℕ) (v : Fin n → Fin N → E) (Lp : Fin n → (U.X k).Ψ → Fin (N - (U.X k).p0) → ℂ) (Lm : Fin n → (U.X k).Ψ → Fin (U.X k).p0 → ℂ), (∀ j (τ : (U.X k).Ψ) (i : Fin (N - (U.X k).p0)), Tendsto (fun w => perFr (U.X k) (xx w) (v j) τ.1 i) imTop (𝓝 (Lp j τ i))) ∧ (∀ j (τ : (U.X k).Ψ) (i : Fin (U.X k).p0), Tendsto (fun w => perFr (U.X k) (xx w) (v j) (conjEmb τ.1) i) imTop (𝓝 (Lm j τ i))) ∧ ∀ τ : (U.X k).Ψ, Submodule.span ℂ (Set.range fun j => Lp j τ) = ⊤ ∧ Submodule.span ℂ (Set.range fun j => Lm j τ) = ⊤ := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ N U A _ φ x fr ψ r y k T M γ xx hσ hU harc hm horb hlift

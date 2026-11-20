@@ -5,21 +5,19 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Introduce `R _ _ I P _ _`. Establish `hF` using `I.finite_minimalPrimes_of_isNoetherianRing R`. Set `a : Ideal R → R` to `fun p => if h : ¬ (p : Set R) ⊆ P then Classical.choose (Set.not_subset.mp h) else 1`. Establish `ha : ∀ p : Ideal R, ¬ p ≤ P → a p ∈ p ∧ a p ∉ P`. Introduce `p h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : ¬ (p : Set R) ⊆ P` using `h`. Simplify using `only [a, dif_pos h']`. Conclude with `Classical.choose_spec (Set.not_subset.mp h')`. Set `s : Finset (Ideal R)` to `hF.toFinset.filter (fun p => ¬ p ≤ P)`. Use `⟨∏ p ∈ s, a p, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.IsPrime.prod_mem_iff]`. Introduce and unpack `⟨p, hp, hpP⟩`. Conclude with `(ha p (Finset.mem_filter.mp hp).2).2 hpP`. Introduce `Q _ _ hgQ`. Rewrite using `[Ideal.height_eq_inf_minimalPrimes (I.map (algebraMap R (Localization.AtPrime Q)))]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_iInf₂ fun J hJ => ?_` and prove the remaining obligations. Establish `hJp : J.IsPrime` using `hJ.isPrime`. Establish `hmin : J.comap (algebraMap R (Localization.AtPrime Q)) ∈ I.minimalPrimes`. Rewrite `hJ` using `[IsLocalization.minimalPrimes_map Q.primeCompl]`. Conclude with `hJ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set p := J.comap (algebraMap R (Localization.AtPrime Q)) with hpdef`. Establish `hpp : p.IsPrime` using `hmin.1.1`. Establish `hpQ : p ≤ Q`. Introduce `x hx`. Assume the negation of the conclusion as `hxQ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hu` using `IsLocalization.map_units (Localization.AtPrime Q) (⟨x, hxQ⟩ : Q.primeCompl)`. Conclude with `hJp.ne_top (Ideal.eq_top_of_isUnit_mem J hx hu)`. Establish `hpP : p ≤ P`. Assume the negation of the conclusion as `hnot`. Apply `hgQ` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hpQ` to reduce the goal to its premises. Establish `hps : p ∈ s` using `Finset.mem_filter.mpr ⟨hF.mem_toFinset.mpr hmin, hnot⟩`. Conclude with `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem a hps) (ha p hnot).1`. Establish `hdisj : Disjoint (P.primeCompl : Set R) (p : Set R)`. Rewrite using `[Set.disjoint_left]`.
-
-Introduce `x hx hxp`. Conclude with `hx (hpP hxp)`. Establish `hJh : J.height = p.height` using `(IsLocalization.height_under Q.primeCompl J).symm`. Rewrite using `[hJh, ← IsLocalization.height_map_of_disjoint P.primeCompl (S := Localization.AtPrime P) p hdisj]`. Conclude with `Ideal.height_mono (Ideal.map_mono hmin.1.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IdealHeightSpread.proof : IdealHeightSpread.Statement := by
   intro R _ _ I P _ _

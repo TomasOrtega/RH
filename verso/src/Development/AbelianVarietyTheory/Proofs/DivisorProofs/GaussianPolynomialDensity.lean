@@ -9,19 +9,17 @@ open scoped Nat
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ Q c hc hQ g hg N hN ψ A ρ hψ F hF`. Use `set p : ℕ → V → ℂ := fun m y => ∑ j ∈ Finset.range (m + 1), ((j ! : ℝ))⁻¹ • iteratedFDeriv ℝ j ψ 0 (fun _ => y) with hp`. Use `choose f hfN hf using fun j => hN j (((j ! : ℝ))⁻¹ • iteratedFDeriv ℝ j ψ 0)`. Use `set Fm : ℕ → SchwartzMap V ℂ := fun m => ∑ j ∈ Finset.range (m + 1), f j with hFm`. Establish `hFmN : ∀ m, Fm m ∈ N` using `fun m => Submodule.sum_mem _ fun j _ => hfN j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hFmx : ∀ m x, Fm m x = p m x * g x`. Introduce `m x`. Simplify using `only [hFm, hp, Finset.sum_mul]`. Rewrite using `[SchwartzMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hf j x]`. Both sides reduce to the same expression. Establish `hFmfun : ∀ m, (⇑(Fm m) : V → ℂ) = fun y => p m y * g y` using `fun m => funext (hFmx m)`. Establish `hgfun : (⇑g : V → ℂ) = fun y => Complex.exp (-(Q y y))` using `funext hg`. Establish `hpcd : ∀ m, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (p m)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `m`. Use `ContDiff.sum fun j _ => ?_` and prove the remaining obligations. Conclude with `((iteratedFDeriv ℝ j ψ 0).contDiff.comp (contDiff_pi.2 fun _ => contDiff_id)).const_smul _`. Establish `hT : Tendsto Fm atTop (𝓝 F)`. Use `GlobalTheory.T.schwartz_tendsto_of_pointwise_uniform_bounds Fm F (fun v => ?_) (fun k n => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hFmx, hF]`. Conclude with `(GlobalTheory.T.schwartz_taylor_series_converges ψ A ρ hψ v).mul_const _`. Use `choose C hC using fun i => GlobalTheory.T.gaussian_quadratic_form_schwartz_bounds Q c hc hQ i k |ρ|`. Use `⟨∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (|A| * |ρ| ^ i) * C (n - i), fun m v => ?_⟩` and prove the remaining obligations. Rewrite using `[hFmfun]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(mul_le_mul_of_nonneg_left (norm_iteratedFDeriv_mul_le (hpcd m) (g.smooth ⊤) v (by exact_mod_cast le_top)) (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h2` using `GlobalTheory.T.schwartz_taylor_partial_sum_deriv_bound ψ A ρ hψ m i v`. Establish `h3` using `hC (n - i) v`.
-
-Rewrite `h3` using `[← hgfun]`. Combine the equalities or inequalities in the displayed calculation. Establish `: F ∈ closure (N : Set (SchwartzMap V ℂ))` using `mem_closure_of_tendsto hT (Eventually.of_forall hFmN)`. Rewrite `this` using `[← Submodule.topologicalClosure_coe]`. Conclude with `this`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussian_mul_mem_closure_of_taylor : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (Q : V →ₗ[ℝ] V →ₗ[ℝ] ℂ) (c : ℝ), 0 < c → (∀ x, c * ‖x‖ ^ 2 ≤ (Q x x).re) →

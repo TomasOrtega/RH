@@ -34,7 +34,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `letI := fun w => modS i r π dc g0 eB e₁ s Dd hD hc w`. Use `haveI := fun w => KLat.towerT Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc) w`. Use `letI := fun w => modS' i r π dc g0 eB e₁ s Dd hD hc w`. Use `haveI := fun w => KLat.towerT' Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc) w`. Conclude with `Bk.tieSel1_K i dc Dd (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc) hD hN`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem selFS_of_normAt (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) :
     TieSel1 i ρ π (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk 0) Dd.r Dd.χ (colIdx i dc) (decs D.host.E (Aw i dc))
@@ -51,7 +51,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hOrb : ∀ l : Col i dc, KHf.OrbC i dc (KFin.ρV i dc Dd l)` using `fun l => KOrb.orbC_uRep i dc r π g0 eB e₁ s Dd hD hc (fun c v => KOrb.latM_alg i Dd (Dd.ρk 0) c v) (colIdx i dc l)`. Conclude with `hRho_of i r ρ π dc g0 eB e₁ s Dd hD hc hT hrk hG4 hdec (fun l => KTate.finFf_of i dc Dd hFin l (hOrb l)) (fun l => KTate.rankFf i dc Dd ρ π l (hOrb l) (hDim l)) (selFS_of_normAt i r ρ π dc g0 eB e₁ s Dd hD hc hN)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hRho_rec (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π)
     (hG4 : TruncatedSeriesCountingIdentities.admG4 i r) (hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (hFin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i)

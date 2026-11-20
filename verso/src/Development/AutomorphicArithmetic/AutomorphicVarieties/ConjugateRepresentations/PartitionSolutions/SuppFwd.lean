@@ -6,17 +6,17 @@ open UpperTheory.V.Cj.A
 open Matrix NumberField GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.Lit UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Introduce `E _ _ _ a ho U hU Ξ q α w h hα`. Take `⟨R, hR⟩` from `hα`. Take `⟨C, hC, hC'⟩` from `(qhtFacts E a).2.2.2 R`. Establish `h1 : Continuous (pInf E)` using `continuous_pi fun v => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex v)).continuous.comp ((continuous_apply v).comp continuous_fst)`. Establish `h2 : Continuous (pFin E)` using `continuous_snd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : Continuous fun g : GA E a => GeneralLinearGroup.map (pInf E) g` using `Continuous.units_map _ (continuous_id.matrix_map h1)`. Establish `hf : Continuous fun g : GA E a => GeneralLinearGroup.map (pFin E) g` using `Continuous.units_map _ (continuous_id.matrix_map h2)`. Use `haveI : DiscreteTopology (GL (Fin a) (Af E) ⧸ U) := QuotientGroup.discreteTopology hU`. Use `⟨(fun g : GA E a => ((GeneralLinearGroup.map (pFin E) g : GL (Fin a) (Af E)) : GL (Fin a) (Af E) ⧸ U)) '' C, (fun g : GA E a => sand (GeneralLinearGroup.map (pInf E) g) (hOne E a)) '' C, (hC.image (QuotientGroup.continuous_mk.comp hf)).finite_of_discrete, hC.image ((sandCpt E a). …` and prove the remaining obligations. Introduce and unpack `_ ⟨g, -, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨_, rfl⟩`. Introduce and unpack `s _ ⟨g, rfl⟩ hp`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective s`. Establish `hlt : R < qht (infGL E a g * finGL E a x)`. Assume the negation of the conclusion as `hle`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, t, hm⟩` from `hC' _ (not_lt.1 hle)`. Take `⟨e1, r, hr, e2⟩` from `(splitFacts E a).1 t`. Use `hp ⟨⟨γ, Subgroup.mem_top γ⟩, r, hr, ⟨_, hm, ?_⟩, ⟨_, hm, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [map_mul, e1, pFin_infGL, pFin_finGL, one_mul, mul_one]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, pInf_infGL, pInf_finGL, mul_one, ContinuousLinearMap.mul_apply, e2, map_smul, geo_ρ]`. Use `ContinuousAlternatingMap.ext fun v => ?_` and prove the remaining obligations. Establish `hv' : v = fun i => (2 : ℝ) • sand g (hv (hv.symm ((2 : ℝ)⁻¹ • sand g⁻¹ (v i))))`. Use function extensionality and compare the values at `i`. Rewrite using `[LinearEquiv.apply_symm_apply, map_smul, smul_smul, ← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hv', h, hR _ _ hlt, Matrix.mulVec_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.A.suppFwd :
     SuppFwd := by

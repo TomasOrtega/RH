@@ -24,11 +24,11 @@ namespace GlobalTheory.WeilFieldExt
 open GlobalTheory.CommPairing ReciprocityTheory.ChartRestriction.G.Out
 
 /- English proof (translation)
-Introduce `j j' c₁ c₂ c₃`. Establish `inj : Function.Injective (pullU q (LB.wchart L φ j ⊓ LB.wchart L φ' j'))` using `fun a b e => Units.ext (hq _ (congrArg Units.val e))`. Apply `inj` to reduce the goal to its premises. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `hy' : q y ∈ LB.wchart L φ j ⊓ LB.wchart L φ' j'` using `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨J, hJ, e⟩` from `exists_good L hL y (fun k => q ≫ Sum.elim φ φ' k) (Sum.elim j j') (by`. Introduce `a b e`. Establish `e` using `(cancel_epi q).1 e`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Use `exacts [c₁ a b e, c₃ a b e, (c₃ b a e.symm).symm, c₂ a b e]) (by`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(a | a)`. Use `exacts [Set.mem_iInter.1 hy'.1 a, Set.mem_iInter.1 hy'.2 a])`. Use `h y J hJ` as an intermediate fact. Rewrite `this` using `[val_of t _ y J j (fun k => e (.inl k)), val_of t' _ y J j' (fun k => e (.inr k))]`. Conclude with `(gm_id_pull q y _ hy' _).trans ((gm_res _ y _ hy' _).trans (this.trans ((gm_res _ y _ hy' _).symm.trans (gm_id_pull q y _ hy' _).symm)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corr_of_val_epi {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
@@ -57,7 +57,7 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {k : ℤ}
 
 omit [GrpObj A] in
 /- English proof (translation)
-Use `(IsPullback.of_right (h₁₁ := (h ▷ A).left) (v₁₁ := pullback.fst T'.hom A.hom) (h₁₂ := pullback.snd T.hom A.hom) (v₁₂ := pullback.fst T.hom A.hom) (h₂₁ := h.left) (h₂₂ := T.hom) (v₁₃ := A.hom) ?_ ?_ (IsPullback.of_hasPullback T.hom A.hom).flip)` and prove the remaining obligations. Establish `e : (h ▷ A).left ≫ pullback.snd T.hom A.hom = pullback.snd T'.hom A.hom` using `congrArg (fun q => q.left) (whiskerRight_snd h A)`. Rewrite using `[e, Over.w h]`. Conclude with `(IsPullback.of_hasPullback T'.hom A.hom).flip`. Conclude with `congrArg (fun q => q.left) (whiskerRight_fst h A)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_whisker {T T' : Over S} (h : T' ⟶ T) :
     IsPullback (h ▷ A).left (fst T' A).left (fst T A).left h.left := by
@@ -71,11 +71,11 @@ theorem isPullback_whisker {T T' : Over S} (h : T' ⟶ T) :
   · exact congrArg (fun q => q.left) (whiskerRight_fst h A)
 
 /- English proof (translation)
-Take `⟨θx', hx, vx⟩` from `exists_pull hL h θx`. Take `⟨θy', hy, vy⟩` from `exists_pull hL h θy`. Establish `H'` using `(commIsOf_iff hL _ _ _).1 (commIsOf_change globalFns_holds hA hL (hx.trans ha.symm) (hy.trans hb.symm) H)`. Use `corr_of_val_epi hL (h ▷ A).left hq fun z J hJ => ?_` and prove the remaining obligations. Establish `key : ∀ θ θ' : ThetaGrp A L k T, val (LB.mulGen L _ _ _ _ θ.φ (LB.pullGen L _ _ θ'.φ (translT A θ.pt).left)) (h ▷ A).left z J = tval θ (h ▷ A).left z J * tval θ' ((h ▷ A).left ≫ (translT A θ.pt).left) z J` using `fun θ θ' => (val_mul hJ _ _ _).trans (congrArg (tval θ (h ▷ A).left z J * ·) (val_pull hJ _ _ _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `H' _ (𝟙 _) z J hJ`. Establish `t : ∀ x : T ⟶ A, (𝟙 _ ≫ (translT A (h ≫ x)).left) ≫ (h ▷ A).left = (h ▷ A).left ≫ (translT A x).left` using `fun x => by`. Rewrite using `[Category.id_comp, ← Over.comp_left, ← Over.comp_left, whisker_translT]`. Establish `g : gm (𝟙 _ ≫ (fst T' A).left) z ⊤ (Units.map h.left.appTop.hom.toMonoidHom c) = gm ((h ▷ A).left ≫ (fst T A).left) z ⊤ c`. Use `(gm_pull (𝟙 _ ≫ (fst T' A).left) h.left z ⊤ trivial c).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.id_comp, ← Over.comp_left, ← Over.comp_left, whiskerRight_fst]`. Rewrite `e` using `[vx _ _ z J hJ, vx _ _ z J hJ, vy _ _ z J hJ, vy _ _ z J hJ, hx, hy, t, t, g, Category.id_comp]`. Conclude with `(key θx θy).trans (e.trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (key θy θx) (H1.val_constGen L c _ z J))).symm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commIsOf_descend (hA : IsAbelianScheme A) (hL : L.IsLB) {T T' : Over S} (h : T' ⟶ T)
     [Epi (h ▷ A).left] (hq : ∀ U, Function.Injective ((h ▷ A).left.app U).hom)
@@ -104,15 +104,15 @@ theorem commIsOf_descend (hA : IsAbelianScheme A) (hL : L.IsLB) {T T' : Over S} 
       (congrArg₂ (· * ·) (key θy θx) (H1.val_constGen L c _ z J))).symm)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Take `⟨V, hp, ⟨θx, θy, hx, hy⟩, hc⟩` from `H default`. Take `rfl : V = ⊤` from `eq_top_iff.2 fun p _ => by rwa [Unique.eq_default p]`. Set `s : T ⟶ overRes (⊤ : T.left.Opens)` to `Over.homMk T.left.topIso.inv (by show T.left.topIso.inv ≫ T.left.topIso.hom ≫ T.hom = T.hom`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[Iso.inv_hom_id_assoc])`. Establish `w : s.left ≫ (⊤ : T.left.Opens).ι = 𝟙 _` using `T.left.topIso.inv_hom_id`. Establish `w' : s ≫ overResι ⊤ = 𝟙 T` using `Over.OverMorphism.ext w`. Take `⟨a, b, ha, hb, H'⟩` from `exists_commIsOf_pull hL s (hc θx θy hx hy)`. Rewrite `ha` using `[hx, ← Category.assoc, w', Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[hy, ← Category.assoc, w', Category.id_comp]`. Establish `e : Units.map s.left.appTop.hom.toMonoidHom (unitRes ⊤ c) = c`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg (fun q => q.appTop.hom c.val) w` as an intermediate fact. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Rewrite `H'` using `[e]`. Conclude with `⟨a, b, ha, hb, H'⟩`. Introduce and unpack `⟨θx, θy, rfl, rfl, H⟩ p`. Take `⟨a, b, ha, hb, H'⟩` from `exists_commIsOf_pull hL (overResι (⊤ : T.left.Opens)) H`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⊤, trivial, ⟨a, b, ha, hb⟩, fun a' b' ha' hb' => commIsOf_change globalFns_holds hA hL (ha'.trans ha.symm) (hb'.trans hb.symm) H'⟩`.
+A detailed English derivation is pending.
 -/
 theorem weilIs_iff (hA : IsAbelianScheme A) (hL : L.IsLB) {T : Over S} [Unique T.left] (x y : T ⟶ A)
     (c : Γ(T.left, ⊤)ˣ) : WeilIs A L k x y c ↔
@@ -142,7 +142,7 @@ theorem weilIs_iff (hA : IsAbelianScheme A) (hL : L.IsLB) {T : Over S} [Unique T
       commIsOf_change globalFns_holds hA hL (ha'.trans ha.symm) (hb'.trans hb.symm) H'⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hd (thetaLB A L k x) (DVR.linComb_isLB L hL _ _) (gen_chartPull (chartPullOut L ![(snd T A).left, (translPt A x).left] ![k, -k] (h ▷ A).left ![(snd T' A).left, (translPt A a.pt).left] (fun i => by fin_cases i`. Conclude with `(congrArg (fun q => q.left) (whiskerRight_snd h A)).symm`. Use `show (translPt A a.pt).left = (h ▷ A).left ≫ (translPt A x).left`. Rewrite using `[← Over.comp_left, whisker_translPt, ha])) a.φ a.isGen)`. Conclude with `⟨⟨x, t, ht⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift_descend (hL : L.IsLB) {T T' : Over S} (h : T' ⟶ T)
     (hd : ∀ M : LB (T ⊗ A).left, M.IsLB → (∃ t : (M.pull (h ▷ A).left).Gen, t.IsGen) → ∃ t : M.Gen, t.IsGen)
@@ -157,7 +157,7 @@ theorem exists_lift_descend (hL : L.IsLB) {T T' : Over S} (h : T' ⟶ T)
   exact ⟨⟨x, t, ht⟩, rfl⟩
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `congrArg (fun q => q.hom c.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom i))`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem unitOn_map {K Ω : Type} [CommRing K] [CommRing Ω] (i : K →+* Ω) (c : Kˣ) :
     unitOn (Units.map i.toMonoidHom c) = Units.map (spMap i).appTop.hom.toMonoidHom (unitOn c) := by
@@ -171,11 +171,11 @@ namespace GlobalTheory
 open WeilFieldExt CommPairing in
 
 /- English proof (translation)
-Introduce `S G _ K Ω _ _ i x L k y y' c hG hL`. Rewrite using `[unitOn_map]`. Set `h : Over.mk (spMap i ≫ x) ⟶ Over.mk x` to `Over.homMk (spMap i) rfl`. Use `⟨fun H => ?_, fun H => weilIs_pull globalFns_holds hG hL h H⟩` and prove the remaining obligations. Use `letI : Unique (Over.mk x).left := inferInstanceAs (Unique (PrimeSpectrum K))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `letI : Unique (Over.mk (spMap i ≫ x)).left := inferInstanceAs (Unique (PrimeSpectrum Ω))`. Take `⟨a, b, ha, hb, Hc⟩` from `(weilIs_iff hG hL _ _ _).1 H`. Establish `pb : IsPullback (h ▷ G).left (fst _ G).left (fst _ G).left (spMap i)` using `isPullback_whisker h`. Take `⟨e, -, -, -, inj⟩` from `(FieldBaseChange.epi_and_isMonHom_iff K Ω i).1 _ _ _ _ _ pb`. Establish `hd` using `(GlobalTheory.T.lineBundle_trivial_iso_descend_field K Ω i _ _ _ _ _ (by have := hG.smooth; exact inferInstanceAs (Smooth (pullback.fst x G.hom))) (by have := hG.proper; exact inferInstanceAs (IsProper (pullback.fst x G.hom))) (by have := hG.geomConnected; exact inferInstanceAs ( …`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨θ, rfl⟩` from `exists_lift_descend hL h hd y a ha`. Take `⟨θ', rfl⟩` from `exists_lift_descend hL h hd y' b hb`. Conclude with `(weilIs_iff hG hL _ _ _).2 ⟨θ, θ', rfl, rfl, commIsOf_descend hG hL h inj ha hb Hc⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem weilIs_fieldExt_iff : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (K Ω : Type) [Field K] [Field Ω] (i : K →+* Ω) (x : Sp K ⟶ S) (L : LB G.left) (k : ℤ) (y y' : Over.mk x ⟶ G) (c : Kˣ), IsAbelianScheme G → L.IsLB → (Out.WeilIs G L k ((Over.homMk (spMap i) rfl : Over.mk (spMap i ≫ x) ⟶ Over.mk x) ≫ y) ((Over.homMk (spMap i) rfl : Over.mk (spMap i ≫ x) ⟶ Over.mk x) ≫ y') (unitOn (Units.map i.toMonoidHom c)) ↔ Out.WeilIs G L k y y' (unitOn c)) := by
   intro S G _ K Ω _ _ i x L k y y' c hG hL

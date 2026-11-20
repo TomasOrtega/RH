@@ -8,11 +8,11 @@ open Matrix NumberField ComplexConjugate
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce and unpack `⟨z, hz⟩`. Establish `hint : IsIntegral ℤ ((2 : K)⁻¹)`. Rewrite using `[← hz]`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe z`. Establish `e : ((2 : K)⁻¹) = algebraMap ℚ K ((2 : ℚ)⁻¹)` using `by simp`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hint` using `[e, isIntegral_algebraMap_iff (algebraMap ℚ K).injective]`. Take `⟨m, hm⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Establish `hm' : (m : ℚ) = 2⁻¹` using `by simpa using hm`. Establish `h2 : ((m * 2 : ℤ) : ℚ) = 1`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm']`. Evaluate the numerical expressions. Establish `h3 : m * 2 = 1` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+Evaluate the numerical expressions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem half_not_integral {K : Type} [Field K] [NumberField K] : ¬ IsIntegralElt ((2 : K)⁻¹) := by
   rintro ⟨z, hz⟩
@@ -31,23 +31,21 @@ theorem half_not_integral {K : Type} [Field K] [NumberField K] : ¬ IsIntegralEl
   omega
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hL`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (funext h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨b, hb⟩, hbint⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 K)) (S.biUnion fun v => Finset.univ.image v)`. Establish `hb0 : (b : K) ≠ 0`. Introduce `h0`. Establish `: b = 0` using `by exact_mod_cast h0`. Conclude with `nonZeroDivisors.ne_zero hb this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hgen : ∀ v ∈ S, ∀ j, IsIntegralElt ((b : K) * v j)`. Introduce `v hv j`. Take `⟨z, hz⟩` from `hbint (v j) (Finset.mem_biUnion.mpr ⟨v, hv, Finset.mem_image_of_mem _ (Finset.mem_univ j)⟩)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Use `show algebraMap (𝓞 K) K z = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hz, Algebra.smul_def]`. Establish `hall : ∀ w ∈ L, ∀ j, IsIntegralElt ((b : K) * w j)`. Introduce `w hw`. Rewrite `hw` using `[← hS]`. Proceed by induction on `hw using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `mem v hv => exact hgen v hv`. Consider the case `zero => intro j; exact ⟨0, by simp⟩`. Consider the case `add v w _ _ hv hw`. Introduce `j`. Take `⟨z1, hz1⟩` from `hv j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z2, hz2⟩` from `hw j`. Use `⟨z1 + z2, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[Pi.add_apply, mul_add]`. Conclude with `congrArg₂ (· + ·) hz1 hz2`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Consider the case `smul a v _ hv`. Introduce `j`. Take `⟨z, hz⟩` from `hv j`. Use `⟨a * z, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hall _ (hline ((2 * (b : K) * x i)⁻¹)) i`. Apply `half_not_integral (K := K)` to reduce the goal to its premises.
-
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem no_line {K : Type} [Field K] [NumberField K] {r : ℕ} (L : Submodule (𝓞 K) (Fin r → K))
     (hL : L.FG) (x : Fin r → K) (hx : x ≠ 0) (hline : ∀ t : K, t • x ∈ L) : False := by
@@ -100,7 +98,7 @@ theorem no_line {K : Type} [Field K] [NumberField K] {r : ℕ} (L : Submodule (�
   field_simp
 
 /- English proof (translation)
-Rewrite using `[HermForm.h, HermForm.h, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -114,17 +112,17 @@ theorem hermForm_smul_left {K : Type} [Field K] [NumberField K] {r : ℕ} (S : H
   ring
 
 /- English proof (translation)
-Introduce `hdet`. Establish `hdetT : S.Gᵀ.det = 0` using `by rw [Matrix.det_transpose]; exact hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdetT`. Establish `hw0 : (fun a => S.c (v a)) ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `h1` using `congrArg S.c (congrFun h a)`. Simplify `h1` using `[S.c_invol]`. Establish `hzero : ∀ y, S.h (fun a => S.c (v a)) y = 0`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `y`. Simplify using `only [HermForm.h, S.c_invol]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb` using `congrFun hv b`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Pi.zero_apply] at hb`. Rewrite using `[← Finset.sum_mul]`. Establish `h2 : ∑ a, v a * S.G a b = 0`. Rewrite using `[← hb]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun a _ => mul_comm _ _)`. Rewrite using `[h2, zero_mul]`. Apply `no_line L hL.1 _ hw0` to reduce the goal to its premises. Introduce `t`. Apply `hSD.2` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y _`. Rewrite using `[hermForm_smul_left, hzero, mul_zero]`. Conclude with `⟨0, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem detG_ne_zero {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (L : Submodule (𝓞 K) (Fin r → K)) (hL : IsLattice L) (hSD : IsSelfDual S L) :

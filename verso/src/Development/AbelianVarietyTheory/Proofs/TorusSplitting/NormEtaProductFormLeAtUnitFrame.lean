@@ -34,11 +34,11 @@ namespace GlobalTheory.EtaAn.ArchPt
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨-, -, -, hL, hact, -⟩` from `hT`. Introduce `x hx`. Take `⟨u, rfl⟩` from `(hL x).1 hx`. Take `⟨cf, v, rfl⟩` from `ha u`. Use `⟨cf, ψ (Pm ((R ^ 3) • v)), (hL _).2 ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, map_add, map_sum, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← hact]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Conclude with `hP.1 _ _ _`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← map_nsmul ψ, ← map_nsmul Pm, smul_smul, ← pow_succ']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_mod {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pm : D.La →+ (Fin g → ℂ)}
     {Hm : Matrix (Fin g) (Fin g) ℂ} {T : I2.PT E} {ψ : (Fin g → ℂ) ≃ₗ[ℂ] I2.Vsp T.dim}
@@ -60,7 +60,7 @@ theorem gen_mod {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pm : D.L
   · rw [Nat.cast_smul_eq_nsmul, ← map_nsmul ψ, ← map_nsmul Pm, smul_smul, ← pow_succ']
 
 /- English proof (translation)
-Use `haveI : _root_.IsReduced (CAt σ) := inferInstanceAs (_root_.IsReduced ℂ)`. Establish `h₁` using `(GlobalTheory.T.etaProductRule_value_eq_productForm_of_testRing E H Dw l Xo c R hR J n cf xs f hf (CAt σ) y (hA _ y)).1`. Establish `h₂ : EtaValAt Xo c R cf xs y (etaExpr (R ^ 4) cf xs w)` using `⟨CAt σ, inferInstance, inferInstance, AlgHom.id c.F _, y, ev, w, RingHom.FaithfullyFlat.of_bijective Function.bijective_id, GlobalTheory.FramedBaseChange.refl y, hev, hw, rfl⟩`. Conclude with `((GlobalTheory.EtaForm.etaValAt_existsUnique_natural GlobalTheory.firstFiveLaws.1 E H Dw l Xo c R hR J n cf xs).1 _ y).unique h₁ h₂`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evR_eq {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} (hA : AllTest Xo c)
     {R : ℕ} (hR : Odd R) {J : Type} [Fintype J] {n : ℕ} {cf : J → ℤ} {xs : J → Fin n → LatMod Dw (R ^ 4)}
@@ -80,31 +80,27 @@ end GlobalTheory.EtaAn.ArchPt
 namespace GlobalTheory.EtaAn
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU hA R i N hR h1R hcard hN J _ cf xs f hJ hcf hsp hf DF q m R0 hrun hm k x hx`. Take `⟨Uw⟩` from `GlobalTheory.ArcQ.nonempty_unfWit_of_isUnf E H Dw l Xo c σ r U hU`. Take `⟨Hm, χl, fr, θ, Fd, a₁, a₂, a₃, a₄, a₅, a₆, a₇, a₈, a₉, hFd, hl2⟩` from `Uw.norm k x hx`. Establish `hy : (U.un k x).x = Uw.F.u (Uw.ik k) (Uw.Pm k x)` using `(Uw.lie k x).1`. Establish `hP` using `Uw.period k x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfn : IsFnOf Uw.F (Uw.ik k) (Uw.Pm k x) fr (U.un k x).x (U.un k x).s θ` using `a₉`. Establish `hAH : AHFrame Uw.F (Uw.ik k) (Uw.Pm k x) Hm χl fr` using `⟨a₁, a₂, a₃, a₄, a₅, a₆, fun j hj => by rw [← hy]; exact a₇ j hj, a₈⟩`. Establish `hty` using `(GlobalTheory.T.relabelling_goodEmbedding_isTypeFn E H Dw l Xo c σ hσ).2.2 Uw.g Uw.e`. Establish `hty' : IsTypeFn H (Uw.F.Di (Uw.ik k)).p (Uw.F.Di (Uw.ik k)).q (fun j => relab c σ (Uw.e j).1)`. Rewrite using `[(Uw.F.sig _).1, (Uw.F.sig _).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hty`. Take `⟨T, ψ, hT⟩` from `GlobalTheory.T.exists_torus_of_period_hermitian E H _ _ _ _ Hm hty' hP a₁ a₂ a₃`. Take `⟨-, hr, hph, hdim⟩` from `GlobalTheory.T.periodTorus_isTorusAt_frame E H Dw l Xo c σ r U hσ hU Uw k x Hm T ψ ⟨a₁, a₂, a₃⟩ hT`. Establish `hhol : Differentiable ℂ θ ∧ ∀ a z, θ (z + Uw.Pm k x a) = χl (Uw.Pm k x a) * Complex.exp (Real.pi * hermForm Hm z (Uw.Pm k x a) + Real.pi / 2 * hermForm Hm (Uw.Pm k x a) (Uw.Pm k x a)) * θ z`. Establish `key : ∀ (x₀ : Sp ℂ ⟶ Xo.X) (s : LB.Sec (PPx x₀)), x₀ = Uw.F.u (Uw.ik k) (Uw.Pm k x) → IsFnOf Uw.F (Uw.ik k) (Uw.Pm k x) fr x₀ s θ → Differentiable ℂ θ ∧ ∀ a z, θ (z + Uw.Pm k x a) = χl (Uw.Pm k x a) * Complex.exp (Real.pi * hermForm Hm z (Uw.Pm k x a) + Real.pi / 2 * hermForm Hm …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x₀ s h₀ hs`. Substitute `h₀` using the available equality. Conclude with `GlobalTheory.T.appellHumbert_section_entire_with_factor E H Dw l Xo _ _ _ Uw.F (Uw.ik k) (Uw.Pm k x) Hm χl fr hP hAH s θ hs`. Conclude with `key _ _ hy hfn`. Establish `hchi` using `GlobalTheory.T.ahFrame_factor_eq_negOnePow_riemannForm E H Dw l Xo _ _ _ Uw.F (Uw.ik k) (Uw.Pm k x) Hm χl fr hP hAH`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hsec, hl2', hpt⟩` from `GlobalTheory.T.theta_function_torus_l2_norm E H _ _ _ _ Hm T ψ θ Fd hT hhol.1 (fun a z => by rw [hhol.2 a z, hchi a]) hFd`. Rewrite `hl2'` using `[hl2]`. Establish `hR4 : 0 < R ^ 4` using `pow_pos hR.pos 4`. Take `⟨ev, hev⟩ : ∃ ev, IsFullLev Xo (R ^ 4) (U.un k x).x ev` from `(GlobalTheory.fullLevel_cover_baseChange_torsor GlobalTheory.firstFiveLaws.1 E H Dw l Xo (R ^ 4) hR4).2.2.2 ℂ (U.un k x).x`. Take `⟨a, ha, hgen⟩` from `GlobalTheory.T.fullLinearLevel_eq_exp_periods_complexPoint E H Dw l Xo c σ _ _ Uw.F (Uw.ik k) (Uw.Pm k x) (U.un k x) hP hy (R ^ 4) hR4 ev hev`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR2 : Odd (R ^ 2)` using `hR.pow`. Establish `htors : ∀ q, ev q ^ ((R ^ 2) ^ 2) = 1` using `fun q => by rw [← pow_mul]; exact (ha q).2`. Use `choose w hw using fun q => ((GlobalTheory.nullValue_existsUnique_natural_linear GlobalTheory.firstFiveLaws.1 E H Dw l Xo c (R ^ 2) hR2).1 _ (U.un k x) (ev q) (htors q)).exists`. Establish `hR0 : (R : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hR.pos.ne'`. Set `z : LatMod Dw (R ^ 4) → (Fin Uw.g → ℂ)` to `fun q => ((R ^ 2 : ℕ) : ℂ) • ((R ^ 4 : ℕ) : ℂ)⁻¹ • Uw.Pm k x (a q)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `hz : ∀ q, ((R : ℂ) ^ 2) • ψ (z q) = ψ (Uw.Pm k x (a q))` using `fun q => by`. Rewrite using `[← map_smul]`. Use `congr 1`. Simplify using `only [z, smul_smul]`. Establish `: (R : ℂ) ^ 2 * (((R ^ 2 : ℕ) : ℂ) * ((R ^ 4 : ℕ) : ℂ)⁻¹) = 1`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, one_smul]`. Establish `hwn : ∀ q, ‖toC (w q)‖ = Real.sqrt (T.ptN2 1 (fun v : Fin 1 → I2.Vsp T.dim => θ (ψ.symm (v 0))) (fun _ => ψ (z q)))` using `fun q => by`. Rewrite using `[hpt]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `GlobalTheory.T.norm_nullVal_eq_norm_theta_alt E H Dw l Xo c σ _ _ Uw.F (Uw.ik k) (Uw.Pm k x) Hm χl fr θ (U.un k x) hP hAH hy hfn (R ^ 2) hR2 (ev q) _ (w q) (htors q) (ha q).1 (hw q)`. Use `haveI : Finite (LevGrp Dw (R ^ 4)) := (GlobalTheory.EtaCard.card_levGrp_and_span E H Dw R h1R).1`. Use `haveI := Fintype.ofFinite (LevGrp Dw (R ^ 4))`. Establish `hval : rdU U f k x.1 = ∏ g : LevGrp Dw (R ^ 4), ∑ j, (cf j : ℂ) * ∏ b, toC (w (g (xs j b)))`. Establish `e₁ : rdU U f k x.1 = toC (evR Xo c f (U.un k x))` using `dif_pos x.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, ArchPt.evR_eq hA hR hf (U.un k x) ev w hev hw, etaExpr, finprod_eq_prod_of_fintype]`. Both sides reduce to the same expression. Take `⟨P, hq, hR0', hm'⟩` from `hrun T hr (hdim m hm)`. Rewrite using `[hval, ← hph, ← hq, ← hR0', ← hm']`. Establish `hspan : ∀ (g : LevGrp Dw (R ^ 4)) j, Submodule.span (𝓞 E) (Set.range fun b => g (xs j b)) = ⊤` using `fun g j => by`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (Set.range fun b => g (xs j b)) = g.toLinearMap '' Set.range (xs j)`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, ← Submodule.map_span, hsp j, Submodule.map_top, LinearEquiv.range]`. Establish `hgen' : ∀ (g : LevGrp Dw (R ^ 4)) j, ∀ v ∈ T.L, ∃ c : Fin r → 𝓞 E, ∃ y ∈ T.L, v = ∑ b, I2.act (c b) (((R : ℂ) ^ 2) • ψ (z (g (xs j b)))) + (R : ℂ) • y` using `fun g j => by`.
-
-Simplify using `only [hz]`. Conclude with `ArchPt.gen_mod hP hT R (fun b => a (g (xs j b))) (hgen r _ (hspan g j))`. Establish `hmem : ∀ q, ((R : ℂ) ^ 2) • ψ (z q) ∈ T.L` using `fun q => by`. Rewrite using `[hz]`. Conclude with `(hT.2.2.2.1 _).2 ⟨_, rfl⟩`.
-
-Establish `key : ∀ (r : ℕ), T.r = r → Fintype.card J ≤ R ^ (2 * I2.PT.f E * r ^ 2) → ∀ (w : LevGrp Dw (R ^ 4) → J → Fin r → ℂ) (a : LevGrp Dw (R ^ 4) → J → Fin r → I2.Vsp T.dim), (∀ g j b, ((R : ℂ) ^ 2) • a g j b ∈ T.L) → (∀ g j, ∀ x ∈ T.L, ∃ c : Fin r → 𝓞 E, ∃ y ∈ T.L, x = ∑ b, I2.act (c b …` using `E) P.q P.R0) - p16 E r P.q P.m R N)) := by`. Introduce `r' hr' hJ' w' a'`. Substitute `hr'` using the available equality. Conclude with `GlobalTheory.T.norm_prod_sum_theta_le_exp_torus E T DF P R i N h1R hN _ hsec hl2' (LevGrp Dw (R ^ 4)) J (by rw [← Nat.card_eq_fintype_card, hcard]) hJ' cf w' a' hcf`. Conclude with `key r hr hJ (fun g j b => toC (w (g (xs j b)))) (fun g j b => ψ (z (g (xs j b)))) (fun g j b => hmem _) hgen' (fun g j b => hwn _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem norm_productForm_le_at_unit_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → AllTest Xo c → ∀ (R i N : ℕ), Odd R → 1 < R → Nat.card (LevGrp Dw (R ^ 4)) = 2 * R ^ 4 * i → 1 ≤ N → ∀ (J : Type) [Fintype J] (cf : J → ℤ) (xs : J → Fin r → LatMod Dw (R ^ 4)) (f : Rul Xo c), Fintype.card J ≤ R ^ (2 * I2.PT.f E * r ^ 2) → (∀ j, |cf j| ≤ N) → Spans xs → IsEtaRule Xo c R cf xs f → ∀ (DF q m : ℕ) (R0 : ℝ), RunOK E r DF q R0 m → (Dw.p ≤ m ∨ Dw.q ≤ m) → ∀ (k : U.Comp) (x : (U.X k).dom), (∀ τ i, ‖dmin (U.X k).Gm x.1 τ i‖ = 1) → ‖rdU U f k x.1‖ ≤ Real.exp (-(i : ℝ) * (I2.phiFD (U.X k) (I2.th (E := E) q R0) x.1 - p16 E r q m R N)) := by
   intro E _ _ _ H Dw l Xo c σ r U hσ hU hA R i N hR h1R hcard hN J _ cf xs f hJ hcf hsp hf DF q m R0 hrun hm k x hx

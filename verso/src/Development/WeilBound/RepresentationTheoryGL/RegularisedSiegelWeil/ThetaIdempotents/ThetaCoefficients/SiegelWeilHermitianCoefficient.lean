@@ -11,15 +11,15 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory.CompanionTheory.SiegelND.Coef
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ n hM ψ hψ dx hdx db hdb T N Φ hΦ`. Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, ht, -, hB, -, hG⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)`. Use `haveI := hB n M`. Take `⟨hψc, hψn, -⟩` from `id hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hstar : ∀ b, starN σ J ψ dx (fun X => ∑ i, Φ i X) b = ∑ i, starN σ J ψ dx (Φ i) b`. Introduce `b`. Unfold `starN`. Repeatedly rewrite using `[Finset.sum_mul]`. Use `integral_finset_sum _ fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hc, hi⟩` from `GlobalTheory.CompanionTheory.SiegelND.CoefSum.continuous_integrable_tuple σ hCM M n dx hdx.1 (Φ i) (hΦ i)`. Establish `hq : Continuous fun X : Fin n → Fin M → AF F ⊗[F] E => algebraMap F (AF F) (1 / 2) * Algebra.trace (AF F) (AF F ⊗[F] E) (Matrix.trace ((b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) * gramR (AF F) σ J X))` using `continuous_const.mul (ht.comp (continuous_const.matrix_mul (hG n M J)).matrix_trace)`. Use `hi.norm.mono' (hc.mul (hψc.comp hq)).aestronglyMeasurable ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hψn, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `coefN`. Repeatedly rewrite using `[hstar, Finset.sum_mul]`. Use `integral_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Establish `hI` using `GlobalTheory.T.siegel_weil_convergent_range F E σ hCM M J hJ n hM ψ hψ dx hdx db hdb (Φ i) (hΦ i)`. Establish `hc : Continuous fun b : HermR (AF F) σ n => ψ (-(algebraMap F (AF F) (1 / 2) * Algebra.trace (AF F) (AF F ⊗[F] E) (Matrix.trace (T.map (inclR (AF F)) * (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E))))))` using `hψc.comp (continuous_const.mul (ht.comp (continuous_const.matrix_mul continuous_subtype_val).matrix_trace)).neg`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : BorelSpace (HermR (AF F) σ n) := ⟨rfl⟩`. Use `hI.norm.mono' (hI.1.mul hc.aestronglyMeasurable) ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun b => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hψn, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefN_finset_sum_all : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (n : ℕ), 2 * n < M → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ dx : Measure (Fin n → Fin M → AF F ⊗[F] E), SdW F E σ M J (AF F) ψ n dx → ∀ db : Measure (HermR (AF F) σ n), SdHerm F E σ (AF F) ψ n db → ∀ (T : Matrix (Fin n) (Fin n) E) (N : ℕ) (Φ : Fin N → (Fin n → Fin M → AF F ⊗[F] E) → ℂ), (∀ i, IsSchwartzBruhat (Φ i)) → coefN σ J ψ dx db (fun X => ∑ i, Φ i X) T = ∑ i, coefN σ J ψ dx db (Φ i) T := by
   intro F E _ _ _ _ _ σ hCM M J hJ n hM ψ hψ dx hdx db hdb T N Φ hΦ

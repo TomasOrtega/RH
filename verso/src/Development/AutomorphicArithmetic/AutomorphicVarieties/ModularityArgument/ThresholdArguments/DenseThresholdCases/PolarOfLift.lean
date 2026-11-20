@@ -18,7 +18,7 @@ open UpperTheory.Zero.LLC UpperTheory.V.Z.Win UpperTheory.V.Z.Kato UpperTheory.V
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.V.Z.Kato.WeilSphericalRecords
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hr.1, fun _ _ _ => trivial, fun W hW hi => hr.2.2 W hW fun g v hv => by obtain ⟨g', e⟩ := h g rw [e] exact hi g' v hv⟩`.
+Supply the required witnesses or components.
 -/
 private theorem isIrr_comp {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {n : ℕ} {r : Γ →* GL (Fin n) k} {φ : Γ' →* Γ}
     (h : ∀ g, ∃ g', r g = r (φ g')) (hr : IsIrr r) : IsIrr (r.comp φ) :=
@@ -27,9 +27,9 @@ private theorem isIrr_comp {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {n
     rw [e]
     exact hi g' v hv⟩
 /- English proof (translation)
-Take `⟨δ, -, -, ⟨ha, hb⟩, -⟩` from `UpperTheory.exists_quadratic_sign_character ℚ K Ω l hK`. Distinguish the cases in `hg : δ g = 1`. Take `⟨g', rfl⟩` from `(ha g).1 hg`. Conclude with `⟨g', rfl⟩`. Establish `e : δ (g * s) = 1`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[map_mul, (hb g).resolve_left hg, (hb s).resolve_left (mt (ha s).1 hs)]`. Simplify using the standard rewrite rules. Take `⟨g', e'⟩` from `(ha _).1 e`. Conclude with `⟨g', by rw [e', map_mul, h1, mul_one]⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem range_of_sign {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra ℚ Ω] [Algebra K Ω] [IsScalarTower ℚ K Ω]
     [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (hK : Module.finrank ℚ K = 2) {H : Type} [Group H] {r : G ℚ Ω →* H} {s : G ℚ Ω}
@@ -44,9 +44,9 @@ private theorem range_of_sign {K Ω : Type} [Field K] [NumberField K] [Field Ω]
     obtain ⟨g', e'⟩ := (ha _).1 e
     exact ⟨g', by rw [e', map_mul, h1, mul_one]⟩
 /- English proof (translation)
-Use `⟨⟨!![0, 1; -1, 0], !![0, -1; 1, 0], ?_, ?_⟩, fun s => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_fin_two]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_fin_two]`. Establish `e : (r s : Matrix (Fin 2) (Fin 2) k) = !![(r s : Matrix (Fin 2) (Fin 2) k) 0 0, (r s : Matrix (Fin 2) (Fin 2) k) 0 1; (r s : Matrix (Fin 2) (Fin 2) k) 1 0, (r s : Matrix (Fin 2) (Fin 2) k) 1 1]` using `Matrix.eta_fin_two _`. Simplify using `only [MonoidHom.comp_apply, Matrix.GeneralLinearGroup.val_det_apply, Matrix.coe_units_inv]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Matrix.det_fin_two_of]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dualTw_det {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin 2) k) :
     DualTw r (Matrix.GeneralLinearGroup.det.comp r) := by
@@ -59,15 +59,13 @@ private theorem dualTw_det {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (F
     rw [e, Matrix.det_fin_two_of]
     ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 /- English proof (translation)
-Use `haveI : IsScalarTower ℚ (maximalRealSubfield K) Ω := IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Use `haveI : IsAlgClosure (maximalRealSubfield K) Ω := ⟨IsAlgClosure.isAlgClosed K, Algebra.IsAlgebraic.trans (maximalRealSubfield K) K Ω⟩`. Establish `hθ' : IsCycWt l (wt + (((2 : ℕ) : ℤ) - 1)) (θ.comp (Bc.res ℚ Ω (maximalRealSubfield K)) * cycBar (maximalRealSubfield K) Ω l ^ (((2 : ℕ) : ℤ) - 1))`. Take `⟨M, χ, hM, hχ, rfl⟩` from `hθ`. Use `⟨M, χ.comp (Bc.res ℚ Ω (maximalRealSubfield K)), hM, fun s hs => hχ _ hs, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[zpow_add, mul_right_comm]`. Both sides reduce to the same expression. Take `⟨hc, χ, art, a, ha⟩` from `UpperTheory.exists_algebraic_heckeChar_cyclotomic hP.litN.aut.art _ Ω l ι _ _ hθ'`. Establish `hL : IsLAdicCharOf ι χ _` using `⟨hc, art, a, ha⟩`. Take `⟨χ', μ', hL', hN, hres, hs⟩` from `UpperTheory.heckeChar_sign_fixed K Ω hK l ι χ _ hL 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hres' : μ'.comp (Bc.res (maximalRealSubfield K) Ω K) = θ.comp (Bc.res ℚ Ω K) * cycBar K Ω l ^ (((2 : ℕ) : ℤ) - 1)` using `hres.trans rfl`. Use `⟨χ', hs, UpperTheory.polOfSat_of_thetaSat UpperTheory.theta_satake_parameters_inverse hP.litN.aut.js.1 hP.litN.aut.gk K 2 one_le_two Q _ ?_⟩` and prove the remaining obligations. Establish `hd' : DualTw (r.comp (Bc.res ℚ Ω K)) (θ.comp (Bc.res ℚ Ω K))` using `let ⟨Q, hQ⟩ := hd`. Use the proof step `⟨Q, fun s => hQ _⟩`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Establish `hl : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ((l : ℕ) : 𝓞 K) ∉ v.asIdeal` using `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Use `filter_upwards [Bc.normGal K Ω l ι χ' μ' hL', Br.bcConj0 ℚ K 2 π Q hBC, hC.2, hl] with w ⟨hu, he⟩ ⟨B, hB, hB'⟩ ⟨B₁, hB₁, hF⟩ hw`. Take `rfl` from `hB.unique hB₁`.
-
-Rewrite `he` using `[hres']`. Conclude with `⟨hu, B, B, hB, hB', UpperTheory.frobenius_eigenvalues_dual K Ω l ι 2 _ _ hd' w hw B _ hF he⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem polar_of_lift (hP : _root_.UpperTheory.V.Af.Hypotheses') {K Ω : Type} [Field K] [NumberField K] [IsCMField K] (hK : Module.finrank ℚ K = 2)
     {l : ℕ} [Fact l.Prime] [Field Ω] [Algebra ℚ Ω] [Algebra K Ω] [IsScalarTower ℚ K Ω] [IsAlgClosure K Ω]
@@ -100,14 +98,14 @@ private theorem polar_of_lift (hP : _root_.UpperTheory.V.Af.Hypotheses') {K Ω :
   rw [hres'] at he
   exact ⟨hu, B, B, hB, hB', UpperTheory.frobenius_eigenvalues_dual K Ω l ι 2 _ _ hd' w hw B _ hF he⟩
 /- English proof (translation)
-Rewrite using `[Formalism.UG.qV]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem qV_eq {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) : Formalism.UG.qV E w = Ideal.absNorm w.asIdeal := by
   rw [Formalism.UG.qV]
 /- English proof (translation)
-Establish `hN : Ideal.absNorm (Ideal.span {((l : ℕ) : 𝓞 ℚ)}) = l`. Rewrite using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank, Module.finrank_self, pow_one]`. Establish `hd : Ideal.absNorm v.asIdeal ∣ l` using `hN ▸ Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hv)`. Use `((Nat.dvd_prime hp).1 hd).resolve_left ?_` and prove the remaining obligations. Rewrite using `[Ideal.absNorm_eq_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `v.isPrime.ne_top`.
+A detailed English derivation is pending.
 -/
 private theorem absNorm_rat {l : ℕ} (hp : l.Prime) (v : HeightOneSpectrum (𝓞 ℚ)) (hv : ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal) :
     Ideal.absNorm v.asIdeal = l := by
@@ -119,13 +117,13 @@ private theorem absNorm_rat {l : ℕ} (hp : l.Prime) (v : HeightOneSpectrum (�
   rw [Ideal.absNorm_eq_one_iff]
   exact v.isPrime.ne_top
 /- English proof (translation)
-Take `⟨⟨σ, hσ⟩, hiso⟩` from `_root_.UpperTheory.V.Af.local_comp_real_of_printed_results hP ℚ 2 π v`. Take `⟨⟨σ', hσ'⟩, hiso'⟩` from `_root_.UpperTheory.V.Af.local_comp_complex_of_printed_results hP K 2 Q w`. Establish `hc` using `hi.1`. Take `⟨e, he⟩` from `hBC.split v w i hi.1 hi.2 σ σ' hσ hσ'`. Establish `c1` using `(_root_.UpperTheory.V.Af.satake_local_of_printed_results hP ℚ 2 v σ).2 _ π.finPart (hiso σ hσ) B`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `c2` using `(_root_.UpperTheory.V.Af.satake_local_of_printed_results hP K 2 w σ').2 _ Q.finPart (hiso' σ' hσ') B`. Establish `hq : Formalism.UG.qV K w = Formalism.UG.qV ℚ v`. Rewrite using `[qV_eq, qV_eq, GlobalTheory.LiftAbsPow.absNorm_eq i hc]`. Use `⟨fun hB => (CG.hasSat_mk _ _ _).2 (c2.2 (GlobalTheory.IsoPull.hasSatGL_of_ringEquiv i (GlobalTheory.LiftAbsPow.v_map_eq i hc) hq e (fun g x => (he g x).symm) (c1.1 hB))), fun hB => c1.2 ?_⟩` and prove the remaining obligations. Use `GlobalTheory.IsoPull.hasSatGL_of_ringEquiv i.symm (fun y => ?_) hq.symm e.symm (fun g x => ?_) (c2.1 ((CG.hasSat_mk _ _ _).1 hB))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.LiftAbsPow.v_map_eq i hc (i.symm y)` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `this.symm`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, he, LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Conclude with `(Units.ext (Matrix.ext fun _ _ => (i.apply_symm_apply _)) : Matrix.GeneralLinearGroup.map i.toRingHom (Matrix.GeneralLinearGroup.map i.symm.toRingHom g) = g)`.
+A detailed English derivation is pending.
 -/
 private theorem sat_iff (hP : _root_.UpperTheory.V.Af.Hypotheses') {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] [Algebra ℚ K]
     (π : TR.CuspSub ℚ 2) (Q : CuspSub K 2) (hBC : IsBC π Q) (v : HeightOneSpectrum (𝓞 ℚ)) (w : HeightOneSpectrum (𝓞 K))
@@ -152,15 +150,15 @@ private theorem sat_iff (hP : _root_.UpperTheory.V.Af.Hypotheses') {K : Type} [F
       Matrix.GeneralLinearGroup.map i.toRingHom (Matrix.GeneralLinearGroup.map i.symm.toRingHom g) = g)
 end UpperTheory.V.Z.Kato.WeilSphericalRecords
 /- English proof (translation)
-Introduce `hP hQ l _ hl Ω _ _ _ ι V π hr hirr ⟨M, hM, hk⟩ hreg hatt v A hlv hv`. Establish `hθ : IsCycWt l 0 (GlobalTheory.Ord2.dt V)` using `⟨M, _, hM, hk, by rw [zpow_zero, one_mul]⟩`. Establish `hd : DualTw V (GlobalTheory.Ord2.dt V)` using `dualTw_det V`. Take `⟨K, _, _, _, _, _, _, hK, hemb, v₀, A₀, ⟨B₀, -, hB₀⟩, hA₀, s, hs, hs'⟩` from `Cq.exQuad Ω l hl _ hatt.2`. Establish `hI : IsIrr (V.comp (AlgEquiv.restrictScalarsHom ℚ : G K Ω →* G ℚ Ω))` using `isIrr_comp (range_of_sign l hK hs' ((hB₀ A₀ hA₀).1 s hs)) hirr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Q, hBC⟩` from `(hQ ℚ K hK π hreg).resolve_left fun ⟨η, hη, ht⟩ => _root_.UpperTheory.V.Af.Bc.noTwist_of_prints hP ℚ K Ω l ι hK 2 V π hr hatt hI η hη ht`. Establish `hBC0` using `(Br.IsBCw.of_isBC hBC).toIsBC0`. Establish `hC` using `Br.bcAtt0 ℚ K Ω l ι 2 V π Q hBC0`. Establish `hA : AttC ι (V.comp (AlgEquiv.restrictScalarsHom ℚ : G K Ω →* G ℚ Ω)) Q` using `hC.2 hatt ((Bc.irrBasic.1 _ Unit _ 2 _).2.1 hI)`. Take `⟨O, _, _, _, Bw, hj⟩` from `exists_bridge (l := l) hv hlv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hjK : ∀ x : K, Bw.j (algebraMap K Ω x) ∈ Bw.Kw.1` using `fun x => by`. Take `⟨y, hy⟩` from `Cq.embPadic K hK l hemb (Bw.j.comp (algebraMap K Ω)) x`. Conclude with `(hy ▸ Bw.Kw.1.algebraMap_mem y :)`. Take `⟨w, hw, i, hi⟩` from `Cq.exPlaceIso ℚ K Ω l A v hv O Bw hj hjK`. Use `⟨K, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, Q, w, hK, hI, hC.1 hreg, polar_of_lift hP hK ι V 0 _ π Q hBC0 hA hθ hd, hA, hw, ?_, ?_, ?_, fun B => sat_iff hP π Q hBC v w i ⟨hi.cont, hi.loc⟩ B⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `(hv ((l : ℕ) : 𝓞 ℚ)).2 hlv`. Use `(hw ((l : ℕ) : 𝓞 K)).1 ?_` and prove the remaining obligations. Simplify using `using h1`. Rewrite using `[← GlobalTheory.LiftAbsPow.absNorm_eq_normV, ← GlobalTheory.LiftAbsPow.absNorm_eq i hi.cont]`. Conclude with `absNorm_rat Fact.out v hlv`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g hg x`. Apply `Bw.j.injective` to reduce the goal to its premises. Use `Bw.e_comm ⟨g, hg⟩ (algebraMap K Ω x)` as an intermediate fact. Rewrite using `[← this]`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 (Bw.e ⟨g, hg⟩).2 _ (hjK x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.WeilSphericalRecords.base_change_split_of_printed_quad_bc :
     _root_.UpperTheory.V.Af.Hypotheses' → Z.Bc.QuadBC2 → BcSplit := by

@@ -21,7 +21,7 @@ def IsCocycleOf (ρ' : Representation LL G W) (i : V →ₗ[LL] W) (p : W →ₗ
   ∃ e : W, p e = 1 ∧ ∀ g, ρ' g e = e + i (c g)
 
 /- English proof (translation)
-Take `⟨-, hex, hs, -, hp⟩` from `h`. Take `⟨e, he⟩` from `hs 1`. Establish `: ∀ g, ∃ x, i x = ρ' g e - e` using `fun g => (hex _).mp (by rw [map_sub, hp, sub_self])`. Use `choose c hc using this`. Conclude with `⟨c, e, he, fun g => by rw [hc]; abel⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsExt.exists_cocycle {ρ : Representation LL G V} {ρ' : Representation LL G W} {i : V →ₗ[LL] W}
     {p : W →ₗ[LL] LL} (h : IsExt ρ ρ' i p) : ∃ c : G → V, IsCocycleOf ρ' i p c := by
@@ -32,9 +32,9 @@ theorem IsExt.exists_cocycle {ρ : Representation LL G V} {ρ' : Representation 
   exact ⟨c, e, he, fun g => by rw [hc]; abel⟩
 
 /- English proof (translation)
-Take `⟨e, -, he⟩` from `hc`. Apply `h.1` to reduce the goal to its premises. Establish `h1` using `he (g * k)`. Rewrite `h1` using `[map_mul, Module.End.mul_apply, he k, map_add, he g, ← h.2.2.2.1, add_assoc]`. Rewrite using `[map_add]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(add_left_cancel h1).symm`.
+A detailed English derivation is pending.
 -/
 theorem IsExt.cocycle_mul {ρ : Representation LL G V} {ρ' : Representation LL G W} {i : V →ₗ[LL] W}
     {p : W →ₗ[LL] LL} (h : IsExt ρ ρ' i p) {c : G → V} (hc : IsCocycleOf ρ' i p c) (g k : G) :
@@ -47,9 +47,9 @@ theorem IsExt.cocycle_mul {ρ : Representation LL G V} {ρ' : Representation LL 
   exact (add_left_cancel h1).symm
 
 /- English proof (translation)
-Take `⟨e, h1, he⟩` from `hc`. Take `⟨e', h1', he'⟩` from `hc'`. Take `⟨x, hx⟩` from `(h.2.1 (e - e')).mp (by rw [map_sub, h1, h1', sub_self])`. Use `⟨x, funext fun g => h.1 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `i (ρ g x - x) = i (c g - c' g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_sub, map_sub, h.2.2.2.1, hx, map_sub, he, he']`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem IsExt.cocycle_sub_mem_coboundaries {ρ : Representation LL G V} {ρ' : Representation LL G W} {i : V →ₗ[LL] W}
     {p : W →ₗ[LL] LL} (h : IsExt ρ ρ' i p) {c c' : G → V} (hc : IsCocycleOf ρ' i p c)
@@ -76,7 +76,7 @@ def extRep (ρ : Representation LL G V) (c : ↥(continuousCocycles ρ)) : Repre
     abel
 
 /- English proof (translation)
-Use `⟨⟨LinearMap.inl_injective, Function.Exact.inl_snd, LinearMap.snd_surjective, fun g x => ?_, fun _ _ => rfl⟩, (0, 1), rfl, fun g => ?_⟩` and prove the remaining obligations. Simplify using `[extRep]`. Simplify using `[extRep]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem extRep_isExt (ρ : Representation LL G V) (c : ↥(continuousCocycles ρ)) :
     IsExt ρ (extRep ρ c) (LinearMap.inl LL V LL) (LinearMap.snd LL V LL) ∧
@@ -103,9 +103,9 @@ def H1fSubmodule {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScal
   ((finiteCocycles PD ρ).comap (continuousCocycles ρ).subtype).map (Submodule.mkQ _)
 
 /- English proof (translation)
-Use `⟨?_, fun h => ⟨c, h, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨c', ⟨-, x, hx⟩, h⟩`. Take `⟨b, hb⟩` from `(Submodule.Quotient.eq _).mp h`. Use `⟨c.2, x - b ⊗ₜ[Qp] (1 : B), fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : ρ g b - b = (c' : G → V) g - (c : G → V) g` using `congrFun hb g`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (c : G → V) g = (c' : G → V) g - (ρ g b - b)` using `by rw [h1]; abel`. Establish `h3 : actVB PD ρ g (b ⊗ₜ[Qp] (1 : B)) = ρ g b ⊗ₜ[Qp] (1 : B)` using `by simp [actVB]`. Establish `h4 : (c' : G → V) g ⊗ₜ[Qp] (1 : B) = actVB PD ρ g x - x` using `hx g`. Rewrite using `[h2, sub_tmul, sub_tmul, h4, map_sub, h3]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem mk_mem_H1fSub {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V] (ρ : Representation LL G V)

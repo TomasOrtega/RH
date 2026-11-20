@@ -20,11 +20,11 @@ namespace BoxIndep
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Use `⟨F, inferInstance, inferInstance, fun i => i.elim0, ?_⟩` and prove the remaining obligations. Rewrite using `[linearIndependent_unique_iff]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ j ih`. Take `⟨B, _, _, em, h⟩` from `ih`. Use `⟨TensorProduct F O B, inferInstance, inferInstance, Fin.cons Algebra.TensorProduct.includeLeft (fun i => (Algebra.TensorProduct.includeRight).comp (em i)), ?_⟩` and prove the remaining obligations. Establish `h2` using `(hβ.tmul_of_isDomain h).comp (Fin.consEquiv (fun _ : Fin (j+1) => Fin m)).symm (Equiv.injective _)`. Use `(congrArg (fun v : (Fin (j + 1) → Fin m) → TensorProduct F O B => LinearIndependent F v) (funext fun a => ?_)).mpr h2` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, AlgHom.comp_apply, Function.comp_apply]`. Rewrite using `[← map_prod, Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_tensor_pow (F O : Type) [Field F] [CommRing O] [Algebra F O] {m : ℕ} (β : Fin m → O)
     (hβ : LinearIndependent F β) (j : ℕ) :
@@ -54,13 +54,13 @@ noncomputable def germOf {B : CommRingCat.{0}} (r : Z ⟶ Spec B) (z : Z) : B �
   (Z.presheaf.germ (r ⁻¹ᵁ ⊤) z trivial).hom.comp ((r.app ⊤).hom.comp (Scheme.ΓSpecIso B).inv.hom)
 
 /- English proof (translation)
-The claim follows from `(gs_eq r z ⊤ trivial _).symm`.
+A detailed English derivation is pending.
 -/
 theorem germOf_apply {B : CommRingCat.{0}} (r : Z ⟶ Spec B) (z : Z) (a : B) :
     germOf r z a = gs r z ⊤ ((Scheme.ΓSpecIso B).inv.hom a) := (gs_eq r z ⊤ trivial _).symm
 
 /- English proof (translation)
-Rewrite using `[germOf_apply, germOf_apply, ← gs_pull r (Spec.map φ) z ⊤ trivial]`. Establish `e` using `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality φ)`. Conclude with `congrArg (gs r z ⊤) e.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem germOf_map {B C : CommRingCat.{0}} (r : Z ⟶ Spec C) (φ : B ⟶ C) (z : Z) (a : B) :
     germOf (r ≫ Spec.map φ) z a = germOf r z (φ.hom a) := by
@@ -69,7 +69,7 @@ theorem germOf_map {B C : CommRingCat.{0}} (r : Z ⟶ Spec C) (φ : B ⟶ C) (z 
   exact congrArg (gs r z ⊤) e.symm
 
 /- English proof (translation)
-Apply `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso B).inv).1` to reduce the goal to its premises. Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Rewrite using `[map_zero, gs_zero _ _ _ hz]`. Conclude with `(germOf_apply _ _ _).symm.trans (h z)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_germOf {B : CommRingCat.{0}} (a : B) (h : ∀ z, germOf (𝟙 (Spec B)) z a = 0) : a = 0 := by
   apply (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso B).inv).1
@@ -78,7 +78,7 @@ theorem eq_zero_of_germOf {B : CommRingCat.{0}} (a : B) (h : ∀ z, germOf (𝟙
   exact (germOf_apply _ _ _).symm.trans (h z)
 
 /- English proof (translation)
-Establish `: X.fromSpecStalk x y ∈ Set.range (X.fromSpecStalk x)` using `⟨y, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Conclude with `Specializes.mem_open this U.isOpen hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromSpecStalk_mem (x : X) {U : X.Opens} (hx : x ∈ U) (y : Spec (X.presheaf.stalk x)) :
     X.fromSpecStalk x y ∈ U := by
@@ -87,7 +87,7 @@ theorem fromSpecStalk_mem (x : X) {U : X.Opens} (hx : x ∈ U) (y : Spec (X.pres
   exact Specializes.mem_open this U.isOpen hx
 
 /- English proof (translation)
-Establish `hm` using `fromSpecStalk_mem x hx (r z)`. Rewrite using `[← gs_pull r _ z U hm, Scheme.fromSpecStalk_app hx, germOf_apply, gs_eq (𝟙 X) x U hx]`. Conclude with `gs_res r z le_top hm _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_fromSpecStalk (x : X) {U : X.Opens} (hx : x ∈ U) (r : Z ⟶ Spec (X.presheaf.stalk x)) (z : Z)
     (a : Γ(X, U)) : gs (r ≫ X.fromSpecStalk x) z U a = germOf r z (gs (𝟙 X) x U a) := by
@@ -96,7 +96,7 @@ theorem gs_fromSpecStalk (x : X) {U : X.Opens} (hx : x ∈ U) (r : Z ⟶ Spec (X
   exact gs_res r z le_top hm _
 
 /- English proof (translation)
-Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[Scheme.Hom.comp_appTop, Scheme.fromSpecStalk_appTop, ← cancel_epi (Scheme.ΓSpecIso B).inv, ← Scheme.ΓSpecIso_inv_naturality]`. Use extensionality with `a`. Establish `e : CommRingCat.ofHom (germOf p x) = (Scheme.ΓSpecIso B).inv ≫ p.appTop ≫ X.presheaf.germ ⊤ x trivial` using `rfl`. Simplify using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem fromSpecStalk_comp {B : CommRingCat.{0}} (p : X ⟶ Spec B) (x : X) :
     X.fromSpecStalk x ≫ p = Spec.map (CommRingCat.ofHom (germOf p x)) := by
@@ -109,13 +109,13 @@ theorem fromSpecStalk_comp {B : CommRingCat.{0}} (p : X ⟶ Spec B) (x : X) :
   simp [e]
 
 /- English proof (translation)
-Set `: Algebra F (X.presheaf.stalk x)` to `(germOf p x).toAlgebra`. Establish `hβ : LinearIndependent F (fun l => gs (𝟙 X) x U (s l))` using `Fintype.linearIndependent_iff.2 fun c hc => congrFun (hs c (by simp only [Algebra.smul_def] at hc; exact hc))`. Take `⟨B, _, _, em, h⟩` from `exists_tensor_pow F _ _ hβ j`. Use `⟨Spec (CommRingCat.of B), Spec.map (CommRingCat.ofHom (algebraMap F B)), fun i => (Spec.map (CommRingCat.ofHom (em i).toRingHom) : _ ⟶ Spec (X.presheaf.stalk x)) ≫ X.fromSpecStalk x, fun i => ?_, fun i z => fromSpecStalk_mem x hx _, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, fromSpecStalk_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations. Use extensionality with `a`. Conclude with `(em i).commutes a`. Use function extensionality and compare the values at `a`. Use `Fintype.linearIndependent_iff.1 h c (eq_zero_of_germOf (B := CommRingCat.of B) _ fun z => ?_) a` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc z, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_prod]`. Use `congr 1`. Rewrite using `[← Category.id_comp (Spec.map _), germOf_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_fromSpecStalk x hx]`. Conclude with `(germOf_map (B := X.presheaf.stalk x) (𝟙 _) (CommRingCat.ofHom (em i).toRingHom) z _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_test {F : Type} [Field F] (p : X ⟶ Spec (CommRingCat.of F)) (x : X) {U : X.Opens} (hx : x ∈ U) {m : ℕ}
     (s : Fin m → Γ(X, U))
@@ -146,7 +146,7 @@ theorem exists_test {F : Type} [Field F] (p : X ⟶ Spec (CommRingCat.of F)) (x 
       exact (germOf_map (B := X.presheaf.stalk x) (𝟙 _) (CommRingCat.ofHom (em i).toRingHom) z _).symm
 
 /- English proof (translation)
-The claim follows from `(gs_res r z le_top hz _).trans ((gs_pull r (fst (Over.mk t) A).left z ⊤ trivial _).trans (germOf_apply _ _ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem gs_liftFun {S : Scheme.{0}} (A : Over S) {B : CommRingCat.{0}} (t : Spec B ⟶ S)
     (W : (Over.mk t ⊗ A).left.Opens) (r : Z ⟶ (Over.mk t ⊗ A).left) (z : Z) (hz : r z ∈ W) (a : B) :
@@ -155,7 +155,7 @@ theorem gs_liftFun {S : Scheme.{0}} (A : Over S) {B : CommRingCat.{0}} (t : Spec
   (gs_res r z le_top hz _).trans ((gs_pull r (fst (Over.mk t) A).left z ⊤ trivial _).trans (germOf_apply _ _ _).symm)
 
 /- English proof (translation)
-Rewrite using `[gs_fsum r z W hz]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [gs_mul r z W hz, gs_liftFun A t W r z hz]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_comb {S : Scheme.{0}} (A : Over S) {B : CommRingCat.{0}} (t : Spec B ⟶ S)
     (W : (Over.mk t ⊗ A).left.Opens) (r : Z ⟶ (Over.mk t ⊗ A).left) (z : Z) (hz : r z ∈ W) {K : Type} [Fintype K]
@@ -166,23 +166,21 @@ theorem gs_comb {S : Scheme.{0}} (A : Over S) {B : CommRingCat.{0}} (t : Spec B 
   exact Finset.sum_congr rfl fun l _ => by rw [gs_mul r z W hz, gs_liftFun A t W r z hz]
 
 /- English proof (translation)
-Use `A.isAb.smooth` as an intermediate fact. Use `A.isAb.geomConnected` as an intermediate fact. Establish `hg` using `geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres A.A.hom`. Establish `hint : IsIntegral (Over.mk t ⊗ A.A).left` using `hg.geometrically_isIntegral t _ _ (IsPullback.of_hasPullback t A.A.hom).flip`. Take `⟨j₀, hj₀⟩` from `exists_chart A.isLB ((snd (Over.mk t) A.A).left (genericPoint (Over.mk t ⊗ A.A).left))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx : genericPoint (Over.mk t ⊗ A.A).left ∈ LB.wchart A.L (fun _ : Fin 1 => (snd (Over.mk t) A.A).left) (fun _ => j₀)` using `Set.mem_iInter.2 fun _ => hj₀`. Take `⟨Z, q, r, hq, hr, H⟩` from `exists_test (F := F) (fst (Over.mk t) A.A).left _ hx (fun l => (b l).f (fun _ => j₀)) (fun c hc => hb c fun jj => by`. Use `fn_ext fun y hy => congrArg _ ?_` and prove the remaining obligations. Establish `hy' : genericPoint (Over.mk t ⊗ A.A).left ∈ LB.wchart A.L (fun _ : Fin 1 => (snd (Over.mk t) A.A).left) jj` using `((genericPoint_spec _).mem_open_set_iff (TopologicalSpace.Opens.isOpen _)).mpr ⟨y, trivial, hy⟩`. Apply `germ_injective_of_isIntegral _ _ hy'` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(gs_eq (𝟙 _) _ _ hy' _).symm.trans (Eq.trans ?_ (map_zero _).symm)` and prove the remaining obligations. Use `(gs_comb A.A t _ (𝟙 _) _ hy' c _).trans ?_` and prove the remaining obligations. Simplify using `only [fun l => sec_trans (b l) (𝟙 _) _ hy' hx, Category.id_comp, mul_left_comm _ (Units.val _)]`. Rewrite using `[← Finset.mul_sum]`. Conclude with `(congrArg _ hc).trans (mul_zero _)) j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `T : Over S` to `Over.mk (q ≫ t)`. Set `q' : T ⟶ Over.mk t` to `Over.homMk q rfl`. Set `r' : Fin j → (T ⟶ Over.mk t ⊗ A.A)` to `fun i => Over.homMk (r i) (by`. Rewrite using `[← Over.w (fst (Over.mk t) A.A), ← Category.assoc, hq]`. Use the proof step `rfl)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ρ : T ⟶ Over.mk t ⊗ A'.A` to `lift q' (Fan.IsLimit.lift pA.lim fun i => r' i ≫ snd _ _)`. Establish `hρ : ∀ i, ρ ≫ Over.mk t ◁ pA.pr i = r' i` using `fun i => by`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, whiskerLeft_fst, lift_fst]`. Conclude with `Over.OverMorphism.ext (hq i).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, whiskerLeft_snd, ← Category.assoc, lift_snd]`. Conclude with `Fan.IsLimit.fac pA.lim _ i`. Establish `hρ' : ∀ i, (ρ.left : Z ⟶ _) ≫ (Over.mk t ◁ pA.pr i).left = r i` using `fun i => congrArg (fun g => g.left) (hρ i)`. Establish `hρq : (ρ.left : Z ⟶ _) ≫ (fst (Over.mk t) A'.A).left = q` using `congrArg (fun g => g.left) (lift_fst q' (Fan.IsLimit.lift pA.lim fun i => r' i ≫ snd _ _))`. Use `H c fun z => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨J, hJ, eJ⟩` from `exists_good A.L A.isLB z (fun i => r i ≫ (snd (Over.mk t) A.A).left) (fun _ => j₀) (fun _ _ _ => rfl) (fun i => Set.mem_iInter.1 (hr i z) 0)`. Use `choose J' hJ' using fun ψ : Z ⟶ A'.A.left => exists_chart A'.isLB (ψ z)`. Establish `hJ' : Good A'.L z J'` using `hJ'`. Establish `hm` using `hJ'.mem (fun _ : Fin 1 => (snd (Over.mk t) A'.A).left) (ρ.left : Z ⟶ _)`. Establish `E` using `(gs_comb A'.A t _ (ρ.left : Z ⟶ _) z hm c _).symm.trans ((congrArg _ (hc _)).trans (gs_zero _ _ _ hm))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `E'` using `fun a => ht a Z ρ.left z J J' hJ hJ'`. Simplify using `only [hρ'] at E'`. Rewrite `E` using `[hρq]`. Take `⟨u, hu⟩ : ∃ u : Z.presheaf.stalk z, ∀ a, u * sval (Z` from `Z) (t' a) ρ.left z J' = ∏ i, sval (b (a i)) (r i) z J := ⟨_, E'⟩`. Use `Eq.trans (Finset.sum_congr rfl fun a _ => ?_) ((Finset.mul_sum _ _ u).symm.trans ((congrArg _ E).trans (mul_zero _)))` and prove the remaining obligations.
-
-Use `Eq.trans (congrArg _ ((Finset.prod_congr rfl fun i _ => (sval_of (b (a i)) (r i) z J (fun _ => j₀) (fun _ => eJ i)).symm).trans (hu a).symm)) ?_` and prove the remaining obligations. Conclude with `mul_left_comm _ _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem box_indep {S : Scheme.{0}} (j : ℕ) (A A' : PolAV S) (pA : IsPowPolAV A' A j) (F : Type) [Field F]
     (t : Spec (CommRingCat.of F) ⟶ S) (k m : ℕ)
@@ -254,7 +252,7 @@ theorem box_indep {S : Scheme.{0}} (j : ℕ) (A A' : PolAV S) (pA : IsPowPolAV A
 end BoxIndep
 
 /- English proof (translation)
-Introduce `R _ _ j A A' pA F _ _ k m b hb t' ht c hc` and use `BoxIndep.box_indep j A A' pA F (jFK (R := R) F) k m b hb t' ht c hc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem boxProduct_linearIndependent : ∀ (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (pA : IsPowPolAV A' A j) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (m : ℕ) (b : Fin m → LB.Sec (LB.LinComb A.L (K := Fin 1) (fun _ => (snd (TFK (R := R) F) A.A).left) (fun _ => (k : ℤ)))), (∀ c : Fin m → F, (∀ jj, ∑ l, liftFun A.A _ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (c l)) * (b l).f jj = 0) → c = 0) → ∀ t' : (Fin j → Fin m) → LB.Sec (LB.LinComb A'.L (K := Fin 1) (fun _ => (snd (TFK (R := R) F) A'.A).left) (fun _ => (k : ℤ))), (∀ a, (∀ (Z : Scheme.{0}) (r : Z ⟶ ((TFK (R := R) F) ⊗ A'.A).left) (z : Z) (J J'), Geo.Tor.Good A.L z J → Geo.Tor.Good A'.L z J' → (bw pA.w (r ≫ (snd (TFK (R := R) F) A'.A).left) z (fun i => J ((r ≫ (snd (TFK (R := R) F) A'.A).left) ≫ (pA.pr i).left)) (J' (r ≫ (snd (TFK (R := R) F) A'.A).left)) ^ k).val * Geo.Tor.sval (t' a) r z J' = ∏ i, Geo.Tor.sval (b (a i)) (r ≫ ((TFK (R := R) F) ◁ pA.pr i).left) z J)) → ∀ c : (Fin j → Fin m) → F, (∀ jj, ∑ a, liftFun A'.A _ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (c a)) * (t' a).f jj = 0) → c = 0 :=
   fun R _ _ j A A' pA F _ _ k m b hb t' ht c hc =>

@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Vert.Model
 
 /- English proof (translation)
-Introduce `O _ _ _ Z`. Take `⟨q, H⟩` from `Z.exists_isPullback_gen (FractionRing O)`. Take `⟨d, hd, -⟩` from `exists_topologicalKrullDim_fibres_eq_of_isPullback Z.str (FractionRing O) (IsLocalRing.ResidueField O) IsLocalRing.residue_surjective (IsPullback.of_hasPullback _ _) H`. Rewrite using `[hd, relDim_eq_iff.2 (IntModel.topologicalKrullDim_eq_succ (IsDiscreteValuationRing.not_isField O) H hd)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem topologicalKrullDim_gen : ∀ (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (Z : Model O), topologicalKrullDim Z.gen.toScheme = Z.relDim := by

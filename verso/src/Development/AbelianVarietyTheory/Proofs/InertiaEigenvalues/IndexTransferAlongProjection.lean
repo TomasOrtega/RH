@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ L, (y ∈ L.map T ↔ Φ y ∈ (L.map Φ).map h)`. Introduce `y hy`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨Φ x, ⟨x, hx, rfl⟩, (hΦT x).symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, hxy⟩`. Establish `h0 : Φ (T x - y) = 0` using `by rw [map_sub, hΦT, hxy, sub_self]`. Establish `hp : p (T x) = p y`. Use `hΦ _ h0` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨p x + (y - p y), L.add_mem (hpL x hx) (L.sub_mem hy (hpL y hy)), ?_⟩` and prove the remaining obligations. Use `show T (p x + (y - p y)) = y`. Rewrite using `[map_add, hT1, hTp, hp]`. Normalize the expressions using the abelian group laws. Set `ψ : L →+ L.map Φ` to `(Φ.comp L.subtype).codRestrict (L.map Φ) (fun x => ⟨x.1, x.2, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : Function.Surjective ψ`. Introduce and unpack `⟨_, x, hx, rfl⟩`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Establish `hc : (L.map T).addSubgroupOf L = (((L.map Φ).map h).addSubgroupOf (L.map Φ)).comap ψ`. Use extensionality with `⟨y, hy⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_comap, AddSubgroup.mem_addSubgroupOf]`. Conclude with `key y hy`. Unfold `AddSubgroup.relIndex`. Rewrite using `[hc, AddSubgroup.index_comap_of_surjective _ hψ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_transfer_along_projection {M N : Type} [AddCommGroup M] [AddCommGroup N]
     (L : AddSubgroup M) (T p : M →+ M) (Φ : M →+ N) (h : N →+ N)

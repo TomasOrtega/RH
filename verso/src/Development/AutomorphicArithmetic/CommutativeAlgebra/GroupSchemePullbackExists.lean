@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenModelBaseChangeU
 open UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Introduce `G R _ _ gb N X X' s e o`. Conclude with `GlobalTheory.UPel.HT.Gen.BaseChange.exists_gObjMap_pull e o`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.group_scheme_pullback_exists :
     GPull := by

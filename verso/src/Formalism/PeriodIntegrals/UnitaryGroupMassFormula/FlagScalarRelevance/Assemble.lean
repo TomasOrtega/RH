@@ -8,23 +8,23 @@ namespace PI.FRS
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.IdCell
 
 /- English proof (translation)
-Introduce `S r T T' F F' c htr hT0 _ hs hrel`. Establish `key : ∀ i : Fin r, c i.succ = c i.castSucc`. Introduce `i`. Establish `hir` using `i.2`. Establish `hc` using `c_ne_zero_of_same F F' c hs i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXa` using `Xa_eq_of_same F F' c hs`. Establish `hrat : ∀ a : E, Algebra.trace K E a = Algebra.trace K E (c i.succ * a * (c i.castSucc)⁻¹)`. Introduce `a`. Take `⟨v, hv⟩` from `hD E S (r + 1) F.fvec (fvec_indep F hT0) (Pi.single i.succ (star a))`. Establish `hvf : ∀ k, S.hT v (F.fvec k) = star ((Pi.single i.succ (star a) : Fin (r + 1) → E) k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[← S.herm.eq (F.fvec k) v, hv k, starRingEnd_apply]`. Establish `hva : S.hT v (F.fvec i.succ) = a`. Rewrite using `[hvf]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hv0 : ∀ y ∈ F.Xa (i.val + 1), S.hT v y = 0`. Use `hT_Xa_of F v _ (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[← fvec_castSucc, hvf, Pi.single_apply, if_neg, star_zero]`. Introduce `h`. Establish `h'` using `congrArg Fin.val h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[Fin.val_castSucc, Fin.val_succ]`. Use linear arithmetic over natural numbers and integers. Establish `hF` using `xv_mem_LieN F i.val (F.e i) v (e_mem_Xa F (by omega)) hv0`. Establish `hF'` using `xv_mem_LieN F' i.val (F.e i) v (by rw [hXa (i.val + 1) (by omega)]; exact e_mem_Xa F (by omega)) (by rw [hXa (i.val + 1) (by omega)]; exact hv0)`. Establish `h` using `hrel _ ⟨hF, hF'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `FlagG.dpsi at h`. Rewrite `h` using `[ell_xv hS hE F i v, hva]`. Establish `h'` using `ell'_xv hA hS hE hL F F' c hs i v hv0`. Rewrite `h'` using `[hva]`. Establish `h'' : F'.ell (xv S (F.e i) v) = c i.succ * a * (c i.castSucc)⁻¹`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h', mul_assoc, mul_inv_cancel₀ hc, mul_one]`. Rewrite using `[h, h'']`. Establish `hzero : ∀ a : E, Algebra.trace K E ((c i.succ * (c i.castSucc)⁻¹ - 1) * a) = 0`. Introduce `a`. Rewrite using `[sub_mul, one_mul, map_sub, show c i.succ * (c i.castSucc)⁻¹ * a = c i.succ * a * (c i.castSucc)⁻¹ by ring, ← hrat a, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1` using `htr _ hzero`. Rewrite `h1` using `[sub_eq_zero]`. Conclude with `(mul_inv_eq_one₀ hc).1 h1`. Introduce `i`. Proceed by induction on `i using Fin.reverseInduction with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `last => rfl`. Consider the case `cast j ih => rw [← key j]`. Conclude with `ih`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem relevScalar_of (hD : DualExists) (hA : CoefAdd) (hS : CoefSmul) (hE : CoefE)
     (hL : CoefLow) (E K : Type) [Field E] [NumberField E] [StarRing E] [Field K] [Algebra K E] :

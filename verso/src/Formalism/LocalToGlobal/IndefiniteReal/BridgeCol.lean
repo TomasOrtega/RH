@@ -47,7 +47,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {S : GSD K} {G Γ : T
   {ι : Γ →* G} {J : Subgroup G} (A : AdPts S ι J)
 
 /- English proof (translation)
-Establish `h` using `A.q_eqv γ k⁻¹ x`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem q_mul (γ : Γ) (x : G) (k : J) : A.q (ι γ * x * (k : G)) = A.gl (γ, k⁻¹) • A.q x := by
   have h := A.q_eqv γ k⁻¹ x
@@ -56,14 +56,14 @@ theorem q_mul (γ : Γ) (x : G) (k : J) : A.q (ι γ * x * (k : G)) = A.gl (γ, 
 def y (c : S.Cl) : G := Function.surjInv A.q_surj (S.outSec.rep c)
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq A.q_surj _`.
+A detailed English derivation is pending.
 -/
 theorem q_y (c : S.Cl) : A.q (A.y c) = S.outSec.rep c := Function.surjInv_eq A.q_surj _
 
 /- English proof (translation)
-Introduce `h`. Use `⟨S.cls (A.q h), ?_, ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `S.outSec.exists_mv (A.q h)`. Take `⟨⟨γ, k⟩, rfl⟩` from `A.gl_surj g`. Rewrite `hg` using `[← A.q_y, ← A.q_eqv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k1, hk1, e⟩` from `(A.q_fib _ _).1 hg`. Use `⟨γ, k⁻¹ * ⟨k1, A.principal_congruence_le hk1⟩, e.trans ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`. Introduce and unpack `c ⟨γ, k, rfl⟩`. Rewrite using `[A.q_mul, S.cls_smul, A.q_y, S.outSec.spec]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem isReps : IsReps ι J A.y := by
   intro h
@@ -93,17 +93,15 @@ theorem toStab_coe (c : S.Cl) (γ : stab ι J (A.y c)) :
     ((A.toStab c γ : MulAction.stabilizer S.G (S.outSec.rep c)) : S.G) = A.gl ((γ : Γ), stabJ γ) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_one _).2 fun γ hγ => ?_` and prove the remaining obligations. Establish `h1 : A.gl ((γ : Γ), stabJ γ) = 1`. Rewrite using `[← A.toStab_coe, hγ]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Subtype.ext ((A.gl_ker _ _).1 h1).1`. Introduce `g`. Take `⟨⟨γ, k⟩, hg⟩` from `A.gl_surj g`. Establish `hfix : A.gl (γ, k) • S.outSec.rep c = S.outSec.rep c`. Rewrite using `[hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `g.2`. Rewrite `hfix` using `[← A.q_y, ← A.q_eqv]`. Take `⟨k1, hk1, e⟩` from `(A.q_fib _ _).1 hfix.symm`. Establish `hmem : (A.y c)⁻¹ * ι γ * A.y c = k1 * (k : G)`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : γ ∈ stab ι J (A.y c)`. Rewrite using `[mem_stab, hmem]`. Conclude with `J.mul_mem (A.principal_congruence_le hk1) k.2`. Use `⟨⟨γ, hs⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[toStab_coe, ← hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : (stabJ (⟨γ, hs⟩ : stab ι J (A.y c)) : J) = ⟨k1, A.principal_congruence_le hk1⟩ * k` using `Subtype.ext hmem`. Establish `h1 : A.gl ((1 : Γ), (⟨k1, A.principal_congruence_le hk1⟩ : J)) = 1` using `(A.gl_ker _ _).2 ⟨rfl, hk1⟩`. Establish `e2 : ((γ, stabJ (⟨γ, hs⟩ : stab ι J (A.y c))) : Γ × J) = ((1 : Γ), (⟨k1, A.principal_congruence_le hk1⟩ : J)) * (γ, k)`. Rewrite using `[hJ]`. Conclude with `Prod.ext (one_mul γ).symm rfl`.
-
-Rewrite using `[e2, map_mul, h1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toStab_bij (c : S.Cl) : Function.Bijective (A.toStab c) := by
   constructor
@@ -173,7 +171,7 @@ variable {G' Γ' : Type} [Group G'] [Group Γ'] {ι' : Γ' →* G'} {ρ' : Γ' �
   {χ' : J' →* ℂˣ}
 
 /- English proof (translation)
-Rewrite using `[mem_stab, mem_stab, hJ, hι]`. Simplify using `only [map_mul, map_inv, MulEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_stab_transport (eG : G ≃* G') (eΓ : Γ ≃* Γ') (hι : ∀ γ, ι' (eΓ γ) = eG (ι γ))
     (hJ : ∀ x, x ∈ J' ↔ eG.symm x ∈ J) (y : G) (γ : Γ) : eΓ γ ∈ stab ι' J' (eG y) ↔ γ ∈ stab ι J y := by
@@ -189,7 +187,7 @@ def stabTransport (eG : G ≃* G') (eΓ : Γ ≃* Γ') (hι : ∀ γ, ι' (eΓ �
   map_mul' a b := Subtype.ext (map_mul eΓ _ _)
 
 /- English proof (translation)
-Use `show ((eG y)⁻¹ * ι' (eΓ (γ : Γ)) * eG y)⁻¹ = eG ((y⁻¹ * ι (γ : Γ) * y)⁻¹)`. Rewrite using `[hι]`. Simplify using `only [map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stabK_transport (eG : G ≃* G') (eΓ : Γ ≃* Γ') (hι : ∀ γ, ι' (eΓ γ) = eG (ι γ))
     (hJ : ∀ x, x ∈ J' ↔ eG.symm x ∈ J) (y : G) (γ : stab ι J y) :

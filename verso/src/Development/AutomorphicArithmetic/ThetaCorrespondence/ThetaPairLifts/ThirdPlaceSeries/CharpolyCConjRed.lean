@@ -19,7 +19,7 @@ end Wild
 section Row
 variable {D : D7} (Y : NTw D.R D.host D.what₂ D.LL0 D.nd)
 /- English proof (translation)
-Establish `h` using `_root_.GlobalTheory.TripleResidual.charpoly_cConj_eq_charpoly_cyc_zpow_smul_inv Y hD hπ hr s`. Rewrite `h` using `[cyc_eq_one_of_mem_Ine hv hA hs, Units.val_one, one_zpow, one_smul]`. Take `⟨p, p1, p2⟩` from `hρ.2.2 (cConj Y s)`. Take `⟨q, q1, q2⟩` from `hρ.2.2 s⁻¹`. Rewrite using `[← p2, ← q2, Polynomial.map_injective _ Subtype.val_injective (p1.trans (h.trans q1.symm))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_cConj_eq_charpoly_inv_of_mem_ine (hD : FrobDense D) {n : ℕ} {π : D.naut.CG n} (hπ : D.naut.csd π) {l : ℕ} [Fact l.Prime]
     {ι : Qbar l ≃+* ℂ} {red : Zbar l →+* Formalism.CyclotomicNorms.Fbar l} {r : GalE D →* GL (Fin n) (Qbar l)}

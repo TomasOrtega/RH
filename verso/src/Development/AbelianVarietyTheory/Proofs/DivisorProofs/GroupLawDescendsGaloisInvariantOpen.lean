@@ -15,7 +15,7 @@ section
 variable {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S ⟶ Sp R} {G : Over S} (N : Near π G)
 
 /- English proof (translation)
-Take `⟨x₀, h₁, h₂, rfl⟩` from `h`. Take `⟨x₁, h₃, h₄, rfl⟩` from `h'`. Rewrite using `[pullback.hom_ext (h₁.trans h₃.symm) (h₂.trans h₄.symm)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_unique {T : Scheme.{0}} {s : T ⟶ S} {a : T ⟶ N.U.left} {x x' : T ⟶ G.left}
     (h : N.Pt s a x) (h' : N.Pt s a x') : x = x' := by
@@ -24,7 +24,7 @@ theorem pt_unique {T : Scheme.{0}} {s : T ⟶ S} {a : T ⟶ N.U.left} {x x' : T 
   rw [pullback.hom_ext (h₁.trans h₃.symm) (h₂.trans h₄.symm)]
 
 /- English proof (translation)
-Take `⟨x₀, rfl, -, h₂⟩` from `h`. Take `⟨x₁, rfl, -, h₄⟩` from `h'`. Use `N.isOpen` as an intermediate fact. Rewrite using `[(cancel_mono N.u).1 (h₂.trans h₄.symm)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_unique_left {T : Scheme.{0}} {s s' : T ⟶ S} {a a' : T ⟶ N.U.left} {x : T ⟶ G.left}
     (h : N.Pt s a x) (h' : N.Pt s' a' x) : a = a' := by
@@ -34,7 +34,7 @@ theorem pt_unique_left {T : Scheme.{0}} {s s' : T ⟶ S} {a a' : T ⟶ N.U.left}
   rw [(cancel_mono N.u).1 (h₂.trans h₄.symm)]
 
 /- English proof (translation)
-Take `⟨x₀, rfl, rfl, rfl⟩` from `h`. Conclude with `⟨k ≫ x₀, Category.assoc _ _ _, Category.assoc _ _ _, Category.assoc _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pt_comp {T T' : Scheme.{0}} (k : T' ⟶ T) {s : T ⟶ S} {a : T ⟶ N.U.left} {x : T ⟶ G.left}
     (h : N.Pt s a x) : N.Pt (k ≫ s) (k ≫ a) (k ≫ x) := by
@@ -42,7 +42,7 @@ theorem pt_comp {T T' : Scheme.{0}} (k : T' ⟶ T) {s : T ⟶ S} {a : T ⟶ N.U.
   exact ⟨k ≫ x₀, Category.assoc _ _ _, Category.assoc _ _ _, Category.assoc _ _ _⟩
 
 /- English proof (translation)
-Take `⟨x₀, rfl, rfl, -⟩` from `h`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_over {T : Scheme.{0}} {s : T ⟶ S} {a : T ⟶ N.U.left} {x : T ⟶ G.left}
     (h : N.Pt s a x) : s ≫ π = a ≫ N.U.hom := by
@@ -50,7 +50,7 @@ theorem pt_over {T : Scheme.{0}} {s : T ⟶ S} {a : T ⟶ N.U.left} {x : T ⟶ G
   rw [Category.assoc, Category.assoc, pullback.condition]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Over.homMk (pullback.lift a s h.symm ≫ N.u) (by change (pullback.lift a s h.symm ≫ N.u) ≫ G.hom = s rw [Category.assoc, N.u_over, pullback.lift_snd]), pullback.lift a s h.symm, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem pt_exists {T : Scheme.{0}} {s : T ⟶ S} {a : T ⟶ N.U.left} (h : s ≫ π = a ≫ N.U.hom) :
     ∃ x : Over.mk s ⟶ G, N.Pt s a x.left :=
@@ -66,7 +66,7 @@ def Prod {T : Scheme.{0}} (s : T ⟶ S) (v : T ⟶ (N.U ⊗ N.U).left) (z : T �
     (x * y).left = z
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `pt_exists N (s := s) (a := v ≫ (fst N.U N.U).left) (by rw [h, Category.assoc]; exact congrArg (v ≫ ·) (Over.w (fst N.U N.U)).symm)`. Take `⟨y, hy⟩` from `pt_exists N (s := s) (a := v ≫ (snd N.U N.U).left) (by rw [h, Category.assoc]; exact congrArg (v ≫ ·) (Over.w (snd N.U N.U)).symm)`. Conclude with `⟨_, x, y, hx, hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem prod_exists {T : Scheme.{0}} {s : T ⟶ S} {v : T ⟶ (N.U ⊗ N.U).left} (h : s ≫ π = v ≫ (N.U ⊗ N.U).hom) :
     ∃ z, Prod N s v z := by
@@ -77,7 +77,7 @@ theorem prod_exists {T : Scheme.{0}} {s : T ⟶ S} {v : T ⟶ (N.U ⊗ N.U).left
   exact ⟨_, x, y, hx, hy, rfl⟩
 
 /- English proof (translation)
-Take `⟨x, y, hx, hy, rfl⟩` from `h`. Take `⟨x', y', hx', hy', rfl⟩` from `h'`. Take `rfl : x = x'` from `Over.OverMorphism.ext (pt_unique N hx hx')`. Take `rfl : y = y'` from `Over.OverMorphism.ext (pt_unique N hy hy')`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem prod_unique {T : Scheme.{0}} {s : T ⟶ S} {v : T ⟶ (N.U ⊗ N.U).left} {z z' : T ⟶ G.left}
     (h : Prod N s v z) (h' : Prod N s v z') : z = z' := by
@@ -88,7 +88,7 @@ theorem prod_unique {T : Scheme.{0}} {s : T ⟶ S} {v : T ⟶ (N.U ⊗ N.U).left
   rfl
 
 /- English proof (translation)
-Take `⟨x, y, -, -, rfl⟩` from `h`. Conclude with `Over.w (x * y)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prod_over {T : Scheme.{0}} {s : T ⟶ S} {v : T ⟶ (N.U ⊗ N.U).left} {z : T ⟶ G.left}
     (h : Prod N s v z) : z ≫ G.hom = s := by
@@ -96,9 +96,9 @@ theorem prod_over {T : Scheme.{0}} {s : T ⟶ S} {v : T ⟶ (N.U ⊗ N.U).left} 
   exact Over.w (x * y)
 
 /- English proof (translation)
-Take `⟨x, y, hx, hy, rfl⟩` from `h`. Set `k' : Over.mk (k ≫ s) ⟶ Over.mk s` to `Over.homMk k rfl`. Use `⟨k' ≫ x, k' ≫ y, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `pt_comp N k hx`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc]`. Conclude with `pt_comp N k hy`. Rewrite using `[← comp_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prod_comp {T T' : Scheme.{0}} (k : T' ⟶ T) {s : T ⟶ S} {v : T ⟶ (N.U ⊗ N.U).left} {z : T ⟶ G.left}
     (h : Prod N s v z) : Prod N (k ≫ s) (k ≫ v) (k ≫ z) := by
@@ -110,9 +110,9 @@ theorem prod_comp {T T' : Scheme.{0}} (k : T' ⟶ T) {s : T ⟶ S} {v : T ⟶ (N
   · rw [← comp_mul]; rfl
 
 /- English proof (translation)
-Take `⟨x, y, hx, hy, rfl⟩` from `h`. Establish `hx'` using `hN _ _ _ _ hx`. Establish `hy'` using `hN _ _ _ _ hy`. Take `⟨x₀, hx₀⟩` from `pt_exists N (pt_over N hx')`. Take `⟨y₀, hy₀⟩` from `pt_exists N (pt_over N hy')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x₀, y₀, hx₀, hy₀, hφ.2 (Over.mk s) x y x₀ y₀ (pt_unique N hx₀ hx') (pt_unique N hy₀ hy')⟩`.
+Supply the required witnesses or components.
 -/
 theorem prod_act {c : S ⟶ S} {φ : G.left ⟶ G.left} (hφ : IsGrpPullback G G c φ)
     (hN : ∀ (T : Scheme.{0}) (s : T ⟶ S) (u : T ⟶ N.U.left) (x : T ⟶ G.left),
@@ -127,29 +127,25 @@ theorem prod_act {c : S ⟶ S} {φ : G.left ⟶ G.left} (hφ : IsGrpPullback G G
   exact ⟨x₀, y₀, hx₀, hy₀, hφ.2 (Over.mk s) x y x₀ y₀ (pt_unique N hx₀ hx') (pt_unique N hy₀ hy')⟩
 
 /- English proof (translation)
-Use `N.smooth` as an intermediate fact. Use `N.isOpen` as an intermediate fact. Establish `hy : Flat (N.U ⊗ N.U).hom`. Express the relevant statement in the definitionally equal form `Flat (pullback.fst N.U.hom N.U.hom ≫ N.U.hom)`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `quot : ∀ {Y : Scheme.{0}} (y : Y ⟶ Sp R) [Flat y], IsAffineQuotient (pullbackAction α π hq.comp_eq y) (pullback.snd π y)` using `fun y _ => hq.of_isPullback (IsPullback.of_hasPullback π y) (pullbackAction_fst α π hq.comp_eq y) (pullbackAction_snd α π hq.comp_eq y)`. Establish `equiv : ∀ {Y : Scheme.{0}} (y : Y ⟶ Sp R) (j : Y ⟶ (N.U ⊗ N.U).left) (z : pullback π y ⟶ G.left), Prod N (pullback.fst π y) (pullback.snd π y ≫ j) z → ∀ g, (pullbackAction α π hq.comp_eq y g).hom ≫ z = z ≫ φ g` using `fun y j z hz g => by`. Establish `h₁` using `prod_comp N (pullbackAction α π hq.comp_eq y g).hom hz`. Rewrite `h₁` using `[pullbackAction_fst, pullbackAction_snd_assoc]`. Conclude with `prod_unique N h₁ (prod_act N (hφ g) (hN g) hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z₀, hz₁⟩` from `prod_exists N (pullback.condition (f := π) (g := (N.U ⊗ N.U).hom))`. Establish `hrange : ∀ g, pullback.map N.U.hom π N.U.hom π (𝟙 _) (α g).hom (𝟙 _) (by simp) (by simp [hq.comp_eq]) ≫ N.u = N.u ≫ φ g` using `fun g => by`. Use `pt_unique N (s := pullback.snd N.U.hom π ≫ (α g).hom) (a := pullback.fst N.U.hom π) ⟨_, ?_, pullback.lift_snd _ _ _, rfl⟩ (hN g _ _ _ _ ⟨𝟙 _, Category.id_comp _, Category.id_comp _, Category.id_comp _⟩)` and prove the remaining obligations. Conclude with `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Take `⟨V, hV⟩` from `(quot (N.U ⊗ N.U).hom).exists_preimage_eq (U := z₀ ⁻¹ᵁ N.u.opensRange) fun g w hw => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w', hw'⟩` from `hw`. Express the relevant statement in the definitionally equal form `((pullbackAction α π hq.comp_eq (N.U ⊗ N.U).hom g).hom ≫ z₀) w ∈ Set.range N.u`. Rewrite using `[equiv _ (𝟙 _) z₀ (by rw [Category.comp_id]; exact hz₁) g, Scheme.Hom.comp_apply, ← hw', ← Scheme.Hom.comp_apply, ← hrange g, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`. Set `y : V.toScheme ⟶ Sp R` to `V.ι ≫ (N.U ⊗ N.U).hom`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `k : pullback π y ⟶ pullback π (N.U ⊗ N.U).hom` to `pullback.lift (pullback.fst π y) (pullback.snd π y ≫ V.ι) (by rw [pullback.condition, Category.assoc])`. Establish `hk : k ≫ pullback.snd _ _ = pullback.snd π y ≫ V.ι` using `pullback.lift_snd _ _ _`. Establish `hz : Prod N (pullback.fst π y) (pullback.snd π y ≫ V.ι) (k ≫ z₀)`. Use `prod_comp N k hz₁` as an intermediate fact. Rewrite `this` using `[hk, pullback.lift_fst]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hsub : Set.range (k ≫ z₀) ⊆ Set.range N.u`. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `: k w ∈ pullback.snd π (N.U ⊗ N.U).hom ⁻¹ᵁ V`. Express the relevant statement in the definitionally equal form `(k ≫ pullback.snd π (N.U ⊗ N.U).hom) w ∈ V`. Rewrite using `[hk, Scheme.Hom.comp_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(pullback.snd π y w).2`. Rewrite `this` using `[hV]`. Conclude with `this`. Set `l` to `IsOpenImmersion.lift N.u (k ≫ z₀) hsub`. Establish `hl : l ≫ N.u = k ≫ z₀` using `IsOpenImmersion.lift_fac _ _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : N.Pt (pullback.fst π y) (l ≫ pullback.fst _ _) (k ≫ z₀)` using `⟨l, rfl, by rw [← N.u_over, ← Category.assoc, hl, prod_over N hz], hl⟩`. Take `⟨m, hm⟩` from `(quot y).exists_comp_eq (l ≫ pullback.fst _ _) fun g => by`. Establish `h₁` using `pt_comp N (pullbackAction α π hq.comp_eq y g).hom hf`. Rewrite `h₁` using `[equiv y V.ι _ hz g]`. Conclude with `pt_unique_left N h₁ (hN g _ _ _ _ hf)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨V, m, fun z hz₀ => ?_, (quot y).hom_ext ?_, fun T v s a b ha hb => ?_⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `(quot (N.U ⊗ N.U).hom).surjective.surj z`. Express the relevant statement in the definitionally equal form `w ∈ pullback.snd π (N.U ⊗ N.U).hom ⁻¹ᵁ V`. Rewrite using `[hV]`. Use `N.all (z₀ w) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hz₀, ← Scheme.Hom.comp_apply z₀, prod_over N hz₁, ← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`. Rewrite using `[← Category.assoc, hm, ← pt_over N hf, pullback.condition]`. Establish `hs : s ≫ π = v ≫ y`. Rewrite using `[pt_over N ha, Category.assoc, Category.assoc]`. Conclude with `congrArg (fun t => v ≫ V.ι ≫ t) (Over.w (fst N.U N.U))`.
-
-Establish `h₁` using `pt_comp N (pullback.lift s v hs) hf`. Establish `h₂` using `prod_comp N (pullback.lift s v hs) hz`. Rewrite `h₂` using `[pullback.lift_fst, pullback.lift_snd_assoc]`. Establish `h₃ : Prod N s (v ≫ V.ι) (a * b).left` using `⟨a, b, by rw [Category.assoc]; exact ha, by rw [Category.assoc]; exact hb, rfl⟩`. Rewrite `h₁` using `[← hm, pullback.lift_fst, pullback.lift_snd_assoc, prod_unique N h₂ h₃]`.
-
-Conclude with `h₁`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_of_isAffineQuotient {Γ : Type} [Group Γ] [Finite Γ] {α : Γ →* Aut S} (hq : IsAffineQuotient α π)
     (φ : Γ → (G.left ⟶ G.left)) (hφ : ∀ g, IsGrpPullback G G (α g).hom (φ g))
@@ -232,13 +228,13 @@ end GlobalTheory.Mum.LawDesc
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ _ R' _ _ _ ρ hρ hG D D' hD A' G' _ _ _ U' a N hN`. Use `hG.1` as an intermediate fact. Set `_ : Algebra R R'` to `ρ.toAlgebra`. Set `_ : MulSemiringAction (R' ≃+* R') R'` to `RingAut.applyMulSemiringAction`. Set `_ : MulSemiringAction (Gal ρ) R'` to `Subgroup.mulSemiringAction _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: SMulCommClass (Gal ρ) R R'` using `⟨fun σ r x => by`. Express the relevant statement in the definitionally equal form `σ.1 (ρ r * x) = ρ r * σ.1 x`. Rewrite using `[map_mul, σ.2 r]⟩`. Establish `: FaithfulSMul R R'` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hρ.2.1`. Establish `: Algebra.IsInvariant R R' (Gal ρ)` using `⟨fun x hx => hG.2 x fun σ hσ => hx ⟨σ, hσ⟩⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : IsAffineQuotient (specAction (Gal ρ) R') (spMap ρ)` using `isAffineQuotient_spec R R'`. Establish `e : ∀ σ : Gal ρ, (specAction (Gal ρ) R' σ).hom = spMap (Gal.hom σ⁻¹)` using `fun σ => by`. Rewrite using `[specAction_hom]`. Both sides reduce to the same expression. Use `LawDesc.law_of_isAffineQuotient N hq (fun σ => a.act σ⁻¹) (fun σ => ?_) fun σ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `a.cart σ⁻¹`. Rewrite using `[e]`. Conclude with `hN σ⁻¹`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_of_galAct_invariant : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G') (a : GalAct ρ hD U'), ∀ N : Near (spMap ρ) G', (∀ σ (T : Scheme.{0}) (s : T ⟶ Sp R') (u : T ⟶ N.U.left) (x : T ⟶ G'.left), N.Pt s u x → N.Pt (s ≫ spMap (Gal.hom σ)) u (x ≫ a.act σ)) → N.Law := by
   intro R _ _ _ _ R' _ _ _ ρ hρ hG D D' hD A' G' _ _ _ U' a N hN

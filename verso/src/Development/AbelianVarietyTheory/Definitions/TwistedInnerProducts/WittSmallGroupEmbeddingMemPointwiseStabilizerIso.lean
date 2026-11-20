@@ -53,7 +53,7 @@ def fixer (T : HSp D) {k : ℕ} (x : Mx D T.rank k) : Subgroup (GA D T) where
     rw [← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_fixer {T : HSp D} {k : ℕ} {x : Mx D T.rank k} {g : GA D T} : g ∈ fixer T x ↔ mt T g ⬝ x = x := Iff.rfl
 
@@ -311,18 +311,18 @@ def stabLast : Subgroup (GA D W) := fixer W (xLast dW (vecB o' ζ'))
 end FlatFJ
 
 /- English proof (translation)
-Rewrite using `[psiE, map_zero, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiE_zero (ψ : AddChar (AF D.host.F) ℂ) : psiE ψ 0 = 1 := by rw [psiE, map_zero, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Rewrite using `[psiE, map_add, AddChar.map_add_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psiE_add (ψ : AddChar (AF D.host.F) ℂ) (x y : AE D) : psiE ψ (x + y) = psiE ψ x * psiE ψ y := by
   rw [psiE, map_add, AddChar.map_add_eq_mul]; rfl
 
 /- English proof (translation)
-The claim follows from `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => by split_ifs with h · exact Matrix.one_apply_ne fun e => by rw [e] at h; omega · rfl`.
+A detailed English derivation is pending.
 -/
 theorem upSum_one (ρ : ℕ) : upSum (1 : Mx D ρ ρ) = 0 :=
   Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => by
@@ -331,16 +331,16 @@ theorem upSum_one (ρ : ℕ) : upSum (1 : Mx D ρ ρ) = 0 :=
     · rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_UX {ρ : ℕ} {u : GL (Fin ρ) (AE D)} : u ∈ UX D ρ ↔ u ∈ upperUni ρ (AE D) := Iff.rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `∑ i, ell D ρ i * u.1 i j = _`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[(hu j j).2, mul_one]`. Introduce `i _ hi`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `ell`. Use `split_ifs with h`. Use `j.2` as an intermediate fact. Rewrite using `[(hu i j).1 (lt_of_le_of_ne (by rw [Fin.le_def]; omega) hi.symm), mul_zero]`. Rewrite using `[zero_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => absurd (Finset.mem_univ j) h`.
+A detailed English derivation is pending.
 -/
 theorem ell_vecMul {ρ : ℕ} {u : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) : ell D ρ ᵥ* u.1 = ell D ρ := by
   funext j
@@ -356,27 +356,27 @@ theorem ell_vecMul {ρ : ℕ} {u : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) : el
   · exact fun h => absurd (Finset.mem_univ j) h
 
 /- English proof (translation)
-Rewrite using `[zEll, Matrix.vecMulVec_mul, ell_vecMul hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zEll_mul (T : HSp D) {ρ : ℕ} (z : Fin T.rank → D.host.E) {u : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) :
     zEll T ρ z ⬝ u.1 = zEll T ρ z := by
   rw [zEll, Matrix.vecMulVec_mul, ell_vecMul hu]
 
 /- English proof (translation)
-Rewrite using `[yZero, Matrix.neg_mul, zEll_mul S z hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem yZero_mul (S : HSp D) {ρ : ℕ} (z : Fin S.rank → D.host.E) {u : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) :
     yZero S ρ z ⬝ u.1 = yZero S ρ z := by
   rw [yZero, Matrix.neg_mul, zEll_mul S z hu]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.BesselChar.mulVec_map (incA D) M z).symm`.
+A detailed English derivation is pending.
 -/
 theorem ratV_mulVec {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (z : Fin n → D.host.E) :
     ratV (M *ᵥ z) = rat M *ᵥ ratV z := (GlobalTheory.BesselChar.mulVec_map (incA D) M z).symm
 
 /- English proof (translation)
-Rewrite using `[yZero, yZero, zEll, zEll, Matrix.mul_neg, Matrix.mul_vecMulVec, vecB, ratV_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem yZero_vecB {S₀ A L : HSp D} (o : OrthDec S₀ A L) (ρ : ℕ) (ζ : Fin L.rank → D.host.E) :
     yZero S₀ ρ (vecB o ζ) = o.jB ⬝ yZero L ρ ζ := by
@@ -387,90 +387,90 @@ section Values
 variable (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (z : Fin S₀.rank → D.host.E)
 
 /- English proof (translation)
-Rewrite using `[blockX, d.levi_jX, cancel₂ d.pX_jX, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockX_levi (a : GL (Fin ρ) (AE D)) : blockX d (d.levi a) = a.1 := by
   rw [blockX, d.levi_jX, cancel₂ d.pX_jX, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[blockX, mem_fixer.1 hg, d.pX_jX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockX_of_fix {g : GA D S} (hg : g ∈ stabX d) : blockX d g = 1 := by
   rw [blockX, mem_fixer.1 hg, d.pX_jX]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨d.nB_mem_NFlag b, d.nB_jX b⟩`.
+Supply the required witnesses or components.
 -/
 theorem nB_mem_radX (b : Mx D ρ S₀.rank) : d.nB b ∈ radX d := ⟨d.nB_mem_NFlag b, d.nB_jX b⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨d.nC_mem_NFlag c, d.nC_jX c⟩`.
+Supply the required witnesses or components.
 -/
 theorem nC_mem_radX (c : skewA D ρ) : d.nC c ∈ radX d := ⟨d.nC_mem_NFlag c, d.nC_jX c⟩
 
 /- English proof (translation)
-The claim follows from `inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem radX_le_stabX : radX d ≤ stabX d := inf_le_right
 
 /- English proof (translation)
-The claim follows from `d.wittDecomp_anisotropicEmbedding_inclX g`.
+A detailed English derivation is pending.
 -/
 theorem wittSmallGroupEmbedding_mem_pointwiseStabilizerIsotropic (g : GA D S₀) : d.emb0 g ∈ stabX d := d.wittDecomp_anisotropicEmbedding_inclX g
 
 /- English proof (translation)
-Rewrite using `[coefX, d.wittDecomp_levi_inclAnisotropic, d.pX_j0, Matrix.zero_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coefX_levi (a : GL (Fin ρ) (AE D)) : coefX d z (d.levi a) = 0 := by
   rw [coefX, d.wittDecomp_levi_inclAnisotropic, d.pX_j0, Matrix.zero_mulVec]
 
 /- English proof (translation)
-Rewrite using `[coefX, d.nB_j0, Matrix.mul_add, d.pX_j0, zero_add, cancel₂ d.pX_jX, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coefX_nB (b : Mx D ρ S₀.rank) : coefX d z (d.nB b) = b *ᵥ ratV z := by
   rw [coefX, d.nB_j0, Matrix.mul_add, d.pX_j0, zero_add, cancel₂ d.pX_jX, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[coefX, d.nC_j0, d.pX_j0, Matrix.zero_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coefX_nC (c : skewA D ρ) : coefX d z (d.nC c) = 0 := by
   rw [coefX, d.nC_j0, d.pX_j0, Matrix.zero_mulVec]
 
 /- English proof (translation)
-Rewrite using `[psiFlag, blockX, mt_mul, Matrix.mul_assoc, mem_fixer.1 hn, ← blockX, blockX_levi, psiUni]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiFlag_levi_mul (u : GL (Fin ρ) (AE D)) {n : GA D S} (hn : n ∈ stabX d) :
     psiFlag ψ d (d.levi u * n) = psiUni ψ u := by
   rw [psiFlag, blockX, mt_mul, Matrix.mul_assoc, mem_fixer.1 hn, ← blockX, blockX_levi, psiUni]
 
 /- English proof (translation)
-Rewrite using `[psiBes, simpleSum, coefX_levi, dotProduct_zero, add_zero, map_one, one_mul, blockX_levi, psiUni]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiBes_levi (u : GL (Fin ρ) (AE D)) : psiBes ψ d 1 z (d.levi u) = psiUni ψ u := by
   rw [psiBes, simpleSum, coefX_levi, dotProduct_zero, add_zero, map_one, one_mul, blockX_levi, psiUni]
 
 /- English proof (translation)
-Rewrite using `[psiBes, simpleSum, coefX_nB, blockX_of_fix d (d.nB_jX b), upSum_one, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiBes_nB (θ : D.host.E) (b : Mx D ρ S₀.rank) :
     psiBes ψ d θ z (d.nB b) = psiE ψ (incA D θ * ell D ρ ⬝ᵥ b *ᵥ ratV z) := by
   rw [psiBes, simpleSum, coefX_nB, blockX_of_fix d (d.nB_jX b), upSum_one, zero_add]
 
 /- English proof (translation)
-Rewrite using `[psiBes, simpleSum, coefX_nC, blockX_of_fix d (d.nC_jX c), upSum_one, dotProduct_zero, add_zero, mul_zero, psiE_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiBes_nC (θ : D.host.E) (c : skewA D ρ) : psiBes ψ d θ z (d.nC c) = 1 := by
   rw [psiBes, simpleSum, coefX_nC, blockX_of_fix d (d.nC_jX c), upSum_one, dotProduct_zero, add_zero, mul_zero, psiE_zero]
 
 /- English proof (translation)
-The claim follows from `d.levi_jX u`.
+A detailed English derivation is pending.
 -/
 theorem levi_xZero (u : GL (Fin ρ) (AE D)) : mt S (d.levi u) ⬝ xZero d = xZero d ⬝ u.1 := d.levi_jX u
 
 end Values
 
 /- English proof (translation)
-Establish `h` using `dW.symplO_incX_incAdj V₀ b (yZero V₀ ρ z)`. Rewrite using `[GlobalTheory.OrientedHeis.symplO_skew]`. Use `(congrArg Neg.neg h).trans ?_` and prove the remaining obligations. Rewrite using `[yZero, Matrix.neg_mul, trace_neg, map_neg, neg_neg, zEll, Matrix.vecMulVec_mul, Matrix.trace_vecMulVec, dotProduct_mulVec, dotProduct_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_yZero {V₀ W W₀ : HSp D} {ρ : ℕ} (dW : HypDec W W₀ ρ) (z : Fin V₀.rank → D.host.E) (b : Mx D ρ V₀.rank) :
     symplO V₀ W (dW.incAdj V₀ (yZero V₀ ρ z)) (xZero dW ⬝ b) =
@@ -482,7 +482,7 @@ theorem symplO_yZero {V₀ W W₀ : HSp D} {ρ : ℕ} (dW : HypDec W W₀ ρ) (z
     dotProduct_mulVec, dotProduct_comm]
 
 /- English proof (translation)
-Rewrite using `[symplO_yZero, psiBes_nB, map_one, one_mul, psiE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_yZero (ψ : AddChar (AF D.host.F) ℂ) {V V₀ W W₀ : HSp D} {ρ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ ρ)
     (z : Fin V₀.rank → D.host.E) (b : Mx D ρ V₀.rank) :
@@ -490,7 +490,7 @@ theorem psi_yZero (ψ : AddChar (AF D.host.F) ℂ) {V V₀ W W₀ : HSp D} {ρ :
   rw [symplO_yZero, psiBes_nB, map_one, one_mul, psiE]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Rewrite using `[heisO, symplOH_zero_right, AddChar.map_zero_eq_one, one_mul, add_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext w
@@ -501,14 +501,14 @@ section JacTVal
 variable (ψ : AddChar (AF D.host.F) ℂ) {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D) (y : Mx D S.rank ρ)
 
 /- English proof (translation)
-Establish `h` using `d.actO_incAdj S 1 a y`. Rewrite `h` using `[actO_eq, inv_one, mt_one, Matrix.mul_one, Matrix.one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem levi_inv_incAdj (a : GL (Fin ρ) (AE D)) : mt T (d.levi a)⁻¹ ⬝ d.incAdj S y = d.incAdj S (y ⬝ a.1) := by
   have h := d.actO_incAdj S 1 a y
   rwa [actO_eq, inv_one, mt_one, Matrix.mul_one, Matrix.one_mul] at h
 
 /- English proof (translation)
-Establish `h : mt T (d.levi a * n)⁻¹ ⬝ d.incAdj S y = mt T n⁻¹ ⬝ d.incAdj S y`. Rewrite using `[_root_.mul_inv_rev, mt_mul, Matrix.mul_assoc, levi_inv_incAdj, ha]`. Use function extensionality and compare the values at `f`. Rewrite using `[jacT, jacT, cenT, cenT, ptT, ptT, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacT_levi_mul {a : GL (Fin ρ) (AE D)} (ha : y ⬝ a.1 = y) (n : GA D T) :
     jacT ψ d S y (d.levi a * n) = jacT ψ d S y n := by
@@ -518,7 +518,7 @@ theorem jacT_levi_mul {a : GL (Fin ρ) (AE D)} (ha : y ⬝ a.1 = y) (n : GA D T)
   rw [jacT, jacT, cenT, cenT, ptT, ptT, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `f`. Rewrite using `[jacT, cenT, ptT, inv_one, mt_one, Matrix.one_mul, GlobalTheory.OrientedHeis.symplOH_self, AddChar.map_zero_eq_one, one_smul, d.incAdj_apply, d.incY_apply, cancel₂ d.p0_jY, Matrix.zero_mul, heisO_zero, id]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacT_one : jacT ψ d S y 1 = id := by
   funext f
@@ -526,7 +526,7 @@ theorem jacT_one : jacT ψ d S y 1 = id := by
     d.incAdj_apply, d.incY_apply, cancel₂ d.p0_jY, Matrix.zero_mul, heisO_zero, id]
 
 /- English proof (translation)
-Rewrite using `[ptT, ← d.nC_mul_nB, _root_.mul_inv_rev, d.nB_inv, d.nC_inv, ← d.nC_mul_nB, mt_mul, Matrix.mul_assoc, cancel₂ (d.wittDecomp_projAnisotropic_unipotentSkew _), cancel₂ (d.wittDecomp_projAnisotropic_unipotentMixed _), d.incAdj_apply, d.incY_apply, Matrix.sub_mul, cancel₂ d.p0_jY, Ma …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptT_nB_mul_nC (b : Mx D ρ T₀.rank) (c : skewA D ρ) :
     ptT d S y (d.nB b * d.nC c) = plus T₀ b ⬝ (incA D (-D.host.xi0⁻¹) • (adj y ⬝ gA S)) := by
@@ -535,7 +535,7 @@ theorem ptT_nB_mul_nC (b : Mx D ρ T₀.rank) (c : skewA D ρ) :
     Matrix.mul_assoc, cancel₂ d.pY_jY, Matrix.zero_mul, Matrix.one_mul, plus_neg, Matrix.neg_mul, zero_sub, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[cenT, HypDec.qT, sub_eq_add_neg, GlobalTheory.OrientedHeis.symplOH_add_right]`. Establish `h` using `GlobalTheory.OrientedHeis.symplOH_add_right (d.incAdj S y) (d.incAdj S y) (-d.incAdj S y)`. Rewrite `h` using `[add_neg_cancel, symplOH_zero_right, GlobalTheory.OrientedHeis.symplOH_self, zero_add]`. Rewrite using `[← h, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cenT_nC (c : skewA D ρ) : cenT d S y (d.nC c) = d.qT S c y := by
   rw [cenT, HypDec.qT, sub_eq_add_neg, GlobalTheory.OrientedHeis.symplOH_add_right]
@@ -550,14 +550,14 @@ section Line
 variable {S₀ A L T T₀ : HSp D} {ρ : ℕ} (o : OrthDec S₀ A L) (d : HypDec T T₀ ρ)
 
 /- English proof (translation)
-Rewrite using `[d.incAdj_apply, d.incAdj_apply, d.incY_apply, d.incY_apply, o.pB_eq, adj_mul]`. Simplify using `only [Matrix.mul_assoc, Matrix.smul_mul, gA_giA_cancel]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem incAdj_jB (y : Mx D L.rank ρ) : d.incAdj S₀ (o.jB ⬝ y) = d.incAdj L y ⬝ o.pB := by
   rw [d.incAdj_apply, d.incAdj_apply, d.incY_apply, d.incY_apply, o.pB_eq, adj_mul]
   simp only [Matrix.mul_assoc, Matrix.smul_mul, gA_giA_cancel]
 
 /- English proof (translation)
-Rewrite using `[o.resS_apply, yZero_vecB, ptT, ptT, incAdj_jB]`. Simplify using `only [Matrix.mul_assoc, o.pB_jA, o.pB_jB, Matrix.mul_zero, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ptT_yZero_vecB (ζ : Fin L.rank → D.host.E) (n : GA D T) :
     o.resS T₀ (ptT d S₀ (yZero S₀ ρ (vecB o ζ)) n) = (0, ptT d L (yZero L ρ ζ) n) := by
@@ -565,7 +565,7 @@ theorem ptT_yZero_vecB (ζ : Fin L.rank → D.host.E) (n : GA D T) :
   simp only [Matrix.mul_assoc, o.pB_jA, o.pB_jB, Matrix.mul_zero, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[cenT, cenT, o.symplOH_resS, o.resS_apply, o.resS_apply, yZero_vecB, incAdj_jB]`. Simplify using `only [Matrix.mul_assoc, o.pB_jA, o.pB_jB, Matrix.mul_zero, Matrix.mul_one, symplOH_zero_left, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cenT_yZero_vecB (ζ : Fin L.rank → D.host.E) (n : GA D T) :
     cenT d S₀ (yZero S₀ ρ (vecB o ζ)) n = cenT d L (yZero L ρ ζ) n := by
@@ -579,7 +579,7 @@ section JacSVal
 variable (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D) (x : Mx D T.rank ρ)
 
 /- English proof (translation)
-Establish `h : d.extX T x ⬝ mt S (d.levi a * n) = d.extX T x ⬝ mt S n`. Rewrite using `[mt_mul, ← Matrix.mul_assoc, d.extX_levi, ha]`. Use function extensionality and compare the values at `f`. Rewrite using `[jacS, jacS, cenS, cenS, ptS, ptS, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacS_levi_mul {a : GL (Fin ρ) (AE D)} (ha : x ⬝ a.1 = x) (n : GA D S) :
     jacS ψ d T x (d.levi a * n) = jacS ψ d T x n := by
@@ -589,7 +589,7 @@ theorem jacS_levi_mul {a : GL (Fin ρ) (AE D)} (ha : x ⬝ a.1 = x) (n : GA D S)
   rw [jacS, jacS, cenS, cenS, ptS, ptS, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `f`. Rewrite using `[jacS, cenS, ptS, mt_one, Matrix.mul_one, GlobalTheory.OrientedHeis.symplOH_self, AddChar.map_zero_eq_one, one_smul, d.extX_apply, Matrix.mul_assoc, d.pX_j0, Matrix.mul_zero, heisO_zero, id]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacS_one : jacS ψ d T x 1 = id := by
   funext f
@@ -597,14 +597,14 @@ theorem jacS_one : jacS ψ d T x 1 = id := by
     d.extX_apply, Matrix.mul_assoc, d.pX_j0, Matrix.mul_zero, heisO_zero, id]
 
 /- English proof (translation)
-Rewrite using `[ptS, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.nC_j0, d.nB_j0, d.extX_apply, Matrix.mul_assoc, Matrix.mul_add, d.pX_j0, zero_add, cancel₂ d.pX_jX, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptS_nB_mul_nC (b : Mx D ρ S₀.rank) (c : skewA D ρ) : ptS d T x (d.nB b * d.nC c) = x ⬝ b := by
   rw [ptS, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.nC_j0, d.nB_j0, d.extX_apply, Matrix.mul_assoc, Matrix.mul_add,
     d.pX_j0, zero_add, cancel₂ d.pX_jX, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[cenS, d.extX_nC, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_self, zero_add, HypDec.qS]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cenS_nC (c : skewA D ρ) : cenS d T x (d.nC c) = d.qS T c x := by
   rw [cenS, d.extX_nC, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_self, zero_add, HypDec.qS]
@@ -618,12 +618,12 @@ section Compare
 variable {V V₀ A L : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (o : OrthDec V₀ A L) {ζ : Fin L.rank → D.host.E}
 
 /- English proof (translation)
-The claim follows from `d.e'e`.
+A detailed English derivation is pending.
 -/
 theorem qX_e : d.qX * d.e = 1 := d.e'e
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.mulVec_injective_iff.1 fun x y h => by have := congrArg (d.qX *ᵥ ·) h simpa only [Matrix.mulVec_mulVec, qX_e, Matrix.one_mulVec] using this, d.ee⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIsoSub_e : IsIsoSub V d.e :=
   ⟨Matrix.mulVec_injective_iff.1 fun x y h => by
@@ -663,16 +663,16 @@ def toBesDat (hζ : IsLineVec L ζ) {θ : D.host.E} (hθ : θ ≠ 0) (ι : A.V �
   y := 1
 
 /- English proof (translation)
-Simplify using `only [superSum, upSum, ell, dotProduct, mul_add, Finset.mul_sum, mul_ite, ite_mul, mul_zero, zero_mul, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem superSum_const (t : AE D) (T : Mx D ρ ρ) (b : Fin ρ → AE D) :
     superSum (fun _ => t) T b = t * (upSum T + ell D ρ ⬝ᵥ b) := by
   simp only [superSum, upSum, ell, dotProduct, mul_add, Finset.mul_sum, mul_ite, ite_mul, mul_zero, zero_mul, one_mul]
 
 /- English proof (translation)
-Rewrite using `[upSum, upSum, upSum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upSum_add (T T' : Mx D ρ ρ) : upSum (T + T') = upSum T + upSum T' := by
   rw [upSum, upSum, upSum, ← Finset.sum_add_distrib]
@@ -687,11 +687,11 @@ variable (ψ : AddChar (AF D.host.F) ℂ) (hζ : IsLineVec L ζ) {θ : D.host.E}
   (hι : frameMat V A ι = d.i₀ * o.iA)
 
 /- English proof (translation)
-Take `⟨T, b, -, h1, h2⟩` from `GlobalTheory.BesselChar.exists_coords (toBesDat d o hζ hθ ι hι) n hn`. Rewrite using `[GlobalTheory.BesselChar.besChar_eq ψ _ n T b h1 h2]`. Establish `e1 : mt V n ⬝ d.jX = d.jX + d.jX ⬝ (show Mx D ρ ρ from T)` using `h1`. Establish `e2 : mt V n *ᵥ ratV (d.i₀ *ᵥ vecB o ζ) = ratV (d.i₀ *ᵥ vecB o ζ) + d.jX *ᵥ (show Fin ρ → AE D from b)` using `h2`. Establish `e3 : blockX d n = 1 + (show Mx D ρ ρ from T)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[blockX, e1, Matrix.mul_add, d.pX_jX, cancel₂ d.pX_jX, Matrix.one_mul]`. Establish `e4 : coefX d (vecB o ζ) n = b`. Rewrite `e2` using `[ratV_mulVec]`. Rewrite using `[coefX, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, HypDec.j0, e2, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← HypDec.j0, d.pX_j0, d.pX_jX, Matrix.zero_mulVec, Matrix.one_mulVec, zero_add]`. Rewrite using `[psiBes, simpleSum, e3, e4, upSum_add, upSum_one, zero_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (psiE ψ) (superSum_const (incA D θ) T b)`.
+A detailed English derivation is pending.
 -/
 theorem besChar_toBesDat {n : GA D V} (hn : n ∈ flagN d) :
     besChar ψ (toBesDat d o hζ hθ ι hι) n = psiBes ψ d θ (vecB o ζ) n := by
@@ -715,7 +715,7 @@ section Struct
 variable {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
 
 /- English proof (translation)
-Take `⟨⟨T, hT, h1⟩, h2⟩` from `(GlobalTheory.BesselChar.mem_NFlag_iff S d.e (isIsoSub_e d).1 n).1 hn`. Use `choose a ha using fun j => h2 (fun k => d.j0 k j) (funext fun i => congrFun (congrFun d.pY_j0 i) j)`. Conclude with `⟨T, (Matrix.of a)ᵀ, hT, h1, funext fun k => funext fun j => congrFun (ha j) k⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_blocks {n : GA D S} (hn : n ∈ flagN d) : ∃ (T : Mx D ρ ρ) (b : Mx D ρ S₀.rank),
     GlobalTheory.BesselChar.StrictUp T ∧ mt S n ⬝ d.jX = d.jX + d.jX ⬝ T ∧ mt S n ⬝ d.j0 = d.j0 + d.jX ⬝ b := by
@@ -724,7 +724,7 @@ theorem exists_blocks {n : GA D S} (hn : n ∈ flagN d) : ∃ (T : Mx D ρ ρ) (
   exact ⟨T, (Matrix.of a)ᵀ, hT, h1, funext fun k => funext fun j => congrFun (ha j) k⟩
 
 /- English proof (translation)
-Rewrite using `[superSum_const, one_mul, simpleSum, blockX, coefX, h1, h2, Matrix.mul_add, Matrix.mul_add, d.pX_jX, d.pX_j0, cancel₂ d.pX_jX, cancel₂ d.pX_jX, Matrix.one_mul, Matrix.one_mul, zero_add, upSum_add, upSum_one, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem simpleSum_eq (z : Fin S₀.rank → D.host.E) {n : GA D S} {T : Mx D ρ ρ} {b : Mx D ρ S₀.rank}
     (h1 : mt S n ⬝ d.jX = d.jX + d.jX ⬝ T) (h2 : mt S n ⬝ d.j0 = d.j0 + d.jX ⬝ b) :
@@ -733,9 +733,9 @@ theorem simpleSum_eq (z : Fin S₀.rank → D.host.E) {n : GA D S} {T : Mx D ρ 
     cancel₂ d.pX_jX, cancel₂ d.pX_jX, Matrix.one_mul, Matrix.one_mul, zero_add, upSum_add, upSum_one, zero_add]
 
 /- English proof (translation)
-Take `⟨T, b, hT, h1, h2⟩` from `exists_blocks d hn`. Take `⟨T', b', hT', h1', h2'⟩` from `exists_blocks d hn'`. Establish `e1 : mt S (n * n') ⬝ d.jX = d.jX + d.jX ⬝ (T + T' + T ⬝ T')`. Rewrite using `[mt_mul]`. Conclude with `GlobalTheory.BesselChar.mul_cols h1 h1'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : mt S (n * n') ⬝ d.j0 = d.j0 + d.jX ⬝ (b + b' + T ⬝ b')`. Rewrite using `[mt_mul, Matrix.mul_assoc, h2', Matrix.mul_add, h2, cancel₂ h1, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[simpleSum_eq d z e1 e2, simpleSum_eq d z h1 h2, simpleSum_eq d z h1' h2', Matrix.add_mulVec, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, GlobalTheory.BesselChar.superSum_mul _ hT hT']`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem simpleSum_mul (z : Fin S₀.rank → D.host.E) {n n' : GA D S} (hn : n ∈ flagN d) (hn' : n' ∈ flagN d) :
     simpleSum d z (n * n') = simpleSum d z n + simpleSum d z n' := by
@@ -753,21 +753,21 @@ theorem simpleSum_mul (z : Fin S₀.rank → D.host.E) {n n' : GA D S} (hn : n �
 variable (ψ : AddChar (AF D.host.F) ℂ)
 
 /- English proof (translation)
-Rewrite using `[psiBes, simpleSum_mul d z hn hn', mul_add, psiE_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psiBes_mul (θ : D.host.E) (z : Fin S₀.rank → D.host.E) {n n' : GA D S} (hn : n ∈ flagN d) (hn' : n' ∈ flagN d) :
     psiBes ψ d θ z (n * n') = psiBes ψ d θ z n * psiBes ψ d θ z n' := by
   rw [psiBes, simpleSum_mul d z hn hn', mul_add, psiE_add]; rfl
 
 /- English proof (translation)
-Establish `h : ratV (0 : Fin S₀.rank → D.host.E) = 0` using `funext fun _ => map_zero _`. Rewrite using `[psiBes, simpleSum, coefX, h, Matrix.mulVec_zero, dotProduct_zero, add_zero, map_one, one_mul, psiFlag]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiFlag_eq (n : GA D S) : psiFlag ψ d n = psiBes ψ d 1 0 n := by
   have h : ratV (0 : Fin S₀.rank → D.host.E) = 0 := funext fun _ => map_zero _
   rw [psiBes, simpleSum, coefX, h, Matrix.mulVec_zero, dotProduct_zero, add_zero, map_one, one_mul, psiFlag]
 
 /- English proof (translation)
-Simplify using `only [psiFlag_eq, psiBes_mul d ψ 1 0 hn hn']`.
+Simplify using the standard rewrite rules.
 -/
 theorem psiFlag_mul {n n' : GA D S} (hn : n ∈ flagN d) (hn' : n' ∈ flagN d) :
     psiFlag ψ d (n * n') = psiFlag ψ d n * psiFlag ψ d n' := by
@@ -776,7 +776,7 @@ theorem psiFlag_mul {n n' : GA D S} (hn : n ∈ flagN d) (hn' : n' ∈ flagN d) 
 end Struct
 
 /- English proof (translation)
-Use `⟨rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[diagSp_gram]`. Express the relevant statement in the definitionally equal form `∑ i : Fin 1, star (1 : D.host.E) * ∑ j : Fin 1, Matrix.diagonal (fun i => Examples₂.sgn (![true] i)) i j * 1 ≠ 0`. Simplify using `[Examples₂.sgn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 example (D : D7) : IsLineVec (diagSp D 1 ![true] 0 1) (fun _ => 1) := by
   refine ⟨rfl, ?_⟩
@@ -785,25 +785,25 @@ example (D : D7) : IsLineVec (diagSp D 1 ![true] 0 1) (fun _ => 1) := by
   simp [Examples₂.sgn]
 
 /- English proof (translation)
-Rewrite using `[psiBes, simpleSum, upSum, dotProduct, Finset.sum_of_isEmpty, Finset.sum_of_isEmpty, add_zero, mul_zero, psiE_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} (d : HypDec S S₀ 0) (θ z n) : psiBes ψ d θ z n = 1 := by
   rw [psiBes, simpleSum, upSum, dotProduct, Finset.sum_of_isEmpty, Finset.sum_of_isEmpty, add_zero, mul_zero, psiE_zero]
 
 /- English proof (translation)
-Rewrite using `[psiBes_nB, map_one, one_mul, dotProduct, Fin.sum_univ_one, show ell D 1 0 = 1 from rfl, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} (d : HypDec S S₀ 1) (z) (b : Mx D 1 S₀.rank) :
     psiBes ψ d 1 z (d.nB b) = psiE ψ ((b *ᵥ ratV z) 0) := by
   rw [psiBes_nB, map_one, one_mul, dotProduct, Fin.sum_univ_one, show ell D 1 0 = 1 from rfl, one_mul]
 
 /- English proof (translation)
-Simplify using `[upSum, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 example (T : Mx D 2 2) : upSum T = T 0 1 := by simp [upSum, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `h` using `ptS_nB_mul_nC d T x 0 c`. Rewrite `h` using `[d.nB_zero, one_mul, Matrix.mul_zero]`. Rewrite using `[jacS, h, cenS_nC, heisO_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 example (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D) (x : Mx D T.rank ρ)
     (c : skewA D ρ) (f : WO S₀ T → ℂ) : jacS ψ d T x (d.nC c) f = ψ (d.qS T c x) • f := by

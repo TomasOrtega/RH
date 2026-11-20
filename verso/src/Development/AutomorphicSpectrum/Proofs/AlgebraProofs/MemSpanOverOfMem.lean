@@ -8,9 +8,9 @@ open GlobalTheory.CompanionTheory.Ar.Num
 variable {o Ω : Type*} [CommRing o] [Field Ω] [Algebra o Ω] {E : Type*} [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-Unfold `spanOver at he ⊢`. Proceed by induction on `he using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, y, hy, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨a * c, R.mul_mem ha hc, y, hy, by rw [mul_smul]⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_spanOver (R : Subalgebra o Ω) (S : Set E) {a : Ω} (ha : a ∈ R) {e : E}
     (he : e ∈ spanOver R S) : a • e ∈ spanOver R S := by
@@ -24,16 +24,16 @@ theorem smul_mem_spanOver (R : Subalgebra o Ω) (S : Set E) {a : Ω} (ha : a ∈
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, R.one_mem, e, he, (one_smul _ _).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_spanOver_of_mem (R : Subalgebra o Ω) {S : Set E} {e : E} (he : e ∈ S) :
     e ∈ spanOver R S :=
   AddSubgroup.subset_closure ⟨1, R.one_mem, e, he, (one_smul _ _).symm⟩
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `ha`. Take `⟨m, hm⟩` from `hb`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `: f ^ (n + m) * (a + b) = f ^ m * (f ^ n * a) + f ^ n * (f ^ m * b)` using `by ring`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `R.add_mem (R.mul_mem (R.pow_mem hf _) hn) (R.mul_mem (R.pow_mem hf _) hm)`.
+A detailed English derivation is pending.
 -/
 theorem frac_add (R : Subalgebra o Ω) {f a b : Ω} (hf : f ∈ R) (ha : ∃ n : ℕ, f ^ n * a ∈ R)
     (hb : ∃ n : ℕ, f ^ n * b ∈ R) : ∃ n : ℕ, f ^ n * (a + b) ∈ R := by
@@ -45,9 +45,9 @@ theorem frac_add (R : Subalgebra o Ω) {f a b : Ω} (hf : f ∈ R) (ha : ∃ n :
   exact R.add_mem (R.mul_mem (R.pow_mem hf _) hn) (R.mul_mem (R.pow_mem hf _) hm)
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hx`. Take `⟨m, hm⟩` from `hy`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `: f ^ (n + m) • (x + y) = f ^ m • (f ^ n • x) + f ^ n • (f ^ m • y)`. Rewrite using `[smul_add, ← mul_smul, ← mul_smul, ← pow_add, ← pow_add, add_comm m n]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `L.add_mem (hL _ (R.pow_mem hf _) _ hn) (hL _ (R.pow_mem hf _) _ hm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_add (R : Subalgebra o Ω) (L : AddSubgroup E) (hL : ∀ a ∈ R, ∀ e ∈ L, a • e ∈ L)
     {f : Ω} (hf : f ∈ R) {x y : E} (hx : ∃ n : ℕ, f ^ n • x ∈ L) (hy : ∃ n : ℕ, f ^ n • y ∈ L) :
@@ -61,33 +61,33 @@ theorem loc_add (R : Subalgebra o Ω) (L : AddSubgroup E) (hL : ∀ a ∈ R, ∀
   exact L.add_mem (hL _ (R.pow_mem hf _) _ hn) (hL _ (R.pow_mem hf _) _ hm)
 
 /- English proof (translation)
-Take `⟨hst, k, f, c, hf, hc, hsum, hloc⟩` from `h`. Establish `hst₁ : ∀ a ∈ R₁, ∀ e ∈ spanOver R₁ (bc '' (L : Set E)), a • e ∈ spanOver R₁ (bc '' (L : Set E))` using `fun a ha e he => smul_mem_spanOver R₁ _ ha he`. Use `⟨hst₁, k, fun l => algebraMap Ω Ω₁ (f l), fun l => algebraMap Ω Ω₁ (c l), fun l => hR _ (hf l), fun l => hR _ (hc l), ?_, fun l => ?_⟩` and prove the remaining obligations. Simplify using `only [← map_mul, ← map_sum, hsum, map_one]`. Take `⟨b, hli, hsp, hb⟩` from `hloc l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `beta_reduce`. Use `set F : Ω₁ := algebraMap Ω Ω₁ (f l) with hF`. Establish `hF₁ : F ∈ R₁` using `hR _ (hf l)`. Set `B : Module.Basis (Fin r) Ω E` to `Module.Basis.mk hli hsp.ge`. Set `B₁ : Module.Basis (Fin r) Ω₁ E₁` to `IsBaseChange.basis B hbc`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hB₁ : (fun q => bc (b q)) = B₁`. Use function extensionality and compare the values at `q`. Simplify using `[B₁, B, IsBaseChange.basis_apply]`. Establish `hB₁' : ∀ q, bc (b q) = B₁ q` using `fun q => congrFun hB₁ q`. Use `⟨B₁, B₁.linearIndependent, B₁.span_eq, fun e => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ x ∈ spanOver R₁ (bc '' (L : Set E)), ∃ a : Fin r → Ω₁, (∀ q, ∃ n : ℕ, F ^ n * a q ∈ R₁) ∧ x = ∑ q, a q • B₁ q`. Introduce `x hx`. Unfold `spanOver at hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, _, ⟨y, hy, rfl⟩, rfl⟩` from `hx`. Take `⟨a, ha, rfl⟩` from `(hb y).1 ⟨0, by simpa using hy⟩`. Use `⟨fun q => t * algebraMap Ω Ω₁ (a q), fun q => ?_, ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `ha q`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `R₁.mul_mem ht (hR _ hn)` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow]`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hF]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [map_sum, map_smul, Finset.smul_sum, hB₁', mul_smul, algebraMap_smul]`. Consider the case `zero => exact ⟨0, fun q => ⟨0, by simp⟩, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨a', ha', rfl⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨a + a', fun q => frac_add R₁ hF₁ (ha q) (ha' q), by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `neg x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Use `⟨-a, fun q => ?_, by simp⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `ha q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨n, by simpa using R₁.neg_mem hn⟩`. Introduce and unpack `⟨n, hn⟩`. Distinguish the cases in `h0 : F = 0`. Conclude with `⟨B₁.repr e, fun q => ⟨1, by simp [h0]⟩, (B₁.sum_repr e).symm⟩`. Take `⟨a, ha, hea⟩` from `key _ hn`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFn : F ^ n ≠ 0` using `pow_ne_zero _ h0`. Use `⟨fun q => (F ^ n)⁻¹ * a q, fun q => ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `ha q`. Use `⟨m + n, ?_⟩` and prove the remaining obligations. Use `hm using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[pow_add]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [mul_smul, ← Finset.smul_sum]`. Rewrite using `[← hea, inv_smul_smul₀ hFn]`. Introduce and unpack `⟨a, ha, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_induction _ (fun x : E₁ => ∃ n : ℕ, F ^ n • x ∈ spanOver R₁ (bc '' (L : Set E))) (fun x y hx hy => loc_add R₁ _ hst₁ hF₁ hx hy) ⟨0, by simp⟩ (fun q _ => ?_)` and prove the remaining obligations. Take `⟨m, hm⟩` from `(hb (b q)).2 ⟨Pi.single q 1, fun q' => ⟨0, by`. Distinguish the cases in `hq : q' = q`. Substitute `hq` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[hq]⟩, by simp [Pi.single_apply]⟩`. Take `⟨n, hn⟩` from `ha q`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `h1 : bc (f l ^ m • b q) ∈ spanOver R₁ (bc '' (L : Set E))` using `mem_spanOver_of_mem R₁ ⟨_, hm, rfl⟩`. Establish `h2` using `hst₁ _ hn _ h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[map_smul, hB₁', ← algebraMap_smul Ω₁ (f l ^ m), map_pow, ← hF, ← mul_smul]`. Rewrite using `[← mul_smul]`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem locFree_baseChange {o Ω Ω₁ : Type} [CommRing o] [Field Ω] [Field Ω₁] [Algebra o Ω]
     [Algebra o Ω₁] [Algebra Ω Ω₁] [IsScalarTower o Ω Ω₁] (R : Subalgebra o Ω)

@@ -11,9 +11,9 @@ namespace GlobalTheory.DepthUnf
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Establish `e : Nat.gcd k k' • x = Nat.gcdA k k' • (k • x) + Nat.gcdB k k' • (k' • x)`. Rewrite using `[← natCast_zsmul, ← natCast_zsmul, ← natCast_zsmul, smul_smul, smul_smul, ← add_smul, Nat.gcd_eq_gcd_ab]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (zsmul_mem h _) (zsmul_mem h' _)`.
+A detailed English derivation is pending.
 -/
 theorem gcd_nsmul_mem_of {A S : Type*} [AddCommGroup A] [SetLike S A] [AddSubgroupClass S A] (Λ : S) {x : A}
     {k k' : ℕ} (h : k • x ∈ Λ) (h' : k' • x ∈ Λ) : Nat.gcd k k' • x ∈ Λ := by
@@ -24,28 +24,28 @@ theorem gcd_nsmul_mem_of {A S : Type*} [AddCommGroup A] [SetLike S A] [AddSubgro
   exact add_mem (zsmul_mem h _) (zsmul_mem h' _)
 
 /- English proof (translation)
-Rewrite using `[mul_add, mul_one, add_smul, natCast_zsmul, add_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem add_mul_succ_zsmul {A : Type*} [AddCommGroup A] (k : ℕ) (n : ℤ) (z w : A) :
     z + ((k : ℤ) * (n + 1)) • w = (z + ((k : ℤ) * n) • w) + k • w := by
   rw [mul_add, mul_one, add_smul, natCast_zsmul, add_assoc]
 
 /- English proof (translation)
-Rewrite using `[add_assoc, ← natCast_zsmul, ← add_smul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem add_mul_pred_zsmul {A : Type*} [AddCommGroup A] (k : ℕ) (n : ℤ) (z w : A) :
     (z + ((k : ℤ) * (n - 1)) • w) + k • w = z + ((k : ℤ) * n) • w := by
   rw [add_assoc, ← natCast_zsmul, ← add_smul]; congr 2; ring
 
 /- English proof (translation)
-Rewrite using `[add_assoc, ← add_smul, ← Nat.gcd_eq_gcd_ab, natCast_zsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem add_gcd_nsmul_eq {A : Type*} [AddCommGroup A] (k k' : ℕ) (z w : A) :
     z + Nat.gcd k k' • w = (z + ((k : ℤ) * Nat.gcdA k k') • w) + ((k' : ℤ) * Nat.gcdB k k') • w := by
   rw [add_assoc, ← add_smul, ← Nat.gcd_eq_gcd_ab, natCast_zsmul]
 
 /- English proof (translation)
-Introduce `i j` and use `by have h1 := ha i j have h2 := hb i j show e * (a i j + c • b i j) = a i j + c • b i j rw [zsmul_eq_mul, mul_add, mul_left_comm, h1, h2]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_add_zsmul {e : AE D} {m n : ℕ} {a b : Mx D m n} (ha : IsHalf e a) (hb : IsHalf e b) (c : ℤ) :
     IsHalf e (a + c • b) := fun i j => by
@@ -55,9 +55,9 @@ theorem isHalf_add_zsmul {e : AE D} {m n : ℕ} {a b : Mx D m n} (ha : IsHalf e 
   rw [zsmul_eq_mul, mul_add, mul_left_comm, h1, h2]
 
 /- English proof (translation)
-Proceed by induction on `c using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[add_mul_succ_zsmul, add_mul_succ_zsmul, hK.2 (x + ((k : ℤ) * n) • u) u (y + ((k : ℤ) * n) • v) v (fun j => isHalf_add_zsmul (hx j) (hu j).1 _) (fun i => isHalf_add_zsmul (hy i) (hv i).1 _) hu hv, ih]`. Consider the case `pred n ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← hK.2 (x + ((k : ℤ) * (-n - 1)) • u) u (y + ((k : ℤ) * (-n - 1)) • v) v (fun j => isHalf_add_zsmul (hx j) (hu j).1 _) (fun i => isHalf_add_zsmul (hy i) (hv i).1 _) hu hv, add_mul_pred_zsmul, add_mul_pred_zsmul, ih]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem DepthOK.flatProd_add_zsmul {S : GridChoice W U} {t : T} {Φ : G.Datum} {β : CosFam G t} {e : AE D} {k : ℕ}
     (hK : DepthOK S t Φ β e k) (c : ℤ)
@@ -77,7 +77,7 @@ theorem DepthOK.flatProd_add_zsmul {S : GridChoice W U} {t : T} {Φ : G.Datum} {
       add_mul_pred_zsmul, add_mul_pred_zsmul, ih]
 
 /- English proof (translation)
-Use `⟨fun x y hx hy hF => ⟨fun j => gcd_nsmul_mem_of _ ((h.1 x y hx hy hF).1 j) ((h'.1 x y hx hy hF).1 j), fun i => gcd_nsmul_mem_of _ ((h.1 x y hx hy hF).2 i) ((h'.1 x y hx hy hF).2 i)⟩, ?_⟩` and prove the remaining obligations. Introduce `x u y v hx hy hu hv`. Rewrite using `[add_gcd_nsmul_eq k k' x u, add_gcd_nsmul_eq k k' y v, h'.flatProd_add_zsmul _ (x + ((k : ℤ) * Nat.gcdA k k') • u) u (y + ((k : ℤ) * Nat.gcdA k k') • v) v (fun j => isHalf_add_zsmul (hx j) (hu j).1 _) (fun i => isHalf_add_zsmul (hy i) (hv i).1 _) hu hv, h.flatProd_add_zsmul _ x u …`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem depthOK_gcd (S : GridChoice W U) (t : T) (Φ : G.Datum) (β : CosFam G t) (e : AE D) (k k' : ℕ)
     (h : DepthOK S t Φ β e k) (h' : DepthOK S t Φ β e k') : DepthOK S t Φ β e (Nat.gcd k k') := by

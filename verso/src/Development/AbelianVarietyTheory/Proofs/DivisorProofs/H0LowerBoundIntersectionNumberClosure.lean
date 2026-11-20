@@ -19,19 +19,19 @@ noncomputable section
 namespace GlobalTheory.ClosureRR
 
 /- English proof (translation)
-Establish `hf : (0 : ℚ) < k.factorial` using `by exact_mod_cast k.factorial_pos`. Establish `hε : (0 : ℚ) < (T : ℚ) - q` using `sub_pos.2 hq`. Take `⟨N, hN⟩` from `exists_nat_ge ((C : ℚ) * k * 2 ^ (k - 1) / ((T : ℚ) - q))`. Use `⟨N + 1, fun l hl => ?_⟩` and prove the remaining obligations. Establish `hm : (1 : ℚ) ≤ l` using `by exact_mod_cast (show 1 ≤ l by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hNl : (N : ℚ) ≤ l` using `by exact_mod_cast (show N ≤ l by omega)`. Establish `hB : (C : ℚ) * k * 2 ^ (k - 1) ≤ ((T : ℚ) - q) * l`. Use `(div_le_iff₀ hε).1 (hN.trans hNl)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a` using `hC l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `a` using `[abs_le]`. Establish `a' : (T : ℚ) * (l : ℚ) ^ k - (C : ℚ) * ((k : ℚ) * ((l : ℚ) + 1) ^ (k - 1)) ≤ (k.factorial : ℚ) * (h l : ℚ)`. Use `a.1` as an intermediate fact. Establish `e : ((T * (l : ℤ) ^ k - C * ((k : ℤ) * ((l : ℤ) + 1) ^ (k - 1)) : ℤ) : ℚ) ≤ (((k.factorial : ℤ) * (h l : ℤ) : ℤ) : ℚ)` using `Int.cast_le.2 (by linarith)`. Move the coercions through the operations in `at e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `e`. Rewrite using `[div_le_iff₀ hf]`. Break down `k with _ | j` into its components or cases. Simplify using `only [pow_zero, mul_one, Nat.factorial_zero, Nat.cast_one, CharP.cast_eq_zero, zero_mul, mul_zero, sub_zero, one_mul] at a' ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.add_sub_cancel] at a' hB`. Establish `h2 : ((l : ℚ) + 1) ^ j ≤ 2 ^ j * (l : ℚ) ^ j`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) (by linarith) j`. Establish `hl0 : (0 : ℚ) ≤ (l : ℚ) ^ j` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCk : (0 : ℚ) ≤ (C : ℚ) * ((j + 1 : ℕ) : ℚ)` using `by positivity`. Establish `e1 : (C : ℚ) * (((j + 1 : ℕ) : ℚ) * ((l : ℚ) + 1) ^ j) ≤ (C : ℚ) * ((j + 1 : ℕ) : ℚ) * 2 ^ j * (l : ℚ) ^ j`. Use `mul_le_mul_of_nonneg_left h2 hCk` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : (C : ℚ) * ((j + 1 : ℕ) : ℚ) * 2 ^ j * (l : ℚ) ^ j ≤ ((T : ℚ) - q) * l * (l : ℚ) ^ j` using `mul_le_mul_of_nonneg_right hB hl0`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `a'`, the goal using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem eventually_le_of_abs_sub_le (k C : ℕ) (T : ℤ) (q : ℚ) (hq : q < T) (h : ℕ → ℕ)
     (hC : ∀ m : ℕ, |(k.factorial : ℤ) * (h m : ℤ) - T * (m : ℤ) ^ k| ≤
@@ -80,13 +80,13 @@ end GlobalTheory.ClosureRR
 namespace GlobalTheory.ClosureRR
 
 /- English proof (translation)
-Introduce `X _ _ p hp A z k q hA`. Use `letI := algebraΓOfHom p`. Introduce `hdim hq`. Use `haveI : IsIntegral (Scheme.IdealSheafData.vanishingIdeal (Closeds.closure ({z} : Set X))).subscheme := isIntegral_red isIrreducible_singleton.closure`. Use `letI := algebraΓOfHom (redι (Closeds.closure ({z} : Set X)) ≫ p)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hi : ∀ r : ℂ, (redι (Closeds.closure ({z} : Set X))).appTop (algebraMap ℂ Γ(X, ⊤) r) = algebraMap ℂ Γ((Scheme.IdealSheafData.vanishingIdeal (Closeds.closure ({z} : Set X))).subscheme, ⊤) r` using `fun r => rfl`. Establish `hpq : IsProjOver (redι (Closeds.closure ({z} : Set X)) ≫ p)`. Take `⟨n, f, hf, hs⟩` from `hp`. Conclude with `⟨n, redι (Closeds.closure ({z} : Set X)) ≫ f, inferInstance, by rw [Category.assoc, hs]⟩`. Establish `hstr : strHom ℂ (Scheme.IdealSheafData.vanishingIdeal (Closeds.closure ({z} : Set X))).subscheme = redι (Closeds.closure ({z} : Set X)) ≫ p` using `strHom_eq fun _ => rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : topologicalKrullDim (Scheme.IdealSheafData.vanishingIdeal (Closeds.closure ({z} : Set X))).subscheme = k` using `(topologicalKrullDim_red _).trans hdim`. Establish `hNef : IsNef ℂ ((toLB A).pull (redι (Closeds.closure ({z} : Set X))))` using `(IsAmpleLB.isNef (k := ℂ) hA).pull_of_isClosedImmersion _ hi`. Take `⟨C, hC⟩` from `NefRiemannRoch.abs_factorial_mul_sections_sub_top_le ℂ _ (hstr ▸ hpq) k hD.le _ hNef`. Establish `heq : interNumRed ℂ (Closeds.closure ({z} : Set X)) (fun _ : Fin k => toLB A) = topSelfIntersection ℂ ((toLB A).pull (redι (Closeds.closure ({z} : Set X)))) k` using `interNumOn_const_eq_topSelf hi (isLB_toLB A) k`. Establish `hH : ∀ l : ℕ, lbH0 ℂ ((toLB (l • A)).pull (redι (Closeds.closure ({z} : Set X)))) = lbH0 ℂ (lbPow ((toLB A).pull (redι (Closeds.closure ({z} : Set X)))) l)` using `fun l => lineBundleGlobalSectionsDim_congr_picardClass (pull_isLB (isLB_toLB _) _) (isLB_lbPow (pull_isLB (isLB_toLB A) _) l) (by rw [cls_lbPow (pull_isLB (isLB_toLB A) _), cls_pull (isLB_toLB _), cls_pull (isLB_toLB A), ← toPic_apply, ← toPic_apply, map_nsmul, map_nsmul])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[heq]`. Take `⟨l₁, hl₁⟩` from `eventually_le_of_abs_sub_le k C _ q hq _ hC`. Conclude with `⟨l₁, fun l hl => by rw [hH l]; exact hl₁ l hl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem h0_ge_of_lt_interNumRed : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ), IsProjOver p → ∀ (A : CartierDiv X) (z : X) (k : ℕ) (q : ℚ),
   IsAmpleLB (toLB A) → letI := algebraΓOfHom p; topologicalKrullDim (closure ({z} : Set X)) = k →

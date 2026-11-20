@@ -2,15 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.A
 
 open UpperTheory.V.Af.Rs in
 /- English proof (translation)
-Introduce and unpack `⟨n, a, ha⟩ ⟨m, b, hb⟩ h`. Simplify using `only at h`. Establish `h0` using `congrFun h 0`. Establish `h1` using `congrFun h 1`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h0 h1`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ga : (a 0).gcd (a 1) = 1` using `Int.isCoprime_iff_gcd_eq_one.mp ha`. Establish `gb : (b 0).gcd (b 1) = 1` using `Int.isCoprime_iff_gcd_eq_one.mp hb`. Establish `hk : (((n + 1 : ℕ) : ℤ) * a 0).gcd (((n + 1 : ℕ) : ℤ) * a 1) = (((m + 1 : ℕ) : ℤ) * b 0).gcd (((m + 1 : ℕ) : ℤ) * b 1)`. Rewrite using `[h0, h1]`. Rewrite `hk` using `[Int.gcd_mul_left, Int.gcd_mul_left, ga, gb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Int.natAbs_natCast, mul_one] at hk`. Establish `hnm : n = m` using `by omega`. Substitute `hnm` using the available equality. Establish `hpos : ((n + 1 : ℕ) : ℤ) ≠ 0` using `by positivity`. Establish `e0 : a 0 = b 0` using `mul_left_cancel₀ hpos h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : a 1 = b 1` using `mul_left_cancel₀ hpos h1`. Establish `hab : a = b`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `e0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Both sides reduce to the same expression.
 
-Conclude with `e1`. Substitute `hab` using the available equality. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private lemma gcdSum_inj :
     Function.Injective (fun p : ℕ × Cop => (((p.1 + 1 : ℕ) : ℤ)) • p.2.1) := by
@@ -41,13 +41,11 @@ private lemma gcdSum_inj :
 
 open UpperTheory.V.Af.Rs in
 /- English proof (translation)
-Use `set g := (v 0).gcd (v 1) with hg`. Establish `hpos : 0 < g`. Break down `Nat.eq_zero_or_pos g with h0 | h` into its components or cases. It suffices to derive a contradiction. Take `⟨a0, a1⟩` from `Int.gcd_eq_zero_iff.mp h0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `a0`. Conclude with `a1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `h`. Establish `hc : IsCoprime ((fun i => v i / (g : ℤ)) 0) ((fun i => v i / (g : ℤ)) 1)` using `Int.isCoprime_iff_gcd_eq_one.mpr (Int.gcd_div_gcd_div_gcd hpos)`. Use `⟨(g - 1, ⟨fun i => v i / (g : ℤ), hc⟩), ?_⟩` and prove the remaining obligations. Establish `hg1 : g - 1 + 1 = g` using `Nat.sub_add_cancel hpos`. Use function extensionality and compare the values at `i`.
-
-Simplify using `only [Pi.smul_apply, smul_eq_mul, hg1]`. Use `fin_cases i`. Conclude with `Int.mul_ediv_cancel' (Int.gcd_dvd_left (v 0) (v 1))`. Conclude with `Int.mul_ediv_cancel' (Int.gcd_dvd_right (v 0) (v 1))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma gcdSum_surj (v : Fin 2 → ℤ) (hv : v ≠ 0) :
     v ∈ Set.range (fun p : ℕ × Cop => (((p.1 + 1 : ℕ) : ℤ)) • p.2.1) := by
@@ -73,13 +71,11 @@ private lemma gcdSum_surj (v : Fin 2 → ℤ) (hv : v ≠ 0) :
   · exact Int.mul_ediv_cancel' (Int.gcd_dvd_right (v 0) (v 1))
 
 /- English proof (translation)
-Introduce `u c hu hc hu0 hc0 hmul`. Establish `hsupp : Function.support u ⊆ Set.range (fun p : ℕ × UpperTheory.V.Af.Rs.Cop => (((p.1 + 1 : ℕ) : ℤ)) • p.2.1)`. Introduce `v hv`. Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hv hu0`. Conclude with `gcdSum_surj v hv0`. Rewrite using `[← gcdSum_inj.tsum_eq hsupp]`. Establish `hterm : ∀ p : ℕ × UpperTheory.V.Af.Rs.Cop, u ((((p.1 + 1 : ℕ) : ℤ)) • p.2.1) = c (p.1 + 1) * u p.2.1` using `fun p => hmul (p.1 + 1) p.2`. Establish `hprod : Summable fun p : ℕ × UpperTheory.V.Af.Rs.Cop => c (p.1 + 1) * u p.2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hu.comp_injective gcdSum_inj` as an intermediate fact. Use `this.congr fun p => ?_` and prove the remaining obligations. Conclude with `hterm p`. Simplify using `only [hterm]`. Rewrite using `[hc.tsum_eq_zero_add, hc0, zero_add]`.
-
-Conclude with `((hc.comp_injective (add_left_injective 1)).tsum_mul_tsum (hu.comp_injective Subtype.val_injective) hprod).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rs.gcdSum :
     UpperTheory.V.Af.Rs.GcdSum := by

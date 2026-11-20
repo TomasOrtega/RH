@@ -24,21 +24,21 @@ def intMap : MvPowerSeries (Fin d) O →ₗ[O] MvPowerSeries (Fin d) E where
     rw [map_mul, Algebra.smul_def]
 
 /- English proof (translation)
-Rewrite using `[In.top_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem in_top_iff (f : MvPowerSeries (Fin d) E) :
     In (⊤ : Ideal O) f ↔ f ∈ LinearMap.range (intMap (d := d) (O := O) (E := E)) := by
   rw [In.top_iff]; rfl
 
 /- English proof (translation)
-Simplify using `[comb, Fintype.linearCombination_apply, algebraMap_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comb_eq {ι : Type} [Fintype ι] (b : ι → O) (e : ι → MvPowerSeries (Fin d) E) :
     comb b e = Fintype.linearCombination O e b := by
   simp [comb, Fintype.linearCombination_apply, algebraMap_smul]
 
 /- English proof (translation)
-Establish `hs` using `hasSubst_up_nmul (Q := E) hμ n`. Simplify using `only [defect, ← coe_substAlgHom hs, ← algebraMap_smul E a, map_add, map_smul]`. Use `module`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem defect_add_smul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O}
     (hμ : ∀ i, constantCoeff (μ i) = 0) (n : ℕ) (f g : MvPowerSeries (Fin d) E) (a : O) :
@@ -48,11 +48,11 @@ theorem defect_add_smul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O}
   module
 
 /- English proof (translation)
-Rewrite `hf`, `hg`, the goal using `[QLog.Chart.isLie_iff c hinj]`. Introduce `n`. Take `⟨s, hs, H⟩` from `hf n`. Take `⟨s', hs', H'⟩` from `hg n`. Use `⟨s + a • s', ?_, fun w φ hφ => ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[defect_add_smul c.isLaw.const, ← hs, ← hs']`. Use `(intMap (d := d) (O := O) (E := E)).map_add s (a • s')` as an intermediate fact. Rewrite `this` using `[LinearMap.map_smul]`. Conclude with `this`. Use `dvd_add (H w φ hφ) (dvd_mul_of_dvd_right (H' w φ hφ) a)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul, map_add, map_smul, smul_eq_mul, smul_eq_mul]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isLie_add_smul {p : ℕ} {G : PDivGroup p O} (c : QLog.Chart G d)
     (hinj : Function.Injective (algebraMap O E)) {f g : MvPowerSeries (Fin d) E}
@@ -74,9 +74,9 @@ theorem isLie_add_smul {p : ℕ} {G : PDivGroup p O} (c : QLog.Chart G d)
     ring
 
 /- English proof (translation)
-Rewrite using `[comb_eq, Fintype.linearCombination_apply]`. Proceed by induction on `(Finset.univ : Finset ι) using Finset.induction_on with`. Consider the case `empty => simpa using c.isLie_zero hinj`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, add_comm, add_comm (b i • L i)]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isLie_add_smul c hinj (b i) ih (hL i)`.
+A detailed English derivation is pending.
 -/
 theorem isLie_sum {p : ℕ} {G : PDivGroup p O} (c : QLog.Chart G d)
     (hinj : Function.Injective (algebraMap O E)) {ι : Type} [Fintype ι]
@@ -91,11 +91,11 @@ theorem isLie_sum {p : ℕ} {G : PDivGroup p O} (c : QLog.Chart G d)
     exact isLie_add_smul c hinj (b i) ih (hL i)
 
 /- English proof (translation)
-Use extensionality with `l l'`. Establish `h1 : In (⊤ : Ideal O) (f l - comb (Pi.single l (1 : O)) f)`. Rewrite using `[in_top_iff, comb_eq, Fintype.linearCombination_apply_single, one_smul, sub_self]`. Conclude with `zero_mem _`. Establish `h2 : In (⊤ : Ideal O) (f l - comb (∑ m, P l m • R m) f)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : f l - comb (∑ m, P l m • R m) f = (f l - comb (P l) g) + ∑ m, P l m • (g m - comb (R m) f)`. Simplify using `only [comb_eq, map_sum, map_smul]`. Simplify using `only [Fintype.linearCombination_apply, smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, in_top_iff]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [in_top_iff] at hP hR`. Conclude with `add_mem (hP l) (Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ (hR m))`. Use `congrFun ((hf.2 (f l) (hf.1 l)).unique h2 h1) l'` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.one_apply, Pi.single_apply, Finset.sum_apply, eq_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mul_eq_one {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} {ι κ : Type} [Fintype ι]
     [Fintype κ] [DecidableEq ι] {f : ι → MvPowerSeries (Fin d) E} {g : κ → MvPowerSeries (Fin d) E}
@@ -120,7 +120,7 @@ theorem mul_eq_one {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} {ι κ : T
   simpa [Matrix.mul_apply, Matrix.one_apply, Pi.single_apply, Finset.sum_apply, eq_comm] using this
 
 /- English proof (translation)
-Establish `e : (κ → O) ≃ₗ[O] (ι → O)` using `LinearEquiv.ofLinear (Matrix.toLin' P) (Matrix.toLin' R) (by rw [← Matrix.toLin'_mul, h1, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, h2, Matrix.toLin'_one])`. Use `e.finrank_eq` as an intermediate fact. Rewrite `this` using `[Module.finrank_fintype_fun_eq_card, Module.finrank_fintype_fun_eq_card, eq_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem card_eq [Nontrivial O] {ι κ : Type} [Fintype ι] [Fintype κ] [DecidableEq ι]
     [DecidableEq κ] (P : Matrix ι κ O) (R : Matrix κ ι O) (h1 : P * R = 1) (h2 : R * P = 1) :
@@ -132,17 +132,15 @@ theorem card_eq [Nontrivial O] {ι κ : Type} [Fintype ι] [Fintype κ] [Decidab
   rwa [Module.finrank_fintype_fun_eq_card, Module.finrank_fintype_fun_eq_card, eq_comm] at this
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv G d c E _ _ h k e he hlog`. Take `⟨k0, e0, lb0, he0, -, -, hlie0⟩` from `GlobalTheory.T.exists_adapted_quasiLog_basis_pDivGroup_lieDual p C v O hv G d c E h`. Establish `hinj : Function.Injective (algebraMap O E)` using `h.inj`. Establish `hex` using `GlobalTheory.T.pDivGroup_dual_tangent_of_quasiLogarithm p C v O hv G d c E h`. Establish `hlin` using `GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose L hL using fun l => (hex _ (he.1 l)).exists`. Establish `hL0 : ∀ i, L (Sum.inl i) = 0` using `fun i => (hlin _ _ _ _ 0 (hL (Sum.inl i)) (hL (Sum.inl i))).2.2 (hlog i)`. Establish `hspan : ⊤ ≤ Submodule.span O (Set.range (L ∘ Sum.inr))`. Rewrite using `[← lb0.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j', rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, -⟩` from `he.2 (e0 (Sum.inr j')) (he0.1 (Sum.inr j'))`. Establish `h1 : c.IsLie (e0 (Sum.inr j') + (-1 : O) • comb b e) (lb0 j' + (-1 : O) • ∑ l, b l • L l)` using `isLie_add_smul c hinj (-1) (hlie0 j') (isLie_sum c hinj e L hL b)`. Rewrite `h1` using `[neg_one_smul, neg_one_smul, ← sub_eq_add_neg, ← sub_eq_add_neg]`. Establish `h2` using `(hlin _ _ _ _ 0 h1 h1).2.1 ((In.top_iff.1 hb).imp fun s hs => hs.symm)`. Rewrite `h2` using `[sub_eq_zero, Fintype.sum_sum_type]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hL0, smul_zero, Finset.sum_const_zero, zero_add] at h2`. Rewrite using `[SetLike.mem_coe, h2]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Use `choose P hP using fun l => (he0.2 (e l) (he.1 l)).exists`. Use `choose R hR using fun m => (he.2 (e0 m) (he0.1 m)).exists`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk` using `card_eq (Matrix.of P) (Matrix.of R) (mul_eq_one he P R hP hR) (mul_eq_one he0 R P hR hP)`. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at hk`. Take `rfl : k0 = k` from `by omega`. Establish `hsurj : Function.Surjective (Fintype.linearCombination O (L ∘ Sum.inr))`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination]`.
-
-Conclude with `eq_top_iff.2 hspan`. Establish `hinj2 : Function.Injective (Fintype.linearCombination O (L ∘ Sum.inr))` using `Function.Injective.of_comp (f := ⇑lb0.equivFun) (OrzechProperty.injective_of_surjective_endomorphism (lb0.equivFun.toLinearMap ∘ₗ Fintype.linearCombination O (L ∘ Sum.inr)) (lb0.equivFun.surjective.comp hsurj))`. Establish `hli : LinearIndependent O (L ∘ Sum.inr)` using `linearIndependent_iff_injective_fintypeLinearCombination.2 hinj2`. Conclude with `⟨Module.Basis.mk hli hspan, fun j => by rw [Module.Basis.mk_apply]; exact hL (Sum.inr j)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lie_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ (E : Type) [CommRing E] [Algebra O E], IsFrame p E (RingHom.id O) → ∀ (k : ℕ) (e : Fin d ⊕ Fin k → MvPowerSeries (Fin d) E), IsBasis c.μ e → (∀ i, cob1 (up E c.μ) (e (Sum.inl i)) = 0) → ∃ lb : Module.Basis (Fin k) O G.dual.Lie, ∀ j, c.IsLie (e (Sum.inr j)) (lb j) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv G d c E _ _ h k e he hlog

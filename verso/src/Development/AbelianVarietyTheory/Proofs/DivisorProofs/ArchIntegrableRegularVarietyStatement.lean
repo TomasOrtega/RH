@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts Glob
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LogNormInt.archIntegrable | exact GlobalTheory.LogNormInt.archIntegrable | (intros; apply GlobalTheory.LogNormInt.archIntegrable <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.archIntegrable_regular_variety : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}, IsRegVar p D →
     ∀ (M N : HermLB p) {r : N.B.ι → X.functionFieldˣ} (hr : IsRatSec N.B r), M.ArchIntegrable N D hr := by

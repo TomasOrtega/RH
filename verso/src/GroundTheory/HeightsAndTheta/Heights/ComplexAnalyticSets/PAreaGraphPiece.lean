@@ -29,7 +29,7 @@ theorem realGraphPt_eq (F : EuclideanSpace ℝ (Fin k) → EuclideanSpace ℝ (F
     (x : EuclideanSpace ℝ (Fin k)) : realGraphPt F x = pairPt x (F x) := rfl
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[firstPart, pairPt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem firstPart_pairPt (u : EuclideanSpace ℝ (Fin k)) (w : EuclideanSpace ℝ (Fin m)) :
     firstPart (pairPt u w) = u := by
@@ -37,7 +37,7 @@ theorem firstPart_pairPt (u : EuclideanSpace ℝ (Fin k)) (w : EuclideanSpace �
   simp [firstPart, pairPt]
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `rcases i with i | i <;> simp [pairPt]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairPt_add (u u' : EuclideanSpace ℝ (Fin k)) (w w' : EuclideanSpace ℝ (Fin m)) :
     pairPt u w + pairPt u' w' = pairPt (u + u') (w + w') := by
@@ -45,7 +45,7 @@ theorem pairPt_add (u u' : EuclideanSpace ℝ (Fin k)) (w w' : EuclideanSpace �
   rcases i with i | i <;> simp [pairPt]
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `rcases i with i | i <;> simp [pairPt]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairPt_sub (u u' : EuclideanSpace ℝ (Fin k)) (w w' : EuclideanSpace ℝ (Fin m)) :
     pairPt u w - pairPt u' w' = pairPt (u - u') (w - w') := by
@@ -53,7 +53,7 @@ theorem pairPt_sub (u u' : EuclideanSpace ℝ (Fin k)) (w w' : EuclideanSpace �
   rcases i with i | i <;> simp [pairPt]
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `rcases i with i | i <;> simp [pairPt]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairPt_smul (c : ℝ) (u : EuclideanSpace ℝ (Fin k)) (w : EuclideanSpace ℝ (Fin m)) :
     c • pairPt u w = pairPt (c • u) (c • w) := by
@@ -61,14 +61,14 @@ theorem pairPt_smul (c : ℝ) (u : EuclideanSpace ℝ (Fin k)) (w : EuclideanSpa
   rcases i with i | i <;> simp [pairPt]
 
 /- English proof (translation)
-Simplify using `[pairPt, PiLp.inner_apply, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_pairPt (u u' : EuclideanSpace ℝ (Fin k)) (w w' : EuclideanSpace ℝ (Fin m)) :
     ⟪pairPt u w, pairPt u' w'⟫ = ⟪u, u'⟫ + ⟪w, w'⟫ := by
   simp [pairPt, PiLp.inner_apply, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Rewrite using `[← real_inner_self_eq_norm_sq, ← real_inner_self_eq_norm_sq, ← real_inner_self_eq_norm_sq, inner_pairPt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_pairPt_sq (u : EuclideanSpace ℝ (Fin k)) (w : EuclideanSpace ℝ (Fin m)) :
     ‖pairPt u w‖ ^ 2 = ‖u‖ ^ 2 + ‖w‖ ^ 2 := by
@@ -76,7 +76,7 @@ theorem norm_pairPt_sq (u : EuclideanSpace ℝ (Fin k)) (w : EuclideanSpace ℝ 
     inner_pairPt]
 
 /- English proof (translation)
-Establish `h` using `norm_pairPt_sq u w`. Use polynomial arithmetic with `[norm_nonneg u, norm_nonneg (pairPt u w), sq_nonneg ‖w‖]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_le_norm_pairPt (u : EuclideanSpace ℝ (Fin k)) (w : EuclideanSpace ℝ (Fin m)) :
     ‖u‖ ≤ ‖pairPt u w‖ := by
@@ -84,7 +84,7 @@ theorem norm_le_norm_pairPt (u : EuclideanSpace ℝ (Fin k)) (w : EuclideanSpace
   nlinarith [norm_nonneg u, norm_nonneg (pairPt u w), sq_nonneg ‖w‖]
 
 /- English proof (translation)
-Establish `h` using `norm_pairPt_sq (0 : EuclideanSpace ℝ (Fin k)) w`. Rewrite `h` using `[norm_zero, zero_pow two_ne_zero, zero_add]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pairPt_zero (w : EuclideanSpace ℝ (Fin m)) :
     ‖pairPt (0 : EuclideanSpace ℝ (Fin k)) w‖ = ‖w‖ := by
@@ -105,7 +105,7 @@ theorem graphLin_apply (A : EuclideanSpace ℝ (Fin k) →L[ℝ] EuclideanSpace 
     (x : EuclideanSpace ℝ (Fin k)) : graphLin A x = pairPt x (A x) := rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `ext_inner_right ℝ` to reduce the goal to its premises. Introduce `y`. Rewrite using `[LinearMap.comp_apply, LinearMap.adjoint_inner_left, LinearMap.add_apply, inner_add_left, Module.End.one_apply, LinearMap.comp_apply, LinearMap.adjoint_inner_left, graphLin_apply, graphLin_apply, inner_pairPt]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -124,7 +124,7 @@ theorem adjoint_graphLin_comp (A : EuclideanSpace ℝ (Fin k) →L[ℝ] Euclidea
   rfl
 
 /- English proof (translation)
-Unfold `graphJac`. Rewrite using `[← adjoint_graphLin_comp, ← LinearMap.normDet_sq (graphLin A)]`. Use `push_cast`. Conclude with `(Real.sqrt_sq (LinearMap.normDet_nonneg _)).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem normDet_graphLin (A : EuclideanSpace ℝ (Fin k) →L[ℝ] EuclideanSpace ℝ (Fin m)) :
     (graphLin A).normDet =
@@ -139,25 +139,25 @@ end AreaGraphPiece
 open AreaGraphPiece in
 
 /- English proof (translation)
-Introduce `k m F A δ t hδ hF`. Use `set L := graphLin A with hLdef`. Establish `hδ1 : (δ : ℝ) < 1` using `by exact_mod_cast hδ`. Establish `hδ0 : (0 : ℝ) ≤ δ` using `δ.2`. Establish `hsub : ∀ x y, realGraphPt F x - realGraphPt F y - L (x - y) = pairPt (0 : EuclideanSpace ℝ (Fin k)) (F x - F y - A (x - y))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Rewrite using `[realGraphPt_eq, realGraphPt_eq, hLdef, graphLin_apply, pairPt_sub, pairPt_sub]`. Simplify using the standard rewrite rules. Establish `hL : ∀ v, ‖v‖ ≤ ‖L v‖` using `fun v => norm_le_norm_pairPt v (A v)`. Establish `hclose : ∀ x ∈ t, ∀ y ∈ t, |‖realGraphPt F x - realGraphPt F y‖ - ‖L (x - y)‖| ≤ δ * ‖L (x - y)‖`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx y hy`. Combine the equalities or inequalities in the displayed calculation. Establish `himG : realGraphPt F '' t = (fun p => realGraphPt F (firstPart p)) '' (L '' t)`. Rewrite using `[Set.image_image]`. Use `Set.image_congr fun x _ => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLdef, graphLin_apply, firstPart_pairPt]`. Establish `hlipG : LipschitzOnWith (1 + δ) (fun p => realGraphPt F (firstPart p)) (L '' t)`. Use `LipschitzOnWith.of_dist_le_mul fun p hp q hq => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hp`. Take `⟨y, hy, rfl⟩` from `hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [hLdef, graphLin_apply, firstPart_pairPt, dist_eq_norm]`. Rewrite using `[← graphLin_apply, ← graphLin_apply, ← map_sub, ← hLdef]`. Establish `h` using `(abs_le.1 (hclose x hx y hy)).2`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `himL : L '' t = (fun p => L (firstPart p)) '' (realGraphPt F '' t)`. Rewrite using `[Set.image_image]`. Use `Set.image_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[realGraphPt_eq, firstPart_pairPt]`. Establish `hlipL : LipschitzOnWith (1 - δ)⁻¹ (fun p => L (firstPart p)) (realGraphPt F '' t)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LipschitzOnWith.of_dist_le_mul fun p hp q hq => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hp`. Take `⟨y, hy, rfl⟩` from `hq`. Simplify using `only [realGraphPt_eq, firstPart_pairPt, dist_eq_norm]`. Rewrite using `[← realGraphPt_eq, ← realGraphPt_eq, ← map_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(abs_le.1 (hclose x hx y hy)).1`. Rewrite using `[NNReal.coe_inv, NNReal.coe_sub hδ.le, NNReal.coe_one, inv_mul_eq_div, le_div_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `harea : μH[(k : ℝ)] (L '' t) = ENNReal.ofReal (graphJac (A : EuclideanSpace ℝ (Fin k) →ₗ[ℝ] EuclideanSpace ℝ (Fin m))) * μH[(k : ℝ)] t`. Establish `h` using `LinearMap.hausdorffMeasure_image L t`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[finrank_euclideanSpace_fin]`. Rewrite using `[h, hLdef, normDet_graphLin]`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hle : μH[(k : ℝ)] (L '' t) ≤ (((1 - δ)⁻¹ : ℝ≥0) : ℝ≥0∞) ^ k * μH[(k : ℝ)] (realGraphPt F '' t)`. Combine the equalities or inequalities in the displayed calculation. Establish `hne : (1 - δ : ℝ≥0) ≠ 0` using `(tsub_pos_of_lt hδ).ne'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← mul_pow, ← ENNReal.coe_mul, mul_inv_cancel₀ hne, ENNReal.coe_one, one_pow, one_mul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AreaGraphPiece.proof : AreaGraphPiece.Statement := by
   intro k m F A δ t hδ hF

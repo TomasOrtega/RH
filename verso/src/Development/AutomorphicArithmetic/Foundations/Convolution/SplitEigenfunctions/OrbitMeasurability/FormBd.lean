@@ -9,11 +9,9 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperT
 open scoped Classical
 
 /- English proof (translation)
-Establish `h` using `TR.infGL_mul_finGL (dM t)`. Establish `h1 : Matrix.GeneralLinearGroup.map (TR.pInf ℚ) (dM t) = 1`. Establish `ht' : TR.pInf ℚ (t : A ℚ) = 1`. Express the relevant statement in the definitionally equal form `(TR.infEq ℚ).symm (t : A ℚ).1 = 1`. Rewrite using `[ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_one _`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [ht']`. Rewrite `h` using `[h1, map_one, one_mul]`.
-
-Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dM_fin (t : (A ℚ)ˣ) (ht : (t : A ℚ).1 = 1) :
     finGL ℚ 2 (Matrix.GeneralLinearGroup.map (pFin ℚ) (dM t)) = dM t := by
@@ -30,13 +28,13 @@ private theorem dM_fin (t : (A ℚ)ˣ) (ht : (t : A ℚ).1 = 1) :
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction in
 /- English proof (translation)
-Introduce `π hπ f hf`. Establish `hL` using `(UpperTheory.ConvolutionTheory.R2.Pp.cuspZero ℚ π f hf).1`. Use `⟨⟨hL.1, hL.2, ?_, fun s x => hπ f hf s x⟩, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `Fb.mem_range_ofCusp.2 (π.cusp f hf)`. Take `⟨B₀, hB₀⟩` from `CuspidalSpectrum.exists_norm_le_of_mem_cuspForms φ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hφ` using the available equality. Use `⟨B₀, fun x => ?_⟩` and prove the remaining obligations. Establish `h2 : (centralSection ℚ 2 (detModule ℚ 2 x))⁻¹ * x ∈ normOneGL ℚ 2`. Rewrite using `[mem_normOneGL_iff_detModule, map_mul, map_inv, detModule_centralSection two_pos, inv_mul_cancel]`. Establish `h3` using `hπ _ hf (detModule ℚ 2 x) ((centralSection ℚ 2 (detModule ℚ 2 x))⁻¹ * x)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[mul_inv_cancel_left]`. Rewrite using `[h3]`. Conclude with `hB₀ _ h2`. Establish `h` using `π.stable (.fin (Matrix.GeneralLinearGroup.map (pFin ℚ) (dM t))) f hf`. Use `⟨_, h, fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `f.1 (x * finGL ℚ 2 (Matrix.GeneralLinearGroup.map (pFin ℚ) (dM t))) = _`. Rewrite using `[dM_fin t ht.1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.formBd :
     UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.FormBd := by

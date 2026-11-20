@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BaseChain
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u f hW hf j hj`. Establish `hC` using `hW.bot.hyp.2.2.2.1`. Establish `hQ : (pk W).Q W.P.A3.A.μ0 = ∅` using `Finset.eq_empty_of_forall_notMem fun PP => GlobalTheory.MiTop.not_mem_Q_base W PP`. Use `⟨hC.chain.ωY W.P.A3.A.μ0 j hj, (pk W).xiR W.P.A3.A.μ0, (pk W).vac j, ?_⟩` and prove the remaining obligations. Establish `h` using `(hf.row W.P.A3.A.μ0).vP j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[hQ]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepY_weil_vec : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ j, j + 1 < D.R.m → IsWeilDatumO (GlobalTheory.BaseChain.com W).ψ (GlobalTheory.BaseChain.stageY W j).V (GlobalTheory.BaseChain.stageY W (j + 1)).V ((GlobalTheory.BaseChain.com W).chS (j + 1)) ((GlobalTheory.BaseChain.com W).chT (j + 1)) (GlobalTheory.BaseChain.stepY f j).ω ∧ ∃ ξ f₀, IsStepVecOf (GlobalTheory.BaseChain.com W).ψ (GlobalTheory.BaseChain.com W).θ (GlobalTheory.BaseChain.stageY W j).V (GlobalTheory.BaseChain.stageY W (j + 1)).V (cart (GlobalTheory.BaseChain.stageY W j).M) (cart (GlobalTheory.BaseChain.stageY W (j + 1)).M) (GlobalTheory.BaseChain.stageY W j).Λ (GlobalTheory.BaseChain.stageY W (j + 1)).Λ (GlobalTheory.BaseChain.stageY W j).β (GlobalTheory.BaseChain.stageY W (j + 1)).β (GlobalTheory.BaseChain.stageY W j).L ((GlobalTheory.BaseChain.com W).chi (j + 1)) ∅ ξ f₀ (GlobalTheory.BaseChain.stepY f j).f := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hW hf j hj

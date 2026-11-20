@@ -9,19 +9,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SurjectionOntoH4.ThetaLoc
 
 /- English proof (translation)
-Use `letI a1 : Algebra P P' := i.toAlgebra`. Use `letI a2 : Algebra Q Q' := r.toAlgebra`. Use `letI a3 : Algebra P Q := t₁.toAlgebra`. Use `letI a4 : Algebra P' Q' := t.toAlgebra`. Use `letI a5 : Algebra P Q' := (t.comp i).toAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower B P P' := .of_algebraMap_eq fun b => (hi b).symm`. Use `haveI : IsScalarTower B P Q := .of_algebraMap_eq fun b => (ht₁ b).symm`. Use `haveI : IsScalarTower B P' Q' := .of_algebraMap_eq fun b => (ht b).symm`. Use `haveI : IsScalarTower B P Q' := .of_algebraMap_eq fun b => by`. Express the relevant statement in the definitionally equal form `_ = t (i _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hi, ht]`. Use `haveI : IsScalarTower P P' Q' := .of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower P Q Q' := .of_algebraMap_eq fun x => hcomm x`. Use `haveI : IsScalarTower A Q Q' := .of_algebraMap_eq fun a => (hr a).symm`. Use `haveI : IsScalarTower B Q Q' := .of_algebraMap_eq fun b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply B A Q, IsScalarTower.algebraMap_apply B A Q']`. Conclude with `(hr _).symm`. Establish `e1 : f₁ = (IsScalarTower.toAlgHom B P Q).toLinearMap` using `LinearMap.ext hf₁`. Establish `p1 : Algebra.IsPushout B A P Q` using `⟨by rw [← e1]; exact h⟩`. Use `haveI p2 : Algebra.IsPushout B P A Q := p1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsLocalization.Away c P' := hP`. Establish `hQ' : IsLocalization (Algebra.algebraMapSubmonoid Q (Submonoid.powers c)) Q'`. Establish `e : Algebra.algebraMapSubmonoid Q (Submonoid.powers c) = Submonoid.powers (t₁ c)`. Simplify using `only [Algebra.algebraMapSubmonoid, Submonoid.map_powers]`. Both sides reduce to the same expression.
-
-Rewrite using `[e]`. Conclude with `hQ`. Establish `p3 : Algebra.IsPushout P Q P' Q'` using `(Algebra.isLocalization_iff_isPushout (Submonoid.powers c) P').1 hQ'`. Establish `p4 : Algebra.IsPushout P P' Q Q'` using `p3.symm`. Establish `p5 : Algebra.IsPushout B P' A Q'` using `(Algebra.IsPushout.comp_iff B P A Q).2 p4`.
-
-Establish `e2 : f = (IsScalarTower.toAlgHom B P' Q').toLinearMap` using `LinearMap.ext hf`. Rewrite using `[e2]`. Conclude with `p5.symm.out`.
+A detailed English derivation is pending.
 -/
 theorem baseChange_loc {B A P P' Q Q' : Type} [CommRing B] [CommRing A] [CommRing P] [CommRing P'] [CommRing Q]
     [CommRing Q'] [Algebra B A] [Algebra B P] [Algebra B P'] [Algebra B Q] [Algebra B Q'] [Algebra A Q] [Algebra A Q']
@@ -73,7 +69,7 @@ theorem baseChange_loc {B A P P' Q Q' : Type} [CommRing B] [CommRing A] [CommRin
 variable {K : Type} [Field K] {n d : ℕ}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mon_congr {M : AddSubmonoid (Gam n d)} {g g' : Gam n d} (e : g = g') (hg : g ∈ M) (hg' : g' ∈ M) :
     mon K g hg = mon K g' hg' := by
@@ -81,9 +77,9 @@ theorem mon_congr {M : AddSubmonoid (Gam n d)} {g g' : Gam n d} (e : g = g') (hg
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty]`. Conclude with `mon_congr (K := K) Finset.sum_empty _ M.zero_mem`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert ha, ← ih, mon_mul]`. Conclude with `mon_congr (Finset.sum_insert ha) _ _`.
+A detailed English derivation is pending.
 -/
 theorem mon_sum {ι : Type} {M : AddSubmonoid (Gam n d)} (s : Finset ι) (g : ι → Gam n d) (hg : ∀ j, g j ∈ M) :
     mon K (∑ j ∈ s, g j) (sum_mem fun j _ => hg j) = ∏ j ∈ s, mon K (g j) (hg j) := by
@@ -99,13 +95,13 @@ theorem mon_sum {ι : Type} {M : AddSubmonoid (Gam n d)} (s : Finset ι) (g : ι
 def cE (S : Finset (Fin d)) (k : Fin d) : Gam n d := ∑ j ∈ S, ratE k j
 
 /- English proof (translation)
-The claim follows from `sum_mem fun j _ => ratE_mem (Finset.mem_singleton_self k) j`.
+A detailed English derivation is pending.
 -/
 theorem cE_mem (S : Finset (Fin d)) (k : Fin d) : cE S k ∈ (cone {k} : AddSubmonoid (Gam n d)) :=
   sum_mem fun j _ => ratE_mem (Finset.mem_singleton_self k) j
 
 /- English proof (translation)
-Establish `e : -cE S k = ∑ j ∈ S, (ratE j k : Gam n d)`. Simplify using `[cE, ratE, ← Finset.sum_neg_distrib]`. Rewrite using `[e]`. Conclude with `sum_mem fun j hj => ratE_mem hj k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_cE_mem {S : Finset (Fin d)} (k : Fin d) : -cE S k ∈ (cone S : AddSubmonoid (Gam n d)) := by
   have e : -cE S k = ∑ j ∈ S, (ratE j k : Gam n d) := by
@@ -114,7 +110,7 @@ theorem neg_cE_mem {S : Finset (Fin d)} (k : Fin d) : -cE S k ∈ (cone S : AddS
   exact sum_mem fun j hj => ratE_mem hj k
 
 /- English proof (translation)
-Establish `: (cE S k : Gam n d) (Sum.inr j) = 1`. Simplify using `[cE, ratE, oneE, Finset.sum_apply, Pi.single_apply, hj, hne]`. Conclude with `this.ge`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_le_cE {S : Finset (Fin d)} {k j : Fin d} (hj : j ∈ S) (hne : j ≠ k) :
     1 ≤ (cE S k : Gam n d) (Sum.inr j) := by
@@ -123,13 +119,11 @@ theorem one_le_cE {S : Finset (Fin d)} {k j : Fin d} (hj : j ∈ S) (hne : j ≠
   exact this.ge
 
 /- English proof (translation)
-Establish `hc` using `cE_mem (n := n) S k`. Establish `hN` using `(cone {k} : AddSubmonoid (Gam n d)).nsmul_mem hc`. Use `⟨∑ j, (g (Sum.inr j)).natAbs, fun l => ?_, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Conclude with `add_nonneg (hg.1 l) ((hN _).1 l)`. Establish `hne : j ≠ k` using `fun h => hj (h ▸ Finset.mem_singleton_self k)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hjS : j ∈ S`. Establish `h1` using `one_le_cE (n := n) hjS hne`. Establish `h2 : (g (Sum.inr j)).natAbs ≤ ∑ j, (g (Sum.inr j)).natAbs` using `Finset.single_le_sum (f := fun j => (g (Sum.inr j)).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Use `show 0 ≤ g (Sum.inr j) + (∑ j, (g (Sum.inr j)).natAbs) • (cE S k : Gam n d) (Sum.inr j)`. Rewrite using `[nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : -g (Sum.inr j) ≤ ((g (Sum.inr j)).natAbs : ℤ)`. Rewrite using `[Int.natCast_natAbs]`. Conclude with `neg_le_abs _`. Establish `h4 : ((g (Sum.inr j)).natAbs : ℤ) ≤ ((∑ j, (g (Sum.inr j)).natAbs : ℕ) : ℤ)` using `by exact_mod_cast h2`. Establish `h5 : (0 : ℤ) ≤ ((∑ j, (g (Sum.inr j)).natAbs : ℕ) : ℤ)` using `Int.natCast_nonneg _`.
-
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `add_nonneg (hg.2.1 j hjS) ((hN _).2.1 j hj)`. Rewrite using `[tdeg_add]`. Conclude with `add_nonneg hg.2.2 (hN _).2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_add_nsmul_mem {S : Finset (Fin d)} (k : Fin d) (g : Gam n d) (hg : g ∈ (cone S : AddSubmonoid (Gam n d))) :
     ∃ N : ℕ, g + N • cE S k ∈ (cone {k} : AddSubmonoid (Gam n d)) := by
@@ -158,17 +152,15 @@ end GlobalTheory.CompanionTheory.SurjectionOntoH4.ThetaLoc
 namespace GlobalTheory.CompanionTheory.SurjectionOntoH4.ThetaLoc
 
 /- English proof (translation)
-Introduce `K _ n d A _ _ C S k hk θ₁ hθ₁ hu hbc`. Establish `hsk : ({k} : Finset (Fin d)) ⊆ S` using `Finset.singleton_subset_iff.2 hk`. Establish `hle : (cone {k} : AddSubmonoid (Gam n d)) ≤ cone S` using `cone_mono hsk`. Establish `hc` using `cE_mem (n := n) S k`. Establish `hP` using `Away.isLocalization_away (K := K) hle (cE S k) hc (neg_cE_mem k) (fun g hg => exists_add_nsmul_mem k g hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθc : θ₁ (mon K (cE S k) hc) = ∏ j ∈ S, C.u {k} k (Finset.mem_singleton_self k) j`. Establish `e : mon K (cE S k) hc = ∏ j ∈ S, mon K (ratE k j) (ratE_mem (Finset.mem_singleton_self k) j)` using `mon_sum S _ _`. Rewrite using `[e, map_prod]`. Conclude with `Finset.prod_congr rfl fun j _ => hu j`. Use `letI aP : Algebra (R0 K n d {k}) (R0 K n d S) := (incl (K := K) hle).toRingHom.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI aQ : Algebra (C.R {k}) (C.R S) := (C.res hsk).toRingHom.toAlgebra`. Use `haveI hP' : IsLocalization.Away (mon K (cE S k) hc) (R0 K n d S) := hP`. Establish `hQ : IsLocalization.Away (θ₁ (mon K (cE S k) hc)) (C.R S)`. Rewrite using `[hθc]`. Conclude with `C.loc S k hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (((C.res hsk).toRingHom.comp θ₁.toRingHom) (mon K (cE S k) hc))` using `IsLocalization.Away.algebraMap_isUnit (S := C.R S) (θ₁ (mon K (cE S k) hc))`. Set `T : R0 K n d S →+* C.R S` to `IsLocalization.Away.lift (mon K (cE S k) hc) hunit`. Establish `hT : ∀ x, T (incl hle x) = C.res hsk (θ₁ x)` using `fun x => IsLocalization.Away.lift_eq (mon K (cE S k) hc) hunit x`. Set `θ : R0 K n d S →ₐ[K] C.R S` to `{ T with commutes' := fun r => by`. Establish `e : algebraMap K (R0 K n d S) r = incl hle (algebraMap K (R0 K n d {k}) r)` using `((incl (K := K) hle).commutes r).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `T _ = _`. Rewrite using `[e, hT, θ₁.commutes, (C.res hsk).commutes] }`. Establish `hθT : ∀ x, θ x = T x` using `fun _ => rfl`. Establish `hθ : ∀ b, θ (poly n K S b) = toR C S (phi C b)` using `fun b => by`. Rewrite using `[hθT, ← incl_poly hsk, hT, hθ₁, res_toR]`.
-
-Use `⟨θ, hθ, ?_⟩` and prove the remaining obligations. Conclude with `baseChange_loc (A := Aa C) (Q := Rb C {k}) (Q' := Rb C S) (incl (K := K) hle).toRingHom (C.res hsk).toRingHom θ₁.toRingHom T (mon K (cE S k) hc) (fun b => incl_poly hsk b) (fun a => res_toR C hsk a) hθ₁ hθ hT hP hQ (thetaLin C θ₁ hθ₁) (fun _ => rfl) (thetaLin C θ hθ) (fun _ => rf …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem theta_loc : ∀ {K : Type} [Field K] {n d : ℕ} {A : Type} [CommRing A] [Algebra K A] (C : ChartRings K A n d) (S : Finset (Fin d)) (k : Fin d) (hk : k ∈ S) (θ₁ : R0 K n d {k} →ₐ[K] C.R {k}) (hθ₁ : ∀ b, θ₁ (poly n K {k} b) = toR C {k} (phi C b)), (∀ j, θ₁ (mon K (ratE k j) (ratE_mem (Finset.mem_singleton_self k) j)) = C.u {k} k (Finset.mem_singleton_self k) j) → IsBaseChange (Aa C) (thetaLin C θ₁ hθ₁) → ∃ (θ : R0 K n d S →ₐ[K] C.R S) (hθ : ∀ b, θ (poly n K S b) = toR C S (phi C b)), IsBaseChange (Aa C) (thetaLin C θ hθ) := by
   intro K _ n d A _ _ C S k hk θ₁ hθ₁ hu hbc

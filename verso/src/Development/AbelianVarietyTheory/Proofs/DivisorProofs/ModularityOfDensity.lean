@@ -23,7 +23,7 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.FlatModel.Modif
 
 /- English proof (translation)
-Take `⟨⟨T, kO, yT, hT, hk, e⟩, hr⟩` from `h`. Use `⟨⟨T, kO, yT ≫ π, hT, hk, by rw [← Category.assoc, e]⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Establish `: (spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ yb') z ∈ π ⁻¹ᵁ Xw` using `hr ⟨z, rfl⟩`. Simplify `this` using `[Scheme.Hom.comp_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isTest_comp (p : ℕ) [Fact p.Prime] {X X' : Scheme.{0}} (π : X' ⟶ X) (Xw : X.Opens)
     (yb' : Sp 𝓞_ℂ_[p] ⟶ X') (h : IsTest p (π ⁻¹ᵁ Xw) yb') : IsTest p Xw (yb' ≫ π) := by
@@ -34,7 +34,7 @@ theorem isTest_comp (p : ℕ) [Fact p.Prime] {X X' : Scheme.{0}} (π : X' ⟶ X)
   simpa [Scheme.Hom.comp_apply] using this
 
 /- English proof (translation)
-Rewrite using `[Scheme.preimage_basicOpen, map_natCast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem preimage_basicOpen_p (p : ℕ) {X X' : Scheme.{0}} (π : X' ⟶ X) :
     π ⁻¹ᵁ X.basicOpen (p : Γ(X, ⊤)) = X'.basicOpen (p : Γ(X', ⊤)) := by
@@ -48,27 +48,23 @@ namespace GlobalTheory.FlatModel
 open Modif
 
 /- English proof (translation)
-Introduce `hD F _ _ V p _ hp X s Xw hXi hXn hXp hXf hXw hGI n K hK hC`. Establish `hDVR` using `(GlobalTheory.isDiscreteValuationRing_and_finite_residueField_of_numberField V (Fact.out : p.Prime).ne_zero hp).1`. Establish `: LocallyOfFiniteType s`. Take `⟨N, i, hi, rfl⟩` from `hXp`. Use `isProper_str V N` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian s`. Establish `: CompactSpace X`. Take `⟨N, i, hi, rfl⟩` from `hXp`. Use `isProper_str V N` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str V N)`. Use `choose R _ ξ J _ Q u hξ hx hcl using hC`. Use `haveI : ∀ x, IsOpenImmersion (ξ x) := hξ`. Take `⟨t, ht⟩` from `CompactSpace.elim_nhds_subcover (fun x => ((ξ x).opensRange : Set X)) fun x => (ξ x).opensRange.isOpen.mem_nhds (by simpa using hx x)`. Use `choose e he using fun x => GlobalTheory.T.open_immersion_ring_factor X (R x) (ξ x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `U : t → X.Opens` to `fun j => (ξ j.1).opensRange`. Set `m : t → ℕ` to `fun j => Nat.card (J j.1) + 1`. Set `A : ∀ j : t, Fin (m j) → Γ(X, U j)` to `fun j => Fin.cons ((p : Γ(X, U j)) ^ n) fun i => e j.1 (Q j.1 ((Finite.equivFin (J j.1)).symm i))`. Take `⟨Jd, hJd, hPr⟩` from `GlobalTheory.HTLine.princ_of_finite X p U m A (fun j => isAffineOpen_opensRange (ξ j.1)) fun j => ⟨n, Ideal.subset_span ⟨0, rfl⟩⟩`. Take `⟨X'', X', b, ν, hEff, hI', hN', hP', hF', hpr, hiso⟩` from `GlobalTheory.T.exists_blowup_normalization_cartier F V p hp X s hXi hXn hXp hXf Jd hJd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hT : ∀ yb', IsTest p ((ν ≫ b) ⁻¹ᵁ Xw) yb' → IsTest p Xw (yb' ≫ (ν ≫ b))` using `isTest_comp p (ν ≫ b) Xw`. Establish `hle : (ν ≫ b) ⁻¹ᵁ Xw ≤ X'.basicOpen (p : Γ(X', ⊤))`. Rewrite using `[← preimage_basicOpen_p p (ν ≫ b)]`. Conclude with `fun x hx => hXw hx`. Establish `: LocallyOfFiniteType (ν ≫ b ≫ s)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨N, i, hi, e'⟩` from `hP'`. Use `isProper_str V N` as an intermediate fact. Rewrite using `[← e']`. Use `infer_instance`. Use `⟨X', ν ≫ b ≫ s, (ν ≫ b) ⁻¹ᵁ Xw, fun yb' => K (yb' ≫ (ν ≫ b)), hI', hN', hP', hF', hle, ?_, fun yb' h => hK _ (hT yb' h), ?_, fun yb h => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.T.geometrically_irreducible_pullback_iso V X X' s (ν ≫ b) Xw _ hXw hiso hGI` as an intermediate fact. Simplify `this` using `only [Category.assoc]`. Introduce `x'`. Distinguish the cases in `hx' : x' ∈ X'.basicOpen (p : Γ(X', ⊤))`. Conclude with `GlobalTheory.T.unit_chart_at_invertible_p p X' _ _ x' hx'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmem : (ν ≫ b) x' ∈ ⋃ x ∈ t, ((ξ x).opensRange : Set X)` using `by rw [ht]; exact Set.mem_univ _`. Simplify using `only [Set.mem_iUnion] at hmem`. Take `⟨x, hxt, hfx⟩` from `hmem`. Take `⟨V', hV', hxV', hVa, k, hk⟩` from `hPr X'' X' b ν hEff x' ⟨x, hxt⟩ hfx`. Establish `heq` using `he x X' (ν ≫ b) V' hVa hV'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `GlobalTheory.T.localization_units_charts p n X X' (ν ≫ b) Xw K (R x) (ξ x) (J x) (Q x) (u x) (hcl x) hT Γ(X', V') hVa.fromSpec _ x' inferInstance (by rw [hVa.range_fromSpec]; exact hxV') heq (fun hne => hD F V p hp X' (ν ≫ b ≫ s) _ hI' hF' inferInstance hle hne Γ(X', V') hVa.from …` and prove the remaining obligations. Establish `hA0 : ((ν ≫ b).appLE (ξ x).opensRange V' hV').hom ((p : Γ(X, (ξ x).opensRange)) ^ n) = (p : Γ(X', V')) ^ n` using `by rw [map_pow, map_natCast]`. Use `revert hk`. Use `Fin.cases (fun hk => Or.inr fun j => ?_) (fun i hk => Or.inl ⟨(Finite.equivFin (J x)).symm i, fun j => ?_, ?_⟩) k` and prove the remaining obligations. Use `hk ((Finite.equivFin (J x)) j).succ` as an intermediate fact.
-
-Simplify `this` using `[A, U, hA0]`. Use `hk ((Finite.equivFin (J x)) j).succ` as an intermediate fact. Simplify `this` using `[A, U]`. Use `hk 0` as an intermediate fact. Simplify `this` using `[A, U, hA0]`.
-
-Take `⟨yb', h1, h2⟩` from `GlobalTheory.T.test_point_lift_proper p X X' (ν ≫ b) hpr Xw _ hXw hiso yb h`. Conclude with `⟨yb', h1, fun κ hκ => by show κ ∈ K (yb' ≫ (ν ≫ b)); rw [h2]; exact hκ⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem modSt_of_densSt : DensSt → ModSt := by
   intro hD F _ _ V p _ hp X s Xw hXi hXn hXp hXf hXw hGI n K hK hC

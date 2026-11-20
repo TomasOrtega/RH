@@ -20,9 +20,7 @@ open Matrix
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hG : IsUnit A.gram.det` using `(gram_det_ne A).isUnit`. Rewrite using `[Tm, stackRows, submatrix_mul_equiv, fromCols_mul_fromRows, Matrix.mul_zero, add_zero]`. Use `show (stackRows A.gram⁻¹ A.gram⁻¹ * A.gram).submatrix id id = stackRows 1 1`. Rewrite using `[submatrix_id_id]`. Use `show stkRows A.gram⁻¹ A.gram⁻¹ * A.gram = stkRows 1 1`.
-
-Rewrite using `[stkRows_mul, nonsing_inv_mul _ hG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tm_mul_stackRows_gram (A : HSp D) (μ : D.host.E) :
     Tm A μ * stackRows A.gram 0 = stackRows 1 1 := by
@@ -34,9 +32,9 @@ theorem Tm_mul_stackRows_gram (A : HSp D) (μ : D.host.E) :
   rw [stkRows_mul, nonsing_inv_mul _ hG]
 
 /- English proof (translation)
-Use `⟨(F ⬝ (stkRows X 0 : Mx D (n + n) n)).submatrix (fun i => finSumFinEquiv (Sum.inl i)) id, ?_⟩` and prove the remaining obligations. Use extensionality with `a j`. Take `⟨s, rfl⟩` from `finSumFinEquiv.surjective a`. Simplify using `only [stkRows, Matrix.submatrix_apply, id, Equiv.symm_apply_apply]`. Break down `s with s | s` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Matrix.fromRows_apply_inl, Matrix.submatrix_apply, id]`. Simplify using `only [Matrix.fromRows_apply_inr, Matrix.submatrix_apply, id, Matrix.mul_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp, ← finSumFinEquiv.sum_comp]`. Simplify using `only [Fintype.sum_sum_type, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero, hF]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_stkRows_zero_diag {n : ℕ} (F : Mx D (n + n) (n + n))
     (hF : ∀ i j : Fin n, F (finSumFinEquiv (Sum.inr i : Fin n ⊕ Fin n)) (finSumFinEquiv (Sum.inl j : Fin n ⊕ Fin n)) =
@@ -55,15 +53,13 @@ theorem mul_stkRows_zero_diag {n : ℕ} (F : Mx D (n + n) (n + n))
       Matrix.fromRows_apply_inr, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero, hF]
 
 /- English proof (translation)
-Introduce `D A μ hμ Fr hFr hdiag`. Take `⟨hgram, hdet, -⟩` from `GlobalTheory.T.doubledBasisSkewColumnMatrix_gram_inverse D A μ hμ`. Establish `hTT : Tm A μ * (Tm A μ)⁻¹ = 1` using `mul_nonsing_inv _ hdet`. Establish `hTT' : (Tm A μ)⁻¹ * Tm A μ = 1` using `nonsing_inv_mul _ hdet`. Establish `hU : adj (Fr.1 * rat (Tm A μ)⁻¹) * (gA (dblSp A) * (Fr.1 * rat (Tm A μ)⁻¹)) = gA (dblSp A)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : rat ((Tm A μ)⁻¹ᴴ * ((Tm A μ)ᴴ * (dblSp A).gram * Tm A μ) * (Tm A μ)⁻¹) = rat (dblSp A).gram`. Use `congr 1`. Rewrite using `[show (Tm A μ)⁻¹ᴴ * ((Tm A μ)ᴴ * (dblSp A).gram * Tm A μ) * (Tm A μ)⁻¹ = (Tm A μ * (Tm A μ)⁻¹)ᴴ * (dblSp A).gram * (Tm A μ * (Tm A μ)⁻¹) by`. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc], hTT, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hgram, rat_mul, rat_mul, rat_smul, ← hFr, rat_conjTranspose, show rat (dblSp A).gram = gA (dblSp A) from rfl]`. Rewrite using `[adj_mul]`. Simplify using `only [Matrix.mul_assoc] at h1 ⊢`. Conclude with `h1`. Establish `hS : (Fr.1 * rat (Tm A μ)⁻¹ : Mx D (A.rank + A.rank) (A.rank + A.rank)) ⬝ (stkRows 1 1 : Mx D (A.rank + A.rank) A.rank) = Fr.1 ⬝ (stkRows (gA A) 0 : Mx D (A.rank + A.rank) A.rank)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (stkRows 1 1 : Mx D (A.rank + A.rank) A.rank) = rat (stackRows 1 1) by rw [rat_stackRows, rat_one], ← Tm_mul_stackRows_gram A μ, rat_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (rat (Tm A μ)⁻¹), ← rat_mul, hTT', rat_one, Matrix.one_mul, rat_stackRows, rat_zero]`. Both sides reduce to the same expression. Take `⟨β, hβ⟩` from `mul_stkRows_zero_diag Fr.1 hdiag (gA A)`. Use `⟨⟨ofMat (dblSp A) _ hU, mem_siegelOf.2 (keepsDiag_of_mul_stkRows_one (β := β) (hS.trans hβ))⟩, ?_⟩` and prove the remaining obligations. Use `show (Fr.1 * rat (Tm A μ)⁻¹) * rat (Tm A μ) = Fr.1`.
-
-Rewrite using `[Matrix.mul_assoc, ← rat_mul, hTT', rat_one, Matrix.mul_one]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_siegel_mul_Tm : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ Fr : GL (Fin (A.rank + A.rank)) (AE D), adj Fr.1 * gA (dblSp A) * Fr.1 = incA D μ • rat (Jst D A.rank) → (∀ i j : Fin A.rank, Fr.1 (finSumFinEquiv (Sum.inr i : Fin A.rank ⊕ Fin A.rank)) (finSumFinEquiv (Sum.inl j : Fin A.rank ⊕ Fin A.rank)) = Fr.1 (finSumFinEquiv (Sum.inl i : Fin A.rank ⊕ Fin A.rank)) (finSumFinEquiv (Sum.inl j : Fin A.rank ⊕ Fin A.rank))) → ∃ p : siegel A, mt (dblSp A) p * (rat (Tm A μ) : Mx D (A.rank + A.rank) (A.rank + A.rank)) = Fr.1 := by
   intro D A μ hμ Fr hFr hdiag

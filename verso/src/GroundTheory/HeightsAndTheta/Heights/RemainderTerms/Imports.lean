@@ -180,883 +180,883 @@ namespace GroundTheory.Heights₂.Heights
 namespace RestTerms
 
 /- English proof (translation)
-The claim follows from `CoinvStepReduction.proof`.
+A detailed English derivation is pending.
 -/
 theorem CoinvStepReduction.full : CoinvStepReduction.Statement :=
   CoinvStepReduction.proof
 
 /- English proof (translation)
-The claim follows from `CoinvMonomialReduction.proof CoinvStepReduction.full`.
+A detailed English derivation is pending.
 -/
 theorem CoinvMonomialReduction.full : CoinvMonomialReduction.Statement :=
   CoinvMonomialReduction.proof CoinvStepReduction.full
 
 /- English proof (translation)
-The claim follows from `CoinvPolynomialReduction.proof CoinvMonomialReduction.full`.
+A detailed English derivation is pending.
 -/
 theorem CoinvPolynomialReduction.full : CoinvPolynomialReduction.Statement :=
   CoinvPolynomialReduction.proof CoinvMonomialReduction.full
 
 /- English proof (translation)
-The claim follows from `CoinvIdealRepresentation.proof`.
+A detailed English derivation is pending.
 -/
 theorem CoinvIdealRepresentation.full : CoinvIdealRepresentation.Statement :=
   CoinvIdealRepresentation.proof
 
 /- English proof (translation)
-The claim follows from `HomogeneousComponentMul.proof`.
+A detailed English derivation is pending.
 -/
 theorem HomogeneousComponentMul.full : HomogeneousComponentMul.Statement :=
   HomogeneousComponentMul.proof
 
 /- English proof (translation)
-The claim follows from `CoinvIdealComponent.proof CoinvIdealRepresentation.full HomogeneousComponentMul.full`.
+A detailed English derivation is pending.
 -/
 theorem CoinvIdealComponent.full : CoinvIdealComponent.Statement :=
   CoinvIdealComponent.proof CoinvIdealRepresentation.full HomogeneousComponentMul.full
 
 /- English proof (translation)
-The claim follows from `CoinvStaircaseDegree.proof`.
+A detailed English derivation is pending.
 -/
 theorem CoinvStaircaseDegree.full : CoinvStaircaseDegree.Statement :=
   CoinvStaircaseDegree.proof
 
 /- English proof (translation)
-The claim follows from `CoinvStaircaseComponent.proof CoinvStaircaseDegree.full`.
+A detailed English derivation is pending.
 -/
 theorem CoinvStaircaseComponent.full : CoinvStaircaseComponent.Statement :=
   CoinvStaircaseComponent.proof CoinvStaircaseDegree.full
 
 /- English proof (translation)
-The claim follows from `CoinvAtTop.proof CoinvPolynomialReduction.full CoinvIdealComponent.full CoinvStaircaseComponent.full`.
+A detailed English derivation is pending.
 -/
 theorem CoinvAtTop.full : CoinvAtTop.Statement :=
   CoinvAtTop.proof CoinvPolynomialReduction.full CoinvIdealComponent.full CoinvStaircaseComponent.full
 
 /- English proof (translation)
-The claim follows from `CoinvariantTopDegree.proof CoinvAtTop.full`.
+A detailed English derivation is pending.
 -/
 theorem CoinvariantTopDegree.full : CoinvariantTopDegree.Statement :=
   CoinvariantTopDegree.proof CoinvAtTop.full
 
 /- English proof (translation)
-The claim follows from `FlagCoeffBlockPermute.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagCoeffBlockPermute.full : FlagCoeffBlockPermute.Statement :=
   FlagCoeffBlockPermute.proof
 
 /- English proof (translation)
-The claim follows from `FlagAltCoeffInjective.proof FlagCoeffBlockPermute.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagAltCoeffInjective.full : FlagAltCoeffInjective.Statement :=
   FlagAltCoeffInjective.proof FlagCoeffBlockPermute.full
 
 /- English proof (translation)
-The claim follows from `FlagInjSumBound.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagInjSumBound.full : FlagInjSumBound.Statement :=
   FlagInjSumBound.proof
 
 /- English proof (translation)
-The claim follows from `FlagStaircaseOrbit.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagStaircaseOrbit.full : FlagStaircaseOrbit.Statement :=
   FlagStaircaseOrbit.proof
 
 /- English proof (translation)
-The claim follows from `FlagVandermondeHomogeneous.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagVandermondeHomogeneous.full : FlagVandermondeHomogeneous.Statement :=
   FlagVandermondeHomogeneous.proof
 
 /- English proof (translation)
-The claim follows from `FlagAltTopDegree.proof FlagCoeffBlockPermute.full FlagAltCoeffInjective.full FlagInjSumBound.full FlagStaircaseOrbit.full FlagVandermondeHomogeneous.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagAltTopDegree.full : FlagAltTopDegree.Statement :=
   FlagAltTopDegree.proof FlagCoeffBlockPermute.full FlagAltCoeffInjective.full FlagInjSumBound.full FlagStaircaseOrbit.full FlagVandermondeHomogeneous.full
 
 /- English proof (translation)
-The claim follows from `FlagAntisymHomogeneous.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagAntisymHomogeneous.full : FlagAntisymHomogeneous.Statement :=
   FlagAntisymHomogeneous.proof
 
 /- English proof (translation)
-The claim follows from `FlagIntegralPermute.proof FlagCoeffBlockPermute.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagIntegralPermute.full : FlagIntegralPermute.Statement :=
   FlagIntegralPermute.proof FlagCoeffBlockPermute.full
 
 /- English proof (translation)
-The claim follows from `FlagIntegralAntisymmetrize.proof FlagIntegralPermute.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagIntegralAntisymmetrize.full : FlagIntegralAntisymmetrize.Statement :=
   FlagIntegralAntisymmetrize.proof FlagIntegralPermute.full
 
 /- English proof (translation)
-The claim follows from `FlagIntegralTopComponent.proof FlagVandermondeHomogeneous.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagIntegralTopComponent.full : FlagIntegralTopComponent.Statement :=
   FlagIntegralTopComponent.proof FlagVandermondeHomogeneous.full
 
 /- English proof (translation)
-The claim follows from `FlagHomogeneousComponentMul.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagHomogeneousComponentMul.full : FlagHomogeneousComponentMul.Statement :=
   FlagHomogeneousComponentMul.proof
 
 /- English proof (translation)
-The claim follows from `FlagIntegralVandermondeMul.proof FlagIntegralTopComponent.full FlagHomogeneousComponentMul.full FlagVandermondeHomogeneous.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagIntegralVandermondeMul.full : FlagIntegralVandermondeMul.Statement :=
   FlagIntegralVandermondeMul.proof FlagIntegralTopComponent.full FlagHomogeneousComponentMul.full FlagVandermondeHomogeneous.full
 
 /- English proof (translation)
-The claim follows from `FlagIntegralViaQuotient.proof FlagIntegralAntisymmetrize.full FlagIntegralVandermondeMul.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagIntegralViaQuotient.full : FlagIntegralViaQuotient.Statement :=
   FlagIntegralViaQuotient.proof FlagIntegralAntisymmetrize.full FlagIntegralVandermondeMul.full
 
 /- English proof (translation)
-The claim follows from `FlagIntegralTopDegree.proof FlagAltTopDegree.full FlagAntisymHomogeneous.full FlagIntegralViaQuotient.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagIntegralTopDegree.full : FlagIntegralTopDegree.Statement :=
   FlagIntegralTopDegree.proof FlagAltTopDegree.full FlagAntisymHomogeneous.full FlagIntegralViaQuotient.full
 
 /- English proof (translation)
-The claim follows from `FlagIntegralVandermondePos.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagIntegralVandermondePos.full : FlagIntegralVandermondePos.Statement :=
   FlagIntegralVandermondePos.proof
 
 /- English proof (translation)
-The claim follows from `IntegralIsDividedDifference.proof FlagIntegralTopDegree.full FlagIntegralVandermondePos.full`.
+A detailed English derivation is pending.
 -/
 theorem IntegralIsDividedDifference.full : IntegralIsDividedDifference.Statement :=
   IntegralIsDividedDifference.proof FlagIntegralTopDegree.full FlagIntegralVandermondePos.full
 
 /- English proof (translation)
-The claim follows from `FlagSwapDivisible.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagSwapDivisible.full : FlagSwapDivisible.Statement :=
   FlagSwapDivisible.proof
 
 /- English proof (translation)
-The claim follows from `FlagDiffPrime.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagDiffPrime.full : FlagDiffPrime.Statement :=
   FlagDiffPrime.proof
 
 /- English proof (translation)
-The claim follows from `FlagDiffNotDvd.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagDiffNotDvd.full : FlagDiffNotDvd.Statement :=
   FlagDiffNotDvd.proof
 
 /- English proof (translation)
-The claim follows from `FlagProdPrimesDvd.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagProdPrimesDvd.full : FlagProdPrimesDvd.Statement :=
   FlagProdPrimesDvd.proof
 
 /- English proof (translation)
-The claim follows from `FlagVandermondeDvd.proof FlagSwapDivisible.full FlagDiffPrime.full FlagDiffNotDvd.full FlagProdPrimesDvd.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagVandermondeDvd.full : FlagVandermondeDvd.Statement :=
   FlagVandermondeDvd.proof FlagSwapDivisible.full FlagDiffPrime.full FlagDiffNotDvd.full FlagProdPrimesDvd.full
 
 /- English proof (translation)
-The claim follows from `FlagDividedDifferencePoly.proof FlagVandermondeDvd.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagDividedDifferencePoly.full : FlagDividedDifferencePoly.Statement :=
   FlagDividedDifferencePoly.proof FlagVandermondeDvd.full
 
 /- English proof (translation)
-The claim follows from `FlagSymmetricMulAntisym.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagSymmetricMulAntisym.full : FlagSymmetricMulAntisym.Statement :=
   FlagSymmetricMulAntisym.proof
 
 /- English proof (translation)
-The claim follows from `FlagPowerSumSymmetric.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagPowerSumSymmetric.full : FlagPowerSumSymmetric.Statement :=
   FlagPowerSumSymmetric.proof
 
 /- English proof (translation)
-The claim follows from `FlagAntisymDecomposition.proof FlagSymmetricMulAntisym.full FlagPowerSumSymmetric.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagAntisymDecomposition.full : FlagAntisymDecomposition.Statement :=
   FlagAntisymDecomposition.proof FlagSymmetricMulAntisym.full FlagPowerSumSymmetric.full
 
 /- English proof (translation)
-The claim follows from `FlagQuotientHomogeneous.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagQuotientHomogeneous.full : FlagQuotientHomogeneous.Statement :=
   FlagQuotientHomogeneous.proof
 
 /- English proof (translation)
-The claim follows from `FlagRestrictHomogeneous.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagRestrictHomogeneous.full : FlagRestrictHomogeneous.Statement :=
   FlagRestrictHomogeneous.proof
 
 /- English proof (translation)
-The claim follows from `FlagRestrictSymmetric.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagRestrictSymmetric.full : FlagRestrictSymmetric.Statement :=
   FlagRestrictSymmetric.proof
 
 /- English proof (translation)
-The claim follows from `FlagRestrictPowerSum.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagRestrictPowerSum.full : FlagRestrictPowerSum.Statement :=
   FlagRestrictPowerSum.proof
 
 /- English proof (translation)
-The claim follows from `FlagRestrictDecomposition.proof FlagRestrictPowerSum.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagRestrictDecomposition.full : FlagRestrictDecomposition.Statement :=
   FlagRestrictDecomposition.proof FlagRestrictPowerSum.full
 
 /- English proof (translation)
-The claim follows from `FlagPowerSumPreimage.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagPowerSumPreimage.full : FlagPowerSumPreimage.Statement :=
   FlagPowerSumPreimage.proof
 
 /- English proof (translation)
-The claim follows from `FlagRestrictConstantCoeff.proof`.
+A detailed English derivation is pending.
 -/
 theorem FlagRestrictConstantCoeff.full : FlagRestrictConstantCoeff.Statement :=
   FlagRestrictConstantCoeff.proof
 
 /- English proof (translation)
-The claim follows from `LemmaA.proof FlagIntegralTopDegree.full FlagIntegralVandermondePos.full FlagDividedDifferencePoly.full FlagAntisymDecomposition.full FlagVandermondeHomogeneous.full FlagAntisymHomogeneous.full FlagQuotientHomogeneous.full FlagRestrictHomogeneous.full FlagRestrictSymmetric.full Fl …`.
+A detailed English derivation is pending.
 -/
 theorem LemmaA.full : LemmaA.Statement :=
   LemmaA.proof FlagIntegralTopDegree.full FlagIntegralVandermondePos.full FlagDividedDifferencePoly.full FlagAntisymDecomposition.full FlagVandermondeHomogeneous.full FlagAntisymHomogeneous.full FlagQuotientHomogeneous.full FlagRestrictHomogeneous.full FlagRestrictSymmetric.full FlagRestrictDecomposition.full FlagPowerSumPreimage.full FlagRestrictConstantCoeff.full FlagIntegralViaQuotient.full
 
 /- English proof (translation)
-The claim follows from `RestTermWellDefined.proof LemmaA.full`.
+A detailed English derivation is pending.
 -/
 theorem RestTermWellDefined.full : RestTermWellDefined.Statement :=
   RestTermWellDefined.proof LemmaA.full
 
 /- English proof (translation)
-The claim follows from `SchAevalSignedRename.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchAevalSignedRename.full : SchAevalSignedRename.Statement :=
   SchAevalSignedRename.proof
 
 /- English proof (translation)
-The claim follows from `SchAntisymmetrizePlace.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchAntisymmetrizePlace.full : SchAntisymmetrizePlace.Statement :=
   SchAntisymmetrizePlace.proof
 
 /- English proof (translation)
-The claim follows from `SchAlternantHomogeneous.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchAlternantHomogeneous.full : SchAlternantHomogeneous.Statement :=
   SchAlternantHomogeneous.proof
 
 /- English proof (translation)
-The claim follows from `SchSmallBlockProduct.proof SchAevalSignedRename.full SchAlternantHomogeneous.full`.
+A detailed English derivation is pending.
 -/
 theorem SchSmallBlockProduct.full : SchSmallBlockProduct.Statement :=
   SchSmallBlockProduct.proof SchAevalSignedRename.full SchAlternantHomogeneous.full
 
 /- English proof (translation)
-The claim follows from `SchAlternantRenamePlace.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchAlternantRenamePlace.full : SchAlternantRenamePlace.Statement :=
   SchAlternantRenamePlace.proof
 
 /- English proof (translation)
-The claim follows from `SchConcatExponent.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchConcatExponent.full : SchConcatExponent.Statement :=
   SchConcatExponent.proof
 
 /- English proof (translation)
-The claim follows from `SchConcatAlternant.proof SchAlternantRenamePlace.full SchConcatExponent.full`.
+A detailed English derivation is pending.
 -/
 theorem SchConcatAlternant.full : SchConcatAlternant.Statement :=
   SchConcatAlternant.proof SchAlternantRenamePlace.full SchConcatExponent.full
 
 /- English proof (translation)
-The claim follows from `SchConcatAlternantZero.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchConcatAlternantZero.full : SchConcatAlternantZero.Statement :=
   SchConcatAlternantZero.proof
 
 /- English proof (translation)
-The claim follows from `SchBlockVandermondeOne.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchBlockVandermondeOne.full : SchBlockVandermondeOne.Statement :=
   SchBlockVandermondeOne.proof
 
 /- English proof (translation)
-The claim follows from `SchSchurHomogeneous.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchSchurHomogeneous.full : SchSchurHomogeneous.Statement :=
   SchSchurHomogeneous.proof
 
 /- English proof (translation)
-The claim follows from `LemmaB.proof SchAevalSignedRename.full SchAntisymmetrizePlace.full SchSmallBlockProduct.full SchConcatAlternant.full SchConcatAlternantZero.full SchBlockVandermondeOne.full SchSchurHomogeneous.full`.
+A detailed English derivation is pending.
 -/
 theorem LemmaB.full : LemmaB.Statement :=
   LemmaB.proof SchAevalSignedRename.full SchAntisymmetrizePlace.full SchSmallBlockProduct.full SchConcatAlternant.full SchConcatAlternantZero.full SchBlockVandermondeOne.full SchSchurHomogeneous.full
 
 /- English proof (translation)
-The claim follows from `CombCardYoungCells.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombCardYoungCells.full : CombCardYoungCells.Statement :=
   CombCardYoungCells.proof
 
 /- English proof (translation)
-The claim follows from `CombTableauRowCount.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombTableauRowCount.full : CombTableauRowCount.Statement :=
   CombTableauRowCount.proof
 
 /- English proof (translation)
-The claim follows from `CombTableauRowPrefix.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombTableauRowPrefix.full : CombTableauRowPrefix.Statement :=
   CombTableauRowPrefix.proof
 
 /- English proof (translation)
-The claim follows from `CombTableauRowLattice.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombTableauRowLattice.full : CombTableauRowLattice.Statement :=
   CombTableauRowLattice.proof
 
 /- English proof (translation)
-The claim follows from `CombYoungRowCard.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombYoungRowCard.full : CombYoungRowCard.Statement :=
   CombYoungRowCard.proof
 
 /- English proof (translation)
-The claim follows from `CombWordOfTableau.proof CombTableauRowCount.full CombTableauRowPrefix.full CombTableauRowLattice.full CombYoungRowCard.full`.
+A detailed English derivation is pending.
 -/
 theorem CombWordOfTableau.full : CombWordOfTableau.Statement :=
   CombWordOfTableau.proof CombTableauRowCount.full CombTableauRowPrefix.full CombTableauRowLattice.full CombYoungRowCard.full
 
 /- English proof (translation)
-The claim follows from `CombCellOfWordMem.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombCellOfWordMem.full : CombCellOfWordMem.Statement :=
   CombCellOfWordMem.proof
 
 /- English proof (translation)
-The claim follows from `CombCellOfWordInj.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombCellOfWordInj.full : CombCellOfWordInj.Statement :=
   CombCellOfWordInj.proof
 
 /- English proof (translation)
-The claim follows from `CombCellOfWordMono.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombCellOfWordMono.full : CombCellOfWordMono.Statement :=
   CombCellOfWordMono.proof
 
 /- English proof (translation)
-The claim follows from `CombTableauOfWord.proof CombCellOfWordMem.full CombCellOfWordInj.full CombCellOfWordMono.full`.
+A detailed English derivation is pending.
 -/
 theorem CombTableauOfWord.full : CombTableauOfWord.Statement :=
   CombTableauOfWord.proof CombCellOfWordMem.full CombCellOfWordInj.full CombCellOfWordMono.full
 
 /- English proof (translation)
-The claim follows from `CombTableEqWords.proof CombCardYoungCells.full CombWordOfTableau.full CombTableauOfWord.full`.
+A detailed English derivation is pending.
 -/
 theorem CombTableEqWords.full : CombTableEqWords.Statement :=
   CombTableEqWords.proof CombCardYoungCells.full CombWordOfTableau.full CombTableauOfWord.full
 
 /- English proof (translation)
-The claim follows from `CombCfUpdateZero.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombCfUpdateZero.full : CombCfUpdateZero.Statement :=
   CombCfUpdateZero.proof
 
 /- English proof (translation)
-The claim follows from `CombCfAtStair.proof CombCfUpdateZero.full`.
+A detailed English derivation is pending.
 -/
 theorem CombCfAtStair.full : CombCfAtStair.Statement :=
   CombCfAtStair.proof CombCfUpdateZero.full
 
 /- English proof (translation)
-The claim follows from `CombCfMonomialPsumOne.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombCfMonomialPsumOne.full : CombCfMonomialPsumOne.Statement :=
   CombCfMonomialPsumOne.proof
 
 /- English proof (translation)
-The claim follows from `CombDetDescFactorial.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombDetDescFactorial.full : CombDetDescFactorial.Statement :=
   CombDetDescFactorial.proof
 
 /- English proof (translation)
-The claim follows from `CombCfVandermondePsumOne.proof CombCfMonomialPsumOne.full CombDetDescFactorial.full`.
+A detailed English derivation is pending.
 -/
 theorem CombCfVandermondePsumOne.full : CombCfVandermondePsumOne.Statement :=
   CombCfVandermondePsumOne.proof CombCfMonomialPsumOne.full CombDetDescFactorial.full
 
 /- English proof (translation)
-The claim follows from `FrobeniusDimensionFormula.proof CombTableEqWords.full CombCfAtStair.full CombCfVandermondePsumOne.full`.
+A detailed English derivation is pending.
 -/
 theorem FrobeniusDimensionFormula.full : FrobeniusDimensionFormula.Statement :=
   FrobeniusDimensionFormula.proof CombTableEqWords.full CombCfAtStair.full CombCfVandermondePsumOne.full
 
 /- English proof (translation)
-The claim follows from `LemmaC.proof FrobeniusDimensionFormula.full`.
+A detailed English derivation is pending.
 -/
 theorem LemmaC.full : LemmaC.Statement :=
   LemmaC.proof FrobeniusDimensionFormula.full
 
 /- English proof (translation)
-The claim follows from `SchPowerSumHomWeighted.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchPowerSumHomWeighted.full : SchPowerSumHomWeighted.Statement :=
   SchPowerSumHomWeighted.proof
 
 /- English proof (translation)
-The claim follows from `SchWeightedPreimage.proof SchPowerSumHomWeighted.full`.
+A detailed English derivation is pending.
 -/
 theorem SchWeightedPreimage.full : SchWeightedPreimage.Statement :=
   SchWeightedPreimage.proof SchPowerSumHomWeighted.full
 
 /- English proof (translation)
-The claim follows from `SchPowerSumAtRootsOfUnity.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchPowerSumAtRootsOfUnity.full : SchPowerSumAtRootsOfUnity.Statement :=
   SchPowerSumAtRootsOfUnity.proof
 
 /- English proof (translation)
-The claim follows from `SchEvalPowerSumHom.proof SchPowerSumAtRootsOfUnity.full`.
+A detailed English derivation is pending.
 -/
 theorem SchEvalPowerSumHom.full : SchEvalPowerSumHom.Statement :=
   SchEvalPowerSumHom.proof SchPowerSumAtRootsOfUnity.full
 
 /- English proof (translation)
-The claim follows from `SchSchurRowsToK.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchSchurRowsToK.full : SchSchurRowsToK.Statement :=
   SchSchurRowsToK.proof
 
 /- English proof (translation)
-The claim follows from `SchProdOneSubRootsOfUnity.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchProdOneSubRootsOfUnity.full : SchProdOneSubRootsOfUnity.Statement :=
   SchProdOneSubRootsOfUnity.proof
 
 /- English proof (translation)
-The claim follows from `SchCompleteGenerating.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchCompleteGenerating.full : SchCompleteGenerating.Statement :=
   SchCompleteGenerating.proof
 
 /- English proof (translation)
-The claim follows from `SchCompleteAtRootsOfUnity.proof SchProdOneSubRootsOfUnity.full SchCompleteGenerating.full`.
+A detailed English derivation is pending.
 -/
 theorem SchCompleteAtRootsOfUnity.full : SchCompleteAtRootsOfUnity.Statement :=
   SchCompleteAtRootsOfUnity.proof SchProdOneSubRootsOfUnity.full SchCompleteGenerating.full
 
 /- English proof (translation)
-The claim follows from `SchSchurEvalMatrix.proof SchCompleteAtRootsOfUnity.full`.
+A detailed English derivation is pending.
 -/
 theorem SchSchurEvalMatrix.full : SchSchurEvalMatrix.Statement :=
   SchSchurEvalMatrix.proof SchCompleteAtRootsOfUnity.full
 
 /- English proof (translation)
-The claim follows from `SchRootOfUnityBialternant.proof SchSchurEvalMatrix.full`.
+A detailed English derivation is pending.
 -/
 theorem SchRootOfUnityBialternant.full : SchRootOfUnityBialternant.Statement :=
   SchRootOfUnityBialternant.proof SchSchurEvalMatrix.full
 
 /- English proof (translation)
-The claim follows from `SchRootOfUnityRowsPerm.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchRootOfUnityRowsPerm.full : SchRootOfUnityRowsPerm.Statement :=
   SchRootOfUnityRowsPerm.proof
 
 /- English proof (translation)
-The claim follows from `SchRootOfUnityRowsEq.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchRootOfUnityRowsEq.full : SchRootOfUnityRowsEq.Statement :=
   SchRootOfUnityRowsEq.proof
 
 /- English proof (translation)
-The claim follows from `SchHookResidues.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchHookResidues.full : SchHookResidues.Statement :=
   SchHookResidues.proof
 
 /- English proof (translation)
-The claim follows from `SchResidueCount.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchResidueCount.full : SchResidueCount.Statement :=
   SchResidueCount.proof
 
 /- English proof (translation)
-The claim follows from `SchNonHookResidues.proof SchResidueCount.full`.
+A detailed English derivation is pending.
 -/
 theorem SchNonHookResidues.full : SchNonHookResidues.Statement :=
   SchNonHookResidues.proof SchResidueCount.full
 
 /- English proof (translation)
-The claim follows from `SchRootOfUnityVandermondeNe.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchRootOfUnityVandermondeNe.full : SchRootOfUnityVandermondeNe.Statement :=
   SchRootOfUnityVandermondeNe.proof
 
 /- English proof (translation)
-The claim follows from `SchJTMatrixDetAtRoots.proof SchRootOfUnityBialternant.full SchRootOfUnityRowsPerm.full SchRootOfUnityRowsEq.full SchHookResidues.full SchNonHookResidues.full SchRootOfUnityVandermondeNe.full`.
+A detailed English derivation is pending.
 -/
 theorem SchJTMatrixDetAtRoots.full : SchJTMatrixDetAtRoots.Statement :=
   SchJTMatrixDetAtRoots.proof SchRootOfUnityBialternant.full SchRootOfUnityRowsPerm.full SchRootOfUnityRowsEq.full SchHookResidues.full SchNonHookResidues.full SchRootOfUnityVandermondeNe.full
 
 /- English proof (translation)
-The claim follows from `SchSchurAtRootsOfUnity.proof SchSchurRowsToK.full SchSchurEvalMatrix.full SchJTMatrixDetAtRoots.full`.
+A detailed English derivation is pending.
 -/
 theorem SchSchurAtRootsOfUnity.full : SchSchurAtRootsOfUnity.Statement :=
   SchSchurAtRootsOfUnity.proof SchSchurRowsToK.full SchSchurEvalMatrix.full SchJTMatrixDetAtRoots.full
 
 /- English proof (translation)
-The claim follows from `SchurPowerSumCoefficient.proof SchWeightedPreimage.full SchEvalPowerSumHom.full SchSchurHomogeneous.full SchSchurAtRootsOfUnity.full`.
+A detailed English derivation is pending.
 -/
 theorem SchurPowerSumCoefficient.full : SchurPowerSumCoefficient.Statement :=
   SchurPowerSumCoefficient.proof SchWeightedPreimage.full SchEvalPowerSumHom.full SchSchurHomogeneous.full SchSchurAtRootsOfUnity.full
 
 /- English proof (translation)
-The claim follows from `CombHookShapeFacts.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombHookShapeFacts.full : CombHookShapeFacts.Statement :=
   CombHookShapeFacts.proof
 
 /- English proof (translation)
-The claim follows from `CombHookBranch.proof CombHookShapeFacts.full`.
+A detailed English derivation is pending.
 -/
 theorem CombHookBranch.full : CombHookBranch.Statement :=
   CombHookBranch.proof CombHookShapeFacts.full
 
 /- English proof (translation)
-The claim follows from `CombHookCount.proof CombHookShapeFacts.full CombHookBranch.full`.
+A detailed English derivation is pending.
 -/
 theorem CombHookCount.full : CombHookCount.Statement :=
   CombHookCount.proof CombHookShapeFacts.full CombHookBranch.full
 
 /- English proof (translation)
-The claim follows from `HookDimensionSum.proof CombTableEqWords.full CombHookShapeFacts.full CombHookCount.full`.
+A detailed English derivation is pending.
 -/
 theorem HookDimensionSum.full : HookDimensionSum.Statement :=
   HookDimensionSum.proof CombTableEqWords.full CombHookShapeFacts.full CombHookCount.full
 
 /- English proof (translation)
-The claim follows from `SchStrictAntiSplit.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchStrictAntiSplit.full : SchStrictAntiSplit.Statement :=
   SchStrictAntiSplit.proof
 
 /- English proof (translation)
-The claim follows from `SchAltPartitionExpansion.proof SchStrictAntiSplit.full`.
+A detailed English derivation is pending.
 -/
 theorem SchAltPartitionExpansion.full : SchAltPartitionExpansion.Statement :=
   SchAltPartitionExpansion.proof SchStrictAntiSplit.full
 
 /- English proof (translation)
-The claim follows from `FrobeniusCharacterFormula.proof SchAltPartitionExpansion.full`.
+A detailed English derivation is pending.
 -/
 theorem FrobeniusCharacterFormula.full : FrobeniusCharacterFormula.Statement :=
   FrobeniusCharacterFormula.proof SchAltPartitionExpansion.full
 
 /- English proof (translation)
-The claim follows from `CombSortLe.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombSortLe.full : CombSortLe.Statement :=
   CombSortLe.proof
 
 /- English proof (translation)
-The claim follows from `Comb.CombSortShift.proof CombSortLe.full`.
+A detailed English derivation is pending.
 -/
 theorem CombSortShift.full : CombSortShift.Statement :=
   Comb.CombSortShift.proof CombSortLe.full
 
 /- English proof (translation)
-The claim follows from `CombSortShiftDistinct.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombSortShiftDistinct.full : CombSortShiftDistinct.Statement :=
   CombSortShiftDistinct.proof
 
 /- English proof (translation)
-The claim follows from `CombPcntAppend.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombPcntAppend.full : CombPcntAppend.Statement :=
   CombPcntAppend.proof
 
 /- English proof (translation)
-The claim follows from `CombExtendWord.proof CombPcntAppend.full`.
+A detailed English derivation is pending.
 -/
 theorem CombExtendWord.full : CombExtendWord.Statement :=
   CombExtendWord.proof CombPcntAppend.full
 
 /- English proof (translation)
-The claim follows from `CombStripSum.proof CombCfAtStair.full CombSortShift.full CombSortShiftDistinct.full CombExtendWord.full`.
+A detailed English derivation is pending.
 -/
 theorem CombStripSum.full : CombStripSum.Statement :=
   CombStripSum.proof CombCfAtStair.full CombSortShift.full CombSortShiftDistinct.full CombExtendWord.full
 
 /- English proof (translation)
-The claim follows from `CombCfBound.proof CombCfAtStair.full CombSortShift.full CombStripSum.full`.
+A detailed English derivation is pending.
 -/
 theorem CombCfBound.full : CombCfBound.Statement :=
   CombCfBound.proof CombCfAtStair.full CombSortShift.full CombStripSum.full
 
 /- English proof (translation)
-The claim follows from `CharacterBound.proof CombTableEqWords.full CombCfBound.full`.
+A detailed English derivation is pending.
 -/
 theorem CharacterBound.full : CharacterBound.Statement :=
   CharacterBound.proof CombTableEqWords.full CombCfBound.full
 
 /- English proof (translation)
-The claim follows from `CharacterAtIdentity.proof CombTableEqWords.full CombCfAtStair.full`.
+A detailed English derivation is pending.
 -/
 theorem CharacterAtIdentity.full : CharacterAtIdentity.Statement :=
   CharacterAtIdentity.proof CombTableEqWords.full CombCfAtStair.full
 
 /- English proof (translation)
-The claim follows from `CoinvAboveTop.proof CoinvPolynomialReduction.full CoinvIdealComponent.full CoinvStaircaseComponent.full`.
+A detailed English derivation is pending.
 -/
 theorem CoinvAboveTop.full : CoinvAboveTop.Statement :=
   CoinvAboveTop.proof CoinvPolynomialReduction.full CoinvIdealComponent.full CoinvStaircaseComponent.full
 
 /- English proof (translation)
-The claim follows from `VandermondeOfHomogeneous.proof`.
+A detailed English derivation is pending.
 -/
 theorem VandermondeOfHomogeneous.full : VandermondeOfHomogeneous.Statement :=
   VandermondeOfHomogeneous.proof
 
 /- English proof (translation)
-The claim follows from `RestPolynomialHomogeneous.proof VandermondeOfHomogeneous.full`.
+A detailed English derivation is pending.
 -/
 theorem RestPolynomialHomogeneous.full : RestPolynomialHomogeneous.Statement :=
   RestPolynomialHomogeneous.proof VandermondeOfHomogeneous.full
 
 /- English proof (translation)
-The claim follows from `RestPolynomialHomogeneousDecomposition.proof CoinvAboveTop.full RestPolynomialHomogeneous.full`.
+A detailed English derivation is pending.
 -/
 theorem RestPolynomialHomogeneousDecomposition.full : RestPolynomialHomogeneousDecomposition.Statement :=
   RestPolynomialHomogeneousDecomposition.proof CoinvAboveTop.full RestPolynomialHomogeneous.full
 
 /- English proof (translation)
-The claim follows from `RestPolynomialDecomposes.proof RestPolynomialHomogeneousDecomposition.full`.
+A detailed English derivation is pending.
 -/
 theorem RestPolynomialDecomposes.full : RestPolynomialDecomposes.Statement :=
   RestPolynomialDecomposes.proof RestPolynomialHomogeneousDecomposition.full
 
 /- English proof (translation)
-The claim follows from `SameFactorFormula.proof LemmaA.full LemmaB.full FrobeniusCharacterFormula.full CharacterAtIdentity.full VandermondeOfHomogeneous.full RectangleTablePos.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem SameFactorFormula.full : SameFactorFormula.Statement :=
   SameFactorFormula.proof LemmaA.full LemmaB.full FrobeniusCharacterFormula.full CharacterAtIdentity.full VandermondeOfHomogeneous.full RectangleTablePos.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `SchurSignCoefficient.proof SchurPowerSumCoefficient.full`.
+A detailed English derivation is pending.
 -/
 theorem SchurSignCoefficient.full : SchurSignCoefficient.Statement :=
   SchurSignCoefficient.proof SchurPowerSumCoefficient.full
 
 /- English proof (translation)
-The claim follows from `HookTableauCount.proof FrobeniusDimensionFormula.full`.
+A detailed English derivation is pending.
 -/
 theorem HookTableauCount.full : HookTableauCount.Statement :=
   HookTableauCount.proof FrobeniusDimensionFormula.full
 
 /- English proof (translation)
-The claim follows from `HookSumBound.proof LemmaC.full HookTableauCount.full`.
+A detailed English derivation is pending.
 -/
 theorem HookSumBound.full : HookSumBound.Statement :=
   HookSumBound.proof LemmaC.full HookTableauCount.full
 
 /- English proof (translation)
-The claim follows from `SameFactorBound.proof SameFactorFormula.full SchurSignCoefficient.full CharacterBound.full HookSumBound.full RectangleTablePos.intersectionNumber_baseChange RestPolynomialDecomposes.full`.
+A detailed English derivation is pending.
 -/
 theorem SameFactorBound.full : SameFactorBound.Statement :=
   SameFactorBound.proof SameFactorFormula.full SchurSignCoefficient.full CharacterBound.full HookSumBound.full RectangleTablePos.intersectionNumber_baseChange RestPolynomialDecomposes.full
 
 /- English proof (translation)
-The claim follows from `OtherFactorFormula.proof LemmaA.full LemmaB.full FrobeniusCharacterFormula.full CharacterAtIdentity.full VandermondeOfHomogeneous.full RectangleTablePos.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem OtherFactorFormula.full : OtherFactorFormula.Statement :=
   OtherFactorFormula.proof LemmaA.full LemmaB.full FrobeniusCharacterFormula.full CharacterAtIdentity.full VandermondeOfHomogeneous.full RectangleTablePos.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `OtherFactorBound.proof OtherFactorFormula.full SameFactorFormula.full SchurSignCoefficient.full CharacterBound.full HookSumBound.full RectangleTablePos.intersectionNumber_baseChange RestPolynomialDecomposes.full`.
+A detailed English derivation is pending.
 -/
 theorem OtherFactorBound.full : OtherFactorBound.Statement :=
   OtherFactorBound.proof OtherFactorFormula.full SameFactorFormula.full SchurSignCoefficient.full CharacterBound.full HookSumBound.full RectangleTablePos.intersectionNumber_baseChange RestPolynomialDecomposes.full
 
 /- English proof (translation)
-The claim follows from `ShiftSumRule.proof ShiftTotalValues.intersectionNumber_baseChange FlagIntegralKillsPowerSums.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem ShiftSumRule.full : ShiftSumRule.Statement :=
   ShiftSumRule.proof ShiftTotalValues.intersectionNumber_baseChange FlagIntegralKillsPowerSums.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `LinearTermValue.proof LemmaA.full LemmaB.full FrobeniusCharacterFormula.full CharacterAtIdentity.full VandermondeOfHomogeneous.full`.
+A detailed English derivation is pending.
 -/
 theorem LinearTermValue.full : LinearTermValue.Statement :=
   LinearTermValue.proof LemmaA.full LemmaB.full FrobeniusCharacterFormula.full CharacterAtIdentity.full VandermondeOfHomogeneous.full
 
 /- English proof (translation)
-The claim follows from `HookCharacterSumIdentity.proof ShiftSumRule.full LinearTermValue.full SameFactorFormula.full SchurSignCoefficient.full RectangleTablePos.intersectionNumber_baseChange RestPolynomialDecomposes.full`.
+A detailed English derivation is pending.
 -/
 theorem HookCharacterSumIdentity.full : HookCharacterSumIdentity.Statement :=
   HookCharacterSumIdentity.proof ShiftSumRule.full LinearTermValue.full SameFactorFormula.full SchurSignCoefficient.full RectangleTablePos.intersectionNumber_baseChange RestPolynomialDecomposes.full
 
 /- English proof (translation)
-The claim follows from `CombVandermondeSucc.proof`.
+A detailed English derivation is pending.
 -/
 theorem CombVandermondeSucc.full : CombVandermondeSucc.Statement :=
   CombVandermondeSucc.proof
 
 /- English proof (translation)
-The claim follows from `TotalIdentity.proof FrobeniusDimensionFormula.full CombVandermondeSucc.full`.
+A detailed English derivation is pending.
 -/
 theorem TotalIdentity.full : TotalIdentity.Statement :=
   TotalIdentity.proof FrobeniusDimensionFormula.full CombVandermondeSucc.full
 
 /- English proof (translation)
-The claim follows from `RestInnerTsumBound.proof`.
+A detailed English derivation is pending.
 -/
 theorem RestInnerTsumBound.full : RestInnerTsumBound.Statement :=
   RestInnerTsumBound.proof
 
 /- English proof (translation)
-The claim follows from `RestKSumBound.proof`.
+A detailed English derivation is pending.
 -/
 theorem RestKSumBound.full : RestKSumBound.Statement :=
   RestKSumBound.proof
 
 /- English proof (translation)
-The claim follows from `RestPrimeBoundOfFactor.proof RestInnerTsumBound.full RestKSumBound.full`.
+A detailed English derivation is pending.
 -/
 theorem RestPrimeBoundOfFactor.full : RestPrimeBoundOfFactor.Statement :=
   RestPrimeBoundOfFactor.proof RestInnerTsumBound.full RestKSumBound.full
 
 /- English proof (translation)
-The claim follows from `RestPrimeBound.proof RestPrimeBoundOfFactor.full SameFactorBound.full OtherFactorBound.full`.
+A detailed English derivation is pending.
 -/
 theorem RestPrimeBound.full : RestPrimeBound.Statement :=
   RestPrimeBound.proof RestPrimeBoundOfFactor.full SameFactorBound.full OtherFactorBound.full
 
 /- English proof (translation)
-The claim follows from `RestBoundOfPrimeBound.proof`.
+A detailed English derivation is pending.
 -/
 theorem RestBoundOfPrimeBound.full : RestBoundOfPrimeBound.Statement :=
   RestBoundOfPrimeBound.proof
 
 /- English proof (translation)
-The claim follows from `RestBound.proof RestPrimeBound.full RestBoundOfPrimeBound.full`.
+A detailed English derivation is pending.
 -/
 theorem RestBound.full : RestBound.Statement :=
   RestBound.proof RestPrimeBound.full RestBoundOfPrimeBound.full
 
 /- English proof (translation)
-The claim follows from `FlagIntegralKillsPowerSums.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem FlagIntegralKillsPowerSums.full : FlagIntegralKillsPowerSums.Statement :=
   FlagIntegralKillsPowerSums.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `DividedDifferenceOfVandermonde.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem DividedDifferenceOfVandermonde.full : DividedDifferenceOfVandermonde.Statement :=
   DividedDifferenceOfVandermonde.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `XBound.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem XBound.full : XBound.Statement :=
   XBound.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `XOverPrime.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem XOverPrime.full : XOverPrime.Statement :=
   XOverPrime.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `GeometricTail.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem GeometricTail.full : GeometricTail.Statement :=
   GeometricTail.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `ExponentialTail.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem ExponentialTail.full : ExponentialTail.Statement :=
   ExponentialTail.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `ChebyshevThetaBound.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem ChebyshevThetaBound.full : ChebyshevThetaBound.Statement :=
   ChebyshevThetaBound.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `PrimeLogSquareTail.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem PrimeLogSquareTail.full : PrimeLogSquareTail.Statement :=
   PrimeLogSquareTail.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `RestConstants.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem RestConstants.full : RestConstants.Statement :=
   RestConstants.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `IntegerLogSquareTail.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem IntegerLogSquareTail.full : IntegerLogSquareTail.Statement :=
   IntegerLogSquareTail.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `ShiftTotalValues.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem ShiftTotalValues.full : ShiftTotalValues.Statement :=
   ShiftTotalValues.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `FibreTranslationInvariance.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem FibreTranslationInvariance.full : FibreTranslationInvariance.Statement :=
   FibreTranslationInvariance.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `PlueckerCauchyBinet.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem PlueckerCauchyBinet.full : PlueckerCauchyBinet.Statement :=
   PlueckerCauchyBinet.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `PlueckerHadamard.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem PlueckerHadamard.full : PlueckerHadamard.Statement :=
   PlueckerHadamard.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `SmallRankBound.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem SmallRankBound.full : SmallRankBound.Statement :=
   SmallRankBound.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `SmallRankWeakHypothesis.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem SmallRankWeakHypothesis.full : SmallRankWeakHypothesis.Statement :=
   SmallRankWeakHypothesis.intersectionNumber_baseChange

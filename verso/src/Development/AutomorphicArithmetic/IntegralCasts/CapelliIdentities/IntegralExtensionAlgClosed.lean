@@ -1,13 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R S K _ _ _ _ _ _ hinj b`. Use `haveI hp : (RingHom.ker b).IsPrime := RingHom.ker_isPrime b`. Take `⟨Q, -, hQ, hQp⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := S) (RingHom.ker b) ⊥ (by`. Introduce `x hx`. Establish `hx0 : algebraMap R S x = 0` using `by simpa using hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x = 0` using `hinj (by simpa using hx0)`. Simplify using `[this])`. Use `haveI : Q.LiesOver (RingHom.ker b) := ⟨hQp.symm⟩`. Use `letI : Algebra (R ⧸ RingHom.ker b) K := (RingHom.kerLift b).toAlgebra`. Use `haveI : FaithfulSMul (R ⧸ RingHom.ker b) K := (faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.kerLift_injective b)`.
+Simplify using the standard rewrite rules. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `haveI : Algebra.IsIntegral (R ⧸ RingHom.ker b) (S ⧸ Q) := inferInstance`. Use `haveI : FaithfulSMul (R ⧸ RingHom.ker b) (S ⧸ Q) := inferInstance`. Use `haveI : Module.IsTorsionFree (R ⧸ RingHom.ker b) (S ⧸ Q) := Module.isTorsionFree_iff_faithfulSMul.2 inferInstance`. Use `haveI : Module.IsTorsionFree (R ⧸ RingHom.ker b) K := Module.isTorsionFree_iff_faithfulSMul.2 inferInstance`. Use `haveI : Algebra.IsAlgebraic (R ⧸ RingHom.ker b) (S ⧸ Q) := Algebra.IsIntegral.isAlgebraic`.
-
-Set `ψ : (S ⧸ Q) →ₐ[R ⧸ RingHom.ker b] K` to `IsAlgClosed.lift`. Use `⟨ψ.toRingHom.comp (Ideal.Quotient.mk Q), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `ψ.commutes (Ideal.Quotient.mk (RingHom.ker b) x)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IntegralExtensionAlgClosed.exists_ringHom_extension_of_integral :
     ∀ (R S K : Type) [inst : CommRing R] [inst_1 : CommRing S]

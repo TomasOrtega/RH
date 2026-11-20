@@ -31,29 +31,29 @@ def sub : Subring hid.Corner where
 include hid h0 hadd hneg hmul hεO in
 
 /- English proof (translation)
-Set `R` to `sub hid O h0 hadd hneg hmul hεO`. Establish `corner_mem : ∀ a ∈ O, a ∈ Subsemigroup.corner ε` using `fun a ha => (Subsemigroup.mem_corner_iff hid).2 ⟨hεa a ha, by rw [mul_comm]; exact hεa a ha⟩`. Set `mk : ∀ a, a ∈ O → R` to `fun a ha => ⟨⟨a, corner_mem a ha⟩, ha⟩`. Set `val : R →+ A` to `{ toFun := fun x => x.1.1, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `val_mem : ∀ x : R, val x ∈ O` using `fun x => x.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `val_inj : ∀ x y : R, val x = val y → x = y` using `fun x y h => Subtype.ext (Subtype.ext h)`. Set `c' : R →+* R` to `{ toFun := fun x => mk (c (val x)) (hcO _ (val_mem x)) map_one' := val_inj _ _ (show c ε = ε from hcε) map_mul' := fun x y => val_inj _ _ (show c (val x * val y) = c (val x) * c (val y) from map_mul c _ _) map_zero' := val_inj _ _ (show c 0 = 0 from map_zero c) map_add' := fun x …`. Establish `hc' : ∀ x, c' (c' x) = x` using `fun x => val_inj _ _ (show c (c (val x)) = val x from hc _)`. Establish `map_mul_val : ∀ X Y : Matrix (Fin n) (Fin n) R, (X * Y).map val = X.map val * Y.map val`. Introduce `X Y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, map_sum]`. Both sides reduce to the same expression. Establish `map_one_val : (1 : Matrix (Fin n) (Fin n) R).map val = ε • (1 : Matrix (Fin n) (Fin n) A)`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Simplify using `only [smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Simplify using `only [smul_eq_mul, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `map_inj : ∀ X Y : Matrix (Fin n) (Fin n) R, X.map val = Y.map val → X = Y` using `fun X Y h => Matrix.ext fun i j => val_inj _ _ (congrFun (congrFun h i) j)`. Set `G : Matrix (Fin n) (Fin n) R` to `Matrix.of fun i j => mk (H i j) (hH i j)`. Establish `hGH : G.map val = H` using `by ext i j; rfl`. Take `⟨H', hH'O, hHH'⟩` from `hinv`. Set `G' : Matrix (Fin n) (Fin n) R` to `Matrix.of fun i j => mk (H' i j) (hH'O i j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hG'H : G'.map val = H'` using `by ext i j; rfl`. Establish `hGG' : G * G' = 1` using `map_inj _ _ (by rw [map_mul_val, map_one_val, hGH, hG'H]; exact hHH')`. Establish `hdet : IsUnit G.det` using `Matrix.isUnit_det_of_right_inverse hGG'`. Establish `hG : ∀ a b, c' (G a b) = G b a` using `fun a b => val_inj _ _ (hherm a b)`. Establish `hlocR : ∀ x : R, c' x = x → IsUnit x ∨ IsUnit (1 - x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hx' : c (val x) = val x` using `congrArg val hx`. Break down `hloc (val x) (val_mem x) hx' with ⟨y, hy, hxy⟩ | ⟨y, hy, hxy⟩` into its components or cases. Conclude with `Or.inl (isUnit_iff_exists_inv.2 ⟨mk y hy, val_inj _ _ hxy⟩)`. Conclude with `Or.inr (isUnit_iff_exists_inv.2 ⟨mk y hy, val_inj _ _ hxy⟩)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Establish `hwR : ∃ w : R, w + c' w = 1`. Take `⟨w, hw, hw'⟩` from `hw`. Conclude with `⟨mk w hw, val_inj _ _ hw'⟩`. Establish `hnormR : ∀ u : R, c' u = u → IsUnit u → ∃ x, x * c' x = u`. Introduce `u hu hu'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hu'.exists_right_inv`. Take `⟨x, hx, hx'⟩` from `hnorm (val u) (val_mem u) (congrArg val hu) ⟨val y, val_mem y, congrArg val hy⟩`. Conclude with `⟨mk x hx, val_inj _ _ hx'⟩`. Take `⟨Q, hQ, hGQ⟩` from `GlobalTheory.UnramifiedHermitian.exists_eq_transpose_mul_map_of_isUnit_or c' hc' hlocR hwR hnormR hG hdet`. Establish `hmap1 : (1 : Matrix (Fin n) (Fin n) R).map c' = 1` using `Matrix.map_one _ (map_zero c') (map_one c')`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((Q⁻¹).map c').map val, (Q.map c').map val, fun i j => val_mem _, fun i j => val_mem _, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul_val, ← Matrix.map_mul, Matrix.nonsing_inv_mul Q hQ, hmap1, map_one_val]`. Rewrite using `[← map_mul_val, ← Matrix.map_mul, Matrix.mul_nonsing_inv Q hQ, hmap1, map_one_val]`. Establish `e1 : (((Q⁻¹).map c').map val).map c = (Q⁻¹).map val`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg val (hc' (Q⁻¹ i j))`. Rewrite using `[e1, ← Matrix.transpose_map, ← hGH, ← map_mul_val, ← map_mul_val, ← map_one_val]`. Use `congr 1`. Establish `h1 : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q hQ`. Rewrite using `[hGQ]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h1, Matrix.transpose_one, hmap1, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_congr_one (c : A →+* A) (hc : ∀ x, c (c x) = x) (hcO : ∀ a ∈ O, c a ∈ O) (hcε : c ε = ε)
     (hεa : ∀ a ∈ O, ε * a = a)
@@ -139,24 +139,24 @@ set_option synthInstance.maxHeartbeats 400000
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zero_mem _, by rw [map_zero]; exact zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_zero' (P : Pl D → Prop) : (0 : AE D) ∈ intAt D P := ⟨zero_mem _, by rw [map_zero]; exact zero_mem _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨neg_mem ha.1, by rw [RingHom.map_neg]; exact neg_mem ha.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_neg' {P : Pl D → Prop} {a : AE D} (ha : a ∈ intAt D P) : -a ∈ intAt D P :=
   ⟨neg_mem ha.1, by rw [RingHom.map_neg]; exact neg_mem ha.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.FinPl.RootKeep.conj_mem_idAt ha.1, (GlobalTheory.FinPl.FrameLat.cA_int_iff a).2 ha.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem cA_mem_intAt' {v : Pl D} {a : AE D} (ha : a ∈ intAt D (· = v)) : cA D a ∈ intAt D (· = v) :=
   ⟨GlobalTheory.FinPl.RootKeep.conj_mem_idAt ha.1, (GlobalTheory.FinPl.FrameLat.cA_int_iff a).2 ha.2⟩
 
 /- English proof (translation)
-Introduce `D v ε n H htame hεε hεc hεI hε hHI hherm hinv`. Conclude with `exists_congr_one (hid := hεε) (O := intAt D (· = v)) (intAt_zero' _) (fun a ha b hb => GlobalTheory.IwaPlace.SdComap.intAt_add ha hb) (fun a ha => intAt_neg' ha) (fun a ha b hb => GlobalTheory.IwaPlace.SdComap.intAt_mul ha hb) hεI (cA D) (fun z => Formalism.L2.Theta.cA_cA z) (fun …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unimodular_congr_one : ∀ (D : D7) (v : Pl D) (ε : AE D) (n : ℕ) (H : Matrix (Fin n) (Fin n) (AE D)), Tame D v → ε * ε = ε → cA D ε = ε → ε ∈ intAt D (· = v) → (∀ a, a ∈ idAt D (· = v) ↔ ε * a = a) → (∀ i j, H i j ∈ intAt D (· = v)) → (∀ i j, cA D (H i j) = H j i) → (∃ H' : Matrix (Fin n) (Fin n) (AE D), (∀ i j, H' i j ∈ intAt D (· = v)) ∧ H * H' = ε • (1 : Matrix (Fin n) (Fin n) (AE D))) → ∃ P P' : Matrix (Fin n) (Fin n) (AE D), (∀ i j, P i j ∈ intAt D (· = v)) ∧ (∀ i j, P' i j ∈ intAt D (· = v)) ∧ P * P' = ε • (1 : Matrix (Fin n) (Fin n) (AE D)) ∧ P' * P = ε • (1 : Matrix (Fin n) (Fin n) (AE D)) ∧ adj P * (H * P) = ε • (1 : Matrix (Fin n) (Fin n) (AE D)) := by
   intro D v ε n H htame hεε hεc hεI hε hHI hherm hinv

@@ -23,11 +23,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
   ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.PullbackSections
 
 /- English proof (translation)
-Use `choose P hP hg using X.signature`. Apply the tactic sequence `have hs : ∀ a : ℕ, sgn X.p0 a ≠ 0 := fun a => by unfold sgn; split_ifs <;> norm_num`. Use `⟨fun τ => P τ, fun τ => ⟨hP τ, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `e : dmin X.Gm (fun τ => P τ) τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Unfold `dmin lminor`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show gram τ.1 X.Gm (mat (fun τ => P τ) τ) = gram τ.1 X.Gm (P τ) from rfl, hg τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Unfold `psgn`. Use `push_cast`. Conclude with `Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ)) (i : ℕ)`. Rewrite using `[e, Complex.ofReal_re]`.
-
-Establish `h0 : psgn X.p0 i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hs a`. Conclude with `mul_self_pos.2 h0`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dom_nonempty {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) : ∃ x, x ∈ X.dom := by
@@ -46,7 +44,7 @@ theorem dom_nonempty {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ
   exact mul_self_pos.2 h0
 
 /- English proof (translation)
-Take `⟨hp, hq, -⟩` from `h.2.2.2 j hj`. Take `⟨h1, h2⟩` from `hj`. Rewrite using `[hp, hq]`. Use `And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity)` as an intermediate fact. Simplify using `only [Ranks.sigW, Ranks.r, Ranks.k]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -60,7 +58,7 @@ theorem rank_of_pins {D : D7} {Q : Par D} (h : Q.Pins) {j : ℕ} (hj : InR D j) 
   omega
 
 /- English proof (translation)
-Establish `hpos : 0 < dE D.host.E` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)`. Unfold `FD.rdE lrd`. Rewrite using `[Real.log_rpow hpos, hostSize_finrank D]`. Unfold `dE`. Use `push_cast`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -73,11 +71,11 @@ theorem log_rdE (D : D7) : Real.log (FD.rdE D.host.E) = lrd D := by
   ring
 
 /- English proof (translation)
-Establish `hrk` using `rank_of_pins h.pins hj`. Establish `h2` using `PfTies1.DF_wtA_le (T.Q.Dw j) w`. Establish `h3 : (((∑ t, ((∑ i, w.aP t i) + ∑ i, w.aM t i) : ℕ)) : ℝ) = absA w` using `by simp [absA]`. Establish `hDF : (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ) ≤ absA w` using `by rw [← h3]; exact_mod_cast h2`. Establish `hDF' : (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ) ≤ (WeightAlgebra.DF w : ℝ)` using `by exact_mod_cast h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd : FD.fdeg D.host.E = D.R.f` using `by unfold FD.fdeg; rw [hostSize_finrank D]; omega`. Take `⟨-, r1, -, -, r4, -, -, r7, r8⟩` from `hrows`. Establish `key` using `(GlobalTheory.StdHarm.harmA_mem_span_short D.host.E T.Q.H (T.Q.Dw j) T.Q.l T.Q.c w.n).2 (hrk ▸ hr) (wtA w) large₂.sc.L hL (by rw [log_rdE]; exact r1) (by rw [hfd]; exact r4) (le_trans (Real.log_le_log (by positivity) (by linarith)) r7) r8 P hP`. Use `Submodule.span_mono ?_ key` and prove the remaining obligations. Introduce `Q hQ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hQ.1, fun σ' => (hQ.2 σ').trans ?_⟩` and prove the remaining obligations. Rewrite using `[hrk]`. Establish `: (0 : ℝ) ≤ large₂.sc.L` using `by linarith`. Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_span_short (D : D7) (T : Top D) (h : LawsP T) (large₂ : SizeData₂ D) (j : ℕ) (hj : InR D j)
     (w : WeightFamilies.Wt D j) (hrows : PullbackSections.SupBoundPageRows D large₂ w) (hL : 2 ≤ large₂.sc.L) (hr : D.R.r ≤ w.n)
@@ -102,13 +100,13 @@ theorem mem_span_short (D : D7) (T : Top D) (h : LawsP T) (large₂ : SizeData�
   gcongr
 
 /- English proof (translation)
-Introduce `hC D T h large₂ j hj w hrows hL hr hlast hDF hα σ hσ k`. Take `⟨inst, hnab⟩` from `h.nabPin j hj`. Use `letI := inst`. Establish `hT` using `h.thTot j hj`. Take `⟨x0, hx0⟩` from `dom_nonempty ((T.U j σ).X k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hM : 4 * WeightAlgebra.DF w + 4 ≤ T.Q.l.M`. Rewrite using `[h.pins.2.1.1]`. Establish `e0 : WeightAlgebra.DF w + 2 ≤ D.host.g 0` using `le_trans hDF (min_le_left _ _)`. Establish `e1 : WeightAlgebra.DF w + 2 ≤ D.host.g 1` using `le_trans hDF (min_le_right _ _)`. Use polynomial arithmetic with `[Nat.mul_le_mul e0 e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Take `⟨f, ⟨x, P, hP, hfP⟩, hf0⟩` from `GlobalTheory.T.thetaGenerators_noCommonZero_of_chartIndependence hC D T h j hj w hr hlast hM hα σ hσ k x0 hx0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Take `⟨N, cf, g, hsum⟩` from `Submodule.mem_span_set'.1 (mem_span_short D T h large₂ j hj w hrows hL hr P hP)`. Use `choose gi hgi using fun i => (existsUnique_thRule _ _ _ hT x (g i).2.1).exists`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hlin` using `(GlobalTheory.T.theta_rules_linear_and_level_congruence hC D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c (T.nab j) hnab (wtA w) w.n).1 x N cf (fun i => (g i : _)) f gi (fun i => (g i).2.1) (by rw [hsum]; exact hP) (by rw [hsum]; exact hfP) hgi`. Apply `hf0` to reduce the goal to its premises. Establish `hz : ∀ i, rdU (T.U j σ) (gi i) k x0 = 0` using `fun i => hno x (g i) (gi i) (g i).2.1 (g i).2.2 (hgi i) x0 hx0`. Rewrite using `[hlin, map_sum]`. Simplify using `only [LinearMap.map_smulₛₗ, Finset.sum_apply, Pi.smul_apply, hz, smul_zero, Finset.sum_const_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem noBase : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ReciprocityTheory.ChartRestriction.G.PullbackSections.NoBaseSt := by
   intro hC D T h large₂ j hj w hrows hL hr hlast hDF hα σ hσ k

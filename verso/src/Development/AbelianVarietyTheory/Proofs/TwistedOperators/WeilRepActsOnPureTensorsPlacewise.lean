@@ -15,31 +15,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PlaceTensor.PureOm
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ`. Take `⟨U, U', hU, hU', hfix⟩` from `GlobalTheory.Mem.ThetaLevel.exists_level D ψ hW.std S T om (GlobalTheory.Ker.isWeak_of_datum hW) hW.om_cont f₀ (base_theta hB)`. Establish `hgen` using `GlobalTheory.T.weilRepresentation_placeByPlace_on_pureTensors D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ`. Take `⟨hp0, hploc⟩` from `GlobalTheory.T.isPureTensor_base_vector_and_local_factor D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ`. Establish `hstab` using `GlobalTheory.T.localFactor_stable_unitaryGroupsAtPlace D ψ θ S T χS χT om sS sT ΛS ΛT hW (base_inf hB)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgat` using `(GlobalTheory.T.adelicUnitaryComponentAtPlace_laws D).1`. Set `Good : GA D S → GA D T → Prop` to `fun g h => ∀ (x : Place D → WO S T → ℂ) (f : WO S T → ℂ), IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x f → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ (fun p => om (gAt S p g, gAt T p h) (x p)) (om (g, h) f)`. Establish `om1 : ∀ u : WO S T → ℂ, om (1, 1) u = u` using `fun u => by`. Establish `: om (1, 1) = 1` using `map_one om`. Rewrite using `[this]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `omm : ∀ (g g' : GA D S) (h h' : GA D T) (u : WO S T → ℂ), om (g * g', h * h') u = om (g, h) (om (g', h') u)` using `fun g g' h h' u => by`. Establish `: om (g * g', h * h') = om (g, h) * om (g', h')` using `map_mul om (g, h) (g', h')`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `G1 : Good 1 1` using `fun x f hx => by`. Simplify `hx` using `only [gAt_one, om1]`. Establish `Gmul : ∀ g h g' h', Good g h → Good g' h' → Good (g * g') (h * h')` using `fun g h g' h' a b x f hx => by`. Simplify `a _ _ (b x f hx)` using `only [gAt_mul, omm]`. Establish `Gloc : ∀ q g h, gAt S q g = g → gAt T q h = h → Good g h` using `fun q g h hg hh => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e1 : ∀ p, p ≠ q → gAt S p g = 1` using `fun p hp => by`. Rewrite using `[← hg]`. Conclude with `(hgat S q g).2.2 p hp`. Establish `e2 : ∀ p, p ≠ q → gAt T p h = 1` using `fun p hp => by`. Rewrite using `[← hh]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hgat T q h).2.2 p hp`. Use `hgen g h ?_ ?_` and prove the remaining obligations. Use `(Set.finite_singleton q).subset fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hpq`. Conclude with `hp (by rw [e1 p hpq, e2 p hpq, om1])`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hploc q (fun p => om (gAt S p g⁻¹, gAt T p h⁻¹) f₀) (hstab q f₀ (base_isLocal hB q) _ _) (fun p hp => by simp only [gAt_inv, e1 p hp, e2 p hp, inv_one, om1])` as an intermediate fact. Establish `e : om (gAt S q g⁻¹, gAt T q h⁻¹) f₀ = om (g⁻¹, h⁻¹) f₀` using `by rw [gAt_inv, gAt_inv, hg, hh]`. Simplify using `only [e] at this`. Conclude with `this`. Establish `Gfin : ∀ g h, (g ∈ U ∧ g ∈ GfC S ∧ ∀ p, gAt S p g ∈ U ∧ gAt S p g ∈ GfC S) → (h ∈ U' ∧ h ∈ GfC T ∧ ∀ p, gAt T p h ∈ U' ∧ gAt T p h ∈ GfC T) → Good g h` using `fun g h hg hh => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hgen g h ?_ ?_` and prove the remaining obligations. Use `Set.finite_empty.subset fun p hp => ?_` and prove the remaining obligations. Conclude with `hp (hfix _ (hg.2.2 p).1 (hg.2.2 p).2 _ (hh.2.2 p).1 (hh.2.2 p).2)`. Establish `e : (fun p => om (gAt S p g⁻¹, gAt T p h⁻¹) f₀) = fun _ => f₀` using `funext fun p => by`. Rewrite using `[gAt_inv, gAt_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `hfix _ (inv_mem (hg.2.2 p).1) (inv_mem (hg.2.2 p).2) _ (inv_mem (hh.2.2 p).1) (inv_mem (hh.2.2 p).2)`. Rewrite using `[e, hfix _ (inv_mem hg.1) (inv_mem hg.2.1) _ (inv_mem hh.1) (inv_mem hh.2.1)]`. Conclude with `hp0`. Establish `GS : ∀ g, Good g 1` using `fun g => by`. Establish `hg : g ∈ Submonoid.closure _` using `(GlobalTheory.T.adelicUnitary_closure_local_components_open D S U hU).2 ▸ Submonoid.mem_top g`.
+Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `hg using Submonoid.closure_induction with`. Consider the case `mem g hg`. Break down `hg with ⟨q, hq⟩ | hg` into its components or cases. Conclude with `Gloc q g 1 hq (gAt_one T q)`. Conclude with `Gfin g 1 hg ⟨one_mem _, one_mem _, fun p => by rw [gAt_one]; exact ⟨one_mem _, one_mem _⟩⟩`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately.
 
-Consider the case `one => exact G1`. Consider the case `mul a b _ _ ha hb => simpa only [mul_one] using Gmul _ _ _ _ ha hb`. Establish `GT : ∀ h, Good 1 h` using `fun h => by`. Establish `hh : h ∈ Submonoid.closure _` using `(GlobalTheory.T.adelicUnitary_closure_local_components_open D T U' hU').2 ▸ Submonoid.mem_top h`. Proceed by induction on `hh using Submonoid.closure_induction with`.
-
-Consider the case `mem h hh`. Break down `hh with ⟨q, hq⟩ | hh` into its components or cases. Conclude with `Gloc q 1 h (gAt_one S q) hq`. Conclude with `Gfin 1 h ⟨one_mem _, one_mem _, fun p => by rw [gAt_one]; exact ⟨one_mem _, one_mem _⟩⟩ hh`. Consider the case `one => exact G1`.
-
-Consider the case `mul a b _ _ ha hb => simpa only [mul_one] using Gmul _ _ _ _ ha hb`. Introduce `x f hx g h`. Use `Gmul _ _ _ _ (GS g) (GT h)` as an intermediate fact. Rewrite `this` using `[mul_one, one_mul]`. Conclude with `this x f hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPure_om : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : OmT S T) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsWeilDatumO ψ S T χS χT om → IsBase ψ θ S T sS sT ΛS ΛT f₀ → IsCovolOne (ratL T S) μ 𝓕 → ∀ (x : Place D → WO S T → ℂ) (f : WO S T → ℂ), IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x f → ∀ (g : GA D S) (h : GA D T), IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ (fun p => om (gAt S p g, gAt T p h) (x p)) (om (g, h) f) := by
   intro D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ

@@ -3,15 +3,13 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a n e he N _ _ β k`. Establish `hk1 : k.1 * star k.1 = 1` using `k.2.2`. Establish `hc : ∀ i j, trF (e i).1 (adHerm k (e j)).1 = trF (e j).1 (star k.1 * (e i).1 * k.1)` using `fun i j => by`. Establish `h : ((e i).1 * (k.1 * (e j).1 * star k.1)).trace = ((e j).1 * (star k.1 * (e i).1 * k.1)).trace`. Rewrite using `[show (e i).1 * (k.1 * (e j).1 * star k.1) = ((e i).1 * k.1) * ((e j).1 * star k.1) by simp only [mul_assoc], Matrix.trace_mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Simplify using `only [trF, adHerm, h]`. Establish `hs : ∀ i, ∑ j, trF (e i).1 (adHerm k (e j)).1 • adHerm k (e j) = e i` using `fun i => by`. Establish `h` using `congrArg Subtype.val (he ⟨star k.1 * (e i).1 * k.1, IsSelfAdjoint.conjugate' (e i).2 k.1⟩)`. Simplify using `only [AddSubmonoidClass.coe_finsetSum, SetLike.val_smul] at h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [AddSubmonoidClass.coe_finsetSum, SetLike.val_smul, hc]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [adHerm, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc]`. Use `_ = k.1 * (star k.1 * (e i).1 * k.1) * star k.1 := by rw [← h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `_ = (k.1 * star k.1) * (e i).1 * (k.1 * star k.1) := by simp only [mul_assoc]`. Use `_ = (e i).1 := by rw [hk1, one_mul, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `_ = ∑ i, β (e i) (∑ j, trF (e i).1 (adHerm k (e j)).1 • adHerm k (e j)) := by`.
-
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [map_sum, map_smul]`. Use `_ = ∑ j, β (e j) (e j) := by simp only [hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Bor.frameAd :
     UpperTheory.V.Lit.Bor.FrameAd := by

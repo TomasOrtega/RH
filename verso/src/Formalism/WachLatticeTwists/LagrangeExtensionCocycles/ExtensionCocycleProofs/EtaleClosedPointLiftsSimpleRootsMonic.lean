@@ -17,9 +17,9 @@ variable {ℓ : ℕ} [Fact ℓ.Prime] {A : Type} [CommRing A] [Algebra ℤ_[ℓ]
   {W₀ : WachMod B M D₀} {W₁ : WachMod B M D₁} {W₂ : WachMod B M D₂}
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `h`. Introduce `y z hyz`. Take `⟨y₁, z₁, hc, hy, hz⟩` from `hL y z hyz`. Use `⟨d • y₁, d • z₁, W₁.cocycle_smulO d hc, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower, hy, smul_smul, mul_comm]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.map_smul_of_tower, hz, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lifts_of_dvd (S : SES W₀ W₁ W₂) {c c' : ℤ_[ℓ]} (h : c ∣ c') (hL : Lifts S c) :
     Lifts S c' := by
@@ -31,9 +31,9 @@ theorem lifts_of_dvd (S : SES W₀ W₁ W₂) {c c' : ℤ_[ℓ]} (h : c ∣ c') 
   · rw [LinearMap.map_smul_of_tower, hz, smul_smul, mul_comm]
 
 /- English proof (translation)
-Introduce `n hn`. Establish `hK' : (pairOfHom F u₁ h).Kills (B.X ^ ((H + (ℓ - 2)) / (ℓ - 1)))`. Introduce `n hn`. Take `⟨n₁, hn₁, he⟩` from `hK n hn`. Conclude with `⟨n₁, hn₁, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hW` using `(unit_lemma_case_a_level_zero ℓ hℓ A (gbase B u₁ h) D' (pairOfHom F u₁ h) H hv hK').2`. Take `⟨n₁, hn₁, he⟩` from `hW n hn`. Use `⟨n₁, hn₁, ?_⟩` and prove the remaining obligations. Rewrite using `[he, ← IsScalarTower.algebraMap_smul A ((ℓ : ℤ_[ℓ]) ^ eWA ℓ H) n, map_pow, map_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem homKillsA (hℓ : ℓ ≠ 2) {D D' : Type} [AddCommGroup D] [Module A D] [Module ℤ_[ℓ] D]
     [IsScalarTower ℤ_[ℓ] A D] [AddCommGroup D'] [Module A D'] [Module ℤ_[ℓ] D']
@@ -52,11 +52,11 @@ theorem homKillsA (hℓ : ℓ ≠ 2) {D D' : Type} [AddCommGroup D] [Module A D]
   rw [he, ← IsScalarTower.algebraMap_smul A ((ℓ : ℤ_[ℓ]) ^ eWA ℓ H) n, map_pow, map_natCast]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `y _ hy`. Simplify using `using hy`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `y hQ hy`. Apply `hZ y hQ` to reduce the goal to its premises. Apply `ih ((ℓ : ℤ_[ℓ]) • y)` to reduce the goal to its premises. Rewrite using `[← IsScalarTower.algebraMap_smul A (ℓ : ℤ_[ℓ]) y]`. Conclude with `W.qInv_smul _ hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, ← pow_succ]`. Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem noTors_pow (W : WachMod B M D₀)
     (hZ : ∀ y, W.QInv y → (ℓ : ℤ_[ℓ]) • y ∈ W.N → y ∈ W.N) (k : ℕ) :
@@ -77,43 +77,39 @@ theorem noTors_pow (W : WachMod B M D₀)
 end
 
 /- English proof (translation)
-Introduce `ℓ _ hℓ A _ _ B M u H jumps c hp hPhi hγX hv hc D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ S δ H₁ H₂ _ _ _ _ cl₁ cl₂ Hf₁ Hf₂ g I _ hδ hQI hφI hRL hNT hXK hSemi hNat hC1 hC2 hInj hE1 hE2 hRO`. Establish `hprime : ℓ.Prime` using `Fact.out`. Establish `h3 : 3 ≤ ℓ` using `by have := hprime.two_le; omega`. Use `set eW := eWA ℓ H with heW`. Use `set u₁ : ℤ_[ℓ]ˣ := u ^ (ℓ - 1) with hu₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu₁c : (u₁ : ℤ_[ℓ]) = (u : ℤ_[ℓ]) ^ (ℓ - 1)` using `by rw [hu₁, Units.val_pow_eq_pow_val]`. Establish `hγX₁ : B.GammaX (u₁ : ℤ_[ℓ])` using `by rw [hu₁c]; exact hγX`. Establish `hv₁ : PadicInt.valuation ((u₁ : ℤ_[ℓ]) - 1) = 1`. Rewrite using `[hu₁c, Formalism.ResultantValuation.powSubOneValuation ℓ hℓ (u : ℤ_[ℓ]) hv (ℓ - 1) (by omega), padicValNat.eq_zero_of_not_dvd (Nat.not_dvd_of_pos_of_lt (by omega) (by omega))]`. Establish `hCK : CokerKilled S eW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n hn`. Rewrite using `[hp]`. Conclude with `homKillsA hℓ S.π u₁ hγX₁ H hv₁ hXK n hn`. Establish `hInt₁ : ∀ κ ∈ Hf₁, ∃ pr : W₁.Z1, W₁.Cocycle (pr : D₁ × D₁).1 (pr : D₁ × D₁).2 ∧ cl₁ pr = ((ℓ : ℤ_[ℓ]) ^ eW) • κ`. Introduce `κ hκ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨E, hEK, hED⟩` from `hE1 κ hκ`. Conclude with `extension_class_is_cocycle ℓ A B M D₁ W₁ H₁ cl₁ κ E eW hED (homKillsA hℓ E.S.π u₁ hγX₁ H hv₁ hEK)`. Establish `hInt₂ : ∀ κ ∈ Hf₂, ∃ pr : W₂.Z1, W₂.Cocycle (pr : D₂ × D₂).1 (pr : D₂ × D₂).2 ∧ cl₂ pr = ((ℓ : ℤ_[ℓ]) ^ eW) • κ`. Introduce `κ hκ`. Take `⟨E, hEK, hED⟩` from `hE2 κ hκ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `extension_class_is_cocycle ℓ A B M D₂ W₂ H₂ cl₂ κ E eW hED (homKillsA hℓ E.S.π u₁ hγX₁ H hv₁ hEK)`. Establish `hRS : RatSurj S` using `rational_points_map_surjective ℓ A B M D₀ D₁ D₂ W₀ W₁ W₂ S H₁ H₂ cl₁ cl₂ Hf₁ Hf₂ g eW hp hNat hC2 hInj hRO hInt₁`. Use `set a := M / (ℓ - 1) with ha`. Establish `hMa : M + 1 ≤ (ℓ - 1) * (a + 1)` using `Nat.lt_mul_div_succ M (by omega)`. Establish `h1` using `phi_map_surjective ℤ_[ℓ] A B M D₀ W₀ I (ℓ - 1) (a + 1) hPhi hMa hQI hφI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hZ` using `regulator_bound_for_l ℓ A B M D₀ W₀ hRL hNT`. Establish `hℓ0 : (ℓ : ℤ_[ℓ]) ≠ 0` using `by exact_mod_cast hprime.ne_zero`. Establish `hc0 : c 0 = 0`. Use `hc 0` as an intermediate fact. Simplify using `only [neg_zero, zpow_zero, Units.val_one, sub_self, mul_eq_zero] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.resolve_left hℓ0`. Establish `hstab : ∀ n ∈ W₀.N.restrictScalars ℤ_[ℓ], δ n ∈ W₀.N.restrictScalars ℤ_[ℓ]`. Introduce `n hn`. Take `⟨x', hx', h⟩` from `W₀.γ_N n hn`. Establish `: δ n = x'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : B.X • (δ n - x') = 0` using `by rw [smul_sub, hδ, h, sub_self]`. Conclude with `sub_eq_zero.1 (W₀.X_inj _ h0)`. Rewrite using `[this]`. Conclude with `hx'`. Use `set R : ℤ_[ℓ][X] := ∏ j ∈ JSet jumps M, (X - C (c j)) with hRdef`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hR : ∀ y, W₀.QInv y → aeval δ (X * R) y ∈ W₀.N`. Introduce `y hy`. Take `⟨R', hR'⟩` from `prod_eig_dvd jumps M (fun j => (X - C (c j)))`. Simplify using `only [hc0, map_zero, sub_zero] at hR'`. Rewrite using `[hRdef, hR', mul_comm, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `aeval_mem _ δ hstab R' _ (hSemi y hy)`. Establish `hprod` using `prod_sub_one_dvd ℓ hℓ u₁ hv₁ a`. Establish `hZu : ∀ y, W₀.QInv y → (∏ i ∈ Finset.Icc 1 a, (1 - (u₁ : ℤ_[ℓ]) ^ i)) • y ∈ W₀.N → y ∈ W₀.N`. Introduce `y hy h`. Take `⟨w, hw⟩` from `hprod`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `noTors_pow W₀ hZ _ y hy` to reduce the goal to its premises. Rewrite using `[hw, mul_comm, mul_smul]`. Conclude with `W₀.smulO_mem w h`. Establish `hgr : ∀ i, 1 ≤ i → i ≤ a → ∀ n ∈ W₀.N, ∃ n' ∈ W₀.N, W₀.γ (B.X ^ i • n) = (u₁ : ℤ_[ℓ]) ^ i • (B.X ^ i • n) + B.X ^ (i + 1) • n'`. Introduce `i _ _ n hn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨n', hn', h⟩` from `gammaGradedStep_holds ℤ_[ℓ] A B M D₀ W₀ (u₁ : ℤ_[ℓ]) hγX₁ i n hn`. Conclude with `⟨n', hn', by rw [← h]; abel⟩`. Establish `hL0` using `lift_wach ℤ_[ℓ] A B M D₀ D₁ D₂ W₀ W₁ W₂ S eW hCK hRS δ R a (ℓ - 1) (u₁ : ℤ_[ℓ]) hPhi (by omega) hδ hR (by rw [hp]; exact hZ) hZu hgr h1`. Establish `hcj : ∀ j ∈ JSet jumps M, (0 - c j) ∣ (ℓ : ℤ_[ℓ]) ^ padicValInt ℓ j`. Introduce `j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj0 : j ≠ 0` using `fun h => zero_notMem_JSet jumps M (h ▸ hj)`. Take `⟨hne, hval⟩` from `Formalism.WindowSums.arc_ZpowVal ℓ u 1 le_rfl (fun h => absurd h hℓ) hv (-j) (neg_ne_zero.2 hj0)`. Establish `hneg : padicValInt ℓ (-j) = padicValInt ℓ j` using `by simp [padicValInt]`. Rewrite `hval` using `[hneg]`. Take `⟨w, hw⟩` from `dvd_pow_of_val hne hval`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨w, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hℓ0` to reduce the goal to its premises. Establish `e : (ℓ : ℤ_[ℓ]) * ((0 - c j) * w) = (((u ^ (-j) : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) - 1) * w`. Use `hc j` as an intermediate fact. Take the linear combination `(-w) * this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[e, ← hw, pow_add, pow_one]`. Establish `hR0 : R.eval 0 ∣ (ℓ : ℤ_[ℓ]) ^ (∑ j ∈ JSet jumps M, padicValInt ℓ j)`. Rewrite using `[hRdef, eval_prod, ← Finset.prod_pow_eq_pow_sum]`. Apply `Finset.prod_dvd_prod_of_dvd` to reduce the goal to its premises. Introduce `j hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hcj j hj`. Establish `hfac : a + padicValNat ℓ a.factorial ≤ aStar ℓ M + padicValNat ℓ (aStar ℓ M).factorial`. Establish `: padicValNat ℓ (a + 1).factorial = padicValNat ℓ (a + 1) + padicValNat ℓ a.factorial`. Rewrite using `[Nat.factorial_succ, padicValNat.mul (Nat.succ_ne_zero a) (Nat.factorial_ne_zero _)]`. Simplify using `only [aStar, ← ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use linear arithmetic over natural numbers and integers. Establish `hL : Lifts S ((ℓ : ℤ_[ℓ]) ^ (eW + eUA ℓ M (JSet jumps M)))`. Use `lifts_of_dvd S ?_ hL0` and prove the remaining obligations. Rewrite using `[hp, pow_add]`. Apply `mul_dvd_mul_left` to reduce the goal to its premises.
-
-Simplify using `only [eUA]`. Rewrite using `[add_assoc, pow_add]`. Conclude with `mul_dvd_mul hR0 (dvd_trans hprod (pow_dvd_pow _ hfac))`. Introduce `κ hκ`. Take `⟨κ₁, hκ₁, h⟩` from `finiteClassesLift_holds ℤ_[ℓ] A B M D₀ D₁ D₂ W₀ W₁ W₂ S H₁ H₂ cl₁ cl₂ Hf₁ Hf₂ g eW _ hNat hC1 ⟨hC2, by rw [hp]; exact hInt₂⟩ hL κ hκ`.
-
-Use `⟨κ₁, hκ₁, ?_⟩` and prove the remaining obligations. Rewrite using `[h, hp, ← pow_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lift_exists_first_case : StatLiftA := by
   intro ℓ _ hℓ A _ _ B M u H jumps c hp hPhi hγX hv hc D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ S δ
@@ -221,7 +217,7 @@ theorem lift_exists_first_case : StatLiftA := by
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨lift_exists_second_case, lift_exists_first_case, lift_to_subgroup_exists⟩`.
+Supply the required witnesses or components.
 -/
 theorem etaleClosed_point_lifts_simple_roots_monic : StatLIFT := ⟨lift_exists_second_case, lift_exists_first_case, lift_to_subgroup_exists⟩
 

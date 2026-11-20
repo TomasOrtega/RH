@@ -10,11 +10,9 @@ open scoped TensorProduct
 variable {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {D m : ℕ}
 
 /- English proof (translation)
-Take `⟨E, hE, hA, hfin, ⟨e⟩⟩` from `quotient_generic_section_field hfg htr x j₀ hx₀ hbig`. Establish `hKf : IsField (RS K Ω D m ⧸ Is K x)` using `MulEquiv.isField (Field.toIsField E) e.toMulEquiv`. Establish `hfd : FiniteDimensional (KTf K D m) (RS K Ω D m ⧸ Is K x)` using `LinearEquiv.finiteDimensional e.symm.toLinearEquiv`. Use `⟨⟨hKf, hfd⟩, fun K' _ _ => ⟨inferInstance, ?_⟩⟩` and prove the remaining obligations. Establish `e' : (K' ⊗[KTf K D m] (RS K Ω D m ⧸ Is K x)) ≃ₐ[K'] (K' ⊗[KTf K D m] E)` using `Algebra.TensorProduct.congr AlgEquiv.refl e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : CharZero (KTf K D m) := charZero_of_injective_algebraMap (algebraMap K (KTf K D m)).injective`. Use `haveI : Algebra.IsSeparable (KTf K D m) E := inferInstance`. Use `haveI : Algebra.FormallyUnramified (KTf K D m) E := by first`. Consider the case `exact inferInstance`. Consider the case `exact Algebra.FormallyUnramified.of_isSeparable _ _`.
-
-Use `haveI : Algebra.FormallyUnramified K' (K' ⊗[KTf K D m] E) := inferInstance`. Use `haveI : Algebra.EssFiniteType K' (K' ⊗[KTf K D m] E) := inferInstance`. Use `haveI : IsReduced (K' ⊗[KTf K D m] E) := Algebra.FormallyUnramified.isReduced_of_field K' _`. Conclude with `isReduced_of_injective e'.toRingHom e'.injective`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem s1 [CharZero K] (hfg : (⊤ : IntermediateField K Ω).FG) (htr : Algebra.trdeg K Ω = D)
     (x : Fin m → Ω) (j₀ : Fin m) (hx₀ : x j₀ ≠ 0)

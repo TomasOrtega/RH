@@ -9,19 +9,17 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 namespace ReciprocityTheory.ChartRestriction.G.TB.G2
 
 /- English proof (translation)
-Introduce `R _ d O _ _ _ _ _ k _ _ _ B h h' hh hh' w0 m ι _ u P hP f`. Unfold `FB.nabVal`. Use `set a : Fin 2 → Pt k 1 d := ![pt k d 0, comp1 (B.actK k w0) (pt k d 0)] with hadef`. Use `set q := ev (n := 1) a (h' - h) with hqdef`. Establish `hbi` using `hG R d O k B h h' hh hh'`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hq0, hq1, hq2⟩` from `hQ R d O k B (h' - h) hbi w0`. Establish `hac : ∀ j i, constantCoeff (a j i) = 0`. Introduce `j i`. Use `fin_cases j`. Simplify using `[hadef, pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show constantCoeff (ev (n := 1) ![pt k d 0] (B.actK k w0 i)) = 0`. Rewrite using `[hE k d 1 1 ![pt k d 0] _ (fun j i => by fin_cases j; simp [pt])]`. Simplify using `only [FB.actK]`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_map, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, B.A.const, map_zero]`. Establish `hs : HasSubst (fun p : Fin 2 × Fin d => a p.1 p.2)` using `hasSubst_of_constantCoeff_zero fun p => hac p.1 p.2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hL' : B.hL k h' w0 = B.hL k h w0 + q`. Simplify using `only [FB.hL, hqdef, ev]`. Rewrite using `[subst_sub hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hh0 : constantCoeff h = 0`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply the tactic sequence `have h1 := hE k d 2 1 ![0, pt k d 0] h (fun j i => by fin_cases j <;> simp [pt])`. Rewrite `h1` using `[hh.ax0]`. Simplify using `using h1.symm`. Establish `hL0 : constantCoeff (B.hL k h w0) = 0`. Simplify using `only [FB.hL]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE k d 2 1 _ h hac, hh0]`. Establish `hexp : FB.expS k ((m : k) • B.hL k h' w0) = FB.expS k ((m : k) • B.hL k h w0) * FB.expS k ((m : k) • q)`. Rewrite using `[hL', smul_add]`. Conclude with `hA k 1 d _ _ (by rw [MvPowerSeries.smul_eq_C_mul, map_mul, hL0, mul_zero]) (by rw [MvPowerSeries.smul_eq_C_mul, map_mul, hq0, mul_zero])`. Rewrite using `[hexp, ← mul_assoc]`.
-
-Use `symm`. Conclude with `hW k d (B.FK k) ι u (fun l l' => dotProduct (u l) ((bilinPart k (h' - h)).mulVec ((dAct k B w0).mulVec (u l'))) + dotProduct (u l') ((bilinPart k (h' - h)).mulVec ((dAct k B w0).mulVec (u l)))) P q (fun l l' => add_comm _ _) hq0 (fun l => hq1 (u l)) (fun l l' => hq2 (u l) (u l')) …`.
+Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem galois_twist_preserves_siegel_bound (hA : ExpAddZeroConstant) (hE : ConstantCoeffSubstitution) (hG : CanonicalGaugeDiffBiadditive) (hQ : QuadraticFormDerivatives)
     (hW : WickOperatorVanishing) : AdmissibilitySecond := by

@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory.ChowHt GlobalTheory.ProjSpace
 
 /- English proof (translation)
-Establish `h : f = Z.isoSpec.hom ≫ Spec.map e.symm.toCommRingCatIso.hom`. Use `ext_of_isAffine ((cancel_epi (Scheme.ΓSpecIso (.of ℚ)).inv).1 (CommRingCat.hom_ext ?_))` and prove the remaining obligations. Conclude with `Subsingleton.elim (α := ℚ →+* _) _ _`. Rewrite using `[h]`. Use `infer_instance`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_of_ringEquiv_rat {Z : Scheme.{0}} [IsAffine Z] (f : Z ⟶ Sp ℚ) (e : Γ(Z, ⊤) ≃+* ℚ) : IsIso f := by
   have h : f = Z.isoSpec.hom ≫ Spec.map e.symm.toCommRingCatIso.hom := by
@@ -23,9 +23,9 @@ theorem isIso_of_ringEquiv_rat {Z : Scheme.{0}} [IsAffine Z] (f : Z ⟶ Sp ℚ) 
   infer_instance
 
 /- English proof (translation)
-Establish `ht : I.subschemeι ⁻¹ᵁ W.1 = ⊤` using `top_le_iff.1 fun z _ => hW _ (I.range_subschemeι.le ⟨z, rfl⟩)`. Establish `ha : IsAffineOpen (⊤ : I.subscheme.Opens)` using `ht ▸ W.2.preimage I.subschemeι`. Establish `: IsAffine I.subscheme`. Establish `: IsAffine (⊤ : I.subscheme.Opens)` using `ha`. Conclude with `.of_isIso I.subscheme.topIso.inv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Function.Surjective g` using `fun q => ⟨((Scheme.ΓSpecIso (.of ℚ)).inv ≫ f.appLE ⊤ W.1 le_top).hom q, congrArg (fun t : ℚ →+* ℚ => t q) (Subsingleton.elim (g.comp ((Scheme.ΓSpecIso (.of ℚ)).inv ≫ f.appLE ⊤ W.1 le_top).hom) (RingHom.id ℚ))⟩`. Establish `e : Γ(I.subscheme, I.subschemeι ⁻¹ᵁ W.1) ≃+* ℚ` using `(RingHom.quotientKerEquivOfSurjective (I.subschemeι_app_surjective W)).symm.trans ((Ideal.quotEquivOfEq ((I.ker_subschemeι_app W).trans hg.symm)).trans (RingHom.quotientKerEquivOfSurjective hs))`. Conclude with `isIso_of_ringEquiv_rat _ (ht ▸ e)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_subschemeι_comp_rat {Y : Scheme.{0}} (f : Y ⟶ Sp ℚ) (I : Y.IdealSheafData) (W : Y.affineOpens)
     (hW : ∀ y ∈ I.support, y ∈ W.1) (g : Γ(Y, W.1) →+* ℚ) (hg : RingHom.ker g = I.ideal W) :
@@ -44,7 +44,7 @@ theorem isIso_subschemeι_comp_rat {Y : Scheme.{0}} (f : Y ⟶ Sp ℚ) (I : Y.Id
   exact isIso_of_ringEquiv_rat _ (ht ▸ e)
 
 /- English proof (translation)
-Use `Set.ncard_eq_one.2 ⟨⟨(spMap (algebraMap k Ω) ≫ inv (I.subschemeι ≫ S.str)) ≫ I.subschemeι, by simp⟩, Set.eq_singleton_iff_unique_mem.2 ⟨⟨_, rfl⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `x ⟨z, hz⟩`. Use `Subtype.ext (hz.symm.trans (congrArg (· ≫ _) ?_))` and prove the remaining obligations. Rewrite using `[IsIso.eq_comp_inv, ← Category.assoc, hz, x.2]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem LinSys.ncard_subPts_of_isIso {k : Type} [Field k] (S : LinSys k) (I : S.Y.IdealSheafData)
     [IsIso (I.subschemeι ≫ S.str)] (Ω : Type) [Field Ω] [Algebra k Ω] : (S.subPts I Ω).ncard = 1 := by
@@ -55,9 +55,9 @@ theorem LinSys.ncard_subPts_of_isIso {k : Type} [Field k] (S : LinSys k) (I : S.
   rw [IsIso.eq_comp_inv, ← Category.assoc, hz, x.2]
 
 /- English proof (translation)
-Use extensionality with `p`. Rewrite using `[RingHom.mem_ker, ← Set.image_univ, mem_ideal_span_X_image, constantCoeff_eq]`. Use `⟨fun h m hm => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `by_contra! H`. Take `rfl : m = 0` from `Finsupp.ext fun i => H i (Set.mem_univ i)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `mem_support_iff.1 hm h`. Assume the negation of the conclusion as `H`. Take `⟨i, -, hi⟩` from `h 0 (mem_support_iff.2 H)`. Conclude with `hi rfl`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ker_constantCoeff_eq_span (σ R : Type) [CommRing R] :
     RingHom.ker (constantCoeff : MvPolynomial σ R →+* R) = Ideal.span (Set.range X) := by
@@ -76,7 +76,7 @@ namespace projTuple
 abbrev lineBC : LinSys ℚ := (projSys ℚ 1).baseChange ℚ
 
 /- English proof (translation)
-Use `(Fin.sum_univ_two _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℚ Γ(lineBC.Y, ⊤) 1 • _ + algebraMap ℚ Γ(lineBC.Y, ⊤) 0 • _ = _`. Rewrite using `[map_one, map_zero, one_smul, zero_smul, add_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comb_one_zero : lineBC.comb ![1, 0] = secPull (coord ℚ 1 0) ((projSys ℚ 1).bcFst ℚ) := by
   refine (Fin.sum_univ_two _).trans ?_
@@ -85,9 +85,7 @@ theorem comb_one_zero : lineBC.comb ![1, 0] = secPull (coord ℚ 1 0) ((projSys 
   rfl
 
 /- English proof (translation)
-Establish `h` using `(mem_support_cutIdeal _ _ y).1 hy 0`. Rewrite `h` using `[comb_one_zero]`. Use `replace h : (projSys ℚ 1).bcFst ℚ y ∉ chart ℚ 1 0 := fun hc => h ((nonzeroLocus_secPull (coord ℚ 1 0) _).ge ((nonzeroLocus_coord ℚ 1 0).ge hc))`. Take `⟨i, hi⟩` from `exists_mem_chart ℚ 1 ((projSys ℚ 1).bcFst ℚ y)`. Use `fin_cases i`.
-
-Conclude with `(h hi).elim`. Conclude with `hi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_chart_of_mem_support (y : lineBC.Y) (hy : y ∈ (lineBC.cut fun _ : Fin 1 => ![1, 0]).support) :
     (projSys ℚ 1).bcFst ℚ y ∈ chart ℚ 1 1 := by
@@ -107,15 +105,15 @@ instance isIso_bcFst : IsIso ((projSys ℚ 1).bcFst ℚ) := by
   exact inferInstanceAs (IsIso (pullback.fst _ _))
 
 /- English proof (translation)
-Set `p` to `(projSys ℚ 1).bcFst ℚ`. Set `W : lineBC.Y.affineOpens` to `⟨p ⁻¹ᵁ chart ℚ 1 1, (isAffineOpen_chart ℚ 1 1).preimage p⟩`. Set `e : MvPolynomial {j : Fin 2 // j ≠ 1} ℚ ≃+* Γ(lineBC.Y, W.1)` to `(chartAlgEquiv ℚ 1 1).toRingEquiv.trans (asIso (p.app (chart ℚ 1 1))).commRingCatIsoToRingEquiv`. Establish `hW : W.1 ≤ lineBC.L.U fun _ => (1 : Fin 2)` using `fun _ hy => Set.mem_iInter.2 fun _ => hy`. Use `isIso_subschemeι_comp_rat _ _ W mem_chart_of_mem_support (constantCoeff.comp e.symm.toRingHom) ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₁ : resG lineBC.Y hW ((lineBC.comb ![1, 0]).f fun _ => (1 : Fin 2)) = e (X ⟨0, by decide⟩)`. Rewrite using `[comb_one_zero]`. Use `Eq.trans ?_ (congrArg (p.app (chart ℚ 1 1)).hom (chartAlgEquiv_X ℚ 1 1 ⟨0, by decide⟩).symm)` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg (fun t => t.hom (ratio ℚ 1 1 0)) (p.appLE_map _ (homOfLE hW).op)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (ideal_cutIdeal lineBC.isLB _ W _ hW).symm` and prove the remaining obligations. Rewrite using `[← RingHom.comap_ker, ker_constantCoeff_eq_span]`. Use `(Ideal.comap_symm e).trans ((Ideal.map_span _ _).trans (congrArg Ideal.span ?_))` and prove the remaining obligations. Rewrite using `[← Set.range_comp]`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, rfl⟩`. Take `rfl : j = ⟨0, by decide⟩` from `by revert j; decide`. Conclude with `⟨0, h₁⟩`. Introduce and unpack `⟨j, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨_, h₁.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem isIso_cut_line : IsIso ((lineBC.cut fun _ : Fin 1 => ![1, 0]).subschemeι ≫ lineBC.str) := by
   let p := (projSys ℚ 1).bcFst ℚ
@@ -142,7 +140,7 @@ theorem isIso_cut_line : IsIso ((lineBC.cut fun _ : Fin 1 => ![1, 0]).subscheme�
     exact ⟨_, h₁.symm⟩
 
 /- English proof (translation)
-Use `isIso_cut_line` as an intermediate fact. Use `⟨⟨⟨?_, ?_⟩, fun y hy => ?_⟩, lineBC.ncard_subPts_of_isIso _ _⟩` and prove the remaining obligations. Conclude with `inferInstanceAs (IsFinite ((lineBC.cut fun _ : Fin 1 => ![1, 0]).subschemeι ≫ lineBC.str))`. Conclude with `inferInstanceAs (Etale ((lineBC.cut fun _ : Fin 1 => ![1, 0]).subschemeι ≫ lineBC.str))`. Conclude with `(Opens.compl_compl (chart ℚ 1 1)).ge (mem_chart_of_mem_support y hy)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isGoodSection_line : (projTuple 1).IsGoodSection ℚ (fun _ => ![1, 0]) ∧
     ((projTuple 1).geomPts ℚ ((projTuple 1).linSection ℚ fun _ => ![1, 0])).ncard = 1 := by

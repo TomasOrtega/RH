@@ -15,13 +15,13 @@ end GlobalTheory.Sieg.CthMult
 open scoped UpperHalfPlane MatrixGroups Manifold in
 
 /- English proof (translation)
-Introduce `c q t hq _`. Use `set g : ℂ → ℂ := fun u => (1 - u * t) ^ c ^ 2 * (1 - u * t⁻¹) ^ c ^ 2 / ((1 - u * t ^ c) * (1 - u * (t ^ c)⁻¹)) with hg`. Establish `hgd : DifferentiableAt ℂ g 0`. Apply `DifferentiableAt.div (by fun_prop) (by fun_prop)` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg0 : g 0 = 1` using `by simp [hg]`. Establish `hbig : (fun m : ℕ => g (q ^ (m + 1)) - 1) =O[Filter.atTop] (fun m : ℕ => q ^ (m + 1))`. Establish `h` using `hgd.isBigO_sub`. Rewrite `h` using `[hg0]`. Simplify using `only [sub_zero] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ht : Filter.Tendsto (fun m : ℕ => q ^ (m + 1)) Filter.atTop (nhds 0)` using `(tendsto_pow_atTop_nhds_zero_of_norm_lt_one hq).comp (Filter.tendsto_add_atTop_nat 1)`. Conclude with `h.comp_tendsto ht`. Establish `hsum : Summable (fun m : ℕ => ‖g (q ^ (m + 1)) - 1‖)`. Use `summable_of_isBigO_nat (g := fun m : ℕ => ‖q‖ ^ (m + 1)) ?_ ?_` and prove the remaining obligations. Conclude with `(summable_geometric_of_lt_one (norm_nonneg _) hq).comp_injective (add_left_injective 1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hbig.norm_left.norm_right` using `[norm_pow]`. Establish `hmul` using `multipliable_one_add_of_summable hsum`. Simplify `hmul` using `[hg, _root_.GlobalTheory.Sieg.cthFac]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Sieg.cthFac_multipliable : ∀ (c : ℕ) (q t : ℂ), ‖q‖ < 1 → t ≠ 0 →
     Multipliable (fun m : ℕ => _root_.GlobalTheory.Sieg.cthFac c q t (m + 1)) := by

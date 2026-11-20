@@ -11,21 +11,21 @@ section Index
 variable {R S ι : Type*} [CommRing R] [CommRing S] [Algebra R S] [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite using `[← Algebra.discr_of_matrix_vecMul, e.toMatrix_map_vecMul v]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem discr_eq_det_toMatrix_sq_mul (e : Basis ι R S) (v : ι → S) :
     Algebra.discr R v = (e.toMatrix v).det ^ 2 * Algebra.discr R e := by
   rw [← Algebra.discr_of_matrix_vecMul, e.toMatrix_map_vecMul v]
 
 /- English proof (translation)
-Rewrite using `[discr_eq_det_toMatrix_sq_mul e, Basis.det_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem discr_eq_basis_det_sq_mul (e : Basis ι R S) (v : ι → S) :
     Algebra.discr R v = e.det v ^ 2 * Algebra.discr R e := by
   rw [discr_eq_det_toMatrix_sq_mul e, Basis.det_apply]
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_apply]`. Conclude with `e.det_comp (LinearMap.mul R S u) v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_det_mul_left (e : Basis ι R S) (u : S) (v : ι → S) :
     e.det (fun i => u * v i) = Algebra.norm R u * e.det v := by
@@ -33,7 +33,7 @@ theorem basis_det_mul_left (e : Basis ι R S) (u : S) (v : ι → S) :
   exact e.det_comp (LinearMap.mul R S u) v
 
 /- English proof (translation)
-Rewrite using `[discr_eq_basis_det_sq_mul e, discr_eq_basis_det_sq_mul e v, basis_det_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem discr_mul_left_of_basis (e : Basis ι R S) (u : S) (v : ι → S) :
     Algebra.discr R (fun i => u * v i) = Algebra.norm R u ^ 2 * Algebra.discr R v := by
@@ -43,7 +43,7 @@ theorem discr_mul_left_of_basis (e : Basis ι R S) (u : S) (v : ι → S) :
 variable [IsDomain R] [IsDiscreteValuationRing R]
 
 /- English proof (translation)
-Rewrite using `[discr_eq_basis_det_sq_mul e, addVal_mul, addVal_pow, length_quotient_span_eq_addVal_det e, nsmul_eq_mul, Nat.cast_ofNat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem addVal_discr_eq_two_mul_length_add (e : Basis ι R S) (v : ι → S) :
     addVal R (Algebra.discr R v) =
@@ -52,7 +52,7 @@ theorem addVal_discr_eq_two_mul_length_add (e : Basis ι R S) (v : ι → S) :
     nsmul_eq_mul, Nat.cast_ofNat]
 
 /- English proof (translation)
-Rewrite using `[addVal_discr_eq_two_mul_length_add e]`. Conclude with `le_self_add`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_mul_length_le_addVal_discr (e : Basis ι R S) (v : ι → S) :
     2 * Module.length R (S ⧸ Submodule.span R (Set.range v)) ≤ addVal R (Algebra.discr R v) := by
@@ -60,7 +60,7 @@ theorem two_mul_length_le_addVal_discr (e : Basis ι R S) (v : ι → S) :
   exact le_self_add
 
 /- English proof (translation)
-The claim follows from `two_mul_length_le_addVal_discr (Module.finBasisOfFinrankEq R S h.symm |>.reindex (Fintype.equivFin ι).symm) v`.
+A detailed English derivation is pending.
 -/
 theorem two_mul_length_le_addVal_discr_of_card [Module.Free R S] [Module.Finite R S]
     (h : Fintype.card ι = finrank R S) (v : ι → S) :
@@ -69,7 +69,7 @@ theorem two_mul_length_le_addVal_discr_of_card [Module.Free R S] [Module.Finite 
     (Fintype.equivFin ι).symm) v
 
 /- English proof (translation)
-Rewrite using `[length_quotient_span_ne_top_iff e]`. Introduce `h`. Rewrite `hv` using `[discr_eq_basis_det_sq_mul e, h]`. Simplify using `at hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem length_quotient_span_ne_top_of_discr_ne_zero (e : Basis ι R S) {v : ι → S}
     (hv : Algebra.discr R v ≠ 0) :
@@ -80,7 +80,7 @@ theorem length_quotient_span_ne_top_of_discr_ne_zero (e : Basis ι R S) {v : ι 
   simp at hv
 
 /- English proof (translation)
-Rewrite using `[addVal_discr_eq_two_mul_length_add e, (Submodule.Quotient.equiv (Submodule.span R (Set.range v)) (Submodule.span R (Set.range fun i => φ (v i))) φ ?_).length_eq]`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem addVal_discr_eq_two_mul_length_add_of_equiv {M : Type*} [AddCommGroup M] [Module R M]
     (φ : M ≃ₗ[R] S) (e : Basis ι R S) (v : ι → M) :
@@ -93,7 +93,7 @@ theorem addVal_discr_eq_two_mul_length_add_of_equiv {M : Type*} [AddCommGroup M]
   rfl
 
 /- English proof (translation)
-Rewrite using `[addVal_discr_eq_two_mul_length_add_of_equiv φ e]`. Conclude with `le_self_add`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_mul_length_le_addVal_discr_of_equiv {M : Type*} [AddCommGroup M] [Module R M]
     (φ : M ≃ₗ[R] S) (e : Basis ι R S) (v : ι → M) :
@@ -110,9 +110,9 @@ variable {R S L ι : Type*} [CommRing R] [CommRing S] [Algebra R S] [CommRing L]
   [Algebra R L] [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨c, hc, hc₀⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h`. Establish `hli` using `(linearIndependent_algHom_toLinearMap R S L).comp P hP`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use `hc (funext (hli c (e.ext fun i => ?_)))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun hc₀ i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, mul_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_algHom_basis_ne_zero (e : Basis ι R S) {P : ι → (S →ₐ[R] L)}
     (hP : Function.Injective P) : (Matrix.of fun i j => P j (e i)).det ≠ 0 := by
@@ -127,7 +127,7 @@ theorem det_algHom_basis_ne_zero (e : Basis ι R S) {P : ι → (S →ₐ[R] L)}
 omit [IsDomain L] in
 
 /- English proof (translation)
-Use extensionality with `j k`. Rewrite using `[Matrix.diagonal_mul, Matrix.of_apply, ← map_mul, ← e.sum_repr (x * e k), map_sum, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, Matrix.of_apply, mul_comm]`.
+By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem algHom_matrix_mul_leftMulMatrix (e : Basis ι R S) (P : ι → (S →ₐ[R] L)) (x : S) :
     (Matrix.of fun j i => P j (e i)) * (Algebra.leftMulMatrix e x).map (algebraMap R L) =
@@ -140,13 +140,11 @@ theorem algHom_matrix_mul_leftMulMatrix (e : Basis ι R S) (P : ι → (S →ₐ
     Matrix.of_apply, mul_comm]
 
 /- English proof (translation)
-Use `set Q : Matrix ι ι L := Matrix.of fun j i => P j (e i) with hQ`. Establish `hQ₀ : Q.det ≠ 0`. Rewrite using `[← Matrix.det_transpose]`. Conclude with `det_algHom_basis_ne_zero e hP`. Establish `h` using `algHom_matrix_mul_leftMulMatrix e P x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[← hQ]`. Rewrite using `[← Matrix.charpoly_map, ← Matrix.charpoly_diagonal]`. Use `set A := (Algebra.leftMulMatrix e x).map (algebraMap R L)`. Use `set D := Matrix.diagonal fun j => P j x`. Establish `h₁ : (C : L →+* L[X]).mapMatrix Q * A.charmatrix = D.charmatrix * (C : L →+* L[X]).mapMatrix Q`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.charmatrix, mul_sub, sub_mul, ← map_mul, h]`. Use `congr 1`. Conclude with `(Matrix.scalar_commute _ (fun _ => Commute.all _ _) _).symm`. Establish `h₂` using `congrArg Matrix.det h₁`. Rewrite `h₂` using `[Matrix.det_mul, Matrix.det_mul, ← RingHom.map_det, mul_comm]`.
-
-Conclude with `mul_right_cancel₀ (C_ne_zero.mpr hQ₀) h₂`.
+A detailed English derivation is pending.
 -/
 theorem map_charpoly_leftMulMatrix_eq_prod_algHom (e : Basis ι R S) {P : ι → (S →ₐ[R] L)}
     (hP : Function.Injective P) (x : S) :
@@ -170,9 +168,9 @@ theorem map_charpoly_leftMulMatrix_eq_prod_algHom (e : Basis ι R S) {P : ι →
   exact mul_right_cancel₀ (C_ne_zero.mpr hQ₀) h₂
 
 /- English proof (translation)
-Establish `hQ₀ : (Matrix.of fun j i => P j (e i)).det ≠ 0`. Rewrite using `[← Matrix.det_transpose]`. Conclude with `det_algHom_basis_ne_zero e hP`. Establish `h` using `congrArg Matrix.det (algHom_matrix_mul_leftMulMatrix e P x)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.norm_eq_matrix_det e, RingHom.map_det]`. Conclude with `mul_right_cancel₀ hQ₀ h`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_norm_eq_prod_algHom_of_basis (e : Basis ι R S) {P : ι → (S →ₐ[R] L)}
     (hP : Function.Injective P) (x : S) :
@@ -186,7 +184,7 @@ theorem algebraMap_norm_eq_prod_algHom_of_basis (e : Basis ι R S) {P : ι → (
   exact mul_right_cancel₀ hQ₀ h
 
 /- English proof (translation)
-Establish `h` using `map_charpoly_leftMulMatrix_eq_prod_algHom e hP x`. Rewrite `h` using `[← Matrix.charpoly_map, ← Matrix.charpoly_diagonal]`. Rewrite using `[Algebra.trace_eq_matrix_trace e, ← Matrix.trace_diagonal, Matrix.trace_eq_neg_charpoly_nextCoeff (Matrix.diagonal _), ← h, ← Matrix.trace_eq_neg_charpoly_nextCoeff, AddMonoidHom.map_trace]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_trace_eq_sum_algHom_of_basis (e : Basis ι R S) {P : ι → (S →ₐ[R] L)}
     (hP : Function.Injective P) (x : S) :
@@ -198,7 +196,7 @@ theorem algebraMap_trace_eq_sum_algHom_of_basis (e : Basis ι R S) {P : ι → (
     ← Matrix.trace_eq_neg_charpoly_nextCoeff, AddMonoidHom.map_trace]
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[algebraMap_trace_eq_sum_algHom_of_basis e hP, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_traceMatrix_eq_mul_transpose_of_basis {κ : Type*} (e : Basis ι R S)
     {P : ι → (S →ₐ[R] L)} (hP : Function.Injective P) (v : κ → S) :
@@ -208,7 +206,7 @@ theorem map_traceMatrix_eq_mul_transpose_of_basis {κ : Type*} (e : Basis ι R S
   simp [algebraMap_trace_eq_sum_algHom_of_basis e hP, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[Algebra.discr_def, RingHom.map_det, RingHom.mapMatrix_apply, map_traceMatrix_eq_mul_transpose_of_basis e hP, Matrix.det_mul, Matrix.det_transpose, pow_two]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_discr_eq_det_sq_of_basis (e : Basis ι R S) {P : ι → (S →ₐ[R] L)}
     (hP : Function.Injective P) (v : ι → S) :
@@ -217,7 +215,7 @@ theorem algebraMap_discr_eq_det_sq_of_basis (e : Basis ι R S) {P : ι → (S �
     map_traceMatrix_eq_mul_transpose_of_basis e hP, Matrix.det_mul, Matrix.det_transpose, pow_two]
 
 /- English proof (translation)
-Rewrite using `[algebraMap_discr_eq_det_sq_of_basis e hP]`. Conclude with `pow_ne_zero _ (det_algHom_basis_ne_zero e hP)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_discr_basis_ne_zero (e : Basis ι R S) {P : ι → (S →ₐ[R] L)}
     (hP : Function.Injective P) : algebraMap R L (Algebra.discr R e) ≠ 0 := by
@@ -229,7 +227,7 @@ variable [Module.Free R S] [Module.Finite R S]
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Use `(algebraMap R L).domain_nontrivial` as an intermediate fact. Conclude with `algebraMap_norm_eq_prod_algHom_of_basis ((Module.finBasisOfFinrankEq R S h.symm).reindex (Fintype.equivFin ι).symm) hP x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraMap_norm_eq_prod_algHom_of_card (h : Fintype.card ι = finrank R S)
     {P : ι → (S →ₐ[R] L)} (hP : Function.Injective P) (x : S) :
@@ -242,7 +240,7 @@ theorem algebraMap_norm_eq_prod_algHom_of_card (h : Fintype.card ι = finrank R 
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Use `(algebraMap R L).domain_nontrivial` as an intermediate fact. Conclude with `algebraMap_trace_eq_sum_algHom_of_basis ((Module.finBasisOfFinrankEq R S h.symm).reindex (Fintype.equivFin ι).symm) hP x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraMap_trace_eq_sum_algHom_of_card (h : Fintype.card ι = finrank R S)
     {P : ι → (S →ₐ[R] L)} (hP : Function.Injective P) (x : S) :
@@ -253,7 +251,7 @@ theorem algebraMap_trace_eq_sum_algHom_of_card (h : Fintype.card ι = finrank R 
     ((Module.finBasisOfFinrankEq R S h.symm).reindex (Fintype.equivFin ι).symm) hP x
 
 /- English proof (translation)
-Use `(algebraMap R L).domain_nontrivial` as an intermediate fact. Conclude with `algebraMap_discr_eq_det_sq_of_basis ((Module.finBasisOfFinrankEq R S h.symm).reindex (Fintype.equivFin ι).symm) hP v`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraMap_discr_eq_det_sq_of_card (h : Fintype.card ι = finrank R S)
     {P : ι → (S →ₐ[R] L)} (hP : Function.Injective P) (v : ι → S) :
@@ -267,7 +265,7 @@ end Points
 section Count
 
 /- English proof (translation)
-Establish `: IsArtinianRing S` using `.of_finite K S`. Establish `(I : MaximalSpectrum S) : Algebra.FormallyEtale K (S ⧸ I.asIdeal)`. Use `letI := Ideal.Quotient.field I.asIdeal`. Conclude with `Algebra.FormallyEtale.of_isSeparable K (S ⧸ I.asIdeal)`. Conclude with `⟨.of_equiv ((IsArtinianRing.equivPi S).restrictScalars K).symm, Algebra.FinitePresentation.of_finiteType.mp inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem etale_of_isReduced_of_perfectField (K S : Type*) [Field K] [PerfectField K] [CommRing S]
     [Algebra K S] [Module.Finite K S] [IsReduced S] : Algebra.Etale K S := by
@@ -281,7 +279,7 @@ theorem etale_of_isReduced_of_perfectField (K S : Type*) [Field K] [PerfectField
 variable (R S L : Type*) [CommRing R] [CommRing S] [Algebra R S] [Field L] [Algebra R L]
 
 /- English proof (translation)
-Use `(algebraMap R L).domain_nontrivial` as an intermediate fact. Establish `: IsArtinianRing (L ⊗[R] S)` using `.of_finite L _`. Use `Fintype.ofFinite (PrimeSpectrum (L ⊗[R] S))` as an intermediate fact. Rewrite using `[Nat.card_congr (AlgHom.liftEquiv R L S L), Nat.card_congr (Algebra.IsFiniteSplit.algHomEquivPrimeSpectrum L (L ⊗[R] S)), ← Module.finrank_baseChange (R := L) (S := R) (M' := S), (Algebra.FormallyEtale.equivPiOfIsSepClosed L (L ⊗[R] S)).toLinearEquiv.finrank_eq, Module.finrank_fi …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_algHom_eq_finrank_of_etale_baseChange [Module.Free R S] [Module.Finite R S]
     [IsSepClosed L] [Algebra.FormallyEtale L (L ⊗[R] S)] :
@@ -296,7 +294,7 @@ theorem natCard_algHom_eq_finrank_of_etale_baseChange [Module.Free R S] [Module.
     Module.finrank_fintype_fun_eq_card, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-The claim follows from `have := etale_of_isReduced_of_perfectField L (L ⊗[R] S) natCard_algHom_eq_finrank_of_etale_baseChange R S L`.
+A detailed English derivation is pending.
 -/
 theorem natCard_algHom_eq_finrank_of_isReduced_baseChange [Module.Free R S] [Module.Finite R S]
     [IsAlgClosed L] [IsReduced (L ⊗[R] S)] : Nat.card (S →ₐ[R] L) = finrank R S :=
@@ -304,7 +302,7 @@ theorem natCard_algHom_eq_finrank_of_isReduced_baseChange [Module.Free R S] [Mod
   natCard_algHom_eq_finrank_of_etale_baseChange R S L
 
 /- English proof (translation)
-The claim follows from `have : Algebra.FormallyEtale L (L ⊗[R] S) := .of_equiv (Algebra.TensorProduct.cancelBaseChange R K L L S) natCard_algHom_eq_finrank_of_etale_baseChange R S L`.
+A detailed English derivation is pending.
 -/
 theorem natCard_algHom_eq_finrank_of_etale_tower [Module.Free R S] [Module.Finite R S]
     (K : Type*) [Field K] [Algebra R K] [Algebra K L] [IsScalarTower R K L] [IsSepClosed L]
@@ -314,9 +312,7 @@ theorem natCard_algHom_eq_finrank_of_etale_tower [Module.Free R S] [Module.Finit
   natCard_algHom_eq_finrank_of_etale_baseChange R S L
 
 /- English proof (translation)
-Establish `: IsReduced (K ⊗[R] S)`. Use `letI : Algebra S (K ⊗[R] S) := Algebra.TensorProduct.rightAlgebra`. Use `haveI := IsLocalization.tensorRight (S := S) K (nonZeroDivisors R)`. Conclude with `isReduced_of_injective (IsLocalization.algEquiv (Algebra.algebraMapSubmonoid S (nonZeroDivisors R)) (K ⊗[R] S) (Localization (Algebra.algebraMapSubmonoid S (nonZeroDivisors R)))) (AlgEquiv.injective _)`. Use `etale_of_isReduced_of_perfectField K (K ⊗[R] S)` as an intermediate fact.
-
-Conclude with `natCard_algHom_eq_finrank_of_etale_tower R S L K`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCard_algHom_eq_finrank_of_isReduced_of_isFractionRing [Module.Free R S]
     [Module.Finite R S] [IsReduced S] (K : Type*) [Field K] [PerfectField K] [Algebra R K]
@@ -342,7 +338,7 @@ variable (K : Type*) {S : Type*} (L : Type*) [Field K] [CommRing S] [Algebra K S
 variable (S) in
 
 /- English proof (translation)
-The claim follows from `have := Algebra.FormallyUnramified.finite_of_free K S natCard_algHom_eq_finrank_of_etale_baseChange K S L`.
+A detailed English derivation is pending.
 -/
 theorem natCard_algHom_eq_finrank_of_etale : Nat.card (S →ₐ[K] L) = finrank K S :=
   have := Algebra.FormallyUnramified.finite_of_free K S
@@ -351,7 +347,7 @@ theorem natCard_algHom_eq_finrank_of_etale : Nat.card (S →ₐ[K] L) = finrank 
 variable (S) in
 
 /- English proof (translation)
-Use `Algebra.FormallyUnramified.finite_of_free K S` as an intermediate fact. Use `Fintype.ofFinite (S →ₐ[K] L)` as an intermediate fact. Rewrite using `[← Fintype.card_eq, h, ← natCard_algHom_eq_finrank_of_etale K S L, Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nonempty_equiv_algHom_of_etale {ι : Type*} [Fintype ι] (h : Fintype.card ι = finrank K S) :
     Nonempty (ι ≃ (S →ₐ[K] L)) := by
@@ -360,7 +356,7 @@ theorem nonempty_equiv_algHom_of_etale {ι : Type*} [Fintype ι] (h : Fintype.ca
   rw [← Fintype.card_eq, h, ← natCard_algHom_eq_finrank_of_etale K S L, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-The claim follows from `have := Algebra.FormallyUnramified.finite_of_free K S algebraMap_norm_eq_prod_algHom_of_card (Nat.card_eq_fintype_card.symm.trans (natCard_algHom_eq_finrank_of_etale K S L)) Function.injective_id x`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_norm_eq_prod_algHom [Fintype (S →ₐ[K] L)] (x : S) :
     algebraMap K L (Algebra.norm K x) = ∏ P : S →ₐ[K] L, P x :=
@@ -370,7 +366,7 @@ theorem algebraMap_norm_eq_prod_algHom [Fintype (S →ₐ[K] L)] (x : S) :
     Function.injective_id x
 
 /- English proof (translation)
-The claim follows from `have := Algebra.FormallyUnramified.finite_of_free K S algebraMap_trace_eq_sum_algHom_of_card (Nat.card_eq_fintype_card.symm.trans (natCard_algHom_eq_finrank_of_etale K S L)) Function.injective_id x`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_trace_eq_sum_algHom [Fintype (S →ₐ[K] L)] (x : S) :
     algebraMap K L (Algebra.trace K S x) = ∑ P : S →ₐ[K] L, P x :=
@@ -382,13 +378,13 @@ theorem algebraMap_trace_eq_sum_algHom [Fintype (S →ₐ[K] L)] (x : S) :
 variable {K L} {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[← natCard_algHom_eq_finrank_of_etale K S L, ← Nat.card_congr P, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_eq_finrank_of_equiv_algHom (P : ι ≃ (S →ₐ[K] L)) : Fintype.card ι = finrank K S := by
   rw [← natCard_algHom_eq_finrank_of_etale K S L, ← Nat.card_congr P, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-The claim follows from `have := Algebra.FormallyUnramified.finite_of_free K S algebraMap_norm_eq_prod_algHom_of_card (card_eq_finrank_of_equiv_algHom P) P.injective x`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_norm_eq_prod_of_equiv_algHom (P : ι ≃ (S →ₐ[K] L)) (x : S) :
     algebraMap K L (Algebra.norm K x) = ∏ j, P j x :=
@@ -396,7 +392,7 @@ theorem algebraMap_norm_eq_prod_of_equiv_algHom (P : ι ≃ (S →ₐ[K] L)) (x 
   algebraMap_norm_eq_prod_algHom_of_card (card_eq_finrank_of_equiv_algHom P) P.injective x
 
 /- English proof (translation)
-The claim follows from `have := Algebra.FormallyUnramified.finite_of_free K S algebraMap_trace_eq_sum_algHom_of_card (card_eq_finrank_of_equiv_algHom P) P.injective x`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_trace_eq_sum_of_equiv_algHom (P : ι ≃ (S →ₐ[K] L)) (x : S) :
     algebraMap K L (Algebra.trace K S x) = ∑ j, P j x :=
@@ -404,7 +400,7 @@ theorem algebraMap_trace_eq_sum_of_equiv_algHom (P : ι ≃ (S →ₐ[K] L)) (x 
   algebraMap_trace_eq_sum_algHom_of_card (card_eq_finrank_of_equiv_algHom P) P.injective x
 
 /- English proof (translation)
-The claim follows from `have := Algebra.FormallyUnramified.finite_of_free K S algebraMap_discr_eq_det_sq_of_card (card_eq_finrank_of_equiv_algHom P) P.injective v`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_discr_eq_det_sq_of_equiv_algHom [DecidableEq ι] (P : ι ≃ (S →ₐ[K] L))
     (v : ι → S) :
@@ -413,7 +409,7 @@ theorem algebraMap_discr_eq_det_sq_of_equiv_algHom [DecidableEq ι] (P : ι ≃ 
   algebraMap_discr_eq_det_sq_of_card (card_eq_finrank_of_equiv_algHom P) P.injective v
 
 /- English proof (translation)
-Take `⟨P⟩` from `nonempty_equiv_algHom_of_etale K S (AlgebraicClosure K) (Module.finrank_eq_card_basis e).symm`. Introduce `h`. Conclude with `algebraMap_discr_basis_ne_zero e P.injective (by rw [h, map_zero])`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem discr_basis_ne_zero_of_etale [DecidableEq ι] (e : Basis ι K S) :
     Algebra.discr K e ≠ 0 := by
@@ -423,7 +419,7 @@ theorem discr_basis_ne_zero_of_etale [DecidableEq ι] (e : Basis ι K S) :
   exact algebraMap_discr_basis_ne_zero e P.injective (by rw [h, map_zero])
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨card_eq_finrank_of_equiv_algHom P, algebraMap_discr_eq_det_sq_of_equiv_algHom P, algebraMap_norm_eq_prod_of_equiv_algHom P, algebraMap_trace_eq_sum_of_equiv_algHom P⟩`.
+Supply the required witnesses or components.
 -/
 theorem discr_norm_trace_of_etale [DecidableEq ι] (P : ι ≃ (S →ₐ[K] L)) :
     Fintype.card ι = finrank K S ∧
@@ -442,7 +438,7 @@ variable {K S L ι : Type*} [Field K] [PerfectField K] [CommRing S] [Algebra K S
   [DecidableEq ι]
 
 /- English proof (translation)
-The claim follows from `have := etale_of_isReduced_of_perfectField K S ⟨card_eq_finrank_of_equiv_algHom P, algebraMap_discr_eq_det_sq_of_equiv_algHom P, algebraMap_norm_eq_prod_of_equiv_algHom P, algebraMap_trace_eq_sum_of_equiv_algHom P⟩`.
+A detailed English derivation is pending.
 -/
 theorem discr_norm_trace_of_isReduced (P : ι ≃ (S →ₐ[K] L)) :
     Fintype.card ι = finrank K S ∧
@@ -461,7 +457,7 @@ variable {R S L ι : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R
   [Algebra R S] [CommRing L] [IsDomain L] [Algebra R L] [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(algebraMap_discr_eq_det_sq_of_basis e hP v).symm, discr_eq_det_toMatrix_sq_mul e v, fun h => algebraMap_discr_basis_ne_zero e hP (by rw [h, map_zero]), addVal_discr_eq_two_mul_length_add e v, two_mul_length_le_addVal_discr e v⟩`.
+Supply the required witnesses or components.
 -/
 theorem det_algHom_sq_eq_discr_and_addVal (e : Basis ι R S) {P : ι → (S →ₐ[R] L)}
     (hP : Function.Injective P) (v : ι → S) :
@@ -478,7 +474,7 @@ theorem det_algHom_sq_eq_discr_and_addVal (e : Basis ι R S) {P : ι → (S →�
 end Both
 
 /- English proof (translation)
-Use `etale_of_isReduced_of_perfectField ℝ (ℝ × ℂ)` as an intermediate fact. Rewrite using `[natCard_algHom_eq_finrank_of_etale ℝ (ℝ × ℂ) ℂ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : Nat.card (ℝ × ℂ →ₐ[ℝ] ℂ) = 3 := by
   have := etale_of_isReduced_of_perfectField ℝ (ℝ × ℂ)

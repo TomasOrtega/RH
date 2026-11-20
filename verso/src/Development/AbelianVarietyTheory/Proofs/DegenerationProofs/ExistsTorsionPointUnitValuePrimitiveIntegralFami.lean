@@ -17,15 +17,13 @@ namespace GlobalTheory.OneBasis.UnitValue
 open GlobalTheory.TorusExt GlobalTheory.UT.WeightValue GlobalTheory.UT.CoefBasic
 
 /- English proof (translation)
-Use `choose! S hS hS0 using H`. Establish `hroot : ∀ (t : Multiplicative X →* Fˣ) (k : ℕ), t ^ n ^ k = 1 → ∀ χ, v (t χ).val = 0 ∧ v ((t χ)⁻¹).val = 0`. Introduce `t k ht χ`. Establish `e : t χ ^ n ^ k = 1` using `by rw [← MonoidHom.pow_apply, ht, MonoidHom.one_apply]`. Establish `hN : 0 < n ^ k` using `pow_pos (by omega) k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨GlobalTheory.TorsRecov.val_eq_zero_of_pow v _ _ hN (by rw [← Units.val_pow_eq_pow_val, e, Units.val_one]), GlobalTheory.TorsRecov.val_eq_zero_of_pow v _ _ hN (by rw [← Units.val_pow_eq_pow_val, inv_pow, e, inv_one, Units.val_one])⟩`. Establish `hpos : ∀ (t : Multiplicative X →* Fˣ) (k : ℕ), t ^ n ^ k = 1 → 0 < v (S t)` using `fun t k ht => lt_of_le_of_ne (le_of_sumV (q := 0) (hS t ⟨k, ht⟩) fun χ => by`. Rewrite using `[v.map_mul, (hroot t k ht _).1, zero_add]`. Conclude with `h0 χ) (hS0 t ⟨k, ht⟩).symm`. Take `⟨k, hk⟩` from `GlobalTheory.coeff_recovery_by_torsion_averages F v X n hn hvn a ha S hS (fun _ => α) (fun _ => ⟨0, by simp⟩) (a α) (Or.inl ⟨α, fun _ => ⟨0, by simp⟩, rfl⟩) 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hk k le_rfl`. Establish `hN : 0 < n ^ k` using `pow_pos (by omega) k`. Use `haveI : Finite {t : Multiplicative X →* Fˣ // t ^ n ^ k = 1} := Nat.finite_of_card_ne_zero (by`. Rewrite using `[GlobalTheory.TorsRecov.card_tors F X _ hN]`. Conclude with `pow_ne_zero _ hN.ne')`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `letI := Fintype.ofFinite {t : Multiplicative X →* Fˣ // t ^ n ^ k = 1}`. Rewrite `h1` using `[finsum_eq_sum_of_fintype]`. Establish `h2 : 0 < v (((n : F) ^ (k * Module.finrank ℤ X))⁻¹ * ∑ t : {t : Multiplicative X →* Fˣ // t ^ n ^ k = 1}, ((t.1 (Multiplicative.ofAdd α))⁻¹).val * S t.1)`. Rewrite using `[v.map_mul, GlobalTheory.TorsRecov.val_inv_pow v _ _ hvn, zero_add]`. Use `v.map_lt_sum WithTop.zero_ne_top fun t _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[v.map_mul, (hroot t.1 k t.2 _).2, zero_add]`. Conclude with `hpos t.1 k t.2`. Establish `h3` using `v.map_lt_add (lt_of_lt_of_le (by exact_mod_cast (zero_lt_one : (0 : ℚ) < 1)) h1) h2`. Rewrite `h3` using `[sub_add_cancel, hα]`. Conclude with `lt_irrefl _ h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_all_ne_zero {F : Type} [Field F] [IsAlgClosed F] [CharZero F] {v : AddValuation F (WithTop ℚ)} {X : Type}
     [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] {n : ℕ} (hn : 2 ≤ n) (hvn : v (n : F) = 0) {a : X → F}
@@ -68,9 +66,9 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)} {hv : ValOver ϖ F v}
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `(coef_basic V D.toPre F k g).1`. Take `⟨r, φ₀, hφ, t₀, ht₀, x, hx, e⟩` from `CoefVal.exists_genV_frm (hϖ := hϖ) (hv := hv) hw`. Establish `hx0 : x ≠ 0` using `v.ne_top_iff.1 (by rw [hx]; exact WithTop.coe_ne_top)`. Take `⟨w', hw', e'⟩` from `TorsionValue.exists_frm_scale w hw (inv_ne_zero hx0)`. Use `⟨w', hw', φ₀, hφ, t₀, ht₀, 1, v.map_one, fun z J hJ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e' z J hJ, e z J hJ, ← _root_.mul_assoc, cst_eq, cst_eq, cst_eq, ← map_mul, inv_mul_cancel₀ hx0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_frm_zero (k : ℕ) (g : GtPtF D.toPre F) : ∃ w : Frm D.toPre F k g.b, w.IsGen ∧ GenV hϖ hv w 0 := by
   obtain ⟨w, hw⟩ := (coef_basic V D.toPre F k g).1
@@ -81,7 +79,7 @@ theorem exists_frm_zero (k : ℕ) (g : GtPtF D.toPre F) : ∃ w : Frm D.toPre F 
   rw [e' z J hJ, e z J hJ, ← _root_.mul_assoc, cst_eq, cst_eq, cst_eq, ← map_mul, inv_mul_cancel₀ hx0]
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Conclude with `⟨w, hw, h0, fun _ _ _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_frm_cast {k : ℕ} {b b' : TF (R := V) F ⟶ D.toPre.P.A} (hb : b' = b) (w : Frm D.toPre F k b) (hw : w.IsGen)
     (h0 : GenV hϖ hv w 0) : ∃ w' : Frm D.toPre F k b', w'.IsGen ∧ GenV hϖ hv w' 0 ∧
@@ -94,27 +92,27 @@ end
 attribute [local instance] gtGroup in
 
 /- English proof (translation)
-Introduce `hL hT hVR hTW hUU V _ _ _ _ hcpl ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ ρ hN k n hk hn hnV t s α hts hint hprim`. Assume the negation of the conclusion as `hcon`. Establish `hk1 : 1 ≤ k` using `by omega`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hcpl⟩`. Establish `: CharZero (FractionRing V)` using `IsFractionRing.charZero V`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CharZero F` using `(algebraMap (FractionRing V) F).charZero_iff (algebraMap (FractionRing V) F).injective |>.1 this`. Take `⟨i, g, o, ho, hgo, hg⟩` from `GlobalTheory.T.exists_torsion_point_primitive_component_valuation_zero hL hT hVR hTW hUU V hcpl ϖ hϖ D Q hQ F v hv k n hk hn hnV s α (hint α) hprim`. Establish `hgi : n ^ i • g = 0` using `((isNsmul_iff_eq _ _ _).1 hgo).symm.trans ((isZero_iff_eq _).1 ho)`. Take `⟨w, hw, hw0⟩` from `exists_frm_zero (hϖ := hϖ) (hv := hv) k g`. Establish `hB` using `D.tau_bimult`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgV : ∀ χ, GenV hϖ hv (g.s χ) 0` using `fun χ => by`. Establish `e` using `CoefVal.gtV_qk (hϖ := hϖ) (hv := hv) hVR hQ (Nat.one_le_pow i n hn.pos) (qkMk hB 0 g (hgi.trans (map_zero _).symm)) χ`. Simplify `e` using `only [qkMk_y, qkMk_g, bOf_zero_left hϖ hQ, Int.cast_zero, zero_div]`. Establish `hvn : v (n : F) = 0`. Establish `e` using `GC.v_alg_unit hv hnV.unit`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[IsUnit.unit_spec, map_natCast, map_natCast]`. Then use the resulting hypothesis. Use `not_all_ne_zero (v := v) (a := coef s g w) (α := α) hn.two_le hvn (((CoefVal.main hL hT hVR hTW hUU V hcpl ϖ hϖ D Q hQ F v hv g).2.2.2.2.2.2 k hk1 w s hw).1) (fun χ => by simpa using CoefVal.le_v_coef hw (hint χ) (hgV χ) hw0) (hg w hw hw0) ?_` and prove the remaining obligations. Introduce and unpack `τ ⟨m, hm⟩`. Establish `hj : 1 ≤ n ^ (i + m + 2)` using `Nat.one_le_pow _ n hn.pos`. Set `p : QkPt D.toPre F (n ^ (i + m + 2))` to `qkMk hB 0 (g + torusPt D.toPre F (Additive.ofMul τ)) (by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e₁ : n ^ (i + m + 2) • g = 0` using `by rw [add_assoc, pow_add, mul_comm, mul_smul, hgi, smul_zero]`. Establish `e₂ : τ ^ n ^ (i + m + 2) = 1`. Rewrite using `[show i + m + 2 = m + (i + 2) by ring, pow_add, pow_mul, hm, one_pow]`. Rewrite using `[smul_add, e₁, ← map_nsmul, ← ofMul_pow, e₂, ofMul_one, map_zero, map_zero, add_zero])`. Take `⟨f, hf, -⟩` from `GlobalTheory.T.uniformisation_torsion_identification_with_pairing hL V (maximalIdeal V) hA D A G hG U F _ hj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hx : QkToAkU U.toUnifPre F _ p (f p)` using `(hf p _).2 rfl`. Establish `hex : ∃ e c, IsTorsFrame A ρ (n ^ (i + m + 2)) (f p) e ∧ ValAt t (f p) e c ∧ v c ≠ 0`. Assume the negation of the conclusion as `h`. Use `hcon ⟨i + m + 2, f p, by omega, ⟨p, rfl, hx⟩, fun e c he hc => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h ⟨e, c, he, hc, h'⟩`. Take `⟨e, c, he, hc, hc0⟩` from `hex`. Take `⟨w₁, hw₁, hv₁, hsum⟩` from `GlobalTheory.T.section_value_at_torsionPoint_eq_sum_terms hL hT hVR hTW hUU V hcpl ϖ hϖ D Q hQ F v hv A G hG U w₀ ρ hN _ hj p _ hx e he`. Establish `hv₁ : GenV hϖ hv w₁ 0`. Establish `e0 : ((Q p.y : ℚ) / ((n ^ (i + m + 2) : ℕ) : ℚ) ^ 2) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show p.y = 0 from rfl, QForm.Q_zero hϖ D hQ]`. Simplify using the standard rewrite rules. Rewrite `hv₁` using `[e0]`. Then use the resulting hypothesis. Take `⟨w₂, hw₂, hwv⟩` from `exists_pow k (line_exp k) w₁ hw₁`. Establish `hw₂0 : GenV hϖ hv w₂ 0` using `genV_pow k (line_exp k) hv₁ fun z J _ => hwv _ _ z J`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : SumV v (coef s p.g w₂) c` using `hsum k hk1 w₂ ⟨hw₂, fun z J _ => hwv _ _ z J⟩ t s c hts hc`. Establish `hb : p.g.b = g.b` using `by show (g + torusPt D.toPre F (Additive.ofMul τ)).b = g.b`. Rewrite using `[add_b, torusPt_b, _root_.mul_one]`. Take `⟨w', hw', hw'0, hww⟩` from `exists_frm_cast hb w hw hw0`. Take `⟨u, hu, huv, huc⟩` from `((coef_basic V D.toPre F k p.g).2.2 w₂ hw₂).2.2.1 w' hw'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.1 (v.ne_top_iff.2 hu)`. Establish `r0 : r = 0`. Use `CoefVal.sep D` as an intermediate fact. Conclude with `CoefVal.genV_unique D.toPre.P.isLB (genV_smul hw₂0 hr.symm huv) hw'0`. Establish `hu0 : v u = 0` using `by rw [← hr, r0]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htr` using `((coef_basic V D.toPre F k g).2.2 w hw).2.2.2 τ _ p.g w' ((isTor_iff _ _).2 (isTorusPtF_torusPt τ)) ((isAdd_iff_eq _ _ _).2 rfl) hww s`. Use `⟨u * c, ?_, by rwa [v.map_mul, hu0, zero_add]⟩` and prove the remaining obligations. Use `sumV_mul hS hu0` as an intermediate fact. Simplify `this` using `only [← huc, htr]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_unit_value : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllUV fun {V} _ _ _ {ϖ} hϖ {D} Q {F} _ _ {v} hv {A} {G} _ _ U => ∀ w₀ ρ, NormW U.toUnifPre w₀ ρ → ∀ k n : ℕ, 4 ≤ k → n.Prime → IsUnit (n : V) → ∀ (t : SecA A F k) (s : Fam D.toPre F k) (α : D.toPre.X), U.ExpandsF F k w₀ t s → IntGe D v s 0 → (∀ q : ℚ, 0 < q → ¬ VGe D F v k α (s.s α) q) → ∃ (j : ℕ) (x : TFK (R := V) F ⟶ A.A), 2 ≤ j ∧ FromGt U.toUnifPre (n ^ j) x ∧ ∀ e (c : F), IsTorsFrame A ρ (n ^ j) x e → ValAt t x e c → v c = 0 := by
   intro hL hT hVR hTW hUU V _ _ _ _ hcpl ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ ρ hN k n hk hn hnV t s α hts hint hprim

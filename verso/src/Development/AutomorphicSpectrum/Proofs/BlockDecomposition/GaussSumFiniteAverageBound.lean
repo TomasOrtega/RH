@@ -22,21 +22,21 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl GlobalTheory.CompanionTheo
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.CosetBound
 
 /- English proof (translation)
-Introduce `X _ _ _ _ _ _ _ m _ L hc ho q hq hn K hK Q s hQ`. Establish `hopen : ∀ a : X, IsOpen {y : X | y - a ∈ L}` using `fun a => ho.preimage (continuous_id.sub continuous_const)`. Establish `hmeas : ∀ a : X, MeasurableSet {y : X | y - a ∈ L}` using `fun a => (hopen a).measurableSet`. Establish `hcomp : ∀ a : X, IsCompact {y : X | y - a ∈ L}`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `himg : {y : X | y - a ∈ L} = (fun x => x + a) '' (L : Set X)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨y - a, hy, by simp⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `using hx`. Rewrite using `[himg]`. Conclude with `hc.image (continuous_id.add continuous_const)`. Establish `hion : ∀ a : X, IntegrableOn q {y : X | y - a ∈ L} m` using `fun a => hq.continuousOn.integrableOn_compact (hcomp a)`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ∀ a : X, (fun x => Set.indicator {y : X | y - a ∈ L} (fun _ => (1 : ℂ)) x * q x) = Set.indicator {y : X | y - a ∈ L} q`. Introduce `a`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ {y : X | y - a ∈ L}`. Simplify using `only [Set.indicator_of_mem hx, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.indicator_of_notMem hx, zero_mul]`. Establish `hint : ∀ a : X, Integrable (Set.indicator {y : X | y - a ∈ L} q) m` using `fun a => (integrable_indicator_iff (hmeas a)).2 (hion a)`. Establish `hfun : (fun x => Q x * q x) = fun x => ∑ a ∈ s, Q a * Set.indicator {y : X | y - a ∈ L} q x`. Use function extensionality and compare the values at `x`. Use `conv_lhs => rw [hQ x]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, congrFun (hterm a) x]`. Establish `hsum : ∫ x, Q x * q x ∂m = ∑ a ∈ s, Q a * ∫ x in {y : X | y - a ∈ L}, q x ∂m`. Rewrite using `[hfun, integral_finsetSum s (fun a _ => (hint a).const_mul (Q a))]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_indicator (hmeas a)]`. Establish `hone : ∀ a : X, ‖∫ x in {y : X | y - a ∈ L}, q x ∂m‖ ≤ √K`. Introduce `a`. Establish `h` using `Real.abs_le_sqrt (hK a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis. Rewrite using `[hsum, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hone a) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twisted_integral_finite_coset_combination_bound :
     ∀ (X : Type) [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]

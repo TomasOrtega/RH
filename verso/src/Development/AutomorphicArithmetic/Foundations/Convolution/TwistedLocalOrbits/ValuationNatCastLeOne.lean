@@ -16,25 +16,25 @@ private def Bd (c : ValueGroupWithZero E) (M : Matrix (Fin n) (Fin n) E) : Prop 
 variable {a b c : ValueGroupWithZero E} {M N : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Introduce `i j` and use `(h i j).trans hab`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Bd.mono (h : Bd a M) (hab : a ≤ b) : Bd b M := fun i j => (h i j).trans hab
 
 /- English proof (translation)
-Introduce `i j` and use `Valuation.map_add_le _ (h i j) (h' i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Bd.add (h : Bd a M) (h' : Bd a N) : Bd a (M + N) := fun i j =>
   Valuation.map_add_le _ (h i j) (h' i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.neg_apply, Valuation.map_neg] exact h i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Bd.neg (h : Bd a M) : Bd a (-M) := fun i j => by
   rw [Matrix.neg_apply, Valuation.map_neg]
   exact h i j
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] refine Valuation.map_sum_le _ fun k _ => ?_ rw [map_mul] exact mul_le_mul' (h i k) (h' k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Bd.mul (h : Bd a M) (h' : Bd b N) : Bd (a * b) (M * N) := fun i j => by
   rw [Matrix.mul_apply]
@@ -43,7 +43,7 @@ private theorem Bd.mul (h : Bd a M) (h' : Bd b N) : Bd (a * b) (M * N) := fun i 
   exact mul_le_mul' (h i k) (h' k j)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => intro i j`. Simplify using the standard rewrite rules. Consider the case `succ m ih => rw [succ_nsmul]`. Conclude with `ih.add h`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem Bd.nsmul (h : Bd a M) (m : ℕ) : Bd a (m • M) := by
   induction m with
@@ -51,9 +51,9 @@ private theorem Bd.nsmul (h : Bd a M) (m : ℕ) : Bd a (m • M) := by
   | succ m ih => rw [succ_nsmul]; exact ih.add h
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => intro i j`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Establish `e : (1 + M) ^ (m + 1) - 1 - (m + 1) • M = ((1 + M) ^ m - 1 - m • M) + ((1 + M) ^ m - 1 - m • M) * M + (m • M) * M`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[pow_succ, succ_nsmul]`. Generalize the expression as in `m • M = D`. Use `noncomm_ring`. Rewrite using `[e]`. Conclude with `(ih.add ((ih.mul h).mono (mul_le_of_le_one_right' ha))).add ((h.nsmul m).mul h)`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Bd.pow (h : Bd a M) (ha : a ≤ 1) (m : ℕ) : Bd (a * a) ((1 + M) ^ m - 1 - m • M) := by
   induction m with
@@ -68,11 +68,11 @@ private theorem Bd.pow (h : Bd a M) (ha : a ≤ 1) (m : ℕ) : Bd (a * a) ((1 + 
     exact (ih.add ((ih.mul h).mono (mul_le_of_le_one_right' ha))).add ((h.nsmul m).mul h)
 
 /- English proof (translation)
-Introduce `i j`. Use `haveI : Nonempty (Fin n × Fin n) := ⟨(i, j)⟩`. Take `⟨p, hp⟩` from `Finite.exists_max fun p : Fin n × Fin n => valuation E (N p.1 p.2)`. Establish `hN : Bd (valuation E (N p.1 p.2)) N` using `fun i j => hp (i, j)`. Use `(hp (i, j)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Bd (max a (a * valuation E (N p.1 p.2))) (-M + -(M * N))` using `(h.neg.mono (le_max_left _ _)).add ((h.mul hN).neg.mono (le_max_right _ _))`. Establish `h2` using `h1 p.1 p.2`. Rewrite `h2` using `[← e]`. Break down `le_max_iff.mp h2 with h3 | h3` into its components or cases. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h4`. Establish `h0 : 0 < valuation E (N p.1 p.2)` using `lt_of_le_of_lt zero_le (not_le.mp h4)`. Conclude with `absurd h3 (not_le.mpr (mul_lt_of_lt_one_left h0 ha))`.
+A detailed English derivation is pending.
 -/
 private theorem Bd.inv (h : Bd a M) (ha : a < 1) (e : N = -M + -(M * N)) : Bd a N := by
   intro i j
@@ -91,7 +91,7 @@ private theorem Bd.inv (h : Bd a M) (ha : a < 1) (e : N = -M + -(M * N)) : Bd a 
     exact absurd h3 (not_le.mpr (mul_lt_of_lt_one_left h0 ha))
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Rewrite using `[Nat.cast_succ]`. Conclude with `Valuation.map_add_le _ ih (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_natCast_le_one (q : ℕ) : valuation E (q : E) ≤ 1 := by
   induction q with
@@ -105,7 +105,7 @@ end Bound
 variable {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `_ hg i j` and use `(hg i j).trans h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ball_mono {r s : ValueGroupWithZero E} (h : r ≤ s) : ball n r ⊆ ball n s := fun _ hg i j => (hg i j).trans h
 
@@ -130,11 +130,11 @@ def ballSub (n : ℕ) (r : ValueGroupWithZero E) (hr : r < 1) : Subgroup (GL (Fi
     noncomm_ring
 
 /- English proof (translation)
-Establish `hO : IsOpen {x : E | valuation E x ≤ r}`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite using `[IsValuativeTopology.mem_nhds_iff]`. Use `⟨Units.mk0 r hr, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `Valuation.map_add_le _ hx (le_of_lt (show valuation E z < r from hz))`. Establish `e : ball n r = ⋂ i, ⋂ j, (fun g : GL (Fin n) E => (g : Matrix (Fin n) (Fin n) E) i j - (1 : Matrix (Fin n) (Fin n) E) i j) ⁻¹' {x : E | valuation E x ≤ r}`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter, Set.mem_preimage]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage ((Units.continuous_val.matrix_elem i j).sub continuous_const)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ball {r : ValueGroupWithZero E} (hr : r ≠ 0) : IsOpen (ball n r) := by
   have hO : IsOpen {x : E | valuation E x ≤ r} := by
@@ -154,9 +154,9 @@ theorem isOpen_ball {r : ValueGroupWithZero E} (hr : r ≠ 0) : IsOpen (ball n r
     hO.preimage ((Units.continuous_val.matrix_elem i j).sub continuous_const)
 
 /- English proof (translation)
-Establish `h0 : IsCompact {M : Matrix (Fin n) (Fin n) E | Bd r M}` using `isCompact_pi_infinite (s := fun _ : Fin n => {x : Fin n → E | ∀ j, x j ∈ {y | valuation E y ≤ r}}) fun _ => isCompact_pi_infinite fun _ => IsNonarchimedeanLocalField.isCompact_closedBall E r`. Establish `h1 : IsCompact {M : Matrix (Fin n) (Fin n) E | Bd r (M - 1)}` using `(Homeomorph.subRight (1 : Matrix (Fin n) (Fin n) E)).isCompact_preimage.mpr h0`. Establish `h2` using `(UpperTheory.V.Z.Tf.Orb.gLTop E n).2.2.2.2 _ _ h1 h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Conclude with `⟨fun hg => ⟨hg, (ballSub n r hr).inv_mem hg⟩, fun hg => hg.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCompact_ball {r : ValueGroupWithZero E} (hr : r < 1) : IsCompact (ball n r) := by
   have h0 : IsCompact {M : Matrix (Fin n) (Fin n) E | Bd r M} :=
@@ -170,9 +170,9 @@ theorem isCompact_ball {r : ValueGroupWithZero E} (hr : r < 1) : IsCompact (ball
   exact ⟨fun hg => ⟨hg, (ballSub n r hr).inv_mem hg⟩, fun hg => hg.1⟩
 
 /- English proof (translation)
-Establish `hu' : Bd r ((u : Matrix (Fin n) (Fin n) E) - 1)` using `hu`. Establish `h1` using `(hu'.pow (hr.le.trans (valuation_natCast_le_one q)) q).mono (mul_le_mul' le_rfl hr.le)`. Establish `h2 : Bd (r * valuation E (q : E)) (q • ((u : Matrix (Fin n) (Fin n) E) - 1))` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, map_mul, mul_comm]`. Conclude with `mul_le_mul' (hu' i j) le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `h1.add h2`. Rewrite `h3` using `[sub_add_cancel, add_sub_cancel, ← Units.val_pow_eq_pow_val]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem_ball {q : ℕ} {r : ValueGroupWithZero E} (hr : r < valuation E (q : E)) {u : GL (Fin n) E}
     (hu : u ∈ ball n r) : u ^ q ∈ ball n (r * valuation E (q : E)) := by
@@ -186,9 +186,9 @@ theorem pow_mem_ball {q : ℕ} {r : ValueGroupWithZero E} (hr : r < valuation E 
   exact h3
 
 /- English proof (translation)
-Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `e : ((sg σ u : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j - (1 : Matrix (Fin n) (Fin n) E) i j = σ ((u : Matrix (Fin n) (Fin n) E) i j - (1 : Matrix (Fin n) (Fin n) E) i j)`. Rewrite using `[map_sub]`. Use `congr 1`. Rewrite using `[Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e, hσ]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem sg_mem_ball_iff {σ : E ≃+* E} (hσ : Isom σ) {r : ValueGroupWithZero E} {u : GL (Fin n) E} :
     sg σ u ∈ ball n r ↔ u ∈ ball n r := by
@@ -202,7 +202,7 @@ theorem sg_mem_ball_iff {σ : E ≃+* E} (hσ : Isom σ) {r : ValueGroupWithZero
   rw [e, hσ]
 
 /- English proof (translation)
-Take `⟨u, ⟨hu, huq⟩, huu⟩` from `rootEx E n q r hr g hg`. Conclude with `⟨u, hu, huu _ ⟨(sg_mem_ball_iff hσ).mpr hu, by rw [← map_pow, huq, hf]⟩, huq⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fixed_root {σ : E ≃+* E} (hσ : Isom σ) {q : ℕ} {r : ValueGroupWithZero E} (hr : r < valuation E (q : E))
     {g : GL (Fin n) E} (hg : g ∈ ball n (r * valuation E (q : E))) (hf : sg σ g = g) :
@@ -211,7 +211,7 @@ theorem exists_fixed_root {σ : E ≃+* E} (hσ : Isom σ) {q : ℕ} {r : ValueG
   exact ⟨u, hu, huu _ ⟨(sg_mem_ball_iff hσ).mpr hu, by rw [← map_pow, huq, hf]⟩, huq⟩
 
 /- English proof (translation)
-Take `⟨c, hc0, hc1⟩` from `ValuativeRel.IsNontrivial.exists_lt_one (R := E)`. Conclude with `⟨c * w, mul_pos hc0 (zero_lt_iff.mpr hw), mul_lt_of_lt_one_left (zero_lt_iff.mpr hw) hc1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_radius {w : ValueGroupWithZero E} (hw : w ≠ 0) : ∃ r : ValueGroupWithZero E, 0 < r ∧ r < w := by
   obtain ⟨c, hc0, hc1⟩ := ValuativeRel.IsNontrivial.exists_lt_one (R := E)

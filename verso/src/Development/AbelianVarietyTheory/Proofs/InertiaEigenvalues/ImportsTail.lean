@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory.NonzeroScalarMembership
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span LL (↑T : Set V)` using `hT ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha, hay⟩` from `hy`. Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `T.add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `T.smul_mem b hay`. Rewrite using `[mul_smul]`. Conclude with `T.smul_mem a hbz`. Consider the case `smul c y _ hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hay⟩` from `hy`. Take `⟨⟨p, q⟩, hpq⟩` from `IsLocalization.surj (nonZeroDivisors O) c`. Establish `hq : (q : O) ≠ 0` using `nonZeroDivisors.coe_ne_zero q`. Use `⟨q * a, mul_ne_zero hq ha, ?_⟩` and prove the remaining obligations. Establish `h : ((q : O) * a) • c • y = p • a • y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (q : O) • c • y = p • y`. Rewrite using `[← algebraMap_smul LL (q : O), smul_smul, mul_comm, hpq, algebraMap_smul]`. Rewrite using `[mul_comm, mul_smul, h1, smul_comm]`. Rewrite using `[h]`. Conclude with `T.smul_mem p hay`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_smul_mem {O LL V : Type} [CommRing O] [IsDomain O] [Field LL]
     [Algebra O LL] [IsFractionRing O LL] [AddCommGroup V] [Module LL V] [Module O V]

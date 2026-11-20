@@ -6,9 +6,9 @@ open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTh
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Measurability
 
 /- English proof (translation)
-Establish `hΛ : Countable Λ` using `(Module.finBasis ℤ Λ).equivFun.toEquiv.injective.countable`. Establish `hZ : Countable (Submodule ℤ Λ)`. Establish `hs : Function.Surjective (fun s : Finset Λ => Submodule.span ℤ (s : Set Λ))`. Introduce `N`. Take `⟨s, hs⟩` from `(IsNoetherian.noetherian N : N.FG)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, hs⟩`. Conclude with `hs.countable`. Conclude with `(Submodule.restrictScalars_injective ℤ A Λ).countable`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem countable_submodule (A : Type) [Ring A] (Λ : Type) [AddCommGroup Λ] [Module A Λ]
     [Module.Free ℤ Λ] [Module.Finite ℤ Λ] : Countable (Submodule A Λ) := by
@@ -23,15 +23,13 @@ theorem countable_submodule (A : Type) [Ring A] (Λ : Type) [AddCommGroup Λ] [M
   exact (Submodule.restrictScalars_injective ℤ A Λ).countable
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty X with hX | ⟨⟨x₀⟩⟩` into its components or cases. Conclude with `measurable_of_empty _`. Use `haveI := (R x₀).free`. Use `haveI := (R x₀).fin`. Use `haveI : Countable (Submodule (𝓞 E) Λ) := countable_submodule (𝓞 E) Λ`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `C : Submodule (𝓞 E) Λ → Prop` to `fun I => I ≠ ⊥ ∧ GroundTheory.Heights₂.Heights.LowerBoundFree.IsSaturated I ∧ GroundTheory.Heights₂.Heights.LowerBoundFree.IsIsoSub form I`. Establish `hC : ∀ x I, (R x).IsCusp I ↔ C I`. Introduce `x I`. Simplify using `only [RiemLat.IsCusp, C, hform x]`. Establish `hset : ∀ x, {y | ∃ I, (R x).IsCusp I ∧ y = -Real.log ((R x).nz σ I)} = Set.range fun I : {I // C I} => -Real.log ((R x).nz σ I.1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce `x`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨I, hI, rfl⟩`. Conclude with `⟨⟨I, (hC x I).1 hI⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨I, rfl⟩`. Conclude with `⟨I.1, (hC x I.1).2 I.2, rfl⟩`. Establish `hsup : Measurable fun x => ⨆ I : {I // C I}, -Real.log ((R x).nz σ I.1)` using `Measurable.iSup fun I => (Real.measurable_log.comp (hnz I.1)).neg`. Establish `heq : (fun x => (R x).cuspW σ) = fun x => max 0 (⨆ I : {I // C I}, -Real.log ((R x).nz σ I.1))`. Use function extensionality and compare the values at `x`.
-
-Simplify using `only [RiemLat.cuspW, hset x, iSup]`. Rewrite using `[heq]`. Conclude with `measurable_const.max hsup`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_cuspW (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ]
     [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (X : Type) [MeasurableSpace X] (R : X → RiemLat E g Λ)

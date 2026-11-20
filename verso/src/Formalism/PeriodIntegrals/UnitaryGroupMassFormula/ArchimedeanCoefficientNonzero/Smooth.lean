@@ -12,7 +12,7 @@ namespace PI.BICNZ
 open Formalism.FourierDecayAlt.B Formalism.QuantumDeterminants Formalism.MainNotions.S.Pv.BetaCut
 
 /- English proof (translation)
-Conclude with `WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)`.
+A detailed English derivation is pending.
 -/
 theorem two_le_smooth : (2 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) := by
   exact WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)
@@ -24,13 +24,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Complex.ofRealCLM.contDiff.contDiffAt.comp x hf`.
+A detailed English derivation is pending.
 -/
 theorem ofReal_contDiffAt {f : ℝ → ℝ} {x : ℝ} {m : WithTop ℕ∞} (hf : ContDiffAt ℝ m f x) :
     ContDiffAt ℝ m (fun t => (f t : ℂ)) x := Complex.ofRealCLM.contDiff.contDiffAt.comp x hf
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.P.B2x7.dgR`. Use `split_ifs`. Conclude with `(contDiff_id.pow _).contDiffAt`. Conclude with `contDiffAt_const`. Conclude with `((contDiff_id.pow _).contDiffAt).inv (pow_ne_zero _ h0)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dgR_contDiffAt (i : Fin (2 * r + k + 1)) {t₀ : ℝ} (h0 : t₀ ≠ 0) :
     ContDiffAt ℝ 2 (fun t => Formalism.FourierDecayAlt.P.B2x7.dgR k r t i) t₀ := by
@@ -41,9 +41,9 @@ theorem dgR_contDiffAt (i : Fin (2 * r + k + 1)) {t₀ : ℝ} (h0 : t₀ ≠ 0) 
   · exact ((contDiff_id.pow _).contDiffAt).inv (pow_ne_zero _ h0)
 
 /- English proof (translation)
-Use `show aDil k r t * Matrix.of n * (aDil k r t)⁻¹ * Matrix.of h = _`. Rewrite using `[Formalism.FourierDecayAlt.P.B2.aDil_inv k r t ht, Formalism.FourierDecayAlt.P.B2x7.aDil_eq, Formalism.FourierDecayAlt.P.B2x7.aDil_eq]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem curve_eq (n h : Mt k r) {t : ℝ} (ht : t ≠ 0) :
     Matrix.of (conjM (aDil k r t) n) * Matrix.of h =
@@ -58,9 +58,9 @@ theorem curve_eq (n h : Mt k r) {t : ℝ} (ht : t ≠ 0) :
   rfl
 
 /- English proof (translation)
-Establish `hev : (fun t : ℝ => Matrix.of (conjM (aDil k r t) n) * Matrix.of h) =ᶠ[𝓝 t₀] (fun t => Matrix.of fun i j => ∑ l, (((Formalism.FourierDecayAlt.P.B2x7.dgR k r t i : ℝ) : ℂ) * n i l * ((Formalism.FourierDecayAlt.P.B2x7.dgR k r t⁻¹ l : ℝ) : ℂ)) * h l j)` using `by filter_upwards [isOpen_ne.mem_nhds h0] with t ht`. Conclude with `curve_eq n h ht`. Use `ContDiffAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Use `contDiffAt_pi.2 fun i => contDiffAt_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContDiffAt.sum fun l _ => ?_` and prove the remaining obligations. Conclude with `(((ofReal_contDiffAt (dgR_contDiffAt i h0)).mul contDiffAt_const).mul (ofReal_contDiffAt ((dgR_contDiffAt l (inv_ne_zero h0)).comp t₀ (contDiffAt_inv ℝ h0)))).mul contDiffAt_const`.
+A detailed English derivation is pending.
 -/
 theorem curve_contDiffAt (n h : Mt k r) {t₀ : ℝ} (h0 : t₀ ≠ 0) :
     ContDiffAt ℝ 2 (fun t : ℝ => Matrix.of (conjM (aDil k r t) n) * Matrix.of h) t₀ := by
@@ -77,9 +77,9 @@ theorem curve_contDiffAt (n h : Mt k r) {t₀ : ℝ} (h0 : t₀ ≠ 0) :
     (ofReal_contDiffAt ((dgR_contDiffAt l (inv_ne_zero h0)).comp t₀ (contDiffAt_inv ℝ h0)))).mul contDiffAt_const
 
 /- English proof (translation)
-Use `set c : ℝ → Mat k r := fun t => Matrix.of (conjM (aDil k r t) n) * Matrix.of h with hc`. Establish `hmem : ∀ t : ℝ, t ≠ 0 → c t ∈ UH (Hpk k r)` using `fun t ht => WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (Formalism.FourierDecayAlt.P.dilation_mem_group k r t ht) hn) (WeylGroupFacts.uh_inv (Formalism.FourierDecayAlt.P.dilation_mem_group k r t ht))) hh`. Establish `hw' : PI.UpqRep.SmoothOnH (PI.UpqRep.Hpk k r) (fun g => σ g w)` using `hw`. Take `⟨U, F, hU, hcU, hF, hFeq⟩` from `hw' (c t₀) (hmem t₀ h0)`. Establish `hcd : ContDiffAt ℝ 2 c t₀` using `curve_contDiffAt n h h0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFc : ContDiffAt ℝ 2 (F ∘ c) t₀` using `((hF.contDiffAt (hU.mem_nhds hcU)).of_le two_le_smooth).comp t₀ hcd`. Use `hFc.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hcd.continuousAt.preimage_mem_nhds (hU.mem_nhds hcU), eventually_ne_nhds h0] with t htU ht`. Conclude with `hFeq (c t) htU (hmem t ht)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coef_contDiffAt {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat k r → (H →L[ℂ] H)) (w : H) (hw : w ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ) (n h : Mt k r)
@@ -101,14 +101,14 @@ theorem coef_contDiffAt {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ
 end curve
 
 /- English proof (translation)
-The claim follows from `ofReal_contDiffAt ((D.χ_smooth.contDiffAt.of_le two_le_smooth).mul ((contDiff_id.pow _).contDiffAt))`.
+A detailed English derivation is pending.
 -/
 theorem chi_factor_contDiffAt {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq) (t₀ : ℝ) :
     ContDiffAt ℝ 2 (fun t : ℝ => ((D.χ t * t ^ kap k r : ℝ) : ℂ)) t₀ := ofReal_contDiffAt ((D.χ_smooth.contDiffAt.of_le two_le_smooth).mul ((contDiff_id.pow _).contDiffAt))
 
 /- English proof (translation)
-Introduce `h` and use `by have := D.χ_supp ht rw [h] at this norm_num at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pos_of_mem_tsupport {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq) {t₀ : ℝ}
@@ -118,11 +118,9 @@ theorem pos_of_mem_tsupport {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [
   norm_num at this
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ hHC hDS v ξ hv x hx1 hx2`. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `t₀`. Distinguish the cases in `ht : t₀ ∈ tsupport D.χ`. Establish `hw` using `coef_contDiffAt σ v hv x.2 x.1 hx2.1 hx1.1 (pos_of_mem_tsupport D ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hin : ContDiffAt ℝ 2 (fun t : ℝ => ⟪σ (Matrix.of (conjM (aDil k r t) x.2) * Matrix.of x.1) v, v⟫_ℂ) t₀` using `hw.inner ℂ contDiffAt_const`. Use `show ContDiffAt ℝ 2 (fun t : ℝ => ((D.χ t * t ^ kap k r : ℝ) : ℂ) * (⟪ξ, D.π (Matrix.of x.1) ξ⟫_ℂ * ⟪σ (Matrix.of (conjM (aDil k r t) x.2) * Matrix.of x.1) v, v⟫_ℂ)) t₀`. Conclude with `(chi_factor_contDiffAt D t₀).mul (contDiffAt_const.mul hin)`. Establish `hz : D.χ =ᶠ[𝓝 t₀] 0` using `notMem_tsupport_iff_eventuallyEq.1 ht`. Use `(contDiffAt_const (c := (0 : ℂ))).congr_of_eventuallyEq ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hz] with t htz`. Simplify using `[H1, htz]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem left_profile_contDiff_two : LeftProfileContDiffTwo := by
   intro k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ hHC hDS v ξ hv x hx1 hx2
@@ -142,11 +140,9 @@ theorem left_profile_contDiff_two : LeftProfileContDiffTwo := by
     simp [H1, htz]
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ hHC hDS v' ξ' hv' x hx1 hx2`. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `t₀`. Distinguish the cases in `ht : t₀ ∈ tsupport D.χ`. Establish `hw` using `coef_contDiffAt σ v' hv' x.2 x.1 hx2.1 hx1.1 (pos_of_mem_tsupport D ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hin : ContDiffAt ℝ 2 (fun t : ℝ => ⟪v', σ (Matrix.of (conjM (aDil k r t) x.2) * Matrix.of x.1) v'⟫_ℂ) t₀` using `contDiffAt_const.inner ℂ hw`. Use `show ContDiffAt ℝ 2 (fun t : ℝ => ((D.χ t * t ^ kap k r : ℝ) : ℂ) * (⟪ξ', D.π' (Matrix.of x.1)⁻¹ ξ'⟫_ℂ * ⟪v', σ (Matrix.of (conjM (aDil k r t) x.2) * Matrix.of x.1) v'⟫_ℂ)) t₀`. Conclude with `(chi_factor_contDiffAt D t₀).mul (contDiffAt_const.mul hin)`. Establish `hz : D.χ =ᶠ[𝓝 t₀] 0` using `notMem_tsupport_iff_eventuallyEq.1 ht`. Use `(contDiffAt_const (c := (0 : ℂ))).congr_of_eventuallyEq ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hz] with t htz`. Simplify using `[H2, htz]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem right_profile_contDiff_two : RightProfileContDiffTwo := by
   intro k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ hHC hDS v' ξ' hv' x hx1 hx2

@@ -7,17 +7,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions GlobalTheory.AllWt Glob
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hdisc` using `natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow K (𝓞 K) E (𝓞 E)`. Establish `hN : Ideal.absNorm (differentIdeal (𝓞 K) (𝓞 E)) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `differentIdeal_ne_bot`. Establish `htow` using `Module.finrank_mul_finrank ℚ K E`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set k := Module.finrank ℚ K`. Use `set m := Module.finrank K E`. Establish `hk : 0 < k` using `Module.finrank_pos`. Establish `hm : 0 < m` using `Module.finrank_pos`. Establish `ha : 0 < (discr K).natAbs` using `Int.natAbs_pos.mpr (discr_ne_zero K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (discr K).natAbs ^ m ≤ (discr E).natAbs`. Rewrite using `[hdisc]`. Conclude with `Nat.le_mul_of_pos_left _ (Nat.pos_of_ne_zero hN)`. Establish `hleR : ((discr K).natAbs : ℝ) ^ m ≤ ((discr E).natAbs : ℝ)` using `by exact_mod_cast hle`. Rewrite using `[rootDiscr_def, rootDiscr_def, ← htow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (((|discr K| : ℤ)) : ℝ) = ((discr K).natAbs : ℝ)`. Rewrite using `[Nat.cast_natAbs]`. Establish `e2 : (((|discr E| : ℤ)) : ℝ) = ((discr E).natAbs : ℝ)`. Rewrite using `[Nat.cast_natAbs]`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Express the relevant statement in the definitionally equal form `_ ^ ((k : ℝ))⁻¹ ≤ _`. Establish `hkR : (0 : ℝ) < k` using `by exact_mod_cast hk`. Establish `hmR : (0 : ℝ) < m` using `by exact_mod_cast hm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by positivity)]`.
-
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ ((discr E).natAbs : ℝ) ^ (((k * m : ℕ) : ℝ))⁻¹ := Real.rpow_le_rpow (by positivity) hleR (by positivity)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem rootDiscr_le_of_intermediateField {E : Type} [Field E] [NumberField E]
     (K : IntermediateField ℚ E) : rootDiscr K ≤ rootDiscr E := by
@@ -58,7 +56,7 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `|GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects.lrd E - Real.log H.d| ≤ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects.lrd E := by intro E _ _ _ H have hK := (rootDiscr_and_different_quadField E H).1 have hle := rootDiscr_le_of_intermediateFi …`.
+A detailed English derivation is pending.
 -/
 theorem abs_lrd_sub_log_d_le_lrd :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E),

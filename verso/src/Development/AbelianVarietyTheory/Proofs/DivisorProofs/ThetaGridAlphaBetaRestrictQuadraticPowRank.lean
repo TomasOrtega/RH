@@ -20,7 +20,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.SquareResChars
 
 /- English proof (translation)
-Break down `Nat.mod_two_eq_zero_or_one n with e | e` into its components or cases. Rewrite using `[e, pow_zero, mul_one]`. Conclude with `resEta_parity hc (by omega)`. Rewrite using `[e, pow_one]`. Conclude with `resEta_parity (resEta_mul hc hη) (by omega)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resEta_mul_pow {D : D7} {c η : (AE D)ˣ →* Circle} (hc : ResEta D c 0) (hη : ResEta D η 1) {n k : ℕ}
     (h : n % 2 = k % 2) : ResEta D (c * η ^ (n % 2)) k := by
@@ -31,13 +31,13 @@ theorem resEta_mul_pow {D : D7} {c η : (AE D)ˣ →* Circle} (hc : ResEta D c 0
     exact resEta_parity (resEta_mul hc hη) (by omega)
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL t i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Establish `hη` using `GlobalTheory.HeckeCharacterRestriction.resEta_eta hL`. Establish `hμ` using `GlobalTheory.HeckeCharacterRestriction.resEta_mu hL t j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ : ResEta D (G.ch.chi (D.R.m - i)) 0` using `⟨hη.1, fun η _ a => by`. Rewrite using `[pow_zero]`. Conclude with `GlobalTheory.GridWeil.triv_base (G.ch.chi_eq _ (by omega) (by omega)) (G.ch.triv _ (by omega) (by omega)) a⟩`. Establish `r : ∀ a b, a ≤ D.R.m → b ≤ D.R.m → (G.V (.grid a b)).rank = rankV D a b` using `fun a b ha hb => (node_isV G hL (X := .grid a b) ⟨ha, hb⟩).rank`. Establish `hpar : (spW₁ G i j).rank % 2 = (spW G i j).rank % 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (spW G i j).rank = (spW₁ G i j).rank + D.R.t + sLen D` using `by show (G.V (.grid (i + 1) (j + 1))).rank = (G.V (.grid i j)).rank + _ + _`. Rewrite using `[r _ _ (by omega) (by omega), r _ _ (by omega) (by omega)]`. Simplify using `only [rankV]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨p, hp⟩` from `D.R.t_odd`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `odd_sLen D`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ResEta D (alpha G t i j) (spW₁ G i j).rank` using `resEta_mul_pow hμ hη rfl`. Establish `h2 : ResEta D (beta G i j) (spW G i j).rank` using `resEta_mul_pow hχ hη hpar`. Conclude with `⟨h1, h2⟩`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem resEta_alpha_beta : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m), GlobalTheory.LFun.ResEta D.host.F D.host.E (alpha G t i j) (spW₁ G i j).rank ∧

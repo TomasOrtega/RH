@@ -9,14 +9,14 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.KumZero
 
 /- English proof (translation)
-Simplify using `using h.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_top {A : Type} [CommRing A] {q : ℕ} (h : IsUnit (q : A)) :
     IsUnit (q : Γ(Spec (CommRingCat.of A), ⊤)) := by
   simpa using h.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom
 
 /- English proof (translation)
-Introduce and unpack `U ⟨x⟩`. Establish `x' : U ⟶ X` using `x`. Simplify using `using hX.map x'.appTop.hom`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_sch {q : ℕ} {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) : Inv q (sch.obj X) := by
   rintro U ⟨x⟩
@@ -24,7 +24,7 @@ theorem inv_sch {q : ℕ} {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) : Inv 
   simpa using hX.map x'.appTop.hom
 
 /- English proof (translation)
-Introduce `a b h`. Use `(GlobalTheory.EtC.GmSec.gm_sec_bijective X).1 h` as an intermediate fact. Simplify using `using congrArg (fun z => Additive.toMul z.down) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unitSec_injective {X : Scheme.{0}} : Function.Injective (unitSec (U := X)) := by
   intro a b h
@@ -32,14 +32,14 @@ theorem unitSec_injective {X : Scheme.{0}} : Function.Injective (unitSec (U := X
   simpa using congrArg (fun z => Additive.toMul z.down) this
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `(GlobalTheory.EtC.GmSec.gm_sec_bijective X).2 b`. Conclude with `⟨Additive.toMul w.down, hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unitSec_surjective {X : Scheme.{0}} (b : Sec Gm X) : ∃ v, unitSec v = b := by
   obtain ⟨w, hw⟩ := (GlobalTheory.EtC.GmSec.gm_sec_bijective X).2 b
   exact ⟨Additive.toMul w.down, hw⟩
 
 /- English proof (translation)
-Establish `h : (n • φ).hom = n • φ.hom` using `(sheafToPresheaf _ _).map_zsmul (X := F) (Y := G) (f := φ) (r := n)`. Unfold `Sec.map`. Rewrite using `[h, NatTrans.app_zsmul, ModuleCat.hom_zsmul, LinearMap.smul_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_map_zsmul {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) (n : ℤ) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map (n • φ) x = n • Sec.map φ x := by
@@ -48,7 +48,7 @@ theorem sec_map_zsmul {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) (n : 
   rw [h, NatTrans.app_zsmul, ModuleCat.hom_zsmul, LinearMap.smul_apply]
 
 /- English proof (translation)
-Unfold `unitSec ofRings.sec`. Use `(map_zsmul (ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op X))) (n : ℤ) (show (Scheme.Γ ⋙ unitsF).obj (op X) from ⟨Additive.ofMul v⟩)).symm.trans ?_` and prove the remaining obligations. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem smul_unitSec (n : ℕ) {X : Scheme.{0}} (v : (Γ(X, ⊤))ˣ) : (n : ℤ) • unitSec v = unitSec (v ^ n) := by
   unfold unitSec ofRings.sec
@@ -57,7 +57,7 @@ theorem smul_unitSec (n : ℕ) {X : Scheme.{0}} (v : (Γ(X, ⊤))ˣ) : (n : ℤ)
   congr 1
 
 /- English proof (translation)
-Rewrite using `[sec_map_zsmul, ← smul_unitSec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_q_unitSec (q : ℕ) {X : Scheme.{0}} (v : (Γ(X, ⊤))ˣ) :
     Sec.map ((q : ℤ) • 𝟙 Gm) (unitSec v) = unitSec (v ^ q) := by
@@ -65,11 +65,11 @@ theorem map_q_unitSec (q : ℕ) {X : Scheme.{0}} (v : (Γ(X, ⊤))ˣ) :
   rfl
 
 /- English proof (translation)
-Introduce `q _ A _ hq u hu`. Establish `hX` using `isUnit_top hq`. Take `⟨κ, -, bd, -, hex, ⟨s, hs⟩, -⟩` from `GlobalTheory.T.exists_kummer_boundary_etale_cohomology q`. Establish `h1 : bd (sch.obj (Spec (CommRingCat.of A))) 0 (secClass Gm (unitSec u)) = 0`. Rewrite using `[hs _ u hX, hu, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `((hex _ (inv_sch hX) 0).1 _).1 h1`. Establish `hsc` using `GlobalTheory.T.degreeZeroSectionClass_properties ℤ Gm (Spec (CommRingCat.of A))`. Take `⟨b, rfl⟩` from `hsc.2.1.2 y`. Rewrite `hy` using `[hsc.2.2.2.2]`. Establish `hb` using `hsc.2.1.1 hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨v, rfl⟩` from `unitSec_surjective b`. Rewrite `hb` using `[map_q_unitSec]`. Conclude with `⟨v, (unitSec_injective hb).symm⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.EtC.eq_pow_of_kum_eq_zero : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A], IsUnit (q : A) →
     ∀ u : (Γ(Spec (CommRingCat.of A), ⊤))ˣ, kum q u = 0 → ∃ v, u = v ^ q := by

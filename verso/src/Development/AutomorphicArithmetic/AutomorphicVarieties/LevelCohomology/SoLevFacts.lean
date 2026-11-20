@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.X
 
 /- English proof (translation)
-Establish `hfl` using `isFiniteLength_quotient_span_singleton O (mem_nonZeroDivisors_of_ne_zero hb)`. Use `haveI : IsArtinianRing (O ⧸ Ideal.span {b}) := isArtinian_of_tower O (isFiniteLength_iff_isNoetherian_isArtinian.mp hfl).2`. Conclude with `IsLocalRing.finite_quotient_iff.mpr (IsLocalRing.exists_maximalIdeal_pow_le_of_isArtinianRing_quotient _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem finite_quot {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (ResidueField O)] (b : O) (hb : b ≠ 0) : Finite (O ⧸ Ideal.span {b}) := by
@@ -16,25 +16,23 @@ private theorem finite_quot {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValu
     (IsLocalRing.exists_maximalIdeal_pow_le_of_isArtinianRing_quotient _)
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ a ha M _ _ hne`. Take `⟨e⟩` from `hne`. Use `haveI : CharZero O := charZero_of_injective_algebraMap (UpperTheory.V.Base.dvrFacts l O).1`. Take `⟨-, hfin, hlm, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l O`. Use `haveI := hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI hQa : Finite (O ⧸ Ideal.span {a}) := finite_quot a ha`. Use `haveI : Finite M := Finite.of_equiv _ e.symm.toEquiv`. Establish `hkill : ∀ c : O, c ∈ Ideal.span {a} → ∀ z : O ⧸ Ideal.span {a}, c • z = 0`. Introduce `c hc z`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective z`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right _ _ hc`. Establish `hgen : ∀ m : M, ∃ y : O, y • e.symm (Ideal.Quotient.mk _ 1) = m`. Introduce `m`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (e m)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply, ← hy, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, mul_one]`. Use `⟨inferInstance, ?_, ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `(IsLocalRing.finite_quotient_iff (R := O)).mp hQa`. Use `⟨n + 1, Nat.succ_pos n, fun m => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hmem : (l : O) ^ (n + 1) ∈ Ideal.span {a}` using `hn (Ideal.pow_le_pow_right (Nat.le_succ n) (Ideal.pow_mem_pow hlm (n + 1)))`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero, ← Nat.cast_smul_eq_nsmul O, Nat.cast_pow]`. Conclude with `hkill _ hmem _`. Introduce `d hd haveI : Finite (O ⧸ Ideal.span {d}) := finite_quot d hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Set `φ : M →ₗ[O] M` to `LinearMap.lsmul O M d`. Establish `hker : Nat.card {m : M // d • m = 0} = Nat.card (LinearMap.ker φ)` using `Nat.card_congr (Equiv.subtypeEquivRight (fun m => by simp [φ]))`. Establish `h1` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup (LinearMap.ker φ).toAddSubgroup`. Establish `h2` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup (LinearMap.range φ).toAddSubgroup`. Express the relevant statement in the definitionally equal form `Nat.card M = Nat.card (M ⧸ LinearMap.ker φ) * Nat.card (LinearMap.ker φ) at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Nat.card M = Nat.card (M ⧸ LinearMap.range φ) * Nat.card (LinearMap.range φ) at h2`. Rewrite `h1` using `[Nat.card_congr φ.quotKerEquivRange.toEquiv]`. Establish `hpos : 0 < Nat.card (LinearMap.range φ)` using `Nat.card_pos`. Establish `heq : Nat.card (LinearMap.ker φ) = Nat.card (M ⧸ LinearMap.range φ)`. Establish `h3` using `h1.symm.trans h2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Nat.eq_of_mul_eq_mul_left hpos (by rw [h3, mul_comm])`. Rewrite using `[hker, heq]`. Set `x0 : M` to `e.symm (Ideal.Quotient.mk _ 1)`. Set `f : O →ₗ[O] M ⧸ LinearMap.range φ` to `(LinearMap.range φ).mkQ ∘ₗ LinearMap.toSpanSingleton O M x0`. Establish `hle : Ideal.span {d} ≤ LinearMap.ker f`.
+Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, f, LinearMap.comp_apply, LinearMap.toSpanSingleton_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨x0, rfl⟩`. Apply `Nat.card_le_card_of_surjective ((Ideal.span {d}).liftQ f hle)` to reduce the goal to its premises. Introduce `z`.
-
-Take `⟨m, rfl⟩` from `Submodule.mkQ_surjective _ z`. Take `⟨y, rfl⟩` from `hgen m`. Conclude with `⟨Submodule.Quotient.mk y, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.So.levFacts :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (a : O), a ≠ 0 → ∀ (M : Type) [AddCommGroup M] [Module O M], Nonempty (M ≃ₗ[O] (O ⧸ Ideal.span {a})) → Finite M ∧ (∃ r : ℕ, 0 < r ∧ ∀ m : M, (l ^ r) • m = 0) ∧ ∀ d : O, d ≠ 0 → Nat.card {m : M // d • m = 0} ≤ Nat.card (O ⧸ Ideal.span {d}) := by

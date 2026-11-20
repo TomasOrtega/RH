@@ -15,9 +15,9 @@ section Scalar
 variable {K V W : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W] {σ : K →+* ℂ}
 
 /- English proof (translation)
-Break down `hs x y c h with rfl | ⟨a, ha⟩` into its components or cases. Conclude with `⟨0, hinj (by rw [h]; simp)⟩`. Take `⟨n, hn, e⟩` from `isOfFinOrder_iff_pow_eq_one.1 hc`. Establish `h1 : a ^ n = 1` using `σ.injective (by rw [map_pow, ha, ← Units.val_pow_eq_pow_val, e, Units.val_one, map_one])`. Use `⟨⟨a, IsIntegral.of_pow hn (by rw [h1]; exact isIntegral_one)⟩, hinj ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h, map_smulₛₗ, ← ha]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_int_smul (f : V →ₛₗ[σ] W) (hinj : Function.Injective f)
     (hs : ∀ x y (c : ℂ), f x = c • f y → y = 0 ∨ ∃ a, σ a = c) {x y : V} {c : ℂˣ} (hc : IsOfFinOrder c)
@@ -31,13 +31,13 @@ theorem exists_int_smul (f : V →ₛₗ[σ] W) (hinj : Function.Injective f)
     rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective f`. Use `(injective_iff_map_eq_zero f).2 fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Use `(hli 1 (fun _ => x) (linearIndependent_unique_iff.2 h0)).ne_zero 0` as an intermediate fact. Conclude with `this hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hinj, fun x y c h => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y = 0`. Conclude with `Or.inl hy`. Establish `hy' : f y ≠ 0` using `fun h0 => hy (hinj (by rw [h0, map_zero]))`. Distinguish the cases in `hl : LinearIndependent K ![y, x]`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2 : LinearIndependent ℂ ![f y, f x]`. Use `hli 2 _ hl using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> rfl`. Conclude with `absurd h.symm ((LinearIndependent.pair_iff' hy').1 h2 c)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hl` using `[LinearIndependent.pair_iff' hy] at hl push Not`. Take `⟨a, rfl⟩` from `hl`. Rewrite `h` using `[map_smulₛₗ]`. Conclude with `Or.inr ⟨a, smul_left_injective ℂ hy' h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem inj_and_rat_of_li (f : V →ₛₗ[σ] W)
     (hli : ∀ (n : ℕ) (b : Fin n → V), LinearIndependent K b → LinearIndependent ℂ fun k => f (b k)) :
@@ -70,9 +70,9 @@ variable {G Γ W K X : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerP
   {J : Subgroup G} {χ : J →* ℂˣ} (P : ClassPres ι S σ ρ J χ) (k : G → W →ₗ[ℂ] X)
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Conclude with `Or.inl hy`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, S.bV.repr y j ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hy (S.bV.repr.injective (by ext j; simp [hn j]))`. Establish `e` using `congrArg (fun w => (bW P).repr w j) h`. Simplify using `only [map_smul, Finsupp.smul_apply, repr_coef, smul_eq_mul] at e`. Use `Or.inr ⟨S.bV.repr x j / S.bV.repr y j, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, e, mul_div_cancel_right₀ _ ((map_ne_zero σ).2 hj)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_rat (x y : S.V) (c : ℂ) (h : P.coef x = c • P.coef y) : y = 0 ∨ ∃ a, σ a = c := by
   by_cases hy : y = 0
@@ -87,7 +87,7 @@ theorem coef_rat (x y : S.V) (c : ℂ) (h : P.coef x = c • P.coef y) : y = 0 �
   rw [map_div₀, e, mul_div_cancel_right₀ _ ((map_ne_zero σ).2 hj)]
 
 /- English proof (translation)
-Use `Nat.card_congr (Equiv.subtypeEquiv (MulAut.conj γ⁻¹).toEquiv fun δ => ?_)` and prove the remaining obligations. Rewrite using `[mem_stab, mem_stab]`. Establish `e : (ι γ * y * j)⁻¹ * ι δ * (ι γ * y * j) = (j : G)⁻¹ * (y⁻¹ * ι ((MulAut.conj γ⁻¹).toEquiv δ) * y) * j`. Simplify using `[mul_assoc]`. Rewrite using `[e, J.mul_mem_cancel_right j.2, J.mul_mem_cancel_left (J.inv_mem j.2)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_stab (γ : Γ) (y : G) (j : J) : Nat.card (stab ι J (ι γ * y * j)) = Nat.card (stab ι J y) := by
   refine Nat.card_congr (Equiv.subtypeEquiv (MulAut.conj γ⁻¹).toEquiv fun δ => ?_)
@@ -97,15 +97,15 @@ theorem card_stab (γ : Γ) (y : G) (j : J) : Nat.card (stab ι J (ι γ * y * j
   rw [e, J.mul_mem_cancel_right j.2, J.mul_mem_cancel_left (J.inv_mem j.2)]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective fun c => P.decC (P.y c * κ)`. Introduce `c c' e`. Establish `e1` using `P.dec_spec (P.y c * κ)`. Establish `e2` using `P.dec_spec (P.y c' * κ)`. Simplify using `only at e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e2` using `[← e]`. Generalize the expression as in `P.decC (P.y c * κ) = d at e1 e2`. Generalize the expression as in `P.decG (P.y c * κ) = γ at e1`. Generalize the expression as in `P.decK (P.y c * κ) = j at e1`. Generalize the expression as in `P.decG (P.y c' * κ) = γ' at e2`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `P.decK (P.y c' * κ) = j' at e2`. Use `(P.reps (P.y c')).unique ⟨γ' * γ⁻¹, ⟨_, h1 _ (j⁻¹ * j').2⟩, ?_⟩ ⟨1, 1, by simp⟩` and prove the remaining obligations. Rewrite using `[eq_mul_inv_of_mul_eq e1, eq_mul_inv_of_mul_eq e2]`. Simplify using `[mul_assoc]`. Use `Fintype.sum_bijective _ (Finite.injective_iff_bijective.1 hinj) _ _ fun c => ?_` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `P.dec_spec (P.y c * κ)`. Establish `e2 : stab ι J (P.y c * κ) = stab ι J (P.y c)`. Use extensionality with `δ`. Rewrite using `[mem_stab, mem_stab]`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1 _ h using 1 group` and compare the differences between its conclusion and the goal. Use `h2 _ h using 1 group` and compare the differences between its conclusion and the goal. Rewrite using `[← e2]`. Use `conv_lhs => rw [e1, card_stab, hΦ]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_translate (κ : G) (h1 : ∀ j ∈ J, κ * j * κ⁻¹ ∈ J) (h2 : ∀ j ∈ J, κ⁻¹ * j * κ ∈ J) (Φ : G → X)
     (hΦ : ∀ γ h (j : J), Φ (ι γ * h * j) = Φ h) :
@@ -145,7 +145,7 @@ def clSum : S.Forms →ₛₗ[σ] X where
     exact Finset.sum_congr rfl fun c _ => smul_comm _ _ _
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun c _ => by rw [ClassPres.extL_apply, ext_y]`.
+A detailed English derivation is pending.
 -/
 theorem clSum_apply (f : S.Forms) :
     clSum P k f = ∑ c, (Nat.card (stab ι J (P.y c)) : ℂ)⁻¹ • k (P.y c) (P.coef ((f : S.Cl → S.V) c)) :=
@@ -158,23 +158,23 @@ structure KernelLaws (ι : Γ →* G) (ρ : Γ →* Module.End ℂ W) {J : Subgr
 variable {k}
 
 /- English proof (translation)
-Rewrite using `[hk.typ, hk.aut, smul_smul, Units.mul_inv, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem KernelLaws.dec (hk : KernelLaws ι ρ χ k) (γ : Γ) (h : G) (j : J) (w : W) :
     (χ j : ℂ) • k (ι γ * h * j) (ρ γ w) = k h w := by
   rw [hk.typ, hk.aut, smul_smul, Units.mul_inv, one_smul]
 
 /- English proof (translation)
-Rewrite using `[hF γ h j, map_smul, hk.dec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem KernelLaws.form (hk : KernelLaws ι ρ χ k) {F : G → W} (hF : F ∈ AdForms ι ρ J χ) (γ : Γ) (h : G) (j : J) :
     k (ι γ * h * j) (F (ι γ * h * j)) = k h (F h) := by
   rw [hF γ h j, map_smul, hk.dec]
 
 /- English proof (translation)
-Rewrite using `[clSum_apply, Finset.sum_eq_single c]`. Establish `hg : ∀ g : S.Gam c, k (P.y c) (P.coef (S.ρ c g x)) = k (P.y c) (P.coef x)` using `fun g => by`. Use `hk.dec (P.stabI c g : Γ) (P.y c) (stabK ι (P.stabI c g)) (P.coef x)` as an intermediate fact. Rewrite `this` using `[stabK_spec, ← map_smul, ← P.coef_act]`. Then use the resulting hypothesis. Simplify using `only [avgForm, Pi.single_eq_same, map_sum, hg, Finset.sum_const, Finset.card_univ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Nat.card_congr (P.stabI c).toEquiv, Nat.card_eq_fintype_card, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast Fintype.card_ne_zero), one_smul]`. Introduce `c' _ hc`. Simplify using `[avgForm, Pi.single_eq_of_ne hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem clSum_avgForm (hk : KernelLaws ι ρ χ k) (c : S.Cl) (x : S.V) :
     clSum P k (avgForm S c x) = k (P.y c) (P.coef x) := by
@@ -191,9 +191,9 @@ theorem clSum_avgForm (hk : KernelLaws ι ρ χ k) (c : S.Cl) (x : S.V) :
   · simp
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `T.red_surj g`. Establish `hn : ∀ (q : Q), ∀ j ∈ J, (q : G) * j * (q : G)⁻¹ ∈ J` using `fun q j hj => (T.red_ker (q * ⟨j, hJ hj⟩ * q⁻¹)).1 (by`. Rewrite using `[map_mul, map_mul, (T.red_ker ⟨j, hJ hj⟩).2 hj, mul_one, ← map_mul, mul_inv_cancel, map_one])`. Establish `key` using `sum_translate P (q : G) (hn q) (fun j hj => by simpa using hn q⁻¹ j hj) (fun h => k h (P.ext f h)) (hk.form (extMem P f))`. Express the relevant statement in the definitionally equal form `∑ c, _ • k (P.y c) (P.ext _ (P.y c)) = a _ (∑ c, _ • k (P.y c) (P.ext _ (P.y c)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← key, map_sum, T.act_eq _ q rfl]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ha, g0Act, map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem clSum_act (hk : KernelLaws ι ρ χ k) {Q : Subgroup G} {ch : Q →* ℂˣ} {G0 : Type} [Group G0]
     {act : Representation K G0 S.Forms} (T : ActTie ι P Q ch act) (hJ : J ≤ Q) (a : G0 → X →ₗ[ℂ] X)
@@ -218,11 +218,11 @@ structure LatSys (r : Γ → S.V →ₗ[K] S.V) (L : G → Submodule (𝓞 K) S.
 variable {P} {r : Γ → S.V →ₗ[K] S.V} {L : G → Submodule (𝓞 K) S.V}
 
 /- English proof (translation)
-Distinguish the cases in `h : c' = c`. Substitute `h` using the available equality. Simplify using `only [avgForm, Pi.single_eq_same]`. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations. Establish `h1` using `hL.move (P.stabI c' g : Γ) (P.y c') (stabK ι (P.stabI c' g)) x (hL.nab c' ▸ hx)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[stabK_spec, hL.nab]`. Take `⟨a, ha⟩` from `exists_int_smul P.coef (coef_injective P) (coef_rat P) (hχ _) ((P.coef_act c' g x).trans (by rw [← hL.coef]))`. Rewrite using `[ha]`. Establish `h2` using `Submodule.smul_mem _ a h1`. Rewrite `h2` using `[← algebraMap_smul K a]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `[avgForm, Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem LatSys.avg_mem (hL : LatSys P r L) (hχ : ∀ j, IsOfFinOrder (χ j)) {c : S.Cl} {x : S.V} (hx : x ∈ S.Nab c) (c' : S.Cl) :
     (avgForm S c x : S.Cl → S.V) c' ∈ S.Nab c' := by
@@ -241,7 +241,7 @@ theorem LatSys.avg_mem (hL : LatSys P r L) (hχ : ∀ j, IsOfFinOrder (χ j)) {c
   · simp [avgForm, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Take `⟨c, ⟨γ, j, rfl⟩, -⟩` from `P.reps h`. Establish `h1` using `hL.move γ⁻¹ _ j⁻¹ x hx`. Rewrite `h1` using `[show ι γ⁻¹ * (ι γ * P.y c * j) * (j⁻¹ : J) = P.y c by simp [mul_assoc], hL.nab]`. Use `⟨avgForm S c (r γ⁻¹ x), hL.avg_mem hχ h1, j, ?_⟩` and prove the remaining obligations. Rewrite using `[clSum_avgForm P hk, ← hk.dec γ (P.y c) j, smul_smul, Units.inv_mul, one_smul, hL.coef, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem LatSys.exists_trace (hL : LatSys P r L) (hχ : ∀ j, IsOfFinOrder (χ j)) (hk : KernelLaws ι ρ χ k) {h : G} {x : S.V}
     (hx : x ∈ L h) : ∃ f : S.Forms, (∀ c, (f : S.Cl → S.V) c ∈ S.Nab c) ∧

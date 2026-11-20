@@ -10,9 +10,9 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Apply `LSeries.norm_term_le` to reduce the goal to its premises. Simplify using `only [Pi.mul_apply, Pi.one_apply, norm_one, norm_mul]`. Establish `h1` using `DirichletCharacter.norm_le_one χ (n : ZMod q)`. Establish `h2 : ‖((μ n : ℤ) : ℂ)‖ ≤ 1`. Rewrite using `[Complex.norm_intCast]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ArithmeticFunction.abs_moebius_le_one` after adjusting the coercions. Conclude with `mul_le_one₀ h1 (norm_nonneg _) h2`.
+A detailed English derivation is pending.
 -/
 lemma norm_term_twist_moebius_le {q : ℕ} (χ : DirichletCharacter ℂ q) (s : ℂ) (n : ℕ) :
     ‖term (↗χ * ↗μ) s n‖ ≤ ‖term (1 : ℕ → ℂ) s n‖ := by
@@ -26,27 +26,25 @@ lemma norm_term_twist_moebius_le {q : ℕ} (χ : DirichletCharacter ℂ q) (s : 
 
 open Formalism.ZF.MoebiusInverseZetaBounds in
 /- English proof (translation)
-Introduce `q _ χ s hs`. Establish `hσ1 : 0 < s.re - 1` using `by linarith`. Establish `hshift : ∑' n : ℕ, ((n : ℝ) + 1) ^ (-(s.re - 1) - 1) ≤ s.re / (s.re - 1)`. Apply `Real.tsum_le_of_sum_range_le` to reduce the goal to its premises. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Check the signs of the components of the expression. Introduce `m`. Break down `m with _ | k` into its components or cases. Simplify using `only [Finset.range_zero, Finset.sum_empty]`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Rewrite using `[Finset.sum_range_succ']`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hanti : AntitoneOn (fun x : ℝ => x ^ (-s.re)) (Set.Icc (1 : ℝ) (1 + k))`. Introduce `x hx y _ hxy`. Conclude with `Real.rpow_le_rpow_of_nonpos (by linarith [hx.1]) hxy (by linarith)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsum` using `hanti.sum_le_integral`. Establish `hint : ∫ x in (1 : ℝ)..(1 + k), x ^ (-s.re) = ((1 + k : ℝ) ^ (-s.re + 1) - 1 ^ (-s.re + 1)) / (-s.re + 1)`. Apply `integral_rpow` to reduce the goal to its premises. Use `Or.inr ⟨by linarith, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.uIcc_of_le (by linarith)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Combine the linear relations using `[h.1]`. Establish `hpos : 0 ≤ (1 + k : ℝ) ^ (-s.re + 1)` using `by positivity`. Establish `hb : ((1 + k : ℝ) ^ (-s.re + 1) - 1 ^ (-s.re + 1)) / (-s.re + 1) ≤ 1 / (s.re - 1)`. Rewrite using `[Real.one_rpow, show -s.re + 1 = -(s.re - 1) by ring, div_neg, ← neg_div]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos' : 0 ≤ (1 + k : ℝ) ^ (-(s.re - 1))` using `by positivity`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : ∑ i ∈ Finset.range k, (((i + 1 : ℕ) : ℝ) + 1) ^ (-(s.re - 1) - 1) = ∑ i ∈ Finset.range k, (fun x : ℝ => x ^ (-s.re)) (1 + ((i + 1 : ℕ) : ℝ))` using `Finset.sum_congr rfl fun i _ => by show (((i + 1 : ℕ) : ℝ) + 1) ^ (-(s.re - 1) - 1) = (1 + ((i + 1 : ℕ) : ℝ)) ^ (-s.re)`. Apply the tactic sequence `congr 1 <;> ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Establish `e2 : s.re / (s.re - 1) = 1 / (s.re - 1) + 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Nat.cast_zero, zero_add, Real.one_rpow]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hsum` using `[hint]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp : -(s.re - 1) - 1 < -1` using `by linarith`. Establish `hfun : (fun n : ℕ => ‖term (1 : ℕ → ℂ) s (n + 1)‖) = fun n : ℕ => ((n : ℝ) + 1) ^ (-(s.re - 1) - 1)`. Use function extensionality and compare the values at `(norm_term_one_succ s)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS1 : Summable fun n => ‖term (1 : ℕ → ℂ) s n‖`. Rewrite using `[← summable_nat_add_iff 1, hfun]`. Conclude with `summable_shift hp`. Establish `hT1 : ∑' n, ‖term (1 : ℕ → ℂ) s n‖ ≤ s.re / (s.re - 1)`. Rewrite using `[hS1.tsum_eq_zero_add, LSeries.term_zero, norm_zero, zero_add, hfun]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hshift`. Rewrite using `[DirichletCharacter.LFunction_eq_LSeries χ hs]`. Establish `hmul` using `DirichletCharacter.LSeries.mul_mu_eq_one χ hs`. Establish `hinv : ‖LSeries ↗χ s‖⁻¹ = ‖LSeries (↗χ * ↗μ) s‖`. Rewrite using `[← norm_inv, inv_eq_of_mul_eq_one_right hmul]`.
-
-Rewrite using `[hinv]`. Establish `hS2 : Summable fun n => ‖term (↗χ * ↗μ) s n‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun n => norm_term_twist_moebius_le χ s n) hS1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inverseBound : LInvBound := by
   intro q _ χ s hs
@@ -114,7 +112,7 @@ theorem inverseBound : LInvBound := by
     _ ≤ s.re / (s.re - 1) := hT1
 
 /- English proof (translation)
-Establish `hev : DirichletCharacter.LFunction χ =ᶠ[𝓝 s] LSeries ↗χ` using `by filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds hs] with z hz`. Conclude with `DirichletCharacter.LFunction_eq_LSeries χ hz`. Rewrite using `[negLD, hev.deriv_eq, DirichletCharacter.LFunction_eq_LSeries χ hs, DirichletCharacter.LSeries_twist_vonMangoldt_eq χ hs, neg_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma negLD_eq_LSeries_mul_vonMangoldt {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {s : ℂ} (hs : 1 < s.re) :
     negLD χ s = L (↗χ * ↗Λ) s := by
@@ -125,11 +123,11 @@ lemma negLD_eq_LSeries_mul_vonMangoldt {q : ℕ} [NeZero q] (χ : DirichletChara
     DirichletCharacter.LSeries_twist_vonMangoldt_eq χ hs, neg_div]
 
 /- English proof (translation)
-Establish `hre : 1 < (s.re : ℂ).re` using `by simpa using hs`. Establish `hSΛ : Summable fun n => ‖term ↗Λ (s.re : ℂ) n‖` using `summable_norm_iff.2 (ArithmeticFunction.LSeriesSummable_vonMangoldt hre)`. Establish `hle : ∀ n, ‖term (↗χ * ↗Λ) s n‖ ≤ ‖term ↗Λ (s.re : ℂ) n‖`. Introduce `n`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Apply `LSeries.norm_term_le` to reduce the goal to its premises. Simplify using `only [Pi.mul_apply, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (DirichletCharacter.norm_le_one χ _)`. Use `_ = ‖term ↗Λ (s.re : ℂ) n‖ := by`. Rewrite using `[LSeries.norm_term_eq, LSeries.norm_term_eq, Complex.ofReal_re]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hS2 : Summable fun n => ‖term (↗χ * ↗Λ) s n‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hle hSΛ`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma norm_LSeries_twist_vonMangoldt_le {q : ℕ} (χ : DirichletCharacter ℂ q) {s : ℂ} (hs : 1 < s.re) :
     ‖L (↗χ * ↗Λ) s‖ ≤ Formalism.ZF.lamF s.re := by
@@ -152,9 +150,9 @@ lemma norm_LSeries_twist_vonMangoldt_le {q : ℕ} (χ : DirichletCharacter ℂ q
     _ = Formalism.ZF.lamF s.re := rfl
 
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `Formalism.ZF.logDerivBoundRightHalfPlane`. Use `⟨C, hC0, ?_⟩` and prove the remaining obligations. Introduce `q _ χ s hs`. Rewrite using `[negLD_eq_LSeries_mul_vonMangoldt χ hs]`. Use `le_trans (norm_LSeries_twist_vonMangoldt_le χ hs) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hre : 1 < (s.re : ℂ).re` using `by simpa using hs`. Rewrite using `[Formalism.ZF.lamF_eq_norm hs, ArithmeticFunction.LSeries_vonMangoldt_eq_deriv_riemannZeta_div hre, neg_div, norm_neg]`. Establish `h` using `hC (s.re : ℂ) hre`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem l_log_deriv_right : LLogDerivRight := by
   obtain ⟨C, hC0, hC⟩ := Formalism.ZF.logDerivBoundRightHalfPlane

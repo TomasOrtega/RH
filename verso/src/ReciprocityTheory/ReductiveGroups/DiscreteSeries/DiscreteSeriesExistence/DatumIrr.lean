@@ -22,9 +22,9 @@ theorem jSm_coe (hP : IsPsiFor ε lam T Ψ) (v₀ v : T.V) :
     ((jSm hP v₀ v : smD ε (rreg ε)) : L2 ε) = uniformisationL2 ε Ψ v₀ v := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_datumV_iff hP v₀ x, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Conclude with `⟨v, Subtype.ext hv.symm⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨v, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem datumV_eq_range (hP : IsPsiFor ε lam T Ψ) (v₀ : T.V) :
     datumV ε Ψ v₀ = LinearMap.range (jSm hP v₀) := by
@@ -37,14 +37,14 @@ theorem datumV_eq_range (hP : IsPsiFor ε lam T Ψ) (v₀ : T.V) :
     exact ⟨v, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (rightDerivative_datum_embedding hP v₀ v hab)`.
+A detailed English derivation is pending.
 -/
 theorem smE_jSm (hP : IsPsiFor ε lam T Ψ) (v₀ v : T.V) {a b : Fin n} (hab : ε a = ε b) :
     smE ε (rreg ε) a b (jSm hP v₀ v) = jSm hP v₀ (T.dτ (Matrix.single a b 1) v) :=
   Subtype.ext (rightDerivative_datum_embedding hP v₀ v hab)
 
 /- English proof (translation)
-Introduce `v v' h`. Apply `uniformisationL2_injective hP hv₀` to reduce the goal to its premises. Use `congrArg (fun x : smD ε (rreg ε) => (x : L2 ε)) h` as an intermediate fact. Simplify `this` using `[jSm_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem jSm_injective (hP : IsPsiFor ε lam T Ψ) {v₀ : T.V} (hv₀ : v₀ ≠ 0) :
     Function.Injective (jSm hP v₀) := by
@@ -54,19 +54,17 @@ theorem jSm_injective (hP : IsPsiFor ε lam T Ψ) {v₀ : T.V} (hv₀ : v₀ ≠
   simpa [jSm_coe] using this
 
 /- English proof (translation)
-Rewrite using `[datumV_eq_range hP v₀]`. Use `⟨LinearMap.finiteDimensional_range _, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a b hab x ⟨v, rfl⟩`. Conclude with `⟨T.dτ (Matrix.single a b 1) v, (smE_jSm hP v₀ v hab).symm⟩`. Introduce `S' hS' hst`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW : ∀ a b, ε a = ε b → ∀ v ∈ S'.comap (jSm hP v₀), T.dτ (Matrix.single a b 1) v ∈ S'.comap (jSm hP v₀)`. Introduce `a b hab v hv`. Rewrite `hv`, the goal using `[Submodule.mem_comap]`. Rewrite using `[← smE_jSm hP v₀ v hab]`. Conclude with `hst a b hab _ hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `HW.KType.dτ_irred T _ hW with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨v, rfl⟩` from `hS' hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv : v ∈ S'.comap (jSm hP v₀)` using `hx`. Rewrite `hv` using `[h, Submodule.mem_bot]`. Rewrite using `[hv, map_zero]`. Conclude with `Submodule.zero_mem _`. Use `right`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm hS' ?_` and prove the remaining obligations. Introduce and unpack `x ⟨v, rfl⟩`. Establish `hv : v ∈ S'.comap (jSm hP v₀)` using `by rw [h]; trivial`. Conclude with `hv`. Use `⟨jSm hP v₀ T.w, ⟨T.w, rfl⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `HW.KType.w_ne_zero T` to reduce the goal to its premises. Apply `jSm_injective hP hv₀` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`. Introduce `a`.
-
-Rewrite using `[smE_jSm hP v₀ T.w rfl, T.w_wt a, map_smul]`. Introduce `a b _ hab`. Rewrite using `[smE_jSm hP v₀ T.w hab, T.w_hw a b ‹_› hab, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datumV_isKIrrHW (hP : IsPsiFor ε lam T Ψ) {v₀ : T.V} (hv₀ : v₀ ≠ 0) :
     IsKIrrHW ε (smE ε (rreg ε)) (lowK ε lam) (datumV ε Ψ v₀) := by

@@ -21,11 +21,11 @@ open UpperTheory.V.Z.Win UpperTheory.GalN.V
 open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 /- English proof (translation)
-Establish `h0 : (x ^ a) ^ b = (y ^ a * c ^ a) ^ b`. Rewrite using `[pow_right_comm, h, pow_right_comm, mul_pow y c a]`. Rewrite `h0` using `[hx, hy]`. Simplify using `only [← zpow_natCast, ← zpow_mul, ← zpow_add] at h0`. Establish `h1 : c ^ (p * a * b - (q * a + a) * b) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[zpow_sub, h0, mul_inv_cancel]`. Establish `hne : p * a * b - (q * a + a) * b ≠ 0`. Establish `e : p * a * b - (q * a + a) * b = (p - (q + 1)) * a * b` using `by ring`. Rewrite using `[e]`. Establish `h2 : p - (q + 1) ≠ 0` using `sub_ne_zero.2 hpq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (a : ℤ) ≠ 0` using `by exact_mod_cast ha.ne'`. Establish `h4 : (b : ℤ) ≠ 0` using `by exact_mod_cast hb.ne'`. Conclude with `mul_ne_zero (mul_ne_zero h2 h3) h4`. Conclude with `hinf _ (Int.natAbs_ne_zero.2 hne) (pow_natAbs_eq_one.2 h1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem flag_exp {U : Type} [CommGroup U] (x y c : U) (a b : ℕ) (p q : ℤ) (ha : 0 < a) (hb : 0 < b)
     (hpq : p ≠ q + 1) (hinf : ∀ k : ℕ, k ≠ 0 → c ^ k ≠ 1)
@@ -45,11 +45,11 @@ private theorem flag_exp {U : Type} [CommGroup U] (x y c : U) (a b : ℕ) (p q :
     exact mul_ne_zero (mul_ne_zero h2 h3) h4
   exact hinf _ (Int.natAbs_ne_zero.2 hne) (pow_natAbs_eq_one.2 h1)
 /- English proof (translation)
-Establish `key : ∀ i j : ℕ, i < j → (∀ x : F, (σ ^ i) (algebraMap F Ω x) = (σ ^ j) (algebraMap F Ω x)) → ∃ n : ℕ, 0 < n ∧ ∀ x : F, (σ ^ n) (algebraMap F Ω x) = algebraMap F Ω x`. Introduce `i j hij h`. Use `⟨j - i, by omega, fun x => (σ ^ i).injective ?_⟩` and prove the remaining obligations. Establish `e : σ ^ j = σ ^ i * σ ^ (j - i)` using `by rw [← pow_add]; congr 1; omega`. Rewrite using `[h x, e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `e : F →ₐ[ℚ] Ω` to `IsScalarTower.toAlgHom ℚ F Ω`. Set `f : ℕ → (F →ₐ[ℚ] Ω)` to `fun k => ((σ ^ k : G ℚ Ω) : Ω →ₐ[ℚ] Ω).comp e`. Take `⟨i, j, hij, hf⟩` from `Finite.exists_ne_map_eq_of_infinite f`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `key i j h fun x => DFunLike.congr_fun hf x`. Conclude with `key j i h fun x => (DFunLike.congr_fun hf x).symm`.
+A detailed English derivation is pending.
 -/
 private theorem pow_fix {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [Algebra ℚ Ω] [IsScalarTower ℚ F Ω]
     (σ : G ℚ Ω) : ∃ n : ℕ, 0 < n ∧ ∀ x : F, (σ ^ n) (algebraMap F Ω x) = algebraMap F Ω x := by
@@ -67,17 +67,15 @@ private theorem pow_fix {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alge
   · exact key i j h fun x => DFunLike.congr_fun hf x
   · exact key j i h fun x => (DFunLike.congr_fun hf x).symm
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : IsAlgClosure ℚ Ω := ⟨IsAlgClosure.isAlgClosed F, Algebra.IsAlgebraic.trans ℚ F Ω⟩`. Establish `hu : IsUnit ((l + 1 : ℕ) : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff]`. Conclude with `PadicInt.norm_natCast_eq_one_iff.2 (by simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨σ, hσ, he⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A hA hu.unit`. Take `⟨n, hn, hfix⟩` from `pow_fix (F := F) σ`. Set `τ : G F Ω` to `AlgEquiv.ofRingEquiv (f := (σ ^ n).toRingEquiv) hfix`. Establish `hτ : τ.restrictScalars ℚ = σ ^ n` using `by ext x; rfl`. Establish `hmem : τ ∈ Ine (F` using `F) A := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : τ.restrictScalars ℚ ∈ Ine (F` using `ℚ) A := by rw [hτ]; exact pow_mem hσ n`. Conclude with `h1`. Establish `hz : cycZ F Ω l τ = hu.unit ^ n`. Establish `h1 : cycZ ℚ Ω l (τ.restrictScalars ℚ) = cycZ F Ω l τ` using `rfl`. Rewrite using `[← h1, hτ, map_pow, he]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨τ, hmem, fun k hk h => ?_⟩` and prove the remaining obligations. Establish `h2 : ((cycBar F Ω l τ : (Qbar l)ˣ) : Qbar l) = ((l + 1 : ℕ) : Qbar l) ^ n`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (Qbar l) (PadicInt.Coe.ringHom ((cycZ F Ω l τ : ℤ_[l]ˣ) : ℤ_[l])) = _`. Rewrite using `[hz, Units.val_pow_eq_pow_val, hu.unit_spec, map_pow, map_pow, map_natCast, map_natCast]`. Establish `h3` using `congrArg Units.val h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Units.val_pow_eq_pow_val, h2, Units.val_one, ← Nat.cast_pow, ← Nat.cast_pow, Nat.cast_eq_one, Nat.pow_eq_one]`. Use `hl.out.pos` as an intermediate fact. Break down `h3 with h3 | h3` into its components or cases. Rewrite `h3` using `[Nat.pow_eq_one]`. Use linear arithmetic over natural numbers and integers.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem cyc_inf_over (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (l : ℕ) [hl : Fact l.Prime] (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) :
@@ -109,11 +107,11 @@ private theorem cyc_inf_over (F Ω : Type) [Field F] [NumberField F] [Field Ω] 
     omega
   · omega
 /- English proof (translation)
-Introduce `A hA`. Establish `hAl : A.valuation (l : Ω) < 1`. Establish `h1` using `(hA ((l : ℕ) : 𝓞 L)).2 hw`. Simplify using `using h1`. Take `⟨b, k, κ, hk, hflag, hκ⟩` from `H A hAl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨κ, hflag, fun i j c hc h => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hinf⟩` from `cyc_inf_over L Ω l A hAl`. Set `t : ↥(Dec (F` to `L) A) := ⟨s, Ine_le_Dec A hs⟩`. Establish `h1 : κ i t ^ c = (κ j t * cycBar L Ω l s) ^ c` using `DFunLike.congr_fun h t`. Take `⟨h2, h3⟩` from `hκ t hs`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `he : ∀ i : Fin 2, κ i t ^ k = (cycBar L Ω l s ^ (![b + m, b] i)) ^ k` using `fun i => by fin_cases i`. Conclude with `h2`. Conclude with `h3`. Apply the tactic sequence `have hne : ∀ i j : Fin 2, ![b + (m : ℤ), b] i ≠ ![b + (m : ℤ), b] j + 1 := fun i j => by fin_cases i <;> fin_cases j <;> simp <;> omega`. Conclude with `flag_exp (κ i t) (κ j t) (cycBar L Ω l s) k c _ _ hk hc (hne i j) hinf (he i) (he j) h1`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem pot_of_above {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime]
     {r : G L Ω →* GL (Fin 2) (Qbar l)} {m : ℕ} (hm : 2 ≤ m) {w : Plc L} (hw : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal)
@@ -139,13 +137,11 @@ private theorem pot_of_above {L Ω : Type} [Field L] [NumberField L] [Field Ω] 
     fin_cases i <;> fin_cases j <;> simp <;> omega
   exact flag_exp (κ i t) (κ j t) (cycBar L Ω l s) k c _ _ hk hc (hne i j) hinf (he i) (he j) h1
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL L n w hs`. Take `⟨hi, f, f0, fm, fe⟩` from `hτ`. Take `⟨z, hz, hfix⟩` from `hf`. Use `⟨f z, fm z, fun h0 => ?_, fun x hx hk => ?_⟩` and prove the remaining obligations. Set `K : Subrepresentation τ.ρ` to `⟨LinearMap.ker f, fun g v hv => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Take `⟨x, rfl⟩ : ∃ x : locU n w, cLoc w (x : UA L n) = g` from `⟨e.symm g, (he _).symm.trans (e.apply_symm_apply g)⟩`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Conclude with `(fe x v).trans (by rw [hv, map_zero])⟩`. Break down `hi.eq_bot_or_eq_top K with hK | hK` into its components or cases. Establish `h1 : z ∈ K.toSubmodule` using `h0`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hK]`. Conclude with `hz h1`. Use `f0 (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Establish `h1 : v ∈ K.toSubmodule` using `by rw [hK]; trivial`. Conclude with `h1`.
-
-Rewrite using `[← fe ⟨x, hx⟩ z]`. Conclude with `congrArg f (hfix _ hk)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unr_of_comp {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w : Plc L}
     {σ : Submodule ℂ (UA L n → ℂ)} {τ : SmIrr (GL (Fin n) (Kw w))} (hs : IsSplitAt w) (hτ : Comp σ w τ)
@@ -168,47 +164,43 @@ private theorem unr_of_comp {L : Type} [Field L] [NumberField L] [IsCMField L] {
   · rw [← fe ⟨x, hx⟩ z]
     exact congrArg f (hfix _ hk)
 /- English proof (translation)
-Introduce `P L Ω _ _ _ _ _ _ l _ ι hl M m hM hlM hU r hr`. Establish `PA` using `P.af`. Establish `hc` using `hr.cont`. Take `⟨π, hreg, hd, hatt⟩` from `hr.aut`. Establish `hpol : ∃ χ, GlobalTheory.ContraPair.PolarizedPair π χ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨quadChar L ^ 2, fun v => ?_, ?_⟩` and prove the remaining obligations. Establish `e : (quadChar L ^ 2).locInf v (-1) = (quadChar L).locInf v (-1) ^ 2` using `rfl`. Rewrite using `[e, quadChar_locInf]`. Rewrite using `[map_pow, compNorm_quadChar, one_pow]`. Conclude with `(GlobalTheory.ContraPair.dualIsConjBy_one π).2 hd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨HT, hwt, hLG⟩` from `P.compat L Ω l ι 2 one_le_two r π hc hreg hpol hatt`. Establish `hg : ∀ (w : Plc L) (A : ValuationSubring Ω) (hA : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion L) → WD hA), UpperTheory.Zero.LLC.IsRecT hA rc → ∀ τ, π.IsLocComp w τ → GlobalTheory.RoadU.PlainTor (IrrGL.of τ.ρ τ.smooth τ.irred) ∧ UpperTheory.GalStar.Tor (rc (algNorm τ)) ∧ (rc (a …` using `fun w A hA rc hrc τ hτ => guard_of P.plain hreg hatt hr.wit (by`. Distinguish the cases in `e : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal`. Conclude with `Or.inr (Or.inr (pot_of_above hr.gap e hr.above))`. Conclude with `Or.inl e) hrc hτ`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative. Establish an intermediate fact.
 
-Establish `hex : ∀ w : Plc L, ∃ τ, π.IsLocComp w τ` using `fun w => (_root_.UpperTheory.V.Af.local_comp_complex_of_printed_results PA L 2 π w).1`. Establish `hpt : ∀ (w : Plc L) τ, π.IsLocComp w τ → UpperTheory.V.Z.Sym.W.PT τ` using `fun w τ hτ => by`. Take `⟨A, hA⟩ : ∃ A : ValuationSubring Ω, IsPlaceOver A w` from `exists_isPlaceOver Ω w`. Take `⟨rc, hrc⟩` from `_root_.UpperTheory.V.Z.Win.exRec'_alt PA.litN hA`. Conclude with `(hg w A hA rc hrc τ hτ).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ φ : L →+* Qbar l, ∃ b : ℤ, HT φ = {b, b + m}` using `fun φ => by`. Establish `hw : ((l : ℕ) : 𝓞 L) ∈ (GlobalTheory.EvExtend.placeOf φ).asIdeal`. Rewrite using `[GlobalTheory.EvExtend.mem_placeOf]`. Simplify using `using GlobalTheory.EvExtend.norm_natCast_lt_one (l := l)`. Take `⟨A, hA⟩ : ∃ A : ValuationSubring Ω, IsPlaceOver A (GlobalTheory.EvExtend.placeOf φ)` from `exists_isPlaceOver Ω _`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hAl : A.valuation (l : Ω) < 1` using `by simpa using (hA _).2 hw`. Take `⟨τ, hτ⟩` from `hex (GlobalTheory.EvExtend.placeOf φ)`. Take `⟨-, b, hb⟩` from `_root_.UpperTheory.V.Z.Sym.W.above_w_statement PA L Ω l ι hl r hc m hr.gap _ hw HT ((hLG _ _ hτ).2 (hpt _ _ hτ)) A hA (hr.above A hAl) τ (hLG _ _ hτ).1 (hpt _ _ hτ)`. Take `⟨j, hj, hx, -⟩` from `GlobalTheory.EvExtend.exists_ext φ`. Use `⟨b, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hb ⟨j, hj⟩` as an intermediate fact. Rewrite `this` using `[show (j.comp (algebraMap L _)) = φ from RingHom.ext hx]`. Then use the resulting hypothesis. Establish `hrw : Z.Desc.RegWt π` using `fun u => by`. Take `⟨b, h2⟩` from `hb (ι.symm.toRingHom.comp u.embedding)`. Establish `h3` using `hwt (ι.symm.toRingHom.comp u.embedding)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ι.toRingHom.comp (ι.symm.toRingHom.comp u.embedding) = u.embedding` using `RingHom.ext fun x => by simp`. Rewrite `h3` using `[e, h2]`. Establish `hm : (2 : ℤ) ≤ m` using `by exact_mod_cast hr.gap`. Establish `hs : StrictAnti ![-b, 1 - b - m]`. Introduce `i j hij`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp at hij ⊢`. Use linear arithmetic over natural numbers and integers. Use `⟨u.embedding, ⟨![-b, 1 - b - m], hs.antitone⟩, u.mk_embedding, hs, ?_⟩` and prove the remaining obligations. Establish `h4` using `GlobalTheory.CuspRep.ParLaws.hasInfChar_infChar (CG.mk π) u.embedding`. Establish `h5 : (CG.mk π).infChar u.embedding = infOfWeight ⟨![-b, 1 - b - m], hs.antitone⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Multiset.map_injective (sub_right_injective (b := (((2 : ℕ) : ℂ) - 1) / 2)) (h3.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[infOfWeight, Multiset.map_map, show (Finset.univ : Finset (Fin 2)).val = {0, 1} from rfl]`. Simplify using `only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton, Function.comp_apply]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite `h4` using `[h5]`. Conclude with `h4`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hk : ∀ (k : ℕ) (w : Plc L), (k : 𝓞 L) ∈ w.asIdeal ↔ (k : 𝓞 (Lp L)) ∈ (w.under (𝓞 (Lp L))).asIdeal` using `fun k w => by`. Rewrite using `[← map_natCast (algebraMap (𝓞 (Lp L)) (𝓞 L))]`. Both sides reduce to the same expression. Establish `hlm : ∀ w : Plc L, ((l : ℕ) : 𝓞 L) ∈ w.asIdeal → (M : 𝓞 L) ∈ w.asIdeal` using `fun w hw => by`. Take `⟨c, rfl⟩` from `hlM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hw`. Establish `hfin : {v : HeightOneSpectrum (𝓞 (Lp L)) | (M : 𝓞 (Lp L)) ∈ v.asIdeal}.Finite`. Establish `h0 : Ideal.span {(M : 𝓞 (Lp L))} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hM` after adjusting the coercions. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr hv`. Establish `hfix : ∀ w : Plc L, (M : 𝓞 L) ∉ w.asIdeal → ∀ τ, π.IsLocComp w τ → Af.HasFixed τ.ρ (GlobalTheory.LFun.KGL w 2)` using `fun w hw τ hτ => by`. Take `⟨A, hA⟩ : ∃ A : ValuationSubring Ω, IsPlaceOver A w` from `exists_isPlaceOver Ω w`. Take `⟨rc, hrc⟩` from `_root_.UpperTheory.V.Z.Win.exRec'_alt PA.litN hA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hl'` using `mt (hlm w) hw`. Establish `hq` using `hg w A hA rc hrc τ hτ`. Conclude with `_root_.UpperTheory.V.Z.Desc.W.sphT_alt PA.litN L Ω l ι 2 r hc w hl' A hA (hr.unr A fun h => hw ((hA _).1 (by simpa using h))) rc hrc τ hq.1 ((((hLG w τ hτ).1 A hA rc hrc).1 hl').isWDOf hq.2)`. Take `⟨σ, hσ, hunr, hsat⟩` from `P.desc L hU.unr l Fact.out _ hfin (fun w hw => hU.split w ((hk M w).2 hw)) (fun w hw => (hk M w).1 (hlm w hw)) 2 le_rfl (by norm_num) π hreg hrw hd fun w hw => by`. Establish `hw' : (M : 𝓞 L) ∉ w.asIdeal` using `mt (hk M w).1 hw`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨⟨τ, hτ⟩, hi⟩` from `_root_.UpperTheory.V.Af.local_comp_complex_of_printed_results PA L 2 π w`. Take `⟨b, hb⟩` from `(_root_.UpperTheory.V.Af.satake_local_of_printed_results PA L 2 w τ).1 (hfix w hw' τ hτ)`. Conclude with `⟨b, ((_root_.UpperTheory.V.Af.satake_local_of_printed_results PA L 2 w τ).2 _ π.finPart (hi τ hτ) b).2 hb⟩`. Take `⟨hloc, hinf⟩` from `P.same L Ω hU.unr l ι 2 one_le_two π r hc hatt σ hσ hsat`. Use `choose τ₀ hτ₀ using hex`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hcl : ∀ w, IsSplitAt w → ∀ τ, Comp σ w τ → IrrGL.of τ.ρ τ.smooth τ.irred = IrrGL.of (τ₀ w).ρ (τ₀ w).smooth (τ₀ w).irred` using `fun w hw τ hτ => IrrGL.of_eq_of.2 (UpperTheory.building_component_uniqueness L 2 σ hσ w hw _ _ _ _ hτ (hloc w hw _ (hτ₀ w)))`. Use `⟨σ, HT, hσ, ⟨hc, fun w hs => ⟨τ₀ w, hloc w hs _ (hτ₀ w)⟩, fun w hs τ hτ A hA rc hrc => ?_, hr.pair⟩, fun w hs τ hτ => ⟨?_, (hLG w _ (hτ₀ w)).2 (hpt w _ (hτ₀ w))⟩, fun w hw => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `e : algNorm τ = algNorm (τ₀ w)`. Unfold `algNorm`. Rewrite using `[hcl w hs τ hτ]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `(hLG w _ (hτ₀ w)).1 A hA rc hrc`. Establish `h` using `hpt w _ (hτ₀ w)`. Unfold `UpperTheory.V.Z.Sym.W.PT at h ⊢`. Rewrite using `[hcl w hs τ hτ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `h`. Distinguish the cases in `hs : IsSplitAt w`. Conclude with `unr_of_comp hs (hloc w hs _ (hτ₀ w)) (hfix w hw _ (hτ₀ w))`. Conclude with `hunr w hs`. Take `⟨lam, h1, h2⟩` from `hinf v.embedding`.
-
-Establish `e : ι.toRingHom.comp (ι.symm.toRingHom.comp v.embedding) = v.embedding` using `RingHom.ext fun x => by simp`. Take `⟨b, h3⟩` from `hb (ι.symm.toRingHom.comp v.embedding)`. Establish `h4` using `hwt (ι.symm.toRingHom.comp v.embedding)`. Rewrite `h4` using `[e, h3, CG.HasInfChar.infChar_eq (π := CG.mk π) h2]`. Establish `h5` using `Ga.wtOf m b lam h4`.
-
-Use `hr.gap` as an intermediate fact. Conclude with `⟨lam, h1, by omega⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.W.aboveWeight : _root_.UpperTheory.V.Z.Sym.W.AboveWeightAlt := by
   intro P L Ω _ _ _ _ _ _ l _ ι hl M m hM hlM hU r hr

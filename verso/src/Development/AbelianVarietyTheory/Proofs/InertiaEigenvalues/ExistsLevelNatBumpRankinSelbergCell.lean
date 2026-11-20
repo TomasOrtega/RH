@@ -22,7 +22,7 @@ namespace GlobalTheory.RSParams
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h` using `v.valuedAdicCompletion_eq_valuation (K := E) (N : 𝓞 E)`. Rewrite `h` using `[v.valuation_of_algebraMap]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem valued_natCast (v : HeightOneSpectrum (𝓞 E)) (N : ℕ) :
     Valued.v (N : v.adicCompletion E) = v.intValuation (N : 𝓞 E) := by
@@ -31,21 +31,17 @@ theorem valued_natCast (v : HeightOneSpectrum (𝓞 E)) (N : ℕ) :
   simpa using h
 
 /- English proof (translation)
-Use `set q : HeightOneSpectrum (𝓞 E) → Ideal ℤ := fun w => Ideal.comap (algebraMap ℤ (𝓞 E)) w.asIdeal with hq`. Establish `hq0 : ∀ w, q w ≠ ⊥` using `fun w h => by`. Establish `hm : ((Ideal.absNorm w.asIdeal : ℕ) : ℤ) ∈ q w`. Rewrite using `[hq, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.absNorm_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[h, Ideal.mem_bot, Nat.cast_eq_zero, Ideal.absNorm_eq_zero_iff]`. Conclude with `w.ne_bot hm`. Use `set 𝔞 : Ideal ℤ := ∏ w ∈ S, q w with h𝔞`. Use `set n : ℤ := Submodule.IsPrincipal.generator 𝔞 with hn`. Establish `hspan : Ideal.span {n} = 𝔞` using `Ideal.span_singleton_generator 𝔞`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h𝔞0 : 𝔞 ≠ ⊥`. Rewrite using `[h𝔞, ← Ideal.zero_eq_bot, Finset.prod_ne_zero_iff]`. Conclude with `fun w _ => hq0 w`. Establish `hn0 : n ≠ 0` using `fun h => h𝔞0 (by rw [← hspan, h, Ideal.span_singleton_eq_bot])`. Use `set N₀ : ℕ := n.natAbs with hN₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN₀q : ∀ w ∈ S, (N₀ : ℤ) ∈ q w` using `fun w hw => by`. Establish `h1 : (N₀ : ℤ) ∈ 𝔞`. Rewrite using `[← hspan, Ideal.mem_span_singleton]`. Conclude with `Int.dvd_natAbs.2 dvd_rfl`. Conclude with `Ideal.prod_le_inf.trans (Finset.inf_le hw) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨N₀ ^ k, pow_pos (Int.natAbs_pos.2 hn0) k, fun v hv => ?_, fun v hv h => ?_⟩` and prove the remaining obligations. Establish `h1 : (N₀ : 𝓞 E) ∈ v.asIdeal`. Use `hN₀q v hv` as an intermediate fact. Rewrite `this` using `[hq, Ideal.mem_comap, map_natCast]`. Then use the resulting hypothesis. Rewrite using `[Nat.cast_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.pow_mem_pow h1 k`. Rewrite `h` using `[Nat.cast_pow]`. Establish `h1 : (N₀ : 𝓞 E) ∈ v.asIdeal` using `v.isPrime.mem_of_pow_mem k h`. Establish `h2 : (N₀ : ℤ) ∈ q v` using `by rwa [hq, Ideal.mem_comap, map_natCast]`. Establish `h3 : n ∈ q v`.
-
-Take `⟨c, hc⟩` from `(Int.natAbs_dvd.2 (dvd_refl n) : (N₀ : ℤ) ∣ n)`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ h2`. Use `haveI hp : (q v).IsPrime := Ideal.comap_isPrime _ _`. Establish `h4 : 𝔞 ≤ q v` using `by rw [← hspan, Ideal.span_singleton_le_iff_mem]; exact h3`.
-
-Take `⟨w, hw, hle⟩` from `(Ideal.IsPrime.prod_le hp).1 h4`. Establish `hmax : (q w).IsMaximal` using `(Ideal.comap_isPrime _ w.asIdeal).isMaximal (hq0 w)`. Establish `heq : q w = q v` using `hmax.eq_of_le hp.ne_top hle`. Conclude with `hv (hS w hw v heq.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_nat (S : Finset (HeightOneSpectrum (𝓞 E)))
     (hS : ∀ w ∈ S, ∀ w' : HeightOneSpectrum (𝓞 E), Ideal.comap (algebraMap ℤ (𝓞 E)) w'.asIdeal =
@@ -95,13 +91,11 @@ theorem exists_nat (S : Finset (HeightOneSpectrum (𝓞 E)))
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ v`. Express the relevant statement in the definitionally equal form `Valued.v ((N : v.adicCompletion E) * y v) ≤ _`. Rewrite using `[map_mul]`. Conclude with `mul_le_of_le_one_right' ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hy v))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h set c : Af E := algebraMap E (Af E) ((N : E)⁻¹) with hc`. Establish `hcN : c * (N : Af E) = 1`. Rewrite using `[hc, ← map_natCast (algebraMap E (Af E)), ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hN.ne'), map_one]`. Use `⟨z * c, fun v => ?_, ?_⟩` and prove the remaining obligations. Establish `e : c v * (N : v.adicCompletion E) = 1` using `congrArg (fun x : Af E => x v) hcN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : Valued.v (c v) * Valued.v (N : v.adicCompletion E) = 1` using `by rw [← map_mul, e, map_one]`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Express the relevant statement in the definitionally equal form `Valued.v (z v * c v) ≤ 1`. Rewrite using `[map_mul, ← e', mul_comm (Valued.v (c v))]`. Conclude with `mul_le_mul_of_nonneg_right (h v) zero_le'`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mem_natLat_iff {N : ℕ} (hN : 0 < N) (z : Af E) :
     z ∈ GlobalTheory.RSJ.natLat E N ↔ ∀ v : HeightOneSpectrum (𝓞 E), Valued.v (z v) ≤ Valued.v (N : v.adicCompletion E) := by
@@ -129,17 +123,17 @@ end GlobalTheory.RSParams
 open GlobalTheory.RSParams in
 
 /- English proof (translation)
-Introduce `E _ _ _ m S hS V hV hw`. Take `⟨J, hJS, -, hJV⟩` from `GlobalTheory.RSLocalPart.exists_levelAt_subset S V hV hw`. Use `set k : ℕ := ∑ v ∈ S, (FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E)).toNat with hk`. Take `⟨N, hN, hNS, hNc⟩` from `exists_nat S hS k`. Establish `hv1 : ∀ v : HeightOneSpectrum (𝓞 E), Valued.v (N : v.adicCompletion E) ≤ 1` using `fun v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[valued_natCast]`. Conclude with `v.intValuation_le_one _`. Establish `hvS : ∀ v ∈ S, Valued.v (N : v.adicCompletion E) ≤ WithZero.exp (-FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E))` using `fun v hv => by`. Rewrite using `[valued_natCast]`. Use `((v.intValuation_le_pow_iff_mem _ k).2 (hNS v hv)).trans (WithZero.exp_le_exp.2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E) ≤ ((FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E)).toNat : ℤ)` using `Int.self_le_toNat _`. Establish `h2 : (FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E)).toNat ≤ k` using `Finset.single_le_sum (f := fun v => (FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E)).toNat) (fun _ _ => Nat.zero_le _) hv`. Use linear arithmetic over natural numbers and integers. Establish `hvn : ∀ v ∉ S, Valued.v (N : v.adicCompletion E) = 1` using `fun v hv => by`. Rewrite using `[valued_natCast]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `le_antisymm (v.intValuation_le_one _) (not_lt.1 fun h => hNc v hv ((v.intValuation_lt_one_iff_mem _).1 h))`. Establish `he : (Pi.single (Fin.last m) 1 : Fin (m + 1) → Cinf E) ∈ GlobalTheory.RSTheta.rowSet E (Fin.last m)` using `fun w => by`. Simplify using the standard rewrite rules. Take `⟨ρ, hts, hcs, hcd, hr, h1⟩` from `exists_contDiff_tsupport_subset (n := ⊤) ((GlobalTheory.RSTheta.isOpen_rowSet (E := E) (Fin.last m)).mem_nhds he)`. Establish `hr' : ∀ u, ρ u ∈ Set.Icc (0 : ℝ) 1` using `fun u => hr ⟨u, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨N, J, fun u => (ρ u : ℂ), hN, Complex.ofRealCLM.contDiff.comp hcd, hcs.comp_left Complex.ofReal_zero, (tsupport_comp_subset Complex.ofReal_zero ρ).trans hts, fun u => ⟨by simpa using (hr' u).1, by simp⟩, by simp [h1], hJS, hJV, fun z hz v => ?_, fun z hz v hv => ?_, fun z z' hzz …` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `((mem_natLat_iff hN z).1 hz v).trans (hv1 v)`. Conclude with `((mem_natLat_iff hN z).1 hz v).trans (hvS v hv)`. Rewrite using `[mem_natLat_iff hN, mem_natLat_iff hN]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `forall_congr' fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hzz v hv]`. Rewrite using `[hvn v hv]`. Conclude with `⟨fun _ => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hz' v hv), fun _ => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hz v hv)⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RSParams.exists_level_nat_bump : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))),

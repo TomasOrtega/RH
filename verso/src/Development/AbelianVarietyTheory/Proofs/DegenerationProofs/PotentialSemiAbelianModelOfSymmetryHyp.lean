@@ -26,16 +26,16 @@ open GlobalTheory.SS
 namespace GlobalTheory.SymSemistable
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_spMap {R R₁ R₂ : Type} [CommRing R] [CommRing R₁] [CommRing R₂] (a : R →+* R₁) (b : R₁ →+* R₂) :
     spMap b ≫ spMap a = spMap (b.comp a) := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Establish `h : IsUnit (((3 : ℕ) : V) * 2 + ((5 : ℕ) : V) * (-1))`. Establish `: ((3 : ℕ) : V) * 2 + ((5 : ℕ) : V) * (-1) = 1` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `isUnit_one`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨3, by norm_num, by decide, isUnit_of_mul_isUnit_left h⟩`. Conclude with `⟨5, by norm_num, by decide, isUnit_of_mul_isUnit_left h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_odd_prime_isUnit (V : Type) [CommRing V] [IsLocalRing V] :
     ∃ n : ℕ, n.Prime ∧ Odd n ∧ IsUnit (n : V) := by
@@ -47,7 +47,7 @@ theorem exists_odd_prime_isUnit (V : Type) [CommRing V] [IsLocalRing V] :
   · exact ⟨5, by norm_num, by decide, isUnit_of_mul_isUnit_left h⟩
 
 /- English proof (translation)
-Take `⟨P', φ, hφ, hg, hm, t, ht⟩` from `GlobalTheory.abelianSchemeLaws_all.1.polBaseChange S S' f P`. Use `⟨P', φ, hg, ⟨hφ, fun T x y x₀ y₀ hx hy => ?_⟩, LBIso.symm ⟨t, ht⟩⟩` and prove the remaining obligations. Rewrite using `[(Over.OverMorphism.ext hx : x₀ = Out.toBase hφ.w x), (Over.OverMorphism.ext hy : y₀ = Out.toBase hφ.w y), ← hm]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_polarised_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (P : Out.PolAV S) :
     ∃ (P' : Out.PolAV S') (φ : P'.A.left ⟶ P.A.left),
@@ -58,13 +58,13 @@ theorem exists_polarised_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (P : Out.PolAV 
   rfl
 
 /- English proof (translation)
-Set `j₁ : Ω₀ →+* K₁` to `j.codRestrict K₁ hj`. Establish `pA` using `isGrpPullback_pullback A (spMap (algebraMap K K₁))`. Establish `pB` using `isGrpPullback_pullback B (spMap j₁)`. Establish `qA` using `((isGrpPullback_pullback _ (spMap (algebraMap K₁ Ω))).comp pA).congr (f' := spMap (algebraMap K Ω)) (by rw [spMap_spMap]; rfl) rfl`. Establish `qB` using `((isGrpPullback_pullback _ (spMap (algebraMap K₁ Ω))).comp pB).congr (f' := spMap j) (by rw [spMap_spMap]; rfl) rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e₁, m₁, -⟩` from `grpPullback_iso qA hα`. Take `⟨e₂, m₂, -⟩` from `grpPullback_iso hβ qB`. Establish `m : IsMonHom (e₁ ≪≫ e₂).hom` using `inferInstanceAs (IsMonHom (e₁.hom ≫ e₂.hom))`. Take `⟨L, hL, i, r, mi, -, h⟩` from `GlobalTheory.homPair_descends_to_finite K₁ Ω _ _ (PolPull.isAbelianScheme_of_isGrpPullback hA pA) (PolPull.isAbelianScheme_of_isGrpPullback hB pB) (e₁ ≪≫ e₂).hom (e₁ ≪≫ e₂).inv m inferInstance`. Take `⟨h₁, h₂⟩` from `h 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [pow_one] at h₁ h₂`. Set `e` to `Iso.mk i r (h₁ (Iso.hom_inv_id _)) (h₂ (Iso.inv_hom_id _))`. Establish `me : IsMonHom e.hom` using `mi`. Establish `rA` using `((isGrpPullback_pullback _ (spMap (algebraMap K₁ L))).comp pA).congr (f' := spMap (algebraMap K L)) (by rw [spMap_spMap]; rfl) rfl`. Take `⟨e₃, m₃, -⟩` from `grpPullback_iso (isGrpPullback_pullback A (spMap (algebraMap K L))) rA`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `m' : IsMonHom (e₃ ≪≫ e).hom` using `inferInstanceAs (IsMonHom (e₃.hom ≫ e.hom))`. Conclude with `⟨L, inferInstance, inferInstance, Module.Finite.trans K₁ L, (algebraMap K₁ L).comp j₁, _, ((isGrpPullback_of_iso (e₃ ≪≫ e)).comp ((isGrpPullback_pullback _ (spMap (algebraMap K₁ L))).comp pB)).congr (by rw [Category.id_comp, spMap_spMap]) rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_finite_common_pull {K Ω Ω₀ : Type} [Field K] [Field Ω] [Field Ω₀] [Algebra K Ω]
     [Algebra.IsAlgebraic K Ω] (K₁ : IntermediateField K Ω) [FiniteDimensional K K₁] (j : Ω₀ →+* Ω)
@@ -100,15 +100,13 @@ theorem exists_finite_common_pull {K Ω Ω₀ : Type} [Field K] [Field Ω] [Fiel
       (by rw [Category.id_comp, spMap_spMap]) rfl⟩
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `fg`. Set `t : Finset Ω` to `insert z (s.image j)`. Set `K₁` to `IntermediateField.adjoin K (t : Set Ω)`. Use `⟨K₁, IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x, fun x => ?_⟩` and prove the remaining obligations. Establish `hle : o ≤ K₁.toSubfield.toSubring`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ho, Subring.closure_le]`. Introduce and unpack `y (rfl | rfl)`. Conclude with `IntermediateField.subset_adjoin _ _ (Finset.mem_coe.2 (Finset.mem_insert_self _ _))`. Conclude with `K₁.inv_mem (natCast_mem K₁ n)`. Establish `hR : ∀ a ∈ Algebra.adjoin o (s : Set Ω₀), j a ∈ K₁` using `fun a ha => by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Conclude with `IntermediateField.subset_adjoin _ _ (Finset.mem_coe.2 (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ hx)))`. Consider the case `algebraMap c => rw [j.commutes]`. Conclude with `hle c.2`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `K₁.add_mem ha hb`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `K₁.mul_mem ha hb`. Take `⟨a, ha, b, hb, rfl⟩` from `fr x`.
-
-Rewrite using `[map_div₀]`. Conclude with `K₁.div_mem (hR a ha) (hR b hb)`.
+A detailed English derivation is pending.
 -/
 theorem exists_finite_range {K Ω Ω₀ : Type} [Field K] [Field Ω] [Field Ω₀] [Algebra K Ω] [Algebra.IsAlgebraic K Ω]
     (o : Subring Ω) (z : Ω) (n : ℕ) (ho : o = Subring.closure {z, (n : Ω)⁻¹}) [Algebra o Ω₀] (j : Ω₀ →ₐ[o] Ω)
@@ -137,13 +135,13 @@ theorem exists_finite_range {K Ω Ω₀ : Type} [Field K] [Field Ω] [Field Ω�
   exact K₁.div_mem (hR a ha) (hR b hb)
 
 /- English proof (translation)
-Establish `hle : o ≤ (c.range.comap d).map o.subtype`. Use `ho.le.trans (Subring.closure_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `y (rfl | rfl)`. Conclude with `⟨z, hz, rfl⟩`. Establish `hm : (n : Ω)⁻¹ ∈ o` using `ho.ge (Subring.subset_closure (Or.inr rfl))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hn.exists_left_inv`. Establish `e₁ : (⟨_, hm⟩ : o) * n = 1` using `Subtype.ext (by simp [hn₀])`. Establish `e₂ : d ⟨_, hm⟩ * n = 1` using `by simpa using congrArg d e₁`. Establish `e₃ : c u * n = 1` using `by simpa using congrArg c hu`. Use `⟨⟨_, hm⟩, ⟨u, ?_⟩, rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_inv_of_mul_eq_one_left e₂, eq_inv_of_mul_eq_one_left e₃]`. Establish `hr : ∀ x, d x ∈ c.range` using `fun x => by`. Take `⟨y, hy, e⟩` from `hle x.2`. Conclude with `(Subtype.ext e : y = x) ▸ hy`. Set `E : W ≃+* c.range` to `RingEquiv.ofBijective c.rangeRestrict ⟨fun a b h => hc (congrArg Subtype.val h), c.rangeRestrict_surjective⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨E.symm.toRingHom.comp (d.codRestrict c.range hr), RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (E.apply_symm_apply (d.codRestrict c.range hr x))`.
+A detailed English derivation is pending.
 -/
 theorem exists_factor {Ω W L : Type} [Field Ω] [CharZero Ω] [CommRing W] [Field L] (c : W →+* L) (hc : Function.Injective c)
     (o : Subring Ω) (z : o) (n : ℕ) (hn₀ : n ≠ 0) (ho : o = Subring.closure {(z : Ω), (n : Ω)⁻¹}) (d : o →+* L)
@@ -168,15 +166,15 @@ theorem exists_factor {Ω W L : Type} [Field Ω] [CharZero Ω] [CommRing W] [Fie
   exact congrArg Subtype.val (E.apply_symm_apply (d.codRestrict c.range hr x))
 
 /- English proof (translation)
-Introduce `V K _ _ _ _ _ _ _ _ Q hS`. Take `⟨n, np, nodd, nu⟩` from `exists_odd_prime_isUnit V`. Take `⟨a, fam⟩` from `GlobalTheory.T.exists_proper_semiAbelian_family' Q.g n np nodd`. Set `Ω` to `AlgebraicClosure K`. Take `⟨o, ze, ded, ft, no, prim, ho⟩` from `GlobalTheory.CycAway.exists_base Ω n a np`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨P, α, hg, hα, hL⟩` from `exists_polarised_pull (spMap (algebraMap K Ω)) Q`. Establish `hSP : letI` using `P.isAb.comm; GlobalTheory.ZH.HypS P.A P.L := by`. Use `letI := Q.isAb.comm`. Use `letI := P.isAb.comm`. Conclude with `GlobalTheory.SymBaseChange.hypS_baseChange _ _ Q.A P.A _ α Q.L P.L Q.isLB P.isLB hα hL hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `lev` using `GlobalTheory.nonempty_level_of_isAlgClosed Ω P (n ^ a) _ (by exact_mod_cast pow_ne_zero a np.ne_zero) prim`. Take `⟨Ω₀, _, _, j, R₀, Q₀, φ, fg, fr, hg₀, hφ, hS₀, lev₀⟩` from `GlobalTheory.SymLevelDescent.descends_to_fg_field o Ω P (n ^ a) ze hSP lev`. Use `haveI : GlobalTheory.ZH.ArithBase o Ω₀ := ⟨ded, ft, RingHom.charZero j.toRingHom, fun x y h => Subtype.ext (by`. Use `congrArg j h` as an intermediate fact. Rewrite using `[j.commutes, j.commutes] at this)⟩` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, s, x, G, _, χ, hs, hx, hG, hχ⟩` from `fam o Ω₀ R₀ fg fr Q₀ ze (hg₀.trans hg) no hS₀ lev₀`. Take `⟨K₁, hK₁, hj⟩` from `exists_finite_range (K := K) o _ n ho j R₀ fg fr`. Take `⟨L, _, _, _, j', ψ, hψ⟩` from `exists_finite_common_pull K₁ j.toRingHom hj Q.A Q₀.A P.A Q.isAb Q₀.isAb hα hφ`. Take `⟨W, _, _, _, cW, _, _, _, sq, fin, -, loc, int, -⟩` from `GlobalTheory.SS.exists_complete_dvr_finite_extension V K L`. Establish `hz : (ze : o) ^ (n ^ a) = 1` using `Subtype.ext (by simpa using congrArg Units.val prim.pow_eq_one)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨β, hβ⟩` from `exists_factor (algebraMap W L) (IsFractionRing.injective W L) o ze n np.ne_zero ho (j'.comp (algebraMap o Ω₀)) (int _ ⟨Polynomial.X ^ (n ^ a) - Polynomial.C 1, Polynomial.monic_X_pow_sub_C _ (pow_ne_zero a np.ne_zero), by`. Rewrite using `[Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_C, ← map_pow, hz, map_one, map_one, sub_self]⟩)`. Use the proof step `(by simpa using nu.map (algebraMap V W))`. Take `⟨G', _, e, hG', he⟩` from `GlobalTheory.SS.exists_semiAbelian_model_of_proper_base o W L β Z s (spMap j' ≫ x) G _ _ hs (by rw [Category.assoc, hx, spMap_spMap, hβ]) hG (hψ.comp hχ)`. Conclude with `⟨W, L, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, sq, fin, loc, cW, G', inferInstance, ⟨e, he⟩, hG'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem potModel_semiAbelian_of_hypS : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (Q : Out.PolAV (Sp K)), (letI := Q.isAb.comm; GlobalTheory.ZH.HypS Q.A Q.L) → PotModel V K Q.A (fun _ _ _ G _ => IsSemiAbelian G) := by
   intro V K _ _ _ _ _ _ _ _ Q hS

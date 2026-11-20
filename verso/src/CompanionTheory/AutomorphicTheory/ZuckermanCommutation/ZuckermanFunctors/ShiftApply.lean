@@ -54,11 +54,11 @@ variable {O : Type 1} {N : O → Type} [∀ o, AddCommGroup (N o)] [∀ o, Modul
   {Hom : ∀ a b, (N a →ₗ[ℂ] N b) → Prop}
 
 /- English proof (translation)
-Take `⟨io, pr, h⟩` from `h`. Use `choose f g hf hg hgf hfg using e`. Establish `a1 : ∀ s y, g s (f s y) = y` using `fun s y => LinearMap.congr_fun (hgf s) y`. Establish `a2 : ∀ s y, f s (g s y) = y` using `fun s y => LinearMap.congr_fun (hfg s) y`. Use `⟨fun s => io s ∘ₗ g s, fun s => f s ∘ₗ pr s, fun s => C.comp _ _ _ _ _ (hg s) (h.io_hom s), fun s => C.comp _ _ _ _ _ (h.pr_hom s) (hf s), ?_, fun s => ?_, fun s s' hs => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h.sum]`. Conclude with `Finset.sum_congr rfl fun s _ => LinearMap.ext fun x => by simp [a1]`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun (h.pr_io s) (g s y)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this ⊢`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, a2]`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun (h.pr_io_ne s s' hs) (g s' y)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply] at this ⊢`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dec_iso (C : IsLinCat N Hom) {κ : Type} [Fintype κ] {X : O} {T T' : κ → O}
     (h : ∃ io pr, IsDec Hom X T io pr) (e : ∀ s, IsIso Hom (T s) (T' s)) : ∃ io pr, IsDec Hom X T' io pr := by
@@ -86,22 +86,22 @@ section num
 variable {n : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [shift]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shift_shift (b : Bool) (μ : Fin n → ℝ) (s : Fin n) : shift (!b) (shift b μ s) s = μ := by
   cases b <;> simp [shift]
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> by_cases h : a = s <;> simp [shift, h, Pi.single_apply, sub_eq_add_neg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shift_apply (b : Bool) (μ : Fin n → ℝ) (s a : Fin n) :
     shift b μ s a = μ a + if a = s then (if b then -1 else 1) else 0 := by
   cases b <;> by_cases h : a = s <;> simp [shift, h, Pi.single_apply, sub_eq_add_neg]
 
 /- English proof (translation)
-Introduce `a c hac`. Establish `h1` using `hg a c hac`. Establish `hne : a ≠ c` using `fun e => hac (by rw [e])`. Rewrite using `[shift_apply, shift_apply]`. Rewrite `h1`, the goal using `[le_abs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases e1 : a = s <;> by_cases e2 : c = s`. Conclude with `absurd (e1.trans e2.symm) hne`. Apply the tactic sequence `all_goals cases b <;> simp only [e1, e2, if_true, if_false, Bool.false_eq_true] at h1 ⊢ <;>`. Apply the tactic sequence `rcases h1 with h1 | h1 <;> first | (left; linarith) | (right; linarith)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem gap_shift {ε : Fin n → Bool} {μ : Fin n → ℝ} {h : ℝ} (hg : GapAtLeast ε μ h) (b : Bool) (s : Fin n) :
     GapAtLeast ε (shift b μ s) (h - 1) := by
@@ -116,9 +116,9 @@ theorem gap_shift {ε : Fin n → Bool} {μ : Fin n → ℝ} {h : ℝ} (hg : Gap
     rcases h1 with h1 | h1 <;> first | (left; linarith) | (right; linarith)
 
 /- English proof (translation)
-Establish `: ∑ a, shift b μ s a ^ 2 = ∑ a, (μ a ^ 2 + if a = s then 2 * (if b then -1 else 1) * μ s + 1 else 0)`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[shift_apply]`. Distinguish the cases in `h : a = s`. Apply the tactic sequence `subst h; cases b <;> simp <;> ring`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[h]`. Unfold `casG`. Rewrite using `[this, Finset.sum_add_distrib]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem casG_shift (b : Bool) (μ : Fin n → ℝ) (s : Fin n) :
     casG (shift b μ s) = casG μ + 2 * (if b then -1 else 1) * μ s + 1 := by
@@ -134,9 +134,9 @@ theorem casG_shift (b : Bool) (μ : Fin n → ℝ) (s : Fin n) :
   ring
 
 /- English proof (translation)
-Introduce `h`. Establish `h' : casG (shift b (shift b μ s) t) = 2 * casG (shift b μ s) - casG μ` using `by exact_mod_cast h`. Rewrite `h'` using `[casG_shift b (shift b μ s) t, casG_shift b μ s, shift_apply]`. Distinguish the cases in `e : t = s`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Apply the tactic sequence `cases b <;> simp at h' <;> linarith`. Apply `e` to reduce the goal to its premises. Apply `hμ.injective` to reduce the goal to its premises. Apply the tactic sequence `cases b <;> simp [e] at h' <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cas_ne {μ : Fin n → ℝ} (hμ : StrictAnti μ) (b : Bool) (s t : Fin n) :
     (casG (shift b (shift b μ s) t) : ℂ) ≠ 2 * (casG (shift b μ s) : ℂ) - (casG μ : ℂ) := by
@@ -151,7 +151,7 @@ theorem cas_ne {μ : Fin n → ℝ} (hμ : StrictAnti μ) (b : Bool) (s t : Fin 
     cases b <;> simp [e] at h' <;> linarith
 
 /- English proof (translation)
-Introduce `s t h`. Use `congrFun h s` as an intermediate fact. Rewrite `this` using `[shift_apply, shift_apply]`. Assume the negation of the conclusion as `e`. Apply the tactic sequence `cases b <;> simp [e] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shift_inj (b : Bool) (μ : Fin n → ℝ) : Function.Injective (shift b μ) := by
   intro s t h
@@ -161,13 +161,13 @@ theorem shift_inj (b : Bool) (μ : Fin n → ℝ) : Function.Injective (shift b 
   cases b <;> simp [e] at this
 
 /- English proof (translation)
-Use `choose x hxj hx using hx`. Establish `hx0 : ∀ a, (0 : ℝ) ≤ x a` using `fun a => Nat.cast_nonneg _`. Establish `hx1 : ∀ a, (x a : ℝ) ≤ j` using `fun a => by exact_mod_cast hxj a`. Establish `h3 : ∀ a c, a < c → D - j ≤ ν a - ν c` using `fun a c hac => by`. Use `hD a c hac` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, hx]`. Combine the linear relations using `[hx0 a, hx1 c]`. Use `⟨⟨fun a c hac => by linarith [h3 a c hac], fun a => ?_⟩, fun a c hac => ?_, h3⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hμ.2 a`. Conclude with `⟨m + x a, by rw [hx]; push_cast; linarith⟩`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1` using `hg a c hac`. Rewrite `h1`, the goal using `[le_abs]`. Rewrite using `[hx, hx]`. Break down `h1 with h1 | h1` into its components or cases. Use `left`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[hx0 a, hx1 c]`. Use `right`. Combine the linear relations using `[hx0 c, hx1 a]`.
+A detailed English derivation is pending.
 -/
 theorem near {ε : Fin n → Bool} {μ : Fin n → ℝ} {h D : ℝ} (hμ : IsHCParam μ) (hg : GapAtLeast ε μ h)
     (hD : ∀ a c, a < c → D ≤ μ a - μ c) {ν : Fin n → ℝ} (j : ℕ) (hj : (j : ℝ) < D)
@@ -190,7 +190,7 @@ theorem near {ε : Fin n → Bool} {μ : Fin n → ℝ} {h D : ℝ} (hμ : IsHCP
     · right; linarith [hx0 c, hx1 a]
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[← J.2]`. Conclude with `Finset.card_pos.2 ⟨a, h⟩`. Conclude with `Nat.zero_le _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_le {m : ℕ} (J : Sub n m) (a : Fin n) : (if a ∈ J.1 then 1 else 0 : ℕ) ≤ m := by
   split_ifs with h
@@ -198,7 +198,7 @@ theorem ind_le {m : ℕ} (J : Sub n m) (a : Fin n) : (if a ∈ J.1 then 1 else 0
   · exact Nat.zero_le _
 
 /- English proof (translation)
-Introduce `I J h`. Use `Subtype.ext (Finset.ext fun a => ?_)` and prove the remaining obligations. Use `congrFun h a` as an intermediate fact. Simplify using `only [addSet, add_right_inj] at this`. Apply the tactic sequence `by_cases h1 : a ∈ I.1 <;> by_cases h2 : a ∈ J.1 <;> simp_all`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem addSet_inj {l : ℕ} (μ : Fin n → ℝ) : Function.Injective fun I : Sub n l => addSet μ I.1 := by
   intro I J h
@@ -215,7 +215,7 @@ def mkU {μ : Fin (2 * r + k + 1) → ℝ} (R : Rep k r) (h : R.IsDS ε μ) : UR
   ⟨R, CompanionTheory.LimBd.SchurHpk.isURepOn_of_ds h.2⟩
 
 /- English proof (translation)
-The claim follows from `S.uIso k r _ U U' (Lb.uniq k r ε μ U.R U'.R h hU hU' hg ht)`.
+A detailed English derivation is pending.
 -/
 theorem iso_of (S : Steps) (Lb : Lib t) {μ : Fin (2 * r + k + 1) → ℝ} {U U' : URep k r} {h : ℝ}
     (hU : U.R.IsDS ε μ) (hU' : U'.R.IsDS ε μ) (hg : GapAtLeast ε μ h) (ht : t _ ε < h) :
@@ -223,7 +223,7 @@ theorem iso_of (S : Steps) (Lb : Lib t) {μ : Fin (2 * r + k + 1) → ℝ} {U U'
   S.uIso k r _ U U' (Lb.uniq k r ε μ U.R U'.R h hU hU' hg ht)
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) ≤ (((2 * r + k + 1) ^ 2 + 2 : ℕ) : ℝ)` using `by exact_mod_cast (by omega)`. Take `⟨T, hT, hin, hof⟩` from `S.zuckH t Lb.zg k r ε μ U b h hU hg (by linarith)`. Establish `hd` using `Lb.dec k r ε μ U h _ hU hg ht`. Conclude with `⟨T, hT, S.inj k r _ _ T _ (S.okVr k r b) ⟨_, _, hU⟩ (fun s => ⟨_, _, hT s⟩) hd (by show 1 + _ + 1 ≤ _; omega) hin, fun s => S.occ k r _ _ _ (S.okVr k r b) ⟨_, _, hU⟩ ⟨_, _, hT s⟩ hd (by show 1 + _ + 1 ≤ _; omega) (hof s)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem injV (S : Steps) (Lb : Lib t) (b : Bool) {μ : Fin (2 * r + k + 1) → ℝ} {U : URep k r} {h : ℝ}
     (hU : U.R.IsDS ε μ) (hg : GapAtLeast ε μ h) (ht : t _ ε + (((2 * r + k + 1) ^ 2 + 2 : ℕ) : ℝ) < h) :
@@ -237,21 +237,21 @@ theorem injV (S : Steps) (Lb : Lib t) (b : Bool) {μ : Fin (2 * r + k + 1) → �
     fun s => S.occ k r _ _ _ (S.okVr k r b) ⟨_, _, hU⟩ ⟨_, _, hT s⟩ hd (by show 1 + _ + 1 ≤ _; omega) (hof s)⟩
 
 /- English proof (translation)
-Establish `C` using `S.homCat k r`. Establish `h1 : (1 : ℝ) ≤ (((2 * r + k + 1) ^ 2 + 2 : ℕ) : ℝ)` using `by exact_mod_cast (by omega)`. Establish `hsimp` using `S.schur S.infChar k r ε _ _ T (shift_inj b μ) hT`. Establish `adj' : ∀ U U' : URep k r, ∃ e : (M (vr k r (!b), U) →ₗ[ℂ] M (one U')) ≃ₗ[ℂ] (M (one U) →ₗ[ℂ] M (vr k r b, U')), ∀ p, IsHom (vr k r (!b), U) (one U') p ↔ IsHom (one U) (vr k r b, U') (e p)`. Consider the cases of `b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Conclude with `S.adj k r true`. Conclude with `S.adj k r false`. Establish `occ : ∀ s, ∃ i, IsHom (one (T s)) (vr k r b, U) i ∧ i ≠ 0`. Introduce `s`. Take `⟨T', hT', -, hp⟩` from `injV S Lb (!b) (hT s) (gap_shift hg b s) (by linarith)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : IsHCParam (shift (!b) (shift b μ s) s)` using `by rw [shift_shift]; exact hU.1`. Take `⟨p, hp, hp0⟩` from `hp ⟨s, hs⟩`. Establish `hd : (T' ⟨s, hs⟩).R.IsDS ε μ` using `by simpa only [shift_shift] using hT' ⟨s, hs⟩`. Take `⟨f, g, hf, -, hgf, -⟩` from `iso_of S Lb hd hU hg (by linarith)`. Take `⟨e, he⟩` from `adj' (T s) U`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨e (f ∘ₗ p), (he _).1 (C.comp _ _ _ _ _ hp hf), fun h0 => hp0 ?_⟩` and prove the remaining obligations. Establish `h2 : f ∘ₗ p = 0` using `e.map_eq_zero_iff.1 h0`. Combine the equalities or inequalities in the displayed calculation. Use `S.decOfInj _ _ _ C _ _ _ hsimp ?_ (fun s => ?_) occ` and prove the remaining obligations. Take `⟨T', hT', hi, -⟩` from `injV S Lb b hU hg (by linarith)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Use `hi x fun s p hp => ?_` and prove the remaining obligations. Take `⟨f, g, hf, -, hgf, -⟩` from `iso_of S Lb (hT' s) (hT s.1) (gap_shift hg b s.1) (by linarith)`. Establish `h2` using `hx s.1 _ (C.comp _ _ _ _ _ hp hf)`. Establish `h3` using `LinearMap.congr_fun hgf (p x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h2 h3`. Rewrite using `[← h3, h2, map_zero]`. Take `⟨T', hT', hi, -⟩` from `injV S Lb b (hT s) (gap_shift hg b s) (by linarith)`. Establish `cB` using `S.casDS S.infChar k r ε _ (T s) hk (hT s)`. Establish `m1 : AtMostOne (N` using `M) IsHom (one U) (vr k r (!b), T s) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Use `fun hi' ho' => S.multOne k r (!b) (T s) U _ T' _ _ _ (fun F => (cB F).1) (cB (triv k r)).2 (S.casDS S.infChar k r ε _ U hk hU (triv k r)).2 (fun u => (S.casDS S.infChar k r ε _ (T' u) hk (hT' u) (triv k r)).2) (fun u => cas_ne hU.1.1 b s u.1) hi' (hsimp.2.1 s) ⟨_, _, hU⟩ ho'` as an intermediate fact. Consider the cases of `b`. Conclude with `this hi (occ s)`. Conclude with `this hi (occ s)`. Take `⟨e, he⟩` from `S.adj k r b U (T s)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `f g hf hg'`. Take `⟨α, β, hab, h0⟩` from `m1 _ _ ((he f).1 hf) ((he g).1 hg')`. Use `⟨α, β, hab, e.map_eq_zero_iff.1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, h0]`.
+A detailed English derivation is pending.
 -/
 theorem decV (S : Steps) (Lb : Lib t) (hk : 1 ≤ k) (b : Bool) {μ : Fin (2 * r + k + 1) → ℝ} {U : URep k r} {h : ℝ}
     (hU : U.R.IsDS ε μ) (hg : GapAtLeast ε μ h) (ht : t _ ε + (((2 * r + k + 1) ^ 2 + 2 : ℕ) : ℝ) + 1 < h)
@@ -303,7 +303,7 @@ theorem decV (S : Steps) (Lb : Lib t) (hk : 1 ≤ k) (b : Bool) {μ : Fin (2 * r
     rw [map_add, map_smul, map_smul, h0]
 
 /- English proof (translation)
-The claim follows from `| 0, μ, U, h, hU, hg, ht, _, T, hT => by have C := S.homCat k r have h1 : (1 : ℝ) ≤ (((2 * r + k + 1) ^ 2 + 2 : ℕ) : ℝ) := by exact_mod_cast (by omega) have hI : ∀ I : Sub (2 * r + k + 1) 0, I = ⟨∅, rfl⟩ := fun I => Subtype.ext (Finset.card_eq_zero.1 I.2) have : Unique (Sub (2 * …`.
+A detailed English derivation is pending.
 -/
 theorem decW (S : Steps) (Lb : Lib t) (hk : 1 ≤ k) : ∀ (l : ℕ) {μ : Fin (2 * r + k + 1) → ℝ} {U : URep k r} {h : ℝ},
     U.R.IsDS ε μ → GapAtLeast ε μ h → t _ ε + (((2 * r + k + 1) ^ 2 + 2 : ℕ) : ℝ) + 1 + l < h →
@@ -415,7 +415,7 @@ def ZuckSm (t : ∀ n : ℕ, (Fin n → Bool) → ℝ) : Prop :=
       (∀ s, (RI s).IsDS ε (mu - Pi.single s 1)) → ∃ io pr, TensRaw dualM R RI io pr
 
 /- English proof (translation)
-Introduce `k r ε mu R h hk hR hg`. Use `⟨fun l RI ht hD hI => ?_, fun RI ht hI => ?_⟩` and prove the remaining obligations. Conclude with `S.toRaw k r (wedge k r l) (mkU R hR) _ (fun I => mkU (RI I) (hI I)) (decW S Lb hk l (U := mkU R hR) hR hg (by push_cast at ht ⊢; linarith) hD _ hI)`. Conclude with `S.toRaw k r (vr k r true) (mkU R hR) _ (fun s => mkU (RI s) (hI s)) (decV S Lb hk true (U := mkU R hR) hR hg (by push_cast at ht ⊢; linarith) _ hI)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem zuckSm_of (S : Steps) (Lb : Lib t) : ZuckSm t := by
   intro k r ε mu R h hk hR hg

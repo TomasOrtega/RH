@@ -22,7 +22,7 @@ def UnrOff (c : (AE D)ˣ →* Circle) (P : Finset (Pl D.host.E)) : Prop :=
     (∀ PP ∈ P, PP.under (𝓞 D.host.F) ≠ v) → UnramAt ε c
 
 /- English proof (translation)
-Introduce `e he x hex hx u hu`. Establish `k` using `h e he x hex hx u hu`. Establish `k'` using `h' e he x hex hx u hu`. Simplify using `only [MonoidHom.mul_apply, Circle.coe_mul, Units.val_mul, k, k']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ResAt.mul {c c' : (AE D)ˣ →* Circle} {PP : Pl D.host.E} {a a' : (kP PP)ˣ →* ℂˣ} (h : ResAt c PP a)
     (h' : ResAt c' PP a') : ResAt (c * c') PP (a * a') := by
@@ -32,7 +32,7 @@ theorem ResAt.mul {c c' : (AE D)ˣ →* Circle} {PP : Pl D.host.E} {a a' : (kP P
   simp only [MonoidHom.mul_apply, Circle.coe_mul, Units.val_mul, k, k']
 
 /- English proof (translation)
-Introduce `e he x hex hx u hu`. Establish `k` using `h e he x hex hx u hu`. Simplify using `only [MonoidHom.inv_apply, Circle.coe_inv, Units.val_inv_eq_inv_val, k]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ResAt.inv {c : (AE D)ˣ →* Circle} {PP : Pl D.host.E} {a : (kP PP)ˣ →* ℂˣ} (h : ResAt c PP a) :
     ResAt c⁻¹ PP a⁻¹ := by
@@ -41,7 +41,7 @@ theorem ResAt.inv {c : (AE D)ˣ →* Circle} {PP : Pl D.host.E} {a : (kP PP)ˣ �
   simp only [MonoidHom.inv_apply, Circle.coe_inv, Units.val_inv_eq_inv_val, k]
 
 /- English proof (translation)
-Introduce `v ε hε hv x h₁ h₂ h₃`. Rewrite using `[MonoidHom.mul_apply, h v ε hε hv x h₁ h₂ h₃, h' v ε hε hv x h₁ h₂ h₃, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UnrOff.mul {c c' : (AE D)ˣ →* Circle} {P : Finset (Pl D.host.E)} (h : UnrOff c P) (h' : UnrOff c' P) :
     UnrOff (c * c') P := by
@@ -49,7 +49,7 @@ theorem UnrOff.mul {c c' : (AE D)ˣ →* Circle} {P : Finset (Pl D.host.E)} (h :
   rw [MonoidHom.mul_apply, h v ε hε hv x h₁ h₂ h₃, h' v ε hε hv x h₁ h₂ h₃, one_mul]
 
 /- English proof (translation)
-Introduce `v ε hε hv x h₁ h₂ h₃`. Rewrite using `[MonoidHom.inv_apply, h v ε hε hv x h₁ h₂ h₃, inv_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UnrOff.inv {c : (AE D)ˣ →* Circle} {P : Finset (Pl D.host.E)} (h : UnrOff c P) :
     UnrOff c⁻¹ P := by

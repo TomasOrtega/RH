@@ -11,17 +11,17 @@ noncomputable abbrev genMat {R ι : Type} [CommRing R] [Fintype ι] {n : ℕ}
   ∑ i, (X i : MvPolynomial ι R) • (M i).map (C : R →+* MvPolynomial ι R)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `hinj : Function.Injective (Algebra.TensorProduct.includeRight : B →ₐ[K] E ⊗[K] B)` using `Algebra.TensorProduct.includeRight_injective (algebraMap K E).injective`. Establish `hL : Function.Injective (LinearMap.mulLeft K x)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Establish `h0 : ((1 : E) ⊗ₜ[K] x) * (1 ⊗ₜ z) = 0`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Simplify using `only [LinearMap.mulLeft_apply] at hz`. Rewrite using `[hz, TensorProduct.tmul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : E) ⊗ₜ[K] z = 0` using `hu.mul_right_eq_zero.mp h0`. Conclude with `hinj (by simpa using h1)`. Establish `hR : Function.Injective (LinearMap.mulRight K x)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : ((1 : E) ⊗ₜ[K] z) * (1 ⊗ₜ x) = 0`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Simplify using `only [LinearMap.mulRight_apply] at hz`. Rewrite using `[hz, TensorProduct.tmul_zero]`. Establish `h1 : (1 : E) ⊗ₜ[K] z = 0` using `hu.mul_left_eq_zero.mp h0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hinj (by simpa using h1)`. Take `⟨z, hz⟩` from `LinearMap.injective_iff_surjective.mp hL 1`. Take `⟨w, hw⟩` from `LinearMap.injective_iff_surjective.mp hR 1`. Simplify using `only [LinearMap.mulLeft_apply] at hz`. Simplify using `only [LinearMap.mulRight_apply] at hw`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hwz : w = z`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨⟨x, z, hz, hwz ▸ hw⟩, rfl⟩`. Introduce `hx`. Conclude with `hx.map (Algebra.TensorProduct.includeRight : B →ₐ[K] E ⊗[K] B)`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnit_one_tmul_iff {K E B : Type} [Field K] [Field E] [Algebra K E] [Ring B]
     [Algebra K B] [FiniteDimensional K B] (x : B) :

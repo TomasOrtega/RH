@@ -15,11 +15,11 @@ variable {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {ι : Type} {m : ι
   {O : X.X.Opens} {H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ}
 
 /- English proof (translation)
-Introduce `a b`. Establish `hy'' : c.e.symm (c.e y) = y` using `c.e.left_inv hc`. Establish `hsm` using `hM.smooth y hy A hA`. Establish `hre` using `GlobalTheory.ChernWeilLine.cInfAt_eventually (hsm τ a b).1`. Establish `him` using `GlobalTheory.ChernWeilLine.cInfAt_eventually (hsm τ a b).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ {f : CxPts X.str σ → ℝ}, (∀ᶠ z in 𝓝 y, CInfAt f z) → ContDiffAt ℝ 2 (f ∘ c.e.symm) (c.e y)`. Introduce `f hf`. Establish `hs : c.e.target ∩ c.e.symm ⁻¹' {z | CInfAt f z} ∈ 𝓝 (c.e y)`. Use `Filter.inter_mem (c.e.open_target.mem_nhds (c.e.map_source hc)) ?_` and prove the remaining obligations. Conclude with `(c.e.continuousAt_symm (c.e.map_source hc)).preimage_mem_nhds (hy''.symm ▸ hf)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `((contDiffOn_chart (fun z hz => hz) c).contDiffAt hs).of_le (by norm_cast)`. Establish `h1` using `(Complex.ofRealCLM.contDiff.contDiffAt.comp _ (hn hre)).add ((Complex.ofRealCLM.contDiff.contDiffAt.comp _ (hn him)).mul (contDiffAt_const (c := Complex.I)))`. Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Complex.ofRealCLM_apply]`. Conclude with `(Complex.re_add_im _).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsMetricOn.mContDiffAt_chart (hM : IsMetricOn E O H) {y : CxPts X.str σ} (hy : y ∈ ptsIn X.str σ O)
     (c : AlgChart X.str σ X.dim) (hc : y ∈ c.e.source) {A : Mat m X.Fn} (hA : A ∈ E.S (under y)) (τ : ι) :
@@ -42,7 +42,7 @@ theorem IsMetricOn.mContDiffAt_chart (hM : IsMetricOn E O H) {y : CxPts X.str σ
   exact (Complex.re_add_im _).symm
 
 /- English proof (translation)
-Rewrite using `[c.e.left_inv hc]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (hM.posDef y hy A hA τ).isUnit`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsMetricOn.isUnit_det_chart (hM : IsMetricOn E O H) {y : CxPts X.str σ} (hy : y ∈ ptsIn X.str σ O)
     (c : AlgChart X.str σ X.dim) (hc : y ∈ c.e.source) {A : Mat m X.Fn} (hA : A ∈ E.S (under y)) (τ : ι) :
@@ -51,9 +51,9 @@ theorem IsMetricOn.isUnit_det_chart (hM : IsMetricOn E O H) {y : CxPts X.str σ}
   exact (Matrix.isUnit_iff_isUnit_det _).1 (hM.posDef y hy A hA τ).isUnit
 
 /- English proof (translation)
-Establish `hP : Par 0 ((ratOf X).O (under y)).toSubring (A * A'⁻¹)` using `(Fr.mem_iff hA').1 hA`. Use `GlobalTheory.PointChern.chernTop_changeFrame R _ _ (fun w => (A * A'⁻¹).map (ratVal · (c.e.symm w))) (fun _ => 1) _ (fun _ => one_pos) (fun τ i j => GlobalTheory.FrameLift.analyticAt_ratVal c hc (mem_O_ratOf.1 ((hP τ).1 i j))) (fun τ => ?_) (hM.mContDiffAt_chart hy c hc hA') (hM. …` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `exists_ratVal_hom y`. Simplify using `only [c.e.left_inv hc]`. Conclude with `((hP.map_of (ratVal · y) ψ hψ).det_ne τ).isUnit`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hO : ∀ᶠ z in 𝓝 y, z ∈ ptsIn X.str σ O` using `(isOpen_ptsIn O).mem_nhds hy filter_upwards [(c.e.tendsto_symm hc).eventually (hO.and ((GlobalTheory.FrameLift.eventually_mem hA).and (GlobalTheory.FrameLift.eventually_mem hA')))] with w hw τ`. Rewrite using `[Complex.ofReal_one, one_smul]`. Conclude with `hM.trans _ hw.1 A' hw.2.2 A hw.2.1 τ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsMetricOn.chernTop_frame [Finite ι] (hM : IsMetricOn E O H) (R : MvPolynomial (ι × ℕ) ℝ) {y : CxPts X.str σ}
     (hy : y ∈ ptsIn X.str σ O) (c : AlgChart X.str σ X.dim) (hc : y ∈ c.e.source) {A A' : Mat m X.Fn}
@@ -73,11 +73,11 @@ theorem IsMetricOn.chernTop_frame [Finite ι] (hM : IsMetricOn E O H) (R : MvPol
     exact hM.trans _ hw.1 A' hw.2.2 A hw.2.1 τ
 
 /- English proof (translation)
-Set `K : V X.dim → Mat m ℂ` to `fun v => H A (c'.e.symm v)`. Establish `ho` using `isOpen_over c.e c'.e.open_source`. Establish `hm` using `mem_over c.e hc hc'`. Establish `hφ : AnalyticAt ℂ (c'.e ∘ c.e.symm) (c.e y)` using `GlobalTheory.SCV.analyticAt_of_differentiableOn (c.holo_trans c') (ho.mem_nhds hm)`. Establish `e₂ : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hc)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK2 : ∀ τ, MContDiffAt 2 (fun u => K u τ) (c'.e y)` using `hM.mContDiffAt_chart hy c' hc' hA`. Establish `hKu : ∀ τ, IsUnit (K (c'.e y) τ).det` using `hM.isUnit_det_chart hy c' hc' hA`. Establish `key` using `GlobalTheory.ChernPull.chernTop_comp R K (c'.e ∘ c.e.symm) (c.e y) hφ (e₂ ▸ hK2) (e₂ ▸ hKu)`. Establish `hg : (fun v => H A (c.e.symm v)) =ᶠ[𝓝 (c.e y)] fun w => K ((c'.e ∘ c.e.symm) w)` using `by filter_upwards [ho.mem_nhds hm] with w hw`. Simplify using `only [K, Function.comp_apply, c'.e.left_inv hw.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.ChernWeilLine.chernTop_congr R hg, key, e₂, transDet, Complex.sq_norm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsMetricOn.chernTop_chart (hM : IsMetricOn E O H) (R : MvPolynomial (ι × ℕ) ℝ) {y : CxPts X.str σ}
     (hy : y ∈ ptsIn X.str σ O) (c c' : AlgChart X.str σ X.dim) (hc : y ∈ c.e.source) (hc' : y ∈ c'.e.source)
@@ -101,7 +101,7 @@ theorem IsMetricOn.chernTop_chart (hM : IsMetricOn E O H) (R : MvPolynomial (ι 
 end GlobalTheory.GoodMetric
 
 /- English proof (translation)
-Introduce `F _ σ X ι _ m E O H hM R y hy c c' hc hc' A A' hA hA'`. Rewrite using `[hM.chernTop_frame R hy c hc hA hA', hM.chernTop_chart R hy c c' hc hc' hA']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.GoodMetric.chernTop_frame_chart_trans : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {ι : Type} [Finite ι] {m : ι → ℕ} (E : Fr (ratOf X) m 0) (O : X.X.Opens) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ), IsMetricOn E O H → ∀ (R : MvPolynomial (ι × ℕ) ℝ) {y : CxPts X.str σ}, y ∈ ptsIn X.str σ O → ∀ (c c' : AlgChart X.str σ X.dim), y ∈ c.e.source → y ∈ c'.e.source → ∀ {A A' : Mat m X.Fn}, A ∈ E.S (under y) → A' ∈ E.S (under y) → chernTop R (fun v => H A (c.e.symm v)) (c.e y) = ‖transDet c.e c'.e y‖ ^ 2 * chernTop R (fun v => H A' (c'.e.symm v)) (c'.e y) := by
   intro F _ σ X ι _ m E O H hM R y hy c c' hc hc' A A' hA hA'

@@ -3,13 +3,13 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.Qk43
 
 /- English proof (translation)
-Simplify using `[Multiset.esymm]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma esymm_zero_deg (s : Multiset ℂ) : s.esymm 0 = 1 := by
   simp [Multiset.esymm]
 
 /- English proof (translation)
-Simplify using `[Multiset.esymm, Multiset.powersetCard_cons, Multiset.sum_map_mul_left]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma esymm_cons_succ (a : ℂ) (s : Multiset ℂ) (k : ℕ) :
     (a ::ₘ s).esymm (k + 1) = s.esymm (k + 1) + a * s.esymm k := by
@@ -17,9 +17,9 @@ private lemma esymm_cons_succ (a : ℂ) (s : Multiset ℂ) (k : ℕ) :
 
 open Polynomial in
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on generalizing k with`. Consider the case `empty => cases k <;> simp [Multiset.esymm, coeff_one, Multiset.powersetCard_zero_right]`. Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, add_mul, one_mul, mul_assoc, coeff_add, coeff_C_mul]`. Consider the cases of `k with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => rw [coeff_X_mul_zero, ih, esymm_zero_deg, esymm_zero_deg, mul_zero, add_zero]`. Consider the case `succ k => rw [coeff_X_mul, ih, ih, esymm_cons_succ]`.
+Treat this case separately. Treat this case separately.
 -/
 private lemma coeff_prod_one_add (s : Multiset ℂ) (k : ℕ) :
     (s.map fun r => (1 + C r * X : ℂ[X])).prod.coeff k = s.esymm k := by
@@ -33,7 +33,7 @@ private lemma coeff_prod_one_add (s : Multiset ℂ) (k : ℕ) :
     | succ k => rw [coeff_X_mul, ih, ih, esymm_cons_succ]
 
 /- English proof (translation)
-Rewrite using `[← coeff_prod_one_add, Multiset.map_add, Multiset.prod_add, Polynomial.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Simplify using `only [coeff_prod_one_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem esymm_add (s t : Multiset ℂ) (j : ℕ) :
     (s + t).esymm j = ∑ a ∈ Finset.range (j + 1), s.esymm a * t.esymm (j - a) := by

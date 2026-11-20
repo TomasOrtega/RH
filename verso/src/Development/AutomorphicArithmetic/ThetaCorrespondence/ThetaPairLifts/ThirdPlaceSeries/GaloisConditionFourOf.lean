@@ -10,7 +10,7 @@ namespace Formalism.MainNotions.N
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 open NumberField IsDedekindDomain
 /- English proof (translation)
-Introduce `g k`. Take `⟨f, hf⟩` from `((h32 i).2.2 r hr).1 g k`. Establish `e : (fun x : D.nd.X i => ((Formalism.MainNotions.N.rO D.nd i r x g).charpolyRev).coeff k) = (f : D.nd.X i → D.nd.O i)` using `funext fun x => (hf x).symm`. Rewrite using `[e]`. Conclude with `f.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galois_condition_one_of_alt (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (h32 : _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D) (hr : Formalism.MainNotions.N.GoodR D.nd i r) : Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG1 (D := D) i r := by
@@ -21,7 +21,7 @@ theorem galois_condition_one_of_alt (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (F
   rw [e]
   exact f.2
 /- English proof (translation)
-Introduce `x v hl hS hQ g hg`. Conclude with `((h32 i).2.2 r hr).2.2.2 x v hl hS hQ (D.nd.plOm.1 v) (D.nd.plOm.2 v) g hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem admG4_of_goodR (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (h32 : _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D) (hr : Formalism.MainNotions.N.GoodR D.nd i r) : Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG4 (D := D) i r := by

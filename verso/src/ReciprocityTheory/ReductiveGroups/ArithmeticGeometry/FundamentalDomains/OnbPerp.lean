@@ -6,19 +6,19 @@ open Complex
 open scoped ComplexConjugate InnerProductSpace
 
 /- English proof (translation)
-Set `v : EuclideanSpace ℂ (Fin n)` to `WithLp.toLp 2 α`. Establish `hv : v ≠ 0`. Introduce `h`. Apply `hα` to reduce the goal to its premises. Establish `h'` using `congrArg WithLp.ofLp h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify `h'` using `[v]`. Use `haveI : Fact (Module.finrank ℂ (EuclideanSpace ℂ (Fin n)) = (n - 1) + 1) := ⟨by rw [finrank_euclideanSpace_fin]; omega⟩`. Establish `hK : Module.finrank ℂ (ℂ ∙ v)ᗮ = n - 1` using `Submodule.finrank_orthogonal_span_singleton hv`. Set `b : OrthonormalBasis (Fin (n - 1)) ℂ (ℂ ∙ v)ᗮ` to `(stdOrthonormalBasis ℂ (ℂ ∙ v)ᗮ).reindex (finCongr hK)`. Use `⟨fun k a => ((b k : (ℂ ∙ v)ᗮ) : EuclideanSpace ℂ (Fin n)).ofLp a, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k l`. Establish `h` using `(orthonormal_iff_ite.mp b.orthonormal) l k`. Rewrite `h` using `[Submodule.coe_inner, EuclideanSpace.inner_eq_star_dotProduct]`. Simplify using `only [dotProduct, Pi.star_apply, RCLike.star_def] at h`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `if_congr eq_comm rfl rfl`. Introduce `k`. Establish `h` using `Submodule.mem_orthogonal_singleton_iff_inner_right.mp (b k).2`. Rewrite `h` using `[EuclideanSpace.inner_eq_star_dotProduct]`. Simplify `h` using `[dotProduct, v]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `γ hγ`. Establish `hw : (WithLp.toLp 2 γ : EuclideanSpace ℂ (Fin n)) ∈ (ℂ ∙ v)ᗮ`. Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_right, EuclideanSpace.inner_eq_star_dotProduct]`. Simplify `hγ` using `[dotProduct, v]`. Establish `hsum` using `b.sum_repr' ⟨_, hw⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hγeq : γ = ∑ i, inner ℂ (b i) (⟨_, hw⟩ : (ℂ ∙ v)ᗮ) • (fun a => ((b i : (ℂ ∙ v)ᗮ) : EuclideanSpace ℂ (Fin n)).ofLp a)`. Use function extensionality and compare the values at `a`. Establish `h` using `congrArg (fun x : (ℂ ∙ v)ᗮ => ((x : EuclideanSpace ℂ (Fin n))).ofLp a) hsum`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Rewrite using `[Finset.sum_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h.symm`. Rewrite using `[hγeq]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem onb_perp (n : ℕ) (hn : 1 ≤ n) (α : Fin n → ℂ) (hα : α ≠ 0) :
     ∃ g : Fin (n - 1) → Fin n → ℂ,

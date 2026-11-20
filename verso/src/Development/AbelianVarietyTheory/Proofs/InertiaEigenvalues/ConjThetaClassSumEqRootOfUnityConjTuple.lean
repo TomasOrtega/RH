@@ -25,11 +25,11 @@ noncomputable section
 namespace GlobalTheory.GalEqCls
 
 /- English proof (translation)
-Substitute `hd` using the available equality. Introduce `k _ _ A A₂ hk y y₂ hy`. Take `⟨vc, hvc, he⟩` from `@h k _ _ A A₂ hk y y₂ hy`. Use `⟨fun cl => vc (e.symm cl), fun cl => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k', rfl⟩` from `e.surjective cl dsimp only`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e.symm_apply_apply, ← eq_of_heq (hw k'), hLa, hNc, hx]`. Conclude with `hvc k'`. Rewrite using `[he]`. Use `congr 1`. Rewrite using `[← e.sum_comp]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[e.symm_apply_apply, hgam, hep]`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isThClsD_transfer {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
@@ -61,21 +61,19 @@ theorem isThClsD_transfer {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
     rw [e.symm_apply_apply, hgam, hep]
 
 /- English proof (translation)
-Introduce `hC D G _ _ Pl0 T0 A T _ R F κ v₀ hcore hFW i Tp tup M hP τ ta hta hfix hcurve hxi`. Establish `hf : Fixes M.c' ta` using `⟨fun φ x => Subtype.ext (by rw [hta]; exact hfix.host φ x), fun a => Subtype.ext (by rw [hta]; exact hfix.core ⟨a, T.Q.c.le a.2⟩)⟩`. Take `⟨k0, hk0, hcxi⟩` from `GlobalTheory.T.galoisConj_coverFunction_eq_const_mul_conjTuple D G Pl0 T0 A T R F κ v₀ hcore hFW i Tp tup M hP τ ta hta hfix hcurve hxi`. Establish `hk0ne : k0 ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨n, hn, hkn⟩` from `hk0`. Rewrite `hkn` using `[zero_pow hn.ne']`. Conclude with `zero_ne_one hkn`. Use `⟨hf, k0⁻¹, ?_, ?_⟩` and prove the remaining obligations. Take `⟨n, hn, hkn⟩` from `hk0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, hn, by rw [inv_pow, hkn, inv_one]⟩`. Introduce `a b e hsame hconj`. Take `⟨⟨cx, hcx⟩, hU, hdict, -, -, hcl⟩` from `id hsame`. Take `⟨h₂, ka, s1, hka, hev⟩` from `hcxi a b cx hcx hU hdict hconj`. Take `⟨u, s2, w', hu, hw'eq, hw⟩` from `GlobalTheory.T.conj_fourierCoefficients_conjugate_tuples D G Pl0 T0 A T R F κ v₀ hcore hFW i Tp tup M hP τ ta hta hfix a b e hsame hconj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hvol, hep⟩` from `GlobalTheory.T.galoisConj_classScalars_and_volume D G Pl0 T0 A T R F κ v₀ hcore hFW i Tp tup M hP τ ta hta hfix a b e hsame hconj`. Establish `hkane : ka ≠ 0` using `fun h0 => by`. Establish `h1 : ((ka : ℂ)) = 0` using `by rw [h0]; rfl`. Rewrite `h1` using `[hka]`. Conclude with `mul_ne_zero hk0ne (Circle.coe_ne_zero _) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hune : u ≠ 0` using `fun h0 => by`. Establish `h1 : ((u : ℂ)) = 0` using `by rw [h0]; rfl`. Rewrite `h1` using `[hu]`. Conclude with `Circle.coe_ne_zero _ h1`. Use `⟨(ka * u)⁻¹, (s1 * s2)⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : (((ka * u)⁻¹ : M.c'.F) : ℂ) = ((ka : ℂ) * (u : ℂ))⁻¹` using `by push_cast; rfl`. Rewrite using `[e1, hka, hu, map_inv, map_mul, Circle.coe_inv, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `xs xs' hxs f hfs hsum`. Take `⟨-, cga, hio⟩` from `hP.io`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hio'` using `fun v => GlobalTheory.HarmBasis.mem_HHa_of_mem_span subset_rfl (hio.2.2.1 ▸ LinearMap.mem_range_self M.io v)`. Take `⟨hLev, -, hN⟩` from `hP.cov a`. Establish `hδ` using `hLev.2.2.2.2.2.2.2.1`. Establish `key` using `GlobalTheory.GalTw.isThClsD_galRul hC _ _ _ _ (T.Q.Xo ((i : ℕ) + 1)) M.c' ta hf (Vc D i).rank (M.dδ a) h₂ hN hδ cx ka u hkane hune hev (M.Cl' a) (M.w a) w' (M.La a) (M.Nc a) (M.gam a) (M.vol a) (M.ep a) (VsV D i M.c'.F) M.io (wtA (κ i)) hio' hw xs (fun k => xs' (e k)) (fun k => G …`. Use `⟨key.1, ?_⟩` and prove the remaining obligations.
-
-Establish `key2` using `key.2`. Rewrite `key2` using `[hvol]`. Conclude with `isThClsD_transfer hcx e w' (M.w b) hw'eq (M.La a) (M.La b) (fun k => (hcl k).2.1) (M.Nc a) (M.Nc b) (fun k => (hcl k).2.2.1) (M.gam a) (M.gam b) (fun k => (hcl k).2.2.2) (M.vol b) (fun k => ta (M.ep a k)) (M.ep b) (fun k => (hep k).symm) M.io (fun k => xs' (e k)) xs' (fun _ => rf …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galRul_isSum : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → Nonempty (FWTie T R κ v₀) → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (M : OMDat T.toCore R i Tp tup), M.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) M.s0) → ∀ (τ : ℂ ≃+* ℂ) (ta : M.c'.F ≃+* M.c'.F), (∀ a : M.c'.F, ((ta a : M.c'.F) : ℂ) = τ (a : ℂ)) → FixBase T R i τ → GlobalTheory.CompRat.CurveOver T.Q.H M.c'.F 1 → (∀ t x, ((R.xi (tup t) x : Circle) : ℂ) ∈ M.c'.F) → ∃ (hf : Fixes M.c' ta) (k0 : ℂ), IsRoot1 k0 ∧ ∀ (a b : Tp) (e : M.Cl' a ≃ M.Cl' b), SameCover M a b e → ConjTup R τ (tup a) (tup b) → ∃ (u : M.c'.F) (s : (AE D)ˣ), (u : ℂ) = k0 * ((R.xi (tup b) s : Circle) : ℂ) ∧ ∀ (xs : M.Cl' a → VsV D i M.c'.F) (xs' : M.Cl' b → VsV D i M.c'.F), (∀ k, (xs' (e k) : Pol M.c'.F D.what₂.Tau (Vc D i).rank) = MvPolynomial.map (ta : M.c'.F →+* M.c'.F) (xs k : Pol M.c'.F D.what₂.Tau (Vc D i).rank)) → ∀ f ∈ sec (T.Q.Xo ((i : ℕ) + 1)) M.c' (wtA (κ i)) (Vc D i).rank, GlobalTheory.OneMapAll.IsSum M a xs f → u • galRul hf f ∈ sec (T.Q.Xo ((i : ℕ) + 1)) M.c' (wtA (κ i)) (Vc D i).rank ∧ GlobalTheory.OneMapAll.IsSum M b xs' (u • galRul hf f) := by
   intro hC D G _ _ Pl0 T0 A T _ R F κ v₀ hcore hFW i Tp tup M hP τ ta hta hfix hcurve hxi

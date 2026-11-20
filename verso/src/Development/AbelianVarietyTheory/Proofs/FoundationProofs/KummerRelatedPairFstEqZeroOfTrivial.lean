@@ -11,9 +11,9 @@ open Matrix GlobalTheory.KZ
 namespace GlobalTheory.KZ.H3.LamInj
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Establish `e` using `PadicInt.unitCoeff_spec h0`. Rewrite `hx` using `[e, map_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl : (l : E) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Break down `mul_eq_zero.1 hx with h | h` into its components or cases. Conclude with `((PadicInt.unitCoeff h0).isUnit.map (algebraMap ℤ_[l] E)).ne_zero h`. Conclude with `pow_ne_zero _ hl h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem algebraMap_injective (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [Algebra ℤ_[l] E] [CharZero E] :
     Function.Injective (algebraMap ℤ_[l] E) := by
@@ -28,11 +28,11 @@ theorem algebraMap_injective (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [Alge
   · exact pow_ne_zero _ hl h
 
 /- English proof (translation)
-Introduce `δ hδ`. Rewrite `hδ`, the goal using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨a, b, c, d⟩` from `hδ`. Establish `e : ∀ x : ℤ, ((x : ZMod M).cast : ZMod N) = (x : ZMod N)` using `fun x => ZMod.cast_intCast h x`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e, a]`. Simplify using `[ZMod.cast_one h]`. Rewrite using `[← e, b]`. Simplify using the standard rewrite rules. Rewrite using `[← e, c]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← e, d]`. Simplify using `[ZMod.cast_one h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gamma_le_of_dvd {N M : ℕ} (h : N ∣ M) : CongruenceSubgroup.Gamma M ≤ CongruenceSubgroup.Gamma N := by
   intro δ hδ
@@ -46,7 +46,7 @@ theorem gamma_le_of_dvd {N M : ℕ} (h : N ∣ M) : CongruenceSubgroup.Gamma M �
   · rw [← e, d]; simp [ZMod.cast_one h]
 
 /- English proof (translation)
-Introduce `δ hδ`. Establish `h1` using `CongruenceSubgroup.Gamma_mem.1 (gamma_le_of_dvd (Dvd.intro l rfl : N ∣ N * l) hδ)`. Establish `h2` using `CongruenceSubgroup.Gamma_mem.1 (gamma_le_of_dvd (Dvd.intro_left N rfl : l ∣ N * l) hδ)`. Conclude with `⟨(CongruenceSubgroup.Gamma1_mem N δ).2 ⟨h1.1, h1.2.2.2, h1.2.2.1⟩, CongruenceSubgroup.Gamma0_mem.2 h2.2.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem gamma_le_gam (N l : ℕ) : CongruenceSubgroup.Gamma (N * l) ≤ Gam N l := by
   intro δ hδ
@@ -55,7 +55,7 @@ theorem gamma_le_gam (N l : ℕ) : CongruenceSubgroup.Gamma (N * l) ≤ Gam N l 
   exact ⟨(CongruenceSubgroup.Gamma1_mem N δ).2 ⟨h1.1, h1.2.2.2, h1.2.2.1⟩, CongruenceSubgroup.Gamma0_mem.2 h2.2.2.1⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X _ _ N l w _ hN E _ _ hE y G hp hG`. Conclude with `GlobalTheory.T.trivial_eigenvalue_congruence_vanishes Ω ε X l E (algebraMap_injective l E) w (Gam N l) (N * l) (Nat.mul_pos hN (Fact.out : l.Prime).pos) (gamma_le_gam N l) (y, G) hp hG`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fst_eq_zero_of_triv : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε),
     Function.Injective ε → (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →

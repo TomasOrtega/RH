@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Obs
 
 /- English proof (translation)
-Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s'`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s') G H hcov`. Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s') G H hcov hdir`. Establish `hv` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s') G H hcov hdir`. Establish `hv2` using `GlobalTheory.T.twoCocycle_coboundary_of_basisFunctor (OAff s') G H hcov hdir`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨⟨_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg, _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩, GlobalTheory.T.comma_descent_injective _ _ hs hg hv, GlobalTheory.T.comma_descent_restriction_equiv _ _ hs hg hv hv2⟩`.
+Supply the required witnesses or components.
 -/
 theorem restrictO_bijective_of_basis {R' : Type} [CommRing R'] {X' : Scheme.{0}} (s' : X' ⟶ Sp R')
     {C' : Type} [Category.{0} C'] [Quiver.IsThin C'] (G : C' ⥤ AffOp X')
@@ -46,16 +46,16 @@ section
 variable {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {X X' X'' : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `restrictO_bijective_of_basis s' (pairFst φ) (pair_cover_affine φ s') (exists_pair_below_two φ s')`.
+A detailed English derivation is pending.
 -/
 theorem pairResO_bijective (φ : X' ⟶ X) (s' : X' ⟶ Sp R') :
     Function.Bijective (pairRes φ s').pull1 ∧ Function.Bijective (pairRes φ s').pull2 :=
   restrictO_bijective_of_basis s' (pairFst φ) (pair_cover_affine φ s') (exists_pair_below_two φ s')
 
 /- English proof (translation)
-Establish `key : ∀ c : HO1 s'', (cechTripleRestrictComposite ψ φ s'').pull1 ((pairRes (ψ ≫ φ) s'').pull1 c) = (CoefMap.restrict (OAff s'') (cechTripleProjFirstThird ψ φ ⋙ pairFst (ψ ≫ φ))).pull1 c` using `fun c ↦ by`. Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) c`. Introduce `x y e`. Take `⟨x0, rfl⟩` from `(pairResO_bijective (ψ ≫ φ) s'').1.2 x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y0, rfl⟩` from `(pairResO_bijective (ψ ≫ φ) s'').1.2 y`. Rewrite `e` using `[key, key]`. Rewrite using `[(restrictO_bijective_of_basis s'' _ (triple_cover_affine ψ φ s'') (exists_triple_below_two ψ φ s'')).1.1 e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triResO_injective (ψ : X'' ⟶ X') (φ : X' ⟶ X) (s'' : X'' ⟶ Sp R'') :
     Function.Injective (cechTripleRestrictComposite ψ φ s'').pull1 := by
@@ -74,11 +74,11 @@ variable {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {s'' : X'' ⟶ Sp R''} {σ : R →
   {φ : X' ⟶ X} {ψ : X'' ⟶ X'}
 
 /- English proof (translation)
-Use `triResO_injective ψ φ s'' ?_` and prove the remaining obligations. Establish `p0 : (pairPull h).pull1 a = (pairRes φ s').pull1 a'` using `p`. Establish `p1 : (pairPull h').pull1 a' = (pairRes ψ s'').pull1 a''` using `p'`. Establish `e1 : (cechTripleRestrictComposite ψ φ s'').pull1 ((pairPull h'').pull1 a) = (cechTriplePullbackSecond h').pull1 ((pairPull h).pull1 a)`. Rewrite using `[← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans ((pairPull h'').comp (cechTripleRestrictComposite ψ φ s'')) ((pairPull h).comp (cechTriplePullbackSecond h')) { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]`. Conclude with `congrArg (fun q ↦ q.hom b) (Scheme.Hom.appLE_comp_appLE ψ φ U.unop.1.2.2.1 U.unop.1.2.1.1 U.unop.1.1.1 U.unop.2.2 U.unop.2.1)) a`. Establish `e2 : (cechTriplePullbackSecond (φ` using `φ) h').pull1 ((pairRes φ s').pull1 a') = (cechTripleRestrictFirst ψ φ s'').pull1 ((pairPull h').pull1 a') := by`. Rewrite using `[← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]) a'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : (cechTripleRestrictFirst ψ φ s'').pull1 ((pairRes ψ s'').pull1 a'') = (cechTripleRestrictComposite ψ φ s'').pull1 ((pairRes (ψ ≫ φ) s'').pull1 a'')`. Rewrite using `[← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) a''`. Rewrite using `[e1, p0, e2, p1, e3]`.
+A detailed English derivation is pending.
 -/
 theorem isPullO_comp (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ spMap τ)
     (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) (a : HO1 s) (a' : HO1 s') (a'' : HO1 s'')
@@ -105,7 +105,7 @@ theorem isPullO_comp (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ 
   rw [e1, p0, e2, p1, e3]
 
 /- English proof (translation)
-Establish `p0 : (pairPull h).pull1 a = (pairRes φ s').pull1 a'` using `p`. Establish `q0 : (pairPull h).pull1 b = (pairRes φ s').pull1 b'` using `q`. Unfold `IsPullbackH2Structure`. Rewrite using `[CoefMap.pullCohomologyTwo_cup, CoefMap.pullCohomologyTwo_cup, p0, q0]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPullO2_cup (h : φ ≫ s = s' ≫ spMap σ) (a b : HO1 s) (a' b' : HO1 s')
     (p : IsPullO h a a') (q : IsPullO h b b') :
@@ -118,7 +118,7 @@ theorem isPullO2_cup (h : φ ≫ s = s' ≫ spMap σ) (a b : HO1 s) (a' b' : HO1
 end
 
 /- English proof (translation)
-The claim follows from `fun _ _ _ _ _ s' φ h ↦ ⟨(pairResO_bijective φ s').2, fun a b a' b' p q ↦ isPullO2_cup h a b a' b' p q, fun _ _ _ h' h'' a a' a'' p p' ↦ isPullO_comp h h' h'' a a' a'' p p'⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem pullO_basic : ∀ (R : Type) [CommRing R] (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R) (φ : X' ⟶ X) (h : φ ≫ s = s' ≫ spMap (RingHom.id R)), Function.Bijective (pairRes φ s').pull2 ∧ (∀ a b a' b', IsPullO h a a' → IsPullO h b b' → IsPullbackH2Structure h (GlobalTheory.CatCoh.cup _ a b) (GlobalTheory.CatCoh.cup _ a' b')) ∧ ∀ (X'' : Scheme.{0}) (s'' : X'' ⟶ Sp R) (ψ : X'' ⟶ X') (h' : ψ ≫ s' = s'' ≫ spMap (RingHom.id R)) (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (RingHom.id R)) a a' a'', IsPullO h a a' → IsPullO h' a' a'' → IsPullO h'' a a'' :=
   fun _ _ _ _ _ s' φ h ↦ ⟨(pairResO_bijective φ s').2, fun a b a' b' p q ↦ isPullO2_cup h a b a' b' p q,

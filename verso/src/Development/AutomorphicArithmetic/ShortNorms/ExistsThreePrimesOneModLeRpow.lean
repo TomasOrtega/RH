@@ -5,33 +5,29 @@ open GlobalTheory.Mem.An
 namespace UpperTheory.T3
 
 /- English proof (translation)
-Rewrite using `[← Nat.mod_mul_right_mod p M K, h, Nat.mod_eq_of_lt hM]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mod_eq_one_of_mod_mul {p M K : ℕ} (h : p % (M * K) = 1) (hM : 1 < M) : p % M = 1 := by
   rw [← Nat.mod_mul_right_mod p M K, h, Nat.mod_eq_of_lt hM]
 
 /- English proof (translation)
-Introduce `hS`. Take `⟨A, hA1, hA⟩` from `hS`. Establish `hA0 : (0 : ℝ) ≤ A` using `by linarith`. Establish `hAA : A ≤ A * A` using `by nlinarith`. Establish `hAAA : 0 ≤ A * A * A` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(1 + (2 * A + (2 * A + 2) * A)) * A, by nlinarith, ?_⟩` and prove the remaining obligations. Introduce `N hN`. Establish `hx : (30 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hx0 : (0 : ℝ) < N` using `by linarith`. Establish `hx1 : (1 : ℝ) ≤ N` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (M : ℕ) (e : ℝ), 2 ≤ M → (M : ℝ) ≤ (N : ℝ) ^ e → ∃ q : ℕ, q.Prime ∧ q % M = 1 ∧ (q : ℝ) ≤ (N : ℝ) ^ (e * A)`. Introduce `M e hM hle`. Take `⟨q, hq, hqm, hqle⟩` from `hA M hM`. Use `⟨q, hq, hqm, le_trans hqle ?_⟩` and prove the remaining obligations. Rewrite using `[Real.rpow_mul hx0.le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.rpow_le_rpow (Nat.cast_nonneg _) hle (by linarith)`. Take `⟨p, hp, hpm, hple⟩` from `key (15 * N) 2 (by omega) (by`. Use `push_cast`. Rewrite using `[Real.rpow_two]`. Use the proof step `nlinarith)`.
+Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp1 : 1 < p` using `hp.one_lt`. Take `⟨p', hp', hp'm, hp'le⟩` from `key (p * (15 * N)) (2 * A + 2) (by`. Use `Nat.mul_le_mul hp.two_le (show 1 ≤ 15 * N by omega)` as an intermediate fact. Use the proof step `omega)`. Use the proof step `(by`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[Real.rpow_add hx0, Real.rpow_two]`. Conclude with `mul_le_mul hple (by nlinarith) (by positivity) (by positivity))`. Take `⟨q0, hq0, hq0m, hq0le⟩` from `key (N * (p * p')) (1 + (2 * A + (2 * A + 2) * A)) (by`. Use `Nat.mul_le_mul (show 2 ≤ N by omega) (Nat.mul_pos hp.pos hp'.pos)` as an intermediate fact.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `omega)`. Use the proof step `(by`. Use `push_cast`. Rewrite using `[Real.rpow_add hx0, Real.rpow_add hx0, Real.rpow_one]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul hple hp'le (Nat.cast_nonneg _) (by positivity)) hx0.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp'p : p' % p = 1` using `mod_eq_one_of_mod_mul hp'm hp1`. Establish `hp'15 : p' % (15 * N) = 1` using `mod_eq_one_of_mod_mul (K := p) (by rw [Nat.mul_comm]; exact hp'm) (by omega)`. Establish `hq0N : q0 % N = 1` using `mod_eq_one_of_mod_mul hq0m (by omega)`. Establish `hq0p : q0 % p = 1` using `mod_eq_one_of_mod_mul (K := p' * N) (by rw [show p * (p' * N) = N * (p * p') by ring]; exact hq0m) hp1`. Establish `hq0p' : q0 % p' = 1` using `mod_eq_one_of_mod_mul (K := p * N) (by rw [show p' * (p * N) = N * (p * p') by ring]; exact hq0m) hp'.one_lt`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨p, p', q0, hp, hp', hq0, ?_, ?_, ?_, hpm, hp'15, hq0N, ?_, ?_, hq0le⟩` and prove the remaining obligations. Introduce `h`. Rewrite `hp'p` using `[← h, Nat.mod_self]`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
-
-Rewrite `hq0p` using `[h, Nat.mod_self]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Rewrite `hq0p'` using `[h, Nat.mod_self]`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `le_trans hple (Real.rpow_le_rpow_of_exponent_le hx1 (by nlinarith))`. Conclude with `le_trans hp'le (Real.rpow_le_rpow_of_exponent_le hx1 (by nlinarith))`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_three_primes_one_mod_le_rpow :
     SmallOne → ∃ C8 : ℝ, 1 ≤ C8 ∧ ∀ N : ℕ, 30 ≤ N → ∃ p p' q0 : ℕ, p.Prime ∧ p'.Prime ∧ q0.Prime ∧ p ≠ p' ∧ q0 ≠ p ∧ q0 ≠ p' ∧

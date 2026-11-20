@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.RoadU
 
 /- English proof (translation)
-Use `⟨Ideal.ext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.under, Ideal.mem_comap, ← h x, ← h' _]`. Establish `: algebraMap M Ω ((algebraMap (𝓞 E) (𝓞 M) x : 𝓞 M) : M) = algebraMap E Ω (x : E)`. Rewrite using `[IsScalarTower.algebraMap_apply E M Ω]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem liesOver_of_isPlaceOver {E M Ω : Type} [Field E] [NumberField E] [Field M] [NumberField M] [Field Ω]
     [Algebra E Ω] [Algebra M Ω] [Algebra E M] [IsScalarTower E M Ω] {A : ValuationSubring Ω}
@@ -35,9 +35,9 @@ theorem liesOver_of_isPlaceOver {E M Ω : Type} [Field E] [NumberField E] [Field
   rw [this]
 
 /- English proof (translation)
-Introduce `hI Ω _ E _ _ _ _ _ l _ ι n hn π χ hπ r hr w A h σ hσ ξ hξ hsupp hunl a ha g hg`. Set `ξ₀ : Fin n → ((w.adicCompletion E)ˣ →* ℂˣ)` to `fun j => ξ j * absPow (w.adicCompletion E) (-((((1 : ℝ) - n) / 2 : ℝ) : ℂ))`. Establish `hξ₀ : ∀ j, IsSmoothChar (ξ₀ j)` using `fun j => (hξ j).mul (isSmoothChar_absPow _)`. Take `⟨M, _, _, _, _, _, _, _, P, χ', hP, hcl, hfix, hkill⟩` from `GlobalTheory.T.weaklyAttached_toral_of_cm_lift hI Ω E l ι n hn π χ hπ r hr w A h ξ₀ hξ₀ a ha g hg`. Take `⟨u, h', -⟩` from `GlobalTheory.T.exists_isPlaceOver_finiteExtension_of_isPlaceOver E M Ω A w h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := liesOver_of_isPlaceOver (M := M) h h'`. Establish `hunr` using `GlobalTheory.T.unramified_comp_norm_of_killed_inertia_fixing Ω E M A w u h h' n ξ₀ a ha hkill`. Take `⟨B, hB, hch⟩` from `GlobalTheory.T.frobenius_charpoly_eq_satake_of_place_above hI Ω E M l n hn π χ hπ A w u h h' σ hσ ξ hξ hsupp hunl a ha P hcl hunr`. Conclude with `⟨M, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, u, h', P, χ', hP, hcl.1, hfix, B, hB, hch⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sph_lift_of_toral : UpperTheory.Gal.ToralGalois.Inq → ∀ (Ω : Type) [Field Ω] (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ), 1 ≤ n → ∀ (π : CuspSub E n) (χ : HChar (maximalRealSubfield E)), InScope .all l π χ → ∀ r : G E Ω →* GL (Fin n) (Qbar l), Weak π ι r → ∀ (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w), ∀ σ : SmIrr (GL (Fin n) (w.adicCompletion E)), π.IsLocComp w σ → ∀ (ξ : Fin n → ((w.adicCompletion E)ˣ →* ℂˣ)) (hξ : ∀ j, IsSmoothChar (ξ j)), HasSupport (algNorm σ).rep (chars ξ hξ) → Unlinked (chars ξ hξ) → ∀ a : Weil h →* (w.adicCompletion E)ˣ, IsLocalArtin h a → ∀ g : Weil h, deg g ≠ 0 → ∃ (M : Type) (_ : Field M) (_ : NumberField M) (_ : IsCMField M) (_ : Algebra M Ω) (_ : IsAlgClosure M Ω) (_ : Algebra E M) (_ : IsScalarTower E M Ω) (u : HeightOneSpectrum (𝓞 M)) (h' : IsPlaceOver A u) (P : CuspSub M n) (χ' : HChar (maximalRealSubfield M)), InScope .all l P χ' ∧ IsLift π P ∧ (∀ x : M, (g : G E Ω) (algebraMap M Ω x) = algebraMap M Ω x) ∧ ∃ B : Multiset ℂˣ, (CG.mk P).HasSat u B ∧ ∀ (g₀ : Weil h) (g' : Weil h'), (∀ z : Ω, (g₀ : G E Ω) z = (g' : G M Ω) z) → (satWD h' n B).charPol g' = ∏ j, (X - C ((ξ j (a g₀) : ℂˣ) : ℂ)) := by
   intro hI Ω _ E _ _ _ _ _ l _ ι n hn π χ hπ r hr w A h σ hσ ξ hξ hsupp hunl a ha g hg
@@ -65,7 +65,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Gal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.RoadU.exists_sph_lift_of_toral) | (exact GlobalTheory.RoadU.exists_sph_lift_of_toral) | (intros; apply GlobalTheory.RoadU.exists_sph_lift_of_toral <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem GlobalTheory.T.frobenius_charpoly_of_unlinked_unramified_support : UpperTheory.Gal.ToralGalois.Inq → ∀ (Ω : Type) [Field Ω] (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ), 1 ≤ n → ∀ (π : CuspSub E n) (χ : HChar (maximalRealSubfield E)), InScope .all l π χ → ∀ r : G E Ω →* GL (Fin n) (Qbar l), Weak π ι r → ∀ (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w), ∀ σ : SmIrr (GL (Fin n) (w.adicCompletion E)), π.IsLocComp w σ → ∀ (ξ : Fin n → ((w.adicCompletion E)ˣ →* ℂˣ)) (hξ : ∀ j, IsSmoothChar (ξ j)), HasSupport (algNorm σ).rep (chars ξ hξ) → Unlinked (chars ξ hξ) → ∀ a : Weil h →* (w.adicCompletion E)ˣ, IsLocalArtin h a → ∀ g : Weil h, deg g ≠ 0 → ∃ (M : Type) (_ : Field M) (_ : NumberField M) (_ : IsCMField M) (_ : Algebra M Ω) (_ : IsAlgClosure M Ω) (_ : Algebra E M) (_ : IsScalarTower E M Ω) (u : HeightOneSpectrum (𝓞 M)) (h' : IsPlaceOver A u) (P : CuspSub M n) (χ' : HChar (maximalRealSubfield M)), InScope .all l P χ' ∧ IsLift π P ∧ (∀ x : M, (g : G E Ω) (algebraMap M Ω x) = algebraMap M Ω x) ∧ ∃ B : Multiset ℂˣ, (CG.mk P).HasSat u B ∧ ∀ (g₀ : Weil h) (g' : Weil h'), (∀ z : Ω, (g₀ : G E Ω) z = (g' : G M Ω) z) → (satWD h' n B).charPol g' = ∏ j, (X - C ((ξ j (a g₀) : ℂˣ) : ℂ)) := by
   first | (exact @GlobalTheory.RoadU.exists_sph_lift_of_toral) | (exact GlobalTheory.RoadU.exists_sph_lift_of_toral) | (intros; apply GlobalTheory.RoadU.exists_sph_lift_of_toral  <;> assumption)

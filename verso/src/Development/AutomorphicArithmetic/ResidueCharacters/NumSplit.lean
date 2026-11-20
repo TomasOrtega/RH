@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace UpperTheory.N.Num
 
 /- English proof (translation)
-Rewrite using `[D.host.finrank_cmField]`. Use `show 4 * D.R.ord = 2 * (2 * D.R.ord)`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finrank_E_host (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   rw [D.host.finrank_cmField]
@@ -20,9 +20,9 @@ theorem finrank_E_host (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   ring
 
 /- English proof (translation)
-Establish `: Fact l.Prime` using `⟨hl⟩`. Establish `hmax` using `Int.ideal_span_isMaximal_of_prime l`. Use `v.isPrime` as an intermediate fact. Use `⟨v.isPrime, ⟨?_⟩⟩` and prove the remaining obligations. Apply `hmax.eq_of_le (Ideal.IsPrime.under ℤ v.asIdeal).ne_top` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]`. Establish `hv' : ((l : ℕ) : 𝓞 E) ∈ v.asIdeal` using `hv`. Simplify using `using hv'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_primesOver_of_mem {E : Type} [Field E] [NumberField E] {l : ℕ} (hl : l.Prime)
     {v : HeightOneSpectrum (𝓞 E)} (hv : v ∈ placesOver E l) :
@@ -37,9 +37,7 @@ theorem mem_primesOver_of_mem {E : Type} [Field E] [NumberField E] {l : ℕ} (hl
   simpa using hv'
 
 /- English proof (translation)
-Establish `: Fact l.Prime` using `⟨hl⟩`. Use `haveI := Int.ideal_span_isMaximal_of_prime l`. Establish `hfin : ((Ideal.span {(l : ℤ)}).primesOver (𝓞 E)).Finite` using `Set.toFinite _`. Establish `hinj : Set.InjOn (fun v : HeightOneSpectrum (𝓞 E) => v.asIdeal) ((fun v : HeightOneSpectrum (𝓞 E) => v.asIdeal) ⁻¹' ((Ideal.span {(l : ℤ)}).primesOver (𝓞 E)))`. Introduce `a _ b _ hab`.
-
-Conclude with `HeightOneSpectrum.ext hab`. Conclude with `(hfin.preimage hinj).subset (fun v hv => mem_primesOver_of_mem hl hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem placesOver_finite (E : Type) [Field E] [NumberField E] {l : ℕ} (hl : l.Prime) :
     (placesOver E l).Finite := by
@@ -55,7 +53,7 @@ theorem placesOver_finite (E : Type) [Field E] [NumberField E] {l : ℕ} (hl : l
   exact (hfin.preimage hinj).subset (fun v hv => mem_primesOver_of_mem hl hv)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.N.locDeg`. Use `lam.isPrime` as an intermediate fact. Establish `h1` using `Ideal.ramificationIdx_pos lam.asIdeal ℤ`. Establish `h2` using `Ideal.inertiaDeg_pos lam.asIdeal ℤ`. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero h1.ne' h2.ne')`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nLam_pos (D : D7) (lam : HeightOneSpectrum (𝓞 D.host.E)) : 1 ≤ locDeg D.host.E lam := by
   unfold Formalism.MainNotions.N.locDeg
@@ -65,17 +63,15 @@ theorem nLam_pos (D : D7) (lam : HeightOneSpectrum (𝓞 D.host.E)) : 1 ≤ locD
   exact Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero h1.ne' h2.ne')
 
 /- English proof (translation)
-Establish `: Fact l.Prime` using `⟨hl⟩`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank (Ideal.span {(l : ℤ)}) (𝓞 D.host.E)`. Rewrite `hsum` using `[RingOfIntegers.rank, finrank_E_host]`. Establish `hsum' : ∑ q ∈ ((Ideal.span {(l : ℤ)}).primesOver (𝓞 D.host.E)).toFinset, q.ramificationIdx ℤ * q.inertiaDeg ℤ = 2 * D.R.f`. Rewrite using `[← hsum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Finset.sum_set_coe (f := fun q : Ideal (𝓞 D.host.E) => q.ramificationIdx ℤ * q.inertiaDeg ℤ) _).symm`. Use `set G : Ideal (𝓞 D.host.E) → ℝ := fun q => ((q.ramificationIdx ℤ * q.inertiaDeg ℤ : ℕ) : ℝ) with hG`. Use `set S := (placesOver_finite D.host.E hl).toFinset with hS`. Establish `hinj : Set.InjOn (fun v : HeightOneSpectrum (𝓞 D.host.E) => v.asIdeal) (S : Set _)`. Introduce `a _ b _ hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `HeightOneSpectrum.ext hab`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun lam _ => ?_)` and prove the remaining obligations. Simplify using `[hG, Formalism.MainNotions.N.locDeg]`. Use `_ = ∑ q ∈ S.image (fun v => v.asIdeal), G q := (Finset.sum_image hinj).symm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ ≤ ∑ q ∈ ((Ideal.span {(l : ℤ)}).primesOver (𝓞 D.host.E)).toFinset, G q := by`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `q hq`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hq`. Rewrite using `[Set.mem_toFinset]`.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `mem_primesOver_of_mem hl ((Set.Finite.mem_toFinset _).1 hv)`. Introduce `q _ _`. Simplify using `only [hG]`. Check the signs of the components of the expression. Use `_ = 2 * D.R.f := by`.
-
-Simplify using `only [hG]`. Rewrite using `[← Nat.cast_sum, hsum']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_nLam_le (D : D7) {l : ℕ} (hl : l.Prime) :
     ∑ lam ∈ (placesOver_finite D.host.E hl).toFinset, (locDeg D.host.E lam : ℝ) ≤ 2 * D.R.f := by
@@ -114,9 +110,9 @@ theorem sum_nLam_le (D : D7) {l : ℕ} (hl : l.Prime) :
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hl` using `(D.nd.lPrime i).out`. Use `le_trans ?_ (sum_nLam_le D hl)` and prove the remaining obligations. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `v hv`. Conclude with `(Set.Finite.mem_toFinset _).2 (hS v hv)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v _ _`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem sum_locDeg_le (i : D.nd.Loc) (S : Finset (HeightOneSpectrum (𝓞 D.host.E)))
     (hS : ∀ v ∈ S, v ∈ placesOver D.host.E (D.nd.l i)) :
@@ -130,7 +126,7 @@ theorem sum_locDeg_le (i : D.nd.Loc) (S : Finset (HeightOneSpectrum (𝓞 D.host
     positivity
 
 /- English proof (translation)
-Rewrite using `[Finset.card_eq_sum_ones, Nat.cast_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `v _`. Conclude with `nLam_pos D v` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem card_le_sum_locDeg (S : Finset (HeightOneSpectrum (𝓞 D.host.E))) :
     (S.card : ℝ) ≤ ∑ w ∈ S, (locDeg D.host.E w : ℝ) := by
@@ -140,7 +136,7 @@ theorem card_le_sum_locDeg (S : Finset (HeightOneSpectrum (𝓞 D.host.E))) :
   exact_mod_cast nLam_pos D v
 
 /- English proof (translation)
-Establish `: (0 : ℚ) ≤ D.nd.vdel i`. Unfold `NData.vdel`. Check the signs of the components of the expression. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem vdel_nonneg (i : D.nd.Loc) : (0 : ℝ) ≤ (D.nd.vdel i : ℝ) := by
   have : (0 : ℚ) ≤ D.nd.vdel i := by
@@ -149,9 +145,9 @@ theorem vdel_nonneg (i : D.nd.Loc) : (0 : ℝ) ≤ (D.nd.vdel i : ℝ) := by
   exact_mod_cast this
 
 /- English proof (translation)
-Use `D.nd.lPrime i` as an intermediate fact. Establish `h1` using `LargeLevelLemmas.vdel_le i`. Establish `hv : (padicValNat (D.nd.l i) D.R.t.factorial : ℚ) ≤ D.R.t`. Conclude with `padicValNat_factorial_le (D.nd.l i) D.R.t` after adjusting the coercions. Establish `h2 : D.nd.vdel i ≤ (D.R.t : ℚ) * ((D.nd.s0 i : ℚ) + 1)` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (D.nd.vdel i : ℝ) ≤ (D.R.t : ℝ) * ((D.nd.s0 i : ℝ) + 1)` using `by exact_mod_cast h2`. Conclude with `h3.trans (mul_le_mul_of_nonneg_left h (Nat.cast_nonneg _))`.
+A detailed English derivation is pending.
 -/
 theorem vdel_le (i : D.nd.Loc) {Λ : ℝ} (h : (D.nd.s0 i : ℝ) + 1 ≤ Λ) : (D.nd.vdel i : ℝ) ≤ D.R.t * Λ := by
   have := D.nd.lPrime i
@@ -163,13 +159,13 @@ theorem vdel_le (i : D.nd.Loc) {Λ : ℝ} (h : (D.nd.s0 i : ℝ) + 1 ≤ Λ) : (
   exact h3.trans (mul_le_mul_of_nonneg_left h (Nat.cast_nonneg _))
 
 /- English proof (translation)
-Establish `hf : 1 ≤ f` using `hm1.trans hmf`. Establish `hy : 0 ≤ c * y` using `he0.trans he`. Establish `a1 : A * (m * (2 * e)) ≤ 4 * (c * f * m * y)`. Combine the equalities or inequalities in the displayed calculation. Establish `a2 : k * e ≤ 2 * (c * f * m * y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `b1 : A * (m * v) ≤ 2 * (c * f ^ 2 * t ^ 2 * V * Λ)`. Combine the equalities or inequalities in the displayed calculation. Establish `b2 : k * (2 * v) ≤ 4 * (c * f ^ 2 * t ^ 2 * V * Λ)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `b3 : k * (2 * (c * r * f * V * Λ)) ≤ 4 * (c * f ^ 2 * t ^ 2 * V * Λ)`. Combine the equalities or inequalities in the displayed calculation. Establish `b4 : t * ((A' + 2 * k') * b) ≤ 6 * (c * f ^ 2 * t ^ 2 * V * Λ)`. Combine the equalities or inequalities in the displayed calculation. Establish `b5 : 4 * V * (k + 1) * v ≤ 12 * (c * f ^ 2 * t ^ 2 * V * Λ)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `b6 : t * k * h ≤ 2 * (c * f ^ 2 * t ^ 2 * V * Λ)`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : A * (m * (2 * e + v)) + k * (e + 2 * v + 2 * (c * r * f * V * Λ)) = A * (m * (2 * e)) + A * (m * v) + k * e + k * (2 * v) + k * (2 * (c * r * f * V * Λ))` using `by ring`. Rewrite `hS` using `[e1]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -224,13 +220,13 @@ theorem split_arith {f m r t V Λ c y A A' k k' v e b h S : ℝ} (hm1 : 1 ≤ m)
   linarith
 
 /- English proof (translation)
-Take `⟨r1, r2, r3, r4, r5, r6, -⟩` from `ranks D`. Establish `hΛ : 1 ≤ Λ` using `by have : (0 : ℝ) ≤ D.nd.s0 i := Nat.cast_nonneg _; linarith`. Establish `hrow` using `sum_locDeg_le i dc.row (fun v hv => (dc.cover v).1 (Or.inl hv))`. Establish `hcol` using `sum_locDeg_le i dc.col (fun v hv => (dc.cover v).1 (Or.inr hv))`. Establish `hr` using `card_le_sum_locDeg dc.row`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `card_le_sum_locDeg dc.col`. Establish `hsum : ∑ u ∈ dc.col, ((e' : ℝ) + (locDeg D.host.E u : ℝ) * (D.R.m : ℝ) * ((e' : ℝ) + (D.nd.vdel i : ℝ)) + 2 * (D.nd.vdel i : ℝ) + (Br.h0W i u ρ π : ℝ) + (locDeg D.host.E u : ℝ) * (D.R.m : ℝ) * (e' : ℝ) + (D.R.r : ℝ) * (c0 u : ℝ)) ≤ (∑ u ∈ dc.col, (locDeg D.host.E u : ℝ)) * ((D.R. …`. Rewrite using `[Finset.sum_mul, ← nsmul_eq_mul dc.col.card, ← Finset.sum_const, ← Finset.sum_add_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4` using `mul_le_mul_of_nonneg_left (hc0 u hu) (Nat.cast_nonneg (α := ℝ) D.R.r)`. Establish `h5` using `hW u hu`. Use the polynomial consequences of the given equalities and inequalities. Establish `key` using `split_arith r1 r2 (Nat.cast_nonneg _) r5 (by linarith) (by linarith) hΛ hc (Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _) hcol hrow (Nat.cast_nonneg dc.col.card) (hk.trans hcol) (hr.trans hrow) (vdel_nonneg i) (vdel_le i hs) (Nat.cast_nonneg e') he (Nat.cast_nonneg cB) hB hh hs …`. Establish `hrw : ∑ w ∈ dc.row, ((locDeg D.host.E w : ℝ) + 2) * (cB : ℝ) = ((∑ w ∈ dc.row, (locDeg D.host.E w : ℝ)) + 2 * (dc.row.card : ℝ)) * (cB : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_mul, Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `EmbeddingTypes.boundSplit`. Move the coercions through the operations in `at key ⊢`. Rewrite using `[hrw]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

@@ -17,9 +17,9 @@ def projNumMat {n : ℕ} (F : (Fin n → ℂ) → Fin (n + 1) → ℂ) (u : Fin 
     F u i.succ * fderiv ℂ (fun v => F v 0) u (Pi.single l 1)
 
 /- English proof (translation)
-Establish `hc : ∀ i, AnalyticAt ℂ (fun v => F v i) u` using `fun i => analyticAt_pi_iff.1 hF i`. Establish `hd : ∀ i (w : Fin n → ℂ), AnalyticAt ℂ (fun v => fderiv ℂ (fun v => F v i) v w) u` using `fun i w => ((ContinuousLinearMap.apply ℂ ℂ w).analyticAt _).comp (hc i).fderiv`. Establish `hm : ∀ i l, AnalyticAt ℂ (fun v => projNumMat F v i l) u` using `fun i l => ((hc 0).mul (hd _ _)).sub ((hc _).mul (hd _ _))`. Use `(hc 0).mul ?_` and prove the remaining obligations. Simplify using `only [Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.univ.analyticAt_fun_sum (fun σ _ => analyticAt_const.mul (Finset.univ.analyticAt_fun_prod (fun i _ => hm _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_projDet {n : ℕ} {F : (Fin n → ℂ) → Fin (n + 1) → ℂ} {u : Fin n → ℂ}
     (hF : AnalyticAt ℂ F u) : AnalyticAt ℂ (fun v => F v 0 * (projNumMat F v).det) u := by
@@ -34,15 +34,15 @@ theorem analyticAt_projDet {n : ℕ} {F : (Fin n → ℂ) → Fin (n + 1) → �
     analyticAt_const.mul (Finset.univ.analyticAt_fun_prod (fun i _ => hm _ _)))
 
 /- English proof (translation)
-Establish `hc : ∀ i, AnalyticAt ℂ (fun v => F v i) u` using `fun i => analyticAt_pi_iff.1 hF i`. Establish `key : ∀ (i : Fin n) (w : Fin n → ℂ), F u 0 ^ 2 * fderiv ℂ (fun v (i : Fin n) => F v i.succ / F v 0) u w i = F u 0 * fderiv ℂ (fun v => F v i.succ) u w - F u i.succ * fderiv ℂ (fun v => F v 0) u w`. Introduce `i w`. Establish `hq : AnalyticAt ℂ (fun v => F v i.succ / F v 0) u` using `(hc _).div (hc 0) h0`. Establish `hev : (fun v => F v i.succ / F v 0 * F v 0) =ᶠ[𝓝 u] (fun v => F v i.succ)` using `by filter_upwards [(hc 0).continuousAt.eventually_ne h0] with v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `div_mul_cancel₀ _ hv`. Establish `hmul : fderiv ℂ (fun v => F v i.succ) u = (F u i.succ / F u 0) • fderiv ℂ (fun v => F v 0) u + F u 0 • fderiv ℂ (fun v => F v i.succ / F v 0) u`. Rewrite using `[← hev.fderiv_eq]`. Conclude with `fderiv_fun_mul hq.differentiableAt (hc 0).differentiableAt`. Establish `hcomp : fderiv ℂ (fun v (i : Fin n) => F v i.succ / F v 0) u w i = fderiv ℂ (fun v => F v i.succ / F v 0) u w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[fderiv_pi (φ := fun (i : Fin n) v => F v i.succ / F v 0) (fun i => ((hc _).div (hc 0) h0).differentiableAt)]`. Both sides reduce to the same expression. Rewrite using `[hcomp, hmul]`. Simplify using `only [FunLike.coe_add, FunLike.coe_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hM : LinearMap.toMatrix' (fderiv ℂ (fun v (i : Fin n) => F v i.succ / F v 0) u : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) = (F u 0 ^ 2)⁻¹ • projNumMat F u`. Use extensionality with `i l`. Simplify using `only [LinearMap.toMatrix'_apply, ContinuousLinearMap.coe_coe, Matrix.smul_apply, smul_eq_mul, projNumMat]`. Rewrite using `[← key i (Pi.single l 1)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[← LinearMap.det_toMatrix', hM, Matrix.det_smul, Fintype.card_fin]`.
+A detailed English derivation is pending.
 -/
 theorem det_fderiv_div {n : ℕ} {F : (Fin n → ℂ) → Fin (n + 1) → ℂ} {u : Fin n → ℂ}
     (hF : AnalyticAt ℂ F u) (h0 : F u 0 ≠ 0) :
@@ -85,11 +85,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P J :
   {n : ℕ} {R : AnLogRes P J (n + 1)} (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
 
 /- English proof (translation)
-Rewrite using `[analyticAt_pi_iff]`. Introduce `p`. Take `⟨k, hk⟩ : ∃ k, ((BV.chart j).symm u).1 ∈ (R.A.chart k).source` from `R.A.cover _`. Establish `h1 : AnalyticAt ℂ ((fun y => R.lift x y p) ∘ (R.A.chart k).symm) (R.A.chart k ((BV.chart j).symm u).1)` using `R.holo x p k _ ⟨(R.A.chart k).map_source hk, by show (R.A.chart k).symm (R.A.chart k ((BV.chart j).symm u).1) ∈ R.U x`. Rewrite using `[(R.A.chart k).left_inv hk]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU⟩`. Establish `h2 : AnalyticAt ℂ (R.A.chart k ∘ Subtype.val ∘ (BV.chart j).symm) u` using `hB.2 j k _ ⟨hu, hk⟩`. Establish `hcont : ContinuousAt (fun v => ((BV.chart j).symm v).1) u` using `continuous_subtype_val.continuousAt.comp ((BV.chart j).continuousAt_symm hu)`. Use `(h1.comp_of_eq h2 rfl).congr ?_` and prove the remaining obligations. Use `filter_upwards [hcont.preimage_mem_nhds ((R.A.chart k).open_source.mem_nhds hk)] with v hv`.
-
-Simplify using `[(R.A.chart k).left_inv hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_analyticAt_of_mem {V : Set R.X} {BV : FinHolAtlas n V}
     (hB : HoloMap BV R.A Subtype.val) (x : R.X) {j : Fin BV.n} {u : Fin n → ℂ}
@@ -112,9 +110,7 @@ theorem lift_analyticAt_of_mem {V : Set R.X} {BV : FinHolAtlas n V}
   simp [(R.A.chart k).left_inv hv]
 
 /- English proof (translation)
-Establish `hF` using `lift_analyticAt_of_mem hB x hu hU`. Establish `hs : AnalyticAt ℂ (fun v => segre (R.lift x ((BV.chart j).symm v).1)) u`. Rewrite using `[analyticAt_pi_iff]`. Introduce `i`. Conclude with `Finset.univ.analyticAt_fun_prod (fun k _ => analyticAt_pi_iff.1 hF ⟨k, i k⟩)`.
-
-Conclude with `((LinearMap.toContinuousLinearMap Ψ).analyticAt _).comp hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem proj_analyticAt_of_mem {V : Set R.X} {BV : FinHolAtlas n V}
     (hB : HoloMap BV R.A Subtype.val) (x : R.X) {j : Fin BV.n} {u : Fin n → ℂ}
@@ -133,25 +129,23 @@ end ProjRegularClosureOpen
 open ProjRegularClosureOpen in
 
 /- English proof (translation)
-Introduce `K _ ι _ P J n R Ψ V BV hB`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Take `⟨j, hj⟩` from `BV.cover x`. Set `S : Set (Fin n → ℂ)` to `(BV.chart j).target ∩ (BV.chart j).symm ⁻¹' (Subtype.val ⁻¹' R.U x.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hSo : IsOpen S` using `(BV.chart j).isOpen_inter_preimage_symm ((R.isOpen_U x.1).preimage continuous_subtype_val)`. Establish `hxS : BV.chart j x ∈ S` using `⟨(BV.chart j).map_source hj, by simp [(BV.chart j).left_inv hj, R.mem_U]⟩`. Take `⟨r, hr, hrS⟩` from `Metric.isOpen_iff.1 hSo _ hxS`. Set `F : (Fin n → ℂ) → Fin (n + 1) → ℂ` to `fun v => Ψ (segre (R.lift x.1 ((BV.chart j).symm v).1))`. Set `h : (Fin n → ℂ) → ℂ` to `fun v => F v 0 * (projNumMat F v).det`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hFa : ∀ u ∈ S, AnalyticAt ℂ F u` using `fun u hu => proj_analyticAt_of_mem Ψ hB x.1 hu.1 hu.2`. Establish `hha : AnalyticOnNhd ℂ h (Metric.ball (BV.chart j x) r)` using `fun u hu => analyticAt_projDet (hFa u (hrS hu))`. Establish `hreg : ∀ u ∈ S, (BV.chart j).symm u ∈ projRegular R Ψ BV ↔ h u ≠ 0`. Introduce `u hu`. Establish `hy : (BV.chart j).symm u ∈ (BV.chart j).source` using `(BV.chart j).map_target hu.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hyu : BV.chart j ((BV.chart j).symm u) = u` using `(BV.chart j).right_inv hu.1`. Establish `h0iff` using `ProjRegular.proj_ne_zero_iff Ψ (R := R) (hu.2 : ((BV.chart j).symm u).1 ∈ R.U x.1)`. Establish `hev : (projCoord R Ψ ∘ Subtype.val) ∘ (BV.chart j).symm =ᶠ[𝓝 u] fun v (i : Fin n) => F v i.succ / F v 0` using `by filter_upwards [hSo.mem_nhds hu] with v hv`. Conclude with `ProjRegular.projCoord_eq Ψ hv.2`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h0, hd⟩`. Establish `hF0 : F u 0 ≠ 0` using `h0iff.1 h0`. Establish `hdj` using `hd j hy`. Rewrite `hdj` using `[hyu, hev.fderiv_eq, det_fderiv_div (hFa u hu) hF0]`. Conclude with `mul_ne_zero hF0 (right_ne_zero_of_mul hdj)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hh`. Establish `hF0 : F u 0 ≠ 0` using `left_ne_zero_of_mul hh`. Establish `h0` using `h0iff.2 hF0`. Use `⟨h0, fun k hk => ProjRegular.det_ne_zero_of_chart Ψ hB _ h0 hk hy ?_⟩` and prove the remaining obligations. Rewrite using `[hyu, hev.fderiv_eq, det_fderiv_div (hFa u hu) hF0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ (inv_ne_zero (pow_ne_zero _ hF0))) (right_ne_zero_of_mul hh)`. Establish `hW : (BV.chart j).source ∩ (BV.chart j) ⁻¹' Metric.ball (BV.chart j x) r ∈ 𝓝 x` using `((BV.chart j).isOpen_inter_preimage Metric.isOpen_ball).mem_nhds ⟨hj, Metric.mem_ball_self hr⟩`. Use `filter_upwards [hW] with y hyW`. Take `⟨hys, hyb⟩` from `hyW`. Rewrite using `[mem_closure_iff_nhds]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `W hWy`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Set.not_nonempty_iff_eq_empty]`. Establish `hz : h =ᶠ[𝓝 (BV.chart j y)] 0`. Establish `hc : ContinuousAt (BV.chart j).symm (BV.chart j y)` using `(BV.chart j).continuousAt_symm ((BV.chart j).map_source hys)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hW' : W ∈ 𝓝 ((BV.chart j).symm (BV.chart j y))`. Rewrite using `[(BV.chart j).left_inv hys]`. Conclude with `hWy`. Use `filter_upwards [hc.preimage_mem_nhds hW', Metric.isOpen_ball.mem_nhds hyb] with v hvW hvB`. Assume the negation of the conclusion as `hv`.
-
-Conclude with `(Set.eq_empty_iff_forall_notMem.1 hne) _ ⟨hvW, (hreg v (hrS hvB)).2 hv⟩`. Establish `hall` using `hha.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball _ _).isPreconnected hyb hz`. Take `⟨z, hzW, hzreg⟩` from `mem_closure_iff_nhds.1 hx _ hW`. Conclude with `((hreg _ (hrS hzW.2)).1 (by rwa [(BV.chart j).left_inv hzW.1])) (hall hzW.2)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ProjRegularClosureOpen.proof : ProjRegularClosureOpen.Statement := by
   intro K _ ι _ P J n R Ψ V BV hB

@@ -9,9 +9,9 @@ open scoped InnerProductSpace
 namespace ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_bij (fun a _ => Fin.castLE hi a) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a _`. Simplify using `[Finset.mem_filter]`. Introduce `a _ b _ h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Fin.castLE_injective hi h`. Introduce `b hb`. Conclude with `⟨⟨b, (Finset.mem_filter.1 hb).2⟩, Finset.mem_univ _, Fin.ext (by simp)⟩`. Introduce `a _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_castLE_eq_sum_ite_lt_formal_degree {M : Type*} [AddCommMonoid M] {n i : ℕ} (hi : i ≤ n) (g : Fin n → M) :
     ∑ a : Fin i, g (Fin.castLE hi a) = ∑ a : Fin n, if (a : ℕ) < i then g a else 0 := by
@@ -27,7 +27,7 @@ theorem sum_castLE_eq_sum_ite_lt_formal_degree {M : Type*} [AddCommMonoid M] {n 
     rfl
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Finset.map_orderEmbOfFin_univ S h, Finset.prod_map]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prod_orderEmbOfFin {R : Type*} [CommMonoid R] {n i : ℕ} (S : Finset (Fin n)) (h : S.card = i)
     (d : Fin n → R) : ∏ k : Fin i, d (S.orderEmbOfFin h k) = ∏ s ∈ S, d s := by
@@ -35,11 +35,11 @@ theorem prod_orderEmbOfFin {R : Type*} [CommMonoid R] {n i : ℕ} (S : Finset (F
   rfl
 
 /- English proof (translation)
-Establish `hsplit : (U.map f * diagonal d * (Uᴴ).map f).submatrix (Fin.castLE hi) (Fin.castLE hi) = ((U.map f).submatrix (Fin.castLE hi) id * diagonal d) * ((Uᴴ).map f).submatrix id (Fin.castLE hi)`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply, id_eq]`. Establish `hdet : ∀ M : Matrix (Fin i) (Fin i) ℂ, (M.map f).det = f M.det` using `fun M => (RingHom.map_det f M).symm`. Rewrite using `[hsplit, cauchyBinet]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Establish `hA : ((U.map f).submatrix (Fin.castLE hi) id * diagonal d).submatrix id (S.1.orderEmbOfFin S.2) = (U.submatrix (Fin.castLE hi) (S.1.orderEmbOfFin S.2)).map f * diagonal (fun k => d (S.1.orderEmbOfFin S.2 k))`. Use extensionality with `a b`. Simplify using `[Matrix.submatrix_apply, Matrix.mul_diagonal, Matrix.map_apply]`. Establish `hB : (((Uᴴ).map f).submatrix id (Fin.castLE hi)).submatrix (S.1.orderEmbOfFin S.2) id = ((U.submatrix (Fin.castLE hi) (S.1.orderEmbOfFin S.2))ᴴ).map f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `[Matrix.submatrix_apply, Matrix.conjTranspose_apply, Matrix.map_apply]`. Rewrite using `[hA, hB, Matrix.det_mul, Matrix.det_diagonal, hdet, hdet, Matrix.det_conjTranspose, prod_orderEmbOfFin S.1 S.2 d, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem leading_minor_conj_diagonal {R : Type*} [CommRing R] (f : ℂ →+* R) {n i : ℕ} (hi : i ≤ n)
     (U : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → R) :
@@ -70,11 +70,11 @@ theorem leading_minor_conj_diagonal {R : Type*} [CommRing R] (f : ℂ →+* R) {
 
 open Polynomial in
 /- English proof (translation)
-Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Simplify using `[Polynomial.coeff_one]`. Introduce `a S ha ih`. Take `⟨h0, h1, h2⟩` from `ih`. Establish `e : ∀ P : ℂ[X], (1 + X * C (v a)) * P = P + X * (C (v a) * P)` using `fun P => by ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_insert ha, e, Finset.sum_insert ha, Finset.sum_insert ha]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_X_mul_zero, h0, add_zero]`. Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_X_mul, Polynomial.coeff_C_mul, h1, h0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_X_mul, Polynomial.coeff_C_mul, mul_add, h2, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coeff_prod_one_add_low {ι : Type*} [DecidableEq ι] (S : Finset ι) (v : ι → ℂ) :
     (∏ s ∈ S, (1 + X * C (v s))).coeff 0 = 1 ∧ (∏ s ∈ S, (1 + X * C (v s))).coeff 1 = ∑ s ∈ S, v s ∧
@@ -94,9 +94,9 @@ theorem coeff_prod_one_add_low {ι : Type*} [DecidableEq ι] (S : Finset ι) (v 
 
 open Polynomial in
 /- English proof (translation)
-Establish `hD : diagonal (fun s => 1 + X * C (ν s)) = 1 + (X : ℂ[X]) • (diagonal ν).map C`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.diagonal_apply_ne _ h, Matrix.one_apply_ne h]`. Rewrite using `[hD, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul, hV, Matrix.map_one _ (map_zero C) (map_one C)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_polynomial_diagonal {m : ℕ} (V : Matrix (Fin m) (Fin m) ℂ) (hV : V * Vᴴ = 1) (ν : Fin m → ℂ) :
     V.map C * diagonal (fun s => 1 + X * C (ν s)) * (Vᴴ).map C =
@@ -112,14 +112,14 @@ theorem conj_polynomial_diagonal {m : ℕ} (V : Matrix (Fin m) (Fin m) ℂ) (hV 
     Matrix.map_one _ (map_zero C) (map_one C)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace_mul_comm, ← Matrix.mul_assoc, hV, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_conj_eq_trace_of_conjTranspose_mul_self {m : ℕ} (V D : Matrix (Fin m) (Fin m) ℂ) (hV : Vᴴ * V = 1) :
     trace (V * D * Vᴴ) = trace D := by
   rw [Matrix.trace_mul_comm, ← Matrix.mul_assoc, hV, Matrix.one_mul]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = V * diagonal (fun s => ν s ^ 2) * Vᴴ := by`. Rewrite using `[hV, Matrix.mul_one, Matrix.mul_assoc V, Matrix.diagonal_mul_diagonal]`. Simplify using `[sq]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sq_conj_diagonal {m : ℕ} (V : Matrix (Fin m) (Fin m) ℂ) (ν : Fin m → ℂ) (hV : Vᴴ * V = 1) :
     V * diagonal ν * Vᴴ * (V * diagonal ν * Vᴴ) = V * diagonal (fun s => ν s ^ 2) * Vᴴ := by
@@ -131,11 +131,9 @@ theorem sq_conj_diagonal {m : ℕ} (V : Matrix (Fin m) (Fin m) ℂ) (ν : Fin m 
 
 open Polynomial in
 /- English proof (translation)
-Use `set U : Matrix (Fin m) (Fin m) ℂ := (hA.eigenvectorUnitary : Matrix (Fin m) (Fin m) ℂ) with hU`. Use `set ν : Fin m → ℂ := fun s => ((hA.eigenvalues s : ℝ) : ℂ) with hν`. Establish `hUU : U * Uᴴ = 1` using `Matrix.mem_unitaryGroup_iff.mp hA.eigenvectorUnitary.prop`. Establish `hUU' : Uᴴ * U = 1` using `Matrix.mem_unitaryGroup_iff'.mp hA.eigenvectorUnitary.prop`. Establish `hAeq : A = U * diagonal ν * Uᴴ` using `hA.spectral_theorem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconj` using `conj_polynomial_diagonal U hUU ν`. Establish `hdU : (U.map C).det * ((Uᴴ).map C).det = 1`. Rewrite using `[← Matrix.det_mul, ← Matrix.map_mul, hUU, Matrix.map_one _ (map_zero C) (map_one C), Matrix.det_one]`. Establish `hdet : (1 + (X : ℂ[X]) • (U * diagonal ν * Uᴴ).map C).det = ∏ s, (1 + X * C (ν s))`. Rewrite using `[← hconj, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, mul_comm ((U.map C).det), mul_assoc, hdU, mul_one]`.
-
-Rewrite using `[hAeq, hdet, (coeff_prod_one_add_low Finset.univ ν).2.2, sq_conj_diagonal U ν hUU', trace_conj_eq_trace_of_conjTranspose_mul_self U _ hUU', trace_conj_eq_trace_of_conjTranspose_mul_self U _ hUU', Matrix.trace_diagonal, Matrix.trace_diagonal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_two_det_hermitian {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) (hA : A.IsHermitian) :
     2 * (det (1 + (X : ℂ[X]) • A.map C)).coeff 2 = (trace A) ^ 2 - trace (A * A) := by
@@ -154,7 +152,7 @@ theorem coeff_two_det_hermitian {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) (hA :
     trace_conj_eq_trace_of_conjTranspose_mul_self U _ hUU', Matrix.trace_diagonal, Matrix.trace_diagonal]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.submatrix_apply]`. Conclude with `sum_castLE_eq_sum_ite_lt_formal_degree hi (fun a => M a a)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_leading_submatrix {n i : ℕ} (hi : i ≤ n) (M : Matrix (Fin n) (Fin n) ℂ) :
     trace (M.submatrix (Fin.castLE hi) (Fin.castLE hi)) = ∑ a : Fin n, if (a : ℕ) < i then M a a else 0 := by
@@ -162,15 +160,15 @@ theorem trace_leading_submatrix {n i : ℕ} (hi : i ≤ n) (M : Matrix (Fin n) (
   exact sum_castLE_eq_sum_ite_lt_formal_degree hi (fun a => M a a)
 
 /- English proof (translation)
-Establish `hMab : ∀ a b, M a b * M b a = (‖M b a‖ : ℂ) ^ 2`. Introduce `a b`. Rewrite using `[← hM.apply a b]`. Conclude with `Complex.conj_mul' (M b a)`. Establish `h1 : trace ((M * M).submatrix (Fin.castLE hi) (Fin.castLE hi)) = ∑ a : Fin n, if (a : ℕ) < i then ∑ b : Fin n, M a b * M b a else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[trace_leading_submatrix hi]`. Simplify using `only [Matrix.mul_apply]`. Establish `inner : ∀ a : Fin n, ∑ b : Fin i, M a (Fin.castLE hi b) * M (Fin.castLE hi b) a = ∑ b : Fin n, if (b : ℕ) < i then M a b * M b a else 0` using `fun a => sum_castLE_eq_sum_ite_lt_formal_degree hi (fun b => M a b * M b a)`. Establish `h2 : trace (M.submatrix (Fin.castLE hi) (Fin.castLE hi) * M.submatrix (Fin.castLE hi) (Fin.castLE hi)) = ∑ a : Fin n, if (a : ℕ) < i then ∑ b : Fin n, (if (b : ℕ) < i then M a b * M b a else 0) else 0`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.submatrix_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, h2, ← Finset.sum_sub_distrib]`. Simplify using `only [Vi, Complex.ofReal_sum, apply_ite Complex.ofReal, Complex.ofReal_zero, Complex.ofReal_pow]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha : (a : ℕ) < i`. Rewrite using `[if_pos ha, if_pos ha, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : (b : ℕ) < i`. Rewrite using `[if_pos hb, sub_self, if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hb, sub_zero, if_pos (by omega), hMab]`. Rewrite using `[if_neg ha, if_neg ha, sub_zero]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem variance_eq_trace_diff {n i : ℕ} (hi : i ≤ n) (M : Matrix (Fin n) (Fin n) ℂ) (hM : M.IsHermitian) :
     ((Vi M i : ℝ) : ℂ) = trace ((M * M).submatrix (Fin.castLE hi) (Fin.castLE hi)) -

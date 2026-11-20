@@ -20,9 +20,9 @@ section Transport
 variable {V : Type} [AddCommGroup V] [Module ℂ V] {c : ℂ}
 
 /- English proof (translation)
-Rewrite using `[AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[DistribSMul.toAddMonoidHom_apply, inv_smul_smul₀ hc]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨c⁻¹ • x, h, by rw [DistribSMul.toAddMonoidHom_apply, smul_inv_smul₀ hc]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gcm_mem_map_smul (hc : c ≠ 0) (A : AddSubgroup V) (x : V) :
     x ∈ A.map (DistribSMul.toAddMonoidHom V c) ↔ c⁻¹ • x ∈ A := by
@@ -35,7 +35,7 @@ theorem gcm_mem_map_smul (hc : c ≠ 0) (A : AddSubgroup V) (x : V) :
     exact ⟨c⁻¹ • x, h, by rw [DistribSMul.toAddMonoidHom_apply, smul_inv_smul₀ hc]⟩
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.relIndex_map_map_of_injective A B fun _ _ hxy => smul_right_injective V hc hxy`.
+A detailed English derivation is pending.
 -/
 theorem gcm_relIdx_map_smul (hc : c ≠ 0) (A B : AddSubgroup V) :
     relIdx (A.map (DistribSMul.toAddMonoidHom V c)) (B.map (DistribSMul.toAddMonoidHom V c)) = relIdx A B :=
@@ -44,7 +44,7 @@ theorem gcm_relIdx_map_smul (hc : c ≠ 0) (A B : AddSubgroup V) :
 variable {H H' : Sesq V}
 
 /- English proof (translation)
-Simplify using `only [opU]`. Rewrite using `[hH', hH', smul_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gcm_opU_scale (hH' : ∀ u v, H' u v = H (c⁻¹ • u) (c⁻¹ • v)) (x : V) (F : V → ℂ) (z : V) :
     opU H' x (fun w => F (c⁻¹ • w)) z = opU H (c⁻¹ • x) F (c⁻¹ • z) := by
@@ -52,7 +52,7 @@ theorem gcm_opU_scale (hH' : ∀ u v, H' u v = H (c⁻¹ • u) (c⁻¹ • v)) 
   rw [hH', hH', smul_add]
 
 /- English proof (translation)
-Simplify using `only [alphaQ, qOf]`. Rewrite using `[hH']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gcm_alphaQ_scale (hH' : ∀ u v, H' u v = H (c⁻¹ • u) (c⁻¹ • v)) (r : ℝ) (x : V) :
     alphaQ r H' x = alphaQ r H (c⁻¹ • x) := by
@@ -60,7 +60,7 @@ theorem gcm_alphaQ_scale (hH' : ∀ u v, H' u v = H (c⁻¹ • u) (c⁻¹ • v
   rw [hH']
 
 /- English proof (translation)
-Simplify using `only [altE]`. Rewrite using `[hH']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gcm_altE_scale (hH' : ∀ u v, H' u v = H (c⁻¹ • u) (c⁻¹ • v)) (x y : V) :
     altE H' x y = altE H (c⁻¹ • x) (c⁻¹ • y) := by
@@ -68,14 +68,14 @@ theorem gcm_altE_scale (hH' : ∀ u v, H' u v = H (c⁻¹ • u) (c⁻¹ • v))
   rw [hH']
 
 /- English proof (translation)
-Introduce `x y`. Rewrite using `[hH', hH', hH]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem gcm_isHerm_scale (hH' : ∀ u v, H' u v = H (c⁻¹ • u) (c⁻¹ • v)) (hH : IsHerm H) : IsHerm H' := by
   intro x y
   rw [hH', hH', hH]
 
 /- English proof (translation)
-Use `⟨fun x hx => hβ.1 _ ((gcm_mem_map_smul hc M x).1 hx), fun x hx y hy => ?_⟩` and prove the remaining obligations. Use `show β (c⁻¹ • (x + y)) = β (c⁻¹ • x) * β (c⁻¹ • y) * Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H' x y : ℂ))`. Rewrite using `[smul_add, gcm_altE_scale hH']`. Conclude with `hβ.2 _ ((gcm_mem_map_smul hc M x).1 hx) _ ((gcm_mem_map_smul hc M y).1 hy)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gcm_semi_scale (hc : c ≠ 0) (hH' : ∀ u v, H' u v = H (c⁻¹ • u) (c⁻¹ • v)) {M : AddSubgroup V}
     {β : V → ℂ} (hβ : IsSemiChar H M β) :
@@ -86,7 +86,7 @@ theorem gcm_semi_scale (hc : c ≠ 0) (hH' : ∀ u v, H' u v = H (c⁻¹ • u) 
   exact hβ.2 _ ((gcm_mem_map_smul hc M x).1 hx) _ ((gcm_mem_map_smul hc M y).1 hy)
 
 /- English proof (translation)
-Introduce `x hx z`. Use `show β (c⁻¹ • x) * opU H' x (fun w => F (c⁻¹ • w)) z = F (c⁻¹ • z)`. Rewrite using `[gcm_opU_scale hH']`. Conclude with `hF _ ((gcm_mem_map_smul hc S x).1 hx) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gcm_fixed_scale (hc : c ≠ 0) (hH' : ∀ u v, H' u v = H (c⁻¹ • u) (c⁻¹ • v)) {S : AddSubgroup V}
     {β : V → ℂ} {F : V → ℂ} (hF : F ∈ fixedBy H β S) :
@@ -97,11 +97,11 @@ theorem gcm_fixed_scale (hc : c ≠ 0) (hH' : ∀ u v, H' u v = H (c⁻¹ • u)
   exact hF _ ((gcm_mem_map_smul hc S x).1 hx) _
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, fun x hx y hy hxy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨x', hx', rfl⟩` from `Finset.mem_image.1 hx`. Rewrite using `[gcm_mem_map_smul hc, inv_smul_smul₀ hc]`. Conclude with `hR.1 x' hx'`. Take `⟨x', hx', rfl⟩` from `Finset.mem_image.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy', rfl⟩` from `Finset.mem_image.1 hy`. Rewrite `hxy` using `[gcm_mem_map_smul hc, ← smul_sub, inv_smul_smul₀ hc]`. Rewrite using `[hR.2.1 x' hx' y' hy' hxy]`. Take `⟨x, hx, hyx⟩` from `hR.2.2 (c⁻¹ • y) ((gcm_mem_map_smul hc B y).1 hy)`. Use `⟨c • x, Finset.mem_image_of_mem _ hx, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gcm_mem_map_smul hc, smul_sub, inv_smul_smul₀ hc]`. Conclude with `hyx`.
+A detailed English derivation is pending.
 -/
 theorem gcm_reps_scale (hc : c ≠ 0) [DecidableEq V] {A B : AddSubgroup V} {R : Finset V} (hR : IsReps A B R) :
     IsReps (A.map (DistribSMul.toAddMonoidHom V c)) (B.map (DistribSMul.toAddMonoidHom V c))
@@ -120,9 +120,9 @@ theorem gcm_reps_scale (hc : c ≠ 0) [DecidableEq V] {A B : AddSubgroup V} {R :
     exact hyx
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[gcm_mem_map_smul hc]`. Use `show (∀ y ∈ Λ.map (DistribSMul.toAddMonoidHom V c), ∃ m : ℤ, altE H' x y = (m : ℝ)) ↔ (∀ y ∈ Λ, ∃ m : ℤ, altE H (c⁻¹ • x) y = (m : ℝ))`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hx (c • y) ((gcm_mem_map_smul hc Λ _).2 (by rw [inv_smul_smul₀ hc]; exact hy))` as an intermediate fact. Rewrite `this` using `[gcm_altE_scale hH', inv_smul_smul₀ hc]`. Then use the resulting hypothesis. Introduce `hx y hy`. Rewrite using `[gcm_altE_scale hH']`. Conclude with `hx _ ((gcm_mem_map_smul hc Λ y).1 hy)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gcm_dualLat_scale (hc : c ≠ 0) (hH' : ∀ u v, H' u v = H (c⁻¹ • u) (c⁻¹ • v)) (Λ : AddSubgroup V) :
     dualLat H' (Λ.map (DistribSMul.toAddMonoidHom V c)) = (dualLat H Λ).map (DistribSMul.toAddMonoidHom V c) := by
@@ -139,9 +139,9 @@ theorem gcm_dualLat_scale (hc : c ≠ 0) (hH' : ∀ u v, H' u v = H (c⁻¹ • 
     exact hx _ ((gcm_mem_map_smul hc Λ y).1 hy)
 
 /- English proof (translation)
-Take `⟨⟨R, hR⟩, -⟩` from `Formalism.L2.Th1.H.repsExist V S M hidx`. Rewrite using `[Formalism.L2.Th1.H.interReps V H' (gcm_isHerm_scale hH' hH) _ _ _ (gcm_semi_scale hc hH' hβ) _ (gcm_fixed_scale hc hH' hF) _ (gcm_reps_scale hc hR) w, Formalism.L2.Th1.H.interReps V H hH S M β hβ F hF R hR (c⁻¹ • w), gcm_relIdx_map_smul hc]`. Use `congr 1`. Simplify using `only [sumU]`. Rewrite using `[Finset.sum_image fun _ _ _ _ hxy => smul_right_injective V hc hxy]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `show β (c⁻¹ • c • x) * opU H' (c • x) (fun v => F (c⁻¹ • v)) w = β x * opU H x F (c⁻¹ • w)`. Rewrite using `[gcm_opU_scale hH', inv_smul_smul₀ hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gcm_inter_scale (hc : c ≠ 0) (hH' : ∀ u v, H' u v = H (c⁻¹ • u) (c⁻¹ • v)) (hH : IsHerm H)
     {S M : AddSubgroup V} {β : V → ℂ} {F : V → ℂ} (hβ : IsSemiChar H M β) (hF : F ∈ fixedBy H β S)
@@ -165,13 +165,13 @@ end Transport
 section Forms
 
 /- English proof (translation)
-Rewrite using `[map_inv₀, ← mul_inv, Complex.mul_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gcm_inv_mul_conj (c : ℂ) : (c⁻¹ * conj c⁻¹ : ℂ) = ((Complex.normSq c : ℝ) : ℂ)⁻¹ := by
   rw [map_inv₀, ← mul_inv, Complex.mul_conj]
 
 /- English proof (translation)
-Rewrite using `[(Formalism.L2.Th1.H.matHBasic m _).1, (Formalism.L2.Th1.H.matHBasic m M).1, ← gcm_inv_mul_conj c]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gcm_matH_scale {m : Type} [Fintype m] (c : ℂ) (M : Matrix m m ℂ) (u v : m → ℂ) :
     matH (((Complex.normSq c : ℝ) : ℂ)⁻¹ • M) u v = matH M (c⁻¹ • u) (c⁻¹ • v) := by
@@ -181,7 +181,7 @@ theorem gcm_matH_scale {m : Type} [Fintype m] (c : ℂ) (M : Matrix m m ℂ) (u 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w w'`. Simplify using `only [blk4, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockFour_smul {n : Type} (k : ℂ) (h : Matrix n n ℂ) : blk4 (k • h) = k • blk4 h := by
   funext w w'
@@ -189,9 +189,9 @@ theorem blockFour_smul {n : Type} (k : ℂ) (h : Matrix n n ℂ) : blk4 (k • h
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[(Formalism.L2.Th1.H.stdHBasic _ m).1, (Formalism.L2.Th1.H.stdHBasic L m).1]`. Establish `hA` using `(Formalism.L2.Th1.F.homogeneity L c hc).2.2.2.2.2.1`. Establish `key : (c⁻¹ * conj c⁻¹ : ℂ) = ((‖c‖ : ℂ) ^ 2)⁻¹`. Rewrite using `[map_inv₀, ← mul_inv, Complex.mul_conj']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Formalism.L2.Th1.F.herm, hA, Pi.smul_apply, smul_eq_mul, map_mul, div_eq_mul_inv, Complex.ofReal_mul, Complex.ofReal_pow, mul_inv]`. Rewrite using `[← key]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gcm_stdH_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (m : Type) [Fintype m] [DecidableEq m]
     (u v : m → ℂ) : stdH (scalePair L c hc) m u v = stdH L m (c⁻¹ • u) (c⁻¹ • v) := by
@@ -206,7 +206,7 @@ theorem gcm_stdH_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (m : Type) [Fin
   ring
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[gcm_mem_map_smul hc]`. Simplify using `only [stdLat, AddSubgroup.mem_pi, Submodule.mem_toAddSubgroup, (Formalism.L2.Th1.F.homogeneity L c hc).1, Pi.smul_apply, smul_eq_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gcm_stdLat_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (m : Type) :
     stdLat (scalePair L c hc) m = (stdLat L m).map (DistribSMul.toAddMonoidHom (m → ℂ) c) := by
@@ -216,13 +216,13 @@ theorem gcm_stdLat_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (m : Type) :
     Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[gcm_mem_map_smul hc]`. Simplify using `only [imgLat, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hy' : ∀ a, slice a y ∈ Λ.map (DistribSMul.toAddMonoidHom (n → ℂ) c)` using `hy`. Use `⟨c⁻¹ • y, fun a => (gcm_mem_map_smul hc Λ _).1 (hy' a), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce and unpack `⟨y, hy, hyx⟩`. Establish `hy' : ∀ a, slice a y ∈ Λ` using `hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨c • y, fun a => (gcm_mem_map_smul hc Λ _).2 ?_, ?_⟩` and prove the remaining obligations. Establish `: c⁻¹ • slice a (c • y) = slice a y`. Use function extensionality and compare the values at `i`. Simplify using `only [slice, Pi.smul_apply, smul_eq_mul, inv_mul_cancel_left₀ hc]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy' a`. Simplify using `only [LinearMap.toAddMonoidHom_coe] at hyx ⊢`. Rewrite using `[map_smul, hyx, smul_inv_smul₀ hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gcm_imgLat_scale {W : Type} [AddCommGroup W] [Module ℂ W] {n : Type} (c : ℂ) (hc : c ≠ 0)
     (g : (Fin 4 × n → ℂ) →ₗ[ℂ] W) (Λ : AddSubgroup (n → ℂ)) :
@@ -248,7 +248,7 @@ theorem gcm_imgLat_scale {W : Type} [AddCommGroup W] [Module ℂ W] {n : Type} (
       rw [map_smul, hyx, smul_inv_smul₀ hc]
 
 /- English proof (translation)
-Simplify using `only [F0, prodFn]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h9` using `(Formalism.L2.Th1.F.homogeneity L c hc).2.2.2.2.2.2.2.2.1 (ω₀ / 2) (c⁻¹ * w i)`. Rewrite `h9` using `[mul_inv_cancel_left₀ hc]`. Rewrite using `[show c * ω₀ / 2 = c * (ω₀ / 2) by ring, h9]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -262,9 +262,7 @@ theorem periodF0_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (ω₀ : ℂ) (
   rfl
 
 /- English proof (translation)
-Use `show PeriodPair.mk _ _ _ = PeriodPair.mk _ _ _`. Use `congr 1`. Use `show b * (a * L.ω₁) = _`. Expand and normalize the polynomial expressions, which then agree. Use `show b * (a * L.ω₂) = _`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gcm_scalePair_scalePair (L : PeriodPair) (a b : ℂ) (ha : a ≠ 0) (hb : b ≠ 0) :
     scalePair (scalePair L a ha) b hb = scalePair L (a * b) (mul_ne_zero ha hb) := by
@@ -276,9 +274,9 @@ theorem gcm_scalePair_scalePair (L : PeriodPair) (a b : ℂ) (ha : a ≠ 0) (hb 
     ring
 
 /- English proof (translation)
-Establish `hH'` using `gcm_stdH_scale L c hc (Fin 4 × n)`. Establish `hα : alphaQ r (stdH (scalePair L c hc) (Fin 4 × n)) = fun x => alphaQ r (stdH L (Fin 4 × n)) (c⁻¹ • x)`. Use function extensionality and compare the values at `(gcm_alphaQ_scale hH' r)`. Establish `hF0 : F0 (scalePair L c hc) (c * ω₀) (Fin 4 × n) = fun w => F0 L ω₀ (Fin 4 × n) (c⁻¹ • w)`. Use function extensionality and compare the values at `(periodF0_scale L c hc ω₀ (Fin 4 × n))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [kernel4]`. Rewrite using `[gcm_stdLat_scale, gcm_imgLat_scale c hc, hα, hF0, map_smul]`. Conclude with `gcm_inter_scale hc hH' (Formalism.L2.Th1.H.stdHBasic L (Fin 4 × n)).2.1 hβ hF hidx _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gcm_kernel4_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (ω₀ : ℂ) (r : ℝ) {n : Type} [Fintype n]
     [DecidableEq n] (Λ : AddSubgroup (n → ℂ)) (g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ))

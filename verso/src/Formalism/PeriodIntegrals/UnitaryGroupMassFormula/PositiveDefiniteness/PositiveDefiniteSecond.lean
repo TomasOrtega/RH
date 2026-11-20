@@ -8,11 +8,11 @@ namespace PI.DefPosDefWork
 open Matrix ComplexOrder
 
 /- English proof (translation)
-Establish `hQc : Continuous fun w : Fin k → ℂ => (star w ⬝ᵥ (M *ᵥ w)).re` using `by show Continuous fun w : Fin k → ℂ => (∑ i, star (w i) * ∑ j, M i j * w j).re`. Conclude with `Complex.continuous_re.comp (continuous_finset_sum _ fun i _ => (continuous_star.comp (continuous_apply i)).mul (continuous_finset_sum _ fun j _ => continuous_const.mul (continuous_apply j)))`. Set `ψ : (Fin k → ℝ) × (Fin k → ℝ) → (Fin k → ℂ)` to `fun p i => (p.1 i : ℂ) + (p.2 i : ℂ) * z`. Establish `hψ : Continuous ψ` using `by fun_prop`. Set `d : (Fin k → ℚ) × (Fin k → ℚ) → (Fin k → ℝ) × (Fin k → ℝ)` to `Prod.map (fun α i => (α i : ℝ)) (fun β i => (β i : ℝ))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd : DenseRange d` using `(DenseRange.piMap fun _ => Rat.denseRange_cast).prodMap (DenseRange.piMap fun _ => Rat.denseRange_cast)`. Establish `key : ∀ p : (Fin k → ℝ) × (Fin k → ℝ), 0 ≤ (star (ψ p) ⬝ᵥ (M *ᵥ ψ p)).re` using `fun p => hd.induction_on p (isClosed_le continuous_const (hQc.comp hψ)) (fun q => by simpa [ψ, d] using h q.1 q.2)`. Set `p : (Fin k → ℝ) × (Fin k → ℝ)` to `(fun i => (v i).re - (v i).im / z.im * z.re, fun i => (v i).im / z.im)`. Establish `hp : ψ p = v`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [ψ, p] <;> (try field_simp) <;> (try ring)`. Establish `h1` using `key p`. Rewrite `h1` using `[hp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem re_nonneg_of_rat {k : ℕ} (M : Matrix (Fin k) (Fin k) ℂ) (z : ℂ) (hz : z.im ≠ 0)
     (h : ∀ α β : Fin k → ℚ, 0 ≤ (star (fun i => (α i : ℂ) + (β i : ℂ) * z) ⬝ᵥ
@@ -39,9 +39,9 @@ theorem re_nonneg_of_rat {k : ℕ} (M : Matrix (Fin k) (Fin k) ℂ) (z : ℂ) (h
   rwa [hp] at h1
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, Finset.mul_sum, Complex.re_sum, Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im, Complex.add_re, Complex.add_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.mul_im, hN]`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[← Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem re_quad {k : ℕ} (N : Matrix (Fin k) (Fin k) ℂ) (hN : ∀ i j, (N i j).im = 0) (a b : Fin k → ℝ) :
     (star (fun i => (a i : ℂ) + (b i : ℂ) * Complex.I) ⬝ᵥ (N *ᵥ (fun i => (a i : ℂ) + (b i : ℂ) * Complex.I))).re
@@ -59,17 +59,15 @@ theorem re_quad {k : ℕ} (N : Matrix (Fin k) (Fin k) ℂ) (hN : ∀ i j, (N i j
   ring
 
 /- English proof (translation)
-Use `haveI : CharZero E := RingHom.charZero φ`. Establish `hPSD : ∀ v : Fin k → ℂ, 0 ≤ (star v ⬝ᵥ (N *ᵥ v)).re`. Distinguish the cases in `hreal : ∀ t : E, (φ t).im = 0`. Establish `hNr'` using `hNr hreal`. Establish `hQc : Continuous fun a : Fin k → ℝ => (star (fun i => (a i : ℂ)) ⬝ᵥ (N *ᵥ fun i => (a i : ℂ))).re` using `by show Continuous fun a : Fin k → ℝ => (∑ i, star ((a i : ℂ)) * ∑ j, N i j * (a j : ℂ)).re`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Complex.continuous_re.comp (continuous_finset_sum _ fun i _ => (continuous_star.comp (Complex.continuous_ofReal.comp (continuous_apply i))).mul (continuous_finset_sum _ fun j _ => continuous_const.mul (Complex.continuous_ofReal.comp (continuous_apply j))))`. Establish `hd : DenseRange (fun α : Fin k → ℚ => fun i => (α i : ℝ))` using `DenseRange.piMap fun _ => Rat.denseRange_cast`. Establish `hreal' : ∀ a : Fin k → ℝ, 0 ≤ (star (fun i => (a i : ℂ)) ⬝ᵥ (N *ᵥ fun i => (a i : ℂ))).re` using `fun a => hd.induction_on a (isClosed_le continuous_const hQc) (fun α => by`. Establish `h1` using `hpt (fun i => (α i : E))`. Simplify `h1)` using `[map_ratCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v`. Establish `e` using `re_quad N hNr' (fun i => (v i).re) (fun i => (v i).im)`. Establish `hv : (fun i => ((v i).re : ℂ) + ((v i).im : ℂ) * Complex.I) = v`. Use function extensionality and compare the values at `fun i => Complex.re_add_im (v i)`. Rewrite `e` using `[hv]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `add_nonneg (hreal' _) (hreal' _)`. Use `push_neg at hreal`. Take `⟨t, ht⟩` from `hreal`. Use `re_nonneg_of_rat N (φ t) ht (fun α β => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hpt (fun i => (α i : E) + (β i : E) * t)`. Simplify `h1` using `[map_add, map_mul, map_ratCast]`. Establish `hpsd : N.PosSemidef`. Rewrite using `[Matrix.posSemidef_iff_dotProduct_mulVec]`. Use `⟨hN, fun v => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Complex.nonneg_iff]`. Conclude with `⟨hPSD v, (hN.im_star_dotProduct_mulVec_self v).symm⟩`. Conclude with `hpsd.posDef_iff_isUnit.2 hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem posDef_of_points {E : Type} [Field E] (φ : E →+* ℂ) {k : ℕ} (N : Matrix (Fin k) (Fin k) ℂ)
     (hN : N.IsHermitian) (hu : IsUnit N) (hNr : (∀ t : E, (φ t).im = 0) → ∀ i j, (N i j).im = 0)
@@ -111,29 +109,27 @@ theorem posDef_of_points {E : Type} [Field E] (φ : E →+* ℂ) {k : ℕ} (N : 
   exact hpsd.posDef_iff_isUnit.2 hu
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ hF σ k J _ hH hD h1 φ`. Take `⟨r, hr⟩` from `hF (φ.comp (algebraMap F E))`. Establish `hr' : ∀ a, φ (algebraMap F E a) = (r a : ℂ)` using `fun a => hr a`. Establish `hJ : ∀ i j, σ (J j i) = J i j` using `fun i j => congrFun (congrFun hH i) j`. Establish `hst : ∀ y, star (φ y) = φ (σ y)` using `fun y => (h1 φ y).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMh : (J.map φ).IsHermitian`. Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply, hst, hJ]`. Establish `hQ : ∀ x : Fin k → E, star (fun i => φ (x i)) ⬝ᵥ (J.map φ *ᵥ (fun i => φ (x i))) = φ (hform (σ : E →+* E) J x x)`. Introduce `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [dotProduct, mulVec, hform, Pi.star_apply, hst, Matrix.map_apply, map_sum, map_mul, Finset.mul_sum, mul_assoc]`. Both sides reduce to the same expression. Establish `hdet : J.det ≠ 0`. Introduce `h0`. Take `⟨v, hv, hJv⟩` from `(Matrix.exists_mulVec_eq_zero_iff).mpr h0`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h0' : hform (σ : E →+* E) J v v = 0`. Establish `e : hform (σ : E →+* E) J v v = ∑ i, (σ : E →+* E) (v i) * (J *ᵥ v) i`. Simplify using `only [hform, mulVec, dotProduct, Finset.mul_sum, mul_assoc]`. Rewrite using `[e, hJv]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `hD r with h | h` into its components or cases. Take `⟨a, ha, ha'⟩` from `h v hv`. Rewrite `ha` using `[h0']`. Establish `ha0 : a = 0` using `(map_eq_zero_iff _ (algebraMap F E).injective).mp ha`. Rewrite `ha'` using `[ha0, map_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ ha'`. Take `⟨a, ha, ha'⟩` from `h v hv`. Rewrite `ha` using `[h0']`. Establish `ha0 : a = 0` using `(map_eq_zero_iff _ (algebraMap F E).injective).mp ha`. Rewrite `ha'` using `[ha0, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lt_irrefl _ ha'`. Establish `hMu : IsUnit (J.map φ)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero φ).mpr hdet`. Establish `hMr : (∀ t : E, (φ t).im = 0) → ∀ i j, ((J.map φ) i j).im = 0` using `fun ht i j => ht (J i j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Establish `hQ0 : ∀ x : Fin k → E, x = 0 → hform (σ : E →+* E) J x x = 0`. Introduce `x hx`. Substitute `hx` using the available equality. Simplify using `[hform]`. Break down `hD r with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `left`. Use `posDef_of_points φ _ hMh hMu hMr fun x => ?_` and prove the remaining obligations. Rewrite using `[hQ]`. Distinguish the cases in `hx : x = 0`. Rewrite using `[hQ0 x hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Take `⟨a, ha, ha'⟩` from `h x hx`. Rewrite using `[← ha, hr']`. Simplify using `using ha'.le`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `posDef_of_points φ _ hMh.neg hMu.neg (fun ht i j => by simpa using hMr ht i j) fun x => ?_` and prove the remaining obligations. Rewrite using `[Matrix.neg_mulVec, dotProduct_neg, hQ]`. Distinguish the cases in `hx : x = 0`. Rewrite using `[hQ0 x hx]`. Simplify using the standard rewrite rules.
-
-Take `⟨a, ha, ha'⟩` from `h x hx`. Rewrite using `[← ha, hr']`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem positive_definite_second : Step2 := by
   intro F E _ _ _ _ _ hF σ k J _ hH hD h1 φ

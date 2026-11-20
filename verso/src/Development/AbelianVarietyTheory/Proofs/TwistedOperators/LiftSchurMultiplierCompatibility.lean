@@ -27,7 +27,7 @@ namespace GlobalTheory.ChainEquiv
 variable {D : D7}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime (p : 𝓞 K) (q : 𝓞 K)`. Simplify using `using (Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne)).map (Int.castRingHom (𝓞 K))`. Take `⟨a, b, hab⟩` from `hc`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_natCast_mem {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) {p q : ℕ} (hp : p.Prime)
     (hq : q.Prime) (h1 : (p : 𝓞 K) ∈ P.asIdeal) (h2 : (q : 𝓞 K) ∈ P.asIdeal) : p = q := by
@@ -38,7 +38,7 @@ theorem eq_of_natCast_mem {K : Type} [Field K] [NumberField K] (P : HeightOneSpe
   exact P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `h _ hn`. Establish `: c = (n : 𝓞 D.host.E)` using `RingOfIntegers.ext (by rw [e]; simp)`. Conclude with `this ▸ hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCast_mem_of_isConjPl {P P' : Pl D.host.E} (h : Lev.IsConjPl P P') {n : ℕ} (hn : (n : 𝓞 D.host.E) ∈ P.asIdeal) :
     (n : 𝓞 D.host.E) ∈ P'.asIdeal := by
@@ -47,11 +47,9 @@ theorem natCast_mem_of_isConjPl {P P' : Pl D.host.E} (h : Lev.IsConjPl P P') {n 
   exact this ▸ hc
 
 /- English proof (translation)
-Take `⟨Q, hQ, -⟩` from `GlobalTheory.Mem.Chr.existsUnique_conjPl D.host.conj.toRingEquiv P`. Establish `: Q = P'`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use `Q.isMaximal.eq_of_le P'.isPrime.ne_top fun y hy => ?_` and prove the remaining obligations. Set `x : 𝓞 D.host.E` to `(RingOfIntegers.mapRingEquiv D.host.conj.toRingEquiv).symm y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hxy : (y : D.host.E) = D.host.conj.toRingEquiv (x : D.host.E)` using `(congrArg (fun z : 𝓞 D.host.E => (z : D.host.E)) ((RingOfIntegers.mapRingEquiv D.host.conj.toRingEquiv).apply_symm_apply y)).symm`. Take `⟨c, hc, e⟩` from `h x (((GlobalTheory.Mem.Chr.conjPl_iff_mem _ _ _).1 hQ x y hxy).2 hy)`. Establish `: c = y` using `RingOfIntegers.ext (by`. Rewrite using `[e, hxy]`. Conclude with `bridge_star_holds D.R D.host (x : D.host.E))`.
-
-Conclude with `this ▸ hc`. Conclude with `this ▸ hQ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_smul_of_isConjPl {P P' : Pl D.host.E} (h : Lev.IsConjPl P P') :
     GlobalTheory.Mem.Chr.ConjPl D.host.conj.toRingEquiv P P' := by
@@ -70,15 +68,13 @@ theorem conj_smul_of_isConjPl {P P' : Pl D.host.E} (h : Lev.IsConjPl P P') :
   exact this ▸ hQ
 
 /- English proof (translation)
-Establish `hQ : ∀ PP ∈ L.Q t, ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal`. Introduce `PP hP k hk`. Take `⟨⟨q, hq, hc, -, hne⟩, -⟩` from `h.Q_pl t PP hP`. Establish `h1 : (q : 𝓞 D.host.E) ∈ PP.asIdeal`. Rewrite using `[← hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.absNorm_mem PP.asIdeal`. Conclude with `hne k (eq_of_natCast_mem PP hq (D.host.g_prime k) h1 hk)`. Use `⟨fun PP hP PP' hP' hc => ?_, Finset.disjoint_left.2 fun PP hP hP' => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `(h.Pg PP).1 hP`. Establish `h1 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `L.C.P.overP hk`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2` using `natCast_mem_of_isConjPl hc h1`. Break down `hP' with hP' | hP'` into its components or cases. Take `⟨k', hk'⟩` from `(h.Pg PP').1 hP'`. Establish `h3` using `eq_of_natCast_mem PP' (D.host.g_prime k) (D.host.g_prime k') h2 (L.C.P.overP hk')`. Establish `h4 : k = k'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `D.host.g_ne` as an intermediate fact. Apply the tactic sequence `fin_cases k <;> fin_cases k' <;> simp_all`. Substitute `h4` using the available equality. Conclude with `((GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) PP h1).2.2.2 (L.C.P.pb k) (L.C.P.pb_over k) PP' (conj_smul_of_isConjPl hc)).2.1 hk hk'`. Conclude with `hQ PP' hP' k h2`.
-
-Take `⟨k, hk⟩` from `(h.Pg PP).1 hP`. Conclude with `hQ PP hP' k (L.C.P.overP hk)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem places_sep {T : Type} (L : LevCh D T) (μ0 : T) (h : L.Is μ0) (t : T) :
     (∀ PP ∈ L.Pg, ∀ PP', PP' ∈ L.Pg ∨ PP' ∈ L.Q t → ¬ Lev.IsConjPl PP PP') ∧ Disjoint L.Pg (L.Q t) := by
@@ -107,7 +103,7 @@ theorem places_sep {T : Type} (L : LevCh D T) (μ0 : T) (h : L.Is μ0) (t : T) :
     exact hQ PP hP' k (L.C.P.overP hk)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.βY j hj`. Conclude with `GlobalTheory.T.parahoricLevel_liftsExist _ _ _ _ _ hc (places_sep L μ0 h t).1 (places_sep L μ0 h t).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lifts_chain {T : Type} (L : LevCh D T) (μ0 : T) (h : L.Is μ0) (t : T) (j : ℕ) (hj : j < D.R.m) :
     LiftsExist (Yc D j) (L.βY j) (L.datYt t j L.triv) := by
@@ -115,11 +111,11 @@ theorem lifts_chain {T : Type} (L : LevCh D T) (μ0 : T) (h : L.Is μ0) (t : T) 
   exact GlobalTheory.T.parahoricLevel_liftsExist _ _ _ _ _ hc (places_sep L μ0 h t).1 (places_sep L μ0 h t).2
 
 /- English proof (translation)
-Establish `h0` using `GlobalTheory.mult_value_left_cont_level θ M J χ _ ((mem_multT θ M J χ u).1 hu)`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Establish `h1` using `h0 f`. Simplify using `only [PiTensorProduct.lift_symm, LinearMap.compMultilinearMap_apply] at h1`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun γ hγ g => ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, Pi.smul_apply, h1.1 γ hγ g]`. Simplify using `only [map_smul, Pi.smul_apply, h1.2.2 k hk g, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Use `⟨fun γ hγ g => ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply, hx.1 γ hγ g, hy.1 γ hγ g]`. Simplify using `only [map_add, Pi.add_apply, hx.2 k hk g, hy.2 k hk g]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem multT_value {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ)
     (u : SmT M →ₗ[ℂ] (GA D V → ℂ)) (hu : u ∈ MultT θ M J χ) (v : SmT M) :
@@ -138,7 +134,7 @@ theorem multT_value {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M 
     · simp only [map_add, Pi.add_apply, hx.2 k hk g, hy.2 k hk g]; ring
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable V`. Establish `h7 : IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Take `⟨h5, h6⟩` from `GlobalTheory.ParahoricCompact.isCompact_flag_and_lift V β L`. Conclude with `(GlobalTheory.fundamentalDomain_setIntegral_mul_right (GQ V) ν 𝓕 h𝓕 κ (GlobalTheory.haar_map_mul_right_of_mem_compact_subgroup ν _ h5 κ (h6 g0 κ hκ)) f hf hi).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integral_shift_lift (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (g0 : G0 L.Pg L.r)
     (κ : GA D V) (hκ : IsLevelLift V β L g0 κ) (ν : Measure (GA D V)) (hν : ν.IsHaarMeasure) (𝓕 : Set (GA D V))
@@ -151,15 +147,15 @@ theorem integral_shift_lift (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : 
     (GlobalTheory.haar_map_mul_right_of_mem_compact_subgroup ν _ h5 κ (h6 g0 κ hκ)) f hf hi).2
 
 /- English proof (translation)
-Establish `hc` using `levChi_ne_zero (β := β) (flagL L) κ`. Establish `hf' : om (κ, κ') f = (levChi S β (flagL L) κ * a') • f`. Rewrite using `[mul_smul, ← hf, smul_smul, mul_inv_cancel₀ hc, one_smul]`. Establish `hm : actL S β L g0 ∘ₗ (io F : SmT M →ₗ[ℂ] (GA D S → ℂ)) ∈ MultT θ M (levS S β L) (levChi S β L)`. Establish `h1` using `GlobalTheory.FlagAction.finiteGroupAction_preserves_principalFlagMultiplicity θ M hθ β L g0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hL]`. Conclude with `(mem_multT θ M _ _ _).2 (h1 _ ((mem_multT θ M _ _ _).1 (io F).2) _ fun v => rfl)`. Establish `hu : ∀ v g, (actL S β L g0 ∘ₗ (io F : SmT M →ₗ[ℂ] (GA D S → ℂ))) v g = (levChi S β (flagL L) κ)⁻¹ * (io F : SmT M →ₗ[ℂ] (GA D S → ℂ)) v (g * κ)` using `fun v g => level_action_spec (by rw [hL]; exact (multT_value θ M _ _ _ (io F).2 v).2) ⟨κ, hκ⟩ κ hκ g`. Establish `key` using `GlobalTheory.thetaLift_translate_of_kernel_fixed ν 𝓕 (thetaKO om) _ It CC _ io hio ?_ κ κ' (levChi S β (flagL L) κ)⁻¹ a' ?_ ?_ F F' ⟨_, hm⟩ hF hu`. Rewrite using `[key]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hu v g`. Introduce `u h0`. Choose the witnesses or unpack the hypotheses as in `⟨φ, w, hw⟩ : ∃ φ w, It φ w ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `hIt (LinearMap.ext fun φ => LinearMap.ext fun w => hn φ w)`. Conclude with `Subtype.ext (GlobalTheory.multT_eq_zero_of_apply_eq_zero θ M _ _ μ 𝓔 hθ hμ h𝓔 hS _ u.2 _ hw (h0 φ w))`. Introduce `g h φ`. Rewrite using `[(GlobalTheory.thetaKO_rat_left_and_eigen_right ψ S T χS χT om hom _ (hpt φ)).2 κ κ' _ (GlobalTheory.FiniteFock.om_pureTensorO_of_finite ψ θ S T χS χT om hθ hom sS sT BS BT f hpt κ hκ.1 κ' hκ'.1 _ hf' φ) g h]`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `F φ v g`. Use `integral_shift_lift T β' L' g0' κ' hκ' ν hν 𝓕 h𝓕 (fun h => thetaKO om g h (pureTensorO ψ θ S T sS sT BS BT f φ) * (F : Ds →ₗ[ℂ] (GA D T → ℂ)) v h) (fun γ hγ h => ?_) (hio.integ F φ v g)` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.thetaKO_rat_left_and_eigen_right ψ S T χS χT om hom _ (hpt φ)).1 1 (GQ S).one_mem γ hγ g h`. Rewrite `h1` using `[one_mul]`. Simplify using `only [h1, hCC F v γ hγ h]`.
+A detailed English derivation is pending.
 -/
 theorem step {S T : HSp D} {Sp : D.what₂.Tau → SPar} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hθ : IsInfFam θ)
     (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (hom : IsWeilDatumO ψ S T χS χT om)
@@ -212,9 +208,9 @@ theorem step {S T : HSp D} {Sp : D.what₂.Tau → SPar} (ψ : AddChar (AF D.hos
     simp only [h1, hCC F v γ hγ h]
 
 /- English proof (translation)
-Use `⟨⟨hx.1.1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2, h3]`. Conclude with `hx.1.2`. Use `Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun _ => mem_parah.2 ⟨parLev_St hx, mem_blockTri.2 fun i j hij => ?_⟩` and prove the remaining obligations. Establish `hi : i.val < L'.r` using `lt_of_lt_of_le i.2 hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[blk2, hi] at hij`.
+A detailed English derivation is pending.
 -/
 theorem parLev_of_rank {V : HSp D} (β : GL (Fin V.rank) (Lev.EAf D)) (L L' : LevDat D.host.E ℂ V.rank) (hr : V.rank ≤ L'.r)
     (h1 : L'.Pg = L.Pg) (h2 : L'.r = L.r) (h3 : L'.t = L.t) {x : GL (Fin V.rank) (Lev.EAf D)}
@@ -226,9 +222,9 @@ theorem parLev_of_rank {V : HSp D} (β : GL (Fin V.rank) (Lev.EAf D)) (L L' : Le
     simp [blk2, hi] at hij
 
 /- English proof (translation)
-Establish `: IsEmpty {a : Fin n // blk2 r a = 1}` using `⟨fun a => by`. Establish `h` using `a.2`. Simplify using `[blk2, lt_of_lt_of_le a.1.2 hr] at h⟩`. Distinguish the cases in `hx : x ∈ blockTri (blk2 r)`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[diag_block_det_val 1 hx, Matrix.det_isEmpty, Units.val_one]`. Unfold `dBlk ext1`. Rewrite using `[dif_neg hx]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem determinantBlock_eq_one_of_rank_le {κ : Type} [CommRing κ] {n r : ℕ} (hr : n ≤ r) (x : GL (Fin n) κ) : dBlk (blk2 r) 1 x = 1 := by
   have : IsEmpty {a : Fin n // blk2 r a = 1} := ⟨fun a => by
@@ -241,7 +237,7 @@ theorem determinantBlock_eq_one_of_rank_le {κ : Type} [CommRing κ] {n r : ℕ}
     rw [dif_neg hx]
 
 /- English proof (translation)
-Rewrite using `[D.sp.Y_rank _ (min_le_right _ _)]`. Use `show D.R.r + min 0 D.R.m * D.R.t ≤ D.R.r`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rank_zero_le : (Yc D 0).rank ≤ D.R.r := by
   rw [D.sp.Y_rank _ (min_le_right _ _)]
@@ -249,7 +245,7 @@ theorem rank_zero_le : (Yc D 0).rank ≤ D.R.r := by
   simp
 
 /- English proof (translation)
-Unfold `levChi levFn`. Use `congr 2`. Rewrite using `[Finset.prod_eq_one fun PP _ => by rw [determinantBlock_eq_one_of_rank_le (r := (L.datYt t 0 P).r) rank_zero_le, map_one]]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem levChi_zero {T : Type} (L : LevCh D T) (t : T) (P : LevelP L.Pg D.R.r ℂ) (κ : GA D (Yc D 0)) :
     levChi _ (L.βY 0) (L.datYt t 0 P) κ = levChi _ (L.βY 0) (L.dat0 P) κ := by
@@ -259,14 +255,14 @@ theorem levChi_zero {T : Type} (L : LevCh D T) (t : T) (P : LevelP L.Pg D.R.r �
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_mul, h, ← Module.End.mul_apply, ← map_mul, mul_inv_rev, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_left {H Γ W : Type} [Group H] [Group Γ] [AddCommGroup W] [Module ℂ W] (π : H →* Γ) (ρ : H →* Module.End ℂ W)
     (f : Γ → W) (γ z : H) (h : f (π γ * π z) = ρ γ (f (π z))) : ρ (γ * z)⁻¹ (f (π (γ * z))) = ρ z⁻¹ (f (π z)) := by
   rw [map_mul, h, ← Module.End.mul_apply, ← map_mul, mul_inv_rev, inv_mul_cancel_right]
 
 /- English proof (translation)
-Rewrite using `[hf, mul_inv_rev, map_mul, map_mul, hκ, one_mul, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_shift {H Γ W : Type} [Group H] [Group Γ] [AddCommGroup W] [Module ℂ W] (π : H →* Γ) (ρ : H →* Module.End ℂ W)
     (f f' : Γ → W) (κ z : H) (hκ : ρ κ⁻¹ = 1) (a : ℂ) (hf : ∀ h, f' h = a • f (h * π κ)) :
@@ -274,7 +270,7 @@ theorem coef_shift {H Γ W : Type} [Group H] [Group Γ] [AddCommGroup W] [Module
   rw [hf, mul_inv_rev, map_mul, map_mul, hκ, one_mul, map_smul]
 
 /- English proof (translation)
-Simplify using `using hf γ z 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem adForms_left {H Γ W : Type} [Group H] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (ι : Γ →* H)
     (ρ : Γ →* Module.End ℂ W) (J : Subgroup H) (χ : J →* ℂˣ) (f : H → W) (hf : f ∈ Bridge.AdForms ι ρ J χ) (γ : Γ) (z : H) :
@@ -282,7 +278,7 @@ theorem adForms_left {H Γ W : Type} [Group H] [Group Γ] [NormedAddCommGroup W]
   simpa using hf γ z 1
 
 /- English proof (translation)
-The claim follows from `congrArg (fun x => pr x w) (coef_left (finHom V).rangeRestrict c.ρ f γ z (adForms_left (Bridge.ratF V) c.coef.ρ J χ f hf ⟨γ, hγ⟩ ((finHom V).rangeRestrict z)))`.
+A detailed English derivation is pending.
 -/
 theorem toMap_left {V : HSp D} (c : CoefA V) {Dm : Type} [AddCommGroup Dm] [Module ℂ Dm] (pr : c.W →ₗ[ℂ] Dm →ₗ[ℂ] ℂ)
     (J : Subgroup (Bridge.Gf V)) (χ : J →* ℂˣ) (f : Bridge.Gf V → c.W)
@@ -292,7 +288,7 @@ theorem toMap_left {V : HSp D} (c : CoefA V) {Dm : Type} [AddCommGroup Dm] [Modu
     (adForms_left (Bridge.ratF V) c.coef.ρ J χ f hf ⟨γ, hγ⟩ ((finHom V).rangeRestrict z)))
 
 /- English proof (translation)
-Establish `h : ∃ x, (c.toMap pr ∘ₗ M.e) x = (U : Dm →ₗ[ℂ] (GA D V → ℂ))` using `U.2`. Use `h.elim fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← hx]`. Conclude with `toMap_left c pr J χ (M.e x) (hM.le (LinearMap.mem_range_self _ x)) w γ hγ z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_left {V : HSp D} (c : CoefA V) {Dm : Type} [AddCommGroup Dm] [Module ℂ Dm] (pr : c.W →ₗ[ℂ] Dm →ₗ[ℂ] ℂ)
     (M : HMod (Bridge.Gf V → c.W)) (J : Subgroup (Bridge.Gf V)) (χ : J →* ℂˣ)
@@ -305,7 +301,7 @@ theorem range_left {V : HSp D} (c : CoefA V) {Dm : Type} [AddCommGroup Dm] [Modu
   exact toMap_left c pr J χ (M.e x) (hM.le (LinearMap.mem_range_self _ x)) w γ hγ z
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun x => pr x w) (coef_shift (finHom V).rangeRestrict c.ρ f f' κ z (hc.1 _ ((GfC V).inv_mem hκ)) a hf)).trans (LinearMap.congr_fun (pr.map_smul a _) w)`.
+A detailed English derivation is pending.
 -/
 theorem toMap_shift {V : HSp D} (c : CoefA V) (hc : c.Is) {Dm : Type} [AddCommGroup Dm] [Module ℂ Dm]
     (pr : c.W →ₗ[ℂ] Dm →ₗ[ℂ] ℂ) (f f' : Bridge.Gf V → c.W) (κ : GA D V) (hκ : κ ∈ GfC V) (a : ℂ)
@@ -327,7 +323,7 @@ def Rel (t : T0) (g0 : G0 R.Pg D.R.r) (j : ℕ) (F F' : R.CC t j) : Prop :=
 variable {R}
 
 /- English proof (translation)
-Distinguish the cases in `h1 : j + 1 < D.R.m`. Conclude with `⟨(hY t j h1).1.1, (hY t j h1).2⟩`. Take `rfl : j = D.R.m - 1` from `by omega`. Conclude with `⟨(hY' t).1.1, (hY' t).2⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem meas_chain (hY : R.models_νY) (hY' : R.models_νY') (t : T0) (j : ℕ) (hj : j < D.R.m) :
     (R.νY t j).IsHaarMeasure ∧ IsFundamentalDomain (GQ (Yc D j)) (R.fdY t j) (R.νY t j) := by
@@ -337,9 +333,9 @@ theorem meas_chain (hY : R.models_νY) (hY' : R.models_νY') (t : T0) (j : ℕ) 
     exact ⟨(hY' t).1.1, (hY' t).2⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact hF`. Consider the case `succ k ih`. Establish `hk : k < D.R.m` using `by omega`. Use `ih hk (R.ioY t k F) (R.ioY t k F') fun κ hκ v g => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨κ', hκ'⟩` from `lifts_chain R.toLevCh _ hl t (k + 1) hn g0`. Conclude with `step R.ψ R.θ hi _ _ (R.ωY t k) (hc.ωY t k hn) _ _ _ _ (R.vY t k) (hc.ptY t k hn) (R.MY k) (R.βY k) (R.datYt t k R.triv) rfl _ (meas_chain hY hY' t k hk).1 _ (meas_chain hY hY' t k hk).2 (hS t k hk) (R.ItY k) (hc.ItY t k hn).ne (R.CC t (k + 1)) (fun U w => (multT_value _ _ _ _ _ U …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rel_dnFrom (hl : R.toLevCh.Is A.μ0) (hi : R.models_inf) (hY : R.models_νY) (hY' : R.models_νY') (hc : R.IsChain)
     (hS : ∀ t j, j < D.R.m → SchurMult R.θ (R.MY j) (levS _ (R.βY j) (R.datYt t j R.triv))
@@ -360,7 +356,7 @@ theorem rel_dnFrom (hl : R.toLevCh.Is A.μ0) (hi : R.models_inf) (hY : R.models_
       (GlobalTheory.T.stepVector_lift_pair_flagLevel_realized_chain R hl hi hc.ωY hc.vY t k hn g0 κ κ' hκ hκ') F F' (hF κ' hκ') v g
 
 /- English proof (translation)
-Introduce `κ hκ v g`. Establish `hm : D.R.m - 1 < D.R.m` using `by have := D.R.two_le_m; omega`. Conclude with `step R.ψ R.θ hi _ _ (R.ωX t) (hc.ωX t) _ _ _ _ (R.vX t) (hc.ptX t) (R.MY (D.R.m - 1)) (R.βY (D.R.m - 1)) (R.datYt t (D.R.m - 1) R.triv) rfl _ (meas_chain hY hY' t _ hm).1 _ (meas_chain hY hY' t _ hm).2 (hS t _ hm) R.ItX (hc.ItX t).ne _ (range_left R.cX R.prX (R.HX t) _ _ (hHX t). …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rel_ioX (hl : R.toLevCh.Is A.μ0) (hi : R.models_inf) (hY : R.models_νY) (hY' : R.models_νY') (hc : R.IsChain)
     (hX : R.models_νX) (hcX : R.models_cX) (hHX : R.models_HX)
@@ -380,7 +376,7 @@ theorem rel_ioX (hl : R.toLevCh.Is A.μ0) (hi : R.models_inf) (hY : R.models_νY
       (toMap_shift R.cX hcX R.prX _ _ κ' hκ'.1 _ hy) v g
 
 /- English proof (translation)
-Introduce `c hc z` and use `by rw [← levChi_zero R.toLevCh t] exact (multT_value R.θ (R.MY 0) _ _ _ U.2 v).2 c ⟨hc.1, parLev_of_rank _ (R.dat0 R.triv) (R.datYt t 0 R.triv) rank_zero_le rfl rfl rfl hc.2.1, hc.2.2⟩ z`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasType_of_mem (t : T0) (U : R.CC t 0) (v : SmT (R.MY 0)) :
     HasType (Yc D 0) (R.βY 0) (R.dat0 R.triv) ((U : SmT (R.MY 0) →ₗ[ℂ] (GA D (Yc D 0) → ℂ)) v) := fun c hc z => by
@@ -389,9 +385,9 @@ theorem hasType_of_mem (t : T0) (U : R.CC t 0) (v : SmT (R.MY 0)) :
     ⟨hc.1, parLev_of_rank _ (R.dat0 R.triv) (R.datYt t 0 R.triv) rank_zero_le rfl rfl rfl hc.2.1, hc.2.2⟩ z
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `lifts_chain R.toLevCh _ h t 0 (by have := D.R.two_le_m; omega) g0`. Establish `hk0 : IsLevelLift (Yc D 0) (R.βY 0) (R.dat0 R.triv) g0 k` using `⟨hk.1, parLev_of_rank _ (R.datYt t 0 R.triv) (R.dat0 R.triv) rank_zero_le rfl rfl rfl hk.2.1, hk.2.2⟩`. Use function extensionality and compare the values at `z`. Establish `h1` using `level_action_spec (L := R.dat0 R.triv) (hasType_of_mem t U v) ⟨k, hk0⟩ k hk0 z`. Establish `h2 : levChi _ (R.βY 0) (flagL (R.datYt t 0 R.triv)) k = levChi _ (R.βY 0) (flagL (R.dat0 R.triv)) k` using `levChi_zero R.toLevCh t (LevelP.full _ _ _) k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hU k hk v z, h2]`. Conclude with `h1.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_of_rel (h : R.toLevCh.Is A.μ0) (t : T0) (g0 : G0 R.Pg D.R.r) (U U' : R.CC t 0) (hU : Rel R t g0 0 U U')
     (v : SmT (R.MY 0)) :
@@ -416,7 +412,7 @@ Both sides reduce to the same expression.
 theorem thDn_eq (t : T0) (y : (R.HX t).H) : R.thDn t y = (thCC t y : SmT (R.MY 0) →ₗ[ℂ] (GA D (Yc D 0) → ℂ)) := rfl
 
 /- English proof (translation)
-Rewrite using `[hT t x, postOn_apply, thDn_eq t x]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem e_Th (hT : R.chain_Th) (t : T0) (x : (R.HX t).H) (v : (R.MY 0).Vec) : R.HE.e (R.Th t x) v =
     R.e0 ((thCC t x : SmT (R.MY 0) →ₗ[ℂ] (GA D (Yc D 0) → ℂ)) (PiTensorProduct.tprod ℂ v)) := by

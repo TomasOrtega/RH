@@ -33,7 +33,7 @@ namespace GlobalTheory.GalLoc
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨Rw', hR, Bs', -⟩` from `GlobalTheory.T.twist_second_step_kept_with_localisations D cf Rw low Pq S hl eig θ Bs L ψ hψ`. Establish `hg` using `GlobalTheory.GalAway.galoisReps_of_cgTrue hL hP.what₂.fin hP.what₂.gal _ T cg`. Establish `hm` using `GlobalTheory.T.stableGoodForms_meet_generic_type hP.greenC _ exT grp`. Establish `hs` using `GlobalTheory.T.good_part_eigensystem_is_triple_eigensystem _ _ _ _ _ _ _ _ _ Bs' nf hm cm fa`. Conclude with `GlobalTheory.T.side_eigen_export hP.what₂.cheb hP.what₂.art _ _ _ _ _ _ _ _ _ Bs' Sb hSb ks chiT grp chr val roots hstar (eT Rw' hR) eO (rp Rw' hR) (rt Rw' hR) hg hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem triple_withLoc (hP : PrN) (hL : GlobalTheory.Published.LocalLanglandsGL) {D : D7} {cf : CharFrame D} {Rw : RowSide D} {low : Finset ℕ}
     {Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host} {S : RatDat D.ntw}
@@ -70,19 +70,19 @@ namespace GlobalTheory.GalLoc
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.T.residual_compatible_rows hP hL`. Use `atMem_imp (atMem_and hE (atMem_and hF (atMem_and hR (atMem_and hC hT)))) ?_` and prove the remaining obligations. Introduce `K B f T w Z Wt p0 t nch n xd c hN H`. Take `⟨⟨Sb, hSb, eT, eO⟩, ⟨val, roots, hstar⟩, rp, ⟨cm, fa⟩, rt⟩` from `H`. Take `⟨e⟩` from `hN`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `eq` using `c.a.nt.eq`. Establish `pk` using `c.a.nt.pack`. Set `L` to `c.a.nt.L`. Establish `hψ : ∃ ψ : (withLoc L).nd.Loc → NC.HC (withLoc L).host.E, ∀ a, NC.ReadC (withLoc L).nd.plOm.1 ((withLoc L).ntw.psiL a) (NC.iotaC (withLoc L) a) (ψ a) 0`. Establish `h0 : ∃ ψ : (w.D Z).nd.Loc → NC.HC (w.D Z).host.E, ∀ a, NC.ReadC (w.D Z).nd.plOm.1 ((w.D Z).ntw.psiL a) (NC.iotaC (w.D Z) a) (ψ a) 0` using `⟨c.a.all.chiD.psi, c.a.all.chi.psi⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `eq ▸ h0`. Take `⟨ψ, hψ⟩` from `hψ`. Establish `cast2 : ∀ P : (D : D7) → CharFrame D → Prop, P (w.D Z) (TC.cf w.I w.l Z) → P (withLoc L) (cfL L c.a.nt.cf)` using `fun P h => cast (congrArg (fun x : (Σ (D₁ : D7) (c₁ : CharFrame D₁) (C₁ : NChoice D₁), TupTied D₁ c₁ C₁) => P x.1 x.2.1) pk) h`. Establish `chr : Nonempty (CharSide (withLoc L) (cfL L c.a.nt.cf))` using `cast2 (fun D cf => Nonempty (CharSide D cf)) ⟨{ c.a.chrN with }⟩`. Take `⟨chr⟩` from `chr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `val' : ValLL0 (withLoc L) (cfL L c.a.nt.cf)` using `cast2 (fun D cf => ValLL0 D cf) val`. Establish `roots' : ∀ (k : Fin 2) (z : ℂ), z ^ ((withLoc L).host.g k * ((withLoc L).host.g k - 1)) = 1 → z ∈ (embLL0 (withLoc L)).fieldRange` using `eq ▸ roots`. Establish `star' : ∀ x : (withLoc L).LL0, star (x : (withLoc L).what₂.LL) ∈ (withLoc L).LL0` using `eq ▸ hstar`. Establish `grp : Nonempty (GrpSide (withLoc L))`. Establish `g0 : Nonempty (GrpSide (w.D Z))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Ty` to `c.a.all.types`. Conclude with `⟨⟨Ty.tA, Ty.tκ, Ty.teichC_def, Ty.ζ, Ty.ζ_gen, Ty.O, Ty.eSer_def, Ty.kv, Ty.tg_tame, Ty.O_equiv, Ty.O_tw⟩⟩`. Conclude with `eq ▸ g0`. Take `⟨grp⟩` from `grp`. Establish `rp' : ∀ Rw : RowSide (withLoc L), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.TwInputs.RowParam (withLoc L) Rw` using `eq ▸ rp`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `rt' : ∀ Rw : RowSide (withLoc L), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.EigTie.ResTied (withLoc L) Rw` using `eq ▸ rt`. Establish `cm' : GlobalTheory.TwInputs.CommAll (withLoc L)` using `eq ▸ cm`. Establish `fa' : GlobalTheory.TwInputs.FullAll (withLoc L)` using `eq ▸ fa`. Establish `exT : NExpTied (withLoc L)` using `eq ▸ c.a.all.exp`. Establish `nf : GlobalTheory.TwInputs.NoFormsOff (withLoc L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : GlobalTheory.TwInputs.NoFormsOff (w.D Z)` using `fun i j hj b => e.ser.off i j b fun h => hj (Finset.mem_Icc.2 h)`. Conclude with `eq ▸ h0`. Rewrite using `[eq]`. Conclude with `triple_withLoc hP hL c.a.nt.Bs L ψ hψ Sb hSb c.a.ratIn.ks c.a.nt.A.chiT grp chr val' roots' star' { c.a.nt.A.wdT with } { c.a.nt.cg with } eT eO rp' rt' nf exT cm' fa'`.
+A detailed English derivation is pending.
 -/
 theorem triple_at (hP : PrN) (hS : SerN) (hL : GlobalTheory.Published.LocalLanglandsGL)
     (hE : AtMem hL fun _ _ _ _ w Z _ _ t nch n c => ∃ Sb : Finset (PlE c.a.nt.D.host), (∀ i, Sb ⊆ (withLoc c.a.nt.L).ntw.S0 i) ∧ (∀ Rw : RowSide (withLoc c.a.nt.L), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.TwInputs.EigTrue (withLoc c.a.nt.L) (cfL c.a.nt.L c.a.nt.cf) Rw Sb c.a.nt.eig) ∧ GlobalTheory.TwInputs.EigOcc (withLoc c.a.nt.L) ({ c.a.nt.S with } : RatDat (withLoc c.a.nt.L).ntw) c.a.nt.θ c.a.nt.hL Sb c.a.nt.eig)
@@ -140,9 +140,9 @@ namespace GlobalTheory.GalLoc
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hP hS hL`. Establish `htr : AtMem hL fun _ _ _ _ w Z _ _ t nch n c => GlobalTheory.Triple.IsTriple (w.D Z)` using `triple_at hP hS hL (GlobalTheory.T.eigen_occurrence_with_local_data hP hS hL) (GlobalTheory.T.coefficient_field_valuation_facts hP hS hL) (GlobalTheory.T.row_parameter_of_local_langlands hP hS hL) (GlobalTheory.T.commutant_full_of_local_langlands hP hS hL)`. Use `(GlobalTheory.T.eventually_sizes_congruences_hostFacts_columnChoices.inter htr).imp fun K _ _ _ _ H => ?_` and prove the remaining obligations. Use `(H.1.inter H.2).imp fun B f T _ H => ?_` and prove the remaining obligations. Introduce `hK w Z Wt p0 t nch n xd c hE hX hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e⟩` from `hE`. Establish `hs` using `H.1 hK T w Z`. Conclude with `GlobalTheory.TwInputs.JoinModel.gal_of e (H.2 hK w Z Wt p0 t nch n xd c ⟨e⟩ hX hC) hs.1 hs.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem galSide_at : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c =>
     ∃ G : GlobalTheory.TwInputs.GalSide (w.st Z).toD7, G.cf = (TC.cf w.I w.l Z) ∧ G.lam.C = (TC.cf w.I w.l Z) ∧

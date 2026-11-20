@@ -9,9 +9,9 @@ namespace UpperTheory.TP.RP.Der
 variable {R : Type} [CommRing R] [Algebra ℂ R]
 
 /- English proof (translation)
-Establish `na` using `ha.summable.norm`. Establish `nb` using `hb.summable.norm`. Establish `e` using `tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm na nb`. Rewrite `e` using `[ha.tsum_eq, hb.tsum_eq]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(summable_norm_sum_mul_antidiagonal_of_summable_norm na nb).of_norm.hasSum`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_cauchy {a b : ℕ → ℂ} {A B : ℂ} (ha : HasSum a A) (hb : HasSum b B) :
     HasSum (fun k => ∑ p ∈ Finset.HasAntidiagonal.antidiagonal k, a p.1 * b p.2) (A * B) := by
@@ -23,9 +23,9 @@ theorem hasSum_cauchy {a b : ℕ → ℂ} {A B : ℂ} (ha : HasSum a A) (hb : Ha
   exact (summable_norm_sum_mul_antidiagonal_of_summable_norm na nb).of_norm.hasSum
 
 /- English proof (translation)
-Establish `h` using `Nat.add_choose_mul_factorial_mul_factorial i j`. Rewrite `h` using `[← Nat.choose_symm_add]`. Establish `h' : ((i + j).choose i : ℂ) * i.factorial * j.factorial = (i + j).factorial` using `by exact_mod_cast h`. Establish `a : (i.factorial : ℂ) ≠ 0` using `by exact_mod_cast i.factorial_ne_zero`. Establish `b : (j.factorial : ℂ) ≠ 0` using `by exact_mod_cast j.factorial_ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f : ((i + j).factorial : ℂ) ≠ 0` using `by exact_mod_cast (i + j).factorial_ne_zero`. Rewrite using `[inv_mul_eq_div, div_eq_iff f, ← h']`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem fact_choose {i j : ℕ} :
     (((i + j).factorial : ℂ))⁻¹ * ((i + j).choose i : ℂ) = ((i.factorial : ℂ))⁻¹ * ((j.factorial : ℂ))⁻¹ := by
@@ -39,11 +39,11 @@ theorem fact_choose {i j : ℕ} :
   field_simp
 
 /- English proof (translation)
-Establish `st : ∀ (i : ℕ) (x : R), D ((D.toLinearMap ^ i) x) = (D.toLinearMap ^ (i + 1)) x` using `fun i x => by`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Both sides reduce to the same expression. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, Finset.sum_antidiagonal_choose_succ_mul (fun i j => (D.toLinearMap ^ i) P * (D.toLinearMap ^ j) Q) k, map_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hc : k.choose p.2 = k.choose p.1` using `(Nat.choose_symm_of_eq_add (Finset.HasAntidiagonal.mem_antidiagonal.1 hp).symm).symm`. Rewrite using `[hc, ← nsmul_eq_mul, map_nsmul, ← mul_add, ← nsmul_eq_mul]`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `D _ = _`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul, st, st, mul_comm ((D.toLinearMap ^ p.2) Q)]`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem der_pow_mul (D : Derivation ℂ R R) (k : ℕ) (P Q : R) :
     (D.toLinearMap ^ k) (P * Q) = ∑ p ∈ Finset.HasAntidiagonal.antidiagonal k,
@@ -69,7 +69,7 @@ def Good (D : Derivation ℂ R R) (P u : R) : Prop :=
     ∀ l : R →ₗ[ℂ] ℂ, HasSum (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * l ((D.toLinearMap ^ n) P)) (l u)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using hP`. Consider the case `succ n ih => rw [pow_succ', Module.End.mul_apply]`. Conclude with `hN _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pow_mem {D : Derivation ℂ R R} {P : R} {N : Submodule ℂ R} (hP : P ∈ N) (hN : ∀ y ∈ N, D y ∈ N) (n : ℕ) :
     (D.toLinearMap ^ n) P ∈ N := by
@@ -78,9 +78,9 @@ theorem pow_mem {D : Derivation ℂ R R} {P : R} {N : Submodule ℂ R} (hP : P �
   | succ n ih => rw [pow_succ', Module.End.mul_apply]; exact hN _ ih
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l'`. Establish `a` using `h (l' ∘ₗ N.mkQ)`. Establish `e : (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * (l' ∘ₗ N.mkQ) ((D.toLinearMap ^ n) P)) = fun _ => 0`. Use function extensionality and compare the values at `n`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[(Submodule.Quotient.mk_eq_zero N).2 (pow_mem hP hN n)]`. Rewrite `a` using `[e]`. Conclude with `a.unique hasSum_zero`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_sum {D : Derivation ℂ R R} {P u : R}
     (h : ∀ l : R →ₗ[ℂ] ℂ, HasSum (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * l ((D.toLinearMap ^ n) P)) (l u))
@@ -95,9 +95,9 @@ theorem mem_of_sum {D : Derivation ℂ R R} {P u : R}
   exact a.unique hasSum_zero
 
 /- English proof (translation)
-Take `⟨⟨N₁, f₁, m₁, s₁⟩, h₁⟩` from `hP`. Take `⟨⟨N₂, f₂, m₂, s₂⟩, h₂⟩` from `hQ`. Use `⟨⟨N₁ ⊔ N₂, inferInstance, add_mem (Submodule.mem_sup_left m₁) (Submodule.mem_sup_right m₂), ?_⟩, fun l => ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add]`. Conclude with `add_mem (Submodule.mem_sup_left (s₁ a ha)) (Submodule.mem_sup_right (s₂ b hb))`. Simplify `(h₁ l).add (h₂ l)` using `[mul_add]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Good.add {D : Derivation ℂ R R} {P Q u v : R} (hP : Good D P u) (hQ : Good D Q v) : Good D (P + Q) (u + v) := by
   obtain ⟨⟨N₁, f₁, m₁, s₁⟩, h₁⟩ := hP
@@ -110,9 +110,9 @@ theorem Good.add {D : Derivation ℂ R R} {P Q u v : R} (hP : Good D P u) (hQ : 
   · simpa [mul_add] using (h₁ l).add (h₂ l)
 
 /- English proof (translation)
-Establish `hz : ∀ n : ℕ, n ≠ 0 → (D.toLinearMap ^ n) (algebraMap ℂ R a) = 0` using `fun n hn => by`. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Rewrite using `[pow_succ, Module.End.mul_apply]`. Establish `: D.toLinearMap (algebraMap ℂ R a) = 0` using `D.map_algebraMap a`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨Submodule.span ℂ {algebraMap ℂ R a}, inferInstance, Submodule.mem_span_singleton_self _, ?_⟩, fun l => ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Simplify using the standard rewrite rules. Use `hasSum_single (f := fun n : ℕ => ((n.factorial : ℂ))⁻¹ * l ((D.toLinearMap ^ n) (algebraMap ℂ R a))) 0 (fun n hn => by simp [hz n hn]) using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Simplify using the standard rewrite rules.
 -/
@@ -131,19 +131,19 @@ theorem Good.const (D : Derivation ℂ R R) (a : ℂ) : Good D (algebraMap ℂ R
     simp
 
 /- English proof (translation)
-Take `⟨⟨N₁, f₁, m₁, s₁⟩, h₁⟩` from `hP`. Take `⟨⟨N₂, f₂, m₂, s₂⟩, h₂⟩` from `hQ`. Use `⟨⟨N₁ * N₂, ?_, Submodule.mul_mem_mul m₁ m₂, ?_⟩, fun l => ?_⟩` and prove the remaining obligations. Conclude with `Module.Finite.iff_fg.2 (Submodule.FG.mul (Module.Finite.iff_fg.1 f₁) (Module.Finite.iff_fg.1 f₂))`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hy using Submodule.mul_induction_on' with`. Consider the case `mem_mul_mem a ha b hb`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul, mul_comm b]`. Conclude with `add_mem (Submodule.mul_mem_mul ha (s₂ b hb)) (Submodule.mul_mem_mul (s₁ a ha) hb)`. Consider the case `add x _ y _ hx hy => rw [map_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `add_mem hx hy`. Establish `hv : v ∈ N₂` using `mem_of_sum h₂ m₂ s₂`. Take `⟨π, hπ⟩` from `LinearMap.exists_leftInverse_of_injective N₂.subtype (Submodule.ker_subtype N₂)`. Set `b` to `Module.finBasis ℂ N₂`. Establish `dec : ∀ y (hy : y ∈ N₂), y = ∑ i, (b.coord i (π y)) • (b i : R)` using `fun y hy => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `e : π y = ⟨y, hy⟩` using `LinearMap.congr_fun hπ ⟨y, hy⟩`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submodule.coe_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [Module.Basis.coord_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (a y : R), y ∈ N₂ → l (a * y) = ∑ i, l (a * b i) * b.coord i (π y)` using `fun a y hy => by conv_lhs => rw [dec y hy]`. Rewrite using `[Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul, mul_comm]`. Establish `S` using `fun i => hasSum_cauchy (h₁ (l ∘ₗ LinearMap.mulRight ℂ (b i : R))) (h₂ (b.coord i ∘ₗ π))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `T` using `hasSum_sum (s := Finset.univ) (fun i _ => S i)`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulRight_apply] at T`. Rewrite using `[key u v hv]`. Use `T using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[der_pow_mul, map_sum, Finset.mul_sum, Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Take `rfl : p.1 + p.2 = k` from `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Rewrite using `[← nsmul_eq_mul, map_nsmul, nsmul_eq_mul, key _ _ (pow_mem m₂ s₂ _), ← mul_assoc, fact_choose, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Good.mul {D : Derivation ℂ R R} {P Q u v : R} (hP : Good D P u) (hQ : Good D Q v) : Good D (P * Q) (u * v) := by
   obtain ⟨⟨N₁, f₁, m₁, s₁⟩, h₁⟩ := hP
@@ -185,9 +185,9 @@ theorem Good.mul {D : Derivation ℂ R R} {P Q u v : R} (hP : Good D P u) (hQ : 
     ring
 
 /- English proof (translation)
-Establish `g : ∀ P, Good D P (φ P)` using `fun P => by`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Use `Good.const D a` as an intermediate fact. Rewrite `*` using `[show algebraMap ℂ (MvPolynomial σ ℂ) a = MvPolynomial.C a from rfl, ← MvPolynomial.algebraMap_eq, AlgHom.commutes]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption.
 
-Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p i hp => rw [map_mul]`. Conclude with `hp.mul (h i)`. Conclude with `fun v l => (g v).2 l`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem isExp_of_gens {σ : Type} (D : Derivation ℂ (MvPolynomial σ ℂ) (MvPolynomial σ ℂ))
     (φ : MvPolynomial σ ℂ →ₐ[ℂ] MvPolynomial σ ℂ) (h : ∀ i, Good D (MvPolynomial.X i) (φ (MvPolynomial.X i))) :
@@ -203,13 +203,13 @@ theorem isExp_of_gens {σ : Type} (D : Derivation ℂ (MvPolynomial σ ℂ) (MvP
   exact fun v l => (g v).2 l
 
 /- English proof (translation)
-Introduce `v l`. Establish `hc : Commute L (s • (1 : Module.End ℂ V))` using `(Commute.one_right L).smul_right s`. Establish `b : HasSum (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * s ^ n) (Complex.exp s)`. Use `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) s` as an intermediate fact. Rewrite `this` using `[← Complex.exp_eq_exp_ℂ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[smul_eq_mul]`. Establish `T` using `hasSum_cauchy (h v l) b`. Establish `e : l ((Complex.exp s • U) v) = l (U v) * Complex.exp s`. Simplify using `[mul_comm]`. Rewrite using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `T using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[hc.add_pow', LinearMap.sum_apply, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Take `rfl : p.1 + p.2 = k` from `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Establish `: (s • (1 : Module.End ℂ V)) ^ p.2 = s ^ p.2 • 1` using `by rw [smul_pow, one_pow]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this, LinearMap.smul_apply, Module.End.mul_apply]`. Simplify using `only [mul_smul_comm, mul_one, LinearMap.smul_apply, Module.End.one_apply, map_nsmul, map_smul, smul_eq_mul, nsmul_eq_mul]`. Rewrite using `[← mul_assoc, fact_choose]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isExp_shift {V : Type} [AddCommGroup V] [Module ℂ V] {L U : Module.End ℂ V} (h : IsExp L U) (s : ℂ) :
     IsExp (L + s • 1) (Complex.exp s • U) := by
@@ -238,7 +238,7 @@ section Mat
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Establish `h` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) Y`. Establish `h1` using `h.map (Matrix.entryAddMonoidHom ℂ a c) (continuous_id.matrix_elem a c)`. Simplify using `only [Function.comp_def, Matrix.entryAddMonoidHom_apply, Matrix.smul_apply, smul_eq_mul] at h1`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSum_exp_entry {τ : Type} [Fintype τ] [DecidableEq τ] (Y : Matrix τ τ ℂ) (a c : τ) :
     HasSum (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * (Y ^ n) a c) (NormedSpace.exp Y a c) := by
@@ -250,17 +250,17 @@ theorem hasSum_exp_entry {τ : Type} [Fintype τ] [DecidableEq τ] (Y : Matrix �
 end Mat
 
 /- English proof (translation)
-Establish `hp : ∀ (k : ℕ) c, (D.toLinearMap ^ k) (v c) = ∑ a, (Y ^ k) a c • v a` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => intro c`. Simplify using `[Matrix.one_apply, ite_smul]`. Consider the case `succ k ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `c`. Rewrite using `[pow_succ, Module.End.mul_apply, show D.toLinearMap (v c) = _ from hD c, map_sum]`. Simplify using `only [map_smul, ih, pow_succ, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun e _ => by rw [mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨Submodule.span ℂ (Set.range v), FiniteDimensional.span_of_finite ℂ (Set.finite_range v), Submodule.subset_span ⟨c, rfl⟩, ?_⟩, fun l => ?_⟩` and prove the remaining obligations. Establish `: Submodule.span ℂ (Set.range v) ≤ (Submodule.span ℂ (Set.range v)).comap D.toLinearMap`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨e, rfl⟩`. Express the relevant statement in the definitionally equal form `D (v e) ∈ Submodule.span ℂ (Set.range v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Conclude with `fun y hy => this hy`. Apply the tactic sequence `have T := hasSum_sum (s := Finset.univ) fun a _ => (hasSum_exp_entry Y a c).mul_right (l (v a))`. Establish `e1 : (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * l ((D.toLinearMap ^ n) (v c))) = fun n : ℕ => ∑ a, ((n.factorial : ℂ))⁻¹ * (Y ^ n) a c * l (v a)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `n`. Rewrite using `[hp, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_assoc]`. Establish `e2 : l (∑ a, NormedSpace.exp Y a c • v a) = ∑ a, NormedSpace.exp Y a c * l (v a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [map_smul, smul_eq_mul]`. Rewrite using `[e1, e2]`. Conclude with `T`.
+A detailed English derivation is pending.
 -/
 theorem good_lin (D : Derivation ℂ R R) {τ : Type} [Fintype τ] [DecidableEq τ] (Y : Matrix τ τ ℂ) (v : τ → R)
     (hD : ∀ c, D (v c) = ∑ a, Y a c • v a) (c : τ) : Good D (v c) (∑ a, NormedSpace.exp Y a c • v a) := by
@@ -296,7 +296,7 @@ theorem good_lin (D : Derivation ℂ R R) {τ : Type} [Fintype τ] [DecidableEq 
     exact T
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => simp [Finset.sum_insert ha, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem der_sum_apply {ι : Type} (s : Finset ι) (f : ι → Derivation ℂ R R) (x : R) :
     (∑ i ∈ s, f i) x = ∑ i ∈ s, f i x := by

@@ -15,21 +15,19 @@ open scoped ENNReal Classical
 namespace GlobalTheory.Mass.RowPerpMass
 
 /- English proof (translation)
-Introduce `D u F0 he hz hp hs Λ hΛ`. Set `` to `D.host.cmStar`. Take `⟨⟨hPD, hrk⟩, hL⟩` from `GlobalTheory.Mass.RowPerp.main D u F0 he hz`. Take `⟨hInt, hdisc⟩` from `hL Λ hΛ`. Take `⟨hsym, hortho, hpos, -, -⟩` from `GlobalTheory.T.stdLat_isOrthoLattice_and_mass_properties D.host.E D.sp.cm.cmUnram D.R.k`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hf : fDeg D.host.E = D.R.f`. Establish `: NumberField.IsTotallyComplex D.host.E` using `D.sp.cm.cmUnram.1`. Establish `h1` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank D.host.E`. Establish `h2` using `Formalism.HC.HostAx.finrank_cmField D.host.toHostAx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : NumberField.InfinitePlace.nrRealPlaces D.host.E = 0` using `NumberField.IsTotallyComplex.nrRealPlaces_eq_zero D.host.E`. Establish `h4 : fDeg D.host.E = NumberField.InfinitePlace.nrRealPlaces D.host.E + NumberField.InfinitePlace.nrComplexPlaces D.host.E` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces D.host.E`. Use `show _ = 2 * D.R.ord`. Use linear arithmetic over natural numbers and integers. Establish `hmass` using `GlobalTheory.Mass.CyclicDisc.main GlobalTheory.T.maximalHermitianLattice_massRatio D.host.E (D.sp.X 0).V (D.sp.X 0).hT D.sp.cm.cmUnram (D.sp.X 0).herm hPD (by rw [hrk]; exact hk) (Fin D.R.k → D.host.E) (Cnt.stdH D.host.E D.R.k) hsym (Cnt.stdLat D.host.E D.R.k) (by rw [hrk]; exact …`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmass` using `[hrk, hf]`. Establish `hS : mass (Cnt.stdH D.host.E D.R.k) (Cnt.stdLat D.host.E D.R.k) = Cnt.massS D D.R.k` using `rfl`. Rewrite `hmass` using `[hS]`. Use `⟨hmass, ?_⟩` and prove the remaining obligations. Rewrite using `[hmass]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT2 : (2 : ℝ) ≤ (Lat.Tu D u : ℝ)` using `by exact_mod_cast hp.two_le`. Establish `hgeom : (Lat.Tu D u : ℝ) ^ (D.R.k - 1) ≤ ((Lat.Tu D u : ℝ) ^ D.R.k - 1) / ((Lat.Tu D u : ℝ) - 1)`. Rewrite using `[le_div_iff₀ (by linarith)]`. Establish `e : (Lat.Tu D u : ℝ) ^ D.R.k = (Lat.Tu D u : ℝ) * (Lat.Tu D u : ℝ) ^ (D.R.k - 1)`. Rewrite using `[← pow_succ']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `h1 : (1 : ℝ) ≤ (Lat.Tu D u : ℝ) ^ (D.R.k - 1)` using `one_le_pow₀ (by linarith)`. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hNT : Cnt.NT D u ^ (D.R.k - 1) = ((Lat.Tu D u : ℝ) ^ (D.R.k - 1)) ^ D.R.f` using `by show (((D.mem u).A.T : ℝ) ^ D.R.f) ^ (D.R.k - 1) = _`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[hNT]`. Establish `hm : 0 ≤ Cnt.massS D D.R.k` using `hpos.le`.
-
-Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (u : D.what₂.Word), letI := D.host.cmStar; ∀ F0 : FlagG (VS D) D.R.rS ((Lat.Tu D u : ℕ) : D.host.E), F0.e = D.sp.hypE → F0.z = D.zmOf u → (Lat.Tu D u).Prime → Lat.SplitsCompletely (E := D.host.E) (Lat.Tu D u) → ∀ Λ : Cnt.LatV D, IsRowLat D F0 Λ → mass (D.sp.X 0).hT (Lat.L0X D Λ (lf D F0)) = Cnt.massS D D.R.k * ((((Lat.Tu D u : ℕ) : ℝ) ^ D.R.k - 1) / (((Lat.Tu D u : ℕ) : ℝ) - 1)) ^ D.R.f ∧ Cnt.massS D D.R.k * Cnt.NT D u ^ (D.R.k - 1) ≤ mass (D.sp.X 0).hT (Lat.L0X D Λ (lf D F0)) := by
   intro D u F0 he hz hp hs Λ hΛ

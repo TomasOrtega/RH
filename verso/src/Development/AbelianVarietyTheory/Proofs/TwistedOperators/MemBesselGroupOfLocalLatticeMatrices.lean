@@ -24,7 +24,7 @@ namespace GlobalTheory.RowLiftBes
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `he : IsIdemSum ew {w}` using `⟨⟨fun _ => ew, fun PP hPP => by rw [Finset.mem_singleton.1 hPP]; exact hew, (Finset.sum_singleton (fun _ => ew) w).symm⟩, hew.1.2.1⟩`. Take `⟨g', hg'⟩` from `GlobalTheory.RowRep.exists_inBasis_eq (rank_vertex G t w (X := (D.R.m, j)) ⟨le_rfl, hj⟩) (B.β D.R.m j) w x`. Take `⟨h, hh, hl⟩` from `GlobalTheory.RowRep.exists_suppAt_loc_eq (G.V (.grid D.R.m j)) {w} ew he fun w' => (Finset.mem_singleton.1 w'.2).symm ▸ g'`. Conclude with `⟨h, hh, hg' _ (hl ⟨w, Finset.mem_singleton_self w⟩)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_suppAt_locAt {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (B : Frames G) (t : T)
     {w : Pl D.host.E} (ew : AE D) (hew : Formalism.L2.NTheta.IsIdemAt ew w) {j : ℕ} (hj : j ≤ D.R.m)
@@ -42,9 +42,9 @@ namespace GlobalTheory.RowLiftBes
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `⟨0, fun _ _ _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t j σ hi hj hj' h' r g ⟨e, he, hsupp, hloc⟩ hg`. Use `GlobalTheory.T.mem_subgroup_of_localComponents_splitPlaces _ (locPl ch.G t) e he _ r hsupp fun w hw ew hew => ?_` and prove the remaining obligations. Take `⟨h, hs, hl⟩` from `exists_suppAt_locAt ch.S.B t ew hew hj (g ⟨w, hw⟩)`. Use `⟨h, GlobalTheory.T.mem_besselGroup_of_localMatrix_gridNode ch.S.toGridChoice (Set.mem_univ t) hw ew hew hj hj' h' h hs (hl ▸ hg ⟨w, hw⟩), hs, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.RowBaseUniq.loc_eq_of_inBasis _ _ _ (hl.trans (hloc ⟨w, hw⟩).symm)`.
+A detailed English derivation is pending.
 -/
 theorem mem_besGrp_of_hasLoc : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t j σ, j ∈ idx D → ∀ (hj : j ≤ D.R.m) (hj' : j < D.R.m) (h' : j + 2 * σ + 2 = D.R.m)
     (r : GA D (ch.G.V (.grid D.R.m j))) (g : ∀ w : locPl ch.G t, GL (Fin ((locGrid ch.G t w.1).rank (D.R.m, j))) (Kw w.1)),

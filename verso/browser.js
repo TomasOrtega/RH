@@ -10,7 +10,7 @@ const startModules = [
 const proofLabels = {
   authored: "English proof",
   citation: "Proof by reference",
-  translation: "Source translation",
+  translation: "English outline",
   "source gap": "Proof source",
 };
 
@@ -107,13 +107,7 @@ function renderProse(text, allowCitation) {
       prose.append(paragraph);
       continue;
     }
-    for (const part of block.split(/(\x60[^\x60\n]+\x60)/)) {
-      if (part.startsWith("\x60") && part.endsWith("\x60") && part.length > 2) {
-        paragraph.append(element("code", part.slice(1, -1)));
-      } else {
-        paragraph.append(part);
-      }
-    }
+    paragraph.textContent = block;
     prose.append(paragraph);
   }
   return prose;

@@ -21,11 +21,11 @@ open GlobalTheory.Models
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `grpPullback_iso (isGrpPullback_pullback B (spMap (algebraMap V K))) h₁`. Take `⟨e', he', -⟩` from `grpPullback_iso h₂ (isGrpPullback_pullback G (spMap (algebraMap V K)))`. Take `⟨F, hF⟩` from `hext (e.hom ≫ e'.hom) inferInstance`. Use `isAbelianScheme_of_generically_surjective V K B G hB hG F ?_` and prove the remaining obligations. Introduce and unpack `x ⟨k, hk⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback x k hk.symm`. Establish `hsq : ((Over.pullback (spMap (algebraMap V K))).map F).left ≫ pullback.fst G.hom (spMap (algebraMap V K)) = pullback.fst B.hom (spMap (algebraMap V K)) ≫ F.left`. Simplify using the standard rewrite rules. Conclude with `pullback.lift_fst _ _ _`. Rewrite `hsq` using `[hF]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hid : (e ≪≫ e').inv.left ≫ (e.hom ≫ e'.hom).left = 𝟙 _`. Rewrite using `[← Over.comp_left, ← Iso.trans_hom, Iso.inv_hom_id, Over.id_left]`. Use `⟨pullback.fst B.hom (spMap (algebraMap V K)) ((e ≪≫ e').inv.left z), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_of_common_generic_fibre
     {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K]
@@ -56,11 +56,11 @@ theorem isAbelianScheme_of_common_generic_fibre
     _ = x := hz
 
 /- English proof (translation)
-Introduce `hext E _ _ _ H D l Xo c O _ β Y V K _ _ _ _ _ _ b y hy hex`. Take `⟨𝒜, _, 𝓛, A, _, φ₁, φ₂, h𝒜, -, -, hp1, hp2, -⟩` from `hex`. Take `⟨y', t, m, hy's, hy'j, hab⟩` from `GlobalTheory.model_point_extends E H D l Xo c O β Y V K b y hy`. Use `⟨y', hy's, hy'j, hab ?_⟩` and prove the remaining obligations. Establish `hm` using `m.cart`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc` using `IsGrpPullback.comp hp2 Y.m.cart`. Establish `hw : (φ₂ ≫ Y.m.cm.F) ≫ Y.t.G.hom = (A.hom ≫ spMap (algebraMap V K)) ≫ y'`. Rewrite using `[hc.1.w, Category.assoc, hy'j]`. Both sides reduce to the same expression. Establish `h2 : IsGrpPullback A t.G (spMap (algebraMap V K)) (hm.1.lift _ _ hw)` using `IsGrpPullback.cancel hm (hc.congr (by rw [hy'j]; rfl) (hm.1.lift_fst _ _ hw).symm) (hm.1.lift_snd _ _ hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `isAbelianScheme_of_common_generic_fibre 𝒜 t.G h𝒜 t.semi (fun f hf => (hext V K 𝒜 t.G (isSemiAbelian_of_isAbelianScheme 𝒜 h𝒜) t.semi f hf).exists.imp fun _ h => h.2) A hp1 h2`.
+A detailed English derivation is pending.
 -/
 theorem goodRedExt_of_isDiscreteValuationRing :
     (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K], Y.GoodRedExt V K := by

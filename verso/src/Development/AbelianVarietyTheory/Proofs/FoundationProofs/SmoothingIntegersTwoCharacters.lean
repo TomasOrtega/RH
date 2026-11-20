@@ -3,11 +3,9 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨u₁, hu₁⟩` from `MulChar.ne_one_iff.1 h₁`. Take `⟨u₂, hu₂⟩` from `MulChar.ne_one_iff.1 h₂`. Distinguish the cases in `a : θ₂ (u₁ : ZMod N) = 1`. Distinguish the cases in `b : θ₁ (u₂ : ZMod N) = 1`. Use `⟨u₁ * u₂, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_mul, map_mul, b, mul_one]`. Conclude with `hu₁`. Rewrite using `[Units.val_mul, map_mul, a, one_mul]`. Conclude with `hu₂`. Conclude with `⟨u₂, b, hu₂⟩`.
-
-Conclude with `⟨u₁, hu₁, a⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_dirichletCharacter_ne_one_ne_one {N : ℕ} (θ₁ θ₂ : DirichletCharacter ℂ N)
     (h₁ : θ₁ ≠ 1) (h₂ : θ₂ ≠ 1) :
@@ -23,13 +21,13 @@ theorem exists_unit_dirichletCharacter_ne_one_ne_one {N : ℕ} (θ₁ θ₂ : Di
   · exact ⟨u₁, hu₁, a⟩
 
 /- English proof (translation)
-Establish `hy1 : x ^ n ≠ 1`. Break down `hn with rfl | rfl` into its components or cases. Simplify using `using hx1`. Rewrite using `[zpow_neg_one]`. Conclude with `fun h => hx1 (inv_eq_one.1 h)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hyn : ‖x ^ n‖ = 1` using `by rw [norm_zpow, hx, one_zpow]`. Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast (show p ≠ 0 by omega)`. Introduce `h`. Break down `Nat.lt_or_ge e 2 with he2 | he2` into its components or cases. Establish `: e = 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Establish `h' : (p : ℂ) ^ 2 * x ^ n = (p : ℂ) ^ 2` using `h.symm`. Conclude with `hy1 ((mul_eq_left₀ (pow_ne_zero 2 hp0)).1 h')`. Establish `h2` using `congrArg norm h`. Rewrite `h2` using `[norm_mul, hyn, mul_one, norm_pow, norm_pow, Complex.norm_natCast]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hp' : (1 : ℝ) < p` using `by exact_mod_cast hp`. Use `pow_lt_pow_right₀ hp' (show 2 < e + 1 by omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sq_ne_pow_succ_mul_zpow {p e : ℕ} (hp : 1 < p) (he : 1 ≤ e) {x : ℂ} (hx : ‖x‖ = 1)
     (hx1 : x ≠ 1) {n : ℤ} (hn : n = 1 ∨ n = -1) :
@@ -53,21 +51,19 @@ theorem sq_ne_pow_succ_mul_zpow {p e : ℕ} (hp : 1 < p) (he : 1 ≤ e) {x : ℂ
     linarith
 
 /- English proof (translation)
-Introduce `N l e θ₁ θ₂ ψ hN hl hlN he h₁ h₂`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : NeZero l := ⟨hl.ne_zero⟩`. Use `haveI : NeZero (N * l) := ⟨Nat.mul_ne_zero hN.ne' hl.ne_zero⟩`. Establish `hcop : N.Coprime l` using `((Nat.Prime.coprime_iff_not_dvd hl).2 hlN).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hM : 0 < 6 * N * l` using `Nat.mul_pos (Nat.mul_pos (by norm_num) hN) hl.pos`. Take `⟨u, hu₁, hu₂⟩` from `exists_unit_dirichletCharacter_ne_one_ne_one θ₁ θ₂ h₁ h₂`. Take `⟨k, hkN, hkl⟩` from `Nat.chineseRemainder hcop (u : ZMod N).val 1`. Establish `hkN' : (k : ZMod N) = u`. Rewrite using `[(ZMod.natCast_eq_natCast_iff k _ N).2 hkN, ZMod.natCast_zmod_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkl' : (k : ZMod l) = 1`. Rewrite using `[(ZMod.natCast_eq_natCast_iff k 1 l).2 hkl, Nat.cast_one]`. Establish `hk1 : k.Coprime N` using `(ZMod.isUnit_iff_coprime k N).1 (hkN' ▸ u.isUnit)`. Establish `hk2 : k.Coprime l` using `(ZMod.isUnit_iff_coprime k l).1 (hkl' ▸ isUnit_one)`. Establish `hunit : IsUnit (k : ZMod (N * l))` using `(ZMod.isUnit_iff_coprime k (N * l)).2 (Nat.Coprime.mul_right hk1 hk2)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, hpgt, hp, hpk⟩` from `Nat.forall_exists_prime_gt_and_eq_mod hunit (6 * N * l)`. Establish `hpN : (p : ZMod N) = u`. Use `congrArg (ZMod.castHom (dvd_mul_right N l) (ZMod N)) hpk` as an intermediate fact. Rewrite `this` using `[map_natCast, map_natCast]`. Rewrite using `[this, hkN']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpl : (p : ZMod l) = 1`. Use `congrArg (ZMod.castHom (dvd_mul_left l N) (ZMod l)) hpk` as an intermediate fact. Rewrite `this` using `[map_natCast, map_natCast]`. Rewrite using `[this, hkl']`. Establish `hpcop : p.Coprime (6 * N * l)` using `(Nat.Prime.coprime_iff_not_dvd hp).2 (Nat.not_dvd_of_pos_of_lt hM hpgt)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨6 * N * l + 1, p, by omega, hp.one_lt, ?_, hpcop, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm, Nat.coprime_add_self_left]`. Conclude with `Nat.coprime_one_left _`. Introduce `z hz h`. Establish `h2` using `congrArg norm h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h2` using `[norm_pow, Complex.norm_natCast, hz]`. Establish `hc' : (1 : ℝ) < ((6 * N * l + 1 : ℕ) : ℝ)` using `by exact_mod_cast (show 1 < 6 * N * l + 1 by omega)`. Use `one_lt_pow₀ hc' (show e ≠ 0 by omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `n₁ n₂ hn`.
-
-Rewrite using `[hpl, map_one, one_zpow, mul_one, mul_one, hpN]`. Conclude with `⟨sq_ne_pow_succ_mul_zpow hp.one_lt he (DirichletCharacter.unit_norm_eq_one _ _) hu₁ hn, sq_ne_pow_succ_mul_zpow hp.one_lt he (DirichletCharacter.unit_norm_eq_one _ _) hu₂ hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smoothing_integers_two_characters : ∀ (N l e : ℕ) (θ₁ θ₂ : DirichletCharacter ℂ N)
     (ψ : DirichletCharacter ℂ l), 0 < N → l.Prime → ¬ l ∣ N → 1 ≤ e → θ₁ ≠ 1 → θ₂ ≠ 1 →

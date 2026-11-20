@@ -6,9 +6,9 @@ open scoped BigOperators
 namespace Formalism.IncomingBounds
 
 /- English proof (translation)
-Introduce `l hl n n' hdvd`. Take `⟨m, hm⟩` from `hdvd`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h1 : (l : ℝ) - 1 ≠ 0` using `(by linarith : (0 : ℝ) < l - 1).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (l : ℝ) + 1 ≠ 0` using `(by linarith : (0 : ℝ) < l + 1).ne'`. Establish `hmR : (n : ℝ) - l * n' = ((l : ℝ) ^ 2 - 1) * m` using `by exact_mod_cast hm`. Establish `hn : (n : ℝ) = ((l : ℝ) - 1) * ((l : ℝ) + 1) * m + l * n'` using `by linear_combination hmR`. Unfold `rho`. Rewrite using `[hn, show (l : ℝ) ^ 2 - 1 = ((l : ℝ) - 1) * ((l : ℝ) + 1) by ring]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -27,9 +27,9 @@ theorem sqSubOneInvMulDvd : InvWeight := by
   ring
 
 /- English proof (translation)
-Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Proceed by induction on `v with`. Consider the case `zero => simp <;> exact Nat.ModEq.refl _`. Consider the case `succ v ih`. Rewrite using `[show l ^ (v + 1) * m = l * (l ^ v * m) by ring, show l ^ (v + 1) = l * l ^ v by ring]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Choose.choose_modEq_choose_mod_mul_choose_div_nat.trans ?_` and prove the remaining obligations. Simplify using `only [Nat.mul_mod_right, Nat.mul_div_cancel_left _ hl, Nat.choose_self, one_mul]`. Conclude with `ih`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma binomGcd_lucas_lemma (l : ℕ) [Fact l.Prime] (m v : ℕ) :
     (l ^ v * m).choose (l ^ v) ≡ m [MOD l] := by
@@ -43,13 +43,13 @@ private lemma binomGcd_lucas_lemma (l : ℕ) [Fact l.Prime] (m v : ℕ) :
     exact ih
 
 /- English proof (translation)
-Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hl0 : 0 < l` using `by omega`. Establish `hlt : l - 1 < l` using `by omega`. Proceed by induction on `a with`. Consider the case `zero => simp <;> exact Nat.ModEq.refl _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ a ih`. Establish `e1 : 1 ≤ l ^ a` using `Nat.one_le_pow _ _ hl0`. Establish `e2 : 1 ≤ l ^ (a + 1)` using `Nat.one_le_pow _ _ hl0`. Establish `e3 : 1 ≤ l ^ (a + 1 + 1)` using `Nat.one_le_pow _ _ hl0`. Establish `hn : l ^ (a + 1 + 1) - 1 = (l - 1) + l * (l ^ (a + 1) - 1)` using `by zify [e2, e3, (by omega : 1 ≤ l)]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hk : l ^ (a + 1) - 1 = (l - 1) + l * (l ^ a - 1)` using `by zify [e1, e2, (by omega : 1 ≤ l)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnk : (l ^ (a + 1 + 1) - 1).choose (l ^ (a + 1) - 1) = ((l - 1) + l * (l ^ (a + 1) - 1)).choose ((l - 1) + l * (l ^ a - 1))`. Rewrite using `[← hk, ← hn]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnk]`. Use `Choose.choose_modEq_choose_mod_mul_choose_div_nat.trans ?_` and prove the remaining obligations. Simplify using `only [Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt hlt, Nat.add_mul_div_left _ _ hl0, Nat.div_eq_of_lt hlt, zero_add, Nat.choose_self, one_mul]`. Conclude with `ih`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma binomGcd_lucas_lemma_2 (l : ℕ) [Fact l.Prime] (a : ℕ) :
     (l ^ (a + 1) - 1).choose (l ^ a - 1) ≡ 1 [MOD l] := by
@@ -78,21 +78,19 @@ private lemma binomGcd_lucas_lemma_2 (l : ℕ) [Fact l.Prime] (a : ℕ) :
     exact ih
 
 /- English proof (translation)
-Introduce `l hl n hn`. Use `haveI := Fact.mk hl`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, hk0, hkn, hndvd⟩ ⟨e, rfl⟩`. Conclude with `hndvd (hl.dvd_choose_pow (by omega) (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hnp`. Establish `hd1 : l ^ padicValNat l n ∣ n` using `pow_padicValNat_dvd`. Establish `hd2 : ¬ l ^ (padicValNat l n + 1) ∣ n` using `pow_succ_padicValNat_not_dvd (by omega)`. Generalize the expression as in `padicValNat l n = v at hd1 hd2`. Take `⟨m, rfl⟩` from `hd1`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hlm : ¬ l ∣ m`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `hd2 ⟨c, by ring⟩`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `hn` using `[mul_zero]`. Use linear arithmetic over natural numbers and integers. Establish `hm1 : m ≠ 1` using `fun h => hnp ⟨v, by rw [h, mul_one]⟩`. Establish `hp : 0 < l ^ v` using `pow_pos hl.pos v`. Use `⟨l ^ v, hp, lt_mul_of_one_lt_right hp (by omega), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hd`. Apply `hlm` to reduce the goal to its premises. Conclude with `Nat.modEq_zero_iff_dvd.1 ((binomGcd_lucas_lemma l m v).symm.trans (Nat.modEq_zero_iff_dvd.2 hd))`. Introduce `e he hne`. Substitute `hne` using the available equality.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩ : ∃ a, e = a + 1` from `⟨e - 1, by omega⟩`. Use `⟨l ^ a, pow_pos hl.pos a, Nat.pow_lt_pow_right hl.one_lt (by omega), ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ l ^ a` using `Nat.one_le_pow _ _ hl.pos`. Establish `h2 : 1 ≤ l ^ (a + 1)` using `Nat.one_le_pow _ _ hl.pos`. Establish `key` using `Nat.add_one_mul_choose_eq (l ^ (a + 1) - 1) (l ^ a - 1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.sub_add_cancel h1, Nat.sub_add_cancel h2] at key`. Establish `hc : (l ^ (a + 1)).choose (l ^ a) = l * (l ^ (a + 1) - 1).choose (l ^ a - 1)`. Apply `Nat.eq_of_mul_eq_mul_right (pow_pos hl.pos a)` to reduce the goal to its premises. Rewrite using `[← key, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
-
-Introduce `hdvd`. Rewrite `hdvd` using `[hc, pow_two, Nat.mul_dvd_mul_iff_left hl.pos]`. Establish `h3 : l ∣ 1` using `Nat.modEq_zero_iff_dvd.1 ((binomGcd_lucas_lemma_2 l a).symm.trans (Nat.modEq_zero_iff_dvd.2 hdvd))`. Conclude with `hl.one_lt.ne' (Nat.dvd_one.1 h3)`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem primeDvdChooseIff : BinomGcd := by
   intro l hl n hn
@@ -138,17 +136,17 @@ theorem primeDvdChooseIff : BinomGcd := by
     exact hl.one_lt.ne' (Nat.dvd_one.1 h3)
 
 /- English proof (translation)
-Introduce `l hl N hN`. Use `haveI := Fact.mk hl`. Establish `key` using `sub_one_mul_padicValNat_factorial (p := l) N`. Establish `hsN : (l.digits N).sum ≤ N` using `Nat.digit_sum_le l N`. Establish `hne : l.digits N ≠ []` using `Nat.digits_ne_nil_iff_ne_zero.2 (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1 : 1 ≤ (l.digits N).sum`. Establish `hpos : 0 < (l.digits N).getLast hne` using `Nat.pos_of_ne_zero (Nat.getLast_digit_ne_zero l (by omega))`. Use `List.le_sum_of_mem (List.getLast_mem hne)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hdig : (l.digits N).sum ≤ (Nat.log l N + 1) * (l - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlen` using `Nat.digits_len l N hl.one_lt (by omega)`. Use `List.sum_le_card_nsmul (l.digits N) (l - 1) (fun x hx => by have := Nat.digits_lt_base hl.one_lt hx; omega)` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, hlen]`. Then use the resulting hypothesis. Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl.two_le`. Establish `hl1 : (0 : ℝ) < l - 1` using `by linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun t : ℕ => (t : ℝ)) key`. Simplify using `only [Nat.cast_mul, Nat.cast_sub hsN, Nat.cast_sub hl.one_le, Nat.cast_one] at e`. Establish `hs1R : (1 : ℝ) ≤ ((l.digits N).sum : ℝ)` using `by exact_mod_cast hs1`. Establish `hdigR` using `(Nat.cast_le (α := ℝ)).2 hdig`. Simplify using `only [Nat.cast_mul, Nat.cast_sub hl.one_le, Nat.cast_add, Nat.cast_one] at hdigR`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlog : (Nat.log l N : ℝ) ≤ Real.logb l N` using `Real.natLog_le_logb N l`. Prove the components needed by the constructor for the conclusion. Establish `h : (N : ℝ) / ((l : ℝ) - 1) ≤ (padicValNat l N.factorial : ℝ) + ((Nat.log l N : ℝ) + 1)`. Rewrite using `[div_le_iff₀ hl1]`. Use the polynomial consequences of the given equalities and inequalities.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[le_div_iff₀ hl1]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem padicValFactorialBounds : FactValBounds := by
   intro l hl N hN
@@ -183,7 +181,7 @@ theorem padicValFactorialBounds : FactValBounds := by
     nlinarith
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[← add_assoc, Nat.factorial_succ, Nat.cast_mul, ih, Finset.prod_range_succ]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -197,7 +195,7 @@ lemma num_fact_add_q (a k : ℕ) :
     ring
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_Ico_eq_prod_range, show m + 1 - 1 = m by omega, ← Finset.prod_range_add_one_eq_factorial, Nat.cast_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hj : ((j : ℚ) + 1) ≠ 0` using `by positivity`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -213,9 +211,9 @@ lemma prod_range_eq_factorial_mul_prod_Ico (m x : ℕ) :
   ring
 
 /- English proof (translation)
-Unfold `uFac`. Rewrite using `[show (m + 1) * (x + 1) = (m + 1) * x + (m + 1) by ring, num_fact_add_q, Finset.prod_range_succ, prod_range_eq_factorial_mul_prod_Ico m x, Nat.factorial_succ x]`. Establish `h1 : ((m : ℚ) + 1) ≠ 0` using `by positivity`. Establish `h2 : ((x : ℚ) + 1) ≠ 0` using `by positivity`. Establish `h3 : ((x.factorial : ℕ) : ℚ) ≠ 0` using `by positivity`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma num_uFac_succ (m x : ℕ) :
     uFac (m + 1) (x + 1) = uFac (m + 1) x * (-(m.factorial : ℚ) *
@@ -231,9 +229,9 @@ lemma num_uFac_succ (m x : ℕ) :
   ring
 
 /- English proof (translation)
-Introduce `l hl x`. Take `⟨m, rfl⟩ : ∃ m, l = m + 1` from `⟨l - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel]`. Proceed by induction on `x with`. Consider the case `zero => simp [uFac]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `succ x ih`. Rewrite using `[num_uFac_succ, ih, Finset.prod_range_succ, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem unitFactorialProd : UProduct := by
   intro l hl x
@@ -246,7 +244,7 @@ theorem unitFactorialProd : UProduct := by
     ring
 
 /- English proof (translation)
-Proceed by induction on `v with`. Consider the case `zero => simp`. Consider the case `succ v ih`. Rewrite using `[pow_succ]`. Use `Nat.one_le_pow v 5 (by norm_num)` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -259,11 +257,11 @@ lemma num_one_add_four_mul_le (v : ℕ) : 1 + 4 * v ≤ 5 ^ v := by
     omega
 
 /- English proof (translation)
-Introduce `l hl hl5 s hs`. Use `haveI := Fact.mk hl`. Establish `hdvd : l ^ padicValNat l s ∣ s` using `pow_padicValNat_dvd`. Establish `hle : l ^ padicValNat l s ≤ s` using `Nat.le_of_dvd (by omega) hdvd`. Establish `h5 : 5 ^ padicValNat l s ≤ l ^ padicValNat l s` using `Nat.pow_le_pow_left hl5 _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `num_one_add_four_mul_le (padicValNat l s)`. Establish `hN : 1 + 4 * padicValNat l s ≤ s` using `by omega`. Establish `hR : (1 : ℝ) + 4 * (padicValNat l s : ℝ) ≤ s` using `by exact_mod_cast hN`. Establish `hl5R : (5 : ℝ) ≤ l` using `by exact_mod_cast hl5`. Establish `h14 : 1 / ((l : ℝ) - 1) ≤ 1 / 4` using `one_div_le_one_div_of_le (by norm_num) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1 : (1 : ℝ) ≤ s` using `by exact_mod_cast hs`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem logCoeffValuation : LogCoeffVal := by
   intro l hl hl5 s hs
@@ -280,11 +278,11 @@ theorem logCoeffValuation : LogCoeffVal := by
   linarith
 
 /- English proof (translation)
-Introduce `l hl s0`. Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hne : (l : ℝ) ^ 2 ≠ 1` using `by nlinarith`. Establish `hne' : (l : ℝ) ^ 2 - 1 ≠ 0` using `sub_ne_zero.2 hne`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[geom_sum_eq hne, rho, ← pow_mul, pow_succ]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `s`. Rewrite using `[Finset.sum_range_succ', Finset.mul_sum, pow_zero]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem shiftExponentIdentity : LemmaMExponent := by
   intro l hl s0
@@ -301,7 +299,7 @@ theorem shiftExponentIdentity : LemmaMExponent := by
     exact Finset.sum_congr rfl fun t _ => by ring
 
 /- English proof (translation)
-Establish `h` using `one_add_mul_le_pow (show (-2 : ℝ) ≤ a - 1 by linarith) w`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma num_bern_real (a : ℝ) (ha : 1 ≤ a) (w : ℕ) : 1 + (w : ℝ) * (a - 1) ≤ a ^ w := by
   have h := one_add_mul_le_pow (show (-2 : ℝ) ≤ a - 1 by linarith) w
@@ -309,39 +307,39 @@ lemma num_bern_real (a : ℝ) (ha : 1 ≤ a) (w : ℕ) : 1 + (w : ℝ) * (a - 1)
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `l hl i hi`. Take `⟨k, rfl⟩` from `hi`. Establish `hL : (5 : ℝ) ≤ l` using `by exact_mod_cast hl`. Use `set L : ℝ := (l : ℝ) with hLdef`. Establish `hL2 : L ^ 2 - 1 ≠ 0` using `by nlinarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρpos : 0 < rho l`. Unfold `rho`. Apply `div_pos one_pos` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `hρeq : L ^ 2 * rho l = 1 + rho l`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `rho`. Rewrite using `[← hLdef]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hk1 : 1 ≤ L ^ (2 * k)` using `one_le_pow₀ (by linarith)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLi : L ≤ L ^ (2 * k + 1)` using `by rw [pow_succ]; nlinarith`. Establish `hLipos : 0 < L ^ (2 * k + 1)` using `by positivity`. Establish `hinv : (L ^ (2 * k + 1))⁻¹ ≤ L⁻¹` using `inv_anti₀ (by linarith) hLi`. Establish `hinv5 : L⁻¹ ≤ 5⁻¹` using `inv_anti₀ (by norm_num) hL`. Establish `hinvpos : 0 < (L ^ (2 * k + 1))⁻¹` using `inv_pos.2 hLipos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h14 : 1 / (L - 1) ≤ 1 / 4` using `one_div_le_one_div_of_le (by norm_num) (by linarith)`. Use `⟨hρeq, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i' hi'`. Take `⟨j, rfl⟩ : ∃ j, i' = j + 3` from `⟨i' - 3, by omega⟩`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `b` using `num_bern_real L (by linarith) j`. Establish `e : L ^ (j + 3) * rho l = L ^ (j + 1) * (1 + rho l)` using `by rw [← hρeq]; ring`. Establish `hp : 0 < L ^ (j + 1)` using `by positivity`. Establish `h1 : (1 + j * (L - 1)) * L ≤ L ^ j * L` using `mul_le_mul_of_nonneg_right b (by linarith)`. Establish `h3 : (0 : ℝ) ≤ j * (L * (L - 1) - 1)` using `mul_nonneg (Nat.cast_nonneg j) (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : L ^ (j + 1) ≤ L ^ (j + 1) * (1 + rho l)` using `by nlinarith`. Establish `hpow : L ^ (j + 1) = L ^ j * L` using `pow_succ L j`. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities. Introduce `i' hi'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩ : ∃ j, i' = j + 2` from `⟨i' - 2, by omega⟩`. Use `push_cast`. Establish `b` using `num_bern_real L (by linarith) j`. Establish `e : L ^ (j + 2) * rho l = L ^ j * (1 + rho l)` using `by rw [← hρeq]; ring`. Establish `hpj : 0 < L ^ j` using `by positivity`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `mul_pos hpj hρpos`. Establish `h : (0 : ℝ) ≤ j * (L - 5)` using `mul_nonneg (Nat.cast_nonneg j) (by linarith)`. Establish `h25 : L ^ j * 25 ≤ L ^ j * L ^ 2` using `mul_le_mul_of_nonneg_left (by nlinarith) hpj.le`. Establish `hpow : L ^ (j + 2) = L ^ j * L ^ 2` using `pow_add L j 2`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Use `mul_nonneg (by linarith : (0 : ℝ) ≤ L - 1) hρpos.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (2 * k + 1 + 1) / 2 = k + 1 by omega, ← pow_mul]`. Establish `: L ^ (2 * k + 1) ≠ 0` using `hLipos.ne'`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e8 : (1 : ℝ) / (8 * L) = L⁻¹ / 8` using `by ring`. Rewrite using `[e8]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i' hi'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lt_div_iff₀ (by linarith : (0 : ℝ) < L - 1)]`. Establish `b` using `num_bern_real L (by linarith) i'`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `J v hJ hv dsimp only`. Establish `hδ : 9 / 40 ≤ rho l + 1 / 2 - (L ^ (2 * k + 1))⁻¹ / 8 - 1 / (L - 1)` using `by linarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Establish `hJR : (2 : ℝ) ≤ J` using `by exact_mod_cast hJ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `hv0`. Substitute `hv0` using the available equality. Establish `hprod : 0 ≤ ((J : ℝ) - 1) * (rho l + 1 / 2 - (L ^ (2 * k + 1))⁻¹ / 8 - 1 / (L - 1))` using `mul_nonneg (by linarith) (by linarith)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hv1`. Take `⟨w, rfl⟩ : ∃ w, v = w + 1` from `⟨v - 1, by omega⟩`. Establish `h5 : 5 ^ (w + 1) ≤ l ^ (w + 1)` using `Nat.pow_le_pow_left (by omega) _`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4` using `num_one_add_four_mul_le w`. Establish `hps : 5 ^ (w + 1) = 5 ^ w * 5` using `pow_succ 5 w`. Establish `hJn : 20 * w + 5 ≤ J` using `by omega`. Establish `hJr : 20 * (w : ℝ) + 5 ≤ J` using `by exact_mod_cast hJn`. Establish `hprod : (20 * (w : ℝ) + 4) * (9 / 40) ≤ ((J : ℝ) - 1) * (rho l + 1 / 2 - (L ^ (2 * k + 1))⁻¹ / 8 - 1 / (L - 1))` using `mul_le_mul (by linarith) hδ (by norm_num) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem weightNumerics : LemmaMNumerics := by
   intro l hl i hi

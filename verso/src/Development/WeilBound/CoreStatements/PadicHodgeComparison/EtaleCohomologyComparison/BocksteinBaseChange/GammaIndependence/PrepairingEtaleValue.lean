@@ -24,7 +24,7 @@ Both sides reduce to the same expression.
 theorem toV_eq (M : Model l K) (n : ℕ) (u : M.T n) : M.toV n u = tmV M n 1 u := rfl
 
 /- English proof (translation)
-The claim follows from `TensorProduct.induction_on (R := ℤ_[l]) (M := ℚ_[l]) (N := M.T n) (motive := p) v h0 ht ha`.
+A detailed English derivation is pending.
 -/
 theorem V_induction {M : Model l K} {n : ℕ} {p : M.V n → Prop} (v : M.V n) (h0 : p 0)
     (ht : ∀ z u, p (tmV M n z u)) (ha : ∀ x y, p x → p y → p (x + y)) : p v :=
@@ -43,7 +43,7 @@ theorem pullV_tmV {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (n 
     Model.pullV u hu n (tmV N n z w) = tmV M n z (Model.pullT u hu n w) := rfl
 
 /- English proof (translation)
-The claim follows from `TensorProduct.smul_tmul' c z _`.
+A detailed English derivation is pending.
 -/
 theorem smul_tmV (M : Model l K) (n : ℕ) (c z : ℚ_[l]) (u : M.T n) : c • tmV M n z u = tmV M n (c * z) u :=
   TensorProduct.smul_tmul' c z _
@@ -52,7 +52,7 @@ variable {R : Per l K} {G : Model l K → Prop} {D : Dat R} (hF : R.Facts) (hL :
   (β : BMap G D) (κ : PMap G D)
 
 /- English proof (translation)
-Rewrite using `[E.nat m hM hN, gamma_nat hF β κ m hM hN]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gammaE_nat {M N : Model l K} {u : M.X ⟶ N.X} {hu : u ≫ N.p = M.p} {a : D.Ch M} {b : D.Ch N}
     (m : D.Mo u hu a b) (hM : G M) (hN : G N) (n : ℕ) (w : N.T n) (φ : Module.Dual K (HdR M.q n)) :
@@ -61,7 +61,7 @@ theorem gammaE_nat {M N : Model l K} {u : M.X ⟶ N.X} {hu : u ≫ N.p = M.p} {a
   rw [E.nat m hM hN, gamma_nat hF β κ m hM hN]
 
 /- English proof (translation)
-Use `gammaE_nat hF E β κ m hM hM n u φ` as an intermediate fact. Rewrite `this` using `[pullT_id, LinearMap.id_apply, pullR_genMap_id, LinearMap.comp_id]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gammaE_id {M : Model l K} {a a' : D.Ch M} (m : D.Mo (𝟙 M.X) (Category.id_comp _) a' a) (hM : G M) (n : ℕ)
     (u : M.T n) (φ : Module.Dual K (HdR M.q n)) :
@@ -73,7 +73,7 @@ theorem gammaE_id {M : Model l K} {a a' : D.Ch M} (m : D.Mo (𝟙 M.X) (Category
 include hL in
 
 /- English proof (translation)
-Take `⟨b, ⟨m₁⟩, ⟨m₂⟩⟩` from `hL.refine M M (𝟙 M.X) (Category.id_comp _) hM hM a a'`. Rewrite using `[← gammaE_id hF E β κ m₁ hM, gammaE_id hF E β κ m₂ hM]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gammaE_indep {M : Model l K} (hM : G M) (a a' : D.Ch M) (n : ℕ) (u : M.T n) (φ : Module.Dual K (HdR M.q n)) :
     gamma hF β κ a n (E.e a n u) φ = gamma hF β κ a' n (E.e a' n u) φ := by
@@ -95,7 +95,7 @@ def cV {M : Model l K} (hM : G M) (a : D.Ch M) (n : ℕ) : M.V n →+ (Module.Du
     ℚ_[l] ⊗[ℤ_[l]] M.T n →+ (Module.Dual K (HdR M.q n) →+ R.B))
 
 /- English proof (translation)
-Unfold `cV tmV`. Use `erw [TensorProduct.liftAddHom_tmul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cV_tmV {M : Model l K} (hM : G M) (a : D.Ch M) (n : ℕ) (z : ℚ_[l]) (u : M.T n) (φ : Module.Dual K (HdR M.q n)) :
     cV hF E β κ hM a n (tmV M n z u) φ = R.q z * gamma hF β κ a n (E.e a n u) φ := by
@@ -111,21 +111,21 @@ def cP (M : Model l K) (n : ℕ) : M.V n →+ (Module.Dual K (HdR M.q n) →+ R.
   if hM : G M then cV hF E β κ hM (a0 hL M hM) n else 0
 
 /- English proof (translation)
-Rewrite using `[cP, dif_pos hM, cV_tmV]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cP_tmV {M : Model l K} (hM : G M) (n : ℕ) (z : ℚ_[l]) (u : M.T n) (φ : Module.Dual K (HdR M.q n)) :
     cP hF hL E β κ M n (tmV M n z u) φ = R.q z * gamma hF β κ (a0 hL M hM) n (E.e _ n u) φ := by
   rw [cP, dif_pos hM, cV_tmV]
 
 /- English proof (translation)
-Rewrite using `[toV_eq, cP_tmV hF hL E β κ hM, map_one, one_mul, gammaE_indep hF hL E β κ hM]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cP_toV {M : Model l K} (hM : G M) (a : D.Ch M) (n : ℕ) (u : M.T n) (φ : Module.Dual K (HdR M.q n)) :
     cP hF hL E β κ M n (M.toV n u) φ = gamma hF β κ a n (E.e a n u) φ := by
   rw [toV_eq, cP_tmV hF hL E β κ hM, map_one, one_mul, gammaE_indep hF hL E β κ hM]
 
 /- English proof (translation)
-Rewrite using `[cP, dif_neg hM]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cP_not {M : Model l K} (hM : ¬ G M) (n : ℕ) (v : M.V n) (φ : Module.Dual K (HdR M.q n)) :
     cP hF hL E β κ M n v φ = 0 := by
@@ -134,13 +134,13 @@ theorem cP_not {M : Model l K} (hM : ¬ G M) (n : ℕ) (v : M.V n) (φ : Module.
 include hL in
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `z h`. Take `⟨v₀, hv₀⟩` from `E.one a hM`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v₀, by rw [pow_zero, one_smul]; exact hL.one_uniq a _ _ (β.one a hM z h) hv₀⟩`. Consider the case `succ k ih`. Introduce `z h`. Take `⟨y, hy, hc⟩` from `h`. Take `⟨v, hv⟩` from `ih y hy`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v₁, hv₁⟩` from `E.c1 a hM`. Establish `e₁` using `hL.first_chern_class_unique a _ _ (β.c1 a hM x hx) hv₁`. Take `⟨w, hw⟩` from `hE.cup_ex M v v₁`. Establish `hA` using `hL.cup_smul a (R.t ^ k) R.t _ _ _ (E.cup a hM v v₁ w hw)`. Establish `hB` using `β.cup a hM y x z hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hB` using `[hv, e₁]`. Conclude with `⟨w, (hL.cup_uniq a _ _ _ _ hB hA).trans (by rw [pow_succ]; exact rfl)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isPow_beta (hE : EtSide G) {M : Model l K} (hM : G M) (a : D.Ch M) (x : (D.H a).N 2) (hx : D.c1H a x) :
     ∀ (k : ℕ) (z : (D.H a).N (2 * k)), IsPow (N := (D.H a).N) (D.H a).one (D.H a).cup x k z →
@@ -229,25 +229,23 @@ def preP (hE : EtSide G) : Pre G R where
     exact hu
 
 /- English proof (translation)
-Take `⟨k, r, w', hw', hsp⟩` from `hS M hM' (a0 hL M hM) n`. Take `⟨n', hn'⟩` from `β.surj' (a0 hL M hM) hM n`. Set `f : Module.Dual K (HdR M.q n) → ((D.H' (a0 hL M hM)).N n →+ R.B)` to `fun φ => (AddMonoidHom.eval φ).comp ((gamma hF β κ (a0 hL M hM) n).comp (β.β' (a0 hL M hM) n).toAddMonoidHom)`. Establish `hf : ∀ φ y, f φ y = gamma hF β κ (a0 hL M hM) n (β.β' (a0 hL M hM) n y) φ` using `fun _ _ => rfl`. Establish `hFn : ∀ φ, GMod.Fn R (D.H' (a0 hL M hM)) n (f φ)` using `fun φ => ⟨fun c y => by rw [hf, hf, map_smul, gamma_smul hF β κ hM], fun σ y => by rw [hf, hf, β.act' _ hM, gamma_act hF β κ hL hM]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ (j : ℕ) (x : (D.H' (a0 hL M hM)).N n) (u : M.T n), β.β' (a0 hL M hM) n x = R.t ^ n' • E.e (a0 hL M hM) n u → β.β' (a0 hL M hM) n ((D.phi' (a0 hL M hM) n)^[j] x) = (((l : R.A) ^ j * R.t) ^ n') • E.e (a0 hL M hM) n u`. Introduce `j x u h`. Proceed by induction on `j with`. Consider the case `zero => rw [Function.iterate_zero_apply, pow_zero, one_mul]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply', β.phi' _ hM, ih, hL.phi_smul, E.phi _ hM]`. Use `congr 1`. Rewrite using `[map_pow, map_mul, map_pow, map_natCast, hF.frobenius_period]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hl : (l : R.B) ≠ 0`. Rewrite using `[← map_natCast R.q]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Establish `hic : R.i (((l : R.A) ^ k * R.t) ^ n') = ((l : R.B) ^ k * R.tB) ^ n'`. Simplify using `only [map_pow, map_mul, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hi : R.i (((l : R.A) ^ k * R.t) ^ n') ≠ 0`. Rewrite using `[hic]`. Conclude with `pow_ne_zero _ (mul_ne_zero (pow_ne_zero _ hl) hF.t_ne)`. Establish `hiS : (R.i (((l : R.A) ^ k * R.t) ^ n'))⁻¹ ∈ S`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hic, ← inv_pow, mul_inv, ← inv_pow]`. Use `S.pow_mem (S.mul_mem (S.pow_mem ?_ _) ht) _` and prove the remaining obligations. Rewrite using `[← map_natCast R.q, ← map_inv₀]`. Conclude with `hq _`. Establish `hu : ∀ u : M.T n, ∃ b : Fin r → R.B, (∀ i, b i ∈ S) ∧ ∀ φ, gamma hF β κ (a0 hL M hM) n (E.e (a0 hL M hM) n u) φ = ∑ i, b i * w' i (f φ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u`. Take `⟨x, hx⟩` from `hn' (E.e (a0 hL M hM) n u)`. Take `⟨b, hbS, hb⟩` from `hsp x`. Use `⟨fun i => (R.i (((l : R.A) ^ k * R.t) ^ n'))⁻¹ * b i, fun i => S.mul_mem hiS (hbS i), fun φ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hb (f φ) (hFn φ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hf, hc k x u hx, gamma_smul hF β κ hM]`. Simplify using `only [mul_assoc]`. Rewrite using `[← Finset.mul_sum, ← h1, ← mul_assoc, inv_mul_cancel₀ hi, one_mul]`. Use `⟨r, fun i φ => w' i (f φ), fun i φ σ => hw' (f φ) (hFn φ) i σ, fun v => ?_⟩` and prove the remaining obligations. Use `V_induction (p := fun v => ∃ b : Fin r → R.B, (∀ i, b i ∈ S) ∧ ∀ φ, cP hF hL E β κ M n v φ = ∑ i, b i * w' i (f φ)) v ?_ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨0, fun _ => S.zero_mem, fun φ => by simp⟩`. Introduce `z u`. Take `⟨b, hbS, hb⟩` from `hu u`. Use `⟨fun i => R.q z * b i, fun i => S.mul_mem (hq z) (hbS i), fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[cP_tmV hF hL E β κ hM, hb, Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Introduce and unpack `x y ⟨b, hbS, hb⟩ ⟨b', hbS', hb'⟩`. Use `⟨b + b', fun i => S.add_mem (hbS i) (hbS' i), fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, AddMonoidHom.add_apply, hb, hb', ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Pi.add_apply, add_mul]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cP_span {M : Model l K} (hM : G M) (G' : Model l K → Prop) (S : Subring R.B) (ht : (R.tB)⁻¹ ∈ S)
     (hq : ∀ z, R.q z ∈ S) (hS : D.Span G' S) (hM' : G' M) (n : ℕ) :
@@ -316,7 +314,7 @@ def PrepairingEtaleValue : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : Intermediat
         P.c M n (M.toV n v) φ = gamma hF β κ a n (E.e a n v) φ
 
 /- English proof (translation)
-Introduce `l _ K R G D hF hE hL E β κ`. Conclude with `⟨preP hF hL E β κ hE, fun G' S ht hq hS M hM hM' n => cP_span hF hL E β κ hM G' S ht hq hS hM' n, fun M hM a n v φ => cP_toV hF hL E β κ hM a n v φ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem pre' : PrepairingEtaleValue := by
   intro l _ K R G D hF hE hL E β κ
@@ -324,7 +322,7 @@ theorem pre' : PrepairingEtaleValue := by
     fun M hM a n v φ => cP_toV hF hL E β κ hM a n v φ⟩
 
 /- English proof (translation)
-Introduce `l _ K R G D hF hE hL E β κ`. Conclude with `(pre' l K R G D hF hE hL E β κ).imp fun _ h => h.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pre : ComparisonPairing := by
   intro l _ K R G D hF hE hL E β κ

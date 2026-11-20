@@ -27,9 +27,9 @@ def FinExR : Prop :=
   ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ) (π : TR.CuspSub F a), ∃ τ, π.IsFinComp τ
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha π hπ σ`. Take `⟨τ, hτ⟩` from `hF E a π`. Take `⟨π', h1, h2⟩` from `h E a ha π hπ τ hτ σ`. Take `⟨τ', hτ'⟩` from `hF E a π'`. Use `⟨π', τ, τ', hτ, hτ', h1 τ' hτ', fun φ m hm => h2 _ m ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hm using 1` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext fun x => σ.symm_apply_apply _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem clozelConjC_of (hF : FinExC) (h : ConjC) : Published.ClozelConjC := by
   intro E _ _ _ a ha π hπ σ
@@ -41,9 +41,9 @@ theorem clozelConjC_of (hF : FinExC) (h : ConjC) : Published.ClozelConjC := by
   exact RingHom.ext fun x => σ.symm_apply_apply _
 
 /- English proof (translation)
-Introduce `F _ _ _ a ha π hπ σ`. Take `⟨τ, hτ⟩` from `hF F a π`. Take `⟨π', h1, h2⟩` from `h F a ha π hπ τ hτ σ`. Take `⟨τ', hτ'⟩` from `hF F a π'`. Use `⟨π', τ, τ', hτ, hτ', h1 τ' hτ', fun φ m hm => h2 _ m ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hm using 2` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext fun x => σ.symm_apply_apply _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem clozelConjR_of (hF : FinExR) (h : ConjR) : Published.ClozelConjR := by
   intro F _ _ _ a ha π hπ σ

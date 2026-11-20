@@ -16,9 +16,9 @@ namespace GlobalTheory.InertiaRestrict
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `: y = x - (x - y)` using `by ring`. Rewrite using `[this]`. Conclude with `Valuation.map_sub_lt _ hx h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Establish `: x = y + (x - y)` using `by ring`. Rewrite using `[this]`. Conclude with `Valuation.map_add_lt _ hy h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lt_one_iff_of_sub_lt (V : ValuationSubring Ω) {x y : Ω} (h : V.valuation (x - y) < 1) :
     V.valuation x < 1 ↔ V.valuation y < 1 := by
@@ -33,7 +33,7 @@ theorem lt_one_iff_of_sub_lt (V : ValuationSubring Ω) {x y : Ω} (h : V.valuati
     exact Valuation.map_add_lt _ hy h
 
 /- English proof (translation)
-Rewrite using `[← ValuationSubring.mem_nonunits_iff, ← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or, ValuationSubring.mem_nonunits_iff_or, ValuationSubring.mem_comap, map_inv₀, map_eq_zero_iff f f.injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_valuation_lt_one_iff {L : Type} [Field L] (f : L →+* Ω) (V : ValuationSubring Ω) (z : L) :
     (V.comap f).valuation z < 1 ↔ V.valuation (f z) < 1 := by
@@ -42,7 +42,7 @@ theorem comap_valuation_lt_one_iff {L : Type} [Field L] (f : L →+* Ω) (V : Va
     ValuationSubring.mem_comap, map_inv₀, map_eq_zero_iff f f.injective]
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((V.valuation_le_one_iff s).2 hs) (not_lt.1 h)`.
+A detailed English derivation is pending.
 -/
 theorem valuation_eq_one {V : ValuationSubring Ω} {s : Ω} (hs : s ∈ V) (h : ¬ V.valuation s < 1) :
     V.valuation s = 1 :=
@@ -55,13 +55,11 @@ namespace GlobalTheory.InertiaRestrict
 open GlobalTheory.ProlongConj IntermediateField
 
 /- English proof (translation)
-Set `M : IntermediateField K Ω` to `K⟮x⟯`. Use `haveI : FiniteDimensional K M := adjoin.finiteDimensional (Algebra.IsSeparable.isIntegral K x)`. Use `haveI : Algebra.IsSeparable K M := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω`. Use `haveI : IsDedekindDomain (integralClosure R M) := integralClosure.isDedekindDomain R K M`. Use `haveI : IsFractionRing (integralClosure R M) M := integralClosure.isFractionRing_of_finite_extension K M`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower R M Ω := IsScalarTower.of_algebraMap_eq fun r => by`. Rewrite using `[IsScalarTower.algebraMap_apply R K Ω, IsScalarTower.algebraMap_apply R K M]`. Both sides reduce to the same expression. Set `A` to `V.comap (algebraMap M Ω)`. Establish `hint : ∀ s : integralClosure R M, IsIntegral R ((s : M) : Ω)` using `fun s => (s.2).map (IsScalarTower.toAlgHom R M Ω)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hS : ∀ s : integralClosure R M, algebraMap (integralClosure R M) M s ∈ A` using `fun s => mem_of_isIntegral V hR (hint s)`. Take `⟨s, t, hs, e⟩` from `exists_den (integralClosure R M) A hS (x := ⟨x, mem_adjoin_simple_self K x⟩) hx`. Use `⟨((s : M) : Ω), ((t : M) : Ω), hint s, hint t, valuation_eq_one (hS s) ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h2 : A.valuation (algebraMap (integralClosure R M) M s) < 1` using `(comap_valuation_lt_one_iff (algebraMap M Ω) V _).2 h`.
-
-Rewrite `h2` using `[hs]`. Conclude with `lt_irrefl _ h2`. Use `congrArg (algebraMap M Ω) e` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_den_integral (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K]
     [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [Algebra R Ω] [IsScalarTower R K Ω]
@@ -105,9 +103,9 @@ variable (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [
 
 include hR in
 /- English proof (translation)
-Take `⟨s, t, hs, ht, hs1, e⟩` from `exists_den_integral R K Ω V hR hx`. Establish `hgs : V.valuation (g s) = 1` using `valuation_eq_one (mem_of_isIntegral V hR (hs.map (g.restrictScalars R))) (by`. Rewrite using `[hg s hs, hs1]`. Conclude with `lt_irrefl 1)`. Establish `e' : g s * g x = g t` using `by rw [← map_mul, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg V.valuation e'` as an intermediate fact. Rewrite `this` using `[Valuation.map_mul, hgs, _root_.one_mul]`. Rewrite using `[← V.valuation_le_one_iff, this, V.valuation_le_one_iff]`. Conclude with `mem_of_isIntegral V hR (ht.map (g.restrictScalars R))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_of_lt_one_iff (g : Ω ≃ₐ[K] Ω)
     (hg : ∀ b : Ω, IsIntegral R b → (V.valuation (g b) < 1 ↔ V.valuation b < 1)) {x : Ω} (hx : x ∈ V) :
@@ -125,11 +123,11 @@ theorem map_mem_of_lt_one_iff (g : Ω ≃ₐ[K] Ω)
 include hR in
 
 /- English proof (translation)
-Establish `hgi : ∀ y : Ω, g (g⁻¹ y) = y` using `fun y => by`. Rewrite using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Establish `hg' : ∀ b : Ω, IsIntegral R b → (V.valuation (g⁻¹ b) < 1 ↔ V.valuation b < 1)`. Introduce `b hb`. Use `hg (g⁻¹ b) (hb.map ((g⁻¹ : Ω ≃ₐ[K] Ω).restrictScalars R))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hgi]`. Conclude with `this.symm`. Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `map_mem_of_lt_one_iff R K Ω V hR g hg h` as an intermediate fact. Rewrite `this` using `[hgi]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `map_mem_of_lt_one_iff R K Ω V hR g⁻¹ hg' h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smul_eq_of_lt_one_iff (g : Ω ≃ₐ[K] Ω)
     (hg : ∀ b : Ω, IsIntegral R b → (V.valuation (g b) < 1 ↔ V.valuation b < 1)) : g • V = V := by
@@ -152,13 +150,13 @@ theorem smul_eq_of_lt_one_iff (g : Ω ≃ₐ[K] Ω)
 include hR in
 
 /- English proof (translation)
-Establish `hg : g • V = V` using `smul_eq_of_lt_one_iff R K Ω V hR g fun b hb => lt_one_iff_of_sub_lt V (h b hb)`. Rewrite using `[mem_inertia_iff]`. Use `⟨hg, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨s, t, hs, ht, hs1, e⟩` from `exists_den_integral R K Ω V hR hx`. Establish `hgs : V.valuation (g s) = 1` using `valuation_eq_one (mem_of_isIntegral V hR (hs.map (g.restrictScalars R))) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[lt_one_iff_of_sub_lt V (h s hs), hs1]`. Conclude with `lt_irrefl 1)`. Establish `key : g s * (g x - x) = (g t - t) - x * (g s - s)`. Rewrite using `[← e, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congrArg V.valuation key` as an intermediate fact. Rewrite `this` using `[Valuation.map_mul, hgs, _root_.one_mul]`. Rewrite using `[this]`. Use `Valuation.map_sub_lt _ (h t ht) ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem mem_inertia_of_sub_lt_one (g : Ω ≃ₐ[K] Ω)
     (h : ∀ b : Ω, IsIntegral R b → V.valuation (g b - b) < 1) : g ∈ inertia K V := by
@@ -189,9 +187,9 @@ namespace GlobalTheory.InertiaRestrict
 open GlobalTheory.ProlongConj
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralFractionLift.inertia_surjective`. Consider the case `exact _root_.GlobalTheory.IntegralFractionLift.inertia_surjective`. Consider the case `(apply _root_.GlobalTheory.IntegralFractionLift.inertia_surjective <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralFractionLift.inertia_surjective <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegralFractionLift.inertia_surjective <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralFractionLift.inertia_surjective ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_mem_inertia_eq_on : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]

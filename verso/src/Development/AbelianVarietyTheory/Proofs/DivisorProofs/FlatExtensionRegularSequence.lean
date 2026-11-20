@@ -6,35 +6,31 @@ namespace GlobalTheory
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ _ _ φ _ hflat hreg n r hr`. Use `letI := φ.toAlgebra`. Use `haveI : Module.Flat A B := hflat`. Use `haveI : Algebra.HasGoingDown A B := Algebra.HasGoingDown.of_flat`. Use `haveI : IsLocalHom (algebraMap A B) := ‹IsLocalHom φ›`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set I : Ideal B := (maximalIdeal A).map φ with hI`. Establish `hIle : I ≤ maximalIdeal B`. Rewrite using `[hI, Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Conclude with `map_nonunit φ x hx`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmF : (maximalIdeal B).map (Ideal.Quotient.mk I) = maximalIdeal (B ⧸ I)`. Break down `Ideal.map_eq_top_or_isMaximal_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective (maximalIdeal.isMaximal B) with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h1 : (1 : B ⧸ I) ∈ (maximalIdeal B).map (Ideal.Quotient.mk I)` using `h ▸ Submodule.mem_top`. Rewrite `h1` using `[Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨y, hy, hy1⟩` from `h1`. Rewrite `hy1` using `[← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq]`. Use `(maximalIdeal B).sub_mem hy (hIle hy1)` as an intermediate fact. Simplify using `at this`. Conclude with `IsLocalRing.eq_maximalIdeal h`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hfg : (maximalIdeal (B ⧸ I)).FG` using `IsNoetherian.noetherian _`. Take `⟨t, htcard, htspan⟩` from `Submodule.FG.exists_span_finset_card_eq_spanFinrank hfg`. Use `set g := t.card with hg`. Set `u : Fin g → B ⧸ I` to `fun i => (t.equivFin.symm i : B ⧸ I)`. Establish `hu : Set.range u = (t : Set (B ⧸ I))`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(t.equivFin.symm i).2`. Introduce `hx; exact ⟨t.equivFin ⟨x, hx⟩, by simp [u]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Set `s : Fin g → B` to `fun i => Function.surjInv Ideal.Quotient.mk_surjective (u i)`. Establish `hs : ∀ i, Ideal.Quotient.mk I (s i) = u i` using `fun i => Function.surjInv_eq _ _`. Establish `hcomap : (maximalIdeal (B ⧸ I)).comap (Ideal.Quotient.mk I) = maximalIdeal B` using `IsLocalRing.eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective)`. Establish `hmapS : (Ideal.span (Set.range s)).map (Ideal.Quotient.mk I) = maximalIdeal (B ⧸ I)`. Rewrite using `[Ideal.map_span, ← Set.range_comp, ← htspan, ← hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `hs i`. Use `⟨g, s, ?_, ?_⟩` and prove the remaining obligations. Establish `hspan_r : Ideal.span (Set.range (fun i => φ (r i))) = I`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hI, ← hr.1, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hrange : Set.range (Fin.append (fun i => φ (r i)) s) = Set.range (fun i => φ (r i)) ∪ Set.range s`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨i, rfl⟩`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Use the proof step `left; exact ⟨j, by simp⟩`. Use the proof step `right; exact ⟨j, by simp⟩`. Introduce and unpack `(⟨j, rfl⟩ | ⟨j, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨Fin.castAdd g j, by simp⟩`. Conclude with `⟨Fin.natAdd n j, by simp⟩`. Rewrite using `[hrange, Ideal.span_union, hspan_r]`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le hIle ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcomap, ← Ideal.map_le_iff_le_comap, hmapS]`. Introduce `x hx`. Rewrite `hx` using `[← hcomap, Ideal.mem_comap, ← hmapS, Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective]`. Take `⟨y, hy, hyx⟩` from `hx`. Rewrite `hyx` using `[Ideal.Quotient.eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `: x = (x - y) + y` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left (by simpa using I.neg_mem hyx)) (Ideal.mem_sup_right hy)`. Establish `hA : ((maximalIdeal A).height : WithBot ℕ∞) = n`. Rewrite using `[maximalIdeal_height_eq_ringKrullDim, hr.2]`.
-
-Establish `hF : ((maximalIdeal (B ⧸ I)).height : WithBot ℕ∞) = g`. Rewrite using `[maximalIdeal_height_eq_ringKrullDim, ← hreg.spanFinrank_maximalIdeal, ← htcard]`. Establish `H` using `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (maximalIdeal A) (maximalIdeal B)`. Establish `hIalg : (maximalIdeal A).map (algebraMap A B) = I` using `rfl`. Rewrite `H` using `[hIalg, hmF]`.
-
-Rewrite using `[← maximalIdeal_height_eq_ringKrullDim, H, WithBot.coe_add, hA, hF]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rsp_append_of_flat_of_isRegularLocalRing_closedFibre :
     ∀ (A B : Type) [CommRing A] [CommRing B] [IsLocalRing A] [IsLocalRing B] [IsNoetherianRing A]

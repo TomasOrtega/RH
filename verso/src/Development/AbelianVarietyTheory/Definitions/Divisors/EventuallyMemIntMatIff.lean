@@ -30,7 +30,7 @@ def IsProdSec (f : GAd σ Q → ℂ) (φi : ∀ w, GArch σ Q w → ℂ) (φf : 
 variable {σ Q}
 
 /- English proof (translation)
-The claim follows from `(Filter.eventually_cofinite.1 (h.and (eventually_proj_mem_KUpFin g))).subset fun _ hv h' => hv (h'.1 _ h'.2)`.
+A detailed English derivation is pending.
 -/
 theorem AlmostSph.finite {φf : ∀ v, GLoc σ Q v → ℂ} (h : AlmostSph σ Q φf) (g : GAd σ Q) :
     (Function.mulSupport fun v => φf v (proj σ Q v g)).Finite :=
@@ -65,7 +65,7 @@ def finProd (φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin m → Fin n → Fv F 
   ∏ᶠ v, φ v fun i j => Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F E) (y i j)
 
 /- English proof (translation)
-The claim follows from `(Filter.eventually_cofinite.1 (h.and (Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => eventually_map_evalV_mem_intLoc (y i j)))).subset fun v hv h' => hv (by beta_reduce rw [h'.1, Set.indicator_of_mem (s := intMat F E m n v) h'.2, Pi.one_apply])`.
+A detailed English derivation is pending.
 -/
 theorem AlmostInt.finite {φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin m → Fin n → Fv F v ⊗[F] E) → ℂ} (h : AlmostInt φ)
     (y : Fin m → Fin n → Af F ⊗[F] E) : (Function.mulSupport fun v => φ v fun i j =>
@@ -76,9 +76,9 @@ theorem AlmostInt.finite {φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin m → Fi
       rw [h'.1, Set.indicator_of_mem (s := intMat F E m n v) h'.2, Pi.one_apply])
 
 /- English proof (translation)
-Use `haveI := t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := Fv F v)`. Take `⟨hc, ho⟩` from `ThK.isCompact_isOpen_intLoc (F := F) (E := E) v`. Establish `e : intMat F E m n v = Set.univ.pi fun _ => Set.univ.pi fun _ => (intLoc F E v : Set (Fv F v ⊗[F] E))`. Use extensionality with `x`. Simplify using `[intMat]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : IsCompact (intMat F E m n v)` using `e ▸ isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hc`. Establish `h2 : IsOpen (intMat F E m n v)` using `e ▸ isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => ho`. Conclude with `⟨(LocallyConstant.indicator (1 : LocallyConstant _ ℂ) ⟨h1.isClosed, h2⟩).isLocallyConstant, HasCompactSupport.intro h1 fun x hx => Set.indicator_of_notMem hx _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem indicator_intMat_mem_SB (v : HeightOneSpectrum (𝓞 F)) :
     (Set.indicator (intMat F E m n v) 1 : _ → ℂ) ∈ WeilM.SB (Fin m → Fin n → Fv F v ⊗[F] E) := by
@@ -111,9 +111,9 @@ def matCoord {d : ℕ} (b : Module.Basis (Fin d) F E) (R : Type) [CommRing R] [A
 omit [NumberField F] [NumberField E] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.basis R' b).repr (Algebra.TensorProduct.map φ (AlgHom.id F E) (x k.1 k.2.1)) k.2.2 = φ ((Algebra.TensorProduct.basis R b).repr (x k.1 k.2.1) k.2.2)`. Proceed by induction on `x k.1 k.2.1 using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [Algebra.TensorProduct.basis_repr_tmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Treat this case separately.
 -/
 theorem matCoord_map {d : ℕ} (b : Module.Basis (Fin d) F E) {R R' : Type} [CommRing R] [Algebra F R] [TopologicalSpace R]
     [IsTopologicalRing R] [CommRing R'] [Algebra F R'] [TopologicalSpace R'] [IsTopologicalRing R'] (φ : R →ₐ[F] R')
@@ -128,7 +128,7 @@ theorem matCoord_map {d : ℕ} (b : Module.Basis (Fin d) F E) {R R' : Type} [Com
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
 /- English proof (translation)
-The claim follows from `(Cofinite.eventually_mem_intLoc_iff_repr b).mono fun _ h _ => ⟨fun hx k => (h _).1 (hx k.1 k.2.1) k.2.2, fun hx i j => (h _).2 fun k => hx (i, j, k)⟩`.
+A detailed English derivation is pending.
 -/
 theorem eventually_mem_intMat_iff {d : ℕ} (b : Module.Basis (Fin d) F E) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ x, x ∈ intMat F E m n v ↔
@@ -137,11 +137,11 @@ theorem eventually_mem_intMat_iff {d : ℕ} (b : Module.Basis (Fin d) F E) :
     ⟨fun hx k => (h _).1 (hx k.1 k.2.1) k.2.2, fun hx i j => (h _).2 fun k => hx (i, j, k)⟩
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F E`. Establish `h1` using `AdelicCoordSB.finprod_mem_SB F _ (fun v => φ v ∘ (matCoord b (Fv F v)).symm) (fun v => ⟨(hφ v).1.comp_continuous (matCoord b (Fv F v)).symm.continuous, (hφ v).2.comp_homeomorph _⟩) (by filter_upwards [h, eventually_mem_intMat_iff (m := m) (n := n) b] with v hv hv'`. Use function extensionality and compare the values at `y`. Rewrite using `[hv, Function.comp_apply]`. Use `Set.indicator_eq_indicator ?_ rfl` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv', Homeomorph.apply_symm_apply]`. Use the proof step `rfl)`. Establish `e : finProd φ = (fun y => ∏ᶠ v, (φ v ∘ (matCoord b (Fv F v)).symm) fun k => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y k)) ∘ matCoord b (Af F)` using `funext fun y => finprod_congr fun v => by`. Rewrite using `[Function.comp_apply, ← matCoord_map, Homeomorph.symm_apply_apply]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨h1.1.comp_continuous (matCoord b (Af F)).continuous, h1.2.comp_homeomorph _⟩`.
+A detailed English derivation is pending.
 -/
 theorem finProd_mem_SB {φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin m → Fin n → Fv F v ⊗[F] E) → ℂ}
     (hφ : ∀ v, φ v ∈ WeilM.SB (Fin m → Fin n → Fv F v ⊗[F] E)) (h : AlmostInt φ) :
@@ -161,9 +161,9 @@ theorem finProd_mem_SB {φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin m → Fin 
   exact ⟨h1.1.comp_continuous (matCoord b (Af F)).continuous, h1.2.comp_homeomorph _⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : ∀ v i j, Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F E) (y i j) ∈ intLoc F E v`. Rewrite using `[Set.indicator_of_mem (by exact hy)]`. Conclude with `finprod_eq_one_of_forall_eq_one fun v => Set.indicator_of_mem (s := intMat F E m n v) (hy v) _`. Rewrite using `[Set.indicator_of_notMem (by exact hy)]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `not_forall.1 hy`. Conclude with `finprod_eq_zero _ v (Set.indicator_of_notMem (s := intMat F E m n v) hv _) (AlmostInt.finite (φ := fun v => Set.indicator (intMat F E m n v) 1) (.of_forall fun _ => rfl) y)`.
+A detailed English derivation is pending.
 -/
 theorem finProd_indicator : finProd (fun v => Set.indicator (intMat F E m n v) 1) =
     Set.indicator {y | ∀ v i j, Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F E) (y i j) ∈
@@ -180,7 +180,7 @@ theorem finProd_indicator : finProd (fun v => Set.indicator (intMat F E m n v) 1
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compFin_eq_map_sndA (v : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E) : compFin F E v z =
     Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F E)
@@ -204,14 +204,14 @@ def gaussAt (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matri
   Complex.exp (-(2 * Real.pi) * (((|l τ| : ℝ) : ℂ) * Matrix.trace (zᴴ * (gramAt D V τ * s τ) * z)))
 
 /- English proof (translation)
-Rewrite using `[StdUnn.gauss, Finset.mul_sum, Complex.exp_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gauss_eq_prod (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (z : D.what₂.Tau → Matrix (Fin V.rank) (Fin n) ℂ) : StdUnn.gauss V l s z = ∏ τ, gaussAt V l s τ (z τ) := by
   rw [StdUnn.gauss, Finset.mul_sum, Complex.exp_sum]; rfl
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.eval_rename _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem evalPoly_rename {m : ℕ} (τ : D.what₂.Tau) (p : MvPolynomial (Fin m × Fin n × Bool) ℂ)
     (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) :
@@ -232,7 +232,7 @@ def IsFactorizable (θ : InfFam D) (V : HSp D) (n : ℕ) (l : D.what₂.Tau → 
       Φ = pureFun θ V l s p φ
 
 /- English proof (translation)
-Conclude with `compFin_eq_map_sndA v z`.
+A detailed English derivation is pending.
 -/
 theorem compFin_eq (v : HeightOneSpectrum (𝓞 D.host.F)) (z : AE D) : AdelicU.compFin D.host.F D.host.E v z =
     Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F v) (AlgHom.id D.host.F D.host.E) (finPart D z) := by
@@ -241,7 +241,7 @@ theorem compFin_eq (v : HeightOneSpectrum (𝓞 D.host.F)) (z : AE D) : AdelicU.
 variable {θ : InfFam D} {V : HSp D} {l : D.what₂.Tau → ℝ} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
 
 /- English proof (translation)
-Rewrite using `[pureFun, Finset.prod_mul_distrib, gauss_eq_prod, StdUnn.evalPoly, map_prod, finProd]`. Simplify using `only [compFin_eq]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun τ _ => (evalPoly_rename τ (p τ) fun τ => compAt θ τ x).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pureFun_eq (p : D.what₂.Tau → MvPolynomial (Fin V.rank × Fin n × Bool) ℂ)
     (φ : ∀ v : HeightOneSpectrum (𝓞 D.host.F), (Fin V.rank → Fin n → Fv D.host.F v ⊗[D.host.F] D.host.E) → ℂ)
@@ -254,7 +254,7 @@ theorem pureFun_eq (p : D.what₂.Tau → MvPolynomial (Fin V.rank × Fin n × B
   exact Finset.prod_congr rfl fun τ _ => (evalPoly_rename τ (p τ) fun τ => compAt θ τ x).symm
 
 /- English proof (translation)
-Take `⟨p, φ, h1, h2, rfl⟩` from `h`. Conclude with `Submodule.subset_span ⟨_, _, finProd_mem_SB h1 h2, funext (pureFun_eq p φ)⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsFactorizable.mem_fockA {Φ : Mx D V.rank n → ℂ} (h : IsFactorizable θ V n l s Φ) :
     Φ ∈ StdUnn.fockA θ V n l s := by
@@ -266,7 +266,7 @@ def vacFun (θ : InfFam D) (V : HSp D) (n : ℕ) (l : D.what₂.Tau → ℝ) (s 
   Set.indicator {x : Mx D V.rank n | ∀ v i j, AdelicU.compFin D.host.F D.host.E v (x i j) ∈ intLoc D.host.F D.host.E v} 1 x
 
 /- English proof (translation)
-Use `⟨1, fun v => Set.indicator (intMat _ _ _ _ v) 1, indicator_intMat_mem_SB, .of_forall fun _ => rfl,` and prove the remaining obligations. Use function extensionality and compare the values at `fun x => ?_⟩`. Rewrite using `[pureFun_eq, finProd_indicator, vacFun]`. Simplify using `only [Pi.one_apply, map_one, Finset.prod_const_one, StdUnn.evalPoly, one_mul, compFin_eq]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem isFactorizable_vacFun : IsFactorizable θ V n l s (vacFun θ V n l s) := by
   refine ⟨1, fun v => Set.indicator (intMat _ _ _ _ v) 1, indicator_intMat_mem_SB, .of_forall fun _ => rfl,
@@ -276,7 +276,7 @@ theorem isFactorizable_vacFun : IsFactorizable θ V n l s (vacFun θ V n l s) :=
   rfl
 
 /- English proof (translation)
-Establish `h : ∀ τ, compAt θ τ (0 : Mx D V.rank n) = 0` using `fun τ => by ext i j; simp [compAt]`. Rewrite using `[vacFun, Set.indicator_of_mem (fun v i j => by simp)]`. Simplify using `[StdUnn.gauss, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vacFun_zero : vacFun θ V n l s 0 = 1 := by
   have h : ∀ τ, compAt θ τ (0 : Mx D V.rank n) = 0 := fun τ => by ext i j; simp [compAt]
@@ -284,13 +284,13 @@ theorem vacFun_zero : vacFun θ V n l s 0 = 1 := by
   simp [StdUnn.gauss, h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, isFactorizable_vacFun.mem_fockA, isFactorizable_vacFun, vacFun_zero⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ Φ ∈ StdUnn.fockA θ V n l s, IsFactorizable θ V n l s Φ ∧ Φ 0 = 1 :=
   ⟨_, isFactorizable_vacFun.mem_fockA, isFactorizable_vacFun, vacFun_zero⟩
 
 /- English proof (translation)
-Simplify using `[evalPolyAt]`.
+Simplify using the standard rewrite rules.
 -/
 example {m : ℕ} (z : Matrix (Fin m) (Fin n) ℂ) (i : Fin m) (j : Fin n) :
     evalPolyAt (MvPolynomial.X (i, j, false)) z = z i j ∧ evalPolyAt (MvPolynomial.X (i, j, true)) z = conj (z i j) := by

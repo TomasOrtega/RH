@@ -16,7 +16,7 @@ variable {n : ℕ} [NeZero n] {M : Type} [AddCommGroup M] [Module (ZMod n) M] [F
 
 omit [Finite M] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun φ => (ZMod.stdAddChar (N := n)).compAddMonoidHom φ.toAddMonoidHom, fun φ ψ h => by ext m exact ZMod.injective_stdAddChar (DFunLike.congr_fun h m)⟩`.
+Supply the required witnesses or components.
 -/
 theorem dual_inj : ∃ F : Module.Dual (ZMod n) M → AddChar M ℂ, Function.Injective F :=
   ⟨fun φ => (ZMod.stdAddChar (N := n)).compAddMonoidHom φ.toAddMonoidHom, fun φ ψ h => by
@@ -24,13 +24,13 @@ theorem dual_inj : ∃ F : Module.Dual (ZMod n) M → AddChar M ℂ, Function.In
     exact ZMod.injective_stdAddChar (DFunLike.congr_fun h m)⟩
 
 /- English proof (translation)
-The claim follows from `Finite.of_injective _ (DFunLike.coe_injective (F := M →ₗ[ZMod n] ZMod n))`.
+A detailed English derivation is pending.
 -/
 theorem finite_dual : Finite (Module.Dual (ZMod n) M) :=
   Finite.of_injective _ (DFunLike.coe_injective (F := M →ₗ[ZMod n] ZMod n))
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `dual_inj (n := n) (M := M)`. Use `Fintype.ofFinite M` as an intermediate fact. Establish `h` using `Nat.card_le_card_of_injective F hF`. Rewrite `h` using `[Nat.card_eq_fintype_card (α := AddChar M ℂ), AddChar.card_eq, ← Nat.card_eq_fintype_card]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem card_dual_le : Nat.card (Module.Dual (ZMod n) M) ≤ Nat.card M := by
   classical
@@ -40,13 +40,13 @@ theorem card_dual_le : Nat.card (Module.Dual (ZMod n) M) ≤ Nat.card M := by
   rwa [Nat.card_eq_fintype_card (α := AddChar M ℂ), AddChar.card_eq, ← Nat.card_eq_fintype_card] at h
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `(AddChar.exists_apply_ne_zero (a := x)).2 hx`. Establish `hζ` using `Complex.isPrimitiveRoot_exp n (NeZero.ne n)`. Establish `h : ∀ m : M, ∃ k : ZMod n, ZMod.stdAddChar k = ψ m` using `fun m => by`. Establish `h1 : ψ m ^ n = 1`. Rewrite using `[← AddChar.map_nsmul_eq_pow, ← Nat.cast_smul_eq_nsmul (ZMod n), ZMod.natCast_self, zero_smul, AddChar.map_zero_eq_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, -, hk⟩` from `hζ.eq_pow_of_pow_eq_one h1`. Use `⟨((k : ℤ) : ZMod n), ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.stdAddChar_coe, ← hk, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `choose f hf using h`. Set `F : M →+ ZMod n` to `AddMonoidHom.mk' f fun a b => ZMod.injective_stdAddChar (by`. Rewrite using `[AddChar.map_add_eq_mul, hf, hf, hf, AddChar.map_add_eq_mul])`. Use `⟨F.toZModLinearMap n, fun h0 => hψ ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : f x = 0` using `h0`. Rewrite using `[← hf, h1, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dual_ne_zero {x : M} (hx : x ≠ 0) : ∃ φ : Module.Dual (ZMod n) M, φ x ≠ 0 := by
   obtain ⟨ψ, hψ⟩ := (AddChar.exists_apply_ne_zero (a := x)).2 hx
@@ -69,9 +69,9 @@ theorem exists_dual_ne_zero {x : M} (hx : x ≠ 0) : ∃ φ : Module.Dual (ZMod 
   rw [← hf, h1, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Use `finite_dual (n := n) (M := M)` as an intermediate fact. Use `finite_dual (n := n) (M := Module.Dual (ZMod n) M)` as an intermediate fact. Establish `hinj : Function.Injective (Module.Dual.eval (ZMod n) M)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Take `⟨φ, hφ⟩` from `exists_dual_ne_zero (n := n) h`. Conclude with `hφ (DFunLike.congr_fun hx φ)`. Conclude with `hinj.bijective_of_nat_card_le (card_dual_le.trans card_dual_le)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eval_bijective : Function.Bijective (Module.Dual.eval (ZMod n) M) := by
   have := finite_dual (n := n) (M := M)
@@ -107,13 +107,13 @@ def Gen (χ : G →* ℤ_[l]ˣ) (r : ℕ) (c : G × G → ℤ_[l]) : Prop :=
 variable {χ : G →* ℤ_[l]ˣ} {M : Type} [AddCommGroup M] [Module ℤ_[l] M] {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dvd_iff_toZModPow (a : ℤ_[l]) : (l : ℤ_[l]) ^ r ∣ a ↔ PadicInt.toZModPow r a = 0 := by
   rw [← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Rewrite using `[← sub_eq_zero, ← sub_smul, hw, mul_smul, hM]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_congr (hM : ∀ m : M, (l : ℤ_[l]) ^ r • m = 0) {a a' : ℤ_[l]}
     (h : (l : ℤ_[l]) ^ r ∣ a - a') (m : M) : a • m = a' • m := by
@@ -121,7 +121,7 @@ theorem smul_congr (hM : ∀ m : M, (l : ℤ_[l]) ^ r • m = 0) {a a' : ℤ_[l]
   rw [← sub_eq_zero, ← sub_smul, hw, mul_smul, hM]
 
 /- English proof (translation)
-Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ_[l]]`. Apply `smul_congr hM` to reduce the goal to its premises. Rewrite using `[dvd_iff_toZModPow, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_eq_val (hM : ∀ m : M, (l : ℤ_[l]) ^ r • m = 0) (a : ℤ_[l]) (m : M) :
     a • m = (PadicInt.toZModPow r a).val • m := by
@@ -131,7 +131,7 @@ theorem smul_eq_val (hM : ∀ m : M, (l : ℤ_[l]) ^ r • m = 0) (a : ℤ_[l]) 
   rw [dvd_iff_toZModPow, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]
 
 /- English proof (translation)
-Simplify using `only [smul_eq_val hM]`. Establish `h1 : IsLocallyConstant fun x => PadicInt.toZModPow r (f x)` using `(IsLocallyConstant.iff_continuous _).2 ((continuous_toZModPow r).comp hf)`. Conclude with `h1.comp₂ hb fun a m => a.val • m`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lc_smul (hM : ∀ m : M, (l : ℤ_[l]) ^ r • m = 0) {X : Type} [TopologicalSpace X]
     {f : X → ℤ_[l]} (hf : Continuous f) {b : X → M} (hb : IsLocallyConstant b) :
@@ -142,7 +142,7 @@ theorem lc_smul (hM : ∀ m : M, (l : ℤ_[l]) ^ r • m = 0) {X : Type} [Topolo
   exact h1.comp₂ hb fun a m => a.val • m
 
 /- English proof (translation)
-Use `⟨((lc_smul hM (hχ.comp continuous_fst) (hb.comp_continuous continuous_snd)).sub (hb.comp_continuous continuous_mul)).add (hb.comp_continuous continuous_fst), fun g h k => ?_⟩` and prove the remaining obligations. Simplify using `only [cob, map_mul, Units.val_mul, mul_assoc]`. Use `module`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCoc_cob [ContinuousMul G] (hχ : Continuous fun g => (χ g : ℤ_[l]))
     (hM : ∀ m : M, (l : ℤ_[l]) ^ r • m = 0) {b : G → M} (hb : IsLocallyConstant b) :
@@ -153,7 +153,7 @@ theorem isCoc_cob [ContinuousMul G] (hχ : Continuous fun g => (χ g : ℤ_[l]))
   module
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.add h'.1, fun g k m => by have e := h.2 g k m have e' := h'.2 g k m linear_combination (norm := module) e + e'⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCoc.add {z z' : G × G → M} (h : IsCoc χ z) (h' : IsCoc χ z') :
     IsCoc χ fun p => z p + z' p :=
@@ -163,7 +163,7 @@ theorem IsCoc.add {z z' : G × G → M} (h : IsCoc χ z) (h' : IsCoc χ z') :
     linear_combination (norm := module) e + e'⟩
 
 /- English proof (translation)
-Introduce `M _ _ _ hM`. Establish `e : ∀ p (x : M), c' p • x = c p • x` using `fun p x => smul_congr hM (hc p) x`. Simplify using `only [e]`. Conclude with `h M hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Gen.congr {c c' : G × G → ℤ_[l]} (h : Gen χ r c) (hc : ∀ p, (l : ℤ_[l]) ^ r ∣ c' p - c p) :
     Gen χ r c' := by
@@ -173,19 +173,19 @@ theorem Gen.congr {c c' : G × G → ℤ_[l]} (h : Gen χ r c) (hc : ∀ p, (l :
   exact h M hM
 
 /- English proof (translation)
-Introduce `M _ _ _ hM` and use `h M fun m => by rw [pow_succ, mul_smul, hM]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Gen.mono {c : G × G → ℤ_[l]} (h : Gen χ (r + 1) c) : Gen χ r c :=
   fun M _ _ _ hM => h M fun m => by rw [pow_succ, mul_smul, hM]
 
 /- English proof (translation)
-Introduce `M _ _ _ hM`. Take `⟨h1, h2, h3⟩` from `h M hM`. Take `⟨u, rfl⟩` from `hu`. Establish `e : ∀ p (x : M), (c p * u + cob χ β p) • x = c p • ((u : ℤ_[l]) • x) + cob χ (fun g => β g • x) p` using `fun p x => by`. Simplify using `only [cob, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `module`. Establish `hl : ∀ x : M, IsLocallyConstant fun g => β g • x` using `fun x => hβ.comp fun a => a • x`. Establish `es : ∀ (b b' : G → M) p, cob χ (b - b') p = cob χ b p - cob χ b' p` using `fun b b' p => by`. Simplify using `only [cob, Pi.sub_apply]`. Use `module`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [e]`. Use `⟨fun x => (h1 _).add (isCoc_cob hχ hM (hl x)), fun z hz => ?_, fun x b hb hx => ?_⟩` and prove the remaining obligations. Take `⟨x, b, hb, hz⟩` from `h2 z hz`. Use `⟨((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) • x, b - fun g => β g • (((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) • x), hb.sub (hl _), fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[es, hz, smul_smul (u : ℤ_[l]), Units.mul_inv, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `h4` using `h3 ((u : ℤ_[l]) • x) (b - fun g => β g • x) (hb.sub (hl _)) fun p => by`. Rewrite using `[es, ← hx p]`. Normalize the expressions using the abelian group laws. Conclude with `(u.isUnit.smul_eq_zero).1 h4`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem Gen.twist [ContinuousMul G] (hχ : Continuous fun g => (χ g : ℤ_[l])) {c : G × G → ℤ_[l]}
     (h : Gen χ r c) {u : ℤ_[l]} (hu : IsUnit u) {β : G → ℤ_[l]} (hβ : IsLocallyConstant β) :
@@ -213,17 +213,17 @@ theorem Gen.twist [ContinuousMul G] (hχ : Continuous fun g => (χ g : ℤ_[l]))
     exact (u.isUnit.smul_eq_zero).1 h4
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Break down `r with _ | r` into its components or cases. Conclude with `⟨c', h', fun p => by simp⟩`. Establish `: NeZero (l ^ (r + 1))` using `⟨pow_ne_zero _ hl.ne_zero⟩`. Use `set π : ℤ_[l] →+* ZMod (l ^ (r + 1)) := PadicInt.toZModPow (r + 1) with hπ`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `: Module ℤ_[l] (ZMod (l ^ (r + 1)))` to `Module.compHom _ π`. Establish `hs : ∀ (a : ℤ_[l]) (m : ZMod (l ^ (r + 1))), a • m = π a * m` using `fun _ _ => rfl`. Establish `h0 : π ((l : ℤ_[l]) ^ (r + 1)) = 0` using `(dvd_iff_toZModPow _).1 dvd_rfl`. Establish `hM : ∀ m : ZMod (l ^ (r + 1)), (l : ℤ_[l]) ^ (r + 1) • m = 0` using `fun m => by`. Rewrite using `[hs, h0, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, -, h3⟩` from `h _ hM`. Take `⟨x, b, hb, hx⟩` from `(h'.mono _ hM).2.1 _ (h1 1)`. Simplify using `only [cob, hs, mul_one] at hx`. Establish `hu : IsUnit ((x.val : ℕ) : ℤ_[l])`. Assume the negation of the conclusion as `hu`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(PadicInt.norm_lt_one_iff_dvd _).1 (PadicInt.not_isUnit_iff.1 hu)`. Establish `hw'` using `congrArg π hw`. Rewrite `hw'` using `[map_natCast, ZMod.natCast_zmod_val, map_mul]`. Establish `h4` using `h3 (π ((l : ℤ_[l]) ^ r)) (fun g => π ((l : ℤ_[l]) ^ r) * b g) (hb.comp fun a => π ((l : ℤ_[l]) ^ r) * a) fun p => by`. Simplify using `only [cob, hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[pow_succ (l : ℤ_[l]), map_mul]`. Rewrite using `[hx p, hw']`. Take the linear combination `π (c' p) * π w * h0`. Rewrite `h4` using `[map_pow, map_natCast, ← Nat.cast_pow, ZMod.natCast_eq_zero_iff, Nat.pow_dvd_pow_iff_le_right hl.one_lt]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, h'.twist hχ hu (β := fun g => (((b g).val : ℕ) : ℤ_[l])) (hb.comp fun a => ((a.val : ℕ) : ℤ_[l])), fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[dvd_iff_toZModPow, ← hπ]`. Simplify using `only [cob, smul_eq_mul, map_sub, map_add, map_mul π, map_natCast, ZMod.natCast_zmod_val, hx p, sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Gen.step [ContinuousMul G] (hχ : Continuous fun g => (χ g : ℤ_[l])) {c c' : G × G → ℤ_[l]}
     (h : Gen χ r c) (h' : Gen χ (r + 1) c') :
@@ -262,13 +262,13 @@ theorem Gen.step [ContinuousMul G] (hχ : Continuous fun g => (χ g : ℤ_[l])) 
     sub_self]
 
 /- English proof (translation)
-Establish `hv : ∀ n m (x : ℤ_[l]), n ≤ m → (l : ℤ_[l]) ^ n ∣ x - (((PadicInt.toZModPow m x).val : ℕ) : ℤ_[l])` using `fun n m x hnm => by`. Establish `: NeZero (l ^ m)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `(pow_dvd_pow _ hnm).trans ?_` and prove the remaining obligations. Rewrite using `[dvd_iff_toZModPow, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Set `f : ℕ → ℤ` to `fun n => ((PadicInt.toZModPow n (a n)).val : ℕ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hf : ∀ n, (l : ℤ) ^ n ∣ f (n + 1) - f n` using `fun n => by`. Rewrite using `[← PadicInt.pow_p_dvd_int_iff]`. Use `((h n).sub (hv n (n + 1) (a (n + 1)) (by omega))).add (hv n n (a n) le_rfl)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [f]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨PadicInt.ofIntSeq _ (PadicInt.isCauSeq_padicNorm_of_pow_dvd_sub f l hf), fun n => ?_⟩` and prove the remaining obligations. Establish `: NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Rewrite using `[dvd_iff_toZModPow, map_sub, PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub f l hf n]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[f]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_lim (a : ℕ → ℤ_[l]) (h : ∀ n, (l : ℤ_[l]) ^ n ∣ a (n + 1) - a n) :
     ∃ L : ℤ_[l], ∀ n, (l : ℤ_[l]) ^ n ∣ L - a n := by
@@ -291,9 +291,9 @@ theorem exists_lim (a : ℕ → ℤ_[l]) (h : ∀ n, (l : ℤ_[l]) ^ n ∣ a (n 
   simp [f]
 
 /- English proof (translation)
-Establish `st : ∀ r (c : {c // Gen χ r c}), ∃ c' : {c // Gen χ (r + 1) c}, ∀ p, (l : ℤ_[l]) ^ r ∣ c'.1 p - c.1 p` using `fun r c => by`. Take `⟨c', hc'⟩` from `h r`. Take `⟨c'', h1, h2⟩` from `c.2.step hχ hc'`. Conclude with `⟨⟨c'', h1⟩, h2⟩`. Use `choose T hT using st`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀, hc₀⟩` from `h 0`. Set `C : ∀ r, {c // Gen χ r c}` to `fun r => Nat.rec ⟨c₀, hc₀.mono⟩ T r`. Establish `hC : ∀ p n, (l : ℤ_[l]) ^ n ∣ (C (n + 1)).1 p - (C n).1 p` using `fun p n => hT n (C n) p`. Use `choose L hL using fun p => exists_lim (fun n => (C n).1 p) (hC p)`. Conclude with `⟨L, fun r => (C r).2.congr fun p => hL p r⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gen_all [ContinuousMul G] (hχ : Continuous fun g => (χ g : ℤ_[l]))
     (h : ∀ r, ∃ c, Gen χ (r + 1) c) : ∃ c, ∀ r, Gen χ r c := by
@@ -310,7 +310,7 @@ theorem exists_gen_all [ContinuousMul G] (hχ : Continuous fun g => (χ g : ℤ_
   exact ⟨L, fun r => (C r).2.congr fun p => hL p r⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp f, fun g k m => by have e := congrArg f (h.2 g k m) simpa only [map_sub, map_add, map_smul, map_zero] using e⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCoc.map {N : Type} [AddCommGroup N] [Module ℤ_[l] N] (f : M →ₗ[ℤ_[l]] N) {z : G × G → M}
     (h : IsCoc χ z) : IsCoc χ fun p => f (z p) :=
@@ -319,13 +319,11 @@ theorem IsCoc.map {N : Type} [AddCommGroup N] [Module ℤ_[l] N] (f : M →ₗ[�
     simpa only [map_sub, map_add, map_smul, map_zero] using e⟩
 
 /- English proof (translation)
-Use `choose e he using htor`. Take `⟨r, hr⟩` from `(hS.image e).bddAbove`. Establish `hM : ∀ m : Submodule.span ℤ_[l] S, (l : ℤ_[l]) ^ r • m = 0` using `fun m => by`. Establish `h1 : Submodule.span ℤ_[l] S ≤ Submodule.torsionBy ℤ_[l] M ((l : ℤ_[l]) ^ r)` using `Submodule.span_le.2 fun a ha => by`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le' (hr ⟨a, ha, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_torsionBy_iff, hk, pow_add, mul_smul, he, smul_zero]`. Conclude with `Subtype.ext (h1 m.2)`. Use `⟨r, ?_, hM⟩` and prove the remaining obligations. Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `Module.Finite.span_of_finite ℤ_[l] hS` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `: Module (ZMod (l ^ r)) (Submodule.span ℤ_[l] S)` to `AddCommGroup.zmodModule fun m => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ_[l], Nat.cast_pow, hM]`. Set `f : Submodule.span ℤ_[l] S →ₛₗ[(PadicInt.toZModPow r : ℤ_[l] →+* ZMod (l ^ r))] Submodule.span ℤ_[l] S` to `{ toFun := id map_add' := fun _ _ => rfl map_smul' := fun a m => by`. Rewrite using `[id, id, smul_eq_val hM, ← Nat.cast_smul_eq_nsmul (ZMod (l ^ r)), ZMod.natCast_zmod_val] }`. Establish `: Module.Finite (ZMod (l ^ r)) (Submodule.span ℤ_[l] S)` using `Module.Finite.of_surjective f Function.surjective_id`.
-
-Conclude with `@Module.finite_of_finite (ZMod (l ^ r)) _ _ _ _ _ this`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_span (htor : ∀ a : M, ∃ r : ℕ, (l : ℤ_[l]) ^ r • a = 0) {S : Set M} (hS : S.Finite) :
     ∃ r : ℕ, Finite (Submodule.span ℤ_[l] S) ∧
@@ -354,19 +352,17 @@ theorem finite_span (htor : ∀ a : M, ∃ r : ℕ, (l : ℤ_[l]) ^ r • a = 0)
   exact @Module.finite_of_finite (ZMod (l ^ r)) _ _ _ _ _ this
 
 /- English proof (translation)
-Establish `hZ : ∀ z : G × G → M, z ∈ ReciprocityTheory.Def.Z2 π ⊤ ↔ IsCoc χ z` using `fun z => by`. Use `⟨fun hz => ⟨hz.1.1, fun g k m => ?_⟩, fun hz => ⟨⟨hz.1, fun _ => trivial⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hπ]`. Conclude with `congrFun hz.2 (g, k, m)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `hz.2 x.1 x.2.1 x.2.2` as an intermediate fact. Rewrite `this` using `[← hπ]`. Conclude with `this`. Establish `hd : ∀ b : G → M, ReciprocityTheory.Def.d1 π b = cob χ b` using `fun b => by`. Use function extensionality and compare the values at `p`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[cob, ← hπ]`. Both sides reduce to the same expression. Establish `h1 : ∀ x : M, IsCoc χ fun p => c p • x` using `fun x => by`. Take `⟨r, hf, hM⟩` from `finite_span htor (Set.finite_singleton x)`. Conclude with `((h r _ hM).1 ⟨x, Submodule.subset_span rfl⟩).map (Submodule.subtype _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `Φ : M →ₗ[O] ReciprocityTheory.Def.Z2 π ⊤` to `{ toFun := fun x => ⟨fun p => c p • x, (hZ _).2 (h1 x)⟩ map_add' := fun x y => Subtype.ext (funext fun p => smul_add _ _ _) map_smul' := fun a x => Subtype.ext (funext fun p => smul_comm _ _ _) }`. Use `⟨(LinearEquiv.ofBijective ((Submodule.mkQ _).comp Φ) ⟨?_, fun y => ?_⟩).symm⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨b, hb, hbx⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hbx` using `[hd]`. Take `⟨r, hf, hM⟩` from `finite_span htor (hb.1.range_finite.insert x)`. Establish `h3` using `(h r _ hM).2.2 ⟨x, Submodule.subset_span (Set.mem_insert _ _)⟩ (fun g => ⟨b g, Submodule.subset_span (Set.mem_insert_of_mem _ ⟨g, rfl⟩)⟩) (IsLocallyConstant.desc _ Subtype.val hb.1 Subtype.val_injective) fun p => Subtype.ext (congrFun hbx p).symm`. Conclude with `congrArg Subtype.val h3`. Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz'` using `(hZ z).1 hz`. Take `⟨r, hf, hM⟩` from `finite_span htor hz'.1.range_finite`. Take `⟨x, b, hb, hx⟩` from `(h r _ hM).2.1 (fun p => ⟨z p, Submodule.subset_span ⟨p, rfl⟩⟩) ⟨IsLocallyConstant.desc _ Subtype.val hz'.1 Subtype.val_injective, fun g k m => Subtype.ext (hz'.2 g k m)⟩`. Use `⟨x, Eq.symm ((Submodule.Quotient.eq _).2 ?_)⟩` and prove the remaining obligations. Use `Submodule.mem_map.2 ⟨fun g => (b g : M), ⟨hb.comp _, fun _ => trivial⟩, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hd]`. Use function extensionality and compare the values at `p`. Conclude with `(sub_eq_of_eq_add' (congrArg Subtype.val (hx p))).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem h2_equiv_of_torsion_character [CompactSpace G] {c : G × G → ℤ_[l]} (h : ∀ r, Gen χ r c)
     (htor : ∀ a : M, ∃ r : ℕ, (l : ℤ_[l]) ^ r • a = 0) {O : Type} [CommRing O] [Module O M]
@@ -416,14 +412,14 @@ theorem h2_equiv_of_torsion_character [CompactSpace G] {c : G × G → ℤ_[l]} 
 
 omit [TopologicalSpace G] in
 /- English proof (translation)
-Simplify using `[cob]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cob_comp {G' : Type} [Group G'] (φ : G' →* G) (b : G → M) (p : G' × G') :
     cob (χ.comp φ) (b ∘ φ) p = cob χ b (φ p.1, φ p.2) := by
   simp [cob]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp_continuous (hφ.prodMap hφ), fun g k m => by simpa only [map_mul, MonoidHom.comp_apply] using h.2 (φ g) (φ k) (φ m)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCoc.comp {G' : Type} [Group G'] [TopologicalSpace G'] (φ : G' →* G) (hφ : Continuous φ)
     {z : G × G → M} (h : IsCoc χ z) : IsCoc (χ.comp φ) fun p => z (φ p.1, φ p.2) :=
@@ -431,11 +427,11 @@ theorem IsCoc.comp {G' : Type} [Group G'] [TopologicalSpace G'] (φ : G' →* G)
     simpa only [map_mul, MonoidHom.comp_apply] using h.2 (φ g) (φ k) (φ m)⟩
 
 /- English proof (translation)
-Introduce `M _ _ _ hM`. Take `⟨h1, h2, h3⟩` from `h M hM`. Establish `e : (χ.comp φ.toMonoidHom).comp φ.symm.toMonoidHom = χ` using `by ext g; simp`. Use `⟨fun x => (h1 x).comp φ.toMonoidHom hφ, fun z hz => ?_, fun x b hb hx => ?_⟩` and prove the remaining obligations. Establish `hz'` using `hz.comp φ.symm.toMonoidHom hφ'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hz'` using `[e]`. Take `⟨x, b, hb, hx⟩` from `h2 _ hz'`. Use `⟨x, b ∘ φ.toMonoidHom, hb.comp_continuous hφ, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[cob_comp]`. Simplify using `using hx (φ p.1, φ p.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h3 x (b ∘ φ.symm.toMonoidHom) (hb.comp_continuous hφ') fun p => ?_` and prove the remaining obligations. Rewrite using `[← e, cob_comp]`. Simplify using `using hx (φ.symm p.1, φ.symm p.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Gen.transport {G' : Type} [Group G'] [TopologicalSpace G'] (φ : G' ≃* G) (hφ : Continuous φ)
     (hφ' : Continuous φ.symm) {c : G × G → ℤ_[l]} (h : Gen χ r c) :
@@ -463,29 +459,27 @@ def scalRep {R : Type} [CommRing R] (ψ : G →* Rˣ) (M : Type) [AddCommGroup M
 open ReciprocityTheory.Gal in
 
 /- English proof (translation)
-Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Take `⟨e⟩` from `h1`. Take `⟨c, hc⟩` from `Submodule.Quotient.mk_surjective _ (e.symm 1)`. Use `⟨fun p => (((c.1 p).val : ℕ) : ℤ_[l]), fun M _ _ _ hM => ?_⟩` and prove the remaining obligations. Take `⟨_⟩ : Nonempty (Module (ZMod (l ^ r)) M)` from `⟨AddCommGroup.zmodModule fun m => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ_[l], Nat.cast_pow, hM]⟩`. Set `: TopologicalSpace M` to `⊥`. Establish `: DiscreteTopology M` using `⟨rfl⟩`. Establish `hs : ∀ (a : ℤ_[l]) (m : M), a • m = PadicInt.toZModPow r a • m` using `fun a m => by`. Rewrite using `[smul_eq_val hM, ← Nat.cast_smul_eq_nsmul (ZMod (l ^ r)), ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `rho : Representation (ZMod (l ^ r)) G M` to `scalRep (redChar χ r) M`. Establish `hrho : ∀ (g : G) (m : M), (χ g : ℤ_[l]) • m = rho g m` using `fun g m => hs _ _`. Establish `hcont : ContAction rho` using `(continuous_of_discreteTopology (f := fun q : ZMod (l ^ r) × M => q.1 • q.2)).comp ((((continuous_toZModPow r).comp hχ).comp continuous_fst).prodMk continuous_snd)`. Establish `hbij` using `h2 M rho hcont`. Establish `hZ : ∀ z : G × G → M, IsCoc χ z ↔ z ∈ Z2 (rho.comp (MonoidHom.id G))` using `fun z => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [IsCoc, IsLocallyConstant.iff_continuous, hrho]`. Both sides reduce to the same expression. Establish `hd : ∀ (b : G → M) p, cob χ b p = d1 (rho.comp (MonoidHom.id G)) b p` using `fun b p => by`. Rewrite using `[cob, hrho]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hT : ∀ x : M, (fun p => c.1 p • x) ∈ Z2 (rho.comp (MonoidHom.id G))` using `fun x => by`. Use `⟨(continuous_of_discreteTopology (f := fun a : ZMod (l ^ r) => a • x)).comp c.2.1, fun g k m => ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (fun a : ZMod (l ^ r) => a • x) (c.2.2 g k m)`. Simplify using `only [sub_smul, add_smul, zero_smul] at h3`. Rewrite using `[← h3]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Conclude with `(mul_smul _ _ _).symm`. Establish `hcup : ∀ (x : M) (φ : H0 ((twDual (redChar χ r) rho).comp (MonoidHom.id G))), e (cup20 (redChar χ r) rho (MonoidHom.id G) (Submodule.Quotient.mk ⟨_, hT x⟩) φ) = φ.1 x` using `fun x φ => by`. Establish `h3 : cup20 (redChar χ r) rho (MonoidHom.id G) (Submodule.Quotient.mk ⟨_, hT x⟩) φ = Submodule.Quotient.mk (φ.1 x • c)`. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun p => ?_))` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `φ.1 (c.1 p • x) = φ.1 x * c.1 p`. Rewrite using `[mul_comm]`. Conclude with `LinearMap.map_smul (show M →ₗ[ZMod (l ^ r)] ZMod (l ^ r) from φ.1) _ _`. Rewrite using `[h3, Submodule.Quotient.mk_smul, hc, map_smul, LinearEquiv.apply_symm_apply, smul_eq_mul, mul_one]`. Set `inv : Module.Dual (ZMod (l ^ r)) M →ₗ[ZMod (l ^ r)] H0 ((twDual (redChar χ r) rho).comp (MonoidHom.id G))` to `{ toFun := fun φ => ⟨TDual.mk φ, fun g => TDual.ext fun m => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(redChar χ r g : ZMod (l ^ r)) * φ ((redChar χ r g⁻¹ : ZMod (l ^ r)) • m) = φ m`. Rewrite using `[map_smul, smul_eq_mul, ← mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, one_mul]⟩`. Use the proof step `map_add' := fun _ _ => rfl`. Use the proof step `map_smul' := fun _ _ => rfl }`. Simplify using `only [hZ, hd, hs (_ : ℕ), map_natCast, ZMod.natCast_zmod_val, IsLocallyConstant.iff_continuous]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨hT, fun z hz => ?_, fun x b hb hx => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `(eval_bijective (n := l ^ r) (M := M)).2 (e.toLinearMap ∘ₗ (cup20 (redChar χ r) rho (MonoidHom.id G) (Submodule.Quotient.mk ⟨z, hz⟩)) ∘ₗ inv)`. Establish `h3 : (Submodule.Quotient.mk ⟨z, hz⟩ : H2 (rho.comp (MonoidHom.id G))) = Submodule.Quotient.mk ⟨_, hT x⟩`. Apply `hbij.1` to reduce the goal to its premises. Use extensionality with `φ`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hcup]`. Conclude with `(DFunLike.congr_fun hx φ.1).symm`. Take `⟨b, hb, hbz⟩` from `(Submodule.Quotient.eq _).1 h3`. Conclude with `⟨x, b, hb, fun p => eq_add_of_sub_eq' (congrFun hbz p).symm⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (Submodule.Quotient.mk ⟨_, hT x⟩ : H2 (rho.comp (MonoidHom.id G))) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 ⟨b, hb, funext fun p => (hx p).symm⟩`. Assume the negation of the conclusion as `hx0`. Take `⟨φ, hφ⟩` from `exists_dual_ne_zero (n := l ^ r) hx0`. Establish `h4` using `hcup x (inv φ)`. Rewrite `h4` using `[h3, map_zero, LinearMap.zero_apply, map_zero]`.
-
-Conclude with `hφ h4.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen (hχ : Continuous fun g => (χ g : ℤ_[l]))
     (h1 : Nonempty (H2 ((charRep (redChar χ r)).comp (MonoidHom.id G)) ≃ₗ[ZMod (l ^ r)] ZMod (l ^ r)))
@@ -571,11 +565,11 @@ variable {l : ℕ} [Fact l.Prime] {LL : Type} [Field LL] [Algebra ℚ_[l] LL] [T
   {O : Type} [CommRing O] [Algebra O LL]
 
 /- English proof (translation)
-Take `⟨-, -, h1, h2, h3⟩` from `hO`. Introduce `x`. Establish `hc : Continuous fun a : ℚ_[l] => a • x` using `continuous_id.smul continuous_const`. Establish `h4` using `hc.continuousAt (x := 0) (h3.mem_nhds ⟨0, by simp⟩)`. Rewrite `h4` using `[Filter.mem_map, Metric.mem_nhds_iff]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ε, hε, h5⟩` from `h4`. Take `⟨n, hn⟩` from `exists_zpow_neg_lt (l := l) hε`. Use `⟨n, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def]`. Apply `h5` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mem_ball_zero_iff, norm_mul, Padic.norm_p_pow]`. Conclude with `(mul_le_of_le_one_right (by positivity) a.2).trans_lt hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem (hO : GoodO (Qp := ℚ_[l]) LL O) :
     ∀ x : LL, ∃ n : ℕ, ∀ a : ℤ_[l], algebraMap ℚ_[l] LL ((l : ℚ_[l]) ^ n * a) * x ∈
@@ -594,11 +588,11 @@ theorem exists_pow_smul_mem (hO : GoodO (Qp := ℚ_[l]) LL O) :
   exact (mul_le_of_le_one_right (by positivity) a.2).trans_lt hn
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `exists_pow_smul_mem hO 1`. Take `⟨⟨_, _, _⟩, -⟩` from `hO`. Establish `hinj` using `IsFractionRing.injective O LL`. Establish `h : ∀ a : ℤ_[l], ∃ o : O, algebraMap O LL o = algebraMap ℚ_[l] LL a` using `fun a => by`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton.1 (PadicInt.appr_spec n a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨o, ho⟩` from `hn w`. Use `⟨o + (a.appr n : O), ?_⟩` and prove the remaining obligations. Establish `h1 : (a : ℚ_[l]) = (l : ℚ_[l]) ^ n * w + (a.appr n : ℚ_[l])`. Rewrite using `[eq_add_of_sub_eq hw]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← eq_add_of_sub_eq hw]`. Rewrite using `[map_add, ho, mul_one, h1, map_add, map_natCast, map_natCast]`. Use `choose f hf using h`. Conclude with `⟨{ toFun := f map_one' := hinj (by simp [hf]) map_mul' := fun a b => hinj (by simp [hf]) map_zero' := hinj (by simp [hf]) map_add' := fun a b => hinj (by simp [hf]) }, hf⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ringHom (hO : GoodO (Qp := ℚ_[l]) LL O) :
     ∃ ι : ℤ_[l] →+* O, ∀ a, algebraMap O LL (ι a) = algebraMap ℚ_[l] LL a := by
@@ -624,19 +618,19 @@ theorem exists_ringHom (hO : GoodO (Qp := ℚ_[l]) LL O) :
 end Coeff
 
 /- English proof (translation)
-Introduce `l _ K LL _ _ _ O _ _ hO L1 hL1`. Take `⟨hΦ1, hΦ2⟩` from `continuous_fixingSubgroupEquiv K.1`. Use `set Φ := K.1.fixingSubgroupEquiv with hΦ`. Establish `hcyc : IsCyc (D.loc l).χQ` using `(D.loc l).χQ_cyc`. Set `χZ : Formalism.GaloisCohomology.GK l K.1 →* ℤ_[l]ˣ` to `(cyclotomicCharacter (PadicAlgCl l) l).comp (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK l K.1) (PadicAlgCl l))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hχZ : ∀ g, ((χZ g : ℤ_[l]) : ℚ_[l]) = ((D.loc l).χQ (Φ.symm g : GQ l) : ℚ_[l])` using `fun g => by`. Rewrite using `[isCyc_unique hcyc (isCyc_cycChar l)]`. Both sides reduce to the same expression. Establish `hχc : Continuous fun g => (χZ g : ℤ_[l])`. Rewrite using `[continuous_iff_coe]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hχZ]`. Conclude with `hcyc.continuous.comp (continuous_subtype_val.comp hΦ1)`. Take `⟨c, hc⟩` from `exists_gen_all hχc fun r => by`. Establish `: NeZero (l ^ (r + 1))` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Conclude with `exists_gen hχc (hT l K.1 K.2 (r + 1) (ZMod (l ^ (r + 1))) (ReciprocityTheory.Gal.charRep (redChar χZ (r + 1))) (Nat.succ_pos _) (contAction_charRep _ ((continuous_toZModPow _).comp hχc))).1 fun M _ _ _ _ _ rho hrho => (hT l K.1 K.2 (r + 1) M rho (Nat.succ_pos _) hrho).2.2.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hcpt : CompactSpace (GK K)` using `Φ.symm.surjective.compactSpace hΦ1`. Take `⟨ι, hι⟩` from `exists_ringHom hO`. Set `: Module ℤ_[l] (LL ⧸ L1.T)` to `Module.compHom _ ι`. Establish `: SMulCommClass ℤ_[l] O (LL ⧸ L1.T)` using `⟨fun a o x => smul_comm (ι a) o x⟩`. Establish `hs : ∀ (a : ℤ_[l]) (x : LL), a • (Submodule.Quotient.mk x : LL ⧸ L1.T) = Submodule.Quotient.mk (algebraMap ℚ_[l] LL a * x)` using `fun a x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hι, ← Algebra.smul_def]`. Both sides reduce to the same expression. Use `@h2_equiv_of_torsion_character l _ (GK K) _ _ _ _ _ _ hcpt _ (fun r => (hc r).transport Φ hΦ2 hΦ1) (fun x => ?_) O _ _ _ _ fun g x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨n, hn⟩` from `exists_pow_smul_mem hO x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, Submodule.Quotient.mk_eq_zero, hL1]`. Simplify using `using hn 1`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[hs]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1` using `hχZ (Φ g)`. Rewrite `h1` using `[show Φ.symm (Φ g) = g from Φ.symm_apply_apply g, ← (D.loc l).PD_χ K g]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (algebraMap ℚ_[l] LL (((D.loc l).PD K).χ g : ℚ_[l]) * x) = _`. Rewrite using `[← h1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tate_h2_of_local_duality (hT : Formalism.GaloisCohomology.LocalTateDualityK) (D : Formalism.BasicNotions.D7) : adm3 D := by
   intro l _ K LL _ _ _ O _ _ hO L1 hL1

@@ -66,23 +66,23 @@ def BaseChangeClosed (𝒞 : FamClass) : Prop :=
   Closed 𝒞 (fun Fm _ => ForFamily Fm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H j h1 h2 _ => H j h1 h2, fun H j h1 h2 => H j h1 h2 (h j h1 h2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem atRecord_iff_guarded (D : D7) (h : ∀ j, 1 ≤ j → j ≤ D.R.m → Standing D j) :
     AtRecord D ↔ AtRecordGuarded D :=
   ⟨fun H j h1 h2 _ => H j h1 h2, fun H j h1 h2 => H j h1 h2 (h j h1 h2)⟩
 
 /- English proof (translation)
-Unfold `ubc`. Apply the tactic sequence `split_ifs <;> simp [Multiset.map_map, add_comm]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ubc_map_inv (n : ℕ) (α : Multiset ℂ) : (ubc n α).map (·⁻¹) = ubc n α := by
   unfold ubc
   split_ifs <;> simp [Multiset.map_map, add_comm]
 
 /- English proof (translation)
-Unfold `ubc`. Use `split_ifs with ho`. Take `⟨k, rfl⟩` from `ho`. Simplify using `[h]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `Nat.not_odd_iff_even.mp ho`. Simplify using `[h]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_ubc (n : ℕ) (α : Multiset ℂ) (h : Multiset.card α = n / 2) : Multiset.card (ubc n α) = n := by
   unfold ubc
@@ -93,11 +93,11 @@ theorem card_ubc (n : ℕ) (α : Multiset ℂ) (h : Multiset.card α = n / 2) : 
     simp [h]; omega
 
 /- English proof (translation)
-Use `⟨fun p hp => ⟨(h.parts.discrete p hp).1, (h.parts.discrete p hp).2, h.parts.selfDual p hp⟩, ?_, h.rank, fun w hw => ?_, fun w hw => ⟨h.inertUnr w hw, ?_⟩, fun τ => ?_⟩` and prove the remaining obligations. Use `h.parts.distinct.map ?_` and prove the remaining obligations. Introduce and unpack `⟨a, π, d⟩ ⟨a', π', d'⟩ e`. Simplify using `only [Prod.mk.injEq, Sigma.mk.injEq] at e`. Take `⟨⟨rfl, e2⟩, rfl⟩` from `e`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Consider the cases of `e2`. Both sides reduce to the same expression. Rewrite using `[B.embAV_loc]`. Conclude with `h.split w hw`. Rewrite using `[B.embAV_sat]`.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.inertSat w hw`. Rewrite using `[B.embAV_inf]`. Conclude with `h.infChar τ`.
+A detailed English derivation is pending.
 -/
 theorem isBCV_of_isBaseChange {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
     (B : NBC A) (i : N.Loc) (Q : A.AV i) (P : List (Part A.CG))

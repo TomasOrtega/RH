@@ -18,19 +18,19 @@ open GlobalTheory.PlaceInt
 namespace GlobalTheory.PlaceInt
 
 /- English proof (translation)
-Set `_ : Algebra A R` to `Φ.toAlgebra`. Establish `hsm : ∀ (a : A) (y : R), a • y = Φ a * y` using `fun a y => rfl`. Establish `hli : LinearIndependent A b`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `(hb 0).unique (y₁ := c) (y₂ := 0) (by simpa [hsm] using hc0.symm) (by simp)`. Introduce `i`. Rewrite using `[h0]`. Both sides reduce to the same expression. Establish `hsp : ⊤ ≤ Submodule.span A (Set.range b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `f _`. Take `⟨c, hc, -⟩` from `hb f`. Rewrite using `[hc]`. Conclude with `Submodule.sum_mem _ fun i _ => (hsm (c i) (b i)) ▸ Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `bs : Module.Basis (Fin r) A R` to `Module.Basis.mk hli hsp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Module.Free A R` using `Module.Free.of_basis bs`. Establish `: Module.Finite A R` using `Module.Finite.of_basis bs`. Establish `hr : Module.finrank A R = r` using `by rw [Module.finrank_eq_card_basis bs, Fintype.card_fin]`. Use `choose ψ hψ using hg`. Set `G : S → (R →ₐ[A] R)` to `fun α => { ψ α.1 α.2 with commutes' := fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hfix α.1 α.2 a` as an intermediate fact. Rewrite `this` using `[hψ α.1 α.2]`. Conclude with `this }`. Establish `hG : ∀ (α : S) f, G α f = g α.1 f` using `fun α f => (hψ α.1 α.2 f).symm`. Establish `hGi : Function.Injective G` using `fun α β h => Subtype.ext (hinj _ α.2 _ β.2 fun f => by rw [← hG, ← hG, h])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Fintype S` using `hS.fintype`. Establish `hcard : (Finset.univ.image G).card = Module.finrank A R`. Rewrite using `[Finset.card_image_of_injective _ hGi, hr, ← hc, Finset.card_univ, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Take `⟨a, ha⟩` from `(GlobalTheory.PlaceInt.invariants_and_trace_of_card_eq_finrank A R _ hcard).1 x (by`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `g0 hg0`. Take `⟨α, -, rfl⟩` from `Finset.mem_image.1 hg0`. Rewrite using `[hG, hx _ α.2])`. Conclude with `⟨a, ha.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_of_invariant (A R : Type) [CommRing A] [IsDomain A] [CommRing R] [IsDomain R] (Φ : A →+* R)
     (r : ℕ) (b : Fin r → R) (hb : ∀ f, ∃! cf : Fin r → A, f = ∑ i, Φ (cf i) * b i)
@@ -78,13 +78,13 @@ theorem mem_range_of_invariant (A R : Type) [CommRing A] [IsDomain A] [CommRing 
   exact ⟨a, ha.symm⟩
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ d O _ _ B hB n q q' N hN hq hj hs f hf`. Establish `h0 : ∀ b i, MvPowerSeries.constantCoeff (matV B q (fun j => pt V (n` using `n) d j) b i) = 0 := (GlobalTheory.T.formalModuleMatrixApplyPoints_action_laws V d O B n 0 q q 0 0 (fun b i => by simp) (fun b i => by simp)).2.2.2.2.2.1`. Use `set φ : Fin n × Fin d → MvPowerSeries (Fin n × Fin d) V := fun s => matV B q (fun j => pt V (n := n) d j) s.1 s.2 with hφ`. Establish `hφ0 : ∀ s, MvPowerSeries.constantCoeff (φ s) = 0` using `fun s => h0 s.1 s.2`. Take `⟨⟨Ψ, -, hΨ⟩, -, hsub, -⟩` from `GlobalTheory.PlaceInt.evC_spec V (Fin n × Fin d) (Fin n × Fin d) (Fin n × Fin d) φ (fun s => by rw [hφ0]; exact Ideal.zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : ∀ a, pullM B q a = Ψ a` using `fun a => hΨ a`. Establish `hs' : ∀ a, MvPowerSeries.subst φ a = Ψ a` using `fun a => (hsub hφ0 a).symm.trans (hΨ a)`. Take `⟨r, b, hr, hb⟩` from `GlobalTheory.FiniteColength.exists_basis_subst_finrank_quotient V (Fin n × Fin d) φ hφ0 (GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n q q' N hN hq)`. Take `⟨hfin, hcard⟩` from `GlobalTheory.T.formalMatrixKernel_finite_ncard_eq_rank V d O B hB n q q' N hN hq hj hs`. Establish `: IsDomain (MvPowerSeries (Fin n × Fin d) V)` using `NoZeroDivisors.to_isDomain _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsh` using `(GlobalTheory.T.formalGroupTranslate_automorphism_and_matrixKernel V d O B n q).2.2`. Take `⟨a, ha⟩` from `mem_range_of_invariant (MvPowerSeries (Fin n × Fin d) V) (MvPowerSeries (Fin n × Fin d) V) (Ψ : MvPowerSeries (Fin n × Fin d) V →+* MvPowerSeries (Fin n × Fin d) V) r b (fun f => by simpa only [hs', RingHom.coe_coe] using hb f) (kerM B q) hfin (hcard.trans hr) (shift B.G.F) (fun …`. Take `⟨ψ, hψ⟩` from `(hsh α α hα.1 hα.1).1`. Conclude with `⟨ψ.toRingEquiv.toRingHom, hψ⟩)`. Use the proof step `(fun α hα a => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hsh α α hα.1 hα.1).2.1.1 hα a` as an intermediate fact. Rewrite `this` using `[hp]`. Conclude with `this)`. Use the proof step `(fun α hα β hβ h => (hsh α β hα.1 hβ.1).2.2.1 h) f hf`. Conclude with `⟨a, ha.trans (hp a).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem descends_of_invariant : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [CharZero V] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB V d O), FinHt B → ∀ (n : ℕ) (q q' : Matrix (Fin n) (Fin n) O) (N : ℕ), 1 ≤ N → q' * q = (N : O) • (1 : Matrix (Fin n) (Fin n) O) → jacM B q ≠ 0 → SplitKer B q → ∀ f : PS V n d, (∀ α ∈ kerM B q, shift B.G.F α f = f) → ∃ f', f = pullM B q f' := by
   intro V _ _ _ _ _ d O _ _ B hB n q q' N hN hq hj hs f hf

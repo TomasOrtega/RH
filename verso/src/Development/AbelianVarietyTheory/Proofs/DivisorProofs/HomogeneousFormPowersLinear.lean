@@ -14,19 +14,17 @@ open scoped Classical
 namespace GlobalTheory.IntLinPow
 
 /- English proof (translation)
-Introduce `D F hF`. Establish `hmem : F ∈ Submodule.span ℝ (Set.range fun n : Fin 5 → ℤ => lin (fun i => (n i : ℝ)) ^ D)`. Assume the negation of the conclusion as `hnot`. Take `⟨φ, hφF, hφ⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hnot inferInstance`. Establish `hkill : ∀ n : Fin 5 → ℤ, φ (lin (fun i => (n i : ℝ)) ^ D) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `n`. Establish `hm : lin (fun i => (n i : ℝ)) ^ D ∈ Submodule.span ℝ (Set.range fun n : Fin 5 → ℤ => lin (fun i => (n i : ℝ)) ^ D)` using `Submodule.subset_span ⟨n, rfl⟩`. Establish `h2 : φ (lin (fun i => (n i : ℝ)) ^ D) ∈ (Submodule.span ℝ (Set.range fun n : Fin 5 → ℤ => lin (fun i => (n i : ℝ)) ^ D)).map φ` using `Submodule.mem_map_of_mem hm`. Rewrite `h2` using `[hφ]`. Conclude with `(Submodule.mem_bot ℝ).mp h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : PowLinSpan.polOf φ D = 0`. Use `eq_zero_of_eval_zero_at_prod_finset (PowLinSpan.polOf φ D) (fun _ => (Finset.range (D + 1)).image (fun k : ℕ => (k : ℝ))) ?_ ?_` and prove the remaining obligations. Introduce `x`. Rewrite using `[Finset.card_image_of_injective _ Nat.cast_injective]`. Simplify using `using Nat.lt_succ_of_le (PowLinSpan.degreeOf_polOf_le φ D x)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Establish `hv' : ∀ i, ∃ k : ℕ, (k : ℝ) = v i`. Introduce `i`. Take `⟨k, -, hk⟩` from `Finset.mem_image.mp (hv i)`. Conclude with `⟨k, hk⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `choose k hk using hv'`. Rewrite using `[PowLinSpan.eval_polOf]`. Establish `h` using `hkill (fun i => (k i : ℤ))`. Establish `he : (∑ x, C (v x) * X x : MvPolynomial (Fin 5) ℝ) = lin (fun i => (((k i : ℤ)) : ℝ))`. Simplify using `only [lin, Int.cast_natCast, hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[he]`. Conclude with `h`. Conclude with `hφF (PowLinSpan.homog_kill φ D hP F hF)`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp hmem`. Use `⟨c.support, c, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hc, Finsupp.sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homog_eq_sum_pow_intLin : ∀ (D : ℕ) (F : MvPolynomial (Fin 5) ℝ), F.IsHomogeneous D →
     ∃ (s : Finset (Fin 5 → ℤ)) (c : (Fin 5 → ℤ) → ℝ), F = ∑ n ∈ s, c n • lin (fun i => (n i : ℝ)) ^ D := by

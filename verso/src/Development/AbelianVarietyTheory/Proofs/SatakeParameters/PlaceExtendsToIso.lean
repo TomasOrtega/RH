@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MkLeContinuumOfDense
 namespace GlobalTheory.ThLoc
 
 /- English proof (translation)
-Introduce `p _ lam` and use `GlobalTheory.PadicComplexIso.exists_ringEquiv_extending p lam`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem place_extends_to_iso : Formalism.L2.KerInert.LamExt :=
   fun p _ lam => GlobalTheory.PadicComplexIso.exists_ringEquiv_extending p lam

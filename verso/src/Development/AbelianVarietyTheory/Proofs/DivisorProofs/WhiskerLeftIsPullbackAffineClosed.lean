@@ -13,11 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PinchLift
 
 /- English proof (translation)
-Establish `hP` using `GlobalTheory.DualCon.isPullback_whiskerLeft_snd_left E p`. Establish `hI` using `GlobalTheory.DualCon.isPullback_whiskerLeft_snd_left E i`. Establish `hP'` using `GlobalTheory.DualCon.isPullback_whiskerLeft_snd_left E p'`. Use `⟨?_, MorphismProperty.of_isPullback hP.flip ‹_›, MorphismProperty.of_isPullback hI.flip ‹_›⟩` and prove the remaining obligations. Establish `hout` using `hP'.flip.paste_horiz hpb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsPullback.of_right ?_ ?_ hP.flip` and prove the remaining obligations. Establish `h1 : (E ◁ i').left ≫ (snd E X').left = (snd E Z').left ≫ i'.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Simplify using the standard rewrite rules. Establish `h2 : (E ◁ i).left ≫ (snd E X).left = (snd E Z).left ≫ i.left`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2]`. Conclude with `hout`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← whiskerLeft_comp, ← whiskerLeft_comp, hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whiskerLeft_isPullback_affine_closed (S : Scheme.{0}) (E X X' Z Z' : Over S) (p : X' ⟶ X) (i : Z ⟶ X)
     (i' : Z' ⟶ X') (p' : Z' ⟶ Z) (hc : i' ≫ p = p' ≫ i) (hpb : IsPullback i'.left p'.left p.left i.left)
@@ -38,9 +38,9 @@ theorem whiskerLeft_isPullback_affine_closed (S : Scheme.{0}) (E X X' Z Z' : Ove
   · rw [← Over.comp_left, ← Over.comp_left, ← whiskerLeft_comp, ← whiskerLeft_comp, hc]
 
 /- English proof (translation)
-Introduce `S E X X' Z Z' p i i' p' hE hc hpb hp hi hg`. Take `⟨h1, h2, h3⟩` from `whiskerLeft_isPullback_affine_closed S E X X' Z Z' p i i' p' hc hpb`. Use `⟨h1, h2, h3, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.pullback_square_sections_glue_of_basis (E ◁ p).left (E ◁ i).left (E ◁ i').left (E ◁ p').left {W | IsAffineOpen W ∧ ∃ V : X.left.Opens, IsAffineOpen V ∧ W ≤ (snd E X).left ⁻¹ᵁ V} ?_ ?_` and prove the remaining obligations. Introduce `W x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨_, ⟨V, hV, rfl⟩, hxV, -⟩` from `X.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ ((snd E X).left x)) isOpen_univ`. Take `⟨_, ⟨W', hW', rfl⟩, hxW', hle⟩` from `(E ⊗ X).left.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ ((W ⊓ (snd E X).left ⁻¹ᵁ V : (E ⊗ X).left.Opens) : Set (E ⊗ X).left) from ⟨hx, hxV⟩) (W ⊓ (snd E X).left ⁻¹ᵁ V).isOpen`. Conclude with `⟨W', ⟨hW', V, hV, fun y hy => (hle hy).2⟩, hxW', fun y hy => (hle hy).1⟩`. Introduce and unpack `W ⟨hW, V, hV, hWV⟩`. Conclude with `GlobalTheory.T.pinched_functions_glue_affine_flat_baseChange S E X X' Z Z' p i i' p' hE hc hpb hp hi hg V W hV hW hWV`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem glues_whiskerLeft : ∀ (S : Scheme.{0}) (E X X' Z Z' : Over S) (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z), Flat E.hom → i' ≫ p = p' ≫ i → IsPullback i'.left p'.left p.left i.left → IsAffineHom p.left → IsClosedImmersion i.left → GlobalTheory.PinchLift.Glues p.left i.left i'.left p'.left → IsPullback (E ◁ i').left (E ◁ p').left (E ◁ p).left (E ◁ i).left ∧ IsAffineHom (E ◁ p).left ∧ IsClosedImmersion (E ◁ i).left ∧ GlobalTheory.PinchLift.Glues (E ◁ p).left (E ◁ i).left (E ◁ i').left (E ◁ p').left := by
   intro S E X X' Z Z' p i i' p' hE hc hpb hp hi hg

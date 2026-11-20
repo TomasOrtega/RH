@@ -8,33 +8,33 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
 /- English proof (translation)
-Introduce `K _ _ v`. Take `⟨hadd, hmul, hcp, hidl, hlc, -, -, -, -, -⟩` from `sgLaws K v`. Establish `h0 : sg v 0 = 0`. Use `hadd 0 0` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hinv : ∀ a : (Kv v)ˣ, idl v a⁻¹ = (idl v a)⁻¹` using `fun a => map_inv (localIdele K v) a`. Establish `hv : ∀ a : (Kv v)ˣ, 1 + sg v ((a : Kv v) - 1) = ((idl v a : (A K)ˣ) : A K)` using `fun a => (hidl a).symm`. Establish `hvi : ∀ a : (Kv v)ˣ, 1 + sg v (((a⁻¹ : (Kv v)ˣ) : Kv v) - 1) = (((idl v a)⁻¹ : (A K)ˣ) : A K)` using `fun a => by`. Rewrite using `[← hinv, hidl]`. Establish `hvi' : ∀ a : (Kv v)ˣ, 1 + sg v ((a : Kv v)⁻¹ - 1) = (((idl v a)⁻¹ : (A K)ˣ) : A K)` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hvi a, Units.val_inv_eq_inv_val]`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `b`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[hlc]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nL, nU, h0] <;> rfl`. Introduce `a`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[hlc]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dL, mD, h0, hv, hvi'] <;> rfl`. Introduce `t`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[hlc]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dL, dM, h0, hv]`. Introduce `a`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[hlc]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dL, aE, h0, hv]`. Introduce `a`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[hlc]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dL, h0, hv]`. Introduce `y`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.GeneralLinearGroup.map_apply, hlc, map_add, hcp]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Introduce `g y`. Establish `one_l : ∀ (R : Type) [CommRing R] (M : Matrix (Fin 2) (Fin 2) R) (i j : Fin 2), (1 : Matrix (Fin 2) (Fin 2) R) i 0 * M 0 j + (1 : Matrix (Fin 2) (Fin 2) R) i 1 * M 1 j = M i j` using `fun R _ M i j => by`. Use `congrFun (congrFun (Matrix.one_mul M) i) j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mul_apply, Fin.sum_univ_two]`. Then use the resulting hypothesis. Establish `one_r : ∀ (R : Type) [CommRing R] (M : Matrix (Fin 2) (Fin 2) R) (i j : Fin 2), M i 0 * (1 : Matrix (Fin 2) (Fin 2) R) 0 j + M i 1 * (1 : Matrix (Fin 2) (Fin 2) R) 1 j = M i j` using `fun R _ M i j => by`. Use `congrFun (congrFun (Matrix.mul_one M) i) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Fin.sum_univ_two]`. Then use the resulting hypothesis. Establish `hr : ∀ (x : Kv v) (a : A K), sg v x * a = sg v (x * cp v a)` using `fun x a => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, hmul, mul_comm]`. Use `set gv := Matrix.GeneralLinearGroup.map (cp v) g with hgv`. Establish `hgva : ∀ i j, gv.val i j = cp v (g.val i j)` using `fun i j => by`. Rewrite using `[hgv, Matrix.GeneralLinearGroup.map_apply]`. Generalize the expression as in `hzd : gv⁻¹ * y * gv = z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hz : gv * z = y * gv`. Rewrite using `[← hzd]`. Use `group`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : gv.val i 0 * z.val 0 j + gv.val i 1 * z.val 1 j = y.val i 0 * gv.val 0 j + y.val i 1 * gv.val 1 j`. Use `congrArg (fun h : GL (Fin 2) (Kv v) => h.val i j) hz` as an intermediate fact. Simplify `this` using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two, hlc]`. Simplify using `only [add_mul, mul_add, hr, hmul, ← hgva]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e : (y.val i 0 - (1 : Matrix (Fin 2) (Fin 2) (Kv v)) i 0) * gv.val 0 j + (y.val i 1 - (1 : Matrix (Fin 2) (Fin 2) (Kv v)) i 1) * gv.val 1 j = gv.val i 0 * (z.val 0 j - (1 : Matrix (Fin 2) (Fin 2) (Kv v)) 0 j) + gv.val i 1 * (z.val 1 j - (1 : Matrix (Fin 2) (Fin 2) (Kv v)) 1 j)`. Take the linear combination `-hz' - one_l (Kv v) gv.val i j + one_r (Kv v) gv.val i j`. Establish `es` using `congrArg (sg v) e`. Rewrite `es` using `[hadd, hadd]`. Take the linear combination `es + one_l (A K) g.val i j - one_r (A K) g.val i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.H.lcLaws :
     ∀ (K : Type) [Field K] [NumberField K] (v : P K), (∀ b, lc v (nL b) = gl (nU (sg v b))) ∧ (∀ a, lc v (dL a a⁻¹) = gl (mD (idl v a))) ∧ (∀ t, lc v (dL 1 t) = dM (idl v t)) ∧

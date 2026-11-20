@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.LatticeInvariants
 
 /- English proof (translation)
-Use `(tsum_subtype {w | p w} f).trans (Eq.trans ?_ (tsum_subtype {w | q w} f).symm)` and prove the remaining obligations. Use `congr with w`. Distinguish the cases in `h0 : f w = 0`. Simplify using `[Set.indicator, h0]`. Simplify using `[Set.indicator, h w h0]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma tsum_subtype_congr {p q : ℂ → Prop} (f : ℂ → ℂ) (h : ∀ w, f w ≠ 0 → (p w ↔ q w)) :
     ∑' w : {w // p w}, f w = ∑' w : {w // q w}, f w := by
@@ -22,7 +22,7 @@ lemma tsum_subtype_congr {p q : ℂ → Prop} (f : ℂ → ℂ) (h : ∀ w, f w 
   · simp [Set.indicator, h w h0]
 
 /- English proof (translation)
-Simplify using `only [eisG, one_div]`. Use `tsum_subtype_congr (p := fun w ↦ w ∈ Λ ∧ w ≠ 0) (q := fun w ↦ w ∈ Λ) (fun w ↦ (w ^ (2 * k))⁻¹) fun w hw ↦ ⟨fun h ↦ h.1, fun h ↦ ⟨h, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `[hk] at hw`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 lemma eisG_eq_tsum (Λ : AddSubgroup ℂ) {k : ℕ} (hk : k ≠ 0) :
     eisG Λ k = ∑' w : Λ, ((w : ℂ) ^ (2 * k))⁻¹ := by
@@ -38,7 +38,7 @@ variable {L : PeriodPair} {Λ : AddSubgroup ℂ} (h : ∀ z, z ∈ Λ ↔ z ∈ 
 include h
 
 /- English proof (translation)
-Rewrite using `[eisG_eq_tsum Λ hk]`. Conclude with `tsum_subtype_congr (p := fun w ↦ w ∈ Λ) (q := fun w ↦ w ∈ L.lattice) (fun w ↦ (w ^ (2 * k))⁻¹) fun w _ ↦ h w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eisG_eq_G {k : ℕ} (hk : k ≠ 0) : eisG Λ k = L.G (2 * k) := by
   rw [eisG_eq_tsum Λ hk]
@@ -46,17 +46,17 @@ lemma eisG_eq_G {k : ℕ} (hk : k ≠ 0) : eisG Λ k = L.G (2 * k) := by
     (fun w ↦ (w ^ (2 * k))⁻¹) fun w _ ↦ h w
 
 /- English proof (translation)
-Rewrite using `[g2, eisG_eq_G h two_ne_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma g2_eq : g2 Λ = L.g₂ := by rw [g2, eisG_eq_G h two_ne_zero]; rfl
 
 /- English proof (translation)
-Rewrite using `[g3, eisG_eq_G h three_ne_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma lattice_invariant_g3_eq : g3 Λ = L.g₃ := by rw [g3, eisG_eq_G h three_ne_zero]; rfl
 
 /- English proof (translation)
-Rewrite using `[wpD, PeriodPair.derivWeierstrassP, neg_mul, ← tsum_mul_left]`. Simplify using `only [mul_one_div]`. Use `congr 1`. Conclude with `tsum_subtype_congr (p := fun w ↦ w ∈ Λ) (q := fun w ↦ w ∈ L.lattice) (fun w ↦ 2 / (z - w) ^ 3) fun w _ ↦ h w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma wpD_eq (z : ℂ) : wpD Λ z = L.derivWeierstrassP z := by
   rw [wpD, PeriodPair.derivWeierstrassP, neg_mul, ← tsum_mul_left]
@@ -66,9 +66,9 @@ lemma wpD_eq (z : ℂ) : wpD Λ z = L.derivWeierstrassP z := by
     (fun w ↦ 2 / (z - w) ^ 3) fun w _ ↦ h w
 
 /- English proof (translation)
-Rewrite using `[← L.weierstrassPExcept_add 0, wpF, add_comm]`. Use `congr 1`. Use `Eq.trans (tsum_congr fun w ↦ ?_) (tsum_subtype_congr (p := fun w ↦ w ∈ Λ ∧ w ≠ 0) (q := fun w ↦ w ∈ L.lattice) (fun w ↦ if w = 0 then 0 else 1 / (z - w) ^ 2 - 1 / w ^ 2) fun w hw ↦ ?_)` and prove the remaining obligations. Rewrite using `[if_neg w.2.2]`. Establish `: w ≠ 0` using `by rintro rfl; simp at hw`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[h, this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma wpF_eq (z : ℂ) : wpF Λ z = L.weierstrassP z := by
   rw [← L.weierstrassPExcept_add 0, wpF, add_comm]
@@ -82,17 +82,15 @@ lemma wpF_eq (z : ℂ) : wpF Λ z = L.weierstrassP z := by
   · simp
 
 /- English proof (translation)
-Use `IsLeast.csInf_eq ⟨⟨?_, L.ω₂, (h _).2 L.ω₂_mem_lattice, L.ω₁, (h _).2 L.ω₁_mem_lattice, by rw [mul_comm]⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[abs_pos]`. Introduce `h0`. Establish `hi` using `LinearIndependent.pair_iff.mp L.indep`. Simplify using `only [Complex.mul_im, Complex.conj_im, Complex.conj_re] at h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hi L.ω₂.re (-L.ω₁.re) (by`. Apply the tactic sequence `apply Complex.ext <;> simp`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `linarith)`. Establish `h2` using `hi L.ω₂.im (-L.ω₁.im) (by`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply Complex.ext <;> simp`. Combine the linear equalities and inequalities to obtain the conclusion. Use the proof step `ring)`. Establish `h3 : L.ω₂ = 0` using `Complex.ext h1.1 h2.1`. Simplify using `using (hi 0 1 (by simp [h3])).2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `a ⟨ha, w₁, h₁, w₂, h₂, rfl⟩`. Take `⟨m, n, rfl⟩` from `PeriodPair.mem_lattice.1 ((h _).1 h₁)`. Take `⟨p, q, rfl⟩` from `PeriodPair.mem_lattice.1 ((h _).1 h₂)`. Establish `e : (starRingEnd ℂ (m * L.ω₁ + n * L.ω₂) * (p * L.ω₁ + q * L.ω₂)).im = (n * p - m * q : ℤ) * (L.ω₁ * starRingEnd ℂ L.ω₂).im`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `ha`, the goal using `[e, abs_mul]`. Establish `h1 : (n * p - m * q : ℤ) ≠ 0`. Introduce `h0`. Simplify using `[h0] at ha`.
-
-Establish `h2 : (1 : ℝ) ≤ |((n * p - m * q : ℤ) : ℝ)|` using `by exact_mod_cast Int.one_le_abs h1`. Conclude with `le_mul_of_one_le_left (abs_nonneg _) h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma area_eq : area Λ = |(L.ω₁ * starRingEnd ℂ L.ω₂).im| := by
   refine IsLeast.csInf_eq ⟨⟨?_, L.ω₂, (h _).2 L.ω₂_mem_lattice, L.ω₁, (h _).2 L.ω₁_mem_lattice,
@@ -128,13 +126,13 @@ lemma area_eq : area Λ = |(L.ω₁ * starRingEnd ℂ L.ω₂).im| := by
 end
 
 /- English proof (translation)
-Rewrite `h` using `[eisG_eq_tsum Λ hk]`. Establish `hs : Summable fun w : Λ ↦ ((w : ℂ) ^ (2 * k))⁻¹`. Assume the negation of the conclusion as `hs`. Conclude with `h (tsum_eq_zero_of_not_summable hs)`. Establish `hf : {w : Λ | ¬ ‖((w : ℂ) ^ (2 * k))⁻¹‖ < 1}.Finite` using `Filter.eventually_cofinite.1 ((tendsto_zero_iff_norm_tendsto_zero.1 hs.tendsto_cofinite_zero).eventually_lt_const one_pos)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `discreteTopology_iff_isOpen_singleton_zero.2 ?_` and prove the remaining obligations. Establish `ho : IsOpen {w : Λ | ‖(w : ℂ)‖ < 1}` using `isOpen_lt (by fun_prop) continuous_const`. Use `ho.sdiff hf.isClosed using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w`. Simplify using `only [Set.mem_singleton_iff, Set.mem_sdiff, Set.mem_setOf_eq, not_not]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using `[hk]`. Introduce and unpack `⟨h1, h2⟩`. Assume the negation of the conclusion as `h0`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h3 : 0 < ‖(w : ℂ)‖` using `by simpa using h0`. Rewrite `h2` using `[norm_inv, norm_pow]`. Conclude with `absurd h2 (not_lt.2 ((one_le_inv₀ (by positivity)).2 (pow_le_one₀ h3.le h1.le)))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma discrete_of_eisG_ne_zero {Λ : AddSubgroup ℂ} {k : ℕ} (hk : k ≠ 0) (h : eisG Λ k ≠ 0) :
     DiscreteTopology Λ := by
@@ -160,9 +158,9 @@ lemma discrete_of_eisG_ne_zero {Λ : AddSubgroup ℂ} {k : ℕ} (hk : k ≠ 0) (
     exact absurd h2 (not_lt.2 ((one_le_inv₀ (by positivity)).2 (pow_le_one₀ h3.le h1.le)))
 
 /- English proof (translation)
-Rewrite using `[eisG_eq_tsum Λ hk]`. Break down `eq_or_ne a 0 with rfl | h0` into its components or cases. Establish `: ∀ w : Λ, (w : ℂ) = 0` using `fun w ↦ by simpa [eq_comm] using h w w.2`. Simplify using `[this, hk]`. Set `e : ℤ → Λ` to `fun m ↦ ⟨m • a, Λ.zsmul_mem ha m⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `he : Function.Bijective e` using `⟨fun m n hmn ↦ by simpa [e, h0] using hmn, fun w ↦ (h w w.2).imp fun m hm ↦ Subtype.ext hm⟩`. Rewrite using `[← (Equiv.ofBijective e he).tsum_eq, two_mul_riemannZeta_eq_tsum_int_inv_pow_of_even (by omega) (even_two_mul k), ← tsum_mul_left]`. Use `congr with m`. Simplify using `[e, mul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 lemma eisG_of_cyclic {Λ : AddSubgroup ℂ} {a : ℂ} (ha : a ∈ Λ) (h : ∀ w ∈ Λ, ∃ m : ℤ, m • a = w)
     {k : ℕ} (hk : k ≠ 0) : eisG Λ k = (a ^ (2 * k))⁻¹ * (2 * riemannZeta (2 * k : ℕ)) := by
@@ -179,9 +177,9 @@ lemma eisG_of_cyclic {Λ : AddSubgroup ℂ} {a : ℂ} (ha : a ∈ Λ) (h : ∀ w
   simp [e, mul_pow]
 
 /- English proof (translation)
-Establish `h6 : riemannZeta 6 = Real.pi ^ 6 / 945`. Use `riemannZeta_two_mul_nat (k := 3) (by norm_num)` as an intermediate fact. Rewrite `this` using `[show bernoulli (2 * 3) = 1 / 42 by decide +kernel]`. Evaluate the numerical expressions using `[Nat.factorial] at this`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[TaylorLogMetric.discr, g2, g3, eisG_of_cyclic ha h two_ne_zero, eisG_of_cyclic ha h three_ne_zero]`. Evaluate the numerical expressions using `only [riemannZeta_four, h6]`. Simplify using `only [← inv_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma discr_of_cyclic {Λ : AddSubgroup ℂ} {a : ℂ} (ha : a ∈ Λ)
     (h : ∀ w ∈ Λ, ∃ m : ℤ, m • a = w) : TaylorLogMetric.discr Λ = 0 := by
@@ -197,15 +195,15 @@ lemma discr_of_cyclic {Λ : AddSubgroup ℂ} {a : ℂ} (ha : a ∈ Λ)
   ring
 
 /- English proof (translation)
-Establish `hd : DiscreteTopology Λ`. Distinguish the cases in `h2 : eisG Λ 2 = 0`. Use `discrete_of_eisG_ne_zero three_ne_zero fun h3 ↦ h ?_` and prove the remaining obligations. Simplify using `[TaylorLogMetric.discr, g2, g3, h2, h3]`. Conclude with `discrete_of_eisG_ne_zero two_ne_zero h2`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `M : Submodule ℤ ℂ` to `AddSubgroup.toIntSubmodule Λ`. Establish `hM : DiscreteTopology M` using `hd`. Distinguish the cases in `hs : Submodule.span ℝ (M : Set ℂ) = ⊤`. Establish `hZ : IsZLattice ℝ M` using `⟨hs⟩`. Set `b` to `Module.finBasisOfFinrankEq ℤ M ((ZLattice.rank ℝ M).trans Complex.finrank_real_complex)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hi` using `(b.ofZLatticeBasis ℝ M).linearIndependent`. Establish `e : ⇑(b.ofZLatticeBasis ℝ M) = ![(b 0 : ℂ), b 1]`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp`. Use `⟨⟨b 0, b 1, e ▸ hi⟩, fun z ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `z ∈ M ↔ z ∈ Submodule.span ℤ {(b 0 : ℂ), (b 1 : ℂ)}`. Rewrite using `[← Matrix.range_cons_cons_empty _ _ ![], ← e, b.ofZLatticeBasis_span ℝ M]`. Establish `h1 : Module.finrank ℤ M ≤ 1`. Establish `e` using `Real.finrank_eq_int_finrank_of_discrete (s := (M : Set ℂ)) (by rw [Submodule.span_eq]; exact hM)`. Rewrite `e` using `[Set.finrank, Set.finrank, Submodule.span_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.finrank_lt hs` as an intermediate fact. Rewrite `this` using `[Complex.finrank_real_complex]`. Use linear arithmetic over natural numbers and integers. Take `⟨v, hv⟩` from `finrank_le_one_iff.1 h1`. Conclude with `absurd (discr_of_cyclic (a := v) v.2 fun w hw ↦ (hv ⟨w, hw⟩).imp fun m hm ↦ congrArg Subtype.val hm) h`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma exists_periodPair_of_discr_ne_zero {Λ : AddSubgroup ℂ} (h : TaylorLogMetric.discr Λ ≠ 0) :
     ∃ L : PeriodPair, ∀ z, z ∈ Λ ↔ z ∈ L.lattice := by
@@ -238,11 +236,11 @@ lemma exists_periodPair_of_discr_ne_zero {Λ : AddSubgroup ℂ} (h : TaylorLogMe
       (hv ⟨w, hw⟩).imp fun m hm ↦ congrArg Subtype.val hm) h
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_E₄_cube_div_discriminant_eq (1728 * a ^ 3 / (a ^ 3 - 27 * b ^ 2))`. Set `L` to `periodPairOfTau τ`. Establish `h1` using `g₂_cube_div_eq_modularJ one_ne_zero (mem_lattice_periodPairOfTau τ)`. Establish `h0` using `g₂_cube_sub_g₃_sq_ne_zero L`. Rewrite `h1` using `[modularJ_def, hτ, div_eq_div_iff h0 h]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu, h2, h3⟩` from `exists_scale_of_j_eq h0 h (by linear_combination h1 / 1728)`. Take `⟨c, hc⟩` from `IsAlgClosed.exists_pow_nat_eq u⁻¹ (n := 2) (by norm_num)`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `inv_ne_zero hu (by simpa using hc.symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `H` using `isHomothetic_scalePeriods L c hc0`. Use `⟨scalePeriods L c hc0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[H.g₂_eq, h2, show c ^ 4 = (c ^ 2) ^ 2 by ring, hc]; simp`. Rewrite using `[H.g₃_eq, h3, show c ^ 6 = (c ^ 2) ^ 3 by ring, hc]; simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_periodPair_of_invariants {a b : ℂ} (h : a ^ 3 - 27 * b ^ 2 ≠ 0) :
     ∃ L : PeriodPair, L.g₂ = a ∧ L.g₃ = b := by
@@ -262,9 +260,9 @@ lemma exists_periodPair_of_invariants {a b : ℂ} (h : a ^ 3 - 27 * b ^ 2 ≠ 0)
   · rw [H.g₃_eq, h3, show c ^ 6 = (c ^ 2) ^ 3 by ring, hc]; simp
 
 /- English proof (translation)
-Introduce `L Λ h`. Establish `hΔ : TaylorLogMetric.discr Λ ≠ 0`. Rewrite using `[TaylorLogMetric.discr, g2_eq h, lattice_invariant_g3_eq h]`. Conclude with `g₂_cube_sub_g₃_sq_ne_zero L`. Use `⟨g2_eq h, lattice_invariant_g3_eq h, hΔ, area_eq h, fun z _ ↦ ⟨wpF_eq h z, wpD_eq h z⟩, fun Λ' h2 h3 ↦ ?_, fun a b ↦ exists_periodPair_of_invariants⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨L', h'⟩` from `exists_periodPair_of_discr_ne_zero (Λ := Λ') (by rwa [TaylorLogMetric.discr, h2, h3])`. Rewrite `h2` using `[g2_eq h, g2_eq h']`. Rewrite `h3` using `[lattice_invariant_g3_eq h, lattice_invariant_g3_eq h']`. Use extensionality with `z`. Rewrite using `[h, h', lattice_eq_of_g₂_eq_of_g₃_eq h2 h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariants_dictionary : ∀ (L : PeriodPair) (Λ : AddSubgroup ℂ), (∀ z, z ∈ Λ ↔ z ∈ L.lattice) → g2 Λ = L.g₂ ∧ g3 Λ = L.g₃ ∧ TaylorLogMetric.discr Λ ≠ 0 ∧ area Λ = |(L.ω₁ * starRingEnd ℂ L.ω₂).im| ∧ (∀ z, z ∉ Λ → wpF Λ z = L.weierstrassP z ∧ wpD Λ z = L.derivWeierstrassP z) ∧ (∀ (Λ' : AddSubgroup ℂ), g2 Λ' = g2 Λ → g3 Λ' = g3 Λ → Λ' = Λ) ∧ ∀ a b : ℂ, a ^ 3 - 27 * b ^ 2 ≠ 0 → ∃ (L' : PeriodPair), L'.g₂ = a ∧ L'.g₃ = b := by
   intro L Λ h

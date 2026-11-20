@@ -22,7 +22,7 @@ section Tri
 variable {ι : Type} {m : ι → ℕ}
 
 /- English proof (translation)
-Introduce `τ` and use `by refine ⟨fun _ _ => trivial, ?_, trivial, fun i j _ hij => ?_⟩ · show (ψ.mapMatrix (M τ)).det ≠ 0 rw [← RingHom.map_det] exact ((hu τ).map ψ).ne_zero · show ψ (M τ i j) = 0 rw [hl τ i j hij, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem par_map {R K : Type} [CommRing R] [Field K] (ψ : R →+* K) {M : Mat m R} (hu : ∀ τ, IsUnit (M τ).det)
     (hl : ∀ τ i k, i < k → M τ i k = 0) : Par m ⊤ (M.map ψ) := fun τ => by
@@ -39,13 +39,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
 /- English proof (translation)
-Take `⟨y, ψ, φ₁, f, t, t', hp, h2, h3⟩` from `hc`. Establish `hsp : p (IsLocalRing.closedPoint K) ⤳ y`. Establish `: p (IsLocalRing.closedPoint K) ∈ Set.range (C.Y.X.fromSpecStalk y)`. Rewrite using `[hp]`. Conclude with `⟨spMap ψ (IsLocalRing.closedPoint K), rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hψ : ψ = (Scheme.stalkClosedPointTo (R` using `CommRingCat.of K) p).hom.comp (C.Y.X.presheaf.stalkSpecializes hsp).hom := by`. Use `EigLoc.spMap_inj ((cancel_mono (C.Y.X.fromSpecStalk y)).1 ?_)` and prove the remaining obligations. Establish `e1` using `spMap_stalkClosedPointTo p`. Establish `e2 : spMap (C.Y.X.presheaf.stalkSpecializes hsp).hom ≫ C.Y.X.fromSpecStalk y = C.Y.X.fromSpecStalk _` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : spMap ((Scheme.stalkClosedPointTo (R` using `CommRingCat.of K) p).hom.comp (C.Y.X.presheaf.stalkSpecializes hsp).hom) = spMap (Scheme.stalkClosedPointTo (R := CommRingCat.of K) p).hom ≫ spMap (C.Y.X.presheaf.stalkSpecializes hsp).hom := by`. Simplify using `[spMap, Spec.map_comp]`. Rewrite using `[e3, Category.assoc, e2, e1]`. Conclude with `hp.symm`. Establish `hρ : spMap (C.Y.X.presheaf.stalkSpecializes hsp).hom ≫ stalkPt C.Y y = stalkPt C.Y (p (IsLocalRing.closedPoint K))` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx₀ : spMap (C.Y.X.presheaf.stalkSpecializes hsp).hom ≫ (stalkPt C.Y y ≫ C.π ≫ genι Z) = stalkPt C.Y (p (IsLocalRing.closedPoint K)) ≫ C.π ≫ genι Z`. Rewrite using `[← Category.assoc, hρ]`. Take `⟨g₀, hg₀⟩` from `ValCoord.exists_bc f (C.Y.X.presheaf.stalkSpecializes hsp).hom hx₀`. Conclude with `⟨_, g₀, t, t', ValCoord.tri_bc hx₀ hg₀ (by rw [← CarriesAt.algebraMap_eq_comp_specializes hsp]; exact h2), ValCoord.tri_bc hx₀ hg₀ (by rw [← hψ]; exact h3)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem carries_at_image {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e) {K : Type} [Field K]
     {φ : c.F →+* K} {x : Sp K ⟶ Z.X} {p : Sp K ⟶ C.Y.X} {g : EigFrame Z φ x} (hc : C.Carries p g) :
@@ -83,25 +83,25 @@ theorem carries_at_image {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e
     ValCoord.tri_bc hx₀ hg₀ (by rw [← hψ]; exact h3)⟩
 
 /- English proof (translation)
-Take `⟨φ₀, g₀, t, s, T1, T2⟩` from `carries_at_image C hg`. Take `⟨φ₀', g₀', t₂, s₂, T1', T2'⟩` from `carries_at_image C hg'`. Establish `hinj : Function.Injective (algebraMap (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) C.Y.X.functionField)` using `IsFractionRing.injective _ _`. Take `rfl : φ₀' = φ₀` from `RingHom.ext fun a => hinj ((RingHom.congr_fun T1'.2.1 a).symm.trans (RingHom.congr_fun T1.2.1 a))`. Establish `hφ : φ' = φ` using `T2'.2.1.trans T2.2.1.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, hT, hTd, hTl⟩` from `(g₀.tri_iff _ C.f0 t).1 T1`. Take `⟨T₂, hT₂, hT₂d, hT₂l⟩` from `(g₀'.tri_iff _ C.f0 t₂).1 T1'`. Take `⟨h, hh, hhd, hhl⟩` from `(g₀.tri_iff _ g s).1 T2`. Take `⟨h₂, hh₂, hh₂d, hh₂l⟩` from `(g₀'.tri_iff _ g' s₂).1 T2'`. Establish `hS₀ : g₀.Stable` using `EigStable.stable_of_isLocalRing E H Dw l Xo c O β Z _ _ _ g₀ inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hid : stalkPt C.Y (p (IsLocalRing.closedPoint K)) ≫ C.π ≫ genι Z = spMap (RingHom.id _) ≫ stalkPt C.Y (p (IsLocalRing.closedPoint K)) ≫ C.π ≫ genι Z`. Rewrite using `[show spMap (RingHom.id (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K)))) = 𝟙 _ from Spec.map_id _, Category.id_comp]`. Take `⟨⟨M, hM, -⟩, hMu⟩` from `(EigCoord.coord_spec E H Dw l Xo c O β Z _ _ _ g₀ _ _ _ (RingHom.id _) inferInstance hS₀ hid (RingHom.id_comp _).symm).1 g₀'`. Establish `hMd` using `hMu M hM`. Establish `hc1 : g₀.Coord (algebraMap (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) C.Y.X.functionField) C.f0 (T₂ * M.map (algebraMap (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) C.Y.X.functionField))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `CoordComp.coord_comp E H Dw l Xo c O β Z _ _ _ g₀ _ _ _ g₀' _ _ _ C.f0 (RingHom.id _) (algebraMap (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) C.Y.X.functionField) M T₂ inferInstance hM hT₂` as an intermediate fact. Rewrite `this` using `[RingHom.comp_id]`. Then use the resulting hypothesis. Establish `heq` using `(((EigCoord.coord_spec E H Dw l Xo c O β Z _ _ _ g₀ _ _ _ _ inferInstance hS₀ hT.1 hT.2.1).1 C.f0).1).unique hT hc1`. Establish `hPT : Par Dw.mult ⊤ T` using `CarriesAt.par_of_tri (fun τ i => by rw [hTd]; exact Units.ne_zero _) hTl`. Establish `hPT₂ : Par Dw.mult ⊤ T₂` using `CarriesAt.par_of_tri (fun τ i => by rw [hT₂d]; exact Units.ne_zero _) hT₂l`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPM : Par Dw.mult ⊤ (M.map (algebraMap (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) C.Y.X.functionField))`. Establish `e : M.map (algebraMap (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) C.Y.X.functionField) = T₂⁻¹ * T`. Rewrite using `[heq, ← mul_assoc, Mat.inv_mul hPT₂.det_ne, one_mul]`. Rewrite using `[e]`. Conclude with `hPT₂.inv.mul hPT`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hMl : ∀ τ i k, i < k → M τ i k = 0` using `fun τ i k hik => by`. Establish `h0` using `(hPM τ).2.2.2 i k i.2 hik`. Conclude with `hinj (by rw [map_zero]; exact h0)`. Establish `hSg : g.Stable` using `EigStable.stable_of_isLocalRing E H Dw l Xo c O β Z _ _ _ g inferInstance`. Establish `hidK : x = spMap (RingHom.id K) ≫ x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show spMap (RingHom.id K) = 𝟙 _ from Spec.map_id _, Category.id_comp]`. Take `⟨⟨N, hN, -⟩, -⟩` from `(EigCoord.coord_spec E H Dw l Xo c O β Z _ _ _ g _ φ' _ (RingHom.id K) inferInstance hSg hidK (by rw [RingHom.id_comp]; exact hφ)).1 g'`. Establish `c1 : g₀.Coord (Scheme.stalkClosedPointTo (R` using `CommRingCat.of K) p).hom g' (N * h.map (RingHom.id K)) := by`. Use `CoordComp.coord_comp E H Dw l Xo c O β Z _ _ _ g₀ _ _ _ g _ _ _ g' (Scheme.stalkClosedPointTo (R := CommRingCat.of K) p).hom (RingHom.id K) h N inferInstance hh hN` as an intermediate fact. Rewrite `this` using `[RingHom.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : g₀.Coord (Scheme.stalkClosedPointTo (R` using `CommRingCat.of K) p).hom g' (h₂ * M.map (Scheme.stalkClosedPointTo (R := CommRingCat.of K) p).hom) := by`. Use `CoordComp.coord_comp E H Dw l Xo c O β Z _ _ _ g₀ _ _ _ g₀' _ _ _ g' (RingHom.id _) (Scheme.stalkClosedPointTo (R := CommRingCat.of K) p).hom M h₂ inferInstance hM hh₂` as an intermediate fact. Rewrite `this` using `[RingHom.comp_id]`. Then use the resulting hypothesis. Establish `heqK` using `(((EigCoord.coord_spec E H Dw l Xo c O β Z _ _ _ g₀ _ _ _ _ inferInstance hS₀ hh₂.1 hh₂.2.1).1 g').1).unique c1 c2`. Establish `hmid : h.map (RingHom.id K) = h` using `funext fun τ => by ext i j; rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `heqK` using `[hmid]`. Establish `hPh : Par Dw.mult ⊤ h` using `CarriesAt.par_of_tri (fun τ i => by rw [hhd]; exact Units.ne_zero _) hhl`. Establish `hPh₂ : Par Dw.mult ⊤ h₂` using `CarriesAt.par_of_tri (fun τ i => by rw [hh₂d]; exact Units.ne_zero _) hh₂l`. Establish `hPMK` using `par_map (Scheme.stalkClosedPointTo (R := CommRingCat.of K) p).hom hMd hMl`. Establish `hNe : N = h₂ * M.map (Scheme.stalkClosedPointTo (R` using `CommRingCat.of K) p).hom * h⁻¹ := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← heqK, mul_assoc, Mat.mul_inv hPh.det_ne, mul_one]`. Establish `hPN : Par Dw.mult ⊤ N`. Rewrite using `[hNe]`. Conclude with `(hPh₂.mul hPMK).mul hPh.inv`. Conclude with `⟨fun τ i => Units.mk0 _ (CarriesAt.Par.diag_ne hPN τ i), (g.tri_iff _ g' _).2 ⟨N, hN, fun _ _ => rfl, fun τ i k hik => (hPN τ).2.2.2 i k i.2 hik⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tri_of_carries {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e) {K : Type} [Field K]
     {φ φ' : c.F →+* K} {x : Sp K ⟶ Z.X} {p : Sp K ⟶ C.Y.X} {g : EigFrame Z φ x} {g' : EigFrame Z φ' x}
@@ -179,7 +179,7 @@ theorem tri_of_carries {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e) 
     (g.tri_iff _ g' _).2 ⟨N, hN, fun _ _ => rfl, fun τ i k hik => (hPN τ).2.2.2 i k i.2 hik⟩⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y C K _ φ φ' x p g g' hg hg'`. Conclude with `tri_of_carries C hg hg'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem carriesTri : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)},

@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
 /- English proof (translation)
-Unfold `colMinor`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem UpperTheory.colMinor_map_ringHom {R S : Type} [CommRing R] [CommRing S] (g : R →+* S) {n r : ℕ}
     (X : Matrix (Fin n) (Fin r) R) (k : ℕ) (hk : k ≤ r) (σ : Fin k → Fin n) :
@@ -24,9 +24,9 @@ private theorem UpperTheory.colMinor_map_ringHom {R S : Type} [CommRing R] [Comm
   rfl
 
 /- English proof (translation)
-Use `choose A hA using hL`. Establish `e : L = (Matrix.of A).map (algebraMap (Z.presheaf.stalk (below y)) Z.functionField)`. Use extensionality with `k i`. Conclude with `(hA k i).symm`. Establish `e' : L.map (TrueGeo.valAt y) = (Matrix.of A).map (Scheme.stalkClosedPointTo y).hom`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `k i`. Rewrite using `[Matrix.map_apply, ← hA k i, SmallSec.valAt_algebraMap]`. Both sides reduce to the same expression. Rewrite using `[e', UpperTheory.colMinor_map_ringHom, e, UpperTheory.colMinor_map_ringHom, SmallSec.valAt_algebraMap]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.valAt_colMinor' {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z) {n r : ℕ}
     (L : Matrix (Fin n) (Fin r) Z.functionField) (hL : ∀ k i, RegAt (below y) (L k i)) (k : ℕ) (hk : k ≤ r)
@@ -42,9 +42,7 @@ private theorem UpperTheory.valAt_colMinor' {K : Type} [Field K] {Z : Scheme.{0}
   rw [e', UpperTheory.colMinor_map_ringHom, e, UpperTheory.colMinor_map_ringHom, SmallSec.valAt_algebraMap]
 
 /- English proof (translation)
-Use `choose A hA using hL`. Establish `e : L = (Matrix.of A).map (algebraMap (Z.presheaf.stalk x) Z.functionField)`. Use extensionality with `k i`. Conclude with `(hA k i).symm`. Rewrite using `[e, UpperTheory.colMinor_map_ringHom]`.
-
-Conclude with `⟨_, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.regAt_colMinor' {Z : Scheme.{0}} [IsIntegral Z] (x : Z) {n r : ℕ}
     (L : Matrix (Fin n) (Fin r) Z.functionField) (hL : ∀ k i, RegAt x (L k i)) (k : ℕ) (hk : k ≤ r)
@@ -56,9 +54,9 @@ private theorem UpperTheory.regAt_colMinor' {Z : Scheme.{0}} [IsIntegral Z] (x :
   exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Establish `h1 : TrueGeo.valAt y (1 : Z.functionField) = 1`. Use `SmallSec.valAt_algebraMap (y := y) 1` as an intermediate fact. Rewrite `this` using `[map_one, map_one]`. Then use the resulting hypothesis. Establish `h2` using `SmallSec.valAt_mul hg.regAt hg.inv.regAt`. Rewrite `h2` using `[mul_inv_cancel₀ hg.ne_zero, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[div_eq_mul_inv, SmallSec.valAt_mul hf hg.inv.regAt, div_eq_mul_inv, eq_inv_of_mul_eq_one_right h2.symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.valAt_div_of_unit {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] {y : Sp K ⟶ Z}
     {f g : Z.functionField} (hf : RegAt (below y) f) (hg : UnitAt (below y) g) :
@@ -71,15 +69,15 @@ private theorem UpperTheory.valAt_div_of_unit {K : Type} [Field K] {Z : Scheme.{
   rw [div_eq_mul_inv, SmallSec.valAt_mul hf hg.inv.regAt, div_eq_mul_inv, eq_inv_of_mul_eq_one_right h2.symm]
 
 /- English proof (translation)
-Establish `hd : IsUnit T.det`. Rewrite using `[Matrix.det_of_upperTriangular hT]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun i _ => h0 i).isUnit`. Generalize the expression as in `hL : X * T⁻¹ = L`. Establish `e : X = L * T` using `by rw [← hL, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ k (hk : k ≤ r), ∏ i : Fin k, T (Fin.castLE hk i) (Fin.castLE hk i) ≠ 0` using `fun k hk => Finset.prod_ne_zero_iff.2 fun i _ => h0 _`. Substitute `e` using the available equality. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `ρ k`. Simplify using `only [cram, lead, Matrix.of_apply, UpperTheory.colMinor_mul_triangular K n r L T hT]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_mul_right _ _ (hp _ _)]`. Introduce `k hk h`. Unfold `lead at h ⊢`. Rewrite using `[UpperTheory.colMinor_mul_triangular K n r L T hT]`. Conclude with `mul_ne_zero h (hp _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Simplify using `only [lead, UpperTheory.colMinor_mul_triangular K n r L T hT]`. Rewrite using `[Fin.prod_univ_castSucc]`. Use `hp i i.2.le` as an intermediate fact. Establish `e1 : ∏ j : Fin (i : ℕ), T (Fin.castLE i.2 j.castSucc) (Fin.castLE i.2 j.castSucc) = ∏ j : Fin (i : ℕ), T (Fin.castLE i.2.le j) (Fin.castLE i.2.le j)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Fin.castLE i.2 (Fin.last (i : ℕ)) = i` using `rfl`. Rewrite using `[e1, e2, ← _root_.mul_assoc, mul_right_comm, mul_div_mul_right _ _ this]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.cramer_lead_ratio_triangular {K : Type} [Field K] {n r : ℕ} (X : Matrix (Fin n) (Fin r) K)
     (T : Matrix (Fin r) (Fin r) K) (hT : T.BlockTriangular id) (h0 : ∀ i, T i i ≠ 0) (σ : Fin r → Fin n) :
@@ -114,39 +112,33 @@ private theorem UpperTheory.cramer_lead_ratio_triangular {K : Type} [Field K] {n
     ring
 
 /- English proof (translation)
-Introduce `F _ _ Y V W p J U n r X T f l hp hW ⟨S1, S2, S3⟩ a U' σ x hx hU ⟨G1, G2⟩`. Establish `hη` using `GlobalTheory.T.cover_map_generic_point_specializes F Y V`. Use `haveI : IsPreimmersion V.j :=`. Establish `h : IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))`. Use the proof step `MorphismProperty.of_isPullback (P := @IsPreimmersion) V.pb.flip h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tri` using `fun x : Y.X => UpperTheory.cramer_lead_ratio_triangular (X a) ((T x).map V.φ) ((S1 x).1.map V.φ) (fun i => (map_ne_zero V.φ).2 (right_ne_zero_of_mul ((S1 x).2 i).ne_zero)) σ`. Establish `hg : V.j (genericPoint V.G) ∈ U'` using `hη.mem_open U'.isOpen (gen_mem hx)`. Establish `hne : ∀ k hk, lead (X a) σ k hk ≠ 0` using `fun k hk => (tri _).2.1 k hk (G1 _ hg k hk).ne_zero`. Use `choose M hM using fun k i => SmallSec.fnMap_surjective V.j hη (cram (X a) σ k i)`. Set `c : Fin r → V.G.functionFieldˣ` to `fun i => Units.mk0 (lead (X a) σ (i + 1) i.2 / lead (X a) σ i i.2.le) (div_ne_zero (hne _ _) (hne _ _))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ i (x : Y.X), V.φ (f i x) * (c i : V.G.functionField) = V.φ (f i x * T x i i) * (lead (locM V (X a) T x) σ (i + 1) i.2 / lead (locM V (X a) T x) σ i i.2.le)`. Introduce `i x`. Rewrite using `[map_mul, _root_.mul_assoc]`. Conclude with `congrArg _ ((tri x).2.2 i)`. Establish `hreg : ∀ z : V.G, V.j z ∈ U' → ∀ k i, RegAt (V.j z) (M k i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz k i`. Rewrite using `[← SmallSec.regAt_fnMap_iff V.j hη, hM, (tri (V.π z)).1, cram, Matrix.of_apply, div_eq_mul_inv]`. Conclude with `(UpperTheory.regAt_colMinor' z _ (S2 a z (hU hz)) _ _ _).mul (G1 z hz _ _).inv.regAt`. Establish `hbelow : ∀ {v e y z yt}, Tst V W p v e y z yt → ⊤ ≤ yt ⁻¹ᵁ U' → V.j (below z) ∈ U' ∧ V.π (below z) = below y.1`. Introduce `v e y z yt ⟨_, _, h1, h⟩ hU`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, by rw [← h1]; rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(z ≫ V.j) _ ∈ U'`. Rewrite using `[← h]`. Conclude with `hU (x := spMap e.O.subtype _) trivial`. Establish `hlead : ∀ {v e y z yt}, Tst V W p v e y z yt → ⊤ ≤ yt ⁻¹ᵁ U' → ∀ k hk, UnitAt (below z) (lead (locM V (X a) T (below y.1)) σ k hk) ∧ TrueGeo.valAt z (lead (locM V (X a) T (below y.1)) σ k hk) = lead (vals V (X a) T z (below y.1)) σ k hk`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v e y z yt ht hU' k hk`. Take `⟨h1, h2⟩` from `hbelow ht hU'`. Rewrite using `[← h2]`. Conclude with `⟨G1 _ h1 k hk, UpperTheory.valAt_colMinor' z _ (S2 a _ (hU h1)) _ _ _⟩`. Establish `hne' : ∀ {v e y z yt}, Tst V W p v e y z yt → ⊤ ≤ yt ⁻¹ᵁ U' → ∀ k hk, lead (vals V (X a) T z (below y.1)) σ k hk ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v e y z yt ht hU' k hk`. Rewrite using `[← (hlead ht hU' k hk).2]`. Conclude with `SmallSec.valAt_ne_zero (hlead ht hU' k hk).1`. Establish `hval : ∀ {v e y z yt}, Tst V W p v e y z yt → ⊤ ≤ yt ⁻¹ᵁ U' → ∀ k i, TrueGeo.valAt (z ≫ V.j) (M k i) = cram (vals V (X a) T z (below y.1)) σ k i`. Introduce `v e y z yt ht hU' k i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨h1, h2⟩` from `hbelow ht hU'`. Establish `hr` using `S2 a _ (hU h1)`. Rewrite `hr` using `[h2]`. Rewrite using `[← SmallSec.valAt_fnMap V.j hη z (hreg _ h1 k i), hM, (tri (below y.1)).1, cram, cram, Matrix.of_apply, Matrix.of_apply, ← (hlead ht hU' _ _).2]`. Use `(UpperTheory.valAt_div_of_unit (UpperTheory.regAt_colMinor' _ _ hr _ _ _) (hlead ht hU' _ _).1).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[UpperTheory.valAt_colMinor' z _ hr]`. Both sides reduce to the same expression. Establish `hvc : ∀ {v e y z yt}, Tst V W p v e y z yt → ⊤ ≤ yt ⁻¹ᵁ U' → ∀ i, TrueGeo.valAt z (V.φ (f i (below y.1)) * (c i : V.G.functionField)) = TrueGeo.valAt y.1 (f i (below y.1) * T (below y.1) i i) * (lead (vals V (X a) T z (below y.1)) σ (i + 1) i.2 / lead (vals V (X a) T z (below y.1 …`. Introduce `v e y z yt ht hU' i`. Take `⟨h1, h2⟩` from `hbelow ht hU'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : UnitAt (V.π (below z)) (f i (below y.1) * T (below y.1) i i)` using `h2 ▸ (S1 _).2 i`. Establish `h3` using `hlead ht hU' (i + 1) i.2`. Establish `h4` using `hlead ht hU' i i.2.le`. Establish `h5 : RegAt (below z) (lead (locM V (X a) T (below y.1)) σ (i + 1) i.2 / lead (locM V (X a) T (below y.1)) σ i i.2.le)`. Rewrite using `[div_eq_mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(h3.1.mul h4.1.inv).regAt`. Rewrite using `[hc, SmallSec.valAt_mul (V.unitAt_φ hu).regAt h5, V.valAt_φ z hu.regAt, ht.2.2.1, UpperTheory.valAt_div_of_unit h3.1.regAt h4.1, h3.2, h4.2]`. Use `⟨Matrix.of M, c, fun x hx hpx k i => ?_, ?_, fun i z hz => ?_, fun v e y z yt ht hU' => ⟨fun i => ?_, ?_⟩⟩` and prove the remaining obligations. Use `GlobalTheory.T.good_reduction_extends_regular F Y V p hp W hW U' _ (fun z hz => hreg z hz k i) (fun v hv e y hy z yt h1 h2 hU' => ?_) x hx hpx` and prove the remaining obligations. Establish `ht : Tst V W p v e y z yt` using `⟨hv, hy, h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hval ht hU', cram, Matrix.of_apply, map_div₀]`. Conclude with `div_le_one_of_le₀ (G2 v e y z yt ht hU' _ _ _) (e.w.nonneg _)`. Take `⟨_, _, _, _, h⟩` from `UpperTheory.cramer_matrix_block_triangular_factor _ n r (X a) σ hne`. Apply `(SmallSec.fnMap V.j hη).injective` to reduce the goal to its premises. Rewrite using `[map_one, RingHom.map_det, ← h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `k i`. Conclude with `hM _ _`. Rewrite using `[hc, div_eq_mul_inv]`. Conclude with `(V.unitAt_φ ((S1 _).2 i)).mul ((G1 z hz _ _).mul (G1 z hz _ _).inv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨ν, n0, n1, n2, n3⟩, -⟩` from `S3 v e y z yt ht a (fun q hq => hU (hU' hq))`. Establish `hν : ∀ k hk, ν k = e.w (lead (vals V (X a) T z (below y.1)) σ k hk)`. Introduce `k hk`. Take `⟨σ', h⟩` from `n3 k hk`. Conclude with `le_antisymm (h ▸ G2 v e y z yt ht hU' k hk σ') (n2 k hk _)`.
-
-Establish `h1` using `(e.w.pos (SmallSec.valAt_ne_zero (y := y.1) ((S1 _).2 i))).ne'`. Establish `h2` using `(e.w.pos (hne' ht hU' (i + 1) i.2)).ne'`. Establish `h3` using `(e.w.pos (hne' ht hU' i i.2.le)).ne'`. Rewrite using `[n1, hvc ht hU', hν _ i.2, hν _ i.2.le, map_mul, map_div₀, Real.log_mul h1 (div_ne_zero h2 h3), Real.log_div h2 h3]`. Expand and normalize the polynomial expressions, which then agree.
-
-Take `⟨β, b1, b2, b3, -⟩` from `UpperTheory.cramer_matrix_block_triangular_factor _ n r _ σ (hne' ht hU')`. Use `⟨β, b1, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← b2]`. Use extensionality with `k i`. Conclude with `hval ht hU' k i`.
-
-Rewrite using `[hvc ht hU', mul_left_comm, ← mul_div_assoc, b3, div_self (hne' ht hU' _ _), _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.side_data_good_on_open :
     ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (W : Y.X.Opens) (p : ℕ) (J : Type) (U : J → V.X.Opens) (n r : ℕ) (X : J → Matrix (Fin n) (Fin r) V.G.functionField) (T : Y.X → Matrix (Fin r) (Fin r) Y.Fn) (f : Fin r → Y.X → Y.Fn) (l : Fin r → PtFn Y), p.Prime → genericPoint Y.X ∈ W → SideData V W p U X T f l → ∀ (a : J) (U' : V.X.Opens) (σ : Fin r → Fin n) (x : V.X), x ∈ U' → U' ≤ U a → GoodOn V W p U' (X a) T σ → ∃ (M : Matrix (Fin n) (Fin r) V.X.functionField) (c : Fin r → V.G.functionFieldˣ), FrameOn V W p U' (X a) T f l M c σ := by

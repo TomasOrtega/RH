@@ -33,7 +33,7 @@ def lift (F : LaurentSeries (ZMod p)) : Lau p :=
     intro h; apply hn; rw [h]; simp⟩
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[red_coeff]`. Use `show PadicInt.toZMod (((F.coeff n).val : ℕ) : ℤ_[p]) = F.coeff n`. Rewrite using `[map_natCast, ZMod.natCast_zmod_val]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_lift (F : LaurentSeries (ZMod p)) : red p (lift p F) = F := by
   ext n
@@ -42,9 +42,9 @@ theorem red_lift (F : LaurentSeries (ZMod p)) : red p (lift p F) = F := by
   rw [map_natCast, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[red_coeff]`. Distinguish the cases in `h : n = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[HahnSeries.coeff_single_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem red_single (a : ℤ) : red p (HahnSeries.single a (1 : ℤ_[p])) = HahnSeries.single a (1 : ZMod p) := by
   ext n
@@ -54,9 +54,9 @@ theorem red_single (a : ℤ) : red p (HahnSeries.single a (1 : ℤ_[p])) = HahnS
   · simp [HahnSeries.coeff_single_of_ne h]
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `GlobalTheory.T.laurentSeries_eq_sum_single_mul_pow_prime p (red p f)`. Use `set S : Lau p := ∑ j : Fin p, HahnSeries.single ((j : ℕ) : ℤ) (1 : ℤ_[p]) * lift p (G j) ^ p`. Establish `hS : red p S = red p f`. Rewrite using `[hG]`. Simplify using `only [S, map_sum, map_mul, map_pow, red_single, red_lift]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : (f - S).map (PadicInt.toZMod (p` using `p)).toNonUnitalRingHom = 0 := by show red p (f - S) = 0`. Rewrite using `[map_sub, hS, sub_self]`. Take `⟨h, hh⟩` from `(GlobalTheory.K5.Basic.dvd_iff_map p (f - S)).2 h0`. Conclude with `⟨fun j => lift p (G j), h, by rw [← hh, add_sub_cancel]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_comb (f : Lau p) : ∃ (g : Fin p → Lau p) (h : Lau p),
     f = ∑ j : Fin p, HahnSeries.single ((j : ℕ) : ℤ) (1 : ℤ_[p]) * g j ^ p + (p : Lau p) * h := by

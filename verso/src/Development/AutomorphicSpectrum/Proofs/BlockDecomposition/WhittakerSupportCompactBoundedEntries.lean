@@ -14,11 +14,11 @@ namespace GlobalTheory.CompanionTheory.GL2DualWhittakerPair.Cpt
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Use `haveI : T2Space F := inferInstance`. Establish `hM : ∀ S : ℝ, IsCompact {A : Matrix (Fin 2) (Fin 2) F | ∀ i j, (modulus (A i j) : ℝ) ≤ S}`. Introduce `S`. Establish `hO : IsCompact {x : F | (modulus x : ℝ) ≤ S}` using `GlobalTheory.CompanionTheory.LFDual.ZRho.isCompact_modulus_le S`. Establish `h` using `isCompact_univ_pi fun _ : Fin 2 => isCompact_univ_pi fun _ : Fin 2 => hO`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : {A : Matrix (Fin 2) (Fin 2) F | ∀ i j, (modulus (A i j) : ℝ) ≤ S} = Set.univ.pi fun _ : Fin 2 => Set.univ.pi fun _ : Fin 2 => {x : F | (modulus x : ℝ) ≤ S}` using `Set.ext fun A => ⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩`. Conclude with `e ▸ h`. Establish `h` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin 2) (Fin 2) F)).isCompact_preimage ((hM R).prod ((hM M).image MulOpposite.continuous_op))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨fun h => ⟨h.1, _, h.2, rfl⟩, fun ⟨h1, A, hA, e⟩ => ⟨h1, fun i j => by`. Establish `: A = ((g⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F)` using `MulOpposite.op_injective e`. Conclude with `this ▸ hA i j⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_bounded (R M : ℝ) :
     IsCompact {g : GL (Fin 2) F | (∀ i j, (modulus (g.val i j) : ℝ) ≤ R) ∧
@@ -41,7 +41,7 @@ theorem isCompact_bounded (R M : ℝ) :
     exact this ▸ hA i j⟩⟩
 
 /- English proof (translation)
-Establish `term : ∀ j, (modulus (k i j * κ j l) : ℝ) ≤ B` using `fun j => by`. Rewrite using `[modulus_mul, NNReal.coe_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_two]`. Conclude with `(GlobalTheory.CompanionTheory.LFCoords.modulus_add_le_max _ _).trans (max_le (term 0) (term 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modulus_entry_mul_le {κ k : Matrix (Fin 2) (Fin 2) F} (hκ : ∀ i j, κ i j ∈ 𝒪[F]) {B : ℝ}
     (hk : ∀ i j, (modulus (k i j) : ℝ) ≤ B) (i l : Fin 2) : (modulus ((k * κ) i l) : ℝ) ≤ B := by
@@ -54,11 +54,11 @@ theorem modulus_entry_mul_le {κ k : Matrix (Fin 2) (Fin 2) F} (hκ : ∀ i j, �
   exact (GlobalTheory.CompanionTheory.LFCoords.modulus_add_le_max _ _).trans (max_le (term 0) (term 1))
 
 /- English proof (translation)
-Establish `hint` using `((GLnLocal.mem_integralGL_iff F 2).1 hκ).1`. Establish `e : κ.val * (κ⁻¹ : GL (Fin 2) F).val = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `e00` using `congrFun (congrFun e 0) 0`. Rewrite `e00` using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `term : ∀ j, (modulus (κ.val 0 j * (κ⁻¹ : GL (Fin 2) F).val j 0) : ℝ) < 1` using `fun j => by`. Rewrite using `[modulus_mul, NNReal.coe_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.CompanionTheory.LFCoords.modulus_add_le_max (κ.val 0 0 * (κ⁻¹ : GL (Fin 2) F).val 0 0) (κ.val 0 1 * (κ⁻¹ : GL (Fin 2) F).val 1 0)`. Rewrite `h1` using `[e00]`. Establish `h2` using `max_lt (term 0) (term 1)`. Establish `h3 : (modulus (1 : F) : ℝ) = 1` using `by simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_one_le_modulus_inv {κ : GL (Fin 2) F} (hκ : κ ∈ GLnLocal.integralGL F 2) :
     ∃ i, 1 ≤ (modulus ((κ⁻¹ : GL (Fin 2) F).val i 0) : ℝ) := by
@@ -83,9 +83,9 @@ theorem exists_one_le_modulus_inv {κ : GL (Fin 2) F} (hκ : κ ∈ GLnLocal.int
   linarith
 
 /- English proof (translation)
-Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, Units.val_mul, Units.val_mul]`. Use `congr 1`. Establish `e1' : ((dg2 a b)⁻¹ : GL (Fin 2) F).val = !![((a⁻¹ : Fˣ) : F), 0; 0, ((b⁻¹ : Fˣ) : F)]` using `rfl`. Establish `e2' : ((uni2 x)⁻¹ : GL (Fin 2) F).val = !![1, -x; 0, 1]` using `rfl`. Rewrite using `[e1', e2']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inv_val (x : F) (a b : Fˣ) (κ : GL (Fin 2) F) :
     ((uni2 x * dg2 a b * κ)⁻¹ : GL (Fin 2) F).val =
@@ -99,23 +99,21 @@ theorem inv_val (x : F) (a b : Fˣ) (κ : GL (Fin 2) F) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
 
 /- English proof (translation)
-Take `⟨hint, hint'⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hκ`. Establish `ha : (modulus ((a⁻¹ : Fˣ) : F) : ℝ) ≤ R`. Take `⟨i, hi⟩` from `exists_one_le_modulus_inv hκ`. Establish `h` using `h2 i`. Establish `e : (((uni2 x * dg2 a b * κ)⁻¹ : GL (Fin 2) F).val *ᵥ e1) i = (κ⁻¹ : GL (Fin 2) F).val i 0 * ((a⁻¹ : Fˣ) : F)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inv_val]`. Simplify using `[Matrix.mulVec, dotProduct, e1, Fin.sum_univ_two, Matrix.mul_apply]`. Rewrite `h` using `[e, modulus_mul, NNReal.coe_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hT : ∀ i j, (modulus ((uni2 x * dg2 a b).val i j) : ℝ) ≤ R`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e : (uni2 x * dg2 a b).val = (uni2 x * dg2 a b * κ).val * (κ⁻¹ : GL (Fin 2) F).val`. Rewrite using `[← Units.val_mul]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `modulus_entry_mul_le hint' h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxb : (modulus (x * (b : F)) : ℝ) ≤ R`. Use `hT 0 1` as an intermediate fact. Simplify `this` using `[uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `pa : (0 : ℝ) < modulus ((a⁻¹ : Fˣ) : F)` using `by exact_mod_cast modulus_pos (Units.ne_zero _)`. Establish `pb : (0 : ℝ) < modulus ((b⁻¹ : Fˣ) : F)` using `by exact_mod_cast modulus_pos (Units.ne_zero _)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pa' : (0 : ℝ) < modulus ((a : Fˣ) : F)` using `by exact_mod_cast modulus_pos (Units.ne_zero _)`. Establish `pab : (0 : ℝ) < modulus ((a * b⁻¹ : Fˣ) : F)` using `by exact_mod_cast modulus_pos (Units.ne_zero _)`. Establish `hB0 : 0 < B` using `pab.trans_le hab`. Establish `hR0 : 0 < R` using `pa.trans_le ha`. Establish `hbinv : (modulus ((b⁻¹ : Fˣ) : F) : ℝ) ≤ B * R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (modulus ((b⁻¹ : Fˣ) : F) : ℝ) = (modulus ((a * b⁻¹ : Fˣ) : F) : ℝ) * modulus ((a⁻¹ : Fˣ) : F)`. Rewrite using `[← NNReal.coe_mul, ← modulus_mul, ← Units.val_mul]`. Use `congr 3`. Simplify using `[mul_comm]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul hab ha pa.le hB0.le`. Establish `hxa : (modulus (-(x * ((a⁻¹ : Fˣ) : F))) : ℝ) ≤ R * (B * R) * R`. Establish `e : x * ((a⁻¹ : Fˣ) : F) = x * (b : F) * ((b⁻¹ : Fˣ) : F) * ((a⁻¹ : Fˣ) : F)` using `by simp`. Rewrite using `[GlobalTheory.CompanionTheory.LFCoords.modulus_neg_self, e, modulus_mul, modulus_mul, NNReal.coe_mul, NNReal.coe_mul]`. Conclude with `mul_le_mul (mul_le_mul hxb hbinv pb.le hR0.le) ha pa.le (by positivity)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM0 : 0 ≤ max (max R (B * R)) (R * (B * R) * R)` using `hR0.le.trans ((le_max_left _ _).trans (le_max_left _ _))`. Rewrite using `[inv_val]`. Use `GlobalTheory.CompanionTheory.LFCoords.modulus_mul_entry_le hint' (fun i j => ?_) i j` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `ha.trans ((le_max_left _ _).trans (le_max_left _ _))`.
-
-Conclude with `hxa.trans (le_max_right _ _)`. Simplify using `using hM0`. Conclude with `hbinv.trans ((le_max_right _ _).trans (le_max_left _ _))`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inv_entries_le (x : F) (a b : Fˣ) (κ : GL (Fin 2) F) (hκ : κ ∈ GLnLocal.integralGL F 2)
     (R B : ℝ) (hab : (modulus ((a * b⁻¹ : Fˣ) : F) : ℝ) ≤ B)
@@ -173,9 +171,9 @@ theorem inv_entries_le (x : F) (a b : Fˣ) (κ : GL (Fin 2) F) (hκ : κ ∈ GLn
   · exact hbinv.trans ((le_max_right _ _).trans (le_max_left _ _))
 
 /- English proof (translation)
-Establish `hb0 : (b : F) ≠ 0` using `b.ne_zero`. Establish `e0 : dg2 a b = dg2 b b * dg2 (a * b⁻¹) 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Clear the denominators using the available nonvanishing facts.
 
-Establish `e : uni2 x * dg2 a b * κ = uni2 x * (dg2 b b * (dg2 (a * b⁻¹) 1 * κ))`. Rewrite using `[e0]`. Simplify using `only [mul_assoc]`. Rewrite `hz` using `[e, H.psi W₀ hW, H.cen W₀ hW]`. Conclude with `(hB _ κ hκ).2 fun h => hz (by rw [h]; simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_bound {ψ : AddChar F Circle} {ν : Fˣ →* ℂˣ} [MeasurableSpace F] [BorelSpace F]
     {V' : Submodule ℂ (GL (Fin 2) F → ℂ)} (H : WhittakerModelGL2 ψ ν ν⁻¹ V') {W₀ : GL (Fin 2) F → ℂ} (hW : W₀ ∈ V')
@@ -196,7 +194,7 @@ theorem ratio_bound {ψ : AddChar F Circle} {ν : Fˣ →* ℂˣ} [MeasurableSpa
   exact (hB _ κ hκ).2 fun h => hz (by rw [h]; simp)
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ _ ν V' H W₀ hW R`. Take `⟨C₀, B, hB⟩` from `H.bound W₀ hW 1 one_pos`. Use `⟨_, isCompact_bounded R (max (max R (B * R)) (R * (B * R) * R)), fun z hz h1 h2 => ⟨h1, ?_⟩⟩` and prove the remaining obligations. Take `⟨x, m, n, κ, hκ, rfl⟩` from `GlobalTheory.CompanionTheory.GIntIw.iwasawa_decomposition_gl_two F z`. Conclude with `inv_entries_le x _ _ κ hκ R B (ratio_bound H hW hB x _ _ κ hκ hz) h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem support_compact : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → ∀ (ν : Fˣ →* ℂˣ) (V' : Submodule ℂ (GL (Fin 2) F → ℂ)), WhittakerModelGL2 ψ ν ν⁻¹ V' → ∀ W₀ ∈ V', ∀ R : ℝ, ∃ C : Set (GL (Fin 2) F), IsCompact C ∧ ∀ z : GL (Fin 2) F, W₀ z ≠ 0 → (∀ i j, (modulus (z.val i j) : ℝ) ≤ R) → (∀ i, (modulus (((z⁻¹ : GL (Fin 2) F).val *ᵥ e1) i) : ℝ) ≤ R) → z ∈ C := by
   intro F _ _ _ _ _ _ ψ _ ν V' H W₀ hW R

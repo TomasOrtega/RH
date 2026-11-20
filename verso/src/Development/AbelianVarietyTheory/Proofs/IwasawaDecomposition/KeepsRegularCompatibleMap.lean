@@ -10,11 +10,11 @@ namespace GlobalTheory.TorRef
 open GlobalTheory.Cartier
 
 /- English proof (translation)
-Use `isRegularFn_iff_germ.2 fun x hx => ?_` and prove the remaining obligations. Use `haveI := hdom x`. Use `mem_nonZeroDivisors_of_ne_zero fun h0 => ?_` and prove the remaining obligations. Establish `e : (Y.presheaf.germ U x hx).hom g = (Y.presheaf.germ U x hx).hom 0`. Rewrite using `[h0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hxW, i₁, i₂, e'⟩` from `Y.presheaf.germ_eq x hx hx _ _ e`. Establish `le : W ≤ U` using `i₁.le`. Establish `e'' : resG Y le g = resG Y le 0` using `e'`. Rewrite `e''` using `[map_zero]`. Take `⟨u, hu⟩` from `hφ.exists_mem_open W.isOpen ⟨x, hxW⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Nonempty (φ ⁻¹ᵁ W) := ⟨⟨u, hu⟩⟩`. Establish `hr` using `hg.resG (φ.preimage_mono le)`. Rewrite `hr` using `[← app_resG φ le, e'', map_zero]`. Conclude with `hr.ne_zero rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRegularFn_of_app_of_denseRange {T Y : Scheme.{0}} (hdom : ∀ y : Y, IsDomain (Y.presheaf.stalk y))
     (φ : T ⟶ Y) (hφ : DenseRange φ) {U : Y.Opens} (g : Γ(Y, U))
@@ -35,9 +35,9 @@ theorem isRegularFn_of_app_of_denseRange {T Y : Scheme.{0}} (hdom : ∀ y : Y, I
   exact hr.ne_zero rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c X Z π DX h i`. Establish `hX` using `GlobalTheory.genericPart_dense_proOpen (𝓞 c.F) c.F X.X (Xo.XF c) X.s X.jQ X.flat X.proj X.jQ_open X.jQ_dense`. Establish `hZ` using `GlobalTheory.genericPart_dense_proOpen (𝓞 c.F) c.F Z.X (Xo.XF c) Z.s Z.jQ Z.flat Z.proj Z.jQ_open Z.jQ_dense`. Use `haveI hfl : Flat X.j := hX.2.2.2.2.1`. Use `haveI hd : IsDominant Z.j := hZ.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hreg` using `(DX.regular i).app_of_flat X.j`. Rewrite `hreg` using `[← h, Scheme.Hom.comp_app]`. Conclude with `isRegularFn_of_app_of_denseRange (fun z => (Z.normal z).1) Z.j Z.j.denseRange _ hreg`.
+A detailed English derivation is pending.
 -/
 theorem keepsRegular_of_comp_j : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (X Z : GMod Xo c) (π : Z.X ⟶ X.X)

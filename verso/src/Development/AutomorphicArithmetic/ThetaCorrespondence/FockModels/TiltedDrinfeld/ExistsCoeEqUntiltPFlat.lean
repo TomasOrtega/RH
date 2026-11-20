@@ -15,11 +15,11 @@ variable {l : ℕ} [Fact l.Prime]
 local notation "φi" => RingEquiv.symm (_root_.frobeniusEquiv (PreTilt (normInteger ℂ_[l]) l) l)
 
 /- English proof (translation)
-Establish `hN : l ^ m ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq (l : PadicAlgCl l) (Nat.pos_of_ne_zero hN)`. Establish `hπ : ((PreTilt.untilt (φi^[m] (pFlat l)) : normInteger ℂ_[l]) : ℂ_[l]) ^ l ^ m = (l : ℂ_[l])`. Rewrite using `[← SubmonoidClass.coe_pow, PreTilt.untilt_iterate_frobeniusEquiv_symm_pow, coe_untilt_pFlat]`. Establish `hyl : algebraMap (PadicAlgCl l) ℂ_[l] y ^ l ^ m = (l : ℂ_[l])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, hy, map_natCast]`. Establish `hy0 : algebraMap (PadicAlgCl l) ℂ_[l] y ≠ 0`. Introduce `h0`. Rewrite `hyl` using `[h0, zero_pow hN]`. Conclude with `natCast_p_ne_zero_cp (p := l) hyl.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `exists_coe_eq_of_pow_eq_one hN (x := ((PreTilt.untilt (φi^[m] (pFlat l)) : normInteger ℂ_[l]) : ℂ_[l]) * (algebraMap (PadicAlgCl l) ℂ_[l] y)⁻¹) (by rw [mul_pow, inv_pow, hπ, hyl, mul_inv_cancel₀ (natCast_p_ne_zero_cp (p := l))])`. Use `⟨y * w, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (PadicAlgCl l) ℂ_[l] (y * w) = _`. Rewrite using `[map_mul, show algebraMap (PadicAlgCl l) ℂ_[l] w = _ from hw, mul_comm, mul_assoc, inv_mul_cancel₀ hy0, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coe_eq_untilt_pFlat (m : ℕ) : ∃ z : PadicAlgCl l,
     (z : ℂ_[l]) = ((PreTilt.untilt (φi^[m] (pFlat l)) : normInteger ℂ_[l]) : ℂ_[l]) := by
@@ -42,11 +42,11 @@ theorem exists_coe_eq_untilt_pFlat (m : ℕ) : ∃ z : PadicAlgCl l,
     mul_one]
 
 /- English proof (translation)
-Establish `e : ∀ σ : GQ l, (toBot σ) • ((PreTilt.untilt (φi^[m] (pFlat l)) : normInteger ℂ_[l]) : ℂ_[l]) = ((PreTilt.untilt (φi^[m] (pFlat l)) : normInteger ℂ_[l]) : ℂ_[l]) * ((PreTilt.untilt (φi^[m] (epsilon l)) : normInteger ℂ_[l]) : ℂ_[l]) ^ (PadicInt.toZModPow m (kummerC (untilt_epsilon …` using `l)) untilt_frobeniusEquiv_symm_epsilon_ne_one (toBot σ))).val := fun σ => gal_smul_untilt_iterate_of_eq_mul untilt_epsilon (tiltGal_eq_mul_epsPow untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one pFlat_ne_zero gal_smul_coe_untilt_pFlat (toBot σ)) m`. Establish `hs : ∀ σ : GQ l, (toBot σ) • ((PreTilt.untilt (φi^[m] (pFlat l)) : normInteger ℂ_[l]) : ℂ_[l]) = ((σ z : PadicAlgCl l) : ℂ_[l])` using `fun σ => by`. Rewrite using `[← hz, ← galCp_apply, galCp_coe]`. Both sides reduce to the same expression. Establish `hπ0 : ((PreTilt.untilt (φi^[m] (pFlat l)) : normInteger ℂ_[l]) : ℂ_[l]) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `h0`. Establish `hπ : ((PreTilt.untilt (φi^[m] (pFlat l)) : normInteger ℂ_[l]) : ℂ_[l]) ^ l ^ m = (l : ℂ_[l])`. Rewrite using `[← SubmonoidClass.coe_pow, PreTilt.untilt_iterate_frobeniusEquiv_symm_pow, coe_untilt_pFlat]`. Rewrite `hπ` using `[h0, zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)]`. Conclude with `natCast_p_ne_zero_cp (p := l) hπ.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(e h).symm.trans ((hs h).trans (hgh ▸ (hs g).symm |>.trans (e g)))`. Establish `h3` using `mul_left_cancel₀ hπ0 h2`. Establish `hprim : IsPrimitiveRoot ((PreTilt.untilt (φi^[m] (epsilon l)) : normInteger ℂ_[l]) : ℂ_[l]) (l ^ m)` using `IsPrimitiveRoot.coe_submonoidClass_iff.2 (isPrimitiveRoot_untilt_iterate untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one m)`. Conclude with `ZMod.val_injective _ (hprim.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h3)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toZModPow_kummerC_eq (m : ℕ) {g h : GQ l} {z : PadicAlgCl l}
     (hz : (z : ℂ_[l]) = ((PreTilt.untilt (φi^[m] (pFlat l)) : normInteger ℂ_[l]) : ℂ_[l])) (hgh : h z = g z) :
@@ -80,13 +80,13 @@ theorem toZModPow_kummerC_eq (m : ℕ) {g h : GQ l} {z : PadicAlgCl l}
 end cont
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : GQ l => kummerC (untilt_epsilon (p` using `l)) untilt_frobeniusEquiv_symm_epsilon_ne_one (toBot g) := by`. Use `continuous_iff_continuousAt.2 fun g0 => Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one hε (inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt : (1 : ℝ) < l))`. Take `⟨z, hz⟩` from `exists_coe_eq_untilt_pFlat (l := l) m`. Establish `: FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] {z})` using `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral z)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : IsOpen {h : GQ l | g0⁻¹ * h ∈ (IntermediateField.adjoin ℚ_[l] {z}).fixingSubgroup}` using `(IntermediateField.fixingSubgroup_isOpen _).preimage (continuous_const_mul _)`. Establish `h1 : g0 ∈ {h : GQ l | g0⁻¹ * h ∈ (IntermediateField.adjoin ℚ_[l] {z}).fixingSubgroup}`. Simplify using `only [Set.mem_setOf_eq, inv_mul_cancel]`. Conclude with `Subgroup.one_mem _`. Use `filter_upwards [hU.mem_nhds h1] with h hh`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hh z (IntermediateField.mem_adjoin_simple_self _ _)`. Establish `hgh : h z = g0 z`. Use `congrArg g0 hfix` as an intermediate fact. Simplify using `using this`. Establish `e` using `toZModPow_kummerC_eq m hz hgh`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dist_eq_norm]`. Establish `hmem : kummerC (untilt_epsilon (p` using `l)) untilt_frobeniusEquiv_symm_epsilon_ne_one (toBot h) - kummerC (untilt_epsilon (p := l)) untilt_frobeniusEquiv_symm_epsilon_ne_one (toBot g0) ∈ Ideal.span {(l : ℤ_[l]) ^ m} := by`. Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, e, sub_self]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `continuous_subtype_val.comp hc`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem continuous_κ (l : ℕ) [Fact l.Prime] : Continuous (κ : GQ l → ℚ_[l]) := by
   have hc : Continuous fun g : GQ l =>

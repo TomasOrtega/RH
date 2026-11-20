@@ -24,23 +24,21 @@ open GlobalTheory.CoordsOrigin
 namespace GlobalTheory.CoordsOrigin
 
 /- English proof (translation)
-Introduce `R _ _ _ _ G _ _ hsm n v dd hinv δ hδ`. Use `letI : Algebra R (G.left.presheaf.stalk (origin G)) := (constO G).toAlgebra`. Take `⟨hN, hF, hFin⟩` from `GlobalTheory.T.originLocalRing_noetherian_free_unitSectionConormal R G hsm`. Establish `key : ∀ a f, evO G (δ a f) = tanDer G (v a) f`. Introduce `a f`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨O, hx, g, rfl⟩` from `G.left.presheaf.exists_germ_eq f`. Rewrite using `[hδ a O hx g]`. Conclude with `GlobalTheory.T.invariantVectorField_eval_origin_eq_tangentDerivative R G (v a) (dd a) (hinv a) O hx g`. Establish `hadd : ∀ a x y, tanDer G (v a) (x + y) = tanDer G (v a) x + tanDer G (v a) y`. Introduce `a x y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key, ← key, ← key, map_add, map_add]`. Establish `hmul : ∀ a x y, tanDer G (v a) (x * y) = evO G x * tanDer G (v a) y + evO G y * tanDer G (v a) x`. Introduce `a x y`. Rewrite using `[← key, ← key, ← key, Derivation.leibniz, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul]`. Establish `hc : ∀ a r, tanDer G (v a) (algebraMap R _ r) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a r`. Rewrite using `[← key]`. Use `show evO G (δ a (constO G r)) = 0`. Rewrite using `[← GlobalTheory.GermConst.germ_constFn_origin R G ⊤ trivial r, hδ a ⊤ trivial, GlobalTheory.Heat.isInv_constFn R G (v a) (dd a) (hinv a) ⊤ r, map_zero, map_zero]`. Set `φ : TanM (𝟙 (Sp R)) G →+ (G.left.presheaf.stalk (origin G) → R)` to `{ toFun := fun w => tanDer G w map_zero' := funext fun f => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `GlobalTheory.T.tangentDerivativeAtOrigin_smul_tangentVector R G 0 0 f`. Rewrite `h` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis. Use the proof step `map_add' := fun u w => funext fun f => GlobalTheory.T.tangentDerivativeAtOrigin_add_tangentVector R G u w f }`. Establish `hlin : ∀ (c : Fin n → R) f, tanDer G (∑ a, c a • v a) f = ∑ a, c a * tanDer G (v a) f`. Introduce `c f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : tanDer G (∑ a, c a • v a) f = φ (∑ a, c a • v a) f` using `rfl`. Rewrite using `[h1, map_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => GlobalTheory.T.tangentDerivativeAtOrigin_smul_tangentVector R G (c a) (v a) f`. Establish `hbasis : ∀ D : G.left.presheaf.stalk (origin G) → R, (∀ x y, D (x + y) = D x + D y) → (∀ x y, D (x * y) = evO G x * D y + evO G y * D x) → (∀ r, D (algebraMap R _ r) = 0) → ∃! c : Fin n → R, ∀ x, D x = ∑ a, c a * tanDer G (v a) x`. Introduce `D h1 h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `GlobalTheory.T.exists_tangentVector_of_originDerivation R G D h1 h2 h3`. Use `⟨fun a => v.repr w a, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[← hw x, ← hlin]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(v.sum_repr w).symm`. Introduce `c hc'`. Establish `hw' : ∑ a, c a • v a = w` using `GlobalTheory.T.tangentVector_eq_of_tangentDerivativeAtOrigin_eq R G _ _ fun f => by rw [hlin, hw, hc' f]`. Use function extensionality and compare the values at `a`. Rewrite using `[← hw', v.repr_sum_self]`.
-
-Take `⟨z, hz0, hz1, hz2⟩` from `GlobalTheory.T.derivation_family_cotangent_basis R _ (evO G) (GlobalTheory.FormalOrigin.evO_constO R G) hF hFin n (fun a => tanDer G (v a)) hadd hmul hc hbasis`. Conclude with `⟨z, hz0, fun a i => by rw [key]; exact hz1 a i, hz2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coords_at_origin : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], Smooth G.hom → ∀ (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G)) (dd : Fin n → Fld G.left), (∀ a, IsInv G (v a) (dd a)) → ∀ δ : Fin n → Derivation ℤ (G.left.presheaf.stalk (origin G)) (G.left.presheaf.stalk (origin G)), (∀ a O (hO : origin G ∈ O) f, δ a ((G.left.presheaf.germ O (origin G) hO).hom f) = (G.left.presheaf.germ O (origin G) hO).hom (dd a O f)) → ∃ z : Fin n → G.left.presheaf.stalk (origin G), (∀ i, evO G (z i) = 0) ∧ (∀ a i, evO G (δ a (z i)) = if a = i then 1 else 0) ∧ maximalIdeal (G.left.presheaf.stalk (origin G)) = (maximalIdeal R).map (constO G) ⊔ Ideal.span (Set.range z) := by
   intro R _ _ _ _ G _ _ hsm n v dd hinv δ hδ

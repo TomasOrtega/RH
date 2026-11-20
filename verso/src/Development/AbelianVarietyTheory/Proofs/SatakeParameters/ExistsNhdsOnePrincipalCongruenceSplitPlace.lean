@@ -9,9 +9,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.SplitCongNbhd
 
 /- English proof (translation)
-Establish `hx : ((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) * conjT (conjAL L) ((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = 1` using `x.2`. Establish `h3 : (((x⁻¹ : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) * ((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = 1`. Rewrite using `[← Units.val_mul]`. Simplify using the standard rewrite rules. Establish `h2 : (((x⁻¹ : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = conjT (conjAL L) ((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hx, Matrix.mul_one]`. Use `_ = _ := by rw [← Matrix.mul_assoc, h3, Matrix.one_mul]`. Rewrite using `[h2]`. Simplify using `[conjT, Matrix.transpose_apply, Matrix.map_apply]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjAL_entry (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (x : GAf L n) (i j : Fin n) :
     conjAL L (((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) i j)
@@ -31,7 +31,7 @@ theorem conjAL_entry (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ
   rw [h2]; simp [conjT, Matrix.transpose_apply, Matrix.map_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ringHom_one_apply {R S : Type*} [Ring R] [Ring S] (f : R →+* S) (n : ℕ) (i j : Fin n) :
     f ((1 : Matrix (Fin n) (Fin n) R) i j) = (1 : Matrix (Fin n) (Fin n) S) i j := by
@@ -42,27 +42,23 @@ end GlobalTheory.SplitCongNbhd
 open GlobalTheory.SplitCongNbhd in
 
 /- English proof (translation)
-Use `set K := s.v.adicCompletion (maximalRealSubfield L)`. Set `U : Set (GL (Fin n) K)` to `{A | ∀ i j, Valued.v ((N : K)⁻¹ * ((A : Matrix (Fin n) (Fin n) K) i j - (1 : Matrix (Fin n) (Fin n) K) i j)) ≤ 1 ∧ Valued.v ((N : K)⁻¹ * (((A⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) i j - (1 : Matrix (Fin n) (Fin n) K) i j)) ≤ 1}`. Use `⟨U, ?_, ?_⟩` and prove the remaining obligations. Establish `hball : {t : K | Valued.v t ≤ 1} ∈ nhds (0 : K)` using `(Valued.isOpen_integer K).mem_nhds (by simp [Valuation.mem_integer_iff])`. Establish `key : ∀ f : GL (Fin n) K → K, Continuous f → f 1 = 0 → ∀ᶠ A in nhds (1 : GL (Fin n) K), Valued.v (f A) ≤ 1`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf h1`. Conclude with `hf.continuousAt.preimage_mem_nhds (by rw [h1]; exact hball)`. Establish `hc1 : ∀ i j, Continuous fun A : GL (Fin n) K => (A : Matrix (Fin n) (Fin n) K) i j` using `fun i j => Units.continuous_val.matrix_elem i j`. Establish `hc2 : ∀ i j, Continuous fun A : GL (Fin n) K => ((A⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) i j` using `fun i j => Units.continuous_coe_inv.matrix_elem i j`. Establish `hij : ∀ i j, ∀ᶠ (A : GL (Fin n) K) in nhds 1, Valued.v ((N : K)⁻¹ * ((A : Matrix (Fin n) (Fin n) K) i j - (1 : Matrix (Fin n) (Fin n) K) i j)) ≤ 1 ∧ Valued.v ((N : K)⁻¹ * (((A⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) i j - (1 : Matrix (Fin n) (Fin n) K) i j)) ≤ 1` using `fun i j => (key _ (continuous_const.mul ((hc1 i j).sub continuous_const)) (by simp)).and (key _ (continuous_const.mul ((hc2 i j).sub continuous_const)) (by simp))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => hij i j`. Introduce `x hx hU`. Take `⟨e, he1, he2⟩` from `GlobalTheory.SplitSep.exists_sep L s`. Establish `hN' : (N : L) ≠ 0` using `by exact_mod_cast hN.ne'`. Use `set c : AL L := ((N : L)⁻¹) ⊗ₜ[maximalRealSubfield L] (1 : AFplus L) with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hNc : (N : AL L) * c = 1`. Rewrite using `[hc, Algebra.TensorProduct.natCast_def, Algebra.TensorProduct.tmul_mul_tmul, mul_inv_cancel₀ hN', one_mul]`. Both sides reduce to the same expression. Establish `hconjc : conjAL L c = c`. Rewrite using `[hc, GlobalTheory.SplitLift.conjAL_tmul, map_inv₀, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hprojc : s.proj c = (N : K)⁻¹`. Rewrite using `[hc, GlobalTheory.SplitLift.proj_tmul, map_inv₀, map_natCast]`. Simplify using the standard rewrite rules. Use `set M : Matrix (Fin n) (Fin n) (AL L) := ((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) with hM`. Establish `hy : ∀ i j, c * (M i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j) ∈ ALint L`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i j`. Use `GlobalTheory.mem_ALint_of_supported_at_split L s e he1 he2 _ ?_ ?_ ?_` and prove the remaining obligations. Introduce `w hw`. Establish `h1` using `congrFun (congrFun (hx w (by simpa using hw)) i) j`. Rewrite `h1` using `[Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_mul, map_sub, h1, ringHom_one_apply, sub_self, mul_zero]`. Rewrite using `[map_mul, map_sub, hprojc, ringHom_one_apply]`. Conclude with `(hU i j).1`. Establish `hinv : s.proj ((((x⁻¹ : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) j i) = ((((s.loc n x)⁻¹ : GL (Fin n) K)) : Matrix (Fin n) (Fin n) K) j i`. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `h1 : (1 : Matrix (Fin n) (Fin n) K) i j = (1 : Matrix (Fin n) (Fin n) K) j i`. Simplify using `[Matrix.one_apply, eq_comm]`. Rewrite using `[map_mul, map_sub, hconjc, hM, conjAL_entry, ringHom_one_apply, map_mul, map_sub, hprojc, hinv, ringHom_one_apply, h1]`. Conclude with `(hU j i).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hone : ∀ i j, (1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L`. Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `(ALint L).one_mem`.
-
-Conclude with `(ALint L).zero_mem`. Establish `hz : ∀ i j, M i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j = (N : AL L) * (c * (M i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j))`. Introduce `i j`. Rewrite using `[← mul_assoc, hNc, one_mul]`. Use `⟨?_, fun i j => ⟨_, hy i j, hz i j⟩⟩` and prove the remaining obligations.
-
-Use `show ∀ i j, M i j ∈ ALint L`. Introduce `i j`. Establish `: M i j = (N : AL L) * (c * (M i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j)) + (1 : Matrix (Fin n) (Fin n) (AL L)) i j` using `by rw [← hz, sub_add_cancel]`. Rewrite using `[this]`. Conclude with `(ALint L).add_mem ((ALint L).mul_mem (natCast_mem _ _) (hy i j)) (hone i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SplitCongNbhd.exists_nhds_one_cong (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (s : SplitPlace L) (N : ℕ) (hN : 0 < N) :

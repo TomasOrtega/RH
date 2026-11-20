@@ -29,27 +29,27 @@ namespace GlobalTheory.ArchLocalAct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-The claim follows from `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`.
+A detailed English derivation is pending.
 -/
 theorem evI_add' (a b : AF F) : evI F (a + b) = evI F a + evI F b :=
   map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1
 
 /- English proof (translation)
-The claim follows from `map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`.
+A detailed English derivation is pending.
 -/
 theorem evI_mul' (a b : AF F) : evI F (a * b) = evI F a * evI F b :=
   map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1
 
 /- English proof (translation)
-Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hw`. Use `set w := M.co.e.symm (p, q) with hw'`. Establish `he : M.co.e (u • w) = (u • p, u • q)`. Rewrite using `[LinearEquiv.map_smul, hw', LinearEquiv.apply_symm_apply, Prod.smul_mk]`. Establish `h1 : u • (mat x.1 - 1) = 0` using `hx1 u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : u • (mat x.2 - 1) = 0` using `hx2 u hu`. Establish `e1 : mat x.1 * (u • w) = u • w`. Establish `: mat x.1 * (u • w) - u • w = (u • (mat x.1 - 1)) * w`. Rewrite using `[Matrix.smul_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_smul, smul_sub]`. Rewrite `this` using `[h1, Matrix.zero_mul, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `e2 : (u • w) * (mat x.2)ᵀ = u • w`. Establish `: (u • w) * (mat x.2)ᵀ - u • w = w * (u • (mat x.2 - 1))ᵀ`. Rewrite using `[Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.mul_one, smul_sub]`. Rewrite `this` using `[h2, Matrix.transpose_zero, Matrix.mul_zero, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Establish `hact : GlobalTheory.WeilM.actAB (cA σ) x (u • w) = u • w`. Simplify using `only [GlobalTheory.WeilM.actAB]`. Use `e1` as an intermediate fact. Simplify using `only [mat] at this e2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, e2]`. Establish `h3` using `hW.impl x (u • w) Φ hΦ`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, he, hact] at h3`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem comm_offI {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {ψ : AddChar (AF F) ℂ}
     {χX χW : Chr F E} {om : Rep σ X W} (hw : M.IsWeil ψ χX χW om) (x : UA σ X.J × UA σ W.J)
@@ -84,7 +84,7 @@ theorem comm_offI {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
   exact h3
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[GlobalTheory.WeilM.schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schr_trans' (ψ : AddChar (AF F) ℂ) {κ : Type} [Fintype κ] (w : κ → AF F) (Φ : (κ → AF F) → ℂ) :
     GlobalTheory.WeilM.schr ψ (w, 0) Φ = fun y => Φ (y + w) := by
@@ -96,41 +96,33 @@ end GlobalTheory.ArchLocalAct
 namespace GlobalTheory.ArchLocalAct
 
 /- English proof (translation)
-Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hw`. Establish `hkeep : ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d), om x Φ ∈ GlobalTheory.WeilM.schA F _` using `fun Φ hΦ => hW.pres x Φ hΦ`. Establish `hcomm` using `comm_offI hw x hx1 hx2`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.T.exists_finiteWeight_complementary_archimedeanSchwartz (F := F) (Fin n × Fin d)`. Establish `hB : ∀ f : SInf F (Fin n × Fin d), ∃ g : SInf F (Fin n × Fin d), ∀ t, g t = (R 0)⁻¹ * om x (tens (evI F) (⇑f) R) (liftI t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `f`. Take `⟨g, hg⟩` from `GlobalTheory.ArchSlice.exists_schwartz_slice _ (Submodule.smul_mem _ (R 0)⁻¹ (hkeep _ (hR f).2))`. Conclude with `⟨g, fun t => by rw [hg]; rfl⟩`. Use `choose Tf hTf using hB`. Establish `htens_add : ∀ f g : SInf F (Fin n × Fin d), tens (evI F) (⇑(f + g)) R = tens (evI F) (⇑f) R + tens (evI F) (⇑g) R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f g`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, SchwartzMap.add_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `htens_smul : ∀ (c : ℂ) (f : SInf F (Fin n × Fin d)), tens (evI F) (⇑(c • f)) R = c • tens (evI F) (⇑f) R`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c f`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, SchwartzMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Set `T : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)` to `{ toFun := Tf map_add' := fun f g => by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Use extensionality with `t`. Rewrite using `[SchwartzMap.add_apply, hTf, hTf, hTf, htens_add, map_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c f => by`. Use extensionality with `t`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[SchwartzMap.smul_apply, hTf, hTf, htens_smul, map_smul, Pi.smul_apply, smul_eq_mul, smul_eq_mul, RingHom.id_apply]`. Use `ring }`. Use `⟨T, fun f r hr => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Use `set T0 := om x with hT0`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set u : AF F := ((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F)) with hudef`. Establish `hu : evI F u = 0` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : InfiniteAdeleRing F) = 0`. Conclude with `map_zero _`. Use `set p : Fin n × Fin d → AF F := liftI (fun i => evI F (y i)) with hpdef`. Establish `hyp : y + u • (-y) = p`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, hudef, hpdef, liftI, evI, RingEquiv.symm_apply_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (y i).1 + 0 * (-(y i)).1 = (y i).1`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (y i).2 + 1 * (-(y i)).2 = 0`. Rewrite using `[one_mul]`. Conclude with `add_neg_cancel ((y i).2)`. Establish `hpat : At (evI F) p`. Introduce `u' hu'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : u'.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu')`. Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u'.1 * (p i).1 = 0`. Rewrite using `[h0, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show u'.2 * (p i).2 = 0`. Simplify using `[hpdef, liftI]`. Use `set Φ₀ := tens (evI F) (⇑f) R with hΦ₀`. Use `set Φ₁ := tens (evI F) (⇑f) r with hΦ₁`. Use `set Φ₂ : (Fin n × Fin d → AF F) → ℂ := (r y / R 0) • (fun w => Φ₀ (w + u • (-y))) with hΦ₂`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hm₀ : Φ₀ ∈ GlobalTheory.WeilM.schA F _` using `(hR f).2`. Establish `hm₂ : Φ₂ ∈ GlobalTheory.WeilM.schA F _` using `Submodule.smul_mem _ _ (GlobalTheory.SchwartzTranslation.schA_add_const _ _ hm₀)`. Establish `hfz : ∀ z, At (evI F) z → (Φ₁ - Φ₂) (y + z) = 0`. Introduce `z hz`. Establish `e1 : r (y + z) = r y` using `hr.1 y z hz`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : y + z + u • (-y) = p + z` using `by rw [← hyp]; abel`. Establish `hpz : At (evI F) (p + z)` using `fun u' hu' => by`. Rewrite using `[smul_add, hpat u' hu', hz u' hu', add_zero]`. Establish `e3 : R (p + z) = R 0` using `by simpa using (hR f).1 0 (p + z) hpz`. Establish `e4 : (fun i => evI F ((y + z + u • (-y)) i)) = fun i => evI F ((y + z) i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, evI_add', evI_mul', hu, zero_mul, add_zero]`. Simplify using `only [Pi.sub_apply, hΦ₂, hΦ₁, hΦ₀, Pi.smul_apply, smul_eq_mul, tens]`. Rewrite using `[e4, e2, e3, e1]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `GlobalTheory.T.heisenbergCommuting_operator_independent_of_archimedeanFibres ψ T0 hψ hkeep (fun u hu p q Φ hΦ => hcomm u hu p q Φ hΦ) (Φ₁ - Φ₂) (sub_mem hr.2 hm₂) y hfz`. Rewrite `h0` using `[map_sub, Pi.sub_apply, sub_eq_zero]`. Establish `htr : T0 (fun w => Φ₀ (w + u • (-y))) = fun w => T0 Φ₀ (w + u • (-y))`. Establish `h` using `hcomm u hu (-y) 0 Φ₀ hm₀`.
-
-Rewrite `h` using `[smul_zero, schr_trans', schr_trans']`. Conclude with `h`. Establish `h2 : T0 Φ₂ y = (r y / R 0) * T0 Φ₀ p`. Rewrite using `[hΦ₂, map_smul, htr, Pi.smul_apply, smul_eq_mul, hyp]`. Use `show T0 Φ₁ y = tens (evI F) (⇑(Tf f)) r y`.
-
-Rewrite using `[h0, h2]`. Use `show r y / R 0 * T0 Φ₀ p = (Tf f) (fun i => evI F (y i)) * r y`. Rewrite using `[hTf]`. Use `show r y / R 0 * T0 Φ₀ p = (R 0)⁻¹ * T0 Φ₀ p * r y`. Rewrite using `[div_eq_mul_inv]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_op_of_UAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {ψ : AddChar (AF F) ℂ}
@@ -228,7 +220,7 @@ theorem exists_op_of_UAt {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d Y W M om χ₁ χ₂ hB _ hw k hk`. Establish `h1 : (1 : UA σ Y.J) ∈ UAt σ Y (evI F)`. Introduce `u _`. Simplify using `[mat]`. Conclude with `exists_op_of_UAt hB.std hw (1, k) h1 hk.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_op_of_KInf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (Y : Spc F E n) (W : Spc F E d) (M : Model σ Y W) (om : Rep σ Y W) (χ₁ χ₂ : Chr F E),

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKr
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad
 
 /- English proof (translation)
-Establish `h1 : IsIntegral (NormedField.valuation (K` using `F)).integer y := hy.tower_top`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := F))).mem_of_integral h1`. Establish `h3 : ‖y‖₊ ≤ 1` using `h2`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem norm_le_one_of_int {F : Type} [NormedField F] [IsUltrametricDist F] (y : F)
     (hy : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
@@ -15,11 +15,11 @@ private theorem norm_le_one_of_int {F : Type} [NormedField F] [IsUltrametricDist
   exact_mod_cast h3
 
 /- English proof (translation)
-Take `⟨T, rfl⟩` from `hL`. Use `⟨∑ t ∈ T, ‖j (t q)‖, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h0 : (0 : ℝ) ≤ ∑ t ∈ T, ‖j (t q)‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact Finset.single_le_sum (f := fun t => ‖j (t q)‖) (fun _ _ => norm_nonneg _) hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using h0`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Pi.add_apply, map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Consider the case `smul a x _ hx`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `e : (a • x) q = (a : K) * x q` using `rfl`. Establish `ha : ‖j (a : K)‖ ≤ 1` using `norm_le_one_of_int _ (map_isIntegral_int j (RingOfIntegers.isIntegral_coe a))`. Rewrite using `[e, map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem bddBelow_support_primePowerComponent_coeff (p : ℕ) [Fact p.Prime] (K : Type) [Field K] [NumberField K] (g : ℕ)
     (j : K →+* ℂ_[p]) (L : Submodule (𝓞 K) (Fin g → K)) (q : Fin g) (hL : L.FG) :
@@ -42,21 +42,19 @@ private theorem bddBelow_support_primePowerComponent_coeff (p : ℕ) [Fact p.Pri
       _ ≤ _ := by rwa [one_mul]
 
 /- English proof (translation)
-Introduce `p _ K _ _ g j L S q hL hex`. Take `⟨B, hB⟩` from `bddBelow_support_primePowerComponent_coeff p K g j L q hL`. Use `set A : Set ℝ := (fun b => ‖j b‖) '' {b : K | ∃ v ∈ L, (∀ k, k ∉ S → v k = 0) ∧ b = v q} with hA`. Use `set R : Set ℝ := {r : ℝ | ∃ c : Fin g → ℂ_[p], c q ≠ 0 ∧ (∀ k, k ∉ S → c k = 0) ∧ (∃ (n : ℕ) (a : Fin n → ℂ_[p]) (v : Fin n → Fin g → K), (∀ m, ‖a m‖ ≤ 1) ∧ (∀ m, v m ∈ L) ∧ c = ∑ m, a m • fun i => j (v m i)) ∧ r = ‖c q‖⁻¹} with hR`. Establish `hbdd : BddAbove A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨B, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨v, hv, _, rfl⟩, rfl⟩`. Conclude with `hB v hv`. Establish `hle : ∀ v ∈ L, (∀ k, k ∉ S → v k = 0) → ‖j (v q)‖ ≤ sSup A` using `fun v hv hS => le_csSup hbdd ⟨v q, ⟨v, hv, hS, rfl⟩, rfl⟩`. Establish `hmem : ∀ v ∈ L, (∀ k, k ∉ S → v k = 0) → v q ≠ 0 → ‖j (v q)‖⁻¹ ∈ R`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `v hv hS hq`. Use `⟨fun i => j (v i), (map_ne_zero j).mpr hq, fun k hk => by simp [hS k hk], ⟨1, fun _ => 1, fun _ => v, fun _ => by simp, fun _ => hv, by simp⟩, rfl⟩` and prove the remaining obligations. Take `⟨v0, hv0, hS0, hq0⟩` from `hex`. Establish `hpos0 : 0 < ‖j (v0 q)‖` using `norm_pos_iff.mpr ((map_ne_zero j).mpr hq0)`. Establish `hs : 0 < sSup A` using `hpos0.trans_le (hle v0 hv0 hS0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hlow : ∀ r ∈ R, (sSup A)⁻¹ ≤ r`. Introduce and unpack `_ ⟨c, hcq, hcS, hc, rfl⟩`. Take `⟨n, a, v, ha, hv, rfl⟩` from `UpperTheory.padic_span_coordinate_lattice p K g j L S c hL hcS hc`. Use `inv_anti₀ (norm_pos_iff.mpr hcq) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hs.le fun m _ => ?_` and prove the remaining obligations. Establish `e : (a m • fun i => j (v m i)) q = a m * j (v m q)` using `rfl`. Rewrite using `[e, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hne : R.Nonempty` using `⟨_, hmem v0 hv0 hS0 hq0⟩`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (sSup A)⁻¹ ≤ sInf R` using `le_csInf hne hlow`. Establish `hi : 0 < sInf R` using `(inv_pos.mpr hs).trans_le h1`. Use `le_antisymm ?_ h1` and prove the remaining obligations. Rewrite using `[le_inv_comm₀ hi hs]`. Use `csSup_le ⟨_, v0 q, ⟨v0, hv0, hS0, rfl⟩, rfl⟩ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨_, ⟨v, hv, hS, rfl⟩, rfl⟩`. Distinguish the cases in `hq : v q = 0`. Simplify using `only [hq, map_zero, norm_zero]`. Conclude with `(inv_pos.mpr hi).le`. Establish `hp : 0 < ‖j (v q)‖` using `norm_pos_iff.mpr ((map_ne_zero j).mpr hq)`.
-
-Conclude with `(le_inv_comm₀ hp hi).mpr (csInf_le ⟨_, hlow⟩ (hmem v hv hS hq))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.padic_coordinate_infimum :
     ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] [NumberField K] (g : ℕ) (j : K →+* ℂ_[p]) (L : Submodule (𝓞 K) (Fin g → K)) (S : Set (Fin g)) (q : Fin g), L.FG → (∃ v ∈ L, (∀ k, k ∉ S → v k = 0) ∧ v q ≠ 0) → sInf {r : ℝ | ∃ c : Fin g → ℂ_[p], c q ≠ 0 ∧ (∀ k, k ∉ S → c k = 0) ∧ (∃ (n : ℕ) (a : Fin n → ℂ_[p]) (v : Fin n → Fin g → K), (∀ m, ‖a m‖ ≤ 1) ∧ (∀ m, v m ∈ L) ∧ c = ∑ m, a m • fun i => j (v m i)) ∧ r = ‖c q‖⁻¹} = (sSup ((fun b => ‖j b‖) '' {b : K | ∃ v ∈ L, (∀ k, k ∉ S → v k = 0) ∧ b = v q}))⁻¹ := by

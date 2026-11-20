@@ -20,11 +20,9 @@ namespace GlobalTheory.UnitGlue.EvalPt
 open GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits
 
 /- English proof (translation)
-Establish `hm : ∀ a : 𝓞_ℂ_[p], ‖(a : ℂ_[p])‖ ≤ 1` using `fun a => by`. Establish `this : (Valued.v (a : ℂ_[p]) : NNReal) ≤ 1` using `a.2`. Rewrite using `[PadicComplex.norm_eq_norm]`. Conclude with `(Valued.toNormedField.norm_le_one_iff).2 this`. Establish `h1 : ((u : 𝓞_ℂ_[p]) : ℂ_[p]) * ((u⁻¹ : (𝓞_ℂ_[p])ˣ) : 𝓞_ℂ_[p]) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `u.mul_inv` after adjusting the coercions. Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_mul, norm_one]`. Establish `h3` using `hm (u : 𝓞_ℂ_[p])`. Establish `h4` using `hm ((u⁻¹ : (𝓞_ℂ_[p])ˣ) : 𝓞_ℂ_[p])`.
-
-Use `show ‖((u : 𝓞_ℂ_[p]) : ℂ_[p])‖ = 1`. Use polynomial arithmetic with `[norm_nonneg ((u : 𝓞_ℂ_[p]) : ℂ_[p]), norm_nonneg (((u⁻¹ : (𝓞_ℂ_[p])ˣ) : 𝓞_ℂ_[p]) : ℂ_[p])]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_algebraMap_unit (p : ℕ) [Fact p.Prime] (u : (𝓞_ℂ_[p])ˣ) :
     ‖algebraMap 𝓞_ℂ_[p] ℂ_[p] (u : 𝓞_ℂ_[p])‖ = 1 := by
@@ -42,9 +40,9 @@ theorem norm_algebraMap_unit (p : ℕ) [Fact p.Prime] (u : (𝓞_ℂ_[p])ˣ) :
   nlinarith [norm_nonneg ((u : 𝓞_ℂ_[p]) : ℂ_[p]), norm_nonneg (((u⁻¹ : (𝓞_ℂ_[p])ˣ) : 𝓞_ℂ_[p]) : ℂ_[p])]
 
 /- English proof (translation)
-Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Introduce `h0`. Establish `hV : (p : V) = 0` using `IsFractionRing.injective V (FractionRing V) (by rw [map_natCast, h0, map_zero])`. Establish `hF : (p : F) = 0`. Use `map_natCast V.subtype p` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hV, map_zero]`. Conclude with `this.symm`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) hF`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_fraction {F : Type} [Field F] [NumberField F] (V : ValuationSubring F) (p : ℕ)
     [Fact p.Prime] : IsUnit (p : FractionRing V) := by
@@ -59,9 +57,9 @@ theorem isUnit_natCast_fraction {F : Type} [Field F] [NumberField F] (V : Valuat
   exact (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) hF
 
 /- English proof (translation)
-Establish `h1 : IsUnit (p : Γ(Spec (.of (FractionRing V)), ⊤))`. Use `(isUnit_natCast_fraction V p).map (Scheme.ΓSpecIso (.of (FractionRing V))).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h2` using `h1.map (genericStr s).appTop.hom`. Rewrite `h2` using `[map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `h2.map ((genericFibre s).presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom`. Rewrite `h3` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_natCast_generic {F : Type} [Field F] [NumberField F] {V : ValuationSubring F}
     [IsDiscreteValuationRing V] (p : ℕ) [Fact p.Prime] {X : Scheme.{0}} (s : X ⟶ Sp V)
@@ -75,7 +73,7 @@ theorem isUnit_natCast_generic {F : Type} [Field F] [NumberField F] {V : Valuati
   rwa [map_natCast] at h3
 
 /- English proof (translation)
-Rewrite using `[Xp, Scheme.preimage_basicOpen, map_natCast]`. Conclude with `Scheme.basicOpen_of_isUnit _ (isUnit_natCast_generic p s _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimage_Xp_generic {F : Type} [Field F] [NumberField F] {V : ValuationSubring F}
     [IsDiscreteValuationRing V] (p : ℕ) [Fact p.Prime] {X : Scheme.{0}} (s : X ⟶ Sp V) :
@@ -84,14 +82,14 @@ theorem preimage_Xp_generic {F : Type} [Field F] [NumberField F] {V : ValuationS
   exact Scheme.basicOpen_of_isUnit _ (isUnit_natCast_generic p s _)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appLE_congr {T Z : Scheme.{0}} {f g : T ⟶ Z} (e : f = g) (U : Z.Opens) (V : T.Opens)
     (hV : V ≤ f ⁻¹ᵁ U) : f.appLE U V hV = g.appLE U V (e ▸ hV) := by
   subst e; rfl
 
 /- English proof (translation)
-The claim follows from `Scheme.Hom.appLE_eq_app (f := f) (U := ⊤)`.
+A detailed English derivation is pending.
 -/
 theorem appLE_top_top {T Z : Scheme.{0}} (f : T ⟶ Z) (hV : ⊤ ≤ f ⁻¹ᵁ ⊤) : f.appLE ⊤ ⊤ hV = f.appTop :=
   Scheme.Hom.appLE_eq_app (f := f) (U := ⊤)
@@ -102,35 +100,31 @@ namespace GlobalTheory.UnitGlue.EvalPt
 open GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits
 
 /- English proof (translation)
-Introduce `F _ _ V _ p _ X s Xw K h x φ yb hyb y hy e cc hc`. Substitute `hyb` using the available equality. Set `j : PUnit → (glueLB h).ι` to `fun _ => x`. Establish `hW : ∀ {T : Scheme.{0}} (f : T ⟶ X), LB.wchart (glueLB h) (fun _ : PUnit => f) j = f ⁻¹ᵁ Uc h x` using `fun f => TopologicalSpace.Opens.ext (by ext z; simp [LB.wchart, glueLB, j])`. Establish `hYb : (spMap φ ≫ cξ h x) ⁻¹ᵁ Uc h x = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `spMap φ ⁻¹ᵁ (cξ h x ⁻¹ᵁ (cξ h x ''ᵁ ⊤)) = ⊤`. Rewrite using `[Scheme.Hom.preimage_image_eq]`. Both sides reduce to the same expression. Establish `hYg : y ⁻¹ᵁ (genericι s ⁻¹ᵁ Uc h x) = ⊤`. Express the relevant statement in the definitionally equal form `(y ≫ genericι s) ⁻¹ᵁ Uc h x = ⊤`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hy]`. Express the relevant statement in the definitionally equal form `Spec.map _ ⁻¹ᵁ ((spMap φ ≫ cξ h x) ⁻¹ᵁ Uc h x) = ⊤`. Rewrite using `[hYb]`. Both sides reduce to the same expression. Establish `h₁ : (⊤ : (Spec (.of ℂ_[p])).Opens) ≤ y ⁻¹ᵁ ((glueLB h).pull (genericι s)).U j`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `⊤ ≤ y ⁻¹ᵁ LB.wchart (glueLB h) (fun _ : PUnit => genericι s) j`. Rewrite using `[hW, hYg]`. Establish `h₂ : (⊤ : (Spec (.of ℂ_[p])).Opens) ≤ Spec.map (CommRingCat.ofHom (algebraMap 𝓞_ℂ_[p] ℂ_[p])) ⁻¹ᵁ ((glueLB h).pull (spMap φ ≫ cξ h x)).U j`. Express the relevant statement in the definitionally equal form `⊤ ≤ Spec.map _ ⁻¹ᵁ LB.wchart (glueLB h) (fun _ : PUnit => spMap φ ≫ cξ h x) j`. Rewrite using `[hW, hYb]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_top`. Establish `hcond : LB.wchart (glueLB h) (fun _ : PUnit => genericι s) j ≤ genericι s ⁻¹ᵁ (Uc h x ⊓ Xp X p)`. Rewrite using `[hW]`. Introduce `z hz`. Use `show z ∈ genericι s ⁻¹ᵁ Uc h x ⊓ genericι s ⁻¹ᵁ Xp X p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[preimage_Xp_generic p s]`. Conclude with `⟨hz, trivial⟩`. Establish `hsig : (sigGen h s).s j = res hcond (pullU (genericι s) _ (Cx h x))` using `dif_pos hcond`. Establish `key` using `hc j ⊤ h₁ h₂`. Rewrite `key` using `[hsig]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `χ : Γ(X, Uc h x ⊓ Xp X p) ⟶ Γ(Spec (.of ℂ_[p]), ⊤)` to `(genericι s).appLE (Uc h x ⊓ Xp X p) _ hcond ≫ y.appLE _ ⊤ h₁`. Set `ψ : Localization.Away (p : cR h x) →+* ℂ_[p]` to `(Scheme.ΓSpecIso (.of ℂ_[p])).hom.hom.comp (χ.hom.comp (ev h x))`. Establish `hψc : ψ (cu h x : Localization.Away (p : cR h x)) = (Scheme.ΓSpecIso (.of ℂ_[p])).hom.hom ((res h₁ (pullU y _ (res hcond (pullU (genericι s) _ (Cx h x))))) : Γ(Spec (.of ℂ_[p]), ⊤))` using `rfl`. Establish `hF1 : (Scheme.ΓSpecIso (.of ℂ_[p])).hom.hom ((res (U` using `⊤) (V := ⊤) le_top (constUnit (𝟙 (Spec (.of ℂ_[p]))) cc) : Γ(Spec (.of ℂ_[p]), ⊤))) = cc := by`. Establish `hid : (homOfLE (le_top : (⊤ : (Spec (.of ℂ_[p])).Opens) ≤ ⊤)).op = 𝟙 _` using `Subsingleton.elim _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[res, constUnit, hid]`. Establish `htop : (⊤ : (Sp 𝓞_ℂ_[p]).Opens) ≤ ((glueLB h).pull (spMap φ ≫ cξ h x)).U j`. Express the relevant statement in the definitionally equal form `⊤ ≤ LB.wchart (glueLB h) (fun _ : PUnit => spMap φ ≫ cξ h x) j`. Rewrite using `[hW, hYb]`. Establish `hM : (Spec.map (CommRingCat.ofHom (algebraMap 𝓞_ℂ_[p] ℂ_[p]))).app (((glueLB h).pull (spMap φ ≫ cξ h x)).U j) ≫ (Spec (.of ℂ_[p])).presheaf.map (homOfLE h₂).op ≫ (Scheme.ΓSpecIso (.of ℂ_[p])).hom = (Sp 𝓞_ℂ_[p]).presheaf.map (homOfLE htop).op ≫ (Scheme.ΓSpecIso (.of 𝓞_ℂ_[p])).hom …`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (Spec.map (CommRingCat.ofHom (algebraMap 𝓞_ℂ_[p] ℂ_[p]))).app (((glueLB h).pull (spMap φ ≫ cξ h x)).U j) ≫ (Spec (.of ℂ_[p])).presheaf.map (homOfLE h₂).op = (Spec.map (CommRingCat.ofHom (algebraMap 𝓞_ℂ_[p] ℂ_[p]))).appLE _ ⊤ h₂` using `rfl`. Rewrite using `[← Category.assoc, e1, ← Scheme.Hom.map_appLE _ (U := ⊤) (by simp) (homOfLE htop).op, Category.assoc]`. Use `erw [appLE_top_top]`. Rewrite using `[Scheme.ΓSpecIso_naturality]`. Establish `hF2 : (Scheme.ΓSpecIso (.of ℂ_[p])).hom.hom ((res h₂ (pullU (Spec.map (CommRingCat.ofHom (algebraMap 𝓞_ℂ_[p] ℂ_[p]))) _ (e.s j))) : Γ(Spec (.of ℂ_[p]), ⊤)) = algebraMap 𝓞_ℂ_[p] ℂ_[p] ((Units.map (Scheme.ΓSpecIso (.of 𝓞_ℂ_[p])).hom.hom.toMonoidHom (res htop (e.s j)) : (𝓞_ℂ_[p])ˣ) …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg (fun m => m.hom ((e.s j : Γ(Sp 𝓞_ℂ_[p], ((glueLB h).pull (spMap φ ≫ cξ h x)).U j)))) hM` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Conclude with `this`. Establish `hinvapp : ((cξ h x).appIso ⊤).inv ≫ (cξ h x).app (Uc h x) = (Sp (cR h x)).presheaf.map (eqToHom (Scheme.Hom.preimage_image_eq (cξ h x) ⊤)).op` using `by show ((cξ h x).appIso ⊤).inv ≫ (cξ h x).app (cξ h x ''ᵁ ⊤) = _`. Rewrite using `[Iso.inv_comp_eq, Scheme.Hom.appIso_hom, Category.assoc, ← Functor.map_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Uc]`. Establish `hinvapp' : ∀ {Z : CommRingCat.{0}} (k : Γ(Sp (cR h x), cξ h x ⁻¹ᵁ Uc h x) ⟶ Z), ((cξ h x).appIso ⊤).inv ≫ (cξ h x).app (Uc h x) ≫ k = (Sp (cR h x)).presheaf.map (eqToHom (Scheme.Hom.preimage_image_eq (cξ h x) ⊤)).op ≫ k`. Introduce `Z k`. Rewrite using `[← hinvapp]`. Conclude with `(Category.assoc _ _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmor : (Scheme.ΓSpecIso (.of (cR h x))).inv ≫ ((cξ h x).appIso ⊤).inv ≫ X.presheaf.map (homOfLE (inf_le_left : Uc h x ⊓ Xp X p ≤ Uc h x)).op ≫ χ ≫ (Scheme.ΓSpecIso (.of ℂ_[p])).hom = CommRingCat.ofHom φ ≫ CommRingCat.ofHom (algebraMap 𝓞_ℂ_[p] ℂ_[p])`. Rewrite using `[show χ = _ from Scheme.Hom.appLE_comp_appLE y (genericι s) _ _ _ hcond h₁]`. Use `erw [reassoc_of% (Scheme.Hom.map_appLE (y ≫ genericι s) _ (homOfLE (inf_le_left : Uc h x ⊓ Xp X p ≤ Uc h x)).op)]`. Rewrite using `[appLE_congr (hy.trans (Category.assoc _ _ _).symm), Scheme.Hom.comp_appLE, Category.assoc]`. Use `erw [hinvapp']`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `erw [reassoc_of% (Scheme.Hom.map_appLE (Spec.map (CommRingCat.ofHom (algebraMap 𝓞_ℂ_[p] ℂ_[p])) ≫ spMap φ) _ (eqToHom (Scheme.Hom.preimage_image_eq (cξ h x) ⊤)).op)]`. Use `erw [appLE_top_top]`. Rewrite using `[Scheme.Hom.comp_appTop, Category.assoc, Scheme.ΓSpecIso_naturality, reassoc_of% (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ)), Iso.inv_hom_id_assoc]`. Use `⟨ψ, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `r`.
-
-Use `congrArg (fun m => m.hom r) hmor` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Use `show (Scheme.ΓSpecIso _).hom.hom (χ.hom (ev h x (algebraMap _ _ r))) = algebraMap 𝓞_ℂ_[p] ℂ_[p] (φ r)`. Rewrite using `[← this, ev, IsLocalization.Away.lift, IsLocalization.lift_eq]`. Both sides reduce to the same expression.
-
-Establish `key'` using `congrArg (fun u : Γ(Spec (.of ℂ_[p]), ⊤)ˣ => (Scheme.ΓSpecIso (.of ℂ_[p])).hom.hom (u : Γ(Spec (.of ℂ_[p]), ⊤))) key dsimp only at key'`. Rewrite `key'` using `[Units.val_mul, map_mul]`. Rewrite using `[hψc, key', hF1, hF2, norm_mul, norm_algebraMap_unit, _root_.mul_one]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalPt_norm : ∀ (F : Type) [Field F] [NumberField F] (V : ValuationSubring F) [IsDiscreteValuationRing V] (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) (s : X ⟶ Sp V) (Xw : X.Opens) (K : (Sp 𝓞_ℂ_[p] ⟶ X) → Set ℂ_[p]) (h : ∀ x : X, UnitChartAt p Xw K x) (x : X) (φ : cR h x →+* 𝓞_ℂ_[p]) (yb : Sp 𝓞_ℂ_[p] ⟶ X), spMap φ ≫ cξ h x = yb → ∀ y : Spec (.of ℂ_[p]) ⟶ GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.genericFibre s, y ≫ GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.genericι s = Spec.map (CommRingCat.ofHom (algebraMap 𝓞_ℂ_[p] ℂ_[p])) ≫ yb → ∀ (e : ((glueLB h).pull yb).Gen) (cc : ℂ_[p]ˣ), GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.IsCoord s (glueLB h) (sigGen h s) yb y e cc → ∃ ψ : Localization.Away (p : cR h x) →+* ℂ_[p], ψ.comp (algebraMap (cR h x) _) = (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp φ ∧ ‖ψ (cu h x : Localization.Away (p : cR h x))‖ = ‖(cc : ℂ_[p])‖ := by
   intro F _ _ V _ p _ X s Xw K h x φ yb hyb y hy e cc hc

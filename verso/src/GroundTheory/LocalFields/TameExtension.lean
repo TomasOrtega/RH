@@ -23,9 +23,9 @@ def IsTameSubextension (E : IntermediateField K Ω) : Prop :=
       (_ : ValuativeExtension K E), Nat.Coprime (ramificationIndex K E) (ringChar 𝓀[K])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hfin, h⟩`. Conclude with `⟨hfin, (finiteExtensionStructure K E).rel, (finiteExtensionStructure K E).top, finiteExtensionStructure_isNonarchimedeanLocalField K E, finiteExtensionStructure_valuativeExtension K E, h (finiteExtensionStructure K E).rel (finiteExtensionStructure K E).top (finiteExtensionStructu …`. Introduce and unpack `⟨hfin, v₁, t₁, h₁, e₁, h⟩`. Use `⟨hfin, fun v₂ t₂ h₂ e₂ ↦ ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl` from `valuativeRel_unique K h₁ h₂ e₁ e₂`. Conclude with `h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isTameSubextension_iff_exists (E : IntermediateField K Ω) :
     IsTameSubextension E ↔ FiniteDimensional K E ∧
@@ -45,7 +45,7 @@ theorem isTameSubextension_iff_exists (E : IntermediateField K Ω) :
     exact h
 
 /- English proof (translation)
-The claim follows from `hE.2 inferInstance inferInstance inferInstance inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem IsTameSubextension.coprime {E : IntermediateField K Ω} (hE : IsTameSubextension E)
     [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [ValuativeExtension K E] :
@@ -53,7 +53,7 @@ theorem IsTameSubextension.coprime {E : IntermediateField K Ω} (hE : IsTameSube
   hE.2 inferInstance inferInstance inferInstance inferInstance
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hE.1, fun _ _ _ _ ↦ by rw [hE.ramificationIndex_eq_one]; exact Nat.coprime_one_left _⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsUnramifiedSubextension.isTameSubextension {E : IntermediateField K Ω}
     (hE : IsUnramifiedSubextension E) : IsTameSubextension E :=
@@ -65,7 +65,7 @@ def tameExtension : IntermediateField K Ω :=
   ⨆ E : {E : IntermediateField K Ω // IsTameSubextension E}, E.1
 
 /- English proof (translation)
-The claim follows from `le_iSup (fun E : {E : IntermediateField K Ω // IsTameSubextension E} ↦ E.1) ⟨E, hE⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsTameSubextension.le_tameExtension {E : IntermediateField K Ω}
     (hE : IsTameSubextension E) : E ≤ tameExtension K Ω :=
@@ -74,7 +74,7 @@ theorem IsTameSubextension.le_tameExtension {E : IntermediateField K Ω}
 variable (K Ω) in
 
 /- English proof (translation)
-The claim follows from `iSup_le fun E ↦ E.2.isTameSubextension.le_tameExtension`.
+A detailed English derivation is pending.
 -/
 theorem maximalUnramifiedExtension_le_tameExtension :
     maximalUnramifiedExtension K Ω ≤ tameExtension K Ω :=
@@ -83,7 +83,7 @@ theorem maximalUnramifiedExtension_le_tameExtension :
 end Definition
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_injective (IntermediateField.inclusion h).toLinearMap (IntermediateField.inclusion_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_le {K Ω : Type*} [Field K] [Field Ω] [Algebra K Ω]
     {E F : IntermediateField K Ω} [FiniteDimensional K F] (h : E ≤ F) : FiniteDimensional K E :=
@@ -97,7 +97,7 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h ↦ h.coprime, fun h ↦ (isTameSubextension_iff_exists E).2 ⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTameSubextension_iff (E : IntermediateField K Ω) [FiniteDimensional K E] :
     IsTameSubextension E ↔ Nat.Coprime (ramificationIndex K E) (ringChar 𝓀[K]) :=
@@ -105,7 +105,7 @@ theorem isTameSubextension_iff (E : IntermediateField K Ω) [FiniteDimensional K
     ⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, h⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h ↦ h.ramificationIndex_eq_one, fun h ↦ (isUnramifiedSubextension_iff_exists E).2 ⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnramifiedSubextension_iff' (E : IntermediateField K Ω) [FiniteDimensional K E] :
     IsUnramifiedSubextension E ↔ ramificationIndex K E = 1 :=
@@ -113,9 +113,9 @@ theorem isUnramifiedSubextension_iff' (E : IntermediateField K Ω) [FiniteDimens
     ⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, h⟩⟩
 
 /- English proof (translation)
-Establish `: FiniteDimensional K F` using `Module.Finite.trans T F`. Establish `: FiniteDimensional K (F.restrictScalars K)` using `this`. Establish `h1 : Nat.card 𝓀[F.restrictScalars K] = Nat.card 𝓀[K] ^ residueDegree K (F.restrictScalars K)` using `card_residueField_eq_pow_residueDegree K _`. Establish `h2 : Nat.card 𝓀[F] = Nat.card 𝓀[T] ^ residueDegree T F` using `card_residueField_eq_pow_residueDegree T F`. Establish `h3 : Nat.card 𝓀[T] = Nat.card 𝓀[K] ^ residueDegree K T` using `card_residueField_eq_pow_residueDegree K T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Nat.card 𝓀[F.restrictScalars K] = Nat.card 𝓀[F]` using `rfl`. Rewrite `h1` using `[h4, h2, h3, ← pow_mul]`. Conclude with `(Nat.pow_right_injective (one_lt_card_residueField K) h1).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residueDegree_restrictScalars (T : IntermediateField K Ω) [FiniteDimensional K T]
     (F : IntermediateField T Ω) [FiniteDimensional T F] :
@@ -133,9 +133,9 @@ theorem residueDegree_restrictScalars (T : IntermediateField K Ω) [FiniteDimens
   exact (Nat.pow_right_injective (one_lt_card_residueField K) h1).symm
 
 /- English proof (translation)
-Establish `: FiniteDimensional K F` using `Module.Finite.trans T F`. Establish `: FiniteDimensional K (F.restrictScalars K)` using `this`. Establish `hf` using `residueDegree_restrictScalars T F`. Establish `h1` using `ramificationIndex_mul_residueDegree K (F.restrictScalars K)`. Establish `h2` using `ramificationIndex_mul_residueDegree K T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `ramificationIndex_mul_residueDegree T F`. Establish `h4 : Module.finrank K (F.restrictScalars K) = Module.finrank K T * Module.finrank T F` using `(Module.finrank_mul_finrank K T F).symm`. Rewrite `h1` using `[h4, ← h2, ← h3, hf]`. Establish `hpos : 0 < residueDegree K T * residueDegree T F` using `Nat.mul_pos (residueDegree_pos K T) (residueDegree_pos T F)`. Conclude with `Nat.eq_of_mul_eq_mul_right hpos (by rw [h1]; ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ramificationIndex_restrictScalars (T : IntermediateField K Ω) [FiniteDimensional K T]
     (F : IntermediateField T Ω) [FiniteDimensional T F] :
@@ -154,9 +154,9 @@ theorem ramificationIndex_restrictScalars (T : IntermediateField K Ω) [FiniteDi
   exact Nat.eq_of_mul_eq_mul_right hpos (by rw [h1]; ring)
 
 /- English proof (translation)
-Use `hF.1` as an intermediate fact. Establish `: FiniteDimensional K E` using `finiteDimensional_of_le h`. Use `set F' := extendScalars h`. Establish `: FiniteDimensional K F'` using `(inferInstance : FiniteDimensional K F)`. Establish `: FiniteDimensional E F'` using `Module.Finite.of_restrictScalars_finite K E F'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isTameSubextension_iff]`. Establish `he : ramificationIndex K F = ramificationIndex K E * ramificationIndex E F'` using `ramificationIndex_restrictScalars E F'`. Conclude with `Nat.Coprime.coprime_dvd_left (Dvd.intro _ he.symm) hF.coprime`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsTameSubextension.of_le {E F : IntermediateField K Ω} (hF : IsTameSubextension F)
     (h : E ≤ F) : IsTameSubextension E := by
@@ -177,7 +177,7 @@ section SlopeTestRemainingChoices
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
 /- English proof (translation)
-Rewrite using `[Ne, CharP.cast_eq_zero_iff 𝓀[K] (ringChar 𝓀[K])]`. Introduce `hd`. Establish `h1` using `Nat.Coprime.eq_one_of_dvd hm.symm hd`. Conclude with `Nat.not_prime_one (h1 ▸ CharP.char_is_prime 𝓀[K] (ringChar 𝓀[K]))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCast_residueField_ne_zero_of_coprime {m : ℕ} (hm : Nat.Coprime m (ringChar 𝓀[K])) :
     (m : 𝓀[K]) ≠ 0 := by
@@ -187,14 +187,14 @@ theorem natCast_residueField_ne_zero_of_coprime {m : ℕ} (hm : Nat.Coprime m (r
   exact Nat.not_prime_one (h1 ▸ CharP.char_is_prime 𝓀[K] (ringChar 𝓀[K]))
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `natCast_residueField_ne_zero_of_coprime (K := K) hm Nat.cast_zero`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_coprime_ringChar {m : ℕ} (hm : Nat.Coprime m (ringChar 𝓀[K])) : m ≠ 0 := by
   rintro rfl
   exact natCast_residueField_ne_zero_of_coprime (K := K) hm Nat.cast_zero
 
 /- English proof (translation)
-Establish `hu : IsUnramified K L` using `(isUnramified_iff K L).2 h`. Establish `hmap` using `(map_maximalIdeal_eq_iff K L).2 hu`. Rewrite `hπ`, the goal using `[IsDiscreteValuationRing.irreducible_iff_uniformizer]`. Rewrite using `[← hmap, hπ, Ideal.map_span, Set.image_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem irreducible_algebraMap_of_ramificationIndex_eq_one {L : Type*} [Field L] [ValuativeRel L]
     [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra K L] [ValuativeExtension K L]
@@ -206,11 +206,9 @@ theorem irreducible_algebraMap_of_ramificationIndex_eq_one {L : Type*} [Field L]
   rw [← hmap, hπ, Ideal.map_span, Set.image_singleton]
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Conclude with `absurd (Subsingleton.elim P ⊤) hP`. Use `⟨?_, fun {n} hn ↦ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(monic_X_pow_sub_C a hm.ne').leadingCoeff]`. Conclude with `fun h ↦ hP ((Ideal.eq_top_iff_one _).2 h)`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[natDegree_X_pow_sub_C]`. Rewrite using `[coeff_sub, coeff_X_pow, if_neg hn.ne, coeff_C, zero_sub]`. Use `split_ifs`. Conclude with `P.neg_mem ha`. Rewrite using `[neg_zero]`.
-
-Conclude with `P.zero_mem`. Rewrite using `[coeff_sub, coeff_X_pow, if_neg hm.ne, coeff_C, if_pos rfl, zero_sub]`. Conclude with `fun h ↦ ha2 ((P ^ 2).neg_mem_iff.1 h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem isEisensteinAt_X_pow_sub_C {R : Type*} [CommRing R] {P : Ideal R} (hP : P ≠ ⊤) {m : ℕ}
     (hm : 0 < m) {a : R} (ha : a ∈ P) (ha2 : a ∉ P ^ 2) : (X ^ m - C a).IsEisensteinAt P := by
@@ -231,11 +229,9 @@ theorem isEisensteinAt_X_pow_sub_C {R : Type*} [CommRing R] {P : Ideal R} (hP : 
 variable {Ω : Type*} [Field Ω] [Algebra K Ω]
 
 /- English proof (translation)
-Use `choose n hn0 hn using hS`. Use `set k := ∏ x ∈ S.attach, n x.1 x.2 with hk_def`. Establish `hk : k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun x _ ↦ hn0 x.1 x.2`. Take `⟨ζ, hζ⟩` from `HasUnramifiedRoots.exists_isPrimitiveRoot (K := K) (Ω := Ω) k hk`. Use `⟨k, hk, ζ, hζ, fun x hx ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd : n x hx ∣ k` using `Finset.dvd_prod_of_mem (fun y : S ↦ n y.1 y.2) (Finset.mem_attach S ⟨x, hx⟩)`. Establish `hx1 : x ^ (Nat.card 𝓀[K] ^ k - 1) = 1`. Take `⟨c, hc⟩` from `pow_sub_one_dvd_pow_sub_one (Nat.card 𝓀[K]) hdvd`. Rewrite using `[hc, pow_mul, hn x hx, one_pow]`. Establish `: NeZero (Nat.card 𝓀[K] ^ k - 1)` using `⟨by have := one_lt_card_residueField_pow (K := K) hk; omega⟩`.
-
-Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hx1`. Conclude with `pow_mem (mem_adjoin_simple_self K ζ) i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isPrimitiveRoot_forall_mem_adjoin [HasUnramifiedRoots K Ω] (S : Finset Ω)
     (hS : ∀ x ∈ S, x ∈ unramifiedRoots K Ω) :
@@ -264,21 +260,19 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω]
 
 /- English proof (translation)
-Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (ne_zero_of_coprime_ringChar hm)`. Take `⟨hT, -⟩` from `isUnramifiedSubextension_adjoin hk hζ`. Use `set T := K⟮ζ⟯ with hT_def`. Use `hT.1` as an intermediate fact. Establish `heT : ramificationIndex K T = 1` using `hT.ramificationIndex_eq_one`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set πT : 𝒪[T] := algebraMap 𝒪[K] 𝒪[T] π with hπT_def`. Establish `hπT : Irreducible πT` using `irreducible_algebraMap_of_ramificationIndex_eq_one heT hπ`. Use `set g : 𝒪[T][X] := X ^ m - C πT with hg_def`. Establish `hgE : g.IsEisensteinAt 𝓂[T]`. Use `isEisensteinAt_X_pow_sub_C (IsLocalRing.maximalIdeal.isMaximal _).ne_top hm0 (uniformizer_mem_maximalIdeal hπT) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 hπT, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Introduce `hd`. Use `(_root_.pow_dvd_pow_iff hπT.ne_zero hπT.not_isUnit).1 (by rwa [pow_one] : πT ^ 2 ∣ πT ^ 1)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hgdeg : g.natDegree = m` using `natDegree_X_pow_sub_C`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hπΩ : algebraMap T Ω ((πT : 𝒪[T]) : T) = algebraMap K Ω π`. Rewrite using `[hπT_def, coe_algebraMap_integer, ← IsScalarTower.algebraMap_apply]`. Establish `hγT : aeval γ (g.map (algebraMap 𝒪[T] T)) = 0`. Rewrite using `[hg_def, Polynomial.map_sub, Polynomial.map_pow, map_X, map_C, map_sub, map_pow, aeval_X, aeval_C, sub_eq_zero, hγ]`. Conclude with `hπΩ.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hγint : IsIntegral T γ` using `⟨g.map (algebraMap 𝒪[T] T), (monic_X_pow_sub_C _ hm0.ne').map _, by rwa [← aeval_def]⟩`. Establish `: FiniteDimensional T T⟮γ⟯` using `adjoin.finiteDimensional hγint`. Use `set α := AdjoinSimple.gen T γ`. Establish `hα : aeval α g = 0`. Apply `(algebraMap T⟮γ⟯ Ω).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← aeval_algebraMap_apply, IntermediateField.algebraMap_apply, AdjoinSimple.coe_gen, map_zero, ← aeval_map_algebraMap T]`. Conclude with `hγT`. Establish `he : ramificationIndex T T⟮γ⟯ = m`. Rewrite using `[← hgdeg]`. Conclude with `ramificationIndex_eq_natDegree_of_isEisensteinAt hgE (by rw [hgdeg]; exact hm0) hα (adjoin_gen_eq_top γ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hadj : T⟮γ⟯.restrictScalars K = adjoin K {ζ, γ}` using `adjoin_simple_adjoin_simple K ζ γ`. Establish `: FiniteDimensional K T⟮γ⟯` using `Module.Finite.trans T T⟮γ⟯`. Establish `hfin : FiniteDimensional K (T⟮γ⟯.restrictScalars K)` using `this`. Rewrite `hfin` using `[hadj]`. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
-
-Use `ramificationIndex_restrictScalars T T⟮γ⟯` as an intermediate fact. Rewrite `this` using `[heT, one_mul, he]`. Rewrite using `[← hadj]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_adjoin_pair_and_ramificationIndex {k : ℕ} (hk : k ≠ 0) {ζ : Ω}
     (hζ : IsPrimitiveRoot ζ (Nat.card 𝓀[K] ^ k - 1)) {π : 𝒪[K]} (hπ : Irreducible π) {m : ℕ}
@@ -339,7 +333,7 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Establish `ht : t ∈ K⟮z⟯` using `by rw [hgen]; trivial`. Establish `: ι t ∈ (K⟮z⟯).map ι` using `(IntermediateField.mem_map _).2 ⟨t, ht, rfl⟩`. Rewrite `this` using `[adjoin_map, Set.image_singleton]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem apply_mem_adjoin_of_adjoin_eq_top {A Ω : Type*} [Field A] [Algebra K A] [Field Ω]
     [Algebra K Ω] (ι : A →ₐ[K] Ω) {z : A} (hgen : K⟮z⟯ = ⊤) (t : A) : ι t ∈ K⟮ι z⟯ := by
@@ -351,43 +345,39 @@ variable {Ω : Type*} [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValu
   [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω]
 
 /- English proof (translation)
-Use `hE.1` as an intermediate fact. Use `set e := ramificationIndex K E with he_def`. Establish `he : Nat.Coprime e (ringChar 𝓀[K])` using `hE.coprime`. Take `⟨T₀, hT₀un, -, -, -, -, π₀, hπ₀, α, -, hαpow, hαgen⟩` from `exists_tame_structure K E he`. Establish `heT₀ : ramificationIndex K T₀ = 1` using `(isUnramified_iff K T₀).1 hT₀un`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ₀, hζ₀, hζ₀gen⟩` from `exists_isPrimitiveRoot_adjoin_eq_top_of_unramified K T₀ heT₀`. Establish `hπT₀ : Irreducible (algebraMap 𝒪[K] 𝒪[T₀] π)` using `irreducible_algebraMap_of_ramificationIndex_eq_one heT₀ hπ`. Take `⟨u, hu⟩` from `IsDiscreteValuationRing.associated_of_irreducible 𝒪[T₀] hπT₀ hπ₀`. Use `set t : 𝒪[T₀]ˣ := teichmuller T₀ (unitsToResidue T₀ u) with ht_def`. Establish `ht : t ^ (Nat.card 𝓀[T₀] - 1) = 1` using `teichmuller_pow_card_sub_one _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : u * t⁻¹ ∈ unitFiltration T₀ 1` using `unitsMulInvTeichmuller_mem u`. Establish `heK : (e : 𝓀[K]) ≠ 0` using `natCast_residueField_ne_zero_of_coprime he`. Establish `heT₀' : (e : 𝓀[T₀]) ≠ 0` using `natCast_residueField_ne_zero T₀ heK`. Take `⟨w₀, hw₀⟩` from `unitFiltration_one_le_range_pow heT₀' hw`. Establish `hw₀' : w₀ ^ e * t = u`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: w₀ ^ e = u * t⁻¹` using `hw₀`. Rewrite using `[this, inv_mul_cancel_right]`. Set `ι : T₀ →ₐ[K] Ω` to `E.val.comp T₀.val`. Establish `hιT₀ : ∀ x : T₀, ι x = ((x : E) : Ω)` using `fun x ↦ rfl`. Take `⟨t', ht'_def⟩ : ∃ x : Ω, x = ι ((t : 𝒪[T₀]) : T₀)` from `⟨_, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw'_def⟩ : ∃ x : Ω, x = ι ((w₀ : 𝒪[T₀]) : T₀)` from `⟨_, rfl⟩`. Take `⟨α', hα'_def⟩ : ∃ x : Ω, x = (((α : 𝒪[E]) : E) : Ω)` from `⟨_, rfl⟩`. Establish `he0 : (e : Ω) ≠ 0`. Rewrite using `[← map_natCast (algebraMap K Ω)]`. Conclude with `(map_ne_zero_iff _ (algebraMap K Ω).injective).2 (natCast_ne_zero_of_residueField heK)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: NeZero (e : Ω)` using `⟨he0⟩`. Take `⟨ξ, hξ⟩` from `IsSepClosed.exists_pow_nat_eq t' e`. Establish `ht'0 : t' ≠ 0`. Rewrite using `[ht'_def]`. Conclude with `(map_ne_zero_iff _ ι.injective).2 (by simp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hw'0 : w' ≠ 0`. Rewrite using `[hw'_def]`. Conclude with `(map_ne_zero_iff _ ι.injective).2 (by simp)`. Establish `hξ0 : ξ ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `hξ` using `[zero_pow (ne_zero_of_coprime_ringChar he)]`. Conclude with `ht'0 hξ.symm`. Establish `hα'pow : α' ^ e = algebraMap K Ω π * w' ^ e * t'`. Establish `h1 : α' ^ e = ι ((π₀ : 𝒪[T₀]) : T₀)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ((π₀ : 𝒪[T₀]) : T₀) = algebraMap K T₀ π * ((w₀ : 𝒪[T₀]) : T₀) ^ e * ((t : 𝒪[T₀]) : T₀)`. Rewrite using `[← hu, ← hw₀']`. Move the coercions through the operations in `[coe_algebraMap_integer]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, map_mul, map_mul, map_pow, AlgHom.commutes, ht'_def, hw'_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ, hγ_def⟩ : ∃ x : Ω, x = α' / (ξ * w')` from `⟨_, rfl⟩`. Establish `hγ : γ ^ e = algebraMap K Ω π`. Rewrite using `[hγ_def, div_pow, mul_pow, hξ, hα'pow]`. Clear the denominators using the available nonvanishing facts. Establish `hf₀ : residueDegree K T₀ ≠ 0` using `(residueDegree_pos K T₀).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Nat.card 𝓀[T₀] = Nat.card 𝓀[K] ^ residueDegree K T₀` using `card_residueField_eq_pow_residueDegree K T₀`. Establish `htT : ((t : 𝒪[T₀]) : T₀) ^ (Nat.card 𝓀[T₀] - 1) = 1`. Use `congrArg (fun x : 𝒪[T₀]ˣ ↦ (((x : 𝒪[T₀]) : T₀))) ht` as an intermediate fact. Simplify using `using this`. Establish `hξroot : ξ ^ (e * (Nat.card 𝓀[T₀] - 1)) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_mul, hξ, ht'_def, ← map_pow, htT, map_one]`. Establish `hζ₀root : ι ζ₀ ^ (Nat.card 𝓀[T₀] - 1) = 1`. Rewrite using `[← map_pow, hζ₀.pow_eq_one, map_one]`. Establish `hcK : ((Nat.card 𝓀[T₀] - 1 : ℕ) : 𝓀[K]) ≠ 0`. Rewrite using `[hcard]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `natCast_card_pow_sub_one_ne_zero hf₀`. Take `⟨k, hk, ζ, hζ, hmem⟩` from `exists_isPrimitiveRoot_forall_mem_adjoin (K := K) {ξ, ι ζ₀} (by`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_insert, Finset.mem_singleton]`. Break down `hx with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mem_unramifiedRoots_iff.2 ⟨_, by rw [Nat.cast_mul]; exact mul_ne_zero heK hcK, hξroot⟩`. Conclude with `mem_unramifiedRoots_iff.2 ⟨_, hcK, hζ₀root⟩)`. Use `⟨k, hk, ζ, hζ, e, he, γ, hγ, ?_⟩` and prove the remaining obligations. Establish `hζA : K⟮ζ⟯ ≤ adjoin K {ζ, γ}` using `adjoin_simple_le_iff.2 (subset_adjoin K _ (by simp))`. Establish `hγA : γ ∈ adjoin K {ζ, γ}` using `subset_adjoin K _ (by simp)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT₀A : ∀ x : T₀, ι x ∈ adjoin K {ζ, γ}` using `fun x ↦ hζA (adjoin_simple_le_iff.2 (hmem (ι ζ₀) (by simp)) (apply_mem_adjoin_of_adjoin_eq_top ι hζ₀gen x))`. Establish `hξA : ξ ∈ adjoin K {ζ, γ}` using `hζA (hmem ξ (by simp))`. Establish `hα'A : α' ∈ adjoin K {ζ, γ}`. Establish `: α' = γ * (ξ * w')`. Rewrite using `[hγ_def, div_mul_cancel₀ _ (mul_ne_zero hξ0 hw'0)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `mul_mem hγA (mul_mem hξA (hw'_def ▸ hT₀A _))`. Establish `htop : (⊤ : IntermediateField K E) = adjoin K ((T₀ : Set E) ∪ {((α : 𝒪[E]) : E)})`. Rewrite using `[← restrictScalars_adjoin, hαgen, restrictScalars_top]`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Establish `hx' : (⟨x, hx⟩ : E) ∈ adjoin K ((T₀ : Set E) ∪ {((α : 𝒪[E]) : E)})`. Rewrite using `[← htop]`. Discharge the goal by the elementary cases of `trivial`. Establish `hxm : E.val ⟨x, hx⟩ ∈ (adjoin K ((T₀ : Set E) ∪ {((α : 𝒪[E]) : E)})).map E.val` using `(IntermediateField.mem_map _).2 ⟨_, hx', rfl⟩`. Rewrite `hxm` using `[adjoin_map]`.
-
-Use `(adjoin_le_iff.2 ?_) hxm` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Break down `hy with hy | hy` into its components or cases. Conclude with `hT₀A ⟨y, hy⟩`. Rewrite `hy` using `[Set.mem_singleton_iff]`.
-
-Substitute `hy` using the available equality. Rewrite `hα'A` using `[hα'_def]`. Conclude with `hα'A`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTameSubextension.exists_le_adjoin_pair [IsSepClosed Ω] {E : IntermediateField K Ω}
     (hE : IsTameSubextension E) {π : 𝒪[K]} (hπ : Irreducible π) :
@@ -510,7 +500,7 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω]
 
 /- English proof (translation)
-Take `⟨hfin, he⟩` from `finiteDimensional_adjoin_pair_and_ramificationIndex hk hζ hπ hm hγ`. Rewrite using `[isTameSubextension_iff, he]`. Conclude with `hm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTameSubextension_adjoin_pair {k : ℕ} (hk : k ≠ 0) {ζ : Ω}
     (hζ : IsPrimitiveRoot ζ (Nat.card 𝓀[K] ^ k - 1)) {π : 𝒪[K]} (hπ : Irreducible π) {m : ℕ}
@@ -523,11 +513,11 @@ theorem isTameSubextension_adjoin_pair {k : ℕ} (hk : k ≠ 0) {ζ : Ω}
 variable [IsSepClosed Ω]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun E ↦ ?_` and prove the remaining obligations. Take `⟨k, hk, ζ, hζ, m, hm, γ, hγ, hE⟩` from `E.2.exists_le_adjoin_pair hπ`. Use `hE.trans ((adjoin_le_iff).2 ?_)` and prove the remaining obligations. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with rfl | rfl` into its components or cases. Conclude with `le_sup_left (a := maximalUnramifiedExtension K Ω) (unramifiedRoots_subset_maximalUnramifiedExtension ⟨k, hk, hζ.pow_eq_one⟩)`. Conclude with `le_sup_right (a := maximalUnramifiedExtension K Ω) (subset_adjoin K _ ⟨m, hm, hγ⟩)`. Use `sup_le (maximalUnramifiedExtension_le_tameExtension K Ω) ((adjoin_le_iff).2 ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `γ ⟨m, hm, hγ⟩`. Take `⟨ζ, hζ⟩` from `exists_isPrimitiveRoot_card_pow_sub_one (K := K) (Ksep := Ω) one_ne_zero`. Conclude with `(isTameSubextension_adjoin_pair one_ne_zero hζ hπ hm hγ).le_tameExtension (subset_adjoin K _ (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem tameExtension_eq_sup {π : 𝒪[K]} (hπ : Irreducible π) :
     tameExtension K Ω = maximalUnramifiedExtension K Ω ⊔
@@ -549,7 +539,7 @@ theorem tameExtension_eq_sup {π : 𝒪[K]} (hπ : Irreducible π) :
       (subset_adjoin K _ (by simp))
 
 /- English proof (translation)
-Rewrite using `[tameExtension_eq_sup hπ, maximalUnramifiedExtension_eq_adjoin, adjoin_union]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tameExtension_eq_adjoin {π : 𝒪[K]} (hπ : Irreducible π) :
     tameExtension K Ω = adjoin K (unramifiedRoots K Ω ∪
@@ -567,9 +557,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 omit [Algebra.IsAlgebraic K Ω] in
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Rewrite using `[normal_iff_forall_map_le']`. Introduce `σ`. Rewrite using `[tameExtension_eq_adjoin hπ, adjoin_map]`. Use `adjoin_le_iff.2 fun y hy ↦ subset_adjoin K _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx, rfl⟩` from `hy`. Break down `hx with ⟨n, hn, hx⟩ | ⟨m, hm, hx⟩` into its components or cases. Conclude with `Or.inl ⟨n, hn, by rw [AlgEquiv.coe_toAlgHom, ← map_pow, hx, map_one]⟩`. Conclude with `Or.inr ⟨m, hm, by rw [AlgEquiv.coe_toAlgHom, ← map_pow, hx, AlgEquiv.commutes]⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem normal_tameExtension [Normal K Ω] : Normal K (tameExtension K Ω) := by
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
@@ -585,7 +575,7 @@ theorem normal_tameExtension [Normal K Ω] : Normal K (tameExtension K Ω) := by
 omit [Algebra.IsAlgebraic K Ω] in
 
 /- English proof (translation)
-The claim follows from `have := Algebra.isSeparable_tower_bot_of_isSeparable K (tameExtension K Ω) Ω have := normal_tameExtension (K := K) (Ω := Ω) isGalois_iff.2 ⟨inferInstance, inferInstance⟩`.
+A detailed English derivation is pending.
 -/
 theorem isGalois_tameExtension_of_valued [IsGalois K Ω] : IsGalois K (tameExtension K Ω) :=
   have := Algebra.isSeparable_tower_bot_of_isSeparable K (tameExtension K Ω) Ω

@@ -34,29 +34,23 @@ noncomputable section
 namespace GlobalTheory.KFinDecomp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨Unit, inferInstance, fun _ _ => ψ, fun _ _ => 0, fun _ _ => hψ, fun _ _ τ _ => hTy τ, fun _ _ _ _ _ => rfl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `_ _ τ hτ`. Conclude with `absurd hτ (Finset.notMem_empty τ)`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_ _ τ hτ`. Conclude with `absurd hτ (Finset.notMem_empty τ)`. Introduce `_ _ τ hτ`. Conclude with `absurd hτ (Finset.notMem_empty τ)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `@insert τ₀ s hτ₀ ih`. Take `⟨κ, hκ, T, u, hT𝒞, hTTy, hTfix, hTadd, hTsmul, hTR, hψs⟩` from `ih`. Use `⟨κ × Fin (m τ₀), inferInstance, fun p v => A τ₀ p.2 (v τ₀) (T p.1 v), fun p => Function.update (u p.1) τ₀ (a τ₀ p.2), ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p v`. Conclude with `hmaps _ _ _ _ (hT𝒞 _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p v τ hτ`. Establish `hne : τ ≠ τ₀` using `fun h => hτ (h ▸ Finset.mem_insert_self τ₀ s)`. Establish `hs : τ ∉ s` using `fun h => hτ (Finset.mem_insert_of_mem h)`. Conclude with `hkeep τ₀ p.2 (v τ₀) τ hne _ (hT𝒞 _ _) (hTTy _ _ τ hs)`. Introduce `p v τ hτ w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hne : τ ≠ τ₀` using `fun h => hτ (h ▸ Finset.mem_insert_self τ₀ s)`. Establish `hs : τ ∉ s` using `fun h => hτ (Finset.mem_insert_of_mem h)`. Use `show A τ₀ p.2 (Function.update v τ w τ₀) (T p.1 (Function.update v τ w)) = A τ₀ p.2 (v τ₀) (T p.1 v)`. Rewrite using `[Function.update_of_ne hne.symm, hTfix p.1 v τ hs w]`. Introduce `p v τ hτ x y show A τ₀ p.2 (Function.update v τ (x + y) τ₀) (T p.1 (Function.update v τ (x + y))) = A τ₀ p.2 (Function.update v τ x τ₀) (T p.1 (Function.update v τ x)) + A τ₀ p.2 (Function.update v τ y τ₀) (T p.1 (Function.update v τ y))`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Rewrite using `[hTfix p.1 v τ hτ₀, hTfix p.1 v τ hτ₀, hTfix p.1 v τ hτ₀]`. Conclude with `hadd' τ p.2 _ (hT𝒞 _ _) x y`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : τ ∈ s` using `(Finset.mem_insert.1 hτ).resolve_left h`. Rewrite using `[Function.update_of_ne (Ne.symm h), Function.update_of_ne (Ne.symm h), Function.update_of_ne (Ne.symm h), hTadd p.1 v τ hs x y]`. Conclude with `hadd τ₀ p.2 (v τ₀) _ (hT𝒞 _ _) _ (hT𝒞 _ _)`. Introduce `p v τ hτ c x show A τ₀ p.2 (Function.update v τ (c • x) τ₀) (T p.1 (Function.update v τ (c • x))) = c • A τ₀ p.2 (Function.update v τ x τ₀) (T p.1 (Function.update v τ x))`. Distinguish the cases in `h : τ = τ₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Rewrite using `[hTfix p.1 v τ hτ₀, hTfix p.1 v τ hτ₀]`. Conclude with `hsmul' τ p.2 _ (hT𝒞 _ _) c x`. Establish `hs : τ ∈ s` using `(Finset.mem_insert.1 hτ).resolve_left h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne (Ne.symm h), Function.update_of_ne (Ne.symm h), hTsmul p.1 v τ hs c x]`. Conclude with `hsmul τ₀ p.2 (v τ₀) c _ (hT𝒞 _ _)`. Introduce `p v τ hτ w Φ hRw show A τ₀ p.2 (Function.update v τ w τ₀) (T p.1 (Function.update v τ w)) = Φ (A τ₀ p.2 (v τ₀) (T p.1 v))`. Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality.
-
-Rewrite using `[Function.update_self, hTfix p.1 v τ hτ₀]`. Conclude with `hR τ p.2 _ (hT𝒞 _ _) (v τ) w Φ hRw`. Establish `hs : τ ∈ s` using `(Finset.mem_insert.1 hτ).resolve_left h`. Rewrite using `[Function.update_of_ne (Ne.symm h), hTR p.1 v τ hs w Φ hRw]`. Conclude with `(hcomm τ₀ p.2 (v τ₀) τ h (v τ) w Φ hRw _ (hT𝒞 _ _)).symm ▸ rfl`.
-
-Establish `hterm : ∀ k, T k (u k) = ∑ j, A τ₀ j (a τ₀ j) (T k (u k))` using `fun k => hsum τ₀ _ (hT𝒞 _ _) (hTTy _ _ τ₀ hτ₀)`. Rewrite using `[Fintype.sum_prod_type, hψs]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hterm k]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Use `show A τ₀ j (a τ₀ j) (T k (u k)) = A τ₀ j (Function.update (u k) τ₀ (a τ₀ j) τ₀) (T k (Function.update (u k) τ₀ (a τ₀ j)))`. Rewrite using `[Function.update_self, hTfix k (u k) τ₀ hτ₀]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assemble_finset {ι : Type} [DecidableEq ι] {U : ι → Type} [∀ τ, AddCommGroup (U τ)] [∀ τ, Module ℂ (U τ)]
     {E : Type} [AddCommGroup E] [Module ℂ E] (𝒞 : Set E) (Ty : ι → E → Prop)
@@ -151,17 +145,15 @@ theorem assemble_finset {ι : Type} [DecidableEq ι] {U : ι → Type} [∀ τ, 
       rw [Function.update_self, hTfix k (u k) τ₀ hτ₀]
 
 /- English proof (translation)
-Introduce `D θ N 𝒞 Ty hcont hdec ψ hψ hTy`. Unfold `GlobalTheory.KFinDecomp.DecompAt at hdec`. Use `choose m a A hop hlin hsum using hdec`. Establish `hK : ∀ τ, ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.maxCpt N.M τ, k ∈ Formalism.QuantumDeterminants.UH (gramAt D N.V τ)`. Introduce `τ k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu : IsUnit (N.M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (N.M.fr_unit τ)`. Establish `h` using `(GlobalTheory.Chain.RealLine.Semi.conj_compact N.M τ (k := N.M.fr τ * k * (N.M.fr τ)⁻¹) hk).1`. Establish `he : (N.M.fr τ)⁻¹ * (N.M.fr τ * k * (N.M.fr τ)⁻¹) * N.M.fr τ = k`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h` using `[he]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `R : ∀ τ, GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ → GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ → ((GA D N.V → ℂ) → (GA D N.V → ℂ)) → Prop` to `fun τ x y Φ => (∃ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.maxCpt N.M τ, (y : N.M.H τ) = N.M.rep τ k x ∧ Φ = fun f => rTr N.V (atTau θ N.V τ k) f) ∨ (∃ X ∈ lieAt N.V τ, (y : N.M.H τ) = dRep (N.M.rep τ) X x ∧ Φ = fun f => Rder θ N.V τ X f)`. Establish `hcomm : ∀ τ j u τ', τ' ≠ τ → ∀ x y Φ, R τ' x y Φ → ∀ f ∈ 𝒞, A τ j u (Φ f) = Φ (A τ j u f)`. Introduce and unpack `τ j u τ' hne x y Φ (⟨k, hk, -, rfl⟩ | ⟨X, hX, -, rfl⟩) f hf`. Conclude with `(hop τ j u).tr τ' hne k (hK τ' k hk) f hf`. Conclude with `(hop τ j u).lie τ' hne X hX f hf`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hRel : ∀ τ j, ∀ f ∈ 𝒞, ∀ x y Φ, R τ x y Φ → A τ j y f = Φ (A τ j x f)`. Introduce and unpack `τ j f hf x y Φ (⟨k, hk, hy, rfl⟩ | ⟨X, hX, hy, rfl⟩)`. Conclude with `(hlin τ j f hf).2.2.1 k hk x y hy`. Conclude with `(hlin τ j f hf).2.2.2 X hX x y hy`. Take `⟨κ, hκ, T, u, hT𝒞, -, -, hTadd, hTsmul, hTR, hψT⟩` from `GlobalTheory.KFinDecomp.assemble_finset (U := fun τ => GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ) 𝒞 Ty R m a A (fun τ j x f hf f' hf' => (hop τ j x).add f f' (hcont f hf) (hcont f' hf')) (fun τ j x c f hf => (hop τ j x).smul c f (hcont f hf)) (fun τ j x f …`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `e` to `Fintype.equivFin κ`. Set `T₀ : Fin (Fintype.card κ) → GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KMap N.M` to `fun j => (⟨T (e.symm j), fun v τ x y => by convert hTadd (e.symm j) v τ (Finset.mem_univ τ) x y, fun v τ c x => by convert hTsmul (e.symm j) v τ (Finset.mem_univ τ) c x⟩ : MultilinearMap ℂ (fun τ => GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ) (GA D N.V → ℂ) …`. Use `⟨Fintype.card κ, T₀, fun j => u (e.symm j), fun j v => hT𝒞 (e.symm j) v, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j τ k hk v w hw`. Conclude with `hTR (e.symm j) v τ (Finset.mem_univ τ) w _ (Or.inl ⟨k, hk, hw, rfl⟩)`.
-
-Introduce `j τ X hX v w hw`. Conclude with `hTR (e.symm j) v τ (Finset.mem_univ τ) w _ (Or.inr ⟨X, hX, hw, rfl⟩)`. Rewrite using `[hψT]`. Conclude with `(Equiv.sum_comp e.symm (fun k => T k (u k))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assemble_places : ∀ (D : D7) (θ : InfFam D) (N : GlobalTheory.Grid.Node D) (𝒞 : Set (GA D N.V → ℂ)) (Ty : D.what₂.Tau → (GA D N.V → ℂ) → Prop), (∀ f ∈ 𝒞, Continuous f) → (∀ τ, GlobalTheory.KFinDecomp.DecompAt θ N 𝒞 Ty τ) → ∀ ψ ∈ 𝒞, (∀ τ, Ty τ ψ) → ∃ (n : ℕ) (T₀ : Fin n → GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KMap N.M) (u : Fin n → GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KVec N.M), (∀ j v, T₀ j v ∈ 𝒞) ∧ (∀ j, ∀ τ, ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.maxCpt N.M τ, ∀ (v : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KVec N.M) (w : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ), (w : N.M.H τ) = N.M.rep τ k (v τ) → T₀ j (Function.update v τ w) = rTr N.V (atTau θ N.V τ k) (T₀ j v)) ∧ (∀ j, ∀ τ, ∀ X ∈ lieAt N.V τ, ∀ (v : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KVec N.M) (w : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ), (w : N.M.H τ) = dRep (N.M.rep τ) X (v τ) → T₀ j (Function.update v τ w) = Rder θ N.V τ X (T₀ j v)) ∧ ψ = ∑ j, T₀ j (u j) := by
   intro D θ N 𝒞 Ty hcont hdec ψ hψ hTy

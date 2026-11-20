@@ -13,21 +13,21 @@ def castZp {a b : ℕ} [Fact a.Prime] [Fact b.Prime] (e : a = b) : ℤ_[a] →+*
   subst e; exact RingHom.id _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castZp_symm {a b : ℕ} [Fact a.Prime] [Fact b.Prime] (e : a = b) (x : ℤ_[b]) :
     castZp e (castZp e.symm x) = x := by
   subst e; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castZp_val {a b : ℕ} [Fact a.Prime] [Fact b.Prime] (e : a = b) (x : ℤ_[a]) :
     (castZp e x).valuation = x.valuation := by
   subst e; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `fun x y h => h`.
+Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem castZp_inj {a b : ℕ} [Fact a.Prime] [Fact b.Prime] (e : a = b) :
     Function.Injective (castZp e) := by

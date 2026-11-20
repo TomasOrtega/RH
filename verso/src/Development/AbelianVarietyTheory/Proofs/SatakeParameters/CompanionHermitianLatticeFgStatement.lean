@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.UG For
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.compan_fg | exact GlobalTheory.compan_fg | (intros; apply GlobalTheory.compan_fg <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.companionHermitianLattice_fg : ∀ {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (sp : Spaces R F E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E), IsUnit J.det → ∀ (a : 𝓞 E) (Lb : Submodule (𝓞 E) (Fin N → E)), Lb.FG → Submodule.span E (Lb : Set (Fin N → E)) = ⊤ → (compan (sp := sp) J a Lb).FG := by
   first | exact @GlobalTheory.compan_fg | exact GlobalTheory.compan_fg | (intros; apply GlobalTheory.compan_fg <;> assumption)

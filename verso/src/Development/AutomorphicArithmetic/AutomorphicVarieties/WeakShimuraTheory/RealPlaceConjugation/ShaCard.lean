@@ -8,27 +8,25 @@ open scoped Classical
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l hl M _ _ _ _ _ S ρ Av K r hA hN hK hρ hX`. Establish `hM : ∀ m : M, l • m = 0`. Introduce `m`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod (l ^ 1)) l m]`. Establish `h0 : ((l : ℕ) : ZMod (l ^ 1)) = 0` using `(ZMod.natCast_eq_zero_iff _ _).2 (by rw [pow_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, zero_smul]`. Establish `hB` using `UpperTheory.V.Ws.card_cocycles_vanishing_on_inertia_le_pow F Ω l (ZMod (l ^ 1)) M hM (ρ.comp (toGS Ω _)) K r hK hρ hX`. Take `⟨p1, p2, -, -⟩` from `UpperTheory.V.Kum.placeDict F Ω`. Establish `hmem : ∀ z : Z1 ρ, (Submodule.Quotient.mk z : H1 ρ) ∈ Sha1 ρ (locFam S Av) (continuous_locFam S Av) → (fun g => z.1 (toGS Ω _ g)) ∈ cocOff (ρ.comp (toGS Ω _)) (ineOff F Ω 1 ∩ K)`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz1 : z.1 1 = 0`. Use `z.2.2 1 1` as an intermediate fact. Rewrite `this` using `[one_mul, map_one, Module.End.one_apply]`. Conclude with `left_eq_add.1 this`. Establish `hc : ∀ a b : G F Ω, z.1 (toGS Ω _ (a * b)) = z.1 (toGS Ω _ a) + ρ (toGS Ω _ a) (z.1 (toGS Ω _ b))` using `fun a b => by rw [map_mul, z.2.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(IsLocallyConstant.iff_continuous _).2 (z.2.1.comp (continuous_toGS Ω _)), hc, ?_⟩` and prove the remaining obligations. Introduce and unpack `u ⟨⟨A, -, hu⟩, huK⟩`. Use `show z.1 (toGS Ω _ u) = 0`. Distinguish the cases in `hT : A = ⊤`. Substitute `hT` using the available equality.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hu` using `[p1, Subgroup.mem_bot]`. Rewrite using `[hu, map_one, hz1]`. Take `⟨v, hv⟩` from `p2 A hT`. Distinguish the cases in `hvS : v ∈ S`. Take `⟨g, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := F) (hA ⟨v, hvS⟩) hv`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : g⁻¹ * u * g ∈ Dec (F` using `F) (Av ⟨v, hvS⟩) := by`. Establish `h : u • g • Av ⟨v, hvS⟩ = g • Av ⟨v, hvS⟩` using `Ine_le_Dec _ hu`. Use `show (g⁻¹ * u * g) • Av ⟨v, hvS⟩ = Av ⟨v, hvS⟩`. Rewrite using `[mul_smul, mul_smul, h, inv_smul_smul]`. Establish `hk : g⁻¹ * u * g ∈ K` using `by simpa using hN.conj_mem u huK g⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 ((Submodule.mem_iInf _).1 hz ⟨v, hvS⟩))`. Establish `h0 : z.1 (toGS Ω _ (g⁻¹ * u * g)) = 0` using `(hm ⟨_, hd⟩).trans (sub_eq_zero.2 (hρ _ hk m))`. Establish `h1` using `hc g (g⁻¹ * u * g)`. Rewrite `h1` using `[h0, map_zero, add_zero, mul_assoc, mul_inv_cancel_left, hc, hρ u huK]`. Conclude with `add_eq_right.1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hn : u ∈ NS Ω (S : Set (HeightOneSpectrum (𝓞 F)))`. Apply `Subgroup.le_topologicalClosure` to reduce the goal to its premises. Apply `Subgroup.subset_normalClosure` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨v, hvS, A, hv, hu⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: toGS Ω (S : Set (HeightOneSpectrum (𝓞 F))) u = 1` using `(QuotientGroup.eq_one_iff _).2 hn`. Rewrite using `[this, hz1]`. Use `choose s hs using Submodule.Quotient.mk_surjective ((B1 ρ).comap (Z1 ρ).subtype)`. Use `hB.of_injective (fun x => ⟨_, hmem (s x.1) ((hs x.1).symm ▸ x.2)⟩) fun x y h => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hs x.1, ← hs y.1]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective a`.
-
-Conclude with `congrFun (congrArg Subtype.val h) g`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.tate_shafarevich_card_mod_l :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module (ZMod (l ^ 1)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (S : Finset (HeightOneSpectrum (𝓞 F))) (ρ : Representation (ZMod (l ^ 1)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M) (Av : S → ValuationSubring Ω) (K : Subgroup (G F Ω)) (r : ℕ), (∀ v, IsPlaceOver (Av v) v.1) → K.Normal → ¬ l ∣ K.index → (∀ g ∈ K, ∀ m, ρ (toGS Ω _ g) m = m) → XRk l 1 K r → CardLe (Sha1 ρ (locFam S Av) (continuous_locFam S Av)) (Nat.card M ^ (r + 1)) := by

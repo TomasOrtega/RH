@@ -20,7 +20,7 @@ def kerFil {C : Type} [Field C] {w : Valuation C ℝ≥0} {S W : Type} [AddCommG
     rw [e, map_smul, hf.2 s, smul_zero]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_kerFil {C : Type} [Field C] {w : Valuation C ℝ≥0} {S W : Type} [AddCommGroup W] [Module C W]
     {a : S → w.valuationSubring} {r : ℕ} {g : S → (Fin r → C) →ₗ[C] W} {f : S → Fin r → C} :
@@ -31,7 +31,7 @@ def eigCoord {E : Type} [Field E] [NumberField E] {C M : Type} [Field C] [AddCom
   Fintype.linearCombination C (fun j => HT.eigProj ρ s (t j))
 
 /- English proof (translation)
-Simplify using `[eigCoord, Fintype.linearCombination_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eigCoord_apply {E : Type} [Field E] [NumberField E] {C M : Type} [Field C] [AddCommGroup M] [Module C M]
     (ρ : 𝓞 E →+* Module.End C M) {N : ℕ} (t : Fin N → M) (s : E →+* C) (y : Fin N → C) :

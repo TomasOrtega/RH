@@ -19,7 +19,7 @@ section Coord
 variable {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word)
 
 /- English proof (translation)
-Rewrite using `[← Formalism.L2.SG.Pf.Level.hEl_apply, map_sum]`. Simplify using `only [map_smul, Formalism.L2.SG.Pf.Level.hEl_apply, smul_eq_mul, Matrix.mulVec, dotProduct, ZE]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hE_comb (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (c : Fin (D.R.rS + 1) → X.B.I.E)
     (a : Fin (D.R.rS + 1)) :
@@ -29,7 +29,7 @@ theorem hE_comb (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (c : Fin (D.R.r
   exact Finset.sum_congr rfl fun b _ => mul_comm _ _
 
 /- English proof (translation)
-Unfold `nu1E xPrE`. Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem firstNormal_eq_adjugate (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
     nu1E X u u' M = ∑ b, ((ZE X u u' M).det⁻¹ * (ZE X u u' M).adjugate b (Fin.last _)) • (M *ᵥ famE X u' b) := by
@@ -38,9 +38,9 @@ theorem firstNormal_eq_adjugate (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)
   simp only [smul_smul]
 
 /- English proof (translation)
-Rewrite using `[firstNormal_eq_adjugate, hE_comb]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Establish `h1 : ∑ b, ZE X u u' M a b * ((ZE X u u' M).det⁻¹ * (ZE X u u' M).adjugate b (Fin.last _)) = (ZE X u u' M).det⁻¹ * (ZE X u u' M * (ZE X u u' M).adjugate) a (Fin.last _)`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.mul_adjugate, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Use `split_ifs`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermitian_firstNormal (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (hdet : (ZE X u u' M).det ≠ 0)
     (a : Fin (D.R.rS + 1)) :
@@ -60,7 +60,7 @@ def x2E (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) : Fin X.B.I.n → X.B.I
   (star (ZE X u u' M).det)⁻¹ • xUnE X u u' M
 
 /- English proof (translation)
-Use `conv_lhs => rw [Formalism.L2.SG.Pf.Level.hE_symm]`. Rewrite using `[← Formalism.L2.SG.Pf.Level.hEl_apply, map_sum, star_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Formalism.L2.SG.Pf.Level.hEl_apply, smul_eq_mul, star_mul', star_star, ← Formalism.L2.SG.Pf.Level.hE_symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hE_sum_left {m : ℕ} (k : Fin m → X.B.I.E) (f : Fin m → Fin X.B.I.n → X.B.I.E) (y : Fin X.B.I.n → X.B.I.E) :
     Formalism.L2.SG.Pf.Level.hE X (∑ a, star (k a) • f a) y = ∑ a, k a * Formalism.L2.SG.Pf.Level.hE X (f a) y := by
@@ -70,7 +70,7 @@ theorem hE_sum_left {m : ℕ} (k : Fin m → X.B.I.E) (f : Fin m → Fin X.B.I.n
   rw [map_smul, Formalism.L2.SG.Pf.Level.hEl_apply, smul_eq_mul, star_mul', star_star, ← Formalism.L2.SG.Pf.Level.hE_symm]
 
 /- English proof (translation)
-Unfold `x2E xUnE`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, star_mul', star_inv₀]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem secondNormal_eq_adjugate (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
     x2E X u u' M = ∑ a, star ((ZE X u u' M).det⁻¹ * (ZE X u u' M).adjugate (Fin.last _) a) • famE X u a := by
@@ -80,9 +80,9 @@ theorem secondNormal_eq_adjugate (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E
   rw [smul_smul, star_mul', star_inv₀]
 
 /- English proof (translation)
-Rewrite using `[secondNormal_eq_adjugate, hE_sum_left]`. Establish `h1 : ∑ a, (ZE X u u' M).det⁻¹ * (ZE X u u' M).adjugate (Fin.last _) a * Formalism.L2.SG.Pf.Level.hE X (famE X u a) (M *ᵥ famE X u' b) = (ZE X u u' M).det⁻¹ * ((ZE X u u' M).adjugate * ZE X u u' M) (Fin.last _) b`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by simp only [ZE]; ring`. Rewrite using `[h1, Matrix.adjugate_mul, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `split_ifs with h h' h'`. Clear the denominators using the available nonvanishing facts. Conclude with `absurd h.symm h'`. Conclude with `absurd h'.symm h`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermitian_secondNormal (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (hdet : (ZE X u u' M).det ≠ 0)
     (b : Fin (D.R.rS + 1)) :
@@ -101,7 +101,7 @@ theorem hermitian_secondNormal (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) 
   · simp
 
 /- English proof (translation)
-Unfold `nu2E x2E`. Rewrite using `[Matrix.mulVec_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem secondNormal_eq_mulVec (M Mi : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) : nu2E X u u' M Mi = Mi *ᵥ x2E X u u' M := by
   unfold nu2E x2E
@@ -114,7 +114,7 @@ section Flag
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Simplify using `only [FlagG.fvec, Fin.snoc_last]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`. Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fvec_mem_xplus (F : FlagG S r T) (a : Fin (r + 1)) : F.fvec a ∈ F.Xplus := by
   refine Fin.lastCases ?_ (fun i => ?_) a
@@ -124,15 +124,15 @@ theorem fvec_mem_xplus (F : FlagG S r T) (a : Fin (r + 1)) : F.fvec a ∈ F.Xplu
     exact Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (fvec_mem_xplus F a)`.
+A detailed English derivation is pending.
 -/
 theorem sum_mem_xplus (F : FlagG S r T) (c : Fin (r + 1) → E) : ∑ a, c a • F.fvec a ∈ F.Xplus :=
   Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (fvec_mem_xplus F a)
 
 /- English proof (translation)
-Rewrite using `[PI.ScalarPairDr.W.mem_orth_Xplus (S := S) F]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ a`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Simplify `h2` using `[FlagG.fvec]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1 i` using `[FlagG.fvec]`. Introduce `h`. Conclude with `⟨fun i => by simpa [FlagG.fvec] using h i.castSucc, by simpa [FlagG.fvec] using h (Fin.last r)⟩`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem orth_fvec (F : FlagG S r T) {v : S.V} : v ∈ orth S F.Xplus ↔ ∀ a, S.hT (F.fvec a) v = 0 := by
   rw [PI.ScalarPairDr.W.mem_orth_Xplus (S := S) F]
@@ -145,7 +145,7 @@ theorem orth_fvec (F : FlagG S r T) {v : S.V} : v ∈ orth S F.Xplus ↔ ∀ a, 
     exact ⟨fun i => by simpa [FlagG.fvec] using h i.castSucc, by simpa [FlagG.fvec] using h (Fin.last r)⟩
 
 /- English proof (translation)
-Take `⟨a', x', hx', e'⟩` from `xplus_dec F hv`. Take `⟨c', hc'⟩` from `x_sum F hx'`. Conclude with `⟨Fin.snoc (α := fun _ => E) c' a', by rw [sum_fvec, hc', e']⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem xplus_sum (F : FlagG S r T) {v : S.V} (hv : v ∈ F.Xplus) : ∃ C : Fin (r + 1) → E, ∑ a, C a • F.fvec a = v := by
   obtain ⟨a', x', hx', e'⟩ := xplus_dec F hv
@@ -168,7 +168,7 @@ abbrev Miof : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E :=
   (((ratM X Y u u' s)⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Simplify using `[famE, FlagG.fvec, HidaSetting.zR, Formalism.L2.SG.Pf.Level.toV_crd, X.flagZVector]`. Simplify using `[famE, FlagG.fvec, HidaSetting.eR, Formalism.L2.SG.Pf.Level.toV_crd, X.Fu_e]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem toV_famE (w : D.what₂.Word) (a : Fin (D.R.rS + 1)) :
     Formalism.L2.SG.Pf.Level.toV X (famE X w a) = (X.Fu w).fvec a := by
@@ -177,12 +177,12 @@ theorem toV_famE (w : D.what₂.Word) (a : Fin (D.R.rS + 1)) :
   · simp [famE, FlagG.fvec, HidaSetting.eR, Formalism.L2.SG.Pf.Level.toV_crd, X.Fu_e]
 
 /- English proof (translation)
-The claim follows from `s.rep.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem lin_iso : s.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT := s.rep.2.2.1
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.TermOp.GTerm.frame Formalism.L2.SG.TermOp.mapLF`. Rewrite using `[dif_pos (lin_iso X Y u u' s)]`. Use `show s.lin ((X.Fu u').e b) = _`. Rewrite using `[X.Fu_e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_e (b : Fin D.R.rS) : s.frame.fl.e b = s.lin (X.eX b) := by
   unfold Formalism.L2.SG.TermOp.GTerm.frame Formalism.L2.SG.TermOp.mapLF
@@ -191,7 +191,7 @@ theorem frame_e (b : Fin D.R.rS) : s.frame.fl.e b = s.lin (X.eX b) := by
   rw [X.Fu_e]
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.TermOp.GTerm.frame Formalism.L2.SG.TermOp.mapLF`. Rewrite using `[dif_pos (lin_iso X Y u u' s)]`. Use `show s.lin ((X.Fu u').z) = _`. Rewrite using `[X.flagZVector]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_z_eq_lin_zu : s.frame.fl.z = s.lin (X.zu u') := by
   unfold Formalism.L2.SG.TermOp.GTerm.frame Formalism.L2.SG.TermOp.mapLF
@@ -200,7 +200,7 @@ theorem frame_z_eq_lin_zu : s.frame.fl.z = s.lin (X.zu u') := by
   rw [X.flagZVector]
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.TermOp.GTerm.frame Formalism.L2.SG.TermOp.mapLF`. Rewrite using `[dif_pos (lin_iso X Y u u' s)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frame_zt : s.frame.zt = s.frame.fl.z := by
   unfold Formalism.L2.SG.TermOp.GTerm.frame Formalism.L2.SG.TermOp.mapLF
@@ -208,7 +208,7 @@ theorem frame_zt : s.frame.zt = s.frame.fl.z := by
   rfl
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun i => ?_) b` and prove the remaining obligations. Simplify using `only [FlagG.fvec, Fin.snoc_last]`. Rewrite using `[frame_z_eq_lin_zu, X.flagZVector]`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`. Rewrite using `[frame_e, X.Fu_e]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_fvec (b : Fin (D.R.rS + 1)) : s.frame.fl.fvec b = s.lin ((X.Fu u').fvec b) := by
   refine Fin.lastCases ?_ (fun i => ?_) b
@@ -216,7 +216,7 @@ theorem frame_fvec (b : Fin (D.R.rS + 1)) : s.frame.fl.fvec b = s.lin ((X.Fu u')
   · simp only [FlagG.fvec, Fin.snoc_castSucc]; rw [frame_e, X.Fu_e]
 
 /- English proof (translation)
-Establish `h` using `s.rep.2.1.choose_spec.2.2.2 (Formalism.L2.SG.Pf.Level.toV X x)`. Rewrite `h` using `[Formalism.L2.SG.Pf.Level.crd_toV]`. Rewrite using `[← Formalism.L2.SG.Pf.Level.toV_crd X (s.lin (Formalism.L2.SG.Pf.Level.toV X x))]`. Conclude with `congrArg (Formalism.L2.SG.Pf.Level.toV X) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_toV (x : Fin X.B.I.n → X.B.I.E) :
     s.lin (Formalism.L2.SG.Pf.Level.toV X x) = Formalism.L2.SG.Pf.Level.toV X (Mof X Y u u' s *ᵥ x) := by
@@ -226,21 +226,21 @@ theorem lin_toV (x : Fin X.B.I.n → X.B.I.E) :
   exact congrArg (Formalism.L2.SG.Pf.Level.toV X) h
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq, lin_toV, Matrix.mulVec_mulVec, Mof, Miof, Units.mul_inv, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem linsymm_toV (x : Fin X.B.I.n → X.B.I.E) :
     s.lin.symm (Formalism.L2.SG.Pf.Level.toV X x) = Formalism.L2.SG.Pf.Level.toV X (Miof X Y u u' s *ᵥ x) := by
   rw [LinearEquiv.symm_apply_eq, lin_toV, Matrix.mulVec_mulVec, Mof, Miof, Units.mul_inv, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← lin_toV, toV_famE, frame_fvec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toV_Mfam (b : Fin (D.R.rS + 1)) :
     Formalism.L2.SG.Pf.Level.toV X (Mof X Y u u' s *ᵥ famE X u' b) = s.frame.fl.fvec b := by
   rw [← lin_toV, toV_famE, frame_fvec]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.SG.Pf.Level.toV_sum]`. Simplify using `only [Formalism.L2.SG.Pf.Level.toV_smul, toV_Mfam]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toV_comb (c : Fin (D.R.rS + 1) → X.B.I.E) :
     Formalism.L2.SG.Pf.Level.toV X (∑ b, c b • (Mof X Y u u' s *ᵥ famE X u' b)) = ∑ b, X.ιE (c b) • s.frame.fl.fvec b := by
@@ -248,7 +248,7 @@ theorem toV_comb (c : Fin (D.R.rS + 1) → X.B.I.E) :
   simp only [Formalism.L2.SG.Pf.Level.toV_smul, toV_Mfam]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.SG.Pf.Level.toV_sum]`. Simplify using `only [Formalism.L2.SG.Pf.Level.toV_smul, toV_famE]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toV_combL (c : Fin (D.R.rS + 1) → X.B.I.E) :
     Formalism.L2.SG.Pf.Level.toV X (∑ a, c a • famE X u a) = ∑ a, X.ιE (c a) • (X.Fu u).fvec a := by
@@ -256,20 +256,20 @@ theorem toV_combL (c : Fin (D.R.rS + 1) → X.B.I.E) :
   simp only [Formalism.L2.SG.Pf.Level.toV_smul, toV_famE]
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem iota_if (p : Prop) [Decidable p] : X.ιE (if p then 1 else 0) = if p then 1 else 0 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[firstNormal_eq_adjugate, toV_comb]`. Conclude with `sum_mem_xplus _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstNormal_mem_Xplus : Formalism.L2.SG.Pf.Level.toV X (nu1E X u u' (Mof X Y u u' s)) ∈ s.frame.fl.Xplus := by
   rw [firstNormal_eq_adjugate, toV_comb]
   exact sum_mem_xplus _ _
 
 /- English proof (translation)
-Rewrite using `[← toV_famE, ← Formalism.L2.SG.Pf.Level.iota_hE, hermitian_firstNormal X u u' _ hdet, iota_if]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem firstNormal_pairing (hdet : (ZE X u u' (Mof X Y u u' s)).det ≠ 0) (a : Fin (D.R.rS + 1)) :
     (VS D).hT ((X.Fu u).fvec a) (Formalism.L2.SG.Pf.Level.toV X (nu1E X u u' (Mof X Y u u' s))) =
@@ -277,14 +277,14 @@ theorem firstNormal_pairing (hdet : (ZE X u u' (Mof X Y u u' s)).det ≠ 0) (a :
   rw [← toV_famE, ← Formalism.L2.SG.Pf.Level.iota_hE, hermitian_firstNormal X u u' _ hdet, iota_if]
 
 /- English proof (translation)
-Rewrite using `[secondNormal_eq_adjugate, toV_combL]`. Conclude with `sum_mem_xplus _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secondNormal_mem_Xplus : Formalism.L2.SG.Pf.Level.toV X (x2E X u u' (Mof X Y u u' s)) ∈ (X.Fu u).Xplus := by
   rw [secondNormal_eq_adjugate, toV_combL]
   exact sum_mem_xplus _ _
 
 /- English proof (translation)
-Rewrite using `[← toV_Mfam, ← Formalism.L2.SG.Pf.Level.iota_hE, hermitian_secondNormal X u u' _ hdet, iota_if]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secondNormal_pairing (hdet : (ZE X u u' (Mof X Y u u' s)).det ≠ 0) (b : Fin (D.R.rS + 1)) :
     (VS D).hT (Formalism.L2.SG.Pf.Level.toV X (x2E X u u' (Mof X Y u u' s))) (s.frame.fl.fvec b) =
@@ -292,18 +292,18 @@ theorem secondNormal_pairing (hdet : (ZE X u u' (Mof X Y u u' s)).det ≠ 0) (b 
   rw [← toV_Mfam, ← Formalism.L2.SG.Pf.Level.iota_hE, hermitian_secondNormal X u u' _ hdet, iota_if]
 
 /- English proof (translation)
-Rewrite using `[secondNormal_eq_mulVec, linsymm_toV]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secondNormal_toV : Formalism.L2.SG.Pf.Level.toV X (nu2E X u u' (Mof X Y u u' s) (Miof X Y u u' s)) =
     s.lin.symm (Formalism.L2.SG.Pf.Level.toV X (x2E X u u' (Mof X Y u u' s))) := by
   rw [secondNormal_eq_mulVec, linsymm_toV]
 
 /- English proof (translation)
-Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Use `⟨Formalism.L2.SG.Pf.Level.toV X (∑ b, c b • (Mof X Y u u' s *ᵥ famE X u' b)), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[toV_comb]`. Conclude with `sum_mem_xplus _ _`. Rewrite using `[orth_fvec]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Rewrite using `[← toV_famE, ← Formalism.L2.SG.Pf.Level.iota_hE, hE_comb, hc, Pi.zero_apply, map_zero]`. Introduce `h`. Rewrite `h` using `[toV_comb]`. Establish `h2` using `indep' (X.Fu u) s.frame.fl hG _ h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hc0` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Establish `h3` using `congrFun h2 b`. Simplify using `using h3`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ker_of_det (hG : Gflag (X.Fu u) s.frame.fl ≠ 0) (hdet : (ZE X u u' (Mof X Y u u' s)).det = 0) :
     ∃ d ∈ s.frame.fl.Xplus, d ∈ orth (VS D) (X.Fu u).Xplus ∧ d ≠ 0 := by
@@ -322,13 +322,11 @@ theorem ker_of_det (hG : Gflag (X.Fu u) s.frame.fl ≠ 0) (hdet : (ZE X u u' (Mo
     simpa using h3
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `xplus_sum _ hd`. Use `set c : Fin (D.R.rS + 1) → X.B.I.E := fun b => X.ιE.symm (C b) with hc`. Establish `hd' : Formalism.L2.SG.Pf.Level.toV X (∑ b, c b • (Mof X Y u u' s *ᵥ famE X u' b)) = d`. Rewrite using `[toV_comb, ← hC]`. Simplify using `[c]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hZ : ZE X u u' (Mof X Y u u' s) *ᵥ c = 0`. Use function extensionality and compare the values at `a`. Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[← hE_comb, Formalism.L2.SG.Pf.Level.iota_hE, toV_famE, hd', Pi.zero_apply, map_zero]`. Conclude with `(orth_fvec _).1 hdO a`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc0 : c ≠ 0`. Introduce `h`. Apply `hd0` to reduce the goal to its premises. Rewrite using `[← hd', h]`. Simplify using `[Formalism.L2.SG.Pf.Level.toV]`.
-
-Conclude with `Matrix.exists_mulVec_eq_zero_iff.1 ⟨c, hc0, hZ⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_of_ker {d : (VS D).V} (hd : d ∈ s.frame.fl.Xplus) (hdO : d ∈ orth (VS D) (X.Fu u).Xplus) (hd0 : d ≠ 0) :
     (ZE X u u' (Mof X Y u u' s)).det = 0 := by
@@ -350,13 +348,13 @@ theorem det_of_ker {d : (VS D).V} (hd : d ∈ s.frame.fl.Xplus) (hdO : d ∈ ort
   exact Matrix.exists_mulVec_eq_zero_iff.1 ⟨c, hc0, hZ⟩
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `xplus_sum _ hd`. Use `set k : Fin (D.R.rS + 1) → X.B.I.E := fun a => star (X.ιE.symm (C a)) with hk`. Establish `hd' : Formalism.L2.SG.Pf.Level.toV X (∑ a, star (k a) • famE X u a) = d`. Rewrite using `[toV_combL, ← hC]`. Simplify using `[k]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hZ : k ᵥ* ZE X u u' (Mof X Y u u' s) = 0`. Use function extensionality and compare the values at `b`. Apply `X.ιE.injective` to reduce the goal to its premises. Establish `e1 : (k ᵥ* ZE X u u' (Mof X Y u u' s)) b = Formalism.L2.SG.Pf.Level.hE X (∑ a, star (k a) • famE X u a) (Mof X Y u u' s *ᵥ famE X u' b)`. Rewrite using `[hE_sum_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.vecMul, dotProduct, ZE]`. Rewrite using `[e1, Formalism.L2.SG.Pf.Level.iota_hE, hd', toV_Mfam, Pi.zero_apply, map_zero]`. Conclude with `hdO b`. Establish `hk0 : k ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hd0` to reduce the goal to its premises. Rewrite using `[← hd', h]`. Simplify using `[Formalism.L2.SG.Pf.Level.toV]`. Conclude with `Matrix.exists_vecMul_eq_zero_iff.1 ⟨k, hk0, hZ⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_of_lker {d : (VS D).V} (hd : d ∈ (X.Fu u).Xplus) (hdO : ∀ b, (VS D).hT d (s.frame.fl.fvec b) = 0)
     (hd0 : d ≠ 0) : (ZE X u u' (Mof X Y u u' s)).det = 0 := by
@@ -382,11 +380,9 @@ theorem det_of_lker {d : (VS D).V} (hd : d ∈ (X.Fu u).Xplus) (hdO : ∀ b, (VS
   exact Matrix.exists_vecMul_eq_zero_iff.1 ⟨k, hk0, hZ⟩
 
 /- English proof (translation)
-Unfold `UUE spanE`. Rewrite using `[Submodule.span_le]`. Establish `h : UU Λ F F' ≤ (F.fl.Xplus ⊔ F'.fl.Xplus).restrictScalars (𝓞 D.host.E)`. Unfold `UU`. Use `sup_le (sup_le (sup_le ?_ ?_) ?_) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `inf_le_right.trans (fun v hv => Submodule.mem_sup_left (Submodule.mem_sup_left hv))`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, hz]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))`. Conclude with `inf_le_right.trans (fun v hv => Submodule.mem_sup_right (Submodule.mem_sup_left hv))`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, hz']`.
-
-Conclude with `Submodule.mem_sup_right (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))`. Conclude with `fun v hv => h hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem uue_le {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (hz : F.zt = F.fl.z) (hz' : F'.zt = F'.fl.z) :
@@ -405,11 +401,11 @@ theorem uue_le {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E} (F : 
   exact fun v hv => h hv
 
 /- English proof (translation)
-Establish `h1 : ∀ a, (VS D).hT ((X.Fu u).fvec a) (Formalism.L2.SG.Pf.Level.toV X y) = 0` using `fun a => by`. Rewrite using `[← toV_famE, ← Formalism.L2.SG.Pf.Level.iota_hE, hy.1 a, map_zero]`. Establish `h2 : ∀ b, (VS D).hT (s.frame.fl.fvec b) (Formalism.L2.SG.Pf.Level.toV X y) = 0` using `fun b => by`. Rewrite using `[← toV_Mfam, ← Formalism.L2.SG.Pf.Level.iota_hE, hy.2 b, map_zero]`. Establish `o1` using `(orth_fvec (X.Fu u)).2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `o2` using `(orth_fvec s.frame.fl).2 h2`. Apply `PI.UnitaryGroupMassFormula.ScalEquivGen.orthAntiQ (uue_le (Λ := Λ) (lf D (X.Fu u)) s.frame rfl (frame_zt X Y u u' s))` to reduce the goal to its premises. Rewrite using `[PI.UnitaryGroupMassFormula.ScalEquivGen.memOrthQ]`. Introduce `x hx`. Take `⟨x1, hx1, x2, hx2, rfl⟩` from `Submodule.mem_sup.mp hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add, LinearMap.add_apply, PI.UnitaryGroupMassFormula.ScalEquivGen.memOrthQ.mp o1 x1 hx1, PI.UnitaryGroupMassFormula.ScalEquivGen.memOrthQ.mp o2 x2 hx2, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem orthogonal_toV {Λ : Submodule (𝓞 D.host.E) (VS D).V} {y : Fin X.B.I.n → X.B.I.E}
     (hy : orthogonalComplementRational X u u' (Mof X Y u u' s) y) :
@@ -428,9 +424,9 @@ theorem orthogonal_toV {Λ : Submodule (𝓞 D.host.E) (VS D).V} {y : Fin X.B.I.
     PI.UnitaryGroupMassFormula.ScalEquivGen.memOrthQ.mp o2 x2 hx2, add_zero]
 
 /- English proof (translation)
-Establish `hm` using `PI.PairCorankPos.W.frame_mem_UUE Λ hΛ (lf D (X.Fu u)) s.frame hL hL'`. Establish `hy' : ∀ x ∈ UUE Λ (lf D (X.Fu u)) s.frame, (VS D).hT x y = 0` using `PI.UnitaryGroupMassFormula.ScalEquivGen.memOrthQ.mp hy`. Use `⟨fun a => ?_, fun b => ?_⟩` and prove the remaining obligations. Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[Formalism.L2.SG.Pf.Level.iota_hE, toV_famE, Formalism.L2.SG.Pf.Level.toV_crd, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy' _ (hm (Sum.inl a))`. Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[Formalism.L2.SG.Pf.Level.iota_hE, toV_Mfam, Formalism.L2.SG.Pf.Level.toV_crd, map_zero]`. Conclude with `hy' _ (hm (Sum.inr b))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthogonal_ofV {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Submodule.IsLattice D.host.E Λ)
     (hL : IsLift Λ (lf D (X.Fu u))) (hL' : IsLift Λ s.frame) {y : (VS D).V}
@@ -446,9 +442,9 @@ theorem orthogonal_ofV {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Submodul
     exact hy' _ (hm (Sum.inr b))
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).1 h`. Establish `e : x = ∑ i, X.ιE.symm (c i) • X.eR i`. Rewrite using `[← Formalism.L2.SG.Pf.Level.crd_toV X x, ← Formalism.L2.SG.Pf.Level.crd_toV X (∑ i, X.ιE.symm (c i) • X.eR i)]`. Use `congr 1`. Rewrite using `[Formalism.L2.SG.Pf.Level.toV_sum, ← hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.Level.toV_smul, HidaSetting.eR, Formalism.L2.SG.Pf.Level.toV_crd, RingEquiv.apply_symm_apply]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (Or.inl (Or.inl ⟨i, rfl⟩)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wperp_of (w : D.what₂.Word) {x : Fin X.B.I.n → X.B.I.E}
     (h : Formalism.L2.SG.Pf.Level.toV X x ∈ Submodule.span D.host.E (Set.range X.eX)) : x ∈ WperpE X w := by
@@ -463,13 +459,13 @@ theorem wperp_of (w : D.what₂.Word) {x : Fin X.B.I.n → X.B.I.E}
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (Or.inl (Or.inl ⟨i, rfl⟩)))
 
 /- English proof (translation)
-Simplify `hv` using `[FlagG.X, X.Fu_e]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fixedX (v : (VS D).V) (hv : v ∈ (X.Fu u).X) : v ∈ Submodule.span D.host.E (Set.range X.eX) := by
   simpa [FlagG.X, X.Fu_e] using hv
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `x_sum _ hv`. Rewrite using `[← hc, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, frame_e, LinearEquiv.symm_apply_apply]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_frameX {v : (VS D).V} (hv : v ∈ s.frame.fl.X) : s.lin.symm v ∈ Submodule.span D.host.E (Set.range X.eX) := by
   obtain ⟨c, hc⟩ := x_sum _ hv

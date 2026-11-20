@@ -15,7 +15,7 @@ open GlobalTheory.CompanionTheory.Ar.PB.MinorCalc
 variable {N : ℕ}
 
 /- English proof (translation)
-Establish `key : minorIJ X C C = minorIJ Xᵀ C C`. Rewrite using `[minorIJ_eq_det X C C C.card rfl rfl, minorIJ_eq_det Xᵀ C C C.card rfl rfl, ← Matrix.transpose_submatrix, Matrix.det_transpose]`. Rewrite using `[key, minorIJ_self_of_triangular Xᵀ (fun i j hij => by simpa [Matrix.transpose_apply] using hX.2 j i hij) C]`. Conclude with `Finset.prod_eq_one (fun c _ => hX.1 c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minorIJ_self_of_isLowerUni {X : Matrix (Fin N) (Fin N) ℂ} (hX : IsLowerUni X) (C : Finset (Fin N)) :
     minorIJ X C C = 1 := by
@@ -26,25 +26,21 @@ theorem minorIJ_self_of_isLowerUni {X : Matrix (Fin N) (Fin N) ℂ} (hX : IsLowe
   exact Finset.prod_eq_one (fun c _ => hX.1 c)
 
 /- English proof (translation)
-Establish `ha : a' ∉ C` using `fun h => absurd (hmax a' h) (not_le.mpr hlt)`. Take `⟨n, hn⟩ : ∃ n, C.card = n + 1` from `⟨C.card - 1, by have := Finset.card_pos.mpr ⟨b', hb⟩; omega⟩`. Establish `hR : (insert a' (C.erase b')).card = n + 1`. Rewrite using `[Finset.card_insert_of_notMem (fun h => ha (Finset.mem_of_mem_erase h)), Finset.card_erase_of_mem hb, hn]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `set eC := C.orderEmbOfFin hn with heC`. Establish `hlast : eC (Fin.last n) = b'`. Establish `hmem : b' ∈ Set.range eC` using `by rw [heC, Finset.range_orderEmbOfFin]; exact hb`. Take `⟨k, hk⟩` from `hmem`. Break down `(Fin.le_last k).lt_or_eq with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h1 : eC k < eC (Fin.last n)` using `eC.strictMono h`. Establish `h2 : eC (Fin.last n) ∈ C` using `Finset.orderEmbOfFin_mem C hn _`. Conclude with `absurd (hmax _ h2) (not_le.mpr (hk ▸ h1))`. Rewrite using `[← h, hk]`. Establish `hlt' : ∀ k : Fin (n + 1), k ≠ Fin.last n → eC k < b'` using `fun k hk => hlast ▸ eC.strictMono (lt_of_le_of_ne (Fin.le_last k) hk)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : Fin (n + 1) → Fin N` to `fun k => if k = Fin.last n then a' else eC k`. Establish `hfmono : StrictMono f`. Introduce `i j hij`. Establish `hi : i ≠ Fin.last n` using `ne_of_lt (lt_of_lt_of_le hij (Fin.le_last j))`. Simplify using `only [f, if_neg hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hj : j = Fin.last n`. Rewrite using `[if_pos hj]`. Conclude with `(hlt' i hi).trans hlt`. Rewrite using `[if_neg hj]`. Conclude with `eC.strictMono hij`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfmem : ∀ k, f k ∈ insert a' (C.erase b')`. Introduce `k`. Simplify using `only [f]`. Use `split_ifs with hk`. Conclude with `Finset.mem_insert_self _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_insert_of_mem (Finset.mem_erase.mpr ⟨(hlt' k hk).ne, Finset.orderEmbOfFin_mem C hn k⟩)`. Establish `hR' : ⇑((insert a' (C.erase b')).orderEmbOfFin hR) = f` using `(Finset.orderEmbOfFin_unique hR hfmem hfmono).symm`. Rewrite using `[minorIJ_eq_det X _ C (n + 1) hR hn, hR', Matrix.det_of_lowerTriangular]`. Establish `h1 : ∀ k : Fin n, X.submatrix f eC k.castSucc k.castSucc = 1`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show X (f k.castSucc) (eC k.castSucc) = 1`. Simplify using `only [f, if_neg (Fin.castSucc_lt_last k).ne]`. Conclude with `hX.1 _`. Rewrite using `[Fin.prod_univ_castSucc, Finset.prod_eq_one (fun k _ => h1 k), one_mul]`. Use `show X (if Fin.last n = Fin.last n then a' else eC (Fin.last n)) (eC (Fin.last n)) = X a' b'`.
-
-Rewrite using `[if_pos rfl, hlast]`. Introduce `i j hij`. Establish `hij' : i < j` using `OrderDual.toDual_lt_toDual.mp hij`. Establish `hi : i ≠ Fin.last n` using `ne_of_lt (lt_of_lt_of_le hij' (Fin.le_last j))`. Simplify using `only [Matrix.submatrix_apply, f, if_neg hi]`.
-
-Conclude with `hX.2 _ _ (eC.strictMono hij')`.
+A detailed English derivation is pending.
 -/
 theorem minorIJ_insert_erase_of_isLowerUni {X : Matrix (Fin N) (Fin N) ℂ} (hX : IsLowerUni X) {C : Finset (Fin N)}
     {a' b' : Fin N} (hb : b' ∈ C) (hmax : ∀ c ∈ C, c ≤ b') (hlt : b' < a') :
@@ -100,9 +96,9 @@ theorem minorIJ_insert_erase_of_isLowerUni {X : Matrix (Fin N) (Fin N) ℂ} (hX 
     exact hX.2 _ _ (eC.strictMono hij')
 
 /- English proof (translation)
-Establish `hc` using `c.isLt`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp only [stepCols, stepOf] split_ifs all_goals (try simp) all_goals omega`. Establish `hx'` using `x.isLt`. Simplify using `only [stepCols, stepOf] at hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.le_iff_val_le_val]`. Use `split_ifs at hx`. Apply the tactic sequence `all_goals (try simp at hx)`. Apply the tactic sequence `all_goals omega`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stepCols_stepOf (N j : ℕ) (c : Fin N) :
     c ∈ stepCols N j (stepOf N j c) ∧ ∀ x ∈ stepCols N j (stepOf N j c), x ≤ c := by
@@ -120,7 +116,7 @@ theorem mem_stepCols_stepOf (N j : ℕ) (c : Fin N) :
     all_goals omega
 
 /- English proof (translation)
-Take `⟨hb, hmax⟩` from `mem_stepCols_stepOf N j b'`. Conclude with `⟨minorIJ_self_of_isLowerUni hX _, minorIJ_insert_erase_of_isLowerUni hX hb hmax hlt⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem minorIJ_stepCols_of_isLowerUni (N j : ℕ) (X : Matrix (Fin N) (Fin N) ℂ) (a' b' : Fin N) (_hj : j ≤ N)
     (_hd : IsBlockDiag j X) (hX : IsLowerUni X) (hlt : b' < a') (_hs : (a' : ℕ) < N - j ↔ (b' : ℕ) < N - j) :

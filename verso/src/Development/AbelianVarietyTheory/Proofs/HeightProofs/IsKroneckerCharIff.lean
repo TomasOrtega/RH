@@ -17,9 +17,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `hd` using `DirichletCharacter.differentiable_LFunction h₁`. Establish `hd' : Differentiable ℂ (conj ∘ χ.LFunction ∘ conj : ℂ → ℂ)` using `fun z => differentiableAt_conj_conj_iff.mpr (hd _)`. Use `AnalyticOnNhd.eq_of_eventuallyEq (z₀ := 2) (fun z _ => hd'.analyticAt z) (fun z _ => hd.analyticAt z) ?_` and prove the remaining obligations. Use `Filter.eventuallyEq_of_mem ((isOpen_lt continuous_const Complex.continuous_re).mem_nhds (show (1 : ℝ) < (2 : ℂ).re by norm_num)) fun z (hz : 1 < z.re) => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[χ.LFunction_eq_LSeries hz, χ.LFunction_eq_LSeries (by rwa [Complex.conj_re]), LSeries, LSeries, Complex.conj_tsum]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[LSeries.term_of_ne_zero hn, LSeries.term_of_ne_zero hn, map_div₀, hr, ← Complex.conj_cpow _ _ (by rw [Complex.natCast_arg]; positivity), Complex.conj_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_LFunction_conj {d : ℕ} [NeZero d] {χ : DirichletCharacter ℂ d} (h₁ : χ ≠ 1)
     (hr : ∀ a, conj (χ a) = χ a) : (conj ∘ χ.LFunction ∘ conj : ℂ → ℂ) = χ.LFunction := by
@@ -40,9 +40,9 @@ theorem conj_LFunction_conj {d : ℕ} [NeZero d] {χ : DirichletCharacter ℂ d}
       ← Complex.conj_cpow _ _ (by rw [Complex.natCast_arg]; positivity), Complex.conj_natCast]
 
 /- English proof (translation)
-Establish `e` using `conj_LFunction_conj h₁ hr`. Establish `e₀ : conj (χ.LFunction 1) = χ.LFunction 1` using `by simpa using congrFun e 1`. Establish `e₁ : conj (deriv χ.LFunction 1) = deriv χ.LFunction 1`. Use `congrFun (deriv_conj_conj (f := χ.LFunction)) 1` as an intermediate fact. Rewrite `this` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this.symm`. Rewrite using `[← Complex.conj_eq_iff_re, map_div₀, e₀, e₁]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem logDeriv_im {d : ℕ} [NeZero d] {χ : DirichletCharacter ℂ d} (h₁ : χ ≠ 1) (hr : ∀ a, conj (χ a) = χ a) :
     (((deriv χ.LFunction 1 / χ.LFunction 1).re : ℝ) : ℂ) = deriv χ.LFunction 1 / χ.LFunction 1 := by
@@ -55,9 +55,9 @@ theorem logDeriv_im {d : ℕ} [NeZero d] {χ : DirichletCharacter ℂ d} (h₁ :
   rw [← Complex.conj_eq_iff_re, map_div₀, e₀, e₁]
 
 /- English proof (translation)
-Establish `h₀ : IsKroneckerChar (LogarithmicDifferentialCharacter.chi H)` using `isKroneckerChar_quadraticChar (by have := H.d_mod; omega)`. Use `⟨fun h => MulChar.ext' fun a => ?_, fun h => h ▸ h₀⟩` and prove the remaining obligations. Take `⟨n, rfl⟩` from `ZMod.natCast_zmod_surjective a`. Break down `Nat.even_or_odd n with hn | hn` into its components or cases. Establish `ho : Odd (n + H.d)` using `hn.add_odd (Nat.odd_iff.2 (by have := H.d_mod; omega))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `(h _ ho).trans (h₀ _ ho).symm` as an intermediate fact. Simplify using `using this`. Conclude with `(h n hn).trans (h₀ n hn).symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isKroneckerChar_iff (χ : DirichletCharacter ℂ H.d) : IsKroneckerChar χ ↔ χ = LogarithmicDifferentialCharacter.chi H := by
   have h₀ : IsKroneckerChar (LogarithmicDifferentialCharacter.chi H) := isKroneckerChar_quadraticChar (by have := H.d_mod; omega)
@@ -70,7 +70,7 @@ theorem isKroneckerChar_iff (χ : DirichletCharacter ℂ H.d) : IsKroneckerChar 
   · exact (h n hn).trans (h₀ n hn).symm
 
 /- English proof (translation)
-Take `rfl` from `(isKroneckerChar_iff χ).1 h`. Conclude with `logDeriv_im (LogarithmicDifferentialCharacter.chi_ne_one H) fun a => by simp [LogarithmicDifferentialCharacter.chi]`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dlogL_eq [NeZero H.d] {χ : DirichletCharacter ℂ H.d} (h : IsKroneckerChar χ) :
     (LogarithmicDifferentialCharacter.dlogL H : ℂ) = deriv χ.LFunction 1 / χ.LFunction 1 := by
@@ -78,14 +78,14 @@ theorem dlogL_eq [NeZero H.d] {χ : DirichletCharacter ℂ H.d} (h : IsKronecker
   exact logDeriv_im (LogarithmicDifferentialCharacter.chi_ne_one H) fun a => by simp [LogarithmicDifferentialCharacter.chi]
 
 /- English proof (translation)
-Rewrite using `[logOm, LogarithmicDifferentialCharacter.logOm, Complex.ofReal_sub, dlogL_eq h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem logOm_eq [NeZero H.d] {χ : DirichletCharacter ℂ H.d} (h : IsKroneckerChar χ) :
     logOm E χ = (LogarithmicDifferentialCharacter.logOm H : ℝ) := by
   rw [logOm, LogarithmicDifferentialCharacter.logOm, Complex.ofReal_sub, dlogL_eq h]
 
 /- English proof (translation)
-Rewrite using `[logOm_of_finrank_eq_two h2 hD, LogarithmicDifferentialCharacter.logOmCurve, Complex.ofReal_sub, dlogL_eq h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem logOm_eq_logOmCurve [NeZero H.d] {χ : DirichletCharacter ℂ H.d} (h : IsKroneckerChar χ) {K : Type} [Field K]
     [NumberField K] (h2 : Module.finrank ℚ K = 2) (hD : discr K = -H.d) : logOm K χ = (LogarithmicDifferentialCharacter.logOmCurve H : ℝ) := by
@@ -96,18 +96,18 @@ section Curve
 variable {R R' : Type} [CommRing R] [CommRing R'] {ω : R} {ω' : R'}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a, b, c, d⟩ => ⟨a.symm, b, d, c⟩, fun ⟨a, b, c, d⟩ => ⟨a.symm, b, d, c⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ellMap_iff (C' : Ell H R' ω') (C : Ell H R ω) (f : R →+* R') (φ : C'.P.A.left ⟶ C.P.A.left) :
     EllMap C' C f φ ↔ LogarithmicDifferentialCharacter.IsCurveFibre f C C' φ :=
   ⟨fun ⟨a, b, c, d⟩ => ⟨a.symm, b, d, c⟩, fun ⟨a, b, c, d⟩ => ⟨a.symm, b, d, c⟩⟩
 
 /- English proof (translation)
-Take `⟨τ, hτ, -⟩` from `LieChar.ell_char E H R ω C`. Establish `h : (2 * wK H - 1) ^ 2 = -(H.d : OK H)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (2 * H.w0 - 1) ^ 2 = -(H.d : 𝓞 E)`. Rewrite using `[H.two_weight_eq_one_add_root, ← H.rt_sq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h₁ : (2 * s ω - 1) ^ 2 = -(H.d : ℂ)` using `by simpa [hτ, map_ofNat] using congrArg (fun a => s (τ a)) h`. Establish `h₂ : (Complex.I * Real.sqrt H.d) ^ 2 = -(H.d : ℂ)`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `sq_eq_sq_iff_eq_or_eq_neg.1 (h₁.trans h₂.symm) with e | e` into its components or cases. Use `left`. Take the linear combination `e / 2`. Use `right`. Take the linear combination `e / 2`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eigenvalue_eq (C : Ell H R ω) (s : R →+* ℂ) :
     s ω = (1 + Complex.I * Real.sqrt H.d) / 2 ∨ s ω = 1 - (1 + Complex.I * Real.sqrt H.d) / 2 := by
@@ -124,7 +124,7 @@ theorem eigenvalue_eq (C : Ell H R ω) (s : R →+* ℂ) :
   · right; linear_combination e / 2
 
 /- English proof (translation)
-Use `forall₄_congr fun Q φ _ u => exists_congr fun c => and_congr_right fun _ => forall_congr' fun z => iff_congr Iff.rfl ?_` and prove the remaining obligations. Break down `eigenvalue_eq C s with e | e` into its components or cases. Rewrite using `[e]`. Rewrite using `[e]`. Apply the tactic sequence `constructor <;> rintro ⟨m, n, rfl⟩ <;> exact ⟨m + n, -n, funext fun _ => by push_cast; ring⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isPrincipalAt_iff (C : Ell H R ω) (s : R →+* ℂ) : C.IsPrincipalAt s ↔ LogarithmicDifferentialCharacter.IsPrincipalAt C s := by
   refine forall₄_congr fun Q φ _ u => exists_congr fun c => and_congr_right fun _ => forall_congr' fun z =>
@@ -137,7 +137,7 @@ theorem isPrincipalAt_iff (C : Ell H R ω) (s : R →+* ℂ) : C.IsPrincipalAt s
 end Curve
 
 /- English proof (translation)
-The claim follows from `exists_congr fun _ => and_congr_right fun _ => eq_comm`.
+A detailed English derivation is pending.
 -/
 theorem hasPeriod_iff {M : Type} [Field M] [NumberField M] {ω : 𝓞 M} (C : Ell H (𝓞 M) ω) (x : ℝ) :
     C.HasPeriod x ↔ LogarithmicDifferentialCharacter.HasPeriod C x :=
@@ -149,7 +149,7 @@ variable {R : Type} [CommRing R] {ω : R} {C : Ell H R ω} {T : PAT H (Sp R)} {D
   {φ : L → (C.P.A ⟶ T.t.G)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a, b, c, d⟩ => ⟨⟨fun x => (a x).1, b, c, fun k x => (a x).2 k⟩, d⟩, fun ⟨a, d⟩ => ⟨fun x => ⟨a.hom x, fun k => a.lin k x⟩, a.add, a.smul, d⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFam_iff_isHomFam (h : D.La → D.La → OK H) : IsFam C T h L φ ↔ LogarithmicDifferentialCharacter.IsHomFam C T.t L φ ∧
     ∀ a b : L, LamEq T.t.PP.L (φ a) (φ b) C.P.L (C.act.act (h a b)) (𝟙 C.P.A) :=
@@ -157,20 +157,20 @@ theorem isFam_iff_isHomFam (h : D.La → D.La → OK H) : IsFam C T h L φ ↔ L
     fun ⟨a, d⟩ => ⟨fun x => ⟨a.hom x, fun k => a.lin k x⟩, a.add, a.smul, d⟩⟩
 
 /- English proof (translation)
-The claim follows from `funext₂ fun x y => Subtype.ext ((a x y).trans (b x y).symm)`.
+A detailed English derivation is pending.
 -/
 theorem isKForm_unique {ε : ℤˣ} {h h' : D.La → D.La → OK H} (a : IsKForm D ε h) (b : IsKForm D ε h') : h = h' :=
   funext₂ fun x y => Subtype.ext ((a x y).trans (b x y).symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a, h, b, c⟩ => ⟨h, b, (isFam_iff_isHomFam h).2 ⟨a, c⟩⟩, fun ⟨h, b, c⟩ => ⟨((isFam_iff_isHomFam h).1 c).1, h, b, ((isFam_iff_isHomFam h).1 c).2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPolFam_iff_exists (ε : ℤˣ) : LogarithmicDifferentialCharacter.IsPolFam C T.t L ε φ ↔ ∃ h, IsKForm D ε h ∧ IsFam C T h L φ :=
   ⟨fun ⟨a, h, b, c⟩ => ⟨h, b, (isFam_iff_isHomFam h).2 ⟨a, c⟩⟩,
     fun ⟨h, b, c⟩ => ⟨((isFam_iff_isHomFam h).1 c).1, h, b, ((isFam_iff_isHomFam h).1 c).2⟩⟩
 
 /- English proof (translation)
-Rewrite using `[isPolFam_iff_exists]`. Conclude with `⟨fun a => ⟨h, hh, a⟩, fun ⟨h', b, c⟩ => isKForm_unique b hh ▸ c⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isFam_iff {ε : ℤˣ} {h : D.La → D.La → OK H} (hh : IsKForm D ε h) :
     IsFam C T h L φ ↔ LogarithmicDifferentialCharacter.IsPolFam C T.t L ε φ := by
@@ -180,11 +180,11 @@ theorem isFam_iff {ε : ℤˣ} {h : D.La → D.La → OK H} (hh : IsKForm D ε h
 end Family
 
 /- English proof (translation)
-Use `forall_congr' fun y => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨n, i, x, rfl⟩`. Rewrite using `[List.prod_ofFn]`. Use `Finset.prod_induction _ (fun y : Over.mk t ⟶ A => ∃ x : ∀ i, Over.mk t ⟶ B i, y = ∏ i, x i ≫ φ i) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ _ ⟨x, rfl⟩ ⟨x', rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun i => x i * x' i, by simp only [MonObj.mul_comp, Finset.prod_mul_distrib]⟩`. Conclude with `⟨fun _ => 1, by simp only [MonObj.one_comp, Finset.prod_const_one]⟩`. Introduce `m _`. Use `⟨Function.update (fun _ => 1) (i m) (x m), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single (i m) (fun j _ hj => by rw [Function.update_of_ne hj, MonObj.one_comp]) (by simp), Function.update_self]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, rfl⟩`. Use `⟨_, (Fintype.equivFin I).symm, fun m => x _, ?_⟩` and prove the remaining obligations. Rewrite using `[List.prod_ofFn]`. Conclude with `((Fintype.equivFin I).symm.prod_comp fun i => x i ≫ φ i).symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ontoAt_iff {S : Scheme.{0}} {I : Type} [Fintype I] {B : I → Over S} [∀ i, GrpObj (B i)] {A : Over S} [GrpObj A]
     [IsCommMonObj A] (φ : ∀ i, B i ⟶ A) (hφ : ∀ i, IsMonHom (φ i)) {k : Type} [Field k] (t : Sp k ⟶ S) :
@@ -207,7 +207,7 @@ theorem ontoAt_iff {S : Scheme.{0}} {I : Type} [Fintype I] {B : I → Over S} [�
     exact ((Fintype.equivFin I).symm.prod_comp fun i => x i ≫ φ i).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a, b, c, d, f, g, h⟩ => ⟨a, c, d, f, g, b, h⟩, fun h => ⟨h.period, h.hol, h.add, h.onto, h.ker, h.lin, h.weil⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isExp_iff {R : Type} [CommRing R] (T : PAT H (Sp R)) (σ : R →+* ℂ) (D : Datum H) {g : ℕ}
     (ty : Fin g → (E →+* ℂ)) (Pe : D.La →+ (Fin g → ℂ)) (e : (Fin g → ℂ) → (Over.mk (spMap σ) ⟶ T.t.G)) :
@@ -217,15 +217,13 @@ theorem isExp_iff {R : Type} [CommRing R] (T : PAT H (Sp R)) (σ : R →+* ℂ) 
 section Lattice
 
 /- English proof (translation)
-Establish `key : ∀ a : M, a ∈ ⨆ i, LinearMap.range (f i) ↔ ∃ x : ∀ i, N i, a = ∑ i, f i (x i)` using `fun a => by`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.iSup_induction _ (motive := fun a => ∃ x : ∀ i, N i, a = ∑ i, f i (x i)) h ?_ ⟨0, by simp⟩ ?_` and prove the remaining obligations. Introduce and unpack `i _ ⟨b, rfl⟩`. Use `⟨Pi.single i b, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, map_zero]) (by simp), Pi.single_eq_same]`. Introduce and unpack `_ _ ⟨x, rfl⟩ ⟨y, rfl⟩`. Conclude with `⟨x + y, by simp [Finset.sum_add_distrib]⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [← key]`. Use `⟨fun ⟨n, hn, h⟩ a => ⟨n, hn, h a⟩, fun h => ?_⟩` and prove the remaining obligations. Use `choose n hn h using h`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := O) (M := M)`. Use `⟨∏ a ∈ s, n a, Finset.prod_pos fun a _ => hn a, fun a => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Submodule.span O (s : Set M) ≤ (⨆ i, LinearMap.range (f i)).comap ((∏ a ∈ s, n a) • (LinearMap.id : M →ₗ[O] M))` using `Submodule.span_le.2 fun b hb => by`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem n (show b ∈ s from hb)`. Use `show (∏ a ∈ s, n a) • b ∈ ⨆ i, LinearMap.range (f i)`. Rewrite using `[hc, mul_comm, mul_smul]`. Conclude with `nsmul_mem (h b) c`.
-
-Conclude with `this (hs ▸ Submodule.mem_top)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_iff {O : Type} [CommRing O] {M : Type} [AddCommGroup M] [Module O M] [Module.Finite O M] {I : Type}
     [Fintype I] {N : I → Type} [∀ i, AddCommGroup (N i)] [∀ i, Module O (N i)] (f : ∀ i, N i →ₗ[O] M) :
@@ -278,7 +276,7 @@ end Lattice
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Use `exists₂_congr fun oa nth => ⟨fun ⟨a, b, c, d⟩ => ⟨a, c, fun σ => ⟨?_, b σ⟩, d⟩, fun ⟨a, c, b, d⟩ => ⟨a, fun σ => (b σ).2, c, d⟩⟩` and prove the remaining obligations. Take `⟨x', nη, -, h⟩` from `b σ`. Conclude with `(LamF.KeyArch.pos_of_isArchNorm thetaUnifAV_all x' h).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isThetaDeg_iff (x : KeyIn K) (δ : ℝ) : IsThetaDeg x δ ↔ LogarithmicDifferentialCharacter.IsDegDe x δ := by
   refine exists₂_congr fun oa nth => ⟨fun ⟨a, b, c, d⟩ => ⟨a, c, fun σ => ⟨?_, b σ⟩, d⟩,
@@ -287,7 +285,7 @@ theorem isThetaDeg_iff (x : KeyIn K) (δ : ℝ) : IsThetaDeg x δ ↔ Logarithmi
   exact (LamF.KeyArch.pos_of_isArchNorm thetaUnifAV_all x' h).1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hg, rig, hr, th, hth, rfl⟩`. Conclude with `⟨F.φ, F.fib⟩`. Introduce and unpack `⟨φ, h⟩`. Conclude with `⟨⟨x.P, φ, h, x.v, x.basis⟩, x.g_pos, x.rig, x.rig_gen, x.th, x.th_ne, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_key_iff (P : Out.PolAV (Sp (𝓞 K))) (x : KeyIn K) :
     (∃ (F : GenFib P) (hg : _) (rig : _) (hr : _) (th : _) (hth : _), F.key hg rig hr th hth = x) ↔
@@ -299,9 +297,9 @@ theorem exists_key_iff (P : Out.PolAV (Sp (𝓞 K))) (x : KeyIn K) :
     exact ⟨⟨x.P, φ, h, x.v, x.basis⟩, x.g_pos, x.rig, x.rig_gen, x.th, x.th_ne, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hg, rig, hr, th, hth, h⟩`. Conclude with `⟨_, F.φ, F.fib, (isThetaDeg_iff _ _).1 h⟩`. Introduce and unpack `⟨x, φ, h, hδ⟩`. Take `⟨F, hg, rig, hr, th, hth, rfl⟩` from `(exists_key_iff P x).2 ⟨φ, h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨F, hg, rig, hr, th, hth, (isThetaDeg_iff _ _).2 hδ⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDegDeOf_iff (P : Out.PolAV (Sp (𝓞 K))) (δ : ℝ) :
     (∃ (F : GenFib P) (hg : _) (rig : _) (hr : _) (th : _) (hth : _), IsThetaDeg (F.key hg rig hr th hth) δ) ↔

@@ -11,7 +11,7 @@ section Pi
 variable {E : Type*} [CommRing E] {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[leftMulMatrix_eq_repr_mul]`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.diagonal_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem leftMulMatrix_pi_basisFun [DecidableEq ι] (x : ι → E) :
     leftMulMatrix (Pi.basisFun E ι) x = Matrix.diagonal x := by
@@ -20,7 +20,7 @@ theorem leftMulMatrix_pi_basisFun [DecidableEq ι] (x : ι → E) :
   by_cases h : i = j <;> simp [h, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basisFun E ι), leftMulMatrix_pi_basisFun, Matrix.trace_diagonal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraTrace_pi_apply (x : ι → E) : Algebra.trace E (ι → E) x = ∑ i, x i := by
   classical
@@ -35,7 +35,7 @@ variable {R S : Type*} (E : Type*) [CommRing R] [CommRing S] [Algebra R S] [Comm
   [Algebra R E] [Module.Free R S] [Module.Finite R S]
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraTrace_one_tmul (x : S) :
     Algebra.trace E (E ⊗[R] S) (1 ⊗ₜ x) = algebraMap R E (Algebra.trace R S x) := by
@@ -52,11 +52,11 @@ variable {R S : Type*} (E : Type*) [CommRing R] [CommRing S] [Algebra R S] [Fiel
 variable (R S) in
 
 /- English proof (translation)
-Take `⟨n, ⟨e⟩⟩` from `IsFiniteSplit.nonempty_algEquiv_fun E (E ⊗[R] S)`. Set `f : Fin n → (E ⊗[R] S →ₐ[E] E)` to `fun j ↦ (Pi.evalAlgHom E (fun _ ↦ E) j).comp e.toAlgHom`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Use `AlgHom.congr_fun hij (e.symm (Pi.single i 1))` as an intermediate fact. Simplify using `[f, Ne.symm h] at this`. Introduce `g`. Take `⟨j, hj⟩` from `AlgHom.eq_piEvalAlgHom (g.comp e.symm.toAlgHom)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨j, AlgHom.ext fun x ↦ ?_⟩` and prove the remaining obligations. Simplify `(AlgHom.congr_fun hj (e x)).symm` using `[f]`. Conclude with `⟨n, (Equiv.ofBijective f hf).trans (AlgHom.liftEquiv R E S E).symm, e, fun x j ↦ rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem exists_algEquiv_fin_points :
     ∃ (n : ℕ) (P : Fin n ≃ (S →ₐ[R] E)) (e : E ⊗[R] S ≃ₐ[E] (Fin n → E)),
@@ -79,7 +79,7 @@ theorem exists_algEquiv_fin_points :
 
 variable (R S) in
 /- English proof (translation)
-Take `⟨n, P, -⟩` from `exists_algEquiv_fin_points R S E`. Conclude with `Finite.of_equiv _ P`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_algHom_of_isFiniteSplit : Finite (S →ₐ[R] E) := by
   obtain ⟨n, P, -⟩ := exists_algEquiv_fin_points R S E
@@ -88,7 +88,7 @@ theorem finite_algHom_of_isFiniteSplit : Finite (S →ₐ[R] E) := by
 variable {E} in
 
 /- English proof (translation)
-Take `⟨n, Q, e, he⟩` from `exists_algEquiv_fin_points R S E`. Use `⟨e.trans (AlgEquiv.piCongrLeft' E (fun _ ↦ E) (Q.trans P.symm)), fun x j ↦ ?_⟩` and prove the remaining obligations. Simplify using `[he]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_algEquiv_points {ι : Type*} (P : ι ≃ (S →ₐ[R] E)) :
     ∃ e : E ⊗[R] S ≃ₐ[E] (ι → E), ∀ x j, e (1 ⊗ₜ x) j = P j x := by
@@ -101,7 +101,7 @@ variable [Module.Free R S]
 variable (R S) in
 
 /- English proof (translation)
-Take `⟨n, P, e, -⟩` from `exists_algEquiv_fin_points R S E`. Rewrite using `[← Nat.card_congr P, ← Module.finrank_baseChange (R := E), e.toLinearEquiv.finrank_eq]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem natCard_algHom_eq_finrank [Nontrivial R] : Nat.card (S →ₐ[R] E) = finrank R S := by
   obtain ⟨n, P, e, -⟩ := exists_algEquiv_fin_points R S E
@@ -111,7 +111,7 @@ theorem natCard_algHom_eq_finrank [Nontrivial R] : Nat.card (S →ₐ[R] E) = fi
 variable {E} {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Use `(algebraMap R E).domain_nontrivial` as an intermediate fact. Rewrite using `[← natCard_algHom_eq_finrank R S E, ← Nat.card_congr P, Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_eq_finrank_of_points (P : ι ≃ (S →ₐ[R] E)) : Fintype.card ι = finrank R S := by
   have := (algebraMap R E).domain_nontrivial
@@ -120,7 +120,7 @@ theorem card_eq_finrank_of_points (P : ι ≃ (S →ₐ[R] E)) : Fintype.card ι
 variable [Module.Finite R S]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_algEquiv_points P`. Rewrite using `[← algebraTrace_one_tmul, ← Algebra.trace_eq_of_algEquiv e, algebraTrace_pi_apply]`. Simplify using `[he]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem algebraMap_trace_eq_sum_points (P : ι ≃ (S →ₐ[R] E)) (x : S) :
     algebraMap R E (Algebra.trace R S x) = ∑ j, P j x := by
@@ -131,7 +131,7 @@ theorem algebraMap_trace_eq_sum_points (P : ι ≃ (S →ₐ[R] E)) (x : S) :
 variable [DecidableEq ι]
 
 /- English proof (translation)
-Establish `: (algebraMap R E).mapMatrix (traceMatrix R v) = (Matrix.of fun i j ↦ P j (v i)) * (Matrix.of fun i j ↦ P j (v i))ᵀ`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, algebraMap_trace_eq_sum_points P]`. Rewrite using `[discr_def, RingHom.map_det, this, Matrix.det_mul, Matrix.det_transpose, pow_two]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_points_sq_eq_discr (P : ι ≃ (S →ₐ[R] E)) (v : ι → S) :
     (Matrix.of fun i j ↦ P j (v i)).det ^ 2 = algebraMap R E (discr R v) := by
@@ -144,9 +144,9 @@ theorem det_points_sq_eq_discr (P : ι ≃ (S →ₐ[R] E)) (v : ι → S) :
 omit [Module.Free R S] [Module.Finite R S] in
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_algEquiv_points P`. Establish `h` using `(Pi.basisFun E ι).isUnit_det ((Algebra.TensorProduct.basis E b).map e.toLinearEquiv)`. Rewrite `h` using `[Basis.det_apply, ← Matrix.det_transpose]`. Use `h.ne_zero using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[Basis.toMatrix_apply, Algebra.TensorProduct.basis_apply, he]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_points_ne_zero_of_basis (P : ι ≃ (S →ₐ[R] E)) (b : Basis ι R S) :
     (Matrix.of fun i j ↦ P j (b i)).det ≠ 0 := by
@@ -179,9 +179,9 @@ variable (K A : Type*) [Field K] [CommRing A] [Algebra K A]
 variable {K A} {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hli`. Use `det_points_sq_eq_discr P v` as an intermediate fact. Rewrite `this` using `[discr_zero_of_not_linearIndependent K hli, map_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero 2 h this`. Introduce `h`. Simplify using `using det_points_ne_zero_of_basis P (basisOfLinearIndependentOfCardEqFinrank' v h (card_eq_finrank_of_points P))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem det_points_ne_zero_iff {E : Type*} [Field E] [Algebra K E] [Module.Finite K A]
     [IsFiniteSplit E (E ⊗[K] A)] (P : ι ≃ (A →ₐ[K] E)) (v : ι → A) :
@@ -197,7 +197,7 @@ theorem det_points_ne_zero_iff {E : Type*} [Field E] [Algebra K E] [Module.Finit
       (basisOfLinearIndependentOfCardEqFinrank' v h (card_eq_finrank_of_points P))
 
 /- English proof (translation)
-Use `FormallyUnramified.finite_of_free K A` as an intermediate fact. Use `finite_algHom_of_isFiniteSplit K A (AlgebraicClosure K)` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨P⟩ : Nonempty (ι ≃ (A →ₐ[K] AlgebraicClosure K)) := by`. Rewrite using `[← Finite.card_eq, natCard_algHom_eq_finrank, Nat.card_eq_fintype_card, h]`. Rewrite using `[← det_points_ne_zero_iff P, ← pow_ne_zero_iff (a := Matrix.det _) two_ne_zero, det_points_sq_eq_discr]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

@@ -12,13 +12,13 @@ variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ Module
   {ι : Type} (U : ι → ObjectProperty C)
 
 /- English proof (translation)
-Introduce `_ _ φ h a` and use `hU (i a) φ (h a)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cosieve_capT (hU : ∀ α, Cosieve (U α)) {n : ℕ} (i : Fin n → ι) : Cosieve (capT U i) :=
   fun _ _ φ h a => hU (i a) φ (h a)
 
 /- English proof (translation)
-Introduce `k` and use `by refine Fin.cases ?_ (fun k => ?_) k · exact ha · exact hi k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem capT_cons {n : ℕ} {a : ι} {i : Fin n → ι} {T : C} (ha : U a T) (hi : capT U i T) :
     capT U (Fin.cons (α := fun _ => ι) a i) T := fun k => by
@@ -37,7 +37,7 @@ def ev (hU : ∀ α, Cosieve (U α)) {n q : ℕ} (i : Fin n → ι) (x : CH.Cn (
 variable {F U}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ev_congr (hU : ∀ α, Cosieve (U α)) {n q : ℕ} (f : ∀ i : Fin n → ι, CH.Cn ((capT U i).ι ⋙ F) q)
     {i i' : Fin n → ι} (e : i = i') (s : ComposableArrows C q) (h : capT U i (s.obj 0))
@@ -45,7 +45,7 @@ theorem ev_congr (hU : ∀ α, Cosieve (U α)) {n q : ℕ} (f : ∀ i : Fin n �
   subst e; rfl
 
 /- English proof (translation)
-Establish `e` using `congrFun (congrFun (Cos.d_apply ((cechCC F U).cos q) p f) i) (liftC U hU i s h)`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_d (hU : ∀ α, Cosieve (U α)) {p q : ℕ} (f : ∀ i : Fin (p + 1) → ι, CH.Cn ((capT U i).ι ⋙ F) q)
     (i : Fin (p + 2) → ι) (s : ComposableArrows C q) (h : capT U i (s.obj 0)) :
@@ -57,7 +57,7 @@ theorem ev_d (hU : ∀ α, Cosieve (U α)) {p q : ℕ} (f : ∀ i : Fin (p + 1) 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[Function.comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cons_zero {n : ℕ} (a : ι) (i : Fin (n + 1) → ι) :
     (Fin.cons (α := fun _ => ι) a i : Fin (n + 2) → ι) ∘ (0 : Fin (n + 2)).succAbove = i := by
@@ -65,7 +65,7 @@ theorem cons_zero {n : ℕ} (a : ι) (i : Fin (n + 1) → ι) :
   simp [Function.comp]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `[Function.comp]`. Simplify using `[Function.comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cons_succ {n : ℕ} (a : ι) (i : Fin (n + 1) → ι) (j : Fin (n + 1)) :
     (Fin.cons (α := fun _ => ι) a i : Fin (n + 2) → ι) ∘ j.succ.succAbove =
@@ -82,9 +82,9 @@ def hh (hU : ∀ α, Cosieve (U α)) (α : C → ι) (hα : ∀ T, U (α T) T) {
     (capT_cons U (hα _) (t.obj 0).property)
 
 /- English proof (translation)
-Establish `h'` using `capT_cons U (hα (s.obj 0)) h`. Establish `e` using `ev_d hU f _ s h'`. Establish `z : ev F U hU _ (((cechCC F U).cos q).d (p + 1) f (Fin.cons (α` using `fun _ => ι) (α (s.obj 0)) i)) s h' = 0 := by`. Rewrite using `[hf]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `e` using `[z, Fin.sum_univ_succ]`. Establish `e0` using `ev_congr hU f (cons_zero (α (s.obj 0)) i) s (fun a => h' _) h`. Establish `e1 : ∀ j : Fin (p + 2), ev F U hU _ (f ((Fin.cons (α` using `fun _ => ι) (α (s.obj 0)) i : Fin (p + 3) → ι) ∘ j.succ.succAbove)) s (fun a => h' _) = ev F U hU _ (f (Fin.cons (α := fun _ => ι) (α (s.obj 0)) (i ∘ j.succAbove))) s (capT_cons U (hα _) fun a => h _) := fun j => ev_congr hU f (cons_succ _ i j) s _ _`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, Fin.val_succ, pow_succ, mul_neg, mul_one, neg_smul, Finset.sum_neg_distrib, e0, e1] at e`. Conclude with `(add_neg_eq_zero.1 e.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cocycle_eq (hU : ∀ α, Cosieve (U α)) (α : C → ι) (hα : ∀ T, U (α T) T) {p q : ℕ}
     (f : ∀ i : Fin (p + 2) → ι, CH.Cn ((capT U i).ι ⋙ F) q) (hf : ((cechCC F U).cos q).d (p + 1) f = 0)
@@ -106,11 +106,11 @@ theorem cocycle_eq (hU : ∀ α, Cosieve (U α)) (α : C → ι) (hα : ∀ T, U
   exact (add_neg_eq_zero.1 e.symm)
 
 /- English proof (translation)
-Establish `h'` using `capT_cons U (hα (s.obj 0)) h`. Establish `e` using `ev_d hU f _ s h'`. Establish `z : ev F U hU _ (((cechCC F U).cos q).d 0 f (Fin.cons (α` using `fun _ => ι) (α (s.obj 0)) i)) s h' = 0 := by`. Rewrite using `[hf]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `e` using `[z, Fin.sum_univ_two]`. Establish `e0` using `ev_congr hU f (cons_zero (α (s.obj 0)) i) s (fun a => h' _) h`. Establish `e1` using `ev_congr hU f (i := (Fin.cons (α := fun _ => ι) (α (s.obj 0)) i : Fin (0 + 2) → ι) ∘ (1 : Fin (0 + 2)).succAbove) (i' := fun _ => α (s.obj 0)) (funext fun k => by`. Take `rfl : k = 0` from `Subsingleton.elim (α := Fin 1) _ _`. Use the proof step `rfl) s (fun a => h' _) (fun _ => hα _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_zero, pow_zero, one_smul, Fin.val_one, pow_one, neg_smul, e0, e1] at e`. Conclude with `(add_neg_eq_zero.1 e.symm)`.
+A detailed English derivation is pending.
 -/
 theorem cocycle_zero (hU : ∀ α, Cosieve (U α)) (α : C → ι) (hα : ∀ T, U (α T) T) {q : ℕ}
     (f : ∀ i : Fin (0 + 1) → ι, CH.Cn ((capT U i).ι ⋙ F) q) (hf : ((cechCC F U).cos q).d 0 f = 0)
@@ -134,13 +134,11 @@ end GlobalTheory.CompanionTheory.CechRowExact
 open GlobalTheory.CompanionTheory.CechRowExact in
 
 /- English proof (translation)
-Introduce `R _ C _ F ι U hU hc q`. Use `choose α hα using hc`. Use `⟨(cechAugRowU F U).hε q, fun g hg => ?_, fun f hf => ?_, fun n f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Use function extensionality and compare the values at `s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `congrFun (congrFun hg fun _ => α (s.obj 0)) (liftC U hU _ s fun _ => hα _)`. Conclude with `h1`. Use `⟨fun s => ev F U hU _ (f fun _ => α (s.obj 0)) s (fun _ => hα _), ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Use function extensionality and compare the values at `i t`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(cocycle_zero hU α hα f hf i (t ⋙ (capT U i).ι) (t.obj 0).property).symm`. Use `⟨hh hU α hα f, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Use function extensionality and compare the values at `i t`. Use `(ev_d hU (hh hU α hα f) i (t ⋙ (capT U i).ι) (t.obj 0).property).trans ?_` and prove the remaining obligations.
-
-Use `Eq.trans ?_ (cocycle_eq hU α hα f hf i (t ⋙ (capT U i).ι) (t.obj 0).property).symm` and prove the remaining obligations. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.CechRowExact.cech_rows : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R) {ι : Type} (U : ι → ObjectProperty C), (∀ α, Cosieve (U α)) → (∀ T, ∃ α, U α T) → ∀ q, ((cechCC F U).dcx.row q).ResUpTo 1 ((cechAugRowU F U).ε q) := by
   intro R _ C _ F ι U hU hc q

@@ -8,14 +8,14 @@ namespace GlobalTheory.Honda.TwistedDivision
 variable {K : Type} [NormedField K]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max x (-y)).trans_eq (by rw [norm_neg])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_le_max_of_ultrametric_field [IsUltrametricDist K] (x y : K) : ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
   rw [sub_eq_add_neg]
   exact (IsUltrametricDist.norm_add_le_max x (-y)).trans_eq (by rw [norm_neg])
 
 /- English proof (translation)
-Proceed by induction on `i generalizing x with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [pow_succ, RingHom.mul_def, RingHom.comp_apply, ih, hτ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem norm_pow_apply (τ : K →+* K) (hτ : ∀ x, ‖τ x‖ = ‖x‖) (i : ℕ) (x : K) :
     ‖(τ ^ i) x‖ = ‖x‖ := by
@@ -31,13 +31,13 @@ termination_by m => m
 decreasing_by exact i.isLt
 
 /- English proof (translation)
-Rewrite using `[step]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem step_zero (τ : K →+* K) (π : K) (c : ℕ → K) (t : ℕ → K) : step τ π c t 0 = 1 := by
   rw [step]
 
 /- English proof (translation)
-Rewrite using `[step, Fin.sum_univ_eq_sum_range (fun i => step τ π c t i * (τ ^ i) (c (m + 1 - i)))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem step_succ (τ : K →+* K) (π : K) (c : ℕ → K) (t : ℕ → K) (m : ℕ) :
     step τ π c t (m + 1) = (π * t (m + 2) - ∑ i ∈ Finset.range (m + 1), step τ π c t i * (τ ^ i) (c (m + 1 - i))) /
@@ -49,11 +49,11 @@ include hτ hc0
 
 include hc in
 /- English proof (translation)
-Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Consider the cases of `m with`. Consider the case `zero => simp [step_zero]`. Consider the case `succ m`.
+Proceed by induction. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite using `[step_succ, norm_div, norm_pow_apply τ hτ, hc0, div_one]`. Use `(norm_sub_le_max_of_ultrametric_field _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hπ (norm_nonneg _) (ht _)`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_pow_apply τ hτ]`. Conclude with `mul_le_one₀ (ih i (Finset.mem_range.1 hi)) (norm_nonneg _) (hc _)`.
+A detailed English derivation is pending.
 -/
 theorem step_bound [IsUltrametricDist K] (hπ : ‖π‖ ≤ 1) (t : ℕ → K) (ht : ∀ j, ‖t j‖ ≤ 1) (m : ℕ) : ‖step τ π c t m‖ ≤ 1 := by
   induction m using Nat.strong_induction_on with
@@ -70,13 +70,13 @@ theorem step_bound [IsUltrametricDist K] (hπ : ‖π‖ ≤ 1) (t : ℕ → K) 
 
 include hc in
 /- English proof (translation)
-Establish `hπε : 0 ≤ ‖π‖ * ε` using `mul_nonneg (norm_nonneg _) hε`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Consider the cases of `m with`. Consider the case `zero => simpa [step_zero] using hπε`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ m`. Rewrite using `[step_succ, step_succ, ← sub_div, norm_div, norm_pow_apply τ hτ, hc0, div_one]`. Establish `key : (π * t (m + 2) - ∑ i ∈ Finset.range (m + 1), step τ π c t i * (τ ^ i) (c (m + 1 - i))) - (π * t' (m + 2) - ∑ i ∈ Finset.range (m + 1), step τ π c t' i * (τ ^ i) (c (m + 1 - i))) = π * (t (m + 2) - t' (m + 2)) - ∑ i ∈ Finset.range (m + 1), (step τ π c t i - step τ π c t' i) …`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[key]`. Use `(norm_sub_le_max_of_ultrametric_field _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (h _) (norm_nonneg _)`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hπε fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_pow_apply τ hτ]`. Establish `hi' : i < m + 1` using `Finset.mem_range.1 hi`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem step_diff [IsUltrametricDist K] (t t' : ℕ → K) (ε : ℝ) (hε : 0 ≤ ε) (h : ∀ j, ‖t j - t' j‖ ≤ ε) (m : ℕ) :
     ‖step τ π c t m - step τ π c t' m‖ ≤ ‖π‖ * ε := by
@@ -103,11 +103,11 @@ theorem step_diff [IsUltrametricDist K] (t t' : ℕ → K) (ε : ℝ) (hε : 0 �
           _ = ‖π‖ * ε := mul_one _
 
 /- English proof (translation)
-Establish `hu : (τ ^ (m + 1)) (c 0) ≠ 0`. Introduce `h0`. Use `norm_pow_apply τ hτ (m + 1) (c 0)` as an intermediate fact. Rewrite `this` using `[h0, norm_zero, hc0]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_range_succ, step_succ]`. Establish `h1 : m + 2 - 1 - (m + 1) = 0` using `by omega`. Rewrite using `[h1, div_mul_cancel₀ _ hu]`. Establish `h2 : ∑ i ∈ Finset.range (m + 1), step τ π c t i * (τ ^ i) (c (m + 2 - 1 - i)) = ∑ i ∈ Finset.range (m + 1), step τ π c t i * (τ ^ i) (c (m + 1 - i))`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: m + 2 - 1 - i = m + 1 - i` using `by omega`. Rewrite using `[this]`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem step_eq (t : ℕ → K) (m : ℕ) :
     π * t (m + 2) = ∑ i ∈ Finset.range (m + 2), step τ π c t i * (τ ^ i) (c (m + 2 - 1 - i)) := by
@@ -130,25 +130,21 @@ namespace GlobalTheory.Honda
 open PowerSeries Filter Topology
 
 /- English proof (translation)
-Introduce `K _ _ _ τ hτ π hπ c hc0 hc`. Set `T : ℕ → ℕ → K` to `fun k => (TwistedDivision.step τ π c)^[k] (fun _ => 1)`. Establish `hTs : ∀ k, T (k + 1) = TwistedDivision.step τ π c (T k)` using `fun k => Function.iterate_succ_apply' _ _ _`. Establish `hπ1 : ‖π‖ ≤ 1` using `hπ.le`. Establish `hB : ∀ k j, ‖T k j‖ ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro j`. Simplify using `[T]`. Consider the case `succ k ih => intro j`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[hTs]`. Conclude with `TwistedDivision.step_bound τ hτ π c hc0 hc hπ1 _ ih j`. Establish `hD : ∀ k j, ‖T (k + 1) j - T k j‖ ≤ ‖π‖ ^ k`. Introduce `k`. Proceed by induction on `k with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => intro j`. Simplify using `using (TwistedDivision.norm_sub_le_max_of_ultrametric_field _ _).trans (max_le (hB 1 j) (hB 0 j))`. Consider the case `succ k ih`. Introduce `j`. Use `TwistedDivision.step_diff τ hτ π c hc0 hc (T (k + 1)) (T k) _ (pow_nonneg (norm_nonneg _) _) ih j` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hTs (k + 1), ← hTs k, ← pow_succ']`. Conclude with `this`. Establish `hC : ∀ j, ∃ x, Tendsto (fun k => T k j) atTop (𝓝 x)` using `fun j => cauchySeq_tendsto_of_complete (cauchySeq_of_le_geometric ‖π‖ 1 hπ fun k => by`. Rewrite using `[dist_eq_norm, norm_sub_rev, one_mul]`. Conclude with `hD k j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose t ht using hC`. Use `⟨t, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ k, T k 0 = 1`. Introduce `k`. Consider the cases of `k with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => rfl`. Consider the case `succ k => rw [hTs]`. Conclude with `TwistedDivision.step_zero _ _ _ _`. Establish `: Tendsto (fun k => T k 0) atTop (𝓝 1)` using `by simp only [h0]; exact tendsto_const_nhds`. Conclude with `tendsto_nhds_unique (ht 0) this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Conclude with `le_of_tendsto' (ht j).norm fun k => hB k j`. Introduce `n hn`. Take `⟨m, rfl⟩ : ∃ m, n = m + 2` from `⟨n - 2, by omega⟩`. Establish `hL : Tendsto (fun k => π * T k (m + 2)) atTop (𝓝 (π * t (m + 2)))` using `(ht _).const_mul π`.
-
-Establish `hR : Tendsto (fun k => ∑ i ∈ Finset.range (m + 2), T (k + 1) i * (τ ^ i) (c (m + 2 - 1 - i))) atTop (𝓝 (∑ i ∈ Finset.range (m + 2), t i * (τ ^ i) (c (m + 2 - 1 - i))))` using `tendsto_finsetSum _ fun i _ => (((ht i).comp (tendsto_add_atTop_nat 1)).mul_const _)`. Establish `hEq : (fun k => π * T k (m + 2)) = fun k => ∑ i ∈ Finset.range (m + 2), T (k + 1) i * (τ ^ i) (c (m + 2 - 1 - i))`. Use function extensionality and compare the values at `k`. Rewrite using `[hTs]`. Conclude with `TwistedDivision.step_eq τ hτ π c hc0 _ m`.
-
-Rewrite `hL` using `[hEq]`. Conclude with `tendsto_nhds_unique hL hR`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_twisted_division : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CompleteSpace K] (τ : K →+* K),
     (∀ x, ‖τ x‖ = ‖x‖) → ∀ π : K, ‖π‖ < 1 → ∀ c : ℕ → K, ‖c 0‖ = 1 → (∀ i, ‖c i‖ ≤ 1) →

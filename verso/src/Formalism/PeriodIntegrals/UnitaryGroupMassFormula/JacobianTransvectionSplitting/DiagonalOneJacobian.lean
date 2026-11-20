@@ -38,15 +38,15 @@ def scaleAt (i : ι) (a : F) (ha : a ≠ 0) : (ι → F) ≃ₜ+ (ι → F) wher
   continuous_invFun := continuous_id.update i (continuous_const.mul (continuous_apply i))
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [Set.mem_image, Set.mem_univ_pi]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ j`. Distinguish the cases in `hj : j = i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using `only [update_self]`. Conclude with `⟨x j, hx j, rfl⟩`. Simplify using `only [update_of_ne hj]`. Conclude with `hx j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Establish `hyi` using `hy i`. Simplify using `only [update_self, Set.mem_image] at hyi`. Take `⟨t, ht, hti⟩` from `hyi`. Use `⟨update y i t, fun j => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using ht`. Use `hy j` as an intermediate fact. Simplify `this` using `[update_of_ne hj]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[hti]`. Simplify using `[update_of_ne hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem image_update_pi (i : ι) (a : F) (_ha : a ≠ 0) (s : ι → Set F) :
     (fun x => update x i (a * x i)) '' (univ.pi s) =
@@ -80,27 +80,23 @@ theorem image_update_pi (i : ι) (a : F) (_ha : a ≠ 0) (s : ι → Set F) :
 end Diag
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ι _ _ mι bι i a ha ν hν S hS`. Establish `hpi : mι = @MeasurableSpace.pi ι (fun _ => F) (fun _ => borel F)`. Use `letI : MeasurableSpace F := borel F`. Use `haveI : BorelSpace F := ⟨rfl⟩`. Rewrite using `[bι.measurable_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Conclude with `(Pi.borelSpace (ι := ι) (X := fun _ => F)).measurable_eq.symm`. Substitute `hpi` using the available equality. Use `letI mF : MeasurableSpace F := borel F`. Use `haveI : BorelSpace F := ⟨rfl⟩`. Use `haveI := hν`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set μ : Measure F := Measure.addHaar with hμ`. Use `set P : Measure (ι → F) := Measure.pi fun _ => μ with hP`. Use `set m' : ℝ≥0 := distribHaarChar F (Units.mk0 a ha) with hm'`. Establish `hmod : modF F a = (m' : ℝ≥0∞)` using `by simp [modF, ha, hm']`. Use `set φ := scaleAt i a ha with hφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `himg : ∀ T : Set (ι → F), φ '' T = φ.symm ⁻¹' T` using `fun T => by`. Rewrite using `[Set.image_eq_preimage_of_inverse (fun x => φ.symm_apply_apply x) (fun x => φ.apply_symm_apply x)]`. Establish `hφm : Measurable φ.symm` using `φ.symm.continuous.measurable`. Establish `hscal : ∀ t : Set F, μ ((fun y => a * y) '' t) = m' * μ t` using `fun t => by`. Rewrite using `[distribHaarChar_mul μ (Units.mk0 a ha) t, ← Set.image_smul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `set μs : ι → Measure F := update (fun _ => μ) i (m' • μ) with hμs`. Establish `hsf : ∀ j, SigmaFinite (μs j)`. Introduce `j`. Distinguish the cases in `hj : j = i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using `only [hμs, update_self]`. Use `infer_instance`. Simplify using `only [hμs, update_of_ne hj] infer_instance`. Establish `hA : Measure.pi μs = Measure.map φ.symm P`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hφm (MeasurableSet.univ_pi hs), ← himg]`. Rewrite using `[show ((φ : (ι → F) → (ι → F)) '' univ.pi s) = (fun x => update x i (a * x i)) '' univ.pi s from rfl, image_update_pi i a ha s, hP, Measure.pi_pi]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hj` using the available equality. Simplify using `only [hμs, update_self, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, hscal]`. Simplify using `only [hμs, update_of_ne hj]`. Establish `hB : Measure.pi μs = m' • P`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.smul_apply, hP, Measure.pi_pi, ENNReal.smul_def, smul_eq_mul, ← Finset.mul_prod_erase Finset.univ (fun j => μs j (s j)) (Finset.mem_univ i), ← Finset.mul_prod_erase Finset.univ (fun j => μ (s j)) (Finset.mem_univ i)]`. Establish `herase : ∏ j ∈ Finset.univ.erase i, μs j (s j) = ∏ j ∈ Finset.univ.erase i, μ (s j)` using `Finset.prod_congr rfl fun j hj => by`. Simplify using `only [hμs, update_of_ne (Finset.ne_of_mem_erase hj)]`. Rewrite using `[herase]`. Simplify using `only [hμs, update_self, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hmap : Measure.map φ.symm P = m' • P` using `hA.symm.trans hB`. Establish `hPS : P (φ '' S) = m' * P S`. Rewrite using `[himg, ← Measure.map_apply hφm hS, hmap, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `hνP : ν = ν.addHaarScalarFactor P • P` using `Measure.isAddLeftInvariant_eq_smul ν P`.
-
-Use `show ν (φ '' S) = modF F a * ν S`. Rewrite using `[hmod, hνP, Measure.smul_apply, Measure.smul_apply, hPS, ENNReal.smul_def, ENNReal.smul_def, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem diagonal_one_jacobian : DiagOne := by
   intro F _ _ _ _ _ _ ι _ _ mι bι i a ha ν hν S hS

@@ -7,11 +7,11 @@ open Finset
 open Finset in
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter]`. Establish `hfin` using `Fin.sum_univ_eq_sum_range (fun j => if j < i then (if h : j < m then f ⟨j, h⟩ else 0) else 0) m`. Simplify using `only [Fin.is_lt, ↓reduceDIte, Fin.eta] at hfin`. Rewrite using `[hfin, ← Finset.sum_filter]`. Apply `Finset.sum_subset` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j hj`. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hj ⊢`. Conclude with `hj.2`. Introduce `j hj hj'`. Simplify using `only [Finset.mem_filter, Finset.mem_range, not_and] at hj hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hjm : ¬ j < m` using `fun hjm => hj' hjm hj`. Simplify using `[hjm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Harm.sum_filter_lt_eq_sum_range {m : ℕ} (f : Fin m → ℤ) (i : ℕ) :
     ∑ k ∈ Finset.univ.filter (fun k : Fin m => (k : ℕ) < i), f k =
@@ -32,7 +32,7 @@ theorem _root_.GlobalTheory.Harm.sum_filter_lt_eq_sum_range {m : ℕ} (f : Fin m
 
 open Finset in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [sum_range_succ, sum_range_succ, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sum_range_sub_mul_eq_abel_summation (D e : ℕ → ℤ) (n : ℕ) :
     ∑ i ∈ range n, (D (i + 1) - D i) * e i =
@@ -44,29 +44,27 @@ private theorem sum_range_sub_mul_eq_abel_summation (D e : ℕ → ℤ) (n : ℕ
 open Finset in
 
 /- English proof (translation)
-Take `⟨d, hd⟩ : ∃ d : ℕ → ℤ, d = fun j => (if h : j < m then κ₀ ⟨j, h⟩ else 0) - (if h : j < m then κ ⟨j, h⟩ else 0)` from `⟨_, rfl⟩`. Take `⟨e, he⟩ : ∃ e : ℕ → ℤ, e = fun j => if h : j < m then κ₀ ⟨j, h⟩ + κ ⟨j, h⟩ + (m : ℤ) - 1 - 2 * (j : ℤ) else 0` from `⟨_, rfl⟩`. Take `⟨D, hD⟩ : ∃ D : ℕ → ℤ, D = fun j => ∑ i ∈ range j, d i` from `⟨_, rfl⟩`. Establish `hDj : ∀ j, D j = ∑ k ∈ univ.filter (fun k : Fin m => (k : ℕ) < j), κ₀ k - ∑ k ∈ univ.filter (fun k : Fin m => (k : ℕ) < j), κ k`. Introduce `j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hD, hd, sum_sub_distrib, _root_.GlobalTheory.Harm.sum_filter_lt_eq_sum_range]`. Establish `hD0 : ∀ j, 0 ≤ D j` using `fun j => by rw [hDj]; linarith [hle j]`. Establish `hDm : D m = 0` using `by rw [hDj]; simp [hsum]`. Establish `hDzero : D 0 = 0` using `by simp [hD]`. Establish `hdD : ∀ j, d j = D (j + 1) - D j` using `by intro j; simp [hD, sum_range_succ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC' : ∑ i ∈ range m, (D (i + 1) - D i) * e i ≤ 0`. Establish `h1 : ∑ i ∈ range m, d i * e i = ∑ i : Fin m, (κ₀ i - κ i) * (κ₀ i + κ i + m - 1 - 2 * (i : ℕ))`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => d i * e i) m]`. Use `sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `[hd, he, i.isLt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∑ i : Fin m, (κ₀ i - κ i) * (κ₀ i + κ i + m - 1 - 2 * (i : ℕ)) = ∑ i, κ₀ i * (κ₀ i + m - 1 - 2 * (i : ℕ)) - ∑ i, κ i * (κ i + m - 1 - 2 * (i : ℕ))`. Rewrite using `[← sum_sub_distrib]`. Use `sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[← hdD]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[h1, h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `sum_range_sub_mul_eq_abel_summation D e m`. Rewrite `key` using `[hDm, hDzero, zero_mul, zero_mul, zero_add, sub_zero]`. Establish `he_gap : ∀ i, i + 1 < m → 2 ≤ e i - e (i + 1)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `h1` using `h₀ (Fin.mk_le_mk.mpr (Nat.le_succ i) : (⟨i, by omega⟩ : Fin m) ≤ ⟨i + 1, hi⟩)`. Establish `h2` using `h (Fin.mk_le_mk.mpr (Nat.le_succ i) : (⟨i, by omega⟩ : Fin m) ≤ ⟨i + 1, hi⟩)`. Simplify using `only [he, hi, show i < m by omega, ↓reduceDIte]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hterm : ∀ i ∈ range m, 0 ≤ D (i + 1) * (e i - e (i + 1))`. Introduce `i hi`. Rewrite `hi` using `[mem_range]`. Break down `Nat.lt_or_ge (i + 1) m with h' | h'` into its components or cases.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `mul_nonneg (hD0 _) (by linarith [he_gap i h'])`. Rewrite using `[show i + 1 = m by omega, hDm, zero_mul]`. Establish `hsum0 : ∑ i ∈ range m, D (i + 1) * (e i - e (i + 1)) = 0` using `le_antisymm (by linarith) (sum_nonneg hterm)`. Establish `hall` using `(sum_eq_zero_iff_of_nonneg hterm).mp hsum0`. Establish `hDall : ∀ j, j ≤ m → D j = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Break down `Nat.eq_zero_or_pos j with rfl | hj0` into its components or cases. Conclude with `hDzero`. Break down `Nat.lt_or_ge j m with hjm | hjm` into its components or cases. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Break down `mul_eq_zero.mp (hall i (mem_range.mpr (by omega))) with h0 | h0` into its components or cases. Conclude with `h0`. Combine the linear relations using `[he_gap i hjm]`. Rewrite using `[show j = m by omega]`. Conclude with `hDm`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Establish `hk'` using `k.isLt`. Establish `hk` using `hdD k`. Rewrite `hk` using `[hDall ((k : ℕ) + 1) (by omega), hDall (k : ℕ) (by omega)]`. Simplify using `[hd, k.isLt] at hk`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Harm.casimir_value_strict {m : ℕ} (κ κ₀ : Fin m → ℤ) (h : Antitone κ)
     (h₀ : Antitone κ₀)
@@ -151,9 +149,9 @@ theorem mixedWeight_apply (m : ℕ) {p q : ℕ} (a : Fin p → ℕ) (b : Fin q �
 open Finset in
 
 /- English proof (translation)
-Introduce `k l hkl`. Establish `hkl' : (k : ℕ) ≤ l` using `hkl`. Simplify using `only [_root_.GlobalTheory.Harm.mixedWeight_apply]`. Apply the tactic sequence `have hA : (if h : (l : ℕ) < p then (a ⟨l, h⟩ : ℤ) else 0) ≤ (if h : (k : ℕ) < p then (a ⟨k, h⟩ : ℤ) else 0) := by split_ifs <;> first`. Consider the case `omega | positivity | exact le_rfl | exact_mod_cast ha (Fin.mk_le_mk.mpr hkl')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Apply the tactic sequence `have hB : (if h : m - 1 - (k : ℕ) < q then (b ⟨m - 1 - k, h⟩ : ℤ) else 0) ≤ (if h : m - 1 - (l : ℕ) < q then (b ⟨m - 1 - l, h⟩ : ℤ) else 0) := by split_ifs <;> first`. Consider the case `omega | positivity | exact le_rfl | exact_mod_cast hb (Fin.mk_le_mk.mpr (by omega))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem _root_.GlobalTheory.Harm.antitone_mixedWeight (m : ℕ) {p q : ℕ} {a : Fin p → ℕ} {b : Fin q → ℕ}
     (ha : Antitone a) (hb : Antitone b) : Antitone (_root_.GlobalTheory.Harm.mixedWeight m a b) := by
@@ -173,11 +171,11 @@ theorem _root_.GlobalTheory.Harm.antitone_mixedWeight (m : ℕ) {p q : ℕ} {a :
 open Finset in
 
 /- English proof (translation)
-Establish `hfin` using `Fin.sum_univ_eq_sum_range (fun j => if h : j < p then f ⟨j, h⟩ else 0) m`. Establish `hfin'` using `Fin.sum_univ_eq_sum_range (fun j => if h : j < p then f ⟨j, h⟩ else 0) p`. Use `beta_reduce at hfin`. Simplify using `only [Fin.is_lt, ↓reduceDIte, Fin.eta] at hfin'`. Rewrite using `[hfin, hfin']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `j hj`. Simplify using `only [Finset.mem_range] at hj ⊢`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Simplify using `only [Finset.mem_range] at hj`. Simplify using `[hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Harm.sum_dite_lt {m p : ℕ} (hp : p ≤ m) (f : Fin p → ℤ) :
     ∑ k : Fin m, (if h : (k : ℕ) < p then f ⟨k, h⟩ else 0) = ∑ k, f k := by
@@ -198,9 +196,9 @@ theorem _root_.GlobalTheory.Harm.sum_dite_lt {m p : ℕ} (hp : p ≤ m) (f : Fin
 open Finset in
 
 /- English proof (translation)
-Rewrite using `[← _root_.GlobalTheory.Harm.sum_dite_lt hq f]`. Use `Fintype.sum_equiv Fin.revPerm _ _ (fun k => ?_)` and prove the remaining obligations. Establish `hk : ((Fin.revPerm k : Fin m) : ℕ) = m - 1 - k`. Simplify using `only [Fin.revPerm_apply, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.Harm.sum_dite_rev_lt {m q : ℕ} (hq : q ≤ m) (f : Fin q → ℤ) :
     ∑ k : Fin m, (if h : m - 1 - (k : ℕ) < q then f ⟨m - 1 - k, h⟩ else 0) = ∑ k, f k := by
@@ -214,7 +212,7 @@ theorem _root_.GlobalTheory.Harm.sum_dite_rev_lt {m q : ℕ} (hq : q ≤ m) (f :
 open Finset in
 
 /- English proof (translation)
-Establish `h1` using `_root_.GlobalTheory.Harm.sum_dite_lt (m := m) (by omega : p ≤ m) (fun i => (a i : ℤ))`. Establish `h2` using `_root_.GlobalTheory.Harm.sum_dite_rev_lt (m := m) (by omega : q ≤ m) (fun i => (b i : ℤ))`. Use `beta_reduce at h1 h2`. Simplify using `only [_root_.GlobalTheory.Harm.mixedWeight_apply, Finset.sum_sub_distrib]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Harm.sum_mixedWeight {m p q : ℕ} (h : p + q ≤ m) (a : Fin p → ℕ) (b : Fin q → ℕ) :
     ∑ k, _root_.GlobalTheory.Harm.mixedWeight m a b k = ∑ i, (a i : ℤ) - ∑ i, (b i : ℤ) := by
@@ -229,11 +227,11 @@ theorem _root_.GlobalTheory.Harm.sum_mixedWeight {m p q : ℕ} (h : p + q ≤ m)
 open Finset in
 
 /- English proof (translation)
-Establish `hp : p ≤ m` using `by omega`. Establish `hq : q ≤ m` using `by omega`. Establish `h1` using `_root_.GlobalTheory.Harm.sum_dite_lt hp (fun i : Fin p => (a i : ℤ) * (a i + m - 1 - 2 * (i : ℕ)))`. Establish `h2` using `_root_.GlobalTheory.Harm.sum_dite_rev_lt hq (fun j : Fin q => (b j : ℤ) * (b j + m - 1 - 2 * (j : ℕ)))`. Use `beta_reduce at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_mk] at h1 h2`. Establish `hpt : ∀ k : Fin m, _root_.GlobalTheory.Harm.mixedWeight m a b k * (_root_.GlobalTheory.Harm.mixedWeight m a b k + m - 1 - 2 * (k : ℕ)) = (if h : (k : ℕ) < p then (a ⟨k, h⟩ : ℤ) * (a ⟨k, h⟩ + m - 1 - 2 * (k : ℕ)) else 0) + (if h : m - 1 - (k : ℕ) < q then (b ⟨m - 1 - k, h⟩ : ℤ) * …`. Introduce `k`. Establish `hk` using `k.isLt`. Establish `hc : ((m - 1 - (k : ℕ) : ℕ) : ℤ) = (m : ℤ) - 1 - (k : ℕ)` using `by omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.GlobalTheory.Harm.mixedWeight_apply]`. Apply the tactic sequence `split_ifs <;> first | omega | (rw [hc]; ring) | ring`. Rewrite using `[Finset.sum_congr rfl (fun k _ => hpt k), Finset.sum_add_distrib, h1, h2, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl (fun i _ => ?_) <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Harm.casimir_value_mixedWeight {m p q : ℕ} (h : p + q ≤ m) (a : Fin p → ℕ) (b : Fin q → ℕ) :
     ∑ k : Fin m, _root_.GlobalTheory.Harm.mixedWeight m a b k * (_root_.GlobalTheory.Harm.mixedWeight m a b k + m - 1 - 2 * (k : ℕ)) =

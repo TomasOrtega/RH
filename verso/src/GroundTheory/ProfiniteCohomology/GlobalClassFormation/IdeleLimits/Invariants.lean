@@ -17,7 +17,7 @@ namespace IdeleLimit
 open FiniteSubfield
 
 /- English proof (translation)
-The claim follows from `(smul_of σ M x).trans (of_ideleEquiv_congr _ _ h x)`.
+A detailed English derivation is pending.
 -/
 theorem smul_of_eq_of_ideleEquiv {M : FiniteSubfield} (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (τ : M.1 ≃+* M.1)
     (h : ∀ x : M.1, σ x = τ x) (x : IdeleGroup M.1) :
@@ -25,15 +25,15 @@ theorem smul_of_eq_of_ideleEquiv {M : FiniteSubfield} (σ : ℚ̄ ≃ₐ[ℚ] �
   (smul_of σ M x).trans (of_ideleEquiv_congr _ _ h x)
 
 /- English proof (translation)
-Take `⟨E, x, rfl⟩` from `exists_of z`. Set `S : FiniteSubfield` to `⟨F.1 ⊔ E.1, inferInstance⟩`. Set `M` to `galoisClosure S`. Establish `hFM : F ≤ M` using `le_trans (show F.1 ≤ F.1 ⊔ E.1 from le_sup_left) (le_galoisClosure S)`. Establish `hEM : E ≤ M` using `le_trans (show E.1 ≤ F.1 ⊔ E.1 from le_sup_right) (le_galoisClosure S)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz`, the goal using `[← of_ideleMap hEM x]`. Set `` to `algebraOfLE hFM`. Establish `: IsScalarTower ℚ F.1 M.1` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `: IsGalois F.1 M.1` using `IsGalois.tower_top_of_isGalois ℚ F.1 M.1`. Establish `hfix : ∀ σ : M.1 ≃ₐ[F.1] M.1, σ • ideleMap hEM x = ideleMap hEM x`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ`. Set `σ' : ℚ̄ ≃ₐ[ℚ] ℚ̄` to `(σ.restrictScalars ℚ).liftNormal ℚ̄`. Establish `hσ' : ∀ y : M.1, σ' y = σ y` using `fun y ↦ (σ.restrictScalars ℚ).liftNormal_commutes ℚ̄ y`. Establish `hmem : σ' ∈ F.1.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Establish `h1` using `hσ' (algebraMap F.1 M.1 ⟨y, hy⟩)`. Rewrite `h1` using `[σ.commutes]`. Conclude with `h1`. Establish `h1` using `hz σ' hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[smul_of_eq_of_ideleEquiv σ' (σ : M.1 ≃+* M.1) hσ']`. Rewrite using `[smul_idele_eq_ideleEquiv]`. Conclude with `of_injective M h1`. Take `⟨d, hd⟩` from `(forall_smul_eq_iff_mem_range_ideleEmbedding (K := F.1) (ideleMap hEM x)).1 hfix`. Conclude with `⟨d, by rw [← of_ideleMap hFM d]; exact congrArg (of M) hd⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_of_of_forall_smul_eq (F : FiniteSubfield) (z : IdeleLimit)
     (hz : ∀ σ ∈ F.1.fixingSubgroup, σ • z = z) : z ∈ (of F).range := by

@@ -4,7 +4,7 @@ import CompanionTheory.RealGroups.GeneralUnitaryRepresentations.ArchimedeanJacqu
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.RgGu.segmentRepresentation`.
+A detailed English derivation is pending.
 -/
 theorem segmentRepresentation' : GlobalTheory.Published.SegmentRepresentation :=
   CompanionTheory.RgGu.segmentRepresentation

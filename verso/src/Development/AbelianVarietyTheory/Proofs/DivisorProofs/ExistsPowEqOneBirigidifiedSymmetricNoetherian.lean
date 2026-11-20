@@ -11,9 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.AbDual
 
 /- English proof (translation)
-Introduce `B _ _ A _ _ P hA hP h0l h0r hsym hamp`. Establish `hL : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB hP _`. Take `⟨H, _, i, hi, hm, hf, hfl, hH⟩` from `GlobalTheory.kernel_finiteFlat_subgroup B A hA _ hL hamp`. Use `haveI : IsCommMonObj H := GlobalTheory.AbelianImage.isCommMonObj_of_mono i`. Take `⟨M, hM, h1⟩` from `GlobalTheory.FiniteFlatKilled.main B H hf hfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M, hM, fun T x hx => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(hH T x).1 (memKL_diag_of_triv_ev_of_symm B A hA P hP h0l h0r hsym T x hx)`. Establish `h2 : z ^ M = 1`. Rewrite using `[← Category.comp_id z, ← MonObj.comp_pow, h1, MonObj.comp_one]`. Rewrite using `[← MonObj.pow_comp, h2, MonObj.one_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_one_of_triv_ev_noeth : ∀ (B : Type) [CommRing B] [IsNoetherianRing B] (A : Over (Sp B)) [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left), IsAbelianScheme A → P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd A A) (fst A A)).left) → Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) → ∃ M : ℕ, 0 < M ∧ ∀ (T : Over (Sp B)) (x : T ⟶ A), (∃ t : (P.pull (lift (snd A T ≫ x) (fst A T)).left).Gen, t.IsGen) → x ^ M = 1 := by
   intro B _ _ A _ _ P hA hP h0l h0r hsym hamp

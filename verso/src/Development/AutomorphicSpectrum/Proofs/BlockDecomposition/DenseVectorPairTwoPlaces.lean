@@ -11,9 +11,9 @@ section Coord
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology K (K ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (K ⊗[F] E) := IsModuleTopology.toContinuousAdd K (K ⊗[F] E)`. Use `haveI : ContinuousSMul K (K ⊗[F] E) := IsModuleTopology.toContinuousSMul K (K ⊗[F] E)`. Set `e` to `(Algebra.TensorProduct.basis K b).equivFun`. Use `⟨e.symm, IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap, e.symm.surjective, fun c => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.basis K b).equivFun.symm _ = (1 : K) ⊗ₜ[F] (∑ i, c i • b i)`. Rewrite using `[Module.Basis.equivFun_symm_apply, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tensCoord (K : Type) [NontriviallyNormedField K] [Algebra F K] {ι : Type} [Fintype ι]
     [DecidableEq ι] (b : Module.Basis ι F E) :
@@ -31,11 +31,11 @@ theorem exists_tensCoord (K : Type) [NontriviallyNormedField K] [Algebra F K] {�
     TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F E`. Take `⟨ψ₁, c₁, s₁, h₁⟩` from `exists_tensCoord K₁ b`. Take `⟨ψ₂, c₂, s₂, h₂⟩` from `exists_tensCoord K₂ b`. Set `G : (Fin (Module.finrank F E) → K₁ × K₂) → (K₁ ⊗[F] E) × (K₂ ⊗[F] E)` to `fun w => (ψ₁ (fun i => (w i).1), ψ₂ (fun i => (w i).2))`. Establish `hGc : Continuous G` using `(c₁.comp (by fun_prop)).prodMk (c₂.comp (by fun_prop))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hGs : Function.Surjective G`. Introduce and unpack `⟨x, y⟩`. Take `⟨u, rfl⟩` from `s₁ x`. Take `⟨v, rfl⟩` from `s₂ y`. Conclude with `⟨fun i => (u i, v i), rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hD : DenseRange (Pi.map fun (_ : Fin (Module.finrank F E)) (f : F) => (algebraMap F K₁ f, algebraMap F K₂ f))` using `DenseRange.piMap fun _ => h`. Use `Dense.mono ?_ (hGs.denseRange.comp hD hGc)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Use `⟨∑ i, c i • b i, ?_⟩` and prove the remaining obligations. Conclude with `(Prod.ext (h₁ c) (h₂ c)).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem denseRange_inclR_pair [FiniteDimensional F E] {K₁ K₂ : Type} [NontriviallyNormedField K₁] [Algebra F K₁]
     [NontriviallyNormedField K₂] [Algebra F K₂]
@@ -63,9 +63,9 @@ theorem denseRange_inclR_pair [FiniteDimensional F E] {K₁ K₂ : Type} [Nontri
 end Coord
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ K₁ K₂ _ _ _ _ h M`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hP : DenseRange (Pi.map fun (_ : Fin M) (x : E) => ((inclR K₁ x, inclR K₂ x) : (K₁ ⊗[F] E) × (K₂ ⊗[F] E)))` using `DenseRange.piMap fun _ => denseRange_inclR_pair h`. Set `g : ((Fin M → (K₁ ⊗[F] E) × (K₂ ⊗[F] E)) × (Fin M → (K₁ ⊗[F] E) × (K₂ ⊗[F] E))) → ((Fin M → K₁ ⊗[F] E) × (Fin M → K₁ ⊗[F] E)) × ((Fin M → K₂ ⊗[F] E) × (Fin M → K₂ ⊗[F] E))` to `fun q => ((fun i => (q.1 i).1, fun i => (q.2 i).1), (fun i => (q.1 i).2, fun i => (q.2 i).2))`. Establish `hgc : Continuous g` using `by fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgs : Function.Surjective g`. Introduce and unpack `⟨⟨a, b⟩, ⟨c, d⟩⟩`. Conclude with `⟨(fun i => (a i, c i), fun i => (b i, d i)), rfl⟩`. Conclude with `hgs.denseRange.comp (hP.prodMap hP) hgc`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem denseRange_ratPairs : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ {K₁ K₂ : Type} [NontriviallyNormedField K₁] [Algebra F K₁] [NontriviallyNormedField K₂] [Algebra F K₂], DenseRange (fun f : F => (algebraMap F K₁ f, algebraMap F K₂ f)) → ∀ M : ℕ, DenseRange (fun p : (Fin M → E) × (Fin M → E) => (((incV K₁ p.1, incV K₁ p.2), (incV K₂ p.1, incV K₂ p.2)) : ((Fin M → K₁ ⊗[F] E) × (Fin M → K₁ ⊗[F] E)) × ((Fin M → K₂ ⊗[F] E) × (Fin M → K₂ ⊗[F] E)))) := by
   intro F E _ _ _ _ _ σ _ K₁ K₂ _ _ _ _ h M

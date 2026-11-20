@@ -367,7 +367,7 @@ def RealisationStatementAll : Prop :=
   ∃ C₁ C₀ : ℝ, ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (C : ℝ), admitted D HW F Cm C → Conclusion1 D C₁ ∧ ∀ C₂ : ℝ, C₀ ≤ C₂ → Conclusion2 D C₂
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C₁, C₀, h⟩`. Conclude with `⟨C₁, C₀, fun D HW F Cm C C₂ hC₂ hA => ⟨(h D HW F Cm C hA).1, (h D HW F Cm C hA).2 C₂ hC₂⟩⟩`. Introduce and unpack `⟨C₁, C₀, h⟩`. Conclude with `⟨C₁, C₀, fun D HW F Cm C hA => ⟨(h D HW F Cm C C₀ le_rfl hA).1, fun C₂ hC₂ => (h D HW F Cm C C₂ hC₂ hA).2⟩⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem closed_form_iff_threshold_form : RealisationStatementAll ↔ ∃ C₁ C₀ : ℝ, ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (C C₂ : ℝ), C₀ ≤ C₂ → Stmt D HW F Cm C C₁ C₂ := by
   constructor

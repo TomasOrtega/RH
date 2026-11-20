@@ -13,15 +13,15 @@ open scoped Kronecker ComplexOrder
 variable {n d : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mul_apply, star_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_star_mul {a b c : Type} [Fintype b] (A : Matrix a b ℂ) (B : Matrix b c ℂ) : (A * B).map star = A.map star * B.map star := by
   ext i j; simp [mul_apply, star_sum]
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `h`. Establish `h1' : θ.map star * θ.map star = 1`. Rewrite using `[← map_star_mul, h1]`. Use extensionality with `i j`. Simplify using `[one_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cartan_comm {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan M θ) : M * θ.map star = θᵀ * M := by
   obtain ⟨h1, h2, -⟩ := h
@@ -31,9 +31,9 @@ theorem cartan_comm {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan M θ) : M 
     _ = θᵀ * M := by rw [Matrix.mul_assoc (θᵀ * M), h1', Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hH : (θᵀ * M).IsHermitian`. Rewrite using `[IsHermitian, conjTranspose_mul, ← cartan_comm h]`. Apply the tactic sequence `congr 1 <;> ext i j <;> simp [hM]`. Use `posDef_iff_dotProduct_mulVec.2 ⟨hH, fun c hc => Complex.pos_iff.2 ⟨?_, (hH.im_star_dotProduct_mulVec_self c).symm⟩⟩` and prove the remaining obligations. Establish `hx : star c ≠ 0` using `by simpa using hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h.2.2 (star c) hx` as an intermediate fact. Rewrite `this` using `[star_star]`. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem cartan_posDef {M θ : Matrix (Fin n) (Fin n) ℂ} (hM : ∀ i j, star (M j i) = M i j) (h : IsCartan M θ) :
     (θᵀ * M).PosDef := by
@@ -55,7 +55,7 @@ open scoped Kronecker ComplexOrder
 variable {n d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← trace_transpose_mul, transpose_transpose]`. Simplify using `only [trace, diag_apply, mul_apply, transpose_apply, map_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -69,7 +69,7 @@ theorem quadruple_sum_eq_trace_transpose_mul (A : Matrix (Fin n) (Fin n) ℂ) (B
   ring
 
 /- English proof (translation)
-Simplify using `only [dotProduct, mulVec, kronecker_apply, Fintype.sum_prod_type, Pi.star_apply, star_star, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quadruple_sum_eq_kronecker_quadraticForm (P : Matrix (Fin n) (Fin n) ℂ) (Q : Matrix (Fin d) (Fin d) ℂ) (x : Matrix (Fin n) (Fin d) ℂ) :
     (∑ i, ∑ j, ∑ k, ∑ l, x i j * P i k * Q j l * star (x k l)) =
@@ -86,33 +86,33 @@ open scoped Kronecker ComplexOrder
 variable {n d : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_star_smulI {a b : Type} (M : Matrix a b ℂ) : (Complex.I • M).map star = (-Complex.I) • M.map star := by
   ext i j; simp
 
 /- English proof (translation)
-The claim follows from `smul_right_injective _ Complex.I_ne_zero h`.
+A detailed English derivation is pending.
 -/
 theorem cancelI {A B : Matrix (Fin d) (Fin d) ℂ} (h : Complex.I • A = Complex.I • B) : A = B :=
   smul_right_injective _ Complex.I_ne_zero h
 
 /- English proof (translation)
-Introduce `n d JX θX JW θW hJX hX hJW hW x y`. Establish `hWc : θWᵀ * JW * θW.map star = JW`. Establish `h` using `hW.2.1`. Rewrite `h` using `[Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `cancelI h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `cW : JW * θW.map star = θWᵀ * JW`. Establish `h` using `cartan_comm hW`. Rewrite `h` using `[Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `cancelI h`. Establish `cX` using `cartan_comm hX`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hIW : ∀ i j, star ((Complex.I • JW) j i) = (Complex.I • JW) i j`. Introduce `i j`. Simplify using `[hJW]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[quadruple_sum_eq_trace_transpose_mul, quadruple_sum_eq_trace_transpose_mul]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (Complex.I • (θX * x * θWᵀ))ᵀ * (JX * (Complex.I • (θX * y * θWᵀ)).map star * JWᵀ) = θW * (xᵀ * (θXᵀ * JX * θX.map star) * y.map star * (θW.map star)ᵀ * JWᵀ)`. Rewrite using `[map_star_smulI, transpose_smul, map_star_mul, map_star_mul, transpose_mul, transpose_mul, transpose_transpose, transpose_map]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc, mul_neg, Complex.I_mul_I, neg_neg, one_smul, neg_mul]`. Establish `e2 : xᵀ * (θXᵀ * JX * θX.map star) * y.map star * (θW.map star)ᵀ * JWᵀ * θW = xᵀ * (θXᵀ * JX * θX.map star) * y.map star * (θWᵀ * JW * θW.map star)ᵀ`. Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, trace_mul_comm, e2, hX.2.1, hWc]`. Simplify using `only [Matrix.mul_assoc]`. Introduce `hx`. Establish `e3 : xᵀ * (JX * (Complex.I • (θX * x * θWᵀ)).map star * JWᵀ) = -(xᵀ * ((θXᵀ * JX) * x.map star * (θWᵀ * (Complex.I • JW))ᵀ))`. Establish `h3 : xᵀ * (JX * (Complex.I • (θX * x * θWᵀ)).map star * JWᵀ) = (-Complex.I) • (xᵀ * (JX * θX.map star) * x.map star * (JW * θW.map star)ᵀ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_star_smulI, map_star_mul, map_star_mul, transpose_map, transpose_mul]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`. Rewrite using `[h3, cX, cW]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, transpose_smul, neg_smul, Matrix.mul_assoc]`. Rewrite using `[quadruple_sum_eq_trace_transpose_mul, e3, trace_neg, Complex.neg_re, neg_neg, ← quadruple_sum_eq_trace_transpose_mul (θXᵀ * JX) (θWᵀ * (Complex.I • JW)) x x, quadruple_sum_eq_kronecker_quadraticForm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `(cartan_posDef hJX hX).kronecker (cartan_posDef hIW hW)`. Establish `hc : (fun p : Fin n × Fin d => star (x p.1 p.2)) ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun h (i, j)` as an intermediate fact. Simplify using `using this`. Conclude with `(Complex.pos_iff.1 ((posDef_iff_dotProduct_mulVec.1 hK).2 hc)).1`.
+A detailed English derivation is pending.
 -/
 theorem tensor_cartan_invariant_pos : ∀ (n d : ℕ) (JX θX : Matrix (Fin n) (Fin n) ℂ) (JW θW : Matrix (Fin d) (Fin d) ℂ),
     (∀ i j, star (JX j i) = JX i j) → IsCartan JX θX → (∀ i j, star (JW j i) = -JW i j) → IsCartan (Complex.I • JW) θW →

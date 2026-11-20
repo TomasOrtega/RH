@@ -6,6 +6,6 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   {m : Fin 3 → ℤ} {r : G F Ω →* GL (Fin 3) (Qbar l)}
 
 /- English proof (translation)
-The claim follows from `Keep.oddA_of_unl h`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Keep.odd3' (h : Th.Unl l M m r) : Keep.OddA l r := Keep.oddA_of_unl h

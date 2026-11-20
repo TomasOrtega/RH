@@ -10,7 +10,7 @@ open ReciprocityTheory.AnForm (levi)
 namespace GlobalTheory.CompanionTheory.Ar.AtlasSmooth
 
 /- English proof (translation)
-Introduce `_ _ _ A _ hf` and use `ReciprocityTheory.AnForm.M.st_smooth_continuous A hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem continuous_of_atlas_smooth :
     ∀ (e : ℕ) (X : Type) [TopologicalSpace X] (A : ReciprocityTheory.AnForm.M.FinHolAtlas e X) (f : X → ℝ),

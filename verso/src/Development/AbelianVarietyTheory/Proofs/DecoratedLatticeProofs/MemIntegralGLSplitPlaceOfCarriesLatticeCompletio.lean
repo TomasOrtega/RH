@@ -19,9 +19,9 @@ namespace GlobalTheory.SplitInt
 variable {D : D7}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `GlobalTheory.FinPlLoc.smul_latV v (GlobalTheory.FinPlLoc.idem_mem_intAt (D := D) (· = v)) h`. Establish `e : GlobalTheory.FinPlLoc.idem D (· = v) • y = y`. Use function extensionality and compare the values at `i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `(GlobalTheory.FinPlLoc.mem_idAt_iff _ _).1 (hy i)`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `GlobalTheory.FinPl.KSplit.latV_mono S N (fun w hw => by subst hw; exact hv) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_latV_iff_at (S : HSp D) (N : Lat S) {P : Pl D → Prop} {v : Pl D} (hv : P v)
     (y : Fin S.rank → AE D) (hy : ∀ i, y i ∈ idAt D (· = v)) :
@@ -41,7 +41,7 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h` using `q.sec_pr (a * q.sec b)`. Establish `h2` using `q.sec_pr (q.sec b)`. Rewrite `h2` using `[q.pr_sec]`. Rewrite `h` using `[RingHom.map_mul, q.pr_sec]`. Rewrite using `[h, mul_left_comm, ← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_sec (q : SplitPt D k) (a : AE D) (b : k) : a * q.sec b = q.sec (q.pr a * b) := by
   have h := q.sec_pr (a * q.sec b)
@@ -51,7 +51,7 @@ theorem mul_sec (q : SplitPt D k) (a : AE D) (b : k) : a * q.sec b = q.sec (q.pr
   rw [h, mul_left_comm, ← h2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Rewrite using `[map_sum q.sec]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_sec q _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_sec (q : SplitPt D k) {n : ℕ} (M : Matrix (Fin n) (Fin n) (AE D)) (b : Fin n → k) :
     (M *ᵥ fun i => q.sec (b i)) = fun i => q.sec ((M.map q.pr *ᵥ b) i) := by
@@ -61,17 +61,15 @@ theorem mulVec_sec (q : SplitPt D k) {n : ℕ} (M : Matrix (Fin n) (Fin n) (AE D
   exact Finset.sum_congr rfl fun j _ => mul_sec q _ _
 
 /- English proof (translation)
-Establish `h1 : ∀ j i : Y, (Pi.single j (1 : k) : Y → k) i ∈ 𝒪[k]`. Introduce `j i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne hij]`. Conclude with `zero_mem _`. Establish `hc : ∀ (A : Matrix Y Y k) (i j : Y), (A *ᵥ (Pi.single j (1 : k) : Y → k)) i = A i j`. Introduce `A i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hA : ∀ i j, x.val i j ∈ 𝒪[k]` using `fun i j => by`. Rewrite using `[← hc x.val i j]`. Conclude with `(h _).1 (h1 j) i`. Establish `hB : ∀ i j, (x⁻¹).val i j ∈ 𝒪[k]` using `fun i j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc (x⁻¹).val i j]`. Use `(h _).2 ?_ i` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `h1 j`. Establish `hinj : Function.Injective ((algebraMap 𝒪[k] k).mapMatrix : Matrix Y Y 𝒪[k] → Matrix Y Y k)` using `fun a b hab => Matrix.ext fun i j => Subtype.ext (congrFun (congrFun hab i) j)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `A : Matrix Y Y 𝒪[k]` to `Matrix.of fun i j => ⟨x.val i j, hA i j⟩`. Set `B : Matrix Y Y 𝒪[k]` to `Matrix.of fun i j => ⟨(x⁻¹).val i j, hB i j⟩`. Establish `eA : (algebraMap 𝒪[k] k).mapMatrix A = x.val` using `rfl`. Establish `eB : (algebraMap 𝒪[k] k).mapMatrix B = (x⁻¹).val` using `rfl`. Use `⟨⟨A, B, hinj ?_, hinj ?_⟩, Units.ext eA⟩` and prove the remaining obligations.
-
-Rewrite using `[RingHom.map_mul, RingHom.map_one, eA, eB, Units.mul_inv]`. Rewrite using `[RingHom.map_mul, RingHom.map_one, eA, eB, Units.inv_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_KO_of_keeps {Y : Type} [Fintype Y] [DecidableEq Y] (x : GL Y k)
     (h : ∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ ∀ i, (x.val *ᵥ y) i ∈ 𝒪[k]) : x ∈ GlobalTheory.SplitWeil.KO k Y := by
@@ -103,9 +101,9 @@ theorem mem_KO_of_keeps {Y : Type} [Fintype Y] [DecidableEq Y] (x : GL Y k)
 end
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q S Y _ _ F N P hP hI g hM x hx`. Use `mem_KO_of_keeps x fun y => ?_` and prove the remaining obligations. Establish `hs : ∀ (b : Fin S.rank → k) i, (fun i => q.sec (b i)) i ∈ idAt D (· = q.v)` using `fun b i => q.sec_mem_idAt _`. Establish `e : (Formalism.L2.Theta.mt S g).map q.pr *ᵥ (F.β *ᵥ y) = F.β *ᵥ (x.val *ᵥ y)`. Rewrite using `[hx, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, F.γβ, Matrix.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI y, hI (x.val *ᵥ y), ← mem_latV_iff_at S N hP _ (hs _), ← mem_latV_iff_at S N hP _ (hs _), hM _ (fun i => GlobalTheory.FinPl.KSplit.idAt_mono (fun w hw => by subst hw; exact hP) (hs _ i)), mulVec_sec, e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem mem_KO_of_moves : ∀ {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k) (S : HSp D) {Y : Type} [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k S.rank Y) (N : Lat S) (P : Pl D → Prop), P q.v → IntIn q S F N → ∀ g : GA D S, Moves S g N N P → ∀ x : GL Y k, (mt S g).map q.pr = F.β * x.val * F.γ → x ∈ GlobalTheory.SplitWeil.KO k Y := by
   intro D k _ _ _ _ q S Y _ _ F N P hP hI g hM x hx

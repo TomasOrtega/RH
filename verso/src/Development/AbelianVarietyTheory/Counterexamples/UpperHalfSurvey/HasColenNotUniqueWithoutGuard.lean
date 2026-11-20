@@ -10,11 +10,9 @@ open ReciprocityTheory.PGsh.L2
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Establish `hc : ∀ j, ∃ c : X → R, ∑ i, c i • (fun x => B' x i) = fun x => B x j` using `fun j => (Submodule.mem_span_range_iff_exists_fun R).mp (h (Submodule.subset_span ⟨j, rfl⟩))`. Use `choose c hc using hc`. Establish `hB : B = B' * (Matrix.of fun i j => c j i).map (algebraMap R C)`. Use extensionality with `x j`. Use `congrFun (hc j) x` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, Algebra.smul_def] at this`. Rewrite using `[← this, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [mul_comm]`. Establish `hd : ((Matrix.of fun i j => c j i).map (algebraMap R C)).det = algebraMap R C (Matrix.of fun i j => c j i).det` using `((algebraMap R C).map_det _).symm`. Rewrite using `[hB, Matrix.det_mul, map_mul, hd]`.
-
-Conclude with `mul_le_of_le_one_right' (hv _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vdet_le_of_span_le (v : Valuation C NNReal) (hv : ∀ r : R, v (algebraMap R C r) ≤ 1)
     {X : Type} [Fintype X] [DecidableEq X] (B B' : Matrix X X C)
@@ -35,7 +33,7 @@ theorem vdet_le_of_span_le (v : Valuation C NNReal) (hv : ∀ r : R, v (algebraM
   exact mul_le_of_le_one_right' (hv _)
 
 /- English proof (translation)
-Take `⟨B, hB, rfl⟩` from `h`. Take `⟨B', hB', rfl⟩` from `h'`. Conclude with `le_antisymm (vdet_le_of_span_le v hv B B' (by rw [← hB, ← hB'])) (vdet_le_of_span_le v hv B' B (by rw [← hB, ← hB']))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasColen_unique (v : Valuation C NNReal) (hv : ∀ r : R, v (algebraMap R C r) ≤ 1)
     {X : Type} [Fintype X] [DecidableEq X] {M : Submodule R (X → C)} {c c' : NNReal}
@@ -46,9 +44,9 @@ theorem hasColen_unique (v : Valuation C NNReal) (hv : ∀ r : R, v (algebraMap 
     (vdet_le_of_span_le v hv B' B (by rw [← hB, ← hB']))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf choose r hr using hf`. Use `(Submodule.mem_span_range_iff_exists_fun R).mpr ⟨r, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[Finset.sum_apply, Algebra.smul_def, Matrix.one_apply, hr]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `f ⟨j, rfl⟩ x`. Distinguish the cases in `h : x = j`. Conclude with `⟨1, by simp [Matrix.one_apply, h]⟩`. Conclude with `⟨0, by simp [Matrix.one_apply, h]⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem intFun_eq_span {X : Type} [Fintype X] [DecidableEq X] :
     intFun (C := C) R X = Submodule.span R (Set.range fun j x => (1 : Matrix X X C) x j) := by
@@ -65,15 +63,15 @@ theorem intFun_eq_span {X : Type} [Fintype X] [DecidableEq X] :
     · exact ⟨0, by simp [Matrix.one_apply, h]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, intFun_eq_span, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasColen_intFun (v : Valuation C NNReal) {X : Type} [Fintype X] [DecidableEq X] :
     HasColen R v (intFun (C := C) R X) 1 := ⟨1, intFun_eq_span, by simp⟩
 
 /- English proof (translation)
-Use `⟨Matrix.of fun _ _ => t, ?_, by simp⟩` and prove the remaining obligations. Use `symm`. Rewrite using `[eq_top_iff]`. Introduce `f _`. Use `(Submodule.mem_span_range_iff_exists_fun C).mpr ⟨fun _ => f () / t, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Simplify using `[ht]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hasColen_not_unique_without_guard (v : Valuation C NNReal) (t : C) (ht : t ≠ 0) :
     HasColen C v (⊤ : Submodule C (Unit → C)) (v t) := by

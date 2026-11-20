@@ -51,7 +51,7 @@ def kForm (D : Datum H) (ε : ℤˣ) (lin : Bool) (x y : D.La) : OK H :=
   (((ε : ℤ) * (D.EF (H.w0 • x) y - D.EF x y) : ℤ) : OK H) + (((ε : ℤ) * D.EF x y : ℤ) : OK H) * wSide H lin
 
 /- English proof (translation)
-Introduce `x y` and use `by simp [kForm, wSide, wK]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isKForm_kForm (D : Datum H) (ε : ℤˣ) : IsKForm D ε (kForm D ε true) := fun x y => by
   simp [kForm, wSide, wK]
@@ -85,7 +85,7 @@ structure IsHomFam {R : Type} [CommRing R] {ω : R} (C : Ell H R ω) (t : SAB H 
   lam : ∀ a b : L, LamEq t.PP.L (φ a) (φ b) C.P.L (C.act.act (kForm D ε lin a b)) (𝟙 C.P.A)
 
 /- English proof (translation)
-The claim follows from `h.ten.isMonHom_tmul _ add a b := h.ten.tmul_add _ _ smul s a := h.lin s a side a := (h.ten.isLinearHom_tmul a.1).comm (wK H) lam a b := h.lam _ _`.
+A detailed English derivation is pending.
 -/
 theorem isHomFam_tmul {R : Type} [CommRing R] {ω : R} {C : Ell H R ω} {D : Datum H} {ε : ℤˣ} {T : PAT H (Sp R)}
     (h : IsTen C D (kForm D ε true) T) : IsHomFam C T.t (⊤ : Submodule (𝓞 E) D.La) ε true (fun a => h.ten.tmul a.1) where
@@ -111,9 +111,9 @@ structure IsExp {S : Scheme.{0}} (t : SAB H S) (y : Sp ℂ ⟶ S) (D : Datum H) 
     Out.WeilIs t.G t.PP.L n (ex ((n : ℂ)⁻¹ • Pe a)) (ex ((n : ℂ)⁻¹ • Pe b)) (unitOn c)
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h₁, h₂⟩` from `h U f`. Establish `hd : Differentiable ℂ fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z)` using `by fun_prop`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e₁ : {b ∈ Set.univ | ⊤ ≤ e b ⁻¹ᵁ U} = (fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z)) ⁻¹' {b ∈ (Set.univ : Set (Fin 0 → ℂ)) ×ˢ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ e b.2 ⁻¹ᵁ U}` using `Set.ext fun z => ⟨fun h => And.intro (And.intro trivial trivial) h.2, fun h => And.intro trivial h.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e₁]`. Conclude with `h₁.preimage hd.continuous`. Use `h₂.comp (s := {b ∈ Set.univ | ⊤ ≤ e b ⁻¹ᵁ U}) hd.differentiableOn fun z hz => ⟨⟨trivial, trivial⟩, hz.2⟩` as an intermediate fact. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isHolTo_slice {g : ℕ} {X : Scheme.{0}} {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)}
     (h : IsHolTo ((Set.univ : Set (Fin 0 → ℂ)) ×ˢ (Set.univ : Set (Fin g → ℂ))) fun bz => e bz.2) :
@@ -132,7 +132,7 @@ theorem isHolTo_slice {g : ℕ} {X : Scheme.{0}} {e : (Fin g → ℂ) → (Sp �
     exact this
 
 /- English proof (translation)
-The claim follows from `hP add := FU.ex_add i Pe hP onto := FU.ex_onto i Pe hP ker := FU.ex_ker i Pe hP lin := FU.ex_lin i Pe hP hol := isHolTo_slice (e := fun z => (FU.ex i Pe z).left) (FU.hol i 0 Set.univ (fun _ => Pe) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2 diff := (FU.ex_di …`.
+A detailed English derivation is pending.
 -/
 theorem isExp_family {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σ ty) (i : Fin FU.n) {Pe : (FU.Di i).La →+ (Fin g → ℂ)}
@@ -177,11 +177,11 @@ def IsPointOf {D₁ D₂ D : Datum H} {p q : ℕ} (lp : Fin p → (D₁.La →�
     (∀ j x, lp j x ∈ PureType.lat hP H.rt0) ∧ ∀ j y, lm j y ∈ PureType.lat hP (-H.rt0)
 
 /- English proof (translation)
-Establish `hne` using `PureType.form_w0_ne_zero hP hρ ha h0`. Take `⟨Hm, -, hpos, hE⟩` from `hP.2.2.2.2`. Establish `hz : Pe a ≠ 0` using `fun h => h0 (hP.2.1 (h.trans (map_zero Pe).symm))`. Establish `h1` using `hE (H.w0 • a) a`. Establish `h2` using `hE a a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[D.alt]`. Establish `h3 : hermForm Hm (Pe (H.w0 • a)) (Pe a) = ((1 + ρ) / 2) * hermForm Hm (Pe a) (Pe a)`. Rewrite using `[PureType.period_w0_smul hP ha, hermForm, hermForm, smul_dotProduct, smul_eq_mul]`. Establish `h4 : ((1 + ρ) / 2).im = ρ.im / 2` using `by simp`. Rewrite `h1` using `[h3, Complex.mul_im, h2, h4, Int.cast_zero, mul_zero, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5` using `hpos _ hz`. Establish `h6 : ρ.im ≠ 0` using `fun h => hne (by rw [h] at h1; exact_mod_cast (by simpa using h1.symm))`. Rewrite using `[← h1]`. Use `mul_self_pos.2 h6` as an intermediate fact. Use polynomial arithmetic with `[mul_pos this h5]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem im_mul_form_pos {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pe : D.La →+ (Fin g → ℂ)}
     (hP : IsPeriod D ty Pe) {ρ : ℂ} (hρ : ρ ^ 2 = -(H.d : ℂ)) {a : D.La} (ha : a ∈ PureType.lat hP ρ) (h0 : a ≠ 0) :
@@ -203,7 +203,7 @@ theorem im_mul_form_pos {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {
   nlinarith [mul_pos this h5]
 
 /- English proof (translation)
-The claim follows from `h₁ sig₂ := h₂ sig := h₁ inj x y h := Prod.ext (funext fun j => by rw [Subsingleton.elim j 0]; simpa using h) (Subsingleton.elim _ _) span z := ⟨1, one_pos, fun _ => z, Fin.elim0, by simp⟩ orth _ j := j.elim0 pos x hx := by simpa using im_mul_form_pos hP H.sqrt_neg_disc_sq (a := x …`.
+A detailed English derivation is pending.
 -/
 theorem isLatData_id {D D₂ : Datum H} (h₁ : D.p = 1 ∧ D.q = 0) (h₂ : D₂.p = 0 ∧ D₂.q = 1) {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} {Pe : D.La →+ (Fin g → ℂ)} (hty : IsTypeFn H 1 0 ty) (hP : IsPeriod D ty Pe) :

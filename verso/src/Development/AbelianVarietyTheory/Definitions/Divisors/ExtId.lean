@@ -49,7 +49,7 @@ def Ext (f : R →+* V) {F₀ F : Type} [Field F₀] [Algebra (FractionRing R) F
     algebraMap (FractionRing V) F (algebraMap V (FractionRing V) (f r))
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem ext_id (F : Type) [Field F] [Algebra (FractionRing R) F] : Ext (RingHom.id R) (RingHom.id F) := fun _ => rfl
 

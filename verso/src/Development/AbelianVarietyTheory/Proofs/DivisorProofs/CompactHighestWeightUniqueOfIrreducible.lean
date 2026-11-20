@@ -16,28 +16,28 @@ noncomputable def height (n : ℕ) : (Fin n → ℝ) →ₗ[ℝ] ℝ :=
   ∑ i : Fin n, ((i : ℕ) : ℝ) • LinearMap.proj i
 
 /- English proof (translation)
-Simplify using `[height, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem height_apply {n : ℕ} (u : Fin n → ℝ) : height n u = ∑ i : Fin n, ((i : ℕ) : ℝ) * u i := by
   simp [height, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[height_apply]`. Simplify using `[PI.UpqRep.root, Pi.single_apply, mul_sub, Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem height_root {n : ℕ} (a b : Fin n) : height n (PI.UpqRep.root a b) = (a : ℝ) - (b : ℝ) := by
   rw [height_apply]
   simp [PI.UpqRep.root, Pi.single_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `h`. Establish `hval : height n (Λ - μ) = ∑ a, ∑ b, (c a b : ℝ) * ((a : ℝ) - (b : ℝ))`. Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, height_root, smul_eq_mul]`. Establish `term : ∀ a b, (c a b : ℝ) * ((a : ℝ) - (b : ℝ)) ≤ 0 ∧ ((c a b : ℝ) * ((a : ℝ) - (b : ℝ)) = 0 → c a b = 0)`. Introduce `a b`. Distinguish the cases in `h0 : c a b = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h0]`. Establish `hab : ((a : ℕ) : ℝ) < (b : ℕ)` using `by exact_mod_cast (hc a b h0).1`. Establish `hpos : (0 : ℝ) < c a b` using `by exact_mod_cast Nat.pos_of_ne_zero h0`. Use `⟨mul_nonpos_of_nonneg_of_nonpos hpos.le (by linarith), fun h => ?_⟩` and prove the remaining obligations. Conclude with `absurd h (mul_neg_of_pos_of_neg hpos (by linarith)).ne`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Conclude with `Finset.sum_nonpos fun a _ => Finset.sum_nonpos fun b _ => (term a b).1`. Rewrite `h0` using `[hval]`. Establish `hz : ∀ a b, c a b = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b`. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonpos fun a _ => Finset.sum_nonpos fun b _ => (term a b).1).1 h0 a (Finset.mem_univ _)`. Conclude with `(term a b).2 ((Finset.sum_eq_zero_iff_of_nonpos fun b _ => (term a b).1).1 h1 b (Finset.mem_univ _))`. Rewrite using `[← sub_eq_zero, e]`. Simplify using `[hz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem height_cdom {n : ℕ} {ε : Fin n → Bool} {μ Λ : Fin n → ℝ} (h : PI.UpqRep.CDom ε μ Λ) :
     height n (Λ - μ) ≤ 0 ∧ (height n (Λ - μ) = 0 → Λ = μ) := by
@@ -68,7 +68,7 @@ theorem height_cdom {n : ℕ} {ε : Fin n → Bool} {μ Λ : Fin n → ℝ} (h :
     simp [hz]
 
 /- English proof (translation)
-Establish `a` using `height_cdom h`. Establish `b` using `height_cdom h'`. Establish `hn : height n (μ - Λ) = - height n (Λ - μ)` using `by rw [← map_neg, neg_sub]`. Conclude with `(a.2 (by linarith [a.1, b.1])).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cdom_antisymm {n : ℕ} {ε : Fin n → Bool} {μ Λ : Fin n → ℝ} (h : PI.UpqRep.CDom ε μ Λ)
     (h' : PI.UpqRep.CDom ε Λ μ) : μ = Λ := by
@@ -78,9 +78,9 @@ theorem cdom_antisymm {n : ℕ} {ε : Fin n → Bool} {μ Λ : Fin n → ℝ} (h
   exact (a.2 (by linarith [a.1, b.1])).symm
 
 /- English proof (translation)
-Introduce `n ε V _ _ E hR hU L hfin hst hirr Λ v hvL hv0 hv ν x hxL hx0 hx`. Establish `dom : ∀ (μ : Fin n → ℝ) (y : V) (μ' : Fin n → ℝ) (z : V), y ∈ L → y ≠ 0 → KHighest ε E μ y → z ∈ L → z ≠ 0 → IsWeight E μ' z → PI.UpqRep.CDom ε μ' μ`. Introduce `μ y μ' z hyL hy0 hy hzL hz0 hz`. Take `⟨L₁, hle, hyL₁, hst₁, -, hdom, -⟩` from `CompanionTheory.D.DSIC.hLowSpan n ε V E μ y L hR hU hy0 hy hfin hst hyL`. Establish `hL₁ : L₁ = L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `hirr L₁ hle hst₁ with h | h` into its components or cases. Conclude with `absurd (by simpa [h] using hyL₁) hy0`. Conclude with `h`. Conclude with `hdom μ' z (hL₁ ▸ hzL) hz0 hz`. Conclude with `cdom_antisymm (dom Λ v ν x hvL hv0 hv hxL hx0 hx.1) (dom ν x Λ v hxL hx0 hx hvL hv0 hv.1)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem khighest_weight_unique : ∀ (n : ℕ) (ε : Fin n → Bool) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V), KRel ε E → KUnit ε E → ∀ L : Submodule ℂ V, FiniteDimensional ℂ L →

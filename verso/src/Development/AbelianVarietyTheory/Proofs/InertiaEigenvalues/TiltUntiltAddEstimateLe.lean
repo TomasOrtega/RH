@@ -9,9 +9,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.PSer
 
 /- English proof (translation)
-Take `⟨h1, -, hmul, -, hle1, -, hadd, -⟩` from `GlobalTheory.T.tiltUntiltToComplexPAdic_basic_laws l`. Take `⟨u, rfl⟩` from `(GlobalTheory.T.tilt_untilt_injective_and_dvd_of_norm_le l).2 x y hxy`. Establish `hsum : y * u + y = y * (u + 1)` using `by ring`. Rewrite using `[hsum, hmul, hmul]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `key : sh y * sh (u + 1) - sh y * sh u - sh y = sh y * (sh (u + 1) - sh u - sh (1 : Fl l))` using `by rw [h1]; ring`. Rewrite using `[key, norm_mul, mul_comm ‖(l : ℂ_[l])‖]`. Conclude with `mul_le_mul_of_nonneg_left (hadd u 1) (norm_nonneg _)`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tiltUntilt_add_estimate_of_norm_le (l : ℕ) [Fact l.Prime] (x y : Fl l) (hxy : ‖sh x‖ ≤ ‖sh y‖) :
     ‖sh (x + y) - sh x - sh y‖ ≤ ‖(l : ℂ_[l])‖ * ‖sh y‖ ∧ ‖sh (x + y)‖ ≤ ‖sh y‖ := by
@@ -30,11 +30,11 @@ theorem tiltUntilt_add_estimate_of_norm_le (l : ℕ) [Fact l.Prime] (x y : Fl l)
       _ = ‖sh y‖ := mul_one _
 
 /- English proof (translation)
-Introduce `l _ r x y hx hy`. Establish `hl : 0 ≤ ‖(l : ℂ_[l])‖` using `norm_nonneg _`. Break down `le_total ‖sh x‖ ‖sh y‖ with h | h` into its components or cases. Take `⟨h1, h2⟩` from `tiltUntilt_add_estimate_of_norm_le l x y h`. Conclude with `⟨h1.trans (mul_le_mul_of_nonneg_left hy hl), h2.trans hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨h1, h2⟩` from `tiltUntilt_add_estimate_of_norm_le l y x h`. Rewrite using `[add_comm x y]`. Use `⟨?_, h2.trans hx⟩` and prove the remaining obligations. Establish `e : sh (y + x) - sh x - sh y = sh (y + x) - sh y - sh x` using `by ring`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans (mul_le_mul_of_nonneg_left hx hl)`.
+A detailed English derivation is pending.
 -/
 theorem sh_add_le : ∀ (l : ℕ) [Fact l.Prime] (r : ℝ) (x y : Fl l), ‖sh x‖ ≤ r → ‖sh y‖ ≤ r →
     ‖sh (x + y) - sh x - sh y‖ ≤ ‖(l : ℂ_[l])‖ * r ∧ ‖sh (x + y)‖ ≤ r := by

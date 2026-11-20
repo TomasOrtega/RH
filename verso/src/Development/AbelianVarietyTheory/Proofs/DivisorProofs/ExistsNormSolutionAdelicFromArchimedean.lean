@@ -10,9 +10,9 @@ open Classical
 variable (F : Type) [Field F] [NumberField F] (w : InfinitePlace F)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Express the relevant statement in the definitionally equal form `(Pi.single w (a*b) : ∀ v : InfinitePlace F, v.Completion) u = (Pi.single w a : ∀ v : InfinitePlace F, v.Completion) u * (Pi.single w b : ∀ v : InfinitePlace F, v.Completion) u`. Distinguish the cases in `h : u = w`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.single_eq_of_ne h, mul_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ainf_single_mul (a b : w.Completion) :
     (show Ainf F from Pi.single w (a * b)) = (show Ainf F from Pi.single w a) * (show Ainf F from Pi.single w b) := by
@@ -24,9 +24,9 @@ theorem ainf_single_mul (a b : w.Completion) :
   · simp only [Pi.single_eq_of_ne h, mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Express the relevant statement in the definitionally equal form `(e : ∀ v : InfinitePlace F, v.Completion) u * (Pi.single w a : ∀ v : InfinitePlace F, v.Completion) u = (Pi.single w a : ∀ v : InfinitePlace F, v.Completion) u`. Distinguish the cases in `h : u = w`. Substitute `h` using the available equality. Rewrite using `[h1, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.single_eq_of_ne h, mul_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ainf_idem_mul (e : Ainf F) (h1 : e w = 1) (h0 : ∀ u, u ≠ w → e u = 0) (a : w.Completion) :
     e * (show Ainf F from Pi.single w a) = (show Ainf F from Pi.single w a) := by
@@ -37,9 +37,9 @@ theorem ainf_idem_mul (e : Ainf F) (h1 : e w = 1) (h0 : ∀ u, u ≠ w → e u =
   · simp only [Pi.single_eq_of_ne h, mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Express the relevant statement in the definitionally equal form `(Pi.single w 1 : ∀ v : InfinitePlace F, v.Completion) u = e u`. Distinguish the cases in `h : u = w`. Substitute `h` using the available equality. Rewrite using `[h1, Pi.single_eq_same]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne h, h0 u h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ainf_single_one (e : Ainf F) (h1 : e w = 1) (h0 : ∀ u, u ≠ w → e u = 0) :
     (show Ainf F from Pi.single w 1) = e := by
@@ -50,14 +50,14 @@ theorem ainf_single_one (e : Ainf F) (h1 : e w = 1) (h0 : ∀ u, u ≠ w → e u
   · rw [Pi.single_eq_of_ne h, h0 u h]
 
 /- English proof (translation)
-Use extensionality with `v`. Conclude with `congrArg _ (h v)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem af_zero (y : Af F) (h : ∀ v, evalV F v y = 0) : y = 0 := by
   ext v
   exact congrArg _ (h v)
 
 /- English proof (translation)
-The claim follows from `Prod.ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem af_ext {p q : AF F} (h1 : fstA F p = fstA F q) (h2 : sndA F p = sndA F q) : p = q :=
   Prod.ext h1 h2
@@ -75,7 +75,7 @@ Both sides reduce to the same expression.
 theorem sndA_placeAtInf (a : w.Completion) : sndA F (placeAtInf F w a) = 0 := rfl
 
 /- English proof (translation)
-Apply `af_ext` to reduce the goal to its premises. Establish `e2 : fstA F (placeAtInf F w a * placeAtInf F w b) = fstA F (placeAtInf F w a) * fstA F (placeAtInf F w b)` using `map_mul (fstA F) _ _`. Conclude with `(fstA_placeAtInf F w (a * b)).trans ((ainf_single_mul F w a b).trans (e2.trans (congrArg₂ (· * ·) (fstA_placeAtInf F w a) (fstA_placeAtInf F w b))).symm)`. Establish `e2 : sndA F (placeAtInf F w a * placeAtInf F w b) = sndA F (placeAtInf F w a) * sndA F (placeAtInf F w b)` using `map_mul (sndA F) _ _`. Conclude with `(sndA_placeAtInf F w (a * b)).trans ((mul_zero (0 : Af F)).symm.trans (e2.trans (congrArg₂ (· * ·) (sndA_placeAtInf F w a) (sndA_placeAtInf F w b))).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem placeAtInf_mul (a b : w.Completion) :
     placeAtInf F w (a * b) = placeAtInf F w a * placeAtInf F w b := by
@@ -92,7 +92,7 @@ theorem placeAtInf_mul (a b : w.Completion) :
 variable {F w}
 
 /- English proof (translation)
-Apply `af_ext` to reduce the goal to its premises. Establish `e2 : fstA F (ε * placeAtInf F w a) = fstA F ε * fstA F (placeAtInf F w a)` using `map_mul (fstA F) _ _`. Conclude with `e2.trans ((congrArg (fstA F ε * ·) (fstA_placeAtInf F w a)).trans ((ainf_idem_mul F w _ (hε.1 w (Finset.mem_singleton_self w)) (fun u hu => hε.2.1 u (by simpa using hu)) a).trans (fstA_placeAtInf F w a).symm))`. Establish `e2 : sndA F (ε * placeAtInf F w a) = sndA F ε * sndA F (placeAtInf F w a)` using `map_mul (sndA F) _ _`. Conclude with `e2.trans ((congrArg (sndA F ε * ·) (sndA_placeAtInf F w a)).trans ((mul_zero _).trans (sndA_placeAtInf F w a).symm))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idem_mul_placeAtInf {ε : AF F} (hε : IsPlacesIdem {w} ∅ ε) (a : w.Completion) :
     ε * placeAtInf F w a = placeAtInf F w a := by
@@ -106,7 +106,7 @@ theorem idem_mul_placeAtInf {ε : AF F} (hε : IsPlacesIdem {w} ∅ ε) (a : w.C
       ((mul_zero _).trans (sndA_placeAtInf F w a).symm))
 
 /- English proof (translation)
-Apply `af_ext` to reduce the goal to its premises. Use `(fstA_placeAtInf F w 1).trans ?_` and prove the remaining obligations. Conclude with `ainf_single_one F w _ (hε.1 w (Finset.mem_singleton_self w)) (fun u hu => hε.2.1 u (by simpa using hu))`. Use `(sndA_placeAtInf F w 1).trans ?_` and prove the remaining obligations. Conclude with `(af_zero F _ (fun v => hε.2.2.2 v (Finset.notMem_empty v))).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem placeAtInf_one {ε : AF F} (hε : IsPlacesIdem {w} ∅ ε) : placeAtInf F w 1 = ε := by
   apply af_ext
@@ -128,9 +128,9 @@ theorem placeAtInfE_tmul (a : w.Completion) (e : E) :
     placeAtInfE F w E (a ⊗ₜ e) = placeAtInf F w a ⊗ₜ e := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [zero_mul, map_zero, zero_mul]`. Consider the case `add a b ha hb => rw [add_mul, map_add, map_add, ha, hb, add_mul]`. Consider the case `tmul a e`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => rw [mul_zero, map_zero, mul_zero]`. Consider the case `add c d hc hd => rw [mul_add, map_add, map_add, hc, hd, mul_add]`. Consider the case `tmul b f`. Unfold `placeAtInfE`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, LinearMap.rTensor_tmul, LinearMap.rTensor_tmul, LinearMap.rTensor_tmul, Algebra.TensorProduct.tmul_mul_tmul, placeAtInf_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem placeAtInfE_mul (x y : w.Completion ⊗[F] E) :
     placeAtInfE F w E (x * y) = placeAtInfE F w E x * placeAtInfE F w E y := by
@@ -147,7 +147,7 @@ theorem placeAtInfE_mul (x y : w.Completion ⊗[F] E) :
         LinearMap.rTensor_tmul, Algebra.TensorProduct.tmul_mul_tmul, placeAtInf_mul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x₁ x₂ h₁ h₂ => simp only [map_add, h₁, h₂]`. Consider the case `tmul a e`. Simplify using `only [sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, placeAtInfE_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem placeAtInfE_sig (σ : E →ₐ[F] E) (x : w.Completion ⊗[F] E) :
     placeAtInfE F w E (sigR w.Completion σ x) = sigR (AF F) σ (placeAtInfE F w E x) := by
@@ -161,7 +161,7 @@ theorem placeAtInfE_sig (σ : E →ₐ[F] E) (x : w.Completion ⊗[F] E) :
 variable {F w E}
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x₁ x₂ h₁ h₂ => simp only [mul_add, map_add, h₁, h₂]`. Consider the case `tmul a e`. Rewrite using `[placeAtInfE_tmul, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.algebraMap_self, RingHom.id_apply, idem_mul_placeAtInf hε]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_placeAtInfE {ε : AF F} (hε : IsPlacesIdem {w} ∅ ε) (x : w.Completion ⊗[F] E) :
     algebraMap (AF F) (AF F ⊗[F] E) ε * placeAtInfE F w E x = placeAtInfE F w E x := by
@@ -173,7 +173,7 @@ theorem idem_mul_placeAtInfE {ε : AF F} (hε : IsPlacesIdem {w} ∅ ε) (x : w.
       one_mul, Algebra.algebraMap_self, RingHom.id_apply, idem_mul_placeAtInf hε]
 
 /- English proof (translation)
-Simplify using `only [inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, placeAtInfE_tmul, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, Algebra.algebraMap_self, RingHom.id_apply, placeAtInf_one hε]`.
+Simplify using the standard rewrite rules.
 -/
 theorem placeAtInfE_incl {ε : AF F} (hε : IsPlacesIdem {w} ∅ ε) (c : E) :
     placeAtInfE F w E (inclR w.Completion c) = algebraMap (AF F) (AF F ⊗[F] E) ε * inclR (AF F) c := by
@@ -182,7 +182,7 @@ theorem placeAtInfE_incl {ε : AF F} (hε : IsPlacesIdem {w} ∅ ε) (c : E) :
     mul_one, Algebra.algebraMap_self, RingHom.id_apply, placeAtInf_one hε]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ σ w ε hε c ⟨t, ht⟩`. Use `⟨placeAtInfE F w E t, ?_⟩` and prove the remaining obligations. Rewrite using `[← placeAtInfE_sig, ← placeAtInfE_mul, mul_add, idem_mul_placeAtInfE hε, ← placeAtInfE_incl hε, ← map_add, ht, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem normEq_inf_place : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (w : InfinitePlace F) (ε : AF F), IsPlacesIdem {w} ∅ ε → ∀ c : E,

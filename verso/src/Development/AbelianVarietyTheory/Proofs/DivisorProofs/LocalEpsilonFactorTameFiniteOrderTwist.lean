@@ -13,7 +13,7 @@ namespace GlobalTheory.TameTwistEps
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h1 : ((ξ ^ N : HChar E).1 x) = (ξ.1 x) ^ N`. Rewrite using `[SubgroupClass.coe_pow, MonoidHom.pow_apply]`. Rewrite using `[← Units.val_pow_eq_pow_val, ← h1, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pow_apply_eq_one {ξ : HChar E} {N : ℕ} (h : ξ.OrderDvd N) (x : Ideles E) : ((ξ.1 x : ℂˣ) : ℂ) ^ N = 1 := by
   have h1 : ((ξ ^ N : HChar E).1 x) = (ξ.1 x) ^ N := by
@@ -22,20 +22,20 @@ theorem pow_apply_eq_one {ξ : HChar E} {N : ℕ} (h : ξ.OrderDvd N) (x : Idele
   rfl
 
 /- English proof (translation)
-The claim follows from `pow_apply_eq_one h _`.
+A detailed English derivation is pending.
 -/
 theorem locK_pow_eq_one {ξ : HChar E} {N : ℕ} (h : ξ.OrderDvd N) (w : HeightOneSpectrum (𝓞 E)) (x : Eˣ) :
     ((ξ.locK w x : ℂˣ) : ℂ) ^ N = 1 :=
   pow_apply_eq_one h _
 
 /- English proof (translation)
-Introduce `x` and use `Complex.norm_eq_one_of_pow_eq_one (pow_apply_eq_one h x) hN.ne'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnitary_of_orderDvd {ξ : HChar E} {N : ℕ} (hN : 0 < N) (h : ξ.OrderDvd N) : IsUnitary ξ := fun x =>
   Complex.norm_eq_one_of_pow_eq_one (pow_apply_eq_one h x) hN.ne'
 
 /- English proof (translation)
-Introduce `k`. Establish `hk : χ.LevelLe w k` using `hχ.levelLe k`. Use `⟨fun hx => (hξ k).1 ?_, fun hn => hk.mul ((hξ k).2 hn)⟩` and prove the remaining obligations. Use `hk.inv.mul hx` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem expAt_unr_mul {χ ξ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (hχ : χ.UnrAt w) (hξ : ExpAt ξ w a) :
     ExpAt (χ * ξ) w a := by
@@ -46,7 +46,7 @@ theorem expAt_unr_mul {χ ξ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : �
   rwa [inv_mul_cancel_left] at this
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using psiAt_eq_one (w := w) (t := 0) (by simp)`. Consider the case `succ k ih => rw [Nat.cast_succ, add_mul, one_mul, psiAt_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem psiAt_natMul (w : HeightOneSpectrum (𝓞 E)) (t : w.adicCompletion E) (k : ℕ) :
     psiAt w ((k : w.adicCompletion E) * t) = psiAt w t ^ k := by
@@ -55,13 +55,13 @@ theorem psiAt_natMul (w : HeightOneSpectrum (𝓞 E)) (t : w.adicCompletion E) (
   | succ k ih => rw [Nat.cast_succ, add_mul, one_mul, psiAt_add, ih, pow_succ]
 
 /- English proof (translation)
-Unfold `gaussSumAt`. Use `congr 1`. Use function extensionality and compare the values at `y`. Establish `hy` using `out_notMem w ha y`. Establish `hy1 : w.valuation E ((Quotient.out (y : 𝓞 E ⧸ w.asIdeal ^ a) : 𝓞 E) : E) = 1` using `(w.valuation_eq_one_iff_notMem (K := E)).2 hy`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0 : ((Quotient.out (y : 𝓞 E ⧸ w.asIdeal ^ a) : 𝓞 E) : E) ≠ 0` using `fun h => by`. Rewrite `hy1` using `[h, map_zero]`. Conclude with `zero_ne_one hy1`. Rewrite using `[gaussTerm, gaussTerm, dif_neg hz0, dif_neg hz0]`. Establish `h1 : χ.locK w (Units.mk0 _ hz0) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hχ _ ?_` and prove the remaining obligations. Use `show Valued.v (((atFin w (Units.mk0 _ hz0)) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1`. Simplify using `only [atFin, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, Units.val_mk0]`. Establish `hval : ∀ x : E, Valued.v (algebraMap E (w.adicCompletion E) x) = w.valuation E x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`. Rewrite using `[hval, hy1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (χ * ξ).locK w (Units.mk0 _ hz0) = χ.locK w (Units.mk0 _ hz0) * ξ.locK w (Units.mk0 _ hz0)` using `rfl`. Rewrite using `[e, h1, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem gaussSumAt_unr_mul {χ ξ : HChar E} {w : HeightOneSpectrum (𝓞 E)} (hχ : χ.UnrAt w) {a : ℕ} (ha : a ≠ 0) (c : Eˣ) :
     gaussSumAt (χ * ξ) w a c = gaussSumAt ξ w a c := by
@@ -92,27 +92,23 @@ namespace GlobalTheory.TameTwistEps
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `set c : Eˣ := unif w ^ (1 + diffExp w) with hc`. Use `haveI : Fintype (𝓞 E ⧸ w.asIdeal ^ 1)ˣ := Fintype.ofFinite _`. Establish `hval : ∀ x : E, Valued.v (algebraMap E (w.adicCompletion E) x) = w.valuation E x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`. Establish `hqv : w.valuation E ((q : 𝓞 E) : E) ≤ WithZero.exp (-((1 : ℕ) : ℤ))`. Establish `h` using `valuation_sub_le (w := w) (a := 1) (y := (q : 𝓞 E)) (y' := 0) (by rw [sub_zero, pow_one, ← hqw]; exact Ideal.absNorm_mem _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hterm : ∀ y : (𝓞 E ⧸ w.asIdeal ^ 1)ˣ, ∃ x : K, σ x = gaussTerm ξ w c ((Quotient.out (y : 𝓞 E ⧸ w.asIdeal ^ 1) : 𝓞 E) : E) ∧ x ^ (N * q) = 1`. Introduce `y`. Establish `hy` using `out_notMem w one_ne_zero y`. Use `set z : 𝓞 E := Quotient.out (y : 𝓞 E ⧸ w.asIdeal ^ 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy1 : w.valuation E (z : E) = 1` using `(w.valuation_eq_one_iff_notMem (K := E)).2 hy`. Establish `hz0 : (z : E) ≠ 0` using `fun h => by`. Rewrite `hy1` using `[h, map_zero]`. Conclude with `zero_ne_one hy1`. Rewrite using `[gaussTerm, dif_neg hz0]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨x1, hx1⟩` from `hξK (Units.mk0 _ hz0)⁻¹`. Establish `hp : psiAt w (algebraMap E (w.adicCompletion E) ((z : E) / c)) ^ q = 1`. Rewrite using `[← psiAt_natMul]`. Apply `psiAt_eq_one` to reduce the goal to its premises. Establish `e : ((q : ℕ) : w.adicCompletion E) * algebraMap E (w.adicCompletion E) ((z : E) / c) = algebraMap E (w.adicCompletion E) (((q : 𝓞 E) : E) * ((z : E) / c))` using `by simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, hval, map_mul, map_div₀, hy1, hc, valuation_unif_pow, one_div, ← div_eq_mul_inv, div_le_iff₀ (zero_lt_iff.2 WithZero.exp_ne_zero), ← WithZero.exp_add]`. Use `hqv using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨x2, hx2⟩` from `hqK _ hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hx1N : x1 ^ N = 1` using `σ.injective (by rw [map_pow, hx1, locK_pow_eq_one hξN, map_one])`. Establish `hx2q : x2 ^ q = 1` using `σ.injective (by rw [map_pow, hx2, hp, map_one])`. Use `⟨x1 * x2, by rw [map_mul, hx1, hx2, map_inv], ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_mul, hx1N, one_pow, one_mul, mul_comm N q, pow_mul, hx2q, one_pow]`. Use `choose X hX using hterm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < N * q` using `Nat.mul_pos hN hq.pos`. Establish `hXi : ∀ y, IsIntegral ℤ (X y)` using `fun y => IsIntegral.of_pow hpos (by rw [(hX y).2]; exact isIntegral_one)`. Establish `hXi' : ∀ y, IsIntegral ℤ (X y)⁻¹` using `fun y => IsIntegral.of_pow hpos (by rw [inv_pow, (hX y).2, inv_one]; exact isIntegral_one)`. Establish `hnorm : ∀ y, ‖σ (X y)‖ = 1` using `fun y => Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, (hX y).2, map_one]) hpos.ne'`. Establish `hgi : IsIntegral ℤ (∑ y, X y)` using `IsIntegral.sum _ fun y _ => hXi y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgi' : IsIntegral ℤ (∑ y, (X y)⁻¹)` using `IsIntegral.sum _ fun y _ => hXi' y`. Establish `hσg : σ (∑ y, X y) = gaussSumAt ξ w 1 c`. Rewrite using `[map_sum, gaussSumAt, finsum_eq_sum_of_fintype]`. Conclude with `Finset.sum_congr rfl fun y _ => (hX y).1`. Establish `hσg' : σ (∑ y, (X y)⁻¹) = starRingEnd ℂ (gaussSumAt ξ w 1 c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← hσg, map_sum, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun y _ => by rw [map_inv₀, Complex.inv_eq_conj (hnorm y)]`. Establish `hu : IsUnitary ξ` using `isUnitary_of_orderDvd hN hξN`. Establish `hG` using `GlobalTheory.GaussMod.gaussSumAt_normSq ξ w 1 c one_ne_zero hξ hu (valuation_unif_pow w _)`. Establish `hprod : (∑ y, X y) * (∑ y, (X y)⁻¹) = (q : K)` using `σ.injective (by`.
-
-Rewrite using `[map_mul, hσg, hσg', Complex.mul_conj, Complex.normSq_eq_norm_sq, hG, hqw, map_natCast]`. Use `push_cast`. Use the proof step `ring)`. Use `⟨⟨_, hgi⟩, hσg, ⟨⟨_, hgi'⟩, RingOfIntegers.ext ?_⟩⟩` and prove the remaining obligations. Establish `e : ((q : 𝓞 K) : K) = (q : K)` using `by simp`.
-
-Rewrite using `[e, ← hprod]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gaussSumAt_dvd {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) {ξ : HChar E} {w : HeightOneSpectrum (𝓞 E)}
     {q N : ℕ} (hq : q.Prime) (hqw : Ideal.absNorm w.asIdeal = q) (hN : 0 < N) (hξN : ξ.OrderDvd N) (hξ : ExpAt ξ w 1)
@@ -184,19 +180,19 @@ end GlobalTheory.TameTwistEps
 namespace GlobalTheory.TameTwistEps
 
 /- English proof (translation)
-Introduce `E _ _ K _ _ _ σ χ ξ w q m N s hq hcard hqm hN hξN hχ hξ hξK hqK hs`. Establish `hqw : Ideal.absNorm w.asIdeal = q` using `by rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]; exact hcard`. Use `⟨expAt_unr_mul hχ hξ, ?_⟩` and prove the remaining obligations. Take `⟨gG, hgG, hdvd⟩` from `exists_gaussSumAt_dvd σ hq hqw hN hξN hξ hξK hqK`. Take `⟨x1, hx1⟩` from `hξK (unif w ^ (1 + diffExp w))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx1N : x1 ^ N = 1` using `σ.injective (by rw [map_pow, hx1, locK_pow_eq_one hξN, map_one])`. Establish `hx1i : IsIntegral ℤ x1` using `IsIntegral.of_pow hN (by rw [hx1N]; exact isIntegral_one)`. Use `set a1 : 𝓞 K := ⟨x1, hx1i⟩ with ha1d`. Establish `ha1 : IsUnit a1`. Establish `e : ((a1 : 𝓞 K) : K) = x1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsUnit.of_pow_eq_one (RingOfIntegers.ext (by push_cast; exact (congrArg (· ^ N) e).trans hx1N)) hN.ne'`. Establish `hqm' : (q : 𝓞 K) ∣ (m : 𝓞 K)` using `Nat.cast_dvd_cast hqm`. Use `⟨x1 * (q : K) ^ (-s).toNat * (gG : K), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : GlobalTheory.Square.IsAwayUnit m x1` using `GlobalTheory.Square.IsAwayUnit.of_dvd (a := a1) (k := 0) (by simpa using ha1.dvd)`. Establish `h2 : GlobalTheory.Square.IsAwayUnit m ((q : K) ^ (-s).toNat)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `GlobalTheory.Square.IsAwayUnit.of_dvd (K := K) (m := m) (a := (q : 𝓞 K) ^ (-s).toNat) (pow_dvd_pow_of_dvd hqm' _)` as an intermediate fact. Simplify using `using this`. Establish `h3 : GlobalTheory.Square.IsAwayUnit m (gG : K)` using `GlobalTheory.Square.IsAwayUnit.of_dvd (k := 1) (by rw [pow_one]; exact hdvd.trans hqm')`. Conclude with `(h1.mul h2).mul h3`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : (((-s).toNat : ℕ) : ℂ) = -(s : ℂ)`. Establish `: (((-s).toNat : ℕ) : ℤ) = -s` using `Int.toNat_of_nonneg (by omega)`. Conclude with `this` after adjusting the coercions. Establish `e1 : ((q : ℕ) : ℂ) ^ (-(s : ℂ) * ((1 + diffExp w : ℕ) : ℂ)) = ((q : ℕ) : ℂ) ^ (-(s : ℂ) * ((0 + diffExp w : ℕ) : ℂ)) * (q : ℂ) ^ ((-s).toNat)`. Rewrite using `[← Complex.cpow_natCast, ← Complex.cpow_add _ _ hq0, hj]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (χ * ξ).locK w (unif w ^ (1 + diffExp w)) = χ.val w * χ.locK w (unif w ^ (0 + diffExp w)) * ξ.locK w (unif w ^ (1 + diffExp w))` using `by show χ.locK w (unif w ^ (1 + diffExp w)) * ξ.locK w (unif w ^ (1 + diffExp w)) = _`. Rewrite using `[pow_add, pow_one, map_mul, zero_add]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Both sides reduce to the same expression. Rewrite using `[locEps, locEps, if_neg one_ne_zero, if_pos rfl, gaussSumAt_unr_mul hχ one_ne_zero, hqw, e1, e2, map_mul, map_mul, hx1, hgG, map_pow σ, map_natCast σ]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem locEps_tame_twist : ∀ (E : Type) [Field E] [NumberField E] (K : Type) [Field K] [NumberField K] [StarRing K] (σ : K →+* ℂ) (χ ξ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (q m N : ℕ) (s : ℤ), q.Prime → Nat.card (𝓞 E ⧸ w.asIdeal) = q → q ∣ m → 0 < N → ξ.OrderDvd N → χ.UnrAt w → ExpAt ξ w 1 → (∀ x : Eˣ, ((ξ.locK w x : ℂˣ) : ℂ) ∈ Set.range σ) → (∀ z : ℂ, z ^ q = 1 → z ∈ Set.range σ) → s ≤ 0 → ExpAt (χ * ξ) w 1 ∧ ∃ g : K, GlobalTheory.Square.IsAwayUnit m g ∧ locEps (χ * ξ) w 1 (s : ℂ) = σ g * ((χ.val w : ℂˣ) : ℂ) * locEps χ w 0 (s : ℂ) := by
   intro E _ _ K _ _ _ σ χ ξ w q m N s hq hcard hqm hN hξN hχ hξ hξK hqK hs

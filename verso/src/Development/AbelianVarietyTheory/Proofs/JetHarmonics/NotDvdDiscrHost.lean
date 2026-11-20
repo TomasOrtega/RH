@@ -8,9 +8,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.GoodDepth
 
 /- English proof (translation)
-Introduce `Rk H p hp hs hq hd hdvd`. Establish `hc : p ∣ H.QS * H.q * H.d` using `H.der.discr_primes.1 p hp hdvd`. Break down `(hp.dvd_mul).1 hc with h | h` into its components or cases. Break down `(hp.dvd_mul).1 h with h | h` into its components or cases. Conclude with `hs (Nat.mem_primeFactors.2 ⟨hp, h, H.QS_pos.ne'⟩)`.
-
-Conclude with `hq ((Nat.prime_dvd_prime_iff_eq hp H.hyp.1).1 h)`. Conclude with `hd ((Nat.prime_dvd_prime_iff_eq hp H.hyp.2.1).1 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem not_dvd_discr_host : ∀ (Rk : Ranks) (H : Formalism.BasicNotions.Host Rk) (p : ℕ), p.Prime → p ∉ H.small →
     p ≠ H.q → p ≠ H.d → ¬ (p : ℤ) ∣ NumberField.discr H.E := by

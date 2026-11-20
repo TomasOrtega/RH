@@ -20,17 +20,15 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Establish `: IsAffine (pullback q y)` using `isAffine_of_isAffineHom (pullback.snd q y)`. Set `e` to `(pullback q y).isoSpec`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (pullback.lift x _ h ≫ e.hom)`. Take `⟨α, hα⟩` from `Spec.map_surjective (e.inv ≫ pullback.snd q y)`. Establish `hs : RingHom.Smooth α.hom`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← HasRingHomProperty.Spec_iff (P := @Smooth), hα]`. Use `infer_instance`. Establish `hφα : α ≫ φ = CommRingCat.ofHom π`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hα, hφ, Category.assoc, Iso.hom_inv_id_assoc, pullback.lift_snd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI : Algebra S Γ(pullback q y, ⊤) := α.hom.toAlgebra`. Use `letI : Algebra S S' := π.toAlgebra`. Use `haveI : Algebra.Smooth S Γ(pullback q y, ⊤) := hs`. Set `φ' : Γ(pullback q y, ⊤) →ₐ[S] S'` to `⟨φ.hom, fun r => congr($hφα r)⟩`. Set `ψ` to `Algebra.FormallySmooth.liftOfSurjective φ' (Algebra.ofId S S') hπ hk`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hψ : (Algebra.ofId S S').comp ψ = φ'` using `Algebra.FormallySmooth.comp_liftOfSurjective φ' (Algebra.ofId S S') hπ hk`. Set `ψ' : Γ(pullback q y, ⊤) ⟶ CommRingCat.of S` to `CommRingCat.ofHom ψ.toRingHom`. Establish `h₁ : α ≫ ψ' = 𝟙 _`. Use extensionality with `r`. Conclude with `ψ.commutes r`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₂ : ψ' ≫ CommRingCat.ofHom π = φ`. Use extensionality with `a`. Conclude with `congr($hψ a)`. Use `⟨Spec.map ψ' ≫ e.inv ≫ pullback.fst q y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc e.inv, ← hα, ← Category.assoc, ← Spec.map_comp, h₁, Spec.map_id, Category.id_comp]`.
-
-Rewrite using `[← Category.assoc, ← Spec.map_comp, h₂, hφ, Category.assoc, Iso.hom_inv_id_assoc, pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lift_of_smooth_affine {G B : Scheme.{0}} (q : G ⟶ B) [Smooth q] [IsAffineHom q]
     {S S' : Type} [CommRing S] [CommRing S'] (π : S →+* S') (hπ : Function.Surjective π)
@@ -67,21 +65,19 @@ private theorem lift_of_smooth_affine {G B : Scheme.{0}} (q : G ⟶ B) [Smooth q
   · rw [← Category.assoc, ← Spec.map_comp, h₂, hφ, Category.assoc, Iso.hom_inv_id_assoc, pullback.lift_fst]
 
 /- English proof (translation)
-Introduce `R _ _ I D k G _ _ c S _ _ hS S' _ _ ρ σ hρσ hk y hy`. Establish `hS' : Kills I k S'` using `fun t ht => by rw [← ρ.commutes, hS t ht, map_zero]`. Take `⟨hex, hmul⟩` from `(qRel_existsUnique_mul_nat R I D k G c).1 S' hS'`. Take `⟨y₀, hy₀, hu⟩` from `hex 1`. Establish `h1 : y₀ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `hmul 1 1 y₀ y₀ hy₀ hy₀`. Rewrite `h` using `[_root_.mul_one]`. Conclude with `mul_eq_left.1 (hu _ h)`. Substitute `h1` using the available equality. Take `⟨x, hx₁, hx₂⟩` from `hy₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `c.q_hom` as an intermediate fact. Use `c.q_flat` as an intermediate fact. Use `c.q_surj` as an intermediate fact. Use `c.q_affine` as an intermediate fact. Use `(H1.torus_dim (Spec (CommRingCat.of (R ⧸ I ^ (k + 1)))) D.X).smooth` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Smooth c.q.left`. Use `MorphismProperty.of_isPullback_of_descendsAlong (P := @Smooth) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) ((H1.torsor_pullback c.i c.q c.isKernel).map (Over.forget _)).flip ⟨⟨‹_›, ‹_›⟩, inferInstanceAs (QuasiCompact c.q.left)⟩ ?_` and prove the remaining obligations. Conclude with `smooth_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _) this`. Establish `: IsClosedImmersion (Out.thick R I k)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hf : Mono (pullback.fst D.P.A.hom (Out.thick R I k))` using `inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `t : Spec (CommRingCat.of S) ⟶ Spec (CommRingCat.of (R ⧸ I ^ (k + 1)))` to `Spec.map (CommRingCat.ofHom (Ideal.Quotient.lift (I ^ (k + 1)) (algebraMap R S) hS))`. Establish `ht : t ≫ Out.thick R I k = Spec.map (CommRingCat.ofHom (algebraMap R S))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Set `y' : Spec (CommRingCat.of S) ⟶ (Out.thickObj R I k D.P.A).left` to `pullback.lift y.left t ((Over.w y).trans ht.symm)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : y' ≫ pullback.fst D.P.A.hom (Out.thick R I k) = y.left` using `pullback.lift_fst _ _ _`. Establish `hyl : Spec.map (CommRingCat.ofHom ρ.toRingHom) ≫ y.left = (1 : sp (R₀` using `R) S' ⟶ D.P.A).left := congrArg (·.left) hy`. Take `⟨w, hw₁, hw₂⟩` from `lift_of_smooth_affine c.q.left ρ.toRingHom (fun a => ⟨σ a, congr($hρσ a)⟩) ⟨2, hk⟩ y' x (by`. Use `(cancel_mono (pullback.fst D.P.A.hom (Out.thick R I k))).1 ?_` and prove the remaining obligations. Conclude with `((Category.assoc _ _ _).trans hx₂).trans (hyl.symm.trans ((congrArg (_ ≫ ·) hy'.symm).trans (Category.assoc _ _ _).symm)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : w ≫ c.pG.left = y.left` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) hw₁).trans hy')`. Establish `hz : (w ≫ (Out.fstG I k G).left) ≫ G.hom = Spec.map (CommRingCat.ofHom (algebraMap R S))`. Establish `a : (Out.fstG I k G).left ≫ G.hom = c.pG.left ≫ D.P.A.hom` using `(Over.w _).trans (Over.w _).symm`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (w ≫ ·) a).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ D.P.A.hom) hq).trans (Over.w y))))`. Use `⟨Over.homMk (w ≫ (Out.fstG I k G).left) hz, ?_, w, rfl, hq⟩` and prove the remaining obligations.
-
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (Out.fstG I k G).left) hw₂).trans hx₁)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem qRel_lift : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : Out.DegPre R) (k : ℕ) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (c : Out.GtCoord I D k G) (S : Type) [CommRing S] [Algebra R S], Kills I k S → ∀ (S' : Type) [CommRing S'] [Algebra R S'] (ρ : S →ₐ[R] S') (σ : S' →ₐ[R] S), ρ.comp σ = AlgHom.id R S' → RingHom.ker ρ ^ 2 = ⊥ → ∀ y : sp (R₀ := R) S ⟶ D.P.A, spMap ρ ≫ y = 1 → ∃ z : sp (R₀ := R) S ⟶ G, spMap ρ ≫ z = 1 ∧ QRel c S z y := by
   intro R _ _ I D k G _ _ c S _ _ hS S' _ _ ρ σ hρσ hk y hy

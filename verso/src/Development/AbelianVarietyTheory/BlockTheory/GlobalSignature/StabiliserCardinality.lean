@@ -6,7 +6,7 @@ def stab {G : Type} [Group G] (Γ K : Subgroup G) (y : G) : Subgroup G :=
   Γ ⊓ K.map (MulAut.conj y).toMonoidHom
 
 /- English proof (translation)
-Unfold `stab`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_map]`. Use `and_congr_right fun _ => ⟨?_, fun h => ⟨_, h, by simp [mul_assoc]⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨k, hk, rfl⟩`. Simplify `hk` using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_stab {G : Type} [Group G] (Γ K : Subgroup G) (y γ : G) :
     γ ∈ stab Γ K y ↔ γ ∈ Γ ∧ y⁻¹ * γ * y ∈ K := by
@@ -31,19 +31,19 @@ def DoubleCosetCount : Prop :=
             1 / (Nat.card (stab Γ K (rep c)) : ℚ)
 
 /- English proof (translation)
-Simplify using `[stab]`.
+Simplify using the standard rewrite rules.
 -/
 example {G : Type} [Group G] (Γ : Subgroup G) (x : G) : stab Γ ⊥ x = ⊥ := by
   simp [stab]
 
 /- English proof (translation)
-Use extensionality with `γ`. Simplify using `[mem_stab]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 example {G : Type} [Group G] (Γ : Subgroup G) (x : G) : stab Γ ⊤ x = Γ := by
   ext γ; simp [mem_stab]
 
 /- English proof (translation)
-The claim follows from `DoubleCoset.out_eq' Γ K`.
+A detailed English derivation is pending.
 -/
 example {G : Type} [Group G] (Γ K : Subgroup G) :
     ∀ c : DoubleCoset.Quotient (Γ : Set G) (K : Set G), DoubleCoset.mk Γ K c.out = c :=

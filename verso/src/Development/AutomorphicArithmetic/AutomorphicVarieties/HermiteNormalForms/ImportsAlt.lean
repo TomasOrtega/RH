@@ -6,11 +6,11 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `L _ _ _ N p t`. Establish `hle : MulAction.stabilizer (Gm L N) t ≤ MulAction.stabilizer (Gm L N) (t.1 0)`. Introduce `g hg`. Rewrite `hg`, the goal using `[MulAction.mem_stabilizer_iff]`. Rewrite using `[← Sx.smul_val, hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : Finite (MulAction.stabilizer (Gm L N) t)` using `by haveI := UpperTheory.V.KT.stabfin L N (t.1 0)`. Conclude with `Finite.of_injective _ (Subgroup.inclusion_injective hle)`. Establish `hrk : Module.finrank ℤ (Matrix (Fin N) (Fin N) (𝓞 L)) = dd L N * N`. Rewrite using `[Module.finrank_matrix, RingOfIntegers.rank]`. Simplify using `only [Fintype.card_fin, dd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h` using `UpperTheory.V.KT.mink3 (Matrix (Fin N) (Fin N) (𝓞 L)) (MulAction.stabilizer (Gm L N) t) hfin`. Rewrite `h` using `[hrk]`. Conclude with `⟨hfin, h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.stab :
     ∀ (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N : ℕ) (p : ℕ),

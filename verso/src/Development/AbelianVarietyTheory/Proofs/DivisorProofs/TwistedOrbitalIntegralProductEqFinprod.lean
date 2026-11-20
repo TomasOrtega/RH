@@ -28,49 +28,39 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n hn S hS K' hK' f hf γ hγ`. Establish `hTB` using `fun w : Pl E => GlobalTheory.T.localTwist_continuous_involution_integral_properties E hU n w`. Establish `hKo : ∀ w : Pl E, IsOpen (KL n w : Set (UL n w))` using `fun w => (hTB w).2.2.2.2.2.2.1`. Establish `hKc : ∀ w : Pl E, IsCompact (KL n w : Set (UL n w))` using `fun w => (hTB w).2.2.2.2.2.2.2.1`. Set `p : ∀ i : S, finU E n →* UL n i.1` to `fun i => ((cLoc i.1).comp (finU E n).subtype).codRestrict (UL n i.1) (fun x => GlobalTheory.T.finiteAdelicUnitaryPoint_localComponent_mem_localUnitary E hU n i.1 x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hp : ∀ (i : S) (x : finU E n), p i x = toSub (UL n i.1) (cLoc i.1 (x : UA E n))`. Introduce `i x`. Unfold `toSub`. Rewrite using `[dif_pos (GlobalTheory.T.finiteAdelicUnitaryPoint_localComponent_mem_localUnitary E hU n i.1 x)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hδ : ∀ i : S, p i (finPt γ) = locPt i.1 γ` using `fun i => (hp i _).trans (GlobalTheory.T.localComponent_definiteUnitaryFinitePart_eq_localPoint E hU n γ i.1)`. Establish `hsep : ∀ w : Pl E, (locPt w γ).1.val.charpoly.Separable`. Introduce `w`. Rewrite using `[GlobalTheory.T.definiteUnitaryLocalPoint_eq_map_rational E hU n γ w]`. Use `show ((γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).map (algebraMap E (w.adicCompletion E)) |>.charpoly.Separable`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.charpoly_map]`. Conclude with `hγ.map`. Establish `hlev : ∀ w : Pl E, IsLevel (MonoidHom.id (UL n w)) (KL n w) (KL n w)` using `fun w => ⟨hKo w, le_rfl, fun k hk => hk⟩`. Establish `hglob : globFn S f = fun x => ∏ᶠ i : S, f i.1 (p i x)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `globFn`. Conclude with `(finprod_subtype_eq_finprod_cond (f := fun w => f w (toSub (UL n w) (cLoc w (x : UA E n)))) (fun w => w ∈ S)).symm.trans (finprod_congr fun i => by rw [hp])`. Establish `hK : ∀ x : finU E n, x ∈ globLev S (KL n) ↔ ∀ i : S, p i x ∈ KL n i.1`. Introduce `x`. Unfold `globLev`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Subgroup.mem_iInf, Subgroup.mem_comap, Subgroup.mem_map, MonoidHom.coe_comp, Function.comp_apply, Subgroup.coe_subtype]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Take `⟨k, hk, hke⟩` from `h i.1 i.2`. Establish `: p i x = k` using `Subtype.ext hke.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[this]`. Conclude with `hk`. Introduce `h w hw`. Conclude with `⟨p ⟨w, hw⟩ x, h ⟨w, hw⟩, rfl⟩`. Rewrite using `[hglob]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hmain` using `GlobalTheory.T.orbitalIntegral_restrictedProduct_eq_prod S (finU E n) (fun i : S => UL n i.1) p (globLev S (KL n)) (fun i => KL n i.1) (finPt γ) (fun i => f i.1) (fun i => by`. Establish `hfun : (p i : finU E n → UL n i.1) = fun x : finU E n => toSub (UL n i.1) (cLoc i.1 (x : UA E n))` using `funext (hp i)`. Rewrite using `[hfun]`. Conclude with `GlobalTheory.T.continuous_unitaryLocalComponent_toLocalUnitaryGroup E hU n i.1)`. Use the proof step `(fun x y h => GlobalTheory.T.finiteAdelicUnitaryPoint_eq_of_section_components_eq E hU n S hS x y (fun w hw => by rw [← hp ⟨w, hw⟩, ← hp ⟨w, hw⟩]; exact h ⟨w, hw⟩))`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use the proof step `(fun y hy => by`. Set `y' : ∀ w : Pl E, UL n w` to `fun w => if hw : w ∈ S then y ⟨w, hw⟩ else 1`. Establish `hy' : ∀ᶠ w in cofinite, y' w ∈ KL n w`. Rewrite `hy`, the goal using `[Filter.eventually_cofinite]`. Use `(hy.image Subtype.val).subset ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `w hw`. Distinguish the cases in `hwS : w ∈ S`. Conclude with `⟨⟨w, hwS⟩, by simpa [y', hwS] using hw, rfl⟩`. Conclude with `absurd (by simp only [y', dif_neg hwS]; exact one_mem _) hw`. Take `⟨x, hx⟩` from `GlobalTheory.T.exists_finiteAdelicUnitaryPoint_of_local_family E hU n S hS y' hy'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Conclude with `⟨x, fun i => by rw [hp, hx i.1 i.2]; simp [y', i.2]⟩)`. Use the proof step `(fun x => by`. Establish `h` using `GlobalTheory.T.eventually_finiteAdelicUnitaryComponent_mem_integral E hU n x`. Rewrite `h`, the goal using `[Filter.eventually_cofinite]`. Use `(h.preimage Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `i hi`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at hi ⊢`. Rewrite using `[← hp])` and apply the resulting hypothesis. Use `hK`. Use the proof step `(fun C hC hCK => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `C' : ∀ w : Pl E, Set (UL n w)` to `fun w => if hw : w ∈ S then C ⟨w, hw⟩ else (KL n w : Set (UL n w))`. Establish `hC' : ∀ᶠ w in cofinite, C' w = KL n w`. Rewrite `hCK`, the goal using `[Filter.eventually_cofinite]`. Use `(hCK.image Subtype.val).subset ?_` and prove the remaining obligations. Introduce `w hw`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hwS : w ∈ S`. Conclude with `⟨⟨w, hwS⟩, by simpa [C', hwS] using hw, rfl⟩`. Conclude with `absurd (by simp only [C', dif_neg hwS]) hw`. Establish `h` using `GlobalTheory.T.isCompact_definiteUnitary_restricted_product E hU n S hS C' (fun w => by`. Distinguish the cases in `hw : w ∈ S`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [C', dif_pos hw]`. Conclude with `hC _`. Simplify using `only [C', dif_neg hw]`. Conclude with `hKc w) hC'`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hx w hw`. Use `hx ⟨w, hw⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[hp]`. Simplify `this` using `[C', hw]`. Introduce `hx i`. Use `hx i.1 i.2` as an intermediate fact. Rewrite using `[hp]`.
-
-Simplify `this)` using `[C', i.2]`. Use the proof step `(fun i => hKc i.1)`. Use the proof step `(fun i => by rw [hδ]; exact GlobalTheory.T.twistedCentralizer_localUnitary_comm_of_separable E hU n i.1 (locPt i.1 γ) (hsep i.1))`. Use the proof step `(fun i x => by rw [hδ]; exact (GlobalTheory.T.unitary_local_finiteness_regular_semisimple_centralizer E hU n i.1 (locPt i.1 γ) (hsep i.1) (KL n i.1) (hlev i.1)).1 x)`. Use the proof step `(fun i x => GlobalTheory.T.rightStabilizer_conj_biinvariant_finiteIndex (UL n i.1) (KL n i.1) (K' i.1) (f i.1) (p i (finPt γ)) (hKc i.1) (hK'.1 i.1).1 (hK'.1 i.1).2.1 (hf.1 i.1).2 x)`.
-
-Use the proof step `(fun i => by`. Rewrite using `[hδ]`. Conclude with `GlobalTheory.T.finite_doubleCosets_meeting_compact_support_conj (UL n i.1) (twCent (MonoidHom.id (UL n i.1)) (locPt i.1 γ)) (KL n i.1) (locPt i.1 γ) (f i.1) (hKc i.1) (hf.1 i.1).1 (GlobalTheory.T.unitary_local_finiteness_regular_semisimple_centralizer E hU n i.1 (locPt i.1 γ) (hs …`. Use the proof step `(by`. Establish `hgood` using `(GlobalTheory.T.eventually_definiteUnitaryLocalPoint_mem_maxCompact E hU n γ hγ).and (hf.2.and ((GlobalTheory.T.eventually_integralConjugate_mem_centralizer_mul_integral E hU n hn γ hγ).and (GlobalTheory.T.centraliser_compactPart_le_integral_almostAll E hU n γ hγ)))`.
-
-Rewrite `hgood`, the goal using `[Filter.eventually_cofinite]`. Use `(hgood.preimage Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at hi ⊢`. Introduce `h`.
-
-Apply `hi` to reduce the goal to its premises. Rewrite using `[hδ]`. Conclude with `h)`. Rewrite using `[hmain]`. Repeatedly rewrite using `[hδ]`.
-
-Conclude with `finprod_subtype_eq_finprod_cond (f := fun w => twOrb (MonoidHom.id _) (KL n w) (locPt w γ) (f w)) (fun w => w ∈ S)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twOrb_globFn_eq_finprod : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ f : ∀ w : Pl E, UL n w → ℂ, IsTest (KL n) K' f → ∀ γ : UE E n, γ.1.val.charpoly.Separable → twOrb (MonoidHom.id _) (globLev S (KL n)) (finPt γ) (globFn S f) = ∏ᶠ w ∈ S, twOrb (MonoidHom.id _) (KL n w) (locPt w γ) (f w) := by
   intro E _ _ _ hU n hn S hS K' hK' f hf γ hγ

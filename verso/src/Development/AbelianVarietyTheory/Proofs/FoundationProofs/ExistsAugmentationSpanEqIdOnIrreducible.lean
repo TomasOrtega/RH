@@ -5,65 +5,53 @@ open scoped Matrix
 namespace GlobalTheory.AugSpan
 
 /- English proof (translation)
-Introduce `K _ _ Γ _ m S P hst hirrP hnt`. Use `set J := Submodule.span K (Set.range fun g => S g - 1) with hJ`. Take `⟨g₀, v₀, hv₀, hne⟩` from `hnt`. Establish `hP : P ≠ ⊥`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv₀` using `[h, Submodule.mem_bot]`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hv₀, Matrix.mulVec_zero]`. Establish `hinv : ∀ g, ∀ v ∈ P, (Matrix.toLin' (S g)) v ∈ P` using `fun g v hv => by rw [Matrix.toLin'_apply]; exact hst g v hv`. Set `r : Representation K Γ P` to `{ toFun := fun g => (Matrix.toLin' (S g)).restrict (hinv g) map_one' := by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Use extensionality with `v i`. Simplify using `[LinearMap.restrict_apply]`. Use the proof step `map_mul' := fun g g' => by`. Use extensionality with `v i`. Simplify using `[LinearMap.restrict_apply, Matrix.mulVec_mulVec] }`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ g (v : P), ((r g v : P) : Fin m → K) = S g *ᵥ (v : Fin m → K)` using `fun g v => by simp [r, LinearMap.restrict_apply]`. Establish `hirr : r.IsIrreducible`. Establish `hnt : Nontrivial (Subrepresentation r)`. Use `⟨⊥, ⊤, fun hbt => hP ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Subrepresentation.toSubmodule hbt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(⊥ : Submodule K P) = ⊤ at h2`. Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Establish `: (⟨v, hv⟩ : P) ∈ (⊥ : Submodule K P)` using `by rw [h2]; trivial`. Rewrite `this` using `[Submodule.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using congrArg Subtype.val this`. Use `⟨fun W => ?_⟩` and prove the remaining obligations. Establish `hle : W.toSubmodule.map P.subtype ≤ P`. Introduce and unpack `_ ⟨v, _, rfl⟩`. Conclude with `v.2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinvW : ∀ g, ∀ v ∈ W.toSubmodule.map P.subtype, S g *ᵥ v ∈ W.toSubmodule.map P.subtype`. Introduce and unpack `g _ ⟨v, hv, rfl⟩`. Use `⟨r g v, W.apply_mem_toSubmodule g hv, ?_⟩` and prove the remaining obligations. Simplify using `[hr]`. Break down `hirrP _ hle hinvW with h1 | h1` into its components or cases.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `left`. Use `Subrepresentation.toSubmodule_injective (eq_bot_iff.2 fun v hv => ?_)` and prove the remaining obligations. Establish `: (v : Fin m → K) ∈ W.toSubmodule.map P.subtype` using `⟨v, hv, rfl⟩`. Rewrite `this` using `[h1, Submodule.mem_bot]`. Use `show v ∈ (⊥ : Submodule K P)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Submodule.mem_bot]`. Conclude with `Subtype.ext this`. Use `right`. Use `Subrepresentation.toSubmodule_injective (eq_top_iff.2 fun v _ => ?_)` and prove the remaining obligations. Establish `: (v : Fin m → K) ∈ W.toSubmodule.map P.subtype` using `by rw [h1]; exact v.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨w, hw, hwv⟩` from `this`. Rewrite `hw` using `[show w = v from Subtype.ext hwv]`. Then use the resulting hypothesis. Establish `hs` using `GlobalTheory.BurnsideField.span_range_eq_top_of_isAlgClosed r hirr`. Establish `hJl : ∀ g, ∀ T ∈ J, S g * T ∈ J`. Introduce `g T hT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`. Establish `: S g * (S h - 1) = (S (g * h) - 1) - (S g - 1)`. Rewrite using `[map_mul, mul_sub, mul_one]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨_, rfl⟩) (Submodule.subset_span ⟨_, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [Matrix.mul_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Establish `hJr : ∀ g, ∀ T ∈ J, T * S g ∈ J`. Introduce `g T hT`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`. Establish `: (S h - 1) * S g = (S (h * g) - 1) - (S g - 1)`. Rewrite using `[map_mul, sub_mul, one_mul]`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨_, rfl⟩) (Submodule.subset_span ⟨_, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [Matrix.smul_mul]`. Conclude with `Submodule.smul_mem _ c hx`. Set `J' : Submodule K (Module.End K P)` to `{ carrier := {f | ∃ T ∈ J, ∀ w : P, T *ᵥ (w : Fin m → K) = f w} add_mem' := by`. Introduce and unpack `f f' ⟨T, hT, hTf⟩ ⟨T', hT', hTf'⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨T + T', J.add_mem hT hT', fun w => by`. Rewrite using `[Matrix.add_mulVec, hTf, hTf']`. Use the proof step `simp⟩`. Use the proof step `zero_mem' := ⟨0, J.zero_mem, fun w => by simp⟩`. Use the proof step `smul_mem' := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce and unpack `c f ⟨T, hT, hTf⟩`. Conclude with `⟨c • T, J.smul_mem c hT, fun w => by`. Rewrite using `[Matrix.smul_mulVec, hTf]`. Use the proof step `simp⟩ }`. Establish `hmem : ∀ f, f ∈ J' ↔ ∃ T ∈ J, ∀ w : P, T *ᵥ (w : Fin m → K) = f w` using `fun f => Iff.rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hl : ∀ a : Module.End K P, ∀ f ∈ J', a * f ∈ J'`. Introduce `a f hf`. Establish `ha : a ∈ Submodule.span K (Set.range r)` using `by rw [hs]; trivial`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨g, rfl⟩` from `hx`. Take `⟨T, hT, hTf⟩` from `(hmem f).1 hf`. Use `(hmem _).2 ⟨S g * T, hJl g T hT, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, hTf, Module.End.mul_apply, hr]`. Consider the case `zero => rw [zero_mul]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `J'.zero_mem`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `J'.add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_mul_assoc]`. Conclude with `J'.smul_mem c hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hrt : ∀ a : Module.End K P, ∀ f ∈ J', f * a ∈ J'`. Introduce `a f hf`. Establish `ha : a ∈ Submodule.span K (Set.range r)` using `by rw [hs]; trivial`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, rfl⟩` from `hx`. Take `⟨T, hT, hTf⟩` from `(hmem f).1 hf`. Use `(hmem _).2 ⟨T * S g, hJr g T hT, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← hr, hTf, Module.End.mul_apply]`. Consider the case `zero => rw [mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J'.zero_mem`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `J'.add_mem hx hy`. Consider the case `smul c x _ hx => rw [mul_smul_comm]`. Conclude with `J'.smul_mem c hx`.
-
-Use `set f₀ : Module.End K P := r g₀ - 1 with hf₀def`. Establish `hf₀ : f₀ ∈ J'` using `(hmem _).2 ⟨S g₀ - 1, Submodule.subset_span ⟨g₀, rfl⟩, fun w => by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, hf₀def, LinearMap.sub_apply, Submodule.coe_sub, hr]`. Use the proof step `rfl⟩`. Use `set w₀ : P := ⟨v₀, hv₀⟩ with hw₀`.
-
-Establish `hfw : f₀ w₀ ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Establish `h'` using `congrArg Subtype.val h`. Rewrite `h'` using `[hf₀def, LinearMap.sub_apply, Submodule.coe_sub, hr, Submodule.coe_zero, sub_eq_zero]`.
-
-Conclude with `h'`. Choose the witnesses or unpack the hypotheses as in `⟨ψ, hψ⟩ : ∃ ψ : Module.Dual K P, ψ (f₀ w₀) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hfw ((Module.forall_dual_apply_eq_zero_iff K _).1 hc)`.
-
-Set `b` to `Module.finBasis K P`. Establish `hid : (1 : Module.End K P) ∈ J'`. Establish `heq : (1 : Module.End K P) = ∑ i, ((ψ (f₀ w₀))⁻¹ • ψ.smulRight (b i)) * f₀ * ((b.coord i).smulRight w₀)` using `by ext1 w`. Rewrite using `[LinearMap.sum_apply, Module.End.one_apply]`. Use `conv_lhs => rw [← b.sum_repr w]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, map_smul, smul_eq_mul, smul_smul, Module.Basis.coord_apply]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`.
-
-Conclude with `J'.sum_mem fun i _ => hrt _ _ (hl _ _ hf₀)`. Take `⟨T, hT, hTid⟩` from `(hmem _).1 hid`. Conclude with `⟨T, hT, fun v hv => hTid ⟨v, hv⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_span_sub_one_eq_id_on :
     ∀ {K : Type} [Field K] [IsAlgClosed K] {Γ : Type} [Group Γ] {m : ℕ}

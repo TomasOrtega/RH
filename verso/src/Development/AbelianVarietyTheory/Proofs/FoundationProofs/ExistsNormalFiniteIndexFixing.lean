@@ -5,23 +5,21 @@ open scoped NNReal
 namespace GlobalTheory.AlmostEt
 
 /- English proof (translation)
-Use `set T : Set L := ⋃ s ∈ S, MulAction.orbit G s with hT`. Establish `hTfin : T.Finite` using `Set.Finite.biUnion S.finite_toSet (fun s hs => hS s hs)`. Establish `hTstab : ∀ g : G, ∀ x ∈ T, g • x ∈ T`. Introduce `g x hx`. Simplify using `only [hT, Set.mem_iUnion] at hx ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hx⟩` from `hx`. Conclude with `⟨s, hs, MulAction.mem_orbit_of_mem_orbit g hx⟩`. Use `set F : Finset L := hTfin.toFinset`. Establish `hF : ∀ x, x ∈ F ↔ x ∈ T` using `fun x => hTfin.mem_toFinset`. Set `U : Subgroup G` to `⨅ x ∈ F, MulAction.stabilizer G x`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU : ∀ g : G, g ∈ U ↔ ∀ x ∈ T, g • x = x`. Introduce `g`. Simplify using `only [U, Subgroup.mem_iInf, MulAction.mem_stabilizer_iff, hF]`. Establish `hST : ∀ s ∈ S, s ∈ T`. Introduce `s hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [hT, Set.mem_iUnion]`. Conclude with `⟨s, hs, MulAction.mem_orbit_self s⟩`. Establish `hFix : ∀ x ∈ T, x ∈ Fix L U`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `∀ m : U, m • x = x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨g, hg⟩`. Conclude with `(hU g).1 hg x hx`. Use `⟨U, ?_, ?_, fun s hs => hFix s (hST s hs), ?_⟩` and prove the remaining obligations. Use `⟨fun n hn g => ?_⟩` and prove the remaining obligations. Rewrite `hn`, the goal using `[hU]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Use `hn (g⁻¹ • x) (hTstab g⁻¹ x hx)` as an intermediate fact. Rewrite using `[mul_smul, mul_smul, this, smul_inv_smul]`. Use `Subgroup.finiteIndex_iInf' _ (fun x hx => ?_)` and prove the remaining obligations. Use `⟨?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[MulAction.index_stabilizer]`. Establish `hx'` using `(hF x).1 hx`. Simplify using `only [hT, Set.mem_iUnion] at hx'`. Take `⟨s, hs, hxs⟩` from `hx'`. Rewrite using `[MulAction.orbit_eq_iff.mpr hxs]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Set.ncard_pos (hS s hs)).mpr ⟨s, MulAction.mem_orbit_self s⟩ |>.ne'`. Introduce `h hh`. Rewrite `hh` using `[hU]`. Use `push_neg at hh`. Take `⟨x, hx, hne⟩` from `hh`.
-
-Conclude with `⟨x, hFix x hx, hne⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_normal_finiteIndex_fixing (L : Type) [Field L] (G : Type) [Group G]
     [MulSemiringAction G L] (S : Finset L) (hS : ∀ s ∈ S, (MulAction.orbit G s).Finite) :

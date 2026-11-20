@@ -18,9 +18,9 @@ set_option linter.unusedSectionVars false
 variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Rewrite using `[secFun_smul hb, secFun_smul hb', wgt, wgt, m.smul, map_mul, map_pow]`. Establish `hc' : (‖c‖ : ℂ) ≠ 0` using `by simpa using hc`. Establish `hk : starRingEnd ℂ c ^ n * c ^ n = (‖c‖ : ℂ) ^ (2 * n)`. Rewrite using `[← mul_pow, Complex.conj_mul', ← pow_mul]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hk, mul_inv_cancel₀ (pow_ne_zero _ hc'), one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem gramFun_smul {m : ConeMetric ℂ (Ix κ)} {n : ℕ} {b b' : MvPolynomial (Ix κ) ℚ}
     (hb : ∃ f : MvPolynomial (Ix κ) ℤ, f.IsHomogeneous n ∧ b = map (Int.castRingHom ℚ) f)
@@ -39,7 +39,7 @@ theorem gramFun_smul {m : ConeMetric ℂ (Ix κ)} {n : ℕ} {b b' : MvPolynomial
         rw [hk, mul_inv_cancel₀ (pow_ne_zero _ hc'), one_mul]
 
 /- English proof (translation)
-Establish `hρ : ContinuousOn m.ρ {0}ᶜ` using `continuousOn_rho hm`. Use `(((continuous_secFun _).continuousOn.star).mul (continuous_secFun _).continuousOn).mul (Complex.continuous_ofReal.comp_continuousOn ((hρ.pow _).inv₀ fun z hz => ?_))` and prove the remaining obligations. Conclude with `pow_ne_zero _ (m.pos z hz).ne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousOn_gramFun {m : ConeMetric ℂ (Ix κ)} (hm : IsSmoothMetric m) (n : ℕ)
     (b b' : MvPolynomial (Ix κ) ℚ) :
@@ -50,13 +50,13 @@ theorem continuousOn_gramFun {m : ConeMetric ℂ (Ix κ)} (hm : IsSmoothMetric m
   exact pow_ne_zero _ (m.pos z hz).ne'
 
 /- English proof (translation)
-Use `set h : (Ix κ → ℂ) → ℂ := fun z => starRingEnd ℂ (secFun (b i) z) * secFun (b j) z * (wgt d.m n z : ℂ) with hh`. Establish `hcont : ContinuousOn h {0}ᶜ` using `continuousOn_gramFun d.smooth n (b i) (b j)`. Establish `hsm : ∀ (c : ℂ) (z : Ix κ → ℂ), c ≠ 0 → h (c • z) = h z` using `fun c z hc => gramFun_smul (hb i) (hb j) c z hc`. Take `⟨C, hC⟩` from `(isCompact_sphere (0 : Ix κ → ℂ) 1).exists_bound_of_continuousOn (hcont.mono fun z hz => by`. Simplify using `only [Set.mem_compl_iff, Set.mem_singleton_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `at hz)`. Establish `hbd : ∀ z, ‖h z‖ ≤ max C ‖h 0‖`. Introduce `z`. Distinguish the cases in `hz : z = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `le_max_right _ _`. Establish `hz' : (‖z‖ : ℂ) ≠ 0` using `by simpa using hz`. Establish `hu : ((‖z‖ : ℂ)⁻¹ • z) ∈ Metric.sphere (0 : Ix κ → ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_norm, inv_mul_cancel₀ (norm_ne_zero_iff.mpr hz)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: z = (‖z‖ : ℂ) • ((‖z‖ : ℂ)⁻¹ • z)` using `by rw [smul_smul, mul_inv_cancel₀ hz', one_smul]`. Rewrite using `[this, hsm _ _ hz']`. Conclude with `(hC _ hu).trans (le_max_left _ _)`. Conclude with `Integrable.of_bound (measurable_of_continuousOn_compl_singleton 0 hcont).aestronglyMeasurable _ (Filter.Eventually.of_forall hbd)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_gram (d : HSMDatum D Ω κ) {n r : ℕ} {b : Fin r → MvPolynomial (Ix κ) ℚ}
     (hb : ∀ k, ∃ f : MvPolynomial (Ix κ) ℤ, f.IsHomogeneous n ∧ b k = map (Int.castRingHom ℚ) f)
@@ -88,7 +88,7 @@ theorem integrable_gram (d : HSMDatum D Ω κ) {n r : ℕ} {b : Fin r → MvPoly
     _ (Filter.Eventually.of_forall hbd)
 
 /- English proof (translation)
-Use `⟨fun k => ?_, hz.2⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `Function.ne_iff.mp hz.1`. Conclude with `⟨p.2, by cases k; exact hp⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_mcPts_of_pts {x : Ix κ → Ω} {z : Ix κ → ℂ} (hz : z ∈ pts (coordIdeal ℤ x)) :
     z ∈ mcPts (ι := GlobalTheory κ) (coordIdeal ℤ x) := by
@@ -97,11 +97,11 @@ theorem mem_mcPts_of_pts {x : Ix κ → Ω} {z : Ix κ → ℂ} (hz : z ∈ pts 
   exact ⟨p.2, by cases k; exact hp⟩
 
 /- English proof (translation)
-Take `⟨S, hS, hJ⟩` from `d.R.homog`. Establish `: ¬ S ⊆ coordIdeal ℤ d.x` using `fun hsub => d.R.nondeg (by`. Rewrite using `[hJ]`. Conclude with `Ideal.span_le.mpr hsub)`. Take `⟨g, hgS, hgP⟩` from `Set.not_subset.mp this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hS g hgS`. Establish `hhom : g.IsHomogeneous (a ())`. Introduce `m hm`. Establish `h` using `ha m (mem_support_iff.mpr hm) ()`. Simplify using `only [Finsupp.weight_apply, Pi.one_apply, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Simplify `h` using `[Fintype.sum_sigma]`. Use `⟨g, a (), ?_, hhom, fun h0 => hgP (mem_coordIdeal_of_isHomogeneous ℤ d.x hhom h0)⟩` and prove the remaining obligations. Rewrite using `[hJ]`. Conclude with `Ideal.subset_span hgS`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form_J (d : HSMDatum D Ω κ) :
     ∃ (g : MvPolynomial (Ix κ) ℤ) (N : ℕ), g ∈ d.J ∧ g.IsHomogeneous N ∧ aeval d.x g ≠ 0 := by
@@ -121,41 +121,37 @@ theorem exists_form_J (d : HSMDatum D Ω κ) :
   exact Ideal.subset_span hgS
 
 /- English proof (translation)
-Establish `hint` using `integrable_gram d hb.1`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos (bGram_isHermitian _ _ _) fun c hc => ?_` and prove the remaining obligations. Rewrite using `[dot_bGram _ _ _ hint c, Complex.zero_lt_real]`. Use `set h : (Ix κ → ℂ) → ℝ := fun z => ‖∑ i, c i * secFun (b i) z‖ ^ 2 * wgt d.m n z with hh`. Establish `hnn : ∀ z, 0 ≤ h z` using `fun z => mul_nonneg (by positivity) (inv_nonneg.mpr (pow_nonneg (d.m.nonneg z) _))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ContinuousOn h {0}ᶜ` using `continuousOn_normSq d.smooth b c`. Establish `hdeg : ∀ (a : ℂ) z, a ≠ 0 → h (a • z) = h z` using `fun a z ha => isDegZero_normSq hb.1 c a z ha`. Express the relevant statement in the definitionally equal form `0 < ∫ z, h z ∂(symMeasure d)`. Rewrite using `[integral_symMeasure d hcont hdeg, smul_eq_mul]`. Establish `hA : 0 ≤ ∫ y, h (resPt d y) ∂d.dV` using `integral_nonneg fun y => hnn _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : 0 ≤ ∫ y, h (conjPt (resPt d y)) ∂d.dV` using `integral_nonneg fun y => hnn _`. Assume the negation of the conclusion as `hle`. Establish `hA0 : ∫ y, h (resPt d y) ∂d.dV = 0` using `by push Not at hle`. Use the polynomial consequences of the given equalities and inequalities. Use `d.vol.1` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1` using `continuous_degZero_resPt d hcont hdeg`. Establish `hi1 : Integrable (fun y => h (resPt d y)) d.dV` using `integrableOn_univ.1 (hc1.continuousOn.integrableOn_compact isCompact_univ)`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun y => hnn _) hi1).mp hA0`. Establish `hv : ∀ y, h (resPt d y) = 0`. Introduce `y₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hy₀`. Establish `hO : IsOpen {y | h (resPt d y) ≠ 0}` using `isOpen_ne_fun hc1 continuous_const`. Establish `hpos` using `dV_pos_of_isOpen d hO ⟨y₀, hy₀⟩`. Conclude with `hpos.ne' (ae_iff.mp hae)`. Use `set F : (Ix κ → ℂ) → ℂ := fun z => ∑ i, c i * secFun (b i) z with hF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hFv : ∀ y, F (resPt d y) = 0`. Introduce `y`. Establish `h1` using `hv y`. Establish `hw : 0 < wgt d.m n (resPt d y)` using `inv_pos.mpr (pow_pos (d.m.pos _ (resPt_mem_pts d y).1) _)`. Establish `h2 : ‖F (resPt d y)‖ ^ 2 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `mul_eq_zero.mp h1 with h' | h'` into its components or cases. Conclude with `h'`. Conclude with `absurd h' hw.ne'`. Conclude with `norm_eq_zero.mp (pow_eq_zero_iff two_ne_zero |>.mp h2)`. Establish `hFpts : ∀ z ∈ pts (coordIdeal ℤ d.x), z ∉ mcPts (ι` using `GlobalTheory κ) d.J → F z = 0 := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `z hz hzJ`. Take `⟨y, hy⟩` from `d.R.surj z (mem_mcPts_of_pts hz) hzJ`. Take `⟨a, ha, he⟩` from `sameOrbit_eq_smul hy`. Establish `h1 : ∑ i, c i * secFun (b i) (a • z) = 0`. Use `hFv y` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `∑ i, c i * secFun (b i) (d.R.lift y y) = 0 at this`. Rewrite `this` using `[he]`. Then use the resulting hypothesis. Rewrite `h1` using `[sum_secFun_smul hb.1 c a z]`. Conclude with `(mul_eq_zero.mp h1).resolve_left (pow_ne_zero _ ha)`. Establish `hX : Nonempty d.R.X`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_nonempty_iff]`. Establish `h1 : d.dV Set.univ = 1` using `measure_univ`. Rewrite `h1` using `[Set.univ_eq_empty_iff.mpr hne, measure_empty]`. Conclude with `zero_ne_one h1`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y₀⟩` from `hX`. Establish `hF0 : F 0 = 0`. Establish `h1` using `sum_secFun_smul hb.1 c 0 (resPt d y₀)`. Rewrite `h1` using `[zero_smul]`. Express the relevant statement in the definitionally equal form `F 0 = _ at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `hFv y₀`. Express the relevant statement in the definitionally equal form `∑ i, c i * secFun (b i) (resPt d y₀) = 0 at h2`. Rewrite using `[h1, h2, mul_zero]`. Take `⟨g, N, hgJ, -, hgx⟩` from `exists_form_J d`. Use `set b' : Fin r → MvPolynomial (Ix κ) ℚ := fun k => b k * map (Int.castRingHom ℚ) g with hb'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hli : LinearIndependent ℚ fun k => aeval d.x (b' k)`. Establish `hs` using `linIndep_rat_of_isSecBasis hb`. Rewrite `hs`, the goal using `[linearIndependent_iff']`. Introduce `s w hsum i hi`. Use `hs s w ?_ i hi` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (∑ i ∈ s, w i • aeval d.x (b i)) * aeval d.x g = 0`. Rewrite using `[Finset.sum_mul, ← hsum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc]`. Simplify using `only [hb', map_mul, aeval_map_intQ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.mp h1).resolve_right hgx`. Use `hc (coeff_eq_zero_of_vanish hli fun z hz => ?_)` and prove the remaining obligations. Establish `hsum : ∑ k, c k * secFun (b' k) z = F z * eval z (map (Int.castRingHom ℂ) g)`. Rewrite using `[hF, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hb', secFun, map_mul]`. Rewrite using `[show (map (algebraMap ℚ ℂ)) ((map (Int.castRingHom ℚ)) g) = map (Int.castRingHom ℂ) g by`. Rewrite using `[MvPolynomial.map_map]`. Use `congr 1`. Apply the tactic sequence `try exact RingHom.ext_int _ _]`.
-
-Apply the tactic sequence `try ring`. Rewrite using `[hsum]`. Distinguish the cases in `hz0 : z = 0`. Rewrite using `[hz0, hF0, zero_mul]`. Establish `hzp : z ∈ pts (coordIdeal ℤ d.x)` using `⟨hz0, hz⟩`.
-
-Distinguish the cases in `hzJ : z ∈ mcPts (ι := GlobalTheory κ) d.J`. Rewrite using `[hzJ.2 g hgJ, mul_zero]`. Rewrite using `[hFpts z hzp hzJ, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_gram (d : HSMDatum D Ω κ) {n r : ℕ} {b : Fin r → MvPolynomial (Ix κ) ℚ}
     (hb : IsSecBasis d.x n b) : (bGram (symMeasure d) (fun k => secFun (b k)) (wgt d.m n)).PosDef := by
@@ -254,21 +250,21 @@ theorem posDef_gram (d : HSMDatum D Ω κ) {n r : ℕ} {b : Fin r → MvPolynomi
     · rw [hFpts z hzp hzJ, zero_mul]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hR D Ω κ d`. Use `⟨2 * C ^ 2, fun n r b hn hb c z hz => ?_⟩` and prove the remaining obligations. Use `set f : MvPolynomial (Ix κ) ℂ := ∑ k, MvPolynomial.C (c k) * map (algebraMap ℚ ℂ) (b k) with hf`. Establish `hfh : f.IsHomogeneous n`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun k _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hgb⟩` from `hb.1 k`. Rewrite using `[hgb, MvPolynomial.map_map]`. Conclude with `(hg.map _).C_mul _`. Use `set h : (Ix κ → ℂ) → ℝ := fun z => ‖∑ i, c i * secFun (b i) z‖ ^ 2 * wgt d.m n z with hh`. Establish `hnn : ∀ z, 0 ≤ h z` using `fun z => mul_nonneg (by positivity) (inv_nonneg.mpr (pow_nonneg (d.m.nonneg z) _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ContinuousOn h {0}ᶜ` using `continuousOn_normSq d.smooth b c`. Establish `hdeg : ∀ (a : ℂ) z, a ≠ 0 → h (a • z) = h z` using `fun a z ha => isDegZero_normSq hb.1 c a z ha`. Establish `hevf : ∀ w, eval w f = ∑ i, c i * secFun (b i) w`. Introduce `w`. Simplify using `[hf, secFun, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpt : ∀ w : Ix κ → ℂ, w ≠ 0 → ptNorm d.m (RingHom.id ℂ) n f w ^ 2 = h w`. Introduce `w hw`. Establish `hρ : 0 < d.m.ρ w` using `d.m.pos w hw`. Rewrite using `[ptNorm, MvPolynomial.map_id, hevf]`. Simplify using `only [hh, wgt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_pow, ← pow_mul, mul_comm n 2, div_eq_mul_inv]`. Establish `hL : resolutionVolumeL2Complex d n f ^ 2 ≤ 2 * bNormSq (symMeasure d) (fun k => secFun (b k)) (wgt d.m n) c`. Establish `hI : 0 ≤ ∫ y, ptNorm d.m (RingHom.id ℂ) n f (resPt d y) ^ 2 ∂d.dV` using `integral_nonneg fun y => sq_nonneg _`. Rewrite using `[resolutionVolumeL2Complex, Real.sq_sqrt hI]`. Establish `he : (fun y => ptNorm d.m (RingHom.id ℂ) n f (resPt d y) ^ 2) = fun y => h (resPt d y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `y`. Conclude with `hpt _ (resPt_mem_pts d y).1`. Establish `hbn : bNormSq (symMeasure d) (fun k => secFun (b k)) (wgt d.m n) c = ∫ z, h z ∂(symMeasure d)` using `rfl`. Rewrite using `[he, hbn, integral_symMeasure d hcont hdeg, smul_eq_mul]`. Establish `hB : 0 ≤ ∫ y, h (conjPt (resPt d y)) ∂d.dV` using `integral_nonneg fun y => hnn _`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hC n hn f hfh z hz`. Establish `h0 : 0 ≤ ptNorm d.m (RingHom.id ℂ) n f z` using `div_nonneg (norm_nonneg _) (pow_nonneg (d.m.nonneg z) _)`. Establish `h2` using `pow_le_pow_left₀ h0 h1 2`. Rewrite `h2` using `[hpt z hz.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hpow : ((n : ℝ) ^ ((D : ℝ) / 2)) ^ 2 = (n : ℝ) ^ D`. Rewrite using `[← Real.rpow_mul_natCast hn0, show (D : ℝ) / 2 * ((2 : ℕ) : ℝ) = (D : ℝ) by push_cast; ring, Real.rpow_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem sup_le_gram (hR : ResolutionSupBound.Statement) (d : HSMDatum D Ω κ) :
     ∃ K : ℝ, ∀ (n r : ℕ) (b : Fin r → MvPolynomial (Ix κ) ℚ), 1 ≤ n → IsSecBasis d.x n b →
@@ -326,7 +322,7 @@ theorem sup_le_gram (hR : ResolutionSupBound.Statement) (d : HSMDatum D Ω κ) :
     _ = _ := by ring
 
 /- English proof (translation)
-Simplify using `only [pairVal, secFun, wgt, map_mul, Complex.conj_conj, Complex.conj_ofReal, div_eq_mul_inv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairVal_eq_conj (m : ConeMetric ℂ (Ix κ)) (n : ℕ) (b b' : MvPolynomial (Ix κ) ℚ) (z : Ix κ → ℂ) :
     pairVal m n b b' z = starRingEnd ℂ (starRingEnd ℂ (secFun b z) * secFun b' z * (wgt m n z : ℂ)) := by
@@ -335,11 +331,11 @@ theorem pairVal_eq_conj (m : ConeMetric ℂ (Ix κ)) (n : ℕ) (b b' : MvPolynom
   ring
 
 /- English proof (translation)
-Establish `hG : bGram (symMeasure d) (fun k => secFun (b k)) (wgt d.m n) = Complex.ofRealHom.mapMatrix (resGram d n b)`. Use extensionality with `k l`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Complex.ofRealHom_eq_coe]`. Establish `hreal` using `conj_bGram d.conjInv (map_conjPt_symMeasure d) n b k l`. Rewrite using `[← Complex.conj_eq_iff_re.mp hreal]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [bGram, Matrix.of_apply, resGram]`. Rewrite using `[integral_symMeasure d (continuousOn_gramFun d.smooth n (b k) (b l)) (fun c z hc => gramFun_smul (hb k) (hb l) c z hc)]`. Simplify using `only [pairVal_eq_conj]`. Rewrite using `[integral_conj, integral_conj, Complex.conj_re, Complex.conj_re, Complex.real_smul, Complex.re_ofReal_mul, Complex.add_re]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hG, ← RingHom.map_det, Complex.ofRealHom_eq_coe, Complex.ofReal_re]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_resGram (d : HSMDatum D Ω κ) {n r : ℕ} {b : Fin r → MvPolynomial (Ix κ) ℚ}
     (hb : ∀ k, ∃ f : MvPolynomial (Ix κ) ℤ, f.IsHomogeneous n ∧ b k = map (Int.castRingHom ℚ) f) :
@@ -361,7 +357,7 @@ theorem det_resGram (d : HSMDatum D Ω κ) {n r : ℕ} {b : Fin r → MvPolynomi
   rw [hG, ← RingHom.map_det, Complex.ofRealHom_eq_coe, Complex.ofReal_re]
 
 /- English proof (translation)
-Unfold `resChi`. Rewrite using `[dif_pos h, det_resGram d h.choose_spec.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem resChi_eq (d : HSMDatum D Ω κ) (n : ℕ)
     (h : ∃ p : (Σ r : ℕ, Fin r → MvPolynomial (Ix κ) ℚ), IsSecBasis d.x n p.2) :

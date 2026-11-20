@@ -27,7 +27,7 @@ lemma Lsq_ins {p m : ℕ} (y : Yp p m) (z : ℂ) (l : Fin (p + 2)) :
     Lsq (ins y z) l = Lsq (tailPt y) l := rfl
 
 /- English proof (translation)
-Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact absurd rfl hj`. Consider the case `succ k => simp [ins, ReciprocityTheory.ChartRestriction.DS.Xi.tailPt]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem ins_snd_fst_eq_tailPt_snd_fst_of_ne_zero {p m : ℕ} (y : Yp p m) (z : ℂ) {j : Fin (p + 1)} (hj : j ≠ 0) :
     (ins y z).2.1 j = (ReciprocityTheory.ChartRestriction.DS.Xi.tailPt y).2.1 j := by
@@ -36,9 +36,9 @@ private theorem ins_snd_fst_eq_tailPt_snd_fst_of_ne_zero {p m : ℕ} (y : Yp p m
   | succ k => simp [ins, ReciprocityTheory.ChartRestriction.DS.Xi.tailPt]
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : i.succ.val ≤ j.val`. Establish `hj : j ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos h, if_pos h, ins_snd_fst_eq_tailPt_snd_fst_of_ne_zero y z hj]`. Apply the tactic sequence `all_goals rfl`. Rewrite using `[if_neg h, if_neg h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_ins_succ {p m : ℕ} (y : Yp p m) (z : ℂ) (i : Fin (p + 1)) (g : ℂ → ℂ → ℂ) :
     (∑ j : Fin (p + 1), if i.succ.val ≤ j.val then g ((ins y z).2.1 j) ((ins y z).1 j) else 0) =
@@ -53,9 +53,9 @@ lemma sum_ins_succ {p m : ℕ} (y : Yp p m) (z : ℂ) (i : Fin (p + 1)) (g : ℂ
   · rw [if_neg h, if_neg h]
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : i.succ.val ≤ j.val`. Establish `hj : j ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos h, if_pos h, ins_snd_fst_eq_tailPt_snd_fst_of_ne_zero y z hj]`. Rewrite using `[if_neg h, if_neg h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma sumR_ins_succ {p m : ℕ} (y : Yp p m) (z : ℂ) (i : Fin (p + 1)) :
     (∑ j : Fin (p + 1), if i.succ.val ≤ j.val then ‖(ins y z).2.1 j‖ ^ 2 else 0) =
@@ -69,7 +69,7 @@ lemma sumR_ins_succ {p m : ℕ} (y : Yp p m) (z : ℂ) (i : Fin (p + 1)) :
   · rw [if_neg h, if_neg h]
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.rhoSq`. Rewrite using `[Lsq_ins, sumR_ins_succ]`. Apply the tactic sequence `all_goals rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rhoSq_ins_succ {p m : ℕ} (y : Yp p m) (z : ℂ) (i : Fin (p + 1)) :
     rhoSq (ins y z) i.succ = rhoSq (tailPt y) i.succ := by
@@ -78,7 +78,7 @@ lemma rhoSq_ins_succ {p m : ℕ} (y : Yp p m) (z : ℂ) (i : Fin (p + 1)) :
   all_goals rfl
 
 /- English proof (translation)
-Establish `h : (∑ j : Fin (p + 1), if i.succ.val ≤ j.val then (ins y z).2.1 j * star ((ins y z).1 j) else 0) = ∑ j : Fin (p + 1), if i.succ.val ≤ j.val then (ReciprocityTheory.ChartRestriction.DS.Xi.tailPt y).2.1 j * star ((ReciprocityTheory.ChartRestriction.DS.Xi.tailPt y).1 j) else 0` using `sum_ins_succ y z i (fun a b => a * star b)`. Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.bco`. Rewrite using `[h]`. Apply the tactic sequence `all_goals rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma bco_ins_succ {p m : ℕ} (y : Yp p m) (z : ℂ) (i : Fin (p + 1)) :
     bco (ins y z) i.succ = bco (tailPt y) i.succ := by
@@ -90,7 +90,7 @@ lemma bco_ins_succ {p m : ℕ} (y : Yp p m) (z : ℂ) (i : Fin (p + 1)) :
   all_goals rfl
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.de`. Rewrite using `[Lsq_ins, rhoSq_ins_succ, bco_ins_succ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma de_ins_succ {p m : ℕ} (y : Yp p m) (z : ℂ) (i : Fin (p + 1)) :
     de (ins y z) i.succ = de (tailPt y) i.succ := by
@@ -98,9 +98,9 @@ lemma de_ins_succ {p m : ℕ} (y : Yp p m) (z : ℂ) (i : Fin (p + 1)) :
   rw [Lsq_ins, rhoSq_ins_succ, bco_ins_succ]
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.bco`. Use `congr 1`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp [ReciprocityTheory.ChartRestriction.DS.Xi.tailPt]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k => simp`.
+Treat this case separately.
 -/
 lemma bco_tail_zero {p m : ℕ} (y : Yp p m) : bco (tailPt y) 0 = bco (tailPt y) 1 := by
   unfold ReciprocityTheory.ChartRestriction.DS.Xi.bco
@@ -111,7 +111,7 @@ lemma bco_tail_zero {p m : ℕ} (y : Yp p m) : bco (tailPt y) 0 = bco (tailPt y)
   | succ k => simp
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.Lsq`. Apply the tactic sequence `have : 0 ≤ ∑ j : Fin p, (if j.val < l.val then ‖x.1 j‖ ^ 2 else 0) := Finset.sum_nonneg (fun j _ => by split_ifs <;> positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma Lsq_ge_one {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 1 ≤ Lsq x l := by
   unfold ReciprocityTheory.ChartRestriction.DS.Xi.Lsq
@@ -120,9 +120,9 @@ lemma Lsq_ge_one {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 1 ≤ Lsq x l := b
   linarith
 
 /- English proof (translation)
-Establish `h' : l.val ≤ l'.val` using `Fin.le_iff_val_le_val.mp h`. Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.Lsq`. Establish `: ∑ j : Fin p, (if j.val < l.val then ‖x.1 j‖ ^ 2 else 0) ≤ ∑ j : Fin p, (if j.val < l'.val then ‖x.1 j‖ ^ 2 else 0)`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h1 : j.val < l.val`. Establish `h2 : j.val < l'.val` using `lt_of_lt_of_le h1 h'`. Rewrite using `[if_pos h1, if_pos h2]`. Apply the tactic sequence `rw [if_neg h1] split_ifs <;> positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma Lsq_mono {p m : ℕ} (x : Xp p m) {l l' : Fin (p + 1)} (h : l ≤ l') : Lsq x l ≤ Lsq x l' := by
   have h' : l.val ≤ l'.val := Fin.le_iff_val_le_val.mp h
@@ -139,7 +139,7 @@ lemma Lsq_mono {p m : ℕ} (x : Xp p m) {l l' : Fin (p + 1)} (h : l ≤ l') : Ls
   linarith
 
 /- English proof (translation)
-Establish `h1` using `Lsq_mono x (Fin.le_last l')`. Establish `h2 : 0 ≤ ∑ i, ‖x.2.2.1 i‖ ^ 2` using `Finset.sum_nonneg (fun i _ => by positivity)`. Apply the tactic sequence `have h3 : 0 ≤ ∑ j : Fin p, (if l.val ≤ j.val then ‖x.2.1 j‖ ^ 2 else 0) := Finset.sum_nonneg (fun j _ => by split_ifs <;> positivity)`. Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.rhoSq`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma rhoSq_ge {p m : ℕ} (x : Xp p m) (l l' : Fin (p + 1)) : Lsq x l' ≤ rhoSq x l := by
   have h1 := Lsq_mono x (Fin.le_last l')
@@ -150,7 +150,7 @@ lemma rhoSq_ge {p m : ℕ} (x : Xp p m) (l l' : Fin (p + 1)) : Lsq x l' ≤ rhoS
   linarith
 
 /- English proof (translation)
-Establish `hL` using `Lsq_ge_one x l`. Establish `hR : 1 ≤ ReciprocityTheory.ChartRestriction.DS.Xi.rhoSq x l` using `le_trans hL (rhoSq_ge x l l)`. Establish `hc : 0 ≤ ‖ReciprocityTheory.ChartRestriction.DS.Xi.bco x l‖ ^ 2` using `by positivity`. Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.de`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 lemma de_ge_one {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 1 ≤ de x l := by
   have hL := Lsq_ge_one x l
@@ -167,11 +167,11 @@ lemma bco_eq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) :
     bco x l = (((-(∑ i, ‖x.2.2.1 i‖ ^ 2) / 2 : ℝ)) : ℂ) + (x.2.2.2 : ℂ) * Complex.I - bS x l := rfl
 
 /- English proof (translation)
-Establish `hL` using `Lsq_ge_one x l`. Establish `hR : 1 ≤ ReciprocityTheory.ChartRestriction.DS.Xi.rhoSq x l` using `le_trans hL (rhoSq_ge x l l)`. Establish `hpos : 0 ≤ ReciprocityTheory.ChartRestriction.DS.Xi.Lsq x l * ReciprocityTheory.ChartRestriction.DS.Xi.rhoSq x l + ‖ReciprocityTheory.ChartRestriction.DS.Xi.bco x l‖ ^ 2` using `add_nonneg (mul_nonneg (by linarith) (by linarith)) (by positivity)`. Establish `hre : (ReciprocityTheory.ChartRestriction.DS.Xi.bco x l).re = -(∑ i, ‖x.2.2.1 i‖ ^ 2) / 2 - (bS x l).re`. Rewrite using `[bco_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.sub_re, Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im, Complex.I_re, Complex.I_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `him : (ReciprocityTheory.ChartRestriction.DS.Xi.bco x l).im = x.2.2.2 - (bS x l).im`. Rewrite using `[bco_eq]`. Simplify using `only [Complex.sub_im, Complex.add_im, Complex.ofReal_re, Complex.mul_im, Complex.ofReal_im, Complex.I_re, Complex.I_im]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.de`. Rewrite using `[Real.sq_sqrt hpos, Complex.sq_norm, Complex.normSq_apply, hre, him]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma de_sq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) :
     de x l ^ 2 = (Lsq x l * rhoSq x l + (-(∑ i, ‖x.2.2.1 i‖ ^ 2) / 2 - (bS x l).re) ^ 2) +
@@ -195,7 +195,7 @@ lemma de_sq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) :
   ring
 
 /- English proof (translation)
-Rewrite using `[bco_eq]`. Simplify using `only [Complex.sub_im, Complex.add_im, Complex.ofReal_re, Complex.mul_im, Complex.ofReal_im, Complex.I_re, Complex.I_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma im_bco {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : (bco x l).im = x.2.2.2 - (bS x l).im := by
   rw [bco_eq]
@@ -213,9 +213,9 @@ def splitE (p m : ℕ) : Xp (p + 1) m ≃ᵐ Yp p m × ℂ :=
           (MeasurableEquiv.prodAssoc.trans MeasurableEquiv.prodComm))))
 
 /- English proof (translation)
-Establish `e1 : MeasurePreserving ((MeasurableEquiv.refl (Fin (p + 1) → ℂ)).prodCongr ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (p + 1) => ℂ) 0).prodCongr (MeasurableEquiv.refl ((Fin m → ℂ) × ℝ)))) volume volume` using `(MeasurePreserving.id volume).prod ((volume_preserving_piFinSuccAbove (fun _ : Fin (p + 1) => ℂ) 0).prod (MeasurePreserving.id volume))`. Establish `e2 : MeasurePreserving ((MeasurableEquiv.refl (Fin (p + 1) → ℂ)).prodCongr (MeasurableEquiv.prodAssoc : (ℂ × (Fin p → ℂ)) × ((Fin m → ℂ) × ℝ) ≃ᵐ ℂ × (Fin p → ℂ) × ((Fin m → ℂ) × ℝ))) volume volume` using `(MeasurePreserving.id volume).prod volume_preserving_prodAssoc`. Establish `e3 : MeasurePreserving (MeasurableEquiv.prodAssoc : ((Fin (p + 1) → ℂ) × ℂ) × ((Fin p → ℂ) × ((Fin m → ℂ) × ℝ)) ≃ᵐ (Fin (p + 1) → ℂ) × ℂ × ((Fin p → ℂ) × ((Fin m → ℂ) × ℝ))).symm volume volume` using `MeasurePreserving.symm _ volume_preserving_prodAssoc`. Establish `e4 : MeasurePreserving ((MeasurableEquiv.prodComm : (Fin (p + 1) → ℂ) × ℂ ≃ᵐ ℂ × (Fin (p + 1) → ℂ)).prodCongr (MeasurableEquiv.refl ((Fin p → ℂ) × ((Fin m → ℂ) × ℝ)))) volume volume` using `Measure.measurePreserving_swap.prod (MeasurePreserving.id volume)`. Establish `e5 : MeasurePreserving (MeasurableEquiv.prodAssoc : (ℂ × (Fin (p + 1) → ℂ)) × ((Fin p → ℂ) × ((Fin m → ℂ) × ℝ)) ≃ᵐ ℂ × (Fin (p + 1) → ℂ) × ((Fin p → ℂ) × ((Fin m → ℂ) × ℝ))) volume volume` using `volume_preserving_prodAssoc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e6 : MeasurePreserving (MeasurableEquiv.prodComm : ℂ × ((Fin (p + 1) → ℂ) × ((Fin p → ℂ) × ((Fin m → ℂ) × ℝ))) ≃ᵐ ((Fin (p + 1) → ℂ) × ((Fin p → ℂ) × ((Fin m → ℂ) × ℝ))) × ℂ) volume volume` using `Measure.measurePreserving_swap`. Conclude with `e6.comp (e5.comp (e4.comp (e3.comp (e2.comp e1))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma splitE_mp (p m : ℕ) : MeasurePreserving (splitE p m) volume volume := by
   have e1 : MeasurePreserving ((MeasurableEquiv.refl (Fin (p + 1) → ℂ)).prodCongr
@@ -246,7 +246,7 @@ lemma splitE_mp (p m : ℕ) : MeasurePreserving (splitE p m) volume volume := by
   exact e6.comp (e5.comp (e4.comp (e3.comp (e2.comp e1))))
 
 /- English proof (translation)
-Use `Prod.ext rfl (Prod.ext ?_ rfl)` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => rfl`. Consider the case `succ k => show x.2.1 (Fin.succAbove 0 k) = x.2.1 k.succ`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 
 Simplify using the standard rewrite rules.
 -/
@@ -260,7 +260,7 @@ lemma ins_splitE {p m : ℕ} (x : Xp (p + 1) m) : ins (splitE p m x).1 (splitE p
     simp
 
 /- English proof (translation)
-Establish `h` using `(splitE_mp p m).lintegral_comp_emb (splitE p m).measurableEmbedding (fun w => G (ins w.1 w.2))`. Simplify using `only [ins_splitE] at h`. Conclude with `h.trans_le (lintegral_prod_le _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma split_le {p m : ℕ} (G : Xp (p + 1) m → ℝ≥0∞) :
     ∫⁻ x, G x ≤ ∫⁻ y : Yp p m, ∫⁻ z : ℂ, G (ins y z) := by
@@ -270,7 +270,7 @@ lemma split_le {p m : ℕ} (G : Xp (p + 1) m → ℝ≥0∞) :
   exact h.trans_le (lintegral_prod_le _)
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.Lsq`. Conclude with `continuous_const.add (continuous_finsetSum _ (fun j _ => by`. Apply the tactic sequence `by_cases h : j.val < l.val <;> simp only [h, ↓reduceIte] <;> fun_prop))`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma cont_Lsq {p m : ℕ} (l : Fin (p + 1)) : Continuous (fun x : Xp p m => Lsq x l) := by
   unfold ReciprocityTheory.ChartRestriction.DS.Xi.Lsq
@@ -278,9 +278,9 @@ lemma cont_Lsq {p m : ℕ} (l : Fin (p + 1)) : Continuous (fun x : Xp p m => Lsq
     by_cases h : j.val < l.val <;> simp only [h, ↓reduceIte] <;> fun_prop))
 
 /- English proof (translation)
-Establish `h1` using `cont_Lsq (p := p) (m := m) (Fin.last p)`. Establish `h2 : Continuous fun x : ReciprocityTheory.ChartRestriction.DS.Xi.Xp p m => ∑ i, ‖x.2.2.1 i‖ ^ 2` using `continuous_finsetSum _ (fun i _ => by fun_prop)`. Establish `h3 : Continuous fun x : ReciprocityTheory.ChartRestriction.DS.Xi.Xp p m => ∑ j : Fin p, if l.val ≤ j.val then ‖x.2.1 j‖ ^ 2 else 0` using `continuous_finsetSum _ (fun j _ => by`. Apply the tactic sequence `by_cases h : l.val ≤ j.val <;> simp only [h, ↓reduceIte] <;> fun_prop)`. Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.rhoSq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Conclude with `(h1.add h2).add h3`.
+A detailed English derivation is pending.
 -/
 lemma cont_rhoSq {p m : ℕ} (l : Fin (p + 1)) : Continuous (fun x : Xp p m => rhoSq x l) := by
   have h1 := cont_Lsq (p := p) (m := m) (Fin.last p)
@@ -293,9 +293,9 @@ lemma cont_rhoSq {p m : ℕ} (l : Fin (p + 1)) : Continuous (fun x : Xp p m => r
   exact (h1.add h2).add h3
 
 /- English proof (translation)
-Establish `h00 : Continuous fun x : ReciprocityTheory.ChartRestriction.DS.Xi.Xp p m => ∑ i, ‖x.2.2.1 i‖ ^ 2` using `continuous_finsetSum _ (fun i _ => by fun_prop)`. Establish `h0 : Continuous fun x : ReciprocityTheory.ChartRestriction.DS.Xi.Xp p m => (((-(∑ i, ‖x.2.2.1 i‖ ^ 2) / 2 : ℝ)) : ℂ) + (x.2.2.2 : ℂ) * Complex.I` using `(Complex.continuous_ofReal.comp (h00.neg.div_const 2)).add ((Complex.continuous_ofReal.comp (by fun_prop : Continuous fun x : ReciprocityTheory.ChartRestriction.DS.Xi.Xp p m => x.2.2.2)).mul continuous_const)`. Establish `hs : Continuous fun x : ReciprocityTheory.ChartRestriction.DS.Xi.Xp p m => ∑ j : Fin p, if l.val ≤ j.val then x.2.1 j * star (x.1 j) else 0` using `continuous_finsetSum _ (fun j _ => by`. Apply the tactic sequence `by_cases h : l.val ≤ j.val <;> simp only [h, ↓reduceIte] <;> fun_prop)`. Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.bco`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Conclude with `h0.sub hs`.
+A detailed English derivation is pending.
 -/
 lemma cont_bco {p m : ℕ} (l : Fin (p + 1)) : Continuous (fun x : Xp p m => bco x l) := by
   have h00 : Continuous fun x : ReciprocityTheory.ChartRestriction.DS.Xi.Xp p m => ∑ i, ‖x.2.2.1 i‖ ^ 2 :=
@@ -311,7 +311,7 @@ lemma cont_bco {p m : ℕ} (l : Fin (p + 1)) : Continuous (fun x : Xp p m => bco
   exact h0.sub hs
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.de`. Conclude with `Real.continuous_sqrt.comp (((cont_Lsq l).mul (cont_rhoSq l)).add ((cont_bco l).norm.pow 2))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma cont_de {p m : ℕ} (l : Fin (p + 1)) : Continuous (fun x : Xp p m => de x l) := by
   unfold ReciprocityTheory.ChartRestriction.DS.Xi.de
@@ -319,16 +319,16 @@ lemma cont_de {p m : ℕ} (l : Fin (p + 1)) : Continuous (fun x : Xp p m => de x
     (((cont_Lsq l).mul (cont_rhoSq l)).add ((cont_bco l).norm.pow 2))
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.linF`. Conclude with `(continuous_finsetSum _ fun j _ => by fun_prop).add (continuous_finsetSum _ fun i _ => by fun_prop)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma cont_linF {p m : ℕ} (η η' : Fin p → ℂ) (ζ : Fin m → ℂ) : Continuous (linF η η' ζ) := by
   unfold ReciprocityTheory.ChartRestriction.DS.Xi.linF
   exact (continuous_finsetSum _ fun j _ => by fun_prop).add (continuous_finsetSum _ fun i _ => by fun_prop)
 
 /- English proof (translation)
-Establish `hmid : Continuous fun y : Yp p m => (Fin.cons (0 : ℂ) y.2.1 : Fin (p + 1) → ℂ)` using `continuous_pi (fun j => by`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp only [Fin.cons_zero]`. Conclude with `continuous_const`. Consider the case `succ k => simp only [Fin.cons_succ]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Use the proof step `fun_prop)`. Unfold `ReciprocityTheory.ChartRestriction.DS.Xi.tailPt`. Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 lemma cont_tailPt {p m : ℕ} : Continuous (fun y : Yp p m => tailPt y) := by
   have hmid : Continuous fun y : Yp p m => (Fin.cons (0 : ℂ) y.2.1 : Fin (p + 1) → ℂ) :=
@@ -340,7 +340,7 @@ lemma cont_tailPt {p m : ℕ} : Continuous (fun y : Yp p m => tailPt y) := by
   fun_prop
 
 /- English proof (translation)
-Unfold `fS`. Conclude with `Finset.measurable_prod _ (fun l _ => ENNReal.measurable_ofReal.comp ((cont_de (p := p + 1) (m := m) l).measurable.pow_const _))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma meas_fS {p m : ℕ} (s : Fin (p + 2) → ℝ) : Measurable (fS (p := p) (m := m) s) := by
   unfold fS

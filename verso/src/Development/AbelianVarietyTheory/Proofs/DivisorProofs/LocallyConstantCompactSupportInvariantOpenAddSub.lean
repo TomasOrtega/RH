@@ -5,19 +5,19 @@ namespace GlobalTheory
 open Filter Topology
 
 /- English proof (translation)
-Introduce `X _ _ _ _ g hg hc`. Establish `key : ∀ z : X, ∃ V : OpenAddSubgroup X, ∀ h ∈ V, g (z + h) = g z`. Introduce `z`. Establish `hT : Tendsto (fun h : X => z + h) (𝓝 0) (𝓝 z)`. Use `(continuous_add_left z).tendsto (0 : X)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hn : {h : X | g (z + h) = g z} ∈ 𝓝 (0 : X)` using `hT.eventually (hg.eventually_eq z)`. Take `⟨V, hV⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ hn`. Conclude with `⟨V, fun h hh => hV hh⟩`. Use `choose H hH using key`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hU : ∀ j y, y - j ∈ H j → g y = g j`. Introduce `j y h`. Use `hH j (y - j) h` as an intermediate fact. Establish `e : j + (y - j) = y` using `by abel`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hc.isCompact.elim_finite_subcover (fun z : X => {y : X | y - z ∈ H z}) (fun z => (H z).isOpen.preimage (continuous_id.sub continuous_const)) (fun y _ => Set.mem_iUnion.2 ⟨y, by simp⟩)`. Use `⟨t.inf H, fun z a ha => ?_⟩` and prove the remaining obligations. Establish `hle : ∀ j ∈ t, a ∈ H j` using `fun j hj => Finset.inf_le (f := H) hj ha`. Distinguish the cases in `hz : z ∈ tsupport g`. Take `⟨j, hj, hzj⟩` from `Set.mem_iUnion₂.1 (ht hz)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : z - j ∈ H j` using `hzj`. Establish `h2 : z + a - j ∈ H j`. Use `(H j).add_mem h1 (hle j hj)` as an intermediate fact. Establish `e : z - j + a = z + a - j` using `by abel`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU j _ h2, hU j _ h1]`. Distinguish the cases in `hza : z + a ∈ tsupport g`. Take `⟨j, hj, hzj⟩` from `Set.mem_iUnion₂.1 (ht hza)`. Establish `h1 : z + a - j ∈ H j` using `hzj`. Establish `h2 : z - j ∈ H j`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(H j).sub_mem h1 (hle j hj)` as an intermediate fact. Establish `e : z + a - j - a = z - j` using `by abel`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Rewrite using `[hU j _ h2, hU j _ h1]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hz, image_eq_zero_of_notMem_tsupport hza]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locallyConstant_compactSupport_invariant_openAddSubgroup :
     ∀ {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]

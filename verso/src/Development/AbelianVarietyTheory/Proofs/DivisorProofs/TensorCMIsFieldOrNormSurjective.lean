@@ -10,47 +10,39 @@ noncomputable section
 namespace GlobalTheory.NormDichotomy
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h K _ _`. Take `⟨e, he⟩` from `GlobalTheory.HermLineZeros.exists_conj_ne h`. Use `set d : E := e - σ e with hd`. Establish `hσd : σ d = -d`. Rewrite using `[hd, map_sub, GlobalTheory.HermLineZeros.conj_invol h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hd0 : d ≠ 0`. Introduce `h0`. Apply `he` to reduce the goal to its premises. Rewrite `h0` using `[hd, sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0.symm`. Establish `hfix : σ (d * d) = d * d` using `by rw [map_mul, hσd]; ring`. Take `⟨c0, hc0⟩` from `GlobalTheory.HermLineZeros.exists_of_fixed h _ hfix`. Use `haveI : CharZero F := inferInstance`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap F K).injective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set L := K ⊗[F] E`. Use `set ι := algebraMap K L with hι`. Use `set D : L := inclR K d with hD`. Use `set c : K := algebraMap F K c0 with hc`. Establish `hc0ne : c0 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Apply `hd0` to reduce the goal to its premises. Rewrite `hc0` using `[map_zero]`. Conclude with `mul_self_eq_zero.1 hc0.symm`. Establish `hcne : c ≠ 0` using `by rw [hc]; exact (map_ne_zero _).2 hc0ne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hDD : D * D = ι c`. Rewrite using `[hD, ← map_mul, ← hc0, hc, hι, ← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : E →ₐ[F] K ⊗[F] E).commutes c0`. Establish `hsD : sigR K σ D = -D` using `by show inclR K (σ d) = _`. Rewrite using `[hσd, map_neg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hst : ∀ t : K, sigR K σ (ι t) = ι t`. Introduce `t`. Use `show t ⊗ₜ[F] σ 1 = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hli : LinearIndependent F ![(1 : E), d]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst0`. Rewrite `hst0` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `e2` using `congrArg σ hst0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e2` using `[map_add, map_mul, AlgHom.commutes, AlgHom.commutes, hσd, map_zero]`. Establish `ht : algebraMap F E t * d = 0` using `by linear_combination (hst0 - e2) / 2`. Establish `ht0 : t = 0`. Break down `mul_eq_zero.1 ht with h1 | h1` into its components or cases. Conclude with `(map_eq_zero _).1 h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `absurd h1 hd0`. Use `⟨?_, ht0⟩` and prove the remaining obligations. Rewrite `hst0` using `[ht0, map_zero, zero_mul, add_zero]`. Conclude with `(map_eq_zero _).1 hst0`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank F E` using `by rw [h.2.2.1]; rfl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli hcard`. Set `bK` to `Algebra.TensorProduct.basis K b`. Establish `hdec : ∀ a : L, ∃ u v : K, a = ι u + ι v * D`. Introduce `a`. Use `⟨bK.repr a 0, bK.repr a 1, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← bK.sum_repr a]`. Rewrite using `[Fin.sum_univ_two]`. Establish `hb : ⇑b = ![(1 : E), d]` using `coe_basisOfLinearIndependentOfCardEqFinrank _ _`. Establish `h0 : bK 0 = 1`. Simplify using `only [bK, Algebra.TensorProduct.basis_apply, hb, Matrix.cons_val_zero]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h1 : bK 1 = D`. Simplify using `only [bK, Algebra.TensorProduct.basis_apply, hb, Matrix.cons_val_one, Matrix.head_cons]`. Both sides reduce to the same expression. Rewrite using `[h0, h1, Algebra.smul_def, Algebra.smul_def, mul_one]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hsq : ∃ r : K, r * r = c`. Use `right`. Take `⟨r, hr⟩` from `hsq`. Establish `hr0 : r ≠ 0` using `by rintro rfl; exact hcne (by rw [← hr, mul_zero])`. Establish `h2 : ι (1 / 2) * 2 = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show (2 : L) = ι 2 from (map_ofNat ι 2).symm, ← map_mul]`. Evaluate the numerical expressions. Establish `hs : ι r * ι r⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ hr0, map_one]`. Establish `hD2 : D * D = ι r * ι r` using `by rw [hDD, ← hr, map_mul]`. Use `set ε : L := ι (1 / 2) * (1 + ι r⁻¹ * D) with hε`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `he0 : ε * (1 - ε) = 0`. Rewrite using `[hε]`. Take the linear combination `(-(1 + ι r⁻¹ * D) * ι (1 / 2)) * h2 + (-ι (1 / 2) ^ 2 * ι r⁻¹ ^ 2) * hD2 + (-ι (1 / 2) ^ 2 * (ι r⁻¹ * ι r + 1)) * hs`. Establish `hσε : sigR K σ ε = 1 - ε`. Rewrite using `[hε, map_mul, map_add, map_mul, map_one, hst, hst, hsD]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `h2`. Introduce `k _`. Use `⟨ι k * ε + (1 - ε), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_sub, map_one, hst, hσε]`. Take the linear combination `(ι k ^ 2 + 1 - 2 * ι k) * he0`.
-
-Use `left push_neg at hsq`. Introduce `a ha`. Take `⟨u, v, rfl⟩` from `hdec a`. Establish `hn : u * u - c * (v * v) ≠ 0`. Introduce `h0`.
-
-Distinguish the cases in `hv : v = 0`. Apply `ha` to reduce the goal to its premises. Establish `: u * u = 0` using `by rw [hv] at h0; simpa using h0`. Rewrite using `[mul_self_eq_zero.1 this, hv, map_zero, zero_mul, add_zero]`. Apply `hsq (u / v)` to reduce the goal to its premises.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `h0`. Establish `hN : (ι u + ι v * D) * sigR K σ (ι u + ι v * D) = ι (u * u - c * (v * v))`. Rewrite using `[map_add, map_mul, hst, hst, hsD, map_sub, map_mul, map_mul, map_mul]`. Take the linear combination `(-(ι v * ι v)) * hDD`.
-
-Use `IsUnit.of_mul_eq_one (sigR K σ (ι u + ι v * D) * ι (u * u - c * (v * v))⁻¹) ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hN, ← map_mul, mul_inv_cancel₀ hn, map_one]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_or_norm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (K : Type) [Field K] [Algebra F K], (∀ a : K ⊗[F] E, a ≠ 0 → IsUnit a) ∨ (∀ k : K, k ≠ 0 → ∃ t : K ⊗[F] E, t * sigR K σ t = algebraMap K (K ⊗[F] E) k) := by
   intro F E _ _ _ _ _ σ h K _ _

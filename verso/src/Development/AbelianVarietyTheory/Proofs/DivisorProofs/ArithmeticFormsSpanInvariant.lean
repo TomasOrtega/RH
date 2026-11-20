@@ -8,15 +8,15 @@ namespace GlobalTheory.IntFormsRank
 variable {LL : Type} [Field LL] [NumberField LL] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(algebraMap_smul LL r z).symm`.
+A detailed English derivation is pending.
 -/
 theorem smul_eq_algebraMap_smul (r : 𝓞 LL) (z : Fin n → LL) : r • z = (algebraMap (𝓞 LL) LL r) • z :=
   (algebraMap_smul LL r z).symm
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NonzeroMultipleInSpan.exists_ne_zero_smul_mem_span`. Consider the case `exact _root_.GlobalTheory.NonzeroMultipleInSpan.exists_ne_zero_smul_mem_span`. Consider the case `(apply _root_.GlobalTheory.NonzeroMultipleInSpan.exists_ne_zero_smul_mem_span <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NonzeroMultipleInSpan.exists_ne_zero_smul_mem_span <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NonzeroMultipleInSpan.exists_ne_zero_smul_mem_span <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NonzeroMultipleInSpan.exists_ne_zero_smul_mem_span ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_den_smul_mem (T : Set (Fin n → LL)) (x : Fin n → LL) (hx : x ∈ Submodule.span LL T) :
     ∃ d : 𝓞 LL, d ≠ 0 ∧ d • x ∈ Submodule.span (𝓞 LL) T := by
@@ -29,13 +29,11 @@ theorem exists_den_smul_mem (T : Set (Fin n → LL)) (x : Fin n → LL) (hx : x 
   | (intros; exact _root_.GlobalTheory.NonzeroMultipleInSpan.exists_ne_zero_smul_mem_span ..)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `hx.2`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxT : x ∈ Submodule.span LL T` using `by rw [hT]; exact Submodule.mem_top`. Take `⟨d, hd, hdx⟩` from `exists_den_smul_mem T x hxT`. Establish `hdL : algebraMap (𝓞 LL) LL d ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 LL) LL)]`. Conclude with `hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : d • x ∈ (Submodule.span (𝓞 LL) T ⊓ S.restrictScalars (𝓞 LL) : Submodule (𝓞 LL) (Fin n → LL))`. Use `⟨hdx, ?_⟩` and prove the remaining obligations. Use `show d • x ∈ S`. Rewrite using `[smul_eq_algebraMap_smul]`. Conclude with `S.smul_mem _ hx`.
-
-Establish `hx' : x = (algebraMap (𝓞 LL) LL d)⁻¹ • (d • x)`. Rewrite using `[smul_eq_algebraMap_smul, smul_smul, inv_mul_cancel₀ hdL, one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_inf_eq (T : Set (Fin n → LL)) (hT : Submodule.span LL T = ⊤) (S : Submodule LL (Fin n → LL)) :
     Submodule.span LL ((Submodule.span (𝓞 LL) T ⊓ S.restrictScalars (𝓞 LL) : Submodule (𝓞 LL) (Fin n → LL)) :
@@ -61,9 +59,9 @@ theorem span_inf_eq (T : Set (Fin n → LL)) (hT : Submodule.span LL T = ⊤) (S
 end GlobalTheory.IntFormsRank
 
 /- English proof (translation)
-Introduce `LL Ks _ _ _ _ _ n Wσ _ _ G0 _ _ A J0 lam0 f hsp`. Prove the components needed by the constructor for the conclusion. Unfold `Formalism.HN.rkK Formalism.IndefR.Arith.FormsL.Mall`. Rewrite using `[GlobalTheory.IntFormsRank.span_inf_eq _ hsp]`. Unfold `Formalism.HN.rkK Formalism.IndefR.Arith.FormsL.Mall`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `e : (Submodule.span (𝓞 LL) (A.MK : Set (Fin n → LL)) ⊓ (A.typeP J0 lam0).restrictScalars (𝓞 LL) ⊓ (LinearMap.ker f).restrictScalars (𝓞 LL)) = Submodule.span (𝓞 LL) (A.MK : Set (Fin n → LL)) ⊓ (A.typeP J0 lam0 ⊓ LinearMap.ker f : Submodule LL (Fin n → LL)).restrictScalars (𝓞 LL)`. Rewrite using `[inf_assoc]`. Both sides reduce to the same expression. Rewrite using `[e, GlobalTheory.IntFormsRank.span_inf_eq _ hsp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.IntFormsRank.rkK_Mall : ∀ (LL Ks : Type) [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] [Algebra Ks LL] (n : ℕ)
     (Wσ : (LL →+* ℂ) → Type) [∀ σ, NormedAddCommGroup (Wσ σ)] [∀ σ, InnerProductSpace ℂ (Wσ σ)]

@@ -16,7 +16,7 @@ section Gen
 variable {α : Type*} {r : α → α → Prop}
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `rel x y hxy => exact hf x y hxy`. Consider the case `refl x => exact Iff.rfl`. Consider the case `symm x y _ ih => exact ih.symm`. Consider the case `trans x y z _ _ ih1 ih2 => exact ih1.trans ih2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eqvGen_iff_of (f : α → Prop) (hf : ∀ a b, r a b → (f a ↔ f b)) {a b : α} (h : Relation.EqvGen r a b) :
     (f a ↔ f b) := by
@@ -27,7 +27,7 @@ theorem eqvGen_iff_of (f : α → Prop) (hf : ∀ a b, r a b → (f a ↔ f b)) 
   | trans x y z _ _ ih1 ih2 => exact ih1.trans ih2
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `rel x y hxy => exact hf x y hxy`. Consider the case `refl x => rfl`. Consider the case `symm x y _ ih => exact ih.symm`. Consider the case `trans x y z _ _ ih1 ih2 => exact ih1.trans ih2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eqvGen_eq_of {β : Type*} (f : α → β) (hf : ∀ a b, r a b → f a = f b) {a b : α} (h : Relation.EqvGen r a b) :
     f a = f b := by
@@ -40,13 +40,13 @@ theorem eqvGen_eq_of {β : Type*} (f : α → β) (hf : ∀ a b, r a b → f a =
 end Gen
 
 /- English proof (translation)
-Introduce `D X Y u u' t hr hG`. Establish `hΛ : IsRowLat D (X.Fu u) t.lam` using `(Y.rowsOK u).1 t.lam t.mem`. Take `⟨hGF, -, hRF, -, -⟩` from `term_function_const D u u' (X.Fu u) t.lam hΛ`. Use `set x : TermDef.Carrier (TermDef.PD D t.lam (lf D (X.Fu u)) u') := ⟨frq X t.rep, t.rep.2.2.2.2⟩ with hx`. Establish `hcls : t.toTerm.cls = TermDef.mk t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') x` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Take `⟨F', ⟨hP, hmk⟩, hrel⟩` from `hr`. Establish `hcls' : t.toTerm.cls = TermDef.mk t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') x` using `hcls`. Rewrite `hmk` using `[hcls']`. Establish `he : Relation.EqvGen (TermDef.Rel t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u')) ⟨F', hP⟩ x` using `Quot.eqvGen_exact hmk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(eqvGen_iff_of (fun y : TermDef.Carrier (TermDef.PD D t.lam (lf D (X.Fu u)) u') => Relevant D.host.F (lf D (X.Fu u)).fl y.1.fl) (fun a b hab => hRF a b hab) he).1 hrel`. Establish `hG' : TermDef.Gt t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') (TermDef.mk t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') x) = 0` using `hG`. Unfold `TermDef.Gt at hG'`. Establish `hout` using `Quot.out_eq (TermDef.mk t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') x)`. Establish `he : Relation.EqvGen (TermDef.Rel t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u')) (Quot.out (TermDef.mk t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') x)) x` using `Quot.eqvGen_exact hout`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `eqvGen_eq_of (fun y : TermDef.Carrier (TermDef.PD D t.lam (lf D (X.Fu u)) u') => Gval (lf D (X.Fu u)) y.1) (fun a b hab => hGF a b hab) he` as an intermediate fact. Rewrite using `[← this]`. Conclude with `hG'`.
+A detailed English derivation is pending.
 -/
 theorem relRepC : RelRepC := by
   intro D X Y u u' t hr hG
@@ -75,7 +75,7 @@ theorem relRepC : RelRepC := by
     rw [← this]; exact hG'
 
 /- English proof (translation)
-The claim follows from `kppOffC_of_cut hFold hFE hOI hV relRepC hCov hSch`.
+A detailed English derivation is pending.
 -/
 theorem kppOffC_of_steps (hFold : FoldOKC) (hFE : FundExistsC) (hOI : OOIntAllC) (hV : LemmaVC)
     (hCov : CovRepC) (hSch : SchurNFC) : Formalism.L2.SG.RowsConc.KppOffC :=

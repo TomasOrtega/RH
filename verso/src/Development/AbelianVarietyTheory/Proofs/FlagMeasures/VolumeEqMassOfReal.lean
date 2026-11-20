@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions
 namespace GlobalTheory.RankVolume
 
 /- English proof (translation)
-Introduce `D h` and use `have hT : StandardLattice.VolTie D := Formalism.L2.Theta.VolTieG.volTie h.vol StandardLattice.volume_eq_mass_at_rank D (StandardLattice.volume_eq_mass_of_definite D (StandardLattice.volumeMass_of_unfolding D (hU D hT)) (Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.mass_volume …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem definiteSpaceVolume_eq_mass_of_volumeComparison (hU : ∀ D : D7, StandardLattice.VolTie D → StandardLattice.VolumeRatio₂ D) :
     ∀ D : D7, Formalism.L2.Theta.RealTied D → StandardLattice.volY0 D = StandardLattice.massI D D.R.r := fun D h =>

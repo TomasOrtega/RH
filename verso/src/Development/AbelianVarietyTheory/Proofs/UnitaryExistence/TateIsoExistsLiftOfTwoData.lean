@@ -21,7 +21,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D D' :
   {Q : Type} [Group Q] {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
 
 /- English proof (translation)
-Rewrite using `[tateIso_ev_eq_iff I hn]`. Conclude with `exists_congr fun c => sub_eq_iff_eq_add'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateIso_ev_eq_iff_add (I : TateIso D k Q act e) {n : ℕ} (hn : 0 < n) (a b : D.La) :
     I.ev n a = I.ev n b ↔ ∃ c, a = b + n • c := by
@@ -29,13 +29,13 @@ theorem tateIso_ev_eq_iff_add (I : TateIso D k Q act e) {n : ℕ} (hn : 0 < n) (
   exact exists_congr fun c => sub_eq_iff_eq_add'
 
 /- English proof (translation)
-Set `R : Submodule (𝓞 E) (D.La × D'.La)` to `{ carrier := {p | I.ev n p.1 = I'.ev n p.2} add_mem' := fun {p q} hp hq => by`. Express the relevant statement in the definitionally equal form `I.ev n (p.1 + q.1) = I'.ev n (p.2 + q.2)`. Rewrite using `[I.add, I'.add, show I.ev n p.1 = I'.ev n p.2 from hp, show I.ev n q.1 = I'.ev n q.2 from hq]`. Use the proof step `zero_mem' := by`. Express the relevant statement in the definitionally equal form `I.ev n 0 = I'.ev n 0`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(I.ker n hn 0).2 ⟨0, by simp⟩, (I'.ker n hn 0).2 ⟨0, by simp⟩]`. Use the proof step `smul_mem' := fun c p hp => by`. Express the relevant statement in the definitionally equal form `I.ev n (c • p.1) = I'.ev n (c • p.2)`. Rewrite using `[I.lin, I'.lin, show I.ev n p.1 = I'.ev n p.2 from hp] }`. Establish `hs : Function.Surjective ((LinearMap.fst (𝓞 E) D.La D'.La).comp R.subtype)` using `fun a => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b, hb⟩` from `(I'.onto n hn _).1 (tateIso_ev_pow I hn a)`. Conclude with `⟨⟨(a, b), hb.symm⟩, rfl⟩`. Use `haveI := D.proj`. Take `⟨s, hs⟩` from `Module.projective_lifting_property _ LinearMap.id hs`. Use `⟨((LinearMap.snd (𝓞 E) D.La D'.La).comp R.subtype).comp s, fun a => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (s a).1.1 = a` using `LinearMap.congr_fun hs a`. Establish `h2 : I.ev n (s a).1.1 = I'.ev n (s a).1.2` using `(s a).2`. Rewrite `h2` using `[h1]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem tateIso_exists_lift_of_two_data (I : TateIso D k Q act e) (I' : TateIso D' k Q act e) {n : ℕ} (hn : 0 < n) :
     ∃ f : D.La →ₗ[𝓞 E] D'.La, ∀ a, I.ev n a = I'.ev n (f a) := by
@@ -62,21 +62,21 @@ theorem tateIso_exists_lift_of_two_data (I : TateIso D k Q act e) (I' : TateIso 
   exact h2
 
 /- English proof (translation)
-Establish `h1 : ∀ n : ℕ, ∃ f : D.La →ₗ[𝓞 E] D'.La, 0 < n → ∀ a, I.ev n a = I'.ev n (f a)`. Introduce `n`. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Conclude with `⟨0, fun h' => absurd h h'.ne'⟩`. Take `⟨f, hf⟩` from `tateIso_exists_lift_of_two_data I I' h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, fun _ => hf⟩`. Establish `h2 : ∀ n : ℕ, ∃ ν : ℕ, 0 < n → I.ζ n = I'.ζ n ^ ν`. Introduce `n`. Break down `Nat.eq_zero_or_pos n with h | hn` into its components or cases. Conclude with `⟨1, fun h' => absurd h h'.ne'⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Use `haveI : NeZero n := ⟨hn.ne'⟩`. Take `⟨i, -, hi⟩` from `(I'.ζ_prim n hn).eq_pow_of_mem_rootsOfUnity ((mem_rootsOfUnity _ _).2 (I.ζ_prim n hn).pow_eq_one)`. Conclude with `⟨i, fun _ => hi.symm⟩`. Use `choose f hf using h1`. Use `choose ν hν using h2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨f, fun n => ν n, ?_, ?_, ?_, ?_, ?_, hf⟩` and prove the remaining obligations. Introduce `n m hn hm a`. Rewrite using `[← tateIso_ev_eq_iff_add I' hn, ← hf n hn, ← I'.tower n m hn hm, ← hf (n * m) (Nat.mul_pos hn hm), I.tower n m hn hm]`. Introduce `n hn`. Use `⟨fun a => ?_, fun a' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← I'.ker n hn, ← I.ker n hn, hf n hn]`. Take `⟨a, ha⟩` from `(I.onto n hn _).1 (tateIso_ev_pow I' hn a')`. Rewrite `ha` using `[hf n hn]`. Conclude with `⟨a, (tateIso_ev_eq_iff_add I' hn _ _).1 ha.symm⟩`. Introduce `n hn`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `I.ζ_prim n hn`. Rewrite `h` using `[hν n hn]`. Conclude with `Nat.isCoprime_iff_coprime.2 (((I'.ζ_prim n hn).pow_iff_coprime hn _).1 h)`. Introduce `n m hn hm`. Establish `h : I'.ζ n ^ ν (n * m) = I'.ζ n ^ ν n`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hν n hn, ← I.ζ_pow n m hn hm, hν (n * m) (Nat.mul_pos hn hm), ← I'.ζ_pow n m hn hm, ← pow_mul, ← pow_mul, mul_comm m]`. Rewrite using `[← (I'.ζ_prim n hn).zpow_eq_one_iff_dvd, zpow_sub, zpow_natCast, zpow_natCast, h, mul_inv_cancel]`. Introduce `n hn a b`. Establish `e1` using `I'.isom n hn (f n a) (f n b)`. Establish `e2` using `I.isom n hn a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[hf n hn a, hf n hn b]`. Establish `h` using `he n _ _ _ _ e1 e2`. Rewrite `h` using `[hν n hn, ← zpow_natCast, ← zpow_mul]`. Rewrite using `[← (I'.ζ_prim n hn).zpow_eq_one_iff_dvd, zpow_sub, h, mul_inv_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem tateIso_similar_of_two_data
     (he : ∀ n x y c c', e n x y c → e n x y c' → c = c') (I : TateIso D k Q act e) (I' : TateIso D' k Q act e) :
@@ -136,7 +136,7 @@ noncomputable def expNegUnit (n : ℕ) : ℂˣ :=
   (Units.mk0 (Complex.exp (2 * Real.pi * Complex.I / n)) (Complex.exp_ne_zero _))⁻¹
 
 /- English proof (translation)
-Rewrite using `[Units.val_zpow_eq_zpow_val, expNegUnit, Units.val_inv_eq_inv_val, Units.val_mk0, ← Complex.exp_neg, ← Complex.exp_int_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem expNegUnit_zpow_val (n : ℕ) (j : ℤ) :
     ((expNegUnit n ^ j : ℂˣ) : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (j : ℂ) / n) := by
@@ -146,15 +146,15 @@ theorem expNegUnit_zpow_val (n : ℕ) (j : ℤ) :
   ring
 
 /- English proof (translation)
-The claim follows from `(IsPrimitiveRoot.coe_units_iff.1 (Complex.isPrimitiveRoot_exp n hn.ne')).inv`.
+A detailed English derivation is pending.
 -/
 theorem expNegUnit_isPrimitiveRoot {n : ℕ} (hn : 0 < n) : IsPrimitiveRoot (expNegUnit n) n :=
   (IsPrimitiveRoot.coe_units_iff.1 (Complex.isPrimitiveRoot_exp n hn.ne')).inv
 
 /- English proof (translation)
-Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `hm' : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← zpow_natCast, expNegUnit_zpow_val, ← zpow_one (expNegUnit n), expNegUnit_zpow_val]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem expNegUnit_mul_pow {n m : ℕ} (hn : 0 < n) (hm : 0 < m) : expNegUnit (n * m) ^ m = expNegUnit n := by
   have hn' : (n : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hn.ne'
@@ -172,7 +172,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {P : (U.Di i).La →+ (Fin g → ℂ)}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[Nat.cast_zero, zero_smul, pow_zero]`. Conclude with `(U.ex_ker i P hP 0).2 (zero_mem _)`. Consider the case `succ n ih => rw [Nat.cast_succ, add_smul, one_smul, U.ex_add i P hP, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem familyUnif_ex_nsmul (hP : IsPeriod (U.Di i) ty P) (n : ℕ) (z : Fin g → ℂ) :
     U.ex i P ((n : ℂ) • z) = U.ex i P z ^ n := by
@@ -224,9 +224,9 @@ noncomputable def familyUnifTateIso (hP : IsPeriod (U.Di i) ty P) :
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ g ty U i P hP`. Take `⟨-, I, -, hA, hM⟩` from `Xo.univ.geom ℂ (U.u i P) σ (U.over_σ i P hP)`. Take `⟨f, ν, h1, h2, h3, h4, h5, h6⟩` from `tateIso_similar_of_two_data (fun n x y c c' => weilIs_unique_fieldPoint _ _ _ Xo.univ.t.PP.isLB ℂ _ n x y c c') I (familyUnifTateIso U hP)`. Establish `hM0 : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Use `⟨f, ν, h1, h2, h3, h4, h5, fun a ha => ?_, fun a => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← tateIso_ev_eq_iff_add (familyUnifTateIso U hP) hM0, ← h6 _ hM0, ← hM a ha]`. Conclude with `U.ex_eta i P hP a ha`. Rewrite using `[← tateIso_ev_eq_iff_add (familyUnifTateIso U hP) l.A_pos, ← h6 _ l.A_pos, ← hA a]`. Conclude with `U.ex_etaA i P hP a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem familyUnif_lattice_similar : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (U : FamilyUnif Xo σ ty) (i : Fin U.n) (P : (U.Di i).La →+ (Fin g → ℂ)), IsPeriod (U.Di i) ty P → ∃ (f : ℕ → D.La →ₗ[𝓞 E] (U.Di i).La) (ν : ℕ → ℤ), (∀ n m : ℕ, 0 < n → 0 < m → ∀ a, ∃ e, f (n * m) a = f n a + n • e) ∧ (∀ n : ℕ, 0 < n → (∀ a, (∃ e, f n a = n • e) ↔ ∃ e, a = n • e) ∧ ∀ a', ∃ a e, a' = f n a + n • e) ∧ (∀ n : ℕ, 0 < n → IsCoprime (ν n) (n : ℤ)) ∧ (∀ n m : ℕ, 0 < n → 0 < m → (n : ℤ) ∣ ν (n * m) - ν n) ∧ (∀ n : ℕ, 0 < n → ∀ a a', (n : ℤ) ∣ (U.Di i).EF (f n a) (f n a') - ν n * D.EF a a') ∧ (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), ∃ e, f l.M a = U.t i a + l.M • e) ∧ ∀ a, ∃ e, f l.A a = U.t i a + l.A • e := by
   intro E _ _ _ H D l Xo σ g ty U i P hP

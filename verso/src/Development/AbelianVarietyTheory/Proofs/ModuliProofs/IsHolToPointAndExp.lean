@@ -31,15 +31,13 @@ def Uniformises (Xo : Moduli D l) (σ : KA l →+* ℂ) {g : ℕ} (ty : Fin g �
     ∀ a, toUnit _ ≫ Xo.univ.etaA a = e ((l.A : ℂ)⁻¹ • P (t a))
 
 /- English proof (translation)
-Take `⟨h1, -, ⟨h3, h4, h5, h6, h7⟩, h8, h9, h10, h11, h12⟩` from `h`. Use `⟨h1, hP, ⟨fun z w => by simp only [map_add, h3], h4.comp k.surjective, ?_, fun w => ?_, fun v hv => ?_⟩, fun z => ?_, fun a z => by simp only [hlin, h9], fun n a a₂ c hn hc => ?_, fun a ha => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `hd : DifferentiableOn ℂ (fun z => k z) Set.univ` using `k.toContinuousLinearEquiv.differentiable.differentiableOn`. Use `isHolTo_comp h5 isOpen_univ hd (Set.mapsTo_univ _ _)` as an intermediate fact. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [isDerivAt0_comp_equiv (fun z => (e z).left) k]`. Conclude with `h6 _`. Simplify using `only [isDerivAt0_comp_equiv (fun z => (e z).left) k]`. Take `⟨w, hw, hu⟩` from `h7 v (by simpa only [map_zero] using hv)`. Use `⟨k.symm w, by simpa only [LinearEquiv.apply_symm_apply] using hw, fun w' hw' => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu _ hw', LinearEquiv.symm_apply_apply]`. Rewrite using `[h8]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨a, k.injective (by rw [← hk, ha])⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, hk a⟩`. Simplify using `only [map_smul, ← hk]`. Conclude with `h10 n a a₂ c hn hc`. Simplify using `only [map_smul, ← hk]`.
-
-Conclude with `h11 a ha`. Simplify using `only [map_smul, ← hk]`. Conclude with `h12 a`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Uniformises.comp_equiv {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {D' : Datum H}
     {t : D.La →ₗ[𝓞 E] D'.La} {P P' : D'.La →+ (Fin g → ℂ)} {y : Sp ℂ ⟶ Xo.X}
@@ -76,31 +74,29 @@ theorem Uniformises.comp_equiv {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ}
 end Pointwise
 
 /- English proof (translation)
-Introduce `hUniq hExp hLift hCoord hOpen hChart E _ _ _ H D l Xo σ g ty hpq hσ hty D' t m B P y e hgen hB hP hU`. Establish `hU' : ∀ b ∈ B, Uniformises Xo σ ty D' t (P b) (y b) (e b)` using `hU`. Establish `uniq : ∀ {Q Q' : D'.La →+ (Fin g → ℂ)} {x x' : Sp ℂ ⟶ Xo.X} {u : (Fin g → ℂ) → (Over.mk x ⟶ Xo.univ.t.G)} {u' : (Fin g → ℂ) → (Over.mk x' ⟶ Xo.univ.t.G)}, Uniformises Xo σ ty D' t Q x u → Uniformises Xo σ ty D' t Q' x' u' → ∀ k : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), (∀ a, Q' a = k (Q a …`. Introduce `Q Q' x x' u u' h h' k hk`. Conclude with `(hUniq E H D l Xo σ g ty hpq hσ hty D' D' t t Q Q' x x' u u' h h').2 ⟨LinearEquiv.refl _ _, k, fun _ _ => rfl, fun a _ => ⟨0, by simp⟩, fun a => ⟨0, by simp⟩, hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `expo : ∀ {Q Q' : D'.La →+ (Fin g → ℂ)} {x x' : Sp ℂ ⟶ Xo.X} {u : (Fin g → ℂ) → (Over.mk x ⟶ Xo.univ.t.G)} {u' : (Fin g → ℂ) → (Over.mk x' ⟶ Xo.univ.t.G)}, Uniformises Xo σ ty D' t Q x u → Uniformises Xo σ ty D' t Q' x' u' → ∀ k : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), (∀ a, Q' a = k (Q a …`. Introduce `Q Q' x x' u u' h h' k hk hlin z`. Take `rfl` from `uniq h h' k hk`. Use `hExp E H D l Xo σ g ty hpq hσ hty D' t Q x u (fun z => u' (k z)) hgen h (h'.comp_equiv h.2.1 k hk hlin)` as an intermediate fact. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdim : D'.dim = D.dim` using `by simp only [Datum.dim, hgen.1, hgen.2.1]`. Establish `hsm : SmoothOfRelativeDimension D'.dim Xo.s` using `hdim ▸ Xo.smooth`. Establish `hty' : IsTypeFn H D'.p D'.q ty` using `by rw [hgen.1, hgen.2.1]; exact hty`. Establish `near : ∀ {n : ℕ} {C : Set (Fin n → ℂ)} {R : (Fin n → ℂ) → (D'.La →+ (Fin g → ℂ))} (P₀ : D'.La →+ (Fin g → ℂ)) (s : Finset D'.La) (ε : ℝ), IsOpen C → IsHolPeriods D' ty C R → IsOpen {c | c ∈ C ∧ ∀ x ∈ s, ‖R c x - P₀ x‖ < ε}`. Introduce `n C R P₀ s ε hC hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `isOpen_iff_mem_nhds.2 fun c hc => ?_` and prove the remaining obligations. Use `Filter.Eventually.and (hC.mem_nhds hc.1) ((Filter.eventually_all_finset s).2 fun x hx => ?_)` and prove the remaining obligations. Establish `: ContinuousAt (fun c => ‖R c x - P₀ x‖) c` using `(((hR.2 x).continuousOn.continuousAt (hC.mem_nhds hc.1)).sub continuousAt_const).norm`. Conclude with `this.eventually_lt continuousAt_const (hc.2 x hx)`. Establish `loc : ∀ b₀ ∈ B, ∃ B' : Set (Fin m → ℂ), b₀ ∈ B' ∧ B' ⊆ B ∧ IsHolTo B' y ∧ IsHolTo (B' ×ˢ Set.univ) (fun bz : (Fin m → ℂ) × (Fin g → ℂ) => (e bz.1 bz.2).left)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `b₀ hb₀`. Take `⟨C₀, y₁, -, -, -, -, hC₀, h0, hy0, hover, hhol, hinj, -⟩` from `hChart (KA l) σ Xo.X Xo.s D'.dim (y b₀) hsm (hU' b₀ hb₀).1`. Choose the witnesses or unpack the hypotheses as in `⟨e₀, he₀⟩ : ∃ e₀, Uniformises Xo σ ty D' t (P b₀) (y₁ 0) e₀ := by`. Rewrite using `[hy0]`. Conclude with `⟨_, hU' b₀ hb₀⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C₁, P₁, e₁, hC₁, h01, hsub, hP0, hP₁, he₁, hU₁⟩` from `hLift E H D l Xo σ g ty hpq hσ hty D' t D'.dim C₀ y₁ 0 (P b₀) e₀ hC₀ h0 hover hhol he₀`. Establish `hU₁' : ∀ c ∈ C₁, Uniformises Xo σ ty D' t (P₁ c) (y₁ c) (e₁ c)` using `hU₁`. Take `⟨Z, s, ε, hε, hZ, hZinj⟩` from `hCoord E H D' g ty (P b₀) hty' (hP.1 b₀ hb₀)`. Use `set C₂ := {c | c ∈ C₁ ∧ ∀ x ∈ s, ‖P₁ c x - P b₀ x‖ < ε} with hC₂def`. Establish `hC₂ : IsOpen C₂` using `near (P b₀) s ε hC₁ hP₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h02 : (0 : Fin D'.dim → ℂ) ∈ C₂` using `⟨h01, fun x _ => by simpa [hP0] using hε⟩`. Establish `hF : DifferentiableOn ℂ (fun c => Z (P₁ c)) C₂` using `hZ _ C₂ P₁ hC₂ ⟨fun c hc => hP₁.1 c hc.1, fun x => (hP₁.2 x).mono fun c hc => hc.1⟩ fun c hc => hc.2`. Establish `hFinj : Set.InjOn (fun c => Z (P₁ c)) C₂`. Introduce `c hc c' hc' hcc`. Take `⟨k, hk, -⟩` from `hZinj _ _ (hP₁.1 c hc.1) (hP₁.1 c' hc'.1) hc.2 hc'.2 hcc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hinj (hsub hc.1) (hsub hc'.1) (uniq (hU₁' c hc.1) (hU₁' c' hc'.1) k hk)`. Take `⟨W, G, hW, hW0, hG, hGW⟩` from `exists_local_section hC₂ hF h02 (hOpen _ C₂ _ hC₂ hF hFinj 0 h02)`. Use `set B₁ := {b | b ∈ B ∧ ∀ x ∈ s, ‖P b x - P b₀ x‖ < ε} with hB₁def`. Establish `hB₁ : IsOpen B₁` using `near (P b₀) s ε hB hP`. Establish `hZP : DifferentiableOn ℂ (fun b => Z (P b)) B₁` using `hZ _ B₁ P hB₁ ⟨fun c hc => hP.1 c hc.1, fun x => (hP.2 x).mono fun c hc => hc.1⟩ fun c hc => hc.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B₂ := B₁ ∩ (fun b => Z (P b)) ⁻¹' W with hB₂def`. Establish `hB₂ : IsOpen B₂` using `hZP.continuousOn.isOpen_inter_preimage hB₁ hW`. Establish `hb₂ : b₀ ∈ B₂` using `⟨⟨hb₀, fun x _ => by simpa using hε⟩, by simpa [hP0] using hW0⟩`. Establish `hβ : DifferentiableOn ℂ (fun b => G (Z (P b))) B₂` using `hG.comp (hZP.mono Set.inter_subset_left) fun b hb => hb.2`. Establish `hβC : ∀ b ∈ B₂, G (Z (P b)) ∈ C₂` using `fun b hb => (hGW _ hb.2).1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hk : ∀ b, ∃ k : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), b ∈ B₂ → (∀ a, P₁ (G (Z (P b))) a = k (P b a)) ∧ ∀ (a : 𝓞 E) z, k (fun i => ty i (a : E) * z i) = fun i => ty i (a : E) * k z i`. Introduce `b`. Distinguish the cases in `hb : b ∈ B₂`. Take `⟨k, hk⟩` from `hZinj _ _ (hP.1 b hb.1.1) (hP₁.1 _ (hβC b hb).1) hb.1.2 (hβC b hb).2 (hGW _ hb.2).2.symm`. Conclude with `⟨k, fun _ => hk⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨LinearEquiv.refl _ _, fun h => absurd h hb⟩`. Use `choose k hk using hk`. Take `⟨B₃, hB₃, hb₃, hsub₃, hkd⟩` from `exists_differentiableOn_transfer (Q := P) (Q' := fun b => P₁ (G (Z (P b)))) hB₂ (fun x => (hP.2 x).mono fun b hb => hb.1.1) (fun x => (hP₁.2 x).comp hβ fun b hb => (hβC b hb).1) hb₂ (hP.1 b₀ hb₀).2.2.2.1 (fun b => (k b).toLinearMap) fun b hb x => (hk b hb).1 x`. Use `⟨B₃, hb₃, fun b hb => (hsub₃ hb).1.1, ?_, ?_⟩` and prove the remaining obligations. Use `isHolTo_congr (isHolTo_comp hhol hB₃ (hβ.mono hsub₃) fun b hb => hsub (hβC b (hsub₃ hb)).1) fun b hb => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `uniq (hU' b (hsub₃ hb).1.1) (hU₁' _ (hβC b (hsub₃ hb)).1) (k b) (hk b (hsub₃ hb)).1`. Establish `hφ : DifferentiableOn ℂ (fun bz : (Fin m → ℂ) × (Fin g → ℂ) => (G (Z (P bz.1)), k bz.1 bz.2)) (B₃ ×ˢ Set.univ)` using `(hβ.comp differentiableOn_fst fun bz hbz => hsub₃ hbz.1).prodMk hkd`. Use `isHolTo_congr (isHolTo_comp he₁ (hB₃.prod isOpen_univ) hφ fun bz hbz => ⟨(hβC _ (hsub₃ hbz.1)).1, trivial⟩) fun bz hbz => ?_` and prove the remaining obligations. Conclude with `expo (hU' _ (hsub₃ hbz.1).1.1) (hU₁' _ (hβC _ (hsub₃ hbz.1)).1) (k bz.1) (hk _ (hsub₃ hbz.1)).1 (hk _ (hsub₃ hbz.1)).2 bz.2`. Use `⟨isHolTo_of_local fun b hb => ?_, isHolTo_of_local fun bz hbz => ?_⟩` and prove the remaining obligations.
-
-Take `⟨B', h1, h2, h3, -⟩` from `loc b hb`. Conclude with `⟨B', h1, h2, h3⟩`. Take `⟨B', h1, h2, -, h4⟩` from `loc bz.1 hbz.1`. Conclude with `⟨B' ×ˢ Set.univ, ⟨h1, trivial⟩, Set.prod_mono h2 le_rfl, h4⟩`.
+A detailed English derivation is pending.
 -/
 theorem isHolTo_point_and_exp : (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty

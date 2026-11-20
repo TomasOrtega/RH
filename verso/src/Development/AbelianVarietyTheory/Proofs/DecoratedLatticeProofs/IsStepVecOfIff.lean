@@ -42,7 +42,7 @@ Both sides reduce to the same expression.
 theorem isMoved_move {p : SplitPt D k} {S : HSp D} (β : Frame p S n) (g : GA D S) : IsMoved g β (move β g) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `β.b = (mt S g).map p.pr * ((mt S g⁻¹).map p.pr * β.b)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.map_mul]`. Simplify using `[Formalism.L2.Theta.mt]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isMoved_back {p : SplitPt D k} {S : HSp D} (β : Frame p S n) (g : GA D S) : IsMoved g (move β g⁻¹) β := by
   change β.b = (mt S g).map p.pr * ((mt S g⁻¹).map p.pr * β.b)
@@ -66,14 +66,14 @@ def JacCols {p : SplitPt D k} {ρ : ℕ} (J : JacLev D ρ) (θ s a : k) (α : Fr
       β.b r (Sum.inr j) = s * a * (-1 / θ) ^ (ρ - 1 - i.val) * (ofSplit p).pr (J.d.e' r i)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem besCols_toFin {p : SplitPt D k} {ρ : ℕ} (B : BesLev D ρ) (s : k) (α : GlobalTheory.LocMod.Frame k B.A.rank n)
     (β : GlobalTheory.LocMod.Frame k B.V.rank (n ⊕ Fin c)) :
     BesCols B (ofSplit p).xi s (toFin p _ α) (toFin p _ β) ↔ (ofSplit p).IsBesFrame B s α β := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem jacCols_toFin {p : SplitPt D k} {ρ : ℕ} (J : JacLev D ρ) (s h : k) (α : GlobalTheory.LocMod.Frame k J.W₀.rank n)
     (β : GlobalTheory.LocMod.Frame k J.W.rank (n ⊕ Fin c)) :
@@ -82,11 +82,9 @@ theorem jacCols_toFin {p : SplitPt D k} {ρ : ℕ} (J : JacLev D ρ) (s h : k) (
 open GlobalTheory.LocMod.Witness in
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Take `⟨G, hG⟩` from `exists_witt (ofSplit p) J.d (GlobalTheory.LocMod.Frame.ofFinPl α)`. Take `⟨F, hF⟩` from `exists_scaled' G (Sum.map id (Sum.elim (fun i : Fin ρ => (⟨i.val, by omega⟩ : Fin (2 * ρ))) fun i : Fin ρ => ⟨2 * ρ - 1 - i.val, by omega⟩)) (by`. Apply the tactic sequence `rintro (a | a | a) (b | b | b) h <;> simp [Fin.ext_iff] at h ⊢ <;> first | exact h | omega)`. Use the proof step `(by simp; ring)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use the proof step `(Sum.elim (fun _ => 1) (Sum.elim (fun i => s * θ ^ (ρ - i.val)) fun i => s * a * (-1 / θ) ^ (ρ - 1 - i.val)))`. Apply the tactic sequence `(by rintro (a | a | a) <;> simp [hs, ha, hθ])`. Rewrite `hF` using `[hG]`. Use `⟨toFin p _ F, rfl, fun r a => (hF r (Sum.inl a)).trans (one_mul _), fun i j h r => ?_, fun i j h r => ?_⟩` and prove the remaining obligations. Rewrite using `[show j = ⟨i.val, by omega⟩ from Fin.ext h]`.
-
-Conclude with `hF r (Sum.inr (Sum.inl i))`. Rewrite using `[show j = ⟨2 * ρ - 1 - i.val, by omega⟩ from Fin.ext (by simp only; omega)]`. Conclude with `hF r (Sum.inr (Sum.inr i))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_jacCols {p : SplitPt D k} {ρ : ℕ} (J : JacLev D ρ) {θ s a : k} (hθ : θ ≠ 0) (hs : s ≠ 0) (ha : a ≠ 0)
     (α : Frame p J.W₀ n) (hc : c = 2 * ρ) : ∃ β : Frame p J.W (n ⊕ Fin c), JacCols J θ s a α β := by
@@ -109,15 +107,13 @@ theorem exists_jacCols {p : SplitPt D k} {ρ : ℕ} (J : JacLev D ρ) {θ s a : 
 open GlobalTheory.LocMod.Witness in
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Take `⟨F₀, h₀⟩` from `exists_core (ofSplit p) B one_ne_zero (GlobalTheory.LocMod.Frame.ofFinPl α)`. Take `⟨G, hG⟩` from `exists_witt (ofSplit p) B.d F₀`. Establish `hz` using `hz_ne (ofSplit p) B`. Take `⟨F, hF⟩` from `exists_scaled' G (Sum.elim (Sum.map id fun _ => (⟨ρ, by omega⟩ : Fin (2 * ρ + 1))) (Sum.elim (fun i : Fin ρ => Sum.inr (⟨i.val, by omega⟩ : Fin (2 * ρ + 1))) fun i : Fin ρ => Sum.inr ⟨2 * ρ - i.val, by omega⟩)) (by`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `rintro ((a | a) | a | a) ((b | b) | b | b) h <;> simp [Fin.ext_iff] at h ⊢ <;> first | exact h | omega)`. Use the proof step `(by simp; ring)`. Use the proof step `(Sum.elim (Sum.elim (fun _ => 1) fun _ => s) (Sum.elim (fun i => s * θ ^ (ρ - i.val)) fun i => s * (-(ofSplit p).hz B / θ) * (-1 / θ) ^ (ρ - 1 - i.val)))`. Apply the tactic sequence `(by rintro ((a | a) | a | a) <;> simp [hs, hz, hθ])`. Rewrite `hF` using `[hG]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨toFin p _ F, rfl, fun r a => ((hF r (Sum.inl (Sum.inl a))).trans (one_mul _)).trans ?_, fun i j h r => ?_, fun j h r => ?_, fun i j h r => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(B.d.i₀.map (prH (ofSplit p)) * F₀.β) r (Sum.inl a) = ((B.d.i₀ * B.o.iA).map (prH (ofSplit p)) * α.b) r a`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun u _ => by rw [h₀.1]; rfl`. Rewrite using `[show j = ⟨i.val, by omega⟩ from Fin.ext h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hF r (Sum.inr (Sum.inl i))`. Rewrite using `[show j = ⟨ρ, by omega⟩ from Fin.ext h]`. Use `(hF r (Sum.inl (Sum.inr ()))).trans (congrArg (s * ·) ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(B.d.i₀.map (prH (ofSplit p)) * F₀.β) r (Sum.inr ()) = prH (ofSplit p) (∑ u, B.d.i₀ r u * vecB B.o B.ζ u)`. Rewrite using `[Matrix.mul_apply, map_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun u _ => by rw [h₀.2, one_mul, map_mul]; rfl`. Rewrite using `[show j = ⟨2 * ρ - i.val, by omega⟩ from Fin.ext (by simp only; omega)]`. Conclude with `hF r (Sum.inr (Sum.inr i))`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_besCols {p : SplitPt D k} {ρ : ℕ} (B : BesLev D ρ) {θ s : k} (hθ : θ ≠ 0) (hs : s ≠ 0)
     (α : Frame p B.A n) (hc : c = 2 * ρ + 1) : ∃ β : Frame p B.V (n ⊕ Fin c), BesCols B θ s α β := by
@@ -184,7 +180,7 @@ def stepDat (c : GlobalTheory.ChainOnto.Com D) (s s' : GlobalTheory.ChainOnto.Pi
 
 open Classical in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isStepVecOf_iff (c : GlobalTheory.ChainOnto.Com D) (s s' : GlobalTheory.ChainOnto.PiLocalization₂ D) (j : ℕ) (ξ f₀ f) :
     IsStepVecOf c.ψ c.θ s.V s'.V (cart s.M) (cart s'.M) s.Λ s'.Λ s.β s'.β s.L (c.chi (j + 1)) ∅ ξ f₀ f ↔
@@ -232,7 +228,7 @@ example (j c : ℕ) (h : j + c = G.s) : (G.S.T (Fin D.R.t)).Phi j c h =
       (GlobalTheory.StepData.typeFrame G.S.ϖ (GlobalTheory.StepData.stdOrd (Fin D.R.k) (Fin D.R.t) (j + 1) c (by omega))) := rfl
 
 /- English proof (translation)
-Introduce `_ sS BS sT BT _ _ _ a b c e` and use `⟨sS, BS, sT, BT, a, b, c, e, fun _ h => h, fun P => ⟨P, fun _ _ => rfl⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (LS : Lat S) (LT : Lat T) : FockMap ψ LS LT LS LT id :=
   fun _ sS BS sT BT _ _ _ a b c e => ⟨sS, BS, sT, BT, a, b, c, e, fun _ h => h, fun P => ⟨P, fun _ _ => rfl⟩⟩

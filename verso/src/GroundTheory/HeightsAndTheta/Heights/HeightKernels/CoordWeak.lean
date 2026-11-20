@@ -13,37 +13,37 @@ section Mean
 variable {S : Type*} [Fintype S]
 
 /- English proof (translation)
-Conclude with `Fintype.card_pos` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem card_pos_real [Nonempty S] : (0 : ℝ) < Fintype.card S := by
   exact_mod_cast Fintype.card_pos
 
 /- English proof (translation)
-The claim follows from `div_le_div_of_nonneg_right (Finset.sum_le_sum fun s _ => hfh s) card_pos_real.le`.
+A detailed English derivation is pending.
 -/
 theorem finMean_mono [Nonempty S] {f h : S → ℝ} (hfh : ∀ s, f s ≤ h s) : finMean f ≤ finMean h :=
   div_le_div_of_nonneg_right (Finset.sum_le_sum fun s _ => hfh s) card_pos_real.le
 
 /- English proof (translation)
-Simplify using `[finMean, Finset.sum_add_distrib, add_div]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finMean_add (f h : S → ℝ) : finMean (fun s => f s + h s) = finMean f + finMean h := by
   simp [finMean, Finset.sum_add_distrib, add_div]
 
 /- English proof (translation)
-Simplify using `[finMean, Finset.sum_sub_distrib, sub_div]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finMean_sub (f h : S → ℝ) : finMean (fun s => f s - h s) = finMean f - finMean h := by
   simp [finMean, Finset.sum_sub_distrib, sub_div]
 
 /- English proof (translation)
-Simplify using `[finMean, ← Finset.mul_sum, mul_div_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finMean_const_mul (c : ℝ) (f : S → ℝ) : finMean (fun s => c * f s) = c * finMean f := by
   simp [finMean, ← Finset.mul_sum, mul_div_assoc]
 
 /- English proof (translation)
-Establish `h` using `(card_pos_real (S := S)).ne'`. Simplify using `only [finMean, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem finMean_const [Nonempty S] (c : ℝ) : finMean (fun _ : S => c) = c := by
   have h := (card_pos_real (S := S)).ne'
@@ -53,9 +53,9 @@ theorem finMean_const [Nonempty S] (c : ℝ) : finMean (fun _ : S => c) = c := b
 end Mean
 
 /- English proof (translation)
-Establish `h1 : log (1 + a) ≤ a`. Use `Real.log_le_sub_one_of_pos (show 0 < 1 + a by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : G * log (1 + a) ≤ G * a` using `mul_le_mul_of_nonneg_left h1 hG`. Establish `hpi : 0 < π` using `Real.pi_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : π / 192 * a ^ 2 + 48 / π * G ^ 2 - G * a = (π * a - 96 * G) ^ 2 / (192 * π)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : 0 ≤ (π * a - 96 * G) ^ 2 / (192 * π)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem mul_log_le (G a : ℝ) (hG : 0 ≤ G) (ha : 0 < a) :
     G * log (1 + a) ≤ π / 192 * a ^ 2 + 48 / π * G ^ 2 := by
@@ -71,13 +71,11 @@ theorem mul_log_le (G a : ℝ) (hG : 0 ≤ G) (ha : 0 < a) :
   linarith
 
 /- English proof (translation)
-Establish `hx : 0 < 1 + (ρ ^ 2)⁻¹` using `by positivity`. Establish `h0 : 0 ≤ 1 / 2 * log (1 + (ρ ^ 2)⁻¹)`. Establish `: 0 ≤ log (1 + (ρ ^ 2)⁻¹)` using `Real.log_nonneg (by`. Establish `: 0 ≤ (ρ ^ 2)⁻¹` using `by positivity`. Use the proof step `linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : log (1 / ρ) ≤ 1 / 2 * log (1 + (ρ ^ 2)⁻¹)`. Establish `e : log (1 / ρ) = 1 / 2 * log ((ρ ^ 2)⁻¹)`. Rewrite using `[one_div, Real.log_inv, Real.log_inv, Real.log_pow]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `: log ((ρ ^ 2)⁻¹) ≤ log (1 + (ρ ^ 2)⁻¹)` using `Real.log_le_log (by positivity) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Real.posLog]`.
-
-Conclude with `max_le h0 h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem posLog_le_half_log (ρ : ℝ) (hρ : 0 < ρ) :
     posLog (1 / ρ) ≤ 1 / 2 * log (1 + (ρ ^ 2)⁻¹) := by
@@ -102,39 +100,35 @@ theorem posLog_le_half_log (ρ : ℝ) (hρ : 0 < ρ) :
 end KCoord
 
 /- English proof (translation)
-Introduce `C₀ hC₀`. Use `⟨64 * (33 + C₀), by positivity, ?_⟩` and prove the remaining obligations. Introduce `g _ S _ _ ρ Φ hρ hΦ hmean`. Establish `hg1 : (1 : ℝ) ≤ g` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne g)`. Establish `hG : (0 : ℝ) ≤ g` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := log (2 * (g : ℝ)) with hL`. Establish `hLge : log 2 ≤ L` using `Real.log_le_log (by norm_num) (by linarith)`. Establish `hlog2 : (1 / 2 : ℝ) < log 2`. Use `Real.log_two_gt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hLpos : 1 / 2 < L` using `by linarith`. Establish `hpi3 : 3 < π` using `Real.pi_gt_three`. Establish `hpi : 0 < π` using `Real.pi_pos`. Use `set x : S → ℝ := fun s => (ρ s ^ 2)⁻¹ with hx`. Use `set E : S → ℝ := fun s => g * log (1 + 1 / ρ s) + C₀ * g * L with hE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set K : ℝ := 48 / π * (g : ℝ) ^ 2 + C₀ * g * L with hK`. Establish `hEx : ∀ s, E s ≤ π / 192 * x s + K`. Introduce `s`. Establish `h` using `KCoord.mul_log_le (g : ℝ) (1 / ρ s) hG (by have := (hρ s).1; positivity)`. Establish `e : (1 / ρ s) ^ 2 = x s` using `by simp [hx, one_div, inv_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Simplify using `only [hE, hK]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK' : K ≤ (32 + C₀) * ((g : ℝ) ^ 2 * L)`. Establish `h1 : 48 / π * (g : ℝ) ^ 2 ≤ 32 * ((g : ℝ) ^ 2 * L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hg2 : 0 ≤ (g : ℝ) ^ 2` using `by positivity`. Establish `: 48 / π ≤ 16`. Rewrite using `[div_le_iff₀ hpi]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h16 : 16 * (g : ℝ) ^ 2 ≤ 32 * ((g : ℝ) ^ 2 * L)` using `by nlinarith`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : C₀ * g * L ≤ C₀ * ((g : ℝ) ^ 2 * L)`. Establish `: (g : ℝ) * L ≤ (g : ℝ) ^ 2 * L`. Establish `: (g : ℝ) ≤ (g : ℝ) ^ 2` using `by nlinarith`. Conclude with `mul_le_mul_of_nonneg_right this (by linarith)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left this hC₀` as an intermediate fact. Combine the linear relations using `[mul_assoc C₀ (g : ℝ) L]`. Simplify using `only [hK]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgL : 0 ≤ (g : ℝ) ^ 2 * L` using `by have := sq_nonneg (g : ℝ); nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmx : π / 192 * finMean x ≤ Φ + K`. Establish `h1 : finMean (fun s => π / 96 * x s - E s) ≥ finMean (fun s => π / 192 * x s - K)` using `KCoord.finMean_mono fun s => by have := hEx s; linarith`. Establish `h2 : finMean (fun s => π / 192 * x s - K) = π / 192 * finMean x - K`. Rewrite using `[KCoord.finMean_sub, KCoord.finMean_const_mul, KCoord.finMean_const]`. Establish `h3 : finMean (fun s => π / 96 * x s - E s) ≤ Φ` using `hmean`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmx' : finMean x ≤ 64 * (Φ + K)`. Establish `: finMean x ≤ 192 / π * (Φ + K)`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hpi]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hΦK : 0 ≤ Φ + K`. Establish `: 0 ≤ K` using `by simp only [hK]; positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: 192 / π ≤ 64` using `by rw [div_le_iff₀ hpi]; linarith`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show finMean x ≤ _`. Use the polynomial consequences of the given equalities and inequalities. Use `show finMean E ≤ _`. Establish `h0 : finMean E ≤ finMean (fun s => π / 192 * x s + K)` using `KCoord.finMean_mono hEx`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0' : finMean (fun s => π / 192 * x s + K) = π / 192 * finMean x + K`. Rewrite using `[KCoord.finMean_add, KCoord.finMean_const_mul, KCoord.finMean_const]`. Establish `h1 : finMean E ≤ π / 192 * finMean x + K` using `h0.trans h0'.le`. Use the polynomial consequences of the given equalities and inequalities. Establish `hpt : ∀ s, posLog (1 / ρ s) ≤ 1 / 2 * log (1 + x s)` using `fun s => KCoord.posLog_le_half_log (ρ s) (hρ s).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `KCoord.finMean_mono hpt`. Rewrite `h1` using `[KCoord.finMean_const_mul]`. Establish `hj : finMean (fun s => log (1 + x s)) ≤ log (1 + finMean x)`. Establish `hcard` using `(KCoord.card_pos_real (S := S))`. Establish `hJ` using `(strictConcaveOn_log_Ioi.concaveOn).le_map_sum (t := Finset.univ) (w := fun _ : S => (1 : ℝ) / Fintype.card S) (p := fun s => 1 + x s) (fun _ _ => by positivity) (by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]; field_simp) (fun s _ => by show (0 : ℝ) < 1 + x s`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: 0 ≤ x s` using `by simp only [hx]; positivity`. Use the proof step `linarith)`. Simplify using `only [smul_eq_mul] at hJ`. Establish `e1 : ∑ s, 1 / (Fintype.card S : ℝ) * log (1 + x s) = finMean fun s => log (1 + x s)`. Simplify using `[finMean, ← Finset.mul_sum, div_eq_inv_mul]`.
-
-Establish `e2 : ∑ s, 1 / (Fintype.card S : ℝ) * (1 + x s) = 1 + finMean x`. Rewrite using `[← Finset.mul_sum, Finset.sum_add_distrib]`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, finMean]`. Clear the denominators using the available nonvanishing facts. Rewrite `hJ` using `[e1, e2]`.
-
-Conclude with `hJ`. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem WeakMatrixArithmetic.intersectionNumber_baseChange : WeakMatrixArithmetic.Statement := by
   intro C₀ hC₀

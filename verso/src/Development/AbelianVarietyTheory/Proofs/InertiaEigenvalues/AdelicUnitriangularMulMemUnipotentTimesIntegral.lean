@@ -62,9 +62,9 @@ open NumberField IsDedekindDomain Matrix Formalism.UG GlobalTheory.CuspRep
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB R).1 hu`. Use `(GlobalTheory.SmGL.mem_unipB R).2 ⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, GlobalTheory.SmGL.val_diagT, Matrix.diagonal_mul, Matrix.mul_diagonal, h1 i j hij]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, GlobalTheory.SmGL.val_diagT, Matrix.diagonal_mul, Matrix.mul_diagonal, h2 i]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diagT_conj_mem {R : Type} [CommRing R] (w : Fin n → Rˣ) {u : GL (Fin n) R}
     (hu : u ∈ GlobalTheory.SmGL.unipB R (Fin n)) :
@@ -78,9 +78,9 @@ theorem diagT_conj_mem {R : Type} [CommRing R] (w : Fin n → Rˣ) {u : GL (Fin 
     simp
 
 /- English proof (translation)
-Establish `: Countable F` using `(Module.finBasis ℚ F).equivFun.injective.countable`. Establish `: Countable (𝓞 F)` using `(RingOfIntegers.coe_injective (K := F)).countable`. Establish `: Countable (Ideal (𝓞 F))`. Establish `hs : Function.Surjective (fun t : Finset (𝓞 F) => Ideal.span (t : Set (𝓞 F)))` using `fun I => by`. Take `⟨t, ht⟩` from `(IsNoetherian.noetherian I : I.FG)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, ht⟩`. Conclude with `hs.countable`. Establish `hi : Function.Injective (HeightOneSpectrum.asIdeal (R` using `𝓞 F)) := fun v w h => HeightOneSpectrum.ext h`. Conclude with `hi.countable`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countable_places (F : Type) [Field F] [NumberField F] : Countable (HeightOneSpectrum (𝓞 F)) := by
   have : Countable F := (Module.finBasis ℚ F).equivFun.injective.countable
@@ -98,9 +98,9 @@ instance countable_Lam (S : Finset (HeightOneSpectrum (𝓞 E))) : Countable (ab
   exact Subtype.countable
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.SmGL.val_diagT]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin n) (Fin n) (Ad E)) i j - sFin E ((1 : Matrix (Fin n) (Fin n) (Af E)) i j) + sFin E ((GlobalTheory.SmGL.diagT (Af E) (Fin n) _ : Matrix (Fin n) (Fin n) (Af E)) i j) = _`. Rewrite using `[GlobalTheory.SmGL.val_diagT]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[finId, GlobalTheory.CuspRep.corner]`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tl_eq_diagT (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ) (l : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) :
     tl n ϖ l = GlobalTheory.SmGL.diagT (Ad E) (Fin n) fun i => finId E (adl ϖ (Finsupp.mapRange (fun x : Fin n → ℤ => x i) rfl l)) := by
@@ -115,14 +115,14 @@ theorem tl_eq_diagT (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion 
   · simp [h]
 
 /- English proof (translation)
-Rewrite using `[tl_eq_diagT]`. Conclude with `diagT_conj_mem _ hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tl_conj_mem (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ) (l : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ))
     {u : GA E n} (hu : u ∈ NA E n) : tl n ϖ l * u * (tl n ϖ l)⁻¹ ∈ NA E n := by
   rw [tl_eq_diagT]; exact diagT_conj_mem _ hu
 
 /- English proof (translation)
-Take `⟨v, hv, k, hk, rfl⟩` from `hg`. Conclude with `⟨u * v, mul_mem hu hv, k, hk, (mul_assoc _ _ _).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem adelicUnitriangular_mul_mem_unipotentTimesIntegral {S : Finset (HeightOneSpectrum (𝓞 E))} {u g : GA E n} (hu : u ∈ NA E n) (hg : g ∈ C0 E n S) :
     u * g ∈ C0 E n S := by

@@ -14,7 +14,7 @@ namespace PositivityTheory.AdelicQuotientData
 namespace LogNormEstimates
 
 /- English proof (translation)
-The claim follows from `|Real.log D| ≤ |Real.log a| + |Real.log b| := by have l1 := Real.log_le_log ha h1 have l2 := Real.log_le_log hD h2 rw [abs_le] constructor · linarith [neg_abs_le (Real.log a), abs_nonneg (Real.log b)] · linarith [le_abs_self (Real.log b), abs_nonneg (Real.log a)]`.
+A detailed English derivation is pending.
 -/
 theorem log_le {D a b : ℝ} (hD : 0 < D) (ha : 0 < a) (h1 : a ≤ D) (h2 : D ≤ b) :
     |Real.log D| ≤ |Real.log a| + |Real.log b| := by
@@ -26,11 +26,11 @@ theorem log_le {D a b : ℝ} (hD : 0 < D) (ha : 0 < a) (h1 : a ≤ D) (h2 : D �
   · linarith [le_abs_self (Real.log b), abs_nonneg (Real.log a)]
 
 /- English proof (translation)
-Distinguish the cases in `hp : p = 0`. Simplify using `[hp]`. Take `⟨h1, h2⟩` from `h hp`. Rewrite using `[norm_mul, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hD, Complex.norm_cpow_eq_rpow_re_of_pos hD]`. Establish `e : D ^ z.re = D ^ z₀.re * D ^ (z.re - z₀.re)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_add hD]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← mul_assoc]`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Real.rpow_def_of_pos hD]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_le {p : ℂ} {D a b : ℝ} (hD : 0 < D) (ha : 0 < a) (h : p ≠ 0 → a ≤ D ∧ D ≤ b) (z z₀ : ℂ) :
     ‖p * (D : ℂ) ^ z‖ ≤ ‖p * (D : ℂ) ^ z₀‖ * Real.exp ((|Real.log a| + |Real.log b|) * |z.re - z₀.re|) := by
@@ -49,7 +49,7 @@ theorem norm_le {p : ℂ} {D a b : ℝ} (hD : 0 < D) (ha : 0 < a) (h : p ≠ 0 �
     _ ≤ _ := mul_le_mul_of_nonneg_right (log_le hD ha h1 h2) (abs_nonneg _)
 
 /- English proof (translation)
-Rewrite using `[Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 hD.ne'), ← Complex.ofReal_cpow hD.le σ, show p * (((D ^ σ : ℝ) : ℂ) * (D : ℂ) ^ ((u : ℂ) * Complex.I)) = ((D ^ σ : ℝ) : ℂ) * (p * (D : ℂ) ^ ((u : ℂ) * Complex.I)) by ring, Complex.re_ofReal_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem re_eq (p : ℂ) {D : ℝ} (hD : 0 < D) (σ u : ℝ) :
     (p * (D : ℂ) ^ ((σ : ℂ) + u * Complex.I)).re = D ^ σ * (p * (D : ℂ) ^ ((u : ℂ) * Complex.I)).re := by
@@ -59,7 +59,7 @@ theorem re_eq (p : ℂ) {D : ℝ} (hD : 0 < D) (σ u : ℝ) :
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem msc {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {k : ℕ} :
     MeasurableSingletonClass (GA E k) := inferInstance
@@ -67,47 +67,41 @@ theorem msc {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {k : ℕ} 
 end LogNormEstimates
 
 /- English proof (translation)
-Introduce `hQ1 hD0 hN3 hC0`. Unfold `D1 ForMu`. Introduce `E _ _ _ k μ _ hk β hβ S P u z₀ hPc hPinv hP1 hpos hint`. Take `⟨hDpos, hDmul, hDc, -, hDUU, -⟩` from `hD0 E k`. Take `⟨hG0o, h1G0, hG0inv, -⟩` from `hC0 E k S`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hNP, -, -, hN0⟩` from `hN3 E k`. Take `⟨hνs, hνinv, -⟩` from `hNP 0 (by omega)`. Take `⟨a, b, ha, hab⟩` from `hpos`. Establish `hD1 : Dt (1 : GA E k) = 1`. Establish `h` using `hDmul 1 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_one] at h`. Conclude with `(mul_left_cancel₀ (hDpos 1).ne' (by rw [mul_one]; exact h.symm))`. Establish `hG0m : MeasurableSet (G0 (k` using `k) S) := hG0o.measurableSet`. Establish `hcont : ∀ z : ℂ, Continuous fun g : GA E k => P g * (Dt g : ℂ) ^ z` using `fun z => hPc.mul ((Complex.continuous_ofReal.comp hDc).cpow continuous_const fun g => Complex.ofReal_mem_slitPlane.2 (hDpos g))`. Use `set L := |Real.log a| + |Real.log b| with hL`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : 0 ≤ L` using `by positivity`. Establish `hdom : ∀ g ∈ G0 (k` using `k) S, ∀ z : ℂ, ‖P g * (Dt g : ℂ) ^ z‖ ≤ ‖P g * (Dt g : ℂ) ^ z₀‖ * Real.exp (L * |z.re - z₀.re|) := by`. Introduce `g hg z`. Conclude with `LogNormEstimates.norm_le (hDpos g) ha (fun hp => ⟨(hab g hg hp).1, (hab g hg hp).2.1⟩) z z₀`. Establish `hintG : ∀ z : ℂ, Integrable (fun g => P g * (Dt g : ℂ) ^ z) ((μ.withDensity β).restrict (G0 S))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Use `Integrable.mono' ((hint.norm.mul_const (Real.exp (L * |z.re - z₀.re|))).restrict) (hcont z).aestronglyMeasurable ?_` and prove the remaining obligations. Conclude with `ae_restrict_of_forall_mem hG0m fun g hg => hdom g hg z`. Use `⟨fun z₁ => ?_, fun σ => ?_⟩` and prove the remaining obligations. Establish `hderiv` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := (μ.withDensity β).restrict (G0 S)) (F := fun z g => P g * (Dt g : ℂ) ^ z) (F' := fun z g => P g * (Dt g : ℂ) ^ z * ((Real.log (Dt g) : ℝ) : ℂ)) (x₀ := z₁) (bound := fun g => ‖P g * (Dt g : ℂ) ^ z₀‖ * Real.exp (L * (|z₁.re - z …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `hderiv.2.differentiableAt`. Use `ae_restrict_of_forall_mem hG0m fun g hg z hz => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Distinguish the cases in `hp : P g = 0`. Simplify using `only [hp, zero_mul, norm_zero]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hlog` using `LogNormEstimates.log_le (hDpos g) ha (hab g hg hp).1 (hab g hg hp).2.1`. Establish `hz' : |z.re - z₀.re| ≤ |z₁.re - z₀.re| + 1`. Establish `h1 : |z.re - z₁.re| ≤ 1`. Use `Complex.abs_re_le_norm (z - z₁)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `hz` using `[Metric.mem_ball, dist_eq_norm]`. Rewrite `this` using `[Complex.sub_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `e1` using `hdom g hg z`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : Real.exp (L * |z.re - z₀.re|) ≤ Real.exp (L * (|z₁.re - z₀.re| + 1))` using `Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left hz' hL0)`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul _ hlog (abs_nonneg _) (by positivity)` to reduce the goal to its premises. Conclude with `e1.trans (mul_le_mul_of_nonneg_left e2 (norm_nonneg _))`. Use `_ = _ := rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Filter.Eventually.of_forall fun g z _ => ?_` and prove the remaining obligations. Establish `hD` using `hDpos g`. Establish `h` using `((hasDerivAt_id z).const_cpow (c := (Dt g : ℂ)) (Or.inl (Complex.ofReal_ne_zero.2 hD.ne'))).const_mul (P g)`. Establish `e : P g * ((Dt g : ℂ) ^ id z * Complex.log (Dt g) * 1) = P g * (Dt g : ℂ) ^ z * ((Real.log (Dt g) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_log hD.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [id, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h.congr_deriv e`. Use `set f : GA E k → ℝ := fun g => (P g * (Dt g : ℂ) ^ ((u : ℂ) * Complex.I)).re with hf`. Establish `hfc : Continuous f` using `Complex.continuous_re.comp (hcont _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set O : Set (GA E k) := G0 S ∩ {g | 0 < f g} with hO`. Establish `hOo : IsOpen O` using `hG0o.inter (isOpen_lt continuous_const hfc)`. Establish `hOm : MeasurableSet O` using `hOo.measurableSet`. Establish `h1O : (1 : GA E k) ∈ O`. Use `⟨h1G0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show 0 < (P 1 * ((Dt (1 : GA E k) : ℝ) : ℂ) ^ ((u : ℂ) * Complex.I)).re`. Rewrite using `[hD1, Complex.ofReal_one, Complex.one_cpow, mul_one]`. Conclude with `hP1`. Establish `hOinv : ∀ n g, UU 0 n → (n * g ∈ O ↔ g ∈ O)`. Introduce `n g hn`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hO, hf, Set.mem_inter_iff, Set.mem_setOf_eq, hG0inv n g hn, hPinv n hn g, hDmul, hDUU 0 n hn, one_mul]`. Use `haveI : MeasurableSingletonClass (GA E k) := LogNormEstimates.msc`. Establish `hμO : μ O ≠ 0` using `(hOo.measure_pos μ ⟨1, h1O⟩).ne'`. Establish `hβO : μ.withDensity β O ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hμO` to reduce the goal to its premises. Establish `hin : ∀ g, ∫⁻ r, O.indicator 1 (r * g) ∂nuP E k 0 = O.indicator 1 g * nuP E k 0 Set.univ`. Introduce `g`. Rewrite using `[← lintegral_const]`. Apply `lintegral_congr_ae` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `filter_upwards [(hN0 hk).1] with r hr`. Distinguish the cases in `hg : g ∈ O`. Simplify using `[Set.indicator_apply, hg, (hOinv r g hr).2 hg]`. Simplify using `[Set.indicator_apply, hg, mt (hOinv r g hr).1 hg]`. Establish `key` using `hQ1 (GA E k) μ (Measure.dirac 1) (nuP E k 0) {1} (fun _ => 1) β (by rw [Measure.map_dirac' measurable_inv, inv_one]) (by rw [ae_dirac_eq]; exact rfl) ⟨measurable_const, fun g => by simp⟩ hβ.1 (fun g => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [lintegral_dirac, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `(O.indicator 1) (measurable_one.indicator hOm) (by rintro h rfl g; simp)`. Establish `hw : μ.withDensity (fun _ => (1 : ℝ≥0∞)) = μ` using `withDensity_one`. Rewrite `key` using `[hw, lintegral_indicator_one hOm]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Repeatedly rewrite using `[hin]`. Rewrite using `[lintegral_mul_const _ (measurable_one.indicator hOm), lintegral_indicator_one hOm, h0, zero_mul]`. Introduce `hzero`. Establish `hFi` using `hintG ((σ : ℂ) + u * Complex.I)`.
-
-Establish `hre` using `integral_re hFi`. Rewrite `hre` using `[hzero]`. Simplify using `only [RCLike.re_to_complex, Complex.zero_re] at hre`. Establish `hpos'` using `(setIntegral_pos_iff_support_of_nonneg_ae (s := G0 S) (μ := μ.withDensity β) (f := fun g => (P g * (Dt g : ℂ) ^ ((σ : ℂ) + u * Complex.I)).re) (ae_restrict_of_forall_mem hG0m fun g hg => ?_) hFi.re).2 ?_`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Distinguish the cases in `hp : P g = 0`. Simplify using `[hp]`. Use `show 0 ≤ (P g * (Dt g : ℂ) ^ ((σ : ℂ) + u * Complex.I)).re`. Rewrite using `[LogNormEstimates.re_eq _ (hDpos g)]`. Conclude with `mul_nonneg (Real.rpow_nonneg (hDpos g).le _) (hab g hg hp).2.2`.
-
-Use `lt_of_lt_of_le (pos_iff_ne_zero.2 hβO) (measure_mono fun g hg => ⟨?_, hg.1⟩)` and prove the remaining obligations. Rewrite using `[Function.mem_support, LogNormEstimates.re_eq _ (hDpos g)]`. Conclude with `(mul_pos (Real.rpow_pos_of_pos (hDpos g) σ) hg.2).ne'`.
+A detailed English derivation is pending.
 -/
 theorem log_norm_estimate_of_Q : Q1 → D0 → N3 → C0 → D1 := by
   intro hQ1 hD0 hN3 hC0

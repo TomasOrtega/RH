@@ -86,16 +86,16 @@ def SpanStatement (E : Type) [Field E] [NumberField E] [IsCMField E] : Prop :=
     ∀ f ∈ X.SSgt (wtTop Xa) Xa.c1, InSpan Fl t f
 
 /- English proof (translation)
-Introduce `j` and use `(hf j).add (hg j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem VanOrd.add {X : Data E r} {Xa : ArchInM X} {Fl : FlatM X Xa} {a : ℕ}
     {f g : Frame X.Ψ r → ℂ} (hf : VanOrd Fl a f) (hg : VanOrd Fl a g) :
     VanOrd Fl a fun x => f x + g x := fun j => (hf j).add (hg j)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `(hf j).bound`. Establish `h` using `hC.self_of_nhds`. Establish `hz : zAt Fl j 0 = 0`. Use extensionality with `k`. Simplify using `[zAt, hs k]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [hz, norm_zero, zero_pow ha, mul_zero] at h`. Conclude with `norm_le_zero_iff.mp h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem VanOrd.eq_zero {X : Data E r} {Xa : ArchInM X} {Fl : FlatM X Xa} {a : ℕ} (ha : a ≠ 0)
     {f : Frame X.Ψ r → ℂ} (hf : VanOrd Fl a f) (j : Fin Fl.δ)

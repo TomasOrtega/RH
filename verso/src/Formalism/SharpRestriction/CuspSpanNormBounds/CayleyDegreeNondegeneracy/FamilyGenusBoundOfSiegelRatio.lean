@@ -11,13 +11,13 @@ namespace Formalism.MainNotions.BridgeLemma₂
 open NumberField Module Formalism.HermitianLatticesTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ _ h L _ hL M hlat hint huni x hx hx0` and use `exists_orthogonal_second_vector K hK V h L hL M hlat hint huni x hx hx0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem second_orthogonal_vector_holds (K : Type) [Field K] [NumberField K] [StarRing K] (hK : IsCMUnram K) : SecondOrthogonalVector K :=
   fun V _ _ _ _ h L _ hL M hlat hint huni x hx hx0 => exists_orthogonal_second_vector K hK V h L hL M hlat hint huni x hx hx0
 
 /- English proof (translation)
-Introduce `V _ _ _ _ h L hs hL s hreps B₁ B₂ hint hshort` and use `class_count_plane_bound K hK V h L hs hL s hreps B₁ B₂ hint hshort`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem plane_class_count_holds (K : Type) [Field K] [NumberField K] [StarRing K] (hK : IsCMUnram K) : PlaneClassCount K :=
   fun V _ _ _ _ h L hs hL s hreps B₁ B₂ hint hshort => class_count_plane_bound K hK V h L hs hL s hreps B₁ B₂ hint hshort
@@ -31,13 +31,13 @@ open NumberField Module Formalism.BasicNotions Formalism.MainNotions Formalism.M
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hK : Formalism.HermitianLatticesTheory.IsCMUnram D.host.E` using `D.sp.cm.cmUnram`. Establish `hfin` using `Formalism.MainNotions.StandardLattice.finrank_host D`. Establish `hrd : rootDiscriminant D.host.E = D.host.rdE` using `rfl`. Establish `h19 : 1 ≤ D.host.v`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, h19, -⟩` from `hH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h19`. Establish `hrd0 : 0 ≤ D.host.rdE`. Establish `e : 2 * D.host.v = D.host.rdE` using `by unfold Host.v; ring`. Rewrite using `[← e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `plane_mass_bound_of_facts D large₂ C' Cl Cg cb Cu cT CT C _ (short_vector_every_place D.host.E hK) (second_orthogonal_vector_holds D.host.E hK) (plane_class_count_holds D.host.E hK) ?_ ?_ hC hH` and prove the remaining obligations. Rewrite using `[hrd]`. Check the signs of the components of the expression. Rewrite using `[hrd, hfin]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_of_eq` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem plane_mass_le_height_pow (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C : ℝ)
     (hC : 55 * max 1 (1 / Cl) ≤ C ^ 2) (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) : UnitaryVolumeMass.Mass2At D large₂ C := by
@@ -56,21 +56,21 @@ theorem plane_mass_le_height_pow (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg c
   · rw [hrd, hfin]; push_cast; apply le_of_eq; ring
 
 /- English proof (translation)
-Introduce `hH` and use `plane_mass_le_height_pow D large₂ C' Cl Cg cb Cu cT CT C hC hH.1.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem plane_mass_bound_parameters (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl Cg cb Cu cT CT C0 A C : ℝ)
     (hC : 55 * max 1 (1 / Cl) ≤ C ^ 2) : UnitaryVolumeMass.stMass2 D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C :=
   fun hH => plane_mass_le_height_pow D large₂ C' Cl Cg cb Cu cT CT C hC hH.1.1
 
 /- English proof (translation)
-Introduce `hH` and use `plane_mass_le_height_pow D large₂ C' Cl Cg cb Cu cT CT C hC hH.1.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem plane_mass_bound_K2 (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 C : ℝ)
     (hC : 55 * max 1 (1 / Cl) ≤ C ^ 2) : UnitaryVolumeMass.stMass2K D large₂ C' Cl Cg cb Cu cT CT C0 C :=
   fun hH => plane_mass_le_height_pow D large₂ C' Cl Cg cb Cu cT CT C hC hH.1.1
 
 /- English proof (translation)
-Establish `h : (1 : ℝ) ≤ max 1 (1 / Cl)` using `le_max_left _ _`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem plane_mass_constant_le_sq (Cl : ℝ) : 55 * max 1 (1 / Cl) ≤ (55 * max 1 (1 / Cl)) ^ 2 := by
   have h : (1 : ℝ) ≤ max 1 (1 / Cl) := le_max_left _ _
@@ -81,32 +81,32 @@ section Family
 variable {eps : ℝ} (Fm : FamP eps)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨55 * max 1 (1 / sCl Fm), 0, fun _ _ _ u u' => plane_mass_bound_parameters _ _ u u' _ _ _ _ _ _ _ _ _ _ (plane_mass_constant_le_sq _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem family_plane_mass_admissible (Cg cb Cu cT CT C0 A : ℝ) : AuxiliaryNormPrimes.FamilyRankTwoMassBound Fm Cg cb Cu cT CT C0 A :=
   ⟨55 * max 1 (1 / sCl Fm), 0, fun _ _ _ u u' => plane_mass_bound_parameters _ _ u u' _ _ _ _ _ _ _ _ _ _ (plane_mass_constant_le_sq _)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨55 * max 1 (1 / sCl Fm), 0, fun _ _ _ u u' => plane_mass_bound_parameters _ _ u u' _ _ _ _ _ _ _ _ _ _ (plane_mass_constant_le_sq _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem family_plane_mass_admissible_alt (Cg cb Cu cT CT C0 A : ℝ) : VanishingOnXAndXPlus.FamilyRankTwoMassEstimate Fm Cg cb Cu cT CT C0 A :=
   ⟨55 * max 1 (1 / sCl Fm), 0, fun _ _ _ u u' => plane_mass_bound_parameters _ _ u u' _ _ _ _ _ _ _ _ _ _ (plane_mass_constant_le_sq _)⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _` and use `⟨55 * max 1 (1 / sCl Fm), 0, fun _ _ _ => plane_mass_bound_K2 _ _ _ _ _ _ _ _ _ _ _ (plane_mass_constant_le_sq _)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem family_plane_mass_admissible_k2 : LatticeIndexAndWeightTheory.FamilyRankTwoMassHyp Fm := fun _ _ _ _ _ _ =>
   ⟨55 * max 1 (1 / sCl Fm), 0, fun _ _ _ => plane_mass_bound_K2 _ _ _ _ _ _ _ _ _ _ _ (plane_mass_constant_le_sq _)⟩
 
 /- English proof (translation)
-The claim follows from `BridgeLemma.family_first_bound_of_mass_ratio Fm Cg cb Cu cT CT C0 A h1 (family_plane_mass_admissible Fm Cg cb Cu cT CT C0 A) hCl`.
+A detailed English derivation is pending.
 -/
 theorem family_genus_bound_of_mass_ratio (Cg cb Cu cT CT C0 A : ℝ) (h1 : VanishingOnXAndXPlusMass.familyUnitInput Fm) (hCl : 1 ≤ sCl Fm) :
     VanishingOnXAndXPlusMass.Conclusion1Family Fm Cg cb Cu cT CT C0 A :=
   BridgeLemma.family_first_bound_of_mass_ratio Fm Cg cb Cu cT CT C0 A h1 (family_plane_mass_admissible Fm Cg cb Cu cT CT C0 A) hCl
 
 /- English proof (translation)
-The claim follows from `family_genus_bound_of_mass_ratio Fm Cg cb Cu cT CT C0 A (BridgeLemma.family_lattice_count_first_of_siegel Fm hS) hCl`.
+A detailed English derivation is pending.
 -/
 theorem family_genus_bound_of_siegel_ratio (Cg cb Cu cT CT C0 A : ℝ) (hS : Formalism.HermitianLatticesTheory.SiegelMassRatio) (hCl : 1 ≤ sCl Fm) :
     VanishingOnXAndXPlusMass.Conclusion1Family Fm Cg cb Cu cT CT C0 A :=

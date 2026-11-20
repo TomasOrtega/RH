@@ -9,35 +9,31 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp)
 namespace GlobalTheory.WmodRank
 
 /- English proof (translation)
-Introduce `O _ A _ d h p`. Establish `hfr : ∀ x : Sp O, ∃ (U : (Sp O).Opens) (n : ℕ) (s : Fin n → Γ(GlobalTheory.LieVB.omega A, U)), x ∈ U ∧ GlobalTheory.VB.IsFrame s` using `fun x => by`. Take `⟨U, e, hx, he⟩` from `h x`. Conclude with `⟨U, d, e, hx, he⟩`. Use `haveI : (GlobalTheory.LieVB.omega A).IsQuasicoherent := GlobalTheory.OmegaGlobal.isQuasicoherent_of_frames hfr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨hfin, hproj⟩` from `GlobalTheory.FramesFGP.finite_projective_wmod O A hfr`. Establish `hb : Function.Bijective (GlobalTheory.LieVB.cst O)` using `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of O)).inv`. Take `⟨U, e, hx, he⟩` from `h p`. Establish `hU` using `isAffineOpen_top (Sp O)`. Take `⟨f, hf, hpf⟩` from `hU.exists_basicOpen_le (V := U) ⟨p, hx⟩ trivial`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `hb.2 f`. Establish `hrp : r ∉ p.asIdeal`. Establish `: p ∈ (Sp O).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of O)).inv r)` using `hpf`. Rewrite `this` using `[AlgebraicGeometry.basicOpen_eq_of_affine]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set F := GlobalTheory.LieVB.omega A`. Use `set f := GlobalTheory.LieVB.cst O r with hfdef`. Set `S` to `Γ(Sp O, (Sp O).basicOpen f)`. Set `M'` to `Γ(F, (Sp O).basicOpen f)`. Set `res : Γ(Sp O, ⊤) →+* S` to `((Sp O).presheaf.map (homOfLE ((Sp O).basicOpen_le f)).op).hom`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `letI : Algebra O S := (res.comp (GlobalTheory.LieVB.cst O)).toAlgebra`. Use `letI : Module O M' := Module.compHom M' (algebraMap O S)`. Use `haveI : IsScalarTower O S M' := .of_algebraMap_smul fun _ _ => rfl`. Set `l : GlobalTheory.SqZeroPt.Wmod A →ₗ[O] M'` to `{ toFun := GlobalTheory.QCoh.resBasicOpen F f map_add' := map_add _ map_smul' := fun c w => (GlobalTheory.QCoh.resBasicOpen F f).map_smul (GlobalTheory.LieVB.cst O c) w }`. Use `haveI hL := GlobalTheory.QCoh.isLocalizedModule_resBasicOpen F hU f`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI hS := hU.isLocalization_basicOpen f`. Establish `hSO : IsLocalization (Submonoid.powers r) S`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, n, rfl⟩`. Use `IsLocalization.map_units S (⟨f ^ n, n, rfl⟩ : Submonoid.powers f)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[RingHom.algebraMap_toAlgebra, hfdef, map_pow]`. Introduce `z`. Take `⟨⟨a, ⟨s, n, rfl⟩⟩, hz⟩` from `IsLocalization.surj (Submonoid.powers f) z`. Take `⟨a', rfl⟩` from `hb.2 a`. Use `⟨⟨a', ⟨r ^ n, n, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hz` using `[RingHom.algebraMap_toAlgebra, hfdef, map_pow]`. Introduce `x y hxy`. Establish `hxy' : algebraMap Γ(Sp O, ⊤) S (GlobalTheory.LieVB.cst O x) = algebraMap Γ(Sp O, ⊤) S (GlobalTheory.LieVB.cst O y)` using `hxy`. Take `⟨⟨c, n, rfl⟩, hc⟩` from `IsLocalization.exists_of_eq (M := Submonoid.powers f) hxy'`. Use `⟨⟨r ^ n, n, rfl⟩, hb.1 ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `hc` using `[hfdef, map_pow]`. Establish `hLO : IsLocalizedModule (Submonoid.powers r) l`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, n, rfl⟩`. Use `IsLocalizedModule.map_units (GlobalTheory.QCoh.resBasicOpen F f) (⟨f ^ n, n, rfl⟩ : Submonoid.powers f)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this`, the goal using `[Module.End.isUnit_iff]`. Establish `hfun : ⇑(algebraMap O (Module.End O M') (r ^ n)) = ⇑(algebraMap Γ(Sp O, ⊤) (Module.End Γ(Sp O, ⊤) M') (f ^ n))`. Use function extensionality and compare the values at `m`. Simplify using `only [Module.algebraMap_end_apply]`. Use `show res (GlobalTheory.LieVB.cst O (r ^ n)) • m = res (f ^ n) • m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_pow]`. Simplify `this` using `only [hfun]`. Introduce `z`. Take `⟨⟨a, ⟨s, n, rfl⟩⟩, hz⟩` from `IsLocalizedModule.surj (Submonoid.powers f) (GlobalTheory.QCoh.resBasicOpen F f) z`. Use `⟨⟨a, ⟨r ^ n, n, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show res (GlobalTheory.LieVB.cst O (r ^ n)) • z = GlobalTheory.QCoh.resBasicOpen F f a`. Rewrite using `[map_pow]`. Conclude with `hz`. Introduce `x y hxy`. Take `⟨⟨c, n, rfl⟩, hc⟩` from `IsLocalizedModule.exists_of_eq (S := Submonoid.powers f) (f := GlobalTheory.QCoh.resBasicOpen F f) hxy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨⟨r ^ n, n, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hc' : f ^ n • (show Γ(F, ⊤) from x) = f ^ n • (show Γ(F, ⊤) from y)` using `hc`. Rewrite `hc'` using `[hfdef, ← map_pow]`. Conclude with `hc'`. Establish `hbc : IsBaseChange S l` using `(isLocalizedModule_iff_isBaseChange (Submonoid.powers r) S l).1 hLO`.
-
-Establish `hq : p ∈ Set.range (PrimeSpectrum.comap (algebraMap O S))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range S r]`. Conclude with `hrp`. Take `⟨q, rfl⟩` from `hq`. Set `bas : Module.Basis (Fin d) S M'` to `he.basis hf`.
-
-Use `haveI := Module.Free.of_basis bas`. Use `haveI : Nontrivial S := q.nontrivial`. Rewrite using `[← Module.rankAtStalk_isBaseChange hbc q, Module.rankAtStalk_eq_finrank_of_free]`. Express the relevant statement in the definitionally equal form `Module.finrank S M' = d`. Rewrite using `[Module.finrank_eq_card_basis bas, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankAtStalk_wmod : ∀ (O : Type) [CommRing O] (A : Over (Sp O)) [GrpObj A] (d : ℕ),
     GlobalTheory.VB.IsVB (GlobalTheory.LieVB.omega A) d → ∀ p : PrimeSpectrum O,

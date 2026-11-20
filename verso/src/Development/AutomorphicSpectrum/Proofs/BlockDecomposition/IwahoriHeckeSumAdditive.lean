@@ -20,11 +20,11 @@ section Abstract
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Establish `h1' : i⁻¹ * z ∈ dc I t`. Take `⟨x, hx, y, hy, rfl⟩` from `h1`. Conclude with `⟨i⁻¹ * x, mul_mem (inv_mem hi) hx, y, hy, by group⟩`. Establish `h2' : (i⁻¹ * z)⁻¹ * (t * t') ∈ dc I t'`. Take `⟨x, hx, y, hy, e⟩` from `h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨x, hx, y * i'⁻¹, mul_mem hy (inv_mem hi'), ?_⟩` and prove the remaining obligations. Establish `: (i⁻¹ * z)⁻¹ * (t * t') = z⁻¹ * (i * (t * t') * i') * i'⁻¹` using `by group`. Rewrite using `[this, e]`. Use `group`. Use `inv_mul_mem_of_dc hf hc h1' h2'` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (i * t)⁻¹ * z = t⁻¹ * (i⁻¹ * z)` using `by group`. Rewrite using `[e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fibre_coset {I : Subgroup G} {t t' : G}
     (hf : ∀ g ∈ I, ∃ a ∈ I, ∃ b ∈ I, g = a * b ∧ t * a * t⁻¹ ∈ I ∧ t'⁻¹ * b * t' ∈ I)
@@ -44,17 +44,15 @@ theorem fibre_coset {I : Subgroup G} {t t' : G}
   rwa [e]
 
 /- English proof (translation)
-Distinguish the cases in `hm : m ∈ dc I (t * t')`. Rewrite using `[(he'' m).1 hm]`. Take `⟨i, hi, i', hi', rfl⟩` from `hm`. Rewrite using `[finsum_eq_single _ (((i * t : G)) : G ⧸ I)]`. Establish `hz : (i * t)⁻¹ * (((i * t : G)) : G ⧸ I).out ∈ I` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' _).symm`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨z, hzd⟩ : ∃ z, z = (((i * t : G)) : G ⧸ I).out` from `⟨_, rfl⟩`. Rewrite `hz`, the goal using `[← hzd]`. Establish `h1 : z ∈ dc I t` using `⟨i, hi, _, hz, by group⟩`. Establish `h2 : z⁻¹ * (i * (t * t') * i') ∈ dc I t'` using `⟨((i * t)⁻¹ * z)⁻¹, inv_mem hz, i', hi', by group⟩`. Rewrite using `[(he _).1 h1, (he' _).1 h2, one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Distinguish the cases in `h1 : q.out ∈ dc I t`. Distinguish the cases in `h2 : q.out⁻¹ * (i * (t * t') * i') ∈ dc I t'`. It suffices to derive a contradiction. Apply `hq` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `(QuotientGroup.eq.2 (fibre_coset hf hc hi hi' h1 h2)).symm`. Rewrite using `[(he' _).2 h2, mul_zero]`. Rewrite using `[(he _).2 h1, zero_mul]`. Rewrite using `[(he'' m).2 hm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_eq_zero_of_forall_eq_zero fun q => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : q.out ∈ dc I t`. Distinguish the cases in `h2 : q.out⁻¹ * m ∈ dc I t'`. Conclude with `absurd (mem_dc_mul hf h1 h2) hm`. Rewrite using `[(he' _).2 h2, mul_zero]`.
-
-Rewrite using `[(he _).2 h1, zero_mul]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_dc {I : Subgroup G} {t t' : G}
     (hf : ∀ g ∈ I, ∃ a ∈ I, ∃ b ∈ I, g = a * b ∧ t * a * t⁻¹ ∈ I ∧ t'⁻¹ * b * t' ∈ I)
@@ -99,9 +97,9 @@ section Local
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `e` using `ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Establish `h1 : Valued.v (ϖ : w.adicCompletion E) < 1` using `GlobalTheory.CompanionTheory.IwahoriContraction.v_lt_one_of_ordL_eq_one w ϖ.ne_zero hϖ`. Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective (ValuativeRel.uniformizer (w.adicCompletion E))`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ValuativeRel.le_uniformizer_iff]`. Conclude with `e.lt_one_iff_lt_one.2 h1`. Rewrite using `[← hy]`. Establish `h2 : Valued.v y < 1` using `e.lt_one_iff_lt_one.1 (hy ▸ ValuativeRel.uniformizer_lt_one)`. Conclude with `(e _ _).2 (GlobalTheory.CompanionTheory.IwahoriContraction.v_le_of_ordL_eq_one w ϖ.ne_zero hϖ h2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_unif {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : ordL (ϖ : w.adicCompletion E) = 1) :
     ValuativeRel.valuation (w.adicCompletion E) (ϖ : w.adicCompletion E) =
@@ -121,13 +119,13 @@ theorem val_unif {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : ordL (ϖ : w.ad
     exact (e _ _).2 (GlobalTheory.CompanionTheory.IwahoriContraction.v_le_of_ordL_eq_one w ϖ.ne_zero hϖ h2)
 
 /- English proof (translation)
-Introduce `g hg`. Establish `c1` using `GlobalTheory.IwahoriTraceProof.dominantContracts (k := w.adicCompletion E) (n := Fin n) ϖ (val_unif hϖ) x hx`. Establish `c2` using `GlobalTheory.IwahoriTraceProof.dominantContracts (k := w.adicCompletion E) (n := Fin n) ϖ (val_unif hϖ) x' hx'`. Take `⟨u, hu, d, hd, c, hc, rfl⟩` from `GlobalTheory.IwahoriTraceProof.iwahori_factorisation hg`. Establish `hdI` using `GlobalTheory.SmGL.diagT_mem_iwahori hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `huI` using `(GlobalTheory.IwahoriTraceProof.mem_unipO_iff hu.1).2 hu`. Establish `hcI` using `GlobalTheory.SmGL.KOne_le_iwahori _ _ hc.2`. Use `⟨_, mul_mem huI hdI, c, hcI, rfl, ?_, GlobalTheory.SmGL.KOne_le_iwahori _ _ (c2.2 c hc).2⟩` and prove the remaining obligations. Establish `hcomm : tdiag ϖ x * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) d * (tdiag ϖ x)⁻¹ = GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) d`. Unfold `tdiag`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← map_mul, mul_comm, map_mul]`. Use `group`. Establish `h1` using `c1.1 u hu`. Establish `h1I` using `(GlobalTheory.IwahoriTraceProof.mem_unipO_iff h1.1).2 h1`. Establish `e : tdiag ϖ x * (u * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) d) * (tdiag ϖ x)⁻¹ = (tdiag ϖ x * u * (tdiag ϖ x)⁻¹) * (tdiag ϖ x * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) d * (tdiag ϖ x)⁻¹)` using `by group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hcomm]`. Conclude with `mul_mem h1I hdI`.
+A detailed English derivation is pending.
 -/
 theorem iw_fact {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : ordL (ϖ : w.adicCompletion E) = 1) {n : ℕ}
     {x x' : Fin n → ℤ} (hx : Antitone x) (hx' : Antitone x') :
@@ -155,7 +153,7 @@ theorem iw_fact {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : ordL (ϖ : w.adi
   exact mul_mem h1I hdI
 
 /- English proof (translation)
-Establish `h1 : Valued.v (ϖ : w.adicCompletion E) < 1` using `GlobalTheory.CompanionTheory.IwahoriContraction.v_lt_one_of_ordL_eq_one w ϖ.ne_zero hϖ`. Establish `h0 : 0 < Valued.v (ϖ : w.adicCompletion E)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ϖ.ne_zero)`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀]`. Conclude with `zpow_le_one₀ h0 h1.le hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_zpow_le_one {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : ordL (ϖ : w.adicCompletion E) = 1) {k : ℤ}
     (hk : 0 ≤ k) : Valued.v ((ϖ ^ k : (w.adicCompletion E)ˣ) : w.adicCompletion E) ≤ 1 := by
@@ -167,11 +165,11 @@ theorem v_zpow_le_one {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : ordL (ϖ :
   exact zpow_le_one₀ h0 h1.le hk
 
 /- English proof (translation)
-Rewrite using `[conj_entry]`. Break down `le_total i j with h | h` into its components or cases. Establish `a1` using `hx' h`. Establish `e : ((ϖ ^ (x j - x i) : (w.adicCompletion E)ˣ) : w.adicCompletion E) * g.val i j = ((ϖ ^ (x' i - x' j) : (w.adicCompletion E)ˣ) : w.adicCompletion E) * (((tdiag ϖ (x + x'))⁻¹ * g * tdiag ϖ (x + x')).val i j)`. Rewrite using `[conj_entry, ← mul_assoc, ← Units.val_mul, ← _root_.zpow_add]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_mul]`. Conclude with `mul_le_one' (v_zpow_le_one hϖ (by omega)) (h2 i j)`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1` using `hx h`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (v_zpow_le_one hϖ (by omega)) (h1 i j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_entries {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : ordL (ϖ : w.adicCompletion E) = 1) {n : ℕ}
     {x x' : Fin n → ℤ} (hx : Antitone x) (hx' : Antitone x') {g : GLw n w}
@@ -195,11 +193,9 @@ theorem int_entries {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : ordL (ϖ : w
     exact mul_le_one' (v_zpow_le_one hϖ (by omega)) (h1 i j)
 
 /- English proof (translation)
-Introduce `g hg hg'`. Rewrite `hg'` using `[← tdiag_add]`. Take `⟨h1, h2, h3⟩` from `(GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n g).1.1 hg`. Take `⟨p1, p2, -⟩` from `(GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n _).1.1 hg'`. Establish `e : ∀ t : GLw n w, (t⁻¹ * g * t)⁻¹ = t⁻¹ * g⁻¹ * t` using `fun t => by group`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n _).1.2 ⟨int_entries hϖ hx hx' h1 p1, ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `int_entries hϖ hx hx' h2 (by rw [← e]; exact p2)`. Rewrite using `[conj_entry, map_mul]`. Establish `a1` using `hx hij.le`.
-
-Conclude with `(mul_le_of_le_one_left' (v_zpow_le_one hϖ (by omega))).trans_lt (h3 i j hij)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iw_chain {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : ordL (ϖ : w.adicCompletion E) = 1) {n : ℕ}
     {x x' : Fin n → ℤ} (hx : Antitone x) (hx' : Antitone x') :
@@ -219,18 +215,18 @@ theorem iw_chain {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : ordL (ϖ : w.ad
     exact (mul_le_of_le_one_left' (v_zpow_le_one hϖ (by omega))).trans_lt (h3 i j hij)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => if_pos h, fun h => if_neg h⟩`.
+Supply the required witnesses or components.
 -/
 theorem dcos_mem (n : ℕ) (w : Pl E) (t y : GLw n w) :
     (y ∈ dc (iwGL n w) t → dcos n w t y = 1) ∧ (y ∉ dc (iwGL n w) t → dcos n w t y = 0) :=
   ⟨fun h => if_pos h, fun h => if_neg h⟩
 
 /- English proof (translation)
-Use `⟨GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin n), GlobalTheory.SmGL.IwahoriOnto.isCompact_iwahori (w.adicCompletion E) (Fin n), HasCompactSupport.of_support_subset_isCompact (GlobalTheory.CompanionTheory.IwFacts.isCompact_support_dcos w n t) fun g hg => …` and prove the remaining obligations. Distinguish the cases in `h : g ∈ dc (iwGL n w) t`. Establish `h' : k₁ * g * k₂ ∈ dc (iwGL n w) t`. Take `⟨x, hx, z, hz, rfl⟩` from `h`. Conclude with `⟨k₁ * x, mul_mem h₁ hx, z * k₂, mul_mem hz h₂, by group⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[(dcos_mem n w t _).1 h, (dcos_mem n w t _).1 h']`. Establish `h' : k₁ * g * k₂ ∉ dc (iwGL n w) t`. Introduce and unpack `⟨x, hx, z, hz, e⟩`. Use `h ⟨k₁⁻¹ * x, mul_mem (inv_mem h₁) hx, z * k₂⁻¹, mul_mem hz (inv_mem h₂), ?_⟩` and prove the remaining obligations. Establish `: g = k₁⁻¹ * (k₁ * g * k₂) * k₂⁻¹` using `by group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, e]`. Use `group`. Rewrite using `[(dcos_mem n w t _).2 h, (dcos_mem n w t _).2 h']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHk_dcos (n : ℕ) (w : Pl E) (t : GLw n w) : IsHk (iwGL n w) (dcos n w t) := by
   refine ⟨GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin n),
@@ -250,11 +246,9 @@ theorem isHk_dcos (n : ℕ) (w : Pl E) (t : GLw n w) : IsHk (iwGL n w) (dcos n w
     rw [(dcos_mem n w t _).2 h, (dcos_mem n w t _).2 h']
 
 /- English proof (translation)
-Introduce `E _ _ _ w a ϖ hϖ x x' hx hx' V _ _ π v hv`. Take `⟨-, -, h⟩` from `GlobalTheory.CompanionTheory.HeckeAlg.hk_alg (w.adicCompletion E) (Fin a) (iwGL a w) (dcos a w (tdiag ϖ x)) (dcos a w (tdiag ϖ x')) (isHk_dcos a w _) (isHk_dcos a w _)`. Take `⟨-, hm, -⟩` from `h V π v (by show ∀ k : iwGL a w, π (k : GLw a w) v = (((1 : iwGL a w →* ℂˣ) k : ℂˣ) : ℂ) • v`. Introduce `k`. Simplify using `using hv k k.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : hconv (iwGL a w) (dcos a w (tdiag ϖ x)) (dcos a w (tdiag ϖ x')) = dcos a w (tdiag ϖ (x + x'))`. Use function extensionality and compare the values at `g`. Rewrite using `[tdiag_add]`. Conclude with `conv_dc (iw_fact hϖ hx hx') (iw_chain hϖ hx hx') (dcos_mem a w _) (dcos_mem a w _) (dcos_mem a w _) g`. Rewrite `hm` using `[hc]`.
-
-Conclude with `hm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (a : ℕ) (ϖ : (w.adicCompletion E)ˣ), ordL (ϖ : w.adicCompletion E) = 1 → ∀ (x x' : Fin a → ℤ), Antitone x → Antitone x' → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GLw a w) V) (v : V), (∀ k ∈ iwGL a w, π k v = v) → ∑ᶠ q : GLw a w ⧸ iwGL a w, dcos a w (tdiag ϖ (x + x')) q.out • π q.out v = ∑ᶠ q : GLw a w ⧸ iwGL a w, dcos a w (tdiag ϖ x) q.out • π q.out (∑ᶠ q' : GLw a w ⧸ iwGL a w, dcos a w (tdiag ϖ x') q'.out • π q'.out v) := by
   intro E _ _ _ w a ϖ hϖ x x' hx hx' V _ _ π v hv

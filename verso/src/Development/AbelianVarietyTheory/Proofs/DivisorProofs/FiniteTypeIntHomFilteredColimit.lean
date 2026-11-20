@@ -4,19 +4,17 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A hA J _ _ D c hc`. Set `R : CommRingCat.{0}` to `CommRingCat.of ℤ`. Set `f : R ⟶ A` to `CommRingCat.ofHom (Int.castRingHom A)`. Set `α : (Functor.const J).obj R ⟶ D` to `{ app := fun i => CommRingCat.ofHom (Int.castRingHom (D.obj i)) naturality := by`. Introduce `i j g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ext1`. Conclude with `RingHom.ext_int _ _ }`. Establish `hfp : f.hom.FinitePresentation`. Establish `h1 : Algebra.FinitePresentation ℤ A` using `Algebra.FinitePresentation.of_finiteType.mp hA`. Establish `e : f.hom.toAlgebra = (inferInstance : Algebra ℤ A)` using `Subsingleton.elim _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `RingHom.FinitePresentation`. Rewrite using `[e]`. Conclude with `h1`. Establish `hft : f.hom.FiniteType`. Establish `e : f.hom.toAlgebra = (inferInstance : Algebra ℤ A)` using `Subsingleton.elim _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `RingHom.FiniteType`. Rewrite using `[e]`. Conclude with `hA`. Establish `hR : ∀ {X : CommRingCat.{0}} (u v : R ⟶ X), u = v`. Introduce `X u v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `ext1`. Conclude with `RingHom.ext_int _ _`. Use `⟨fun φ => ?_, fun j ψ ψ' h => ?_⟩` and prove the remaining obligations. Take `⟨i, g', -, hg'⟩` from `RingHom.EssFiniteType.exists_eq_comp_ι_app_of_isColimit R D α f c hc hfp φ (fun i => hR _ _)`. Conclude with `⟨i, g', hg'.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hik, hjk, e⟩` from `RingHom.EssFiniteType.exists_comp_map_eq_of_isColimit R D α f c hc hft.essFiniteType ψ (hR _ _) ψ' (hR _ _) h`. Use `⟨IsFiltered.coeq hik hjk, hik ≫ IsFiltered.coeqHom hik hjk, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[D.map_comp, Category.assoc]`. Use `_ = (ψ' ≫ D.map hjk) ≫ D.map (IsFiltered.coeqHom hik hjk) := by rw [e]`.
-
-Use `_ = ψ' ≫ D.map (hjk ≫ IsFiltered.coeqHom hik hjk) := by`. Rewrite using `[D.map_comp, Category.assoc]`. Use `_ = ψ' ≫ D.map (hik ≫ IsFiltered.coeqHom hik hjk) := by`. Rewrite using `[IsFiltered.coeq_condition]`.
+A detailed English derivation is pending.
 -/
 theorem finiteType_int_hom_filteredColimit :
     ∀ (A : CommRingCat.{0}), Algebra.FiniteType ℤ A → ∀ (J : Type) [SmallCategory J] [IsFiltered J]

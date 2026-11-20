@@ -17,9 +17,9 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory.IsoExt
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `GlobalTheory.FrameFibre.exists_matrix φ hφ hspan (φ' ∘ₗ gam.toLinearMap)`. Take `⟨B, hB⟩` from `GlobalTheory.FrameFibre.exists_matrix φ' hφ' hspan' (φ ∘ₗ gam.symm.toLinearMap)`. Establish `hA' : ∀ v, A *ᵥ φ v = φ' (gam v)` using `hA`. Establish `hB' : ∀ v, B *ᵥ φ' v = φ (gam.symm v)` using `hB`. Establish `hAB : A * B = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext_on_range hspan' fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, hB', hA', Matrix.one_mulVec, LinearEquiv.apply_symm_apply]`. Conclude with `⟨⟨A, B, hAB, mul_eq_one_comm.1 hAB⟩, hA'⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_gl_of_equiv {E : Type} [Field E] [NumberField E] {r : ℕ} {L L' : Type}
     [AddCommGroup L] [Module (𝓞 E) L] [AddCommGroup L'] [Module (𝓞 E) L']
@@ -40,15 +40,13 @@ theorem exists_gl_of_equiv {E : Type} [Field E] [NumberField E] {r : ℕ} {L L' 
   exact ⟨⟨A, B, hAB, mul_eq_one_comm.1 hAB⟩, hA'⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D D' r ξ Gm φ φ' gam _ hl hl' hiso`. Take `⟨γ, hγ⟩` from `exists_gl_of_equiv φ φ' hl.1 hl.2.1 hl'.1 hl'.2.1 gam`. Use `⟨γ, ?_, fun a => (hγ a).symm⟩` and prove the remaining obligations. Distinguish the cases in `hξ : ξ = 0`. Establish `h0 : ∀ x : D.La, x = 0` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Apply `D.unimod.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Establish `h` using `hl.2.2.2.2 x y`. Rewrite `h` using `[hξ, zero_mul, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h` after adjusting the coercions. Establish `h1 : ∀ u : Fin r → E, u = 0` using `fun u => by`. Establish `hu : u ∈ Submodule.span E (Set.range φ)` using `by rw [hl.2.1]; trivial`. Establish `hle : Submodule.span E (Set.range φ) ≤ ⊥` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0 x, map_zero]`. Conclude with `Submodule.zero_mem _)`. Conclude with `hle hu`. Introduce `u v`. Rewrite using `[h1 ((γ : Matrix (Fin r) (Fin r) E) *ᵥ u), h1 ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v), h1 u, h1 v]`.
-
-Conclude with `GlobalTheory.FrameFibre.herm_of_trace φ hl.2.1 Gm γ ξ hξ fun v w => by`. Rewrite using `[hγ, hγ, ← hl.2.2.2.2, ← hl'.2.2.2.2, hiso]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_of_isometry : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D D' : Datum H) (r : ℕ) (ξ : E) (Gm : Matrix (Fin r) (Fin r) E) (φ : D.La →ₗ[𝓞 E] (Fin r → E)) (φ' : D'.La →ₗ[𝓞 E] (Fin r → E)) (gam : D.La ≃ₗ[𝓞 E] D'.La), cc ξ = -ξ → (Function.Injective φ ∧ Submodule.span E (Set.range φ) = ⊤ ∧ (∀ a b, cc (Gm a b) = Gm b a) ∧ Gm.det ≠ 0 ∧ ∀ x y, ((D.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (ξ * herm Gm (φ x) (φ y))) → (Function.Injective φ' ∧ Submodule.span E (Set.range φ') = ⊤ ∧ (∀ a b, cc (Gm a b) = Gm b a) ∧ Gm.det ≠ 0 ∧ ∀ x y, ((D'.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (ξ * herm Gm (φ' x) (φ' y))) → (∀ a b, D'.EF (gam a) (gam b) = D.EF a b) → ∃ γ : GL (Fin r) E, (∀ u v, herm Gm ((γ : Matrix (Fin r) (Fin r) E) *ᵥ u) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v) = herm Gm u v) ∧ ∀ a, φ' (gam a) = (γ : Matrix (Fin r) (Fin r) E) *ᵥ φ a := by
   intro E _ _ _ H D D' r ξ Gm φ φ' gam _ hl hl' hiso

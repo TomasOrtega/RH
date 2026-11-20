@@ -14,27 +14,25 @@ private theorem res_zsmul {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}}
   simp
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.etaleSheafSections_ext_and_glue R F W).1 a b (GlobalTheory.T.etaleLocal_property_calculus_rules.2.2.2.2.2.2 W _)`.
+A detailed English derivation is pending.
 -/
 private theorem sec_eq_of_isEmpty {R : Type} [CommRing R] {F : Shv R} (W : Scheme.{0}) [IsEmpty W] (a b : Sec F W) : a = b :=
   (GlobalTheory.T.etaleSheafSections_ext_and_glue R F W).1 a b (GlobalTheory.T.etaleLocal_property_calculus_rules.2.2.2.2.2.2 W _)
 
 /- English proof (translation)
-Introduce `q _ i U ζ φ hφ`. Set `V : ℤ → U.Opens` to `fun n => ⟨{x | φ x = n}, hφ.isOpen_fiber n⟩`. Establish `hmem : ∀ (n : ℤ) (v : (V n : Scheme)), φ ((V n).ι v) = n`. Introduce `n v`. Establish `h1 : (V n).ι v ∈ Set.range (V n).ι` using `⟨v, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[Scheme.Opens.range_ι]`. Conclude with `h1`. Establish `hcov : ∀ u : U, ∃ n, ∃ v, (V n).ι v = u`. Introduce `u`. Use `⟨φ u, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : u ∈ Set.range (V (φ u)).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `rfl`. Conclude with `h1`. Take `⟨y, hy⟩` from `(GlobalTheory.T.etaleSheafSections_sep_glue_of_surjective_family (ZMod q) (tw q i) U ℤ (fun n => (V n : Scheme)) (fun n => (V n).ι) (fun n => inferInstance) hcov).2 (fun n => n • Sec.res (V n).ι (twGen i ζ)) (by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `n m`. Distinguish the cases in `h : n = m`. Substitute `h` using the available equality. Rewrite using `[res_zsmul, res_zsmul, res_res, res_res, pullback.condition]`. Use `haveI : IsEmpty ↥(pullback (V n).ι (V m).ι) := by`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun p => h ?_⟩` and prove the remaining obligations. Establish `e1` using `hmem n (pullback.fst (V n).ι (V m).ι p)`. Establish `e2` using `hmem m (pullback.snd (V n).ι (V m).ι p)`. Establish `hc : (V n).ι (pullback.fst (V n).ι (V m).ι p) = (V m).ι (pullback.snd (V n).ι (V m).ι p)` using `congrArg (fun f : pullback (V n).ι (V m).ι ⟶ U => f p) pullback.condition`. Rewrite `e1` using `[hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `e1.symm.trans e2`. Conclude with `sec_eq_of_isEmpty _ _ _)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ x`. Establish `hr : Set.range x ⊆ Set.range (V (φ (pt x))).ι`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨s, rfl⟩`. Use `show φ (x s) = φ (pt x)`. Rewrite using `[pt_eq]`. Take `⟨k, hk⟩ : ∃ k, k ≫ (V (φ (pt x))).ι = x` from `⟨_, IsOpenImmersion.lift_fac _ _ hr⟩`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← res_res, hy]`. Use `_ = φ (pt x) • Sec.res x (twGen i ζ) := by rw [res_zsmul, res_res, hk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.funSec_of :
     FunSec := by

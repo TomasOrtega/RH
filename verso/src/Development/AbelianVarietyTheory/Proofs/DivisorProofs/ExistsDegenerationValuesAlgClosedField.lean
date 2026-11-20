@@ -15,7 +15,7 @@ open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 namespace GlobalTheory.MumValues
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D F _ _ _`. Use `haveI : IsNoetherianRing R := hR.1.1`. Take `⟨N, ν, -⟩` from `GlobalTheory.ValuesExist.exists_integral_values GlobalTheory.allSixLaws.1 R D.toPre D.psi_even D.tau_bimult F ⊤ (fun _ => trivial)`. Conclude with `⟨N, ⟨ν⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_values : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F], ∃ N : NumD F, Nonempty (NumOf D.toPre F N) := by
   intro R _ _ _ hR D F _ _ _

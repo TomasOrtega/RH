@@ -13,24 +13,24 @@ open CategoryTheory AlgebraicGeometry DividedPowers GroundTheory.PAdicHodge Glob
 namespace GlobalTheory.CompanionTheory.TestZar
 
 /- English proof (translation)
-The claim follows from `h.mul_left_cancel (by rw [mul_one]; exact hu)`.
+A detailed English derivation is pending.
 -/
 theorem idem_unit {R : Type} [CommRing R] {u : R} (hu : IsIdempotentElem u) (h : IsUnit u) : u = 1 :=
   h.mul_left_cancel (by rw [mul_one]; exact hu)
 
 /- English proof (translation)
-The claim follows from `idem_unit ((hb i).map g) (isUnit_of_dvd_unit (map_dvd g (Finset.dvd_prod_of_mem b hi)) (h ▸ isUnit_one))`.
+A detailed English derivation is pending.
 -/
 theorem factor_one {R R' ι : Type} [CommRing R] [CommRing R'] (g : R →+* R') (b : ι → R) (hb : ∀ i, IsIdempotentElem (b i))
     (S : Finset ι) (h : g (∏ i ∈ S, b i) = 1) {i : ι} (hi : i ∈ S) : g (b i) = 1 :=
   idem_unit ((hb i).map g) (isUnit_of_dvd_unit (map_dvd g (Finset.dvd_prod_of_mem b hi)) (h ▸ isUnit_one))
 
 /- English proof (translation)
-Establish `h1 : Ideal.map (Ideal.Quotient.mk I) (Ideal.span (Set.range g)) = ⊤`. Establish `e1 : (Ideal.Quotient.mk I) ∘ g = π ∘ e` using `funext fun i => (h i).symm`. Rewrite using `[Ideal.map_span, ← Set.range_comp, e1, Set.range_comp, ← Ideal.map_span, he, Ideal.map_top]`. Establish `h2 : (1 : R ⧸ I) ∈ Ideal.map (Ideal.Quotient.mk I) (Ideal.span (Set.range g))`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨a, ha, ha1⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 h2`. Establish `hj : a - 1 ∈ I` using `Ideal.Quotient.eq.1 (by rw [ha1, map_one])`. Establish `hu : IsUnit a`. Use `(hI _ hj).isUnit_add_one` as an intermediate fact.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `Ideal.eq_top_of_isUnit_mem _ ha hu`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem span_of_nil {R P ι : Type} [CommRing R] [CommRing P] (I : Ideal R) (hI : ∀ x ∈ I, IsNilpotent x) (g : ι → R)
     (π : P →+* R ⧸ I) (e : ι → P) (he : Ideal.span (Set.range e) = ⊤)
@@ -96,7 +96,7 @@ end Gen
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hA` using `(GlobalTheory.T.period_ring_base_change_from_universal A n).2.2.2.2.1 k r`. Establish `hB` using `(GlobalTheory.T.period_ring_base_change_from_universal B n).2.2.2.2.1 k r`. Establish `e : (mapAcr lam n).comp (mapAcr A.fromBase n) = mapAcr B.fromBase n` using `RingHom.ext fun x => mapAcr_fromBase lam n x`. Rewrite `hy` using `[hB, ← e, ← Ideal.map_map, ← hA]`. Conclude with `(Ideal.mem_map_iff_of_surjective _ hs).1 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_onto {A B : PAlg l} (lam : A ⟶ B) (k : Bool) (n r : ℕ) (hs : Function.Surjective (mapAcr lam n))
     {y : B.Acr n} (hy : y ∈ fil (DD k B n) r) : ∃ x ∈ fil (DD k A n) r, mapAcr lam n x = y := by
@@ -108,7 +108,7 @@ theorem step_onto {A B : PAlg l} (lam : A ⟶ B) (k : Bool) (n r : ℕ) (hs : Fu
   exact (Ideal.mem_map_iff_of_surjective _ hs).1 hy
 
 /- English proof (translation)
-Take `⟨⟨π, hπ, -⟩, -, -, -, -, hnil, -⟩` from `GlobalTheory.T.period_ring_base_change_from_universal A n`. Conclude with `span_of_nil (A.PFil n) (fun x hx => (hnil x hx).1) _ π e he fun i => hπ _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem span_acr (A : PAlg l) (n : ℕ) {m : ℕ} (e : Fin m → A.A) (he : Ideal.span (Set.range e) = ⊤) :
     Ideal.span (Set.range fun i => A.toAcr n (WittVector.teichmuller l (e i))) = ⊤ := by
@@ -116,14 +116,14 @@ theorem span_acr (A : PAlg l) (n : ℕ) {m : ℕ} (e : Fin m → A.A) (he : Idea
   exact span_of_nil (A.PFil n) (fun x hx => (hnil x hx).1) _ π e he fun i => hπ _
 
 /- English proof (translation)
-Rewrite using `[mapAcr_toAcr, mapW, WittVector.map_teichmuller, h, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem acr_teich_one {A B : PAlg l} (f : A ⟶ B) (n : ℕ) {a : A.A} (h : Hom.f f a = 1) :
     mapAcr f n (A.toAcr n (WittVector.teichmuller l a)) = 1 := by
   rw [mapAcr_toAcr, mapW, WittVector.map_teichmuller, h, map_one, map_one]
 
 /- English proof (translation)
-Rewrite using `[map_prod, map_prod]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem acr_teich_prod (A : PAlg l) (n : ℕ) {ι : Type} (S : Finset ι) (a : ι → A.A) :
     A.toAcr n (WittVector.teichmuller l (∏ i ∈ S, a i)) = ∏ i ∈ S, A.toAcr n (WittVector.teichmuller l (a i)) := by
@@ -146,7 +146,7 @@ theorem facHom_hom (T' : El (F.pt κ)) (A' : PAlg l) (lam : T'.1.obj ⟶ A') (h 
     (facHom F κ T' A' lam h).1.hom = lam := rfl
 
 /- English proof (translation)
-Take `⟨χ, hχ, huniq⟩` from `hu`. Use `⟨⟨ObjectProperty.homMk χ, ?_⟩, Subtype.ext (ObjectProperty.hom_ext _ hχ), fun χ' h' => Subtype.ext (ObjectProperty.hom_ext _ (huniq χ'.1.hom (congrArg (fun z => z.1.hom) h')))⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(F.pt κ).map χ ((F.pt κ).map lam T'.2) = T''.2`. Rewrite using `[← Functor.map_comp_apply, hχ]`. Conclude with `ψ.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fac_univ (T' : El (F.pt κ)) (A' : PAlg l) (lam : T'.1.obj ⟶ A') (h : A'.IsTest) (T'' : El (F.pt κ)) (ψ : T' ⟶ T'')
     (hu : ∃! χ : A' ⟶ T''.1.obj, lam ≫ χ = ψ.1.hom) :
@@ -159,9 +159,9 @@ theorem fac_univ (T' : El (F.pt κ)) (A' : PAlg l) (lam : T'.1.obj ⟶ A') (h : 
   exact ψ.2
 
 /- English proof (translation)
-Establish `hf : Ideal.span (Set.range fun i => T'.1.obj.toAcr n (WittVector.teichmuller l (b i))) = ⊤` using `span_acr _ n b hspan`. Establish `hk' : ∀ S x, mapAcr (lam S) n x = 0 → (∏ i ∈ S, T'.1.obj.toAcr n (WittVector.teichmuller l (b i))) * x = 0` using `fun S x hx => by`. Establish `h` using `hk S x hx`. Rewrite `h` using `[acr_teich_prod]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨locModG (F := F) (b := bs l k n) (ht := rfl) (κ := κb κ k n) ((base l).cris n) r (gT F κ k n) T' (fun S => facObj F κ T' (A' S) (lam S) (ht S)) (fun S => facHom F κ T' (A' S) (lam S) (ht S)) (fun i => T'.1.obj.toAcr n (WittVector.teichmuller l (b i))) hf (fun S i hi => acr_teich …`.
+A detailed English derivation is pending.
 -/
 theorem fac_loc (k : Bool) (n r : ℕ) (T' : El (F.pt κ)) {m : ℕ} (b : Fin m → T'.1.obj.A)
     (hspan : Ideal.span (Set.range b) = ⊤) (A' : Finset (Fin m) → PAlg l) (lam : ∀ S, T'.1.obj ⟶ A' S)
@@ -183,9 +183,9 @@ theorem fac_loc (k : Bool) (n r : ℕ) (T' : El (F.pt κ)) {m : ℕ} (b : Fin m 
     (fun S y hy => step_onto (lam S) k n r (hs S) hy) hk'⟩
 
 /- English proof (translation)
-Establish `ha : ∀ S : Finset (Fin m), IsIdempotentElem (∏ i ∈ S, b i)` using `fun S => Finset.prod_induction _ IsIdempotentElem (fun _ _ h h' => h.mul h') IsIdempotentElem.one fun i _ => hb i`. Use `choose A' lam htest hlam huniv hacr using fun S => GlobalTheory.T.idempotent_localization_universal T'.1.obj (∏ i ∈ S, b i) (ha S)`. Establish `h1 : ∀ S, ∀ i ∈ S, Hom.f (lam S) (b i) = 1` using `fun S i hi => factor_one (Hom.f (lam S)) b hb S (hlam S) hi`. Establish `ht : ∀ S, (A' S).IsTest` using `fun S => htest S T'.1.property`. Use `⟨fun S => facObj F κ T' (A' S) (lam S) (ht S), fun S => facHom F κ T' (A' S) (lam S) (ht S), h1, fun S T'' ψ h => fac_univ F κ T' (A' S) (lam S) (ht S) T'' ψ (huniv S T''.1.obj ψ.1.hom ?_), fac_loc F κ k n r T' b hspan A' lam ht h1 (fun S => (hacr S n).1) fun S => (hacr S n).2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_one fun i hi => h i hi`.
+A detailed English derivation is pending.
 -/
 theorem factors (k : Bool) (n r : ℕ) (T' : El (F.pt κ)) {m : ℕ}
     (b : Fin m → T'.1.obj.A) (hb : ∀ i, IsIdempotentElem (b i)) (hspan : Ideal.span (Set.range b) = ⊤) :
@@ -207,9 +207,9 @@ theorem factors (k : Bool) (n r : ℕ) (T' : El (F.pt κ)) {m : ℕ}
 end Fac
 
 /- English proof (translation)
-Establish `hu : IsUnit ((CommRingCat.ofHom (mapU ψ.1.hom)).hom s)`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 ha`. Establish `h2` using `congrArg (mapU ψ.1.hom) hc`. Rewrite `h2` using `[map_mul, mapU_sharp, h, map_one]`. Conclude with `IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact h2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα⟩` from `hcov _ _ hu`. Establish `hpt : F.Pt.map (CommRingCat.ofHom (mapU ψ.1.hom)) T.2.1 = T₁.2.1` using `congrArg Subtype.val ψ.2`. Rewrite `hα` using `[hpt]`. Conclude with `⟨α, (𝒜.V α).in_map (CommRingCat.ofHom (uJ k T₁.1.obj n)) hα⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chart_of_one {O : Type} [CommRing O] (F : Fn O) (κ : O →+* OC l) {d : ℕ} (𝒜 : F.Atlas d) (k : Bool) (n : ℕ)
     {T T₁ : El (F.pt κ)} (ψ : T ⟶ T₁) (s : T.1.obj.U) (a : T.1.obj.A) (ha : T.1.obj.sharp a ∈ Ideal.span {s})
@@ -227,11 +227,11 @@ theorem chart_of_one {O : Type} [CommRing O] (F : Fn O) (κ : O →+* OC l) {d :
   exact ⟨α, (𝒜.V α).in_map (CommRingCat.ofHom (uJ k T₁.1.obj n)) hα⟩
 
 /- English proof (translation)
-Introduce `l _ O _ F κ d 𝒜 k n r`. Use `⟨fun T T' φ h => (GlobalTheory.CompanionTheory.ThickZar.zarCov_pdS F (bs l k n) rfl (κb κ k n) ((base l).cris n) 𝒜 (Fact.out : l.Prime).ne_zero r).1 ((gT F κ k n).map φ) h, fun T => ?_⟩` and prove the remaining obligations. Take `⟨m, s, hs, hcov⟩` from `𝒜.cov (CommRingCat.of T.1.obj.U) T.2.1`. Take `⟨e, hidem, hspan, hes⟩` from `GlobalTheory.T.idempotent_refinement_of_unimodular T.1.obj T.1.property s hs`. Use `⟨m, fun i _ ψ => Hom.f ψ.1.hom (e i) = 1, fun i T₁ T₂ ψ χ h => ?_, fun i T₁ ψ h => chart_of_one F κ 𝒜 k n ψ (s i) (e i) (hes i) (hcov i) h, fun T' φ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h' : Hom.f ψ.1.hom (e i) = 1` using `h`. Establish `e1 : Hom.f (ψ ≫ χ).1.hom (e i) = Hom.f χ.1.hom (Hom.f ψ.1.hom (e i))` using `rfl`. Conclude with `e1.trans (by rw [h', map_one])`. Establish `hspan' : Ideal.span (Set.range fun i => Hom.f φ.1.hom (e i)) = ⊤`. Establish `h` using `congrArg (Ideal.map (Hom.f φ.1.hom)) hspan`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Conclude with `h`. Take `⟨Lc', lamE, h1, h2, h3⟩` from `factors F κ k n r T' (fun i => Hom.f φ.1.hom (e i)) (fun i => (hidem i).map (Hom.f φ.1.hom)) hspan'`. Conclude with `⟨Lc', lamE, fun S i hi => h1 S i hi, fun S T'' ψ h => h2 S T'' ψ fun i hi => h i hi, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem zarCov_test : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] (F : Fn O) (κ : O →+* OC l) {d : ℕ} (𝒜 : F.Atlas d)
     (k : Bool) (n r : ℕ), ZarCov (gT F κ k n ⋙ (pdS (Lc F κ k n) ((base l).cris n) r).fn)

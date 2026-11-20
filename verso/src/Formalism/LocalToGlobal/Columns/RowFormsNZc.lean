@@ -18,9 +18,9 @@ section One
 variable (K : Type) [Field K] {n : ℕ}
 
 /- English proof (translation)
-Unfold `rowAct`. Rewrite using `[aeval_X, Finset.sum_eq_single (s v.1)]`. Rewrite using `[Matrix.transpose_apply, pM_apply, if_pos rfl, C_1, one_mul]`. Introduce `b _ hb`. Rewrite using `[Matrix.transpose_apply, pM_apply, if_neg hb, C_0, zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nz_rowAct_X (s : Equiv.Perm (Fin n)) (v : Fin n × Fin n) :
     rowAct K (n := n) (pM K s)ᵀ (X v) = X (s v.1, v.2) := by
@@ -33,9 +33,9 @@ theorem nz_rowAct_X (s : Equiv.Perm (Fin n)) (v : Fin n × Fin n) :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Unfold `lpMinor`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `nz_rowAct_X K s _`.
+A detailed English derivation is pending.
 -/
 theorem nz_rowAct_minor (s : Equiv.Perm (Fin n)) (i : ℕ) (hi : i ≤ n) :
     rowAct K (n := n) (pM K s)ᵀ (lpMinor K i hi hi) =
@@ -48,17 +48,15 @@ theorem nz_rowAct_minor (s : Equiv.Perm (Fin n)) (i : ℕ) (hi : i ≤ n) :
   exact nz_rowAct_X K s _
 
 /- English proof (translation)
-Rewrite using `[nz_rowAct_minor]`. Establish `ha : a.val < i` using `lt_trans hab hb`. Establish `hne : (⟨a.val, ha⟩ : Fin i) ≠ ⟨b.val, hb⟩` using `fun h => (ne_of_lt hab) (Fin.ext (Fin.mk.inj_iff.mp h))`. Establish `h1 : (Matrix.of fun p q : Fin i => (X (Equiv.swap a b (Fin.castLE hi p), Fin.castLE hi q) : MvPolynomial (Fin n × Fin n) K)) = (Matrix.of fun p q : Fin i => (X (Fin.castLE hi p, Fin.castLE hi q) : MvPolynomial (Fin n × Fin n) K)).submatrix (Equiv.swap (⟨a.val, ha⟩ : Fin i) ⟨b.val …`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, id]`. Establish `key : Equiv.swap a b (Fin.castLE hi p) = Fin.castLE hi (Equiv.swap (⟨a.val, ha⟩ : Fin i) ⟨b.val, hb⟩ p)`. Distinguish the cases in `hpa : p = ⟨a.val, ha⟩`. Substitute `hpa` using the available equality. Rewrite using `[Equiv.swap_apply_left]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `: Fin.castLE hi ⟨a.val, ha⟩ = a` using `Fin.ext rfl`. Rewrite using `[this, Equiv.swap_apply_left]`. Conclude with `Fin.ext rfl`. Distinguish the cases in `hpb : p = ⟨b.val, hb⟩`. Substitute `hpb` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.swap_apply_right]`. Establish `: Fin.castLE hi ⟨b.val, hb⟩ = b` using `Fin.ext rfl`. Rewrite using `[this, Equiv.swap_apply_right]`. Conclude with `Fin.ext rfl`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne hpa hpb, Equiv.swap_apply_of_ne_of_ne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hpa (Fin.ext (show p.val = a.val from congrArg Fin.val h))`. Introduce `h`. Conclude with `hpb (Fin.ext (show p.val = b.val from congrArg Fin.val h))`. Rewrite using `[key]`.
-
-Rewrite using `[h1, Matrix.det_permute, Equiv.Perm.sign_swap hne]`. Unfold `lpMinor`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nz_minor_swap_in {a b : Fin n} (hab : a < b) (i : ℕ) (hi : i ≤ n) (hb : b.val < i) :
     rowAct K (n := n) (pM K (Equiv.swap a b))ᵀ (lpMinor K i hi hi) = -lpMinor K i hi hi := by
@@ -94,11 +92,11 @@ theorem nz_minor_swap_in {a b : Fin n} (hab : a < b) (i : ℕ) (hi : i ≤ n) (h
   simp
 
 /- English proof (translation)
-Rewrite using `[nz_rowAct_minor]`. Unfold `lpMinor`. Use `congr 1`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Equiv.swap_apply_of_ne_of_ne]`. Introduce `h`. Establish `h1 : p.val = a.val` using `congrArg Fin.val h`. Use `p.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h`. Establish `h1 : p.val = b.val` using `congrArg Fin.val h`. Use `p.2` as an intermediate fact. Establish `h2 : a.val < b.val` using `hab`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem nz_minor_swap_out {a b : Fin n} (hab : a < b) (i : ℕ) (hi : i ≤ n) (ha : i ≤ a.val) :
     rowAct K (n := n) (pM K (Equiv.swap a b))ᵀ (lpMinor K i hi hi) = lpMinor K i hi hi := by
@@ -119,17 +117,17 @@ theorem nz_minor_swap_out {a b : Fin n} (hab : a < b) (i : ℕ) (hi : i ≤ n) (
     omega
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, k = n - b.val` from `⟨_, rfl⟩`. Proceed by induction on `k generalizing b with`. Consider the case `zero => have := b.2`. Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Distinguish the cases in `hb : b.val + 1 < n`. Establish `hfil : Finset.univ.filter (fun i : Fin n => b ≤ i) = insert b (Finset.univ.filter (fun i : Fin n => (⟨b.val + 1, hb⟩ : Fin n) ≤ i))`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.le_def, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hnot : b ∉ Finset.univ.filter (fun i : Fin n => (⟨b.val + 1, hb⟩ : Fin n) ≤ i)`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_def]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hfil, Finset.sum_insert hnot, ih ⟨b.val + 1, hb⟩ (by simp only; omega)]`. Establish `h1 : nuNext ν b = ν ⟨b.val + 1, hb⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `nuNext`. Rewrite using `[dif_pos hb]`. Establish `h2 : ν ⟨b.val + 1, hb⟩ ≤ ν b` using `hν (by rw [Fin.le_def]; simp)`. Rewrite using `[h1]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hfil : Finset.univ.filter (fun i : Fin n => b ≤ i) = {b}`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.le_def, Fin.ext_iff]`. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1 : nuNext ν b = 0`. Unfold `nuNext`. Rewrite using `[dif_neg hb]`. Rewrite using `[hfil, Finset.sum_singleton, h1, Nat.sub_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem nz_tel (ν : Fin n → ℕ) (hν : Antitone ν) (b : Fin n) :
     ∑ i ∈ Finset.univ.filter (fun i : Fin n => b ≤ i), (ν i - nuNext ν i) = ν b := by
@@ -164,15 +162,15 @@ theorem nz_tel (ν : Fin n → ℕ) (hν : Antitone ν) (b : Fin n) :
       rw [hfil, Finset.sum_singleton, h1, Nat.sub_zero]
 
 /- English proof (translation)
-Unfold `hw`. Rewrite using `[map_prod]`. Establish `h1 : ∀ i : Fin n, rowAct K (n` using `n) (pM K (Equiv.swap a b))ᵀ ((lpMinor K (i.val + 1) (by omega) (by omega)) ^ (ν i - nuNext ν i)) = (if b ≤ i then (-1 : MvPolynomial (Fin n × Fin n) K) ^ (ν i - nuNext ν i) else 1) * (lpMinor K (i.val + 1) (by omega) (by omega)) ^ (ν i - nuNext ν i) := by`. Introduce `i`. Rewrite using `[map_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hbi : b ≤ i`. Rewrite using `[if_pos hbi, nz_minor_swap_in K hab _ _ (by rw [Fin.le_def] at hbi; omega), neg_pow]`. Rewrite using `[if_neg hbi, one_mul]`. Distinguish the cases in `hai : i < a`. Rewrite using `[nz_minor_swap_out K hab _ _ (by rw [Fin.lt_def] at hai; omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hib : i.val + 1 < n`. Rewrite `hbi` using `[Fin.le_def]`. Use `b.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e1 : nuNext ν i = ν ⟨i.val + 1, hib⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Unfold `nuNext`. Rewrite using `[dif_pos hib]`. Establish `e2 : ν i ≤ ν a` using `hν (not_lt.mp hai)`. Establish `e3 : ν b ≤ ν ⟨i.val + 1, hib⟩` using `hν (by rw [Fin.le_def] at hbi ⊢; simp only; omega)`. Establish `e4 : ν i - nuNext ν i = 0` using `by rw [e1]; omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e4, pow_zero, pow_zero]`. Rewrite using `[Finset.prod_congr rfl fun i _ => h1 i, Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[← Finset.prod_filter, Finset.prod_pow_eq_pow_sum, nz_tel ν hν b]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem nz_hw_swap (ν : Fin n → ℕ) (hν : Antitone ν) {a b : Fin n} (hab : a < b) (h : ν a = ν b) :
     rowAct K (n := n) (pM K (Equiv.swap a b))ᵀ (hw K le_rfl ν) = (-1) ^ ν b * hw K le_rfl ν := by
@@ -205,9 +203,9 @@ theorem nz_hw_swap (ν : Fin n → ℕ) (hν : Antitone ν) {a b : Fin n} (hab :
   rw [← Finset.prod_filter, Finset.prod_pow_eq_pow_sum, nz_tel ν hν b]
 
 /- English proof (translation)
-Establish `h : pM K s = (1 : Matrix (Fin n) (Fin n) K).submatrix (s⁻¹ : Equiv.Perm (Fin n)) id`. Use extensionality with `i j`. Rewrite using `[pM_apply, Matrix.submatrix_apply, Matrix.one_apply, id]`. Distinguish the cases in `hij : i = s j`. Rewrite using `[if_pos hij, if_pos (by rw [hij]; simp)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hij, if_neg (fun h' => hij (by rw [← h']; simp))]`. Rewrite using `[h, Matrix.det_permute, Matrix.det_one, mul_one, Equiv.Perm.sign_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem nz_det_pM (s : Equiv.Perm (Fin n)) : (pM K s).det = ((Equiv.Perm.sign s : ℤˣ) : ℤ) := by
   have h : pM K s = (1 : Matrix (Fin n) (Fin n) K).submatrix (s⁻¹ : Equiv.Perm (Fin n)) id := by
@@ -219,17 +217,17 @@ theorem nz_det_pM (s : Equiv.Perm (Fin n)) : (pM K s).det = ((Equiv.Perm.sign s 
   rw [h, Matrix.det_permute, Matrix.det_one, mul_one, Equiv.Perm.sign_inv]
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `lt_of_le_of_lt (Nat.zero_le _) b.2`. Establish `hge : ∀ x : Fin n, lam.detShift ≤ lam.w x`. Introduce `x`. Unfold `DomWeight.detShift`. Rewrite using `[dif_pos hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lam.anti (by rw [Fin.le_def]; have := x.2; simp only; omega)`. Establish `hnat : ∀ x : Fin n, ((lam.natW x : ℕ) : ℤ) = lam.w x - lam.detShift`. Introduce `x`. Unfold `DomWeight.natW`. Rewrite using `[Int.toNat_of_nonneg (by have := hge x; omega)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hab' : lam.natW a = lam.natW b`. Use `hnat a` as an intermediate fact. Use `hnat b` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Unfold `sqAct extremal`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[permGL_val, nz_hw_swap K lam.natW (natW_antitone lam) hab hab']`. Establish `hdet : detPow K n (permGL K (Equiv.swap a b)) lam.detShift = (-1 : K) ^ lam.detShift`. Unfold `detPow`. Rewrite using `[Units.val_zpow_eq_zpow_val]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `show ((permGL K (Equiv.swap a b) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).det = -1`. Rewrite using `[permGL_val, nz_det_pM, Equiv.Perm.sign_swap (ne_of_lt hab)]`. Simplify using the standard rewrite rules. Rewrite using `[hdet]`. Establish `hw : lam.w b = lam.detShift + ((lam.natW b : ℕ) : ℤ)` using `by rw [hnat b]; ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hw, zpow_add₀ (by norm_num : (-1 : K) ≠ 0), zpow_natCast, mul_smul]`. Use `congr 1`. Rewrite using `[smul_eq_C_mul, map_pow, map_neg, C_1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nz_sqAct_swap (lam : DomWeight n) {a b : Fin n} (hab : a < b) (h : lam.w a = lam.w b) :
     sqAct K n lam (permGL K (Equiv.swap a b)) (extremal K n lam) = ((-1 : K) ^ lam.w b) • extremal K n lam := by
@@ -271,13 +269,13 @@ variable (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 def nzExt (lam : ι → DomWeight n) : VV K lam := ⟨extVV K lam, extVV_mem K lam⟩
 
 /- English proof (translation)
-Introduce `h` and use `extVV_ne_zero K lam (congrArg Subtype.val h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nzExt_ne_zero (lam : ι → DomWeight n) : nzExt K lam ≠ 0 :=
   fun h => extVV_ne_zero K lam (congrArg Subtype.val h)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons a S ha ih => rw [Finset.prod_cons, Finset.sum_cons, ih, zpow_add₀ hu]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem nz_prod_zpow (u : K) (hu : u ≠ 0) (f : ι → ℤ) (S : Finset ι) : ∏ τ ∈ S, u ^ f τ = u ^ ∑ τ ∈ S, f τ := by
   induction S using Finset.cons_induction with
@@ -285,7 +283,7 @@ theorem nz_prod_zpow (u : K) (hu : u ≠ 0) (f : ι → ℤ) (S : Finset ι) : �
   | cons a S ha ih => rw [Finset.prod_cons, Finset.sum_cons, ih, zpow_add₀ hu]
 
 /- English proof (translation)
-Unfold `ten`. Simplify using `only [map_smul]`. Rewrite using `[Finset.prod_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nz_ten_smul (c : ι → K) (f : ι → MvPolynomial (Fin n × Fin n) K) :
     ten (fun τ => c τ • f τ) = (∏ τ, c τ) • ten f := by
@@ -294,9 +292,9 @@ theorem nz_ten_smul (c : ι → K) (f : ι → MvPolynomial (Fin n × Fin n) K) 
   rw [Finset.prod_smul]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[rhoK_coe]`. Use `show actP lam (fun _ => permGL K (Equiv.swap a b)) (ten fun τ => extremal K n (lam τ)) = ((-1 : K) ^ ∑ τ, (lam τ).w b) • ten fun τ => extremal K n (lam τ)`. Rewrite using `[actTen K ι n lam]`. Establish `h1 : (fun τ => sqAct K n (lam τ) (permGL K (Equiv.swap a b)) (extremal K n (lam τ))) = fun τ => ((-1 : K) ^ (lam τ).w b) • extremal K n (lam τ)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun τ => nz_sqAct_swap K (lam τ) hab (h τ)`. Rewrite using `[h1, nz_ten_smul, nz_prod_zpow K (-1) (by norm_num)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nz_rhoK_swap_lt (lam : ι → DomWeight n) {a b : Fin n} (hab : a < b) (h : ∀ τ, (lam τ).w a = (lam τ).w b) :
     rhoK lam (fun _ => permGL K (Equiv.swap a b)) (nzExt K lam) = ((-1 : K) ^ ∑ τ, (lam τ).w b) • nzExt K lam := by
@@ -311,9 +309,9 @@ theorem nz_rhoK_swap_lt (lam : ι → DomWeight n) {a b : Fin n} (hab : a < b) (
   rw [h1, nz_ten_smul, nz_prod_zpow K (-1) (by norm_num)]
 
 /- English proof (translation)
-Break down `lt_or_gt_of_ne hab with hlt | hlt` into its components or cases. Establish `he' : Even (∑ τ, (lam τ).w b)`. Rewrite using `[← Finset.sum_congr rfl fun τ _ => h τ]`. Conclude with `he`. Rewrite using `[nz_rhoK_swap_lt K lam hlt h, he'.neg_one_zpow, one_smul]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.swap_comm, nz_rhoK_swap_lt K lam hlt (fun τ => (h τ).symm), he.neg_one_zpow, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem nz_rhoK_swap (lam : ι → DomWeight n) {a b : Fin n} (hab : a ≠ b) (h : ∀ τ, (lam τ).w a = (lam τ).w b)
     (he : Even (∑ τ, (lam τ).w a)) :
@@ -326,25 +324,23 @@ theorem nz_rhoK_swap (lam : ι → DomWeight n) {a b : Fin n} (hab : a ≠ b) (h
   · rw [Equiv.swap_comm, nz_rhoK_swap_lt K lam hlt (fun τ => (h τ).symm), he.neg_one_zpow, one_smul]
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, s.support.card = k` from `⟨_, rfl⟩`. Proceed by induction on `k using Nat.strong_induction_on generalizing s with`. Consider the case `_ k ih`. Distinguish the cases in `hs : s = 1`. Substitute `hs` using the available equality.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `: (fun _ : ι => permGL K (1 : Equiv.Perm (Fin n))) = 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Rewrite using `[this, map_one]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, s x ≠ x := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hs (Equiv.ext hc)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set s' : Equiv.Perm (Fin n) := Equiv.swap x (s x) * s with hs'`. Establish `hcard : s'.support.card < k`. Rewrite using `[← hk]`. Conclude with `Equiv.Perm.card_support_swap_mul hx`. Establish `hsw : ∀ τ y, (lam τ).w (Equiv.swap x (s x) y) = (lam τ).w y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `τ y`. Distinguish the cases in `hy1 : y = x`. Rewrite using `[hy1, Equiv.swap_apply_left, h1]`. Distinguish the cases in `hy2 : y = s x`. Rewrite using `[hy2, Equiv.swap_apply_right, h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.swap_apply_of_ne_of_ne hy1 hy2]`. Establish `h1' : ∀ τ y, (lam τ).w (s' y) = (lam τ).w y`. Introduce `τ y`. Rewrite using `[hs', Equiv.Perm.mul_apply, hsw, h1]`. Establish `h2' : ∀ y, s' y ≠ y → Even (∑ τ, (lam τ).w y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y hy`. Apply `h2` to reduce the goal to its premises. Introduce `hsy`. Apply `hy` to reduce the goal to its premises. Rewrite using `[hs', Equiv.Perm.mul_apply, hsy]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Equiv.swap_apply_of_ne_of_ne` to reduce the goal to its premises. Introduce `hyx`. Conclude with `hx (by rw [← hyx]; exact hsy)`. Introduce `hyx`. Establish `: s y = s x` using `by rw [hsy]; exact hyx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx (by rw [← s.injective this]; exact hsy)`. Establish `hdec : s = Equiv.swap x (s x) * s'`. Rewrite using `[hs', ← mul_assoc, Equiv.swap_mul_self, one_mul]`. Establish `hfun : (fun _ : ι => permGL K s) = (fun _ : ι => permGL K (Equiv.swap x (s x))) * fun _ : ι => permGL K s'`. Use function extensionality and compare the values at `τ`.
-
-Rewrite using `[Pi.mul_apply, ← map_mul, ← hdec]`. Rewrite using `[hfun, map_mul, Module.End.mul_apply, ih _ hcard s' h1' h2' rfl]`. Conclude with `nz_rhoK_swap K lam (Ne.symm hx) (fun τ => (h1 τ x).symm) (h2 x hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nz_rhoK_perm (lam : ι → DomWeight n) (s : Equiv.Perm (Fin n)) (h1 : ∀ τ x, (lam τ).w (s x) = (lam τ).w x)
     (h2 : ∀ x, s x ≠ x → Even (∑ τ, (lam τ).w x)) :
@@ -406,7 +402,7 @@ section Emb
 variable {E : Type} [Field E] (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ} (emb : ι → E →+* K)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[embGL_coe, permGL_val, permGL_val, pM_map]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem nz_embGL_perm (s : Equiv.Perm (Fin n)) : embGL emb (permGL E s) = fun _ => permGL K s := by
   funext τ
@@ -414,7 +410,7 @@ theorem nz_embGL_perm (s : Equiv.Perm (Fin n)) : embGL emb (permGL E s) = fun _ 
   rw [embGL_coe, permGL_val, permGL_val, pM_map]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[invTrK_coe, ← map_inv, permGL_val, permGL_val, pM_transpose, inv_inv]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem nz_invTrK_perm (s : Equiv.Perm (Fin n)) :
     invTrK (fun _ : ι => permGL K s) = fun _ => permGL K s := by
@@ -423,7 +419,7 @@ theorem nz_invTrK_perm (s : Equiv.Perm (Fin n)) :
   rw [invTrK_coe, ← map_inv, permGL_val, permGL_val, pM_transpose, inv_inv]
 
 /- English proof (translation)
-Use `show rhoK lam (embGL emb (permGL E s)) (nzExt K lam) = nzExt K lam`. Rewrite using `[nz_embGL_perm]`. Conclude with `nz_rhoK_perm K lam s h1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nz_rhoV_perm (lam : ι → DomWeight n) (s : Equiv.Perm (Fin n)) (h1 : ∀ τ x, (lam τ).w (s x) = (lam τ).w x)
     (h2 : ∀ x, s x ≠ x → Even (∑ τ, (lam τ).w x)) :
@@ -433,7 +429,7 @@ theorem nz_rhoV_perm (lam : ι → DomWeight n) (s : Equiv.Perm (Fin n)) (h1 : �
   exact nz_rhoK_perm K lam s h1 h2
 
 /- English proof (translation)
-Use `show rhoK lam (invTrK (embGL emb (permGL E s))) (nzExt K lam) = nzExt K lam`. Rewrite using `[nz_embGL_perm, nz_invTrK_perm]`. Conclude with `nz_rhoK_perm K lam s h1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nz_rhoVr_perm (lam : ι → DomWeight n) (s : Equiv.Perm (Fin n)) (h1 : ∀ τ x, (lam τ).w (s x) = (lam τ).w x)
     (h2 : ∀ x, s x ≠ x → Even (∑ τ, (lam τ).w x)) :

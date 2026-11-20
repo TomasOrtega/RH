@@ -18,39 +18,39 @@ namespace SpanLat
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hA i l) (hB l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_mul {A B : Matrix (Fin n) (Fin n) k} (hA : A ∈ intM k (Fin n) (Fin n)) (hB : B ∈ intM k (Fin n) (Fin n)) :
     A * B ∈ intM k (Fin n) (Fin n) := fun i j => by
   rw [Matrix.mul_apply]; exact Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hA i l) (hB l j)
 
 /- English proof (translation)
-Introduce `i j` and use `Subring.add_mem _ (hA i j) (hB i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_add {A B : Matrix (Fin n) (Fin n) k} (hA : A ∈ intM k (Fin n) (Fin n)) (hB : B ∈ intM k (Fin n) (Fin n)) :
     A + B ∈ intM k (Fin n) (Fin n) := fun i j => Subring.add_mem _ (hA i j) (hB i j)
 
 /- English proof (translation)
-Introduce `i j` and use `Subring.sub_mem _ (hA i j) (hB i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_sub {A B : Matrix (Fin n) (Fin n) k} (hA : A ∈ intM k (Fin n) (Fin n)) (hB : B ∈ intM k (Fin n) (Fin n)) :
     A - B ∈ intM k (Fin n) (Fin n) := fun i j => Subring.sub_mem _ (hA i j) (hB i j)
 
 /- English proof (translation)
-Introduce `i j` and use `Subring.neg_mem _ (hA i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_neg {A : Matrix (Fin n) (Fin n) k} (hA : A ∈ intM k (Fin n) (Fin n)) :
     -A ∈ intM k (Fin n) (Fin n) := fun i j => Subring.neg_mem _ (hA i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul]; exact Subring.mul_mem _ hc (hA i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_smul {c : k} (hc : c ∈ 𝒪[k]) {A : Matrix (Fin n) (Fin n) k} (hA : A ∈ intM k (Fin n) (Fin n)) :
     c • A ∈ intM k (Fin n) (Fin n) := fun i j => by
   rw [Matrix.smul_apply, smul_eq_mul]; exact Subring.mul_mem _ hc (hA i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.one_apply]; split_ifs · exact Subring.one_mem _ · exact Subring.zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_one : (1 : Matrix (Fin n) (Fin n) k) ∈ intM k (Fin n) (Fin n) := fun i j => by
   rw [Matrix.one_apply]; split_ifs
@@ -58,30 +58,30 @@ theorem intM_one : (1 : Matrix (Fin n) (Fin n) k) ∈ intM k (Fin n) (Fin n) := 
   · exact Subring.zero_mem _
 
 /- English proof (translation)
-The claim follows from `((mem_KO_iff u).1 hu).1`.
+A detailed English derivation is pending.
 -/
 theorem KO_intM {u : GL (Fin n) k} (hu : u ∈ KO k (Fin n)) : u.val ∈ intM k (Fin n) (Fin n) :=
   ((mem_KO_iff u).1 hu).1
 
 /- English proof (translation)
-Use `congrArg (· * (h⁻¹).val) e` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cancel_right {P Q : Matrix (Fin n) (Fin n) k} (h : GL (Fin n) k) (e : P * h.val = Q * h.val) : P = Q := by
   have := congrArg (· * (h⁻¹).val) e
   simpa only [Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one] using this
 
 /- English proof (translation)
-Take `⟨h, A₀, B₀, C₀, D₀, hA₀, hB₀, hC₀, hD₀, e1, e2, e3⟩` from `GlobalTheory.T.integral_matrix_left_factor k n s hs X`. Establish `sB : ∀ P : Matrix (Fin n) (Fin n) k, P * (D₀ * h.val) = s • P` using `fun P => by`. Rewrite using `[← e3, Matrix.mul_smul, Matrix.mul_one]`. Establish `r1 : A₀ * C₀ + B₀ * D₀ = 1` using `cancel_right h (by`. Rewrite using `[Matrix.one_mul, Matrix.add_mul, Matrix.mul_assoc, ← e2, Matrix.mul_assoc, sB, ← e1])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨T, hT, u₁, hu₁, eu₁⟩` from `GlobalTheory.T.integral_unimodular_completion k n C₀ D₀ A₀ B₀ hC₀ hD₀ hA₀ hB₀ r1`. Establish `hY' : Y = (A * C₀ + B * D₀) * h.val`. Rewrite using `[hY, Matrix.add_mul, Matrix.mul_assoc, ← e2, Matrix.mul_assoc, sB]`. Establish `r2 : (A₀ * C) * (A * C₀ + B * D₀) + (A₀ * D + B₀) * D₀ = 1` using `cancel_right h (by`. Rewrite using `[Matrix.one_mul, Matrix.add_mul, Matrix.mul_assoc (A₀ * C), ← hY', Matrix.mul_assoc _ D₀, sB]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e1, hX]`. Simplify using `only [Matrix.mul_add, Matrix.mul_smul, Matrix.mul_assoc, smul_add]`. Use the proof step `abel)`. Take `⟨T', hT', u₂, hu₂, eu₂⟩` from `GlobalTheory.T.integral_unimodular_completion k n _ D₀ (A₀ * C) (A₀ * D + B₀) (intM_add (intM_mul hA hC₀) (intM_mul hB hD₀)) hD₀ (intM_mul hA₀ hC) (intM_add (intM_mul hA₀ hD) hB₀) r2`. Establish `f1 : u₁.val * h.val = X + s • T`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eu₁, Matrix.add_mul, ← e2, Matrix.mul_assoc, sB]`. Establish `f2 : u₂.val * h.val = Y + s • T'`. Rewrite using `[eu₂, Matrix.add_mul, ← hY', Matrix.mul_assoc, sB]`. Establish `f3 : h.val = (u₁⁻¹).val * (X + s • T)`. Rewrite using `[← f1, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : u₂ * u₁⁻¹ ∈ KO k (Fin n)` using `Subgroup.mul_mem _ hu₂ (Subgroup.inv_mem _ hu₁)`. Use `⟨u₂ * u₁⁻¹, hu, (u₂ * u₁⁻¹).val * T - T', intM_sub (intM_mul (KO_intM hu) hT) hT', ?_⟩` and prove the remaining obligations. Establish `e4 : Y = u₂.val * h.val - s • T'` using `by rw [f2]; abel`. Rewrite using `[e4, f3]`. Simplify using `only [Units.val_mul, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_assoc, smul_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem orbit {s : k} (hs : s ≠ 0) {X Y A B C D : Matrix (Fin n) (Fin n) k}
     (hA : A ∈ intM k (Fin n) (Fin n)) (hB : B ∈ intM k (Fin n) (Fin n)) (hC : C ∈ intM k (Fin n) (Fin n))
@@ -116,15 +116,15 @@ theorem orbit {s : k} (hs : s ≠ 0) {X Y A B C D : Matrix (Fin n) (Fin n) k}
   abel
 
 /- English proof (translation)
-Establish `sB : ∀ P : Matrix (Fin n) (Fin n) k, P * (D * h.val) = s • P` using `fun P => by`. Rewrite using `[← e3, Matrix.mul_smul, Matrix.mul_one]`. Establish `hX : X = X * (h⁻¹).val * h.val`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Unfold `latInd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hm : X * (h⁻¹ : GL (Fin n) k).val ∈ intM k (Fin n) (Fin n)`. Rewrite using `[Set.indicator_of_mem hm, if_pos]`. Both sides reduce to the same expression. Use `⟨?_, X * (h⁻¹).val * A, X * (h⁻¹).val * B, intM_mul hm hA, intM_mul hm hB, ?_⟩` and prove the remaining obligations. Establish `hth : t ^ N • h.val ∈ intM k (Fin n) (Fin n)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e1, smul_add, ← Matrix.mul_smul, smul_smul]`. Conclude with `intM_add (intM_mul hA ha) (intM_smul (Subring.mul_mem _ (Subring.pow_mem _ ht N) hs) hB)`. Rewrite using `[hX, ← Matrix.mul_smul]`. Conclude with `intM_mul hm hth`. Use `conv_lhs => rw [hX, e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_add, Matrix.mul_smul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Set.indicator_of_notMem hm, if_neg]`. Introduce and unpack `⟨_, A', B', hA', hB', eX⟩`. Apply `hm` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: X = (A' * C + B' * D) * h.val`. Rewrite using `[eX, Matrix.add_mul, Matrix.mul_assoc, ← e2, Matrix.mul_assoc, sB]`. Rewrite using `[this, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Conclude with `intM_add (intM_mul hA' hC) (intM_mul hB' hD)`.
+A detailed English derivation is pending.
 -/
 theorem latInd_eq {t s : k} (ht : t ∈ 𝒪[k]) (hs : s ∈ 𝒪[k]) {N : ℕ} {a : Matrix (Fin n) (Fin n) k}
     (ha : t ^ N • a ∈ intM k (Fin n) (Fin n)) {h : GL (Fin n) k} {A B C D : Matrix (Fin n) (Fin n) k}
@@ -162,21 +162,21 @@ end SpanLat
 open SpanLat in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n φ hφ hK`. Take `⟨t, ht0, ht1⟩ : ∃ t : k, t ≠ 0 ∧ valuation k t < 1` from `Valuation.IsNontrivial.exists_lt_one`. Establish `htO : t ∈ 𝒪[k]` using `(Valuation.mem_integer_iff _ _).2 ht1.le`. Take `⟨N, M, hsupp, hper⟩` from `GlobalTheory.T.schwartz_locally_constant_support k n t ht0 ht1 φ hφ`. Take `⟨R, hRB, hRcov⟩` from `GlobalTheory.T.finite_net_integral_matrices k n t ht0 ht1 N M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs0 : t ^ M ≠ 0` using `pow_ne_zero _ ht0`. Establish `hsO : t ^ M ∈ 𝒪[k]` using `Subring.pow_mem _ htO M`. Set `le : Matrix (Fin n) (Fin n) k → Matrix (Fin n) (Fin n) k → Prop` to `fun X Y => ∃ A B, A ∈ intM k (Fin n) (Fin n) ∧ B ∈ intM k (Fin n) (Fin n) ∧ X = A * Y + t ^ M • B`. Establish `htr : ∀ x y z, le x y → le y z → le x z`. Introduce and unpack `x y z ⟨A, B, hA, hB, rfl⟩ ⟨A', B', hA', hB', rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨A * A', A * B' + B, intM_mul hA hA', intM_add (intM_mul hA hB') hB, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_add, Matrix.mul_smul, Matrix.mul_assoc, smul_add]`. Normalize the expressions using the abelian group laws. Set `Bs : Set (Matrix (Fin n) (Fin n) k)` to `{X | t ^ N • X ∈ intM k (Fin n) (Fin n)}`. Establish `hcov : ∀ x ∈ Bs, ∃ y ∈ R, le x y ∧ le y x` using `fun x hx => by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨y, hy, E, hE, rfl⟩` from `hRcov x hx`. Use `⟨y, hy, ⟨1, E, intM_one, hE, by rw [Matrix.one_mul]⟩, ⟨1, -E, intM_one, intM_neg hE, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_mul, smul_neg, add_neg_cancel_right]`. Establish `hcls : ∀ x ∈ Bs, ∀ y ∈ Bs, le x y → le y x → φ x = φ y`. Introduce and unpack `x - y - ⟨A, B, hA, hB, hxy⟩ ⟨C, D, hC, hD, hyx⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨u, hu, E, hE, e⟩` from `orbit hs0 hA hB hC hD hxy hyx`. Rewrite using `[e, hper _ _ hE, hK u hu]`. Take `⟨m, c, a, ha, hF⟩` from `GlobalTheory.T.step_function_indicator_span _ le htr Bs R φ (fun y hy => hRB y hy) hcov hcls`. Establish `hI : ∀ i, ∃ (h : GL (Fin n) k) (A B C D : Matrix (Fin n) (Fin n) k), A ∈ intM k (Fin n) (Fin n) ∧ B ∈ intM k (Fin n) (Fin n) ∧ C ∈ intM k (Fin n) (Fin n) ∧ D ∈ intM k (Fin n) (Fin n) ∧ h.val = A * a i + t ^ M • B ∧ a i = C * h.val ∧ t ^ M • (1 : Matrix (Fin n) (Fin n) k) = D * h. …` using `fun i => GlobalTheory.T.integral_matrix_left_factor k n (t ^ M) hs0 (a i)`. Use `choose h A B C D hA hB hC hD e1 e2 e3 using hI`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, c, h, funext fun X => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, latInd_eq htO hsO (ha _) (hA _) (hB _) (hC _) (hD _) (e1 _) (e2 _) (e3 _)]`. Distinguish the cases in `hX : X ∈ Bs`. Rewrite using `[hF X hX]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `if_congr (and_iff_right (show t ^ N • X ∈ intM k (Fin n) (Fin n) from hX)).symm rfl rfl`. Establish `: φ X = 0`. Assume the negation of the conclusion as `h0`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hX (hsupp X h0)`. Rewrite using `[this]`. Use `(Finset.sum_eq_zero fun i _ => ?_).symm` and prove the remaining obligations. Rewrite using `[if_neg fun h' => hX h'.1, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_latInd_lat : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)
     (φ : Matrix (Fin n) (Fin n) k → ℂ), φ ∈ SB (Matrix (Fin n) (Fin n) k) →

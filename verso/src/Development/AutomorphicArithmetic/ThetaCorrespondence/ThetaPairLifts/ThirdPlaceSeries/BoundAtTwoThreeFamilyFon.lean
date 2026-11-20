@@ -27,7 +27,7 @@ def BoundAtTwoThreeFamilyFonAlt {eps : ℝ} (Fm : FamP eps) : Prop := ∃ C x0 :
     (_ : CmpOf (Fm.D x i).loc (Fm.D x i).locA HW F) (X : KillingConditions.HubData (Fm.D x i)) (C₂ : ℝ),
     _root_.GlobalTheory.NLink.SetupAlt (Fm.L x i) (Fm.ex x hx i).nch HW X C₂ → BoundAtTwoThree (Fm.L x i) X.ρ C
 /- English proof (translation)
-Take `⟨C, x0, h⟩` from `h`. Conclude with `⟨C, x0, fun x hx0 _ i _ _ _ X _ S => h x hx0 i S.sha X.r X.ρ S.canon.fam S.kill⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem BoundAtTwoThreeFamilyFonAlt.of_all {eps : ℝ} {Fm : FamP eps} (h : BoundAtTwoThreeFamily Fm) : _root_.GlobalTheory.NLink.BoundAtTwoThreeFamilyFonAlt Fm := by
   obtain ⟨C, x0, h⟩ := h

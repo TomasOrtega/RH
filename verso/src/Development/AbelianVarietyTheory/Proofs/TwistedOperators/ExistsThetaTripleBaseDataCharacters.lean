@@ -26,24 +26,22 @@ noncomputable section
 namespace GlobalTheory.TripleBaseChars
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, GlobalTheory.AdelicU.singleFin v 1, rfl, GlobalTheory.AdelicU.evalV_singleFin_self v 1, fun _ h => GlobalTheory.AdelicU.evalV_singleFin_ne h 1⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_placeIdem (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : ∃ ε, IsPlaceIdem D v ε :=
   ⟨_, GlobalTheory.AdelicU.singleFin v 1, rfl, GlobalTheory.AdelicU.evalV_singleFin_self v 1,
     fun _ h => GlobalTheory.AdelicU.evalV_singleFin_ne h 1⟩
 
 /- English proof (translation)
-Establish `hn : D.host.QS ≠ 0` using `D.host.QS_pos.ne'`. Establish `hq : D.host.q ≠ 0` using `D.host.hyp.1.ne_zero`. Establish `hd : D.host.d ≠ 0` using `D.host.hyp.2.1.ne_zero`. Establish `hm : D.host.QS * D.host.q * D.host.d ≠ 0` using `by positivity`. Take `⟨p, hp, hlt, hc⟩` from `Nat.exists_prime_gt_modEq_one (∑ u ∈ P₀, Ideal.absNorm u.asIdeal) hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, -, -⟩` from `GlobalTheory.HostSplit.split_completely_of_modEq_one D.R D.host p hp hc`. Establish `h : (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 D.host.E)).ncard = Module.finrank ℚ D.host.E`. Rewrite using `[← GlobalTheory.HostSplit.ncard_placesOver _ hp]`. Conclude with `h1`. Take `⟨v, hv⟩` from `GlobalTheory.SplitChoice.exists_place_over D.host.F hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnot : ∀ u ∈ P₀, u ≠ v`. Introduce `u hu e`. Use `GlobalTheory.SplitChoice.natCast_notMem_of_absNorm_lt u hp ?_ (e ▸ hv)` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun u : HeightOneSpectrum (𝓞 D.host.F) => Ideal.absNorm u.asIdeal) (fun _ _ => Nat.zero_le _) hu` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨v, fun hv0 => hnot v hv0 rfl, ?_, ?_⟩` and prove the remaining obligations. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hp).irreducible`. Establish `hle : Ideal.span {(p : ℤ)} ≤ v.asIdeal.under ℤ`. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]`. Simplify using `using hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hunder : v.asIdeal.under ℤ = Ideal.span {(p : ℤ)}` using `(hmax.eq_of_le (Ideal.IsPrime.under ℤ v.asIdeal).ne_top hle).symm`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SplitsFully`. Rewrite using `[hunder]`. Conclude with `h`. Rewrite using `[GlobalTheory.AdelicU.nonempty_split_iff (GlobalTheory.AdelicU.isCMExt_host D)]`.
-
-Conclude with `GlobalTheory.GoodPlace.ncard_primesOver_eq_two (GlobalTheory.AdelicU.isCMExt_host D).2.2.1 hp h v hv`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_good_place (D : D7) (P₀ : Finset (HeightOneSpectrum (𝓞 D.host.F))) :
     ∃ v₁ : HeightOneSpectrum (𝓞 D.host.F), v₁ ∉ P₀ ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SplitsFully D.host.E v₁ ∧
@@ -80,37 +78,31 @@ theorem exists_good_place (D : D7) (P₀ : Finset (HeightOneSpectrum (𝓞 D.hos
     exact GlobalTheory.GoodPlace.ncard_primesOver_eq_two (GlobalTheory.AdelicU.isCMExt_host D).2.2.1 hp h v hv
 
 /- English proof (translation)
-Introduce `D ψ W W₁ X α β hT ωA hW`. Establish `hψ : IsStdChar D ψ (-1)` using `hW.std`. Use `choose τf hτf using fun w : InfinitePlace D.host.F => GlobalTheory.ConjTypeOverReal.exists_conj_tauE_over D w`. Use `choose a b ha hb hab using hT.gap`. Take `⟨mα, hmα, emα⟩` from `GlobalTheory.ConjInfExp.hasExp_conj_of_hasInfExp α a ha τf hτf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨mβ, hmβ, emβ⟩` from `GlobalTheory.ConjInfExp.hasExp_conj_of_hasInfExp β b hb τf hτf`. Establish `hν : IsHeckeChar D (α / β)` using `GlobalTheory.HeckeCharsOfSquare.isHeckeChar_div hT.hecA hT.hecB`. Establish `hνr : ResEta D (α / β) 0` using `GlobalTheory.HeckeCharsOfSquare.resEta_of_mod (GlobalTheory.HeckeCharsOfSquare.resEta_div hT.resA hT.resB) (by`. Establish `h` using `hT.even`. Rewrite `h` using `[hT.rank]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `h`. Use the proof step `omega)`. Establish `hfin : {w : HeightOneSpectrum (𝓞 D.host.E) | ¬ GlobalTheory.LFun.UnrAt α w ∨ ¬ GlobalTheory.LFun.UnrAt β w}.Finite` using `((GlobalTheory.T.heckeChar_unramified_at_cofinitely_many_places D α hT.hecA).union (GlobalTheory.T.heckeChar_unramified_at_cofinitely_many_places D β hT.hecB)).subset (fun w hw => hw)`. Use `set S₀ : Finset (HeightOneSpectrum (𝓞 D.host.F)) := hfin.toFinset.image (fun w => w.under (𝓞 D.host.F)) with hS₀`. Establish `hS : ∀ v ∈ S₀, ∃ ε, IsPlaceIdem D v ε ∧ ¬ GlobalTheory.WeilParts.NonSplitAt D v ε ∧ ¬ GlobalTheory.WeilParts.UnramAt ε (α / β) ∧ ¬ v.asIdeal ∣ differentIdeal ℤ (𝓞 D.host.F)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `v hv`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 hv`. Rewrite `hw` using `[Set.Finite.mem_toFinset]`. Take `⟨ε, hε⟩` from `exists_placeIdem D (w.under (𝓞 D.host.F))`. Break down `hT.ram _ ε hε with ⟨h1, h2⟩ | ⟨h1, h2, h3⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Break down `hw with hw | hw` into its components or cases. Conclude with `hw (GlobalTheory.T.heckeChar_unramified_above_place_of_trivial_units D α _ ε hε h1 w rfl)`. Conclude with `hw (GlobalTheory.T.heckeChar_unramified_above_place_of_trivial_units D β _ ε hε h2 w rfl)`. Conclude with `⟨ε, hε, h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hbad : ∀ w : HeightOneSpectrum (𝓞 D.host.E), (¬ GlobalTheory.LFun.UnrAt α w ∨ ¬ GlobalTheory.LFun.UnrAt β w) → w.under (𝓞 D.host.F) ∈ S₀` using `fun w hw => Finset.mem_image.2 ⟨w, (Set.Finite.mem_toFinset hfin).2 hw, rfl⟩`. Take `⟨v₁, hv₁, hsp, ⟨τ₁⟩⟩` from `exists_good_place D S₀`. Establish `hemb : ∀ v : S₀, Nonempty (D.host.E →ₐ[D.host.F] Fv D.host.F v)` using `fun v => by`. Take `⟨ε, hε, hns, -, -⟩` from `hS v.1 v.2`. Conclude with `GlobalTheory.T.nonempty_algHom_completion_of_split_place D v.1 ε hε hns`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E` to `{ ψ := ψ, emb := fun w => ⟨(starRingEnd ℂ).comp (tauE D (τf w)), hτf w⟩, mα := mα, mβ := mβ, P := S₀, τ := fun v => (hemb v).some, v₁ := v₁, τ₁ := τ₁ }`. Set `Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E` to `⟨α, β, S₀, ∅⟩`. Establish `hT' : Xc.T = S₀` using `by simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars.T, Xc]`. Use `⟨Bs, Xc, rfl, rfl, rfl, ?_, ?_, fun w => ⟨τf w, fun x => rfl⟩, fun w => ?_⟩` and prove the remaining obligations. Use `{ cm := GlobalTheory.AdelicU.isCMExt_host D galois := D.host.hostE_isGalois unram := GlobalTheory.InertOfConj.unram D std := GlobalTheory.BaseGoodPlace.isStd_of_isStdChar hψ inert := ?_ psiP := ?_ }` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v w hw`. Establish `hns : ¬ Formalism.MainNotions.KudlaSiegelWeil.Split D v`. Introduce and unpack `⟨w1, w2, hne, h1, h2⟩`. Apply `hne` to reduce the goal to its premises. Establish `key : ∀ u : HeightOneSpectrum (𝓞 D.host.E), Formalism.MainNotions.KudlaSiegelWeil.Over D u v → u = w` using `fun u hu => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hle : w.asIdeal ≤ u.asIdeal`. Rewrite using `[← hw]`. Conclude with `Ideal.map_le_iff_le_comap.2 (le_of_eq hu.symm)`. Conclude with `HeightOneSpectrum.ext (w.isMaximal.eq_of_le u.isPrime.ne_top hle).symm`. Rewrite using `[key w1 h1, key w2 h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h2, h3, hd, -⟩` from `Formalism.MainNotions.KudlaSiegelWeil.inert_conditions_hold D v hns`. Conclude with `⟨h2, h3, GlobalTheory.BaseGoodPlace.psiUnr_of_not_le hψ v hd⟩`. Introduce `v hv`. Take `⟨ε, -, -, -, hd⟩` from `hS v hv`. Conclude with `GlobalTheory.BaseGoodPlace.psiUnr_of_not_le hψ v (fun hle => hd (Ideal.dvd_iff_le.2 hle))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hT.hecA, hT.hecB, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ D.sp.cm.deg2 _ _ hT.resA, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ D.sp.cm.deg2 _ _ hT.resB, hmα, hmβ, Finset.disjoint_empty_right _, ?_, ?_, ?_, …` and prove the remaining obligations. Rewrite using `[hT']`. Introduce `w hw`. Rewrite `hw` using `[hT']`. Take `⟨ε, hε, -, hnu, -⟩` from `hS _ hw`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun hu => hnu (GlobalTheory.T.heckeChar_unramified_place_of_unramified_one_prime D (α / β) hν hνr _ ε hε w rfl hu)`. Introduce `w hw`. Assume the negation of the conclusion as `h`. Conclude with `hw (show w.under (𝓞 D.host.F) ∈ ((Xc.T : Finset _) : Set _) by`. Rewrite using `[hT']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_coe.2 (hbad w (Or.inl h)))`. Introduce `w hw`. Assume the negation of the conclusion as `h`. Conclude with `hw (show w.under (𝓞 D.host.F) ∈ ((Xc.T : Finset _) : Set _) by`. Rewrite using `[hT']`.
-
-Conclude with `Finset.mem_coe.2 (hbad w (Or.inr h)))`. Conclude with `⟨by rw [hT']; exact hv₁, hsp⟩`. Establish `h1` using `emα w`. Establish `h2` using `emβ w`. Establish `h3` using `hab (τf w)`.
-
-Rewrite `h3` using `[hT.rank]`. Establish `: (((W.rank + W₁.rank : ℕ) : ℤ) : ℚ) < ((mα w - mβ w : ℤ) : ℚ)`. Move the coercions through the operations in `at h1 h2 h3 ⊢`. Rewrite using `[h1, h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `this` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_base_chars : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (W W₁ X : HSp D) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
     ∀ ωA : WRep W X, IsWeil ψ true W X β (β / α) ωA →

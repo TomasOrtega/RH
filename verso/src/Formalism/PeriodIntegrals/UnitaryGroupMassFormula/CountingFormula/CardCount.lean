@@ -17,15 +17,15 @@ variable {ϖ : 𝒪[F]} {k : Type} [Field k] {r : M.L.O →+* k} {n : ℕ} {b : 
   {Λ : Submodule M.L.O V}
 
 /- English proof (translation)
-Set `Φ : {v : ι → V // H.Prim Λ v ∧ ∀ a a', H.h (v a') (v a) - G₀ a a' ∈ Submodule.span M.L.O {algebraMap F E (ϖ : F)}} → {X : ι → Fin n → k // LinearIndependent k X ∧ ∀ a a', ∑ i, ∑ j, X a' i * Ph r H b hint i j * X a j ^ q = r ⟨G₀ a a', hG1 a a'⟩}` to `fun v => ⟨fun a => red hR (v.1 a), (prim_iff hR H hϖ o2 o3 v.1 v.2.1.1).1 v.2.1, fun a a' => (gram_cond_iff hR H hint q rfrob (v.2.1.1 a') (v.2.1.1 a) (G₀ a a') (hG1 a a')).1 (v.2.2 a a')⟩`. Establish `hsurj : Function.Surjective Φ`. Introduce `X`. Use `choose x hxΛ hxr using fun a => red_lift hR (X.1 a)`. Establish `hfx : (fun a => red hR (x a)) = X.1` using `funext hxr`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent k (fun a => red hR (x a))` using `by rw [hfx]; exact X.2.1`. Use `⟨⟨x, (prim_iff hR H hϖ o2 o3 x hxΛ).2 hli, fun a a' => (gram_cond_iff hR H hint q rfrob (hxΛ a') (hxΛ a) (G₀ a a') (hG1 a a')).2 ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hxr, hxr]`. Conclude with `X.2.2 a a'`. Conclude with `Subtype.ext hfx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Nat.card_congr ((Setoid.quotientKerEquivRange _).symm.trans ((Quotient.congrRight ?_).trans (Setoid.quotientKerEquivOfSurjective Φ hsurj)))` and prove the remaining obligations. Introduce `v v'`. Rewrite using `[Setoid.ker_def, Setoid.ker_def]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `h1` using `congrFun h a`. Rewrite `h1` using `[Submodule.Quotient.eq]`. Conclude with `(class_iff hR H (v.2.1.1 a) (v'.2.1.1 a)).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use function extensionality and compare the values at `a`. Establish `h1` using `congrFun (congrArg Subtype.val h) a`. Rewrite using `[Submodule.Quotient.eq]`. Conclude with `(class_iff hR H (v.2.1.1 a) (v'.2.1.1 a)).2 h1`.
+A detailed English derivation is pending.
 -/
 theorem card_count (hR : RedData ϖ k r n b Λ) (H : Loc.HermSp M V) (hϖ : Irreducible ϖ)
     (o2 : ∀ x : E, ∃ c : 𝒪[F], c ≠ 0 ∧ algebraMap F E c * x ∈ M.L.O)

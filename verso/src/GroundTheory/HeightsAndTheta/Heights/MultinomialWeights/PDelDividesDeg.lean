@@ -10,9 +10,9 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `w`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `u`. Establish `h` using `hAnti d w u`. Rewrite `h` using `[← hEval, ← hEval]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[RestTerms.blockPermute, eval_rename, smul_eval]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degPoly_isBlockAlternating (hAnti : DegAntisym.Statement) (hEval : DegPolyEval.Statement)
     (d : IndexData) : RestTerms.IsBlockAlternating d.f d.N (degPoly d) := by
@@ -25,7 +25,7 @@ theorem degPoly_isBlockAlternating (hAnti : DegAntisym.Statement) (hEval : DegPo
   exact h
 
 /- English proof (translation)
-Introduce `d` and use `RestTerms.FlagVandermondeDvd.full d.f d.N (degPoly d) (degPoly_isBlockAlternating hAnti hEval d)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DelDividesDeg.proof (hAnti : DegAntisym.Statement) (hEval : DegPolyEval.Statement) :
     DelDividesDeg.Statement := fun d =>

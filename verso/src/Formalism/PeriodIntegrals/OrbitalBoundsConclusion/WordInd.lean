@@ -3,7 +3,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WordInduction.WordInduc
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `LevelPointCoordinates.WordIndPf.word_induction_of_parts_holds`.
+A detailed English derivation is pending.
 -/
 theorem word_induction_of_parts : LevelPointCoordinates.WordIndOfParts := LevelPointCoordinates.WordIndPf.word_induction_of_parts_holds
 

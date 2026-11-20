@@ -16,7 +16,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp only [aeval_C]`. Rewrite using `[eq_intCast, eq_intCast, map_intCast]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p n hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 -/
 theorem ringHom_aeval {A A' : Type*} [CommRing A] [CommRing A'] [Algebra ℤ A] (f : A →+* A')
     (z : (Σ k, ι k) → A) (g : MRing ι) : f (aeval z g) = aeval (fun p => f (z p)) g := by
@@ -26,7 +26,7 @@ theorem ringHom_aeval {A A' : Type*} [CommRing A] [CommRing A'] [Algebra ℤ A] 
   | mul_X p n hp => simp [hp]
 
 /- English proof (translation)
-Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap_homog y hg, mul_eq_zero, C_eq_zero]`. Conclude with `or_iff_left (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (X_ne_zero k))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mCoordIdeal_iff {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) {g : MRing ι} {d : K → ℕ}
     (hg : IsMultiHomog g d) : g ∈ mCoordIdeal y ↔ aeval y g = 0 := by
@@ -34,7 +34,7 @@ theorem mem_mCoordIdeal_iff {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) {g 
   exact or_iff_left (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (X_ne_zero k))
 
 /- English proof (translation)
-Rewrite using `[mem_mCoordIdeal_iff y (homog_sub hf hg), map_sub, h, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_mem_mCoordIdeal {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) {f g : MRing ι} {d : K → ℕ}
     (hf : IsMultiHomog f d) (hg : IsMultiHomog g d) (h : aeval y f = aeval y g) :
@@ -44,7 +44,7 @@ theorem sub_mem_mCoordIdeal {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) {f 
 omit [Fintype K] in
 
 /- English proof (translation)
-The claim follows from `h ▸ hf`.
+A detailed English derivation is pending.
 -/
 theorem homogD {f : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (h : a = b) : IsMultiHomog f b :=
   h ▸ hf
@@ -52,7 +52,7 @@ theorem homogD {f : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (h : a =
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [Pi.add_apply, pow_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_pow_add {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (e₁ e₂ : K → ℕ) :
     ∏ k, y ⟨k, c k⟩ ^ (e₁ + e₂) k = (∏ k, y ⟨k, c k⟩ ^ e₁ k) * ∏ k, y ⟨k, c k⟩ ^ e₂ k := by
@@ -62,7 +62,7 @@ theorem prod_pow_add {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[chartMon]`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hQ)).mp h`. Conclude with `hc k (hQ.mem_of_pow_mem _ hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chartMon_notMem {Q : Ideal (MRing ι)} (hQ : Q.IsPrime) {c : ∀ k, ι k}
     (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ Q) (n : K → ℕ) : chartMon c n ∉ Q := by
@@ -72,7 +72,7 @@ theorem chartMon_notMem {Q : Ideal (MRing ι)} (hQ : Q.IsPrime) {c : ∀ k, ι k
   exact hc k (hQ.mem_of_pow_mem _ hk)
 
 /- English proof (translation)
-The claim follows from `exists_form_of_mem_chartRingZ y c hc (mem_curveRing.mp b.2 c hc)`.
+A detailed English derivation is pending.
 -/
 theorem exists_form {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (b : curveRing y) :
@@ -106,7 +106,7 @@ def formIdeal {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k)
     ring
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_formIdeal {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} {hc : ∀ k, y ⟨k, c k⟩ ≠ 0}
     {Q : Ideal (MRing ι)} {b : curveRing y} :
@@ -115,33 +115,29 @@ theorem mem_formIdeal {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {c : ∀ 
   Iff.rfl
 
 /- English proof (translation)
-Establish `hmonQ : ∀ n, chartMon c n ∉ Q` using `chartMon_notMem hQ fun k h => hXc k (hQW h)`. Establish `htr : ∀ {f g : MRing ι} {n : K → ℕ}, IsMultiHomog f n → IsMultiHomog g n → aeval y f = aeval y g → g ∈ Q → f ∈ Q`. Introduce `f g n hf hg he hgQ`. Establish `h1` using `Q.add_mem (hPQ (sub_mem_mCoordIdeal y hf hg he)) hgQ`. Rewrite `h1` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hIQm : formIdeal y c hc Q ≤ m`. Introduce `x hx`. Take `⟨e, g, hg, hv, hgQ⟩` from `mem_formIdeal.mp hx`. Conclude with `(hWB x hg hv).mp (hQW hgQ)`. Establish `haIQ : a ∈ formIdeal y c hc Q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, h, hh, hv⟩` from `exists_form y c hc b`. Use `mem_formIdeal.mpr ⟨e + d, h * s, homog_mul hh hs, ?_, Q.mul_mem_left _ hsQ⟩` and prove the remaining obligations. Rewrite using `[map_mul, hv, prod_pow_add]`. Take the linear combination `(∏ k, y ⟨k, c k⟩ ^ e k) * hbx`. Establish `hIQprime : (formIdeal y c hc Q).IsPrime`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.eq_top_iff_one]`. Introduce `h1`. Take `⟨e, g, hg, hv, hgQ⟩` from `mem_formIdeal.mp h1`. Use `hmonQ e (htr (homog_chartMon c e) hg ?_ hgQ)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_chartMon, hv]`. Simplify using the standard rewrite rules. Introduce `x₁ x₂ h12`. Take `⟨e, g, hg, hv, hgQ⟩` from `mem_formIdeal.mp h12`. Take `⟨e₁, h₁, hh₁, hv₁⟩` from `exists_form y c hc x₁`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₂, h₂, hh₂, hv₂⟩` from `exists_form y c hc x₂`. Establish `hf : h₁ * h₂ * chartMon c e ∈ Q`. Use `htr (homog_mul (homog_mul hh₁ hh₂) (homog_chartMon c e)) (homogD (homog_mul hg (homog_chartMon c (e₁ + e₂))) (add_comm _ _)) ?_ (Q.mul_mem_right (chartMon c (e₁ + e₂)) hgQ)` and prove the remaining obligations. Simplify using `only [map_mul, aeval_chartMon, hv₁, hv₂, hv, prod_pow_add, Subring.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hQ.mem_or_mem hf with h12 | h3` into its components or cases. Break down `hQ.mem_or_mem h12 with h1Q | h2Q` into its components or cases. Conclude with `Or.inl (mem_formIdeal.mpr ⟨e₁, h₁, hh₁, hv₁, h1Q⟩)`. Conclude with `Or.inr (mem_formIdeal.mpr ⟨e₂, h₂, hh₂, hv₂, h2Q⟩)`. Conclude with `absurd h3 (hmonQ e)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIQmax : (formIdeal y c hc Q).IsMaximal`. Establish `: Algebra.IsIntegral ℤ (curveRing y)` using `Algebra.IsIntegral.of_finite ℤ _`. Establish `hcomap : (formIdeal y c hc Q).comap (algebraMap ℤ (curveRing y)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem ha0 haIQ (Algebra.IsIntegral.isIntegral a)`. Establish `: ((formIdeal y c hc Q).comap (algebraMap ℤ (curveRing y))).IsPrime` using `Ideal.IsPrime.comap _`. Conclude with `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap _ (IsPrime.to_maximal_ideal hcomap)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hIQeq : formIdeal y c hc Q = m` using `hIQmax.eq_of_le hm.ne_top hIQm`. Take `⟨S, hS, hWS⟩` from `hWforms`. Introduce `f hfW`. Rewrite `hfW` using `[hWS]`. Use `(Ideal.span_le.mpr ?_) hfW` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `f hf`. Take `⟨δ, hδ⟩` from `hS f hf`. Establish `hfW' : f ∈ W` using `by rw [hWS]; exact Ideal.subset_span hf`. Take `⟨a', b', ha'm, hb'm, hv'⟩` from `hWfrac hδ hfW'`. Establish `ha'IQ : a' ∈ formIdeal y c hc Q` using `by rw [hIQeq]; exact ha'm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ea, ga, hga, hva, hgaQ⟩` from `mem_formIdeal.mp ha'IQ`. Take `⟨eb, hb, hhb, hvb⟩` from `exists_form y c hc b'`. Establish `hbQ : hb ∉ Q`. Introduce `h`. Establish `hbIQ : b' ∈ formIdeal y c hc Q` using `mem_formIdeal.mpr ⟨eb, hb, hhb, hvb, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hbIQ` using `[hIQeq]`. Conclude with `hb'm hbIQ`. Establish `h1 : hb * f * chartMon c ea ∈ Q`. Use `htr (homog_mul (homog_mul hhb hδ) (homog_chartMon c ea)) (homogD (homog_mul hga (homog_chartMon c (eb + δ))) (add_comm _ _)) ?_ (Q.mul_mem_right (chartMon c (eb + δ)) hgaQ)` and prove the remaining obligations. Simplify using `only [map_mul, aeval_chartMon, hvb, hva, prod_pow_add]`.
-
-Take the linear combination `(∏ k, y ⟨k, c k⟩ ^ eb k) * (∏ k, y ⟨k, c k⟩ ^ ea k) * hv'`. Break down `hQ.mem_or_mem h1 with h2 | h3` into its components or cases. Break down `hQ.mem_or_mem h2 with h4 | h5` into its components or cases. Conclude with `absurd h4 hbQ`. Conclude with `h5`.
-
-Conclude with `absurd h3 (hmonQ ea)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem le_of_minimal {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (hfin : Module.Finite ℤ (curveRing y)) (m : Ideal (curveRing y)) (hm : m.IsMaximal)
@@ -228,11 +224,11 @@ theorem le_of_minimal {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ 
   · exact absurd h3 (hmonQ ea)
 
 /- English proof (translation)
-Establish `key : ∀ w : LocalizedModule m.primeCompl (R ⧸ Ideal.span {a}), w = 0`. Introduce `w`. Proceed by induction on `w using LocalizedModule.induction_on with`. Consider the case `h x t`. Rewrite using `[← LocalizedModule.zero_mk t, LocalizedModule.mk_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Take `⟨x', rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[smul_zero, smul_zero, Submonoid.smul_def, Submonoid.smul_def, Algebra.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self a)`. Establish `hsub : Subsingleton (LocalizedModule m.primeCompl (R ⧸ Ideal.span {a}))` using `⟨fun u v => by rw [key u, key v]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[locLen, dif_pos ‹m.IsPrime›, Module.length_eq_zero_iff.mpr hsub]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem locLen_quot_eq_zero {R : Type*} [CommRing R] (m : Ideal R) [m.IsPrime] {a : R} (ha : a ∉ m) :
     locLen m (R ⧸ Ideal.span {a}) = 0 := by

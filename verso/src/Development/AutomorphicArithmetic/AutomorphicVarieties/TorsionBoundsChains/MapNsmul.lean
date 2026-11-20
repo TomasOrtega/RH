@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `G _ A B f g n j h hB z`. Establish `hc : groupHomology.chainsMap (MonoidHom.id G) (f ≫ g) = n • 𝟙 (groupHomology.inhomogeneousChains A)`. Use extensionality with `i : 1`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Use `DFunLike.ext _ _ fun c => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finsupp.ext fun y => ?_` and prove the remaining obligations. Simplify using `[h]`. Establish `hm : groupHomology.map (MonoidHom.id G) (f ≫ g) j = n • 𝟙 (groupHomology A j)`. Simplify using `only [groupHomology.map, hc]`. Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyFunctor _ _ j).map _ = _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Functor.map_nsmul, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression. Establish `e1 : (groupHomology.map (MonoidHom.id G) (f ≫ g) j).hom z = n • z`. Rewrite using `[hm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← e1, groupHomology.map_id_comp]`. Establish `e2 : (groupHomology.map (MonoidHom.id G) f j).hom z = 0` using `Subsingleton.elim (α := groupHomology B j) _ _`. Simplify using `[e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.KH.mapNsmul :
     ∀ (G : Type) [Group G] (A B : Rep ℤ G) (f : A ⟶ B) (g : B ⟶ A) (n j : ℕ),

@@ -24,11 +24,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CMEigen
 
 /- English proof (translation)
-Take `⟨ψ', ⟨n, a, b, hch, he⟩, h'⟩` from `IsPolForm.pull_comp m (X.isLB c) (π := (lift (𝟙 X.A) (𝟙 X.A)).left) (L := X.P c) hψ`. Take `⟨φ₂, hsq, hiso⟩` from `hX.pol`. Establish `e : (lift (𝟙 X'.A) (𝟙 X'.A)).left ≫ φ₂ = p ≫ (lift (𝟙 X.A) (𝟙 X.A)).left`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst X.A X.A).left = _ ≫ (fst X.A X.A).left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `_ ≫ (snd X.A X.A).left = _ ≫ (snd X.A X.A).left`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hI : LBIso (X'.diag c) ((X.P c).pull (p ≫ (lift (𝟙 X.A) (𝟙 X.A)).left))` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso (hiso c) _ e.symm`. Conclude with `⟨ψ', ⟨n, a, b, (isChern_existsUnique_and_iso _ _ _ _ _).2 _ _ (pull_isLB (X.isLB c) _) (pull_isLB (X'.isLB c) _) hI.symm _ hch, he⟩, h'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem polForm_bc {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R R' : Type} [CommRing R] [CommRing R']
     (σ : R →+* R') {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')} {p : X'.A.left ⟶ X.A.left}
@@ -55,7 +55,7 @@ theorem polForm_bc {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R R' 
     (pull_isLB (X'.isLB c) _) hI.symm _ hch, he⟩, h'⟩
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun c ↦ hσ ((hx c).symm.trans (hy c))`.
+A detailed English derivation is pending.
 -/
 theorem corr_inj {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} (hσ : Function.Injective σ)
     {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp R')} [GrpObj A'] {b : Sp R' ⟶ Sp R} {q : A'.left ⟶ A.left}
@@ -64,7 +64,7 @@ theorem corr_inj {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} (hσ
   LinearMap.ext fun c ↦ hσ ((hx c).symm.trans (hy c))
 
 /- English proof (translation)
-The claim follows from `fun c ↦ by simp only [LinearMap.smul_apply, smul_eq_mul, hx c, map_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem corr_smul {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'}
     {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp R')} [GrpObj A'] {b : Sp R' ⟶ Sp R} {q : A'.left ⟶ A.left}
@@ -73,7 +73,7 @@ theorem corr_smul {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'}
   simp only [LinearMap.smul_apply, smul_eq_mul, hx c, map_mul]
 
 /- English proof (translation)
-Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic x).algHom τ.toRatAlgHom`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlg_emb {E : Type} [Field E] [NumberField E] (τ : E →+* ℂ) (x : E) : τ x ∈ algebraicClosure ℚ ℂ := by
   rw [mem_algebraicClosure_iff]
@@ -82,31 +82,29 @@ theorem isAlg_emb {E : Type} [Field E] [NumberField E] (τ : E →+* ℂ) (x : E
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hPC hDR hDC E _ _ _ I _ φ L 𝔠 X₀ X p U v₀ v a hφ hp hv hex hdesc`. Take `⟨y₀, yv, w, hy⟩` from `GlobalTheory.T.cm_period_transcendence_relation hPC hDR hDC E I φ L 𝔠 X₀ X p U v₀ v a hp hφ hv hex hdesc`. Establish `m` using `GlobalTheory.Published.AbelianDeRham.bcMor hp.grp`. Establish `hne : ∀ i, y₀ i ≠ 0` using `fun i ↦ (hy i).1`. Use `replace hy : ∀ i, m.Corr (y₀ i) (yv i) ∧ U.IsCMVec i (yv i) (w i) ∧ w i ≠ 0 ∧ IsAlgebraic ℚ (w i / a i) := fun i ↦ (hy i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ : Function.Injective (algebraMap Qb ℂ)` using `Subtype.val_injective`. Take `⟨ψ₀, hψ₀⟩` from `GlobalTheory.T.polarization_form_exists_free_de_rham hDR.1 X₀ U.c`. Take `⟨ψ, hψ, hψc⟩` from `polForm_bc (algebraMap Qb ℂ) hp m U.c hψ₀`. Establish `eig : ∀ i (b : 𝓞 (FR E)) (β : Qb), algebraMap Qb ℂ β = φ i ((b : FR E) : E) → act (dp0 Qb) (𝟙 _) X₀.rm b (y₀ i) = β • y₀ i`. Introduce `i b β hβ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := X₀.rm.hom b`. Use `haveI := X.rm.hom b`. Establish `h1 : m.Corr (act (dp0 Qb) (𝟙 _) X₀.rm b (y₀ i)) (push (dp0 ℂ) (𝟙 _) (X.rm.act b) (yv i))`. Rewrite using `[act_apply]`. Conclude with `GrpMor.Corr.push (m := m) m (X₀.rm.act b) (X.rm.act b) (hp.act b).symm (hy i).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : push (dp0 ℂ) (𝟙 _) (X.rm.act b) (yv i) = algebraMap Qb ℂ β • yv i`. Rewrite using `[hβ]`. Conclude with `(hy i).2.1.1 _ (X.rm.act b) fun w' ↦ U.act b w'`. Rewrite `h1` using `[h2]`. Conclude with `corr_inj hσ h1 (corr_smul (hy i).1 β)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `eigβ : ∀ i (b : 𝓞 (FR E)), ∃ β : Qb, algebraMap Qb ℂ β = φ i ((b : FR E) : E)` using `fun i b ↦ ⟨⟨_, isAlg_emb (φ i) _⟩, rfl⟩`. Establish `orth : ∀ (c : 𝔠.elt) (ψ' : LinearMap.BilinForm Qb (HdR X₀.A)), IsPolForm (dp0 Qb) (𝟙 _) X₀.A (X₀.diag c) ψ' → ∀ i j, ψ' (y₀ i) (y₀ j) = 0`. Introduce `c ψ' hψ' i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hψ'.isAlt _`. Take `⟨b, hb⟩` from `GlobalTheory.T.exists_ne_of_isCMType_of_ne φ hφ i j hij`. Take `⟨βi, hβi⟩` from `eigβ i b`. Take `⟨βj, hβj⟩` from `eigβ j b`. Use `GlobalTheory.T.polarization_form_ring_action_symmetric hDR hDC X₀ c ψ' hψ' b (y₀ i) (y₀ j)` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[eig i b βi hβi, eig j b βj hβj, LinearMap.map_smul₂, LinearMap.map_smul, smul_eq_mul, smul_eq_mul]`. Establish `hne' : βi ≠ βj` using `fun e ↦ hb (by rw [← hβi, ← hβj, e])`. Establish `: (βi - βj) * ψ' (y₀ i) (y₀ j) = 0` using `by rw [sub_mul, this, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne')`. Set `N : I → Module.End Qb (HdR X₀.A)` to `fun i ↦ (ψ₀.flip (y₀ i)).smulRight (y₀ i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN : ∀ i x, N i x = ψ₀ x (y₀ i) • y₀ i` using `fun _ _ ↦ rfl`. Use `⟨N, m, ψ, yv, w, hψ, ⟨?_, ?_, ?_⟩, fun i ↦ ⟨(hy i).2.1, (hy i).2.2.1, (hy i).2.2.2, ?_⟩⟩` and prove the remaining obligations. Introduce `i b`. Take `⟨β, hβ⟩` from `eigβ i b`. Use `LinearMap.ext fun x ↦ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `N i (act (dp0 Qb) (𝟙 _) X₀.rm b x) = act (dp0 Qb) (𝟙 _) X₀.rm b (N i x)`. Rewrite using `[hN, hN, GlobalTheory.T.polarization_form_ring_action_symmetric hDR hDC X₀ U.c ψ₀ hψ₀, eig i b β hβ, LinearMap.map_smul, map_smul, eig i b β hβ, smul_smul, smul_eq_mul, mul_comm]`. Introduce `i j`. Use `LinearMap.ext fun x ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `N i (N j x) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN, hN, LinearMap.map_smul₂, orth U.c ψ₀ hψ₀ j i, smul_zero, zero_smul]`. Introduce `c ψ' hψ'`. Use `⟨fun i x y ↦ ?_, fun i j x y ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hN, hN, LinearMap.map_smul₂, LinearMap.map_smul, smul_eq_mul, smul_eq_mul]`. Establish `h0 : (ψ₀ (y₀ i)) (y₀ i) = 0` using `hψ₀.isAlt (y₀ i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0' : (ψ' (y₀ i)) (y₀ i) = 0` using `hψ'.isAlt (y₀ i)`. Establish `hr` using `GlobalTheory.T.cm_periods_algebraic_nonzero hPC hDR E I φ L 𝔠 X₀ X p U hφ hp i (y₀ i) (hne i) (eig i) (ψ₀ (y₀ i)) (ψ' (y₀ i)) h0 h0' (fun b β hβ z ↦ ⟨by`. Rewrite using `[← GlobalTheory.T.polarization_form_ring_action_symmetric hDR hDC X₀ U.c ψ₀ hψ₀, eig i b β hβ, LinearMap.map_smul₂, smul_eq_mul], by`. Rewrite using `[← GlobalTheory.T.polarization_form_ring_action_symmetric hDR hDC X₀ c ψ' hψ', eig i b β hβ, LinearMap.map_smul₂, smul_eq_mul]⟩) x y`. Establish `a1 : ψ₀ x (y₀ i) = - ψ₀ (y₀ i) x` using `(LinearMap.IsAlt.neg hψ₀.isAlt (y₀ i) x).symm`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `a2 : ψ₀ y (y₀ i) = - ψ₀ (y₀ i) y` using `(LinearMap.IsAlt.neg hψ₀.isAlt (y₀ i) y).symm`. Establish `a3 : ψ' x (y₀ i) = - ψ' (y₀ i) x` using `(LinearMap.IsAlt.neg hψ'.isAlt (y₀ i) x).symm`. Rewrite using `[a1, a2, a3]`. Take the linear combination `-hr`. Rewrite using `[hN, hN, LinearMap.map_smul₂, LinearMap.map_smul, orth c ψ' hψ' i j]`.
-
-Simplify using the standard rewrite rules. Introduce `x₀ x hx`. Establish `h1` using `corr_smul (m := m) (hy i).1 (ψ₀ x₀ (y₀ i))`. Rewrite `h1` using `[← hψc x₀ x (y₀ i) (yv i) hx (hy i).1]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigen_ops : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (L : Set E)

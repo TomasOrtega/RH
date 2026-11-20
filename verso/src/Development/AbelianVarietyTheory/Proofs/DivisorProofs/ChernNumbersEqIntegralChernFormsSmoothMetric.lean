@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegreeEqIntegralTop
 namespace GlobalTheory.ChernDegree
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.chernWeilNumbers_of_degree_eq_chernIntegral GlobalTheory.T.degree_eq_integral_topChernForm_complex`.
+A detailed English derivation is pending.
 -/
 theorem chernWeilNumbers_holds : GlobalTheory.Published.ChernWeilNumbers :=
   GlobalTheory.T.chernWeilNumbers_of_degree_eq_chernIntegral GlobalTheory.T.degree_eq_integral_topChernForm_complex

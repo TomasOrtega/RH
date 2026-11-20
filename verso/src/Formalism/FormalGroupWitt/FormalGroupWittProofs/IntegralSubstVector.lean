@@ -11,7 +11,7 @@ open Formalism.G
 variable {K : Type u} [NormedField K] [IsUltrametricDist K] {τ : Type w}
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun p _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hA _) (norm_nonneg _) (hB _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_mul {A B : MvPowerSeries τ K} (hA : IntegralMv A) (hB : IntegralMv B) :
     IntegralMv (A * B) := by
@@ -23,7 +23,7 @@ theorem integral_mul {A B : MvPowerSeries τ K} (hA : IntegralMv A) (hB : Integr
   exact mul_le_one₀ (hA _) (norm_nonneg _) (hB _)
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[MvPowerSeries.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem integral_one : IntegralMv (1 : MvPowerSeries τ K) := by
   classical
@@ -32,7 +32,7 @@ theorem integral_one : IntegralMv (1 : MvPowerSeries τ K) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using integral_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `integral_mul ih hA`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem integral_pow {A : MvPowerSeries τ K} (hA : IntegralMv A) (n : ℕ) :
     IntegralMv (A ^ n) := by
@@ -41,7 +41,7 @@ theorem integral_pow {A : MvPowerSeries τ K} (hA : IntegralMv A) (n : ℕ) :
   | succ n ih => rw [pow_succ]; exact integral_mul ih hA
 
 /- English proof (translation)
-Unfold `Finsupp.prod`. Conclude with `Finset.prod_induction _ (fun x => IntegralMv x) (fun _ _ hx hy => integral_mul hx hy) integral_one (fun i _ => integral_pow (ha i) _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem integral_finsuppProd {ι : Type v} (a : ι → MvPowerSeries τ K) (ha : ∀ i, IntegralMv (a i))
     (n : ι →₀ ℕ) : IntegralMv (n.prod fun s e => (a s) ^ e) := by
@@ -51,9 +51,9 @@ theorem integral_finsuppProd {ι : Type v} (a : ι → MvPowerSeries τ K) (ha :
     integral_one (fun i _ => integral_pow (ha i) _)
 
 /- English proof (translation)
-Introduce `d`. Establish `hs : MvPowerSeries.HasSubst a` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha0`. Rewrite using `[MvPowerSeries.coeff_subst hs g d]`. Establish `hfin` using `MvPowerSeries.coeff_subst_finite hs g d`. Rewrite using `[finsum_eq_sum _ hfin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun n _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, norm_mul]`. Conclude with `mul_le_one₀ (hg n) (norm_nonneg _) (integral_finsuppProd a ha n d)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integralSubstV {ι : Type v} [Finite ι] (g : MvPowerSeries ι K)
     (a : ι → MvPowerSeries τ K) (hg : IntegralMv g)
@@ -71,7 +71,7 @@ theorem integralSubstV {ι : Type v} [Finite ι] (g : MvPowerSeries ι K)
 end Formalism.FG.IntegralSubstitution
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ g a hg ha0 ha` and use `Formalism.FG.IntegralSubstitution.integralSubstV g a hg ha0 ha`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Formalism.FG.integral_subst_vector : Formalism.FG.IntegralSubstV.{u, v, w} :=
   fun _ _ _ _ _ _ g a hg ha0 ha => Formalism.FG.IntegralSubstitution.integralSubstV g a hg ha0 ha

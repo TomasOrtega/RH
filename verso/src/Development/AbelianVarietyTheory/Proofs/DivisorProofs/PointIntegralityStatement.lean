@@ -15,9 +15,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.
 open GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.LieRead
 
 /- English proof (translation)
-Introduce `hP hH D O hc hN A T H hr`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.T.lie_lattice_degree_height_bounded hP hH D O hc hN A T H hr`. Take `⟨C₃, hC₃⟩` from `GlobalTheory.T.filtration_lattice_degree_height_bounded hP hH D O hc hN A T H hr`. Use `⟨max C₂ C₃, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨K, _, _, F, ι, hg, ht⟩` from `GlobalTheory.T.interior_point_semi_fibration hP hH D O hc hN A T H hr y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `(GlobalTheory.T.semi_fibration_lie_lattice_full K F).2.1`. Use `⟨K, inferInstance, inferInstance, F, h, hg, hh, (hC₂ y hy K F ι h ht hh).trans (le_max_left _ _), fun τ k hk => ?_⟩` and prove the remaining obligations. Take `⟨e₁, e₂⟩` from `hC₃ y hy K F ι h ht hh τ k hk`. Conclude with `⟨stepLat O F τ k, inf_le_left, e₁, e₂.trans (le_max_right _ _)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.HeightParts.ptInt : Hypotheses2 → HypothesesH → PtInt := by
   intro hP hH D O hc hN A T H hr

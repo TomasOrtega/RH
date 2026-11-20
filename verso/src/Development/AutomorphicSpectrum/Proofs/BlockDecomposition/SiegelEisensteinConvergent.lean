@@ -41,21 +41,21 @@ namespace GlobalTheory.CompanionTheory.Godement
 open GlobalTheory.StdUnn.HeightExists GlobalTheory.StdUnn.PolesModel
 
 /- English proof (translation)
-Introduce `D n χ s₁ φ hcont hlaw hs g`. Take `⟨H, φ₀, -, -, hH, hsec, hne⟩` from `GlobalTheory.StdUnn.PolesModel.hypotheses_hold D n 0 (s₁.re : ℂ)`. Establish `hconv0` using `GlobalTheory.StdUnn.PolesModel.cosetConv_stdSec hH hsec (s := (s₁.re : ℂ)) (by simpa using hs) g`. Establish `hstd : GlobalTheory.StdUnn.stdSec H φ₀ (s₁.re : ℂ) (s₁.re : ℂ) = φ₀`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[GlobalTheory.StdUnn.stdSec, GlobalTheory.Doubling.npow]`. Rewrite `hconv0` using `[hstd]`. Establish `hK : IsCompact (↑(GlobalTheory.StdUnn.K D n) : Set (G D n))` using `GlobalTheory.StdUnn.HeightExists.isCompact_K`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hcont.continuousOn`. Establish `hC0 : 0 ≤ C` using `le_trans (norm_nonneg _) (hC 1 (GlobalTheory.StdUnn.K D n).one_mem)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k₀, -, hk₀⟩` from `hK.exists_isMinOn ⟨1, (GlobalTheory.StdUnn.K D n).one_mem⟩ hsec.2.1.norm.continuousOn`. Establish `hc : 0 < ‖φ₀ k₀‖` using `norm_pos_iff.mpr (hne k₀)`. Establish `hχ : ∀ u : Circle, ‖(u : ℂ)‖ = 1` using `fun u => by first`. Consider the case `exact Circle.norm_coe u`. Consider the case `exact mem_sphere_zero_iff_norm.mp u.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [Circle.abs_coe]`. Establish `key : ∀ x, ‖φ x‖ ≤ C / ‖φ₀ k₀‖ * ‖φ₀ x‖`. Introduce `x`. Take `⟨p, hp, k, hk, rfl⟩` from `GlobalTheory.StdUnn.Iwasawa.exists_mul D n x`. Take `⟨a, ha⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_blkA hp`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hlaw p hp a ha k, hsec.1 p hp a ha k]`. Establish `hu : IsUnit (GlobalTheory.Doubling.absA D (Matrix.GeneralLinearGroup.det a))` using `(Group.isUnit _).map _`. Establish `hr : (0 : ℝ) < (GlobalTheory.Doubling.absA D (Matrix.GeneralLinearGroup.det a) : ℝ)` using `NNReal.coe_pos.mpr (pos_iff_ne_zero.mpr hu.ne_zero)`. Establish `hRR : ‖GlobalTheory.Doubling.npow (GlobalTheory.Doubling.absA D (Matrix.GeneralLinearGroup.det a)) ((s₁.re : ℂ) + (n : ℂ) / 2)‖ = ‖GlobalTheory.Doubling.npow (GlobalTheory.Doubling.absA D (Matrix.GeneralLinearGroup.det a)) (s₁ + (n : ℂ) / 2)‖`. Simplify using `only [GlobalTheory.Doubling.npow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hr, Complex.norm_cpow_eq_rpow_re_of_pos hr]`. Apply the tactic sequence `congr 1 <;> simp`. Establish `hb : ‖φ k‖ ≤ C / ‖φ₀ k₀‖ * ‖φ₀ k‖`. Use `le_trans (hC k hk) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [norm_mul, hχ, hRR]`. Combine the equalities or inequalities in the displayed calculation. Unfold `GlobalTheory.Eis.CosetConv at hconv0 ⊢`. Use `Summable.of_nonneg_of_le (fun q => norm_nonneg _) (fun q => ?_) (hconv0.mul_left (C / ‖φ₀ k₀‖))` and prove the remaining obligations. Simplify using `only [GlobalTheory.Eis.term]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `key _`.
+A detailed English derivation is pending.
 -/
 theorem cosetConv_of_continuous_law : ∀ (D : D7) (n : ℕ) (χ : (AE D)ˣ →* Circle) (s₁ : ℂ) (φ : G D n → ℂ), Continuous φ →
     (∀ p ∈ P D n, ∀ a : GL (Fin n) (AE D), blkA (mat p) = a.1 → ∀ g,

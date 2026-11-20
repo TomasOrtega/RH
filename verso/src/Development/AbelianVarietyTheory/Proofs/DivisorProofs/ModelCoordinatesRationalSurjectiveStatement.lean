@@ -11,7 +11,7 @@ open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatDarbSurj.rat_surj | exact GlobalTheory.RatDarbSurj.rat_surj | (intros; apply GlobalTheory.RatDarbSurj.rat_surj <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.model_coordinates_rational_surjective : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W), B.IsGood σ → M.IsGood B.ψ →

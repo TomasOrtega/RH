@@ -11,9 +11,9 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.L
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Establish `h1 : a < ((Multiplicative.ofAdd (0 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Simplify using `using h`. Rewrite `h1` using `[WithZero.lt_ofAdd_iff ha]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[WithZero.le_ofAdd_iff ha]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem le_ofAdd_neg_one_of_lt_one_local_unitary_orbits {a : WithZero (Multiplicative ℤ)} (h : a < 1) :
     a ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
@@ -26,15 +26,13 @@ private theorem le_ofAdd_neg_one_of_lt_one_local_unitary_orbits {a : WithZero (M
     omega
 
 /- English proof (translation)
-Establish `hv : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))` using `hϖ`. Establish `hlt : Valued.v ϖ < 1`. Rewrite using `[hv]`. Conclude with `(by decide : (Multiplicative.ofAdd (-1 : ℤ)) < 1)` after adjusting the coercions. Establish `hne : ϖ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `hv` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe hv`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hd⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd1 : Valued.v (d : Fv F v) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 d.2`. Rewrite using `[hd, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Introduce `hx`. Establish `hle : Valued.v (x : Fv F v) ≤ Valued.v ϖ`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hv]`. Conclude with `le_ofAdd_neg_one_of_lt_one_local_unitary_orbits hx`. Establish `hmem : (x : Fv F v) / ϖ ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_div₀]`. Conclude with `div_le_one_of_le₀ hle zero_le'`.
-
-Use `⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mem_unifO_iff {ϖ : Fv F v} (hϖ : IsUnif v ϖ) (x : v.adicCompletionIntegers F) :
     x ∈ unifO v ϖ ↔ Valued.v (x : Fv F v) < 1 := by
@@ -68,11 +66,11 @@ def redO : v.adicCompletionIntegers F →+ 𝓞 F ⧸ v.asIdeal where
   map_add' x y := red_add v x.2 y.2
 
 /- English proof (translation)
-Introduce `ϖ hϖ`. Establish `hker : unifO v ϖ = (redO v).ker`. Use extensionality with `x`. Rewrite using `[mem_unifO_iff v hϖ x, AddMonoidHom.mem_ker]`. Conclude with `(red_eq_zero_iff v x.2).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (redO v)`. Introduce `t`. Take `⟨y, hy, hyt⟩` from `red_surj v t`. Conclude with `⟨⟨y, hy⟩, hyt⟩`. Rewrite using `[hker, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hsurj, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem resIdx_holds : ResIdx v := by
   intro ϖ hϖ

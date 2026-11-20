@@ -34,7 +34,7 @@ def hermToME : hermA D n ≃ᵐ HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF D.
     exact continuous_hermFrom.measurable
 
 /- English proof (translation)
-The claim follows from `(hermToME (D := D) (n := n)).measurableEmbedding.integral_map W`.
+A detailed English derivation is pending.
 -/
 theorem integral_map_hermTo (lam : Measure (hermA D n))
     (W : HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF D.host.F) D.sp.cm.sig n → ℂ) :
@@ -42,7 +42,7 @@ theorem integral_map_hermTo (lam : Measure (hermA D n))
   (hermToME (D := D) (n := n)).measurableEmbedding.integral_map W
 
 /- English proof (translation)
-The claim follows from `((hermToME (D := D) (n := n)).measurableEmbedding.integrable_map_iff).2 h`.
+A detailed English derivation is pending.
 -/
 theorem integrable_map_hermTo (lam : Measure (hermA D n))
     (W : HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF D.host.F) D.sp.cm.sig n → ℂ) (h : Integrable (fun b => W (hermTo b)) lam) :

@@ -25,7 +25,7 @@ section Ideal
 variable {L : LB Y} {L' : LB Y'} {ι : Type}
 
 /- English proof (translation)
-The claim follows from `ger_appLE φ (l.le j) z hj _`.
+A detailed English derivation is pending.
 -/
 theorem secGer_chartSec (l : ChartPull L' L φ) (s : ι → L.Sec) (j : L'.ι) (z : Y') (hj : z ∈ L'.U j)
     (i : ι) : secGer (fun i => chartSec l (s i)) j z hj i =
@@ -33,7 +33,7 @@ theorem secGer_chartSec (l : ChartPull L' L φ) (s : ι → L.Sec) (j : L'.ι) (
   ger_appLE φ (l.le j) z hj _
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `exists_chart hL' z`. Rewrite using `[stalkId_cutIdeal hL' _ j z hj, stalkId_cutIdeal hL s _ _ (l.le j hj), Ideal.map_span, ← Set.range_comp]`. Conclude with `congrArg (fun f => Ideal.span (Set.range f)) (funext (secGer_chartSec l s j z hj))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkId_cutIdeal_chartSec (hL : L.IsLB) (hL' : L'.IsLB) (l : ChartPull L' L φ)
     (s : ι → L.Sec) (z : Y') : stalkId (cutIdeal hL' fun i => chartSec l (s i)) z =
@@ -44,7 +44,7 @@ theorem stalkId_cutIdeal_chartSec (hL : L.IsLB) (hL' : L'.IsLB) (l : ChartPull L
   exact congrArg (fun f => Ideal.span (Set.range f)) (funext (secGer_chartSec l s j z hj))
 
 /- English proof (translation)
-The claim follows from `stalkId_cutIdeal_chartSec hL _ (GlobalTheory.chartPullPull L φ) s z`.
+A detailed English derivation is pending.
 -/
 theorem stalkId_cutIdeal_secPull (hL : L.IsLB) (s : ι → L.Sec) (z : Y') :
     stalkId (cutIdeal (LB.isLB_pull hL φ) fun i => secPull (s i) φ) z =
@@ -54,9 +54,9 @@ theorem stalkId_cutIdeal_secPull (hL : L.IsLB) (s : ι → L.Sec) (z : Y') :
 variable {I : Y.IdealSheafData} {I' : Y'.IdealSheafData}
 
 /- English proof (translation)
-Use `⟨fun h z => ?_, fun h => Scheme.IdealSheafData.le_ofIdeals_iff.2 fun U a ha => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, -⟩` from `exists_affine (U := ⊤) (y := t z) trivial`. Rewrite using `[ds_stalkId_eq_map I W _ hW, Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Establish `h₀ : (t.app W.1).hom a = 0` using `t.ideal_ker_le W (h W ha)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Scheme.Hom.germ_stalkMap_apply t _ z hW a).trans ((congrArg _ h₀).trans (map_zero _))`. Use `fun_ext_ger (U := t ⁻¹ᵁ U.1) fun z hz => ?_` and prove the remaining obligations. Use `h z ((mem_ideal_iff_ger I U a).1 ha _ hz)` as an intermediate fact. Conclude with `(Scheme.Hom.germ_stalkMap_apply t _ z hz a).symm.trans (this.trans (map_zero _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_ker_iff_stalk (t : T ⟶ Y) :
     I ≤ t.ker ↔ ∀ z, stalkId I (t z) ≤ RingHom.ker (t.stalkMap z).hom := by
@@ -74,7 +74,7 @@ variable (hI : ∀ z, stalkId I' z = (stalkId I (φ z)).map (φ.stalkMap z).hom)
 include hI
 
 /- English proof (translation)
-Rewrite using `[le_ker_iff_stalk, le_ker_iff_stalk]`. Use `forall_congr' fun z => ?_` and prove the remaining obligations. Rewrite using `[hI, Ideal.map_le_iff_le_comap, RingHom.comap_ker, Scheme.Hom.stalkMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem le_ker_iff_comp (t : T ⟶ Y') : I' ≤ t.ker ↔ I ≤ (t ≫ φ).ker := by
   rw [le_ker_iff_stalk, le_ker_iff_stalk]
@@ -83,12 +83,12 @@ theorem le_ker_iff_comp (t : T ⟶ Y') : I' ≤ t.ker ↔ I ≤ (t ≫ φ).ker :
   rfl
 
 /- English proof (translation)
-The claim follows from `(le_ker_iff_comp hI _).1 I'.ker_subschemeι.ge`.
+A detailed English derivation is pending.
 -/
 theorem le_map_of_stalk : I ≤ I'.map φ := (le_ker_iff_comp hI _).1 I'.ker_subschemeι.ge
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((le_ker_iff_comp hI _).2 (by rw [Limits.pullback.condition] exact I.ker_subschemeι.ge.trans (Scheme.Hom.le_ker_comp _ _))) (Scheme.IdealSheafData.le_map_iff_comap_le.1 (le_map_of_stalk hI))`.
+A detailed English derivation is pending.
 -/
 theorem eq_comap_of_stalk : I' = I.comap φ :=
   le_antisymm ((le_ker_iff_comp hI _).2 (by
@@ -97,7 +97,7 @@ theorem eq_comap_of_stalk : I' = I.comap φ :=
     (Scheme.IdealSheafData.le_map_iff_comap_le.1 (le_map_of_stalk hI))
 
 /- English proof (translation)
-The claim follows from `isPullback_of_isClosedImmersion _ _ _ _ hψ.symm (by rw [I.ker_subschemeι, I'.ker_subschemeι, eq_comap_of_stalk hI])`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_subscheme {ψ : I'.subscheme ⟶ I.subscheme}
     (hψ : ψ ≫ I.subschemeι = I'.subschemeι ≫ φ) : IsPullback I'.subschemeι ψ φ I.subschemeι :=
@@ -105,14 +105,14 @@ theorem isPullback_subscheme {ψ : I'.subscheme ⟶ I.subscheme}
     rw [I.ker_subschemeι, I'.ker_subschemeι, eq_comap_of_stalk hI])
 
 /- English proof (translation)
-Rewrite using `[eq_comap_of_stalk hI, Scheme.IdealSheafData.support_comap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_support_iff_of_stalk (z : Y') : z ∈ I'.support ↔ φ z ∈ I.support := by
   rw [eq_comap_of_stalk hI, Scheme.IdealSheafData.support_comap]
   rfl
 
 /- English proof (translation)
-Introduce `z hz` and use `hO _ ((mem_support_iff_of_stalk hI z).1 hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SuppIn.preimage {O : Y.Opens} (hO : SuppIn O I) : SuppIn (φ ⁻¹ᵁ O) I' :=
   fun z hz => hO _ ((mem_support_iff_of_stalk hI z).1 hz)
@@ -126,7 +126,7 @@ variable {p : Y ⟶ Sp k} {p' : Y' ⟶ Sp k'} {σ : k →+* k'} {B : LB Y} {B' :
   (hI : ∀ z, stalkId I' z = (stalkId I (φ z)).map (φ.stalkMap z).hom)
 
 /- English proof (translation)
-Set `_` to `(φ.stalkMap z).hom.toAlgebra`. Establish `: Module.Flat (Y.presheaf.stalk (φ z)) (Y'.presheaf.stalk z)` using `Flat.stalkMap φ z`. Establish `: IsLocalHom (algebraMap (Y.presheaf.stalk (φ z)) (Y'.presheaf.stalk z))` using `inferInstanceAs (IsLocalHom (φ.stalkMap z).hom)`. Establish `: Module.FaithfullyFlat (Y.presheaf.stalk (φ z)) (Y'.presheaf.stalk z)` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`. Conclude with `Ideal.comap_map_eq_self_of_faithfullyFlat J`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comap_map_stalkMap [Flat φ] (z : Y') (J : Ideal (Y.presheaf.stalk (φ z))) :
     (J.map (φ.stalkMap z).hom).comap (φ.stalkMap z).hom = J := by
@@ -141,9 +141,9 @@ theorem comap_map_stalkMap [Flat φ] (z : Y') (J : Ideal (Y.presheaf.stalk (φ z
 include hI in
 
 /- English proof (translation)
-Use `⟨fun h => vanishesTo_of_exists fun y _ hy => ?_, fun h => h.pullChart a w le_rfl fun z => (hI z).ge⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `φ.surjective y`. Take `⟨i, hi⟩` from `exists_chart hB' z`. Use `vanishesTo_iff_forall.1 h z (show z ∈ φ ⁻¹ᵁ O from hy) i hi` as an intermediate fact. Rewrite `this` using `[germ_pullChart, hI, ← Ideal.map_pow, ← Ideal.mem_comap, comap_map_stalkMap]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, _, this⟩`.
+Supply the required witnesses or components.
 -/
 theorem vanishesTo_pullChart_iff_of_flat [Flat φ] [Surjective φ] (hB' : B'.IsLB)
     (a : ChartPull B' B φ) (w : φ ≫ p = p' ≫ spMap σ) (f : H0 p B O) :
@@ -157,14 +157,14 @@ theorem vanishesTo_pullChart_iff_of_flat [Flat φ] [Surjective φ] (hB' : B'.IsL
   exact ⟨_, _, this⟩
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @Flat) H.flip inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem flat_of_isPullback {E E' : Type} [Field E] [Field E'] {σ : E →+* E'} {p : Y ⟶ Sp E}
     {p' : Y' ⟶ Sp E'} (H : IsPullback φ p' p (spMap σ)) : Flat φ :=
   MorphismProperty.of_isPullback (P := @Flat) H.flip inferInstance
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @Surjective) H.flip ⟨fun x => ⟨IsLocalRing.closedPoint E', Subsingleton.elim (α := PrimeSpectrum E) _ _⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem surjective_of_isPullback {E E' : Type} [Field E] [Field E'] {σ : E →+* E'} {p : Y ⟶ Sp E}
     {p' : Y' ⟶ Sp E'} (H : IsPullback φ p' p (spMap σ)) : Surjective φ :=
@@ -172,9 +172,9 @@ theorem surjective_of_isPullback {E E' : Type} [Field E] [Field E'] {σ : E →+
     ⟨fun x => ⟨IsLocalRing.closedPoint E', Subsingleton.elim (α := PrimeSpectrum E) _ _⟩⟩
 
 /- English proof (translation)
-Establish `e : Ideal.span {r | r * x ∈ J} = ⊤`. Rewrite using `[← hW.iSup_basicOpen_eq_self_iff]`. Use `le_antisymm (iSup_le fun r => Y.basicOpen_le _) fun y hy => ?_` and prove the remaining obligations. Set `` to `TopCat.Presheaf.algebra_section_stalk Y.presheaf (⟨y, hy⟩ : W)`. Use `hW.isLocalization_stalk ⟨y, hy⟩` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨r, hr, hx⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff (hW.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl (Y.presheaf.stalk y) J x).1 (h y hy)`. Conclude with `Opens.mem_iSup.2 ⟨⟨r, hx⟩, (Y.mem_basicOpen r y hy).2 (IsLocalization.map_units (Y.presheaf.stalk y) (⟨r, hr⟩ : (hW.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl))⟩`. Establish `e' : Ideal.span {r | r * x ∈ J} ≤ J.colon {x}` using `Ideal.span_le.2 fun r hr => Submodule.mem_colon_singleton.2 hr`. Simplify using `using Submodule.mem_colon_singleton.1 (e' (e.ge (Submodule.mem_top (x := 1))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_ger {W : Y.Opens} (hW : IsAffineOpen W) (J : Ideal Γ(Y, W)) (x : Γ(Y, W))
     (h : ∀ y hy, ger y hy x ∈ J.map (ger y hy)) : x ∈ J := by
@@ -192,13 +192,11 @@ theorem mem_of_forall_ger {W : Y.Opens} (hW : IsAffineOpen W) (J : Ideal Γ(Y, W
   simpa using Submodule.mem_colon_singleton.1 (e' (e.ge (Submodule.mem_top (x := 1))))
 
 /- English proof (translation)
-Use `letI := α.toAlgebra`. Use `letI := β.toAlgebra`. Use `letI := ρ.toAlgebra`. Use `letI := (ρ.comp α).toAlgebra`. Use `haveI : IsScalarTower k A A' := IsScalarTower.of_algebraMap_eq' rfl`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower k k' A' := IsScalarTower.of_algebraMap_eq' (congrArg CommRingCat.Hom.hom H.w)`. Establish `P : Algebra.IsPushout k A k' A'` using `CommRingCat.isPushout_iff_isPushout.1 H`. Set `lam : A' →ₗ[A] A` to `P.out.lift (Algebra.linearMap k A ∘ₗ μ)`. Establish `hl (b : k') (a : A) : lam (β b * ρ a) = α (μ b) * a`. Rewrite using `[mul_comm, mul_comm _ a]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(lam.map_smul a _).trans (congrArg (a * ·) (P.out.lift_eq _ b))`. Establish `hJ (y : A') (hy : y ∈ J.map ρ) : lam y ∈ J`. Establish `hy' : y ∈ J • (⊤ : Submodule A A')`. Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `hy`.
-
-Conclude with `Submodule.smul_induction_on hy' (fun r hr y _ => by`. Rewrite using `[map_smul]; exact J.mul_mem_right _ hr) fun y y' h h' => by`. Rewrite using `[map_add]`. Conclude with `add_mem h h'`. Simplify `hJ _ h` using `only [map_sum, hl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_mem_of_isPushout [Algebra k k'] {A A' : Type} [CommRing A] [CommRing A'] (α : k →+* A)
     (β : k' →+* A') (ρ : A →+* A')
@@ -228,13 +226,13 @@ theorem sum_mem_of_isPushout [Algebra k k'] {A A' : Type} [CommRing A] [CommRing
 include hI in
 
 /- English proof (translation)
-Use `vanishesTo_iff_affine.2 fun W i hW => ?_` and prove the remaining obligations. Establish `hW' : IsAffineOpen (φ ⁻¹ᵁ W.1 ⊓ p' ⁻¹ᵁ ⊤)`. Rewrite using `[show φ ⁻¹ᵁ W.1 ⊓ p' ⁻¹ᵁ ⊤ = φ ⁻¹ᵁ W.1 from inf_top_eq _]`. Conclude with `TopForm.isAffineOpen_preimage_of_isPullback H W.2`. Establish `key` using `sum_mem_of_isPushout _ _ (φ.appLE W.1 _ inf_le_left).hom (isPushout_sections p p' φ H W.1 W.2) (I.ideal W ^ n) μ S c (fun t => resG Y hW ((f t).loc i)) (mem_of_forall_ger hW' _ _ fun z hz => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `exists_chart hB' z`. Establish `h₁` using `vanishesTo_iff_forall.1 h z (show z ∈ φ ⁻¹ᵁ O from (hW hz.1).1) j hj`. Establish `e : (ger z hz).comp (φ.appLE W.1 _ inf_le_left).hom = (φ.stalkMap z).hom.comp (ger (φ z) hz.1)` using `RingHom.ext (ger_appLE φ _ z hz)`. Rewrite using `[Ideal.map_map, e, ← Ideal.map_map, Ideal.map_pow, ← ds_stalkId_eq_map I W _ hz.1, Ideal.map_pow, ← hI]`. Use `Ideal.mul_mem_left _ ((φ.stalkMap z).hom (tr B (φ z) i (a.idx j)).val) h₁ using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_mul, germ_smul, germ_pullChart, ger_algX, ger_appLE, ger_resG, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← map_mul]`. Conclude with `congrArg (fun x => _ * (φ.stalkMap z).hom x) ((ger_resG hW _ hz.1 _).trans (germ_change i _ _ (hW hz.1).1 (hW hz.1).2 (a.le j hj) (f t))))`. Use `key using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `fun_ext_ger fun y hy => ?_` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, ger_algX, ger_resG]`. Express the relevant statement in the definitionally equal form `germ i y (hW hy).1 (hW hy).2 _ = _`. Simplify using `only [map_sum, germ_smul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vanishesTo_sum_of_baseChange [Algebra k k'] (H : IsPullback φ p' p (spMap (algebraMap k k')))
     (hB' : B'.IsLB) (a : ChartPull B' B φ) (μ : k' →ₗ[k] k) {τ : Type*} (S : Finset τ) (c : τ → k')
@@ -270,13 +268,11 @@ theorem vanishesTo_sum_of_baseChange [Algebra k k'] (H : IsPullback φ p' p (spM
 include hI in
 
 /- English proof (translation)
-Use `le_antisymm (fun g hg => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Take `⟨S, hS, c, rfl⟩` from `(Submodule.mem_span_image_iff_exists_fun k').1 hg.1`. Set `b` to `Module.Free.chooseBasis k k'`. Set `N` to `(Finset.univ : Finset S).biUnion fun t => (b.repr (c t)).support`. Establish `hc (t : S) : c t = ∑ j ∈ N, b j * algebraMap k k' (b.coord j (c t))` using `by conv_lhs => rw [← b.linearCombination_repr (c t), Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ (Finset.subset_biUnion_of_mem (fun t => (b.repr (c t)).support) (Finset.mem_univ t)) _ (by simp)]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by rw [Algebra.smul_def, mul_comm]; rfl`. Establish `e : ∑ t : S, c t • pullChart a H.w le_rfl t.1 = ∑ j ∈ N, b j • pullChart a H.w le_rfl (∑ t : S, b.coord j (c t) • t.1)`. Simplify using `only [map_sum, map_smulₛₗ, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun t _ => by rw [← Finset.sum_smul, ← hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `sum_mem fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨?_, ?_⟩, rfl⟩)` and prove the remaining obligations. Conclude with `sum_mem fun t _ => V.smul_mem _ (hS t.2)`. Conclude with `vanishesTo_sum_of_baseChange hI H hB' a (b.coord j) _ c (fun t => t.1) hg.2`. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
-
-Conclude with `⟨Submodule.subset_span ⟨f, hf.1, rfl⟩, VanishesTo.pullChart hf.2 a H.w le_rfl fun z => (hI z).ge⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Fil_span_pullChart_of_free [Algebra k k'] [Module.Free k k']
     (H : IsPullback φ p' p (spMap (algebraMap k k'))) (hB' : B'.IsLB) (a : ChartPull B' B φ)
@@ -313,7 +309,7 @@ section On
 variable {S S' : Scheme.{0}} {u : S ⟶ Y} {u' : S' ⟶ Y'} {ψ : S' ⟶ S}
 
 /- English proof (translation)
-Establish `key {r r' : S' ⟶ Y} (e : r = r') (h : r z ∈ U) (h' : r' z ∈ U) : (r.stalkMap z).hom (ger _ h x) = (r'.stalkMap z).hom (ger _ h' x)`. Substitute `e` using the available equality. Both sides reduce to the same expression. Use `key hψ h h'` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.stalkMap_comp, Scheme.Hom.stalkMap_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stalkMap_square (hψ : ψ ≫ u = u' ≫ φ) (z : S') {U : Y.Opens} (h : u (ψ z) ∈ U)
     (h' : φ (u' z) ∈ U) (x : Γ(Y, U)) :
@@ -327,15 +323,15 @@ theorem stalkMap_square (hψ : ψ ≫ u = u' ≫ φ) (z : S') {U : Y.Opens} (h :
   rwa [Scheme.Hom.stalkMap_comp, Scheme.Hom.stalkMap_comp] at this
 
 /- English proof (translation)
-The claim follows from `congrArg (fun r : S' ⟶ Y => r z) hψ`.
+A detailed English derivation is pending.
 -/
 theorem pt_square (hψ : ψ ≫ u = u' ≫ φ) (z : S') : u (ψ z) = φ (u' z) :=
   congrArg (fun r : S' ⟶ Y => r z) hψ
 
 /- English proof (translation)
-Establish `key (y : Y) (e : y = φ (u' z)) : ∃ θ : Y.presheaf.stalk y →+* Y'.presheaf.stalk (u' z), ∀ (U : Y.Opens) h h' (x : Γ(Y, U)), θ (ger _ h x) = (φ.stalkMap (u' z)).hom (ger _ h' x)`. Substitute `e` using the available equality. Conclude with `⟨_, fun _ _ _ _ => rfl⟩`. Take `⟨θ, hθ⟩` from `key _ (pt_square hψ z)`. Use `⟨θ, hθ, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U, hU, x, rfl⟩` from `Y.presheaf.germ_exist x`. Conclude with `(congrArg _ (hθ U hU (pt_square hψ z ▸ hU) x)).trans (stalkMap_square hψ z hU _ x).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_stalkHom (hψ : ψ ≫ u = u' ≫ φ) (z : S') :
     ∃ θ : Y.presheaf.stalk (u (ψ z)) →+* Y'.presheaf.stalk (u' z),
@@ -381,7 +377,7 @@ def pullOn (a : ChartPull B' B φ) (w : φ ≫ p = p' ≫ spMap σ)
     le_top
 
 /- English proof (translation)
-The claim follows from `germ_pullChart _ _ _ g j z _ hj`.
+A detailed English derivation is pending.
 -/
 theorem germ_pullOn (a : ChartPull B' B φ) (w : φ ≫ p = p' ≫ spMap σ)
     (hψ : ψ ≫ I.subschemeι = I'.subschemeι ≫ φ) (g : sectionsOnClosedSubscheme p B I) (j : (B'.pull I'.subschemeι).ι)
@@ -392,7 +388,7 @@ theorem germ_pullOn (a : ChartPull B' B φ) (w : φ ≫ p = p' ≫ spMap σ)
   germ_pullChart _ _ _ g j z _ hj
 
 /- English proof (translation)
-The claim follows from `LB.sec_ext fun j => fun_ext_ger fun z hz => by change germ j z (Opens.mem_top z) hz.2 _ = germ j z (Opens.mem_top z) hz.2 _ rw [germ_resTo, germ_pullChart, germ_pullOn] refine Eq.trans ?_ (congrArg (ψ.stalkMap z).hom (germ_resTo hO (fun _ => a.idx (j PUnit.unit)) (ψ z) ((chartPul …`.
+A detailed English derivation is pending.
 -/
 theorem resTo_pullChart (a : ChartPull B' B φ) (w : φ ≫ p = p' ≫ spMap σ)
     (hψ : ψ ≫ I.subschemeι = I'.subschemeι ≫ φ) (h : W ≤ φ ⁻¹ᵁ O) (hO : SuppIn O I)
@@ -408,9 +404,9 @@ theorem resTo_pullChart (a : ChartPull B' B φ) (w : φ ≫ p = p' ≫ spMap σ)
 end On
 
 /- English proof (translation)
-Take `⟨m, hm, hf⟩` from `h`. Use `⟨fun α => θ (m α), fun α => by rw [e, hm], ?_⟩` and prove the remaining obligations. Use `Ideal.mem_map_of_mem θ hf` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow, Ideal.map_span, ← Set.range_comp]`. Simplify using `only [map_sub, map_sum, map_mul, map_monoVal] at this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem LeadAt.map {R S R' S' : Type*} [CommRing R] [CommRing S] [CommRing R'] [CommRing S']
     {ι : Type} [Finite ι] {π : R →+* S} {π' : R' →+* S'} {x : ι → R} {a : ℕ} {f : R}
@@ -429,7 +425,7 @@ variable {p : Y ⟶ Sp k} {p' : Y' ⟶ Sp k'} {σ : k →+* k'} {L M : LB Y} {L'
   {hL : L.IsLB} {hL' : L'.IsLB} {ι : Type} [Finite ι] {s : ι → L.Sec} {O : Y.Opens} {W : Y'.Opens}
 
 /- English proof (translation)
-Introduce `z i j hi hj` and use `by obtain ⟨θ, hθ, hθ'⟩ := exists_stalkHom hψ z have := (e (ψ z) (m.idx i) (l.idx j) ((pt_square hψ z).symm ▸ m.le i hi) ((pt_square hψ z).symm ▸ l.le j hj)).map θ (ψ.stalkMap z).hom hθ' convert this using 1 · exact funext fun t => (secGer_chartSec l s j _ hj t).trans (hθ _ _ _ _) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasLead.pullChart (m : ChartPull M' M φ) (l : ChartPull L' L φ) (w : φ ≫ p = p' ≫ spMap σ)
     {ψ : (cutIdeal hL' fun i => chartSec l (s i)).subscheme ⟶ (cutIdeal hL s).subscheme}
@@ -457,7 +453,7 @@ variable {p : Y ⟶ Sp k} {p' : Y' ⟶ Sp k'} {σ : k →+* k'} (H : IsPullback 
 include H in
 
 /- English proof (translation)
-The claim follows from `(isPullback_subscheme hI hψ).flip.paste_vert H`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_subscheme_base {I : Y.IdealSheafData} {I' : Y'.IdealSheafData}
     (hI : ∀ z, stalkId I' z = (stalkId I (φ z)).map (φ.stalkMap z).hom)
@@ -468,7 +464,7 @@ theorem isPullback_subscheme_base {I : Y.IdealSheafData} {I' : Y'.IdealSheafData
 include H in
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @Etale) (isPullback_subscheme_base H hI (I'.subschemeMap_subschemeι I φ (le_map_of_stalk hI))) hS`.
+A detailed English derivation is pending.
 -/
 theorem etale_baseChange {I : Y.IdealSheafData} {I' : Y'.IdealSheafData}
     (hI : ∀ z, stalkId I' z = (stalkId I (φ z)).map (φ.stalkMap z).hom)
@@ -479,7 +475,7 @@ theorem etale_baseChange {I : Y.IdealSheafData} {I' : Y'.IdealSheafData}
 include H in
 
 /- English proof (translation)
-The claim follows from `have := smoothOfRelativeDimension_isStableUnderBaseChange.{0} D MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension D) H h`.
+A detailed English derivation is pending.
 -/
 theorem smooth_baseChange (D : ℕ) [h : SmoothOfRelativeDimension D p] :
     SmoothOfRelativeDimension D p' :=
@@ -494,7 +490,7 @@ abbrev chartPullCanon : ChartPull (K.baseChange H).bundle K.bundle φ :=
   GlobalTheory.chartPullPull K.bundle φ
 
 /- English proof (translation)
-Use `Eq.trans (congrArg ((K.baseChange H).jacobian i inf_le_left) (funext fun t => ?_)) (K.jacobian_baseChange H i inf_le_left inf_le_left _ _)` and prove the remaining obligations. Conclude with `(resG_appLE φ _ _ _).trans (LB.appLE_resG φ _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jacFun_baseChange (i : (K.baseChange H).bundle.ι) (j : L'.ι) :
     (K.baseChange H).jacFun (fun t => chartSec l (s t)) i j =
@@ -513,7 +509,7 @@ variable (hL : L.IsLB) (hA : A.IsLB) (hB : B.IsLB) (hL' : L'.IsLB) (hA' : A'.IsL
 include hA' hB' in
 
 /- English proof (translation)
-Rewrite using `[nonzeroLocus_chartSec _ e fun y _ _ => exists_chart (LB.isLB_div hA' (isLB_tw hB' hL' D)) y]`. Conclude with `he.preimage (stalkId_cutIdeal_chartSec hL hL' l s)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppIn_pullQuotSec (he : SuppIn (nonzeroLocus e) (cutIdeal hL s)) :
     SuppIn (nonzeroLocus (pullQuotSec l a b e)) (cutIdeal hL' fun t => chartSec l (s t)) := by
@@ -529,7 +525,7 @@ variable (hS : Etale ((cutIdeal hL s).subschemeι ≫ p))
   (hψ : ψ ≫ (cutIdeal hL s).subschemeι = (cutIdeal hL' fun t => chartSec l (s t)).subschemeι ≫ φ)
 
 /- English proof (translation)
-The claim follows from `ext_germ fun z _ => by obtain ⟨⟨i, c, d, j⟩, ⟨hc, -⟩, h', -⟩ := (quotChart (K.baseChange H).isLB hA' hB' hL' (n := n) (d := 0) rfl).cover ((cutIdeal hL' fun t => chartSec l (s t)).subschemeι z) obtain ⟨⟨hi, hd⟩, hj⟩ := mem_tw_U.1 h' have q := pt_square hψ z refine ⟨_, _, (germ_mu …`.
+A detailed English derivation is pending.
 -/
 theorem mulEDs_pullOn (n : ℤ) (g : sectionsOnClosedSubscheme p (tw B L n) (cutIdeal hL s)) :
     mulEDs (K.baseChange H) hL' hA' hB' _ hS' n _ he' (pullOn (chartPullTwist b l n) H.w hψ g) =
@@ -555,7 +551,7 @@ variable {O : Y.Opens} {W : Y'.Opens} (hW : W ≤ φ ⁻¹ᵁ O) (hO : SuppIn O 
   (hO' : SuppIn W (cutIdeal hL' fun t => chartSec l (s t)))
 
 /- English proof (translation)
-Rewrite using `[Res_eq_iff, mulEDs_pullOn H K l a b s hL hA hB hL' hA' hB' e hS hS' he he' hψ, mulEDs_Res, resTo_pullChart _ _ hψ hW hO]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Res_pullChart (n : ℤ) (m : H0 p (tw (tens K.bundle A) L n) O) :
     Res (K.baseChange H) hL' hA' hB' _ hS' n _ he' hO'
@@ -565,7 +561,7 @@ theorem Res_pullChart (n : ℤ) (m : H0 p (tw (tens K.bundle A) L n) O) :
     resTo_pullChart _ _ hψ hW hO]
 
 /- English proof (translation)
-Rewrite using `[sym_eq_iff, HasSymbol, hf]`. Simplify using `only [mulEDs_pullOn H K l a b s hL hA hB hL' hA' hB' e hS hS' he he' hψ]`. Conclude with `HasLead.pullChart _ l H.w hψ hW hO' ((sym_eq_iff K hL hA hB s hS e he hO h f _).1 rfl)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sym_pullChart {n d : ℤ} {r : ℕ} (h : n + r = d)
     {V : Submodule k (H0 p (tw (tens K.bundle A) L d) O)}
@@ -599,7 +595,7 @@ def cutMap {ι : Type} (s : ι → L.Sec) :
 variable (φ) in
 
 /- English proof (translation)
-The claim follows from `Scheme.IdealSheafData.subschemeMap_subschemeι _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cutMap_ι {ι : Type} (s : ι → L.Sec) :
     cutMap φ hL s ≫ (cutIdeal hL s).subschemeι = (cutIdealPull φ hL s).subschemeι ≫ φ :=
@@ -610,7 +606,7 @@ section Order
 variable {ι : Type} (s : ι → L.Sec) {B : LB Y} {B' : LB Y'} {O : Y.Opens} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `have := flat_of_isPullback H have := surjective_of_isPullback H vanishesTo_pullChart_iff_of_flat (stalkId_cutIdeal_secPull hL s) hB' a H.w f`.
+A detailed English derivation is pending.
 -/
 theorem vanishesTo_baseChange_iff (hB' : B'.IsLB) (a : ChartPull B' B φ) (f : H0 p B O) :
     VanishesTo (cutIdealPull φ hL s) n (pullChart a H.w le_rfl f) ↔
@@ -620,7 +616,7 @@ theorem vanishesTo_baseChange_iff (hB' : B'.IsLB) (a : ChartPull B' B φ) (f : H
   vanishesTo_pullChart_iff_of_flat (stalkId_cutIdeal_secPull hL s) hB' a H.w f
 
 /- English proof (translation)
-The claim follows from `letI := σ.toAlgebra Fil_span_pullChart_of_free (stalkId_cutIdeal_secPull hL s) H hB' a V`.
+A detailed English derivation is pending.
 -/
 theorem Fil_baseChange (hB' : B'.IsLB) (a : ChartPull B' B φ) (V : Submodule E (H0 p B O)) :
     Fil (cutIdealPull φ hL s) n (Submodule.span E' (pullChart (O := O) a H.w le_rfl '' V)) =
@@ -629,7 +625,7 @@ theorem Fil_baseChange (hB' : B'.IsLB) (a : ChartPull B' B φ) (V : Submodule E 
   Fil_span_pullChart_of_free (stalkId_cutIdeal_secPull hL s) H hB' a V
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Submodule.subset_span ⟨f.1, f.2.1, rfl⟩, VanishesTo.pullChart f.2.2 a H.w le_rfl fun z => (stalkId_cutIdeal_secPull hL s z).ge⟩`.
+Supply the required witnesses or components.
 -/
 theorem pullChart_mem_Fil (a : ChartPull B' B φ) {V : Submodule E (H0 p B O)}
     (f : Fil (cutIdeal hL s) n V) : pullChart a H.w le_rfl f.1 ∈
@@ -655,7 +651,7 @@ abbrev pullCut {ι : Type} (s : ι → L.Sec) (n : ℤ) : sectionsOnClosedSubsch
   pullOn (chartPullTwist b (GlobalTheory.chartPullPull L φ) n) H.w (cutMap_ι φ hL s)
 
 /- English proof (translation)
-The claim follows from `Res_pullChart H K _ a b s hL hA hB _ hA' hB' e hS _ he _ (cutMap_ι φ hL s) le_rfl hO _ n m`.
+A detailed English derivation is pending.
 -/
 theorem Res_baseChange (n : ℤ) (m : H0 p (tw (tens K.bundle A) L n) O) :
     Res (K.baseChange H) (LB.isLB_pull hL φ) hA' hB' (fun i => secPull (s i) φ)
@@ -667,7 +663,7 @@ theorem Res_baseChange (n : ℤ) (m : H0 p (tw (tens K.bundle A) L n) O) :
   Res_pullChart H K _ a b s hL hA hB _ hA' hB' e hS _ he _ (cutMap_ι φ hL s) le_rfl hO _ n m
 
 /- English proof (translation)
-The claim follows from `sym_pullChart H K _ a b s hL hA hB _ hA' hB' e hS _ he _ (cutMap_ι φ hL s) le_rfl hO _ h f _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem sym_baseChange {n d : ℤ} {r : ℕ} (h : n + r = d)
     (V : Submodule E (H0 p (tw (tens K.bundle A) L d) O)) (f : Fil (cutIdeal hL s) r V) :
@@ -683,7 +679,7 @@ theorem sym_baseChange {n d : ℤ} {r : ℕ} (h : n + r = d)
 end Field
 
 /- English proof (translation)
-The claim follows from `smooth_baseChange H D (∀ (n : ℤ) (m : H0 p (tw (tens K.bundle A) L n) O), Res (K.baseChange H) (LB.isLB_pull hL φ) hA' hB' (fun i => secPull (s i) φ) (etale_baseChange H (stalkId_cutIdeal_secPull hL s) hS) n (pullQuotSec (GlobalTheory.chartPullPull L φ) a b e) (suppIn_pullQuotSec …`.
+A detailed English derivation is pending.
 -/
 theorem vanishing_baseChange {E E' : Type} [Field E] [Field E'] {σ : E →+* E'} {p : Y ⟶ Sp E}
     {p' : Y' ⟶ Sp E'} (H : IsPullback φ p' p (spMap σ)) {L : LB Y} (hL : L.IsLB) :

@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Rewrite using `[← res_eq_zero_iff O, res_map φ, res_eq_zero_iff]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem max_map {O : Type} [CommRing O] [IsLocalRing O] {C : Type} [CommRing C] [Algebra O C] [IsCO O C]
     {C' : Type} [CommRing C'] [Algebra O C'] [IsCO O C'] (φ : C →ₐ[O] C') {c : C} (hc : c ∈ maximalIdeal C) :
@@ -11,7 +11,7 @@ private theorem max_map {O : Type} [CommRing O] [IsLocalRing O] {C : Type} [Comm
   rwa [← res_eq_zero_iff O, res_map φ, res_eq_zero_iff]
 
 /- English proof (translation)
-Establish `h : (maximalIdeal C).map φ ≤ maximalIdeal C'` using `Ideal.map_le_iff_le_comap.2 fun _ h => max_map φ h`. Establish `h2` using `Ideal.mem_map_of_mem φ hc`. Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h N h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_map {O : Type} [CommRing O] [IsLocalRing O] {C : Type} [CommRing C] [Algebra O C] [IsCO O C]
     {C' : Type} [CommRing C'] [Algebra O C'] [IsCO O C'] (φ : C →ₐ[O] C') (N : ℕ) {c : C}
@@ -22,9 +22,9 @@ private theorem pow_map {O : Type} [CommRing O] [IsLocalRing O] {C : Type} [Comm
   exact Ideal.pow_right_mono h N h2
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hs x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => rw [Algebra.smul_def, map_mul, h, ← Algebra.smul_def]`. Conclude with `M.smul_mem _ hx`.
+A detailed English derivation is pending.
 -/
 private theorem span_map {C C' K K' : Type} [CommRing C] [CommRing C'] [CommRing K] [CommRing K'] [Algebra C K]
     [Algebra C' K'] (φ : C → C') (f : K →+* K') (h : ∀ c, f (algebraMap C K c) = algebraMap C' K' (φ c))
@@ -36,7 +36,7 @@ private theorem span_map {C C' K K' : Type} [CommRing C] [CommRing C'] [CommRing
   | smul a x _ hx => rw [Algebra.smul_def, map_mul, h, ← Algebra.smul_def]; exact M.smul_mem _ hx
 
 /- English proof (translation)
-Rewrite `hu`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Conclude with `fun x => (hu x).mono fun y hy => h _ _ hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem lc_of {X A B : Type} [TopologicalSpace X] {u : X → A} {v : X → B} (hu : IsLocallyConstant u)
     (h : ∀ x y, u x = u y → v x = v y) : IsLocallyConstant v := by
@@ -44,19 +44,17 @@ private theorem lc_of {X A B : Type} [TopologicalSpace X] {u : X → A} {v : X �
   exact fun x => (hu x).mono fun y hy => h _ _ hy
 
 /- English proof (translation)
-Introduce `l _ O _ _ F n C _ _ _ K _ _ C' _ _ _ K' _ _ φ f h ρ H`. Establish `hsp : ∀ i j, ∀ x ∈ Submodule.span C (Set.range fun g => ρ.r g i j), f x ∈ Submodule.span C' (Set.range fun g => (ρ.map f).r g i j)` using `fun i j x hx => span_map φ f h (by rintro _ ⟨g, rfl⟩; exact Submodule.subset_span ⟨g, rfl⟩) hx`. Use `⟨fun g i => ?_, fun L hL hs => ?_, fun i j => ?_, fun i j N => ?_, ?_⟩` and prove the remaining obligations. Take `⟨c, h1, h2⟩` from `H.dg g i`. Conclude with `⟨φ c, by rw [← h, h1, NRep.map_r], by rw [res_map, h2]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, h1, h2⟩` from `H.cyc L hL hs`. Use `⟨φ c, max_map φ h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← h, h2, map_list_prod, List.map_map]`. Both sides reduce to the same expression. Take `⟨t, ht⟩` from `H.fg i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `⟨t.image f, le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hy)`. Conclude with `hsp i j x (ht ▸ Submodule.subset_span hx)`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `span_map φ f h (s := (t : Set K)) (fun x hx => Submodule.subset_span ?_) (x := ρ.r g i j) ?_` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 (Finset.mem_image_of_mem f hx)`. Rewrite using `[ht]`. Conclude with `Submodule.subset_span ⟨g, rfl⟩`. Use `lc_of (H.cont i j N) fun x y hxy => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hxy`, the goal using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Rewrite using `[NRep.map_r, NRep.map_r, ← map_sub]`. Use `Submodule.smul_induction_on hxy (fun a ha z hz => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def a z, map_mul, h, ← Algebra.smul_def (φ a) (f z)]`. Conclude with `Submodule.smul_mem_smul (pow_map φ N ha) (hsp i j z hz)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add]`. Conclude with `add_mem ha hb`. Take `⟨χ, h1, h2⟩` from `H.psi`. Use `⟨fun v i g => φ (χ v i g), fun v i => ⟨fun N => ?_, fun g => ?_⟩, fun v i g => ?_⟩` and prove the remaining obligations. Use `lc_of ((h1 v i).1 N) fun x y hxy => ?_` and prove the remaining obligations.
-
-Rewrite `hxy`, the goal using `[Ideal.Quotient.eq]`. Rewrite using `[← map_sub]`. Conclude with `pow_map φ N hxy`. Rewrite using `[res_map, (h1 v i).2]`. Rewrite using `[← h, h2, NRep.map_ψ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.frobenius_corner_cone_map :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)} {n : ℕ} (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (K : Type) [CommRing K] [Algebra C K] (C' : Type) [CommRing C'] [Algebra O C'] [IsCO O C'] (K' : Type) [CommRing K'] [Algebra C' K'] (β : C →ₐ[O] C') (f : K →+* K'), (∀ c, f (algebraMap C K c) = algebraMap C' K' (β c)) → ∀ ρ : NRep F n K, Cone O C ρ → Cone O C' (ρ.map f) := by

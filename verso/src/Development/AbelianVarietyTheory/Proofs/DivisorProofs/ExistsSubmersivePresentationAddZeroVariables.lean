@@ -11,13 +11,11 @@ namespace GlobalTheory.PinchEnl
 open MvPolynomial
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `p hp`. Rewrite using `[← Set.image_univ, MvPolynomial.mem_ideal_span_X_image]`. Introduce `m hm`. Assume the negation of the conclusion as `h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Establish `hm0 : m = 0` using `by ext i; simpa using h i (Set.mem_univ i)`. Substitute `hm0` using the available equality. Rewrite `hp` using `[RingHom.mem_ker]`. Establish `: aeval (R` using `D) (fun _ : κ ↦ (0 : D)) p = coeff 0 p := by first`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(show MvPolynomial.eval (0 : κ → D) p = _`. Conclude with `congrFun (congrArg DFunLike.coe (MvPolynomial.eval_zero (R := D) (σ := κ))) p)`. Consider the case `(rw [MvPolynomial.aeval_def]; simp [MvPolynomial.eval₂_eq, MvPolynomial.coeff_zero_eq_constantCoeff])`. Conclude with `(mem_support_iff.mp hm) (this ▸ hp)`. Rewrite using `[Ideal.span_le]`.
-
-Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_aeval_zero_eq_span (D κ : Type) [CommRing D] :
     RingHom.ker (aeval (R := D) (fun _ : κ ↦ (0 : D))) = Ideal.span (Set.range X) := by
@@ -53,9 +51,9 @@ noncomputable def zeroPre (D κ : Type) [CommRing D] :
   map_inj := Function.injective_id
 
 /- English proof (translation)
-Establish `: Fintype κ` using `Fintype.ofFinite κ`. Rewrite using `[Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det]`. Establish `h1 : (zeroPre D κ).jacobiMatrix = 1`. Use extensionality with `i j`. Rewrite using `[Algebra.PreSubmersivePresentation.jacobiMatrix_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[zeroPre, Matrix.one_apply, pderiv_X, Pi.single_apply, eq_comm]`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zeroPre_jacobian (D κ : Type) [CommRing D] [Finite κ] : (zeroPre D κ).jacobian = 1 := by
   classical
@@ -71,7 +69,7 @@ theorem zeroPre_jacobian (D κ : Type) [CommRing D] [Finite κ] : (zeroPre D κ)
 end GlobalTheory.PinchEnl
 
 /- English proof (translation)
-Introduce `R D ν σ κ _ _ _ _ _ _ P`. Set `Q : Algebra.SubmersivePresentation D D κ κ` to `{ __ := GlobalTheory.PinchEnl.zeroPre D κ jacobian_isUnit := by rw [GlobalTheory.PinchEnl.zeroPre_jacobian]; exact isUnit_one }`. Use `⟨Q.comp P, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Break down `i with k | j` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
 Both sides reduce to the same expression. Both sides reduce to the same expression.
 -/

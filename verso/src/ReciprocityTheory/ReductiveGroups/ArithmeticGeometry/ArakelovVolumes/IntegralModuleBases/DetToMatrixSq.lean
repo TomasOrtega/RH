@@ -13,7 +13,7 @@ open scoped MatrixOrder ComplexOrder
 variable {d : ℕ}
 
 /- English proof (translation)
-Establish `h` using `Q_eq A B hAB x`. Simplify using `only [Q, polar] at h`. Establish `h2 : ‖fB B x‖ ^ 2 = toReal x ⬝ᵥ (A *ᵥ toReal x)` using `by linarith`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma norm_fB_sq (A B : Matrix (Fin d) (Fin d) ℝ) (hAB : A = Bᴴ * B) (x : Fin d → ℤ) :
     ‖fB B x‖ ^ 2 = (fun i => (x i : ℝ)) ⬝ᵥ (A *ᵥ fun i => (x i : ℝ)) := by
@@ -23,7 +23,7 @@ lemma norm_fB_sq (A B : Matrix (Fin d) (Fin d) ℝ) (hAB : A = Bᴴ * B) (x : Fi
   exact h2
 
 /- English proof (translation)
-Establish `h` using `(Pi.basisFun ℤ (Fin d)).toMatrix_mul_toMatrix_flip e`. Establish `hu : IsUnit ((Pi.basisFun ℤ (Fin d)).toMatrix e).det` using `isUnit_iff_exists_inv.mpr ⟨(e.toMatrix (Pi.basisFun ℤ (Fin d))).det, by rw [← Matrix.det_mul, h, Matrix.det_one]⟩`. Apply the tactic sequence `rcases Int.isUnit_iff.mp hu with h1 | h1 <;> rw [h1] <;> norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma det_toMatrix_sq (e : Module.Basis (Fin d) ℤ (Fin d → ℤ)) :
     (((Pi.basisFun ℤ (Fin d)).toMatrix e).det : ℝ) ^ 2 = 1 := by
@@ -34,11 +34,11 @@ lemma det_toMatrix_sq (e : Module.Basis (Fin d) ℤ (Fin d → ℤ)) :
   rcases Int.isUnit_iff.mp hu with h1 | h1 <;> rw [h1] <;> norm_num
 
 /- English proof (translation)
-Establish `hG : Matrix.gram ℝ (fun i => fB B (e i)) = (Matrix.of fun k j => ((e j k : ℤ) : ℝ))ᵀ * A * (Matrix.of fun k j => ((e j k : ℤ) : ℝ))`. Use extensionality with `i j`. Rewrite using `[Matrix.gram_apply, ← polar_eq A B hAB]`. Simplify using `only [polar, toReal, dotProduct, mulVec, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hE : (Matrix.of fun k j => ((e j k : ℤ) : ℝ)) = ((Pi.basisFun ℤ (Fin d)).toMatrix e).map (Int.cast : ℤ → ℝ)`. Use extensionality with `k j`. Simplify using `[Module.Basis.toMatrix_apply]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hsq` using `det_toMatrix_sq e`. Rewrite using `[hG, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hE, ← Int.cast_det]`. Take the linear combination `A.det * hsq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma det_gram_fB (A B : Matrix (Fin d) (Fin d) ℝ) (hAB : A = Bᴴ * B)
     (e : Module.Basis (Fin d) ℤ (Fin d → ℤ)) :
@@ -61,13 +61,13 @@ lemma det_gram_fB (A B : Matrix (Fin d) (Fin d) ℝ) (hAB : A = Bᴴ * B)
   linear_combination A.det * hsq
 
 /- English proof (translation)
-Introduce `d A m D hA hm hmin hD`. Choose the witnesses or unpack the hypotheses as in `⟨B, hAB⟩ : ∃ B : Matrix (Fin d) (Fin d) ℝ, A = Bᴴ * B := by`. Use `⟨CFC.sqrt A, ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ A` using `Matrix.nonneg_iff_posSemidef.mpr hA.posSemidef`. Establish `hsa : IsSelfAdjoint (CFC.sqrt A)` using `IsSelfAdjoint.of_nonneg (CFC.sqrt_nonneg A)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.star_eq_conjTranspose, hsa.star_eq, CFC.sqrt_mul_sqrt_self A h0]`. Take `⟨e, hre⟩` from `exists_red_of (fB B) (fun e => (li_basis A B hA hAB e).2) (hlow_of A B hA hAB)`. Establish `hm' : ∀ i, m ≤ ‖fB B (e i)‖ ^ 2`. Introduce `i`. Rewrite using `[norm_fB_sq A B hAB]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmin _ (e.ne_zero i)`. Use `⟨e, fun i => ?_, fun x i => ?_⟩` and prove the remaining obligations. Establish `h1` using `red_norm_sq_le _ hre m D hm hm' (by rw [det_gram_fB A B hAB e]; exact hD) i`. Rewrite `h1` using `[norm_fB_sq A B hAB]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `red_coeff_sq_le _ hre m hm hm' (fun l => ((e.repr x l : ℤ) : ℝ)) i`. Rewrite `h1` using `[← fB_expand B e x, norm_fB_sq A B hAB]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem redGram_holds : RedGramStatement := by
   intro d A m D hA hm hmin hD

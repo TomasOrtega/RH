@@ -14,21 +14,21 @@ section Length
 variable {A : Type} [CommRing A]
 
 /- English proof (translation)
-Establish `hmap : Submodule.colon K {f} ≤ Submodule.comap (LinearMap.lsmul A A f) K`. Introduce `x hx`. Use `Submodule.mem_colon_singleton.1 hx` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, mul_comm]`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `g : (A ⧸ Submodule.colon K {f}) →ₗ[A] (A ⧸ K)` to `Submodule.mapQ _ _ (LinearMap.lsmul A A f) hmap`. Establish `hle : K ≤ K ⊔ Ideal.span {f}` using `le_sup_left`. Set `h : (A ⧸ K) →ₗ[A] (A ⧸ (K ⊔ Ideal.span {f}))` to `Submodule.factor hle`. Establish `hg : Function.Injective g`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hx' : (Submodule.Quotient.mk (f • x) : A ⧸ K) = 0` using `hx`. Rewrite `hx'` using `[Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_colon_singleton.2 ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm]`. Conclude with `hx'`. Establish `hex : Function.Exact g h`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy' : (Submodule.Quotient.mk y : A ⧸ (K ⊔ Ideal.span {f})) = 0` using `hy`. Rewrite `hy'` using `[Submodule.Quotient.mk_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hy'`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Use `⟨Submodule.Quotient.mk c, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (f • c) : A ⧸ K) = Submodule.Quotient.mk (a + c * f)`. Rewrite using `[Submodule.Quotient.eq]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: f • c - (a + c * f) = -a` using `by rw [smul_eq_mul]; ring`. Rewrite using `[this]`. Conclude with `K.neg_mem ha`. Introduce and unpack `⟨z, hz⟩`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hz]`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (f • z) : A ⧸ (K ⊔ Ideal.span {f})) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Conclude with `Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self f))`. Conclude with `Module.length_eq_add_of_exact g h hg (Submodule.factor_surjective hle) hex`.
+A detailed English derivation is pending.
 -/
 theorem length_quotient_eq_sup_add_colon (K : Ideal A) (f : A) :
     Module.length A (A ⧸ K) =
@@ -77,17 +77,17 @@ theorem length_quotient_eq_sup_add_colon (K : Ideal A) (f : A) :
   exact Module.length_eq_add_of_exact g h hg (Submodule.factor_surjective hle) hex
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Submodule.mem_colon_singleton, smul_eq_mul, ← map_mul]`. Use `Submodule.mem_colon_singleton.1 hx` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[smul_eq_mul]`. Conclude with `Ideal.mem_map_of_mem _ this`. Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_colon_singleton, smul_eq_mul]`. Take `⟨⟨r, s⟩, hrs⟩` from `IsLocalization.surj M x`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only at hrs`. Establish `h1 : algebraMap A B (f * r) ∈ I.map (algebraMap A B)`. Rewrite using `[map_mul, ← hrs, mul_comm, mul_assoc, mul_comm (algebraMap A B s), ← mul_assoc]`. Conclude with `Ideal.mul_mem_right _ _ hx`. Take `⟨⟨i, t⟩, hit⟩` from `(IsLocalization.mem_map_algebraMap_iff M B).1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at hit`. Rewrite `hit` using `[← map_mul]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists M B).1 hit`. Establish `h2 : (c : A) * t * r ∈ Submodule.colon I {f}`. Rewrite using `[Submodule.mem_colon_singleton, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (c : A) * t * r * f = c * (f * r * t)` using `by ring`. Rewrite using `[this, hc]`. Conclude with `I.mul_mem_left _ i.2`. Establish `h3` using `Ideal.mem_map_of_mem (algebraMap A B) h2`. Establish `h4 : algebraMap A B ((c : A) * t * r) = algebraMap A B ((c * t * s : M) : A) * x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_mul _ _ r, ← hrs]`. Simplify using `only [Submonoid.coe_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[h4]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ (IsLocalization.map_units B (c * t * s))).1 h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_colon_singleton {B : Type} [CommRing B] [Algebra A B] (M : Submonoid A)
     [IsLocalization M B] (I : Ideal A) (f : A) :
@@ -131,9 +131,9 @@ section LocalLength
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h` using `length_quotient_eq_sup_add_colon (I.map (algebraMap R (Localization.AtPrime Q))) (algebraMap R (Localization.AtPrime Q) f)`. Rewrite `h` using `[← map_colon_singleton Q.primeCompl]`. Establish `e : (I ⊔ Ideal.span {f}).map (algebraMap R (Localization.AtPrime Q)) = I.map (algebraMap R (Localization.AtPrime Q)) ⊔ Ideal.span {algebraMap R (Localization.AtPrime Q) f}`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Rewrite `h` using `[← e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem localLength_eq_colon_add_sup (I Q : Ideal R) [Q.IsPrime] (f : R) :
     localLength I Q = localLength (Submodule.colon I {f}) Q +
@@ -149,7 +149,7 @@ theorem localLength_eq_colon_add_sup (I Q : Ideal R) [Q.IsPrime] (f : R) :
   exact h
 
 /- English proof (translation)
-Take `⟨a, ha, haQ⟩` from `SetLike.not_le_iff_exists.1 h`. Rewrite using `[localLength, Module.length_eq_zero_iff, Ideal.Quotient.subsingleton_iff]`. Establish `hu : IsUnit (algebraMap R (Localization.AtPrime Q) a)` using `IsLocalization.map_units _ (⟨a, haQ⟩ : Q.primeCompl)`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ ha) hu`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem localLength_eq_zero {I Q : Ideal R} [Q.IsPrime] (h : ¬ I ≤ Q) : localLength I Q = 0 := by
   obtain ⟨a, ha, haQ⟩ := SetLike.not_le_iff_exists.1 h
@@ -164,13 +164,13 @@ noncomputable def lenAt (I Q : Ideal R) : ℕ :=
   if h : Q.IsPrime then (haveI := h; localLength I Q).toNat else 0
 
 /- English proof (translation)
-Rewrite using `[lenAt, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lenAt_of_isPrime (I Q : Ideal R) [h : Q.IsPrime] : lenAt I Q = (localLength I Q).toNat := by
   rw [lenAt, dif_pos h]
 
 /- English proof (translation)
-Distinguish the cases in `h : I ≤ Q`. Conclude with `localLength_ne_top ⟨⟨inferInstance, h⟩, fun R' hR hle => hQ.2 ⟨hR.1, hJ.trans hR.2⟩ hle⟩`. Rewrite using `[localLength_eq_zero h]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem localLength_ne_top_of_le [IsNoetherianRing R] {J I Q : Ideal R} [Q.IsPrime]
     (hQ : Q ∈ J.minimalPrimes) (hJ : J ≤ I) : localLength I Q ≠ ⊤ := by
@@ -180,7 +180,7 @@ theorem localLength_ne_top_of_le [IsNoetherianRing R] {J I Q : Ideal R} [Q.IsPri
     simp
 
 /- English proof (translation)
-Use `haveI : Q.IsPrime := hQ.1.1`. Establish `hc : J ≤ Submodule.colon I {f}` using `fun x hx => Submodule.mem_colon_singleton.2 (by`. Rewrite using `[smul_eq_mul]`. Conclude with `I.mul_mem_right _ (hJ hx))`. Rewrite using `[lenAt_of_isPrime, lenAt_of_isPrime, lenAt_of_isPrime, localLength_eq_colon_add_sup I Q f, ENat.toNat_add (localLength_ne_top_of_le hQ hc) (localLength_ne_top_of_le hQ (hJ.trans le_sup_left))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lenAt_eq_colon_add_sup [IsNoetherianRing R] {J I Q : Ideal R}
     (hQ : Q ∈ J.minimalPrimes) (hJ : J ≤ I) (f : R) :
@@ -201,14 +201,14 @@ variable {k : Type} [Field k] {N : ℕ}
 local notation "S" => MvPolynomial (Fin N) k
 
 /- English proof (translation)
-The claim follows from `ringKrullDim_le_of_surjective _ (Ideal.Quotient.factor_surjective h)`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_mono {I J : Ideal S} (h : I ≤ J) :
     ringKrullDim (S ⧸ J) ≤ ringKrullDim (S ⧸ I) :=
   ringKrullDim_le_of_surjective _ (Ideal.Quotient.factor_surjective h)
 
 /- English proof (translation)
-Take `⟨a, ha, haP⟩` from `SetLike.exists_of_lt h`. Conclude with `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor h.le) (Ideal.Quotient.factor_surjective _) (r := Ideal.Quotient.mk P a) (mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])) (by rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]; exac …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_add_one_le {P I : Ideal S} [P.IsPrime] (h : P < I) :
     ringKrullDim (S ⧸ I) + 1 ≤ ringKrullDim (S ⧸ P) := by
@@ -219,31 +219,27 @@ theorem ringKrullDim_quotient_add_one_le {P I : Ideal S} [P.IsPrime] (h : P < I)
     (by rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]; exact ha)
 
 /- English proof (translation)
-Proceed by induction on `I using IsNoetherian.induction with`. Consider the case `_ I ih`. Establish `hdI : ringKrullDim (S ⧸ I) ≤ (e + 1 : ℕ)` using `(ringKrullDim_quotient_mono hJI).trans hd`. Distinguish the cases in `htop : I = ⊤`. Substitute `htop` using the available equality.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[idealHilbertPoly_top, Polynomial.coeff_zero]`. Use `symm`. Use `Finset.sum_eq_zero fun Q hQ => ?_` and prove the remaining obligations. Use `haveI : Ideal.IsPrime Q := (hT Q hQ).1.1.1`. Rewrite using `[lenAt_of_isPrime, localLength_eq_zero (fun h => Ideal.IsPrime.ne_top ‹_› (top_le_iff.1 h))]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Distinguish the cases in `hp : Ideal.IsPrime I`. Use `haveI := hp`. Distinguish the cases in `hdim : ringKrullDim (S ⧸ I) = (e + 1 : ℕ)`. Establish `hIT : I ∈ T`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `hT' I ?_ hdim` and prove the remaining obligations. Take `⟨Q', hQ', hle⟩` from `Ideal.exists_minimalPrimes_le hJI`. Use `haveI : Q'.IsPrime := hQ'.1.1`. Break down `hle.eq_or_lt with rfl | hlt` into its components or cases. Conclude with `hQ'`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `ringKrullDim_quotient_add_one_le hlt`. Establish `h2` using `ringKrullDim_quotient_mono hQ'.1.2`. Establish `h3` using `(h1.trans h2).trans hd`. Rewrite `h3` using `[hdim]`. Conclude with `absurd h3 (by exact_mod_cast (by omega : ¬ (e + 1 + 1 ≤ e + 1)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_eq_single_of_mem I hIT]`. Rewrite using `[lenAt_of_isPrime, localLength_self]`. Simplify using the standard rewrite rules. Introduce `Q hQ hne haveI : Ideal.IsPrime Q := (hT Q hQ).1.1.1`. Establish `hnle : ¬ I ≤ Q` using `fun hle => hne (le_antisymm ((hT Q hQ).1.2 ⟨hp, hJI⟩ hle) hle)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lenAt_of_isPrime, localLength_eq_zero hnle]`. Simplify using the standard rewrite rules. Take `⟨δ, hδ⟩` from `exists_ringKrullDim_quotient_mvPolynomial_eq_nat htop`. Establish `hδe : δ ≤ e`. Establish `h1 : δ ≤ e + 1` using `by rw [hδ] at hdI; exact_mod_cast hdI`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Establish `h2 : δ ≠ e + 1` using `fun h => hdim (by rw [hδ, h])`. Use linear arithmetic over natural numbers and integers. Establish `hco : (idealHilbertPoly I).coeff e = 0` using `Polynomial.coeff_eq_zero_of_degree_lt (degree_idealHilbertPoly_lt hI (m := e) (by rw [hδ]; exact_mod_cast hδe))`. Rewrite using `[hco]`. Use `symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun Q hQ => ?_` and prove the remaining obligations. Use `haveI : Ideal.IsPrime Q := (hT Q hQ).1.1.1`. Establish `hnle : ¬ I ≤ Q` using `fun hle => by`. Use `ringKrullDim_quotient_mono hle` as an intermediate fact. Rewrite `this` using `[(hT Q hQ).2, hδ]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : e + 1 ≤ δ` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[lenAt_of_isPrime, localLength_eq_zero hnle]`. Simplify using the standard rewrite rules. Take `⟨d, f, hf, h1, h2⟩` from `exists_form_lt_sup_lt_colon hI htop hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ₁` using `isHomogeneous_sup_span_singleton hI hf`. Establish `hJ₂` using `isHomogeneous_colon_singleton hI hf`. Establish `hdeg : (idealHilbertPoly (Submodule.colon I {f})).degree ≤ (e : ℕ)`. Use `degree_idealHilbertPoly_lt hJ₂ ((ringKrullDim_quotient_mono h2.le).trans hdI)` as an intermediate fact. Conclude with `(Polynomial.degree_le_iff_coeff_zero _ _).2 fun m hm => (Polynomial.degree_lt_iff_coeff_zero _ _).1 this m (by`.
-
-Establish `: e < m` using `by exact_mod_cast hm`. Use the proof step `omega)`. Rewrite using `[idealHilbertPoly_eq_sup_add_colon hI hf, Polynomial.coeff_add, coeff_comp_X_sub_C_rat hdeg, ih _ h1 hJ₁ (hJI.trans h1.le), ih _ h2 hJ₂ (hJI.trans h2.le), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun Q hQ => ?_` and prove the remaining obligations. Rewrite using `[lenAt_eq_colon_add_sup (hT Q hQ).1 hJI f]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coeff_idealHilbertPoly_eq_sum {J : Ideal S} {e : ℕ}
     (hd : ringKrullDim (S ⧸ J) ≤ (e + 1 : ℕ)) (T : Finset (Ideal S))
@@ -327,35 +323,31 @@ theorem coeff_idealHilbertPoly_eq_sum {J : Ideal S} {e : ℕ}
 end Hilbert
 
 /- English proof (translation)
-Introduce `k _ N e P hP hp he u hu`. Use `haveI := hp`. Use `set J := P ⊔ Ideal.span {hyperplaneForm u} with hJdef`. Establish `hℓ` using `isHomogeneous_hyperplaneForm u`. Establish `hJ : J.IsHomogeneous (homogeneousSubmodule (Fin N) k)` using `isHomogeneous_sup_span_singleton hP hℓ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPJ : P < J` using `lt_of_le_of_ne le_sup_left fun h => hu (by`. Rewrite using `[h]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hd : ringKrullDim (MvPolynomial (Fin N) k ⧸ J) ≤ (e + 1 : ℕ)`. Distinguish the cases in `htop : J = ⊤`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[htop, ringKrullDim_eq_bot_of_subsingleton]`. Conclude with `bot_le`. Take `⟨δ, hδ⟩` from `exists_ringKrullDim_quotient_mvPolynomial_eq_nat htop`. Establish `h1` using `ringKrullDim_quotient_add_one_le hPJ`. Rewrite `h1` using `[he, hδ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : δ + 1 ≤ e + 1 + 1` using `by exact_mod_cast h1`. Rewrite using `[hδ]`. Conclude with `(by omega : δ ≤ e + 1)` after adjusting the coercions. Establish `hmin : ∀ Q ∈ J.minimalPrimes, ringKrullDim (MvPolynomial (Fin N) k ⧸ Q) = (e + 1 : ℕ)`. Introduce `Q hQ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Q.IsPrime := hQ.1.1`. Establish `h1` using `ringKrullDim_quotient_add_one_of_mem_minimalPrimes_sup k hu hQ`. Rewrite `h1` using `[he]`. Take `⟨δ, hδ⟩` from `exists_ringKrullDim_quotient_mvPolynomial_eq_nat (Ideal.IsPrime.ne_top ‹Q.IsPrime›)`. Rewrite `h1`, the goal using `[hδ]`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : δ + 1 = e + 1 + 1` using `by exact_mod_cast h1`. Take `rfl : δ = e + 1` from `by omega`. Both sides reduce to the same expression. Establish `hsupp : ∀ Q, Q ∈ (hyperplaneSection P u).support ↔ Q ∈ J.minimalPrimes`. Introduce `Q`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hyperplaneSection, mem_support_projCycle]`. Use `⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hX`. Use `push Not at hX`. Establish `h1` using `ringKrullDim_quotient_le_zero_of_forall_X_mem hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hmin Q h]`. Conclude with `absurd h1 (by exact_mod_cast (by omega : ¬ (e + 1 ≤ 0)))`. Establish `key` using `coeff_idealHilbertPoly_eq_sum hd (hyperplaneSection P u).support (fun Q hQ => ⟨(hsupp Q).1 hQ, hmin Q ((hsupp Q).1 hQ)⟩) (fun Q hQ _ => (hsupp Q).2 hQ) J hJ le_rfl`. Establish `hPdeg : (idealHilbertPoly P).degree = ((e + 1 : ℕ) : WithBot ℕ)` using `degree_idealHilbertPoly_eq_of_isPrime hP he`. Establish `hH` using `idealHilbertPoly_sup_of_isPrime hP hℓ hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `coeff_sub_comp_X_sub_C (idealHilbertPoly P) (((1 : ℕ) : ℚ)) e hPdeg.le`. Rewrite `hc` using `[← hH]`. Establish `hJdeg : (idealHilbertPoly J).degree = (e : ℕ)`. Establish `hne : (idealHilbertPoly J).coeff e ≠ 0`. Rewrite using `[hc.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (idealHilbertPoly P).coeff (e + 1) ≠ 0`. Establish `h0 : idealHilbertPoly P ≠ 0` using `fun h => by`. Rewrite `hPdeg` using `[h, Polynomial.degree_zero]`. Conclude with `WithBot.bot_ne_natCast _ hPdeg`. Rewrite using `[← Polynomial.natDegree_eq_of_degree_eq_some hPdeg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Polynomial.leadingCoeff_ne_zero.2 h0`. Establish `h1 : ((e : ℚ) + 1) ≠ 0` using `by positivity`. Simplify using `using ⟨h1, this⟩`. Use `le_antisymm ?_ (Polynomial.le_degree_of_ne_zero hne)` and prove the remaining obligations. Conclude with `(Polynomial.degree_le_iff_coeff_zero _ _).2 fun m hm => (Polynomial.degree_lt_iff_coeff_zero _ _).1 hc.1 m (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: e < m` using `by exact_mod_cast hm`. Use the proof step `omega)`. Establish `hcast` using `cast_hilbertDegree_of_degree_eq hJ hJdeg`. Establish `: (GlobalTheory.hilbertDegree J : ℚ) = (((hyperplaneSection P u).sum (fun Q m => m * GlobalTheory.hilbertDegree Q) : ℕ) : ℚ)`. Rewrite using `[hcast, key, Finsupp.sum, Nat.cast_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun Q hQ => ?_` and prove the remaining obligations. Establish `hQm` using `(hsupp Q).1 hQ`. Use `haveI : Q.IsPrime := hQm.1.1`. Establish `hQh` using `isHomogeneous_of_mem_minimalPrimes _ hJ hQm`. Establish `hQd` using `degree_idealHilbertPoly_eq_of_isPrime hQh (hmin Q hQm)`.
-
-Establish `hm : lenAt J Q = hyperplaneSection P u Q`. Establish `hcomp` using `mem_support_projCycle.1 hQ`. Establish `h1` using `cast_projCycle_apply hcomp`. Rewrite using `[lenAt_of_isPrime, ← h1, ENat.toNat_coe]`. Both sides reduce to the same expression.
-
-Rewrite using `[hm]`. Use `push_cast`. Rewrite using `[cast_hilbertDegree_of_degree_eq hQh hQd]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hilbertDegree_sup_eq_sum :
     ∀ {k : Type} [Field k] {N e : ℕ} {P : Ideal (MvPolynomial (Fin N) k)},

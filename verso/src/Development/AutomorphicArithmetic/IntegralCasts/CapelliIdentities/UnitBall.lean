@@ -27,11 +27,11 @@ private def UpperTheory.Reformulated.B.UnitBallLemmas.unitBall (p : ℕ) [Fact (
     simpa using ha
 
 /- English proof (translation)
-Introduce `p _ σ F hF h1`. Set `F' : MvPowerSeries σ (UpperTheory.Reformulated.B.UnitBallLemmas.unitBall p)` to `fun n => ⟨MvPowerSeries.coeff n F, hF n⟩`. Establish `hmap : MvPowerSeries.map (UpperTheory.Reformulated.B.UnitBallLemmas.unitBall p).subtype F' = F`. Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hc : MvPowerSeries.constantCoeff F' = ((1 : (UpperTheory.Reformulated.B.UnitBallLemmas.unitBall p)ˣ) : UpperTheory.Reformulated.B.UnitBallLemmas.unitBall p)`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h1`. Use `⟨MvPowerSeries.map (UpperTheory.Reformulated.B.UnitBallLemmas.unitBall p).subtype (MvPowerSeries.invOfUnit F' 1), ?_, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff n (MvPowerSeries.invOfUnit F' 1)).2`. Rewrite using `[← hmap, ← map_mul, MvPowerSeries.mul_invOfUnit F' 1 hc, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.UnitBallLemmas.intMv_inv.{u_1} :
     ∀ {p : ℕ} [inst : Fact (Nat.Prime p)] {σ : Type u_1} {F : MvPowerSeries σ ℂ_[p]},

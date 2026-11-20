@@ -7,7 +7,7 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools
 namespace GlobalTheory.HSShort
 
 /- English proof (translation)
-Take `⟨d, rfl⟩ : ∃ d, D = d + 1` from `⟨D - 1, by omega⟩`. Rewrite using `[Nat.card_eq_fintype_card, MonoDeg.card_eq_card_finsuppAntidiag, Finset.card_finsuppAntidiag_nat_eq_choose]`. Simplify using `only [Finset.card_univ, Fintype.card_fin]`. Rewrite using `[show a + (d + 1) - 1 = a + d by omega, show d + 1 + a - 1 = a + d by omega, show d + 1 - 1 = d by omega]`. Conclude with `Nat.choose_symm_add`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_card_monoDeg_fin (D a : ℕ) (hD : 1 ≤ D) :
     Nat.card (MonoDeg (Fin D) a) = (a + D - 1).choose (D - 1) := by
@@ -21,9 +21,9 @@ theorem nat_card_monoDeg_fin (D a : ℕ) (hD : 1 ≤ D) :
   exact Nat.choose_symm_add
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [Nat.choose_eq_zero_of_lt]`. Consider the case `succ n ih`. Establish `h1 : ∑ a ∈ Finset.range n, (a + d).choose d * (n + 1 - a) = ∑ a ∈ Finset.range n, (a + d).choose d * (n - a) + ∑ a ∈ Finset.range n, (a + d).choose d`. Rewrite using `[← Finset.sum_add_distrib]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `: a < n` using `Finset.mem_range.mp ha`. Rewrite using `[show n + 1 - a = (n - a) + 1 by omega, Nat.mul_succ]`. Rewrite using `[Finset.sum_range_succ, h1, ih, show n + 1 - n = 1 by omega, mul_one, add_assoc, ← Finset.sum_range_succ, Nat.sum_range_add_choose, show n + 1 + d + 1 = (n + d + 1) + 1 by omega, Nat.choose_succ_succ' (n + d + 1) (d + 1)]`. Put the polynomial expressions in normal form.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 theorem sum_range_choose_mul_sub (d n : ℕ) :
     ∑ a ∈ Finset.range n, (a + d).choose d * (n - a) = (n + d + 1).choose (d + 2) := by
@@ -43,15 +43,15 @@ theorem sum_range_choose_mul_sub (d n : ℕ) :
     ring_nf
 
 /- English proof (translation)
-Introduce `D T hD hT`. Establish `h1` using `fun a => nat_card_monoDeg_fin D a hD`. Take `⟨d, rfl⟩ : ∃ d, D = d + 1` from `⟨D - 1, by omega⟩`. Take `⟨m, rfl⟩ : ∃ m, T = d + 2 + m` from `⟨T - (d + 2), by omega⟩`. Establish `hTD : d + 2 + m - (d + 1) = m + 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT1 : d + 2 + m - 1 = m + d + 1` using `by omega`. Establish `hsub : ∀ a, a + (d + 1) - 1 = a + d` using `fun a => by omega`. Simplify using `only [hsub, show d + 1 - 1 = d by omega] at h1 ⊢`. Establish `hsum : ∑ a ∈ Finset.range (m + 1), (a + d).choose d = (m + d + 1).choose (d + 1)` using `Nat.sum_range_add_choose m d`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.card_sigma, hT1]`. Simplify using `only [h1]`. Rewrite using `[← hsum, hTD, Finset.sum_range (fun a => (a + d).choose d)]`. Rewrite using `[hTD, hT1]`. Establish `hw : ∑ a ∈ Finset.range (m + 1), (a + d).choose d * (d + 2 + m - a) = ∑ a ∈ Finset.range (m + 1), (a + d).choose d * (m + 1 - a) + (d + 1) * ∑ a ∈ Finset.range (m + 1), (a + d).choose d`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `: a < m + 1` using `Finset.mem_range.mp ha`. Rewrite using `[show d + 2 + m - a = (m + 1 - a) + (d + 1) by omega]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hw, sum_range_choose_mul_sub, hsum]`. Establish `key` using `Nat.add_one_mul_choose_eq (m + d + 1) (d + 1)`. Rewrite using `[show m + 1 + d + 1 = m + d + 1 + 1 by omega]`. Use polynomial arithmetic with `[key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem monomial_counts : ∀ D T : ℕ, 1 ≤ D → D + 1 ≤ T →
     (∀ a : ℕ, Nat.card (MonoDeg (Fin D) a) = (a + D - 1).choose (D - 1)) ∧

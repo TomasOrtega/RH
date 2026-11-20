@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 namespace UpperTheory.Gal.KunnethLefschetz.Di
 
 /- English proof (translation)
-Introduce `U hU`. Take `⟨y⟩` from `hU`. Set `y' : U ⟶ E` to `y`. Simplify using `using ζ.2.1.map y'.appTop.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem inv_root {q : ℕ} {E : Scheme.{0}} (ζ : Prim q Γ(E, ⊤)) : Inv q (sch.obj E) := by
   intro U hU
@@ -17,21 +17,21 @@ private theorem inv_root {q : ℕ} {E : Scheme.{0}} (ζ : Prim q Γ(E, ⊤)) : I
   simpa using ζ.2.1.map y'.appTop.hom
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem cast_eq_iff {q : ℕ} {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') (x : Ht q E n i) (y : Ht q E n' i') :
     Ht.cast h1 h2 x = y ↔ x = Ht.cast h1.symm h2.symm y := by
   subst h1 h2; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem rootClass_cast {q : ℕ} {E : Scheme.{0}} (ζ : Prim q Γ(E, ⊤)) {i i' : ℤ} (h : i = i') (h0 : (0 : ℤ) = 0) :
     rootClass i' ζ = Ht.cast h0 h (rootClass i ζ) := by
   subst h; rfl
 
 /- English proof (translation)
-Rewrite using `[(h6 q E).2.2 r b]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem swap0 (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {E : Spc} {m k s : ℤ} (r : Ht q E 0 s) (b : Ht q E m k) :
     cup q r b = Ht.cast (by ring) (by ring) (cup q b r) := by
@@ -39,7 +39,7 @@ private theorem swap0 (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {E : 
   simp
 
 /- English proof (translation)
-Establish `e1 : cup q r (cup q b c) = Ht.cast (by ring) (by ring) (cup q b (cup q r c))`. Establish `e2` using `(cast_eq_iff _ _ _ _).1 ((h6 q E).2.1 r b c).symm`. Rewrite using `[e2, swap0 h6 r b, cup_cast_left, (h6 q E).2.1 b r c, LRingPf.cast_cast, LRingPf.cast_cast]`. Rewrite using `[(h6 q E).2.1 a r (cup q b c), e1, cup_cast_right, LRingPf.cast_cast, (h6 q E).2.1 a b (cup q r c), LRingPf.cast_cast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem four (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {E : Spc} {n m i k s t : ℤ} (a : Ht q E n i) (r : Ht q E 0 s)
     (b : Ht q E m k) (c : Ht q E 0 t) :
@@ -51,7 +51,7 @@ private theorem four (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {E : S
     LRingPf.cast_cast]
 
 /- English proof (translation)
-Substitute `hn hi` using the available equality. Establish `hr : rootClass (-(0 : ℤ)) ζ = Ht.cast h0 (neg_zero.symm : (0 : ℤ) = -0) (one q (sch.obj E))`. Rewrite using `[rootClass_cast ζ (neg_zero.symm : (0 : ℤ) = -0) h0, ((GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).2 E ζ 0 0).2]`. Rewrite using `[hr, cup_cast_left, cup_cast_right, LRingPf.cast_cast, LRingPf.cast_cast, (h6 q _).1 (inv_root ζ) (one q (sch.obj E)), LRingPf.cast_cast]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem base (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {E : Scheme.{0}} (ζ : Prim q Γ(E, ⊤)) {n i : ℤ} (hn : 0 = n) (hi : 0 = i)
     (h0 : (0 : ℤ) = 0) (h1 : n + 0 = n) (h2 : i + -i = 0) :
@@ -63,9 +63,9 @@ private theorem base (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {E : S
     LRingPf.cast_cast]
 
 /- English proof (translation)
-Introduce `hI q _ E ζ x j`. Establish `h6` using `hI.a6ring`. Proceed by induction on `j with`. Consider the case `zero`. Conclude with `base h6 ζ (n := 2 * ((0 : ℕ) : ℤ)) (i := ((0 : ℕ) : ℤ)) (by simp) (by simp) (Eq.refl 0) _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j ih`. Establish `e : pow0 q (untw q x (rootClass (-1) ζ)) (j + 1) = cup0 q (by push_cast; ring) (pow0 q (untw q x (rootClass (-1) ζ)) j) (untw q x (rootClass (-1) ζ))` using `rfl`. Rewrite using `[e, ih]`. Unfold `cup0 untw`. Rewrite using `[cup_cast_left, cup_cast_right, LRingPf.cast_cast, LRingPf.cast_cast, four h6, ((GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).2 E ζ _ _).1, cup_cast_right, LRingPf.cast_cast, cpow_succ, cup_cast_left, rootClass_cast ζ (show -(j : ℤ) + -1 = -((j + 1 : ℕ) : ℤ) by p …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powRoot_holds : PowRoot := by
   intro hI q _ E ζ x j

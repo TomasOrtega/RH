@@ -12,12 +12,12 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.BaseChangeIdentities
 
 /- English proof (translation)
-The claim follows from `bcSpeh_of ascComp (definiteN_of h)`.
+A detailed English derivation is pending.
 -/
 theorem speh (h : PositivityTheory.Rg.BcN.BaseChangeIsobaricN) : GlobalTheory.BcSpeh.BcSpeh := bcSpeh_of ascComp (definiteN_of h)
 
 /- English proof (translation)
-Introduce `h _ _` and use `baseChange_preserves_unitary_of ascComp h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Conclusion1 : DefiniteN → GlobalTheory.Published.BernsteinUnitaryProductIrreducible →
     GlobalTheory.Published.DiscreteSpectrumGL → GlobalTheory.Published.GenericUnitaryDualGL → GlobalTheory.Published.StandardCosocleGL →

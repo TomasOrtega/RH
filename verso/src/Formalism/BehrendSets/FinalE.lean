@@ -10,7 +10,7 @@ namespace Formalism.BehrendSets.FinalE
 open Formalism.BehrendSets
 
 /- English proof (translation)
-The claim follows from `Formalism.BehrendSets.trivStab`.
+A detailed English derivation is pending.
 -/
 theorem trivStab : TrivStab := Formalism.BehrendSets.trivStab
 

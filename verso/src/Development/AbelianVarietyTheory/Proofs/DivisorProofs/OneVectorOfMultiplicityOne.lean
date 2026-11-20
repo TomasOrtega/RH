@@ -16,17 +16,17 @@ section GroupAlgebra
 variable {K : Type} [Field K] [CharZero K] {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Take `⟨n, ρ, hi, hρ⟩` from `h`. Set `j` to `algebraMap K (AlgebraicClosure K)`. Establish `hj : Function.Injective j` using `j.injective`. Use `set T : Module.End (AlgebraicClosure K) (Fin n → AlgebraicClosure K) := ∑ g, ρ (g * s * g⁻¹) with hT`. Establish `hc : ∀ g v, T (ρ g v) = ρ g (T v)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g v`. Simplify using `only [hT, LinearMap.sum_apply, map_sum]`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft g)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Simplify using `only [Equiv.coe_mulLeft]`. Use `group`. Take `⟨c, hcT⟩` from `schur_scalar ρ T hc`. Establish `h1 : ∀ u : G, ∑ g, ρ.character (g * s * g⁻¹ * u) = c * ρ.character u`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u`. Establish `: LinearMap.trace _ _ (T * ρ u) = c * ρ.character u`. Rewrite using `[hcT]`. Simplify using `[Representation.character, Module.End.mul_eq_comp]`. Rewrite using `[← this, hT, Finset.sum_mul, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Representation.character, map_mul ρ _ u]`. Establish `h2` using `h1 1`. Simplify using `only [mul_one, Representation.char_conj, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h2`. Establish `h3` using `h1 u`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `hj` to reduce the goal to its premises. Simplify using `only [map_mul, map_sum, map_natCast]`. Simplify using `only [hρ] at h2 h3`. Rewrite using `[h3, ← mul_assoc, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_conj_char {χ : G → K} (h : IsAbsIrrChar χ) (s u : G) :
     (∑ g, χ (g * s * g⁻¹ * u)) * χ 1 = (Fintype.card G : K) * (χ s * χ u) := by
@@ -62,13 +62,13 @@ theorem sum_conj_char {χ : G → K} (h : IsAbsIrrChar χ) (s u : G) :
   ring
 
 /- English proof (translation)
-Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `u`. Establish `e : ∀ g : G, (MonoidAlgebra.single g (1 : K) * MonoidAlgebra.single s a * MonoidAlgebra.single g⁻¹ (1 : K) * chiIdem χ).coeff u = a * (χ 1 / (Fintype.card G : K)) * χ (g * s * g⁻¹ * u⁻¹)`. Introduce `g`. Rewrite using `[MonoidAlgebra.single_mul_single, MonoidAlgebra.single_mul_single, coeff_mul_fin, Finset.sum_eq_single (g * s * g⁻¹)]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[coeff_chiIdem]`. Establish `: χ ((g * s * g⁻¹)⁻¹ * u)⁻¹ = χ (g * s * g⁻¹ * u⁻¹)`. Rewrite using `[← h.conj u]`. Use `congr 1`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`. Rewrite using `[MonoidAlgebra.coeff_single, Finsupp.single_eq_of_ne hb, zero_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hh`. Conclude with `absurd (Finset.mem_univ _) hh`. Rewrite using `[MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_smul, Finsupp.smul_apply, Finsupp.smul_apply, MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply, Finset.sum_congr rfl fun g _ => e g, ← Finset.mul_sum, coeff_chiIdem, smul_eq_mul, smul_eq_mul]`. Use `sum_conj_char h s u⁻¹` as an intermediate fact. Take the linear combination `(a * (χ 1 / (Fintype.card G : K))) * this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_conj_mul_chiIdem {χ : G → K} (h : IsAbsIrrChar χ) (s : G) (a : K) :
     χ 1 • ∑ g : G, MonoidAlgebra.single g (1 : K) * MonoidAlgebra.single s a * MonoidAlgebra.single g⁻¹ (1 : K) * chiIdem χ =
@@ -99,11 +99,11 @@ open Classical in
 def typeSum (P : Subgroup G) (ψ : P →* Kˣ) (χ : G → K) : K := ∑ h : P, χ (h : G) * (((ψ h)⁻¹ : Kˣ) : K)
 
 /- English proof (translation)
-Establish `hN : ((Fintype.card G : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Establish `hP : ((Nat.card P : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `key : χ 1 • ∑ g : G, MonoidAlgebra.single g (1 : K) * (lvlIdem P ψ * (MonoidAlgebra.single g⁻¹ (1 : K) * chiIdem χ)) = ((Fintype.card G : K) * ((Nat.card P : K)⁻¹ * typeSum P ψ χ)) • chiIdem χ`. Unfold `lvlIdem typeSum`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, ← mul_assoc (MonoidAlgebra.single _ (1 : K))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm, Finset.smul_sum, Finset.sum_smul]`. Use `Finset.sum_congr (by congr 1) fun k _ => ?_` and prove the remaining obligations. Use `sum_conj_mul_chiIdem h (k : G) ((Nat.card P : K)⁻¹ * ((ψ k⁻¹ : Kˣ) : K))` as an intermediate fact. Simplify using `only [mul_assoc] at this ⊢`. Rewrite using `[this, map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : (Fintype.card G : K) * ((Nat.card P : K)⁻¹ * typeSum P ψ χ) ≠ 0` using `mul_ne_zero hN (mul_ne_zero (inv_ne_zero hP) hne)`. Use `⟨((Fintype.card G : K) * ((Nat.card P : K)⁻¹ * typeSum P ψ χ))⁻¹ * χ 1, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, key, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiIdem_eq_sum {χ : G → K} (h : IsAbsIrrChar χ) (P : Subgroup G) (ψ : P →* Kˣ) (hne : typeSum P ψ χ ≠ 0) :
     ∃ c : K, chiIdem χ =
@@ -136,7 +136,7 @@ variable {K : Type} [Field K] [CharZero K] {G : Type} [Group G] [Fintype G]
 
 omit [CharZero K] in
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum_single a]`. Simplify using `[map_sum, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem asAlg_eq_sum (r : Representation K G V) (a : MonoidAlgebra K G) (x : V) :
     r.asAlgebraHom a x = ∑ g : G, a.coeff g • r g x := by
@@ -145,7 +145,7 @@ theorem asAlg_eq_sum (r : Representation K G V) (a : MonoidAlgebra K G) (x : V) 
 
 omit [CharZero K] in
 /- English proof (translation)
-Rewrite using `[asAlg_eq_sum]`. Conclude with `Z.sum_mem fun g _ => Z.smul_mem _ (hZ g x hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem asAlg_mem (r : Representation K G V) {Z : Submodule K V} (hZ : ∀ g, ∀ x ∈ Z, r g x ∈ Z)
     (a : MonoidAlgebra K G) {x : V} (hx : x ∈ Z) : r.asAlgebraHom a x ∈ Z := by
@@ -154,7 +154,7 @@ theorem asAlg_mem (r : Representation K G V) {Z : Submodule K V} (hZ : ∀ g, �
 
 omit [CharZero K] in
 /- English proof (translation)
-Rewrite using `[asAlg_eq_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => by rw [map_smulₛₗ, hι]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semi_asAlg {σ : K →+* ℂ} {E : Type} [AddCommGroup E] [Module ℂ E] (r : Representation K G V)
     (ρ : Representation ℂ G E) (ι : V →ₛₗ[σ] E) (hι : ∀ g x, ι (r g x) = ρ g (ι x)) (a : MonoidAlgebra K G) (x : V) :
@@ -163,19 +163,17 @@ theorem semi_asAlg {σ : K →+* ℂ} {E : Type} [AddCommGroup E] [Module ℂ E]
   exact Finset.sum_congr rfl fun g _ => by rw [map_smulₛₗ, hι]
 
 /- English proof (translation)
-Introduce and unpack `x ⟨hxZ, w, hw⟩`. Establish `hidem` using `idemOf_mul_self X hX`. Establish `hcen` using `idemOf_central X hX`. Establish `he : r.asAlgebraHom (idemOf X) x = x`. Rewrite using `[← hw, ← Module.End.mul_apply, ← map_mul, goodAt, ← mul_assoc, hidem]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : r.asAlgebraHom (goodAt X P' ψ') x = x`. Rewrite using `[← hw, ← Module.End.mul_apply, ← map_mul, goodAt, mul_assoc, ← mul_assoc (lvlIdem P' ψ'), hcen, mul_assoc, lvlIdem_idem, ← mul_assoc, hidem]`. Set `S : Submodule K V` to `{ carrier := {y | ∃ y₀ ∈ Z₀, ι₀ y₀ = ι y} add_mem' := by`. Introduce and unpack `a b ⟨a₀, ha, ha'⟩ ⟨b₀, hb, hb'⟩`. Conclude with `⟨a₀ + b₀, Z₀.add_mem ha hb, by rw [map_add, map_add, ha', hb']⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `zero_mem' := ⟨0, Z₀.zero_mem, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨a₀, ha, ha'⟩`. Conclude with `⟨c • a₀, Z₀.smul_mem c ha, by rw [map_smulₛₗ, map_smulₛₗ, ha']⟩ }`. Establish `hS : ∀ g, ∀ y ∈ S, r g y ∈ S`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `g y ⟨y₀, hy, hy'⟩`. Conclude with `⟨r₀ g y₀, hZ₀ g _ hy, by rw [hι, hι₀, hy']⟩`. Establish `hxS : x ∈ S`. Rewrite using `[← he, idemOf, map_sum, LinearMap.sum_apply]`. Use `S.sum_mem fun χ hχ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `chiIdem_eq_sum (hX χ hχ) P ψ (hgen χ hχ)`. Rewrite using `[hc, map_smul, LinearMap.smul_apply, map_sum, LinearMap.sum_apply]`. Use `S.smul_mem c (S.sum_mem fun g _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply]`. Use `asAlg_mem r hS _ (h0 _ ⟨asAlg_mem r hZ _ hxZ, ?_⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨r.asAlgebraHom (MonoidAlgebra.single g⁻¹ (1 : K) * chiIdem χ) x, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← he]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, hcen, goodAt, mul_assoc]`. Take `⟨x₀, hx₀, hx₀'⟩` from `hxS`. Use `⟨r₀.asAlgebraHom (goodAt X P' ψ') x₀, ⟨asAlg_mem r₀ hZ₀ _ hx₀, x₀, rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[semi_asAlg r₀ ρ ι₀ hι₀, hx₀', ← semi_asAlg r ρ ι hι, hg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_le_of_type {V₀ : Type} [AddCommGroup V₀] [Module K V₀] {σ : K →+* ℂ} {E : Type} [AddCommGroup E] [Module ℂ E]
     (r : Representation K G V) (r₀ : Representation K G V₀) (ρ : Representation ℂ G E)
@@ -231,17 +229,17 @@ section Coordinates
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Establish `hop : ∀ (a : MonoidAlgebra K G) (φ : B.S.Forms), B.S.gaOp B.r a φ = B.r.asAlgebraHom a φ`. Introduce `a φ`. Rewrite using `[asAlg_eq_sum, CSD.gaOp, LinearMap.sum_apply]`. Both sides reduce to the same expression. Establish `hV : LinearMap.range (B.vE ℓ).mulVecLin = LinearMap.range (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ)).mulVecLin` using `(image_idempotent_spec K B.S.dim (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ))).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use `⟨(B.mem_goodPart_iff ℓ Z _).1 (B.zE_mem ℓ Z y), ?_⟩` and prove the remaining obligations. Establish `: (B.vE ℓ).mulVec ((B.zE ℓ Z).mulVec y) ∈ LinearMap.range (B.vE ℓ).mulVecLin` using `⟨_, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hV]`. Take `⟨u, hu⟩` from `this`. Use `⟨B.S.basis.equivFun.symm u, ?_⟩` and prove the remaining obligations. Rewrite using `[B.toF_apply, ← hu, ← hop, LinearEquiv.eq_symm_apply, ← CSD.gaMat_mulVec_equivFun, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨hZ, w, hw⟩`. Establish `: B.S.basis.equivFun φ ∈ LinearMap.range (B.vE ℓ).mulVecLin`. Rewrite using `[hV]`. Use `⟨B.S.basis.equivFun w, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, CSD.gaMat_mulVec_equivFun, hop, hw]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `this`. Rewrite `hu` using `[Matrix.mulVecLin_apply]`. Establish `hu0 : u ∈ B.Z0 ℓ Z`. Rewrite using `[BlockDat.Z0, B.mem_goodPart_iff, hu, LinearEquiv.symm_apply_apply]`. Conclude with `hZ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `B.exists_zE ℓ Z hu0`. Conclude with `⟨y, by rw [B.toF_apply, hy, hu, LinearEquiv.symm_apply_apply]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_toF {G : Type} [Group G] [Fintype G] {Pl0 : Type} (B : BlockDat K G Pl0) (ℓ : Lvl K G)
     (Z : Submodule K B.S.Forms) :
@@ -280,9 +278,9 @@ theorem range_toF {G : Type} [Group G] [Fintype G] {Pl0 : Type} (B : BlockDat K 
 variable {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (b : Bool)
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Finset.univ_sum_single x]`. Rewrite using `[CxData.iC, lin_apply, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: (Pi.single k (x k) : Fin _ → K) = x k • Pi.single k 1`. Apply the tactic sequence `funext i; by_cases hi : i = k <;> simp [hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_smul, map_smulₛₗ, map_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem iC_cpt (t : Bs.Tup) (x : Fin ((lv (fc X.zs) b).dQ t) → K) :
     X.iC cr b t (cpt Bs.v0.embedding x) = X.Θ t (X.jR t (cr.toR X.zs b t x)) := by
@@ -296,7 +294,7 @@ theorem iC_cpt (t : Bs.Tup) (x : Fin ((lv (fc X.zs) b).dQ t) → K) :
   rfl
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨_, ⟨(X.rowMat cr b t).mulVec x, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← iC_cpt, ← iC_cpt, X.key_row cr b h2 hr]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem image_le_of_rat (h2 : X.H2 cr b) (hr : X.RATmu cr b) (t : Bs.Tup) :
     ∀ y ∈ LinearMap.range (cr.toR X.zs b t), ∃ y₀ ∈ LinearMap.range (cr.toR X.zs b Bs.μ0),
@@ -306,9 +304,9 @@ theorem image_le_of_rat (h2 : X.H2 cr b) (hr : X.RATmu cr b) (t : Bs.Tup) :
   rw [← iC_cpt, ← iC_cpt, X.key_row cr b h2 hr]
 
 /- English proof (translation)
-Introduce `t i k`. Take `⟨_, ⟨x₀, rfl⟩, hx⟩` from `h t _ ⟨Pi.single k 1, rfl⟩`. Establish `h1 : X.iC cr b Bs.μ0 (cpt Bs.v0.embedding x₀) = X.iC cr b t (Pi.single k 1)`. Rewrite using `[iC_cpt, hx, CxData.iC, lin_single]`. Establish `h2 : solve (X.iC cr b Bs.μ0) (X.iC cr b t (Pi.single k 1)) = cpt Bs.v0.embedding x₀` using `hinj ((solve_spec _ ⟨_, h1⟩).trans h1.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨x₀ i, by simp only [CxData.rowMatC, relMat, Matrix.of_apply, h2, cpt]⟩`.
+Supply the required witnesses or components.
 -/
 theorem rat_of_image_le (hinj : Function.Injective (X.iC cr b Bs.μ0))
     (h : ∀ t, ∀ y ∈ LinearMap.range (cr.toR X.zs b t), ∃ y₀ ∈ LinearMap.range (cr.toR X.zs b Bs.μ0),
@@ -343,11 +341,11 @@ def ImageLe (X : CxData A.fam.amb) (P : Subgroup G) (ψ : P →* Kˣ) : Prop :=
       X.Θ A.μ0 (X.jR A.μ0 y₀) = X.Θ t (X.jR t y)
 
 /- English proof (translation)
-Take `⟨ρF, hj, hΘ, hup⟩` from `heq`. Establish `hZ : ∀ t g, ∀ x ∈ X.Z t, A.leftGroupActionRight t g x ∈ X.Z t`. Introduce and unpack `t g x ⟨y, hy⟩`. Conclude with `⟨ρ g y, (hup t g y).trans ((congrArg (ρF t g) hy).trans (hj t g x).symm)⟩`. Establish `hι : ∀ t g x, ((X.Θ t).comp (X.jR t)) (A.leftGroupActionRight t g x) = ρ g (((X.Θ t).comp (X.jR t)) x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `t g x`. Conclude with `(congrArg (X.Θ t) (hj t g x)).trans (hΘ t g _)`. Introduce `t`. Rewrite using `[range_toF, range_toF]`. Use `image_le_of_type (A.leftGroupActionRight t) (A.leftGroupActionRight A.μ0) ρ ((X.Θ t).comp (X.jR t)) ((X.Θ A.μ0).comp (X.jR A.μ0)) (hι t) (hι A.μ0) (X.Z t) (X.Z A.μ0) (hZ t) (hZ A.μ0) A.X hX P ψ hgen ?_ P' ψ'` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `h'` using `h t`. Rewrite `h'` using `[range_toF, range_toF]`. Take `⟨y₀, hy₀, e⟩` from `h' y hy`. Conclude with `⟨y₀, hy₀.1, e⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem imageLe_of_type (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (X : CxData A.fam.amb) (ρ : Representation ℂ G X.EE)
     (heq : ThetaEquivariant X ρ) (P : Subgroup G) (ψ : P →* Kˣ) (hgen : ∀ χ ∈ A.X, typeSum P ψ χ ≠ 0)
@@ -376,14 +374,14 @@ variable (X : CxData A.fam.amb) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : Subg
   (Zsc : DefSub A.fam.amb → IndefScale A.fam.base)
 
 /- English proof (translation)
-The claim follows from `image_le_of_rat X (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) false h2 hr`.
+A detailed English derivation is pending.
 -/
 theorem imageLe_of_rat (h2 : X.H2 (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) false)
     (hr : X.RATmu (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) false) : ImageLe X P0 ψ0 :=
   image_le_of_rat X (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) false h2 hr
 
 /- English proof (translation)
-Use `rat_of_image_le X _ b h2.1 ?_` and prove the remaining obligations. Consider the cases of `b with`. Consider the case `false => exact h P0 ψ0`. Consider the case `true => exact h P1 ψ1`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem rat_of_imageLe (b : Bool) (h2 : X.H2 (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) b)
     (h : ∀ P ψ, ImageLe X P ψ) : X.RATmu (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) b := by
@@ -395,16 +393,16 @@ theorem rat_of_imageLe (b : Bool) (h2 : X.H2 (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) b
 end Faces
 
 /- English proof (translation)
-Introduce `χ hχ` and use `by rw [h χ hχ]; exact Nat.cast_ne_zero.mpr Nat.card_pos.ne'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem OneVector.ne_zero {X : Finset (G → K)} {P : Subgroup G} {ψ : P →* Kˣ} (h : OneVector X P ψ) :
     ∀ χ ∈ X, typeSum P ψ χ ≠ 0 := fun χ hχ => by
   rw [h χ hχ]; exact Nat.cast_ne_zero.mpr Nat.card_pos.ne'
 
 /- English proof (translation)
-Introduce `χ hχ`. Take `⟨i, rfl⟩` from `hch χ hχ`. Establish `h` using `hM i`. Unfold `Formalism.MainNotions.PrimeDegreeVariant.nS at h`. Rewrite `h` using `[GlobalTheory.CuspidalIdempotentCharacters.eps_eq_lvlIdem]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(GlobalTheory.CuspidalIdempotentCharacters.finrank_eq_one_iff (Tg.tau i) P ψ).1 h`.
+A detailed English derivation is pending.
 -/
 theorem one_vector_of_multiplicity_one {X : Finset (G → K)} {P : Subgroup G} {ψ : P →* Kˣ} (Tg : Formalism.MainNotions.PrimeDegreeVariant.GoodSet K G)
     (hch : ∀ χ ∈ X, ∃ i, χ = fun g => LinearMap.trace K (Tg.W i) (Tg.tau i g))
@@ -418,7 +416,7 @@ theorem one_vector_of_multiplicity_one {X : Finset (G → K)} {P : Subgroup G} {
   exact (GlobalTheory.CuspidalIdempotentCharacters.finrank_eq_one_iff (Tg.tau i) P ψ).1 h
 
 /- English proof (translation)
-Introduce `χ hχ`. Rewrite using `[Finset.mem_singleton.1 hχ]`. Simplify using `only [typeSum, MonoidHom.one_apply, inv_one, Units.val_one, mul_one, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (P : Subgroup G) : OneVector ({fun _ => 1} : Finset (G → K)) P 1 := by
   intro χ hχ
@@ -442,7 +440,7 @@ def rowSub (R : RealDat D A Ks) (t : T) : Submodule D.what₂.LL (A.fam.amb.FR t
     (Tw.semi (σ' := A.v0.embedding) (twAt D.what₂.embLL A.v0) R.emb0 (R.jX t))
 
 /- English proof (translation)
-Establish `e : ∀ t, (R.toCx F).Z t = rowSub R t` using `fun t => rfl`. Unfold `ImageLe`. Simplify using `only [e]`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem imageLe_iff (R : RealDat D A Ks) (F : Face D A) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) :
     ImageLe (R.toCx F) P ψ ↔
@@ -455,14 +453,14 @@ theorem imageLe_iff (R : RealDat D A Ks) (F : Face D A) (P : Subgroup G) (ψ : P
   exact Iff.rfl
 
 /- English proof (translation)
-The claim follows from `(imageLe_iff R F' P ψ).2 ((imageLe_iff R F P ψ).1 h)`.
+A detailed English derivation is pending.
 -/
 theorem imageLe_face (R : RealDat D A Ks) (F F' : Face D A) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ)
     (h : ImageLe (R.toCx F) P ψ) : ImageLe (R.toCx F') P ψ :=
   (imageLe_iff R F' P ψ).2 ((imageLe_iff R F P ψ).1 h)
 
 /- English proof (translation)
-The claim follows from `rat_of_imageLe (R.toCx F') F'.P0 F'.ψ0 F'.P1 F'.ψ1 F'.Dc F'.Sp F'.Zsc b h2' fun P ψ => imageLe_face R F F' P ψ (imageLe_of_type hOk.irr (R.toCx F) (R.gEx F) heq F.P0 F.ψ0 hM.ne_zero (imageLe_of_rat (R.toCx F) F.P0 F.ψ0 F.P1 F.ψ1 F.Dc F.Sp F.Zsc h2 hr) P ψ)`.
+A detailed English derivation is pending.
 -/
 theorem ratMu_of_base {s : ℕ} (hOk : A.fam.Ok s) (R : RealDat D A Ks) (F F' : Face D A) (b : Bool)
     (hM : OneVector A.X F.P0 F.ψ0) (heq : ThetaEquivariant (R.toCx F) (R.gEx F))
@@ -475,7 +473,7 @@ theorem ratMu_of_base {s : ℕ} (hOk : A.fam.Ok s) (R : RealDat D A Ks) (F F' : 
 def principalFace (F : Face D A) : Face D A := ⟨⊥, 1, F.P1, F.ψ1, F.Dc, F.Sp, F.Zsc⟩
 
 /- English proof (translation)
-The claim follows from `ratMu_of_base hOk R F (principalFace F) false hM heq h2 h2' hr`.
+A detailed English derivation is pending.
 -/
 theorem ratMu_principal {s : ℕ} (hOk : A.fam.Ok s) (R : RealDat D A Ks) (F : Face D A)
     (hM : OneVector A.X F.P0 F.ψ0) (heq : ThetaEquivariant (R.toCx F) (R.gEx F))
@@ -485,7 +483,7 @@ theorem ratMu_principal {s : ℕ} (hOk : A.fam.Ok s) (R : RealDat D A Ks) (F : F
   ratMu_of_base hOk R F (principalFace F) false hM heq h2 h2' hr
 
 /- English proof (translation)
-Introduce `b` and use `ratMu_of_base hOk R F F b hM heq (h2 false) (h2 b) hr`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lRatMu_of_base {s : ℕ} (hOk : A.fam.Ok s) (R : RealDat D A Ks) (F : Face D A)
     (hM : OneVector A.X F.P0 F.ψ0) (heq : ThetaEquivariant (R.toCx F) (R.gEx F))
@@ -496,11 +494,11 @@ def GoodInduced (R : RealDat D A Ks) : Prop :=
   ∀ χ ∈ A.X, GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.IsCuspIndProdChar R.Pg D.R.r D.what₂.embLL fun g => χ (R.eG.symm g)
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hP, -⟩` from `hlev`. Introduce `χ hχ`. Establish `h` using `hW D.host.E R.Pg D.R.r ℂ (RingHom.id ℂ) ψ hψ (fun g => D.what₂.embLL (χ (R.eG.symm g))) (hind χ hχ)`. Rewrite `h` using `[← hP]`. Set `e : (R.levR F false).H ≃ F.P0` to `R.eG.symm.toEquiv.subtypeEquiv fun _ => Iff.rfl`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[map_natCast, ← Nat.card_congr e, ← h, typeSum, map_sum]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.lvlSum`. Use `letI := GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.fintypeH (R.levR F false)`. Use `(Fintype.sum_equiv e _ _ fun x => ?_).symm` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem oneVector_of_whittaker (R : RealDat D A Ks) (F : Face D A) (hW : GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.OneWhittakerVector)
     (hlev : R.grp_levels F) (hind : GoodInduced R) : OneVector A.X F.P0 F.ψ0 := by
@@ -519,7 +517,7 @@ theorem oneVector_of_whittaker (R : RealDat D A Ks) (F : Face D A) (hW : GlobalT
   rfl
 
 /- English proof (translation)
-The claim follows from `ratMu_principal hOk R F (oneVector_of_whittaker R F hW hlev hind) heq h2 h2' hr`.
+A detailed English derivation is pending.
 -/
 theorem ratMu_principal_of_whittaker {s : ℕ} (hOk : A.fam.Ok s) (R : RealDat D A Ks) (F : Face D A)
     (hW : GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.OneWhittakerVector) (hlev : R.grp_levels F) (hind : GoodInduced R)

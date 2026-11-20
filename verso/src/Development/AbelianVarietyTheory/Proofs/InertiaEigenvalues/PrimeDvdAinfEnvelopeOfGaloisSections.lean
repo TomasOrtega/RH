@@ -13,27 +13,25 @@ namespace GlobalTheory.BSP
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `l _ K bk En κ _ x c h hx hs`. Take `⟨-, -, -, -, -, -, hA7⟩` from `GlobalTheory.T.ainf_divisibility_breuilKisin_facts l K bk`. Take `⟨-, hM2, hM3⟩` from `GlobalTheory.T.ainf_envelope_mod_prime_properties l K bk En`. Set `I : Ideal En.Q.A` to `Ideal.span {((l : ℕ) : En.Q.A)}`. Set `π : En.Q.A →+* En.Q.A ⧸ I` to `Ideal.Quotient.mk I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hπ : ∀ y, π y = 0 ↔ ((l : ℕ) : En.Q.A) ∣ y` using `fun y => Ideal.Quotient.eq_zero_iff_mem.trans Ideal.mem_span_singleton`. Establish `hl0 : ((l : ℕ) : En.Q.A ⧸ I) = 0`. Rewrite using `[← map_natCast π]`. Conclude with `(hπ _).2 dvd_rfl`. Establish `hreg : π (En.inl.f (bk.ev X)) ∈ nonZeroDivisors (En.Q.A ⧸ I)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `y hy`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `: π (En.inl.f (bk.ev X) * y) = 0` using `by rw [map_mul, mul_comm]; exact hy`. Conclude with `(hπ _).2 (hM2 y ((hπ _).1 this))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hE : π (En.inl.f (bk.ev bk.E)) = π (En.inl.f (bk.ev X)) ^ bk.Ep.natDegree`. Set `ι : Ainf l →+* En.Q.A` to `En.inl.f`. Establish `h1 : ((l : ℕ) : En.Q.A) ∣ ι (bk.ev bk.E - bk.ev X ^ bk.Ep.natDegree)`. Use `map_dvd ι hA7` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(hπ _).2 h1`. Rewrite `h2` using `[map_sub, map_pow, map_sub, map_pow, sub_eq_zero]`. Conclude with `h2`. Establish `hl1 : π ((l : ℕ) : En.Q.A) = 0` using `(hπ _).2 dvd_rfl`. Establish `hφ : ∀ y, π (En.Q.D.φ y) = π y ^ l` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e : π (En.Q.D.φ y - y ^ l) = 0` using `(hπ _).2 ⟨En.Q.D.δ y, by rw [En.Q.D.φ_eq y]; ring⟩`. Rewrite `e` using `[map_sub, map_pow, sub_eq_zero]`. Then use the resulting hypothesis. Establish `heq : ∀ j, π (En.inl.f (bk.ev X)) ^ (bk.Ep.natDegree * h) * π (x j) = ∑ i, π (x i) ^ l * π (c i j)` using `fun j => by`. Use `congrArg π (hx j)` as an intermediate fact. Rewrite `this` using `[map_mul π, map_pow π, hE, ← pow_mul, map_sum π]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_mul π, hφ]`. Establish `hpts : ∀ (O : Type) [CommRing O] [IsDomain O] [ValuationRing O] [CharP O l] [PerfectRing O l] (f : En.Q.A ⧸ I →+* O), f (π (En.inl.f (bk.ev X))) ≠ 0 → ¬ IsUnit (f (π (En.inl.f (bk.ev X)))) → IsAdicComplete (Ideal.span {f (π (En.inl.f (bk.ev X)))}) O → ∀ j, f (π (x j)) = 0`. Introduce `O _ _ _ _ _ f hf0 hfu hfc j`. Take `⟨g, s, ψ, h1, h2, h3⟩` from `GlobalTheory.T.breuilKisinEnvelope_point_factors_through_section l K bk En O (f.comp π) hf0 hfu hfc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩` from `hs g s h1 h2 j`. Establish `e` using `h3 (x j)`. Rewrite `e` using `[RingHom.comp_apply]`. Rewrite using `[e, hz]`. Establish `: WittVector.coeff (p` using `l) (R := OCb l) (((l : ℕ) : (ainfObj K).A) * z) 0 = 0 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_comm]`. Conclude with `WittVector.mul_charP_coeff_zero (p := l) (R := OCb l) z`. Rewrite using `[this, map_zero]`. Establish `key` using `GlobalTheory.T.dvd_all_pow_of_frobenius_eq_killed_by_perfect_points l (En.Q.A ⧸ I) (π (En.inl.f (bk.ev X))) hl0 hreg κ (fun i => π (x i)) (fun i j => π (c i j)) (bk.Ep.natDegree * h) heq (fun O _ _ _ _ _ f hf0 hfu hfc j => hpts O f hf0 hfu hfc j)`. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `hM3 (x j) fun m => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `key m j`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Use `⟨z, (hπ _).1 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π (x j) = π (En.inl.f (bk.ev X)) ^ m * π z at hw`.
-
-Rewrite using `[map_sub π, map_mul π, map_pow π, hw, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_dvd_of_galois_sections : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (En : Env bk (ainfObj K) (bk.ev bk.E) (bk.ev X)) (κ : Type) [Fintype κ] (x : κ → En.Q.A) (c : κ → κ → En.Q.A) (h : ℕ), (∀ j, En.inl.f (bk.ev bk.E) ^ h * x j = ∑ i, En.Q.D.φ (x i) * c i j) → (∀ (g : ↥(GK K)) (s : Hom En.Q (ainfObj K)), s.comp En.inl = Hom.id _ → s.comp En.inr = (ainfHom K g).comp bk.ι → ∀ j, ((l : ℕ) : (ainfObj K).A) ∣ s.f (x j)) → ∀ j, ((l : ℕ) : En.Q.A) ∣ x j := by
   intro l _ K bk En κ _ x c h hx hs

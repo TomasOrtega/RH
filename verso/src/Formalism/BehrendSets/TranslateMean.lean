@@ -9,7 +9,7 @@ namespace Formalism.BehrendSets.Final
 open Formalism.BehrendSets
 
 /- English proof (translation)
-The claim follows from `Formalism.BehrendSets.select`.
+A detailed English derivation is pending.
 -/
 theorem select : Select := Formalism.BehrendSets.select
 

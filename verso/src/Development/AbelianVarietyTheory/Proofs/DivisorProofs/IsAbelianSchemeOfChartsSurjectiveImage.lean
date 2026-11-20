@@ -11,9 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.QuotAbelian
 
 /- English proof (translation)
-Introduce `S 𝒰 A G _ _ Q B _ ψ hA hG hQ hψ hB`. Establish `: IsZariskiLocalAtTarget @Smooth.{0}` using `HasRingHomProperty.instIsZariskiLocalAtTarget (P := @Smooth)`. Establish `hsm : Smooth G.hom` using `GlobalTheory.GroupGlue.of_charts @Smooth hψ fun j => (hB j).smooth`. Establish `hpr : IsProper G.hom` using `GlobalTheory.GroupGlue.of_charts @IsProper hψ fun j => (hB j).proper`. Establish `hw : Q.left ≫ G.hom = A.hom` using `Over.w Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA.geomConnected` as an intermediate fact. Establish `: GeometricallyConnected (Q.left ≫ G.hom)` using `by rw [hw]; infer_instance`. Conclude with `⟨hG, hsm, hpr, GlobalTheory.AbelianQuotient.geometricallyConnected_of_comp Q.left G.hom⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isAbelianScheme_of_charts_of_surjective :
     ∀ (S : Scheme.{0}) (𝒰 : S.OpenCover.{0}) (A G : Over S) [GrpObj A] [GrpObj G] (Q : A ⟶ G)

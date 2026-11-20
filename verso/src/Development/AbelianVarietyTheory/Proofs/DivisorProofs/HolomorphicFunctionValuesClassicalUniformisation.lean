@@ -16,9 +16,9 @@ namespace GlobalTheory.MBLow.Cl.HolB
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Distinguish the cases in `h : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U`. Establish `h' : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U)` using `h`. Rewrite using `[valF, valF, dif_pos h', dif_pos h]`. Simplify using `only [Scheme.Hom.comp_appLE, CommRingCat.comp_apply]`. Establish `h' : ¬ ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U)` using `h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[valF, valF, dif_neg h', dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valF_comp_app (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)) :
     valF x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valF (x ≫ φ) U f := by
@@ -44,15 +44,15 @@ def psiB (R : Type) [CommRing R] [IsDomain R] [Algebra (FractionRing R) ℂ] (D 
       Over.mk (x.P.A.hom ≫ (TF (R := R) ℂ).hom) ⟶ D.P.A)).left
 
 /- English proof (translation)
-Introduce `R _ _ _ D N ν g d x u φ hφ hE U f`. Establish `hw` using `hφ.1.w`. Establish `key : ∀ z, ptB ν d z = (u.ex z).left ≫ psiB R D x φ hw`. Introduce `z`. Establish `h0 : (u.ex z).left ≫ x.P.A.hom = 𝟙 _` using `Over.w (u.ex z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `e : TF (R` to `R) ℂ ⟶ Over.mk (x.P.A.hom ≫ (TF (R := R) ℂ).hom) := Over.homMk (u.ex z).left (by simp only [Over.mk_hom]; rw [← Category.assoc, h0]; exact Category.id_comp _)`. Establish `he : e ≫ lift (Over.homMk x.P.A.hom rfl : Over.mk (x.P.A.hom ≫ (TF (R` using `R) ℂ).hom) ⟶ TF (R := R) ℂ) (Over.homMk φ (by`. Rewrite using `[hw]`. Simplify using `only [Over.mk_hom, TF, jFK, jK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]) :`. Use the proof step `Over.mk (x.P.A.hom ≫ (TF (R := R) ℂ).hom) ⟶ D.P.A) = lift (𝟙 (TF (R := R) ℂ)) (ν.eA (d.ex z)) := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_lift]`. Use `congr 1`. Use `ext`. Simplify using `[e, h0]`. Use `ext`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[e, hE z]`. Rewrite using `[ptB, ← he]`. Both sides reduce to the same expression. Establish `hs : {z | ⊤ ≤ ptB ν d z ⁻¹ᵁ U} = {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ (psiB R D x φ hw ⁻¹ᵁ U)}`. Use extensionality with `z`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, key z, Scheme.Hom.comp_preimage]`. Take `⟨ho, hd⟩` from `u.hol (psiB R D x φ hw ⁻¹ᵁ U) ((psiB R D x φ hw).app U |>.hom f)`. Rewrite using `[hs]`. Use `⟨ho, hd.congr fun z _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← valF_eq_valAt', valF_comp_app, key z]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hol_ptB : ∀ (R : Type) [CommRing R] [IsDomain R] [Algebra (FractionRing R) ℂ] (D : DegPre R) (N : NumD ℂ)
     (ν : NumOf D ℂ N) (g : ℕ) (d : AB N.toNumB g) (x : KeyIn ℂ) (u : HolUnif x.P.A x.P.L g) (φ : x.P.A.left ⟶ D.P.A.left),

@@ -10,7 +10,7 @@ namespace GlobalTheory.DualOrthSum
 open GlobalTheory.HermFrame
 
 /- English proof (translation)
-Simplify using `[form_eq_sum, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_blockSum {m n : Type} [Fintype m] [Fintype n] (A : Matrix m m ℂ)
     (B : Matrix n n ℂ) (x y : m ⊕ n → ℂ) :
@@ -19,7 +19,7 @@ theorem form_blockSum {m n : Type} [Fintype m] [Fintype n] (A : Matrix m m ℂ)
   simp [form_eq_sum, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Establish `: (fromBlocks A 0 0 B)⁻¹ = fromBlocks A⁻¹ 0 0 B⁻¹` using `Matrix.inv_eq_right_inv (by`. Simplify using `[fromBlocks_multiply, Matrix.mul_nonsing_inv _ hA, Matrix.mul_nonsing_inv _ hB])`. Simplify using `[dualGram, this, fromBlocks_transpose]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dualGram_fromBlocks_diag {m n : Type} [Fintype m] [Fintype n] [DecidableEq m]
     [DecidableEq n] {A : Matrix m m ℂ} {B : Matrix n n ℂ} (hA : IsUnit A.det) (hB : IsUnit B.det) :
@@ -29,7 +29,7 @@ theorem dualGram_fromBlocks_diag {m n : Type} [Fintype m] [Fintype n] [Decidable
   simp [dualGram, this, fromBlocks_transpose]
 
 /- English proof (translation)
-Rewrite using `[dualGram, dualGram, inv_submatrix_equiv, form_eq_sum, form_eq_sum]`. Use `Fintype.sum_equiv e _ _ fun i => Fintype.sum_equiv e _ _ fun j => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem form_dualGram_submatrix {m n : Type} [Fintype m] [Fintype n] [DecidableEq m]
     [DecidableEq n] (e : m ≃ n) (H : Matrix n n ℂ) (u w : n → ℂ) :
@@ -39,7 +39,7 @@ theorem form_dualGram_submatrix {m n : Type} [Fintype m] [Fintype n] [DecidableE
   simp
 
 /- English proof (translation)
-Establish `h` using `Matrix.mul_nonsing_inv N hN`. Establish `h' : N⁻¹ᵀ * Nᵀ = 1` using `by rw [← transpose_mul, h, transpose_one]`. Rewrite using `[dualGram_chg h, form_chg, mulVec_mulVec, mulVec_mulVec, h', one_mulVec, one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_dualGram_chg_transpose {n : Type} [Fintype n] [DecidableEq n] {N : Matrix n n ℂ}
     (hN : IsUnit N.det) (D : Matrix n n ℂ) (x y : n → ℂ) :
@@ -49,17 +49,17 @@ theorem form_dualGram_chg_transpose {n : Type} [Fintype n] [DecidableEq n] {N : 
   rw [dualGram_chg h, form_chg, mulVec_mulVec, mulVec_mulVec, h', one_mulVec, one_mulVec]
 
 /- English proof (translation)
-Introduce `g g₁ g₂ hg H H₁ H₂ M₁ M₂ hH hH₁ hH₂ hsum t ht a a' b b'`. Establish `ht' : (0 : ℂ) < (t : ℂ)` using `by exact_mod_cast ht`. Set `e : Fin g₁ ⊕ Fin g₂ ≃ Fin g` to `finSumFinEquiv.trans (finCongr hg.symm)`. Set `M : Matrix (Fin g₁ ⊕ Fin g₂) (Fin g) ℂ` to `Matrix.fromRows M₁ M₂`. Set `N : Matrix (Fin g₁ ⊕ Fin g₂) (Fin g₁ ⊕ Fin g₂) ℂ` to `M.submatrix id e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `D : Matrix (Fin g₁ ⊕ Fin g₂) (Fin g₁ ⊕ Fin g₂) ℂ` to `fromBlocks ((t : ℂ) • H₁) 0 0 ((t : ℂ) • H₂)`. Establish `hM : (t : ℂ) • H = chg M D`. Use extensionality with `i j`. Rewrite using `[← form_single ((t : ℂ) • H), ← form_single (chg M D), form_chg, form_smul, hsum, form_blockSum, form_smul, form_smul, mul_add, fromRows_mulVec, fromRows_mulVec]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hN : chg N D = ((t : ℂ) • H).submatrix e e`. Rewrite using `[hM]`. Use extensionality with `i j`. Rewrite using `[submatrix_apply, chg_apply, chg_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hdet : IsUnit N.det`. Establish `h1 : (chg N D).det ≠ 0`. Rewrite using `[hN, det_submatrix_equiv_self]`. Conclude with `(hH.smul ht').det_pos.ne'`. Rewrite `h1` using `[det_chg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `isUnit_iff_ne_zero.2 fun h0 => h1 ?_` and prove the remaining obligations. Simplify using `[h0]`. Establish `hv (c : Fin g₁ → ℂ) (d : Fin g₂ → ℂ) : (M₁ᵀ *ᵥ c + M₂ᵀ *ᵥ d) ∘ e = Nᵀ *ᵥ Sum.elim c d`. Use function extensionality and compare the values at `i`. Simplify using `[N, M, mulVec, dotProduct, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← form_dualGram_submatrix e, ← hN, hv, hv, form_dualGram_chg_transpose hdet, dualGram_fromBlocks_diag (hH₁.smul ht').det_pos.ne'.isUnit (hH₂.smul ht').det_pos.ne'.isUnit, form_blockSum]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem form_dualGram_orthSum : ∀ (g g₁ g₂ : ℕ), g = g₁ + g₂ → ∀ (H : Matrix (Fin g) (Fin g) ℂ) (H₁ : Matrix (Fin g₁) (Fin g₁) ℂ) (H₂ : Matrix (Fin g₂) (Fin g₂) ℂ) (M₁ : Matrix (Fin g₁) (Fin g) ℂ) (M₂ : Matrix (Fin g₂) (Fin g) ℂ), H.PosDef → H₁.PosDef → H₂.PosDef → (∀ z w, HermFrame.form H z w = HermFrame.form H₁ (M₁.mulVec z) (M₁.mulVec w) + HermFrame.form H₂ (M₂.mulVec z) (M₂.mulVec w)) → ∀ (t : ℝ), 0 < t → ∀ (a a' : Fin g₁ → ℂ) (b b' : Fin g₂ → ℂ), HermFrame.form (HermFrame.dualGram ((t : ℂ) • H)) (M₁.transpose.mulVec a + M₂.transpose.mulVec b) (M₁.transpose.mulVec a' + M₂.transpose.mulVec b') = HermFrame.form (HermFrame.dualGram ((t : ℂ) • H₁)) a a' + HermFrame.form (HermFrame.dualGram ((t : ℂ) • H₂)) b b' := by
   intro g g₁ g₂ hg H H₁ H₂ M₁ M₂ hH hH₁ hH₂ hsum t ht a a' b b'

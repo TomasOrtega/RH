@@ -4,55 +4,51 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ β J hsym hJJ hJ hpos`. Use `set Φ : (V × V) →ₗ[ℝ] (V × V) := LinearMap.inr ℝ V V ∘ₗ LinearMap.fst ℝ V V + J ∘ₗ LinearMap.inr ℝ V V ∘ₗ LinearMap.snd ℝ V V with hΦdef`. Establish `hΦ : ∀ u : V × V, Φ u = (0, u.1) + J (0, u.2)`. Introduce `u`. Simplify using `[hΦdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `u hu`. Rewrite `hu` using `[hΦ]`. Establish `h1 : (J (0, u.2)).1 = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Prod.fst hu` as an intermediate fact. Simplify using `using this`. Establish `hb : u.2 = 0`. Assume the negation of the conclusion as `hne`. Use `hpos (0, u.2) (by simpa using hne)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h1] at this`. Establish `hJ0 : J (0, 0) = 0` using `J.map_zero`. Establish `ha : u.1 = 0`. Use `congrArg Prod.snd hu` as an intermediate fact. Simplify `this` using `[hb, hJ0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `Prod.ext ha hb`. Use `set E := LinearEquiv.ofInjectiveEndo Φ hinj with hEdef`. Establish `hE : ∀ w, Φ (E.symm w) = w` using `fun w => by show E (E.symm w) = w`. Conclude with `E.apply_symm_apply w`. Establish `hJ0 : J (0, 0) = 0` using `J.map_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `set A : V →ₗ[ℝ] V := LinearMap.fst ℝ V V ∘ₗ E.symm.toLinearMap ∘ₗ LinearMap.inl ℝ V V with hAdef`. Use `set B : V →ₗ[ℝ] V := LinearMap.snd ℝ V V ∘ₗ E.symm.toLinearMap ∘ₗ LinearMap.inl ℝ V V with hBdef`. Establish `hAB : ∀ p, E.symm (p, 0) = (A p, B p)` using `fun p => by simp [hAdef, hBdef]`. Establish `hP0 : ∀ q, E.symm (0, q) = (q, 0)` using `fun q => by`. Apply `E.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[E.apply_symm_apply]`. Use `show (0, q) = Φ (q, 0)`. Rewrite using `[hΦ]`. Simplify using `[hJ0]`. Establish `hsplit : ∀ w : V × V, E.symm w = (A w.1 + w.2, B w.1)` using `fun w => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : w = (w.1, 0) + (0, w.2)` using `by simp`. Rewrite using `[hw, map_add, hAB, hP0]`. Simplify using the standard rewrite rules. Establish `hJB : ∀ p, J (0, B p) = (p, -A p)` using `fun p => by`. Use `hE (p, 0)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hAB, hΦ]`. Establish `h2 : J (0, B p) = (p, 0) - (0, A p)` using `by rw [← this]; abel`. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Establish `hPJ : ∀ w : V × V, E.symm (J w) = (-(E.symm w).2, (E.symm w).1)` using `fun w => by`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `E.injective` to reduce the goal to its premises. Rewrite using `[E.apply_symm_apply]`. Use `show J w = Φ _`. Use `conv_lhs => rw [← hE w]`. Rewrite using `[hΦ, hΦ, map_add, hJJ]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp <;> abel`. Establish `hAsym : ∀ x y, β x (A y) = β y (A x)` using `fun x y => by`. Use `hJ (0, B x) (0, B y)` as an intermediate fact. Rewrite `this` using `[hJB, hJB]`. Simplify using `at this`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBsym : ∀ x y, β x (B y) = β y (B x)` using `fun x y => by`. Use `hJ (J (0, B x)) (0, B y)` as an intermediate fact. Rewrite `this` using `[hJJ, hJB, hJB]`. Simplify using `at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBpos : ∀ x, x ≠ 0 → 0 < -β x (B x)` using `fun x hx => by`. Establish `hne : ((0 : V), B x) ≠ 0`. Introduce `h0`. Establish `h1 : J (0, B x) = 0` using `by rw [h0]; exact J.map_zero`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hJB]`. Conclude with `hx (congrArg Prod.fst h1)`. Use `hpos (0, B x) hne` as an intermediate fact. Rewrite `this` using `[hJB]`. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Q' : V →ₗ[ℝ] V →ₗ[ℝ] ℂ` to `LinearMap.mk₂ ℝ (fun x y => ((Real.pi * β x (A y) : ℝ) : ℂ) * Complex.I - ((Real.pi * β x (B y) : ℝ) : ℂ)) (fun m₁ m₂ n => by simp; ring) (fun c m n => by simp; ring) (fun m n₁ n₂ => by simp; ring) (fun c m n => by simp; ring)`. Set `Q : V →L[ℝ] V →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : (V →ₗ[ℝ] ℂ) ≃ₗ[ℝ] (V →L[ℝ] ℂ)).toLinearMap ∘ₗ Q')`. Establish `hQ : ∀ x y, Q x y = ((Real.pi * β x (A y) : ℝ) : ℂ) * Complex.I - ((Real.pi * β x (B y) : ℝ) : ℂ)` using `fun x y => rfl`. Establish `hre : ∀ x, (Q x x).re = Real.pi * -β x (B x)` using `fun x => by`. Rewrite using `[hQ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hscale : ∀ (t : ℝ) (y : V), Real.pi * -β (t • y) (B (t • y)) = t ^ 2 * (Real.pi * -β y (B y))` using `fun t y => by simp; ring`. Establish `hcont : Continuous fun x => (Q x x).re` using `by fun_prop`. Establish `hsym' : ∀ x y, Q x y = Q y x` using `fun x y => by rw [hQ, hQ, hAsym x y, hBsym x y]`. Establish `hfock : ∀ w x, Q x (J w).1 + (Real.pi : ℂ) * Complex.I * (β x (J w).2 : ℂ) = Complex.I * (Q x w.1 + (Real.pi : ℂ) * Complex.I * (β x w.2 : ℂ))` using `fun w x => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `hsplit (J w)`. Rewrite `e1` using `[hPJ, hsplit w]`. Establish `h1 : A (J w).1 + (J w).2 = -(B w.1)` using `(congrArg Prod.fst e1).symm`. Establish `h2 : B (J w).1 = A w.1 + w.2` using `(congrArg Prod.snd e1).symm`. Establish `hb1 : β x (A (J w).1) = -β x (B w.1) - β x (J w).2`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (β x) h1` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb2 : β x (B (J w).1) = β x (A w.1) + β x w.2` using `by rw [h2]; simp`. Rewrite using `[hQ, hQ, hb1, hb2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Take the linear combination `(-((Real.pi : ℂ) * (β x (A w.1) : ℂ) + (Real.pi : ℂ) * (β x w.2 : ℂ))) * Complex.I_sq`. Distinguish the cases in `hs : (Metric.sphere (0 : V) 1).Nonempty`. Take `⟨u, hu, hmin⟩` from `(isCompact_sphere (0 : V) 1).exists_isMinOn hs hcont.continuousOn`. Establish `hu0 : u ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hu` using `[h]`. Simplify using `at hu`. Use `⟨Q, (Q u u).re, ?_, ?_, hsym', hfock⟩` and prove the remaining obligations. Rewrite using `[hre]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_pos Real.pi_pos (hBpos u hu0)`. Introduce `x`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hn : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Establish `hu' : ‖x‖⁻¹ • x ∈ Metric.sphere (0 : V) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hn.ne']`. Establish `hm : (Q u u).re ≤ (Q (‖x‖⁻¹ • x) (‖x‖⁻¹ • x)).re` using `hmin hu'`. Establish `key : Real.pi * -β x (B x) = ‖x‖ ^ 2 * (Real.pi * -β (‖x‖⁻¹ • x) (B (‖x‖⁻¹ • x)))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[hscale]`. Clear the denominators using the available nonvanishing facts. Rewrite `hm` using `[hre, hre]`. Rewrite using `[hre u, hre x, key]`. Use `mul_le_mul_of_nonneg_left hm (sq_nonneg ‖x‖)` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨Q, 1, one_pos, ?_, hsym', hfock⟩` and prove the remaining obligations. Introduce `x`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
-
-Simplify using the standard rewrite rules. It suffices to derive a contradiction. Apply `hs` to reduce the goal to its premises. Use `⟨‖x‖⁻¹ • x, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ (norm_pos_iff.mpr hx).ne']`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegel_fock_exists : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ)
     (J : (V × V) →ₗ[ℝ] (V × V)), (∀ x y, β x y = β y x) → (∀ w, J (J w) = -w) →

@@ -18,11 +18,11 @@ namespace PositivityTheory.Rg.Rsw.L.LFourierPt
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Establish `e : pch ψ x (rat a) = ψ (GlobalTheory.CompanionTheory.FourierN.pr a x)`. Rewrite using `[pch, GlobalTheory.CompanionTheory.FourierN.pr]`. Use `congr 2`. Conclude with `Matrix.trace_mul_comm _ _`. Rewrite using `[e, AddChar.map_neg_eq_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : ‖ψ (GlobalTheory.CompanionTheory.FourierN.pr a x)‖ = 1` using `hψ.2.1 _`. Establish `hne : ψ (GlobalTheory.CompanionTheory.FourierN.pr a x) ≠ 0`. Introduce `h`. Rewrite `hn` using `[h, norm_zero]`. Conclude with `zero_ne_one hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hn]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem conj_pch {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (a : Matrix (Fin n) (Fin n) D.host.E)
     (x : Mx D n n) : conj (pch ψ x (rat a)) = ψ (-GlobalTheory.CompanionTheory.FourierN.pr a x) := by
@@ -45,15 +45,13 @@ open LFourierPt
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `D n ψ hψ lam 𝓖 hC f hf hper hco`. Take `⟨hlam, hFD, -⟩` from `hC`. Take `⟨i1, i2, i3, i4, -, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D n n`. Establish `: BorelSpace (Mx D n n)` using `⟨rfl⟩`. Establish `: BorelSpace (hermA D n)` using `Subtype.borelSpace _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology (hermA D n)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `: LocallyCompactSpace (hermA D n)` using `GlobalTheory.CompanionTheory.FourierN.isClosed_hermA.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: DiscreteTopology (ratHerm D n)` using `GlobalTheory.CompanionTheory.FourierN.discrete_ratHerm`. Take `⟨K, hK, hcov⟩` from `GlobalTheory.CompanionTheory.FourierN.exists_compact_cover (D := D) (n := n)`. Conclude with `GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero (hermA D n) (ratHerm D n) K hK hcov (GlobalTheory.CompanionTheory.FourierN.hermSub D n) (fun a x => ψ (-GlobalTheory.CompanionTheory.FourierN.pr a.1 x.1)) (fun a => hψ.1.comp ((GlobalTheory.CompanionTheory.FourierN …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompanionTheory.FourierN.pr_add_right, neg_add, AddChar.map_add_eq_mul])`. Use the proof step `(fun a b x => by show ψ (-GlobalTheory.CompanionTheory.FourierN.pr (a.1 + b.1) x.1) = _`. Rewrite using `[GlobalTheory.CompanionTheory.FourierN.pr_add_left, neg_add, AddChar.map_add_eq_mul])`. Use the proof step `(fun x => by show ψ (-GlobalTheory.CompanionTheory.FourierN.pr 0 x.1) = 1`. Rewrite using `[GlobalTheory.CompanionTheory.FourierN.pr_zero_left, neg_zero, AddChar.map_zero_eq_one])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun a x => hψ.2.1 _)`. Use the proof step `(fun x => ⟨fun h => GlobalTheory.CompanionTheory.FourierN.rat_ker hψ x (fun a ha => h ⟨a, ha⟩), fun hx a => GlobalTheory.CompanionTheory.FourierN.ker_of_rat hψ x hx a.1⟩)`. Use `lam 𝓖 hlam hFD f hf hper`. Use the proof step `(fun a => by`. Establish `h` using `hco ⟨a.1, a.2⟩`.
-
-Use `(integral_congr_ae (.of_forall fun x => ?_)).trans h` and prove the remaining obligations. Use `show ψ (-GlobalTheory.CompanionTheory.FourierN.pr a.1 x.1) * f x = f x * conj (pch ψ x.1 (rat a.1))`. Rewrite using `[conj_pch hψ, mul_comm])`.
+A detailed English derivation is pending.
 -/
 theorem fourierPt : FourierPt := by
   intro D n ψ hψ lam 𝓖 hC f hf hper hco

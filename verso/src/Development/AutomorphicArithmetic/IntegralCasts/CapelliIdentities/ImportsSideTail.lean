@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G _ _ C hC n hn h`. Establish `hsub : C ×ˢ ({1} : Set G) ⊆ n`. Introduce and unpack `⟨c, u⟩ ⟨hc, hu⟩`. Simplify using `only [Set.mem_singleton_iff] at hu`. Substitute `hu` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Conclude with `h c hc`. Take `⟨U, V, _, hV, _, hV1, hUV⟩` from `generalized_tube_lemma hC isCompact_singleton hn hsub`. Use `⟨V, hV.mem_nhds (hV1 rfl), ?_⟩` and prove the remaining obligations. Introduce `c hc u hu`. Conclude with `hUV ⟨‹C ⊆ U› hc, hu⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ylb7.main :
     ∀ {G : Type} [inst : Group G] [inst_1 : TopologicalSpace G] {C : Set G},

@@ -9,7 +9,7 @@ namespace PositivityTheory.Rg.BcB.CV.AdelicTopology
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨g, -, rfl⟩`. Conclude with `⟨g, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem ratCent_subset_range (d : GL (Fin n) E) :
     (ratCent d : Set (GA E n)) ⊆ ((ratGL E n).range : Set (GA E n)) := by
@@ -17,14 +17,14 @@ theorem ratCent_subset_range (d : GL (Fin n) E) :
   exact ⟨g, rfl⟩
 
 /- English proof (translation)
-The claim follows from `DiscreteTopology.of_subset (s := ((ratGL E n).range : Set (GA E n))) GlobalTheory.CompanionTheory.KerTwFin.discreteTopology_range (ratCent_subset_range d)`.
+A detailed English derivation is pending.
 -/
 theorem discrete_ratCent (d : GL (Fin n) E) : DiscreteTopology (ratCent d) :=
   DiscreteTopology.of_subset (s := ((ratGL E n).range : Set (GA E n)))
     GlobalTheory.CompanionTheory.KerTwFin.discreteTopology_range (ratCent_subset_range d)
 
 /- English proof (translation)
-Use `GlobalTheory.CompanionTheory.UnfoldCut.countable_GL (E := E) (n := n)` as an intermediate fact. Establish `h : (ratCent d : Set (GA E n)).Countable` using `(Set.countable_range (ratGL E n)).mono fun _ hx => by`. Take `⟨g, hg⟩` from `ratCent_subset_range d hx`. Conclude with `⟨g, hg⟩`. Conclude with `h.to_subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem countable_ratCent (d : GL (Fin n) E) : Countable (ratCent d) := by
   have := GlobalTheory.CompanionTheory.UnfoldCut.countable_GL (E := E) (n := n)
@@ -37,9 +37,9 @@ theorem countable_ratCent (d : GL (Fin n) E) : Countable (ratCent d) := by
 end PositivityTheory.Rg.BcB.CV.AdelicTopology
 
 /- English proof (translation)
-Introduce `hD _ E _ _ _ n`. Use `GlobalTheory.CompanionTheory.UnfoldCut.t2Space_adelicGL_cmField (E := E) (n := n)` as an intermediate fact. Use `⟨GlobalTheory.CompanionTheory.UnfoldCut.locallyCompact_GA, inferInstance, GlobalTheory.CompanionTheory.UnfoldCut.secondCountable_GA, GlobalTheory.CompanionTheory.KerTwFin.continuous_thetaA, fun W => ?_, fun d => ?_⟩` and prove the remaining obligations. Set `_ : MeasurableSpace (GA E n)` to `borel _`. Establish `: BorelSpace (GA E n)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `((hD E n).2 W).measurable`. Use `PositivityTheory.Rg.BcB.CV.AdelicTopology.discrete_ratCent d` as an intermediate fact. Conclude with `⟨Subgroup.isClosed_of_discrete, inferInstance, PositivityTheory.Rg.BcB.CV.AdelicTopology.countable_ratCent d⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.BcB.CV.pf_AdTop : PositivityTheory.Rg.BcB.DegBdd → PositivityTheory.Rg.BcB.D4.RatDisc → PositivityTheory.Rg.BcB.CV.AdTop := by
   intro hD _ E _ _ _ n

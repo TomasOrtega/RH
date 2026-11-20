@@ -10,19 +10,19 @@ open scoped Matrix Classical
 namespace GlobalTheory.ThetaTransform
 
 /- English proof (translation)
-Introduce `F _ _ N _ ψ lam ν hC 𝓓 hD hD1 f hf hq hdec`. Establish `hC'` using `hC`. Take `⟨hTR, ⟨hψc, hψn, hψF, -⟩, -, -, -⟩` from `hC'`. Use function extensionality and compare the values at `w`. Take `⟨x, y⟩` from `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Set `P : (Fin N → AF F) → ℂ` to `fun u => f (x, u) * ψ (-(⅟(2 : AF F) * (x ⬝ᵥ u)))`. Establish `hPc : Continuous P`. Use `(hf.comp (Continuous.prodMk continuous_const continuous_id)).mul (hψc.comp ?_)` and prove the remaining obligations. Use `(continuous_const.mul ?_).neg` and prove the remaining obligations. Conclude with `continuous_finset_sum _ fun l _ => continuous_const.mul (continuous_apply l)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hPper : ∀ (ξ : Fin N → F) u, P (rat ξ + u) = P u` using `fun ξ u => integrand_periodic hq x u ξ`. Establish `hcoef : ∀ ξ : Fin N → F, ∫ u in 𝓓, P u * ψ (-(Bd (AF F) (half F N) u (rat ξ))) ∂(muV N ν) = invV ψ ν 𝓓 f (rat ξ + x)`. Introduce `ξ`. Unfold `invV`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `u`. Establish `h0 : (rat (0 : Fin N → F) : Fin N → AF F) = 0` using `by funext l; simp [rat]`. Establish `h` using `hq ξ 0 (x, u)`. Rewrite `h` using `[h0, Prod.mk_add_mk, zero_add]`. Rewrite using `[h, Bd_half]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [P]`. Rewrite using `[mul_assoc, ← AddChar.map_add_eq_mul, mul_comm (ψ _) (f _), mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Simplify using `only [symV, add_dotProduct, dotProduct_zero, sub_zero, dotProduct_comm u (rat ξ)]`. Take the linear combination `two_mul_invOf (rat ξ ⬝ᵥ u)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hsum : Summable (fun ξ : Fin N → F => ‖invV ψ ν 𝓓 f (rat ξ + x)‖)` using `(GlobalTheory.decay_integrable_periodise F N hTR _ hdec).2.1 x`. Establish `hser` using `GlobalTheory.SWQ.FourierSeries.fourier_series F N ψ lam ν (half F N) hC 𝓓 hD hD1 P (fun ξ => invV ψ ν 𝓓 f (rat ξ + x)) hPc hPper hcoef hsum y`. Establish `hfxy : f (x, y) = P y * ψ (⅟(2 : AF F) * (x ⬝ᵥ y))`. Simplify using `only [P, mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, mul_one]`. Rewrite using `[hfxy, hser, ← tsum_mul_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [thV, GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.schr]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Use `show ψ (rat ξ ⬝ᵥ y + ⅟(2 : AF F) * (x ⬝ᵥ y)) * invV ψ ν 𝓓 f (rat ξ + x) = _`. Rewrite using `[Bd_half, AddChar.map_add_eq_mul, dotProduct_comm y (rat ξ)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thV_invV_eq : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) [Invertible (2 : AF F)] (ψ : AddChar (AF F) ℂ) (lam : InfinitePlace F → ℝ) (ν : Measure (AF F)), Ctx ψ lam ν (half F N) → ∀ 𝓓 : Set (Fin N → AF F), IsAddFundamentalDomain (ratSub F N) 𝓓 (muV N ν) → muV N ν 𝓓 = 1 → ∀ f : VA F N → ℂ, Continuous f → QuasiV ψ f → Decay (invV ψ ν 𝓓 f) → thV ψ (invV ψ ν 𝓓 f) = f := by
   intro F _ _ N _ ψ lam ν hC 𝓓 hD hD1 f hf hq hdec

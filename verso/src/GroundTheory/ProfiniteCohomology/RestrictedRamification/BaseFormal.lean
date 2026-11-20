@@ -45,7 +45,7 @@ section Counting
 variable {n : ℕ} [NeZero n]
 
 /- English proof (translation)
-Use `hX.bijective_of_nat_card_le ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem bijective_of_injective_of_injective_flip {X Y Z : Type*} [AddCommGroup X] [AddCommGroup Y]
     [AddCommGroup Z] [Finite X] [Finite Y] (β : X →+ Y →+ Z) (t : Z →+ ZMod n)
@@ -64,15 +64,15 @@ section DegreeZero
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨z, rfl⟩` from `cohomologyπ_surjective A 0 x`. Establish `hx' : cohomologyπ (Rep.res ψ A) 0 (cocyclesMapAlong ψ hψ (𝟙 _) 0 z) = 0` using `(cohomologyMapAlong_cohomologyπ ψ hψ (𝟙 _) z).symm.trans hx`. Establish `hπ : Function.Injective (cohomologyπ (Rep.res ψ A) 0)` using `(ModuleCat.mono_iff_injective _).1 (inferInstanceAs (Mono (CochainComplex.isoHomologyπ₀ (cochainsComplex (Rep.res ψ A))).hom))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : cocyclesMapAlong ψ hψ (𝟙 _) 0 z = 0` using `hπ (hx'.trans (map_zero _).symm)`. Establish `hz : z = 0`. Apply `cocycles_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Establish `e` using `congrArg (fun w => cochainOf (Rep.res ψ A) (cocycleι (Rep.res ψ A) 0 w) Fin.elim0) h0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [cochainOf_cocycleι_cocyclesMapAlong] at e`. Establish `hL : cochainOf A (cocycleι A 0 z) (⇑ψ ∘ Fin.elim0) = 0`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hR : cochainOf A (cocycleι A 0 (0 : cocycles A 0)) = 0`. Rewrite using `[map_zero]`. Both sides reduce to the same expression. Establish `hσ : σ = ⇑ψ ∘ (Fin.elim0 : Fin 0 → K)` using `Subsingleton.elim _ _`. Rewrite using `[hσ, hL, hR, Pi.zero_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem injective_cohomologyMapAlong_zero {K : Type u} [Group K] [TopologicalSpace K]
     [IsTopologicalGroup K] (ψ : K →* G) (hψ : Continuous ψ) (A : Rep.{u} k G) [IsDiscreteRep A]
@@ -112,9 +112,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   [∀ v, IsTopologicalGroup (H v)] (φ : ∀ v, H v →ₜ* G)
 
 /- English proof (translation)
-Take `⟨v⟩` from `‹Nonempty ι›`. Establish `hinj : Function.Injective (compactToGlobal φ A (fun v => Rep.res (φ v).toMonoidHom A) (fun _ => 𝟙 _) 0).hom` using `(ModuleCat.mono_iff_injective _).1 (mono_compactToGlobal_zero φ A _ _)`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. It suffices to establish `h : ∀ x : compactCohomologyRes φ A 0, x = 0 by rw [h a, h b]`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `injective_cohomologyMapAlong_zero (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) A` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `congrFun (ConcreteCategory.congr_hom (compactToGlobal_globalToLocal φ A (fun v => Rep.res (φ v).toMonoidHom A) (fun _ => 𝟙 _) 0) x) v`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_compactCohomologyRes_zero [Nonempty ι] (A : Rep.{u} k G) [IsDiscreteRep A] :
     Subsingleton (compactCohomologyRes φ A 0) := by
@@ -158,7 +158,7 @@ theorem pairWith_hom_apply (μ : A ⊗ B ⟶ C) (b : B) (hb : ∀ g : K, B.ρ g 
   rfl
 
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun a (c : k) => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `μ.hom (a ⊗ₜ[k] (unitHom B b hb).hom c) = (pairWith μ b hb).hom ((ρ_ A).hom.hom (a ⊗ₜ[k] c))`. Rewrite using `[unitHom_hom_apply, GroundTheory.GroupCoh.rightUnitor_hom_tmul, pairWith_hom_apply, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorHom_unitHom_comp (μ : A ⊗ B ⟶ C) (b : B) (hb : ∀ g : K, B.ρ g b = b) :
     (𝟙 A ⊗ₘ unitHom B b hb) ≫ μ = (ρ_ A).hom ≫ pairWith μ b hb := by
@@ -178,9 +178,9 @@ def h0Class (A : Rep.{u} k K) [IsDiscreteRep A] (a : A) (ha : ∀ g : K, A.ρ g 
   cohomologyMap (unitHom A a ha) 0 unitClass
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `cohomologyMapAlong ψ hψ (𝟙 (Rep.res ψ A)) 0 (cohomologyMap (unitHom A a ha) 0 unitClass) = cohomologyMap (unitHom (Rep.res ψ A) a fun g => ha (ψ g)) 0 unitClass`. Simplify using `only [unitClass]`. Rewrite using `[cohomologyMap_cohomologyπ, cohomologyMap_cohomologyπ, cohomologyMapAlong_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cyclesMap]`. Use function extensionality and compare the values at `σ`. Simplify using `only [cochainOf_cocycleι_unitCocycle]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cohomologyMapAlong_h0Class {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (ψ : K →* G) (hψ : Continuous ψ) (A : Rep.{u} k G) [IsDiscreteRep A] [IsDiscreteRep (Rep.res ψ A)]
@@ -201,7 +201,7 @@ theorem cohomologyMapAlong_h0Class {G : Type u} [Group G] [TopologicalSpace G] [
 variable {A B C : Rep.{u} k K} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C]
 
 /- English proof (translation)
-Establish `e` using `cupPairing_cohomologyMap μ (𝟙 A) (unitHom B b hb) h y unitClass`. Rewrite `e` using `[cohomologyMap_id]`. Express the relevant statement in the definitionally equal form `cupPairing μ h y (h0Class B b hb) = _ at e`. Rewrite using `[e, tensorHom_unitHom_comp, ← cohomologyMap_cupPairing, cupPairing_apply, cohomologyMap_rightUnitor_cup_unitClass]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cupPairing_h0Class (μ : A ⊗ B ⟶ C) (b : B) (hb : ∀ g : K, B.ρ g b = b) {q : ℕ} (h : q + 0 = q)
     (y : cohomology A q) :
@@ -241,7 +241,7 @@ variable {G K : Type u} [Group G] [Group K] [TopologicalSpace K] [IsTopologicalG
 omit [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [TotallyDisconnectedSpace K]
   [IsDiscreteRep (Rep.res ψ D)] [IsDiscreteRep (Rep.res ψ (zmodRep.{u} G n))] in
 /- English proof (translation)
-The claim follows from `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun _ _ => rfl))`.
+A detailed English derivation is pending.
 -/
 theorem pairingRes_zmodMulPairing :
     pairingRes ψ (zmodMulPairing n D hD) =
@@ -249,7 +249,7 @@ theorem pairingRes_zmodMulPairing :
   Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun _ _ => rfl))
 
 /- English proof (translation)
-Rewrite using `[pairingRes_zmodMulPairing, cupPairing_apply, cupPairing_apply, cohomologyMap_comp, ConcreteCategory.comp_apply, cohomologyMap_braiding_cup h h, mul_one, pow_one, neg_smul]`. Use `erw [one_smul]`. Conclude with `map_neg _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupPairing_pairingRes_zmodMulPairing_one (h : 1 + 1 = 2)
     (ξ : cohomology (Rep.res ψ (zmodRep.{u} G n)) 1) (η : cohomology (Rep.res ψ D) 1) :
@@ -261,7 +261,7 @@ theorem cupPairing_pairingRes_zmodMulPairing_one (h : 1 + 1 = 2)
   exact map_neg _ _
 
 /- English proof (translation)
-Rewrite using `[pairingRes_zmodMulPairing, cupPairing_apply, cupPairing_apply, cohomologyMap_comp, ConcreteCategory.comp_apply, cohomologyMap_braiding_cup h h', mul_zero, pow_zero]`. Use `erw [one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupPairing_pairingRes_zmodMulPairing_two_zero (h : 2 + 0 = 2) (h' : 0 + 2 = 2)
     (ξ : cohomology (Rep.res ψ (zmodRep.{u} G n)) 2) (η : cohomology (Rep.res ψ D) 0) :
@@ -309,13 +309,13 @@ def zmodToCyclic : zmodRep.{u} G n ⟶ D :=
       rw [htriv]⟩
 
 /- English proof (translation)
-The claim follows from `Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun d => e.symm_apply_apply d))`.
+A detailed English derivation is pending.
 -/
 theorem cyclicToZMod_comp_zmodToCyclic : cyclicToZMod D e htriv ≫ zmodToCyclic D e htriv = 𝟙 D :=
   Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun d => e.symm_apply_apply d))
 
 /- English proof (translation)
-The claim follows from `Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun a => congrArg ULift.up (e.apply_symm_apply a.down)))`.
+A detailed English derivation is pending.
 -/
 theorem zmodToCyclic_comp_cyclicToZMod : zmodToCyclic D e htriv ≫ cyclicToZMod D e htriv = 𝟙 _ :=
   Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun a => congrArg ULift.up (e.apply_symm_apply a.down)))
@@ -323,9 +323,9 @@ theorem zmodToCyclic_comp_cyclicToZMod : zmodToCyclic D e htriv ≫ cyclicToZMod
 variable (hD : ∀ d : D, n • d = 0)
 
 /- English proof (translation)
-Establish `he : ∀ a : ZMod n, e.symm a = a.val • e.symm 1` using `fun a => by conv_lhs => rw [← ZMod.natCast_zmod_val a]`. Rewrite using `[← nsmul_one, map_nsmul]`. Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun (a b : ULift.{u} (ZMod n)) => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(zmodMulPairing n D hD).hom (b ⊗ₜ[ULift.{u} ℤ] e.symm a.down) = (zmodMulPairing n D hD).hom (a ⊗ₜ[ULift.{u} ℤ] e.symm b.down)`. Take `⟨a⟩` from `a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Take `⟨b⟩` from `b`. Rewrite using `[zmodMulPairing_tmul, zmodMulPairing_tmul, ZMod.cast_eq_val, ZMod.cast_eq_val, natCast_zsmul, natCast_zsmul, he a, he b, smul_smul, smul_smul, mul_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem zmodToCyclic_tensor_zmodMulPairingRight [NeZero n] :
     (zmodToCyclic D e htriv ⊗ₘ 𝟙 (zmodRep.{u} G n)) ≫ zmodMulPairingRight n D hD =
@@ -401,7 +401,7 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [Fintype ι] [Nonempty ι] [�
   [∀ v, TotallyDisconnectedSpace (H v)] [IsTopologicalGroup G] [∀ v, IsTopologicalGroup (H v)] [IsDiscreteRep D] in
 
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun d => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(zmodMulPairing n D hD).hom (ULift.up a ⊗ₜ[ULift.{u} ℤ] d) = (a.val • 𝟙 (Rep.res (φ v).toMonoidHom D)).hom d`. Rewrite using `[zmodMulPairing_tmul, Rep.nsmul_hom, Representation.IntertwiningMap.coe_nsmul, Pi.smul_apply, ZMod.cast_eq_val, natCast_zsmul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pairWith_pairingRes_zmodMulPairingRight (v : ι) (a : ZMod n)
     (h : ∀ g : H v, (Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)).ρ g (ULift.up a) = ULift.up a) :
@@ -422,7 +422,7 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
   [∀ v, TotallyDisconnectedSpace (H v)] [Nonempty ι] [NeZero n] in
 
 /- English proof (translation)
-Introduce `_` and use `(ShortComplex.moduleCat_exact_iff_ker_sub_range _).1 (compactCohomology_exact_compact φ D _ (fun _ => 𝟙 _) 2) (@Subsingleton.elim _ hyp.three_D _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem localToCompact_two_surjective :
     Function.Surjective (localToCompact φ D (fun v => Rep.res (φ v).toMonoidHom D) (fun _ => 𝟙 _) 2).hom :=
@@ -434,9 +434,9 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
   [∀ v, TotallyDisconnectedSpace (H v)] [Nonempty ι] in
 
 /- English proof (translation)
-Take `⟨ξ, rfl⟩` from `hyp.localToCompact_two_surjective y`. Establish `e` using `compactCup_localToCompact φ (zmodMulPairingRight n D hD) (fun v => pairingRes (φ v).toMonoidHom (zmodMulPairingRight n D hD)) (fun v => resFunctor_map_comp_id (φ v).toMonoidHom (zmodMulPairingRight n D hD)) (show 2 + 0 = 2 from rfl) h ξ (zmodH0Class a)`. Establish `hloc : ∀ v, cupPairing (pairingRes (φ v).toMonoidHom (zmodMulPairingRight n D hD)) (show 2 + 0 = 2 from rfl) (ξ v) ((cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 0).hom (zmodH0Class a)) = a.val • ξ v` using `fun v => by`. Rewrite using `[show zmodH0Class a = h0Class (zmodRep.{u} G n) (ULift.up a) (fun g => zmodRep_ρ_apply g _) from rfl, cohomologyMapAlong_h0Class, cupPairing_h0Class, pairWith_pairingRes_zmodMulPairingRight, cohomologyMap_nsmul_id_apply]`. Use `(congrArg T e).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (fun v => cupPairing (pairingRes (φ v).toMonoidHom (zmodMulPairingRight n D hD)) (show 2 + 0 = 2 from rfl) (ξ v) ((cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 0).hom (zmodH0Class a))) = a.val • ξ from funext fun v => hloc v, map_nsmul, map_nsmu …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem T_compactCupRes_zmodH0Class (h : 3 + 0 = 3) (a : ZMod n) (y : compactCohomologyRes φ D 3) :
     T (compactCupRes φ (zmodMulPairingRight n D hD) h y (zmodH0Class a)) = a.val • T y := by
@@ -460,7 +460,7 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
   [∀ v, TotallyDisconnectedSpace (H v)] [NeZero n] in
 
 /- English proof (translation)
-Use `hyp.three_zmod` as an intermediate fact. Use `subsingleton_compactCohomologyRes_zero φ D` as an intermediate fact. Use `⟨fun x y _ => Subsingleton.elim x y, fun χ => ⟨0, AddMonoidHom.ext fun y => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim y 0, map_zero, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bijective_three (h : 3 + 0 = 3) : Function.Bijective (compactZmodDualityMap φ D hD T h) := by
   have := hyp.three_zmod
@@ -472,11 +472,11 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
   [∀ v, TotallyDisconnectedSpace (H v)] [Nonempty ι] in
 
 /- English proof (translation)
-Establish `key : ∀ (a : ZMod n) (y : compactCohomologyRes φ D 3), compactZmodDualityMap φ D hD T h (zmodH0Class a) y = a * T y` using `fun a y => by`. Rewrite using `[compactZmodDualityMap_apply, hyp.T_compactCupRes_zmodH0Class, nsmul_eq_mul, ZMod.natCast_zmod_val]`. Take `⟨y₁, hy₁⟩` from `hyp.bijective_alt.2 1`. Use `⟨fun x x' hxx' => ?_, fun χ => ⟨zmodH0Class (χ y₁), AddMonoidHom.ext fun y => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `zmodH0Class_surjective (H := G) (n := n) x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a', rfl⟩` from `zmodH0Class_surjective (H := G) (n := n) x'`. Establish `e` using `DFunLike.congr_fun hxx' y₁`. Rewrite `e` using `[key, key, hy₁, mul_one, mul_one]`. Rewrite using `[e]`. Establish `hy : y = (T y).val • y₁` using `hyp.bijective_alt.1 (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_nsmul, hy₁, nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val])`. Rewrite using `[key]`. Use `conv_rhs => rw [hy]`. Rewrite using `[map_nsmul, nsmul_eq_mul, ZMod.natCast_zmod_val, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_zero (h : 0 + 3 = 3) : Function.Bijective (compactZmodDualityMap φ D hD T h) := by
   have key : ∀ (a : ZMod n) (y : compactCohomologyRes φ D 3),
@@ -499,11 +499,11 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
   [∀ v, TotallyDisconnectedSpace (H v)] [Nonempty ι] in
 
 /- English proof (translation)
-Use `hyp.finite_one` as an intermediate fact. Use `hyp.finite_two` as an intermediate fact. Use `bijective_of_injective_of_injective_flip (bilinAddHom (compactCupRes φ (zmodMulPairingRight n D hD) ((Nat.add_comm 2 1).trans h))).flip T ?_ ?_` and prove the remaining obligations. Introduce `x x' hxx'`. Rewrite using `[← sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `hyp.ker_left _ fun y => ?_` and prove the remaining obligations. Establish `e` using `DFunLike.congr_fun hxx' y`. Simplify using `only [AddMonoidHom.comp_apply, AddMonoidHom.flip_apply, bilinAddHom_apply] at e`. Rewrite using `[map_sub, map_sub, e, sub_self]`. Introduce `y y' hyy'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← sub_eq_zero]`. Use `hyp.ker_right _ fun x => ?_` and prove the remaining obligations. Establish `e` using `DFunLike.congr_fun hyy' x`. Simplify using `only [AddMonoidHom.comp_apply, AddMonoidHom.flip_apply, bilinAddHom_apply] at e`. Rewrite using `[map_sub, LinearMap.sub_apply, map_sub, e, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bijective_one (h : 1 + 2 = 3) : Function.Bijective (compactZmodDualityMap φ D hD T h) := by
   have := hyp.finite_one
@@ -527,7 +527,7 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
   [∀ v, TotallyDisconnectedSpace (H v)] [Nonempty ι] [NeZero n] in
 
 /- English proof (translation)
-Establish `e` using `compactCup_localToCompact φ (zmodMulPairingRight n D hD) (fun v => pairingRes (φ v).toMonoidHom (zmodMulPairingRight n D hD)) (fun v => resFunctor_map_comp_id (φ v).toMonoidHom (zmodMulPairingRight n D hD)) (show 0 + 2 = 2 from rfl) h ξ x`. Conclude with `(congrArg T e).trans (hyp.T_localToCompact _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem T_compactCupRes_localToCompact_zero (h : 1 + 2 = 3)
     (ξ : ∀ v, cohomology (Rep.res (φ v).toMonoidHom D) 0) (x : cohomology (zmodRep.{u} G n) 2) :
@@ -545,7 +545,7 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
   [∀ v, TotallyDisconnectedSpace (H v)] [Nonempty ι] [NeZero n] in
 
 /- English proof (translation)
-Establish `e` using `compactCup_localToCompact φ (zmodMulPairing n D hD) (fun v => pairingRes (φ v).toMonoidHom (zmodMulPairing n D hD)) (fun v => resFunctor_map_comp_id (φ v).toMonoidHom (zmodMulPairing n D hD)) (show 1 + 1 = 2 from rfl) h ξ y`. Conclude with `(congrArg T e).trans (hyp.T_localToCompact _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem T_compactCupRes_localToCompact_one (h : 2 + 1 = 3)
     (ξ : ∀ v, cohomology (Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) 1) (y : cohomology D 1) :
@@ -564,7 +564,7 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
   [∀ v, TotallyDisconnectedSpace (H v)] [Nonempty ι] [NeZero n] in
 
 /- English proof (translation)
-Establish `e` using `compactCup_localToCompact φ (zmodMulPairing n D hD) (fun v => pairingRes (φ v).toMonoidHom (zmodMulPairing n D hD)) (fun v => resFunctor_map_comp_id (φ v).toMonoidHom (zmodMulPairing n D hD)) (show 2 + 0 = 2 from rfl) h ξ y`. Conclude with `(congrArg T e).trans (hyp.T_localToCompact _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem T_compactCupRes_localToCompact_two (h : 3 + 0 = 3)
     (ξ : ∀ v, cohomology (Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) 2) (y : cohomology D 0) :
@@ -583,7 +583,7 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
   [∀ v, TotallyDisconnectedSpace (H v)] [Nonempty ι] in
 
 /- English proof (translation)
-Rewrite using `[compactCupRes_compactCohomologyResMap φ (zmodMulPairingRight n D hD) (zmodMulPairing n D hD) (zmodToCyclic D e hyp.triv) (zmodToCyclic D e hyp.triv) (zmodToCyclic_tensor_zmodMulPairingRight D e hyp.triv hD)]`. Use `congr 1`. Rewrite using `[← ConcreteCategory.comp_apply, ← cohomologyMap_comp, cyclicToZMod_comp_zmodToCyclic, cohomologyMap_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compactCupRes_zmodMulPairing_eq (e : D ≃+ ZMod n) (w : compactCohomologyRes φ (zmodRep.{u} G n) 2)
     (y : cohomology D 1) :
@@ -602,11 +602,11 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
   [∀ v, TotallyDisconnectedSpace (H v)] [Nonempty ι] in
 
 /- English proof (translation)
-Take `⟨e⟩` from `hyp.nonempty_addEquiv`. Establish `h0 : (compactCohomologyResMap φ (zmodToCyclic D e hyp.triv) 2).hom w = 0`. Use `hyp.ker_right _ fun x => ?_` and prove the remaining obligations. Establish `hx : x = (cohomologyMap (cyclicToZMod D e hyp.triv) 1).hom ((cohomologyMap (zmodToCyclic D e hyp.triv) 1).hom x)`. Rewrite using `[← ConcreteCategory.comp_apply, ← cohomologyMap_comp, zmodToCyclic_comp_cyclicToZMod, cohomologyMap_id]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hx, ← compactCupRes_zmodMulPairing_eq hyp e]`. Conclude with `hw _`. Establish `hinv : (compactCohomologyResMap φ (cyclicToZMod D e hyp.triv) 2).hom ((compactCohomologyResMap φ (zmodToCyclic D e hyp.triv) 2).hom w) = w`. Rewrite using `[← ConcreteCategory.comp_apply, ← compactCohomologyResMap_comp, zmodToCyclic_comp_cyclicToZMod, compactCohomologyResMap_id]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[← hinv, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_compactCupRes_zmodMulPairing (w : compactCohomologyRes φ (zmodRep.{u} G n) 2)
     (hw : ∀ y : cohomology D 1,
@@ -631,7 +631,7 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [Nonempty ι] [NeZero n] [Fin
   [∀ v, CompactSpace (H v)] [∀ v, TotallyDisconnectedSpace (H v)] [IsTopologicalGroup G] hyp in
 
 /- English proof (translation)
-The claim follows from `funext fun v => nsmul_cohomology_eq_zero (Rep.res (φ v).toMonoidHom D) (fun d => hD' d) q (c v)`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_local_cohomology_D (hD' : ∀ d : D, n • d = 0) (q : ℕ)
     (c : ∀ v, cohomology (Rep.res (φ v).toMonoidHom D) q) : n • c = 0 :=
@@ -640,23 +640,21 @@ theorem nsmul_local_cohomology_D (hD' : ∀ d : D, n • d = 0) (q : ℕ)
 omit [CompactSpace G] [TotallyDisconnectedSpace G] [Nonempty ι] in
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `hx' : ∀ y : compactCohomologyRes φ D 1, T (compactCupRes φ (zmodMulPairingRight n D hD) ((Nat.add_comm 1 2).trans h) y x) = 0` using `fun y => DFunLike.congr_fun hx y`. Establish `hres : ∀ v, (cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 2).hom x = 0`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(hyp.loc_two v).1` to reduce the goal to its premises. Use `AddMonoidHom.ext fun η => ?_` and prove the remaining obligations. Establish `e` using `hx' ((localToCompact φ D (fun v => Rep.res (φ v).toMonoidHom D) (fun _ => 𝟙 _) 0).hom (Pi.single v η))`. Rewrite using `[hyp.T_compactCupRes_localToCompact_zero, Finset.sum_eq_single v (fun w _ hw => by`. Rewrite using `[Pi.single_eq_of_ne hw, map_zero, LinearMap.zero_apply, map_zero]) (fun hv => absurd (Finset.mem_univ v) hv),`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `Pi.single_eq_same] at e`. Simplify using `only [AddMonoidHom.comp_apply, AddMonoidHom.flip_apply, bilinAddHom_apply, map_zero, AddMonoidHom.zero_apply]`. Conclude with `e`. Take `⟨xc, hxc⟩` from `(ShortComplex.moduleCat_exact_iff_ker_sub_range _).1 (compactCohomology_exact_global φ (zmodRep.{u} G n) _ (fun _ => 𝟙 _) 2) (show (globalToLocal φ (zmodRep.{u} G n) _ (fun _ => 𝟙 _) 2).hom x = 0 from funext hres)`. Set `lam : cohomology D 1 →+ ZMod n` to `T.comp (bilinAddHom (compactCupRes φ (zmodMulPairing n D hD) (show 2 + 1 = 3 from rfl)) xc)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : (globalToLocal φ D (fun v => Rep.res (φ v).toMonoidHom D) (fun _ => 𝟙 _) 1).hom.toAddMonoidHom.ker ≤ lam.ker`. Introduce `y hy`. Take `⟨yc, rfl⟩` from `(ShortComplex.moduleCat_exact_iff_ker_sub_range _).1 (compactCohomology_exact_global φ D _ (fun _ => 𝟙 _) 1) hy`. Rewrite using `[AddMonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `T (compactCupRes φ (zmodMulPairing n D hD) (show 2 + 1 = 3 from rfl) xc _) = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hyp.swap yc xc, hxc]`. Conclude with `hx' yc`. Take `⟨Λ, hΛ⟩` from `zmod_exists_comp_eq_of_ker_le (nsmul_local_cohomology_D hD 1) _ lam hker`. Use `choose ξ hξ using fun v => hyp.loc_one v (Λ.comp (AddMonoidHom.single (fun w => cohomology (Rep.res (φ w).toMonoidHom D) 1) v))`. Establish `hw : ∀ y : cohomology D 1, T (compactCupRes φ (zmodMulPairing n D hD) (show 2 + 1 = 3 from rfl) (xc + (localToCompact φ (zmodRep.{u} G n) (fun v => Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) (fun _ => 𝟙 _) 1).hom ξ) y) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `y`. Rewrite using `[map_add, LinearMap.add_apply, map_add, hyp.T_compactCupRes_localToCompact_one]`. Establish `h1 : T (compactCupRes φ (zmodMulPairing n D hD) (show 2 + 1 = 3 from rfl) xc y) = ∑ v, t v (cupPairing (pairingRes (φ v).toMonoidHom (zmodMulPairingRight n D hD)) (show 1 + 1 = 2 from rfl) ((cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 1).hom y) (ξ v) …`. Express the relevant statement in the definitionally equal form `lam y = _`. Rewrite using `[← hΛ, AddMonoidHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← Finset.univ_sum_single ((globalToLocal φ D _ (fun _ => 𝟙 _) 1).hom.toAddMonoidHom y)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `DFunLike.congr_fun (hξ v) ((cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 1).hom y)` as an intermediate fact. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations. Rewrite using `[cupPairing_pairingRes_zmodMulPairing_one, map_neg, add_neg_cancel]`. Establish `hw0` using `hyp.eq_zero_of_forall_compactCupRes_zmodMulPairing _ hw`. Establish `hxc' : xc = -(localToCompact φ (zmodRep.{u} G n) (fun v => Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) (fun _ => 𝟙 _) 1).hom ξ` using `eq_neg_of_add_eq_zero_left hw0`.
-
-Rewrite using `[← hxc, hxc', map_neg]`. Establish `hz` using `ConcreteCategory.congr_hom (localToCompact_compactToGlobal φ (zmodRep.{u} G n) (fun v => Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) (fun _ => 𝟙 _) 1) ξ`. Rewrite `hz` using `[ConcreteCategory.comp_apply]`. Rewrite using `[hz, neg_eq_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem injective_two (h : 2 + 1 = 3) : Function.Injective (compactZmodDualityMap φ D hD T h) := by
   classical
@@ -730,7 +728,7 @@ theorem injective_two (h : 2 + 1 = 3) : Function.Injective (compactZmodDualityMa
 omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
   [∀ v, TotallyDisconnectedSpace (H v)] [Nonempty ι] [Fintype ι] [NeZero n] hyp in
 /- English proof (translation)
-The claim follows from `nsmul_cohomology_eq_zero D hD' 1 c`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_cohomology_one_D (hD' : ∀ d : D, n • d = 0) (c : cohomology D 1) : n • c = 0 :=
   nsmul_cohomology_eq_zero D hD' 1 c
@@ -739,7 +737,7 @@ omit [CompactSpace G] [TotallyDisconnectedSpace G] [∀ v, CompactSpace (H v)]
   [∀ v, TotallyDisconnectedSpace (H v)] [Nonempty ι] in
 
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun (a : ULift.{u} (ZMod n)) => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.symm a.down = (zmodMulPairing n D hD).hom (a ⊗ₜ[ULift.{u} ℤ] e.symm 1)`. Take `⟨a⟩` from `a`. Rewrite using `[zmodMulPairing_tmul, ZMod.cast_eq_val, natCast_zsmul, ← map_nsmul, nsmul_one, ZMod.natCast_zmod_val]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem resFunctor_map_zmodToCyclic (e : D ≃+ ZMod n) (v : ι)
     (hζ : ∀ g : H v, (Rep.res (φ v).toMonoidHom D).ρ g (e.symm 1) = e.symm 1) :
@@ -753,37 +751,35 @@ theorem resFunctor_map_zmodToCyclic (e : D ≃+ ZMod n) (v : ι)
 omit [CompactSpace G] [TotallyDisconnectedSpace G] [Nonempty ι] in
 
 /- English proof (translation)
-Introduce `χ`. Take `⟨e⟩` from `hyp.nonempty_addEquiv`. Use `choose ξ hξ using fun v => (hyp.loc_two v).2 (χ.comp ((localToCompact φ D (fun v => Rep.res (φ v).toMonoidHom D) (fun _ => 𝟙 _) 0).hom.toAddMonoidHom.comp (AddMonoidHom.single (fun w => cohomology (Rep.res (φ w).toMonoidHom D) 0) v)))`. Establish `hξ' : ∀ v η, t v (cupPairing (pairingRes (φ v).toMonoidHom (zmodMulPairingRight n D hD)) (show 0 + 2 = 2 from rfl) η (ξ v)) = χ ((localToCompact φ D (fun v => Rep.res (φ v).toMonoidHom D) (fun _ => 𝟙 _) 0).hom (Pi.single v η))` using `fun v η => DFunLike.congr_fun (hξ v) η`. Establish `hζ : ∀ g : G, D.ρ g (e.symm 1) = e.symm 1` using `fun g => hyp.triv g _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∑ v, t v ((cohomologyMap ((Rep.resFunctor (φ v).toMonoidHom).map (zmodToCyclic D e hyp.triv)) 2).hom (ξ v)) = 0`. Establish `e1 : ∀ v, t v ((cohomologyMap ((Rep.resFunctor (φ v).toMonoidHom).map (zmodToCyclic D e hyp.triv)) 2).hom (ξ v)) = χ ((localToCompact φ D (fun v => Rep.res (φ v).toMonoidHom D) (fun _ => 𝟙 _) 0).hom (Pi.single v ((cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v) …` using `fun v => by`. Rewrite using `[← hξ', cohomologyMapAlong_h0Class, ← cupPairing_pairingRes_zmodMulPairing_two_zero (φ v).toMonoidHom D hD (show 2 + 0 = 2 from rfl), cupPairing_h0Class]`. Conclude with `congrArg (fun f => t v ((cohomologyMap f 2).hom (ξ v))) (resFunctor_map_zmodToCyclic hyp e v _)`. Rewrite using `[Finset.sum_congr rfl fun v _ => e1 v, ← map_sum, ← map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∑ v, Pi.single v ((cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 0).hom (h0Class D (e.symm 1) hζ)) = (globalToLocal φ D (fun v => Rep.res (φ v).toMonoidHom D) (fun _ => 𝟙 _) 0).hom (h0Class D (e.symm 1) hζ)` using `Finset.univ_sum_single _`. Rewrite using `[e2]`. Establish `hz` using `ConcreteCategory.congr_hom (globalToLocal_localToCompact φ D (fun v => Rep.res (φ v).toMonoidHom D) (fun _ => 𝟙 _) 0) (h0Class D (e.symm 1) hζ)`. Rewrite `hz` using `[ConcreteCategory.comp_apply]`. Rewrite using `[hz]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `map_zero χ`. Establish `hδξ : (localToCompact φ (zmodRep.{u} G n) (fun v => Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) (fun _ => 𝟙 _) 2).hom ξ = 0`. Establish `hnat` using `ConcreteCategory.congr_hom (localToCompact_compactCohomologyMap φ (zmodToCyclic D e hyp.triv) (fun v => (Rep.resFunctor (φ v).toMonoidHom).map (zmodToCyclic D e hyp.triv)) (fun _ => (Category.id_comp _).trans (Category.comp_id _).symm) 2) ξ`. Rewrite `hnat` using `[ConcreteCategory.comp_apply, ConcreteCategory.comp_apply]`. Establish `h0 : (compactCohomologyResMap φ (zmodToCyclic D e hyp.triv) 3).hom ((localToCompact φ (zmodRep.{u} G n) (fun v => Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) (fun _ => 𝟙 _) 2).hom ξ) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hyp.bijective_alt.1 ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `(congrArg T hnat).trans ?_` and prove the remaining obligations. Rewrite using `[hyp.T_localToCompact]`. Conclude with `hsum`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : (compactCohomologyResMap φ (cyclicToZMod D e hyp.triv) 3).hom ((compactCohomologyResMap φ (zmodToCyclic D e hyp.triv) 3).hom ((localToCompact φ (zmodRep.{u} G n) (fun v => Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) (fun _ => 𝟙 _) 2).hom ξ)) = (localToCompact φ (zmodRep.{ …`. Rewrite using `[← ConcreteCategory.comp_apply, ← compactCohomologyResMap_comp, zmodToCyclic_comp_cyclicToZMod, compactCohomologyResMap_id]`. Both sides reduce to the same expression. Rewrite using `[← hinv, h0, map_zero]`. Take `⟨x₀, hx₀⟩` from `(ShortComplex.moduleCat_exact_iff_ker_sub_range _).1 (compactCohomology_exact_local φ (zmodRep.{u} G n) _ (fun _ => 𝟙 _) 2) hδξ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hres : ∀ v, (cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 2).hom x₀ = ξ v` using `fun v => congrFun hx₀ v`. Establish `hχδ : ∀ η, χ ((localToCompact φ D (fun v => Rep.res (φ v).toMonoidHom D) (fun _ => 𝟙 _) 0).hom η) = compactZmodDualityMap φ D hD T h x₀ ((localToCompact φ D (fun v => Rep.res (φ v).toMonoidHom D) (fun _ => 𝟙 _) 0).hom η)`. Introduce `η`. Rewrite using `[compactZmodDualityMap_apply, hyp.T_compactCupRes_localToCompact_zero]`. Use `conv_lhs => rw [← Finset.univ_sum_single η]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← hξ', hres v]`. Take `⟨Λ, hΛ⟩` from `zmod_exists_comp_eq_of_ker_le (nsmul_cohomology_one_D hD) (compactToGlobal φ D (fun v => Rep.res (φ v).toMonoidHom D) (fun _ => 𝟙 _) 1).hom.toAddMonoidHom (χ - compactZmodDualityMap φ D hD T h x₀) (by`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨η, rfl⟩` from `(ShortComplex.moduleCat_exact_iff_ker_sub_range _).1 (compactCohomology_exact_compact φ D _ (fun _ => 𝟙 _) 0) hy`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.sub_apply, hχδ, sub_self])`. Use `hyp.finite_one` as an intermediate fact. Use `hyp.finite_two` as an intermediate fact. Establish `hbij` using `bijective_of_injective_of_injective_flip (bilinAddHom (compactCupRes φ (zmodMulPairingRight n D hD) (show 2 + 1 = 3 from rfl))) T (fun y y' hyy' => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Use `hyp.ker_right _ fun x => ?_` and prove the remaining obligations. Establish `e` using `DFunLike.congr_fun hyy' x`. Simplify using `only [AddMonoidHom.comp_apply, bilinAddHom_apply] at e`. Rewrite using `[map_sub, LinearMap.sub_apply, map_sub, e, sub_self])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun x x' hxx' => by`. Rewrite using `[← sub_eq_zero]`. Use `hyp.ker_left _ fun y => ?_` and prove the remaining obligations. Establish `e` using `DFunLike.congr_fun hxx' y`. Simplify using `only [AddMonoidHom.comp_apply, AddMonoidHom.flip_apply, bilinAddHom_apply] at e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_sub, e, sub_self])`. Take `⟨y', hy'⟩` from `hbij.2 (Λ.comp (cohomologyMap (zmodToCyclic D e hyp.triv) 1).hom.toAddMonoidHom)`. Establish `hw : ∀ y : cohomology D 1, T (compactCupRes φ (zmodMulPairing n D hD) (show 2 + 1 = 3 from rfl) ((compactCohomologyResMap φ (cyclicToZMod D e hyp.triv) 2).hom y') y) = Λ y`. Introduce `y`. Rewrite using `[hyp.compactCupRes_zmodMulPairing_eq e]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : (compactCohomologyResMap φ (zmodToCyclic D e hyp.triv) 2).hom ((compactCohomologyResMap φ (cyclicToZMod D e hyp.triv) 2).hom y') = y'`. Rewrite using `[← ConcreteCategory.comp_apply, ← compactCohomologyResMap_comp, cyclicToZMod_comp_zmodToCyclic, compactCohomologyResMap_id]`. Both sides reduce to the same expression. Establish `h2 : (cohomologyMap (zmodToCyclic D e hyp.triv) 1).hom ((cohomologyMap (cyclicToZMod D e hyp.triv) 1).hom y) = y`. Rewrite using `[← ConcreteCategory.comp_apply, ← cohomologyMap_comp, cyclicToZMod_comp_zmodToCyclic, cohomologyMap_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[h1]`. Establish `h3` using `DFunLike.congr_fun hy' ((cohomologyMap (cyclicToZMod D e hyp.triv) 1).hom y)`. Simplify using `only [AddMonoidHom.comp_apply, bilinAddHom_apply, LinearMap.toAddMonoidHom_coe] at h3`. Rewrite using `[h3, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x₀ + (compactToGlobal φ (zmodRep.{u} G n) (fun v => Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) (fun _ => 𝟙 _) 2).hom ((compactCohomologyResMap φ (cyclicToZMod D e hyp.triv) 2).hom y'), AddMonoidHom.ext fun yc => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, AddMonoidHom.add_apply, compactZmodDualityMap_apply φ D hD T h ((compactToGlobal φ (zmodRep.{u} G n) (fun v => Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) (fun _ => 𝟙 _) 2).hom ((compactCohomologyResMap φ (cyclicToZMod D e hyp.triv) 2).hom y')) yc, hyp.swap yc, hw]`. Establish `hΛ'` using `DFunLike.congr_fun hΛ yc`. Rewrite `hΛ'` using `[AddMonoidHom.comp_apply, AddMonoidHom.sub_apply]`. Rewrite `hΛ'` using `[LinearMap.toAddMonoidHom_coe]`.
-
-Rewrite using `[hΛ']`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem surjective_two (h : 2 + 1 = 3) : Function.Surjective (compactZmodDualityMap φ D hD T h) := by
   classical
@@ -915,9 +911,9 @@ theorem surjective_two (h : 2 + 1 = 3) : Function.Surjective (compactZmodDuality
 omit [CompactSpace G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Break down `r with _ | _ | _ | _ | r` into its components or cases. Take `rfl : s = 3` from `by omega`. Conclude with `hyp.bijective_zero h`. Take `rfl : s = 2` from `by omega`. Conclude with `hyp.bijective_one h`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `rfl : s = 1` from `by omega`. Conclude with `⟨hyp.injective_two h, hyp.surjective_two h⟩`. Take `rfl : s = 0` from `by omega`. Conclude with `hyp.bijective_three h`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem bijective_compactZmodDualityMap {r s : ℕ} (h : r + s = 3) :
     Function.Bijective (compactZmodDualityMap φ D hD T h) := by

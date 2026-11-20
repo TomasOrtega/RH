@@ -22,27 +22,27 @@ abbrev resM (F : X.Modules) {U V : X.Opens} (h : V ≤ U) : Γ(F, U) →+ Γ(F, 
 variable {F G : X.Modules}
 
 /- English proof (translation)
-The claim follows from `QCoh.res_res F h₁ h₂ s`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem resM_resM {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (s : Γ(F, U)) :
     resM F h₂ (resM F h₁ s) = resM F (h₂.trans h₁) s :=
   QCoh.res_res F h₁ h₂ s
 
 /- English proof (translation)
-The claim follows from `QCoh.res_self F h s`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem resM_self {U : X.Opens} (h : U ≤ U) (s : Γ(F, U)) : resM F h s = s :=
   QCoh.res_self F h s
 
 /- English proof (translation)
-The claim follows from `F.map_smul (homOfLE h) a s`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem resM_smul {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)) (s : Γ(F, U)) :
     resM F h (a • s) = resG X h a • resM F h s :=
   F.map_smul (homOfLE h) a s
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom (φ.mapPresheaf.naturality (homOfLE h).op) s`.
+A detailed English derivation is pending.
 -/
 theorem app_resM (φ : F ⟶ G) {U V : X.Opens} (h : V ≤ U) (s : Γ(F, U)) :
     φ.app V (resM F h s) = resM G h (φ.app U s) :=
@@ -51,14 +51,14 @@ theorem app_resM (φ : F ⟶ G) {U V : X.Opens} (h : V ≤ U) (s : Γ(F, U)) :
 abbrev abSheaf (F : X.Modules) : TopCat.Sheaf Ab X := ⟨F.presheaf, F.isSheaf⟩
 
 /- English proof (translation)
-The claim follows from `(abSheaf F).eq_of_locally_eq' W V (fun k => homOfLE (hW k)) hc s t h`.
+A detailed English derivation is pending.
 -/
 theorem sec_ext_of_cover {ι : Type*} {V : X.Opens} (W : ι → X.Opens) (hW : ∀ k, W k ≤ V)
     (hc : V ≤ iSup W) {s t : Γ(F, V)} (h : ∀ k, resM F (hW k) s = resM F (hW k) t) : s = t :=
   (abSheaf F).eq_of_locally_eq' W V (fun k => homOfLE (hW k)) hc s t h
 
 /- English proof (translation)
-The claim follows from `((abSheaf F).existsUnique_gluing' W V (fun k => homOfLE (hW k)) hc s h).exists`.
+A detailed English derivation is pending.
 -/
 theorem exists_sec_of_cover {ι : Type*} {V : X.Opens} (W : ι → X.Opens) (hW : ∀ k, W k ≤ V)
     (hc : V ≤ iSup W) (s : ∀ k, Γ(F, W k))
@@ -68,9 +68,9 @@ theorem exists_sec_of_cover {ι : Type*} {V : X.Opens} (W : ι → X.Opens) (hW 
   ((abSheaf F).existsUnique_gluing' W V (fun k => homOfLE (hW k)) hc s h).exists
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `s t e`. Use `sec_ext_of_cover (fun k => V ⊓ U k) (fun _ => inf_le_left) (le_iSup_inf hU V) fun k => (h k _ inf_le_left inf_le_right).1 ?_` and prove the remaining obligations. Rewrite using `[app_resM, app_resM, e]`. Introduce `t choose s hs using fun k => (h k _ inf_le_left inf_le_right).2 (resM G (inf_le_left : V ⊓ U k ≤ V) t)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr⟩` from `exists_sec_of_cover (fun k => V ⊓ U k) (fun _ => inf_le_left) (le_iSup_inf hU V) s fun k l => (h k _ (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right)).1 (by`. Rewrite using `[app_resM, app_resM, hs, hs, resM_resM, resM_resM])`. Use `⟨r, sec_ext_of_cover (fun k => V ⊓ U k) (fun _ => inf_le_left) (le_iSup_inf hU V) fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← app_resM, hr, hs]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bijective_app_of_cover (φ : F ⟶ G) {ι : Type*} {U : ι → X.Opens} (hU : ⨆ k, U k = ⊤)
     (V : X.Opens) (h : ∀ (k : ι) (W : X.Opens), W ≤ V → W ≤ U k → Function.Bijective (φ.app W)) :
@@ -92,21 +92,21 @@ theorem bijective_app_of_cover (φ : F ⟶ G) {ι : Type*} {U : ι → X.Opens} 
     rw [← app_resM, hr, hs]
 
 /- English proof (translation)
-The claim follows from `Scheme.Modules.Hom.isIso_iff_isIso_app.2 fun V => (ConcreteCategory.isIso_iff_bijective _).2 (h V)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_of_bijective (φ : F ⟶ G) (h : ∀ V, Function.Bijective (φ.app V)) : IsIso φ :=
   Scheme.Modules.Hom.isIso_iff_isIso_app.2 fun V =>
     (ConcreteCategory.isIso_iff_bijective _).2 (h V)
 
 /- English proof (translation)
-The claim follows from `isIso_of_bijective φ fun V => bijective_app_of_cover φ hU V fun k W _ hW => h k W hW`.
+A detailed English derivation is pending.
 -/
 theorem isIso_of_cover (φ : F ⟶ G) {ι : Type*} {U : ι → X.Opens} (hU : ⨆ k, U k = ⊤)
     (h : ∀ (k : ι) (W : X.Opens), W ≤ U k → Function.Bijective (φ.app W)) : IsIso φ :=
   isIso_of_bijective φ fun V => bijective_app_of_cover φ hU V fun k W _ hW => h k W hW
 
 /- English proof (translation)
-The claim follows from `ha.smul_bijective`.
+A detailed English derivation is pending.
 -/
 theorem bijective_smul_of_isUnit {V : X.Opens} {a : Γ(X, V)} (ha : IsUnit a) :
     Function.Bijective fun s : Γ(F, V) => a • s :=
@@ -164,7 +164,7 @@ def generatorsOfLocallyIso {ι : Type} {U : ι → X.Opens} (hU : ⨆ k, U k = �
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `hF.exists_localGeneratorsData`. Conclude with `⟨generatorsOfLocallyIso hU e σ, ⟨fun p => ⟨(hσ.isFiniteType p.1).finite⟩⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isFiniteType_of_locally_iso {ι : Type} {U : ι → X.Opens} (hU : ⨆ k, U k = ⊤)
     (e : ∀ (k : ι) (W : X.Opens), W ≤ U k → (F.restrict W.ι ≅ G.restrict W.ι))
@@ -173,7 +173,7 @@ theorem isFiniteType_of_locally_iso {ι : Type} {U : ι → X.Opens} (hU : ⨆ k
   exact ⟨generatorsOfLocallyIso hU e σ, ⟨fun p => ⟨(hσ.isFiniteType p.1).finite⟩⟩⟩
 
 /- English proof (translation)
-Use `QCoh.isQuasicoherent_of_restrict G (fun k => (U k).ι) (fun x => ?_) fun k => ?_` and prove the remaining obligations. Take `⟨l, hl⟩` from `Opens.mem_iSup.1 (hU.ge (Set.mem_univ x))`. Conclude with `⟨l, by rwa [Scheme.Opens.opensRange_ι]⟩`. Conclude with `(SheafOfModules.isQuasicoherent (U k).toScheme.ringCatSheaf).prop_of_iso (e k) (inferInstanceAs (F.restrict (U k).ι).IsQuasicoherent)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isQuasicoherent_of_locally_iso {ι : Type} {U : ι → X.Opens} (hU : ⨆ k, U k = ⊤)
     (e : ∀ k : ι, F.restrict (U k).ι ≅ G.restrict (U k).ι)
@@ -191,7 +191,7 @@ variable {U : X.Opens} (φ : ∀ V : X.Opens, V ≤ U → (Γ(F, V) ≃ₗ[Γ(X,
     φ W (h.trans hV) (resM F h s) = resM G h (φ V hV s)) {x : X} (hx : x ∈ U)
 
 /- English proof (translation)
-The claim follows from `F.presheaf.germ_res_apply (homOfLE h) x hx s`.
+A detailed English derivation is pending.
 -/
 theorem germ_resM {V W : X.Opens} (h : W ≤ V) {x : X} (hx : x ∈ W) (s : Γ(F, V)) :
     F.presheaf.germ W x hx (resM F h s) = F.presheaf.germ V x (h hx) s :=
@@ -215,7 +215,7 @@ def stalkHomOfLinear : F.presheaf.stalk x ⟶ G.presheaf.stalk x :=
               resM_resM] } }
 
 /- English proof (translation)
-Establish `e : stalkHomOfLinear φ hφ hx (F.presheaf.germ V x hxV s) = G.presheaf.germ (V ⊓ U) x ⟨hxV, hx⟩ (φ _ inf_le_right (resM F inf_le_left s))` using `ConcreteCategory.congr_hom (Limits.colimit.ι_desc (F := (OpenNhds.inclusion x).op ⋙ F.presheaf) _ (op ⟨V, hxV⟩)) s`. Rewrite using `[e, hφ hV]`. Conclude with `germ_resM _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkHomOfLinear_germ {V : X.Opens} (hV : V ≤ U) (hxV : x ∈ V) (s : Γ(F, V)) :
     stalkHomOfLinear φ hφ hx (F.presheaf.germ V x hxV s) = G.presheaf.germ V x hxV (φ V hV s) := by
@@ -229,7 +229,7 @@ theorem stalkHomOfLinear_germ {V : X.Opens} (hV : V ≤ U) (hxV : x ∈ V) (s : 
 include hx in
 
 /- English proof (translation)
-Take `⟨V, hV, s, rfl⟩` from `F.presheaf.exists_germ_eq t`. Conclude with `⟨V ⊓ U, inf_le_right, ⟨hV, hx⟩, resM F inf_le_left s, germ_resM _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_germ_eq_of_mem (t : (F.presheaf.stalk x :)) :
     ∃ (V : X.Opens) (_ : V ≤ U) (hxV : x ∈ V) (s : Γ(F, V)), F.presheaf.germ V x hxV s = t := by
@@ -239,7 +239,7 @@ theorem exists_germ_eq_of_mem (t : (F.presheaf.stalk x :)) :
 include hφ in
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq, hφ hV, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_resM {V W : X.Opens} (hV : V ≤ U) (h : W ≤ V) (s : Γ(G, V)) :
     (φ W (h.trans hV)).symm (resM G h s) = resM F h ((φ V hV).symm s) := by
@@ -268,7 +268,7 @@ def stalkEquivOfLinear :
       LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-The claim follows from `stalkHomOfLinear_germ φ hφ hx hV hxV s`.
+A detailed English derivation is pending.
 -/
 theorem stalkEquivOfLinear_germ {V : X.Opens} (hV : V ≤ U) (hxV : x ∈ V) (s : Γ(F, V)) :
     stalkEquivOfLinear φ hφ hx (F.presheaf.germ V x hxV s) =
@@ -286,9 +286,9 @@ def mateHom (A : C) : P.obj (S.obj A) ⟶ T.obj (P.obj A) :=
   (adj.homEquiv _ _).symm (S.map (adj.unit.app A) ≫ e.hom.app (P.obj A))
 
 /- English proof (translation)
-Rewrite using `[mateHom, mateHom, ← Adjunction.homEquiv_naturality_left_symm, ← Adjunction.homEquiv_naturality_right_symm, ← S.map_comp_assoc, Category.assoc]`. Use `congr 1`. Establish `h₁` using `adj.unit.naturality f`. Establish `h₂` using `e.hom.naturality (P.map f)`. Simplify using `at h₁ h₂ ⊢`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Rewrite using `[h₁, S.map_comp_assoc, h₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mateHom_naturality {A B : C} (f : A ⟶ B) :
     P.map (S.map f) ≫ mateHom adj S T e B = mateHom adj S T e A ≫ T.map (P.map f) := by
@@ -301,13 +301,13 @@ theorem mateHom_naturality {A B : C} (f : A ⟶ B) :
   rw [h₁, S.map_comp_assoc, h₂]
 
 /- English proof (translation)
-Establish `key (B : D) : Function.Bijective fun ψ : T.obj (P.obj A) ⟶ T.obj B => mateHom adj S T e A ≫ ψ`. Establish `h₁ : Function.Bijective fun χ : P.obj A ⟶ B => T.map χ` using `(Functor.FullyFaithful.ofFullyFaithful T).map_bijective _ _`. Rewrite using `[← Function.Bijective.of_comp_iff _ h₁, ← Function.Bijective.of_comp_iff' (adj.homEquiv (S.obj A) (T.obj B)).bijective]`. Establish `h₂ : Function.Bijective fun χ : A ⟶ Q.obj B => S.map χ` using `(Functor.FullyFaithful.ofFullyFaithful S).map_bijective _ _`. Establish `h₃ : Function.Bijective fun χ : S.obj A ⟶ S.obj (Q.obj B) => (χ ≫ e.hom.app B : S.obj A ⟶ Q.obj (T.obj B))` using `(Iso.homToEquiv (e.app B)).bijective`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(h₃.comp h₂).comp (adj.homEquiv A B).bijective using 1` and compare the differences between its conclusion and the goal. Use extensionality with `χ`. Establish `h₄` using `e.hom.naturality χ`. Simplify using `at h₄ ⊢`. Rewrite using `[Adjunction.homEquiv_naturality_right, mateHom, Equiv.apply_symm_apply, Category.assoc, Adjunction.homEquiv_unit, S.map_comp_assoc, h₄]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `isIso_of_coyoneda_map_bijective _ fun B => ?_` and prove the remaining obligations. Set `i` to `T.objObjPreimageIso B`. Establish `h₅ : Function.Bijective fun ψ : T.obj (P.obj A) ⟶ T.obj (T.objPreimage B) => ψ ≫ i.hom` using `(Iso.homToEquiv i).bijective`. Establish `h₆ : Function.Bijective fun ψ : P.obj (S.obj A) ⟶ T.obj (T.objPreimage B) => ψ ≫ i.hom` using `(Iso.homToEquiv i).bijective`. Rewrite using `[← Function.Bijective.of_comp_iff _ h₅]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h₆.comp (key _) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `ψ`. Simplify using the standard rewrite rules.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isIso_mateHom [S.IsEquivalence] [T.IsEquivalence] (A : C) : IsIso (mateHom adj S T e A) := by
   have key (B : D) : Function.Bijective

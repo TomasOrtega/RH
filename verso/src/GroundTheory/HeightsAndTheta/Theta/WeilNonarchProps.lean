@@ -23,16 +23,16 @@ def linearEquivHomeomorph (L : (ι → F) ≃ₗ[F] (ι → F)) : (ι → F) ≃
   continuous_invFun := L.symm.toLinearMap.continuous_on_pi
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Automorphic.Measures.distribHaarChar_pi_eq, distribHaarChar_eq_modulus]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem distribHaarChar_linearEquiv (L : (ι → F) ≃ₗ[F] (ι → F)) :
     distribHaarChar (ι → F) L = modulus (LinearEquiv.det L : F) := by
   rw [GroundTheory.Automorphic.Measures.distribHaarChar_pi_eq, distribHaarChar_eq_modulus]
 
 /- English proof (translation)
-Establish `hL : Measurable (L : (ι → F) → (ι → F))` using `(linearEquivHomeomorph L).continuous.measurable`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hL hs, Measure.smul_apply]`. Establish `hpre : (L : (ι → F) → (ι → F)) ⁻¹' s = L⁻¹ • s`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Set.mem_smul_set_iff_inv_smul_mem, LinearEquiv.smul_def]`. Rewrite using `[hpre, ← distribHaarChar_mul, map_inv, distribHaarChar_linearEquiv, ENNReal.smul_def, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_linearEquiv_selfDualPi (L : (ι → F) ≃ₗ[F] (ι → F)) :
     Measure.map L (selfDualPi ι ψ) =
@@ -48,7 +48,7 @@ theorem map_linearEquiv_selfDualPi (L : (ι → F) ≃ₗ[F] (ι → F)) :
     smul_eq_mul]
 
 /- English proof (translation)
-Establish `h` using `integral_map_equiv (μ := selfDualPi ι ψ) (linearEquivHomeomorph L).toMeasurableEquiv g`. Establish `he : ((linearEquivHomeomorph L).toMeasurableEquiv : (ι → F) → (ι → F)) = L` using `rfl`. Rewrite `h` using `[he, map_linearEquiv_selfDualPi, integral_smul_nnreal_measure]`. Rewrite using `[← h, NNReal.smul_def, Complex.real_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_comp_linearEquiv (L : (ι → F) ≃ₗ[F] (ι → F)) (g : (ι → F) → ℂ) :
     ∫ x, g (L x) ∂selfDualPi ι ψ =
@@ -59,9 +59,9 @@ theorem integral_comp_linearEquiv (L : (ι → F) ≃ₗ[F] (ι → F)) (g : (ι
   rw [← h, NNReal.smul_def, Complex.real_smul]
 
 /- English proof (translation)
-Use `set G := Matrix.GeneralLinearGroup.mkOfDetNeZero P hP`. Establish `h1 : ∀ x, GroundTheory.Automorphic.Measures.glEquiv G x = P *ᵥ x` using `fun x => GroundTheory.Automorphic.Measures.glEquiv_apply G x`. Establish `h2 : (LinearEquiv.det (GroundTheory.Automorphic.Measures.glEquiv G) : F) = P.det`. Rewrite using `[GroundTheory.Automorphic.Measures.det_glEquiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `integral_comp_linearEquiv (ψ := ψ) (GroundTheory.Automorphic.Measures.glEquiv G) g` as an intermediate fact. Rewrite `this` using `[h1, h2]`. Conclude with `this`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_comp_mulVec {P : Matrix ι ι F} (hP : P.det ≠ 0) (g : (ι → F) → ℂ) :
     ∫ x, g (P *ᵥ x) ∂selfDualPi ι ψ =

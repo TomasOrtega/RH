@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC
 namespace LateralTheory.E.ProdAcycPf
 
 /- English proof (translation)
-Introduce `n i hn`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ x : Ht q (sp A) n i, x = 0`. Introduce `x`. Take `⟨Y, f, -, -, hx⟩` from `H.a5 (ZMod q) (Spec (CommRingCat.of A)) (tw q i) n hn x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: IsEmpty (Spec (CommRingCat.of A))` using `inferInstanceAs (IsEmpty (PrimeSpectrum A))`. Establish `: IsIso (sch.map f)` using `inferInstance`. Establish `hy : pull _ (inv (sch.map f)) _ _ (pull _ (sch.map f) _ _ x) = x`. Rewrite using `[← pull_comp, IsIso.inv_hom_id, pull_id]`. Rewrite using `[← hy, hx, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0 x, h0 y]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zero_acyc (H : LateralTheory.E.t_E2Cut.Hyp) (q : ℕ) (A : Type) [CommRing A] [Subsingleton A] : Acyc q (sp A) := by
   intro n i hn
@@ -38,9 +38,9 @@ def splitFirst (n : ℕ) (R : Fin (n + 1) → Type) [∀ k, CommRing (R k)] :
   map_add' f g := rfl
 
 /- English proof (translation)
-Introduce `H q A _ n`. Proceed by induction on `n generalizing A with`. Consider the case `zero`. Introduce `R _ ⟨e⟩ _`. Establish `: Subsingleton A` using `e.injective.subsingleton`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `zero_acyc H q A`. Consider the case `succ n ih`. Introduce `R _ ⟨e⟩ hR`. Use `hB H q A (R 0) (∀ k : Fin n, R k.succ) ⟨e.trans (splitFirst n R)⟩ (hR 0) ?_` and prove the remaining obligations. Conclude with `ih (∀ k : Fin n, R k.succ) (fun k => R k.succ) ⟨RingEquiv.refl _⟩ fun k => hR k.succ`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem prod_of (hB : Bin) : LateralTheory.E.QuotAcycCut.ProdAcyc := by
   intro H q A _ n

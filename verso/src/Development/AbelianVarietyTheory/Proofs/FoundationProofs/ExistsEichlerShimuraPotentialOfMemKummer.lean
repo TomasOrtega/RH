@@ -7,7 +7,7 @@ open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X _ hj N l w hl h2 hN hc hw b hb`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Take `⟨φ, hφ, hφ'⟩` from `hj`. Conclude with `GlobalTheory.T.exists_kummerPotentialRelation_padic Ω ε X l ⟨φ, hφ', hφ⟩ N w (by omega) h2 ((Nat.Prime.coprime_iff_not_dvd hl.out).1 hc.symm) hw b (Submodule.subset_span hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KZ.exists_pot_rel_of_mem_bSet : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), Function.Injective ε → (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) → ∀ (N l w : ℕ) [Fact l.Prime], l ≠ 2 → 5 ≤ N → Nat.Coprime N l → Odd w → ∀ b ∈ X.BSet N l w, ∃ F ∈ Pot ℤ_[l] w (Gam N l), H3.Rel X l b F := by
   intro Ω _ _ _ ε X _ hj N l w hl h2 hN hc hw b hb

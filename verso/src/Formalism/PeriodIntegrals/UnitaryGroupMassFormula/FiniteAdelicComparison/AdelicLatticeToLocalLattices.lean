@@ -11,7 +11,7 @@ open scoped TensorProduct
 open Formalism.MainNotions.S (AutInst)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [psiV]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem psiV_tmul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (e : I.E) (a : Formalism.MainNotions.S.Af I.F) :
     psiV I v (e ⊗ₜ[I.F] a) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV I.F v a ⊗ₜ[I.F] e := by
@@ -20,7 +20,7 @@ theorem psiV_tmul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (e : I.E) (a 
     | simp [psiV]
 
 /- English proof (translation)
-Use `show psiV I v (e ⊗ₜ[I.F] (1 : Formalism.MainNotions.S.Af I.F)) = _`. Rewrite using `[psiV_tmul, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem psiV_inclE (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (e : I.E) :
     psiV I v (Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) e) =
@@ -30,9 +30,9 @@ theorem psiV_inclE (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (e : I.E) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x e`. Rewrite using `[TensorProduct.smul_tmul', Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add a b ha hb => rw [smul_add, ha, hb, mul_add]`.
+Treat this case separately.
 -/
 theorem ov_smul_eq (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (c : v.adicCompletionIntegers I.F)
     (t : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) :
@@ -45,7 +45,7 @@ theorem ov_smul_eq (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (c : v.adicC
   | add a b ha hb => rw [smul_add, ha, hb, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `ov_smul_eq I v c (z i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ov_smul_vec (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (c : v.adicCompletionIntegers I.F)
     (z : Fin I.n → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) :
@@ -73,13 +73,11 @@ def mulSet (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) : Subring (I.E ⊗[I
     exact neg_mem (ha z hz)
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l, hl, rfl⟩` from `hy`. Establish `heq : ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) ⊗ₜ[I.F] (algebraMap (𝓞 I.E) I.E o)) • Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) l = Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) (o • l) := by`. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Formalism.L2.SG.Sub.ratV, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR, Pi.smul_apply, smul_eq_mul]`. Use `show _ * ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) ⊗ₜ[I.F] l i) = (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) ⊗ₜ[I.F] (o • l) i`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, Pi.smul_apply, Algebra.smul_def]`. Rewrite using `[heq]`. Conclude with `Submodule.subset_span ⟨o • l, I.L.smul_mem o hl, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`.
-
-Rewrite using `[ov_smul_vec I v c x, smul_smul, mul_comm, ← smul_smul, ← ov_smul_vec I v c]`. Conclude with `Submodule.smul_mem _ c hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inclR_smul_mem (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (o : 𝓞 I.E)
     (z : Fin I.n → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)
@@ -107,11 +105,9 @@ theorem inclR_smul_mem (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (o : �
     exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.S.IntAf, Formalism.UG.tensInt, Subring.closure_le]`. Introduce and unpack `_ (⟨⟨e, he⟩, rfl⟩ | ⟨⟨a, ha⟩, rfl⟩)`. Take `⟨o, rfl⟩` from `he`. Introduce `z hz`. Rewrite using `[psiV_tmul, map_one]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inclR_smul_mem I v o z hz`. Introduce `z hz`. Rewrite using `[psiV_tmul]`. Establish `h` using `Submodule.smul_mem _ (⟨a v, ha v⟩ : v.adicCompletionIntegers I.F) hz`. Rewrite `h` using `[ov_smul_vec]`.
-
-Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAf_le_mulSet (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) :
     Formalism.MainNotions.S.IntAf I.F I.E ≤ mulSet I v := by
@@ -128,17 +124,13 @@ theorem intAf_le_mulSet (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) :
     exact h
 
 /- English proof (translation)
-Introduce `I x hx v`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l, rfl⟩` from `hy`. Establish `heq : PI.FinKW.vecV I v (fun i => Formalism.UG.inclE (F` using `I.F) (Formalism.MainNotions.S.Af I.F) ((l : Fin I.n → I.E) i)) = Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) (l : Fin I.n → I.E) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `psiV_inclE I v _`. Rewrite using `[heq]`. Conclude with `Submodule.subset_span ⟨l, l.2, rfl⟩`. Consider the case `zero`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0 : PI.FinKW.vecV I v 0 = 0`. Use function extensionality and compare the values at `i`. Conclude with `map_zero _`. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b _ _ ha hb`. Establish `h0 : PI.FinKW.vecV I v (a + b) = PI.FinKW.vecV I v a + PI.FinKW.vecV I v b`. Use function extensionality and compare the values at `i`. Conclude with `map_add _ _ _`. Rewrite using `[h0]`.
-
-Conclude with `add_mem ha hb`. Consider the case `smul c y _ hy`. Establish `h0 : PI.FinKW.vecV I v (c • y) = psiV I v (c : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) • PI.FinKW.vecV I v y`. Use function extensionality and compare the values at `i`. Conclude with `map_mul _ _ _`.
-
-Rewrite using `[h0]`. Conclude with `intAf_le_mulSet I v c.2 _ hy`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_local_lattice_iff : PI.FinKW.MemLocTo := by
   intro I x hx v

@@ -8,9 +8,9 @@ namespace Formalism.L2.PairingIndexBounds.Mv
 open Formalism.L2.Th1.H
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Rewrite `ha` using `[AddSubgroup.mem_addSubgroupOf]`. Use function extensionality and compare the values at `z`. Conclude with `hθ _ ha z`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Establish `hbΛ : (b : V) ∈ Λ₀` using `g0.2.2.2.2 b b.2 fun a ha haΛ => (cU_eq_one_iff H A B b ⟨a, ha⟩).1 (hb ⟨a, ha⟩ (by simpa [AddSubgroup.mem_addSubgroupOf] using haΛ))`. Use function extensionality and compare the values at `z`. Conclude with `hθ _ hbΛ z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fixed_of_good {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A B Λ₀ : AddSubgroup V)
     (g0 : GoodLat H α A B Λ₀) (θ : V → ℂ) (hθ : θ ∈ fixedBy H α Λ₀) :
@@ -28,19 +28,19 @@ theorem fixed_of_good {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (�
     exact hθ _ hbΛ z
 
 /- English proof (translation)
-Introduce `V _ _ H α Λ₀ M ι Λ Y vol hH θ hθ hfam`. Use `hExt ℂ (M → ℂ) (V → ℂ) ι (fun i => Set.indicator (Y i) 1) (fun i => ((Real.sqrt (vol i) : ℝ) : ℂ) • inter H α Λ₀ (Λ i) θ) ?_` and prove the remaining obligations. Introduce `s r hr`. Take `⟨A, B, φ, hA, hB, g0, hs⟩` from `hfam s`. Take `⟨hbc, hheis⟩` from `heisenberg_unitary_holds V H α A B hH hA hB`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hfa, hfb⟩` from `fixed_of_good H α A B Λ₀ g0 θ hθ`. Take `⟨Xi, hXi, -⟩` from `hXE ℂ A B (V → ℂ) (cU H A B) (wA H α A) (wB H α B) hbc hheis (Λ₀.addSubgroupOf A) θ hfa hfb`. Take `⟨Xi', hXi'⟩` from `LinearMap.exists_extend Xi`. Establish `hterm : ∀ i ∈ s, ((Real.sqrt (vol i) : ℝ) : ℂ) • inter H α Λ₀ (Λ i) θ = Xi' (ind (((Λ i).addSubgroupOf A : AddSubgroup A) : Set A))`. Introduce `i hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨gi, hfin, hmem, hvol⟩` from `hs i hi`. Take `⟨h, hpos, heq⟩` from `hMU V H α A B Λ₀ (Λ i) hH hA hB g0 gi hfin θ hθ Xi hXi`. Establish `e1 : Xi' (ind (((Λ i).addSubgroupOf A : AddSubgroup A) : Set A)) = Xi ⟨_, h⟩`. Rewrite using `[← hXi']`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1, heq, hvol, smul_smul]`. Establish `hs0 : Real.sqrt (volA A Λ₀ (Λ i)) ≠ 0` using `(Real.sqrt_pos.2 hpos).ne'`. Rewrite using `[← Complex.ofReal_mul, mul_inv_cancel₀ hs0, Complex.ofReal_one, one_smul]`. Rewrite using `[Finset.sum_congr rfl fun i hi => by rw [hterm i hi]]`. Repeatedly rewrite using `[← map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← map_sum]`. Establish `hz : ∑ i ∈ s, r i • (ind (((Λ i).addSubgroupOf A : AddSubgroup A) : Set A) : A → ℂ) = 0`. Use function extensionality and compare the values at `a`. Use `congrFun hr (φ a)` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Take `⟨-, -, hmem, -⟩` from `hs i hi`. Use `congr 1`. Unfold `ind`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Simplify using `only [SetLike.mem_coe, AddSubgroup.mem_addSubgroupOf, Set.indicator, Pi.one_apply]`. Distinguish the cases in `ha : (a : V) ∈ Λ i`. Rewrite using `[if_pos ha, if_pos ((hmem a).1 ha)]`. Rewrite using `[if_neg ha, if_neg (fun h => ha ((hmem a).2 h))]`. Rewrite using `[hz, map_zero]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem GenModelXi_of (hXE : XiExists) (hMU : MovesU) (hExt : ExtendLin) : GenModelXi := by
   intro V _ _ H α Λ₀ M ι Λ Y vol hH θ hθ hfam

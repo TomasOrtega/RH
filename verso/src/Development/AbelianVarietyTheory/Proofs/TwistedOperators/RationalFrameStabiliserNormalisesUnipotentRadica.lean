@@ -16,33 +16,33 @@ variable {D : D7}
 local infixl:70 " ⋆ₘ " => HMul.hMul
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`.
+A detailed English derivation is pending.
 -/
 theorem incA_injective (D : D7) : Function.Injective (incA D) :=
   Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_mul (W : HSp D) (g h : GA D W) : Formalism.L2.Theta.mt W (g * h) = Formalism.L2.Theta.mt W g * Formalism.L2.Theta.mt W h := by
   simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Rewrite using `[← mt_mul]`. Simplify using `[Formalism.L2.Theta.mt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mt_inv_mul (W : HSp D) (g : GA D W) : Formalism.L2.Theta.mt W g⁻¹ * Formalism.L2.Theta.mt W g = 1 := by
   rw [← mt_mul]; simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Rewrite using `[← mt_mul]`. Simplify using `[Formalism.L2.Theta.mt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mt_mul_inv (W : HSp D) (g : GA D W) : Formalism.L2.Theta.mt W g * Formalism.L2.Theta.mt W g⁻¹ = 1 := by
   rw [← mt_mul]; simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Proceed by induction on `hn using Subgroup.closure_induction with`. Consider the case `mem g hg`. Establish `h1 : (Formalism.L2.Theta.mt W g - 1) ⋆ₘ L.map (incA D) = 0` using `hg.1`. Rewrite `h1` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Conclude with `h1`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `one => simp [Formalism.L2.Theta.mt]`. Consider the case `mul x y _ _ hx hy => rw [mt_mul, Matrix.mul_assoc, hy, hx]`. Consider the case `inv x _ hx`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mt_mul_frame (W : HSp D) {s : ℕ} (L : Matrix (Fin W.rank) (Fin s) D.host.E) (n : GA D W) (hn : n ∈ NI W L) :
     Formalism.L2.Theta.mt W n ⋆ₘ L.map (incA D) = L.map (incA D) := by
@@ -59,14 +59,14 @@ theorem mt_mul_frame (W : HSp D) {s : ℕ} (L : Matrix (Fin W.rank) (Fin s) D.ho
       _ = L.map (incA D) := by rw [← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[mt_mul, mt_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, mt_mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_conj_sub_one (W : HSp D) (γ m : GA D W) : Formalism.L2.Theta.mt W (γ * m * γ⁻¹) - 1 =
     Formalism.L2.Theta.mt W γ * (Formalism.L2.Theta.mt W m - 1) * Formalism.L2.Theta.mt W γ⁻¹ := by
   rw [mt_mul, mt_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, mt_mul_inv]
 
 /- English proof (translation)
-Rewrite using `[mt_conj_sub_one, Matrix.mul_assoc, hΓiL, Matrix.mul_assoc, h1, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sub_one_kills_frame_of_fixed (W : HSp D) {s : ℕ} (L : Matrix (Fin W.rank) (Fin s) D.host.E) (γ m : GA D W)
     (hΓiL : Formalism.L2.Theta.mt W γ⁻¹ ⋆ₘ L.map (incA D) = L.map (incA D))
@@ -75,7 +75,7 @@ theorem conj_sub_one_kills_frame_of_fixed (W : HSp D) {s : ℕ} (L : Matrix (Fin
   rw [mt_conj_sub_one, Matrix.mul_assoc, hΓiL, Matrix.mul_assoc, h1, Matrix.mul_zero]
 
 /- English proof (translation)
-Rewrite using `[mt_conj_sub_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPΓ, h2, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rowFrame_mul_conj_sub_one_eq_zero_of_fixed (W : HSp D) {s : ℕ} (P : Matrix (Fin s) (Fin W.rank) D.host.E) (γ m : GA D W)
     (hPΓ : P.map (incA D) ⋆ₘ Formalism.L2.Theta.mt W γ = P.map (incA D))
@@ -84,11 +84,11 @@ theorem rowFrame_mul_conj_sub_one_eq_zero_of_fixed (W : HSp D) {s : ℕ} (P : Ma
   rw [mt_conj_sub_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPΓ, h2, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `hy : P *ᵥ (γi *ᵥ x) = 0`. Rewrite using `[Matrix.mulVec_mulVec, hPγi]`. Conclude with `hx`. Take `⟨a, ha⟩` from `h3 _ hy`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hyb : (fun i => incA D ((γi *ᵥ x) i)) = γi.map (incA D) *ᵥ (fun i => incA D (x i))`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (incA D) γi x i`. Establish `hxb : Formalism.L2.Theta.mt W γ *ᵥ (fun i => incA D ((γi *ᵥ x) i)) = fun i => incA D (x i)`. Rewrite using `[hyb, Matrix.mulVec_mulVec, hγ₀, ← Matrix.map_mul, hγγi, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxi : Formalism.L2.Theta.mt W γ⁻¹ *ᵥ (fun i => incA D (x i)) = fun i => incA D ((γi *ᵥ x) i)`. Rewrite using `[← hxb, Matrix.mulVec_mulVec, mt_inv_mul, Matrix.one_mulVec]`. Rewrite using `[mt_conj_sub_one, ← Matrix.mulVec_mulVec, hxi, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_mulVec, hΓL]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_unipotentRadical_kernelCondition_of_rationalFixed (W : HSp D) {s : ℕ} (L : Matrix (Fin W.rank) (Fin s) D.host.E) (P : Matrix (Fin s) (Fin W.rank) D.host.E)
     (γ m : GA D W) (γ₀ γi : Matrix (Fin W.rank) (Fin W.rank) D.host.E)
@@ -112,27 +112,23 @@ theorem conj_unipotentRadical_kernelCondition_of_rationalFixed (W : HSp D) {s : 
   rw [mt_conj_sub_one, ← Matrix.mulVec_mulVec, hxi, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_mulVec, hΓL]
 
 /- English proof (translation)
-Introduce `D W s L _`. Use `⟨?_, fun n hn n₀ hn₀ => ?_⟩` and prove the remaining obligations. Use `swap`. Apply `Matrix.map_injective (incA_injective D) show (n₀ * L).map (incA D) = L.map (incA D)` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, ← hn₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mt_mul_frame W L n hn`. Introduce `γ hγ γ₀ hγ₀ hL`. Take `⟨g, hg, e⟩` from `hγ`. Establish `hg0 : (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E) = γ₀`. Apply `Matrix.map_injective (incA_injective D)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (incA D) = γ₀.map (incA D)`. Rewrite using `[← hγ₀]`. Conclude with `congrArg Units.val e`. Take `⟨σ, hσ⟩ : ∃ σ : D.host.E →+* D.host.E, σ = (D.sp.cm.sig : D.host.E →+* D.host.E)` from `⟨_, rfl⟩`. Take `⟨G, hG⟩ : ∃ G, G = W.gram` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P, hP⟩ : ∃ P : Matrix (Fin s) (Fin W.rank) D.host.E, P = Formalism.UG.cT σ L * G` from `⟨_, rfl⟩`. Take `⟨γi, hγi⟩ : ∃ γi : Matrix (Fin W.rank) (Fin W.rank) D.host.E, γi = (g⁻¹ : GL (Fin W.rank) D.host.E).1` from `⟨_, rfl⟩`. Establish `hγγi : γ₀ * γi = 1` using `by rw [← hg0, hγi]; exact Units.mul_inv g`. Establish `hU : Formalism.UG.cT σ γ₀ * G * γ₀ = G` using `by rw [← hg0, hσ, hG]; exact hg`. Establish `hPγ : P * γ₀ = P`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = P := by rw [hU, hP]`. Establish `hPγi : P * γi = P`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hΓL : Formalism.L2.Theta.mt W γ ⋆ₘ L.map (incA D) = L.map (incA D)`. Rewrite using `[hγ₀, ← Matrix.map_mul, hL]`. Establish `hΓiL : Formalism.L2.Theta.mt W γ⁻¹ ⋆ₘ L.map (incA D) = L.map (incA D)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hPΓ : P.map (incA D) ⋆ₘ Formalism.L2.Theta.mt W γ = P.map (incA D)`. Rewrite using `[hγ₀, ← Matrix.map_mul, hPγ]`. Establish `hPΓi : P.map (incA D) ⋆ₘ Formalism.L2.Theta.mt W γ⁻¹ = P.map (incA D)`. Combine the equalities or inequalities in the displayed calculation. Establish `key : NI W L ≤ (NI W L).comap (MulAut.conj γ).toMonoidHom`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Subgroup.closure_le _).2 fun m hm => ?_` and prove the remaining obligations. Establish `h1 : (Formalism.L2.Theta.mt W m - 1) ⋆ₘ L.map (incA D) = 0` using `hm.1`. Establish `h2 : P.map (incA D) ⋆ₘ (Formalism.L2.Theta.mt W m - 1) = 0`. Use `hm.2.1` as an intermediate fact. Rewrite using `[hP, hσ, hG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h3 : ∀ x : Fin W.rank → D.host.E, P *ᵥ x = 0 → ∃ a : Fin s → AE D, (Formalism.L2.Theta.mt W m - 1) *ᵥ (fun i => incA D (x i)) = L.map (incA D) *ᵥ a`. Rewrite using `[hP, hσ, hG]`. Conclude with `hm.2.2`. Rewrite using `[SetLike.mem_coe, Subgroup.mem_comap, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`.
-
-Use `Subgroup.subset_closure ⟨conj_sub_one_kills_frame_of_fixed W L γ m hΓiL h1, ?_, ?_⟩` and prove the remaining obligations. Use `rowFrame_mul_conj_sub_one_eq_zero_of_fixed W P γ m hPΓ h2` as an intermediate fact. Rewrite `this` using `[hP, hσ, hG]`. Conclude with `this`. Introduce `x hx`.
-
-Rewrite `hx` using `[← hG, ← hσ, ← hP]`. Conclude with `conj_unipotentRadical_kernelCondition_of_rationalFixed W L P γ m γ₀ γi hγ₀ hγγi hPγi hΓL h3 x hx`. Introduce `n hn`. Conclude with `key hn`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stab : ∀ (D : D7) (W : HSp D) (s : ℕ) (L : Matrix (Fin W.rank) (Fin s) D.host.E), IsIsoFrame W L →
     (∀ γ ∈ GQ W, ∀ γ₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E, Formalism.L2.Theta.mt W γ = γ₀.map (incA D) →

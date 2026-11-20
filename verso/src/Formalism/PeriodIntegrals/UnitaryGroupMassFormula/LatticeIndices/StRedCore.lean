@@ -26,13 +26,13 @@ variable {θ} {s : T →+* T} (hs : ∀ t, θ (s t) = (θ t).swap)
 include hs
 
 /- English proof (translation)
-Rewrite using `[firstSplit_apply, secondSplit_apply, hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem firstSplit_conj (t : T) : t1 θ (s t) = t2 θ t := by
   rw [firstSplit_apply, secondSplit_apply, hs]
   rfl
 /- English proof (translation)
-Rewrite using `[firstSplit_apply, secondSplit_apply, hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secondSplit_conj (t : T) : t2 θ (s t) = t1 θ t := by
   rw [firstSplit_apply, secondSplit_apply, hs]
@@ -41,9 +41,9 @@ theorem secondSplit_conj (t : T) : t2 θ (s t) = t1 θ t := by
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `hg' : Formalism.UG.cT s (g : Matrix n n T) * J * (g : Matrix n n T) = J` using `hg`. Establish `e : ((g : Matrix n n T).map (t2 θ))ᵀ = (Formalism.UG.cT s (g : Matrix n n T)).map (t1 θ)`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, firstSplit_conj hs]`. Rewrite using `[e, ← Matrix.map_mul, ← Matrix.map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun M : Matrix n n T => M.map (t1 θ)) hg'`.
+A detailed English derivation is pending.
 -/
 theorem unit_1 (J : Matrix n n T) (g : GL n T) (hg : g ∈ Formalism.UG.UJ s J) :
     ((g : Matrix n n T).map (t2 θ))ᵀ * J.map (t1 θ) * (g : Matrix n n T).map (t1 θ) = J.map (t1 θ) := by
@@ -55,9 +55,9 @@ theorem unit_1 (J : Matrix n n T) (g : GL n T) (hg : g ∈ Formalism.UG.UJ s J) 
   exact congrArg (fun M : Matrix n n T => M.map (t1 θ)) hg'
 
 /- English proof (translation)
-Establish `hg' : Formalism.UG.cT s (g : Matrix n n T) * J * (g : Matrix n n T) = J` using `hg`. Establish `e : ((g : Matrix n n T).map (t1 θ))ᵀ = (Formalism.UG.cT s (g : Matrix n n T)).map (t2 θ)`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, secondSplit_conj hs]`. Rewrite using `[e, ← Matrix.map_mul, ← Matrix.map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun M : Matrix n n T => M.map (t2 θ)) hg'`.
+A detailed English derivation is pending.
 -/
 theorem unit_2 (J : Matrix n n T) (g : GL n T) (hg : g ∈ Formalism.UG.UJ s J) :
     ((g : Matrix n n T).map (t1 θ))ᵀ * J.map (t2 θ) * (g : Matrix n n T).map (t2 θ) = J.map (t2 θ) := by
@@ -69,7 +69,7 @@ theorem unit_2 (J : Matrix n n T) (g : GL n T) (hg : g ∈ Formalism.UG.UJ s J) 
   exact congrArg (fun M : Matrix n n T => M.map (t2 θ)) hg'
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun hJ i) j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] at hij`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply]`. Rewrite using `[← hij, secondSplit_conj hs]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem group_law_jacobian_eq (J : Matrix n n T) (hJ : Formalism.UG.cT s J = J) : J.map (t2 θ) = (J.map (t1 θ))ᵀ := by
   ext i j

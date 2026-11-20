@@ -27,7 +27,7 @@ noncomputable def toRepartition (a : repartitions k X) : Repartition k X.functio
 
 omit [IsFunctionField k X.functionField] in
 /- English proof (translation)
-Rewrite using `[toRepartition, Repartition.mk_apply, ← placeEquiv_apply hX, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma toRepartition_apply_toPlace (a : repartitions k X) (Z : PrimeDivisor X) :
     toRepartition (k := k) hX a Z.toPlace = a.1 Z := by
@@ -53,11 +53,11 @@ noncomputable def repartitionEquiv : repartitions k X ≃ₗ[k] Repartition k X.
     exact toRepartition_apply_toPlace hX _ Z
 
 /- English proof (translation)
-Use extensionality with `b`. Rewrite using `[Submodule.mem_map_equiv, mem_boundedRepartitions, Divisor.mem_A]`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Take `⟨Z, rfl⟩` from `PrimeDivisor.toPlace_surjective (k := k) hX v`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(Z.mem_divisorSubgroup D _).mp (h Z)` as an intermediate fact. Rewrite using `[PrimeDivisor.toPlace_valuation, divisorEquiv_apply_toPlace]`. Conclude with `this`. Introduce `h Z`. Rewrite using `[PrimeDivisor.mem_divisorSubgroup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h Z.toPlace` as an intermediate fact. Rewrite `this` using `[PrimeDivisor.toPlace_valuation, divisorEquiv_apply_toPlace]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma map_boundedRepartitions (D : WeilDivisor X) :
     (boundedRepartitions k D).map (repartitionEquiv (k := k) hX).toLinearMap =
@@ -76,7 +76,7 @@ lemma map_boundedRepartitions (D : WeilDivisor X) :
     rwa [PrimeDivisor.toPlace_valuation, divisorEquiv_apply_toPlace] at this
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.range_comp]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 lemma map_range_diagRepartition :
     (LinearMap.range (diagRepartition k X)).map (repartitionEquiv (k := k) hX).toLinearMap =
@@ -92,7 +92,7 @@ noncomputable def repartitionQuotientEquiv (D : WeilDivisor X) :
     rw [Submodule.map_sup, map_boundedRepartitions, map_range_diagRepartition])
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[mem_globalL, mem_L_divisorEquiv]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 lemma globalL_eq (D : WeilDivisor X) :
     globalL k D = Divisor.L (divisorEquiv (k := k) hX D) := by

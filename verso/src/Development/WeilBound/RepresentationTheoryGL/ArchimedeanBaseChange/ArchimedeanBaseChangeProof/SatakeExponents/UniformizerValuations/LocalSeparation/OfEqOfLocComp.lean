@@ -31,7 +31,7 @@ def twCongr' {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGr
 
 unseal Iso i2 in
 /- English proof (translation)
-Establish `a : Nonempty (A₀.ρ.Equiv (ind₂ (stdSum h) (extTensor A.ρ B.ρ)))` using `hI`. Conclude with `e₀.elim fun x => a.elim fun y => (ind₂_congr h e₁ e₂).elim fun z => ⟨(x.trans y).trans z.symm⟩`. Use `unseal mp in`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fin_step {r t N : ℕ} (h : r + t = N) {V₀ V₁ V₂ : Type} [AddCommGroup V₀] [Module ℂ V₀] [AddCommGroup V₁] [Module ℂ V₁]
     [AddCommGroup V₂] [Module ℂ V₂] (ρ₀ : Representation ℂ (GL (Fin N) k) V₀) (ρ₁ : Representation ℂ (GL (Fin r) k) V₁)
@@ -43,7 +43,7 @@ theorem fin_step {r t N : ℕ} (h : r + t = N) {V₀ V₁ V₂ : Type} [AddCommG
 
 unseal mp in
 /- English proof (translation)
-The claim follows from `e`.
+A detailed English derivation is pending.
 -/
 theorem to_mp {c N : ℕ} (z : Fin c → IrrGL k) (h : ∑ a, (z a).1 = N) {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin N) k) V) (e : Nonempty (ρ.Equiv (prodIrr z h))) :
@@ -54,13 +54,13 @@ end Loc
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hst : ∀ g, ∀ φ ∈ V, finRep E a (locGL E a w g) φ ∈ V` using `fun g φ hφ => hV.stable (.fin _) φ hφ`. Set `ρV : Representation ℂ (GL (Fin a) (w.adicCompletion E)) V` to `{ toFun := fun g => (finRep E a (locGL E a w g)).restrict (hst g) map_one' := LinearMap.ext fun φ => Subtype.ext (by simp) map_mul' := fun g g' => LinearMap.ext fun φ => Subtype.ext (by simp) }`. Use `σ.irred` as an intermediate fact. Use `σ'.irred` as an intermediate fact. Take `⟨f', h0', h1', h2'⟩` from `h'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `LocUniq.equiv_of_isoPart σ.ρ σ'.ρ ρV ?_ ⟨f'.codRestrict V h1', fun g => LinearMap.ext fun v => Subtype.ext (h2' g v)⟩ fun e => h0' (LinearMap.ext fun v => by` and prove the remaining obligations. Use `congrArg (fun F : σ'.ρ.IntertwiningMap ρV => (F.toLinearMap v : Sm E a)) e` as an intermediate fact. Simplify using `using this)`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `hx : x.1 ∈ ⨆ f : GlobalTheory.LocDual.Maps V w σ, LinearMap.range f.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.LocDual.iSup_range_eq V hV.stable hV.irred w σ h]`. Conclude with `x.2`. Establish `hle : (⨆ f : GlobalTheory.LocDual.Maps V w σ, LinearMap.range f.1) ≤ (LocUniq.isoPart σ.ρ ρV).map V.subtype`. Use `iSup_le fun f => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨f.1 v, f.2.1 v⟩, Submodule.mem_iSup_of_mem (⟨f.1.codRestrict V f.2.1, fun g => LinearMap.ext fun u => Subtype.ext (f.2.2 g u)⟩ : σ.ρ.IntertwiningMap ρV) ⟨v, rfl⟩, rfl⟩`. Take `⟨y, hy, hyx⟩` from `hle hx`. Take `rfl : y = x` from `Subtype.ext hyx`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locComp_unique' {a : ℕ} {V : Submodule ℂ (Sm E a)} (hV : IsDiscrete V)
     {w : HeightOneSpectrum (𝓞 E)} {σ σ' : SmIrr (GL (Fin a) (w.adicCompletion E))} (h : IsLocCompGL V w σ)
@@ -91,7 +91,7 @@ theorem locComp_unique' {a : ℕ} {V : Submodule ℂ (Sm E a)} (hV : IsDiscrete 
   exact hy
 
 /- English proof (translation)
-Substitute `hxy` using the available equality. Conclude with `IrrGL.of_eq_of.2 (locComp_unique' hV h h')`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem of_eq_of_locComp' {w : HeightOneSpectrum (𝓞 E)} {x y : Σ M : ℕ, Submodule ℂ (Sm E M)}
     (hxy : x = y) (hV : IsDiscrete x.2) (σ : SmIrr (GL (Fin x.1) (w.adicCompletion E)))
@@ -110,7 +110,7 @@ def twCls {m : ℕ} (χ : HChar E) (P : Pre E m) (w : HeightOneSpectrum (𝓞 E)
   fun j => (P.cls j w).tw (χ.loc w) (ParLaws.isSmoothChar_loc χ w)
 
 /- English proof (translation)
-Rewrite using `[IrrGL.tw_of]`. Establish `h1` using `of_eq_of_locComp' hi (D.discrete i) (D.σ i w) (σ.twist (CuspSub.locDet M χ w) (CuspSub.isOpen_ker_locDet χ w)) (D.loc i w) (TwistDisc.isLocCompGL_map χ hσ)`. Conclude with `h1.trans (IrrGL.of_eq_of.2 ⟨twLoc σ.ρ χ⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cls_tw {n M : ℕ} (D : Pre E n) (i : Fin D.c) (χ : HChar E) {w : HeightOneSpectrum (𝓞 E)}
     (V : Submodule ℂ (Sm E M)) (σ : SmIrr (GL (Fin M) (w.adicCompletion E))) (hσ : IsLocCompGL V w σ)
@@ -123,9 +123,9 @@ theorem cls_tw {n M : ℕ} (D : Pre E n) (i : Fin D.c) (χ : HChar E) {w : Heigh
   exact h1.trans (IrrGL.of_eq_of.2 ⟨twLoc σ.ρ χ⟩)
 
 /- English proof (translation)
-Establish `e : List.ofFn (fun i => (⟨D.N i, D.V i⟩ : Σ M : ℕ, Submodule ℂ (Sm E M))) = List.ofFn (Fin.append (fun j => twPart χ₁ ⟨Pa.N j, Pa.V j⟩) (fun j => twPart χ₂ ⟨Pb.N j, Pb.V j⟩))`. Establish `hJ' : parts D = (parts Pa).map (twPart χ₁) ++ (parts Pb).map (twPart χ₂)` using `hJ`. Unfold `parts at hJ'`. Rewrite using `[hJ', List.map_ofFn, List.map_ofFn, List.ofFn_fin_append]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨hc, hf⟩` from `Sigma.mk.inj_iff.1 (List.ofFn_inj'.1 e)`. Conclude with `⟨hc, fun i => (Fin.heq_fun_iff hc).1 hf (Fin.cast hc.symm i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem join_parts {n a b : ℕ} {χ₁ χ₂ : HChar E} {Pa : Pre E a} {Pb : Pre E b} {D : Pre E n}
     (hJ : IsJoin χ₁ χ₂ Pa Pb D) : ∃ hc : D.c = Pa.c + Pb.c, ∀ i : Fin (Pa.c + Pb.c),
@@ -141,9 +141,9 @@ theorem join_parts {n a b : ℕ} {χ₁ χ₂ : HChar E} {Pa : Pre E a} {Pb : Pr
   exact ⟨hc, fun i => (Fin.heq_fun_iff hc).1 hf (Fin.cast hc.symm i)⟩
 
 /- English proof (translation)
-Introduce `i`. Use `Fin.addCases (motive := fun i => Fin.append (twCls χ₁ Pa w) (twCls χ₂ Pb w) i = D.cls (Fin.cast hc.symm i) w) (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Establish `hi` using `hD (Fin.castAdd Pb.c j)`. Rewrite `hi` using `[Fin.append_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(cls_tw D _ χ₁ (Pa.V j) (Pa.σ j w) (Pa.loc j w) hi).symm`. Rewrite using `[Fin.append_right]`. Establish `hi` using `hD (Fin.natAdd Pa.c j)`. Rewrite `hi` using `[Fin.append_right]`. Conclude with `(cls_tw D _ χ₂ (Pb.V j) (Pb.σ j w) (Pb.loc j w) hi).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_append {n a b : ℕ} {χ₁ χ₂ : HChar E} {Pa : Pre E a} {Pb : Pre E b} {D : Pre E n} (w : HeightOneSpectrum (𝓞 E))
     (hc : D.c = Pa.c + Pb.c) (hD : ∀ i : Fin (Pa.c + Pb.c),
@@ -163,7 +163,7 @@ theorem cls_append {n a b : ℕ} {χ₁ χ₂ : HChar E} {Pa : Pre E a} {Pb : Pr
     exact (cls_tw D _ χ₂ (Pb.V j) (Pb.σ j w) (Pb.loc j w) hi).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(twCongr' (prodIrrEquiv P.h (fun j => (P.σ j w).ρ) (fun j => (P.σ j w).smooth) fun j => (P.σ j w).irred) _).trans (prodIrrTwistEquiv (fun j => P.cls j w) P.h (χ.loc w) (ParLaws.isSmoothChar_loc χ w))⟩`.
+Supply the required witnesses or components.
 -/
 theorem twist_lp {a : ℕ} (χ : HChar E) (P : Pre E a) (w : HeightOneSpectrum (𝓞 E)) :
     Nonempty ((twRep (lp P w) ((χ.loc w).comp GeneralLinearGroup.det)).Equiv (prodIrr (twCls χ P w) P.h)) :=
@@ -172,14 +172,14 @@ theorem twist_lp {a : ℕ} (χ : HChar E) (P : Pre E a) (w : HeightOneSpectrum (
     (prodIrrTwistEquiv (fun j => P.cls j w) P.h (χ.loc w) (ParLaws.isSmoothChar_loc χ w))⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨prodIrrEquiv D.h (fun i => (D.σ i w).ρ) (fun i => (D.σ i w).smooth) fun i => (D.σ i w).irred⟩`.
+Supply the required witnesses or components.
 -/
 theorem lp_equiv {n : ℕ} (D : Pre E n) (w : HeightOneSpectrum (𝓞 E)) :
     Nonempty ((lp D w).Equiv (prodIrr (fun i => D.cls i w) D.h)) :=
   ⟨prodIrrEquiv D.h (fun i => (D.σ i w).ρ) (fun i => (D.σ i w).smooth) fun i => (D.σ i w).irred⟩
 
 /- English proof (translation)
-Take `⟨hc, hD⟩` from `join_parts hJ`. Rewrite using `[← List.ofFn_fin_append, List.ofFn_congr hc]`. Conclude with `congrArg List.ofFn (funext fun i => (cls_append w hc hD i).symm)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_list {n a b : ℕ} {χ₁ χ₂ : HChar E} {Pa : Pre E a} {Pb : Pre E b} {D : Pre E n} (w : HeightOneSpectrum (𝓞 E))
     (hJ : IsJoin χ₁ χ₂ Pa Pb D) :
@@ -189,7 +189,7 @@ theorem cls_list {n a b : ℕ} {χ₁ χ₂ : HChar E} {Pa : Pre E a} {Pb : Pre 
   exact congrArg List.ofFn (funext fun i => (cls_append w hc hD i).symm)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ h χ₁ χ₂ Pa Pb D w hJ` and use `fin_step h _ _ _ _ _ _ (to_mp (fun i => D.cls i w) D.h _ (lp_equiv D w)) (to_mp (twCls χ₁ Pa w) Pa.h _ (twist_lp χ₁ Pa w)) (to_mp (twCls χ₂ Pb w) Pb.h _ (twist_lp χ₂ Pb w)) (stagesB _ _ _ _ _ _ (cls_list w hJ) h _ _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem joinMod_holds : JoinMod := fun _ _ _ _ _ _ _ h χ₁ χ₂ Pa Pb D w hJ =>
   fin_step h _ _ _ _ _ _ (to_mp (fun i => D.cls i w) D.h _ (lp_equiv D w))

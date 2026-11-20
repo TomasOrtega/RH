@@ -5,15 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.E
 open GroundTheory.LocalField ValuativeRel Module Topology
 
 /- English proof (translation)
-Establish `key : ∀ m : ℕ, ((Additive.toMul x : U) : G) ^ m = 1 ↔ m • x = 0`. Introduce `m`. Rewrite using `[← Subgroup.coe_pow, ← toMul_nsmul, OneMemClass.coe_eq_one, toMul_eq_one]`. Rewrite using `[Submodule.mem_torsion_iff, CommGroup.mem_primaryComponent]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, ha⟩`. Establish `ha0 : (a : ℤ_[l]) ≠ 0` using `nonZeroDivisors.coe_ne_zero a`. Establish `hspec` using `PadicInt.unitCoeff_spec ha0`. Use `set c := PadicInt.unitCoeff ha0`. Use `set v := (a : ℤ_[l]).valuation`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hax : (a : ℤ_[l]) • x = 0` using `ha`. Rewrite `hax` using `[hspec, mul_smul]`. Establish `hlv : ((l : ℤ_[l]) ^ v) • x = 0`. Use `congrArg (fun y => ((c⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) • y) hax` as an intermediate fact. Simplify `this` using `[smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨v, (key _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ_[l]]`. Use `push_cast`. Conclude with `hlv`. Introduce and unpack `⟨k, hk⟩`.
-
-Use `⟨⟨((l ^ k : ℕ) : ℤ_[l]), mem_nonZeroDivisors_of_ne_zero ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `pow_ne_zero k hl.out.ne_zero` after adjusting the coercions. Use `show ((l ^ k : ℕ) : ℤ_[l]) • x = 0`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `(key _).1 hk`.
+Move the embeddings inside the algebraic operations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.mem_torsion_iff_primary_component (l : ℕ) [hl : Fact l.Prime] {G : Type} [CommGroup G]
     (U : Subgroup G) [Module ℤ_[l] (Additive U)] (x : Additive U) :
@@ -46,33 +44,29 @@ private theorem UpperTheory.mem_torsion_iff_primary_component (l : ℕ) [hl : Fa
       exact (key _).1 hk
 
 /- English proof (translation)
-Substitute `hd` using the available equality. Use `haveI : T2Space (Additive U) := inferInstanceAs (T2Space U)`. Take `⟨hfin, p0, t0, hp0c, ht0o, hpt, hbij⟩` from `UpperTheory.finite_zp_module_torsion_free_splitting l (Additive U)`. Establish `memT : ∀ u : U, (u : G) ∈ CommGroup.primaryComponent G l → Additive.ofMul u ∈ Submodule.torsion ℤ_[l] (Additive U)` using `fun u hu => (UpperTheory.mem_torsion_iff_primary_component l U (Additive.ofMul u)).2 hu`. Establish `memP : ∀ z : Submodule.torsion ℤ_[l] (Additive U), ((Additive.toMul (z : Additive U) : U) : G) ∈ CommGroup.primaryComponent G l` using `fun z => (UpperTheory.mem_torsion_iff_primary_component l U z).1 z.2`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `p : G →* Multiplicative (Fin (Module.finrank ℤ_[l] (Additive U)) → ℤ_[l])` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (p0 (Additive.ofMul (r g)))) (by`. Introduce `a b`. Simplify using `[ofAdd_add])`. Set `t : G →* CommGroup.primaryComponent G l` to `MonoidHom.mk' (fun g => ⟨((Additive.toMul (t0 (Additive.ofMul (r g)) : Additive U) : U) : G), memP _⟩) (by`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use the proof step `simp)`. Establish `hrU : ∀ y : CommGroup.primaryComponent G l, r (y : G) = ⟨y, hP y y.2⟩` using `fun y => hid ⟨y, hP y y.2⟩`. Establish `htker : ∀ g, t g = 1 ↔ t0 (Additive.ofMul (r g)) = 0`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← OneMemClass.coe_eq_one]`. Use `show ((Additive.toMul (t0 (Additive.ofMul (r g)) : Additive U) : U) : G) = 1 ↔ _`. Rewrite using `[OneMemClass.coe_eq_one, toMul_eq_one, ZeroMemClass.coe_eq_zero]`. Use `⟨?_, p, t, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hfin`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `Finite.of_injective (β := Submodule.torsion ℤ_[l] (Additive U)) (fun y => ⟨Additive.ofMul ⟨(y : G), hP y y.2⟩, memT _ y.2⟩) ?_` and prove the remaining obligations. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun z : Submodule.torsion ℤ_[l] (Additive U) => ((Additive.toMul (z : Additive U) : U) : G)) hab` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_ofAdd.comp (hp0c.comp (continuous_ofMul.comp hr))`. Establish `hset : (t.ker : Set G) = (fun g => Additive.ofMul (r g)) ⁻¹' (t0.ker : Set (Additive U))`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, LinearMap.mem_ker, Set.mem_preimage]`. Conclude with `htker g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset]`. Conclude with `ht0o.preimage (continuous_ofMul.comp hr)`. Introduce `y`. Establish `hz` using `hpt ⟨Additive.ofMul ⟨(y : G), hP y y.2⟩, memT _ y.2⟩`. Establish `hry` using `hrU y`.
+Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Use `show Multiplicative.ofAdd (p0 (Additive.ofMul (r y))) = 1`. Rewrite using `[hry, hz.1]`. Both sides reduce to the same expression. Apply `Subtype.ext show ((Additive.toMul (t0 (Additive.ofMul (r y)) : Additive U) : U) : G) = y` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hry, hz.2]`. Both sides reduce to the same expression. Introduce `x τ`. Take `⟨m, hm⟩` from `hbij.2 (Multiplicative.toAdd x, ⟨Additive.ofMul ⟨(τ : G), hP τ τ.2⟩, memT _ τ.2⟩)`. Simplify using `only [Prod.mk.injEq] at hm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨((Additive.toMul m : U) : G), (Additive.toMul m).2, ?_, ?_⟩` and prove the remaining obligations. Use `show Multiplicative.ofAdd (p0 (Additive.ofMul (r _))) = x`. Rewrite using `[hid, ofMul_toMul, hm.1, ofAdd_toAdd]`. Apply `Subtype.ext show ((Additive.toMul (t0 (Additive.ofMul (r _)) : Additive U) : U) : G) = τ` to reduce the goal to its premises. Rewrite using `[hid, ofMul_toMul, hm.2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Introduce `n y hdiv hty`. Establish `ht0 : t0 (Additive.ofMul (r y)) = 0` using `(htker y).1 hty`. Use `choose c hc using hdiv`. Take `⟨m', hm'⟩` from `hbij.2 (c, 0)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Prod.mk.injEq] at hm'`. Establish `heq : Additive.ofMul (r y) = ((l : ℤ_[l]) ^ n) • m'`. Apply `hbij.1` to reduce the goal to its premises. Simplify using `only [Prod.mk.injEq, map_smul, hm'.1, hm'.2, smul_zero, ht0, and_true]`. Use function extensionality and compare the values at `i`.
-
-Rewrite using `[Pi.smul_apply, smul_eq_mul, ← hc i]`. Both sides reduce to the same expression. Use `⟨Additive.toMul m', ?_⟩` and prove the remaining obligations. Establish `hsm : ((l : ℤ_[l]) ^ n) • m' = (l ^ n) • m'`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ_[l]]`.
-
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[← toMul_ofMul (r y), heq, hsm, toMul_nsmul]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.finite_quotient_of_retraction_rank (l : ℕ) [hl : Fact l.Prime] {G : Type} [CommGroup G]
     [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
@@ -169,27 +163,23 @@ private theorem UpperTheory.finite_quotient_of_retraction_rank (l : ℕ) [hl : F
     rw [← toMul_ofMul (r y), heq, hsm, toMul_nsmul]
 
 /- English proof (translation)
-Introduce `K _ _ _ _ l _ _ _ _`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Establish `hlmax : (l : 𝒪[K]) ∈ IsLocalRing.maximalIdeal 𝒪[K]`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `hinv : (algebraMap ℚ_[l] K) ((l : ℚ_[l])⁻¹) ∈ 𝒪[K]`. Establish `heq : (algebraMap ℚ_[l] K) ((l : ℚ_[l])⁻¹) = (v : K)`. Establish `h1 : ((l : 𝒪[K]) : K) * (v : K) = 1`. Use `congrArg (fun z : 𝒪[K] => (z : K)) hv` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Rewrite using `[map_inv₀, map_natCast]`. Move the coercions through the operations in `at h1`. Conclude with `inv_eq_of_mul_eq_one_right h1`. Rewrite using `[heq]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `v.2`. Rewrite `hinv` using `[algebraMap_mem_integer_iff, PadicRank.mem_integer_padic_iff, norm_inv, Padic.norm_p, inv_inv]`. Establish `h2 : (2 : ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).two_le`. Combine the linear equalities and inequalities to obtain the conclusion. Use `haveI : CharP 𝓀[K] l := by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[CharP.charP_iff_prime_eq_zero (Fact.out : l.Prime)]`. Use `(IsLocalRing.residue_eq_zero_iff _).2 hlmax` as an intermediate fact. Simplify using `using this`. Establish `hhom : CharZero.padicHom K l = algebraMap ℚ_[l] K`. Use `(Padic.denseRange_ratCast (p := l)).equalizer (CharZero.continuous_padicHom K l) (GroundTheory.LocalField.continuous_algebraMap ℚ_[l] K) (by funext q; simp)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `RingHom.ext (congrFun this)`. Establish `halg : (CharZero.padicHom K l).toAlgebra = ‹Algebra ℚ_[l] K›` using `Algebra.algebra_ext _ _ fun q => by show CharZero.padicHom K l q = algebraMap ℚ_[l] K q`. Rewrite using `[hhom]`. Establish `hfr : Module.finrank ℤ_[l] (Additive (unitFiltrationUnits K 1)) = Module.finrank ℚ_[l] K`. Use `finrank_principalUnits (K := K) l` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[halg]`. Conclude with `this`. Use `haveI := finite_principalUnits (K := K) l`. Take `⟨hPU, r, hr, hid, hdiv⟩` from `UpperTheory.exists_principal_units_retraction_localField K l`. Take `⟨hfin, p, t, hp, ht, hpt, hsurj, hpow⟩` from `UpperTheory.finite_quotient_of_retraction_rank l (unitFiltrationUnits K 1) hPU r hr hid (Module.finrank ℚ_[l] K) hfr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Establish `hord : ∀ y ∈ unitFiltrationUnits K 1, ord (y : K) = 0`. Introduce `y hy`. Take `⟨u, -, rfl⟩` from `Subgroup.mem_map.1 hy`. Establish `h1` using `unitsEquivIntProd_fst hϖ (unitsIncl K u)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[unitsEquivIntProd_unitsIncl]`. Establish `h2 : Multiplicative.ofAdd (ord ((unitsIncl K u : Kˣ) : K)) = Multiplicative.ofAdd 0`. Rewrite using `[← h1]`. Both sides reduce to the same expression. Conclude with `Multiplicative.ofAdd.injective h2`.
-
-Use `⟨hfin, p, t, hp, ht, hpt, ?_, ?_⟩` and prove the remaining obligations. Introduce `x τ`. Take `⟨y, hy, hpx, hty⟩` from `hsurj x τ`. Conclude with `⟨y, hord y hy, hpx, hty⟩`. Introduce `n y hpd hod hty`.
-
-Conclude with `hdiv n y hod (hpow n y hpd hty)`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.localField_units_structure_theorem :
     ∀ (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] (l : ℕ) [Fact l.Prime] [Algebra ℚ_[l] K] [ValuativeExtension ℚ_[l] K] [FiniteDimensional ℚ_[l] K], Finite ↥(CommGroup.primaryComponent Kˣ l) ∧ ∃ (p : Kˣ →* Multiplicative (Fin (Module.finrank ℚ_[l] K) → ℤ_[l])) (t : Kˣ →* ↥(CommGroup.primaryComponent Kˣ l)), Continuous p ∧ IsOpen (t.ker : Set Kˣ) ∧ (∀ y : ↥(CommGroup.primaryComponent Kˣ l), p y = 1 ∧ t y = y) ∧ (∀ x τ, ∃ y : Kˣ, GroundTheory.LocalField.ord (y : K) = 0 ∧ p y = x ∧ t y = τ) ∧ ∀ (n : ℕ) (y : Kˣ), (∀ i, (l : ℤ_[l]) ^ n ∣ Multiplicative.toAdd (p y) i) → (l : ℤ) ^ n ∣ GroundTheory.LocalField.ord (y : K) → t y = 1 → ∃ z : Kˣ, y = z ^ l ^ n := by

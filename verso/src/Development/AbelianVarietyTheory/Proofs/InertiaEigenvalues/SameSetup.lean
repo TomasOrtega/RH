@@ -30,7 +30,7 @@ theorem CopyTw.cm_val (h : CopyTw D D' ι e) (j : Fin D.R.m) : ((h.cm j : Fin D'
 abbrev SameSetup (ρ : Setup D.ntw) (ρ' : Setup D'.ntw) : Prop := SameData ρ ρ'
 
 /- English proof (translation)
-The claim follows from `SameData.refl ρ`.
+A detailed English derivation is pending.
 -/
 theorem SameSetup.refl (ρ : Setup D.ntw) : SameSetup ρ ρ := SameData.refl ρ
 
@@ -39,7 +39,7 @@ def RdRel (h : CopyTw D D' ι e) {ρ : Setup D.ntw} {ρ' : Setup D'.ntw} (rd : R
     HEq (rd' i' (h.cm j) b (h.fmCast hi ((j : ℕ) + 1) b f)) (rd i j b f)
 
 /- English proof (translation)
-Introduce `i i' hi j b f` and use `by cases hi; exact HEq.rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RdRel.refl (D : D7) {ρ : Setup D.ntw} (rd : Rds D.nexp ρ) : RdRel (CopyTw.refl D) rd rd := fun i i' hi j b f => by
   cases hi; exact HEq.rfl

@@ -5,9 +5,9 @@ open GlobalTheory.NeedB Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IdealPowerMembership.main`. Consider the case `exact _root_.GlobalTheory.IdealPowerMembership.main`. Consider the case `(apply _root_.GlobalTheory.IdealPowerMembership.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IdealPowerMembership.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IdealPowerMembership.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IdealPowerMembership.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_isHomogeneous_poly_coords :
     ∀ (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L],

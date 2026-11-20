@@ -13,7 +13,7 @@ section
 noncomputable section
 namespace PositivityTheory.SiegelWeilFormula.Ald
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.Ald.modelExists_of_smallness hG (_root_.PositivityTheory.SiegelWeilFormula.Ald.smallS_of'_k _root_.PositivityTheory.SiegelWeilFormula.Ald.chartFacts_k sliceFacts)`.
+A detailed English derivation is pending.
 -/
 theorem modelExists_of_siegelSmall (hG : _root_.PositivityTheory.SiegelWeilFormula.Ald.SiegelSmall_k) : _root_.PositivityTheory.SiegelWeilFormula.Ald.ModelEx_k := _root_.PositivityTheory.SiegelWeilFormula.Ald.modelExists_of_smallness hG (_root_.PositivityTheory.SiegelWeilFormula.Ald.smallS_of'_k _root_.PositivityTheory.SiegelWeilFormula.Ald.chartFacts_k sliceFacts)
 end PositivityTheory.SiegelWeilFormula.Ald

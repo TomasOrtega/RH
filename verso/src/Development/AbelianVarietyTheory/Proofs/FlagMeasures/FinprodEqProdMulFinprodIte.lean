@@ -5,13 +5,13 @@ namespace GlobalTheory.FinprodProdMulIte
 open Classical in
 
 /- English proof (translation)
-Establish `hsub₁ : Function.mulSupport (fun p => if p ∈ S₁ then f p else (1 : ℂ)) ⊆ (S₁ : Set ι)`. Introduce `p hp`. Assume the negation of the conclusion as `h`. Establish `h' : p ∉ S₁` using `h`. Conclude with `hp (by simp [h'])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub₂ : Function.mulSupport (fun p => if p ∈ S₁ then (1 : ℂ) else g p) ⊆ Function.mulSupport f`. Introduce `p hp`. Distinguish the cases in `h : p ∈ S₁`. Conclude with `absurd (by simp [h]) hp`. Introduce `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp (by simp [h, ← hfg p h, h1])`. Establish `h₁ : ∏ᶠ p, (if p ∈ S₁ then f p else (1 : ℂ)) = ∏ p ∈ S₁, f p`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub₁]`. Conclude with `Finset.prod_congr rfl fun p hp => by simp [hp]`. Rewrite using `[← h₁, ← finprod_mul_distrib (S₁.finite_toSet.subset hsub₁) (hf.subset hsub₂)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `finprod_congr fun p => ?_` and prove the remaining obligations. Distinguish the cases in `h : p ∈ S₁`. Simplify using `[h]`. Simplify using `[h, hfg p h]`.
+A detailed English derivation is pending.
 -/
 theorem finprod_eq_prod_mul_finprod_ite {ι : Type} (S₁ : Finset ι) (f g : ι → ℂ)
     (hf : (Function.mulSupport f).Finite) (hfg : ∀ p, p ∉ S₁ → f p = g p) :

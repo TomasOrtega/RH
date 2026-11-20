@@ -14,7 +14,7 @@ Both sides reduce to the same expression.
 theorem wj_ej (D : D7) (j : ℕ) (τ : D.what₂.Tau) : wj D j τ = ej D.R (D.hc τ) j := rfl
 
 /- English proof (translation)
-Establish `h1` using `h (D.eTau τ)`. Establish `e : (coreOf D).2.2 (D.eTau τ) = D.hc τ` using `congrArg D.hc (D.eTau.symm_apply_apply τ)`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem forall_tau (D : D7) {Φ : ↥(D.R.Psi) → HCParam D.R → Prop} (h : ∀ g, Φ g ((coreOf D).2.2 g))
     (τ : D.what₂.Tau) : Φ (D.eTau τ) (D.hc τ) := by

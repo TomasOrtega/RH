@@ -19,33 +19,33 @@ variable {F : Type} [Field F] {n : ℕ}
 def sg (F : Type) [Field F] {n : ℕ} (i l : Fin n) : F := (-1) ^ ((i : ℕ) + l)
 
 /- English proof (translation)
-Rewrite using `[sg, ← pow_add]`. Conclude with `Even.neg_one_pow ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sg_mul_self (i l : Fin n) : sg F i l * sg F i l = 1 := by
   rw [sg, ← pow_add]
   exact Even.neg_one_pow ⟨_, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[sg]`. Conclude with `Even.neg_one_pow ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sg_self (i : Fin n) : sg F i i = 1 := by
   rw [sg]
   exact Even.neg_one_pow ⟨_, rfl⟩
 
 /- English proof (translation)
-Simplify using `[sg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_sg (c : F →+* F) (i l : Fin n) : c (sg F i l) = sg F i l := by
   simp [sg]
 
 /- English proof (translation)
-Use `set P' : Matrix (Fin n) (Fin n) F := ((p⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) with hP'`. Establish `h1 : (1 + T) * P' = 1`. Rewrite using `[← hP, hP', ← Units.val_mul, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `h2 : P' = 1 - T * P'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[add_mul, one_mul]`. Conclude with `eq_sub_of_add_eq h1`. Establish `h3 : P' = 1 - T + T * T * P'`. Combine the equalities or inequalities in the displayed calculation. Establish `hent : P' l.rev i.rev = (1 - T + T * T * P') l.rev i.rev` using `congrFun (congrFun h3 _) _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[GlobalTheory.ThetaPull.thetaGL_apply, ← hP', hent, Matrix.add_apply, Matrix.sub_apply, map_add, map_sub, mul_add, mul_sub]`. Use `congr 2`. Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, map_one, mul_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sg_self i`. Establish `h' : l.rev ≠ i.rev` using `fun e => h (Fin.rev_injective e).symm`. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne h', map_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem theta_expand (c : F →+* F) (p : GL (Fin n) F) (T : Matrix (Fin n) (Fin n) F)
     (hP : (p : Matrix (Fin n) (Fin n) F) = 1 + T) (i l : Fin n) :
@@ -77,87 +77,71 @@ theorem theta_expand (c : F →+* F) (p : GL (Fin n) F) (T : Matrix (Fin n) (Fin
 variable [ValuativeRel F]
 
 /- English proof (translation)
-Establish `hI : g ∈ PositivityTheory.Rg.Tf.Loc.iwahori (m` using `n) F := by rw [← hU]; exact hgU`. Establish `hρ1' : ρ ≤ 1` using `hρ1.le`. Use `set C : Matrix (Fin n) (Fin n) F := (g : Matrix (Fin n) (Fin n) F) with hCdef`. Set `d : Fin n → F` to `fun i => C i i`. Establish `hd : ∀ i, valuation F (d i) = 1` using `fun i => val_diag_of_mem_iwahori hI i`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : ∀ i, d i ≠ 0` using `fun i h => by`. Use `hd i` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `zero_ne_one this`. Establish `hsgv : ∀ i l : Fin n, valuation F (sg F i l) = 1` using `fun i l => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sg, map_pow, Valuation.map_neg, map_one, one_pow]`. Establish `hev : ∀ i, valuation F (e i) ≠ 0` using `fun i => (Valuation.ne_zero_iff _).2 (he i)`. Establish `hq : ∀ i l, i < l → valuation F (e i / e l) ≤ ρ` using `fun i l h => by`. Rewrite using `[map_div₀, div_le_iff₀ (zero_lt_iff.2 (hev l))]`. Conclude with `hc i l h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s : ℕ := max j 1 with hs`. Establish `hs1 : 1 ≤ s` using `le_max_right _ _`. Establish `hjs : j ≤ s` using `le_max_left _ _`. Establish `hsj : s ≤ j + 1` using `max_le (Nat.le_succ j) (Nat.le_add_left 1 j)`. Establish `hlow : ∀ i l, l < i → valuation F (C i l) ≤ ρ ^ s` using `fun i l h => by`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Break down `max_choice j 1 with h' | h'` into its components or cases. Rewrite using `[hs, h']`. Conclude with `hgD i l h.ne'`. Rewrite using `[hs, h', pow_one]`. Conclude with `hunif _ (hI.2 i l h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `T : Matrix (Fin n) (Fin n) F` to `fun i l => if l < i then sg F l.rev i.rev * c (C l.rev i.rev / d l.rev) else if i < l then (e i / e l) * (C i l / d l) else 0`. Establish `hTlo : ∀ i l, l < i → T i l = sg F l.rev i.rev * c (C l.rev i.rev / d l.rev)` using `fun i l h => if_pos h`. Establish `hTup : ∀ i l, i < l → T i l = (e i / e l) * (C i l / d l)` using `fun i l h => by show (if l < i then _ else _) = _`. Rewrite using `[if_neg (not_lt.2 h.le), if_pos h]`. Establish `hTd : ∀ i, T i i = 0` using `fun i => by show (if i < i then _ else _) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg (lt_irrefl i), if_neg (lt_irrefl i)]`. Establish `hTlov : ∀ i l, l < i → valuation F (T i l) ≤ ρ ^ s` using `fun i l h => by`. Rewrite using `[hTlo i l h, map_mul, hsgv, one_mul, hcv, map_div₀, hd, div_one]`. Conclude with `hlow _ _ (Fin.rev_lt_rev.2 h)`. Establish `hTupv : ∀ i l, i < l → valuation F (T i l) ≤ ρ ^ (j + 1)` using `fun i l h => by`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hTup i l h, map_mul, map_div₀ _ (C i l), hd, div_one, pow_succ']`. Conclude with `mul_le_mul' (hq i l h) (hgD i l h.ne)`. Establish `hT : Dp ρ s T` using `fun i l => by`. Break down `lt_trichotomy i l with h | h | h` into its components or cases. Conclude with `(hTupv i l h).trans (pow_le_pow_right_of_le_one' hρ1' hsj)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Rewrite using `[hTd, map_zero]`. Conclude with `zero_le'`. Conclude with `hTlov i l h`. Establish `hρs : ρ ^ s ≤ ρ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `set P : Matrix (Fin n) (Fin n) F := 1 + T with hP`. Establish `hPd : ∀ i, P i i = 1` using `fun i => by`. Rewrite using `[hP, Matrix.add_apply, Matrix.one_apply_eq, hTd, add_zero]`. Establish `hPo : ∀ i l, i ≠ l → P i l = T i l` using `fun i l h => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hP, Matrix.add_apply, Matrix.one_apply_ne h, zero_add]`. Establish `hPint : ∀ i l, valuation F (P i l) ≤ 1` using `fun i l => by`. Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Rewrite using `[hPd, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hPo i l h]`. Conclude with `(hT i l).trans (hρs.trans hρ1')`. Establish `hPlow : ∀ i l, l < i → valuation F (P i l) < 1` using `fun i l h => by`. Rewrite using `[hPo i l h.ne']`. Conclude with `lt_of_le_of_lt ((hT i l).trans hρs) hρ1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPdet : valuation F P.det = 1`. Establish `h1` using `val_det_sub_prod_lt P hPint hPlow`. Rewrite `h1` using `[Finset.prod_congr rfl fun i _ => hPd i, Finset.prod_const_one]`. Use `Valuation.map_eq_of_sub_lt (valuation F) (x := (1 : F)) (y := P.det) (by rwa [map_one])` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Establish `hPne : P.det ≠ 0` using `fun h => by`. Rewrite `hPdet` using `[h, map_zero]`. Conclude with `zero_ne_one hPdet`. Set `p : GL (Fin n) F` to `Matrix.GeneralLinearGroup.mkOfDetNeZero P hPne`. Establish `hpv : (p : Matrix (Fin n) (Fin n) F) = P` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpI : p ∈ PositivityTheory.Rg.Tf.Loc.iwahori (m` using `n) F := ⟨mem_unitGL_of p hPint hPdet, hPlow⟩`. Establish `hpU : p ∈ U`. Rewrite using `[← SetLike.mem_coe, hU]`. Conclude with `hpI`. Establish `hxinv : ((x⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = Matrix.diagonal fun i => (e i)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[Matrix.coe_units_inv, hx]`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_mul_cancel₀ (he i)`. Set `q : GL (Fin n) F` to `x⁻¹ * p * x`. Use `set Q : Matrix (Fin n) (Fin n) F := (q : Matrix (Fin n) (Fin n) F) with hQdef`. Establish `hQ : ∀ i l, Q i l = (e i)⁻¹ * P i l * e l` using `fun i l => by show ((x⁻¹ * p * x : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i l = _`. Rewrite using `[Units.val_mul, Units.val_mul, hxinv, hx, hpv, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hQd : ∀ i, Q i i = 1` using `fun i => by`. Rewrite using `[hQ, hPd, mul_one, inv_mul_cancel₀ (he i)]`. Establish `hQup : ∀ i l, i < l → Q i l = C i l / d l` using `fun i l h => by`. Rewrite using `[hQ, hPo i l h.ne, hTup i l h]`. Establish `h1` using `he i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `he l`. Clear the denominators using the available nonvanishing facts. Establish `hQlow : ∀ i l, l < i → valuation F (Q i l) ≤ ρ * ρ ^ s` using `fun i l h => by`. Rewrite using `[hQ, hPo i l h.ne', show (e i)⁻¹ * T i l * e l = (e l / e i) * T i l by`. Rewrite using `[div_eq_mul_inv]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use the proof step `ring, map_mul]`. Conclude with `mul_le_mul' (hq l i h) (hTlov i l h)`. Establish `hQint : ∀ i l, valuation F (Q i l) ≤ 1` using `fun i l => by`. Break down `lt_trichotomy i l with h | h | h` into its components or cases. Rewrite using `[hQup i l h, map_div₀, hd, div_one]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mem_unitGL_entries hI.1 i l`. Substitute `h` using the available equality. Rewrite using `[hQd, map_one]`. Use `(hQlow i l h).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQdet : valuation F Q.det = 1`. Establish `: Q.det = P.det` using `by show ((x⁻¹ * p * x : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).det = _`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.det_mul, Matrix.det_mul, hpv]`. Establish `h3 : (x : Matrix (Fin n) (Fin n) F).det * ((x⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).det = 1`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `hPdet`. Establish `hqU : q ∈ U`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: q ∈ PositivityTheory.Rg.Tf.Loc.iwahori (m` using `n) F := ⟨mem_unitGL_of q hQint hQdet, fun i l h => lt_of_le_of_lt (hQlow i l h) (lt_of_le_of_lt (mul_le_mul' le_rfl hρs) (by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← SetLike.mem_coe, hU]`. Conclude with `this`. Set `T' : Matrix (Fin n) (Fin n) F` to `fun i l => - (sg F i l * c (T l.rev i.rev))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hT'v : ∀ i l, valuation F (T' i l) = valuation F (T l.rev i.rev)` using `fun i l => by show valuation F (- (sg F i l * c (T l.rev i.rev))) = _`. Rewrite using `[Valuation.map_neg, map_mul, hsgv, one_mul, hcv]`. Establish `hT' : Dp ρ s T'` using `fun i l => by`. Rewrite using `[hT'v]`. Conclude with `hT _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT'd : ∀ i, T' i i = 0` using `fun i => by show - (sg F i i * c (T i.rev i.rev)) = 0`. Rewrite using `[hTd, map_zero, mul_zero, neg_zero]`. Establish `hT'lo : ∀ i l, l < i → T' i l = - (C i l / d i)` using `fun i l h => by show - (sg F i l * c (T l.rev i.rev)) = _`. Rewrite using `[hTlo _ _ (Fin.rev_lt_rev.2 h), Fin.rev_rev, Fin.rev_rev, map_mul, map_sg, hcc, ← mul_assoc, sg_mul_self, one_mul]`. Establish `hT'up : ∀ i l, i < l → valuation F (T' i l) ≤ ρ ^ (j + 1)` using `fun i l h => by`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hT'v]`. Conclude with `hTupv _ _ (Fin.rev_lt_rev.2 h)`. Establish `hp0 : Dp ρ 0 ((p⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)` using `fun a b => by`. Rewrite using `[pow_zero]`. Establish `: p⁻¹ ∈ PositivityTheory.Rg.Tf.Loc.iwahori (m` using `n) F := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← hU]`. Conclude with `U.inv_mem hpU`. Conclude with `mem_unitGL_entries this.1 a b`. Set `W : Matrix (Fin n) (Fin n) F` to `T * T * ((p⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Establish `hW : Dp ρ (s + s + 0) W` using `(hT.mul hT).mul hp0`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `D : Matrix (Fin n) (Fin n) F` to `fun i l => sg F i l * c (W l.rev i.rev)`. Establish `hD : Dp ρ (s + s + 0) D` using `fun i l => by show valuation F (sg F i l * c (W l.rev i.rev)) ≤ _`. Rewrite using `[map_mul, hsgv, one_mul, hcv]`. Conclude with `hW _ _`. Establish `hθ : ((GlobalTheory.CuspRep.thetaGL n c p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = 1 + T' + D`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i l`. Rewrite using `[theta_expand c p T hpv i l, Matrix.add_apply, Matrix.add_apply]`. Use `show _ = (1 : Matrix (Fin n) (Fin n) F) i l + - (sg F i l * c (T l.rev i.rev)) + sg F i l * c (W l.rev i.rev)`. Rewrite using `[sub_eq_add_neg]`. Set `Dg : Matrix (Fin n) (Fin n) F` to `Matrix.diagonal d`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `Co : Matrix (Fin n) (Fin n) F` to `C - Dg`. Establish `hC0 : Dp ρ 0 C` using `fun a b => by`. Rewrite using `[pow_zero]`. Conclude with `mem_unitGL_entries hI.1 a b`. Establish `hCo : Dp ρ j Co` using `fun i l => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = l`. Substitute `h show valuation F (C i i - Dg i i) ≤ _` using the available equality. Rewrite using `[show Dg i i = C i i from Matrix.diagonal_apply_eq _ _, sub_self, map_zero]`. Conclude with `zero_le'`. Use `show valuation F (C i l - Dg i l) ≤ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show Dg i l = 0 from Matrix.diagonal_apply_ne _ h, sub_zero]`. Conclude with `hgD i l h`. Set `B : Matrix (Fin n) (Fin n) F` to `C + Dg * T' - Q * Dg`. Establish `hBe : ∀ i l, B i l = C i l + d i * T' i l - Q i l * d l` using `fun i l => by show (C + Dg * T' - Q * Dg) i l = _`. Rewrite using `[Matrix.sub_apply, Matrix.add_apply, Matrix.diagonal_mul, Matrix.mul_diagonal]`.
-
-Establish `hB : Dp ρ (j + 1) B` using `fun i l => by`. Rewrite using `[hBe]`. Break down `lt_trichotomy i l with h | h | h` into its components or cases. Rewrite using `[hQup i l h, div_mul_cancel₀ _ (hd0 l), add_sub_cancel_left, map_mul, hd, one_mul]`. Conclude with `hT'up i l h`.
-
-Substitute `h` using the available equality. Rewrite using `[hT'd, hQd, mul_zero, add_zero, one_mul]`. Use `show valuation F (C i i - C i i) ≤ _`. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_le'`.
-
-Rewrite using `[hT'lo i l h, mul_neg, mul_div_cancel₀ _ (hd0 i), add_neg_cancel, zero_sub, Valuation.map_neg, map_mul, hd, mul_one]`. Use `(hQlow i l h).trans ?_` and prove the remaining obligations. Rewrite using `[← pow_succ']`. Conclude with `pow_le_pow_right_of_le_one' hρ1' (Nat.succ_le_succ hjs)`. Set `R : Matrix (Fin n) (Fin n) F` to `B + Co * T' + C * D`.
-
-Establish `hR : Dp ρ (j + 1) R` using `(hB.add ((hCo.mul hT').mono hρ1' (Nat.add_le_add_left hs1 j))).add ((hC0.mul hD).mono hρ1' (by omega))`. Establish `hid : C * (1 + T' + D) = Q * Dg + R` using `by show C * (1 + T' + D) = Q * Dg + (C + Dg * T' - Q * Dg + (C - Dg) * T' + C * D) noncomm_ring`. Establish `hw : x⁻¹ * p⁻¹ * x * g * GlobalTheory.CuspRep.thetaGL n c p = q⁻¹ * (g * GlobalTheory.CuspRep.thetaGL n c p)` using `by show _ = (x⁻¹ * p * x)⁻¹ * _ group`. Use `⟨p, hpU, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`.
-
-Conclude with `U.mul_mem (U.inv_mem hqU) (U.mul_mem hgU (hθU p hpU))`. Introduce `i l hil`. Rewrite using `[hw]`. Establish `hval : ((q⁻¹ * (g * GlobalTheory.CuspRep.thetaGL n c p) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = Dg + ((q⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * R`. Rewrite using `[Units.val_mul, Units.val_mul, hθ]`.
-
-Use `show ((q⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * (C * (1 + T' + D)) = _`. Rewrite using `[hid, mul_add, ← mul_assoc]`. Use `congr 1`. Use `show ((q⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * (q : Matrix (Fin n) (Fin n) F) * Dg = Dg`. Rewrite using `[← Units.val_mul, inv_mul_cancel]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[hval, Matrix.add_apply, show Dg i l = 0 from Matrix.diagonal_apply_ne _ hil, zero_add]`. Establish `hq0 : Dp ρ 0 ((q⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)` using `fun a b => by`. Rewrite using `[pow_zero]`. Establish `: q⁻¹ ∈ PositivityTheory.Rg.Tf.Loc.iwahori (m` using `n) F := by`.
-
-Rewrite using `[← hU]`. Conclude with `U.inv_mem hqU`. Conclude with `mem_unitGL_entries this.1 a b`. Use `(hq0.mul hR) i l` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem step (U : Subgroup (GL (Fin n) F)) (hU : (U : Set (GL (Fin n) F)) = PositivityTheory.Rg.Tf.Loc.iwahori (m := n) F)
     (c : F →+* F) (hcv : ∀ a, valuation F (c a) = valuation F a) (hcc : ∀ a, c (c a) = a)
@@ -407,25 +391,21 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {n : ℕ}
 
 /- English proof (translation)
-Establish `hUI : ∀ g, g ∈ U ↔ g ∈ PositivityTheory.Rg.Tf.Loc.iwahori (m` using `n) F := fun g => by`. Rewrite using `[← hU]`. Both sides reduce to the same expression. Set `f : GL (Fin n) F → GL (Fin n) F` to `fun m => x⁻¹ * m⁻¹ * δ * GlobalTheory.CuspRep.thetaGL n c m`. Establish `hf : Continuous f` using `((continuous_const.mul continuous_inv).mul continuous_const).mul (GlobalTheory.ThetaPull.continuous_thetaGL c hcont)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : ℕ → Set (GL (Fin n) F)` to `fun j => {m | m ∈ PositivityTheory.Rg.Tf.Loc.iwahori (m := n) F ∧ f m ∈ PositivityTheory.Rg.Tf.Loc.iwahori (m := n) F ∧ ∀ i l, i ≠ l → valuation F ((f m : Matrix (Fin n) (Fin n) F) i l) ≤ ρ ^ j}`. Establish `hclosedI : IsClosed (PositivityTheory.Rg.Tf.Loc.iwahori (m` using `n) F) := hcpt.isClosed`. Establish `hSc : ∀ j, IsClosed (S j)` using `fun j => by`. Establish `h1 : IsClosed {m : GL (Fin n) F | ∀ i l, i ≠ l → valuation F ((f m : Matrix (Fin n) (Fin n) F) i l) ≤ ρ ^ j}`. Simplify using `only [Set.setOf_forall]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `isClosed_iInter fun i => isClosed_iInter fun l => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Establish `hcont : Continuous fun m : GL (Fin n) F => (f m : Matrix (Fin n) (Fin n) F) i l` using `(Units.continuous_val.comp hf).matrix_elem i l`. Conclude with `(IsNonarchimedeanLocalField.isCompact_closedBall F (ρ ^ j)).isClosed.preimage hcont`. Conclude with `hclosedI.inter ((hclosedI.preimage hf).inter h1)`. Establish `hSn : ∀ j, (S j).Nonempty`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Take `⟨a, ha, b, hb, rfl⟩` from `hδ`. Establish `hfa : f a = b * GlobalTheory.CuspRep.thetaGL n c a` using `by show x⁻¹ * a⁻¹ * (a * x * b) * _ = _ group`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfaI : f a ∈ PositivityTheory.Rg.Tf.Loc.iwahori (m` using `n) F := by`. Rewrite using `[hfa, ← hUI]`. Conclude with `U.mul_mem ((hUI _).2 hb) (hθU _ ((hUI _).2 ha))`. Use `⟨a, ha, hfaI, fun i l _ => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_unitGL_entries hfaI.1 i l`. Consider the case `succ j ih`. Take `⟨m, hm, hfm, hD⟩` from `ih`. Take `⟨p, hp, hcU, hcD⟩` from `step U hU c hcv hcc hθU ρ hρ1 hunif e he hc x hx j (f m) ((hUI _).2 hfm) hD`. Establish `hfmp : f (m * p) = x⁻¹ * p⁻¹ * x * f m * GlobalTheory.CuspRep.thetaGL n c p` using `by show x⁻¹ * (m * p)⁻¹ * δ * GlobalTheory.CuspRep.thetaGL n c (m * p) = x⁻¹ * p⁻¹ * x * (x⁻¹ * m⁻¹ * δ * GlobalTheory.CuspRep.thetaGL n c m) * _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Use `group`. Use `⟨m * p, (hUI _).1 (U.mul_mem ((hUI _).2 hm) hp), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfmp]`. Conclude with `(hUI _).1 hcU`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfmp]`. Conclude with `hcD`. Establish `hSd : ∀ j, S (j + 1) ⊆ S j` using `fun j m hm => ⟨hm.1, hm.2.1, fun i l h => (hm.2.2 i l h).trans (pow_le_pow_right_of_le_one' hρ1.le (Nat.le_succ j))⟩`. Establish `hS0 : IsCompact (S 0)` using `hcpt.of_isClosed_subset (hSc 0) fun m hm => hm.1`. Take `⟨m, hm⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed S hSd hSn hS0 hSc`.
-
-Establish `hm' : ∀ j, m ∈ S j` using `Set.mem_iInter.1 hm`. Establish `: MulArchimedean (ValueGroupWithZero F)` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Use `⟨m, (hm' 0).1, f m, (hm' 0).2.1, fun i l hil => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `hv : valuation F ((f m : Matrix (Fin n) (Fin n) F) i l) ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`.
-
-Take `⟨j, hj⟩` from `exists_pow_lt₀ hρ1 (Units.mk0 _ hv)`. Conclude with `absurd ((hm' j).2.2 i l hil) (not_le.2 hj)`. Use `show _ = x * (x⁻¹ * m⁻¹ * δ * GlobalTheory.CuspRep.thetaGL n c m) group`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem contraction (U : Subgroup (GL (Fin n) F))
     (hU : (U : Set (GL (Fin n) F)) = PositivityTheory.Rg.Tf.Loc.iwahori (m := n) F)
@@ -514,11 +494,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hsg : ∀ i l : Fin n, Valued.v ((-1 : w.adicCompletion E) ^ ((i : ℕ) + l)) = 1` using `fun i l => by`. Rewrite using `[map_pow, Valuation.map_neg, map_one, one_pow]`. Take `⟨h1, h2, h3⟩` from `(GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n g).1.1 hg`. Take `⟨-, -, h4⟩` from `(GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n g⁻¹).1.1 (inv_mem hg)`. Use `(GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n _).1.2 ⟨fun i l => ?_, fun i l => ?_, fun i l h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.ThetaPull.thetaGL_apply, map_mul, hsg, one_mul, hcv]`. Conclude with `h2 _ _`. Rewrite using `[← map_inv, GlobalTheory.ThetaPull.thetaGL_apply, map_mul, hsg, one_mul, hcv, inv_inv]`. Conclude with `h1 _ _`. Rewrite using `[GlobalTheory.ThetaPull.thetaGL_apply, map_mul, hsg, one_mul, hcv]`.
-
-Conclude with `h4 _ _ (Fin.rev_lt_rev.2 h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaGL_mem_iwGL {w : Pl E} (c : w.adicCompletion E →+* w.adicCompletion E)
     (hcv : ∀ x, Valued.v (c x) = Valued.v x) (n : ℕ) (g : GLw n w) (hg : g ∈ iwGL n w) :
@@ -536,29 +514,27 @@ theorem thetaGL_mem_iwGL {w : Pl E} (c : w.adicCompletion E →+* w.adicCompleti
     exact h4 _ _ (Fin.rev_lt_rev.2 h)
 
 /- English proof (translation)
-Introduce `E _ _ _ hU w hw ϖ hϖ n y hy δ hδ`. Take `⟨hcont, hcc, hcv, -⟩` from `GlobalTheory.T.placeConjugation_properties_cmField E hU w`. Establish `hθ : GlobalTheory.BCT.thL n w = GlobalTheory.CuspRep.thetaGL n (GlobalTheory.BCT.cj w)` using `if_neg hw`. Establish `hEq : (ValuativeRel.valuation (w.adicCompletion E)).IsEquiv (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ValuativeRel.isEquiv _ _`. Establish `hvF : ∀ a, valuation (w.adicCompletion E) (GlobalTheory.BCT.cj w a) = valuation (w.adicCompletion E) a` using `fun a => le_antisymm ((hEq _ _).2 (hcv a).le) ((hEq _ _).2 (hcv a).ge)`. Establish `hIU : ((GlobalTheory.BCT.iwGL n w : Subgroup _) : Set (GlobalTheory.BCT.GLw n w)) = PositivityTheory.Rg.Tf.Loc.iwahori (m` using `n) (w.adicCompletion E) := by`. Use extensionality with `g`. Conclude with `(GlobalTheory.CompanionTheory.IwContract.mem_iwahori_iff).symm`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcpt : IsCompact (PositivityTheory.Rg.Tf.Loc.iwahori (m` using `n) (w.adicCompletion E)) := by`. Rewrite using `[← hIU]`. Conclude with `GlobalTheory.SmGL.IwahoriOnto.isCompact_iwahori _ _`. Take `⟨u, hu⟩` from `WithZero.ne_zero_iff_exists.1 ((Valuation.ne_zero_iff (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).2 ϖ.ne_zero)`. Establish `hu1 : Multiplicative.toAdd u = -1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `hϖ.1` as an intermediate fact. Rewrite `this` using `[GlobalTheory.CompanionTheory.UnitaryCorrection.ordL_of_eq hu.symm]`. Use linear arithmetic over natural numbers and integers. Establish `hρ1 : valuation (w.adicCompletion E) (ϖ : w.adicCompletion E) < 1`. Use `(GlobalTheory.CompanionTheory.IwEntries.rel_lt_one_iff w _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← hu, ← WithZero.coe_one, WithZero.coe_lt_coe]`. Express the relevant statement in the definitionally equal form `Multiplicative.toAdd u < 0`. Use linear arithmetic over natural numbers and integers. Establish `hunif : ∀ a : w.adicCompletion E, valuation (w.adicCompletion E) a < 1 → valuation (w.adicCompletion E) a ≤ valuation (w.adicCompletion E) (ϖ : w.adicCompletion E)`. Introduce `a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `ha'` using `(GlobalTheory.CompanionTheory.IwEntries.rel_lt_one_iff w a).1 ha`. Use `(hEq _ _).2 ?_` and prove the remaining obligations. Distinguish the cases in `h0 : Valued.v a = 0`. Rewrite using `[h0]`. Conclude with `zero_le'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨b, hb⟩` from `WithZero.ne_zero_iff_exists.1 h0`. Rewrite `ha'` using `[← hb, ← WithZero.coe_one, WithZero.coe_lt_coe]`. Rewrite using `[← hb, ← hu, WithZero.coe_le_coe]`. Express the relevant statement in the definitionally equal form `Multiplicative.toAdd b < 0 at ha'`. Express the relevant statement in the definitionally equal form `Multiplicative.toAdd b ≤ Multiplicative.toAdd u`.
+Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Set `e : Fin n → w.adicCompletion E` to `fun i => ((ϖ ^ y i : (w.adicCompletion E)ˣ) : w.adicCompletion E)`. Establish `he : ∀ i, e i ≠ 0` using `fun i => Units.ne_zero _`. Establish `hc : ∀ i l, i < l → valuation (w.adicCompletion E) (e i) ≤ valuation (w.adicCompletion E) (ϖ : w.adicCompletion E) * valuation (w.adicCompletion E) (e l)`. Introduce `i l h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ y i - y l - 1 by have := hy h; omega)`. Establish `hyi : y i = y l + ((b + 1 : ℕ) : ℤ)` using `by push_cast; omega`. Establish `hei : e i = e l * (ϖ : w.adicCompletion E) ^ (b + 1)` using `by show ((ϖ ^ y i : (w.adicCompletion E)ˣ) : w.adicCompletion E) = ((ϖ ^ y l : (w.adicCompletion E)ˣ) : w.adicCompletion E) * _`. Rewrite using `[hyi, _root_.zpow_add, Units.val_mul, zpow_natCast, Units.val_pow_eq_pow_val]`. Rewrite using `[hei, map_mul, map_pow, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul' ?_ le_rfl` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hx : ((GlobalTheory.BCT.tdiag ϖ y : GlobalTheory.BCT.GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.diagonal e`. Rewrite using `[GlobalTheory.BCT.tdiag, GlobalTheory.SmGL.val_diagT]`. Establish `hδ' : δ ∈ PositivityTheory.Rg.Tf.Loc.iwDouble (w.adicCompletion E) (GlobalTheory.BCT.tdiag ϖ y)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h : ∃ x ∈ GlobalTheory.BCT.iwGL n w, ∃ z ∈ GlobalTheory.BCT.iwGL n w, δ = x * GlobalTheory.BCT.tdiag ϖ y * z`. Assume the negation of the conclusion as `h`. Conclude with `hδ (if_neg h)`. Take `⟨a, ha, b, hb, e'⟩` from `h`. Conclude with `⟨a, by rw [← hIU]; exact ha, b, by rw [← hIU]; exact hb, e'⟩`.
-
-Take `⟨m, hm, t, ht, hoff, h⟩` from `contraction (GlobalTheory.BCT.iwGL n w) hIU hcpt (GlobalTheory.BCT.cj w) hcc hvF hcont (fun g hg => thetaGL_mem_iwGL _ hcv n g hg) _ hρ1 hunif e he hc _ hx δ hδ'`. Use `⟨m, by rw [← SetLike.mem_coe, hIU]; exact hm, t, ⟨hoff, fun i => ?_⟩, by rw [hθ]; exact h⟩` and prove the remaining obligations. Conclude with `hEq.eq_one_iff_eq_one.1 (val_diag_of_mem_iwahori ht i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contr_tw : PositivityTheory.Rg.Bc.ArchbcB.B.M4.Tw.P_contr_tw := by
   intro E _ _ _ hU w hw ϖ hϖ n y hy δ hδ

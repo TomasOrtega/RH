@@ -26,27 +26,27 @@ def lat (g : GL n 𝒜) : Submodule (𝓞 E) (n → E) :=
   Formalism.UG.CS.globLat g (stdLat (n := n) (A := E) (𝓞 E))
 
 /- English proof (translation)
-Rewrite using `[easyc_latS_std, adelstab_mem_stdLat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_latS_std (v : n → 𝒜) :
     v ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) 𝒮 (stdLat (n := n) (A := E) (𝓞 E)) ↔ ∀ i, v i ∈ 𝒮 := by
   rw [easyc_latS_std, adelstab_mem_stdLat]
 
 /- English proof (translation)
-The claim follows from `mem_latS_std _`.
+A detailed English derivation is pending.
 -/
 theorem mem_lat (g : GL n 𝒜) (x : n → E) :
     x ∈ lat g ↔ ∀ i, (((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ (fun j => ι (x j))) i ∈ 𝒮 :=
   mem_latS_std _
 
 /- English proof (translation)
-The claim follows from `global_lattice_isLattice_holds F E n _ (standard_lattice_full_holds E n).1 (standard_lattice_full_holds E n).2 g`.
+A detailed English derivation is pending.
 -/
 theorem lat_isLattice (g : GL n 𝒜) : Submodule.IsLattice E (lat g) :=
   global_lattice_isLattice_holds F E n _ (standard_lattice_full_holds E n).1 (standard_lattice_full_holds E n).2 g
 
 /- English proof (translation)
-The claim follows from `(span_recovery_of_integral_adelic_approx csGlob_intAdApprox F E n _ (standard_lattice_full_holds E n).1 (standard_lattice_full_holds E n).2 g u).trans (mem_latS_std _)`.
+A detailed English derivation is pending.
 -/
 theorem lat_span (g : GL n 𝒜) (u : n → 𝒜) :
     u ∈ Submodule.span 𝒮 ((fun x : n → E => fun i => ι (x i)) '' (lat g : Set (n → E))) ↔
@@ -55,7 +55,7 @@ theorem lat_span (g : GL n 𝒜) (u : n → 𝒜) :
     g u).trans (mem_latS_std _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨⟨e, csGlob_int (F := F) e h⟩, rfl⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `adelstab_incl_int b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem incl_mem_iff (e : E) : ι e ∈ 𝒮 ↔ e ∈ (algebraMap (𝓞 E) E).range := by
   constructor
@@ -65,7 +65,7 @@ theorem incl_mem_iff (e : E) : ι e ∈ 𝒮 ↔ e ∈ (algebraMap (𝓞 E) E).r
     exact adelstab_incl_int b
 
 /- English proof (translation)
-Simplify using `only [mulVec, dotProduct]`. Conclude with `sum_mem fun j _ => mul_mem (hM i j) (hv j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_int {M : Matrix n n 𝒜} (hM : ∀ i j, M i j ∈ 𝒮) {v : n → 𝒜} (hv : ∀ i, v i ∈ 𝒮) (i : n) :
     (M *ᵥ v) i ∈ 𝒮 := by
@@ -73,7 +73,7 @@ theorem mulVec_int {M : Matrix n n 𝒜} (hM : ∀ i j, M i j ∈ 𝒮) {v : n �
   exact sum_mem fun j _ => mul_mem (hM i j) (hv j)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[mem_lat]`. Introduce `i`. Use `mulVec_int h hx i` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lat_le_of_int {g g' : GL n 𝒜} (h : ∀ i j, ((g'⁻¹ * g : GL n 𝒜) : Matrix n n 𝒜) i j ∈ 𝒮) :
     lat g ≤ lat g' := by
@@ -84,9 +84,9 @@ theorem lat_le_of_int {g g' : GL n 𝒜} (h : ∀ i j, ((g'⁻¹ * g : GL n 𝒜
   rwa [mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right] at this
 
 /- English proof (translation)
-Establish `h1` using `(lat_span g ((g : Matrix n n 𝒜) *ᵥ Pi.single j 1)).2 (by`. Introduce `k`. Rewrite using `[mulVec_mulVec, Units.inv_mul, one_mulVec, Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `zero_mem _)`. Establish `h2` using `(lat_span g' _).1 (Submodule.span_mono (Set.image_mono h) h1) i`. Rewrite `h2` using `[mulVec_mulVec, ← Units.val_mul, mulVec_single_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem int_of_lat_le {g g' : GL n 𝒜} (h : lat g ≤ lat g') (i j : n) :
     ((g'⁻¹ * g : GL n 𝒜) : Matrix n n 𝒜) i j ∈ 𝒮 := by
@@ -100,27 +100,27 @@ theorem int_of_lat_le {g g' : GL n 𝒜} (h : lat g ≤ lat g') (i j : n) :
   rwa [mulVec_mulVec, ← Units.val_mul, mulVec_single_one] at h2
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem map_one_incl : (1 : Matrix n n E).map ι = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, one_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hform_one {A : Type} [CommRing A] (σ : A →+* A) (x y : n → A) :
     hform σ (1 : Matrix n n A) x y = ∑ i, σ (x i) * y i := by
   rw [hform_eq_dot, one_mulVec]; rfl
 
 /- English proof (translation)
-Establish `hU : cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (g : Matrix n n 𝒜) * (1 : Matrix n n E).map ι * (g : Matrix n n 𝒜) = (1 : Matrix n n E).map ι` using `hg`. Establish `hback : ∀ v : n → 𝒜, (g : Matrix n n 𝒜) *ᵥ (((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ v) = v`. Introduce `v`. Rewrite using `[mulVec_mulVec, Units.mul_inv, one_mulVec]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy x hx`. Rewrite `hx`, `hy` using `[mem_lat]`. Establish `h1` using `csDual_hform_incl σ (1 : Matrix n n E) x y`. Rewrite `h1` using `[← hback (fun i => ι (x i)), ← hback (fun i => ι (y i)), hform_mulVec, hU, map_one_incl, hform_one, hform_one]`. Rewrite using `[← incl_mem_iff (F := F)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ι (∑ i, σ (x i) * y i) = _` using `h1.symm`. Rewrite using `[h2]`. Conclude with `sum_mem fun i _ => mul_mem (csDual_sig_mem σ (hx i)) (hy i)`. Introduce `hy`. Rewrite using `[mem_lat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `h1` using `(lat_span g ((g : Matrix n n 𝒜) *ᵥ Pi.single j 1)).2 (by`. Introduce `k`. Rewrite using `[mulVec_mulVec, Units.inv_mul, one_mulVec, Pi.single_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `one_mem _`. Conclude with `zero_mem _)`. Establish `h2` using `csDual_span σ (1 : Matrix n n E) (lat g) y (fun x hx => by rw [hform_one]; exact hy x hx) _ h1`. Rewrite `h2` using `[← hback (fun i => ι (y i)), hform_mulVec, hU, map_one_incl, sf_single, one_mulVec]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem lat_selfDual (σ : E →ₐ[F] E) (g : GL n 𝒜)
     (hg : g ∈ UPts σ (1 : Matrix n n E) (FiniteAdeleRing (𝓞 F) F)) (y : n → E) :
@@ -153,7 +153,7 @@ theorem lat_selfDual (σ : E →ₐ[F] E) (g : GL n 𝒜)
     rwa [← hback (fun i => ι (y i)), hform_mulVec, hU, map_one_incl, sf_single, one_mulVec] at h2
 
 /- English proof (translation)
-Rewrite using `[mem_lat, inv_one, Units.val_one, one_mulVec]`. Conclude with `forall_congr' fun i => incl_mem_iff _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lat_one (x : n → E) :
     x ∈ lat (1 : GL n 𝒜) ↔ ∀ i, x i ∈ (algebraMap (𝓞 E) E).range := by
@@ -161,7 +161,7 @@ theorem mem_lat_one (x : n → E) :
   exact forall_congr' fun i => incl_mem_iff _
 
 /- English proof (translation)
-Establish `key : (fun i => ι ((γ *ᵥ x) i)) = (γA : Matrix n n 𝒜) *ᵥ (fun i => ι (x i))`. Use extensionality with `i`. Rewrite using `[RingHom.map_mulVec, h]`. Both sides reduce to the same expression. Rewrite using `[mem_lat, mem_lat, key, mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev, inv_mul_cancel_right]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_lat_rat (γA g : GL n 𝒜) (γ : Matrix n n E) (h : (γA : Matrix n n 𝒜) = γ.map ι)
     (x : n → E) : x ∈ lat g ↔ γ *ᵥ x ∈ lat (γA * g) := by
@@ -170,7 +170,7 @@ theorem mem_lat_rat (γA g : GL n 𝒜) (γ : Matrix n n E) (h : (γA : Matrix n
   rw [mem_lat, mem_lat, key, mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev, inv_mul_cancel_right]
 
 /- English proof (translation)
-Establish `hU : cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (g : Matrix n n 𝒜) * (1 : Matrix n n E).map ι * (g : Matrix n n 𝒜) = (1 : Matrix n n E).map ι` using `hg`. Rewrite `hU` using `[map_one_incl, Matrix.mul_one]`. Establish `: ((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) = cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (g : Matrix n n 𝒜)` using `Units.inv_eq_of_mul_eq_one_left hU`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inv_entry (σ : E →ₐ[F] E) (g : GL n 𝒜)
     (hg : g ∈ UPts σ (1 : Matrix n n E) (FiniteAdeleRing (𝓞 F) F)) (i j : n) :
@@ -184,9 +184,9 @@ theorem inv_entry (σ : E →ₐ[F] E) (g : GL n 𝒜)
   rw [this]; rfl
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_lat]`. Introduce `i`. Use `mulVec_int (M := (s : 𝒜) • ((g'⁻¹ * g : GL n 𝒜) : Matrix n n 𝒜)) h hx i` as an intermediate fact. Rewrite `this` using `[smul_mulVec, mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right, ← mulVec_smul]`. Establish `e : (fun j => ι (((s : E) • x) j)) = (s : 𝒜) • fun j => ι (x j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, map_natCast]`. Rewrite using `[e]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_lat {g g' : GL n 𝒜} (s : ℕ)
     (h : ∀ i j, (s : 𝒜) * ((g'⁻¹ * g : GL n 𝒜) : Matrix n n 𝒜) i j ∈ 𝒮) {x : n → E} (hx : x ∈ lat g) :
@@ -202,15 +202,13 @@ theorem smul_mem_lat {g g' : GL n 𝒜} (s : ℕ)
   exact this
 
 /- English proof (translation)
-Use `choose m hm hmS using h`. Use `set s : ℕ := ∏ q : n × n, m q.1 q.2 with hs`. Establish `hint : ∀ i j, (s : 𝒜) * (g : Matrix n n 𝒜) i j ∈ 𝒮`. Introduce `i j`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem (fun q : n × n => m q.1 q.2) (Finset.mem_univ (i, j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : Matrix n n 𝒜) i j ∈ 𝒮`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `: (s : 𝒜) * (g : Matrix n n 𝒜) i j = (k : 𝒜) * ((m i j : 𝒜) * ((g : Matrix n n 𝒜) i j - (1 : Matrix n n 𝒜) i j)) + (s : 𝒜) * (1 : Matrix n n 𝒜) i j`. Rewrite using `[hs, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `add_mem (mul_mem (natCast_mem _ k) (hmS i j)) (mul_mem (natCast_mem _ s) h1)`. Use `⟨s, Nat.Coprime.prod_left fun q _ => hm q.1 q.2, fun x hx => smul_mem_lat s ?_ hx, fun x hx => smul_mem_lat s ?_ hx⟩` and prove the remaining obligations. Introduce `i j`. Apply the tactic sequence `rw [mul_one, inv_entry σ g hg]`. Use `csDual_sig_mem σ (hint j i)` as an intermediate fact.
-
-Rewrite `this` using `[map_mul, map_natCast]`. Then use the resulting hypothesis. Introduce `i j`. Rewrite using `[inv_one, one_mul]`. Conclude with `hint i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_up_to (σ : E →ₐ[F] E) (g : GL n 𝒜)
     (hg : g ∈ UPts σ (1 : Matrix n n E) (FiniteAdeleRing (𝓞 F) F)) (p : ℕ)
@@ -253,7 +251,7 @@ open scoped BigOperators
 namespace GlobalTheory.NormSum.AdLattice
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `letI := D.host.isCMField_hostE`. Use `show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, D.host.toHostAx.conjE_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_eq_conj (D : D7) (x : D.host.E) : (letI := D.host.cmStar; star x) = D.host.conj x := by
   apply D.host.φ₀.injective
@@ -262,15 +260,13 @@ theorem star_eq_conj (D : D7) (x : D.host.E) : (letI := D.host.cmStar; star x) =
   rw [NumberField.IsCMField.complexEmbedding_complexConj, D.host.toHostAx.conjE_apply]
 
 /- English proof (translation)
-Establish `hmul : ∀ M M' : Matrix (Fin N) (Fin N) (AE D), (∀ i j, M i j ∈ OhE D) → (∀ i j, M' i j ∈ OhE D) → ∀ i j, (M * M') i j ∈ OhE D`. Introduce `M M' h h' i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => mul_mem (h i l) (h' l j)`. Proceed by induction on `hk using Subgroup.closure_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem k hk => exact hk`. Consider the case `one`. Introduce `i j`. Establish `h1 : (1 : Matrix (Fin N) (Fin N) (AE D)) i j ∈ OhE D`. Rewrite using `[Matrix.one_apply]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Rewrite using `[OneMemClass.coe_one, inv_one]`. Conclude with `⟨h1, h1⟩`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Consider the case `mul a b _ _ ha hb`. Introduce `i j`. Rewrite using `[Subgroup.coe_mul, mul_inv_rev, Units.val_mul, Units.val_mul]`. Conclude with `⟨hmul _ _ (fun i j => (ha i j).1) (fun i j => (hb i j).1) i j, hmul _ _ (fun i j => (hb i j).2) (fun i j => (ha i j).2) i j⟩`. Consider the case `inv a _ ha`.
-
-Introduce `i j`. Rewrite using `[Subgroup.coe_inv, inv_inv]`. Conclude with `⟨(ha i j).2, (ha i j).1⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem intG_of_mem (D : D7) (N : ℕ) (k : GA D N) (hk : k ∈ intG D N) :
     IntG D (k : GL (Fin N) (AE D)) := by
@@ -301,7 +297,7 @@ theorem intG_of_mem (D : D7) (N : ℕ) (k : GA D N) (hk : k ∈ intG D N) :
     exact ⟨(ha i j).2, (ha i j).1⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_lat_one, stdL, Submodule.mem_pi]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_univ, true_implies, Submodule.mem_one, RingHom.mem_range]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lat_one_eq (D : D7) (N : ℕ) : lat (1 : GL (Fin N) (AE D)) = stdL D N := by
   ext x
@@ -314,13 +310,13 @@ end GlobalTheory.NormSum.AdLattice
 open GlobalTheory.NormSum.AdLattice in
 
 /- English proof (translation)
-Introduce `D N`. Use `⟨fun g => lat (g : GL (Fin N) (AE D)), fun g => ⟨fun x => mem_lat _ x, ?_⟩, lat_one_eq D N, fun g g' => ⟨fun h => ?_, fun h => ?_⟩, fun γA g γ h x => mem_lat_rat _ _ γ h x, fun p g _ h => ?_⟩` and prove the remaining obligations. Use `⟨(lat_isLattice _).fg, (lat_isLattice _).span_eq_top, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[lat_selfDual (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) _ g.2 y]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [stdH, star_eq_conj]`. Both sides reduce to the same expression. Use `Subgroup.subset_closure fun i j => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, mul_inv_rev, inv_inv]`. Conclude with `⟨int_of_lat_le h.ge i j, int_of_lat_le h.le i j⟩`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hk` using `intG_of_mem D N _ h`. Rewrite `hk` using `[IntG, Subgroup.coe_mul, Subgroup.coe_inv, mul_inv_rev, inv_inv]`. Conclude with `le_antisymm (lat_le_of_int fun i j => (hk i j).2) (lat_le_of_int fun i j => (hk i j).1)`. Rewrite using `[← lat_one_eq]`. Use `eq_up_to (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) _ g.2 p fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨m, -, hm, s, hs, he⟩` from `h i j 0`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[pow_zero, one_mul]`. Rewrite using `[he]`. Conclude with `hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NormSum.exists_lattice_of_adelic_point : ∀ (D : D7) (N : ℕ), ∃ Lt : GA D N → Submodule (𝓞 D.host.E) (Fin N → D.host.E), (∀ g : GA D N, Moves D (g : GL (Fin N) (AE D)) (Lt g) ∧ SD D (Lt g)) ∧ Lt 1 = stdL D N ∧ (∀ g g' : GA D N, Lt g = Lt g' ↔ g⁻¹ * g' ∈ intG D N) ∧ (∀ (γA g : GA D N) γ, IsRat D (γA : GL (Fin N) (AE D)) γ → ∀ x, x ∈ Lt g ↔ γ.mulVec x ∈ Lt (γA * g)) ∧ (∀ (p : ℕ) (g : GA D N), p.Prime → TrivAt D p (g : GL (Fin N) (AE D)) → EqAt D p (stdL D N) (Lt g)) := by
   intro D N

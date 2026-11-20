@@ -23,14 +23,14 @@ instance (K : Subgroup H) : MulAction K (ConjTgt H K) where
     intro γ; group
 
 /- English proof (translation)
-The claim follows from `Quotient.sound' (mem_orbit x t)`.
+A detailed English derivation is pending.
 -/
 theorem mk_smul' {T α : Type} [Group T] [MulAction T α] (t : T) (x : α) :
     (Quotient.mk'' (t • x) : orbitRel.Quotient T α) = Quotient.mk'' x :=
   Quotient.sound' (mem_orbit x t)
 
 /- English proof (translation)
-Establish `h2 : (Quotient.mk'' (Quotient.out q) : orbitRel.Quotient T α) = Quotient.mk'' x`. Rewrite using `[h]`. Conclude with `Quotient.out_eq' q`. Conclude with `orbitRel_apply.1 (Quotient.eq''.1 h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_out' {T α : Type} [Group T] [MulAction T α] (q : orbitRel.Quotient T α) (x : α)
     (h : (Quotient.mk'' x : orbitRel.Quotient T α) = q) : ∃ t : T, t • x = Quotient.out q := by
@@ -47,11 +47,9 @@ open MulAction GlobalTheory.MassConj
 variable {H X : Type} [Group H] [MulAction H X]
 
 /- English proof (translation)
-Apply `Nat.card_congr` to reduce the goal to its premises. Use `{ toFun := fun k => ⟨((k : stabilizer H x) : H), ?_⟩ invFun := fun d => ⟨⟨(d : H), ?_⟩, ?_⟩ left_inv := fun k => rfl right_inv := fun d => rfl }` and prove the remaining obligations. Establish `hk : ((k : stabilizer H x) : H) * γ * ((k : stabilizer H x) : H)⁻¹ = γ` using `k.2`. Rewrite using `[GlobalTheory.MassConj.mem_stabilizer_iff]`. Use `⟨?_, (k : stabilizer H x).2⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `((GlobalTheory.MassConj.mem_stabilizer_iff _ _).1 d.2).2`. Establish `hd` using `((GlobalTheory.MassConj.mem_stabilizer_iff _ _).1 d.2).1`. Rewrite using `[MulAction.mem_stabilizer_iff]`. Use `show (d : H) * γ * (d : H)⁻¹ = γ`.
-
-Rewrite using `[hd]`. Use `group`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_stab_pair (x : X) (γ : H) :
     Nat.card (stabilizer (stabilizer H x) (show ConjTgt H (stabilizer H x) from γ)) =
@@ -75,14 +73,14 @@ theorem card_stab_pair (x : X) (γ : H) :
     rw [hd]; group
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (stabilizerEquivStabilizer (rfl : t • p = t • p)).toEquiv).symm`.
+A detailed English derivation is pending.
 -/
 theorem card_stab_smul (t : H) (p : ConjPair H X) :
     Nat.card (stabilizer H (t • p)) = Nat.card (stabilizer H p) :=
   (Nat.card_congr (stabilizerEquivStabilizer (rfl : t • p = t • p)).toEquiv).symm
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_smul_eq_out' (Quotient.mk'' p : orbitRel.Quotient H (ConjPair H X)) p rfl`. Rewrite using `[← ht, smul_pt, mk_smul']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_out_pt (p : ConjPair H X) :
     (Quotient.mk'' (Quotient.out (Quotient.mk'' p : orbitRel.Quotient H (ConjPair H X))).pt :
@@ -91,31 +89,27 @@ theorem mk_out_pt (p : ConjPair H X) :
   rw [← ht, smul_pt, mk_smul']
 
 /- English proof (translation)
-Use `haveI := hfin x`. Set `K` to `stabilizer H x`. Set `F : ConjTgt H K → ℂ` to `fun γ => f γ x`. Establish `hF : ∀ (k : K) (γ : ConjTgt H K), F (k • γ) = F γ`. Introduce `k γ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `H at γ`. Use `show f ((k : H) * γ * (k : H)⁻¹) x = f γ x`. Establish `h` using `hf k γ x`. Rewrite `h` using `[show (k : H) • x = x from k.2]`. Then use the resulting hypothesis. Establish `key` using `GlobalTheory.finsum_orbits_stabilizer_mass F hF (hsupp x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : ConjTgt H K → {O : orbitRel.Quotient H (ConjPair H X) // (Quotient.mk'' (Quotient.out O).pt : orbitRel.Quotient H X) = Quotient.mk'' x}` to `fun γ => ⟨Quotient.mk'' (ConjPair.mk (H := H) γ x), by rw [mk_out_pt]⟩`. Establish `hg : ∀ a b : ConjTgt H K, a ∈ orbit K b → g a = g b`. Introduce and unpack `a b ⟨k, hk⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (Quotient.mk'' (ConjPair.mk (H := H) a x) : orbitRel.Quotient H (ConjPair H X)) = Quotient.mk'' (ConjPair.mk (H := H) b x)`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `: (ConjPair.mk (H` using `H) a x : ConjPair H X) = (k : H) • ConjPair.mk (H := H) b x := by`. Use `ext`. Rewrite using `[smul_elt, ← hk]`. Both sides reduce to the same expression. Rewrite using `[smul_pt]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `k.2.symm`. Rewrite using `[this, mk_smul']`. Set `φ : orbitRel.Quotient K (ConjTgt H K) → {O : orbitRel.Quotient H (ConjPair H X) // (Quotient.mk'' (Quotient.out O).pt : orbitRel.Quotient H X) = Quotient.mk'' x}` to `Quotient.lift g (fun a b hab => hg a b (orbitRel_apply.1 hab))`. Establish `hφ : ∀ γ : ConjTgt H K, φ (Quotient.mk'' γ) = g γ` using `fun γ => rfl`. Establish `hinj : Function.Injective φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `o1 o2 h`. Proceed by induction on `o1 using Quotient.inductionOn' with | h a => ?_`. Proceed by induction on `o2 using Quotient.inductionOn' with | h b => ?_`. Rewrite `h` using `[hφ, hφ]`. Establish `h1 : (Quotient.mk'' (ConjPair.mk (H` using `H) a x) : orbitRel.Quotient H (ConjPair H X)) = Quotient.mk'' (ConjPair.mk (H := H) b x) := congrArg Subtype.val h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨δ, hδ⟩` from `orbitRel_apply.1 (Quotient.eq''.1 h1)`. Establish `he : δ * ConjTgt.val b * δ⁻¹ = ConjTgt.val a` using `congrArg ConjPair.elt hδ`. Establish `hp : δ • x = x` using `congrArg ConjPair.pt hδ`. Apply `Quotient.sound'` to reduce the goal to its premises. Conclude with `orbitRel_apply.2 ⟨⟨δ, hp⟩, he⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : Function.Surjective φ`. Introduce and unpack `⟨O, hO⟩`. Take `⟨t, ht⟩` from `orbitRel_apply.1 (Quotient.eq''.1 hO)`. Use `⟨Quotient.mk'' (show ConjTgt H K from (t⁻¹ * (Quotient.out O).elt * t : H)), ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (Quotient.mk'' (ConjPair.mk (t⁻¹ * (Quotient.out O).elt * t) x) : orbitRel.Quotient H (ConjPair H X)) = O`. Establish `: (ConjPair.mk (t⁻¹ * (Quotient.out O).elt * t) x : ConjPair H X) = t⁻¹ • Quotient.out O`. Use `ext`. Rewrite using `[smul_elt]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `group`. Rewrite using `[smul_pt, ← ht, inv_smul_smul]`. Rewrite using `[this, mk_smul']`. Conclude with `Quotient.out_eq' O`. Set `e` to `Equiv.ofBijective φ ⟨hinj, hsurj⟩`.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← finsum_comp_equiv e]`. Establish `hterm : ∀ o : orbitRel.Quotient K (ConjTgt H K), (1 / (Nat.card (stabilizer H (Quotient.out (e o).1)) : ℂ)) * f (Quotient.out (e o).1).elt (Quotient.out (e o).1).pt = ((Nat.card (stabilizer K (Quotient.out o)) : ℕ) : ℂ)⁻¹ * F (Quotient.out o)`. Introduce `o`. Establish `h1 : (e o).1 = Quotient.mk'' (ConjPair.mk (H` using `H) (Quotient.out o) x) := by show (φ o).1 = _ conv_lhs => rw [← Quotient.out_eq' o]`. Both sides reduce to the same expression.
-
-Rewrite using `[h1]`. Take `⟨t, ht⟩` from `exists_smul_eq_out' (Quotient.mk'' (ConjPair.mk (H := H) (Quotient.out o) x) : orbitRel.Quotient H (ConjPair H X)) _ rfl`. Rewrite using `[← ht, card_stab_smul, smul_elt, smul_pt, hf, ← card_stab_pair, one_div]`. Both sides reduce to the same expression. Rewrite using `[finsum_congr hterm, key, one_div]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptFib_mass (H : Type) [Group H] (X : Type) [MulAction H X] (f : H → X → ℂ)
     (hf : ∀ δ γ : H, ∀ x : X, f (δ * γ * δ⁻¹) (δ • x) = f γ x)

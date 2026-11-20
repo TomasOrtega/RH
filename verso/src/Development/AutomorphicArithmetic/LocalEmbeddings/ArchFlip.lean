@@ -20,7 +20,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {K : Type} [Field K] {ι τ : K →+* ℂ}
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.FlipMatch.FourierInv.card_res_pow k 1`. Establish `hp : 0 < Fintype.card (Res k 1)` using `Fintype.card_pos`. Rewrite `hp` using `[h, pow_one]`. Conclude with `hp` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_q : (1 : ℝ) ≤ resCard k := by
   have h := GlobalTheory.FlipMatch.FourierInv.card_res_pow k 1
@@ -29,7 +29,7 @@ theorem one_le_q : (1 : ℝ) ≤ resCard k := by
   exact_mod_cast hp
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_fun, Fintype.card_fun, GlobalTheory.FlipMatch.FourierInv.card_res_pow, ← pow_mul, ← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_res_fun (A B : Type) [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B] (e : ℕ) :
     Fintype.card (A → B → Res k e) = resCard k ^ (e * Fintype.card A * Fintype.card B) := by
@@ -37,15 +37,15 @@ theorem card_res_fun (A B : Type) [Fintype A] [DecidableEq A] [Fintype B] [Decid
   congr 1; ring
 
 /- English proof (translation)
-Rewrite using `[fourierSum_apply]`. Establish `hB0 : 0 ≤ B` using `(hΦ Y).nonneg`. Use `split_ifs with hY`. Establish `hsum : Sz ι τ (∑ T : A → P → Res k e, Φ (setCols P Y (liftRes T)) * (ψ (pairCols P Y (liftRes T)) : ℂ)) ((Finset.univ : Finset (A → P → Res k e)).card * B)`. Apply `Sz.sum_card` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T _`. Apply `Sz.mul_un (hΦ _)` to reduce the goal to its premises. Apply `hψ` to reduce the goal to its premises. Establish `hm : ((ϖ ^ e : kˣ) : k) * pairCols P Y (liftRes T) ∈ 𝒪[k]`. Simplify using `only [pairCols, Finset.mul_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `Subring.mul_mem _ (liftRes_mem T i j) (hY i j j.2)`. Conclude with `(Valuation.mem_integer_iff _ _).mp hm`. Establish `hinv` using `Sz.inv_nat (ι := ι) (τ := τ) (resCard k ^ (e * Fintype.card A * P.card))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hinv`. Use `(hinv.mul hsum).mono ?_` and prove the remaining obligations. Establish `hc : (Finset.univ : Finset (A → P → Res k e)).card = resCard k ^ (e * Fintype.card A * P.card)`. Rewrite using `[Finset.card_univ, card_res_fun, Fintype.card_coe]`. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : (0:ℝ) < resCard k` using `lt_of_lt_of_le one_pos one_le_q`. Use `push_cast`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (by positivity), one_mul]`. Conclude with `Sz.zero hB0`.
+A detailed English derivation is pending.
 -/
 theorem sz_fourierSum {A D : Type} [Fintype A] [DecidableEq A] [DecidableEq D] (ψ : AddChar k Circle)
     (ϖ : kˣ) (e : ℕ) (P : Finset D) (hψ : ∀ x : k, valuation k (((ϖ ^ e : kˣ) : k) * x) ≤ 1 → Un ι τ (ψ x : ℂ))
@@ -77,15 +77,13 @@ theorem sz_fourierSum {A D : Type} [Fintype A] [DecidableEq A] [DecidableEq D] (
   · exact Sz.zero hB0
 
 /- English proof (translation)
-Rewrite using `[invFourierSum_inv_apply]`. Establish `hB0 : 0 ≤ B` using `(hΦ T).nonneg`. Establish `hq : (0:ℝ) < resCard k` using `lt_of_lt_of_le one_pos one_le_q`. Use `split_ifs with hT`. Establish `hc : (Finset.univ : Finset (A → P → Res k e)).card = resCard k ^ (e * Fintype.card A * P.card)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.card_univ, card_res_fun, Fintype.card_coe]`. Establish `hsum` using `Sz.sum_card (ι := ι) (τ := τ) (Finset.univ : Finset (A → P → Res k e)) (f := fun S => Φ (setCols P T ((ϖ ^ e)⁻¹ • liftRes S)) * (ψ (pairCols P T ((ϖ ^ e)⁻¹ • liftRes S)) : ℂ)) (B := B) (by`. Introduce `S _`. Apply `Sz.mul_un (hΦ _)` to reduce the goal to its premises. Apply `hψ` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `key : ((ϖ ^ e : kˣ) : k) * pairCols P T ((ϖ ^ e)⁻¹ • liftRes S) = pairCols P T (liftRes S)`. Simplify using `only [pairCols, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Units.smul_def, smul_eq_mul, ← mul_assoc, ← mul_assoc, Units.mul_inv, one_mul]`. Establish `hm : pairCols P T (liftRes S) ∈ 𝒪[k]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [pairCols]`. Conclude with `Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => Subring.mul_mem _ (liftRes_mem S i j) (hT i j j.2)`. Rewrite using `[key]`. Conclude with `(Valuation.mem_integer_iff _ _).mp hm)`. Rewrite `hsum` using `[hc]`.
-
-Move the coercions through the operations in `at hsum`. Conclude with `hsum`. Conclude with `Sz.zero (mul_nonneg (by positivity) hB0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem sz_invFourierSum {A D : Type} [Fintype A] [DecidableEq A] [DecidableEq D] (ψ : AddChar k Circle)
     (ϖ : kˣ) (e : ℕ) (P : Finset D) (hψ : ∀ x : k, valuation k (((ϖ ^ e : kˣ) : k) * x) ≤ 1 → Un ι τ (ψ x : ℂ))
@@ -121,7 +119,7 @@ theorem sz_invFourierSum {A D : Type} [Fintype A] [DecidableEq A] [DecidableEq D
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Establish `h1` using `(Model.val_le_iff_mem hϖ e ((T i j).out - (T' i j).out)).mpr (by simpa [liftRes] using h i j)`. Rewrite using `[← Ideal.Quotient.mk_out (T i j), ← Ideal.Quotient.mk_out (T' i j)]`. Conclude with `Ideal.Quotient.eq.mpr h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem res_eq_of_liftRes_sub_valuation_le {A : Type} {ϖ : kˣ} (hϖ : IsUnif ϖ) {e : ℕ} (T T' : A → A → Res k e)
     (h : ∀ i j, valuation k (liftRes T i j - liftRes T' i j) ≤ valuation k ((ϖ ^ e : kˣ) : k)) : T = T' := by
@@ -131,7 +129,7 @@ private theorem res_eq_of_liftRes_sub_valuation_le {A : Type} {ϖ : kˣ} (hϖ : 
   exact Ideal.Quotient.eq.mpr h1
 
 /- English proof (translation)
-Use `⟨fun i j => Ideal.Quotient.mk _ ⟨x i j, hx i j⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1 : (⟨x i j, hx i j⟩ : 𝒪[k]) - (Ideal.Quotient.mk (𝓂[k] ^ e) ⟨x i j, hx i j⟩ : Res k e).out ∈ 𝓂[k] ^ e`. Rewrite using `[← Ideal.Quotient.eq, Ideal.Quotient.mk_out]`. Establish `h2` using `(Model.val_le_iff_mem hϖ e _).mp h1`. Simplify `h2` using `[liftRes]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem exists_res_approx_of_entries_integral {A : Type} {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (x : Matrix A A k)
     (hx : ∀ i j, x i j ∈ 𝒪[k]) :
@@ -143,35 +141,31 @@ private theorem exists_res_approx_of_entries_integral {A : Type} {ϖ : kˣ} (hϖ
   simpa [liftRes] using h2
 
 /- English proof (translation)
-Use `haveI := isHaarMeasure_haarVol hJo hJK`. Establish `hB0 : 0 ≤ B` using `(hB 0).nonneg`. Use `set S : (A → A → Res k e) → Set (GL A k) := fun T => {g | ∀ i j, valuation k ((g : Matrix A A k) i j - liftRes T i j) ≤ valuation k ((ϖ ^ e : kˣ) : k)} with hS`. Establish `hSm : ∀ T, MeasurableSet (S T)` using `fun T => ((GlobalTheory.SmallFInF.isOpen_cosetM (ϖ ^ e) (liftRes T)).preimage Units.continuous_val).measurableSet`. Establish `hconst : ∀ T, ∀ g ∈ S T, φ (g : Matrix A A k) = φ (liftRes T)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `T g hg`. Use `hφ.2 (liftRes T) ((g : Matrix A A k) - liftRes T) (GlobalTheory.FunObj.GivenAdm.mem_matLat_smul.mpr (fun i j => hg i j))` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `this`. Establish `hzero : ∀ g : GL A k, ¬ (∀ i j, (g : Matrix A A k) i j ∈ 𝒪[k]) → φ (g : Matrix A A k) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce `g hg`. Apply `hφ.1` to reduce the goal to its premises. Rewrite using `[mem_matLat_stdLat]` and apply the resulting hypothesis. Use `set f : GL A k → ℂ := fun g => (ν (gdet g) : ℂ) * apow (gdet g) ((n : ℂ) / 2) with hf`. Establish `hF : (fun g : GL A k => φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) ((n : ℂ) / 2)) = fun g => ∑ T, (S T).indicator (fun g => φ g.val * f g) g`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : ∀ i j, (g : Matrix A A k) i j ∈ 𝒪[k]`. Take `⟨T0, hT0⟩` from `exists_res_approx_of_entries_integral hϖ e (g : Matrix A A k) hg`. Rewrite using `[Finset.sum_eq_single T0]`. Rewrite using `[Set.indicator_apply, if_pos (show g ∈ S T0 from hT0), mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `T _ hT`. Rewrite using `[Set.indicator_apply, if_neg]`. Introduce `hgT`. Apply `hT` to reduce the goal to its premises. Apply `res_eq_of_liftRes_sub_valuation_le hϖ` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[show liftRes T i j - liftRes T0 i j = ((g : Matrix A A k) i j - liftRes T0 i j) + (liftRes T i j - (g : Matrix A A k) i j) by ring]`. Conclude with `Valuation.map_add_le _ (hT0 i j) (by rw [Valuation.map_sub_swap]; exact hgT i j)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : φ g.val = 0` using `hzero g hg`. Simplify using `[Set.indicator_apply, h0]`. Distinguish the cases in `hint : Integrable (fun g : GL A k => φ g.val * f g) (haarVol J)`. Establish `hI : ∫ g, φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) ((n : ℂ) / 2) ∂(haarVol J) = ∑ T, φ (liftRes T) * ∫ g in S T, f g ∂(haarVol J)`. Rewrite using `[hF, integral_finset_sum _ (fun T _ => hint.indicator (hSm T))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator (hSm T)]`. Rewrite using `[setIntegral_congr_fun (hSm T) (g := fun g => φ (liftRes T) * f g) (fun g hg => by show φ g.val * f g = φ (liftRes T) * f g`. Rewrite using `[hconst T g hg])]`. Conclude with `integral_const_mul _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hI]`. Establish `hvol` using `UpperTheory.haarVol_KO_le_resCard_pow_of_congruence_le hJo hJK hϖ hJ`. Establish `hterm : ∀ T, Sz ι τ (φ (liftRes T) * ∫ g in S T, f g ∂(haarVol J)) (B * (resCard k : ℝ) ^ (e * Fintype.card A * Fintype.card A))`. Introduce `T`. Use `(hB _).mul ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hsing : ∃ y : Matrix A A k, (∀ i j, valuation k (y i j - liftRes T i j) ≤ valuation k ((ϖ ^ e : kˣ) : k)) ∧ y.det = 0`. Take `⟨y, hy, hdet⟩` from `hsing`. Establish `hSy : S T = {g : GL A k | ∀ i j, valuation k ((g : Matrix A A k) i j - y i j) ≤ valuation k ((ϖ ^ e : kˣ) : k)}`. Use extensionality with `g`. Simplify using `only [hS, Set.mem_setOf_eq]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg i j`. Rewrite using `[show (g : Matrix A A k) i j - y i j = ((g : Matrix A A k) i j - liftRes T i j) + (liftRes T i j - y i j) by ring]`. Conclude with `Valuation.map_add_le _ (hg i j) (by rw [Valuation.map_sub_swap]; exact hy i j)`. Introduce `hg i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (g : Matrix A A k) i j - liftRes T i j = ((g : Matrix A A k) i j - y i j) + (y i j - liftRes T i j) by ring]`. Conclude with `Valuation.map_add_le _ (hg i j) (hy i j)`. Establish `h0 : ∫ g in S T, f g ∂(haarVol J) = 0`. Rewrite using `[hSy]`. Conclude with `GlobalTheory.CosetVanish.integral_coset_singular_eq_zero (haarVol J) ν ((n : ℂ) / 2) hram (ϖ ^ e) y hdet`.
+Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0]`. Conclude with `Sz.zero (by positivity)`. Establish `h1` using `UpperTheory.unramified_character_invariant ι τ hJo hJK ν hϖ hν hνU habs n (liftRes T) (fun i j => (Valuation.mem_integer_iff _ _).mp (liftRes_mem T i j)) (fun y hy hdet => hsing ⟨y, hy, hdet⟩)`. Conclude with `h1.mono hvol`. Establish `hsum` using `Sz.sum_card (ι := ι) (τ := τ) (Finset.univ : Finset (A → A → Res k e)) (fun T _ => hterm T)`.
-
-Use `hsum.mono (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.card_univ, card_res_fun]`. Use `push_cast`. Rewrite using `[show 2 * e * Fintype.card A * Fintype.card A = e * Fintype.card A * Fintype.card A + e * Fintype.card A * Fintype.card A by ring, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[integral_undef]`. Conclude with `Sz.zero (mul_nonneg (by positivity) hB0)`. Introduce `h`. Apply `hint` to reduce the goal to its premises. Simplify `h` using `only [mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sz_zeta {A : Type} [Fintype A] [DecidableEq A] {J : Subgroup (GL A k)} (hJo : IsOpen (J : Set (GL A k)))
     (hJK : J ≤ KO k A) (ν : kˣ →* ℂˣ) {ϖ : kˣ} {e : ℕ} (hϖ : IsUnif ϖ) (hJ : glLatCong (ϖ ^ e) (SplitFlip.stdLat k A) ≤ J)
@@ -272,7 +266,7 @@ theorem sz_zeta {A : Type} [Fintype A] [DecidableEq A] {J : Subgroup (GL A k)} (
 
 omit [MeasurableSpace k] [BorelSpace k] in
 /- English proof (translation)
-Use extensionality with `j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem row_mul' {A B C : Type} [Fintype B] (Y : Matrix A B k) (M : Matrix B C k) (i : A) : (Y * M).row i = Y.row i ᵥ* M := by
   ext j
@@ -281,23 +275,21 @@ theorem row_mul' {A B C : Type} [Fintype B] (Y : Matrix A B k) (M : Matrix B C k
 omit [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Establish `hrow : ∀ (M : Matrix A' D k) (i : A') (b d : D → kˣ), (∀ j, d j = b j * c j) → ((M * (κ * diagGL c : GL D k).val).row i ∈ diagLat d ↔ (M * (κ : Matrix D D k)).row i ∈ diagLat b)`. Introduce `M i b d hd`. Rewrite using `[Units.val_mul, diagGL_val, ← Matrix.mul_assoc, row_mul', ← diagGL_val]`. Conclude with `GlobalTheory.FrameDepth.vecMul_diagGL_mem b c d hd _`. Establish `hYκ : ∀ a j, (Y0 k σ * (κ : Matrix D D k)) a j ∈ 𝒪[k]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a j`. Rewrite using `[frameMatrixSecondColumnBlock_mul_apply]`. Conclude with `((mem_KO_iff κ).mp hκ).1 _ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne`. Apply `hg` to reduce the goal to its premises. Establish `hm : g * (Y0 k σ * (κ * diagGL c : GL D k).val) ∈ matLat A' (diagLat c)`. Assume the negation of the conclusion as `h`. Conclude with `hne (hΨ.1 _ h)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hall : g * Y0 k σ * (κ : Matrix D D k) ∈ matLat A' (stdLat k D)`. Introduce `i`. Establish `hi` using `hm i`. Rewrite `hi` using `[← Matrix.mul_assoc, hrow (g * Y0 k σ) i 1 c (fun j => by simp)]`. Conclude with `hi`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ((1 : GL A' k) : Matrix A' A' k) * (g * Y0 k σ) * (κ : Matrix D D k) ∈ matLat A' (stdLat k D)`. Rewrite using `[Units.val_one, Matrix.one_mul]`. Conclude with `hall`. Establish `h1'` using `(mul_mul_mem_matLat_iff (g := (1 : GL A' k)) (h := κ) (KO k A').one_mem hκ (g * Y0 k σ)).mp h1`. Rewrite `h1'` using `[mem_matLat_stdLat]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_matLat_stdLat]`. Introduce `i a`. Establish `h2` using `h1' i (σ (Sum.inr a))`. Establish `h3 : (g * Y0 k σ) i (σ (Sum.inr a)) = g i a`. Simplify using `[Matrix.mul_apply, Y0]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Introduce `X Z hZ show Ψ ((X + Z) * (Y0 k σ * (κ * diagGL c : GL D k).val)) = Ψ (X * (Y0 k σ * (κ * diagGL c : GL D k).val))`. Rewrite using `[Matrix.add_mul]`. Apply `hΨ.2` to reduce the goal to its premises. Rewrite using `[smul_diagLat]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[← Matrix.mul_assoc, hrow (Z * Y0 k σ) i (fun _ => ϖ ^ e) (fun j => ϖ ^ e * c j) (fun j => rfl)]`. Establish `hC : GlobalTheory.FunObj.GivenAdm.CongM (ϖ ^ e) (Z * Y0 k σ * (κ : Matrix D D k))`. Rewrite using `[Matrix.mul_assoc]`. Conclude with `GlobalTheory.FunObj.GivenAdm.CongM.mul_right (GlobalTheory.FunObj.GivenAdm.mem_matLat_smul.mp hZ) hYκ`.
-
-Establish `hm` using `GlobalTheory.FunObj.GivenAdm.mem_matLat_smul.mpr hC i`. Rewrite `hm` using `[show stdLat k D = diagLat 1 from rfl, smul_diagLat]`. Simplify using `using hm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isNatDatum_comp {A A' D : Type} [Fintype A'] [DecidableEq A'] [Fintype D] [DecidableEq D] (σ : A ⊕ A' ≃ D)
     {ϖ : kˣ} {e : ℕ} (c : D → kˣ) {Ψ : Matrix A' D k → ℂ} (hΨ : HasDepth ϖ e (diagLat c) Ψ) {κ : GL D k} (hκ : κ ∈ KO k D) :
@@ -349,35 +341,33 @@ theorem isNatDatum_comp {A A' D : Type} [Fintype A'] [DecidableEq A'] [Fintype D
     simpa using hm
 
 /- English proof (translation)
-Use `haveI := isHaarMeasure_haarVol hJo hJK`. Establish `hB0 : 0 ≤ B` using `(hB 0).nonneg`. Establish `hq : (1:ℝ) ≤ resCard k` using `one_le_q`. Unfold `phiA`. Use `split_ifs with hX`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `swap`. Conclude with `Sz.zero (by positivity)`. Rewrite `hX` using `[latA_blockLat]`. Establish `hlat : ∀ x : D → k, x ᵥ* (((blockScale ϖ e Pᶜ)⁻¹ : GL D k) : Matrix D D k) ∈ stdLat k D ↔ x ∈ blockLat ϖ e Pᶜ`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← vecMul_blockScale_mem ϖ e Pᶜ, vecMul_vecMul, ← Units.val_mul, inv_mul_cancel, Units.val_one, vecMul_one]`. Take `⟨κ, hκ, hκX⟩` from `UpperTheory.exists_mem_KO_eq_stdFrame_mul_of_isPrimFrame_fin σ _ (Model.isPrimFrame_mul hX (blockScale ϖ e Pᶜ)⁻¹ hlat)`. Establish `hinvT : invT (diagGL (fun j => ϖ ^ e * blockUnits ϖ e P j)) = blockScale ϖ e Pᶜ`. Apply `Units.ext` to reduce the goal to its premises. Use `show ((((diagGL (fun j => ϖ ^ e * blockUnits ϖ e P j))⁻¹ : GL D k) : Matrix D D k))ᵀ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1 : (((diagGL (fun j => ϖ ^ e * blockUnits ϖ e P j))⁻¹ : GL D k) : Matrix D D k) = diagonal fun j => (((ϖ ^ e * blockUnits ϖ e P j)⁻¹ : kˣ) : k)` using `rfl`. Rewrite using `[h1, Matrix.diagonal_transpose, blockScale, diagGL_val]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `by_cases hj : j ∈ P <;> simp [blockUnits, hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXeq : X = X0 k σ * ((invT (κ * diagGL (fun j => ϖ ^ e * blockUnits ϖ e P j)) : GL D k) : Matrix D D k)`. Rewrite using `[map_mul, hinvT, Units.val_mul, ← Matrix.mul_assoc, ← hκX, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Rewrite using `[hXeq, splitTheta_fFun_frameFirstBlock_mul]`. Establish `hY : Y0 k σ * ((κ * diagGL (fun j => ϖ ^ e * blockUnits ϖ e P j) : GL D k) : Matrix D D k) = ((diagGL (fun _ : Fin a' => ϖ ^ e) : GL (Fin a') k) : Matrix (Fin a') (Fin a') k) * (Y0 k σ * ((κ * diagGL (blockUnits ϖ e P) : GL D k) : Matrix D D k))`. Establish `hd : ((diagGL (fun j => ϖ ^ e * blockUnits ϖ e P j) : GL D k) : Matrix D D k) = ((ϖ ^ e : kˣ) : k) • ((diagGL (blockUnits ϖ e P) : GL D k) : Matrix D D k)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[diagGL_val, diagGL_val]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Matrix.diagonal_apply_ne _ hij]`. Rewrite using `[diagGL_val, Units.val_mul, Units.val_mul, hd, Matrix.mul_smul, Matrix.mul_smul, ← Matrix.smul_eq_diagonal_mul]`. Establish `hmulL` using `smallF_mul_left (haarVol J) ν Ψ (diagGL (fun _ : Fin a' => ϖ ^ e)) (Y0 k σ * ((κ * diagGL (blockUnits ϖ e P) : GL D k) : Matrix D D k))`. Rewrite `hmulL` using `[← hY]`. Establish `hsmall : smallF (haarVol J) ν Ψ (Y0 k σ * ((κ * diagGL (fun j => ϖ ^ e * blockUnits ϖ e P j) : GL D k) : Matrix D D k)) = (ν (gdet (diagGL (fun _ : Fin a' => ϖ ^ e))) : ℂ)⁻¹ * (apow (gdet (diagGL (fun _ : Fin a' => ϖ ^ e))) ((Fintype.card D : ℂ) / 2))⁻¹ * smallF (haarVol J) ν Ψ ( …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmulL]`. Establish `h1 : (ν (gdet (diagGL (fun _ : Fin a' => ϖ ^ e))) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `h2` using `apow_ne_zero (gdet (diagGL (fun _ : Fin a' => ϖ ^ e))) ((Fintype.card D : ℂ) / 2)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hsmall]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hzeta` using `sz_zeta (ι := ι) (τ := τ) hJo hJK ν hϖ hJ hν hram hνU habs (Fintype.card D) (isNatDatum_comp σ (blockUnits ϖ e P) hΨ hκ) (fun X => hB _)`. Simplify using `only [Fintype.card_fin] at hzeta`. Establish `hdet0 : gdet (diagGL (fun _ : Fin a' => ϖ ^ e)) = (ϖ ^ e) ^ a'`. Use `ext`. Simplify using `[gdet, diagGL_val, Matrix.det_diagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hnabs : nabs k (gdet (diagGL (fun _ : Fin a' => ϖ ^ e)))⁻¹ = (resCard k : ℝ) ^ (e * a')`. Establish `hn : ((distribHaarChar k ϖ : NNReal) : ℝ) = (resCard k : ℝ)⁻¹` using `GlobalTheory.SplitWeil.nabs_uniformiser hϖ.irreducible rfl`. Rewrite using `[hdet0]`. Unfold `nabs`. Rewrite using `[map_inv, map_pow, map_pow]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[hn, ← pow_mul, inv_pow, inv_inv]`. Establish `hA : Sz ι τ (apow (gdet (diagGL (fun _ : Fin a' => ϖ ^ e))) ((Fintype.card D : ℂ) / 2))⁻¹ (((resCard k : ℝ) ^ (e * a')) ^ Fintype.card D)`. Rewrite using `[← apow_neg, ← apow_inv]`. Conclude with `sz_apow_nat_half _ (habs _) _ (one_le_pow₀ hq) hnabs.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hdh : valuation k ((gdet (κ * diagGL (fun j => ϖ ^ e * blockUnits ϖ e P j)) : kˣ) : k) ≤ 1`. Rewrite using `[gdet_mul, Units.val_mul, map_mul, valuation_gdet_of_mem_KO hκ, one_mul]`. Establish `hp : ((gdet (diagGL (fun j => ϖ ^ e * blockUnits ϖ e P j)) : kˣ) : k) = ∏ j, (((ϖ ^ e * blockUnits ϖ e P j) : kˣ) : k)`. Simplify using `[gdet, diagGL_val, Matrix.det_diagonal]`. Rewrite using `[hp, map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Finset.prod_le_one'` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `hj : j ∈ P`. Simplify using `[blockUnits, hj]`. Simplify using `only [blockUnits, hj, if_false, mul_one, Units.val_pow_eq_pow_val, map_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `pow_le_one' ((Valuation.mem_integer_iff _ _).mp (IsUnif.mem hϖ)) _`. Establish `hH : Sz ι τ (apow (gdet (κ * diagGL (fun j => ϖ ^ e * blockUnits ϖ e P j))) ((Fintype.card D : ℂ) / 2)) 1` using `sz_apow_of_le_one _ (habs _) _ hdh`. Establish `hfinal` using `(hνU (gdet (κ * diagGL (fun j => ϖ ^ e * blockUnits ϖ e P j)))).mul_sz (hH.mul ((Un.inv (hνU (gdet (diagGL (fun _ : Fin a' => ϖ ^ e))))).mul_sz (hA.mul hzeta)))`. Use `Sz.mono (B := 1 * (((resCard k : ℝ) ^ (e * a')) ^ Fintype.card D * ((resCard k : ℝ) ^ (2 * e * a' * a') * B))) ?_ ?_` and prove the remaining obligations. Use `hfinal using 1` and compare the differences between its conclusion and the goal.
-
-Simplify using `only [smallF]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[one_mul, ← pow_mul, ← mul_assoc, ← pow_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sz_phiA {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] {a' : ℕ}
     {J : Subgroup (GL (Fin a') k)} (hJo : IsOpen (J : Set (GL (Fin a') k))) (hJK : J ≤ KO k (Fin a')) (σ : A ⊕ Fin a' ≃ D)
@@ -477,19 +467,19 @@ theorem sz_phiA {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableE
   · rw [one_mul, ← pow_mul, ← mul_assoc, ← pow_add]
 
 /- English proof (translation)
-Establish `hq : (1:ℝ) ≤ resCard k` using `one_le_q`. Establish `hB0 : 0 ≤ B` using `(hB x).nonneg`. Establish `hJ'` using `isOpen_map_invT hJ hK`. Establish `hC' : glLatCong (ϖ ^ e) (SplitFlip.stdLat k (Fin (G.rank (i, j)))) ≤ Subgroup.map invT (J (i, j))`. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨invT g, hC (GlobalTheory.FunObj.GivenAdm.invT_mem_glLatCong hg), invT_invT g⟩`. Establish `hdep` using `(FourierDepth.fourier_exchange k (Fin (G.rank (i, j))) (G.Cols i j) ψ ϖ e (Assignment.one.block (Fin (G.rank (i, j + 1))) (Fin (G.rank (i + 1, j)))) hϖ hψc).1 _ (GlobalTheory.FunObj.isNatDatum_sliceB hT h1 h2 x)`. Unfold `Grid.flipTensor squareFlip`. Use `Sz.mono (sz_invFourierSum ψ ϖ e _ hψ (fun X => sz_phiA hJ'.1 hJ'.2 _ (G.nu i j) hϖ hC' hν hram hνU habs _ hdep (fun Y => sz_fourierSum ψ ϖ e _ hψ (fun Z => hB _) Y) X) _) ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← pow_add]`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_le_mul_of_nonneg_right _ hB0` to reduce the goal to its premises. Apply `pow_le_pow_right₀ hq` to reduce the goal to its premises. Establish `hcard : Fintype.card (G.Cols i j) = G.rank (i + 1, j + 1) + G.rank (i, j)`. Simplify using `only [Grid.Cols, Fintype.card_sum, Fintype.card_fin]`. Conclude with `(G.rank_square i j).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc` using `Finset.card_le_univ (Assignment.one.block (Fin (G.rank (i, j + 1))) (Fin (G.rank (i + 1, j))))ᶜ`. Establish `h00 : G.rank (i, j) ≤ G.rank (i + 1, j + 1)`. Simplify using `only [Grid.rank]`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [Fintype.card_fin]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hc`, the goal using `[hcard]`. Generalize the expression as in `(Assignment.one.block (Fin (G.rank (i, j + 1))) (Fin (G.rank (i + 1, j))))ᶜ.card = c at hc ⊢`. Generalize the expression as in `G.rank (i + 1, j + 1) = a at hM h00 hc ⊢`. Generalize the expression as in `G.rank (i, j) = b at h00 hc ⊢`. Establish `hbM : b ≤ M` using `le_trans h00 hM`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : a * c ≤ M * (M + M)` using `Nat.mul_le_mul hM (by omega)`. Establish `e2 : b * (a + b) ≤ M * (M + M)` using `Nat.mul_le_mul hbM (by omega)`. Establish `e3 : b * b ≤ M * M` using `Nat.mul_le_mul hbM hbM`. Establish `f1` using `Nat.mul_le_mul_left e e1`. Establish `f2` using `Nat.mul_le_mul_left e e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f3` using `Nat.mul_le_mul_left e e3`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sz_flipTensor {G : Grid k} {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} (hϖ : IsUnif ϖ)
     (hψc : HasConductor ψ 1) (habs : ∀ u : kˣ, apow u (1 / 2) ∈ Set.range ι)
@@ -538,17 +528,15 @@ theorem sz_flipTensor {G : Grid k} {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} 
   nlinarith
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `S B _ _ _ _ hB z`. Simplify `hB z` using `[Grid.PiLocalization₂.flips]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `cons x l ih`. Introduce `S B hl hcan hlev hT hB z`. Take `⟨hMx, hνx, hramx, hνUx⟩` from `hl x (List.mem_cons_self ..)`. Consider the cases of `hcan with`. Consider the case `cons hpass hcan'`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `hth : Edge.theta x.1 x.2 ∈ S.path` using `hpass.subset (by simp)`. Establish `hex : Edge.ex x.1 x.2 ∈ S.path` using `hpass.subset (by simp)`. Take `⟨hJo, hJK, hJC⟩` from `hlev (x.1, x.2)`. Establish `key` using `ih (S.flip .one ψ ϖ e x) ((resCard k : ℝ) ^ (6 * e * M ^ 2) * B) (fun y hy => hl y (List.mem_cons_of_mem _ hy)) hcan' (by`. Introduce `X`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `eq_or_ne X (x.1 + 1, x.2 + 1) with rfl | hne` into its components or cases. Simplify using `only [Grid.PiLocalization₂.flip, Grid.flipLevel, Function.update_self]`. Conclude with `⟨isOpen_KO, le_rfl, fun g hg => (GlobalTheory.FunObj.GivenAdm.mem_glLatCong.mp hg).1⟩`. Simplify using `only [Grid.PiLocalization₂.flip, Grid.flipLevel, Function.update_of_ne hne]`. Conclude with `hlev X)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `(GlobalTheory.FunObj.isTensor_flipTensor hϖ hψc he hνx hJo hJK hth hex hT)`. Use the proof step `(fun w => sz_flipTensor hϖ hψc habs hψ hMx hνx hramx hνUx hJo hJK hJC hth hex hT hB w) z`. Establish `hlen : 6 * e * M ^ 2 * (x :: l).length = 6 * e * M ^ 2 * l.length + 6 * e * M ^ 2`. Simplify using `only [List.length_cons]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hlen, pow_add, mul_assoc]`. Conclude with `key`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sz_flips {G : Grid k} {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} (hϖ : IsUnif ϖ)
     (hψc : HasConductor ψ 1) (he : 1 ≤ e) (habs : ∀ u : kˣ, apow u (1 / 2) ∈ Set.range ι)

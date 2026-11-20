@@ -24,7 +24,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
 include hA in
 
 /- English proof (translation)
-Unfold `kerOf stepC thDistC`. Simplify using `only [hA _ _ _ _ _ _ _ hN hN']`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem kerOf_congr (u : Pr.Word) (i : ℕ) {b : ℕ} (lam' : X.Tau → DomWeight b) (T cA cB) {N : Submodule (𝓞 X.E) (Sp X.E (R.N i))}
     {N' : Submodule (𝓞 X.E) (Sp X.E b)} (hN : IsSdLat N) (hN' : IsSdLat N') (fr fr' Ξ) :
@@ -35,13 +35,13 @@ theorem kerOf_congr (u : Pr.Word) (i : ℕ) {b : ℕ} (lam' : X.Tau → DomWeigh
 include hA in
 
 /- English proof (translation)
-Establish `e1 : matK W Ch sel mu cst L (chTh W Ch sel mu cst A u m2) = matK W Ch sel mu cst L (chTh W Ch sel mu cst A' u m2)`. Use function extensionality and compare the values at `i al be p p'`. Conclude with `kerOf_congr W Ch sel mu cst hA u i _ _ _ _ ⟨p.deco.2.lat, p.deco.2.uni⟩ ⟨p'.deco.2.lat, p'.deco.2.uni⟩ _ _ _`. Establish `e2 : cp1K W Ch sel mu cst L (chTh W Ch sel mu cst A u m2) = cp1K W Ch sel mu cst L (chTh W Ch sel mu cst A' u m2)`. Use function extensionality and compare the values at `al p p' Y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `cp1K`. Conclude with `if_congr Iff.rfl (kerOf_congr W Ch sel mu cst hA u m2 _ _ _ _ ⟨p.deco.2.lat, p.deco.2.uni⟩ ⟨p'.deco.2.lat, p'.deco.2.uni⟩ _ _ _) rfl`. Establish `e3 : cp2K W Ch sel mu cst (chTh W Ch sel mu cst A u m2) = cp2K W Ch sel mu cst (chTh W Ch sel mu cst A' u m2)`. Use function extensionality and compare the values at `p Y d`. Unfold `cp2K`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `if_congr Iff.rfl (kerOf_congr W Ch sel mu cst hA u (m2 + 1) _ _ _ _ ⟨p.deco.2.lat, p.deco.2.uni⟩ ⟨(tilQ sel mu u d).2.lat, (tilQ sel mu u d).2.uni⟩ _ _ _) rfl`. Unfold `chKerC chKer`. Use `congr 1`. Use function extensionality and compare the values at `i al be split_ifs`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e1]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `al`. Use `congr 1`. Rewrite using `[e2]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chKerC_congr (u : Pr.Word) (m2 : ℕ) (b : L.β (m2 + 1)) (hY : YbHyp (R := R) sel mu cst L u m2 b) (P : LevFam X.E X.K R.r Pr.vGs)
     (h : KerEquivC W Ch sel mu cst L A u m2 b hY P) (h' : KerEquivC W Ch sel mu cst L A' u m2 b hY P) :
@@ -85,11 +85,11 @@ variable {B : Base} {X : PreX B.toPre} {I : TC B X} (h : I.Ok) (hp : TC.Pins B X
 include hχ in
 
 /- English proof (translation)
-Establish `hf : Th.chiFac B.host χ a b N N' = Th.chiFac B.host I.chi a b N N'`. Unfold `Th.chiFac`. Rewrite using `[hχ (Th.detId B.host (Th.stdL B.host _) N) (RcHyp.n1_detStd I l Z hN), hχ (Th.detId B.host (Th.stdL B.host _) N') (RcHyp.n1_detStd I l Z hN')]`. Establish `e3 : (I.J.amb B χ).e a b N N' = I.A.e a b N N'` using `by show I.J.V.eNat χ _ _ N N' = I.J.V.eNat I.chi _ _ N N'`. Unfold `Th.VacIn.eNat`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hf]`. Establish `e4 : (I.J.amb B χ).thInd T N N' c x = I.A.thInd T N N' c x`. Use function extensionality and compare the values at `z`. Unfold `Amb.thInd`. Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `m`. Unfold `Amb.jetK`. Rewrite using `[e4, show (I.J.amb B χ).chiF a b N N' = I.A.chiF a b N N' from hf]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem jetK_chi (a b : ℕ) (T) (N : Submodule (𝓞 B.fields.E) (Sp B.fields.E a)) (N' : Submodule (𝓞 B.fields.E) (Sp B.fields.E b)) (c x)
     (hN : IsSdLat N) (hN' : IsSdLat N') : (I.J.amb B χ).jetK T N N' c x = I.A.jetK T N N' c x := by
@@ -114,7 +114,7 @@ theorem jetK_chi (a b : ℕ) (T) (N : Submodule (𝓞 B.fields.E) (Sp B.fields.E
 include hp ht hJ hχ in
 
 /- English proof (translation)
-Substitute `e1 e2` using the available equality. Establish `hK'` using `(RcHyp.hyps_of_isTw I h hp l Z ht hJ I.chi (fun _ _ => rfl) a u).2.2.2 b hY`. Use `⟨⟨b, hY, hK', hF⟩, fun φ z => ?_⟩` and prove the remaining obligations. Rewrite using `[chKerC_congr (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (jetK_chi l Z χ hχ) u _ b hY I.Ps hK hK']`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_cpl (u : B.Word) (a : I.ι) (cst : LocCst B.fields (rowSG (B.primes X) I.sel (I.tup a)))
     (L : ChIdx B.fields (B.primes X) B.R (I.Q a)) (e1 : cst = I.cst a) (e2 : L = I.idx a) (b : L.β (B.R.m - 2 + 1))
@@ -132,11 +132,11 @@ theorem exists_cpl (u : B.Word) (a : I.ι) (cst : LocCst B.fields (rowSG (B.prim
   rfl
 
 /- English proof (translation)
-Take `⟨eM, hs, -, hn, -⟩` from `GlobalTheory.AtG.ramCols_true I h l Z l0 u`. Set `eL : (Z.V.div.Nu u).V ≃ₗ[B.LL] MramV (Pr` to `B.primes X) B.wts I.Ch u := { eM with map_smul' := hs }`. Set `bs` to `ramBas (Pr := B.primes X) B.wts I.Ch hX u`. Establish `hin : ∀ x, Z.V.nuIn u ((bs.equivFun.symm.trans eL.symm) x) = colForm I l h u I.mu0 (colOfCoord (Pr` using `B.primes X) B.wts I.Ch hX u x) := fun x => (hn _).trans (congrArg (fun φ : MramV (Pr := B.primes X) B.wts I.Ch u => colForm I l h u I.mu0 φ.1) (eL.apply_symm_apply _))`. Use `⟨bs.equivFun.symm.trans eL.symm, fun v x y => ?_, hin⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsTotallyComplex B.LL := hX.cplxK`. Use `GlobalTheory.Mem.RowSides.majAt_eq_of_normAt _ _ _ _ v (bs.equivFun.symm.trans eL.symm).toLinearMap (fun x => congrArg (· ^ 2) ?_) x y` and prove the remaining obligations. Use `(Z.V.nuIn_norm u v _).trans ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, hin]`. Use `(GlobalTheory.Core.ColNorm.nrm_stepZero_eq I h hX l u I.mu0 _ (colOfCoord (Pr := B.primes X) B.wts I.Ch hX u x) (fun _ => rfl) v).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(ramInclH_norm (Pr := B.primes X) B.wts I.Ch hX u v (bs.equivFun.symm x)).symm.trans ?_` and prove the remaining obligations. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `congrArg v.embedding (congrFun (bs.equivFun.apply_symm_apply x) i)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_eNu (l0 : I.Law0 l) (u : B.Word) :
     ∃ e : (Fin (ramDim (Pr := B.primes X) B.wts I.Ch hX u) → B.LL) ≃ₗ[B.LL] (Z.V.div.Nu u).V,
@@ -164,11 +164,9 @@ theorem exists_eNu (l0 : I.Law0 l) (u : B.Word) :
 include hJ in
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hT⟩` from `GlobalTheory.AtG.ramCols_true I h l Z l0 u`. Establish `hM` using `(colMatchAll I h hX l Z hJ u a).2 c (colForm I l h u a φ) φ`. Establish `hj` using `(Z.V.nuIn_jN u n).trans (congrArg ((I.fm l u I.mu0).emb 0) hn)`. Distinguish the cases in `ha : a = I.mu0`. Substitute `ha` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `(Z.W.perCol_base_eq_PtilCol u _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hj]`. Conclude with `hM _ z (fun _ => rfl) fun p => h0 u _ p`. Use `(Z.W.perCol_tie u a ha _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hj, ← hT a φ]`.
-
-Conclude with `hM _ z (fun _ => rfl) fun p => h1 u a _ p`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perCol_eq (l0 : I.Law0 l) (e : ∀ a : (I.cols l).Tup, Df.MtCx I a ≃ₗ[ℂ] Z.W.Amb a)
     (h0 : ∀ u F, Df.SameForm I l u I.mu0 F ((Z.W.eMt0 u).symm (e (I.cols l).mu0 F)))
@@ -190,7 +188,7 @@ theorem perCol_eq (l0 : I.Law0 l) (e : ∀ a : (I.cols l).Tup, Df.MtCx I a ≃�
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_cpl h hp l Z ht hJ χ hχ hX u a _ _ (cstT_tup ht a) (idxT_tup ht a) ((colRecC h hp l Z ht hJ χ hχ hX U Xg tr).b ⟨I.tup a, ha⟩ u) ((colRecC h hp l Z ht hJ χ hχ hX U Xg tr).hY ⟨I.tup a, ha⟩ u) ((colRecC h hp l Z ht hJ χ hχ hX U Xg tr).hK ⟨I.tup a, ha⟩ u) ((colRecC h hp l Z ht …`. Rewrite using `[perCol_eq h l Z hJ hX l0 e h0 h1 u a c n _ hn z, ← hc, hz]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem face_pt (l0 : I.Law0 l) (e : ∀ a : (I.cols l).Tup, Df.MtCx I a ≃ₗ[ℂ] Z.W.Amb a)
     (h0 : ∀ u F, Df.SameForm I l u I.mu0 F ((Z.W.eMt0 u).symm (e (I.cols l).mu0 F)))

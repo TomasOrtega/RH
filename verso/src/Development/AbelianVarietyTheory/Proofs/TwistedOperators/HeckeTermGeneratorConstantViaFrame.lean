@@ -17,11 +17,9 @@ namespace GlobalTheory.HeckeGenConst
 open ReciprocityTheory.ChartRestriction.G.PullbackSections ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues Formalism.IndefR.Datum
 
 /- English proof (translation)
-Establish `hcl : ∀ z, z ∈ closure (M : Set V)`. Introduce `z`. Establish `hz : z ∈ Submodule.span ℝ (M : Set V)` using `hM ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact subset_closure hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact subset_closure M.zero_mem`. Consider the case `add x y _ _ hx hy => exact M.toAddSubgroup.topologicalClosure.add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `h1 : ∀ q : ℚ, (q : ℝ) • x ∈ closure (M : Set V)` using `fun q => map_mem_closure (f := fun y : V => (q : ℝ) • y) (continuous_const_smul _) hx fun y hy => by beta_reduce; rw [Rat.cast_smul_eq_qsmul]; exact M.smul_mem q hy`. Conclude with `(Rat.denseRange_cast (𝕜 := ℝ)).induction_on (p := fun c : ℝ => c • x ∈ closure (M : Set V)) c (isClosed_closure.preimage (continuous_id.smul continuous_const)) h1`.
-
-Conclude with `(isClosed_eq hf continuous_const).closure_subset_iff.2 h0 (hcl z)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_rat_span {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [Module ℚ V] (M : Submodule ℚ V)
     (hM : Submodule.span ℝ (M : Set V) = ⊤) {f : V → ℂ} (hf : Continuous f) (h0 : ∀ z ∈ M, f z = 0) (z : V) : f z = 0 := by
@@ -48,9 +46,9 @@ variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : 
   {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom}
 
 /- English proof (translation)
-Establish `he : ∀ τ : D.host.E →+* ℂ, Data.emb τ (v + w) = Data.emb τ v + Data.emb τ w` using `fun τ => by`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Use function extensionality and compare the values at `j`. Simplify using `only [perVec, Pi.add_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `perFr`. Apply the tactic sequence `split_ifs <;> simp [he, Matrix.mulVec_add, hermC, map_add, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem perVec_add (Wt : UnfAt U k x) (v w : Fin r → D.host.E) : perVec Wt (v + w) = perVec Wt v + perVec Wt w := by
   have he : ∀ τ : D.host.E →+* ℂ, Data.emb τ (v + w) = Data.emb τ v + Data.emb τ w := fun τ => by
@@ -61,11 +59,11 @@ theorem perVec_add (Wt : UnfAt U k x) (v w : Fin r → D.host.E) : perVec Wt (v 
   split_ifs <;> simp [he, Matrix.mulVec_add, hermC, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `he : ∀ τ : D.host.E →+* ℂ, Data.emb τ (q • v) = (q : ℂ) • Data.emb τ v` using `fun τ => by`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb, Rat.smul_def]`. Use function extensionality and compare the values at `j`. Simplify using `only [perVec, Pi.smul_apply, Rat.smul_def]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `perFr`. Use `split_ifs`. Rewrite using `[he, Matrix.mulVec_smul]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [he, hermC, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul, map_ratCast]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perVec_smul (Wt : UnfAt U k x) (q : ℚ) (v : Fin r → D.host.E) : perVec Wt (q • v) = q • perVec Wt v := by
   have he : ∀ τ : D.host.E →+* ℂ, Data.emb τ (q • v) = (q : ℂ) • Data.emb τ v := fun τ => by
@@ -82,11 +80,11 @@ theorem perVec_smul (Wt : UnfAt U k x) (q : ℚ) (v : Fin r → D.host.E) : perV
   · simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Set `L : (Fin r → D.host.E) →ₗ[ℚ] (Fin Wt.g → ℂ)` to `⟨⟨perVec Wt, perVec_add Wt⟩, perVec_smul Wt⟩`. Establish `h0` using `eq_zero_of_rat_span (LinearMap.range L) (by`. Rewrite using `[eq_top_iff, ← Wt.per.2.2.2.1]`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨_, perVec_lat Wt a⟩) (GlobalTheory.EtaPinnedCompare.theta_entire Y).continuous (by`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hne v)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h9` using `Y.c9`. Simplify using `[h0] at h9`.
+A detailed English derivation is pending.
 -/
 theorem exists_theta_perVec_ne_zero {Wt : UnfAt U k x} (Y : UnitAt Wt) :
     ∃ v : Fin r → D.host.E, Y.θ (perVec Wt v) ≠ 0 := by
@@ -106,9 +104,9 @@ theorem exists_theta_perVec_ne_zero {Wt : UnfAt U k x} (Y : UnitAt Wt) :
 end Period
 
 /- English proof (translation)
-Use `⟨fun j n => v j * ∑ a', ∑ i, b' i a' * g i n, fun j a => ?_⟩` and prove the remaining obligations. Establish `h : ∑ n, (∑ a', ∑ i, b' i a' * g i n) * b n a = 1`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun a' _ => Finset.sum_comm.trans (hb a' a)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc, ← Finset.mul_sum]`. Rewrite using `[h, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_const_of_orth {K : Type} [CommRing K] {n m : ℕ} {b b' g : Fin n → Fin n → K}
     (hb : ∀ a a', ∑ i, ∑ j, b' i a * g i j * b j a' = if a = a' then 1 else 0) (v : Fin m → K) :
@@ -122,16 +120,16 @@ theorem exists_const_of_orth {K : Type} [CommRing K] {n m : ℕ} {b b' g : Fin n
   rw [h, mul_one]
 
 /- English proof (translation)
-The claim follows from `exists_const_of_orth (b' := fun i a => star (b i a)) (g := V.gram) hb.1 v`.
+A detailed English derivation is pending.
 -/
 theorem exists_map_const {V : HSp D} {b : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (hb : IsONLatBasis V b) {m : ℕ}
     (v : Fin m → D.host.E) : ∃ X : Matrix (Fin m) (Fin V.rank) D.host.E, ∀ j a, ∑ n, X j n * b n a = v j :=
   exists_const_of_orth (b' := fun i a => star (b i a)) (g := V.gram) hb.1 v
 
 /- English proof (translation)
-Establish `e : res T (sg0 D A) = T.σ₀`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0]`. Conclude with `res_embLL T ht.alg ht.laws.pins.2.2.1`. Establish `hg : GoodEmb T.Q.c (res T (sg0 D A))` using `e ▸ T.toCore.good_σ₀`. Take `rfl : σ = res T (sg0 D A)` from `hσ.trans e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, h1, h2, -⟩` from `(GlobalTheory.HolDict.BaseFrame.baseFrT_of_tieIn D G Pl0 T0 A T R κ v₀ hM ht i _ hg hV).2.2 h`. Conclude with `⟨γ, h1, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frAt {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
@@ -148,9 +146,9 @@ theorem exists_frAt {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn 
   exact ⟨γ, h1, h2⟩
 
 /- English proof (translation)
-Establish `h3 : Complex.exp (Real.pi / 2 * ∑ a, e a) * ∏ a, Complex.exp (-(Real.pi / 2 * e a)) = 1`. Rewrite using `[← Complex.exp_sum, ← Complex.exp_add, Finset.sum_neg_distrib, Finset.mul_sum, add_neg_cancel, Complex.exp_zero]`. Establish `h4 : ∏ a, θ a ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hθ a`. Rewrite `h1` using `[← h2, Finset.prod_mul_distrib]`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hμ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `mul_left_cancel₀ (mul_ne_zero hph h4) ?_` and prove the remaining obligations. Take the linear combination `h1 - μ * q * u * ph * K * (∏ a, θ a) * h3`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cancel {ι : Type} [Fintype ι] {u ph K K' μ q w : ℂ} {e θ : ι → ℂ} (hph : ph ≠ 0) (hμ : μ ≠ 0) (hθ : ∀ a, θ a ≠ 0)
     (h1 : Complex.exp (Real.pi / 2 * ∑ a, e a) * (μ * q * w) = ph * K' * ∏ a, θ a)
@@ -168,7 +166,7 @@ end GlobalTheory.HeckeGenConst
 open GlobalTheory.HeckeGenConst GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues in
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsAlgClosed ℂ) ∀ a ∈ Rc, ∀ (C : hkKer (Xo := T.Q.Xo ((i : ℕ) + 1)) P.asIdeal p k (CAt σ) ((T.U ((i : ℕ) + 1) σ).un (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.dictW T i σ hV h).1 ⟨(GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatt …`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeckeGenConst.generator_constant : ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws → GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.SplitLinearModel D → GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.VacFixed D →
     ∀ (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)

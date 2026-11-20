@@ -17,19 +17,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.ResW
 
 /- English proof (translation)
-Introduce `E _ _ _ x ha`. Use `⟨?_, (CG.isUnitary_mk _).symm⟩` and prove the remaining obligations. Establish `hc : ∀ φ ∈ x.2.V, zc E x.1 φ = cex x • φ` using `Classical.epsilon_spec (p := fun c : ℂ => ∀ φ ∈ x.2.V, zc E x.1 φ = c • φ) (by rw [zc_eq_scL]; exact Central.lie_scalar x.2 (1 : Cinf E))`. Establish `hd : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `hpos : (0 : ℝ) < x.1 * Module.finrank ℚ E` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz` using `(zc_comm_mem_eigen E x.1).2.2`. Rewrite using `[rexp, div_eq_zero_iff, or_iff_left hpos.ne']`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hne : (x.1 * (Module.finrank ℚ E : ℂ)) ≠ 0` using `by exact_mod_cast hpos.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨χ, h1, -, h2, -⟩` from `exists_abs_cpow E (-cex x / (x.1 * (Module.finrank ℚ E : ℂ)))`. Establish `hre : (-cex x / (x.1 * (Module.finrank ℚ E : ℂ))).re = 0`. Rewrite using `[← Nat.cast_mul, Complex.div_natCast_re, Complex.neg_re, h0]`. Simplify using the standard rewrite rules. Establish `hχ : χ.IsUnitary` using `fun y => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h2, hre, nu, Model.eq_one_of_isAbsPow (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E 0)]`. Conclude with `isUnitary_one y`. Establish `hn : IsNormalised (x.2.twist χ)`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩ t g`. Establish `h3 : zc E x.1 (mulChi x.1 χ φ) = (0 : ℂ) • mulChi x.1 χ φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hc φ hφ, mul_div_cancel₀ _ hne, ← add_smul, add_neg_cancel, map_smul]`. Simplify using `using (hz _ 0).1 h3 t g`. Take `⟨ω, hω⟩` from `Central.exists_hasCentral E x.1 x.2`. Establish `h4` using `((hω.twist χ).isUnitary_iff.1 (GlobalTheory.SpehPair.isUnitary_of_isNormalised hn)).mul (isUnitary_pow hχ x.1).inv`. Rewrite `h4` using `[mul_inv_cancel_right]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hω.isUnitary_iff.2 h4`. Introduce `hu`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 x.2.ne_bot`. Take `⟨g, hg⟩ : ∃ g, φ.1 g ≠ 0` from `Function.ne_iff.1 fun e => h0 (Subtype.ext e)`. Establish `h1` using `congrArg norm ((hz φ _).1 (hc φ hφ) 1 g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[splitCentre_eq_scalar, hu.norm_eq hφ, norm_mul, Complex.norm_exp]`. Establish `h2` using `(mul_eq_right₀ (norm_ne_zero_iff.2 hg)).1 h1.symm`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rexp_eq_zero_iff_isUnitary : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (x : Letter E), 1 ≤ x.1 → (rexp x = 0 ↔ x.2.IsUnitary) ∧ (x.2.IsUnitary ↔ (CG.mk x.2).IsUnitary) := by
   intro E _ _ _ x ha

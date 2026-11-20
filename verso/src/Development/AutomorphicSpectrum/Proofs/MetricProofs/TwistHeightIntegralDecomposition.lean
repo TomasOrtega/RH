@@ -17,7 +17,7 @@ def joinIdx (i : (k : K) → ι k) (j : Fin 2) : (o : Option K) → Tb ι o
   | some k => i k
 
 /- English proof (translation)
-Use `show ∏ o, u ⟨o, J o⟩ = (∏ k, u ⟨some k, J (some k)⟩) * u ⟨none, J none⟩`. Rewrite using `[Fintype.prod_option, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segre_split (u : (Σ o, Tb ι o) → ℂ) (J : (o : Option K) → Tb ι o) :
     segre u J = segre (basePart₂ u) (fun k => J (some k)) * u ⟨none, J none⟩ := by
@@ -31,7 +31,7 @@ theorem embL_apply (v : Fin 2 → ℂ) (w : ((k : K) → ι k) → ℂ) (J : (o 
     embL v w J = w (fun k => J (some k)) * v (J none) := rfl
 
 /- English proof (translation)
-Introduce `w w' h`. Use function extensionality and compare the values at `i`. Use `congrFun h (joinIdx i 1)` as an intermediate fact. Simplify `this` using `[embL_apply, joinIdx, hv1]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem embL_injective {v : Fin 2 → ℂ} (hv1 : v 1 = 1) :
     Function.Injective (embL v : (((k : K) → ι k) → ℂ) → _) := by
@@ -41,7 +41,7 @@ theorem embL_injective {v : Fin 2 → ℂ} (hv1 : v 1 = 1) :
   simpa [embL_apply, joinIdx, hv1] using this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Take `⟨o, i⟩` from `q`. Apply the tactic sequence `cases o <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glue_oldPart (u : (Σ o, Tb ι o) → ℂ) :
     glue (basePart₂ u) (fun j => u ⟨none, j⟩) = u := by
@@ -50,7 +50,7 @@ theorem glue_oldPart (u : (Σ o, Tb ι o) → ℂ) :
   cases o <;> rfl
 
 /- English proof (translation)
-Use `⟨oldPart_ne hu.1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1 : inc f ∈ twist p Q` using `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hf)`. Establish `h2` using `hu.2 _ h1`. Rewrite `h2` using `[← glue_oldPart u, eval_inc]`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oldPart_mem {p : ℕ} {Q : Ideal (MRing ι)} {u : (Σ o, Tb ι o) → ℂ}
     (hu : u ∈ mcPts (twist p Q)) : basePart₂ u ∈ mcPts Q := by
@@ -61,7 +61,7 @@ theorem oldPart_mem {p : ℕ} {Q : Ideal (MRing ι)} {u : (Σ o, Tb ι o) → �
   exact h2
 
 /- English proof (translation)
-Establish `h1 : (quad p : MRing (Tb ι)) ∈ twist p Q` using `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Establish `h2` using `hu.2 _ h1`. Rewrite `h2` using `[eval_quad]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem quad_eq_zero {p : ℕ} {Q : Ideal (MRing ι)} {u : (Σ o, Tb ι o) → ℂ}
     (hu : u ∈ mcPts (twist p Q)) :
@@ -72,11 +72,9 @@ theorem quad_eq_zero {p : ℕ} {Q : Ideal (MRing ι)} {u : (Σ o, Tb ι o) → �
   rwa [eval_quad] at h2
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `quad_eq_zero hu`. Rewrite `h1` using `[h0]`. Establish `h2 : u ⟨none, (0 : Fin 2)⟩ = 0` using `by simpa using h1`. Take `⟨i, hi⟩` from `hu.1 none`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hi ?_` and prove the remaining obligations. Establish `hi' : i = (0 : Fin 2) ∨ i = (1 : Fin 2)`. Establish `: ∀ j : Fin 2, j = 0 ∨ j = 1` using `by decide`. Conclude with `this i`. Break down `hi' with rfl | rfl` into its components or cases.
-
-Conclude with `h2`. Conclude with `h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem second_ne_zero {p : ℕ} (hp : p ≠ 0) {Q : Ideal (MRing ι)} {u : (Σ o, Tb ι o) → ℂ}
     (hu : u ∈ mcPts (twist p Q)) : u ⟨none, (1 : Fin 2)⟩ ≠ 0 := by
@@ -94,9 +92,9 @@ theorem second_ne_zero {p : ℕ} (hp : p ≠ 0) {Q : Ideal (MRing ι)} {u : (Σ 
   · exact h0
 
 /- English proof (translation)
-Use `⟨by rw [segre_glue, h.1], ?_⟩` and prove the remaining obligations. Use `filter_upwards [h.2] with y' ⟨hd, hm, hΨ⟩`. Use `⟨?_, glue_mem_mcPts hm hv hv1, ?_⟩` and prove the remaining obligations. Use `differentiableAt_pi.mpr fun q => ?_` and prove the remaining obligations. Take `⟨o, i⟩` from `q`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `o with`. Consider the case `none => exact differentiableAt_const _`. Consider the case `some k => exact differentiableAt_pi.mp hd ⟨k, i⟩`. Rewrite using `[segre_glue]`. Conclude with `hΨ`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_isSheet {p e : ℕ} {Q : Ideal (MRing ι)}
     {Ψ : (((o : Option K) → Tb ι o) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {v : Fin 2 → ℂ}
@@ -116,43 +114,37 @@ theorem glue_isSheet {p e : ℕ} {Q : Ideal (MRing ι)}
 
 open Classical in
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Take `⟨hd0, hm0, hΨ0⟩` from `h2.self_of_nhds`. Establish `hρ : v 0 ^ 2 = -(p : ℂ)`. Rewrite `hv` using `[hv1]`. Take the linear combination `hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hρ0 : v 0 ≠ 0`. Introduce `h0`. Rewrite `hρ` using `[h0]`. Establish `: (p : ℂ) = 0` using `by simpa using hρ`. Conclude with `hp (by exact_mod_cast this)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0` using `second_ne_zero hp hm0`. Establish `hne : embL v w ≠ 0`. Introduce `h0`. Rewrite `hΨ0` using `[h1, h0, map_zero]`. Use `congrFun hΨ0 0` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Establish `hw : w ≠ 0`. Introduce `h0`. Conclude with `hne (by rw [h0, map_zero])`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : w i ≠ 0` using `hi`. Establish `hseg : ∀ j : Fin 2, segre (basePart₂ (γ' y)) i * γ' y ⟨none, j⟩ = w i * v j`. Introduce `j`. Use `congrFun h1 (joinIdx i j)` as an intermediate fact. Rewrite `this` using `[segre_split, embL_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Establish `hm : segre (basePart₂ (γ' y)) i ≠ 0`. Introduce `h0`. Use `hseg 1` as an intermediate fact. Rewrite `this` using `[h0, zero_mul, hv1, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `hi' this.symm`. Establish `hay : γ' y ⟨none, (0 : Fin 2)⟩ = v 0 * γ' y ⟨none, (1 : Fin 2)⟩`. Apply `mul_left_cancel₀ hm` to reduce the goal to its premises. Establish `e0` using `hseg 0`. Establish `e1` using `hseg 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `e1` using `[hv1, mul_one]`. Rewrite using `[e0]`. Take the linear combination `(-(v 0)) * e1`. Establish `hcont : ContinuousAt (fun y' => γ' y' ⟨none, (0 : Fin 2)⟩ + v 0 * γ' y' ⟨none, (1 : Fin 2)⟩) y` using `((differentiableAt_pi.mp hd0 _).continuousAt).add (continuousAt_const.mul (differentiableAt_pi.mp hd0 _).continuousAt)`. Establish `hne2 : γ' y ⟨none, (0 : Fin 2)⟩ + v 0 * γ' y ⟨none, (1 : Fin 2)⟩ ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hay]`. Establish `: v 0 * γ' y ⟨none, (1 : Fin 2)⟩ + v 0 * γ' y ⟨none, (1 : Fin 2)⟩ = 2 * (v 0 * γ' y ⟨none, (1 : Fin 2)⟩)` using `by ring`. Rewrite using `[this]`. Conclude with `mul_ne_zero two_ne_zero (mul_ne_zero hρ0 hb0)`. Establish `hline : ∀ᶠ y' in 𝓝 y, γ' y' ⟨none, (0 : Fin 2)⟩ = v 0 * γ' y' ⟨none, (1 : Fin 2)⟩` using `by filter_upwards [h2, hcont.eventually_ne hne2] with y' ⟨_, hm', _⟩ hn`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hq` using `quad_eq_zero hm'`. Establish `hz : (γ' y' ⟨none, (0 : Fin 2)⟩ - v 0 * γ' y' ⟨none, (1 : Fin 2)⟩) * (γ' y' ⟨none, (0 : Fin 2)⟩ + v 0 * γ' y' ⟨none, (1 : Fin 2)⟩) = 0`. Take the linear combination `hq - γ' y' ⟨none, (1 : Fin 2)⟩ ^ 2 * hρ`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp hz).resolve_right hn)`. Set `c : K → (Fin e → ℂ) → ℂ` to `fun k y' => if k = k0 then γ' y' ⟨none, (1 : Fin 2)⟩ else 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `γ : (Fin e → ℂ) → (Σ k, ι k) → ℂ` to `fun y' q => c q.1 y' * basePart₂ (γ' y') q`. Establish `hprod : ∀ y', ∏ k, c k y' = γ' y' ⟨none, (1 : Fin 2)⟩`. Introduce `y'`. Simplify using `[c, Finset.prod_ite_eq']`. Establish `hkey : ∀ y', γ' y' ⟨none, (0 : Fin 2)⟩ = v 0 * γ' y' ⟨none, (1 : Fin 2)⟩ → embL v (segre (γ y')) = segre (γ' y')`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y' hl`. Use function extensionality and compare the values at `J`. Establish `hj : γ' y' ⟨none, J none⟩ = γ' y' ⟨none, (1 : Fin 2)⟩ * v (J none)`. Establish `hJ : ∀ j : Fin 2, γ' y' ⟨none, j⟩ = γ' y' ⟨none, (1 : Fin 2)⟩ * v j`. Introduce `j`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `: j = 0 ∨ j = 1`. Establish `: ∀ j : Fin 2, j = 0 ∨ j = 1` using `by decide`. Conclude with `this j`. Break down `this with rfl | rfl` into its components or cases. Rewrite using `[hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hv1, mul_one]`. Conclude with `hJ _`. Establish `hsm : segre (γ y') = (∏ k, c k y') • segre (basePart₂ (γ' y'))` using `segre_smul (fun k => c k y') (basePart₂ (γ' y'))`. Establish `hs : segre (γ y') (fun k => J (some k)) = γ' y' ⟨none, (1 : Fin 2)⟩ * segre (basePart₂ (γ' y')) (fun k => J (some k))`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsm, hprod]`. Both sides reduce to the same expression. Rewrite using `[embL_apply, segre_split, hj, hs]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨γ, embL_injective hv1 ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hkey y hay, h1]`. Use `filter_upwards [h2, hline] with y' ⟨hd, hm', hΨ'⟩ hl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `differentiableAt_pi.mpr fun q => ?_` and prove the remaining obligations. Establish `hc : DifferentiableAt ℂ (c q.1) y'`.
-
-Distinguish the cases in `hk : q.1 = k0`. Simplify using `only [c, hk, if_true]`. Conclude with `differentiableAt_pi.mp hd _`. Simplify using `only [c, hk, if_false]`. Conclude with `differentiableAt_const _`.
-
-Conclude with `hc.mul (differentiableAt_pi.mp hd _)`. Use `mcPts_smul hQ (fun k => c k y') (fun k => ?_) (oldPart_mem hm')` and prove the remaining obligations. Distinguish the cases in `hk : k = k0`. Simplify `second_ne_zero hp hm'` using `[c, hk]`. Simplify using `[c, hk]`.
-
-Use `show Ψ (embL v (segre (γ y'))) = _`. Rewrite using `[hkey y' hl]`. Conclude with `hΨ'`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sheet_of_twist_sheet {p e : ℕ} (hp : p ≠ 0) {Q : Ideal (MRing ι)} (hQ : IsMultiHomogIdeal Q)
     (k0 : K) {Ψ : (((o : Option K) → Tb ι o) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {v : Fin 2 → ℂ}
@@ -265,17 +257,15 @@ theorem sheet_of_twist_sheet {p e : ℕ} (hp : p ≠ 0) {Q : Ideal (MRing ι)} (
       exact hΨ'
 
 /- English proof (translation)
-Introduce `K _ ι _ p Q e Ψ L' A' L A s v hp hQ hT hΨ hL' hA' hs hv hLh hAh`. Establish `hv1 : v 1 = 1`. Apply the tactic sequence `rcases hv with rfl | rfl <;> simp [vPlus, vMinus]`. Establish `hvq : v 0 ^ 2 + (p : ℂ) * v 1 ^ 2 = 0`. Break down `hv with rfl | rfl` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `vPlus_root p`. Conclude with `vMinus_root p`. Take `⟨k0⟩` from `hQ.1`. Establish `hQh : IsMultiHomogIdeal Q` using `hQ.2.1.2.1`. Use `filter_upwards [sheetIndep (Option K) (Tb ι) (twist p Q) e Ψ L' A' (inc s) hT hΨ hL' hA' hs] with y hind`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `w`. Distinguish the cases in `hγ : ∃ γ, IsSheet Q (pj v Ψ) y w γ`. Establish `hg` using `hγ.choose_spec`. Establish `hg1` using `glue_isSheet hvq (by rw [hv1]; exact one_ne_zero) hg`. Establish `hex : ∃ γ', IsSheet (twist p Q) Ψ y (embL v w) γ'` using `⟨_, hg1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `sheetDensity`. Rewrite using `[dif_pos hex, dif_pos hγ, hind _ _ _ hex.choose_spec hg1]`. Establish `hlog : logNorm A' (inc s) (glue (hγ.choose y) v) = logNorm A s (hγ.choose y)`. Rewrite using `[logNorm, logNorm, eval_inc, hAh _ hg.2.self_of_nhds.2.1]`. Establish `hma : maDensity (fun j y' => pot L' j (glue (hγ.choose y') v)) y = maDensity (fun j y' => pot L j (hγ.choose y')) y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `maDensity_congr_of_eventuallyEq fun j => ?_` and prove the remaining obligations. Use `filter_upwards [hg.2] with y' ⟨_, hm, _⟩`. Simplify using `only [pot, hLh j _ hm]`. Rewrite using `[hlog, hma]`. Establish `hno : ¬ ∃ γ', IsSheet (twist p Q) Ψ y (embL v w) γ'` using `fun ⟨γ', h⟩ => hγ (sheet_of_twist_sheet hp hQh k0 hvq hv1 h)`.
-
-Unfold `sheetDensity`. Rewrite using `[dif_neg hno, dif_neg hγ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem density_twist : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (p : ℕ) (Q : Ideal (MRing ι)) (e : ℕ) (Ψ : (((o : Option K) → Tb ι o) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (L' : Fin e → HermLine (Tb ι)) (A' : HermLine (Tb ι)) (L : Fin e → HermLine ι) (A : HermLine ι) (s : MRing ι) (v : Fin 2 → ℂ), p ≠ 0 → IsArithVar Q (e + 1) → IsArithVar (twist p Q) (e + 1) → IsGoodProj (twist p Q) Ψ → (∀ j, IsSmoothHerm (L' j)) → IsSmoothHerm A' → IsSectionOn (twist p Q) A' (inc s) → (v = vPlus p ∨ v = vMinus p) → (∀ j, ∀ z ∈ mcPts Q, (L' j).h (glue z v) = (L j).h z) → (∀ z ∈ mcPts Q, A'.h (glue z v) = A.h z) → ∀ᵐ y, ∀ w, sheetDensity (twist p Q) Ψ (pot L') (logNorm A' (inc s)) y (embL v w) = sheetDensity Q (pj v Ψ) (pot L) (logNorm A s) y w := by
   intro K _ ι _ p Q e Ψ L' A' L A s v hp hQ hT hΨ hL' hA' hs hv hLh hAh

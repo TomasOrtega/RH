@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DblSchr
 
 /- English proof (translation)
-Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ _ co hco ω hω om hom`. Take `⟨ωd, hωd, omd₀, homd⟩` from `GlobalTheory.T.exists_doubledPairWeilDatum_schrodingerTransport D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco`. Use `⟨dblD _ co, omdOf omd₀, isDblCoord_dblD _ co, ⟨GlobalTheory.WeilM.isLagr_diagCols _ _, GlobalTheory.T.isUnitarySplitting_transportedDoubledWeilDatum D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ωd hωd omd₀ homd, GlobalTheory.T.siegelRule_diagonal_doubledSchroedingerModel …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem doubledModel : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →

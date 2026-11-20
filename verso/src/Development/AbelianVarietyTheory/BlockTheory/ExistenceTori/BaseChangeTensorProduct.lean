@@ -164,14 +164,14 @@ def MaxCusps : Prop :=
   ∀ (D : D7) (T : Top D), LawsP T → ∀ j, InR D j → DualIsLat T.toCore j ∧ ∀ w c, MaxCuspsC T.toCore j w c
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hd k => ⟨hP k, hd k⟩, fun hd k => (hd k).2⟩`.
+Supply the required witnesses or components.
 -/
 example (T : Core D) (j : ℕ) (w : WeightFamilies.Wt D j) (c : ℝ) (P : FDSec (T.X₀ j)) (hP : IsHolCusp (T.X₀ j) (la T j w) P) :
     Deep T j w c P ↔ ∀ k, P k ∈ (T.X₀ j k).SSgt (la T j w k) c :=
   ⟨fun hd k => ⟨hP k, hd k⟩, fun hd k => (hd k).2⟩
 
 /- English proof (translation)
-Rewrite using `[rdGen_tmul, map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (T : Core D) (j N : ℕ) {σ' : KT T j N →+* ℂ} (hσ : IsExt σ') (w : WeightFamilies.Wt D j) (F : Cf T j w) :
     rdGen hσ w (1 ⊗ₜ F) = rd T j w F := by

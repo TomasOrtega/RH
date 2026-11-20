@@ -5,9 +5,9 @@ import Formalism.LocalRingCardinality.Params
 import Formalism.LocalRingCardinality.DataHost
 
 /- English proof (translation)
-Introduce `D J hJ x`. Rewrite using `[FractionalIdeal.mem_inv_iff (FractionalIdeal.coeIdeal_ne_zero.mpr hJ)]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Conclude with `(FractionalIdeal.mem_one_iff _).mp (h _ ((FractionalIdeal.mem_coeIdeal _).mpr ⟨y, hy, rfl⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h z hz`. Take `⟨y, hy, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).mp hz`. Conclude with `(FractionalIdeal.mem_one_iff _).mpr (h y hy)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf38.mem_inv_coe :
     ∀ (D : Formalism.BasicNotions.D7) {J : Ideal (NumberField.RingOfIntegers D.host.E)},

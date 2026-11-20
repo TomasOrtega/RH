@@ -37,29 +37,29 @@ def DcountEq : Prop :=
   ∀ t ∈ labT (D := D), D.ntypes.goodTuple t → dimX X {t} = Module.finrank ℂ (VT X t)
 
 /- English proof (translation)
-Take `⟨hl1, hl2, hl3⟩` from `hL`. Use `⟨hl1, hl2, fun t ht hg => ?_⟩` and prove the remaining obligations. Establish `hT'` using `hT`. Take `⟨j, hj⟩` from `hT`. Establish `hb : ∀ σ, bRow X ι σ = star ((j (D.what₂.onb σ) : EEC X G) : L2X X)` using `fun σ => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hj (D.what₂.onb σ)`. Simplify using `only at h1`. Unfold `bRow`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hf : LinearIndependent ℂ (fun σ => ((j (D.what₂.onb σ) : EEC X G) : L2X X))` using `(D.what₂.onb.toBasis.linearIndependent.map' j.toLinearEquiv.toLinearMap j.toLinearEquiv.ker).map' (EEC X G).subtype (Submodule.ker_subtype _)`. Establish `hli : LinearIndependent ℂ (bRow X ι)`. Rewrite using `[linearIndependent_iff']`. Introduce `s g hs i hi`. Establish `h0 : conjL (muX X) (∑ i ∈ s, (starRingEnd ℂ (g i)) • ((j (D.what₂.onb i) : EEC X G) : L2X X)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Rewrite using `[← hs]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[LinearIsometryEquiv.map_smulₛₗ, conjL_apply, hb σ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : (∑ i ∈ s, (starRingEnd ℂ (g i)) • ((j (D.what₂.onb i) : EEC X G) : L2X X)) = 0` using `(conjL (muX X)).map_eq_zero_iff.1 h0`. Use `(linearIndependent_iff'.1 hf) s (fun i => starRingEnd ℂ (g i)) h1 i hi` as an intermediate fact. Simplify using `using this`. Establish `hspan : ∀ φ ∈ goodSub X G, φ ∈ Submodule.span ℂ (Set.range (bRow X ι))`. Introduce `φ hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨F, hF⟩` from `(range_sEE X hT' ⟨φ, hφ.1⟩).1 hφ`. Establish `e : φ = ((ι (D.sEE F) : Formalism.L2.SG.PoincareInHH.PoincareSetting.HHX X) : L2X X)` using `by rw [hF]`. Rewrite using `[e, ← D.what₂.onb.sum_repr F, map_sum, map_sum, Submodule.coe_sum]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, map_smul, Submodule.coe_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨σ, rfl⟩)`. Set `Sf : Finset (Fin D.what₂.Drows)` to `Finset.univ.filter fun σ => labOf σ = t`. Establish `hEq : VT X t = Submodule.span ℂ (Set.range (fun σ : Sf => bRow X ι σ))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `φ hφ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (hspan φ (hP.1 t hg hφ))`. Use `set φ1 := ∑ σ ∈ Sf, c σ • bRow X ι σ with hφ1`. Use `set φ2 := ∑ σ ∈ Finset.univ.filter (fun σ => ¬ labOf σ = t), c σ • bRow X ι σ with hφ2`. Establish `hsplit : φ = φ1 + φ2`. Rewrite using `[← hc, hφ1, hφ2, Finset.sum_filter_add_sum_filter_not]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1V : φ1 ∈ VT X t` using `Submodule.sum_mem _ fun σ hσ => Submodule.smul_mem _ _ (by`. Use `hl3 σ` as an intermediate fact. Rewrite using `[(Finset.mem_filter.1 hσ).2] at this)` and apply the resulting hypothesis. Establish `h2V : φ2 ∈ VT X t`. Use `Submodule.sub_mem _ hφ h1V` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hsplit, add_sub_cancel_left]`. Then use the resulting hypothesis. Establish `horth : ⟪φ2, φ2⟫_ℂ = 0` using `by conv_lhs => rw [hφ2]`. Rewrite using `[sum_inner]`. Use `Finset.sum_eq_zero fun σ hσ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, hP.2 (labOf σ) t (Finset.mem_filter.1 hσ).2 _ (hl3 σ) _ h2V, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h20 : φ2 = 0` using `inner_self_eq_zero.1 horth`. Rewrite using `[hsplit, h20, add_zero, hφ1]`. Conclude with `Submodule.sum_mem _ fun σ hσ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨σ, hσ⟩, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨σ, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hl3 σ` as an intermediate fact. Rewrite `this` using `[(Finset.mem_filter.1 σ.2).2]`. Then use the resulting hypothesis. Establish `hli' : LinearIndependent ℂ (fun σ : Sf => bRow X ι σ)` using `hli.comp (Subtype.val : Sf → _) Subtype.val_injective`. Rewrite using `[hD t ht hg, hEq, finrank_span_eq_card hli', Fintype.card_coe]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rowsGood_of (G : GoodOp X) (ι : D.s.HH ≃ₗᵢ[ℂ] Formalism.L2.SG.PoincareInHH.PoincareSetting.HHX X) (hT : RowDictTie X G ι)
     (hL : LabTie X ι) (hP : ProjT X G) (hD : DcountEq X) : RowsGood X := by
@@ -139,7 +139,7 @@ def EtGood (G : GoodOp X) : Prop :=
   ∀ t : Tup2 D, D.ntypes.goodTuple t → ∀ φ : L2X X, G.Rg (ReT X {t} φ) = ReT X {t} φ
 
 /- English proof (translation)
-Establish `h2` using `(Submodule.mem_inf.mp h).2`. Rewrite `h2` using `[LinearMap.mem_ker]`. Simplify `h2` using `[sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_VT {t : Tup2 D} {φ : L2X X} (h : φ ∈ VT X t) : ReT X {t} φ = φ := by
   have h2 := (Submodule.mem_inf.mp h).2
@@ -147,11 +147,11 @@ theorem mem_VT {t : Tup2 D} {φ : L2X X} (h : φ ∈ VT X t) : ReT X {t} φ = φ
   simpa [sub_eq_zero] using h2
 
 /- English proof (translation)
-Use `⟨fun t ht φ hφ => ?_, fun t t' htt φ hφ φ' hφ' => ?_⟩` and prove the remaining obligations. Use `Submodule.mem_inf.mpr ⟨(Submodule.mem_inf.mp hφ).1, ?_⟩` and prove the remaining obligations. Establish `h1` using `hG t ht φ`. Rewrite `h1` using `[mem_VT X hφ]`. Rewrite using `[LinearMap.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify `h1` using `[sub_eq_zero]`. Rewrite using `[← mem_VT X hφ, ← mem_VT X hφ', hA, hC]`. Establish `hE0 : ({t} : Set (Tup2 D)) ∩ {t'} = ∅`. Use extensionality with `s`. Simplify using `only [Set.mem_inter_iff, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false, not_and]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Conclude with `htt`. Rewrite using `[hE0, hE, inner_zero_right]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projT_of (G : GoodOp X) (hC : EtConv X) (hE : EtEmpty X) (hA : EtAdj X) (hG : EtGood X G) : ProjT X G := by
   refine ⟨fun t ht φ hφ => ?_, fun t t' htt φ hφ φ' hφ' => ?_⟩
@@ -169,13 +169,13 @@ theorem projT_of (G : GoodOp X) (hC : EtConv X) (hE : EtEmpty X) (hA : EtAdj X) 
     rw [hE0, hE, inner_zero_right]
 
 /- English proof (translation)
-Introduce `φ`. Establish `hES : ∀ g, (ES (D` using `D) ∅).coeff g = 0 := by`. Introduce `g`. Simplify using `[ES]`. Establish `hg : egA X (ES (D` using `D) ∅) = 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Simplify using `[egA, hES]`. Establish `he : eT X ∅ = 0`. Use function extensionality and compare the values at `x`. Simplify using `[eT, Formalism.MainNotions.S.AutInst.convF, hg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `ReT`. Use `split_ifs with h`. Establish `hT` using `(Classical.choose_spec h).2`. Establish `h0 : ∀ x, ⟪x, (Classical.choose h) φ⟫_ℂ = 0` using `fun x => by`. Rewrite using `[hT x φ, he]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `inner_self_eq_zero.mp (h0 _)`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem etEmpty : EtEmpty X := by
   intro φ
@@ -198,13 +198,11 @@ theorem etEmpty : EtEmpty X := by
   · rfl
 
 /- English proof (translation)
-Establish `: X.B.μf.IsMulRightInvariant` using `Formalism.L2.SG.Closed.GfUnimod_holds X.B.I X.B.μf`. Establish `hK` using `Formalism.L2.SG.Closed.level_subgroup_is_group X`. Establish `hL` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Establish `he1 : X.B.e 1 ≠ 0`. Rewrite using `[X.e_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : X.B.I.Gf) ∈ X.K2` using `hK.1`. Rewrite using `[if_pos (show (1 : X.B.I.Gf) ∈ Formalism.L2.SG.HidaSetting.K2set X.B.I X.B.g X.e0 X.z0 X.bw from h1)]`. Establish `hc : X.chi2 1 ≠ 0`. Introduce `h0`. Use `hK.2.2.2.2 1 h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Establish `hv : ((X.B.μf X.K2).toReal : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero]`. Conclude with `(ENNReal.toReal_pos hL.2.2.1.ne' hL.2.2.2.ne).ne'`.
-
-Conclude with `div_ne_zero (star_ne_zero.2 hc) hv`. Conclude with `Formalism.MainNotions.BridgeLemma.inv_invariant_of_bi_invariant X.B.μf (fun g => ‖X.B.e g‖) X.B.e_adm.1.continuous.norm X.B.Re_spec.1.norm (norm_pos_iff.2 he1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invInvariant_muf : X.B.μf.IsInvInvariant := by
   have : X.B.μf.IsMulRightInvariant := Formalism.L2.SG.Closed.GfUnimod_holds X.B.I X.B.μf
@@ -225,15 +223,13 @@ theorem invInvariant_muf : X.B.μf.IsInvInvariant := by
 def EtSA : Prop := ∀ (S : Set (Tup2 D)) (x : X.B.I.Gf), star (eT X S x⁻¹) = eT X S x
 
 /- English proof (translation)
-Use `haveI := invInvariant_muf X`. Introduce `S φ ψ`. Establish `hT` using `reT_spec X (etInt_holds X) S`. Establish `hreg : ∀ g : X.B.I.Gf, ⟪X.B.R ((1, g) : X.B.I.GA) φ, ψ⟫_ℂ = ⟪φ, X.B.R ((1, g⁻¹) : X.B.I.GA) ψ⟫_ℂ`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Formalism.L2.SG.EvalTOntoPhi.inner_reg X ((1, g⁻¹) : X.B.I.GA) φ ψ` as an intermediate fact. Rewrite using `[this, Prod.inv_mk, inv_one, inv_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← starRingEnd_apply, ← integral_conj]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (starRingEnd ℂ) (eT X S g * ⟪ψ, X.B.R ((1, g) : X.B.I.GA) φ⟫_ℂ) = _`. Rewrite using `[map_mul]`. Use `show _ = star (eT X S g) * ⟪φ, X.B.R ((1, g⁻¹) : X.B.I.GA) ψ⟫_ℂ`. Rewrite using `[← hreg g, inner_conj_symm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫ g, star (eT X S g⁻¹) * ⟪φ, X.B.R ((1, g) : X.B.I.GA) ψ⟫_ℂ ∂X.B.μf := by`. Rewrite using `[← MeasureTheory.integral_inv_eq_self (fun g => star (eT X S g) * ⟪φ, X.B.R ((1, g⁻¹) : X.B.I.GA) ψ⟫_ℂ) X.B.μf]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show star (eT X S g⁻¹) * ⟪φ, X.B.R ((1, g⁻¹⁻¹) : X.B.I.GA) ψ⟫_ℂ = _`. Rewrite using `[inv_inv]`.
-
-Use `_ = ∫ g, eT X S g * ⟪φ, X.B.R ((1, g) : X.B.I.GA) ψ⟫_ℂ ∂X.B.μf := by`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show star (eT X S g⁻¹) * _ = _`. Rewrite using `[hSA S g]`. Use `_ = ⟪φ, ReT X S ψ⟫_ℂ := (hT.2 φ ψ).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etAdj_of (hSA : EtSA X) : EtAdj X := by
   haveI := invInvariant_muf X
@@ -265,9 +261,9 @@ theorem etAdj_of (hSA : EtSA X) : EtAdj X := by
     _ = ⟪φ, ReT X S ψ⟫_ℂ := (hT.2 φ ψ).symm
 
 /- English proof (translation)
-Introduce `t ht φ`. Establish `h1` using `Formalism.L2.SG.Pf.AllRowsRMul.isRConvF_conv X G.Rg_spec (reT_spec X (etInt_holds X) {t})`. Establish `e : X.B.I.convF X.B.μf (eg X) (eT X {t}) = eT X {t}`. Rewrite using `[← goodIdempotent_eq, ← ES_good, hEC]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Set.inter_eq_right.2 (Set.singleton_subset_iff.2 ht)`. Rewrite `h1` using `[e]`. Establish `h2` using `isRConvF_unique X h1 (reT_spec X (etInt_holds X) {t})`. Conclude with `congrArg (fun T : L2X X →L[ℂ] L2X X => T φ) h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etGood_of (G : GoodOp X)
     (hEC : ∀ S S' : Set (Tup2 D), X.B.I.convF X.B.μf (egA X (ES S')) (eT X S) = eT X (S' ∩ S)) : EtGood X G := by

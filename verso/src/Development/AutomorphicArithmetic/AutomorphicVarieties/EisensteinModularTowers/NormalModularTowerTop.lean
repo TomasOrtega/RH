@@ -7,7 +7,7 @@ attribute [local instance] algMdl algPoly algRat
 
 attribute [-instance] UpperTheory.V.Alg.IsCO.toIsLocalRing in
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X M hM`. Conclude with `UpperTheory.normal_modularTowerTop_algebraModel X M hM`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.normal_modularTowerTop :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) {M : ℕ}, M ≠ 0 → Normal (topF X M) (topL X M) := by

@@ -17,11 +17,11 @@ namespace GlobalTheory.BKGal.CoverBridge
 variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a]
 
 /- English proof (translation)
-Take `⟨z₀, ω, hω, hz, h⟩` from `exists_gen l a`. Establish `h1` using `one_lt_pow_l l a`. Establish `hω' : k ω = ω ^ l ^ s` using `hk ω (by`. Rewrite using `[← Nat.sub_add_cancel h1.le, pow_succ, hω.pow_eq_one, one_mul])`. Establish `hd : ¬ l ∣ l ^ a - 1` using `fun h => hl.out.not_dvd_one ((Nat.dvd_sub_iff_right h1.le (dvd_pow_self l (NeZero.ne a))).1 h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Per.σF k (Fq.val l a z₀) = Fq.val l a z₀ ^ l ^ s`. Use `GlobalTheory.UnramIdem.tilt_pow (k := l ^ s) hd dvd_rfl hz fun n => ?_` and prove the remaining obligations. Take `⟨y, y1, y2, y3⟩` from `hz n`. Use `⟨Per.σO k y, ?_, by rw [← map_pow, y2, map_one], ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RingIface.sigO_coe l, ← map_pow, y1, GlobalTheory.RingBasics.σC_coe, hω']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.AdicMaps.coeff_galois l k _ n y y3`. Break down `eq_or_ne z 0 with h0 | h0` into its components or cases. Rewrite using `[h0, map_zero, map_zero, zero_pow (pow_pos hl.out.pos s).ne']`. Take `⟨j, rfl⟩` from `h z h0`. Rewrite using `[map_pow, map_pow, h2, ← pow_mul, ← pow_mul, mul_comm]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galF_val {k : GQ l} {s : ℕ} (hk : ∀ x : Om l, x ^ l ^ a = x → k x = x ^ l ^ s) (z : Fq l a) :
     Per.σF k (Fq.val l a z) = Fq.val l a z ^ l ^ s := by
@@ -43,7 +43,7 @@ theorem galF_val {k : GQ l} {s : ℕ} (hk : ∀ x : Om l, x ^ l ^ a = x → k x 
     rw [map_pow, map_pow, h2, ← pow_mul, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Use `(GlobalTheory.RingIface.sigA_coeff l k _ n).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Per.σF k (Fq.val l a (w.coeff n)) = Fq.val l a (((sigma l a ^ s) w).coeff n)`. Rewrite using `[coeff_sigma_pow, map_pow, galF_val hk]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem galA_wA {k : GQ l} {s : ℕ} (hk : ∀ x : Om l, x ^ l ^ a = x → k x = x ^ l ^ s) (w : Wq l a) :
     Per.σA k (wA l a w) = wA l a ((sigma l a ^ s) w) := by
@@ -55,9 +55,9 @@ theorem galA_wA {k : GQ l} {s : ℕ} (hk : ∀ x : Om l, x ^ l ^ a = x → k x =
 variable {e : ℕ} [NeZero e]
 
 /- English proof (translation)
-Establish `hfix` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hk`. Introduce `n`. Use `⟨ϖ.ratio k n, ?_, ?_, ϖ.coeff_kummer k n⟩` and prove the remaining obligations. Rewrite using `[PiSys.coe_ratio, ← map_pow, div_pow, ← map_pow, ϖ.seq_pow, hζ, mul_div_cancel_right₀ _ (ϖ.seq_ne_zero 0)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[SubmonoidClass.coe_pow, PiSys.coe_ratio, ← map_pow, div_pow, ← map_pow, hfix _ (IntermediateField.subset_adjoin _ _ ⟨n, rfl⟩), div_self (pow_ne_zero _ (ϖ.seq_ne_zero n)), map_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isTiltOf_kummer (ϖ : PiSys l e) {k : GQ l} (hk : k ∈ ϖ.GKinf) {ζ : Om l}
     (hζ : k (ϖ.seq 0) = ζ * ϖ.seq 0) : IsTiltOf ζ e (ϖ.kummer k) := by
@@ -74,9 +74,9 @@ theorem isTiltOf_kummer (ϖ : PiSys l e) {k : GQ l} (hk : k ∈ ϖ.GKinf) {ζ : 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `n generalizing w with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, ih, emb_sigma]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem emb_sigma_pow {O : Type} [CommRing O] [Algebra ℤ_[l] O] (t : Wq l a →ₐ[ℤ_[l]] O) (n : ℕ)
     (τ : ZMod a) (w : Wq l a) : emb t τ ((sigma l a ^ n) w) = emb t (τ - n) w := by
@@ -89,18 +89,18 @@ theorem emb_sigma_pow {O : Type} [CommRing O] [Algebra ℤ_[l] O] (t : Wq l a �
     ring
 
 /- English proof (translation)
-Rewrite using `[mem_resSub, ← he, pow_succ, GlobalTheory.MemLoc.IsTiltOf.pow_eq_one (isTiltOf_kummer ϖ hk hζ), one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kummer_mem_resSub (ϖ : PiSys l e) {k : GQ l} (hk : k ∈ ϖ.GKinf) {ζ : Om l}
     (hζ : k (ϖ.seq 0) = ζ * ϖ.seq 0) (he : e + 1 = l ^ a) : ϖ.kummer k ∈ resSub l a := by
   rw [mem_resSub, ← he, pow_succ, GlobalTheory.MemLoc.IsTiltOf.pow_eq_one (isTiltOf_kummer ϖ hk hζ), one_mul]
 
 /- English proof (translation)
-Use `RingHom.congr_fun (ringHom_ext_of_sep ((Per.σA k).comp (ϖ.ev a)) ((ϖ.ev a).comp ((rescale (WittVector.teichmuller l z)).comp (PowerSeries.map ((sigma l a ^ s : Wq l a ≃ₐ[ℤ_[l]] Wq l a) : Wq l a →+* Wq l a)))) (fun w => ?_) ?_ fun y hy => ϖ.sep_teich y fun n => ?_) x` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, PiSys.ev_C, galA_wA hk, map_C]`. Establish `: rescale (WittVector.teichmuller l z) (C ((sigma l a ^ s) w)) = C ((sigma l a ^ s) w)`. Use `PowerSeries.ext fun m => ?_` and prove the remaining obligations. Rewrite using `[coeff_rescale, coeff_C]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[h, pow_zero, one_mul]`. Rewrite using `[mul_zero]`. Rewrite using `[RingHom.coe_coe, this, PiSys.ev_C]`. Simplify using `only [RingHom.comp_apply, PiSys.ev_X, map_X, rescale_X, map_mul, PiSys.ev_C, PiSys.gal_teich, PiSys.mu, wA_teich, hz, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Dvd.dvd.trans ?_ (hy n)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, PiSys.ev_X, PiSys.gal_teich, mul_pow]`. Conclude with `dvd_mul_left _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem galA_ev (ϖ : PiSys l e) {k : GQ l} {s : ℕ} (hk : ∀ x : Om l, x ^ l ^ a = x → k x = x ^ l ^ s)
     (z : Fq l a) (hz : Fq.val l a z = ϖ.kummer k) (x : (Wq l a)⟦X⟧) :
@@ -125,7 +125,7 @@ theorem galA_ev (ϖ : PiSys l e) {k : GQ l} {s : ℕ} (hk : ∀ x : Om l, x ^ l 
     exact dvd_mul_left _ _
 
 /- English proof (translation)
-Use `Subtype.ext ((algebraMap (Om l) ℂ_[l]).injective ?_)` and prove the remaining obligations. Establish `h1` using `congrArg (fun y : OC l => (y : ℂ_[l])) (intToOC_thetaW a LL (WittVector.teichmuller l z))`. Simplify using `only [coe_intToOC, wA_teich, WittVector.fontaineTheta_teichmuller, hz] at h1`. Conclude with `h1.trans (GlobalTheory.MemLoc.IsTiltOf.untilt_eq (isTiltOf_kummer ϖ hk hζ))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaW_teich (ϖ : PiSys l e) {k : GQ l} (hk : k ∈ ϖ.GKinf) (LL : FinExt l) [HasUnr a LL]
     {ζ : ↥LL.1} (hζ : k (ϖ.seq 0) = (ζ : Om l) * ϖ.seq 0) (z : Fq l a) (hz : Fq.val l a z = ϖ.kummer k) :
@@ -136,7 +136,7 @@ theorem thetaW_teich (ϖ : PiSys l e) {k : GQ l} (hk : k ∈ ϖ.GKinf) (LL : Fin
   exact h1.trans (GlobalTheory.MemLoc.IsTiltOf.untilt_eq (isTiltOf_kummer ϖ hk hζ))
 
 /- English proof (translation)
-Use `PowerSeries.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[ringAct_apply, coeff_rescale, coeff_toAc, coeff_toAc, coeff_rescale, coeff_map, map_mul, map_pow, map_mul, map_pow, hc]`. Use `congr 2`. Rewrite using `[RingHom.coe_coe, emb_sigma_pow, ZMod.natCast_zmod_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem toAc_rescale {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [NormedField K] [IsUltrametricDist K]
     [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a]
@@ -151,7 +151,7 @@ theorem toAc_rescale {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [NormedField 
   rw [RingHom.coe_coe, emb_sigma_pow, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((thetaW a LL ((sigma l a ^ (-τ).val) (WittVector.teichmuller l z)) : ↥(OL LL)) : ↥LL.1) = _`. Rewrite using `[sigma_pow_teich, map_pow, SubmonoidClass.coe_pow, thetaW_teich ϖ hk LL hζ z hz, TameGal.root, powL_apply]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem algebraMap_emb_teich (ϖ : PiSys l e) {k : GQ l} (hk : k ∈ ϖ.GKinf) (LL : FinExt l) [HasUnr a LL]
     [TameDescentExponentData ↥LL.1 l e a] (γ : TameGal ↥LL.1 l e a)
@@ -163,13 +163,13 @@ theorem algebraMap_emb_teich (ϖ : PiSys l e) {k : GQ l} (hk : k ∈ ϖ.GKinf) (
   simp
 
 /- English proof (translation)
-Introduce `f f' hf'`. Take `⟨x, rfl⟩` from `exists_eq_sum_toAc t K (Module.Free.chooseBasis ℤ_[l] O) f`. Use `set o := Module.Free.chooseBasis ℤ_[l] O`. Establish `hf : f' = ∑ j, o j • toAc t K (rescale (WittVector.teichmuller l z) (PowerSeries.map ((sigma l a ^ γ.shift.val : Wq l a ≃ₐ[ℤ_[l]] Wq l a) : Wq l a →+* Wq l a) (x j)))`. Use function extensionality and compare the values at `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hf' τ]`. Establish `h1 : (fun σ => (((∑ j, o j • toAc t K (x j)) σ : A O K) : K⟦X⟧)) = ∑ j, algebraMap O K (o j) • (fun σ => (toAc t K (x j) σ : K⟦X⟧))`. Use function extensionality and compare the values at `σ`. Simplify using `[Finset.sum_apply, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_sum]`. Simplify using `only [map_smul, Finset.sum_apply, Pi.smul_apply]`. Simplify using `[algebraMap_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[toAc_rescale t γ _ hroot]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hf` using the available equality. Simplify using `only [map_sum, map_smul, PiSys.iTot_toAc, galOA_tmul, galA_ev ϖ hunr z hz]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem covers_of_root {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O]
     [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K]
@@ -201,7 +201,7 @@ end GlobalTheory.BKGal.CoverBridge
 open GlobalTheory.BKGal.CoverBridge in
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ LL _ _ γ k hk hunr hζ`. Establish `hmem` using `kummer_mem_resSub ϖ hk hζ (TameDescentExponentData.succ_eq (K := ↥LL.1) (l := l) (e := e) (a := a))`. Conclude with `covers_of_root (thetaW a LL) ϖ γ hunr ⟨ϖ.kummer k, hmem⟩ rfl (algebraMap_emb_teich ϖ hk LL γ hζ ⟨ϖ.kummer k, hmem⟩ rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BKGal.covers_of_action : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e)
     (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (γ : TameGal ↥LL.1 l e a), ∀ k ∈ ϖ.GKinf,

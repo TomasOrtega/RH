@@ -8,19 +8,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.FrobeniusOrbi
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hx' : Valued.v (x : v.adicCompletion L) = 1` using `hx`. Establish `hy1 : Valued.v (algebraMap (𝓞 L) (v.adicCompletion L) y) = 1`. Rewrite using `[← hx']`. Apply `Valuation.map_eq_of_sub_lt` to reduce the goal to its premises. Rewrite using `[Valuation.map_sub_swap, hx']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Establish `hy2 : v.valuation L (algebraMap (𝓞 L) L y) = 1`. Rewrite using `[← ReciprocityTheory.Aut.adic_valued_algebraMap, ← ReciprocityTheory.Aut.adic_algebraMap_R]`. Conclude with `hy1`. Establish `hnot : y ∉ v.asIdeal` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem v).mp hy2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy0 : (y : L) ≠ 0`. Introduce `h`. Apply `hnot` to reduce the goal to its premises. Establish `: y = 0` using `by exact_mod_cast h`. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `v.asIdeal.zero_mem`. Use `⟨hnot, Units.mk0 (y : L) hy0, rfl, ?_⟩` and prove the remaining obligations. Establish `hk : ((atFin v (Units.mk0 (y : L) hy0) : (v.adicCompletion L)ˣ) : v.adicCompletion L) = algebraMap (𝓞 L) (v.adicCompletion L) y` using `rfl`. Establish `hne : algebraMap (𝓞 L) (v.adicCompletion L) y ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy1` using `[h, map_zero]`. Conclude with `zero_ne_one hy1`. Establish `e : ((x * (atFin v (Units.mk0 (y : L) hy0))⁻¹ : (v.adicCompletion L)ˣ) : v.adicCompletion L) - 1 = ((x : v.adicCompletion L) - algebraMap (𝓞 L) (v.adicCompletion L) y) * (algebraMap (𝓞 L) (v.adicCompletion L) y)⁻¹`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, hk, sub_mul, mul_inv_cancel₀ hne]`. Rewrite using `[e, map_mul, map_inv₀, hy1, inv_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Generalize the expression as in `Valued.v ((x : v.adicCompletion L) - algebraMap (𝓞 L) (v.adicCompletion L) y) = g at hy`. Distinguish the cases in `hg : g = 0`. Rewrite using `[hg]`. Conclude with `zero_le`. Rewrite `hy`, the goal using `[← WithZero.exp_log hg]`.
-
-Rewrite `hy` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem localUnit_div_congr_one {L : Type} [Field L] [NumberField L]
     (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ) (hx : IsUnitAt v x) (y : 𝓞 L)
@@ -65,9 +63,9 @@ theorem localUnit_div_congr_one {L : Type} [Field L] [NumberField L]
     omega
 
 /- English proof (translation)
-Use `Fact.mk hp` as an intermediate fact. Establish `hcard : Nat.card (𝓞 L ⧸ I) = p`. Rewrite using `[← hN, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: Finite (𝓞 L ⧸ I)` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact hp.ne_zero)`. Establish `: Nontrivial (𝓞 L ⧸ I)` using `Ideal.Quotient.nontrivial_iff.mpr hI`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `mem_multiples_of_prime_card hcard (g := (1 : 𝓞 L ⧸ I)) (g' := Ideal.Quotient.mk I y) one_ne_zero`. Take `⟨a, ha⟩` from `h`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, map_natCast, ← ha]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_nat_congr_of_absNorm_prime {L : Type} [Field L] [NumberField L]
     (I : Ideal (𝓞 L)) (hI : I ≠ ⊤) {p : ℕ} (hp : p.Prime) (hN : Ideal.absNorm I = p) (y : 𝓞 L) :
@@ -87,15 +85,15 @@ theorem exists_nat_congr_of_absNorm_prime {L : Type} [Field L] [NumberField L]
 open Classical in
 
 /- English proof (translation)
-Introduce `L _ _ v x hx`. Take `⟨y, hy⟩` from `ReciprocityTheory.Aut.adic_exists_approx v (x : v.adicCompletion L) (le_of_eq hx)`. Use `⟨?_, fun p hp hN => ?_⟩` and prove the remaining obligations. Take `⟨h1, k, hk, h2⟩` from `localUnit_div_congr_one v x hx y hy`. Conclude with `⟨k, y, hk, h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `exists_nat_congr_of_absNorm_prime v.asIdeal v.isPrime.ne_top hp hN y`. Establish `hya : Valued.v (algebraMap (𝓞 L) (v.adicCompletion L) (y - (a : 𝓞 L))) < 1`. Establish `h3 : Valued.v (algebraMap (𝓞 L) (v.adicCompletion L) (y - (a : 𝓞 L))) = v.valuation L (algebraMap (𝓞 L) L (y - (a : 𝓞 L)))` using `ReciprocityTheory.Aut.adic_valued_algebraMap v (algebraMap (𝓞 L) L (y - (a : 𝓞 L)))`. Rewrite using `[h3]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem v _).mpr ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxa : Valued.v ((x : v.adicCompletion L) - algebraMap (𝓞 L) (v.adicCompletion L) (a : 𝓞 L)) < 1`. Establish `e : (x : v.adicCompletion L) - algebraMap (𝓞 L) (v.adicCompletion L) (a : 𝓞 L) = ((x : v.adicCompletion L) - algebraMap (𝓞 L) (v.adicCompletion L) y) + algebraMap (𝓞 L) (v.adicCompletion L) (y - (a : 𝓞 L))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt hy hya)`. Take `⟨h1, k, hk, h2⟩` from `localUnit_div_congr_one v x hx (a : 𝓞 L) hxa`. Use `⟨a, k, ?_, by simpa using hk, h2⟩` and prove the remaining obligations. Rewrite using `[Nat.coprime_comm, hp.coprime_iff_not_dvd]`. Introduce and unpack `⟨c, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `h1` to reduce the goal to its premises. Establish `hpm : ((p : ℕ) : 𝓞 L) ∈ v.asIdeal` using `hN ▸ Ideal.absNorm_mem v.asIdeal`. Use `push_cast`. Conclude with `v.asIdeal.mul_mem_right _ hpm`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem localUnit_congr_global :
     ∀ (L : Type) [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ), IsUnitAt v x → (∃ (k : Lˣ) (y : 𝓞 L), (k : L) = (y : L) ∧ y ∉ v.asIdeal ∧ Valued.v (((x * (atFin v k)⁻¹ : (v.adicCompletion L)ˣ) : v.adicCompletion L) - 1) ≤ WithZero.exp (-1 : ℤ)) ∧ ∀ p : ℕ, p.Prime → Ideal.absNorm v.asIdeal = p → ∃ (a : ℕ) (k : Lˣ), a.Coprime p ∧ (k : L) = (a : L) ∧ Valued.v (((x * (atFin v k)⁻¹ : (v.adicCompletion L)ˣ) : v.adicCompletion L) - 1) ≤ WithZero.exp (-1 : ℤ) := by

@@ -17,7 +17,7 @@ section Restrict
 variable {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] [IsGalois F Ω]
 
 /- English proof (translation)
-Rewrite using `[← topologicalAbelianizationEquiv_mk, restrictAb_topologicalAbelianizationEquiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictAb_restrictNormalHom (E : IntermediateField F Ω) [Normal F E]
     (h : E ≤ maximalAbelianExtension F Ω) (g : Gal(Ω/F)) :
@@ -28,7 +28,7 @@ theorem restrictAb_restrictNormalHom (E : IntermediateField F Ω) [Normal F E]
 end Restrict
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd (n • Multiplicative.toAdd z) = Multiplicative.ofAdd 0`. Rewrite using `[nsmul_eq_mul, ZMod.natCast_self, zero_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem zmod_pow_eq_one {n : ℕ} (z : Multiplicative (ZMod n)) : z ^ n = 1 := by
   change Multiplicative.ofAdd (n • Multiplicative.toAdd z) = Multiplicative.ofAdd 0
@@ -52,27 +52,27 @@ theorem charAbs_apply (g : Gal(Ω/K)) :
   rfl
 
 /- English proof (translation)
-The claim follows from `χ.continuous.comp (InfiniteGalois.restrictNormalHom_continuous _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_charAbs : Continuous (charAbs χ) :=
   χ.continuous.comp (InfiniteGalois.restrictNormalHom_continuous _)
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.coe_ker]`. Conclude with `(isOpen_discrete {1}).preimage (continuous_charAbs χ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_charAbs : IsOpen ((charAbs χ).ker : Set Gal(Ω/K)) := by
   rw [MonoidHom.coe_ker]
   exact (isOpen_discrete {1}).preimage (continuous_charAbs χ)
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.coe_ker]`. Conclude with `(isClosed_discrete {1}).preimage (continuous_charAbs χ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_ker_charAbs : IsClosed ((charAbs χ).ker : Set Gal(Ω/K)) := by
   rw [MonoidHom.coe_ker]
   exact (isClosed_discrete {1}).preimage (continuous_charAbs χ)
 
 /- English proof (translation)
-The claim follows from `Subgroup.topologicalClosure_minimal _ (commutator_le_ker_of_comm _) (isClosed_ker_charAbs χ)`.
+A detailed English derivation is pending.
 -/
 theorem closure_commutator_le_ker_charAbs :
     (commutator Gal(Ω/K)).topologicalClosure ≤ (charAbs χ).ker :=
@@ -83,7 +83,7 @@ def charAb : (maximalAbelianExtension K Ω ≃ₐ[K] maximalAbelianExtension K �
     (topologicalAbelianizationEquiv K Ω).symm.toMulEquiv.toMonoidHom
 
 /- English proof (translation)
-Rewrite using `[← topologicalAbelianizationEquiv_mk]`. Express the relevant statement in the definitionally equal form `QuotientGroup.lift _ (charAbs χ) (closure_commutator_le_ker_charAbs χ) ((topologicalAbelianizationEquiv K Ω).symm (topologicalAbelianizationEquiv K Ω _)) = _`. Rewrite using `[ContinuousMulEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charAb_restrictNormalHom (g : Gal(Ω/K)) :
     charAb χ (AlgEquiv.restrictNormalHom (maximalAbelianExtension K Ω) g) = charAbs χ g := by
@@ -96,7 +96,7 @@ theorem charAb_restrictNormalHom (g : Gal(Ω/K)) :
 def charField : IntermediateField K Ω := fixedField (charAbs χ).ker
 
 /- English proof (translation)
-The claim follows from `InfiniteGalois.fixingSubgroup_fixedField ⟨(charAbs χ).ker, isClosed_ker_charAbs χ⟩`.
+A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_charField : (charField χ).fixingSubgroup = (charAbs χ).ker :=
   InfiniteGalois.fixingSubgroup_fixedField ⟨(charAbs χ).ker, isClosed_ker_charAbs χ⟩
@@ -107,7 +107,7 @@ instance finiteDimensional_charField : FiniteDimensional K (charField χ) :=
 instance isGalois_charField : IsGalois K (charField χ) := IsGalois.of_fixedField_normal_subgroup _
 
 /- English proof (translation)
-Rewrite using `[← MonoidHom.mem_ker, ← MonoidHom.mem_ker, IntermediateField.restrictNormalHom_ker, fixingSubgroup_charField]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charAbs_eq_one_iff (g : Gal(Ω/K)) :
     charAbs χ g = 1 ↔ AlgEquiv.restrictNormalHom (charField χ) g = 1 := by
@@ -124,9 +124,9 @@ instance isAbelianGalois_charField : IsAbelianGalois K (charField χ) := by
   exact ⟨⟩
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup (maxUnramifiedOutside K Ω S), IntermediateField.mem_fixedField_iff]`. Introduce `g hg`. Establish `h1 : AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S) g = 1`. Rewrite using `[← MonoidHom.mem_ker, IntermediateField.restrictNormalHom_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg`. Establish `h2 : charAbs χ g = 1` using `by rw [charAbs_apply, h1, map_one]`. Conclude with `(IntermediateField.mem_fixedField_iff _ _).1 hx g (MonoidHom.mem_ker.2 h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charField_le : charField χ ≤ maxUnramifiedOutside K Ω S := by
   intro x hx
@@ -140,13 +140,13 @@ theorem charField_le : charField χ ≤ maxUnramifiedOutside K Ω S := by
   exact (IntermediateField.mem_fixedField_iff _ _).1 hx g (MonoidHom.mem_ker.2 h2)
 
 /- English proof (translation)
-The claim follows from `(isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 (charField_le χ)`.
+A detailed English derivation is pending.
 -/
 theorem isUnramifiedOutside_charField : IsUnramifiedOutside S (charField χ) :=
   (isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 (charField_le χ)
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (E := Ω) σ`. Rewrite `h` using `[restrictAb_restrictNormalHom]`. Rewrite using `[charAb_restrictNormalHom, charAbs_eq_one_iff]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charAb_eq_one_of_restrictAb
     {σ : maximalAbelianExtension K Ω ≃ₐ[K] maximalAbelianExtension K Ω}
@@ -157,9 +157,9 @@ theorem charAb_eq_one_of_restrictAb
   exact h
 
 /- English proof (translation)
-Use `sup_le ?_ fun u hu ↦ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.comp_apply, IdeleClassGroup.mk_diagonal, map_one, map_one]`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.comp_apply]`. Apply `charAb_eq_one_of_restrictAb` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[restrictAb_artinMap, reciprocityMap_mk]`. Conclude with `unitsOutsidePos_le_ker_ideleSymbol_of_isUnramifiedOutside S _ (isUnramifiedOutside_charField χ) hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sIdeleSubgroupPos_le_ker :
     sIdeleSubgroupPos S ≤ (((charAb χ).comp (artinMap K Ω)).comp (IdeleClassGroup.mk K)).ker := by
@@ -185,7 +185,7 @@ theorem charToSIdelePos_mk (x : IdeleGroup K) :
   rfl
 
 /- English proof (translation)
-Establish `: AlgEquiv.restrictNormalHom (maximalAbelianExtension K Ω) g = artinMap K Ω (IdeleClassGroup.mk K x)` using `AlgEquiv.ext fun y ↦ Subtype.ext (by rw [AlgEquiv.restrictNormalHom_apply, hg y y.2])`. Rewrite using `[charToSIdelePos_mk, ← this, charAb_restrictNormalHom]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charToSIdelePos_mk_eq (x : IdeleGroup K) (g : Gal(Ω/K))
     (hg : ∀ (y : Ω) (hy : y ∈ maximalAbelianExtension K Ω),
@@ -203,7 +203,7 @@ end Character
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.liftNormal_commutes σ Ω ⟨y, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem liftNormal_apply_of_mem (σ : maximalAbelianExtension K Ω ≃ₐ[K] maximalAbelianExtension K Ω)
     (y : Ω) (hy : y ∈ maximalAbelianExtension K Ω) :
@@ -242,9 +242,9 @@ theorem ofIdeleClassPos_mk (x : IdeleGroup K) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_one]`. Introduce `χ hχ`. Use `ContinuousMonoidHom.ext fun τ ↦ ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (E := Ω) τ`. Take `⟨c, hc⟩` from `artinMap_surjective (K := K) (Ω := Ω) (AlgEquiv.restrictNormalHom (maximalAbelianExtension K Ω) g)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K c`. Establish `h` using `charToSIdelePos_mk_eq (S := S) χ x g fun y hy ↦ by`. Rewrite using `[hc, AlgEquiv.restrictNormalHom_apply]`. Rewrite using `[← h]`. Conclude with `DFunLike.congr_fun hχ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charToSIdelePosHom_injective [IsAlgClosure K Ω] :
     Injective (charToSIdelePosHom K Ω S n) := by
@@ -261,27 +261,23 @@ theorem charToSIdelePosHom_injective [IsAlgClosure K Ω] :
   exact DFunLike.congr_fun hχ _
 
 /- English proof (translation)
-Introduce `ψ`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed K`. Establish `hn : n ≠ 0` using `NeZero.ne n`. Use `set ψC := ψ.comp (ofIdeleClassPos S) with hψC`. Establish `hpow : ∀ c : IdeleClassGroup K, c ^ n ∈ ψC.ker` using `fun c ↦ by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker, map_pow]`. Conclude with `zmod_pow_eq_one _`. Establish `hU : ∀ x ∈ unitsOutsidePos S, IdeleClassGroup.mk K x ∈ ψC.ker` using `fun x hx ↦ by`. Rewrite using `[MonoidHom.mem_ker, hψC, MonoidHom.comp_apply, ofIdeleClassPos_mk, SIdeleClassGroupPos.mk_eq_one_of_mem S hx, map_one]`. Establish `hNo` using `isOpen_of_pow_mem_of_unitsOutsidePos hS hn ψC.ker hpow hU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `finiteIndex_of_pow_mem_of_unitsOutsidePos hS hn ψC.ker hpow hU` as an intermediate fact. Take `⟨E, _, _, hE⟩` from `exists_intermediateField_range_ideleClassNorm_eq_of_finiteIndex (Ω := Ω) ψC.ker hNo`. Establish `hEu : IsUnramifiedOutside S E` using `isUnramifiedOutside_of_range_ideleClassNorm hS hn E (by rw [hE]; exact hpow) (by rw [hE]; exact hU)`. Establish `hES : E ≤ maxUnramifiedOutside K Ω S` using `(isUnramifiedOutside_iff_le_maxUnramifiedOutside S).1 hEu`. Establish `hρ : Surjective (reciprocityMap K E)` using `reciprocityMap_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hker : (reciprocityMap K E).ker ≤ ψC.ker` using `by rw [ker_reciprocityMap, hE]`. Set `χE : Gal(E/K) →* Multiplicative (ZMod n)` to `(reciprocityMap K E).liftOfRightInverse (surjInv hρ) (rightInverse_surjInv hρ) ⟨ψC, hker⟩`. Establish `hχE : ∀ c, χE (reciprocityMap K E c) = ψC c` using `fun c ↦ MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ c`. Set `χΩ : Gal(Ω/K) →* Multiplicative (ZMod n)` to `χE.comp (AlgEquiv.restrictNormalHom E)`. Establish `hχΩc : Continuous χΩ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.coe_comp]`. Conclude with `(continuous_of_discreteTopology (f := ⇑χE)).comp (InfiniteGalois.restrictNormalHom_continuous E)`. Establish `hres : RightInverse (fun τ : galUnramifiedOutside K Ω S ↦ τ.liftNormal Ω) (AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S))` using `fun τ ↦ AlgEquiv.restrict_liftNormal (E := Ω) τ`. Establish `hkerS : (AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S)).ker ≤ χΩ.ker`. Introduce `g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hg` using `[IntermediateField.restrictNormalHom_ker]`. Establish `h1 : AlgEquiv.restrictNormalHom E g = 1`. Rewrite using `[← MonoidHom.mem_ker, IntermediateField.restrictNormalHom_ker]`. Conclude with `IntermediateField.fixingSubgroup_antitone hES hg`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, h1, map_one]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `χS : galUnramifiedOutside K Ω S →* Multiplicative (ZMod n)` to `(AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S)).liftOfRightInverse _ hres ⟨χΩ, hkerS⟩`. Establish `hχS : ∀ g, χS (AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S) g) = χΩ g` using `fun g ↦ MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ g`. Establish `hq : Topology.IsQuotientMap (AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S) : Gal(Ω/K) → _)`. Establish `: T2Space (galUnramifiedOutside K Ω S)` using `krullTopology_t2`. Establish `hc` using `InfiniteGalois.restrictNormalHom_continuous (k := K) (K := Ω) (maxUnramifiedOutside K Ω S)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc.isClosedMap.isQuotientMap hc (AlgEquiv.restrictNormalHom_surjective Ω)`. Establish `hcont : Continuous χS`. Rewrite using `[hq.continuous_iff]`. Establish `: (χS ∘ AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S)) = χΩ` using `funext hχS`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hχΩc`. Use `⟨⟨χS, hcont⟩, QuotientGroup.monoidHom_ext _ (MonoidHom.ext fun x ↦ ?_)⟩` and prove the remaining obligations. Use `set σ := artinMap K Ω (IdeleClassGroup.mk K x)`. Express the relevant statement in the definitionally equal form `charToSIdelePos _ (SIdeleClassGroupPos.mk S x) = ψ (SIdeleClassGroupPos.mk S x)`. Rewrite using `[charToSIdelePos_mk_eq _ x (σ.liftNormal Ω) (liftNormal_apply_of_mem σ)]`.
-
-Express the relevant statement in the definitionally equal form `χS _ = _`. Rewrite using `[hχS]`. Establish `hg' : AlgEquiv.restrictNormalHom (maximalAbelianExtension K Ω) (σ.liftNormal Ω) = σ` using `AlgEquiv.restrict_liftNormal (E := Ω) σ`. Express the relevant statement in the definitionally equal form `χE (AlgEquiv.restrictNormalHom E (σ.liftNormal Ω)) = _`. Rewrite using `[← restrictAb_restrictNormalHom E (le_maximalAbelianExtension E), hg', restrictAb_artinMap, hχE]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem charToSIdelePosHom_surjective [IsAlgClosure K Ω] (hS : S.Finite) [NeZero n] :
     Surjective (charToSIdelePosHom K Ω S n) := by
@@ -351,7 +347,7 @@ theorem charToSIdelePosHom_surjective [IsAlgClosure K Ω] (hS : S.Finite) [NeZer
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨charToSIdelePosHom_injective, charToSIdelePosHom_surjective hS⟩`.
+Supply the required witnesses or components.
 -/
 theorem charToSIdelePosHom_bijective [IsAlgClosure K Ω] (hS : S.Finite) [NeZero n] :
     Bijective (charToSIdelePosHom K Ω S n) :=

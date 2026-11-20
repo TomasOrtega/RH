@@ -7,23 +7,19 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 namespace GlobalTheory.VacLine
 
 /- English proof (translation)
-Introduce `F _ _ κ vac hne hcof`. Establish `hS : {v : Pl F | ¬ vac v = indO v}.Finite` using `Filter.eventually_cofinite.mp hcof`. Establish `hz : ∀ v, ∃ z : κ → Fv F v, vac v z ≠ 0` using `fun v => by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hne v (funext h)`. Use `choose z hz using hz`. Use `set S := hS.toFinset with hSdef`. Use `⟨fun i => ∑ v ∈ S, singleFin v (z v i), ?_⟩` and prove the remaining obligations. Establish `hev : ∀ (u : Pl F) (i : κ), evalV F u (∑ v ∈ S, singleFin v (z v i)) = if u ∈ S then z u i else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u i`. Rewrite using `[map_sum]`. Use `split_ifs with hu`. Rewrite using `[Finset.sum_eq_single u]`. Conclude with `GlobalTheory.AdelicU.evalV_singleFin_self u (z u i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `b _ hb`. Conclude with `GlobalTheory.AdelicU.evalV_singleFin_ne (Ne.symm hb) _`. Introduce `h`. Conclude with `absurd hu h`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b hb`. Conclude with `GlobalTheory.AdelicU.evalV_singleFin_ne (fun h : u = b => hu (h ▸ hb)) _`. Unfold `vacProd`. Establish `hsub : Function.mulSupport (fun u : Pl F => vac u fun i => evalV F u (∑ v ∈ S, singleFin v (z v i))) ⊆ (S : Set (Pl F))`. Introduce `u hu`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hnot`. Apply `hu` to reduce the goal to its premises. Establish `hmem : u ∉ S` using `hnot`. Establish `hvu : vac u = indO u`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmem (by rw [hSdef, Set.Finite.mem_toFinset]; exact h)`. Simplify using `only [hev, hmem, if_false]`. Rewrite using `[hvu]`. Simplify using `[indO, Set.indicator, zero_mem]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub, Finset.prod_ne_zero_iff]`.
-
-Introduce `u hu`. Establish `: (fun i => evalV F u (∑ v ∈ S, singleFin v (z v i))) = z u`. Use function extensionality and compare the values at `i`. Rewrite using `[hev, if_pos hu]`. Rewrite using `[this]`.
-
-Conclude with `hz u`.
+A detailed English derivation is pending.
 -/
 theorem vacProd_ne_zero_somewhere : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} (vac : ∀ v : Pl F, (κ → Fv F v) → ℂ), (∀ v, vac v ≠ 0) →
     (∀ᶠ v in cofinite, vac v = indO v) → ∃ y : κ → Af F, vacProd vac y ≠ 0 := by

@@ -25,29 +25,25 @@ def fixedIn (σ : BanachRep L E) (W : Submodule ℂ E) (U : Subgroup L) : Submod
   smul_mem' := fun c w hw => ⟨W.smul_mem c hw.1, fun u hu => by rw [map_smul, hw.2 u hu]⟩
 
 /- English proof (translation)
-Set `_ : MeasurableSpace L` to `borel L`. Establish `_ : BorelSpace L` using `⟨rfl⟩`. Use `set W := Submodule.span ℂ (Set.range fun g : L => σ g v) with hWdef`. Establish `hWc : IsClosed (W : Set E)` using `Submodule.closed_of_finiteDimensional W`. Establish `hσW : ∀ g, σ g v ∈ W` using `fun g => Submodule.subset_span ⟨g, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F : Subgroup L → Submodule ℂ E := fun U => fixedIn σ W U with hFdef`. Establish `hFle : ∀ U, F U ≤ W` using `fun U w hw => hw.1`. Establish `hFfin : ∀ U, FiniteDimensional ℂ (F U)` using `fun U => Submodule.finiteDimensional_of_le (hFle U)`. Establish `hFanti : ∀ {U V : Subgroup L}, U ≤ V → F V ≤ F U` using `fun hUV w hw => ⟨hw.1, fun u hu => hw.2 u (hUV hu)⟩`. Use `set S : Set ℕ := {d | ∃ U : Subgroup L, IsOpen (U : Set L) ∧ finrank ℂ (F U) = d} with hSdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSne : S.Nonempty` using `⟨_, ⊤, by rw [Subgroup.coe_top]; exact isOpen_univ, rfl⟩`. Establish `hSbdd : BddAbove S`. Use `⟨finrank ℂ W, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨U, -, rfl⟩`. Conclude with `Submodule.finrank_mono (hFle U)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U₀, hU₀, hU₀d⟩` from `Nat.sSup_mem hSne hSbdd`. Establish `hmax : ∀ U : Subgroup L, IsOpen (U : Set L) → finrank ℂ (F U) ≤ finrank ℂ (F U₀)` using `fun U hU => hU₀d ▸ le_csSup hSbdd ⟨U, hU, rfl⟩`. Establish `hstab : ∀ U : Subgroup L, IsOpen (U : Set L) → U ≤ U₀ → F U = F U₀`. Introduce `U hU hle`. Establish `_` using `hFfin U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(Submodule.eq_of_le_of_finrank_le (hFanti hle) (hmax U hU)).symm`. Establish `_` using `hFfin U₀`. Establish `hclosed : IsClosed (F U₀ : Set E)` using `Submodule.closed_of_finiteDimensional (F U₀)`. Establish `hvF : v ∈ F U₀`. Express the relevant statement in the definitionally equal form `v ∈ (F U₀ : Set E)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hclosed.closure_eq, Metric.mem_closure_iff]`. Introduce `ε hε`. Establish `hN : IsOpen ({g : L | ‖σ g v - v‖ < ε / 2} ∩ (U₀ : Set L))` using `(isOpen_lt ((σ.continuous_orbit v).sub continuous_const).norm continuous_const).inter hU₀`. Establish `h1N : (1 : L) ∈ {g : L | ‖σ g v - v‖ < ε / 2} ∩ (U₀ : Set L)` using `⟨by simp [half_pos hε], U₀.one_mem⟩`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hN h1N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set U : Subgroup L := H.toOpenSubgroup.toSubgroup with hUdef`. Establish `hU : IsOpen (U : Set L)` using `H.toOpenSubgroup.isOpen`. Establish `hUU₀ : U ≤ U₀` using `fun u hu => (hH hu).2`. Establish `hUN : ∀ u ∈ U, ‖σ u v - v‖ < ε / 2` using `fun u hu => (hH hu).1`. Establish `_ : CompactSpace U` using `isCompact_iff_compactSpace.1 (U.isClosed_of_isOpen hU).isCompact`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set ρ : Measure U := CuspidalSpectrum.haarProb U with hρ`. Establish `hcont : Continuous fun u : U => σ (u : L) v` using `(σ.continuous_orbit v).comp continuous_subtype_val`. Establish `hint : Integrable (fun u : U => σ (u : L) v) ρ` using `integrableOn_univ.1 (hcont.continuousOn.integrableOn_compact isCompact_univ)`. Use `set e : E := ∫ u : U, σ (u : L) v ∂ρ with hedef`. Establish `heW : e ∈ W` using `Convex.integral_mem (W.restrictScalars ℝ).convex hWc (ae_of_all _ fun u => hσW u) hint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hefix : ∀ u ∈ U, σ u e = e`. Introduce `u hu`. Rewrite using `[hedef, ← (σ u).integral_comp_comm hint]`. Use `integral_mul_left_eq_self (μ := ρ) (fun x : U => σ (x : L) v) ⟨u, hu⟩` as an intermediate fact. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[map_mul_apply]`. Establish `heF : e ∈ F U₀`. Rewrite using `[← hstab U hU hUU₀]`.
-
-Conclude with `⟨heW, hefix⟩`. Use `⟨e, heF, ?_⟩` and prove the remaining obligations. Establish `hdiff : e - v = ∫ u : U, (σ (u : L) v - v) ∂ρ`. Rewrite using `[integral_sub hint (integrable_const v), integral_const, probReal_univ, one_smul]`. Rewrite using `[dist_comm, dist_eq_norm, hdiff]`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨U₀, hU₀, fun u hu => hvF.2 u hu⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isOpen_forall_eq_of_finiteDimensional (σ : BanachRep L E) (v : E)
     (hv : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun g : L => σ g v))) :
@@ -132,7 +128,7 @@ variable {L : Type*} [Group L] [TopologicalSpace L] [IsTopologicalGroup L] [Comp
   {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /- English proof (translation)
-Establish `e : (Set.range fun g : L => BanachRep.ofUnitary σ g v) = Set.range fun g : L => σ g v` using `rfl`. Rewrite `hv` using `[← e]`. Conclude with `BanachRep.exists_isOpen_forall_eq_of_finiteDimensional (BanachRep.ofUnitary σ) v hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isOpen_forall_eq_of_finiteDimensional (σ : UnitaryRep L H) (v : H)
     (hv : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun g : L => σ g v))) :
@@ -157,9 +153,7 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 variable (μ : Measure (Reduction.normOneGL K n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Establish `hle : Submodule.span ℂ (Set.range fun u : AdelicGLn.integralFiniteGL K n => (cuspRep μ).comapHom (finOne K n) continuous_finOne u v) ≤ Submodule.span ℂ (Set.range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => cuspRep μ ⟨k, Reduction.maxCompact_le_normOneGL …`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `Submodule.subset_span ⟨⟨finEmb K n u, finEmb_mem_maxCompact u.2⟩, rfl⟩`. Establish `_` using `hv`.
-
-Conclude with `UnitaryRep.exists_isOpen_forall_eq_of_finiteDimensional _ v (Submodule.finiteDimensional_of_le hle)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isOpen_forall_cuspRep_finOne_eq (v : cuspidalL2 μ)
     (hv : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k :

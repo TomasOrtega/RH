@@ -16,11 +16,11 @@ open scoped TensorProduct
 namespace GlobalTheory.SmoothProperModel
 
 /- English proof (translation)
-Introduce `k _ X f hsm hpr`. Take `⟨R₀, _, φ, X₀, f₀, π, hm⟩` from `GlobalTheory.T.scheme_models_spread k X f inferInstance inferInstance inferInstance`. Take `⟨R₁, _, ψ₁, φ₁, e₁, ft₁, sm₁⟩` from `GlobalTheory.T.smooth_spreads_out k R₀ φ X X₀ f f₀ π hm hsm`. Establish `m₁` using `GlobalTheory.CompanionTheory.CubeModels.model_refine' e₁ ft₁ hm`. Take `⟨R₂, _, ψ₂, φ₂, e₂, ft₂, pr₂⟩` from `GlobalTheory.T.isProper_spreads_out k R₁ φ₁ X _ f _ _ m₁ hpr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `m₂` using `GlobalTheory.CompanionTheory.CubeModels.model_refine' e₂ ft₂ m₁`. Establish `sm₁' : Smooth (pullback.snd f₀ (Spec.map (CommRingCat.ofHom ψ₁)))` using `sm₁`. Establish `pr₂' : IsProper (pullback.snd (pullback.snd f₀ (Spec.map (CommRingCat.ofHom ψ₁))) (Spec.map (CommRingCat.ofHom ψ₂)))` using `pr₂`. Establish `sm₂' : Smooth (pullback.snd (pullback.snd f₀ (Spec.map (CommRingCat.ofHom ψ₁))) (Spec.map (CommRingCat.ofHom ψ₂)))` using `inferInstance`. Set `ψ₃ : R₂ →+* φ₂.range` to `φ₂.rangeRestrict`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e₃ : φ₂.range.subtype.comp ψ₃ = φ₂` using `by ext x; rfl`. Establish `ft₃ : Algebra.FiniteType ℤ φ₂.range` using `haveI := ft₂ Algebra.FiniteType.of_surjective ψ₃.toIntAlgHom φ₂.rangeRestrict_surjective`. Establish `m₃` using `GlobalTheory.CompanionTheory.CubeModels.model_refine' e₃ ft₃ m₂`. Conclude with `⟨φ₂.range, _, _, _, ft₃, inferInstance, inferInstance, m₃.2.2.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_smooth_proper_model : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (f : X ⟶ Sp k), Smooth f → IsProper f →
     ∃ (R : Subring k) (X₀ : Scheme.{0}) (f₀ : X₀ ⟶ Sp R) (π : X ⟶ X₀), Algebra.FiniteType ℤ R ∧ Smooth f₀ ∧

@@ -6,13 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ L c d m h δ ι P hM`. Use `⟨orbEq O K Δ τ L c d m h δ ι P hM, ?_, ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `finU O K Δ τ L c d m h δ ι P hM`. Use `⟨s, fun y hy => hs y ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hy (by simp [UpperTheory.V.Z.Sym.Glob.one, hn])`. Introduce `y`. Use `QuotientGroup.induction_on y ?_` and prove the remaining obligations. Introduce `y`. Establish `e : MulAction.stabilizer (U3 Δ) (QuotientGroup.mk y : U3 Δ ⧸ KU O Δ) = (KU O Δ).comap (MulAut.conj y⁻¹).toMonoidHom`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Simplify using `[MulAction.mem_stabilizer_iff, QuotientGroup.eq, mul_assoc]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Simplify `(KU O Δ).inv_mem hg` using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg`. Simplify `(KU O Δ).inv_mem hg` using `[mul_assoc]`. Rewrite using `[e]`. Conclude with `stabU O K Δ τ L c d m h δ ι P hM y`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.finUq : UpperTheory.V.Z.Sym.Loc.FinUq := by
   intro O K _ _ _ _ _ Δ τ L c d m h δ ι P hM

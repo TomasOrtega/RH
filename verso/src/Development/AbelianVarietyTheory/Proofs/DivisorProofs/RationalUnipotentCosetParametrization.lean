@@ -15,7 +15,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `haveI : Nontrivial (AF F) := (NumberField.AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Use `haveI : Nontrivial (AF F ⊗[F] E) := inferInstance`. Conclude with `(inclR (F := F) (E := E) (AF F)).injective`.
+A detailed English derivation is pending.
 -/
 theorem incl_inj : Function.Injective (inclR (F := F) (E := E) (AF F)) := by
   haveI : Nontrivial (AF F) := (NumberField.AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial
@@ -24,21 +24,21 @@ theorem incl_inj : Function.Injective (inclR (F := F) (E := E) (AF F)) := by
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `funext fun i => incl_inj (F := F) (congrFun h i)`.
+A detailed English derivation is pending.
 -/
 theorem incV_inj {x y : Fin n → E} (h : incV F x = incV F y) : x = y :=
   funext fun i => incl_inj (F := F) (congrFun h i)
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mat_mul_vec (g h : UA σ J) (v : Fin n → AE F E) : mat (g * h) *ᵥ v = mat g *ᵥ (mat h *ᵥ v) := by
   rw [Matrix.mulVec_mulVec]; rfl
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `: mat (1 : UA σ J) = 1` using `rfl`. Rewrite using `[this, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_one_vec (v : Fin n → AE F E) : mat (1 : UA σ J) *ᵥ v = v := by
   have : mat (1 : UA σ J) = 1 := rfl
@@ -46,7 +46,7 @@ theorem mat_one_vec (v : Fin n → AE F E) : mat (1 : UA σ J) *ᵥ v = v := by
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[← h, ← mat_mul_vec, inv_mul_cancel, mat_one_vec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_vec {g : UA σ J} {v w : Fin n → AE F E} (h : mat g *ᵥ v = w) : mat g⁻¹ *ᵥ w = v := by
   rw [← h, ← mat_mul_vec, inv_mul_cancel, mat_one_vec]
@@ -54,9 +54,9 @@ theorem inv_vec {g : UA σ J} {v w : Fin n → AE F E} (h : mat g *ᵥ v = w) : 
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩` and prove the remaining obligations. Proceed by induction on `h using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => exact mat_one_vec v`. Consider the case `mul x y _ _ hx hy => rw [mat_mul_vec, hy, hx]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `inv x _ hx => exact inv_vec hx`.
+Treat this case separately.
 -/
 theorem mem_closure_iff (v : Fin n → AE F E) (g : UA σ J) :
     g ∈ Subgroup.closure {g : UA σ J | mat g *ᵥ v = v} ↔ mat g *ᵥ v = v := by
@@ -70,15 +70,13 @@ theorem mem_closure_iff (v : Fin n → AE F E) (g : UA σ J) :
 omit [NumberField E] in
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `Subgroup.mem_subgroupOf.1 hδ`. Establish `hm : mat δ = (A : Matrix (Fin n) (Fin n) E).map (inclR (F` using `F) (AF F)) := by`. Unfold `mat`. Rewrite using `[← hA]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hU : (mat δ)ᵀ * incM F J * (mat δ).map (cA σ) = incM F J` using `δ.2`. Establish `hE : (A : Matrix (Fin n) (Fin n) E)ᵀ * J * (A : Matrix (Fin n) (Fin n) E).map σ = J`. Apply `Matrix.map_injective (incl_inj (F := F) (E := E))` to reduce the goal to its premises. Use `show _ = incM F J`. Rewrite using `[← hU, hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((A : Matrix (Fin n) (Fin n) E)ᵀ * J * (A : Matrix (Fin n) (Fin n) E).map σ).map (inclR (F := F) (AF F)) = _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `congr 1`. Use `⟨(A : Matrix (Fin n) (Fin n) E) *ᵥ x, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm]`. Conclude with `(RingHom.map_mulVec (inclR (F := F) (AF F)) (A : Matrix (Fin n) (Fin n) E) x i).symm`. Establish `h1 : (fun i => σ (((A : Matrix (Fin n) (Fin n) E) *ᵥ x) i)) = (A : Matrix (Fin n) (Fin n) E).map σ *ᵥ fun i => σ (x i)`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (σ : E →+* E) (A : Matrix (Fin n) (Fin n) E) x i`. Unfold `form`.
-
-Rewrite using `[h1]`. Use `conv_rhs => rw [← hE]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec x, Matrix.vecMul_transpose]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_act {δ : UA σ J} (hδ : δ ∈ ratU σ J) (x : Fin n → E) :
     ∃ y : Fin n → E, mat δ *ᵥ incV F x = incV F y ∧ form σ J y y = form σ J x x := by
@@ -107,13 +105,13 @@ theorem rat_act {δ : UA σ J} (hδ : δ ∈ ratU σ J) (x : Fin n → E) :
       Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J x₀ h0 hne γ hγ δ hδ`. Take `⟨y, hy, hf⟩` from `rat_act ((ratU σ J).inv_mem hδ) x₀`. Establish `hy' : mat δ *ᵥ incV F y = incV F x₀` using `by simpa using inv_vec hy`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hne` to reduce the goal to its premises. Apply `incV_inj (F := F)` to reduce the goal to its premises. Establish `hz : incV F (0 : Fin n → E) = 0` using `funext fun i => map_zero (inclR (F := F) (E := E) (AF F))`. Rewrite using `[← hy', hz, Matrix.mulVec_zero]`. Use `⟨⟨y, hy0, hf.trans h0⟩, ⟨(ratU σ J).mul_mem hδ ((ratU σ J).inv_mem (hγ _).1), ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_closure_iff _ _).2 ?_` and prove the remaining obligations. Rewrite using `[mat_mul_vec, inv_vec (hγ _).2, hy']`. Introduce and unpack `x ⟨-, hx⟩`. Establish `hx'` using `(mem_closure_iff _ _).1 hx`. Rewrite `hx'` using `[mat_mul_vec, inv_vec (hγ _).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `incV_inj (F := F)` to reduce the goal to its premises. Rewrite using `[← inv_vec hx', hy]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coset : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (x₀ : Fin n → E), form σ J x₀ x₀ = 0 → x₀ ≠ 0 →

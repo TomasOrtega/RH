@@ -7,13 +7,13 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce and unpack `k _ σ _ n e f h0 ⟨M, hM⟩`. Use `FormalIsogeny.isRegularLocalRing_mvPowerSeries k σ` as an intermediate fact. Use `(isRegular_of_radical_eq_maximalIdeal ?_ ?_).1` and prove the remaining obligations. Establish `h1 : Ideal.ofList (List.ofFn fun i => f (e i)) = Ideal.span (Set.range f)`. Rewrite using `[ofList_ofFn_eq_span_range]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Ideal.span (e.surjective.range_comp f)`. Rewrite using `[h1]`. Use `le_antisymm ((maximalIdeal.isMaximal _).isPrime.radical_le_iff.2 ?_) fun g hg => ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.2 (by simp [h0])`. Establish `h2 : MvPowerSeries.constantCoeff g = 0`. Simplify `FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.1 hg` using `[maximalIdeal_eq_bot]`. Establish `h3 : g ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ k))`. Rewrite using `[← germIdeal_eq_span]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Conclude with `⟨M, hM (Ideal.pow_mem_pow h3 M)⟩`. Rewrite using `[FormalIsogeny.ringKrullDim_mvPowerSeries, ringKrullDim_eq_zero_of_field, zero_add, List.length_ofFn, ← Nat.card_congr e, Nat.card_eq_fintype_card, Fintype.card_fin]`.
+A detailed English derivation is pending.
 -/
 theorem isWeaklyRegular_mvPowerSeries_of_pow_le :
     ∀ (k : Type) [Field k] (σ : Type) [Finite σ] (n : ℕ) (e : Fin n ≃ σ)

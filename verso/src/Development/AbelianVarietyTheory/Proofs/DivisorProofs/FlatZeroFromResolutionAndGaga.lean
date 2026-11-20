@@ -9,29 +9,25 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKDef.DFormPos
 
 /- English proof (translation)
-Introduce `p _ G B y s hsim0`. Take `⟨v⟩ : Nonempty (InfinitePlace G.F)` from `inferInstance`. Use `set h := G.gram v`. Use `set A := G.psi v (y : G.C)`. Use `set Ai := G.psi v ((y⁻¹ : G.Cˣ) : G.C)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Pb := G.psi v (B.β : G.C)`. Use `set Bm := G.psi v ((B.β⁻¹ : G.Cˣ) : G.C)`. Use `set c : ℂ := ((s : ℚ) : ℂ)`. Establish `hsim` using `congrArg (G.psi v) hsim0`. Establish `hc : G.psi v (algebraMap ℚ G.C s) = c • (1 : Matrix (Fin G.n) (Fin G.n) ℂ)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ G.F G.C, G.psi_F]`. Use extensionality with `i j`. Simplify using `[Matrix.scalar_apply, Matrix.smul_apply, Matrix.one_apply, Matrix.diagonal_apply, c]`. Rewrite `hsim` using `[map_mul, map_mul, map_mul, hc]`. Express the relevant statement in the definitionally equal form `A * Pb * G.psi v (G.star (y : G.C)).unop = _ at hsim`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsim` using `[G.psi_star, Matrix.smul_mul, Matrix.one_mul]`. Establish `hBβ : Bm * Pb = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Establish `hβB : Pb * Bm = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Establish `hAiA : Ai * A = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Establish `hdet : IsUnit h.det` using `isUnit_iff_ne_zero.2 (G.gram_det v)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hhi : h * h⁻¹ = 1` using `Matrix.mul_nonsing_inv h hdet`. Establish `e1 : Aᴴ * h = c • (h * Bm * Ai * Pb)`. Use `congrArg (fun M => h * Bm * Ai * M) hsim` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc (h * Bm) Ai A, hAiA, Matrix.mul_one, Matrix.mul_assoc h Bm Pb, hBβ, Matrix.mul_one, hhi, Matrix.one_mul]`. Use `_ = _ := by rw [this, Matrix.mul_smul]`. Establish `key : Aᴴ * (h * Bm) * A = c • (h * Bm)`. Rewrite using `[← Matrix.mul_assoc, e1, Matrix.smul_mul, Matrix.smul_mul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Pb Bm A, hβB, Matrix.one_mul, hAiA, Matrix.mul_one]`. Take `⟨x, hx⟩ : ∃ x : Fin G.n → ℂ, x ≠ 0` from `⟨Pi.single ⟨0, G.n_pos⟩ 1, by simp⟩`. Establish `hAx : A *ᵥ x ≠ 0` using `fun h0 => hx (by`. Use `congrArg (Ai *ᵥ ·) h0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this)` using `[Matrix.mulVec_mulVec, hAiA]`. Establish `e2 : star (A *ᵥ x) ⬝ᵥ ((h * Bm) *ᵥ (A *ᵥ x)) = c * (star x ⬝ᵥ ((h * Bm) *ᵥ x))`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Simplify using `only [Matrix.mul_assoc] at key ⊢`. Rewrite using `[key, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcr : c = ((s : ℝ) : ℂ)` using `by simp [c]`. Establish `h1` using `B.posR v x hx`. Establish `h2` using `B.posR v _ hAx`. Express the relevant statement in the definitionally equal form `(_ → 0 < (star x ⬝ᵥ ((h * Bm) *ᵥ x)).re) ∧ (_ → (star x ⬝ᵥ ((h * Bm) *ᵥ x)).re < 0) at h1`. Express the relevant statement in the definitionally equal form `(_ → 0 < (star (A *ᵥ x) ⬝ᵥ ((h * Bm) *ᵥ (A *ᵥ x))).re) ∧ (_ → (star (A *ᵥ x) ⬝ᵥ ((h * Bm) *ᵥ (A *ᵥ x))).re < 0) at h2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `h2` using `[e2, hcr, Complex.re_ofReal_mul]`. Establish `hs : (0 : ℝ) < s`. Distinguish the cases in `hv : sigPosH (G.gram_herm v) = 1`. Establish `a1` using `h1.1 hv`. Establish `a2` using `h2.1 hv`.
-
-Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Use the polynomial consequences of the given equalities and inequalities. Establish `a1` using `h1.2 hv`. Establish `a2` using `h2.2 hv`.
-
-Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `hs` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sim_pos : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (B : GlobalTheory.LKDef.DForm G) (y : G.Cˣ) (s : ℚ),
     (y : G.C) * B.β * sh G y = algebraMap ℚ G.C s * B.β → 0 < s := by

@@ -9,16 +9,14 @@ variable {p : ℕ} [Fact p.Prime] (D : Datum p)
 def Datum.algO : Subalgebra ℚ (Module.End ℚ D.VQ) := Algebra.adjoin ℚ (Set.range D.actQ)
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨b, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem Datum.actQ_mem_algO (b : D.O) : D.actQ b ∈ D.algO := Algebra.subset_adjoin ⟨b, rfl⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Subalgebra.centralizer_le ℚ _ _ (Algebra.subset_adjoin)`. Introduce `g hg`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `h hh`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : D.algO ≤ Subalgebra.centralizer ℚ ({g} : Set (Module.End ℚ D.VQ))`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ rfl`.
-
-Conclude with `(D.mem_endO.1 hg b).symm`. Conclude with `((Subalgebra.mem_centralizer_iff ℚ).1 (hle hh) g rfl).symm`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Datum.centralizer_algO : Subalgebra.centralizer ℚ (D.algO : Set (Module.End ℚ D.VQ)) = D.endO := by
   apply le_antisymm

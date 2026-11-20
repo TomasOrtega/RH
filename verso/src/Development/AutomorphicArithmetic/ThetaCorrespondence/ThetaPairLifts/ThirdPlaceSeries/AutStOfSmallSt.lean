@@ -8,7 +8,7 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 /- English proof (citation)
-Apply `GlobalTheory.T.aut_statement_of_small_exponent_statement` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FAutAtOfStatement.lean&line=11#L11)
 -/

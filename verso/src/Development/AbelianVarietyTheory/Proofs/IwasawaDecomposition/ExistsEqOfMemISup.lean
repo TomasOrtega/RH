@@ -17,9 +17,9 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.Mem.EigCarry
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_3 h_4; revert ι κ M h_3 h_4 op χ E hE ψ x hx0 hx hmem; exact @_root_.GlobalTheory.JointEigenSupremum.target)`. Consider the case `exact @_root_.GlobalTheory.JointEigenSupremum.target`. Consider the case `exact _root_.GlobalTheory.JointEigenSupremum.target`. Consider the case `(apply _root_.GlobalTheory.JointEigenSupremum.target <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.JointEigenSupremum.target <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.JointEigenSupremum.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.JointEigenSupremum.target ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_eq_of_mem_iSup {ι κ M : Type} [AddCommGroup M] [Module ℂ M] (op : ι → Module.End ℂ M) (χ : κ → ι → ℂ)
     (E : κ → Submodule ℂ M) (hE : ∀ k, ∀ y ∈ E k, ∀ i, op i y = χ k i • y) (ψ : ι → ℂ) (x : M) (hx0 : x ≠ 0)
@@ -34,9 +34,9 @@ theorem exists_eq_of_mem_iSup {ι κ M : Type} [AddCommGroup M] [Module ℂ M] (
   | (intros; exact _root_.GlobalTheory.JointEigenSupremum.target ..)
 
 /- English proof (translation)
-Establish `hle : (⨆ (c' : C) (_ : S c'), E c') ≤ (⨆ k : {c' // S c'}, (E k.1).map e).comap e`. Use `iSup₂_le fun c' hc' y hy => ?_` and prove the remaining obligations. Conclude with `(le_iSup (fun k : {c' // S c'} => (E k.1).map e) ⟨c', hc'⟩) ⟨y, hy, rfl⟩`. Take `⟨k, hk⟩` from `exists_eq_of_mem_iSup op (fun k : {c' // S c'} => χ k.1) (fun k => (E k.1).map e) (by rintro k _ ⟨y, hy, rfl⟩; exact ((hE _ y).1 hy).2) (χ c) (e x) h0 ((hE c x).1 hx).2 (hle hs)`. Use `⟨k.1, k.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Rewrite using `[hE, hE]`. Conclude with `and_congr_right fun _ => forall_congr' fun q => by rw [congrFun hk q]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_part_eq {ι C H M : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup M] [Module ℂ M] (e : H →ₗ[ℂ] M)
     (op : ι → Module.End ℂ M) (χ : C → ι → ℂ) (N : Submodule ℂ M) (E : C → Submodule ℂ H)
@@ -56,11 +56,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `hL` using `hC.base.lev`. Establish `hQ : R.Q A3.A.μ0 = ∅`. Use `Finset.eq_empty_of_forall_notMem fun PP hP => ?_` and prove the remaining obligations. Use `(hL.Q_ram A3.A.μ0 PP).2 (Or.inl hP) ?_` and prove the remaining obligations. Rewrite using `[hL.xi_base]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Both sides reduce to the same expression. Use extensionality with `v`. Rewrite using `[hC.inert.SF v]`. Unfold `SsetF`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hQ]`. Simplify using `only [Finset.union_empty, Finset.mem_image]`. Use `exists_congr fun PP => and_congr_right fun _ => ?_` and prove the remaining obligations. Conclude with `⟨fun h => h ▸ rfl, fun h => HeightOneSpectrum.ext h⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem ssetF_base {R : RealDat3 D A3 Ks} {F : Face3 D A3} (hC : R.WeakCharacterisation F) : SsetF R.toRealDat A3.A.μ0 = R.SF := by
   have hL := hC.base.lev
@@ -83,7 +83,7 @@ abbrev RowOp (R : RealDat3 D A3 Ks) : Type :=
     Hecke₂ (Yc D 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) R.SF q.1 q.2.1 q.2.2}
 
 /- English proof (translation)
-Unfold `RealDat3.EEc partDual partFull`. Simplify using `only [Submodule.mem_comap, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `and_congr_right fun _ => ⟨fun h q => h _ _ _ q.2, fun h P d S hS => h ⟨(P, d, S), hS⟩⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_eEc_iff (R : RealDat3 D A3 Ks) (c : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ) (x : R.HE.H) :
     x ∈ R.EEc c ↔ R.HE.e x ∈ Mult.Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) ∧
@@ -94,7 +94,7 @@ theorem mem_eEc_iff (R : RealDat3 D A3 Ks) (c : HeightOneSpectrum (𝓞 D.host.E
   exact and_congr_right fun _ => ⟨fun h q => h _ _ _ q.2, fun h P d S hS => h ⟨(P, d, S), hS⟩⟩
 
 /- English proof (translation)
-Establish `hle : (⨆ p, R.EEp3 p) ≤ ⨆ (c') (_ : ∃ p, R.Carries p c'), R.EEc c'` using `iSup_le fun p => iSup₂_le fun c' hc' => le_iSup₂_of_le (f := fun c' (_ : ∃ p, R.Carries p c') => R.EEc c') c' ⟨p, hc'⟩ le_rfl`. Take `⟨c', ⟨p, hp⟩, heq⟩` from `exists_part_eq R.HE.e (fun q : RowOp R => heckeOn (R.MY 0) q.1.2.2) (fun c q => c q.1.1 (dualLab q.1.2.1)) _ R.EEc (mem_eEc_iff R) (fun c' => ∃ p, R.Carries p c') c x hx h0 (hle hs)`. Conclude with `⟨p, heq ▸ hp.1, (Submodule.map_mono heq.ge).trans hp.2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem carries_of_mem (R : RealDat3 D A3 Ks) (c : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ) (x : R.HE.H)
     (hx : x ∈ R.EEc c) (h0 : R.HE.e x ≠ 0) (hs : x ∈ ⨆ p, R.EEp3 p) : ∃ p, R.Carries p c := by
@@ -106,9 +106,7 @@ theorem carries_of_mem (R : RealDat3 D A3 Ks) (c : HeightOneSpectrum (𝓞 D.hos
   exact ⟨p, heq ▸ hp.1, (Submodule.map_mono heq.ge).trans hp.2⟩
 
 /- English proof (translation)
-Establish `h1 : Tw.mk (twAt D.what₂.embLL A3.A.v0) x ∈ (R.toCx3 F).EEl b` using `hx`. Rewrite `h1` using `[← hP.2]`. Establish `h2 : (⨆ p, (R.toCx3 F).EEp p ⊓ (R.toCx3 F).EEl b) ≤ Tw.sub (twAt D.what₂.embLL A3.A.v0) (⨆ p, R.EEp3 p)`. Use `iSup_le fun p => inf_le_left.trans fun y hy => ?_` and prove the remaining obligations. Conclude with `(le_iSup (fun p => R.EEp3 p) p) hy`.
-
-Conclude with `h2 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_iSup_eEp3 (R : RealDat3 D A3 Ks) (F : Face3 D A3) (b : Bool) (hP : (R.toCx3 F).PartsE b) (x : R.HE.H)
     (hx : R.HE.e x ∈ R.toRealDat.EEat (R.toRealDat.levR F.lv2 b)) : x ∈ ⨆ p, R.EEp3 p := by
@@ -120,11 +118,11 @@ theorem mem_iSup_eEp3 (R : RealDat3 D A3 Ks) (F : Face3 D A3) (b : Bool) (hP : (
   exact h2 h1
 
 /- English proof (translation)
-Introduce `_ _ _ hCusp D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hPins hHolds _ π c hc`. Take `⟨hCore, hSF, hEE, -⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hPins.char hHolds.aux.ex`. Establish `hμ : Y.tupT D.what₂.mu0 = A3.A.μ0` using `by rw [← Y.tup0, Y.tupT_tup]`. Unfold `HasEig at hc`. Rewrite `hc` using `[hμ, ssetF_base hPins.char]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, hb⟩` from `principalLevelFrame.rowRepR_occ R.θ (Y.eFT π)`. Take `⟨U, hU, hU0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Take `⟨x, hx, hxU⟩` from `GlobalTheory.T.rowTypePart_le_eigensystemPart (s := 1) R.toRealDat F.lv2 hCore (GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCusp R.toRealDat) R.SF hSF Y.hF Y.PY Y.PW Y.stdPsi.1 Y.stdPsi.2 _ _ c hc b U hU`. Rewrite `hx` using `[← hEE]`. Use `carries_of_mem R c x hx (hxU ▸ hU0) (mem_iSup_eEp3 R F b (hHolds.prim.sumE b) x ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hxU]`. Conclude with `hU.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carries_of_hasEig : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0), Pins R F cG → Holds R F → HostHyp D → ∀ (π : D.what₂.FT) c, HasEig R F Y π c → ∃ p, R.Carries p c := by
   intro _ _ _ hCusp D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hPins hHolds _ π c hc

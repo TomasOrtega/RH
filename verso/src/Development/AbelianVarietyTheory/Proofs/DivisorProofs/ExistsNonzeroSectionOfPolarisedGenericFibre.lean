@@ -17,17 +17,15 @@ open GlobalTheory.UU GlobalTheory.LN
 namespace GlobalTheory.ThetaDomain
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ t hp`. Take `⟨h₁, h₂, -⟩` from `GlobalTheory.allSixLaws`. Take `⟨A, -, gen, -, hL, -⟩` from `GlobalTheory.LN.exists_polAV_of_polAt h₁ h₂ E H R t hp`. Take `⟨O, hO, θ, hθ, -, nz⟩` from `PushInv.pushInvertible_any h₂.secBaseChangeAny h₁.globalSectionsRank _ A (IsLocalRing.closedPoint (FractionRing R))`. Take `⟨g, i, -, hi⟩` from `nz _ hO`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `LBIso.symm hL`. Take `⟨s, hs⟩` from `GlobalTheory.ThetaLocal.exists_sec_pull A.isLB (pull_isLB t.PP.isLB (pullback.fst t.G.hom (jK R))) gen.hom.left w hw (O := A.A.hom ⁻¹ᵁ O) (fun z _ => by`. Express the relevant statement in the definitionally equal form `A.A.hom (gen.hom.left z) ∈ O`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) (A.A.hom (gen.hom.left z)) (IsLocalRing.closedPoint (FractionRing R))]) θ hθ` and apply the resulting hypothesis. Establish `eg : gen.hom.left (gen.inv.left g) = g` using `congrArg (fun q : A.A ⟶ A.A => q.left g) gen.inv_hom_id`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hs (gen.inv.left g) i (by rw [eg]; exact hi)`. Establish `hsk : s.f k ≠ 0` using `fun e => by`. Rewrite `hk` using `[e, Scheme.basicOpen_zero]`. Conclude with `hk`. Use `t.semi.separated` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `t.semi.quasiCompact` as an intermediate fact. Establish `: CompactSpace t.G.left` using `QuasiCompact.compactSpace_of_compactSpace t.G.hom`. Establish `: QuasiSeparatedSpace t.G.left` using `quasiSeparatedSpace_of_quasiSeparated t.G.hom`. Take `⟨n, c, u, hu⟩` from `FlatSec.exists_comb_of_flat R (FractionRing R) (algebraMap R _) (RingHom.flat_algebraMap_iff.2 inferInstance) t.G.left t.G.hom _ _ _ (IsPullback.of_hasPullback t.G.hom (jK R)) t.PP.L t.PP.isLB s`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `push Not at hcon`. Use `hsk (fn_ext fun z hz => ?_)` and prove the remaining obligations. Establish `hz' : pullback.fst t.G.hom (jK R) z ∈ t.PP.L.U (k PUnit.unit)` using `Set.mem_iInter.1 hz PUnit.unit`. Rewrite using `[LBGerm.gs_zero _ z _ hz]`. Use `(hu z (k PUnit.unit) hz').trans (Finset.sum_eq_zero fun i _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[hcon, LBGerm.gs_zero _ z _ hz', mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_ne_zero_of_polAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type)
     [CommRing R] [IsDomain R] [IsNoetherianRing R] (t : SAB H (Sp R)), GlobalTheory.LN.PolAt t (jK R) →

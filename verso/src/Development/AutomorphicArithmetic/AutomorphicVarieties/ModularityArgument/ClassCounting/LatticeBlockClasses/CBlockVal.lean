@@ -10,7 +10,7 @@ noncomputable section
 namespace UpperTheory.V.ZK.Cl.BlockValuationRep
 
 /- English proof (translation)
-Rewrite using `[Cyc, (sChain A).2.1, show bd A G m z = 0 from hz, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cyc_cm {A : Type} [CommRing A] {G H : Type} [Group G] [Group H] (f : G →* H) {m : ℕ}
     {z : Ch A G (m + 1)} (hz : Cyc z) : Cyc (cm A f (m + 1) z) := by
@@ -31,13 +31,11 @@ private def blk {k : Type} [Field k] {C : Type} [Group C] {B : Type} (U : B → 
     simp [scal, Units.smul_def, smul_smul, mul_comm]
 
 /- English proof (translation)
-Use `Fintype.induction_empty_option (P := fun B _ => ∀ (U : B → Type) [∀ b, AddCommGroup (U b)] [∀ b, Module k (U b)] [∀ b, Finite (U b)] (V : Type) [AddCommGroup V] [Module k V] [Finite V] (φ : V ≃ₗ[k] ∀ b, U b) (ρ : G →* (V ≃ₗ[k] V)) (ρ' : ∀ b, G →* (U b ≃ₗ[k] U b)), (∀ g w b, φ (ρ …` and prove the remaining obligations. Introduce `α β _ e ih U _ _ _ V _ _ _ φ ρ ρ' h`. Use `letI : Fintype α := Fintype.ofEquiv β e.symm`. Rewrite using `[← e.sum_comp]`. Conclude with `ih (fun a => U (e a)) V (φ.trans (LinearEquiv.piCongrLeft k U e).symm) ρ (fun a => ρ' (e a)) fun g w a => h g w (e a)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U _ _ _ V _ _ _ φ ρ ρ' h haveI : Subsingleton V := φ.toEquiv.subsingleton haveI : Subsingleton (V ≃ₗ[k] V) := ⟨fun a b => LinearEquiv.ext fun _ => Subsingleton.elim _ _⟩`. Rewrite using `[Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `hθ.bdry V _ ((sChain A).2.2.2.2 _ m _ (cyc_cm ρ hz))`. Introduce `α _ ih U _ _ _ V _ _ _ φ ρ ρ' h`. Set `ψ : V ≃ₗ[k] (U none × ∀ a, U (some a))` to `φ.trans (LinearEquiv.piOptionEquivProd k)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hψ : (cj ψ).comp ρ = sumRep (ρ' none) (piRep (fun a => U (some a)) fun a => ρ' (some a))`. Use `MonoidHom.ext fun g => LinearEquiv.ext fun y => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `ψ.surjective y`. Express the relevant statement in the definitionally equal form `ψ (ρ g (ψ.symm (ψ w))) = _`. Rewrite using `[ψ.symm_apply_apply]`.
-
-Conclude with `Prod.ext (h g w none) (funext fun a => h g w (some a))`. Rewrite using `[Fintype.sum_option, ← hθ.iso V _ ψ _ (cyc_cm ρ hz), ← (sChain A).2.2.1, hψ, hθ.add _ _ _ _ _ _ hz, ih (fun a => U (some a)) _ (LinearEquiv.refl k _) _ (fun a => ρ' (some a)) fun _ _ _ => rfl]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pi_add {k : Type} [Field k] {A : Type} [CommRing A] {m : ℕ} {θ : Fam k A (m + 1)} (hθ : IsAdd θ)
     {G : Type} [Group G] {z : Ch A G (m + 1)} (hz : Cyc z) (B : Type) [Fintype B] :
@@ -75,21 +73,19 @@ end UpperTheory.V.ZK.Cl.BlockValuationRep
 
 open UpperTheory.V.ZK.Cl.BlockValuationRep in
 /- English proof (translation)
-Unfold `UpperTheory.V.ZK.Cl.CBlockVal`. Introduce `k _ q _ e ζ hζ v θ hθ hv B _ U _ _ _ V _ _ _ φ σ g x g' hσ hg`. Take `⟨-, -, h2, h3, -⟩` from `sChain (ZMod q)`. Set `χ : B → Cq q →* kˣ` to `fun b => chi q ζ hζ (x b)`. Set `R : (Cq q × ∀ b, U b ≃ₗ[k] U b) →* (V ≃ₗ[k] V)` to `(cj φ.symm).comp (piRep U (blk U χ))`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hR : ∀ p w b, φ (R p w) b = blk U χ b p (φ w b)`. Introduce `p w b`. Simplify using `[R, cj, piRep]`. Establish `hRg : R (1, g') = g`. Use `LinearEquiv.ext fun w => φ.injective (funext fun b => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hR, hg]`. Simplify using `[blk]`. Establish `hRσ : R.comp (MonoidHom.inl _ _) = σ`. Use `MonoidHom.ext fun c => LinearEquiv.ext fun w => φ.injective (funext fun b => ?_)` and prove the remaining obligations. Rewrite using `[hσ, MonoidHom.comp_apply, MonoidHom.inl_apply, hR]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[blk, scal, Units.smul_def, χ]`. Establish `hblk : ∀ b, (blk U χ b).comp (MonoidHom.inl _ _) = (scal (U b)).comp (χ b)`. Introduce `b`. Use `MonoidHom.ext fun c => ?_` and prove the remaining obligations. Simplify using `[blk]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hk0 : ∀ b, blk U χ b (1, g') = g' b`. Introduce `b`. Simplify using `[blk]`. Establish `hy : Cyc (cm (ZMod q) (MonoidHom.inl (Cq q) (∀ b, U b ≃ₗ[k] U b)) (2 * e + 1 + 1) (zc q e))` using `cyc_cm _ (sZc q e)`. Establish `hconj : (MulAut.conj ((1 : Cq q), g')⁻¹).toMonoidHom.comp (MonoidHom.inl (Cq q) (∀ b, U b ≃ₗ[k] U b)) = MonoidHom.inl _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `MonoidHom.ext fun c => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hZ : Cyc (prism (ZMod q) ((1 : Cq q), g') (2 * e + 1 + 1) (cm (ZMod q) (MonoidHom.inl (Cq q) (∀ b, U b ≃ₗ[k] U b)) (2 * e + 1 + 1) (zc q e)))` using `by show bd _ _ (2 * e + 1 + 1) _ = 0`. Establish `s` using `sPrism (ZMod q) _ ((1 : Cq q), g') (2 * e + 1) (cm (ZMod q) (MonoidHom.inl (Cq q) (∀ b, U b ≃ₗ[k] U b)) (2 * e + 1 + 1) (zc q e))`. Establish `hy' : bd (ZMod q) _ (2 * e + 1) (cm (ZMod q) (MonoidHom.inl (Cq q) (∀ b, U b ≃ₗ[k] U b)) (2 * e + 1 + 1) (zc q e)) = 0` using `hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `s` using `[hy', map_zero, add_zero, ← h2, hconj, sub_self]`. Conclude with `s`. Use `show θ V (prism (ZMod q) g (2 * e + 1 + 1) (cm (ZMod q) σ (2 * e + 1 + 1) (zc q e))) = _`. Rewrite using `[← hRg, ← hRσ, h2, ← h3]`. Use `(pi_add hθ hZ B U V φ R (blk U χ) hR).trans (Finset.sum_congr rfl fun b _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[h3, ← h2, hblk b, hk0 b]`. Conclude with `hv (U b) (x b) (g' b)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Cl.cBlockVal :
     UpperTheory.V.ZK.Cl.CBlockVal := by

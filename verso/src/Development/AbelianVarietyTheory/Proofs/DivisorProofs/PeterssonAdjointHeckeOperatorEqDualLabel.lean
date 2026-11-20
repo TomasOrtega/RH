@@ -18,9 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeckeAdjoint
 
 /- English proof (translation)
-Use `haveI := D.host.isCMField_hostE`. Conclude with `Formalism.L2.Pj.unramBridge_holds D.host.E fun P hP => by`. Take `⟨θ, t, ht, hθ⟩` from `D.sp.cm.cmUnram.2.2 P hP`. Use `⟨θ, ?_⟩` and prove the remaining obligations. Establish `: RingOfIntegers.mapRingEquiv (IsCMField.complexConj D.host.E : D.host.E ≃+* D.host.E) θ = t` using `RingOfIntegers.ext ht.symm`.
-
-Rewrite using `[this]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem unramified_host (D : D7) : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E) := by
   haveI := D.host.isCMField_hostE
@@ -33,9 +31,9 @@ theorem unramified_host (D : D7) : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.ho
     rwa [this]
 
 /- English proof (translation)
-Use `haveI := P.isPrime`. Use `haveI : Algebra.IsUnramifiedAt (𝓞 D.host.F) P.asIdeal := Algebra.unramified_iff_forall.1 (unramified_host D) ⟨P.asIdeal, P.isPrime⟩`. Establish `hle : (P.asIdeal.under (𝓞 D.host.F)).map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) ≤ P.asIdeal` using `Ideal.map_comap_le`. Establish `h1 : Ideal.ramificationIdx' (P.asIdeal.under (𝓞 D.host.F)) P.asIdeal = 1`. Use `letI := Localization.AtPrime.algebraOfLiesOver (P.asIdeal.under (𝓞 D.host.F)) P.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Ideal.IsDedekindDomain.ramificationIdx'_eq_one_iff P.ne_bot hle).2 ((Algebra.isUnramifiedAt_iff_map_eq (𝓞 D.host.F) (P.asIdeal.under (𝓞 D.host.F)) P.asIdeal).1 ‹_›).2`. Establish `h2 : ¬ (P.asIdeal.under (𝓞 D.host.F)).map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) ≤ P.asIdeal ^ 2` using `fun h => (Ideal.ramificationIdx'_ne_one_iff hle).2 h h1`. Rewrite `h2` using `[Ideal.map_le_iff_le_comap, SetLike.not_le_iff_exists]`. Take `⟨x, hx, hx2⟩` from `h2`. Conclude with `⟨x, algebraMap _ _ x, rfl, hx, hx2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem realUnif (D : D7) (P : HeightOneSpectrum (𝓞 D.host.E)) : GlobalTheory.SphericalOps.RealUnif P := by
   haveI := P.isPrime
@@ -56,15 +54,13 @@ theorem realUnif (D : D7) (P : HeightOneSpectrum (𝓞 D.host.E)) : GlobalTheory
 open GlobalTheory.SphericalOps in
 
 /- English proof (translation)
-Introduce `D V S θ M J χ Sb μ 𝓕 hθ hμ h𝓕 hS P d R R' h h' T hT T' hT' hRT hRT'`. Take `⟨R₁, h₁', hcard, K, x, hK, hR, hR₁⟩` from `exists_dual (realUnif D P) h`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Use `haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : μ.IsMulRightInvariant := GlobalTheory.T.isMulRightInvariant_haar_adelicUnitaryGroup_hermitianSpace D V μ hμ`. Establish `hS'` using `hS hθ hμ h𝓕`. Establish `h₁` using `ipM_spec M μ 𝓕 _ _ (hS' _ hRT _ hT')`. Establish `h₂` using `ipM_spec M μ 𝓕 _ _ (hS' _ hT _ hRT')`. Take `⟨c₃, h₃⟩` from `hS' _ hT _ hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c₄, h₄⟩` from `hS' _ hT' _ hT'`. Rewrite `hT`, `hT'` using `[GlobalTheory.MultMem.mem_mult_iff]`. Establish `hex : ∀ τ, ∃ w : M.sm τ, (w : M.H τ) ≠ 0` using `fun τ => by`. Take `⟨w, hw, h0⟩` from `(Submodule.ne_bot_iff _).1 (GlobalTheory.GardingVec.sm_ne_bot D V S M τ)`. Conclude with `⟨⟨w, hw⟩, h0⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose v hv using hex`. Establish `hv0 : ∏ τ, inner ℂ (v τ : M.H τ) (v τ : M.H τ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => inner_self_ne_zero.2 (hv τ)`. Establish `e : heckeOn M R' T' v = heckeLin V R₁ (T' v)` using `labelUnique (realUnif D) P (dualLab d) R' R₁ h' h₁' (T' v) (hT'.lev v)`. Establish `key : ∫ g in 𝓕, star (heckeOn M R T v g) * T' v g ∂μ = ∫ g in 𝓕, star (T v g) * heckeOn M R' T' v g ∂μ`. Rewrite using `[e]`.
-
-Conclude with `integral_adjoint h𝓕 K x R R₁ (hT.aut v).cont (hT'.aut v).cont (hT.aut v).left (hT'.aut v).left (fun k hk g => by rw [hT.lev v k (hK k hk).1, (hK k hk).2, one_mul]) (fun k hk g => by rw [hT'.lev v k (hK k hk).1, (hK k hk).2, one_mul]) (h₃ v v).1 (h₄ v v).1 hR hR₁ hcard`. Conclude with `mul_right_cancel₀ hv0 ((h₁ v v).2.symm.trans (key.trans (h₂ v v).2))`.
+A detailed English derivation is pending.
 -/
 theorem ipM_heckeOn_dualLab : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : DSModel V S) (J : Subgroup (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))), ∀ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), IsInfFam θ → μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ → SchurMult θ M (J : Set (GA D V)) χ μ 𝓕 → ∀ P d R R', Hecke₂ V (J : Set (GA D V)) χ Sb P d R → Hecke₂ V (J : Set (GA D V)) χ Sb P (dualLab d) R' → ∀ T ∈ Mult θ M (J : Set (GA D V)) χ, ∀ T' ∈ Mult θ M (J : Set (GA D V)) χ, heckeOn M R T ∈ Mult θ M (J : Set (GA D V)) χ → heckeOn M R' T' ∈ Mult θ M (J : Set (GA D V)) χ → ipM M μ 𝓕 (heckeOn M R T) T' = ipM M μ 𝓕 T (heckeOn M R' T') := by
   intro D V S θ M J χ Sb μ 𝓕 hθ hμ h𝓕 hS P d R R' h h' T hT T' hT' hRT hRT'

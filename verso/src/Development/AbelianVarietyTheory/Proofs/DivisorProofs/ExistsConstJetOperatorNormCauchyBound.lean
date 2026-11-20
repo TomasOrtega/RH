@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.FockJetBound
 
 /- English proof (translation)
-Simplify using `only [fockS, fockNormSq, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_pow, Complex.ofReal_natCast]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `hm : (mfact m : ℂ) = (multiFactorial m : ℂ)` using `rfl`. Rewrite using `[show star (f.coeff m) = (starRingEnd ℂ) (f.coeff m) from rfl, Complex.conj_mul', hm]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockS_self {σ : Type} (f : MvPolynomial σ ℂ) : fockS f f = ((fockNormSq f : ℝ) : ℂ) := by
   simp only [fockS, fockNormSq, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_pow, Complex.ofReal_natCast]
@@ -28,9 +28,9 @@ theorem fockS_self {σ : Type} (f : MvPolynomial σ ℂ) : fockS f f = ((fockNor
 def eNorm {n : ℕ} (l : DomWeight n) : ℝ := fockNormSq (extremal ℂ n l)
 
 /- English proof (translation)
-Take `⟨s, hs, -, h⟩` from `GlobalTheory.ExtremalNorm.fockS_extremal_eq_nat n l (∑ i, l.natW i) (fun i => Finset.single_le_sum (fun j _ => Nat.zero_le _) (Finset.mem_univ i))`. Establish `h2` using `h ℂ`. Rewrite `h2` using `[fockS_self]`. Establish `h3 : fockNormSq (extremal ℂ n l) = (s : ℝ)` using `by exact_mod_cast h2`. Unfold `eNorm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h3]`. Conclude with `hs` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_eNorm {n : ℕ} (l : DomWeight n) : 1 ≤ eNorm l := by
   obtain ⟨s, hs, -, h⟩ := GlobalTheory.ExtremalNorm.fockS_extremal_eq_nat n l (∑ i, l.natW i)
@@ -43,9 +43,9 @@ theorem one_le_eNorm {n : ℕ} (l : DomWeight n) : 1 ≤ eNorm l := by
   exact_mod_cast hs
 
 /- English proof (translation)
-Establish `hG : gramTw lam (fun _ : ι => (1 : Matrix (Fin n) (Fin n) ℂ)) = 1`. Simplify using `[gramTw]`. Establish `hE : extNorm ℂ lam = ((∏ τ, eNorm (lam τ) : ℝ) : ℂ)`. Simplify using `only [extNorm, fockS_self, eNorm, Complex.ofReal_prod]`. Simplify using `only [pairK, pairP, LinearMap.domRestrict₁₂_apply, LinearMap.smul_apply, LinearMap.compl₂_apply, Matrix.transpose_one, blockAct_one, hG, hE, AlgHom.toLinearMap_apply, AlgHom.id_apply, fockL_apply, fockS_self, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (1 : ℂ) / ((∏ τ, eNorm (lam τ) : ℝ) : ℂ) * ((fockNormSq (v : Pol ℂ ι n) : ℝ) : ℂ) = ((fockNormSq (v : Pol ℂ ι n) / ∏ τ, eNorm (lam τ) : ℝ) : ℂ) by push_cast; ring, Complex.ofReal_re]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem pairK_re {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (v : VV ℂ lam) :
     (pairK lam (fun _ => (1 : Matrix (Fin n) (Fin n) ℂ)) v v).re =
@@ -61,7 +61,7 @@ theorem pairK_re {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (
       ((fockNormSq (v : Pol ℂ ι n) / ∏ τ, eNorm (lam τ) : ℝ) : ℂ) by push_cast; ring, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `hw` using `h (mem_support_iff.mp hα)`. Simplify `hw` using `[Finsupp.weight_apply, Finsupp.sum]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sum_support_eq_degree_of_isHomogeneous {σ : Type} {P : MvPolynomial σ ℂ} {d : ℕ} (h : P.IsHomogeneous d)
     {α : σ →₀ ℕ} (hα : α ∈ P.support) : ∑ i ∈ α.support, α i = d := by
@@ -69,7 +69,7 @@ private theorem sum_support_eq_degree_of_isHomogeneous {σ : Type} {P : MvPolyno
   simpa [Finsupp.weight_apply, Finsupp.sum] using hw
 
 /- English proof (translation)
-Establish `hdiv` using `Nat.prod_factorial_dvd_factorial_sum α.support α`. Rewrite `hdiv` using `[sum_support_eq_degree_of_isHomogeneous h hα]`. Establish `hle` using `Nat.le_of_dvd (Nat.factorial_pos _) hdiv`. Unfold `multiFactorial Finsupp.prod`. Conclude with `hle` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem multiFactorial_le_factorial_of_isHomogeneous {σ : Type} {P : MvPolynomial σ ℂ} {d : ℕ} (h : P.IsHomogeneous d)
     {α : σ →₀ ℕ} (hα : α ∈ P.support) : (multiFactorial α : ℝ) ≤ d.factorial := by
@@ -80,7 +80,7 @@ private theorem multiFactorial_le_factorial_of_isHomogeneous {σ : Type} {P : Mv
   exact_mod_cast hle
 
 /- English proof (translation)
-Unfold `fockNormSq l1Norm`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem fockNormSq_le_l1Norm_sq {σ : Type} {P : MvPolynomial σ ℂ} {d : ℕ} (h : P.IsHomogeneous d) :
     fockNormSq P ≤ d.factorial * l1Norm P ^ 2 := by
@@ -93,15 +93,13 @@ theorem fockNormSq_le_l1Norm_sq {σ : Type} {P : MvPolynomial σ ℂ} {d : ℕ} 
         mul_le_mul_of_nonneg_left (Finset.sum_sq_le_sq_sum_of_nonneg fun _ _ => norm_nonneg _) (by positivity)
 
 /- English proof (translation)
-Establish `hle : ∀ α ∈ P.support, ∀ i, α i ≤ d`. Introduce `α hα i`. Establish `hs : ∑ j ∈ α.support, α j = d`. Establish `hw` using `h (mem_support_iff.mp hα)`. Simplify `hw` using `[Finsupp.weight_apply, Finsupp.sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hi : i ∈ α.support`. Rewrite using `[← hs]`. Conclude with `Finset.single_le_sum (fun j _ => Nat.zero_le _) hi`. Rewrite using `[Finsupp.notMem_support_iff.mp hi]`. Conclude with `Nat.zero_le _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcard : P.support.card ≤ (Fintype.piFinset fun _ : σ => Finset.range (d + 1)).card`. Use `Finset.card_le_card_of_injOn (fun α : σ →₀ ℕ => (α : σ → ℕ)) ?_ ?_` and prove the remaining obligations. Introduce `α hα`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_range]`. Conclude with `fun i => Nat.lt_succ_of_le (hle α (Finset.mem_coe.mp hα) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `α _ β _ hαβ`. Conclude with `DFunLike.coe_injective hαβ`. Rewrite `hcard` using `[Fintype.card_piFinset, Finset.prod_const, Finset.card_range, Finset.card_univ]`. Establish `: ((P.support.card : ℕ) : ℝ) ≤ ((d + 1) ^ Fintype.card σ : ℕ)` using `by exact_mod_cast hcard`. Move the coercions through the operations in `at this`.
-
-Rewrite using `[add_comm (1 : ℝ) (d : ℝ)]`. Conclude with `this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_support_le_of_isHomogeneous {σ : Type} [Fintype σ] {P : MvPolynomial σ ℂ} {d : ℕ}
     (h : P.IsHomogeneous d) : (P.support.card : ℝ) ≤ (1 + d) ^ Fintype.card σ := by
@@ -128,14 +126,14 @@ private theorem card_support_le_of_isHomogeneous {σ : Type} [Fintype σ] {P : M
   exact this
 
 /- English proof (translation)
-Unfold `multiFactorial Finsupp.prod`. Conclude with `Nat.one_le_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun i _ => Nat.factorial_ne_zero _)` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem one_le_multiFactorial {σ : Type} (α : σ →₀ ℕ) : (1 : ℝ) ≤ multiFactorial α := by
   unfold multiFactorial Finsupp.prod
   exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun i _ => Nat.factorial_ne_zero _)
 
 /- English proof (translation)
-Unfold `fockNormSq l1Norm`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun α _ => ?_) (by positivity)` and prove the remaining obligations. Conclude with `le_mul_of_one_le_left (sq_nonneg _) (one_le_multiFactorial α)`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem l1Norm_sq_le_mul_fockNormSq {σ : Type} [Fintype σ] {P : MvPolynomial σ ℂ} {d : ℕ} (h : P.IsHomogeneous d) :
     l1Norm P ^ 2 ≤ (1 + d) ^ Fintype.card σ * fockNormSq P := by
@@ -149,11 +147,9 @@ theorem l1Norm_sq_le_mul_fockNormSq {σ : Type} [Fintype σ] {P : MvPolynomial �
         exact le_mul_of_one_le_left (sq_nonneg _) (one_le_multiFactorial α)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun e _ => ?_` and prove the remaining obligations. Establish `hp : l1Norm (∏ i, (Matrix.of fun p q => (X (g p q) : MvPolynomial σ ℂ)) (e i) i) ≤ 1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Break down `Int.units_eq_one_or (Equiv.Perm.sign e) with h | h` into its components or cases. Rewrite using `[h, one_smul]`. Conclude with `hp`. Rewrite using `[h, Units.neg_smul, one_smul, l1Norm_neg]`. Conclude with `hp`.
-
-Use `_ = (Nat.factorial k : ℝ) := by simp [Fintype.card_perm]`. Use `_ ≤ (k : ℝ) ^ k := by exact_mod_cast Nat.factorial_le_pow k`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l1Norm_det_X_matrix_le {σ : Type} {k : ℕ} (g : Fin k → Fin k → σ) :
     l1Norm (Matrix.of fun p q => (X (g p q) : MvPolynomial σ ℂ)).det ≤ (k : ℝ) ^ k := by
@@ -175,9 +171,9 @@ theorem l1Norm_det_X_matrix_le {σ : Type} {k : ℕ} (g : Fin k → Fin k → σ
     _ ≤ (k : ℝ) ^ k := by exact_mod_cast Nat.factorial_le_pow k
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun e _ => ?_` and prove the remaining obligations. Establish `hp : (∏ i, (Matrix.of fun p q => (X (g p q) : MvPolynomial σ ℂ)) (e i) i).IsHomogeneous k`. Use `MvPolynomial.IsHomogeneous.prod (Finset.univ : Finset (Fin k)) (fun i => (Matrix.of fun p q => (X (g p q) : MvPolynomial σ ℂ)) (e i) i) (fun _ => 1) (fun i _ => by simpa only [Matrix.of_apply] using isHomogeneous_X ℂ (g (e i) i))` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `Int.units_eq_one_or (Equiv.Perm.sign e) with h | h` into its components or cases. Rewrite using `[h, one_smul]`. Conclude with `hp`. Rewrite using `[h, Units.neg_smul, one_smul]`. Conclude with `hp.neg`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isHomogeneous_det_X_matrix {σ : Type} {k : ℕ} (g : Fin k → Fin k → σ) :
     (Matrix.of fun p q => (X (g p q) : MvPolynomial σ ℂ)).det.IsHomogeneous k := by
@@ -193,13 +189,13 @@ private theorem isHomogeneous_det_X_matrix {σ : Type} {k : ℕ} (g : Fin k → 
   · rw [h, Units.neg_smul, one_smul]; exact hp.neg
 
 /- English proof (translation)
-Establish `h` using `Formalism.GradedWeylDivisibility.hw_weight_eq ν hν`. Establish `h2 : ∀ t, ∑ s : Fin n, (ν s - Formalism.GradedWeylDivisibility.nuNext ν s) * Formalism.GradedWeylDivisibility.initW n (s.val + 1) t = ν t`. Introduce `t`. Use `congrFun h t` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : ∀ s : Fin n, ∑ t : Fin n, Formalism.GradedWeylDivisibility.initW n (s.val + 1) t = s.val + 1`. Introduce `s`. Rewrite using `[← Formalism.GradedWeylDivisibility.sum_single_castLE (show s.val + 1 ≤ n by omega)]`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, h3 s, mul_comm]`. Use `_ = ∑ t, ν t := by`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun t _ => h2 t`.
+A detailed English derivation is pending.
 -/
 private theorem sum_succ_mul_sub_nuNext_eq_sum_of_antitone {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) :
     ∑ s : Fin n, (s.val + 1) * (ν s - Formalism.GradedWeylDivisibility.nuNext ν s) = ∑ s, ν s := by
@@ -223,15 +219,13 @@ private theorem sum_succ_mul_sub_nuNext_eq_sum_of_antitone {n : ℕ} (ν : Fin n
         exact Finset.sum_congr rfl fun t _ => h2 t
 
 /- English proof (translation)
-Establish `hanti : Antitone l.natW` using `fun i j hij => by`. Use `l.anti hij` as an intermediate fact. Simplify using `only [DomWeight.natW]`. Conclude with `Int.toNat_le_toNat (by omega)`. Establish `hsum` using `sum_succ_mul_sub_nuNext_eq_sum_of_antitone l.natW hanti`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : extremal ℂ n l = ∏ s : Fin n, (Formalism.GradedWeylDivisibility.lpMinor ℂ (s.val + 1) (by omega) (by omega) : MvPolynomial (Fin n × Fin n) ℂ) ^ (l.natW s - Formalism.GradedWeylDivisibility.nuNext l.natW s)` using `rfl`. Establish `hhom : (extremal ℂ n l).IsHomogeneous (∑ i, l.natW i)`. Rewrite using `[hE, ← hsum]`. Conclude with `MvPolynomial.IsHomogeneous.prod _ _ _ fun s _ => (isHomogeneous_det_X_matrix _).pow _`. Establish `hl1 : l1Norm (extremal ℂ n l) ≤ (n : ℝ) ^ (∑ i, l.natW i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hE]`. Combine the equalities or inequalities in the displayed calculation. Use `l1Norm_prod_pow_le _ _ _ _ fun s _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `s.isLt` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `_ = (n : ℝ) ^ (∑ i, l.natW i) := by`. Simplify using `only [← pow_mul]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hsum]`. Unfold `eNorm`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `l1Norm_nonneg _`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eNorm_le {n : ℕ} (l : DomWeight n) :
     eNorm l ≤ (∑ i, l.natW i).factorial * ((n : ℝ) ^ (∑ i, l.natW i)) ^ 2 := by
@@ -265,9 +259,9 @@ theorem eNorm_le {n : ℕ} (l : DomWeight n) :
 variable {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-Introduce `m hm`. Establish `key : ∀ τ, Finsupp.weight (GlobalTheory.JetDeg.posW a τ) m = e τ` using `fun τ => h τ hm`. Repeatedly rewrite using `[← key]`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Pi.one_apply, smul_eq_mul, mul_one]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.JetDeg.posW]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hom_of_posW [DecidableEq ι] {P : Pol ℂ ι a} {e : ι → ℕ}
     (h : ∀ τ, IsWeightedHomogeneous (GlobalTheory.JetDeg.posW a τ) P (e τ)) : P.IsHomogeneous (∑ τ, e τ) := by
@@ -281,9 +275,9 @@ theorem hom_of_posW [DecidableEq ι] {P : Pol ℂ ι a} {e : ι → ℕ}
 
 omit [Fintype ι] in
 /- English proof (translation)
-Establish `hX : ∀ v : ι × Fin a × Fin a, IsWeightedHomogeneous w (subD ℂ ι a b (X v)) ((AddMonoidHom.id ℕ) ((1 : ι × Fin a × Fin a → ℕ) v))`. Introduce `v`. Simplify using `only [subD, aeval_X, AddMonoidHom.id_apply, Pi.one_apply]`. Use `split_ifs with hv`. Use `IsWeightedHomogeneous.sum _ _ _ fun β _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw (v.1, β, ⟨v.2.2.1, hv⟩) (v.1, β, v.2.1)]`. Conclude with `(isWeightedHomogeneous_X ℂ w _).mul (isWeightedHomogeneous_X ℂ w _)`. Conclude with `isWeightedHomogeneous_zero ℂ w 1`. Conclude with `GlobalTheory.JetDeg.algHom_hom (1 : ι × Fin a × Fin a → ℕ) w (AddMonoidHom.id ℕ) (subD ℂ ι a b) hX hP`.
+A detailed English derivation is pending.
 -/
 theorem subD_hom (w : (ι × Fin b × Fin b) ⊕ DVar ι a b → ℕ) (hw : ∀ x y, w (Sum.inl x) + w (Sum.inr y) = 1)
     {P : Pol ℂ ι a} {d : ℕ} (hP : P.IsHomogeneous d) : IsWeightedHomogeneous w (subD ℂ ι a b P) d := by
@@ -299,9 +293,9 @@ theorem subD_hom (w : (ι × Fin b × Fin b) ⊕ DVar ι a b → ℕ) (hw : ∀ 
   exact GlobalTheory.JetDeg.algHom_hom (1 : ι × Fin a × Fin a → ℕ) w (AddMonoidHom.id ℕ) (subD ℂ ι a b) hX hP
 
 /- English proof (translation)
-Establish `hc : (subD ℂ ι a b P).coeff μ ≠ 0` using `MvPolynomial.mem_support_iff.mp hμ`. Establish `h1` using `subD_hom (b := b) (Sum.elim 1 0) (fun _ _ => rfl) hP hc`. Establish `h2` using `subD_hom (b := b) (Sum.elim 0 1) (fun _ _ => rfl) hP hc`. Rewrite `h1`, `h2` using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (fun _ => by simp), Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.one_apply, Pi.zero_apply, smul_eq_mul, mul_one, mul_zero, Finset.sum_const_zero, add_zero, zero_add] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify `h1` using `[Finsupp.degree_eq_sum, expL, Finsupp.comapDomain_apply]`. Simplify `h2` using `[Finsupp.degree_eq_sum, expR, Finsupp.comapDomain_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem degree_exp {P : Pol ℂ ι a} {d : ℕ} (hP : P.IsHomogeneous d) {μ} (hμ : μ ∈ (subD ℂ ι a b P).support) :
     (expL μ).degree = d ∧ (expR μ).degree = d := by
@@ -317,9 +311,9 @@ theorem degree_exp {P : Pol ℂ ι a} {d : ℕ} (hP : P.IsHomogeneous d) {μ} (h
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use `l1Norm_bind_le_mul_pow_of_isHomogeneous _ hP fun v => ?_` and prove the remaining obligations. Use `split_ifs with h`. Use `(l1Norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum (g := fun _ => (1 : ℝ)) fun β _ => (l1Norm_mul_le _ _).trans (le_of_eq (by rw [l1Norm_X, l1Norm_X, one_mul]))).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem l1Norm_subD_le_mul_pow {P : Pol ℂ ι a} {d : ℕ} (hP : P.IsHomogeneous d) :
     l1Norm (subD ℂ ι a b P) ≤ l1Norm P * (b : ℝ) ^ d := by
@@ -332,9 +326,7 @@ theorem l1Norm_subD_le_mul_pow {P : Pol ℂ ι a} {d : ℕ} (hP : P.IsHomogeneou
   · simp
 
 /- English proof (translation)
-Use `show l1Norm (P * ∏ τ, frDet ℂ a τ ^ n τ) ≤ _`. Use `(l1Norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left ?_ (l1Norm_nonneg _))` and prove the remaining obligations. Use `(l1Norm_prod_pow_le Finset.univ (fun τ => frDet ℂ a τ) n (fun _ => (a : ℝ) ^ a) (fun τ _ => ?_)).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `l1Norm_det_X_matrix_le (fun p q => (τ, p, q))`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`.
-
-Conclude with `Finset.prod_congr rfl fun τ _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l1Norm_sharp_le_mul_pow (n : ι → ℕ) (P : Pol ℂ ι a) : l1Norm (sharp n P) ≤ l1Norm P * (a : ℝ) ^ (∑ τ, n τ * a) := by
   show l1Norm (P * ∏ τ, frDet ℂ a τ ^ n τ) ≤ _
@@ -346,7 +338,7 @@ theorem l1Norm_sharp_le_mul_pow (n : ι → ℕ) (P : Pol ℂ ι a) : l1Norm (sh
     exact Finset.prod_congr rfl fun τ _ => by ring
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.JetPoint.jetMap_eq_sum]`. Use `IsHomogeneous.sum _ _ _ fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[smul_monomial]`. Conclude with `isHomogeneous_monomial _ (degree_exp hP hμ).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jet_hom (J : (DVar ι a b →₀ ℕ) → ℂ) (n : ι → ℕ) {P : Pol ℂ ι a} {d : ℕ} (hP : (sharp n P).IsHomogeneous d) :
     (jetMap J n P).IsHomogeneous d := by
@@ -356,11 +348,9 @@ theorem jet_hom (J : (DVar ι a b →₀ ℕ) → ℂ) (n : ι → ℕ) {P : Pol
   exact isHomogeneous_monomial _ (degree_exp hP hμ).1
 
 /- English proof (translation)
-Establish `hsum : l1Norm (jetMap J n P) ≤ M * l1Norm (subD ℂ ι a b (sharp n P))`. Rewrite using `[GlobalTheory.JetPoint.jetMap_eq_sum]`. Use `(l1Norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[l1Norm, Finset.mul_sum]`. Use `Finset.sum_le_sum fun μ hμ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(l1Norm_smul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[l1Norm_monomial]`. Conclude with `mul_le_mul_of_nonneg_right (hM _ (degree_exp hP hμ).2) (norm_nonneg _)`. Use `hsum.trans (mul_le_mul_of_nonneg_left ?_ hM0)` and prove the remaining obligations. Use `(l1Norm_subD_le_mul_pow hP).trans ?_` and prove the remaining obligations.
-
-Conclude with `mul_le_mul_of_nonneg_right (l1Norm_sharp_le_mul_pow n P) (pow_nonneg (Nat.cast_nonneg _) _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem l1Norm_jetMap_le_of_isHomogeneous (J : (DVar ι a b →₀ ℕ) → ℂ) (n : ι → ℕ) {P : Pol ℂ ι a} {d : ℕ} (hP : (sharp n P).IsHomogeneous d)
     {M : ℝ} (hM0 : 0 ≤ M) (hM : ∀ m, m.degree = d → ‖J m‖ ≤ M) :
@@ -378,7 +368,7 @@ theorem l1Norm_jetMap_le_of_isHomogeneous (J : (DVar ι a b →₀ ℕ) → ℂ)
   exact mul_le_mul_of_nonneg_right (l1Norm_sharp_le_mul_pow n P) (pow_nonneg (Nat.cast_nonneg _) _)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem fact_le {d : ℕ} {T : ℝ} (h : (d : ℝ) ≤ T) : (d.factorial : ℝ) ≤ T ^ d := by
   calc (d.factorial : ℝ) ≤ ((d ^ d : ℕ) : ℝ) := by exact_mod_cast Nat.factorial_le_pow d
@@ -386,11 +376,11 @@ theorem fact_le {d : ℕ} {T : ℝ} (h : (d : ℝ) ≤ T) : (d.factorial : ℝ) 
     _ ≤ T ^ d := pow_le_pow_left₀ (Nat.cast_nonneg d) h d
 
 /- English proof (translation)
-Establish `hT : (0 : ℝ) ≤ T` using `le_trans (Nat.cast_nonneg _) ha`. Rewrite using `[Finset.mul_sum, ← Finset.prod_pow_eq_pow_sum]`. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `τ _`. Conclude with `le_trans zero_le_one (one_le_eNorm _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ _`. Establish `hdτ : ((∑ i, (lam τ).natW i : ℕ) : ℝ) ≤ T`. Use `le_trans (Nat.cast_le.mpr ?_) hd` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun τ => ∑ i, (lam τ).natW i) (fun _ _ => Nat.zero_le _) (Finset.mem_univ τ)`. Establish `h2 : ((∑ i, (lam τ).natW i).factorial : ℝ) ≤ T ^ (∑ i, (lam τ).natW i)` using `fact_le hdτ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h3 : ((a : ℝ) ^ (∑ i, (lam τ).natW i)) ^ 2 ≤ (T ^ (∑ i, (lam τ).natW i)) ^ 2` using `pow_le_pow_left₀ (by positivity) (pow_le_pow_left₀ (Nat.cast_nonneg _) ha _) 2`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem prod_eNorm_le (lam : ι → DomWeight a) {T : ℝ} (ha : (a : ℝ) ≤ T)
     (hd : ((∑ τ, ∑ i, (lam τ).natW i : ℕ) : ℝ) ≤ T) :
@@ -415,13 +405,11 @@ theorem prod_eNorm_le (lam : ι → DomWeight a) {T : ℝ} (ha : (a : ℝ) ≤ T
       _ = T ^ (3 * ∑ i, (lam τ).natW i) := by ring
 
 /- English proof (translation)
-Establish `hT0 : (0 : ℝ) ≤ T` using `le_trans zero_le_one h1`. Establish `hlQ2 : lQ ^ 2 ≤ M * (lP ^ 2 * A ^ 2 * B ^ 2)`. Establish `h` using `pow_le_pow_left₀ hlQ0 hl1 2`. Rewrite `h` using `[mul_pow, Real.sq_sqrt hM0, mul_pow, mul_pow]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hin : lP ^ 2 * A ^ 2 * B ^ 2 ≤ c1 * F * A ^ 2 * B ^ 2`. Use `mul_le_mul_of_nonneg_right hf2 (sq_nonneg A)` as an intermediate fact. Conclude with `mul_le_mul_of_nonneg_right this (sq_nonneg B)`. Establish `step1 : fQ ≤ fac * (M * (c1 * F * A ^ 2 * B ^ 2))` using `le_trans hf1 (mul_le_mul_of_nonneg_left (le_trans hlQ2 (mul_le_mul_of_nonneg_left hin hM0)) hfac0)`. Establish `step2 : fac * (M * (c1 * F * A ^ 2 * B ^ 2)) = M * F * (fac * c1 * (A ^ 2 * B ^ 2))` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAB : A ^ 2 * B ^ 2 ≤ (T ^ D') ^ 2 * (T ^ D') ^ 2` using `mul_le_mul (pow_le_pow_left₀ hA0 hA 2) (pow_le_pow_left₀ hB0 hB 2) (by positivity) (by positivity)`. Establish `h4 : fac * c1 ≤ T ^ D' * T ^ c` using `mul_le_mul hfac hc1 hc10 (pow_nonneg hT0 _)`. Establish `h5 : fac * c1 * (A ^ 2 * B ^ 2) ≤ T ^ D' * T ^ c * ((T ^ D') ^ 2 * (T ^ D') ^ 2)` using `mul_le_mul h4 hAB (by positivity) (mul_nonneg (pow_nonneg hT0 _) (pow_nonneg hT0 _))`. Establish `h6` using `mul_le_mul h5 hET hE.le (mul_nonneg (mul_nonneg (pow_nonneg hT0 _) (pow_nonneg hT0 _)) (by positivity))`. Establish `hX : fac * c1 * (A ^ 2 * B ^ 2) * E ≤ T ^ (5 * D' + c + 3 * D)` using `h6.trans (le_of_eq (by ring))`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem fQ_div_le_of_bounds {M T F E E' fQ lQ lP A B fac c1 : ℝ} {D D' c : ℕ}
     (hM0 : 0 ≤ M) (h1 : 1 ≤ T) (hF0 : 0 ≤ F) (hfQ0 : 0 ≤ fQ) (hE : 0 < E) (hE1' : 1 ≤ E')
@@ -457,17 +445,17 @@ private theorem fQ_div_le_of_bounds {M T F E E' fQ lQ lP A B fac c1 : ℝ} {D D'
     _ = M * T ^ (5 * D' + c + 3 * D) * (F / E) := by ring
 
 /- English proof (translation)
-Establish `hT0 : (0 : ℝ) ≤ T` using `le_trans zero_le_one h1`. Establish `hPV : (v : Pol ℂ ι a) ∈ Formalism.L2.DIV.VV ℂ lam` using `v.2`. Establish `hQV : jetMap J n (v : Pol ℂ ι a) ∈ Formalism.L2.DIV.VV ℂ lam'` using `hV J _ hPV`. Rewrite using `[GlobalTheory.JetPoint.coe_jetOp lam lam' J n v hQV]`. Establish `hone : ∀ lm : ι → DomWeight a, (1 : ℝ) ≤ ∏ τ, eNorm (lm τ)` using `fun lm => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using Finset.prod_le_prod (s := Finset.univ) (f := fun _ => (1 : ℝ)) (g := fun τ => eNorm (lm τ)) (fun _ _ => zero_le_one) (fun τ _ => one_le_eNorm _)`. Establish `hone' : (1 : ℝ) ≤ ∏ τ, eNorm (lam' τ)`. Simplify using `using Finset.prod_le_prod (s := Finset.univ) (f := fun _ => (1 : ℝ)) (g := fun τ => eNorm (lam' τ)) (fun _ _ => zero_le_one) (fun τ _ => one_le_eNorm _)`. Establish `hEpos : (0 : ℝ) < ∏ τ, eNorm (lam τ)` using `lt_of_lt_of_le zero_lt_one (hone lam)`. Establish `hPh : (v : Pol ℂ ι a).IsHomogeneous (∑ τ, ∑ i, (lam τ).natW i)` using `hom_of_posW fun τ => GlobalTheory.JetDeg.VV_hom lam τ hPV`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSh : (sharp n (v : Pol ℂ ι a)).IsHomogeneous (∑ τ, (∑ i, (lam τ).natW i + n τ * a))` using `hom_of_posW fun τ => GlobalTheory.JetDeg.sharp_hom n τ (GlobalTheory.JetDeg.VV_hom lam τ hPV)`. Establish `hQh` using `jet_hom J n hSh`. Establish `hQh' : (jetMap J n (v : Pol ℂ ι a)).IsHomogeneous (∑ τ, ∑ i, (lam' τ).natW i)` using `hom_of_posW fun τ => GlobalTheory.JetDeg.VV_hom lam' τ hQV`. Distinguish the cases in `hQ0 : jetMap J n (v : Pol ℂ ι a) = 0`. Rewrite using `[hQ0, GlobalTheory.MvPoly.fockNormSq_zero, zero_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonneg (mul_nonneg hM0 (pow_nonneg hT0 _)) (div_nonneg (GlobalTheory.MvPoly.fockNormSq_nonneg _) hEpos.le)`. Establish `hdeq` using `hQh.inj_right hQh' hQ0`. Establish `hsq : ∀ m : DVar ι a b →₀ ℕ, m.degree = ∑ τ, (∑ i, (lam τ).natW i + n τ * a) → ‖J m‖ ≤ Real.sqrt M` using `fun m hm => by`. Establish `h` using `Real.abs_le_sqrt (hM m (hm.trans hdeq))`. Rewrite `h` using `[abs_norm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hl1` using `l1Norm_jetMap_le_of_isHomogeneous J n hSh (Real.sqrt_nonneg M) hsq`. Rewrite `hl1` using `[hdeq]`. Establish `hsum : ∑ τ, n τ * a ≤ ∑ τ, ∑ i, (lam' τ).natW i`. Rewrite using `[← hdeq, Finset.sum_add_distrib]`. Conclude with `Nat.le_add_left _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hf2` using `l1Norm_sq_le_mul_fockNormSq hPh`. Simplify using `only [Fintype.card_prod, Fintype.card_fin] at hf2`. Conclude with `fQ_div_le_of_bounds hM0 h1 (GlobalTheory.MvPoly.fockNormSq_nonneg _) (GlobalTheory.MvPoly.fockNormSq_nonneg _) hEpos hone' (prod_eNorm_le lam ha (by linarith)) (fockNormSq_le_l1Norm_sq hQh') (Nat.cast_nonneg _) (fact_le hd') (GlobalTheory.MvPoly.l1Norm_nonneg _) hl1 hf2 (by posit …`.
+A detailed English derivation is pending.
 -/
 theorem jetOp_le (lam : ι → DomWeight a) (lam' : ι → DomWeight b) (n : ι → ℕ) (hV : JetInVV ℂ lam lam' n)
     (J : (DVar ι a b →₀ ℕ) → ℂ) {M T : ℝ} (hM0 : 0 ≤ M)
@@ -528,33 +516,31 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.SumSize GlobalTheory.KerConjMean
 
 /- English proof (translation)
-Use `⟨11, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `D a b lam lam' n hV`. Establish `hE : ∀ {N : ℕ} (l : D.what₂.Tau → DomWeight N), 0 < ∏ τ, GlobalTheory.FockJetBound.eNorm (l τ)` using `fun l => Finset.prod_pos fun τ _ => lt_of_lt_of_le one_pos (GlobalTheory.FockJetBound.one_le_eNorm (l τ))`. Unfold `GlobalTheory.SumSize.nrm`. Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.FockJetBound.pairK_re]`. Conclude with `div_nonneg (GlobalTheory.MvPoly.fockNormSq_nonneg _) (hE lam).le`. Use `set dn : ℕ := ∑ τ, ∑ i, (lam τ).natW i with hdn`. Use `set dn' : ℕ := ∑ τ, ∑ i, (lam' τ).natW i with hdn'`. Establish `cd : (∑ τ, ∑ i, ((lam τ).natW i : ℝ)) = (dn : ℝ)` using `by simp only [hdn, Nat.cast_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `cd' : (∑ τ, ∑ i, ((lam' τ).natW i : ℝ)) = (dn' : ℝ)` using `by simp only [hdn', Nat.cast_sum]`. Rewrite using `[cd, cd']`. Establish `h0 : (0 : ℝ) ≤ dn` using `Nat.cast_nonneg _`. Establish `h0' : (0 : ℝ) ≤ dn'` using `Nat.cast_nonneg _`. Establish `ha0 : (0 : ℝ) ≤ a` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb0 : (0 : ℝ) ≤ b` using `Nat.cast_nonneg _`. Establish `hc0 : (0 : ℝ) ≤ Fintype.card D.what₂.Tau` using `Nat.cast_nonneg _`. Take `⟨Y, hY⟩ : ∃ Y : ℝ, Y = 2 + (dn : ℝ) + dn' + a + b + Fintype.card D.what₂.Tau` from `⟨_, rfl⟩`. Rewrite using `[← hY]`. Establish `hY2 : 2 ≤ Y` using `by rw [hY]; linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Y ^ (6 * dn' + (5 * dn' + Fintype.card D.what₂.Tau * (a * a) + 3 * dn)), pow_pos (by linarith) _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.log_pow]`. Establish `hlog : 0 ≤ Real.log Y` using `Real.log_nonneg (by linarith)`. Apply `mul_le_mul_of_nonneg_right _ hlog` to reduce the goal to its premises. Establish `hsq : (Fintype.card D.what₂.Tau : ℝ) * ((a : ℝ) * a) ≤ Fintype.card D.what₂.Tau * ((a : ℝ) + b) ^ 2` using `mul_le_mul_of_nonneg_left (by nlinarith) hc0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Introduce `H S A hA hS hH hgr v`. Rewrite using `[GlobalTheory.FockJetBound.pairK_re, GlobalTheory.FockJetBound.pairK_re]`. Take `⟨B, hB⟩ : ∃ B : ℝ, B = (dn' : ℝ) + 1` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB1 : 1 ≤ B` using `by rw [hB]; linarith`. Establish `hBY : B ≤ Y` using `by rw [hB, hY]; linarith`. Establish `hX0 : 0 ≤ 2 * Real.exp 1 * Real.pi * B / A` using `div_nonneg (mul_nonneg (by positivity) (by linarith)) hA.le`. Establish `hM0 : 0 ≤ S * (2 * Real.exp 1 * Real.pi * B / A) ^ dn'` using `mul_nonneg hS (pow_nonneg hX0 _)`. Establish `hJ : ∀ m : Formalism.L2.Ker.DVar D.what₂.Tau a b →₀ ℕ, m.degree = dn' → ‖GL3Theta.applyAt0 D (MvPolynomial.monomial m 1) H‖ ^ 2 ≤ S * (2 * Real.exp 1 * Real.pi * B / A) ^ dn'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Establish `hk : ∀ k, (m k : ℝ) ≤ 2 * B`. Introduce `k`. Establish `h1` using `Finsupp.le_degree k m`. Rewrite `h1` using `[hm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : (m k : ℝ) ≤ dn'` using `by exact_mod_cast h1`. Rewrite using `[hB]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `GlobalTheory.GaussCauchy.monomial_deriv_bound D a b H S A B hA hB1 hS hH hgr m hk`. Establish `hs : (m.sum fun _ n => n) = dn'` using `by rw [← hm]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[hs]`. Establish `happ : GL3Theta.applyAt0 D (MvPolynomial.monomial m 1) H = (m.prod fun _ n => (n.factorial : ℂ)) * taylor D H m`. Rewrite using `[Formalism.MainNotions.GL3Theta.applyAt0, MvPolynomial.support_monomial, if_neg one_ne_zero, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl, one_mul]`. Rewrite using `[happ]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT1 : (1 : ℝ) ≤ 1 + (dn : ℝ) + dn' + a + b` using `by linarith`. Establish `hTY : (1 : ℝ) + (dn : ℝ) + dn' + a + b ≤ Y` using `by rw [hY]; linarith`. Establish `main` using `GlobalTheory.FockJetBound.jetOp_le lam lam' n hV (fun m => GL3Theta.applyAt0 D (MvPolynomial.monomial m 1) H) hM0 hJ hT1 (by linarith) (by linarith) (by linarith) (by linarith) v`. Use `main.trans ?_` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right _ (div_nonneg (GlobalTheory.MvPoly.fockNormSq_nonneg _) (hE lam).le)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : Real.exp 1 < 2.7182818286` using `Real.exp_one_lt_d9`. Establish `hpi` using `Real.pi_le_four`. Establish `h32 : (2 : ℝ) ^ 5 ≤ Y ^ 5` using `pow_le_pow_left₀ (by norm_num) hY2 5`. Establish `hc : 2 * Real.exp 1 * Real.pi ≤ 32` using `by nlinarith [Real.exp_pos 1, Real.pi_pos]`. Establish `hnum : 2 * Real.exp 1 * Real.pi * B ≤ Y ^ 6`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hbase : 2 * Real.exp 1 * Real.pi * B / A ≤ Y ^ 6 * max 1 A⁻¹`. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_le_mul hnum (le_max_right _ _) (inv_nonneg.mpr hA.le) (pow_nonneg (by linarith) _)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_pow, ← pow_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FockJetBound.jetOp_norm_le : ∃ K : ℝ, 0 ≤ K ∧ ∀ (D : D7) (a b : ℕ) (lam : D.what₂.Tau → DomWeight a) (lam' : D.what₂.Tau → DomWeight b)
   (n : D.what₂.Tau → ℕ), Formalism.L2.Ker.JetInVV ℂ lam lam' n → (∀ v, 0 ≤ nrm lam (fun _ => 1) v) ∧

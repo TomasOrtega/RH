@@ -40,9 +40,7 @@ section Rep
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 h`. Use `(Submodule.ne_bot_iff _).2 ⟨φ x, GlobalTheory.LGrp.mem_fixed.2 fun g hg => ?_, fun e => hx0 ?_⟩` and prove the remaining obligations. Establish `e` using `Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap g x`. Rewrite `e` using `[GlobalTheory.LGrp.mem_fixed.1 hx g hg]`. Conclude with `e.symm`.
-
-Conclude with `φ.toLinearEquiv.injective (e.trans (map_zero φ.toLinearEquiv).symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSpherical_of_equiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (φ : ρ.Equiv σ) {K : Subgroup G}
     (h : GlobalTheory.LGrp.IsSpherical ρ K) : GlobalTheory.LGrp.IsSpherical σ K := by

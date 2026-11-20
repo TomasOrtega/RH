@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JetScaleTop.jetScale_top | exact GlobalTheory.JetScaleTop.jetScale_top | (intros; apply GlobalTheory.JetScaleTop.jetScale_top <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.jetScale_of_trunc_eq_zero : ∀ {S : Type} [CommRing S] {ρ : Type} (m : ℕ) (c : S) (p : Jet S ρ (m + 1)),
     (jetTrunc : Jet S ρ (m + 1) →ₐ[S] Jet S ρ m) p = 0 → jetScale (fun _ => c) p = c ^ (m + 1) • p := by

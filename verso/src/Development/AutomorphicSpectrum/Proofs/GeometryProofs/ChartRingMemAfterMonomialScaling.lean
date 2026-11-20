@@ -7,7 +7,7 @@ open CategoryTheory AlgebraicGeometry NumberField MvPolynomial GlobalTheory.Comp
 namespace GlobalTheory.CompanionTheory.Ar.HT.ChartOverlap
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ K _ J y s t hs _ a ha`. Conclude with `exists_pow_mul_mem_chartRing (mseg y) s t hs ha`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pow_mul_mem_chartRing_mseg : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (s t : ∀ k, J k), mseg y s ≠ 0 → mseg y t ≠ 0 → ∀ a ∈ chartRing o (mseg y) s, ∃ n : ℕ, (mseg y s / mseg y t) ^ n * a ∈ chartRing o (mseg y) t := by
   intro o _ Ω _ _ K _ J y s t hs _ a ha

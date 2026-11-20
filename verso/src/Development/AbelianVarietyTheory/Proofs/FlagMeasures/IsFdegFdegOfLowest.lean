@@ -6,7 +6,7 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 namespace GlobalTheory.LowestVectorDegree
 
 /- English proof (translation)
-Introduce `_ X v` and use `isFdeg_fdegOf_of_isDS (X.ds v) (X.low v).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFdeg_fdegOf_lowest : ∀ (D : D7) (X : HidaSetting D) (v : InfinitePlace X.B.I.F),
     IsFdeg (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v)

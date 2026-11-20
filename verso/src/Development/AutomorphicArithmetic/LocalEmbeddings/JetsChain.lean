@@ -19,7 +19,7 @@ namespace GlobalTheory.JetsOne
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h : Lev.finE V (infOf V g : GA D V) = 1` using `by show Formalism.UG.bc (Lev.swapAE D) (finHom V (infOf V g : GA D V)) = 1`. Rewrite using `[show finHom V (infOf V g : GA D V) = 1 from (infOf V g).2, map_one]`. Use `conv_rhs => rw [← infOf_mul_finOf V g, map_mul, h, one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finG_finOf (V : HSp D) (g : GA D V) : finG V (finOf V g) = Lev.finE V g := by
   have h : Lev.finE V (infOf V g : GA D V) = 1 := by
@@ -29,11 +29,11 @@ theorem finG_finOf (V : HSp D) (g : GA D V) : finG V (finOf V g) = Lev.finE V g 
   rfl
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `hSC` using `hT.2.1`. Establish `hB` using `hT.2.2.2.1`. Establish `hG` using `hT.2.2.2.2.1`. Take `⟨q, hq, e⟩` from `Subgroup.mem_map.1 (Subgroup.mem_comap.1 hγ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1 : finOf V q = γ` using `ClassFin.finG_injective V ((finG_finOf V q).trans e)`. Establish `e2 : ((infOf V q : GinfC V) : GA D V) * γ = q` using `e1 ▸ infOf_mul_finOf V q`. Establish `c1` using `GlobalTheory.AdelicSplit.commute_GinfC_GfC V (infOf V q).2 (γ * x).2`. Rewrite using `[← integral_mul_left_eq_self (fun k : GinfC V => Φ (((γ * x : GfC V) : GA D V) * k)) (infOf V q)]`. Use `integral_congr_ae (.of_forall fun k => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e3 : ((γ * x : GfC V) : GA D V) * ((infOf V q * k : GinfC V) : GA D V) = q * ((x : GA D V) * k)`. Rewrite using `[Subgroup.coe_mul (GinfC V), ← mul_assoc, ← c1, Subgroup.coe_mul, ← mul_assoc, e2, mul_assoc]`. Simplify using `only`. Rewrite using `[e3, hΦ q hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_rat (V : HSp D) (κ : Measure (GinfC V)) [κ.IsMulLeftInvariant] (Φ : GA D V → ℂ)
     (hΦ : ∀ γ ∈ GQ V, ∀ g, Φ (γ * g) = Φ g) {γ : GfC V} (hγ : γ ∈ ratFin V) (x : GfC V) :
@@ -54,9 +54,9 @@ theorem avg_rat (V : HSp D) (κ : Measure (GinfC V)) [κ.IsMulLeftInvariant] (Φ
   rw [e3, hΦ q hq]
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `hSC` using `hT.2.1`. Establish `hB` using `hT.2.2.2.1`. Establish `hG` using `hT.2.2.2.2.1`. Use `haveI : CompactSpace (GinfC V) := isCompact_iff_compactSpace.1 (Eqv.isCompact_GinfC hV.1 hV.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨Measure.haarMeasure ⊤, Measure.isHaarMeasure_haarMeasure _, ⟨by`. Simplify using `using Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (GinfC V)))⟩⟩`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_haar (V : HSp D) (hV : IsDefiniteSpace V) : ∃ κ : Measure (GinfC V), κ.IsHaarMeasure ∧ IsProbabilityMeasure κ := by
   have hT := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V
@@ -68,13 +68,13 @@ theorem exists_haar (V : HSp D) (hV : IsDefiniteSpace V) : ∃ κ : Measure (Gin
     simpa using Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (GinfC V)))⟩⟩
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `hG` using `hT.2.2.2.2.1`. Take `⟨U, hU, hUN⟩` from `GlobalTheory.Mem.SmallSub.exists_open_subgroup_finite_subset D V _ h`. Establish `key : ∀ g, Lev.finE V g ∈ (U.comap (GfC V).subtype).map (finG V) ↔ (finOf V g : GA D V) ∈ U` using `fun g => by`. Rewrite using `[← finG_finOf, Subgroup.mem_map_iff_mem (ClassFin.finG_injective V)]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hc : Continuous fun g => (finOf V g : GA D V)` using `continuous_subtype_val.comp (continuous_snd.comp (GlobalTheory.AdelicSplit.splitEquiv V).symm.continuous)`. Establish `hl : ∀ k, k ∈ Lev.levA V (K ⊓ (U.comap (GfC V).subtype).map (finG V)) ↔ k ∈ Lev.levA V K ∧ k ∈ U` using `fun k => by`. Rewrite using `[Lev.mem_levA, Lev.mem_levA, Subgroup.mem_inf, key, and_assoc]`. Use `and_congr_right fun hk => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[finOf_fin V ⟨k, hk⟩]`. Use `⟨K ⊓ (U.comap (GfC V).subtype).map (finG V), inf_le_left, ⟨?_, ?_⟩, fun k hk => ?_⟩` and prove the remaining obligations. Use `hK.1.inter (hU.preimage hc) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `and_congr Iff.rfl (key g)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hK.2.inter_right (U.isClosed_of_isOpen hU) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `hl g`. Conclude with `hUN k ((hl k).1 hk).2 (Lev.mem_levA.1 hk).1 (Lev.mem_levA.1 hk).1`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_fine (V : HSp D) {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))} (hK : IsOpenCompactLevel V K) {p : GA D V → Prop}
     (h : ∀ᶠ k in 𝓝 (1 : GA D V), k ∈ GfC V → p k) :
@@ -101,7 +101,7 @@ theorem exists_fine (V : HSp D) {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))} (hK
   · exact hUN k ((hl k).1 hk).2 (Lev.mem_levA.1 hk).1 (Lev.mem_levA.1 hk).1
 
 /- English proof (translation)
-Rewrite using `[h, finOf_mul_inf, finOf_fin, mul_inv_rev, map_mul, hρ _ (inv_mem x.2), mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isFinReal_apply {V : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] {ρ : GA D V →* Module.End ℂ M}
     (hρ : ∀ g ∈ GfC V, ρ g = 1) {F : GA D V → ℂ} {Λ : Module.Dual ℂ M} {v : GfC V → M} (h : IsFinReal ρ F Λ v)
@@ -114,9 +114,9 @@ def wgt (V : HSp D) (μ : Measure (GA D V)) (K : Subgroup (GL (Fin V.rank) (Lev.
 def ext {P : ℕ → Type} [∀ j, One (P j)] (n : ℕ) (x : ∀ j : Fin n, P j) (j : ℕ) : P j := if h : j < n then x ⟨j, h⟩ else 1
 
 /- English proof (translation)
-Use `letI : ∀ j : Fin (n + 1), Fintype (A j) := fun j => @Fintype.ofFinite _ (hA j j.2)`. Use `letI : ∀ j : Fin n, Fintype (A j) := fun j => @Fintype.ofFinite _ (hA j (by omega))`. Use `letI : Fintype (A n) := @Fintype.ofFinite _ (hA n (by omega))`. Simplify using `only [finsum_eq_sum_of_fintype]`. Rewrite using `[← Fintype.sum_prod_type']`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Fintype.sum_equiv (Fin.snocEquiv fun j : Fin (n + 1) => A j) _ _ fun _ => rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem finsum_snoc {A : ℕ → Type} {M : Type} [AddCommMonoid M] (n : ℕ) (hA : ∀ j < n + 1, Finite (A j))
     (f : (∀ j : Fin (n + 1), A j) → M) :
@@ -154,7 +154,7 @@ def FixAt (ker : ∀ n, GA D (V n) → GA D (V (n + 1)) → ℂ) (F : GA D (V 0)
 variable (comp : ∀ n, GfC (V n) → GfC (V (n + 1)) → Mo n →ₗ[ℂ] Mo (n + 1)) (v : GfC (V 0) → Mo 0)
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | n + 1, h => by funext y simp only [ptV] rw [ptV_congr n fun j hj => h j (by omega), h n (by omega)]`.
+A detailed English derivation is pending.
 -/
 theorem ptV_congr {x x' : ∀ n, GfC (V n)} : ∀ n, (∀ j < n, x j = x' j) → ptV comp v x n = ptV comp v x' n
   | 0, _ => rfl
@@ -164,7 +164,7 @@ theorem ptV_congr {x x' : ∀ n, GfC (V n)} : ∀ n, (∀ j < n, x j = x' j) →
     rw [ptV_congr n fun j hj => h j (by omega), h n (by omega)]
 
 /- English proof (translation)
-The claim follows from `| 0 => rfl | n + 1 => by simp only [ptV, chainTo, LinearMap.comp_apply] rw [ptV_eq_chainTo x n]`.
+A detailed English derivation is pending.
 -/
 theorem ptV_eq_chainTo (x : ∀ n, GfC (V n)) :
     ∀ n, ptV comp v x n (x n) = chainTo (V := Mo) (fun j => comp j (x j) (x (j + 1))) n (v (x 0))
@@ -174,7 +174,7 @@ theorem ptV_eq_chainTo (x : ∀ n, GfC (V n)) :
     rw [ptV_eq_chainTo x n]
 
 /- English proof (translation)
-The claim follows from `| 0, _, y => by rw [finsum_unique] simp [sumV, ptV] | n + 1, hA, y => by rw [finsum_snoc n hA] simp only [sumV] refine finsum_congr fun a => ?_ letI : ∀ j : Fin n, Fintype (A j) := fun j => @Fintype.ofFinite _ (hA j (by omega)) rw [sumV_eq o w n fun j hj => hA j (by omega), finsu …`.
+A detailed English derivation is pending.
 -/
 theorem sumV_eq {A : ℕ → Type} (o : ∀ n, A n → GfC (V n)) (w : ∀ n, A n → ℂ) :
     ∀ n, (∀ j < n, Finite (A j)) → ∀ y, sumV o w comp v n y =
@@ -219,14 +219,14 @@ def ArrowOK (n : ℕ) : Prop :=
 def ptF (x : ∀ n, GfC (V n)) (n : ℕ) (h : GA D (V n)) : ℂ := Λ n (ρ n h⁻¹ (ptV comp v x n (finOf _ h)))
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem ptF_real (x : ∀ n, GfC (V n)) (n : ℕ) : IsFinReal (ρ n) (ptF comp v ρ Λ x n) (Λ n) (ptV comp v x n) := fun _ => rfl
 
 variable {comp v ρ ker Λ}
 
 /- English proof (translation)
-Simplify using `only [isFinReal_apply h.2.2.1 (ptF_real comp v ρ Λ x n)]`. Conclude with `(h.2.2.2.2.2.2.2 κ h1 h2 _ _ _).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptF_succ {n : ℕ} (h : ArrowOK comp ρ ker Λ n) (κ : Measure (GinfC (V n))) (h1 : κ.IsHaarMeasure)
     (h2 : IsProbabilityMeasure κ) (x : ∀ n, GfC (V n)) (g : GA D (V (n + 1))) :
@@ -239,7 +239,7 @@ variable {N : ℕ} (hc : ∀ n < N, ArrowOK comp ρ ker Λ n) {F : GA D (V 0) �
 include hc hF hFa
 
 /- English proof (translation)
-The claim follows from `| 0, _, γ, hγ, g => (hF _).symm.trans ((hFa γ hγ g).trans (hF _)) | n + 1, hn, γ, hγ, g => by obtain ⟨κ, h1, h2⟩ := exists_haar _ (hc n hn).1 simp only [ptF_succ (hc n hn) κ h1 h2, (hc n hn).2.2.2.2.2.1 γ hγ]`.
+A detailed English derivation is pending.
 -/
 theorem ptF_left (x : ∀ n, GfC (V n)) : ∀ n ≤ N, ∀ γ ∈ GQ (V n), ∀ g, ptF comp v ρ Λ x n (γ * g) = ptF comp v ρ Λ x n g
   | 0, _, γ, hγ, g => (hF _).symm.trans ((hFa γ hγ g).trans (hF _))
@@ -248,7 +248,7 @@ theorem ptF_left (x : ∀ n, GfC (V n)) : ∀ n ≤ N, ∀ γ ∈ GQ (V n), ∀ 
     simp only [ptF_succ (hc n hn) κ h1 h2, (hc n hn).2.2.2.2.2.1 γ hγ]
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | n + 1, hn => by obtain ⟨κ, h1, h2⟩ := exists_haar _ (hc n hn).1 obtain ⟨γ, hγ, e⟩ := hx n hn funext g rw [ptF_succ (hc n hn) κ h1 h2, ptF_succ (hc n hn) κ h1 h2, ptF_rat hx n (by omega), e] exact avg_rat _ κ (fun z => ker n z g * ptF comp v ρ Λ x n z) (fun q hq z …`.
+A detailed English derivation is pending.
 -/
 theorem ptF_rat {x x' : ∀ n, GfC (V n)} (hx : ∀ j < N, ∃ γ ∈ ratFin (V j), x' j = γ * x j) :
     ∀ n ≤ N, ptF comp v ρ Λ x' n = ptF comp v ρ Λ x n
@@ -264,7 +264,7 @@ theorem ptF_rat {x x' : ∀ n, GfC (V n)} (hx : ∀ j < N, ∃ γ ∈ ratFin (V 
 omit hF in
 
 /- English proof (translation)
-The claim follows from `| 0, _, γ, hγ, g => hFa γ hγ g | n + 1, hn, γ, hγ, g => by simp only [liftC, (hc n hn).2.2.2.2.2.1 γ hγ]`.
+A detailed English derivation is pending.
 -/
 theorem liftC_left (μ : ∀ n, Measure (GA D (V n))) (fd : ∀ n, Set (GA D (V n))) :
     ∀ n ≤ N, ∀ γ ∈ GQ (V n), ∀ g, liftC μ fd ker F n (γ * g) = liftC μ fd ker F n g
@@ -273,7 +273,7 @@ theorem liftC_left (μ : ∀ n, Measure (GA D (V n))) (fd : ∀ n, Set (GA D (V 
 
 omit hc hF hFa in
 /- English proof (translation)
-The claim follows from `| 0, _, hk, g => hk g | n + 1, k, hk, g => by have hk' : ∀ g h, ker n g (h * k) = ker n g h := hk simp only [liftC, hk']`.
+A detailed English derivation is pending.
 -/
 theorem liftC_right (μ : ∀ n, Measure (GA D (V n))) (fd : ∀ n, Set (GA D (V n))) :
     ∀ n k, FixAt ker F n k → ∀ g, liftC μ fd ker F n (g * k) = liftC μ fd ker F n g
@@ -283,7 +283,7 @@ theorem liftC_right (μ : ∀ n, Measure (GA D (V n))) (fd : ∀ n, Set (GA D (V
     simp only [liftC, hk']
 
 /- English proof (translation)
-The claim follows from `| 0, _ => hF | n + 1, hn => by intro h have ih := liftC_real μ fd K hK n (by omega) obtain ⟨h1, ⟨K₀, h2, h3, h4⟩, h5⟩ := hK n hn obtain ⟨-, a2, a3, a4, a5, -, a7, a8⟩ := hc n hn obtain ⟨hfin, κ, hκH, hκP, hU⟩ := GlobalTheory.DefiniteClassReal.integral_eq_finClSum_avg (V n) a2 K₀ …`.
+A detailed English derivation is pending.
 -/
 theorem liftC_real (μ : ∀ n, Measure (GA D (V n))) (fd : ∀ n, Set (GA D (V n)))
     (K : ∀ n, Subgroup (GL (Fin (V n).rank) (Lev.EAf D)))

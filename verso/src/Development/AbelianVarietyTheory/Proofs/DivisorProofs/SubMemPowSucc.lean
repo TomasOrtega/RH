@@ -3,19 +3,17 @@ import Mathlib
 namespace GlobalTheory.AlgEquivTrivialPowerCongruence
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x _`. Simplify using `using h0 x`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `x hx`. Rewrite `hx` using `[pow_succ]`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha q hq`. Establish `hd` using `ih a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hρa : ρ a ∈ Q ^ k`. Establish `h2 : ρ a - a ∈ Q ^ k` using `Ideal.pow_le_pow_right (Nat.le_succ k) hd`. Establish `h3` using `Ideal.add_mem _ h2 ha`. Simplify using `using h3`. Establish `e : ρ (a * q) - a * q = ρ a * (ρ q - q) + (ρ a - a) * q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations. Establish `h4` using `Ideal.mul_mem_mul hρa (h1 q hq)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h4` using `[← pow_add]`. Conclude with `h4`. Establish `h4` using `Ideal.mul_mem_mul hd hq`. Rewrite `h4` using `[← pow_succ]`. Conclude with `h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b ha hb`. Establish `e : ρ (a + b) - (a + b) = (ρ a - a) + (ρ b - b)`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `Ideal.add_mem _ ha hb`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mem_pow_succ {B : Type} [CommRing B] (Q : Ideal B) (ρ : B →+* B)
     (h0 : ∀ x, ρ x - x ∈ Q) (h1 : ∀ x ∈ Q, ρ x - x ∈ Q ^ 2) :
@@ -50,19 +48,19 @@ theorem sub_mem_pow_succ {B : Type} [CommRing B] (Q : Ideal B) (ρ : B →+* B)
       exact Ideal.add_mem _ ha hb
 
 /- English proof (translation)
-Establish `step : ∀ (k : ℕ), ∀ x ∈ Q ^ k, ρ x - x ∈ Q ^ (k + 1)` using `sub_mem_pow_succ Q (ρ : B →+* B) h0 h1`. Establish `key : ∀ (k : ℕ) (x : B), ρ x - x ∈ Q ^ k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `x`. Establish `hy` using `ih x`. Establish `hj : ∀ j : ℕ, (ρ ^ j) x - x - (j : B) * (ρ x - x) ∈ Q ^ (k + 1)`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ihj`. Establish `hz` using `step (k + 1) _ ihj`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hz'` using `Ideal.add_mem _ (Ideal.pow_le_pow_right (Nat.le_succ (k + 1)) hz) ihj`. Rewrite `hz'` using `[sub_add_cancel]`. Establish `hw` using `Ideal.mul_mem_left _ (j : B) (step k _ hy)`. Establish `h5` using `Ideal.add_mem _ hz' hw`. Use `h5 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[pow_succ', AlgEquiv.mul_apply]`. Simplify using `only [map_sub, map_mul, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hmm` using `hj m`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `hmm` using `[hρ]`. Simplify using `only [AlgEquiv.one_apply, sub_self, zero_sub, neg_mem_iff] at hmm`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hm).1 hmm`. Establish `hbot : ⨅ k : ℕ, Q ^ k = ⊥` using `Ideal.iInf_pow_eq_bot_of_isDomain Q hQ`. Use extensionality with `x`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hx : ρ x - x ∈ ⨅ k : ℕ, Q ^ k` using `Ideal.mem_iInf.2 fun k => key k x`. Rewrite `hx` using `[hbot, Ideal.mem_bot, sub_eq_zero]`. Simplify using `using hx`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem algEquiv_eq_one (A B : Type) [CommRing A] [CommRing B] [IsDomain B] [IsNoetherianRing B]
     [Algebra A B] (Q : Ideal B) (ρ : B ≃ₐ[A] B) (m : ℕ) (hQ : Q ≠ ⊤) (hm : IsUnit (m : B))

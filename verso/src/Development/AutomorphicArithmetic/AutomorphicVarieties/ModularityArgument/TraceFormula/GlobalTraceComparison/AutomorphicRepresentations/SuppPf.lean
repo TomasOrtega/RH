@@ -10,23 +10,23 @@ open MeasureTheory GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.
 attribute [local instance] PositivityTheory.Rg.BcB.E.borelH
 
 /- English proof (translation)
-Introduce `hB hZ hK hP hKer E _ _ _ n ι _ s m R hR x y hxy`. Take `⟨hac, hmul, -, -, hone, -, hldth, hthth, hthmul, hrat, -, hthc⟩` from `hB E n s.pos`. Establish `hl1 : ldet (1 : H E n 0) = 0`. Establish `h` using `hac 0`. Rewrite `h` using `[hone]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hlinv : ∀ z : H E n 0, ldet z⁻¹ = -ldet z`. Introduce `z`. Establish `h` using `hmul z z⁻¹`. Rewrite `h` using `[mul_inv_cancel, hl1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hf : Continuous fun w : H E n 0 => m.G x (th w)` using `by show Continuous fun w : H E n 0 => ∑ i, inner ℂ (s.k₁ x i) (m.Uπ (s.k₂ (th w) i))`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `continuous_const.inner (m.Uπ.continuous.comp (((s.vecs.cont i).2).comp hthc))`. Establish `hinv : Inv fun w : H E n 0 => m.G x (th w)`. Introduce `γ w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `(hK E n ι s).2 ⟨th (γ : H E n 0), (hrat γ).2⟩ (th w)`. Use `show Gk s.k₁ s.k₂ m.Uπ x (th ((γ : H E n 0) * w)) = Gk s.k₁ s.k₂ m.Uπ x (th w)`. Rewrite using `[hthmul]`. Unfold `Gk`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show s.k₂ (th (γ : H E n 0) * th w) = s.k₂ (th w) from h]`. Take `⟨δ, hδ⟩ : ∃ δ, δ = (|ldet x + ldet y| - R) / 2` from `⟨_, rfl⟩`. Establish `hδ0 : 0 < δ` using `by rw [hδ]; linarith`. Establish `key` using `hZ E n s.D (fun w => m.G x (th w)) (Set.Ioo (-ldet y - δ) (-ldet y + δ)) hf hinv isOpen_Ioo ?_ (th y) ?_`. Simplify `key` using `only [hthth]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Use `((hKer E n ι s m v x).2).trans ?_` and prove the remaining obligations. Establish `hPv` using `hP E n s.D s.π (-ldet y - δ) (-ldet y + δ) v (hv.mono fun w h h' => h fun hI => h' (Set.Ioo_subset_Icc_self hI))`. Apply `integral_eq_zero_of_ae` to reduce the goal to its premises. Use `filter_upwards [hPv] with w hw`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hI : ldet w ∈ Set.Icc (-ldet y - δ) (-ldet y + δ)`. Establish `hk : kerH m.φ x w = 0`. Unfold `kerH`. Use `finsum_eq_zero_of_forall_eq_zero fun γ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hR _ hne`. Rewrite `h1` using `[hmul, hmul, hlinv, (hrat γ).1]`. Take `⟨a1, a2⟩` from `abs_le.mp h1`. Take `⟨b1, b2⟩` from `hI`. Apply the tactic sequence `rcases abs_cases (ldet x + ldet y) with ⟨h, -⟩ | ⟨h, -⟩ <;> rw [h] at hδ <;> linarith`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hk]`. Simplify using `[hw hI]`. Rewrite using `[hldth]`. Conclude with `⟨by linarith, by linarith⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.supp_pf :
     Basic → Zero → KInv → PSupp → Ker → Supp := by

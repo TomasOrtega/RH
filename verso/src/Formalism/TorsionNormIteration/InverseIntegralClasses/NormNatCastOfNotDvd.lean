@@ -13,13 +13,13 @@ open Formalism.G
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Establish `hcop : Nat.Coprime p m` using `(Nat.Prime.coprime_iff_not_dvd hp).2 hm`. Use `le_antisymm (IsUltrametricDist.norm_natCast_le_one K m) ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab⟩ : ∃ a b : ℤ, a * p + b * m = 1 := by`. Establish `h` using `Nat.gcd_eq_gcd_ab p m`. Rewrite `h` using `[Nat.Coprime.gcd_eq_one hcop]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨Nat.gcdA p m, Nat.gcdB p m, by push_cast at h; linarith⟩`. Establish `h1 : (1 : K) = (a : K) * (p : K) + (b : K) * (m : K)`. Use `congrArg (Int.cast : ℤ → K) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this.symm`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hle : (1 : ℝ) ≤ max ‖(a : K) * p‖ ‖(b : K) * m‖`. Combine the equalities or inequalities in the displayed calculation. Establish `ha` using `IsUltrametricDist.norm_intCast_le_one K a`. Establish `hb` using `IsUltrametricDist.norm_intCast_le_one K b`. Break down `le_max_iff.1 hle with h | h` into its components or cases.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[norm_mul]`. Use polynomial arithmetic with `[norm_nonneg (p : K), norm_nonneg (a : K)]`. Rewrite `h` using `[norm_mul]`. Use polynomial arithmetic with `[norm_nonneg (m : K), norm_nonneg (b : K)]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma norm_natCast_of_not_dvd {p m : ℕ} (hp : p.Prime) (hp1 : ‖(p : K)‖ < 1) (hm : ¬ p ∣ m) :
     ‖(m : K)‖ = 1 := by
@@ -46,9 +46,9 @@ lemma norm_natCast_of_not_dvd {p m : ℕ} (hp : p.Prime) (hp1 : ‖(p : K)‖ < 
     nlinarith [norm_nonneg (m : K), norm_nonneg (b : K)]
 
 /- English proof (translation)
-Take `⟨e, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn p hp.ne_one`. Use `haveI := Fact.mk hp`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm (dvd_zero p)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[padicValNat.mul (pow_ne_zero _ hp.ne_zero) hm0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hm, add_zero]`. Use `push_cast`. Rewrite using `[norm_mul, norm_pow, norm_natCast_of_not_dvd hp hp1 hm, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_natCast_eq {p n : ℕ} (hp : p.Prime) (hp1 : ‖(p : K)‖ < 1) (hn : n ≠ 0) :
     ‖(n : K)‖ = ‖(p : K)‖ ^ padicValNat p n := by
@@ -63,11 +63,11 @@ lemma norm_natCast_eq {p n : ℕ} (hp : p.Prime) (hp1 : ‖(p : K)‖ < 1) (hn :
   rw [norm_mul, norm_pow, norm_natCast_of_not_dvd hp hp1 hm, mul_one]
 
 /- English proof (translation)
-Introduce `K _ _ _ p hp hp1 c hc n`. Use `haveI := Fact.mk hp`. Rewrite using `[norm_div, norm_pow, norm_natCast_eq hp hp1 (Nat.factorial_ne_zero n)]`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hpos : 0 < ‖(p : K)‖ ^ padicValNat p n.factorial` using `pow_pos (norm_pos_iff.2 hp0) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_one hpos]`. Establish `hv : (p - 1) * padicValNat p n.factorial ≤ n`. Use `sub_one_mul_padicValNat_factorial (p := p) n` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hc1 : ‖c‖ ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `one_le_pow₀ (n := p - 1) h.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem expIntegral : Formalism.LT.ExpIntegral.{u} := by
   intro K _ _ _ p hp hp1 c hc n
@@ -90,7 +90,7 @@ theorem expIntegral : Formalism.LT.ExpIntegral.{u} := by
     _ ≤ ‖(p : K)‖ ^ padicValNat p n.factorial := pow_le_pow_left₀ (by positivity) hc _
 
 /- English proof (translation)
-Distinguish the cases in `h : (Function.support g).Finite`. Rewrite using `[finsum_eq_sum g h]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC (fun i _ => hg i)`. Rewrite using `[finsum_of_infinite_support h, norm_zero]`. Conclude with `hC`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_finsum_le {g : ℕ → K} {C : ℝ} (hC : 0 ≤ C) (hg : ∀ n, ‖g n‖ ≤ C) :
     ‖∑ᶠ n, g n‖ ≤ C := by
@@ -101,19 +101,17 @@ lemma norm_finsum_le {g : ℕ → K} {C : ℝ} (hC : 0 ≤ C) (hg : ∀ n, ‖g 
     exact hC
 
 /- English proof (translation)
-Use `haveI := Fact.mk hp`. Establish `hP0 : 0 ≤ ‖(p : K)‖` using `norm_nonneg _`. Establish `hP1 : ‖(p : K)‖ ≤ 1` using `hp1.le`. Take `⟨n, rfl⟩ : ∃ n, d = n + 1` from `⟨d - 1, by omega⟩`. Take `⟨j, hj⟩ : ∃ j, n + 1 - m = j + 1` from `⟨n - m, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsym : (n + 1).choose (j + 1) = (n + 1).choose m`. Rewrite using `[← hj]`. Conclude with `Nat.choose_symm (by omega)`. Establish `hN : (n + 1).choose m * (j + 1) = (n + 1) * n.choose j`. Rewrite using `[← hsym, Nat.add_one_mul_choose_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ‖((n + 1).choose m : K)‖ * ‖((j + 1 : ℕ) : K)‖ ≤ ‖((n + 1 : ℕ) : K)‖`. Establish `h` using `congrArg (fun x : ℕ => ‖(x : K)‖) hN`. Simplify using `only [Nat.cast_mul, norm_mul] at h`. Rewrite using `[h]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one K _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkn : ‖((j + 1 : ℕ) : K)‖ = ‖(p : K)‖ ^ padicValNat p (j + 1)` using `norm_natCast_eq hp hp1 (Nat.succ_ne_zero j)`. Establish `hv : padicValNat p (j + 1) < j + 1`. Establish `h1 : p ^ padicValNat p (j + 1) ≤ j + 1` using `Nat.le_of_dvd (Nat.succ_pos j) pow_padicValNat_dvd`. Establish `h2 : j + 1 < p ^ (j + 1)` using `Nat.lt_pow_self hp.one_lt`. Conclude with `(Nat.pow_lt_pow_iff_right hp.one_lt).1 (lt_of_le_of_lt h1 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcd : ‖c‖ * ‖((n + 1 : ℕ) : K)‖ ≤ 1`. Rewrite using `[mul_comm, ← norm_mul]`. Conclude with `hc` after adjusting the coercions. Rewrite using `[hj, norm_mul, norm_mul, norm_pow]`. Establish `key : ‖c‖ * ‖((n + 1).choose m : K)‖ * ‖(p : K)‖ ^ padicValNat p (j + 1) ≤ 1`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hk' : ‖(p : K)‖ ^ (j + 1) = ‖(p : K)‖ ^ padicValNat p (j + 1) * ‖(p : K)‖ ^ (j + 1 - padicValNat p (j + 1))`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]`. Conclude with `pow_le_of_le_one hP0 hP1 (by omega)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma scalar_bound {p : ℕ} (hp : p.Prime) (hp1 : ‖(p : K)‖ < 1) (c : K) (d m : ℕ) (hmd : m < d)
     (hc : ‖(d : K) * c‖ ≤ 1) :
@@ -163,7 +161,7 @@ lemma scalar_bound {p : ℕ} (hp : p.Prime) (hp1 : ‖(p : K)‖ < 1) (c : K) (d
         exact pow_le_of_le_one hP0 hP1 (by omega)
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.X_pow_eq, MvPowerSeries.X_pow_eq, MvPowerSeries.monomial_mul_monomial, mul_one, MvPowerSeries.coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma norm_coeff_monomial_le (m k : ℕ) (e : Fin 2 →₀ ℕ) :
     ‖MvPowerSeries.coeff e
@@ -173,7 +171,7 @@ lemma norm_coeff_monomial_le (m k : ℕ) (e : Fin 2 →₀ ℕ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [MvPowerSeries.smul_eq_C_mul, mul_pow, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma term_eq (p c : K) (d m : ℕ) :
     c • ((MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) ^ m * (p • MvPowerSeries.X 1) ^ (d - m) *
@@ -184,11 +182,11 @@ lemma term_eq (p c : K) (d m : ℕ) :
   ring
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Simplify using the standard rewrite rules. Establish `hc : ‖(d : K) * coeff d z‖ ≤ 1`. Take `⟨n, rfl⟩ : ∃ n, d = n + 1` from `⟨d - 1, by omega⟩`. Establish `h` using `hdz n`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h` using `[PowerSeries.coeff_derivative]`. Use `push_cast`. Rewrite using `[mul_comm]`. Conclude with `h`. Rewrite using `[add_pow, Finset.sum_range_succ]`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.sub_self, pow_zero, mul_one, Nat.choose_self, Nat.cast_one, add_sub_cancel_right, map_sum, Finset.smul_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun m hm => ?_` and prove the remaining obligations. Establish `hmd : m < d` using `Finset.mem_range.1 hm`. Rewrite using `[← map_smul (MvPowerSeries.coeff e), term_eq, map_smul, smul_eq_mul, norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (norm_coeff_monomial_le _ _ _)).trans (scalar_bound hp hp1 _ d m hmd hc)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma term_bound {p : ℕ} (hp : p.Prime) (hp1 : ‖(p : K)‖ < 1) (z : PowerSeries K)
     (hdz : IntegralPS (PowerSeries.derivative K z)) (d : ℕ) (e : Fin 2 →₀ ℕ) :
@@ -215,9 +213,9 @@ lemma term_bound {p : ℕ} (hp : p.Prime) (hp1 : ‖(p : K)‖ < 1) (z : PowerSe
     (scalar_bound hp hp1 _ d m hmd hc)
 
 /- English proof (translation)
-Introduce `K _ _ p hp hp1 z hz0 hdz e`. Establish `ha : PowerSeries.HasSubst (MvPowerSeries.X (0 : Fin 2) + (p : K) • MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K)` using `PowerSeries.HasSubst.of_constantCoeff_zero (by simp)`. Establish `hb : PowerSeries.HasSubst (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K)` using `PowerSeries.HasSubst.X 0`. Unfold `Formalism.G.atX`. Rewrite using `[map_sub, PowerSeries.coeff_subst ha, PowerSeries.coeff_subst hb, ← finsum_sub_distrib (PowerSeries.coeff_subst_finite ha z e) (PowerSeries.coeff_subst_finite hb z e)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `norm_finsum_le (norm_nonneg _) fun d => ?_` and prove the remaining obligations. Rewrite using `[← smul_sub, ← map_sub]`. Conclude with `term_bound hp hp1 z hdz d e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quasiLogShift : Formalism.LT.QuasiLogShift.{u} := by
   intro K _ _ p hp hp1 z hz0 hdz e
@@ -234,23 +232,23 @@ theorem quasiLogShift : Formalism.LT.QuasiLogShift.{u} := by
   exact term_bound hp hp1 z hdz d e
 
 /- English proof (translation)
-The claim follows from `expIntegral`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.LT.ExpP.ExpIntegral_valid : Formalism.LT.ExpIntegral.{u} := expIntegral
 
 /- English proof (translation)
-The claim follows from `quasiLogShift`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.LT.ExpP.QuasiLogShift_valid_direct : Formalism.LT.QuasiLogShift.{u} := quasiLogShift
 
 end Formalism.LT.ExpP
 
 /- English proof (translation)
-The claim follows from `Formalism.LT.ExpP.expIntegral`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.LT.exp_integral : Formalism.LT.ExpIntegral.{u} := Formalism.LT.ExpP.expIntegral
 
 /- English proof (translation)
-The claim follows from `Formalism.LT.ExpP.quasiLogShift`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.LT.QuasiLogShift_valid : Formalism.LT.QuasiLogShift.{u} := Formalism.LT.ExpP.quasiLogShift

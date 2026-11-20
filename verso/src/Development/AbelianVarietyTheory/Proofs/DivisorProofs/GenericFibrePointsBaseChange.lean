@@ -9,19 +9,17 @@ noncomputable section
 namespace GlobalTheory.KeyOriginBC
 
 /- English proof (translation)
-Use `letI := GlobalTheory.KeyOriginNoeth.closureAlg A R D`. Take `⟨s, hs⟩` from `h`. Use `letI : Algebra (GlobalTheory.KeyOriginNoeth.closure A R D) D := (GlobalTheory.KeyOriginNoeth.closure A R D).subtype.toAlgebra`. Set `g : A →+* GlobalTheory.KeyOriginNoeth.closure A R D` to `(algebraMap R (GlobalTheory.KeyOriginNoeth.closure A R D)).comp (algebraMap A R)`. Set `M : Submonoid (GlobalTheory.KeyOriginNoeth.closure A R D)` to `(nonZeroDivisors A).map g`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hg : ∀ a : A, algebraMap (GlobalTheory.KeyOriginNoeth.closure A R D) D (g a) = GlobalTheory.KeyOriginNoeth.baseHom A R D (algebraMap A R a)` using `fun _ => rfl`. Establish `hR : ∀ r : R, algebraMap (GlobalTheory.KeyOriginNoeth.closure A R D) D (algebraMap R (GlobalTheory.KeyOriginNoeth.closure A R D) r) = GlobalTheory.KeyOriginNoeth.baseHom A R D r` using `fun _ => rfl`. Use `haveI : IsLocalization M D := { map_units := by`. Introduce and unpack `⟨_, a, ha, rfl⟩`. Use `show IsUnit (algebraMap (GlobalTheory.KeyOriginNoeth.closure A R D) D (g a))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hg]`. Conclude with `(IsLocalization.map_units (GlobalTheory.LocAcyc.GenFib A R) (⟨algebraMap A R a, a, ha, rfl⟩ : Algebra.algebraMapSubmonoid R (nonZeroDivisors A))).map (algebraMap (GlobalTheory.LocAcyc.GenFib A R) D)`. Use `surj := fun d => by`. Take `⟨a, ha, hd⟩` from `GlobalTheory.KeyOriginNoeth.exists_common_multiple_mem_closure A R D {d}`. Use `⟨(⟨_, hd d (Finset.mem_singleton_self d)⟩, ⟨g a, a, mem_nonZeroDivisors_of_ne_zero ha, rfl⟩), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show d * algebraMap (GlobalTheory.KeyOriginNoeth.closure A R D) D (g a) = _`. Rewrite using `[hg, mul_comm]`. Both sides reduce to the same expression. Use `exists_of_eq := fun {x y} hxy => ⟨1, by rw [Subtype.ext hxy]⟩ }`. Establish `hρa : ∀ a : A, ρ (algebraMap A R a) = a` using `fun a => congrArg (fun w => w a) hρA`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsr : ∀ r : R, s (algebraMap R (GlobalTheory.KeyOriginNoeth.closure A R D) r) = algebraMap A (FractionRing A) (ρ r)` using `fun r => congrArg (fun w => w r) hs`. Establish `hu : ∀ y : M, IsUnit (s y)`. Introduce and unpack `⟨_, a, ha, rfl⟩`. Use `show IsUnit (s (algebraMap R (GlobalTheory.KeyOriginNoeth.closure A R D) (algebraMap A R a)))`. Rewrite using `[hsr, hρa]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Rewrite using `[ne_eq, ← map_zero (algebraMap A (FractionRing A))]`. Conclude with `fun h0 => nonZeroDivisors.ne_zero ha (IsFractionRing.injective A (FractionRing A) h0)`. Use `⟨IsLocalization.lift (M := M) (S := D) hu, ?_⟩` and prove the remaining obligations. Apply `RingHom.ext` to reduce the goal to its premises.
-
-Introduce `r`. Rewrite using `[RingHom.comp_apply, ← hR, IsLocalization.lift_eq, hsr]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_point_ext (A R D : Type) [CommRing A] [IsDomain A] [CommRing R] [Algebra A R]
     [CommRing D] [Algebra (GlobalTheory.LocAcyc.GenFib A R) D] [Module.Finite (GlobalTheory.LocAcyc.GenFib A R) D]
@@ -77,23 +75,21 @@ end GlobalTheory.KeyOriginBC
 namespace GlobalTheory.KeyOriginBC
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ A A₁ _ _ _ _ f i i₁ hf EA _ _ _ _ QA _ jA hcomp hj ρ hρA hρX hunit DA _ _ q actA hq htor hpt`. Use `haveI : Module.Finite (GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) DA := htor.1`. Take `⟨S, hS⟩` from `exists_point_ext A (Localization.AtPrime QA) DA ρ hρA hpt`. Establish `hfK : Function.Injective ((algebraMap A₁ (FractionRing A₁)).comp f)` using `(IsFractionRing.injective A₁ (FractionRing A₁)).comp hf`. Set `φ : FractionRing A →+* FractionRing A₁` to `IsFractionRing.lift hfK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ a : A, φ (algebraMap A (FractionRing A) a) = algebraMap A₁ (FractionRing A₁) (f a)` using `fun a => IsFractionRing.lift_algebraMap hfK a`. Establish `hρ₁a : ∀ a : A₁, reduceLoc f i i₁ EA QA jA hcomp hj ρ hρA hρX hunit (algebraMap A₁ (Loc₁ f i i₁ EA QA jA hcomp hj) a) = a` using `fun a => congrArg (fun w => w a) (reduceLoc_algebraMap f i i₁ EA QA jA hcomp hj ρ hρA hρX hunit)`. Establish `hu₀ : ∀ y : Algebra.algebraMapSubmonoid (Loc₁ f i i₁ EA QA jA hcomp hj) (nonZeroDivisors A₁), IsUnit (((algebraMap A₁ (FractionRing A₁)).comp (reduceLoc f i i₁ EA QA jA hcomp hj ρ hρA hρX hunit)) y)`. Introduce and unpack `⟨_, a, ha, rfl⟩`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, hρ₁a]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Rewrite using `[ne_eq, ← map_zero (algebraMap A₁ (FractionRing A₁))]`. Conclude with `fun h0 => nonZeroDivisors.ne_zero ha (IsFractionRing.injective A₁ (FractionRing A₁) h0)`. Set `u : GlobalTheory.LocAcyc.GenFib A₁ (Loc₁ f i i₁ EA QA jA hcomp hj) →+* FractionRing A₁` to `IsLocalization.lift hu₀`. Establish `hu : ∀ r, u (algebraMap _ (GlobalTheory.LocAcyc.GenFib A₁ (Loc₁ f i i₁ EA QA jA hcomp hj)) r) = algebraMap A₁ (FractionRing A₁) (reduceLoc f i i₁ EA QA jA hcomp hj ρ hρA hρX hunit r)` using `fun r => IsLocalization.lift_eq hu₀ r`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `v : DA →+* FractionRing A₁` to `φ.comp S`. Establish `huv : u.comp (fibBC f i i₁ EA QA jA hcomp hj hf) = v.comp (algebraMap (GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) DA)`. Apply `IsLocalization.ringHom_ext (Algebra.algebraMapSubmonoid (Localization.AtPrime QA) (nonZeroDivisors A))` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.coe_comp, Function.comp_apply, fibBC_algebraMap, hu]`. Establish `h1` using `congrArg (fun w => w r) (reduceLoc_locBC f i i₁ EA QA jA hcomp hj ρ hρA hρX hunit)`. Establish `h2` using `congrArg (fun w => w r) hS`. Simplify using `only [RingHom.coe_comp, Function.comp_apply] at h1 h2`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = φ (S (GlobalTheory.KeyOriginNoeth.baseHom A _ DA r))`. Rewrite using `[h2, hφ]`. Use `letI : Algebra (GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) (FractionRing A₁) := (v.comp (algebraMap (GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) DA)).toAlgebra`. Set `W₁ : BC (fibBC f i i₁ EA QA jA hcomp hj hf) DA →+* FractionRing A₁` to `(Algebra.TensorProduct.productMap (⟨(u : Over (fibBC f i i₁ EA QA jA hcomp hj hf) →+* FractionRing A₁), fun r => congrArg (fun w => w r) huv⟩ : Over (fibBC f i i₁ EA QA jA hcomp hj hf) →ₐ[GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)] FractionRing A₁) (⟨v, fun _ => rfl⟩ …`. Establish `hW : ∀ y, W₁ (algebraMap (GlobalTheory.LocAcyc.GenFib A₁ (Loc₁ f i i₁ EA QA jA hcomp hj)) (BC (fibBC f i i₁ EA QA jA hcomp hj hf) DA) y) = u y`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Use `show W₁ ((show Over (fibBC f i i₁ EA QA jA hcomp hj hf) from y) ⊗ₜ (1 : DA)) = u y`. Use `(Algebra.TensorProduct.productMap_apply_tmul _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `letI := GlobalTheory.KeyOriginNoeth.closureAlg A₁ (Loc₁ f i i₁ EA QA jA hcomp hj) (BC (fibBC f i i₁ EA QA jA hcomp hj hf) DA)`. Use `⟨W₁.comp (GlobalTheory.KeyOriginNoeth.closure A₁ (Loc₁ f i i₁ EA QA jA hcomp hj) (BC (fibBC f i i₁ EA QA jA hcomp hj hf) DA)).subtype, ?_⟩` and prove the remaining obligations. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Use `show W₁ (algebraMap (GlobalTheory.LocAcyc.GenFib A₁ (Loc₁ f i i₁ EA QA jA hcomp hj)) (BC (fibBC f i i₁ EA QA jA hcomp hj hf) DA) (algebraMap _ (GlobalTheory.LocAcyc.GenFib A₁ (Loc₁ f i i₁ EA QA jA hcomp hj)) r)) = _`.
-
-Rewrite using `[hW, hu]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pointAtZero_bc : ∀ (T O : Type) [CommRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
     [IsScalarTower T T[X] O]

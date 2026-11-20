@@ -31,25 +31,23 @@ open scoped NNReal NumberField Classical in
 variable {C : Type} [Field C] in
 
 /- English proof (translation)
-Use `set f := _root_.GlobalTheory.HTLat.embO hv τ with hf`. Establish `hemb : ∀ x : 𝓞 E, algebraMap O C (f x) = τ x` using `_root_.GlobalTheory.HTLat.algebraMap_embO hv τ`. Establish `hne : differentIdeal ℤ (𝓞 E) ≠ ⊥` using `differentIdeal_ne_bot`. Take `⟨S, hS⟩` from `IsNoetherian.noetherian (differentIdeal ℤ (𝓞 E))`. Establish `hSne : S.Nonempty`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← hS]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hgS, hmax⟩` from `Finset.exists_max_image S (fun g => v (τ g)) hSne`. Establish `hgI : g ∈ differentIdeal ℤ (𝓞 E)` using `hS ▸ Submodule.subset_span hgS`. Establish `hdvd : ∀ x ∈ differentIdeal ℤ (𝓞 E), f g ∣ f x`. Introduce `x hx`. Rewrite `hx` using `[← hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Apply `hv.dvd_of_le` to reduce the goal to its premises. Rewrite using `[hemb, hemb]`. Conclude with `hmax y hy`.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add]`. Conclude with `dvd_add ha hb`. Consider the case `smul a b _ hb`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_mul, map_mul]`. Conclude with `dvd_mul_of_dvd_right hb _`. Establish `hgreat : IsGreatest {r | ∃ x ∈ differentIdeal ℤ (𝓞 E), v (τ x) = r} (v (τ g))`. Use `⟨⟨g, hgI, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `r ⟨x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hemb, ← hemb]`. Conclude with `hv.le_of_dvd (hdvd x hx)`. Establish `habs : _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedDifferentComparison.absDifferent v τ = v (τ g)` using `hgreat.csSup_eq`. Use `⟨f g, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Conclude with `hdvd x hx`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem f hgI`. Rewrite using `[habs, hemb]`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hx0' : v (τ x) ≠ 0`. Rewrite using `[Ne, map_eq_zero, map_eq_zero]`.
-
-Conclude with `hx0` after adjusting the coercions. Rewrite using `[habs]`. Conclude with `ne_of_gt (lt_of_lt_of_le (pos_iff_ne_zero.mpr hx0') (hgreat.2 ⟨x, hx, rfl⟩))`. Rewrite using `[habs, ← hemb]`. Conclude with `hv.map_le_one _`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedDifferentComparison.exists_generator_different {v : Valuation C ℝ≥0} {O : Type}
     [CommRing O] [Algebra O C] (hv : v.Integers O) {E : Type} [Field E] [NumberField E]
@@ -111,7 +109,7 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedDifferentComparison
     exact hv.map_le_one _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨p, (Real.rpow_one _).symm, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (p : ℕ) (v : Valuation C ℝ≥0) {O : Type} [CommRing O] [Algebra O C] {U : Type}
     [AddCommGroup U] [Module C U] [Module O U] [IsScalarTower O C U] (La : Submodule O U) :
@@ -181,14 +179,14 @@ section PadicComplex
 attribute [local instance] algInt algField
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem tower (p : ℕ) [Fact p.Prime] :
     @IsScalarTower ℤ_[p] 𝓞_ℂ_[p] ℂ_[p] (algInt p).toSMul Algebra.toSMul (algField p).toSMul :=
   IsScalarTower.of_algebraMap_eq fun _ => rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PadicComplexHost.not_isUnit_p p⟩`.
+Supply the required witnesses or components.
 -/
 theorem fact_not_isUnit (p : ℕ) [Fact p.Prime] : Fact ¬IsUnit (p : 𝓞_ℂ_[p]) :=
   ⟨PadicComplexHost.not_isUnit_p p⟩

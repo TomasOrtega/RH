@@ -13,9 +13,9 @@ namespace GlobalTheory.ZH.PreInh
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Use `(AddSubgroup.eq_bot_iff_forall _).2 fun a ha => ?_` and prove the remaining obligations. Establish `ha' : ∀ h : S.Gam, eStd S.g _ a h = 0` using `fun h => ha h trivial`. Use function extensionality and compare the values at `k`. Break down `k with i | i` into its components or cases. Use `ha' (Pi.single (Sum.inr i) 1)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify `this` using `[eStd, Pi.single_apply]`. Use `ha' (Pi.single (Sum.inl i) 1)` as an intermediate fact. Simplify `this` using `[eStd, Pi.single_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem perp_top (S : ThetaSys o Ω) : S.perp ⊤ = ⊥ := by
   refine (AddSubgroup.eq_bot_iff_forall _).2 fun a ha => ?_
@@ -28,9 +28,9 @@ theorem perp_top (S : ThetaSys o Ω) : S.perp ⊤ = ⊥ := by
     simpa [eStd, Pi.single_apply] using this
 
 /- English proof (translation)
-Establish `h : S.supI (RatModel.ofAffine o Ω S.R) z = {x | S.th x ≠ 0}`. Use `Set.ext fun x => ⟨fun hx => hx.1, fun hx => ⟨hx, fun j => ?_⟩⟩` and prove the remaining obligations. Use `(RatModel.mem_O_ofAffine (A := S.R) (z := z)).2 ⟨⟨S.th j * (S.th x)⁻¹, S.R.mul_mem (S.th_mem j) (hu x hx)⟩, 1, (Ideal.ne_top_iff_one _).1 (PrimeSpectrum.isPrime z).ne_top, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, div_one, div_eq_mul_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `ThetaSys.TT ThetaSys.HH`. Rewrite using `[h, S.supp, perp_top]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem TT_ofAffine (S : ThetaSys o Ω) [Algebra.FiniteType o S.R] [IsFractionRing S.R Ω]
     (hu : ∀ x, S.th x ≠ 0 → (S.th x)⁻¹ ∈ S.R) (z : (RatModel.ofAffine o Ω S.R).Z) :
@@ -46,9 +46,9 @@ theorem TT_ofAffine (S : ThetaSys o Ω) [Algebra.FiniteType o S.R] [IsFractionRi
   rw [h, S.supp, perp_top]
 
 /- English proof (translation)
-Introduce `hL o Ω _ _ _ hB S ρ _ _`. Establish `: Algebra.FiniteType ℤ o` using `hB.ft`. Establish `: IsNoetherianRing o` using `Algebra.FiniteType.isNoetherianRing ℤ o`. Establish `: IsNoetherianRing S.R` using `Algebra.FiniteType.isNoetherianRing o S.R`. Take `⟨c⟩` from `(hL.cube (Sp S.R) ρ.P ⟨ρ.P.L, ρ.rig, ρ.P.isLB, ρ.rig_gen⟩ rfl).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3⟩` from `PreModel.pre_sec ρ c`. Use `⟨PreModel.pre ρ c, rfl, h1, fun hu => ⟨h2.trans ?_, fun W _ => h3 W⟩⟩` and prove the remaining obligations. Conclude with `(Set.eq_univ_of_forall fun z => TT_ofAffine S hu z).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pre_ofAffine :
     Laws → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) [Algebra.FiniteType o S.R] [IsFractionRing S.R Ω], ∃ Q : ZHPre ρ (RatModel.ofAffine o Ω S.R) ⊤, Q.G = ρ.P.A ∧ Q.Sec ∧ ((∀ x, S.th x ≠ 0 → (S.th x)⁻¹ ∈ S.R) → Q.Ab) := by

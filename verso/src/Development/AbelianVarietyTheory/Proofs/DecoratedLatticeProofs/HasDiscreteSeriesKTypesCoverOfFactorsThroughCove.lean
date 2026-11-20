@@ -17,15 +17,15 @@ open Formalism.MainNotions.S (IsURepOn IsIrredOn IsKFin IsKStableOn IsWtOn IsKTy
 namespace GlobalTheory.CoverDS
 
 /- English proof (translation)
-Introduce `h1 h2 h3 p q n e P T R σ hb hf hd`. Establish `hc : ∀ a, ((blockPar P e a : ℚ) : ℝ) = P.lam (e a)` using `fun a => ratEntry_cast P (e a)`. Establish `hlow : (fun i => ((blattner (blockPar P e) (e.symm i) : ℚ) : ℝ)) = Formalism.QuantumDeterminants.lowK P.sgn P.lam`. Use function extensionality and compare the values at `i`. Rewrite using `[blattner_eq P hb hc, e.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hn : p + q = n` using `by simpa using Fintype.card_congr e`. Use `⟨?_, fun v => ?_, GlobalTheory.CoverCone.inCone_of_kTypesAbove h2 p q n e P T R σ hb hf hd⟩` and prove the remaining obligations. Use `GlobalTheory.T.highestWeightLine_of_kTypeMultiplicityOne p q n e P.sgn T R σ hb hf _ ?_ ?_` and prove the remaining obligations. Rewrite using `[hlow]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd.2.2.2.2.2.1`. Rewrite using `[hlow]`. Conclude with `h1 n P.sgn P.lam _ σ P.hc hd`. Rewrite using `[GlobalTheory.T.casimir_eq_gelfandValue_of_infinitesimalCharacter p q n e P.sgn T R σ hb hf _ (h3 n P.sgn P.lam _ σ P.hc hd) v, GlobalTheory.T.secondGelfandInvariant_value_eq, hn]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : ∀ a, ((blockPar P e a : ℚ) : ℂ) = ((P.lam (e a) : ℝ) : ℂ)` using `fun a => by`. Rewrite using `[← hc a]`. Simplify using the standard rewrite rules. Rewrite using `[normSq]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hc']`. Rewrite using `[Equiv.sum_comp e (fun a => ((P.lam a : ℝ) : ℂ) ^ 2)]`.
+A detailed English derivation is pending.
 -/
 theorem hasTypes_of_factors : GlobalTheory.Dec.LowKMultOne → GlobalTheory.Dec.KTypesAbove → GlobalTheory.Dec.DSInfChar →
     ∀ (p q n : ℕ) (e : Ix p q ≃ Fin n) (P : SignedPar n) (T : GrpData p q) (R : DSRep T)

@@ -4,11 +4,11 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.C.Sf
 
 /- English proof (translation)
-Introduce `G H S _ _ _ _ _ _ _ _ _ _ _ τ hτ π U hUc hUo f hf x`. Establish `hc : (fixU π U).topologicalClosure = fixU π U` using `(isClosed_fixU π U).submodule_topologicalClosure_eq`. Establish `hm : ∀ v, v ∈ (fixU π U).topologicalClosure ↔ v ∈ fixU π U` using `fun v => by rw [hc]`. Establish `hy : f (fixedProj τ hτ hUc hUo x : S) ∈ fixU π U` using `fun u hu => by`. Rewrite using `[← hf.map, (fixedProj τ hτ hUc hUo x).2 u hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero ((hm _).2 hy) fun b hb => ?_` and prove the remaining obligations. Establish `hb' : b ∈ fixU π U` using `(hm _).1 hb`. Rewrite using `[← map_sub, ← inner_conj_symm, map_eq_zero_iff _ (starRingEnd ℂ).injective]`. Set `φ : S →ₗ[ℂ] ℂ` to `(innerSL ℂ b).toLinearMap ∘ₗ f`. Establish `hφ : ∀ k ∈ U, ∀ v, φ (τ k v) = φ v` using `fun k hk v => by show inner ℂ b (f (τ k v)) = inner ℂ b (f v)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hf.map, ← ContinuousLinearMap.adjoint_inner_left, UnitaryRep.adjoint_map, hb' _ (U.inv_mem hk)]`. Conclude with `coinvariantsKer_le_ker_of_invariant hφ (sub_fixedProj_mem hτ hUc hUo x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.fixedProjection_apply_equivariant_eq :
     ∀ (G H S : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [AddCommGroup S] [Module ℂ S] (τ : Representation ℂ G S) (hτ : GroundTheory.Automorphic.IsSmooth τ) (π : UnitaryRep G H) (U : Subgroup G) (hUc : IsCompact (U : Set G)) (hUo : IsOpen (U : Set G)) (f : S →ₗ[ℂ] H), Eqv τ π ⊤ f → ∀ x, prj (fixU π U) (f x) = f (fixedProj τ hτ hUc hUo x) := by

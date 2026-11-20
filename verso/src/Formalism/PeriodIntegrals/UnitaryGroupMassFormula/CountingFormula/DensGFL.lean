@@ -9,7 +9,7 @@ open Formalism.MainNotions.S Polynomial
 open ValuativeRel
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[L.9]`. Conclude with `hx.map ((L.1 : E →ₐ[F] E).restrictScalars 𝒪[F])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fl_cj_mem {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) {x : E} (hx : x ∈ L.O) : L.cj x ∈ L.O := by
@@ -17,7 +17,7 @@ theorem fl_cj_mem {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [
   exact hx.map ((L.1 : E →ₐ[F] E).restrictScalars 𝒪[F])
 
 /- English proof (translation)
-Establish `h1 : IsIntegral 𝒪[F] (algebraMap F E a)` using `(L.9 _).1 ha`. Establish `h2 : IsIntegral 𝒪[F] a` using `(isIntegral_algebraMap_iff hinj).1 h1`. Conclude with `(Valuation.integer.integers _).mem_of_integral h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fl_mem_int {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) (hinj : Function.Injective (algebraMap F E))
@@ -27,7 +27,7 @@ theorem fl_mem_int {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
   exact (Valuation.integer.integers _).mem_of_integral h2
 
 /- English proof (translation)
-Rewrite using `[L.9]`. Establish `h : IsIntegral 𝒪[F] (algebraMap 𝒪[F] E a)` using `isIntegral_algebraMap`. Rewrite `h` using `[IsScalarTower.algebraMap_apply 𝒪[F] F E]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fl_int_mem {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) (a : 𝒪[F]) : algebraMap F E a ∈ L.O := by
@@ -36,7 +36,7 @@ theorem fl_int_mem {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
   rwa [IsScalarTower.algebraMap_apply 𝒪[F] F E] at h
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(L.3 y).1 hc`. Establish `haO : a ∈ 𝒪[F]` using `fl_mem_int L hinj (ha ▸ hy)`. Conclude with `⟨⟨a, haO⟩, ha⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem fl_fix_int {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) (hinj : Function.Injective (algebraMap F E))
@@ -46,7 +46,7 @@ theorem fl_fix_int {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
   exact ⟨⟨a, haO⟩, ha⟩
 
 /- English proof (translation)
-Use `fl_fix_int L hinj (L.O.mul_mem hx (fl_cj_mem L hx)) ?_` and prove the remaining obligations. Rewrite using `[map_mul, L.2, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fl_norm {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) (hinj : Function.Injective (algebraMap F E))
@@ -55,7 +55,7 @@ theorem fl_norm {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [Co
   rw [map_mul, L.2, mul_comm]
 
 /- English proof (translation)
-Use `fl_fix_int L hinj (L.O.add_mem hx (fl_cj_mem L hx)) ?_` and prove the remaining obligations. Rewrite using `[map_add, L.2, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fl_trace {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) (hinj : Function.Injective (algebraMap F E))
@@ -64,13 +64,11 @@ theorem fl_trace {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [C
   rw [map_add, L.2, add_comm]
 
 /- English proof (translation)
-Distinguish the cases in `ha : a ∈ 𝒪[F]`. Conclude with `⟨1, one_ne_zero, by simpa using ha⟩`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `ha (zero_mem _)`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hv : 1 < ValuativeRel.valuation F a`. Rewrite `ha` using `[Valuation.mem_integer_iff, not_le]`. Conclude with `ha`. Establish `hmem : a⁻¹ ∈ 𝒪[F]`. Rewrite using `[Valuation.mem_integer_iff, map_inv₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `inv_le_one_of_one_le₀ hv.le`. Use `⟨⟨a⁻¹, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h'` using `congrArg Subtype.val h`. Simplify using `[ha0] at h'`.
-
-Simplify using `[ha0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fl_den_F {F : Type} [Field F] [ValuativeRel F] (a : F) :
     ∃ c : 𝒪[F], c ≠ 0 ∧ (c : F) * a ∈ 𝒪[F] := by
@@ -92,11 +90,11 @@ theorem fl_den_F {F : Type} [Field F] [ValuativeRel F] (a : F) :
     · simp [ha0]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `(L.3 (x + L.cj x)).1 (by rw [map_add, L.2, add_comm])`. Take `⟨m, hm⟩` from `(L.3 (x * L.cj x)).1 (by rw [map_mul, L.2, mul_comm])`. Take `⟨c1, hc1, ht1⟩` from `fl_den_F t`. Take `⟨c2, hc2, hm2⟩` from `fl_den_F m`. Use `⟨c1 * c2, mul_ne_zero hc1 hc2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[L.9]`. Establish `key : ∀ z : 𝒪[F], algebraMap 𝒪[F] E z = algebraMap F E (z : F)` using `fun z => IsScalarTower.algebraMap_apply 𝒪[F] F E z`. Establish `hx2 : x * x = algebraMap F E t * x - algebraMap F E m` using `by rw [ht, hm]; ring`. Use `⟨X ^ 2 - C (c2 * ⟨(c1 : F) * t, ht1⟩) * X + C (c1 ^ 2 * c2 * ⟨(c2 : F) * m, hm2⟩), by monicity!, ?_⟩` and prove the remaining obligations. Simplify using `only [eval₂_add, eval₂_sub, eval₂_mul, eval₂_X_pow, eval₂_C, eval₂_X, key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Apply the tactic sequence `try simp only [map_mul, map_pow]`. Take the linear combination `(algebraMap F E c1 * algebraMap F E c2) ^ 2 * hx2`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fl_den {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) (x : E) :

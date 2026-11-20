@@ -13,7 +13,7 @@ open PositivityTheory.SiegelWeilFormula.KLI (J pk J_eq J_zero intg_pow_quad pk_d
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `h` using `(PiLp.volume_preserving_toLp ι).integral_comp (MeasurableEquiv.toLp 2 (ι → ℝ)).measurableEmbedding g`. Rewrite using `[← h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_euc (g : EuclideanSpace ℝ ι → ℂ) :
     ∫ η, g η = ∫ x : ι → ℝ, g (WithLp.toLp 2 x) := by
@@ -22,7 +22,7 @@ theorem integral_euc (g : EuclideanSpace ℝ ι → ℂ) :
   rw [← h]
 
 /- English proof (translation)
-Establish `h` using `(PiLp.volume_preserving_toLp ι).integrable_comp_emb (MeasurableEquiv.toLp 2 (ι → ℝ)).measurableEmbedding (g := g)`. Conclude with `h.1 hg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_euc {g : EuclideanSpace ℝ ι → ℂ} (hg : Integrable (fun x : ι → ℝ => g (WithLp.toLp 2 x))) :
     Integrable g := by
@@ -31,14 +31,14 @@ theorem integrable_euc {g : EuclideanSpace ℝ ι → ℂ} (hg : Integrable (fun
   exact h.1 hg
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun i _ => by positivity)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_sq_euc (x : EuclideanSpace ℝ ι) : ‖x‖ ^ 2 = ∑ i, (x i) ^ 2 := by
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun i _ => by positivity)]
   simp
 
 /- English proof (translation)
-Simplify using `[PiLp.inner_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_euc (x y : EuclideanSpace ℝ ι) : inner ℝ x y = ∑ i, x i * y i := by
   simp [PiLp.inner_apply, mul_comm]
@@ -46,16 +46,16 @@ theorem inner_euc (x y : EuclideanSpace ℝ ι) : inner ℝ x y = ∑ i, x i * y
 def phi (b : ℝ) (k : ℕ) (c : ℂ) (x : ℝ) : ℂ := (x : ℂ) ^ k * cexp ((-b : ℂ) * (x : ℂ) ^ 2 + c * x)
 
 /- English proof (translation)
-Establish `h : ((-b : ℂ)).re < 0` using `by simp; linarith`. Conclude with `intg_pow_quad h k c`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_phi {b : ℝ} (hb : 0 < b) (k : ℕ) (c : ℂ) : Integrable (phi b k c) := by
   have h : ((-b : ℂ)).re < 0 := by simp; linarith
   exact intg_pow_quad h k c
 
 /- English proof (translation)
-Establish `h : ((-b : ℂ)).re < 0` using `by simp; linarith`. Establish `e1` using `J_eq h k c`. Rewrite `e1` using `[J_zero h]`. Establish `e2 : ∫ x, phi b k c x = J (-b : ℂ) k c` using `rfl`. Rewrite using `[e2, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[neg_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_phi {b : ℝ} (hb : 0 < b) (k : ℕ) (c : ℂ) :
     ∫ x, phi b k c x = (pk (-b : ℂ) k).eval c * (((Real.pi : ℂ) / b) ^ (1 / 2 : ℂ) * cexp (c ^ 2 / (4 * b))) := by
@@ -69,7 +69,7 @@ theorem integral_phi {b : ℝ} (hb : 0 < b) (k : ℕ) (c : ℂ) :
   · congr 1; ring
 
 /- English proof (translation)
-Rewrite using `[Circle.smul_def, Real.fourierChar_apply, smul_eq_mul]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem circle_smul (r : ℝ) (z : ℂ) : (𝐞 r) • z = cexp (2 * Real.pi * r * I) * z := by
   rw [Circle.smul_def, Real.fourierChar_apply, smul_eq_mul]
@@ -77,15 +77,15 @@ theorem circle_smul (r : ℝ) (z : ℂ) : (𝐞 r) • z = cexp (2 * Real.pi * r
   ring_nf
 
 /- English proof (translation)
-Rewrite using `[eval_monomial, one_mul, Finsupp.prod_fintype _ _ (by simp)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_mono (s : ι →₀ ℕ) (y : ι → ℂ) : eval y (monomial s (1 : ℂ)) = ∏ i, y i ^ s i := by
   rw [eval_monomial, one_mul, Finsupp.prod_fintype _ _ (by simp)]
 
 /- English proof (translation)
-Rewrite using `[circle_smul, eval_mono, inner_euc, norm_sq_euc]`. Simplify using `only [phi, Finset.prod_mul_distrib, ← Complex.exp_sum]`. Rewrite using `[Complex.ofReal_exp, mul_left_comm, ← Complex.exp_add]`. Use `congr 2`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mono_prod (b : ℝ) (s : ι →₀ ℕ) (u : EuclideanSpace ℝ ι) (x : ι → ℝ) :
     𝐞 (inner ℝ (WithLp.toLp 2 x : EuclideanSpace ℝ ι) u) •
@@ -102,7 +102,7 @@ theorem mono_prod (b : ℝ) (s : ι →₀ ℕ) (u : EuclideanSpace ℝ ι) (x :
   ring
 
 /- English proof (translation)
-Use `integrable_euc ?_` and prove the remaining obligations. Repeatedly rewrite using `[mono_prod]`. Conclude with `Integrable.fintype_prod (f := fun i y => phi b (s i) (2 * Real.pi * I * u i) y) fun i => integrable_phi hb _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_mono {b : ℝ} (hb : 0 < b) (s : ι →₀ ℕ) (u : EuclideanSpace ℝ ι) :
     Integrable (fun η : EuclideanSpace ℝ ι => 𝐞 (inner ℝ η u) •
@@ -113,7 +113,7 @@ theorem integrable_mono {b : ℝ} (hb : 0 < b) (s : ι →₀ ℕ) (u : Euclidea
     fun i => integrable_phi hb _ _
 
 /- English proof (translation)
-Rewrite using `[integral_euc]`. Repeatedly rewrite using `[mono_prod]`. Rewrite using `[integral_fintype_prod_volume_eq_prod (f := fun i y => phi b (s i) (2 * Real.pi * I * u i) y)]`. Repeatedly rewrite using `[integral_phi hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem integral_mono {b : ℝ} (hb : 0 < b) (s : ι →₀ ℕ) (u : EuclideanSpace ℝ ι) :
     ∫ η : EuclideanSpace ℝ ι, 𝐞 (inner ℝ η u) •
@@ -128,11 +128,11 @@ theorem integral_mono {b : ℝ} (hb : 0 < b) (s : ι →₀ ℕ) (u : EuclideanS
 def kG (b : ℝ) : ℂ := ((Real.pi : ℂ) / b) ^ (1 / 2 : ℂ)
 
 /- English proof (translation)
-Establish `hb0 : (b : ℂ) ≠ 0` using `by exact_mod_cast hb.ne'`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, ← Complex.exp_sum, ← mul_assoc]`. Use `congr 1`. Rewrite using `[Complex.ofReal_exp, norm_sq_euc]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
 
-Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_gauss {b : ℝ} (hb : 0 < b) (u : EuclideanSpace ℝ ι) (A : ι → ℂ) :
     ∏ i, (A i * (((Real.pi : ℂ) / b) ^ (1 / 2 : ℂ) * cexp ((2 * Real.pi * I * u i) ^ 2 / (4 * b)))) =
@@ -155,7 +155,7 @@ def linP (i : ι) (a : ℂ) (p : Polynomial ℂ) : MvPolynomial ι ℂ :=
 
 omit [Fintype ι] in
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_eq_sum_range, linP, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[mul_pow, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem eval_linP (i : ι) (a : ℂ) (p : Polynomial ℂ) (g : ι → ℂ) : eval g (linP i a p) = p.eval (a * g i) := by
   rw [Polynomial.eval_eq_sum_range, linP, map_sum]
@@ -164,9 +164,9 @@ theorem eval_linP (i : ι) (a : ℂ) (p : Polynomial ℂ) (g : ι → ℂ) : eva
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun j hj => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`. Use `(totalDegree_pow _ _).trans ?_` and prove the remaining obligations. Use `Finset.mem_range.mp hj` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (X i : MvPolynomial ι ℂ).totalDegree ≤ 1` using `by rw [totalDegree_X]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem deg_linP (i : ι) (a : ℂ) (p : Polynomial ℂ) : (linP i a p).totalDegree ≤ p.natDegree := by
   refine (totalDegree_finsetSum _ _).trans (Finset.sup_le fun j hj => ?_)
@@ -181,7 +181,7 @@ def rS (b : ℝ) (s : ι →₀ ℕ) : MvPolynomial ι ℂ :=
   C (kG b ^ Fintype.card ι) * ∏ i, linP i (2 * Real.pi * I) (pk (-b : ℂ) (s i))
 
 /- English proof (translation)
-Simplify using `[rS, eval_linP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_rS (b : ℝ) (s : ι →₀ ℕ) (u : EuclideanSpace ℝ ι) :
     eval (fun i => ((u i : ℝ) : ℂ)) (rS b s) =
@@ -189,7 +189,7 @@ theorem eval_rS (b : ℝ) (s : ι →₀ ℕ) (u : EuclideanSpace ℝ ι) :
   simp [rS, eval_linP]
 
 /- English proof (translation)
-Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`. Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (by simp)]`. Conclude with `Finset.sum_le_sum fun i _ => (deg_linP _ _ _).trans (pk_deg _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_rS (b : ℝ) (s : ι →₀ ℕ) : (rS b s).totalDegree ≤ s.sum (fun _ e => e) := by
   refine (totalDegree_mul _ _).trans ?_
@@ -199,7 +199,7 @@ theorem deg_rS (b : ℝ) (s : ι →₀ ℕ) : (rS b s).totalDegree ≤ s.sum (f
   exact Finset.sum_le_sum fun i _ => (deg_linP _ _ _).trans (pk_deg _ _)
 
 /- English proof (translation)
-Rewrite using `[integral_mono hb, prod_gauss hb, eval_rS]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_mono' {b : ℝ} (hb : 0 < b) (s : ι →₀ ℕ) (u : EuclideanSpace ℝ ι) :
     ∫ η : EuclideanSpace ℝ ι, 𝐞 (inner ℝ η u) •
@@ -210,7 +210,7 @@ theorem integral_mono' {b : ℝ} (hb : 0 < b) (s : ι →₀ ℕ) (u : Euclidean
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use `conv_lhs => rw [Q.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[eval_monomial, eval_monomial, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_as_sum (Q : MvPolynomial ι ℂ) (y : ι → ℂ) :
     eval y Q = ∑ s ∈ Q.support, coeff s Q * eval y (monomial s (1 : ℂ)) := by
@@ -220,14 +220,14 @@ theorem eval_as_sum (Q : MvPolynomial ι ℂ) (y : ι → ℂ) :
   rw [eval_monomial, eval_monomial, one_mul]
 
 /- English proof (translation)
-Rewrite using `[circle_smul, inner_zero_right]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem e_zero (η : EuclideanSpace ℝ ι) (z : ℂ) : 𝐞 (inner ℝ η (0 : EuclideanSpace ℝ ι)) • z = z := by
   rw [circle_smul, inner_zero_right]
   simp
 
 /- English proof (translation)
-Establish `h` using `integrable_mono hb s 0`. Rewrite `h` using `[e_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_mono0 {b : ℝ} (hb : 0 < b) (s : ι →₀ ℕ) :
     Integrable (fun η : EuclideanSpace ℝ ι =>
@@ -237,9 +237,7 @@ theorem integrable_mono0 {b : ℝ} (hb : 0 < b) (s : ι →₀ ℕ) :
   exact h
 
 /- English proof (translation)
-Establish `e : (fun η : EuclideanSpace ℝ ι => MvPolynomial.eval (fun i => ((η i : ℝ) : ℂ)) Q * (Real.exp (-(b * ‖η‖ ^ 2)) : ℂ)) = fun η => ∑ s ∈ Q.support, coeff s Q * (eval (fun i => ((η i : ℝ) : ℂ)) (monomial s (1 : ℂ)) * (Real.exp (-(b * ‖η‖ ^ 2)) : ℂ))`. Use function extensionality and compare the values at `η`. Rewrite using `[eval_as_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Rewrite using `[e]`.
-
-Conclude with `integrable_finsetSum _ fun s _ => (integrable_mono0 hb s).const_mul _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_poly_gauss {ι : Type} [Fintype ι] (b : ℝ) (hb : 0 < b) (Q : MvPolynomial ι ℂ) :
     MeasureTheory.Integrable (fun η : EuclideanSpace ℝ ι =>
@@ -255,13 +253,13 @@ theorem integrable_poly_gauss {ι : Type} [Fintype ι] (b : ℝ) (hb : 0 < b) (Q
   exact integrable_finsetSum _ fun s _ => (integrable_mono0 hb s).const_mul _
 
 /- English proof (translation)
-Use `⟨∑ s ∈ Q.support, C (coeff s Q) * rS b s, ?_, fun u => ?_⟩` and prove the remaining obligations. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun s hs => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`. Conclude with `(deg_rS b s).trans (le_totalDegree hs)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.fourierInv_eq]`. Establish `e : ∀ η : EuclideanSpace ℝ ι, 𝐞 (inner ℝ η u) • (eval (fun i => ((η i : ℝ) : ℂ)) Q * (Real.exp (-(b * ‖η‖ ^ 2)) : ℂ)) = ∑ s ∈ Q.support, coeff s Q * (𝐞 (inner ℝ η u) • (eval (fun i => ((η i : ℝ) : ℂ)) (monomial s (1 : ℂ)) * (Real.exp (-(b * ‖η‖ ^ 2)) : ℂ)))`. Introduce `η`. Rewrite using `[eval_as_sum, Finset.sum_mul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[circle_smul, circle_smul]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[integral_finsetSum _ fun s _ => (integrable_mono hb s u).const_mul _]`. Repeatedly rewrite using `[integral_const_mul, integral_mono' hb]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[eval_mul, eval_C]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fourierInv_poly_gauss {ι : Type} [Fintype ι] (b : ℝ) (hb : 0 < b) (Q : MvPolynomial ι ℂ) :
     ∃ Q' : MvPolynomial ι ℂ, Q'.totalDegree ≤ Q.totalDegree ∧ ∀ u : EuclideanSpace ℝ ι,

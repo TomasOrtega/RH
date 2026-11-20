@@ -17,15 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GenericFibreFactorial
 
 /- English proof (translation)
-Set `K` to `FractionRing R`. Set `M` to `Algebra.algebraMapSubmonoid A (nonZeroDivisors R)`. Set `B` to `Localization M`. Use `letI : Algebra K B := localizationAlgebra (nonZeroDivisors R) A`. Use `haveI : IsScalarTower R K B := inferInstance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI h1 : Algebra.IsPushout R A K B := Algebra.isPushout_of_isLocalization (nonZeroDivisors R) K A B`. Use `haveI : Algebra.IsPushout R K A B := h1.symm`. Use `haveI : Algebra.Smooth K B := Algebra.Smooth.of_equiv (Algebra.IsPushout.equiv (R := R) (S := K) (R' := A) (S' := B))`. Use `haveI : IsRegularRing B := GlobalTheory.isRegularRing_of_smooth K B`. Establish `disj : Disjoint (M : Set A) (p : Set A)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨r, hr, rfl⟩ hrp`. Establish `: r ∈ p.comap (algebraMap R A)` using `hrp`. Rewrite `this` using `[hp, Ideal.mem_bot]`. Conclude with `nonZeroDivisors.ne_zero hr this`.
-
-Set `q` to `p.map (algebraMap A B)`. Use `haveI : q.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint M B p inferInstance disj`. Use `haveI : IsLocalization.AtPrime (Localization.AtPrime q) p := by`. Use `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M (Localization.AtPrime q) q` and compare the differences between its conclusion and the goal. Conclude with `(IsLocalization.under_map_of_isPrime_disjoint M B inferInstance disj).symm`.
-
-Use `haveI : IsRegularRing (Localization.AtPrime q) := GlobalTheory.ExtendRig.isRegularRing_of_isLocalization q.primeCompl _`. Conclude with `IsRegularRing.of_ringEquiv (IsLocalization.algEquiv p.primeCompl (Localization.AtPrime q) (Localization.AtPrime p)).toRingEquiv`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isRegularRing_localization_of_comap_eq_bot (R A : Type) [CommRing R] [IsDomain R]
     [CommRing A] [Algebra R A] [Algebra.Smooth R A] (p : Ideal A) [p.IsPrime]
@@ -58,15 +54,11 @@ theorem isRegularRing_localization_of_comap_eq_bot (R A : Type) [CommRing R] [Is
     (Localization.AtPrime q) (Localization.AtPrime p)).toRingEquiv
 
 /- English proof (translation)
-Introduce `R _ _ X _ f _ x hx`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hs : (f.appLE ⊤ U le_top).hom.Smooth` using `HasRingHomProperty.appLE @Smooth f inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Use `haveI : Nonempty (⊤ : (Sp R).Opens) := ⟨⟨f x, trivial⟩⟩`. Use `haveI : IsDomain Γ(Sp R, ⊤) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgen : f x = genericPoint (Sp R)`. Rewrite using `[genericPoint_eq_bot_of_affine]`. Conclude with `PrimeSpectrum.ext hx`. Establish `h1` using `IsAffineOpen.comap_primeIdealOf_appLE (f := f) ⊤ (isAffineOpen_top _) U hU le_top hxU`. Establish `h2 : (isAffineOpen_top (Sp R)).primeIdealOf ⟨f x, (show f x ∈ (⊤ : (Sp R).Opens) from trivial)⟩ = genericPoint (Spec Γ(Sp R, ⊤))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← (isAffineOpen_top (Sp R)).primeIdealOf_genericPoint]`. Use `congr 1`. Conclude with `Subtype.ext hgen`. Rewrite `h1` using `[h2, genericPoint_eq_bot_of_affine]`. Establish `hcomap : (hU.primeIdealOf ⟨x, hxU⟩).asIdeal.comap (f.appLE ⊤ U le_top).hom = ⊥` using `congrArg PrimeSpectrum.asIdeal h1`.
-
-Use `algebraize [(f.appLE ⊤ U le_top).hom]`. Establish `hreg` using `isRegularRing_localization_of_comap_eq_bot Γ(Sp R, ⊤) Γ(X, U) (hU.primeIdealOf ⟨x, hxU⟩).asIdeal hcomap`. Set `` to `X.presheaf.algebra_section_stalk ⟨x, hxU⟩`. Use `hU.isLocalization_stalk ⟨x, hxU⟩` as an intermediate fact. Use `haveI : IsRegularRing (X.presheaf.stalk x) := IsRegularRing.of_ringEquiv (IsLocalization.algEquiv (hU.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl (Localization.AtPrime (hU.primeIdealOf ⟨x, hxU⟩).asIdeal) (X.presheaf.stalk x)).toRingEquiv`.
-
-Conclude with `GlobalTheory.uniqueFactorizationMonoid_of_isRegularRing_of_isLocalRing GlobalTheory.exists_hasProjectiveDimensionLE_of_isRegularLocalRing GlobalTheory.isPrincipal_map_away_of_hasProjectiveDimensionLE _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ufd_stalk_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] (X : Scheme.{0}) [IsIntegral X]
     (f : X ⟶ Sp R) [Smooth f] (x : X), (show PrimeSpectrum R from f x).asIdeal = ⊥ →

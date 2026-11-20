@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArCalcOfPrincipalis
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h` and use `GlobalTheory.T.arithHilbertSamuel_nef_of_ample (GlobalTheory.MixHt.arCalc_of_principalisation h) (GlobalTheory.T.ampleArithHilbertSamuel_of_principalisation h) (GlobalTheory.SemiPullAll.semiPull_of_principalisation h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem arithHilbertSamuel_of_principalisation :
     GlobalTheory.Published.Principalisation → GlobalTheory.Published.ArithHilbertSamuel :=

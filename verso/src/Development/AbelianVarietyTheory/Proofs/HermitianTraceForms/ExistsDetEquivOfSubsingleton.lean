@@ -30,7 +30,7 @@ Both sides reduce to the same expression.
     (wedgeMul R H a b (x ⊗ₜ y) : ExteriorAlgebra R H) = (x : ExteriorAlgebra R H) * y := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [ExteriorAlgebra.ιMulti_mul_ιMulti])`.
+A detailed English derivation is pending.
 -/
 theorem wedgeMul_ιMulti {a b : ℕ} (x : Fin a → H) (y : Fin b → H) :
     wedgeMul R H a b (exteriorPower.ιMulti R a x ⊗ₜ exteriorPower.ιMulti R b y) =
@@ -38,7 +38,7 @@ theorem wedgeMul_ιMulti {a b : ℕ} (x : Fin a → H) (y : Fin b → H) :
   Subtype.ext (by simp [ExteriorAlgebra.ιMulti_mul_ιMulti])
 
 /- English proof (translation)
-Establish `: (⋀[R]^n H).subtype ∘ₗ exteriorPower.map n i = (ExteriorAlgebra.map i).toLinearMap ∘ₗ (⋀[R]^n F).subtype`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use extensionality with `v`. Simplify using the standard rewrite rules. Conclude with `LinearMap.congr_fun this x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coe_map (n : ℕ) (i : F →ₗ[R] H) (x : ⋀[R]^n F) :
     (exteriorPower.map n i x : ExteriorAlgebra R H) =
@@ -55,7 +55,7 @@ noncomputable def wedgeMap (i : F →ₗ[R] H) (s : L →ₗ[R] H) (a b : ℕ) :
   wedgeMul R H a b ∘ₗ TensorProduct.map (exteriorPower.map a i) (exteriorPower.map b s)
 
 /- English proof (translation)
-Simplify using `[wedgeMap, coe_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_wedgeMap_tmul (i : F →ₗ[R] H) (s : L →ₗ[R] H) {a b : ℕ} (x : ⋀[R]^a F)
     (y : ⋀[R]^b L) : (wedgeMap i s a b (x ⊗ₜ y) : ExteriorAlgebra R H) =
@@ -64,7 +64,7 @@ theorem coe_wedgeMap_tmul (i : F →ₗ[R] H) (s : L →ₗ[R] H) {a b : ℕ} (x
   simp [wedgeMap, coe_map]
 
 /- English proof (translation)
-Rewrite using `[ExteriorAlgebra.exteriorPower, Submodule.map_pow, ← LinearMap.range_comp, ExteriorAlgebra.map_comp_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem range_pow_eq_map (i : F →ₗ[R] H) (n : ℕ) :
     LinearMap.range (ExteriorAlgebra.ι R ∘ₗ i) ^ n =
@@ -73,9 +73,9 @@ theorem range_pow_eq_map (i : F →ₗ[R] H) (n : ℕ) :
     ExteriorAlgebra.map_comp_ι]
 
 /- English proof (translation)
-Proceed by induction on `b generalizing x with`. Consider the case `zero => simp`. Consider the case `succ b ih`. Take `⟨f, hf⟩` from `hh 0`. Establish `h0 : x * ExteriorAlgebra.ι R (h 0) = x * ExteriorAlgebra.ι R (h' 0)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← mul_sub, ← map_sub, ← hf, hx]`. Rewrite using `[ExteriorAlgebra.ιMulti_succ_apply, ExteriorAlgebra.ιMulti_succ_apply, ← mul_assoc, ← mul_assoc, h0]`. Use `ih _ (fun g => ?_) _ _ fun k => hh k.succ` and prove the remaining obligations. Rewrite using `[mul_assoc, eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap (h' 0) (i g)), mul_neg, ← mul_assoc, hx, zero_mul, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_ιMulti_congr (i : F →ₗ[R] H) {b : ℕ} (x : ExteriorAlgebra R H)
     (hx : ∀ f, x * ExteriorAlgebra.ι R (i f) = 0) (h h' : Fin b → H)
@@ -94,9 +94,9 @@ theorem mul_ιMulti_congr (i : F →ₗ[R] H) {b : ℕ} (x : ExteriorAlgebra R H
       mul_neg, ← mul_assoc, hx, zero_mul, neg_zero]
 
 /- English proof (translation)
-Simplify using `only [Submodule.mem_span_range_iff_exists_fun] at hw`. Use `choose u hu using hw`. Establish `: IsEmpty (Set.powersetCard (Fin r) n)` using `⟨fun s => by`. Establish `h1` using `s.1.card_le_univ`. Establish `h2 : s.1.card = n` using `s.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.card_fin] at h1`. Use the proof step `omega⟩`. Establish `h0 : exteriorPower.ιMulti R n u = 0` using `((Pi.basisFun R (Fin r)).exteriorPower n).ext_elem fun s => this.elim s`. Establish `hw : w = Fintype.linearCombination R v ∘ u` using `funext fun k => (hu k).symm`. Rewrite using `[hw, ← exteriorPower.map_apply_ιMulti, h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ιMulti_eq_zero_of_mem_span {r n : ℕ} (hn : r < n) (v : Fin r → F) (w : Fin n → F)
     (hw : ∀ k, w k ∈ Submodule.span R (Set.range v)) : exteriorPower.ιMulti R n w = 0 := by
@@ -121,9 +121,9 @@ end Exact
 section Dual
 
 /- English proof (translation)
-Establish `: exteriorPower.pairingDual R F n ∘ₗ exteriorPower.map n φ.dualMap = (exteriorPower.map n φ).dualMap ∘ₗ exteriorPower.pairingDual R H n`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use `AlternatingMap.ext fun f => ?_` and prove the remaining obligations. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use `AlternatingMap.ext fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Conclude with `LinearMap.congr_fun this ξ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairingDual_map_dualMap (φ : F →ₗ[R] H) (n : ℕ) (ξ : ⋀[R]^n (Dual R H)) :
     exteriorPower.pairingDual R F n (exteriorPower.map n φ.dualMap ξ) =
@@ -138,9 +138,9 @@ theorem pairingDual_map_dualMap (φ : F →ₗ[R] H) (n : ℕ) (ξ : ⋀[R]^n (D
   exact LinearMap.congr_fun this ξ
 
 /- English proof (translation)
-Establish `: exteriorPower.pairingDual R F n = ((b.dualBasis.exteriorPower n).equiv (b.exteriorPower n).dualBasis (Equiv.refl _)).toLinearMap`. Use `(b.dualBasis.exteriorPower n).ext fun s => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, Basis.equiv_apply, Equiv.refl_apply, Basis.coe_dualBasis, exteriorPower.basis_coord, exteriorPower.basis_apply, Basis.coe_dualBasis]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearEquiv.bijective _`.
+A detailed English derivation is pending.
 -/
 theorem pairingDual_bijective_of_basis {κ : Type*} [Finite κ] [LinearOrder κ] (b : Basis κ R F)
     (n : ℕ) : Bijective (exteriorPower.pairingDual R F n) := by
@@ -157,11 +157,11 @@ theorem pairingDual_bijective_of_basis {κ : Type*} [Finite κ] [LinearOrder κ]
 variable (R F) in
 
 /- English proof (translation)
-Take `⟨k, f, g, -, -, hfg⟩` from `Module.Finite.exists_comp_eq_id_of_projective R F`. Establish `hb` using `pairingDual_bijective_of_basis (Pi.basisFun R (Fin k)) n`. Establish `h₁ : ∀ ξ : ⋀[R]^n (Dual R F), exteriorPower.map n g.dualMap (exteriorPower.map n f.dualMap ξ) = ξ` using `fun ξ => by`. Rewrite using `[← LinearMap.comp_apply, ← exteriorPower.map_comp, LinearMap.dualMap_comp_dualMap, hfg, LinearMap.dualMap_id, exteriorPower.map_id, LinearMap.id_apply]`. Establish `h₂ : ∀ ξ : Dual R (⋀[R]^n F), (exteriorPower.map n g).dualMap ((exteriorPower.map n f).dualMap ξ) = ξ` using `fun ξ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.comp_apply, LinearMap.dualMap_comp_dualMap, ← exteriorPower.map_comp, hfg, exteriorPower.map_id, LinearMap.dualMap_id, LinearMap.id_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Rewrite using `[← h₁ x, ← h₁ y]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `hb.1` to reduce the goal to its premises. Rewrite using `[pairingDual_map_dualMap, pairingDual_map_dualMap, hxy]`. Introduce `ξ`. Take `⟨x, hx⟩` from `hb.2 ((exteriorPower.map n f).dualMap ξ)`. Conclude with `⟨exteriorPower.map n g.dualMap x, by rw [pairingDual_map_dualMap, hx, h₂]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pairingDual_bijective [Module.Finite R F] [Module.Projective R F] (n : ℕ) :
     Bijective (exteriorPower.pairingDual R F n) := by
@@ -200,9 +200,9 @@ Both sides reduce to the same expression.
 variable (F) in
 
 /- English proof (translation)
-Set `S` to `p.asIdeal.primeCompl`. Establish `h₁` using `LocalizedModule.isBaseChange S F`. Establish `h₂` using `LocalizedModule.isBaseChange S (Dual R F)`. Establish `: Module.Free (Localization S) (LocalizedModule S F)` using `Module.free_of_flat_of_isLocalRing`. Establish `e` using `h₂.equiv.symm ≪≫ₗ (SymAlg.isBaseChange_dual h₁).equiv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.finrank_eq.trans (Module.finrank_linearMap_self _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem rankAtStalk_dual [Module.Finite R F] [Module.Projective R F] (p : PrimeSpectrum R) :
     rankAtStalk (Dual R F) p = rankAtStalk F p := by

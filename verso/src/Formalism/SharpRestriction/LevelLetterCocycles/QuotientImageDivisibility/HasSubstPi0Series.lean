@@ -21,7 +21,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero (Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_cc hR)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_pi0_series (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) : PowerSeries.HasSubst W.π₀₁ :=
   PowerSeries.HasSubst.of_constantCoeff_zero (Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_cc hR)
@@ -30,7 +30,7 @@ def at0Hom (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) : PowerSerie
   Pi.ringHom fun _ => (PowerSeries.substAlgHom (hasSubst_pi0_series W hR)).toRingHom
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show (PowerSeries.substAlgHom (hasSubst_pi0_series W hR)) f = PowerSeries.subst W.π₀₁ f`. Rewrite using `[PowerSeries.coe_substAlgHom]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at0Hom_apply (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (f : PowerSeries O) :
     at0Hom W hR f = Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W f := by
@@ -39,7 +39,7 @@ theorem at0Hom_apply (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (f
   rw [PowerSeries.coe_substAlgHom]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `PowerSeries.subst_X (hasSubst_pi0_series W hR)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem evalZero_X_eq_pi0 (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) :
     Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W PowerSeries.X = W.π₀ := by
@@ -47,7 +47,7 @@ theorem evalZero_X_eq_pi0 (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP 
   exact PowerSeries.subst_X (hasSubst_pi0_series W hR)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0, PowerSeries.subst_C, PowerSeries.algebraMap_eq]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem evalZero_C (o : O) : Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (PowerSeries.C o) = algebraMap O (LetA O n) o := by
   funext i
@@ -55,18 +55,18 @@ theorem evalZero_C (o : O) : Formalism.MainNotions.RamifiedCoefficientChains.Sh.
   rfl
 
 /- English proof (translation)
-Rewrite using `[← at0Hom_apply W hR, ← at0Hom_apply W hR, ← at0Hom_apply W hR, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evalZero_mul (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (f g : PowerSeries O) :
     Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (f * g) = Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W f * Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W g := by
   rw [← at0Hom_apply W hR, ← at0Hom_apply W hR, ← at0Hom_apply W hR, map_mul]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hR.2.2.1`. Establish `hπ₀ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)`. Rewrite using `[hw, map_mul, map_pow]`. Conclude with `(w.isUnit.map _).mul (W.EE_π.pow _)`. Take `⟨U, hU⟩` from `hπ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := W.EE_complete`. Establish `hJ : ((PD.p : ℕ) : W.EE) ∈ (⊥ : Ideal W.EE).jacobson` using `IsAdicComplete.le_jacobson_bot (Ideal.span {((PD.p : ℕ) : W.EE)}) (Ideal.subset_span (Set.mem_singleton _))`. Establish `h1 : IsUnit (((PD.p : ℕ) : W.EE) * ((U⁻¹ : W.EEˣ) : W.EE) + 1)` using `Ideal.mem_jacobson_bot.1 hJ _`. Establish `e : algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W) = (U : W.EE) * (((PD.p : ℕ) : W.EE) * ((U⁻¹ : W.EEˣ) : W.EE) + 1)`. Rewrite using `[mul_add, mul_one, ← mul_assoc, mul_comm (U : W.EE), mul_assoc, Units.mul_inv, mul_one, hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.MainNotions.LiftingTheory.qp, map_add, map_natCast, add_comm]`. Rewrite using `[e]`. Conclude with `U.isUnit.mul h1`.
+A detailed English derivation is pending.
 -/
 theorem qp_unit_EE (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) :
     IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W)) := by
@@ -89,7 +89,7 @@ theorem qp_unit_EE (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) :
   exact U.isUnit.mul h1
 
 /- English proof (translation)
-Establish `hu : IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W ^ k))`. Rewrite using `[map_pow]`. Conclude with `(qp_unit_EE W hR).pow _`. Rewrite `h` using `[← algebraMap_smul W.EE (Formalism.MainNotions.LiftingTheory.qp W ^ k) x, ← algebraMap_smul W.EE (Formalism.MainNotions.LiftingTheory.qp W ^ k) y]`. Conclude with `hu.smul_left_cancel.1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qp_pow_cancel (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (T : LocLat G Qp LL O) (k : ℕ)
     {x y : W.DD T} (h : Formalism.MainNotions.LiftingTheory.qp W ^ k • x = Formalism.MainNotions.LiftingTheory.qp W ^ k • y) : x = y := by

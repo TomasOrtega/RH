@@ -15,13 +15,13 @@ noncomputable section
 namespace GlobalTheory.MixWLeft
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he g`. Establish `hs` using `IsUWeilPair.isUSplitting hP.weil`. Establish `hs₁` using `IsUWeilPair.isUSplitting hP₁.weil`. Establish `h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1`. Simplify using `[incM]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun Φ hΦ => ?_, fun z Φ hΦ => ?_, fun u hu Φ hΦ => ?_⟩` and prove the remaining obligations. Conclude with `hs₁.pres _ _ (he.maps _ (hs.pres _ _ hΦ))`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hs.impl (g, 1) _ Φ hΦ]`. Establish `key : actAB (cA σ) ((g, 1) : UA σ X.J × UA σ W.J) (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ) = incM F (1 : Matrix (Fin n) (Fin n) E) * (mat g * z) * (incM F H'.ι)ᵀ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[actAB, mat, h1, Matrix.mul_assoc]`. Rewrite using `[key, he.Heisenberg₂ _ _ (hs.pres _ _ hΦ), hs₁.impl (g⁻¹, 1) _ _ (he.maps _ (hs.pres _ _ hΦ))]`. Use `congr 2`. Simplify using `[actAB, mat, ← Matrix.mul_assoc]`. Take `⟨y, rfl⟩` from `hu`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hs.impl (g, 1) _ Φ hΦ]`. Establish `key : actAB (cA σ) ((g, 1) : UA σ X.J × UA σ W.J) (Matrix.vecMulVec y (incV F H'.x)) = Matrix.vecMulVec (mat g *ᵥ y) (incV F H'.x)`. Simplify using `[actAB, mat, Matrix.mul_vecMulVec]`. Rewrite using `[key, he.inv _ ⟨_, rfl⟩ _ (hs.pres _ _ hΦ)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_left : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -57,13 +57,13 @@ theorem twist_left : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     rw [key, he.inv _ ⟨_, rfl⟩ _ (hs.pres _ _ hΦ)]
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he`. Use `GlobalTheory.T.skew_adapted_plane_pair_factor hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he ?_` and prove the remaining obligations. Introduce `g`. Take `⟨hmaps, hheis, hinv⟩` from `twist_left F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he g`. Establish `hspl` using `IsUWeilPair.isUSplitting hP.weil`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hspl₁` using `IsUWeilPair.isUSplitting hP₁.weil`. Establish `hadm : ∀ l ∈ (adeleClass F).adm (Fin n × Fin d₁), l ∘ₗ (om₁ (g⁻¹, 1) ∘ₗ e ∘ₗ om (g, 1)) ∈ (adeleClass F).adm (Fin n × Fin d)`. Introduce `l hl`. Establish `h1` using `hspl₁.adm (g⁻¹, 1) l hl`. Establish `h2` using `GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e hP.good hP₁.good he _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hspl.adm (g, 1) _ h2`. Simplify `h3` using `[LinearMap.comp_assoc]`. Take `⟨c, hc⟩` from `GlobalTheory.T.skew_adapted_plane_pair_vanish hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he _ hmaps hheis hinv hadm`. Use `⟨c, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `key` using `hc Φ hΦ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinv1 : ∀ Ψ, om₁ (g, 1) (om₁ (g⁻¹, 1) Ψ) = Ψ`. Introduce `Ψ`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, mul_inv_cancel, Prod.mk_one_one, map_one, Module.End.one_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem evalZero_unitary_left : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

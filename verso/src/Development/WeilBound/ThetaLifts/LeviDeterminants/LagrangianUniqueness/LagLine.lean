@@ -2,6 +2,6 @@ import Development.WeilBound.ThetaLifts.LeviDeterminants.LagrangianUniqueness.Li
 import Development.WeilBound.ThetaLifts.LeviDeterminants.LagrangianUniqueness.HasDerivAtEc
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.ThKF0.LineCore.lagLine_of PositivityTheory.ThKF0.realTest`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.ThKF0.lagLine : PositivityTheory.ThKF0.LagLine := PositivityTheory.ThKF0.LineCore.lagLine_of PositivityTheory.ThKF0.realTest

@@ -17,17 +17,15 @@ noncomputable section
 namespace GlobalTheory.BdEquation
 open GlobalTheory.Cartier GlobalTheory.ZH GlobalTheory.FlagBundle
 /- English proof (translation)
-Introduce `_ E _ _ _ H Dw l Xo c T Z hF _ y _`. Establish `hsm` using `GlobalTheory.VarFlag.smooth_gen T.smooth`. Take `⟨B, j, hB, hcov⟩` from `GlobalTheory.T.exists_varieties_components_smooth_genericFibre E H Dw l Xo c c.F (RingHom.id c.F) T.Y c.F (RingEquiv.refl _) hF hsm`. Use `(hB Z).1` as an intermediate fact. Take `⟨C, f, hπ, -, hl⟩` from `GlobalTheory.FlagBundle.exists_flagCpt T.Y (RingEquiv.refl _) (GlobalTheory.T.snc_toroidalGenericBoundary_of_snc_boundary T.snc) (B Z) (j Z) (hB Z).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hiso, hh, -, -⟩` from `GlobalTheory.CompProport.exists_iso T Z B j hB hcov C f hπ hl`. Establish `hmem : ∀ z : Y₀ T.X Z, h z ∉ CartierDiv.supp C.bd ↔ z ∈ U₀ T.X Z` using `fun z => by`. Establish `e : GlobalTheory.Toroidal.genι T.Y (C.π (h z)) = T.X.π (inc₀ T.X Z z)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← hh]`. Use `(not_congr (C.bd_supp (h z))).trans (not_not.trans ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `C.π (h z) ∈ Set.range T.Y.jQ ↔ T.X.π (inc₀ T.X Z z) ∈ Set.range T.Y.j`. Use `exists_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← e, Model.j, Scheme.Hom.comp_apply]`. Conclude with `(GlobalTheory.Toroidal.genι T.Y).isOpenEmbedding.injective.eq_iff.symm`. Take `⟨V, hyV, t, ht, hrad⟩` from `exists_section C.bd C.bd_eff C.bd_red (h y)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg : ∀ z (hz : z ∈ h ⁻¹ᵁ V), ger z hz (h.app V t) = (h.stalkMap z).hom (ger (h z) hz t)` using `fun z hz => (Scheme.Hom.germ_stalkMap_apply h V z hz t).symm`. Establish `hu : ∀ z (hz : z ∈ h ⁻¹ᵁ V), IsUnit (ger z hz (h.app V t)) ↔ z ∈ U₀ T.X Z` using `fun z hz => by`. Rewrite using `[hg, isUnit_map_iff]`. Conclude with `(ht (h z) hz).trans (hmem z)`. Use `⟨h ⁻¹ᵁ V, hyV, h.app V t, hu, fun W hW s hs z hz => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, c', hc⟩` from `dvd_pow_of_vanishing _ _ _ hu W hW s hs z hz`. Establish `hb` using `GlobalTheory.BoundaryDivisor.stalkMap_bijective h z`. Take `⟨b, hb'⟩` from `hb.2 (ger z hz s)`. Take `⟨c'', rfl⟩` from `hb.2 c'`. Rewrite `hc` using `[hg, ← hb', ← map_pow, ← map_mul]`.
-
-Rewrite using `[hg, ← hb']`. Conclude with `map_dvd _ (hrad _ _ b n ⟨c'', hb.1 hc⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reduced_boundary_equation : _root_.GlobalTheory.CovTop.Hypotheses'' → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → IsVariety₀ TF.X Z → ∀ y : Y₀ TF.X Z, y ∉ U₀ TF.X Z → ∃ (V : (Y₀ TF.X Z).Opens) (_ : y ∈ V) (t : Γ(Y₀ TF.X Z, V)), (∀ z (hz : z ∈ V), IsUnit (ger z hz t) ↔ z ∈ U₀ TF.X Z) ∧ (∀ (W : (Y₀ TF.X Z).Opens) (hW : W ≤ V) (f : Γ(Y₀ TF.X Z, W)), (∀ z (hz : z ∈ W), z ∉ U₀ TF.X Z → ger z hz f ∈ IsLocalRing.maximalIdeal ((Y₀ TF.X Z).presheaf.stalk z)) → ∀ z (hz : z ∈ W), ger z (hW hz) t ∣ ger z hz f) := by
   intro _ E _ _ _ H Dw l Xo c T Z hF _ y _
@@ -74,7 +72,7 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BdEquation.exists_reduced_boundary_equation | exact _root_.GlobalTheory.BdEquation.exists_reduced_boundary_equation | (intros; apply _root_.GlobalTheory.BdEquation.exists_reduced_boundary_equation <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.boundary_divisor_has_reduced_equation : _root_.GlobalTheory.CovTop.Hypotheses'' → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → IsVariety₀ TF.X Z → ∀ y : Y₀ TF.X Z, y ∉ U₀ TF.X Z → ∃ (V : (Y₀ TF.X Z).Opens) (_ : y ∈ V) (t : Γ(Y₀ TF.X Z, V)), (∀ z (hz : z ∈ V), IsUnit (ger z hz t) ↔ z ∈ U₀ TF.X Z) ∧ (∀ (W : (Y₀ TF.X Z).Opens) (hW : W ≤ V) (f : Γ(Y₀ TF.X Z, W)), (∀ z (hz : z ∈ W), z ∉ U₀ TF.X Z → ger z hz f ∈ IsLocalRing.maximalIdeal ((Y₀ TF.X Z).presheaf.stalk z)) → ∀ z (hz : z ∈ W), ger z (hW hz) t ∣ ger z hz f) := by
   first | exact @_root_.GlobalTheory.BdEquation.exists_reduced_boundary_equation | exact _root_.GlobalTheory.BdEquation.exists_reduced_boundary_equation | (intros; apply _root_.GlobalTheory.BdEquation.exists_reduced_boundary_equation <;> assumption)

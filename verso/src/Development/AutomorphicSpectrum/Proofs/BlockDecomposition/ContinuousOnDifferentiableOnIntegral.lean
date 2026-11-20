@@ -8,13 +8,11 @@ open scoped Topology
 namespace GlobalTheory.CompanionTheory.Param
 
 /- English proof (translation)
-Introduce `Y T _ _ _ _ _ μ U hU F hF hdiff hdom`. Establish `hGat : ∀ z ∈ U, ∀ (t : T) (y : Y), ContinuousAt (fun u : ℂ × T × Y => F u.1 u.2.1 u.2.2) (z, t, y)` using `fun z hz t y => hF.continuousAt ((hU.prod isOpen_univ).mem_nhds (Set.mk_mem_prod hz (Set.mem_univ _)))`. Establish `hslice : ∀ z ∈ U, ∀ t : T, Continuous (fun y => F z t y)` using `fun z hz t => hF.comp_continuous (f := fun y : Y => (z, t, y)) (by fun_prop) fun y => Set.mk_mem_prod hz (Set.mem_univ _)`. Use `⟨?_, fun t => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨z₀, t₀⟩ ⟨hz₀, -⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨V, hV, N, hN, w, hw, hbound⟩` from `hdom z₀ hz₀ t₀`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Use `MeasureTheory.continuousAt_of_dominated (bound := w) ?_ ?_ hw ?_` and prove the remaining obligations. Establish `hmem : U ×ˢ (Set.univ : Set T) ∈ 𝓝 (z₀, t₀)` using `(hU.prod isOpen_univ).mem_nhds (Set.mk_mem_prod hz₀ (Set.mem_univ _)) filter_upwards [hmem] with x hx`. Conclude with `(hslice x.1 hx.1 x.2).aestronglyMeasurable`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : V ×ˢ N ∈ 𝓝 (z₀, t₀)`. Rewrite using `[nhds_prod_eq]`. Conclude with `Filter.prod_mem_prod hV hN`. Use `filter_upwards [hmem] with x hx`. Conclude with `Filter.Eventually.of_forall fun y => hbound x.1 hx.1 x.2 hx.2 y`.
-
-Conclude with `Filter.Eventually.of_forall fun y => ContinuousAt.comp_of_eq (f := fun x : ℂ × T => (x.1, x.2, y)) (hGat z₀ hz₀ t₀ y) (by fun_prop) rfl`. Take `⟨h, -⟩` from `GlobalTheory.differentiableOn_integral_of_holomorphic_of_locally_dominated (μ := μ) (F := fun y z => F z t y) hU (fun z hz => (hslice z hz t).aestronglyMeasurable) (Filter.Eventually.of_forall fun y => hdiff t y) (fun z hz => by`. Take `⟨V, hV, N, hN, w, hw, hb⟩` from `hdom z hz t`. Conclude with `⟨V, hV, w, hw, Filter.Eventually.of_forall fun y z' hz' => hb z' hz' t (mem_of_mem_nhds hN) y⟩)`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem continuousOn_differentiableOn_integral :
     ∀ {Y T : Type} [TopologicalSpace Y] [MeasurableSpace Y] [OpensMeasurableSpace Y]

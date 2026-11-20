@@ -8,12 +8,12 @@ import Formalism.SharpRestriction.GrowthBounds.BinomialPolynomialIdentities.SubP
 namespace Formalism.MainNotions.G.ColumnFamilies
 
 /- English proof (translation)
-Introduce `R _ N r K LL B` and use `⟨linearIndependent_productBasis R N r K LL B, span_productBasis_eq_multihomogeneous R N r K LL B⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem externalProduct_basis : ExternalProductBasis := fun R _ N r K LL B => ⟨linearIndependent_productBasis R N r K LL B, span_productBasis_eq_multihomogeneous R N r K LL B⟩
 
 /- English proof (translation)
-The claim follows from `externalProduct_basis e1 := determinant_divisibility e2 := polynomialHighestWeight_dominant D e3 := projectors_preserve_multidegree e5a := polynomialProjectors_commute_nested e5b := polynomialProjectors_commute_disjoint lowPl := restLowPl_of D (polynomialTypeSums_by_evaluation D) …`.
+A detailed English derivation is pending.
 -/
 theorem externalProductHyps (D : Formalism.BasicNotions.D7) : ExternalProductHyps where
   p16 := externalProduct_basis
@@ -27,7 +27,7 @@ theorem externalProductHyps (D : Formalism.BasicNotions.D7) : ExternalProductHyp
   sum := restJointSum
 
 /- English proof (translation)
-The claim follows from `admissible_externalProduct_of_hyps D (externalProductHyps D)`.
+A detailed English derivation is pending.
 -/
 theorem admissible_externalProduct (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.PairedPathIndependence D := admissible_externalProduct_of_hyps D (externalProductHyps D)
 

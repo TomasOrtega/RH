@@ -22,13 +22,13 @@ section Good
 open Formalism.BasicNotions Formalism.L2.Theta GlobalTheory.CovTop GlobalTheory.HSApp GlobalTheory.DegCmp
 open GlobalTheory.Toroidal (genBd HasToricChart)
 /- English proof (translation)
-Establish `hg : genericPoint (Y₀ TF.X Z) ∉ bd₀ TF.X Z` using `fun h => by`. Take `⟨y, hy⟩` from `(dense_U₀ TF.X Z).nonempty`. Conclude with `h ((genericPoint_specializes y).mem_open (U₀ TF.X Z).isOpen hy)`. Establish `hc : ∀ m : ℕ, cls (L₀ TF.X Z (m • la)) (isLB_L₀ _ _ _) = m • cls (L₀ TF.X Z la) (isLB_L₀ _ _ _)` using `fun m => by`. Establish `a` using `cls_common_add (common₀ TF.X Z)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero`. Use `a 0 0` as an intermediate fact. Simplify using `only [add_zero] at this`. Rewrite using `[zero_nsmul, zero_nsmul]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `left_eq_add.1 this`. Consider the case `succ m ih => rw [succ_nsmul, succ_nsmul, ← ih]`. Conclude with `a _ _`. Rewrite using `[← growth_vanishing hN _ _ (str₀ TF.X Z) _ (GlobalTheory.VarFlag.isVariety₀_flag _ _ _ _ _ _ TF Z hY.geo).2.1 hd _ hg _ (isLB_L₀ _ _ la) (_root_.GlobalTheory.T.base_weight_line_bundle_is_nef hP hN hL _ _ _ _ _ _ TF Z hY.geo la (gapGe_of_strictAnti hla)) _ _ hc (fun m => vanBd TF. …`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `m`. Establish `h1` using `GlobalTheory.T.cuspForms_extend_vanish_compactifiedFlagSpace D T j Y e o hY hf Z TF (m • la)`. Establish `h2` using `le_antisymm h1.space_le (vanBd_le_space D T j Y e o hY hf Z TF (m • la))`. Rewrite using `[CompHt.nsmul_wtOf, smul_zero, ← h2]`. Conclude with `congrArg _ h1.equiv.rank_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem growth_eq_top_self_intersection (hP : _root_.GlobalTheory.CovTop.Hypotheses'') (hN : GlobalTheory.Published.NefNumerics)
     (hL : GlobalTheory.Published.SemiAbelianLieSeminegative) {D : D7} {T : Core D} {j : ℕ} {Y : Deep T j} {e : ℕ} {o : ℝ}
@@ -59,9 +59,9 @@ theorem growth_eq_top_self_intersection (hP : _root_.GlobalTheory.CovTop.Hypothe
   rw [CompHt.nsmul_wtOf, smul_zero, ← h2]
   exact congrArg _ h1.equiv.rank_eq
 /- English proof (translation)
-Take `⟨q, hq, h⟩` from `topSelf_eq_covol hP.p16 TF hc hY.geo (Formalism.L2.PjFree.Unf.ofPj (Y.U σ)) hσ (hY.unf σ hσ)`. Use `⟨q, hq, fun k la hla => ?_⟩` and prove the remaining obligations. Take `⟨_, hd, h⟩` from `h k`. Use `(_root_.GlobalTheory.CompProport.growth_eq_top_self_intersection hP hN hL hY hf _ TF hd hla).trans ?_` and prove the remaining obligations. Rewrite using `[h, GlobalTheory.FlagPoly.flagDegFormula, CompHt.weylProd_eq, show ((CompHt.vdm la : ℤ) : ℝ) = _ from CompHt.map_vdm (Int.castRingHom ℝ) la]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [CompHt.dimFlag, eq_intCast]`. Express the relevant statement in the definitionally equal form `GlobalTheory.TrueCx.covol ((Y.U σ).X k) * _ = _`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem growth_eq_covolume (hP : _root_.GlobalTheory.CovTop.Hypotheses'') (hN : GlobalTheory.Published.NefNumerics)
     (hL : GlobalTheory.Published.SemiAbelianLieSeminegative) {D : D7} {T : Core D} {j : ℕ} {Y : Deep T j} {e : ℕ} {o : ℝ}
@@ -84,9 +84,9 @@ theorem growth_eq_covolume (hP : _root_.GlobalTheory.CovTop.Hypotheses'') (hN : 
   change GlobalTheory.TrueCx.covol ((Y.U σ).X k) * _ = _
   ring
 /- English proof (translation)
-Take `⟨q, hq, h⟩` from `_root_.GlobalTheory.CompProport.growth_eq_covolume hP hN hL hY hf TF hc hσ`. Establish `hs : (0 : ℝ) < (CompHt.vdm (CompHt.stdWt (AllWt.Psi T.Q.H) ((T.Q.Dw j).p + (T.Q.Dw j).q)) : ℤ)` using `Int.cast_pos.2 (CompHt.vdm_pos CompHt.strictAnti_stdWt)`. Establish `hv : ∀ k, CompHt.vZero Y.U (q k) = GlobalTheory.TrueCx.covol ((Y.U σ).X k) * (CompHt.dimFlag (T.Q.Dw j)).factorial / (CompHt.vdm (CompHt.stdWt (AllWt.Psi T.Q.H) ((T.Q.Dw j).p + (T.Q.Dw j).q)) : ℤ)` using `fun k => by`. Use `GlobalTheory.TrueCx.covol_pos ((Y.U σ).X k)` as an intermediate fact. Rewrite using `[CompHt.vZero, h k _ CompHt.strictAnti_stdWt, ENNReal.toReal_ofReal (by positivity), mul_div_cancel_right₀ _ hs.ne']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun Z la hla => ?_, q, hq, hv⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `q.surjective Z`. Rewrite using `[h k la hla, CompHt.topDeg, hv]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem invariant_volume_eq_covolume (hP : _root_.GlobalTheory.CovTop.Hypotheses'') (hN : GlobalTheory.Published.NefNumerics)
     (hL : GlobalTheory.Published.SemiAbelianLieSeminegative) {D : D7} {T : Core D} {j : ℕ} {Y : Deep T j} {e : ℕ} {o : ℝ}
@@ -107,7 +107,7 @@ theorem invariant_volume_eq_covolume (hP : _root_.GlobalTheory.CovTop.Hypotheses
   obtain ⟨k, rfl⟩ := q.surjective Z
   rw [h k la hla, CompHt.topDeg, hv]
 /- English proof (translation)
-Take `⟨h, q, -, hv⟩` from `_root_.GlobalTheory.CompProport.invariant_volume_eq_covolume hP hN hL hY hf TF hc (σ := Y.d.c₂.F.val.toRingHom) rfl`. Use `⟨h, fun Z => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `q.surjective Z`. Rewrite using `[hv]`. Conclude with `div_pos (mul_pos (GlobalTheory.TrueCx.covol_pos _) (by positivity)) (Int.cast_pos.2 (CompHt.vdm_pos CompHt.strictAnti_stdWt))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proportionality_of_local_charts (hP : _root_.GlobalTheory.CovTop.Hypotheses'') (hN : GlobalTheory.Published.NefNumerics)
     (hL : GlobalTheory.Published.SemiAbelianLieSeminegative) {D : D7} {T : Core D} {j : ℕ} {Y : Deep T j} {e : ℕ} {o : ℝ}

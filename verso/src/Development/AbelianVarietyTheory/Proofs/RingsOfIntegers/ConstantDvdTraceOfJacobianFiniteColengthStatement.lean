@@ -9,7 +9,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PlaceInt
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.C_dvd_trace_of_jacobian` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FRingsOfIntegers%2FConstantDvdTraceOfJacobianFiniteColength.lean&line=211#L211)
 -/

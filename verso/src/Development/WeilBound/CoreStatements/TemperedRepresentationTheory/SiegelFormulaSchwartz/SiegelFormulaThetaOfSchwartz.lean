@@ -39,27 +39,27 @@ open GlobalTheory.AdelicU GlobalTheory.Cont GlobalTheory.MixModel GlobalTheory.C
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 
 /- English proof (translation)
-Introduce `hSieg D A B m hm hA ψ χ ω hW f hf hB ν 𝓖 hcov`. Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Take `⟨μ, hμ, -⟩` from `GlobalTheory.StdUnn.ConjElt.exists_isConj D`. Take `⟨κ, hκ⟩` from `GlobalTheory.StdUnn.chart_exists D A μ hμ`. Take `⟨lam, hlam, hψ', -⟩` from `GlobalTheory.StdUnn.shift_char_realPar D ψ hW.std θ hθ μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨omS, hT⟩` from `GlobalTheory.StdUnn.exists_transport_std D ψ A B χ ω hW ν 𝓖 hcov θ hθ κ`. Establish `hχ` using `GlobalTheory.StdUnn.isHeckeChar_resEta_inv D χ B.rank hW.hecT hW.resT`. Establish `hWS : IsWeilSch (shift ψ lam) χ⁻¹ θ B ν omS` using `⟨GlobalTheory.StdUnn.transport_levi D ψ A B χ ω hW ν 𝓖 hcov θ hθ μ hμ κ hκ omS hT lam hlam, GlobalTheory.StdUnn.Unip.transport_unip D ψ A B χ ω hW ν 𝓖 hcov θ hθ μ hμ κ hκ omS hT lam hlam, GlobalTheory.StdUnn.WeylStd.main D ψ A B χ ω hW ν 𝓖 hcov θ hθ μ hμ κ hκ omS hT lam hlam⟩`. Set `Φ : schwartzA θ B.rank A.rank` to `⟨sch ψ A B ν 𝓖 f, ((GlobalTheory.SchSchwartzAll.schSchwartz D) ψ hW.std θ hθ A B ν 𝓖 hcov).1 f hf⟩`. Establish `hΦ : Φ.1 = sch ψ A B ν 𝓖 (ω (((1 : siegel A) : GA D (dblSp A))⁻¹, 1) f)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [OneMemClass.coe_one, inv_one, Prod.mk_one_one, map_one, Module.End.one_apply]`. Both sides reduce to the same expression. Take `⟨-, -, hact⟩` from `GlobalTheory.StdUnn.flat_swSec_eq_sect D ψ A B χ ω hW ν 𝓖 hcov θ hθ μ hμ κ hκ omS hT lam hlam 1 1 f hf Φ hΦ`. Establish `hact' : ∀ g, (omS (κ g) Φ).1 = sch ψ A B ν 𝓖 (ω (g, 1) f)` using `fun g => by`. Use `hact g` as an intermediate fact.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[OneMemClass.coe_one, mul_one]`. Then use the resulting hypothesis. Establish `hval : ∀ g, swSection A B ν 𝓖 ω f g = 1 * (fun γ => (omS γ Φ).1 0) (κ (g * 1))` using `fun g => by`. Simplify using `only [one_mul, mul_one]`. Rewrite using `[hact' g, GlobalTheory.Core.Rk.IP.swSection_eq_swSec]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.swSec, sch, mixS_dblDec_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨H, hH⟩` from `GlobalTheory.StdUnn.exists_height D A.rank`. Establish `hL : LeftInv (P D A.rank ⊓ GF D A.rank) (fun γ => (omS γ Φ).1 0)`. Establish `hs` using `LeftInvSect.leftInv_sect D A.rank (Iwasawa.exists_mul D A.rank) B (shift ψ lam) χ⁻¹ θ ν omS hχ.1 hWS H hH Φ (s0 B A.rank)`. Introduce `γ hγ g`. Establish `h` using `hs γ hγ g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h` using `only [sect, sub_self, npow, Complex.cpow_zero, one_mul]`. Take `⟨hleft, hg⟩` from `GlobalTheory.StdUnn.cosetSum_along_mulEquiv _ _ κ (siegel A) (GQ (dblSp A)) (P D A.rank) (GF D A.rank) (GlobalTheory.StdUnn.mem_siegel_iff_chart_mem_P D A μ hμ κ hκ) (GlobalTheory.StdUnn.chart_mem_GF_iff D A μ hμ κ hκ) (fun γ => (omS γ Φ).1 0) 1 1 _ hval hL`. Establish `hterm : ∀ g, term (P D A.rank) (GF D A.rank) (fun γ => (omS γ (omS (κ g) Φ)).1 0) 1 = term (P D A.rank) (GF D A.rank) (fun γ => (omS γ Φ).1 0) (κ (g * 1))` using `fun g => by`. Use function extensionality and compare the values at `q`. Simplify using `only [term, mul_one, map_mul, Module.End.mul_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨hleft, fun g => ⟨(hg g).1 ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hcφ : Continuous (fun γ => (omS γ Φ).1 0)`. Establish `e : (fun γ => (omS γ Φ).1 0) = swSection A B ν 𝓖 ω f ∘ κ.symm`. Use function extensionality and compare the values at `γ`. Use `hval (κ.symm γ)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [mul_one, one_mul, MulEquiv.apply_symm_apply] at this`. Simplify using `only [Function.comp_apply, this]`. Rewrite using `[e]`. Conclude with `(GlobalTheory.T.theta_section_continuous D ψ A B χ ω hW f hf ν 𝓖 hcov).comp (GlobalTheory.T.continuous_symm_unitary_chart D A μ hμ κ hκ)`. Establish `hs : (A.rank : ℝ) / 2 < (s0 B A.rank).re`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (2 * A.rank : ℝ) < B.rank` using `by exact_mod_cast hB`. Simplify using `only [s0, Complex.sub_re, Complex.div_ofNat_re, Complex.natCast_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `GlobalTheory.T.siegel_eisenstein_convergent D A.rank χ⁻¹ (s0 B A.rank) _ hcφ (GlobalTheory.T.weil_schwartz_parabolic_equivariant D A.rank (shift ψ lam) χ⁻¹ θ B ν omS hWS Φ) hs (κ (g * 1))`. Rewrite using `[(hg g).2, one_mul]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h` using `hSieg D A.rank B hA hB (shift ψ lam) hψ' χ⁻¹ hχ.1 hχ.2 θ hθ ν 𝓖 hcov omS hWS m hm (omS (κ g) Φ)`. Unfold `cosetSum at h ⊢`. Rewrite `h` using `[hterm g]`. Rewrite using `[h]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `q`. Use `congr 1`. Use function extensionality and compare the values at `h'`. Rewrite using `[GlobalTheory.StdUnn.thetaKO_eq_tsum_sch D ψ A B χ ω hW ν 𝓖 hcov f hf g h', hact' g]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.SiegelWeilFormulaUnitary.siegelFormula_theta_of_schwartz' : GlobalTheory.Published.WeilSiegelFormula →
     ∀ (D : D7) (A B : HSp D) (m : Measure (GA D B)), m.IsHaarMeasure → 1 ≤ A.rank →
@@ -133,7 +133,7 @@ theorem PositivityTheory.SiegelWeilFormulaUnitary.siegelFormula_theta_of_schwart
     rfl
 
 /- English proof (translation)
-Introduce `hT hS D A B m hm hA hW`. Use `⟨GlobalTheory.T.absoluteThetaIntegral_le_continuousSeminorm hT D A B m hm hA hW, fun ψ χ ω hω f hf => ⟨GlobalTheory.T.integrable_thetaKernel_weilRange hT D A B m hm hA hW ψ χ ω hω f hf, ?_⟩⟩` and prove the remaining obligations. Introduce `hab ν 𝓖 hν`. Conclude with `PositivityTheory.SiegelWeilFormulaUnitary.siegelFormula_theta_of_schwartz' hS D A B m hm hA ψ χ ω hω f hf hab ν 𝓖 hν`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.SiegelWeilFormulaUnitary.weilSiegelFormulaUnitary_of_two :
     GlobalTheory.Published.WeilThetaConvergence → GlobalTheory.Published.WeilSiegelFormula → GlobalTheory.Published.WeilSiegelFormulaUnitary := by

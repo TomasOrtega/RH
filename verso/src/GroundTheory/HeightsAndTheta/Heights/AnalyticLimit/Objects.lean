@@ -126,7 +126,7 @@ def lincomb : (m : ℕ) → (Fin m → ℝ) → (Fin m → LocPot X) → LocPot 
   | m + 1, c, P => LocPot.rsmul (c 0) (P 0) + lincomb m (fun i => c i.succ) fun i => P i.succ
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[Fin.sum_univ_succ, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lincomb_φ (m : ℕ) (c : Fin m → ℝ) (P : Fin m → LocPot X) (x y : X) :
     (lincomb m c P).φ x y = ∑ i, c i * (P i).φ x y := by
@@ -159,19 +159,19 @@ open ReciprocityTheory.AnForm.M (p1 fsPot projLine_isSmoothPotential projLine_is
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (projLineChartData projLine_fubiniStudy_isPosPot)
 
 /- English proof (translation)
-Introduce `_ hu` and use `Eventually.of_forall fun _ _ _ => refl_mem_uniformity hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tendstoUniformlyOn_self {α β ι : Type*} [UniformSpace β] (f : α → β) (p : Filter ι)
     (s : Set α) : TendstoUniformlyOn (fun _ => f) f p s :=
   fun _ hu => Eventually.of_forall fun _ _ _ => refl_mem_uniformity hu
 
 /- English proof (translation)
-Simplify using `[errE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem errE_zero (t : ℝ) : errE 0 t = 0 := by simp [errE]
 
 /- English proof (translation)
-Simplify using `[levi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem levi_const {ι : Type*} [Fintype ι] (c : ℝ) (z w : ι → ℂ) :
     levi (fun _ : ι → ℂ => c) z w = 0 := by
@@ -211,13 +211,13 @@ def projectiveLineConstantSystem : System projLineChartData where
     tendstoUniformlyOn_self _ _ _⟩
 
 /- English proof (translation)
-The claim follows from `funext fun _ => sub_self (0 : ℝ)`.
+A detailed English derivation is pending.
 -/
 theorem projectiveLine_constantSystem_uT (t : ℝ) : projectiveLineConstantSystem.uT t = fun _ => 0 :=
   funext fun _ => sub_self (0 : ℝ)
 
 /- English proof (translation)
-The claim follows from `funext fun z => by show (0 : ℝ) + fsPot.φ x z = fsPot.φ x z simp`.
+A detailed English derivation is pending.
 -/
 theorem thetaOmega_p1Data_φ (x : OnePoint ℂ) : (thetaOmega projLineChartData).φ x = fsPot.φ x :=
   funext fun z => by
@@ -225,20 +225,18 @@ theorem thetaOmega_p1Data_φ (x : OnePoint ℂ) : (thetaOmega projLineChartData)
     simp
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.AnForm.M.isPotentialAdd p1 _ _ (ReciprocityTheory.AnForm.M.isPotential_ofFun p1 0 fun _ => contDiffOn_const) projLine_isSmoothPotential`.
+A detailed English derivation is pending.
 -/
 theorem thetaOmega_p1Data_pot : IsPotential p1 (thetaOmega projLineChartData) :=
   ReciprocityTheory.AnForm.M.isPotentialAdd p1 _ _
     (ReciprocityTheory.AnForm.M.isPotential_ofFun p1 0 fun _ => contDiffOn_const) projLine_isSmoothPotential
 
 /- English proof (translation)
-Rewrite using `[projectiveLine_constantSystem_uT]`. Use `⟨⟨thetaOmega_p1Data_pot, ?_, ?_, fun _ => contDiffOn_const, fun _ _ => le_rfl, fun _ _ => by simp, ?_, Or.inl fun _ => contDiffOn_const⟩, fun _ => contDiffOn_const⟩` and prove the remaining obligations. Introduce `x k y _ w`. Rewrite using `[thetaOmega_p1Data_φ]`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x k y hy w`. Rewrite using `[thetaOmega_p1Data_φ]`. Use `projLine_isPlurisubharmonic x k y ⟨hy.1, hy.2.1.2⟩ w` as an intermediate fact. Use `show -1 * levi (fsPot.φ x ∘ (p1.chart k).symm) y w ≤ 1 * levi (fsPot.φ x ∘ (p1.chart k).symm) y w`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x k y hy w`. Establish `h : (potForm (thetaOmega projLineChartData) fun _ => (0 : ℝ)).φ x = fsPot.φ x`. Use function extensionality and compare the values at `z`. Use `show (thetaOmega projLineChartData).φ x z + 0 = fsPot.φ x z`. Rewrite using `[thetaOmega_p1Data_φ, add_zero]`.
-
-Rewrite using `[h]`. Conclude with `projLine_isPlurisubharmonic x k y ⟨hy.1, hy.2.2.1.2⟩ w`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projectiveLine_current_smoothPotForm (t : ℝ) :
     IsSmoothPotForm p1 projLineChartData.Yo projLineChartData.r projectiveLineKaehler 0 (thetaOmega projLineChartData) (projectiveLineConstantSystem.uT t) := by
@@ -263,7 +261,7 @@ theorem projectiveLine_current_smoothPotForm (t : ℝ) :
     exact projLine_isPlurisubharmonic x k y ⟨hy.1, hy.2.2.1.2⟩ w
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨projLine_isSmoothPotential, fun x k y hy w => projLine_isPlurisubharmonic x k y ⟨hy.1, hy.2.2⟩ w, fun _ _ _ _ _ => le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem projectiveLine_boundedNonnegForm : IsBoundedNonnegForm p1 fsPot fsPot 1 :=
   ⟨projLine_isSmoothPotential, fun x k y hy w => projLine_isPlurisubharmonic x k y ⟨hy.1, hy.2.2⟩ w,

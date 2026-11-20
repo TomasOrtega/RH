@@ -6,7 +6,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.RowTie
 
 /- English proof (translation)
-Take `⟨hne, hle⟩` from `h`. Take `⟨F, hF, hF0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hF`. Conclude with `⟨f, hf, _, hle hF, fun h0 => hF0 (inner_self_eq_zero.1 h0)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pairs_of_thetaLift {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
     (i : N.Loc) (σ : what₂.FT) (P : A.AV i) (h : thetaOf N A i σ P) : GlobalTheory.ThetaExh.Pairs N A i σ P := by
@@ -16,7 +16,7 @@ theorem pairs_of_thetaLift {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N :
   exact ⟨f, hf, _, hle hF, fun h0 => hF0 (inner_self_eq_zero.1 h0)⟩
 
 /- English proof (translation)
-Introduce `_ _ _ N A i h σ P hθ` and use `h σ P (pairs_of_thetaLift N A i σ P hθ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem splitLift_of_pairLift : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N)
     (i : N.Loc), GlobalTheory.RowTie.PairLift N A i → GlobalTheory.ThetaExh.SplitLift N A i :=

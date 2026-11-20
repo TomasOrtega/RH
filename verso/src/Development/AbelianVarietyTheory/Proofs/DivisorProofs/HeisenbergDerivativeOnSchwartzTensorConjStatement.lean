@@ -10,7 +10,7 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.heisenbergDeriv_tensor_conj | exact GlobalTheory.heisenbergDeriv_tensor_conj | (intros; apply GlobalTheory.heisenbergDeriv_tensor_conj <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.heisenberg_derivative_on_schwartz_tensor_conj : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a₁ b₁ a₂ b₂ : κ → AF F)
     (f g₁ g₂ : SInf F κ) (f₀ h : SInf F (κ ⊕ κ)),

@@ -7,13 +7,13 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW
 
 /- English proof (translation)
-Take `⟨hH, hF⟩` from `h`. Set `eM : V ≃ᵐ V'` to `e.toHomeomorph.toMeasurableEquiv`. Establish `hcoe : (eM : V → V') = e` using `rfl`. Establish `hint : ∀ g : V' → ℂ, ∫ y, g y ∂(μ.map e) = ∫ x, g (e x) ∂μ` using `fun g => by`. Rewrite using `[← hcoe]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `integral_map_equiv eM g`. Use `⟨e.isAddHaarMeasure_map μ, fun Φ hc hs hi z => ?_⟩` and prove the remaining obligations. Establish `hinner : ∀ y : V, ∫ x, Φ x * χ x (e y) ∂(μ.map e) = ∫ x, (Φ ∘ e) x * χ (e x) (e y) ∂μ` using `fun y => hint _`. Establish `hi' : Integrable (fun y => ∫ x, (Φ ∘ e) x * χ (e x) (e y) ∂μ) μ`. Establish `h1 : Integrable ((fun y => ∫ x, Φ x * χ x y ∂(μ.map e)) ∘ eM) μ` using `(eM.measurableEmbedding.integrable_map_iff).1 (by rw [hcoe]; exact hi)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `hinner y`. Establish `hcs : HasCompactSupport (Φ ∘ e)` using `hs.comp_homeomorph e.toHomeomorph`. Establish `key` using `hF (Φ ∘ e) (hc.comp e.continuous) hcs hi' (e.symm z)`. Rewrite using `[hint]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [hinner]`. Simplify using `using key`.
+A detailed English derivation is pending.
 -/
 theorem selfDual_map_of_comp {V V' : Type} [AddCommGroup V] [TopologicalSpace V]
     [IsTopologicalAddGroup V] [MeasurableSpace V] [BorelSpace V] [AddCommGroup V']
@@ -41,9 +41,9 @@ theorem selfDual_map_of_comp {V V' : Type} [AddCommGroup V] [TopologicalSpace V]
   simpa using key
 
 /- English proof (translation)
-Use `⟨selfDual_map_of_comp e μ χ, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `selfDual_map_of_comp e.symm (μ.map e) (fun x y => χ (e x) (e y)) (by simpa using h)`. Establish `hm : (μ.map e).map e.symm = μ`. Establish `m1 : Measurable (e.symm : V' → V)` using `e.symm.continuous.measurable`. Establish `m2 : Measurable (e : V → V')` using `e.continuous.measurable`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_map m1 m2]`. Establish `: (e.symm : V' → V) ∘ e = id` using `by ext x; simp`. Rewrite using `[this, Measure.map_id]`. Rewrite `h2` using `[hm]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem selfDual_transport (V V' : Type) [AddCommGroup V] [TopologicalSpace V]
     [IsTopologicalAddGroup V] [MeasurableSpace V] [BorelSpace V] [AddCommGroup V']

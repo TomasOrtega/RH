@@ -8,9 +8,9 @@ open Module Polynomial TensorProduct
 namespace GlobalTheory.CentSep
 
 /- English proof (translation)
-Establish `hm` using `minpoly.monic hx`. Rewrite using `[← aeval_modByMonic_eq_self_of_root (p := q) (minpoly.aeval K x)]`. Establish `hne : minpoly K x ≠ 1`. Introduce `h`. Use `minpoly.natDegree_pos hx` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h, natDegree_one]`. Conclude with `lt_irrefl _ this`. Establish `hlt` using `natDegree_modByMonic_lt q hm hne`. Rewrite using `[aeval_eq_sum_range' hlt]`. Conclude with `Submodule.sum_mem _ fun j hj => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨j, Finset.mem_range.mp hj⟩, rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem_span_pow {K S : Type} [Field K] [Ring S] [Nontrivial S] [Algebra K S] (x : S)
     (hx : IsIntegral K x) (q : K[X]) :
@@ -28,7 +28,7 @@ theorem aeval_mem_span_pow {K S : Type} [Field K] [Ring S] [Nontrivial S] [Algeb
     (Submodule.subset_span ⟨⟨j, Finset.mem_range.mp hj⟩, rfl⟩)
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `[Subalgebra.mem_centralizer_iff, sub_eq_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem centralizer_toSubmodule {K S : Type} [Field K] [Ring S] [Algebra K S] (g : S) :
     Subalgebra.toSubmodule (Subalgebra.centralizer K ({g} : Set S)) =
@@ -37,13 +37,11 @@ theorem centralizer_toSubmodule {K S : Type} [Field K] [Ring S] [Algebra K S] (g
   simp [Subalgebra.mem_centralizer_iff, sub_eq_zero]
 
 /- English proof (translation)
-Use `set x : K ⊗[F] A := (1 : K) ⊗ₜ[F] g with hx`. Establish `hli : LinearIndependent K (fun j : Fin (minpoly F g).natDegree => x ^ (j : ℕ))`. Establish `h` using `Module.Flat.linearIndependent_one_tmul (S := K) (linearIndependent_pow (K := F) g)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[hx, Algebra.TensorProduct.tmul_pow]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hsum` using `aeval_eq_sum_range' hlt x`. Rewrite `hsum` using `[minpoly.aeval, ← Fin.sum_univ_eq_sum_range (fun i => (minpoly K x).coeff i • x ^ i)]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc` using `Fintype.linearIndependent_iff.mp hli (fun i => (minpoly K x).coeff i) hsum.symm`. Apply `minpoly.ne_zero hK` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[coeff_zero]`. Distinguish the cases in `hi : i < (minpoly F g).natDegree`.
-
-Conclude with `hc ⟨i, hi⟩`. Conclude with `coeff_eq_zero_of_natDegree_lt (by omega)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem natDegree_minpoly_le_baseChange {F A : Type} [Field F] [Ring A] [Algebra F A] (K : Type)
     [Field K] [Algebra F K] (g : A) (hK : IsIntegral K ((1 : K) ⊗ₜ[F] g)) :
@@ -67,27 +65,25 @@ theorem natDegree_minpoly_le_baseChange {F A : Type} [Field F] [Ring A] [Algebra
   · exact coeff_eq_zero_of_natDegree_lt (by omega)
 
 /- English proof (translation)
-Introduce `F B _ _ _ _ _ _ n hB g hsep hdeg`. Take `⟨k, hk0, hkB, ⟨e⟩⟩` from `GroundTheory.Brauer.exists_algEquiv_matrix_algebraicClosure F B`. Establish `hkn : k = n` using `Nat.pow_left_injective (by norm_num : (2 : ℕ) ≠ 0) (hkB.symm.trans hB)`. Substitute `hkn` using the available equality. Use `set K := AlgebraicClosure F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `set x : K ⊗[F] B := (1 : K) ⊗ₜ[F] g with hx`. Establish `hxi : IsIntegral K x` using `IsIntegral.of_finite K x`. Establish `hxr : x = Algebra.TensorProduct.includeRight g` using `rfl`. Establish `hdvd : minpoly K x ∣ (minpoly F g).map (algebraMap F K)`. Apply `minpoly.dvd` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[aeval_map_algebraMap, hxr, aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `hge` using `natDegree_minpoly_le_baseChange K g hxi`. Rewrite `hge` using `[hdeg]`. Establish `hle : (minpoly K x).natDegree ≤ k`. Establish `hmap : (minpoly F g).map (algebraMap F K) ≠ 0` using `(Polynomial.map_ne_zero_iff (algebraMap F K).injective).mpr (minpoly.ne_zero (IsIntegral.of_finite F g))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hxdeg : (minpoly K x).natDegree = k` using `le_antisymm hle hge`. Use `set N := e x with hN`. Establish `hmN : minpoly K N = minpoly K x` using `minpoly.algEquiv_eq e x`. Establish `hchar : N.charpoly = minpoly K x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : minpoly K N ∣ N.charpoly` using `minpoly.dvd K N (Matrix.aeval_self_charpoly N)`. Rewrite `hd` using `[hmN]`. Use `eq_leadingCoeff_mul_of_monic_of_dvd_of_natDegree_le (minpoly.monic hxi) hd (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, hxdeg])` as an intermediate fact. Rewrite using `[this, (Matrix.charpoly_monic N).leadingCoeff, C_1, one_mul]`. Establish `hNsep : N.charpoly.Separable`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hchar]`. Conclude with `(hsep.map).of_dvd hdvd`. Establish `hCK : Subalgebra.toSubmodule (Subalgebra.centralizer K ({x} : Set (K ⊗[F] B))) ≤ Submodule.span K (Set.range fun j : Fin (minpoly K x).natDegree => x ^ (j : ℕ))`. Introduce `y hy`. Establish `hy' : x * y = y * x` using `(Subalgebra.mem_centralizer_iff K).mp hy x (Set.mem_singleton x)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcomm : Commute (e y) N`. Express the relevant statement in the definitionally equal form `e y * e x = e x * e y`. Rewrite using `[← map_mul, ← map_mul, hy']`. Take `⟨q, hq⟩` from `GlobalTheory.T.matrix_eq_aeval_of_commute_of_charpoly_separable k N (e y) hNsep hcomm`. Establish `: y = aeval x q`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hq, hN, ← aeval_algHom_apply]`. Rewrite using `[this]`. Conclude with `aeval_mem_span_pow x hxi q`. Establish `hfinK : finrank K (Subalgebra.toSubmodule (Subalgebra.centralizer K ({x} : Set (K ⊗[F] B)))) ≤ k`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hbc` using `(GlobalTheory.BadCount.finrank_iInf_ker_baseChange F K B (K ⊗[F] B) Unit (TensorProduct.mk F K B 1) (TensorProduct.isBaseChange F B K) (fun _ => LinearMap.mulLeft F g - LinearMap.mulRight F g) (fun _ => LinearMap.mulLeft K x - LinearMap.mulRight K x) (fun _ v => by`. Simplify using `[hx, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.tmul_sub])).1`. Rewrite `hbc` using `[_root_.iInf_const, _root_.iInf_const]`. Rewrite `hbc` using `[← centralizer_toSubmodule, ← centralizer_toSubmodule]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hadj : Algebra.adjoin F ({g} : Set B) ≤ Subalgebra.centralizer F {g}` using `Algebra.adjoin_le (Set.singleton_subset_iff.mpr ((Subalgebra.mem_centralizer_iff F).mpr fun h hh => by rw [Set.mem_singleton_iff.mp hh]))`. Establish `hspan : Submodule.span F (Set.range fun j : Fin (minpoly F g).natDegree => g ^ (j : ℕ)) ≤ Subalgebra.toSubmodule (Algebra.adjoin F ({g} : Set B))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `pow_mem (Algebra.subset_adjoin (Set.mem_singleton g)) _`.
-
-Establish `hfinS : k ≤ finrank F (Subalgebra.toSubmodule (Algebra.adjoin F ({g} : Set B)))`. Combine the equalities or inequalities in the displayed calculation. Establish `heq` using `Submodule.eq_of_le_of_finrank_le (Subalgebra.toSubmodule.monotone hadj) (by rw [← hbc]; exact hfinK.trans hfinS)`. Conclude with `(Subalgebra.toSubmodule_injective heq).symm`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem centralizer_eq_adjoin : ∀ (F B : Type) [Field F] [Ring B] [Algebra F B]
     [Algebra.IsCentral F B] [IsSimpleRing B] [FiniteDimensional F B] (n : ℕ),

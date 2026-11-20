@@ -37,7 +37,7 @@ variable {χ : W → W → ℂ} (hχl : ∀ t t' y, χ (t + t') y = χ t y * χ 
 
 include hχl hχ0 in
 /- English proof (translation)
-Establish `h` using `hχl 0 0 y`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel₀ (hχ0 0 y) (by rw [mul_one, ← h])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_zero_left (y : W) : χ 0 y = 1 := by
   have h := hχl 0 0 y
@@ -46,7 +46,7 @@ theorem chi_zero_left (y : W) : χ 0 y = 1 := by
 
 include hχr hχ0 in
 /- English proof (translation)
-Establish `h` using `hχr t 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel₀ (hχ0 t 0) (by rw [mul_one, ← h])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_zero_right (t : W) : χ t 0 = 1 := by
   have h := hχr t 0 0
@@ -55,7 +55,7 @@ theorem chi_zero_right (t : W) : χ t 0 = 1 := by
 
 include hχl hχ0 in
 /- English proof (translation)
-Establish `h : χ t y * χ (-t) y = 1`. Rewrite using `[← hχl, add_neg_cancel, chi_zero_left hχl hχ0]`. Conclude with `eq_inv_of_mul_eq_one_right h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_neg_left (t y : W) : χ (-t) y = (χ t y)⁻¹ := by
   have h : χ t y * χ (-t) y = 1 := by
@@ -64,7 +64,7 @@ theorem chi_neg_left (t y : W) : χ (-t) y = (χ t y)⁻¹ := by
 
 include hχl hχ0 in
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, chi_zero_left hχl hχ0, pow_zero]`. Consider the case `succ n ih => rw [succ_nsmul, hχl, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem chi_nsmul_left (k : ℕ) (t y : W) : χ (k • t) y = χ t y ^ k := by
   induction k with
@@ -73,7 +73,7 @@ theorem chi_nsmul_left (k : ℕ) (t y : W) : χ (k • t) y = χ t y ^ k := by
 
 include hχr hχ0 in
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, chi_zero_right hχr hχ0, pow_zero]`. Consider the case `succ n ih => rw [succ_nsmul, hχr, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem chi_nsmul_right (k : ℕ) (t y : W) : χ t (k • y) = χ t y ^ k := by
   induction k with
@@ -87,7 +87,7 @@ section Rep
 variable {L X Y : AddSubgroup W}
 
 /- English proof (translation)
-Use `⟨-a + (QuotientAddGroup.mk a : QX L X).out, ?_, (add_neg_cancel_left a _).symm⟩` and prove the remaining obligations. Establish `h : (QuotientAddGroup.mk (QuotientAddGroup.mk a : QX L X).out : QX L X) = QuotientAddGroup.mk a` using `QuotientAddGroup.out_eq' _`. Conclude with `QuotientAddGroup.eq.mp h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem QX_out (a : W) : ∃ l ∈ L ⊓ X, (QuotientAddGroup.mk a : QX L X).out = a + l := by
   refine ⟨-a + (QuotientAddGroup.mk a : QX L X).out, ?_, (add_neg_cancel_left a _).symm⟩
@@ -96,7 +96,7 @@ theorem QX_out (a : W) : ∃ l ∈ L ⊓ X, (QuotientAddGroup.mk a : QX L X).out
   exact QuotientAddGroup.eq.mp h.symm
 
 /- English proof (translation)
-Use `⟨-y + (QuotientAddGroup.mk y : QY L Y).out, ?_, (add_neg_cancel_left y _).symm⟩` and prove the remaining obligations. Establish `h : (QuotientAddGroup.mk (QuotientAddGroup.mk y : QY L Y).out : QY L Y) = QuotientAddGroup.mk y` using `QuotientAddGroup.out_eq' _`. Conclude with `QuotientAddGroup.eq.mp h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem QY_out (y : W) : ∃ μ ∈ L ⊓ Y, (QuotientAddGroup.mk y : QY L Y).out = y + μ := by
   refine ⟨-y + (QuotientAddGroup.mk y : QY L Y).out, ?_, (add_neg_cancel_left y _).symm⟩
@@ -114,21 +114,19 @@ variable {ρ : W → Module.End ℂ V} {χ : W → W → ℂ} {L X Y : AddSubgro
 
 include hχl hχ0 hfinX in
 /- English proof (translation)
-Establish `hc` using `hχ0 l y`. Establish `hH : ∀ t, Φ (a + l + t) * (χ t y)⁻¹ = χ l y * (Φ (a + (t + l)) * (χ (t + l) y)⁻¹)`. Introduce `t`. Establish `e : (χ t y)⁻¹ = χ l y * (χ (t + l) y)⁻¹`. Rewrite using `[hχl, mul_inv, mul_left_comm, mul_inv_cancel₀ hc, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, add_comm t l, ← add_assoc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hiff : ∀ k, IsInv k (L ⊓ X) (fun t => Φ (a + l + t) * (χ t y)⁻¹) ↔ IsInv k (L ⊓ X) (fun t => Φ (a + t) * (χ t y)⁻¹)`. Introduce `k`. Unfold `IsInv`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using `only [hH]`. Prove the components needed by the constructor for the conclusion. Introduce `h t ht u hu`. Use `h (t - l) (sub_mem ht hl) u hu` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, show t - l + k • u + l = t + k • u by abel]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel₀ hc this`. Introduce `h t ht u hu`. Rewrite using `[show t + k • u + l = (t + l) + k • u by abel, h (t + l) (add_mem ht hl) u hu]`. Unfold `coef`. Distinguish the cases in `h0 : ∃ k, 0 < k ∧ IsInv k (L ⊓ X) (fun t => Φ (a + t) * (χ t y)⁻¹)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hinv⟩` from `h0`. Establish `hinv1` using `(hiff k).mpr hinv`. Establish `hinvs : IsInv k (L ⊓ X) (fun t => Φ (a + (t + l)) * (χ (t + l) y)⁻¹)`. Introduce `t ht u hu`. Use `beta_reduce`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show t + k • u + l = (t + l) + k • u by abel]`. Conclude with `hinv (t + l) (add_mem ht hl) u hu`. Rewrite using `[integ_eq hfinX hk hinv1, ← integ_shift hfinX hk hinv hl, integ_eq hfinX hk hinvs]`. Unfold `avg`. Use `haveI := hfinX k hk`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [hH]`. Rewrite using `[← mul_finsum]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ¬ ∃ k, 0 < k ∧ IsInv k (L ⊓ X) (fun t => Φ (a + l + t) * (χ t y)⁻¹)` using `fun ⟨k, hk, hi⟩ => h0 ⟨k, hk, (hiff k).mp hi⟩`. Unfold `integ`.
-
-Rewrite using `[dif_neg h1, dif_neg h0, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_add_left (Φ : W → ℂ) (a y : W) {l : W} (hl : l ∈ L ⊓ X) :
     coef χ L X Φ (a + l) y = χ l y * coef χ L X Φ a y := by
@@ -173,7 +171,7 @@ theorem coef_add_left (Φ : W → ℂ) (a y : W) {l : W} (hl : l ∈ L ⊓ X) :
 
 include hfinX in
 /- English proof (translation)
-Unfold `coef`. Apply `integ_congr hfinX` to reduce the goal to its premises. Introduce `t ht`. Rewrite using `[hχr, hLL t ht μ hμ, mul_one]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_add_right (hχr : ∀ t y y', χ t (y + y') = χ t y * χ t y')
     (hLL : ∀ x ∈ L ⊓ X, ∀ y ∈ L ⊓ Y, χ x y = 1) (Φ : W → ℂ) (a y : W) {μ : W} (hμ : μ ∈ L ⊓ Y) :
@@ -185,11 +183,11 @@ theorem coef_add_right (hχr : ∀ t y y', χ t (y + y') = χ t y * χ t y')
 
 include hfinX in
 /- English proof (translation)
-Establish `h0 : ∀ t ∈ L ⊓ X, Φ (a + t) * (χ t y)⁻¹ = (fun _ : W => (0 : ℂ)) t`. Introduce `t ht`. Establish `hz : Φ (a + t) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `ha (by simpa using X.sub_mem (hΦ _ hne) (AddSubgroup.mem_inf.mp ht).2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `[hz]`. Unfold `coef`. Rewrite using `[integ_congr hfinX h0]`. Unfold `integ`. Use `split_ifs with h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[avg]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem coef_eq_zero (Φ : W → ℂ) (hΦ : ∀ t, Φ t ≠ 0 → t ∈ X) {a : W} (ha : a ∉ X) (y : W) :
     coef χ L X Φ a y = 0 := by
@@ -208,11 +206,11 @@ theorem coef_eq_zero (Φ : W → ℂ) (hΦ : ∀ t, Φ t ≠ 0 → t ∈ X) {a :
 
 include hχl hχ0 hfinX in
 /- English proof (translation)
-Distinguish the cases in `ha : a ∈ X`. Establish `hl'` using `AddSubgroup.mem_inf.mp hl`. Establish `hnl : -l ∈ L ⊓ X` using `neg_mem hl`. Establish `key : ρ (-l) (ρ y f₀) = (χ l y)⁻¹ • ρ y f₀`. Establish `h1` using `congrArg (fun T => T f₀) (hXY (-l) (neg_mem hl'.2) y hy)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply] at h1`. Rewrite using `[h1, hfX (-l) hnl, chi_neg_left hχl hχ0]`. Unfold `term`. Rewrite using `[coef_add_left hχl hχ0 hfinX Φ a y hl, neg_add, hX (-a) (neg_mem ha) (-l) (neg_mem hl'.2), Module.End.mul_apply, key, map_smul, smul_smul, mul_comm (χ l y), mul_assoc, mul_inv_cancel₀ (hχ0 l y), mul_one]`. Establish `hal : a + l ∉ X` using `fun h => ha (by simpa using X.sub_mem h (AddSubgroup.mem_inf.mp hl).2)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `term`. Rewrite using `[coef_eq_zero hfinX Φ hΦ ha, coef_eq_zero hfinX Φ hΦ hal, zero_smul, zero_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_add_left (hX : ∀ x ∈ X, ∀ x' ∈ X, ρ (x + x') = ρ x * ρ x')
     (hXY : ∀ x ∈ X, ∀ y ∈ Y, ρ x * ρ y = χ x y • (ρ y * ρ x)) (hfX : ∀ u ∈ L ⊓ X, ρ u f₀ = f₀)
@@ -234,7 +232,7 @@ theorem term_add_left (hX : ∀ x ∈ X, ∀ x' ∈ X, ρ (x + x') = ρ x * ρ x
 
 include hfinX in
 /- English proof (translation)
-Unfold `term`. Rewrite using `[coef_add_right hfinX hχr hLL Φ a y hμ, hY y hy μ (AddSubgroup.mem_inf.mp hμ).2, Module.End.mul_apply, hfY μ hμ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_add_right (hχr : ∀ t y y', χ t (y + y') = χ t y * χ t y')
     (hLL : ∀ x ∈ L ⊓ X, ∀ y ∈ L ⊓ Y, χ x y = 1) (hY : ∀ y ∈ Y, ∀ y' ∈ Y, ρ (y + y') = ρ y * ρ y')

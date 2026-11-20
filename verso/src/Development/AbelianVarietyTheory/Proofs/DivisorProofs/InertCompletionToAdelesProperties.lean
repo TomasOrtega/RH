@@ -14,11 +14,11 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.InertBigCell
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ v w hw`. Use `⟨iotaW_injective hw, iotaW_mul hw, iotaW_one hw, fun z => ?_, iotaW_conjW σ hw, fun x => ?_, iotaW_algebraMap hw⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.InertLocField.at_iff v z]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨InertChart.complEquiv hw (under_eq_of_isInertAt hw) y, by`. Rewrite using `[iotaW_apply, RingEquiv.symm_apply_apply]⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, (iotaW_apply hw x).symm⟩`. Establish `h` using `invOf_two_smul_add_iotaW hw 0 x`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h` using `[add_zero, zero_add, zero_add]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaW_adelic_place : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {v : Pl F}
     {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w),

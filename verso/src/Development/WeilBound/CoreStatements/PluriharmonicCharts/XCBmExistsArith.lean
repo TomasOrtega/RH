@@ -18,7 +18,7 @@ open KaehlerDifferential
 
 open Algebra in
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic ℤ ℚ` using `IsLocalization.isAlgebraic _ (nonZeroDivisors ℤ)`. Establish `: FaithfulSMul ℤ ℚ` using `(faithfulSMul_iff_algebraMap_injective ℤ ℚ).mpr Int.cast_injective`. Establish `: FaithfulSMul ℚ L` using `(faithfulSMul_iff_algebraMap_injective ℚ L).mpr (algebraMap ℚ L).injective`. Rewrite using `[← trdeg_add_eq ℤ ℚ (A := L), trdeg_eq_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trdeg_int_eq_rat (L : Type) [Field L] [Algebra ℚ L] : Algebra.trdeg ℤ L = Algebra.trdeg ℚ L := by
   have : Algebra.IsAlgebraic ℤ ℚ := IsLocalization.isAlgebraic _ (nonZeroDivisors ℤ)
@@ -29,31 +29,27 @@ theorem trdeg_int_eq_rat (L : Type) [Field L] [Algebra ℚ L] : Algebra.trdeg �
 end PositivityTheory.Xgp.c_bm_exists_arith
 
 /- English proof (translation)
-Introduce `X Ω _ _ ξ K _ J _ x n bd hn T hs`. Take `⟨c, hc⟩` from `T.cover ⟨genPt ξ, specializes_rfl⟩`. Establish `hc0 : ∀ k, x ⟨k, c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hc.1 k (Finset.mem_univ k)`. Take `⟨m, f, a, hf, ha, hsum, hmain⟩` from `hs c hc0`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, f l ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Simplify using `[h] at hsum`. Use `set R : Set Ω := Set.range fun p : Σ k, J k => x p / x ⟨p.1, c p.1⟩ with hR`. Use `set S : Subalgebra ℚ Ω := Algebra.adjoin ℚ (insert (f l)⁻¹ R) with hS`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hsm, z, n', -, hli, hspan, -⟩` from `hmain l hl S rfl`. Establish `hRS : R ⊆ S` using `fun r hr => Algebra.subset_adjoin (Set.mem_insert_of_mem _ hr)`. Establish `hmono : Algebra.adjoin ℤ (Set.range fun j : (k : K) → J k => (∏ k, x ⟨k, j k⟩) / ∏ k, x ⟨k, c k⟩) ≤ S.restrictScalars ℤ`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (∏ k, x ⟨k, j k⟩) / ∏ k, x ⟨k, c k⟩ ∈ S`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `Subalgebra.prod_mem _ fun k _ => hRS ⟨⟨k, j k⟩, rfl⟩`. Establish `hfr : IsFractionRing S Ω`. Use `IsFractionRing.of_field S Ω fun a => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨g, hg, h, hh, -, e⟩` from `GlobalTheory.CompanionTheory.Ar.FlagBun.FracChart.exists_eq_div_adjoin X Ω ξ _ _ c T hc.1 a`. Conclude with `⟨⟨g, hmono hg⟩, ⟨h, hmono hh⟩, e⟩`. Establish `hfin : Module.finrank Ω (KaehlerDifferential ℚ Ω) = n` using `GlobalTheory.CompanionTheory.Ggeo.finrank_kaehler_fractionRing_eq_of_basis ℚ S ℚ Ω n z hli hspan`. Establish `hK : Nonempty K`. Assume the negation of the conclusion as `hK`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hK` using `[not_nonempty_iff]`. Establish `hall : ∀ a : Ω, a ∈ Set.range (algebraMap ℚ Ω)`. Introduce `a`. Take `⟨g, hg, h, hh, -, e⟩` from `GlobalTheory.CompanionTheory.Ar.FlagBun.FracChart.exists_eq_div_adjoin X Ω ξ _ _ c T hc.1 a`. Establish `h1 : (Set.range fun j : (k : K) → J k => (∏ k, x ⟨k, j k⟩) / ∏ k, x ⟨k, c k⟩) ⊆ {1}`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using the standard rewrite rules. Establish `hbot : ∀ b ∈ Algebra.adjoin ℤ (Set.range fun j : (k : K) → J k => (∏ k, x ⟨k, j k⟩) / ∏ k, x ⟨k, c k⟩), ∃ q : ℤ, b = q`. Introduce `b hb`. Use `Algebra.adjoin_mono h1 hb` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[Algebra.adjoin_singleton_one, Algebra.mem_bot]`. Take `⟨q, rfl⟩` from `this`. Conclude with `⟨q, by simp⟩`. Take `⟨q1, rfl⟩` from `hbot g hg`. Take `⟨q2, rfl⟩` from `hbot h hh`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨(q1 : ℚ) / q2, by rw [e]; simp⟩`. Establish `hsub : Subsingleton (KaehlerDifferential ℚ Ω)`. Establish `htop` using `KaehlerDifferential.span_range_derivation ℚ Ω`. Use `subsingleton_of_forall_eq 0 fun w => ?_` and prove the remaining obligations. Establish `hw : w ∈ (⊤ : Submodule Ω (KaehlerDifferential ℚ Ω))` using `trivial`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[← htop]`. Establish `hle : Submodule.span Ω (Set.range (KaehlerDifferential.D ℚ Ω)) ≤ ⊥`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Take `⟨q, rfl⟩` from `hall b`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(KaehlerDifferential.D ℚ Ω).map_algebraMap q`. Simplify using `using hle hw`. Use `Module.finrank_zero_of_subsingleton (R := Ω) (M := KaehlerDifferential ℚ Ω)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `: Algebra.EssFiniteType S Ω` using `.of_isLocalization Ω (nonZeroDivisors S)`.
-
-Establish `: Algebra.EssFiniteType ℚ Ω` using `.comp ℚ S Ω`. Establish `hfd : Module.Finite Ω (KaehlerDifferential ℚ Ω)` using `Module.finite_of_finrank_pos (by omega)`. Establish `htr : Algebra.trdeg ℚ Ω = n`. Rewrite using `[← GlobalTheory.rank_kaehler_eq_trdeg, ← Module.finrank_eq_rank, hfin]`. Establish `htr' : Algebra.trdeg ℤ Ω = n` using `(PositivityTheory.Xgp.c_bm_exists_arith.trdeg_int_eq_rat Ω).trans htr`.
-
-Conclude with `(GlobalTheory.T.birational_of_transcendence_degree X Ω ξ K J x n T htr').2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_c_bm_exists_arith : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (x : (Σ k, J k) → Ω) (n : ℕ) (bd : Ideal (MRing J)), 1 ≤ n → CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, x ⟨k, c' k⟩) → Cmp.IsSncModel x n bd → ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar (mCoordIdeal x) (n + 1) := by
   intro X Ω _ _ ξ K _ J _ x n bd hn T hs

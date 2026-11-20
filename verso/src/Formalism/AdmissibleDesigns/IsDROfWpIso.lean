@@ -19,7 +19,7 @@ section Loc
 variable {D : D7} (i : D.nd.Loc) {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
 /- English proof (translation)
-Conclude with `(Br.toLLK_alg (Bw := D.nbr i w hw) (c := M ((Br.iota D.nbr i w hw g : _) : GE D.nd) a b)).symm`.
+A detailed English derivation is pending.
 -/
 theorem loc_apply {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw) (a b : Fin k) :
     Br.loc D.nbr i w hw M g a b =
@@ -27,7 +27,7 @@ theorem loc_apply {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i))
   exact (Br.toLLK_alg (Bw := D.nbr i w hw) (c := M ((Br.iota D.nbr i w hw g : _) : GE D.nd) a b)).symm
 
 /- English proof (translation)
-Conclude with `(IsFractionRing.lift_algebraMap (Br.toLL_inj (D.nbr i w hw)) ((χ ((Br.iota D.nbr i w hw g : _) : GE D.nd) : (D.nd.O i)ˣ) : D.nd.O i)).symm`.
+A detailed English derivation is pending.
 -/
 theorem locChi_apply (χ : GE D.nd →* (D.nd.O i)ˣ) (g : Br.G D.nbr i w hw) :
     ((Br.locChi D.nbr i w hw χ g : (Br.LL D.nbr i w hw)ˣ) : Br.LL D.nbr i w hw) =
@@ -63,11 +63,11 @@ abbrev phiL (x' : Dd.X') {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ pla
   phiX i Dd x' (eK (D.nbr i w hw))
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hr, -, hsm, -, -, hχ, -⟩` from `hD`. Use function extensionality and compare the values at `j`. Establish `hv` using `congrArg (eK (D.nbr i _ hn)) (congrFun (repX_mulVec i dc Dd x' n hn g v) j)`. Use `hv.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ((MrTw i r hn (Dd.p x')) g).mulVec (fun k => eK (D.nbr i _ hn) ((v : Fin D.R.nV → FractionRing (D.nd.O i)) k)) j`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hu : ∀ h : GE D.nd, ((((Dd.χ h)⁻¹ : (Dd.T')ˣ) : Dd.T') : Dd.X' → D.nd.O i) x' = (((chiU D.nd i 1 h)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i)`. Introduce `h`. Rewrite using `[← map_inv, hχ, map_inv]`. Establish `hrep : ∀ (h : GE D.nd) (y : D.nd.X i), RepresentationBoundsCohomology.repX D.nd r h y = rO D.nd i r y h` using `fun _ _ => rfl`. Simplify using `[Formalism.NG.uElt, hsm, hr, hu, hrep, MrTw, twistM, TruncatedSeriesCountingIdentities.locC, TruncatedSeriesCountingIdentities.chi1C, mapM, loc_apply, locChi_apply, Matrix.mulVec, dotProduct, Matrix.smul_apply, Matrix.map_apply, map_sum, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congrArg₂ (· * ·) (congrArg₂ (· * ·) ?_ ?_) ?_` and prove the remaining obligations. Conclude with `((Units.val_inv_eq_inv_val (TruncatedSeriesCountingIdentities.chi1C (TruncatedSeriesCountingIdentities.CoefExt.self i _ hn) g : (Br.LL D.nbr i _ hn)ˣ)).trans (congrArg Inv.inv (locChi_apply i hn (chiU D.nd i 1) g))).symm`. Conclude with `(loc_apply i hn (rO D.nd i r (Dd.p x')) g j k).symm`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem phiX_equiv (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0
       eB e₁ s Dd)
@@ -97,7 +97,7 @@ theorem phiX_equiv (hD : Formalism.RepresentationBoundsCohomology.ringDataObject
   · rfl
 
 /- English proof (translation)
-Establish `hn` using `col_over i dc l`. Establish `hc` using `(hG2 _ hn (TruncatedSeriesCountingIdentities.CoefExt.self i _ hn)).2 (Dd.p x')`. Unfold `KDim.CrysX`. Conclude with `crys_of_mat _ _ _ (phiL i Dd x' hn) (phiX_equiv i dc r π g0 eB e₁ s Dd hD x' _ hn) hc`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem crysX_of (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π)
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0
@@ -113,7 +113,7 @@ end Ident
 section BC
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, Finset.mul_sum, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smulMV {Kf : Type} [CommRing Kf] {n m : ℕ} (c : Kf) (M : Matrix (Fin n) (Fin m) Kf) (u : Fin m → Kf) :
     (c • M).mulVec u = c • M.mulVec u := by
@@ -160,9 +160,9 @@ theorem eL_apply (v : Fin n → LL) :
     eL f e v = (fun a => f ((e (fun b => f.symm (v b))).1 a), fun j _ => f ((e (fun b => f.symm (v b))).2 j)) := rfl
 
 /- English proof (translation)
-Establish `key : (fun b => f.symm ((R'.mulVec v) b)) = R.mulVec (fun b => f.symm (v b))`. Use function extensionality and compare the values at `b`. Simplify using `only [Matrix.mulVec, dotProduct, hR, map_sum, map_mul, RingEquiv.symm_apply_apply]`. Establish `h2 : e (fun b => f.symm ((R'.mulVec v) b)) = (P.mulVec (e (fun b => f.symm (v b))).1, fun j => c j * (e (fun b => f.symm (v b))).2 j)` using `(congrArg e key).trans (he _)`. Rewrite using `[eL_apply, eL_apply, h2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext (funext fun a => ?_) (funext fun j => funext fun x => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, hP, map_sum, map_mul]`. Simplify using `only [hc, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eL_mul (R : Matrix (Fin n) (Fin n) Kf) (P : Matrix (Fin r) (Fin r) Kf) (c : Fin t → Kf)
     (he : ∀ u, e (R.mulVec u) = (P.mulVec (e u).1, fun j => c j * (e u).2 j))
@@ -191,9 +191,9 @@ variable {D : D7} (i : D.nd.Loc)
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
 /- English proof (translation)
-Establish `e : (fun g : GE D.nd => (((chiU D.nd i c * (chiU D.nd i 1)⁻¹) g : (D.nd.O i)ˣ) : D.nd.O i)) = fun g => ((chiU D.nd i c g : (D.nd.O i)ˣ) : D.nd.O i) * ((chiU D.nd i 1 g⁻¹ : (D.nd.O i)ˣ) : D.nd.O i)`. Use function extensionality and compare the values at `g`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, map_inv, Units.val_mul]`. Establish `hχ : Continuous fun g : GE D.nd => (((chiU D.nd i c * (chiU D.nd i 1)⁻¹) g : (D.nd.O i)ˣ) : D.nd.O i)`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(D.nd.chi_cont i c).mul ((D.nd.chi_cont i 1).comp continuous_inv)`. Use `show Continuous fun g => (((chiU D.nd i c * (chiU D.nd i 1)⁻¹) g : (D.nd.O i)ˣ) : D.nd.O i) • ((1 : GE D.nd →* Matrix (Fin 1) (Fin 1) (D.nd.O i)) g)`. Conclude with `hχ.smul (continuous_const : Continuous fun _ : GE D.nd => (1 : Matrix (Fin 1) (Fin 1) (D.nd.O i)))`.
+A detailed English derivation is pending.
 -/
 theorem chiRat_cont (c : ℕ) : Continuous (chiRatO D.nd i c) := by
   have e : (fun g : GE D.nd => (((chiU D.nd i c * (chiU D.nd i 1)⁻¹) g : (D.nd.O i)ˣ) : D.nd.O i)) =
@@ -208,7 +208,7 @@ theorem chiRat_cont (c : ℕ) : Continuous (chiRatO D.nd i c) := by
   exact hχ.smul (continuous_const : Continuous fun _ : GE D.nd => (1 : Matrix (Fin 1) (Fin 1) (D.nd.O i)))
 
 /- English proof (translation)
-Establish `hinc : Continuous (TruncatedSeriesCountingIdentities.CoefExt.inc C)` using `continuous_induced_rng.2 (by exact continuous_subtype_val)`. Conclude with `(KOrb.loc_cont i hw M hM).matrix_map hinc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locC_cont' {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (hM : Continuous M)
     {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) :
@@ -222,7 +222,7 @@ abbrev MsC {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host
   TruncatedSeriesCountingIdentities.locC (TruncatedSeriesCountingIdentities.CoefExt.self i w hw) (chiRatO D.nd i ((j : ℕ) + 1))
 
 /- English proof (translation)
-Use extensionality with `g a b`. Simplify using `[TBa.MsW, TruncatedSeriesCountingIdentities.locC, TruncatedSeriesCountingIdentities.chi1C, rTwO, mapM, twistM, loc_apply, locChi_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mrTw_eq {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) (x : D.nd.X i) :
     twistM (TruncatedSeriesCountingIdentities.locC (TruncatedSeriesCountingIdentities.CoefExt.self i w hw) (rO D.nd i r x)) (TruncatedSeriesCountingIdentities.chi1C (TruncatedSeriesCountingIdentities.CoefExt.self i w hw))⁻¹ =
@@ -239,17 +239,17 @@ variable {D : D7} (i : D.nd.Loc)
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hDec`. Use `⟨eL (eK (D.nbr i w hw)) e, fun g v => ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩ : ∃ h : GE D.nd, h = ((Br.iota D.nbr i w hw g : _) : GE D.nd)` from `⟨_, rfl⟩`. Establish `hE : ∀ u, e ((toK D.nd i (((chiU D.nd i 1 h)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) • mapM (toK D.nd i) (rO D.nd i r π) h).mulVec u) = ((toK D.nd i (((chiU D.nd i 1 h)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) • mapM (toK D.nd i) (rhoO D.nd i ρ π) h).mulVec (e u).1, fun j : Fin D.R.t => toK D.nd i ((ch …`. Introduce `u`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smulMV, smulMV, map_smul, he h u]`. Use `Prod.ext rfl (funext fun j => ?_)` and prove the remaining obligations. Simplify using `only [Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∀ a b, TBa.MsW i r hw π g a b = eK (D.nbr i w hw) ((toK D.nd i (((chiU D.nd i 1 h)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) • mapM (toK D.nd i) (rO D.nd i r π) h) a b)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `a b`. Substitute `hh` using the available equality. Apply the tactic sequence `simp [TBa.MsW, TruncatedSeriesCountingIdentities.locC, rTwO, twistM, mapM, loc_apply] <;> rfl`. Establish `hP : ∀ a b, Br.loc D.nbr i w hw (WpO D.nd i ρ π) g a b = eK (D.nbr i w hw) ((toK D.nd i (((chiU D.nd i 1 h)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) • mapM (toK D.nd i) (rhoO D.nd i ρ π) h) a b)`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hh` using the available equality. Apply the tactic sequence `simp [WpO, twistM, mapM, loc_apply] <;> rfl`. Establish `hc : ∀ j : Fin D.R.t, MsC i hw j g 0 0 = eK (D.nbr i w hw) (toK D.nd i ((chiU D.nd i ((j : ℕ) + 1) h : (D.nd.O i)ˣ) : D.nd.O i) * toK D.nd i (((chiU D.nd i 1 h)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i))`. Introduce `j`. Substitute `hh` using the available equality.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Use `(loc_apply i hw (chiRatO D.nd i ((j : ℕ) + 1)) g 0 0).trans ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[chiRatO, twistM]`. Establish `key` using `eL_mul (eK (D.nbr i w hw)) e (toK D.nd i (((chiU D.nd i 1 h)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) • mapM (toK D.nd i) (rO D.nd i r π) h) (toK D.nd i (((chiU D.nd i 1 h)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) • mapM (toK D.nd i) (rhoO D.nd i ρ π) h) (fun j : Fin D.R.t => toK D.nd i ((chiU D.nd i (( …`. Use `key.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext rfl (funext fun j => funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[Fin.fin_one_eq_zero x]`. Simplify using `[TBa.sumRep, Matrix.mulVec, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem decomp_at (hDec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) {w : HeightOneSpectrum (𝓞 D.host.E)}
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) :
@@ -297,11 +297,11 @@ theorem decomp_at (hDec : TruncatedSeriesCountingIdentities.SemisimpleDecomposit
   simp [TBa.sumRep, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Take `⟨e', he'⟩` from `decomp_at i r ρ π hDec hw`. Establish `hMsc : ∀ j, Continuous (MsC i hw j)` using `fun j => locC_cont' i _ (chiRat_cont i _) hw _`. Establish `hWc : Continuous ⇑(Br.loc D.nbr i w hw (WpO D.nd i ρ π))` using `KOrb.loc_cont i hw _ (KOrb.wpO_cont i ρ π hρ)`. Establish `hc0` using `(hG2 _ hw (TruncatedSeriesCountingIdentities.CoefExt.self i w hw)).2 π`. Rewrite `hc0` using `[mrTw_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (Kf` using `Br.LL D.nbr i w hw) (TBa.MsW i r hw π)) := hc0`. Establish `hJ : ∀ (j : Fin D.R.t) (τ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] Br.LL D.nbr i w hw) (b : ℤ), IsJumpV (Br.PD D.loc D.nbr i w hw) (matRep (MsC i hw (id j))) τ b → 0 ≤ b`. Introduce `j τ b hb`. Establish `hj` using `j.2`. Establish `h` using `((hG2 _ hw (TruncatedSeriesCountingIdentities.CoefExt.self i w hw)).1.2.2.2.1 ((j : ℕ) + 1) (by omega) (by omega) τ b).1 hb`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Conclude with `decomp_neg (O := Br.OLL D.nbr i w hw) (Br.PD D.loc D.nbr i w hw) (MsC i hw) (by exact hF _ hw (TruncatedSeriesCountingIdentities.CoefExt.self i w hw)) hMsc (TBa.matG (TBa.MsW i r hw) (KOrb.msContW i r hCont hw) π) (TBa.matG (fun _ : Unit => Br.loc D.nbr i w hw (WpO D.nd i ρ π)) ( …`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem wp_font (hF : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (hDec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)
     (hCont : TruncatedSeriesCountingIdentities.FamilyContinuous i r) (hρ : Continuous fun g => rhoO D.nd i ρ π g)
@@ -330,7 +330,7 @@ theorem wp_font (hF : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i)
     (TBa.matG (fun _ : Unit => Br.loc D.nbr i w hw (WpO D.nd i ρ π)) (fun _ => hWc) ()) id e' he' hc hJ
 
 /- English proof (translation)
-Establish `hWc : Continuous ⇑(Br.loc D.nbr i w hw (WpO D.nd i ρ π))` using `KOrb.loc_cont i hw _ (KOrb.wpO_cont i ρ π hρ)`. Establish `hcr` using `(wp_font i r ρ π hF hG2 hDec hCont hρ hw).1`. Establish `hdr` using `(hF _ hw (TruncatedSeriesCountingIdentities.CoefExt.self i w hw)).2.2.2 (TBa.matG (fun _ : Unit => Br.loc D.nbr i w hw (WpO D.nd i ρ π)) (fun _ => hWc) ()) hcr`. Conclude with `dR_of_mat _ _ _ e he hdr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dR_of_wp (hF : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (hDec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)
     (hCont : TruncatedSeriesCountingIdentities.FamilyContinuous i r) (hρ : Continuous fun g => rhoO D.nd i ρ π g)
@@ -359,16 +359,16 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (Dd : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
 
 /- English proof (translation)
-The claim follows from `(wp_font i r ρ π hF hG2 hDec hCont hρ (col_over i dc l)).1`.
+A detailed English derivation is pending.
 -/
 theorem crysW_of (hF : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (hDec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)
     (hCont : TruncatedSeriesCountingIdentities.FamilyContinuous i r) (hρ : Continuous fun g => rhoO D.nd i ρ π g) (l : K.Col i dc) :
     KDim.CrysW i dc ρ π l := (wp_font i r ρ π hF hG2 hDec hCont hρ (col_over i dc l)).1
 
 /- English proof (translation)
-Introduce `τ a ha`. Establish `h1` using `multV_mat (Br.PD D.loc D.nbr i _ (col_over i dc l)) (MrTw i r (col_over i dc l) (Dd.p x')) _ (phiL i Dd x' (col_over i dc l)) (phiX_equiv i dc r π g0 eB e₁ s Dd hD x' _ (col_over i dc l)) τ a`. Establish `h2` using `(hG2 _ (col_over i dc l) (TruncatedSeriesCountingIdentities.CoefExt.self i _ (col_over i dc l))).1.2.1 τ (Dd.p x') π a`. Establish `h3` using `(wp_font i r ρ π hF hG2 hDec hCont hρ (col_over i dc l)).2 τ a ha`. Rewrite `h3` using `[← mrTw_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.trans (h2.trans h3)`.
+A detailed English derivation is pending.
 -/
 theorem negX_of (hF : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (hDec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)
     (hCont : TruncatedSeriesCountingIdentities.FamilyContinuous i r) (hρ : Continuous fun g => rhoO D.nd i ρ π g)
@@ -399,7 +399,7 @@ def WpIso (n : ℕ) (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) {V :
       matRep (Br.loc D.nbr i _ hn (WpO D.nd i ρ π)) g (e x)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Conclude with `dR_of_wp i r ρ π hF hG2 hDec hCont hρ hn _ e he`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isDR_of_wpIso (hF : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (hDec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)
     (hCont : TruncatedSeriesCountingIdentities.FamilyContinuous i r) (hρ : Continuous fun g => rhoO D.nd i ρ π g)

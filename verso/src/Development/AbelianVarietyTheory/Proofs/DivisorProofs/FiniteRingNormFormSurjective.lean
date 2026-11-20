@@ -6,11 +6,11 @@ open scoped TensorProduct
 namespace GlobalTheory.FinRingNorm
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype F`. Establish `hc : ringChar F ≠ 2`. Introduce `h`. Apply `h2` to reduce the goal to its premises. Use `ringChar.Nat.cast_ringChar (R := F)` as an intermediate fact.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Conclude with `this` after adjusting the coercions. Take `⟨a, b, hab⟩` from `FiniteField.exists_root_sum_quadratic (R := F) (f := X ^ 2) (g := -(C d * X ^ 2) - C s) (by simp) (by compute_degree!) (FiniteField.odd_card_of_char_ne_two hc)`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Simplify using `only [eval_pow, eval_X, eval_sub, eval_neg, eval_mul, eval_C] at hab`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hab`.
+A detailed English derivation is pending.
 -/
 theorem field_case (F : Type) [Field F] [Finite F] (h2 : (2 : F) ≠ 0) (d s : F) (hd : d ≠ 0) :
     ∃ a b : F, a ^ 2 - d * b ^ 2 = s := by
@@ -27,11 +27,11 @@ theorem field_case (F : Type) [Field F] [Finite F] (h2 : (2 : F) ≠ 0) (d s : F
   linear_combination hab
 
 /- English proof (translation)
-Establish `key : ∀ I : MaximalSpectrum S, ∃ a b : S ⧸ I.asIdeal, a ^ 2 - (Ideal.Quotient.mk I.asIdeal d) * b ^ 2 = Ideal.Quotient.mk I.asIdeal s`. Introduce `I`. Use `letI : Field (S ⧸ I.asIdeal) := Ideal.Quotient.field I.asIdeal`. Use `haveI : Finite (S ⧸ I.asIdeal) := Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `h2' : (2 : S ⧸ I.asIdeal) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(h2.map (Ideal.Quotient.mk I.asIdeal)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Conclude with `field_case _ h2' _ _ (hd.map (Ideal.Quotient.mk I.asIdeal)).ne_zero`. Use `choose A B hAB using key`. Use `⟨(IsArtinianRing.equivPi S).symm A, (IsArtinianRing.equivPi S).symm B, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply `(IsArtinianRing.equivPi S).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `I`. Simplify using `only [map_sub, map_mul, map_pow, AlgEquiv.apply_symm_apply, Pi.sub_apply, Pi.mul_apply, Pi.pow_apply]`. Conclude with `hAB I`.
+A detailed English derivation is pending.
 -/
 theorem reduced_case (S : Type) [CommRing S] [Finite S] [IsReduced S] (h2 : IsUnit (2 : S))
     (d s : S) (hd : IsUnit d) : ∃ a b : S, a ^ 2 - d * b ^ 2 = s := by
@@ -54,29 +54,25 @@ theorem reduced_case (S : Type) [CommRing S] [Finite S] [IsReduced S] (h2 : IsUn
   exact hAB I
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `S _ _ hn h2 d s hd hs`. Distinguish the cases in `hred : IsReduced S`. Conclude with `reduced_case S h2 d s hd`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx0, hx2⟩ : ∃ x : S, x ≠ 0 ∧ x ^ 2 = 0 := by`. Rewrite `hred` using `[isReduced_iff]`. Use `push_neg at hred`. Take `⟨y, ⟨k, hk⟩, hy⟩` from `hred`. Establish `hex : ∃ m, y ^ m = 0` using `⟨k, hk⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `m` to `Nat.find hex`. Establish `hm : y ^ m = 0` using `Nat.find_spec hex`. Establish `hm0 : m ≠ 0`. Introduce `h`. Establish `: y ^ m = 1` using `by rw [h, pow_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hy` to reduce the goal to its premises. Rewrite using `[← mul_one y, ← this, hm, mul_zero]`. Establish `hm1 : m ≠ 1`. Introduce `h`. Apply `hy` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← pow_one y, ← h, hm]`. Take `⟨j, hj⟩ : ∃ j, m = j + 1` from `⟨m - 1, by omega⟩`. Use `⟨y ^ j, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.find_min hex (by omega)`. Rewrite using `[← pow_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t, ht⟩ : ∃ t, j * 2 = m + t` from `⟨j * 2 - m, by omega⟩`. Rewrite using `[ht, pow_add, hm, zero_mul]`. Use `set I : Ideal S := Ideal.span {x} with hI`. Establish `hlt : Nat.card (S ⧸ I) < n`. Rewrite using `[← hn]`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the cases of `nonempty_fintype S`. Use `haveI : Finite (S ⧸ I) := Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Consider the cases of `nonempty_fintype (S ⧸ I)`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Apply `Fintype.card_lt_of_surjective_not_injective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `hinj`. Apply `hx0` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : Finite (S ⧸ I) := Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Take `⟨a', b', hab'⟩` from `ih _ hlt (S ⧸ I) rfl (h2.map (Ideal.Quotient.mk I)) _ _ (hd.map (Ideal.Quotient.mk I)) (hs.map (Ideal.Quotient.mk I))`. Take `⟨a0, rfl⟩` from `Ideal.Quotient.mk_surjective a'`. Take `⟨b0, rfl⟩` from `Ideal.Quotient.mk_surjective b'`. Establish `hmem : a0 ^ 2 - d * b0 ^ 2 - s ∈ I`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [map_sub, map_mul, map_pow]`. Rewrite using `[hab', sub_self]`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp hmem`. Take `⟨u, hu⟩` from `h2.exists_right_inv`.
-
-Take `⟨t, ht⟩` from `hs.exists_right_inv`. Use `set iv := t - t ^ 2 * r * x with hiv`. Establish `hv : (s + r * x) * iv - 1 = 0`. Rewrite using `[hiv]`. Take the linear combination `(1 - t * r * x) * ht - t ^ 2 * r ^ 2 * hx2`.
-
-Use `⟨a0 - r * a0 * iv * u * x, b0 - r * b0 * iv * u * x, ?_⟩` and prove the remaining obligations. Take the linear combination `(1 - r * x * 2 * u * iv) * hr.symm - r * x * 2 * u * hv - r * x * hu + (r * iv * u) ^ 2 * (a0 ^ 2 - d * b0 ^ 2) * hx2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card (n : ℕ) : ∀ (S : Type) [CommRing S] [Finite S], Nat.card S = n → IsUnit (2 : S) →
     ∀ d s : S, IsUnit d → IsUnit s → ∃ a b : S, a ^ 2 - d * b ^ 2 = s := by
@@ -140,7 +136,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card (n : ℕ) : ∀ (S : Type) [CommRing
   linear_combination (1 - r * x * 2 * u * iv) * hr.symm - r * x * 2 * u * hv - r * x * hu + (r * iv * u) ^ 2 * (a0 ^ 2 - d * b0 ^ 2) * hx2
 
 /- English proof (translation)
-Introduce `S _ _ h2 d s hd hs` and use `finiteRing_sq_sub_mul_sq_eq_of_card _ S rfl h2 d s hd hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_sq_sub_mul_sq_eq : ∀ (S : Type) [CommRing S] [Finite S], IsUnit (2 : S) →
     ∀ d s : S, IsUnit d → IsUnit s → ∃ a b : S, a ^ 2 - d * b ^ 2 = s :=

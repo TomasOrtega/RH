@@ -17,9 +17,9 @@ open GlobalTheory.Member
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).2.2.2.2.2, Submodule.map_span]`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, ⟨a, ha, x, hx, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, V.frame.equivFun x, ⟨x, hx, rfl⟩, by simp⟩`. Introduce and unpack `⟨a, ha, y, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a • x, ⟨a, ha, x, hx, rfl⟩, by simp⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem map_span_eq_latG (D : D7) (V : HSp D) :
     (Submodule.span (𝓞 D.host.E) {v | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ x ∈ V.L0, v = a • x}).map
@@ -34,17 +34,17 @@ theorem map_span_eq_latG (D : D7) (V : HSp D) :
     exact ⟨a • x, ⟨a, ha, x, hx, rfl⟩, by simp⟩
 
 /- English proof (translation)
-Introduce `D Q hP j hj`. Take `⟨⟨-, hrt, hrt0, -⟩, -, -, hD⟩` from `hP`. Take `⟨hp, hq, φ, ε, hinj, hrange, hiso⟩` from `hD j hj`. Establish `hk` using `D.R.m_add_three_le_k`. Take `⟨h1, h2⟩` from `hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, hq, ?_⟩` and prove the remaining obligations. Set `e` to `(((D.sp.W j).frame.equivFun : (D.sp.W j).V →ₗ[D.host.E] (Fin (D.sp.W j).rank → D.host.E)).restrictScalars (𝓞 D.host.E))`. Establish `hr : LinearMap.range (e ∘ₗ φ) = latG (D.sp.W j) 1`. Rewrite using `[LinearMap.range_comp, hrange]`. Conclude with `map_span_eq_latG D (D.sp.W j)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hspan : Submodule.span D.host.E (Set.range φ) = ⊤`. Establish `h` using `(GlobalTheory.T.adelicElementLattice_full_and_completion D (D.sp.W j) 1).2.1`. Rewrite `h` using `[← hr]`. Establish `hs : ((LinearMap.range (e ∘ₗ φ) : Submodule _ _) : Set (Fin (D.sp.W j).rank → D.host.E)) = ((D.sp.W j).frame.equivFun : (D.sp.W j).V →ₗ[D.host.E] (Fin (D.sp.W j).rank → D.host.E)) '' Set.range φ`. Rewrite using `[← Set.range_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `h` using `[hs, ← Submodule.map_span]`. Conclude with `(Submodule.map_eq_top_iff (e := (D.sp.W j).frame.equivFun)).mp h`. Establish `hε : ε = 1` using `GlobalTheory.T.liftDatum_alternatingForm_sign_eq_one D Q.H (Q.Dw j) j ⟨h1, h2⟩ hrt hrt0 hp hq φ ε hinj hspan hiso`. Use `⟨e ∘ₗ φ, hrt, hrt0, ⟨(D.sp.W j).frame.equivFun.injective.comp hinj, hr⟩, fun x y => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ∀ z, (D.sp.W j).frame.equivFun.symm ((e ∘ₗ φ) z) = φ z` using `fun z => (D.sp.W j).frame.equivFun.symm_apply_apply (φ z)`. Rewrite using `[hx, hx, hiso x y, hε]`. Simplify using the standard rewrite rules. Rewrite using `[hp, hq]`. Simplify using `only [Ranks.sigW, Ranks.r]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hq]`. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_iotaOK : ∀ (D : D7) (Q : Par D), Q.Pins → ∀ j, InR D j → (∃ ι, IotaOK (Q.Dw j) (D.sp.W j) ι) ∧ (Q.Dw j).p + (Q.Dw j).q = D.R.r ∧ (Q.Dw j).q = WeightFamilies.rho D j ∧ 2 * (Q.Dw j).q < D.R.r := by
   intro D Q hP j hj

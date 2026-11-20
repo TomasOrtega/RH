@@ -23,7 +23,7 @@ section Lin
 variable {m N : ℕ} (e : Option (Fin m) ≃ Fin N)
 
 /- English proof (translation)
-Use extensionality with `a b`. Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`. Rewrite using `[Matrix.mul_apply, ← e.sum_comp, Fintype.sum_option]`. Apply the tactic sequence `cases a <;> cases b <;> simp [embOpt, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embOpt_mul (h k : Matrix (Fin m) (Fin m) ℂ) : embOpt e (h * k) = embOpt e h * embOpt e k := by
   ext a b
@@ -33,7 +33,7 @@ theorem embOpt_mul (h k : Matrix (Fin m) (Fin m) ℂ) : embOpt e (h * k) = embOp
   cases a <;> cases b <;> simp [embOpt, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `a b`. Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`. Apply the tactic sequence `cases a <;> cases b <;> simp [embOpt]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embOpt_ct (h : Matrix (Fin m) (Fin m) ℂ) : embOpt e hᴴ = (embOpt e h)ᴴ := by
   ext a b
@@ -42,7 +42,7 @@ theorem embOpt_ct (h : Matrix (Fin m) (Fin m) ℂ) : embOpt e hᴴ = (embOpt e h
   cases a <;> cases b <;> simp [embOpt]
 
 /- English proof (translation)
-Use extensionality with `a b`. Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`. Apply the tactic sequence `cases a <;> cases b <;> simp [embOpt, Formalism.REAL.Jm, Matrix.diagonal_apply, h0, h1]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embOpt_Jm {εA : Fin m → Bool} {ε : Fin N → Bool} (h0 : ε (e none) = true) (h1 : ∀ i, ε (e (some i)) = εA i) :
     Formalism.REAL.Jm ε = embOpt e (Formalism.REAL.Jm εA) := by
@@ -52,21 +52,21 @@ theorem embOpt_Jm {εA : Fin m → Bool} {ε : Fin N → Bool} (h0 : ε (e none)
   cases a <;> cases b <;> simp [embOpt, Formalism.REAL.Jm, Matrix.diagonal_apply, h0, h1]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hh.exists_right_inv`. Conclude with `IsUnit.of_mul_eq_one (embOpt e k) (by rw [← embOpt_mul, hk, embOpt_one])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem embOpt_unit {h : Matrix (Fin m) (Fin m) ℂ} (hh : IsUnit h) : IsUnit (embOpt e h) := by
   obtain ⟨k, hk⟩ := hh.exists_right_inv
   exact IsUnit.of_mul_eq_one (embOpt e k) (by rw [← embOpt_mul, hk, embOpt_one])
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (by rw [← embOpt_mul, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hh), embOpt_one])`.
+A detailed English derivation is pending.
 -/
 theorem embOpt_inv {h : Matrix (Fin m) (Fin m) ℂ} (hh : IsUnit h) : (embOpt e h)⁻¹ = embOpt e h⁻¹ :=
   Matrix.inv_eq_right_inv (by
     rw [← embOpt_mul, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hh), embOpt_one])
 
 /- English proof (translation)
-Use `IsUnit.of_mul_eq_one (Formalism.REAL.Jm ε) ?_` and prove the remaining obligations. Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Apply the tactic sequence `congr 1; funext a; split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_unit (ε : Fin m → Bool) : IsUnit (Formalism.REAL.Jm ε) := by
   refine IsUnit.of_mul_eq_one (Formalism.REAL.Jm ε) ?_
@@ -76,7 +76,7 @@ theorem Jm_unit (ε : Fin m → Bool) : IsUnit (Formalism.REAL.Jm ε) := by
 def vecOpt (y : Fin m → ℂ) (a : ℂ) : Fin N → ℂ := fun b => (e.symm b).elim a y
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Take `⟨b, rfl⟩` from `e.surjective b`. Rewrite using `[Matrix.mulVec, dotProduct, ← e.sum_comp, Fintype.sum_option]`. Apply the tactic sequence `cases b <;> simp [embOpt, vecOpt, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embOpt_vec (h : Matrix (Fin m) (Fin m) ℂ) (y : Fin m → ℂ) (a : ℂ) :
     embOpt e h *ᵥ vecOpt e y a = vecOpt e (h *ᵥ y) a := by
@@ -86,7 +86,7 @@ theorem embOpt_vec (h : Matrix (Fin m) (Fin m) ℂ) (y : Fin m → ℂ) (a : ℂ
   cases b <;> simp [embOpt, vecOpt, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Unfold `eu`. Rewrite using `[Real.sq_sqrt (by positivity), Real.sq_sqrt (by positivity), ← e.sum_comp, Fintype.sum_option, add_comm]`. Simplify using `[vecOpt]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eu_vecOpt (y : Fin m → ℂ) (a : ℂ) : eu (vecOpt e y a) ^ 2 = eu y ^ 2 + ‖a‖ ^ 2 := by
   unfold eu
@@ -94,7 +94,7 @@ theorem eu_vecOpt (y : Fin m → ℂ) (a : ℂ) : eu (vecOpt e y a) ^ 2 = eu y ^
   simp [vecOpt]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Take `⟨b, rfl⟩` from `e.surjective b`. Apply the tactic sequence `cases b <;> simp [vecOpt, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vecOpt_zero_one : vecOpt e 0 1 = Pi.single (e none) 1 := by
   funext b
@@ -107,7 +107,7 @@ def colM (F : Matrix (Fin N) (Fin m) ℂ) (z : Matrix (Fin N) (Fin 1) ℂ) : Mat
 variable (F : Matrix (Fin N) (Fin m) ℂ) (z : Matrix (Fin N) (Fin 1) ℂ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec, dotProduct, ← e.sum_comp, Fintype.sum_option]`. Simplify using `[colM, vecOpt, Matrix.mulVec, dotProduct, add_comm, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem colM_vec (y : Fin m → ℂ) (a : ℂ) : colM e F z *ᵥ vecOpt e y a = F *ᵥ y + a • fun i => z i 0 := by
   funext i
@@ -115,7 +115,7 @@ theorem colM_vec (y : Fin m → ℂ) (a : ℂ) : colM e F z *ᵥ vecOpt e y a = 
   simp [colM, vecOpt, Matrix.mulVec, dotProduct, add_comm, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i b`. Take `⟨b, rfl⟩` from `e.surjective b`. Apply the tactic sequence `cases b <;> simp [colM, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_colM (g : Matrix (Fin N) (Fin N) ℂ) : g * colM e F z = colM e (g * F) (g * z) := by
   ext i b
@@ -123,7 +123,7 @@ theorem mul_colM (g : Matrix (Fin N) (Fin N) ℂ) : g * colM e F z = colM e (g *
   cases b <;> simp [colM, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i b`. Take `⟨b, rfl⟩` from `e.surjective b`. Rewrite using `[Matrix.mul_apply, ← e.sum_comp, Fintype.sum_option]`. Apply the tactic sequence `cases b <;> simp [colM, embOpt, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colM_mul (h : Matrix (Fin m) (Fin m) ℂ) : colM e F z * embOpt e h = colM e (F * h) z := by
   ext i b
@@ -132,11 +132,11 @@ theorem colM_mul (h : Matrix (Fin m) (Fin m) ℂ) : colM e F z * embOpt e h = co
   cases b <;> simp [colM, embOpt, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite `h1`, `h2`, `h3`, the goal using `[Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc, mul_colM]`. Use extensionality with `a b`. Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the cases of `a with`. Consider the case `none => cases b with`. Consider the case `none => simpa [colM, embOpt, Matrix.mul_apply (M := _ᴴ)] using congrFun (congrFun h3 0) 0`. Consider the case `some b => simpa [colM, embOpt, Matrix.mul_apply (M := _ᴴ)] using congrFun (congrFun h2 0) b`. Consider the case `some a => cases b with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `none => simpa [colM, embOpt, Matrix.mul_apply (M := _ᴴ)] using congrFun (congrFun h1 a) 0`. Consider the case `some b => simp [colM, embOpt, Matrix.mul_apply (M := _ᴴ)]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem colM_gram (J : Matrix (Fin N) (Fin N) ℂ) (h1 : Fᴴ * J * z = 0) (h2 : zᴴ * J * F = 0) (h3 : zᴴ * J * z = 1) :
     (colM e F z)ᴴ * J * colM e F z = embOpt e (Fᴴ * J * F) := by
@@ -154,17 +154,15 @@ theorem colM_gram (J : Matrix (Fin N) (Fin N) ℂ) (h1 : Fᴴ * J * z = 0) (h2 :
     | some b => simp [colM, embOpt, Matrix.mul_apply (M := _ᴴ)]
 
 /- English proof (translation)
-Use `set M := colM e F z with hM`. Use `set C := embOpt e A with hC`. Establish `hCu : IsUnit C` using `embOpt_unit e hA`. Establish `hg : Mᴴ * J * M = Cᴴ * Formalism.REAL.Jm ε * C`. Rewrite using `[hM, colM_gram e F z J h1 h2 h3, ← hG, embOpt_mul, embOpt_mul, embOpt_ct, embOpt_Jm e h0 hε]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMu : IsUnit M`. Establish `: IsUnit (Mᴴ * J * M)`. Rewrite using `[hg]`. Conclude with `(((Matrix.isUnit_conjTranspose _).2 hCu).mul (Jm_unit ε)).mul hCu`. Rewrite `this` using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_right this)`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hMu`. Establish `hMi : IsUnit M⁻¹` using `Matrix.isUnit_nonsing_inv_iff.2 hMu`. Establish `key : ∀ y a, (C * M⁻¹) *ᵥ (F *ᵥ y + a • fun i => z i 0) = vecOpt e (A *ᵥ y) a`. Introduce `y a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← colM_vec e, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul_cancel_right _ _ hd, embOpt_vec]`. Use `⟨C * M⁻¹, hCu.mul hMi, ?_, fun y a => ?_, ?_, fun g h e1 e2 => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = (M * M⁻¹)ᴴ * J * (M * M⁻¹) := by`. Rewrite using `[← hg, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [Matrix.mul_nonsing_inv _ hd]; simp`. Rewrite using `[key, eu_vecOpt]`.
-
-Use `key 0 1` as an intermediate fact. Simplify `this` using `[vecOpt_zero_one]`. Establish `e3 : g * M = M * embOpt e h` using `by rw [hM, mul_colM, colM_mul, e1, e2]`. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hd, embOpt_mul, embOpt_mul, ← embOpt_inv e hA, ← hC]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_frame (J : Matrix (Fin N) (Fin N) ℂ) (h1 : Fᴴ * J * z = 0) (h2 : zᴴ * J * F = 0) (h3 : zᴴ * J * z = 1)
     (εA : Fin m → Bool) (A : Matrix (Fin m) (Fin m) ℂ) (ε : Fin N → Bool) (hA : IsUnit A)
@@ -208,7 +206,7 @@ end Lin
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `GlobalTheory.FockCompare.tauE_star τ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_cT_tau (τ : D.what₂.Tau) {m n : ℕ} (X : Matrix (Fin m) (Fin n) D.host.E) :
     (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X).map (tauE D τ) = (X.map (tauE D τ))ᴴ := by
@@ -216,7 +214,7 @@ theorem map_cT_tau (τ : D.what₂.Tau) {m n : ℕ} (X : Matrix (Fin m) (Fin n) 
   exact GlobalTheory.FockCompare.tauE_star τ _
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `GlobalTheory.FockCompare.comp_incA hθ τ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_incA_tau {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m n : ℕ} (X : Matrix (Fin m) (Fin n) D.host.E) :
     (X.map (incA D)).map ((θ τ).comp (infPart D)) = X.map (tauE D τ) := by
@@ -224,15 +222,13 @@ theorem map_incA_tau {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m
   exact GlobalTheory.FockCompare.comp_incA hθ τ _
 
 /- English proof (translation)
-Introduce `D θ hθ Y V d τ εA A ε e hA hG h0 hε`. Establish `h1` using `congrArg (fun X => X.map (tauE D τ)) d.perp`. Establish `h2` using `congrArg (fun X => X.map (tauE D τ)) (GlobalTheory.UnitaryEmbeddingGroup.perp' d)`. Establish `h3` using `congrArg (fun X => X.map (tauE D τ)) d.gram`. Establish `h4` using `congrArg (fun X => X.map (tauE D τ)) (GlobalTheory.AutFunCounterexample.gram_pull V Y d.ι d.isom)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_mul, map_cT_tau, Matrix.map_zero _ (map_zero _)] at h1 h2 h3 h4`. Establish `h5 : (antiDiagonalSignGramMatrix 1 (1 : D.host.E)).map (tauE D τ) = 1`. Use extensionality with `a b`. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim b 0]`. Simplify using `[antiDiagonalSignGramMatrix]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h3` using `[h5]`. Take `⟨B, b1, b2, b3, b4, b5⟩` from `exists_frame e _ _ _ h1 h2 h3 εA A ε hA (hG.trans h4.symm) h0 hε`. Use `⟨B, b1, b2, b3, b4, fun h _ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V _ τ, fun h hh => b5 _ h ?_ ?_⟩` and prove the remaining obligations. Establish `k1` using `congrArg (fun X => X.map ((θ τ).comp (infPart D))) ((embRel_iff d (atTau θ Y τ h) _).2 rfl).1`. Establish `k2` using `(GlobalTheory.PointAtPlaceHom.atTau_spec hθ Y τ hh).2.1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_mul, map_incA_tau hθ] at k1`. Rewrite `k2` using `[GlobalTheory.FockCompare.RealAction.infMat_eq]`. Conclude with `k1.trans (congrArg _ k2)`. Establish `k1` using `congrArg (fun X => X.map ((θ τ).comp (infPart D))) (GlobalTheory.UnitaryEmbeddingGroup.unitaryEmbedding_fixes_vectors d (atTau θ Y τ h))`. Simplify using `only [Matrix.map_mul, map_incA_tau hθ] at k1`.
-
-Conclude with `k1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_adapted_frame : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (τ : D.what₂.Tau)
   (εA : Fin Y.rank → Bool) (A : Matrix (Fin Y.rank) (Fin Y.rank) ℂ) (ε : Fin V.rank → Bool)

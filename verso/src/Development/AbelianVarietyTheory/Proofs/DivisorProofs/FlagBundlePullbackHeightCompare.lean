@@ -33,9 +33,9 @@ namespace GlobalTheory.LogSinChern
 open GlobalTheory.CxForm in
 
 /- English proof (translation)
-Establish `hπ` using `GlobalTheory.T.flag_bundle_smooth_relative_dimension B Y π Unit (fun _ => E) (fun _ => 2) (fun _ => fl) (fun _ => hE) hfl`. Establish `: Smooth π` using `@SmoothOfRelativeDimension.smooth _ _ _ π hπ`. Use `hB.toIsArithVar.isLocallyNoetherian` as an intermediate fact. Use `⟨hp, fun y => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ThetaExtend.isRegularRing_stalk hB.regular π y` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `.of_isRegularRing_of_isLocalRing _`.
+A detailed English derivation is pending.
 -/
 theorem isRegVar_of_isFlagBundle {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ Sp k} {d : ℕ}
     (hB : IsRegVar q d) (hp : IsArithVar p (d + 1)) {π : Y ⟶ B} {E : B.Modules} (hE : GlobalTheory.VB.IsVB E 2)
@@ -51,13 +51,13 @@ theorem isRegVar_of_isFlagBundle {k : Type} [CommRing k] {B Y : Scheme.{0}} {q :
 open GlobalTheory.LineForm GlobalTheory.CxForm in
 
 /- English proof (translation)
-Introduce `_`. Take `⟨R, hR⟩` from `GlobalTheory.CovTest.SwapLine.exists_swap_coefficients`. Use `⟨fun D a b => Nat.casesOn D 0 fun d => C (1 / 2 : ℝ) * X 0 * aeval ![X 0 + X 1, X 0 * X 1, X 2] (baseT d (R d a b)), ?_, ?_⟩` and prove the remaining obligations. Introduce `D a b`. Consider the cases of `D with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => exact isHomogeneous_zero _ _ _`. Consider the case `succ d => exact (hR d a b).2.2.2`. Introduce `k _ B Y _ _ q p d hq hp hreg π w E h H flB fl hfb A Ψ hΨ r hr hv a b F hF s c hc`. Establish `hB : IsRegVar q d` using `⟨hq, hreg⟩`. Establish `hY : IsRegVar p (d + 1)` using `isRegVar_of_isFlagBundle hB hp h.isVB hfb`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose v hv hv' using hv`. Take `⟨h1, h2, h3, h4⟩` from `hR d a b`. Rewrite using `[GlobalTheory.T.arch_intersection_combination_log_norm k Y p (d + 1) hY (Fin 5) _ _ r hr (fun σ y => Real.log (1 - v σ y) / 2) (fun σ y hy => (hv' σ y hy).2) s c, ← hc, h1 F hF]`. Use `erw [GlobalTheory.T.geometric_functional_chern_integral k Y p (d + 1) hY (Fin 3) _ Ψ hΨ _ h4]`. Rewrite using `[← finsum_neg_distrib]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.flag_bundle_chern_integral_pull_first k B Y q p d hB hY π w E h H flB fl hfb A σ (v σ) (hv σ) _ h2, GlobalTheory.T.flag_bundle_chern_integral_pull_second k B Y q p d hB hY π w E h H flB fl hfb A σ _ ((GlobalTheory.T.firstChern_form_properties k B q d hB σ).2.1 E h …`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem archInt_logSin_eq_chernNumber : ArCalc → ∃ G : ℕ → ℤ → ℤ → MvPolynomial (Fin 3) ℝ, Homog G ∧
     ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ),

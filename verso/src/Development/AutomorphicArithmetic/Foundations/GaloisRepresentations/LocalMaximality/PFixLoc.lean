@@ -4,27 +4,25 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨-, ⟨ev, hev⟩, -, hinv⟩` from `hV L B e`. Establish `hg' : ∀ m l, ∃ h : g m l ∈ loc B e, ev ⟨_, h⟩ = A m l` using `fun m l => (hev _ _).1 (hg m l)`. Use `choose hmem hval using hg'`. Set `G : Matrix (Fin d) (Fin d) (loc B e)` to `fun m l => ⟨g m l, hmem m l⟩`. Set `N' : Matrix (Fin d) (Fin d) (loc B e)` to `1 - G`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ι : loc B e →+* L` to `(loc B e).val.toRingHom`. Set `ε : loc B e →+* ℂ` to `ev.toRingHom`. Establish `hN'ε : ε.mapMatrix N' = 1 - A`. Use extensionality with `a l`. Simplify using `only [N', RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sub_apply, map_sub]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ε ((1 : Matrix (Fin d) (Fin d) (loc B e)) a l) = (1 : Matrix (Fin d) (Fin d) ℂ) a l`. Distinguish the cases in `h : a = l`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `congr 1`. Conclude with `hval a l`. Establish `hN : (ι.mapMatrix N').det = ι N'.det` using `(RingHom.map_det ι N').symm`. Establish `hVal : Val B e (ι.mapMatrix N').det (1 - A).det`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hN]`. Use `(hev _ _).2 ⟨N'.det.2, ?_⟩` and prove the remaining obligations. Establish `: ε N'.det = (1 - A).det` using `by rw [RingHom.map_det, hN'ε]`. Conclude with `this`. Establish `hmul : ∀ a, r a = ∑ l, (ι.mapMatrix N') a l * t l`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[hr a]`. Establish `h2 : ∀ l, (ι.mapMatrix N') a l * t l = (if a = l then t l else 0) - g a l * t l`. Introduce `l`. Establish `h0 : (ι.mapMatrix N') a l = (if a = l then 1 else 0) - g a l` using `by show ι ((1 - G) a l) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_apply, map_sub, Matrix.one_apply, apply_ite ι, map_one, map_zero]`. Both sides reduce to the same expression. Rewrite using `[h0, sub_mul, ite_mul, one_mul, zero_mul]`. Simplify using `only [h2, Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ι.mapMatrix N', fun a l => (N' a l).2, hVal, hmul, fun l => ?_⟩` and prove the remaining obligations. Take `⟨hv0, hvi⟩` from `hinv _ _ hVal hdet`. Use `⟨fun a => ((ι.mapMatrix N').det)⁻¹ * (ι.mapMatrix N').adjugate l a, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `(loc B e).mul_mem hvi ?_` and prove the remaining obligations. Rewrite using `[← RingHom.map_adjugate]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(N'.adjugate l a).2`. Establish `h3 : (ι.mapMatrix N').mulVec t = r`. Use extensionality with `a`. Rewrite using `[hmul a]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4 : ((ι.mapMatrix N').adjugate).mulVec r = (ι.mapMatrix N').det • t`. Rewrite using `[← h3, Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `h5` using `congrFun h4 l`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at h5`. Simplify using `only [mul_assoc]`.
-
-Rewrite using `[← Finset.mul_sum, h5, inv_mul_cancel_left₀ hv0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fixLoc_key (hV : ValBasic) {L : Type} [Field L] [Algebra ℂ L] (B : Subalgebra ℂ L)
     (e : B →ₐ[ℂ] ℂ) {d : ℕ} (g : Fin d → Fin d → L) (A : Matrix (Fin d) (Fin d) ℂ) (t r : Fin d → L)
@@ -83,15 +81,15 @@ private theorem fixLoc_key (hV : ValBasic) {L : Type} [Field L] [Algebra ℂ L] 
     rw [← Finset.mul_sum, h5, inv_mul_cancel_left₀ hv0]
 
 /- English proof (translation)
-Introduce `hV F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 Fx A hY e he`. Establish `htan` using `hY.tan e he`. Use `choose g hgv hgs using htan`. Use `fixLoc_key hV (rB ℂ K' (xv x) {0}) e.1 g (A e) (tt K' x) _ hgv (hY.det e he) fun a => ?_` and prove the remaining obligations. Rewrite using `[← hgs a]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ofLex (dj (0 : Fin (d + 1)) a) = (a.succ, 0)` using `by show (Fin.succAbove 0 a, (0 : Fin (d + 1))) = _`. Rewrite using `[Fin.succAbove_zero]`. Establish `hx0 : algebraMap F K' (x 0 : F) ≠ 0` using `by simp`. Establish `hy0 : j2 (algebraMap F K (x 0 : F)) ≠ 0` using `by simp`. Establish `hmu : (sysY x j2 d).mu (dj 0 a) = algebraMap F K' (x a.succ : F) * j2 (algebraMap F K (x 0 : F)) - algebraMap F K' (x 0 : F) * j2 (algebraMap F K (x a.succ : F))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Sys.mu`. Rewrite using `[hd]`. Both sides reduce to the same expression. Establish `hu : (((sysY x j2 d).u n11 0 0 (dj 0 a) : K'ˣ) : K') = algebraMap F K' (x 0 : F) * j2 (algebraMap F K (x 0 : F))`. Unfold `Sys.u n11`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_one, Units.val_mul]`. Both sides reduce to the same expression. Unfold `Sys.r`. Rewrite using `[Units.val_inv_eq_inv_val, hu, hmu]`. Simplify using `only [tt, map_div₀]`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.fixLoc_of :
     ValBasic → FixLoc := by

@@ -11,13 +11,13 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CompanionTheory.RgExh
 
 /- English proof (translation)
-Introduce `n V _ _ P l x j hl hx hd`. Proceed by induction on `l with`. Consider the case `nil => simpa using And.intro hx hd`. Consider the case `cons i l ih`. Take `⟨ih1, ih2⟩` from `ih fun k hk => hl k (List.mem_cons_of_mem i hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hi : P i` using `hl i List.mem_cons_self`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply, List.length_cons]`. Prove the components needed by the constructor for the conclusion. Introduce `A hA k hk`. Take `⟨h1, h2⟩` from `CompanionTheory.D.LK.cre_ne hA`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hki : k = i`. Conclude with `hki ▸ hi`. Conclude with `ih1 _ h2 k (Finset.mem_erase.2 ⟨hki, hk⟩)`. Introduce `A hA`. Take `⟨h1, h2⟩` from `CompanionTheory.D.LK.cre_ne hA`.
+Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `ih2 _ h2`. Establish `h4` using `Finset.card_erase_add_one h1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem suppIn_deg_cre_prod : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (P : Pos n → Prop) (l : List (Pos n)) (x : Cn n V) (j : ℕ),
     (∀ i ∈ l, P i) → SuppIn P x → Deg j x →

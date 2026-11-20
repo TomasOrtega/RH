@@ -18,15 +18,15 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.LogPair
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ Y X g f π d _ hpb hproj hdp s L σ h K M A hM hA r b hr hb heq q hq`. Establish `hprop : IsProper f` using `GlobalTheory.SchemeWords.isProper_of_isProjOver hproj`. Establish `: Smooth f` using `SmoothOfRelativeDimension.smooth d f`. Take `⟨κ, U, hcov, hdisj, hU⟩` from `GlobalTheory.T.exists_integral_clopen_cover_of_smooth_quasiCompact_field (ZMod p) X f`. Use `GlobalTheory.T.cohomology_subsingleton_of_disjoint_open_cover X M κ U hM hcov hdisj q (fun c => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint` using `(hU c).1`. Establish `hcl` using `(hU c).2`. Take `⟨W, ρ, hρ, hpb'⟩` from `GlobalTheory.T.open_subscheme_closed_base_change (ZMod (p ^ 2)) (ZMod p) (ZMod.castHom (dvd_pow_self p two_ne_zero) (ZMod p)) Y X g f π (U c) (ZMod.ringHom_surjective _) hpb`. Establish `hsm : SmoothOfRelativeDimension d ((U c).ι ≫ f)`. Use `smoothOfRelativeDimension_comp (f := (U c).ι) 0 d f` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hproj' : IsProjOver ((U c).ι ≫ f)`. Take `⟨N, i, hi, e⟩` from `hproj`. Conclude with `⟨N, (U c).ι ≫ i, inferInstance, by rw [Category.assoc, e]⟩`. Establish `h'` using `GlobalTheory.T.relative_snc_open_immersion (ZMod (p ^ 2)) Y W.toScheme g W.ι d s L σ h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Set `K' : CanonLB ((U c).ι ≫ f) d` to `Classical.choice inferInstance`. Establish `hA' : IsAmpleLB (A.pull (U c).ι)` using `hA.pull_of_isClosedImmersion (U c).ι`. Establish `hK` using `GlobalTheory.T.canonical_bundle_open_restrict (ZMod p) X (U c).toScheme f (U c).ι d K K'`. Use `GlobalTheory.T.kodaira_vanishing_mod_p_squared p W.toScheme (U c).toScheme (W.ι ≫ g) ((U c).ι ≫ f) ρ d hpb' hproj' hdp s (fun i => (L i).pull W.ι) (fun i => Cartier.secPull (σ i) W.ι) h' K' (M.pull (U c).ι) (A.pull (U c).ι) (pull_isLB hM _) hA' r b hr hb ?_ q hq` and prove the remaining obligations. Establish `e2` using `congrArg (CechPic.pull (U c).ι) heq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [map_nsmul, map_add, map_sum] at e2`. Rewrite using `[cls_pull hM (U c).ι, hK, cls_pull hA.isLB (U c).ι, e2]`. Use `congr 2`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← pull_comp, ← hρ, pull_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

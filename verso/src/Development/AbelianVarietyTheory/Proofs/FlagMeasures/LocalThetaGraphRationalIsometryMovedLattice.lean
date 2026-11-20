@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.GraphTr
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Rewrite using `[hg b]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : b < a`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hA a b hab, zero_smul]`. Conclude with `Submodule.zero_mem _`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, ?_, rfl⟩) show (a : ℕ) < r` and prove the remaining obligations. Conclude with `lt_of_le_of_lt (Fin.le_iff_val_le_val.1 (not_lt.1 hab)) hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem span_tri_le {K W : Type*} [Semiring K] [AddCommMonoid W] [Module K W] {n r : ℕ}
     (f g : Fin n → W) (A : Matrix (Fin n) (Fin n) K) (hA : ∀ a b, b < a → A a b = 0)
@@ -33,9 +33,9 @@ theorem span_tri_le {K W : Type*} [Semiring K] [AddCommMonoid W] [Module K W] {n
     exact lt_of_le_of_lt (Fin.le_iff_val_le_val.1 (not_lt.1 hab)) hb
 
 /- English proof (translation)
-Introduce `b`. Repeatedly rewrite using `[hg, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul]`. Establish `h : ∀ c, ∑ a, A⁻¹ a b * A c a = (A * A⁻¹) c b` using `fun c => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Repeatedly rewrite using `[h, Matrix.mul_nonsing_inv _ hA, Matrix.one_apply, ite_smul, one_smul, zero_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_rel {K W : Type*} [CommRing K] [AddCommGroup W] [Module K W] {n : ℕ}
     (f g : Fin n → W) (A : Matrix (Fin n) (Fin n) K) (hA : IsUnit A.det)
@@ -50,7 +50,7 @@ theorem inv_rel {K W : Type*} [CommRing K] [AddCommGroup W] [Module K W] {n : �
   simp
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩; exact ⟨a.castSucc, by simp, rfl⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨⟨i, hi⟩, congrArg f (Fin.ext rfl)⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem range_castSucc {W : Type*} {r : ℕ} (f : Fin (r + 1) → W) :
     Set.range (fun a : Fin r => f a.castSucc) = f '' {i | (i : ℕ) < r} := by
@@ -60,9 +60,9 @@ theorem range_castSucc {W : Type*} {r : ℕ} (f : Fin (r + 1) → W) :
   · rintro ⟨i, hi, rfl⟩; exact ⟨⟨i, hi⟩, congrArg f (Fin.ext rfl)⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, ha, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨a, ha, rfl⟩`. Take `⟨w, hw⟩` from `hu a`. Establish `h : u a • v a ∈ Submodule.span K ((fun a => u a • v a) '' S)` using `Submodule.subset_span ⟨a, ha, rfl⟩`. Establish `h2` using `Submodule.smul_mem _ ((w⁻¹ : Kˣ) : K) h`. Rewrite `h2` using `[smul_smul, ← hw, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_units {K W ι : Type*} [CommRing K] [AddCommGroup W] [Module K W] (u : ι → K)
     (hu : ∀ a, IsUnit (u a)) (v : ι → W) (S : Set ι) :
@@ -83,11 +83,11 @@ namespace GlobalTheory.GraphTr
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `frFac`. Establish `hδ : IsUnit (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p))` using `(Ne.isUnit (Z.agree p).2.1).map _`. Establish `hg : ∀ i, D.host.g i ≠ 0` using `fun i => (D.host.g_prime i).ne_zero`. Establish `hgp : gpart p ≠ 0`. Apply the tactic sequence `unfold gpart; split_ifs <;> simp [hg]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hgS : (Formalism.MainNotions.S.Lat.gS D : ℚ) ≠ 0`. Unfold `Formalism.MainNotions.S.Lat.gS`. Use `push_cast`. Conclude with `mul_ne_zero (by exact_mod_cast hg 0) (by exact_mod_cast hg 1)`. Establish `hu : ((uP p : ℚ) : D.host.E) ≠ 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Rat.cast_ne_zero]; unfold uP; exact div_ne_zero (by exact_mod_cast hgp) hgS`. Establish `hι : IsUnit ((D.s.atP p).ιE ((uP p : ℚ) : D.host.E))` using `(Ne.isUnit hu).map _`. Take `⟨w, hw⟩` from `(hδ.mul hι).pow (D.R.rS - a.val)`. Rewrite using `[← hw, Ring.inverse_unit]`. Conclude with `Units.isUnit _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frFac_isUnit (Z : LocDat D) (p : PlF D) (a : Fin (D.R.rS + 1)) : IsUnit (frFac Z.δ p a) := by
   unfold frFac
@@ -107,7 +107,7 @@ theorem frFac_isUnit (Z : LocDat D) (p : PlF D) (a : Fin (D.R.rS + 1)) : IsUnit 
   exact Units.isUnit _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `GlobalTheory.LocExt.baseChange_mem_span p hx`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem span_bc (p : PlF D) (s : Set (VS D).V) :
     Submodule.span (D.s.atP p).Ep (baseChange₂ D p '' (Submodule.span D.host.E s : Set (VS D).V)) =
@@ -117,7 +117,7 @@ theorem span_bc (p : PlF D) (s : Set (VS D).V) :
   · exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
 
 /- English proof (translation)
-Rewrite using `[span_bc, Set.image_image]`. Unfold `Formalism.MainNotions.S.Loc.HermSp.X`. Rewrite using `[range_castSucc]`. Conclude with `span_units (fun a => frFac Z.δ p a) (frFac_isUnit Z p) (fun a => baseChange₂ D p (f a)) _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_eq (Z : LocDat D) (p : PlF D) (f : Fin (D.R.rS + 1) → (VS D).V) :
     (locH Z p).X (scaled Z p f) = Submodule.span (D.s.atP p).Ep
@@ -128,9 +128,9 @@ theorem X_eq (Z : LocDat D) (p : PlF D) (f : Fin (D.R.rS + 1) → (VS D).V) :
   exact span_units (fun a => frFac Z.δ p a) (frFac_isUnit Z p) (fun a => baseChange₂ D p (f a)) _
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_span, Set.image_image]`. Establish `hA : ∀ a b, b < a → U a b = 0` using `fun a b h => (hU a b).1 h`. Establish `hd : ∀ i, U i i = 1` using `fun i => (hU i i).2 rfl`. Establish `hdet : IsUnit U.det`. Rewrite using `[Matrix.det_of_upperTriangular (by intro i j h; exact (hU i j).1 h)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hd]`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `span_tri_le f0 (fun b => σ (f b)) U hA hσ`. Conclude with `span_tri_le (fun b => σ (f b)) f0 U⁻¹ (inv_unitri U hA hd).1 (inv_rel f0 (fun b => σ (f b)) U hdet hσ)`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem rat_span_eq (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (f f0 : Fin (D.R.rS + 1) → (VS D).V)
     (U : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) (hU : IsUpUni U)
@@ -149,7 +149,7 @@ theorem rat_span_eq (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (f f0 : Fin (D.R.r
       (inv_rel f0 (fun b => σ (f b)) U hdet hσ)
 
 /- English proof (translation)
-Rewrite using `[X_eq, X_eq, Submodule.map_span, Set.image_image, ← rat_span_eq σ f f0 U hU hσ, Submodule.map_coe, Set.image_image]`. Use `congr 1`. Apply `Set.image_congr` to reduce the goal to its premises. Introduce `x _`. Conclude with `hE x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_X (Z : LocDat D) (p : PlF D) (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (gσ : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (hE : Ext p σ gσ) (f f0 : Fin (D.R.rS + 1) → (VS D).V)
@@ -176,9 +176,9 @@ variable {Z : LocDat D} {T T' : D.host.E} {F0 : LFlag (VS D) D.R.rS T} {F0' : LF
   {FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS} {G : GFrames (placesOf Z) D.R.rS D.R.k}
 
 /- English proof (translation)
-Unfold `Frames.X Frames.spanTo Formalism.MainNotions.S.Loc.HermSp.X`. Rewrite using `[range_castSucc, Submodule.map_span, Set.image_image]`. Use `congr 1`. Apply `Set.image_congr` to reduce the goal to its premises. Introduce `a _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(c.c p).f_eq a, hA]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem framesX (c : GCoord Z F0 F0' FP G) (p : PlF D) (hA : (FP p).A.f = scaled Z p (frame F0)) :
     (G.S p).X = ((locH Z p).X (scaled Z p (frame F0))).map
@@ -192,9 +192,9 @@ theorem framesX (c : GCoord Z F0 F0' FP G) (p : PlF D) (hA : (FP p).A.f = scaled
   rfl
 
 /- English proof (translation)
-Unfold `Frames.X' Frames.spanTo Formalism.MainNotions.S.Loc.HermSp.X`. Rewrite using `[range_castSucc, Submodule.map_span, Set.image_image]`. Use `congr 1`. Apply `Set.image_congr` to reduce the goal to its premises. Introduce `a _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(c.c p).f'_eq a, hB]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem framesX' (c : GCoord Z F0 F0' FP G) (p : PlF D) (hB : (FP p).B.f = scaled Z p (frame F0')) :
     (G.S p).X' = ((locH Z p).X (scaled Z p (frame F0'))).map
@@ -208,13 +208,11 @@ theorem framesX' (c : GCoord Z F0 F0' FP G) (p : PlF D) (hB : (FP p).B.f = scale
   rfl
 
 /- English proof (translation)
-Establish `hs : (placesOf Z).bc p '' ((c.lat σ Λ : Submodule (𝓞 D.host.E) G.V) : Set G.V) = ((fun y => (c.c p).e (gσ (baseChange₂ D p y))) '' (Λ : Set (VS D).V))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (c.c p).e (gσ (baseChange₂ D p y)) = (placesOf Z).bc p (c.e (σ y))`. Rewrite using `[hE y]`. Conclude with `c.compat p (σ y)`. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨c.e (σ y), ⟨y, hy, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `show (placesOf Z).bc p (c.e (σ y)) = (c.c p).e (gσ (baseChange₂ D p y))`. Rewrite using `[hE y]`. Conclude with `(c.compat p (σ y)).symm`. Unfold `WCoord.lat LocNG.img lattice₂ Places.lat`. Rewrite using `[Submodule.map_span, Submodule.map_span, Set.image_image, Set.image_image, hs]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lat_eq (c : GCoord Z F0 F0' FP G) (p : PlF D) (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (gσ : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (hE : Ext p σ gσ) (Λ : Submodule (𝓞 D.host.E) (VS D).V) :
@@ -236,9 +234,9 @@ theorem lat_eq (c : GCoord Z F0 F0' FP G) (p : PlF D) (σ : (VS D).V ≃ₗ[D.ho
   rfl
 
 /- English proof (translation)
-Unfold `Frames.th LocNG.theta`. Break down `h : (Z.M p).split with _ | g` into its components or cases. Simplify using `[(c.c p).gg_none h]`. Both sides reduce to the same expression. Take `⟨h1, h2⟩` from `(c.c p).gg_some g h`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Simplify using `[h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem th_eq (c : GCoord Z F0 F0' FP G) (p : PlF D) : (G.S p).th = LocNG.theta (Z.M p) := by
   unfold Frames.th LocNG.theta
@@ -263,9 +261,9 @@ variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M 
   {P : LocNG.FPair H r} {S : Frames M.L r k}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨z, hz, rfl⟩, hx⟩`. Establish `: z = y` using `g.injective (c.e.injective hx)`. Conclude with `this ▸ hz`. Introduce `hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨g y, ⟨y, hy, rfl⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_map_eg (c : WCoord P S) (g : V ≃ₗ[E] V) (W : Submodule E V) (y : V) :
     c.e (g y) ∈ (W.map (g : V →ₗ[E] V)).map (c.e : V →ₗ[E] S.V) ↔ y ∈ W := by
@@ -276,9 +274,9 @@ theorem mem_map_eg (c : WCoord P S) (g : V ≃ₗ[E] V) (W : Submodule E V) (y :
   · intro hy; exact ⟨g y, ⟨y, hy, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨z, hz, rfl⟩, hx⟩`. Establish `: z = y` using `g.injective (c.e.injective hx)`. Conclude with `this ▸ hz`. Introduce `hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨g y, ⟨y, hy, rfl⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_lat_eg (c : WCoord P S) (g : V ≃ₗ[E] V) (Λ0 : Submodule M.L.O V) (y : V) :
     c.e (g y) ∈ c.lat (LocNG.img g Λ0) ↔ y ∈ Λ0 := by
@@ -289,7 +287,7 @@ theorem mem_lat_eg (c : WCoord P S) (g : V ≃ₗ[E] V) (Λ0 : Submodule M.L.O V
   · intro hy; exact ⟨g y, ⟨y, hy, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `c.h_eq (g x) (g y)`. Rewrite `h` using `[hg]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h_eg (c : WCoord P S) (g : V ≃ₗ[E] V) (hg : LocNG.IsUnitary H g) (x y : V) :
     hf M.L S.Hm (c.e (g x)) (c.e (g y)) = H.h x y := by
@@ -298,9 +296,9 @@ theorem h_eg (c : WCoord P S) (g : V ≃ₗ[E] V) (hg : LocNG.IsUnitary H g) (x 
   exact h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `h1` using `h (c.e (g x)) ⟨g x, ⟨x, hx, rfl⟩, rfl⟩`. Rewrite `h1` using `[h_eg c g hg]`. Then use the resulting hypothesis. Introduce and unpack `h _ ⟨_, ⟨x, hx, rfl⟩, rfl⟩ show hf M.L S.Hm (c.e (g y)) (c.e (g x)) = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Rewrite using `[h_eg c g hg]`. Conclude with `h x hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_perp_eg (c : WCoord P S) (g : V ≃ₗ[E] V) (hg : LocNG.IsUnitary H g) (W : Submodule E V) (y : V) :
     c.e (g y) ∈ perp M.L S.Hm ((W.map (g : V →ₗ[E] V)).map (c.e : V →ₗ[E] S.V)) ↔ y ∈ H.perp W := by
@@ -314,17 +312,15 @@ theorem mem_perp_eg (c : WCoord P S) (g : V ≃ₗ[E] V) (hg : LocNG.IsUnitary H
     exact h x hx
 
 /- English proof (translation)
-Establish `hs : ∀ Y : S.V, Y = c.e (g (g.symm (c.e.symm Y)))` using `fun Y => by simp`. Establish `hsub : ∀ (y : V) (Y : S.V), c.e (g y) - Y = c.e (g (y - g.symm (c.e.symm Y)))` using `fun y Y => by`. Rewrite using `[map_sub, map_sub, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Y', hY', Y, hY, h1, h2, h3, h4, w, hw, h5⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨y', rfl⟩ : ∃ y', Y' = c.e (g y')` from `⟨_, hs Y'⟩`. Take `⟨y, rfl⟩ : ∃ y, Y = c.e (g y)` from `⟨_, hs Y⟩`. Take `⟨v, rfl⟩ : ∃ v, w = c.e (g v)` from `⟨_, hs w⟩`. Use `⟨y', (mem_lat_eg c g Λ0 y').1 hY', y, (mem_lat_eg c g Λ0 y).1 hY, ?_, ?_, ?_, ?_, v, (mem_lat_eg c g Λ0 v).1 hw, ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[hX2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mem_perp_eg c g hg X2 y').1 h1`. Rewrite `h2` using `[hX1]`. Conclude with `(mem_perp_eg c g hg X1 y).1 h2`. Rewrite `h3` using `[hX2, hsub]`. Conclude with `(mem_map_eg c g X2 _).1 h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `h4` using `[hX1, hsub]`. Conclude with `(mem_map_eg c g X1 _).1 h4`. Rewrite `h5` using `[hθ, ← map_sub, ← map_sub, ← map_smul, ← map_smul]`. Conclude with `g.injective (c.e.injective h5)`. Introduce and unpack `⟨y', hy', y, hy, h1, h2, h3, h4, v, hv, h5⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c.e (g y'), (mem_lat_eg c g Λ0 y').2 hy', c.e (g y), (mem_lat_eg c g Λ0 y).2 hy, ?_, ?_, ?_, ?_, c.e (g v), (mem_lat_eg c g Λ0 v).2 hv, ?_⟩` and prove the remaining obligations. Rewrite using `[hX2]`. Conclude with `(mem_perp_eg c g hg X2 y').2 h1`. Rewrite using `[hX1]`. Conclude with `(mem_perp_eg c g hg X1 y).2 h2`.
-
-Rewrite using `[hX2, hsub]`. Conclude with `(mem_map_eg c g X2 _).2 h3`. Rewrite using `[hX1, hsub]`. Conclude with `(mem_map_eg c g X1 _).2 h4`. Rewrite using `[hθ, ← map_sub, ← map_sub, h5, map_smul, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graphOf_coord (c : WCoord P S) (g : V ≃ₗ[E] V) (hg : LocNG.IsUnitary H g) (Λ0 : Submodule M.L.O V)
     (X1 X2 : Submodule E V) (hX1 : S.X = (X1.map (g : V →ₗ[E] V)).map (c.e : V →ₗ[E] S.V))
@@ -363,11 +359,11 @@ end Gen
 end GlobalTheory.GraphTr
 
 /- English proof (translation)
-Introduce `D X Y u u' _ _ w F00 F'0 FP _ _ hFP G c p σ gσ F₂ U₁ U₂ hM hE Λ q`. Apply the tactic sequence `obtain ⟨g0, _, hu0, huniq, -⟩ := GlobalTheory.LocExt.ext_isometry D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p σ hM.1`. Establish `hu : LocNG.IsUnitary (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) gσ` using `(huniq gσ hE) ▸ hu0`. Establish `hlat` using `GlobalTheory.GraphTr.lat_eq c p σ gσ hE Λ`. Establish `hX1` using `GlobalTheory.GraphTr.map_X (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p σ gσ hE (frame (lf D (X.Fu u))) (frame F00) U₁ hM.2.1 hM.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX2` using `GlobalTheory.GraphTr.map_X (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p σ gσ hE (frame F₂) (frame F'0) U₂ hM.2.2.1 hM.2.2.2.2`. Establish `hF1` using `GlobalTheory.GraphTr.framesX c p (hFP p).1.1`. Establish `hF2` using `GlobalTheory.GraphTr.framesX' c p (hFP p).1.2.1`. Rewrite `hF1` using `[← hX1]`. Rewrite `hF2` using `[← hX2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show q ∈ (G.S p).graphOf ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).lat p (c.lat σ Λ)) ↔ _`. Rewrite using `[hlat]`. Conclude with `GlobalTheory.GraphTr.graphOf_coord (c.c p) gσ hu _ _ _ hF1 hF2 _ (GlobalTheory.GraphTr.th_eq c p) q`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HL.graph_moved_local : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ (p : PlF D) (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (gσ : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (F₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (U₁ U₂ : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) F₂ σ U₁ U₂ → Ext p σ gσ → ∀ (Λ : Submodule (𝓞 D.host.E) (VS D).V) (q : (G.S p).V × (G.S p).V), (q ∈ (G.datOf (c.lat σ Λ) p).2.2 ↔ ∃ y' ∈ lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p Λ, ∃ y ∈ lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p Λ, y' ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).perp ((locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame F₂))) ∧ y ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).perp ((locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame (lf D (X.Fu u))))) ∧ y' - gσ.symm ((c.c p).e.symm q.1) ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame F₂)) ∧ y - gσ.symm ((c.c p).e.symm q.2) ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame (lf D (X.Fu u)))) ∧ ∃ v ∈ lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p Λ, y' - y = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (LocNG.theta ((⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p)) • v) := by
   intro D X Y u u' _ _ w F00 F'0 FP _ _ hFP G c p σ gσ F₂ U₁ U₂ hM hE Λ q

@@ -8,7 +8,7 @@ namespace GlobalTheory.TotalFamilyRep
 variable {S H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Establish `: inner ℂ (Finsupp.linearCombination ℂ F x) (Finsupp.linearCombination ℂ F x) = inner ℂ (Finsupp.linearCombination ℂ E x) (Finsupp.linearCombination ℂ E x)`. Simplify using `only [Finsupp.linearCombination_apply, Finsupp.sum, sum_inner, inner_sum, inner_smul_left, inner_smul_right, h]`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ _ _ _ _ (Finsupp.linearCombination ℂ E x), this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_linearCombination_eq (E F : S → H) (h : ∀ p q, inner ℂ (F p) (F q) = inner ℂ (E p) (E q))
     (x : S →₀ ℂ) : ‖Finsupp.linearCombination ℂ F x‖ = ‖Finsupp.linearCombination ℂ E x‖ := by
@@ -19,9 +19,9 @@ theorem norm_linearCombination_eq (E F : S → H) (h : ∀ p q, inner ℂ (F p) 
   rw [@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ _ _ _ _ (Finsupp.linearCombination ℂ E x), this]
 
 /- English proof (translation)
-Establish `hd : DenseRange (Finsupp.linearCombination ℂ E)`. Rewrite `hE` using `[← Finsupp.range_linearCombination]`. Conclude with `hE`. Establish `hT : ∀ x, (Finsupp.linearCombination ℂ F).extendOfNorm (Finsupp.linearCombination ℂ E) (Finsupp.linearCombination ℂ E x) = Finsupp.linearCombination ℂ F x` using `LinearMap.extendOfNorm_eq hd ⟨1, fun x => by rw [one_mul, norm_linearCombination_eq E F h]⟩`. Use `⟨(Finsupp.linearCombination ℂ F).extendOfNorm (Finsupp.linearCombination ℂ E), fun x => ?_, fun p => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hd.induction_on (p := fun x => ‖(Finsupp.linearCombination ℂ F).extendOfNorm (Finsupp.linearCombination ℂ E) x‖ = ‖x‖) x (isClosed_eq (by fun_prop) (by fun_prop)) fun y => ?_` and prove the remaining obligations. Rewrite using `[hT, norm_linearCombination_eq E F h]`. Simplify using `using hT (Finsupp.single p 1)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isometry [CompleteSpace H] (E F : S → H) (hE : Dense (Submodule.span ℂ (Set.range E) : Set H))
     (h : ∀ p q, inner ℂ (F p) (F q) = inner ℂ (E p) (E q)) :
@@ -40,17 +40,17 @@ theorem exists_isometry [CompleteSpace H] (E F : S → H) (hE : Dense (Submodule
   · simpa using hT (Finsupp.single p 1)
 
 /- English proof (translation)
-Introduce `G S H _ _ _ _ _ act E h1 hmul hE hinv hcont`. Apply the tactic sequence `choose T hT hTE using fun g => exists_isometry E (fun p => E (act g p)) hE (hinv g)`. Establish `hp : ∀ p, Continuous fun g => T g (E p)`. Introduce `p`. Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Establish `key : ∀ g, ‖T g (E p) - T g₀ (E p)‖ = √(‖E p‖ ^ 2 - 2 * RCLike.re (inner ℂ (E (act g₀ p)) (E (act g p))) + ‖E p‖ ^ 2)`. Introduce `g`. Rewrite using `[norm_sub_rev, ← hTE, ← hTE, ← Real.sqrt_sq (norm_nonneg (T g₀ (E p) - T g (E p))), @norm_sub_sq ℂ, hT, hT]`. Establish `hc : Continuous fun g => ‖T g (E p) - T g₀ (E p)‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [key]`. Use `hcont p (act g₀ p)` as an intermediate fact. Use `fun_prop`. Simplify using `using hc.tendsto g₀`. Use `⟨{ toFun := T, map_one' := ?_, map_mul' := fun g h => ?_ }, hT, ?_, hTE⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `ContinuousLinearMap.ext_on hE ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Simplify using `[hTE, h1]`. Use `ContinuousLinearMap.ext_on hE ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hTE, hmul]`. Use `GlobalTheory.FockSeq.continuous_of_dense T hT hE fun x hx => ?_` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨p, rfl⟩ := hx`. Conclude with `hp p`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simpa using continuous_const`. Consider the case `add x y _ _ hx hy => simp only [map_add]`. Conclude with `hx.add hy`. Consider the case `smul a x _ hx => simp only [map_smul]`. Conclude with `hx.const_smul a`.
+A detailed English derivation is pending.
 -/
 theorem exists_rep : ∀ (G S H : Type) [Group G] [TopologicalSpace G] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] (act : G → S → S) (E : S → H), (∀ p, act 1 p = p) →

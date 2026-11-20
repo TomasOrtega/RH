@@ -25,11 +25,9 @@ namespace GlobalTheory.BotDict
 open GlobalTheory.ChainFr
 
 /- English proof (translation)
-Take `⟨CF1, h1⟩` from `hP`. Take `⟨CF2, h2⟩` from `hQ`. Take `⟨CF3, h3⟩` from `hR`. Use `⟨max CF1 (max CF2 CF3), fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, x1, g1⟩` from `h1 ε CF ((le_max_left _ _).trans hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C2, x2, g2⟩` from `h2 ε CF (((le_max_left _ _).trans (le_max_right _ _)).trans hCF)`. Take `⟨C3, x3, g3⟩` from `h3 ε CF (((le_max_right _ _).trans (le_max_right _ _)).trans hCF)`. Use `⟨max C1 (max C2 C3), max x1 (max x2 x3), fun C hC D large₂ he hx hr T Lc μ₀ hμ G => h G μ₀ _ _ _ hμ ?_ ?_ ?_⟩` and prove the remaining obligations. Conclude with `g1 C ((le_max_left _ _).trans hC) D large₂ he ((le_max_left _ _).trans hx) hr T Lc μ₀ hμ G`. Conclude with `g2 C (((le_max_left _ _).trans (le_max_right _ _)).trans hC) D large₂ he (((le_max_left _ _).trans (le_max_right _ _)).trans hx) hr T Lc μ₀ hμ G`.
-
-Conclude with `g3 C (((le_max_right _ _).trans (le_max_right _ _)).trans hC) D large₂ he (((le_max_right _ _).trans (le_max_right _ _)).trans hx) hr T Lc μ₀ hμ G`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gBig_three {P Q R S : GP} (hP : GBig P) (hQ : GBig Q) (hR : GBig R)
     (h : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
@@ -49,15 +47,15 @@ theorem gBig_three {P Q R S : GP} (hP : GBig P) (hQ : GBig Q) (hR : GBig R)
       (((le_max_right _ _).trans (le_max_right _ _)).trans hx) hr T Lc μ₀ hμ G
 
 /- English proof (translation)
-Use `gBig_three GlobalTheory.T.bottomRanks_arithmetic_largeGrids GlobalTheory.T.exists_bottomInfinityExponents_gap_largeGrids GlobalTheory.T.definiteBottomTriple_finitePlaces_unram_or_split ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b _ hsz hinf hram W i j A A' WW X hX`. Take `⟨a, b, hab⟩` from `hinf W i j`. Establish `hs` using `hX.std`. Establish `hs'` using `hX.std'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw` using `hX.stdW`. Establish `hr : WW.rank = SqNum.botBig D i j + SqNum.botSmall D i j` using `by rw [← hX.is.rank, hX.rank, hX.rank']`. Use `⟨stdFr A hs.1, stdFr A' hs'.1, stdFr WW hw.1, a, b, hasSignature_of_gram_eq_one hs.1, hasSignature_of_gram_eq_one hs'.1, hasSignature_of_gram_eq_one hw.1, fun t => ⟨?_, fun τ => ⟨(hab t τ).1, (hab t τ).2.1⟩, GlobalTheory.T.seesawTriple_firstFiniteDatum_standard_isVacuumDatum X _ …` and prove the remaining obligations. Use `{ hecA := (hX.is.weil' t).hecS hecB := (hX.is.weil t).hecS resA := (hX.is.weil' t).resS resB := (hX.is.weil t).resS rank := hX.is.rank.symm even := by rw [hr]; exact (hsz i j).1 sig := ⟨0, 0, fun τ => ⟨by simpa using hasSignature_of_gram_eq_one hs.1 τ, by simpa using hasSignature …` and prove the remaining obligations. Introduce `P g h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : (GlobalTheory.SquareComm.frSgn true (stdFr A hs.1)).cart = fun τ => -X.rA.s τ`. Use function extensionality and compare the values at `fun τ => by rw [cart_frSgn_true_stdFr, (hs.2.2 τ).1]`. Establish `e2 : (stdFr WW hw.1).cart = X.rW.s` using `funext fun τ => by rw [cart_stdFr, (hw.2.2 τ).1]`. Establish `e3 : (stdFr A hs.1).onb = X.rA.B` using `funext fun τ => by rw [onb_stdFr, (hs.2.2 τ).2]`. Establish `e4 : (stdFr WW hw.1).onb = X.rW.B` using `funext fun τ => by rw [onb_stdFr, (hw.2.2 τ).2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `GlobalTheory.SquareComm.fockF GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Tri.ker`. Rewrite using `[e1, e2, e3, e4]`. Introduce `P g h`. Establish `e1 : (GlobalTheory.SquareComm.frSgn false (stdFr A' hs'.1)).cart = X.rA'.s`. Use function extensionality and compare the values at `fun τ => by rw [cart_frSgn_false_stdFr, (hs'.2.2 τ).1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2 : (stdFr WW hw.1).cart = X.rW.s` using `funext fun τ => by rw [cart_stdFr, (hw.2.2 τ).1]`. Establish `e3 : (stdFr A' hs'.1).onb = X.rA'.B` using `funext fun τ => by rw [onb_stdFr, (hs'.2.2 τ).2]`. Establish `e4 : (stdFr WW hw.1).onb = X.rW.B` using `funext fun τ => by rw [onb_stdFr, (hw.2.2 τ).2]`. Unfold `GlobalTheory.SquareComm.fockF GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Tri.ker'`. Rewrite using `[e1, e2, e3, e4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

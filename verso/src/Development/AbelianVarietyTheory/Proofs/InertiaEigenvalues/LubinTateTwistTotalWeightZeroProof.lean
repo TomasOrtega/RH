@@ -14,9 +14,9 @@ namespace GlobalTheory.PMon.Twist
 variable {l : ℕ} [Fact l.Prime] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp [fr]`. Consider the case `succ k ih`. Express the relevant statement in the definitionally equal form `(frobUr l ^ (r * (k + 1))) c = c`. Rewrite using `[Nat.mul_succ, pow_add, AlgHom.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(frobUr l ^ (r * k)) (fr l r c) = c`. Rewrite using `[h]`. Conclude with `ih`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fr_mul_of_fixed (r N : ℕ) (c : ↥(MaximalUnramifiedExtension l)) (h : fr l r c = c) : fr l (r * N) c = c := by
   induction N with
@@ -29,7 +29,7 @@ theorem fr_mul_of_fixed (r N : ℕ) (c : ↥(MaximalUnramifiedExtension l)) (h :
     exact ih
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Nat.mul_pos hρ.pos hN, hle, fun g i j => by rw [twist_val, Matrix.smul_apply, smul_eq_mul, map_mul, fr_mul_of_fixed r N _ (hρ.rat _ i j), Units.val_zpow_eq_zpow_val, map_zpow₀, hfr], fun i j => by have h1 : Continuous fun g : ↥(GK K') => (((ρ ⟨g, GK_le hK g.2⟩ : Matrix n n ↥(Max …`.
+Supply the required witnesses or components.
 -/
 theorem isRat_twist {K K' : FinExt l} (hK : K.1 ≤ K'.1) (r N : ℕ) (hN : 0 < N) (ρ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l))
     (χ : ↥(GK K') →* (↥(MaximalUnramifiedExtension l))ˣ) (a : ℤ) (hρ : IsRat r ρ)
@@ -50,15 +50,15 @@ theorem isRat_twist {K K' : FinExt l} (hK : K.1 ≤ K'.1) (r N : ℕ) (hN : 0 < 
     rfl⟩
 
 /- English proof (translation)
-Establish `msmul : ∀ {R S : Type} [CommRing R] [CommRing S] {F : Type} [FunLike F R S] [RingHomClass F R S] (f : F) (c : R) (M : Matrix n n R), (c • M).map f = f c • M.map f` using `fun f c M => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Introduce and unpack `⟨K'', hK'', Q', hQ'⟩`. Use `⟨K'', hK.trans hK'', scalGL n (Units.map (Polynomial.C : P.R.B →+* Bst P).toMonoidHom (x ^ a)) * Q', fun g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg` using `hQ' g`. Rewrite `hg` using `[twist_val, msmul, Matrix.smul_mul]`. Use `set g' : ↥(GK K') := ⟨(g : GQ l), GK_le hK'' g.2⟩`. Establish `hx : Units.map (P.actQ (g : GQ l) : P.R.B →* P.R.B) x = Units.map (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B : ↥(MaximalUnramifiedExtension l) →* P.R.B) (χ g') * x`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hact g'`. Establish `hxa : actSt P (g : GQ l) (Polynomial.C ((x ^ a : P.R.Bˣ) : P.R.B)) = ks P ((χ g' ^ a : (↥(MaximalUnramifiedExtension l))ˣ) : ↥(MaximalUnramifiedExtension l)) * Polynomial.C ((x ^ a : P.R.Bˣ) : P.R.B)`. Establish `h2` using `congrArg (fun u : P.R.Bˣ => Polynomial.C ((u ^ a : P.R.Bˣ) : P.R.B)) hx`. Establish `e1 : ((Units.map (P.actQ (g : GQ l) : P.R.B →* P.R.B) x ^ a : P.R.Bˣ) : P.R.B) = P.actQ (g : GQ l) ((x ^ a : P.R.Bˣ) : P.R.B)` using `by rw [← map_zpow]; rfl`. Establish `e2 : ((Units.map (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B : ↥(MaximalUnramifiedExtension l) →* P.R.B) (χ g') ^ a : P.R.Bˣ) : P.R.B) = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B ((χ g' ^ a : (↥(MaximalUnramifiedExtension l))ˣ) : ↥(MaximalUnramifiedExtension l))` using `by rw [← map_zpow]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_zpow] at h2`. Rewrite `h2` using `[e1, Units.val_mul, e2, map_mul]`. Rewrite using `[actSt_C]`. Conclude with `h2`. Rewrite using `[scalGL_mul_val, msmul, Matrix.mul_smul, Units.coe_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `actSt P (g : GQ l) (Polynomial.C ((x ^ a : P.R.Bˣ) : P.R.B)) • _ = Polynomial.C ((x ^ a : P.R.Bˣ) : P.R.B) • _`. Rewrite using `[hxa]`. Use `conv_rhs => rw [← hg]`. Rewrite using `[smul_smul, mul_comm (Polynomial.C _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem potentiallySemistable_of_lubinTateTwist (P : LocPrime l) {K K' : FinExt l} (hK : K.1 ≤ K'.1) (ρ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l))
     (χ : ↥(GK K') →* (↥(MaximalUnramifiedExtension l))ˣ) (x : P.R.Bˣ) (a : ℤ)
@@ -96,15 +96,15 @@ theorem potentiallySemistable_of_lubinTateTwist (P : LocPrime l) {K K' : FinExt 
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Substitute `hN` using the available equality. Simplify using `only [Finset.sum_add_distrib]`. Establish `key : ∀ N : ℕ, ∑ i ∈ Finset.range (r * N), (fun i : ℕ => ∑ j, w ⟨i % r, Nat.mod_lt _ hr⟩ j) i = N * ∑ m, ∑ j, w m j`. Introduce `N`. Proceed by induction on `N with`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Nat.mul_succ, Finset.sum_range_add, ih]`. Establish `: ∑ x ∈ Finset.range r, (fun i : ℕ => ∑ j, w ⟨i % r, Nat.mod_lt _ hr⟩ j) (r * k + x) = ∑ m, ∑ j, w m j`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun x => (fun i : ℕ => ∑ j, w ⟨i % r, Nat.mod_lt _ hr⟩ j) (r * k + x))]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `e : (⟨(r * k + (m : ℕ)) % r, Nat.mod_lt _ hr⟩ : Fin r) = m`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Nat.add_comm, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt m.2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i : ℕ => ∑ j, w ⟨i % r, Nat.mod_lt _ hr⟩ j), key]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[← Finset.mul_sum, Fin.sum_univ_eq_sum_range (fun i : ℕ => if i = 0 then -∑ m, ∑ j, w m j else 0), Finset.sum_ite_eq' (Finset.range _) 0]`. Break down `Nat.eq_zero_or_pos (Fintype.card n) with h0 | h0` into its components or cases. Simplify using `[h0]`. Rewrite using `[if_pos (Finset.mem_range.mpr (Nat.mul_pos hr h0))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -145,9 +145,9 @@ end GlobalTheory.PMon.Twist
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-Introduce `l _ P AI T n _ _ K r ρ w hρ hw`. Distinguish the cases in `hn : Fintype.card n = 0`. Use `⟨K, r, ρ, w, hρ, hw, ?_, id⟩` and prove the remaining obligations. Establish `: IsEmpty n` using `Fintype.card_eq_zero_iff.mp hn`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hN : 0 < Fintype.card n` using `Nat.pos_of_ne_zero hn`. Establish `hs : 0 < r * Fintype.card n` using `Nat.mul_pos hρ.pos hN`. Take `⟨K', hK, x, χ, hle, hfr, hcont, hact, h1, h2, hj⟩` from `GlobalTheory.T.exists_lubinTate_character_unramified_period l P AI T K (r * Fintype.card n) hs`. Conclude with `⟨K', r * Fintype.card n, Twist.twist hK ρ χ (-∑ m, ∑ j, w m j), _, Twist.isRat_twist hK r _ hN ρ χ _ hρ hle hfr hcont, GlobalTheory.T.hasHodgeTateWeightFrame_character_twist l P AI T n K K' hK r (Fintype.card n) hρ.pos ρ w χ x _ hρ hw hact h1 h2 hj, Twist.sum_weights r _ hρ.pos w …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twistStep : TwistStep := by
   intro l _ P AI T n _ _ K r ρ w hρ hw

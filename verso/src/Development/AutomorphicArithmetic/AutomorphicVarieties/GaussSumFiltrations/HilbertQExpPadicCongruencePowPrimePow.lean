@@ -10,7 +10,7 @@ namespace GlobalTheory.QPow
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {p : ℕ} [Fact p.Prime] {ι : Qbar p ≃+* ℂ}
 
 /- English proof (translation)
-Rewrite using `[map_natCast]`. Establish `h : ‖(algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p]))‖ = ‖(p : ℚ_[p])‖` using `PadicAlgCl.norm_extends p _`. Rewrite `h` using `[map_natCast, Padic.norm_p]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_p (ι : Qbar p ≃+* ℂ) : ‖ι.symm (p : ℂ)‖ = (p : ℝ)⁻¹ := by
   rw [map_natCast]
@@ -20,11 +20,9 @@ theorem norm_p (ι : Qbar p ≃+* ℂ) : ‖ι.symm (p : ℂ)‖ = (p : ℝ)⁻�
   exact h
 
 /- English proof (translation)
-Use `⟨⟨1, one_pos, fun ξ hξ => ?_⟩, fun z => ?_⟩` and prove the remaining obligations. Establish `h0 : ξ = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hξ (by simp [Set.indicator_apply, hne])`. Substitute `h0` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Or.inl rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_zero]`. Conclude with `isIntegral_zero`. Establish `h` using `hasSum_single (f := fun ξ : F => (({0} : Set F).indicator (fun _ => c) ξ) * ez ξ z) 0 (fun b hb => by simp [Set.indicator_apply, hb])`. Use `h using 1` and compare the differences between its conclusion and the goal.
-
-Simplify using `[Set.indicator_apply, ez, reAt]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hasQ_const (c : ℂ) :
     HasQ (F := F) (fun _ : Hn F => c) (({0} : Set F).indicator fun _ => c) := by
@@ -44,7 +42,7 @@ private theorem hasQ_const (c : ℂ) :
     simp [Set.indicator_apply, ez, reAt]
 
 /- English proof (translation)
-Use `⟨_, hasQ_const c, fun ξ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hξ : ξ = 0`. Simplify using `[Set.indicator_apply, hξ]`. Simplify using `[Set.indicator_apply, hξ]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem small_const {r : ℝ} {g : Hn F → ℂ} (h : Small ι r g) (c : ℂ) :
     Small (F := F) ι ‖ι.symm c‖ (fun _ : Hn F => c) := by
@@ -55,24 +53,22 @@ theorem small_const {r : ℝ} {g : Hn F → ℂ} (h : Small ι r g) (c : ℂ) :
   · simp [Set.indicator_apply, hξ]
 
 /- English proof (translation)
-Take `⟨a, ha, hb⟩` from `h`. Conclude with `⟨a, ha, fun ξ => (hb ξ).trans hrs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem small_mono {r s : ℝ} {g : Hn F → ℂ} (h : Small ι r g) (hrs : r ≤ s) : Small ι s g := by
   obtain ⟨a, ha, hb⟩ := h
   exact ⟨a, ha, fun ξ => (hb ξ).trans hrs⟩
 
 /- English proof (translation)
-Take `⟨⟨D, hD, hDa⟩, ha⟩` from `hf`. Take `⟨⟨E, hE, hEb⟩, hb⟩` from `hg`. Use `⟨⟨D * E, Nat.mul_pos hD hE, fun ξ hξ => ?_⟩, fun z => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : a ξ = 0`. Establish `hb0 : b ξ ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `hb0`. Apply `hξ` to reduce the goal to its premises. Simplify using `[h0, hb0]`. Take `⟨h1, h2⟩` from `hEb ξ hb0`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `(isIntegral_natCast (R := ℤ) (B := F) D).mul h2`. Establish `e : ((D * E : ℕ) : F) * ξ = (D : F) * ((E : F) * ξ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3`. Take `⟨h1, h2⟩` from `hDa ξ h0`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h3` using `(isIntegral_natCast (R := ℤ) (B := F) E).mul h2`. Establish `e : ((D * E : ℕ) : F) * ξ = (E : F) * ((D : F) * ξ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h3`. Establish `h` using `(ha z).add (hb z)`.
-
-Simplify using `only [Pi.add_apply, add_mul]`. Conclude with `h`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hasQ_add {f g : Hn F → ℂ} {a b : F → ℂ} (hf : HasQ f a) (hg : HasQ g b) :
     HasQ (f + g) (a + b) := by
@@ -105,7 +101,7 @@ private theorem hasQ_add {f g : Hn F → ℂ} {a b : F → ℂ} (hf : HasQ f a) 
     exact h
 
 /- English proof (translation)
-Take `⟨a, ha, ha'⟩` from `hf`. Take `⟨b, hb, hb'⟩` from `hg`. Use `⟨a + b, hasQ_add ha hb, fun ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (ha' ξ) (hb' ξ))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem small_add {r s : ℝ} {f g : Hn F → ℂ} (hf : Small ι r f) (hg : Small ι s g) : Small ι (max r s) (f + g) := by
   obtain ⟨a, ha, ha'⟩ := hf
@@ -115,11 +111,11 @@ theorem small_add {r s : ℝ} {f g : Hn F → ℂ} (hf : Small ι r f) (hg : Sma
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (ha' ξ) (hb' ξ))
 
 /- English proof (translation)
-Take `⟨a, ha, ha'⟩` from `hf`. Take `⟨b, hb, hb'⟩` from `hg`. Establish `hr : 0 ≤ r` using `(norm_nonneg _).trans (ha' 0)`. Establish `hs : 0 ≤ s` using `(norm_nonneg _).trans (hb' 0)`. Take `⟨c, hc, hc'⟩` from `hasQ_mul F f g a b ha hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨c, hc, fun ξ => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hc' ξ`. Rewrite using `[ht, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hr hs) fun η _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (ha' η) (hb' (ξ - η)) (norm_nonneg _) hr`.
+A detailed English derivation is pending.
 -/
 theorem small_mul {r s : ℝ} {f g : Hn F → ℂ} (hf : Small ι r f) (hg : Small ι s g) : Small ι (r * s) (f * g) := by
   obtain ⟨a, ha, ha'⟩ := hf
@@ -135,14 +131,14 @@ theorem small_mul {r s : ℝ} {f g : Hn F → ℂ} (hf : Small ι r f) (hg : Sma
   exact mul_le_mul (ha' η) (hb' (ξ - η)) (norm_nonneg _) hr
 
 /- English proof (translation)
-Take `⟨a, -, hb⟩` from `hf`. Conclude with `(norm_nonneg _).trans (hb 0)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem small_nonneg {r : ℝ} {f : Hn F → ℂ} (hf : Small ι r f) : 0 ≤ r := by
   obtain ⟨a, -, hb⟩ := hf
   exact (norm_nonneg _).trans (hb 0)
 
 /- English proof (translation)
-Use `⟨0, ⟨⟨1, one_pos, fun ξ hξ => (hξ rfl).elim⟩, fun z => ?_⟩, fun ξ => ?_⟩` and prove the remaining obligations. Simplify using `using (hasSum_zero : HasSum (fun _ : F => (0 : ℂ)) 0)`. Simplify using `using small_nonneg hf`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem small_zero {r : ℝ} {f : Hn F → ℂ} (hf : Small ι r f) : Small ι r (0 : Hn F → ℂ) := by
   refine ⟨0, ⟨⟨1, one_pos, fun ξ hξ => (hξ rfl).elim⟩, fun z => ?_⟩, fun ξ => ?_⟩
@@ -150,11 +146,11 @@ theorem small_zero {r : ℝ} {f : Hn F → ℂ} (hf : Small ι r f) : Small ι r
   · simpa using small_nonneg hf
 
 /- English proof (translation)
-Establish `hr0` using `small_nonneg h`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using small_zero h`. Consider the case `succ m ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e : f ^ (m + 1) - 1 = (f ^ m - 1) * (f - 1) + ((f ^ m - 1) + (f - 1))` using `by ring`. Rewrite using `[e]`. Establish `h1` using `small_add (small_mul ih h) (small_add ih h)`. Use `small_mono h1 ?_` and prove the remaining obligations. Rewrite using `[max_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `max_le (mul_le_of_le_one_left hr0 hr) le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem pow_sub_one {r : ℝ} {f : Hn F → ℂ} (h : Small ι r (f - 1)) (hr : r ≤ 1) :
     ∀ m : ℕ, Small ι r (f ^ m - 1) := by
@@ -171,9 +167,9 @@ theorem pow_sub_one {r : ℝ} {f : Hn F → ℂ} (h : Small ι r (f - 1)) (hr : 
     exact max_le (mul_le_of_le_one_left hr0 hr) le_rfl
 
 /- English proof (translation)
-Establish `hp1 : (p : ℝ)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt.le)`. Establish `hs : Small ι (p : ℝ)⁻¹ (f - 1)` using `small_mono h hr`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using small_zero hs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ]`. Establish `h1` using `small_add ih (pow_sub_one hs hp1 n)`. Rewrite `h1` using `[max_self]`. Then use the resulting hypothesis.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sum_small {r : ℝ} {f : Hn F → ℂ} (h : Small ι r (f - 1)) (hr : r ≤ (p : ℝ)⁻¹) :
     ∀ n : ℕ, Small ι (p : ℝ)⁻¹ (∑ i ∈ Finset.range n, (f ^ i - 1)) := by
@@ -189,11 +185,11 @@ theorem sum_small {r : ℝ} {f : Hn F → ℂ} (h : Small ι r (f - 1)) (hr : r 
     rwa [max_self] at h1
 
 /- English proof (translation)
-Establish `key : ∀ x : ℂ, x ^ p - 1 = (x - 1) * ∑ i ∈ Finset.range p, (x ^ i - 1) + (p : ℂ) * (x - 1)`. Introduce `x`. Establish `hg` using `geom_sum_mul x p`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Take the linear combination `(-1 : ℂ) * hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e : f ^ p - 1 = (f - 1) * ∑ i ∈ Finset.range p, (f ^ i - 1) + (fun _ : Hn F => (p : ℂ)) * (f - 1)`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.sub_apply, Pi.pow_apply, Pi.one_apply, Pi.mul_apply, Pi.add_apply, Finset.sum_apply]`. Conclude with `key (f z)`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `small_mul h (sum_small h hr p)`. Establish `h2` using `small_mul (small_const h (p : ℂ)) h`. Rewrite `h2` using `[norm_p ι]`. Use `small_mono (small_add h1 h2) ?_` and prove the remaining obligations. Rewrite using `[mul_comm (p : ℝ)⁻¹ r, max_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_p {r : ℝ} {f : Hn F → ℂ} (h : Small ι r (f - 1)) (hr : r ≤ (p : ℝ)⁻¹) :
     Small ι (r * (p : ℝ)⁻¹) (f ^ p - 1) := by
@@ -217,11 +213,11 @@ theorem pow_p {r : ℝ} {f : Hn F → ℂ} (h : Small ι r (f - 1)) (hr : r ≤ 
   rw [mul_comm (p : ℝ)⁻¹ r, max_self]
 
 /- English proof (translation)
-Introduce `F _ _ _ p _ ι f h N m`. Establish `hp0 : (0 : ℝ) ≤ (p : ℝ)⁻¹` using `by positivity`. Establish `hp1 : (p : ℝ)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt.le)`. Establish `step : ∀ n : ℕ, Small ι ((p : ℝ)⁻¹ ^ (n + 1)) (f ^ (p ^ n) - 1)`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => simpa using h`. Consider the case `succ n ih`. Establish `h1` using `pow_p ih (pow_le_of_le_one hp0 hp1 (Nat.succ_ne_zero n))`. Rewrite `h1` using `[← pow_mul, ← pow_succ, ← pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Establish `h2` using `pow_sub_one (step N) (pow_le_one₀ hp0 hp1) m`. Rewrite `h2` using `[← pow_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ)
     (f : Hn F → ℂ), Small ι (p : ℝ)⁻¹ (f - 1) → ∀ N m : ℕ,
@@ -247,7 +243,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QPow.main | exact GlobalTheory.QPow.main | (intros; apply GlobalTheory.QPow.main <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.hilbertQExp_padicCongruence_pow_prime_pow : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ) (f : Hn F → ℂ), Small ι (p : ℝ)⁻¹ (f - 1) → ∀ N m : ℕ, Small ι ((p : ℝ)⁻¹ ^ (N + 1)) (f ^ (p ^ N * m) - 1) := by
   first | exact @GlobalTheory.QPow.main | exact GlobalTheory.QPow.main | (intros; apply GlobalTheory.QPow.main <;> assumption)

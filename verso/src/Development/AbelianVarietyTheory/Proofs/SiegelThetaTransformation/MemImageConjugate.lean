@@ -16,7 +16,7 @@ open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.Ker.ConjDatum.conjugate_twice (τ : E →+* ℂ) :
     ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ := by
@@ -28,7 +28,7 @@ open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.gram, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC, _root_.ReciprocityTheory.ChartRestriction.G.FD.col, ComplexEmbedding.conjugate_coe_eq, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.Ker.ConjDatum.gram_conjugate (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (P : Matrix (Fin r) (Fin r) ℂ) :
@@ -41,7 +41,7 @@ open Matrix Complex NumberField in
 open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Establish `hdet : (M.map (starRingEnd ℂ)).det = starRingEnd ℂ M.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hdet]`. Conclude with `(map_ne_zero _).2 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Ker.ConjDatum.det_map_ne {M : Matrix (Fin r) (Fin r) ℂ} (h : M.det ≠ 0) :
     (M.map (starRingEnd ℂ)).det ≠ 0 := by
@@ -56,7 +56,7 @@ open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, hσ, rfl⟩`. Rewrite using `[_root_.GlobalTheory.Ker.ConjDatum.conjugate_twice]` and apply the resulting hypothesis. Conclude with `fun h => ⟨_, h, _root_.GlobalTheory.Ker.ConjDatum.conjugate_twice τ⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.Ker.ConjDatum.mem_image_conjugate (Ψ : Finset (E →+* ℂ)) (τ : E →+* ℂ) :
     τ ∈ Ψ.image ComplexEmbedding.conjugate ↔ ComplexEmbedding.conjugate τ ∈ Ψ := by
@@ -77,13 +77,13 @@ open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Introduce `τ`. Take `⟨hdet, hpos⟩` from `hx (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ)`. Establish `hmat : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.GlobalTheory.Ker.ConjDatum.cfr Ψ x) τ = (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ)).map (starRingEnd ℂ)`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hgram : _root_.ReciprocityTheory.ChartRestriction.G.FD.gram (τ : E →+* ℂ) G (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.GlobalTheory.Ker.ConjDatum.cfr Ψ x) τ) = (_root_.ReciprocityTheory.ChartRestriction.G.FD.gram (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ : E →+* …`. Rewrite using `[hmat]`. Establish `h` using `_root_.GlobalTheory.Ker.ConjDatum.gram_conjugate (ComplexEmbedding.conjugate (τ : E →+* ℂ)) G (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ))`. Rewrite `h` using `[_root_.GlobalTheory.Ker.ConjDatum.conjugate_twice]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hmat]`. Conclude with `_root_.GlobalTheory.Ker.ConjDatum.det_map_ne hdet`. Establish `h` using `hpos i`. Establish `hminor : _root_.ReciprocityTheory.ChartRestriction.G.FD.dmin G (_root_.GlobalTheory.Ker.ConjDatum.cfr Ψ x) τ i = starRingEnd ℂ (_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin G x (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ) i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin, _root_.ReciprocityTheory.ChartRestriction.G.FD.lminor, hgram, ← Matrix.submatrix_map]`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hminor, Complex.conj_re]`. Conclude with `h`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Ker.ConjDatum.cfr_mem_GG (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E)
     (p : ℕ) {x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame (Ψ.image ComplexEmbedding.conjugate) r} (hx : x ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.GG _ G p) :
@@ -119,9 +119,9 @@ open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Introduce `τ`. Take `⟨hdet, htri⟩` from `hx (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ)`. Use `⟨?_, fun a c hca => ?_⟩` and prove the remaining obligations. Establish `hmat : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.GlobalTheory.Ker.ConjDatum.cfr Ψ x) τ = (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ)).map (starRingEnd ℂ)`. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite using `[hmat]`. Conclude with `_root_.GlobalTheory.Ker.ConjDatum.det_map_ne hdet`. Simplify using `[_root_.GlobalTheory.Ker.ConjDatum.cfr, htri a c hca]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Ker.ConjDatum.cfr_mem_Bor (Ψ : Finset (E →+* ℂ))
     {x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame (Ψ.image ComplexEmbedding.conjugate) r} (hx : x ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor _ r) :
@@ -142,7 +142,7 @@ open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a c`. Simplify using `[_root_.GlobalTheory.Ker.ConjDatum.cfr, _root_.ReciprocityTheory.ChartRestriction.G.FD.rmul, _root_.ReciprocityTheory.ChartRestriction.G.FD.mat, Matrix.mul_apply, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.Ker.ConjDatum.cfr_rmul (Ψ : Finset (E →+* ℂ))
     (x b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame (Ψ.image ComplexEmbedding.conjugate) r) :
@@ -156,7 +156,7 @@ open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a c`. Simplify using `[_root_.GlobalTheory.Ker.ConjDatum.cfr, _root_.ReciprocityTheory.ChartRestriction.G.FD.lact, _root_.ReciprocityTheory.ChartRestriction.G.FD.mat, Matrix.mul_apply, map_sum, _root_.GlobalTheory.Ker.ConjDatum.cpl, ComplexEmbedding.conjugate_coe_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.Ker.ConjDatum.cfr_lact (Ψ : Finset (E →+* ℂ)) (γ : GL (Fin r) E)
     (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame (Ψ.image ComplexEmbedding.conjugate) r) :

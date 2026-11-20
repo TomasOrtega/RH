@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.SchrSpan
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, Prod.fst_add, Prod.snd_add]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_assoc x]`. Use `congr 2`. Simplify using `only [dotProduct_add, add_dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `h2 : (2 : R) * ⅟(2 : R) = 1` using `mul_invOf_self 2`. Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * h2`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem schr_comp_loc {R : Type} [CommRing R] [Invertible (2 : R)] {κ : Type} [Fintype κ] (ψ : AddChar R ℂ)
     (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
@@ -33,29 +33,23 @@ theorem schr_comp_loc {R : Type} [CommRing R] [Invertible (2 : R)] {κ : Type} [
   linear_combination (-(w.1 ⬝ᵥ w'.2)) * h2
 
 /- English proof (translation)
-Introduce `F _ _ v _ χ κ _ hcond f₀ hf₀ hne φ hφ`. Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Establish `htriv : ∀ y ∈ v.adicCompletionIntegers F, χ y = 1`. Introduce `y hy`. Use `(hcond 1).2 (one_mem _) y hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hc : Continuous χ`. Establish `: IsLocallyConstant χ`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_add_left_nhds_zero, Filter.eventually_map]`. Use `filter_upwards [hO.mem_nhds (zero_mem _)] with s hs`. Rewrite using `[AddChar.map_add_eq_mul, htriv s hs, mul_one]`. Conclude with `this.continuous`. Establish `h1 : χ ≠ 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `hπ0 : π ≠ 0`. Introduce `h0`. Rewrite `hπ` using `[h0, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.zero_ne_coe hπ`. Establish `hmem : ((π⁻¹ : F) : Fv F v) ∈ v.adicCompletionIntegers F` using `(hcond _).1 (fun y _ => by rw [h]; rfl)`. Rewrite `hmem` using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation', map_inv₀, hπ]`. Conclude with `absurd hmem (by decide)`. Use `set N := Submodule.span ℂ (Set.range fun w : (κ → Fv F v) × (κ → Fv F v) => schr χ w f₀) with hNdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `hN : N ≤ GlobalTheory.WeilM.SB (κ → Fv F v)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Use `show schr χ w f₀ ∈ GlobalTheory.WeilM.SB (κ → Fv F v)`. Use `GlobalTheory.SchrSBFin.schr_mem_SB v χ hc w f₀ hf₀ using 2` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `all_goals exact Subsingleton.elim _ _`. Establish `hS : ∀ w, ∀ g ∈ N, schr χ w g ∈ N`. Introduce `w g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨w', rfl⟩` from `hx`. Rewrite using `[schr_comp_loc]`. Conclude with `N.smul_mem _ (Submodule.subset_span ⟨w + w', rfl⟩)`. Consider the case `zero`. Establish `: schr χ w (0 : (κ → Fv F v) → ℂ) = 0` using `by funext x; simp [schr]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `N.zero_mem`. Consider the case `add a b _ _ ha hb`. Establish `: schr χ w (a + b) = schr χ w a + schr χ w b` using `by funext x; simp [schr, mul_add]`. Rewrite using `[this]`.
-
-Conclude with `N.add_mem ha hb`. Consider the case `smul c a _ ha`. Establish `: schr χ w (c • a) = c • schr χ w a` using `by funext x; simp only [schr, Pi.smul_apply, smul_eq_mul]; ring`. Rewrite using `[this]`. Conclude with `N.smul_mem c ha`.
-
-Establish `h0 : f₀ ∈ N`. Establish `: schr χ (0 : (κ → Fv F v) × (κ → Fv F v)) f₀ = f₀` using `by funext x; simp [schr]`. Rewrite using `[← this]`. Conclude with `Submodule.subset_span ⟨0, rfl⟩`. Establish `hall` using `GlobalTheory.SchrIrred.schr_irreducible v χ hc h1 N hN (fun w g hg => by convert hS w g hg using 2; exact Subsingleton.elim _ _) f₀ h0 hne`.
-
-Rewrite using `[hall]`. Conclude with `hφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_schr_of_mem_SB : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) [Invertible (2 : Fv F v)] (χ : AddChar (Fv F v) ℂ) (κ : Type) [Fintype κ], (∀ x : Fv F v, (∀ y ∈ v.adicCompletionIntegers F, χ (x * y) = 1) ↔ x ∈ v.adicCompletionIntegers F) →
     ∀ (f₀ : (κ → Fv F v) → ℂ), f₀ ∈ SB (κ → Fv F v) → f₀ ≠ 0 → ∀ (φ : (κ → Fv F v) → ℂ), φ ∈ SB (κ → Fv F v) →

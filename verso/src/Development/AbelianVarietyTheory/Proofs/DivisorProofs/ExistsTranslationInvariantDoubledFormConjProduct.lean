@@ -20,9 +20,9 @@ local instance measAfD {F : Type} [Field F] [NumberField F] : MeasurableSpace (F
 local instance borelAfD {F : Type} [Field F] [NumberField F] : BorelSpace (FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩
 
 /- English proof (translation)
-Establish `hi` using `integrable_resD hφ`. Establish `e : resD F κ φ' = fun p => resD F κ φ (p + shiftOf x)`. Use function extensionality and compare the values at `p`. Use `show φ' (Sum.elim (glue p) (glue p)) = φ (Sum.elim (glue (p + shiftOf x)) (glue (p + shiftOf x)))`. Rewrite using `[h, glue_add_shiftOf]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lDiag, LinearMap.comp_apply, LinearMap.comp_apply, e, Lext_apply _ (hi.comp_add_right (shiftOf x)), Lext_apply _ hi]`. Conclude with `integral_add_right_eq_self _ _`.
+A detailed English derivation is pending.
 -/
 theorem lDiag_translate {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     {φ : (κ ⊕ κ → AF F) → ℂ} (hφ : φ ∈ schA F (κ ⊕ κ)) (φ' : (κ ⊕ κ → AF F) → ℂ) (x : κ → AF F)
@@ -37,7 +37,7 @@ theorem lDiag_translate {F : Type} [Field F] [NumberField F] {κ : Type} [Fintyp
   exact integral_add_right_eq_self _ _
 
 /- English proof (translation)
-Introduce `F _ _ κ _ Ψ hΨ hne`. Conclude with `⟨lDiag F κ, lDiag_adm, fun φ hφ φ' x h => lDiag_translate hφ φ' x h, GlobalTheory.DiagSq.lDiag_boxFun_star_ne F κ Ψ hΨ hne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_form : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∀ Ψ ∈ schA F κ, Ψ ≠ 0 →
     ∃ l ∈ (adeleClass F).adm (κ ⊕ κ), (∀ φ ∈ schA F (κ ⊕ κ), ∀ (φ' : (κ ⊕ κ → AF F) → ℂ) (x : κ → AF F),

@@ -21,23 +21,23 @@ Both sides reduce to the same expression.
 theorem adj_eq' {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) : adj D A = Aᴴ := rfl
 
 /- English proof (translation)
-Establish `hG : V.gramᴴ = V.gram` using `GlobalTheory.MixModel.gram_conjTranspose V`. Establish `hC : Cᴴ * V.gram * C = 0`. Establish `e : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) C = Cᴴ` using `adj_eq' C`. Use `hs.frame.2.2` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hB` using `hs.isom`. Establish `hCB` using `hs.orth`. Simplify using `only [adj_eq'] at hB hCB h1 h2 h3 ⊢`. Establish `hC'C : C'ᴴ * V.gram * C = 1`. Use `congrArg Matrix.conjTranspose h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.conjTranspose_mul, hG, Matrix.mul_assoc]`. Establish `hBC : Bᴴ * V.gram * C = 0`. Use `congrArg Matrix.conjTranspose hCB` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, hG, Matrix.mul_assoc]`. Establish `hBC' : Bᴴ * V.gram * C' = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg Matrix.conjTranspose h3` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, hG, Matrix.mul_assoc]`. Establish `hG' : V'.gram⁻¹ * V'.gram = 1` using `Matrix.nonsing_inv_mul _ (GlobalTheory.MixModel.gram_isUnit_det V')`. Establish `hPC : V'.gram⁻¹ * Bᴴ * V.gram * C = 0`. Simplify using `only [Matrix.mul_assoc] at hBC ⊢`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hBC, Matrix.mul_zero]`. Establish `hPC' : V'.gram⁻¹ * Bᴴ * V.gram * C' = 0`. Simplify using `only [Matrix.mul_assoc] at hBC' ⊢`. Rewrite using `[hBC', Matrix.mul_zero]`. Establish `hPB : V'.gram⁻¹ * Bᴴ * V.gram * B = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc] at hB ⊢`. Rewrite using `[hB, hG']`. Use `⟨hC'C, hPC, hPC', hPB, hC, ?_⟩` and prove the remaining obligations. Use `set P := V'.gram⁻¹ * Bᴴ * V.gram with hP`. Set `M : Matrix (Fin V.rank) (Fin r ⊕ (Fin V'.rank ⊕ Fin r)) D.host.E` to `Matrix.fromCols C (Matrix.fromCols B C')`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `N : Matrix (Fin r ⊕ (Fin V'.rank ⊕ Fin r)) (Fin V.rank) D.host.E` to `Matrix.fromRows (C'ᴴ * V.gram) (Matrix.fromRows P (Cᴴ * V.gram))`. Establish `hNM : N * M = 1`. Simplify using `only [N, M, Matrix.fromRows_mul, Matrix.mul_fromCols]`. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;>`. Simplify using `[hC'C, hPC, hPC', hPB, hC, h1, h2, h3, hCB, Matrix.one_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (Fin r ⊕ (Fin V'.rank ⊕ Fin r)) = Fintype.card (Fin V.rank)`. Simplify using `only [Fintype.card_sum, Fintype.card_fin]`. Use `hs.rank` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hMN : M * N = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq hcard)).mp hNM`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hMN` using `[M, N, Matrix.fromCols_mul_fromRows]`.
+A detailed English derivation is pending.
 -/
 theorem frame_relations {V V' : HSp D} {r : ℕ} {C C' : Matrix (Fin V.rank) (Fin r) D.host.E}
     {B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E} (hs : IsIsoSplit V V' C B)
@@ -91,33 +91,27 @@ theorem frame_relations {V V' : HSp D} {r : ℕ} {C C' : Matrix (Fin V.rank) (Fi
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V V' W r C B hs C' h1 h2 h3`. Take `⟨hC'C, hPC, hPC', hPB, hCC, hid⟩` from `frame_relations hs h1 h2 h3`. Establish `hV'r` using `GlobalTheory.MixModel.ratL_eq W V'`. Establish `hVr` using `GlobalTheory.MixModel.ratL_eq W V`. Use `set f := incA D with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a := (adj D C' * V.gram).map f with ha`. Use `set c := (adj D C * V.gram).map f with hc`. Use `set p := (V'.gram⁻¹ * adj D B * V.gram).map f with hp`. Use `set u := C.map f with hu`. Use `set u' := C'.map f with hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b := B.map f with hb`. Establish `m1 : ∀ {k l m : ℕ} (X : Matrix (Fin k) (Fin l) D.host.E) (Y : Matrix (Fin l) (Fin m) D.host.E), X.map f * Y.map f = (X * Y).map f` using `fun X Y => (Matrix.map_mul).symm`. Establish `z0 : ∀ {k l : ℕ}, (0 : Matrix (Fin k) (Fin l) D.host.E).map f = 0` using `Matrix.map_zero _ (map_zero f)`. Establish `o1 : ∀ {k : ℕ}, (1 : Matrix (Fin k) (Fin k) D.host.E).map f = 1` using `Matrix.map_one _ (map_zero f) (map_one f)`. Establish `au : a * u = 1` using `by rw [ha, hu, m1, hC'C, o1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cu : c * u = 0` using `by rw [hc, hu, m1, hCC, z0]`. Establish `pu : p * u = 0` using `by rw [hp, hu, m1, hPC, z0]`. Establish `au' : a * u' = 0` using `by rw [ha, hu', m1, h2, z0]`. Establish `cu' : c * u' = 1` using `by rw [hc, hu', m1, h1, o1]`. Establish `pu' : p * u' = 0` using `by rw [hp, hu', m1, hPC', z0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ab : a * b = 0` using `by rw [ha, hb, m1, h3, z0]`. Establish `cb : c * b = 0` using `by rw [hc, hb, m1, hs.orth, z0]`. Establish `pb : p * b = 1` using `by rw [hp, hb, m1, hPB, o1]`. Establish `key : u * a + (b * p + u' * c) = 1`. Rewrite using `[ha, hc, hp, hu, hu', hb, m1, m1, m1, ← Matrix.map_add f (map_add f), ← Matrix.map_add f (map_add f), hid, o1]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `fwd : ∀ (t : Mx D W.rank r) (y : Mx D W.rank r) (x : WO V' W), isoPart V W C' t + isoPart V W C y + midPart V V' W B x = t * a + y * c + x * p` using `fun _ _ _ => rfl`. Establish `back : ∀ (t : Mx D W.rank r) (y : Mx D W.rank r) (x : WO V' W), (t * a + y * c + x * p) * u = t ∧ (t * a + y * c + x * p) * u' = y ∧ (t * a + y * c + x * p) * b = x`. Introduce `t y x`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;>`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, au, cu, pu, au', cu', pu', ab, cb, pb, Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `cont : ∀ {k l m : ℕ} (Q : Mx D l m), Continuous fun z : Mx D k l => z * Q`. Introduce `k l m Q`. Use `(GlobalTheory.MixModel.continuous_sandwich (1 : Mx D k k) Q).congr fun z => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.MixModel.sandwich_apply, Matrix.one_mul]`. Use `haveI := (GlobalTheory.MixModel.lattice_Mx D W.rank V.rank).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Set `e : (Mx D W.rank r × Mx D W.rank r × WO V' W) ≃ₜ+ WO V W` to `{ toFun := fun q => isoPart V W C' q.1 + isoPart V W C q.2.1 + midPart V V' W B q.2.2 invFun := fun w => (w * u, w * u', w * b) left_inv := by`. Introduce and unpack `⟨t, y, x⟩`. Simplify using `only [fwd]`. Rewrite using `[(back t y x).1, (back t y x).2.1, (back t y x).2.2]`. Use `right_inv := by`.
+Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Introduce `w`. Simplify using `only [fwd]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use `_ = w := by rw [key, Matrix.mul_one]`. Use the proof step `map_add' := by`. Introduce and unpack `⟨t, y, x⟩ ⟨t', y', x'⟩`. Simplify using `only [fwd, Prod.mk_add_mk, Matrix.add_mul]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_toFun := by`. Simplify using `only [fwd]`. Conclude with `(((cont a).comp continuous_fst).add ((cont c).comp (continuous_fst.comp continuous_snd))).add ((cont p).comp (continuous_snd.comp continuous_snd))`. Use `continuous_invFun := ((cont u).prodMk ((cont u').prodMk (cont b))) }`. Use `⟨e, fun t y x => rfl, fun t y x => ?_⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `isoPart V W C' t + isoPart V W C y + midPart V V' W B x ∈ ratL W V ↔ _`. Rewrite using `[fwd, hVr, hV'r]`. Establish `hr : ∀ {k l : ℕ} (X : Matrix (Fin k) (Fin l) D.host.E), X.map f ∈ GlobalTheory.MixModel.ratMx D k l` using `fun X => GlobalTheory.MixModel.rat_mem X`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
-
-Take `⟨b1, b2, b3⟩` from `back t y x`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← b1]`. Conclude with `GlobalTheory.MixModel.ratMx_mul h (hr C)`. Rewrite using `[← b2]`.
-
-Conclude with `GlobalTheory.MixModel.ratMx_mul h (hr C')`. Rewrite using `[← b3]`. Conclude with `GlobalTheory.MixModel.ratMx_mul h (hr B)`. Introduce and unpack `⟨ht, hy, hx⟩`. Conclude with `add_mem (add_mem (GlobalTheory.MixModel.ratMx_mul ht (hr _)) (GlobalTheory.MixModel.ratMx_mul hy (hr _))) (GlobalTheory.MixModel.ratMx_mul hx (hr _))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem decomp_exists : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ C' : Matrix (Fin V.rank) (Fin r) D.host.E, adj D C * V.gram * C' = 1 → adj D C' * V.gram * C' = 0 → adj D C' * V.gram * B = 0 → ∃ e : (Mx D W.rank r × Mx D W.rank r × WO V' W) ≃ₜ+ WO V W, (∀ t y x, e (t, y, x) = isoPart V W C' t + isoPart V W C y + midPart V V' W B x) ∧ ∀ t y x, e (t, y, x) ∈ ratL W V ↔ t ∈ ratMx D W.rank r ∧ y ∈ ratMx D W.rank r ∧ x ∈ ratL W V' := by
   intro D V V' W r C B hs C' h1 h2 h3

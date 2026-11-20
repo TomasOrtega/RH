@@ -20,7 +20,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace Qp] [TopologicalSpace LL]
 
 /- English proof (translation)
-Take `⟨_, _, _⟩` from `hO.1`. Use `invariants_stableLattice_mod_irreducible_eq_bot (twLat Γ.T₀ Γ.χ₁⁻¹ hχ).L hlam ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(coefRep (latRep (twLattice Γ.T₀.L Γ.χ₁⁻¹)) (O ⧸ Ideal.span {Γ.lam})).invariants = ⊥`. Rewrite using `[latRep_twLattice]`. Conclude with `h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h0V_tw (hO : GoodO (Qp := Qp) LL O) (Γ : GalData G Qp LL O)
     (hχ : Continuous fun g => algebraMap O LL (Γ.χ₁⁻¹ g)) (hlam : Irreducible Γ.lam)
@@ -32,7 +32,7 @@ theorem h0V_tw (hO : GoodO (Qp := Qp) LL O) (Γ : GalData G Qp LL O)
   exact h0
 
 /- English proof (translation)
-Rewrite using `[h0V_tw hO Γ hχ hlam h0, finrank_bot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_h0V_tw (hO : GoodO (Qp := Qp) LL O) (Γ : GalData G Qp LL O)
     (hχ : Continuous fun g => algebraMap O LL (Γ.χ₁⁻¹ g)) (hlam : Irreducible Γ.lam)
@@ -41,7 +41,7 @@ theorem finrank_h0V_tw (hO : GoodO (Qp := Qp) LL O) (Γ : GalData G Qp LL O)
   rw [h0V_tw hO Γ hχ hlam h0, finrank_bot]
 
 /- English proof (translation)
-Take `⟨_, _, _⟩` from `hO.1`. Conclude with `exists_isCompl_of_saturated _ (h1fT_saturated PD (twLat Γ.T₀ Γ.χ₁⁻¹ hχ).L)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCompl_tw (hO : GoodO (Qp := Qp) LL O) (Γ : GalData G Qp LL O)
     (hχ : Continuous fun g => algebraMap O LL (Γ.χ₁⁻¹ g)) (hfin : Module.Finite O (GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing.HH Γ)) :
@@ -50,7 +50,7 @@ theorem isCompl_tw (hO : GoodO (Qp := Qp) LL O) (Γ : GalData G Qp LL O)
   exact exists_isCompl_of_saturated _ (h1fT_saturated PD (twLat Γ.T₀ Γ.χ₁⁻¹ hχ).L)
 
 /- English proof (translation)
-Take `⟨_, _, _⟩` from `hO.1`. Conclude with `finrank_h1fT PD (twLat Γ.T₀ Γ.χ₁⁻¹ hχ).L hT`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finrank_tw [CompactSpace G] (hO : GoodO (Qp := Qp) LL O) (Γ : GalData G Qp LL O)
     (hχ : Continuous fun g => algebraMap O LL (Γ.χ₁⁻¹ g)) (hT : IsOpen (Γ.T₀.L.T : Set Γ.T₀.V)) :
@@ -63,7 +63,7 @@ end General
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P)
 
 /- English proof (translation)
-Take `⟨-, ⟨-, hρ, hχ, -⟩, -⟩` from `S.hyp`. Conclude with `(hC.2.1 S.Γ.T₀ S.D.U S.Γ.χ₁ S.D.w hρ hχ).2.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cont_inv (hC : S.CrysCalc) : Continuous fun g => algebraMap S.O ↥S.LL.1 (S.Γ.χ₁⁻¹ g) := by
   obtain ⟨-, ⟨-, hρ, hχ, -⟩, -⟩ := S.hyp
@@ -72,7 +72,7 @@ theorem cont_inv (hC : S.CrysCalc) : Continuous fun g => algebraMap S.O ↥S.LL.
 abbrev tw (hC : S.CrysCalc) : LocLat S.G ℚ_[l] ↥S.LL.1 S.O := twLat S.Γ.T₀ S.Γ.χ₁⁻¹ (cont_inv S hC)
 
 /- English proof (translation)
-Take `⟨-, ⟨-, hρ, hχ, -⟩, -⟩` from `S.hyp`. Establish `h1` using `(hC.2.1 S.Γ.T₀ S.D.U S.Γ.χ₁ S.D.w hρ hχ).2`. Conclude with `(hC.2.1 S.Γ.T₀ S.D.U S.Γ.χ₁⁻¹ _ hρ h1).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tw_crysWith (hC : S.CrysCalc) :
     CrysWith (P.PD S.K) S.emb (tw S hC).ρ (fun i => (S.D.U i).map (· + -S.D.w i)) := by
@@ -81,28 +81,28 @@ theorem tw_crysWith (hC : S.CrysCalc) :
   exact (hC.2.1 S.Γ.T₀ S.D.U S.Γ.χ₁⁻¹ _ hρ h1).1
 
 /- English proof (translation)
-Take `⟨⟨-, -, -, -, -, hlam⟩, -⟩` from `S.hyp`. Conclude with `h0V_tw (GlobalTheory.LocalIntegers.good_integers l S.LL).1 S.Γ (cont_inv S hC) hlam hV.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tw_h0V (hC : S.CrysCalc) (hV : S.Vanish) : H0V (tw S hC).ρ = ⊥ := by
   obtain ⟨⟨-, -, -, -, -, hlam⟩, -⟩ := S.hyp
   exact h0V_tw (GlobalTheory.LocalIntegers.good_integers l S.LL).1 S.Γ (cont_inv S hC) hlam hV.1
 
 /- English proof (translation)
-Take `⟨⟨-, -, -, -, -, hlam⟩, -⟩` from `S.hyp`. Conclude with `finrank_h0V_tw (GlobalTheory.LocalIntegers.good_integers l S.LL).1 S.Γ (cont_inv S hC) hlam hV.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tw_finrank_h0V (hC : S.CrysCalc) (hV : S.Vanish) : finrank ↥S.LL.1 ↥(H0V (tw S hC).ρ) = 0 := by
   obtain ⟨⟨-, -, -, -, -, hlam⟩, -⟩ := S.hyp
   exact finrank_h0V_tw (GlobalTheory.LocalIntegers.good_integers l S.LL).1 S.Γ (cont_inv S hC) hlam hV.1
 
 /- English proof (translation)
-The claim follows from `isCompl_tw (P.PD S.K) (GlobalTheory.LocalIntegers.good_integers l S.LL).1 S.Γ (cont_inv S hC) hH.1.2.1`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCompl (hC : S.CrysCalc) (hH : S.FreeH) :
     ∃ C : Submodule S.O (GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing.HH S.Γ), IsCompl (GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing.Hf (P.PD S.K) S.Γ) C :=
   isCompl_tw (P.PD S.K) (GlobalTheory.LocalIntegers.good_integers l S.LL).1 S.Γ (cont_inv S hC) hH.1.2.1
 
 /- English proof (translation)
-The claim follows from `haveI := GlobalTheory.BlochKatoIntegralScalars.compactSpace_GK S.K finrank_tw (P.PD S.K) (GlobalTheory.LocalIntegers.good_integers l S.LL).1 S.Γ (cont_inv S hC) (GlobalTheory.Cyc.locLat_isOpen (GlobalTheory.LocalIntegers.good_integers l S.LL).1 S.Γ.T₀)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_hf (hC : S.CrysCalc) :
     finrank S.O ↥(GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing.Hf (P.PD S.K) S.Γ) = finrank ↥S.LL.1 (FiniteCohomology (P.PD S.K) (tw S hC).ρ) :=
@@ -111,7 +111,7 @@ theorem finrank_hf (hC : S.CrysCalc) :
     (GlobalTheory.Cyc.locLat_isOpen (GlobalTheory.LocalIntegers.good_integers l S.LL).1 S.Γ.T₀)
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Multiset.filter_map, Multiset.card_map, TopData.d]`. Conclude with `congrArg _ (Multiset.filter_congr fun u _ => by simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_card_neg :
     ∑ i, Multiset.card (((S.D.U i).map (· + -S.D.w i)).filter (· < 0)) = S.D.dsum := by
@@ -120,23 +120,23 @@ theorem sum_card_neg :
   exact congrArg _ (Multiset.filter_congr fun u _ => by simp)
 
 /- English proof (translation)
-Take `⟨⟨-, hA, -⟩, -⟩` from `S.hyp`. Conclude with `⟨RingHom.injective _, fun x => ⟨⟨x.1, x.2, hA.1 x.2⟩, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bijective_maxUnramifiedSubfield_algebraMap : Function.Bijective (algebraMap ↥(K0 S.K) ↥S.K.1) := by
   obtain ⟨⟨-, hA, -⟩, -⟩ := S.hyp
   exact ⟨RingHom.injective _, fun x => ⟨⟨x.1, x.2, hA.1 x.2⟩, rfl⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exists_isCompl S hC hH, (finrank_hf S hC).trans hd⟩`.
+Supply the required witnesses or components.
 -/
 theorem fSummand_of_finrank (hC : S.CrysCalc) (hH : S.FreeH)
     (hd : finrank ↥S.LL.1 (FiniteCohomology (P.PD S.K) (tw S hC).ρ) = S.D.dsum) : S.FSummand :=
   ⟨exists_isCompl S hC hH, (finrank_hf S hC).trans hd⟩
 
 /- English proof (translation)
-Use `fSummand_of_finrank S hC hH ?_` and prove the remaining obligations. Establish `h0` using `tw_finrank_h0V S hC hV`. Establish `h1 : ∑ i, (Multiset.card (((S.D.U i).map (· + -S.D.w i)).filter (· < 0)) : ℤ) = (S.D.dsum : ℤ)`. Rewrite using `[← sum_card_neg S, Nat.cast_sum]`. Establish `key : ∀ (a b c : ℕ) (s : ℤ), (a : ℤ) = (b : ℤ) + s → b = 0 → s = (c : ℤ) → a = c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b c s h h' h''`. Use linear arithmetic over natural numbers and integers. Conclude with `key _ _ _ _ hd h0 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fSummand_of_dim (hC : S.CrysCalc) (hV : S.Vanish) (hH : S.FreeH)
     (hd : (finrank ↥S.LL.1 (FiniteCohomology (P.PD S.K) (tw S hC).ρ) : ℤ) = (finrank ↥S.LL.1 ↥(H0V (tw S hC).ρ) : ℤ) +
@@ -151,7 +151,7 @@ theorem fSummand_of_dim (hC : S.CrysCalc) (hV : S.Vanish) (hH : S.FreeH)
   exact key _ _ _ _ hd h0 h1
 
 /- English proof (translation)
-Take `⟨⟨-, -, hn, hemb, -⟩, -⟩` from `S.hyp`. Conclude with `fSummand_of_dim S hC hV hH (hd.trans (congrArg _ (codim_fil_zero (P.PD S.K) S.emb hemb (bijective_maxUnramifiedSubfield_algebraMap S) hn _ (tw_crysWith S hC).2)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fSummand_of_codim (hC : S.CrysCalc) (hV : S.Vanish) (hH : S.FreeH)
     (hD : Module.Finite ↥S.LL.1 ↥(DdR (P.PD S.K) (tw S hC).ρ))

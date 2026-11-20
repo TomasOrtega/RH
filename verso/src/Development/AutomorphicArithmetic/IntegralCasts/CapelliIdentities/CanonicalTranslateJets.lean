@@ -5,11 +5,11 @@ import Formalism.LocalRingCardinality.Params
 import Formalism.LocalRingCardinality.DataHost
 
 /- English proof (translation)
-Introduce `D x hx`. Establish `hs` using `D.host.sqd_sq`. Establish `hx' : x ∈ Algebra.adjoin ℚ ({D.host.sqd} : Set D.host.E)` using `(IntermediateField.adjoin_toSubalgebra_of_isAlgebraic fun y _ => Algebra.IsAlgebraic.isAlgebraic y).le hx`. Use `clear hx`. Proceed by induction on `hx' using Algebra.adjoin_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy => exact ⟨0, 1, by simpa using hy⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, b, rfl⟩` from `hy`. Take `⟨c, e, rfl⟩` from `hz`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a + c, b + e, by push_cast; ring⟩`. Consider the case `mul y z _ _ hy hz`. Take `⟨a, b, rfl⟩` from `hy`. Take `⟨c, e, rfl⟩` from `hz`. Conclude with `⟨a * c - b * e * D.host.d, a * e + b * c, by push_cast; linear_combination (b * e : D.host.E) * hs⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CanonicalTranslateJets.K_repr :
     ∀ (D : Formalism.BasicNotions.D7),

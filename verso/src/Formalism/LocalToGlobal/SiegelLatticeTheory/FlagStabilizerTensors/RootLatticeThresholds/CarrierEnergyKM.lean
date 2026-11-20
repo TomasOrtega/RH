@@ -8,13 +8,13 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.
 namespace Formalism.L2.SG.Pf.Carrier.EnergyKM
 
 /- English proof (translation)
-Establish `hI : ∀ f : ℕ → ℝ, ∏ l ∈ Finset.Ioc 0 r, f l = ∏ i : Fin r, f (i.val + 1)`. Introduce `f`. Establish `hset : Finset.Ioc 0 r = Finset.Ico (0 + 1) (r + 1)`. Use extensionality with `x`. Simplify using `only [Finset.mem_Ioc, Finset.mem_Ico]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => f (i + 1)) r, Finset.range_eq_Ico, Finset.prod_Ico_add' f 0 r 1, hset]`. Unfold `Formalism.FourierDecayAlt.D.GamLev`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Nat.card_Ioc, Nat.sub_zero, Finset.prod_Ioc_succ_top (Nat.zero_le r), hI]`. Use `congr 1`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Nat.cast_add, Nat.cast_one, sub_self, mul_zero, zero_mul, neg_zero, zpow_zero, mul_one]`. Use `Finset.prod_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Establish `ha : a.val ≤ r` using `a.isLt.le`. Simplify using `only [Formalism.FourierDecayAlt.C.Mlev]`. Move the coercions through the operations in `[Nat.cast_sub ha]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gam_eq (k r : ℕ) (κ δ : ℝ) : Formalism.FourierDecayAlt.D.GamLev k r κ δ 0 =
     (∏ a : Fin r, κ ^ (-((4 * (r - a.val) * (2 * (r - a.val) + k) : ℕ) : ℤ))) / δ ^ (r + 1) := by
@@ -39,11 +39,11 @@ theorem gam_eq (k r : ℕ) (κ δ : ℝ) : Formalism.FourierDecayAlt.D.GamLev k 
   ring
 
 /- English proof (translation)
-Rewrite using `[gam_eq]`. Establish `hpi : 0 < Real.pi` using `Real.pi_pos`. Establish `hper : ∀ a : Fin r, (((g / (2 * Real.pi)) ^ (2 * (r - a.val))) ^ (2 * (Formalism.QuantumDeterminants.Mdim k r a - 1)))⁻¹ * Formalism.FourierDecayAlt.D.kapG g rd ^ (-((4 * (r - a.val) * (2 * (r - a.val) + k) : ℕ) : ℤ)) = rd ^ (4 * (r - a.val) * (2 * (r - a.val) + k))`. Introduce `a`. Establish `hM : 2 * (r - a.val) * (2 * (Formalism.QuantumDeterminants.Mdim k r a - 1)) = 4 * (r - a.val) * (2 * (r - a.val) + k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `Formalism.QuantumDeterminants.Mdim`. Rewrite using `[Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← pow_mul, hM, zpow_neg, zpow_natCast, ← mul_inv, ← mul_pow]`. Unfold `Formalism.FourierDecayAlt.D.kapG`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[show g / (2 * Real.pi) * (2 * Real.pi / (g * rd)) = rd⁻¹ by field_simp, inv_pow, inv_inv]`. Rewrite using `[mul_div_assoc', mul_assoc, ← Finset.prod_mul_distrib, Finset.prod_congr rfl (fun a _ => hper a), Finset.prod_pow_eq_pow_sum]`. Unfold `Formalism.FourierDecayAlt.D.deG`. Rewrite using `[div_pow, div_div_eq_mul_div, pow_add]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -72,9 +72,9 @@ theorem level_constant_mul_gamma (r k : ℕ) (g rd : ℝ) (hg : 0 < g) (hrd : 0 
   ring
 
 /- English proof (translation)
-Take `⟨q, hq | hq | hq⟩ : ∃ q, r = 3 * q ∨ r = 3 * q + 1 ∨ r = 3 * q + 2` from `⟨r / 3, by omega⟩`. Substitute `hq` using the available equality. Conclude with `⟨(3 * q + 1) * (24 * q ^ 2 + 10 * q + 1), by ring⟩`. Substitute `hq` using the available equality. Conclude with `⟨(3 * q + 2) * (2 * q + 1) * (12 * q + 7), by ring⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `hq` using the available equality. Conclude with `⟨(q + 1) * (8 * (3 * q + 2) ^ 2 + 10 * (3 * q + 2) + 3), by ring⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem three_dvd (r : ℕ) : 3 ∣ (r + 1) * (8 * r ^ 2 + 10 * r + 3) := by
   obtain ⟨q, hq | hq | hq⟩ : ∃ q, r = 3 * q ∨ r = 3 * q + 1 ∨ r = 3 * q + 2 := ⟨r / 3, by omega⟩
@@ -86,7 +86,7 @@ theorem three_dvd (r : ℕ) : 3 ∣ (r + 1) * (8 * r ^ 2 + 10 * r + 3) := by
     exact ⟨(q + 1) * (8 * (3 * q + 2) ^ 2 + 10 * (3 * q + 2) + 3), by ring⟩
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, mul_add, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_closed (r k : ℕ) :
     3 * ∑ j ∈ Finset.range r, 4 * (j + 1) * (2 * (j + 1) + k) = 4 * r * (r + 1) * (2 * r + 1) + 6 * k * r * (r + 1) := by
@@ -97,11 +97,11 @@ theorem sum_closed (r k : ℕ) :
     ring
 
 /- English proof (translation)
-Establish `hs : ∑ a : Fin r, 4 * (r - a.val) * (2 * (r - a.val) + k) = ∑ j ∈ Finset.range r, 4 * (j + 1) * (2 * (j + 1) + k)`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => 4 * (r - i) * (2 * (r - i) + k)) r, ← Finset.sum_range_reflect]`. Use `Finset.sum_congr rfl (fun j hj => ?_)` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_range]`. Establish `hj' : r - (r - 1 - j) = j + 1` using `by omega`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hj']`. Establish `h3` using `sum_closed r k`. Take `⟨W, hW⟩` from `three_dvd r`. Rewrite using `[hs, hW, Nat.mul_div_cancel_left W (by norm_num : 0 < 3)]`. Take `⟨k', rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Nat.add_sub_cancel]`. Use polynomial arithmetic with `[h3, hW]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exp_eq (r k : ℕ) (hk : 1 ≤ k) :
     (r + 1) + ∑ a : Fin r, 4 * (r - a.val) * (2 * (r - a.val) + k) =
@@ -125,13 +125,13 @@ variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u u' : D.what
 attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 
 /- English proof (translation)
-Introduce `hg hrd hr hk hgpos hk1`. Establish `hrdpos : 0 < Formalism.FourierDecayAlt.S6.rd D.host.E` using `by rw [hrd]; exact EnergyConst.rdE_pos'`. Establish `hgpos' : (0 : ℝ) < P.S.g` using `by exact_mod_cast hgpos`. Establish `hκ : 0 < Formalism.FourierDecayAlt.D.kapG P.S.g (Formalism.FourierDecayAlt.S6.rd D.host.E)`. Simplify using `only [Formalism.FourierDecayAlt.D.kapG]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Check the signs of the components of the expression. Establish `hδ : 0 < Formalism.FourierDecayAlt.D.deG P.S.g (Formalism.FourierDecayAlt.S6.rd D.host.E)`. Simplify using `only [Formalism.FourierDecayAlt.D.deG]`. Check the signs of the components of the expression. Establish `hG : P.Gam0 ≠ 0`.
+Check the signs of the components of the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Rewrite using `[Parts.Gam0, gam_eq]`. Conclude with `ne_of_gt (div_pos (Finset.prod_pos fun a _ => zpow_pos hκ _) (pow_pos hδ _))`. Establish `key` using `level_constant_mul_gamma P.S.G.r P.S.G.k P.S.g (Formalism.FourierDecayAlt.S6.rd D.host.E) hgpos' hrdpos`. Rewrite `key` using `[exp_eq _ _ hk1]`. Rewrite using `[EnergyConst.Kexp, eq_div_iff hG]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[hrd, hg, hr, hk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kMatch_holds (P : Parts X u u') : EnergyPlace.KMatch P := by
   intro hg hrd hr hk hgpos hk1

@@ -6,13 +6,11 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hle : ∫⁻ z in Metric.ball (0 : Fin e → ℂ) r, ∏ k, f k (z k) ≤ ∫⁻ z : Fin e → ℂ, ∏ k, (Metric.ball (0 : ℂ) r).indicator (f k) (z k)`. Rewrite using `[← lintegral_indicator Metric.isOpen_ball.measurableSet]`. Use `lintegral_mono fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ Metric.ball (0 : Fin e → ℂ) r`. Rewrite using `[Set.indicator_of_mem hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `le_of_eq (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Establish `hk : z k ∈ Metric.ball (0 : ℂ) r`. Rewrite `hz`, the goal using `[Metric.mem_ball, dist_zero_right]`. Conclude with `lt_of_le_of_lt (norm_le_pi_norm z k) hz`. Rewrite using `[Set.indicator_of_mem hk]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hz]`. Conclude with `zero_le`. Use `lt_of_le_of_lt hle ?_` and prove the remaining obligations. Rewrite using `[volume_pi, GlobalTheory.RestrMeas.lintegral_fin_prod_eq_prod (fun k => ((hf k).indicator Metric.isOpen_ball.measurableSet).aemeasurable)]`. Use `ENNReal.prod_lt_top fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[lintegral_indicator Metric.isOpen_ball.measurableSet]`. Conclude with `hfin k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_ball_pi_prod_lt_top {e : ℕ} (r : ℝ) (f : Fin e → ℂ → ENNReal)
     (hf : ∀ k, Measurable (f k)) (hfin : ∀ k, ∫⁻ u in Metric.ball (0 : ℂ) r, f k u < ⊤) :
@@ -38,7 +36,7 @@ theorem setLIntegral_ball_pi_prod_lt_top {e : ℕ} (r : ℝ) (f : Fin e → ℂ 
   exact hfin k
 
 /- English proof (translation)
-Introduce `r f hf hfin` and use `setLIntegral_ball_pi_prod_lt_top r f hf hfin`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem setLIntegral_ball_pi_prod_lt_top' : ∀ {e : ℕ} (r : ℝ) (f : Fin e → ℂ → ENNReal), (∀ k, Measurable (f k)) →
     (∀ k, ∫⁻ u in Metric.ball (0 : ℂ) r, f k u < ⊤) → ∫⁻ z in Metric.ball (0 : Fin e → ℂ) r, ∏ k, f k (z k) < ⊤ :=

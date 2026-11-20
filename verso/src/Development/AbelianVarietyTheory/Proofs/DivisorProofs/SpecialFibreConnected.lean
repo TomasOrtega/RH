@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.SpecialConn
 
 /- English proof (translation)
-Establish `key : ∀ Q : PrimeSpectrum S, Spec.map (CommRingCat.ofHom φ) Q = IsLocalRing.closedPoint O`. Introduce `Q`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Q.asIdeal.comap φ = IsLocalRing.maximalIdeal O`. Conclude with `le_antisymm (IsLocalRing.le_maximalIdeal (Ideal.IsPrime.comap φ).ne_top) (hφ _ Q.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, rfl⟩`. Conclude with `key Q`. Introduce and unpack `rfl`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨M, hM⟩` from `Ideal.exists_maximal S`. Conclude with `⟨⟨M, hM.isPrime⟩, key _⟩`.
+A detailed English derivation is pending.
 -/
 theorem range_spec_map_eq {O S : Type} [CommRing O] [IsLocalRing O] [CommRing S] [Nontrivial S] (φ : O →+* S)
     (hφ : ∀ Q : Ideal S, Q.IsPrime → IsLocalRing.maximalIdeal O ≤ Q.comap φ) :
@@ -36,9 +36,7 @@ theorem range_spec_map_eq {O S : Type} [CommRing O] [IsLocalRing O] [CommRing S]
     exact ⟨⟨M, hM.isPrime⟩, key _⟩
 
 /- English proof (translation)
-Use `haveI : Nontrivial (O ⧸ IsLocalRing.maximalIdeal O ^ (n + 1)) := Ideal.Quotient.nontrivial_iff.2 (ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal O).ne_top (Ideal.pow_le_self (Nat.succ_ne_zero n)))`. Use `range_spec_map_eq _ fun Q hQ => ?_` and prove the remaining obligations. Establish `h : IsLocalRing.maximalIdeal O ^ (n + 1) ≤ Q.comap (thickQ O n)` using `fun a ha => by`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ a ∈ Q`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 ha]`.
-
-Conclude with `Q.zero_mem`. Conclude with `(Ideal.IsPrime.comap (thickQ O n)).le_of_pow_le h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_thickQ (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ) :
     Set.range (Spec.map (CommRingCat.ofHom (thickQ O n))) = {IsLocalRing.closedPoint O} := by
@@ -53,7 +51,7 @@ theorem range_thickQ (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ) :
   exact (Ideal.IsPrime.comap (thickQ O n)).le_of_pow_le h
 
 /- English proof (translation)
-Use `range_spec_map_eq _ fun Q hQ a ha => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsLocalRing.residue O a ∈ Q`. Rewrite using `[(IsLocalRing.residue_eq_zero_iff a).2 ha]`. Conclude with `Q.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_residue (O : Type) [CommRing O] [IsLocalRing O] :
     Set.range (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O))) = {IsLocalRing.closedPoint O} := by
@@ -63,37 +61,31 @@ theorem range_residue (O : Type) [CommRing O] [IsLocalRing O] :
   exact Q.zero_mem
 
 /- English proof (translation)
-Introduce `O _ _ _ _ Y f hY _ hP hF`. Establish `hT : Set.range (specialι f) = f ⁻¹' {IsLocalRing.closedPoint O}`. Establish `h` using `Scheme.Pullback.range_fst f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O)))`. Rewrite `h` using `[range_residue]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hTn : ∀ n, Set.range (thickι f n) = f ⁻¹' {IsLocalRing.closedPoint O}` using `fun n => by`. Establish `h` using `Scheme.Pullback.range_fst f (Spec.map (CommRingCat.ofHom (thickQ O n)))`. Rewrite `h` using `[range_thickQ]`. Conclude with `h`. Establish `hne : ∃ y : Y, f y = IsLocalRing.closedPoint O`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨y⟩` from `(inferInstance : Nonempty Y)`. Set `η : Spec (.of O)` to `⟨⊥, Ideal.bot_prime⟩`. Establish `hgen : η ⤳ f y` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`. Take `⟨y', -, hy'⟩` from `(Flat.generalizingMap f) hgen`. Establish `hc : IsClosed (Set.range f)` using `f.isClosedMap.isClosed_range`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsp : η ⤳ IsLocalRing.closedPoint O` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`. Conclude with `hsp.mem_closed hc ⟨y', hy'⟩`. Take `⟨y₀, hy₀⟩` from `hne`. Establish `hy₀' : y₀ ∈ Set.range (specialι f)` using `by rw [hT]; exact hy₀`. Take `⟨z₀, -⟩` from `hy₀'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `haveI : Nonempty (specialFibre f) := ⟨z₀⟩`. Use `haveI : IsClosedImmersion (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O))) := IsClosedImmersion.spec_of_surjective _ IsLocalRing.residue_surjective`. Use `haveI : IsClosedImmersion (specialι f) := inferInstanceAs (IsClosedImmersion (pullback.fst f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O)))))`. Establish `hcl : Topology.IsClosedEmbedding (specialι f)` using `(specialι f).isClosedEmbedding`. Use `{ toPreconnectedSpace := preconnectedSpace_iff_clopen.2 fun U hU => ?_, toNonempty := ‹_› }` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨hU0, hU1⟩` from `hcon`. Take `⟨u, hu⟩` from `hU0`. Choose the witnesses or unpack the hypotheses as in `⟨u', hu'⟩ : ∃ u', u' ∉ U := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hU1 (Set.eq_univ_of_forall h)`. Set `A` to `specialι f '' U`. Set `B` to `specialι f '' Uᶜ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hA : IsClosed A` using `hcl.isClosedMap _ hU.1`. Establish `hB : IsClosed B` using `hcl.isClosedMap _ hU.2.isClosed_compl`. Establish `hpt : ∀ n (z : specialFibre f), ∃ x, thickι f n x = specialι f z` using `fun n z => by`. Establish `: specialι f z ∈ Set.range (thickι f n)` using `by rw [hTn, ← hT]; exact ⟨z, rfl⟩`. Conclude with `this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hAB : ∀ n, (thickι f n ⁻¹' A)ᶜ = thickι f n ⁻¹' B`. Introduce `n`. Use extensionality with `x`. Take `⟨z, hz⟩ : thickι f n x ∈ Set.range (specialι f)` from `by rw [hT, ← hTn n]; exact ⟨x, rfl⟩`. Simplify using `only [Set.mem_compl_iff, Set.mem_preimage, A, B, Set.mem_image]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨z, fun hzU => h ⟨z, hzU, hz⟩, hz⟩`. Introduce and unpack `⟨w, hw, hw'⟩ ⟨w', hw'U, hw''⟩`. Conclude with `hw (hcl.injective (hw''.trans hw'.symm) ▸ hw'U)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hclo : ∀ n, IsClopen (thickι f n ⁻¹' A)` using `fun n => ⟨hA.preimage (thickι f n).continuous, by rw [← isClosed_compl_iff, hAB n]; exact hB.preimage (thickι f n).continuous⟩`. Use `choose e he hbe using fun n => GlobalTheory.T.exists_idempotent_of_clopen _ _ (hclo n)`. Establish `hcomp : ∀ n, (thickTr f n).appTop.hom (e (n + 1)) = e n`. Introduce `n`. Use `GlobalTheory.T.idempotent_eq_of_basicOpen_eq' _ _ _ (by rw [← map_mul, he]) (he n) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `TopologicalSpace.Opens.ext ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.preimage_basicOpen_top, hbe n]`. Express the relevant statement in the definitionally equal form `thickTr f n ⁻¹' ((Scheme.basicOpen _ (e (n + 1)) : Set _)) = _`. Rewrite using `[hbe (n + 1), ← Set.preimage_comp, ← thickTr_ι f n]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `GlobalTheory.T.proper_flat_adic_sections_lift O Y f e hcomp`. Establish `hss : s * s = s`. Use `GlobalTheory.T.proper_flat_section_eq_zero_of_thickenings O Y f (s * s - s) fun n => by rw [map_sub, map_mul, hs, he, sub_self]` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Establish `h01 : s = 0 ∨ s = 1` using `IsIdempotentElem.iff_eq_zero_or_one.1 hss`.
-
-Take `⟨x, hx⟩` from `hpt 0 u`. Take `⟨x', hx'⟩` from `hpt 0 u'`. Break down `h01 with h0 | h1` into its components or cases. Establish `e0 : e 0 = 0` using `by rw [← hs 0, h0, map_zero]`. Establish `hxA : x ∈ thickι f 0 ⁻¹' A` using `⟨u, hu, hx.symm⟩`.
-
-Rewrite `hxA` using `[← hbe 0, e0, Scheme.basicOpen_zero]`. Conclude with `hxA`. Establish `e1 : e 0 = 1` using `by rw [← hs 0, h1, map_one]`. Establish `hxA : x' ∈ ((thickFib f 0).basicOpen (e 0) : Set _)`. Rewrite using `[e1, Scheme.basicOpen_one]`.
-
-Discharge the goal by the elementary cases of `trivial`. Rewrite `hxA` using `[hbe 0]`. Take `⟨w, hw, hw'⟩` from `hxA`. Conclude with `hu' (hcl.injective (hw'.trans hx') ▸ hw)`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem connectedSpace_specialFibre : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (Y : Scheme.{0}) (f : Y ⟶ Spec (.of O)), IsIntegral Y → (∀ z : Y, IsIntegrallyClosed (Y.presheaf.stalk z)) → IsProper f → Flat f → ConnectedSpace (specialFibre f) := by
   intro O _ _ _ _ Y f hY _ hP hF

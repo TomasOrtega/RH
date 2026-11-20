@@ -9,7 +9,7 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P Formalism.FourierDeca
 open CompanionTheory.LimBd.Main (ZuckT ZuckDualT zuckT_of_zuck zuckDualT_of_zuckDual)
 
 /- English proof (translation)
-Introduce `Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Take `⟨C₄, c₃, Cc, Cc', Cc'', h⟩` from `CutBP.CompactFormNormalFormDomination.thmBpAt_top Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Use `⟨C₄, c₃, Cc, Cc', Cc'', ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f b Λ A₀ p₀ χ nn Y K N hb hΛ hΛb hT hp₀ hK hKN hχ hnn hCb hf hfA _`. Conclude with `h Wp Wq P p f b Λ A₀ p₀ χ nn Y K N hb hΛ hΛb hT hp₀ hK hKN hχ hnn hCb hf hfA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem asymptotic_different_types : AsmDiff := by
   intro Cb C₃ CΛ C₀ hC₃ hCΛ hC₀
@@ -19,7 +19,7 @@ theorem asymptotic_different_types : AsmDiff := by
   exact h Wp Wq P p f b Λ A₀ p₀ χ nn Y K N hb hΛ hΛb hT hp₀ hK hKN hχ hnn hCb hf hfA
 
 /- English proof (translation)
-Introduce `Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Take `⟨C₄, c₃, Cc, Cc', Cc'', h⟩` from `CutBPEq.CompactFormNormalFormDomination.thmBpAt_eqR_top Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Use `⟨C₄, c₃, Cc, Cc', Cc'', ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq _ _ _ _ _ _ p f b n₀ S Λ A₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ hK hKN hχ hnp hnm hDp hDm hf hfA _ _`. Conclude with `h P Wp Wq p f b n₀ S Λ A₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ hK hKN hχ hnp hnm hDp hDm hf hfA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem asymptotic_equal_types : AsmEq := by
   intro Cb C₃ CΛ C₀ hC₃ hCΛ hC₀

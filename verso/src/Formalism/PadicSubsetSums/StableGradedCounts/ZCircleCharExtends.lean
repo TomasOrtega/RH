@@ -3,9 +3,9 @@ import Formalism.PadicSubsetSums.CentralIdempotents.PrimitiveRootFifteenSubOneUn
 namespace Formalism.IrreducibleCountingLemmas.Z
 
 /- English proof (translation)
-Introduce `z`. Take `⟨θ, rfl⟩` from `Circle.exp_surjective z`. Use `⟨Circle.exp (θ / n), ?_⟩` and prove the remaining obligations. Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast hn`. Use `show Circle.exp (θ / n) ^ n = Circle.exp θ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Circle.exp_zsmul, zsmul_eq_mul, mul_div_cancel₀ _ hn']`.
+A detailed English derivation is pending.
 -/
 theorem circle_pow_surjective {n : ℤ} (hn : n ≠ 0) :
     Function.Surjective (fun a : Circle => a ^ n) := by
@@ -17,11 +17,9 @@ theorem circle_pow_surjective {n : ℤ} (hn : n ≠ 0) :
   rw [← Circle.exp_zsmul, zsmul_eq_mul, mul_div_cancel₀ _ hn']
 
 /- English proof (translation)
-Introduce `A _ H χ`. Establish `: DivisibleBy (Additive Circle) ℤ` using `divisibleByOfSMulRightSurj (Additive Circle) ℤ fun {n} hn a => by`. Take `⟨b, hb⟩` from `circle_pow_surjective hn a.toMul`. Conclude with `⟨Additive.ofMul b, congrArg Additive.ofMul hb⟩`. Take `⟨ψ, hψ⟩` from `(Module.Baer.of_divisible (Additive Circle)).extension_property_addMonoidHom (MonoidHom.toAdditive H.subtype) (fun a b hab => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `: (a.toMul : A) = (b.toMul : A)` using `congrArg Additive.toMul hab`. Conclude with `congrArg Additive.ofMul (Subtype.ext this))`. Use the proof step `(MonoidHom.toAdditive χ)`. Use `⟨MonoidHom.toAdditive.symm ψ, fun h => ?_⟩` and prove the remaining obligations. Use `DFunLike.congr_fun hψ (Additive.ofMul h)` as an intermediate fact.
-
-Conclude with `congrArg Additive.toMul this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem circle_character_extends : CircleCharExtends := by
   intro A _ H χ

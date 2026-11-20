@@ -26,7 +26,7 @@ open GlobalTheory.UU
 namespace GlobalTheory
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Establish `h0 : (p0 : S) * r = 1` using `by rw [← Units.val_mul, h₀, Units.val_one]`. Use `ext`. Simplify using `only [Units.val_mul, Units.val_one] at h₁ h₂ ⊢`. Take the linear combination `((pa : S) * pb * k * r) * h₂ + (c * u * pab * pa * pb * k) * h0 - (pab : S) * h₁`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cubeRel_of_two_comparisons {S : Type} [CommRing S] (c : S) (u k k' r pa pb pm p0 pab pam pbm pabm : Sˣ)
     (h₁ : (pam * pbm).val = c * (u * k * pa * pb).val) (h₂ : (pabm * pm).val = c * (u * k' * pab * p0).val)
@@ -38,15 +38,15 @@ theorem cubeRel_of_two_comparisons {S : Type} [CommRing S] (c : S) (u k k' r pa 
   linear_combination ((pa : S) * pb * k * r) * h₂ + (c * u * pab * pa * pb * k) * h0 - (pab : S) * h₁
 
 /- English proof (translation)
-Introduce `hL hL2 V _ _ _ hV D A G _ _ U θ f hθ hψ`. Establish `hG : GlobalFnsSt` using `hL.globalFns`. Take `⟨th, hth, -⟩` from `(GlobalTheory.UU.PullSec.pullEx V hV D A G U (Kbar V) (𝟙_ _) (toUnit _) 1).1 θ`. Take `⟨s₀, hs₀, -⟩` from `(GlobalTheory.UU.PullSec.pullEx V hV D A G U (Kbar V) (𝟙_ _) (toUnit _) 1).2 f`. Take `⟨r, n, t, t', s, s', hr, hexp, -, hadd⟩` from `GlobalTheory.T.additionFormula_algClosure_with_expansions hL hL2 V hV D A G U θ f hθ th s₀ hth hs₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hP : PsiRel D (TF (R` using `V) (Kbar V)) s₀ := psiRel_of_pullB V D (Kbar V) f s₀ hs₀ hψ`. Take `⟨hf, hsupp⟩` from `GlobalTheory.T.thetaSection_support_eq_univ hL hL2 V hV D A G U θ f hθ`. Establish `hne : ∃ j, (s₀ 0).f j ≠ 0` using `(pullB_ne_zero_iff V D (Kbar V) 1 f s₀ hs₀ 0).2 (hf 0)`. Use `(GlobalTheory.T.tau_bimult_psi_even_over_extension_field V D (Kbar V)).1.1 ?_` and prove the remaining obligations. Introduce `z J hJ a b m`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨u, hu, -⟩, -⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.gen_fe (D := D) (F := Kbar V) hG 2 m (a + b)`. Take `⟨c, hc⟩` from `GlobalTheory.T.expansionComponents_proportional_shift_multiple hL hL2 V hV D A G U 2 (by norm_num) (a + b) m u hu (hsupp (a + b))`. Establish `hs : ∀ i z J, Good D.P.L z J → sval (s i (a + b + 2 • m)) (𝟙 _) z J = gs (𝟙 _) z ⊤ (DegPre.constBF D (Kbar V) c ⊤) * (sval (s i (a + b)) (DegPre.trF D (Kbar V) m).left z J * (val u (𝟙 _) z J).val)` using `fun i => hc (t i) (s i) (hexp i).1`. Establish `h₁` using `psi_mul_psi_of_addition_first_variable V D (Kbar V) s₀ r n s s' hr hadd hP hne a b m (a + b) rfl c u hs z J hJ`. Establish `h₂` using `psi_mul_psi_of_addition_first_variable V D (Kbar V) s₀ r n s s' hr hadd hP hne (a + b) 0 m (a + b) (add_zero _).symm c u hs z J hJ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₂` using `[zero_add]`. Establish `h₀` using `psi_zero_mul_rigV V D (Kbar V) s₀ hP hne z J hJ`. Establish `hc0 : cT D (TF (R` using `V) (Kbar V)) 0 = 1 := by`. Establish `h` using `FirstSlot.cT_add D (TF (R := V) (Kbar V)) 0 0`. Rewrite `h` using `[add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Establish `hk : cubV D.cub z J (cT D _ (a + b)) (cT D _ 0) (cT D _ m) = 1`. Rewrite using `[hc0]`. Conclude with `(isCub_cubV D.cub hJ).face₂ _ _`. Conclude with `cubeRel_of_two_comparisons _ _ _ _ _ _ _ _ _ _ _ _ _ h₁ h₂ hk h₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauBimult_of_psiRel : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ θ f, U.Theta θ f → PsiRel D (𝟙_ _) f → D.TauBimult) := by
   intro hL hL2 V _ _ _ hV D A G _ _ U θ f hθ hψ

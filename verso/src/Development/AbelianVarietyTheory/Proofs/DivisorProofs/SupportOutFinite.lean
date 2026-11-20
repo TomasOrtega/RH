@@ -7,7 +7,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.TraceLevel
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul H g`. Rewrite using `[hh, hψ g h h.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_out_mk {L W : Type} [Group L] (H : Subgroup L) (ψ : L → W) (hψ : ∀ g, ∀ h ∈ H, ψ (g * h) = ψ g)
     (g : L) : ψ (QuotientGroup.mk g : L ⧸ H).out = ψ g := by
@@ -15,9 +15,9 @@ theorem apply_out_mk {L W : Type} [Group L] (H : Subgroup L) (ψ : L → W) (hψ
   rw [hh, hψ g h h.2]
 
 /- English proof (translation)
-Rewrite using `[← finsum_comp_equiv (MulAction.toPerm l : Equiv.Perm (L ⧸ H)) (f := fun q : L ⧸ H => ψ q.out)]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Establish `: (MulAction.toPerm l : Equiv.Perm (L ⧸ H)) q = (QuotientGroup.mk (l * q.out) : L ⧸ H)`. Rewrite using `[MulAction.toPerm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Use `show ψ (l * q.out) = ψ ((MulAction.toPerm l : Equiv.Perm (L ⧸ H)) q).out`. Rewrite using `[this, apply_out_mk H ψ hψ]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_out_left {L W : Type} [Group L] [AddCommMonoid W] (H : Subgroup L) (ψ : L → W)
     (hψ : ∀ g, ∀ h ∈ H, ψ (g * h) = ψ g) (l : L) :
@@ -33,9 +33,9 @@ theorem finsum_out_left {L W : Type} [Group L] [AddCommMonoid W] (H : Subgroup L
   rw [this, apply_out_mk H ψ hψ]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv h hh`. Use `hv ⟨h, hh⟩` as an intermediate fact. Simplify using `using this`. Introduce `hv h show ρ (h : G) v = ((1 : H →* ℂˣ) h : ℂ) • v`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hv h h.2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixed_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     (H : Subgroup G) (v : V) : v ∈ fixed ρ H ↔ ∀ h ∈ H, ρ h v = v := by
@@ -48,7 +48,7 @@ theorem mem_fixed_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ
     simpa using hv h h.2
 
 /- English proof (translation)
-Use `haveI := QuotientGroup.discreteTopology hH`. Use `((HasCompactSupport.isCompact hF).image QuotientGroup.continuous_mk).finite_of_discrete.subset ?_` and prove the remaining obligations. Introduce `q hq`. Conclude with `⟨q.out, subset_tsupport _ hq, QuotientGroup.out_eq' q⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem support_out_finite {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (H : Subgroup G)
     (hH : IsOpen (H : Set G)) (F : G → ℂ) (hF : HasCompactSupport F) :
@@ -65,11 +65,9 @@ namespace GlobalTheory.TraceLevel
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Unfold `levOp`. Rewrite using `[LinearMap.smul_apply]`. Use `congr 1`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := hfin.toFinset) (fun q hq => by`. Rewrite using `[Set.Finite.coe_toFinset]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Function.mem_support.2 fun h0 => (Function.mem_support.1 hq) (by simp [h0])),`. Use `finsum_eq_sum_of_support_subset _ (s := hfin.toFinset) (fun q hq => by`. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `Function.mem_support.2 fun h0 => (Function.mem_support.1 hq) (by simp [h0])),`. Use the proof step `LinearMap.sum_apply]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levOp_id_apply (ρ : Representation ℂ G V) (K H : Subgroup G) (F : G → ℂ)
     (hfin : (Function.support fun q : G ⧸ H => F q.out).Finite) (v : V) :
@@ -87,11 +85,11 @@ theorem levOp_id_apply (ρ : Representation ℂ G V) (K H : Subgroup G) (F : G �
   simp
 
 /- English proof (translation)
-Establish `hfin` using `support_out_finite H hH F hF.1`. Rewrite `hv`, the goal using `[mem_fixed_iff]`. Introduce `k hk`. Rewrite using `[levOp_id_apply ρ K H F hfin, map_smul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hfin' : (Function.support fun q : G ⧸ H => F q.out • ρ q.out v).Finite` using `hfin.subset fun q hq => Function.mem_support.2 fun h0 => (Function.mem_support.1 hq) (by simp [h0])`. Rewrite using `[map_finsum (ρ k) hfin']`. Use `finsum_out_left H (fun g => F g • ρ g v) (fun g h hh => by` as an intermediate fact. Rewrite using `[(hF.2 h (hle hh) g).2, map_mul, Module.End.mul_apply, hv h hh]) k`. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[map_smul, ← Module.End.mul_apply, ← map_mul, (hF.2 k (hle hk) q.out).1]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem levOp_mem_fixed (ρ : Representation ℂ G V) (K K₀ H : Subgroup G) (F : G → ℂ) (hF : IsHecke K₀ F)
     (hH : IsOpen (H : Set G)) (hle : H ≤ K₀) (v : V) (hv : v ∈ fixed ρ H) :
@@ -112,45 +110,39 @@ theorem levOp_mem_fixed (ρ : Representation ℂ G V) (K K₀ H : Subgroup G) (F
   rw [map_smul, ← Module.End.mul_apply, ← map_mul, (hF.2 k (hle hk) q.out).1]
 
 /- English proof (translation)
-Establish `hK₀o : IsOpen (K₀ : Set G)` using `Subgroup.isOpen_mono hle hK''o`. Establish `hc : K''.relIndex K ≠ 0` using `by haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Establish `ho : IsOpen ((K''.subgroupOf K : Subgroup K) : Set K)` using `hK''o.preimage continuous_subtype_val`. Use `haveI := Subgroup.quotient_finite_of_isOpen _ ho`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : K''.relIndex K₀ * K₀.relIndex K = K''.relIndex K` using `Subgroup.relIndex_mul_relIndex (H := K'') (K := K₀) (L := K) hle hle'`. Establish `hd : K''.relIndex K₀ ≠ 0` using `left_ne_zero_of_mul (hmul ▸ hc)`. Establish `hcard : Nat.card (↥K₀ ⧸ K''.subgroupOf K₀) ≠ 0` using `hd`. Use `haveI : Finite (↥K₀ ⧸ K''.subgroupOf K₀) := Nat.finite_of_card_ne_zero hcard`. Use `letI := Fintype.ofFinite (↥K₀ ⧸ K''.subgroupOf K₀)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set d : ℕ := K''.relIndex K₀ with hd_def`. Take `⟨P, hPapp⟩ : ∃ P : V →ₗ[ℂ] V, ∀ v, P v = (d : ℂ)⁻¹ • ∑ k : ↥K₀ ⧸ K''.subgroupOf K₀, ρ ((k.out : K₀) : G) v` from `⟨(d : ℂ)⁻¹ • ∑ k : ↥K₀ ⧸ K''.subgroupOf K₀, ρ ((k.out : K₀) : G), fun v => by`. Simplify using `[LinearMap.sum_apply]⟩`. Establish `hPfix : ∀ v ∈ fixed ρ K'', P v ∈ fixed ρ K₀`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `hv`, the goal using `[mem_fixed_iff]`. Introduce `k hk`. Rewrite using `[hPapp, map_smul, map_sum]`. Use `congr 1`. Use `finsum_out_left (K''.subgroupOf K₀) (fun x : K₀ => ρ (x : G) v) (fun g h hh => by` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Rewrite using `[hv _ (Subgroup.mem_subgroupOf.1 hh)]) ⟨k, hk⟩`. Simplify using `only [finsum_eq_sum_of_fintype, Subgroup.coe_mul, map_mul, Module.End.mul_apply] at this`. Conclude with `this`. Establish `hPid : ∀ v ∈ fixed ρ K₀, P v = v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Rewrite `hv` using `[mem_fixed_iff]`. Rewrite using `[hPapp, Finset.sum_congr rfl (fun k _ => hv _ (k.out).2), Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Establish `: (Fintype.card (↥K₀ ⧸ K''.subgroupOf K₀) : ℂ) = d`. Rewrite using `[← Nat.card_eq_fintype_card]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[this, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hd), one_smul]`. Establish `key : ∀ v ∈ fixed ρ K'', levOp ρ K K'' F LinearMap.id v = levOp ρ K K₀ F LinearMap.id (P v)`. Introduce `v hv`. Establish `hv'` using `(mem_fixed_iff ρ K'' v).1 hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfin''` using `support_out_finite K'' hK''o F hF.1`. Establish `hfin₀` using `support_out_finite K₀ hK₀o F hF.1`. Rewrite using `[levOp_id_apply ρ K K'' F hfin'', levOp_id_apply ρ K K₀ F hfin₀]`. Establish `hR : ∀ a : G ⧸ K₀, F a.out • ρ a.out (P v) = (d : ℂ)⁻¹ • ∑ᶠ b : ↥K₀ ⧸ K''.subgroupOf K₀, F a.out • ρ (a.out * ((b.out : K₀) : G)) v`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPapp, map_smul, map_sum, smul_comm, finsum_eq_sum_of_fintype, Finset.smul_sum]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[hR]`. Rewrite using `[← smul_finsum, smul_smul]`. Establish `hL : ∑ᶠ q : G ⧸ K'', F q.out • ρ q.out v = ∑ᶠ a : G ⧸ K₀, ∑ᶠ b : ↥K₀ ⧸ K''.subgroupOf K₀, F a.out • ρ (a.out * ((b.out : K₀) : G)) v` using `by set e := Subgroup.quotientEquivProdOfLE hle`. Rewrite using `[← finsum_comp_equiv e.symm]`. Establish `hφ : ∀ g, ∀ h ∈ K'', (fun g => F g • ρ g v) (g * h) = (fun g => F g • ρ g v) g` using `fun g h hh => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Simplify using `only`. Rewrite using `[(hF.2 h (hle hh) g).2, map_mul, Module.End.mul_apply, hv' h hh]`. Establish `he : ∀ p : (G ⧸ K₀) × (↥K₀ ⧸ K''.subgroupOf K₀), e.symm p = (QuotientGroup.mk (p.1.out * ((p.2.out : K₀) : G)) : G ⧸ K'')`. Introduce and unpack `⟨a, b⟩`. Use `conv_lhs => rw [← QuotientGroup.out_eq' b]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : ∀ p : (G ⧸ K₀) × (↥K₀ ⧸ K''.subgroupOf K₀), F (e.symm p).out • ρ (e.symm p).out v = F p.1.out • ρ (p.1.out * ((p.2.out : K₀) : G)) v`. Introduce `p`. Rewrite using `[he p]`. Use `apply_out_mk K'' (fun g => F g • ρ g v) hφ (p.1.out * ((p.2.out : K₀) : G))` as an intermediate fact.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, (hF.2 _ (p.2.out).2 p.1.out).2]`. Repeatedly rewrite using `[h2]`. Rewrite using `[finsum_curry]`. Use `(hfin₀.prod Set.finite_univ).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ hp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, Set.mem_univ _⟩` and prove the remaining obligations. Conclude with `Function.mem_support.2 fun h0 => (Function.mem_support.1 hp) (by simp [h0])`. Rewrite using `[hL]`. Use `congr 1`. Rewrite using `[← hmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[mul_inv, mul_comm]`. Establish `hVle : fixed ρ K₀ ≤ fixed ρ K''`. Introduce `v hv`. Rewrite `hv`, the goal using `[mem_fixed_iff]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `fun h hh => hv h (hle hh)`. Use `haveI : FiniteDimensional ℂ (fixed ρ K₀) := Submodule.finiteDimensional_of_le hVle`. Establish `h'' : ∀ v ∈ fixed ρ K'', levOp ρ K K'' F LinearMap.id v ∈ fixed ρ K''` using `fun v hv => levOp_mem_fixed ρ K K₀ K'' F hF hK''o hle v hv`. Establish `h0 : ∀ v ∈ fixed ρ K₀, levOp ρ K K₀ F LinearMap.id v ∈ fixed ρ K₀` using `fun v hv => levOp_mem_fixed ρ K K₀ K₀ F hF hK₀o le_rfl v hv`. Unfold `twTr`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[dif_pos h'', dif_pos h0]`. Set `Pr : fixed ρ K'' →ₗ[ℂ] fixed ρ K₀` to `(P.domRestrict (fixed ρ K'')).codRestrict (fixed ρ K₀) (fun v => hPfix v.1 v.2)`. Set `ι : fixed ρ K₀ →ₗ[ℂ] fixed ρ K''` to `Submodule.inclusion hVle`. Establish `h1 : (levOp ρ K K'' F LinearMap.id).restrict h'' = ι ∘ₗ (((levOp ρ K K₀ F LinearMap.id).restrict h0) ∘ₗ Pr)`. Apply `LinearMap.ext` to reduce the goal to its premises.
-
-Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show levOp ρ K K'' F LinearMap.id v = levOp ρ K K₀ F LinearMap.id (P v)`. Conclude with `key v v.2`. Establish `h2 : Pr ∘ₗ ι = LinearMap.id`.
-
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show P v = v`. Conclude with `hPid v v.2`.
-
-Rewrite using `[h1, LinearMap.trace_comp_comm', LinearMap.comp_assoc, h2, LinearMap.comp_id]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twTr_level (ρ : Representation ℂ G V) (K K₀ K'' : Subgroup G) (F : G → ℂ) (hK''o : IsOpen (K'' : Set G))
     (hK : IsCompact (K : Set G)) (hle : K'' ≤ K₀) (hle' : K₀ ≤ K) (hF : IsHecke K₀ F)

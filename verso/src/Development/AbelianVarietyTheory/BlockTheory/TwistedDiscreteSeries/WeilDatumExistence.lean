@@ -15,9 +15,9 @@ def WeilDatumExists (D : D7) : Prop :=
       ∃ om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ), IsWeilDatumO ψ S T χS χT om
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h S T ψ χS χT`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨om, H⟩`. Conclude with `⟨H.std, H.hecS, H.hecT, H.resS, H.resT⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hψ, h1, h2, h3, h4⟩`. Conclude with `h S T ψ χS χT hψ h1 h2 h3 h4`. Introduce `h S T ψ χS χT hψ h1 h2 h3 h4`. Conclude with `(h S T ψ χS χT).2 ⟨hψ, h1, h2, h3, h4⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weilDatumExists_iff (D : D7) :
     WeilDatumExists D ↔ ∀ (S T : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle),
@@ -34,12 +34,12 @@ theorem weilDatumExists_iff (D : D7) :
     exact (h S T ψ χS χT).2 ⟨hψ, h1, h2, h3, h4⟩
 
 /- English proof (translation)
-The claim follows from `D.sp.cm.cmUnram`.
+A detailed English derivation is pending.
 -/
 example (D : D7) : Formalism.HermitianLatticesTheory.IsCMUnram D.host.E := D.sp.cm.cmUnram
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (D : D7) : IsHeckeChar D (1 : (AE D)ˣ →* Circle) := ⟨continuous_const, fun _ => rfl⟩
 

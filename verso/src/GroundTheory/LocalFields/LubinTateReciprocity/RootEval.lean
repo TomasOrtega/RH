@@ -11,11 +11,11 @@ section HomExt
 variable {B S : Type*} [CommRing B] [CommRing S]
 
 /- English proof (translation)
-Establish `hpoly : Φ₁.comp (Polynomial.coeToPowerSeries.ringHom (R` using `B)) = Φ₂.comp (Polynomial.coeToPowerSeries.ringHom (R := B)) := by`. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `b`. Simplify using `using hC b`. Simplify using `using hX`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hp : ∀ p : Polynomial B, Φ₁ (p : B⟦X⟧) = Φ₂ (p : B⟦X⟧)` using `fun p => congrArg (fun Φ : Polynomial B →+* S => Φ p) hpoly`. Use extensionality with `F`. Use `sub_eq_zero.mp (hJ _ fun k => ?_)` and prove the remaining obligations. Use `set G : B⟦X⟧ := PowerSeries.mk fun i => coeff (i + k) F`. Establish `hF : Φ₁ F - Φ₂ F = Φ₁ X ^ k * (Φ₁ G - Φ₂ G)` using `by conv_lhs => rw [F.eq_X_pow_mul_shift_add_trunc k]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add, map_mul, map_mul, map_pow, map_pow, hp, ← hX]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hF]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hXJ k)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powerSeries_ringHom_ext {J : Ideal S} (hJ : ∀ z : S, (∀ k : ℕ, z ∈ J ^ k) → z = 0)
     {Φ₁ Φ₂ : B⟦X⟧ →+* S} (hC : ∀ b : B, Φ₁ (C b) = Φ₂ (C b)) (hX : Φ₁ X = Φ₂ X)
@@ -51,7 +51,7 @@ def rootEval : B⟦X⟧ →ₐ[B] AdjoinRoot P :=
     (Ideal.Quotient.mkₐ B _)
 
 /- English proof (translation)
-Apply `hP.algEquivQuotient.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `hP.algEquivQuotient (hP.algEquivQuotient.symm _) = _`. Rewrite using `[AlgEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rootEval_coe (p : Polynomial B) : rootEval hP (p : B⟦X⟧) = AdjoinRoot.mk P p := by
   apply hP.algEquivQuotient.injective
@@ -61,7 +61,7 @@ theorem rootEval_coe (p : Polynomial B) : rootEval hP (p : B⟦X⟧) = AdjoinRoo
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[← Polynomial.coe_X, rootEval_coe]`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rootEval_X : rootEval hP X = AdjoinRoot.root P := by
   rw [← Polynomial.coe_X, rootEval_coe]
@@ -69,13 +69,13 @@ theorem rootEval_X : rootEval hP X = AdjoinRoot.root P := by
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[← Polynomial.coe_C, rootEval_coe, AdjoinRoot.mk_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootEval_C (b : B) : rootEval hP (C b) = AdjoinRoot.of P b := by
   rw [← Polynomial.coe_C, rootEval_coe, AdjoinRoot.mk_C]
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Express the relevant statement in the definitionally equal form `hP.algEquivQuotient.symm _ = 0 ↔ _`. Rewrite using `[map_eq_zero_iff _ hP.algEquivQuotient.symm.injective]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rootEval_eq_zero_iff (F : B⟦X⟧) :
     rootEval hP F = 0 ↔ F ∈ Ideal.span {(P : B⟦X⟧)} := by
@@ -85,27 +85,27 @@ theorem rootEval_eq_zero_iff (F : B⟦X⟧) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← rootEval_eq_zero_iff hP, map_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootEval_eq_rootEval_iff (F G : B⟦X⟧) :
     rootEval hP F = rootEval hP G ↔ F - G ∈ Ideal.span {(P : B⟦X⟧)} := by
   rw [← rootEval_eq_zero_iff hP, map_sub, sub_eq_zero]
 
 /- English proof (translation)
-Rewrite using `[rootEval_coe, AdjoinRoot.mk_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootEval_self : rootEval hP (P : B⟦X⟧) = 0 := by
   rw [rootEval_coe, AdjoinRoot.mk_self]
 
 /- English proof (translation)
-Rewrite using `[subst_coe (HasSubst.of_constantCoeff_zero' hG), Polynomial.aeval_algHom_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootEval_subst_coe {G : B⟦X⟧} (hG : constantCoeff G = 0) (p : Polynomial B) :
     rootEval hP (subst G (p : B⟦X⟧)) = Polynomial.aeval (rootEval hP G) p := by
   rw [subst_coe (HasSubst.of_constantCoeff_zero' hG), Polynomial.aeval_algHom_apply]
 
 /- English proof (translation)
-Take `⟨H, rfl⟩` from `PowerSeries.X_dvd_iff.mpr hG`. Rewrite using `[map_mul, rootEval_X]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootEval_mem_span_root {G : B⟦X⟧} (hG : constantCoeff G = 0) :
     rootEval hP G ∈ Ideal.span {AdjoinRoot.root P} := by
@@ -114,7 +114,7 @@ theorem rootEval_mem_span_root {G : B⟦X⟧} (hG : constantCoeff G = 0) :
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-The claim follows from `(PowerSeries.isUnit_iff_constantCoeff.mpr hG).map _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_rootEval {G : B⟦X⟧} (hG : IsUnit (constantCoeff G)) :
     IsUnit (rootEval hP G) :=
@@ -127,9 +127,9 @@ section Hausdorff
 variable {B : Type*} [CommRing B] {I : Ideal B} {P : Polynomial B}
 
 /- English proof (translation)
-Establish `h : Polynomial.eval₂ (AdjoinRoot.of P) (AdjoinRoot.root P) (Polynomial.X ^ P.natDegree + ∑ i ∈ Finset.range P.natDegree, Polynomial.C (P.coeff i) * Polynomial.X ^ i) = 0`. Rewrite using `[← hP.monic.as_sum]`. Conclude with `AdjoinRoot.eval₂_root P`. Rewrite `h` using `[Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finsetSum]`. Rewrite using `[eq_neg_of_add_eq_zero_left h, neg_mem_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hP.mem (Finset.mem_range.mp hi)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_pow_mem_map (hP : P.IsDistinguishedAt I) :
     AdjoinRoot.root P ^ P.natDegree ∈ I.map (AdjoinRoot.of P) := by
@@ -146,9 +146,9 @@ theorem root_pow_mem_map (hP : P.IsDistinguishedAt I) :
     (Ideal.mem_map_of_mem _ (hP.mem (Finset.mem_range.mp hi)))
 
 /- English proof (translation)
-Establish `hz' : z ∈ J • (⊤ : Submodule B (AdjoinRoot P))`. Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `hz`. Use `Submodule.smul_induction_on hz' (fun a ha m _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.mul_mem_right _ ha`. Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `J.add_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem repr_mem_of_mem_map (hP : P.Monic) (J : Ideal B) {z : AdjoinRoot P}
     (hz : z ∈ J.map (AdjoinRoot.of P)) (i : Fin (AdjoinRoot.powerBasis' hP).dim) :
@@ -163,11 +163,11 @@ theorem repr_mem_of_mem_map (hP : P.Monic) (J : Ideal B) {z : AdjoinRoot P}
     exact J.add_mem hx hy
 
 /- English proof (translation)
-Use `set pb := AdjoinRoot.powerBasis' hP.monic`. Establish `hmem : ∀ k : ℕ, z ∈ (I ^ k).map (AdjoinRoot.of P)`. Introduce `k`. Establish `h` using `hz (P.natDegree * k)`. Rewrite `h` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `h`. Rewrite using `[hw, pow_mul, Ideal.map_pow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (root_pow_mem_map hP) k)`. Apply `pb.basis.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `IsHausdorff.haus' (I := I) _ fun k => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `repr_mem_of_mem_map hP.monic _ (hmem k) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mem_span_root_pow [IsHausdorff I B] (hP : P.IsDistinguishedAt I)
     {z : AdjoinRoot P} (hz : ∀ k : ℕ, z ∈ Ideal.span {AdjoinRoot.root P} ^ k) : z = 0 := by
@@ -187,7 +187,7 @@ theorem eq_zero_of_forall_mem_span_root_pow [IsHausdorff I B] (hP : P.IsDistingu
   exact repr_mem_of_mem_map hP.monic _ (hmem k) i
 
 /- English proof (translation)
-The claim follows from `powerSeries_ringHom_ext (fun _ hz => eq_zero_of_forall_mem_span_root_pow hP hz) hC hX hXJ`.
+A detailed English derivation is pending.
 -/
 theorem rootEval_ringHom_ext [IsHausdorff I B] (hP : P.IsDistinguishedAt I)
     {Φ₁ Φ₂ : B⟦X⟧ →+* AdjoinRoot P}
@@ -202,9 +202,9 @@ section Coordinates
 variable {B : Type*} [CommRing B] {P : Polynomial B}
 
 /- English proof (translation)
-Use `set pb := AdjoinRoot.powerBasis' hP`. Establish `h' : b • z = 0`. Rewrite using `[Algebra.smul_def]`. Conclude with `h`. Apply `pb.basis.repr.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i`. Use `congrArg (fun w => pb.basis.repr w i) h'` as an intermediate fact. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.zero_apply] at this`. Rewrite using `[map_zero, Finsupp.zero_apply]`. Conclude with `hb _ this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_of_mul_eq_zero (hP : P.Monic) {b : B} (hb : ∀ c : B, b * c = 0 → c = 0)
     {z : AdjoinRoot P} (h : AdjoinRoot.of P b * z = 0) : z = 0 := by
@@ -220,7 +220,7 @@ theorem eq_zero_of_of_mul_eq_zero (hP : P.Monic) {b : B} (hb : ∀ c : B, b * c 
   exact hb _ this
 
 /- English proof (translation)
-Use `eq_zero_of_of_mul_eq_zero hP hb ?_` and prove the remaining obligations. Rewrite using `[← hy]`. Take `⟨j, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hk`. Rewrite using `[pow_succ, mul_assoc, h, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_mul_eq_zero_of_pow_eq (hP : P.Monic) {b : B}
     (hb : ∀ c : B, b * c = 0 → c = 0) {y : AdjoinRoot P} {k : ℕ} (hk : k ≠ 0)

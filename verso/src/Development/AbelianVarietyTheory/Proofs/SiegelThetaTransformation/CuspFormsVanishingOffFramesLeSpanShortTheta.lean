@@ -30,9 +30,9 @@ open GlobalTheory.Dict
 namespace GlobalTheory.Dict
 
 /- English proof (translation)
-Establish `h1 : ∀ k, P k ∈ (X k).SS (la k)`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact fun k => (siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.1`. Consider the case `add x y _ _ hx hy => exact fun k => (siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.2.1 _ (hx k) _ (hy k)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => exact fun k => (siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.2.2 a _ (hx k)`. Conclude with `((siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.2.2 t _ (h1 k)).1`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isBddSec_of_mem_holSub {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Comp : Type}
     (X : Comp → Data E r) (la : ∀ k, Wt (X k).Ψ r) (P : Formalism.L2.PjFree.FDSec X) (h : P ∈ Formalism.L2.PjFree.holSub X la) (k : Comp) (t : ℂ) :
@@ -46,7 +46,7 @@ theorem isBddSec_of_mem_holSub {E : Type} [Field E] [NumberField E] [IsCMField E
   exact ((siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.2.2 t _ (h1 k)).1
 
 /- English proof (translation)
-Unfold `thP`. Rewrite using `[I2.jof_polyDeriv_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => I2.polyDeriv_smul _ _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_sum_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {r g q0 n : ℕ} (X : Data E r)
     (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (φ : TF n g)
@@ -59,33 +59,29 @@ theorem theta_sum_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {r g q
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `hci E _ _ _ H Dw l Xo c n d σ r U hσ hU hr1 hA hG hpr hlev hnab huc h3 hpin nab bad nV a hbad hdom hbig hchi htot P hP`. Take `⟨hP1, hP0⟩` from `hP`. Break down `isEmpty_or_nonempty U.Comp with hemp | ⟨⟨k₀⟩⟩` into its components or cases. Establish `: P = 0` using `funext fun k => (hemp.false k).elim`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Take `⟨W⟩` from `nonempty_uw hU`. Establish `hrpq : r = Dw.p + Dw.q` using `hU.1`. Establish `hn : r ≤ n`. Use `Module.finrank_pos (R := ℚ) (M := E)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hev : Even n`. Unfold `Formalism.L2.Pj.Dom at hdom`. The claim follows by propositional logic. Establish `huw` using `GlobalTheory.T.uniformisation_component_lattices_markings E H Dw l Xo c σ r U hσ hU hr1 W`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. The claim follows by propositional logic. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsame : ∀ k, SameSp (U.X k) (U.X k₀)` using `fun k => ⟨Finset.ext fun τ => ((hU.2.1 k).2 τ).trans ((hU.2.1 k₀).2 τ).symm, (hG k k₀).1, (hU.2.1 k).1.trans (hU.2.1 k₀).1.symm, (hG k k₀).2, by rw [(huw k).1, (huw k₀).1, (hG k k₀).2]⟩`. Take `⟨ph, ψ, x₀, hph⟩` from `hpin (hrpq ▸ hn)`. Take `⟨Dc, hDe, -⟩` from `GlobalTheory.T.exists_letterRowWeightDictionary E H Dw l c σ r W.g n (U.X k₀) a W.e hσ hrpq (hU.2.1 k₀).1 (hU.2.1 k₀).2 (huw k₀).2.1 hdom`. Take `⟨D, hD⟩` from `GlobalTheory.T.exists_classicalLevelData_coverSelfDual E H Dw l Xo c n d σ r (U.X k₀) hn hrpq (huw k₀).2.1 hlev h3 ph ψ x₀ hph`. Take `⟨v₀, mu, hv₀, hmu⟩` from `GlobalTheory.SW.exists_vacua_and_multipliers E r (U.X k₀) W.g Dc.bas Dc.idx n Dc.sympl hev D`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x0, ga, δ, hadm, hset, hsep⟩` from `GlobalTheory.T.exists_components_lattices_moved_to_level_family E H Dw l Xo c n d σ r U hσ hU hr1 hA hlev W k₀ hsame ph D hn hD`. Take `⟨u, hu, hread⟩` from `GlobalTheory.T.short_series_readings_eq_classical_thetaSeries hci E H Dw l Xo c n d σ r U hσ hU hr1 hlev hnab huc ph ψ x₀ hph W (U.X k₀) a hdom Dc D hn hDe hD v₀ hv₀ x0`. Use `choose C hC hrd using fun k => hread k (hsame k) (ga k) (δ k) (hset k).1 (hset k).2.1 (hset k).2.2.1 (hset k).2.2.2.1 (hset k).2.2.2.2`. Establish `hmu1` using `GlobalTheory.T.vacuum_multiplier_eq_one_on_stabiliser E H Dw l Xo c n d σ r W.g (U.X k₀) Dc.bas Dc.idx D hn ph Dc.sympl hev hD (W.F.Di (W.ik k₀)) (W.emb k₀) (huw k₀).2.2.2.1 (huw k₀).2.2.2.2.1 (huw k₀).2.2.2.2.2.1 (huw k₀).2.2.2.2.2.2 v₀ hv₀ mu hmu`. Establish `hgrp` using `(GlobalTheory.SW.level_laws E r (U.X k₀) W.g Dc.bas Dc.idx n Dc.sympl hev D hn).2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpull` using `fun k => GlobalTheory.T.isStabiliserInvariant_pull_bounded_section E r (U.X k) (U.X k₀) (hsame k) (ga k) (Formalism.L2.PjFree.laU U a n k) (wtOf (U.X k₀) Dc.hr Dc.k Dc.k' n) D.grp l.M ((C k)⁻¹ • P k) (hset k).1 (fun τ i => by`. Rewrite using `[Dc.wt_eq]`. Simplify using `only [wtX, Formalism.L2.PjFree.laU, (hsame k).p0])`. Use the proof step `(fun g' hg' => ⟨((hgrp g').1 hg').1, fun hfix => (hmu1 _ (hset k).2.1 g' hg' hfix).2⟩)`. Use the proof step `(hpr k) (hchi k) (isBddSec_of_mem_holSub U.X _ P hP1 k _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM2 : 0 < d.l₂.M` using `lt_of_lt_of_le (by norm_num) d.l₂.three_le`. Establish `hMm : ((2 * bad * d.l₂.M : ℕ) : 𝓞 E) ∈ D.𝔪`. Rewrite using `[hD.m, Nat.cast_mul]`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Establish `h1 : (d.l₂.M : 𝓞 E) ∈ d.l₂.Mb * d.l₂.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[d.l₂.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Unfold `Mfr`. Conclude with `(Submodule.mem_inf.1 (Ideal.mul_le_inf h1)).2`. Take `⟨m, Λ, Pj, hΛ, hQ⟩` from `GlobalTheory.T.stableForms_eq_sum_thetaSeries_freeLowerRows E r (U.X k₀) W.g Dw.p Dc.hr Dc.bas Dc.idx n Dc.sympl hev hbig D hn (2 * bad * d.l₂.M) (Mfr l) (Jd d) (by positivity) hMm hD.prod hD.cop v₀ hv₀ mu hmu Dc.k Dc.k' U.Comp (fun k => mapL (ga k) (U.X k).Λ) _ (fun k => (hset k …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hgl` using `fun j => GlobalTheory.Dict.GenLatCmp.genLat_vset E n (Λ j)`. Establish `hg1` using `fun j => (hgl j).1 bad d.l₂.M hbad d.l₂.odd (hΛ j).1`. Use `choose N hN using fun j => (hg1 j).2.2.2`. Establish `hV : ∀ j, Λ j ∈ Vset E n d.l₂.M` using `fun j => (hgl j).2.2.1 _ _ (Dvd.intro_left _ rfl) (hΛ j).1`. Use `choose mj t R hR hPj using fun j => GlobalTheory.T.harmonicRowHighest_eq_span_integral_harmonic E H Dw l c σ r W.g Dw.p n (U.X k₀) a Dc (Λ j) (N j) (hN j).1.pos ((hN j).2.2.trans inf_le_left) (Pj j) (hΛ j).2`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `choose f hf hfr using fun j i => (htot ⟨Λ j⟩ (N j) x0 (R j i) (hg1 j).1 (hg1 j).2.1 (hg1 j).2.2.1 (hN j) (hadm _) (hR j i)).2`. Establish `hPe : P = ∑ j, ∑ i, (t j i * (u (Λ j) (N j))⁻¹) • Formalism.L2.PjFree.rdU U (f j i)`. Use function extensionality and compare the values at `k x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hx : x ∈ (U.X k).dom`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hx1, hx2, -⟩` from `((hpull k).2 0 (differentiableOn_const 0) (by simp)).2 x hx`. Establish `e1` using `hQ k _ hx1`. Rewrite `e1` using `[hx2, Pi.smul_apply, smul_eq_mul, inv_mul_eq_iff_eq_mul₀ (hC k)]`. Rewrite using `[e1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPj j, theta_sum_smul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hrd k (Λ j) (hV j) (N j) (hN j) (R j i) (hR j i).1 (f j i) (hf j i) (hfr j i) x hx]`. Use `hu (Λ j) (hV j) (N j) (hN j)` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[hP0 k x hx]`. Use `(Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun i _ => ?_).symm` and prove the remaining obligations. Establish `: Formalism.L2.PjFree.rdU U (f j i) k x = 0` using `dif_neg hx`. Rewrite using `[this, mul_zero]`. Rewrite using `[hPe]`.
-
-Use `Submodule.sum_mem _ fun j _ => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨f j i, ⟨hf j i, ⟨Λ j⟩, N j, x0, R j i, (hg1 j).1, (hg1 j).2.1, (hg1 j).2.2.1, hN j, hadm _, hR j i, hfr j i⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem holSub0_le_span_shortGen : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → 1 ≤ r → l.A = 1 → (∀ k k', (U.X k).Gm = (U.X k').Gm ∧ (U.X k).ξ0 = (U.X k').ξ0) → (∀ k, HasPrinc (U.X k) l.M) → d.IsLev → (∃ _ : StarRing (𝓞 E), IsNab d.Xo₂ d.c₂ d.nab₂) → UnitC d → ¬ 3 ∣ d.pd → (Dw.p + Dw.q ≤ n → ∃ ph ψ x₀, d.PhiPin ph ψ x₀) → ∀ (nab : NabV Xo c) (bad nV : ℕ) (a : (E →+* ℂ) × ℕ → ℕ), 0 < bad → Dom a n → 4 * (Module.finrank ℚ E * r) + 4 ≤ n → (∀ k, ChiOne (U.X k) (Formalism.L2.PjFree.laU U a n k)) → ShortValTot Xo c nab bad nV a n d → holSub0 U.X (Formalism.L2.PjFree.laU U a n) ≤ Submodule.span ℂ (Formalism.L2.PjFree.rdU U '' shortGen Xo c nab bad nV a n d) := by
   intro hci E _ _ _ H Dw l Xo c n d σ r U hσ hU hr1 hA hG hpr hlev hnab huc h3 hpin nab bad nV a hbad hdom hbig

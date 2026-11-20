@@ -19,11 +19,11 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc.OneSubPhi
 
 /- English proof (translation)
-Establish `hc : IsAdicComplete (Ideal.span {(p : ℤ)}) A`. Rewrite using `[← IsAdicComplete.map_algebraMap_iff (S := A), Ideal.map_span, Set.image_singleton, map_natCast]`. Conclude with `hA`. Set `f : A →ₗ[ℤ] A` to `LinearMap.id - ((AddMonoidHom.mulLeft (p : A)).comp φ.toAddMonoidHom).toIntLinearMap`. Establish `hf : ∀ y, f y = y - (p : A) * φ y` using `fun _ => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Function.Surjective f`. Use `surjective_of_mkQ_comp_surjective (I := Ideal.span {(p : ℤ)}) fun G => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `Submodule.mkQ_surjective _ G`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, hf]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: g - (p : A) * φ g - g = (p : ℤ) • (-φ g)` using `by simp`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`. Take `⟨y, hy⟩` from `hs x`. Conclude with `⟨y, (hf y).symm.trans hy⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem one_sub_mul_onto (p : ℕ) {A : Type} [CommRing A] (φ : A →+* A)
     (hA : IsAdicComplete (Ideal.span {(p : A)}) A) (x : A) : ∃ y : A, y - (p : A) * φ y = x := by
@@ -45,19 +45,19 @@ theorem one_sub_mul_onto (p : ℕ) {A : Type} [CommRing A] (φ : A →+* A)
   exact ⟨y, (hf y).symm.trans hy⟩
 
 /- English proof (translation)
-Establish `hψT : ψ (f t) = (p : B) * f t` using `by rw [hψ, ht, map_mul, map_natCast]`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `x b hb`. Take `⟨y, hy⟩` from `h0 x`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨f y * f t, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg f hy`. Rewrite `e` using `[map_sub, map_mul, map_natCast]`. Rewrite using `[map_mul, hψT, hψ]`. Take the linear combination `f t * e - hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Consider the case `succ r ih`. Introduce `x b hb`. Establish `hb' : b * f t ^ r = f x` using `hT.mul_right_cancel (by rw [← hb]; ring)`. Take `⟨β, z, hz⟩` from `h1 r x`. Take `⟨s, hs⟩` from `(hT.pow r).exists_left_inv`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `(hp.pow (r + 1)).exists_left_inv`. Establish `hψq : ψ q * (p : B) ^ (r + 1) = 1`. Use `congrArg ψ hq` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, map_natCast, map_one]`. Then use the resulting hypothesis. Establish `eq : ψ q = q` using `by linear_combination q * hψq - ψ q * hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hψs : ψ s * ((p : B) ^ r * f t ^ r) = 1`. Use `congrArg ψ hs` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, hψT, map_one, mul_pow]`. Then use the resulting hypothesis. Take `⟨y, hy⟩` from `ih z (f z * f t * s) (by rw [mul_assoc, hs, mul_one])`. Establish `e1` using `congrArg ψ hb'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e1` using `[map_mul, map_pow, hψT, hψ, mul_pow]`. Establish `e2` using `congrArg f hz`. Simplify using `only [map_mul, map_add, map_sub, map_pow, map_natCast] at e2`. Use `⟨b - f β * s + q * y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_sub, map_mul, map_mul, eq, hψ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `((hp.pow (r + 1)).mul (hT.pow r)).mul_left_cancel` to reduce the goal to its premises. Take the linear combination `-(p : B) * e1 - e2 - (p : B) ^ (r + 1) * f β * hs + (p : B) * f (φ β) * hψs + f t ^ r * (y - ψ y) * hq + f t ^ r * hy + f z * f t * hs`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem onto_of_denom (p : ℕ) {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (φ : A →+* A)
     (ψ : B →+* B) (hψ : ∀ x, ψ (f x) = f (φ x)) (t : A) (ht : φ t = (p : A) * t)
@@ -102,20 +102,20 @@ theorem onto_of_denom (p : ℕ) {A B : Type} [CommRing A] [CommRing B] (f : A �
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `(ArtinSchreierWitt.main l).2.2 ((l : Per.Ainf l) ^ r) a`. Conclude with `⟨β, by rw [GlobalTheory.RingBasics.φA_apply]; exact hβ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ainf_onto (r : ℕ) (a : Per.Ainf l) : ∃ β : Per.Ainf l, Per.φA l β - (l : Per.Ainf l) ^ r * β = a := by
   obtain ⟨β, hβ⟩ := (ArtinSchreierWitt.main l).2.2 ((l : Per.Ainf l) ^ r) a
   exact ⟨β, by rw [GlobalTheory.RingBasics.φA_apply]; exact hβ⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CrisMaps.phiA_extends l).alg a`.
+A detailed English derivation is pending.
 -/
 theorem phiA_alg (a : Per.Ainf l) : phiA l (algebraMap (Per.Ainf l) (Per.Acris l) a) =
     algebraMap (Per.Ainf l) (Per.Acris l) (Per.φA l a) := (GlobalTheory.CrisMaps.phiA_extends l).alg a
 
 /- English proof (translation)
-Take `⟨w, hw, -⟩` from `exists_mu_pow_div l e he`. Establish `hw0 : (l : Per.Acris0 l) * w = algebraMap (Per.Ainf l) (Per.Acris0 l) (mu e) ^ (l - 1)` using `Subtype.ext (by simpa using hw)`. Establish `hw1` using `congrArg (algebraMap (Per.Acris0 l) (Per.Acris l)) hw0`. Rewrite `hw1` using `[map_mul, map_natCast, map_pow, ← TFil.alg_factor]`. Conclude with `⟨_, hw1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_w (e : Per.Fl l) (he : e.untilt = 1) : ∃ w : Per.Acris l,
     (l : Per.Acris l) * w = algebraMap (Per.Ainf l) (Per.Acris l) (mu e) ^ (l - 1) := by
@@ -130,11 +130,11 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 /- English proof (translation)
-Establish `he` using `core_isEps l C`. Take `⟨t, u, ht, hu, htu⟩` from `exists_isLogA l C.ε he.1`. Establish `e1 : t = C.t` using `(LogFun.log_fun l C.ε C.t he.1 C.t_log).1 t ht`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Take `⟨w, hw⟩` from `exists_w C.ε he.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, z, hz⟩` from `phiA_mem_ainf_add l C.ε he w hw x`. Establish `h2 : l - 1 = l - 2 + 1`. Use `(Fact.out : l.Prime).two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `hw` using `[h2, pow_succ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Generalize the expression as in `algebraMap (Per.Ainf l) (Per.Acris l) (mu C.ε) = m at hw htu`. Use `⟨a, v * m ^ (l - 2) * z, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, ← e1, htu]`. Take the linear combination `z * hw - m * m ^ (l - 2) * z * hv`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mul_phi_mem (C : Core l) (x : Per.Acris l) : ∃ (a : Per.Ainf l) (z : Per.Acris l),
     (l : Per.Acris l) * phiA l x = (l : Per.Acris l) * algebraMap (Per.Ainf l) (Per.Acris l) a + C.t * z := by
@@ -158,9 +158,9 @@ end GlobalTheory.MemLoc.OneSubPhi
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Introduce `b`. Take `⟨r, x, hx⟩` from `GlobalTheory.T.bcris_eq_acris_localization_periodT l C b`. Take `⟨hT, -, -, hl⟩` from `core_t_unit_fil l C`. Use `OneSubPhi.onto_of_denom l (algebraMap (Per.Acris l) (Per.Bcris l)) (phiA l) (Per.φB l) (ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.2.2.2 C.t (TPhi.t_phi l C) hT hl (OneSubPhi.one_sub_mul_onto l (phiA l) (acris_basic l).1) (fun s y => ?_) (r + 1) x b (by rw [pow_succ, ← mul_assoc, hx])` and prove the remaining obligations. Take `⟨a, z, hz⟩` from `OneSubPhi.mul_phi_mem C y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ⟩` from `OneSubPhi.ainf_onto s a`. Use `⟨algebraMap (Per.Ainf l) (Per.Acris l) β, z, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, ← hβ, OneSubPhi.phiA_alg, map_sub, map_mul, map_pow, map_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_sub_phi_onto (l : ℕ) [Fact l.Prime] (C : Core l) : C.OneSubPhiOnto := by
   intro b

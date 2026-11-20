@@ -21,19 +21,19 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 omit [TopologicalSpace G] [Algebra Qp LL] [TopologicalSpace LL] in
 
 /- English proof (translation)
-Establish `hU : algebraMap O LL (u : O) = 1 + (PD.p : LL)` using `by rw [hu]; simp`. Establish `hne : (1 + (PD.p : LL)) ≠ 0` using `by rw [← hU]; exact (u.isUnit.map _).ne_zero`. Establish `hinv : algebraMap O LL ((u⁻¹ : Oˣ) : O) = (1 + (PD.p : LL))⁻¹`. Rewrite using `[← hU]`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Establish `hk1 : algebraMap O k (u : O) = 1` using `by rw [hu]; simp [hk]`. Establish `hk2 : algebraMap O k ((u⁻¹ : Oˣ) : O) = 1`. Establish `: algebraMap O k ((u⁻¹ : Oˣ) : O) * algebraMap O k (u : O) = 1` using `by rw [← map_mul]; simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hk1, mul_one]`. Then use the resulting hypothesis. Establish `key : ∀ a : ℤ, ∃ x : O, (PD.p : LL) * algebraMap O LL x = 1 - (1 + (PD.p : LL)) ^ a ∧ algebraMap O k x = -(a : k)`. Introduce `a`. Proceed by induction on `a using Int.induction_on with`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih`. Take `⟨x, hx, hx'⟩` from `ih`. Use `⟨x * (u : O) - 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_add_one₀ hne, map_sub, map_mul, hU, map_one]`. Take the linear combination `(1 + (PD.p : LL)) * hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_sub, map_mul, hk1, hx', map_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `pred m ih`. Take `⟨x, hx, hx'⟩` from `ih`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨(x + 1) * ((u⁻¹ : Oˣ) : O), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_sub_one₀ hne, map_mul, hinv, map_add, map_one]`. Establish `h1 : (1 + (PD.p : LL)) * (1 + (PD.p : LL))⁻¹ = 1` using `mul_inv_cancel₀ hne`. Take the linear combination `(1 + (PD.p : LL))⁻¹ * hx + h1`. Rewrite using `[map_mul, map_add, hk2, hx', map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `choose c hc hc' using key`. Conclude with `⟨c, hc, hc'⟩`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_c (hk : (PD.p : k) = 0) (u : Oˣ) (hu : (u : O) = 1 + (PD.p : O)) :
     ∃ c : ℤ → O, WachUse.IsC PD LL c ∧ ∀ a, algebraMap O k (c a) = -(a : k) := by
@@ -69,18 +69,18 @@ theorem exists_c (hk : (PD.p : k) = 0) (u : Oˣ) (hu : (u : O) = 1 + (PD.p : O))
   exact ⟨c, hc, hc'⟩
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem γD_smulA (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n₀) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
   rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]; rfl
 
 /- English proof (translation)
-Establish `hm : ∀ g, g ∈ W.DelF ↔ IsOfFinOrder g` using `fun g => by`. Rewrite using `[W.DelF_def, isOfFinOrder_iff_pow_eq_one]`. Use `Finset.sum_bij' (fun ε _ => δ * ε) (fun ε _ => δ⁻¹ * ε) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Conclude with `(hm _).2 (((hm _).1 hδ).mul ((hm _).1 ha))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Conclude with `(hm _).2 (((hm _).1 hδ).inv.mul ((hm _).1 ha))`. Introduce `a _`. Simplify using the standard rewrite rules. Introduce `a _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `a _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_Del {M : Type} [AddCommMonoid M] (f : W.Gam → M) {δ : W.Gam} (hδ : δ ∈ W.DelF) :
     ∑ ε ∈ W.DelF, f (δ * ε) = ∑ ε ∈ W.DelF, f ε := by
@@ -94,9 +94,9 @@ theorem sum_Del {M : Type} [AddCommMonoid M] (f : W.Gam → M) {δ : W.Gam} (hδ
   · intro a _; rfl
 
 /- English proof (translation)
-Rewrite using `[map_add, map_natCast]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `W.γ₀ δ W.π₀₁ = W.π₀₁`. Rewrite using `[LocWach.π₀₁, map_add, map_sub, map_one, map_natCast, map_sum, ← sum_Del W (fun ε => W.γ₀ ε (1 + PowerSeries.X)) hδ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, AlgHom.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem γA_q {δ : W.Gam} (hδ : δ ∈ W.DelF) :
     W.γA δ (W.π₀ + (PD.p : LetA O n₀)) = W.π₀ + (PD.p : LetA O n₀) := by
@@ -109,9 +109,9 @@ theorem γA_q {δ : W.Gam} (hδ : δ ∈ W.DelF) :
   simp only [map_mul, AlgHom.mul_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `W.γ₀ g ((letE i : LetA O n₀) j) = (letE i : LetA O n₀) j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[letE]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[letE, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem γA_e (g : W.Gam) (i : ZMod n₀) : W.γA g (letE i) = letE i := by
   funext j
@@ -121,13 +121,13 @@ theorem γA_e (g : W.Gam) (i : ZMod n₀) : W.γA g (letE i) = letE i := by
   · simp [letE, h]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h1`. Establish `h3 : (PowerSeries.map (algebraMap O k) W.π₀₁ : k⟦X⟧) = (u : k⟦X⟧) * (PowerSeries.X : k⟦X⟧) ^ (l - 1)`. Apply `HahnSeries.ofPowerSeries_injective (Γ := ℤ)` to reduce the goal to its premises. Rewrite using `[map_mul, map_pow]`. Rewrite `hu` using `[h2, vv_eq_coe_X]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hu`. Establish `h4` using `congrArg (PowerSeries.constantCoeff (R := k)) h3`. Establish `h5 : PowerSeries.constantCoeff W.π₀₁ = 1 - (PD.p : O) + W.DelF.card`. Rewrite using `[LocWach.π₀₁, map_add, map_sub, map_one, map_natCast, map_sum]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (g := fun _ => (1 : O))]`. Simplify using the standard rewrite rules. Introduce `δ _`. Rewrite using `[map_add, map_one, map_add, (W.γ₀_X δ).1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h6 : l - 1 ≠ 0` using `by omega`. Rewrite `h4` using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, h5]`. Simplify using `[h6, hk] at h4`. Take the linear combination `h4`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem card_Del {l : ℕ} (hl : 2 ≤ l) (hk : (PD.p : k) = 0) (ι : k⸨X⸩ →ₐ[k] k⸨X⸩)
     (h1 : ∃ u : (k⟦X⟧)ˣ, ι (vv k) = ((u : k⟦X⟧) : k⸨X⸩) * vv k ^ (l - 1))
@@ -154,9 +154,9 @@ theorem card_Del {l : ℕ} (hl : 2 ≤ l) (hk : (PD.p : k) = 0) (ι : k⸨X⸩ �
   linear_combination h4
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.AevalCommute.main`. Consider the case `exact _root_.GlobalTheory.AevalCommute.main`. Consider the case `(apply _root_.GlobalTheory.AevalCommute.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AevalCommute.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.AevalCommute.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AevalCommute.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem aeval_red {M V : Type} [AddCommGroup M] [Module O M] [AddCommGroup V] [Module k V] (J : M →+ V)
     (hs : ∀ (c : O) y, J (c • y) = algebraMap O k c • J y) (ν : Module.End O M) (μ : Module.End k V)
@@ -182,9 +182,9 @@ def red : ↥(W.NΔ T) →+ Vc k A.m where
 variable {T A q}
 
 /- English proof (translation)
-Use `p.j_smul T A q hq i (algebraMap O (LetA O n₀) c) (algebraMap k k⟦X⟧ (algebraMap O k c)) ⟨y, y.2.2⟩ ⟨(c • y : ↥(W.NΔ T)), (c • y).2.2⟩ ?_ (by rw [algebraMap_smul]; rfl)` as an intermediate fact. Rewrite `this` using `[algebraMap_smul]`. Conclude with `this`. Establish `h1 : PowerSeries.map (algebraMap O k) (algebraMap O (LetA O n₀) c (τ i)) = algebraMap k k⟦X⟧ (algebraMap O k c)`. Simplify using `[PowerSeries.algebraMap_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `ι.commutes _`.
+A detailed English derivation is pending.
 -/
 theorem red_smul (hq : Onto T A q) (c : O) (y : ↥(W.NΔ T)) :
     red p T A q i (c • y) = algebraMap O k c • red p T A q i y := by
@@ -198,18 +198,18 @@ theorem red_smul (hq : Onto T A q) (c : O) (y : ↥(W.NΔ T)) :
     exact ι.commutes _
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul k⸨X⸩ (PowerSeries.X ^ m : k⟦X⟧) x, zpow_natCast, map_pow, vv_eq_coe_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem X_smul_eq (m : ℕ) (x : Vc k A.m) : (PowerSeries.X ^ m : k⟦X⟧) • x = vv k ^ (m : ℤ) • x := by
   rw [← algebraMap_smul k⸨X⸩ (PowerSeries.X ^ m : k⟦X⟧) x, zpow_natCast, map_pow, vv_eq_coe_X]
   rfl
 
 /- English proof (translation)
-Establish `hg : W.γD T γ y ∈ DΔ W T` using `fun δ hδ => by`. Rewrite using `[← W.γD_mul, mul_comm, W.γD_mul, y.2.2 δ hδ]`. Establish `h1` using `p.j_γ T A q hq i ⟨y, y.2.2⟩ ⟨_, hg⟩ rfl`. Establish `h2` using `p.j_smul T A q hq i W.π₀ PowerSeries.X ⟨(ν y : ↥(W.NΔ T)), (ν y).2.2⟩ (⟨_, hg⟩ - ⟨y, y.2.2⟩) (by rw [← vv_eq_coe_X, p.ι_v]; rfl) (hν y)`. Rewrite `h2` using `[map_sub, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `X_smul_eq (A := A) 1 (red p T A q i (ν y))`. Rewrite `h3` using `[pow_one, Nat.cast_one, zpow_one]`. Rewrite using `[nab_apply_eq]`. Express the relevant statement in the definitionally equal form `_ = (vv k)⁻¹ • (((F.D A).γ i) (p.j T A q i ⟨y, y.2.2⟩) - p.j T A q i ⟨y, y.2.2⟩)`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = (vv k)⁻¹ • ((PowerSeries.X : k⟦X⟧) • red p T A q i (ν y))`. Rewrite using `[h3, smul_smul, inv_mul_cancel₀ (vv_ne_zero k), one_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_ν (hq : Onto T A q) (ν : Module.End O ↥(W.NΔ T))
     (hν : ∀ y : ↥(W.NΔ T), W.γD T γ y - y = W.π₀ • ((ν y : ↥(W.NΔ T)) : W.DD T)) (y : ↥(W.NΔ T)) :
@@ -229,15 +229,15 @@ theorem red_ν (hq : Onto T A q) (ν : Module.End O ↥(W.NΔ T))
   rw [h3, smul_smul, inv_mul_cancel₀ (vv_ne_zero k), one_smul]
 
 /- English proof (translation)
-Establish `hz' : ∑ δ ∈ W.DelF, W.γD T δ z ∈ W.NΔ T`. Use `⟨Submodule.sum_mem _ fun δ _ => W.N_Γ T δ z hz, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, ← sum_Del W (fun ε => W.γD T ε z) hδ]`. Simplify using `only [W.γD_mul]`. Establish `he : (letE (τ i) : LetA O n₀) • (y : W.DD T) ∈ DΔ W T` using `fun δ hδ => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[γD_smulA, γA_e, y.2.2 δ hδ]`. Establish `h1` using `p.j_smul T A q hq i (letE (τ i)) 1 ⟨y, y.2.2⟩ ⟨_, he⟩ (by simp [letE]) rfl`. Establish `h2 : W.DelF.card • ((letE (τ i) : LetA O n₀) • (y : W.DD T)) = (W.π₀ + (PD.p : LetA O n₀)) ^ s • ∑ δ ∈ W.DelF, W.γD T δ z`. Rewrite using `[Finset.smul_sum, ← Finset.sum_const]`. Use `Finset.sum_congr rfl fun δ hδ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← he δ hδ, h, γD_smulA, map_pow, γA_q W hδ]`. Establish `h3` using `p.j_smul T A q hq i ((W.π₀ + (PD.p : LetA O n₀)) ^ s) (PowerSeries.X ^ s) ⟨_, hz'.2⟩ (W.DelF.card • ⟨_, he⟩) ?_ h2`. Rewrite `h3` using `[map_nsmul, h1, one_smul, ← Nat.cast_smul_eq_nsmul k, hc, neg_one_smul, X_smul_eq]`. Use `⟨-⟨_, hz'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, smul_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(neg_eq_iff_eq_neg.1 h3)`. Establish `h4 : PowerSeries.map (algebraMap O k) (((W.π₀ + (PD.p : LetA O n₀)) ^ s) (τ i)) = PowerSeries.map (algebraMap O k) W.π₀₁ ^ s`. Establish `h5 : ((PD.p : ℕ) : k⟦X⟧) = 0`. Rewrite using `[← map_natCast (algebraMap k k⟦X⟧), hk, map_zero]`. Rewrite using `[Pi.pow_apply, Pi.add_apply, Pi.natCast_apply, map_pow, map_add, map_natCast, h5, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h4, map_pow, map_pow, map_pow, ← p.ι_v, vv_eq_coe_X]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_div (hq : Onto T A q) (hk : (PD.p : k) = 0) (hc : (W.DelF.card : k) = -1) (s : ℕ)
     (y : ↥(W.NΔ T)) (z : W.DD T) (hz : z ∈ W.N T)
@@ -270,21 +270,19 @@ theorem red_div (hq : Onto T A q) (hk : (PD.p : k) = 0) (hc : (W.DelF.card : k) 
     rw [h4, map_pow, map_pow, map_pow, ← p.ι_v, vv_eq_coe_X]
 
 /- English proof (translation)
-Establish `hk : (PD.p : k) = 0` using `by rw [hp]; exact CharP.cast_eq_zero k l`. Establish `hc` using `card_Del W hl hk ι h1 p.ι_v`. Take `⟨c, hc1, hc2⟩` from `exists_c (PD := PD) (LL := LL) hk (W.χΓ γ) hγ`. Take `⟨ν, hν, hmid, -⟩` from `hS T U hU γ hγ c hc1`. Use `set I := ((Finset.range s) ×ˢ (U (τ i)).toFinset).image (fun p => (p.1 : ℤ) - p.2) with hI`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ y : ↥(W.NΔ T), Polynomial.aeval (nab ((F.D A).γ i)) (∏ m ∈ I, (Polynomial.X + Polynomial.C (m : k))) (red p T A q i y) ∈ sh s N`. Introduce `y`. Take `⟨z, hz, h⟩` from `hmid (τ i) s y`. Take `⟨z', hz'⟩` from `red_div p i hq hk hc s _ z hz h`. Rewrite `hz'` using `[aeval_red (red p T A q i) (red_smul p i hq) ν _ (red_ν p i hq ν hν), Polynomial.map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, hc2, map_neg, sub_neg_eq_add] at hz'`. Conclude with `mem_sh_iff_exists.2 ⟨_, (hN _).2 ⟨⟨z', z'.2.2⟩, z'.2.1, rfl⟩, hz'.symm⟩`. Use `⟨∏ m ∈ I.erase 0, (Polynomial.X + Polynomial.C (m : k)), ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval_prod, Finset.prod_ne_zero_iff]`. Introduce `m hm h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hm0, hm⟩` from `Finset.mem_erase.1 hm`. Take `⟨⟨a, u⟩, hau, rfl⟩` from `Finset.mem_image.1 hm`. Take `⟨ha, hu⟩` from `Finset.mem_product.1 hau`. Rewrite `h0` using `[Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_C, zero_add, CharP.intCast_eq_zero_iff k l]`. Conclude with `hm0 (sub_eq_zero.2 (hs u (Multiset.mem_toFinset.1 hu) a (Finset.mem_range.1 ha) h0))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨x, hx1, rfl⟩` from `(hN x).1 hx`. Set `y : ↥(W.NΔ T)` to `⟨x, hx1, x.2⟩`. Establish `hy : p.j T A q i x = red p T A q i y` using `rfl`. Rewrite using `[hy]`. Distinguish the cases in `h0 : (0 : ℤ) ∈ I`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `key y` as an intermediate fact. Rewrite `this` using `[← Finset.mul_prod_erase I _ h0, map_mul, Module.End.mul_apply]`. Simplify using `using this`. Use `key (ν y)` as an intermediate fact. Rewrite `this` using `[red_ν p i hq ν hν]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.erase_eq_of_notMem h0]`. Establish `h2 : ∀ (f : Polynomial k) (μ : Module.End k (Vc k A.m)) w, μ (Polynomial.aeval μ f w) = Polynomial.aeval μ f (μ w)` using `fun f μ w => by`. Use `congrArg (fun g => Polynomial.aeval μ g w) (mul_comm Polynomial.X f)` as an intermediate fact. Simplify using `using this`. Rewrite using `[h2]`.
-
-Conclude with `this`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ePoly_gen [CharP k l] (hp : PD.p = l) (hl : 2 ≤ l) (hq : Onto T A q)
     (h1 : ∃ u : (k⟦X⟧)ˣ, ι (vv k) = ((u : k⟦X⟧) : k⸨X⸩) * vv k ^ (l - 1))
@@ -335,11 +333,11 @@ theorem ePoly_gen [CharP k l] (hp : PD.p = l) (hl : 2 ≤ l) (hq : Onto T A q)
 end Gen
 
 /- English proof (translation)
-Introduce `l _ P H S k _ _ _ _ R ι F τ γ p hι hτ hγ hQ T A q U hq _ hU N hN i s hs`. Establish `hb : Function.Bijective S.emb` using `S.hyp.1.2.2.2.1`. Establish `hl : 5 ≤ l` using `S.hyp.1.1`. Set `e` to `Equiv.ofBijective _ hb`. Establish `hp : (P.PD S.K).p = l` using `P.PD_p S.K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `ePoly_gen p i hp (by omega) hq hι.1 (by rw [hp]; exact hγ) hQ.2.2.2.2.2 (fun j => U (e.symm ((S.W H).emb j))) ⟨hU.1, fun j => ?_⟩ (N i) (hN i) s ?_` and prove the remaining obligations. Use `hU.2 (e.symm ((S.W H).emb j))` as an intermediate fact. Establish `h2 : S.emb (e.symm ((S.W H).emb j)) = (S.W H).emb j` using `e.apply_symm_apply _`. Rewrite `this` using `[h2]`. Then use the resulting hypothesis. Establish `h2 : e.symm ((S.W H).emb (τ i)) = i` using `by rw [hτ]; exact e.symm_apply_apply i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Simplify `hs` using `only [h2]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ePoly_base : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) (S : TopSit P) (k : Type) [Field k] [Algebra S.O k] [CharP k l], S.IsRes k → ∀ {R : RingPG k l} (ι : k⸨X⸩ →ₐ[k] k⸨X⸩) (F : DFun R S.n S.G) (τ : ZMod S.n → ZMod (Module.finrank ℚ_[l] ↥(K0 S.K))) (γ : (S.W H).Gam) (p : Pres (S.W H) F ι τ γ), GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.IsCyclotomic R ι → (∀ i, (S.W H).emb (τ i) = S.emb i) → ((S.W H).χΓ γ : S.O) = 1 + (l : S.O) → GlobalTheory.WachUse.QN (S.W H) → ∀ (T : LocLat S.G ℚ_[l] ↥S.LL.1 S.O) (A : Ob k S.G) q (U : ZMod S.n → Multiset ℤ), Onto T A q → KerIs S.Γ.lam q → CrysWith (P.PD S.K) S.emb T.ρ U → ∀ N : Lats k S.n A.m, (∀ i y, y ∈ N i ↔ ∃ x : ↥(DΔ (S.W H) T), (x : (S.W H).DD T) ∈ (S.W H).N T ∧ p.j T A q i x = y) → ∀ (i : ZMod S.n) (s : ℕ), (∀ u ∈ U i, ∀ a : ℕ, a < s → (l : ℤ) ∣ (a : ℤ) - u → (a : ℤ) = u) → EPoly ((F.D A).γ i) (N i) s := by
   intro l _ P H S k _ _ _ _ R ι F τ γ p hι hτ hγ hQ T A q U hq _ hU N hN i s hs

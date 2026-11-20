@@ -26,13 +26,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Ker.AtRecord
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, H.d = 16 * k + 7` from `⟨H.d / 16, by have := H.d_mod; omega⟩`. Establish `h1 : (H.w0 : E) + cc (H.w0 : E) = 1`. Use `congrArg (algebraMap (𝓞 E) E) (PullbackSections.CVA.cmHostUnit_add_conj_eq_one H)` as an intermediate fact. Rewrite `this` using `[map_add, map_one]`. Conclude with `(congrArg _ (H.bar_eq _).symm).trans this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : 2 * (H.w0 : E) = 1 + (H.rt : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.two_weight_eq_one_add_root` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`. Then use the resulting hypothesis. Establish `h3 : (H.rt : E) ^ 2 = -(16 * k + 7)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_pow, map_neg, map_natCast, hk]`. Conclude with `this.trans (by push_cast; rfl)`. Use `⟨((2 * k + 1 : ℕ) : E), isIntegral_natCast _, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_sub_of_add_eq' h1]`. Use `push_cast`.
-
-Take the linear combination `(-(1 / 4 : E)) * h3 - (1 / 4 : E) * (2 * (H.w0 : E) - 1 + (H.rt : E)) * h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isRelTraceOneIdempotentModTwo_hostElement {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) :
     IdemTwo (H.w0 : E) := by

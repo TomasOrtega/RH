@@ -22,7 +22,7 @@ end
 section
 variable {cf : CharFrame D} {C : NChoice D} {tp : TupTied D cf C}
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (x :))`.
+A detailed English derivation is pending.
 -/
 theorem Mv.tauTrue_alt {a : _root_.GlobalTheory.HeightCounting.NAllCAlt D C} (x : TauTrue a.exp) : TauTrue ((_root_.UpperTheory.One.M.mvAll_alt trivial) m a).exp := (by with_unfolding_all exact (x :))
 end

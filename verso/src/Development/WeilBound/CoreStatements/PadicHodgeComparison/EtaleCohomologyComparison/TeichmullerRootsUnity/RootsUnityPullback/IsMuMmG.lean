@@ -22,9 +22,9 @@ def IsMuG (wn : b₀.R →+* b₁.R) (e : ℕ) (m : CH.Mor (B.OM (F.cr b₀ h₀
         F.Pt.map (CommRingCat.ofHom φ) T.y.1.2
 
 /- English proof (translation)
-Use `⟨fun T => RingEquiv.refl T.B, fun _ _ => rfl, fun T => ⟨le_of_eq (Ideal.map_id _), fun _ _ => rfl⟩, fun T => Ideal.map_id _, fun _ _ => rfl, fun T h φ hφ => ?_⟩` and prove the remaining obligations. Establish `e1 : Ideal.quotientMap T.J (RingEquiv.refl T.B).toRingHom h = RingHom.id _` using `Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl)`. Establish `e2` using `(p₁ _ (m₂.pt.app _ T.y)).trans (p₂ _ T.y φ hφ)`. Use `Eq.trans ?_ e2` and prove the remaining obligations. Use `(congrArg (fun g => F.Pt.map (CommRingCat.ofHom g) _) e1).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun (congrArg (fun t => (ConcreteCategory.hom t : _ → _)) (F.Pt.map_id (CommRingCat.of (T.B ⧸ T.J)))) _`.
+A detailed English derivation is pending.
 -/
 theorem isMuG (wn : b₀.R →+* b₁.R) (e : ℕ) (m₁ : Mor (F.cr b₀ h₀ κ₀) (F.cr b₁ h₁ κm) wn)
     (m₂ : Mor (F.cr b₁ h₁ κm) (F.cr b₁ h₁ κ₁) (RingHom.id _)) (k₁ : ∀ a, wn (c₀ a) = c₁ (w a))
@@ -47,7 +47,7 @@ end
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-The claim follows from `isMuG (B.schFn M.p) (b₀ := Wc.bs l r.k n) (b₁ := B.bs l true n) (h₀ := rfl) (h₁ := rfl) (Pb.Mid.wn r n) (l ^ N) _ (Pb.Mid.mIn r M n hT) (Pb.Mid.wn_mk r n) (fun _ => rfl) (fun _ _ => rfl) (fun B₀ y φ hφ => congrArg (fun g => (B.schFn M.p).Pt.map (CommRingCat.ofHom g) y.1.2) (RingH …`.
+A detailed English derivation is pending.
 -/
 theorem isMu_mmG (r : Res l K) (M : Model l K) (n : ℕ) {N : ℕ} (hT : Pb.Mid.TeichmullerCongruence r N) :
     IsMu r M n N (mm r M n hT) :=

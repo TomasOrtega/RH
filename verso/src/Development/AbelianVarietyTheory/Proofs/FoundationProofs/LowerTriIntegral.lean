@@ -7,13 +7,13 @@ namespace GlobalTheory.WeylInt
 open Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (hk : k < n) (a : Fin r), a.val < k → m (a, ⟨k, hk⟩) = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro hk a ha`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `succ k ih`. Introduce `hk a ha`. Establish `h1` using `h ⟨k, by omega⟩ ⟨k + 1, hk⟩ rfl a`. Establish `h2 : (∑ b : Fin r with b < a, m (b, ⟨k, by omega⟩)) = 0`. Use `Finset.sum_eq_zero fun b hb => ih _ b ?_` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: b.val < a.val` using `(Finset.mem_filter.mp hb).2`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[h2]`. Establish `h3 : m (a, ⟨k + 1, hk⟩) ≤ ∑ b : Fin r with b ≤ a, m (b, ⟨k + 1, hk⟩)` using `Finset.single_le_sum (f := fun b : Fin r => m (b, ⟨k + 1, hk⟩)) (fun _ _ => Nat.zero_le _) (Finset.mem_filter.mpr ⟨Finset.mem_univ _, le_rfl⟩)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `a s has`. Conclude with `key s.val s.2 a has`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lowerTri_of_interlaced {r n : ℕ} {m : Fin r × Fin n →₀ ℕ} (h : Interlaced m) : LowerTri m := by
   have key : ∀ (k : ℕ) (hk : k < n) (a : Fin r), a.val < k → m (a, ⟨k, hk⟩) = 0 := by
@@ -42,9 +42,9 @@ theorem intQ_apply (r n : ℕ) (P : MvPolynomial (Fin r × Fin n) ℤ) :
     intQ r n P = MvPolynomial.map (Int.castRingHom ℚ) P := rfl
 
 /- English proof (translation)
-Rewrite using `[intQ_apply]`. Simplify using `only [bideterminant, initMinor, map_prod, RingHom.map_det]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `ext1 i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem intQ_bidet {r n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (I : ∀ k, Fin (sz k) → Fin r) :
     intQ r n (bideterminant ℤ sz hsz I) = bideterminant ℚ sz hsz I := by
@@ -56,21 +56,21 @@ theorem intQ_bidet {r n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) 
   simp
 
 /- English proof (translation)
-Introduce `r n ν`. It suffices to establish `key : ∀ d : (colLex r n).syn, ∀ f ∈ dualWeyl ℚ r n ν, (colLex r n).toSyn ((colLex r n).degree f) = d → (∀ e : Fin r × Fin n →₀ ℕ, LowerTri e → ∃ z : ℤ, coeff e f = z) → ∃ Q' : MvPolynomial (Fin r × Fin n) ℤ, f = intQ r n Q' by`. Introduce `f hf hint`. Conclude with `key _ f hf rfl hint`. Introduce `d`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `d using WellFoundedLT.induction with`. Consider the case `_ d ih`. Introduce `f hf hd hz`. Distinguish the cases in `hf0 : f = 0`. Conclude with `⟨0, by rw [hf0, map_zero]⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `set m := (colLex r n).degree f with hm`. Establish `hint : Interlaced m` using `leadInterlaced ℚ r n ν f hf hf0`. Establish `hcol : ∀ t : Fin n, ∑ a : Fin r, m (a, t) = ν t` using `colSums ℚ r n ν f hf m (((colLex r n).degree_mem_support_iff f).mpr hf0)`. Take `⟨K, sz, hsz, I, hshape, hmono, hexp⟩` from `sSYTExists r n ν m hcol hint`. Take `⟨hdeg, hlc⟩` from `column_lex_bideterminant ℚ r n K sz hsz I hmono`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : bideterminant ℚ sz hsz I ∈ dualWeyl ℚ r n ν`. Use `bidetMem ℚ r n K sz hsz I` as an intermediate fact. Rewrite `this` using `[hshape]`. Then use the resulting hypothesis. Take `⟨z, hzm⟩` from `hz m (lowerTri_of_interlaced hint)`. Establish `hlcf : (colLex r n).leadingCoeff f = (z : ℚ)` using `hzm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f' := f - (colLex r n).leadingCoeff f • bideterminant ℚ sz hsz I with hf'`. Establish `hf'mem : f' ∈ dualWeyl ℚ r n ν` using `Submodule.sub_mem _ hf (Submodule.smul_mem _ _ hmem)`. Establish `hb : (colLex r n).leadingCoeff f • bideterminant ℚ sz hsz I = intQ r n (z • bideterminant ℤ sz hsz I)`. Rewrite using `[map_smul, intQ_bidet, hlcf, Int.cast_smul_eq_zsmul]`. Establish `hdecomp : f = f' + intQ r n (z • bideterminant ℤ sz hsz I)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[hf', ← hb]`. Normalize the expressions using the abelian group laws. Establish `hQ : ∃ Q' : MvPolynomial (Fin r × Fin n) ℤ, f' = intQ r n Q'`. Distinguish the cases in `h0 : f' = 0`. Conclude with `⟨0, by rw [h0, map_zero]⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hlt` using `lcassem_sub_lt (colLex r n) (f := f) (g := bideterminant ℚ sz hsz I) (hdeg.trans hexp) hlc h0`. Use `ih _ (hd ▸ hlt) f' hf'mem rfl fun e he => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `hz e he`. Use `⟨w - coeff e (z • bideterminant ℤ sz hsz I), ?_⟩` and prove the remaining obligations. Rewrite using `[hf', hb, coeff_sub, hw, intQ_apply, coeff_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `only [Int.cast_sub, eq_intCast]`. Take `⟨Q', hQ'⟩` from `hQ`. Conclude with `⟨Q' + z • bideterminant ℤ sz hsz I, by rw [map_add, ← hQ']; exact hdecomp⟩`.
+A detailed English derivation is pending.
 -/
 theorem lowerTriIntegral : Formalism.GradedWeylDivisibility.LowerTriIntegral := by
   intro r n ν

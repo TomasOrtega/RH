@@ -22,7 +22,7 @@ def cyc (c : ℤ_[l]) : PowerSeries O :=
   PowerSeries.map (algebraMap ℤ_[l] O) (PowerSeries.binomialSeries ℤ_[l] c) - 1
 
 /- English proof (translation)
-Rewrite using `[cyc, map_sub, map_one, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.binomialSeries_coeff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cyc_const (c : ℤ_[l]) : PowerSeries.constantCoeff (cyc l O c) = 0 := by
   rw [cyc, map_sub, map_one, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map,
@@ -41,75 +41,75 @@ def QQ (s : ℕ) : PowerSeries O := ∑ k ∈ Finset.range l, (1 + XX l O s) ^ k
 namespace Series
 
 /- English proof (translation)
-Rewrite using `[cyc, Fon.map_binomialSeries _ (fun _ => rfl)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cyc_eq (c : ℤ_[l]) : cyc l O c = PowerSeries.binomialSeries O c - 1 := by
   rw [cyc, Fon.map_binomialSeries _ (fun _ => rfl)]
 
 /- English proof (translation)
-The claim follows from `PowerSeries.substAlgHom_X _`.
+A detailed English derivation is pending.
 -/
 theorem act_X (c : ℤ_[l]) : act l O c PowerSeries.X = cyc l O c := PowerSeries.substAlgHom_X _
 
 /- English proof (translation)
-The claim follows from `Fon.algHom_ext_X (by rw [act_X, cyc_eq, Fon.gam_X]) (by rw [act_X, cyc_const])`.
+A detailed English derivation is pending.
 -/
 theorem act_eq (c : ℤ_[l]) : act l O c = Fon.gam O c :=
   Fon.algHom_ext_X (by rw [act_X, cyc_eq, Fon.gam_X]) (by rw [act_X, cyc_const])
 
 /- English proof (translation)
-Rewrite using `[phi, act_eq, Fon.gam_l]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_eq : phi l O = Fon.phi0 l O := by rw [phi, act_eq, Fon.gam_l]
 
 /- English proof (translation)
-Rewrite using `[cyc_eq, PowerSeries.binomialSeries_nat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cyc_natCast (k : ℕ) : cyc l O (k : ℤ_[l]) = (1 + PowerSeries.X) ^ k - 1 := by
   rw [cyc_eq, PowerSeries.binomialSeries_nat]
 
 /- English proof (translation)
-Simplify using `only [act_eq, Fon.gam_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_act (c c' : ℤ_[l]) (a : PowerSeries O) : act l O c (act l O c' a) = act l O (c * c') a := by
   simp only [act_eq, Fon.gam_mul]
 
 /- English proof (translation)
-Rewrite using `[act_eq, Fon.gam_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_one (a : PowerSeries O) : act l O 1 a = a := by rw [act_eq, Fon.gam_one]
 
 /- English proof (translation)
-Rewrite using `[phi, act_act, act_act, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_act (c : ℤ_[l]) (a : PowerSeries O) : phi l O (act l O c a) = act l O c (phi l O a) := by
   rw [phi, act_act, act_act, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[phi_eq, Fon.cyclotomicFrobeniusPowerSeries_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_X : phi l O PowerSeries.X = (1 + PowerSeries.X) ^ l - 1 := by rw [phi_eq, Fon.cyclotomicFrobeniusPowerSeries_X]
 
 /- English proof (translation)
-Rewrite using `[phi_eq, Fon.cyclotomicFrobeniusPowerSeries_pow_apply_X, XX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_pow_X (s : ℕ) : (phi l O ^ (s - 1)) PowerSeries.X = XX l O s := by
   rw [phi_eq, Fon.cyclotomicFrobeniusPowerSeries_pow_apply_X, XX]
 
 /- English proof (translation)
-Rewrite using `[phi_eq]`. Conclude with `Fon.cyclotomicFrobenius_iteratedVariable_eq_mul l O s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_XX (s : ℕ) : phi l O (XX l O s) = XX l O s * QQ l O s := by
   rw [phi_eq]; exact Fon.cyclotomicFrobenius_iteratedVariable_eq_mul l O s
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, Fon.isUnit_vser O c, by rw [act_eq, Fon.gam_X_eq]⟩`.
+Supply the required witnesses or components.
 -/
 theorem act_X_unit (c : ℤ_[l]ˣ) : ∃ v, IsUnit v ∧ act l O c PowerSeries.X = PowerSeries.X * v :=
   ⟨_, Fon.isUnit_vser O c, by rw [act_eq, Fon.gam_X_eq]⟩
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_add_pow_prime_eq (Fact.out : l.Prime) (1 : PowerSeries O) PowerSeries.X`. Conclude with `⟨PowerSeries.X * r, by rw [phi_X, hr]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem phi_X_mod : ∃ r, phi l O PowerSeries.X = PowerSeries.X ^ l + (l : PowerSeries O) * r := by
   obtain ⟨r, hr⟩ := exists_add_pow_prime_eq (Fact.out : l.Prime) (1 : PowerSeries O) PowerSeries.X
@@ -146,9 +146,9 @@ open Series
 variable (n : ℕ)
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.mem_ker, ← AdicCompletion.pow_smul_top_eq_ker_eval (Submodule.fg_span_singleton _), Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, trivial, by rw [Algebra.smul_def, map_pow, map_natCast]⟩`. Introduce and unpack `⟨z, -, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨z, by rw [Algebra.smul_def, map_pow, map_natCast]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem dvd_iff_eval (S : Type) [CommRing S] (k : ℕ) (x : AdicCompletion (Ideal.span {(l : S)}) S) : (l : AdicCompletion (Ideal.span {(l : S)}) S) ^ k ∣ x ↔
     AdicCompletion.eval (Ideal.span {(l : S)}) S k x = 0 := by
@@ -164,7 +164,7 @@ private theorem dvd_iff_eval (S : Type) [CommRing S] (k : ℕ) (x : AdicCompleti
 omit [Algebra ℤ_[l] O] in
 
 /- English proof (translation)
-The claim follows from `(IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (letπ : LetA O n)) letπ).map (algebraMap _ (EE l O n))`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_toEE_π : IsUnit (toEE l O n letπ) :=
   (IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (letπ : LetA O n)) letπ).map
@@ -182,9 +182,9 @@ variable {l O n}
 omit [Algebra ℤ_[l] O] in
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (Ideal.span {(l : Localization.Away (letπ : LetA O n))}) _ k x)`. Establish `h1 : (l : EE l O n) ^ k ∣ x - algebraMap _ (EE l O n) y`. Use `(dvd_iff_eval l _ k _).2 ?_` and prove the remaining obligations. Use `erw [map_sub, ← hy]`. Conclude with `sub_self _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨a, _, m, rfl⟩, h⟩` from `IsLocalization.surj (Submonoid.powers (letπ : LetA O n)) y`. Use `⟨a, m, ?_⟩` and prove the remaining obligations. Simplify using `only [toEE, RingHom.comp_apply]`. Rewrite using `[← h, map_mul, ← sub_mul]`. Conclude with `h1.mul_right _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EE_dense (x : EE l O n) (k : ℕ) :
     ∃ (a : LetA O n) (m : ℕ), (l : EE l O n) ^ k ∣ x * toEE l O n (letπ ^ m) - toEE l O n a := by
@@ -203,11 +203,11 @@ theorem EE_dense (x : EE l O n) (k : ℕ) :
 omit [Algebra ℤ_[l] O] in
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[← sub_eq_zero]`. Use `Fon.eq_zero_of_l_pow_dvd (l := l) _ fun k => ?_` and prove the remaining obligations. Take `⟨a, m, z, hz⟩` from `EE_dense x k`. Establish `hu : IsUnit (f (toEE l O n (letπ ^ m)))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_pow]`. Conclude with `((isUnit_toEE_π l O n).pow m).map f`. Establish `h1` using `congrArg f hz`. Establish `h2` using `congrArg g hz`. Simplify using `only [map_sub, map_mul f, map_mul g, map_pow f, map_pow g, map_natCast, ← h] at h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu.dvd_mul_right]`. Conclude with `⟨f z - g z, by linear_combination h1 - h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem EE_hom_ext {B : Type} [CommRing B] [IsHausdorff (Ideal.span {(l : B)}) B]
     {f g : EE l O n →+* B} (h : ∀ a, f (toEE l O n a) = g (toEE l O n a)) : f = g := by
@@ -231,7 +231,7 @@ def liftEE {B : Type} [CommRing B] [Fon.LComplete l B] (f : LetA O n →+* B) (h
 omit [Algebra ℤ_[l] O] in
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.AdicMaps.padicMap_alg l (IsLocalization.Away.lift (S := Localization.Away (letπ : LetA O n)) letπ hf) (algebraMap _ _ a)`. Rewrite `h` using `[IsLocalization.Away.lift_eq]`. Conclude with `(congrArg (AdicCompletion.ofAlgEquiv (Ideal.span {(l : B)})).symm h).trans ((AdicCompletion.ofAlgEquiv (Ideal.span {(l : B)})).symm.commutes _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem liftEE_toEE {B : Type} [CommRing B] [Fon.LComplete l B] (f : LetA O n →+* B)
     (hf : IsUnit (f letπ)) (a : LetA O n) : liftEE (l := l) f hf (toEE l O n a) = f a := by
@@ -249,7 +249,7 @@ def extEE (f : LetA O n →ₐ[O] LetA O n) (hf : IsUnit (toEE l O n (f letπ)))
 omit [Algebra ℤ_[l] O] in
 
 /- English proof (translation)
-The claim follows from `liftEE_toEE _ hf a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem extEE_toEE (f : LetA O n →ₐ[O] LetA O n) (hf : IsUnit (toEE l O n (f letπ))) (a : LetA O n) :
     extEE f hf (toEE l O n a) = toEE l O n (f a) := liftEE_toEE _ hf a
@@ -264,7 +264,7 @@ def phiEE : EE l O n →ₐ[O] EE l O n :=
     rw [h]; simp)
 
 /- English proof (translation)
-The claim follows from `extEE_toEE _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem phiEE_toEE (a : LetA O n) : phiEE l O n (toEE l O n a) = toEE l O n (letφ (phi l O) a) :=
   extEE_toEE _ _ _
@@ -277,7 +277,7 @@ private def actEE1 (c : ℤ_[l]ˣ) : EE l O n →ₐ[O] EE l O n :=
     exact (isUnit_toEE_π l O n).mul ((Pi.isUnit_iff.2 fun _ => hv).map _))
 
 /- English proof (translation)
-The claim follows from `extEE_toEE _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem actEE1_toEE (c : ℤ_[l]ˣ) (a : LetA O n) :
     actEE1 l O n c (toEE l O n a) = toEE l O n (letγ (act l O c) a) := extEE_toEE _ _ _
@@ -292,7 +292,7 @@ def actEE : ℤ_[l]ˣ →* (EE l O n →ₐ[O] EE l O n) where
     exact congrArg (toEE l O n) (funext fun i => (act_act l O c c' (a i)).symm))
 
 /- English proof (translation)
-The claim follows from `actEE1_toEE l O n c a`.
+A detailed English derivation is pending.
 -/
 theorem actEE_toEE (c : ℤ_[l]ˣ) (a : LetA O n) :
     actEE l O n c (toEE l O n a) = toEE l O n (letγ (act l O c) a) := actEE1_toEE l O n c a
@@ -303,19 +303,17 @@ def toPiEE : EE l O n →+* Fon.EE l O n :=
 omit [Algebra ℤ_[l] O] in
 
 /- English proof (translation)
-Establish `e : ∀ a, toPiEE l O n (toEE l O n a) = algebraMap (LetA O n) (Fon.EE l O n) a` using `liftEE_toEE _ _`. Establish `hu : ∀ m : ℕ, IsUnit (toEE l O n (letπ ^ m))` using `fun m => by`. Rewrite using `[map_pow]`. Conclude with `(isUnit_toEE_π l O n).pow m`. Establish `hI : (Ideal.span {(l : EE l O n)}).map (toPiEE l O n) = Ideal.span {(l : Fon.EE l O n)}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `Fon.eq_zero_of_l_pow_dvd (l := l) _ fun k => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, m, z, hz⟩` from `EE_dense x k`. Establish `h1` using `congrArg (toPiEE l O n) hz`. Rewrite `h1` using `[map_sub, map_mul, hx, zero_mul, e, map_mul, map_pow, map_natCast]`. Take `⟨b, rfl⟩` from `Fon.EE_sat l O n a k (Ideal.mem_span_singleton.2 ⟨-toPiEE l O n z, by linear_combination -h1⟩)`. Rewrite using `[← (hu m).dvd_mul_right]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[map_mul, map_pow (toEE l O n) (l : LetA O n), map_natCast]`. Conclude with `⟨z + toEE l O n b, by linear_combination hz⟩`. Use `haveI : IsHausdorff ((Ideal.span {(l : EE l O n)}).map (toPiEE l O n)) (Fon.EE l O n) := by`. Rewrite using `[hI]`. Use `infer_instance`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `surjective_of_mk_map_comp_surjective (I := Ideal.span {(l : EE l O n)}) _ fun y => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨a, m, h⟩` from `Fon.EE_dense l O n y 1`. Take `⟨w, hw⟩` from `(hu m).exists_right_inv`. Establish `hw'` using `congrArg (toPiEE l O n) hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hw'` using `[map_mul, e, map_one]`. Use `⟨toEE l O n a * w, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, eq_comm, Ideal.Quotient.eq, hI, map_mul, e]`. Rewrite `h` using `[pow_one]`. Use `Ideal.mul_mem_right (toPiEE l O n w) _ h using 1` and compare the differences between its conclusion and the goal.
-
-Take the linear combination `(-y) * hw'`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem toPiEE_bijective [NeZero n] : Function.Bijective (toPiEE l O n) := by
   have e : ∀ a, toPiEE l O n (toEE l O n a) = algebraMap (LetA O n) (Fon.EE l O n) a := liftEE_toEE _ _
@@ -361,7 +359,7 @@ def clW (S : Set (WCb l)) : Set (WCb l) :=
 variable {l}
 
 /- English proof (translation)
-Simplify using `only [clW, Set.mem_setOf_eq, Ideal.mem_span_singleton]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_clW {S : Set (WCb l)} {x : WCb l} :
     x ∈ clW l S ↔ ∀ k : ℕ, ∃ y ∈ S, (l : WCb l) ^ k ∣ x - y := by
@@ -380,19 +378,19 @@ def clAlg (S : Subalgebra ℤ_[l] (WCb l)) : Subalgebra ℤ_[l] (WCb l) where
   algebraMap_mem' z := mem_clW.2 fun _ => ⟨_, S.algebraMap_mem z, by simp⟩
 
 /- English proof (translation)
-The claim follows from `mem_clW`.
+A detailed English derivation is pending.
 -/
 theorem mem_clAlg {S : Subalgebra ℤ_[l] (WCb l)} {x : WCb l} :
     x ∈ clAlg S ↔ ∀ k : ℕ, ∃ y ∈ S, (l : WCb l) ^ k ∣ x - y := mem_clW
 
 /- English proof (translation)
-Introduce `x hx` and use `mem_clAlg.2 fun _ => ⟨x, hx, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_clAlg (S : Subalgebra ℤ_[l] (WCb l)) : S ≤ clAlg S :=
   fun x hx => mem_clAlg.2 fun _ => ⟨x, hx, by simp⟩
 
 /- English proof (translation)
-The claim follows from `le_antisymm (fun x hx => mem_clAlg.2 fun k => by obtain ⟨y, hy, h⟩ := mem_clAlg.1 hx k obtain ⟨z, hz, h'⟩ := mem_clAlg.1 hy k exact ⟨z, hz, by convert h.add h' using 1; ring⟩) (le_clAlg _)`.
+A detailed English derivation is pending.
 -/
 theorem clAlg_clAlg (S : Subalgebra ℤ_[l] (WCb l)) : clAlg (clAlg S) = clAlg S :=
   le_antisymm (fun x hx => mem_clAlg.2 fun k => by
@@ -401,7 +399,7 @@ theorem clAlg_clAlg (S : Subalgebra ℤ_[l] (WCb l)) : clAlg (clAlg S) = clAlg S
     exact ⟨z, hz, by convert h.add h' using 1; ring⟩) (le_clAlg _)
 
 /- English proof (translation)
-Rewrite using `[← clAlg_clAlg]`. Use `mem_clAlg.2 fun k => ?_` and prove the remaining obligations. Take `⟨y, hy, h'⟩` from `mem_clAlg.1 hx k`. Use `⟨σ y, h y hy, ?_⟩` and prove the remaining obligations. Simplify using `using map_dvd σ h'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_mem_clAlg {S S' : Subalgebra ℤ_[l] (WCb l)} (σ : WCb l →+* WCb l)
     (h : ∀ x ∈ S, σ x ∈ clAlg S') {x : WCb l} (hx : x ∈ clAlg S) : σ x ∈ clAlg S' := by
@@ -412,7 +410,7 @@ theorem map_mem_clAlg {S S' : Subalgebra ℤ_[l] (WCb l)} (σ : WCb l →+* WCb 
   simpa using map_dvd σ h'
 
 /- English proof (translation)
-The claim follows from `mem_clAlg.2 fun k => ⟨∑ i ∈ Finset.range k, (l * r) ^ i, S.sum_mem fun i _ => S.pow_mem (S.mul_mem (natCast_mem S l) hr) i, r ^ k * w, by have := mul_neg_geom_sum ((l : WCb l) * r) k rw [mul_pow] at this linear_combination (-w) * this + (∑ i ∈ Finset.range k, ((l : WCb l) * r) ^ …`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem_clAlg {S : Subalgebra ℤ_[l] (WCb l)} {r w : WCb l} (hr : r ∈ S)
     (hw : (1 - l * r) * w = 1) : w ∈ clAlg S :=
@@ -426,9 +424,9 @@ def IsIo (e : OCb l) (io : PowerSeries ℤ_[l] →ₐ[ℤ_[l]] Ainf l) : Prop :=
   io PowerSeries.X = WittVector.teichmuller l e - 1
 
 /- English proof (translation)
-Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises. Establish `h0 : (io PowerSeries.X).coeff 0 = e - 1`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `WittVector.constantCoeff (WittVector.teichmuller l e - 1) = _`. Rewrite using `[map_sub, map_one, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inclW, WittVector.map_coeff, h0, map_ne_zero_iff _ (IsFractionRing.injective (OCb l) (Cb l))]`. Conclude with `sub_ne_zero.2 he`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsIo.isUnit_X {e : OCb l} {io : PowerSeries ℤ_[l] →ₐ[ℤ_[l]] Ainf l} (h : IsIo e io) (he : e ≠ 1) :
     IsUnit (inclW l (io PowerSeries.X)) := by
@@ -441,7 +439,7 @@ theorem IsIo.isUnit_X {e : OCb l} {io : PowerSeries ℤ_[l] →ₐ[ℤ_[l]] Ainf
   exact sub_ne_zero.2 he
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simp [LocAinf.εroot]`. Consider the case `succ s ih`. Rewrite using `[← ih, pow_succ', pow_mul, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p, LocAinf.εroot]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem εroot_pow {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) : AI.εroot s ^ l ^ s = AI.ε := by
   induction s with
@@ -451,13 +449,13 @@ theorem εroot_pow {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) : AI.εroot s ^
       LocAinf.εroot]
 
 /- English proof (translation)
-Introduce `h` and use `AI.ε_ne_one (by rw [← εroot_pow AI s, h, one_pow])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem εroot_ne_one {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) : AI.εroot s ≠ 1 := fun h =>
   AI.ε_ne_one (by rw [← εroot_pow AI s, h, one_pow])
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `(h.pow (l ^ s)).map (PreTilt.coeff 0)`. Rewrite `h1` using `[sub_pow_char_pow, εroot_pow, one_pow, map_sub, AI.ε_coeff, AI.ζ_zero, map_one, map_one, sub_self]`. Use `haveI : Nontrivial (ModP (OC l) l) := CharP.nontrivial_of_char_ne_one (Fact.out : l.Prime).ne_one`. Conclude with `not_isUnit_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem εroot_sub_one_not_unit {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) : ¬ IsUnit (AI.εroot s - 1) := by
   intro h
@@ -467,7 +465,7 @@ theorem εroot_sub_one_not_unit {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) : 
   exact not_isUnit_zero h1
 
 /- English proof (translation)
-Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_X_pow, Polynomial.coeff_C_mul_X_pow]`. Apply the tactic sequence `refine S.sub_mem ?_ ?_ <;> split_ifs <;> first | exact one_mem _ | exact zero_mem _ | exact ha`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem coeff_mem {A : Type} [CommRing A] [Algebra ℤ_[l] A] (S : Subalgebra ℤ_[l] A) {a : A}
     (ha : a ∈ S) (m k i : ℕ) :
@@ -505,35 +503,35 @@ def EurAlg : Subalgebra ℤ_[l] (WCb l) := Algebra.adjoin ℤ_[l] (simpleRoots i
 def Eur : Subalgebra ℤ_[l] (WCb l) := clAlg (EurAlg io)
 
 /- English proof (translation)
-The claim follows from `le_clAlg _ ⟨a, 0, by rw [pow_zero, mul_one]⟩`.
+A detailed English derivation is pending.
 -/
 theorem io_mem_E0 (a : PowerSeries ℤ_[l]) : inclW l (io a) ∈ E0 io :=
   le_clAlg _ ⟨a, 0, by rw [pow_zero, mul_one]⟩
 
 /- English proof (translation)
-The claim follows from `le_clAlg _ ⟨1, 1, by rw [pow_one, mul_comm, hw, map_one, map_one]⟩`.
+A detailed English derivation is pending.
 -/
 theorem inv_X_mem_E0 {w : WCb l} (hw : inclW l (io PowerSeries.X) * w = 1) : w ∈ E0 io :=
   le_clAlg _ ⟨1, 1, by rw [pow_one, mul_comm, hw, map_one, map_one]⟩
 
 /- English proof (translation)
-The claim follows from `clAlg_clAlg _`.
+A detailed English derivation is pending.
 -/
 theorem clAlg_E0 : clAlg (E0 io) = E0 io := clAlg_clAlg _
 
 /- English proof (translation)
-The claim follows from `clAlg_clAlg _`.
+A detailed English derivation is pending.
 -/
 theorem clAlg_Eur : clAlg (Eur io) = Eur io := clAlg_clAlg _
 
 /- English proof (translation)
-Introduce `_ hy` and use `le_clAlg _ (Algebra.subset_adjoin hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem simpleRoots_subset_Eur : simpleRoots io ⊆ Eur io :=
   fun _ hy => le_clAlg _ (Algebra.subset_adjoin hy)
 
 /- English proof (translation)
-Introduce `a ha` and use `simpleRoots_subset_Eur io ⟨Polynomial.X - Polynomial.C a, Polynomial.monic_X_sub_C a, fun i => by have h := coeff_mem (E0 io) ha 1 0 i rwa [pow_one, pow_zero, mul_one] at h, by rw [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, sub_self], by rw [Polynomial.derivative_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem E0_le_Eur : E0 io ≤ Eur io := fun a ha =>
   simpleRoots_subset_Eur io ⟨Polynomial.X - Polynomial.C a, Polynomial.monic_X_sub_C a, fun i => by
@@ -545,9 +543,9 @@ theorem E0_le_Eur : E0 io ≤ Eur io := fun a ha =>
 variable {io}
 
 /- English proof (translation)
-Take `⟨w, hw, hw1⟩` from `hw`. Use `map_mem_clAlg σ ?_ hx` and prove the remaining obligations. Introduce and unpack `x ⟨a, m, h⟩`. Establish `h1` using `congrArg σ h`. Rewrite `h1` using `[map_mul, map_pow, hσ, hσ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : σ x = inclW l (io (f a)) * w ^ m` using `by rw [← h1, mul_assoc, ← mul_pow, hw1, one_pow, mul_one]`. Rewrite using `[h2]`. Conclude with `(E0 io).mul_mem (io_mem_E0 io _) ((E0 io).pow_mem hw m)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_E0 (σ : WCb l →+* WCb l) (f : PowerSeries ℤ_[l] → PowerSeries ℤ_[l])
     (hσ : ∀ a, σ (inclW l (io a)) = inclW l (io (f a)))
@@ -563,7 +561,7 @@ theorem map_mem_E0 (σ : WCb l →+* WCb l) (f : PowerSeries ℤ_[l] → PowerSe
   exact (E0 io).mul_mem (io_mem_E0 io _) ((E0 io).pow_mem hw m)
 
 /- English proof (translation)
-Take `⟨v, hv, h⟩` from `act_X_unit l ℤ_[l] c`. Take `⟨v', hv'⟩` from `hv.exists_right_inv`. Take `⟨w, hw⟩` from `hX.exists_right_inv`. Use `map_mem_E0 σ _ hσ ⟨w * inclW l (io v'), (E0 io).mul_mem (inv_X_mem_E0 io hw) (io_mem_E0 io _), ?_⟩ hx` and prove the remaining obligations. Rewrite using `[h, map_mul, map_mul, mul_mul_mul_comm, hw, ← map_mul, ← map_mul, hv', map_one, map_one, mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mem_E0_act (hX : IsUnit (inclW l (io PowerSeries.X))) (σ : WCb l →+* WCb l) (c : ℤ_[l]ˣ)
     (hσ : ∀ a, σ (inclW l (io a)) = inclW l (io (act l ℤ_[l] c a))) {x : WCb l} (hx : x ∈ E0 io) :
@@ -576,11 +574,11 @@ theorem map_mem_E0_act (hX : IsUnit (inclW l (io PowerSeries.X))) (σ : WCb l �
   rw [h, map_mul, map_mul, mul_mul_mul_comm, hw, ← map_mul, ← map_mul, hv', map_one, map_one, mul_one]
 
 /- English proof (translation)
-Take `⟨r, h⟩` from `phi_X_mod l ℤ_[l]`. Take `⟨w, hw⟩` from `hX.exists_right_inv`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u, inclW l (io (phi l ℤ_[l] PowerSeries.X)) * u = 1 := by`. Rewrite using `[← hσ]`. Conclude with `(hX.map σ).exists_right_inv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `map_mem_E0 σ _ hσ ⟨u, ?_, hu⟩ hx` and prove the remaining obligations. Establish `hwl : inclW l (io PowerSeries.X) ^ l * w ^ l = 1` using `by rw [← mul_pow, hw, one_pow]`. Simplify using `only [h, map_add, map_mul, map_pow, map_natCast] at hu`. Establish `h1 : inclW l (io PowerSeries.X) ^ l * u ∈ clAlg (E0 io)` using `inv_mem_clAlg (r := -(inclW l (io r) * w ^ l)) ((E0 io).neg_mem ((E0 io).mul_mem (io_mem_E0 io _) ((E0 io).pow_mem (inv_X_mem_E0 io hw) l))) (by linear_combination hu + (l : WCb l) * inclW l (io r) * u * hwl)`. Rewrite `h1` using `[clAlg_E0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : u = inclW l (io PowerSeries.X) ^ l * u * w ^ l` using `by linear_combination (-u) * hwl`. Rewrite using `[h2]`. Conclude with `(E0 io).mul_mem h1 ((E0 io).pow_mem (inv_X_mem_E0 io hw) l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_E0_phi (hX : IsUnit (inclW l (io PowerSeries.X))) (σ : WCb l →+* WCb l)
     (hσ : ∀ a, σ (inclW l (io a)) = inclW l (io (phi l ℤ_[l] a))) {x : WCb l} (hx : x ∈ E0 io) :
@@ -602,11 +600,9 @@ theorem map_mem_E0_phi (hX : IsUnit (inclW l (io PowerSeries.X))) (σ : WCb l �
   exact (E0 io).mul_mem h1 ((E0 io).pow_mem (inv_X_mem_E0 io hw) l)
 
 /- English proof (translation)
-Use `map_mem_clAlg (σ : WCb l →+* WCb l) (fun y hy => ?_) hx` and prove the remaining obligations. Use `(Algebra.adjoin_le (S := (Eur io).comap σ) ?_) hy` and prove the remaining obligations. Introduce and unpack `y ⟨f, hf, hc, h0, hu⟩`. Use `simpleRoots_subset_Eur io ⟨f.map (σ : WCb l →+* WCb l), hf.map _, fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hσ _ (hc i)`. Use `Polynomial.eval_map_apply (f := (σ : WCb l →+* WCb l)) (p := f) y` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this`. Use `Polynomial.eval_map_apply (f := (σ : WCb l →+* WCb l)) (p := f.derivative) y` as an intermediate fact.
-
-Rewrite using `[Polynomial.derivative_map]`. Conclude with `this ▸ hu.map _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_Eur (σ : WCb l →ₐ[ℤ_[l]] WCb l) (hσ : ∀ x ∈ E0 io, σ x ∈ E0 io) {x : WCb l}
     (hx : x ∈ Eur io) : σ x ∈ Eur io := by
@@ -625,9 +621,9 @@ theorem map_mem_Eur (σ : WCb l →ₐ[ℤ_[l]] WCb l) (hσ : ∀ x ∈ E0 io, �
 variable (io)
 
 /- English proof (translation)
-Establish `h1 : 1 < l ^ d` using `Nat.one_lt_pow hd.ne' (Fact.out : l.Prime).one_lt`. Use `simpleRoots_subset_Eur io ⟨Polynomial.X ^ l ^ d - Polynomial.X, Polynomial.monic_X_pow_sub (by rw [Polynomial.degree_X]; exact_mod_cast h1), fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `coeff_mem (E0 io) (E0 io).one_mem (l ^ d) 1 i`. Rewrite `h` using `[pow_one, map_one, one_mul]`. Then use the resulting hypothesis. Rewrite using `[Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, ← map_pow, ha, sub_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises. Rewrite using `[← WittVector.constantCoeff_apply, Polynomial.derivative_sub, Polynomial.derivative_X_pow, Polynomial.derivative_X, Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_one, map_sub, map_mul, map_natCast, map_one, Nat.cast_pow, CharP.cast_eq_zero, zero_pow …`. Conclude with `neg_ne_zero.2 one_ne_zero`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem teichmuller_mem_Eur {a : Cb l} {d : ℕ} (hd : 0 < d) (ha : a ^ l ^ d = a) :
     WittVector.teichmuller l a ∈ Eur io := by
@@ -645,7 +641,7 @@ theorem teichmuller_mem_Eur {a : Cb l} {d : ℕ} (hd : 0 < d) (ha : a ^ l ^ d = 
     exact neg_ne_zero.2 one_ne_zero
 
 /- English proof (translation)
-Rewrite using `[← clAlg_Eur]`. Use `mem_clAlg.2 fun k => ⟨_, (Eur io).sum_mem fun n _ => ?_, hx k⟩` and prove the remaining obligations. Take `⟨d, hd, h⟩` from `ha n`. Conclude with `(Eur io).mul_mem ((Eur io).pow_mem (natCast_mem _ l) n) (teichmuller_mem_Eur io hd h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_Eur_of_teichmuller_series (a : ℕ → Cb l) (ha : ∀ n, ∃ d, 0 < d ∧ a n ^ l ^ d = a n) (x : WCb l)
     (hx : ∀ k, (l : WCb l) ^ k ∣ x - ∑ n ∈ Finset.range k, (l : WCb l) ^ n * WittVector.teichmuller l (a n)) :
@@ -660,7 +656,7 @@ end Rings
 section Module
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem map_smul_gen {O R M : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup M]
     [Module O M] (f : R →ₐ[O] R) (g : M →ₗ[O] M) (r : R) (y : R ⊗[O] M) :
@@ -671,11 +667,9 @@ private theorem map_smul_gen {O R M : Type} [CommRing O] [CommRing R] [Algebra O
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨w', hw', t, rfl⟩` from `hz`. Establish `h : (o ⊗ₜ[Z] w : O ⊗[Z] W) • (((1 : O) ⊗ₜ[Z] w') ⊗ₜ[O] t) = o • (((1 : O) ⊗ₜ[Z] (w * w')) ⊗ₜ[O] t)`. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ o (Submodule.subset_span ⟨_, S.mul_mem hw hw', t, rfl⟩)`. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
-
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem smul_mem_gen {Z O W M : Type} [CommRing Z] [CommRing O] [CommRing W] [Algebra Z O]
     [Algebra Z W] [AddCommGroup M] [Module O M] (S : Subalgebra Z W) (o : O) {w : W} (hw : w ∈ S)
@@ -695,9 +689,9 @@ private theorem smul_mem_gen {Z O W M : Type} [CommRing Z] [CommRing O] [CommRin
   | smul c x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul r t`. Simplify using `only [TensorProduct.map_tmul, h2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul o w => simp [h1]`.
+Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem map_map_gen {Z O W M : Type} [CommRing Z] [CommRing O] [CommRing W] [Algebra Z O]
     [Algebra Z W] [AddCommGroup M] [Module O M] {a b c d : W →ₐ[Z] W} {f g h k : M →ₗ[O] M}
@@ -718,7 +712,7 @@ private theorem map_map_gen {Z O W M : Type} [CommRing Z] [CommRing O] [CommRing
     | tmul o w => simp [h1]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul r t => simp [h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem map_comm_gen {O R M M' : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup M]
     [Module O M] [AddCommGroup M'] [Module O M'] (a : R →ₐ[O] R) (f : M →ₗ[O] M') (g : M →ₗ[O] M)
@@ -753,14 +747,14 @@ def EurT (LL : FinExt l) (io : PowerSeries ℤ_[l] →ₐ[ℤ_[l]] Ainf l) (T : 
 variable {LL : FinExt l} {io : PowerSeries ℤ_[l] →ₐ[ℤ_[l]] Ainf l} {T : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨w, hw, t, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem tmul_mem_EurT {w : WCb l} (hw : w ∈ Eur io) (t : ↥T.L.T) :
     ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] w) ⊗ₜ[↥(OL LL)] t ∈ EurT LL io T :=
   Submodule.subset_span ⟨w, hw, t, rfl⟩
 
 /- English proof (translation)
-Use `(Submodule.span_le (p := (EurT LL io T').comap (TensorProduct.map (Algebra.TensorProduct.map (AlgHom.id ↥(OL LL) ↥(OL LL)) σ).toLinearMap f))).2 ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, t, rfl⟩`. Conclude with `tmul_mem_EurT (hσ w hw) (f t)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem map_mem_EurT {T' : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)} (σ : WCb l →ₐ[ℤ_[l]] WCb l)
     (hσ : ∀ x ∈ Eur io, σ x ∈ Eur io) (f : ↥T.L.T →ₗ[↥(OL LL)] ↥T'.L.T) {z : TW (RW LL) T}
@@ -773,7 +767,7 @@ theorem map_mem_EurT {T' : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)} (σ : WCb l →�
   exact tmul_mem_EurT (hσ w hw) (f t)
 
 /- English proof (translation)
-The claim follows from `smul_mem_gen (Eur io) o hw hz`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_EurT (o : ↥(OL LL)) {w : WCb l} (hw : w ∈ Eur io) {z : TW (RW LL) T}
     (hz : z ∈ EurT LL io T) : (o ⊗ₜ[ℤ_[l]] w : RW LL) • z ∈ EurT LL io T :=
@@ -794,7 +788,7 @@ variable {P : LocPrime l} {AI : LocAinf l P} {K LL : FinExt l}
   {io : PowerSeries ℤ_[l] →ₐ[ℤ_[l]] Ainf l} {T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)}
 
 /- English proof (translation)
-Simplify using `only [FonD, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_eqLocus, LinearMap.id_apply, Subtype.forall]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_FonD {z : TW (RW LL) T} : z ∈ FonD AI K LL io T ↔ z ∈ EurT LL io T ∧
     ∀ g : ↥(GK K), P.χQ (g : GQ l) = 1 → TWact (AI.gRW LL (g : GQ l)) T g z = z := by
@@ -804,7 +798,7 @@ theorem mem_FonD {z : TW (RW LL) T} : z ∈ FonD AI K LL io T ↔ z ∈ EurT LL 
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-The claim follows from `mem_FonD.2 ⟨tmul_mem_EurT hw t, fun g hg => by have h1 : AI.gRW LL (g : GQ l) ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] w) = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] w := (Algebra.TensorProduct.map_tmul _ _ 1 w).trans (congrArg ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] ·) (hwH g hg)) exact (TensorProduct.map_tmul _ _ _ t).tran …`.
+A detailed English derivation is pending.
 -/
 theorem tmul_mem_FonD {w : WCb l} (hw : w ∈ Eur io)
     (hwH : ∀ g : ↥(GK K), P.χQ (g : GQ l) = 1 → AI.actWCbHom (g : GQ l) w = w) {t : ↥T.L.T}
@@ -816,7 +810,7 @@ theorem tmul_mem_FonD {w : WCb l} (hw : w ∈ Eur io)
     exact (TensorProduct.map_tmul _ _ _ t).trans (congrArg₂ (· ⊗ₜ[↥(OL LL)] ·) h1 (ht g hg))⟩
 
 /- English proof (translation)
-Use `mem_FonD.2 ⟨smul_mem_EurT o hw (mem_FonD.1 hz).1, fun g hg => ?_⟩` and prove the remaining obligations. Use `(map_smul_gen (AI.gRW LL (g : GQ l)) (T.actT g) _ z).trans ?_` and prove the remaining obligations. Establish `h1 : AI.gRW LL (g : GQ l) (o ⊗ₜ[ℤ_[l]] w) = o ⊗ₜ[ℤ_[l]] w` using `(Algebra.TensorProduct.map_tmul _ _ o w).trans (congrArg (o ⊗ₜ[ℤ_[l]] ·) (hwH g hg))`. Conclude with `congrArg₂ (fun (r : RW LL) (y : TW (RW LL) T) => r • y) h1 ((mem_FonD.1 hz).2 g hg)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smul_mem_FonD (o : ↥(OL LL)) {w : WCb l} (hw : w ∈ Eur io)
     (hwH : ∀ g : ↥(GK K), P.χQ (g : GQ l) = 1 → AI.actWCbHom (g : GQ l) w = w) {z : TW (RW LL) T}
@@ -828,7 +822,7 @@ theorem smul_mem_FonD (o : ↥(OL LL)) {w : WCb l} (hw : w ∈ Eur io)
   exact congrArg₂ (fun (r : RW LL) (y : TW (RW LL) T) => r • y) h1 ((mem_FonD.1 hz).2 g hg)
 
 /- English proof (translation)
-Use `mem_FonD.2 ⟨map_mem_EurT (frobW l) (fun _ => map_mem_Eur _ hφ) _ (mem_FonD.1 hz).1, fun g hg => ?_⟩` and prove the remaining obligations. Use `(map_map_gen (a := (AI.actWCbHom (g : GQ l)).toAlgHom) (b := frobW l) (c := frobW l) (d := (AI.actWCbHom (g : GQ l)).toAlgHom) (f := T.actT g) (g := LinearMap.id) (h := LinearMap.id) (k := T.actT g) (fun w => ?_) (fun _ => rfl) z).trans (congrArg (TWmap (φRW LL) T) ((mem_FonD.1 h …` and prove the remaining obligations. Use extensionality with `n`. Conclude with `map_pow (autCb l (AI.actT g)) (w.coeff n) l`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem phi_mem_FonD (hφ : ∀ x ∈ E0 io, frobW l x ∈ E0 io) {z : TW (RW LL) T}
     (hz : z ∈ FonD AI K LL io T) : TWmap (φRW LL) T z ∈ FonD AI K LL io T := by
@@ -841,7 +835,7 @@ theorem phi_mem_FonD (hφ : ∀ x ∈ E0 io, frobW l x ∈ E0 io) {z : TW (RW LL
   exact map_pow (autCb l (AI.actT g)) (w.coeff n) l
 
 /- English proof (translation)
-The claim follows from `map_mem_EurT (T' := T) (AI.actWCbHom (g : GQ l)).toAlgHom (fun _ hx => map_mem_Eur (AI.actWCbHom (g : GQ l)).toAlgHom hg hx) (T.actT g) hz`.
+A detailed English derivation is pending.
 -/
 theorem act_mem_EurT (g : ↥(GK K)) (hg : ∀ x ∈ E0 io, AI.actWCbHom (g : GQ l) x ∈ E0 io) {z : TW (RW LL) T}
     (hz : z ∈ EurT LL io T) : TWact (AI.gRW LL (g : GQ l)) T g z ∈ EurT LL io T :=
@@ -849,9 +843,9 @@ theorem act_mem_EurT (g : ↥(GK K)) (hg : ∀ x ∈ E0 io, AI.actWCbHom (g : GQ
     (fun _ hx => map_mem_Eur (AI.actWCbHom (g : GQ l)).toAlgHom hg hx) (T.actT g) hz
 
 /- English proof (translation)
-Establish `h1 : ∀ w, (AI.actWCbHom (h : GQ l)).toAlgHom ((AI.actWCbHom (g : GQ l)).toAlgHom w) = (AI.actWCbHom (g : GQ l)).toAlgHom ((AI.actWCbHom (h' : GQ l)).toAlgHom w)` using `fun w => by`. Establish `e' : (h : GQ l) * g = (g : GQ l) * h'` using `congrArg Subtype.val e`. Use `congrArg AI.actWCbHom e'` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Conclude with `congrArg (fun u : WCb l ≃ₐ[ℤ_[l]] WCb l => u w) this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ t, T.actT h (T.actT g t) = T.actT g (T.actT h' t)` using `fun t => by`. Use `congrArg T.ρ e` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Conclude with `Subtype.ext (congrArg (fun u : Module.End ↥LL.1 T.V => u t) this)`. Conclude with `map_map_gen h1 h2 z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem act_act_TW {g h h' : ↥(GK K)} (e : h * g = g * h') (z : TW (RW LL) T) :
     TWact (AI.gRW LL (h : GQ l)) T h (TWact (AI.gRW LL (g : GQ l)) T g z) =
@@ -869,7 +863,7 @@ private theorem act_act_TW {g h h' : ↥(GK K)} (e : h * g = g * h') (z : TW (RW
   exact map_map_gen h1 h2 z
 
 /- English proof (translation)
-Use `mem_FonD.2 ⟨act_mem_EurT g hg (mem_FonD.1 hz).1, fun h hh => ?_⟩` and prove the remaining obligations. Establish `e : h * g = g * (g⁻¹ * h * g)` using `by group`. Establish `hχ : P.χQ ((g⁻¹ * h * g : ↥(GK K)) : GQ l) = 1`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, map_mul, map_mul, hh, mul_one, ← map_mul, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, map_one]`. Conclude with `(act_act_TW e z).trans (congrArg (TWact (AI.gRW LL (g : GQ l)) T g) ((mem_FonD.1 hz).2 _ hχ))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_mem_FonD (g : ↥(GK K)) (hg : ∀ x ∈ E0 io, AI.actWCbHom (g : GQ l) x ∈ E0 io) {z : TW (RW LL) T}
     (hz : z ∈ FonD AI K LL io T) : TWact (AI.gRW LL (g : GQ l)) T g z ∈ FonD AI K LL io T := by
@@ -881,9 +875,7 @@ theorem act_mem_FonD (g : ↥(GK K)) (hg : ∀ x ∈ E0 io, AI.actWCbHom (g : GQ
   exact (act_act_TW e z).trans (congrArg (TWact (AI.gRW LL (g : GQ l)) T g) ((mem_FonD.1 hz).2 _ hχ))
 
 /- English proof (translation)
-Use `mem_FonD.2 ⟨?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `(Submodule.span_le (p := (EurT LL io T').comap (TensorProduct.map (LinearMap.id : RW LL →ₗ[↥(OL LL)] RW LL) f))).2 ?_ (mem_FonD.1 hz).1` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, t, rfl⟩`. Conclude with `tmul_mem_EurT hw (f t)`. Use `Eq.trans ?_ (congrArg (TensorProduct.map (LinearMap.id : RW LL →ₗ[↥(OL LL)] RW LL) f) ((mem_FonD.1 hz).2 g hg))` and prove the remaining obligations.
-
-Conclude with `map_comm_gen (AI.gRW LL (g : GQ l)) f (T.actT g) (T'.actT g) (hf g) z`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_mem_FonD {T' : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)} (f : ↥T.L.T →ₗ[↥(OL LL)] ↥T'.L.T)
     (hf : ∀ g t, f (T.actT g t) = T'.actT g (f t)) {z : TW (RW LL) T} (hz : z ∈ FonD AI K LL io T) :
@@ -900,25 +892,25 @@ theorem map_mem_FonD {T' : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)} (f : ↥
 end Fon
 
 /- English proof (translation)
-Rewrite using `[phi_X]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 example : phi 2 ℤ_[2] PowerSeries.X = PowerSeries.X ^ 2 + 2 * PowerSeries.X := by rw [phi_X]; ring
 
 /- English proof (translation)
-Simplify using `[QQ, XX, Finset.sum_range_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 example : QQ 2 ℤ_[2] 2 = PowerSeries.X ^ 2 + 2 * PowerSeries.X + 2 := by
   simp [QQ, XX, Finset.sum_range_succ]; ring
 
 /- English proof (translation)
-The claim follows from `(Eur io).mul_mem (natCast_mem _ l) (teichmuller_mem_Eur io two_pos ha)`.
+A detailed English derivation is pending.
 -/
 example (io : PowerSeries ℤ_[l] →ₐ[ℤ_[l]] Ainf l) (a : Cb l) (ha : a ^ l ^ 2 = a) :
     (l : WCb l) * WittVector.teichmuller l a ∈ Eur io :=
   (Eur io).mul_mem (natCast_mem _ l) (teichmuller_mem_Eur io two_pos ha)
 
 /- English proof (translation)
-Establish `h : letφ (phi l O) (letπ : LetA O n) = (1 + letπ) ^ l - 1` using `funext fun _ => phi_X l O`. Rewrite using `[phiEE_toEE, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (O : Type) [CommRing O] [Algebra ℤ_[l] O] (n : ℕ) :
     phiEE l O n (toEE l O n letπ) = (1 + toEE l O n letπ) ^ l - 1 := by

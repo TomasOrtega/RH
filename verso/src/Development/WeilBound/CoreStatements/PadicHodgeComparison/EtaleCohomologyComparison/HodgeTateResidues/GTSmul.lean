@@ -20,7 +20,7 @@ variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 include h1 h2 in
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h1.uniq M hM j`. Establish `a1` using `h1.sh r' (rfl : r + r' = r + r') hx`. Establish `a2` using `h1.sh r (Nat.add_comm r' r) hx'`. Establish `e` using `hk (r + r') v _ _ a1 a2`. Rewrite using `[← h2.sh hM r' rfl x (h1.comp hx) a, ← h2.sh hM r (Nat.add_comm r' r) x' (h1.comp hx') a, ← h2.sh hM k rfl _ (h1.comp a1) a, ← h2.sh hM k rfl _ (h1.comp a2) a, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem indep {M : Model l K} (hM : M.Sm) {j r r' : ℕ} {v : M.T j} {x : Fam M r j} {x' : Fam M r' j} (hx : Lf r v x)
     (hx' : Lf r' v x') (a : ℕ) : γ x a = γ x' a := by
@@ -36,7 +36,7 @@ def rr {M : Model l K} (hM : M.Sm) (j : ℕ) : ℕ := (h1.ex M hM j).choose
 def xx {M : Model l K} (hM : M.Sm) {j : ℕ} (v : M.T j) : Fam M (rr h1 hM j) j := ((h1.ex M hM j).choose_spec v).choose
 
 /- English proof (translation)
-The claim follows from `((h1.ex M hM j).choose_spec v).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem xx_spec {M : Model l K} (hM : M.Sm) {j : ℕ} (v : M.T j) : Lf _ v (xx h1 hM v) := ((h1.ex M hM j).choose_spec v).choose_spec
 
@@ -46,14 +46,14 @@ def gT {M : Model l K} (hM : M.Sm) (a : ℕ) {j : ℕ} (v : M.T j) : Module.Dual
 
 include h2 in
 /- English proof (translation)
-The claim follows from `indep h1 h2 hM (xx_spec h1 hM v) hx a`.
+A detailed English derivation is pending.
 -/
 theorem gT_eq {M : Model l K} (hM : M.Sm) (a : ℕ) {j r : ℕ} {v : M.T j} {x : Fam M r j} (hx : Lf r v x) :
     gT h1 (@γ) hM a v = γ x a := indep h1 h2 hM (xx_spec h1 hM v) hx a
 
 include h2 in
 /- English proof (translation)
-The claim follows from `(gT_eq h1 h2 hM a (h1.add (xx_spec h1 hM v) (xx_spec h1 hM w))).trans (h2.add hM _ _ (h1.comp (xx_spec h1 hM v)) (h1.comp (xx_spec h1 hM w)) a)`.
+A detailed English derivation is pending.
 -/
 theorem gT_add {M : Model l K} (hM : M.Sm) (a : ℕ) {j : ℕ} (v w : M.T j) :
     gT h1 (@γ) hM a (v + w) = gT h1 (@γ) hM a v + gT h1 (@γ) hM a w :=
@@ -62,7 +62,7 @@ theorem gT_add {M : Model l K} (hM : M.Sm) (a : ℕ) {j : ℕ} (v w : M.T j) :
 
 include h2 in
 /- English proof (translation)
-Rewrite using `[gT_eq h1 h2 hM a (h1.smul z (xx_spec h1 hM v)), h2.lin hM _ _ (h1.comp (xx_spec h1 hM v)), θA_zA]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gT_smul {M : Model l K} (hM : M.Sm) (a : ℕ) {j : ℕ} (z : ℤ_[l]) (v : M.T j) (φ : Module.Dual K (Hdg M.q a j)) :
     gT h1 (@γ) hM a (z • v) φ = qC l (z : ℚ_[l]) * gT h1 (@γ) hM a v φ := by
@@ -71,9 +71,9 @@ theorem gT_smul {M : Model l K} (hM : M.Sm) (a : ℕ) {j : ℕ} (z : ℤ_[l]) (v
 
 include h2 in
 /- English proof (translation)
-Establish `e1` using `gT_smul h1 h2 hM a ((DeRhamTwist.Twist.chi0 l σ.1 ^ rr h1 hM j : ℤ_[l]ˣ) : ℤ_[l]) (M.actT j σ v) φ`. Use `replace e1 := (DFunLike.congr_fun (gT_eq h1 h2 hM a (h1.gal σ (xx_spec h1 hM v))) φ).symm.trans e1`. Rewrite `e1` using `[Units.val_pow_eq_pow_val, PadicInt.coe_pow, map_pow]`. Establish `e2` using `h2.gal hM σ _ (h1.comp (xx_spec h1 hM v)) a φ`. Rewrite `e2` using `[e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : qC l (period_ring_base.χ σ.1) ^ rr h1 hM j ≠ 0` using `pow_ne_zero _ ((map_ne_zero _).2 (χ_ne _))`. Use `mul_left_cancel₀ hc (Eq.trans ?_ e2)` and prove the remaining obligations. Conclude with `mul_left_comm _ _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gT_act {M : Model l K} (hM : M.Sm) (a : ℕ) {j : ℕ} (σ : K.fixingSubgroup) (v : M.T j) (φ : Module.Dual K (Hdg M.q a j)) :
     qC l (period_ring_base.χ σ.1) ^ a * gT h1 (@γ) hM a (M.actT j σ v) φ = period_ring_base.σC σ.1 (gT h1 (@γ) hM a v φ) := by
@@ -106,7 +106,7 @@ def hP (M : Model l K) (a n : ℕ) : M.V n →+ (Module.Dual K (Hdg M.q a n) →
   if hM : M.Sm then hV h1 h2 hM a n else 0
 
 /- English proof (translation)
-Rewrite using `[hP, dif_pos hM]`. Unfold `hV tmV`. Use `erw [TensorProduct.liftAddHom_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hP_tmV {M : Model l K} (hM : M.Sm) (a n : ℕ) (z : ℚ_[l]) (u : M.T n) (φ : Module.Dual K (Hdg M.q a n)) :
     hP h1 h2 M a n (tmV M n z u) φ = qC l z * gT h1 (@γ) hM a u φ := by
@@ -116,14 +116,14 @@ theorem hP_tmV {M : Model l K} (hM : M.Sm) (a n : ℕ) (z : ℚ_[l]) (u : M.T n)
   rfl
 
 /- English proof (translation)
-Rewrite using `[toV_eq, hP_tmV h1 h2 hM, map_one, one_mul, gT_eq h1 h2 hM a hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hP_toV {M : Model l K} (hM : M.Sm) (a : ℕ) {n r : ℕ} {u : M.T n} {x : Fam M r n} (hx : Lf r u x)
     (φ : Module.Dual K (Hdg M.q a n)) : hP h1 h2 M a n (M.toV n u) φ = γ x a φ := by
   rw [toV_eq, hP_tmV h1 h2 hM, map_one, one_mul, gT_eq h1 h2 hM a hx]
 
 /- English proof (translation)
-Rewrite using `[hP, dif_neg hM]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hP_not {M : Model l K} (hM : ¬ M.Sm) (a n : ℕ) (v : M.V n) (φ : Module.Dual K (Hdg M.q a n)) :
     hP h1 h2 M a n v φ = 0 := by
@@ -131,7 +131,7 @@ theorem hP_not {M : Model l K} (hM : ¬ M.Sm) (a n : ℕ) (v : M.V n) (φ : Modu
 
 include h1 h2 in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ h := hP h1 h2 lin := fun M a n z v φ => by by_cases hM : M.Sm · refine V_induction (p := fun v => hP h1 h2 M a n (z • v) φ = qC l z * hP h1 h2 M a n v φ) v ?_ ?_ ?_ · simp only [smul_zero, map_zero, AddMonoidHom.zero_apply, mul_zero] · intro z' u simp only [smul_tmV, hP_tmV h1 …`.
+Supply the required witnesses or components.
 -/
 theorem pre_of (hF : KFin) (hC : DlogClassExistsUnique) : Nonempty (HTPre l K) := ⟨{
   h := hP h1 h2

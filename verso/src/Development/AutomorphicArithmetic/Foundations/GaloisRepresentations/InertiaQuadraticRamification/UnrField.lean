@@ -2,6 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Inert
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.CharpolyFromTrace.UnlinkedOfType
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Gal.UnramifiedFromSplittingCriterion.unrSplit_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.unrField_holds : UpperTheory.Gal.NearKilling.UnrField := UpperTheory.Gal.UnramifiedFromSplittingCriterion.unrSplit_holds

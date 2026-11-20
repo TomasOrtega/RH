@@ -17,11 +17,11 @@ section Grp
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Establish `hφ : IsIso φ` using `h.1.isIso_fst_of_isIso`. Establish `hw : (asIso φ).hom ≫ B.hom = A.hom` using `by simpa using h.1.w`. Establish `hel : (Over.isoMk (asIso φ) hw).hom.left = φ` using `rfl`. Establish `he : IsMonHom (Over.isoMk (asIso φ) hw).hom`. Use `GlobalTheory.ZarhinFam.RAct.isMonHom_of_mul_comp _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `T x y`. Set `i : Over.mk (T.hom ≫ 𝟙 X) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `key` using `h.2 T x y (i ≫ x ≫ (Over.isoMk (asIso φ) hw).hom) (i ≫ y ≫ (Over.isoMk (asIso φ) hw).hom) (by simp [i, hel]) (by simp [i, hel])`. Rewrite `key` using `[← MonObj.comp_mul]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hi : i.left = 𝟙 T.left` using `rfl`. Rewrite `key` using `[Over.comp_left, hi]`. Rewrite using `[Over.comp_left, hel]`. Conclude with `key.symm.trans (Category.id_comp _)`. Conclude with `⟨Over.isoMk (asIso φ) hw, rfl, he, inferInstance⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_iso_of_cart {A B : Over X} [GrpObj A] [GrpObj B] {φ : A.left ⟶ B.left}
     (h : IsGrpPullback A B (𝟙 X) φ) : ∃ e : A ≅ B, e.hom.left = φ ∧ IsMonHom e.hom ∧ IsMonHom e.inv := by
@@ -43,14 +43,14 @@ private theorem exists_iso_of_cart {A B : Over X} [GrpObj A] [GrpObj B] {φ : A.
   exact ⟨Over.isoMk (asIso φ) hw, rfl, he, inferInstance⟩
 
 /- English proof (translation)
-Rewrite using `[MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comp_pow_id {A B : Over X} [GrpObj A] [GrpObj B] (e : A ⟶ B) [IsMonHom e] (n : ℕ) :
     ((𝟙 A) ^ n) ≫ e = e ≫ ((𝟙 B) ^ n) := by
   rw [MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `rfl`. Conclude with `MonObj.one_comp _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem comp_iso_eq_one {A B T : Over X} [GrpObj A] [GrpObj B] (e : A ≅ B) [IsMonHom e.hom] [IsMonHom e.inv] (a : T ⟶ A) :
     a ≫ e.hom = 1 ↔ a = 1 := by
@@ -64,15 +64,15 @@ private theorem comp_iso_eq_one {A B T : Over X} [GrpObj A] [GrpObj B] (e : A �
 end Grp
 
 /- English proof (translation)
-Establish `hPc : ∀ {Z : Scheme.{0}} (L : LB Z), L.IsLB → (Hecke.lbPow L c).IsLB`. Introduce `Z L hL`. Unfold `Hecke.lbPow`. Conclude with `LB.isLB_linComb hL _ _`. Establish `pw : ∀ {Z : Scheme.{0}} (L : LB Z) (hL : L.IsLB) (h' : (Hecke.lbPow L c).IsLB), GlobalTheory.CechPic.cls _ h' = c • GlobalTheory.CechPic.cls L hL`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z L hL h'`. Unfold `Hecke.lbPow at h' ⊢`. Rewrite using `[GlobalTheory.CechPic.cls_linComb hL]`. Simplify using `[GlobalTheory.CechPic.pull_id]`. Rewrite using `[← GlobalTheory.CechPic.cls_eq_iff (hPc P₁ hP₁) (pull_isLB hQ₁ a₁)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₁` using `[← GlobalTheory.CechPic.cls_eq_iff hP (pull_isLB hP₁ f)]`. Rewrite `h₂` using `[← GlobalTheory.CechPic.cls_eq_iff hQ (pull_isLB hQ₁ g)]`. Rewrite `h` using `[← GlobalTheory.CechPic.cls_eq_iff (hPc P hP) (pull_isLB hQ a)]`. Rewrite `h₁` using `[GlobalTheory.CechPic.cls_pull hP₁]`. Rewrite `h₂` using `[GlobalTheory.CechPic.cls_pull hQ₁]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[GlobalTheory.CechPic.cls_pull hQ, pw P hP, h₁, h₂, ← map_nsmul, ← GlobalTheory.CechPic.pull_comp, ← w, GlobalTheory.CechPic.pull_comp]`. Rewrite using `[pw P₁ hP₁, GlobalTheory.CechPic.cls_pull hQ₁]`. Establish `inj : ∀ z, GlobalTheory.CechPic.pull (inv f) (GlobalTheory.CechPic.pull f z) = z`. Introduce `z`. Rewrite using `[← GlobalTheory.CechPic.pull_comp, IsIso.inv_hom_id, GlobalTheory.CechPic.pull_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inj (c • _), h, inj]`.
+A detailed English derivation is pending.
 -/
 private theorem lbIso_move {Y Y₁ Z Z₁ : Scheme.{0}} {P : LB Y} {P₁ : LB Y₁} {Q : LB Z} {Q₁ : LB Z₁}
     (hP : P.IsLB) (hP₁ : P₁.IsLB) (hQ : Q.IsLB) (hQ₁ : Q₁.IsLB) (f : Y ⟶ Y₁) [IsIso f] (g : Z ⟶ Z₁) (a : Y ⟶ Z) (a₁ : Y₁ ⟶ Z₁)
@@ -103,14 +103,14 @@ private theorem lbIso_move {Y Y₁ Z Z₁ : Scheme.{0}} {P : LB Y} {P₁ : LB Y�
   rw [← inj (c • _), h, inj]
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_mul] exact mul_mem (ha v) (hb v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isIntAf_mul {p : ℕ} [Fact p.Prime] {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf b) : IsIntAf (a * b) := fun v => by
   rw [map_mul]
   exact mul_mem (ha v) (hb v)
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, x, fun v => by rw [map_one]; exact one_mem _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem inAf_mem {p : ℕ} [Fact p.Prime] (D : Datum p) (x : D.La) : inAf D x ∈ LaHat D :=
   AddSubgroup.subset_closure ⟨1, x, fun v => by rw [map_one]; exact one_mem _, rfl⟩
@@ -118,43 +118,41 @@ private theorem inAf_mem {p : ℕ} [Fact p.Prime] (D : Datum p) (x : D.La) : inA
 end UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Introduce `hTE hTB hMU hTT p hp D G L R' _ _ gb q hq r 𝔴₀ 𝔴 atq sp hm h𝔴 hle R _ b N₀ hN₀ i e hnorm h u hTj hInt hu N' N c' c hN' hN X s o' o ψ hψ s₀ o₁ o₂ n₁ n₂`. Take `⟨e₁, he₁, m₁, m₁'⟩` from `exists_iso_of_cart n₁.cart`. Take `⟨e₂, he₂, m₂, m₂'⟩` from `exists_iso_of_cart n₂.cart`. Establish `mψ : IsMonHom ψ` using `hψ.1`. Establish `hu1 : u ∈ L.KN 1` using `KN_anti (one_dvd N₀) hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `atP : AtPrime D q r 𝔴` using `⟨atq.prime, atq.ne, atq.disc, atq.root, atq.perf, h𝔴, hle⟩`. Establish `hcop : (q ^ e).Coprime p` using `Nat.Coprime.pow_left e ((Nat.coprime_primes atq.prime hp.out).2 atq.ne)`. Establish `hact₁ : ∀ x, o'.act.act x ≫ e₁.hom = e₁.hom ≫ o₁.act.act x`. Introduce `x`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `n₁.act x` using `[Over.comp_left, he₁]`. Establish `hact₂ : ∀ x, o.act.act x ≫ e₂.hom = e₂.hom ≫ o₂.act.act x`. Introduce `x`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify `n₂.act x` using `[Over.comp_left, he₂]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `heta₁ : ∀ y, o'.eta (c' • y) ≫ e₁.hom = o₁.eta y`. Introduce `y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, he₁]`. Conclude with `(n₁.eta y).trans (Category.id_comp _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heta₂ : ∀ y, o.eta (c • y) ≫ e₂.hom = o₂.eta y`. Introduce `y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, he₂]`. Conclude with `(n₂.eta y).trans (Category.id_comp _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : n₁.φ ≫ (e₁.inv ≫ ψ ≫ e₂.hom).left = ψ.left ≫ n₂.φ`. Establish `hh : e₁.hom.left ≫ e₁.inv.left = 𝟙 _`. Rewrite using `[← Over.comp_left, e₁.hom_inv_id, Over.id_left]`. Rewrite using `[← he₁, ← he₂, Over.comp_left, Over.comp_left, ← Category.assoc, hh, Category.id_comp]`. Use `⟨e₁.inv ≫ ψ ≫ e₂.hom, hsq, ⟨⟨e, rfl⟩, inferInstance, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `h1 : o₁.act.act x = e₁.inv ≫ o'.act.act x ≫ e₁.hom`. Rewrite using `[Iso.eq_inv_comp]`. Conclude with `(hact₁ x).symm`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Category.assoc, Iso.hom_inv_id_assoc]`. Rewrite using `[reassoc_of% (hψ.2.1 x)]`. Conclude with `congrArg (fun t => e₁.inv ≫ ψ ≫ t) (hact₂ x)`. Introduce `x`. Establish `hE : o'.eta (c' • x) ≫ ψ = o.eta (c • x)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hTE p D G L R' gb (h * u) X s N' N o' o ψ hψ N₀ c' c hN' hN x x ?_` and prove the remaining obligations. Conclude with `Link.CongOne.mul L (hTj.away N₀ hN₀) hu.1 (inAf D x) (inAf_mem D x)`. Establish `a1 : o₁.eta x = o'.eta (c' • x) ≫ e₁.hom` using `(heta₁ x).symm`. Establish `a2 : o₂.eta x = o.eta (c • x) ≫ e₂.hom` using `(heta₂ x).symm`. Rewrite using `[a1, a2]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `((reassoc_of% hE) e₂.hom).symm`. Take `⟨c₀, hc₀, ⟨hL⟩, t, t', ht, ht', htt, hht⟩` from `hψ.2.2.2.1`. Take `⟨t₁, t₁', ht₁, ht₁', htt₁, hh₁⟩` from `hTj.mult`. Take `⟨t₂', hu₂, ht₂', htt₂⟩` from `(hMU p D G L).1 u hu1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Subgroup.coe_mul, Prod.snd_mul, Units.val_mul] at hht`. Establish `hc : c₀ = q ^ e`. Use `(hMU p D G L).2 c₀ (q ^ e) (t₁ * _ * t') (t * t₂' * t₁') hc₀ hcop (isIntAf_mul (isIntAf_mul ht₁ hu₂) ht') (isIntAf_mul (isIntAf_mul ht ht₂') ht₁') ?_ ?_` and prove the remaining obligations. Rewrite using `[show ∀ a b c d f g : AfP p, a * b * c * (d * f * g) = (a * g) * (b * f) * (d * c) from fun _ _ _ _ _ _ => by ring, htt₁, htt₂, htt, _root_.one_mul, _root_.one_mul]`. Rewrite using `[← _root_.mul_one (c₀ : AfP p), ← htt, ← _root_.mul_assoc, ← hht, hh₁, hnorm]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Substitute `hc` using the available equality. Establish `hiso₁ : IsIso n₁.φ₂` using `(GlobalTheory.SiegDesc.isPullback_of_isSquare n₁.cart.1 n₁.sq).isIso_fst_of_isIso`. Establish `hw` using `ES.PIsogExt.isSquare_square_compatible_homs n₁.sq n₂.sq hsq`. Conclude with `⟨lbIso_move o'.isLB o₁.isLB o.isLB o₂.isLB n₁.φ₂ n₂.φ₂ _ _ hw (q ^ e) n₁.pol n₂.pol hL⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hback : ∀ v ∈ LaHat D, ∃ v' ∈ LaHat D, L.actG (h * u) v' = (q ^ e) • v`. Introduce `v hv`. Take `⟨v', hv', hv'e⟩` from `hTj.back v hv`. Take `⟨w, hw, hw'⟩` from `hu.2 v' hv'`. Establish `hinv : L.actG u (L.actG u⁻¹ v') = v'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Use `⟨L.actG u⁻¹ v', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hw']`. Conclude with `add_mem hv' (nsmul_mem hw _)`. Rewrite using `[map_mul, Module.End.mul_apply, hinv, hv'e, hnorm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ψ', mψ', h1, h2⟩` from `hTB p D G L R' gb (h * u) X s N' N o' o ψ hψ (q ^ e) hcop hback`. Use `⟨e₂.inv ≫ ψ' ≫ e₁.hom, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc, Iso.hom_inv_id_assoc]`. Rewrite using `[reassoc_of% h1, comp_pow_id, Iso.inv_hom_id_assoc]`. Simplify using `only [Category.assoc, Iso.hom_inv_id_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[reassoc_of% h2, comp_pow_id, Iso.inv_hom_id_assoc]`. Introduce `k _ _ _ x`. Take `⟨hT1, hT2⟩` from `hTT p D G L R' gb (h * u) X s N' N o' o ψ hψ q r 𝔴 i h u atP hTj hInt hu1 rfl k x`. Establish `hk : ∀ {T : Over X} (g : T ⟶ o₁.A) (a : D.O), g ≫ o₁.act.act a = 1 ↔ (g ≫ e₁.inv) ≫ o'.act.act a = 1`. Introduce `T g a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← comp_iso_eq_one e₁ ((g ≫ e₁.inv) ≫ o'.act.act a)]`. Simplify using `only [Category.assoc]`. Rewrite using `[show o'.act.act a ≫ e₁.hom = e₁.hom ≫ o₁.act.act a from hact₁ a, Iso.inv_hom_id_assoc]`. Establish `hz : ∀ {T : Over X} (g : T ⟶ o₁.A), g ≫ (e₁.inv ≫ ψ ≫ e₂.hom) = 1 ↔ (g ≫ e₁.inv) ≫ ψ = 1`. Introduce `T g`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← comp_iso_eq_one e₂ ((g ≫ e₁.inv) ≫ ψ)]`. Simplify using `only [Category.assoc]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg ⟨n, hn⟩ y hy`. Use `(hk g _).2 ?_` and prove the remaining obligations.
-
-Conclude with `hT1 (g ≫ e₁.inv) ((hz g).1 hg) ⟨n, fun z hz' => (hk g _).1 (hn z hz')⟩ y hy`. Use `show _ = Ideal.absNorm 𝔴 ^ (D.m * i)`. Rewrite using `[hm, _root_.one_mul, ← hT2]`. Apply `Nat.card_congr` to reduce the goal to its premises. Conclude with `{ toFun := fun g => ⟨g.1 ≫ e₁.inv, (hz g.1).1 g.2.1, fun y hy => (hk g.1 _).1 (g.2.2 y hy)⟩ invFun := fun g => ⟨g.1 ≫ e₁.hom, (hz _).2 (by simpa using g.2.1), fun y hy => (hk _ _).2 (by simpa using g.2.2 y hy)⟩ left_inv := fun g => Subtype.ext (by simp) right_inv := fun g => Subt …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.isogG_of :
     TrEta → TrBack → MultUnit → TrTj → IsogG := by

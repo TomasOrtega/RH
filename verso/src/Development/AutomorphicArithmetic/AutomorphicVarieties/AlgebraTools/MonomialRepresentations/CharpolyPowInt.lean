@@ -3,15 +3,15 @@ import Mathlib
 open Polynomial Matrix
 
 /- English proof (translation)
-Introduce `R ι _ _ _ S M N hN h i`. Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Conclude with `⟨1, Polynomial.monic_one, Subsingleton.elim _ _⟩`. Use `haveI : Nontrivial S := ⟨⟨0, 1, fun e => zero_ne_one (congrArg Subtype.val e)⟩⟩`. Establish `hdvd : M.charpoly ∣ (M ^ N).charpoly.comp (X ^ N)` using `by set A : Matrix ι ι R[X] := Matrix.scalar ι (X : R[X]) with hAdef set B : Matrix ι ι R[X] := (C : R →+* R[X]).mapMatrix M with hBdef`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAB : Commute A B` using `Matrix.scalar_commute _ (fun _ => Commute.all _ _) _`. Establish `e1 : (M ^ N).charpoly.comp (X ^ N) = (A ^ N - B ^ N).det`. Establish `hA : A ^ N = Matrix.scalar ι ((X : R[X]) ^ N)` using `(map_pow (Matrix.scalar ι) X N).symm`. Establish `hB : B ^ N = (C : R →+* R[X]).mapMatrix (M ^ N)` using `(map_pow _ M N).symm`. Rewrite using `[hA, hB, Matrix.charpoly, ← Polynomial.coe_compRingHom_apply, RingHom.map_det]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[Matrix.charmatrix_apply_eq]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.charmatrix_apply_ne _ _ _ hab, hab]`. Rewrite using `[e1, ← hAB.geom_sum₂_mul N, Matrix.det_mul]`. Conclude with `Dvd.intro_left _ rfl`. Establish `hl : (M ^ N).charpoly ∈ Polynomial.lifts (algebraMap S R)` using `(Polynomial.lifts_iff_coeff_lifts _).2 fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨p₀, hp₀, -, hmon⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl (Matrix.charpoly_monic _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Polynomial.isIntegral_coeff_of_dvd (p₀.comp (X ^ N)) M.charpoly (hmon.comp (Polynomial.monic_X_pow N) (by rw [Polynomial.natDegree_X_pow]; omega)) (Matrix.charpoly_monic M) ?_ i` and prove the remaining obligations. Rewrite using `[Polynomial.map_comp, hp₀, Polynomial.map_pow, Polynomial.map_X]`. Conclude with `hdvd`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.charpolyPowInt :
     ∀ (R ι : Type) [CommRing R] [Fintype ι] [DecidableEq ι] (S : Subring R) (M : Matrix ι ι R) (N : ℕ), 0 < N →

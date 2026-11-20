@@ -31,9 +31,9 @@ theorem infMat_eq_map (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →
     infMat D.sp.cm.sig V.gram θ h = (infHom V h).1.map θ := rfl
 
 /- English proof (translation)
-Introduce `D V`. Use `⟨fun h => ?_, fun a ha k hk => ⟨?_, fun θ => ?_⟩⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `(GlobalTheory.AdelicSplit.splitEquiv V).surjective h`. Conclude with `⟨p.1.1, p.1.2, p.2.1, p.2.2, hp.symm⟩`. Establish `h1 : finE V a = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: finHom V a = 1` using `ha`. Simplify using `only [finE, MonoidHom.comp_apply, this, map_one]`. Rewrite using `[map_mul, h1, one_mul]`. Establish `h1 : infHom V k = 1` using `hk`. Rewrite using `[infMat_eq_map, infMat_eq_map, map_mul, h1, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem split_parts : ∀ (D : D7) (V : HSp D), (∀ h : GA D V, ∃ a ∈ GinfC V, ∃ k ∈ GfC V, h = a * k) ∧ ∀ a ∈ GinfC V, ∀ k ∈ GfC V, Lev.finE V (a * k) = Lev.finE V k ∧ ∀ θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ, infMat D.sp.cm.sig V.gram θ (a * k) = infMat D.sp.cm.sig V.gram θ a := by
   intro D V

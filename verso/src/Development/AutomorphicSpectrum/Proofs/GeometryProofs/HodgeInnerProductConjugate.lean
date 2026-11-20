@@ -11,14 +11,14 @@ namespace GlobalTheory.CompanionTheory.Ar.HodgeConj
 abbrev cc : Sp ℂ ⟶ Sp ℂ := spMap (starRingEnd ℂ)
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => by simp))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_cc : cc ≫ cc = 𝟙 (Sp ℂ) := by
   rw [← Spec.map_comp, ← Spec.map_id]
   exact congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => by simp))
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, cc_cc, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[reassoc] theorem cc_cc_assoc' {Y : Scheme.{0}} (f : Sp ℂ ⟶ Y) : cc ≫ cc ≫ f = f := by
   rw [← Category.assoc, cc_cc, Category.id_comp]
@@ -52,14 +52,14 @@ def twRep (A : Over (Sp ℂ)) [GrpObj A] : (twF A ⋙ forget _).RepresentableBy 
 scoped instance twGrp (A : Over (Sp ℂ)) [GrpObj A] : GrpObj (tw A) := GrpObj.ofRepresentableBy _ _ (twRep A)
 
 /- English proof (translation)
-The claim follows from `((yonedaGrpObjIsoOfRepresentableBy _ _ (twRep A)).hom.app (Opposite.op T)).hom.map_mul x y`.
+A detailed English derivation is pending.
 -/
 theorem twEquiv_mul {A T : Over (Sp ℂ)} [GrpObj A] (x y : T ⟶ tw A) :
     twEquiv A T (x * y) = twEquiv A T x * twEquiv A T y :=
   ((yonedaGrpObjIsoOfRepresentableBy _ _ (twRep A)).hom.app (Opposite.op T)).hom.map_mul x y
 
 /- English proof (translation)
-The claim follows from `((yonedaGrpObjIsoOfRepresentableBy _ _ (twRep A)).hom.app (Opposite.op T)).hom.map_one`.
+A detailed English derivation is pending.
 -/
 theorem twEquiv_one {A T : Over (Sp ℂ)} [GrpObj A] : twEquiv A T 1 = 1 :=
   ((yonedaGrpObjIsoOfRepresentableBy _ _ (twRep A)).hom.app (Opposite.op T)).hom.map_one
@@ -68,38 +68,38 @@ def pc {A : Over (Sp ℂ)} (s : 𝟙_ (Over (Sp ℂ)) ⟶ A) : 𝟙_ (Over (Sp �
   (twEquiv A _).symm (toUnit _ ≫ s)
 
 /- English proof (translation)
-Simplify using `using Over.w (toUnit (tw (𝟙_ (Over (Sp ℂ)))))`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toUnit_left : (toUnit (tw (𝟙_ (Over (Sp ℂ))))).left = cc := by
   simpa using Over.w (toUnit (tw (𝟙_ (Over (Sp ℂ)))))
 
 /- English proof (translation)
-Use `show (toUnit _ ≫ s).left = _`. Rewrite using `[Over.comp_left, toUnit_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pc_left {A : Over (Sp ℂ)} (s : 𝟙_ (Over (Sp ℂ)) ⟶ A) : (pc s).left = cc ≫ s.left := by
   show (toUnit _ ≫ s).left = _
   rw [Over.comp_left, toUnit_left]
 
 /- English proof (translation)
-The claim follows from `(twEquiv A _).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem twEquiv_pc {A : Over (Sp ℂ)} (s : 𝟙_ (Over (Sp ℂ)) ⟶ A) : twEquiv A _ (pc s) = toUnit _ ≫ s :=
   (twEquiv A _).apply_symm_apply _
 
 /- English proof (translation)
-The claim follows from `(twEquiv A _).injective (by rw [twEquiv_mul, twEquiv_pc, twEquiv_pc, twEquiv_pc, comp_mul])`.
+A detailed English derivation is pending.
 -/
 theorem pc_mul {A : Over (Sp ℂ)} [GrpObj A] (s t : 𝟙_ (Over (Sp ℂ)) ⟶ A) : pc (s * t) = pc s * pc t :=
   (twEquiv A _).injective (by rw [twEquiv_mul, twEquiv_pc, twEquiv_pc, twEquiv_pc, comp_mul])
 
 /- English proof (translation)
-The claim follows from `(twEquiv A _).injective (by rw [twEquiv_one, twEquiv_pc, comp_one])`.
+A detailed English derivation is pending.
 -/
 theorem pc_one {A : Over (Sp ℂ)} [GrpObj A] : pc (1 : 𝟙_ (Over (Sp ℂ)) ⟶ A) = 1 :=
   (twEquiv A _).injective (by rw [twEquiv_one, twEquiv_pc, comp_one])
 
 /- English proof (translation)
-Introduce `s t h` and use `by have h1 := congrArg (fun r => cc ≫ r.left) h simp only [pc_left, cc_cc_assoc'] at h1 exact Over.OverMorphism.ext h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pc_injective {A : Over (Sp ℂ)} : Function.Injective (pc (A := A)) := fun s t h => by
   have h1 := congrArg (fun r => cc ≫ r.left) h
@@ -107,7 +107,7 @@ theorem pc_injective {A : Over (Sp ℂ)} : Function.Injective (pc (A := A)) := f
   exact Over.OverMorphism.ext h1
 
 /- English proof (translation)
-Introduce `r` and use `by have hr : r.left ≫ A.hom = cc := by have := Over.w r simp only [Over.mk_hom] at this have h2 := congrArg (· ≫ cc) this simpa [cc_cc] using h2 refine ⟨Over.homMk (cc ≫ r.left) (by simp [hr, cc_cc]), Over.OverMorphism.ext ?_⟩ rw [pc_left] simp [cc_cc_assoc']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pc_surjective {A : Over (Sp ℂ)} : Function.Surjective (pc (A := A)) := fun r => by
   have hr : r.left ≫ A.hom = cc := by
@@ -122,9 +122,9 @@ theorem pc_surjective {A : Over (Sp ℂ)} : Function.Surjective (pc (A := A)) :=
 def ccIso : Sp ℂ ≅ Sp ℂ := ⟨cc, cc, cc_cc, cc_cc⟩
 
 /- English proof (translation)
-Use `⟨?_, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Conclude with `h.1.of_iso (Iso.refl _) (Iso.refl _) ccIso (Iso.refl _) (by simp) (by simp [ccIso]) (by simp) (by simp [ccIso, cc_cc_assoc'])`. Set `e : Over.mk ((tw T).hom ≫ z) ⟶ Over.mk (T.hom ≫ cc ≫ z)` to `Over.homMk (𝟙 _) (by simp)`. Establish `h1` using `h.2 (tw T) (twEquiv A T x) (twEquiv A T y) (e ≫ x₀) (e ≫ y₀) (by simpa [e] using hx) (by simpa [e] using hy)`. Rewrite `h1` using `[← comp_mul, ← twEquiv_mul]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_tw {X : Scheme.{0}} {G : Over X} [GrpObj G] {A : Over (Sp ℂ)} [GrpObj A]
     {z : Sp ℂ ⟶ X} {φ : A.left ⟶ G.left} (h : IsGrpPullback A G z φ) :
@@ -139,7 +139,7 @@ theorem isGrpPullback_tw {X : Scheme.{0}} {G : Over X} [GrpObj G] {A : Over (Sp 
     simpa [e] using h1
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext hψ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_inv {R : Type} [CommRing R] (ψ : R →+* R) (hψ : ∀ a, ψ (ψ a) = a) :
     spMap ψ ≫ spMap ψ = 𝟙 _ := by
@@ -147,7 +147,7 @@ theorem spMap_inv {R : Type} [CommRing R] (ψ : R →+* R) (hψ : ∀ a, ψ (ψ 
   exact congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext hψ))
 
 /- English proof (translation)
-Introduce `p _` and use `by have h1 : (spMap ψ) p ∈ x ⁻¹ᵁ U := h trivial simpa using h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_comp {R R' : Type} [CommRing R] [CommRing R'] (ψ : R →+* R') {Y : Scheme.{0}} {x : Sp R ⟶ Y}
     {U : Y.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) : ⊤ ≤ (spMap ψ ≫ x) ⁻¹ᵁ U := fun p _ => by
@@ -155,7 +155,7 @@ theorem top_le_comp {R R' : Type} [CommRing R] [CommRing R'] (ψ : R →+* R') {
   simpa using h1
 
 /- English proof (translation)
-Use `⟨fun h => ?_, top_le_comp ψ⟩` and prove the remaining obligations. Establish `h1` using `top_le_comp ψ h`. Rewrite `h1` using `[← Category.assoc, spMap_inv ψ hψ, Category.id_comp]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem top_le_inv {R : Type} [CommRing R] (ψ : R →+* R) (hψ : ∀ a, ψ (ψ a) = a) {Y : Scheme.{0}} {x : Sp R ⟶ Y}
     {U : Y.Opens} : ⊤ ≤ (spMap ψ ≫ x) ⁻¹ᵁ U ↔ ⊤ ≤ x ⁻¹ᵁ U := by
@@ -164,9 +164,9 @@ theorem top_le_inv {R : Type} [CommRing R] (ψ : R →+* R) (hψ : ∀ a, ψ (ψ
   rwa [← Category.assoc, spMap_inv ψ hψ, Category.id_comp] at h1
 
 /- English proof (translation)
-Establish `e` using `Scheme.Hom.appLE_comp_appLE (spMap ψ) x U ⊤ ⊤ h le_top`. Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ)`. Establish `e2 : (spMap ψ).appLE ⊤ ⊤ le_top = (spMap ψ).appTop`. Simplify using `only [Scheme.Hom.appLE]`. Conclude with `Category.comp_id _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, e2]`. Conclude with `congrArg (fun k => k.hom ((Scheme.Hom.appLE x U ⊤ h).hom f)) n`.
+A detailed English derivation is pending.
 -/
 theorem val_spMap {R R' : Type} [CommRing R] [CommRing R'] (ψ : R →+* R') {Y : Scheme.{0}} (x : Sp R ⟶ Y)
     (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ (spMap ψ ≫ x) ⁻¹ᵁ U) (f : Γ(Y, U)) :
@@ -181,9 +181,9 @@ theorem val_spMap {R R' : Type} [CommRing R] [CommRing R'] (ψ : R →+* R') {Y 
   exact congrArg (fun k => k.hom ((Scheme.Hom.appLE x U ⊤ h).hom f)) n
 
 /- English proof (translation)
-Establish `hi` using `top_le_inv (starRingEnd ℂ) (fun a => by simp) (x := x) (U := U)`. Unfold `valAt'`. Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Rewrite using `[dif_pos h, dif_pos (hi.2 h)]`. Conclude with `val_spMap _ x U h _ f`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h, dif_neg (fun h' => h (hi.1 h')), map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem valAt'_cc {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)) :
     valAt' (cc ≫ x) U f = starRingEnd ℂ (valAt' x U f) := by
@@ -205,7 +205,7 @@ def cjL (L : (Fin g → ℂ) →L[ℂ] ℂ) : (Fin g → ℂ) →L[ℂ] ℂ :=
     Complex.continuous_conj.comp (L.continuous.comp continuous_star)⟩
 
 /- English proof (translation)
-Establish `h1` using `h.restrictScalars ℝ`. Establish `h2 : HasFDerivWithinAt (star : (Fin g → ℂ) → (Fin g → ℂ)) (((starL' ℝ : (Fin g → ℂ) ≃L[ℝ] (Fin g → ℂ))) : (Fin g → ℂ) →L[ℝ] (Fin g → ℂ)) (star ⁻¹' s) x` using `(starL' ℝ : (Fin g → ℂ) ≃L[ℝ] (Fin g → ℂ)).hasFDerivAt.hasFDerivWithinAt`. Establish `h3` using `h1.comp x h2 (fun _ h => h)`. Establish `h4` using `(Complex.conjCLE.toContinuousLinearMap.hasFDerivAt (x := F (star x))).comp_hasFDerivWithinAt x h3`. Conclude with `HasFDerivWithinAt.of_restrictScalars ℝ h4 (by ext w; rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivWithinAt_conj {F : (Fin g → ℂ) → ℂ} {L : (Fin g → ℂ) →L[ℂ] ℂ} {s : Set (Fin g → ℂ)}
     {x : Fin g → ℂ} (h : HasFDerivWithinAt F L s (star x)) :
@@ -220,16 +220,16 @@ theorem hasFDerivWithinAt_conj {F : (Fin g → ℂ) → ℂ} {L : (Fin g → ℂ
   exact HasFDerivWithinAt.of_restrictScalars ℝ h4 (by ext w; rfl)
 
 /- English proof (translation)
-Introduce `_ hx` and use `(hasFDerivWithinAt_conj (h _ hx).hasFDerivWithinAt).differentiableWithinAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem differentiableOn_conj {F : (Fin g → ℂ) → ℂ} {s : Set (Fin g → ℂ)} (h : DifferentiableOn ℂ F s) :
     DifferentiableOn ℂ (fun z => starRingEnd ℂ (F (star z))) (star ⁻¹' s) := fun _ hx =>
   (hasFDerivWithinAt_conj (h _ hx).hasFDerivWithinAt).differentiableWithinAt
 
 /- English proof (translation)
-Distinguish the cases in `h : DifferentiableAt ℂ F (star x)`. Establish `h1` using `hasFDerivWithinAt_conj (s := Set.univ) h.hasFDerivAt.hasFDerivWithinAt`. Rewrite `h1` using `[Set.preimage_univ, hasFDerivWithinAt_univ]`. Rewrite using `[h1.fderiv]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h' : ¬ DifferentiableAt ℂ (fun z => starRingEnd ℂ (F (star z))) x` using `fun hd => h (by`. Establish `h1` using `hasFDerivWithinAt_conj (F := fun z => starRingEnd ℂ (F (star z))) (x := star x) (s := Set.univ) (by rw [star_star]; exact hd.hasFDerivAt.hasFDerivWithinAt)`. Rewrite `h1` using `[Set.preimage_univ, hasFDerivWithinAt_univ]`. Simplify using `using h1.differentiableAt)`. Rewrite using `[fderiv_zero_of_not_differentiableAt h, fderiv_zero_of_not_differentiableAt h']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -249,7 +249,7 @@ theorem fderiv_conj (F : (Fin g → ℂ) → ℂ) (x w : Fin g → ℂ) :
     simp
 
 /- English proof (translation)
-Simplify using `[dotProduct, Matrix.mulVec, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_conj (Hm : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) :
     a ⬝ᵥ (Hm.map (starRingEnd ℂ)).mulVec (star b) =
@@ -263,7 +263,7 @@ section Unif
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
 
 /- English proof (translation)
-Rewrite using `[pc_left]`. Conclude with `top_le_inv _ (fun a => by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_pc {s : 𝟙_ (Over (Sp ℂ)) ⟶ A} {U : A.left.Opens} :
     ⊤ ≤ (pc s).left ⁻¹ᵁ U ↔ ⊤ ≤ s.left ⁻¹ᵁ U := by
@@ -271,7 +271,7 @@ theorem top_le_pc {s : 𝟙_ (Over (Sp ℂ)) ⟶ A} {U : A.left.Opens} :
   exact top_le_inv _ (fun a => by simp)
 
 /- English proof (translation)
-Rewrite using `[pc_left]`. Conclude with `valAt'_cc _ U f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt'_pc (s : 𝟙_ (Over (Sp ℂ)) ⟶ A) (U : A.left.Opens) (f : Γ(A.left, U)) :
     valAt' (pc s).left U f = starRingEnd ℂ (valAt' s.left U f) := by
@@ -287,14 +287,14 @@ Both sides reduce to the same expression.
 theorem starZ_apply (z : Fin g → ℂ) : starZ g z = star z := rfl
 
 /- English proof (translation)
-The claim follows from `Set.ext fun _ => top_le_pc`.
+A detailed English derivation is pending.
 -/
 theorem dom_eq (ex : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ A)) (U : A.left.Opens) :
     {z | ⊤ ≤ (pc (ex (star z))).left ⁻¹ᵁ U} = star ⁻¹' {z | ⊤ ≤ (ex z).left ⁻¹ᵁ U} :=
   Set.ext fun _ => top_le_pc
 
 /- English proof (translation)
-Rewrite using `[dom_eq]`. Conclude with `⟨(u.hol U f).1.preimage continuous_star, (differentiableOn_conj (u.hol U f).2).congr fun z _ => valAt'_pc _ U f⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem conjugate_uniformisation_holomorphic (u : HolUnif A L g) (U : A.left.Opens) (f : Γ(A.left, U)) :
     IsOpen {z | ⊤ ≤ (pc (u.ex (star z))).left ⁻¹ᵁ U} ∧
@@ -305,7 +305,7 @@ theorem conjugate_uniformisation_holomorphic (u : HolUnif A L g) (U : A.left.Ope
     (differentiableOn_conj (u.hol U f).2).congr fun z _ => valAt'_pc _ U f⟩
 
 /- English proof (translation)
-Rewrite using `[dom_eq]`. Conclude with `differentiableOn_conj (u.fr_hol i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjugate_frame_holomorphic (u : HolUnif A L g) (i : L.ι) :
     DifferentiableOn ℂ (fun z => starRingEnd ℂ (u.fr i (star z)))
@@ -359,11 +359,11 @@ def cjU (u : HolUnif A L g) : HolUnif (tw A) L g where
     rw [← map_mul, ← u.fr_compat i j _ (top_le_pc.1 h)]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨Matrix.IsHermitian.ext fun i j => ?_, fun z hz => ?_, fun l => ?_, fun l i z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, RCLike.star_def]`. Rewrite using `[← h1.apply i j]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[form_conj, Complex.conj_re]`. Conclude with `h2 _ (by simpa using hz)`. Rewrite using `[RCLike.norm_conj]`. Conclude with `h3 _`. Establish `e` using `h4 ⟨star l.1, l.2⟩ i (star z) (top_le_pc.1 hz) show starRingEnd ℂ (u.fr i (star z)) = starRingEnd ℂ (χ ⟨star l.1, l.2⟩) * _ * starRingEnd ℂ (u.fr i (star (z + l.1)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, star_add, map_mul, map_mul, ← Complex.exp_conj, form_conj, form_conj]`. Simplify using `only [map_add, map_mul, Complex.conj_conj, Complex.conj_ofReal, map_div₀, Complex.conj_ofNat, star_star]`.
+A detailed English derivation is pending.
 -/
 theorem isAH_cjU (u : HolUnif A L g) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (h : u.IsAH Hm χ) :
     (cjU u).IsAH (Hm.map (starRingEnd ℂ)) (fun l => starRingEnd ℂ (χ ⟨star l.1, l.2⟩)) := by
@@ -392,7 +392,7 @@ def cjV (v : epsR ℂ ⟶ A) : epsR ℂ ⟶ tw A :=
       ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl])))
 
 /- English proof (translation)
-Establish `e` using `val_spMap (dualMap (starRingEnd ℂ)) v.left U h0 hU f`. Conclude with `(congrArg TrivSqZeroExt.snd e).trans (by simp [dualMap])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem snd_val_cj (v : epsR ℂ ⟶ A) (U : A.left.Opens) (h0 : ⊤ ≤ v.left ⁻¹ᵁ U)
     (hU : ⊤ ≤ (spMap (dualMap (starRingEnd ℂ)) ≫ v.left) ⁻¹ᵁ U) (f : Γ(A.left, U)) :
@@ -404,7 +404,7 @@ theorem snd_val_cj (v : epsR ℂ ⟶ A) (U : A.left.Opens) (h0 : ⊤ ≤ v.left 
   exact (congrArg TrivSqZeroExt.snd e).trans (by simp [dualMap])
 
 /- English proof (translation)
-Establish `hF : (fun z => valAt' (pc (u.ex (star z))).left U f) = fun z => starRingEnd ℂ (valAt' (u.ex (star z)).left U f)` using `funext fun z => valAt'_pc _ U f`. Establish `e` using `fderiv_conj (fun z => valAt' (u.ex z).left U f) 0 (star a)`. Rewrite `e` using `[star_zero, star_star]`. Rewrite using `[hF]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_cj (u : HolUnif A L g) (U : A.left.Opens) (f : Γ(A.left, U)) (a : Fin g → ℂ) :
     fderiv ℂ (fun z => valAt' (pc (u.ex (star z))).left U f) 0 (star a) =
@@ -417,7 +417,7 @@ theorem fderiv_cj (u : HolUnif A L g) (U : A.left.Opens) (f : Γ(A.left, U)) (a 
   exact e
 
 /- English proof (translation)
-Introduce `U hU f`. Establish `hi : ∀ b : DualNumber ℂ, dualMap (starRingEnd ℂ) (dualMap (starRingEnd ℂ) b) = b` using `fun b => by`. Apply the tactic sequence `ext <;> simp [dualMap]`. Establish `h0 : ⊤ ≤ v.left ⁻¹ᵁ U` using `(top_le_inv _ hi).1 hU`. Conclude with `(snd_val_cj v U h0 hU f).trans ((congrArg _ (h U h0 f)).trans (fderiv_cj u U f a).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDiff_cj (u : HolUnif A L g) {a : Fin g → ℂ} {v : epsR ℂ ⟶ A} (h : u.IsDiff a v) :
     (cjU u).IsDiff (star a) (cjV v) := by
@@ -430,9 +430,9 @@ theorem isDiff_cj (u : HolUnif A L g) {a : Fin g → ℂ} {v : epsR ℂ ⟶ A} (
 end Unif
 
 /- English proof (translation)
-Unfold `IsTanAt at *`. Establish `e1 : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) ≫ spMap (dualMap (starRingEnd ℂ)) = cc ≫ Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => by simp [dualMap]))`. Set `k : Over.mk (cc ≫ z) ⟶ Over.mk z` to `Over.homMk cc rfl`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2 : (1 : Over.mk (cc ≫ z) ⟶ G).left = cc ≫ (1 : Over.mk z ⟶ G).left`. Rewrite using `[← comp_one k]`. Both sides reduce to the same expression. Rewrite using `[e, ← Category.assoc, e1, Category.assoc, h, e2]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTan_conj {X : Scheme.{0}} {G : Over X} [GrpObj G] {z : Sp ℂ ⟶ X} {v : epsAt z ⟶ G}
     {v' : epsAt (cc ≫ z) ⟶ G} (e : v'.left = spMap (dualMap (starRingEnd ℂ)) ≫ v.left) (h : IsTanAt G z v) :
@@ -450,9 +450,9 @@ theorem isTan_conj {X : Scheme.{0}} {G : Over X} [GrpObj G] {z : Sp ℂ ⟶ X} {
   rw [e, ← Category.assoc, e1, Category.assoc, h, e2]
 
 /- English proof (translation)
-Take `⟨hL, tv, tw', A, _, φ, g, u, Hm, χ, a', b', a, b, h1, h2, h3, h4, h5, h6, rfl⟩` from `h`. Use `⟨hL, isTan_conj hv tv, isTan_conj hw tw', tw A, inferInstance, φ, g, cjU u, Hm.map (starRingEnd ℂ), _, cjV a', cjV b', star a, star b, isGrpPullback_tw h1, isAH_cjU u h2, ?_, ?_, isDiff_cj u h5, isDiff_cj u h6, ?_⟩` and prove the remaining obligations. Rewrite using `[hv, ← h3] show (spMap (dualMap (starRingEnd ℂ)) ≫ a'.left) ≫ φ = _`. Rewrite using `[Category.assoc]`. Rewrite using `[hw, ← h4] show (spMap (dualMap (starRingEnd ℂ)) ≫ b'.left) ≫ φ = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc]`. Rewrite using `[form_conj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hodgeInnerProduct_conj {X : Scheme.{0}} {G : Over X} [GrpObj G] {L : LB G.left} {z : Sp ℂ ⟶ X}
     {v w : epsAt z ⟶ G} {v' w' : epsAt (cc ≫ z) ⟶ G} {c : ℂ}
@@ -472,7 +472,7 @@ theorem hodgeInnerProduct_conj {X : Scheme.{0}} {G : Over X} [GrpObj G] {L : LB 
     simp
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ hv hw h` and use `hodgeInnerProduct_conj hv hw h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hodgeInnerProduct_conj_abelianScheme : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (z : Spec (CommRingCat.of ℂ) ⟶ X) (v w : epsAt z ⟶ t.G) (v' w' : epsAt (spMap (starRingEnd ℂ) ≫ z) ⟶ t.G) (c : ℂ), v'.left = spMap (dualMap (starRingEnd ℂ)) ≫ v.left → w'.left = spMap (dualMap (starRingEnd ℂ)) ≫ w.left → HodgeIP t.G t.PP.L z v w c → HodgeIP t.G t.PP.L (spMap (starRingEnd ℂ) ≫ z) v' w' (starRingEnd ℂ c) :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ hv hw h => hodgeInnerProduct_conj hv hw h

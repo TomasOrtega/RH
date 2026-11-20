@@ -16,31 +16,27 @@ open GlobalTheory.PairFourier (pairPt pairCoef qClass_eq tsum_natCast_eq pairPt_
 namespace GlobalTheory.HilbFam
 
 /- English proof (translation)
-Introduce `F _ _ _ k 𝔞 𝔟 G hG`. Take `⟨Z, hZ, hE⟩` from `hG`. Use `set C : ℂ := (2 : ℂ)⁻¹ ^ Module.finrank ℚ F * Z (1 - (k : ℂ)) with hC`. Set `p : Quotient (qRel 𝔞 𝔟) → F` to `fun c ↦ (pairPt 𝔞 𝔟 c : F)`. Set `a' : F → ℂ` to `fun ξ ↦ ∑' c : p ⁻¹' {ξ}, (pairCoef 𝔞 𝔟 k c : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ha' : ∀ ξ, a' ξ = ∑' c : p ⁻¹' {ξ}, (pairCoef 𝔞 𝔟 k c : ℂ)` using `fun _ ↦ rfl`. Establish `hfib : ∀ (z : Emb F → ℂ) (ξ : F) (c : p ⁻¹' {ξ}), qClass 𝔞 𝔟 k z c = (pairCoef 𝔞 𝔟 k c : ℂ) * qPow ξ z`. Introduce and unpack `z ξ ⟨c, hc⟩`. Rewrite `hc` using `[Set.mem_preimage, Set.mem_singleton_iff]`. Substitute `hc` using the available equality.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `qClass_eq 𝔞 𝔟 k z c`. Use `⟨Z, fun ξ ↦ a' ξ + if ξ = 0 then C else 0, hZ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show a' 0 + (if (0 : F) = 0 then C else 0) = C`. Rewrite using `[if_pos rfl]`. Establish `: IsEmpty (p ⁻¹' {0})` using `⟨fun ⟨c, hc⟩ ↦ pairPt_ne_zero 𝔞 𝔟 c (Subtype.ext (Set.mem_singleton_iff.1 (Set.mem_preimage.1 hc)))⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ha']`. Simplify using `only [tsum_empty, zero_add]`. Introduce `ξ hξ set z₀ : Emb F → ℂ := fun _ ↦ Complex.I`. Establish `hz₀ : z₀ ∈ upperHalf F` using `fun _ ↦ by simp [z₀]`. Establish `hq : qPow ξ z₀ ≠ 0` using `Complex.exp_ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : Summable (fun c : p ⁻¹' {ξ} ↦ (pairCoef 𝔞 𝔟 k c : ℂ))`. Use `((hE z₀ hz₀).1.subtype (p ⁻¹' {ξ})).mul_right (qPow ξ z₀)⁻¹` as an intermediate fact. Use `this.congr fun c ↦ ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[hfib z₀ ξ c, mul_assoc, mul_inv_cancel₀ hq, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩` from `tsum_natCast_eq _ hsum`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use `show a' ξ + (if ξ = 0 then C else 0) = _`. Rewrite using `[if_neg hξ, add_zero, ha']`. Simplify using `only [hm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `ξ hξ hne`. Establish `hne' : a' ξ ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show a' ξ + (if ξ = 0 then C else 0) = 0`. Rewrite using `[if_neg hξ, h, add_zero]`. Distinguish the cases in `hem : IsEmpty (p ⁻¹' {ξ})`. Conclude with `absurd (by rw [ha']; exact tsum_empty) hne'`. Take `⟨c, hc⟩` from `not_isEmpty_iff.1 hem`.
+Substitute using the available equality. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hc` using `[Set.mem_preimage, Set.mem_singleton_iff]`. Substitute `hc` using the available equality. Conclude with `⟨(pairPt 𝔞 𝔟 c).2, c.out.2.2.2⟩`. Introduce `z hz`. Take `⟨hs, heq⟩` from `hE z hz`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hs.hasSum.tsum_fiberwise p`. Establish `h2 : (fun ξ ↦ ∑' c : p ⁻¹' {ξ}, qClass 𝔞 𝔟 k z c) = fun ξ ↦ a' ξ * qPow ξ z`. Use function extensionality and compare the values at `ξ`. Rewrite using `[ha', ← tsum_mul_right]`. Conclude with `tsum_congr (hfib z ξ)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h2]`. Establish `h3 : HasSum (fun ξ : F ↦ (if ξ = 0 then C else 0) * qPow ξ z) C`. Use `hasSum_ite_eq (0 : F) C using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `ξ`. Use `split_ifs with h`.
-
-Substitute `h` using the available equality. Simplify using `[qPow]`. Simplify using the standard rewrite rules. Establish `hv : (cK F k : ℂ) * G z / (omegaFactor 𝔞 : ℂ) ^ k = (∑' c, qClass 𝔞 𝔟 k z c) + C` using `by rw [heq]; ring`. Use `show HasSum (fun ξ : F ↦ (a' ξ + if ξ = 0 then C else 0) * qPow ξ z) ((cK F k : ℂ) * G z / (omegaFactor 𝔞 : ℂ) ^ k)`.
-
-Rewrite using `[hv]`. Simplify using `only [add_mul]`. Conclude with `h1.add h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fourier_with_support :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (𝔞 𝔟 : Frac F) (G : (Emb F → ℂ) → ℂ),

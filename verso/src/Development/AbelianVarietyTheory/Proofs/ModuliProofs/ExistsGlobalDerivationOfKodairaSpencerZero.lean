@@ -16,15 +16,13 @@ open GlobalTheory.KS
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hL P₀ u Hm χ hu R _ x₀ X p m hp hpb D s hD hs`. Establish `key : ∀ (W : X.Opens) (f : Γ(X, W)), ∃! a : Γ(P₀.A.left, m ⁻¹ᵁ W), ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (m ⁻¹ᵁ W) → valAt' (u.ex z).left (m ⁻¹ᵁ W) a = s z W f`. Introduce `W f`. Use `existsUnique_section_of_locally_regular P₀ u Hm χ hu (m ⁻¹ᵁ W) (fun z => s z W f) fun z hz => ?_` and prove the remaining obligations. Establish `hz' : ((u.ex z).left ≫ m) (default : PrimeSpectrum ℂ) ∈ W` using `(top_le_preimage_iff_mem _ _).1 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨_, ⟨W₀, hW₀, rfl⟩, hzW₀, hle⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hz' W.isOpen`. Establish `hle' : W₀ ≤ W` using `hle`. Take `⟨a, ha⟩` from `GlobalTheory.T.holomorphic_lift_regular_of_periods_zero hL P₀ u Hm χ hu R x₀ X p m hp hpb D s hD hs W₀ hW₀ W₀ le_rfl (resG X hle' f)`. Use `⟨m ⁻¹ᵁ W₀, a, fun _ hy => hle' hy, (top_le_preimage_iff_mem ((u.ex z).left ≫ m) W₀).2 hzW₀, fun z' hz' => ?_⟩` and prove the remaining obligations. Conclude with `(ha z' hz').trans ((hs.der z').res W W₀ hle' hz' f)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose d hd hu' using key`. Establish `ext : ∀ (W : X.Opens) (f : Γ(X, W)) (a : Γ(P₀.A.left, m ⁻¹ᵁ W)), (∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (m ⁻¹ᵁ W) → valAt' (u.ex z).left (m ⁻¹ᵁ W) a = s z W f) → d W f = a` using `fun W f a h => (hu' W f a h).symm`. Use `⟨d, ⟨fun W _ f f' => ext W _ _ fun z hz => ?_, fun W _ f f' => ext W _ _ fun z hz => ?_, fun W W' i _ f => ext W' _ _ fun z hz => ?_, fun W _ r => ext W _ _ fun z hz => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[valAt'_add, hd W f z hz, hd W f' z hz, (hs.der z).add W hz]`. Rewrite using `[valAt'_add, valAt'_mul, valAt'_mul, valAt'_comp, valAt'_comp, hd W f z hz, hd W f' z hz, (hs.der z).mul W hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hs.der z).res W W' i hz, ← hd W f z fun _ hy => i (hz hy)]`. Conclude with `valAt'_res _ _ _ hz`. Establish `e : constFn p W r = resG X le_top (constFn p ⊤ r)`. Unfold `constFn`. Conclude with `(congrArg (fun k => k.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) (Scheme.Hom.appLE_map p (U := ⊤) (V := ⊤) (V' := W) le_top (homOfLE le_top).op)).symm`.
-
-Rewrite using `[e, (hs.der z).res ⊤ W le_top hz, hs.base]`. Conclude with `valAt'_constFn _ _ (Over.w (u.ex z)) _ _ hz`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locDer_top_of_ksRel_zero :
     Out.Laws → ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (R : Type) [CommRing R] (x₀ : R →+* ℂ) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : P₀.A.left ⟶ X), Smooth p → IsPullback m P₀.A.hom p (spMap x₀) → ∀ D s, IsDer x₀ D → KSRel u p m D 0 s → ∃ d, LocDer P₀.A.hom p m D ⊤ d := by

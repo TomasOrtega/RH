@@ -12,13 +12,13 @@ open scoped Quaternion Topology TensorProduct
 namespace GlobalTheory.QSA
 
 /- English proof (translation)
-Establish `h1 : fstA F (ε * ε) = fstA F ε`. Rewrite using `[map_mul]`. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `fstA F ε w * fstA F ε w = fstA F ε w`. Distinguish the cases in `hw : w ∈ S₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hε.1 w hw, one_mul]`. Rewrite using `[hε.2.1 w hw, zero_mul]`. Establish `h2 : sndA F (ε * ε) = sndA F ε`. Rewrite using `[map_mul]`. Use `RestrictedProduct.ext _ _ fun v => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `evalV F v (sndA F ε * sndA F ε) = evalV F v (sndA F ε)`. Rewrite using `[map_mul]`. Distinguish the cases in `hv : v ∈ S₂`. Rewrite using `[hε.2.2.1 v hv, one_mul]`. Rewrite using `[hε.2.2.2 v hv, zero_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Prod.ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem isPlacesIdem_mul_self {F : Type} [Field F] [NumberField F] {S₁ : Finset (InfinitePlace F)}
     {S₂ : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsPlacesIdem S₁ S₂ ε) : ε * ε = ε := by
@@ -40,11 +40,9 @@ theorem isPlacesIdem_mul_self {F : Type} [Field F] [NumberField F] {S₁ : Finse
   exact Prod.ext h1 h2
 
 /- English proof (translation)
-Introduce `F _ _ a b ha hb S₁ S₂ ε hε hS hpq g hg`. Distinguish the cases in `hiso : ∃ x : ℍ[F, a, b], x ≠ 0 ∧ nrm x = 0`. Conclude with `GlobalTheory.T.strongApproximation_normOne_splitQuaternionAlgebra F a b ha hb hiso S₁ S₂ ε hε hS g hg`. Establish `hdiv : ∀ x : ℍ[F, a, b], nrm x = 0 → x = 0` using `fun x hx =>`. Assume the negation of the conclusion as `fun h => hiso ⟨x, h, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨p, q, hpq⟩` from `hpq`. Use `GlobalTheory.T.mem_closure_normOne_of_strongApproximation F a b ha hb hdiv S₁ S₂ ε hε hS (fun t => ?_) g hg` and prove the remaining obligations. Establish `h2 : IsUnit (2 : AF F)`. Establish `: IsUnit (algebraMap F (AF F) 2)` using `(IsUnit.mk0 (2 : F) two_ne_zero).map _`. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
-
-Conclude with `GlobalTheory.T.quaternion_norm_one_prescribed_re_at_idempotent (AF F) (algebraMap F (AF F) a) (algebraMap F (AF F) b) ε p q (isPlacesIdem_mul_self hε) ((IsUnit.mk0 a ha).map _) ((IsUnit.mk0 b hb).map _) h2 hpq t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem strongApprox_nrm_one : ∀ (F : Type) [Field F] [NumberField F] (a b : F), a ≠ 0 → b ≠ 0 → ∀ (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) (ε : AF F), IsPlacesIdem S₁ S₂ ε → (S₁.Nonempty ∨ S₂.Nonempty) → (∃ p q : AF F, ε * (algebraMap F (AF F) b - (p ^ 2 - algebraMap F (AF F) a * q ^ 2)) = 0) → ∀ g : DA F a b, nrm g = 1 → g ∈ closure (H0 (a := a) (b := b) ε) := by
   intro F _ _ a b ha hb S₁ S₂ ε hε hS hpq g hg

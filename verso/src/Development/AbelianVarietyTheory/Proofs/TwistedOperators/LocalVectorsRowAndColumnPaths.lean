@@ -20,7 +20,7 @@ open GlobalTheory.FunObj GlobalTheory.RowChain GlobalTheory.FlipRun GlobalTheory
 variable {T : Type}
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _, _ => rfl | _, .snoc _ q, d, e => by show ((splitFam q (Path.Fam.zip φ d.1 e.1)).1, ((splitFam q (Path.Fam.zip φ d.1 e.1)).2, φ _ d.2 e.2)) = _ rw [splitFam_zip φ q d.1 e.1] rfl`.
+A detailed English derivation is pending.
 -/
 theorem splitFam_zip {S S' S'' : Arrow T → Type} (φ : ∀ a, S a → S' a → S'' a) {X Y : Node} {p : Path T X Y} :
     ∀ {Z : Node} (q : Path T Y Z) (d : (p.comp q).Fam S) (e : (p.comp q).Fam S'),
@@ -33,7 +33,7 @@ theorem splitFam_zip {S S' S'' : Arrow T → Type} (φ : ∀ a, S a → S' a →
     rfl
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, h => absurd h (Nat.not_lt_zero _) | n + 1, d, e, j, h => by have hs : splitFam (p := Path.one (.down t i n)) (downPath t i n) (Path.Fam.zip (p := downPath t i (n + 1)) φ d e) = (Path.Fam.zip φ (splitFam (p := Path.one (.down t i n)) (downPath t i n) d).1 (splitFam ( …`.
+A detailed English derivation is pending.
 -/
 theorem getD_zip {S S' S'' : Arrow T → Type} (φ : ∀ a, S a → S' a → S'' a) (t : T) (i : ℕ) :
     ∀ (n : ℕ) (d : (downPath t i n).Fam S) (e : (downPath t i n).Fam S') (j : ℕ) (h : j < n),
@@ -58,7 +58,7 @@ theorem getD_zip {S S' S'' : Arrow T → Type} (φ : ∀ a, S a → S' a → S''
 variable {D : D7} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _, _ => Iff.rfl | _, .snoc _ p, φ, f => and_congr_left' (vecAll_iff ρ e p φ.1 f.1)`.
+A detailed English derivation is pending.
 -/
 theorem vecAll_iff {W : G.Weil} (ρ : RealMatch W) (e : AE D) {X : Node} :
     ∀ {Y : Node} (p : Path T X Y) (φ f : PureT G p), VecAll ρ e p φ f ↔
@@ -68,7 +68,7 @@ theorem vecAll_iff {W : G.Weil} (ρ : RealMatch W) (e : AE D) {X : Node} :
   | _, .snoc _ p, φ, f => and_congr_left' (vecAll_iff ρ e p φ.1 f.1)
 
 /- English proof (translation)
-Use `getD_all (fun a (x : Sch G a × Sch G a) => IsLocVec W a.pair e (vacOf ρ a) x.1 x.2) t i n _ ((vecAll_iff ρ e _ φ f).1 h) j hj` as an intermediate fact. Rewrite `this` using `[getD_zip]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem getD_loc {W : G.Weil} (ρ : RealMatch W) (e : AE D) (t : T) (i n : ℕ) (φ f : PureT G (downPath t i n))
     (h : VecAll ρ e (downPath t i n) φ f) (j : ℕ) (hj : j < n) :
@@ -78,7 +78,7 @@ theorem getD_loc {W : G.Weil} (ρ : RealMatch W) (e : AE D) (t : T) (i n : ℕ) 
   rwa [getD_zip] at this
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, _, _ => hF | n + 1, hn, φ, d, P, h => (hS (.right n D.R.m) (Or.inl ⟨n, D.R.m, by omega, le_rfl, rfl⟩) e he φ.2 d.2 h.2 P.2 _ (row_cusp hS he hF n (by omega) φ.1 d.1 P.1 h.1)).2`.
+A detailed English derivation is pending.
 -/
 theorem row_cusp {W : G.Weil} {M : Vol G} {ρ : RealMatch W} {t : T} (hS : CuspStep W M ρ t) {e : AE D}
     (he : IsIdemSum e (locPl G t)) {F : Fn G (.grid 0 D.R.m)} (hF : IsCuspListed W.θ (.grid 0 D.R.m) F) :
@@ -92,7 +92,7 @@ theorem row_cusp {W : G.Weil} {M : Vol G} {ρ : RealMatch W} {t : T} (hS : CuspS
       (row_cusp hS he hF n (by omega) φ.1 d.1 P.1 h.1)).2
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem step_cusp (G : GridData L sc) (Wl : G.Weil) (t : T) {M : Vol G} (hM : M.Is t) {θ : InfFam D} (j : ℕ)
     (hj : j + 1 ≤ D.R.m) {V₀ W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec (G.V (.grid D.R.m j)) V₀ ρ)
@@ -109,7 +109,7 @@ open GlobalTheory.FunObj GlobalTheory.RowChain GlobalTheory.RowUnf GlobalTheory.
 variable {T : Type} {D : D7} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Introduce `n h`. Substitute `h` using the available equality. Conclude with `H`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem last_cusp (G : GridData L sc) (Wl : G.Weil) (t : T) (M : Vol G) {θ : InfFam D} (j : ℕ)
     (f : Sch G (.down t D.R.m (j + 1)))
@@ -123,7 +123,7 @@ theorem last_cusp (G : GridData L sc) (Wl : G.Weil) (t : T) (M : Vol G) {θ : In
   exact H
 
 /- English proof (translation)
-The claim follows from `| 0, j, hj, vN => by refine ⟨?_, trivial⟩ exact step_cusp G Wl t hM j (by omega) (besDecAt G j 0 hj) (rowJac G (j + 1) (by omega) 0 (by omega)) _ _ (hst j (by omega) _ (last_cusp G Wl t M j _ (hst (j + 1) (by omega)) D.R.m (by omega) F hF)) | σ + 1, j, hj, vN => by obtain ⟨h1, h2 …`.
+A detailed English derivation is pending.
 -/
 theorem chain_props (hP : GlobalTheory.Published.CuspRapidDecay) (G : GridData L sc) (Wl : G.Weil) (hθ : IsInfFam Wl.θ) (t : T)
     {M : Vol G} (hM : M.Is t) (d : PureT G (downPath t D.R.m D.R.m)) (F : Fn G (.grid D.R.m D.R.m))

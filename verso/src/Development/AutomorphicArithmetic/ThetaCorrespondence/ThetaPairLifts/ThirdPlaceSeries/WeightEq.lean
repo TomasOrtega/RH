@@ -40,17 +40,17 @@ namespace GlobalTheory.CsdTwistGal
 end GlobalTheory.CsdTwistGal
 namespace GlobalTheory.TempSatGal
 /- English proof (translation)
-Take `⟨τ0⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hτ : ι.toRingHom.comp (ι.symm.toRingHom.comp τ0) = τ0` using `by ext x; simp`. Use `set τ : E →+* Qbar l := ι.symm.toRingHom.comp τ0 with hτdef`. Use `set X : Multiset ℂ := (HT τ).map (fun n : ℤ => (n : ℂ)) with hXdef`. Establish `hX : X = (m τ0).map (fun z => (((a : ℂ) - 1) / 2 - s) + (-1) * z)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hXdef, H.weights τ, hτ, hinf, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hY : (HT (τ.comp (IsCMField.complexConj E).toRingEquiv.toRingHom)).map (fun n : ℤ => (n : ℂ)) = X.map (fun z => (wt : ℂ) + (-1) * z)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[H.weights_conj, hXdef, Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ : (HT (τ.comp (IsCMField.complexConj E).toRingEquiv.toRingHom)).map (fun n : ℤ => (n : ℂ)) = (m τ0).map (fun z => (((a : ℂ) - 1) / 2 - s) + 1 * z)`. Rewrite using `[H.weights, comp_complexConj, hτ, hinf, hconj, Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcX : (X.card : ℂ) = a` using `by rw [hX, Multiset.card_map, hcard]`. Establish `e` using `congrArg Multiset.sum (hY.symm.trans hZ)`. Rewrite `e` using `[sum_map_affine, sum_map_affine, hcX, hX, sum_map_affine, hcard]`. Establish `ha0 : (a : ℂ) ≠ 0` using `by exact_mod_cast (by omega : a ≠ 0)`. Establish `h : (wt : ℂ) = (a : ℂ) - 1 - 2 * (s : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `mul_left_cancel₀ ha0` to reduce the goal to its premises. Take the linear combination `e`. Conclude with `h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem weight_eq_alt_alt {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {a : ℕ} (ha : 1 ≤ a) {π : CuspSub E a} {χ}

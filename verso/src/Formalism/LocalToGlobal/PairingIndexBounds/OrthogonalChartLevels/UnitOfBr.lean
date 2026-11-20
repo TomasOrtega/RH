@@ -37,7 +37,7 @@ variable {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : Taylor
 omit hp in
 
 /- English proof (translation)
-Establish `hq0 : ‖(q : ℂ_[q])‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff]`. Conclude with `(Fact.out : q.Prime).ne_zero` after adjusting the coercions. Rewrite using `[norm_mul, norm_zpow, h, zpow_neg, mul_inv_cancel₀ (zpow_ne_zero _ hq0)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_of_br {q : ℕ} [Fact q.Prime] (k : ℤ) (x : ℂ_[q]) (h : ‖x‖ = ‖(q : ℂ_[q])‖ ^ (-k)) : ‖(q : ℂ_[q]) ^ k * x‖ = 1 := by
   have hq0 : ‖(q : ℂ_[q])‖ ≠ 0 := by

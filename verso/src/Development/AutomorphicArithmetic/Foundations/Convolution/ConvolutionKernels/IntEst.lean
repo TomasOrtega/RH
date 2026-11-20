@@ -3,17 +3,17 @@ import Mathlib
 open MeasureTheory
 
 /- English proof (translation)
-Introduce `X _ ν _ h k c o Z A B hh hc ho hA hB hk h0 hoA hcB`. Use `set S : Set X := {x | h x ≤ Z}`. Establish `hS : MeasurableSet S` using `measurableSet_le hh measurable_const`. Establish `e1 : ∀ x, k x - c x = S.indicator o x - Sᶜ.indicator c x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ S`. Simplify using `[hx, hk x]`. Simplify using `[hx, h0 x (not_le.1 hx)]`. Establish `b1 : ∀ x, ‖S.indicator o x‖ ≤ A` using `fun x => by`. Distinguish the cases in `hx : x ∈ S`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hoA x hx` using `[hx]`. Simplify `hA` using `[hx]`. Establish `b2 : ∀ x, ‖Sᶜ.indicator c x‖ ≤ B` using `fun x => by`. Distinguish the cases in `hx : x ∈ S`. Simplify `hB` using `[hx]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hcB x (not_le.1 hx)` using `[hx]`. Establish `i1 : Integrable (S.indicator o) ν` using `Integrable.of_bound (ho.indicator hS) A (Filter.Eventually.of_forall b1)`. Establish `i2 : Integrable (Sᶜ.indicator c) ν` using `hc.indicator hS.compl`. Establish `ik : Integrable k ν`. Establish `: k = fun x => (S.indicator o x - Sᶜ.indicator c x) + c x` using `funext fun x => by rw [← e1]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(i1.sub i2).add hc`. Rewrite using `[← integral_sub ik hc]`. Repeatedly rewrite using `[e1]`. Rewrite using `[integral_sub i1 i2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sub_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `norm_integral_le_of_norm_le_const (Filter.Eventually.of_forall b1)`. Rewrite using `[mul_comm]`. Conclude with `norm_integral_le_of_norm_le_const (Filter.Eventually.of_forall b2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.K.intEst :
     ∀ {X : Type} [MeasurableSpace X] (ν : Measure X) [IsFiniteMeasure ν] (h : X → ℝ) (k c o : X → ℂ) (Z A B : ℝ),

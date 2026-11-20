@@ -19,16 +19,16 @@ def projL (z : (Σ _ : Unit, Fin 2) → ℂ) : CP 1 :=
   if h : vecL z ≠ 0 then Projectivization.mk ℂ (vecL z) h else CP.chartInv 0 0
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `mem_mcPts_line.1 hz`. Conclude with `fun h => hi (congrFun h i)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vecL_ne_zero {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : z ∈ mcPts (mCoordIdeal yLine)) : vecL z ≠ 0 := by
   obtain ⟨i, hi⟩ := mem_mcPts_line.1 hz
   exact fun h => hi (congrFun h i)
 
 /- English proof (translation)
-Use `⟨CP.chartDomain (CP.chartIndex x), CP.isOpen_chartDomain _, CP.mem_chartDomain_chartIndex x, fun y p => CP.chartVec (CP.chartIndex x) (CP.chartCoord (CP.chartIndex x) y) p.2, fun y hy => ?_, fun p => ?_⟩` and prove the remaining obligations. Establish `hne` using `CP.chartVec_ne_zero (CP.chartIndex x) (CP.chartCoord (CP.chartIndex x) y)`. Use `⟨mem_mcPts_line.2 ⟨CP.chartIndex x, by simp⟩, ?_⟩` and prove the remaining obligations. Unfold `projL`. Use `split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `CP.chartInv_chartCoord _ hy`. Conclude with `absurd hne h`. Introduce `j w hw`. Establish `hw2 : CP.chartVec j w (CP.chartIndex x) ≠ 0` using `hw.2`. Conclude with `(analyticAt_chartVec_apply (CP.chartIndex x) p.2 _).comp (analyticOnNhd_transition j (CP.chartIndex x) w hw2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lineSections (x : CP 1) : ∃ U : Set (CP 1), IsOpen U ∧ x ∈ U ∧ ∃ s : CP 1 → (Σ _ : Unit, Fin 2) → ℂ,
     (∀ y ∈ U, s y ∈ mcPts (mCoordIdeal yLine) ∧ projL (s y) = y) ∧
@@ -95,12 +95,12 @@ def lineModel : CxModel (mCoordIdeal yLine) 1 where
 def refOne : HermLine (PBlk 2) := HermLine.ofWeight (fun _ => 0) fun _ _ _ => rfl
 
 /- English proof (translation)
-Simplify using `[refOne, HermLine.ofWeight]`.
+Simplify using the standard rewrite rules.
 -/
 theorem refOne_h (z : (Σ _ : Unit, Fin 2) → ℂ) : refOne.h z = 1 := by simp [refOne, HermLine.ofWeight]
 
 /- English proof (translation)
-Establish `: refOne.h = fun _ => 1` using `funext refOne_h`. Unfold `IsSmoothHerm`. Rewrite using `[this]`. Conclude with `contDiffOn_const`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem refOne_smooth : IsSmoothHerm refOne := by
   have : refOne.h = fun _ => 1 := funext refOne_h
@@ -112,7 +112,7 @@ variable (II : IntersectionSystem)
   (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
 
 /- English proof (translation)
-Take `⟨U, hU, hy, s, hs, hh⟩` from `lineSections y`. Conclude with `⟨U, hU, hy, Set.subset_univ _, s, hs, hh, fun _ => 0, holoOn_zero' _ _, fun y' _ => by simp [refOne_h]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem th_ref_line (x y : CP 1) : ∃ U : Set (CP 1), IsOpen U ∧ y ∈ U ∧ U ⊆ Set.univ ∧
     ∃ s : CP 1 → (Σ _ : Unit, Fin 2) → ℂ, (∀ y' ∈ U, s y' ∈ mcPts (mCoordIdeal yLine) ∧ projL (s y') = y') ∧
@@ -160,7 +160,7 @@ def lineBReg : BoundedRegularisationSetting lineModel (lineData II hII).Xo
   e1_ge _ _ := le_rfl
 
 /- English proof (translation)
-Simplify using `[BoundedPshData.phReg, BoundedPshData.smoothed, BoundedPshData.u, GroundTheory.Heights₂.Heights.Regular.PotentialCharts.chartFun, ReciprocityTheory.AnForm.A.molli, cpBounded, cpCharts]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cpBounded_phReg (ρ : ReciprocityTheory.AnForm.A.Mollifier 1) (t : ℝ) (j : Fin cpBounded.N) (x : CP 1) :
     cpBounded.phReg ρ t j x = 0 := by

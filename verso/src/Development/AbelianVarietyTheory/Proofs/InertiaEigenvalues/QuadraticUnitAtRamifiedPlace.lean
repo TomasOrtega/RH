@@ -19,15 +19,13 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.TheoremFiveAtS
 
 /- English proof (translation)
-Introduce `D L nch i r π ρ hF _ _ hHG hr _ _ v hv`. Establish `hIne : TruncatedSeriesCountingIdentities.admG5 i r` using `galois_condition_five_of D i r hF.Conclusion2.1 hHG hr`. Establish `hTame : TruncatedSeriesCountingIdentities.TameGeneratorConditions (D` using `D) i := (GlobalTheory.TameDesign.main D i).2`. Establish `hS` using `((D.nd.S_def i v).1 hv).1`. Establish `hvI` using `hIne v (Or.inl hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvT` using `hTame v (Or.inl hv)`. Establish `hp : (∃ k, v ∈ placesOver D.host.E (D.host.g k)) ∨ (v ∈ placesOver D.host.E D.host.pde ∨ (D.nd.l i = D.host.pde ∧ v ∈ placesOver D.host.E D.host.pde'))`. Break down `hS with h | h | h` into its components or cases. Conclude with `Or.inl ⟨0, h⟩`. Conclude with `Or.inl ⟨1, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the first alternative.
 
-Use `right split_ifs at h with hl`. Conclude with `Or.inr ⟨hl, h⟩`. Conclude with `Or.inl h`. Break down `hp with hk | hp` into its components or cases. Use `right`.
+Prove the second alternative. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Pp, hu, hP⟩` from `hvI.2 hk hv hvT.1`. Use `⟨Pp, fun x _ γ hγ => hP x γ hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval_map]`. Establish `hz : D.nd.zeta i v = evT D.nd i π (algebraMap (D.nd.O i) (D.nd.T i) (chi1 D.nd i (D.nd.gam0 i v)))` using `rfl`. Rewrite using `[hz, Polynomial.eval₂_at_apply]`.
-
-Conclude with `hu.map _`. Use `left`. Conclude with `⟨fun x _ γ hγ => ((hvI.1 (Or.inr hp)) x).1 γ hγ, hvT.2.2.2 hv hp⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (L : SizeData₂ D) (nch : NChoice D) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (π : D.nd.X i) (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O i)), GlobalTheory.NFacts.Facts D nch → LevelStarExponents.lStar L < (D.nd.l i : ℝ) → (∀ k, D.nd.l i ≠ D.host.g k) → HG D.nd D.naut i → GoodR D.nd i r → π ∈ D.nd.Z i → GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.IsRankRPart D i (r π) ρ → ∀ v ∈ D.nd.S i, (QuadAt i r Set.univ v ∧ IsUnit (D.nd.zeta i v - 1)) ∨ PolyAt i r Set.univ π v := by
   intro D L nch i r π ρ hF _ _ hHG hr _ _ v hv

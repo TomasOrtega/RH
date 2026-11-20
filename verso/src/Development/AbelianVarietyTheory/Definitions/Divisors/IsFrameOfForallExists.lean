@@ -23,7 +23,7 @@ def IsFrame (e : ι → Γ(F, U)) : Prop :=
     Function.Bijective (Fintype.linearCombination Γ(X, V) fun i => resM F h (e i))
 
 /- English proof (translation)
-Simplify using `only [Fintype.linearCombination_apply, map_sum, resM_smul, resM_resM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem resM_linearCombination (e : ι → Γ(F, U)) (h : V ≤ U) (h' : W ≤ V) (a : ι → Γ(X, V)) :
     resM F h' (Fintype.linearCombination Γ(X, V) (fun i => resM F h (e i)) a) =
@@ -39,7 +39,7 @@ def basis (he : IsFrame e) (h : V ≤ U) : Module.Basis ι Γ(X, V) Γ(F, V) :=
   Module.Basis.ofEquivFun (LinearEquiv.ofBijective _ (he V h)).symm
 
 /- English proof (translation)
-Rewrite using `[basis, Module.Basis.equivFun_ofEquivFun, LinearEquiv.symm_symm, LinearEquiv.ofBijective_apply, Fintype.linearCombination_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem basis_equivFun_symm (he : IsFrame e) (h : V ≤ U) (a : ι → Γ(X, V)) :
     (he.basis h).equivFun.symm a = ∑ i, a i • resM F h (e i) := by
@@ -47,7 +47,7 @@ theorem basis_equivFun_symm (he : IsFrame e) (h : V ≤ U) (a : ι → Γ(X, V))
     Fintype.linearCombination_apply]
 
 /- English proof (translation)
-Use `he.basis_equivFun_symm h (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[Module.Basis.equivFun_symm_apply]`. Simplify `this` using `[Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 @[simp] theorem basis_apply (he : IsFrame e) (h : V ≤ U) (i : ι) :
     he.basis h i = resM F h (e i) := by
@@ -57,13 +57,13 @@ Use `he.basis_equivFun_symm h (Pi.single i 1)` as an intermediate fact. Rewrite 
   simpa [Pi.single_apply] using this
 
 /- English proof (translation)
-The claim follows from `funext (he.basis_apply h)`.
+A detailed English derivation is pending.
 -/
 theorem coe_basis (he : IsFrame e) (h : V ≤ U) : ⇑(he.basis h) = fun i => resM F h (e i) :=
   funext (he.basis_apply h)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (he.basis h).sum_repr s]`. Simplify using `only [map_sum, resM_smul, basis_apply, resM_resM]`. Simplify using `only [← he.basis_apply (h'.trans h)]`. Rewrite using `[← map_sum, Module.Basis.repr_sum_self]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_resM (he : IsFrame e) (h : V ≤ U) (h' : W ≤ V) (s : Γ(F, V)) (i : ι) :
     (he.basis (h'.trans h)).repr (resM F h' s) i = resG X h' ((he.basis h).repr s i) := by
@@ -73,7 +73,7 @@ theorem repr_resM (he : IsFrame e) (h : V ≤ U) (h' : W ≤ V) (s : Γ(F, V)) (
   rw [← map_sum, Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Introduce `W h'` and use `by simpa only [resM_resM] using he W (h'.trans h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem res (he : IsFrame e) (h : V ≤ U) : IsFrame fun i => resM F h (e i) := fun W h' => by
   simpa only [resM_resM] using he W (h'.trans h)
@@ -81,7 +81,7 @@ theorem res (he : IsFrame e) (h : V ≤ U) : IsFrame fun i => resM F h (e i) := 
 end IsFrame
 
 /- English proof (translation)
-Introduce `V h` and use `by have : Fintype.linearCombination Γ(X, V) (fun i => resM F h (e i)) = (b V h).equivFun.symm.toLinearMap := by ext a : 1 simp [Fintype.linearCombination_apply, hb] rw [this] exact (b V h).equivFun.symm.bijective`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFrame_of_basis {e : ι → Γ(F, U)}
     (b : ∀ V : X.Opens, V ≤ U → Module.Basis ι Γ(X, V) Γ(F, V))
@@ -94,7 +94,7 @@ theorem isFrame_of_basis {e : ι → Γ(F, U)}
   exact (b V h).equivFun.symm.bijective
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun he V h => by rw [← he.coe_basis h] exact ⟨(he.basis h).linearIndependent, (he.basis h).span_eq.ge⟩, fun H => isFrame_of_basis (fun V h => Module.Basis.mk (H V h).1 (H V h).2) fun _ _ _ => Module.Basis.mk_apply _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFrame_iff {e : ι → Γ(F, U)} : IsFrame e ↔ ∀ (V : X.Opens) (h : V ≤ U),
     LinearIndependent Γ(X, V) (fun i => resM F h (e i)) ∧
@@ -106,13 +106,11 @@ theorem isFrame_iff {e : ι → Γ(F, U)} : IsFrame e ↔ ∀ (V : X.Opens) (h :
     fun _ _ _ => Module.Basis.mk_apply _ _ _⟩
 
 /- English proof (translation)
-Establish `inj (V : X.Opens) (h : V ≤ U) : Function.Injective (Fintype.linearCombination Γ(X, V) fun i => resM F h (e i))`. Introduce `a b hab`. Use `choose W hW hx hb using fun x : V => H V h x x.2`. Use function extensionality and compare the values at `i`. Use `fun_ext_of_cover W hW (fun x hxV => Opens.mem_iSup.2 ⟨⟨x, hxV⟩, hx _⟩) fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (resM F (hW x)) hab` as an intermediate fact. Rewrite `this` using `[resM_linearCombination, resM_linearCombination]`. Conclude with `congrFun ((hb x).1 this) i`. Use `fun V h => ⟨inj V h, fun s => ?_⟩` and prove the remaining obligations. Use `choose W hW hx hb using fun x : V => H V h x x.2`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : V ≤ iSup W` using `fun x hxV => Opens.mem_iSup.2 ⟨⟨x, hxV⟩, hx _⟩`. Use `choose a ha using fun x => (hb x).2 (resM F (hW x) s)`. Establish `key (x y : V) : (fun i => resG X (inf_le_left : W x ⊓ W y ≤ W x) (a x i)) = fun i => resG X (inf_le_right : W x ⊓ W y ≤ W y) (a y i)`. Apply `inj _ (inf_le_left.trans ((hW x).trans h))` to reduce the goal to its premises. Rewrite using `[← resM_linearCombination e ((hW x).trans h), ← resM_linearCombination e ((hW y).trans h), ha, ha, resM_resM, resM_resM]`.
-
-Use `choose b hb' using fun i => exists_fun_of_cover W hW hc (fun x => a x i) fun x y => congrFun (key x y) i`. Use `⟨b, sec_ext_of_cover W hW hc fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[resM_linearCombination, ← ha x]`. Conclude with `congrArg _ (funext fun i => hb' i x)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame_of_forall_exists {e : ι → Γ(F, U)}
     (H : ∀ (V : X.Opens) (h : V ≤ U) (x : X), x ∈ V → ∃ (W : X.Opens) (h' : W ≤ V), x ∈ W ∧
@@ -147,7 +145,7 @@ namespace IsFrame
 variable {e : ι → Γ(F, U)}
 
 /- English proof (translation)
-The claim follows from `isFrame_of_basis (fun V h => (he.basis h).map (φ V h)) fun V h i => by rw [Module.Basis.map_apply, basis_apply, hφ]`.
+A detailed English derivation is pending.
 -/
 theorem map_of_linearEquiv (he : IsFrame e) {e' : ι → Γ(G, U)}
     (φ : ∀ V : X.Opens, V ≤ U → (Γ(F, V) ≃ₗ[Γ(X, V)] Γ(G, V)))
@@ -156,7 +154,7 @@ theorem map_of_linearEquiv (he : IsFrame e) {e' : ι → Γ(G, U)}
     rw [Module.Basis.map_apply, basis_apply, hφ]
 
 /- English proof (translation)
-The claim follows from `he.map_of_linearEquiv (fun V _ => LinearEquiv.ofBijective (appLinear φ V) (ConcreteCategory.bijective_of_isIso (φ.app V))) fun _ h i => app_resM φ h (e i)`.
+A detailed English derivation is pending.
 -/
 theorem map_iso (he : IsFrame e) (φ : F ⟶ G) [IsIso φ] : IsFrame fun i => φ.app U (e i) :=
   he.map_of_linearEquiv
@@ -165,23 +163,21 @@ theorem map_iso (he : IsFrame e) (φ : F ⟶ G) [IsIso φ] : IsFrame fun i => φ
     fun _ h i => app_resM φ h (e i)
 
 /- English proof (translation)
-The claim follows from `isFrame_of_basis (fun _ h => (he.basis h).reindex σ.symm) fun _ _ _ => by simp`.
+A detailed English derivation is pending.
 -/
 theorem comp_equiv (he : IsFrame e) {κ : Type} [Fintype κ] (σ : κ ≃ ι) : IsFrame (e ∘ σ) :=
   isFrame_of_basis (fun _ h => (he.basis h).reindex σ.symm) fun _ _ _ => by simp
 
 /- English proof (translation)
-Establish `hg (V : X.Opens) (h : V ≤ U) (hxV : x ∈ V) (a : ι → Γ(X, V)) : F.presheaf.germ V x hxV (Fintype.linearCombination Γ(X, V) (fun i => resM F h (e i)) a) = Fintype.linearCombination (X.presheaf.stalk x) (fun i => (F.presheaf.germ U x hx (e i) : (F.presheaf.stalk x :))) fun i => X.pr …`. Simplify using `only [Fintype.linearCombination_apply, map_sum, QCoh.germ_smul, germ_resM]`. Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_ choose W hW b hb using fun i => X.presheaf.exists_germ_eq (a i)` and prove the remaining obligations. Set `V : X.Opens` to `U ⊓ Finset.univ.inf W`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hxV : x ∈ V` using `⟨hx, by`. Rewrite using `[Opens.coe_finset_inf]`. Simplify using `using hW⟩`. Establish `hV (i : ι) : V ≤ W i` using `inf_le_right.trans (Finset.inf_le (Finset.mem_univ i))`. Establish `hb' (i : ι) : X.presheaf.germ V x hxV (resG X (hV i) (b i)) = a i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hb i]`. Conclude with `X.presheaf.germ_res_apply (homOfLE (hV i)) x hxV (b i)`. Establish `h0` using `hg V inf_le_left hxV fun i => resG X (hV i) (b i)`. Simplify using `only [hb'] at h0`. Rewrite `h0` using `[show (fun i => a i) = a from rfl, ha, ← map_zero (F.presheaf.germ V x hxV).hom]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨V', hxV', i₁, i₂, h1⟩` from `F.presheaf.germ_eq x hxV hxV _ _ h0`. Establish `h2 : resM F i₁.le (Fintype.linearCombination Γ(X, V) (fun i => resM F inf_le_left (e i)) fun i => resG X (hV i) (b i)) = 0` using `h1.trans (map_zero _)`. Rewrite `h2` using `[resM_linearCombination, ← map_zero (Fintype.linearCombination Γ(X, V') fun i => resM F (i₁.le.trans inf_le_left) (e i))]`. Use function extensionality and compare the values at `i`. Establish `h3` using `congrFun ((he V' _).1 h2) i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hb' i, ← X.presheaf.germ_res_apply i₁ x hxV']`. Conclude with `(congrArg _ h3).trans (map_zero _)`. Introduce `t`. Take `⟨V, h, hxV, s, rfl⟩` from `Twist.exists_germ_eq_of_mem hx t`. Take `⟨a, rfl⟩` from `(he V h).2 s`.
-
-Conclude with `⟨_, (hg V h hxV a).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bijective_stalk (he : IsFrame e) (x : X) (hx : x ∈ U) :
     Function.Bijective (Fintype.linearCombination (X.presheaf.stalk x)
@@ -223,7 +219,7 @@ def stalkBasis (he : IsFrame e) (x : X) (hx : x ∈ U) :
   Module.Basis.ofEquivFun (LinearEquiv.ofBijective _ (he.bijective_stalk x hx)).symm
 
 /- English proof (translation)
-Simplify using `[stalkBasis, Fintype.linearCombination_apply, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem stalkBasis_apply (he : IsFrame e) (x : X) (hx : x ∈ U) (i : ι) :
     he.stalkBasis x hx i = F.presheaf.germ U x hx (e i) := by
@@ -231,13 +227,11 @@ Simplify using `[stalkBasis, Fintype.linearCombination_apply, Pi.single_apply]`.
   simp [stalkBasis, Fintype.linearCombination_apply, Pi.single_apply]
 
 /- English proof (translation)
-Use `isFrame_of_forall_exists fun V h y hy => ?_` and prove the remaining obligations. Take `⟨U', hU', hyU', hle⟩` from `QCoh.exists_affine_mem_le (f y) (h hy)`. Take `⟨W, hW, hyW, hWle⟩` from `QCoh.exists_affine_mem_le (U := V ⊓ f ⁻¹ᵁ U') y ⟨hy, hyU'⟩`. Use `⟨W, hWle.trans inf_le_left, hyW, ?_⟩` and prove the remaining obligations. Establish `e₁ : W ≤ f ⁻¹ᵁ U'` using `hWle.trans inf_le_right`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `letI := QCoh.appLEAlgebra f e₁`. Use `letI := QCoh.appLEModule f ((Scheme.Modules.pullback f).obj F) e₁`. Use `haveI := QCoh.appLE_isScalarTower f ((Scheme.Modules.pullback f).obj F) e₁`. Set `b` to `(QCoh.isBaseChange_pullbackSections f F hW hU' e₁).basis (he.basis hle)`. Establish `hb (i : ι) : b i = resM _ ((hWle.trans inf_le_left).trans h) (QCoh.pullbackSections f F (le_refl (f ⁻¹ᵁ U)) (e i))`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsBaseChange.basis_apply, basis_apply]`. Conclude with `(QCoh.pullbackSections_res f F e₁ hle _).trans (QCoh.res_pullbackSections f F _ _ _).symm`. Establish `: Fintype.linearCombination Γ(Y, W) (fun i => resM _ ((hWle.trans inf_le_left).trans h) (QCoh.pullbackSections f F (le_refl (f ⁻¹ᵁ U)) (e i))) = b.equivFun.symm.toLinearMap`. Use extensionality with `a : 1`. Simplify using `[Fintype.linearCombination_apply, hb]`.
-
-Rewrite using `[this]`. Conclude with `b.equivFun.symm.bijective`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullback [F.IsQuasicoherent] (he : IsFrame e) (f : Y ⟶ X) :
     IsFrame fun i => QCoh.pullbackSections f F (le_refl (f ⁻¹ᵁ U)) (e i) := by
@@ -268,14 +262,14 @@ def equiv (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) : Γ(F, V) ≃ₗ[Γ
   (he.basis h).equiv (he'.basis h) (Equiv.refl ι)
 
 /- English proof (translation)
-Rewrite using `[← he.basis_apply, equiv, Module.Basis.equiv_apply, basis_apply, Equiv.refl_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem equiv_resM_frame (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (i : ι) :
     he.equiv he' h (resM F h (e i)) = resM G h (e' i) := by
   rw [← he.basis_apply, equiv, Module.Basis.equiv_apply, basis_apply, Equiv.refl_apply]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(he V h).2 s`. Simplify using `only [Fintype.linearCombination_apply, map_sum, resM_smul, resM_resM, map_smul, equiv_resM_frame]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem equiv_resM (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : W ≤ V) (s : Γ(F, V)) :
     he.equiv he' (h'.trans h) (resM F h' s) = resM G h' (he.equiv he' h s) := by
@@ -292,7 +286,7 @@ def iso {e : ι → Γ(F, ⊤)} {e' : ι → Γ(G, ⊤)} (he : IsFrame e) (he' :
   isoOfLinear (fun _ => he.equiv he' le_top) fun h s => he.equiv_resM he' le_top h s
 
 /- English proof (translation)
-Use `he.equiv_resM_frame he' le_rfl i` as an intermediate fact. Rewrite `this` using `[resM_self, resM_self]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem iso_hom_app {e : ι → Γ(F, ⊤)} {e' : ι → Γ(G, ⊤)} (he : IsFrame e) (he' : IsFrame e')
     (i : ι) : (he.iso he').hom.app ⊤ (e i) = e' i := by
@@ -302,11 +296,9 @@ theorem iso_hom_app {e : ι → Γ(F, ⊤)} {e' : ι → Γ(G, ⊤)} (he : IsFra
 end IsFrame
 
 /- English proof (translation)
-Establish `key (V : Y.Opens) (h : V ≤ W) : Function.Bijective (Fintype.linearCombination Γ(Y, V) fun i => resM (F.restrict g) h (e i)) ↔ Function.Bijective (Fintype.linearCombination Γ(X, g ''ᵁ V) fun i => resM F (g.image_mono h) (e i))`. Establish `hb : Function.Bijective fun (a : ι → Γ(Y, V)) (i : ι) => (g.appIso V).inv (a i)` using `Function.Bijective.piMap fun _ => ConcreteCategory.bijective_of_isIso (g.appIso V).inv`. Rewrite using `[← hb.of_comp_iff]`. Both sides reduce to the same expression. Use `⟨fun H V h => ?_, fun H V h => (key V h).2 (H _ _)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨V', rfl⟩ : ∃ V' : Y.Opens, V = g ''ᵁ V'` from `⟨g ⁻¹ᵁ V, by`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf]`. Conclude with `(inf_eq_right.2 (h.trans (g.image_le_opensRange W))).symm⟩`. Establish `h' : V' ≤ W`. Simplify `g.preimage_mono h` using `only [Scheme.Hom.preimage_image_eq]`.
-
-Conclude with `(key V' h').1 (H V' h')`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isFrame_restrict_iff (g : Y ⟶ X) [IsOpenImmersion g] {W : Y.Opens}
     (e : ι → Γ(F, g ''ᵁ W)) : IsFrame (F := F.restrict g) (U := W) e ↔ IsFrame e := by
@@ -328,7 +320,7 @@ theorem isFrame_restrict_iff (g : Y ⟶ X) [IsOpenImmersion g] {W : Y.Opens}
   exact (key V' h').1 (H V' h')
 
 /- English proof (translation)
-The claim follows from `isFrame_of_basis (fun V _ => Module.Basis.singleton (Fin 1) Γ(X, V)) fun V h i => (Module.Basis.singleton_apply (Fin 1) Γ(X, V) i).trans (map_one (resG X h)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_one (U : X.Opens) :
     IsFrame (F := structureModule X) (U := U) fun _ : Fin 1 => (1 : Γ(X, U)) :=
@@ -342,9 +334,9 @@ def freeFrame (ι : Type) (i : ι) : Γ(freeModule X ι, ⊤) :=
     (SheafOfModules.ιFree i) ⊤ (1 : Γ(X, ⊤))
 
 /- English proof (translation)
-Set `φ (V : X.Opens) : Γ(⨁ fun _ : ι => structureModule X, V) ≃ₗ[Γ(X, V)] (ι → Γ(X, V))` to `QCoh.biproductSectionsEquiv (fun _ : ι => structureModule X) V`. Use `isFrame_of_basis (fun V _ => Module.Basis.ofEquivFun (φ V)) fun V h i => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.coe_ofEquivFun]`. Use `(QCoh.biproductSectionsEquiv_symm_apply _ _ _).trans (Eq.trans ?_ (app_resM (biproduct.ι (fun _ : ι => structureModule X) i) h _))` and prove the remaining obligations. Use `(Finset.sum_eq_single i (fun j _ hj => ?_) (by simp)).trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg _ (Pi.single_eq_of_ne hj _)).trans (map_zero _)`. Conclude with `congrArg _ ((Pi.single_eq_same _ _).trans (map_one (resG X h)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_biproduct (ι : Type) [Fintype ι] [HasBiproduct fun _ : ι => structureModule X] :
     IsFrame fun i : ι =>
@@ -363,9 +355,9 @@ theorem isFrame_biproduct (ι : Type) [Fintype ι] [HasBiproduct fun _ : ι => s
 variable (X) in
 
 /- English proof (translation)
-Use `Abelian.hasFiniteBiproducts (C := X.Modules)` as an intermediate fact. Use `(isFrame_biproduct (X := X) ι).map_iso (biproduct.isoCoproduct fun _ : ι => structureModule X).hom` as an intermediate fact. Establish `e (i : ι) : Scheme.Modules.Hom.app (biproduct.isoCoproduct fun _ : ι => structureModule X).hom ⊤ ((biproduct.ι (fun _ : ι => structureModule X) i).app ⊤ (1 : Γ(X, ⊤))) = freeFrame X ι i`. Use `(QCoh.app_app _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[biproduct.isoCoproduct_hom, biproduct.ι_desc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `this` using `[funext e]`. Conclude with `this`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame_freeFrame (ι : Type) [Fintype ι] : IsFrame (freeFrame X ι) := by
   have := Abelian.hasFiniteBiproducts (C := X.Modules)
@@ -388,7 +380,7 @@ def IsVB (r : ℕ) : Prop := ∀ x : X, ∃ (U : X.Opens) (e : Fin r → Γ(F, U
 variable {r s : ℕ}
 
 /- English proof (translation)
-Introduce `x` and use `have ⟨U, _, hx, he⟩ := h x ⟨U, _, hx, he.comp_equiv (Fintype.equivFinOfCardEq hr).symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isVB_of_frames (hr : Fintype.card ι = r)
     (h : ∀ x : X, ∃ (U : X.Opens) (e : ι → Γ(F, U)), x ∈ U ∧ IsFrame e) : IsVB F r := fun x =>
@@ -396,7 +388,7 @@ theorem isVB_of_frames (hr : Fintype.card ι = r)
   ⟨U, _, hx, he.comp_equiv (Fintype.equivFinOfCardEq hr).symm⟩
 
 /- English proof (translation)
-The claim follows from `isVB_of_frames rfl fun _ => ⟨⊤, e, trivial, he⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsFrame.isVB {e : ι → Γ(F, ⊤)} (he : IsFrame e) : IsVB F (Fintype.card ι) :=
   isVB_of_frames rfl fun _ => ⟨⊤, e, trivial, he⟩
@@ -404,7 +396,7 @@ theorem IsFrame.isVB {e : ι → Γ(F, ⊤)} (he : IsFrame e) : IsVB F (Fintype.
 variable (X) in
 
 /- English proof (translation)
-The claim follows from `(isFrame_freeFrame X ι).isVB`.
+A detailed English derivation is pending.
 -/
 theorem isVB_freeModule (ι : Type) [Fintype ι] : IsVB (freeModule X ι) (Fintype.card ι) :=
   (isFrame_freeFrame X ι).isVB
@@ -412,7 +404,7 @@ theorem isVB_freeModule (ι : Type) [Fintype ι] : IsVB (freeModule X ι) (Finty
 variable (X) in
 
 /- English proof (translation)
-Simplify using `using isVB_freeModule X (Fin r)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isVB_freeModule_fin (r : ℕ) : IsVB (freeModule X (Fin r)) r := by
   simpa using isVB_freeModule X (Fin r)
@@ -420,13 +412,13 @@ theorem isVB_freeModule_fin (r : ℕ) : IsVB (freeModule X (Fin r)) r := by
 variable (X) in
 
 /- English proof (translation)
-Introduce `_` and use `⟨⊤, _, trivial, isFrame_one ⊤⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isVB_structureModule : IsVB (structureModule X) 1 :=
   fun _ => ⟨⊤, _, trivial, isFrame_one ⊤⟩
 
 /- English proof (translation)
-The claim follows from `(isFrame_one (L.U i)).map_of_linearEquiv (fun _ h => (LB.chartEquiv hL i h).symm) fun V h _ => (congrArg (· • resM (toMod L) h (LB.chartSec hL i)) (map_one (resG X h))).trans (one_smul _ _)`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_chartSec {L : LB X} (hL : L.IsLB) (i : L.ι) :
     IsFrame fun _ : Fin 1 => LB.chartSec hL i :=
@@ -435,14 +427,14 @@ theorem isFrame_chartSec {L : LB X} (hL : L.IsLB) (i : L.ι) :
       (map_one (resG X h))).trans (one_smul _ _)
 
 /- English proof (translation)
-Introduce `x` and use `have ⟨i, hi⟩ := Semi.LB.mem_of_cover hL x ⟨_, _, hi, isFrame_chartSec hL i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isVB_toMod {L : LB X} (hL : L.IsLB) : IsVB (toMod L) 1 := fun x =>
   have ⟨i, hi⟩ := Semi.LB.mem_of_cover hL x
   ⟨_, _, hi, isFrame_chartSec hL i⟩
 
 /- English proof (translation)
-Use `forall_congr' fun x => ⟨fun ⟨U, e, hx, he⟩ => ⟨U, hx, ⟨?_⟩⟩, fun ⟨U, hx, ⟨φ⟩⟩ => ?_⟩` and prove the remaining obligations. Conclude with `(isFrame_freeFrame _ _).iso ((isFrame_restrict_iff U.ι _).2 (he.res (U.ι_image_le ⊤)))`. Conclude with `⟨U.ι ''ᵁ ⊤, _, by simpa using hx, (isFrame_restrict_iff U.ι _).1 ((isFrame_freeFrame _ _).map_iso φ.hom)⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isVB_iff_restrict : IsVB F r ↔ ∀ x : X, ∃ U : X.Opens, x ∈ U ∧
     Nonempty (freeModule U.toScheme (Fin r) ≅ F.restrict U.ι) := by
@@ -455,7 +447,7 @@ theorem isVB_iff_restrict : IsVB F r ↔ ∀ x : X, ∃ U : X.Opens, x ∈ U ∧
 namespace IsVB
 
 /- English proof (translation)
-The claim follows from `have ⟨U, _, hxU, he⟩ := h x have ⟨W, hW, hxW, hle⟩ := QCoh.exists_affine_mem_le (U := U ⊓ V) x ⟨hxU, hx⟩ ⟨W, _, hW, hxW, hle.trans inf_le_right, he.res (hle.trans inf_le_left)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_affine (h : IsVB F r) {x : X} (hx : x ∈ V) :
     ∃ (U : X.Opens) (e : Fin r → Γ(F, U)), IsAffineOpen U ∧ x ∈ U ∧ U ≤ V ∧ IsFrame e :=
@@ -464,14 +456,14 @@ theorem exists_affine (h : IsVB F r) {x : X} (hx : x ∈ V) :
   ⟨W, _, hW, hxW, hle.trans inf_le_right, he.res (hle.trans inf_le_left)⟩
 
 /- English proof (translation)
-Introduce `x` and use `have ⟨U, _, hx, he⟩ := h x ⟨U, _, hx, he.map_iso φ.hom⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem of_iso (h : IsVB F r) (φ : F ≅ G) : IsVB G r := fun x =>
   have ⟨U, _, hx, he⟩ := h x
   ⟨U, _, hx, he.map_iso φ.hom⟩
 
 /- English proof (translation)
-Use `choose U e hx he using h`. Conclude with `Twist.isQuasicoherent_of_locally_iso (F := freeModule X (Fin r)) (U := U) (top_le_iff.1 fun x _ => Opens.mem_iSup.2 ⟨x, hx x⟩) fun x => ((isFrame_freeFrame X (Fin r)).res le_top).restrictIso (he x) _ (U x).opensRange_ι.le`.
+A detailed English derivation is pending.
 -/
 theorem isQuasicoherent (h : IsVB F r) : F.IsQuasicoherent := by
   choose U e hx he using h
@@ -480,7 +472,7 @@ theorem isQuasicoherent (h : IsVB F r) : F.IsQuasicoherent := by
       ((isFrame_freeFrame X (Fin r)).res le_top).restrictIso (he x) _ (U x).opensRange_ι.le
 
 /- English proof (translation)
-The claim follows from `have := h.isQuasicoherent .of_forall_exists_affine fun x => have ⟨U, _, hU, hx, _, he⟩ := h.exists_affine (V := ⊤) (x := x) trivial ⟨U, hU, hx, Module.Finite.of_basis (he.basis le_rfl)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isFiniteQC (h : IsVB F r) : IsFiniteQC F :=
   have := h.isQuasicoherent
@@ -491,11 +483,7 @@ theorem isFiniteQC (h : IsVB F r) : IsFiniteQC F :=
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Use `choose U hx he using isVB_iff_restrict.1 h`. Establish `φ (x : X) : SheafOfModules.free (R` using `X.ringCatSheaf.over (U x)) (Fin r) ≅ F.over (U x) :=`. Set `e` to `Scheme.Modules.overEquiv (U x)`. Use the proof step `Sigma.mapIso (fun _ : Fin r => ((U x).sheafOfModulesEquivOverInverseUnit X.ringCatSheaf).symm) ≪≫`. Use the proof step `(PreservesCoproduct.iso e.inverse fun _ : Fin r => structureModule (U x).toScheme).symm ≪≫`.
-
-Use the proof step `e.inverse.mapIso (he x).some ≪≫`. Use the proof step `e.inverse.mapIso ((Scheme.Modules.overFunctorEquiv (U x)).app F).symm ≪≫ (e.unitIso.app (F.over (U x))).symm`. Set `q : SheafOfModules.LocalGeneratorsData.{0} F` to `{ I := X X := U coversTop := by`. Rewrite using `[Opens.coversTop_iff]`. Conclude with `top_le_iff.1 fun x _ => Opens.mem_iSup.2 ⟨x, hx x⟩`.
-
-Use `generators x := (SheafOfModules.free.generatingSections (Fin r)).ofEpi (φ x).hom }`. Use `haveI : q.IsLocallyFreeData := ⟨fun x => LB.isIso_ofEpi_π (φ x)⟩`. Conclude with `q.isLocallyFree`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyFree (h : IsVB F r) : F.IsLocallyFree := by
   choose U hx he using isVB_iff_restrict.1 h
@@ -518,7 +506,7 @@ theorem isLocallyFree (h : IsVB F r) : F.IsLocallyFree := by
   exact q.isLocallyFree
 
 /- English proof (translation)
-The claim follows from `have ⟨_, _, hx, he⟩ := h x ⟨he.stalkBasis x hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_basis_stalk (h : IsVB F r) (x : X) :
     Nonempty (Module.Basis (Fin r) (X.presheaf.stalk x) (F.presheaf.stalk x :)) :=
@@ -526,21 +514,21 @@ theorem nonempty_basis_stalk (h : IsVB F r) (x : X) :
   ⟨he.stalkBasis x hx⟩
 
 /- English proof (translation)
-The claim follows from `(h.nonempty_basis_stalk x).elim .of_basis`.
+A detailed English derivation is pending.
 -/
 theorem free_stalk (h : IsVB F r) (x : X) :
     Module.Free (X.presheaf.stalk x) (F.presheaf.stalk x :) :=
   (h.nonempty_basis_stalk x).elim .of_basis
 
 /- English proof (translation)
-The claim follows from `(h.nonempty_basis_stalk x).elim fun b => by simpa using Module.finrank_eq_card_basis b`.
+A detailed English derivation is pending.
 -/
 theorem finrank_stalk (h : IsVB F r) (x : X) :
     Module.finrank (X.presheaf.stalk x) (F.presheaf.stalk x :) = r :=
   (h.nonempty_basis_stalk x).elim fun b => by simpa using Module.finrank_eq_card_basis b
 
 /- English proof (translation)
-The claim follows from `(h.nonempty_basis_stalk x).elim fun b => by simpa using Module.finrank_eq_card_basis (Algebra.TensorProduct.basis (X.residueField x) b)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_fibre (h : IsVB F r) (x : X) :
     Module.finrank (X.residueField x) (QCoh.fibre F x) = r :=
@@ -548,13 +536,13 @@ theorem finrank_fibre (h : IsVB F r) (x : X) :
     simpa using Module.finrank_eq_card_basis (Algebra.TensorProduct.basis (X.residueField x) b)
 
 /- English proof (translation)
-The claim follows from `(h.finrank_stalk (Classical.arbitrary X)).symm.trans (h'.finrank_stalk _)`.
+A detailed English derivation is pending.
 -/
 theorem rank_unique [Nonempty X] (h : IsVB F r) (h' : IsVB F s) : r = s :=
   (h.finrank_stalk (Classical.arbitrary X)).symm.trans (h'.finrank_stalk _)
 
 /- English proof (translation)
-Introduce `y` and use `have := h.isQuasicoherent have ⟨_, _, hx, he⟩ := h (f y) ⟨_, _, hx, he.pullback f⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pullback (h : IsVB F r) (f : Y ⟶ X) : IsVB ((Scheme.Modules.pullback f).obj F) r :=
   fun y =>
@@ -563,13 +551,13 @@ theorem pullback (h : IsVB F r) (f : Y ⟶ X) : IsVB ((Scheme.Modules.pullback f
     ⟨_, _, hx, he.pullback f⟩
 
 /- English proof (translation)
-The claim follows from `(h.pullback g).of_iso ((Scheme.Modules.restrictFunctorIsoPullback g).app F).symm`.
+A detailed English derivation is pending.
 -/
 theorem restrict (h : IsVB F r) (g : Y ⟶ X) [IsOpenImmersion g] : IsVB (F.restrict g) r :=
   (h.pullback g).of_iso ((Scheme.Modules.restrictFunctorIsoPullback g).app F).symm
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨i, hi⟩ := Semi.LB.mem_of_cover hL x obtain ⟨U, e, -, hx, hle, he⟩ := h.exists_affine hi refine ⟨U, fun j => (Twist.chartEquiv hL i hle).symm (e j), hx, he.map_of_linearEquiv (fun V hV => (Twist.chartEquiv hL i (hV.trans hle)).symm) ?_⟩ exact fun V hV j => (Twist.resM_c …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twist (h : IsVB F r) {L : LB X} (hL : L.IsLB) : IsVB (twist F L) r := fun x => by
   obtain ⟨i, hi⟩ := Semi.LB.mem_of_cover hL x
@@ -579,9 +567,9 @@ theorem twist (h : IsVB F r) {L : LB X} (hL : L.IsLB) : IsVB (twist F L) r := fu
   exact fun V hV j => (Twist.resM_chartEquiv_symm hL i hle hV _).symm
 
 /- English proof (translation)
-Use `isVB_of_frames (ι := Fin r ⊕ Fin s) (by simp) fun x => ?_` and prove the remaining obligations. Take `⟨U, e, hx, he⟩` from `hF x`. Take `⟨V, e', -, hx', hle, he'⟩` from `hG.exists_affine hx`. Use `⟨V, Sum.elim (fun i => (biprod.inl : F ⟶ F ⊞ G).app V (resM F hle (e i))) fun i => (biprod.inr : G ⟶ F ⊞ G).app V (e' i), hx', isFrame_of_basis (fun W h => ((he.basis (h.trans hle)).prod (he'.basis h)).map (QCoh.biprodSectionsEquiv F G W).symm) ?_⟩` and prove the remaining obligations. Introduce and unpack `W h (i | i)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Module.Basis.map_apply, Module.Basis.prod_apply, Sum.elim_inl, Sum.elim_inl, ← app_resM]`. Express the relevant statement in the definitionally equal form `(Limits.biprod.inl : F ⟶ F ⊞ G).app W _ + (Limits.biprod.inr : G ⟶ F ⊞ G).app W 0 = _`. Simplify using the standard rewrite rules. Rewrite using `[Module.Basis.map_apply, Module.Basis.prod_apply, Sum.elim_inr, Sum.elim_inr, ← app_resM]`. Express the relevant statement in the definitionally equal form `(Limits.biprod.inl : F ⟶ F ⊞ G).app W 0 + (Limits.biprod.inr : G ⟶ F ⊞ G).app W _ = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
 Simplify using the standard rewrite rules.
 -/
@@ -604,13 +592,13 @@ theorem biprod (hF : IsVB F r) (hG : IsVB G s) : IsVB (F ⊞ G) (r + s) := by
 end IsVB
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.of_iso φ, fun h => h.of_iso φ.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isVB_congr (φ : F ≅ G) : IsVB F r ↔ IsVB G r :=
   ⟨fun h => h.of_iso φ, fun h => h.of_iso φ.symm⟩
 
 /- English proof (translation)
-Use `⟨fun h => QCoh.support_eq_empty_iff.1 (Set.eq_empty_of_forall_notMem fun x => QCoh.notMem_support_iff.2 ?_), fun h x => ⟨⊤, Fin.elim0, trivial, fun V _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨b⟩` from `h.nonempty_basis_stalk x`. Conclude with `b.equivFun.injective.subsingleton`. Use `QCoh.subsingleton_sections_of_isZero h V` as an intermediate fact. Conclude with `⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isVB_zero_iff : IsVB F 0 ↔ IsZero F := by
   refine ⟨fun h => QCoh.support_eq_empty_iff.1 (Set.eq_empty_of_forall_notMem fun x =>
@@ -651,9 +639,9 @@ def presheaf : TopCat.Presheaf Ab.{0} X where
     exact (resM_resM _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]`. Introduce `κ W sf hsf`. Take `⟨t, ht⟩` from `exists_sec_of_cover W (le_iSup W) le_rfl (fun k => (sf k).1) fun k l => congrArg Subtype.val (hsf k l)`. Use `⟨⟨t, N.mem_of_local fun x hx => ?_⟩, fun k => Subtype.ext (ht k), fun u hu => Subtype.ext (sec_ext_of_cover W (le_iSup W) le_rfl fun k => (congrArg Subtype.val (hu k)).trans (ht k).symm)⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨W k, le_iSup W k, hk, (ht k).symm ▸ (sf k).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSheaf_presheaf : N.presheaf.IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]
@@ -684,17 +672,17 @@ Both sides reduce to the same expression.
 @[simp] theorem incl_app_mkSec (s : Γ(F, V)) (hs : s ∈ N.sec V) : N.incl.app V (N.mkSec s hs) = s := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem incl_app_injective (V : X.Opens) : Function.Injective (N.incl.app V) := Subtype.val_injective
 
 /- English proof (translation)
-The claim follows from `(show N.sec V from s).2`.
+A detailed English derivation is pending.
 -/
 theorem incl_app_mem (s : Γ(N.toMod, V)) : N.incl.app V s ∈ N.sec V := (show N.sec V from s).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨N.mkSec s h, rfl⟩, fun ⟨t, ht⟩ => ht ▸ N.incl_app_mem t⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_sec_iff {s : Γ(F, V)} : s ∈ N.sec V ↔ ∃ t, N.incl.app V t = s :=
   ⟨fun h => ⟨N.mkSec s h, rfl⟩, fun ⟨t, ht⟩ => ht ▸ N.incl_app_mem t⟩
@@ -713,14 +701,14 @@ Both sides reduce to the same expression.
     N.lift φ h ≫ N.incl = φ := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨ψ, h⟩ V s => h ▸ N.incl_app_mem (ψ.app V s), fun h => ⟨N.lift φ h, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_comp_incl_iff (φ : G ⟶ F) :
     (∃ ψ : G ⟶ N.toMod, ψ ≫ N.incl = φ) ↔ ∀ V s, φ.app V s ∈ N.sec V :=
   ⟨fun ⟨ψ, h⟩ V s => h ▸ N.incl_app_mem (ψ.app V s), fun h => ⟨N.lift φ h, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `(QCoh.exact_app_of_exact_of_mono (ShortComplex.exact_cokernel N.incl) V s).trans N.mem_sec_iff.symm`.
+A detailed English derivation is pending.
 -/
 theorem cokernel_π_app_eq_zero_iff {s : Γ(F, V)} :
     (cokernel.π N.incl).app V s = 0 ↔ s ∈ N.sec V :=
@@ -728,9 +716,9 @@ theorem cokernel_π_app_eq_zero_iff {s : Γ(F, V)} :
     N.mem_sec_iff.symm
 
 /- English proof (translation)
-Use `(QCoh.isQuasicoherent_iff_forall_affine _).2 fun U hU f => (QCoh.isLocalizedModule_resBasicOpen_iff _ f).2 ⟨fun s => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨n, t, e⟩` from `QCoh.exists_pow_smul_eq_res F hU f (X.basicOpen_le f) rfl (N.incl.app _ s)`. Take `⟨m, hm⟩` from `h U hU f t (by`. Express the relevant statement in the definitionally equal form `F.presheaf.map _ t ∈ _`. Rewrite using `[← e]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(N.sec _).smul_mem _ (N.incl_app_mem s))`. Use `⟨m + n, N.mkSec _ hm, N.incl_app_injective _ ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, QCoh.app_res, incl_app_mkSec, Scheme.Modules.map_smul, ← e, pow_add, mul_smul, map_pow]`. Take `⟨n, e⟩` from `QCoh.exists_pow_smul_eq_zero F hU f (X.basicOpen_le f) rfl (N.incl.app _ t) (by rw [← QCoh.app_res, ht, map_zero])`. Conclude with `⟨n, N.incl_app_injective _ (by rw [Scheme.Modules.Hom.app_smul, e, map_zero])⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isQuasicoherent [F.IsQuasicoherent]
     (h : ∀ (U : X.Opens), IsAffineOpen U → ∀ (f : Γ(X, U)) (t : Γ(F, U)),
@@ -782,7 +770,7 @@ def Sub.ofStalks (N : ∀ x : X, Submodule (X.presheaf.stalk x) (F.presheaf.stal
     rwa [germ_resM] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Iff.rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (s : Γ(F, V)) :
     (s ∈ (Sub.ker (𝟙 F)).sec V ↔ s = 0) ∧ s ∈ (Sub.ker (0 : F ⟶ G)).sec V :=

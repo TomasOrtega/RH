@@ -18,7 +18,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `H`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem fibreDescent_transport {X : Scheme.{0}} {m m' : X ⟶ X} (e : m = m')
     (P : (X ⟶ X) → Prop)
@@ -31,21 +31,19 @@ private theorem fibreDescent_transport {X : Scheme.{0}} {m m' : X ⟶ X} (e : m 
   subst e; exact H
 
 /- English proof (translation)
-Introduce `S G _ _ K _ _ f N hN hsm hfin _ hsurj V a ha`. Set `A : Over (Spec (CommRingCat.of K))` to `(Over.pullback f).obj G`. Set `ρ : ∀ (T : Over (Spec (CommRingCat.of K))) (t : T.left ⟶ S) (ht : T.hom ≫ f = t), (T ⟶ A) ≃* (Over.mk t ⟶ G)` to `fun T t ht => TorsionLift.ptsEquiv f G T t ht`. Establish `hρ : ∀ T t ht x, (ρ T t ht x).left = x.left ≫ Limits.pullback.fst G.hom f` using `fun T t ht x => TorsionLift.ptsEquiv_left f G T t ht x`. Establish `hA : A.hom ≫ f = (G ⊗ Over.mk f).hom` using `Limits.pullback.condition.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid : ρ A _ hA (𝟙 A) = fst G (Over.mk f)` using `Over.OverMorphism.ext (by`. Rewrite using `[hρ]`. Conclude with `Category.id_comp _)`. Establish `ext : ∀ (u : A ⟶ A) (v : G ⊗ Over.mk f ⟶ G ⊗ Over.mk f), v ≫ fst _ _ = ρ A _ hA u → v ≫ snd _ _ = snd _ _ → v.left = u.left`. Introduce `u v h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Conclude with `(congrArg (·.left) h1).trans (hρ _ _ _ _)`. Conclude with `(congrArg (·.left) h2).trans (Over.w u).symm`. Establish `hm : (((𝟙 G) ^ N : G ⟶ G) ▷ Over.mk f).left = ((𝟙 A) ^ N : A ⟶ A).left`. Use `ext _ _ ?_ (whiskerRight_snd _ _)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_pow, hid, whiskerRight_fst, MonObj.comp_pow, Category.comp_id]`. Establish `hpb : IsPullback (((𝟙 G) ^ N : G ⟶ G) ▷ Over.mk f).left (Limits.pullback.fst G.hom f) (Limits.pullback.fst G.hom f) ((𝟙 G) ^ N : G ⟶ G).left`. Use `IsPullback.of_right (h₁₂ := Limits.pullback.snd G.hom f) (v₁₃ := f) (h₂₂ := G.hom) ?_ ?_ (IsPullback.of_hasPullback G.hom f).flip` and prove the remaining obligations. Rewrite using `[Over.w]`. Establish `: (((𝟙 G) ^ N : G ⟶ G) ▷ Over.mk f).left ≫ Limits.pullback.snd G.hom f = Limits.pullback.snd G.hom f` using `congrArg (·.left) (whiskerRight_snd ((𝟙 G) ^ N) (Over.mk f))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(IsPullback.of_hasPullback G.hom f).flip`. Conclude with `congrArg (·.left) (whiskerRight_fst ((𝟙 G) ^ N) (Over.mk f))`. Establish `hsmA : Smooth A.hom` using `inferInstanceAs (Smooth (Limits.pullback.snd G.hom f))`. Establish `h1 : Etale ((𝟙 A) ^ N : A ⟶ A).left` using `GrpTangent.etale_id_pow A (by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using (Ne.isUnit hN).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom)`. Establish `h2 : Surjective ((𝟙 A) ^ N : A ⟶ A).left` using `hm ▸ MorphismProperty.of_isPullback (P := @Surjective) hpb.flip hsurj`. Establish `h3 : IsFinite ((𝟙 A) ^ N : A ⟶ A).left` using `hm ▸ MorphismProperty.of_isPullback (P := @IsFinite) hpb.flip hfin`. Use `fibreDescent_transport hm (fun t => ∃ y : Over.mk f ⟶ G, y ^ N = 1 ∧ t = (lift (fst G (Over.mk f) * (snd G (Over.mk f) ≫ y)) (snd G (Over.mk f))).left) ?_ V a ?_` and prove the remaining obligations. Introduce `V a ha`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `existsUnique_descend_of_torsion_invariant A N V a fun y hy => ?_` and prove the remaining obligations. Use `ha _ ⟨ρ (𝟙_ _) f (Category.id_comp _) y, by rw [← map_pow, hy, map_one], ?_⟩` and prove the remaining obligations. Use `(ext _ _ ?_ (lift_snd _ _)).symm` and prove the remaining obligations. Rewrite using `[lift_fst, map_mul, hid, _root_.mul_comm]`. Use `congr 1`.
-
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, hρ, hρ, Over.comp_left, Category.assoc]`. Both sides reduce to the same expression. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `ha y hy`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem torsion_invariant_descends_fibre :
   (∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (K : Type) [Field K] [IsAlgClosed K] (f : Spec (CommRingCat.of K) ⟶ S) (N : ℕ), (N : K) ≠ 0 → Smooth G.hom → IsFinite ((𝟙 G) ^ N : G ⟶ G).left → Flat ((𝟙 G) ^ N : G ⟶ G).left → Surjective ((𝟙 G) ^ N : G ⟶ G).left →

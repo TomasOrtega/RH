@@ -5,13 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Introduce `hN`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.mpr h`. Establish `ha : A.valuation (a : Ω) ≤ 1` using `by simpa using A.valuation_le_one (a : A)`. Establish `hb : A.valuation (b : Ω) ≤ 1` using `by simpa using A.valuation_le_one (b : A)`. Establish `hv : A.valuation ((a : Ω) * l + (b : Ω) * N) < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ha) hl`. Rewrite using `[Valuation.map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hb) hN`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((a : Ω) * l + (b : Ω) * N) = 1`. Establish `e` using `congrArg (Int.cast : ℤ → Ω) hab`. Move the coercions through the operations in `at e`. Conclude with `e`. Rewrite `hv` using `[h1, map_one]`.
-
-Conclude with `lt_irrefl _ hv`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem teich_not_lt {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {l N : ℕ} (h : l.Coprime N)
     (hl : A.valuation (l : Ω) < 1) : ¬ A.valuation (N : Ω) < 1 := by
@@ -33,19 +31,17 @@ private theorem teich_not_lt {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {l
   exact lt_irrefl _ hv
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD N hN hK`. Assume the negation of the conclusion as `hnd`. Establish `hp : l.Prime` using `Fact.out`. Establish `hcop : l.Coprime N` using `(Nat.Prime.coprime_iff_not_dvd hp).mpr hnd`. Establish `hl` using `hD.pl_over l hp`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNA` using `teich_not_lt (D.pl l) hcop hl`. Establish `hNz : NeZero N` using `⟨by omega⟩`. Establish `hIne` using `(Chr.clsFacts ℚ Ω N).2.2.2.2 (D.pl l) hNA`. Take `⟨σ, hσ, hcyc⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l (D.pl l) hl (-1)`. Establish `hom : D.om σ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hK σ` to reduce the goal to its premises. Introduce `ζ hζ`. Rewrite using `[Chr.cls_spec N σ ζ hζ, MonoidHom.mem_ker.mp (hIne hσ), Units.val_one, ZMod.val_one_eq_one_mod]`. Break down `Nat.lt_or_ge N 2 with h2 | h2` into its components or cases. Establish `h1 : N = 1` using `by omega`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Substitute `h1` using the available equality. Simplify using `at hζ ⊢`. Conclude with `hζ.symm`. Rewrite using `[Nat.one_mod_eq_one.mpr (by omega), pow_one]`. Establish `hbar` using `hD.om_bar σ`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Raw.bar, hom, chiO, MonoidHom.comp_apply, hcyc] at hbar`. Simplify using `[Units.coe_map] at hbar`. Establish `hch` using `(Ws.Gys.coefFacts c (ResidueField c.O) (residue c.O) (fun x hx => (IsLocalRing.residue_eq_zero_iff x).mpr hx)).1`. Establish `h2 : ((2 : ℕ) : ResidueField c.O) = 0`. Establish `e : (1 : ResidueField c.O) + 1 = 0` using `by nth_rewrite 1 [hbar]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_add_cancel 1`. Rewrite using `[Nat.cast_ofNat, ← e]`. Evaluate the numerical expressions. Establish `hdvd` using `(CharP.cast_eq_zero_iff (ResidueField c.O) l 2).mp h2`. Establish `hle` using `Nat.le_of_dvd (by norm_num) hdvd`.
-
-Establish `hge` using `hp.two_le`. Conclude with `hD.l_odd (by omega)`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lev.teichDvd :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ N : ℕ, 1 ≤ N → Af.KillsMu N D.om → l ∣ N := by

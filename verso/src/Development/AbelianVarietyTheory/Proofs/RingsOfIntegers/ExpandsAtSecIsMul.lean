@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[h j, gs_mul q z _ hz]`. Use `congr 1`. Conclude with `gs_constFn p (L.U j) q z hz a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem secIsMul_gs {R : Type} [CommRing R] {Y Z : Scheme.{0}} {p : Y ⟶ Spec (CommRingCat.of R)} {L : LB Y} {a : R}
     {σ τ : LB.Sec L} (h : SecIsMul p a σ τ) (q : Z ⟶ Y) (z : Z) (j : L.ι) (hz : q z ∈ L.U j) :
@@ -23,7 +23,7 @@ theorem secIsMul_gs {R : Type} [CommRing R] {Y Z : Scheme.{0}} {p : Y ⟶ Spec (
   exact gs_constFn p (L.U j) q z hz a
 
 /- English proof (translation)
-Distinguish the cases in `hz : q z ∈ L.U j`. Conclude with `secIsMul_gs h q z j hz`. Simplify using `only [gs, dif_neg hz, mul_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gs_eq_cst_mul_gs_of_secIsMul {R : Type} [CommRing R] {Y Z : Scheme.{0}} {p : Y ⟶ Spec (CommRingCat.of R)}
     {L : LB Y} {a : R} {σ τ : LB.Sec L} (h : SecIsMul p a σ τ) (q : Z ⟶ Y) (z : Z) (j : L.ι) :
@@ -33,17 +33,15 @@ private theorem gs_eq_cst_mul_gs_of_secIsMul {R : Type} [CommRing R] {Y Z : Sche
   · simp only [gs, dif_neg hz, mul_zero]
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U e k a σ σ' f f' hσ hf hE`. Take `⟨S, hS⟩` from `expandsAt_val U e k σ f hE`. Establish `hsf : ∀ α (y : (thickObj R I e G).left) J, sval (f' α) (pGl U e) y J = cst (pGl U e ≫ D.toPre.P.A.hom) y a * sval (f α) (pGl U e) y J`. Introduce `α y J`. Unfold `sval`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Conclude with `gs_eq_cst_mul_gs_of_secIsMul (hf α) _ _ _`. Establish `hsσ : ∀ (y : (thickObj R I e G).left) jL, sv U k σ' (fGl I G e) y jL = cst (fGl I G e ≫ G.hom) y a * sv U k σ (fGl I G e) y jL`. Introduce `y jL`. Unfold `sv`. Conclude with `gs_eq_cst_mul_gs_of_secIsMul hσ _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmap : fGl I G e ≫ G.hom = pGl U e ≫ D.toPre.P.A.hom`. Simplify using `only [fGl, pGl, Over.w]`. Use `expandsAt_of_val U e k σ' f' S ?_` and prove the remaining obligations. Introduce `y J hJ`. Take `⟨h0, h1⟩` from `hS _ (𝟙 _) y J hJ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Category.id_comp] at h0 h1`. Use `⟨fun α hα => ?_, fun jL hmem => ?_⟩` and prove the remaining obligations. Rewrite using `[hsf, h0 α hα, mul_zero]`. Establish `h1'` using `h1 jL hmem`. Rewrite using `[hsσ, hmap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ α ∈ S, sval (f' α) (pGl U e) y J * (val (tG U e α) (𝟙 _) y J).val = cst (pGl U e ≫ D.toPre.P.A.hom) y a * ∑ α ∈ S, sval (f α) (pGl U e) y J * (val (tG U e α) (𝟙 _) y J).val`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[hsf, _root_.mul_assoc]`. Rewrite using `[hsum, ← h1']`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem expandsAt_secIsMul : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (e k : ℕ) (a : R) (σ σ' : H0 U.LG.L k) (f f' : ∀ α : D.toPre.X, D.toPre.SecB k α), SecIsMul G.hom a σ' σ → (∀ α, SecIsMul D.toPre.P.A.hom a (f' α) (f α)) → U.ExpandsAt e k σ f → U.ExpandsAt e k σ' f' := by
   intro R _ _ I D A G _ _ U e k a σ σ' f f' hσ hf hE

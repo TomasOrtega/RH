@@ -10,7 +10,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Unfold `dmin lminor gram hermC col mat`. Use `first`. Consider the case `fun_prop`. Consider the case `(apply Continuous.matrix_det; apply Continuous.matrix_submatrix; fun_prop)`. Consider the case `continuity`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cont_dmin (τ : X.Ψ) (i : Fin (r + 1)) : Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i := by
   unfold dmin lminor gram hermC col mat
@@ -20,11 +20,11 @@ theorem cont_dmin (τ : X.Ψ) (i : Fin (r + 1)) : Continuous fun x : Frame X.Ψ 
     | continuity
 
 /- English proof (translation)
-Establish `hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)), Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i` using `fun τ i => cont_dmin X τ i`. Establish `hne : ∀ x ∈ X.dom, ∀ (τ : X.Ψ) (i : Fin (r + 1)), dmin X.Gm x τ i ≠ 0`. Introduce `x hx τ i h0`. Establish `h1` using `(hx τ).2 i`. Rewrite `h1` using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`. Unfold `Data.nfac`. Apply `continuousOn_finset_prod` to reduce the goal to its premises. Introduce `τ _`. Apply `continuousOn_finset_prod` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _`. Apply `ContinuousOn.rpow_const` to reduce the goal to its premises. Conclude with `(((hd τ i.succ).continuousOn).div ((hd τ i.castSucc).continuousOn) (fun x hx => hne x hx τ i.castSucc)).norm`. Introduce `x hx left`. Conclude with `norm_ne_zero_iff.2 (div_ne_zero (hne x hx τ i.succ) (hne x hx τ i.castSucc))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nfac_contOn (la : Wt X.Ψ r) : ContinuousOn (X.nfac la) X.dom := by
   have hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)), Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i :=
@@ -51,11 +51,9 @@ variable {X} {x0 : Frame X.Ψ r} (D : LUData X x0) (la : Wt X.Ψ r) (F : V (nd X
 def Gf (x : Frame X.Ψ r) : ℝ≥0∞ := ENNReal.ofReal (X.pnorm la (P0 D la F) x ^ 2)
 
 /- English proof (translation)
-Establish `hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)), Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i` using `fun τ i => cont_dmin X τ i`. Establish `hdet : ∀ τ : X.Ψ, Continuous fun x : Frame X.Ψ r => (mat x τ).det`. Introduce `τ`. Use `first`. Consider the case `exact Continuous.matrix_det (continuous_apply τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `(unfold mat; fun_prop)`. Use `show IsOpen {x : Frame X.Ψ r | ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re}`. Simplify using `only [Set.setOf_forall, Set.setOf_and]`. Use `isOpen_iInter_of_finite fun τ => ?_` and prove the remaining obligations. Use `(isOpen_ne_fun (hdet τ) continuous_const).inter (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations.
-
-Conclude with `isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp (hd τ i)))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma dom_isOpen : IsOpen X.dom := by
   have hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)), Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i :=
@@ -73,11 +71,11 @@ private lemma dom_isOpen : IsOpen X.dom := by
   exact isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp (hd τ i)))
 
 /- English proof (translation)
-Establish `hn : ∀ (τ : X.Ψ) (a b : Fin r), Continuous fun z : V (nd X) => nmat X z τ a b`. Introduce `τ a b`. Distinguish the cases in `h : b < a`. Simplify using `only [nmat, dif_pos h] first`. Consider the case `exact (EuclideanSpace.proj (𝕜 := ℂ) _).continuous`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `fun_prop`. Distinguish the cases in `h' : a = b`. Simplify using `only [nmat, dif_neg h, if_pos h']`. Conclude with `continuous_const`. Simplify using `only [nmat, dif_neg h, if_neg h']`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_const`. Use `continuous_pi fun τ => continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Use `show Continuous fun z => ∑ k, mat x0 τ a k * mat (nmat X z) τ k b`. Conclude with `continuous_finset_sum _ fun k _ => continuous_const.mul (hn τ k b)`.
+A detailed English derivation is pending.
 -/
 private lemma continuous_cpt' : Continuous (cpt X x0) := by
   have hn : ∀ (τ : X.Ψ) (a b : Fin r), Continuous fun z : V (nd X) => nmat X z τ a b := by
@@ -97,7 +95,7 @@ private lemma continuous_cpt' : Continuous (cpt X x0) := by
   exact continuous_finset_sum _ fun k _ => continuous_const.mul (hn τ k b)
 
 /- English proof (translation)
-Establish `h` using `(hb τ).1`. Rewrite `h` using `[Matrix.det_of_upperTriangular (by intro a c hca; exact (hb τ).2 a c hca)]`. Conclude with `Finset.prod_ne_zero_iff.1 h i (Finset.mem_univ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma bor_diag_ne_zero {Ψ : Finset (E →+* ℂ)} {b : Frame Ψ r} (hb : b ∈ Bor Ψ r) (τ : Ψ)
     (i : Fin r) : b τ i i ≠ 0 := by
@@ -106,25 +104,21 @@ private lemma bor_diag_ne_zero {Ψ : Finset (E →+* ℂ)} {b : Frame Ψ r} (hb 
   exact Finset.prod_ne_zero_iff.1 h i (Finset.mem_univ _)
 
 /- English proof (translation)
-Establish `hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)), Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i` using `fun τ i => cont_dmin X τ i`. Establish `hcellO : IsOpen (cell D)`. Establish `hc : cell D = X.dom ∩ {x | D.Δ x ≠ 0}` using `rfl`. Rewrite using `[hc]`. Conclude with `dom_isOpen.inter (isOpen_ne_fun D.hΔ.continuous continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfc : ContinuousOn (fun x => bchar la (D.bOf x) * F (D.zOf x)) (cell D)`. Establish `hzc : ContinuousOn D.zOf (cell D)` using `D.hz.continuousOn`. Establish `hbc : ContinuousOn D.bOf (cell D)` using `D.hb.continuousOn`. Establish `hsplit : ∀ x ∈ cell D, D.zOf x ∈ OmF X x0 ∧ D.bOf x ∈ Bor X.Ψ r` using `fun x hx => ⟨(D.split x hx.1 hx.2).1, (D.split x hx.1 hx.2).2.1⟩`. Use `ContinuousOn.mul ?_ (hF.continuousOn.comp hzc fun x hx => (hsplit x hx).1)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `bchar`. Apply `continuousOn_finset_prod` to reduce the goal to its premises. Introduce `τ _`. Apply `continuousOn_finset_prod` to reduce the goal to its premises. Introduce `i _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ContinuousOn.zpow₀` to reduce the goal to its premises. Establish `hent : Continuous fun y : Frame X.Ψ r => y τ i i` using `by first`. Consider the case `fun_prop`. Consider the case `continuity`. Conclude with `hent.comp_continuousOn hbc`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx left`. Conclude with `bor_diag_ne_zero (hsplit x hx).2 τ i`. Establish `hP : P0 D la F = (cell D).piecewise (fun x => bchar la (D.bOf x) * F (D.zOf x)) 0`. Use function extensionality and compare the values at `x`. Distinguish the cases in `h : x ∈ cell D`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Set.piecewise_eq_of_mem _ _ _ h]`. Conclude with `if_pos h`. Use `first`. Consider the case `rw [Set.piecewise_eq_of_notMem _ _ _ h]`. Consider the case `rw [Set.piecewise_eq_of_not_mem _ _ _ h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `if_neg h`. Establish `hPm : Measurable (P0 D la F)`. Rewrite using `[hP]`. Conclude with `hfc.measurable_piecewise continuous_zero.continuousOn hcellO.measurableSet`. Establish `hnf : Measurable fun x => X.nfac la x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Data.nfac`. Apply `Finset.measurable_prod` to reduce the goal to its premises. Introduce `τ _`. Apply `Finset.measurable_prod` to reduce the goal to its premises. Introduce `i _`.
-
-Conclude with `(((hd τ i.succ).measurable.div (hd τ i.castSucc).measurable).norm).pow_const _`. Establish `hp : ∀ x, X.pnorm la (P0 D la F) x = ‖P0 D la F x‖ * X.nfac la x` using `fun x => rfl`. Unfold `Gf`. Simplify using `only [hp]`. Use `first`.
-
-Consider the case `exact ((hPm.norm.mul hnf).pow_const 2).ennreal_ofReal`. Consider the case `exact ENNReal.measurable_ofReal.comp ((hPm.norm.mul hnf).pow_const 2)`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Gf_meas (hF : DifferentiableOn ℂ F (OmF X x0)) : Measurable (Gf D la F) := by
   classical
@@ -181,7 +175,7 @@ theorem Gf_meas (hF : DifferentiableOn ℂ F (OmF X x0)) : Measurable (Gf D la F
     | exact ENNReal.measurable_ofReal.comp ((hPm.norm.mul hnf).pow_const 2)
 
 /- English proof (translation)
-Unfold `Gf`. Rewrite using `[FrameDegreeData.pnorm_rmul X la _ (fun y hy b' hb' => poincareLift_borel_equivariant D la F hy hb') x hx b hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Gf_inv {x b : Frame X.Ψ r} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ r) :
     Gf D la F (rmul x b) = Gf D la F x := by
@@ -189,9 +183,7 @@ theorem Gf_inv {x b : Frame X.Ψ r} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ r) :
   rw [FrameDegreeData.pnorm_rmul X la _ (fun y hy b' hb' => poincareLift_borel_equivariant D la F hy hb') x hx b hb]
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨?_, fun a c hca => ?_⟩` and prove the remaining obligations. Use `show (1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0`. Simplify using the standard rewrite rules. Use `show (1 : Matrix (Fin r) (Fin r) ℂ) a c = 0`.
-
-Conclude with `Matrix.one_apply_ne hca.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma one_mem_bor_upper_bounds {Ψ : Finset (E →+* ℂ)} :
     (fun _ => (1 : Matrix (Fin r) (Fin r) ℂ) : Frame Ψ r) ∈ Bor Ψ r := by
@@ -203,19 +195,19 @@ private lemma one_mem_bor_upper_bounds {Ψ : Finset (E →+* ℂ)} :
     exact Matrix.one_apply_ne hca.ne'
 
 /- English proof (translation)
-Establish `hzd : cpt X x0 z ∈ X.dom` using `hz`. Establish `hne : ∀ (τ : X.Ψ) (i : Fin (r + 1)), dmin X.Gm (cpt X x0 z) τ i ≠ 0`. Introduce `τ i h0`. Establish `h1` using `(hzd τ).2 i`. Rewrite `h1` using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`. Establish `hpos : 0 < X.nfac la (cpt X x0 z)`. Unfold `Data.nfac`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `τ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i _`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Conclude with `norm_pos_iff.2 (div_ne_zero (hne τ i.succ) (hne τ i.castSucc))`. Establish `hr1 : rmul (cpt X x0 z) (fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)) = cpt X x0 z`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_one (mat (cpt X x0 z) τ)`. Take `⟨hΔ, hzo, hbo⟩` from `D.uniq z hz _ one_mem_bor_upper_bounds`. Rewrite `hΔ`, `hzo`, `hbo` using `[hr1]`. Establish `hP : P0 D la F (cpt X x0 z) = F z`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `P0`. Rewrite using `[if_pos (show cpt X x0 z ∈ X.dom ∧ D.Δ (cpt X x0 z) ≠ 0 from ⟨hzd, hΔ⟩), hzo, hbo]`. Simplify using `[bchar]`. Unfold `Gf`. Establish `hp : X.pnorm la (P0 D la F) (cpt X x0 z) = ‖P0 D la F (cpt X x0 z)‖ * X.nfac la (cpt X x0 z)` using `rfl`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hp, hP]`. Use `congr 1`. Unfold `phla`. Establish `hl : -(-2 * Real.log (X.nfac la (cpt X x0 z))) = Real.log (X.nfac la (cpt X x0 z) ^ 2)`. Rewrite using `[Real.log_pow]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hl, Real.exp_log (pow_pos hpos 2), mul_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gf_cpt {z : V (nd X)} (hz : z ∈ OmF X x0) :
     Gf D la F (cpt X x0 z) = ENNReal.ofReal (‖F z‖ ^ 2 * Real.exp (-phla X la (cpt X x0 z))) := by
@@ -255,11 +247,11 @@ theorem Gf_cpt {z : V (nd X)} (hz : z ∈ OmF X x0) :
   rw [hl, Real.exp_log (pow_pos hpos 2), mul_pow]
 
 /- English proof (translation)
-Unfold `Gf`. Rewrite using `[← ENNReal.ofReal_mul (inv_nonneg.2 (sq_nonneg m))]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hp : X.pnorm la (P0 D la F) x = ‖P0 D la F x‖ * X.nfac la x` using `rfl`. Rewrite using `[hp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm2 : 0 < m ^ 2` using `by positivity`. Establish `h1 : m ^ 2 ≤ X.nfac la x ^ 2`. Use `hm.le` as an intermediate fact. Use `gcongr`. Establish `h2 : 1 ≤ (m ^ 2)⁻¹ * X.nfac la x ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_eq_div, one_le_div hm2]`. Conclude with `h1`. Rewrite using `[mul_pow, ← mul_assoc, mul_comm ((m ^ 2)⁻¹), mul_assoc]`. Conclude with `le_mul_of_one_le_right (sq_nonneg _) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_poincareLift_sq_le {x : Frame X.Ψ r} (_hx : x ∈ X.dom) {m : ℝ} (hm : 0 < m) (hmx : m ≤ X.nfac la x) :
     ENNReal.ofReal (‖P0 D la F x‖ ^ 2) ≤ ENNReal.ofReal ((m ^ 2)⁻¹) * Gf D la F x := by
@@ -279,7 +271,7 @@ theorem norm_poincareLift_sq_le {x : Frame X.Ψ r} (_hx : x ∈ X.dom) {m : ℝ}
   exact le_mul_of_one_le_right (sq_nonneg _) h2
 
 /- English proof (translation)
-Establish `hmeas : MeasurableSet (OmF X x0)` using `(dom_isOpen.preimage continuous_cpt').measurableSet`. Unfold `muF`. Conclude with `(withDensity_absolutelyContinuous _ _).ae_le (ae_restrict_mem hmeas)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ae_OmF : ∀ᵐ z ∂muF X x0, z ∈ OmF X x0 := by
   have hmeas : MeasurableSet (OmF X x0) :=
@@ -288,11 +280,11 @@ theorem ae_OmF : ∀ᵐ z ∂muF X x0, z ∈ OmF X x0 := by
   exact (withDensity_absolutelyContinuous _ _).ae_le (ae_restrict_mem hmeas)
 
 /- English proof (translation)
-Take `⟨K, hK, hKG⟩` from `hM r X x0 hx0 C hC hCd`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm, hmC⟩ : ∃ m : ℝ, 0 < m ∧ ∀ x ∈ C, m ≤ X.nfac la x := by`. Break down `C.eq_empty_or_nonempty with h | h` into its components or cases. Conclude with `⟨1, one_pos, by simp [h]⟩`. Take `⟨x1, hx1, hmin⟩` from `hC.exists_isMinOn h ((nfac_contOn X la).mono hCd)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨X.nfac la x1, FlowCoefficientBounds.nfac_pos X (hCd hx1) la, fun x hx => hmin hx⟩`. Establish `h1 : ∫⁻ x in C, ENNReal.ofReal (‖P0 D la F x‖ ^ 2) ≤ ENNReal.ofReal ((m ^ 2)⁻¹) * ∫⁻ x in C, Gf D la F x`. Rewrite using `[← lintegral_const_mul _ (Gf_meas D la F hF)]`. Conclude with `setLIntegral_mono' hC.measurableSet fun x hx => norm_poincareLift_sq_le D la F (hCd hx) hm (hmC x hx)`. Establish `h2` using `hKG (Gf D la F) (Gf_meas D la F hF) fun x hx b hb => Gf_inv D la F hx hb`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∫⁻ z in sat X x0 C, Gf D la F (cpt X x0 z) ∂muF X x0 ≤ ∫⁻ z in sat X x0 C, ENNReal.ofReal (‖F z‖ ^ 2 * Real.exp (-phla X la (cpt X x0 z))) ∂muF X x0`. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_of_ae (ae_OmF (x0 := x0))] with z hz`. Rewrite using `[Gf_cpt D la F hz]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem poincareLift_locally_squareIntegrable (hM : FrameMeasStatement (E := E)) (hx0 : IsOrth X x0)
     (hF : DifferentiableOn ℂ F (OmF X x0))

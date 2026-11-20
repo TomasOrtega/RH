@@ -14,7 +14,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (A : ∀ p : HeightOneSpectrum (𝓞 F), Formalism.MainNotions.S.Loc.LocAt F E sig p)
 
 /- English proof (translation)
-Use `haveI := (A p).lf`. Establish `h` using `((A p).val (algebraMap (𝓞 F) F t) 1).2 (by simpa using p.valuation_le_one t)`. Rewrite `h` using `[map_one]`. Rewrite using `[Valuation.mem_integer_iff]`. Conclude with `(Valuation.vle_one_iff (ValuativeRel.valuation (A p).Fp)).1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaF_int_mem (p : HeightOneSpectrum (𝓞 F)) (t : 𝓞 F) :
     (A p).ιF (algebraMap (𝓞 F) F t) ∈ (haveI := (A p).lf; 𝒪[(A p).Fp]) := by
@@ -25,29 +25,25 @@ theorem iotaF_int_mem (p : HeightOneSpectrum (𝓞 F)) (t : 𝓞 F) :
   exact (Valuation.vle_one_iff (ValuativeRel.valuation (A p).Fp)).1 h
 
 /- English proof (translation)
-Use `haveI := (A p).lf`. Distinguish the cases in `hl : l = 0`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[hl, mul_zero]`. Conclude with `Subring.zero_mem _`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨π, hπp, hπ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot p.ne_bot`. Establish `hπv : p.valuation F (algebraMap (𝓞 F) F π) < 1` using `by first`. Consider the case `exact (p.valuation_lt_one_iff_mem π).2 hπp`. Consider the case `exact (p.valuation_lt_one_iff_mem (K := F) π).2 hπp`. Establish `hπF0 : algebraMap (𝓞 F) F π ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 hπ0`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩ : ∃ c, c = (A p).ιF (algebraMap (𝓞 F) F π)` from `⟨_, rfl⟩`. Establish `hcint : c ∈ (ValuativeRel.valuation (A p).Fp).integer`. Rewrite using `[hc]`. Conclude with `iotaF_int_mem A p π`. Establish `hc0 : c ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc]`. Conclude with `(map_ne_zero (A p).ιF).2 hπF0`. Establish `hnot : -(c⁻¹) ∉ (ValuativeRel.valuation (A p).Fp).integer`. Introduce `hmem`. Rewrite `hmem` using `[Valuation.mem_integer_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(Valuation.vle_one_iff (ValuativeRel.valuation (A p).Fp)).2 hmem`. Establish `h2 : -(c⁻¹) = (A p).ιF (-(algebraMap (𝓞 F) F π)⁻¹)` using `by rw [hc, map_neg, map_inv₀]`. Rewrite `h1` using `[h2, ← map_one (A p).ιF, (A p).val, map_one]`. Establish `h3 : p.valuation F (algebraMap (𝓞 F) F π) * p.valuation F (-(algebraMap (𝓞 F) F π)⁻¹) = 1`. Rewrite using `[← map_mul, mul_neg, mul_inv_cancel₀ hπF0, Valuation.map_neg, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h4 : p.valuation F (algebraMap (𝓞 F) F π) * p.valuation F (-(algebraMap (𝓞 F) F π)⁻¹) ≤ p.valuation F (algebraMap (𝓞 F) F π) * 1` using `by first`. Consider the case `gcongr`. Consider the case `exact mul_le_mul_right' h1 _`. Consider the case `exact mul_le_mul_of_nonneg_left h1 (zero_le _)`. Rewrite `h4` using `[h3, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd h4 (not_le.2 hπv)`. Establish `hW : IsOpen ((fun z => (z * l - 1) * c⁻¹) ⁻¹' ((ValuativeRel.valuation (A p).Fp).integer : Set (A p).Fp))` using `Valuation.isOpen_integer.preimage (((continuous_mul_right l).sub continuous_const).mul continuous_const)`. Establish `hne : ((fun z => (z * l - 1) * c⁻¹) ⁻¹' ((ValuativeRel.valuation (A p).Fp).integer : Set (A p).Fp)).Nonempty`. Use `⟨l⁻¹, ?_⟩` and prove the remaining obligations. Use `show (l⁻¹ * l - 1) * c⁻¹ ∈ (ValuativeRel.valuation (A p).Fp).integer`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_cancel₀ hl, sub_self, zero_mul]`. Conclude with `Subring.zero_mem _`. Take `⟨y, hy⟩` from `(A p).dense.exists_mem_open hW hne`. Establish `hy' : ((A p).ιF y * l - 1) * c⁻¹ ∈ (ValuativeRel.valuation (A p).Fp).integer` using `hy`. Establish `hy1 : (A p).ιF y * l ∈ (ValuativeRel.valuation (A p).Fp).integer`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : (A p).ιF y * l = ((A p).ιF y * l - 1) * c⁻¹ * c + 1`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hc0, mul_one, sub_add_cancel]`. Rewrite using `[e]`. Conclude with `Subring.add_mem _ (Subring.mul_mem _ hy' hcint) (Subring.one_mem _)`. Establish `hy0 : (A p).ιF y ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Rewrite `hy'` using `[h0, zero_mul, zero_sub, neg_mul, one_mul]`. Conclude with `hnot hy'`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) y`. Establish `hb' : algebraMap (𝓞 F) F b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`.
-
-Establish `hy0' : (A p).ιF (algebraMap (𝓞 F) F a / algebraMap (𝓞 F) F b) ≠ 0` using `hy0`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `hy0'` to reduce the goal to its premises. Simplify using the standard rewrite rules.
-
-Establish `e : algebraMap (𝓞 F) F a = algebraMap (𝓞 F) F b * (algebraMap (𝓞 F) F a / algebraMap (𝓞 F) F b)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_mul, mul_assoc]`. Conclude with `Subring.mul_mem _ (iotaF_int_mem A p b) hy1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clear_F (p : HeightOneSpectrum (𝓞 F)) (l : (A p).Fp) :
     ∃ t : 𝓞 F, t ≠ 0 ∧ (A p).ιF (algebraMap (𝓞 F) F t) * l ∈ (haveI := (A p).lf; 𝒪[(A p).Fp]) := by
@@ -119,7 +115,7 @@ theorem clear_F (p : HeightOneSpectrum (𝓞 F)) (l : (A p).Fp) :
     exact Subring.mul_mem _ (iotaF_int_mem A p b) hy1
 
 /- English proof (translation)
-Use `haveI := (A p).lf`. Rewrite using `[(A p).O_def]`. Establish `e : algebraMap (A p).Fp (A p).Ep w = algebraMap (𝒪[(A p).Fp]) (A p).Ep ⟨_, hw⟩` using `rfl`. Rewrite using `[e]`. Conclude with `isIntegral_algebraMap`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ιF_mem_O_of_mem_integers (p : HeightOneSpectrum (𝓞 F)) (w : (A p).Fp)
     (hw : w ∈ (haveI := (A p).lf; 𝒪[(A p).Fp])) : algebraMap (A p).Fp (A p).Ep w ∈ (A p).O := by
@@ -130,9 +126,7 @@ private theorem ιF_mem_O_of_mem_integers (p : HeightOneSpectrum (𝓞 F)) (w : 
   exact isIntegral_algebraMap
 
 /- English proof (translation)
-Use `haveI := (A p).lf`. Rewrite using `[(A p).O_def]`. Establish `hm` using `iotaF_int_mem A p t`. Establish `e : algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F t)) = algebraMap (𝒪[(A p).Fp]) (A p).Ep ⟨_, hm⟩` using `rfl`. Rewrite using `[e]`.
-
-Conclude with `isIntegral_algebraMap`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem algebraMap_ιF_mem_O (p : HeightOneSpectrum (𝓞 F)) (t : 𝓞 F) :
     algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F t)) ∈ (A p).O := by
@@ -145,25 +139,23 @@ private theorem algebraMap_ιF_mem_O (p : HeightOneSpectrum (𝓞 F)) (t : 𝓞 
   exact isIntegral_algebraMap
 
 /- English proof (translation)
-Use `haveI := (A p).lf`. Establish `hz : z ∈ Submodule.span (A p).Fp (Set.range (A p).ιE)`. Rewrite using `[(A p).span]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hz using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨e, rfl⟩` from `hx`. Establish `hz : IsAlgebraic ℤ e` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic e)`. Establish `inj : ∀ x : ℤ, algebraMap ℤ E x = 0 → x = 0` using `fun x hx => by simpa using hx`. Establish `hint : ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ ((y : E) * e)` using `by first`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(obtain ⟨⟨w, hw⟩, y, hy0, hyw⟩ := exists_integral_multiple hz inj`. Use `⟨y, hy0, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `hw' : IsIntegral ℤ w` using `hw`. Simplify `hw')` using `[hyw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `(obtain ⟨y, hy0, hy⟩ := hz.exists_integral_multiple`. Conclude with `⟨y, hy0, by simpa [zsmul_eq_mul] using hy⟩)`. Take `⟨y, hy0, hy⟩` from `hint`. Use `⟨(y : 𝓞 F), by exact_mod_cast hy0, ?_⟩` and prove the remaining obligations. Rewrite using `[← (A p).compat, ← map_mul]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : algebraMap F E (algebraMap (𝓞 F) F (y : 𝓞 F)) * e = (y : E) * e` using `by simp`. Rewrite using `[e1, (A p).O_def]`. Establish `h2 : IsIntegral ℤ ((A p).ιE ((y : E) * e))` using `hy.map (A p).ιE.toIntAlgHom`. Conclude with `h2.tower_top`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_zero]`. Conclude with `Subring.zero_mem _`. Consider the case `add x y _ _ hx hy`. Take `⟨t1, h10, h1⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨t2, h20, h2⟩` from `hy`. Use `⟨t1 * t2, mul_ne_zero h10 h20, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F (t1 * t2))) * (x + y) = algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F t2)) * (algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F t1)) * x) + algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F …`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `Subring.add_mem _ (Subring.mul_mem _ (algebraMap_ιF_mem_O A p t2) h1) (Subring.mul_mem _ (algebraMap_ιF_mem_O A p t1) h2)`. Consider the case `smul c x _ hx`. Take `⟨t1, h10, h1⟩` from `hx`. Take `⟨t2, h20, h2⟩` from `clear_F A p c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨t2 * t1, mul_ne_zero h20 h10, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Establish `e : algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F (t2 * t1))) * (algebraMap (A p).Fp (A p).Ep c * x) = algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F t2) * c) * (algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F t1)) * x)`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `Subring.mul_mem _ (ιF_mem_O_of_mem_integers A p _ h2) h1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clear_one (p : HeightOneSpectrum (𝓞 F)) (z : (A p).Ep) :
     ∃ t : 𝓞 F, t ≠ 0 ∧ algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F t)) * z ∈ (A p).O := by
@@ -226,9 +218,7 @@ theorem clear_one (p : HeightOneSpectrum (𝓞 F)) (z : (A p).Ep) :
     exact Subring.mul_mem _ (ιF_mem_O_of_mem_integers A p _ h2) h1
 
 /- English proof (translation)
-Use `choose t ht0 ht using fun q : S × ι => clear_one A q.1.1 (z q.1 q.2)`. Use `⟨∏ q, t q, Finset.prod_ne_zero_iff.2 (fun q _ => ht0 q), fun p hp k => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase Finset.univ t (Finset.mem_univ (⟨⟨p, hp⟩, k⟩ : S × ι))]`. Simplify using `only [map_mul]`. Rewrite using `[mul_comm (algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F (t ⟨⟨p, hp⟩, k⟩)))), mul_assoc]`.
-
-Conclude with `Subring.mul_mem _ (algebraMap_ιF_mem_O A p _) (ht ⟨⟨p, hp⟩, k⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clear (S : Finset (HeightOneSpectrum (𝓞 F))) {ι : Type} [Fintype ι] (z : ∀ p, ι → (A p).Ep) :
     ∃ c : 𝓞 F, c ≠ 0 ∧ ∀ p ∈ S, ∀ k,
@@ -249,13 +239,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (A : ∀ p : HeightOneSpectrum (𝓞 F), Formalism.MainNotions.S.Loc.LocAt F E sig p) {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `fun ab : Fin n × Fin n => approxE A S c hc (fun p => g p ab.1 ab.2)`. Use `choose x hxS hxO using h`. Use `⟨fun a b => if b < a then x (a, b) else if a = b then 1 else 0, fun a => by simp, fun a b hab => ?_, fun p hp a b => ?_, fun p hp a b => ?_⟩` and prove the remaining obligations. Simplify using `[not_lt.2 hab.le, hab.ne]`. Distinguish the cases in `hba : b < a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [hba, if_true]`. Conclude with `hxS (a, b) p hp`. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Break down `eq_or_ne a b with rfl | hab` into its components or cases. Simplify using `[hg1 p hp a]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlt : a < b` using `lt_of_le_of_ne (not_lt.1 hba) hab`. Simplify using `[hba, hab, hg0 p hp a b hlt]`. Distinguish the cases in `hba : b < a`. Simplify using `only [hba, if_true]`. Conclude with `hxO (a, b) p hp`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hba, if_false] split_ifs`. Rewrite using `[map_one]`. Conclude with `one_mem _`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem approx_lo (S : Finset (HeightOneSpectrum (𝓞 F))) (c : 𝓞 F) (hc : c ≠ 0)
     (g : ∀ p, Matrix (Fin n) (Fin n) (A p).Ep) (hg1 : ∀ p ∈ S, ∀ a, g p a a = 1)
@@ -284,7 +274,7 @@ theorem approx_lo (S : Finset (HeightOneSpectrum (𝓞 F))) (c : 𝓞 F) (hc : c
       · rw [map_zero]; exact zero_mem _
 
 /- English proof (translation)
-Take `⟨L, hL1, hL0, hLS, hLn⟩` from `approx_lo A S c hc (fun p => (g p).transpose) (fun p hp a => by simpa using hg1 p hp a) (fun p hp a b hab => by simpa [Matrix.transpose_apply] using hg0 p hp b a hab)`. Use `⟨L.transpose, fun a => by simpa using hL1 a, fun a b hab => by simpa using hL0 b a hab, fun p hp a b => ?_, fun p hp a b => by simpa using hLn p hp b a⟩` and prove the remaining obligations. Simplify `hLS p hp b a` using `[Matrix.transpose_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem approx_up (S : Finset (HeightOneSpectrum (𝓞 F))) (c : 𝓞 F) (hc : c ≠ 0)
     (g : ∀ p, Matrix (Fin n) (Fin n) (A p).Ep) (hg1 : ∀ p ∈ S, ∀ a, g p a a = 1)

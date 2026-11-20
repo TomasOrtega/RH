@@ -36,13 +36,13 @@ abbrev ιT : TF (R := V) F ⟶ TS S g :=
 abbrev jT : DegPre.BF D.toPre F ⟶ TS S g ⊗ D.toPre.P.A := ιT S g hg ▷ D.toPre.P.A
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, whiskerRight_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jT_snd : (jT S g hg (D := D)).left ≫ (snd (TS S g) D.toPre.P.A).left = (DegPre.prB D.toPre F).left := by
   rw [← Over.comp_left, whiskerRight_snd]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, whiskerRight_fst, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jT_fst : (jT S g hg (D := D)).left ≫ (fst (TS S g) D.toPre.P.A).left =
     (fst (TF (R := V) F) D.toPre.P.A).left ≫ (ιT S g hg).left := by
@@ -52,7 +52,7 @@ abbrev ιs (r : Γ(Spec (CommRingCat.of S), ⊤)) : F :=
   algebraMap S F ((Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom r)
 
 /- English proof (translation)
-Establish `e1 : gs (ρ ≫ (jT S g hg (D` using `D)).left) z ⊤ ((fst (TS S g) D.toPre.P.A).left.appTop.hom r) = gs ((ρ ≫ (jT S g hg (D := D)).left) ≫ (fst (TS S g) D.toPre.P.A).left) z ⊤ r := gs_pull _ _ z ⊤ trivial r`. Rewrite using `[e1, Category.assoc, jT_fst, ← Category.assoc]`. Establish `e2 : gs ((ρ ≫ (fst (TF (R` using `V) F) D.toPre.P.A).left) ≫ (ιT S g hg).left) z ⊤ r = gs (ρ ≫ (fst (TF (R := V) F) D.toPre.P.A).left) z ⊤ ((ιT S g hg).left.appTop.hom r) := (gs_pull _ _ z ⊤ trivial r).symm`. Establish `e3 : gs ρ z ⊤ (gF D.toPre F (ιs S r)) = gs (ρ ≫ (fst (TF (R` using `V) F) D.toPre.P.A).left) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (ιs S r)) := gs_pull _ _ z ⊤ trivial _`. Rewrite using `[e2, e3, show (ιT S g hg).left = Spec.map (CommRingCat.ofHom (algebraMap S F)) from rfl, appTop_specMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -71,7 +71,7 @@ theorem gs_jT {Z : Scheme.{0}} (ρ : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (
   rfl
 
 /- English proof (translation)
-Establish `H₁ : IsPullback (snd (TS S g) D.toPre.P.A).left (fst (TS S g) D.toPre.P.A).left D.toPre.P.A.hom (TS S g).hom` using `(IsPullback.of_hasPullback (TS S g).hom D.toPre.P.A.hom).flip`. Establish `H₀ : IsPullback (DegPre.prB D.toPre F).left (fst (TF (R` using `V) F) D.toPre.P.A).left D.toPre.P.A.hom (TF (R := V) F).hom := (IsPullback.of_hasPullback (TF (R := V) F).hom D.toPre.P.A.hom).flip`. Rewrite `H₀` using `[← jT_snd S g hg, ← Over.w (ιT S g hg)]`. Conclude with `H₀.of_right (jT_fst S g hg) H₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_jT : IsPullback (jT S g hg (D := D)).left (fst (TF (R := V) F) D.toPre.P.A).left
     (fst (TS S g) D.toPre.P.A).left (Spec.map (CommRingCat.ofHom (algebraMap S F))) := by
@@ -85,19 +85,17 @@ theorem isPullback_jT : IsPullback (jT S g hg (D := D)).left (fst (TF (R := V) F
 include hg in
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Use `D.toPre.P.isAb.proper` as an intermediate fact. Establish `hp : IsProper (fst (TS S g) D.toPre.P.A).left` using `inferInstanceAs (IsProper (pullback.fst (TS S g).hom D.toPre.P.A.hom))`. Establish `: CompactSpace (TS S g).left` using `inferInstanceAs (CompactSpace (Spec (CommRingCat.of S)))`. Establish `: QuasiSeparatedSpace (TS S g).left` using `inferInstanceAs (QuasiSeparatedSpace (Spec (CommRingCat.of S)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace (TS S g ⊗ D.toPre.P.A).left` using `QuasiCompact.compactSpace_of_compactSpace (fst (TS S g) D.toPre.P.A).left`. Establish `: QuasiSeparatedSpace (TS S g ⊗ D.toPre.P.A).left` using `(quasiSeparated_iff_quasiSeparatedSpace (fst (TS S g) D.toPre.P.A).left).mp inferInstance`. Take `⟨s₁, hs₁⟩` from `exists_sec hL (φ' := fun i => (jT S g hg (D := D)).left ≫ (snd (TS S g) D.toPre.P.A).left ≫ D.toPre.famφB α i) (ε' := DegPre.famε k) (fun U _ h => Finset.prod_congr rfl fun i _ => by`. Rewrite using `[GC.famφ_eq, ← jT_snd S g hg, Category.assoc]) s`. Take `⟨t, ht, S₀, hS₀⟩` from `TwistLoc.exists_clear_denominator (nonZeroDivisors S) (isPullback_jT S g hg (D := D)) hL (fun i => (snd (TS S g) D.toPre.P.A).left ≫ D.toPre.famφB α i) (DegPre.famε k) s₁`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rr, σ, hσ⟩` from `GlobalTheory.TwistSpanExample.span_holds V D.toPre k hk α S g hloc S₀`. Use `choose σF hσF using fun i => FamInt.exists_pull (D := D) (F := F) (σ i)`. Establish `ht0 : (t : F) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (K := F) ht`. Use `⟨n, fun i => (t : F)⁻¹ * ιs S (rr i), σ, σF, hσF, fun j => ?_⟩` and prove the remaining obligations. Use `(sec_ext_val hL (s' := FamInt.secLin (fun i => gF D.toPre F ((t : F)⁻¹ * ιs S (rr i))) σF) (fun y J hJ => ?_) j).trans rfl` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[sval_lin (s := FamInt.secLin _ _) (fun i => gF D.toPre F ((t : F)⁻¹ * ιs S (rr i))) σF (fun _ => rfl) _ y hJ]`. Establish `e₁ : sval S₀ (𝟙 _ ≫ (jT S g hg (D` using `D)).left) y J = gs (𝟙 _) y ⊤ (gF D.toPre F t) * sval s (𝟙 _) y J := by`. Rewrite using `[← hs₁ _ _ y J hJ, sval_of S₀ (𝟙 _ ≫ (jT S g hg (D := D)).left) y J (fun a => J (𝟙 _ ≫ (jT S g hg (D := D)).left ≫ (snd (TS S g) D.toPre.P.A).left ≫ D.toPre.famφB α a)) (fun a => by rw [Category.assoc])]`. Use `(hS₀ _ (𝟙 _) y _ (hJ.mem (fun a => (jT S g hg (D := D)).left ≫ (snd (TS S g) D.toPre.P.A).left ≫ D.toPre.famφB α a) (𝟙 _))).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Establish `e` using `gs_jT S g hg (D := D) (𝟙 _) y ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[show ιs S ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom t) = (t : F) by simp [ιs]]`. Rewrite using `[← e, ← Category.assoc]`. Conclude with `(gs_pull _ _ y ⊤ trivial _).symm`. Establish `e₂` using `sval_lin (fun l => (fst (TS S g) D.toPre.P.A).left.appTop.hom (rr l)) (fun l => pullSec D.toPre.P.L _ _ (σ l) (snd (TS S g) D.toPre.P.A).left) (fun j => hσ j) (𝟙 _ ≫ (jT S g hg).left) y hJ`. Establish `g' : ∀ a b : F, gs (𝟙 _) y ⊤ (gF D.toPre F (a * b)) = gs (𝟙 _) y ⊤ (gF D.toPre F a) * gs (𝟙 _) y ⊤ (gF D.toPre F b)` using `fun a b => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, gs_mul _ y ⊤ trivial]`. Establish `g₁ : gs (𝟙 _) y ⊤ (gF D.toPre F (t : F)⁻¹) * gs (𝟙 _) y ⊤ (gF D.toPre F t) = 1`. Rewrite using `[← g', inv_mul_cancel₀ ht0, map_one, gs_eq _ _ ⊤ trivial, map_one, map_one]`. Rewrite using `[← _root_.one_mul (sval s _ y J), ← g₁, _root_.mul_assoc, ← e₁, e₂, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[g', gs_jT, sval_pullSec _ _ _ _ _ y hJ, Category.assoc, jT_snd, secScal_sval (hσF i) _ y hJ, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_gen (hloc : IsLocalHom g) {k : ℕ} (hk : 1 ≤ k) {α : D.toPre.X}
     (s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k))) :
@@ -153,11 +151,11 @@ theorem span_gen (hloc : IsLocalHom g) {k : ℕ} (hk : 1 ≤ k) {α : D.toPre.X}
 end Gen
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hxu`. Establish `hm : x ∈ maximalIdeal V` using `(mem_maximalIdeal x).2 hxu`. Establish `h1 : ‖algVF (F` using `C) (V := V) x‖ < 1 := hC.2 x hm`. Take `⟨u, hu⟩` from `hx`. Establish `a1 : ‖((u : S) : C)‖ ≤ 1` using `(hS _).1 (u : S).2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a2 : ‖(((u⁻¹ : Sˣ) : S) : C)‖ ≤ 1` using `(hS _).1 ((u⁻¹ : Sˣ) : S).2`. Establish `e : ((u : S) : C) * (((u⁻¹ : Sˣ) : S) : C) = 1`. Rewrite using `[← MulMemClass.coe_mul, Units.mul_inv, OneMemClass.coe_one]`. Establish `e' : ‖((u : S) : C)‖ * ‖(((u⁻¹ : Sˣ) : S) : C)‖ = 1` using `by rw [← norm_mul, e, norm_one]`. Establish `hux : ((u : S) : C) = algVF (F` using `C) (V := V) x := by rw [hu]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hux]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left a2 (norm_nonneg ((u : S) : C)), norm_nonneg (((u⁻¹ : Sˣ) : S) : C)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem isLocalHom_ball {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {C : Type} [NontriviallyNormedField C] [Algebra (FractionRing V) C]
@@ -178,7 +176,7 @@ theorem isLocalHom_ball {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuatio
     nlinarith [mul_le_mul_of_nonneg_left a2 (norm_nonneg ((u : S) : C)), norm_nonneg (((u⁻¹ : Sˣ) : S) : C)]
 
 /- English proof (translation)
-Introduce `V _ _ _ D C _ _ hC S hS k hk β s`. Conclude with `span_gen (D := D) S _ rfl (isLocalHom_ball hC S hS) hk s`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_ball : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (IsLocalRing.maximalIdeal V)) (C : Type) [NontriviallyNormedField C] [Algebra (FractionRing V) C], CExt V (IsLocalRing.maximalIdeal V) C → ∀ (S : ValuationSubring C), (∀ x, x ∈ S ↔ ‖x‖ ≤ 1) → ∀ (k : ℕ), 1 ≤ k → ∀ (β : D.toPre.X) (s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre C β) (DegPre.famε k))), ∃ (n : ℕ) (a : Fin n → C) (σ : Fin n → D.toPre.SecB k β) (σF : Fin n → LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre C β) (DegPre.famε k))), (∀ i, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre C β) (DegPre.famε k) (σF i) (D.toPre.famφB β) (DegPre.famε k) (σ i) (DegPre.prB D.toPre C).left 1) ∧ ∀ j, s.f j = ∑ i, DegPre.constBF D.toPre C (a i) _ * (σF i).f j := by
   intro V _ _ _ D C _ _ hC S hS k hk β s

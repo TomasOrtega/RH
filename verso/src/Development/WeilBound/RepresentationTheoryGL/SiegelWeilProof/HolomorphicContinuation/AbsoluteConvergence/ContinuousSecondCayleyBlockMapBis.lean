@@ -13,41 +13,39 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mR : Continuous (mR : GR n → M2 n) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Conclude with `continuous_mR.matrix_submatrix Sum.inr Sum.inl`.
+A detailed English derivation is pending.
 -/
 theorem continuous_group_lower_left_block : Continuous (fun g : GR n => (mR g).toBlocks₂₁) := by
   exact continuous_mR.matrix_submatrix Sum.inr Sum.inl
 
 /- English proof (translation)
-Conclude with `continuous_mR.matrix_submatrix Sum.inr Sum.inr`.
+A detailed English derivation is pending.
 -/
 theorem continuous_group_lower_right_block : Continuous (fun g : GR n => (mR g).toBlocks₂₂) := by
   exact continuous_mR.matrix_submatrix Sum.inr Sum.inr
 
 /- English proof (translation)
-Unfold `u1`. Conclude with `((continuous_group_lower_left_block (n := n)).const_smul Complex.I).add continuous_group_lower_right_block`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_first_cayley_block_map : Continuous (fun g : GR n => u1 (mR g)) := by
   unfold u1
   exact ((continuous_group_lower_left_block (n := n)).const_smul Complex.I).add continuous_group_lower_right_block
 
 /- English proof (translation)
-Unfold `u2`. Conclude with `((continuous_group_lower_left_block (n := n)).const_smul Complex.I).neg.add continuous_group_lower_right_block`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_second_cayley_block_map : Continuous (fun g : GR n => u2 (mR g)) := by
   unfold u2
   exact ((continuous_group_lower_left_block (n := n)).const_smul Complex.I).neg.add continuous_group_lower_right_block
 
 /- English proof (translation)
-Establish `hdet : Continuous (fun g : GR n => (mR g).det)` using `continuous_mR.matrix_det`. Establish `h1 : Continuous (fun g : GR n => (u1 (mR g)).det)` using `continuous_first_cayley_block_map.matrix_det`. Establish `h2 : Continuous (fun g : GR n => (u2 (mR g)).det)` using `continuous_second_cayley_block_map.matrix_det`. Establish `hne : ∀ g : GR n, (mR g).det ≠ 0` using `fun g => ((Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit (g : GL (Fin n ⊕ Fin n) ℂ))).ne_zero`. Use `show Continuous (fun g : GR n => (mR g).det ^ e * ((u1 (mR g)).det ^ (-(p : ℤ)) * (u2 (mR g)).det ^ (-(q : ℤ))))`.
-
-Conclude with `(hdet.zpow₀ e fun g => Or.inl (hne g)).mul ((h1.zpow₀ _ fun g => Or.inl (hD n g).1).mul (h2.zpow₀ _ fun g => Or.inl (hD n g).2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_weight_factor (hD : CayleyBlocksInvertible) (p q : ℕ) (e : ℤ) : Continuous (F0 (n := n) p q e) := by
   have hdet : Continuous (fun g : GR n => (mR g).det) := continuous_mR.matrix_det
@@ -61,42 +59,42 @@ theorem continuous_weight_factor (hD : CayleyBlocksInvertible) (p q : ℕ) (e : 
     ((h1.zpow₀ _ fun g => Or.inl (hD n g).1).mul (h2.zpow₀ _ fun g => Or.inl (hD n g).2))
 
 /- English proof (translation)
-Unfold `hLoc`. Conclude with `((continuous_first_cayley_block_map.matrix_det).norm.pow 2).inv₀ fun g => pow_ne_zero 2 (norm_ne_zero_iff.mpr (hD n g).1)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_hLoc (hD : CayleyBlocksInvertible) : Continuous (hLoc (n := n)) := by
   unfold hLoc
   exact ((continuous_first_cayley_block_map.matrix_det).norm.pow 2).inv₀ fun g => pow_ne_zero 2 (norm_ne_zero_iff.mpr (hD n g).1)
 
 /- English proof (translation)
-Unfold `hLoc`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem hLoc_nonneg (g : GR n) : 0 ≤ hLoc g := by
   unfold hLoc
   positivity
 
 /- English proof (translation)
-Unfold `hLoc`. Conclude with `inv_pos.mpr (pow_pos (norm_pos_iff.mpr (hD n g).1) 2)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hLoc_pos (hD : CayleyBlocksInvertible) (g : GR n) : 0 < hLoc g := by
   unfold hLoc
   exact inv_pos.mpr (pow_pos (norm_pos_iff.mpr (hD n g).1) 2)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[u1, mR, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem first_cayley_block_one : u1 (mR (1 : GR n)) = 1 := by
   ext i j
   simp [u1, mR, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[u2, mR, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem second_cayley_block_one : u2 (mR (1 : GR n)) = 1 := by
   ext i j
   simp [u2, mR, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `only [F0, f0, first_cayley_block_one, second_cayley_block_one]`. Simplify using `[mR]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem weight_factor_one (p q : ℕ) (e : ℤ) : F0 (n := n) p q e 1 = 1 := by
   simp only [F0, f0, first_cayley_block_one, second_cayley_block_one]

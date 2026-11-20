@@ -18,9 +18,9 @@ namespace GlobalTheory.LastDbl
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `GlobalTheory.SeeSmallPf.ker`. Establish `e1 : (fun v => oma (h₀, h₁) (fun u => (a • C) u v) 0) = a • fun v => oma (h₀, h₁) (fun u => C u v) 0`. Use function extensionality and compare the values at `v`. Establish `e : (fun u => (a • C) u v) = a • fun u => C u v`. Use function extensionality and compare the values at `u`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply]`. Rewrite using `[e, map_smul]`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[e1, map_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ker_smul {A S X : HSp D} (oma : Om A S) (omX : Om S X) (a : ℂ) (C : WO A S → WO S X → ℂ) (h₀ : GA D A)
     (h₁ : GA D S) (h₂ : GA D X) :
@@ -34,7 +34,7 @@ theorem ker_smul {A S X : HSp D} (oma : Om A S) (omX : Om S X) (a : ℂ) (C : WO
   rw [e1, map_smul]; simp only [Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SeeSmallPf.biLift_eq, GlobalTheory.SeeSmallPf.biLift_eq]`. Establish `e : ∀ h₀ h₁, φ h₀ * GlobalTheory.SeeSmallPf.ker oma omX (a • C) h₀ h₁ h₂ = a * (φ h₀ * GlobalTheory.SeeSmallPf.ker oma omX C h₀ h₁ h₂)` using `fun h₀ h₁ => by rw [ker_smul]; ring`. Simplify using `only [e, integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem biLift_smul {A S X : HSp D} (oma : Om A S) (omX : Om S X) (vA : Vol A) (vS : Vol S) (φ : GA D A → ℂ) (a : ℂ)
     (C : WO A S → WO S X → ℂ) (h₂ : GA D X) :
@@ -45,9 +45,9 @@ theorem biLift_smul {A S X : HSp D} (oma : Om A S) (omX : Om S X) (vA : Vol A) (
   simp only [e, integral_const_mul]
 
 /- English proof (translation)
-Simplify using `only [Pi.smul_apply, smul_eq_mul]; rw [hf.quasi]; ring level := by`. Take `⟨U, hUo, hU⟩` from `hf.level`. Use `⟨U, hUo, fun u hu hi => ?_⟩` and prove the remaining obligations. Establish `e : heisO ψ S T u (a • f) = a • heisO ψ S T u f`. Use function extensionality and compare the values at `w`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hU u hu hi]`. Use `cont := continuous_const.mul hf.cont`. Use `smooth k L hL hfin w := (contDiff_const.mul (hf.smooth k L hL hfin w))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_smul {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (a : ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     IsThetaFunO ψ S T (a • f) where
@@ -62,7 +62,7 @@ theorem theta_smul {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (a : ℂ) {f :
   smooth k L hL hfin w := (contDiff_const.mul (hf.smooth k L hL hfin w))
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_coe_sort s F]`. Conclude with `(Equiv.sum_comp s.equivFin.symm (fun x => F x)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_fin {G M : Type} [AddCommMonoid M] (s : Finset G) (F : G → M) :
     ∑ g ∈ s, F g = ∑ i : Fin s.card, F (s.equivFin.symm i) := by
@@ -70,19 +70,19 @@ theorem sum_fin {G M : Type} [AddCommMonoid M] (s : Finset G) (F : G → M) :
   exact (Equiv.sum_comp s.equivFin.symm (fun x => F x)).symm
 
 /- English proof (translation)
-Introduce `D c v t hc ht hW j h Y hY φ hφ`. Take `⟨χA, χz, χS', χT, omz, omT, omz'', hχV, hWa, hWz, hWX, hWT, hWTb, hWz''⟩` from `hW.last j h`. Establish `hB : BiAct D` using `GlobalTheory.SeeSaw.biAct_all D`. Establish `hA : CoCpt (c.X j)` using `(hc.x j (by omega)).cpt`. Establish `hS : CoCpt (c.X (j + 1))` using `(hc.x (j + 1) (by omega)).cpt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ` using `(hW.tau j h).2`. Take `⟨-, -, hthS, -⟩` from `GlobalTheory.WeilSrc.om0_ext0_eq_om_emb0_of_isWeilDatumO D c.ψ (c.V (j + 1)) (c.X (j + 1)) c.T (c.jac j 0 h).d hc.std`. Establish `hY' : IsThetaFunO c.ψ (c.X (j + 1)) c.T (fun w => Y ((c.jac j 0 h).d.ext0 c.T w))` using `(hthS Y).2 hY`. Establish `hC : ∀ Z : WO (c.V j) (c.V (j + 1)) → ℂ, IsThetaFunO c.ψ _ _ Z → IsBiTheta c.ψ (c.X j) (c.X (j + 1)) (c.X (j + 1 + 1)) (c.lst j h (v.τ j h) (t.sBF j 0 h) Z Y)`. Introduce `Z hZ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hZ' : IsThetaFunO c.ψ (c.B j 0 h).V (c.J j 0 h).W Z` using `hZ`. Take `⟨hΞ, -⟩` from `GlobalTheory.LastRed.val_zero (t.sBF j 0 h) hZ'`. Conclude with `GlobalTheory.LastRed.lastBi_biTheta D c.ψ (c.bes j 0 h).V₀ (c.X j) (c.bes j 0 h).L (c.X (j + 1)) (c.X (j + 1 + 1)) c.T c.Lz (c.bes j 0 h).o (c.oT (j + 1 + 1) h) (v.τ j h) hτ (flatBF (t.sBF j 0 h) Z) _ hΞ hY'`. Use `⟨fun X hX f hf => GlobalTheory.SeeSmallPf.outer hB hWa hWX (hC X hX) hA hS hc.cpt (c.x j).vol (c.x (j + 1)).vol c.volT (c.oT (j + 1 + 1) h) hφ hf, fun G s a X hX => ?_⟩` and prove the remaining obligations. Establish `hsum : ∀ (Z : G → WO (c.V j) (c.V (j + 1)) → ℂ), c.lst j h (v.τ j h) (t.sBF j 0 h) (∑ g ∈ s, a g • Z g) Y = ∑ g ∈ s, a g • c.lst j h (v.τ j h) (t.sBF j 0 h) (Z g) Y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z`. Use function extensionality and compare the values at `u w`. Simplify using `only [Comm.lst, GlobalTheory.FinPl.lastBi, OrthDec.boxT, GlobalTheory.LastRed.flatBF_rankZero, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => by ring`. Establish `hsm : ∀ (b : ℂ) (Z : WO (c.V j) (c.V (j + 1)) → ℂ), c.lst j h (v.τ j h) (t.sBF j 0 h) (b • Z) Y = b • c.lst j h (v.τ j h) (t.sBF j 0 h) Z Y`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `b Z`. Use function extensionality and compare the values at `u w`. Simplify using `only [Comm.lst, GlobalTheory.FinPl.lastBi, OrthDec.boxT, GlobalTheory.LastRed.flatBF_rankZero, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `h₂`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsum, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Establish `e1 : ∀ g, a g * c.bl j (t.kom j) (t.kom (j + 1)) φ (c.lst j h (v.τ j h) (t.sBF j 0 h) (X g) Y) h₂ = c.bl j (t.kom j) (t.kom (j + 1)) φ (c.lst j h (v.τ j h) (t.sBF j 0 h) (a g • X g) Y) h₂` using `fun g => by`. Rewrite using `[hsm]`. Conclude with `(biLift_smul _ _ _ _ _ _ _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e1]`. Rewrite using `[sum_fin s, sum_fin s]`. Establish `e2 : (∑ i : Fin s.card, a (s.equivFin.symm i) • c.lst j h (v.τ j h) (t.sBF j 0 h) (X (s.equivFin.symm i)) Y) = ∑ i : Fin s.card, c.lst j h (v.τ j h) (t.sBF j 0 h) (a (s.equivFin.symm i) • X (s.equivFin.symm i)) Y` using `Finset.sum_congr rfl fun i _ => (hsm _ _).symm`. Rewrite using `[e2]`. Conclude with `(GlobalTheory.SeeSmallPf.biLift_sum hB hWa hWX hA hS (c.x j).vol (c.x (j + 1)).vol hφ (fun i => c.lst j h (v.τ j h) (t.sBF j 0 h) (a (s.equivFin.symm i) • X (s.equivFin.symm i)) Y) (fun i => hC _ (theta_smul _ (hX _))) h₂).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c), c.Is → t.Is → WeilOK (t := t) v → ∀ j (h : j + 2 * 0 + 2 = D.R.m) (Y : WO (c.V (j + 1)) c.T → ℂ), IsThetaFunO c.ψ _ _ Y → ∀ φ, IsContAut (c.X j) φ → (∀ X : WO (c.V j) (c.V (j + 1)) → ℂ, IsThetaFunO c.ψ _ _ X → ∀ f, IsContAut c.T f → IntegrableOn (fun h' => f h' * c.bl j (t.kom j) (t.kom (j + 1)) φ (c.lst j h (v.τ j h) (t.sBF j 0 h) X Y) ((c.oT (j + 1 + 1) h).emb (h', 1))) c.volT.𝓕 c.volT.μ) ∧ ∀ (G : Type) (s : Finset G) (a : G → ℂ) (X : G → WO (c.V j) (c.V (j + 1)) → ℂ), (∀ g, IsThetaFunO c.ψ _ _ (X g)) → ∑ g ∈ s, a g • c.bl j (t.kom j) (t.kom (j + 1)) φ (c.lst j h (v.τ j h) (t.sBF j 0 h) (X g) Y) = c.bl j (t.kom j) (t.kom (j + 1)) φ (c.lst j h (v.τ j h) (t.sBF j 0 h) (∑ g ∈ s, a g • X g) Y) := by
   intro D c v t hc ht hW j h Y hY φ hφ

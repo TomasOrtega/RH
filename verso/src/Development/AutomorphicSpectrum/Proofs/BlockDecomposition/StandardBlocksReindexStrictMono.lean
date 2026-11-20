@@ -5,9 +5,9 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.StdCompat
 
 /- English proof (translation)
-Use `Finset.sum_bij (fun b _ => Fin.castLE c.2.le b) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `b _`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, b.2⟩`. Introduce `x _ y _ h`. Conclude with `Fin.castLE_injective _ h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj`. Establish `hj' : (j : ℕ) < c` using `(Finset.mem_filter.1 hj).2`. Conclude with `⟨⟨j, hj'⟩, Finset.mem_univ _, Fin.ext rfl⟩`. Introduce `_ _`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_castLE_eq_sum_filter {s : ℕ} (f : Fin s → ℕ) (c : Fin s) :
     ∑ b : Fin (c : ℕ), f (Fin.castLE c.2.le b) = ∑ j ∈ Finset.univ.filter (· < c), f j := by
@@ -23,11 +23,9 @@ theorem sum_castLE_eq_sum_filter {s : ℕ} (f : Fin s → ℕ) (c : Fin s) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_image (s := Finset.univ.filter (· < a)) (g := o) (f := d) (fun x _ y _ h => ho.injective h)]`. Use `Finset.sum_subset ?_ ?_` and prove the remaining obligations. Introduce `j hj`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 hj`. Establish `hb' : b < a` using `(Finset.mem_filter.1 hb).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, ho hb'⟩`. Introduce `j hj hj'`. Assume the negation of the conclusion as `hne`. Take `⟨b, rfl⟩` from `hr j hne`. Establish `hlt : o b < o a` using `(Finset.mem_filter.1 hj).2`.
-
-Conclude with `hj' (Finset.mem_image.2 ⟨b, Finset.mem_filter.2 ⟨Finset.mem_univ _, ho.lt_iff_lt.1 hlt⟩, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem partial_sum_drop_empty {r r' : ℕ} (d : Fin r → ℕ) (o : Fin r' → Fin r)
     (ho : StrictMono o) (hr : ∀ j, d j ≠ 0 → j ∈ Set.range o) (a : Fin r') :
@@ -47,9 +45,9 @@ theorem partial_sum_drop_empty {r r' : ℕ} (d : Fin r → ℕ) (o : Fin r' → 
       ⟨b, Finset.mem_filter.2 ⟨Finset.mem_univ _, ho.lt_iff_lt.1 hlt⟩, rfl⟩)
 
 /- English proof (translation)
-Introduce `r r' N d hd o ho hr hd' a t`. Apply `Fin.ext` to reduce the goal to its premises. Establish `h1` using `stdBlocks_val (fun a => d (o a)) hd' a t`. Establish `h2` using `stdBlocks_val d hd (o a) t`. Establish `h3` using `sum_castLE_eq_sum_filter (fun a => d (o a)) a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `sum_castLE_eq_sum_filter d (o a)`. Establish `h5` using `partial_sum_drop_empty d o ho hr a`. Rewrite using `[h1, h2]`. Rewrite using `[h3, h4, h5]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem stdBlocks_drop_empty : ∀ {r r' N : ℕ} (d : Fin r → ℕ) (hd : ∑ a, d a = N)
     (o : Fin r' → Fin r), StrictMono o → (∀ j, d j ≠ 0 → j ∈ Set.range o) →

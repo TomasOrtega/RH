@@ -6,21 +6,19 @@ open Module NumberField IsDedekindDomain
 namespace Formalism.EigenvalueLevelCeiling
 
 /- English proof (translation)
-Unfold `OrthOfMackey`. Introduce `K _ _ _ Z _ _ P _ _ ρ U _ ψ hM h hh z hz`. Take `⟨_, hmul, hex⟩` from `hM`. Take `⟨u0, hu0, hc, hne⟩` from `hex h hh`. Use `set S := ∑ u : U, ((ψ ((u : P)⁻¹) : 𝓞 K) : K) • ρ (u : P) (ρ h z) with hS`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz' : ∀ u ∈ U, ρ u z = ((ψ u : 𝓞 K) : K) • z`. Introduce `u hu`. Unfold `eig at hz`. Establish `h1` using `(Submodule.mem_iInf _).mp hz ⟨u, hu⟩`. Rewrite `h1` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `hA : ∑ u : U, ((ψ ((u : P)⁻¹) : 𝓞 K) : K) • ρ (u : P) (ρ u0 (ρ h z)) = ((ψ u0 : 𝓞 K) : K) • S`. Rewrite using `[hS, Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight (⟨u0, hu0⟩ : U)) _ _ (fun u => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, Subgroup.coe_mul, map_mul, Module.End.mul_apply, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `key : ψ ((u : P)⁻¹) = ψ u0 * ψ (((u : P) * u0)⁻¹)`. Rewrite using `[← hmul u0 hu0 _ (U.inv_mem (U.mul_mem u.2 hu0))]`. Use `congr 1`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact.
 
-Rewrite using `[key]`. Use `norm_cast`. Establish `hB : ∑ u : U, ((ψ ((u : P)⁻¹) : 𝓞 K) : K) • ρ (u : P) (ρ u0 (ρ h z)) = ((ψ (h⁻¹ * u0 * h) : 𝓞 K) : K) • S`. Establish `e1 : ρ u0 (ρ h z) = ((ψ (h⁻¹ * u0 * h) : 𝓞 K) : K) • ρ h z`. Establish `e2 : ρ u0 (ρ h z) = ρ h (ρ (h⁻¹ * u0 * h) z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`. Rewrite using `[e2, hz' _ hc, map_smul]`. Rewrite using `[hS, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun u _ => ?_)` and prove the remaining obligations. Rewrite using `[e1, map_smul, smul_smul, smul_smul, mul_comm]`. Establish `h3 : (((ψ u0 : 𝓞 K) : K) - ((ψ (h⁻¹ * u0 * h) : 𝓞 K) : K)) • S = 0`. Rewrite using `[sub_smul, ← hA, ← hB, sub_self]`. Break down `smul_eq_zero.mp h3 with h0 | h0` into its components or cases.
-
-Conclude with `absurd (by exact_mod_cast (sub_eq_zero.mp h0).symm) hne`. Conclude with `h0`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem orthogonality_of_mackey : OrthOfMackey := by
   unfold OrthOfMackey

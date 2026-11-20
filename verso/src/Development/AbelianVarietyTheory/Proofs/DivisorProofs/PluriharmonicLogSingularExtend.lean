@@ -11,17 +11,15 @@ open scoped ContDiff
 namespace GlobalTheory.FlatExt
 
 /- English proof (translation)
-Introduce `e S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `c R f hR _ _ hf _ _`. Use `⟨R, hR, le_rfl, f, ?_, fun z _ _ => rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hf.mono fun z hz => ⟨hz, by simp⟩`. Consider the case `insert i S hi ih`. Introduce `c R f hR hR1 hc hf hlev hgr`. Establish `hr : 0 < R / 2` using `by linarith`. Establish `hrR : R / 2 < R` using `by linarith`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : R / 2 ≤ 1` using `by linarith`. Establish `hci : c i = 0` using `hc i (Finset.mem_insert_self _ _)`. Establish `hcS : ∀ k ∈ S, c k = 0` using `fun k hk => hc k (Finset.mem_insert_of_mem hk)`. Establish `hg` using `(GlobalTheory.T.poisson_integral_smooth_off_axes) e S i c R (R / 2) f hr hrR hci hf`. Establish `hag` using `(GlobalTheory.T.pluriharmonic_log_growth_extension) e S i c R (R / 2) f hr hrR hR1 hci hi hf hlev hgr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlg` using `(GlobalTheory.T.levi_form_zero_extension) e S i c (R / 2) f _ hg hag (fun z hz hzS hzi w => hlev z (ball_subset_ball hrR.le hz) (by`. Introduce `k hk`. Break down `Finset.mem_insert.1 hk with rfl | hk` into its components or cases. Conclude with `hzi`. Conclude with `hzS k hk) w)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbd` using `(GlobalTheory.T.log_bound_descends_to_smaller_set) e S i c R (R / 2) f hr hrR hci hi hf.continuousOn hgr`. Take `⟨ρ, hρ, hρR, h, hh, hhg⟩` from `ih c (R / 2) _ hr hr1 hcS hg hlg hbd`. Use `⟨ρ, hρ, by linarith, h, hh, ?_⟩` and prove the remaining obligations. Introduce `z hz hzS`. Establish `hzS' : ∀ k ∈ S, z k ≠ 0` using `fun k hk => hzS k (Finset.mem_insert_of_mem hk)`.
-
-Rewrite using `[hhg z hz hzS']`. Conclude with `hag z (ball_subset_ball hρR hz) hzS' (hzS i (Finset.mem_insert_self _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_extend : ∀ (e : ℕ) (S : Finset (Fin e)) (c : Fin e → ℂ) (R : ℝ) (f : (Fin e → ℂ) → ℝ), 0 < R → R ≤ 1 → (∀ i ∈ S, c i = 0) → ContDiffOn ℝ ∞ f {z | z ∈ Metric.ball c R ∧ ∀ i ∈ S, z i ≠ 0} → (∀ z ∈ Metric.ball c R, (∀ i ∈ S, z i ≠ 0) → ∀ w, levi f z w = 0) → (∀ ε : ℝ, 0 < ε → ∃ K : ℝ, ∀ z ∈ Metric.ball c R, (∀ i ∈ S, z i ≠ 0) → |f z| ≤ K - ε * ∑ i ∈ S, Real.log ‖z i‖) → ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ R ∧ ∃ g : (Fin e → ℂ) → ℝ, ContDiffOn ℝ ∞ g (Metric.ball c ρ) ∧ ∀ z ∈ Metric.ball c ρ, (∀ i ∈ S, z i ≠ 0) → g z = f z := by
   intro e S

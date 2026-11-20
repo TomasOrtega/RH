@@ -112,12 +112,12 @@ def onPt (G : PtP) : BdP Part := fun D O c b => G D O c b.pt
 def PRows : BdP Part := fun _ _ _ b => b.pt.Rows
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example {D : D7} {O : Obj D} {c : ℝ} (b : Part D O c) (C CH : ℝ) : L3 C CH D O c b ↔ (b.pt.S false).L3 (b.pt.N C CH) := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example {D : D7} {O : Obj D} {c : ℝ} (b : Part D O c) : PNmj D O c b ↔ b.pt.ExportRow := Iff.rfl
 

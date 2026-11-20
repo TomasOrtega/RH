@@ -17,9 +17,9 @@ namespace GlobalTheory.CxForm.ChernDbar
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `(differentiableAt_fderiv_of_contDiffAt_two hu)`. Establish `h1 : ∀ a, DifferentiableAt ℝ (fun x => fderiv ℝ u x a) z` using `fun a => h.clm_apply (differentiableAt_const _)`. Establish `hs` using `hu.isSymmSndFDerivAt (by simp)`. Establish `e (a b : V n) : dbar (fun x => dbar u x a) z b = (1 / 4 : ℂ) * (fderiv ℝ (fderiv ℝ u) z b a + Complex.I * fderiv ℝ (fderiv ℝ u) z (Complex.I • b) a + Complex.I * fderiv ℝ (fderiv ℝ u) z b (Complex.I • a) - fderiv ℝ (fderiv ℝ u) z (Complex.I • b) (Complex.I • a))`. Establish `e0 : (fun x => dbar u x a) = fun x => (1 / 2 : ℂ) • (fderiv ℝ u x a + Complex.I • fderiv ℝ u x (Complex.I • a))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun x => dbar_apply u x a`. Rewrite using `[e0, dbar_const_smul _ ((h1 _).fun_add ((h1 _).fun_const_smul Complex.I)), dbar_add (h1 _) ((h1 _).fun_const_smul Complex.I), dbar_const_smul _ (h1 _)]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, dbar_apply, fderiv_fderiv_apply hu, smul_eq_mul]`. Take the linear combination `(1 / 4 : ℂ) * fderiv ℝ (fderiv ℝ u) z (Complex.I • b) (Complex.I • a) * Complex.I_mul_I`. Rewrite using `[e, e, hs.eq w v, hs.eq (Complex.I • w) v, hs.eq w (Complex.I • v), hs.eq (Complex.I • w) (Complex.I • v)]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -43,11 +43,11 @@ theorem dbar_dbar_comm {u : V n → ℂ} {z : V n} (hu : ContDiffAt ℝ 2 u z) (
   ring
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `: coefwise (fun f => dbar f v (coordVec a)) (fun x => ∑ p, g p x • c p) = ∑ p, dbar (g p) v (coordVec a) • c p`. Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations. Rewrite using `[FormMul.repr_coefwise]`. Simplify using `only [map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dbar_sum (A := fun p x => g p x * (bas n).repr (c p) S) (fun p _ => (hg p).mul (differentiableAt_const _)), ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[dbar_mul (hg p) (differentiableAt_const _)]`. Simplify using the standard rewrite rules. Rewrite using `[this, Finset.mul_sum]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_smul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dbarAt_sum_smul {ι : Type} [Fintype ι] {v : V n} {g : ι → V n → ℂ} (hg : ∀ p, DifferentiableAt ℝ (g p) v)
     (c : ι → Alt n) : dbarAt (fun x => ∑ p, g p x • c p) v =
@@ -67,7 +67,7 @@ theorem dbarAt_sum_smul {ι : Type} [Fintype ι] {v : V n} {g : ι → V n → �
   simp only [mul_smul_comm]
 
 /- English proof (translation)
-Simplify using `only [map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `DifferentiableAt.fun_sum fun p _ => (hg p).mul (differentiableAt_const _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_sum_smul {ι : Type} [Fintype ι] {v : V n} {g : ι → V n → ℂ}
     (hg : ∀ p, DifferentiableAt ℝ (g p) v) (c : ι → Alt n) (S : Finset (Fin (n + n))) :
@@ -76,7 +76,7 @@ theorem differentiableAt_sum_smul {ι : Type} [Fintype ι] {v : V n} {g : ι →
   exact DifferentiableAt.fun_sum fun p _ => (hg p).mul (differentiableAt_const _)
 
 /- English proof (translation)
-Simplify using `only [dbarAt, ← Finset.sum_add_distrib, ← mul_add]`. Use `Finset.sum_congr rfl fun a _ => congrArg _ ((bas n).ext_elem fun S => ?_)` and prove the remaining obligations. Simplify using `only [map_add, Finsupp.add_apply, FormMul.repr_coefwise]`. Rewrite using `[dbar_add (hF S) (hG S), ContinuousLinearMap.add_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dbarAt_add {v : V n} {F G : V n → Alt n} (hF : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x) S) v)
     (hG : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (G x) S) v) :
@@ -87,7 +87,7 @@ theorem dbarAt_add {v : V n} {F G : V n → Alt n} (hF : ∀ S, DifferentiableAt
   rw [dbar_add (hF S) (hG S), ContinuousLinearMap.add_apply]
 
 /- English proof (translation)
-Simplify using `[dbarAt, coefwise]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dbarAt_const (c : Alt n) (v : V n) : dbarAt (fun _ => c) v = 0 := by
   simp [dbarAt, coefwise]
@@ -96,7 +96,7 @@ def IsClosedAt (v : V n) (F : V n → Ev n) : Prop :=
   (∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x : Alt n) S) v) ∧ dbarAt (fun x => (F x : Alt n)) v = 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => differentiableAt_const _, dbarAt_const _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isClosedAt_const (v : V n) (c : Ev n) : IsClosedAt v fun _ => c :=
   ⟨fun _ => differentiableAt_const _, dbarAt_const _ _⟩
@@ -123,7 +123,7 @@ def closedAt (v : V n) : Subsemiring (V n → Ev n) where
   zero_mem' := isClosedAt_const v 0
 
 /- English proof (translation)
-The claim follows from `isClosedAt_const v c`.
+A detailed English derivation is pending.
 -/
 theorem const_mem (v : V n) (c : Ev n) : (fun _ => c) ∈ closedAt v := isClosedAt_const v c
 
@@ -135,7 +135,7 @@ def closedRing (v : V n) : Subring (V n → Ev n) :=
       rwa [e] at this }
 
 /- English proof (translation)
-Establish `h (b c : Fin n) : dzb c * (dz a * dzb b) = dz a * dzb b * dzb c` using `Subalgebra.mem_center_iff.1 (sym (a, b)).2 (dzb c)`. Rewrite using `[h, h, mul_assoc, mul_assoc, ← mul_neg]`. Conclude with `congrArg _ (eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dzb_dz_dzb (a b c : Fin n) : dzb c * (dz a * dzb b) = -(dzb b * (dz a * dzb c)) := by
   have h (b c : Fin n) : dzb c * (dz a * dzb b) = dz a * dzb b * dzb c :=
@@ -144,15 +144,13 @@ theorem dzb_dz_dzb (a b c : Fin n) : dzb c * (dz a * dzb b) = -(dzb b * (dz a * 
   exact congrArg _ (eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _))
 
 /- English proof (translation)
-Establish `e (x : V n) : ((∑ a, ∑ b, dbar (θ a) x (coordVec b) • sym (a, b) : Ev n) : Alt n) = ∑ p : Fin n × Fin n, dbar (θ p.1) x (coordVec p.2) • (dz p.1 * dzb p.2)`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_smul, sym, Fintype.sum_prod_type]`. Establish `hd (p : Fin n × Fin n) : DifferentiableAt ℝ (fun x => dbar (θ p.1) x (coordVec p.2)) v` using `differentiableAt_dbar_apply (hθ p.1) _`. Express the relevant statement in the definitionally equal form `IsClosedAt v _`. Use `⟨fun S => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [e]`. Conclude with `differentiableAt_sum_smul hd _ S`. Simplify using `only [e]`. Rewrite using `[dbarAt_sum_smul hd]`. Simplify using `only [Fintype.sum_prod_type]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Use `set s : Alt n := ∑ c, ∑ b, dbar (fun x => dbar (θ a) x (coordVec b)) v (coordVec c) • (dzb c * (dz a * dzb b)) with hs`. Establish `h2 : s = -s` using `by conv_lhs => rw [hs, Finset.sum_comm]`. Rewrite using `[hs, ← Finset.sum_neg_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[dzb_dz_dzb a b c, dbar_dbar_comm (hθ a), smul_neg]`. Establish `h3 : (2 : ℂ) • s = 0` using `by rw [two_smul]; exact add_eq_zero_iff_eq_neg.2 h2`.
-
-Conclude with `(smul_eq_zero.1 h3).resolve_left two_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dbar_form_mem {v : V n} {θ : Fin n → V n → ℂ} (hθ : ∀ a, ContDiffAt ℝ 2 (θ a) v) :
     (fun x => ∑ a, ∑ b, dbar (θ a) x (coordVec b) • sym (a, b)) ∈ closedRing v := by
@@ -183,7 +181,7 @@ theorem dbar_form_mem {v : V n} {θ : Fin n → V n → ℂ} (hθ : ∀ a, ContD
     exact (smul_eq_zero.1 h3).resolve_left two_ne_zero
 
 /- English proof (translation)
-Rewrite using `[← Polynomial.coeff_map, charpolyRev, charpolyRev, ← Polynomial.coe_mapRingHom, RingHom.map_det]`. Use `congr 2`. Use extensionality with `i k : 2`. Apply the tactic sequence `by_cases h : i = k <;> simp [h, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_charpolyRev_map {A B r : Type} [CommRing A] [CommRing B] [Fintype r] [DecidableEq r] (f : A →+* B)
     (M : Matrix r r A) (j : ℕ) : (M.map f).charpolyRev.coeff j = f (M.charpolyRev.coeff j) := by
@@ -193,13 +191,13 @@ theorem coeff_charpolyRev_map {A B r : Type} [CommRing A] [CommRing B] [Fintype 
   by_cases h : i = k <;> simp [h, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `n r _ _ H s hs hH hu j v hv`. Establish `h3 : MContDiffAt 3 H v` using `fun a b => ((hH a b).contDiffAt (hs.mem_nhds hv)).of_le (by norm_cast)`. Establish `hθ (i k : r) (a : Fin n) : ContDiffAt ℝ 2 (fun x => conn H x (coordVec a) i k) v` using `h3.conn (hu v hv) (by norm_num) (coordVec a) i k`. Set `M : Matrix r r (closedRing v)` to `Matrix.of fun i k => ⟨_, dbar_form_mem (hθ i k)⟩`. Establish `key (w : V n) : MvPolynomial.aeval sym (chernPoly H w j) = (M.charpolyRev.coeff j : V n → Ev n) w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `coeff_charpolyRev_map (MvPolynomial.aeval (R := ℂ) (sym (n := n))).toRingHom (-curvPoly H w) j`. Establish `h2` using `coeff_charpolyRev_map ((Pi.evalRingHom (fun _ : V n => Ev n) w).comp (closedRing v).subtype) M j`. Use `h1.symm.trans (Eq.trans ?_ h2)` and prove the remaining obligations. Use `congr 2`. Use extensionality with `i k : 2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[M, curvPoly, curv, Algebra.smul_def]`. Establish `hm : IsClosedAt v _` using `(closedRing v).mul_mem (const_mem v (algebraMap ℂ _ (kappa ^ j))) (M.charpolyRev.coeff j).2`. Establish `e : (fun w => (chernAt H w j : Alt n)) = fun w => ((algebraMap ℂ (Ev n) (kappa ^ j) * (M.charpolyRev.coeff j : V n → Ev n) w : Ev n) : Alt n)`. Use function extensionality and compare the values at `fun w => by rw [chernAt, key, Algebra.smul_def]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm.2`.
+A detailed English derivation is pending.
 -/
 theorem dbarAt_chernAt : ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (H : V n → Matrix r r ℂ) (s : Set (V n)),
     IsOpen s → (∀ a b, ContDiffOn ℝ ∞ (fun v => H v a b) s) → (∀ v ∈ s, IsUnit (H v).det) → ∀ (j : ℕ), ∀ v ∈ s,

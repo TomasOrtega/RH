@@ -18,19 +18,19 @@ variable {S : Type} [CommRing S] [IsDomain S] {Y : Scheme.{0}} [IsIntegral Y]
 abbrev img : Y.Opens := j ''ᵁ ⊤
 
 /- English proof (translation)
-The claim follows from `(isAffineOpen_top _).image_of_isOpenImmersion j`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_img : IsAffineOpen (img j) := (isAffineOpen_top _).image_of_isOpenImmersion j
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨q, trivial, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_img (q : Sp S) : j.base q ∈ img j := ⟨q, trivial, rfl⟩
 
 instance : Nonempty (img j) := ⟨⟨_, mem_img j (Classical.arbitrary (PrimeSpectrum S))⟩⟩
 
 /- English proof (translation)
-The claim follows from `gen_mem (mem_img j (Classical.arbitrary (PrimeSpectrum S)))`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem_img : genericPoint Y ∈ img j :=
   gen_mem (mem_img j (Classical.arbitrary (PrimeSpectrum S)))
@@ -44,16 +44,14 @@ instance : IsFractionRing Γ(Y, img j) Y.functionField :=
 def fieldEquiv : Y.functionField ≃+* FractionRing S := IsFractionRing.ringEquivOfRingEquiv (secEquiv j)
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.ringEquivOfRingEquiv_algebraMap _ a`.
+A detailed English derivation is pending.
 -/
 theorem fieldEquiv_fnOf (a : Γ(Y, img j)) :
     fieldEquiv j (fnOf _ (gen_mem_img j) a) = algebraMap S (FractionRing S) (secEquiv j a) :=
   IsFractionRing.ringEquivOfRingEquiv_algebraMap _ a
 
 /- English proof (translation)
-Establish `h : (Sp S).basicOpen ((j.appIso ⊤).hom b) = (Sp S).basicOpen (j.app (img j) b)`. Rewrite using `[Scheme.Hom.appIso_hom, CommRingCat.comp_apply, Scheme.basicOpen_res]`. Conclude with `top_inf_eq _`. Express the relevant statement in the definitionally equal form `q ∈ j ⁻¹ᵁ Y.basicOpen b ↔ _`. Rewrite using `[Scheme.preimage_basicOpen, ← h, basicOpen_eq_of_affine']`.
-
-Conclude with `PrimeSpectrum.mem_basicOpen _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_basicOpen_iff (q : Sp S) (b : Γ(Y, img j)) :
     j.base q ∈ Y.basicOpen b ↔ secEquiv j b ∉ q.asIdeal := by
@@ -65,11 +63,11 @@ theorem mem_basicOpen_iff (q : Sp S) (b : Γ(Y, img j)) :
   exact PrimeSpectrum.mem_basicOpen _ _
 
 /- English proof (translation)
-Establish `key : p.appLE ⊤ (img j) (show img j ≤ p ⁻¹ᵁ ⊤ from le_top) ≫ (j.appIso ⊤).hom ≫ (Scheme.ΓSpecIso (CommRingCat.of S)).hom = (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom ≫ CommRingCat.ofHom (algebraMap ℂ S)`. Rewrite using `[Scheme.Hom.appIso_hom', Scheme.Hom.appLE_comp_appLE_assoc]`. Simplify using `only [hjp]`. Establish `e : (spMap (algebraMap ℂ S)).appLE ⊤ ⊤ (show (⊤ : (Sp S).Opens) ≤ spMap (algebraMap ℂ S) ⁻¹ᵁ ⊤ from le_top) = (spMap (algebraMap ℂ S)).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Scheme.ΓSpecIso_naturality _`. Use `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv a)) key` as an intermediate fact. Use `Eq.trans ?_ (this.trans ?_)` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secEquiv_algX [Algebra ℂ S] (p : Y ⟶ Sp ℂ) (hjp : j ≫ p = spMap (algebraMap ℂ S)) (a : ℂ) :
     secEquiv j (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p (img j) a) = algebraMap ℂ S a := by
@@ -88,7 +86,7 @@ theorem secEquiv_algX [Algebra ℂ S] (p : Y ⟶ Sp ℂ) (hjp : j ≫ p = spMap 
   · simp
 
 /- English proof (translation)
-Rewrite using `[← fnOf_comp_algX p (img j) (gen_mem_img j), RingHom.comp_apply, fieldEquiv_fnOf, secEquiv_algX j p hjp, IsScalarTower.algebraMap_apply ℂ S (FractionRing S)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fieldEquiv_constFn [Algebra ℂ S] (p : Y ⟶ Sp ℂ) (hjp : j ≫ p = spMap (algebraMap ℂ S))
     (a : ℂ) : fieldEquiv j (GlobalTheory.Cartier.constFn p a) = algebraMap ℂ (FractionRing S) a := by
@@ -96,19 +94,19 @@ theorem fieldEquiv_constFn [Algebra ℂ S] (p : Y ⟶ Sp ℂ) (hjp : j ≫ p = s
     secEquiv_algX j p hjp, IsScalarTower.algebraMap_apply ℂ S (FractionRing S)]
 
 /- English proof (translation)
-Establish `hU` using `isAffineOpen_img j`. Establish `hy` using `mem_img j q`. Establish `hg` using `gen_mem_img j`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨V, hyV, c, rfl⟩` from `(mem_locRing.1 hf).exists_fnOf`. Take `⟨b, hbV, hyb⟩` from `hU.exists_basicOpen_le ⟨_, hyV⟩ hy`. Use `hU.isLocalization_basicOpen b` as an intermediate fact. Take `⟨⟨t, s, hs⟩, hts⟩` from `IsLocalization.surj (Submonoid.powers b) (resG Y hbV c)`. Take `⟨n, rfl⟩` from `hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hW : genericPoint Y ∈ Y.basicOpen b` using `gen_mem hyb`. Establish `e1` using `congrArg (fnOf _ hW) hts`. Express the relevant statement in the definitionally equal form `fnOf _ hW (resG Y hbV c * resG Y (Y.basicOpen_le b) (b ^ n)) = fnOf _ hW (resG Y (Y.basicOpen_le b) t) at e1`. Rewrite `e1` using `[map_mul, fnOf_resG, fnOf_resG, fnOf_resG]`. Use `⟨secEquiv j t, secEquiv j (b ^ n), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_pow]`. Conclude with `fun h => (mem_basicOpen_iff j q b).1 hyb (q.isPrime.mem_of_pow_mem n h)`. Rewrite using `[← fieldEquiv_fnOf, ← fieldEquiv_fnOf]`. Express the relevant statement in the definitionally equal form `fieldEquiv j _ * _ = _`. Rewrite using `[← map_mul, e1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a, b, hb, e⟩`. Set `a'` to `(secEquiv j).symm a`. Set `b'` to `(secEquiv j).symm b`. Establish `hb' : j.base q ∈ Y.basicOpen b'` using `(mem_basicOpen_iff j q b').2 (by simpa [b'] using hb)`. Use `⟨fnOf _ hg a' * (fnOf _ hg b')⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mem_locRing.2 ((regAt_fnOf hy hg a').mul ((unitAt_fnOf_iff hy hg b').2 hb').inv.regAt)`. Establish `hb0 : algebraMap S (FractionRing S) b ≠ 0`. Use `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero ?_)` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hb q.asIdeal.zero_mem`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `fieldEquiv j _ = g`. Rewrite using `[map_mul, map_inv₀, fieldEquiv_fnOf, fieldEquiv_fnOf]`. Simplify using `only [a', b', RingEquiv.apply_symm_apply]`. Rewrite using `[← e, mul_inv_cancel_right₀ hb0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_map_locRing (q : Sp S) (g : FractionRing S) :
     g ∈ (locRing (j.base q)).map (fieldEquiv j).toRingHom ↔
@@ -153,7 +151,7 @@ theorem mem_map_locRing (q : Sp S) (g : FractionRing S) :
       rw [← e, mul_inv_cancel_right₀ hb0]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fieldEquiv j, fieldEquiv_constFn j p hjp, mem_map_locRing j⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_fieldEquiv (S : Type) [CommRing S] [IsDomain S] [Algebra ℂ S] (Y : Scheme.{0})
     [IsIntegral Y] (p : Y ⟶ Sp ℂ) (j : Sp S ⟶ Y) [IsOpenImmersion j]

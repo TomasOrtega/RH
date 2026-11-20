@@ -20,7 +20,7 @@ open Set Filter GlobalTheory.Eis
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-Apply the tactic sequence `rw [← map_mul]; congr 1; ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem io_one_mul (δ : GA D V) (x : GA D V × GA D V) : io V (δ, 1) * io V x = io V (δ * x.1, x.2) := by
   rw [← map_mul]; congr 1; ext <;> simp
@@ -30,7 +30,7 @@ section Terms
 variable {μ : (AE D)ˣ →* Circle} {φ : GA D (dblSp V) → ℂ} {f₁ f₂ : GA D V → ℂ}
 
 /- English proof (translation)
-Simplify using `only [dblIntegrand, io_one_mul, hf₁ _ δ.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem term_eq (hf₁ : ∀ γ ∈ GQ V, ∀ g, f₁ (γ * g) = f₁ g) (δ : GQ V) (x : GA D V × GA D V) :
     dblIntegrand V μ (fun y => φ (io V (δ, 1) * y)) f₁ f₂ x =
@@ -38,11 +38,9 @@ theorem term_eq (hf₁ : ∀ γ ∈ GQ V, ∀ g, f₁ (γ * g) = f₁ g) (δ : G
   simp only [dblIntegrand, io_one_mul, hf₁ _ δ.2]
 
 /- English proof (translation)
-Rewrite using `[Measure.prod_restrict]`. Use `ne_top_of_le_ne_top h (le_trans (le_of_eq (tsum_congr fun δ => ?_)) (ENNReal.tsum_comp_le_tsum_of_injective (injective_mk_io (V := V)) (fun q : SiegelCosets V => ∫⁻ x in 𝓕 ×ˢ 𝓕, ‖dblIntegrand V μ (fun x => φ (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * x)) f₁ f₂ x‖ₑ ∂m.prod m)))` and prove the remaining obligations. Use `set q : SiegelCosets V := mk _ ⟨io V (δ, 1), io_mem_GQ V δ.2 (one_mem _)⟩ with hq`. Establish `e : (mk _ q.out : SiegelCosets V) = mk _ ⟨io V (δ, 1), io_mem_GQ V δ.2 (one_mem _)⟩` using `Quotient.out_eq q`. Take `⟨p, hp⟩` from `mk_eq_iff.1 e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE : (fun y => φ (io V (δ, 1) * y)) = fun x => φ (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * x)`. Use function extensionality and compare the values at `y`. Establish `h1 : io V (δ, 1) = ((p : GQ (dblSp V)) : GA D (dblSp V)) * ((q.out : GQ (dblSp V)) : GA D (dblSp V))` using `(congrArg Subtype.val hp).symm`. Rewrite using `[h1, mul_assoc]`. Conclude with `apply_siegelQ_mul V a hμ hφ ⟨Subgroup.mem_subgroupOf.1 p.2, (p : GQ (dblSp V)).2⟩ _`.
-
-Use `beta_reduce`. Rewrite using `[hE]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_open_ne_top (hμ : IsHeckeChar D μ) {a : GL (Fin V.rank) (AE D)} {s : ℂ} (hφ : φ ∈ degPS V a μ s)
     {m : Measure (GA D V)} [SFinite m] {𝓕 : Set (GA D V)}
@@ -67,11 +65,11 @@ theorem tsum_open_ne_top (hμ : IsHeckeChar D μ) {a : GL (Fin V.rank) (AE D)} {
   rw [hE]
 
 /- English proof (translation)
-Introduce and unpack `⟨γ₁, γ₂⟩ ⟨h1, h2⟩ ⟨x₁, x₂⟩`. Establish `hs : ∑' δ : GQ V, φ (io V (δ, 1) * io V ((γ₁, γ₂) * (x₁, x₂))) = ∑' δ : GQ V, φ (io V (δ, 1) * io V (x₁, x₂))`. Set `e : GQ V ≃ GQ V` to `(Equiv.mulLeft (⟨γ₂, h2⟩ : GQ V)⁻¹).trans (Equiv.mulRight ⟨γ₁, h1⟩)`. Use `conv_rhs => rw [← e.tsum_eq]`. Use `tsum_congr fun δ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [io_one_mul, Prod.mk_mul_mk]`. Use `apply_io_mul V a hφ γ₂ ((e δ : GA D V) * x₁) x₂` as an intermediate fact. Rewrite `this` using `[apply_detA hμ h2, Circle.coe_one, one_mul]`. Rewrite using `[← this]`. Use `congr 3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[e, mul_assoc]`. Simplify using `only [dblIntegrand]`. Rewrite using `[hs]`. Simplify using `only [Prod.mk_mul_mk, hf₁ _ h1, hf₂ _ h2, map_mul, apply_detA hμ h2, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leftInv_open (hμ : IsHeckeChar D μ) {a : GL (Fin V.rank) (AE D)} {s : ℂ} (hφ : φ ∈ degPS V a μ s)
     (hf₁ : ∀ γ ∈ GQ V, ∀ g, f₁ (γ * g) = f₁ g) (hf₂ : ∀ γ ∈ GQ V, ∀ g, f₂ (γ * g) = f₂ g) :
@@ -95,35 +93,31 @@ theorem leftInv_open (hμ : IsHeckeChar D μ) {a : GL (Fin V.rank) (AE D)} {s : 
 end Terms
 
 /- English proof (translation)
-Introduce `D V a ha μ hμ s hs φ hφ hgrow m hm f₁ f₂ h₁ h₂`. Use `haveI := hm`. Establish `hF : IsFundamentalDomain (GQ V) (stdDom (GQ V)) m` using `isFundamentalDomain_stdDom _ m`. Use `set 𝓕 := stdDom (GQ V) with h𝓕`. Establish `hφc : Continuous φ` using `hφ.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E : GA D (dblSp V) → ℂ := fun y => ∑' δ : GQ V, φ (io V (δ, 1) * y) with hEdef`. Use `set H : GA D V × GA D V → ℂ := dblIntegrand V μ φ f₁ f₂ with hHdef`. Use `set T : GQ V → GA D V × GA D V → ℂ := fun δ => dblIntegrand V μ (fun y => φ (io V (δ, 1) * y)) f₁ f₂ with hTdef`. Use `set K : GA D V × GA D V → ℂ := fun p => H (p.1 * p.2, p.1) with hKdef`. Establish `hHc : Continuous H` using `continuous_dblIntegrand hμ hφc h₁.continuous h₂.continuous`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ (δ : GQ V) (x : GA D V × GA D V), T δ x = H ((δ : GA D V) * x.1, x.2)` using `fun δ x => term_eq h₁.1 δ x`. Establish `hTc : ∀ δ : GQ V, Continuous (T δ)` using `fun δ => by`. Rewrite using `[show T δ = fun x => H ((δ : GA D V) * x.1, x.2) from funext (hT δ)]`. Conclude with `hHc.comp ((continuous_const.mul continuous_fst).prodMk continuous_snd)`. Establish `hTm : ∀ δ : GQ V, Measurable fun x => ‖T δ x‖ₑ` using `fun δ => (hTc δ).measurable.enorm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hKc : Continuous K` using `hHc.comp ((continuous_fst.mul continuous_snd).prodMk continuous_fst)`. Establish `hbd : ∑' δ : GQ V, ∫⁻ x, ‖T δ x‖ₑ ∂(m.restrict 𝓕).prod (m.restrict 𝓕) ≠ ⊤` using `tsum_open_ne_top hμ hφ ((GlobalTheory.Core.Rk.AbsConv.absConv_unfolded D V a ha μ hμ s hs φ hφ hgrow m hm f₁ f₂ h₁ h₂).1 𝓕 hF)`. Establish `hTint : ∀ δ : GQ V, Integrable (T δ) ((m.restrict 𝓕).prod (m.restrict 𝓕))` using `fun δ => ⟨(hTc δ).aestronglyMeasurable, lt_of_le_of_lt (ENNReal.le_tsum (f := fun δ : GQ V => ∫⁻ x, ‖T δ x‖ₑ ∂(m.restrict 𝓕).prod (m.restrict 𝓕)) δ) (lt_top_iff_ne_top.2 hbd)⟩`. Establish `hlin : ∀ x₂, ∫⁻ x₁, ‖H (x₁, x₂)‖ₑ ∂m = ∑' δ : GQ V, ∫⁻ x₁ in 𝓕, ‖T δ (x₁, x₂)‖ₑ ∂m` using `fun x₂ => by`. Rewrite using `[hF.lintegral_eq_tsum'' (fun x₁ => ‖H (x₁, x₂)‖ₑ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Simplify using `only [hT, Subgroup.smul_def, smul_eq_mul]`. Establish `hlK : ∫⁻ p, ‖K p‖ₑ ∂(m.restrict 𝓕).prod m = ∑' δ : GQ V, ∫⁻ x, ‖T δ x‖ₑ ∂(m.restrict 𝓕).prod (m.restrict 𝓕)`. Rewrite using `[lintegral_prod _ hKc.measurable.enorm.aemeasurable]`. Establish `h1 : ∀ x₂, ∫⁻ g, ‖K (x₂, g)‖ₑ ∂m = ∫⁻ x₁, ‖H (x₁, x₂)‖ₑ ∂m` using `fun x₂ => lintegral_mul_left_eq_self (fun x₁ => ‖H (x₁, x₂)‖ₑ) x₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Repeatedly rewrite using `[h1, hlin]`. Rewrite using `[lintegral_tsum (fun δ => ((hTm δ).lintegral_prod_left').aemeasurable)]`. Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_prod_symm _ (hTm δ).aemeasurable]`. Establish `hKint : Integrable K ((m.restrict 𝓕).prod m)` using `⟨hKc.aestronglyMeasurable, show ∫⁻ p, ‖K p‖ₑ ∂(m.restrict 𝓕).prod m < ⊤ by rw [hlK]; exact lt_top_iff_ne_top.2 hbd⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hHint : ∀ᵐ x₂ ∂(m.restrict 𝓕), Integrable (fun x₁ => H (x₁, x₂)) m` using `by filter_upwards [hKint.prod_right_ae] with x₂ hx`. Use `hx.comp_mul_left x₂⁻¹` as an intermediate fact. Simplify `this` using `[hKdef, mul_inv_cancel_left]`. Establish `hli : LeftInv ((GQ V).prod (GQ V)) (dblIntegrand V μ E f₁ f₂)` using `leftInv_open hμ hφ h₁.1 h₂.1`. Establish `hQ : dblIntegrandQ V μ E f₁ f₂ = dblIntegrand V μ E f₁ f₂ ∘ Prod.map (sec (GQ V)) (sec (GQ V))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `fun q => (congrArg _ (Prod.ext (mk_sec q.1) (mk_sec q.2)).symm).trans (dblIntegrandQ_mk hli _ _)`. Establish `hmp : MeasurePreserving (Prod.map (sec (GQ V)) (sec (GQ V))) ((autMeasure V m).prod (autMeasure V m)) ((m.restrict 𝓕).prod (m.restrict 𝓕))` using `measurePreserving_sec.prod measurePreserving_sec`. Establish `S3 : ∫ q, dblIntegrandQ V μ E f₁ f₂ q ∂(autMeasure V m).prod (autMeasure V m) = ∫ x, dblIntegrand V μ E f₁ f₂ x ∂(m.restrict 𝓕).prod (m.restrict 𝓕)`. Rewrite using `[hQ]`. Conclude with `hmp.integral_comp (measurableEmbedding_sec.prodMap measurableEmbedding_sec) _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `S4 : ∫ x, dblIntegrand V μ E f₁ f₂ x ∂(m.restrict 𝓕).prod (m.restrict 𝓕) = ∑' δ : GQ V, ∫ x, T δ x ∂(m.restrict 𝓕).prod (m.restrict 𝓕)`. Rewrite using `[← integral_tsum (fun δ => (hTc δ).aestronglyMeasurable) hbd]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [hTdef, hEdef, dblIntegrand, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `tsum_mul_right.symm`. Establish `S5 : ∀ δ : GQ V, ∫ x, T δ x ∂(m.restrict 𝓕).prod (m.restrict 𝓕) = ∫ x₂ in 𝓕, ∫ x₁ in 𝓕, T δ (x₁, x₂) ∂m ∂m` using `fun δ => integral_prod_symm _ (hTint δ)`. Establish `S6 : ∑' δ : GQ V, ∫ x₂ in 𝓕, ∫ x₁ in 𝓕, T δ (x₁, x₂) ∂m ∂m = ∫ x₂ in 𝓕, ∑' δ : GQ V, ∫ x₁ in 𝓕, T δ (x₁, x₂) ∂m ∂m`. Use `(integral_tsum (fun δ => ?_) ?_).symm` and prove the remaining obligations. Conclude with `(((hTc δ).comp continuous_swap).aestronglyMeasurable (μ := (m.restrict 𝓕).prod (m.restrict 𝓕))).integral_prod_right'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ne_top_of_le_ne_top hbd (ENNReal.tsum_le_tsum fun δ => ?_)` and prove the remaining obligations. Rewrite using `[lintegral_prod_symm _ (hTm δ).aemeasurable]`. Conclude with `lintegral_mono fun x₂ => enorm_integral_le_lintegral_enorm _`. Establish `S7 : ∀ᵐ x₂ ∂(m.restrict 𝓕), ∑' δ : GQ V, ∫ x₁ in 𝓕, T δ (x₁, x₂) ∂m = ∫ x₁, H (x₁, x₂) ∂m` using `by filter_upwards [hHint] with x₂ hx`. Rewrite using `[hF.integral_eq_tsum'' _ hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Simplify using `only [hT, Subgroup.smul_def, smul_eq_mul]`. Establish `S8 : ∀ x₂, ∫ x₁, H (x₁, x₂) ∂m = ∫ g, K (x₂, g) ∂m` using `fun x₂ => (integral_mul_left_eq_self (fun x₁ => H (x₁, x₂)) x₂).symm`. Establish `S9 : ∫ x₂ in 𝓕, ∫ g, K (x₂, g) ∂m ∂m = ∫ g, ∫ x₂ in 𝓕, K (x₂, g) ∂m ∂m`. Rewrite using `[← integral_prod _ hKint, integral_prod_symm _ hKint]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `MirabolicColumnBlock : ∀ g, ∫ x₂ in 𝓕, K (x₂, g) ∂m = φ (io V (g, 1)) * conj (petCoef V m f₁ f₂ g)` using `fun g => by`. Establish `hl1 : LeftInv (GQ V) (rTr V g f₁)` using `fun γ hγ x => (h₁.mul_right g).1 γ hγ x`. Establish `hl2 : LeftInv (GQ V) f₂` using `h₂.1`. Simplify using `only [petCoef]`. Rewrite using `[petersson_eq hF hl1 hl2, ← integral_conj, ← integral_const_mul]`.
-
-Use `integral_congr_ae (Eventually.of_forall fun x₂ => ?_)` and prove the remaining obligations. Simplify using `only [hKdef, hHdef, dblIntegrand_mul hφ, rTr, map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[zetaConvH_iff]`.
-
-Conclude with `hKint.integral_prod_right.congr (Eventually.of_forall fun g => MirabolicColumnBlock g)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem open_orbit : ∀ (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE D)), IsMaj V a → ∀ (μ : (AE D)ˣ →* Circle), IsHeckeChar D μ → ∀ s : ℂ, (V.rank : ℝ) / 2 < s.re → ∀ φ ∈ degPS V a μ s, GlobalTheory.Grow.ModGrowth (dblSp V) (GlobalTheory.Eis.eis V (GlobalTheory.Eis.sph V a (s.re : ℂ))) → ∀ m : Measure (GA D V), m.IsHaarMeasure → ∀ f₁ f₂ : GA D V → ℂ, GlobalTheory.Grow.RapidDec V f₁ → GlobalTheory.Grow.RapidDec V f₂ → ZetaConvH D.sp.cm.sig (gram_hdbl V) m φ (GlobalTheory.Eis.petCoef V m f₁ f₂) ∧ ∫ x, GlobalTheory.Eis.dblIntegrandQ V μ (fun y => ∑' δ : GQ V, φ (io V (δ, 1) * y)) f₁ f₂ x ∂(autMeasure V m).prod (autMeasure V m) = zetaH D.sp.cm.sig (gram_hdbl V) m φ (GlobalTheory.Eis.petCoef V m f₁ f₂) := by
   intro D V a ha μ hμ s hs φ hφ hgrow m hm f₁ f₂ h₁ h₂

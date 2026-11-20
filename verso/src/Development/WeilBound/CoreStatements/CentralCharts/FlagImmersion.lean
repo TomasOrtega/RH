@@ -15,14 +15,14 @@ section Man
 variable {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
 
 /- English proof (translation)
-Introduce `j t ht` and use `(hf _ ht.2.2).comp (f := A.chart k ∘ (A.chart j).symm) (A.holo j k t ⟨ht.1, ht.2.1⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem holoOn_chart (k : Fin A.n) {V : Set (Fin e → ℂ)} {f : (Fin e → ℂ) → ℂ} (hf : AnalyticOnNhd ℂ f V) :
     A.HoloOn ((A.chart k).source ∩ A.chart k ⁻¹' V) fun y => f (A.chart k y) := fun j t ht =>
   (hf _ ht.2.2).comp (f := A.chart k ∘ (A.chart j).symm) (A.holo j k t ⟨ht.1, ht.2.1⟩)
 
 /- English proof (translation)
-Use `choose G hG hGe using hp`. Take `⟨V', h', hV', hx'⟩` from `eventually_nhds_iff.1 ((hV.eventually_mem hxV).and ((Filter.eventually_all.2 fun p => (hG p).eventually_analyticAt).and (Filter.eventually_all.2 hGe)))`. Use `⟨(A.chart k).source ∩ A.chart k ⁻¹' V', (A.chart k).isOpen_inter_preimage hV', ⟨hx, hx'⟩, fun τ a b => holoOn_chart A k ((ha τ a b).mono fun t ht => (h' t ht).1), fun τ y hy => hd _ (h' _ hy.2).1 τ, fun p => ⟨fun y => G p (A.chart k y), holoOn_chart A k fun t ht => (h' t ht).2.1 …` and prove the remaining obligations. Use `(h' _ hy.2).2.2 p` as an intermediate fact. Rewrite `this` using `[(A.chart k).left_inv hy.1]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem periodChart {Ψ : Type} [Finite Ψ] {N j : ℕ} (pot : Ψ × Fin N → LocPot X) (k : Fin A.n) {V : Set (Fin e → ℂ)}
     {gm : Ψ → (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ} (hV : IsOpen V) {x : X} (hx : x ∈ (A.chart k).source)
@@ -40,19 +40,17 @@ theorem periodChart {Ψ : Type} [Finite Ψ] {N j : ℕ} (pot : Ψ × Fin N → L
   rwa [(A.chart k).left_inv hy.1] at this
 
 /- English proof (translation)
-Introduce `k' hx' v hv`. Set `T` to `A.chart k ∘ (A.chart k').symm`. Set `T'` to `A.chart k' ∘ (A.chart k).symm`. Establish `e₁ : T (A.chart k' x) = A.chart k x` using `congrArg _ ((A.chart k').left_inv hx')`. Establish `hT : DifferentiableAt ℂ T (A.chart k' x)` using `(A.holo k' k _ ⟨(A.chart k').map_source hx', by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_preimage]`. Rewrite using `[(A.chart k').left_inv hx']⟩).differentiableAt` and apply the resulting hypothesis. Establish `hT' : DifferentiableAt ℂ T' (T (A.chart k' x))`. Rewrite using `[e₁]`. Conclude with `(A.holo k k' _ ⟨(A.chart k).map_source hx, by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_preimage]`. Rewrite using `[(A.chart k).left_inv hx]⟩).differentiableAt` and apply the resulting hypothesis. Establish `h0 : fderiv ℂ T (A.chart k' x) v = 0` using `h _ fun τ => by`. Establish `e₂ : (Matrix.of fun a b => fderiv ℂ (fun z => gm τ z a b) (A.chart k x) (fderiv ℂ T (A.chart k' x) v)) = Matrix.of fun a b => fderiv ℂ (fun z => gm τ (A.chart k ((A.chart k').symm z)) a b) (A.chart k' x) v`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1 : DifferentiableAt ℂ (fun t => gm τ t a b) (T (A.chart k' x))`. Rewrite using `[e₁]`. Conclude with `(ha τ a b).differentiableAt`. Establish `h2` using `fderiv_comp _ h1 hT`. Rewrite `h2` using `[e₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg (fun L : (Fin e → ℂ) →L[ℂ] ℂ => L v) h2).symm`. Rewrite using `[e₂]`. Conclude with `hv τ`. Establish `hid : T' ∘ T =ᶠ[𝓝 (A.chart k' x)] id`. Establish `hc : ContinuousAt (A.chart k').symm (A.chart k' x)` using `(A.chart k').continuousAt_symm ((A.chart k').map_source hx')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ∀ᶠ t in 𝓝 (A.chart k' x), (A.chart k').symm t ∈ (A.chart k).source` using `hc.eventually_mem ((A.chart k).open_source.mem_nhds (by rwa [(A.chart k').left_inv hx']))`. Use `filter_upwards [h1, (A.chart k').open_target.mem_nhds ((A.chart k').map_source hx')] with t h1 h2`. Use `show A.chart k' ((A.chart k).symm (A.chart k ((A.chart k').symm t))) = t`. Rewrite using `[(A.chart k).left_inv h1, (A.chart k').right_inv h2]`. Establish `h3` using `hid.fderiv_eq (𝕜 := ℂ)`.
-
-Rewrite `h3` using `[fderiv_comp _ hT' hT, fderiv_id]`. Establish `h4` using `congrArg (fun L => L v) h3`. Simplify `h4.symm` using `[h0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem flagImmersion {Ψ : Type} {N : ℕ} (k : Fin A.n) {gm : Ψ → (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ} {x : X}
     (hx : x ∈ (A.chart k).source) (ha : ∀ τ a b, AnalyticAt ℂ (fun t => gm τ t a b) (A.chart k x))
@@ -100,15 +98,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {c : Coeff l} {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)}
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hπ, hπ'⟩` from `exists_inv An.Sys.A An.Re.R.A An.Re.π An.Re.br An.Re.holo (An.deg_one ▸ An.Re.degree) An.π_bij`. Take `⟨z, hzi, hzc, hzh, hzU⟩` from `ptsFam Gr An ψ hψ hπ hπ'`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Take `⟨k, hk⟩` from `An.Sys.A.cover x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨V, gm, hV, hxV, -, -, ha, hfd, hp, -⟩` from `locChart hLP hT hFV hPM hG hN Gr An ψ hψ hπ z hzi hzc k (hzh k) ⊤ x hx hk trivial`. Take `⟨W, hW⟩` from `periodChart An.Sys.A (fun p => An.Sys.potH (some p)) k hV hk hxV ha hfd fun p => by`. Use `hp _ hxV p` as an intermediate fact. Rewrite `this` using `[(An.Sys.A.chart k).left_inv hk]`. Then use the resulting hypothesis. Conclude with `⟨W, _, hW⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 
-Take `⟨U, hU, hcnt⟩` from `hC hG E H D l Xo c Y Gr.Ω Gr.K Gr.J Gr.y Gr.𝔐 Gr.Fl hN Gr.deg_one`. Take `⟨x, hx, hxU⟩` from `hzU U hU`. Take `⟨k, hk⟩` from `An.Sys.A.cover x`. Take `⟨V, gm, hV, hxV, hVt, hVo, ha, hfd, hp, hcV⟩` from `locChart hLP hT hFV hPM hG hN Gr An ψ hψ hπ z hzi hzc k (hzh k) U x hx hk hxU`. Take `⟨t, ht, him⟩` from `hFI (CMType H) _ _ V gm hV ⟨_, hxV⟩ ha (fun t ht τ => (hfd t ht τ).1) (hcV hcnt)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : An.Sys.A.chart k ((An.Sys.A.chart k).symm t) = t` using `(An.Sys.A.chart k).right_inv (hVt ht)`. Establish `hs` using `(An.Sys.A.chart k).map_target (hVt ht)`. Take `⟨W, hW⟩` from `periodChart An.Sys.A (fun p => An.Sys.potH (some p)) k hV hs (by rwa [e]) ha hfd fun p => by`. Rewrite using `[e]`. Conclude with `hp t ht p`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, hVo t ht, W, _, hW, flagImmersion An.Sys.A k hs (fun τ a b => by rw [e]; exact ha τ a b t ht) (by rwa [e])⟩`.
+A detailed English derivation is pending.
 -/
 theorem unif_of (hLP : LocPer) (hT : Transport) (hFV : FrameVals) (hPM : PerMat) (hFI : FlagImm) (hC : CountGen)
     (hG : Top.Given) (hN : 1 ≤ D.p + D.q) (Gr : RefGeo Y) (An : Gr.An) :

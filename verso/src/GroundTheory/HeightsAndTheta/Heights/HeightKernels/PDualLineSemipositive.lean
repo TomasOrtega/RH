@@ -17,7 +17,7 @@ namespace DualLineSemipositiveAlt
 open scoped MatrixOrder in
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ M` using `Matrix.nonneg_iff_posSemidef.mpr hM`. Use `⟨CFC.sqrt M, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.star_eq_conjTranspose, (CFC.sqrt_nonneg M).isSelfAdjoint.star_eq, CFC.sqrt_mul_sqrt_self M h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_conjTranspose_mul_self {n : Type} [Fintype n] [DecidableEq n] {M : Matrix n n ℂ}
     (hM : M.PosSemidef) : ∃ B : Matrix n n ℂ, M = Bᴴ * B := by
@@ -27,7 +27,7 @@ theorem exists_conjTranspose_mul_self {n : Type} [Fintype n] [DecidableEq n] {M 
     CFC.sqrt_mul_sqrt_self M h0]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`. Simplify using `only [dotProduct, Pi.star_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem re_star_dotProduct_mulVec {n : Type} [Fintype n] (B : Matrix n n ℂ) (w : n → ℂ) :
     (star w ⬝ᵥ ((Bᴴ * B) *ᵥ w)).re = ∑ j, ‖(B *ᵥ w) j‖ ^ 2 := by
@@ -42,7 +42,7 @@ def factor (F : HermLattice K i) (σ : K →+* ℂ) : Matrix (Fin i) (Fin i) ℂ
   Classical.choose (exists_conjTranspose_mul_self (F.posDef σ).posSemidef)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_conjTranspose_mul_self (F.posDef σ).posSemidef)`.
+A detailed English derivation is pending.
 -/
 theorem factor_spec (F : HermLattice K i) (σ : K →+* ℂ) :
     F.metric σ = (factor F σ)ᴴ * factor F σ :=
@@ -58,9 +58,9 @@ def coordMap {F : HermLattice K i} (b : Module.Basis T ℤ (dualLattice F))
 omit [Fintype T] [DecidableEq T] in
 
 /- English proof (translation)
-Use `show Real.sqrt (dualNormSq b hb fun t => z ⟨(), t⟩) = ‖WithLp.toLp 2 (coordMap b hb z)‖`. Rewrite using `[EuclideanSpace.norm_eq]`. Use `congr 1`. Simplify using `only [dualNormSq]`. Rewrite using `[Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[factor_spec F σ, re_star_dotProduct_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dualLine_h_eq {F : HermLattice K i} (b : Module.Basis T ℤ (dualLattice F))
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))) (z : (Σ _ : Unit, T) → ℂ) :
@@ -79,13 +79,13 @@ end DualLineSemipositiveAlt
 open DualLineSemipositiveAlt in
 
 /- English proof (translation)
-Introduce `K _ _ i F T _ _ b hb`. Use `set τc : ((Σ _ : Unit, T) → ℂ) →L[ℂ] ((K →+* ℂ) × Fin i → ℂ) := LinearMap.toContinuousLinearMap (coordMap b hb) with hτc`. Establish `hh : ∀ z, (dualLine F b hb).h z = (fsMetric ((K →+* ℂ) × Fin i)).ρ (τc z)` using `dualLine_h_eq b hb`. Establish `hne : ∀ z : (Σ _ : Unit, T) → ℂ, (∀ k, ∃ j, z ⟨k, j⟩ ≠ 0) → τc z ≠ 0`. Introduce `z hz h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp` using `(dualLine F b hb).pos z hz`. Rewrite `hp` using `[hh, h0]`. Simplify using `[fsMetric] at hp`. Establish `hfun : (dualLine F b hb).h = (fsMetric ((K →+* ℂ) × Fin i)).ρ ∘ τc` using `funext hh`. Use `⟨?_, fun z hz w _ => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Rewrite using `[hfun]`. Conclude with `((HilbertSamuel.ProjLine.isSmoothMetric_fs.contDiffAt (isOpen_ne.mem_nhds (hne z hz))).comp z (τc.restrictScalars ℝ).contDiff.contDiffAt).contDiffWithinAt`. Express the relevant statement in the definitionally equal form `0 ≤ ReciprocityTheory.AnForm.levi (fun z => Real.log ((dualLine F b hb).h z)) z w`. Establish `hlog : (fun z => Real.log ((dualLine F b hb).h z)) = (fun u => Real.log ((fsMetric ((K →+* ℂ) × Fin i)).ρ u)) ∘ τc`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply, hh]`. Rewrite using `[hlog, ReciprocityTheory.AnForm.levi_comp w (τc.analyticAt z) (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_contDiffAt_logρ_id HilbertSamuel.ProjLine.isSmoothMetric_fs (hne z hz.1))]`. Conclude with `HilbertSamuel.ProjLine.leviForm_log_fs_nonneg (hne z hz.1) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DualLineSemipositive.proof : DualLineSemipositive.Statement := by
   intro K _ _ i F T _ _ b hb

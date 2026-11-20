@@ -30,14 +30,14 @@ Both sides reduce to the same expression.
 theorem ptProd_nil : T.ptProd ρ0 [] = 1 := rfl
 
 /- English proof (translation)
-Simplify using `[ptProd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ptProd_cons (P : T.Pt) (l : List T.Pt) :
     T.ptProd ρ0 (P :: l) = T.ξExt P.1 ρ0 * T.ptProd ρ0 l := by
   simp [ptProd]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact one_ne_zero`. Consider the case `cons P l ih => rw [ptProd_cons]`. Conclude with `mul_ne_zero (T.ptExt_ne_zero P.2) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ptProd_ne_zero (l : List T.Pt) : T.ptProd ρ0 l ≠ 0 := by
   induction l with
@@ -45,7 +45,7 @@ theorem ptProd_ne_zero (l : List T.Pt) : T.ptProd ρ0 l ≠ 0 := by
   | cons P l ih => rw [ptProd_cons]; exact mul_ne_zero (T.ptExt_ne_zero P.2) ih
 
 /- English proof (translation)
-Rewrite using `[← T.sum_mult_breaksR hx ha hab hb]`. Conclude with `Finset.sum_nonneg fun σ _ => T.mult_nonneg x σ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mult_sum_nonneg {x : T.RobbaExt ρ0} (hx : x ≠ 0) {a b : ℝ} (ha : 0 < a) (hab : a ≤ b)
     (hb : b < ρ0) : 0 ≤ T.highIdx x b - T.lowIdx x a := by
@@ -53,23 +53,23 @@ theorem mult_sum_nonneg {x : T.RobbaExt ρ0} (hx : x ≠ 0) {a b : ℝ} (ha : 0 
   exact Finset.sum_nonneg fun σ _ => T.mult_nonneg x σ
 
 /- English proof (translation)
-It suffices to establish `H : ∀ M : ℕ, ∀ x : T.RobbaExt ρ0, x ≠ 0 → T.highIdx x b - T.lowIdx x a = M → ∃ (l : List T.Pt) (y : T.RobbaExt ρ0), (∀ P ∈ l, a ≤ T.ptRad P.1 ∧ T.ptRad P.1 ≤ b) ∧ x = T.ptProd ρ0 l * y ∧ y ≠ 0 ∧ ∀ σ, a ≤ σ → σ ≤ b → T.mult y σ = 0 by`. Introduce `x hx`. Conclude with `H _ x hx (Int.toNat_of_nonneg (T.mult_sum_nonneg hx ha hab hb)).symm`. Introduce `M`. Proceed by induction on `M using Nat.strong_induction_on with`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `_ M ih`. Introduce `x hx hM`. Distinguish the cases in `hz : ∀ σ, a ≤ σ → σ ≤ b → T.mult x σ = 0`. Conclude with `⟨[], x, by simp, by rw [ptProd_nil, one_mul], hx, hz⟩`. Use `push_neg at hz`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨σ, hσa, hσb, hσm⟩` from `hz`. Establish `hσ1 : 1 ≤ T.mult x σ`. Use `T.mult_nonneg x σ` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨ξ, hξ, hr, y', hxy⟩` from `hRE ρ0 x hx σ (ha.trans_le hσa) (hσb.trans_lt hb) hσ1`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy'0 : y' ≠ 0` using `by rintro rfl; rw [mul_zero] at hxy; exact hx hxy`. Establish `hξ0` using `T.ptExt_ne_zero (ρ0 := ρ0) hξ`. Establish `hia` using `T.idx_mul hξ0 hy'0 ⟨ha, hab.trans_lt hb⟩`. Establish `hib` using `T.idx_mul hξ0 hy'0 ⟨ha.trans_le hab, hb⟩`. Establish `hla` using `(T.idx_ptExt (ρ0 := ρ0) hξ ⟨ha, hab.trans_lt hb⟩).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hhb` using `(T.idx_ptExt (ρ0 := ρ0) hξ ⟨ha.trans_le hab, hb⟩).2`. Rewrite `hla` using `[if_pos (hr ▸ hσa)]`. Rewrite `hhb` using `[if_neg (not_lt.2 (hr ▸ hσb))]`. Rewrite `hia`, `hib` using `[← hxy]`. Establish `hM' : T.highIdx y' b - T.lowIdx y' a = (M - 1 : ℕ)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnn` using `T.mult_sum_nonneg hy'0 ha hab hb`. Establish `: T.highIdx y' b - T.lowIdx y' a + 1 = M`. Rewrite using `[← hM, hib.2, hia.1, hla, hhb]`. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMpos : 0 < M`. Establish `hnn` using `T.mult_sum_nonneg hy'0 ha hab hb`. Establish `: T.highIdx y' b - T.lowIdx y' a + 1 = M`. Rewrite using `[← hM, hib.2, hia.1, hla, hhb]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨l, y, hl, hy'e, hy0, hym⟩` from `ih (M - 1) (by omega) y' hy'0 hM'`. Use `⟨⟨ξ, hξ⟩ :: l, y, ?_, ?_, hy0, hym⟩` and prove the remaining obligations. Introduce `P hP`. Break down `List.mem_cons.1 hP with rfl | hP` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hr ▸ hσa, hr ▸ hσb⟩`. Conclude with `hl P hP`. Rewrite using `[ptProd_cons, hxy, hy'e, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_factor_annulus (hRE : T.RootExists) {a b : ℝ} (ha : 0 < a) (hab : a ≤ b)
     (hb : b < ρ0) :
@@ -122,15 +122,13 @@ theorem exists_factor_annulus (hRE : T.RootExists) {a b : ℝ} (ha : 0 < a) (hab
   · rw [ptProd_cons, hxy, hy'e, mul_assoc]
 
 /- English proof (translation)
-Use `T.cauchySeq_of_extNorm fun ρ ε hε => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `(Metric.tendsto_atTop.1 (h ρ)) ε hε`. Establish `hinc : ∀ n ≥ J, T.extNorm ρ0 ρ (z (n + 1) - z n) < ε` using `fun n hn => by`. Use `hJ n hn` as an intermediate fact. Rewrite `this` using `[Real.dist_eq, sub_zero, abs_of_nonneg (T.extNorm_nonneg _ _)]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `key : ∀ k ≥ J, ∀ j, T.extNorm ρ0 ρ (z (k + j) - z k) < ε`. Introduce `k hk j`. Proceed by induction on `j with`. Consider the case `zero => rw [add_zero, sub_self, extNorm_zero]`. Conclude with `hε`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j ih`. Use `T.extNorm_add_le ρ (z (k + j + 1) - z (k + j)) (z (k + j) - z k)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Conclude with `this.trans_lt (max_lt (hinc _ (by omega)) ih)`. Use `⟨J, fun j hj k hk => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `le_total k j with hkj | hjk` into its components or cases. Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le hkj`. Conclude with `key k hk i`. Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le hjk`. Rewrite using `[extNorm_sub_comm]`.
-
-Conclude with `key j hj i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cauchySeq_of_increments {z : ℕ → T.RobbaExt ρ0}
     (h : ∀ ρ, Tendsto (fun n => T.extNorm ρ0 ρ (z (n + 1) - z n)) atTop (𝓝 0)) :
@@ -169,18 +167,18 @@ variable {T} (F : T.InfProd ρ0)
 def part (n : ℕ) : T.RobbaExt ρ0 := ∏ i ∈ Finset.range n, F.g i
 
 /- English proof (translation)
-Simplify using `[part]`.
+Simplify using the standard rewrite rules.
 -/
 theorem part_zero : F.part 0 = 1 := by simp [part]
 
 /- English proof (translation)
-Simplify using `[part, Finset.prod_range_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem part_succ (n : ℕ) : F.part (n + 1) = F.part n * F.g n := by
   simp [part, Finset.prod_range_succ]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [part_zero, extNorm_one]`. Consider the case `succ n ih`. Rewrite using `[part_succ, extNorm_mul]`. Conclude with `one_le_mul_of_one_le_of_one_le ih (F.one_le_norm n ρ)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_norm_part (n : ℕ) (ρ : Set.Ioc (0 : ℝ) ρ0) : 1 ≤ T.extNorm ρ0 ρ (F.part n) := by
   induction n with
@@ -190,7 +188,7 @@ theorem one_le_norm_part (n : ℕ) (ρ : Set.Ioc (0 : ℝ) ρ0) : 1 ≤ T.extNor
     exact one_le_mul_of_one_le_of_one_le ih (F.one_le_norm n ρ)
 
 /- English proof (translation)
-Introduce `h`. Use `F.one_le_norm_part n (topRad ρ0)` as an intermediate fact. Rewrite `this` using `[h, extNorm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem part_ne_zero (n : ℕ) : F.part n ≠ 0 := by
   intro h
@@ -199,7 +197,7 @@ theorem part_ne_zero (n : ℕ) : F.part n ≠ 0 := by
   linarith
 
 /- English proof (translation)
-Use `filter_upwards [(F.tendsto_sub_one ρ).eventually (gt_mem_nhds one_pos)] with n hn`. Use `le_antisymm ?_ (F.one_le_norm n ρ)` and prove the remaining obligations. Use `T.extNorm_add_le ρ (F.g n - 1) 1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, extNorm_one]`. Conclude with `this.trans (max_le hn.le le_rfl)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_norm_eq_one (ρ : Set.Ioc (0 : ℝ) ρ0) :
     ∀ᶠ n in atTop, T.extNorm ρ0 ρ (F.g n) = 1 := by
@@ -210,13 +208,13 @@ theorem eventually_norm_eq_one (ρ : Set.Ioc (0 : ℝ) ρ0) :
   exact this.trans (max_le hn.le le_rfl)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `eventually_atTop.1 (F.eventually_norm_eq_one ρ)`. Use `⟨T.extNorm ρ0 ρ (F.part N), fun n => ?_⟩` and prove the remaining obligations. Establish `mono : ∀ k, T.extNorm ρ0 ρ (F.part k) ≤ T.extNorm ρ0 ρ (F.part (k + 1))` using `fun k => by`. Rewrite using `[part_succ, extNorm_mul]`. Conclude with `le_mul_of_one_le_right (T.extNorm_nonneg _ _) (F.one_le_norm k ρ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `stab : ∀ j, T.extNorm ρ0 ρ (F.part (N + j)) = T.extNorm ρ0 ρ (F.part N)` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[← add_assoc, part_succ, extNorm_mul, hN (N + j) (by omega), mul_one, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `monoLe : ∀ a b, a ≤ b → T.extNorm ρ0 ρ (F.part a) ≤ T.extNorm ρ0 ρ (F.part b)`. Introduce `a b hab`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ b _ ih => exact ih.trans (mono b)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_total n N with h | h` into its components or cases. Conclude with `monoLe n N h`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[stab]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound (ρ : Set.Ioc (0 : ℝ) ρ0) : ∃ B, ∀ n, T.extNorm ρ0 ρ (F.part n) ≤ B := by
   obtain ⟨N, hN⟩ := eventually_atTop.1 (F.eventually_norm_eq_one ρ)
@@ -240,9 +238,9 @@ theorem exists_bound (ρ : Set.Ioc (0 : ℝ) ρ0) : ∃ B, ∀ n, T.extNorm ρ0 
     rw [stab]
 
 /- English proof (translation)
-Use `T.cauchySeq_of_increments fun ρ => ?_` and prove the remaining obligations. Take `⟨B, hB⟩` from `F.exists_bound ρ`. Establish `hB0 : 0 ≤ B` using `(T.extNorm_nonneg _ _).trans (hB 0)`. Establish `hmul` using `(F.tendsto_sub_one ρ).const_mul B`. Rewrite `hmul` using `[mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `squeeze_zero (fun n => T.extNorm_nonneg _ _) (fun n => ?_) hmul` and prove the remaining obligations. Rewrite using `[part_succ, show F.part n * F.g n - F.part n = F.part n * (F.g n - 1) by ring, extNorm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hB n) (T.extNorm_nonneg _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cauchySeq_part : CauchySeq F.part := by
   refine T.cauchySeq_of_increments fun ρ => ?_
@@ -257,20 +255,20 @@ theorem cauchySeq_part : CauchySeq F.part := by
 def prod : T.RobbaExt ρ0 := Classical.choose (cauchySeq_tendsto_of_complete F.cauchySeq_part)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (cauchySeq_tendsto_of_complete F.cauchySeq_part)`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_part : Tendsto F.part atTop (𝓝 F.prod) :=
   Classical.choose_spec (cauchySeq_tendsto_of_complete F.cauchySeq_part)
 
 /- English proof (translation)
-The claim follows from `ge_of_tendsto (((T.continuous_extNorm ρ).tendsto _).comp F.tendsto_part) (Eventually.of_forall fun n => F.one_le_norm_part n ρ)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_norm_prod (ρ : Set.Ioc (0 : ℝ) ρ0) : 1 ≤ T.extNorm ρ0 ρ F.prod :=
   ge_of_tendsto (((T.continuous_extNorm ρ).tendsto _).comp F.tendsto_part)
     (Eventually.of_forall fun n => F.one_le_norm_part n ρ)
 
 /- English proof (translation)
-Introduce `h`. Use `F.one_le_norm_prod (topRad ρ0)` as an intermediate fact. Rewrite `this` using `[h, extNorm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem prod_ne_zero : F.prod ≠ 0 := by
   intro h
@@ -279,15 +277,13 @@ theorem prod_ne_zero : F.prod ≠ 0 := by
   linarith
 
 /- English proof (translation)
-Use `choose y hy using h`. Establish `hstep : ∀ n, y n = F.g n * y (n + 1)` using `fun n => by`. Establish `e : F.part n * y n = F.part n * (F.g n * y (n + 1))`. Rewrite using `[← hy n, hy (n + 1), part_succ, mul_assoc]`. Conclude with `mul_left_cancel₀ (F.part_ne_zero n) e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyb : ∀ n (ρ : Set.Ioc (0 : ℝ) ρ0), T.extNorm ρ0 ρ (y n) ≤ T.extNorm ρ0 ρ x` using `fun n ρ => by`. Establish `e` using `congrArg (T.extNorm ρ0 ρ) (hy n)`. Rewrite `e` using `[extNorm_mul]`. Rewrite using `[e]`. Conclude with `le_mul_of_one_le_left (T.extNorm_nonneg _ _) (F.one_le_norm_part n ρ)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : CauchySeq y`. Use `T.cauchySeq_of_increments fun ρ => ?_` and prove the remaining obligations. Establish `hmul` using `(F.tendsto_sub_one ρ).const_mul (T.extNorm ρ0 ρ x)`. Rewrite `hmul` using `[mul_zero]`. Use `squeeze_zero (fun n => T.extNorm_nonneg _ _) (fun n => ?_) hmul` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hstep n, show y (n + 1) - F.g n * y (n + 1) = -((F.g n - 1) * y (n + 1)) by ring, extNorm_neg, extNorm_mul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hyb _ ρ) (T.extNorm_nonneg _ _)`. Take `⟨yl, hyl⟩` from `cauchySeq_tendsto_of_complete hc`. Use `⟨yl, ?_⟩` and prove the remaining obligations. Establish `hlim : Tendsto (fun n => F.part n * y n) atTop (𝓝 (F.prod * yl))` using `F.tendsto_part.mul hyl`.
-
-Establish `hconst : (fun n => F.part n * y n) = fun _ => x` using `funext fun n => (hy n).symm`. Rewrite `hlim` using `[hconst]`. Conclude with `tendsto_nhds_unique tendsto_const_nhds hlim`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_forall {x : T.RobbaExt ρ0} (h : ∀ n, F.part n ∣ x) : F.prod ∣ x := by
   choose y hy using h
@@ -323,16 +319,16 @@ def shift (k : ℕ) : T.InfProd ρ0 where
     (fun _ _ h => by omega) fun n => ⟨n, by omega⟩)
 
 /- English proof (translation)
-Simplify using `only [part, shift]`. Rewrite using `[Finset.prod_range_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem part_add (k n : ℕ) : F.part (k + n) = F.part k * (F.shift k).part n := by
   simp only [part, shift]
   rw [Finset.prod_range_add]
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun n => F.part (k + n)) atTop (𝓝 F.prod)` using `F.tendsto_part.comp (tendsto_atTop_atTop_of_monotone (fun _ _ h => by omega) fun n => ⟨n, by omega⟩)`. Establish `h2 : Tendsto (fun n => F.part k * (F.shift k).part n) atTop (𝓝 (F.part k * (F.shift k).prod))` using `tendsto_const_nhds.mul (F.shift k).tendsto_part`. Establish `e : (fun n => F.part (k + n)) = fun n => F.part k * (F.shift k).part n`. Use function extensionality and compare the values at `fun n => F.part_add k n`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `tendsto_nhds_unique h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem prod_eq_part_mul_shift (k : ℕ) : F.prod = F.part k * (F.shift k).prod := by
   have h1 : Tendsto (fun n => F.part (k + n)) atTop (𝓝 F.prod) :=
@@ -346,7 +342,7 @@ theorem prod_eq_part_mul_shift (k : ℕ) : F.prod = F.part k * (F.shift k).prod 
   exact tendsto_nhds_unique h1 h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, F.prod_eq_part_mul_shift k⟩`.
+Supply the required witnesses or components.
 -/
 theorem part_dvd_prod (k : ℕ) : F.part k ∣ F.prod := ⟨_, F.prod_eq_part_mul_shift k⟩
 
@@ -361,35 +357,35 @@ Both sides reduce to the same expression.
 theorem normProd_nil : T.normProd ρ0 [] = 1 := rfl
 
 /- English proof (translation)
-Simplify using `[normProd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normProd_cons (P : T.Pt) (l : List T.Pt) :
     T.normProd ρ0 (P :: l) = T.normPtExt P.2 ρ0 * T.normProd ρ0 l := by
   simp [normProd]
 
 /- English proof (translation)
-Simplify using `[normProd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normProd_append (l l' : List T.Pt) :
     T.normProd ρ0 (l ++ l') = T.normProd ρ0 l * T.normProd ρ0 l' := by
   simp [normProd]
 
 /- English proof (translation)
-Simplify using `[ptProd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ptProd_append (l l' : List T.Pt) :
     T.ptProd ρ0 (l ++ l') = T.ptProd ρ0 l * T.ptProd ρ0 l' := by
   simp [ptProd]
 
 /- English proof (translation)
-Rewrite using `[T.extNorm_normPtExt P.2]`. Conclude with `le_max_left _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_norm_normPtExt (P : T.Pt) (ρ : Set.Ioc (0 : ℝ) ρ0) :
     1 ≤ T.extNorm ρ0 ρ (T.normPtExt P.2 ρ0) := by
   rw [T.extNorm_normPtExt P.2]; exact le_max_left _ _
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rw [normProd_nil, extNorm_one]`. Consider the case `cons P l ih`. Rewrite using `[normProd_cons, extNorm_mul]`. Conclude with `one_le_mul_of_one_le_of_one_le (T.one_le_norm_normPtExt P ρ) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_norm_normProd (l : List T.Pt) (ρ : Set.Ioc (0 : ℝ) ρ0) :
     1 ≤ T.extNorm ρ0 ρ (T.normProd ρ0 l) := by
@@ -400,13 +396,13 @@ theorem one_le_norm_normProd (l : List T.Pt) (ρ : Set.Ioc (0 : ℝ) ρ0) :
     exact one_le_mul_of_one_le_of_one_le (T.one_le_norm_normPtExt P ρ) ih
 
 /- English proof (translation)
-Establish `hρ` using `rad_pos ρ0 ρ`. Proceed by induction on `l with`. Consider the case `nil`. Rewrite using `[normProd_nil, extNorm_one, sub_self, extNorm_zero]`. Conclude with `⟨rfl, div_nonneg hs hρ.le⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Consider the case `cons P l ih`. Take `⟨h1, h2⟩` from `ih fun Q hQ => hl Q (List.mem_cons_of_mem _ hQ)`. Establish `hP` using `hl P List.mem_cons_self`. Establish `hPr : T.ptRad P.1 / ρ ≤ 1` using `by rw [div_le_one hρ]; linarith`. Establish `hfP : T.extNorm ρ0 ρ (T.normPtExt P.2 ρ0) = 1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[T.extNorm_normPtExt P.2, max_eq_left hPr]`. Use `⟨by rw [normProd_cons, extNorm_mul, hfP, h1, one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[normProd_cons, show T.normPtExt P.2 ρ0 * T.normProd ρ0 l - 1 = (T.normPtExt P.2 ρ0 - 1) * T.normProd ρ0 l + (T.normProd ρ0 l - 1) by ring]`. Use `(T.extNorm_add_le ρ _ _).trans (max_le ?_ h2)` and prove the remaining obligations. Rewrite using `[extNorm_mul, h1, mul_one, T.extNorm_normPtExt_sub_one P.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_le_div_of_nonneg_right hP hρ.le`.
+A detailed English derivation is pending.
 -/
 theorem norm_normProd_of_le {l : List T.Pt} {s : ℝ} (hs : 0 ≤ s) (hl : ∀ P ∈ l, T.ptRad P.1 ≤ s)
     (ρ : Set.Ioc (0 : ℝ) ρ0) (hsρ : s ≤ ρ) :
@@ -436,7 +432,7 @@ def unitProdInv (ρ0 : Set.Ioo (0 : ℝ) 1) (l : List T.Pt) : T.RobbaExt ρ0 :=
   (l.map fun P => T.normUnitInv (ξ := P.1) ρ0).prod
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [unitProd, unitProdInv]`. Consider the case `cons P l ih`. Simplify using `only [unitProd, unitProdInv, List.map_cons, List.prod_cons] at ih ⊢`. Rewrite using `[show T.normUnit P.2 ρ0 * (l.map fun P => T.normUnit P.2 ρ0).prod * (T.normUnitInv (ξ := P.1) ρ0 * (l.map fun P => T.normUnitInv (ξ := P.1) ρ0).prod) = (T.normUnit P.2 ρ0 * T.normUnitInv (ξ := P.1) ρ0) * ((l.map fun P => T.normUnit P.2 ρ0).prod * (l.map fun P => T.normUnitInv (ξ …`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem unitProd_mul_inv (l : List T.Pt) : T.unitProd ρ0 l * T.unitProdInv ρ0 l = 1 := by
   induction l with
@@ -450,7 +446,7 @@ theorem unitProd_mul_inv (l : List T.Pt) : T.unitProd ρ0 l * T.unitProdInv ρ0 
       by ring, T.normUnit_mul_inv, ih, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [normProd, ptProd, unitProd]`. Consider the case `cons P l ih`. Rewrite using `[normProd_cons, ih, T.normPtExt_eq P.2, ptProd_cons]`. Simplify using `only [unitProd, List.map_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -463,13 +459,13 @@ theorem normProd_eq (l : List T.Pt) : T.normProd ρ0 l = T.ptProd ρ0 l * T.unit
     ring
 
 /- English proof (translation)
-Rewrite using `[normProd_eq, mul_assoc, unitProd_mul_inv, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptProd_eq (l : List T.Pt) : T.ptProd ρ0 l = T.normProd ρ0 l * T.unitProdInv ρ0 l := by
   rw [normProd_eq, mul_assoc, unitProd_mul_inv, mul_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩; exact ⟨T.unitProd ρ0 l * y, by rw [normProd_eq, mul_assoc]⟩`. Introduce and unpack `⟨y, rfl⟩; exact ⟨T.unitProdInv ρ0 l * y, by rw [ptProd_eq, mul_assoc]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 theorem normProd_dvd_iff (l : List T.Pt) (x : T.RobbaExt ρ0) :
     T.normProd ρ0 l ∣ x ↔ T.ptProd ρ0 l ∣ x := by
@@ -491,7 +487,7 @@ def InfProd.ofLists (ρ0 : Set.Ioo (0 : ℝ) 1) (ls : ℕ → List T.Pt) (s : �
     exact (T.norm_normProd_of_le (hs0 n) (hl n) ρ hn).2
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[InfProd.part_succ, ih, List.range_succ, List.flatMap_append, normProd_append]`. Simplify using `[InfProd.ofLists]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem InfProd.ofLists_part (ls : ℕ → List T.Pt) (s : ℕ → ℝ) (hs0 : ∀ n, 0 ≤ s n)
     (hs : Tendsto s atTop (𝓝 0)) (hl : ∀ n, ∀ P ∈ ls n, T.ptRad P.1 ≤ s n) (n : ℕ) :

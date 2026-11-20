@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.ColNorms
 
 /- English proof (translation)
-Rewrite using `[← (GlobalTheory.T.coefficientGram_posSemidef_and_normAtPlace X.E X.K X.Tau X.emb n lam σ).2 x]`. Establish `h` using `(GlobalTheory.T.coefficientGram_posSemidef_and_normAtPlace X.E X.K X.Tau X.emb n lam (InfinitePlace.mk σ).embedding).1.dotProduct_mulVec_nonneg fun i => (InfinitePlace.mk σ).embedding ((bVV X.K lam).repr x i)`. Use `le_of_le_of_eq (Complex.le_def.1 h).1 ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Matrix.map_apply, Matrix.of_apply, Pi.star_apply, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -37,9 +37,9 @@ theorem sqAt_nonneg {X : Fields} {n : ℕ} (lam : X.Tau → DomWeight n) (σ : X
   rfl
 
 /- English proof (translation)
-Unfold `sqAt`. Rewrite using `[← Complex.re_ofReal_mul]`. Use `congr 1`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : ((‖σ a‖ ^ 2 : ℝ) : ℂ) = starRingEnd ℂ (σ a) * σ a`. Rewrite using `[Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -58,7 +58,7 @@ theorem sqAt_smul {K : Type} [Field K] [StarRing K] {ι : Type} [Fintype ι] {n 
   ring
 
 /- English proof (translation)
-Establish `h : jetLin (fun m => ∑ x ∈ R, c x * J x m) = ∑ x ∈ R, c x • jetLin (K` using `K) (J x) := by`. Use `(MvPolynomial.basisMonomials _ K).ext fun m => ?_` and prove the remaining obligations. Simplify using `only [jetLin, Module.Basis.constr_basis, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, MvPolynomial.smul_monomial, smul_eq_mul]`. Use `ext1 P`. Simplify using `only [jetOp, jetMap, h, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetOp_sum {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ} (lam : ι → DomWeight a) (lam' : ι → DomWeight b)
     (n : ι → ℕ) {α : Type} (R : Finset α) (c : α → K) (J : α → (DVar ι a b →₀ ℕ) → K) :
@@ -71,9 +71,9 @@ theorem jetOp_sum {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ} (lam
   simp only [jetOp, jetMap, h, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]
 
 /- English proof (translation)
-Distinguish the cases in `hκ : κ = 0`. Use `GlobalTheory.T.jet_finset_linear_combination ι a b cD Unit ∅ (fun _ => 0) (fun _ => F) (by simp) m` as an intermediate fact. Simplify `this` using `[hκ]`. Establish `hF : Differentiable ℂ F`. Use `h.const_mul κ⁻¹` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[← mul_assoc, inv_mul_cancel₀ hκ]`. Use `GlobalTheory.T.jet_finset_linear_combination ι a b cD Unit {()} (fun _ => κ) (fun _ => F) (fun _ _ => hF) m` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem jetC_const_mul {ι : Type} [Fintype ι] {a b : ℕ} (cD : ι → ℂ) (κ : ℂ) (F : VCx ι a b → ℂ)
     (h : Differentiable ℂ fun z => κ * F z) (m : DVar ι a b →₀ ℕ) : jetC cD (fun z => κ * F z) m = κ * jetC cD F m := by
@@ -87,14 +87,14 @@ theorem jetC_const_mul {ι : Type} [Fintype ι] {a b : ℕ} (cD : ι → ℂ) (�
     simpa using this
 
 /- English proof (translation)
-Unfold `StandardLatticesGL3.cj TaylorLogMetric.liftM`. Rewrite using `[dif_pos x.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_coe (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (x : M) : StandardLatticesGL3.cj M ρ (x : ℂ) = ρ x := by
   unfold StandardLatticesGL3.cj TaylorLogMetric.liftM
   rw [dif_pos x.2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[toHost]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem toHost_back {D : D7} {X : Fields} (s : Seam D X) {a b : ℕ} (F : VCx X.Tau a b → ℂ) :
     (fun z : VCx X.Tau a b => toHost s F fun τ => z (s.iT.symm τ)) = F := by
@@ -102,7 +102,7 @@ theorem toHost_back {D : D7} {X : Fields} (s : Seam D X) {a b : ℕ} (F : VCx X.
   simp [toHost]
 
 /- English proof (translation)
-Use `h.comp ?_` and prove the remaining obligations. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem diff_back {D : D7} {X : Fields} (s : Seam D X) {a b : ℕ} (F : TaylorLogMetric.VC D a b → ℂ) (h : Differentiable ℂ F) :
     Differentiable ℂ fun z : VCx X.Tau a b => F fun τ => z (s.iT.symm τ) := by
@@ -110,59 +110,49 @@ theorem diff_back {D : D7} {X : Fields} (s : Seam D X) {a b : ℕ} (F : TaylorLo
   fun_prop
 
 /- English proof (translation)
-Introduce `hB D X s cc dl B χ cD t0 hX hs hcrv ht0 hc0 a b hab hev hE0 lam nu lam' hst S SB cA c c' hcA hc hc' hInd hJ sel mU mI L fr L' fr' hL hL' Ξ β hΞ M _ hK ρ hD hcM hco hsc`. Use `set A := ambOf s B χ cD with hA`. Use `set σ : X.K →+* ℂ := (ρ : M →+* ℂ).comp (s.σ₀.codRestrict M hK) with hσ`. Use `set κ := (A.chiF a b L L')⁻¹ with hκ`. Establish `hβ : 0 ≤ β` using `(norm_nonneg _).trans (hΞ.2.2 σ 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨sd0, sdL⟩` from `GlobalTheory.T.hermitianLatticeTransport_preserves_selfDual D X s hs a`. Take `⟨sd0', sdL'⟩` from `GlobalTheory.T.hermitianLatticeTransport_preserves_selfDual D X s hs b`. Establish `hmv` using `GlobalTheory.T.thetaVectorUpToUnits_thMoved_of_thZero D cc dl B t0 hcrv ht0 a b _ _ (sdL L hL) (sdL' L' hL') hE0`. Take `⟨ρ', hρ', hlam, harea, hnorm⟩` from `GlobalTheory.T.exists_algebraicNumbers_extension_conj_vacuum_normSq D cc dl t0 hcrv ht0 M ρ hD`. Establish `hnorm'` using `hnorm a b _ _ _ _ (sdL L hL) (sdL' L' hL') sd0 sd0' hev _ _ hmv hE0 hco`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdiff : ∀ (c₁ : ℕ) (x : HomE X.E a b), 0 < c₁ → Differentiable ℂ fun z => κ * A.thInd S L L' c₁ x z`. Introduce `c₁ x h₁`. Establish `h2` using `(GlobalTheory.T.conj_torsionTranslateCombination_entire_gaussianGrowth D cc dl t0 hcrv ht0 a b _ _ (sdL L hL) (sdL' L' hL') hev _ _ _ hmv (GlobalTheory.T.cosetIndicatorTheta_torsionTranslates D X s cc dl B χ cD hX hs hcrv a b S L L' c₁ x hL hL' h₁) ρ').1`. Establish `h3` using `diff_back s _ h2`. Rewrite `h3` using `[toHost_back]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI := (GlobalTheory.T.finite_semilocal_hom_lattice_classes_mod X.E a b S L L' cA (c * c') hL.1 hL'.1 hcA (Nat.mul_pos hc hc')).1`. Set `Qt` to `↥(divLat cA (homAt S L L')) ⧸ (mulLat (c * c') (homAt S L L')).comap (divLat cA (homAt S L L')).subtype`. Use `letI : Fintype Qt := Fintype.ofFinite Qt`. Set `rep : Qt → ↥(divLat cA (homAt S L L'))` to `Function.surjInv (Submodule.Quotient.mk_surjective _)`. Establish `hsum : ∀ {Y : Type} [AddCommMonoid Y] (f : HomE X.E a b → Y), latSum (divLat cA (homAt S L L')) (mulLat (c * c') (homAt S L L')) f = ∑ q : Qt, f (rep q)` using `fun f => finsum_eq_sum_of_fintype _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrep : ∀ q, ((rep q : HomE X.E a b)) ∈ divLat (cA * (c * c')) (homAt S L L')`. Introduce `q`. Establish `h1 : ((cA : ℕ) : 𝓞 X.E) • (rep q : HomE X.E a b) ∈ homAt S L L'` using `(rep q).2`. Use `show (((cA * (c * c') : ℕ)) : 𝓞 X.E) • (rep q : HomE X.E a b) ∈ homAt S L L'`. Rewrite using `[mul_comm cA, Nat.cast_mul, mul_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem _ _ h1`. Set `J : (DVar X.Tau a b →₀ ℕ) → X.K` to `fun m => ∑ q : Qt, Ξ (rep q) * A.jetK S L L' (c * c') (rep q) m`. Apply the tactic sequence `have hker : kerOf (thDistC A S SB (cA * (c * c')) sel mU mI lam lam' fun τ => GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.lastEntry (nu τ)) S cA (c * c') L fr L' fr' Ξ = (muInvDet sel SB mU mI L fr * (muInvDet sel SB mU mI L' fr')⁻¹) • jetOp lam lam' J fun τ => Global …`. Unfold `kerOf`. Rewrite using `[hsum, jetOp_sum, Finset.smul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Unfold `thDistC`. Rewrite using `[if_pos ⟨Dvd.intro_left _ rfl, hrep q⟩, smul_comm]`. Set `F : VCx X.Tau a b → ℂ` to `fun z => ∑ q : Qt, s.σ₀ (Ξ (rep q)) * (κ * A.thInd S L L' (c * c') (rep q) z)`. Establish `hJF : ∀ e, (∀ τ, ((degAt e τ : ℕ) : ℤ) = ∑ i, (nu τ).w i) → s.σ₀ (J e) = jetC A.cD F e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `e he`. Rewrite using `[GlobalTheory.T.jet_finset_linear_combination X.Tau a b A.cD Qt Finset.univ _ _ (fun q _ => hdiff _ _ (Nat.mul_pos hc hc')) e, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, jetC_const_mul _ _ _ (hdiff _ _ (Nat.mul_pos hc hc'))]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hJ L L' (c * c') (rep q) ⟨hL, hL', Nat.mul_pos hc hc', Dvd.intro_left _ rfl, hrep q⟩ e (fun τ => by`. Use `Eq.trans ?_ (he τ)` and prove the remaining obligations. Unfold `degAt`. Use the proof step `congr)`. Unfold `Amb.jetK desc`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos h1]`. Conclude with `h1.choose_spec`. Take `⟨R, hRc, hR⟩` from `GlobalTheory.T.exists_finset_latSum_thInd_eq_sum X A a b S L L' cA c c' (fun x => s.σ₀ (Ξ x)) hInd hL hL' hcA hc hc' (fun x hx => hΞ.1 x fun h => hx (by rw [h, map_zero])) (fun x y hy => by rw [hΞ.2.1 x y hy])`. Establish `hF : toHost s F = fun w => ∑ x ∈ R, s.σ₀ (Ξ x) * toHost s (fun z => κ * A.thInd S L L' c x z) w`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hR fun τ => w (s.iT τ)`. Rewrite `h1` using `[hsum]`. Use `show ∑ q : Qt, s.σ₀ (Ξ (rep q)) * (κ * _) = ∑ x ∈ R, s.σ₀ (Ξ x) * (κ * _)`. Simplify using `only [mul_left_comm _ κ, ← Finset.mul_sum]`. Conclude with `congrArg _ h1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKQ : ∀ k, s.σ₀ k ∈ TaylorLogMetric.Qbar` using `fun k => (hρ' _ (hK k)).1`. Establish `hpres` using `GlobalTheory.T.presentation_closed_under_bounded_combination D (TaylorLogMetric.tor0 D cc dl) a b (s.lat L) (s.lat L') _ _ R (fun x => s.σ₀ (Ξ x)) _ _ β hβ (fun x _ => GlobalTheory.T.cosetIndicatorTheta_torsionTranslates D X s cc dl B χ cD hX hs hcrv a b S L L' c x hL hL' hc) (fu …`. Establish `h1` using `hΞ.2.2 ((ρ₁ : TaylorLogMetric.Qbar →+* ℂ).comp (s.σ₀.codRestrict TaylorLogMetric.Qbar hKQ)) x`. Establish `h2` using `cj_coe TaylorLogMetric.Qbar ρ₁ ⟨s.σ₀ (Ξ x), hKQ _⟩`. Conclude with `h2 ▸ h1⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hpres` using `[← hF]`. Take `⟨hFd, hFQ, F', hF'd, hF't, hF'b⟩` from `GlobalTheory.T.conj_torsionTranslateCombination_entire_gaussianGrowth D cc dl t0 hcrv ht0 a b _ _ (sdL L hL) (sdL' L' hL') hev _ _ _ hmv hpres ρ'`. Rewrite `hF'b` using `[hnorm', hlam]`. Use `set ar := TaylorLogMetric.area (TaylorLogMetric.lamConj M ρ (TaylorLogMetric.lamOf D cc dl)) with har`. Set `cD' : X.Tau → ℂ` to `fun τ => ρ (TaylorLogMetric.liftM M (cD (s.iT τ)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcD' : ∀ τ, cD' τ ≠ 0` using `fun τ => by`. Establish `h1 : TaylorLogMetric.liftM M (cD (s.iT τ)) = ⟨cD (s.iT τ), hcM _⟩` using `dif_pos (hcM _)`. Use `show ρ _ ≠ 0`. Rewrite using `[h1, map_ne_zero]`. Conclude with `fun h => hc0 _ (congrArg Subtype.val h)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hJ' : ∀ e, (∀ τ, ((degAt e τ : ℕ) : ℤ) = ∑ i, (nu τ).w i) → σ (J e) = jetC cD' (fun z : VCx X.Tau a b => F' fun τ => z (s.iT.symm τ)) e`. Introduce `e he`. Establish `h1 : σ (J e) = StandardLatticesGL3.cj TaylorLogMetric.Qbar ρ' (s.σ₀ (J e))`. Rewrite using `[(hρ' _ (hK _)).2]`. Conclude with `(cj_coe M ρ ⟨_, hK _⟩).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, hJF e he, ← toHost_back s F]`. Unfold `jetC`. Rewrite using `[GlobalTheory.T.derivAtZero_reindex_eq_taylor_coefficient D X.Tau s.iT a b _ hFd, GlobalTheory.T.derivAtZero_reindex_eq_taylor_coefficient D X.Tau s.iT a b _ hF'd, hF't]`. Establish `hq : ∀ τ, cD (s.iT τ) ∈ TaylorLogMetric.Qbar` using `fun τ => (hρ' _ (hcM _)).1`. Establish `h2` using `cj_coe TaylorLogMetric.Qbar ρ' ((e.prod fun k n => (⟨cD (s.iT k.1), hq _⟩ : TaylorLogMetric.Qbar) ^ n) * ((e.prod fun _ n => (n.factorial : TaylorLogMetric.Qbar)) * ⟨_, hFQ (Finsupp.equivMapDomain (s.iT.prodCongr (Equiv.refl (Fin b × Fin a))) e)⟩))`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Establish `h3 : ∀ τ, ρ' ⟨cD (s.iT τ), hq τ⟩ = cD' τ` using `fun τ => (cj_coe TaylorLogMetric.Qbar ρ' ⟨_, hq τ⟩).symm.trans (hρ' _ (hcM _)).2`. Use `Eq.trans (congrArg _ ?_) (h2.trans ?_)` and prove the remaining obligations. Simplify using `only [Finsupp.prod, IntermediateField.coe_mul, IntermediateField.coe_prod, IntermediateField.coe_pow]`. Simplify using `[hA, ambOf]`. Simplify using `only [Finsupp.prod, map_mul, map_prod, map_pow, map_natCast, h3]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cj_coe TaylorLogMetric.Qbar ρ']`. Establish `hr : 0 < Real.pi / ar` using `div_pos Real.pi_pos harea`. Establish `hblock` using `hB X.Tau a b hab.le lam nu lam' hst (fun h => absurd h hab.ne) (fun _ => Real.sqrt (Real.pi / ar)) (fun τ => Real.exp (logOmAt B cD M ρ (s.iT τ))) cD' (fun _ => Real.sqrt_pos.2 hr) (fun _ => Real.exp_pos _) (fun τ => by`. Establish `h1 : 0 < ‖cD' τ‖` using `norm_pos_iff.2 (hcD' τ)`. Unfold `logOmAt TaylorLogMetric.logMet`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Real.exp_neg, one_div, inv_inv, Real.exp_log (by show 0 < Real.pi * ‖cD' τ‖ ^ 2 / ar; positivity), norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt hr.le]`. Use `show _ = Real.pi * ‖cD' τ‖ ^ 2 / ar`. Use the proof step `ring)`. Use the proof step `(fun z : VCx X.Tau a b => F' fun τ => z (s.iT.symm τ))`. Use the proof step `(β * (c : ℝ) ^ (2 * (Module.finrank ℚ X.E * a * b)) * Real.sqrt (supConst D a b) * Real.exp (logThAt B M ρ a b / 2))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use the proof step `(diff_back s _ hF'd) (fun z => by`. Establish `hsup : 0 ≤ supConst D a b`. Unfold `supConst Host.rdE`. Check the signs of the components of the expression. Use `abs_le_of_sq_le_sq' ?_ (by positivity) |>.2` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hF'b _).trans ?_` and prove the remaining obligations. Establish `e1 : Real.pi * (∑ τ, ∑ i, ∑ j, ‖z (s.iT.symm τ) i j‖ ^ 2) / ar = GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.unitSq (fun _ => Real.sqrt (Real.pi / ar)) z`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.unitSq`. Rewrite using `[s.iT.symm.sum_comp fun τ => ∑ i, ∑ j, ‖z τ i j‖ ^ 2]`. Simplify using `only [norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt hr.le, ← Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ y : ℝ, Real.exp (y / 2) ^ 2 = Real.exp y` using `fun y => by`. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `b1 : (R.card : ℝ) * β * (c : ℝ) ^ (Module.finrank ℚ X.E * a * b) ≤ β * (c : ℝ) ^ (2 * (Module.finrank ℚ X.E * a * b))`. Establish `h1 : (R.card : ℝ) ≤ (c : ℝ) ^ (Module.finrank ℚ X.E * a * b)` using `by exact_mod_cast hRc`. Combine the equalities or inequalities in the displayed calculation. Establish `b2` using `Real.le_exp_log (TaylorLogMetric.normSq D (TaylorLogMetric.torConj D (TaylorLogMetric.tor0 D cc dl) M ρ) (TaylorLogMetric.La D (TaylorLogMetric.torConj D (TaylorLogMetric.tor0 D cc dl) M ρ) (StandardLatticesGL3.stdL D a) (StandardLatticesGL3.stdL D b)) (TaylorLogMetric.fnConj D M …`.
-
-Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul (pow_le_pow_left₀ (by positivity) b1 2) ?_ ?_ (by positivity)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left b2 hsup) (Real.exp_pos _).le`. Use `mul_nonneg (mul_nonneg hsup ?_) (Real.exp_pos _).le` and prove the remaining obligations.
-
-Unfold `TaylorLogMetric.normSq`. Conclude with `MeasureTheory.integral_nonneg fun _ => by positivity`. Use `_ = _ := by`. Rewrite using `[mul_pow _ (Real.exp _), mul_pow _ (Real.exp _), mul_pow _ (Real.sqrt _), e2, e2, Real.sq_sqrt hsup]`. Use the proof step `ring)`.
-
-Establish `hbc` using `GlobalTheory.T.jetOperatorBound_at_embedding_of_complexOpNormSq X.K σ X.Tau a b lam nu lam' hst (GlobalTheory.T.jetMap_coeffSpace_of_jetStepPartitionTriples X.K X.Tau a b hab lam nu lam' hst) (GlobalTheory.T.jetMap_coeffSpace_of_jetStepPartitionTriples ℂ X.Tau a b hab lam nu lam' …`. Introduce `x`. Rewrite using `[hker, LinearMap.smul_apply, sqAt_smul]`. Use `le_trans ?_ (hbc x)` and prove the remaining obligations. Use `mul_le_of_le_one_left (sqAt_nonneg _ _ _) ?_` and prove the remaining obligations.
-
-Conclude with `pow_le_one₀ (norm_nonneg _) hsc`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem block : GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.BlockBound → ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (dl : ℂ) (B : Base D cc dl) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (t0 : ℂ), X.Ok → s.Ok → StandardLatticesGL3.Crv D cc dl → GL3Theta.IsTwoTorsionPointUnkilled D (TaylorLogMetric.lamOf D cc dl) t0 → (∀ τ, cD τ ≠ 0) → ∀ (a b : ℕ), a < b → Even (a * b) → StandardLatticesGL3.ThetaVectorUpToUnits D (TaylorLogMetric.tor0 D cc dl) t0 (StandardLatticesGL3.stdL D a) (StandardLatticesGL3.stdL D b) (B.thZero a b) → ∀ (lam nu : X.Tau → DomWeight a) (lam' : X.Tau → DomWeight b), (∀ τ, GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.StepWeights (lam τ) (nu τ) (lam' τ)) → ∀ (S SB : Finset (HeightOneSpectrum (𝓞 X.E))) (cA c c' : ℕ), 0 < cA → 0 < c → 0 < c' → (ambOf s B χ cD).IndAdd a b S (cA * (c * c')) → JetsInField (ambOf s B χ cD) a b S (cA * (c * c')) (fun τ => ∑ i, (nu τ).w i) → ∀ (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (mU : HeightOneSpectrum (𝓞 X.E) → X.Kˣ) (mI : SB → X.E → X.K) (L : Submodule (𝓞 X.E) (Sp X.E a)) (fr : Frs X.E a SB) (L' : Submodule (𝓞 X.E) (Sp X.E b)) (fr' : Frs X.E b SB), IsSdLat L → IsSdLat L' → ∀ (Ξ : HomE X.E a b → X.K) (β : ℝ), SmallDatum S L L' c Ξ β → ∀ (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M] (hK : ∀ k, s.σ₀ k ∈ M) (ρ : M →ₐ[ℚ] ℂ), TaylorLogMetric.DataIn D B.tor M → (∀ τ, cD τ ∈ M) → TaylorLogMetric.CoefIn D (B.thZero a b) M → ‖((ρ : M →+* ℂ).comp (s.σ₀.codRestrict M hK)) (muInvDet sel SB mU mI L fr * (muInvDet sel SB mU mI L' fr')⁻¹)‖ ≤ 1 → CoefOpLe ((ρ : M →+* ℂ).comp (s.σ₀.codRestrict M hK)) lam lam' (kerOf (thDistC (ambOf s B χ cD) S SB (cA * (c * c')) sel mU mI lam lam' fun τ => GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.lastEntry (nu τ)) S cA (c * c') L fr L' fr' Ξ) (GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.tmax b nu (β * (c : ℝ) ^ (2 * (Module.finrank ℚ X.E * a * b)) * Real.sqrt (supConst D a b) * Real.exp (logThAt B M ρ a b / 2)) fun τ => Real.exp (logOmAt B cD M ρ (s.iT τ))) := by
   intro hB D X s cc dl B χ cD t0 hX hs hcrv ht0 hc0 a b hab hev hE0 lam nu lam' hst S SB cA c c' hcA hc hc' hInd hJ sel mU mI

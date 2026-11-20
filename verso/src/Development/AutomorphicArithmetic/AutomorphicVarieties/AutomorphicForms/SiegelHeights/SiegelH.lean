@@ -8,11 +8,11 @@ open NumberField Matrix GroundTheory.Automorphic GroundTheory.Automorphic.Reduct
 namespace UpperTheory.V.Fb
 
 /- English proof (translation)
-Establish `hL : 1 ≤ B * A ^ (n + 1)` using `one_le_mul_of_one_le_of_one_le hB (one_le_pow₀ hA)`. Establish `key : ∀ x : ℝ, x ^ d ≤ B * A ^ (n + 1) → x ≤ B * A ^ (n + 1)` using `fun x hx => le_of_pow_le_pow_left₀ hd (by positivity) (hx.trans (le_self_pow₀ hL hd))`. Use `⟨key _ ?_, key _ ?_⟩` and prove the remaining obligations. Establish `h3 : 1 ≤ ∏ j : Fin n, A * r (i.succAbove j) ^ d` using `Finset.prod_induction _ (fun x : ℝ => 1 ≤ x) (fun _ _ => one_le_mul_of_one_le_of_one_le) le_rfl fun j _ => h1 _`. Rewrite `h3` using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Fin.prod_univ_succAbove _ i, mul_pow]`. Establish `h4` using `pow_pos (hr i) d`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_pow]`. Use `((inv_le_iff_one_le_mul₀ (pow_pos (hr i) d)).2 (h1 i)).trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(le_self_pow₀ hA n.succ_ne_zero).trans (le_mul_of_one_le_left (by positivity) hB)`.
+A detailed English derivation is pending.
 -/
 private theorem box {n d : ℕ} (hd : d ≠ 0) {r : Fin (n + 1) → ℝ} (hr : ∀ i, 0 < r i) {A B : ℝ} (hA : 1 ≤ A) (hB : 1 ≤ B)
     (h1 : ∀ i, 1 ≤ A * r i ^ d) (h2 : (∏ i, r i) ^ d ≤ B) (i : Fin (n + 1)) :
@@ -36,11 +36,11 @@ private theorem box {n d : ℕ} (hd : d ≠ 0) {r : Fin (n + 1) → ℝ} (hr : �
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨P, hP, h⟩` from `exists_adelicNorm_vecMul_le_mul hω`. Use `⟨P, hP, fun b hb r hr => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `isUnit_apply_self_of_mem_adelicBorel (hB hb) (Fin.last m)`. Establish `e : Pi.single (Fin.last m) 1 ᵥ* b.val = Pi.single (Fin.last m) u.val`. Rewrite using `[single_one_vecMul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Break down `(Fin.le_last j).eq_or_lt with rfl | hj` into its components or cases. Simplify using `[Matrix.row, hu]`. Rewrite using `[Pi.single_eq_of_ne hj.ne]`. Conclude with `hB hb hj`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `h b hb _ (hasFiniteContent_single_one (K := K) (Fin.last m))`. Rewrite `h1` using `[e, adelicNorm_single_one, mul_one, adelicNorm_single_units]`. Rewrite using `[height, Units.val_mul, ← vecMul_vecMul, ratVec_single_one, e, coe_diagUnits, single_vecMul_diagonal, ← Units.val_mul, adelicNorm_single_units, map_mul, Positive.val_mul, ideleModule_posIdele]`. Conclude with `mul_le_mul_of_nonneg_right h1 (pow_nonneg (hr _).le _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lastRow {m : ℕ} {ω : Set (AdelicGLn.AdelicGL K (m + 1))} (hω : IsCompact ω)
     (hB : ω ⊆ (adelicBorel (K := K) (n := m + 1) : Set (AdelicGLn.AdelicGL K (m + 1)))) :
@@ -64,25 +64,23 @@ private theorem lastRow {m : ℕ} {ω : Set (AdelicGLn.AdelicGL K (m + 1))} (hω
   exact mul_le_mul_of_nonneg_right h1 (pow_nonneg (hr _).le _)
 
 /- English proof (translation)
-Introduce `K _ _ n ω hω hB t ht`. Consider the cases of `n with`. Consider the case `zero => exact ⟨1, 1, fun g γ _ => by rw [Subsingleton.elim (_ * g) g, one_mul, pow_one]⟩`. Consider the case `succ m`. Take `⟨C₁, N₁, hC₁, h₁⟩` from `UpperTheory.adelicNorm_vecMul_ge_of_height K (m + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨C₂, N₂, hC₂, h₂⟩` from `UpperTheory.adelicNorm_det_le_height_pow K (m + 1)`. Take `⟨P, hP, h₃⟩` from `lastRow hω hB`. Take `⟨M, h₄⟩` from `CuspidalSpectrum.exists_height_le_of_isCompact hω`. Take `⟨p, q, hp, -, h₅⟩` from `exists_pos_bounds hω (f := fun b => (ideleModule K (AdelicGLn.det K _ b) : ℝ)) (continuous_subtype_val.comp (continuous_ideleModule.comp (AdelicGLn.continuous_det K _))) fun b _ => (ideleModule K (AdelicGLn.det K _ b)).2`. Use `set d := Module.finrank ℚ K with hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : 0 < min t 1` using `lt_min ht one_pos`. Use `set s := (min t 1 ^ m) ^ d with hsd`. Establish `hs0 : 0 < s` using `by positivity`. Use `set A := max 1 (C₁ * P / s)`. Use `set B := max 1 (C₂ / p)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `set e := 2 * Fintype.card (InfinitePlace K)`. Use `set c := AutomorphicForm.heightConst K (m + 1)`. Establish `hc : 0 ≤ c` using `zero_le_one.trans AutomorphicForm.one_le_heightConst`. Use `⟨c * (c * M * (B * A ^ (m + 1)) ^ e), (N₂ + N₁ * (m + 1)) * e, ?_⟩` and prove the remaining obligations. Introduce and unpack `g γ ⟨b, hb, _, ⟨r, hr, hch, rfl⟩, k, hk, heq⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hH` using `AutomorphicForm.one_le_height g`. Use `set H := AutomorphicForm.height g`. Establish `hA : 1 ≤ A * H ^ N₁` using `one_le_mul_of_one_le_of_one_le (le_max_left _ _) (one_le_pow₀ hH)`. Establish `hB' : 1 ≤ B * H ^ N₂` using `one_le_mul_of_one_le_of_one_le (le_max_left _ _) (one_le_pow₀ hH)`. Establish `hx : (Pi.single (Fin.last m) 1 ᵥ* γ.val : Fin (m + 1) → K) ≠ 0` using `fun h0 => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun y => (y ᵥ* (γ⁻¹).val) (Fin.last m)) h0` as an intermediate fact. Simplify using `only [vecMul_vecMul, Units.mul_inv, vecMul_one, zero_vecMul] at this`. Simplify using `at this`. Establish `l1` using `h₁ g _ hx`. Rewrite `l1` using `[← height_diagonal_mul, heq, height_mul_maxCompact _ hk]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `l2 : ∀ i, 1 ≤ A * H ^ N₁ * r i ^ d` using `fun i => by`. Establish `h6` using `pow_le_pow_left₀ (mul_pos (pow_pos hs m) (hr _)).le (pow_mul_le_of_chain hs.le (min_le_right _ _) (min_le_left _ _) hr hch i) d`. Rewrite `h6` using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `l3 : (∏ i, r i) ^ d ≤ B * H ^ N₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h6` using `det_mul_mul b (diagUnits (m + 1) fun i => posIdele (K := K) (r i) (hr i)) k`. Rewrite `h6` using `[← heq, map_mul, map_mul, Positive.val_mul, mem_normOneGL.1 (rationalGL_le_normOneGL ⟨γ, rfl⟩), one_mul, ideleModule_det_diagUnits_posIdele r hr, mem_normOneGL.1 (maxCompact_le_normOneGL hk), mul_one]`. Use `le_trans ?_ (mul_le_mul_of_nonneg_right (le_max_right _ _) (by positivity))` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀' hp]`. Conclude with `(mul_le_mul_of_nonneg_right (h₅ b hb).1 (pow_nonneg (Finset.prod_pos fun i _ => hr i).le _)).trans (h6.symm.le.trans (h₂ g))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `l4` using `CuspidalSpectrum.height_diagUnits_posIdele_le (K := K) hr (one_le_mul_of_one_le_of_one_le hB' (one_le_pow₀ hA)) (box Module.finrank_pos.ne' hr hA hB' l2 l3)`. Rewrite using `[heq]`. Use `(AutomorphicForm.height_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[AutomorphicForm.height_eq_one_of_mem_maxCompact hk, mul_one, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ((AutomorphicForm.height_mul_le _ _).trans ?_) hc` and prove the remaining obligations.
-
-Use `(mul_le_mul (mul_le_mul_of_nonneg_left (h₄ b hb) hc) l4 (AutomorphicForm.height_pos _).le (mul_nonneg hc ((AutomorphicForm.height_pos b).le.trans (h₄ b hb)))).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[pow_mul H, pow_add H, pow_mul H, mul_assoc (c * M), ← mul_pow, mul_pow A]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem siegelHeight : SiegelHeight := by
   intro K _ _ n ω hω hB t ht

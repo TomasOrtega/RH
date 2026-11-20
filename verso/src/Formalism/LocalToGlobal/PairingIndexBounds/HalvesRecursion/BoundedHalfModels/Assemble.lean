@@ -11,7 +11,7 @@ namespace Formalism.L2.PairingIndexBounds.Rec
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.GL3Theta Formalism.L2.PairingIndexBounds.Mv Formalism.L2.Th1.H Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
 /- English proof (translation)
-Establish `h1` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.star_conj D x`. Establish `h2` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.star_conj D (D.host.conj x)`. Set `_` to `D.host.cmStar`. Rewrite using `[← h2, ← h1, star_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj' (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   have h1 := Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.star_conj D x
@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
 theorem cO_coe (D : D7) (x : 𝓞 D.host.E) : ((cO D x : 𝓞 D.host.E) : D.host.E) = D.host.conj (x : D.host.E) := rfl
 
 /- English proof (translation)
-Take `⟨M, hM, hlow⟩` from `FL.YY_lower D L L' h.2.2.1 h.2.2.2`. Use `⟨(M : 𝓞 D.host.E), by exact_mod_cast hM, fun A => ?_⟩` and prove the remaining obligations. Use `hlow (A.map (algebraMap (𝓞 D.host.E) D.host.E)) (fun i j => (A i j).isIntegral_coe)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lowB_YY (D : D7) {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (h : admitted D N N' L L') :
@@ -36,51 +36,45 @@ theorem lowB_YY (D : D7) {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → 
   simpa using this
 
 /- English proof (translation)
-Introduce `D cc δ hcc hδ hδ0 N N' L₀ L₀' hAdm P hP s hs`. Take `⟨π, hπ0, hπP, hcop, hπb⟩` from `hU D P hP`. Take `⟨γ, hγ0, hγI, t, htP, ht⟩` from `hC D cc hcc P`. Establish `key : ∀ {M : ℕ} (Lx Ly : Submodule (𝓞 D.host.E) (Fin M → D.host.E)) (j : ℕ), (∀ x ∈ Lx, (π * cO D π) ^ j • x ∈ Ly) → ∀ k, j ≤ k → ∀ x ∈ Lx, (π * cO D π) ^ k • x ∈ Ly`. Introduce `M Lx Ly j h k hk x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Nat.sub_add_cancel hk, pow_add, mul_smul]`. Conclude with `Ly.smul_mem _ (h x hx)`. Establish `hb : ∀ q ∈ s, ∃ j : ℕ, ∀ k, j ≤ k → (∀ x ∈ q.1, (π * cO D π) ^ k • x ∈ L₀) ∧ (∀ x ∈ L₀', (π * cO D π) ^ k • x ∈ q.2) ∧ (∀ x ∈ q.2, (π * cO D π) ^ k • x ∈ L₀') ∧ (∀ x ∈ L₀, (π * cO D π) ^ k • x ∈ q.1)`. Introduce `q hq`. Take `⟨j1, h1, h2⟩` from `hEq D P π hπP N q.1 L₀ (hs q hq).2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j2, h3, h4⟩` from `hEq D P π hπP N' q.2 L₀' (hs q hq).2.2`. Conclude with `⟨j1 + j2, fun k hk => ⟨key _ _ _ h1 _ (by omega), key _ _ _ h4 _ (by omega), key _ _ _ h3 _ (by omega), key _ _ _ h2 _ (by omega)⟩⟩`. Use `choose! jf hjf using hb`. Use `set J := s.sup jf with hJ`. Use `set w : 𝓞 D.host.E := (π * cO D π) ^ J with hw`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Treat this case separately. Treat this case separately.
 
-Establish `hwb : ∀ q ∈ s, (∀ x ∈ q.1, w • x ∈ L₀) ∧ (∀ x ∈ L₀', w • x ∈ q.2) ∧ (∀ x ∈ q.2, w • x ∈ L₀') ∧ (∀ x ∈ L₀, w • x ∈ q.1)` using `fun q hq => hjf q hq J (Finset.le_sup hq)`. Set `Yf : Option {q // q ∈ s} → Submodule (𝓞 D.host.E) (Matrix (Fin N') (Fin N) D.host.E)` to `fun o => match o with`. Consider the case `none => YYl D L₀ L₀'`. Consider the case `some q => YYl D q.1.1 q.1.2`. Establish `hww : (π * cO D π) ^ (J + J) = w * w` using `by rw [pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hbd1 : ∀ o, ∀ y ∈ YYl D L₀ L₀', (π * cO D π) ^ (J + J) • y ∈ Yf o`. Introduce `o y hy`. Rewrite using `[hww]`. Use `match o with`. Consider the case `none => exact Submodule.smul_mem _ _ hy`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `some q => exact hYY D w N N' q.1.1 L₀ q.1.2 L₀' (hwb q.1 q.2).1 (hwb q.1 q.2).2.1 y hy`. Establish `hbd2 : ∀ o, ∀ y ∈ Yf o, (π * cO D π) ^ (J + J) • y ∈ YYl D L₀ L₀'`. Introduce `o y hy`. Rewrite using `[hww]`. Use `match o with`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `none => exact Submodule.smul_mem _ _ hy`. Consider the case `some q => exact hYY D w N N' L₀ q.1.1 L₀' q.1.2 (hwb q.1 q.2).2.2.2 (hwb q.1 q.2).2.2.1 y hy`. Establish `hlow : ∀ o, ∃ d : 𝓞 D.host.E, d ≠ 0 ∧ LowB d (Yf o : Set (Matrix (Fin N') (Fin N) D.host.E))`. Introduce `o`. Use `match o with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `none => exact lowB_YY D L₀ L₀' hAdm`. Consider the case `some q => exact lowB_YY D q.1.1 q.1.2 (hs q.1 q.2).1`. Establish `HG` using `hG (𝓞 D.host.E) D.host.E P (Fin N') (Fin N) (ccE D cc) γ t π (cO D π) (J + J) (Option {q // q ∈ s}) (YYl D L₀ L₀') Yf hγ0 hγI htP ht hπ0 hπP hπb hcop (lowB_YY D L₀ L₀' hAdm) hlow hbd1 hbd2`. Establish `hπE0 : algebraMap (𝓞 D.host.E) D.host.E π ≠ 0`. Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 D.host.E) D.host.E)]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hπ0`. Establish `hπbE0 : algebraMap (𝓞 D.host.E) D.host.E (cO D π) ≠ 0`. Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 D.host.E) D.host.E)]`. Introduce and unpack `h0`. Conclude with `hπb (h0 ▸ P.asIdeal.zero_mem)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set u : D.host.E := (algebraMap (𝓞 D.host.E) D.host.E (cO D π) / algebraMap (𝓞 D.host.E) D.host.E π) ^ (J + J) with hu`. Establish `hu0 : u ≠ 0` using `pow_ne_zero _ (div_ne_zero hπbE0 hπE0)`. Establish `hc1 : D.host.conj (algebraMap (𝓞 D.host.E) D.host.E (cO D π)) = algebraMap (𝓞 D.host.E) D.host.E π` using `conj_conj' D _`. Establish `hc2 : D.host.conj (algebraMap (𝓞 D.host.E) D.host.E π) = algebraMap (𝓞 D.host.E) D.host.E (cO D π)` using `rfl`. Establish `hu1 : u * D.host.conj u = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, map_pow, map_div₀, hc1, hc2, ← mul_pow]`. Establish `e : algebraMap (𝓞 D.host.E) D.host.E (cO D π) / algebraMap (𝓞 D.host.E) D.host.E π * (algebraMap (𝓞 D.host.E) D.host.E π / algebraMap (𝓞 D.host.E) D.host.E (cO D π)) = 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, one_pow]`. Establish `hu1' : u⁻¹ * D.host.conj u⁻¹ = 1` using `by rw [map_inv₀, ← mul_inv, hu1, inv_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hinj : Function.Injective (Phi D cc δ N N')` using `hPhi D cc δ N N' hδ0`. Establish `hAdmA` using `hUA D N N' L₀ L₀' u hu1 hAdm`. Establish `hAdmB` using `hUA D N N' L₀ L₀' u⁻¹ hu1' hAdm`. Establish `hLaeq : ∀ (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), La D (tor0 D cc δ) L L' = (ccE D cc • YYl D L L').toAddSubgroup.map (Phi D cc δ N N')` using `fun L L' => by`. Rewrite using `[hLa, hMM]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hAeq : La D (tor0 D cc δ) L₀ (sLat D u L₀') = (ccE D cc • sMod u (YYl D L₀ L₀')).toAddSubgroup.map (Phi D cc δ N N')`. Rewrite using `[hLaeq, hUY D N N' L₀ L₀' u hu0]`. Establish `hBeq : La D (tor0 D cc δ) L₀ (sLat D u⁻¹ L₀') = (ccE D cc • sMod u⁻¹ (YYl D L₀ L₀')).toAddSubgroup.map (Phi D cc δ N N')`. Rewrite using `[hLaeq, hUY D N N' L₀ L₀' u⁻¹ (inv_ne_zero hu0)]`. Take `⟨hHerm, -, -, -, hSC⟩` from `local_global_comparison_holds D (tor0 D cc δ) N N'`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hIA` using `hA D cc hcc δ hδ hδ0 N N' L₀ _ hAdmA`. Establish `hIB` using `hA D cc hcc δ hδ hδ0 N N' L₀ _ hAdmB`. Establish `intOf : ∀ Λ : AddSubgroup (VC D N N'), IO.HfInt (tor0 D cc δ) Λ → ∀ x ∈ Λ, ∀ y ∈ Λ, ∃ m : ℤ, altE (HfS D (tor0 D cc δ) N N') x y = m`. Introduce `Λ hI x hx y hy`. Take `⟨a, b, -, hab⟩` from `hI x hx y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, by simp only [altE, HfS_apply, hab]; simp⟩`. Establish `good : ∀ (o : Option {q // q ∈ s}) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), admitted D N N' L L' → YYl D L L' = Yf o → GoodLat (HfS D (tor0 D cc δ) N N') (al D (tor0 D cc δ)) ((ccE D cc • sMod u (YYl D L₀ L₀')).toAddSubgro …`. Introduce `o L L' hLL hY`. Take `⟨c1, c2, -, -, -⟩` from `HG o`. Establish `hΛ : La D (tor0 D cc δ) L L' = (ccE D cc • Yf o).toAddSubgroup.map (Phi D cc δ N N')`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hLaeq, hY]`. Establish `hsum : La D (tor0 D cc δ) L L' ≤ (La D (tor0 D cc δ) L L' ⊓ (ccE D cc • sMod u (YYl D L₀ L₀')).toAddSubgroup.map (Phi D cc δ N N')) ⊔ (La D (tor0 D cc δ) L L' ⊓ (ccE D cc • sMod u⁻¹ (YYl D L₀ L₀')).toAddSubgroup.map (Phi D cc δ N N'))`. Rewrite using `[hΛ]`. Introduce `z hz`. Take `⟨y, hy, rfl⟩` from `AddSubgroup.mem_map.1 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `c1 y hy`. Rewrite using `[map_add]`. Conclude with `AddSubgroup.add_mem_sup ⟨AddSubgroup.mem_map_of_mem _ (Submodule.mem_inf.1 ha).1, AddSubgroup.mem_map_of_mem _ (Submodule.mem_inf.1 ha).2⟩ ⟨AddSubgroup.mem_map_of_mem _ (Submodule.mem_inf.1 hb).1, AddSubgroup.mem_map_of_mem _ (Submodule.mem_inf.1 hb).2⟩`. Establish `hsd : ∀ v : VC D N N', (∀ y ∈ La D (tor0 D cc δ) L L', ∃ b : ℤ, altE (HfS D (tor0 D cc δ) N N') v y = b) → v ∈ La D (tor0 D cc δ) L L'` using `fun v hv => hB D cc hcc δ hδ hδ0 N N' L L' hLL v hv`. Take `⟨d1, d2⟩` from `hGD (VC D N N') (HfS D (tor0 D cc δ) N N') _ _ _ hHerm (intOf _ (hAeq ▸ hIA)) (intOf _ (hBeq ▸ hIB)) hsum hsd`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨hSC _ (hA D cc hcc δ hδ hδ0 N N' L L' hLL), hsum, ?_, d1, d2⟩` and prove the remaining obligations. Introduce `a ha b hb hab`. Take `⟨a', ha', rfl⟩` from `AddSubgroup.mem_map.1 ha`. Take `⟨b', hb', rfl⟩` from `AddSubgroup.mem_map.1 hb`. Rewrite `hab`, the goal using `[hΛ]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hab` using `[← map_add, AddSubgroup.mem_map_iff_mem hinj]`. Conclude with `AddSubgroup.mem_map_of_mem _ (c2 a' ha' b' hb' hab)`. Establish `einf : ∀ X Y : Submodule (𝓞 D.host.E) (Matrix (Fin N') (Fin N) D.host.E), (X ⊓ Y).toAddSubgroup = X.toAddSubgroup ⊓ Y.toAddSubgroup` using `fun X Y => rfl`. Set `φ : ((ccE D cc • sMod u (YYl D L₀ L₀')).toAddSubgroup.map (Phi D cc δ N N')) → Matrix (Fin N') (Fin N) (EP D P)` to `fun a => matI P ((algebraMap (𝓞 D.host.E) D.host.E γ)⁻¹ • Function.invFun (Phi D cc δ N N') (a : VC D N N'))`. Use `⟨_, _, φ, hAeq ▸ hSC _ hIA, hBeq ▸ hSC _ hIB, good none L₀ L₀' hAdm rfl, fun q hq => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq'` using `hs q hq`. Take `⟨-, -, c3, c4, c5⟩` from `HG (some ⟨q, hq⟩)`. Use `⟨good (some ⟨q, hq⟩) q.1 q.2 hq'.1 rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := IO.La_index_finite cc hcc δ L₀ q.1 L₀' q.2 hAdm hq'.1`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
-
-Introduce `a`. Take `⟨a', ha', hΦa⟩` from `AddSubgroup.mem_map.1 a.2`. Establish `hinv : Function.invFun (Phi D cc δ N N') (a : VC D N N') = a'`. Rewrite using `[← hΦa]`. Conclude with `Function.leftInverse_invFun hinj a'`.
-
-Express the relevant statement in the definitionally equal form `_ ↔ matI P ((algebraMap (𝓞 D.host.E) D.host.E γ)⁻¹ • Function.invFun (Phi D cc δ N N') (a : VC D N N')) ∈ _`. Rewrite using `[hinv, ← hΦa, hLaeq, AddSubgroup.mem_map_iff_mem hinj, YP_eq]`. Conclude with `c3 a' ha'`. Rewrite using `[volP, volA, hLaeq, hLaeq, ← AddSubgroup.map_inf_eq _ _ _ hinj, ← AddSubgroup.map_inf_eq _ _ _ hinj, AddSubgroup.relIndex_map_map_of_injective _ _ hinj, AddSubgroup.relIndex_map_map_of_injective _ _ hinj, YP_eq, YP_eq, ← einf, ← einf]`. Establish `c4'` using `c4`.
-
-Establish `c5'` using `c5`. Simplify using `only [AddSubgroup.relIndex] at c4' c5' ⊢`. Rewrite using `[c4', c5']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halvesRec_of_facts (hG : GenHalves) (hLa : LaEqMap) (hMM : MMeq) (hPhi : PhiInj) (hU : UnifElt)
     (hC : CcLoc) (hEq : EqOffBound) (hYY : YYBound) (hUA : UAdm) (hUY : UYY) (hGD : GoodDual)
@@ -231,7 +225,7 @@ theorem halvesRec_of_facts (hG : GenHalves) (hLa : LaEqMap) (hMM : MMeq) (hPhi :
     rw [c4', c5']
 
 /- English proof (translation)
-The claim follows from `halvesRec_of_facts (genHalves_of hC hAp) lattice_equality_map_holds multiplicity_equality_holds phi_injective_holds uniformizer_element_holds central_character_local_holds equality_off_boundary_holds pairing_bound_holds admissible_unipotent_holds unipotent_pairing_holds good_dual …`.
+A detailed English derivation is pending.
 -/
 theorem halvesRec_of_clos (hC : ClosChar) (hAp : ApproxLow) (hA : HfIntRec) (hB : SelfDualRec) : HalvesRec :=
   halvesRec_of_facts (genHalves_of hC hAp) lattice_equality_map_holds multiplicity_equality_holds phi_injective_holds uniformizer_element_holds central_character_local_holds

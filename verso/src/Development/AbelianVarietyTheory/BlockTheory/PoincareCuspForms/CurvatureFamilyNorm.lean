@@ -95,7 +95,7 @@ def c1 : ℝ := RR X * w.T * w.c * dp X ^ 2 * X.p0 / 2
 def t : ℝ := 1 + w.c1 / a1 X
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a`. Simplify using `only [wEt, twoG₁, frameWt, n₁, g0, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weight_eta_sq_theta : (2 : ℤ) • w.wEt + (w.n₁ : ℤ) • w.twoG₁ = (2 * (w.n₁ : ℤ)) • w.L := by
   funext τ a
@@ -105,7 +105,7 @@ theorem weight_eta_sq_theta : (2 : ℤ) • w.wEt + (w.n₁ : ℤ) • w.twoG₁
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a`. Simplify using `only [wEt, twoG₁, ka, G₂, n₁, g0, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [frameWt, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weight_product : (2 * (w.n₁ : ℤ)) • (w.ka + w.G₂) + (2 * (w.n₁ : ℤ)) • w.twoG₁ + (4 : ℤ) • w.wEt =
     (2 * (w.n₁ : ℤ) * (w.T + nd X + 6)) • w.L := by
@@ -116,9 +116,9 @@ theorem weight_product : (2 * (w.n₁ : ℤ)) • (w.ka + w.G₂) + (2 * (w.n₁
   ring
 
 /- English proof (translation)
-Establish `h1` using `(w.plus_div τ b hb).1`. Establish `h2` using `(w.minus_div τ a ha).1`. Establish `hp` using `w.shape.p0_pos`. Establish `hq` using `w.shape.witt`. Establish `e1 : de2 X τ a = -1` using `by simp only [de2]; rw [if_pos (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : de2 X τ b = 1` using `by simp only [de2]; rw [if_neg (by omega)]`. Establish `e3 : ((b : ℕ) : ℤ) = r - 1` using `by omega`. Simplify using `only [rem, Fp, L, frameWt, kapW, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, e1, e2, e3, ha]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem pairing_rem (τ : X.Ψ) (a b : Fin r) (ha : (a : ℕ) = 0) (hb : (b : ℕ) + 1 = r) :
     2 * (w.hF : ℤ) + 2 ≤ w.rem τ b - w.rem τ a := by
@@ -134,15 +134,15 @@ theorem pairing_rem (τ : X.Ψ) (a b : Fin r) (ha : (a : ℕ) = 0) (hb : (b : �
   nlinarith
 
 /- English proof (translation)
-Establish `h1` using `(w.plus_div τ b hb).2`. Establish `h2` using `(w.minus_div τ a ha).2`. Establish `h3` using `w.plus_big τ b hb`. Establish `h4` using `w.minus_big τ a ha`. Establish `hp` using `w.shape.p0_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `w.shape.witt`. Establish `h5 : ((nd X : ℤ) + 2) * (2 * w.hW) + 2 * r ≤ w.T` using `by exact_mod_cast w.T_cols`. Establish `h6 : 40 * ((nd X : ℤ) + 2) ≤ w.T` using `by exact_mod_cast w.T_forty`. Establish `hD : (0 : ℤ) ≤ nd X` using `by positivity`. Establish `hh : (0 : ℤ) ≤ w.hW` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : de2 X τ a = -1` using `by simp only [de2]; rw [if_pos (by omega)]`. Establish `e2 : de2 X τ b = 1` using `by simp only [de2]; rw [if_neg (by omega)]`. Establish `key : ∀ u : ℤ, 2 * (w.T : ℤ) ^ 2 - w.T < ((w.T : ℤ) + nd X + 2) * (u + 1) → 19 * (w.T : ℤ) ≤ 10 * u`. Introduce `u hu`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hc' : 10 * (u + 1) ≤ 19 * (w.T : ℤ) + 9` using `by omega`. Establish `: ((w.T : ℤ) + nd X + 2) * (10 * (u + 1)) ≤ ((w.T : ℤ) + nd X + 2) * (19 * w.T + 9)` using `mul_le_mul_of_nonneg_left hc' (by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Establish `k1` using `key (w.aW τ b) (by nlinarith)`. Establish `k2` using `key (-w.aW τ a) (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [L, frameWt, Pi.add_apply, Pi.smul_apply, smul_eq_mul, e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem pairing_L (τ : X.Ψ) (a b : Fin r) (ha : (a : ℕ) = 0) (hb : (b : ℕ) + 1 = r) :
     38 * (w.T : ℤ) ≤ 10 * (w.L τ b - w.L τ a) := by
@@ -171,15 +171,15 @@ theorem pairing_L (τ : X.Ψ) (a b : Fin r) (ha : (a : ℕ) = 0) (hb : (b : ℕ)
   linarith
 
 /- English proof (translation)
-Establish `hrd : 1 ≤ rd X`. Apply `Real.one_le_rpow _ (by positivity)` to reduce the goal to its premises. Establish `: (1 : ℤ) ≤ |discr E|` using `Int.one_le_abs (discr_ne_zero E)`. Conclude with `this` after adjusting the coercions. Establish `hr : (r : ℝ) ≤ w.T` using `by exact_mod_cast (by have := w.T_cols; omega : r ≤ w.T)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : (0 : ℝ) ≤ w.T` using `by positivity`. Establish `hc` using `w.c_pos`. Establish `hRR : rd X ^ 2 ≤ RR X` using `pow_le_pow_right₀ hrd (by norm_num)`. Establish `hR0 : 0 ≤ RR X` using `by unfold RR; positivity`. Establish `key : w.c1 / a1 X * r ≤ w.T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos X.Ψ.card with h0 | h0` into its components or cases. Simplify using `[a1, h0]`. Establish `hf : (0 : ℝ) < X.Ψ.card` using `by exact_mod_cast h0`. Establish `e : w.c1 / a1 X * r = ((g0 r : ℝ) * X.Ψ.card * (X.p0 : ℝ) ^ 3 * RR X * w.c) * rd X ^ 2 * w.T`. Simplify using `only [c1, a1, dp, g0, g0half]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ((g0 r : ℝ) * X.Ψ.card * (X.p0 : ℝ) ^ 3 * RR X * w.c) * rd X ^ 2 ≤ 1`. Use `le_trans (mul_le_mul_of_nonneg_left hRR (by positivity)) (le_trans (le_of_eq ?_) w.cRR)` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [t]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem t_mul_r_le : w.t * r ≤ 2 * w.T := by
   have hrd : 1 ≤ rd X := by
@@ -212,39 +212,39 @@ theorem t_mul_r_le : w.t * r ≤ 2 * w.T := by
 end Weights
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨T, hT1, hT2, hT3, hT4, hT5⟩ : ∃ T : ℕ, (nd X + 2) * (2 * (4 * X.Ψ.card * r + 2)) + 2 * r ≤ T ∧ 40 * (nd X + 2) ≤ T ∧ 11 * nd X ^ 2 ≤ T ∧ bb X < T ∧ bb X ^ 2 * Crh X + bb X < T := by`. Take `⟨n, hn⟩` from `exists_nat_gt (bb X)`. Take `⟨m, hm⟩` from `exists_nat_gt (bb X ^ 2 * Crh X + bb X)`. Use `⟨(nd X + 2) * (2 * (4 * X.Ψ.card * r + 2)) + 2 * r + 40 * (nd X + 2) + 11 * nd X ^ 2 + n + m, by omega, by omega, by omega, hn.trans_le (by exact_mod_cast (by omega)), hm.trans_le (by exact_mod_cast (by omega))⟩` and prove the remaining obligations. Establish `hp` using `h.p0_pos`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq` using `h.witt`. Establish `hr` using `h.r_ge`. Establish `hT0 : (0 : ℝ) < T` using `by exact_mod_cast (by omega : 0 < T)`. Establish `hg : (0 : ℝ) < g0 r`. Establish `: 0 < g0 r` using `by simp only [g0, g0half]; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Use `set A : ℝ := (T : ℝ) * g0 r with hA`. Use `set B : ℝ := (g0 r : ℝ) * X.Ψ.card * (X.p0 : ℝ) ^ 3 * RR X ^ 2 with hB`. Establish `hA0 : 0 < A` using `by positivity`. Establish `hB0 : 0 ≤ B` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Tp : ℤ` to `T + nd X + 2`. Set `g : ℤ` to `Tp + 2 * r`. Set `aW : Wt X.Ψ r` to `fun _ a => if (a : ℕ) < X.p0 then -(2 * (T : ℤ)) - g * (a : ℕ) else 2 * T + g * ((r : ℤ) - 1 - (a : ℕ))`. Set `s : Wt X.Ψ r` to `fun _ a => if (a : ℕ) < X.p0 then 2 * ((a : ℕ) : ℤ) else ((nd X : ℤ) + 2) * (2 * ((4 * X.Ψ.card * r + 2 : ℕ) : ℤ)) + 2 * r - 2 * ((r : ℤ) - 1 - (a : ℕ))`. Establish `hTp : (0 : ℤ) < T + nd X + 2` using `by positivity`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hgap : ∀ τ a b, IsGap X a b → aW τ a - aW τ b = g ∧ s τ a - s τ b = -2`. Introduce and unpack `τ a b ⟨h1, h2⟩`. Establish `e : ((b : ℕ) : ℤ) = (a : ℕ) + 1` using `by omega`. Distinguish the cases in `ha : (a : ℕ) < X.p0`. Establish `hb : (b : ℕ) < X.p0` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [aW, s, if_pos ha, if_pos hb, e]`. Apply the tactic sequence `constructor <;> ring`. Establish `hb : ¬ (b : ℕ) < X.p0` using `by omega`. Simplify using `only [aW, s, if_neg ha, if_neg hb, e]`. Apply the tactic sequence `constructor <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hplus : ∀ τ (a : Fin r), (a : ℕ) + 1 = r → aW τ a = 2 * T ∧ s τ a = ((nd X : ℤ) + 2) * (2 * ((4 * X.Ψ.card * r + 2 : ℕ) : ℤ)) + 2 * r`. Introduce `τ a ha`. Establish `e : ((a : ℕ) : ℤ) = r - 1` using `by omega`. Establish `hb : ¬ (a : ℕ) < X.p0` using `by omega`. Simplify using `only [aW, s, if_neg hb, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `constructor <;> ring`. Establish `hminus : ∀ τ (a : Fin r), (a : ℕ) = 0 → aW τ a = -(2 * T) ∧ s τ a = 0`. Introduce `τ a ha`. Establish `hb : (a : ℕ) < X.p0` using `by omega`. Simplify using `only [aW, s, if_pos hb]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[ha]`. Apply the tactic sequence `constructor <;> simp`. Establish `hD : (0 : ℝ) ≤ nd X` using `by positivity`. Use `⟨{ shape := h, T := T, i := 1, c := 1 / (A + B), hW := 4 * X.Ψ.card * r + 2, hF := 4 * X.Ψ.card * r + 2 aK := fun τ a => Tp * aW τ a + s τ a, aW := aW i_pos := one_pos, c_pos := by positivity, T_cols := hT1, T_forty := hT2, T_sq := hT3 cols_lo := by apply le_of_eq; ring cols_hi : …` and prove the remaining obligations. Establish `: (T : ℝ) * (1 / (A + B)) * g0 r = A / (A + B)` using `by rw [hA]; ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, div_le_one (by positivity)]; linarith`. Rewrite using `[← hB, mul_one_div, div_le_one (by positivity)]; linarith`. Introduce `τ a b hab`. Take `⟨h1, h2⟩` from `hgap τ a b hab`. Apply `le_of_eq` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Tp, g] at h1 ⊢`. Take the linear combination `(-((T : ℤ) + nd X + 2)) * h1 - h2`. Introduce `τ a ha`. Take `⟨h1, h2⟩` from `hplus τ a ha`. Simplify using `only [h1, h2, Tp]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: (0 : ℤ) ≤ ((nd X : ℤ) + 2) * (2 * ((4 * X.Ψ.card * r + 2 : ℕ) : ℤ)) + 2 * r` using `by positivity`. Establish `: (0 : ℤ) ≤ (T : ℤ) * (nd X + 2)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Introduce `τ a ha`. Take `⟨h1, h2⟩` from `hminus τ a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `only [h1, h2, Tp]`. Establish `: (0 : ℤ) ≤ (T : ℤ) * (nd X + 2)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Introduce `τ a b hab`. Take `⟨h1, h2⟩` from `hgap τ a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `: Tp * aW τ a + s τ a - (Tp * aW τ b + s τ b) + 2 - ((T : ℤ) + nd X + 2) * (aW τ a - aW τ b) = 0`. Simplify using `only [Tp]`. Take the linear combination `h2`. Rewrite using `[this]`. Conclude with `⟨le_rfl, hTp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `τ a ha`. Take `⟨h1, h2⟩` from `hplus τ a ha`. Establish `: Tp * aW τ a + s τ a - ((T : ℤ) + nd X + 2) * aW τ a - ((nd X : ℤ) + 2) * (2 * ((4 * X.Ψ.card * r + 2 : ℕ) : ℤ)) - 2 * r = 0`. Simplify using `only [Tp]`. Take the linear combination `h2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `⟨le_rfl, hTp⟩`. Introduce `τ a ha`. Take `⟨h1, h2⟩` from `hminus τ a ha`. Establish `: -(Tp * aW τ a + s τ a) - ((T : ℤ) + nd X + 2) * (-aW τ a) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Tp]`. Take the linear combination `-h2`. Rewrite using `[this]`. Conclude with `⟨le_rfl, hTp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_weights (X : Data E r) (h : Shape X) : Nonempty (Weights X) := by
   obtain ⟨T, hT1, hT2, hT3, hT4, hT5⟩ : ∃ T : ℕ,

@@ -15,7 +15,7 @@ namespace GlobalTheory.QhtUnip
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [cA, hσ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_cA_eq (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -24,7 +24,7 @@ theorem cA_cA_eq (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) (z : AE F E) 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hP, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mulVec_eq {n : ℕ} {P M : Matrix (Fin n) (Fin n) (AE F E)} (hP : IsUnit P.det)
     {v v' : Fin n → AE F E} (h : M *ᵥ (P *ᵥ v) = P *ᵥ v') : (P⁻¹ * M * P) *ᵥ v = v' := by
@@ -32,7 +32,7 @@ theorem conj_mulVec_eq {n : ℕ} {P M : Matrix (Fin n) (Fin n) (AE F E)} (hP : I
     Matrix.nonsing_inv_mul _ hP, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `[Matrix.mulVec_single_one, incM, basQ, Matrix.transpose_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incM_basQ_col {m : ℕ} (H : Plane E (m + 2) m) (j : Ix m) :
     incM F (basQ H) *ᵥ Pi.single ((ixE m).symm j) 1 = fun r => inclR (F := F) (AF F) (basP H r j) := by
@@ -40,7 +40,7 @@ theorem incM_basQ_col {m : ℕ} (H : Plane E (m + 2) m) (j : Ix m) :
   simp [Matrix.mulVec_single_one, incM, basQ, Matrix.transpose_apply]
 
 /- English proof (translation)
-Simplify using `[crd, Matrix.mulVec_single_one, Matrix.transpose_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem crd_apply {σ : E →ₐ[F] E} {m : ℕ} {J : Matrix (Fin (m + 2)) (Fin (m + 2)) E} (H : Plane E (m + 2) m)
     (g : UA σ J) (i j : Ix m) : crd H g i j =
@@ -48,9 +48,9 @@ theorem crd_apply {σ : E →ₐ[F] E} {m : ℕ} {J : Matrix (Fin (m + 2)) (Fin 
   simp [crd, Matrix.mulVec_single_one, Matrix.transpose_apply]
 
 /- English proof (translation)
-Introduce `hP`. Establish `: (incM F (basQ H)).det = inclR (F` using `F) (AF F) (basQ H).det := by`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP.map _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_incM_basQ {m : ℕ} (H : Plane E (m + 2) m) : IsUnit (basQ H).det → IsUnit (incM F (basQ H)).det := by
   intro hP
@@ -59,25 +59,25 @@ theorem isUnit_det_incM_basQ {m : ℕ} (H : Plane E (m + 2) m) : IsUnit (basQ H)
   rw [this]; exact hP.map _
 
 /- English proof (translation)
-Establish `hQ` using `isUnit_det_incM_basQ (F := F) H hP`. Use `set Q := incM F (basQ H) with hQdef`. Use `choose a ha using fun k : Fin m => hι (Pi.single k 1)`. Establish `cx : Q *ᵥ Pi.single ((ixE m).symm (Sum.inl (Sum.inl 0))) 1 = incV F H.x`. Rewrite using `[incM_basQ_col]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `cι : ∀ k, Q *ᵥ Pi.single ((ixE m).symm (Sum.inl (Sum.inr k))) 1 = incM F H.ι *ᵥ Pi.single k 1`. Introduce `k`. Rewrite using `[incM_basQ_col]`. Use function extensionality and compare the values at `r`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Matrix.mulVec_single_one, incM, basP, Matrix.transpose_apply]`. Establish `hcx : ((Q⁻¹ * mat u * Q) *ᵥ Pi.single ((ixE m).symm (Sum.inl (Sum.inl 0))) 1) = Pi.single ((ixE m).symm (Sum.inl (Sum.inl 0))) 1` using `conj_mulVec_eq hQ (by rw [cx, hx])`. Establish `hcι : ∀ k, ((Q⁻¹ * mat u * Q) *ᵥ Pi.single ((ixE m).symm (Sum.inl (Sum.inr k))) 1) = Pi.single ((ixE m).symm (Sum.inl (Sum.inr k))) 1 + a k • Pi.single ((ixE m).symm (Sum.inl (Sum.inl 0))) 1`. Introduce `k`. Use `conj_mulVec_eq hQ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, cx, cι, ha]`. Establish `ex : ∀ i, crd H u i (Sum.inl (Sum.inl 0)) = if i = Sum.inl (Sum.inl 0) then 1 else 0`. Introduce `i`. Rewrite using `[crd_apply, hcx]`. Simplify using `[Pi.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `eι : ∀ i k, crd H u i (Sum.inl (Sum.inr k)) = (if i = Sum.inl (Sum.inr k) then 1 else 0) + a k * (if i = Sum.inl (Sum.inl 0) then 1 else 0)`. Introduce `i k`. Rewrite using `[crd_apply, hcι]`. Simplify using `[Pi.single_apply]`. Establish `eyy : crd H u (Sum.inr 0) (Sum.inr 0) = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrFun (congrFun hU (Sum.inl (Sum.inl 0))) (Sum.inr 0)`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, ex, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Simplify using `[Fintype.sum_sum_type, gI, Matrix.fromBlocks] at h`. Establish `h2` using `congrArg (cA σ) h`. Rewrite `h2` using `[cA_cA_eq σ hσ, map_one]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨a, fun k => crd H u (Sum.inl (Sum.inr k)) (Sum.inr 0), crd H u (Sum.inl (Sum.inl 0)) (Sum.inr 0), ?_⟩` and prove the remaining obligations. Use extensionality with `((i | i) | i) ((j | j) | j)`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0, ex]`. Simplify using `[Heisenberg₂, Matrix.fromBlocks]`. Rewrite using `[Subsingleton.elim i 0, eι]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Heisenberg₂, Matrix.fromBlocks]`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using `[Heisenberg₂, Matrix.fromBlocks]`. Rewrite using `[Subsingleton.elim j 0, ex]`. Simplify using `[Heisenberg₂, Matrix.fromBlocks]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[eι]`. Simplify using `[Heisenberg₂, Matrix.fromBlocks, Matrix.one_apply]`. Rewrite using `[Subsingleton.elim j 0]`. Simplify using `[Heisenberg₂, Matrix.fromBlocks]`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0, ex]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Heisenberg₂, Matrix.fromBlocks]`. Rewrite using `[Subsingleton.elim i 0, eι]`. Simplify using `[Heisenberg₂, Matrix.fromBlocks]`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0, eyy]`. Simplify using `[Heisenberg₂, Matrix.fromBlocks]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crd_eq_heis_of_gen (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) {m : ℕ} {J : Matrix (Fin (m + 2)) (Fin (m + 2)) E}
     (J₁ : Matrix (Fin m) (Fin m) E) (H : Plane E (m + 2) m) (hP : IsUnit (basQ H).det)
@@ -125,15 +125,15 @@ theorem crd_eq_heis_of_gen (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) {m 
   · rw [Subsingleton.elim i 0, Subsingleton.elim j 0, eyy]; simp [Heisenberg₂, Matrix.fromBlocks]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B m W r s hW W₁ H i₀ i₁ hA u hu`. Establish `hP` using `GlobalTheory.T.isUnit_det_adapted_basis F E σ B W r s hW W₁ H i₀ i₁ hA`. Take `⟨hmul, hone, -⟩` from `GlobalTheory.T.coords_multiplicative_conjugation F E σ W.J H hP`. Establish `hU` using `GlobalTheory.T.coords_preserve_gram_matrix F E σ hσ B W r s hW W₁ H i₀ i₁ hA`. Unfold `unip at hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem x hx => exact crd_eq_heis_of_gen σ hσ W₁.J H hP x (hU x) hx.1 hx.2`. Consider the case `one => exact ⟨0, 0, 0, by rw [hone, heis_zero]⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, w, α, ha⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a', w', α', hb⟩` from `hy`. Conclude with `⟨_, _, _, by rw [hmul, ha, hb, GlobalTheory.T.heis_mul_heis]⟩`. Consider the case `inv x _ hx`. Take `⟨a, w, α, ha⟩` from `hx`. Use `⟨-a, -w, -α + ∑ k, a k * w k, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : crd H x * Heisenberg₂ (-a) (-w) (-α + ∑ k, a k * w k) = 1`. Rewrite using `[ha, GlobalTheory.T.heis_mul_heis, ← heis_zero]`. Use `congr 1`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_neg_distrib]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem crd_unip_eq_heis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), (∀ e, σ (σ e) = e) → ∀ (B : Base F E) {m : ℕ} (W : Spc F E (m + 2)) (r s : ℕ), W.IsSkew σ B r s →
     ∀ (W₁ : Spc F E m) (H : Plane E (m + 2) m) (i₀ i₁ : ℕ), H.IsAdapted σ B W W₁ i₀ i₁ → ∀ u ∈ unip σ W H, ∃ (a w : Fin m → AE F E) (α : AE F E), crd H u = Heisenberg₂ a w α := by

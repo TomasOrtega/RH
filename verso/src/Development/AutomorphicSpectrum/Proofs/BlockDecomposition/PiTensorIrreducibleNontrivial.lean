@@ -7,7 +7,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.TensorIrr
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Conclude with `bot_ne_top (α := Subrepresentation ρ) (Subrepresentation.ext (Subsingleton.elim _ _))`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_space_of_isIrreducible {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (h : ρ.IsIrreducible) : Nontrivial V := by
@@ -17,11 +17,9 @@ theorem nontrivial_space_of_isIrreducible {G V : Type} [Group G] [AddCommGroup V
     (Subrepresentation.ext (Subsingleton.elim _ _))
 
 /- English proof (translation)
-Establish `hv : ∀ i, ∃ v : V i, v ≠ 0` using `fun i => exists_ne 0`. Use `choose v hv using hv`. Establish `hf : ∀ i, ∃ f : Module.Dual ℂ (V i), f (v i) ≠ 0` using `fun i => by`. Assume the negation of the conclusion as `hc`. Conclude with `hv i ((Module.forall_dual_apply_eq_zero_iff ℂ (v i)).1 fun f => not_not.1 (not_exists.1 hc f))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose f hf using hf`. Set `F : MultilinearMap ℂ V ℂ` to `(MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap f`. Establish `hF : PiTensorProduct.lift F (PiTensorProduct.tprod ℂ v) ≠ 0`. Rewrite using `[PiTensorProduct.lift.tprod]`. Simplify `Finset.prod_ne_zero_iff.2 fun i _ => hf i` using `[F]`.
-
-Use `⟨PiTensorProduct.tprod ℂ v, 0, fun h => hF ?_⟩` and prove the remaining obligations. Rewrite using `[h, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_piTensorProduct_of_nontrivial {ι : Type} [Fintype ι] {V : ι → Type}
     [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)] [∀ i, Nontrivial (V i)] :
@@ -41,7 +39,7 @@ theorem nontrivial_piTensorProduct_of_nontrivial {ι : Type} [Fintype ι] {V : �
   rw [h, map_zero]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h x`. Establish `: ∀ a, Nontrivial (x a).2.rep.V` using `fun a => nontrivial_space_of_isIrreducible _ (x a).2.rep.irr`. Conclude with `nontrivial_piTensorProduct_of_nontrivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nontrivial_piTensorProduct_irrGL : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], ∀ {h : ℕ} (x : Fin h → IrrGL k), Nontrivial (PiTensorProduct ℂ (fun a => (x a).2.rep.V)) := by
   intro k _ _ _ _ h x

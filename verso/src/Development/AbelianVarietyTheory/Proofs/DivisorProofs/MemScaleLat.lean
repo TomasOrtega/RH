@@ -43,7 +43,7 @@ def scaleLat (D : D7) (r : D.host.E) (n : ℕ) : Submodule (𝓞 D.host.E) (Fin 
   Submodule.pi Set.univ fun _ => scaleInv D r
 
 /- English proof (translation)
-Simplify using `only [scaleLat, Submodule.mem_pi, Set.mem_univ, true_implies]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_scaleLat {r : D.host.E} {n : ℕ} {y : Fin n → D.host.E} :
     y ∈ scaleLat D r n ↔ ∀ i, ∀ c ∈ D.host.ccE, r * (c : D.host.E) * y i ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := by

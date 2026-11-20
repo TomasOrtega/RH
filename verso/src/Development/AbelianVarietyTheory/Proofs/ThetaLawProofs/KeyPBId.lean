@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ _ x` and use `GlobalTheory.KeyPow.keyPB_refl x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem keyPB_id : ∀ (R : Type) [CommRing R] (x : KeyIn R), KeyPB x x (RingHom.id R) :=
   fun _ _ x => GlobalTheory.KeyPow.keyPB_refl x

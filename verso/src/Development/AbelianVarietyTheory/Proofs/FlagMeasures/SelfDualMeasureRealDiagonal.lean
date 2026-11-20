@@ -8,29 +8,25 @@ open MeasureTheory FourierTransform Formalism.MainNotions.GlobalTheoryTheory.Gen
 namespace GlobalTheory.SelfDualDiagReal
 
 /- English proof (translation)
-Use `⟨hμ, ?_⟩` and prove the remaining obligations. Introduce `Φ hΦc hΦs hint z`. Establish `ha : a ≠ 0` using `left_ne_zero_of_mul_eq_one hab`. Use `set ψ : E → ℂ := fun w => Φ (T.symm w) with hψdef`. Use `set φ : E → ℂ := fun w => ψ (-w) with hφdef`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφc : Continuous φ` using `hΦc.comp (T.symm.continuous.comp continuous_neg)`. Establish `hφs : HasCompactSupport φ` using `(hΦs.comp_homeomorph T.symm.toHomeomorph).comp_homeomorph (Homeomorph.neg E)`. Establish `hφi : Integrable φ` using `hφc.integrable_of_hasCompactSupport hφs`. Establish `hψφ : 𝓕⁻ ψ = 𝓕 φ` using `Real.fourierInv_eq_fourier_comp_neg ψ`. Establish `hhat : ∀ y, ∫ x, Φ x * Complex.exp (2 * Real.pi * Complex.I * ((B x y : ℝ) : ℂ)) ∂μ = a * 𝓕⁻ ψ (R y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Establish `h` using `haI (fun w => ψ w * Complex.exp (2 * Real.pi * Complex.I * ((inner ℝ w (R y) : ℝ) : ℂ)))`. Simplify using `only [hψdef, ContinuousLinearEquiv.symm_apply_apply] at h`. Repeatedly rewrite using `[hR]`. Rewrite using `[h, Real.fourierInv_eq']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Rewrite using `[mul_comm]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hint' : Integrable (fun y => 𝓕⁻ ψ (R y)) μ`. Establish `h2 : (fun y => 𝓕⁻ ψ (R y)) = fun y => a⁻¹ * ∫ x, Φ x * Complex.exp (2 * Real.pi * Complex.I * ((B x y : ℝ) : ℂ)) ∂μ`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hhat y, ← mul_assoc, inv_mul_cancel₀ ha, one_mul]`. Rewrite using `[h2]`. Conclude with `hint.const_mul _`. Take `⟨c, -, -, hiff⟩` from `GlobalTheory.exists_pos_integral_comp_equiv_haar R μ`. Establish `hFi : Integrable (𝓕 φ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hψφ]`. Conclude with `(hiff _).1 hint'`. Establish `hinv : 𝓕⁻ (𝓕⁻ ψ) = φ`. Rewrite using `[hψφ]`. Conclude with `hφc.fourierInv_fourier_eq hφi hFi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsym : ∀ y, B y z = inner ℝ (R y) (T z)` using `fun y => by`. Rewrite using `[hs, hR, real_inner_comm]`. Establish `hlast : ∫ u, 𝓕⁻ ψ u * Complex.exp (2 * Real.pi * Complex.I * ((inner ℝ u (T z) : ℝ) : ℂ)) = 𝓕⁻ (𝓕⁻ ψ) (T z)`. Rewrite using `[Real.fourierInv_eq']`. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [smul_eq_mul]`. Rewrite using `[mul_comm]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hhat y, hsym y, mul_assoc]`. Use `_ = b * ∫ u, a * (𝓕⁻ ψ u * Complex.exp (2 * Real.pi * Complex.I * ((inner ℝ u (T z) : ℝ) : ℂ))) := hbI (fun u => a * (𝓕⁻ ψ u * Complex.exp (2 * Real.pi * Complex.I * ((inner ℝ u (T z) : ℝ) : ℂ))))`.
-
-Use `_ = (a * b) * φ (T z) := by`. Rewrite using `[integral_const_mul, hlast, hinv]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = Φ (-z) := by`. Rewrite using `[hab, one_mul, hφdef, hψdef]`.
-
-Simplify using `only [map_neg, ContinuousLinearEquiv.symm_apply_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem selfDual_of_transport {V E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]
@@ -109,13 +105,11 @@ theorem selfDual_of_transport {V E : Type} [NormedAddCommGroup V] [NormedSpace �
         simp only [map_neg, ContinuousLinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `set f : (κ → ℝ) →ₗ[ℝ] (κ → ℝ) := Matrix.toLin' (Matrix.diagonal d) with hf`. Establish `hdet : LinearMap.det f = ∏ k, d k`. Rewrite using `[hf, LinearMap.det_toLin', Matrix.det_diagonal]`. Establish `hne : LinearMap.det f ≠ 0`. Rewrite using `[hdet]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => hd k`. Use `set D : (κ → ℝ) ≃L[ℝ] (κ → ℝ) := (LinearMap.equivOfDetNeZero f hne).toContinuousLinearEquiv with hDdef`. Establish `hDf : ∀ x, D x = f x` using `fun x => rfl`. Use `⟨D, ?_, ?_⟩` and prove the remaining obligations. Introduce `y k`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hDf, hf, Matrix.toLin'_apply, Matrix.mulVec_diagonal]`. Introduce `g`. Establish `hmap` using `MeasureTheory.Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (κ → ℝ)) hne`. Establish `hcoe : (⇑D.toHomeomorph : (κ → ℝ) → (κ → ℝ)) = ⇑f` using `rfl`. Establish `h` using `D.toHomeomorph.measurableEmbedding.integral_map (μ := (volume : Measure (κ → ℝ))) g`.
-
-Rewrite `h` using `[hcoe, hmap, integral_smul_measure, ENNReal.toReal_ofReal (abs_nonneg _), hdet, abs_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_diag_equiv (κ : Type) [Fintype κ] (d : κ → ℝ) (hd : ∀ k, d k ≠ 0) :
     ∃ D : (κ → ℝ) ≃L[ℝ] (κ → ℝ), (∀ y k, D y k = d k * y k) ∧
@@ -144,7 +138,7 @@ theorem exists_diag_equiv (κ : Type) [Fintype κ] (d : κ → ℝ) (hd : ∀ k,
       _ = _ := by rw [← h, Complex.real_smul]
 
 /- English proof (translation)
-Use `⟨(EuclideanSpace.equiv κ ℝ).symm, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Simplify using `[PiLp.inner_apply, mul_comm]`. Introduce `g`. Conclude with `(PiLp.volume_preserving_toLp κ).integral_comp (MeasurableEquiv.toLp 2 (κ → ℝ)).measurableEmbedding g`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_euclid_equiv (κ : Type) [Fintype κ] :
     ∃ T : (κ → ℝ) ≃L[ℝ] EuclideanSpace ℝ κ, (∀ x y, inner ℝ (T x) (T y) = ∑ k, x k * y k) ∧
@@ -157,19 +151,19 @@ theorem exists_euclid_equiv (κ : Type) [Fintype κ] :
       (MeasurableEquiv.toLp 2 (κ → ℝ)).measurableEmbedding g
 
 /- English proof (translation)
-Take `⟨D, hD, hDI⟩` from `exists_diag_equiv κ d hd`. Take `⟨T, hT, hTI⟩` from `exists_euclid_equiv κ`. Use `set s : ℝ := ∏ k, √|d k| with hsdef`. Establish `hs0 : 0 < s` using `Finset.prod_pos fun k _ => Real.sqrt_pos.2 (abs_pos.2 (hd k))`. Establish `hsq : s * s = |∏ k, d k|`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.abs_prod, hsdef, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => Real.mul_self_sqrt (abs_nonneg _)`. Establish `hr : |∏ k, d k| ≠ 0` using `abs_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun k _ => hd k)`. Establish `: (ENNReal.ofReal s • (volume : Measure (κ → ℝ))).IsAddHaarMeasure` using `Measure.IsAddHaarMeasure.smul _ (by simpa using hs0) ENNReal.ofReal_ne_top`. Establish `hint : ∀ g : (κ → ℝ) → ℂ, ∫ x, g x ∂(ENNReal.ofReal s • (volume : Measure (κ → ℝ))) = (s : ℂ) * ∫ x, g x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[integral_smul_measure, ENNReal.toReal_ofReal hs0.le, Complex.real_smul]`. Establish `hsym : ∀ x y : κ → ℝ, ∑ k, d k * (x k * y k) = ∑ k, d k * (y k * x k)`. Introduce `x y`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∀ x y : κ → ℝ, ∑ k, d k * (x k * y k) = inner ℝ (T x) ((D.trans T) y)`. Introduce `x y`. Rewrite using `[ContinuousLinearEquiv.trans_apply, hT]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hD]`. Expand and normalize the polynomial expressions, which then agree. Establish `hab : (s : ℂ) * ((s : ℂ) * ((|∏ k, d k|⁻¹ : ℝ) : ℂ)) = 1`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, hsq, ← Complex.ofReal_mul, mul_inv_cancel₀ hr, Complex.ofReal_one]`. Establish `haI : ∀ g : EuclideanSpace ℝ κ → ℂ, ∫ x, g (T x) ∂(ENNReal.ofReal s • (volume : Measure (κ → ℝ))) = (s : ℂ) * ∫ w, g w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[hint, hTI]`. Establish `hbI : ∀ g : EuclideanSpace ℝ κ → ℂ, ∫ x, g ((D.trans T) x) ∂(ENNReal.ofReal s • (volume : Measure (κ → ℝ))) = ((s : ℂ) * ((|∏ k, d k|⁻¹ : ℝ) : ℂ)) * ∫ w, g w`. Introduce `g`. Rewrite using `[hint]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearEquiv.trans_apply]`. Rewrite using `[hDI (fun x => g (T x)), hTI]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `selfDual_of_transport (V := κ → ℝ) (E := EuclideanSpace ℝ κ) (fun x y => ∑ k, d k * (x k * y k)) hsym T (D.trans T) hR _ _ _ hab haI hbI`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem selfDual_diag (κ : Type) [Fintype κ] (d : κ → ℝ) (hd : ∀ k, d k ≠ 0) :
     SelfDual (ENNReal.ofReal (∏ k, √|d k|) • (volume : Measure (κ → ℝ)))
@@ -217,19 +211,15 @@ theorem selfDual_diag (κ : Type) [Fintype κ] (d : κ → ℝ) (hd : ∀ k, d k
     (fun x y => ∑ k, d k * (x k * y k)) hsym T (D.trans T) hR _ _ _ hab haI hbI
 
 /- English proof (translation)
-Introduce `κ _ d hd μ hμ`. Establish `hν` using `selfDual_diag κ d hd`. Establish `: (ENNReal.ofReal (∏ k, √|d k|) • (volume : Measure (κ → ℝ))).IsAddHaarMeasure` using `hν.1`. Set `Bl : (κ → ℝ) →ₗ[ℝ] (κ → ℝ) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun x y => ∑ k, d k * (x k * y k)) (fun x x' y => by`. Simplify using `only [Pi.add_apply, ← Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by ring)`. Use the proof step `(fun c x y => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring)`. Use the proof step `(fun x y y' => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring)`. Use the proof step `(fun c x y => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hBl : ∀ x y, Bl x y = ∑ k, d k * (x k * y k)` using `fun x y => rfl`. Establish `hsymm : ∀ x y, Bl x y = Bl y x` using `fun x y => by`. Rewrite using `[hBl, hBl]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `hnd : ∀ x, (∀ y, Bl x y = 0) → x = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Use function extensionality and compare the values at `k`. Establish `h` using `hx (Pi.single k 1)`. Rewrite `h` using `[hBl]`. Simplify using `only [Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`.
-
-Conclude with `(mul_eq_zero.1 h).resolve_left (hd k)`. Take `⟨-, hsch⟩` from `GlobalTheory.fourier_inversion_haar_symm_form Bl hsymm hnd (ENNReal.ofReal (∏ k, √|d k|) • (volume : Measure (κ → ℝ))) inferInstance`. Take `⟨u, -, hu_cs, hu_sm, -, hu0⟩` from `exists_contDiff_tsupport_subset (n := ⊤) (x := (0 : κ → ℝ)) (s := Set.univ) Filter.univ_mem`. Establish `hΦcs : HasCompactSupport (⇑Complex.ofRealCLM ∘ u)` using `hu_cs.comp_left (map_zero _)`. Establish `hΦsm` using `Complex.ofRealCLM.contDiff.comp hu_sm`.
-
-Establish `hI` using `(hsch (hΦcs.toSchwartzMap hΦsm)).2`. Conclude with `SelfDual.eq_of_test hν hμ (⇑Complex.ofRealCLM ∘ u) hΦsm.continuous hΦcs hI 0 (by simp [hu0])`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_selfDual_diag : ∀ (κ : Type) [Fintype κ] (d : κ → ℝ), (∀ k, d k ≠ 0) →
     ∀ μ : Measure (κ → ℝ), SelfDual μ (fun x y => Complex.exp

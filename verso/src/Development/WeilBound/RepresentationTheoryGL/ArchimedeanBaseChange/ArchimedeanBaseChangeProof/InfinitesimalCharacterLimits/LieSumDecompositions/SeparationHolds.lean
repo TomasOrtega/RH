@@ -10,7 +10,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz
 
 /- English proof (translation)
-The claim follows from `separation_of_six_inputs (SliceUniqueness.sliceU_of_noLog2 noLog_holds) blocks_holds leaf_holds2 node_holds types_holds twConc_holds`.
+A detailed English derivation is pending.
 -/
 theorem separation_holds : Sep4 :=
   separation_of_six_inputs (SliceUniqueness.sliceU_of_noLog2 noLog_holds) blocks_holds leaf_holds2 node_holds types_holds twConc_holds

@@ -15,7 +15,7 @@ def twP (r : Oˣ) (y : N.X) (g : N.Gt) : (N.twist β u).Gt :=
   ⟨g.b, fun z => g.s z * r ^ β.be y z, (N.twG β r g (fun z => β.be y z) (fun _ _ => map_add _ _ _)).mult⟩
 
 /- English proof (translation)
-The claim follows from `NumD.Gt.ext rfl (funext fun (z : N.X) => by show g.s z * g'.s z / N.θ (N.c z) g.b g'.b * r ^ β.be (y + y') z = g.s z * r ^ β.be y z * (g'.s z * r ^ β.be y' z) / N.θ (N.c z) g.b g'.b rw [map_add, LinearMap.add_apply, zpow_add] apply Additive.ofMul.injective; simp only [ofMul_mul, …`.
+A detailed English derivation is pending.
 -/
 theorem twistMap_add_mul (r : Oˣ) (y y' : N.X) (g g' : N.Gt) :
     twP β u r (y + y') (g * g') = twP β u r y g * twP β u r y' g' :=
@@ -26,7 +26,7 @@ theorem twistMap_add_mul (r : Oˣ) (y y' : N.X) (g g' : N.Gt) :
     apply Additive.ofMul.injective; simp only [ofMul_mul, ofMul_div]; abel)
 
 /- English proof (translation)
-The claim follows from `NumD.Gt.ext rfl (funext fun (z : N.X) => by show g.s z * g'.s z / N.θ (N.c z) g.b g'.b * (r * r') ^ β.be y z = g.s z * r ^ β.be y z * (g'.s z * r' ^ β.be y z) / N.θ (N.c z) g.b g'.b rw [mul_zpow] apply Additive.ofMul.injective; simp only [ofMul_mul, ofMul_div]; abel)`.
+A detailed English derivation is pending.
 -/
 theorem twistMap_mul_mul (r r' : Oˣ) (y : N.X) (g g' : N.Gt) :
     twP β u (r * r') y (g * g') = twP β u r y g * twP β u r' y g' :=
@@ -37,9 +37,9 @@ theorem twistMap_mul_mul (r r' : Oˣ) (y : N.X) (g g' : N.Gt) :
     apply Additive.ofMul.injective; simp only [ofMul_mul, ofMul_div]; abel)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Simplify using `only [pow_zero]`. Use `NumD.Gt.ext rfl (funext fun (z : N.X) => ?_)` and prove the remaining obligations. Use `show (1 : Oˣ) = 1 * 1 ^ β.be y z`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `succ m ih`. Rewrite using `[pow_succ (twP β u r y g) m, ih, ← twistMap_mul_mul, ← pow_succ, ← pow_succ]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twistMap_pow (r : Oˣ) (y : N.X) (g : N.Gt) (m : ℕ) : twP β u r y g ^ m = twP β u (r ^ m) y (g ^ m) := by
   induction m with
@@ -52,7 +52,7 @@ theorem twistMap_pow (r : Oˣ) (y : N.X) (g : N.Gt) (m : ℕ) : twP β u r y g ^
     rw [pow_succ (twP β u r y g) m, ih, ← twistMap_mul_mul, ← pow_succ, ← pow_succ]
 
 /- English proof (translation)
-The claim follows from `NumD.Gt.ext rfl (funext fun (z : N.X) => by show N.τ y z * u ^ β.be y z = (N.twist β u).τ y z rw [NumD.twist_τ])`.
+A detailed English derivation is pending.
 -/
 theorem twistMap_io (y : N.X) : twP β u u y (N.io y) = (N.twist β u).io y :=
   NumD.Gt.ext rfl (funext fun (z : N.X) => by
@@ -60,7 +60,7 @@ theorem twistMap_io (y : N.X) : twP β u u y (N.io y) = (N.twist β u).io y :=
     rw [NumD.twist_τ])
 
 /- English proof (translation)
-The claim follows from `NumD.Gt.ext rfl (funext fun (z : N.X) => by show g.s z * r ^ β.be (j • y) z = g.s z * (r ^ j) ^ β.be y z rw [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul, zpow_mul, zpow_natCast])`.
+A detailed English derivation is pending.
 -/
 theorem twistMap_nsmul (r : Oˣ) (j : ℕ) (y : N.X) (g : N.Gt) : twP β u r (j • y) g = twP β u (r ^ j) y g :=
   NumD.Gt.ext rfl (funext fun (z : N.X) => by
@@ -68,9 +68,9 @@ theorem twistMap_nsmul (r : Oˣ) (j : ℕ) (y : N.X) (g : N.Gt) : twP β u r (j 
     rw [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul, zpow_mul, zpow_natCast])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `g g' h`. Establish `hb : g.b = g'.b` using `congrArg (fun x => x.b) h`. Establish `hs : ∀ z, g.s z * r ^ β.be y z = g'.s z * r ^ β.be y z` using `fun z => congrFun (congrArg (fun x => x.s) h) z`. Conclude with `NumD.Gt.ext hb (funext fun z => mul_right_cancel (hs z))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨⟨h.b, fun z => h.s z * r⁻¹ ^ β.be y z, (N.twG β r⁻¹ ⟨h.b, h.s, h.mult⟩ (fun z => β.be y z) (fun _ _ => map_add _ _ _)).mult⟩, ?_⟩` and prove the remaining obligations. Use `NumD.Gt.ext rfl (funext fun (z : N.X) => ?_)` and prove the remaining obligations. Use `show h.s z * r⁻¹ ^ β.be y z * r ^ β.be y z = h.s z`. Rewrite using `[inv_zpow, inv_mul_cancel_right]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twistMap_bijective₂ (r : Oˣ) (y : N.X) : Function.Bijective (twP β u r y) := by
   constructor
@@ -91,20 +91,20 @@ def isoG {M M' : NumD O} (J : NumD.Iso M M') : M.Gt →* M'.Gt :=
     (((NumD.Hom.ofIso J).rel_iff _ _).1 (((NumD.Hom.ofIso J).rel_img g).mul ((NumD.Hom.ofIso J).rel_img h))).symm
 
 /- English proof (translation)
-Rewrite using `[← NumD.Hom.ofIso_rel, NumD.Hom.rel_iff]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem rel_iff_isoG {M M' : NumD O} (J : NumD.Iso M M') (g : M.Gt) (g' : M'.Gt) : J.Rel g g' ↔ g' = isoG J g := by
   rw [← NumD.Hom.ofIso_rel, NumD.Hom.rel_iff]
   exact Iff.rfl
 
 /- English proof (translation)
-The claim follows from `(((NumD.Hom.ofIso J).rel_iff _ _).1 ((NumD.Hom.ofIso J).rel_io y)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isoG_io {M M' : NumD O} (J : NumD.Iso M M') (y : M.X) : isoG J (M.io y) = M'.io (J.e y) :=
   (((NumD.Hom.ofIso J).rel_iff _ _).1 ((NumD.Hom.ofIso J).rel_io y)).symm
 
 /- English proof (translation)
-Rewrite `h` using `[div_eq_one.mpr h1, div_eq_one.mpr h2, div_one]`. Conclude with `div_eq_one.mp h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_div_eq_div_div {G : Type*} [CommGroup G] {a b c d x y : G} (h1 : a = b) (h2 : c = d)
     (h : x / y = a / b / (c / d)) : x = y := by
@@ -112,15 +112,13 @@ private theorem eq_of_div_eq_div_div {G : Type*} [CommGroup G] {a b c d x y : G}
   exact div_eq_one.mp h
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_one (isoG J)).2 fun g hg => ?_, fun g' => ?_⟩` and prove the remaining obligations. Take `⟨hb, hs⟩` from `(rel_iff_isoG J g 1).2 hg.symm`. Establish `hgb : g.b = 1`. Establish `h1 : J.φ g.b = 1` using `by rw [← hb]; rfl`. Conclude with `(MulEquiv.map_eq_one_iff J.φ).1 h1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `NumD.Gt.ext hgb (funext fun χ => ?_)` and prove the remaining obligations. Establish `h2` using `hs χ`. Simplify using `only [NumD.Gt.generator_inv_base, hgb, _root_.mul_one, J.h_one, _root_.one_mul] at h2`. Use `show g.s χ = 1`. Conclude with `mul_right_cancel (h2.symm.trans (_root_.one_mul _).symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨J.φ.symm g'.b, fun χ => g'.s (J.e χ) * J.h (M.c χ * J.φ.symm g'.b) / (J.h (M.c χ) * J.h (J.φ.symm g'.b)), fun χ χ' => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hm` using `g'.mult (J.e χ) (J.e χ')`. Establish `ht` using `J.θ_eq (M.c χ) (M.c χ') (J.φ.symm g'.b)`. Rewrite `hm` using `[J.c_eq, J.c_eq, ← map_add J.e χ χ']`. Rewrite `ht` using `[MulEquiv.apply_symm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[M.c_add]`. Use `eq_of_div_eq_div_div hm ht ?_` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws.
-
-Use `((rel_iff_isoG J _ g').1 ⟨(J.φ.apply_symm_apply _).symm, fun χ => ?_⟩).symm show g'.s (J.e χ) * J.h (M.c χ * J.φ.symm g'.b) = g'.s (J.e χ) * J.h (M.c χ * J.φ.symm g'.b) / (J.h (M.c χ) * J.h (J.φ.symm g'.b)) * J.h (M.c χ) * J.h (J.φ.symm g'.b)` and prove the remaining obligations. Rewrite using `[mul_assoc _ (J.h (M.c χ)), div_mul_cancel]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoG_bijective {M M' : NumD O} (J : NumD.Iso M M') : Function.Bijective (isoG J) := by
   refine ⟨(injective_iff_map_eq_one (isoG J)).2 fun g hg => ?_, fun g' => ?_⟩
@@ -150,7 +148,7 @@ theorem isoG_bijective {M M' : NumD O} (J : NumD.Iso M M') : Function.Bijective 
 variable {β u} (J : NumD.Iso (N.twist β u) N')
 
 /- English proof (translation)
-Take `⟨p, ⟨h1, h2, h3⟩, e, hr⟩` from `h`. Establish `hp : p.1.2 = twP β u r q.1.1.toAdd q.1.2` using `NumD.Gt.ext h2 (funext h3)`. Use `⟨e.trans (congrArg (fun x => J.e (Multiplicative.toAdd x)) h1), ?_⟩` and prove the remaining obligations. Rewrite using `[← hp]`. Conclude with `(rel_iff_isoG J _ _).1 hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twJ_elim {r : Oˣ} {j : ℕ} {q : N.QT j} {q' : N'.QT j} (h : TwJ β u r J q q') :
     q'.1.1.toAdd = J.e q.1.1.toAdd ∧ q'.1.2 = isoG J (twP β u r q.1.1.toAdd q.1.2) := by
@@ -174,15 +172,13 @@ def tauHom {r : Oˣ} {j : ℕ} (h : r ^ j = u) : N.QT j →* N'.QT j :=
       ((congrArg (isoG J) (twistMap_add_mul β u r q.1.1.toAdd q'.1.1.toAdd q.1.2 q'.1.2)).trans (map_mul _ _ _)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `q₁ q₂ hq`. Establish `h1 : J.e q₁.1.1.toAdd = J.e q₂.1.1.toAdd` using `congrArg (fun q => q.1.1.toAdd) hq`. Establish `h2 : isoG J (twP β u r q₁.1.1.toAdd q₁.1.2) = isoG J (twP β u r q₂.1.1.toAdd q₂.1.2)` using `congrArg (fun q => q.1.2) hq`. Establish `e1 : q₁.1.1.toAdd = q₂.1.1.toAdd` using `J.e.injective h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[e1]`. Establish `e2` using `(twistMap_bijective₂ β u r _).1 ((isoG_bijective J).1 h2)`. Conclude with `Subtype.ext (Prod.ext (Multiplicative.toAdd.injective e1) e2)`. Introduce `q'`. Take `⟨g', hg'⟩` from `(isoG_bijective J).2 q'.1.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `(twistMap_bijective₂ β u r (J.e.symm q'.1.1.toAdd)).2 g'`. Use `⟨⟨(Multiplicative.ofAdd (J.e.symm q'.1.1.toAdd), g), ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hq` using `N'.mem_QT.1 q'.2`. Establish `e0 : twP β u r (J.e.symm q'.1.1.toAdd) g ^ j = twP β u u (J.e.symm q'.1.1.toAdd) (g ^ j)` using `(twistMap_pow β u r (J.e.symm q'.1.1.toAdd) g j).trans (congrArg (fun s => twP β u s (J.e.symm q'.1.1.toAdd) (g ^ j)) h)`. Establish `hq2 : isoG J (twP β u u (J.e.symm q'.1.1.toAdd) (g ^ j)) = N'.io q'.1.1.toAdd` using `(congrArg (isoG J) e0.symm).trans ((map_pow (isoG J) _ j).trans ((congrArg (fun t => isoG J t ^ j) hg).trans ((congrArg (· ^ j) hg').trans hq)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hio : isoG J (twP β u u (J.e.symm q'.1.1.toAdd) (N.io (J.e.symm q'.1.1.toAdd))) = N'.io q'.1.1.toAdd` using `(congrArg (isoG J) (twistMap_io β u (J.e.symm q'.1.1.toAdd))).trans ((isoG_io J _).trans (congrArg N'.io (J.e.apply_symm_apply _)))`. Conclude with `N.mem_QT.2 ((twistMap_bijective₂ β u u _).1 ((isoG_bijective J).1 (hq2.trans hio.symm)))`. Use `Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Use `show Multiplicative.ofAdd (J.e (J.e.symm q'.1.1.toAdd)) = q'.1.1`. Rewrite using `[J.e.apply_symm_apply]`.
-
-Both sides reduce to the same expression. Conclude with `(congrArg (isoG J) hg).trans hg'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tauHom_bijective {r : Oˣ} {j : ℕ} (h : r ^ j = u) : Function.Bijective (tauHom J h) := by
   constructor
@@ -216,7 +212,7 @@ theorem tauHom_bijective {r : Oˣ} {j : ℕ} (h : r ^ j = u) : Function.Bijectiv
       · exact (congrArg (isoG J) hg).trans hg'
 
 /- English proof (translation)
-Use `Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `congrArg Multiplicative.ofAdd (map_nsmul J.e j z)`. Conclude with `(congrArg (isoG J) ((twistMap_nsmul β u r j z (N.io z)).trans (show twP β u (r ^ j) z (N.io z) = (N.twist β u).io z by rw [h, twistMap_io]))).trans (isoG_io J z)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tauHom_qTriv {r : Oˣ} {j : ℕ} (h : r ^ j = u) (z : N.X) : tauHom J h (N.qTriv j z) = N'.qTriv j (J.e z) := by
   refine Subtype.ext (Prod.ext ?_ ?_)
@@ -225,7 +221,7 @@ theorem tauHom_qTriv {r : Oˣ} {j : ℕ} (h : r ^ j = u) (z : N.X) : tauHom J h 
       (show twP β u (r ^ j) z (N.io z) = (N.twist β u).io z by rw [h, twistMap_io]))).trans (isoG_io J z)
 
 /- English proof (translation)
-Use `show q₁.1.2.s q₂.1.1.toAdd * r ^ β.be q₁.1.1.toAdd q₂.1.1.toAdd * cubN N.θ j 1 q₂.1.2.b q₁.1.2.b / (q₂.1.2.s q₁.1.1.toAdd * r ^ β.be q₂.1.1.toAdd q₁.1.1.toAdd * cubN N.θ j 1 q₁.1.2.b q₂.1.2.b) = q₁.1.2.s q₂.1.1.toAdd * cubN N.θ j 1 q₂.1.2.b q₁.1.2.b / (q₂.1.2.s q₁.1.1.toAdd * cub …`. Rewrite using `[β.symm q₂.1.1.toAdd q₁.1.1.toAdd]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem wp_twQ {r : Oˣ} {j : ℕ} (h : r ^ j = u) (q₁ q₂ : N.QT j) :
     (N.twist β u).wp (twQ (β := β) h q₁) (twQ h q₂) = N.wp q₁ q₂ := by
@@ -241,19 +237,17 @@ end GlobalTheory.Relabel.TwIso
 open GlobalTheory.Relabel.TwIso in
 
 /- English proof (translation)
-Introduce `O _ N N' k β u J`. Use `⟨fun r j h => ?_, fun r₁ r₂ n n' m q₁ q₂ q₁' q₂' hr e1 e2 t1 t2 => ?_⟩` and prove the remaining obligations. Use `⟨MulEquiv.ofBijective (tauHom J h) (tauHom_bijective J h), fun q q' => ?_, fun q₁ q₂ => ?_, fun q₁ q₂ => ?_⟩` and prove the remaining obligations. Use `show tauHom J h q = q' ↔ _`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `⟨twQ (β := β) h q, ⟨rfl, rfl, fun _ => rfl⟩, rfl, (rel_iff_isoG J _ _).2 rfl⟩`. Introduce `ht`. Take `⟨e, he⟩` from `twJ_elim J ht`. Use `Subtype.ext (Prod.ext ?_ he.symm)` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(congrArg Multiplicative.ofAdd e).symm`. Rewrite using `[NumD.qEq_iff, NumD.qEq_iff] show (∃ z, q₂ = q₁ * N.qTriv j z) ↔ ∃ z, tauHom J h q₂ = tauHom J h q₁ * N'.qTriv j z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨J.e z, (map_mul _ _ _).trans (congrArg _ (tauHom_qTriv J h z))⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨z, hz⟩`. Use `⟨J.e.symm z, (tauHom_bijective J h).1 ?_⟩` and prove the remaining obligations. Conclude with `hz.trans ((congrArg (tauHom J h q₁ * ·) ((tauHom_qTriv J h (J.e.symm z)).trans (congrArg (N'.qTriv j) (J.e.apply_symm_apply z))).symm).trans (map_mul (tauHom J h) q₁ _).symm)`. Establish `hrel : ∀ q : N.QT j, (NumD.Hom.ofIso J).Rel (twQ (β` using `β) h q).1.2 (tauHom J h q).1.2 := fun q => (NumD.Hom.ofIso J).rel_img _`. Establish `hw` using `NumD.Hom.wp_eq (NumD.Hom.ofIso J) (twQ (β := β) h q₁) (twQ (β := β) h q₂) (tauHom J h q₁) (tauHom J h q₂) rfl (hrel q₁) rfl (hrel q₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[wp_twQ]`. Use `show N'.wp (tauHom J h q₁) (tauHom J h q₂) = _`. Rewrite using `[hw]`. Conclude with `Units.ext rfl`. Take `⟨a1, b1⟩` from `twJ_elim J t1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a2, b2⟩` from `twJ_elim J t2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Multiplicative.toAdd.injective (a1.trans ((congrArg (fun x => J.e (Multiplicative.toAdd x)) e1).trans a2.symm))`. Rewrite using `[b1, b2]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[twistMap_pow, hr, e1, e2]`. Use `_ = _ := map_pow _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Relabel.twJ_mulEquiv : ∀ (O : Type) [CommRing O] (N N' : NumD O) (k : ℕ) (β : N.Form k) (u : Oˣ) (J : NumD.Iso (N.twist β u) N'), (∀ (r : Oˣ) (j : ℕ), r ^ j = u → ∃ τ : N.QT j ≃* N'.QT j, (∀ q q', τ q = q' ↔ TwJ β u r J q q') ∧ (∀ q₁ q₂, N.QEq q₁ q₂ ↔ N'.QEq (τ q₁) (τ q₂)) ∧ ∀ q₁ q₂, N'.wp (τ q₁) (τ q₂) = N.wp q₁ q₂) ∧ ∀ (r₁ r₂ : Oˣ) (n n' m : ℕ) (q₁ : N.QT n) (q₂ : N.QT n') (q₁' : N'.QT n) (q₂' : N'.QT n'), r₂ ^ m = r₁ → q₁.1.1 = q₂.1.1 → q₁.1.2 = q₂.1.2 ^ m → TwJ β u r₁ J q₁ q₁' → TwJ β u r₂ J q₂ q₂' → q₁'.1.1 = q₂'.1.1 ∧ q₁'.1.2 = q₂'.1.2 ^ m := by
   intro O _ N N' k β u J

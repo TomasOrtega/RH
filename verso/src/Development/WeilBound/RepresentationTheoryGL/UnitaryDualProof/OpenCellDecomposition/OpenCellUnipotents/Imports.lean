@@ -12,9 +12,7 @@ open GroundTheory.Automorphic.GLnLocal
 namespace PositivityTheory.RgUd.CellA
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.Parabolic.conj_permGL_apply (k := k) w ((pm k w)⁻¹ * z * pm k w) i j`. Establish `e : GlobalTheory.Parabolic.permGL k w * ((pm k w)⁻¹ * z * pm k w) * (GlobalTheory.Parabolic.permGL k w)⁻¹ = z`. Express the relevant statement in the definitionally equal form `pm k w * ((pm k w)⁻¹ * z * pm k w) * (pm k w)⁻¹ = z`. Use `group`. Rewrite `h` using `[e]`.
-
-Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem perm_matrix_conj_apply {k : Type} [Field k] {N : ℕ} (w : Equiv.Perm (Fin N)) (z : GL (Fin N) k)
     (i j : Fin N) :
@@ -28,19 +26,17 @@ private theorem perm_matrix_conj_apply {k : Type} [Field k] {N : ℕ} (w : Equiv
   exact h.symm
 
 /- English proof (translation)
-Rewrite using `[mem_unipB]`. Rewrite `hz` using `[mem_unipRadLower]`. Take `⟨hlow, hdiag⟩` from `hz`. Rewrite `hlow` using `[mem_parabLower_iff]`. Establish `hmono` using `Tuple.monotone_sort (wKey d hd)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hanti : ∀ i j : Fin N, j ≤ i → blk (stdBlocks d hd) (wOpen d hd i) ≤ blk (stdBlocks d hd) (wOpen d hd j)`. Introduce `i j hji`. Use `Prod.Lex.monotone_fst _ _ (hmono hji)` as an intermediate fact. Simplify `this` using `[wKey, wOpen]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion.
 
-Introduce `i j hji`. Rewrite using `[perm_matrix_conj_apply]`. Take `⟨⟨a, p⟩, hp⟩ : ∃ x, stdBlocks d hd x = wOpen d hd i` from `⟨_, Equiv.apply_symm_apply _ _⟩`. Take `⟨⟨b, q⟩, hq⟩ : ∃ x, stdBlocks d hd x = wOpen d hd j` from `⟨_, Equiv.apply_symm_apply _ _⟩`. Establish `hab` using `hanti i j hji.le`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hab` using `[← hp, ← hq]`. Simplify using `only [blk, Equiv.symm_apply_apply] at hab`. Rewrite using `[← hp, ← hq]`. Break down `lt_or_eq_of_le hab with hlt | rfl` into its components or cases. Conclude with `hlow a b p q hlt`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdiag]`. Establish `hpq : p ≠ q`. Introduce `hpq`. Substitute `hpq` using the available equality. Establish `hij : wOpen d hd i = wOpen d hd j` using `by rw [← hp, ← hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd ((wOpen d hd).injective hij) (ne_of_gt hji)`. Conclude with `Matrix.one_apply_ne hpq`. Introduce `i`. Rewrite using `[perm_matrix_conj_apply]`. Take `⟨⟨a, p⟩, hp⟩ : ∃ x, stdBlocks d hd x = wOpen d hd i` from `⟨_, Equiv.apply_symm_apply _ _⟩`.
-
-Rewrite using `[← hp, hdiag]`. Conclude with `Matrix.one_apply_eq p`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pm_wOpen_conj_mem_unipB_of_mem_unipRadLower {k : Type} [Field k] {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N)
     {z : GL (Fin N) k} (hz : z ∈ unipRadLower k (stdBlocks d hd)) :
@@ -80,35 +76,31 @@ private theorem pm_wOpen_conj_mem_unipB_of_mem_unipRadLower {k : Type} [Field k]
     exact Matrix.one_apply_eq p
 
 /- English proof (translation)
-Take `⟨m, hm1, hfix, hwhit⟩` from `GlobalTheory.CompanionTheory.Rodier.OpenBump.exists_level ψ hψ d hd ρ hρ v`. Establish `hKo : IsOpen (congruenceSubgroup k N m : Set (GL (Fin N) k))` using `isOpen_congruenceSubgroup k N m`. Take `⟨f, hsupp, hfK⟩` from `GlobalTheory.CompanionTheory.Rodier.OpenBump.exists_smInd_bump (parab k (stdBlocks d hd)) (congruenceSubgroup k N m) hKo _ v hfix`. Set `f' : IndSp (stdBlocks d hd) ρ` to `⟨(ind (parab k (stdBlocks d hd)) ((twist ρ (deltaHalf k fun a => Fin (d a))).comp (leviProj k (stdBlocks d hd)))) (pm k (wOpen d hd))⁻¹ f.1, smoothPart_stable _ _ _ f.2⟩`. Establish `hf' : ∀ x, f'.1.1 x = f.1.1 (x * (pm k (wOpen d hd))⁻¹)` using `fun x => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hconj : Continuous fun g : GL (Fin N) k => pm k (wOpen d hd) * g * (pm k (wOpen d hd))⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`. Establish `hmemL : ∀ u : GL (Fin N) k, u ∈ (unipU k d hd ⊓ (congruenceSubgroup k N m).comap (MulAut.conj (pm k (wOpen d hd))).toMonoidHom : Subgroup (GL (Fin N) k)) ↔ u ∈ unipU k d hd ∧ pm k (wOpen d hd) * u * (pm k (wOpen d hd))⁻¹ ∈ congruenceSubgroup k N m`. Introduce `u`. Simplify using `[Subgroup.mem_inf, Subgroup.mem_comap, MulAut.conj_apply]`. Establish `hUcl : IsClosed (unipU k d hd : Set (GL (Fin N) k))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : IsClosed (unipB k (Fin N) : Set (GL (Fin N) k))` using `GlobalTheory.JacInj.isClosed_unipRad (points (Fin N))`. Establish `h2 : IsClosed (unipRadLower k (stdBlocks d hd) : Set (GL (Fin N) k))` using `GlobalTheory.JacInj.isClosed_unipRad (opp (stdBlocks d hd))`. Establish `h3` using `h2.preimage hconj`. Establish `: (unipU k d hd : Set (GL (Fin N) k)) = (unipB k (Fin N) : Set (GL (Fin N) k)) ∩ ((fun g : GL (Fin N) k => pm k (wOpen d hd) * g * (pm k (wOpen d hd))⁻¹) ⁻¹' (unipRadLower k (stdBlocks d hd) : Set (GL (Fin N) k)))`. Use extensionality with `u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[unipU, Subgroup.mem_inf, Subgroup.mem_comap, MulAut.conj_apply]`. Rewrite using `[this]`. Conclude with `h1.inter h3`. Establish `hOeq : ((fun g : GL (Fin N) k => pm k (wOpen d hd) * g * (pm k (wOpen d hd))⁻¹) ⁻¹' (congruenceSubgroup k N m : Set (GL (Fin N) k))) = (fun g : GL (Fin N) k => (pm k (wOpen d hd))⁻¹ * g * pm k (wOpen d hd)) '' (congruenceSubgroup k N m : Set (GL (Fin N) k))`. Use extensionality with `u`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Conclude with `⟨_, hu, by group⟩`. Introduce and unpack `⟨y, hy, rfl⟩ show pm k (wOpen d hd) * ((pm k (wOpen d hd))⁻¹ * y * pm k (wOpen d hd)) * (pm k (wOpen d hd))⁻¹ ∈ (congruenceSubgroup k N m : Set (GL (Fin N) k))`. Establish `hy' : pm k (wOpen d hd) * ((pm k (wOpen d hd))⁻¹ * y * pm k (wOpen d hd)) * (pm k (wOpen d hd))⁻¹ = y` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy']`. Conclude with `hy`. Establish `hLset : ((unipU k d hd ⊓ (congruenceSubgroup k N m).comap (MulAut.conj (pm k (wOpen d hd))).toMonoidHom : Subgroup (GL (Fin N) k)) : Set (GL (Fin N) k)) = ((fun g : GL (Fin N) k => pm k (wOpen d hd) * g * (pm k (wOpen d hd))⁻¹) ⁻¹' (congruenceSubgroup k N m : Set (GL (Fin N) k))) …`. Use extensionality with `u`. Rewrite using `[SetLike.mem_coe, hmemL]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fun h => ⟨h.2, h.1⟩, fun h => ⟨h.2, h.1⟩⟩`. Use `⟨m, hm1, hwhit, ?_, ?_, f', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hLset, hOeq]`. Conclude with `((isCompact_congruenceSubgroup k N m).image ((continuous_const.mul continuous_id).mul continuous_const)).inter_right hUcl`. Conclude with `⟨_, hKo.preimage hconj, hLset.symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show ∀ g : GL (Fin N) k, f'.1.1 g ≠ 0 → g ∈ cell k d hd (wOpen d hd)`. Introduce `g hg`. Rewrite `hg` using `[hf']`. Take `⟨p, hp, κ, hκ, hpk⟩` from `hsupp _ hg`. Take `⟨q, hq, z, _, hzL, hκqz⟩` from `GlobalTheory.CompanionTheory.Rodier.OpenBump.exists_parab_mul_lower d hd hm1 hκ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨p * q, Subgroup.mul_mem _ hp hq, _, pm_wOpen_conj_mem_unipB_of_mem_unipRadLower d hd hzL, ?_⟩` and prove the remaining obligations. Establish `hg' : g = g * (pm k (wOpen d hd))⁻¹ * pm k (wOpen d hd)` using `by group`. Rewrite using `[hg', hpk, hκqz]`. Use `group`. Introduce `u hu`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hu` using `[hmemL]`. Rewrite using `[hf']`. Conclude with `hfK _ hu.2`. Introduce `u hu hnot`. Rewrite using `[hf']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hne`. Take `⟨p, hp, κ, hκ, hpk⟩` from `hsupp _ hne`. Take `⟨q, hq, z, hzK, hzL, hκqz⟩` from `GlobalTheory.CompanionTheory.Rodier.OpenBump.exists_parab_mul_lower d hd hm1 hκ`. Establish `hlow : pm k (wOpen d hd) * u * (pm k (wOpen d hd))⁻¹ ∈ unipRadLower k (stdBlocks d hd)`. Use `hu` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [unipU, Subgroup.mem_inf, Subgroup.mem_comap] at this`. Simplify `this.2` using `[MulAut.conj_apply]`. Establish `hpq : p * q = (pm k (wOpen d hd) * u * (pm k (wOpen d hd))⁻¹) * z⁻¹`. Rewrite using `[hpk, hκqz]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : p * q = 1`. Apply `GlobalTheory.CompanionTheory.Rodier.OpenBump.eq_one_of_mem_parab_of_mem_lower (stdBlocks d hd)` to reduce the goal to its premises. Conclude with `Subgroup.mul_mem _ hp hq`. Rewrite using `[hpq]`. Conclude with `Subgroup.mul_mem _ hlow (Subgroup.inv_mem _ hzL)`.
-
-Apply `hnot` to reduce the goal to its premises. Rewrite using `[hmemL]`. Use `⟨hu, ?_⟩` and prove the remaining obligations. Establish `: pm k (wOpen d hd) * u * (pm k (wOpen d hd))⁻¹ = z`. Use `hpq.symm.trans h1` as an intermediate fact.
-
-Rewrite `this` using `[mul_inv_eq_one]`. Conclude with `this`. Rewrite using `[this]`. Conclude with `hzK`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bump (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k Circle) (hψ : Continuous ψ) (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) {W : Type}

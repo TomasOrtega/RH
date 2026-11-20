@@ -5,11 +5,11 @@ open CategoryTheory AlgebraicGeometry
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI := hA P`. Set `K` to `RingHom.ker (algebraMap A (Localization.AtPrime P))`. Establish `hK : K.IsPrime` using `RingHom.ker_isPrime _`. Establish `hle : ∀ Q : Ideal A, Q.IsPrime → Q ≤ P → K ≤ Q`. Introduce `Q hQ hQP`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `IsLocalization.comap_map_of_isPrime_disjoint P.primeCompl (Localization.AtPrime P) hQ (Set.disjoint_left.2 fun x hx hxQ ↦ hx (hQP hxQ))`. Rewrite using `[← h]`. Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`. Simplify using `[Ideal.mem_comap, hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : K = p` using `le_antisymm (hle p hp.1.1 hpP) (hp.2 ⟨hK, bot_le⟩ (hle p hp.1.1 hpP))`. Establish `h2 : K = q` using `le_antisymm (hle q hq.1.1 hqP) (hq.2 ⟨hK, bot_le⟩ (hle q hq.1.1 hqP))`. Conclude with `h1.symm.trans h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_minimalPrimes_le_of_isDomain_localization {A : Type} [CommRing A]
     (hA : ∀ (P : Ideal A) [P.IsPrime], IsDomain (Localization.AtPrime P))
@@ -31,11 +31,11 @@ theorem eq_of_minimalPrimes_le_of_isDomain_localization {A : Type} [CommRing A]
   exact h1.symm.trans h2
 
 /- English proof (translation)
-Establish `hfin` using `(minimalPrimes.finite_of_isNoetherianRing A).subset (Set.diff_subset (t := {p}))`. Establish `heq : (PrimeSpectrum.zeroLocus (p : Set A))ᶜ = ⋃ q ∈ minimalPrimes A \ {p}, PrimeSpectrum.zeroLocus (q : Set A)`. Use extensionality with `x`. Simplify using `only [Set.mem_compl_iff, PrimeSpectrum.mem_zeroLocus, SetLike.coe_subset_coe, Set.mem_iUnion, Set.mem_diff, Set.mem_singleton_iff, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Take `⟨q, hq, hqx⟩` from `Ideal.exists_minimalPrimes_le (I := ⊥) (J := x.asIdeal) bot_le`. Use `⟨q, ⟨hq, ?_⟩, hqx⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hx hqx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨q, ⟨hq, hne⟩, hqx⟩ hpx`. Conclude with `hne (eq_of_minimalPrimes_le_of_isDomain_localization hA hq hp hqx hpx)`. Rewrite using `[← isClosed_compl_iff, heq]`. Conclude with `hfin.isClosed_biUnion fun q _ ↦ PrimeSpectrum.isClosed_zeroLocus _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_zeroLocus_of_mem_minimalPrimes {A : Type} [CommRing A] [IsNoetherianRing A]
     (hA : ∀ (P : Ideal A) [P.IsPrime], IsDomain (Localization.AtPrime P))
@@ -62,27 +62,19 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨V, hVne, hVo⟩` from `hV`. Use `set f := Spec.map (CommRingCat.ofHom φ) with hf`. Establish `hAd : ∀ (P : Ideal A) [P.IsPrime], IsDomain (Localization.AtPrime P)` using `fun P _ ↦ (hA P).1`. Establish `hft : LocallyOfFiniteType f` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).mpr hφ`. Set `η` to `genericPoint (Spec (CommRingCat.of B))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hηV : η ∈ V` using `((genericPoint_spec _).mem_open_set_iff V.isOpen).mpr (by simpa using hVne)`. Set `y₀ : PrimeSpectrum A` to `f η`. Establish `hsp : ∀ x, y₀ ⤳ f x` using `fun x ↦ (genericPoint_specializes x).map f.continuous`. Establish `hW : IsOpen (Set.range (V.ι ≫ f))` using `(V.ι ≫ f).isOpenEmbedding.isOpen_range`. Establish `hy₀W : y₀ ∈ Set.range (V.ι ≫ f)` using `⟨⟨η, hηV⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin : y₀.asIdeal ∈ minimalPrimes A`. Use `⟨⟨y₀.isPrime, bot_le⟩, fun q hq hle ↦ ?_⟩` and prove the remaining obligations. Set `z : PrimeSpectrum A` to `⟨q, hq.1⟩`. Establish `hz : z ⤳ y₀` using `(PrimeSpectrum.le_iff_specializes z y₀).1 hle`. Take `⟨v, hv⟩` from `hz.mem_open hW hy₀W`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : y₀ ≤ z`. Rewrite using `[← hv, Scheme.Hom.comp_apply]`. Conclude with `(PrimeSpectrum.le_iff_specializes _ _).2 (hsp _)`. Conclude with `h2`. Establish `hZo : IsOpen (closure ({y₀} : Set (PrimeSpectrum A)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[PrimeSpectrum.closure_singleton]`. Conclude with `isOpen_zeroLocus_of_mem_minimalPrimes hAd hmin`. Set `Z : (Spec (CommRingCat.of A)).Opens` to `⟨closure ({y₀} : Set (PrimeSpectrum A)), hZo⟩`. Establish `hrange : Set.range f ⊆ Set.range Z.ι`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `specializes_iff_mem_closure.1 (hsp x)`. Set `g : Spec (CommRingCat.of B) ⟶ Z.toScheme` to `IsOpenImmersion.lift Z.ι f hrange`. Establish `hgf : g ≫ Z.ι = f` using `IsOpenImmersion.lift_fac _ _ _`. Use `haveI : _root_.IsReduced A := isReduced_ofLocalizationMaximal A fun P _ ↦ by haveI := hAd P; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Nonempty Z.toScheme := ⟨⟨y₀, subset_closure rfl⟩⟩`. Use `haveI : IrreducibleSpace Z.toScheme := Subtype.irreducibleSpace (isIrreducible_singleton (x := y₀)).closure`. Use `haveI : IsIntegral Z.toScheme := isIntegral_of_irreducibleSpace_of_isReduced _`. Establish `hZ : ∀ z : Z.toScheme, IsIntegrallyClosed (Z.toScheme.presheaf.stalk z)`. Introduce `z`.
-
-Establish `e₁` using `asIso (Z.ι.stalkMap z)`. Set `x : PrimeSpectrum A` to `Z.ι z`. Establish `hloc : IsLocalization.AtPrime ((Spec.structureSheaf A).presheaf.stalk x) x.asIdeal` using `StructureSheaf.IsLocalization.to_stalk A x`. Establish `e₂` using `IsLocalization.algEquiv x.asIdeal.primeCompl ((Spec.structureSheaf A).presheaf.stalk x) (Localization.AtPrime x.asIdeal)`. Use `haveI := (hA x.asIdeal).2`.
-
-Establish `hic : IsIntegrallyClosed ((Spec.structureSheaf A).presheaf.stalk x)` using `IsIntegrallyClosed.of_equiv e₂.symm.toRingEquiv`. Use `haveI : IsIntegrallyClosed ((Spec (CommRingCat.of A)).presheaf.stalk (Z.ι z)) := hic`. Conclude with `IsIntegrallyClosed.of_equiv (e₁.commRingCatIsoToRingEquiv)`. Use `haveI : IsSeparated g := IsSeparated.of_comp g Z.ι`. Use `haveI : QuasiCompact g := QuasiCompact.of_comp g Z.ι`.
-
-Use `haveI : LocallyOfFiniteType (g ≫ Z.ι) := by rw [hgf]; exact hft`. Use `haveI : LocallyOfFiniteType g := locallyOfFiniteType_of_comp g Z.ι`. Use `haveI : LocallyQuasiFinite (g ≫ Z.ι) := by rw [hgf]; exact hqf`. Use `haveI : LocallyQuasiFinite g := LocallyQuasiFinite.of_comp g Z.ι`. Use `haveI : IsOpenImmersion ((V.ι ≫ g) ≫ Z.ι) := by rw [Category.assoc, hgf]; exact hVo`.
-
-Use `haveI : IsOpenImmersion (V.ι ≫ g) := IsOpenImmersion.of_comp _ Z.ι`. Use `isOpenImmersion_of_quasiFinite_of_isOpenImmersion_restrict g hZ V hVne` as an intermediate fact. Rewrite using `[← hgf]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_spec_of_quasiFinite_of_normal {A B : Type} [CommRing A] [CommRing B]
     [IsDomain B] [IsNoetherianRing A] (φ : A →+* B)

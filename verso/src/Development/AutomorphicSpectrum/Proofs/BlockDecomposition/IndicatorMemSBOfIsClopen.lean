@@ -15,13 +15,13 @@ variable {F : Type} [Field F] [NumberField F] {κ : Type}
 def ratA (ξ : κ → F) : κ → AF F := fun i => algebraMap F (AF F) (ξ i)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => continuous_snd.comp (continuous_apply i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finOf : Continuous (finOf : (κ → AF F) → κ → FiniteAdeleRing (𝓞 F) F) :=
   continuous_pi fun i => continuous_snd.comp (continuous_apply i)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (InfiniteAdeleRing.homeomorph_mixedSpace F).continuous`. Consider the case `(rw [show (InfiniteAdeleRing.ringEquiv_mixedSpace F : InfiniteAdeleRing F → mixedEmbedding.mixedSpace F) = fun x => (fun v : {w : InfinitePlace F // w.IsReal} => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v.1), fun v : {w : InfinitePlace F // w.IsComplex} => Infin …`. Conclude with `Continuous.prodMk (continuous_pi fun v => (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)) (continuous_pi fun v => (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)))`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem continuous_infiniteAdeleRing_ringEquiv_mixedSpace :
     Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
@@ -37,15 +37,13 @@ private theorem continuous_infiniteAdeleRing_ringEquiv_mixedSpace :
       (continuous_pi fun v => (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)))
 
 /- English proof (translation)
-Conclude with `continuous_pi fun i => continuous_infiniteAdeleRing_ringEquiv_mixedSpace.comp (continuous_fst.comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infOf : Continuous (infOf : (κ → AF F) → κ → mixedEmbedding.mixedSpace F) := by
   exact continuous_pi fun i => continuous_infiniteAdeleRing_ringEquiv_mixedSpace.comp (continuous_fst.comp (continuous_apply i))
 
 /- English proof (translation)
-Use `⟨fun s => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `Set.indicator_const_preimage V s (1 : ℂ)`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at h`. Apply the tactic sequence `rcases h with h | h | h | h <;> rw [h]`. Conclude with `isOpen_univ`.
-
-Conclude with `hV.isOpen`. Conclude with `hV.isClosed.isOpen_compl`. Conclude with `isOpen_empty`. Conclude with `HasCompactSupport.intro' hc hV.isClosed fun x hx => by simp [hx]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem indicator_mem_SB_of_isClopen {X : Type} [TopologicalSpace X] {V : Set X} (hV : IsClopen V) (hc : IsCompact V) :
     V.indicator (fun _ => (1 : ℂ)) ∈ SB X := by
@@ -60,9 +58,9 @@ theorem indicator_mem_SB_of_isClopen {X : Type} [TopologicalSpace X] {V : Set X}
   · exact HasCompactSupport.intro' hc hV.isClosed fun x hx => by simp [hx]
 
 /- English proof (translation)
-Set `f : FiniteAdeleRing (𝓞 F) F → ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletion F` to `fun x v => x v`. Establish `hf : Continuous f` using `by first`. Consider the case `exact RestrictedProduct.continuous_coe`. Consider the case `fun_prop`. Establish `hi : Function.Injective f` using `by first`.
+Introduce a local definition for the expression. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact RestrictedProduct.coe_injective`. Consider the case `exact fun x y h => Subtype.ext h`. Use `⟨fun s _ hs => ?_⟩` and prove the remaining obligations. Establish `h1 : (f '' s).Subsingleton` using `(hs.image f hf.continuousOn).subsingleton`. Conclude with `fun x hx y hy => hi (h1 (Set.mem_image_of_mem f hx) (Set.mem_image_of_mem f hy))`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem totallyDisconnectedSpace_finiteAdeleRing :
     TotallyDisconnectedSpace (FiniteAdeleRing (𝓞 F) F) := by
@@ -82,9 +80,9 @@ private theorem totallyDisconnectedSpace_finiteAdeleRing :
 open GroundTheory.Global in
 
 /- English proof (translation)
-Use `haveI := totallyDisconnectedSpace_finiteAdeleRing (F := F)`. Establish `hB : TopologicalSpace.IsTopologicalBasis {s : Set (κ → FiniteAdeleRing (𝓞 F) F) | IsClopen s}` using `loc_compact_Haus_tot_disc_of_zero_dim`. Establish `hx : ∀ x ∈ S, ∃ C : Set (κ → FiniteAdeleRing (𝓞 F) F), IsClopen C ∧ IsCompact C ∧ x ∈ C`. Introduce `x _`. Take `⟨K, hK, hKx⟩` from `exists_compact_mem_nhds x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hCc, hxC, hCK⟩` from `hB.mem_nhds_iff.1 hKx`. Conclude with `⟨C, hCc, hK.of_isClosed_subset hCc.isClosed hCK, hxC⟩`. Use `choose! C hCc hCk hxC using hx`. Take `⟨t, htS, ht, hcov⟩` from `hS.elim_finite_subcover_image (fun x hx => (hCc x hx).isOpen) (fun x hx => Set.mem_biUnion hx (hxC x hx))`. Use `⟨⋃ x ∈ t, C x, ⟨ht.isClosed_biUnion fun x hx => (hCc x (htS hx)).isClosed, isOpen_biUnion fun x hx => (hCc x (htS hx)).isOpen⟩, ht.isCompact_biUnion fun x hx => hCk x (htS hx), hcov⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_clopen_superset [Fintype κ] {S : Set (κ → FiniteAdeleRing (𝓞 F) F)} (hS : IsCompact S) :
     ∃ V, IsClopen V ∧ IsCompact V ∧ S ⊆ V := by
@@ -104,7 +102,7 @@ theorem exists_clopen_superset [Fintype κ] {S : Set (κ → FiniteAdeleRing (�
     isOpen_biUnion fun x hx => (hCc x (htS hx)).isOpen⟩, ht.isCompact_biUnion fun x hx => hCk x (htS hx), hcov⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (algebraMap F (InfiniteAdeleRing F) (ξ i) + (a i).1) = mixedEmbedding F (ξ i) + InfiniteAdeleRing.ringEquiv_mixedSpace F (a i).1`. Rewrite using `[map_add, InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp F]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infOf_ratA_add [Fintype κ] (ξ : κ → F) (a : κ → AF F) :
     infOf (ratA ξ + a) = (fun i => mixedEmbedding F (ξ i) : κ → mixedEmbedding.mixedSpace F) + infOf a := by
@@ -122,25 +120,23 @@ theorem finOf_ratA_add (ξ : κ → F) (a : κ → AF F) :
 open scoped Classical in
 
 /- English proof (translation)
-Take `⟨hgl, hgc⟩` from `hg`. Take `⟨M, hM⟩` from `hgl.continuous.bounded_above_of_compact_support hgc`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 0)`. Take `⟨R0, hR0⟩` from `(hK.image continuous_infOf).isBounded.exists_norm_le`. Establish `hD : IsCompact ((fun q : (κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F) => q.1 - q.2) '' (tsupport g ×ˢ (finOf '' K)))` using `(hgc.isCompact.prod (hK.image continuous_finOf)).image continuous_sub`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V, hVc, hVk, hDV⟩` from `exists_clopen_superset hD`. Take `⟨k, hk⟩` from `GlobalTheory.CompanionTheory.ThetaAdm.summable_weight F (indicator_mem_SB_of_isClopen hVc hVk)`. Establish `hC : ∀ z, (1 + ‖z‖) ^ k * ‖f z‖ ≤ 2 ^ k * (Finset.Iic (k, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) f` using `fun z => by`. Use `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (k, 0)) le_rfl le_rfl f z` as an intermediate fact. Simplify `this` using `[norm_iteratedFDeriv_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨C, hCdef⟩ : ∃ C, C = 2 ^ k * (Finset.Iic (k, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) f` from `⟨_, rfl⟩`. Rewrite `hC` using `[← hCdef]`. Establish `hC0 : 0 ≤ C` using `(mul_nonneg (by positivity) (norm_nonneg _)).trans (hC 0)`. Take `⟨R, hR, hRdef⟩ : ∃ R : ℝ, 0 ≤ R ∧ R = max R0 0` from `⟨_, le_max_right _ _, rfl⟩`. Use `⟨fun ξ => (M * (C * (1 + R) ^ k)) * (‖V.indicator (fun _ => (1 : ℂ)) (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i))‖ * ((1 + ‖(fun i => mixedEmbedding F (ξ i) : κ → mixedEmbedding.mixedSpace F)‖) ^ k)⁻¹), hk.mul_left _, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ξ a ha`. Use `beta_reduce`. Establish `hpure : pureA F f g (ratA ξ + a) = f ((fun i => mixedEmbedding F (ξ i) : κ → mixedEmbedding.mixedSpace F) + infOf a) * g ((fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) + finOf a)` using `by show f (infOf (ratA ξ + a)) * g (finOf (ratA ξ + a)) = _`. Rewrite using `[infOf_ratA_add, finOf_ratA_add]`. Rewrite using `[hpure, norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hp : (fun i => mixedEmbedding F (ξ i) : κ → mixedEmbedding.mixedSpace F) = p`. Generalize the expression as in `hy : (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) = y`. Establish `hRa : ‖infOf a‖ ≤ R` using `hRdef ▸ (hR0 _ ⟨a, ha, rfl⟩).trans (le_max_left _ _)`. Establish `hf1 : ‖f (p + infOf a)‖ ≤ C * (1 + R) ^ k * ((1 + ‖p‖) ^ k)⁻¹`. Establish `h0 : ‖p‖ ≤ ‖p + infOf a‖ + ‖infOf a‖`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using norm_sub_le (p + infOf a) (infOf a)`. Establish `h1 : 1 + ‖p‖ ≤ (1 + ‖p + infOf a‖) * (1 + R)`. Use polynomial arithmetic with `[norm_nonneg (p + infOf a), norm_nonneg (infOf a)]`. Establish `hpos : 0 < 1 + ‖p‖` using `by positivity`. Establish `h2 : (1 + ‖p‖) ^ k ≤ (1 + ‖p + infOf a‖) ^ k * (1 + R) ^ k`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ hpos.le h1 k`. Establish `h3` using `hC (p + infOf a)`. Rewrite using `[le_mul_inv_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hg1 : ‖g (y + finOf a)‖ ≤ M * ‖V.indicator (fun _ => (1 : ℂ)) y‖`. Distinguish the cases in `hyV : y ∈ V`. Rewrite using `[Set.indicator_of_mem hyV, norm_one, mul_one]`. Conclude with `hM _`. Establish `hz : g (y + finOf a) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne`. Apply `hyV` to reduce the goal to its premises. Apply `hDV` to reduce the goal to its premises. Conclude with `⟨(y + finOf a, finOf a), ⟨subset_tsupport g hne, ⟨a, ha, rfl⟩⟩, by simp⟩`. Rewrite using `[hz, norm_zero]`.
-
-Conclude with `mul_nonneg hM0 (norm_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pure_bound [Fintype κ] (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
     {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F))
@@ -212,13 +208,11 @@ theorem pure_bound [Fintype κ] (f : SchwartzMap (κ → mixedEmbedding.mixedSpa
 open scoped Classical in
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun Φ _ => Continuous Φ ∧ ∀ K : Set (κ → AF F), IsCompact K → ∃ u : (κ → F) → ℝ, Summable u ∧ ∀ ξ, ∀ a ∈ K, ‖Φ (ratA ξ + a)‖ ≤ u ξ) ?_ ?_ ?_ ?_ hΦ` and prove the remaining obligations. Introduce and unpack `x ⟨f, g, hg, rfl⟩`. Use `⟨?_, fun K hK => pure_bound f hg hK⟩` and prove the remaining obligations. Use `show Continuous fun x => f (infOf x) * g (finOf x)`. Conclude with `(f.continuous.comp continuous_infOf).mul (hg.1.continuous.comp continuous_finOf)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨continuous_const, fun K _ => ⟨0, summable_zero, fun ξ a _ => by simp⟩⟩` and prove the remaining obligations. Introduce and unpack `x y _ _ ⟨hxc, hxb⟩ ⟨hyc, hyb⟩`. Use `⟨hxc.add hyc, fun K hK => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hub⟩` from `hxb K hK`. Take `⟨v, hv, hvb⟩` from `hyb K hK`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨u + v, hu.add hv, fun ξ a ha => (norm_add_le _ _).trans (add_le_add (hub ξ a ha) (hvb ξ a ha))⟩`. Introduce and unpack `c x _ ⟨hxc, hxb⟩`. Use `⟨hxc.const_smul c, fun K hK => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hub⟩` from `hxb K hK`. Use `⟨fun ξ => ‖c‖ * u ξ, hu.mul_left _, fun ξ a ha => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Pi.smul_apply, norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hub ξ a ha) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schA_bound [Fintype κ] {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     Continuous Φ ∧ ∀ K : Set (κ → AF F), IsCompact K →

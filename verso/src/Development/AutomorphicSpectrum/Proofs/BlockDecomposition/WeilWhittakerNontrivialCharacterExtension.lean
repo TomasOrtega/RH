@@ -33,17 +33,17 @@ open scoped Topology
 namespace GlobalTheory.CompanionTheory.WhitOffBorel
 
 /- English proof (translation)
-Establish `hXY : 0 < X / Y` using `div_pos hX hY`. Take `⟨s, hs⟩ : ∃ s, s = Real.sqrt (X / Y)` from `⟨_, rfl⟩`. Take `⟨d, hd⟩ : ∃ d, d = Real.sqrt δ` from `⟨_, rfl⟩`. Establish `hs0 : 0 < s` using `hs ▸ Real.sqrt_pos.2 hXY`. Establish `hd0 : 0 < d` using `hd ▸ Real.sqrt_pos.2 hδ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hss : s * s = X / Y` using `by rw [hs]; exact Real.mul_self_sqrt hXY.le`. Establish `hdd : d * d = δ` using `by rw [hd]; exact Real.mul_self_sqrt hδ.le`. Establish `e : (X * Y * δ) ^ (1 / 2 : ℝ) = s * d * Y`. Rewrite using `[← Real.sqrt_eq_rpow]`. Establish `: X * Y * δ = (s * d * Y) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (s * d * Y) ^ 2 = (s * s) * (d * d) * Y ^ 2` using `by ring`. Rewrite using `[this, hss, hdd]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Real.sqrt_sq (by positivity)]`. Rewrite using `[e, ← Real.sqrt_eq_rpow (X / Y), ← hs, ← hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmax : p * max 1 (q / p) = max p q`. Rewrite using `[mul_max_of_nonneg _ _ hp.le, mul_one, mul_div_cancel₀ _ hp.ne']`. Establish `key : I * max p q ≤ |C₀| * p`. Rewrite using `[← hmax]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `key2 : d * d * I ≤ |C₀| * M * p`. Rewrite using `[hdd]`. Combine the equalities or inequalities in the displayed calculation. Establish `key3 : d * I / p ≤ |C₀| * M / d`. Rewrite using `[div_le_div_iff₀ hp hd0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ (L * s) * (|C₀| * M / d) := mul_le_mul_of_nonneg_left key3 (by positivity)`. Use `_ = L * d⁻¹ * |C₀| * M * s := by field_simp`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem real_bound {X Y δ p q M I C₀ L : ℝ} (hX : 0 < X) (hY : 0 < Y) (hδ : 0 < δ) (hp : 0 < p)
     (hM : 0 < M) (hI : 0 ≤ I) (hL : 0 ≤ L)
@@ -86,13 +86,13 @@ theorem real_bound {X Y δ p q M I C₀ L : ℝ} (hX : 0 < X) (hY : 0 < Y) (hδ 
     _ = L * d⁻¹ * |C₀| * M * s := by field_simp
 
 /- English proof (translation)
-Establish `e : (X * Y * δ / (Y * p)) ^ 2 * (X * Y * δ)⁻¹ = (X / Y) * δ / p ^ 2`. Clear the denominators using the available nonvanishing facts. Rewrite `h` using `[e]`. Establish `hM : 0 < M` using `hp.trans_le hpM`. Establish `hm : max 1 ((q / p) ^ 2) ≤ M ^ 2 / p ^ 2`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `max_le ?_ ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (by positivity), one_mul]`. Conclude with `pow_le_pow_left₀ hp.le hpM 2`. Rewrite using `[div_pow]`. Conclude with `div_le_div_of_nonneg_right (pow_le_pow_left₀ hq hqM 2) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (X / Y) * δ / p ^ 2 ≤ |R| * (M ^ 2 / p ^ 2)` using `h.trans ((mul_le_mul_of_nonneg_right (le_abs_self R) (by positivity)).trans (mul_le_mul_of_nonneg_left hm (abs_nonneg R)))`. Establish `h4 : (X / Y) * δ ≤ |R| * M ^ 2`. Establish `hp2 : 0 < p ^ 2` using `by positivity`. Use `mul_le_mul_of_nonneg_right h3 hp2.le` as an intermediate fact. Establish `e1 : (X / Y) * δ / p ^ 2 * p ^ 2 = (X / Y) * δ` using `by field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e2 : |R| * (M ^ 2 / p ^ 2) * p ^ 2 = |R| * M ^ 2` using `by field_simp`. Rewrite `this` using `[e1, e2]`. Then use the resulting hypothesis. Conclude with `le_max_of_le_right ((le_div_iff₀ hδ).2 h4)`.
+A detailed English derivation is pending.
 -/
 theorem real_supp {X Y δ p q M R : ℝ} (hX : 0 < X) (hY : 0 < Y) (hδ : 0 < δ) (hp : 0 < p)
     (hq : 0 ≤ q) (hpM : p ≤ M) (hqM : q ≤ M)
@@ -120,41 +120,37 @@ theorem real_supp {X Y δ p q M R : ℝ} (hX : 0 < X) (hY : 0 < Y) (hδ : 0 < δ
   exact le_max_of_le_right ((le_div_iff₀ hδ).2 h4)
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχc hχ1 σ hσ μ _ lam c hc Φ hΦl hΦc h₀`. Take `⟨C₀, hC₀⟩` from `GlobalTheory.T.weil_whittaker_nonvanishing_character F E χ hχc hχ1 σ hσ μ Φ hΦl hΦc`. Take `⟨R, hR⟩` from `GlobalTheory.T.weil_whittaker_measurability F E χ hχc hχ1 σ hσ μ Φ hΦl hΦc`. Take `⟨M, hM0, hM⟩` from `GlobalTheory.T.compact_translate_entries_bounded F h₀`. Establish `hδ₀ : (0 : ℝ) < (modulus (h₀.val).det : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : (h₀.val).det ≠ 0`. Use `(Matrix.isUnits_det_units h₀)` as an intermediate fact. Conclude with `this.ne_zero`. Conclude with `modulus_pos hne` after adjusting the coercions. Use `⟨‖lam‖ * (Real.sqrt (modulus (h₀.val).det : ℝ))⁻¹ * |C₀| * M, max 1 (|R| * M ^ 2 / (modulus (h₀.val).det : ℝ)), by positivity, lt_of_lt_of_le one_pos (le_max_left _ _), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x y k hk hne`. Take `⟨hent, hdet⟩` from `hM k hk`. Rewrite using `[mul_assoc (dg2 x y) k h₀]`. Take `⟨m, hm⟩ : ∃ m, m = k * h₀` from `⟨_, rfl⟩`. Rewrite `hne`, `hent`, `hdet`, the goal using `[← hm]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩ : ∃ g, g = dg2 x y * m` from `⟨_, rfl⟩`. Rewrite using `[← hg]`. Establish `g10 : g.val 1 0 = y * m.val 1 0`. Simplify using `[hg, dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `g11 : g.val 1 1 = y * m.val 1 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hg, dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `gdet : (g.val).det = x * y * (m.val).det`. Rewrite using `[hg, Units.val_mul, Matrix.det_mul]`. Simplify using `[dg2, Matrix.det_fin_two_of]`. Establish `hXp : (0 : ℝ) < (modulus (x : F) : ℝ)` using `by exact_mod_cast modulus_pos x.ne_zero`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYp : (0 : ℝ) < (modulus (y : F) : ℝ)` using `by exact_mod_cast modulus_pos y.ne_zero`. Establish `hpp : (0 : ℝ) < (modulus (m.val 1 0) : ℝ)` using `by exact_mod_cast modulus_pos hne`. Establish `hxy : (modulus ((x / y : Fˣ) : F) : ℝ) = (modulus (x : F) : ℝ) / (modulus (y : F) : ℝ)`. Rewrite using `[Units.val_div_eq_div_val, div_eq_mul_inv, modulus_mul, modulus_inv]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[div_eq_mul_inv]`. Establish `mg10 : (modulus (g.val 1 0) : ℝ) = (modulus (y : F) : ℝ) * (modulus (m.val 1 0) : ℝ)`. Rewrite using `[g10, modulus_mul]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `mgdet : (modulus (g.val).det : ℝ) = (modulus (x : F) : ℝ) * (modulus (y : F) : ℝ) * (modulus (h₀.val).det : ℝ)`. Rewrite using `[gdet, modulus_mul, modulus_mul, hdet]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hg10 : g.val 1 0 ≠ 0`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[g10]`. Conclude with `mul_ne_zero y.ne_zero hne`. Establish `mκ : (modulus (g.val 1 1 / g.val 1 0) : ℝ) = (modulus (m.val 1 1) : ℝ) / (modulus (m.val 1 0) : ℝ)`. Rewrite using `[g10, g11, div_eq_mul_inv, modulus_mul, modulus_inv, modulus_mul, modulus_mul]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Distinguish the cases in `hW : GL2LocalData.Wc χ σ μ lam c Φ g = 0`. Rewrite using `[hW, norm_zero]`. Use `⟨by positivity, fun h => absurd rfl h⟩` and prove the remaining obligations. Take `⟨t, htN, hval⟩` from `GlobalTheory.T.weil_whittaker_galois_invariance F E χ σ hσ μ lam c hc Φ g hg10 hW`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hI0 : gaussI χ μ Φ (g.val 1 1 / g.val 1 0) (algebraMap F E ((g.val).det / g.val 1 0) * (t : E)⁻¹) ≠ 0`. Introduce `h0`. Rewrite `hval` using `[h0, norm_zero, mul_zero]`. Conclude with `hW (norm_eq_zero.1 hval)`. Use `⟨?_, fun _ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hval, mgdet, mg10, hxy]`. Use `GlobalTheory.CompanionTheory.WhitOffBorel.real_bound (q := (modulus (m.val 1 1) : ℝ)) hXp hYp hδ₀ hpp hM0 (norm_nonneg _) (norm_nonneg _) ?_ ?_` and prove the remaining obligations. Use `hC₀ (g.val 1 1 / g.val 1 0) (algebraMap F E ((g.val).det / g.val 1 0) * (t : E)⁻¹)` as an intermediate fact. Rewrite `this` using `[mκ]`. Then use the resulting hypothesis. Establish `hpm : (modulus (m.val 1 0) : ℝ) ≤ max (modulus (m.val 1 0) : ℝ) (modulus (m.val 1 1) : ℝ)` using `le_max_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hqm : (modulus (m.val 1 1) : ℝ) ≤ max (modulus (m.val 1 0) : ℝ) (modulus (m.val 1 1) : ℝ)` using `le_max_right _ _`. Establish `hn1 : (modulus (-1 : F) : ℝ) ≤ 1`. Conclude with `(modulus_le_one_iff (K := F)).2 (neg_mem (one_mem _))` after adjusting the coercions. Establish `t1 : (modulus (m.val 0 0 * m.val 1 1) : ℝ) ≤ M * max (modulus (m.val 1 0) : ℝ) (modulus (m.val 1 1) : ℝ)`. Rewrite using `[modulus_mul]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `mul_le_mul (hent 0 0) hqm (NNReal.coe_nonneg _) hM0.le`. Establish `t2 : (modulus (-(m.val 0 1 * m.val 1 0)) : ℝ) ≤ M * max (modulus (m.val 1 0) : ℝ) (modulus (m.val 1 1) : ℝ)`. Establish `e : -(m.val 0 1 * m.val 1 0) = (-1) * (m.val 0 1 * m.val 1 0)` using `by ring`. Rewrite using `[e, modulus_mul, modulus_mul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Establish `hd : (m.val).det = m.val 0 0 * m.val 1 1 + -(m.val 0 1 * m.val 1 0)`. Rewrite using `[Matrix.det_fin_two]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdd : (modulus (h₀.val).det : ℝ) = (modulus (m.val).det : ℝ)` using `by rw [hdet]`. Rewrite using `[hdd, hd]`. Conclude with `(GlobalTheory.CompanionTheory.LFCoords.modulus_add_le_max _ _).trans (max_le t1 t2)`. Rewrite using `[hxy]`. Establish `hs` using `hR _ _ hI0`.
-
-Establish `mξ : (modulus (algebraMap F E ((g.val).det / g.val 1 0) * (t : E)⁻¹) : ℝ) = ((modulus (x : F) : ℝ) * (modulus (y : F) : ℝ) * (modulus (h₀.val).det : ℝ) / ((modulus (y : F) : ℝ) * (modulus (m.val 1 0) : ℝ))) ^ 2 * ((modulus (x : F) : ℝ) * (modulus (y : F) : ℝ) * (modulus (h₀.val). …`. Rewrite using `[modulus_mul, GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.modulus_algebraMap (K := F), modulus_inv, ← GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.modulus_norm (K := F) (t : E), htN, div_eq_mul_inv, modulus_mul, modulus_inv]`. Use `push_cast`. Rewrite using `[mgdet, mg10, div_eq_mul_inv]`. Rewrite `hs` using `[mξ, mκ]`.
-
-Conclude with `GlobalTheory.CompanionTheory.WhitOffBorel.real_supp hXp hYp hδ₀ hpp (NNReal.coe_nonneg _) (hent 1 0) (hent 1 1) hs`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whittaker_off_borel : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle), Continuous χ → χ ≠ 1 → ∀ σ : E ≃ₐ[F] E, σ ≠ AlgEquiv.refl → ∀ (μ : Measure E) [μ.IsAddHaarMeasure] (lam : ℂ) (c : Eˣ →* ℂˣ), IsUnit1 c → ∀ Φ : E → ℂ, IsLocallyConstant Φ → HasCompactSupport Φ → ∀ h₀ : GL (Fin 2) F, ∃ C B : ℝ, 0 ≤ C ∧ 0 < B ∧ ∀ (x y : Fˣ), ∀ k ∈ GLnLocal.integralGL F 2, (k * h₀).val 1 0 ≠ 0 → ‖GL2LocalData.Wc χ σ μ lam c Φ (dg2 x y * k * h₀)‖ ≤ C * (modulus ((x / y : Fˣ) : F) : ℝ) ^ (1 / 2 : ℝ) ∧ (GL2LocalData.Wc χ σ μ lam c Φ (dg2 x y * k * h₀) ≠ 0 → (modulus ((x / y : Fˣ) : F) : ℝ) ≤ B) := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχc hχ1 σ hσ μ _ lam c hc Φ hΦl hΦc h₀

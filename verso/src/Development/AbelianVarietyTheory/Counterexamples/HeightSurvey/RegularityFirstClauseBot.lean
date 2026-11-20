@@ -13,9 +13,9 @@ variable {V F : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Fie
   [IsFractionRing V F]
 
 /- English proof (translation)
-Establish `h : valV V (algebraMap V F (u : V)) = 1`. Unfold `valV`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Introduce `hm`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hm u.isUnit`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[vV, h]`.
+A detailed English derivation is pending.
 -/
 theorem vV_unit (u : Vˣ) : vV V (algebraMap V F (u : V)) = 0 := by
   have h : valV V (algebraMap V F (u : V)) = 1 := by
@@ -31,7 +31,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h a ha`. Rewrite using `[← hu]`. Conclude with `vV_unit u`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vV_eq_zero_of_triv {T : CDVR} {ι : c.F →+* T.Fr} {y : IntFr Xo c T ι} (h : trivCls Xo c T ι y)
     {a : c.F} (ha : a ≠ 0) : vV T.V (ι a) = 0 := by
@@ -39,9 +39,9 @@ theorem vV_eq_zero_of_triv {T : CDVR} {ι : c.F →+* T.Fr} {y : IntFr Xo c T ι
   rw [← hu]; exact vV_unit u
 
 /- English proof (translation)
-Introduce and unpack `⟨he, hv⟩`. Take `⟨π, hπ⟩` from `la.valuation_exists_uniformizer c.F`. Establish `hπ0 : π ≠ 0` using `by rintro rfl; simp at hπ; exact absurd hπ.symm WithZero.exp_ne_zero`. Establish `h1` using `hv π`. Rewrite `h1` using `[vV_eq_zero_of_triv h hπ0, vLa, hπ]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem not_overLa_of_triv {T : CDVR} {ι : c.F →+* T.Fr} {y : IntFr Xo c T ι} (h : trivCls Xo c T ι y)
     (la : HeightOneSpectrum (𝓞 c.F)) (e : ℕ) : ¬ OverLa la T.V ι e := by
@@ -54,7 +54,7 @@ theorem not_overLa_of_triv {T : CDVR} {ι : c.F →+* T.Fr} {y : IntFr Xo c T ι
   omega
 
 /- English proof (translation)
-Unfold `ordQ`. Rewrite using `[evI_smul]`. Conclude with `nval_mul_unit 1 ((map_ne_zero q.ι).2 ha) (vV_eq_zero_of_triv q.triv ha) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordQ_smul (q : QPt Xo c) {a : c.F} (ha : a ≠ 0) (f : Rul Xo c) :
     ordQ Xo c q (a • f) = ordQ Xo c q f := by
@@ -63,11 +63,11 @@ theorem ordQ_smul (q : QPt Xo c) {a : c.F} (ha : a ≠ 0) (f : Rul Xo c) :
   exact nval_mul_unit 1 ((map_ne_zero q.ι).2 ha) (vV_eq_zero_of_triv q.triv ha) _
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `la.valuation_exists_uniformizer c.F`. Establish `hπ0 : π ≠ 0` using `by rintro rfl; simp at hπ; exact absurd hπ.symm WithZero.exp_ne_zero`. Establish `hN : vLa la (π ^ N) = N`. Simplify using `[vLa, map_pow, hπ, ← WithZero.exp_nsmul]`. Rewrite using `[← ordQ_smul q (pow_ne_zero N hπ0) f]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `h a n _ ((C a n).smul_mem _ hf) ⟨la, fun v hv => ?_⟩ q` and prove the remaining obligations. Rewrite using `[(isVal_valSet la v hv).smul _ _ (pow_ne_zero N hπ0), hN]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← EReal.coe_add]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ ≤ _ := add_le_add le_rfl (hb v hv)`.
+A detailed English derivation is pending.
 -/
 theorem ord_nonneg_of_bddBelow {C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c)} (h : RegularityR1Quotient Xo c C)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ C a n) (la : HeightOneSpectrum (𝓞 c.F)) (N : ℕ)
@@ -85,7 +85,7 @@ theorem ord_nonneg_of_bddBelow {C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → S
     _ ≤ _ := add_le_add le_rfl (hb v hv)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `(h a n a n 0 Fin.elim0 f 0 le_rfl (fun i => i.elim0) hf ⟨la, 0, by simp [h0]⟩ q).2 hne` as an intermediate fact. Rewrite `this` using `[iInf_of_empty]`. Simplify using `at this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ord_eq_top_of_no_point {C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c)} (h : RegularityR2Quotient Xo c C)
     (la : HeightOneSpectrum (𝓞 c.F)) (h0 : valSet Xo c (algCls Xo c) la = ∅)
@@ -96,7 +96,7 @@ theorem ord_eq_top_of_no_point {C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → S
   simp at this
 
 /- English proof (translation)
-Introduce `h`. Take `⟨T, io, e, ho, y, hy⟩` from `hne la`. Take `⟨i, -⟩` from `h _ ⟨PtV.mk la ho y hy () trivial, rfl⟩`. Conclude with `i.elim0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem premise_fails_of_empty (hne : IntFrNe Xo c (algCls Xo c)) (ws : Fin 0 → Rul Xo c)
     (la : HeightOneSpectrum (𝓞 c.F)) : ¬ ∀ v ∈ valSet Xo c (algCls Xo c) la, ∃ i, v (ws i) ≠ ⊤ := by
@@ -106,7 +106,7 @@ theorem premise_fails_of_empty (hne : IntFrNe Xo c (algCls Xo c)) (ws : Fin 0 �
   exact i.elim0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Units.map (PowerSeries.C : K →+* PowerSeries K).toMonoidHom (Units.mk0 a ha), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem powerSeries_const_unit (K : Type) [Field K] (a : K) (ha : a ≠ 0) :
     ∃ u : (PowerSeries K)ˣ, algebraMap (PowerSeries K) (FractionRing (PowerSeries K)) u =
@@ -119,7 +119,7 @@ def powerSeriesCDVR (K : Type) [Field K] [CharZero K] : CDVR where
   ch0 := algebraRat.charZero _
 
 /- English proof (translation)
-Introduce `a ha` and use `powerSeries_const_unit c.F a ha`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivCls_powerSeries
     (y : IntFr Xo c (powerSeriesCDVR c.F)
@@ -127,7 +127,7 @@ theorem trivCls_powerSeries
     trivCls Xo c _ _ y := fun a ha => powerSeries_const_unit c.F a ha
 
 /- English proof (translation)
-Introduce `a n f hf _ q`. Rewrite using `[(Submodule.mem_bot c.F).1 hf, ordQ, (isEval_evI q.y).zero (), nval_zero]`. Conclude with `le_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regularity_first_clause_bot : RegularityR1Quotient Xo c (fun _ _ => ⊥) := by
   intro a n f hf _ q

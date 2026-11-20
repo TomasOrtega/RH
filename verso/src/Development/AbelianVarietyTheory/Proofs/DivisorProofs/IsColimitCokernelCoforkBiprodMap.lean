@@ -12,7 +12,7 @@ namespace GlobalTheory.Vert.Flag
 variable {X : Scheme.{0}} {E E₁ E₂ : X.Modules} {N r s : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `refine biprod.hom_ext' _ _ ?_ ?_ <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem biprodMap_comp_biprodMap_π {A B C D : X.Modules} (f : A ⟶ B) (g : C ⟶ D) :
     biprod.map f g ≫ biprod.map (cokernel.π f) (cokernel.π g) = 0 := by
@@ -44,7 +44,7 @@ def isColimitCokernelCoforkBiprodMap {A B C D : X.Modules} (f : A ⟶ B) (g : C 
         simpa [cokernelCoforkBiprodMap] using this)
 
 /- English proof (translation)
-Take `⟨_, m, hm⟩` from `hf`. Take `⟨_, n, hn⟩` from `hg`. Conclude with `⟨inferInstance, m + n, (hm.biprod hn).of_iso ((isColimitCokernelCoforkBiprodMap f g).coconePointUniqueUpToIso (colimit.isColimit _))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSubbundle_biprodMap {A B C D : X.Modules} {f : A ⟶ B} {g : C ⟶ D}
     (hf : VB.IsSubbundle f) (hg : VB.IsSubbundle g) : VB.IsSubbundle (biprod.map f g) := by
@@ -57,7 +57,7 @@ variable (fl : Flag E N)
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem eqToHom_ι {a b : Fin (N + 1)} (e : a = b) : eqToHom (congrArg fl.F e) ≫ fl.ι b = fl.ι a := by
   subst e; simp
@@ -70,7 +70,7 @@ def incl (a b : Fin (N + 1)) (h : (b : ℕ) = a ∨ (b : ℕ) = a + 1) : fl.F a 
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Unfold `incl`. Use `split_ifs with h'`. Conclude with `fl.eqToHom_ι (Fin.ext h'.symm)`. Apply the tactic sequence `rw [Category.assoc, Category.assoc, fl.eqToHom_ι, fl.step_ι, fl.eqToHom_ι] all_goals ext; simp only [Fin.val_castSucc, Fin.val_succ] <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem incl_ι (a b : Fin (N + 1)) (h : (b : ℕ) = a ∨ (b : ℕ) = a + 1) :
     fl.incl a b h ≫ fl.ι b = fl.ι a := by
@@ -81,7 +81,7 @@ theorem incl_ι (a b : Fin (N + 1)) (h : (b : ℕ) = a ∨ (b : ℕ) = a + 1) :
     all_goals ext; simp only [Fin.val_castSucc, Fin.val_succ] <;> omega
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `infer_instance`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isIso_ι_of_eq {a : Fin (N + 1)} (e : a = Fin.last N) : IsIso (fl.ι a) := by
   subst e; infer_instance
@@ -91,14 +91,14 @@ def fstIdx (r s : ℕ) (i : Fin (r + s + 1)) : Fin (r + 1) := ⟨min (i : ℕ) r
 def sndIdx (r s : ℕ) (i : Fin (r + s + 1)) : Fin (s + 1) := ⟨(i : ℕ) - r, by omega⟩
 
 /- English proof (translation)
-Simplify using `only [fstIdx, Fin.val_succ, Fin.val_castSucc]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fstIdx_step (i : Fin (r + s)) : (fstIdx r s i.succ : ℕ) = fstIdx r s i.castSucc ∨
     (fstIdx r s i.succ : ℕ) = fstIdx r s i.castSucc + 1 := by
   simp only [fstIdx, Fin.val_succ, Fin.val_castSucc]; omega
 
 /- English proof (translation)
-Simplify using `only [sndIdx, Fin.val_succ, Fin.val_castSucc]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sndIdx_step (i : Fin (r + s)) : (sndIdx r s i.succ : ℕ) = sndIdx r s i.castSucc ∨
     (sndIdx r s i.succ : ℕ) = sndIdx r s i.castSucc + 1 := by

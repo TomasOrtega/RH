@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ImportsBis
 namespace GlobalTheory.PrimIn
 
 /- English proof (translation)
-Introduce `q1 q2 q3 q4 q5 q6 q7 sw e1 e2 q10 q11 q12 q14`. Conclude with `⟨q1, q2, q3, q4, q5, q6, q7, sw, GlobalTheory.T.doubling_method_of_eisenstein_facts q2 e1 e2, q10, q11, q12, GlobalTheory.weilRepresentationUnitaryPair, q14⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem hypotheses3_intro :
     GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite →

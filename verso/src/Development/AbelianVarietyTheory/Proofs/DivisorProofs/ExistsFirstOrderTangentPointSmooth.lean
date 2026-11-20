@@ -16,13 +16,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.TanPt
 
 /- English proof (translation)
-Use `letI := α.toAlgebra`. Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension D k A := h`. Take `⟨ιv, σv, _, _, P, hP⟩` from `‹Algebra.IsStandardSmoothOfRelativeDimension D k A›.out`. Use `letI := Fintype.ofFinite ιv`. Use `letI := Fintype.ofFinite σv`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hc : Fintype.card ((Set.range P.map)ᶜ : Set ιv) = D`. Rewrite using `[Fintype.card_compl_set, Set.card_range_of_injective P.map_inj, ← hP]`. Simplify using `[Algebra.Presentation.dimension]`. Set `e` to `Fintype.equivFinOfCardEq hc`. Set `B` to `P.basisKaehler.reindex e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : ∀ i, KaehlerDifferential.D k A (P.val (e.symm i)) = B i` using `fun i => by`. Simplify using `[B]`. Use `⟨fun i => P.val (e.symm i), fun c => { toFun := fun s => B.coord c (KaehlerDifferential.D k A s) map_zero' := by simp map_add' := fun s t => by simp }, fun c a b => ?_, fun a c => ?_, fun c r => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `B.coord c (KaehlerDifferential.D k A (a * b)) = a * B.coord c (KaehlerDifferential.D k A b) + b * B.coord c (KaehlerDifferential.D k A a)`. Rewrite using `[Derivation.leibniz, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `B.coord c (KaehlerDifferential.D k A (P.val (e.symm a))) = _`. Rewrite using `[hB, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Express the relevant statement in the definitionally equal form `B.coord c (KaehlerDifferential.D k A (algebraMap k A r)) = 0`. Rewrite using `[Derivation.map_algebraMap, map_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coords_derivs' {k A : Type} [CommRing k] [CommRing A] {α : k →+* A} {D : ℕ}
     (h : α.IsStandardSmoothOfRelativeDimension D) :
@@ -82,7 +82,7 @@ def jetVec {A K : Type} [CommRing A] [Field K] {D : ℕ} (φ : A →+* K) (d : F
       MulOpposite.unop_op, hd c, map_add, map_mul, map_mul, mul_comm (φ (d c s))]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem evalPt_congr {R : Type} [CommRing R] {X : Scheme.{0}} {x y : Sp R ⟶ X} (e : x = y) (U : X.Opens)
     (hx : ⊤ ≤ x ⁻¹ᵁ U) (hy : ⊤ ≤ y ⁻¹ᵁ U) (f : Γ(X, U)) : evalPt x U hx f = evalPt y U hy f := by
@@ -93,27 +93,25 @@ end GlobalTheory.TanPt
 namespace GlobalTheory.TanPt
 
 /- English proof (translation)
-Introduce `o _ Y p D hsm K _ β z hz`. Use `haveI := hsm`. Take `⟨V, hV, hx, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (TopologicalSpace.Opens.mem_top (GlobalTheory.Adelic.ptOf z))`. Establish `h` using `HasRingHomProperty.appLE (@SmoothOfRelativeDimension D) p ‹_› ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ le_top`. Take `⟨S, hS, h⟩` from `(RingHom.locally_iff_isLocalization RingHom.isStandardSmoothOfRelativeDimension_respectsIso _).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, hxt⟩ : ∃ t : (S : Set Γ(Y, V)), GlobalTheory.Adelic.ptOf z ∈ Y.basicOpen (t : Γ(Y, V))` from `TopologicalSpace.Opens.mem_iSup.1 (((IsAffineOpen.iSup_basicOpen_eq_self_iff hV).2 hS).ge hx)`. Use `IsAffineOpen.isLocalization_basicOpen hV (t : Γ(Y, V))` as an intermediate fact. Establish `h₁` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of o)).symm.commRingCatIsoToRingEquiv (h t t.2 Γ(Y, Y.basicOpen (t : Γ(Y, V))))`. Establish `h₂ : (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p (Y.basicOpen (t : Γ(Y, V)))).IsStandardSmoothOfRelativeDimension D`. Rewrite using `[← GlobalTheory.TopForm.resG_comp_algX p (Y.basicOpen_le (t : Γ(Y, V)))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h₁`. Take `⟨x, d, hl, hd, h0⟩` from `exists_coords_derivs' h₂`. Establish `hO : IsAffineOpen (Y.basicOpen (t : Γ(Y, V)))` using `IsAffineOpen.basicOpen hV _`. Establish `hzO : ⊤ ≤ z ⁻¹ᵁ Y.basicOpen (t : Γ(Y, V))` using `(GlobalTheory.Adelic.le_iff_ptOf_mem z _).2 hxt`. Take `⟨w, hw, he⟩` from `exists_evalPt_eq hO (jetVec (evalPt z _ hzO) d hl)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨w, ?_, ?_, fun mu hmu => ?_⟩` and prove the remaining obligations. Establish `h' : ⊤ ≤ (spMap (TrivSqZeroExt.fstHom K K (Fin D → K)).toRingHom ≫ w) ⁻¹ᵁ Y.basicOpen (t : Γ(Y, V))` using `fun q _ => hw (Set.mem_univ _)`. Use `ext_evalPt hO h' hzO (RingHom.ext fun f => ?_)` and prove the remaining obligations. Use `(evalPt_spMap_comp _ w _ hw h' f).trans ?_` and prove the remaining obligations. Rewrite using `[he]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `eq_spMap_of_evalPt _ _ fun a => ?_` and prove the remaining obligations. Rewrite using `[← evalPt_constFn p w _ hw a, he]`. Establish `hza : evalPt z _ hzO (constFn p (Y.basicOpen (t : Γ(Y, V))) a) = β a`. Rewrite using `[evalPt_constFn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(evalPt_congr hz (⊤ : (Sp o).Opens) _ le_rfl _).trans (evalPt_spMap β a)`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Conclude with `hza`. Use function extensionality and compare the values at `c`. Express the relevant statement in the definitionally equal form `evalPt z _ hzO (d c (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p _ a)) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h0 c a, map_zero]`. Both sides reduce to the same expression. Use `(Pi.basisFun K (Fin D)).ext fun a => ?_` and prove the remaining obligations. Establish `h1 : ⊤ ≤ (spMap (dirMap mu) ≫ w) ⁻¹ᵁ Y.basicOpen (t : Γ(Y, V))` using `fun q _ => hw (Set.mem_univ _)`. Establish `h2 : ⊤ ≤ (constPt (spMap (dirMap mu) ≫ w)) ⁻¹ᵁ Y.basicOpen (t : Γ(Y, V))` using `fun q _ => hw (Set.mem_univ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ⊤ ≤ (spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ spMap (dirMap mu) ≫ w) ⁻¹ᵁ Y.basicOpen (t : Γ(Y, V))` using `fun q _ => hw (Set.mem_univ _)`. Establish `e` using `congrArg TrivSqZeroExt.snd (evalPt_congr hmu _ h1 h2 (x a))`. Establish `e2 : (evalPt (constPt (spMap (dirMap mu) ≫ w)) _ h2 (x a)).snd = 0`. Rewrite using `[evalPt_congr (show constPt (spMap (dirMap mu) ≫ w) = spMap (algebraMap K (DualNumber K)) ≫ (spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ spMap (dirMap mu) ≫ w) from rfl) _ h2 h2, evalPt_spMap_comp _ _ _ h3 h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[e2, evalPt_spMap_comp _ w _ hw h1, he]`. Establish `hv : (fun c => evalPt z _ hzO (d c (x a))) = Pi.basisFun K (Fin D) a`. Use function extensionality and compare the values at `c`. Rewrite using `[hd, Pi.basisFun_apply]`. Distinguish the cases in `hac : a = c`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `hac` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hac, Pi.single_apply, Ne.symm hac]`. Rewrite using `[LinearMap.zero_apply, ← hv]`. Rewrite `e` using `[dirMap, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, TrivSqZeroExt.snd_map]`.
-
-Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tangent_point : ∀ {o : Type} [CommRing o] (X : Scheme.{0}) (s : X ⟶ Sp o) (D : ℕ), SmoothOfRelativeDimension D s → ∀ (K : Type) [Field K] (β : o →+* K) (x₀ : Sp K ⟶ X), x₀ ≫ s = spMap β → ∃ y : Sp (TrivSqZeroExt K (Fin D → K)) ⟶ X, spMap (TrivSqZeroExt.fstHom K K (Fin D → K)).toRingHom ≫ y = x₀ ∧ y ≫ s = spMap ((algebraMap K (TrivSqZeroExt K (Fin D → K))).comp β) ∧ ∀ mu : (Fin D → K) →ₗ[K] K, spMap (dirMap mu) ≫ y = constPt (spMap (dirMap mu) ≫ y) → mu = 0 := by
   intro o _ Y p D hsm K _ β z hz

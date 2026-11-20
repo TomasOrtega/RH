@@ -4,7 +4,7 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `hD Z Y s _ _ d h`. Take `⟨W, c, G, iG, fG, a, σ, hg, hs⟩` from `hD s d ⟨inferInstance, inferInstance, h⟩`. Conclude with `⟨W, c, G, iG, fG, a, Fin d, inferInstance, σ, hg, hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.G3.pGalClos :
     GalClosD → GalClos := by

@@ -30,17 +30,17 @@ open Finset Matrix
 
 namespace ReciprocityTheory.ChartRestriction.DS.G2
 /- English proof (translation)
-Introduce `n ε lam hlam h hh hbig`. Establish `hl'` using `(mir_isHCParam_iff lam).1 hlam`. Establish `hq0 : ((min (pOf ε) (qOf ε) : ℕ) : ℝ) = (S7.q0 ε : ℝ)` using `rfl`. Take `⟨T⟩` from `HW.kType_exists ε lam hl'`. Establish `hw : T.w ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Use `T.w_norm` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Establish `h2n : 2 * (n : ℝ) < h` using `lt_of_le_of_lt (le_max_left _ _) hbig`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgap : StdGap ε lam` using `⟨hlam.1, h, hh, h2n⟩`. Distinguish the cases in `hq : 1 ≤ S7.q0 ε`. Establish `h16` using `lt_of_le_of_lt (le_max_right _ _) hbig`. Rewrite `h16` using `[hq0]`. Establish `h8 : 8 * (n : ℝ) * S7.q0 ε < h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ (n : ℝ) * S7.q0 ε` using `by positivity`. Use `Real.sqrt_nonneg (2 * (S7.q0 ε : ℝ))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Take `⟨Ψ, hP, -⟩` from `exists_isPsiFor (hS7 n) T hl' hh hq h8`. Conclude with `⟨Hlam ε Ψ T.w, inferInstance, inferInstance, sigLam ε Ψ T.w, isDS_sigLam hgap hP hw⟩`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hpq : pOf ε = 0 ∨ qOf ε = 0`. Establish `h0 : S7.q0 ε = 0` using `by omega`. Unfold `S7.q0 at h0`. Use linear arithmetic over natural numbers and integers. Take `⟨σ, hσ, -⟩` from `isDS_compact hpq hl' T`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨T.V, inferInstance, inferInstance, σ, hσ⟩`.
+A detailed English derivation is pending.
 -/
 theorem final_existsG_of (hS7 : ∀ m : ℕ, S7.PsiExistsStatement m) :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →

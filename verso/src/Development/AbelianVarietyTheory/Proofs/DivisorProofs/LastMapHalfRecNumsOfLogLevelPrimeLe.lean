@@ -12,69 +12,63 @@ open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNo
 namespace GlobalTheory.ColRows.LastSideProof
 
 /- English proof (translation)
-Introduce `CY CT N X Pr W pl u δ J _ eJ R hWT hS hSR hlogT hT hR`. Take `⟨C, hC⟩` from `GlobalTheory.BranchLogBound.orthNormLogBound`. Establish `hW : W.Ok` using `hWT.1`. Establish `hk` using `N.R.m_add_three_le_k`. Establish `hm` using `N.R.two_le_m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hL, ha, -, -, hmR, -, hkR, hNn, hSc, hη, hb', -⟩` from `hR.nums`. Take `⟨-, -, -, -, -, hnodes, hcloud, -, hbT, hoff⟩` from `id hSR`. Establish `hNq : ((N.Nm : ℕ) : ℝ) = (N.R.k : ℝ) + (N.R.m : ℝ) * ((N.R.t : ℝ) + 1)`. Unfold `NumDatum.Nm Ranks.N`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Set `lam1 : RPl N.R → ℝ` to `fun z => (ext (W.lamTrue u N.R.m (pl z)) 0 : ℝ)`. Set `D0 : RPl N.R → ℝ` to `fun z => ((Br.d0 (N_m_succ N.R) (W.lamTrue u N.R.m (pl z)) (W.sgTrue (pl z)) : ℤ) : ℝ)`. Set `D1 : RPl N.R → ℝ` to `fun z => ((GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.dOne (N_m_succ N.R) (W.lamTrue u N.R.m (pl z)) (W.sgTrue (pl z)) : ℤ) : ℝ)`. Set `logc : RPl N.R → ℝ` to `fun z => (R.Nn - 1) * D1 z * Real.log (2 * R.a)`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `logxi : RPl N.R → ℝ` to `fun _ => R.Nn * (R.Nn - 1) / 2 * Real.log (2 * R.a)`. Set `bT : RPl N.R → ℝ` to `fun z => ((N.bT z.2 : ℚ) : ℝ)`. Establish `hrow : ∀ z, (W.hc u (pl z)).v = (N.hc z).v ∧ (W.hc u (pl z)).b = (N.hc z).b ∧ (W.hc u (pl z)).e = (N.hc z).e` using `fun z => ⟨congrArg RowPar.v (hWT.2.2 z).1, congrArg RowPar.b (hWT.2.2 z).1, congrArg RowPar.e (hWT.2.2 z).1⟩`. Establish `hu0 : ∀ z, (W.hc u (pl z)).u ⟨0, by omega⟩ = (N.hc z).u ⟨0, by omega⟩` using `fun z => ((hWT.2.2 z).2 _).trans (uW_first N δ z _)`. Establish `hul : ∀ z, (W.hc u (pl z)).u ⟨N.R.k - 1, by omega⟩ = (N.hc z).u ⟨N.R.k - 1, by omega⟩` using `fun z => ((hWT.2.2 z).2 _).trans (uW_last N δ z _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlam1 : ∀ z, lam1 z = (((N.hc z).u ⟨0, by omega⟩ : ℚ) : ℝ) - ((N.R.k : ℝ) - 1) / 2 - (N.R.m : ℝ) * (((N.R.t : ℝ) + 1) / 2)`. Introduce `z`. Establish `h` using `congrArg (fun q : ℚ => (q : ℝ)) (ext_lam_lo W u (pl z) 0 (by omega))`. Rewrite `h` using `[hu0 z]`. Move the coercions through the operations in `at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `show (ext (W.lamTrue u N.R.m (pl z)) 0 : ℝ) = _`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsumB : ∀ z, ((∑ B ∈ Finset.range N.R.m, ((RowPar.of (W.hc u (pl z))).eAt B - (RowPar.of (W.hc u (pl z))).bAt B - ((N.R.t : ℚ) + 1) / 2) : ℚ) : ℝ) ≤ (N.R.m : ℝ) * N.eta`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Establish `: ∀ B ∈ Finset.range N.R.m, (((RowPar.of (W.hc u (pl z))).eAt B : ℚ) : ℝ) - (((RowPar.of (W.hc u (pl z))).bAt B : ℚ) : ℝ) - ((N.R.t : ℝ) + 1) / 2 ≤ N.eta`. Introduce `B hB`. Rewrite `hB` using `[Finset.mem_range]`. Rewrite using `[RowPar.eAt_of _ hB, RowPar.bAt_of _ hB, (hrow z).2.1, (hrow z).2.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hnodes z ⟨B, hB⟩ ⟨B, hB⟩`. Establish `h2` using `neg_abs_le ((((N.hc z).b ⟨B, hB⟩ - (N.hc z).e ⟨B, hB⟩ : ℚ) : ℝ))`. Move the coercions through the operations in `at h1 h2`. Establish `ht : (0 : ℝ) ≤ N.R.t` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_le_sum this).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Establish `hD0 : ∀ z, D0 z ≤ N.Sc + (N.R.m : ℝ) * N.eta + (if z ∈ R.TT then bT z else 0)`. Introduce `z`. Establish `h` using `castQ (bottomRank_sum_le_two_mul_totalRank W hW u (pl z))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h`. Establish `hB` using `hsumB z`. Move the coercions through the operations in `at hB`. Establish `hv0` using `hcloud z ⟨0, by omega⟩`. Rewrite `hv0` using `[← (hrow z).1]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv0' : (((W.hc u (pl z)).v ⟨0, by omega⟩ : ℚ) : ℝ) ≤ N.Sc` using `hv0.2`. Establish `hkR' : (5 : ℝ) ≤ N.R.k` using `by exact_mod_cast (by omega : 5 ≤ N.R.k)`. Use `show ((Br.d0 (N_m_succ N.R) (W.lamTrue u N.R.m (pl z)) (W.sgTrue (pl z)) : ℤ) : ℝ) ≤ _`. Use `split_ifs with htop`. Take `⟨h1, h2⟩` from `(hR.tops z).1 htop`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hbz : bT z = -(((N.hc z).u ⟨N.R.k - 1, by omega⟩ : ℚ) : ℝ) - ((N.R.k : ℝ) - 1) / 2` using `by show ((N.bT z.2 : ℚ) : ℝ) = _`. Take `⟨b, t⟩` from `z`. Simplify using `only at h1`. Substitute `h1` using the available equality. Unfold `NumDatum.bT`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hbz, ← hul z]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzero : (0 : ℚ) ≤ (N.hc z).v ⟨N.R.k - 2, by omega⟩` using `(hcloud z ⟨N.R.k - 2, by omega⟩).1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hlast, -, -⟩` from `hoff z (fun h => htop ((hR.tops z).2 h)) (by omega)`. Establish `hl : (((W.hc u (pl z)).u ⟨N.R.k - 1, by omega⟩ : ℚ) : ℝ) = (((N.hc z).v ⟨N.R.k - 2, by omega⟩ : ℚ) : ℝ) - 1 / 2`. Rewrite using `[hul z, hlast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hzero' : (0 : ℝ) ≤ (((N.hc z).v ⟨N.R.k - 2, by omega⟩ : ℚ) : ℝ)` using `by exact_mod_cast hzero`. Rewrite `h` using `[hl]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD1 : ∀ z, D1 z ≤ 3 * D0 z + N.Sc + N.eta`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `h` using `castQ (dOne_le_place W hW u (pl z))`. Move the coercions through the operations in `at h`. Establish `hv0` using `(hcloud z ⟨0, by omega⟩).2`. Establish `hvk` using `(hcloud z ⟨N.R.k - 2, by omega⟩).1`. Rewrite `hv0`, `hvk` using `[← (hrow z).1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hvk' : (0 : ℝ) ≤ (((W.hc u (pl z)).v ⟨N.R.k - 2, by omega⟩ : ℚ) : ℝ)` using `by exact_mod_cast hvk`. Establish `hu1 : (((W.hc u (pl z)).u ⟨1, by omega⟩ : ℚ) : ℝ) < (((W.hc u (pl z)).v ⟨0, by omega⟩ : ℚ) : ℝ)`. Conclude with `(W.hc u (pl z)).v_gt_u ⟨0, by omega⟩` after adjusting the coercions. Rewrite `h` using `[RowPar.eAt_of _ (by omega : N.R.m - 1 < N.R.m), RowPar.eAt_of _ (by omega : 0 < N.R.m)]`. Establish `hg` using `(W.hc u (pl z)).gap_be ⟨0, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg' : ((((W.hc u (pl z)).b ⟨0, by omega⟩ : ℚ)) : ℝ) ≤ (((W.hc u (pl z)).e ⟨0, by omega⟩ : ℚ) : ℝ)`. Establish `ht : (0 : ℚ) ≤ N.R.t` using `Nat.cast_nonneg _`. Conclude with `(by linarith : (W.hc u (pl z)).b ⟨0, by omega⟩ ≤ (W.hc u (pl z)).e ⟨0, by omega⟩)` after adjusting the coercions. Establish `hn` using `hnodes z ⟨0, by omega⟩ ⟨N.R.m - 1, by omega⟩`. Rewrite `hn` using `[← (hrow z).2.1, ← (hrow z).2.2]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn'` using `neg_abs_le ((((W.hc u (pl z)).b ⟨0, by omega⟩ - (W.hc u (pl z)).e ⟨N.R.m - 1, by omega⟩ : ℚ) : ℝ))`. Move the coercions through the operations in `at hn hn'`. Establish `hkR' : (5 : ℝ) ≤ N.R.k` using `by exact_mod_cast (by omega : 5 ≤ N.R.k)`. Establish `hmt : (0 : ℝ) ≤ ((N.R.m : ℝ) - 1) * ((N.R.t : ℝ) + 1)`. Establish `: (1 : ℝ) ≤ N.R.m` using `by exact_mod_cast (by omega : 1 ≤ N.R.m)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (0 : ℝ) ≤ N.R.t` using `Nat.cast_nonneg _`. Establish `: (0 : ℝ) ≤ N.R.t` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Use `show ((GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.dOne (N_m_succ N.R) (W.lamTrue u N.R.m (pl z)) (W.sgTrue (pl z)) : ℤ) : ℝ) ≤ 3 * ((Br.d0 (N_m_succ N.R) (W.lamTrue u N.R.m (pl z)) (W.sgTrue (pl z)) : ℤ) : ℝ) + N.Sc + N.eta`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨bT, fun z => lam1 z - D0 z, lam1, D0, D1, logc, logxi, ?_, fun z => le_rfl, fun z => le_rfl, fun z => rfl, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hI : (∀ τ, Br.Interlace (N_m_succ N.R) (W.lamTrue u N.R.m τ) (W.sgTrue τ)) ∧ ∀ τ, Br.SameShift (W.lamTrue u N.R.m τ) (W.sgTrue τ)` using `⟨fun τ => GlobalTheory.BranchMembers.interlace W hW u τ, fun τ => GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance.members_sameShift W hW u τ⟩`. Establish `hsp : ∀ τ, (((W.lamTrue u N.R.m τ).spread : ℤ) : ℝ) ≤ 2 * N.sc.a` using `fun τ => hS.spread_le u N.R.m le_rfl τ`. Take `⟨-, hlog, -⟩` from `hC X.Tau (N.R.N N.R.m) (N.R.N N.R.m - 1) (N_m_succ N.R) (fun τ => W.lamTrue u N.R.m τ) W.sgTrue hI.1 N.sc.a hsp`. Establish `hA : lastLog W u = -((∑ τ, Br.nBr (W.lamTrue u N.R.m τ) (W.sgTrue τ) : ℤ) : ℝ) * Real.log (Pr.T u : ℝ) + Real.log (GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.orthNormSq (N_m_succ N.R) (fun τ => W.lamTrue u N.R.m τ) W.sgTrue)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∀ z, ext (W.lamTrue u N.R.m (pl z)) 0 = (W.lamTrue u N.R.m (pl z)).w ⟨0, N.R.N_pos N.R.m⟩` using `fun z => ext_of _ ⟨0, _⟩`. Establish `hn : ((∑ τ, Br.nBr (W.lamTrue u N.R.m τ) (W.sgTrue τ) : ℤ) : ℝ) = ∑ z, (lam1 z - D0 z)`. Rewrite using `[Int.cast_sum, ← Equiv.sum_comp pl]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[nBr_eq_sub (N_m_succ N.R)]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ = ((ext (W.lamTrue u N.R.m (pl z)) 0 : ℤ) : ℝ) - ((Br.d0 (N_m_succ N.R) (W.lamTrue u N.R.m (pl z)) (W.sgTrue (pl z)) : ℤ) : ℝ)`. Rewrite using `[h0]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hre : ∑ τ, (2 * (((N.R.N N.R.m : ℕ) : ℝ) - 1) * ((GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.dOne (N_m_succ N.R) (W.lamTrue u N.R.m τ) (W.sgTrue τ) : ℤ) : ℝ) + ((N.R.N N.R.m : ℕ) : ℝ) * (((N.R.N N.R.m : ℕ) : ℝ) - 1) / 2) * Real.log (2 * N.sc.a) = ∑ z, (2 * lo …`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← Equiv.sum_comp pl]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Use `show _ = 2 * ((R.Nn - 1) * ((GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.dOne (N_m_succ N.R) (W.lamTrue u N.R.m (pl z)) (W.sgTrue (pl z)) : ℤ) : ℝ) * Real.log (2 * R.a)) + R.Nn * (R.Nn - 1) / 2 * Real.log (2 * R.a)`. Rewrite using `[hNn, ha]`. Unfold `NumDatum.Nm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show lastLog W u ≤ -(∑ z, (lam1 z - D0 z) * R.logT) + ∑ z, (2 * logc z + logxi z)`. Rewrite using `[hA, hn, hR.logT, ← Finset.sum_mul, ← hre]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `(hR.tops z).1 hz`. Take `⟨b, t⟩` from `z`. Simplify using `only at h1`. Substitute `h1` using the available equality. Rewrite using `[hlam1, hR.aT t h2, hNn, hkR, hNq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Unfold `NumDatum.aT`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `z hz`. Take `⟨-, hS1, -⟩` from `hoff z (fun h => hz ((hR.tops z).2 h)) (by omega)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hv` using `(hcloud z ⟨0, by omega⟩).1`. Establish `hv' : (0 : ℝ) ≤ (((N.hc z).v ⟨0, by omega⟩ : ℚ) : ℝ)` using `by exact_mod_cast hv`. Rewrite using `[hlam1, hSc, hNn, hNq]`. Move the coercions through the operations in `at hS1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Introduce `z`. Rewrite using `[hSc, hmR, hη]`. Conclude with `hD0 z`. Introduce `z`. Rewrite using `[hSc, hη]`.
-
-Conclude with `hD1 z`. Introduce `z hz`. Take `⟨h1, h2⟩` from `(hR.tops z).1 hz`. Take `⟨b, t⟩` from `z`. Simplify using `only at h1`.
-
-Substitute `h1` using the available equality. Rewrite using `[hb']`. Conclude with `(hbT t h2).2`. Rewrite using `[hR.logT]`. Conclude with `Real.log_nonneg (by exact_mod_cast hT)`.
-
-Rewrite using `[hR.logT, hmR, hL]`. Conclude with `hlogT`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lastSide_of_logT_le : ∀ (CY CT : ℝ) (N : NumDatum) (X : Fields) (Pr : Primes X) (W : Wts X Pr.Word N.R) (pl : RPl N.R ≃ X.Tau)
     (u : Pr.Word) (δ : Code N) (J : Type) [Fintype J] (eJ : J ≃ Fin N.R.m) (R : RecNums J (RPl N.R)),

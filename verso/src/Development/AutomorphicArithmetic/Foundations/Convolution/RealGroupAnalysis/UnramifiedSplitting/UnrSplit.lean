@@ -15,11 +15,11 @@ open private satLocFree from Development.AutomorphicArithmetic.AutomorphicVariet
 open private UpperTheory.V.Af.RealLocalComponent.exists_comp UpperTheory.V.Af.RealLocalComponent.isotypic from Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.LocCompR
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π hN Q hQ v w hs B hB`. Take `⟨hq, i, hc, hx, hv⟩` from `hs`. Take `⟨σ, hσ⟩` from `UpperTheory.V.Af.RealLocalComponent.exists_comp UpperTheory.V.Af.admissibleReal π v`. Establish `hiso` using `UpperTheory.V.Af.RealLocalComponent.isotypic π v σ hσ`. Take `⟨σ', hσ', -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp UpperTheory.V.Af.formsFiniteGL E 2 Q w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `UpperTheory.ConvolutionTheory.R2.split F E D W M π hN Q hQ v w i hc hx σ σ' hσ hσ'`. Establish `h1 : GlobalTheory.LFun.HasSatGL v σ.ρ B` using `((satLocFree F 2 v σ).2 _ π.finPart hiso B).1 hB`. Establish `hq' : Formalism.UG.qV E w = Formalism.UG.qV F v`. Simplify `hq` using `[Formalism.UG.qV, Ideal.absNorm_apply, Submodule.cardQuot_apply, normV]`. Establish `h2 : GlobalTheory.LFun.HasSatGL w σ'.ρ B` using `GlobalTheory.IsoPull.hasSatGL_of_ringEquiv i hv hq' e (fun g x => (he g x).symm) h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.BcSpehCompare.hasSat_iff hσ' B).2 h2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.H.unrSplit :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ThetaLiftTrivialOrbitTermsVanish W M π → ∀ Q : CuspSub E 2, Q.V ≤ span W M π →

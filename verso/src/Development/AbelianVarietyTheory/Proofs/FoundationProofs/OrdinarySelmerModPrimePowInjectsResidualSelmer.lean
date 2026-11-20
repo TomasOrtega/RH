@@ -17,14 +17,14 @@ def rv (c : Coef l) (n : ℕ) (v : Fin 2 → Qbar l) : Mn c n :=
   fun i => if h : v i ∈ c.O then red c n ⟨v i, h⟩ else 0
 
 /- English proof (translation)
-Unfold `rv`. Rewrite using `[dif_pos (hv i)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rv_apply {c : Coef l} {n : ℕ} {v : Fin 2 → Qbar l} (hv : ∀ i, v i ∈ c.O) (i : Fin 2) :
     rv c n v i = red c n ⟨v i, hv i⟩ := by
   unfold rv; rw [dif_pos (hv i)]
 
 /- English proof (translation)
-Rewrite using `[funext_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[rv_apply ha, rv_apply hb, red_eq_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rv_eq_iff {c : Coef l} {n : ℕ} {a b : Fin 2 → Qbar l} (ha : ∀ i, a i ∈ c.O) (hb : ∀ i, b i ∈ c.O) :
     rv c n a = rv c n b ↔ Cv n a b := by
@@ -33,24 +33,24 @@ theorem rv_eq_iff {c : Coef l} {n : ℕ} {a b : Fin 2 → Qbar l} (ha : ∀ i, a
   rw [rv_apply ha, rv_apply hb, red_eq_iff]
 
 /- English proof (translation)
-Introduce `i` and use `c.O.add_mem (ha i) (hb i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem addV {c : Coef l} {a b : Fin 2 → Qbar l} (ha : ∀ i, a i ∈ c.O) (hb : ∀ i, b i ∈ c.O) :
     ∀ i, (a + b) i ∈ c.O := fun i => c.O.add_mem (ha i) (hb i)
 
 /- English proof (translation)
-Introduce `i` and use `c.O.sub_mem (ha i) (hb i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subV {c : Coef l} {a b : Fin 2 → Qbar l} (ha : ∀ i, a i ∈ c.O) (hb : ∀ i, b i ∈ c.O) :
     ∀ i, (a - b) i ∈ c.O := fun i => c.O.sub_mem (ha i) (hb i)
 
 /- English proof (translation)
-Introduce `_` and use `c.O.zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zeroV (c : Coef l) : ∀ i, (0 : Fin 2 → Qbar l) i ∈ c.O := fun _ => c.O.zero_mem
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[rv_apply (addV ha hb)]`. Use `show _ = rv c n a i + rv c n b i`. Rewrite using `[rv_apply ha, rv_apply hb, ← map_add]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rv_add {c : Coef l} {n : ℕ} {a b : Fin 2 → Qbar l} (ha : ∀ i, a i ∈ c.O) (hb : ∀ i, b i ∈ c.O) :
     rv c n (a + b) = rv c n a + rv c n b := by
@@ -61,7 +61,7 @@ theorem rv_add {c : Coef l} {n : ℕ} {a b : Fin 2 → Qbar l} (ha : ∀ i, a i 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[rv_apply (subV ha hb)]`. Use `show _ = rv c n a i - rv c n b i`. Rewrite using `[rv_apply ha, rv_apply hb, ← map_sub]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rv_sub {c : Coef l} {n : ℕ} {a b : Fin 2 → Qbar l} (ha : ∀ i, a i ∈ c.O) (hb : ∀ i, b i ∈ c.O) :
     rv c n (a - b) = rv c n a - rv c n b := by
@@ -72,7 +72,7 @@ theorem rv_sub {c : Coef l} {n : ℕ} {a b : Fin 2 → Qbar l} (ha : ∀ i, a i 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[rv_apply (zeroV c)]`. Use `show _ = (0 : Qn c n)`. Rewrite using `[← map_zero (red c n)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rv_zero (c : Coef l) (n : ℕ) : rv c n 0 = 0 := by
   funext i
@@ -82,7 +82,7 @@ theorem rv_zero (c : Coef l) (n : ℕ) : rv c n 0 = 0 := by
   rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Conclude with `c.O.add_mem (c.O.mul_mem (hM _ _) (hx _)) (c.O.mul_mem (hM _ _) (hx _))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem {c : Coef l} {M : Matrix (Fin 2) (Fin 2) (Qbar l)} (hM : ∀ i j, M i j ∈ c.O)
     {x : Fin 2 → Qbar l} (hx : ∀ i, x i ∈ c.O) (i : Fin 2) : (M *ᵥ x) i ∈ c.O := by
@@ -94,9 +94,9 @@ section
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[rv_apply (mulVec_mem (hint s) hx)]`. Establish `e : (⟨(mat W s *ᵥ x) i, mulVec_mem (hint s) hx i⟩ : c.O) = ⟨mat W s i 0, hint s i 0⟩ * ⟨x 0, hx 0⟩ + ⟨mat W s i 1, hint s i 1⟩ * ⟨x 1, hx 1⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, map_add, map_mul, map_mul]`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, matQ_apply, rv_apply hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rv_mulVec (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) (s : G ℚ Ω)
     {x : Fin 2 → Qbar l} (hx : ∀ i, x i ∈ c.O) :
@@ -111,11 +111,9 @@ theorem rv_mulVec (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W 
   simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, matQ_apply, rv_apply hx]
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `continuous_discrete_rng.2 fun q => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `red_surjective c n q`. Establish `e : (fun s => rv c n (y s) i) ⁻¹' {red c n z} = (fun s => y s i) ⁻¹' Metric.closedBall (z : Qbar l) ‖((l : ℕ) : Qbar l) ^ n‖`. Use extensionality with `s`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Metric.mem_closedBall, dist_eq_norm, rv_apply (hO s)]`. Conclude with `red_eq_iff _ _`. Rewrite using `[e]`. Establish `hne : ‖((l : ℕ) : Qbar l) ^ n‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff]`.
-
-Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Conclude with `(IsUltrametricDist.isOpen_closedBall _ hne).preimage ((continuous_apply i).comp hyc)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_rv (c : Coef l) (n : ℕ) {y : G ℚ Ω → Fin 2 → Qbar l} (hyc : Continuous y)
     (hO : ∀ s i, y s i ∈ c.O) : Continuous fun s => rv c n (y s) := by
@@ -134,9 +132,9 @@ theorem continuous_rv (c : Coef l) (n : ℕ) {y : G ℚ Ω → Fin 2 → Qbar l}
   exact (IsUltrametricDist.isOpen_closedBall _ hne).preimage ((continuous_apply i).comp hyc)
 
 /- English proof (translation)
-Establish `hp : Prime ((l : ℕ) : 𝓞 ℚ)`. Establish `e : ((l : ℕ) : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm ((l : ℕ) : ℤ)` using `by simp`. Rewrite using `[e]`. Conclude with `(MulEquiv.prime_iff Rat.ringOfIntegersEquiv.symm.toMulEquiv).mpr (Nat.prime_iff_prime_int.1 (Fact.out : l.Prime))`. Establish `hmax : (Ideal.span {((l : ℕ) : 𝓞 ℚ)}).IsMaximal` using `((Ideal.span_singleton_prime hp.ne_zero).2 hp).isMaximal (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hp.ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Ideal.span {((l : ℕ) : 𝓞 ℚ)} = v.asIdeal` using `hmax.eq_of_le v.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hv)`. Establish `h2 : Ideal.span {((l : ℕ) : 𝓞 ℚ)} = w.asIdeal` using `hmax.eq_of_le w.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hw)`. Conclude with `HeightOneSpectrum.ext (h1.symm.trans h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_natCast_mem {v w : Pl} (hv : ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal) (hw : ((l : ℕ) : 𝓞 ℚ) ∈ w.asIdeal) :
     v = w := by
@@ -155,7 +153,7 @@ theorem eq_of_natCast_mem {v w : Pl} (hv : ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal)
   exact HeightOneSpectrum.ext (h1.symm.trans h2)
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.mk'_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem toGS_surjective (S : Finset Pl) : Function.Surjective (toGS Ω (S : Set Pl)) :=
   QuotientGroup.mk'_surjective _
@@ -164,9 +162,9 @@ def zOf (c : Coef l) (n : ℕ) (S : Finset Pl) (y : G ℚ Ω → Fin 2 → Qbar 
   fun g => rv c n (y (Function.surjInv (toGS_surjective S) g))
 
 /- English proof (translation)
-Establish `hO : ∀ s i, y s i ∈ c.O` using `hy.1.2.1`. Establish `ha : s⁻¹ * t ∈ (toGS Ω (S : Set Pl)).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, h, inv_mul_cancel]`. Establish `e : s * (s⁻¹ * t) = t` using `by group`. Establish `h1` using `hy.1.2.2 s (Subgroup.mem_top _) (s⁻¹ * t) (Subgroup.mem_top _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e]`. Establish `h2` using `hy.2.1 _ ha`. Rewrite using `[(rv_eq_iff (hO t) (addV (hO s) (mulVec_mem (hint s) (hO _)))).2 h1, rv_add (hO s) (mulVec_mem (hint s) (hO _)), rv_mulVec c n W hint s (hO _), (rv_eq_iff (hO _) (zeroV c)).2 h2, rv_zero, Matrix.mulVec_zero, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rv_wd (c : Coef l) (n : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l)
     (hint : ∀ s i j, mat W s i j ∈ c.O) {y : G ℚ Ω → Fin 2 → Qbar l} (hy : GwCount.SelN c n S A W y)
@@ -183,7 +181,7 @@ theorem rv_wd (c : Coef l) (n : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (
     (rv_eq_iff (hO _) (zeroV c)).2 h2, rv_zero, Matrix.mulVec_zero, add_zero]
 
 /- English proof (translation)
-The claim follows from `rv_wd c n S A W hint hy (Function.surjInv_eq (toGS_surjective S) _)`.
+A detailed English derivation is pending.
 -/
 theorem zOf_toGS (c : Coef l) (n : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l)
     (hint : ∀ s i j, mat W s i j ∈ c.O) {y : G ℚ Ω → Fin 2 → Qbar l} (hy : GwCount.SelN c n S A W y)
@@ -191,11 +189,11 @@ theorem zOf_toGS (c : Coef l) (n : ℕ) (S : Finset Pl) (A : ValuationSubring Ω
   rv_wd c n S A W hint hy (Function.surjInv_eq (toGS_surjective S) _)
 
 /- English proof (translation)
-Establish `hO : ∀ s i, y s i ∈ c.O` using `hy.1.2.1`. Use `⟨?_, fun g h => ?_⟩` and prove the remaining obligations. Rewrite using `[(QuotientGroup.isQuotientMap_mk _).continuous_iff]`. Establish `e : (zOf c n S y ∘ QuotientGroup.mk) = fun s => rv c n (y s)`. Use function extensionality and compare the values at `fun s => zOf_toGS c n S A W hint hy s`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Establish `h0` using `hy.1.1`. Rewrite `h0` using `[Subgroup.coe_top]`. Conclude with `continuous_rv c n (continuousOn_univ.1 h0) hO`. Take `⟨s, rfl⟩` from `toGS_surjective S g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `toGS_surjective S h`. Rewrite using `[← map_mul, zOf_toGS c n S A W hint hy, zOf_toGS c n S A W hint hy, zOf_toGS c n S A W hint hy, rhoS_toGS, ← rv_mulVec c n W hint s (hO t), ← rv_add (hO s) (mulVec_mem (hint s) (hO t))]`. Conclude with `(rv_eq_iff (hO _) (addV (hO s) (mulVec_mem (hint s) (hO t)))).2 (hy.1.2.2 s (Subgroup.mem_top _) t (Subgroup.mem_top _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOf_mem (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) (S : Finset Pl)
     (hN : ∀ a ∈ NS Ω (S : Set Pl), W a = 1) (A : ValuationSubring Ω) {y : G ℚ Ω → Fin 2 → Qbar l}
@@ -219,29 +217,25 @@ theorem zOf_mem (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s 
 end
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ e S A W hW c hint hN n _`. Use `⟨fun y => if h : GwCount.SelN c n S A W y then Submodule.Quotient.mk ⟨zOf c n S y, zOf_mem c n W hint S hN A h⟩ else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hO : ∀ s i, y s i ∈ c.O` using `hy.1.2.1`. Simplify using `only [dif_pos hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[SelG, mem_Sel]`. Introduce `v`. Rewrite using `[resH1, Submodule.mapQ_apply]`. Distinguish the cases in `hv : IsPlaceOver A v.1`. Establish `hL : Lc c n W hint S hN A v = ordCond c n W hint S hN (Av A S v)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Unfold `Lc`. Conclude with `if_pos hv`. Establish `hAv : Av A S v = A`. Unfold `Av`. Rewrite using `[if_pos hv]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (restrictCocycles1 (rhoS c n W hint S hN) (locHom (S : Set Pl) (Av A S v)) (continuous_locHom _ _) ⟨zOf c n S y, zOf_mem c n W hint S hN A hy⟩) ∈ ordCond c n W hint S hN (Av A S v)`. Rewrite using `[ordCond]`. Establish `hmem : restrictCocycles1 (rhoS c n W hint S hN) (locHom (S : Set Pl) (Av A S v)) (continuous_locHom _ _) ⟨zOf c n S y, zOf_mem c n W hint S hN A hy⟩ ∈ (ordZ c n W hint (Av A S v)).comap (Z1 ((rhoS c n W hint S hN).comp (locHom (S : Set Pl) (Av A S v)))).subtype`. Rewrite using `[Submodule.mem_comap, mem_ordZ]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hxs⟩` from `hy.2.2.2`. Use `⟨red c n ⟨x, hx⟩, fun s => ?_⟩` and prove the remaining obligations. Use `show zOf c n S y (toGS Ω (S : Set Pl) s.1) 1 = _`. Establish `hs : (s : G ℚ Ω) ∈ Dec (F` using `ℚ) A := (le_of_eq (congrArg (Dec (F := ℚ)) hAv)) s.2`. Rewrite using `[zOf_toGS c n S A W hint hy, rv_apply (hO s.1), matQ_apply, ← map_mul, ← map_sub, red_eq_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hxs s hs`. Conclude with `Submodule.mem_map_of_mem hmem`. Establish `hL : Lc c n W hint S hN A v = H1ur ((rhoS c n W hint S hN).comp (locFam S (Av A S) v)) ((Ine (F` using `ℚ) (Av A S v)).subgroupOf (Dec (F := ℚ) (Av A S v))) := by`. Unfold `Lc`. Conclude with `if_neg hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hl : ((l : ℕ) : 𝓞 ℚ) ∉ v.1.asIdeal` using `fun h => hv (by`. Take `⟨v0, hA0, hl0⟩` from `hW.atL`. Rewrite using `[eq_of_natCast_mem h hl0]`. Conclude with `hA0)`. Take `⟨B, hB, hcob⟩` from `hy.2.2.1 v.1 v.2 hl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hxO, hx⟩` from `CobConj.cob_conj l Ω W c n y v.1 B (Av A S v) hint hy.1 hB (isPlaceOver_Av A S v) hcob`. Rewrite using `[hL, H1ur, LinearMap.mem_ker]`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((mem_coboundaries1 _ _).2 ⟨rv c n x, fun g => ?_⟩)` and prove the remaining obligations. Use `show zOf c n S y (toGS Ω (S : Set Pl) g.1.1) = matQ c n W hint g.1.1 *ᵥ rv c n x - rv c n x`. Establish `hg : (g.1.1 : G ℚ Ω) ∈ Ine (F` using `ℚ) (Av A S v) := Subgroup.mem_subgroupOf.1 g.2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[zOf_toGS c n S A W hint hy, ← rv_mulVec c n W hint _ hxO, ← rv_sub (mulVec_mem (hint _) hxO) hxO]`. Conclude with `(rv_eq_iff (hO _) (subV (mulVec_mem (hint _) hxO) hxO)).2 (hx _ hg)`. Introduce `y y' hy hy' heq`. Establish `hO : ∀ s i, y s i ∈ c.O` using `hy.1.2.1`. Establish `hO' : ∀ s i, y' s i ∈ c.O` using `hy'.1.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [dif_pos hy, dif_pos hy'] at heq`. Rewrite `heq` using `[Submodule.Quotient.eq, Submodule.mem_comap, mem_coboundaries1]`. Take `⟨m, hm⟩` from `heq`. Use `choose x hx using fun i => red_surjective c n (m i)`. Establish `hxO : ∀ i, (fun i => ((x i : c.O) : Qbar l)) i ∈ c.O` using `fun i => (x i).2`.
-
-Establish `hm' : rv c n (fun i => ((x i : c.O) : Qbar l)) = m` using `funext fun i => by`. Rewrite using `[rv_apply hxO]`. Conclude with `hx i`. Use `⟨fun i => ((x i : c.O) : Qbar l), hxO, fun s _ => ?_⟩` and prove the remaining obligations. Establish `h` using `hm (toGS Ω (S : Set Pl) s)`.
-
-Express the relevant statement in the definitionally equal form `zOf c n S y (toGS Ω (S : Set Pl) s) - zOf c n S y' (toGS Ω (S : Set Pl) s) = rhoS c n W hint S hN (toGS Ω (S : Set Pl) s) m - m at h`. Rewrite `h` using `[zOf_toGS c n S A W hint hy, zOf_toGS c n S A W hint hy', rhoS_toGS, ← hm', ← rv_mulVec c n W hint s hxO, ← rv_sub (hO s) (hO' s), ← rv_sub (mulVec_mem (hint s) hxO) hxO]`. Conclude with `(rv_eq_iff (subV (hO s) (hO' s)) (subV (mulVec_mem (hint s) hxO) hxO)).1 h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sel_lower : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W → ∀ (c : Coef l) (hint : ∀ s i j, mat W s i j ∈ c.O) (hN : ∀ a ∈ NS Ω (S : Set Pl), W a = 1) (n : ℕ), 1 ≤ n → ∃ cls : (G ℚ Ω → Fin 2 → Qbar l) → H1 (rhoS c n W hint S hN), (∀ y, GwCount.SelN c n S A W y → cls y ∈ SelG c n W hint S hN A) ∧ ∀ y y', GwCount.SelN c n S A W y → GwCount.SelN c n S A W y' → cls y = cls y' → Cob1 c n W ⊤ (y - y') := by
   intro l _ Ω _ _ _ e S A W hW c hint hN n _

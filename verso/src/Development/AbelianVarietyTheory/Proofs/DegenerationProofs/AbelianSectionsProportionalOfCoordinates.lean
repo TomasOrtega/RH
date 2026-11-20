@@ -20,7 +20,7 @@ section
 variable {F : Type} [Field F] [IsAlgClosed F] {Y : Scheme.{0}} (p : Y ⟶ Sp F) [LocallyOfFiniteType p]
 
 /- English proof (translation)
-Establish `: JacobsonSpace Y` using `LocallyOfFiniteType.jacobsonSpace p`. Take `⟨c, hcW, hc⟩` from `nonempty_inter_closedPoints hn hZ`. Conclude with `⟨pointOfClosedPoint p c hc, pointOfClosedPoint_comp p c hc, fun z => (congrArg (· ∈ Z) (pointOfClosedPoint_apply p c hc z)).mpr hcW⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_point {Z : Set Y} (hZ : IsLocallyClosed Z) (hn : Z.Nonempty) :
     ∃ r : Sp F ⟶ Y, r ≫ p = 𝟙 _ ∧ ∀ z, r z ∈ Z := by
@@ -30,9 +30,9 @@ theorem exists_point {Z : Set Y} (hZ : IsLocallyClosed Z) (hn : Z.Nonempty) :
     fun z => (congrArg (· ∈ Z) (pointOfClosedPoint_apply p c hc z)).mpr hcW⟩
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← basicOpen_eq_bot_iff]`. Assume the negation of the conclusion as `hne`. Establish `hn : ((Y.basicOpen (a - b) : Y.Opens) : Set Y).Nonempty` using `Set.nonempty_iff_ne_empty.2 fun e => hne (SetLike.coe_injective e)`. Take `⟨r, hr, hz⟩` from `exists_point p (Y.basicOpen (a - b)).isOpen.isLocallyClosed hn`. Establish `hU : ⊤ ≤ r ⁻¹ᵁ U` using `fun z _ => Y.basicOpen_le _ (hz z)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu` using `(isUnit_valR_iff r U hU (a - b)).2 fun z _ => hz z`. Establish `e` using `h r hr hU`. Rewrite `e` using `[valR_eq r U hU, valR_eq r U hU, ← sub_eq_zero, ← map_sub]`. Rewrite `hu` using `[valR_eq r U hU, e]`. Conclude with `not_isUnit_zero hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fn_ext_valR [IsReduced Y] {U : Y.Opens} {a b : Γ(Y, U)}
     (h : ∀ r : Sp F ⟶ Y, r ≫ p = 𝟙 _ → ⊤ ≤ r ⁻¹ᵁ U → valR r U a = valR r U b) : a = b := by
@@ -51,11 +51,11 @@ theorem fn_ext_valR [IsReduced Y] {U : Y.Opens} {a b : Γ(Y, U)}
 variable {H : LB Y} {I : Type} {a b : I → H.Sec}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Set `V : Y.Opens` to `⨆ i, Y.basicOpen ((b i).f l)`. Establish `hyV : y ∉ V` using `fun e => hne (TopologicalSpace.Opens.mem_iSup.1 e)`. Take `⟨r, hr, hz⟩` from `exists_point p ((H.U l).isOpen.isLocallyClosed.inter V.isOpen.isClosed_compl.isLocallyClosed) ⟨y, hy, hyV⟩`. Take `⟨w, hw, hc⟩` from `h r hr`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hU : ⊤ ≤ r ⁻¹ᵁ H.U l` using `fun z _ => (hz z).1`. Take `⟨c, hc'⟩` from `crd_unique hc (⟨l, 1, hU, fun j => by simp⟩ : Crd H b r (fun i => valR r (H.U l) ((b i).f l)))`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hw`. Establish `hu : IsUnit (valR r (H.U l) ((b i).f l))`. Rewrite using `[hc' i]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `c.isUnit.mul (Ne.isUnit hi)`. Establish `z : Sp F` using `IsLocalRing.closedPoint F`. Conclude with `(hz z).2 (TopologicalSpace.Opens.mem_iSup.2 ⟨i, (isUnit_valR_iff r _ hU _).1 hu (Set.mem_univ z)⟩)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mem_basicOpen (h : ∀ r : Sp F ⟶ Y, r ≫ p = 𝟙 _ → ∃ w, w ≠ 0 ∧ Crd H b r w) (l : H.ι) (y : Y)
     (hy : y ∈ H.U l) : ∃ i, y ∈ Y.basicOpen ((b i).f l) := by
@@ -76,7 +76,7 @@ theorem exists_mem_basicOpen (h : ∀ r : Sp F ⟶ Y, r ≫ p = 𝟙 _ → ∃ w
   exact (hz z).2 (TopologicalSpace.Opens.mem_iSup.2 ⟨i, (isUnit_valR_iff r _ hU _).1 hu (Set.mem_univ z)⟩)
 
 /- English proof (translation)
-Use `fn_ext_valR p fun r hr hU => ?_` and prove the remaining obligations. Take `⟨w, ha, hb⟩` from `h r hr`. Take `⟨c, hc⟩` from `crd_unique ha (⟨l, 1, hU, fun j => by simp⟩ : Crd H a r (fun i => valR r (H.U l) ((a i).f l)))`. Take `⟨d, hd⟩` from `crd_unique hb (⟨l, 1, hU, fun j => by simp⟩ : Crd H b r (fun i => valR r (H.U l) ((b i).f l)))`. Rewrite using `[valR_mul r _ hU, valR_mul r _ hU, hc i, hc i', hd i, hd i']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -94,9 +94,9 @@ theorem cross_eq [IsReduced Y] (h : ∀ r : Sp F ⟶ Y, r ≫ p = 𝟙 _ → ∃
 end
 
 /- English proof (translation)
-Rewrite using `[valR_res r le_top hU, valR_eq r ⊤ le_rfl]`. Establish `e : r.appLE ⊤ ⊤ le_rfl = r.appTop` using `(Scheme.Hom.app_eq_appLE r).symm`. Establish `e₂ : p.appTop ≫ r.appTop = 𝟙 _` using `by rw [← Scheme.Hom.comp_appTop, hr, Scheme.Hom.id_appTop]`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom ((p.appTop ≫ r.appLE ⊤ ⊤ le_rfl).hom _) = a`. Rewrite using `[e, e₂]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Scheme.ΓSpecIso (CommRingCat.of F)).inv_hom_id_apply a`.
+A detailed English derivation is pending.
 -/
 theorem valR_const {F : Type} [Field F] {Y : Scheme.{0}} (p : Y ⟶ Sp F) (r : Sp F ⟶ Y) (hr : r ≫ p = 𝟙 _)
     (U : Y.Opens) (hU : ⊤ ≤ r ⁻¹ᵁ U) (a : F) :
@@ -109,23 +109,21 @@ theorem valR_const {F : Type} [Field F] {Y : Scheme.{0}} (p : Y ⟶ Sp F) (r : S
   exact (Scheme.ΓSpecIso (CommRingCat.of F)).inv_hom_id_apply a
 
 /- English proof (translation)
-Introduce `hG R _ _ A F _ _ _ k I J _ t s b H`. Establish `hsm` using `A.isAb.smooth`. Set `T : Over (Spec (CommRingCat.of (FractionRing R)))` to `TFK (R := R) F`. Set `p : (T ⊗ A.A).left ⟶ Sp F` to `(fst T A.A).left`. Establish `hp : Smooth p` using `inferInstanceAs (Smooth (pullback.fst T.hom A.A.hom))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsReduced (T ⊗ A.A).left` using `GlobalTheory.isReduced_of_smooth_of_isReduced p`. Set `m : I → SecM A.A A.L (k : ℤ) T` to `fun i => ∑ j, kf R F (b i j) • SecM.ofSec A.A (s j)`. Set `t' : I → SecA A F k` to `fun i => SecM.toSec A.A (m i)`. Establish `key : ∀ r : Sp F ⟶ (T ⊗ A.A).left, r ≫ p = 𝟙 _ → ∃ w, w ≠ 0 ∧ Crd (LPow A.A A.L (k : ℤ) T) t' r w ∧ Crd (LPow A.A A.L (k : ℤ) T) t r w`. Introduce `r hr`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `r' : T ⟶ T ⊗ A.A` to `Over.homMk r (by`. Rewrite using `[← Over.w (fst T A.A), ← Category.assoc]`. Conclude with `(congrArg (· ≫ T.hom) hr).trans (Category.id_comp _))`. Establish `er : ptSecT A.A (r' ≫ snd _ _) = r'`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ (lift_snd _ _)` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ptSecT, lift_fst]`. Conclude with `Over.OverMorphism.ext hr.symm`. Take `⟨v, hv, hs, ht⟩` from `H (r' ≫ snd _ _)`. Establish `er' : (ptSecT A.A (r' ≫ snd _ _)).left = r` using `congrArg (·.left) er`. Use `replace hs : Crd (LPow A.A A.L (k : ℤ) T) s r v := er' ▸ hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `replace ht : Crd (LPow A.A A.L (k : ℤ) T) t r (b.mulVec v) := er' ▸ ht`. Use `⟨_, hv, ?_, ht⟩` and prove the remaining obligations. Take `⟨l, c, hl, hc⟩` from `hs`. Use `⟨l, c, hl, fun i => ?_⟩` and prove the remaining obligations. Establish `e : (t' i).f l = ∑ j, resG _ le_top (p.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (b i j))) * (s j).f l`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(m i).1 l = _`. Simplify using `only [m, Submodule.coe_sum, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[e, valR_eq r _ hl, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← valR_eq r _ hl, valR_mul r _ hl, valR_const p r hr _ hl, hc j, mul_left_comm]`. Take `⟨c₀, hc₀⟩` from `SectionRatio.exists_ratio A.isLB (φ := fun _ : Fin 1 => (snd T A.A).left) (ε := fun _ => (k : ℤ)) t' t (fun y J hJ => by`. Establish `hm` using `hJ.mem (fun _ : Fin 1 => (snd T A.A).left) (𝟙 _)`. Take `⟨i, hi⟩` from `exists_mem_basicOpen p (H := LPow A.A A.L (k : ℤ) T) (b := t) (fun r hr => (key r hr).imp fun w hw => ⟨hw.1, hw.2.2⟩) _ y hm`. Conclude with `⟨i, (SectionRatio.mem_basicOpen_iff_gs _ y hm).1 hi⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun i i' y J hJ => by`. Establish `hm` using `hJ.mem (fun _ : Fin 1 => (snd T A.A).left) (𝟙 _)`. Establish `e` using `cross_eq p (H := LPow A.A A.L (k : ℤ) T) (a := t') (b := t) (fun r hr => (key r hr).imp fun w hw => hw.2) (fun _ => J (𝟙 _ ≫ (snd T A.A).left)) i i'`. Conclude with `(gs_mul _ y _ hm _ _).symm.trans ((congrArg (gs (𝟙 _) y _) e).trans (gs_mul _ y _ hm _ _)))`. Take `⟨d, hd⟩` from `CommPairing.surj_fst hG A.isAb T c₀`.
-
-Take `⟨c, rfl⟩` from `(kf_bijective R F).2 d`. Use `⟨c, fun i => ThetaAct.sv_ext A.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Use `(hc₀ i y J hJ).trans (Eq.trans ?_ (ThetaAct.sv_smul _ _ _ _ hJ).symm)` and prove the remaining obligations. Conclude with `congrArg (· * _) ((congrArg (gs (𝟙 _) y ⊤) hd.symm).trans (gs_pull (𝟙 _) _ y ⊤ trivial _))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem proportional_of_crd : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (k : ℕ) (I J : Type) [Fintype J] (t : I → SecA A F k) (s : J → SecA A F k) (b : Matrix I J F), (∀ x : TFK (R := R) F ⟶ A.A, ∃ v : J → F, b.mulVec v ≠ 0 ∧ Crd (LPow A.A A.L (k : ℤ) (TFK (R := R) F)) s (show Sp F ⟶ _ from (ptSecT A.A x).left) v ∧ Crd (LPow A.A A.L (k : ℤ) (TFK (R := R) F)) t (show Sp F ⟶ _ from (ptSecT A.A x).left) (b.mulVec v)) → ∃ c : F, ∀ i, ∑ j, kf R F (b i j) • SecM.ofSec A.A (s j) = kf R F c • SecM.ofSec A.A (t i) := by
   intro hG R _ _ A F _ _ _ k I J _ t s b H

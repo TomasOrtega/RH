@@ -66,7 +66,7 @@ section General
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨(GlobalTheory.FinWeilO.thetaSub ψ S T).zero_mem, fun w _ => by simp⟩`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `(h i (Finset.mem_insert_self _ _)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reads_sum {a d : ℕ} {hS : S.rank = a} {hT : T.rank = d} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {r : D.host.E} {ι : Type}
     (s : Finset ι) (G : ι → Formalism.MainNotions.TaylorLogMetric.VC D a d → ℂ) (f : ι → WO S T → ℂ) (h : ∀ i ∈ s, Reads ψ θ hS hT cc δ r (G i) (f i)) :
@@ -83,7 +83,7 @@ Both sides reduce to the same expression.
 theorem ip_eq (ν : Measure (WO S T)) (𝓕 : Set (WO S T)) (f g : WO S T → ℂ) : ip S T ν 𝓕 f g = GlobalTheory.Ker.ipO ν 𝓕 f g := rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ip]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, ← ih]`. Conclude with `GlobalTheory.Size.ipO_add_left hψ hν.1 hν.2.1 (hf i) ((GlobalTheory.FinWeilO.thetaSub ψ S T).sum_mem fun j _ => hf j) hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_sum_left (hψ : IsStdChar D ψ (-1)) {ν : Measure (WO S T)} {𝓕 : Set (WO S T)} (hν : IsCovolOne (ratL T S) ν 𝓕)
     {ι : Type} (s : Finset ι) (f : ι → WO S T → ℂ) (hf : ∀ i, IsThetaFunO ψ S T (f i)) {g : WO S T → ℂ}
@@ -95,7 +95,7 @@ theorem ip_sum_left (hψ : IsStdChar D ψ (-1)) {ν : Measure (WO S T)} {𝓕 : 
     exact GlobalTheory.Size.ipO_add_left hψ hν.1 hν.2.1 (hf i) ((GlobalTheory.FinWeilO.thetaSub ψ S T).sum_mem fun j _ => hf j) hg
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ip]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, ← ih]`. Conclude with `GlobalTheory.Size.ipO_add_right hψ hν.1 hν.2.1 hg (hf i) ((GlobalTheory.FinWeilO.thetaSub ψ S T).sum_mem fun j _ => hf j)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_sum_right (hψ : IsStdChar D ψ (-1)) {ν : Measure (WO S T)} {𝓕 : Set (WO S T)} (hν : IsCovolOne (ratL T S) ν 𝓕)
     {ι : Type} (s : Finset ι) (f : ι → WO S T → ℂ) (hf : ∀ i, IsThetaFunO ψ S T (f i)) {g : WO S T → ℂ}
@@ -107,9 +107,9 @@ theorem ip_sum_right (hψ : IsStdChar D ψ (-1)) {ν : Measure (WO S T)} {𝓕 :
     exact GlobalTheory.Size.ipO_add_right hψ hν.1 hν.2.1 hg (hf i) ((GlobalTheory.FinWeilO.thetaSub ψ S T).sum_mem fun j _ => hf j)
 
 /- English proof (translation)
-Establish `key : ∀ u, (∀ i ∈ s, heisO ψ S T u (f i) = f i) → heisO ψ S T u (∑ i ∈ s, f i) = ∑ i ∈ s, f i`. Introduce `u hu`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Finset.sum_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i hi => congrFun (hu i hi) w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨fun u hu => key _ fun i hi => (hf i hi).1 u hu, fun e he u hu hh => key _ fun i hi => (hf i hi).2 e he u hu hh⟩`.
+A detailed English derivation is pending.
 -/
 theorem isSphOff_sum {LS : Lat S} {LT : Lat T} {Sf : Finset (FinPl D)} {ι : Type} (s : Finset ι) (f : ι → WO S T → ℂ)
     (hf : ∀ i ∈ s, IsSphOff ψ S T LS LT Sf (f i)) : IsSphOff ψ S T LS LT Sf (∑ i ∈ s, f i) := by
@@ -121,7 +121,7 @@ theorem isSphOff_sum {LS : Lat S} {LT : Lat T} {Sf : Finset (FinPl D)} {ι : Typ
   exact ⟨fun u hu => key _ fun i hi => (hf i hi).1 u hu, fun e he u hu hh => key _ fun i hi => (hf i hi).2 e he u hu hh⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun u hu => by rw [← GlobalTheory.VacPairSchur.pT_heisO hθ sS BS sT BT f (GlobalTheory.FockLatVac.infPart_latO_any (nsmul_mem hu 2)), hf.1 u hu], fun e he u hu hh => by rw [← GlobalTheory.VacPairSchur.pT_heisO hθ sS BS sT BT f (GlobalTheory.FockLatVac.infPart_latO_any hu), hf.2 …`.
+Supply the required witnesses or components.
 -/
 theorem isSphOff_pure (hθ : IsInfFam θ) {LS : Lat S} {LT : Lat T} {Sf : Finset (FinPl D)} {f : WO S T → ℂ}
     (hf : IsSphOff ψ S T LS LT Sf f) (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
@@ -133,7 +133,7 @@ theorem isSphOff_pure (hθ : IsInfFam θ) {LS : Lat S} {LT : Lat T} {Sf : Finset
     rw [← GlobalTheory.VacPairSchur.pT_heisO hθ sS BS sT BT f (GlobalTheory.FockLatVac.infPart_latO_any hu), hf.2 e he u hu hh]⟩
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.T.integral_definiteUnitaryQuotient_eq_classSum V n ι (intG D n) K μ 𝓕 h1 h2 h3 h4 h5 h6 h7 (fun _ => 1) ⟨fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩).2.2`. Simplify `h` using `[GlobalTheory.AutomorphicL2Unitary.descend, volQ, mass]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem volQ_eq_mass (V : HSp D) (n : ℕ) (ι : Formalism.MainNotions.StandardLatticesGL3.GA D n →* GA D V)
     (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (μ : Measure (GA D V)) (𝓕 : Set (GA D V))
@@ -146,7 +146,7 @@ theorem volQ_eq_mass (V : HSp D) (n : ℕ) (ι : Formalism.MainNotions.StandardL
   simpa [GlobalTheory.AutomorphicL2Unitary.descend, volQ, mass] using h
 
 /- English proof (translation)
-Introduce `v hv` and use `by rw [map_mul, map_mul, map_inv] exact mul_mem (mul_mem (inv_mem (ha v (Finset.notMem_empty v))) (hg v hv)) (hb v (Finset.notMem_empty v))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem openOff_conj {V : HSp D} {L : Lat V} {Sf : Finset (FinPl D)} {a g b : GA D V} (ha : a ∈ openOff V L ∅)
     (hg : g ∈ openOff V L Sf) (hb : b ∈ openOff V L ∅) : a⁻¹ * g * b ∈ openOff V L Sf := fun v hv => by
@@ -161,18 +161,18 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE 
   {ν : Measure (WO S T)} {𝓕 : Set (WO S T)} {G : Type} [Group G] (ι : G →* GA D S)
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem om_mul_one (om : GlobalTheory.Core.Rk.IP.WRep S T) (g g' : GA D S) (f : WO S T → ℂ) :
     om (g * g', 1) f = om (g, 1) (om (g', 1) f) := by
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Establish `hth : ∀ g : GA D S, IsThetaFunO ψ S T (om (g, 1) φ)` using `fun g => hom.om_pres _ _ hφ`. Rewrite using `[map_sum]`. Simplify using `only [← om_mul_one]`. Rewrite using `[ip_sum_left hom.std hν R _ (fun _ => hth _) ((GlobalTheory.FinWeilO.thetaSub _ _ _).sum_mem fun j _ => hth _)]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ip_sum_right hom.std hν R _ (fun _ => hth _) (hth _)]`. Use `Finset.sum_congr rfl fun y' _ => ?_` and prove the remaining obligations. Establish `e : ι x * ι y = ι y' * ι (y'⁻¹ * x * y)`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Rewrite using `[ip_eq, ip_eq, ← GlobalTheory.Size.ipO_om hom hν.1 hν.2.1 (hth (ι (y'⁻¹ * x * y))) hφ (ι y', 1), ← om_mul_one, e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_sum (hom : IsWeilDatumO ψ S T χS χT om) (hν : IsCovolOne (ratL T S) ν 𝓕) {φ : WO S T → ℂ}
     (hφ : IsThetaFunO ψ S T φ) (R : Finset G) (x : G) :
@@ -192,9 +192,9 @@ theorem coef_sum (hom : IsWeilDatumO ψ S T χS χT om) (hν : IsCovolOne (ratL 
   rw [ip_eq, ip_eq, ← GlobalTheory.Size.ipO_om hom hν.1 hν.2.1 (hth (ι (y'⁻¹ * x * y))) hφ (ι y', 1), ← om_mul_one, e]
 
 /- English proof (translation)
-Establish `h1` using `coef_sum ι hom hν hφ R 1`. Rewrite `h1` using `[map_one, Prod.mk_one_one, map_one, Module.End.one_apply]`. Establish `h2 : ∀ y ∈ R, ∑ y' ∈ R, ip S T ν 𝓕 (om (ι (y'⁻¹ * 1 * y), 1) φ) φ = ip S T ν 𝓕 φ φ`. Introduce `y hy`. Rewrite using `[Finset.sum_eq_single_of_mem y hy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one, inv_mul_cancel, map_one, Prod.mk_one_one, map_one, Module.End.one_apply]`. Introduce `y' hy' hne`. Rewrite using `[mul_one]`. Conclude with `h y hy y' hy' hne`. Rewrite using `[h1, Finset.sum_congr rfl h2, Finset.sum_const, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sum (hom : IsWeilDatumO ψ S T χS χT om) (hν : IsCovolOne (ratL T S) ν 𝓕) {φ : WO S T → ℂ}
     (hφ : IsThetaFunO ψ S T φ) (R : Finset G)
@@ -212,14 +212,14 @@ theorem norm_sum (hom : IsWeilDatumO ψ S T χS χT om) (hν : IsCovolOne (ratL 
   rw [h1, Finset.sum_congr rfl h2, Finset.sum_const, nsmul_eq_mul]
 
 /- English proof (translation)
-Use `mul_mem (mul_mem ha h) (inv_mem hb)` as an intermediate fact. Rewrite `this` using `[show a * (a⁻¹ * x * b) * b⁻¹ = x by group]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_conj_mem {H : Subgroup G} {a b x : G} (ha : a ∈ H) (hb : b ∈ H) (h : a⁻¹ * x * b ∈ H) : x ∈ H := by
   have := mul_mem (mul_mem ha h) (inv_mem hb)
   rwa [show a * (a⁻¹ * x * b) * b⁻¹ = x by group] at this
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv]`. Conclude with `openOff_conj ha hg hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem openOff_conj_hom {L : Lat S} {Sf : Finset (FinPl D)} {a g b : G} (ha : ι a ∈ openOff S L ∅)
     (hg : ι g ∈ openOff S L Sf) (hb : ι b ∈ openOff S L ∅) : ι (a⁻¹ * g * b) ∈ openOff S L Sf := by
@@ -227,7 +227,7 @@ theorem openOff_conj_hom {L : Lat S} {Sf : Finset (FinPl D)} {a g b : G} (ha : �
   exact openOff_conj ha hg hb
 
 /- English proof (translation)
-Rewrite using `[h1, h2, h3, h4, ← h5]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_arith {A B C : ℂ} {c N e : ℕ} {n v L : ℝ} (h1 : A = (c : ℂ) * B) (h2 : B = ((N : ℂ) ^ e)⁻¹ * C) (h3 : C = n)
     (h4 : n = v) (h5 : (c : ℝ) * ((N : ℝ) ^ e)⁻¹ = L) : A = (L : ℂ) * (v : ℂ) := by
@@ -242,12 +242,12 @@ section Exact
 variable {D : D7} {δ t0 : ℂ} {Q : ℕ} {P : Pair D ⊤ δ t0 Q} {X : Data P} {r : D.host.E}
 
 /- English proof (translation)
-Introduce `i j` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem congOne_one (𝔪 : Ideal (𝓞 D.host.E)) (N : ℕ) : CongOne D 𝔪 (1 : Formalism.MainNotions.StandardLatticesGL3.GA D N) := fun i j => by simp
 
 /- English proof (translation)
-Substitute `hF` using the available equality. Conclude with `h.read.unique h1`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem vac_eq_of_reads (h : IsExact P X r) {G : Formalism.MainNotions.TaylorLogMetric.VC D P.a P.d → ℂ} {f : WO X.A X.B → ℂ} (hF : P.F = G)
     (h1 : Reads X.ψ X.θ X.rkA X.rkB ⊤ δ r G f) : X.vac = f := by
@@ -255,7 +255,7 @@ theorem vac_eq_of_reads (h : IsExact P X r) {G : Formalism.MainNotions.TaylorLog
   exact h.read.unique h1
 
 /- English proof (translation)
-Establish `h1 : ∀ y, Reads X.ψ X.θ X.rkA X.rkB ⊤ δ r (P.W.Om y 1 (cosetVec P 𝔪 o)) (X.om (X.ιA y, 1) φ)` using `fun y => by`. Use `h.reads_om hI y 1 (GlobalTheory.FunObj.CosetTheta.cosetVec_mem_TT P hm o) hφ` as an intermediate fact. Rewrite `this` using `[X.ιB.map_one]`. Then use the resulting hypothesis. Conclude with `vac_eq_of_reads h hF (reads_sum R (fun y => P.W.Om y 1 (cosetVec P 𝔪 o)) (fun y => X.om (X.ιA y, 1) φ) fun y _ => h1 y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem vac_eq_sum (hI : GlobalTheory.NormSum.Inp D) (h : IsExact P X r) {𝔪 : Ideal (𝓞 D.host.E)} (hm : 𝔪 ≠ ⊥) {o : ℕ}
     {R : Finset (Formalism.MainNotions.StandardLatticesGL3.GA D P.a)} (hF : P.F = ∑ y ∈ R, P.W.Om y 1 (cosetVec P 𝔪 o)) {φ : WO X.A X.B → ℂ}
@@ -266,28 +266,28 @@ theorem vac_eq_sum (hI : GlobalTheory.NormSum.Inp D) (h : IsExact P X r) {𝔪 :
   exact vac_eq_of_reads h hF (reads_sum R (fun y => P.W.Om y 1 (cosetVec P 𝔪 o)) (fun y => X.om (X.ιA y, 1) φ) fun y _ => h1 y)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_adelicTheta_reads_curveThetaFunction X.ψ X.θ X.A X.B X.rkA X.rkB ⊤ δ r h.setup (cosetVec P 𝔪 o) (GlobalTheory.FunObj.CosetTheta.cosetVec_mem_TT P hm o)`.
+A detailed English derivation is pending.
 -/
 theorem exists_reads_coset (h : IsExact P X r) {𝔪 : Ideal (𝓞 D.host.E)} (hm : 𝔪 ≠ ⊥) (o : ℕ) :
     ∃ φ, Reads X.ψ X.θ X.rkA X.rkB ⊤ δ r (cosetVec P 𝔪 o) φ :=
   GlobalTheory.T.exists_adelicTheta_reads_curveThetaFunction X.ψ X.θ X.A X.B X.rkA X.rkB ⊤ δ r h.setup (cosetVec P 𝔪 o) (GlobalTheory.FunObj.CosetTheta.cosetVec_mem_TT P hm o)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_adelicTheta_reads_curveThetaFunction X.ψ X.θ X.A X.B X.rkA X.rkB ⊤ δ r h.setup P.e0 (GlobalTheory.NormSum.VacMove.vac_TT (GlobalTheory.InducedType.induced_type D).1 P.crv P.vac.1)`.
+A detailed English derivation is pending.
 -/
 theorem exists_reads_vacuum (h : IsExact P X r) : ∃ f₀, Reads X.ψ X.θ X.rkA X.rkB ⊤ δ r P.e0 f₀ :=
   GlobalTheory.T.exists_adelicTheta_reads_curveThetaFunction X.ψ X.θ X.A X.B X.rkA X.rkB ⊤ δ r h.setup P.e0
     (GlobalTheory.NormSum.VacMove.vac_TT (GlobalTheory.InducedType.induced_type D).1 P.crv P.vac.1)
 
 /- English proof (translation)
-Introduce `v _` and use `(GlobalTheory.T.standardLattice_selfDual_and_integral_iff_stabilizes X.A P.a (X.ιA x) x h.std.frame.gramA X.rkA (h.std.ptA x)).2.1 hx v (Finset.notMem_empty v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_openOff (h : IsExact P X r) {x : Formalism.MainNotions.StandardLatticesGL3.GA D P.a} (hx : x ∈ intG D P.a) (Sf : Finset (FinPl D)) :
     X.ιA x ∈ openOff X.A (stdLat X.A) Sf := fun v _ =>
   (GlobalTheory.T.standardLattice_selfDual_and_integral_iff_stabilizes X.A P.a (X.ιA x) x h.std.frame.gramA X.rkA (h.std.ptA x)).2.1 hx v (Finset.notMem_empty v)
 
 /- English proof (translation)
-Use `norm_sum X.ιA h.weil hν hφ R fun y hy y' hy' hne => horth _ (mem_openOff h (mul_mem (inv_mem (hR y' hy')) (hR y hy)) Sf) fun hc => hne ?_` and prove the remaining obligations. Establish `h1 : CongOne D 𝔪 (y⁻¹ * y)` using `by rw [inv_mul_cancel]; exact congOne_one 𝔪 _`. Conclude with `(hRu y (hR y hy)).unique ⟨hy', hc.2⟩ ⟨hy, h1⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_transl (h : IsExact P X r) {𝔪 : Ideal (𝓞 D.host.E)} {Sf : Finset (FinPl D)}
     {R : Finset (Formalism.MainNotions.StandardLatticesGL3.GA D P.a)} (hR : ∀ y ∈ R, y ∈ intG D P.a)
@@ -302,7 +302,7 @@ theorem norm_transl (h : IsExact P X r) {𝔪 : Ideal (𝓞 D.host.E)} {Sf : Fin
   exact (hRu y (hR y hy)).unique ⟨hy', hc.2⟩ ⟨hy, h1⟩
 
 /- English proof (translation)
-Use `(coef_sum X.ιA h.weil hν hφ R x).trans ?_` and prove the remaining obligations. Use `Finset.sum_eq_zero fun y hy => Finset.sum_eq_zero fun y' hy' => horth _ ?_ fun hc => hx ?_` and prove the remaining obligations. Conclude with `openOff_conj_hom X.ιA (mem_openOff h (hR y' hy') ∅) hx' (mem_openOff h (hR y hy) ∅)`. Conclude with `mem_of_conj_mem (hR y' hy') (hR y hy) hc.1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem supp_transl (h : IsExact P X r) {𝔪 : Ideal (𝓞 D.host.E)} {Sf : Finset (FinPl D)}
     {R : Finset (Formalism.MainNotions.StandardLatticesGL3.GA D P.a)} (hR : ∀ y ∈ R, y ∈ intG D P.a) {φ : WO X.A X.B → ℂ} (hφ : IsThetaFunO X.ψ X.A X.B φ)
@@ -317,13 +317,13 @@ theorem supp_transl (h : IsExact P X r) {𝔪 : Ideal (𝓞 D.host.E)} {Sf : Fin
   · exact mem_of_conj_mem (hR y' hy') (hR y hy) hc.1
 
 /- English proof (translation)
-Take `⟨R, hR, hRu, hF⟩` from `hstd`. Use `(exists_reads_coset h hm.1 o).elim fun φ hφ => ?_` and prove the remaining obligations. Use `(exists_reads_vacuum h).elim fun f₀ hf₀ => ?_` and prove the remaining obligations. Use `(GlobalTheory.T.exists_selfDualLattice_vacuumReading X.ψ X.θ X.A X.B X.rkA X.rkB δ r h.setup).elim fun LB ⟨hLB, hz, hsph⟩ => ?_` and prove the remaining obligations. Establish `hs₀` using `hsph P.e0 P.vac.1 f₀ hf₀`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsd` using `(GlobalTheory.T.standardLattice_selfDual_and_integral_iff_stabilizes X.A P.a (X.ιA 1) 1 h.std.frame.gramA X.rkA (h.std.ptA 1)).1`. Establish `hv` using `vac_eq_sum hI h hm.1 hF hφ`. Establish `hsφ` using `GlobalTheory.T.thetaCosetIndicatorReading_spherical_off_modulus P X r h 𝔪 Sf o hm LB hLB hz f₀ φ hf₀ hs₀ hφ`. Establish `hs` using `isSphOff_sum R (fun y => X.om (X.ιA y, 1) φ) fun y hy => GlobalTheory.T.weilRep_keeps_spherical_of_lattice_stabilizer X.ψ X.A X.B X.χA X.χB X.om h.weil _ _ hsd hLB Sf _ (mem_openOff h (hR y hy) Sf) φ hφ.1 hsφ`. Use `⟨⟨LB, hLB, by rw [hv]; exact hs⟩, fun ν 𝓕 hν => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `horth` using `GlobalTheory.T.cosetVector_orthogonal_translate_finite_point P X r h 𝔪 Sf o hm LB hLB hz f₀ φ hf₀ hs₀ hφ ho ν 𝓕 hν`. Use `⟨?_, fun x hx hx' => by rw [hv]; exact supp_transl h hR hφ.1 hν horth hx hx'⟩` and prove the remaining obligations. Establish `h3` using `GlobalTheory.T.thetaCosetIndicatorReading_normSq_eq_absNorm_inv_mul_vacuum P X r h 𝔪 Sf o hm LB hLB hz f₀ φ hf₀ hs₀ hφ ν 𝓕 hν`. Establish `h4` using `GlobalTheory.T.thetaLineReading_adelicNorm_eq_torusMeanSquare X.ψ X.θ X.A X.B X.rkA X.rkB δ r h.setup LB hLB hz P.e0 P.vac.1 f₀ hf₀ hs₀ ν 𝓕 hν`. Establish `h5` using `GlobalTheory.T.card_transversal_congruence_mul_norm_eq_localNorm D 𝔪 hm.1 hm.2.1 P.a (P.d - P.a) R hR hRu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h5` using `[Nat.add_sub_cancel' P.a_le]`. Establish `h6` using `norm_transl h hR hRu hφ.1 hν horth`. Conclude with `norm_arith (by rw [hv]; exact h6) h3 h4 P.vac.2.2.1 h5`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_data (hI : GlobalTheory.NormSum.Inp D) (h : IsExact P X r) {𝔪 : Ideal (𝓞 D.host.E)} {Sf : Finset (FinPl D)} {o : ℕ}
     (hm : GoodMod D 𝔪 Sf) (hstd : IsStdDatum P 𝔪 o) (ho : o + P.a ≤ P.d) :
@@ -358,7 +358,7 @@ section Fock
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ} {P : Pair D cc δ t0 Q} {X : Data P}
 
 /- English proof (translation)
-Introduce and unpack `⟨τ, i, j⟩ ⟨τ', i', j'⟩ e`. Simplify using `only [Data.var, Prod.mk.injEq, Fin.cast_inj] at e`. Take `⟨rfl, rfl, rfl⟩` from `e`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem var_injective (X : Data P) : Function.Injective X.var := by
   rintro ⟨τ, i, j⟩ ⟨τ', i', j'⟩ e
@@ -367,7 +367,7 @@ theorem var_injective (X : Data P) : Function.Injective X.var := by
   rfl
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.FockIsometry.ipO_pureTensorO D X.ψ X.θ X.A X.B hX.2.weil.std hX.2.inf (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => X.A.rank) (fun _ => X.B.rank) (fun _ => le_rfl) (fun _ => le_rfl) (GlobalTheory.SmoothVac.isCartanInv_one X.A hX.1.gramA) (GlobalTheory …`. Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockIp (MvPolynomial.rename X.var (minorPol D T)) (MvPolynomial.rename X.var (minorPol D T)) = GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockIp (minorPol D T) (minorPol D T)`. Rewrite using `[GlobalTheory.FockCoefReal.fockIp_eq_fock, GlobalTheory.LowRowFock.fock_rename_inj (var_injective X), ← GlobalTheory.FockCoefReal.fockIp_eq_fock]`. Establish `e2 : ip X.A X.B ν 𝓕 X.vac X.vac = (nrm2 ν 𝓕 X.vac : ℂ)` using `GlobalTheory.Size.ipO_self ν 𝓕 X.vac`. Conclude with `h.trans (by rw [e, e2])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ip_fock (hX : IsDict P X) {ν : Measure (WO X.A X.B)} {𝓕 : Set (WO X.A X.B)} (hν : IsCovolOne (ratL X.B X.A) ν 𝓕)
     (T : Tup D P.a P.d P.n) : ip X.A X.B ν 𝓕 (X.fock T) (X.fock T) =
@@ -384,7 +384,7 @@ theorem ip_fock (hX : IsDict P X) {ν : Measure (WO X.A X.B)} {𝓕 : Set (WO X.
   exact h.trans (by rw [e, e2])
 
 /- English proof (translation)
-Use `(GlobalTheory.FockCoefSplit.pair_eq_inf D X.ψ X.θ X.A X.B X.χA X.χB X.om hX.2.weil hX.2.inf (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => X.A.rank) (fun _ => X.B.rank) (GlobalTheory.SmoothVac.isCartanInv_one X.A hX.1.gramA) (GlobalTheory.SmoothVac.isCartanInv_one …` and prove the remaining obligations. Establish `h1` using `hc X.vac (X.om (g, 1) X.vac) hX.2.vac_theta (hX.2.weil.om_pres _ _ hX.2.vac_theta) hX.2.vac_fock fun τ => GlobalTheory.FockCoefSplit.fockVac_om_fin hX.2.weil hX.2.inf hg (one_mem _) τ _ hX.2.vac_theta (hX.2.vac_fock τ)`. Establish `h2` using `GlobalTheory.FockCoefSplit.om_fin_pureTensorO hX.2.weil hX.2.inf (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) hg (one_mem (GfC X.B)) hX.2.vac_theta (MvPolynomial.rename X.var (minorPol D T))`. Rewrite `h1` using `[GlobalTheory.VacPairSchur.thetaIP_eq_ipO, GlobalTheory.VacPairSchur.thetaIP_eq_ipO, ← h2, Prod.mk_one_one, X.om.map_one, Module.End.one_apply, ← ip_eq, ← ip_eq, h0, mul_zero]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_fock_zero (hX : IsDict P X) {ν : Measure (WO X.A X.B)} {𝓕 : Set (WO X.A X.B)} (hν : IsCovolOne (ratL X.B X.A) ν 𝓕)
     (T : Tup D P.a P.d P.n) {g : GA D X.A} (hg : g ∈ GfC X.A) (h0 : ip X.A X.B ν 𝓕 (X.om (g, 1) X.vac) X.vac = 0) :
@@ -403,7 +403,7 @@ theorem ip_fock_zero (hX : IsDict P X) {ν : Measure (WO X.A X.B)} {𝓕 : Set (
   exact h1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FockSph.isFockVec_pureTensorO (sS := fun _ => 1) (sT := fun _ => 1) hX.2.weil.std hX.2.inf (GlobalTheory.SmoothVac.isCartanInv_one X.A hX.1.gramA) (GlobalTheory.SmoothVac.isCartanInv_one X.B hX.1.gramB) (fun _ => 1) (fun _ => 1) hX.2.vac_theta hX.2.vac_fock _`.
+A detailed English derivation is pending.
 -/
 theorem isFockVec_fock (hX : IsDict P X) (T : Tup D P.a P.d P.n) :
     IsFockVec X.ψ X.θ X.A X.B (fun _ => 1) (fun _ => 1) (X.fock T) :=
@@ -412,7 +412,7 @@ theorem isFockVec_fock (hX : IsDict P X) (T : Tup D P.a P.d P.n) :
     hX.2.vac_theta hX.2.vac_fock _
 
 /- English proof (translation)
-Rewrite using `[wcoef, om_mul_one, GlobalTheory.T.weilRep_real_fixes_fock_maximal_minors P X hX hX.2.infB k hk T]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wcoef_fock (hX : IsDict P X) (ν : Measure (WO X.A X.B)) (𝓕 : Set (WO X.A X.B)) (T : Tup D P.a P.d P.n)
     (g : GA D X.A) {k : GA D X.A} (hk : k ∈ GinfC X.A) : wcoef X.om ν 𝓕 (X.fock T) (X.fock T) (g * k) =
@@ -426,13 +426,13 @@ section Norm
 variable {D : D7} {δ t0 : ℂ} {Q : ℕ} {P : Pair D ⊤ δ t0 Q} {X : Data P} {r : D.host.E}
 
 /- English proof (translation)
-Use `(GlobalTheory.T.exists_thetaDoublingPairData_identity_cartan P X hX ha had).elim fun cA h1 => h1.elim fun a h2 => h2.elim fun ν h3 => h3.elim fun 𝓕 hPair => ?_` and prove the remaining obligations. Establish `hfd` using `finite_data hI h hm hstd ho`. Use `hfd.1.elim fun LB hLB => ?_` and prove the remaining obligations. Establish `hn` using `(hfd.2 ν 𝓕 hPair.covol).1`. Establish `hs` using `(hfd.2 ν 𝓕 hPair.covol).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlev` using `fun x => GlobalTheory.T.standardLattice_selfDual_and_integral_iff_stabilizes X.A P.a (X.ιA x) x h.std.frame.gramA X.rkA (h.std.ptA x)`. Establish `hsph : IsSphOff X.ψ X.A X.B (stdLat X.A) LB Sf (X.fock T)` using `isSphOff_pure hX.2.inf hLB.2 _ _ _ _ _`. Establish `hU : GlobalTheory.Core.Rk.IP.Unram X.ψ X.A X.B X.χB (stdLat X.A) LB Sf (X.fock T) (X.fock T)` using `⟨(hlev 1).1, hLB.1, fun v _ h2 => GlobalTheory.Core.Rk.IP.Model.isSplit_two v h2, hu, hsph, hsph⟩`. Establish `hint` using `GlobalTheory.T.doublingIntegrand_integrable_of_coefficient_const_compact P X hX (hlev 1).1 (fun x => (hlev x).2) a ν 𝓕 hPair.maj Sf (X.fock T) (ip X.A X.B ν 𝓕 (X.fock T) (X.fock T)) (fun x hx k hk => (wcoef_fock hX ν 𝓕 T _ hk).trans (by rw [hX.2.fixA x hx T])) (fun x hx hx' k hk …`. Use `hK.meas.elim fun 𝓕₀ h𝓕₀ => hX.1.measA.elim fun 𝓕A h𝓕A => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hX.1.haarA`. Use `haveI : μ₀.IsHaarMeasure := h𝓕₀.1.1`. Establish `hA : GlobalTheory.Cusp.wittIndex X.A = 0` using `GlobalTheory.Cusp.wittIndex_eq_zero_iff_isAniso.2 (GlobalTheory.Mem.ColAd.isAniso_of_gram hX.1.gramA)`. Establish `hB : GlobalTheory.Cusp.wittIndex X.B = 0` using `GlobalTheory.Cusp.wittIndex_eq_zero_iff_isAniso.2 (GlobalTheory.Mem.ColAd.isAniso_of_gram hX.1.gramB)`. Establish `key` using `GlobalTheory.BottomRallis.norm_eq hP hPair hA hB (isFockVec_fock hX T) hU X.m μ₀ ⟨((P.d - P.a : ℕ) : ℝ) / 2 - 1, by linarith, hint.1 _⟩ (fun i => Λ (((P.d - P.a : ℕ) : ℂ) / 2 + (X.A.rank : ℂ) / 2 - i)) fun i _ => hΛ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `vA` using `volQ_eq_mass X.A P.a X.ιA X.KA X.m 𝓕A hX.1.defA hX.1.injA hX.1.rangeA hX.1.ratA hX.1.levA hX.1.levA_iff h𝓕A`. Establish `vB` using `volQ_eq_mass X.B P.d X.ιB K₀ μ₀ 𝓕₀ hX.1.defB hX.1.injB hX.1.rangeB hX.1.ratB hK.lev hK.mem_iff h𝓕₀`. Establish `e1` using `hint.2.trans ((ip_fock hX hPair.covol T).trans (congrArg _ hn))`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[vA, vB, e1, X.rkA, X.rkB]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem petersson_eq (hP : GlobalTheory.FunPr.Hypotheses₂) (hI : GlobalTheory.NormSum.Inp D) (h : IsExact P X r) (hX : IsDict P X)
     {K₀ : Subgroup (GL (Fin X.B.rank) (Lev.EAf D))} {μ₀ : Measure (GA D X.B)} (hK : IsMaxLevel X.toFrame K₀ μ₀)
@@ -476,7 +476,7 @@ def normFactor (D : D7) (δ t0 : ℂ) (a d : ℕ) (n : D.what₂.Tau → ℕ) : 
     GlobalTheory.LFun.dSfun D.host.E (∅ : Set (FinPl D)) a d (((d - a : ℕ) : ℂ) / 2)
 
 /- English proof (translation)
-Rewrite `hS`, the goal using `[← h]`. Establish `h1 : I ≠ 0` using `fun e => hS (by rw [e]; simp)`. Establish `h2 : l ≠ 0` using `fun e => hS (by rw [e]; simp)`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem collect {c I mB mA L dS d0 F l v : ℂ} (h : I * l * d0 = dS) (h0 : d0 ≠ 0) (hS : dS ≠ 0) :
     c * I * (mB * mA * (L / dS) * (F * (l * v))) = c * mB * mA * F * v / d0 * L := by
@@ -486,19 +486,19 @@ theorem collect {c I mB mA L dS d0 F l v : ℂ} (h : I * l * d0 = dS) (h0 : d0 �
   field_simp
 
 /- English proof (translation)
-Establish `hm` using `goodMod_modT hL (GlobalTheory.SqTop.BotT.pde_ne_q hR).1 (GlobalTheory.SqTop.BotT.pde_ne_q hR).2 G t`. Establish `hrk` using `GlobalTheory.FunObj.SqNum.Model.bot_ranks (D := D) i j`. Establish `hPa` using `hb.rank.1`. Establish `hPd` using `hb.rank.2.2.1`. Establish `hdict` using `exact_dictionary P hI (isCongLevel_of_isBlockLevel hm.1 hb.lev.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hdict.2.1.elim fun X h1 => h1.elim fun r h2 => h2.elim fun K₀ h3 => h3.elim fun μ₀ h4 => ?_` and prove the remaining obligations. Establish `h5` using `hdict.2.2 X r K₀ μ₀ h4.1 h4.2`. Establish `hX` using `h5.1.1`. Establish `hχ` using `GlobalTheory.T.heckeCharEq_of_finitePart_power_inverse X.χB P.W.chV' P.W.ep' (nuH G t i j) hX.2.weil.hecT h4.1.chB hb.chars.2`. Establish `hl` using `GlobalTheory.T.squareNu_unramified_off_pair_partial_L_primitive hL hR.hF G t i j X.χB hχ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `petersson_eq hP hI h4.1 hX h4.2 hm hb.std (by rw [zero_add]; exact P.a_le) (by omega) (by omega) hl.1 Λ (hl.2 Λ hΛ)`. Establish `hidx : ((P.J.relIndex (intG D P.d) : ℕ) : ℝ) = locIdx D (modT G t) P.a (P.d - P.a)` using `GlobalTheory.StdLoc.relIndex_blockLevel P (modT G t) P.a hm.1 hm.2.1 P.a_le (hPa.symm ▸ hb.lev.1)`. Establish `hidx' : ((P.J.relIndex (intG D P.d) : ℕ) : ℂ) = (locIdx D (modT G t) P.a (P.d - P.a) : ℂ)`. Rewrite using `[← hidx]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hd` using `GlobalTheory.T.localIndex_localNorm_normalizingFactor_eq_partial D (modT G t) (sfB G t) hm P.a (P.d - P.a) (by omega)`. Rewrite `hd` using `[Nat.add_sub_cancel' P.a_le]`. Establish `hre : 0 < (((P.d - P.a : ℕ) : ℂ) / 2).re`. Establish `: (0 : ℝ) < ((P.d - P.a : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 0 < P.d - P.a)`. Rewrite using `[show (((P.d - P.a : ℕ) : ℂ) / 2) = ((((P.d - P.a : ℕ) : ℝ) / 2 : ℝ) : ℂ) by push_cast; ring, Complex.ofReal_re]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Establish `hprod : ∏ k ∈ Finset.range P.a, Λ (((P.d - P.a : ℕ) : ℂ) / 2 + (P.a : ℂ) / 2 - k) = ∏ s ∈ Finset.Icc (1 - (GlobalTheory.SqTop.e0 D i j : ℤ)) (GlobalTheory.SqTop.h0 D i j : ℤ), Λ s`. Take `⟨u, hu⟩` from `hrk.2.2.1`. Establish `e1 : P.d = 2 * GlobalTheory.SqTop.h0 D i j` using `by unfold GlobalTheory.SqTop.h0; omega`. Rewrite using `[← GlobalTheory.BottomRallis.prod_range_sub_eq_prod_Icc (fun s => Λ s) P.a (GlobalTheory.SqTop.h0 D i j) (GlobalTheory.SqTop.e0 D i j) (by unfold GlobalTheory.SqTop.h0 GlobalTheory.SqTop.e0; omega)]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => congrArg Λ ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sub P.a_le, e1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `h5.2.2.2.2.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_congr rfl fun T _ => hT T, ← Finset.mul_sum, ← Finset.sum_mul, hidx', hprod]`. Conclude with `collect hd (GlobalTheory.LFun.dSfun_ne_zero_of_re_pos _ _ _ hre) (GlobalTheory.LFun.dSfun_ne_zero_of_re_pos _ _ _ hre)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_bottom (hP : GlobalTheory.FunPr.Hypotheses₂) (hI : GlobalTheory.NormSum.Inp D) {large₂ : SizeData₂ D} (hR : GlobalTheory.SqTop.Rec large₂) {T : Type}
     {L : LevCh D T} {sc : Consts} {μ : T} (hL : L.Is μ) (G : GridData L sc) {t : T} {i j : Fin D.R.m}
@@ -544,9 +544,9 @@ theorem norm_bottom (hP : GlobalTheory.FunPr.Hypotheses₂) (hI : GlobalTheory.N
 end Norm
 
 /- English proof (translation)
-Introduce `hP hI _`. Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ hR T Lc μ₀ hL G => ?_⟩⟩` and prove the remaining obligations. Introduce `δ t0 i j t t' Q Q' P P' P₁ P₁' Λ Λ' hb hb' hΛ hΛ'`. Establish `h1` using `norm_bottom hP (hI D) hR hL G hb hΛ`. Establish `h2` using `norm_bottom hP (hI D) hR hL G hb' hΛ'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(GlobalTheory.BottomReal.bottom_real_eq G hL hb hb').1`. Establish `h4 : normFactor D δ t0 P.a P.d P.n = normFactor D δ t0 P₁.a P₁.d P₁.n`. Use `congr (congr (congrArg (normFactor D δ t0) h3.1) h3.2.1) h3.2.2.1`. Rewrite using `[h1, h2, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem normBig_ratio : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.LNe → GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ =>
   ∀ (δ t0 : ℂ) (i j : Fin D.R.m) (t t' : T) (Q Q' : ℕ) (P P' : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q) (P₁ P₁' : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q')

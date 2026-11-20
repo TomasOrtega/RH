@@ -23,7 +23,7 @@ open GlobalTheory.ArchMetricCompare
 variable {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {p : A'.left ⟶ A.left} {g : ℂ ≃+* ℂ}
 
 /- English proof (translation)
-Establish `: IsIso (CommRingCat.ofHom (g : ℂ →+* ℂ))` using `⟨⟨CommRingCat.ofHom (g.symm : ℂ →+* ℂ), by ext; simp, by ext; simp⟩⟩`. Unfold `spMap`. Use `infer_instance`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isIso_spMap (g : ℂ ≃+* ℂ) : IsIso (spMap (g : ℂ →+* ℂ)) := by
   have : IsIso (CommRingCat.ofHom (g : ℂ →+* ℂ)) :=
@@ -32,13 +32,11 @@ theorem isIso_spMap (g : ℂ ≃+* ℂ) : IsIso (spMap (g : ℂ →+* ℂ)) := b
   infer_instance
 
 /- English proof (translation)
-Establish `e2 : v'.left = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ (show Sp (DualNumber ℂ) ⟶ _ from v.left) ≫ inv p`. Rewrite using `[← Category.assoc]`. Conclude with `(IsIso.eq_comp_inv p).2 e`. Establish `h2 : ⊤ ≤ v.left ⁻¹ᵁ (inv p ⁻¹ᵁ U)` using `fun q _ => by`. Use `subsingleton_dual ℂ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `hU (show q ∈ (⊤ : (Sp (DualNumber ℂ)).Opens) from trivial)`. Rewrite `hq` using `[e2]`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum (DualNumber ℂ)) q (spMap (Chart.dualMapR (g : ℂ →+* ℂ)) q)]`. Conclude with `hq`. Establish `k : ∀ (y : Sp (DualNumber ℂ) ⟶ A'.left) (hy : ⊤ ≤ y ⁻¹ᵁ U), y = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ (show Sp (DualNumber ℂ) ⟶ _ from v.left) ≫ inv p → TangentOrigin.evalPt y U hy f = Chart.dualMapR (g : ℂ →+* ℂ) (TangentOrigin.evalPt (R` using `DualNumber ℂ) v.left _ h2 (((inv p).app U).hom f)) := by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ hy rfl`. Rewrite using `[TangentOrigin.evalPt_spMap_comp _ _ U h2]`. Use `congr 1`. Rewrite using `[k _ hU e2]`. Establish `e3` using `hd _ h2 (((inv p).app U).hom f)`.
-
-Simplify using `only [Chart.dualMapR, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`. Conclude with `congrArg g e3`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem snd_pull [IsIso p] {L : LB A.left} {N : ℕ} (u : HolUnif A L N) {v : epsR ℂ ⟶ A} {v' : epsR ℂ ⟶ A'}
     (e : v'.left ≫ p = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ v.left) {w : Fin N → ℂ} (hd : u.IsDiff w v)
@@ -76,9 +74,9 @@ def Rel {L : LB A.left} {L' : LB A'.left} {N : ℕ} (p : A'.left ⟶ A.left) [Is
       g (fderiv ℂ (fun z => valAt' (u.ex z).left (inv p ⁻¹ᵁ U) (((inv p).app U).hom f)) 0 w)
 
 /- English proof (translation)
-Establish `hv' : IsTangent v'` using `isTangent_of_pull (σ := (g : ℂ →+* ℂ)) h hv e`. Prove the components needed by the constructor for the conclusion. Introduce `hd' U hU f`. Establish `hU'` using `(TangentOrigin.tangent_mem_iff (u := u') hv' U).2 hU`. Conclude with `(hd' U hU' f).symm.trans (snd_pull u e hd U hU' f)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hr U hU f`. Conclude with `(snd_pull u e hd U hU f).trans (hr U ((TangentOrigin.tangent_mem_iff (u := u') hv' U).1 hU) f).symm`.
+A detailed English derivation is pending.
 -/
 theorem isDiff_iff_rel [IsIso p] (h : IsGrpPullback A' A (spMap (g : ℂ →+* ℂ)) p) {L : LB A.left} {L' : LB A'.left}
     {N : ℕ} (u : HolUnif A L N) (u' : HolUnif A' L' N) {v : epsR ℂ ⟶ A} {v' : epsR ℂ ⟶ A'} (hv : IsTangent v)
@@ -94,7 +92,7 @@ theorem isDiff_iff_rel [IsIso p] (h : IsGrpPullback A' A (spMap (g : ℂ →+* �
       (hr U ((TangentOrigin.tangent_mem_iff (u := u') hv' U).1 hU) f).symm
 
 /- English proof (translation)
-Introduce `U hU f` and use `by rw [map_add, map_add, map_add, h₁ U hU f, h₂ U hU f]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rel_add [IsIso p] {L : LB A.left} {L' : LB A'.left} {N : ℕ} (u : HolUnif A L N) (u' : HolUnif A' L' N)
     {w₁' w₁ w₂' w₂ : Fin N → ℂ} (h₁ : Rel p g u u' w₁' w₁) (h₂ : Rel p g u u' w₂' w₂) :
@@ -102,14 +100,14 @@ theorem rel_add [IsIso p] {L : LB A.left} {L' : LB A'.left} {N : ℕ} (u : HolUn
   rw [map_add, map_add, map_add, h₁ U hU f, h₂ U hU f]
 
 /- English proof (translation)
-Introduce `U hU f` and use `by rw [map_smul, map_smul, h₁ U hU f, smul_eq_mul, smul_eq_mul, map_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rel_smul [IsIso p] {L : LB A.left} {L' : LB A'.left} {N : ℕ} (u : HolUnif A L N) (u' : HolUnif A' L' N)
     {w' w : Fin N → ℂ} (c : ℂ) (h₁ : Rel p g u u' w' w) : Rel p g u u' (g c • w') (c • w) := fun U hU f => by
   rw [map_smul, map_smul, h₁ U hU f, smul_eq_mul, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Over.w]`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pull_sq (g : ℂ ≃+* ℂ) (v : epsR ℂ ⟶ A) :
     (spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ v.left) ≫ A.hom = (epsR ℂ).hom ≫ spMap (g : ℂ →+* ℂ) := by
@@ -123,20 +121,18 @@ def liftT (h : IsGrpPullback A' A (spMap (g : ℂ →+* ℂ)) p) (v : epsR ℂ �
   Over.homMk (h.1.lift _ _ (pull_sq g v)) (h.1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `h.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftT_left (h : IsGrpPullback A' A (spMap (g : ℂ →+* ℂ)) p) (v : epsR ℂ ⟶ A) :
     (liftT h v).left ≫ p = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ v.left :=
   h.1.lift_fst _ _ _
 
 /- English proof (translation)
-Introduce `A A' _ _ p g h L L' N u u' hex huniq`. Use `haveI := isIso_spMap g`. Use `haveI : IsIso p := h.1.isIso_fst_of_isIso`. Use `choose vv hvv using fun w => (hex w).exists`. Establish `ht : ∀ w, IsTangent (liftT h (vv w))` using `fun w => isTangent_of_pull (σ := (g : ℂ →+* ℂ)) h (hvv w).1 (liftT_left h _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose T hT using fun w => (huniq _ (ht w)).exists`. Establish `hR : ∀ w, Rel p g u u' (T w) w` using `fun w => (isDiff_iff_rel h u u' (hvv w).1 (liftT_left h _) (hvv w).2 _).1 (hT w)`. Establish `hU : ∀ w w', Rel p g u u' w' w → T w = w'` using `fun w w' hr => (huniq _ (ht w)).unique (hT w) ((isDiff_iff_rel h u u' (hvv w).1 (liftT_left h _) (hvv w).2 _).2 hr)`. Set `Tl : (Fin N → ℂ) →ₛₗ[(g : ℂ →+* ℂ)] (Fin N → ℂ)` to `{ toFun := T map_add' := fun a b => hU _ _ (rel_add u u' (hR a) (hR b)) map_smul' := fun c a => hU _ _ (rel_smul u u' c (hR a)) }`. Use `⟨Tl, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(injective_iff_map_eq_zero Tl).2 fun w hw => ?_` and prove the remaining obligations. Establish `hw' : T w = 0` using `hw`. Establish `h0 : u'.IsDiff 0 (liftT h (vv w))` using `by rw [← hw']; exact hT w`. Establish `e1` using `eq_of_isDiff u' (ht w) (isTangent_zero A') h0 (isDiff_zero u')`. Establish `e2` using `(zero_pull_iff (σ := (g : ℂ →+* ℂ)) h (liftT_left h (vv w))).1 e1`.
-
-Establish `hd` using `(hvv w).2`. Rewrite `hd` using `[e2]`. Conclude with `eq_zero_of_isDiff u hd`. Introduce `w v v' hv e hd`. Conclude with `(isDiff_iff_rel h u u' hv e hd _).2 (hR w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_semilinear_transport : ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (p : A'.left ⟶ A.left) (g : ℂ ≃+* ℂ),
     IsGrpPullback A' A (spMap (g : ℂ →+* ℂ)) p → ∀ (L : LB A.left) (L' : LB A'.left) (N : ℕ) (u : HolUnif A L N)

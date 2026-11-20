@@ -17,13 +17,13 @@ namespace GlobalTheory.GlueRat
 variable {S : Scheme.{0}} [IsIntegral S]
 
 /- English proof (translation)
-The claim follows from `((genericPoint_spec S).mem_open_set_iff U.isOpen).mpr ⟨x, trivial, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem genericPoint_mem' {U : S.Opens} {x : S} (hx : x ∈ U) : genericPoint S ∈ U :=
   ((genericPoint_spec S).mem_open_set_iff U.isOpen).mpr ⟨x, trivial, hx⟩
 
 /- English proof (translation)
-Distinguish the cases in `hg : genericPoint S ∈ V`. Conclude with `Units.ext (germ_injective_of_isIntegral S (genericPoint S) hg (h hg))`. Conclude with `unit_ext fun x hx => (hg (genericPoint_mem' hx)).elim`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem unit_eq_of_germ {V : S.Opens} {a b : Γ(S, V)ˣ}
     (h : ∀ hg : genericPoint S ∈ V, S.presheaf.germ V (genericPoint S) hg (a : Γ(S, V)) =
@@ -33,7 +33,7 @@ theorem unit_eq_of_germ {V : S.Opens} {a b : Γ(S, V)ˣ}
   · exact unit_ext fun x hx => (hg (genericPoint_mem' hx)).elim
 
 /- English proof (translation)
-The claim follows from `S.presheaf.germ_res_apply (homOfLE hle) _ hg _`.
+A detailed English derivation is pending.
 -/
 theorem germ_res_unit {U V : S.Opens} (hle : V ≤ U) (hg : genericPoint S ∈ V) (a : Γ(S, U)ˣ) :
     S.presheaf.germ V (genericPoint S) hg ((res hle a : Γ(S, V)ˣ) : Γ(S, V)) =
@@ -41,9 +41,9 @@ theorem germ_res_unit {U V : S.Opens} (hle : V ≤ U) (hg : genericPoint S ∈ V
   S.presheaf.germ_res_apply (homOfLE hle) _ hg _
 
 /- English proof (translation)
-Use `choose V hVW hxV u hu using fun x : W => H x.1 x.2`. Take `⟨s, hs⟩` from `glue_unit W V hVW (fun x hx => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hx⟩, hxV _⟩) u (fun i j z hz => by`. Rewrite using `[← gm_res (𝟙 S) z (inf_le_left : V i ⊓ V j ≤ V i) hz, ← gm_res (𝟙 S) z (inf_le_right : V i ⊓ V j ≤ V j) hz]`. Use `congr 1`. Use `unit_eq_of_germ fun hg => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[germ_res_unit, germ_res_unit, hu i (hg.1), hu j hg.2])`. Use `⟨s, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← germ_res_unit (hVW ⟨_, h⟩) (hxV ⟨_, h⟩), hs]`. Conclude with `hu _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_local {W : S.Opens} (f : S.presheaf.stalk (genericPoint S))
     (H : ∀ x ∈ W, ∃ (V : S.Opens) (_ : V ≤ W) (_ : x ∈ V) (u : Γ(S, V)ˣ),
@@ -66,13 +66,13 @@ end GlobalTheory.GlueRat
 open GlobalTheory.GlueRat in
 
 /- English proof (translation)
-Introduce `S _ A B f H1 H2`. Use `choose s hs using fun p => exists_unit_of_local (f p) (H1 p)`. Use `⟨⟨s⟩, fun p q => unit_eq_of_germ fun hg => ?_⟩` and prove the remaining obligations. Establish `hp : genericPoint S ∈ B.U p.1 ⊓ A.U p.2` using `hg.1`. Establish `hq : genericPoint S ∈ B.U q.1 ⊓ A.U q.2` using `hg.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : genericPoint S ∈ B.U p.1 ⊓ B.U q.1` using `⟨hg.1.1, hg.2.1⟩`. Establish `h2 : genericPoint S ∈ A.U p.2 ⊓ A.U q.2` using `⟨hg.1.2, hg.2.2⟩`. Use `((germ_res_unit _ hg _).trans (hs p hp)).trans ?_` and prove the remaining obligations. Use `set O := (LB.div B A).U p ⊓ (LB.div B A).U q`. Establish `lB : O ≤ B.U p.1 ⊓ B.U q.1` using `le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lA : O ≤ A.U p.2 ⊓ A.U q.2` using `le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)`. Establish `lq : O ≤ B.U q.1 ⊓ A.U q.2` using `inf_le_right`. Express the relevant statement in the definitionally equal form `f p = S.presheaf.germ O (genericPoint S) hg (((res lB (B.g p.1 q.1) * (res lA (A.g p.2 q.2))⁻¹ * res lq (s q) : Γ(S, O)ˣ)) : Γ(S, O))`. Establish `e : S.presheaf.germ O (genericPoint S) hg (((res lA (A.g p.2 q.2))⁻¹ : Γ(S, O)ˣ) : Γ(S, O)) * S.presheaf.germ _ (genericPoint S) h2 (A.g p.2 q.2 : Γ(S, A.U p.2 ⊓ A.U q.2)) = 1`. Rewrite using `[← germ_res_unit lA hg, ← map_mul, Units.inv_mul, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `H` using `H2 p q h1 h2`. Simplify using `only [Units.val_mul, map_mul, germ_res_unit, hs q hq]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GlueRat.lbIso_of_rat : ∀ (S : Scheme.{0}) [IsIntegral S] (A B : LB S) (f : B.ι × A.ι → S.presheaf.stalk (genericPoint S)),
     (∀ p, ∀ x ∈ B.U p.1 ⊓ A.U p.2, ∃ (V : S.Opens) (_ : V ≤ B.U p.1 ⊓ A.U p.2) (_ : x ∈ V) (u : Γ(S, V)ˣ),

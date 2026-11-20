@@ -38,17 +38,15 @@ def ThetaThetaAdjScalar : Prop :=
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), ScalarAt R F
 
 /- English proof (translation)
-Establish `hk` using `Rk.m_add_three_le_k`. Establish `hj` using `j.2`. Establish `mono : ∀ a d : ℕ, a + d < Rk.r → Formalism.L2.NTheta.lamAt h (a + d) ≤ Formalism.L2.NTheta.lamAt h a`. Introduce `a d`. Proceed by induction on `d with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro _`. Conclude with `le_rfl`. Consider the case `succ d ih`. Introduce `hd`. Conclude with `(Formalism.L2.NTheta.lamAt_lt h (a + d) hd).le.trans (ih (by omega))`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `val : ∀ (c : ℕ) (hc : c < Rk.m), Formalism.L2.NTheta.lamAt h (Rk.k - 1 + c) = -h.b ⟨c, hc⟩`. Introduce `c hc`. Unfold `Formalism.L2.NTheta.lamAt`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Unfold `Ranks.r at hn mono`. Distinguish the cases in `hle : n ≤ Rk.k - 1 + j`. Establish `h1` using `mono n (Rk.k - 1 + j - n) (by omega)`. Rewrite `h1` using `[show n + (Rk.k - 1 + j - n) = Rk.k - 1 + j by omega, val j hj]`. Establish `h2` using `h.gap_be j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_trans (by simp only [Fin.eta] at h1; linarith) (le_abs_self _)`. Establish `hj1 : (j : ℕ) + 1 < Rk.m` using `by omega`. Establish `h1` using `mono (Rk.k - 1 + (j + 1)) (n - (Rk.k - 1 + (j + 1))) (by omega)`. Rewrite `h1` using `[show Rk.k - 1 + (j + 1) + (n - (Rk.k - 1 + (j + 1))) = n by omega, val _ hj1]`. Establish `h2` using `h.gap_eb j hj1`.
-
-Conclude with `le_trans (by linarith) (neg_le_abs _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gap {Rk : Ranks} (h : HCParam Rk) (j : Fin Rk.m) {n : ℕ} (hn : n < Rk.r) :
     ((Rk.t : ℚ) + 3) / 2 ≤ |Formalism.L2.NTheta.lamAt h n + h.e j| := by
@@ -79,7 +77,7 @@ theorem gap {Rk : Ranks} (h : HCParam Rk) (j : Fin Rk.m) {n : ℕ} (hn : n < Rk.
     exact le_trans (by linarith) (neg_le_abs _)
 
 /- English proof (translation)
-Rewrite using `[h i t c x hx]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsScalarOnParts.mem {R : RealDat D A Ks} {lam : Fin D.R.m → T → EigSys D → ℝ} (h : IsScalarOnParts R lam)
     (i : Fin D.R.m) (t : T) (c : EigSys D) {x} (hx : x ∈ goodPartOff R i (badPlaces R t) c) :
@@ -87,13 +85,11 @@ theorem IsScalarOnParts.mem {R : RealDat D A Ks} {lam : Fin D.R.m → T → EigS
   rw [h i t c x hx]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h hP`. Take `⟨x, hx, hy⟩` from `h _ hP`. Conclude with `hy (algebraMap _ _ x) rfl hx`. Introduce `h v hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Establish `hle : v.asIdeal ≤ (P.under (𝓞 D.host.F)).asIdeal`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, hyP⟩` from `hc x hx`. Establish `: y = algebraMap _ _ x` using `RingOfIntegers.ext hy`. Substitute `this` using the available equality. Conclude with `hyP`. Use `v.isMaximal.eq_of_le (P.under (𝓞 D.host.F)).isPrime.ne_top hle` as an intermediate fact.
-
-Rewrite using `[show P.under (𝓞 D.host.F) = v from HeightOneSpectrum.ext this.symm]` and apply the resulting hypothesis.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem offS_iff (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (P : HeightOneSpectrum (𝓞 D.host.E)) :
     OffS D S P ↔ P.under (𝓞 D.host.F) ∉ S := by

@@ -19,13 +19,13 @@ def Wl (W : Submodule ℂ (Kinf E N → ℂ)) : Submodule ℂ (Kinf E N → ℂ)
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Introduce `w hw` and use `by simpa only [one_mul] using hw.2 1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wl_le (W : Submodule ℂ (Kinf E N → ℂ)) : Wl W ≤ W := fun w hw => by
   simpa only [one_mul] using hw.2 1
 
 /- English proof (translation)
-The claim follows from `Submodule.finiteDimensional_of_le (wl_le W)`.
+A detailed English derivation is pending.
 -/
 theorem wl_fin (W : Submodule ℂ (Kinf E N → ℂ)) [FiniteDimensional ℂ W] : FiniteDimensional ℂ (Wl W) :=
   Submodule.finiteDimensional_of_le (wl_le W)
@@ -50,9 +50,9 @@ def sig (W : Submodule ℂ (Kinf E N → ℂ)) : Representation ℂ (Kinf E N) (
     exact Subtype.ext (funext fun k' => show w.1 (k₁ * k₂ * k') = w.1 (k₁ * (k₂ * k')) by rw [mul_assoc])
 
 /- English proof (translation)
-Use `wl_fin W` as an intermediate fact. Introduce `ℓ v`. Use `set w := (Module.evalEquiv ℂ (Wl W)).symm ℓ`. Establish `hℓ : ∀ x, ℓ x = x w` using `fun x => by`. Rewrite using `[← (Module.evalEquiv ℂ (Wl W)).apply_symm_apply ℓ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Repeatedly rewrite using `[hℓ]`. Establish `hc : Continuous fun k : Kinf E N => lt W k w` using `continuous_induced_rng.2 (continuous_pi fun k' => w.2.1.comp (continuous_id.mul continuous_const))`. Conclude with `(LinearMap.continuous_of_finiteDimensional v).comp hc`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sig_cont (W : Submodule ℂ (Kinf E N → ℂ)) [FiniteDimensional ℂ W] : GlobalTheory.Published.AutFin.IsContRep (sig W) := by
   have := wl_fin W
@@ -67,7 +67,7 @@ theorem sig_cont (W : Submodule ℂ (Kinf E N → ℂ)) [FiniteDimensional ℂ W
   exact (LinearMap.continuous_of_finiteDimensional v).comp hc
 
 /- English proof (translation)
-Establish `h1 : (fun k : Kinf E N => y.1 (g * infGL E N (Unitary.toUnits k))) = fun k => chart y.1 g (toL k.1)`. Use function extensionality and compare the values at `fun k => (chart_val y.1 g (Unitary.toUnits k)).symm`. Rewrite using `[h1]`. Conclude with `(y.2 g).continuousOn.comp_continuous continuous_subtype_val fun k => val_mem_invSet (Unitary.toUnits k)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_ev (y : Sm E N) (g : GA E N) : Continuous fun k : Kinf E N => y.1 (g * infGL E N (Unitary.toUnits k)) := by
   have h1 : (fun k : Kinf E N => y.1 (g * infGL E N (Unitary.toUnits k))) = fun k => chart y.1 g (toL k.1) :=
@@ -76,7 +76,7 @@ theorem cont_ev (y : Sm E N) (g : GA E N) : Continuous fun k : Kinf E N => y.1 (
   exact (y.2 g).continuousOn.comp_continuous continuous_subtype_val fun k => val_mem_invSet (Unitary.toUnits k)
 
 /- English proof (translation)
-Set `f : Wl W` to `⟨fun k => φ.1 (g * infGL E N (Unitary.toUnits k)), cont_ev φ g, fun k₀ => by`. Simplify `hφ (g * infGL E N (Unitary.toUnits k₀))⟩` using `only [map_mul, mul_assoc]`. Use `Submodule.subset_span ⟨Module.Dual.eval ℂ (Wl W) f, (LinearMap.proj 1).comp (Wl W).subtype, funext fun k => ?_⟩` and prove the remaining obligations. Use `show φ.1 (g * infGL E N (Unitary.toUnits k)) = φ.1 (g * infGL E N (Unitary.toUnits (k * 1)))`. Rewrite using `[mul_one]`.
+Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem (W : Submodule ℂ (Kinf E N → ℂ)) (φ : Sm E N)
     (hφ : ∀ x, (fun k : Kinf E N => φ.1 (x * infGL E N (Unitary.toUnits k))) ∈ W) (g : GA E N) :
@@ -91,9 +91,9 @@ end fintype
 
 open fintype in
 /- English proof (translation)
-Introduce `E _ _ _ N K W m S hK hW hS hm`. Use `wl_fin W` as an intermediate fact. Establish `hF` using `PositivityTheory.Rg.HF.GL.automorphicFormsFiniteGL E N K hK (Module.Dual ℂ (Wl W)) (sig W) (sig_cont W) (fun τ u => ((m τ).map (u + ·)).prod)`. Establish `hsub : S ⊆ GlobalTheory.Published.AutFinGL.forms K (sig W) (fun τ u => ((m τ).map (u + ·)).prod)`. Introduce `φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2, h3⟩` from `hS φ hφ`. Conclude with `⟨h1, fun u hu => Subtype.ext (funext fun x => h2 u hu x), coeff_mem W φ h3, fun τ u => (hm τ).2 u φ (Submodule.subset_span hφ)⟩`. Conclude with `Submodule.finiteDimensional_of_le (Submodule.span_mono hsub)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fintype_holds : FinType := by
   intro E _ _ _ N K W m S hK hW hS hm

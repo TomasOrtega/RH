@@ -5,17 +5,15 @@ namespace GlobalTheory.SaturatedSublattice
 open NumberField
 
 /- English proof (translation)
-Introduce `E _ _ n Λ hspan v`. Establish `hv : v ∈ Submodule.span E (Λ : Set (Fin n → E))` using `by rw [hspan]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨D1, hD1, h1⟩` from `hx`. Take `⟨D2, hD2, h2⟩` from `hy`. Use `⟨D1 * D2, mul_ne_zero hD1 hD2, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Λ.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `Λ.smul_mem D2 h1`. Rewrite using `[mul_smul]`. Conclude with `Λ.smul_mem D1 h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul a x _ hx`. Take `⟨D, hD, h⟩` from `hx`. Take `⟨⟨b, d⟩, hd⟩` from `IsLocalization.surj (nonZeroDivisors (RingOfIntegers E)) a`. Simplify using `only at hd`. Use `⟨(d : RingOfIntegers E) * D, mul_ne_zero (nonZeroDivisors.coe_ne_zero d) hD, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `key : ((d : RingOfIntegers E) * D) • (a • x) = b • (D • x)`. Rewrite using `[← algebraMap_smul E ((d : RingOfIntegers E) * D) (a • x), ← algebraMap_smul E b (D • x), ← algebraMap_smul E D x, smul_smul, smul_smul, map_mul, ← hd]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
-
-Conclude with `Λ.smul_mem b h`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {E : Type} [inst : Field E] [NumberField E] {n : ℕ} (Λ : Submodule (NumberField.RingOfIntegers E) (Fin n → E)), Submodule.span E (↑Λ : Set (Fin n → E)) = ⊤ → ∀ (v : Fin n → E), ∃ (D : NumberField.RingOfIntegers E), D ≠ (0 : NumberField.RingOfIntegers E) ∧ D • v ∈ Λ := by
   intro E _ _ n Λ hspan v

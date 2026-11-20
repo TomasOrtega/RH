@@ -18,19 +18,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Sl.KeyDeg.Denom
 
 /- English proof (translation)
-Take `⟨s, hsS, hs⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset ((fun q : R × R × A => q.2.2) '' T)).1 (IsNoetherian.noetherian (Ideal.span ((fun q : R × R × A => q.2.2) '' T)))`. Establish `hex : ∀ g ∈ s, ∃ q ∈ T, q.2.2 = g` using `fun g hg => by`. Take `⟨q, hq, rfl⟩` from `hsS hg`. Conclude with `⟨q, hq, rfl⟩`. Use `choose! q hqT hqg using hex`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∏ g ∈ s, (q g).2.1, Finset.prod_ne_zero_iff.2 fun g hg => (hT _ (hqT g hg)).1, ?_⟩` and prove the remaining obligations. Use `set D := ∏ g ∈ s, (q g).2.1 with hD`. Establish `key : ∀ a ∈ Submodule.span A (s : Set A), ∃ b, φ D * a = b * f`. Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mem g hg`. Establish `hg' : g ∈ s` using `hg`. Use `⟨φ (∏ g' ∈ s.erase g, (q g').2.1) * φ (q g).1, ?_⟩` and prove the remaining obligations. Establish `e` using `(hT _ (hqT g hg')).2`. Rewrite `e` using `[hqg g hg']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hD, ← Finset.prod_erase_mul s _ hg', map_mul, _root_.mul_assoc, e, _root_.mul_assoc]`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨a', ha'⟩` from `ha`. Take `⟨b', hb'⟩` from `hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨a' + b', by rw [mul_add, ha', hb', add_mul]⟩`. Consider the case `smul c a _ ha`. Take `⟨a', ha'⟩` from `ha`. Use `⟨c * a', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_left_comm, ha', _root_.mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `r hr`. Take `⟨b, hb⟩` from `key r.2.2 (by`. Rewrite using `[← hs]`. Conclude with `Ideal.subset_span ⟨r, hr, rfl⟩)`. Use `⟨b, mul_right_cancel₀ hf ?_⟩` and prove the remaining obligations.
-
-Establish `e` using `(hT r hr).2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_den {R A : Type} [CommRing R] [IsDomain R] [CommRing A] [IsDomain A] [IsNoetherianRing A]
     (φ : R →+* A) {f : A} (hf : f ≠ 0) (T : Set (R × R × A))
@@ -77,13 +75,11 @@ theorem exists_den {R A : Type} [CommRing R] [IsDomain R] [CommRing A] [IsDomain
 variable {R : Type} [CommRing R] [IsDomain R] {X : Scheme.{0}}
 
 /- English proof (translation)
-Introduce `h0`. Establish `hine : (M.U i : Set X).Nonempty`. Assume the negation of the conclusion as `hc`. Establish `hb : M.U i = ⊥`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.not_nonempty_iff_eq_empty] at hc`. Simplify using `[hc]`. Establish `: Subsingleton Γ(X, M.U i)`. Rewrite using `[hb]`. Use `infer_instance`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hi (Subsingleton.elim _ _)`. Establish `hne : ((M.U i ⊓ M.U j : X.Opens) : Set X).Nonempty` using `nonempty_preirreducible_inter (M.U i).isOpen (M.U j).isOpen hine hj`. Establish `: Nonempty (M.U i ⊓ M.U j : X.Opens)` using `hne.to_subtype`. Establish `e` using `LB.Sec.compat t i j`. Rewrite `e` using `[h0, map_zero, MulZeroClass.mul_zero]`.
-
-Use `hi (map_injective_of_isIntegral X (homOfLE (inf_le_left : M.U i ⊓ M.U j ≤ M.U i)) ?_)` and prove the remaining obligations. Conclude with `e.trans (map_zero _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem f_ne_zero [IsIntegral X] {p : X ⟶ Sp R} {M : LB X} {t : SecMod p M} {i j : M.ι}
     (hi : LB.Sec.f t i ≠ 0) (hj : (M.U j : Set X).Nonempty) : LB.Sec.f t j ≠ 0 := by
@@ -107,9 +103,9 @@ theorem f_ne_zero [IsIntegral X] {p : X ⟶ Sp R} {M : LB X} {t : SecMod p M} {i
   exact e.trans (map_zero _).symm
 
 /- English proof (translation)
-Establish `: Nonempty V` using `hne.to_subtype`. Establish `: IsNoetherianRing Γ(X, V)` using `IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Set `r` to `(X.presheaf.map (homOfLE hVj).op).hom`. Establish `hinj : Function.Injective r` using `map_injective_of_isIntegral X (homOfLE hVj)`. Take `⟨D, hD, h⟩` from `exists_den (constHom p V) (f := r (LB.Sec.f t j)) (fun h0 => ht (hinj (by rw [map_zero]; exact h0))) {q | q.2.1 ≠ 0 ∧ constHom p V q.2.1 * q.2.2 = constHom p V q.1 * r (LB.Sec.f t j)} fun q hq => hq`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨D, hD, fun x d u hd e => h (x, d, r (LB.Sec.f u j)) ⟨hd, ?_⟩⟩` and prove the remaining obligations. Establish `e'` using `congrArg r (congrArg (fun s : SecMod p M => LB.Sec.f s j) e)`. Simplify using `only [smul_f, r, map_mul, res_constFn] at e'`. Conclude with `e'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_den_open [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp R) (M : LB X) (t : SecMod p M) (j : M.ι)
     (V : X.Opens) (hV : IsAffineOpen V) (hne : (V : Set X).Nonempty) (hVj : V ≤ M.U j) (ht : LB.Sec.f t j ≠ 0) :
@@ -128,13 +124,13 @@ theorem exists_den_open [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp R) 
   exact e'
 
 /- English proof (translation)
-Establish `hh : ∀ z ∈ (⊤ : (Sp R).Opens), cst (𝟙 (Sp R)) z a ∣ gs (𝟙 (Sp R)) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom b)`. Introduce `z _`. Take `⟨y, rfl⟩` from `hp z`. Apply `dvd_descend p y` to reduce the goal to its premises. Rewrite using `[cst, ← gs_stalkMap p y ⊤ trivial, ← gs_stalkMap p y ⊤ trivial]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h y`. Take `⟨g, hg⟩` from `exists_div (𝟙 (Sp R)) ha ⊤ _ hh`. Establish `e : constFn (𝟙 (Sp R)) ⊤ a = (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a`. Establish `e₀ : (𝟙 (Sp R) : Sp R ⟶ Sp R).appLE ⊤ ⊤ (fun _ _ => trivial) = 𝟙 _`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Sp R).presheaf.map_id _`. Rewrite using `[constFn, e₀]`. Both sides reduce to the same expression. Rewrite `hg` using `[e]`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom g, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom hg` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_forall_point (p : X ⟶ Sp R) [Flat p] (hp : Function.Surjective p) {a b : R} (ha : a ≠ 0)
     (h : ∀ y : X, cst p y a ∣ cst p y b) : a ∣ b := by
@@ -158,19 +154,17 @@ theorem dvd_of_forall_point (p : X ⟶ Sp R) [Flat p] (hp : Function.Surjective 
   simpa using this
 
 /- English proof (translation)
-Introduce `R _ _ _ G _ _ _ _ M hM t ht`. Use `GlobalTheory.grpObj_geometricallyIntegral_of_smooth _ G` as an intermediate fact. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `: IsIntegral G.left` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian G.hom`. Establish `: CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace G.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective G.hom` using `(inferInstance : Surjective G.hom).surj`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, hi₀⟩ : ∃ i, LB.Sec.f t i ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `ht (SecMod.ext fun i => by rw [hc i]; rfl)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ y : G.left, ∃ j, y ∈ M.U j` using `fun y => by`. Establish `: y ∈ (⨆ i, M.U i : G.left.Opens)` using `by rw [hM.cover]; trivial`. Simplify using `using this`. Use `choose j hj using hc`. Establish `hV : ∀ y : G.left, ∃ V : G.left.Opens, IsAffineOpen V ∧ y ∈ V ∧ V ≤ M.U (j y)` using `fun y => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hVa, hy, hle⟩` from `exists_isAffineOpen_mem_and_subset (hj y)`. Conclude with `⟨V, hVa, hy, hle⟩`. Use `choose V hVa hVy hVj using hV`. Take `⟨s, hs⟩` from `CompactSpace.elim_nhds_subcover (fun y => (V y : Set G.left)) (fun y => (V y).isOpen.mem_nhds (hVy y))`. Establish `hD` using `fun y => exists_den_open G.hom M t (j y) (V y) (hVa y) ⟨y, hVy y⟩ (hVj y) (f_ne_zero hi₀ ⟨y, hj y⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose D hD0 hD using hD`. Use `⟨∏ y ∈ s, D y, Finset.prod_ne_zero_iff.2 fun y _ => hD0 y, fun x d u hd e => ?_⟩` and prove the remaining obligations. Use `dvd_of_forall_point G.hom hsurj hd fun y => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨w, hw, hyw⟩ : ∃ w ∈ s, y ∈ V w := by`. Establish `: y ∈ ⋃ x ∈ s, (V x : Set G.left)` using `by rw [hs]; trivial`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h₁ : constHom G.hom (V w) d ∣ constHom G.hom (V w) ((∏ y ∈ s, D y) * x)`. Use `(hD w x d u hd e).trans (map_dvd _ ?_)` and prove the remaining obligations. Conclude with `mul_dvd_mul_right (Finset.dvd_prod_of_mem _ hw) _`. Take `⟨c, hc⟩` from `h₁`.
-
-Establish `e'` using `congrArg (gs (𝟙 G.left) y (V w)) hc`. Rewrite `e'` using `[constHom_apply, constHom_apply, gs_mul _ y _ hyw, gs_constFn _ _ _ y hyw, gs_constFn _ _ _ y hyw, Category.id_comp]`. Conclude with `⟨_, e'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bounded_denominators : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G]
     [Smooth G.hom] [GeometricallyConnected G.hom] [QuasiCompact G.hom] (M : LB G.left), M.IsLB →

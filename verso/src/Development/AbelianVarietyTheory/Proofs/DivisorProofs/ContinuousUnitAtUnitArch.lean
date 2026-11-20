@@ -12,7 +12,7 @@ open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 namespace GlobalTheory.ThK.ConeEuler
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `((continuous_const_smul ε).comp Units.continuous_val).add continuous_const`. Conclude with `((continuous_const_smul ε).comp Units.continuous_coe_inv).add continuous_const`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem continuous_idemUnit {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (ε : AF F) (hε : ε * ε = ε) : Continuous (idemUnit E ε hε) := by
@@ -22,7 +22,7 @@ theorem continuous_idemUnit {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   · exact ((continuous_const_smul ε).comp Units.continuous_coe_inv).add continuous_const
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _`. Conclude with `⟨fun v => continuous_idemUnit _ _, continuous_idemUnit _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem continuous_unitAt_unitArch :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E],

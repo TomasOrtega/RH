@@ -20,17 +20,15 @@ section Core
 open Formalism.L2.Col Formalism.L2.DIV GlobalTheory.Mem.Col2.ZeroMove
 
 /- English proof (translation)
-Establish `hN : (extTo SQ p1).deco.1.N = (extTo SQ p0).deco.1.N` using `by show p1.deco.1.N = p0.deco.1.N`. Rewrite using `[hdeco]`. Establish `hxU : k⁻¹ * g1 ∈ UPts hc.sig 1 (FiniteAdeleRing (𝓞 F) F)` using `mul_mem (inv_mem hpt.uni) hg1.uni`. Establish `hxC : Formalism.L2.Herm.Carries (k⁻¹ * g1) (Formalism.L2.Col.stdLat E n) (Formalism.L2.Col.stdLat E n)`. Introduce `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `hpt.lat (((k : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) _) *ᵥ z)`. Establish `e2` using `hg1.lat (((k : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) _) *ᵥ z)`. Rewrite `e1` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite `e2` using `[hN]`. Rewrite using `[_root_.mul_inv_rev, inv_inv, Units.val_mul, ← Matrix.mulVec_mulVec, ← e2, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨κ, hκU, hκin, hκout⟩` from `exists_splice hc.sig 1 W (k⁻¹ * g1) hxU`. Establish `hκC : Formalism.L2.Herm.Carries κ (Formalism.L2.Col.stdLat E n) (Formalism.L2.Col.stdLat E n)` using `carries_of_local _ κ hxC fun v => if hv : v ∈ W then Or.inl (hκin v hv) else Or.inr (hκout v hv)`. Establish `hof : ∀ P : HeightOneSpectrum (𝓞 E), (P ∈ ST ∨ P ∈ SG) → bc (prV (E` using `E) (P.under (𝓞 F))) κ = 1 := fun P hP => hκout _ (hoff P hP)`. Establish `hd' : (extTo SQ p1).deco = (extTo SQ p0).deco` using `hdeco`. Use `⟨κ, hκout, mul_mem hpt.uni hκU, ?_, fun P x hx i hi => ?_, fun w x hx i => ?_, fun P i j => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hN]`. Conclude with `GlobalTheory.Mem.Col2.TC.ChTw.Match.LocForm.carries_mul hpt.lat hκC`. Rewrite using `[adAt_pullV_mul P.1 k (hof P.1 (Or.inl P.2)), hd']`. Conclude with `hpt.f P x (by rw [← hN]; exact hx) i hi`. Rewrite using `[adAt_pullV_mul w.1 k (hof w.1 (Or.inr w.2)), hd']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpt.be w x (by rw [← hN]; exact hx) i`. Distinguish the cases in `hv : P.1.under (𝓞 F) ∈ W`. Rewrite using `[adAt_mul_congr P.1 k (hκin _ hv) i j, mul_inv_cancel_left]`. Conclude with `hg1.fr P i j`. Establish `hQa : P.1 ∉ Q` using `fun h => hv (hQ1 _ h)`.
-
-Rewrite using `[adAt_mul_of_one P.1 k (hκout _ hv) i j, hpt.fr P i j, extTo_fr, extTo_fr, ptFr_eq p0 p1 hdeco.symm hQa hQa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_move {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
     (hc : CMData F E) {n : ℕ} {ST SG Q SQ : Finset (HeightOneSpectrum (𝓞 E))}
@@ -85,11 +83,9 @@ def reindex {D : D7} {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} {
   stabI_range c := K.stabI_range (e c)
 
 /- English proof (translation)
-Rewrite using `[← h.key, hφ, hφ, hinj.eq_iff] onto := hon lb β := h.lb (φ β) k_std β := h.k_std (φ β) k_off β := h.k_off (φ β) k_T β := h.k_T (φ β) pt c := by`. Use `h.pt c` as an intermediate fact. Rewrite `this` using `[hφ]`. Then use the resulting hypothesis. Use `lev c x q := by`. Use `h.lev c x q` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hφ]`. Then use the resulting hypothesis. Use `chr c := by`. Establish `key : ∀ γ, chOf₀ c = γ → ∀ (x : U γ) (κ : (I.stp u a i).G c.1), (I.stp u a i).gam c.1 κ = 1 → TC.PtOf (y c * x.1 * k γ) ((I.stp u a i).act c.1 κ ((I.stp u a i).rep c)).1.1 → ((chi γ x : ℂˣ) : ℂ) = B.embLL (((I.stp u a i).chr c.1 κ : B.LLˣ) : B.LL)`. Introduce and unpack `_ rfl`. Conclude with `h.chr c`.
-
-Conclude with `key _ (hφ c)`. Use `stab := h.stab`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem reads_rename {B : Base} {X : PreX B.toPre} {I : TC B X} {u : B.Word} {a : I.ι} {i : ℕ} {C C₀ : Type}
     {chOf₀ : (I.stp u a i).Cl → C₀} {Lb : C₀ → Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E)}
@@ -124,17 +120,15 @@ variable {B : Base} {X : PreX B.toPre}
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Set `Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))` to `(I.Q a).image (fun P => P.under (𝓞 B.host.F))`. Establish `hQ : ∀ v, v ∈ Q ↔ I.UnderQ a v` using `fun v => Finset.mem_image`. Establish `key₀ : ∀ c c', GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i c = GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i c' ↔ chOf c = chOf c'` using `fun c c' => by`. Rewrite using `[key]`. Conclude with `Subtype.ext_iff.trans Prod.ext_iff`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ : C → GlobalTheory.Mem.Col2.TC.ChTw.Chart I u a i` to `fun β => GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i (Function.surjInv onto β)`. Set `ψ : GlobalTheory.Mem.Col2.TC.ChTw.Chart I u a i → C` to `fun γ => chOf γ.2.choose`. Establish `hφ : ∀ c, GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i c = φ (chOf c)` using `fun c => (key₀ _ _).2 (Function.surjInv_eq onto _).symm`. Establish `hψ : ∀ β, ψ (φ β) = β` using `fun β => by`. Use `Eq.trans ((key₀ _ _).1 ?_) (Function.surjInv_eq onto β)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (φ β).2.choose_spec`. Establish `hinj : Function.Injective φ` using `Function.LeftInverse.injective hψ`. Take `⟨K, hK, hfin⟩` from `GlobalTheory.Mem.Col2.ChExM.exists_charts I hI hP l Z u a Q i hi h1 h2 hQ (fun γ => k (ψ γ)) ⟨fun γ => hk.std _, fun γ => hk.off _, fun γ => hk.T _⟩`. Set `e : ∀ β : C, {c // chOf c = β} → {c // GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i c = φ β}` to `fun β c => ⟨c.1, (hφ c.1).trans (congrArg φ c.2)⟩`. Establish `he : ∀ β, Function.Bijective (e β)` using `fun β => ⟨fun c c' h => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h'` using `congrArg Subtype.val h`. Conclude with `Subtype.ext h', fun c => ⟨⟨c.1, hinj ((hφ c.1).symm.trans c.2)⟩, rfl⟩⟩`. Use `⟨badQ (I.rec7 l Z) Q, fun β => reindex (K (φ β)) (e β) (he β), ?_, fun β => hfin (φ β), fun v hv => hv.imp id (hQ v).1⟩` and prove the remaining obligations. Establish `h` using `reads_rename hK chOf φ hφ hinj onto`. Establish `hy : ∀ c γ (hc : GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i c = γ), ((K γ).y ⟨c, hc⟩).1 = ((K (GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i c)).y ⟨c, rfl⟩).1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce and unpack `c _ rfl`. Both sides reduce to the same expression. Establish `hs : ∀ c γ (hc : GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i c = γ) s, ((K γ).stabI ⟨c, hc⟩ s).1 = ((K (GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i c)).stabI ⟨c, rfl⟩ s).1`. Introduce and unpack `c _ rfl s`. Both sides reduce to the same expression.
-
-Establish `e1 : (fun β => k (ψ (φ β))) = k` using `funext fun β => congrArg k (hψ β)`. Rewrite `h` using `[e1, ← funext fun c => hy c _ (hφ c), ← funext fun c => funext fun s => hs c _ (hφ c) s]`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_charts (I : TC B X) (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι)
     (i : ℕ) (hi : i ≤ B.R.m) (h1 : 1 ≤ i) (h2 : i < B.R.m) {C : Type} (chOf : (I.stp u a i).Cl → C)
@@ -205,21 +199,19 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hi : i ≤ B.R.m` using `by omega`. Establish `h2m` using `B.R.two_le_m`. Establish `hR₀` using `hA.reads i hi`. Establish `hd : Disjoint (B.primes X).vGs (I.Q a)` using `(LevTwist.levOk_twists B X I hI).2.1.mono_right (I.Q_subset_SQ a)`. Establish `hk : GlobalTheory.Mem.Col2.TC.ChTw.AdmK I u a i (fun β => A.kb i β * κ β)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun β => ?_, fun β v h1 h2 h3 => ?_, fun β P r j hr => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hpN⟩` from `hR₀.k_std β`. Use `⟨p, ⟨(hpt β).uni, ?_, fun P => absurd P.2 (Finset.notMem_empty _), fun P => absurd P.2 (Finset.notMem_empty _), fun P => absurd P.2 (Finset.notMem_empty _)⟩, hpN⟩` and prove the remaining obligations. Establish `e` using `(hpt β).lat`. Rewrite `e` using `[extTo_deco, hN]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hpN]`. Conclude with `e`. Rewrite using `[map_mul, hR₀.k_off β v h1 h2 h3, hoff β v h2, mul_one]`. Establish `e : bc (prV (E` using `B.host.E) (P.1.under (𝓞 B.host.F))) (A.kb i β * κ β)⁻¹ = bc (prV (E := B.host.E) (P.1.under (𝓞 B.host.F))) (A.kb i β)⁻¹ := by`. Rewrite using `[map_inv, map_mul, hoff β _ (GlobalTheory.Mem.Col2.ZeroMove.not_underQ I hI u a (Or.inl P.2)), mul_one, map_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `GlobalTheory.Mem.Col2.ZeroMove.adAt_entry_of_bc (F := B.host.F) (E := B.host.E) P.1 e r j`. Conclude with `e2 ▸ hR₀.k_T β P r j hr`. Take `⟨bad, K, hR, hfin, hbad⟩` from `exists_charts I hI hP l Z u a i hi (by omega) (by omega) (A.chOf i) hR₀.key hR₀.onto _ hk`. Establish `hq : ∀ β, TC.PtOf (A.kb i β * κ β) (q β)` using `fun β => IsPtOf.of_extTo (I.Q_subset_SQ a) hd (hpt β)`. Establish `hone : ∀ β, ∀ P ∈ I.SQ, P ∉ I.Q a → (A.kb i β * κ β).1.map (adAt B.host.F P) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `β P hP' hPQ`. Establish `hPG : P ∉ (B.primes X).vGs` using `Finset.disjoint_right.1 (LevTwist.levOk_twists B X I hI).2.1 hP'`. Establish `hfr : ptFr (q β) P = 1`. Unfold `ptFr`. Rewrite using `[dif_neg hPG, dif_neg hPQ, hN]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `GlobalTheory.Mem.Col2.latFr`. Conclude with `if_pos rfl`. Use `Matrix.ext fun r s => ?_` and prove the remaining obligations. Establish `e` using `(hpt β).fr ⟨P, hP'⟩ r s`. Rewrite `e` using `[extTo_fr, hfr]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `e.trans ?_` and prove the remaining obligations. Use `show algebraMap _ _ ((Pi.single s 1 : Fin (B.R.N i) → B.host.E) r) = _`. Rewrite using `[Matrix.one_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `choose kA hkA using fun β => GlobalTheory.T.exists_adelicUnitaryLift_of_chartBasePoint I hI hP l Z i hi _ (hR.k_std β)`.
-
-Use `choose xr hxr using fun β => GlobalTheory.RecDict.exists_isDetRoot (I.rec7 l Z) _ (kA β)`. Use `choose b0 p0 hp1 hp2 hp3 using fun β => GlobalTheory.KxPoint.pointOf_base I hI hP u a i hi _ _ _ _ _ _ _ hR β ⟨q β, hq β⟩ (hone β)`. Use `choose U chi h hU hchi hh using fun β => GlobalTheory.T.chartLevelCharacterReps_on_adelicUnitaryPoints I l Z i hi (K β)`. Use `⟨bad, fun _ => K, kA, xr, p0, U, chi, h, fun _ => ⟨hR, fun β => ⟨(hkA β).1, (hkA β).2, hxr β⟩, fun β => ⟨hp1 β, hp2 β⟩, fun c => (hp3 _ c rfl).2, hU, hchi, hh, hfin, hbad⟩, fun β => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Mem.Col2.PtUniq.isPtOf_unique _ _ _ _ (IsPtOf.of_extTo (I.Q_subset_SQ a) hd (hp1 β)) (hq β)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_step {I : TC B X} (hI : I.Ok) (hP : TC.Pins B X) {l : I.Laws} {Z : TC.Later B (I.cols l)} {u : B.Word} {a : I.ι}
     {Ch : ℕ → Type} (A : TwDat I l Z u a Ch) (hA : A.Is) (i : ℕ) (hm : i + 1 = B.R.m)
@@ -275,11 +267,11 @@ theorem exists_step {I : TC B X} (hI : I.Ok) (hP : TC.Pins B X) {l : I.Laws} {Z 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `H : ∀ i, ∃ bad K k kA xr p0 U chi h, StepOk A i bad K k kA xr p0 U chi h ∧ (i + 1 ≠ B.R.m → k = A.kb i ∧ p0 = A.p0 i) ∧ (i + 1 = B.R.m → ∀ β, k β = A.kb i β * κ i β ∧ (p0 β).1.1 = q i β)`. Introduce `i`. Distinguish the cases in `hm : i + 1 = B.R.m`. Take `⟨bad, K, kA, xr, p0, U, chi, h, h1, h2⟩` from `exists_step hI hP A hA i hm (q i) (κ i) (hoff i hm) (hpt i hm) (hN i hm)`. Conclude with `⟨bad, K, _, kA, xr, p0, U, chi, h, h1, fun h' => absurd hm h', fun _ β => ⟨rfl, h2 β⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨A.bad i, A.K i, A.kb i, A.kA i, A.xr i, A.p0 i, A.U i, A.chi i, A.h i, fun hi => ⟨hA.reads i hi, hA.kA i hi, hA.base i hi, fun c => (hA.rep i hi c).2, hA.U i hi, hA.chi i hi, hA.h i hi, hA.fin i hi, hA.bad_le i hi⟩, fun _ => ⟨rfl, rfl⟩, fun h' => absurd h' hm⟩`. Use `choose bad K k kA xr p0 U chi h hS hne heq using H`. Use `⟨⟨bad, A.chOf, K, k, kA, xr, A.b0, p0, U, chi, h, A.chr, A.e⟩, ⟨fun i hi => (hS i hi).1, fun β => ?_, fun i hi => (hS i hi).2.1, fun i hi => (hS i hi).2.2.1, fun i hi c => ⟨(hA.rep i hi c).1, (hS i hi).2.2.2.1 c⟩, fun i hi => (hS i hi).2.2.2.2.1, fun i hi => (hS i hi).2.2.2.2.2.1 …` and prove the remaining obligations. Use `show I.TopPt l Z u a (k B.R.m β)`. Rewrite using `[(hne B.R.m (by omega)).1]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hA.top β`. Establish `hi : i ≤ B.R.m` using `by omega`. Take `⟨c, rfl⟩` from `(hA.reads i hi).onto β`. Conclude with `((hS i hi).2.2.2.1 c).symm.trans (hA.rep i hi c).2`.
+A detailed English derivation is pending.
 -/
 theorem exists_moved {I : TC B X} (hI : I.Ok) (hP : TC.Pins B X) {l : I.Laws} {Z : TC.Later B (I.cols l)} {u : B.Word} {a : I.ι}
     {Ch : ℕ → Type} (A : TwDat I l Z u a Ch) (hA : A.Is)
@@ -315,9 +307,9 @@ theorem exists_moved {I : TC B X} (hI : I.Ok) (hP : TC.Pins B X) {l : I.Laws} {Z
 open Formalism.L2.Col in
 
 /- English proof (translation)
-Set `q : ChPt (Pr` to `B.primes X) (R := B.R) I.sel (I.tup a) u i := ⟨(p.deco, r), fun P x => by show r P x ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal p.deco.1.N ↔ _`. Rewrite using `[hN]`. Conclude with `hr P x⟩`. Set `Q : Finset (HeightOneSpectrum (𝓞 B.host.F))` to `(I.Q a).image (fun P => P.under (𝓞 B.host.F))`. Establish `hQ : ∀ v, v ∈ Q ↔ I.UnderQ a v` using `fun v => Finset.mem_image`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g1, hg1⟩` from `PtTwist.exists_ptOf_twists I hI u _ (extTo I.SQ q)`. Take `⟨κ, h1, h2⟩` from `exists_move B.sp.cm Q p q rfl (fun P h => (hQ _).2 ⟨P, h, rfl⟩) (fun P hP hv => GlobalTheory.Mem.Col2.ZeroMove.not_underQ I hI u a hP ((hQ _).1 hv)) k g1 hk hg1`. Conclude with `⟨q, κ, rfl, fun _ => rfl, fun v hv => h1 v fun h => hv ((hQ v).1 h), h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frames {I : TC B X} (hI : I.Ok) {u : B.Word} {a : I.ι} {i : ℕ}
     (p : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u i) (k : TC.GA B (B.R.N i)) (hk : TC.PtOf k (extTo I.SQ p))
@@ -340,15 +332,13 @@ theorem exists_frames {I : TC B X} (hI : I.Ok) {u : B.Word} {a : I.ι} {i : ℕ}
 open Formalism.L2.Col in
 
 /- English proof (translation)
-Establish `h1 : (frsF sel mu p'.1.1 P).symm (repY p'.1.2) ∈ cosetIn p' P` using `⟨_, p'.repY_mem h, by rw [sub_self, smul_zero]; exact zero_mem _⟩`. Rewrite `h1` using `[hc]`. Take `⟨y, hy, h2⟩` from `h1`. Take `⟨y₀, -, hY⟩` from `p.mem_ybSet h`. Establish `h3` using `p.repY_mem h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy' : y - y₀ ∈ locLat (rowSG Pr sel mu) p.1.1.deco.1.N (fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ))`. Rewrite `hy` using `[hY]`. Conclude with `hy`. Establish `h3' : repY p.1.2 - y₀ ∈ locLat (rowSG Pr sel mu) p.1.1.deco.1.N (fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ))`. Generalize the expression as in `repY p.1.2 = z at h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hY]`. Conclude with `h3`. Establish `h4` using `(mem_locLat _ _ _ _).1 (sub_mem hy' h3') P`. Rewrite `h4` using `[sub_sub_sub_cancel_right]`. Apply the tactic sequence `have h5 : ((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then (0 : ℤ) else (cst.M : ℤ))) = (qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then 0 else cst.M) := by split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[h5]`. Establish `h6 : (frsF sel mu p.1.1 P).symm (((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then 0 else cst.M))⁻¹ • (y - repY p.1.2)) ∈ stdAt X.E (R.N j) P.1`. Use `(isFr_ptFr p.1.1 P.1 _).1 ?_` and prove the remaining obligations. Rewrite using `[← frsF_eq_ptFr, LinearEquiv.apply_symm_apply]`. Conclude with `h4`.
-
-Establish `h7` using `add_mem h2 h6`. Rewrite `h7` using `[map_smul, map_sub, ← smul_add, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem repY_cong {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
     {mu : Formalism.L2.DIV.Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ} (h : j + 1 = R.m)

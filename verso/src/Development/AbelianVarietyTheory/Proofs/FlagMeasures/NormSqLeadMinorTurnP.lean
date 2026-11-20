@@ -24,7 +24,7 @@ def cj (d : Fin m → ℂ) (g : Matrix (Fin m) (Fin m) ℂ) : Matrix (Fin m) (Fi
   diagonal (star d) * g * diagonal d
 
 /- English proof (translation)
-Simplify using `[cj, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cj_apply (d : Fin m → ℂ) (g : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) :
     cj d g i j = star (d i) * g i j * d j := by
@@ -33,7 +33,7 @@ theorem cj_apply (d : Fin m → ℂ) (g : Matrix (Fin m) (Fin m) ℂ) (i j : Fin
 def Uni (d : Fin m → ℂ) : Prop := ∀ i, star (d i) * d i = 1
 
 /- English proof (translation)
-Introduce `i` and use `by have := h i simp only [Pi.star_apply, star_star] rw [mul_comm]; exact this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Uni.st {d : Fin m → ℂ} (h : Uni d) : Uni (star d) := fun i => by
   have := h i
@@ -41,33 +41,33 @@ theorem Uni.st {d : Fin m → ℂ} (h : Uni d) : Uni (star d) := fun i => by
   rw [mul_comm]; exact this
 
 /- English proof (translation)
-Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `h i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem Uni.l {d : Fin m → ℂ} (h : Uni d) : diagonal (star d) * diagonal d = 1 := by
   rw [diagonal_mul_diagonal, ← diagonal_one]
   congr 1; funext i; exact h i
 
 /- English proof (translation)
-Use `h.st.l` as an intermediate fact. Rewrite `this` using `[star_star]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Uni.r {d : Fin m → ℂ} (h : Uni d) : diagonal d * diagonal (star d) = 1 := by
   have := h.st.l
   rwa [star_star] at this
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv h.l`.
+A detailed English derivation is pending.
 -/
 theorem Uni.inv {d : Fin m → ℂ} (h : Uni d) : (diagonal d)⁻¹ = diagonal (star d) :=
   Matrix.inv_eq_left_inv h.l
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv h.r`.
+A detailed English derivation is pending.
 -/
 theorem Uni.inv' {d : Fin m → ℂ} (h : Uni d) : (diagonal (star d))⁻¹ = diagonal d :=
   Matrix.inv_eq_left_inv h.r
 
 /- English proof (translation)
-Establish `h1 : ‖star (d i) * d i‖ = ‖(1 : ℂ)‖` using `by rw [h i]`. Rewrite `h1` using `[norm_mul, norm_star, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (d i)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem Uni.nrm {d : Fin m → ℂ} (h : Uni d) (i : Fin m) : ‖d i‖ = 1 := by
   have h1 : ‖star (d i) * d i‖ = ‖(1 : ℂ)‖ := by rw [h i]
@@ -75,7 +75,7 @@ theorem Uni.nrm {d : Fin m → ℂ} (h : Uni d) (i : Fin m) : ‖d i‖ = 1 := b
   nlinarith [norm_nonneg (d i)]
 
 /- English proof (translation)
-Unfold `cj`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h.r]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cj_mul {d : Fin m → ℂ} (h : Uni d) (a b : Matrix (Fin m) (Fin m) ℂ) : cj d (a * b) = cj d a * cj d b := by
   unfold cj
@@ -85,14 +85,14 @@ theorem cj_mul {d : Fin m → ℂ} (h : Uni d) (a b : Matrix (Fin m) (Fin m) ℂ
     _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `cj`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, h.inv, h.inv', Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_inv {d : Fin m → ℂ} (h : Uni d) (a : Matrix (Fin m) (Fin m) ℂ) : cj d a⁻¹ = (cj d a)⁻¹ := by
   unfold cj
   rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, h.inv, h.inv', Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `cj`. Rewrite using `[star_star]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cj_star_cj {d : Fin m → ℂ} (h : Uni d) (a : Matrix (Fin m) (Fin m) ℂ) : cj (star d) (cj d a) = a := by
   unfold cj
@@ -102,14 +102,14 @@ theorem cj_star_cj {d : Fin m → ℂ} (h : Uni d) (a : Matrix (Fin m) (Fin m) �
     _ = a := by rw [h.r]; simp
 
 /- English proof (translation)
-Use `cj_star_cj h.st a` as an intermediate fact. Rewrite `this` using `[star_star]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cj_cj_star {d : Fin m → ℂ} (h : Uni d) (a : Matrix (Fin m) (Fin m) ℂ) : cj d (cj (star d) a) = a := by
   have := cj_star_cj h.st a
   rwa [star_star] at this
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [conjTranspose_apply, cj_apply, star_mul', star_star]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cj_conjTranspose (d : Fin m → ℂ) (a : Matrix (Fin m) (Fin m) ℂ) : (cj d a)ᴴ = cj d aᴴ := by
   ext i j
@@ -117,20 +117,20 @@ theorem cj_conjTranspose (d : Fin m → ℂ) (a : Matrix (Fin m) (Fin m) ℂ) : 
   ring
 
 /- English proof (translation)
-Unfold `cj`. Rewrite using `[Matrix.mul_one, h.l]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_one {d : Fin m → ℂ} (h : Uni d) : cj d 1 = 1 := by
   unfold cj; rw [Matrix.mul_one, h.l]
 
 /- English proof (translation)
-Simplify using `only [cj, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cj_mulVec (d : Fin m → ℂ) (a : Matrix (Fin m) (Fin m) ℂ) (v : Fin m → ℂ) :
     cj d a *ᵥ v = diagonal (star d) *ᵥ (a *ᵥ (diagonal d *ᵥ v)) := by
   simp only [cj, Matrix.mulVec_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[Matrix.mem_unitaryGroup_iff']`. Rewrite `hg`, the goal using `[star_eq_conjTranspose]`. Rewrite using `[cj_conjTranspose, ← cj_mul h, hg, cj_one h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_mem_unitary {d : Fin m → ℂ} (h : Uni d) {g : Matrix (Fin m) (Fin m) ℂ}
     (hg : g ∈ Matrix.unitaryGroup (Fin m) ℂ) : cj d g ∈ Matrix.unitaryGroup (Fin m) ℂ := by
@@ -139,7 +139,7 @@ theorem cj_mem_unitary {d : Fin m → ℂ} (h : Uni d) {g : Matrix (Fin m) (Fin 
   rw [cj_conjTranspose, ← cj_mul h, hg, cj_one h]
 
 /- English proof (translation)
-Unfold `cj`. Rewrite using `[← h.inv]`. Conclude with `Matrix.exp_conj' _ _ (IsUnit.of_mul_eq_one _ h.r)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_exp {d : Fin m → ℂ} (h : Uni d) (X : Matrix (Fin m) (Fin m) ℂ) :
     NormedSpace.exp (cj d X) = cj d (NormedSpace.exp X) := by
@@ -148,13 +148,13 @@ theorem cj_exp {d : Fin m → ℂ} (h : Uni d) (X : Matrix (Fin m) (Fin m) ℂ) 
   exact Matrix.exp_conj' _ _ (IsUnit.of_mul_eq_one _ h.r)
 
 /- English proof (translation)
-Unfold `cj`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cj_smul (d : Fin m → ℂ) (c : ℂ) (X : Matrix (Fin m) (Fin m) ℂ) : cj d (c • X) = c • cj d X := by
   unfold cj; simp
 
 /- English proof (translation)
-Simplify using `only [cj_apply, Matrix.of_apply]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_cj (d : Fin m → ℂ) :
     Measurable (fun x : Fin m → Fin m → ℂ => (fun i j => cj d (Matrix.of x) i j : Fin m → Fin m → ℂ)) := by
@@ -186,7 +186,7 @@ def cjR (d : Fin m → ℂ) :
     cases b <;> simp [realifyFun, cj_apply, unrealify] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[unrealify, realifyFun]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem unrealify_realify (X : Matrix (Fin m) (Fin m) ℂ) :
     unrealify ((WithLp.equiv 2 _).symm (realifyFun X)) = X := by
@@ -194,15 +194,15 @@ theorem unrealify_realify (X : Matrix (Fin m) (Fin m) ℂ) :
   simp [unrealify, realifyFun]
 
 /- English proof (translation)
-The claim follows from `unrealify_realify _`.
+A detailed English derivation is pending.
 -/
 theorem unrealify_cjR (d : Fin m → ℂ) (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
     unrealify (cjR d x) = cj d (unrealify x) := unrealify_realify _
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool, ← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [unrealify, Real.norm_eq_abs, sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_sq_unrealify (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
     ‖x‖ ^ 2 = ∑ i, ∑ j, ‖unrealify x i j‖ ^ 2 := by
@@ -215,7 +215,7 @@ theorem norm_sq_unrealify (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
   ring
 
 /- English proof (translation)
-Establish `: ‖cjR d x‖ ^ 2 = ‖x‖ ^ 2`. Rewrite using `[norm_sq_unrealify, norm_sq_unrealify, unrealify_cjR]`. Simplify using `only [cj_apply, norm_mul, norm_star, h.nrm, one_mul, mul_one]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_cjR {d : Fin m → ℂ} (h : Uni d) (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
     ‖cjR d x‖ = ‖x‖ := by
@@ -225,11 +225,9 @@ theorem norm_cjR {d : Fin m → ℂ} (h : Uni d) (x : EuclideanSpace ℝ (Fin m 
   exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 this
 
 /- English proof (translation)
-Introduce `x hx`. Establish `: lieE S ≤ (lieE S).comap (cjR d)`. Unfold `lieE`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨X, hX, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `Submodule.subset_span ⟨cj d X, fun t => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cj_smul, cj_exp h]`. Conclude with `hS _ (hX t)`. Use `show _ = (WithLp.equiv 2 _).symm (realifyFun (cj d (unrealify _)))`. Rewrite using `[unrealify_realify]`.
-
-Conclude with `this hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cjR_mem {d : Fin m → ℂ} (h : Uni d) {S : Set (Matrix (Fin m) (Fin m) ℂ)} (hS : ∀ g ∈ S, cj d g ∈ S) :
     ∀ x ∈ lieE S, cjR d x ∈ lieE S := by
@@ -247,11 +245,11 @@ theorem cjR_mem {d : Fin m → ℂ} (h : Uni d) {S : Set (Matrix (Fin m) (Fin m)
 end Conj
 
 /- English proof (translation)
-Unfold `haarLie`. Rewrite using `[Measure.map_smul]`. Use `congr 1`. Use `set E : lieE S → Mt k r := fun x => fun i j => NormedSpace.exp (unrealify (x : EuclideanSpace ℝ _)) i j with hE`. Distinguish the cases in `hm : AEMeasurable E volume`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression.
 
-Set `Φ₀ : lieE S →ₗᵢ[ℝ] lieE S` to `⟨(cjR d).restrict (cjR_mem h hS), fun x => norm_cjR h x⟩`. Set `Φ : lieE S ≃ₗᵢ[ℝ] lieE S` to `Φ₀.toLinearIsometryEquiv rfl`. Establish `hΦ` using `Φ.measurePreserving`. Establish `e : (cjE h) ∘ E = E ∘ Φ`. Use function extensionality and compare the values at `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show cj d (NormedSpace.exp (unrealify (x : EuclideanSpace ℝ _))) = NormedSpace.exp (unrealify (cjR d x))`. Rewrite using `[unrealify_cjR, cj_exp h]`. Rewrite using `[AEMeasurable.map_map_of_aemeasurable (cjE h).measurable.aemeasurable hm, e, ← AEMeasurable.map_map_of_aemeasurable (by rwa [hΦ.map_eq]) hΦ.measurable.aemeasurable, hΦ.map_eq]`. Rewrite using `[Measure.map_of_not_aemeasurable hm, Measure.map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarLie_map_cj {k r : ℕ} {d : Fin (2 * r + k + 1) → ℂ} (h : Uni d) {S : Set (Mx k r)}
     (hS : ∀ g ∈ S, cj d g ∈ S) (κ : ENNReal) : (haarLie S κ).map (cjE h) = haarLie S κ := by
@@ -283,18 +281,18 @@ structure Tor (k r : ℕ) (d : Fin (2 * r + k + 1) → ℂ) : Prop where
 variable {d : Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.uni.st, fun i j a b => by simp only [Pi.star_apply, h.sym i j a b], fun i a b => by simp only [Pi.star_apply, h.mid i a b, star_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem Tor.st (h : Tor k r d) : Tor k r (star d) :=
   ⟨h.uni.st, fun i j a b => by simp only [Pi.star_apply, h.sym i j a b],
     fun i a b => by simp only [Pi.star_apply, h.mid i a b, star_one]⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[cj_apply]`. Unfold `Hpk`. Use `split_ifs with h1 h2 h3 h4`. Rewrite using `[← h.sym i j h1.2 h1.1, mul_one, h.uni i]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.sym j i (by omega) h2.1, mul_one, h.uni i]`. Rewrite using `[← h3.2.2, h.mid i h3.1 h3.2.1]`. Simplify using the standard rewrite rules. Rewrite using `[← h3.2.2, h.mid i h3.1 h3.2.1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem cj_Hpk (h : Tor k r d) : cj d (Hpk k r) = Hpk k r := by
   ext i j
@@ -308,7 +306,7 @@ theorem cj_Hpk (h : Tor k r d) : cj d (Hpk k r) = Hpk k r := by
   · simp
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Use `show (cj d g)ᴴ * Hpk k r * cj d g = Hpk k r`. Rewrite using `[cj_conjTranspose]`. Use `conv_lhs => rw [← cj_Hpk h]`. Rewrite using `[← cj_mul h.uni, ← cj_mul h.uni, hg', cj_Hpk h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_mem_UH (h : Tor k r d) {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : cj d g ∈ UH (Hpk k r) := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -318,9 +316,9 @@ theorem cj_mem_UH (h : Tor k r d) {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : cj d 
   rw [← cj_mul h.uni, ← cj_mul h.uni, hg', cj_Hpk h]
 
 /- English proof (translation)
-Use `⟨cj_mem_UH h hg.1, fun a i hi => ?_, fun i j h1 h2 h3 => ?_⟩` and prove the remaining obligations. Rewrite using `[cj_apply, hg.2.1 a i hi] split_ifs with e`. Rewrite using `[← e, mul_one, h.uni i]`. Simplify using the standard rewrite rules. Rewrite using `[cj_apply, hg.2.2 i j h1 h2 h3] split_ifs with e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, mul_one, h.uni i]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cj_mem_N (h : Tor k r d) {g : Mx k r} (hg : g ∈ Nset k r) : cj d g ∈ Nset k r := by
   refine ⟨cj_mem_UH h hg.1, fun a i hi => ?_, fun i j h1 h2 h3 => ?_⟩
@@ -334,7 +332,7 @@ theorem cj_mem_N (h : Tor k r d) {g : Mx k r} (hg : g ∈ Nset k r) : cj d g ∈
     · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[mulVec_diagonal]`. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[hz i hi, mul_zero]`. Rewrite using `[h.mid i (by omega) (by omega), one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_wb (h : Tor k r d) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : diagonal d *ᵥ z = z := by
   funext i
@@ -344,9 +342,9 @@ theorem diag_wb (h : Tor k r d) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r
   · rw [h.mid i (by omega) (by omega), one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Rewrite using `[mulVec_diagonal]`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[bvec, e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diag_bvec {m : ℕ} (d : Fin m → ℂ) (i : Fin m) : diagonal d *ᵥ bvec i = d i • bvec i := by
   funext j
@@ -356,14 +354,14 @@ theorem diag_bvec {m : ℕ} (d : Fin m → ℂ) (i : Fin m) : diagonal d *ᵥ bv
   · simp [bvec, e]
 
 /- English proof (translation)
-Rewrite using `[cj_mulVec, diag_bvec, mulVec_smul, hg, mulVec_smul, diag_bvec, smul_smul, Pi.star_apply, mul_comm, h i, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_fix {m : ℕ} {d : Fin m → ℂ} (h : Uni d) {g : Matrix (Fin m) (Fin m) ℂ} {i : Fin m}
     (hg : g *ᵥ bvec i = bvec i) : cj d g *ᵥ bvec i = bvec i := by
   rw [cj_mulVec, diag_bvec, mulVec_smul, hg, mulVec_smul, diag_bvec, smul_smul, Pi.star_apply, mul_comm, h i, one_smul]
 
 /- English proof (translation)
-Use `⟨cj_mem_UH h hg.1, fun a => ⟨cj_fix h.uni (hg.2.1 a).1, cj_fix h.uni (hg.2.1 a).2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[cj_mulVec, diag_wb h hz, hg.2.2, diag_wb h.st hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_mem_UW (h : Tor k r d) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {g : Mx k r}
     (hg : g ∈ UWset k r z) : cj d g ∈ UWset k r z := by
@@ -371,7 +369,7 @@ theorem cj_mem_UW (h : Tor k r d) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k
   rw [cj_mulVec, diag_wb h hz, hg.2.2, diag_wb h.st hz]
 
 /- English proof (translation)
-Use `⟨cj_mem_UH h hg.1, fun a => ⟨cj_fix h.uni (hg.2.1 a).1, cj_fix h.uni (hg.2.1 a).2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[cj_mulVec, mulVec_smul, diag_bvec, h.mid (wI k r (Fin.last k)) (by simp [wI]) (by simp [wI]), one_smul, hg.2.2, diag_wb h.st hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_frame (h : Tor k r d) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {g : Mx k r}
     (hg : IsFrameW k r z g) : IsFrameW k r z (cj d g) := by
@@ -380,9 +378,9 @@ theorem cj_frame (h : Tor k r d) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k 
     diag_wb h.st hz]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[cj_apply]`. Unfold `blockW`. Use `split_ifs with h1 h2 h3`. Rewrite using `[h.mid i h1.1 (by omega), h.mid j h2.1 (by omega)]; simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[← h3, mul_one, h.uni i]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cj_blockW (h : Tor k r d) (x : Matrix (Fin k) (Fin k) ℂ) : cj d (blockW k r x) = blockW k r x := by
   ext i j
@@ -395,11 +393,11 @@ theorem cj_blockW (h : Tor k r d) (x : Matrix (Fin k) (Fin k) ℂ) : cj d (block
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[cj_apply]`. Unfold `bigCell`. Use `split_ifs with h1 h2 h3 h4 h5`. Establish `: d j = d i` using `h.sym j i (by rw [h2]; simp only [esI]; omega) h1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_right_comm, h.uni i, one_mul]`. Simplify using the standard rewrite rules. Rewrite using `[h.mid i h4.1 h4.2, h.mid j (by omega) h3]; simp`. Simplify using the standard rewrite rules. Establish `: d i = d j` using `h.sym i j (by omega) (by omega)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, mul_right_comm, h.uni i, one_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cj_bigCell (h : Tor k r d) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     cj d (bigCell k r c μ) = bigCell k r c μ := by
@@ -417,9 +415,9 @@ theorem cj_bigCell (h : Tor k r d) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)
   · simp
 
 /- English proof (translation)
-Take `⟨g, hg, hU⟩` from `hπ`. Use `⟨cj d g, cj_frame h hz hg, ?_⟩` and prove the remaining obligations. Establish `e : ∀ x, cj (star d) (cj d g * blockW k r x * (cj d g)⁻¹) = g * blockW k r x * g⁻¹` using `fun x => by conv_lhs => rw [← cj_blockW h x]`. Rewrite using `[← cj_inv h.uni, ← cj_mul h.uni, ← cj_mul h.uni, cj_star_cj h.uni]`. Simplify using `only [e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hU`.
+A detailed English derivation is pending.
 -/
 theorem isHCTypeW_cj (h : Tor k r d) {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {u : Fin k → ℝ} {π : Mx k r → (H →L[ℂ] H)}
@@ -433,11 +431,11 @@ theorem isHCTypeW_cj (h : Tor k r d) {H : Type*} [NormedAddCommGroup H] [InnerPr
   exact hU
 
 /- English proof (translation)
-Take `⟨P, ⟨⟨hP1, hP2⟩, hP3⟩, hD⟩` from `hσ`. Use `⟨P * diagonal d, ⟨⟨hP1.mul (IsUnit.of_mul_eq_one _ h.uni.r), ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `cj_Hpk h` as an intermediate fact. Rewrite using `[← this, ← hP2, conjTranspose_mul, diagonal_conjTranspose, cj]`. Simplify using `only [Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `mul_mem hP3 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', star_eq_conjTranspose, diagonal_conjTranspose, h.uni.l]`. Establish `e : ∀ g, cj (star d) ((P * diagonal d)⁻¹ * g * (P * diagonal d)) = P⁻¹ * g * P` using `fun g => by conv_rhs => rw [← cj_star_cj h.uni (P⁻¹ * g * P)]`. Use `congr 1`. Rewrite using `[Matrix.mul_inv_rev, h.uni.inv, cj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [e]`. Conclude with `hD`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDSHpk_cj (h : Tor k r d) {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
@@ -458,7 +456,7 @@ theorem isDSHpk_cj (h : Tor k r d) {H : Type*} [NormedAddCommGroup H] [InnerProd
     exact hD
 
 /- English proof (translation)
-Take `⟨S, h1, h2, h3⟩` from `hv`. Conclude with `⟨S, h1, h2, fun g hg x hx => h3 _ ⟨cj_mem_UH h.st hg.1, cj_mem_unitary h.uni.st hg.2⟩ x hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isKFin_cj (h : Tor k r d) {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Mx k r → (H →L[ℂ] H)} {v : H} (hv : IsKFinHpk (k := k) (r := r) σ v) :
@@ -467,7 +465,7 @@ theorem isKFin_cj (h : Tor k r d) {H : Type*} [NormedAddCommGroup H] [InnerProdu
   exact ⟨S, h1, h2, fun g hg x hx => h3 _ ⟨cj_mem_UH h.st hg.1, cj_mem_unitary h.uni.st hg.2⟩ x hx⟩
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Use `show Measurable fun x : Mt k r => (s * Matrix.of x) i j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_lmulM (s : Mx k r) : Measurable (lmulM (k := k) (r := r) s) := by
   refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_
@@ -476,9 +474,9 @@ theorem measurable_lmulM (s : Mx k r) : Measurable (lmulM (k := k) (r := r) s) :
   fun_prop
 
 /- English proof (translation)
-Take `⟨⟨h1, h2, h3, h4⟩, h5⟩` from `hμ`. Establish `hu : (μ.map (cjE h)) Set.univ = 1` using `by rw [MeasurableEquiv.map_apply, Set.preimage_univ, h5]`. Use `⟨⟨(cjE h).sigmaFinite_map, fun e => by simp [e] at hu, ?_, fun s hs => ?_⟩, hu⟩` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply]`. Conclude with `measure_mono_null (fun x hx hx' => hx (hS _ hx')) h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : lmulM s ∘ cjE h = cjE h ∘ lmulM (cj (star d) s)`. Use function extensionality and compare the values at `x`. Use `show s * cj d (Matrix.of x) = cj d (cj (star d) s * Matrix.of x)`. Rewrite using `[cj_mul h, cj_cj_star h]`. Rewrite using `[Measure.map_map (measurable_lmulM s) (cjE h).measurable, e, ← Measure.map_map (cjE h).measurable (measurable_lmulM _), h4 _ (hS' s hs)]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarOn_cj (h : Uni d) {S : Set (Mx k r)} (hS : ∀ g ∈ S, cj d g ∈ S) (hS' : ∀ g ∈ S, cj (star d) g ∈ S)
     {μ : Measure (Mt k r)} (hμ : IsHaarOn S μ ∧ μ Set.univ = 1) :
@@ -496,7 +494,7 @@ theorem isHaarOn_cj (h : Uni d) {S : Set (Mx k r)} (hS : ∀ g ∈ S, cj d g ∈
       ← Measure.map_map (cjE h).measurable (measurable_lmulM _), h4 _ (hS' s hs)]
 
 /- English proof (translation)
-Unfold `herm`. Establish `e : Hpk k r * diagonal (star d) = diagonal (star d) * Hpk k r` using `by conv_rhs => rw [← cj_Hpk h.st, cj, star_star, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h.uni.l, Matrix.one_mul]`. Rewrite using `[mulVec_mulVec, e, ← mulVec_mulVec, star_mulVec, diagonal_conjTranspose, dotProduct_mulVec]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_diag (h : Tor k r d) (y x : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (diagonal (star d) *ᵥ y) x = herm (Hpk k r) y (diagonal d *ᵥ x) := by
@@ -514,16 +512,16 @@ variable {k r : ℕ}
 def dT (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ := (-Complex.I) ^ ((r - i.val) + (i.val - (r + k)))
 
 /- English proof (translation)
-Rewrite using `[star_pow, ← mul_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uni_pow (n : ℕ) : star ((-Complex.I) ^ n) * (-Complex.I) ^ n = 1 := by
   rw [star_pow, ← mul_pow]
   simp
 
 /- English proof (translation)
-Use `⟨fun i => uni_pow _, fun i j h1 h2 => ?_, fun i h1 h2 => ?_⟩` and prove the remaining obligations. Unfold `dT`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Unfold `dT`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Establish `: (r - i.val) + (i.val - (r + k)) = 0` using `by omega`. Rewrite using `[this, pow_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tor_dT (k r : ℕ) : Tor k r (dT k r) := by
   refine ⟨fun i => uni_pow _, fun i j h1 h2 => ?_, fun i h1 h2 => ?_⟩
@@ -533,13 +531,13 @@ theorem tor_dT (k r : ℕ) : Tor k r (dT k r) := by
     rw [this, pow_zero]
 
 /- English proof (translation)
-Unfold `dT`. Use `congr 1`. Simplify using `only [eI]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dT_eI (a : Fin r) : dT k r (eI k r a) = (-Complex.I) ^ (r - a.val) := by
   unfold dT; congr 1; simp only [eI]; omega
 
 /- English proof (translation)
-Unfold `fvec`. Use `split_ifs with h`. Rewrite using `[diag_bvec, dT_eI]`. Establish `: r - a.val = 0` using `by omega`. Rewrite using `[diag_wb (tor_dT k r) hz, this, pow_zero, one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_fvec {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin (r + 1)) :
     diagonal (dT k r) *ᵥ fvec k r z a = (-Complex.I) ^ (r - a.val) • fvec k r z a := by
@@ -550,11 +548,11 @@ theorem diag_fvec {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin (
     rw [diag_wb (tor_dT k r) hz, this, pow_zero, one_smul]
 
 /- English proof (translation)
-Unfold `ell`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[cj_apply, dT_eI, dT_eI]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: r - a.val = (r - (a.val + 1)) + 1` using `by omega`. Rewrite using `[this, pow_succ, star_mul', mul_right_comm, mul_right_comm _ (star (-Complex.I)), uni_pow]`. Simplify using the standard rewrite rules. Establish `: r - a.val = 1` using `by have := a.isLt; omega`. Rewrite using `[cj_mulVec, diag_wb (tor_dT k r) hz, mulVec_diagonal, Pi.star_apply, dT_eI, this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem ell_cj {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (g : Mx k r) :
     ell k r z (cj (dT k r) g) = Complex.I * ell k r z g := by
@@ -571,7 +569,7 @@ theorem ell_cj {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (g : Mx k r) 
     simp
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[ell_cj hz]`. Establish `: -Complex.I * c * (Complex.I * ell k r z g) = c * ell k r z g`. Take the linear combination `(-(c * ell k r z g)) * Complex.I_mul_I`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_cj {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : ℂ) (g : Mx k r) :
     psi k r z (-Complex.I * c) (cj (dT k r) g) = psi k r z c g := by
@@ -582,9 +580,9 @@ theorem psi_cj {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : ℂ) (g 
   rw [this]
 
 /- English proof (translation)
-Unfold `ZhatO Formalism.QuantumDeterminants.Zhat`. Rewrite using `[cj_mulVec, herm_diag (tor_dT k r), diag_fvec hz, diag_fvec hz', mulVec_smul]`. Unfold `herm`. Rewrite using `[mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc, ← mul_assoc]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : 2 * r = (r - a.val) + (r - b.val) + (a.val + b.val)` using `by have := a.isLt; have := b.isLt; omega`. Establish `e2 : Complex.I ^ (a.val + b.val) * (-Complex.I) ^ (a.val + b.val) = 1` using `by rw [← mul_pow]; simp`. Rewrite using `[e, pow_add, mul_assoc (Complex.I ^ _), e2, mul_one, pow_add, star_pow, neg_pow Complex.I (r - b.val)]`. Simplify using `only [star_neg, Complex.star_def, Complex.conj_I, neg_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Zhat_cj {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z') (g : Mx k r)
     (a b : Fin (r + 1)) :
@@ -602,7 +600,7 @@ theorem Zhat_cj {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : in
   ring
 
 /- English proof (translation)
-Unfold `flagMat`. Use `split_ifs with h1 h2`. Rewrite using `[cj_mulVec, diag_fvec hz, mulVec_smul, mulVec_diagonal, Pi.star_apply, dT_eI, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[← h2, uni_pow, one_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flagMat_cj {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (g : Mx k r) (a b : Fin (r + 1)) :
     flagMat k r z (cj (dT k r) g) a b =
@@ -629,9 +627,9 @@ theorem turnB_cons (w t : ℂ) (s : ℕ) (bs : List (ℂ × ℕ)) :
     turnB w ((t, s) :: bs) = (w * (-Complex.I) ^ (s - 1) * t, s) :: turnB (w * (-Complex.I) ^ (2 * s)) bs := rfl
 
 /- English proof (translation)
-Proceed by induction on `bs with`. Consider the case `nil => intro w`. Both sides reduce to the same expression. Consider the case `cons b bs ih => intro w`. Take `⟨t, s⟩` from `b`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `[turnB_cons, ih]`.
+Simplify using the standard rewrite rules.
 -/
 theorem turnB_snd (bs : List (ℂ × ℕ)) : ∀ w, (turnB w bs).map Prod.snd = bs.map Prod.snd := by
   induction bs with
@@ -639,11 +637,11 @@ theorem turnB_snd (bs : List (ℂ × ℕ)) : ∀ w, (turnB w bs).map Prod.snd = 
   | cons b bs ih => intro w; obtain ⟨t, s⟩ := b; simp [turnB_cons, ih]
 
 /- English proof (translation)
-Proceed by induction on `bs with`. Consider the case `nil => intro w _ _ b hb`. Simplify using `[turnB_nil] at hb`. Consider the case `cons b bs ih`. Introduce `w hw h b' hb'`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, s⟩` from `b`. Establish `hI : (-Complex.I) ≠ 0` using `neg_ne_zero.2 Complex.I_ne_zero`. Establish `h0` using `h (t, s) (by simp)`. Rewrite `hb'` using `[turnB_cons, List.mem_cons]`. Break down `hb' with rfl | hb'` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨mul_ne_zero (mul_ne_zero hw (pow_ne_zero _ hI)) h0.1, h0.2⟩`. Conclude with `ih _ (mul_ne_zero hw (pow_ne_zero _ hI)) (fun b hb => h b (List.mem_cons_of_mem _ hb)) _ hb'`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem turnB_ok (bs : List (ℂ × ℕ)) : ∀ w, w ≠ 0 → (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) →
     ∀ b ∈ turnB w bs, b.1 ≠ 0 ∧ 1 ≤ b.2 := by
@@ -660,11 +658,11 @@ theorem turnB_ok (bs : List (ℂ × ℕ)) : ∀ w, w ≠ 0 → (∀ b ∈ bs, b.
     · exact ih _ (mul_ne_zero hw (pow_ne_zero _ hI)) (fun b hb => h b (List.mem_cons_of_mem _ hb)) _ hb'
 
 /- English proof (translation)
-Proceed by induction on `bs with`. Consider the case `nil => intro w i j`. Simplify using `[turnB_nil, ptEntry]`. Consider the case `cons b bs ih`. Introduce `w i j`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, s⟩` from `b`. Rewrite using `[turnB_cons, ptEntry, ptEntry]`. Use `split_ifs with h1 h2 h3`. Establish `: s - 1 = i + j` using `by omega`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `: i + j = 2 * s + (i - s + (j - s))` using `by omega`. Rewrite using `[ih, this, pow_add _ (2 * s), mul_assoc w]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptEntry_turnB (bs : List (ℂ × ℕ)) : ∀ w i j,
     ptEntry (turnB w bs) i j = w * (-Complex.I) ^ (i + j) * ptEntry bs i j := by
@@ -683,9 +681,9 @@ theorem ptEntry_turnB (bs : List (ℂ × ℕ)) : ∀ w i j,
     · simp
 
 /- English proof (translation)
-Proceed by induction on `bs with`. Consider the case `nil => intro w p`. Both sides reduce to the same expression. Consider the case `cons b bs ih => intro w p`. Take `⟨t, s⟩` from `b`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[turnB_cons, blockIdx, blockIdx, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockIdx_turnB (bs : List (ℂ × ℕ)) : ∀ w p, blockIdx (turnB w bs) p = blockIdx bs p := by
   induction bs with
@@ -693,9 +691,9 @@ theorem blockIdx_turnB (bs : List (ℂ × ℕ)) : ∀ w p, blockIdx (turnB w bs)
   | cons b bs ih => intro w p; obtain ⟨t, s⟩ := b; rw [turnB_cons, blockIdx, blockIdx, ih]
 
 /- English proof (translation)
-Proceed by induction on `bs with`. Consider the case `nil => intro w a _`. Both sides reduce to the same expression. Consider the case `cons b bs ih`. Introduce `w a hw`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, s⟩` from `b`. Establish `e : ‖w * (-Complex.I) ^ (s - 1) * t‖ = ‖t‖` using `by simp [hw]`. Rewrite using `[turnB_cons, ptWeightFrom, ptWeightFrom, ih _ _ (by simp [hw]), Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptWeightFrom_turnB (T T' : ℝ) (bs : List (ℂ × ℕ)) : ∀ w a, ‖w‖ = 1 →
     ptWeightFrom k r T T' a (turnB w bs) = ptWeightFrom k r T T' a bs := by
@@ -711,29 +709,29 @@ def turnP (p : Point ℂ (r + 1)) : Point ℂ (r + 1) :=
   ⟨turnB (Complex.I ^ (2 * r)) p.1, turnB_ok _ _ (pow_ne_zero _ Complex.I_ne_zero) p.2.1, by rw [turnB_snd]; exact p.2.2⟩
 
 /- English proof (translation)
-The claim follows from `ptEntry_turnB _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ptMat_turnP (p : Point ℂ (r + 1)) (a b : Fin (r + 1)) :
     ptMat (turnP p) a b = Complex.I ^ (2 * r) * (-Complex.I) ^ (a.val + b.val) * ptMat p a b :=
   ptEntry_turnB _ _ _ _
 
 /- English proof (translation)
-The claim follows from `ptWeightFrom_turnB _ _ _ _ _ (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem ptWeight_turnP (T T' : ℝ) (p : Point ℂ (r + 1)) : ptWeight k r T T' (turnP p) = ptWeight k r T T' p :=
   ptWeightFrom_turnB _ _ _ _ _ (by simp)
 
 /- English proof (translation)
-Unfold `rootPat turnP`. Simplify using `only [blockIdx_turnB]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem rootPat_turnP (p : Point ℂ (r + 1)) : rootPat (turnP p) = rootPat p := by
   unfold rootPat turnP
   simp only [blockIdx_turnB]
 
 /- English proof (translation)
-Unfold `leadMinor`. Establish `e : (ptMat (turnP p)).submatrix (Fin.castLE hl) (Fin.castLE hl) = Matrix.of (fun i j : Fin l => (Complex.I ^ (2 * r) * (-Complex.I) ^ i.val) * (Matrix.of (fun i j : Fin l => (-Complex.I) ^ j.val * ((ptMat p).submatrix (Fin.castLE hl) (Fin.castLE hl)) i j)) i j)`. Use extensionality with `a b`. Simplify using `only [submatrix_apply, ptMat_turnP, of_apply, Fin.val_castLE, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Matrix.det_mul_column, Matrix.det_mul_row, map_mul, map_mul, map_prod, map_prod]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem normSq_leadMinor_turnP (p : Point ℂ (r + 1)) (l : ℕ) (hl : l ≤ r + 1) :
     Complex.normSq (leadMinor (ptMat (turnP p)) l hl) = Complex.normSq (leadMinor (ptMat p) l hl) := by
@@ -749,7 +747,7 @@ theorem normSq_leadMinor_turnP (p : Point ℂ (r + 1)) (l : ℕ) (hl : l ≤ r +
   simp
 
 /- English proof (translation)
-Unfold `Gpt`. Rewrite using `[normSq_leadMinor_turnP, normSq_leadMinor_turnP]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem GPoint_turnP (T T' : ℝ) (p : Point ℂ (r + 1)) : Gpt T T' (turnP p) = Gpt T T' p := by
   unfold Gpt
@@ -773,7 +771,7 @@ def turnF (L : LocBessel k r) (f : Mx k r → (L.Wq →L[ℂ] L.Wp)) : Mx k r �
   fun g => f (cj (star (dT k r)) g)
 
 /- English proof (translation)
-Take `⟨P, Q, h1, h2, h3⟩` from `hf`. Conclude with `⟨P, Q, fun w => isKFin_cj (tor_dT k r) (h1 w), fun w => isKFin_cj (tor_dT k r) (h2 w), fun g => h3 _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isKFinCoef_turn (L : LocBessel k r) {f : Mx k r → (L.Wq →L[ℂ] L.Wp)} (hf : IsKFinCoefH L.σ f) :
     IsKFinCoefH (turnL L).σ (turnF L f) := by
@@ -792,9 +790,9 @@ theorem conj_four_apply (p : PairSp k r) : cj4 k r p =
   rfl
 
 /- English proof (translation)
-Establish `: SFinite L.μN` using `by unfold LocBessel.μN haarLie; infer_instance`. Use `L.hμW.1.1` as an intermediate fact. Use `L.hμW'.1.1` as an intermediate fact. Establish `hN : (turnL L).μN = L.μN.map (cjE (tor_dT k r).uni)` using `(haarLie_map_cj (tor_dT k r).uni (fun _ => cj_mem_N (tor_dT k r)) L.κN).symm`. Establish `hm` using `(cjE (tor_dT k r).uni).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `pairMeas`. Rewrite using `[hN]`. Use `show ((L.μW.map _).prod _).prod ((L.μW'.map _).prod _) = _`. Rewrite using `[Measure.map_prod_map _ _ hm hm, Measure.map_prod_map _ _ hm hm, Measure.map_prod_map _ _ (hm.prodMap hm) (hm.prodMap hm)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pairMeas_turn (L : LocBessel k r) : pairMeas (turnL L) = (pairMeas L).map (cj4 k r) := by
   have : SFinite L.μN := by unfold LocBessel.μN haarLie; infer_instance
@@ -811,9 +809,9 @@ theorem pairMeas_turn (L : LocBessel k r) : pairMeas (turnL L) = (pairMeas L).ma
   rfl
 
 /- English proof (translation)
-Establish `h` using `(tor_dT k r).uni`. Rewrite using `[conj_four_apply]`. Unfold `besselIntg turnF`. Simplify using `only [of_cjE]`. Rewrite using `[← cj_inv h, ← cj_inv h, ← cj_inv h, ← cj_mul h, ← cj_mul h, ← cj_mul h, ← cj_mul h, cj_star_cj h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (psi k r L.z (-Complex.I * L.c) _ * star (psi k r L.z' (-Complex.I * L.c) _)) • (L.π (cj _ _)).comp ((f _).comp (L.π' (cj _ _))) = _`. Rewrite using `[psi_cj L.hz.1, psi_cj L.hz'.1, cj_star_cj h, cj_star_cj h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem besselIntg_turn (L : LocBessel k r) (f : Mx k r → (L.Wq →L[ℂ] L.Wp)) (g : Mx k r) (p : PairSp k r) :
     besselIntg (turnL L) (turnF L f) (cj (dT k r) g) (cj4 k r p) = besselIntg L f g p := by
@@ -827,7 +825,7 @@ theorem besselIntg_turn (L : LocBessel k r) (f : Mx k r → (L.Wq →L[ℂ] L.Wp
   rw [psi_cj L.hz.1, psi_cj L.hz'.1, cj_star_cj h, cj_star_cj h]
 
 /- English proof (translation)
-Unfold `OrbInt`. Rewrite using `[integral_map_equiv]`. Simplify using `only [besselIntg_turn]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem orbInt_turn (L : LocBessel k r) (f : Mx k r → (L.Wq →L[ℂ] L.Wp)) (g : Mx k r) (ν : Measure (PairSp k r)) :
     OrbInt (turnL L) (turnF L f) (cj (dT k r) g) (ν.map (cj4 k r)) = OrbInt L f g ν := by
@@ -837,9 +835,9 @@ theorem orbInt_turn (L : LocBessel k r) (f : Mx k r → (L.Wq →L[ℂ] L.Wp)) (
   rfl
 
 /- English proof (translation)
-Establish `e : ∀ c μ, (turnL L).J (turnF L f) (bigCell k r c μ) = L.J f (bigCell k r c μ)` using `fun c μ => by`. Use `orbInt_turn L f (bigCell k r c μ) (pairMeas L)` as an intermediate fact. Rewrite `this` using `[← pairMeas_turn, cj_bigCell (tor_dT k r)]`. Conclude with `this`. Unfold `jNorm2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jNorm2_turn (L : LocBessel k r) (f : Mx k r → (L.Wq →L[ℂ] L.Wp))
     (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : jNorm2 (turnL L) (turnF L f) μsec = jNorm2 L f μsec := by
@@ -858,7 +856,7 @@ section Orb
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `⟨cj_mem_N h ha.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← cj_inv h.uni, ← cj_mul h.uni, ← cj_mul h.uni]`. Conclude with `cj_mem_N h ha.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_mem_RStab {d : Fin (2 * r + k + 1) → ℂ} (h : Tor k r d) {g a : Mx k r} (ha : a ∈ RStab k r g) :
     cj d a ∈ RStab k r (cj d g) := by
@@ -867,9 +865,9 @@ theorem cj_mem_RStab {d : Fin (2 * r + k + 1) → ℂ} (h : Tor k r d) {g a : Mx
   exact cj_mem_N h ha.2
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h` using `tor_dT k r`. Establish `h1` using `cj_mem_RStab h.st ha`. Rewrite `h1` using `[cj_star_cj h.uni]`. Establish `h2` using `hg _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[← psi_cj L.hz.1, ← psi_cj L.hz'.1, cj_mul h.uni, cj_mul h.uni, cj_cj_star h.uni, cj_inv h.uni]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRelStab_turn (L : LocBessel k r) {g : Mx k r} (hg : IsRelStab L g) :
     IsRelStab (turnL L) (cj (dT k r) g) := by
@@ -882,9 +880,7 @@ theorem isRelStab_turn (L : LocBessel k r) {g : Mx k r} (hg : IsRelStab L g) :
   exact h2
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun q => ?_` and prove the remaining obligations. Unfold `flagMat`. Use `split_ifs`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply] fun_prop`. Conclude with `measurable_const`.
-
-Conclude with `measurable_const`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_flag (z : Fin (2 * r + k + 1) → ℂ) (S : Finset (Fin (r + 1) × Fin (r + 1))) :
     Measurable (fun x : Mt k r => fun q : S => flagMat k r z (Matrix.of x) q.1.1 q.1.2) := by
@@ -897,13 +893,13 @@ theorem measurable_flag (z : Fin (2 * r + k + 1) → ℂ) (S : Finset (Fin (r + 
   · exact measurable_const
 
 /- English proof (translation)
-The claim follows from `(rotation ⟨u, by simpa [Submonoid.unitSphere] using hu⟩).measurePreserving`.
+A detailed English derivation is pending.
 -/
 theorem mp_mul_unit {u : ℂ} (hu : ‖u‖ = 1) : MeasurePreserving (fun x : ℂ => u * x) volume volume :=
   (rotation ⟨u, by simpa [Submonoid.unitSphere] using hu⟩).measurePreserving
 
 /- English proof (translation)
-Establish `hp : MeasurePreserving (fun (y : S → ℂ) (q : S) => (star ((-Complex.I) ^ (r - q.1.1.val)) * (-Complex.I) ^ (r - q.1.2.val)) * y q) volume volume` using `volume_preserving_pi fun q : S => mp_mul_unit (by simp)`. Establish `e : (fun x : Mt k r => fun q : S => flagMat k r z (Matrix.of x) q.1.1 q.1.2) ∘ cjE (tor_dT k r).uni = (fun (y : S → ℂ) (q : S) => (star ((-Complex.I) ^ (r - q.1.1.val)) * (-Complex.I) ^ (r - q.1.2.val)) * y q) ∘ (fun x : Mt k r => fun q : S => flagMat k r z (Matrix.of x) q.1.1 q. …`. Use function extensionality and compare the values at `x q`. Conclude with `flagMat_cj hz (Matrix.of x) _ _`. Rewrite using `[Measure.map_map (measurable_flag z S) (cjE _).measurable, e, ← Measure.map_map hp.measurable (measurable_flag z S), hμ, Measure.map_smul, hp.map_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_map_turn {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (S : Finset (Fin (r + 1) × Fin (r + 1)))
     (μ : Measure (Mt k r)) (c : ENNReal)
@@ -922,9 +918,9 @@ theorem root_map_turn {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (S : F
     ← Measure.map_map hp.measurable (measurable_flag z S), hμ, Measure.map_smul, hp.map_eq]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply]`. Conclude with `measure_mono_null (fun x hx hx' => hx (cj_mem_RStab (tor_dT k r) hx')) hμ.1`. Establish `hc : ‖(turnL L).c‖ = ‖L.c‖` using `by show ‖-Complex.I * L.c‖ = _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∀ S : Finset (Fin (r + 1) × Fin (r + 1)), S = rootPat p → (μ.map (cjE (tor_dT k r).uni)).map (fun x : Mt k r => fun q : S => flagMat k r L.z (Matrix.of x) q.1.1 q.1.2) = ENNReal.ofReal ((‖L.c‖ / (2 * Real.pi)) ^ S.card) • volume`. Introduce and unpack `S rfl`. Conclude with `root_map_turn L.hz.1 _ _ _ hμ.2`. Rewrite using `[hc]`. Conclude with `key _ (rootPat_turnP p)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRootMeas_turn (L : LocBessel k r) {p : Point ℂ (r + 1)} {g : Mx k r} {μ : Measure (Mt k r)}
     (hμ : IsRootMeas L p g μ) :
@@ -944,11 +940,11 @@ theorem isRootMeas_turn (L : LocBessel k r) {p : Point ℂ (r + 1)} {g : Mx k r}
     exact key _ (rootPat_turnP p)
 
 /- English proof (translation)
-Introduce `f hf`. Establish `h` using `(tor_dT k r).uni`. Rewrite using `[pairMeas_turn, lintegral_map_equiv, lintegral_map_equiv, hν (fun x => f (cj4 k r x)) (hf.comp (cj4 k r).measurable)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map_equiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun a => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[conj_four_apply, conj_four_apply]`. Unfold `stabAct`. Simplify using `only [of_cjE]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[← cj_inv h, ← cj_mul h, ← cj_mul h, ← cj_mul h, ← cj_mul h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isOrbQuot_turn (L : LocBessel k r) {g : Mx k r} {μ : Measure (Mt k r)} {ν : Measure (PairSp k r)}
     (hν : IsOrbQuot L g μ ν) :
@@ -967,9 +963,9 @@ theorem isOrbQuot_turn (L : LocBessel k r) {g : Mx k r} {μ : Measure (Mt k r)} 
   rfl
 
 /- English proof (translation)
-Unfold `Bridge.orbSqO orbSq`. Use `iSup_le fun g => iSup_le fun μ => iSup_le fun ν => iSup_le fun hh => ?_` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `hh`. Use `le_iSup_of_le (cj (dT k r) g) (le_iSup_of_le (μ.map (cjE (tor_dT k r).uni)) (le_iSup_of_le (ν.map (cj4 k r)) (le_iSup_of_le ⟨⟨cj_mem_UH (tor_dT k r) h1.1, ?_⟩, isRelStab_turn L h2, isRootMeas_turn L h3, isOrbQuot_turn L h4⟩ ?_)))` and prove the remaining obligations. Use extensionality with `a b`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[ptMat_turnP, ← h1.2]`. Conclude with `Zhat_cj L.hz.1 L.hz'.1 g a b`. Rewrite using `[orbInt_turn]`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbSqO_le_turn (L : LocBessel k r) (f : Mx k r → (L.Wq →L[ℂ] L.Wp)) (p : Point ℂ (r + 1)) :
     Bridge.orbSqO L f p ≤ orbSq (turnL L) (turnF L f) (turnP p) := by
@@ -987,9 +983,9 @@ theorem orbSqO_le_turn (L : LocBessel k r) (f : Mx k r → (L.Wq →L[ℂ] L.Wp)
 end Orb
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h1` using `h a b hab`. Establish `h2 : ∀ s, |lam s - lam0 s| ≤ δ` using `fun s => (Finset.single_le_sum (f := fun s => |lam s - lam0 s|) (fun _ _ => abs_nonneg _) (Finset.mem_univ s)).trans hd`. Establish `h3 : |lam0 a - lam0 b| ≤ |lam a - lam b| + |lam a - lam0 a| + |lam b - lam0 b|`. Establish `e : lam0 a - lam0 b = (lam a - lam b) - (lam a - lam0 a) + (lam b - lam0 b)` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(abs_add_le _ _).trans (add_le_add (abs_sub _ _) le_rfl)`. Combine the linear relations using `[h2 a, h2 b]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gap_near {n : ℕ} {ε : Fin n → Bool} {lam lam0 : Fin n → ℝ} {x y δ : ℝ} (h : GapAtLeast ε lam0 x)
     (hd : l1dist lam lam0 ≤ δ) (hy : y + 2 * δ ≤ x) : GapAtLeast ε lam y := by
@@ -1004,9 +1000,9 @@ theorem gap_near {n : ℕ} {ε : Fin n → Bool} {lam lam0 : Fin n → ℝ} {x y
   linarith [h2 a, h2 b]
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) ≤ ((2 * r + 2 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ 2 * r + 2)`. Establish `h2 : ((2 * r + 2 : ℕ) : ℝ) ^ 3 ≤ ((2 * r + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2)`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le h1 (by norm_num)`. Establish `h3 : k ≤ (2 * r + k + 1) ^ 3` using `(by omega : k ≤ 2 * r + k + 1).trans (Nat.le_self_pow (by norm_num) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (k : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3` using `by exact_mod_cast h3`. Rewrite using `[mul_comm]`. Use `mul_le_mul h2 (h4.trans (le_add_of_nonneg_left (by positivity))) (by positivity) (by positivity)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem size_le (k r : ℕ) : (k : ℝ) * ((2 * r + 2 : ℕ) : ℝ) ^ 3 ≤ ((2 * r + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) *
     (((3 * (r + 1) : ℕ) : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + ((2 * r + k + 1 : ℕ) : ℝ) ^ 3) := by
@@ -1020,7 +1016,7 @@ theorem size_le (k r : ℕ) : (k : ℝ) * ((2 * r + 2 : ℕ) : ℝ) ^ 3 ≤ ((2 
   refine mul_le_mul h2 (h4.trans (le_add_of_nonneg_left (by positivity))) (by positivity) (by positivity)
 
 /- English proof (translation)
-Establish `h1 : 1 ≤ max 1 (1 / G)` using `le_max_left _ _`. Use `max_le (by nlinarith) ?_` and prove the remaining obligations. Rewrite using `[one_div, mul_inv, ← one_div G]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem max_inv_scale {s B G : ℝ} (hB : 1 ≤ B) (hs : 0 < s) (hsB : s⁻¹ ≤ B) :
     max 1 (1 / (s * G)) ≤ B * max 1 (1 / G) := by
@@ -1031,35 +1027,33 @@ theorem max_inv_scale {s B G : ℝ} (hB : 1 ≤ B) (hs : 0 < s) (hsB : s⁻¹ �
     _ ≤ _ := mul_le_mul_of_nonneg_right hsB (by linarith)
 
 /- English proof (translation)
-Introduce `Ch Cgf Cf hCh hCf`. Use `⟨2 * Ch * Cf + Ch, by positivity, fun Cn => ⟨Cgf + 2 * |Cn|, fun Cs hCs D hFr => ?_⟩⟩` and prove the remaining obligations. Introduce `L lam0 f ka b hb hka hka1 hka2 hc hκ hε hκ0 hStd hl1 hf`. Establish `hm : D.R.m = 2 * D.R.rS + 2`. Take `⟨t, ht⟩` from `D.R.m_even`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `D.R.two_le_m`. Simplify using `only [Ranks.rS]`. Use linear arithmetic over natural numbers and integers. Rewrite `hl1`, the goal using `[hm]`. Establish `hb1 : 1 ≤ b` using `(Real.one_le_exp zero_le_one).trans hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb0 : 0 < b` using `by linarith`. Establish `hgap : GapAtLeast L.ε L.lam (Cgf * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) * (((3 * (D.R.rS + 1) : ℕ) : ℝ) * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 2 + ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 3))`. Use `gap_near hStd.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 hl1 ?_` and prove the remaining obligations. Establish `h1` using `size_le D.R.k D.R.rS`. Establish `h0 : 0 ≤ (D.R.k : ℝ) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc Cgf, mul_assoc Cs, mul_assoc Cn]`. Generalize the expression as in `(D.R.k : ℝ) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3 = Y at h1 h0 ⊢`. Generalize the expression as in `((2 * D.R.rS + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) * (((3 * (D.R.rS + 1) : ℕ) : ℝ) * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 2 + ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 3) = X at h1 ⊢`. Establish `h2 : Cn * Y ≤ |Cn| * X` using `(mul_le_mul_of_nonneg_right (le_abs_self Cn) h0).trans (mul_le_mul_of_nonneg_left h1 (abs_nonneg _))`. Establish `h3 : (Cgf + 2 * |Cn|) * X ≤ Cs * X` using `mul_le_mul_of_nonneg_right hCs (h0.trans h1)`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc' : (turnL L).c = cOfDpsi (ka : ℂ)` using `by show -Complex.I * L.c = _`. Rewrite using `[hc, cOfDpsi]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨L₁, f₁, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, hsec⟩` from `hFr (turnL L) (turnF L f) ka ka⁻¹ (ka ^ D.R.rS) hka (inv_pos.2 hka) (pow_pos hka _) hc' hκ0 hκ hε hgap (isKFinCoef_turn L hf)`. Establish `eT : ∀ T : ℝ, (ka ^ D.R.rS) ^ 2 * T = T * ka ^ (2 * D.R.rS)` using `fun T => by ring`. Use `⟨L₁, f₁, e1, e2, e3, e4, by rw [e5, inv_mul_cancel₀ hka.ne'], e6, e7, e8.trans (eT _), e9.trans (eT _), e10, fun μsec hμ => ?_⟩` and prove the remaining obligations. Take `⟨μsec₁, hμ₁, K₁, hK, hj, hpt⟩` from `hsec μsec hμ`. Rewrite `hj` using `[jNorm2_turn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨μsec₁, hμ₁, K₁, hK, hj.le, fun h0 => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[hj]`. Conclude with `mul_ne_zero (ENNReal.ofReal_pos.2 hK).ne' h0`. Take `⟨p₁, -, hG, -, hw⟩` from `hpt (turnP p) (by rw [GPoint_turnP]; exact hp)`. Rewrite `hG` using `[GPoint_turnP]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[ptWeight_turnP]`. Use `set M : ℝ := ((2 * D.R.rS + 2 : ℕ) : ℝ) with hM`. Establish `hrM : (D.R.rS : ℝ) ≤ M` using `by rw [hM]; exact_mod_cast (by omega : D.R.rS ≤ 2 * D.R.rS + 2)`. Establish `hM0 : 0 ≤ M` using `by positivity`. Establish `hs : ka⁻¹ ^ (2 * D.R.rS * (D.R.rS + 1)) * (ka ^ D.R.rS) ^ (4 * (D.R.rS + 1)) = ka ^ (2 * D.R.rS * (D.R.rS + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: D.R.rS * (4 * (D.R.rS + 1)) = 2 * D.R.rS * (D.R.rS + 1) + 2 * D.R.rS * (D.R.rS + 1)` using `by ring`. Rewrite using `[← pow_mul, this, pow_add, ← mul_assoc, ← mul_pow, inv_mul_cancel₀ hka.ne', one_pow, one_mul]`. Rewrite `hG` using `[hs]`. Establish `hpw : ∀ {x : ℝ} (n : ℕ), 0 ≤ x → x ≤ b ^ Ch → x ^ n ≤ b ^ (Ch * n)` using `fun n h0 h1 => by`. Rewrite using `[Real.rpow_mul hb0.le, Real.rpow_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pow_le_pow_left₀ h0 h1 n`. Establish `hCC : 0 ≤ Ch * Cf` using `mul_nonneg hCh hCf`. Use `⟨p₁, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `mul_ne_zero (pow_pos hka _).ne' hp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hG]`. Use `max_inv_scale (Real.one_le_rpow hb1 (by positivity)) (pow_pos hka _) ?_` and prove the remaining obligations. Rewrite using `[← inv_pow]`. Use `(hpw _ (inv_pos.2 hka).le hka2).trans (Real.rpow_le_rpow_of_exponent_le hb1 ?_)` and prove the remaining obligations. Establish `h1 : ((2 * D.R.rS * (D.R.rS + 1) : ℕ) : ℝ) ≤ M ^ 2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hM]; exact_mod_cast (by nlinarith : 2 * D.R.rS * (D.R.rS + 1) ≤ (2 * D.R.rS + 2) ^ 2)`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 hCh`. Establish `h3 : 0 ≤ Ch * Cf * M ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : max ka⁻¹ ka⁻¹⁻¹ ≤ b ^ Ch` using `max_le hka2 (by rwa [inv_inv])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : max (ka ^ D.R.rS) (ka ^ D.R.rS)⁻¹ ≤ b ^ (Ch * D.R.rS)` using `max_le (hpw _ hka.le hka1) (by rw [← inv_pow]; exact hpw _ (inv_pos.2 hka).le hka2)`. Establish `h3 : max ka⁻¹ ka⁻¹⁻¹ ^ (Cf * M ^ 2) * max (ka ^ D.R.rS) (ka ^ D.R.rS)⁻¹ ^ (Cf * M) ≤ b ^ ((2 * Ch * Cf + Ch) * M ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul hb0.le, ← Real.rpow_mul hb0.le, ← Real.rpow_add hb0]`. Use `_ ≤ _ := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Use `Real.rpow_le_rpow_of_exponent_le hb1 ?_` and prove the remaining obligations. Establish `h4` using `mul_le_mul_of_nonneg_left hrM (mul_nonneg hCC hM0)`. Establish `h5 : 0 ≤ Ch * M ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[ENNReal.ofReal_mul hK.le, ENNReal.ofReal_mul (Real.rpow_nonneg hb0.le _), mul_assoc, mul_assoc]`.
-
-Use `le_trans ?_ (hw.trans (mul_le_mul_left (ENNReal.ofReal_le_ofReal h3) _))` and prove the remaining obligations. Conclude with `mul_le_mul_right (mul_le_mul_right (orbSqO_le_turn L f p) _) _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem frameChange_of_frames : ∀ Ch Cgf Cf : ℝ, 0 ≤ Ch → 0 ≤ Cf → ∃ Cf' : ℝ, 0 ≤ Cf' ∧ ∀ Cn : ℝ, ∃ Cs₀ : ℝ,
     ∀ Cs ≥ Cs₀, ∀ D : D7, OnePlaceEstimates.FrameBesselBound D Cgf Cf → Bridge.FrameChange D Ch Cs Cn Cf' := by

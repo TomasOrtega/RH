@@ -34,9 +34,7 @@ def lmC : LieI ι a →ₗ[ℝ] (LieI ι a →L[ℝ] LieI ι a) where
 def lm : LieI ι a →L[ℝ] (LieI ι a →L[ℝ] LieI ι a) := LinearMap.toContinuousLinearMap lmC
 
 /- English proof (translation)
-Establish `: {M : LieI ι a | IsUnit (Matrix.of M)} = (fun M : LieI ι a => (Matrix.of M).det) ⁻¹' {u | IsUnit u}`. Use extensionality with `M`. Conclude with `Matrix.isUnit_iff_isUnit_det _`. Rewrite using `[this]`. Use `Units.isOpen.preimage (Continuous.matrix_det ?_)` and prove the remaining obligations.
-
-Conclude with `continuous_matrix fun i j => (continuous_apply j).comp (continuous_apply i)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_U : IsOpen {M : LieI ι a | IsUnit (Matrix.of M)} := by
   have : {M : LieI ι a | IsUnit (Matrix.of M)} = (fun M : LieI ι a => (Matrix.of M).det) ⁻¹' {u | IsUnit u} := by
@@ -48,7 +46,7 @@ theorem isOpen_U : IsOpen {M : LieI ι a | IsUnit (Matrix.of M)} := by
 def invL (M : LieI ι a) : LieI ι a := Matrix.of.symm (Matrix.of M)⁻¹
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).mp hM`. Express the relevant statement in the definitionally equal form `Matrix.of.symm ((Matrix.of M)⁻¹ * (Matrix.of M * Matrix.of Z)) = Z`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hd]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lm_inv_mul {M : LieI ι a} (hM : IsUnit (Matrix.of M)) (Z : LieI ι a) : lm (invL M) (lm M Z) = Z := by
   have hd := (Matrix.isUnit_iff_isUnit_det _).mp hM
@@ -56,7 +54,7 @@ theorem lm_inv_mul {M : LieI ι a} (hM : IsUnit (Matrix.of M)) (Z : LieI ι a) :
   rw [Matrix.nonsing_inv_mul_cancel_left _ _ hd]; rfl
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).mp hM`. Express the relevant statement in the definitionally equal form `Matrix.of.symm (Matrix.of M * ((Matrix.of M)⁻¹ * Matrix.of Z)) = Z`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hd]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lm_mul_inv {M : LieI ι a} (hM : IsUnit (Matrix.of M)) (Z : LieI ι a) : lm M (lm (invL M) Z) = Z := by
   have hd := (Matrix.isUnit_iff_isUnit_det _).mp hM
@@ -64,14 +62,14 @@ theorem lm_mul_inv {M : LieI ι a} (hM : IsUnit (Matrix.of M)) (Z : LieI ι a) :
   rw [Matrix.mul_nonsing_inv_cancel_left _ _ hd]; rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨lm M, lm (invL M), ContinuousLinearMap.ext fun Z => lm_mul_inv hM Z, ContinuousLinearMap.ext fun Z => lm_inv_mul hM Z⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnit_lm {M : LieI ι a} (hM : IsUnit (Matrix.of M)) : IsUnit (lm M) :=
   ⟨⟨lm M, lm (invL M), ContinuousLinearMap.ext fun Z => lm_mul_inv hM Z,
     ContinuousLinearMap.ext fun Z => lm_inv_mul hM Z⟩, rfl⟩
 
 /- English proof (translation)
-Establish `: (⟨lm M, lm (invL M), ContinuousLinearMap.ext fun Z => lm_mul_inv hM Z, ContinuousLinearMap.ext fun Z => lm_inv_mul hM Z⟩ : (LieI ι a →L[ℝ] LieI ι a)ˣ) = (isUnit_lm hM).unit` using `Units.ext rfl`. Establish `h2` using `Ring.inverse_unit (isUnit_lm hM).unit`. Rewrite `h2` using `[← this]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inverse_lm {M : LieI ι a} (hM : IsUnit (Matrix.of M)) : Ring.inverse (lm M) = lm (invL M) := by
   have : (⟨lm M, lm (invL M), ContinuousLinearMap.ext fun Z => lm_mul_inv hM Z,
@@ -83,7 +81,7 @@ theorem inverse_lm {M : LieI ι a} (hM : IsUnit (Matrix.of M)) : Ring.inverse (l
 
 omit [Fintype ι] in
 /- English proof (translation)
-Unfold `orb`. Rewrite using `[dif_pos hM]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem orb_unit (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)) (v : X) {M : LieI ι a} (hM : IsUnit (Matrix.of M)) :
     orb ρ v M = ρ hM.unit v := by
@@ -91,13 +89,13 @@ theorem orb_unit (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)) (v : X) {M 
 
 omit [Fintype ι] in
 /- English proof (translation)
-Distinguish the cases in `hM : IsUnit (Matrix.of M)`. Establish `h' : IsUnit (Matrix.of (Matrix.of.symm (g.val * Matrix.of M)))`. Express the relevant statement in the definitionally equal form `IsUnit (g.val * Matrix.of M)`. Conclude with `g.isUnit.mul hM`. Rewrite using `[orb_unit ρ v h', orb_unit ρ v hM]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: h'.unit = g * hM.unit` using `Units.ext rfl`. Rewrite using `[this, map_mul]`. Both sides reduce to the same expression. Establish `h' : ¬ IsUnit (Matrix.of (Matrix.of.symm (g.val * Matrix.of M)))`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hM` to reduce the goal to its premises. Establish `e : Matrix.of M = (g⁻¹).val * (g.val * Matrix.of M)`. Rewrite using `[← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`. Rewrite using `[e]`. Conclude with `(g⁻¹).isUnit.mul h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `orb`. Rewrite using `[dif_neg hM, dif_neg h', map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem orb_mul (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)) (v : X) (g : GL (Fin a) (ι → ℂ)) (M : LieI ι a) :
     orb ρ v (Matrix.of.symm (g.val * Matrix.of M)) = ρ g (orb ρ v M) := by
@@ -116,11 +114,11 @@ theorem orb_mul (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)) (v : X) (g :
     unfold orb; rw [dif_neg hM, dif_neg h', map_zero]
 
 /- English proof (translation)
-Rewrite using `[inverse_lm hM]`. Establish `h1 : lm (invL M) M = oneI ι a`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).mp hM`. Express the relevant statement in the definitionally equal form `Matrix.of.symm ((Matrix.of M)⁻¹ * Matrix.of M) = Matrix.of.symm 1`. Rewrite using `[Matrix.nonsing_inv_mul _ hd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hD' : HasFDerivAt (orb ρ v) D (lm (invL M) M)` using `by rw [h1]; exact hD`. Establish `hc` using `(((ρ hM.unit).restrictScalars ℝ).hasFDerivAt).comp M (hD'.comp M (lm (invL M)).hasFDerivAt)`. Use `hc.congr_of_eventuallyEq (Filter.Eventually.of_forall fun Z => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `orb ρ v Z = ρ hM.unit (orb ρ v (lm (invL M) Z))`. Rewrite using `[← orb_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(lm_mul_inv hM Z).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_orb (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)) {v : X} {D : LieI ι a →L[ℝ] X}
     (hD : HasFDerivAt (orb ρ v) D (oneI ι a)) {M : LieI ι a} (hM : IsUnit (Matrix.of M)) :
@@ -139,9 +137,9 @@ theorem hasFDerivAt_orb (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)) {v :
   exact (lm_mul_inv hM Z).symm
 
 /- English proof (translation)
-Rewrite using `[(hasFDerivAt_orb ρ hD hM).fderiv]`. Use `ext1 Z`. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply]`. Use `conv_lhs => rw [← b.sum_repr (Ring.inverse (lm M) Z)]`. Rewrite using `[map_sum, map_sum, ContinuousLinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.comp_apply, LinearMap.coe_toContinuousLinearMap', Module.Basis.coord_apply, orb_unit ρ _ hM]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fderiv_orb (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)) {v : X} {D : LieI ι a →L[ℝ] X}
     (hD : HasFDerivAt (orb ρ v) D (oneI ι a)) {M : LieI ι a} (hM : IsUnit (Matrix.of M))
@@ -162,15 +160,15 @@ end LieAlgebraAction
 
 open LieAlgebraAction in
 /- English proof (translation)
-Introduce `ι _ a X _ _ _ ρ _ 𝒮 hS`. Use `choose D hD hDS using hS`. Set `b` to `Module.finBasis ℝ (LieI ι a)`. Establish `key : ∀ N : ℕ, ∀ v (hv : v ∈ 𝒮), ContDiffOn ℝ N (orb ρ v) {M | IsUnit (Matrix.of M)}`. Introduce `N`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `v hv`. Rewrite using `[Nat.cast_zero, contDiffOn_zero]`. Conclude with `fun M hM => (hasFDerivAt_orb ρ (hD v hv) hM).continuousAt.continuousWithinAt`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately.
 
-Consider the case `succ N ih`. Introduce `v hv`. Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen isOpen_U]`. Use `⟨fun M hM => (hasFDerivAt_orb ρ (hD v hv) hM).differentiableAt.differentiableWithinAt, fun h => by simp at h, ?_⟩` and prove the remaining obligations. Establish `hR : ContDiffOn ℝ N (fun M : LieI ι a => Ring.inverse (lm M)) {M | IsUnit (Matrix.of M)}`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M hM`. Take `⟨u, hu⟩` from `isUnit_lm hM`. Establish `h1 : ContDiffAt ℝ N Ring.inverse (u : LieI ι a →L[ℝ] LieI ι a)` using `contDiffAt_ringInverse (𝕜 := ℝ) u`. Rewrite `h1` using `[hu]`. Conclude with `(h1.comp M ((lm (ι := ι) (a := a)).contDiff.contDiffAt)).contDiffWithinAt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ContDiffOn ℝ N (fun M : LieI ι a => ∑ i, ((LinearMap.toContinuousLinearMap (b.coord i)).comp (Ring.inverse (lm M))).smulRight (orb ρ (D v hv (b i)) M)) {M | IsUnit (Matrix.of M)}` using `ContDiffOn.sum fun i _ => ((contDiffOn_const (c := LinearMap.toContinuousLinearMap (b.coord i))).clm_comp hR).smulRight (ih _ (hDS v hv (b i)))`. Conclude with `hsum.congr fun M hM => fderiv_orb ρ (hD v hv) hM b`. Introduce `v hv`. Conclude with `contDiffOn_infty.mpr fun N => key N v hv`.
+A detailed English derivation is pending.
 -/
 theorem lie_algebra_action_exists : S1 := by
   intro ι _ a X _ _ _ ρ _ 𝒮 hS

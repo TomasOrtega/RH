@@ -18,15 +18,13 @@ noncomputable section
 namespace GlobalTheory.SphLine
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM v hv φ hφ hfix`. Establish `hvT : v ∉ X.T` using `fun hT => hv.false (B.τ ⟨v, hM.triple.chars.sub hT⟩)`. Take `⟨ρ, hex, hρ⟩` from `GlobalTheory.T.matched_local_unitary_representation_exists hKP F E σ B a a' G X om om' R Rf hM v`. Take `⟨θ, h1, h2, h3⟩` from `GlobalTheory.T.spherical_anti_involution_gelfand_trick F E σ B a a' G X om om' hM.triple v hv`. Establish `hcomm` using `GlobalTheory.T.spherical_compact_conjugate_relative_index F E σ B a a' G X om om' hM.triple v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrank : Module.rank ℂ (Rf.Pi v) ≤ Cardinal.aleph0`. Establish `h1 : Module.rank ℂ ((SB (Fin a × Fin (a + a') → Fv F v)).map (Rf.p v)) ≤ Cardinal.aleph0` using `(rank_map_le _ _).trans (GlobalTheory.SBCount.rank_sb_localField_le v _)`. Rewrite `h1` using `[hM.fin.onto v, rank_top]`. Then use the resulting hypothesis. Establish `hirr : ∀ N : Submodule ℂ (Rf.Pi v), (∀ g, ∀ x ∈ N, ρ g x ∈ N) → N = ⊥ ∨ N = ⊤`. Introduce `N hN`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hM.fin.irred v N (fun h hh φ₀ hφ₀ φ₁ hφ₁ hA hN' => ?_)` and prove the remaining obligations. Rewrite using `[← hρ ⟨h, hh⟩ φ₀ hφ₀ φ₁ hφ₁ hA]`. Conclude with `hN _ _ hN'`. Establish `hvac : G.M.vac v ∈ SB (Fin a × Fin (a + a') → Fv F v)` using `(hM.triple.geo.hM.vac v).1`. Establish `hx0 : ∀ k ∈ (locK σ G.W v).subgroupOf (locU σ G.W v), ρ k (Rf.p v (G.M.vac v)) = Rf.p v (G.M.vac v)` using `fun k hk => hρ k _ hvac _ hvac (GlobalTheory.T.compact_fixes_vacuum_nonsplit F E σ B a a' G X om om' hM.triple v hv hvT k (Subgroup.mem_subgroupOf.1 hk))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : ∀ k ∈ (locK σ G.W v).subgroupOf (locU σ G.W v), ρ k (Rf.p v φ) = Rf.p v φ`. Introduce `k hk`. Take `⟨φ₁, hφ₁, hA⟩` from `hex k φ hφ`. Rewrite using `[hρ k φ hφ φ₁ hφ₁ hA]`. Conclude with `hfix k (Subgroup.mem_subgroupOf.1 hk) φ₁ hφ₁ hA`.
-
-Conclude with `GlobalTheory.T.gelfand_pair_irreducible_pairing_symmetric _ _ hcomm θ h1 h2 h3 (Rf.Pi v) ρ hrank hirr _ _ hx0 hx (hM.fin.sph v hvT).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_eq_smul_vac : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

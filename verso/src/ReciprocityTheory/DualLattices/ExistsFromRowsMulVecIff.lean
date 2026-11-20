@@ -10,7 +10,7 @@ namespace ReciprocityTheory.PGsh.Up
 variable {R : Type} [CommRing R] {g : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, Finset.mul_sum, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma smulMV {κ μ : Type} [Fintype μ] (c : R) (M : Matrix κ μ R) (v : μ → R) :
     (c • M) *ᵥ v = c • (M *ᵥ v) := by
@@ -19,13 +19,11 @@ private lemma smulMV {κ μ : Type} [Fintype μ] (c : R) (M : Matrix κ μ R) (v
     Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `hdet : A.det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det h`. Rewrite `h1` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ hc h1.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : A.det • (B * A) = A.det • (c • (1 : Matrix n n S))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul]`. Use `_ = A.adjugate * ((A * B) * A) := by simp only [Matrix.mul_assoc]`. Use `_ = A.adjugate * (c • A) := by rw [h, Matrix.smul_mul, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `_ = c • (A.adjugate * A) := by rw [Matrix.mul_smul]`. Use `_ = A.det • (c • (1 : Matrix n n S)) := by rw [Matrix.adjugate_mul]; exact smul_comm _ _ _`. Use extensionality with `i j`. Establish `h2` using `congrFun (congrFun key i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at h2`.
-
-Simplify `mul_left_cancel₀ hdet h2` using `only [Matrix.smul_apply, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem matrix_mul_comm_of_mul_eq_smul_one_of_ne_zero {n : Type} [Fintype n] [DecidableEq n] {S : Type} [CommRing S]
     [IsDomain S] {A B : Matrix n n S} {c : S} (hc : c ≠ 0) (h : A * B = c • (1 : Matrix n n S)) :
@@ -48,11 +46,11 @@ private theorem matrix_mul_comm_of_mul_eq_smul_one_of_ne_zero {n : Type} [Fintyp
   simpa only [Matrix.smul_apply, smul_eq_mul] using mul_left_cancel₀ hdet h2
 
 /- English proof (translation)
-Establish `hT1 : Htᵀ * Bt - Btᵀ * Ht = cp • Eᵀ`. Simplify `congrArg Matrix.transpose hform` using `only [Matrix.transpose_sub, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_smul]`. Establish `hEF : Eᵀ * (Eᵀ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (by rwa [Matrix.det_transpose])`. Establish `hP : Matrix.fromCols Htᵀ Btᵀ * Matrix.fromRows (Bt * (Eᵀ)⁻¹) (-(Ht * (Eᵀ)⁻¹)) = cp • (1 : Matrix (Ix g) (Ix g) R)`. Rewrite using `[Matrix.fromCols_mul_fromRows, Matrix.mul_neg, ← sub_eq_add_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.sub_mul, hT1, Matrix.smul_mul, hEF]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ` using `matrix_mul_comm_of_mul_eq_smul_one_of_ne_zero hcp hP`. Rewrite `hQ` using `[Matrix.fromRows_mul_fromCols]`. Establish `h1 : (cp • (1 : Matrix (Ix g) (Ix g) R)) = Matrix.fromBlocks (cp • 1) 0 0 (cp • 1)`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.one_apply]`. Rewrite `hQ` using `[h1, Matrix.fromBlocks_inj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hQ`.
+A detailed English derivation is pending.
 -/
 private theorem block_products_of_transpose_form_eq_smul [IsDomain R] {Ht Bt : Matrix (Fin g) (Ix g) R}
     {E : Matrix (Ix g) (Ix g) R} {cp : R} (hcp : cp ≠ 0) (hE : IsUnit E.det)
@@ -75,9 +73,7 @@ private theorem block_products_of_transpose_form_eq_smul [IsDomain R] {Ht Bt : M
   exact hQ
 
 /- English proof (translation)
-Take `⟨h11, -, h21, -⟩` from `block_products_of_transpose_form_eq_smul hcp hE hform`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `h21` using `[Matrix.neg_mul, neg_eq_zero, Matrix.mul_assoc]`. Conclude with `h21`. Rewrite `h11` using `[Matrix.mul_assoc]`.
-
-Conclude with `h11`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hb_facts [IsDomain R] {Ht Bt : Matrix (Fin g) (Ix g) R} {E : Matrix (Ix g) (Ix g) R} {cp : R}
     (hcp : cp ≠ 0) (hE : IsUnit E.det) (hform : Btᵀ * Ht - Htᵀ * Bt = cp • E) :
@@ -92,17 +88,17 @@ lemma hb_facts [IsDomain R] {Ht Bt : Matrix (Fin g) (Ix g) R} {E : Matrix (Ix g)
 variable {m : ℕ}
 
 /- English proof (translation)
-Establish `hT1 : Htᵀ * Bt - Btᵀ * Ht = cp • Eᵀ`. Simplify `congrArg Matrix.transpose hform` using `only [Matrix.transpose_sub, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_smul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Rewrite `ht` using `[Matrix.fromRows_mulVec]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : Ht *ᵥ (εT i *ᵥ t) = 0` using `funext fun k => by simpa using congrFun ht (Sum.inl k)`. Establish `h2 : Bt *ᵥ (εT i *ᵥ t) = x` using `funext fun k => by simpa using congrFun ht (Sum.inr k)`. Use `⟨Eᵀ *ᵥ (εT i *ᵥ t), ?_⟩` and prove the remaining obligations. Rewrite using `[← smulMV, ← hT1, Matrix.sub_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h1, h2, Matrix.mulVec_zero, sub_zero]`. Introduce and unpack `⟨z, hz⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨hHF, hBF⟩` from `hb_facts hcp hE hform`. Establish `hs1 : Ht *ᵥ ((Eᵀ)⁻¹ *ᵥ z) = 0`. Establish `h : cp • (Ht *ᵥ ((Eᵀ)⁻¹ *ᵥ z)) = 0`. Rewrite using `[← Matrix.mulVec_smul, ← Matrix.mulVec_smul, ← hz]`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hHF, Matrix.zero_mulVec]`. Conclude with `(smul_eq_zero.mp h).resolve_left hcp`. Establish `hs2 : Bt *ᵥ ((Eᵀ)⁻¹ *ᵥ z) = x`. Establish `h : cp • (Bt *ᵥ ((Eᵀ)⁻¹ *ᵥ z)) = cp • x`. Rewrite using `[← Matrix.mulVec_smul, ← Matrix.mulVec_smul, ← hz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[hBF, smulMV, Matrix.one_mulVec]`. Conclude with `smul_right_injective _ hcp h`. Generalize the expression as in `(Eᵀ)⁻¹ *ᵥ z = s at hs1 hs2`. Establish `e1 : Ht *ᵥ (εT i *ᵥ s) = 0`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, hHt, ← Matrix.mulVec_mulVec, hs1, Matrix.mulVec_zero]`. Establish `e2 : Bt *ᵥ (εT i *ᵥ s) = x`. Rewrite using `[Matrix.mulVec_mulVec, hBt, ← Matrix.mulVec_mulVec, hs2, hx]`. Conclude with `⟨s, by rw [Matrix.fromRows_mulVec, e1, e2]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_fromRows_mulVec_iff [IsDomain R] {Ht Bt : Matrix (Fin g) (Ix g) R} {E : Matrix (Ix g) (Ix g) R} {cp : R}
     (hcp : cp ≠ 0) (hE : IsUnit E.det) (hform : Btᵀ * Ht - Htᵀ * Bt = cp • E)
@@ -144,11 +140,11 @@ lemma exists_fromRows_mulVec_iff [IsDomain R] {Ht Bt : Matrix (Fin g) (Ix g) R} 
     exact ⟨s, by rw [Matrix.fromRows_mulVec, e1, e2]⟩
 
 /- English proof (translation)
-Introduce `f hf`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.mp hf`. Take `⟨-, -, -, h22⟩` from `block_products_of_transpose_form_eq_smul hcp hE hform`. Rewrite `h22` using `[Matrix.neg_mul, Matrix.mul_assoc]`. Establish `hHt' : Ht *ᵥ (-((Eᵀ)⁻¹ *ᵥ (Btᵀ *ᵥ y))) = cp • y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_neg]`. Simplify using `only [Matrix.mulVec_mulVec]`. Rewrite using `[← Matrix.neg_mulVec, h22, smulMV, Matrix.one_mulVec]`. Generalize the expression as in `-((Eᵀ)⁻¹ *ᵥ (Btᵀ *ᵥ y)) = t at hHt'`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mulVecLin_apply]`. Rewrite using `[Matrix.mulVec_mulVec, hHt, hπi, ← Matrix.mulVec_mulVec, hHt', Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma cok_kill [IsDomain R] {Ht Bt : Matrix (Fin g) (Ix g) R} {E : Matrix (Ix g) (Ix g) R} {cp : R}
     (hcp : cp ≠ 0) (hE : IsUnit E.det) (hform : Btᵀ * Ht - Htᵀ * Bt = cp • E)

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.InvSqLeWignerCoeffSq
 import Development.AbelianVarietyTheory.Definitions.Jets.Imports
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.WigSh.inv_sq_le_wM` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FInvSqLeWignerCoeffSqLowering.lean&line=60#L60)
 -/

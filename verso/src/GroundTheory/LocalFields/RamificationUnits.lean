@@ -15,9 +15,7 @@ variable {K L : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K]
 section Inertia
 
 /- English proof (translation)
-Establish `hres : unitsToResidue L (Units.map (integerAlgEquiv K L σ : 𝒪[L] →* 𝒪[L]) (teichmuller L ζ)) = unitsToResidue L (teichmuller L ζ)`. Use `ext`. Conclude with `residue_integerAlgEquiv_of_mem_zero K L hσ _`. Establish `hpow : Units.map (integerAlgEquiv K L σ : 𝒪[L] →* 𝒪[L]) (teichmuller L ζ) ^ (Nat.card 𝓀[L] - 1) = 1`. Rewrite using `[← map_pow, teichmuller_pow_card_sub_one, map_one]`.
-
-Conclude with `congrArg Units.val (eq_of_pow_card_sub_one hpow (teichmuller_pow_card_sub_one ζ) hres)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integerAlgEquiv_teichmuller {σ : L ≃ₐ[K] L} (hσ : σ ∈ lowerRamificationGroup K L 0)
     (ζ : 𝓀[L]ˣ) :
@@ -32,23 +30,21 @@ theorem integerAlgEquiv_teichmuller {σ : L ≃ₐ[K] L} (hσ : σ ∈ lowerRami
   exact congrArg Units.val (eq_of_pow_card_sub_one hpow (teichmuller_pow_card_sub_one ζ) hres)
 
 /- English proof (translation)
-Use `set e := integerAlgEquiv K L σ`. Set `P : 𝒪[L] → Prop` to `fun y ↦ e y - y ∈ 𝓂[L] ^ n`. Establish `hadd : ∀ a b, P a → P b → P (a + b)` using `fun a b ha hb ↦ by`. Establish `: e (a + b) - (a + b) = (e a - a) + (e b - b)` using `by rw [map_add]; ring`. Simplify using `only [P, this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `add_mem ha hb`. Establish `hmul : ∀ a b, P a → P b → P (a * b)` using `fun a b ha hb ↦ by`. Establish `: e (a * b) - a * b = e a * (e b - b) + (e a - a) * b` using `by rw [map_mul]; ring`. Simplify using `only [P, this]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hb) (Ideal.mul_mem_right _ _ ha)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hpow : ∀ a (k : ℕ), P a → P (a ^ k)`. Introduce `a k ha`. Proceed by induction on `k with`. Consider the case `zero => simp [P]`. Consider the case `succ k ih => rw [pow_succ]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hmul _ _ ih ha`. Establish `hfix : ∀ a, e a = a → P a` using `fun a ha ↦ by simp [P, ha]`. Establish `hideal : ∀ y ∈ 𝓂[L] ^ n, P y` using `fun y hy ↦ sub_mem ((integerAlgEquiv_mem_maximalIdeal_pow_iff σ n y).mpr hy) hy`. Establish `happrox : ∀ y : 𝒪[L], ∃ t, e t = t ∧ y - t ∈ 𝓂[L]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hy : residue 𝒪[L] y = 0`. Conclude with `⟨0, map_zero e, by simpa using (residue_eq_zero_iff y).mp hy⟩`. Use `⟨teichmuller L (Units.mk0 _ hy), integerAlgEquiv_teichmuller hσ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← residue_eq_zero_iff, map_sub, sub_eq_zero]`. Conclude with `(congrArg Units.val (unitsToResidue_teichmuller (K := L) (Units.mk0 _ hy))).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hstep : ∀ m : ℕ, ∃ r, P r ∧ x - r ∈ 𝓂[L] ^ m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, by simp [P], by simp⟩`. Consider the case `succ m ih`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr, hxr⟩` from `ih`. Take `⟨y, hy⟩` from `(mem_maximalIdeal_pow_iff hϖ).mp hxr`. Take `⟨t, ht, hyt⟩` from `happrox y`. Take `⟨z, hz⟩` from `(mem_maximalIdeal_iff_dvd hϖ).mp hyt`. Use `⟨r + ϖ ^ m * t, hadd _ _ hr (hmul _ _ (hpow _ _ h) (hfix _ ht)), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_maximalIdeal_pow_iff hϖ]`. Conclude with `⟨z, by rw [pow_succ]; linear_combination hy + ϖ ^ m * hz⟩`. Take `⟨r, hr, hxr⟩` from `hstep n`. Establish `: x = r + (x - r)` using `by ring`. Rewrite using `[this]`.
-
-Conclude with `hadd _ _ hr (hideal _ hxr)`.
+A detailed English derivation is pending.
 -/
 theorem sub_mem_of_uniformizer {σ : L ≃ₐ[K] L} (hσ : σ ∈ lowerRamificationGroup K L 0)
     {ϖ : 𝒪[L]} (hϖ : Irreducible ϖ) {n : ℕ}
@@ -97,7 +93,7 @@ theorem sub_mem_of_uniformizer {σ : L ≃ₐ[K] L} (hσ : σ ∈ lowerRamificat
   exact hadd _ _ hr (hideal _ hxr)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h ↦ mem_lowerRamificationGroup_natCast_iff.mp h ϖ, fun h ↦ mem_lowerRamificationGroup_natCast_iff.mpr (sub_mem_of_uniformizer hσ hϖ h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_lowerRamificationGroup_iff_uniformizer {σ : L ≃ₐ[K] L}
     (hσ : σ ∈ lowerRamificationGroup K L 0) {ϖ : 𝒪[L]} (hϖ : Irreducible ϖ) (n : ℕ) :
@@ -110,7 +106,7 @@ end Inertia
 section Ratio
 
 /- English proof (translation)
-The claim follows from `(MulEquiv.irreducible_iff (f := (integerAlgEquiv K L σ : 𝒪[L] ≃* 𝒪[L]))).mpr hϖ`.
+A detailed English derivation is pending.
 -/
 theorem irreducible_integerAlgEquiv (σ : L ≃ₐ[K] L) {ϖ : 𝒪[L]} (hϖ : Irreducible ϖ) :
     Irreducible (integerAlgEquiv K L σ ϖ) :=
@@ -124,7 +120,7 @@ variable {ϖ : 𝒪[L]} (hϖ : Irreducible ϖ)
 include hϖ
 
 /- English proof (translation)
-The claim follows from `(IsDiscreteValuationRing.associated_of_irreducible 𝒪[L] hϖ (irreducible_integerAlgEquiv σ hϖ)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mul_uniformizerRatio (σ : L ≃ₐ[K] L) :
     ϖ * uniformizerRatio hϖ σ = integerAlgEquiv K L σ ϖ :=
@@ -132,7 +128,7 @@ theorem mul_uniformizerRatio (σ : L ≃ₐ[K] L) :
     (irreducible_integerAlgEquiv σ hϖ)).choose_spec
 
 /- English proof (translation)
-Use `⟨fun h ↦ h ▸ mul_uniformizerRatio hϖ σ, fun h ↦ Units.ext ?_⟩` and prove the remaining obligations. Conclude with `mul_left_cancel₀ hϖ.ne_zero ((mul_uniformizerRatio hϖ σ).trans h.symm)`. Use the proof step `@[simp]`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem uniformizerRatio_eq_iff (σ : L ≃ₐ[K] L) (u : 𝒪[L]ˣ) :
     uniformizerRatio hϖ σ = u ↔ ϖ * u = integerAlgEquiv K L σ ϖ := by
@@ -141,13 +137,13 @@ theorem uniformizerRatio_eq_iff (σ : L ≃ₐ[K] L) (u : 𝒪[L]ˣ) :
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[uniformizerRatio_eq_iff, map_one, AlgEquiv.one_apply, Units.val_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uniformizerRatio_one : uniformizerRatio hϖ (1 : L ≃ₐ[K] L) = 1 := by
   rw [uniformizerRatio_eq_iff, map_one, AlgEquiv.one_apply, Units.val_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[uniformizerRatio_eq_iff, map_mul, AlgEquiv.mul_apply, ← mul_uniformizerRatio hϖ τ, map_mul, ← mul_uniformizerRatio hϖ σ, Units.val_mul, Units.coe_map, MonoidHom.coe_coe, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uniformizerRatio_mul (σ τ : L ≃ₐ[K] L) :
     uniformizerRatio hϖ (σ * τ) = uniformizerRatio hϖ σ *
@@ -156,7 +152,7 @@ theorem uniformizerRatio_mul (σ τ : L ≃ₐ[K] L) :
     ← mul_uniformizerRatio hϖ σ, Units.val_mul, Units.coe_map, MonoidHom.coe_coe, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[mem_lowerRamificationGroup_iff_uniformizer hσ hϖ, mem_unitFiltration, ← mul_uniformizerRatio hϖ σ, mem_maximalIdeal_pow_iff hϖ, mem_maximalIdeal_pow_iff hϖ, show ϖ * (uniformizerRatio hϖ σ : 𝒪[L]) - ϖ = ϖ * ((uniformizerRatio hϖ σ : 𝒪[L]) - 1) by ring, pow_succ', mul_dvd_mul_iff …`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem mem_lowerRamificationGroup_iff_uniformizerRatio {σ : L ≃ₐ[K] L}
     (hσ : σ ∈ lowerRamificationGroup K L 0) (n : ℕ) :
@@ -167,7 +163,7 @@ theorem mem_lowerRamificationGroup_iff_uniformizerRatio {σ : L ≃ₐ[K] L}
     pow_succ', mul_dvd_mul_iff_left hϖ.ne_zero]
 
 /- English proof (translation)
-The claim follows from `(mem_lowerRamificationGroup_iff_uniformizerRatio hϖ (lowerRamificationGroup_antitone K L (by omega) σ.2) n).mp σ.2`.
+A detailed English derivation is pending.
 -/
 theorem uniformizerRatio_mem {n : ℕ} (σ : lowerRamificationGroup K L n) :
     uniformizerRatio hϖ (σ : L ≃ₐ[K] L) ∈ unitFiltration L n :=
@@ -177,7 +173,7 @@ theorem uniformizerRatio_mem {n : ℕ} (σ : lowerRamificationGroup K L n) :
 omit hϖ in
 
 /- English proof (translation)
-Rewrite using `[mem_unitFiltration]`. Establish `h : ((Units.map (integerAlgEquiv K L σ : 𝒪[L] →* 𝒪[L]) u * u⁻¹ : 𝒪[L]ˣ) : 𝒪[L]) - 1 = (integerAlgEquiv K L σ u - u) * ((u⁻¹ : 𝒪[L]ˣ) : 𝒪[L])`. Rewrite using `[Units.val_mul, Units.coe_map, MonoidHom.coe_coe, sub_mul, Units.mul_inv]`. Rewrite using `[h]`. Conclude with `Ideal.mul_mem_right _ _ (mem_lowerRamificationGroup_natCast_iff.mp hσ (u : 𝒪[L]))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_inv_mem {n : ℕ} {σ : L ≃ₐ[K] L} (hσ : σ ∈ lowerRamificationGroup K L n)
     (u : 𝒪[L]ˣ) :
@@ -226,7 +222,7 @@ theorem ramificationToUnits_apply (n : ℕ) (σ : lowerRamificationGroup K L n) 
   rfl
 
 /- English proof (translation)
-Use extensionality with `σ`. Establish `hσ0 : (σ : L ≃ₐ[K] L) ∈ lowerRamificationGroup K L 0` using `lowerRamificationGroup_antitone K L (by omega) σ.2`. Rewrite using `[MonoidHom.mem_ker, ramificationToUnits_apply, QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf, Subgroup.mem_subgroupOf, mem_lowerRamificationGroup_iff_uniformizerRatio hϖ hσ0]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_ramificationToUnits (n : ℕ) :
     (ramificationToUnits hϖ n).ker =

@@ -9,7 +9,7 @@ namespace PI.WGL
 open Formalism.BasicNotions Formalism.GradedWeylDivisibility MvPolynomial
 
 /- English proof (translation)
-Introduce `i j hij`. Use `mu.anti hij` as an intermediate fact. Unfold `DomWeight.natW`. Conclude with `Int.toNat_le_toNat (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lm_natW_anti {k : ℕ} (mu : DomWeight k) : Antitone mu.natW := by
   intro i j hij
@@ -18,7 +18,7 @@ theorem lm_natW_anti {k : ℕ} (mu : DomWeight k) : Antitone mu.natW := by
   exact Int.toNat_le_toNat (by omega)
 
 /- English proof (translation)
-Unfold `Formalism.REAL.fockF`. Apply `Finset.sum_subset hs` to reduce the goal to its premises. Introduce `m _ hm`. Rewrite using `[MvPolynomial.notMem_support_iff.mp hm]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lm_fockF_eq_sum {σ : Type*} (f g : MvPolynomial σ ℂ) (s : Finset (σ →₀ ℕ)) (hs : f.support ⊆ s) :
     Formalism.REAL.fockF f g =
@@ -30,7 +30,7 @@ theorem lm_fockF_eq_sum {σ : Type*} (f g : MvPolynomial σ ℂ) (s : Finset (σ
   simp
 
 /- English proof (translation)
-Rewrite using `[lm_fockF_eq_sum (f1 + f2) g (f1.support ∪ f2.support) MvPolynomial.support_add, lm_fockF_eq_sum f1 g _ Finset.subset_union_left, lm_fockF_eq_sum f2 g _ Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lm_fockF_add {σ : Type*} (f1 f2 g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (f1 + f2) g = Formalism.REAL.fockF f1 g + Formalism.REAL.fockF f2 g := by
@@ -43,7 +43,7 @@ theorem lm_fockF_add {σ : Type*} (f1 f2 g : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[lm_fockF_eq_sum (a • f) g f.support MvPolynomial.support_smul, Formalism.REAL.fockF, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lm_fockF_smul {σ : Type*} (a : ℂ) (f g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (a • f) g = a * Formalism.REAL.fockF f g := by
@@ -54,14 +54,14 @@ theorem lm_fockF_smul {σ : Type*} (a : ℂ) (f g : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← Int.cast_smul_eq_zsmul ℂ, lm_fockF_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lm_fockF_zsmul {σ : Type*} (a : ℤ) (f g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (a • f) g = a * Formalism.REAL.fockF f g := by
   rw [← Int.cast_smul_eq_zsmul ℂ, lm_fockF_smul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Formalism.REAL.fockF]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, lm_fockF_add, h0 i (Finset.mem_insert_self _ _), ih (fun j hj => h0 j (Finset.mem_insert_of_mem hj)), add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem lm_fockF_finsum {σ ι : Type*} (s : Finset ι) (y : ι → MvPolynomial σ ℂ) (g : MvPolynomial σ ℂ)
     (h0 : ∀ i ∈ s, Formalism.REAL.fockF (y i) g = 0) : Formalism.REAL.fockF (∑ i ∈ s, y i) g = 0 := by
@@ -73,7 +73,7 @@ theorem lm_fockF_finsum {σ ι : Type*} (s : Finset ι) (y : ι → MvPolynomial
       ih (fun j hj => h0 j (Finset.mem_insert_of_mem hj)), add_zero]
 
 /- English proof (translation)
-Simplify using `only [rowDiv, map_sub, Polynomial.coeff_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lm_rowDiv_sub {R : Type*} [CommRing R] {r m : ℕ} (a b : Fin r) (k : ℕ)
     (f g : MvPolynomial (Fin r × Fin m) R) :
@@ -81,7 +81,7 @@ theorem lm_rowDiv_sub {R : Type*} [CommRing R] {r m : ℕ} (a b : Fin r) (k : �
   simp only [rowDiv, map_sub, Polynomial.coeff_sub]
 
 /- English proof (translation)
-Simplify using `only [rowDiv, map_smul, Polynomial.coeff_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lm_rowDiv_smul {R : Type*} [CommRing R] {r m : ℕ} (a b : Fin r) (k : ℕ) (c : R)
     (f : MvPolynomial (Fin r × Fin m) R) :
@@ -89,7 +89,7 @@ theorem lm_rowDiv_smul {R : Type*} [CommRing R] {r m : ℕ} (a b : Fin r) (k : �
   simp only [rowDiv, map_smul, Polynomial.coeff_smul]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih => show rowDiv R x.1 x.2.1 x.2.2 (applyWord R w (f - c • g)) = rowDiv R x.1 x.2.1 x.2.2 (applyWord R w f) - c • rowDiv R x.1 x.2.1 x.2.2 (applyWord R w g)`. Rewrite using `[ih, lm_rowDiv_sub, lm_rowDiv_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem lm_applyWord_sub_smul {R : Type*} [CommRing R] {r m : ℕ} (w : List (Fin r × Fin r × ℕ)) (c : R)
     (f g : MvPolynomial (Fin r × Fin m) R) :
@@ -102,9 +102,9 @@ theorem lm_applyWord_sub_smul {R : Type*} [CommRing R] {r m : ℕ} (w : List (Fi
     rw [ih, lm_rowDiv_sub, lm_rowDiv_smul]
 
 /- English proof (translation)
-Introduce `m hm`. Apply `hf` to reduce the goal to its premises. Rewrite `hm` using `[coeff_map]`. Introduce `h0`. Apply `hm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h0, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lm_isWH_map {σ M : Type*} [AddCommMonoid M] (w : σ → M) (f : MvPolynomial σ ℤ) (d : M)
     (hf : IsWeightedHomogeneous w f d) : IsWeightedHomogeneous w (map (Int.castRingHom ℂ) f) d := by
@@ -116,9 +116,9 @@ theorem lm_isWH_map {σ M : Type*} [AddCommMonoid M] (w : σ → M) (f : MvPolyn
   rw [h0, map_zero]
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite using `[← hf hm, Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum, Finsupp.sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `only [lastW, rowW, Pi.smul_apply, Pi.single_apply, smul_eq_mul, Fin.ext_iff]`. Distinguish the cases in `hv : v.1.1 + 1 = N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hv, if_pos (by omega)]`. Rewrite using `[if_neg hv, if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lm_last_of_row {N : ℕ} (hN : 0 < N) (f : MvPolynomial (Fin N × Fin N) ℂ) (ω : Fin N → ℕ)
     (hf : IsWeightedHomogeneous (rowW N N) f ω) :
@@ -132,7 +132,7 @@ theorem lm_last_of_row {N : ℕ} (hN : 0 < N) (f : MvPolynomial (Fin N × Fin N)
   · rw [if_neg hv, if_neg (by omega)]
 
 /- English proof (translation)
-Unfold `liftWt`. Rewrite using `[dif_neg (by simp; omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lm_liftWt_last {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (mu : DomWeight n) (ω : Fin n → ℕ) :
     liftWt h lam mu ω ⟨N - 1, by omega⟩ = dLast lam mu := by
@@ -140,7 +140,7 @@ theorem lm_liftWt_last {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (mu : Dom
   rw [dif_neg (by simp; omega)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use `congrFun he (eRow h a)` as an intermediate fact. Establish `ha : (eRow h a).1 < n` using `a.isLt`. Simplify using `only [liftWt, ha, dif_pos] at this`. Simplify `this` using `[eRow]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lm_liftWt_inj {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (mu : DomWeight n) {ω ω' : Fin n → ℕ}
     (he : liftWt h lam mu ω = liftWt h lam mu ω') : ω = ω' := by
@@ -151,7 +151,7 @@ theorem lm_liftWt_inj {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (mu : DomW
   simpa [eRow] using this
 
 /- English proof (translation)
-Unfold `initMinor`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[RingHom.mapMatrix_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lm_map_initMinor {r m s : ℕ} (I : Fin s → Fin r) (hs : s ≤ m) :
     map (Int.castRingHom ℂ) (initMinor ℤ (n := m) I hs) = initMinor ℂ I hs := by
@@ -162,7 +162,7 @@ theorem lm_map_initMinor {r m s : ℕ} (I : Fin s → Fin r) (hs : s ≤ m) :
   simp [RingHom.mapMatrix_apply]
 
 /- English proof (translation)
-Unfold `xi`. Simplify using `only [map_prod, map_mul, map_pow, lm_map_initMinor, Formalism.UG.P.wlocal_map_lpMinor]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem lm_map_xi {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) :
     map (Int.castRingHom ℂ) (xi ℤ h lam sg) = xi ℂ h lam sg := by
@@ -170,7 +170,7 @@ theorem lm_map_xi {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeigh
   simp only [map_prod, map_mul, map_pow, lm_map_initMinor, Formalism.UG.P.wlocal_map_lpMinor]
 
 /- English proof (translation)
-Unfold `extremal`. Conclude with `Formalism.UG.P.wlocal_map_hw _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lm_map_ext {n : ℕ} (sg : DomWeight n) :
     map (Int.castRingHom ℂ) (extremal ℤ n sg) = extremal ℂ n sg := by
@@ -178,63 +178,57 @@ theorem lm_map_ext {n : ℕ} (sg : DomWeight n) :
   exact Formalism.UG.P.wlocal_map_hw _ _ _
 
 /- English proof (translation)
-Introduce `n N h lam sg hI io0 hE hx _hW`. Take `⟨Z, -, hZa⟩` from `hZ n N h lam sg hI`. Establish `hc0 : ((cBr h lam sg : ℤ) : ℂ) ≠ 0` using `Int.cast_ne_zero.mpr (hN n N h lam sg hI).1`. Use `set c : ℂ := ((cBr h lam sg : ℤ) : ℂ) with hc`. Establish `hxi0 : xi ℂ h lam sg ≠ 0` using `(hX n N h lam sg hI).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hext : extremal ℂ n sg ∈ nablaSq ℂ n sg` using `hwMem ℂ n n le_rfl sg.natW (lm_natW_anti sg)`. Take `⟨hZmem, hZdiv, hZwt⟩` from `hZC n N h lam Z (fun mu hmu φ hφ => ⟨_, hZa mu hmu φ hφ⟩)`. Establish `hZio : ∀ s ∈ nablaSq ℂ n sg, Z (io0 s) = c • io0 s` using `fun s hs => hZa sg hI io0 hE s hs`. Establish `hO : ∀ o ∈ OtherPart h lam sg, Z o = 0`. Introduce `o ho`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : OtherPart h lam sg ≤ LinearMap.ker Z`. Unfold `OtherPart`. Use `iSup_le fun mu => iSup_le fun hmu => iSup_le fun hne => iSup_le fun hw => iSup_le fun φ => iSup_le fun hφ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Rewrite using `[LinearMap.mem_ker, hZa mu hmu φ hφ t ht, hV n N h lam sg mu hI hmu hne hw, Int.cast_zero, zero_smul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hle ho`. Establish `hdec` using `hdecP n N h lam sg hI io0 hE (by rw [hx]; exact hxi0)`. Establish `hcrit : ∀ f ∈ nablaSq ℂ N lam, IsWeightedHomogeneous (lastW N) f (dLast lam sg) → ∀ s ∈ nablaSq ℂ n sg, Z f = c • io0 s → f - io0 s ∈ OtherPart h lam sg`. Introduce `f hf hfl s _ hZf`. Take `⟨u, hu, ho⟩` from `hdec f hf hfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Z f = c • io0 u`. Use `hO _ ho` as an intermediate fact. Rewrite `this` using `[map_sub, hZio u hu, sub_eq_zero]`. Conclude with `this`. Establish `h2 : io0 u = io0 s`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `hZf` using `[h1]`. Conclude with `smul_right_injective _ hc0 hZf`. Rewrite using `[← h2]` and apply the resulting hypothesis. Establish `hZim : ∀ f ∈ nablaSq ℂ N lam, IsWeightedHomogeneous (lastW N) f (dLast lam sg) → ∃ u ∈ nablaSq ℂ n sg, Z f = io0 u`. Introduce `f hf hfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu, ho⟩` from `hdec f hf hfl`. Use `⟨c • u, Submodule.smul_mem _ _ hu, ?_⟩` and prove the remaining obligations. Use `hO _ ho` as an intermediate fact. Rewrite `this` using `[map_sub, hZio u hu, sub_eq_zero]`. Rewrite using `[this, map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hIoW : ∀ w : List (Fin n × Fin n × ℕ), OffDiag w → ∀ s ∈ nablaSq ℂ n sg, applyWord ℂ w s ∈ nablaSq ℂ n sg ∧ io0 (applyWord ℂ w s) = applyWord ℂ (liftWord h w) (io0 s)`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro _ s hs`. Conclude with `⟨hs, rfl⟩`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Consider the case `cons x w ih`. Introduce `hw s hs`. Establish `hw' : OffDiag w` using `fun y hy => hw y (List.mem_cons_of_mem _ hy)`. Take `⟨h1, h2⟩` from `ih hw' s hs`. Use `⟨rowDivStable ℂ n n sg.natW x.1 x.2.1 x.2.2 _ h1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `show io0 (rowDiv ℂ x.1 x.2.1 x.2.2 (applyWord ℂ w s)) = rowDiv ℂ (eRow h x.1) (eRow h x.2.1) x.2.2 (applyWord ℂ (liftWord h w) (io0 s))`. Rewrite using `[equivariant_divisibility n N h sg lam io0 hE x.1 x.2.1 (hw x (by simp)) x.2.2 _ h1, h2]`. Establish `hZW : ∀ w : List (Fin n × Fin n × ℕ), OffDiag w → ∀ f ∈ nablaSq ℂ N lam, applyWord ℂ (liftWord h w) f ∈ nablaSq ℂ N lam ∧ Z (applyWord ℂ (liftWord h w) f) = applyWord ℂ (liftWord h w) (Z f)`. Introduce `w`. Proceed by induction on `w with`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `nil => intro _ f hf`. Conclude with `⟨hf, rfl⟩`. Consider the case `cons x w ih`. Introduce `hw f hf`. Establish `hw' : OffDiag w` using `fun y hy => hw y (List.mem_cons_of_mem _ hy)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `ih hw' f hf`. Use `⟨rowDivStable ℂ N N lam.natW _ _ x.2.2 _ h1, ?_⟩` and prove the remaining obligations. Use `show Z (rowDiv ℂ (eRow h x.1) (eRow h x.2.1) x.2.2 (applyWord ℂ (liftWord h w) f)) = rowDiv ℂ (eRow h x.1) (eRow h x.2.1) x.2.2 (applyWord ℂ (liftWord h w) (Z f))`. Rewrite using `[hZdiv x.1 x.2.1 (hw x (by simp)) x.2.2 _ h1, h2]`. Establish `hgen : ∀ (K : ℕ) (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (I : ∀ k, Fin (sz k) → Fin n), shapeDeg sz = sg.natW → ∃ m ∈ nablaSq ℤ N lam, map (Int.castRingHom ℂ) m - io0 (map (Int.castRingHom ℂ) (bideterminant ℤ sz hsz I)) ∈ OtherPart h lam sg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `K sz hsz I hsh`. Take `⟨M, hM1, hM2, hM3, J0, hJ0c, -, hJ0m⟩` from `tuple_decomposition_formula n N h lam sg hI K sz hsz hsh`. Establish `hbm : ∀ J, map (Int.castRingHom ℂ) (bideterminant ℤ sz hsz J) ∈ nablaSq ℂ n sg`. Introduce `J`. Use `bidetMem ℤ n n K sz hsz J` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hsh]`. Conclude with `dualWeylMap ℤ ℂ (Int.castRingHom ℂ) n n sg.natW _ this`. Establish `hMm : ∀ J, map (Int.castRingHom ℂ) (M J) ∈ nablaSq ℂ N lam` using `fun J => dualWeylMap ℤ ℂ (Int.castRingHom ℂ) N N lam.natW _ (hM1 J).1`. Establish `hMl : ∀ J, IsWeightedHomogeneous (lastW N) (map (Int.castRingHom ℂ) (M J)) (dLast lam sg)`. Introduce `J`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `lm_last_of_row (N := N) (by omega) _ _ (lm_isWH_map _ _ _ (hM1 J).2.1)` as an intermediate fact. Rewrite `this` using `[lm_liftWt_last]`. Then use the resulting hypothesis. Establish `hxiW : IsWeightedHomogeneous (rowW N N) (xi ℂ h lam sg) (liftWt h lam sg sg.natW)`. Use `lm_isWH_map _ _ _ (hM1 J0).2.1` as an intermediate fact. Rewrite `this` using `[hJ0m, lm_map_xi, hJ0c]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Δ : (∀ k, Fin (sz k) → Fin n) → MvPolynomial (Fin N × Fin N) ℂ := fun J => Z (map (Int.castRingHom ℂ) (M J)) - c • io0 (map (Int.castRingHom ℂ) (bideterminant ℤ sz hsz J)) with hΔ`. Establish `hΔim : ∀ J, ∃ u ∈ nablaSq ℂ n sg, Δ J = io0 u`. Introduce `J`. Take `⟨u, hu, hZu⟩` from `hZim _ (hMm J) (hMl J)`. Use `⟨u - c • map (Int.castRingHom ℂ) (bideterminant ℤ sz hsz J), Submodule.sub_mem _ hu (Submodule.smul_mem _ _ (hbm J)), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hΔ]`. Rewrite using `[map_sub, map_smul, hZu]`. Establish `hΔorth : ∀ J, Formalism.REAL.fockF (Δ J) (xi ℂ h lam sg) = 0`. Introduce `J`. Distinguish the cases in `hJ : tupCnt J = sg.natW`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ε, hb, hm⟩` from `hM3 J hJ`. Establish `h0 : Δ J = 0`. Simplify using `only [hΔ, hb, hm, map_zsmul, lm_map_xi, lm_map_ext]`. Rewrite using `[← hx, hZio _ hext, smul_comm c ε, sub_self]`. Rewrite using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Formalism.REAL.fockF]`. Establish `hw1 : IsWeightedHomogeneous (rowW N N) (Δ J) (liftWt h lam sg (tupCnt J))`. Establish `a1` using `hZwt _ _ (hMm J) (lm_isWH_map _ _ _ (hM1 J).2.1)`. Establish `a2` using `equivariant_partial_weight n N h lam sg hI io0 hE (tupCnt J) _ (hbm J) (lm_isWH_map _ _ _ (hM1 J).2.2)`. Use `Submodule.sub_mem _ ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr a1) (Submodule.smul_mem _ c ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr a2))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_weightedHomogeneousSubmodule _ _ _ _).mp this`. Conclude with `fockWeightOrth _ _ (rowW N N) _ _ _ _ (fun he => hJ (lm_liftWt_inj h lam sg he)) hw1 hxiW`. Take `⟨u, hu, hΔu⟩` from `hΔim I`. Establish `hzero : io0 u = 0`. Use `hFD n N h lam sg hI io0 hE hx u hu ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w hw`. Take `⟨d, hd1, hd2⟩` from `hM2 I w hw`. Rewrite using `[← hΔu]`. Establish `e1 : applyWord ℂ (liftWord h w) (Z (map (Int.castRingHom ℂ) (M I))) = d.sum fun J k => k • Z (map (Int.castRingHom ℂ) (M J))`. Rewrite using `[← (hZW w hw _ (hMm I)).2, ← Formalism.UG.P.wlocal_map_applyWord, hd2, Finsupp.sum, Finsupp.sum, map_sum, map_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_zsmul]`. Establish `e2 : applyWord ℂ (liftWord h w) (io0 (map (Int.castRingHom ℂ) (bideterminant ℤ sz hsz I))) = d.sum fun J k => k • io0 (map (Int.castRingHom ℂ) (bideterminant ℤ sz hsz J))`. Rewrite using `[← (hIoW w hw _ (hbm I)).2, ← Formalism.UG.P.wlocal_map_applyWord, hd1, Finsupp.sum, Finsupp.sum, map_sum, map_sum]`. Simplify using `only [map_zsmul]`. Establish `e3 : applyWord ℂ (liftWord h w) (Δ I) = ∑ J ∈ d.support, d J • Δ J`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hΔ]`. Rewrite using `[lm_applyWord_sub_smul, e1, e2, Finsupp.sum, Finsupp.sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[smul_sub, smul_comm c (d J)]`. Rewrite using `[e3]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Use `lm_fockF_finsum _ _ _ fun J _ => ?_` and prove the remaining obligations. Rewrite using `[lm_fockF_zsmul, hΔorth J, mul_zero]`. Use `⟨M I, (hM1 I).1, hcrit _ (hMm I) (hMl I) _ (hbm I) ?_⟩` and prove the remaining obligations. Establish `: Δ I = 0` using `by rw [hΔu, hzero]`. Rewrite `this` using `[hΔ]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_eq_zero.mp this`. Introduce `s hs`. Establish `hs' : s ∈ Submodule.span ℤ {f | ∃ (K : ℕ) (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (I : ∀ k, Fin (sz k) → Fin n), shapeDeg sz = sg.natW ∧ f = bideterminant ℤ sz hsz I}`. Rewrite using `[← standardMonomialSpan n n sg.natW (lm_natW_anti sg)]`. Conclude with `hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Use `clear hs`. Proceed by induction on `hs' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨K, sz, hsz, I, hsh, rfl⟩` from `hx`. Conclude with `hgen K sz hsz I hsh`.
-
-Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨m1, hm1, h1⟩` from `hx`. Take `⟨m2, hm2, h2⟩` from `hy`. Use `⟨m1 + m2, Submodule.add_mem _ hm1 hm2, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_add, map_add, map_add]`. Use `Submodule.add_mem _ h1 h2 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Consider the case `smul a x _ hx`. Take `⟨m, hm, h1⟩` from `hx`.
-
-Use `⟨a • m, Submodule.smul_mem _ a hm, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul, map_zsmul, ← smul_sub]`. Conclude with `zsmul_mem h1 a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftMod_asm (hZ : CapelliZ) (hV : ZScalarVanish) (hN : Numbers) (hX : XiFacts)
     (equivariant_divisibility : EqvDiv) (equivariant_partial_weight : EqvRowWt) (hdecP : Decomp) (hZC : ZComm) (hFD : FockDetect)

@@ -8,11 +8,11 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Break down `lt_or_eq_of_le hn with hlt | heq` into its components or cases. Establish `h2 : w (z * d - 1) < w 1` using `by rw [map_one]; exact h1.trans_lt hlt`. Establish `h3 : w (z * d) = 1`. Establish `e : z * d = (z * d - 1) + 1` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_right w h2, map_one]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : 1 ≤ w z`. Rewrite `h3` using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[heq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 private theorem loc_dv {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] (w : Valuation K Γ) {c d z n : K}
     (hc : w c ≤ 1) (hd : w d ≤ 1) (hn : w n ≤ 1) (h0 : w (z * c) ≤ w n) (h1 : w (z * d - 1) ≤ w n) : w c ≤ w n := by
@@ -34,20 +34,20 @@ private theorem loc_dv {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero �
     exact hc
 
 /- English proof (translation)
-Establish `h : (N : H.Kv v) ∈ v.adicCompletionIntegers ℚ` using `natCast_mem _ N`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem nat_le_one (v : H.P ℚ) (N : ℕ) : Valued.v (N : H.Kv v) ≤ 1 := by
   have h : (N : H.Kv v) ∈ v.adicCompletionIntegers ℚ := natCast_mem _ N
   exact h
 
 /- English proof (translation)
-Introduce `N _ p s k hk hkS`. Establish `hz : ∀ z : IdeleGroup ℚ, (PhiN N p fun j => ((z : (A ℚ)ˣ) : A ℚ) * row k j) = 0`. Introduce `z`. Unfold `PhiN`. Rewrite using `[if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hkS` to reduce the goal to its premises. Introduce `v`. Take `⟨h0, h1⟩` from `h v`. Establish `hint : ∀ i j, Valued.v (H.cp v (k i j)) ≤ 1` using `fun i j => hk.2 v i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e0 : H.cp v (((z : (A ℚ)ˣ) : A ℚ) * row k 0) = H.cp v ((z : (A ℚ)ˣ) : A ℚ) * H.cp v (k 1 0)` using `map_mul _ _ _`. Establish `e1 : H.cp v (((z : (A ℚ)ˣ) : A ℚ) * row k 1 - 1) = H.cp v ((z : (A ℚ)ˣ) : A ℚ) * H.cp v (k 1 1) - 1`. Rewrite using `[map_sub, map_one]`. Conclude with `congrArg (· - 1) (map_mul _ _ _)`. Establish `h0' : Valued.v (H.cp v (((z : (A ℚ)ˣ) : A ℚ) * row k 0)) ≤ Valued.v (N : H.Kv v)` using `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : Valued.v (H.cp v (((z : (A ℚ)ˣ) : A ℚ) * row k 1 - 1)) ≤ Valued.v (N : H.Kv v)` using `h1`. Rewrite `h0'` using `[e0]`. Rewrite `h1'` using `[e1]`. Conclude with `loc_dv Valued.v (hint 1 0) (hint 1 1) (nat_le_one v N) h0' h1'`. Simplify using `only [Zr, hz, zero_mul, MeasureTheory.integral_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.zeta_integral_eq_zero_of_mem_maximal_compact_not_mem_level :
     ∀ (N : ℕ), 0 < N → ∀ (p : MvPolynomial (Fin 2) ℂ) (s : ℂ), ∀ k ∈ KK ℚ, k ∉ SS N → Zr N p s k = 0 := by

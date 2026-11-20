@@ -13,9 +13,9 @@ namespace GlobalTheory.FinCovol
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X H hH hp`. Take `⟨R, hR⟩` from `GlobalTheory.orthonormal_frames_bounded_of_definite r X hp`. Establish `hx0 : IsOrth X (x0F X)` using `fun τ => (X.signature τ).choose_spec.2`. Take `⟨-, -, h⟩` from `GlobalTheory.UnitaryFrames.unitary_group_frames.2 r X H hH`. Take `⟨horth, ι, hc, -, hι⟩` from `h (x0F X) hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hK` using `(isCompact_orth_bounded r X R).image_of_continuousOn (hc.mono fun x hx => hx.1)`. Use `⟨hK.of_isClosed_subset isClosed_univ fun g _ => ?_⟩` and prove the remaining obligations. Conclude with `⟨_, ⟨horth g, hR _ (horth g)⟩, hι g⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem compactSpace_unitary_of_definite :
     (∀ (r : ℕ) (X : Data E r) (H : Subgroup (X.Ψ → GL (Fin r) ℂ)),

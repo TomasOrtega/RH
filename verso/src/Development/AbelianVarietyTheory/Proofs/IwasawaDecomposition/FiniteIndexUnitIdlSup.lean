@@ -25,13 +25,11 @@ def classHom : Ideles L →* ClassGroup (𝓞 L) :=
   (ClassGroup.mk L).comp ((idealHom L).comp (finIdele L)).toHomUnits
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h1 : ClassGroup.mk L (((idealHom L).comp (finIdele L)).toHomUnits a) = 1` using `ha`. Rewrite `h1` using `[ClassGroup.mk_eq_one_iff]`. Take `⟨x, hx⟩` from `(FractionalIdeal.isPrincipal_iff _).1 h1`. Establish `hx' : GlobalTheory.Idele.idealOf (finIdele L a) = FractionalIdeal.spanSingleton (𝓞 L)⁰ x` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `GlobalTheory.Idele.idealOf_ne_zero _ (hx'.trans (FractionalIdeal.spanSingleton_zero))`. Establish `hd : finIdele L (diagUnits L (Units.mk0 x hx0)) = FiniteAdeleRing.unitEmbedding (𝓞 L) L (Units.mk0 x hx0)` using `Units.ext rfl`. Establish `hu : a * (diagUnits L (Units.mk0 x hx0))⁻¹ ∈ unitIdl L`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.Idele.smul_eq_self_iff (finIdele L (a * (diagUnits L (Units.mk0 x hx0))⁻¹)) (I := 1) one_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Idele.smul_one_eq, map_mul, map_inv, GlobalTheory.Idele.idealOf_mul, GlobalTheory.Idele.idealOf_inv, hd, GlobalTheory.Idele.idealOf_unitEmbedding, hx']`. Conclude with `mul_inv_cancel₀ (FractionalIdeal.spanSingleton_ne_zero_iff.2 hx0)`. Establish `: a = a * (diagUnits L (Units.mk0 x hx0))⁻¹ * diagUnits L (Units.mk0 x hx0)` using `by simp`. Rewrite using `[this]`.
-
-Conclude with `Subgroup.mul_mem_sup hu ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_classHom_le : (classHom L).ker ≤ unitIdl L ⊔ (diagUnits L).range := by
   intro a ha
@@ -57,7 +55,7 @@ theorem ker_classHom_le : (classHom L).ker ≤ unitIdl L ⊔ (diagUnits L).range
 open Classical in
 
 /- English proof (translation)
-Introduce `L _ _`. Establish `: (classHom L).ker.FiniteIndex` using `Subgroup.finiteIndex_ker _`. Conclude with `Subgroup.finiteIndex_of_le (ker_classHom_le L)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteIndex_unitIdl_sup : ∀ (L : Type) [Field L] [NumberField L],
     (unitIdl L ⊔ (diagUnits L).range).FiniteIndex := by

@@ -11,22 +11,22 @@ open GlobalTheory.Sieg GlobalTheory.QFam GlobalTheory.Sieg.Model
 namespace GlobalTheory.Sieg.Hol
 
 /- English proof (translation)
-Unfold `ee`. Conclude with `(differentiable_id.const_mul _).cexp`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_ee : Differentiable ℂ ee := by
   unfold ee
   exact (differentiable_id.const_mul _).cexp
 
 /- English proof (translation)
-Establish `hU : IsOpen {z : ℂ | 0 < z.im}` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `hec : Continuous ee` using `differentiable_ee.continuous`. Establish `hgc : Continuous g` using `hg.continuous`. Establish `hloc : HasProdLocallyUniformlyOn (fun (m : ℕ) (z : ℂ) => 1 + -(ee z ^ (m + 1) * g z)) (fun z => ∏' m : ℕ, (1 + -(ee z ^ (m + 1) * g z))) {z : ℂ | 0 < z.im}`. Use `hasProdLocallyUniformlyOn_of_forall_compact hU fun K hK hKc => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `K.eq_empty_or_nonempty with hK0 | hKne` into its components or cases. Substitute `hK0` using the available equality. Conclude with `Summable.hasProdUniformlyOn_nat_one_add hKc (u := fun _ => (0 : ℝ)) summable_zero (.of_forall fun n z hz => absurd hz (Set.notMem_empty z)) (fun n => (by fun_prop : Continuous fun z => -(ee z ^ (n + 1) * g z)).continuousOn)`. Take `⟨z₀, hz₀, hmax⟩` from `hKc.exists_isMaxOn hKne (continuous_norm.comp hec).continuousOn`. Take `⟨C, hC⟩` from `hKc.exists_bound_of_continuousOn hgc.continuousOn`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set r := ‖ee z₀‖ with hr_def`. Establish `hr1 : r < 1` using `norm_ee_lt_one ⟨z₀, hK hz₀⟩`. Establish `hr0 : 0 ≤ r` using `norm_nonneg _`. Establish `hr : ∀ z ∈ K, ‖ee z‖ ≤ r` using `fun z hz => hmax hz`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC z₀ hz₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Summable.hasProdUniformlyOn_nat_one_add hKc (u := fun n => C * r * r ^ n) ((summable_geometric_of_lt_one hr0 hr1).mul_left (C * r)) (.of_forall fun n z hz => ?_) (fun n => (by fun_prop : Continuous fun z => -(ee z ^ (n + 1) * g z)).continuousOn)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `hd` using `hloc.differentiableOn (.of_forall fun n => by`. Simplify `DifferentiableOn.finsetProd (fun i _ => ((differentiable_const (1 : ℂ)).add ((differentiable_ee.pow (i + 1)).mul hg).neg).differentiableOn)) hU` using `[Finset.prod_fn]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `hd.congr fun z _ => ?_` and prove the remaining obligations. Simplify using `only [sub_eq_add_neg]`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn_geomProd {g : ℂ → ℂ} (hg : Differentiable ℂ g) :
     DifferentiableOn ℂ (fun z => ∏' m : ℕ, (1 - ee z ^ (m + 1) * g z)) {z : ℂ | 0 < z.im} := by
@@ -64,19 +64,17 @@ theorem differentiableOn_geomProd {g : ℂ → ℂ} (hg : Differentiable ℂ g) 
 def geomProd (q a : ℂ) : ℂ := ∏' m : ℕ, (1 - q ^ (m + 1) * a)
 
 /- English proof (translation)
-Take `⟨hc1, hc6, hnot⟩` from `h`. Establish `hq : ‖ee τ‖ < 1` using `norm_ee_lt_one τ`. Establish `hx : ¬ (x 0 ∈ Set.range ((↑) : ℤ → ℚ) ∧ x 1 ∈ Set.range ((↑) : ℤ → ℚ))`. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Conclude with `hnot ⟨⟨(c : ℤ) * a, by push_cast; rw [ha]⟩, ⟨(c : ℤ) * b, by push_cast; rw [hb]⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hcx : ¬ ((c • x) 0 ∈ Set.range ((↑) : ℤ → ℚ) ∧ (c • x) 1 ∈ Set.range ((↑) : ℤ → ℚ))`. Simplify `hnot` using `[nsmul_eq_mul]`. Establish `htc : ee (pt x τ) ^ c = ee (pt (c • x) τ)` using `ee_pt_pow c x τ`. Establish `n1 : ∀ m : ℕ, 1 - ee τ ^ (m + 1) * ee (pt x τ) ≠ 0` using `fun m => (ne_one_of_not_int hx τ (m + 1)).1`. Establish `n2 : ∀ m : ℕ, 1 - ee τ ^ (m + 1) * (ee (pt x τ))⁻¹ ≠ 0` using `fun m => (ne_one_of_not_int hx τ (m + 1)).2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n3 : ∀ m : ℕ, 1 - ee τ ^ (m + 1) * ee (pt x τ) ^ c ≠ 0` using `fun m => by`. Rewrite using `[htc]`. Conclude with `(ne_one_of_not_int hcx τ (m + 1)).1`. Establish `n4 : ∀ m : ℕ, 1 - ee τ ^ (m + 1) * (ee (pt x τ) ^ c)⁻¹ ≠ 0` using `fun m => by`. Rewrite using `[htc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(ne_one_of_not_int hcx τ (m + 1)).2`. Take `⟨P1, -, h1⟩` from `hasProd_geom hq _ n1`. Take `⟨P2, -, h2⟩` from `hasProd_geom hq _ n2`. Take `⟨P3, hP3, h3⟩` from `hasProd_geom hq _ n3`. Take `⟨P4, hP4, h4⟩` from `hasProd_geom hq _ n4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : geomProd (ee τ) (ee (pt x τ)) = P1` using `h1.tprod_eq`. Establish `e2 : geomProd (ee τ) (ee (pt x τ))⁻¹ = P2` using `h2.tprod_eq`. Establish `e3 : geomProd (ee τ) (ee (pt x τ) ^ c) = P3` using `h3.tprod_eq`. Establish `e4 : geomProd (ee τ) (ee (pt x τ) ^ c)⁻¹ = P4` using `h4.tprod_eq`. Rewrite using `[e1, e2, e3, e4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨mul_ne_zero hP3 hP4, ?_⟩` and prove the remaining obligations. Establish `hall` using `((hasProd_pow h1 (c ^ 2)).mul (hasProd_pow h2 (c ^ 2))).mul (hasProd_inv (h3.mul h4) (mul_ne_zero hP3 hP4))`. Rewrite using `[div_eq_mul_inv, ← hall.tprod_eq]`. Use `tprod_congr fun m => ?_` and prove the remaining obligations. Unfold `cthFac`.
-
-Rewrite using `[div_eq_mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tprod_cthFac {c : ℕ} {x : Fin 2 → ℚ} (h : admitted c x) (τ : ℍ) :
     geomProd (ee τ) (ee (pt x τ) ^ c) * geomProd (ee τ) (ee (pt x τ) ^ c)⁻¹ ≠ 0 ∧
@@ -121,15 +119,13 @@ namespace GlobalTheory.Sieg
 open Hol
 
 /- English proof (translation)
-Introduce `c x h`. Rewrite using `[UpperHalfPlane.mdifferentiable_iff]`. Use `set T : ℂ → ℂ := fun z => ee ((x 0 : ℂ) * z + (x 1 : ℂ)) with hT`. Establish `hTd : Differentiable ℂ T` using `differentiable_ee.comp ((differentiable_id.const_mul _).add_const _)`. Establish `hT0 : ∀ z, T z ≠ 0` using `fun z => ee_ne_zero _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG1` using `differentiableOn_geomProd hTd`. Establish `hG2` using `differentiableOn_geomProd (hTd.inv hT0)`. Establish `hG3` using `differentiableOn_geomProd (hTd.pow c)`. Establish `hG4` using `differentiableOn_geomProd ((hTd.pow c).inv fun z => pow_ne_zero _ (hT0 z))`. Establish `hnd : ∀ z ∈ {z : ℂ | 0 < z.im}, 1 - T z ^ c ≠ 0` using `fun z hz => (multipliable_and_sg_ne_zero h ⟨z, hz⟩).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnG : ∀ z ∈ {z : ℂ | 0 < z.im}, geomProd (ee z) (T z ^ c) * geomProd (ee z) (T z ^ c)⁻¹ ≠ 0` using `fun z hz => (tprod_cthFac h ⟨z, hz⟩).1`. Establish `hH : DifferentiableOn ℂ (fun z => ee z ^ ((c ^ 2 - 1) / 12) * (-T z) ^ (((c : ℤ) - (c : ℤ) ^ 2) / 2) * (1 - T z) ^ (c ^ 2) / (1 - T z ^ c) * (geomProd (ee z) (T z) ^ (c ^ 2) * geomProd (ee z) (T z)⁻¹ ^ (c ^ 2) / (geomProd (ee z) (T z ^ c) * geomProd (ee z) (T z ^ c)⁻¹))) {z : ℂ | …`. Use `DifferentiableOn.mul (DifferentiableOn.div (DifferentiableOn.mul (DifferentiableOn.mul ?_ ?_) ?_) ?_ hnd) (DifferentiableOn.div (DifferentiableOn.mul (hG1.pow _) (hG2.pow _)) (hG3.mul hG4) hnG)` and prove the remaining obligations. Conclude with `(differentiable_ee.pow _).differentiableOn`. Conclude with `hTd.neg.differentiableOn.zpow (Or.inl fun z _ => neg_ne_zero.mpr (hT0 z))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(((differentiable_const _).sub hTd).pow _).differentiableOn`. Conclude with `((differentiable_const _).sub (hTd.pow c)).differentiableOn`. Use `hH.congr fun z hz => ?_` and prove the remaining obligations. Establish `hz' : 0 < z.im` using `hz`. Simplify using `only [Function.comp_apply, UpperHalfPlane.ofComplex_apply_of_im_pos hz']`.
-
-Unfold `sg cth`. Rewrite using `[(tprod_cthFac h ⟨z, hz'⟩).2]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mdifferentiable_sg :
     ∀ (c : ℕ) (x : Fin 2 → ℚ), admitted c x → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (sg c x) := by

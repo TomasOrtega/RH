@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.DyadicPrimeIntervals.Sm
 namespace PI.PrimesDyadicRS.K
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem run3 : run 98304 4388 32768 65536 3030 = true := by decide +kernel
 

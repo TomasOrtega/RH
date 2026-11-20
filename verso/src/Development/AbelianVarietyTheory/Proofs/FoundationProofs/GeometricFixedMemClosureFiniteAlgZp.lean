@@ -9,15 +9,13 @@ namespace GlobalTheory.K5.GeoFix
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Establish `mono : ∀ {S S' : Finset Ω}, S ⊆ S' → Subfield.closure (R ∪ (S : Set Ω)) ≤ Subfield.closure (R ∪ (S' : Set Ω))` using `fun h => Subfield.closure_mono (Set.union_subset_union_right _ (Finset.coe_subset.2 h))`. Establish `two : ∀ {y z : Ω}, (∃ S : Finset Ω, (S : Set Ω) ⊆ A ∧ y ∈ Subfield.closure (R ∪ (S : Set Ω))) → (∃ S : Finset Ω, (S : Set Ω) ⊆ A ∧ z ∈ Subfield.closure (R ∪ (S : Set Ω))) → ∃ S : Finset Ω, (S : Set Ω) ⊆ A ∧ y ∈ Subfield.closure (R ∪ (S : Set Ω)) ∧ z ∈ Subfield.closure (R ∪ (S : S …`. Introduce and unpack `y z ⟨S, hS, hy⟩ ⟨S', hS', hz⟩`. Use `⟨S ∪ S', ?_, mono Finset.subset_union_left hy, mono Finset.subset_union_right hz⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_union]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.union_subset hS hS'`. Set `F : Subfield Ω` to `{ carrier := {y | ∃ S : Finset Ω, (S : Set Ω) ⊆ A ∧ y ∈ Subfield.closure (R ∪ (S : Set Ω))} mul_mem' := fun {a b} ha hb => by`. Take `⟨S, hS, h1, h2⟩` from `two ha hb`. Conclude with `⟨S, hS, mul_mem h1 h2⟩`. Use the proof step `one_mem' := ⟨∅, by simp, one_mem _⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `add_mem' := fun {a b} ha hb => by`. Take `⟨S, hS, h1, h2⟩` from `two ha hb`. Conclude with `⟨S, hS, add_mem h1 h2⟩`. Use the proof step `zero_mem' := ⟨∅, by simp, zero_mem _⟩`. Use the proof step `neg_mem' := fun {a} ⟨S, hS, h1⟩ => ⟨S, hS, neg_mem h1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `inv_mem' := fun a ⟨S, hS, h1⟩ => ⟨S, hS, inv_mem h1⟩ }`. Establish `hle : Subfield.closure (R ∪ A) ≤ F`. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `y (hy | hy)`. Conclude with `⟨∅, by simp, Subfield.subset_closure (Or.inl hy)⟩`.
-
-Use `⟨{y}, by simpa using hy, Subfield.subset_closure (Or.inr (by simp))⟩` and prove the remaining obligations. Conclude with `hle hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_of_mem_closure (R A : Set Ω) {x : Ω} (hx : x ∈ Subfield.closure (R ∪ A)) :
     ∃ S : Finset Ω, (S : Set Ω) ⊆ A ∧ x ∈ Subfield.closure (R ∪ (S : Set Ω)) := by
@@ -57,13 +55,11 @@ def geoField : Subfield Ω :=
   Subfield.closure (Set.range (algebraMap (O0 p) Ω) ∪ {x : Ω | IsAlgZp p x})
 
 /- English proof (translation)
-Use `haveI := h.clo`. Use `haveI : CharZero Ω := Basic.charZero_of_isClo h`. Establish `hR : ∀ a : O0 p, algebraMap (O0 p) Ω a ∈ geoField p Ω` using `fun a => Subfield.subset_closure (Or.inl ⟨a, rfl⟩)`. Set `f : O0 p →+* geoField p Ω` to `(algebraMap (O0 p) Ω).codRestrict (geoField p Ω) hR`. Establish `hf : (algebraMap (geoField p Ω) Ω).comp f = algebraMap (O0 p) Ω` using `by ext; rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfi : Function.Injective f` using `fun a b hab => h.inj (congrArg Subtype.val hab)`. Use `haveI : Algebra.IsAlgebraic (geoField p Ω) Ω := ⟨fun a => by`. Take `⟨P, hP0, hP⟩` from `h.alg.isAlgebraic a`. Use `⟨P.map f, (Polynomial.map_ne_zero_iff hfi).2 hP0, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map, hf, ← Polynomial.aeval_def, hP]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `haveI : IsAlgClosure (geoField p Ω) Ω := ⟨h.clo, inferInstance⟩`. Use `haveI : IsGalois (geoField p Ω) Ω := IsAlgClosure.isGalois _ Ω`. Establish `hbot : x ∈ (⊥ : IntermediateField (geoField p Ω) Ω)`. Use `(InfiniteGalois.mem_bot_iff_fixed x).2 fun σ => ?_` and prove the remaining obligations. Set `τ : Ω ≃ₐ[O0 p] Ω` to `AlgEquiv.ofRingEquiv (f := σ.toRingEquiv) (fun a => σ.commutes ⟨_, hR a⟩)`.
-
-Establish `hτ : τ ∈ Ggeo p Ω` using `fun y hy => σ.commutes ⟨y, Subfield.subset_closure (Or.inr hy)⟩`. Conclude with `hx τ hτ`. Take `⟨y, rfl⟩` from `IntermediateField.mem_bot.1 hbot`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_geoField_of_fixed (h : IsClo p Ω) (x : Ω) (hx : ∀ g ∈ Ggeo p Ω, g x = x) :
     x ∈ geoField p Ω := by
@@ -90,7 +86,7 @@ theorem mem_geoField_of_fixed (h : IsClo p Ω) (x : Ω) (hx : ∀ g ∈ Ggeo p �
   exact y.2
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ h x hx`. Take `⟨S, hS, hxS⟩` from `exists_finset_of_mem_closure _ _ (mem_geoField_of_fixed h x hx)`. Conclude with `⟨S, fun s hs => hS hs, hxS⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fixed_mem_closure : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ x : Ω, (∀ g ∈ Ggeo p Ω, g x = x) → ∃ S : Finset Ω, (∀ s ∈ S, IsAlgZp p s) ∧

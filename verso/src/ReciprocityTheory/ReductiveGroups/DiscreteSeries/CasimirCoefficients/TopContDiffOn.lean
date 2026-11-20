@@ -21,9 +21,9 @@ namespace CapG
 variable {E E' : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E'] [NormedSpace ℂ E']
 
 /- English proof (translation)
-Establish `h2 : ContDiffOn ℂ ∞ (negL a b G) U` using `(GelfandGA.lhol_contDiffOn hU hG _).neg`. Unfold `Formalism.QuantumDeterminants.Top`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `only [↓reduceIte]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `(hG.const_smul u).add h2`. Simplify using `only [hab, ↓reduceIte, zero_add]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem top_contDiffOn {U : Set (Matrix (Fin n) (Fin n) ℂ)} (hU : IsOpen U)
     {G : Matrix (Fin n) (Fin n) ℂ → E} (hG : ContDiffOn ℂ ∞ G U) (u : ℂ) (a b : Fin n) :
@@ -38,11 +38,11 @@ theorem top_contDiffOn {U : Set (Matrix (Fin n) (Fin n) ℂ)} (hU : IsOpen U)
     exact h2
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨hG, fun g hg hgu => by simpa using hf g hg hgu⟩`. Consider the case `cons x l ih`. Take `⟨ihc, ihf⟩` from `ih`. Simplify using `only [List.map_cons, List.foldr_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨top_contDiffOn hU ihc _ _ _, fun g hg hgu => ?_⟩` and prove the remaining obligations. Establish `hz` using `(hWU g hg).2`. Establish `hHd` using `ihc.differentiableOn (by simp)`. Use `set H := (l.map fun x => Formalism.QuantumDeterminants.Top negL x.1 x.2.1 x.2.2).foldr (fun T h => T h) G with hH`. Establish `hF : DifferentiableOn ℂ (fun z => Lk (H z)) U` using `Lk.differentiable.comp_differentiableOn hHd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `eabV_of_local ε hU hF hW hWU ihf x.2.1 x.2.2 hg hgu`. Use `show (if x.2.1 = x.2.2 then x.1 • _ else 0) + EabV ε x.2.1 x.2.2 _ g = Lk ((if x.2.1 = x.2.2 then x.1 • _ else 0) + negL x.2.1 x.2.2 _ (g⁻¹ * m))`. Rewrite using `[e, CasG.lhol_clm _ _ ((hHd _ hz).differentiableAt (hU.mem_nhds hz)), ihf g hg hgu, map_add]`. Simplify using `only [negL, map_neg]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem foldr_local (ε : Fin n → Bool) (Lk : E →L[ℂ] E') {G : Matrix (Fin n) (Fin n) ℂ → E}
     {U W : Set (Matrix (Fin n) (Fin n) ℂ)} {m : Matrix (Fin n) (Fin n) ℂ} (hU : IsOpen U)
@@ -71,9 +71,9 @@ theorem foldr_local (ε : Fin n → Bool) (Lk : E →L[ℂ] E') {G : Matrix (Fin
     split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.qdetOp, Formalism.QuantumDeterminants.qminorOp, Finset.sum_apply, Pi.smul_apply, map_sum, map_smul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `key` using `(foldr_local ε Lk hU hG hW hWU hf (List.ofFn fun k : Fin n => (u - ((k : ℕ) : ℂ), σ k, k))).2 g hg hgu`. Rewrite `key` using `[List.map_ofFn, List.map_ofFn]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem qdet_local (ε : Fin n → Bool) (Lk : E →L[ℂ] E') {G : Matrix (Fin n) (Fin n) ℂ → E}
     {U W : Set (Matrix (Fin n) (Fin n) ℂ)} {m : Matrix (Fin n) (Fin n) ℂ} (hU : IsOpen U)
@@ -94,11 +94,11 @@ end CapG
 variable {ε : Fin n → Bool} {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Use `compactSpace_KG ε` as an intermediate fact. Take `⟨U₁, hU₁o, hpos₁, -, hcap⟩` from `cap_psM T μ lam hμ`. Establish `hUo : IsOpen (U₁ ∩ Ps1.Uset ε)` using `hU₁o.inter Ps1.isOpen_Uset`. Establish `hpos : posSet n ⊆ U₁ ∩ Ps1.Uset ε` using `Set.subset_inter hpos₁ Ps1.posSet_subset_Uset`. Establish `hsm : ContDiffOn ℂ ∞ (psM T μ) (U₁ ∩ Ps1.Uset ε)` using `(GelfandGA.psM_contDiffOn T μ).mono Set.inter_subset_right`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W, k₀, hWo, hgW, hWV, hloc⟩` from `psiM_local T μ hμ _ hUo hpos hg`. Establish `hz : g⁻¹ * toMK k₀ ∈ U₁ ∩ Ps1.Uset ε` using `(hWV g hgW).2`. Establish `hlocL : ∀ g' ∈ W, inUJ ε g' → PsiM T μ g' = ContinuousLinearMap.mul ℂ (T.V →L[ℂ] T.V) (T.op k₀) (psM T μ (g'⁻¹ * toMK k₀))` using `fun g' hg' hgu => hloc g' hg' hgu`. Establish `e` using `CapG.qdet_local ε _ hUo hsm hWo hWV hlocL (Y + ((n : ℂ) - 1) / 2) hgW hg`. Use `show Formalism.QuantumDeterminants.qdetOp (EabV ε) _ (PsiM T μ) g = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hcap Y _ hz.1, map_smul, hloc g hgW hg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem psiM_capelli (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsMu lam μ) (Y : ℂ)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :

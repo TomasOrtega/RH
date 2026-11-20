@@ -5,11 +5,11 @@ namespace PositivityTheory.Xgn.FreeNakayamaDescent
 open TensorProduct Module
 
 /- English proof (translation)
-Use `haveI : Module.Free S (S ⊗[A] M) := Module.Free.of_basis b`. Use `haveI : Module.Flat A M := Module.Flat.of_flat_tensorProduct A M S`. Establish `hrk : ∀ p : PrimeSpectrum A, rankAtStalk M p = r`. Introduce `p`. Take `⟨q, rfl⟩` from `PrimeSpectrum.comap_surjective_of_faithfullyFlat (A := A) (B := S) p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : Nontrivial S := q.nontrivial`. Rewrite using `[← rankAtStalk_baseChange, rankAtStalk_eq_finrank_of_free]`. Simplify using `[finrank_eq_card_basis b]`. Apply `nonempty_basis_of_flat_of_finrank_eq A M r` to reduce the goal to its premises. Introduce `P`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := P.2`. Use `letI := Ideal.Quotient.field P.1`. Establish `h` using `rankAtStalk_baseChange (R := A) (M := M) (S := A ⧸ P.1) ⟨⊥, Ideal.isPrime_bot⟩`. Rewrite `h` using `[hrk, rankAtStalk_eq_finrank_of_free]`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem descent (A S M : Type) [CommRing A] [CommRing S] [Algebra A S] [Module.FaithfullyFlat A S]
     [Finite (MaximalSpectrum A)] [AddCommGroup M] [Module A M] [Module.Finite A M] (r : ℕ)
@@ -31,13 +31,13 @@ theorem descent (A S M : Type) [CommRing A] [CommRing S] [Algebra A S] [Module.F
   simpa using h
 
 /- English proof (translation)
-Use `⟨Basis.mk (v := y) ?_ ?_⟩` and prove the remaining obligations. Rewrite `hli`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Use `hli (fun q => c.repr (g q.1) q.2) (by` as an intermediate fact. Rewrite using `[Fintype.sum_prod_type, ← hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← c.sum_repr (g j), Finset.sum_smul]`. Simplify using `only [smul_assoc])`. Apply `c.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this (j, i)`. Introduce `t _`. Establish `ht : t ∈ Submodule.span k (Set.range fun q : Fin r × ι => c q.2 • y q.1)`. Rewrite using `[hsp]`. Discharge the goal by the elementary cases of `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Establish `hle : Submodule.span k (Set.range fun q : Fin r × ι => c q.2 • y q.1) ≤ (Submodule.span S (Set.range y)).restrictScalars k`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `Submodule.smul_mem (Submodule.span S (Set.range y)) (c q.2) (Submodule.subset_span (Set.mem_range_self q.1))`. Conclude with `hle ht`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem basis_of_tower (k S T ι : Type) [Field k] [CommRing S] [Algebra k S] [AddCommGroup T]
     [Module k T] [Module S T] [IsScalarTower k S T] [Fintype ι] (c : Basis ι k S) (r : ℕ)
@@ -67,21 +67,19 @@ theorem basis_of_tower (k S T ι : Type) [Field k] [CommRing S] [Algebra k S] [A
     exact hle ht
 
 /- English proof (translation)
-Use `haveI : Module.Finite F A := Module.Finite.of_basis b`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite F A`. Use `haveI : Module.Finite A M := Module.Finite.of_restrictScalars_finite F A M`. Establish `ibc : IsBaseChange k (IsScalarTower.toAlgHom F A S).toLinearMap` using `Algebra.IsPushout.out`. Set `c : Basis ι k S` to `ibc.basis b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc : ∀ i, c i = algebraMap A S (b i)` using `fun i => ibc.basis_apply b i`. Set `g : S ⊗[A] M ≃ₗ[k] N` to `(Algebra.IsPushout.cancelBaseChange F k A S M).trans e`. Establish `hg : ∀ i (n : N), g.symm (act i n) = c i • g.symm n`. Introduce `i n`. Take `⟨t, rfl⟩` from `e.surjective n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => simp only [map_add, hu, hv, smul_add]`. Consider the case `tmul s m`. Establish `h1 : (s ⊗ₜ[F] m : k ⊗[F] M) = s • (1 ⊗ₜ[F] m)` using `by simp [smul_tmul']`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, map_smul, map_smul, hact, map_smul, map_smul, smul_comm, hc]`. Use `congr 1`. Simplify using `[g, smul_tmul', ← smul_tmul, Algebra.smul_def]`. Take `⟨bS⟩` from `basis_of_tower k S (S ⊗[A] M) ι c r (fun j => g.symm (x j)) (by`. Use `hli.map' g.symm.toLinearMap g.symm.ker` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h2 : (fun q : Fin r × ι => c q.2 • g.symm (x q.1)) = g.symm.toLinearMap ∘ (fun q : Fin r × ι => act q.2 (x q.1))`. Use function extensionality and compare the values at `q`. Simplify using `[hg]`. Rewrite using `[h2]`. Conclude with `this)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Establish `: (fun q : Fin r × ι => c q.2 • g.symm (x q.1)) = g.symm.toLinearMap ∘ (fun q : Fin r × ι => act q.2 (x q.1))`. Use function extensionality and compare the values at `q`. Simplify using `[hg]`. Rewrite using `[this, Set.range_comp, ← Submodule.map_span, hsp, Submodule.map_top]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g.symm.range)`. Take `⟨bA⟩` from `descent A S M r bS`. Use `⟨bA, ?_⟩` and prove the remaining obligations. Establish `: (fun q : Fin r × ι => b q.2 • bA q.1) = b.smulTower' bA`. Use function extensionality and compare the values at `q`.
-
-Conclude with `(Basis.smulTower'_apply b bA q).symm`. Rewrite using `[this]`. Conclude with `⟨Basis.linearIndependent _, Basis.span_eq _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem abstract_descent (F k A S M N ι : Type) [Field F] [Field k] [CommRing A] [CommRing S]
     [Algebra F k] [Algebra F A] [Algebra F S] [Algebra k S] [Algebra A S]
@@ -139,9 +137,9 @@ theorem abstract_descent (F k A S M N ι : Type) [Field F] [Field k] [CommRing A
 
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 /- English proof (translation)
-Use `letI : Module A (n → F) := Module.compHom (n → F) φ.toRingHom`. Establish `hs : ∀ (a : A) (m : n → F), a • m = (φ a).mulVec m` using `fun _ _ => rfl`. Use `haveI : IsScalarTower F A (n → F) := ⟨fun c a m => by`. Rewrite using `[hs, hs, map_smul, Matrix.smul_mulVec]⟩`. Use `haveI : Algebra.IsPushout F k A (A ⊗[F] k) := Algebra.IsPushout.symm inferInstance`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `abstract_descent F k A (A ⊗[F] k) (n → F) (n → k) ι b (TensorProduct.piScalarRight F k k n) (fun i => ((φ (b i)).map (algebraMap F k)).mulVecLin) (by`. Introduce `i m`. Use function extensionality and compare the values at `a`. Simplify using `[hs, Matrix.mulVec, dotProduct, Algebra.smul_def]) r x hli hsp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matrix_descent (F k A n ι : Type) [Field F] [Field k] [CommRing A]
     [Algebra F k] [Algebra F A] [Fintype n] [DecidableEq n] [Fintype ι] (b : Basis ι F A)
@@ -166,9 +164,9 @@ theorem matrix_descent (F k A n ι : Type) [Field F] [Field k] [CommRing A]
       simp [hs, Matrix.mulVec, dotProduct, Algebra.smul_def]) r x hli hsp
 
 /- English proof (translation)
-Set `φ : F ⊗[ℤ] O →ₐ[F] Matrix n n F` to `Algebra.TensorProduct.lift (Algebra.ofId F _) ρ.toIntAlgHom (fun c y => Algebra.commute_algebraMap_left c _)`. Set `b` to `Algebra.TensorProduct.basis F β`. Establish `hb : ∀ i, φ (b i) = ρ (β i)`. Introduce `i`. Simplify using `only [φ, b, Algebra.TensorProduct.basis_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `(Algebra.TensorProduct.lift_tmul _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression. Use `matrix_descent F k _ n _ b φ r x (by simpa only [hb] using hli) (by simpa only [hb] using hsp)` as an intermediate fact. Simplify `this` using `only [hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem int_descent (F k O n ι : Type) [Field F] [Field k] [CommRing O]
     [Algebra F k] [Fintype n] [DecidableEq n] [Fintype ι] (β : Basis ι ℤ O)
@@ -194,9 +192,9 @@ theorem int_descent (F k O n ι : Type) [Field F] [Field k] [CommRing O]
   simpa only [hb] using this
 
 /- English proof (translation)
-Set `b0` to `Basis.mk hli hsp.ge`. Set `σ : n ≃ κ` to `(Pi.basisFun (IsLocalRing.ResidueField R) n).indexEquiv b0`. Establish `h0` using `((Pi.basisFun (IsLocalRing.ResidueField R) n).reindex σ).is_basis_iff_det.1 ⟨hli, hsp⟩`. Rewrite using `[((Pi.basisFun R n).reindex σ).is_basis_iff_det]`. Rewrite `h0`, the goal using `[Basis.det_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← isUnit_map_iff (IsLocalRing.residue R), RingHom.map_det]`. Use `h0 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `[Basis.toMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lift_basis (R n κ : Type) [CommRing R] [IsLocalRing R] [Fintype n] [DecidableEq n]
     [Fintype κ] (v : κ → n → R)
@@ -219,15 +217,13 @@ theorem lift_basis (R n κ : Type) [CommRing R] [IsLocalRing R] [Fintype n] [Dec
 end PositivityTheory.Xgn.FreeNakayamaDescent
 
 /- English proof (translation)
-Introduce `E _ _ R k _ _ _ f _ n _ _ r ρ ⟨x, hli, hsp⟩`. Use `letI : Algebra (IsLocalRing.ResidueField R) k := (IsLocalRing.ResidueField.lift f).toAlgebra`. Set `ρ0 : 𝓞 E →+* Matrix n n (IsLocalRing.ResidueField R)` to `(IsLocalRing.residue R).mapMatrix.comp ρ`. Establish `hb : ∀ a, ρ0 a = (ρ a).map (IsLocalRing.residue R)` using `fun _ => rfl`. Establish `hb' : ∀ a, (ρ0 a).map (algebraMap (IsLocalRing.ResidueField R) k) = (ρ a).map f`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[hb, Matrix.map_map]`. Both sides reduce to the same expression. Take `⟨x0, h1, h2⟩` from `PositivityTheory.Xgn.FreeNakayamaDescent.int_descent (IsLocalRing.ResidueField R) k _ n _ (RingOfIntegers.basis E) ρ0 r x (by simpa only [hb'] using hli) (by simpa only [hb'] using hsp)`. Use `choose y hy using fun j a => IsLocalRing.residue_surjective (R := R) (x0 j a)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `key : (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => fun a => IsLocalRing.residue R ((ρ (RingOfIntegers.basis E q.2)).mulVec (y q.1) a)) = fun q => (ρ0 (RingOfIntegers.basis E q.2)).mulVec (x0 q.1)`. Use function extensionality and compare the values at `q a`. Rewrite using `[hb, RingHom.map_mulVec]`. Use `congr 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Conclude with `hy _ _`. Apply `PositivityTheory.Xgn.FreeNakayamaDescent.lift_basis` to reduce the goal to its premises. Rewrite using `[key]`. Conclude with `h1`.
-
-Rewrite using `[key]`. Conclude with `h2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.free_module_nakayama_descent : ∀ (E : Type) [Field E] [NumberField E] (R k : Type) [CommRing R] [IsLocalRing R] [Field k] (f : R →+* k) [IsLocalHom f] (n : Type) [Fintype n] [DecidableEq n] (r : ℕ) (ρ : 𝓞 E →+* Matrix n n R), (∃ x : Fin r → n → k, LinearIndependent k (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => ((ρ (RingOfIntegers.basis E q.2)).map f).mulVec (x q.1)) ∧ Submodule.span k (Set.range fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => ((ρ (RingOfIntegers.basis E q.2)).map f).mulVec (x q.1)) = ⊤) → ∃ x : Fin r → n → R, LinearIndependent R (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => (ρ (RingOfIntegers.basis E q.2)).mulVec (x q.1)) ∧ Submodule.span R (Set.range fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => (ρ (RingOfIntegers.basis E q.2)).mulVec (x q.1)) = ⊤ := by
   intro E _ _ R k _ _ _ f _ n _ _ r ρ ⟨x, hli, hsp⟩

@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 GroundTheory.Heights₂.Heights.
 universe u v w
 
 /- English proof (translation)
-Unfold `intNum`. Rewrite using `[FieldNumbers.mixedDiff_comp_perm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem intNum_comp_perm {K : Type*} [DecidableEq K] {ι : K → Type*} {F : Type*} [Field F]
     (P : Ideal (MRing ι F)) {n : ℕ} (bs : Fin n → K → ℤ) (σ : Equiv.Perm (Fin n)) :
@@ -21,7 +21,7 @@ theorem intNum_comp_perm {K : Type*} [DecidableEq K] {ι : K → Type*} {F : Typ
   rw [FieldNumbers.mixedDiff_comp_perm]
 
 /- English proof (translation)
-Introduce `I hI V n L σ hV`. Establish `hA : ∀ L' : Fin n → K → ℤ, I V n L' = intNum F V L'` using `fun L' => Numbers.agree_of FieldNumbers.IntNumBase.full FieldNumbers.CutRational.full FieldNumbers.ExistsForm.full FieldNumbers.DivCycleSupport.full I hI V n L' hV`. Rewrite using `[hA (L ∘ σ), hA L]`. Conclude with `intNum_comp_perm V L σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SymmStatement.of_type (F : Type u) [Field F] {K : Type} [Fintype K] (ι : K → Type)
     [∀ k, Fintype (ι k)] : SymmStatement F ι := by
@@ -34,7 +34,7 @@ theorem SymmStatement.of_type (F : Type u) [Field F] {K : Type} [Fintype K] (ι 
   exact intNum_comp_perm V L σ
 
 /- English proof (translation)
-Set `e : K ≃ Fin (Fintype.card K)` to `Fintype.equivFin K`. Use `hR F K ι (Fin (Fintype.card K)) (fun j => Fin (Fintype.card (ι (e.symm j)))) e (fun k => (Fintype.equivFin (ι k)).trans (finCongr ?_)) (SymmStatement.of_type F _)` and prove the remaining obligations. Conclude with `congrArg (fun x => Fintype.card (ι x)) (e.symm_apply_apply k).symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem SymmStatement.of_found (hR : SymmRelabel.Statement.{u, v, w, 0, 0}) {K : Type v}
     [Fintype K] (F : Type u) [Field F] (ι : K → Type w) [∀ k, Fintype (ι k)] :

@@ -17,54 +17,54 @@ namespace ClsSpec
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem res_zero {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) : Sec.res g (0 : Sec F U) = 0 := map_zero _
 /- English proof (translation)
-The claim follows from `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_add {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (a b : Sec F U) :
     Sec.res g (a + b) = Sec.res g a + Sec.res g b := map_add _ _ _
 /- English proof (translation)
-The claim follows from `map_sub _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_sub {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (a b : Sec F U) :
     Sec.res g (a - b) = Sec.res g a - Sec.res g b := map_sub _ _ _
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem smap_zero {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} : Sec.map φ (0 : Sec F U) = 0 := map_zero _
 /- English proof (translation)
-The claim follows from `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem smap_add {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
     Sec.map φ (a + b) = Sec.map φ a + Sec.map φ b := map_add _ _ _
 /- English proof (translation)
-The claim follows from `map_sub _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem smap_sub {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
     Sec.map φ (a - b) = Sec.map φ a - Sec.map φ b := map_sub _ _ _
 /- English proof (translation)
-The claim follows from `map_nsmul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem smap_nsmul {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (k : ℕ) (a : Sec F U) :
     Sec.map φ (k • a) = k • Sec.map φ a := map_nsmul _ _ _
 
 /- English proof (translation)
-Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_comp {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (a : Sec F U) :
     Sec.res k (Sec.res g a) = Sec.res (k ≫ g) a := by
   simp only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_id {F : Shv R} {U : Scheme.{0}} (a : Sec F U) : Sec.res (𝟙 U) a = a := by
   simp [Sec.res]
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun f => f.hom a) (φ.hom.naturality g.op)).symm`.
+A detailed English derivation is pending.
 -/
 theorem res_map {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec F U) :
     Sec.res g (Sec.map φ a) = Sec.map φ (Sec.res g a) :=
@@ -82,15 +82,15 @@ Both sides reduce to the same expression.
 theorem map_zero_hom {F G : Shv R} {U : Scheme.{0}} (a : Sec F U) : Sec.map (0 : F ⟶ G) a = 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[map_comp, I.d_comp_d, map_zero_hom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_d (I : Cx R) (i j k : ℤ) {U : Scheme.{0}} (a : Sec (I.X i) U) : Sec.map (I.d j k) (Sec.map (I.d i j) a) = 0 := by
   rw [map_comp, I.d_comp_d, map_zero_hom]
 
 /- English proof (translation)
-Establish `h : resι R F ≫ (res R F).d 0 1 = 0`. Establish `h₁ : (resAug F).f 0 ≫ (res R F).d 0 1 = 0`. Rewrite using `[(resAug F).comm 0 1]`. Establish `: (sgl F).d 0 1 = 0` using `rfl`. Rewrite using `[this, zero_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(sglι F ≫ (resAug F).f 0) ≫ _ = 0`. Rewrite using `[Category.assoc, h₁, comp_zero]`. Rewrite using `[map_comp, h, map_zero_hom]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem d_resι (F : Shv R) {U : Scheme.{0}} (a : Sec F U) : Sec.map ((res R F).d 0 1) (Sec.map (resι R F) a) = 0 := by
   have h : resι R F ≫ (res R F).d 0 1 = 0 := by
@@ -103,59 +103,55 @@ theorem d_resι (F : Shv R) {U : Scheme.{0}} (a : Sec F U) : Sec.map ((res R F).
   rw [map_comp, h, map_zero_hom]
 
 /- English proof (translation)
-Simplify using `[Sx.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sx_res_comp {E : Spc} {p : ℕ} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sx E p U) :
     (x.res g).res k = x.res (k ≫ g) := by
   simp [Sx.res]
 
 /- English proof (translation)
-Simplify using `[Sx.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sx_res_id {E : Spc} {p : ℕ} {U : Scheme.{0}} (x : Sx E p U) : x.res (𝟙 U) = x := by
   simp [Sx.res]
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun f => f x) ((E.δ i).naturality g.op)).symm`.
+A detailed English derivation is pending.
 -/
 theorem face_res {E : Spc} {p : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E (p + 1) U) (i : Fin (p + 2)) :
     (x.face i).res g = (x.res g).face i :=
   (congrArg (fun f => f x) ((E.δ i).naturality g.op)).symm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.etaleLocal_property_calculus_rules.2.1 U P Q h i`.
+A detailed English derivation is pending.
 -/
 theorem loc_mono {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P) (i : ∀ V g, P V g → Q V g) :
     Loc U Q := GlobalTheory.T.etaleLocal_property_calculus_rules.2.1 U P Q h i
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.etaleLocal_property_calculus_rules.2.2.1 U P Q h i`.
+A detailed English derivation is pending.
 -/
 theorem loc_and {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P) (i : Loc U Q) :
     Loc U fun V g => P V g ∧ Q V g := GlobalTheory.T.etaleLocal_property_calculus_rules.2.2.1 U P Q h i
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.etaleLocal_property_calculus_rules.2.2.2.2.1 U P h`.
+A detailed English derivation is pending.
 -/
 theorem loc_trans {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
     (h : Loc U (fun V g => Loc V fun W k => P W (k ≫ g))) : Loc U P := GlobalTheory.T.etaleLocal_property_calculus_rules.2.2.2.2.1 U P h
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.etaleSheafSections_ext_and_glue R F U).1 a b h`.
+A detailed English derivation is pending.
 -/
 theorem sep {F : Shv R} {U : Scheme.{0}} {a b : Sec F U} (h : Loc U fun _ g => Sec.res g a = Sec.res g b) : a = b :=
   (GlobalTheory.T.etaleSheafSections_ext_and_glue R F U).1 a b h
 
 /- English proof (translation)
-Establish `key : ∀ (U : Scheme.{0}) (x : Sx E p U), ∃ a : Sec F U, ∀ (V : Scheme.{0}) (g : V ⟶ U) (s : Sec F V), Rel V (x.res g) s → Sec.res g a = s`. Introduce `U x`. Take `⟨S, hS, hP⟩` from `hex U x`. Use `choose s hs using hP`. Take `⟨a, ha⟩` from `(GlobalTheory.T.etaleSheafSections_ext_and_glue R F U).2 S hS s (fun V W g k hg => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `huniq W (x.res (k ≫ g)) _ _ ?_ (hs _ _ _)` and prove the remaining obligations. Rewrite using `[← sx_res_comp]`. Conclude with `hres _ _ _ _ _ (hs _ _ hg))`. Use `⟨a, fun V g s' hs' => sep ⟨S.pullback g, Scheme.etaleTopology.pullback_stable g hS, fun W k hk => ?_⟩⟩` and prove the remaining obligations. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[res_comp, ha W (k ≫ g) hk]`. Use `huniq W (x.res (k ≫ g)) _ _ (hs _ _ _) ?_` and prove the remaining obligations. Rewrite using `[← sx_res_comp]`. Conclude with `hres _ _ _ _ _ hs'`. Use `choose a ha using key`.
-
-Use `⟨a, fun V U g x => sep (loc_mono (hex V (x.res g)) ?_), fun U x s hs => ?_⟩` and prove the remaining obligations. Introduce and unpack `W k ⟨s, hs⟩`. Rewrite using `[ha V _ W k s hs, res_comp]`. Conclude with `ha U x W (k ≫ g) s (by rwa [← sx_res_comp])`. Rewrite using `[← res_id (a U x)]`.
-
-Conclude with `ha U x U (𝟙 U) s (by rwa [sx_res_id])`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_family (F : Shv R) {E : Spc} {p : ℕ} (Rel : ∀ U : Scheme.{0}, Sx E p U → Sec F U → Prop)
     (hex : ∀ (U : Scheme.{0}) (x : Sx E p U), Loc U fun V g => ∃ s, Rel V (x.res g) s)
@@ -188,11 +184,11 @@ theorem glue_family (F : Shv R) {E : Spc} {p : ℕ} (Rel : ∀ U : Scheme.{0}, S
     exact ha U x U (𝟙 U) s (by rwa [sx_res_id])
 
 /- English proof (translation)
-Substitute `h₀` using the available equality. Take `⟨α, hα⟩` from `GlobalTheory.T.exists_cochain_ev_eq_of_natural' R (E := E) (I := I) (n := n) (fun p s h U x => if hp : p = p₀ then (by subst hp; subst h; exact b U x) else 0) (by`. Introduce `p s h V U g x`. Distinguish the cases in `hp : p = p₀`. Substitute `hp` using the available equality.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `only [dif_pos]`. Conclude with `hb V U g x`. Simplify using `only [dif_neg hp]`. Conclude with `map_zero _)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨α, fun U x => ?_, fun p s h U x hp => ?_⟩` and prove the remaining obligations. Rewrite using `[hα]`. Simplify using `only [dif_pos]`. Rewrite using `[hα]`. Simplify using `only [dif_neg hp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_single {E : Spc} {I : Cx R} {n : ℤ} (p₀ : ℕ) (s₀ : ℤ) (h₀ : -(p₀ : ℤ) + n = s₀)
     (b : ∀ U : Scheme.{0}, Sx E p₀ U → Sec (I.X s₀) U)
@@ -214,21 +210,21 @@ theorem exists_single {E : Spc} {I : Cx R} {n : ℤ} (p₀ : ℕ) (s₀ : ℤ) (
   · rw [hα]; simp only [dif_neg hp]
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 α β p s h U x).1`.
+A detailed English derivation is pending.
 -/
 theorem ev_add {E : Spc} {I : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E) I n) (p s h U x) :
     ev (α + β) p s h U x = ev α p s h U x + ev β p s h U x := ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 α β p s h U x).1
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 0 0 p s h U x).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem ev_zero {E : Spc} {I : Cx R} {n : ℤ} (p s h U x) :
     ev (0 : Cochain ((chains R).obj E) I n) p s h U x = 0 := ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 0 0 p s h U x).2.2.1
 
 /- English proof (translation)
-Use `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.1 _ _ fun p t ht U x => ?_` and prove the remaining obligations. Rewrite using `[ev_zero]`. Consider the cases of `p with`. Consider the case `zero`. Take `rfl : m = t` from `by simpa using ht`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `((GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values R hm α U).1 x).trans (h₀ U x)`. Consider the case `succ p => exact ((GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values R hm α U).2 p _ t rfl ht x).trans (h₁ U p _ t rfl _ x)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem δ_eq_zero {E : Spc} {I : Cx R} {n m : ℤ} (hm : n + 1 = m) (α : Cochain ((chains R).obj E) I n)
     (h₀ : ∀ (U : Scheme.{0}) (x : Sx E 0 U), Sec.map (I.d n m) (ev α 0 n (by simp) U x) = 0)
@@ -244,7 +240,7 @@ theorem δ_eq_zero {E : Spc} {I : Cx R} {n m : ℤ} (hm : n + 1 = m) (α : Cocha
   | succ p => exact ((GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values R hm α U).2 p _ t rfl ht x).trans (h₁ U p _ t rfl _ x)
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => f.hom (Submodule.Quotient.mk (Finsupp.single ζ 1))) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).naturality g.op)`. Use `h.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op V)).hom (Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map g.appTop.hom) (Finsupp.single ζ 1))) = _`. Rewrite using `[Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_twGen {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (twGen i ζ) = twGen i (ζ.map g.appTop.hom) := by
@@ -257,7 +253,7 @@ theorem res_twGen {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Pri
   rfl
 
 /- English proof (translation)
-Unfold `resGen`. Rewrite using `[res_map, res_twGen]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_resGen {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (resGen i ζ) = resGen i (ζ.map g.appTop.hom) := by
@@ -265,13 +261,13 @@ theorem res_resGen {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Pr
   rw [res_map, res_twGen]
 
 /- English proof (translation)
-The claim follows from `d_resι _ _`.
+A detailed English derivation is pending.
 -/
 theorem d_resGen {q : ℕ} (i : ℤ) {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) :
     Sec.map ((res _ (tw q i)).d 0 1) (resGen i ζ) = 0 := d_resι _ _
 
 /- English proof (translation)
-Unfold `resGen twGen`. Use `congr 2`. Use `(Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨ζ, ξ, a, h, ?_⟩)` and prove the remaining obligations. Rewrite using `[zpow_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resGen_zero_pow {q : ℕ} {U : Scheme.{0}} (ζ ξ : Prim q Γ(U, ⊤)) (a : (ZMod q)ˣ) (h : ξ.1 = ζ.1 ^ (a : ZMod q).val) :
     resGen 0 ξ = resGen 0 ζ := by
@@ -282,7 +278,7 @@ theorem resGen_zero_pow {q : ℕ} {U : Scheme.{0}} (ζ ξ : Prim q Γ(U, ⊤)) (
   rfl
 
 /- English proof (translation)
-Use `sep (loc_mono ((GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q U).2.1 ζ ξ) ?_)` and prove the remaining obligations. Introduce and unpack `V g ⟨a, ha⟩`. Rewrite using `[res_resGen, res_resGen]`. Conclude with `resGen_zero_pow _ _ a ha`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resGen_zero_eq {q : ℕ} [NeZero q] {U : Scheme.{0}} (ζ ξ : Prim q Γ(U, ⊤)) : resGen 0 ξ = resGen 0 ζ := by
   refine sep (loc_mono ((GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q U).2.1 ζ ξ) ?_)
@@ -291,11 +287,11 @@ theorem resGen_zero_eq {q : ℕ} [NeZero q] {U : Scheme.{0}} (ζ ξ : Prim q Γ(
   exact resGen_zero_pow _ _ a ha
 
 /- English proof (translation)
-Take `⟨α, h₁, h₂⟩` from `exists_single (I := I) (n := 0) 0 0 (by simp) b hb`. Use `⟨Cocycle.mk α 1 rfl (δ_eq_zero (m := 1) rfl α (fun U x => ?_) (fun U p s t hs ht x => ?_)), h₁⟩` and prove the remaining obligations. Rewrite using `[h₁, hd]`. Rewrite using `[h₂ _ _ _ _ _ (Nat.succ_ne_zero p), smap_zero, zero_add]`. Consider the cases of `p with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Take `rfl : t = 0` from `by omega`. Rewrite using `[Fin.sum_univ_two, h₁, h₁, hf]`. Simplify using the standard rewrite rules. Consider the case `succ p`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[Finset.sum_eq_zero fun i _ => by rw [h₂ _ _ _ _ _ (Nat.succ_ne_zero p), smul_zero], smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_cocycle_zero {E : Spc} {I : Cx R} (b : ∀ U : Scheme.{0}, Sx E 0 U → Sec (I.X 0) U)
     (hb : ∀ (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E 0 U), Sec.res g (b U x) = b V (x.res g))
@@ -314,13 +310,11 @@ theorem exists_cocycle_zero {E : Spc} {I : Cx R} (b : ∀ U : Scheme.{0}, Sx E 0
       rw [Finset.sum_eq_zero fun i _ => by rw [h₂ _ _ _ _ _ (Nat.succ_ne_zero p), smul_zero], smul_zero]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos q with rfl | hq` into its components or cases. Use `⟨0, fun U x ζ => ?_⟩` and prove the remaining obligations. Establish `hU : IsEmpty U`. Assume the negation of the conclusion as `h`. Establish `: Nonempty U` using `not_isEmpty_iff.1 h`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: Nonempty (⊤ : U.Opens)` using `⟨⟨this.some, trivial⟩⟩`. Conclude with `not_isUnit_zero (Nat.cast_zero (R := Γ(U, ⊤)) ▸ ζ.2.1)`. Conclude with `sep (GlobalTheory.T.etaleLocal_property_calculus_rules.2.2.2.2.2.2 U _)`. Establish `: NeZero q` using `⟨hq.ne'⟩`. Establish `hloc : ∀ (U : Scheme.{0}) (_ : Sx E 0 U), Loc U fun V _ => Nonempty (Prim q Γ(V, ⊤))` using `fun U x => (GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q U).1 (hE U ⟨x⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hs⟩` from `glue_family ((res _ (tw q 0)).X 0) (E := E) (p := 0) (fun U _ s => ∃ ζ, s = resGen 0 ζ) (fun U x => loc_mono (hloc U x) fun V g ⟨ζ⟩ => ⟨_, ζ, rfl⟩) (by rintro V U g x s ⟨ζ, rfl⟩; exact ⟨_, res_resGen 0 g ζ⟩) (by rintro U x s s' ⟨ζ, rfl⟩ ⟨ξ, rfl⟩; exact resGen_zero_eq _ _)`. Take `⟨α, hα⟩` from `exists_cocycle_zero a ha (fun U x => sep (loc_mono (hloc U x) fun V g ⟨ζ⟩ => by`. Rewrite using `[res_map, ha, hs V _ _ ⟨ζ, rfl⟩, d_resGen, res_zero]))`. Use the proof step `(fun U y => sep (loc_mono (hloc U (y.face 0)) fun V g ⟨ζ⟩ => by`. Rewrite using `[ha, ha, hs V _ _ ⟨ζ, rfl⟩, hs V _ _ ⟨ζ, rfl⟩]))`.
-
-Conclude with `⟨α, fun U x ζ => (hα U x).trans (hs U x _ ⟨ζ, rfl⟩)⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_one (q : ℕ) (E : Spc) (hE : Inv q E) : ∃ α : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 0)) 0,
     ∀ (U : Scheme.{0}) (x : Sx E 0 U) (ζ : Prim q Γ(U, ⊤)), ev α.1 0 0 (by simp) U x = resGen 0 ζ := by
@@ -346,7 +340,7 @@ theorem exists_one (q : ℕ) (E : Spc) (hE : Inv q E) : ∃ α : Cocycle ((chain
   exact ⟨α, fun U x ζ => (hα U x).trans (hs U x _ ⟨ζ, rfl⟩)⟩
 
 /- English proof (translation)
-The claim follows from `exists_cocycle_zero (E := sch.obj X) (fun U (x : U ⟶ X) => Sec.res x (resGen i ζ)) (fun V U g x => res_comp g x _) (fun U (x : U ⟶ X) => by rw [← res_map, d_resGen, res_zero]) (fun U y => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem exists_root {q : ℕ} (i : ℤ) {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) :
     ∃ α : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q i)) 0,
@@ -357,7 +351,7 @@ theorem exists_root {q : ℕ} (i : ℤ) {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)
 abbrev umap {V U : Scheme.{0}} (g : V ⟶ U) : (Γ(U, ⊤))ˣ →* (Γ(V, ⊤))ˣ := Units.map g.appTop.hom.toMonoidHom
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(k ≫ g).appTop.hom _ = _`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem umap_comp {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (u : (Γ(U, ⊤))ˣ) : umap (k ≫ g) u = umap k (umap g u) := by
   ext
@@ -366,7 +360,7 @@ theorem umap_comp {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (u : (Γ(U, �
   rfl
 
 /- English proof (translation)
-Simplify using `using h.map g.appTop.hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_res {q : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (h : IsUnit (q : Γ(U, ⊤))) : IsUnit (q : Γ(V, ⊤)) := by
   simpa using h.map g.appTop.hom
@@ -375,9 +369,9 @@ section Kum
 variable {q : ℕ} {t : ∀ U : Scheme.{0}, (Γ(U, ⊤))ˣ → Sec ((res _ (tw q 1)).X 0) U}
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `w hw`. Rewrite `hw` using `[pow_zero, one_mul]`. Rewrite using `[Units.ext hw, zero_smul, add_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ k ih`. Introduce `w hw`. Establish `hw' : (w : Γ(U, ⊤)) = ζ.1 * (ζ.1 ^ k * v)` using `by rw [hw]; ring`. Take `⟨z, hz⟩ : IsUnit (ζ.1 ^ k * v)` from `isUnit_of_mul_isUnit_right (hw' ▸ w.isUnit)`. Rewrite using `[ht.2 U ζ z w (by rw [hw', hz]), ih z hz, succ_nsmul, add_assoc]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem kum_pow (ht : IsKum q t) {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (v : (Γ(U, ⊤))ˣ) (k : ℕ) :
     ∀ w : (Γ(U, ⊤))ˣ, (w : Γ(U, ⊤)) = ζ.1 ^ k * v → t U w = t U v + k • resGen 1 ζ := by
@@ -393,11 +387,11 @@ theorem kum_pow (ht : IsKum q t) {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (v : 
     rw [ht.2 U ζ z w (by rw [hw', hz]), ih z hz, succ_nsmul, add_assoc]
 
 /- English proof (translation)
-Use `loc_trans (loc_mono ((GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q U).1 hU) fun V g ⟨ζ⟩ => ?_)` and prove the remaining obligations. Establish `hx : ((umap g (w * v⁻¹) : (Γ(V, ⊤))ˣ) : Γ(V, ⊤)) ^ q = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, mul_pow, inv_pow, h, mul_inv_cancel, map_one, Units.val_one]`. Use `loc_mono ((GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q V).2.2.1 ζ _ hx) ?_` and prove the remaining obligations. Introduce and unpack `W k ⟨a, ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨a • resGen 1 (ζ.map k.appTop.hom), by rw [smap_nsmul, d_resGen, smul_zero], fun z => ?_⟩` and prove the remaining obligations. Use `kum_pow ht _ _ a _ ?_` and prove the remaining obligations. Establish `h₁ : ((umap (k ≫ g) (w * v⁻¹) : (Γ(W, ⊤))ˣ) : Γ(W, ⊤)) = (ζ.map k.appTop.hom).1 ^ a`. Rewrite using `[umap_comp]`. Conclude with `ha`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h₁, ← Units.val_mul, ← mul_assoc, ← map_mul, inv_mul_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem kum_loc [NeZero q] (ht : IsKum q t) {U : Scheme.{0}} (hU : IsUnit (q : Γ(U, ⊤))) {v w : (Γ(U, ⊤))ˣ} (h : v ^ q = w ^ q) :
     Loc U fun V g => ∃ r : Sec ((res _ (tw q 1)).X 0) V, Sec.map ((res _ (tw q 1)).d 0 1) r = 0 ∧
@@ -414,9 +408,9 @@ theorem kum_loc [NeZero q] (ht : IsKum q t) {U : Scheme.{0}} (hU : IsUnit (q : �
   rw [← h₁, ← Units.val_mul, ← mul_assoc, ← map_mul, inv_mul_cancel_right]
 
 /- English proof (translation)
-Use `sep (loc_mono (kum_loc ht hU h) ?_)` and prove the remaining obligations. Introduce and unpack `V g ⟨r, hr, hz⟩`. Use `hz 1` as an intermediate fact. Rewrite `this` using `[mul_one, mul_one]`. Rewrite using `[res_map, res_map, ht.1 V U g v hU, ht.1 V U g w hU]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Sec.map _ (t V (umap g v)) = Sec.map _ (t V (umap g w))`. Rewrite using `[this, smap_add, hr, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem kum_d_eq [NeZero q] (ht : IsKum q t) {U : Scheme.{0}} (hU : IsUnit (q : Γ(U, ⊤))) {v w : (Γ(U, ⊤))ˣ} (h : v ^ q = w ^ q) :
     Sec.map ((res _ (tw q 1)).d 0 1) (t U v) = Sec.map ((res _ (tw q 1)).d 0 1) (t U w) := by
@@ -429,9 +423,9 @@ theorem kum_d_eq [NeZero q] (ht : IsKum q t) {U : Scheme.{0}} (hU : IsUnit (q : 
   rw [this, smap_add, hr, add_zero]
 
 /- English proof (translation)
-Use `sep (loc_mono (kum_loc ht hU h) ?_)` and prove the remaining obligations. Introduce and unpack `V g ⟨r, -, hz⟩`. Use `hz 1` as an intermediate fact. Rewrite `this` using `[mul_one, mul_one]`. Rewrite using `[res_sub, res_sub, ht.1 V U g v hU, ht.1 V U g w hU, ht.1 V U g _ hU, ht.1 V U g _ hU]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `t V (umap g v) - t V (umap g (v * z)) = t V (umap g w) - t V (umap g (w * z))`. Rewrite using `[map_mul, map_mul, this, hz]`. Normalize the expressions using the abelian group laws.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem kum_sub_eq [NeZero q] (ht : IsKum q t) {U : Scheme.{0}} (hU : IsUnit (q : Γ(U, ⊤))) {v w : (Γ(U, ⊤))ˣ}
     (h : v ^ q = w ^ q) (z : (Γ(U, ⊤))ˣ) : t U v - t U (v * z) = t U w - t U (w * z) := by
@@ -445,7 +439,7 @@ theorem kum_sub_eq [NeZero q] (ht : IsKum q t) {U : Scheme.{0}} (hU : IsUnit (q 
   abel
 
 /- English proof (translation)
-Establish `h₁` using `kum_sub_eq ht hU h w`. Establish `h₂` using `kum_sub_eq ht hU h' v'`. Rewrite `h₂` using `[mul_comm w, mul_comm w']`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem kum_two_eq [NeZero q] (ht : IsKum q t) {U : Scheme.{0}} (hU : IsUnit (q : Γ(U, ⊤))) {v w v' w' : (Γ(U, ⊤))ˣ}
     (h : v ^ q = v' ^ q) (h' : w ^ q = w' ^ q) : t U v + t U w - t U (v * w) = t U v' + t U w' - t U (v' * w') := by
@@ -457,15 +451,15 @@ theorem kum_two_eq [NeZero q] (ht : IsKum q t) {U : Scheme.{0}} (hU : IsUnit (q 
     _ = _ := by rw [h₂]; abel
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q U).2.2.2 hU u`.
+A detailed English derivation is pending.
 -/
 theorem root_loc [NeZero q] {U : Scheme.{0}} (hU : IsUnit (q : Γ(U, ⊤))) (u : (Γ(U, ⊤))ˣ) :
     Loc U fun V g => ∃ v : (Γ(V, ⊤))ˣ, v ^ q = umap g u := (GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q U).2.2.2 hU u
 
 /- English proof (translation)
-Take `⟨a, ha, hs⟩` from `glue_family ((res _ (tw q 1)).X 1) (E := E) (p := p) (fun U x s => ∃ v, v ^ q = u U x ∧ s = Sec.map ((res _ (tw q 1)).d 0 1) (t U v)) (fun U x => loc_mono (root_loc (hq U x) (u U x)) fun V g ⟨v, hv⟩ => ⟨_, v, hv.trans (hu V U g x).symm, rfl⟩) (by`. Introduce and unpack `V U g x s ⟨v, hv, rfl⟩`. Conclude with `⟨umap g v, by rw [← map_pow, hv, hu], by rw [res_map, ht.1 V U g v (hq U x)]⟩)`. Use the proof step `(by rintro U x s s' ⟨v, hv, rfl⟩ ⟨w, hw, rfl⟩; exact kum_d_eq ht (hq U x) (hv.trans hw.symm))`. Use `⟨a, ha, fun U x => sep (loc_mono (root_loc (hq U x) (u U x)) fun V g ⟨v, hv⟩ => ?_), fun U x v hv => hs U x _ ⟨v, hv, rfl⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[res_map, ha, hs V _ _ ⟨v, hv.trans (hu V U g x).symm, rfl⟩, d_d, res_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_d_family [NeZero q] (ht : IsKum q t) {E : Spc} {p : ℕ}
     (hq : ∀ (U : Scheme.{0}) (_ : Sx E p U), IsUnit (q : Γ(U, ⊤))) (u : ∀ U : Scheme.{0}, Sx E p U → (Γ(U, ⊤))ˣ)
@@ -486,9 +480,9 @@ theorem exists_d_family [NeZero q] (ht : IsKum q t) {E : Spc} {p : ℕ}
   rw [res_map, ha, hs V _ _ ⟨v, hv.trans (hu V U g x).symm, rfl⟩, d_d, res_zero]
 
 /- English proof (translation)
-Take `⟨a, ha, hs⟩` from `glue_family ((res _ (tw q 1)).X 0) (E := E) (p := p) (fun U x s => ∃ v w, v ^ q = u U x ∧ w ^ q = u' U x ∧ s = t U v + t U w - t U (v * w)) (fun U x => loc_mono (loc_and (root_loc (hq U x) (u U x)) (root_loc (hq U x) (u' U x))) fun V g ⟨⟨v, hv⟩, w, hw⟩ => ⟨_, v, w, hv.trans (hu V …`. Introduce and unpack `V U g x s ⟨v, w, hv, hw, rfl⟩`. Use `⟨umap g v, umap g w, by rw [← map_pow, hv, hu], by rw [← map_pow, hw, hu'], ?_⟩` and prove the remaining obligations. Rewrite using `[res_sub, res_add, ht.1 V U g v (hq U x), ht.1 V U g w (hq U x), ht.1 V U g _ (hq U x), ← map_mul])`. Use the proof step `(by`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `U x s s' ⟨v, w, hv, hw, rfl⟩ ⟨v', w', hv', hw', rfl⟩`. Conclude with `kum_two_eq ht (hq U x) (hv.trans hv'.symm) (hw.trans hw'.symm))`. Conclude with `⟨a, ha, fun U x v w hv hw => hs U x _ ⟨v, w, hv, hw, rfl⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_two_family [NeZero q] (ht : IsKum q t) {E : Spc} {p : ℕ}
     (hq : ∀ (U : Scheme.{0}) (_ : Sx E p U), IsUnit (q : Γ(U, ⊤))) (u u' : ∀ U : Scheme.{0}, Sx E p U → (Γ(U, ⊤))ˣ)
@@ -512,11 +506,11 @@ theorem exists_two_family [NeZero q] (ht : IsKum q t) {E : Spc} {p : ℕ}
   exact ⟨a, ha, fun U x v w hv hw => hs U x _ ⟨v, w, hv, hw, rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨b, hb, hd, hv⟩` from `exists_d_family ht (E := sch.obj X) (p := 0) (fun U (x : U ⟶ X) => unit_res x hX) (fun U (x : U ⟶ X) => umap x u) (fun V U g (x : U ⟶ X) => umap_comp g x u)`. Take `⟨α, h₁, h₂⟩` from `exists_single (I := res _ (tw q 1)) (n := 1) 0 1 (by simp) b hb`. Use `⟨Cocycle.mk α 2 rfl (δ_eq_zero (m := 2) rfl α (fun U x => ?_) (fun U p s t hs ht x => ?_)), fun U x => h₂ 1 0 _ U x one_ne_zero, fun U x v h => (h₁ U x).trans (hv U x v h)⟩` and prove the remaining obligations. Rewrite using `[h₁, hd]`. Rewrite using `[h₂ _ _ _ _ _ (Nat.succ_ne_zero p), smap_zero, zero_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `p with`. Consider the case `zero`. Take `rfl : t = 1` from `by omega`. Establish `hf : b U (x.face 0) = b U (x.face 1)` using `rfl`. Rewrite using `[Fin.sum_univ_two, h₁, h₁, hf]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ p`. Rewrite using `[Finset.sum_eq_zero fun i _ => by rw [h₂ _ _ _ _ _ (Nat.succ_ne_zero p), smul_zero], smul_zero]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_kum [NeZero q] (ht : IsKum q t) {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) (u : (Γ(X, ⊤))ˣ) :
     ∃ γ : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q 1)) 1,
@@ -542,7 +536,7 @@ theorem exists_kum [NeZero q] (ht : IsKum q t) {X : Scheme.{0}} (hX : IsUnit (q 
 end Kum
 
 /- English proof (translation)
-Establish `: E.δ i ≫ E.δ j = E.δ i' ≫ E.δ j'`. Simplify using `only [SimplicialObject.δ, ← Functor.map_comp, ← op_comp, h]`. Conclude with `congrArg (fun f => f.app (op U) y) this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem face_face {E : Spc} {U : Scheme.{0}} {p : ℕ} (y : Sx E (p + 2) U) (i i' : Fin (p + 3)) (j j' : Fin (p + 2))
     (h : SimplexCategory.δ j ≫ SimplexCategory.δ i = SimplexCategory.δ j' ≫ SimplexCategory.δ i') :
@@ -552,7 +546,7 @@ theorem face_face {E : Spc} {U : Scheme.{0}} {p : ℕ} (y : Sx E (p + 2) U) (i i
   exact congrArg (fun f => f.app (op U) y) this
 
 /- English proof (translation)
-Establish `: SimplexCategory.subinterval 0 1 h = SimplexCategory.δ 2`. Apply the tactic sequence `ext i; fin_cases i <;> rfl`. Unfold `Sx.sub`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sub_zero_one {E : Spc} {U : Scheme.{0}} (y : Sx E 2 U) (h : 0 + 1 ≤ 2) : y.sub 0 1 h = y.face 2 := by
   have : SimplexCategory.subinterval 0 1 h = SimplexCategory.δ 2 := by
@@ -561,7 +555,7 @@ theorem sub_zero_one {E : Spc} {U : Scheme.{0}} (y : Sx E 2 U) (h : 0 + 1 ≤ 2)
   rw [this]; rfl
 
 /- English proof (translation)
-Establish `: SimplexCategory.subinterval 1 1 h = SimplexCategory.δ 0`. Apply the tactic sequence `ext i; fin_cases i <;> rfl`. Unfold `Sx.sub`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sub_one_one {E : Spc} {U : Scheme.{0}} (y : Sx E 2 U) (h : 1 + 1 ≤ 2) : y.sub 1 1 h = y.face 0 := by
   have : SimplexCategory.subinterval 1 1 h = SimplexCategory.δ 0 := by
@@ -576,7 +570,7 @@ theorem glMat_res {N : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (y : Sx (ofCat (glC
     glMat (y.res g) = Matrix.GeneralLinearGroup.map g.appTop.hom (glMat y) := rfl
 
 /- English proof (translation)
-The claim follows from `(show ComposableArrows (SingleObj (GL (Fin N) Γ(U, ⊤))) 2 from y).map_comp (homOfLE (show (0 : Fin 3) ≤ 1 by decide)) (homOfLE (show (1 : Fin 3) ≤ 2 by decide))`.
+A detailed English derivation is pending.
 -/
 theorem glMat_face {N : ℕ} {U : Scheme.{0}} (y : Sx (ofCat (glCat N)) 2 U) :
     glMat (y.face 1) = glMat (y.face 0) * glMat (y.face 2) :=
@@ -590,21 +584,21 @@ theorem lineUnit_eq {E : Spc} (L : E ⟶ ofCat (glCat 1)) {U : Scheme.{0}} (x : 
     lineUnit L x = Matrix.GeneralLinearGroup.det (glMat (x.map L)) := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (fun φ => φ x) ((f.app (op (SimplexCategory.mk p))).naturality g.op)`.
+A detailed English derivation is pending.
 -/
 theorem map_res {E E' : Spc} (f : E ⟶ E') {p : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E p U) :
     (x.res g).map f = (x.map f).res g :=
   congrArg (fun φ => φ x) ((f.app (op (SimplexCategory.mk p))).naturality g.op)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun φ => φ.app (op U) x) (f.naturality (SimplexCategory.δ i).op)`.
+A detailed English derivation is pending.
 -/
 theorem map_face {E E' : Spc} (f : E ⟶ E') {p : ℕ} {U : Scheme.{0}} (x : Sx E (p + 1) U) (i : Fin (p + 2)) :
     (x.face i).map f = (x.map f).face i :=
   congrArg (fun φ => φ.app (op U) x) (f.naturality (SimplexCategory.δ i).op)
 
 /- English proof (translation)
-Rewrite using `[lineUnit_eq, lineUnit_eq, map_res, glMat_res]`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_unique]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lineUnit_res {E : Spc} (L : E ⟶ ofCat (glCat 1)) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E 1 U) :
     lineUnit L (x.res g) = umap g (lineUnit L x) := by
@@ -613,36 +607,36 @@ theorem lineUnit_res {E : Spc} (L : E ⟶ ofCat (glCat 1)) {V U : Scheme.{0}} (g
   simp [Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_unique]
 
 /- English proof (translation)
-Rewrite using `[lineUnit_eq, lineUnit_eq, lineUnit_eq, map_face, map_face, map_face, glMat_face, map_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lineUnit_face {E : Spc} (L : E ⟶ ofCat (glCat 1)) {U : Scheme.{0}} (y : Sx E 2 U) :
     lineUnit L (y.face 1) = lineUnit L (y.face 2) * lineUnit L (y.face 0) := by
   rw [lineUnit_eq, lineUnit_eq, lineUnit_eq, map_face, map_face, map_face, glMat_face, map_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hq₁ : ∀ (U : Scheme.{0}) (_ : Sx E 1 U), IsUnit (q : Γ(U, ⊤))` using `fun U x => hE U ⟨x.face 0⟩`. Establish `hq₂ : ∀ (U : Scheme.{0}) (_ : Sx E 2 U), IsUnit (q : Γ(U, ⊤))` using `fun U x => hq₁ U (x.face 0)`. Establish `hf : ∀ (i : Fin 3) (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E 2 U), lineUnit L ((x.res g).face i) = umap g (lineUnit L (x.face i))` using `fun i V U g x => by rw [← face_res, lineUnit_res]`. Take `⟨b, hb, hd, hv⟩` from `exists_d_family ht hq₁ (fun U x => lineUnit L x) (fun V U g x => lineUnit_res L g x)`. Take `⟨e, he, hw⟩` from `exists_two_family ht hq₂ (fun U x => lineUnit L (x.face 2)) (fun U x => lineUnit L (x.face 0)) (hf 2) (hf 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h₂ : ∀ (U : Scheme.{0}) (y : Sx E 2 U), Sec.map ((res _ (tw q 1)).d 0 1) (e U y) = b U (y.face 0) - b U (y.face 1) + b U (y.face 2)`. Introduce `U y`. Use `sep (loc_mono (loc_and (root_loc (hq₂ U y) (lineUnit L (y.face 2))) (root_loc (hq₂ U y) (lineUnit L (y.face 0)))) ?_)` and prove the remaining obligations. Introduce and unpack `V g ⟨⟨v, h⟩, w, h'⟩`. Rewrite `h`, `h'` using `[← hf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[res_map, res_add, res_sub, he, hb, hb, hb, face_res, face_res, face_res, hw V _ v w h h', hv V _ v h, hv V _ w h', hv V _ (v * w) (by rw [mul_pow, h, h', lineUnit_face]), smap_sub, smap_add]`. Normalize the expressions using the abelian group laws. Establish `h₃ : ∀ (U : Scheme.{0}) (y : Sx E 3 U), e U (y.face 0) - e U (y.face 1) + e U (y.face 2) - e U (y.face 3) = 0`. Introduce `U y`. Establish `hU` using `hq₂ U (y.face 0)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `sep (loc_mono (loc_and (root_loc hU (lineUnit L ((y.face 3).face 2))) (loc_and (root_loc hU (lineUnit L ((y.face 0).face 2))) (root_loc hU (lineUnit L ((y.face 0).face 0))))) ?_)` and prove the remaining obligations. Introduce and unpack `V g ⟨⟨u, h⟩, ⟨v, h'⟩, w, h''⟩`. Rewrite `h`, `h'`, `h''` using `[← hf, face_res]`. Rewrite using `[res_sub, res_add, res_sub, he, he, he, he, face_res, face_res, face_res, face_res, res_zero]`. Generalize the expression as in `y.res g = z at h h' h'' ⊢`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `e₁ : (z.face 1).face 0 = (z.face 0).face 0` using `face_face z _ _ _ _ (by decide)`. Establish `e₂ : (z.face 1).face 2 = (z.face 3).face 1` using `face_face z _ _ _ _ (by decide)`. Establish `e₃ : (z.face 2).face 2 = (z.face 3).face 2` using `face_face z _ _ _ _ (by decide)`. Establish `e₄ : (z.face 2).face 0 = (z.face 0).face 1` using `face_face z _ _ _ _ (by decide)`. Establish `e₅ : (z.face 3).face 0 = (z.face 0).face 2` using `face_face z _ _ _ _ (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw V _ v w h' h'', hw V (z.face 1) (u * v) w (by rw [e₂, lineUnit_face, e₅, mul_pow, h, h']) (by rw [e₁, h'']), hw V (z.face 2) u (v * w) (by rw [e₃, h]) (by rw [e₄, lineUnit_face, mul_pow, h', h'']), hw V (z.face 3) u v h (by rw [e₅, h']), mul_assoc]`. Normalize the expressions using the abelian group laws. Take `⟨α, a₁, a₂⟩` from `exists_single (I := res _ (tw q 1)) (n := 2) 1 1 (by simp) b hb`. Take `⟨β, b₁, b₂⟩` from `exists_single (I := res _ (tw q 1)) (n := 2) 2 0 (by simp) e he`. Establish `c₀ : ∀ p s h U x, p ≠ 1 → p ≠ 2 → ev (α + β) p s h U x = 0` using `fun p s h U x h₁ h₂ => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ev_add, a₂ _ _ _ _ _ h₁, b₂ _ _ _ _ _ h₂, add_zero]`. Establish `c₁ : ∀ h U x, ev (α + β) 1 1 h U x = b U x` using `fun h U x => by`. Rewrite using `[ev_add, a₁, b₂ _ _ _ _ _ (by decide), add_zero]`. Establish `c₂ : ∀ h U x, ev (α + β) 2 0 h U x = e U x` using `fun h U x => by`. Rewrite using `[ev_add, b₁, a₂ _ _ _ _ _ (by decide), zero_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : (3 : ℤ).negOnePow = -1` using `rfl`. Use `⟨Cocycle.mk (α + β) 3 rfl (δ_eq_zero (m := 3) rfl _ (fun U x => ?_) (fun U p s t hs' ht' x => ?_)), fun U x => c₀ 0 2 _ U x (by decide) (by decide), fun U x v h => (c₁ _ U x).trans (hv U x v h), fun U x v w h h' => (c₂ _ U x).trans (hw U x v w h h')⟩` and prove the remaining obligations. Rewrite using `[c₀ _ _ _ _ _ (by decide) (by decide), smap_zero]`. Use `match p with`. Consider the case `0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `rfl : s = 1` from `by omega`. Take `rfl : t = 2` from `by omega`. Rewrite using `[Finset.sum_eq_zero fun i _ => by rw [c₀ _ _ _ _ _ (by decide) (by decide), smul_zero], smul_zero, add_zero]`. Conclude with `(congrArg _ (c₁ _ U x)).trans (hd U x)`. Consider the case `1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : s = 0` from `by omega`. Take `rfl : t = 1` from `by omega`. Rewrite using `[Fin.sum_univ_three, c₁, c₁, c₁, c₂, h₂, hs]`. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `2`. Take `rfl : t = 0` from `by omega`. Rewrite using `[Fin.sum_univ_four, c₂, c₂, c₂, c₂, c₀ _ _ _ _ _ (by decide) (by decide), smap_zero, zero_add]`. Use `smul_zero _` and compare the differences between its conclusion and the goal. Rewrite using `[← h₃ U x]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Normalize the expressions using the abelian group laws.
 
-Evaluate the numerical expressions. Normalize the expressions using the abelian group laws. Consider the case `p + 3`. Rewrite using `[c₀ _ _ _ _ _ (by omega) (by omega), smap_zero, zero_add, Finset.sum_eq_zero fun i _ => by rw [c₀ _ _ _ _ _ (by omega) (by omega), smul_zero], smul_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_etaleCocycle_firstChernClassTateTwist {q : ℕ} {t : ∀ U : Scheme.{0}, (Γ(U, ⊤))ˣ → Sec ((res _ (tw q 1)).X 0) U} [NeZero q] (ht : IsKum q t)
     {E : Spc} (hE : Inv q E) (L : E ⟶ ofCat (glCat 1)) :
@@ -725,7 +719,7 @@ theorem exists_etaleCocycle_firstChernClassTateTwist {q : ℕ} {t : ∀ U : Sche
         Finset.sum_eq_zero fun i _ => by rw [c₀ _ _ _ _ _ (by omega) (by omega), smul_zero], smul_zero]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ t, IsKum q t`. Conclude with `Or.inl (pick_spec h)`. Use `right`. Unfold `kumT pick`. Rewrite using `[dif_neg h]`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kumT_cases (q : ℕ) : IsKum q (kumT q) ∨ kumT q = 0 := by
   by_cases h : ∃ t, IsKum q t
@@ -739,7 +733,7 @@ end ClsSpec
 open ClsSpec
 
 /- English proof (translation)
-Take `⟨α, h⟩` from `exists_one q E hE`. Conclude with `pick_spec (P := fun c : Ht q E 0 0 => ∃ α : Cocycle _ _ 0, CohomologyClass.mk α = c ∧ ∀ (U : Scheme.{0}) (x : Sx E 0 U) (ζ : Prim q Γ(U, ⊤)), ev α.1 0 0 (by simp) U x = resGen 0 ζ) ⟨_, α, rfl, h⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem one_spec (q : ℕ) (E : Spc) (hE : Inv q E) : ∃ α : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 0)) 0, CohomologyClass.mk α = one q E ∧
     ∀ (U : Scheme.{0}) (x : Sx E 0 U) (ζ : Prim q Γ(U, ⊤)), ev α.1 0 0 (by simp) U x = resGen 0 ζ := by
@@ -748,7 +742,7 @@ theorem one_spec (q : ℕ) (E : Spc) (hE : Inv q E) : ∃ α : Cocycle ((chains 
     ∀ (U : Scheme.{0}) (x : Sx E 0 U) (ζ : Prim q Γ(U, ⊤)), ev α.1 0 0 (by simp) U x = resGen 0 ζ) ⟨_, α, rfl, h⟩
 
 /- English proof (translation)
-Take `⟨α, h⟩` from `exists_root i ζ`. Conclude with `pick_spec (P := fun c : Ht q (sch.obj X) 0 i => ∃ α : Cocycle _ _ 0, CohomologyClass.mk α = c ∧ ∀ (U : Scheme.{0}) (x : U ⟶ X), ev α.1 0 0 (by simp) U x = Sec.res x (resGen i ζ)) ⟨_, α, rfl, h⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rootClass_spec {q : ℕ} (i : ℤ) {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) : ∃ α : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q i)) 0,
     CohomologyClass.mk α = rootClass i ζ ∧ ∀ (U : Scheme.{0}) (x : U ⟶ X), ev α.1 0 0 (by simp) U x = Sec.res x (resGen i ζ) := by
@@ -757,9 +751,9 @@ theorem rootClass_spec {q : ℕ} (i : ℤ) {X : Scheme.{0}} (ζ : Prim q Γ(X, �
     ∀ (U : Scheme.{0}) (x : U ⟶ X), ev α.1 0 0 (by simp) U x = Sec.res x (resGen i ζ)) ⟨_, α, rfl, h⟩
 
 /- English proof (translation)
-Use `pick_spec (P := fun c : Ht q (sch.obj X) 1 1 => ∃ γ : Cocycle _ _ 1, CohomologyClass.mk γ = c ∧ (∀ (U : Scheme.{0}) (x : U ⟶ X), ev γ.1 1 0 (by simp) U x = 0) ∧ ∀ (U : Scheme.{0}) (x : U ⟶ X) (v : (Γ(U, ⊤))ˣ), v ^ q = Units.map x.appTop.hom.toMonoidHom u → ev γ.1 0 1 (by simp) U …` and prove the remaining obligations. Break down `kumT_cases q with h | h` into its components or cases. Take `⟨γ, hγ⟩` from `exists_kum h hX u`. Conclude with `⟨_, γ, rfl, hγ⟩`. Use `⟨_, 0, rfl, fun U x => ev_zero (E := sch.obj X) _ _ _ _ _, fun U x v _ => (ev_zero (E := sch.obj X) _ _ _ _ _).trans ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h]`. Conclude with `(smap_zero _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kum_spec (q : ℕ) [NeZero q] {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) (u : (Γ(X, ⊤))ˣ) :
     ∃ γ : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q 1)) 1, CohomologyClass.mk γ = kum q u ∧
@@ -778,9 +772,9 @@ theorem kum_spec (q : ℕ) [NeZero q] {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, �
     exact (smap_zero _).symm
 
 /- English proof (translation)
-Use `pick_spec (P := fun c : Ht q E 2 1 => ∃ γ : Cocycle _ _ 2, CohomologyClass.mk γ = c ∧ (∀ (U : Scheme.{0}) (x : Sx E 0 U), ev γ.1 0 2 (by simp) U x = 0) ∧ (∀ (U : Scheme.{0}) (x : Sx E 1 U) (v : (Γ(U, ⊤))ˣ), v ^ q = lineUnit L x → ev γ.1 1 1 (by simp) U x = Sec.map ((res _ (tw q 1 …` and prove the remaining obligations. Break down `kumT_cases q with h | h` into its components or cases. Take `⟨γ, h₀, h₁, h₂⟩` from `exists_etaleCocycle_firstChernClassTateTwist h hE L`. Conclude with `⟨_, γ, rfl, h₀, h₁, fun U x v w hv hw => h₂ U x v w (by rw [hv, sub_zero_one]) (by rw [hw, sub_one_one])⟩`. Use `⟨_, 0, rfl, fun U x => ev_zero _ _ _ _ _, fun U x v _ => (ev_zero _ _ _ _ _).trans ?_, fun U x v w _ _ => (ev_zero _ _ _ _ _).trans ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h]`. Conclude with `(smap_zero _).symm`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem firstChernClassTateTwist_cocycle_representative (q : ℕ) [NeZero q] {E : Spc} (hE : Inv q E) (L : E ⟶ ofCat (glCat 1)) :
     ∃ γ : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 1)) 2, CohomologyClass.mk γ = c1 q L ∧

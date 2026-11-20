@@ -20,7 +20,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HeckeFunct
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LevelPlusSubgroup
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
 /- English proof (citation)
-Apply `GlobalTheory.SqTop.join_claims` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSquareTopStatementsOfInputs.lean&line=44#L44)
 -/

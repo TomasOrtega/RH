@@ -20,7 +20,7 @@ namespace GlobalTheory.ThK.EvAt0.PolD.Comm
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Establish `e : lin b = ⇑(Complex.ofRealCLM.comp (linL b))`. Use function extensionality and compare the values at `x`. Simplify using `[lin, linL_apply]`. Rewrite using `[e]`. Conclude with `(Complex.ofRealCLM.comp (linL b)).hasFDerivAt`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_lin (b x : κ → mixedEmbedding.mixedSpace F) :
     HasFDerivAt (lin b) (Complex.ofRealCLM.comp (linL b)) x := by
@@ -30,11 +30,11 @@ theorem hasFDerivAt_lin (b x : κ → mixedEmbedding.mixedSpace F) :
   exact (Complex.ofRealCLM.comp (linL b)).hasFDerivAt
 
 /- English proof (translation)
-Establish `e : (⇑(dOp a' b' f)) = fun y => fderiv ℝ f y a' - 2 * Real.pi * Complex.I * (lin b' y * f y)`. Use function extensionality and compare the values at `y`. Rewrite using `[dOp_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ContDiff ℝ 2 (⇑f)` using `f.smooth 2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h1 : DifferentiableAt ℝ (fderiv ℝ (⇑f)) x` using `((hs.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)) x`. Establish `h2 : HasFDerivAt (fun y => fderiv ℝ (⇑f) y a') _ x` using `h1.hasFDerivAt.clm_apply (hasFDerivAt_const a' x)`. Establish `h3 : HasFDerivAt (⇑f) (fderiv ℝ (⇑f) x) x` using `f.differentiableAt.hasFDerivAt`. Establish `h4` using `h2.sub (((hasFDerivAt_lin b' x).mul h3).const_mul (2 * Real.pi * Complex.I : ℂ))`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5` using `h4.fderiv`. Establish `h6 : fderiv ℝ (fun y => fderiv ℝ (⇑f) y a' - 2 * Real.pi * Complex.I * (lin b' y * f y)) x = _` using `h5`. Rewrite using `[h6]`. Simplify using `[lin, linL_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fderiv_dOp (a a' b' : κ → mixedEmbedding.mixedSpace F) (f : SInf F κ)
     (x : κ → mixedEmbedding.mixedSpace F) :
@@ -57,7 +57,7 @@ theorem fderiv_dOp (a a' b' : κ → mixedEmbedding.mixedSpace F) (f : SInf F κ
   ring
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `hs : ContDiff ℝ 2 (⇑f)` using `f.smooth 2`. Establish `hsym : IsSymmSndFDerivAt ℝ (⇑f) x` using `hs.contDiffAt.isSymmSndFDerivAt (by simp)`. Establish `h` using `hsym.eq a a'`. Rewrite using `[SchwartzMap.sub_apply, SchwartzMap.smul_apply, dOp_apply a b, dOp_apply a' b' (dOp a b f), fderiv_dOp, fderiv_dOp, dOp_apply, dOp_apply, h, smul_eq_mul]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -73,7 +73,7 @@ theorem dOp_comm (a b a' b' : κ → mixedEmbedding.mixedSpace F) (f : SInf F κ
   ring
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ a b a' b'` and use `⟨_, dOp_comm a b a' b'⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem dOp_comm_scalar : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (a b a' b' : κ → mixedEmbedding.mixedSpace F),

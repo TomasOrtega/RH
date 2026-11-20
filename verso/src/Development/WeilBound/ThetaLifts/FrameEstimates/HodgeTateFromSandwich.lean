@@ -27,7 +27,7 @@ def DomSoU : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) χX χW om r s r' s', IsPair B M χX χW om r s r' s' → DomU M om (soFin B M)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP hd φ hφ`. Take `⟨k, hk⟩` from `h F E σ B n d X W M χX χW om r s r' s' hP hd`. Take `⟨p, G, hp, hG, hint, hb⟩` from `hk φ hφ`. Conclude with `⟨p, k, G, hp, hG, hint, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem domWeil_of_U (h : DomWeilU) : DomWeil := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP hd φ hφ
@@ -36,7 +36,7 @@ theorem domWeil_of_U (h : DomWeilU) : DomWeil := by
   exact ⟨p, k, G, hp, hG, hint, hb⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP φ hφ N`. Take `⟨k, hk⟩` from `h F E σ B n d X W M χX χW om r s r' s' hP N`. Take `⟨p, hp, hb⟩` from `hk φ hφ`. Conclude with `⟨p, k, hp, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem soSemi_of_U (h : SoSemiU) : SoSemi := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP φ hφ N

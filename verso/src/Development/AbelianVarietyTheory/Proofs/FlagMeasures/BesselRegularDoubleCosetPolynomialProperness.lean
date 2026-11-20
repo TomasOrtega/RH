@@ -14,38 +14,38 @@ namespace GlobalTheory.SgInf.PolyProper
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_right_inverse (hermitian_pos_facts_hold k r).2.1`.
+A detailed English derivation is pending.
 -/
 theorem gram_det_unit : IsUnit (Hpk k r).det :=
   Matrix.isUnit_det_of_right_inverse (hermitian_pos_facts_hold k r).2.1
 
 /- English proof (translation)
-The claim follows from `(unitary_group_holds _ _ gram_det_unit).2.1 g hg h hh`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem {g h : Mat k r} (hg : g ∈ GG k r) (hh : h ∈ GG k r) : g * h ∈ GG k r :=
   (unitary_group_holds _ _ gram_det_unit).2.1 g hg h hh
 
 /- English proof (translation)
-The claim follows from `((unitary_group_holds _ _ gram_det_unit).2.2 g hg).2`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem {g : Mat k r} (hg : g ∈ GG k r) : g⁻¹ ∈ GG k r :=
   ((unitary_group_holds _ _ gram_det_unit).2.2 g hg).2
 
 /- English proof (translation)
-The claim follows from `((unitary_group_holds _ _ gram_det_unit).2.2 g hg).1`.
+A detailed English derivation is pending.
 -/
 theorem det_unit {g : Mat k r} (hg : g ∈ GG k r) : IsUnit g.det :=
   ((unitary_group_holds _ _ gram_det_unit).2.2 g hg).1
 
 /- English proof (translation)
-Take `⟨h, hh, m, hm, rfl⟩` from `hs`. Conclude with `mul_mem hh.1 hm.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_S {z : Fin (2 * r + k + 1) → ℂ} {s : Mat k r} (hs : s ∈ Sset k r z) : s ∈ GG k r := by
   obtain ⟨h, hh, m, hm, rfl⟩ := hs
   exact mul_mem hh.1 hm.1
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Establish `h : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Rewrite using `[Matrix.mul_assoc (Hpk k r), Matrix.mul_assoc (Hpk k r), h]`. Conclude with `(hermitian_pos_facts_hold k r).2.1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_eq {g : Mat k r} (hg : g ∈ GG k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
   apply Matrix.inv_eq_left_inv
@@ -54,17 +54,17 @@ theorem inv_eq {g : Mat k r} (hg : g ∈ GG k r) : g⁻¹ = Hpk k r * gᴴ * Hpk
   exact (hermitian_pos_facts_hold k r).2.1
 
 /- English proof (translation)
-Take `⟨C1, h1⟩` from `GlobalTheory.T.siegel_region_norm_bound k r z z' C hz hz' hT hT' hC hCr`. Take `⟨C2, h2⟩` from `GlobalTheory.T.isometry_opNorm_bounded_by_two_frames k r z z' C hz hz' hT hT' hC (fun γ hγ => ⟨(hCr hγ).1, (hCr hγ).2.2⟩)`. Take `⟨hN1, -, -, -, hN5, -⟩` from `GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r`. Use `⟨C2 * (max 1 C1) ^ 2, fun γ hγ s hs s' hs' => ?_⟩` and prove the remaining obligations. Establish `hsG` using `mem_of_S hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs'G` using `mem_of_S hs'`. Establish `hγG : γ ∈ GG k r` using `(hCr hγ).1`. Establish `hxG : s * γ * s'⁻¹ ∈ GG k r` using `mul_mem (mul_mem hsG hγG) (inv_mem hs'G)`. Establish `hx1 : 1 ≤ opn (s * γ * s'⁻¹)` using `(hN1 _ hxG).2`. Establish `hxs : (s * γ * s'⁻¹) * s' = s * γ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (det_unit hs'G), Matrix.mul_one]`. Establish `h1'` using `h1 γ hγ s hs s' hs'`. Establish `h5` using `hN5 (s * γ * s'⁻¹)`. Use `set X := opn (s * γ * s'⁻¹) with hX`. Establish `hp1 : 1 ≤ X ^ (r * (r + 1))` using `one_le_pow₀ hx1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : (1 : ℝ) ≤ max 1 C1` using `le_max_left _ _`. Establish `hle : C1 * X ^ (r * (r + 1)) ≤ max 1 C1 * X ^ (r * (r + 1))` using `mul_le_mul_of_nonneg_right (le_max_right _ _) (by positivity)`. Establish `hQ1 : 1 ≤ max 1 C1 * X ^ (r * (r + 1))` using `one_le_mul_of_one_le_of_one_le hm1 hp1`. Establish `hB : 1 ≤ X * (max 1 C1 * X ^ (r * (r + 1)))` using `one_le_mul_of_one_le_of_one_le hx1 hQ1`. Establish `key` using `h2 γ hγ s hsG (X * (max 1 C1 * X ^ (r * (r + 1)))) hB (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(a | b)`. Use `show eucl (s *ᵥ fvec k r z a) ≤ _`. Use `((h1' a).1.trans hle).trans ?_` and prove the remaining obligations. Conclude with `le_mul_of_one_le_left (by linarith) hx1`. Use `show eucl (s *ᵥ (γ *ᵥ fvec k r z' b)) ≤ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← hxs, ← Matrix.mulVec_mulVec]`. Use `(h5 _).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left ((h1' b).2.trans hle) (by linarith))`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem left_bound (z z' : Fin (2 * r + k + 1) → ℂ) (C : Set (Mat k r)) (hz : inWb k r z)
     (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') (hC : IsCompact C)
@@ -105,15 +105,15 @@ theorem left_bound (z z' : Fin (2 * r + k + 1) → ℂ) (C : Set (Mat k r)) (hz 
   ring
 
 /- English proof (translation)
-Introduce `k r z z' C hz hz' hT hT' hC hCr`. Take `⟨C1, h1⟩` from `left_bound z z' C hz hz' hT hT' hC hCr`. Establish `hcont : Continuous fun g : Mat k r => Hpk k r * gᴴ * Hpk k r` using `(continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const`. Establish `hCr' : (fun g : Mat k r => Hpk k r * gᴴ * Hpk k r) '' C ⊆ Greg k r z' z`. Introduce and unpack `_ ⟨γ, hγ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hγG : γ ∈ GG k r` using `(hCr hγ).1`. Use `show Hpk k r * γᴴ * Hpk k r ∈ _`. Rewrite using `[← inv_eq hγG]`. Conclude with `(GlobalTheory.T.besselZhat_inv_and_regular_iff k r z z' γ hγG).2.1 (hCr hγ)`. Take `⟨C2, h2⟩` from `left_bound z' z _ hz' hz hT' hT (hC.image hcont) hCr'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hN1, -⟩` from `GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r`. Use `⟨max 1 (max C1 C2), le_max_left _ _, fun γ hγ s hs s' hs' => ?_⟩` and prove the remaining obligations. Establish `hsG` using `mem_of_S hs`. Establish `hs'G` using `mem_of_S hs'`. Establish `hγG : γ ∈ GG k r` using `(hCr hγ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxG : s * γ * s'⁻¹ ∈ GG k r` using `mul_mem (mul_mem hsG hγG) (inv_mem hs'G)`. Establish `hinv : s' * γ⁻¹ * s⁻¹ = (s * γ * s'⁻¹)⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ (det_unit hs'G), Matrix.mul_assoc]`. Establish `ha` using `h1 γ hγ s hs s' hs'`. Establish `hb` using `h2 γ⁻¹ ⟨γ, hγ, (inv_eq hγG).symm⟩ s' hs' s hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hb` using `[hinv, (hN1 _ hxG).1]`. Establish `hp : 0 ≤ opn (s * γ * s'⁻¹) ^ (2 * (r ^ 2 + r + 1))` using `pow_nonneg (opn_nonneg _) _`. Use `max_le (ha.trans ?_) (hb.trans ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right ((le_max_left _ _).trans (le_max_right _ _)) hp`. Conclude with `mul_le_mul_of_nonneg_right ((le_max_right _ _).trans (le_max_right _ _)) hp`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem poly_proper : ∀ (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (C : Set (Mat k r)), inWb k r z → inWb k r z' → 0 < Tz k r z → 0 < Tz k r z' → IsCompact C → C ⊆ Greg k r z z' → ∃ C0 : ℝ, 1 ≤ C0 ∧ ∀ γ ∈ C, ∀ s ∈ Sset k r z, ∀ s' ∈ Sset k r z', max (opn s) (opn s') ≤ C0 * opn (s * γ * s'⁻¹) ^ (2 * (r ^ 2 + r + 1)) := by
   intro k r z z' C hz hz' hT hT' hC hCr

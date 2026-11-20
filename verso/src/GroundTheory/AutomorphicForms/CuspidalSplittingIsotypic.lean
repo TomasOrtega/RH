@@ -32,7 +32,7 @@ theorem subrepIncl_apply (Y : Subrepresentation ρ) (y : Y.toSubmodule) :
     subrepIncl Y y = (y : U) := rfl
 
 /- English proof (translation)
-Introduce `y`. Use `Subgroup.isOpen_mono (fun g hg => ?_) (hρ (y : U))` and prove the remaining obligations. Rewrite `hg`, the goal using `[mem_stabilizerOf]`. Conclude with `Subtype.ext hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_toRepresentation (hρ : IsSmooth ρ) (Y : Subrepresentation ρ) :
     IsSmooth Y.toRepresentation := by
@@ -43,13 +43,13 @@ theorem isSmooth_toRepresentation (hρ : IsSmooth ρ) (Y : Subrepresentation ρ)
 
 omit [ValuativeRel F] [IsNonarchimedeanLocalField F] [TopologicalSpace F] in
 /- English proof (translation)
-Introduce `z hz y` and use `Subtype.ext (hωρ z hz y)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasCentralChar.toRepresentation (hωρ : HasCentralChar ρ ω) (Y : Subrepresentation ρ) :
     HasCentralChar Y.toRepresentation ω := fun z hz y => Subtype.ext (hωρ z hz y)
 
 /- English proof (translation)
-Introduce `x`. Use `Subgroup.isOpen_mono (H₁ := stabilizerOf π x.1 ⊓ stabilizerOf ρ x.2) (fun g hg => ?_) ((hπ x.1).inter (hρ x.2))` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Subgroup.mem_inf.1 hg`. Rewrite `h1`, `h2`, the goal using `[mem_stabilizerOf]`. Conclude with `Prod.ext h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_prod (hπ : IsSmooth π) (hρ : IsSmooth ρ) : IsSmooth (π.prod ρ) := by
   intro x
@@ -75,9 +75,9 @@ theorem piRep_apply (m : ℕ) (g : GL (Fin n) F) (x : Fin m → V) (i : Fin m) :
     piRep π m g x i = π g (x i) := rfl
 
 /- English proof (translation)
-Introduce `x`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Establish `h : ⋂ i, (stabilizerOf π (x i) : Set (GL (Fin n) F)) ∈ 𝓝 (1 : GL (Fin n) F)` using `Filter.iInter_mem.2 fun i => (hπ (x i)).mem_nhds (one_mem _)`. Use `Filter.mem_of_superset h fun g hg => ?_` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_stabilizerOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Conclude with `(Set.mem_iInter.1 hg i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isSmooth_piRep (hπ : IsSmooth π) (m : ℕ) : IsSmooth (piRep π m) := by
   intro x
@@ -91,7 +91,7 @@ theorem isSmooth_piRep (hπ : IsSmooth π) (m : ℕ) : IsSmooth (piRep π m) := 
 
 omit [ValuativeRel F] [IsNonarchimedeanLocalField F] [TopologicalSpace F] in
 /- English proof (translation)
-Introduce `z hz x` and use `funext fun i => hωπ z hz (x i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasCentralChar.piRep (hωπ : HasCentralChar π ω) (m : ℕ) :
     HasCentralChar (piRep π m) ω := fun z hz x => funext fun i => hωπ z hz (x i)
@@ -133,13 +133,13 @@ variable {V U : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module 
   {ω : GL (Fin n) F → ℂ}
 
 /- English proof (translation)
-Set `j : Representation.IntertwiningMap (π.prod Y.toRepresentation) ρ` to `t.comp (Representation.IntertwiningMap.fst ℂ π Y.toRepresentation) + (subrepIncl Y).comp (Representation.IntertwiningMap.snd ℂ π Y.toRepresentation)`. Establish `hj : ∀ p : V × Y.toSubmodule, j p = t p.1 + (p.2 : U)` using `fun p => rfl`. Establish `hjinj : Injective j`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `p hp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hp` using `[hj]`. Establish `h1 : p.1 = 0` using `ht p.1 (by`. Rewrite using `[eq_neg_of_add_eq_zero_left hp]`. Conclude with `Y.toSubmodule.neg_mem p.2.2)`. Establish `h2 : (p.2 : U) = 0` using `by rw [h1, map_zero, zero_add] at hp; exact hp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Prod.ext h1 (Subtype.ext h2)`. Take `⟨Fm, hFm⟩` from `exists_extend_of_isSupercuspidal hπ hsc hωπ (isSmooth_prod hπ (isSmooth_toRepresentation hρ Y)) hρ hωρ j hjinj (Representation.IntertwiningMap.fst ℂ π Y.toRepresentation)`. Establish `hF : ∀ p, Fm (j p) = p.1` using `fun p => congrArg (fun φ : Representation.IntertwiningMap (π.prod Y.toRepresentation) π => φ p) hFm`. Use `⟨Fm, fun x => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `hF (x, 0)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hj, ZeroMemClass.coe_zero, add_zero]`. Then use the resulting hypothesis. Use `hF (0, ⟨y, hy⟩)` as an intermediate fact. Rewrite `this` using `[hj, map_zero, zero_add]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_retraction [π.IsIrreducible] (hπ : IsSmooth π) (hsc : IsSupercuspidal π)
     (hωπ : HasCentralChar π ω) (hρ : IsSmooth ρ) (hωρ : HasCentralChar ρ ω)
@@ -174,9 +174,7 @@ theorem exists_retraction [π.IsIrreducible] (hπ : IsSmooth π) (hsc : IsSuperc
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Establish `hle : (⨆ t ∈ s, LinearMap.range (t : Representation.IntertwiningMap π ρ).toLinearMap) ≤ (⨆ t ∈ s, LinearMap.range (t : Representation.IntertwiningMap π ρ).toLinearMap).comap (ρ g)`. Use `iSup₂_le fun t ht => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Submodule.mem_comap, Representation.IntertwiningMap.toLinearMap_apply, ← Representation.IntertwiningMap.isIntertwining]`. Conclude with `(le_iSup₂ (f := fun t (_ : t ∈ s) => LinearMap.range (t : Representation.IntertwiningMap π ρ).toLinearMap) t ht) ⟨π g x, rfl⟩`.
-
-Conclude with `hle hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_range_stable (s : Finset (Representation.IntertwiningMap π ρ))
     (g : GL (Fin n) F) {y : U}
@@ -194,17 +192,15 @@ theorem iSup_range_stable (s : Finset (Representation.IntertwiningMap π ρ))
   exact hle hy
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `y hy hy0`. Simplify using `only [Finset.notMem_empty, iSup_false, iSup_bot, Submodule.mem_bot] at hy`. Conclude with `absurd hy hy0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `insert t s hts ih`. Introduce `y hy hy0`. Rewrite `hy` using `[Finset.iSup_insert]`. Take `⟨a, ⟨w, rfl⟩, b, hb, rfl⟩` from `Submodule.mem_sup.1 hy`. Distinguish the cases in `hyY : t w + b ∈ ⨆ t ∈ s, LinearMap.range (t : Representation.IntertwiningMap π ρ).toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression.
 
-Conclude with `ih _ hyY hy0`. Set `Y : Subrepresentation ρ` to `⟨⨆ t ∈ s, LinearMap.range (t : Representation.IntertwiningMap π ρ).toLinearMap, fun g _ hy => iSup_range_stable s g hy⟩`. Set `L : Subrepresentation π` to `⟨Y.toSubmodule.comap t.toLinearMap, fun g x hx => by`. Rewrite using `[Submodule.mem_comap, Representation.IntertwiningMap.toLinearMap_apply, Representation.IntertwiningMap.isIntertwining]`. Conclude with `Y.apply_mem_toSubmodule g hx⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL : ∀ x, t x ∈ Y.toSubmodule → x = 0`. Break down `eq_bot_or_eq_top L with h | h` into its components or cases. Introduce `x hx`. Establish `hxL : x ∈ L.toSubmodule` using `hx`. Rewrite `hxL` using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(Submodule.mem_bot ℂ).1 hxL`. It suffices to derive a contradiction. Establish `hwL : w ∈ L.toSubmodule` using `by rw [h]; exact Submodule.mem_top`. Conclude with `hyY (Y.toSubmodule.add_mem hwL hb)`. Take `⟨Fm, hFt, hFY⟩` from `exists_retraction hπ hsc hωπ hρ hωρ Y t hL`.
-
-Use `⟨Fm, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, Representation.IntertwiningMap.toLinearMap_apply, hFt, hFY b hb, add_zero]`. Introduce and unpack `rfl`. Conclude with `hyY (by rw [map_zero, zero_add]; exact hb)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_apply_ne_zero_of_mem_iSup [π.IsIrreducible] (hπ : IsSmooth π)
     (hsc : IsSupercuspidal π) (hωπ : HasCentralChar π ω) (hρ : IsSmooth ρ)
@@ -267,7 +263,7 @@ def isotypicKernel : Submodule ℂ U :=
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Simplify using `only [isotypicKernel, Submodule.mem_iInf, LinearMap.mem_ker, Representation.IntertwiningMap.toLinearMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_isotypicKernel {u : U} :
     u ∈ isotypicKernel π ρ ↔ ∀ Fm : Representation.IntertwiningMap ρ π, Fm u = 0 := by
@@ -276,7 +272,7 @@ theorem mem_isotypicKernel {u : U} :
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-The claim follows from `(le_iSup (fun t : Representation.IntertwiningMap π ρ => LinearMap.range t.toLinearMap) t) ⟨x, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem apply_mem_isotypicPart (t : Representation.IntertwiningMap π ρ) (x : V) :
     t x ∈ isotypicPart π ρ :=
@@ -286,9 +282,7 @@ theorem apply_mem_isotypicPart (t : Representation.IntertwiningMap π ρ) (x : V
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Establish `hle : isotypicPart π ρ ≤ (isotypicPart π ρ).comap (ρ g)`. Use `iSup_le fun t => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Submodule.mem_comap, Representation.IntertwiningMap.toLinearMap_apply, ← Representation.IntertwiningMap.isIntertwining]`. Conclude with `apply_mem_isotypicPart t (π g x)`.
-
-Conclude with `hle hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isotypicPart_stable (g : GL (Fin n) F) {u : U} (hu : u ∈ isotypicPart π ρ) :
     ρ g u ∈ isotypicPart π ρ := by
@@ -303,7 +297,7 @@ theorem isotypicPart_stable (g : GL (Fin n) F) {u : U} (hu : u ∈ isotypicPart 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Rewrite `hu`, the goal using `[mem_isotypicKernel]`. Introduce `Fm`. Rewrite using `[Representation.IntertwiningMap.isIntertwining, hu, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isotypicKernel_stable (g : GL (Fin n) F) {u : U} (hu : u ∈ isotypicKernel π ρ) :
     ρ g u ∈ isotypicKernel π ρ := by
@@ -316,9 +310,9 @@ variable [π.IsIrreducible] (hπ : IsSmooth π) (hsc : IsSupercuspidal π)
 include hπ hsc hωπ hρ hωρ
 
 /- English proof (translation)
-Rewrite using `[Submodule.disjoint_def]`. Introduce `y hy1 hy2`. Assume the negation of the conclusion as `hy0`. Take `⟨s, hs⟩` from `Submodule.mem_iSup_iff_exists_finset.1 hy1`. Take `⟨Fm, hFm⟩` from `exists_apply_ne_zero_of_mem_iSup hπ hsc hωπ hρ hωρ s y hs hy0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hFm (mem_isotypicKernel.1 hy2 Fm)`.
+A detailed English derivation is pending.
 -/
 theorem disjoint_isotypicPart_isotypicKernel :
     Disjoint (isotypicPart π ρ) (isotypicKernel π ρ) := by
@@ -330,53 +324,47 @@ theorem disjoint_isotypicPart_isotypicKernel :
   exact hFm (mem_isotypicKernel.1 hy2 Fm)
 
 /- English proof (translation)
-Take `⟨u₀, hu₀⟩` from `exists_ne_zero_of_isIrreducible (ρ := π)`. Establish `hπa` using `isAdmissible_of_isIrreducible hπ`. Take `⟨K, hKc, hKo, huK⟩` from `(isSmooth_iff_forall_exists ρ).1 hρ u`. Set `ev : Representation.IntertwiningMap ρ π →ₗ[ℂ] V` to `{ toFun := fun Fm => Fm u, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Set `E` to `LinearMap.range ev`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hEK : E ≤ fixedVectors π K`. Introduce and unpack `_ ⟨Fm, rfl⟩`. Conclude with `map_mem_fixedVectors ρ Fm huK`. Establish `: FiniteDimensional ℂ (fixedVectors π K)` using `hπa.2 K hKc hKo`. Establish `: FiniteDimensional ℂ E` using `Submodule.finiteDimensional_of_le hEK`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `m` to `Module.finrank ℂ E`. Set `bE` to `Module.finBasis ℂ E`. Establish `hb : ∀ i, ∃ Gi : Representation.IntertwiningMap ρ π, Gi u = (bE i : V)` using `fun i => (bE i).2`. Use `choose Gs hGs using hb`. Set `Γ : Representation.IntertwiningMap ρ (piRep π m)` to `{ toLinearMap := LinearMap.pi fun i => (Gs i).toLinearMap isIntertwining' := fun g => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x i`. Simplify using `[Representation.IntertwiningMap.isIntertwining] }`. Establish `hΓ : ∀ x i, Γ x i = Gs i x` using `fun _ _ => rfl`. Set `W0 : Subrepresentation ρ` to `⟨Submodule.span ℂ (Set.range fun g => ρ g u), fun g x hx => by`. Establish `hle : Submodule.span ℂ (Set.range fun h => ρ h u) ≤ (Submodule.span ℂ (Set.range fun h => ρ h u)).comap (ρ g)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * h, by simp [map_mul, Module.End.mul_apply]⟩`. Conclude with `hle hx⟩`. Establish `huW0 : u ∈ W0.toSubmodule` using `Submodule.subset_span ⟨1, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hvanish : ∀ H : Representation.IntertwiningMap ρ π, H u = 0 → ∀ x ∈ W0.toSubmodule, H x = 0`. Introduce `H hH x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Representation.IntertwiningMap.isIntertwining, hH, map_zero]`. Consider the case `zero => exact map_zero H`. Consider the case `add a b _ _ ha hb => rw [map_add, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [map_smul, ha, smul_zero]`. Set `Γ0` to `Γ.comp (subrepIncl W0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΓ0 : ∀ x i, Γ0 x i = Gs i (x : U)` using `fun _ _ => rfl`. Establish `hρ0` using `isSmooth_toRepresentation hρ W0`. Establish `hωρ0` using `hωρ.toRepresentation W0`. Establish `hsurj : Surjective Γ0`. Assume the negation of the conclusion as `hns`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Set `R : Subrepresentation (piRep π m)` to `Γ0.range`. Establish `hRmem : ∀ y, y ∈ R.toSubmodule ↔ ∃ x, Γ0 x = y` using `fun y => Iff.rfl`. Establish `hR : ∃ j, ∀ x, piIncl π m j x ∈ R.toSubmodule → x = 0`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Apply `hns` to reduce the goal to its premises. Establish `hsub : ∀ j, ∀ x, piIncl π m j x ∈ R.toSubmodule`. Introduce `j`. Take `⟨x₀, hx₀R, hx₀⟩` from `hall j`. Set `L : Subrepresentation π` to `⟨R.toSubmodule.comap (piIncl π m j).toLinearMap, fun g x hx => by`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap, Representation.IntertwiningMap.toLinearMap_apply, Representation.IntertwiningMap.isIntertwining]`. Conclude with `R.apply_mem_toSubmodule g hx⟩`. Break down `eq_bot_or_eq_top L with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hx₀L : x₀ ∈ L.toSubmodule` using `hx₀R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx₀L` using `[h]`. Conclude with `hx₀ ((Submodule.mem_bot ℂ).1 hx₀L)`. Introduce `x`. Establish `hxL : x ∈ L.toSubmodule` using `by rw [h]; exact Submodule.mem_top`. Conclude with `hxL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `y`. Establish `hy : y ∈ R.toSubmodule`. Rewrite using `[← Finset.univ_sum_single y]`. Conclude with `Submodule.sum_mem _ fun j _ => hsub j (y j)`. Conclude with `(hRmem y).1 hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨j, hj⟩` from `hR`. Take `⟨Φ, hΦj, hΦR⟩` from `exists_retraction hπ hsc hωπ (isSmooth_piRep hπ m) (hωπ.piRep m) R (piIncl π m j) hj`. Establish `hc : ∀ i, ∃ c : ℂ, ∀ x, Φ (piIncl π m i x) = c • x` using `fun i => by`. Take `⟨c, hc⟩` from `(algebraMap_intertwiningMap_bijective_of_isSmooth hπ).2 (Φ.comp (piIncl π m i))`. Conclude with `⟨c, fun x => (congrArg (fun ψ : Representation.IntertwiningMap π π => ψ x) hc).symm⟩`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose c hcx using hc`. Establish `hΦ : ∀ y : Fin m → V, Φ y = ∑ i, c i • y i` using `fun y => by conv_lhs => rw [← Finset.univ_sum_single y]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hcx i (y i)`. Establish `hzero : ∑ i, c i • bE i = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : Φ (Γ u) = 0` using `hΦR _ ((hRmem _).2 ⟨⟨u, huW0⟩, rfl⟩)`. Rewrite `h1` using `[hΦ]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `h1` using `[hΓ, hGs]`. Establish `hcj : c j = 0` using `(Fintype.linearIndependent_iff.1 bE.linearIndependent) c hzero j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : (1 : ℂ) • u₀ = c j • u₀` using `by rw [one_smul, ← hcx j u₀, hΦj]`. Rewrite `h1` using `[hcj, zero_smul, one_smul]`. Conclude with `hu₀ h1`. Establish `hlift : ∀ i, ∃ s : Representation.IntertwiningMap π W0.toRepresentation, Γ0.comp s = piIncl π m i` using `fun i => exists_lift_of_isSupercuspidal hπ hsc hωπ hρ0 hωρ0 Γ0 hsurj (piIncl π m i)`. Use `choose s hs using hlift`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Set `u' : U` to `∑ i, (s i (Gs i u) : U)`. Establish `hu'W0 : u' ∈ W0.toSubmodule` using `Submodule.sum_mem _ fun i _ => (s i (Gs i u)).2`. Establish `hGu' : ∀ i, Gs i u' = Gs i u`. Introduce `i`. Establish `h2 : Γ0 (∑ k, s k (Gs k u)) = Γ u`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Establish `h3 : ∀ k, Γ0 (s k (Gs k u)) = Pi.single k (Gs k u)` using `fun k => by`. Rewrite using `[← Representation.IntertwiningMap.comp_apply, hs]`. Both sides reduce to the same expression. Simplify using `only [h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Finset.univ_sum_single (Γ u)`. Establish `h4` using `congrFun h2 i`. Rewrite `h4` using `[hΓ0, hΓ]`. Simplify `h4` using `[u']`. Use `⟨u', Submodule.sum_mem _ fun i _ => apply_mem_isotypicPart ((subrepIncl W0).comp (s i)) (Gs i u), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[mem_isotypicKernel]`. Introduce `Fm`. Establish `hFE : Fm u ∈ E` using `⟨Fm, rfl⟩`. Set `a` to `bE.repr ⟨Fm u, hFE⟩`. Establish `hFu : Fm u = ∑ i, a i • (bE i : V)`.
-
-Establish `h5` using `congrArg Subtype.val (bE.sum_repr ⟨Fm u, hFE⟩)`. Rewrite `h5` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h5`. Conclude with `h5.symm`. Set `H : Representation.IntertwiningMap ρ π` to `Fm - ∑ i, a i • Gs i`.
-
-Establish `hHx : ∀ x, H x = Fm x - ∑ i, a i • Gs i x` using `fun x => by`. Simplify using `[H, Representation.IntertwiningMap.sum_apply, Representation.IntertwiningMap.smul_apply]`. Establish `hHu : H u = 0`. Rewrite using `[hHx, hFu]`. Simplify using `[hGs]`.
-
-Establish `hHu'` using `hvanish H hHu u' hu'W0`. Rewrite `hHu'` using `[hHx, sub_eq_zero]`. Rewrite using `[map_sub, hHu', hFu, sub_eq_zero]`. Simplify using `[hGu', hGs]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem_isotypicKernel (u : U) :
     ∃ u' ∈ isotypicPart π ρ, u - u' ∈ isotypicKernel π ρ := by
@@ -523,7 +511,7 @@ theorem exists_sub_mem_isotypicKernel (u : U) :
   simp [hGu', hGs]
 
 /- English proof (translation)
-Use `⟨disjoint_isotypicPart_isotypicKernel hπ hsc hωπ hρ hωρ, codisjoint_iff.2 (eq_top_iff.2 fun u _ => ?_)⟩` and prove the remaining obligations. Take `⟨u', hu', h⟩` from `exists_sub_mem_isotypicKernel hπ hsc hωπ hρ hωρ u`. Conclude with `Submodule.mem_sup.2 ⟨u', hu', u - u', h, add_sub_cancel u' u⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCompl_isotypicPart_isotypicKernel :
     IsCompl (isotypicPart π ρ) (isotypicKernel π ρ) := by
@@ -533,11 +521,11 @@ theorem isCompl_isotypicPart_isotypicKernel :
   exact Submodule.mem_sup.2 ⟨u', hu', u - u', h, add_sub_cancel u' u⟩
 
 /- English proof (translation)
-Introduce `hp`. Take `⟨x₀, hx₀⟩` from `exists_ne_zero_of_isIrreducible (ρ := π)`. Take `⟨s, hs⟩` from `exists_lift_of_isSupercuspidal hπ hsc hωπ (isSmooth_toRepresentation hρ A) (hωρ.toRepresentation A) p hp (Representation.IntertwiningMap.id π)`. Establish `hps : ∀ x, p (s x) = x` using `fun x => congrArg (fun φ : Representation.IntertwiningMap π π => φ x) hs`. Set `i` to `(subrepIncl A).comp s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hi : Injective i` using `fun x y hxy => by`. Establish `h1 : s x = s y` using `Subtype.ext hxy`. Rewrite using `[← hps x, ← hps y, h1]`. Take `⟨Fm, hFm⟩` from `exists_extend_of_isSupercuspidal hπ hsc hωπ hπ hρ hωρ i hi (Representation.IntertwiningMap.id π)`. Establish `h1 : Fm (i x₀) = x₀` using `congrArg (fun φ : Representation.IntertwiningMap π π => φ x₀) hFm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : Fm (i x₀) = 0` using `mem_isotypicKernel.1 (hA (s x₀).2) Fm`. Conclude with `hx₀ (h1.symm.trans h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_surjective_of_le_isotypicKernel (A : Subrepresentation ρ)
     (hA : A.toSubmodule ≤ isotypicKernel π ρ)

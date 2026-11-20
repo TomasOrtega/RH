@@ -31,9 +31,9 @@ def rad (ρ : ι → Module.End ℂ Q) (C : Submodule ℂ Q) : Submodule ℂ Q :
   sSup {N | IsStab ρ N ∧ C ≤ N ∧ N ≠ ⊤}
 
 /- English proof (translation)
-Introduce `i`. Establish `h : rad ρ C ≤ (rad ρ C).comap (ρ i)`. Use `sSup_le fun N hN => ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `le_sSup hN (hN.1 i x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun x hx => h hx`.
+A detailed English derivation is pending.
 -/
 theorem isStab_rad (ρ : ι → Module.End ℂ Q) (C : Submodule ℂ Q) : IsStab ρ (rad ρ C) := by
   intro i
@@ -77,7 +77,7 @@ end Fock
 section LALemmas
 
 /- English proof (translation)
-Introduce `i x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (h i y hy) (h' i z hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isStab_sup {ι Q : Type} [AddCommGroup Q] [Module ℂ Q] {ρ : ι → Module.End ℂ Q} {N N' : Submodule ℂ Q}
     (h : IsStab ρ N) (h' : IsStab ρ N') : IsStab ρ (N ⊔ N') := by
@@ -87,13 +87,13 @@ theorem isStab_sup {ι Q : Type} [AddCommGroup Q] [Module ℂ Q] {ρ : ι → Mo
   exact Submodule.add_mem_sup (h i y hy) (h' i z hz)
 
 /- English proof (translation)
-Introduce `ι Q _ _ ρ C N₀ hH hs hC hne`. Take `⟨⟨L, hL⟩, hsum⟩` from `hH`. Set `S : Set (Submodule ℂ Q)` to `{N | IsStab ρ N ∧ C ≤ N ∧ N ≠ ⊤}`. Establish `wf : WellFounded (fun x y : S => y.1 < x.1)`. Use `⟨fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hx`. Take `⟨f, -, hf⟩` from `not_acc_iff_exists_descending_chain.1 hx`. Establish `mono : StrictMono fun n => (f n).1` using `strictMono_nat_of_lt_succ hf`. Use `hL (L + 1) (fun k => (f k).1) (mono.comp Fin.val_strictMono) fun k => ⟨(f k).2.1, (f k).2.2.1⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨M, -, hM⟩` from `wf.has_min Set.univ ⟨⟨N₀, hs, hC, hne⟩, trivial⟩`. Establish `hmax : ∀ N ∈ S, N ≤ M.1`. Introduce `N hN`. Establish `hs' : M.1 ⊔ N ∈ S` using `⟨isStab_sup M.2.1 hN.1, le_sup_of_le_left M.2.2.1, hsum _ _ M.2.1 M.2.2.1 M.2.2.2 hN.1 hN.2.1 hN.2.2⟩`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hM ⟨_, hs'⟩ trivial (lt_of_le_of_ne le_sup_left fun e => h (e ▸ le_sup_right))`. Establish `e : rad ρ C = M.1` using `le_antisymm (sSup_le hmax) (le_sSup M.2)`. Rewrite using `[e]`. Conclude with `M.2.2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rad_ne_top : ∀ (ι Q : Type) [AddCommGroup Q] [Module ℂ Q] (ρ : ι → Module.End ℂ Q) (C N₀ : Submodule ℂ Q),
   GlobalTheory.RealQuot.HoweCond ρ C → GlobalTheory.RealQuot.IsStab ρ N₀ → C ≤ N₀ → N₀ ≠ ⊤ → GlobalTheory.RealQuot.rad ρ C ≠ ⊤ := by
@@ -119,21 +119,19 @@ theorem rad_ne_top : ∀ (ι Q : Type) [AddCommGroup Q] [Module ℂ Q] (ρ : ι 
   exact M.2.2.2
 
 /- English proof (translation)
-Introduce `ι Q Pi _ _ _ _ ρ C σ β hi hk hrad hss`. Assume the negation of the conclusion as `hne`. Establish `hKs : IsStab ρ (LinearMap.ker β)` using `fun i x hx => by`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[← LinearMap.comp_apply, hi i, LinearMap.comp_apply, hx, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : LinearMap.ker β ≠ ⊤` using `fun h => hne (h ▸ le_top)`. Establish `hTs : IsStab σ ((rad ρ C).map β)`. Introduce and unpack `i _ ⟨x, hx, rfl⟩`. Conclude with `⟨ρ i x, isStab_rad ρ C i x hx, by rw [← LinearMap.comp_apply, hi i, LinearMap.comp_apply]⟩`. Take `⟨N', hN's, hc⟩` from `hss _ hTs`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hUs : IsStab ρ (N'.comap β)` using `fun i x hx => by show β (ρ i x) ∈ N'`. Rewrite using `[← LinearMap.comp_apply, hi i, LinearMap.comp_apply]`. Conclude with `hN's i _ hx`. Establish `hCU : C ≤ N'.comap β` using `fun x hx => by show β x ∈ N'`. Rewrite using `[LinearMap.mem_ker.1 (hk hx)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `N'.zero_mem`. Establish `hsup : rad ρ C ⊔ N'.comap β = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `h1 : β x ∈ (rad ρ C).map β ⊔ N'` using `hc.sup_eq_top ▸ Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, n, hn, htn⟩` from `Submodule.mem_sup.1 h1`. Take `⟨r, hr, rfl⟩` from `ht`. Establish `h2 : x - r ∈ N'.comap β` using `by show β (x - r) ∈ N'`. Rewrite using `[map_sub, ← htn, add_sub_cancel_left]`. Conclude with `hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails.
 
-Establish `h3` using `Submodule.add_mem_sup hr h2`. Rewrite `h3` using `[add_sub_cancel]`. Then use the resulting hypothesis. Distinguish the cases in `hU : N'.comap β = ⊤`. Apply `hne` to reduce the goal to its premises. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : β x ∈ (rad ρ C).map β` using `⟨x, hx, rfl⟩`. Establish `h2 : β x ∈ N'`. Establish `: x ∈ N'.comap β` using `hU ▸ Submodule.mem_top`. Conclude with `this`. Establish `h3 : β x ∈ (rad ρ C).map β ⊓ N'` using `Submodule.mem_inf.2 ⟨h1, h2⟩`.
-
-Rewrite `h3` using `[hc.inf_eq_bot, Submodule.mem_bot]`. Conclude with `h3`. Conclude with `hrad (eq_top_iff.2 (hsup ▸ sup_le le_rfl (le_sSup ⟨hUs, hCU, hU⟩)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rad_le_ker : ∀ (ι Q Pi : Type) [AddCommGroup Q] [Module ℂ Q] [AddCommGroup Pi] [Module ℂ Pi] (ρ : ι → Module.End ℂ Q)
   (C : Submodule ℂ Q) (σ : ι → Module.End ℂ Pi) (β : Q →ₗ[ℂ] Pi),
@@ -185,15 +183,15 @@ theorem rad_le_ker : ∀ (ι Q Pi : Type) [AddCommGroup Q] [Module ℂ Q] [AddCo
 end LALemmas
 
 /- English proof (translation)
-Introduce `D α β τ a b hA hB`. Take `⟨m, hm, ex, hα⟩` from `hA`. Take `⟨n, hn, -, hβ⟩` from `hB`. Use `⟨n - m, by push_cast; rw [hm, hn]; ring, ex, fun θ hθ x h1 h2 => ?_⟩` and prove the remaining obligations. Establish `eα` using `hα θ hθ x h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `eβ` using `hβ θ hθ x h1 h2`. Use `set w : ℂ := θ τ (infPart D (x : AE D)) / (‖θ τ (infPart D (x : AE D))‖ : ℂ) with hw`. Establish `hdiv : (((β / α) x : Circle) : ℂ) = ((β x : Circle) : ℂ) / ((α x : Circle) : ℂ)`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div]`. Rewrite using `[hdiv, eα, eβ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne w 0 with h0 | h0` into its components or cases. Establish `hm0 : m = 0`. Assume the negation of the conclusion as `hm0`. Use `eα` as an intermediate fact. Rewrite `this` using `[h0, _root_.zero_zpow _ hm0]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Circle.coe_ne_zero _ this`. Establish `hn0 : n = 0`. Assume the negation of the conclusion as `hn0`. Use `eβ` as an intermediate fact. Rewrite `this` using `[h0, _root_.zero_zpow _ hn0]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `Circle.coe_ne_zero _ this`. Substitute `hm0 hn0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[zpow_sub₀ h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasInfExp_div : ∀ (D : D7) (α β : (AE D)ˣ →* Circle) (τ : D.what₂.Tau) (a b : ℚ), HasInfExp D α τ a → HasInfExp D β τ b →
   HasInfExp D (β / α) τ (b - a) := by

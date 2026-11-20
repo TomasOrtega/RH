@@ -10,17 +10,17 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 namespace PositivityTheory.HtPt.Mb.LPulllocCentre
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x M E _ _ L X' Ω' _ ξ' i F _ _ j p₀ p' hcoh hdom`. Take `⟨hd1, hd2⟩` from `hdom`. Take `⟨c, hc⟩` from `M.tie.cover p₀`. Establish `hcx : x c ≠ 0` using `hc.1`. Establish `hch0 : ∀ a ∈ chRing o x c, a ∈ regAt M.ξ p₀` using `fun a ha => (M.tie.ring c hcx a).1 ha p₀ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hctr : p' ∈ ctrSet o x i ξ'` using `⟨c, hcx, fun a ha => hd1 a (hch0 a ha)⟩`. Take `⟨p₁, ⟨h11, -⟩, h13, h14⟩` from `PositivityTheory.HtPt.Mb.centre o Ω κ x M X' Ω' ξ' i p' hctr`. Establish `hp1c : InChart M.ξ x c p₁` using `h14 c hcx fun k => hd1 _ (hc.2 k)`. Establish `hle : regAt M.ξ p₁ ≤ regAt M.ξ p₀`. Introduce `a ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, v, hv, hvu, rfl⟩` from `((PositivityTheory.HtPt.Ma.regat_loc o Ω κ x M c p₁ hp1c).2 a).1 ha`. Establish `hiv : unitAt ξ' p' (i v)` using `⟨(map_ne_zero i).2 hvu.1, h11 _ hvu.2.1, by rw [← map_inv₀]; exact h11 _ hvu.2.2⟩`. Establish `hv0 : unitAt M.ξ p₀ v` using `hd2 v (hch0 v hv) hiv`. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_mem (hch0 u hu) hv0.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsp : p₀.1 ⤳ p₁.1` using `(PositivityTheory.HtPt.Ma.reg_le_spec o Ω κ x M p₁ p₀).1 hle`. Establish `hstalk : ∀ p : Cpt M.ξ, (∀ a ∈ regAt M.ξ p, i a ∈ regAt ξ' p') → ∀ e ∈ L p, e ∈ L p₀`. Introduce `p hp e he`. Establish `hs : p₀.1 ⤳ p.1` using `hsp.trans (h13 p hp)`. Take `⟨U, hU, n, b, hb⟩` from `hcoh p (Set.mem_univ p)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0U : p₀.1 ∈ U` using `hs.mem_open U.isOpen hU`. Establish `hreg : regAt M.ξ p ≤ regAt M.ξ p₀` using `(PositivityTheory.HtPt.Ma.reg_le_spec o Ω κ x M p p₀).2 hs`. Rewrite `he` using `[hb p (Set.mem_univ p) hU]`. Rewrite using `[hb p₀ (Set.mem_univ p₀) h0U]`. Proceed by induction on `he using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy => exact Submodule.subset_span hy`. Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `smul a y _ hy => exact Submodule.smul_mem _ (⟨a, hreg a.2⟩ : regAt M.ξ p₀) hy`. Conclude with `Lat.pullLoc_eq_span_of_ctr j ⟨hd1, hd2⟩ fun p hp => hstalk p hp.1`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pullLoc_eq_span_centre : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (E : Type) [AddCommGroup E] [Module Ω E] (L : Lat M.ξ E) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (F : Type) [AddCommGroup F] [Module Ω' F] (j : E →+ F) (p₀ : Cpt M.ξ) (p' : Cpt ξ'), L.IsCohOn Set.univ → ((∀ a ∈ regAt M.ξ p₀, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt M.ξ p₀, unitAt ξ' p' (i a) → unitAt M.ξ p₀ a) → L.pullLoc ξ' i j p' = Submodule.span (regAt ξ' p') (j '' (L p₀ : Set E)) := by
   intro o _ Ω _ _ κ _ x M E _ _ L X' Ω' _ ξ' i F _ _ j p₀ p' hcoh hdom
@@ -60,7 +60,7 @@ end PositivityTheory.HtPt.Mb.LPulllocCentre
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField in
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Mb.LPulllocCentre.pullLoc_eq_span_centre`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HtPt.Mb.pullloc_centre : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (E : Type) [AddCommGroup E] [Module Ω E] (L : Lat M.ξ E) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (F : Type) [AddCommGroup F] [Module Ω' F] (j : E →+ F) (p₀ : Cpt M.ξ) (p' : Cpt ξ'), L.IsCohOn Set.univ → ((∀ a ∈ regAt M.ξ p₀, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt M.ξ p₀, unitAt ξ' p' (i a) → unitAt M.ξ p₀ a) → L.pullLoc ξ' i j p' = Submodule.span (regAt ξ' p') (j '' (L p₀ : Set E)) :=
   @PositivityTheory.HtPt.Mb.LPulllocCentre.pullLoc_eq_span_centre

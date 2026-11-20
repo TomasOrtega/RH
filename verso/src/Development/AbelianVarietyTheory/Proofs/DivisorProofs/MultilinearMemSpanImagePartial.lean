@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory.MultilinearSpanImage
 
 /- English proof (translation)
-Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Introduce `f _ h`. Conclude with `Submodule.subset_span ⟨f, fun i => h i (by simp), rfl⟩`. Introduce `a t ha ih f h1 h2`. Establish `key : ∀ x ∈ Submodule.span ℂ (s a), Φ (Function.update f a x) ∈ Submodule.span ℂ {y : N | ∃ g : (i : ι) → M i, (∀ i, g i ∈ s i) ∧ y = Φ g}`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Apply `ih` to reduce the goal to its premises. Introduce `i hi`.
+Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : i ≠ a` using `by rintro rfl; exact ha hi`. Simplify `h1 i (Finset.mem_insert_of_mem hi)` using `[hne]`. Introduce `i hi`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hx`. Simplify `h2 i (by simp [h, hi])` using `[h]`. Consider the case `zero => rw [Φ.map_update_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Φ.map_update_add]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [Φ.map_update_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Use `key (f a) (h1 a (Finset.mem_insert_self a t))` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem multilinear_mem_span_image_partial {ι : Type} [Fintype ι] [DecidableEq ι] {M : ι → Type}
     [(i : ι) → AddCommGroup (M i)] [(i : ι) → Module ℂ (M i)] {N : Type} [AddCommGroup N]
@@ -42,7 +42,7 @@ theorem multilinear_mem_span_image_partial {ι : Type} [Fintype ι] [DecidableEq
     simpa using this
 
 /- English proof (translation)
-The claim follows from `multilinear_mem_span_image_partial Φ s Finset.univ f (fun i _ => hf i) (fun i hi => absurd (Finset.mem_univ i) hi)`.
+A detailed English derivation is pending.
 -/
 theorem multilinear_apply_mem_span_image {ι : Type} [Fintype ι] [DecidableEq ι] {M : ι → Type}
     [inst : (i : ι) → AddCommGroup (M i)] [inst_1 : (i : ι) → Module ℂ (M i)] {N : Type}

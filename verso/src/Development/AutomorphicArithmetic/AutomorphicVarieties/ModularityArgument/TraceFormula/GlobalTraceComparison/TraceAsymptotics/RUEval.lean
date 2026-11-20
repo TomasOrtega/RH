@@ -16,7 +16,7 @@ section Generic
 variable {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `hs : (Function.support fun q : G ⧸ K => f q.out • (ρ q.out ∘ₗ (LinearMap.id : V →ₗ[ℂ] V))).Finite` using `hfs.subset fun q hq h0 => hq (by simp [h0])`. Establish `h` using `(LinearMap.applyₗ (R := ℂ) (M := V) (M₂ := V) x).toAddMonoidHom.map_finsum hs`. Simplify using `only [levOp, Subgroup.relIndex_self, Nat.cast_one, inv_one, one_smul]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem levOp_self (ρ : Representation ℂ G V) (K : Subgroup G) (f : G → ℂ)
     (hfs : (Function.support fun q : G ⧸ K => f q.out).Finite) (x : V) :
@@ -28,11 +28,11 @@ private theorem levOp_self (ρ : Representation ℂ G V) (K : Subgroup G) (f : G
   exact h
 
 /- English proof (translation)
-Set `q₁ : G ⧸ K` to `QuotientGroup.mk 1`. Establish `hz : ∀ q : G ⧸ K, q ≠ q₁ → ((K : Set G).indicator 1 q.out : ℂ) = 0` using `fun q hq => by`. Use `Set.indicator_of_notMem (fun hm => hq ?_) _` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 (by simpa using K.inv_mem hm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Quotient.out q₁ ∈ K`. Use `QuotientGroup.eq.1 (QuotientGroup.out_eq' q₁).symm` as an intermediate fact. Simplify `this` using `[q₁]`. Rewrite using `[levOp_self ρ K _ ((Set.finite_singleton q₁).subset fun q hq => by`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq (hz q hne)), finsum_eq_single _ q₁ fun q hq => by rw [hz q hq, zero_smul]]`. Rewrite using `[Set.indicator_of_mem h1]`. Simplify using `using GlobalTheory.LGrp.mem_fixed.1 hx _ h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem levOp_ind (ρ : Representation ℂ G V) (K : Subgroup G) {x : V} (hx : x ∈ fixed ρ K) :
     levOp ρ K K ((K : Set G).indicator 1) LinearMap.id x = x := by
@@ -51,11 +51,11 @@ private theorem levOp_ind (ρ : Representation ℂ G V) (K : Subgroup G) {x : V}
   simpa using GlobalTheory.LGrp.mem_fixed.1 hx _ h1
 
 /- English proof (translation)
-Establish `hx0 : (⟨x, hx⟩ : fixed ρ K) ≠ 0` using `fun h => h0 (congrArg Subtype.val h)`. Establish `hall : ∀ y ∈ fixed ρ K, levOp ρ K K f LinearMap.id y = c • y` using `fun y hy => by`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' _ hx0).1 h1 ⟨y, hy⟩`. Establish `hy' : y = a • x` using `(congrArg Subtype.val ha).symm`. Rewrite using `[hy', map_smul, hop, smul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ v ∈ fixed ρ K, levOp ρ K K f LinearMap.id v ∈ fixed ρ K` using `fun v hv => by`. Rewrite using `[hall v hv]`. Conclude with `Submodule.smul_mem _ _ hv`. Establish `hr : (levOp ρ K K f LinearMap.id).restrict hmem = c • LinearMap.id`. Use extensionality with `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[LinearMap.restrict_apply, hall y.1 y.2]`. Use `haveI : Module.Finite ℂ (fixed ρ K) := Module.finite_of_finrank_pos (by omega)`. Rewrite using `[twTr, dif_pos hmem, hr, map_smul, LinearMap.trace_id, h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem twTr_line (ρ : Representation ℂ G V) (K : Subgroup G) (f : G → ℂ) (c : ℂ)
     (h1 : Module.finrank ℂ (fixed ρ K) = 1) {x : V} (hx : x ∈ fixed ρ K) (h0 : x ≠ 0)
@@ -76,7 +76,7 @@ private theorem twTr_line (ρ : Representation ℂ G V) (K : Subgroup G) (f : G 
   simp
 
 /- English proof (translation)
-Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Conclude with `twTr_line ρ K _ 1 h1 hx h0 (by rw [levOp_ind ρ K hx, one_smul])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem twTr_ind (ρ : Representation ℂ G V) (K : Subgroup G) (h1 : Module.finrank ℂ (fixed ρ K) = 1)
     (hne : fixed ρ K ≠ ⊥) : twTr ρ K K ((K : Set G).indicator 1) LinearMap.id = 1 := by
@@ -84,7 +84,7 @@ private theorem twTr_ind (ρ : Representation ℂ G V) (K : Subgroup G) (h1 : Mo
   exact twTr_line ρ K _ 1 h1 hx h0 (by rw [levOp_ind ρ K hx, one_smul])
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (G ⧸ K) := QuotientGroup.discreteTopology hK`. Establish `himg : IsCompact ((QuotientGroup.mk : G → G ⧸ K) '' tsupport f)` using `IsCompact.image hc continuous_quot_mk`. Use `himg.finite_of_discrete.subset fun q hq => ?_` and prove the remaining obligations. Conclude with `⟨q.out, subset_tsupport _ hq, QuotientGroup.out_eq' q⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem finite_supp [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G)
     (hK : IsOpen (K : Set G)) (f : G → ℂ) (hc : HasCompactSupport f) :
@@ -96,19 +96,19 @@ private theorem finite_supp [TopologicalSpace G] [IsTopologicalGroup G] (K : Sub
   exact ⟨q.out, subset_tsupport _ hq, QuotientGroup.out_eq' q⟩
 
 /- English proof (translation)
-Set `φ : G ⧸ K₁ → H ⧸ K` to `fun q => QuotientGroup.mk (e q.out)`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Rewrite using `[← QuotientGroup.out_eq' a, ← QuotientGroup.out_eq' b]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `QuotientGroup.eq.2 ((hK _).2 ?_)` and prove the remaining obligations. Use `QuotientGroup.eq.1 hab` as an intermediate fact. Simplify using `using this`. Introduce `q`. Use `⟨QuotientGroup.mk (e.symm q.out), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← QuotientGroup.out_eq' q]`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Establish `h1 : (e.symm q.out)⁻¹ * (Quotient.out (QuotientGroup.mk (e.symm q.out) : G ⧸ K₁)) ∈ K₁` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' _).symm`. Establish `h2` using `(hK _).1 (K₁.inv_mem h1)`. Simplify `h2` using `[φ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hrep : ∀ q : G ⧸ K₁, ∃ k ∈ K, (φ q).out = e q.out * k` using `fun q => by`. Use `⟨(e q.out)⁻¹ * (φ q).out, QuotientGroup.eq.1 (QuotientGroup.out_eq' _).symm, by group⟩` and prove the remaining obligations. Establish `hval : ∀ q : G ⧸ K₁, F q.out = f (φ q).out` using `fun q => by`. Take `⟨k, hk, h⟩` from `hrep q`. Rewrite using `[h, hf _ k hk, hFf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin' : (Function.support fun q : G ⧸ K₁ => F q.out).Finite`. Use `(hfin.preimage hφ.1.injOn).subset fun q hq => ?_` and prove the remaining obligations. Simplify `hq` using `[hval q]`. Rewrite using `[levOp_self _ K₁ F hfin', levOp_self ρ K f hfin, ← finsum_comp_equiv (Equiv.ofBijective φ hφ)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk, h⟩` from `hrep q`. Simplify using `only [Equiv.ofBijective_apply]`. Rewrite using `[hval q, h]`. Use `congr 1`. Establish `hk'` using `GlobalTheory.LGrp.mem_fixed.1 hx k hk`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Module.End.mul_apply, hk']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem levOp_comp (e : G ≃* H) (ρ : Representation ℂ H V) (K : Subgroup H) (K₁ : Subgroup G)
     (hK : ∀ g, g ∈ K₁ ↔ e g ∈ K) (F : G → ℂ) (f : H → ℂ) (hFf : ∀ g, F g = f (e g))
@@ -150,7 +150,7 @@ private theorem levOp_comp (e : G ≃* H) (ρ : Representation ℂ H V) (K : Sub
   rfl
 
 /- English proof (translation)
-Use `Submodule.ext fun x => ⟨fun h => GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, fun h => GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.LGrp.mem_fixed.1 h (e.symm k) ((hK _).2 (by simpa using hk))`. Simplify using `using h1`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 h (e k) ((hK k).1 hk)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem fixed_comp (e : G ≃* H) (ρ : Representation ℂ H V) (K : Subgroup H) (K₁ : Subgroup G)
     (hK : ∀ g, g ∈ K₁ ↔ e g ∈ K) : fixed (ρ.comp e.toMonoidHom) K₁ = fixed ρ K := by
@@ -166,7 +166,7 @@ section Local
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {w : Pl E}
 
 /- English proof (translation)
-Rewrite using `[UL, if_pos hs]`. Conclude with `Subgroup.mem_top _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_UL (hs : IsSplitAt w) (g : GLw n w) : g ∈ UL n w := by
   rw [UL, if_pos hs]
@@ -186,14 +186,14 @@ private def toGL (hs : IsSplitAt w) (σ : SmIrr (UL n w)) : SmIrr (GLw n w) :=
     irred := GlobalTheory.BCT.LocCompU.isIrreducible_comp_of_surjective σ.ρ _ (eSp hs).surjective σ.irred }
 
 /- English proof (translation)
-The claim follows from `fixed_comp (eSp hs) σ.ρ (KL n w) (KGL w n) fun _ => Iff.rfl`.
+A detailed English derivation is pending.
 -/
 private theorem fixed_toGL (hs : IsSplitAt w) (σ : SmIrr (UL n w)) :
     fixed (toGL hs σ).ρ (KGL w n) = fixed σ.ρ (KL n w) :=
   fixed_comp (eSp hs) σ.ρ (KL n w) (KGL w n) fun _ => Iff.rfl
 
 /- English proof (translation)
-Take `⟨p, hp, -, f, hf0, hfm, hf⟩` from `h`. Use `⟨(toGL hs σ).irred, f, hf0, hfm, fun x v => ?_⟩` and prove the remaining obligations. Establish `he : eSp hs (((cLoc w).comp (locU n w).subtype) x) = p x` using `Subtype.ext (hp x).symm`. Conclude with `(congrArg (fun g => f (σ.ρ g v)) he).trans (hf x v)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem comp_toGL (hs : IsSplitAt w) {π : Submodule ℂ (UA E n → ℂ)} {σ : SmIrr (UL n w)}
     (h : IsCompU π w σ) :
@@ -204,7 +204,7 @@ private theorem comp_toGL (hs : IsSplitAt w) {π : Submodule ℂ (UA E n → ℂ
   exact (congrArg (fun g => f (σ.ρ g v)) he).trans (hf x v)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp_isClosedEmbedding (GlobalTheory.BCT.LocCompU.isClosed_UL hU n w).isClosedEmbedding_subtypeVal, fun k hk x => ⟨(h.2 k.1 (hK k hk) x.1).1, (h.2 k.1 (hK k hk) x.1).2⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem isHecke_val (hU : GlobalTheory.BCT.Unr E) (K₀ : Subgroup (GLw n w)) (f : GLw n w → ℂ)
     (h : IsHecke K₀ f) (K₁ : Subgroup (UL n w)) (hK : ∀ k ∈ K₁, k.1 ∈ K₀) :
@@ -213,9 +213,9 @@ private theorem isHecke_val (hU : GlobalTheory.BCT.Unr E) (K₀ : Subgroup (GLw 
     fun k hk x => ⟨(h.2 k.1 (hK k hk) x.1).1, (h.2 k.1 (hK k hk) x.1).2⟩⟩
 
 /- English proof (translation)
-Use `⟨HasCompactSupport.intro (GlobalTheory.BCT.LocCompU.isOpen_isCompact_KL hU n w).2 fun x hx => Set.indicator_of_notMem hx _, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ KL n w`. Rewrite using `[Set.indicator_of_mem (show x ∈ (KL n w : Set (UL n w)) from hx), Set.indicator_of_mem (show k * x ∈ (KL n w : Set (UL n w)) from (KL n w).mul_mem hk hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show x ∉ (KL n w : Set (UL n w)) from hx), Set.indicator_of_notMem (show k * x ∉ (KL n w : Set (UL n w)) from fun h => hx (((KL n w).mul_mem_cancel_left hk).1 h))]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : x ∈ KL n w`. Rewrite using `[Set.indicator_of_mem (show x ∈ (KL n w : Set (UL n w)) from hx), Set.indicator_of_mem (show x * k ∈ (KL n w : Set (UL n w)) from (KL n w).mul_mem hx hk)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show x ∉ (KL n w : Set (UL n w)) from hx), Set.indicator_of_notMem (show x * k ∉ (KL n w : Set (UL n w)) from fun h => hx (((KL n w).mul_mem_cancel_right hk).1 h))]`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem isHecke_ind (hU : GlobalTheory.BCT.Unr E) : IsHecke (KL n w) ((KL n w : Set (UL n w)).indicator 1) := by
   refine ⟨HasCompactSupport.intro (GlobalTheory.BCT.LocCompU.isOpen_isCompact_KL hU n w).2 fun x hx =>
@@ -236,9 +236,9 @@ private theorem isHecke_ind (hU : GlobalTheory.BCT.Unr E) : IsHecke (KL n w) ((K
           fun h => hx (((KL n w).mul_mem_cancel_right hk).1 h))]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hB.exists_vec`. Take `⟨hH, hA⟩` from `hE E n w e`. Establish `hfix : x ∈ fixed σ.ρ (KL n w)` using `(fixed_toGL hs σ) ▸ hx.2.1`. Establish `hHU` using `isHecke_val hU _ _ hH (KL n w) fun k hk => hk`. Establish `hop` using `hA _ (toGL hs σ).ρ x B hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `twTr_line σ.ρ (KL n w) _ _ h1 hfix hx.1 ?_` and prove the remaining obligations. Rewrite using `[← levOp_comp (eSp hs) σ.ρ (KL n w) (KGL w n) (fun g => Iff.rfl) (fn1 n w e) (fun y : UL n w => fn1 n w e y.1) (fun _ => rfl) (fun y k hk => (hHU.2 k hk y).2) (finite_supp _ (GlobalTheory.BCT.LocCompU.isOpen_isCompact_KL hU n w).1 _ hHU.1) hfix]`. Conclude with `hop`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trace_test_function_eq (hE : ExAct) (hU : GlobalTheory.BCT.Unr E) (hs : IsSplitAt w) (σ : SmIrr (UL n w))
     (h1 : Module.finrank ℂ (fixed σ.ρ (KL n w)) = 1) {B : Multiset ℂˣ} (hB : HasSatGL w (toGL hs σ).ρ B)
@@ -258,53 +258,47 @@ private theorem trace_test_function_eq (hE : ExAct) (hU : GlobalTheory.BCT.Unr E
 end Local
 
 /- English proof (translation)
-Introduce `hUS hPl hEx hSL hIL hUC E _ _ _ hU n hn S hS lam Z hZ f hf hreg`. Take `⟨-, hcc, -, hsec⟩` from `hPl E`. Establish `hsplit' : ∀ w : Pl E, IsSplitAt w → IsSplitAt (cPl w)` using `fun w h => (hcc (cPl w)).2.2 (by rw [(hcc w).1]; exact ((hcc w).2.1 h).symm)`. Establish `hnot : ∀ w ∈ S, IsSplitAt w → cPl w ∉ S` using `fun w hw h hc => (hcc w).2.1 h ((hsec S hS w).2 hw hc)`. Choose the witnesses or unpack the hypotheses as in `⟨Kz, hKo, hKle, hKf, hKn⟩ : ∃ Kz : ∀ w : Pl E, Subgroup (GLw n w), (∀ w, IsOpen (Kz w : Set (GLw n w))) ∧ (∀ w, Kz w ≤ KGL w n) ∧ (∀ w ∈ Z, IsHecke (Kz w) (f w)) ∧ ∀ w, w ∉ Z → Kz w = KGL w n := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fun w => if h : w ∈ Z then (hf w h).choose else KGL w n, fun w => ?_, fun w => ?_, fun w h => ?_, fun w h => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : w ∈ Z`. Simplify `(hf w h).choose_spec.1` using `[h]`. Simplify `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).1` using `[h]`. Distinguish the cases in `h : w ∈ Z`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Simplify `(hf w h).choose_spec.2.1` using `[h]`. Simplify using `[h]`. Simplify `(hf w h).choose_spec.2.2` using `[h]`. Simplify using `[h]`. Set `K' : ∀ w : Pl E, Subgroup (UL n w)` to `fun w => (Kz w).subgroupOf (UL n w)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hKL : ∀ w, w ∉ Z → K' w = KL n w` using `fun w h => by`. Simplify using `only [K', hKn w h, KL]`. Establish `hLev : IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K'`. Use `⟨fun w => ⟨?_, fun k hk => hKle w hk, fun k hk => hk⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [K', Subgroup.coe_subgroupOf]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(hKo w).preimage continuous_subtype_val`. Use `Filter.eventually_cofinite.2 (Z.finite_toSet.subset fun w hw => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hw (hKL w h)`. Take `⟨ι, hι, π, σ, hσ, -, hTr⟩` from `hUS E hU n hn S hS lam K' hLev`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hline : ∀ i, ∀ w ∈ S, w ∉ Z → fixed (σ i w).ρ (KL n w) ≠ ⊥ ∧ Module.finrank ℂ (fixed (σ i w).ρ (KL n w)) = 1 ∧ ∃ B, ∀ hs : IsSplitAt w, HasSatGL w (toGL hs (σ i w)).ρ B` using `fun i w hw hz => by`. Take `⟨hc, hne, hfd⟩` from `(hσ i).2.2.2 w hw`. Rewrite `hne` using `[hKL w hz]`. Distinguish the cases in `hs : IsSplitAt w`. Take `⟨h1, B, hB⟩` from `hSL E n w (toGL hs (σ i w)) (by rw [fixed_toGL]; exact hne)`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨hne, ?_, B, fun _ => hB⟩` and prove the remaining obligations. Rewrite `h1` using `[fixed_toGL]`. Conclude with `h1`. Conclude with `⟨hne, hIL E hU n w hs (σ i w) hne (hfd _ (GlobalTheory.BCT.LocCompU.isOpen_isCompact_KL hU n w).1), 0, fun h => absurd h hs⟩`. Set `B₀ : ι → Pl E → Multiset ℂˣ` to `fun i w => Classical.epsilon fun B => ∀ hs : IsSplitAt w, HasSatGL w (toGL hs (σ i w)).ρ B`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB₀ : ∀ i, ∀ w ∈ S, w ∉ Z → ∀ hs : IsSplitAt w, HasSatGL w (toGL hs (σ i w)).ρ (B₀ i w)` using `fun i w hw hz => Classical.epsilon_spec (p := fun B => ∀ hs : IsSplitAt w, HasSatGL w (toGL hs (σ i w)).ρ B) (hline i w hw hz).2.2`. Set `B : ι → Pl E → Multiset ℂˣ` to `fun i w => if w ∈ S then B₀ i w else inv (B₀ i (cPl w))`. Establish `hBS : ∀ i, ∀ w ∈ S, B i w = B₀ i w` using `fun i w hw => if_pos hw`. Establish `hBN : ∀ i w, w ∉ S → B i w = inv (B₀ i (cPl w))` using `fun i w hw => if_neg hw`. Set `A : ι → ℂ` to `fun i => ∏ w ∈ Z, twTr (σ i w).ρ (KL n w) (K' w) (fun x => f w x.1) LinearMap.id`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨K', ι, hι, π, A, B, hLev, fun i => ⟨(hσ i).1, fun w hns => ?_, fun w hoff hs => ?_⟩, fun T hT hd e₁ e₂ k => ?_⟩` and prove the remaining obligations. Establish `hw : w ∈ S`. Establish `hcw : cPl w = w`. Assume the negation of the conclusion as `h`. Conclude with `hns ((hcc w).2.2 h)`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `(hsec S hS w).1 with h | h` into its components or cases. Conclude with `h`. Rewrite `h` using `[hcw]`. Then use the resulting hypothesis. Establish `hz : w ∉ Z` using `fun h => hns (hZ w h).2`. Take `⟨φ, hφ, h0, hfix⟩` from `(hσ i).2.2.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, hp, -⟩` from `((hσ i).2.2.2 w hw).1`. Use `⟨φ, hφ, h0, fun x hx hk => hfix w hw x hx ⟨p ⟨x, hx⟩, ?_, hp ⟨x, hx⟩⟩⟩` and prove the remaining obligations. Rewrite using `[hKL w hz]`. Express the relevant statement in the definitionally equal form `(p ⟨x, hx⟩).1 ∈ KGL w n`. Rewrite using `[hp ⟨x, hx⟩]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hk`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[hBS i w hw]`. Conclude with `⟨toGL hs (σ i w), comp_toGL hs ((hσ i).2.2.2 w hw).1, hB₀ i w hw hoff.1 hs⟩`. Establish `hcw : cPl w ∈ S` using `((hsec S hS w).1).resolve_left hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsc` using `hsplit' w hs`. Establish `hu` using `hUC E n (π i) (cPl w) hsc (toGL hsc (σ i (cPl w))) (B₀ i (cPl w)) (comp_toGL hsc ((hσ i).2.2.2 _ hcw).1) (hB₀ i _ hcw hoff.2 hsc)`. Rewrite `hu` using `[(hcc w).1]`. Rewrite using `[hBN i w hw]`. Conclude with `hu`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hTs : ∀ w ∈ T, w ∈ S ∧ IsSplitAt w ∧ w ∉ Z` using `fun w hw => ⟨(hT w hw).1, (hT w hw).2, Finset.disjoint_left.1 hd hw⟩`. Establish `hfZ : ∀ w ∈ Z, famU Z T f e₁ e₂ k w = fun x => f w x.1` using `fun w hw => by`. Simplify using `[famU, hw]`. Establish `hfT : ∀ w ∈ T, famU Z T f e₁ e₂ k w = fun x => fn1 n w (((e₁ w).pow k).mul ((e₂ w).pow k)) x.1` using `fun w hw => by`. Simplify using `[famU, hw, (hTs w hw).2.2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hfO : ∀ w, w ∉ Z → w ∉ T → famU Z T f e₁ e₂ k w = (KL n w : Set _).indicator 1` using `fun w h1 h2 => by`. Simplify using `[famU, h1, h2]`. Establish `htest : GlobalTheory.BCT.IsTest (KL n) K' (famU Z T f e₁ e₂ k)`. Use `⟨fun w => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : w ∈ Z`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[hfZ w h1]`. Conclude with `isHecke_val hU _ _ (hKf w h1) (K' w) fun k hk => hk`. Distinguish the cases in `h2 : w ∈ T`. Rewrite using `[hfT w h2]`. Conclude with `isHecke_val hU _ _ (hEx E n w _).1 (K' w) fun k hk => hKle w hk`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hfO w h1 h2, hKL w h1]`. Conclude with `isHecke_ind hU`. Use `Filter.eventually_cofinite.2 ((Z ∪ T).finite_toSet.subset fun w hw => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `h' : w ∉ Z ∧ w ∉ T` using `by simpa using h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `hw (hfO w h'.1 h'.2)`. Use `⟨htest, ?_⟩` and prove the remaining obligations. Establish `hr : ∃ w ∈ S, ∀ y, famU Z T f e₁ e₂ k w y ≠ 0 → y.1.val.charpoly.Separable`. Take `⟨w, hw, hy⟩` from `hreg`. Use `⟨w, (hZ w hw).1, fun y h => hy y.1 ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hfZ w hw]`. Then use the resulting hypothesis. Rewrite using `[← hTr _ htest hr]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `set g : Pl E → ℂ := fun w => twTr (σ i w).ρ (KL n w) (K' w) (famU Z T f e₁ e₂ k w) LinearMap.id with hg`. Establish `hone : ∀ w ∈ S, w ∉ Z → w ∉ T → g w = 1` using `fun w hw h1 h2 => by`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hne, hfr, -⟩` from `hline i w hw h1`. Simplify using `only [hg]`. Rewrite using `[hfO w h1 h2, hKL w h1]`. Conclude with `twTr_ind _ _ hfr hne`. Establish `hUS' : ∀ w ∈ Z ∪ T, w ∈ S` using `fun w hw => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Conclude with `(hZ w h).1`. Conclude with `(hTs w h).1`. Establish `hsupp : ∏ᶠ w ∈ S, g w = ∏ w ∈ Z ∪ T, g w`. Rewrite using `[← finprod_mem_coe_finset]`.
-
-Use `finprod_mem_inter_mulSupport_eq' _ _ _ fun w hw => ⟨fun h => ?_, fun h => hUS' w h⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `h' : w ∉ Z ∧ w ∉ T` using `by simpa using hn`. Conclude with `hw (hone w h h'.1 h'.2)`. Rewrite using `[hsupp, Finset.prod_union hd.symm]`.
-
-Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun w hw => ?_) ?_` and prove the remaining obligations. Simplify using `only [hg]`. Rewrite using `[hfZ w hw]`. Rewrite using `[val1, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations.
-
-Take `⟨hwS, hs, hz⟩` from `hTs w hw`. Establish `hinv : inv (inv (B₀ i w)) = B₀ i w` using `by simp [inv, Multiset.map_map]`. Simplify using `only [hg]`. Rewrite using `[hfT w hw, hKL w hz, trace_test_function_eq hEx hU hs (σ i w) (hline i w hwS hz).2.1 (hB₀ i w hwS hz hs), hBS i w hwS, hBN i _ (hnot w hwS hs), (hcc w).1, hinv]`. Simplify using `only [ev1, Ex.ev, Ex.ev_pow, mul_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rUEval : RUEval := by
   intro hUS hPl hEx hSL hIL hUC E _ _ _ hU n hn S hS lam Z hZ f hf hreg

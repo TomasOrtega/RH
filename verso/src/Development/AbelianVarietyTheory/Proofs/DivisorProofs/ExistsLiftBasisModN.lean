@@ -6,11 +6,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H D N hN`. Use `haveI := D.fin`. Use `haveI := D.proj`. Establish `hN0 : (N : 𝓞 E) ≠ 0` using `by exact_mod_cast hN.ne'`. Take `⟨e, h1, h2⟩` from `GlobalTheory.ModNBasis.exists_basis_modN (M := D.La) hN0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← D.rank]`. Use `⟨e, fun a => ?_, fun c hc i => ?_⟩` and prove the remaining obligations. Take `⟨c, w, hw⟩` from `h1 a`. Conclude with `⟨c, w, by rw [hw, Nat.cast_smul_eq_nsmul]⟩`. Take `⟨w, hw⟩` from `hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b, hb⟩` from `h2 c ⟨w, by rw [hw, Nat.cast_smul_eq_nsmul]⟩ i`. Conclude with `⟨b, by rw [hb, nsmul_eq_mul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_basis_modN : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (N : ℕ), 0 < N → ∃ e : Fin (D.p + D.q) → D.La,

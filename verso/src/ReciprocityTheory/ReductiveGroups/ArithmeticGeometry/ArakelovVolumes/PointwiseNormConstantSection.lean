@@ -14,7 +14,7 @@ variable {n : ℕ} {Y : Type*} [TopologicalSpace Y] [T2Space Y] [SecondCountable
   [MeasurableSpace Y] [BorelSpace Y] {ι La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La)
 
 /- English proof (translation)
-Simplify using `[multiLt, Finset.Nat.mem_antidiagonalTuple]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_multiIndicesBelow_iff {a0 : ℕ} {α : Fin n → ℕ} : α ∈ multiLt n a0 ↔ ∑ k, α k < a0 := by
   simp [multiLt, Finset.Nat.mem_antidiagonalTuple]

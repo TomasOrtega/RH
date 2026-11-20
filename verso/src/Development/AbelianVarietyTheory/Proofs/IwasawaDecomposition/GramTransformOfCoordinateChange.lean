@@ -19,25 +19,23 @@ open scoped ComplexOrder ContDiff
 namespace GlobalTheory.FramePairGram
 
 /- English proof (translation)
-Introduce `D A N j S κ s L k x f f' hz t`. Establish `hp` using `s.p0_eq k`. Establish `hmo : ∀ τ : (s.fd k).Ψ, moeb (frameCo (s.fd k) s.j_le f.1 τ) 0 = moeb (frameCo (s.fd k) s.j_le f'.1 τ) 0`. Introduce `τ`. Take `⟨t', rfl⟩` from `(s.lab L k).surjective τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `congrFun hz t'`. Establish `h1` using `fun τ => PointWell.block_of_moeb_eq _ s.j_le hp f.2 f'.2 τ (hmo τ)`. Establish `h2` using `fun τ => PointWell.block_of_moeb_eq _ s.j_le hp f'.2 f.2 τ (hmo τ).symm`. Establish `hx : ((s.U κ.σ₀).un k f).x = ((s.U κ.σ₀).un k f').x` using `PointWell.pt_eq_of_block s.isUnf κ.good_σ₀ k f f' h1 h2`. Establish `hg : ∀ τ, x.gram (s.framePt k f) (s.lieFrame k f) τ = (Matrix.of fun b i : Fin (S.Dw.mult τ) => coef (s.fd k) f.1 f'.1 τ b i)ᴴ * x.gram (s.framePt k f') (s.lieFrame k f') τ * Matrix.of fun b i : Fin (S.Dw.mult τ) => coef (s.fd k) f.1 f'.1 τ b i` using `fun τ => GlobalTheory.T.frame_point_combination_matrix x _ _ hx τ _ (fun i => GlobalTheory.T.unfolded_frames_parabolic_relation s.isUnf κ.good_σ₀ k f f' h1 h2 τ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `T hT`. Establish `hu` using `isUnit_coW (s.fd k) s.j_le hp f'.2 (s.lab L k t)`. Establish `hT' : T = (coW (s.fd k) s.j_le f'.1 (s.lab L k t))⁻¹ * coW (s.fd k) s.j_le f.1 (s.lab L k t)`. Rewrite using `[← hT, ← Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT', ← GlobalTheory.T.frame_coefficient_eq_weight_ratio (s.fd k) s.j_le hp f.2 f'.2 (s.lab L k t) (hmo _)]`. Unfold `ToroidalCompactificationData.gramW`. Rewrite using `[hg]`. Use `set e := Fin.cast (S.mult_psi L t).symm`. Establish `he : Function.Bijective e` using `(finCongr (S.mult_psi L t).symm).bijective`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.submatrix_mul _ _ _ _ _ he, Matrix.submatrix_mul _ _ _ _ _ he, ← conjTranspose_submatrix]`. Establish `hKe : (Matrix.of fun b i : Fin (S.Dw.mult (L.ψ t).1) => coef (s.fd k) f.1 f'.1 (L.ψ t).1 b i).submatrix e e = Matrix.of fun b i : Fin j => coef (s.fd k) f.1 f'.1 (s.lab L k t).1 b i`. Use extensionality with `b i`. Both sides reduce to the same expression. Rewrite using `[hKe]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `T hT`. Establish `hu` using `isUnit_coOm (s.fd k) s.j_le hp f'.2 (s.lab L k t)`. Establish `hT' : T = (coOm (s.fd k) s.j_le f'.1 (s.lab L k t))⁻¹ * coOm (s.fd k) s.j_le f.1 (s.lab L k t)`. Rewrite using `[← hT, ← Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.one_mul]`. Establish `hK` using `GlobalTheory.T.frame_coefficient_eq_omega_ratio (s.fd k) s.j_le hp f.2 f'.2 (s.lab L k t) (hmo _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ToroidalCompactificationData.gramOm`. Rewrite using `[hg, dualGram_conj]`. Use `set eo : Fin (N - j) ≃ Fin (S.Dw.mult (conjEmb (L.ψ t).1)) := Fin.revPerm.trans (finCongr (S.mult_conj L t).symm)`. Establish `heo : (fun a : Fin (N - j) => Fin.cast (S.mult_conj L t).symm a.rev) = ⇑eo` using `rfl`. Establish `key : ∀ (M G : Matrix (Fin (S.Dw.mult (conjEmb (L.ψ t).1))) (Fin (S.Dw.mult (conjEmb (L.ψ t).1))) ℂ), (Mᴴ * G * M).submatrix eo eo = (M.submatrix eo eo)ᴴ * G.submatrix eo eo * M.submatrix eo eo`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `M G`. Rewrite using `[Matrix.submatrix_mul _ _ _ _ _ eo.bijective, Matrix.submatrix_mul _ _ _ _ _ eo.bijective, ← conjTranspose_submatrix]`. Establish `hu0` using `isUnit_coOm (s.fd k) s.j_le hp f.2 (s.lab L k t)`. Establish `hKo : ((Matrix.of fun b i : Fin (S.Dw.mult (conjEmb (L.ψ t).1)) => coef (s.fd k) f.1 f'.1 (conjEmb (L.ψ t).1) b i)⁻¹ᵀ).submatrix eo eo = T`. Establish `e1 : (Matrix.of fun b i : Fin (S.Dw.mult (conjEmb (L.ψ t).1)) => coef (s.fd k) f.1 f'.1 (conjEmb (L.ψ t).1) b i).submatrix eo eo = ((coOm (s.fd k) s.j_le f.1 (s.lab L k t))⁻¹ * coOm (s.fd k) s.j_le f'.1 (s.lab L k t))ᵀ`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use extensionality with `b i`. Use `congrFun (congrFun hK b.rev) i.rev` as an intermediate fact. Simplify using `only [of_apply, submatrix_apply, Fin.rev_rev] at this`. Conclude with `Eq.trans rfl this`. Rewrite using `[← transpose_submatrix, ← inv_submatrix_equiv, e1, transpose_nonsing_inv, transpose_transpose, hT', Matrix.mul_inv_rev, nonsing_inv_nonsing_inv _ hu0]`.
-
-Rewrite using `[heo, key, hKo, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_frames_eq : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (L : CmList A) (k : s.Comp) (x : ToroidalCompactificationData s) (f f' : (s.fd k).dom), s.zOf L k f = s.zOf L k f' → ∀ t, (∀ T, coW (s.fd k) s.j_le f'.1 (s.lab L k t) * T = coW (s.fd k) s.j_le f.1 (s.lab L k t) → x.gramW L k f t = Tᴴ * x.gramW L k f' t * T) ∧ ∀ T, coOm (s.fd k) s.j_le f'.1 (s.lab L k t) * T = coOm (s.fd k) s.j_le f.1 (s.lab L k t) → x.gramOm L k f t = Tᴴ * x.gramOm L k f' t * T := by
   intro D A N j S κ s L k x f f' hz t

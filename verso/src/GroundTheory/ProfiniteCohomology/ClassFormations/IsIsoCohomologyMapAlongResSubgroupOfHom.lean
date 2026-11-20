@@ -17,9 +17,9 @@ section Congr
 variable {A : Rep.{u} k G} {B : Rep.{u} k H} [IsDiscreteRep A] [IsDiscreteRep B]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: f = g`. Use extensionality with `a`. Conclude with `hfg a`. Substitute `this` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cochainsMapAlong_congr {φ ψ : H →* G} (hφ : Continuous φ) (hψ : Continuous ψ)
     (f : Rep.res φ A ⟶ B) (g : Rep.res ψ A ⟶ B) (h : φ = ψ) (hfg : ∀ a : A, f.hom a = g.hom a) :
@@ -32,7 +32,7 @@ theorem cochainsMapAlong_congr {φ ψ : H →* G} (hφ : Continuous φ) (hψ : C
   rfl
 
 /- English proof (translation)
-Rewrite using `[cohomologyMapAlong, cohomologyMapAlong, cochainsMapAlong_congr hφ hψ f g h hfg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyMapAlong_congr {φ ψ : H →* G} (hφ : Continuous φ) (hψ : Continuous ψ)
     (f : Rep.res φ A ⟶ B) (g : Rep.res ψ A ⟶ B) (h : φ = ψ) (hfg : ∀ a : A, f.hom a = g.hom a)
@@ -42,9 +42,7 @@ theorem cohomologyMapAlong_congr {φ ψ : H →* G} (hφ : Continuous φ) (hψ :
 omit [IsTopologicalGroup H] in
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: f = 𝟙 A`. Use extensionality with `a`. Conclude with `hf a`. Substitute `this` using the available equality.
-
-Conclude with `cohomologyMapAlong_id n`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cohomologyMapAlong_eq_id {φ : G →* G} (hφ : Continuous φ) (f : Rep.res φ A ⟶ A)
     (h : φ = MonoidHom.id G) (hf : ∀ a : A, f.hom a = a) (n : ℕ) :
@@ -82,7 +80,7 @@ noncomputable def resInvHom (e : H ≃* G) (f : Rep.res e.toMonoidHom A ⟶ B)
 omit [TopologicalSpace G] [TopologicalSpace H] [IsTopologicalGroup G] [IsTopologicalGroup H]
   [IsDiscreteRep A] [IsDiscreteRep B] in
 /- English proof (translation)
-The claim follows from `(LinearEquiv.ofBijective f.hom.toLinearMap hf).apply_symm_apply b`.
+A detailed English derivation is pending.
 -/
 theorem resInvHom_hom_apply (e : H ≃* G) (f : Rep.res e.toMonoidHom A ⟶ B)
     (hf : Function.Bijective f.hom) (b : B) :
@@ -92,7 +90,7 @@ theorem resInvHom_hom_apply (e : H ≃* G) (f : Rep.res e.toMonoidHom A ⟶ B)
 omit [TopologicalSpace G] [TopologicalSpace H] [IsTopologicalGroup G] [IsTopologicalGroup H]
   [IsDiscreteRep A] [IsDiscreteRep B] in
 /- English proof (translation)
-The claim follows from `(LinearEquiv.ofBijective f.hom.toLinearMap hf).symm_apply_apply a`.
+A detailed English derivation is pending.
 -/
 theorem resInvHom_hom_apply' (e : H ≃* G) (f : Rep.res e.toMonoidHom A ⟶ B)
     (hf : Function.Bijective f.hom) (a : A) :
@@ -100,7 +98,7 @@ theorem resInvHom_hom_apply' (e : H ≃* G) (f : Rep.res e.toMonoidHom A ⟶ B)
   (LinearEquiv.ofBijective f.hom.toLinearMap hf).symm_apply_apply a
 
 /- English proof (translation)
-Use `⟨cohomologyMapAlong e.symm.toMonoidHom he' (resInvHom e f hf) n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_eq_id _ _ (by ext; simp) (fun a => resInvHom_hom_apply' e f hf a) n`. Rewrite using `[← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_eq_id _ _ (by ext; simp) (fun b => resInvHom_hom_apply e f hf b) n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_cohomologyMapAlong_of_mulEquiv (e : H ≃* G) (he : Continuous e.toMonoidHom)
     (he' : Continuous e.symm.toMonoidHom) (f : Rep.res e.toMonoidHom A ⟶ B) (hf : Function.Bijective f.hom)
@@ -119,7 +117,7 @@ variable (A : Rep.{u} k G) [IsDiscreteRep A]
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[cohomologyResLE, cohomologyResLE, cohomologyResLE, ← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ rfl (fun _ => rfl) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyResLE_comp {U V W : Subgroup G} (hVU : V ≤ U) (hWV : W ≤ V) (n : ℕ) :
     cohomologyResLE A hVU n ≫ cohomologyResLE A hWV n = cohomologyResLE A (hWV.trans hVU) n := by
@@ -135,7 +133,7 @@ variable {U V : Subgroup G} (h : V ≤ U)
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-The claim follows from `(continuous_subtype_val.comp continuous_subtype_val).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_subgroupOfEquivOfLe : Continuous (Subgroup.subgroupOfEquivOfLe h).toMonoidHom :=
   (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
@@ -143,7 +141,7 @@ theorem continuous_subgroupOfEquivOfLe : Continuous (Subgroup.subgroupOfEquivOfL
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-The claim follows from `(continuous_subtype_val.subtype_mk _).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_subgroupOfEquivOfLe_symm :
     Continuous (Subgroup.subgroupOfEquivOfLe h).symm.toMonoidHom :=
@@ -165,7 +163,7 @@ instance isDiscreteRep_res_res (W : Subgroup G) (S : Subgroup W) :
   isDiscreteRep_res_subtype _ _
 
 /- English proof (translation)
-Rewrite using `[cohomologyRes, ← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ (by ext; rfl) (fun _ => rfl) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyResLE_eq_cohomologyRes_comp (n : ℕ) :
     cohomologyResLE A h n = cohomologyRes (Rep.res U.subtype A) (V.subgroupOf U) n ≫
@@ -182,7 +180,7 @@ instance isIso_cohomologyMapAlong_resSubgroupOfHom (n : ℕ) :
     (show Function.Bijective (id : A → A) from Function.bijective_id) n
 
 /- English proof (translation)
-Rewrite using `[cohomologyResLE_eq_cohomologyRes_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`. Establish `hinj : Function.Injective (cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe h).symm.toMonoidHom (continuous_subgroupOfEquivOfLe_symm h) (resSubgroupOfHom h A) n).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Conclude with `⟨fun hx => hinj (by rw [hx, map_zero]), fun hx => by rw [hx, map_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem cohomologyResLE_apply_eq_zero_iff (n : ℕ) (x : cohomology (Rep.res U.subtype A) n) :
     (cohomologyResLE A h n).hom x = 0 ↔
@@ -198,7 +196,7 @@ end SubgroupOf
 namespace QZ
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [succ_nsmul, mk_add, ih, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mk_nsmul (n : ℕ) (q : ℚ) : mk (n • q) = n • mk q := by
   induction n with
@@ -206,13 +204,13 @@ theorem mk_nsmul (n : ℕ) (q : ℚ) : mk (n • q) = n • mk q := by
   | succ n ih => rw [succ_nsmul, mk_add, ih, succ_nsmul]
 
 /- English proof (translation)
-Simplify using `[mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mk_zsmul (n : ℤ) (q : ℚ) : mk (n • q) = n • mk q := by
   simp [mk]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[← mk_nsmul, nsmul_eq_mul, mul_one_div_cancel (by exact_mod_cast hn.ne'), mk_eq_zero_iff]`. Conclude with `⟨1, by simp⟩`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nsmul_mk_one_div (n : ℕ) : n • mk (1 / n) = 0 := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -221,14 +219,14 @@ theorem nsmul_mk_one_div (n : ℕ) : n • mk (1 / n) = 0 := by
     exact ⟨1, by simp⟩
 
 /- English proof (translation)
-Establish `: Fact ((0 : ℚ) < 1)` using `⟨one_pos⟩`. Conclude with `AddCircle.addOrderOf_period_div (p := (1 : ℚ)) hn`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem addOrderOf_mk_one_div {n : ℕ} (hn : 0 < n) : addOrderOf (mk (1 / n)) = n := by
   have : Fact ((0 : ℚ) < 1) := ⟨one_pos⟩
   exact AddCircle.addOrderOf_period_div (p := (1 : ℚ)) hn
 
 /- English proof (translation)
-Establish `: Fact ((0 : ℚ) < 1)` using `⟨one_pos⟩`. Take `⟨m, -, hm⟩` from `(AddCircle.nsmul_eq_zero_iff (p := (1 : ℚ)) (u := x) hn).1 hx`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← mk_nsmul, ← hm, nsmul_eq_mul, mul_one, mul_one_div]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_eq_nsmul_mk_one_div {n : ℕ} (hn : 0 < n) {x : QZ} (hx : n • x = 0) :
     ∃ m : ℕ, x = m • mk (1 / n) := by
@@ -245,7 +243,7 @@ namespace PreClassFormation
 variable {C : Rep.{u} k G} [IsDiscreteRep C] (F : PreClassFormation C)
 
 /- English proof (translation)
-Rewrite using `[← F.inv_res U V h x]`. Conclude with `⟨fun hx => by rw [hx, map_zero], fun hx => hV (by rw [hx, map_zero])⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem resLE_eq_zero_iff {U V : OpenSubgroup G} (h : V ≤ U) (hV : Function.Injective (F.inv V))
     (x : H2Open C U) :

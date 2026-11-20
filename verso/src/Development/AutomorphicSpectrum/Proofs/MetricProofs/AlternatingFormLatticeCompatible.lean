@@ -14,13 +14,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict
 
 /- English proof (translation)
-Set `f : G →+ L` to `{ toFun := fun y => ⟨D • (y : W), hG y y.2⟩ map_zero' := by ext; simp map_add' := fun a b => by ext; simp [smul_add] }`. Establish `hf : Function.Injective f`. Use `(injective_iff_map_eq_zero f).2 fun a ha => ?_` and prove the remaining obligations. Establish `: D • (a : W) = 0` using `congrArg Subtype.val ha`. Conclude with `Subtype.ext (hinj _ this)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Module.Finite ℤ L := Module.Finite.iff_addGroup_fg.2 inferInstance`. Use `haveI : Module.Finite ℤ G := Module.Finite.of_injective f.toIntLinearMap hf`. Use `haveI : AddGroup.FG G := Module.Finite.iff_addGroup_fg.1 inferInstance`. Use `haveI : Finite (G ⧸ L.addSubgroupOf G) := by`. Use `AddCommGroup.finite_of_fg_torsion _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H y`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨D, Nat.pos_of_ne_zero hD, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`.
-
-Simplify using `using hG y y.2`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_nsmul_mem {W : Type*} [AddCommGroup W] (L G : AddSubgroup W) [AddGroup.FG L] {D : ℕ} (hD : D ≠ 0)
     (hinj : ∀ y : W, D • y = 0 → y = 0) (hG : ∀ y ∈ G, D • y ∈ L) : L.relIndex G ≠ 0 := by
@@ -46,31 +44,29 @@ theorem relIndex_ne_zero_of_nsmul_mem {W : Type*} [AddCommGroup W] (L G : AddSub
   exact AddSubgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Introduce `E _ _ _ H Λ _ _ _ N e he form hform B hB hskew hnd hspan h m hm htr`. Establish `hd0 : (H.d : E) ≠ 0` using `Nat.cast_ne_zero.2 H.d_prime.ne_zero`. Establish `hm0 : (m : E) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Establish `hrtsq : (H.rt : E) ^ 2 = -(H.d : E)`. Use `congrArg (fun a : 𝓞 E => (a : E)) H.rt_sq` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hrt0 : (H.rt : E) ≠ 0`. Introduce `h0`. Rewrite `hrtsq` using `[h0]`. Conclude with `hd0 (by simpa using hrtsq.symm)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : ((m * H.d : ℕ) : E) * ((m : E) * (H.rt : E))⁻¹ = -(H.rt : E)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hrtsq`. Establish `key : ∀ y ∈ dualLattice h e.range, ∀ x, ∃ n : ℤ, (n : ℚ) = ((m * H.d : ℕ) : ℚ) * B (e x) y`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy x`. Establish `hint : IsIntegral ℤ (h.toSesq y (e x))` using `hy (e x) ⟨x, rfl⟩`. Establish `ht` using `htr 1 (e x) y`. Rewrite `ht` using `[one_smul, one_mul]`. Establish `h2 : ((m * H.d : ℕ) : ℚ) * B (e x) y = Algebra.trace ℚ E (-(H.rt : E) * h.toSesq y (e x))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← ht, ← hinv, mul_assoc, ← smul_eq_mul (a := ((m * H.d : ℕ) : ℚ)), ← map_smul]`. Use `congr 1`. Rewrite using `[Algebra.smul_def]`. Simplify using the standard rewrite rules. Establish `hrti : IsIntegral ℤ (-(H.rt : E))` using `(H.rt.2).neg`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : IsIntegral ℤ (Algebra.trace ℚ E (-(H.rt : E) * h.toSesq y (e x)))` using `Algebra.isIntegral_trace (hrti.mul hint)`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h3`. Conclude with `⟨n, by rw [h2, ← hn]; simp⟩`. Establish `hDy : ∀ y ∈ dualLattice h e.range, (m * H.d) • y ∈ e.range`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose n hn using key y hy`. Establish `hadd : ∀ a b, n (a + b) = n a + n b`. Introduce `a b`. Establish `: ((n (a + b) : ℤ) : ℚ) = ((n a + n b : ℤ) : ℚ)`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hn, hn, hn, map_add, map_add, LinearMap.add_apply, mul_add]`. Conclude with `this` after adjusting the coercions. Set `φ : Λ →ₗ[ℤ] ℤ` to `(AddMonoidHom.mk' n hadd).toIntLinearMap`. Take `⟨z, hz⟩` from `hform.2 φ`. Establish `hzx : ∀ x, form z x = n x` using `fun x => by rw [hz]; rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : ∀ x, B (e x) ((m * H.d) • y + e z) = 0`. Introduce `x`. Establish `h1 : B (e x) (e z) = -((n x : ℤ) : ℚ)`. Rewrite using `[hskew, hB, hzx]`. Rewrite using `[map_add, map_nsmul, h1, hn, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∀ v, B v ((m * H.d) • y + e z) = 0`. Introduce `v`. Take `⟨k, x, hk, hx⟩` from `hspan v`. Establish `h2` using `h0 x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite `h2` using `[hx, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (Nat.cast_ne_zero.2 hk)`. Establish `h2` using `hnd _ h1`. Conclude with `⟨-z, by rw [map_neg]; exact (eq_neg_of_add_eq_zero_left h2).symm⟩`. Use `haveI : AddGroup.FG e.range := by haveI : Module.Finite ℤ e.range := Module.Finite.of_surjective e.rangeRestrict.toIntLinearMap e.rangeRestrict_surjective`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Module.Finite.iff_addGroup_fg.1 inferInstance`. Use `relIndex_ne_zero_of_nsmul_mem _ _ (D := m * H.d) (mul_ne_zero hm H.d_prime.ne_zero) ?_ hDy` and prove the remaining obligations. Introduce `y hy`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun hy i`.
-
-Simplify using `only [Pi.smul_apply, Pi.zero_apply] at h1`. Rewrite `h1` using `[nsmul_eq_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (Nat.cast_ne_zero.2 (mul_ne_zero hm H.d_prime.ne_zero))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latEmb_relIndex_dual_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Λ : Type) [AddCommGroup Λ] [Module.Free ℤ Λ] [Module.Finite ℤ Λ] (N : ℕ) (e : Λ →+ (Fin N → E)), Function.Injective e → ∀ form : Λ →ₗ[ℤ] Λ →ₗ[ℤ] ℤ, Function.Bijective form → ∀ B : LinearMap.BilinForm ℚ (Fin N → E), (∀ x y, B (e x) (e y) = ((form x y : ℤ) : ℚ)) → (∀ u v, B u v = - B v u) → (∀ u, (∀ v, B v u = 0) → u = 0) → (∀ v : Fin N → E, ∃ (k : ℕ) (x : Λ), k ≠ 0 ∧ e x = k • v) → ∀ (h : HermitianForm (maximalRealSubfield E) E (Fin N → E)) (m : ℕ), m ≠ 0 → (∀ (a : E) u v, Algebra.trace ℚ E (a * (((m : E) * (H.rt : E))⁻¹ * h.toSesq v u)) = B (a • u) v) → e.range.relIndex (dualLattice h e.range) ≠ 0 := by
   intro E _ _ _ H Λ _ _ _ N e he form hform B hB hskew hnd hspan h m hm htr

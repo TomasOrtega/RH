@@ -12,7 +12,7 @@ open Formalism.DivisionValues
 variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Forms (f : S.Cl → S.V) : f ∈ S.Forms ↔ ∀ c (γ : S.Gam c), S.ρ c γ (f c) = f c := Iff.rfl
 
@@ -22,7 +22,7 @@ Both sides reduce to the same expression.
 theorem I_apply (x : Fin S.dim → K) : S.I x = ((S.basis.equivFun.symm x : S.Forms) : S.Cl → S.V) := rfl
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h' : (S.basis.equivFun.symm x : S.Forms) = S.basis.equivFun.symm y` using `Subtype.ext h`. Conclude with `S.basis.equivFun.symm.injective h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem I_injective : Function.Injective S.I := by
   intro x y h
@@ -30,7 +30,7 @@ theorem I_injective : Function.Injective S.I := by
   exact S.basis.equivFun.symm.injective h'
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `(S.basis.equivFun.symm x).2`. Introduce `h`. Conclude with `⟨S.basis.equivFun ⟨f, h⟩, by simp [I_apply]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem I_onto (f : S.Cl → S.V) : (∃ x, S.I x = f) ↔ ∀ c (γ : S.Gam c), S.ρ c γ (f c) = f c := by
   constructor
@@ -40,16 +40,16 @@ theorem I_onto (f : S.Cl → S.V) : (∃ x, S.I x = f) ↔ ∀ c (γ : S.Gam c),
     exact ⟨S.basis.equivFun ⟨f, h⟩, by simp [I_apply]⟩
 
 /- English proof (translation)
-Rewrite using `[I_apply, Basis.equivFun_symm_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem I_eq_sum (x : Fin S.dim → K) : S.I x = ∑ i, x i • (S.basis i : S.Cl → S.V) := by
   rw [I_apply, Basis.equivFun_symm_apply]
   simp
 
 /- English proof (translation)
-Simplify using `only [csum, I_eq_sum, H, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem csum_sum (x y : Fin S.dim → K) :
     S.csum (S.I x) (S.I y) = ∑ i, ∑ j, star (x i) * S.H i j * y j := by
@@ -65,9 +65,9 @@ theorem csum_sum (x y : Fin S.dim → K) :
   ring
 
 /- English proof (translation)
-Introduce `x y`. Establish `h` using `S.csum_sum x y`. Unfold `csum at h`. Rewrite using `[h]`. Simplify using `only [hform, Matrix.toLinearMapₛₗ₂'_apply, starRingEnd_apply, RingHom.id_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isClassSum : IsClassSum S.H S.I S.pair S.wt := by
   intro x y
@@ -79,17 +79,17 @@ theorem isClassSum : IsClassSum S.H S.I S.pair S.wt := by
   ring
 
 /- English proof (translation)
-The claim follows from `Fintype.card_pos`.
+A detailed English derivation is pending.
 -/
 theorem wt_pos (c : S.Cl) : 0 < S.wt c := Fintype.card_pos
 
 /- English proof (translation)
-The claim follows from `Finset.dvd_lcm (Finset.mem_univ c)`.
+A detailed English derivation is pending.
 -/
 theorem wt_dvd_DGam (c : S.Cl) : S.wt c ∣ S.DGam := Finset.dvd_lcm (Finset.mem_univ c)
 
 /- English proof (translation)
-Use `Nat.pos_of_ne_zero ?_` and prove the remaining obligations. Unfold `DGam`. Rewrite using `[Ne, Finset.lcm_eq_zero_iff]`. Introduce and unpack `⟨c, -, hc⟩`. Conclude with `(S.wt_pos c).ne' hc`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem DGam_pos : 0 < S.DGam := by
   refine Nat.pos_of_ne_zero ?_
@@ -99,14 +99,14 @@ theorem DGam_pos : 0 < S.DGam := by
   exact (S.wt_pos c).ne' hc
 
 /- English proof (translation)
-Unfold `basis`. Conclude with `dif_pos h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem basis_eq (h : S.HasRatBasis) : S.basis = h.choose := by
   unfold basis
   exact dif_pos h
 
 /- English proof (translation)
-Rewrite using `[S.basis_eq h]`. Conclude with `h.choose_spec i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_rat (h : S.HasRatBasis) (i : Fin S.dim) : S.IsRat (S.basis i : S.Cl → S.V) := by
   rw [S.basis_eq h]

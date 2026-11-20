@@ -16,43 +16,43 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Proje
 namespace UpperTheory.Gal.CertificateRingHomMap
 
 /- English proof (translation)
-The claim follows from `pTrRho_of`.
+A detailed English derivation is pending.
 -/
 theorem trRho_holds : TrRho := pTrRho_of
 /- English proof (translation)
-The claim follows from `pTrSch_of`.
+A detailed English derivation is pending.
 -/
 theorem trSch_holds : TrSch := pTrSch_of
 /- English proof (translation)
-The claim follows from `pSchHom_of`.
+A detailed English derivation is pending.
 -/
 theorem schHom_holds : SchHom := pSchHom_of
 /- English proof (translation)
-The claim follows from `pCharConj_of`.
+A detailed English derivation is pending.
 -/
 theorem charConj_holds : CharConj := pCharConj_of
 /- English proof (translation)
-The claim follows from `pWtCore_of trRho_holds trSch_holds schHom_holds charConj_holds`.
+A detailed English derivation is pending.
 -/
 theorem wtCore_holds : WtCore := pWtCore_of trRho_holds trSch_holds schHom_holds charConj_holds
 /- English proof (translation)
-The claim follows from `pAutEx_of`.
+A detailed English derivation is pending.
 -/
 theorem autEx_holds : AutEx := pAutEx_of
 /- English proof (translation)
-The claim follows from `pWtAt_of`.
+A detailed English derivation is pending.
 -/
 theorem wtAt_holds : WtAt := pWtAt_of
 /- English proof (translation)
-The claim follows from `pEpsIff_of`.
+A detailed English derivation is pending.
 -/
 theorem epsIff_holds : EpsIff := pEpsIff_of
 /- English proof (translation)
-The claim follows from `pExpSum_of`.
+A detailed English derivation is pending.
 -/
 theorem expSum_holds : ExpSum := pExpSum_of
 /- English proof (translation)
-The claim follows from `pExpCore_of expSum_holds`.
+A detailed English derivation is pending.
 -/
 theorem expCore_holds : ExpCore := pExpCore_of expSum_holds
 
@@ -61,17 +61,17 @@ end UpperTheory.Gal.CertificateRingHomMap
 namespace UpperTheory.Gal.Int.Geo.Pl
 
 /- English proof (translation)
-The claim follows from `vecEx_of CertificateRingHomMap.seedGU_holds CertificateRingHomMap.wtAt_holds`.
+A detailed English derivation is pending.
 -/
 theorem vecEx_holds : VecEx := vecEx_of CertificateRingHomMap.seedGU_holds CertificateRingHomMap.wtAt_holds
 
 /- English proof (translation)
-The claim follows from `wtOf_of CertificateRingHomMap.wtCore_holds`.
+A detailed English derivation is pending.
 -/
 theorem wtOf_holds : WtOf := wtOf_of CertificateRingHomMap.wtCore_holds
 
 /- English proof (translation)
-The claim follows from `expOf_of CertificateRingHomMap.expCore_holds CertificateRingHomMap.autEx_holds CertificateRingHomMap.wtAt_holds CertificateRingHomMap.epsIff_holds`.
+A detailed English derivation is pending.
 -/
 theorem expOf_holds : ExpOf := expOf_of CertificateRingHomMap.expCore_holds CertificateRingHomMap.autEx_holds CertificateRingHomMap.wtAt_holds CertificateRingHomMap.epsIff_holds
 

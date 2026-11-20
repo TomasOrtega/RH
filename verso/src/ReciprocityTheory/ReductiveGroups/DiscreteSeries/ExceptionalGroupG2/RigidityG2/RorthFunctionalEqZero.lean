@@ -22,17 +22,15 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {lam : Fin n → ℝ} {V : Submodule ℂ M}
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy` using `[genSub_eq_iSup_layer hE hV.2.1, Submodule.mem_iSup_of_directed _ (Monotone.directed_le fun _ _ h => layer_mono h)]`. Take `⟨k, hk⟩` from `hy`. Use `set W := layer ε E V k with hW`. Establish `: FiniteDimensional ℂ W` using `finiteDimensional_layer hV.1 k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompleteSpace W` using `FiniteDimensional.complete ℂ W`. Establish `hWK : IsKStableSub ε E W` using `layer_kStable hE hV.2.1 k`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : W, ∀ w : W, inner ℂ (u : M) (w : M) = f w := by`. Use `⟨(InnerProductSpace.toDual ℂ W).symm (LinearMap.toContinuousLinearMap (f.comp W.subtype)), fun w => ?_⟩` and prove the remaining obligations. Use `InnerProductSpace.toDual_symm_apply (𝕜 := ℂ) (x := w) (y := LinearMap.toContinuousLinearMap (f.comp W.subtype))` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hsg : ∀ a b, ε a = ε b → adjSign ε a b = 1` using `fun a b h => by simp [adjSign, h]`. Establish `hkhw : IsKHWVec ε E (lowK ε lam) (u : M)`. Use `⟨fun a => ?_, fun a b hab h => ?_⟩` and prove the remaining obligations. Establish `hz : E a a u - (lowK ε lam a : ℂ) • (u : M) ∈ W` using `W.sub_mem (hWK a a rfl _ u.2) (W.smul_mem _ u.2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← inner_self_eq_zero (𝕜 := ℂ)]`. Establish `key : ∀ z ∈ W, inner ℂ (E a a u - (lowK ε lam a : ℂ) • (u : M)) z = 0`. Introduce `z hz`. Rewrite using `[inner_sub_left, inner_smul_left, hU a a, hsg a a rfl, one_mul, hu ⟨_, hWK a a rfl _ hz⟩, hu ⟨z, hz⟩]`. Simplify using `[hfd]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key _ hz`. Establish `hz : E a b u ∈ W` using `hWK a b h _ u.2`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ), hU a b, hsg a b h, one_mul]`. Conclude with `(hu ⟨_, hWK b a h.symm _ hz⟩).trans (hfl a b hab h _)`. Establish `huV : (u : M) ∈ V` using `khw_lowK_mem hE hU hV hc hgap (layer_le_genSub k u.2) hkhw`.
-
-Establish `hu0 : (u : M) = 0`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ), hu u]`. Conclude with `hfV _ huV`. Rewrite using `[← hu ⟨y, hk⟩, hu0, inner_zero_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rorth_functional_eq_zero (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
@@ -88,17 +86,15 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `rorth_exists_ext hV.1 j`. Establish `hrel` using `fun a b (h : ε a = ε b) => rorth_inner_E hσ hD hVK j hj φ hφ h`. Take `⟨w, hwV, hw0, hw⟩` from `hV.2.2.2`. Establish `h0 : ∀ y ∈ genSub E V, inner ℂ (j ⟨w, hwV⟩) (y : H) = 0`. Use `rorth_functional_eq_zero hD.glRep (isInfUnitary_of_isDerivedOn hσ hD) hV hc hgap ((innerₛₗ ℂ (j ⟨w, hwV⟩)).comp D.subtype) (fun v hv => horth ⟨v, hv⟩ _) (fun a y => ?_) (fun a b hab h y => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hrel a a rfl ⟨w, hwV⟩ y` as an intermediate fact. Simplify using `only [hw.1 a, Submodule.coe_smul, map_smul, inner_smul_left, Complex.conj_ofReal, hφ ⟨w, hwV⟩] at this`. Conclude with `this.symm`. Use `hrel a b h ⟨w, hwV⟩ y` as an intermediate fact. Simplify using `only [hw.2 a b hab h, Submodule.coe_zero, map_zero, inner_zero_left] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `this.symm`. Set `S : Submodule ℂ D` to `{ carrier := {v | v ∈ V ∧ ∀ y ∈ genSub E V, inner ℂ (φ (v : H)) (y : H) = 0} add_mem' := fun {u v} hu hv => ⟨V.add_mem hu.1 hv.1, fun y hy => by`. Simplify using `[hu.2 y hy, hv.2 y hy]⟩`. Use the proof step `zero_mem' := ⟨V.zero_mem, fun y _ => by simp⟩`. Use the proof step `smul_mem' := fun c v hv => ⟨V.smul_mem c hv.1, fun y hy => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hv.2 y hy]⟩ }`. Establish `hSK : IsKStableSub ε E S`. Introduce `a b h v hv`. Use `⟨hV.2.1 a b h v hv.1, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hrel a b h ⟨v, hv.1⟩ y, ← hφ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hv.2 _ (rorth_apply_mem_genSub b a hy)`. Establish `hwS : w ∈ S` using `⟨hwV, fun y hy => by rw [hφ ⟨w, hwV⟩]; exact h0 y hy⟩`. Break down `hV.2.2.1 S (fun v hv => hv.1) hSK with h | h` into its components or cases. Rewrite `hwS` using `[h]`. Conclude with `absurd ((Submodule.mem_bot ℂ).1 hwS) hw0`.
-
-Introduce `v' y hy`. Establish `hv' : (v' : D) ∈ S` using `by rw [h]; exact v'.2`. Rewrite using `[← hφ]`. Conclude with `hv'.2 y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigid_orth_genSub {lam : Fin n → ℝ} (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ)
     (hD : IsDerivedOn ε σ D E) (hV : IsKIrrHW ε E (lowK ε lam) V)
@@ -143,9 +139,7 @@ theorem rigid_orth_genSub {lam : Fin n → ℝ} (hgap : StdGap ε lam) (hσ : Is
     exact hv'.2 y hy
 
 /- English proof (translation)
-Introduce `v' x hx`. Establish `hle : ((genSub E V).map D.subtype).topologicalClosure ≤ (ℂ ∙ j v')ᗮ`. Use `Submodule.topologicalClosure_minimal _ ?_ (Submodule.isClosed_orthogonal _)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_right.2 (rigid_orth_genSub hgap hσ hD hV hc hVK j hj horth v' y hy)`.
-
-Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_right.1 (hle hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem rigid_orth_closure {lam : Fin n → ℝ} (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ)
     (hD : IsDerivedOn ε σ D E) (hV : IsKIrrHW ε E (lowK ε lam) V)

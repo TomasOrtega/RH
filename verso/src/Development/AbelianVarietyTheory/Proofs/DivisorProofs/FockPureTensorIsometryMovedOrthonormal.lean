@@ -27,7 +27,7 @@ open Formalism.UG (cT cT_mul cT_one)
 open scoped TensorProduct
 
 /- English proof (translation)
-Unfold `opPow`. Proceed by induction on `(Multiset.toList (Finsupp.toMultiset k)) with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => simp only [List.foldr_cons]`. Rewrite using `[ih, h]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem opPow_comm {ι X X' : Type} (tr : (X → ℂ) →ₗ[ℂ] (X' → ℂ)) (A : ι → (X → ℂ) → (X → ℂ))
     (A' : ι → (X' → ℂ) → (X' → ℂ)) (h : ∀ k g, A' k (tr g) = tr (A k g)) (k : ι →₀ ℕ) (f : X → ℂ) :
@@ -38,9 +38,9 @@ private theorem opPow_comm {ι X X' : Type} (tr : (X → ℂ) →ₗ[ℂ] (X' �
   | cons a l ih => simp only [List.foldr_cons]; rw [ih, h]
 
 /- English proof (translation)
-Substitute `hm hn` using the available equality. Establish `e : polMove (D` using `D) (rfl : m = m) (rfl : n = n) P = P := MvPolynomial.rename_id_apply P`. Rewrite using `[e]`. Establish `e2 : pureTensorL A' (tr f) = tr ∘ₗ pureTensorL A f`. Use `(MvPolynomial.basisMonomials (FVar D m n) ℂ).ext fun k => ?_` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `pureTensorL`. Rewrite using `[LinearMap.comp_apply, Module.Basis.constr_basis, Module.Basis.constr_basis]`. Conclude with `opPow_comm tr A A' h k f`. Rewrite using `[e2]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem pure_comm {D : D7} {m n m' n' : ℕ} (hm : m = m') (hn : n = n') {X X' : Type}
     (tr : (X → ℂ) →ₗ[ℂ] (X' → ℂ)) (A : FVar D m n → (X → ℂ) → (X → ℂ))
@@ -60,9 +60,9 @@ private theorem pure_comm {D : D7} {m n m' n' : ℕ} (hm : m = m') (hn : n = n')
   rfl
 
 /- English proof (translation)
-Substitute `hm hn` using the available equality. Establish `e1 : rdx (K` using `ℂ) (rfl : m = m) = 1 := rfl`. Establish `e2 : rdx (K` using `ℂ) (rfl : n = n) = 1 := rfl`. Unfold `unitMap`. Rewrite using `[e1, e2, Matrix.mul_one, Matrix.mul_one, Matrix.mul_inv_rev, Matrix.inv_eq_right_inv pq]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem unitMap_move {m n m' n' : ℕ} (hm : m = m') (hn : n = n')
     (pS : Matrix (Fin n') (Fin n) ℂ) (qS : Matrix (Fin n) (Fin n') ℂ) (pq : pS * qS = 1)
@@ -77,9 +77,9 @@ private theorem unitMap_move {m n m' n' : ℕ} (hm : m = m') (hn : n = n')
   rfl
 
 /- English proof (translation)
-Establish `e : GlobalTheory.Grid.sgnM ε (pS * s * qS) = pS * GlobalTheory.Grid.sgnM ε s * qS`. Consider the cases of `ε`. Both sides reduce to the same expression. Use `show -(pS * s * qS) = pS * (-s) * qS`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `cplxO`. Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem cplxO_move {m n m' n' : ℕ} (ε : Bool)
     (pS : Matrix (Fin n') (Fin n) ℂ) (qS : Matrix (Fin n) (Fin n') ℂ) (qp : qS * pS = 1)
@@ -98,7 +98,7 @@ private theorem cplxO_move {m n m' n' : ℕ} (ε : Bool)
     _ = _ := by rw [qp, qp', Matrix.mul_one, Matrix.mul_one]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← hH, ← hJ, cT_mul, cT_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem trace_move {A : Type} [CommRing A] {m n m' n' : ℕ} (s : A →+* A)
     {H : Matrix (Fin n) (Fin n) A} {H' : Matrix (Fin n') (Fin n') A} {Q : Matrix (Fin n) (Fin n') A}
@@ -113,9 +113,9 @@ private theorem trace_move {A : Type} [CommRing A] {m n m' n' : ℕ} (s : A →+
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `hO`. Simplify using `only [Matrix.trace, Matrix.diag_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sum_form (cA D) (T.gram.map (incA D)) x y (incA D (S.gram⁻¹ a b)) a b`.
+A detailed English derivation is pending.
 -/
 private theorem hO_trace (S T : HSp D) (x y : WO S T) :
     hO S T x y = Matrix.trace (S.gram⁻¹.map (incA D) * (cT (cA D) y * T.gram.map (incA D) * x)) := by
@@ -129,7 +129,7 @@ private theorem hO_trace (S T : HSp D) (x y : WO S T) :
 variable {S S' T T' : HSp D}
 
 /- English proof (translation)
-Use `(Matrix.inv_eq_right_inv ?_).symm` and prove the remaining obligations. Rewrite using `[← I.gram]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[I.PQ, Matrix.mul_one, Matrix.mul_nonsing_inv _ (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit S'), Matrix.mul_one, ← cT_mul, I.QP, cT_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gram_inv_move (I : IsoMat S S') :
     I.Q * S'.gram⁻¹ * cT (D.sp.cm.sig : D.host.E →+* D.host.E) I.Q = S.gram⁻¹ := by
@@ -142,7 +142,7 @@ private theorem gram_inv_move (I : IsoMat S S') :
         cT_one]
 
 /- English proof (translation)
-Rewrite using `[hO_trace, hO_trace]`. Use `trace_move (cA D) ?_ (map_gram (incA D) _ (cA D) (fun _ => rfl) IT.gram) x y` and prove the remaining obligations. Rewrite using `[← gram_inv_move IS, Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem hO_homMap (IS : IsoMat S S') (IT : IsoMat T T') (x y : WO S T) :
     hO S' T' (homMap IS IT x) (homMap IS IT y) = hO S T x y := by
@@ -152,9 +152,9 @@ private theorem hO_homMap (IS : IsoMat S S') (IT : IsoMat T T') (x y : WO S T) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Take `⟨w, rfl⟩` from `(homMap IS IT).surjective w`. Establish `e : hO (GlobalTheory.Grid.sgn ε S') T' (homMap IS IT w) (homMap IS IT u) = hO (GlobalTheory.Grid.sgn ε S) T w u`. Consider the cases of `ε`. Conclude with `hO_homMap IS IT w u`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Conclude with `(GlobalTheory.Grid.hO_neg S' T' _ _).trans ((congrArg Neg.neg (hO_homMap IS IT w u)).trans (GlobalTheory.Grid.hO_neg S T _ _).symm)`. Simplify using `only [heisO, trH, ← map_add, AddEquiv.symm_apply_apply, symplOH, symplO, e]`.
+A detailed English derivation is pending.
 -/
 private theorem heisO_homMap (ψ : AddChar (AF D.host.F) ℂ) (ε : Bool) (IS : IsoMat S S') (IT : IsoMat T T') (u : WO S T)
     (f : WO S T → ℂ) :
@@ -168,22 +168,22 @@ private theorem heisO_homMap (ψ : AddChar (AF D.host.F) ℂ) (ε : Bool) (IS : 
   simp only [heisO, trH, ← map_add, AddEquiv.symm_apply_apply, symplOH, symplO, e]
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (GlobalTheory.RealLineAt.lineAt_exists D θ hθ m n τ z)`.
+A detailed English derivation is pending.
 -/
 private theorem lineAt_spec {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ) :
     IsLineAt θ τ z (lineAt θ τ z) :=
   Classical.epsilon_spec (GlobalTheory.RealLineAt.lineAt_exists D θ hθ m n τ z)
 
 /- English proof (translation)
-Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Take `⟨h1, h2, h3⟩` from `lineAt_spec hθ τ z`. Establish `key : IsLineAt θ τ (IT.pT τ * z * IS.qT τ) ((homMap IS IT).toAddMonoidHom.comp (lineAt θ τ z))`. Use `⟨(continuous_const.matrix_mul h1).matrix_mul continuous_const, fun t => ?_, fun t τ' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (HMul.hMul (HMul.hMul IT.aP (lineAt θ τ z t)) IS.aQ).map (finPart D) = 0`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h2, Matrix.mul_zero, Matrix.zero_mul]`. Set `ρ : AE D →+* ℂ` to `(θ τ').comp (infPart D)`. Establish `hρ : ∀ x : D.host.E, ρ (incA D x) = tauE D τ' x` using `fun x => by`. Use `(hθ τ').1 x` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Simplify using `[ρ, incA, inclR, infPart]`. Establish `e1 : IT.aP.map ρ = IT.pT τ'` using `by ext i j; exact hρ _`. Establish `e2 : IS.aQ.map ρ = IS.qT τ'` using `by ext i j; exact hρ _`. Establish `e3 : (lineAt θ τ z t).map ρ = _` using `h3 t τ'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (HMul.hMul (HMul.hMul IT.aP (lineAt θ τ z t)) IS.aQ).map ρ = _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e1, e2, e3]`. Use `split_ifs with c`. Substitute `c` using the available equality. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.mul_zero, Matrix.zero_mul]`. Rewrite using `[GlobalTheory.RealLineAt.lineAt_unique D θ hθ _ _ τ _ _ _ (lineAt_spec hθ τ _) key]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem lineAt_homMap {θ : InfFam D} (hθ : IsInfFam θ) (IS : IsoMat S S') (IT : IsoMat T T') (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (t : ℝ) :
@@ -213,7 +213,7 @@ private theorem lineAt_homMap {θ : InfFam D} (hθ : IsInfFam θ) (IS : IsoMat S
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `Formalism.IndefR.Datum.dRho`. Simplify using `only [lineAt_homMap hθ, heisO_homMap]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem dRho_homMap (ψ : AddChar (AF D.host.F) ℂ) {θ : InfFam D} (hθ : IsInfFam θ) (ε : Bool) (IS : IsoMat S S')
     (IT : IsoMat T T') (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (f : WO S T → ℂ) :
@@ -227,9 +227,9 @@ private theorem dRho_homMap (ψ : AddChar (AF D.host.F) ℂ) {θ : InfFam D} (h�
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `D ψ θ hθ ε S S' T T' IS IT sS BS sT BT f P`. Use `pure_comm IT.rank_eq IS.rank_eq (GlobalTheory.TriMove.trLE IS IT).toLinearMap _ _ (fun k g => ?_) f P` and prove the remaining obligations. Establish `e : ∀ g, (GlobalTheory.TriMove.trLE IS IT).toLinearMap g = GlobalTheory.TriMove.trH IS IT g` using `fun _ => rfl`. Establish `e1 : unitMap (GlobalTheory.TriMove.basMove IS k.1 (BS k.1)) (GlobalTheory.TriMove.basMove IT k.1 (BT k.1)) (finCongr IT.rank_eq k.2.1) (finCongr IS.rank_eq k.2.2) = _` using `unitMap_move IT.rank_eq IS.rank_eq _ _ (IS.pT_qT k.1) (IT.pT k.1) (BS k.1) (BT k.1) k.2.1 k.2.2`. Rewrite using `[e, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `aPlusAll aPlus crea GlobalTheory.TriMove.cartMove`. Simplify using `only`. Rewrite using `[e1, cplxO_move ε _ _ (IS.qT_pT k.1) _ _ (IT.qT_pT k.1), dRho_homMap ψ hθ, dRho_homMap ψ hθ]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.T.fockPureTensor_isometry_moved_orthonormal : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : Formalism.IndefR.Datum.InfFam D), IsInfFam θ → ∀ (ε : Bool) {S S' T T' : HSp D} (IS : GlobalTheory.Mem.Isom.IsoMat S S') (IT : GlobalTheory.Mem.Isom.IsoMat T T') (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (f : WO S T → ℂ) (P : MvPolynomial (FVar D T.rank S.rank) ℂ),
   pureTensorO ψ θ (GlobalTheory.Grid.sgn ε S') T' (fun τ => GlobalTheory.Grid.sgnM ε (GlobalTheory.TriMove.cartMove (S' := S') IS τ (sS τ))) (fun τ => GlobalTheory.TriMove.cartMove (S' := T') IT τ (sT τ)) (fun τ => GlobalTheory.TriMove.basMove (S' := S') IS τ (BS τ)) (fun τ => GlobalTheory.TriMove.basMove (S' := T') IT τ (BT τ)) (GlobalTheory.TriMove.trH (S := S) (S' := S') (T := T) (T' := T') IS IT f) (GlobalTheory.TriMove.polMove IT.rank_eq IS.rank_eq P) =

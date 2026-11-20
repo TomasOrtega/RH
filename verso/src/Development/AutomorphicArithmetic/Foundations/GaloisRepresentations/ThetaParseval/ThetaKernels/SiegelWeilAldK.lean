@@ -15,9 +15,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.Ald
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d n h Y b j hb hj`. Establish `hX : ∀ g, inFrame d.b (j g) = blk h (inFrame b g) 1` using `fun g => eq_blk h _ _ (hj.2.1 g) (hj.2.2 g)`. Introduce `k`. Rewrite using `[Subgroup.mem_comap, d.ok.stdK (j k)]`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff, forall_eq_or_imp, forall_eq, ← map_inv, hX]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `and_congr (forall_congr' fun w => ?_) (and_congr (int_blk h _) (int_blk h _))` and prove the remaining obligations. Rewrite using `[blk_map _ _ _ _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _), blk_conjTranspose, Matrix.conjTranspose_one, blk_mul, Matrix.one_mul, blk_eq_one_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kStd_k : _root_.PositivityTheory.SiegelWeilFormula.Ald.KStd_k := by
   intro F E _ _ _ _ _ σ d n h Y b j hb hj

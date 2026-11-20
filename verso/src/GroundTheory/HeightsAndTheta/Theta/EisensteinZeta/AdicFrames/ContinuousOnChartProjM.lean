@@ -42,19 +42,19 @@ variable (h : IsTransChart dX Γ Ω σ)
 include h
 
 /- English proof (translation)
-Rewrite using `[chartProj, h.shift _ _ hX, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Γ_chartProj {X : G} (hX : X ∈ Ω) : Γ (chartProj Γ σ X) = 0 := by
   rw [chartProj, h.shift _ _ hX, add_neg_cancel]
 
 /- English proof (translation)
-Rewrite using `[chartProj, h.add _ _ _ hX, add_neg_cancel, h.zero _ hX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σ_Γ_chartProj {X : G} (hX : X ∈ Ω) : σ (Γ X) (chartProj Γ σ X) = X := by
   rw [chartProj, h.add _ _ _ hX, add_neg_cancel, h.zero _ hX]
 
 /- English proof (translation)
-Rewrite using `[chartProj, chartProj, h.shift _ _ hX, h.add _ _ _ hX]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 -/
 theorem chartProj_σ (s : T) {X : G} (hX : X ∈ Ω) :
     chartProj Γ σ (σ s X) = chartProj Γ σ X := by
@@ -63,7 +63,7 @@ theorem chartProj_σ (s : T) {X : G} (hX : X ∈ Ω) :
   abel
 
 /- English proof (translation)
-Rewrite using `[chartProj, h0, neg_zero, h.zero _ hX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chartProj_of_Γ_eq_zero {X : G} (hX : X ∈ Ω) (h0 : Γ X = 0) : chartProj Γ σ X = X := by
   rw [chartProj, h0, neg_zero, h.zero _ hX]

@@ -17,14 +17,14 @@ def IsHerm (σ : A →+* A) (J : Matrix n n A) : Prop := cT σ J = J
 def hform (σ : A →+* A) (J : Matrix n n A) (x y : n → A) : A := ∑ i, ∑ j, σ (x i) * J i j * y j
 
 /- English proof (translation)
-Simplify using `[cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul (σ : A →+* A) {m p q : Type} [Fintype p] (M : Matrix m p A) (N : Matrix p q A) :
     cT σ (M * N) = cT σ N * cT σ M := by
   simp [cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Unfold `cT`. Rewrite using `[Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.transpose_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_one (σ : A →+* A) : cT σ (1 : Matrix n n A) = 1 := by
   unfold cT

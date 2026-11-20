@@ -5,19 +5,17 @@ open MvPolynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hb : ∀ (y : σ → K) (f : σ → MvPolynomial σ K) (Q : MvPolynomial σ K), eval y (bind₁ f Q) = eval (fun s => eval y (f s)) Q` using `fun y f Q => eval₂Hom_bind₁ _ _ _ _`. Use `revert hT`. Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q T hq ih hT`. Establish `hq'` using `hT q (Finset.mem_insert_self q T)`. Establish `hab : q.1 < q.2` using `Fin.lt_def.2 (lt_of_lt_of_le hq'.1 hq'.2)`. Use `set y : σ → K := fun s => x s + ∑ q' ∈ T, ∑ k, if s = z (q'.2, k) then c q' * x (z (q'.1, k)) else 0 with hy_def`. Establish `hy : ∀ k, y (z (q.1, k)) = x (z (q.1, k))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Rewrite using `[hy_def]`. Simplify using `only [add_eq_left]`. Use `Finset.sum_eq_zero fun q' hq'T => Finset.sum_eq_zero fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h2` using `congrArg Prod.fst (hz h)`. Establish `h3` using `hT q' (Finset.mem_insert_of_mem hq'T)`. Establish `: (q.1 : ℕ) < q'.2` using `lt_of_lt_of_le hq'.1 h3.2`. Simplify using `only at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h2]`. Conclude with `lt_irrefl _ this`. Establish `hfun : (fun s => x s + ∑ q' ∈ insert q T, ∑ k, if s = z (q'.2, k) then c q' * x (z (q'.1, k)) else 0) = fun s => eval y (X s + ∑ k, if s = z (q.2, k) then C (c q) * X (z (q.1, k)) else 0)`. Use function extensionality and compare the values at `s`. Establish `he : ∀ k, eval y (if s = z (q.2, k) then C (c q) * X (z (q.1, k)) else 0) = if s = z (q.2, k) then c q * x (z (q.1, k)) else 0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `k`. Use `split_ifs`. Simplify using `[hy]`. Simplify using the standard rewrite rules. Rewrite using `[map_add, eval_X, map_sum, Finset.sum_congr rfl fun k _ => he k, Finset.sum_insert hq, hy_def]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun, ← hb, hinv q.1 q.2 hab (c q), ih fun q' h => hT q' (Finset.mem_insert_of_mem h)]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_rowOps_eq {K σ : Type*} [Field K] [DecidableEq σ] {p n : ℕ} (z : Fin p × Fin n → σ)
     (hz : Function.Injective z) (P : MvPolynomial σ K)
@@ -67,7 +65,7 @@ theorem eval_rowOps_eq {K σ : Type*} [Field K] [DecidableEq σ] {p n : ℕ} (z 
     rw [hfun, ← hb, hinv q.1 q.2 hab (c q), ih fun q' h => hT q' (Finset.mem_insert_of_mem h)]
 
 /- English proof (translation)
-Rewrite using `[eval_eq, Polynomial.eval_finsetSum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_monomial]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, ← pow_mul]`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -84,79 +82,71 @@ theorem eval_scale_eq {K σ : Type*} [Field K] (w : σ → ℕ) (P : MvPolynomia
   ring
 
 /- English proof (translation)
-Introduce `m0 hm0`. Distinguish the cases in `hpr : p ≤ S.card`. Establish `hfil : Finset.univ.filter (fun a : Fin p => (a : ℕ) < S.card) = Finset.univ`. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, iff_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `lt_of_lt_of_le a.isLt hpr`. Rewrite using `[hfil]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← hrow a m0 hm0]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ S)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `push Not at hpr`. Set `Z : Finset σ` to `(Finset.univ ×ˢ S).image z`. Set `w : σ → ℕ` to `fun s => if s ∈ Z then 1 else 0`. Establish `hwz : ∀ a k, w (z (a, k)) = if k ∈ S then 1 else 0`. Introduce `a k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (if z (a, k) ∈ Finset.image z (Finset.univ ×ˢ S) then 1 else 0) = _`. Establish `hm : z (a, k) ∈ Finset.image z (Finset.univ ×ˢ S) ↔ k ∈ S`. Rewrite using `[hz.mem_finset_image]`. Simplify using the standard rewrite rules. Distinguish the cases in `hk : k ∈ S`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_pos (hm.2 hk), if_pos hk]`. Rewrite using `[if_neg (fun h => hk (hm.1 h)), if_neg hk]`. Establish `he : ∀ m : σ →₀ ℕ, ∑ s ∈ m.support, w s * m s = ∑ a, ∑ k ∈ S, m (z (a, k))`. Introduce `m`. Establish `h1 : ∑ s ∈ m.support, w s * m s = ∑ s ∈ m.support, if s ∈ Z then m s else 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [w]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : ∑ s ∈ m.support ∩ Z, m s = ∑ s ∈ Z, m s`. Use `Finset.sum_subset Finset.inter_subset_right fun s hsZ hs => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Conclude with `hs (Finset.mem_inter.2 ⟨Finsupp.mem_support_iff.2 h, hsZ⟩)`. Rewrite using `[h1, Finset.sum_ite_mem, h2, Finset.sum_image hz.injOn, Finset.sum_product]`. Establish `hlow : ∀ m ∈ P.support, ∑ a ∈ Finset.univ.filter (fun a : Fin p => (a : ℕ) < S.card), ∑ k ∈ S, m (z (a, k)) ≤ ∑ a ∈ Finset.univ.filter (fun a : Fin p => (a : ℕ) < S.card), lam a`. Introduce `m hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← hrow a m hm]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ S)`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set j := ∑ a, ∑ k ∈ S, m0 (z (a, k)) with hj`. Set `R : MvPolynomial σ K` to `∑ m ∈ P.support.filter (fun m => ∑ a, ∑ k ∈ S, m (z (a, k)) = j), monomial m (coeff m P)`. Establish `hR0 : coeff m0 R ≠ 0`. Establish `hmem : m0 ∈ P.support.filter (fun m => ∑ a, ∑ k ∈ S, m (z (a, k)) = j)` using `Finset.mem_filter.2 ⟨hm0, rfl⟩`. Simplify using `only [R, coeff_sum, coeff_monomial]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_ite_eq' _ _ _, if_pos hmem]`. Conclude with `mem_support_iff.1 hm0`. Set `top : Fin S.card → Fin p` to `Fin.castLE hpr.le`. Establish `htop : Function.Injective top` using `Fin.castLE_injective _`. Set `ee : Fin S.card → Fin n` to `S.orderEmbOfFin rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hee : ∀ k ∈ S, ∃ i, ee i = k`. Introduce `k hk`. Establish `: k ∈ Set.range (S.orderEmbOfFin rfl)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `hk`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `this`. Set `D : MvPolynomial σ K` to `(Matrix.of fun a b : Fin S.card => (X (z (top a, ee b)) : MvPolynomial σ K)).det`. Establish `hevD : ∀ y : σ → K, eval y D = (Matrix.of fun a b : Fin S.card => y (z (top a, ee b))).det`. Introduce `y`. Simplify using `only [D]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[RingHom.mapMatrix_apply]`. Establish `hD : D ≠ 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `x0 : σ → K` to `fun s => if ∃ a : Fin S.card, s = z (top a, ee a) then 1 else 0`. Establish `hx0 : ∀ a b, x0 (z (top a, ee b)) = if a = b then 1 else 0`. Introduce `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [x0]`. Conclude with `if_pos ⟨a, rfl⟩`. Simplify using `only [x0, if_neg hab]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨a', h⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h'` using `hz h`. Simplify using `only [Prod.mk.injEq] at h'`. Conclude with `hab ((htop h'.1).trans ((S.orderEmbOfFin rfl).injective h'.2).symm)`. Introduce `h0`. Establish `h1` using `hevD x0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0, map_zero]`. Establish `h2 : (Matrix.of fun a b : Fin S.card => x0 (z (top a, ee b))) = 1`. Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, hx0, Matrix.one_apply]`. Rewrite `h1` using `[h2, Matrix.det_one]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h1`. Set `Q : (σ → K) → Polynomial K` to `fun y => ∑ m ∈ P.support, Polynomial.monomial (∑ s ∈ m.support, w s * m s) (coeff m P * ∏ s ∈ m.support, y s ^ m s)`. Establish `hQcoeff : ∀ y : σ → K, (Q y).coeff j = ∑ m ∈ P.support, if ∑ a, ∑ k ∈ S, m (z (a, k)) = j then coeff m P * ∏ s ∈ m.support, y s ^ m s else 0`. Introduce `y`. Simplify using `only [Q, Polynomial.finsetSum_coeff, Polynomial.coeff_monomial, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ x : σ → K, eval x D ≠ 0 → eval x R = 0`. Introduce `x hdet`. Set `M : Matrix (Fin S.card) (Fin S.card) K` to `Matrix.of fun a b => x (z (top a, ee b))`. Establish `hMu : IsUnit M.det` using `isUnit_iff_ne_zero.2 (by rw [← hevD]; exact hdet)`. Set `v : Fin p → Fin S.card → K` to `fun b i => x (z (b, ee i))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `c : Fin p × Fin p → K` to `fun q => if h : (q.1 : ℕ) < S.card then -(Matrix.vecMul (v q.2) M⁻¹) ⟨q.1, h⟩ else 0`. Set `B : Finset (Fin p)` to `Finset.univ.filter fun b : Fin p => S.card ≤ (b : ℕ)`. Set `T : Finset (Fin p × Fin p)` to `(Finset.univ.image top) ×ˢ B`. Establish `hT : ∀ q ∈ T, (q.1 : ℕ) < S.card ∧ S.card ≤ (q.2 : ℕ)`. Introduce `q hq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [T, B, Finset.mem_product, Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_filter] at hq`. Take `⟨⟨a, ha⟩, hb⟩` from `hq`. Use `⟨?_, hb⟩` and prove the remaining obligations. Rewrite using `[← ha]`. Conclude with `a.isLt`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `op : (σ → K) → σ → K` to `fun y s => y s + ∑ q ∈ T, ∑ k, if s = z (q.2, k) then c q * y (z (q.1, k)) else 0`. Set `sc : K → (σ → K) → σ → K` to `fun t y s => t ^ w s * y s`. Establish `hcomm : ∀ t y, op (sc t y) = sc t (op y)`. Introduce `t y`. Use function extensionality and compare the values at `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [op, sc]`. Rewrite using `[mul_add, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[h, hwz, hwz]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∀ b : Fin p, ∀ i, ∑ a, (Matrix.vecMul (v b) M⁻¹) a * M a i = v b i`. Introduce `b i`. Establish `h` using `congrFun (show Matrix.vecMul (Matrix.vecMul (v b) M⁻¹) M = v b by`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hMu, Matrix.vecMul_one]) i`. Simplify `h` using `[Matrix.vecMul, dotProduct]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hx'0 : ∀ b : Fin p, S.card ≤ (b : ℕ) → ∀ k ∈ S, op x (z (b, k)) = 0`. Introduce `b hb k hk`. Take `⟨i, rfl⟩` from `hee k hk`. Establish `hinner : ∀ q : Fin p × Fin p, (∑ k, if z (b, ee i) = z (q.2, k) then c q * x (z (q.1, k)) else 0) = if b = q.2 then c q * x (z (q.1, ee i)) else 0`. Introduce `q`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hz.eq_iff, Prod.mk.injEq, ite_and]`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `only [op]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun q _ => hinner q, Finset.sum_product]`. Establish `hbB : b ∈ B` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, hb⟩`. Simplify using `only [Finset.sum_ite_eq, hbB, if_true]`. Rewrite using `[Finset.sum_image fun a _ a' _ h => htop h]`. Establish `hc : ∀ a : Fin S.card, c (top a, b) = -(Matrix.vecMul (v b) M⁻¹) a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a`. Simplify using `only [c]`. Rewrite using `[dif_pos (show ((top a : Fin p) : ℕ) < S.card from a.isLt)]`. Both sides reduce to the same expression. Simplify using `only [hc, neg_mul, Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hsum b i` as an intermediate fact. Simplify using `only [M, v, Matrix.of_apply] at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ : Q x = Q (op x)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Polynomial.funext fun t => ?_` and prove the remaining obligations. Rewrite using `[← eval_scale_eq w P x t, ← eval_scale_eq w P (op x) t]`. Express the relevant statement in the definitionally equal form `eval (sc t x) P = eval (sc t (op x)) P`. Rewrite using `[← hcomm]`. Conclude with `(eval_rowOps_eq z hz P hinv S.card c (sc t x) T hT).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hRx : eval x R = (Q x).coeff j`. Rewrite using `[hQcoeff, ← Finset.sum_filter]`. Simplify using `only [R, map_sum, eval_monomial, Finsupp.prod]`. Rewrite using `[hRx, hQ, hQcoeff]`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hmj`. Establish `hsplit` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun a : Fin p => (a : ℕ) < S.card) (fun a => ∑ k ∈ S, m (z (a, k)))`. Establish `hup : ∑ a ∈ Finset.univ.filter (fun a : Fin p => ¬ (a : ℕ) < S.card), ∑ k ∈ S, m (z (a, k)) ≠ 0`. Introduce `h0`. Use `hlow m hm` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Take `⟨a, ha, ha0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hup`. Take `⟨k, hk, hk0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero ha0`. Establish `hs : z (a, k) ∈ m.support` using `Finsupp.mem_support_iff.2 hk0`. Establish `hza : op x (z (a, k)) = 0` using `hx'0 a (not_lt.1 (Finset.mem_filter.1 ha).2) k hk`.
-
-Rewrite using `[Finset.prod_eq_zero hs (by rw [hza, zero_pow hk0]), mul_zero]`. Both sides reduce to the same expression. Establish `hRD : R * D = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`.
-
-Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hdet : eval x D = 0`. Rewrite using `[hdet, mul_zero]`. Rewrite using `[key x hdet, zero_mul]`. Establish `hR : R = 0` using `(mul_eq_zero.1 hRD).resolve_right hD`.
-
-Conclude with `hR0 (by rw [hR, coeff_zero])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem column_degree_le {K σ : Type*} [Field K] [CharZero K] [DecidableEq σ] {p n : ℕ} (z : Fin p × Fin n → σ) (hz : Function.Injective z)
     (P : MvPolynomial σ K) (lam : Fin p → ℕ)

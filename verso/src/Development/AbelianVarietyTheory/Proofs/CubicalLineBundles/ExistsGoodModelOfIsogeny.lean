@@ -22,7 +22,7 @@ namespace IsogenyModel
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj UpperHalfPlane TensorProduct in
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem over_pullback_map_left_fst {S S' : Scheme} (φ : S' ⟶ S) (Ga X : Over S) (io : Ga ⟶ X) :
     ((Over.pullback φ).map io).left ≫ pullback.fst X.hom φ = pullback.fst _ _ ≫ io.left :=
@@ -31,7 +31,7 @@ private theorem over_pullback_map_left_fst {S S' : Scheme} (φ : S' ⟶ S) (Ga X
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj UpperHalfPlane TensorProduct in
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem over_pullback_map_left_snd {S S' : Scheme} (φ : S' ⟶ S) (Ga X : Over S) (io : Ga ⟶ X) :
     ((Over.pullback φ).map io).left ≫ pullback.snd X.hom φ = pullback.snd _ _ :=
@@ -41,17 +41,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj UpperHalfPlane TensorProduct in
 
 /- English proof (translation)
-Use `haveI := hi`. Use `haveI : Flat (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap T K)) := _root_.GlobalTheory.flat_specMap_localization (nonZeroDivisors T) K`. Use `haveI : Mono (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap T K)) := _root_.GlobalTheory.mono_specMap_localization (nonZeroDivisors T) K`. Use `set u := pullback.fst X.hom (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap T K)) with hu`. Use `set j := i.left ≫ u with hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjs : Z.hom ≫ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap T K)) = j ≫ X.hom`. Rewrite using `[hj, Category.assoc, hu, pullback.condition, ← Category.assoc]`. Use `congr 1`. Conclude with `(Over.w i).symm`. Use `haveI : QuasiCompact (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap T K)) := by dsimp [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : QuasiCompact j := by rw [hj, hu]; infer_instance`. Establish `hflat : Flat (j.imageι ≫ X.hom)` using `_root_.GlobalTheory.flat_image_of_over_fractionField j X.hom Z.hom hjs`. Establish `hA : IsPullback i.left j.toImage u j.imageι` using `_root_.GlobalTheory.isPullback_toImage_of_isClosedImmersion j i.left u rfl`. Establish `hB : IsPullback u (pullback.snd X.hom (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap T K))) X.hom (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap T K))` using `IsPullback.of_hasPullback X.hom (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap T K))`. Establish `hC : IsPullback j.toImage (i.left ≫ pullback.snd X.hom (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap T K))) (j.imageι ≫ X.hom) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap T K))` using `IsPullback.paste_vert hA.flip hB`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hZ : i.left ≫ pullback.snd X.hom (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap T K)) = Z.hom` using `Over.w i`. Rewrite `hC` using `[hZ]`. Use `⟨Over.mk (j.imageι ≫ X.hom), Over.homMk j.imageι rfl, Over.isoMk hC.isoPullback.symm (by simp), (show IsClosedImmersion j.imageι from inferInstance), hflat, ?_⟩` and prove the remaining obligations. Use `ext1`. Simplify using `only [Over.comp_left, Over.isoMk_hom_left, Iso.symm_hom]`.
-
-Rewrite using `[Iso.inv_comp_eq]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, over_pullback_map_left_fst] erw [hC.isoPullback_hom_fst_assoc]`. Simplify using `[hj, hu]`. Rewrite using `[Category.assoc, over_pullback_map_left_snd] erw [hC.isoPullback_hom_snd]`.
-
-Conclude with `hZ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IsogenyModel.exists_flat_closure (T K : Type) [CommRing T] [IsDedekindDomain T] [Field K] [Algebra T K]
     [IsFractionRing T K] (X : Over (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp T)) (Z : Over (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K))
@@ -99,13 +95,11 @@ open scoped CategoryTheory.Obj UpperHalfPlane TensorProduct in
 variable {S : Scheme.{0}} in
 
 /- English proof (translation)
-Establish `hP` using `IsPullback.of_hasPullback f η[B]`. Establish `hL` using `IsPullback.map (Over.forget S) hP`. Use `haveI : IsClosedImmersion η[B].left := _root_.GlobalTheory.Retract.isClosedImmersion_section (f := 𝟙 S) (r := B.hom) (Over.w η[B]) (Category.comp_id _)`. Use `haveI : Mono η[B] := ⟨fun a b _ => toUnit_unique a b⟩`. Use `set i := pullback.fst f η[B] with hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ {X : Over S} (a : X ⟶ pullback f η[B]), (a ≫ i) ≫ f = 1` using `fun a => by`. Rewrite using `[Category.assoc, hi, pullback.condition, ← Category.assoc, toUnit_unique (a ≫ pullback.snd f η[B]) (toUnit _), ← Hom.one_def]`. Establish `key1 : i ≫ f = 1` using `by simpa using key (𝟙 _)`. Establish `hinv : ∀ {X : Over S} (a : X ⟶ G), a⁻¹ ≫ f = (a ≫ f)⁻¹`. Introduce `X a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `GrpObj.inv_comp a f`. Take `⟨inst, hmon⟩` from `_root_.GlobalTheory.exists_grpObj_of_mono i (pullback.lift η[G] (𝟙 _) (by simp)) (pullback.lift ((fst _ _ ≫ i) * (snd _ _ ≫ i)) (toUnit _) (by rw [mul_comp, key, key, _root_.mul_one, Hom.one_def])) (pullback.lift i⁻¹ (toUnit _) (by rw [hinv, key1, _root_.inv_one, Hom.one_def])) ( …`. Use `⟨pullback f η[B], inst, i, hmon, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `MorphismProperty.of_isPullback (P := @IsClosedImmersion) hL.flip (show IsClosedImmersion η[B].left from inferInstance)`. Establish `hw` using `Over.w (pullback.snd f η[B])`.
-
-Establish `: IsFinite (pullback.snd f η[B]).left` using `MorphismProperty.of_isPullback (P := @IsFinite) hL (show IsFinite f.left from inferInstance)`. Rewrite using `[← hw]`. Simplify using `using this`. Simplify `hP` using `[toUnit_unique (pullback.snd f η[B]) (toUnit _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IsogenyModel.exists_kernel {G B : Over S} [GrpObj G] [GrpObj B] [IsSeparated B.hom] (f : G ⟶ B)
     [IsMonHom f] [IsFinite f.left] :
@@ -147,19 +141,13 @@ open scoped CategoryTheory.Obj UpperHalfPlane TensorProduct in
 variable {S : Scheme.{0}} in
 
 /- English proof (translation)
-Take `⟨β, hβ, hqβ⟩` from `_root_.GlobalTheory.FlatQuotient.exists_desc q i f hq hf.w`. Establish `htriv : ∀ {X : Over S} (x : X ⟶ A), x ≫ β = 1 → x = 1`. Introduce `X x hx`. Establish `hP` using `IsPullback.of_hasPullback x q`. Establish `hL` using `IsPullback.map (Over.forget S) hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Flat (pullback.fst x q).left := MorphismProperty.of_isPullback (P := @Flat) hL.flip (show Flat q.left from inferInstance)`. Use `haveI : Surjective (pullback.fst x q).left := MorphismProperty.of_isPullback (P := @Surjective) hL.flip (show Surjective q.left from inferInstance)`. Use `haveI : Epi (pullback.fst x q) := _root_.GlobalTheory.FlatQuotient.epi_of_flat_surjective _`. Establish `hg : pullback.snd x q ≫ f = toUnit _ ≫ η[B]`. Rewrite using `[← hqβ, ← Category.assoc, ← pullback.condition, Category.assoc, hx, Hom.one_def, ← Category.assoc, toUnit_unique (pullback.fst x q ≫ toUnit X) (toUnit _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hgq : pullback.snd x q ≫ q = toUnit _ ≫ η[A]`. Rewrite using `[← hf.lift_fst _ _ hg, Category.assoc, hq.w, ← Category.assoc, toUnit_unique (hf.lift _ _ hg ≫ toUnit Z) (toUnit _)]`. Rewrite using `[← cancel_epi (pullback.fst x q), pullback.condition, hgq, Hom.one_def, ← Category.assoc, toUnit_unique (pullback.fst x q ≫ toUnit X) (toUnit _)]`. Use `haveI : Mono β := ⟨fun a b hab => by`. Establish `h1 : (a * b⁻¹) ≫ β = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comp, GrpObj.inv_comp, hab, _root_.mul_inv_cancel]`. Establish `h2` using `htriv _ h1`. Conclude with `(mul_inv_eq_one.mp h2)⟩`. Use `haveI : Surjective (q.left ≫ β.left) := by`. Rewrite using `[← Over.comp_left, hqβ]`.
-
-Use `infer_instance`. Use `haveI : Surjective β.left := Surjective.of_comp q.left β.left`. Use `haveI : IsProper (β.left ≫ B.hom) := by rw [Over.w β]; infer_instance`. Use `haveI : IsProper β.left := IsProper.of_comp β.left B.hom`. Use `haveI : IsClosedImmersion β.left := (IsClosedImmersion.iff_isProper_and_mono (f := β.left)).mpr ⟨inferInstance, inferInstance⟩`.
-
-Use `haveI : IsIso β.left := isIso_of_isClosedImmersion_of_surjective β.left`. Use `⟨Over.isoMk (asIso β.left) (Over.w β), ?_, ?_⟩` and prove the remaining obligations. Establish `: (Over.isoMk (asIso β.left) (Over.w β)).hom = β` using `by ext1; rfl`. Rewrite using `[this]`. Conclude with `hβ`.
-
-Establish `: (Over.isoMk (asIso β.left) (Over.w β)).hom = β` using `by ext1; rfl`. Rewrite using `[this]`. Conclude with `hqβ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IsogenyModel.exists_iso_of_same_kernel {G A B Z : Over S} [GrpObj G] [GrpObj A] [GrpObj B]
     (q : G ⟶ A) (f : G ⟶ B) (i : Z ⟶ G) [IsMonHom q] [IsMonHom f] [Flat q.left]

@@ -10,19 +10,19 @@ namespace UpperTheory.V.HV.Core0
 open UpperTheory.V.Lit
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨U.localGaloisCohomology₂ hN, hN.coh.pt, hN.coh.gf, hN.coh.ge, hK⟩`.
+Supply the required witnesses or components.
 -/
 theorem cohInp (hN : LitN) (hK : ∃ CK : ℝ, LemmaK CK) : U3.CohInp :=
   ⟨U.localGaloisCohomology₂ hN, hN.coh.pt, hN.coh.gf, hN.coh.ge, hK⟩
 
 /- English proof (translation)
-The claim follows from `Z.Kato.rigII_of (cohInp hN hK) adQ nw hKa`.
+A detailed English derivation is pending.
 -/
 theorem rigII (hN : LitN) (hK : ∃ CK : ℝ, LemmaK CK) (adQ : Af.AdVanishQ) (nw : Af.NewformAut) (hKa : Z.Kato.KatoTwo) : Z.Kato.RigII :=
   Z.Kato.rigII_of (cohInp hN hK) adQ nw hKa
 
 /- English proof (translation)
-The claim follows from `Z.Kato.caseI { toCohInp := cohInp hN hK, lemM := Alg.M.main_holds, lemM' := Alg.M.mprime_holds, lemP := Alg.lemmaP, rigII := hR, adK := adK, number := nU } h3`.
+A detailed English derivation is pending.
 -/
 theorem countI (hN : LitN) (hK : ∃ CK : ℝ, LemmaK CK) (hR : Z.Kato.RigII) (adK : Af.AdVanishK) (nU : Af.CongruenceNumberRankThree)
     (h3 : Aut.AutomorphyUnramifiedCoefficients) : CountI :=

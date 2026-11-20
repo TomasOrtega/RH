@@ -17,7 +17,7 @@ def val (V : X.Opens) (hV : genPt ξ ∈ V) : Γ(X, V) →+* Ω :=
   (X.presheaf.germ V (genPt ξ) hV ≫ Scheme.stalkClosedPointTo ξ).hom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Scheme.stalkClosedPointTo ξ).hom (X.presheaf.stalkSpecializes p.2 (X.presheaf.germ V p.1 hp f)) = _`. Rewrite using `[TopCat.Presheaf.germ_stalkSpecializes_apply]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem genMap_germ (V : X.Opens) (hV : genPt ξ ∈ V) (p : Cpt ξ) (hp : p.1 ∈ V) (f : Γ(X, V)) :
     genMap ξ p (X.presheaf.germ V p.1 hp f) = val ξ V hV f := by
@@ -27,14 +27,14 @@ theorem genMap_germ (V : X.Opens) (hV : genPt ξ ∈ V) (p : Cpt ξ) (hp : p.1 �
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, genMap_germ ξ V hV p hp f⟩`.
+Supply the required witnesses or components.
 -/
 theorem val_mem (V : X.Opens) (hV : genPt ξ ∈ V) (p : Cpt ξ) (hp : p.1 ∈ V) (f : Γ(X, V)) :
     val ξ V hV f ∈ regAt ξ p :=
   ⟨_, genMap_germ ξ V hV p hp f⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ V _ hV (X.presheaf.map (homOfLE h).op f)) = _`. Rewrite using `[TopCat.Presheaf.germ_res_apply]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_res {V V' : X.Opens} (h : V ≤ V') (hV : genPt ξ ∈ V) (f : Γ(X, V')) :
     val ξ V hV (X.presheaf.map (homOfLE h).op f) = val ξ V' (h hV) f := by
@@ -45,7 +45,7 @@ theorem val_res {V V' : X.Opens} (h : V ≤ V') (hV : genPt ξ ∈ V) (f : Γ(X,
 variable {ξ}
 
 /- English proof (translation)
-Introduce `f g hfg`. Use `TopCat.Presheaf.section_ext X.sheaf V f g fun q hq => ?_` and prove the remaining obligations. Apply `hgen.inj ⟨q, hcl q hq⟩` to reduce the goal to its premises. Conclude with `(genMap_germ ξ V hV ⟨q, hcl q hq⟩ hq f).trans (hfg.trans (genMap_germ ξ V hV ⟨q, hcl q hq⟩ hq g).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem val_injective (hgen : IsCptGen ξ) (V : X.Opens) (hV : genPt ξ ∈ V)
     (hcl : ∀ q ∈ V, genPt ξ ⤳ q) : Function.Injective (val ξ V hV) := by
@@ -56,15 +56,15 @@ theorem val_injective (hgen : IsCptGen ξ) (V : X.Opens) (hV : genPt ξ ∈ V)
     (hfg.trans (genMap_germ ξ V hV ⟨q, hcl q hq⟩ hq g).symm)
 
 /- English proof (translation)
-Establish `key : ∀ q : V, ∃ (O : X.Opens) (_ : q.1 ∈ O) (hle : O ≤ V) (hξ : genPt ξ ∈ O) (f : Γ(X, O)), val ξ O hξ f = a`. Introduce and unpack `⟨q, hq⟩`. Take `⟨g, hg⟩` from `ha ⟨q, hcl q hq⟩ hq`. Take `⟨O, hqO, f, hf⟩` from `TopCat.Presheaf.germ_exist X.presheaf g`. Establish `hξ : genPt ξ ∈ O ⊓ V` using `(hcl q hq).mem_open (O ⊓ V).2 ⟨hqO, hq⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨O ⊓ V, ⟨hqO, hq⟩, inf_le_right, hξ, X.presheaf.map (homOfLE inf_le_left).op f, ?_⟩` and prove the remaining obligations. Rewrite using `[val_res, ← genMap_germ ξ O _ ⟨q, hcl q hq⟩ hqO, hf]`. Conclude with `hg`. Use `choose O hqO hle hξ f hf using key`. Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' O V (fun i => homOfLE (hle i)) (fun q hq => Opens.mem_iSup.2 ⟨⟨q, hq⟩, hqO ⟨q, hq⟩⟩) f (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `i j`. Distinguish the cases in `hne : genPt ξ ∈ O i ⊓ O j`. Apply `val_injective hgen (O i ⊓ O j) hne (fun q hq => hcl q (hle i hq.1))` to reduce the goal to its premises. Establish `e1` using `val_res ξ (inf_le_left : O i ⊓ O j ≤ O i) hne (f i)`. Establish `e2` using `val_res ξ (inf_le_right : O i ⊓ O j ≤ O j) hne (f j)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `e1.trans ((hf i).trans ((hf j).symm.trans e2.symm))`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Conclude with `⟨hξ i, hξ j⟩)`. Use `⟨s, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `val_res ξ (hle ⟨_, hV⟩) (hξ ⟨_, hV⟩) s` as an intermediate fact. Rewrite using `[← this]`. Establish `h2` using `hs ⟨_, hV⟩`. Conclude with `(congrArg _ h2).trans (hf ⟨_, hV⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_val_eq (hgen : IsCptGen ξ) (V : X.Opens) (hV : genPt ξ ∈ V)
     (hcl : ∀ q ∈ V, genPt ξ ⤳ q) (a : Ω) (ha : ∀ p : Cpt ξ, p.1 ∈ V → a ∈ regAt ξ p) :
@@ -97,11 +97,11 @@ theorem exists_val_eq (hgen : IsCptGen ξ) (V : X.Opens) (hV : genPt ξ ∈ V)
   exact (congrArg _ h2).trans (hf ⟨_, hV⟩)
 
 /- English proof (translation)
-Rewrite using `[X.mem_basicOpen f p.1 hp]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨u, hu⟩` from `h.exists_right_inv`. Establish `h1 : val ξ V hV f * genMap ξ p u = 1`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← genMap_germ ξ V hV p hp f, ← map_mul, hu, map_one]`. Establish `h0 : val ξ V hV f ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Use `⟨h0, val_mem ξ V hV p hp f, ⟨u, ?_⟩⟩` and prove the remaining obligations. Conclude with `eq_inv_of_mul_eq_one_right h1`. Introduce and unpack `⟨h0, -, u, hu⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUnit.of_mul_eq_one u ?_` and prove the remaining obligations. Apply `hgen.inj p` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, genMap_germ ξ V hV p hp f, hu]`. Conclude with `mul_inv_cancel₀ h0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_basicOpen_iff (hgen : IsCptGen ξ) (V : X.Opens) (hV : genPt ξ ∈ V) (f : Γ(X, V))
     (p : Cpt ξ) (hp : p.1 ∈ V) : p.1 ∈ X.basicOpen f ↔ unitAt ξ p (val ξ V hV f) := by
@@ -121,9 +121,9 @@ theorem mem_basicOpen_iff (hgen : IsCptGen ξ) (V : X.Opens) (hV : genPt ξ ∈ 
     exact mul_inv_cancel₀ h0
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `ha`. Set `_` to `X.presheaf.algebra_section_stalk ⟨p.1, hp⟩`. Establish `hl` using `hU.isLocalization_stalk ⟨p.1, hp⟩`. Take `⟨⟨f, g⟩, h⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨p.1, hp⟩).asIdeal.primeCompl t`. Establish `hu : IsUnit (X.presheaf.germ U p.1 hp g.1)` using `IsLocalization.map_units (X.presheaf.stalk p.1) g`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨f, g.1, (X.mem_basicOpen g.1 p.1 hp).2 hu, ?_⟩` and prove the remaining obligations. Rewrite using `[← genMap_germ ξ U hV p hp, ← genMap_germ ξ U hV p hp, ← map_mul]`. Use `congr 1`. Rewrite using `[mul_comm]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den {U : X.Opens} (hU : IsAffineOpen U) (hV : genPt ξ ∈ U)
     (p : Cpt ξ) (hp : p.1 ∈ U) (a : Ω) (ha : a ∈ regAt ξ p) :
@@ -141,9 +141,9 @@ theorem exists_den {U : X.Opens} (hU : IsAffineOpen U) (hV : genPt ξ ∈ U)
   exact h
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `exists_val_eq hgen (X.basicOpen g) hg (fun q hq => hcl q (X.basicOpen_le g hq)) a ha`. Set `_` to `hU.isLocalization_basicOpen g`. Take `⟨N, f, h⟩` from `IsLocalization.Away.surj g b`. Use `⟨N, f, ?_⟩` and prove the remaining obligations. Establish `e : ∀ r : Γ(X, U), val ξ (X.basicOpen g) hg (algebraMap Γ(X, U) Γ(X, X.basicOpen g) r) = val ξ U hV r` using `fun r => val_res ξ (X.basicOpen_le g) hg r`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← e g, ← e f, ← h, map_mul, map_pow, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow {U : X.Opens} (hgen : IsCptGen ξ) (hU : IsAffineOpen U) (hV : genPt ξ ∈ U)
     (hcl : ∀ q ∈ U, genPt ξ ⤳ q) (g : Γ(X, U)) (hg : genPt ξ ∈ X.basicOpen g) (a : Ω)
@@ -159,7 +159,7 @@ theorem exists_pow {U : X.Opens} (hgen : IsCptGen ξ) (hU : IsAffineOpen U) (hV 
   rw [← e g, ← e f, ← h, map_mul, map_pow, mul_comm]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hgen.bij.2 a`. Use `⟨t, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Scheme.stalkClosedPointTo ξ).hom (X.presheaf.stalkSpecializes h t) = a`. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl]`. Conclude with `ht`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_regAt_gen (hgen : IsCptGen ξ) (a : Ω) (h : genPt ξ ⤳ genPt ξ) :
     a ∈ regAt ξ ⟨genPt ξ, h⟩ := by
@@ -170,15 +170,15 @@ theorem mem_regAt_gen (hgen : IsCptGen ξ) (a : Ω) (h : genPt ξ ⤳ genPt ξ) 
   exact ht
 
 /- English proof (translation)
-Use `Fintype.ofFinite κ'` as an intermediate fact. Establish `key : ∀ T : Finset κ', ∃ g : Γ(X, U), p.1 ∈ X.basicOpen g ∧ ∀ l ∈ T, ∃ f, val ξ U hV g * a l = val ξ U hV f`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `⟨1, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[X.mem_basicOpen _ _ hp, map_one]`. Conclude with `isUnit_one`. Consider the case `insert l T _ ih`. Take `⟨g, hg, h⟩` from `ih`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f', g', hg', h'⟩` from `exists_den hU hV p hp (a l) (ha l)`. Use `⟨g * g', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.basicOpen_mul]`. Conclude with `⟨hg, hg'⟩`. Introduce `m hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_insert.1 hm with rfl | hm` into its components or cases. Conclude with `⟨g * f', by rw [map_mul, map_mul, _root_.mul_assoc, h']⟩`. Take `⟨f, hf⟩` from `h m hm`. Conclude with `⟨f * g', by rw [map_mul, map_mul, mul_right_comm, hf]⟩`. Take `⟨g, hg, h⟩` from `key Finset.univ`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨g, hg, fun l => h l (Finset.mem_univ l)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_common_den {κ' : Type} [Finite κ'] {U : X.Opens} (hU : IsAffineOpen U)
     (hV : genPt ξ ∈ U) (p : Cpt ξ) (hp : p.1 ∈ U) (a : κ' → Ω) (ha : ∀ l, a l ∈ regAt ξ p) :
@@ -221,23 +221,23 @@ def trace : Set Γ(X, U) :=
 variable {U hξ s i}
 
 /- English proof (translation)
-The claim follows from `iSup_le fun _ => X.basicOpen_le _`.
+A detailed English derivation is pending.
 -/
 theorem chartOpen_le : chartOpen U hξ s i ≤ U := iSup_le fun _ => X.basicOpen_le _
 
 /- English proof (translation)
-The claim follows from `le_iSup (fun g : denoms U hξ s i => X.basicOpen g.1) ⟨g, hg⟩`.
+A detailed English derivation is pending.
 -/
 theorem basicOpen_le_chartOpen {g : Γ(X, U)} (hg : g ∈ denoms U hξ s i) :
     X.basicOpen g ≤ chartOpen U hξ s i :=
   le_iSup (fun g : denoms U hξ s i => X.basicOpen g.1) ⟨g, hg⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hq`. Establish `hqU` using `chartOpen_le hq`. Use `⟨hqU, hcl q hqU, hsi, fun j => ?_⟩` and prove the remaining obligations. Take `⟨⟨g, hg⟩, hqg⟩` from `Opens.mem_iSup.1 hq`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h0, -, hinv⟩` from `(mem_basicOpen_iff hgen U hξ g ⟨q, hcl q hqU⟩ hqU).1 hqg`. Take `⟨f, hf⟩` from `hg j`. Establish `e : s j / s i = (val ξ U hξ g)⁻¹ * val ξ U hξ f`. Rewrite using `[← hf]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e]`. Conclude with `mul_mem hinv (val_mem ξ U hξ ⟨q, hcl q hqU⟩ hqU f)`. Introduce and unpack `⟨hqU, h, -, hreg⟩`. Take `⟨g, hg, hd⟩` from `exists_common_den hU hξ ⟨q, h⟩ hqU (fun j => s j / s i) hreg`. Conclude with `basicOpen_le_chartOpen (g := g) hd hg`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_chartOpen [Finite κ'] (hgen : IsCptGen ξ) (hU : IsAffineOpen U)
     (hcl : ∀ q ∈ U, genPt ξ ⤳ q) (hsi : s i ≠ 0) (q : X) :
@@ -258,9 +258,9 @@ theorem mem_chartOpen [Finite κ'] (hgen : IsCptGen ξ) (hU : IsAffineOpen U)
     exact basicOpen_le_chartOpen (g := g) hd hg
 
 /- English proof (translation)
-Rewrite using `[← hU.iSup_basicOpen_eq_self_iff]`. Use `le_antisymm (iSup_le fun _ => X.basicOpen_le _) fun q hq => ?_` and prove the remaining obligations. Take `⟨j, hj0, hj⟩` from `hs ⟨q, hcl q hq⟩`. Take `⟨g, hg, hd⟩` from `exists_common_den hU hξ ⟨q, hcl q hq⟩ hq (fun l => s l / s j) hj`. Use `Opens.mem_iSup.2 ⟨⟨g, val ξ U hξ g / s j, j, fun l => ?_, ?_⟩, hg⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f, hf⟩` from `hd l`. Conclude with `⟨f, by rw [← hf]; ring⟩`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Clear the denominators using the available nonvanishing facts.
 -/
 theorem span_trace [Finite κ'] (hU : IsAffineOpen U) (hcl : ∀ q ∈ U, genPt ξ ⤳ q)
     (hs : ∀ p : Cpt ξ, ∃ j, InChart ξ s j p) : Ideal.span (trace U hξ s) = ⊤ := by
@@ -274,9 +274,9 @@ theorem span_trace [Finite κ'] (hU : IsAffineOpen U) (hcl : ∀ q ∈ U, genPt 
   · field_simp
 
 /- English proof (translation)
-Take `⟨h, j, hh, hv⟩` from `hf`. Take `⟨a, ha⟩` from `hh i`. Use `⟨a, j, fun l => ?_, ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `hh l`. Use `⟨e, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ha, ← he]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hv, ← ha]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_denom_of_trace (hsi : s i ≠ 0) {f : Γ(X, U)} (hf : f ∈ trace U hξ s) :
     ∃ (a : Γ(X, U)) (j : κ'), a ∈ denoms U hξ s i ∧ val ξ U hξ f = val ξ U hξ a * (s j / s i) := by
@@ -291,17 +291,15 @@ theorem exists_denom_of_trace (hsi : s i ≠ 0) {f : Γ(X, U)} (hf : f ∈ trace
     field_simp
 
 /- English proof (translation)
-Use `set W := chartOpen U hξ s i with hWdef`. Establish `hWU : W ≤ U` using `chartOpen_le`. Establish `hclW : ∀ q ∈ W, genPt ξ ⤳ q` using `fun q hq => hcl q (hWU hq)`. Establish `hτ : ∀ j, ∃ τ : Γ(X, W), val ξ W hW τ = s j / s i`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_val_eq hgen W hW hclW _ fun p hp => ?_` and prove the remaining obligations. Take `⟨-, h, -, hreg⟩` from `(mem_chartOpen hgen hU hcl hsi p.1).1 hp`. Conclude with `hreg j`. Use `choose τ hτ using hτ`. Set `r` to `X.presheaf.map (homOfLE hWU).op`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `isAffineOpen_of_isAffineOpen_basicOpen W (r '' denoms U hξ s i) ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Establish `h1 : Ideal.map r.hom (Ideal.span (trace U hξ s)) = ⊤`. Rewrite using `[span_trace hU hcl hs, Ideal.map_top]`. Rewrite using `[← h1, Ideal.map_span, Ideal.span_le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨a, j, ha, hv⟩` from `exists_denom_of_trace (i := i) hsi hf`. Establish `e : r.hom f = r a * τ j`. Apply `val_injective hgen W hW hclW` to reduce the goal to its premises. Rewrite using `[map_mul, hτ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(val_res ξ hWU hW f).trans (hv.trans (congrArg (· * _) (val_res ξ hWU hW a).symm))`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨a, ha, rfl⟩)`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Rewrite using `[Scheme.basicOpen_res, inf_eq_right.2 (basicOpen_le_chartOpen ha)]`.
-
-Conclude with `hU.basicOpen a`.
+A detailed English derivation is pending.
 -/
 theorem chartOpen_affine [Finite κ'] (hgen : IsCptGen ξ) (hU : IsAffineOpen U)
     (hcl : ∀ q ∈ U, genPt ξ ⤳ q) (hsi : s i ≠ 0) (hs : ∀ p : Cpt ξ, ∃ j, InChart ξ s j p)
@@ -334,19 +332,17 @@ theorem chartOpen_affine [Finite κ'] (hgen : IsCptGen ξ) (hU : IsAffineOpen U)
     exact hU.basicOpen a
 
 /- English proof (translation)
-Set `c : Ideal Γ(X, U)` to `{ carrier := {r | val ξ U hξ r * a ∈ B} add_mem' := fun {u v} hu hv => by`. Express the relevant statement in the definitionally equal form `val ξ U hξ (u + v) * a ∈ B`. Rewrite using `[map_add, add_mul]`. Conclude with `add_mem hu hv`. Use the proof step `zero_mem' := by`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `val ξ U hξ 0 * a ∈ B`. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := fun u v hv => by`. Express the relevant statement in the definitionally equal form `val ξ U hξ (u * v) * a ∈ B`. Rewrite using `[map_mul, _root_.mul_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_mem (hA u) hv }`. Establish `hrad : Ideal.span (trace U hξ s) ≤ c.radical`. Rewrite using `[Ideal.span_le]`. Introduce `f hf`. Take `⟨b, j, hb, hv⟩` from `exists_denom_of_trace (i := i) hsi hf`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb0 : val ξ U hξ b = 0`. Use `⟨1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `val ξ U hξ (f ^ 1) * a ∈ B`. Rewrite using `[pow_one, hv, hb0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbξ : genPt ξ ∈ X.basicOpen b`. Use `(mem_basicOpen_iff hgen U hξ b ⟨genPt ξ, specializes_rfl⟩ hξ).2 ⟨hb0, mem_regAt_gen hgen _ _, mem_regAt_gen hgen _ _⟩` and prove the remaining obligations. Take `⟨N, e, he⟩` from `exists_pow hgen hU hξ hcl b hbξ a fun p hp => ha p (basicOpen_le_chartOpen hb hp)`. Use `⟨N, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `val ξ U hξ (f ^ N) * a ∈ B`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_pow, hv, mul_pow, mul_right_comm, he]`. Conclude with `mul_mem (hA e) (pow_mem (ht j) N)`. Establish `htop : c.radical = ⊤`. Rewrite using `[eq_top_iff, ← span_trace (hξ := hξ) hU hcl hs]`. Conclude with `hrad`.
-
-Establish `h1 : (1 : Γ(X, U)) ∈ c`. Rewrite using `[Ideal.radical_eq_top.1 htop]`. Discharge the goal by the elementary cases of `trivial`. Establish `h2 : val ξ U hξ 1 * a ∈ B` using `h1`. Simplify using `using h2`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_regular [Finite κ'] (hgen : IsCptGen ξ) (hU : IsAffineOpen U)
     (hcl : ∀ q ∈ U, genPt ξ ⤳ q) (hsi : s i ≠ 0) (hs : ∀ p : Cpt ξ, ∃ j, InChart ξ s j p)
@@ -395,11 +391,11 @@ theorem mem_of_regular [Finite κ'] (hgen : IsCptGen ξ) (hU : IsAffineOpen U)
 end Core
 
 /- English proof (translation)
-Take `⟨c₀, hc₀, hx₀⟩` from `hx`. Take `⟨i₀, hi₀, hs₀⟩` from `hs`. Establish `hw` using `h c₀ i₀`. Establish `hu : (x c₀ / x c) = (x c₀ / x c * (s i₀ / s i)) * (s i / s i₀)` using `by field_simp`. Establish `hv : (s i₀ / s i) = (x c₀ / x c * (s i₀ / s i)) * (x c / x c₀)` using `by field_simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : x c₀ / x c ∈ regAt ξ p` using `hu ▸ mul_mem hw (hs₀ i)`. Establish `hv' : s i₀ / s i ∈ regAt ξ p` using `hv ▸ mul_mem hw (hx₀ c)`. Use `⟨⟨hxc, fun c' => ?_⟩, ⟨hsi, fun i' => ?_⟩⟩` and prove the remaining obligations. Establish `: x c' / x c = (x c' / x c₀) * (x c₀ / x c)` using `by field_simp`. Conclude with `this ▸ mul_mem (hx₀ c') hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: s i' / s i = (s i' / s i₀) * (s i₀ / s i)` using `by field_simp`. Conclude with `this ▸ mul_mem (hs₀ i') hv'`.
+A detailed English derivation is pending.
 -/
 theorem inChart_of_mul {κ κ' : Type} {x : κ → Ω} {s : κ' → Ω} {c : κ} {i : κ'} {p : Cpt ξ}
     (hx : ∃ c, InChart ξ x c p) (hs : ∃ i, InChart ξ s i p) (hxc : x c ≠ 0) (hsi : s i ≠ 0)
@@ -419,35 +415,33 @@ theorem inChart_of_mul {κ κ' : Type} {x : κ → Ω} {s : κ' → Ω} {c : κ}
     exact this ▸ mul_mem (hs₀ i') hv'
 
 /- English proof (translation)
-Establish `hratio : ∀ q q', z q' / z q = x (u q') / x (u q) * (s (v q') / s (v q))` using `fun q q' => by`. Rewrite using `[hz, hz, mul_div_mul_comm]`. Establish `hchart : ∀ (q : T) (p : Cpt ξ), InChart ξ z q p → InChart ξ x (u q) p ∧ InChart ξ s (v q) p`. Introduce `q p ⟨h0, h⟩`. Rewrite `h0` using `[hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `inChart_of_mul (hx.cover p) (hs p) (left_ne_zero_of_mul h0) (right_ne_zero_of_mul h0) fun c' i' => ?_` and prove the remaining obligations. Take `⟨q', rfl, rfl⟩` from `hsurj c' i'`. Rewrite using `[← hratio]`. Conclude with `h q'`. Establish `hchart' : ∀ (q : T) (p : Cpt ξ), InChart ξ x (u q) p → InChart ξ s (v q) p → InChart ξ z q p`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q p ⟨h1, h2⟩ ⟨h3, h4⟩`. Use `⟨by rw [hz]; exact mul_ne_zero h1 h3, fun q' => ?_⟩` and prove the remaining obligations. Rewrite using `[hratio]`. Conclude with `mul_mem (h2 _) (h4 _)`. Establish `hne : ∀ q, z q ≠ 0 → x (u q) ≠ 0 ∧ s (v q) ≠ 0` using `fun q h => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h` using `[hz]`. Conclude with `⟨left_ne_zero_of_mul h, right_ne_zero_of_mul h⟩`. Establish `hdata : ∀ q, z q ≠ 0 → ∃ (U : X.Opens) (hξ : genPt ξ ∈ U), IsAffineOpen U ∧ (∀ q' ∈ U, genPt ξ ⤳ q') ∧ ∀ q' : X, q' ∈ U ↔ ∃ h : genPt ξ ⤳ q', InChart ξ x (u q) ⟨q', h⟩`. Introduce `q h`. Take `⟨U, hU, hm⟩` from `hx.affine (u q) (hne q h).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hξ : genPt ξ ∈ U` using `(hm _).2 ⟨specializes_rfl, (hne q h).1, fun _ => mem_regAt_gen hx.gen _ _⟩`. Conclude with `⟨U, hξ, hU, fun q' hq' => ((hm q').1 hq').1, hm⟩`. Use `⟨hx.gen, fun p => ?_, fun q h => ?_, fun q h a => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hx.cover p`. Take `⟨i, hi⟩` from `hs p`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨q, rfl, rfl⟩` from `hsurj c i`. Conclude with `⟨q, hchart' q p hc hi⟩`. Take `⟨U, hξ, hU, hcl, hm⟩` from `hdata q h`. Establish `hmem` using `mem_chartOpen (hξ := hξ) (s := s) (i := v q) hx.gen hU hcl (hne q h).2`. Establish `hW : genPt ξ ∈ chartOpen U hξ s (v q)` using `(hmem _).2 ⟨hξ, specializes_rfl, (hne q h).2, fun _ => mem_regAt_gen hx.gen _ _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, chartOpen_affine hx.gen hU hcl (hne q h).2 hs hW, fun q' => ?_⟩` and prove the remaining obligations. Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Take `⟨h4, h5⟩` from `(hm q').1 h1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h2, hchart' q ⟨q', h2⟩ h5 h3⟩`. Introduce and unpack `⟨h2, h3⟩`. Take `⟨h4, h5⟩` from `hchart q _ h3`. Conclude with `⟨(hm q').2 ⟨h2, h4⟩, h2, h5⟩`. Take `⟨U, hξ, hU, hcl, hm⟩` from `hdata q h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hmem` using `mem_chartOpen (hξ := hξ) (s := s) (i := v q) hx.gen hU hcl (hne q h).2`. Prove the components needed by the constructor for the conclusion. Introduce `ha p hp`. Take `⟨h1, h2⟩` from `hchart q p hp`. Proceed by induction on `ha using Algebra.adjoin_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem a ha`. Take `⟨q', rfl⟩` from `ha`. Conclude with `hp.2 q'`. Consider the case `algebraMap r`. Conclude with `(hx.ring (u q) (hne q h).1 _).1 (Subalgebra.algebraMap_mem _ r) p h1`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`. Introduce `ha set S := Algebra.adjoin o (Set.range fun j => z j / z q) with hS`. Establish `hxS : ∀ c, x c / x (u q) ∈ S`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q', hu, hv⟩` from `hsurj c (v q)`. Establish `e : x c / x (u q) = z q' / z q`. Rewrite using `[hratio, hu, hv, div_self (hne q h).2, _root_.mul_one]`. Rewrite using `[e]`. Conclude with `Algebra.subset_adjoin ⟨q', rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsS : ∀ i, s i / s (v q) ∈ S`. Introduce `i`. Take `⟨q', hu, hv⟩` from `hsurj (u q) i`. Establish `e : s i / s (v q) = z q' / z q`. Rewrite using `[hratio, hu, hv, div_self (hne q h).1, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `Algebra.subset_adjoin ⟨q', rfl⟩`. Establish `hle : Algebra.adjoin o (Set.range fun j => x j / x (u q)) ≤ S` using `Algebra.adjoin_le (by rintro _ ⟨c, rfl⟩; exact hxS c)`. Use `mem_of_regular (hξ := hξ) (s := s) (i := v q) (B := S.toSubring) hx.gen hU hcl (hne q h).2 hs (fun f => ?_) hsS a fun p hp => ?_` and prove the remaining obligations. Apply `hle` to reduce the goal to its premises.
-
-Use `(hx.ring (u q) (hne q h).1 _).2 fun p hp => ?_` and prove the remaining obligations. Conclude with `val_mem ξ U hξ p ((hm p.1).2 ⟨p.2, hp⟩) f`. Take `⟨h1, h2, h3⟩` from `(hmem p.1).1 hp`. Take `⟨h4, h5⟩` from `(hm p.1).1 h1`. Conclude with `ha p (hchart' q p h5 h3)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coordTie_mul {o : Type} [CommRing o] [Algebra o Ω] {κ κ' : Type} [Finite κ'] {x : κ → Ω}
     {s : κ' → Ω} (hx : CoordTie o ξ x) (hs : ∀ p : Cpt ξ, ∃ i, InChart ξ s i p) {T : Type}
@@ -544,7 +538,7 @@ end GlobalTheory.CompanionTheory.Ar.AddBlock
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `X Ω _ ξ o _ _ κ κ' x s hx hs _ _`. Use `⟨0, AddBlock.coordTie_mul hx hs _ (fun q => q.2.1) (fun q => q.2.2) (fun q => by simp) fun c i => ⟨(Fin.elim0, c, i), rfl, rfl⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem coordTie_add_block : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (o : Type) [CommRing o] [Algebra o Ω] (κ κ' : Type) (x : κ → Ω) (s : κ' → Ω), CoordTie o ξ x → (∀ p : Cpt ξ, ∃ i, InChart ξ s i p) → [Finite κ] → [Finite κ'] → ∃ n : ℕ, CoordTie o ξ fun q : (Fin n → κ) × κ × κ' => (∏ a, x (q.1 a)) * x q.2.1 * s q.2.2 := by
   intro X Ω _ ξ o _ _ κ κ' x s hx hs _ _

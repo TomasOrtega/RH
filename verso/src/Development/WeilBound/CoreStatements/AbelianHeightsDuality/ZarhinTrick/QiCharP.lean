@@ -13,15 +13,15 @@ namespace PositivityTheory.PrwZar.Qi
 variable {K H : Type} [Field K] [CommRing H] [Algebra K H]
 
 /- English proof (translation)
-Proceed by induction on `r generalizing x with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, pow_one, RingHom.mem_ker]`. Establish `h` using `AlgHom.congr_fun (counit_pw Δ ε hL hR 1) x`. Rewrite `h` using `[AlgHom.comp_apply]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `RingHom.mem_ker.1 hx`. Consider the case `succ r ih`. Establish `hp : (p : H) = 0`. Rewrite using `[← map_natCast (algebraMap K H), CharP.cast_eq_zero K p, map_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : pw Δ ε p x ∈ RingHom.ker ε ^ 2`. Use `pw_sub_mem Δ ε hL hR p hx` as an intermediate fact. Rewrite `this` using `[hp, zero_mul, sub_zero]`. Then use the resulting hypothesis. Establish `hcomp : pw Δ ε (p ^ (r + 1)) = (pw Δ ε (p ^ r)).comp (pw Δ ε p)`. Rewrite using `[pow_succ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmul _ _`. Rewrite using `[hcomp, AlgHom.comp_apply]`. Establish `hmap : Ideal.map (pw Δ ε (p ^ r)) (RingHom.ker ε) ≤ RingHom.ker ε ^ (2 ^ r)` using `Ideal.map_le_iff_le_comap.2 fun z hz => ih hz`. Establish `hy : pw Δ ε (p ^ r) (pw Δ ε p x) ∈ Ideal.map (pw Δ ε (p ^ r)) (RingHom.ker ε ^ 2)` using `Ideal.mem_map_of_mem _ h2`. Rewrite `hy` using `[Ideal.map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `Ideal.pow_right_mono hmap 2 hy`. Rewrite `h3` using `[← pow_mul, ← pow_succ]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem pw_charP (p : ℕ) [Fact p.Prime] [CharP K p] (Δ : H →ₐ[K] H ⊗[K] H) (ε : H →ₐ[K] K)
     (hL : CounitL Δ ε) (hR : CounitR Δ ε) (hmul : ∀ a b : ℕ, pw Δ ε (a * b) = (pw Δ ε a).comp (pw Δ ε b))

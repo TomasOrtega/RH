@@ -20,7 +20,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {H : S
   {p : X → G ⧸ H}
 
 /- English proof (translation)
-Establish `hc` using `σ.sec c`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem Sec.inv_smul (σ : Sec H) (c : G ⧸ H) : (σ.s c)⁻¹ • c = ((1 : G) : G ⧸ H) := by
   have hc := σ.sec c
@@ -28,7 +28,7 @@ theorem Sec.inv_smul (σ : Sec H) (c : G ⧸ H) : (σ.s c)⁻¹ • c = ((1 : G)
     _ = ((1 : G) : G ⧸ H) := by rw [MulAction.Quotient.smul_mk, smul_eq_mul, inv_mul_cancel]
 
 /- English proof (translation)
-Establish `hg` using `σ.sec (g : G ⧸ H)`. Rewrite `hg` using `[QuotientGroup.eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Sec.inv_mul_mem (σ : Sec H) (g : G) : (σ.s (g : G ⧸ H))⁻¹ * g ∈ H := by
   have hg := σ.sec (g : G ⧸ H)
@@ -47,7 +47,7 @@ theorem zpart_val (x : X) : (zpart hp σ x).1 = (σ.s (p x))⁻¹ • x := rfl
 
 include hp in
 /- English proof (translation)
-Establish `hz : p z.1 = ((1 : G) : G ⧸ H)` using `z.2`. Rewrite using `[hp, hz, MulAction.Quotient.smul_mk, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem p_smul_fib (g : G) (z : Fib p) : p (g • z.1) = (g : G ⧸ H) := by
   have hz : p z.1 = ((1 : G) : G ⧸ H) := z.2
@@ -90,7 +90,7 @@ def triv : X × H ≃ₜ G × Fib p where
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem triv_apply (q : X × H) :
     triv hp σ hpc q = (σ.s (p q.1) * q.2, fibSmul hp q.2⁻¹ (zpart hp σ q.1)) := rfl
@@ -121,7 +121,7 @@ def fap [LocallyCompactSpace (Fib p)] (α : SB G) (φ : SB (Fib p)) : SB X :=
   avg hp σ hpc μH (tens α φ)
 
 /- English proof (translation)
-Simplify using `[fap, avg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fap_apply [LocallyCompactSpace (Fib p)] (α : SB G) (φ : SB (Fib p)) (x : X) :
     ((fap hp σ hpc μH α φ : SB X) : X → ℂ) x = ∫ h, (α : G → ℂ) (σ.s (p x) * (h : G)) *
@@ -129,11 +129,9 @@ theorem fap_apply [LocallyCompactSpace (Fib p)] (α : SB G) (φ : SB (Fib p)) (x
   simp [fap, avg]
 
 /- English proof (translation)
-Rewrite using `[fap_apply, p_smul_fib hp g z]`. Use `set s0 := σ.s (g : G ⧸ H)`. Use `set k : H := ⟨s0⁻¹ * g, σ.inv_mul_mem g⟩`. Use `conv_lhs => rw [← integral_mul_left_eq_self _ k]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : s0 * ((k * h : H) : G) = g * h`. Simplify using `[k, mul_assoc]`. Establish `e2 : fibSmul hp (k * h)⁻¹ (zpart hp σ (g • z.1)) = fibSmul hp h⁻¹ z`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[k, s0, smul_smul, mul_assoc, p_smul_fib hp g z]`.
-
-Simplify using `only [e1, e2]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fap_smul [LocallyCompactSpace (Fib p)] (α : SB G) (φ : SB (Fib p)) (g : G) (z : Fib p) :
     ((fap hp σ hpc μH α φ : SB X) : X → ℂ) (g • z.1) =
@@ -151,7 +149,7 @@ theorem fap_smul [LocallyCompactSpace (Fib p)] (α : SB G) (φ : SB (Fib p)) (g 
   simp only [e1, e2]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `hx : x = σ.s (p x) • (zpart hp σ x).1` using `by simp`. Rewrite using `[hx, hf, fap_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_fap [LocallyCompactSpace (Fib p)] (α : SB G) (φ : SB (Fib p)) (f : SB X)
     (hf : ∀ (g : G) (z : Fib p), (f : X → ℂ) (g • z.1) =

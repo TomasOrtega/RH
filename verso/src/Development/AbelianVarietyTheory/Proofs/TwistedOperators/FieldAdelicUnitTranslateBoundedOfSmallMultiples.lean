@@ -8,21 +8,19 @@ open scoped TensorProduct
 namespace GlobalTheory.RegSS
 
 /- English proof (translation)
-Unfold `FieldUnitBounded`. Introduce `F B _ _ _ _ _ τ hB hτ`. Take `⟨hTop, hLC, hT2, hSC, _hinj, hdisc, C, hC, hcov⟩` from `hT F B`. Set `: TopologicalSpace (B ⊗[F] AdeleRing (𝓞 F) F)` to `Formalism.BasicNotions.tensTopL (F := F) (E := B) (AdeleRing (𝓞 F) F)`. Use `hTop` as an intermediate fact.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hLC` as an intermediate fact. Use `hT2` as an intermediate fact. Use `hSC` as an intermediate fact. Establish `: Nontrivial B` using `⟨hB.exists_pair_ne⟩`. Establish `: Infinite F` using `Infinite.of_injective (Nat.cast : ℕ → F) Nat.cast_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Infinite B` using `Infinite.of_injective (algebraMap F B) (algebraMap F B).injective`. Establish `: NoncompactSpace (B ⊗[F] AdeleRing (𝓞 F) F)`. Use `⟨fun hU => ?_⟩` and prove the remaining obligations. Establish `hfin` using `hdisc Set.univ hU`. Simplify using `only [Set.mem_univ, Set.ofPred_true] at hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Set.infinite_univ hfin`. Establish `: Countable F` using `(Module.finBasis ℚ F).equivFun.injective.countable`. Establish `: Countable B` using `(Module.finBasis F B).equivFun.injective.countable`. Set `ι` to `inclE (F := F) (E := B) (AdeleRing (𝓞 F) F)`. Set `Λ : AddSubgroup (B ⊗[F] AdeleRing (𝓞 F) F)` to `ι.toAddMonoidHom.range`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΛ : Countable Λ`. Use `Function.Surjective.countable (f := fun b : B => (⟨ι b, b, rfl⟩ : Λ)) ?_` and prove the remaining obligations. Introduce and unpack `⟨y, b, rfl⟩`. Conclude with `⟨b, rfl⟩`. Establish `hcoc : ∃ C' : Set (B ⊗[F] AdeleRing (𝓞 F) F), IsCompact C' ∧ ∀ x, ∃ l ∈ Λ, x - l ∈ C'`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C, hC, fun x => ?_⟩` and prove the remaining obligations. Take `⟨β, hβ⟩` from `hcov x`. Conclude with `⟨ι β, ⟨β, rfl⟩, hβ⟩`. Take `⟨D, hD, hDu⟩` from `hP (B ⊗[F] AdeleRing (𝓞 F) F) (sigR τ (AdeleRing (𝓞 F) F)) (continuous_sigR τ (AdeleRing (𝓞 F) F)) (sigR_sigR hτ (AdeleRing (𝓞 F) F)) Λ hΛ hcoc`. Use `⟨D, hD, fun u hu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨β, ⟨b, rfl⟩, hβ0, huβ⟩` from `hDu u hu`. Establish `hb : b ≠ 0`. Introduce and unpack `rfl`. Conclude with `hβ0 (map_zero ι)`. Take `⟨c, hc⟩` from `hB.mul_inv_cancel hb`.
-
-Conclude with `⟨b, ⟨⟨b, c, hc, by rw [mul_comm]; exact hc⟩, rfl⟩, huβ⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fieldUnitBounded_of_packing (hP : NormOnePacking) (hT : TensorLattice) :
     FieldUnitBounded := by

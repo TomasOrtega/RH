@@ -19,11 +19,11 @@ noncomputable section
 namespace GlobalTheory.ArchLim.ChTwoDens
 
 /- English proof (translation)
-Establish `h₁ (f : n → n) : ∑ s : Equiv.Perm n, ((Equiv.Perm.sign s : ℤ) : ℂ) * ((∏ i, J (f i) (s i)) * T f) = (J.submatrix f id).det * T f`. Rewrite using `[← det_transpose, det_apply', Finset.sum_mul]`. Simplify using `[mul_assoc]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h₁]`. Use `(Finset.sum_of_injOn (fun s : Equiv.Perm n => (s : n → n)) (fun _ _ _ _ h => Equiv.coe_fn_injective h) (fun _ _ => Finset.mem_univ _) (fun f _ hf => ?_) fun s _ => ?_).symm` and prove the remaining obligations. Establish `hn : ¬ Function.Injective f` using `fun hi => hf ⟨Equiv.ofBijective f (Finite.injective_iff_bijective.1 hi), by simp, rfl⟩`. Take `⟨a, b, hab, hne⟩` from `Function.not_injective_iff.1 hn`. Rewrite using `[det_zero_of_row_eq hne (by ext j; simp [hab]), zero_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_permute]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem alt_sum {n : Type} [Fintype n] [DecidableEq n] (J : Matrix n n ℂ) (T : (n → n) → ℂ) :
     ∑ s : Equiv.Perm n, ((Equiv.Perm.sign s : ℤ) : ℂ) * ∑ f : n → n, (∏ i, J (f i) (s i)) * T f =
@@ -46,9 +46,9 @@ theorem alt_sum {n : Type} [Fintype n] [DecidableEq n] (J : Matrix n n ℂ) (T :
     ring
 
 /- English proof (translation)
-Rewrite using `[← alt_sum J fun f => B (f 0) (f 1) * ∏ i : Fin e, C i (f i.succ.succ)]`. Use `Finset.sum_congr rfl fun s _ => congrArg _ ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum, ← (Fin.consEquiv fun _ => Fin (e + 2)).sum_comp, Fintype.sum_prod_type, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← (Fin.consEquiv fun _ => Fin (e + 2)).sum_comp, Fintype.sum_prod_type, Finset.sum_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_succ, Fin.consEquiv_apply, Fin.cons_zero, Fin.cons_succ, Finset.prod_mul_distrib, ← Fin.succ_zero_eq_one]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem alt_sum_two {e : ℕ} (J B : Matrix (Fin (e + 2)) (Fin (e + 2)) ℂ) (C : Fin e → Fin (e + 2) → ℂ) :
     ∑ s : Equiv.Perm (Fin (e + 2)), ((Equiv.Perm.sign s : ℤ) : ℂ) *
@@ -68,19 +68,17 @@ theorem alt_sum_two {e : ℕ} (J B : Matrix (Fin (e + 2)) (Fin (e + 2)) ℂ) (C 
   ring
 
 /- English proof (translation)
-Establish `h₁ (t : Equiv.Perm (Fin (e + 2)))` using `alt_sum_two J (of fun a c => Θ (bas _ a) (T (bas _ (t 0))) (bas _ c) (T (bas _ (t 1)))) fun i a => (A * Jᴴᵀ) a (t i.succ.succ)`. Establish `h₂ (s : Equiv.Perm (Fin (e + 2)))` using `alt_sum_two Jᴴᵀ (of fun a c => Θ (bas _ (s 0)) (bas _ a) (bas _ (s 1)) (bas _ c)) fun i a => A (s i.succ.succ) a`. Establish `key : ∑ s : Equiv.Perm (Fin (e + 2)), ∑ t : Equiv.Perm (Fin (e + 2)), (((Equiv.Perm.sign s * Equiv.Perm.sign t : ℤˣ) : ℤ) : ℂ) * (Θ (T (bas _ (s 0))) (T (bas _ (t 0))) (T (bas _ (s 1))) (T (bas _ (t 1))) * ∏ i : Fin e, chg J A (s i.succ.succ) (t i.succ.succ)) = ((‖J.det‖ ^ 2 : ℝ) …`. Establish `hd : ((‖J.det‖ ^ 2 : ℝ) : ℂ) = J.det * Jᴴᵀ.det`. Rewrite using `[det_transpose, det_conjTranspose, Complex.star_def, Complex.ofReal_pow, Complex.mul_conj']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg _ (h₁ t))` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hT (s 0), hT (s 1), hl, chg, Matrix.mul_assoc]`. Simplify using `only [mul_apply (M := Jᵀ), transpose_apply, of_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = J.det * ∑ s : Equiv.Perm (Fin (e + 2)), ((Equiv.Perm.sign s : ℤ) : ℂ) * (Jᴴᵀ.det * ∑ t : Equiv.Perm (Fin (e + 2)), ((Equiv.Perm.sign t : ℤ) : ℂ) * (Θ (bas _ (s 0)) (bas _ (t 0)) (bas _ (s 1)) (bas _ (t 1)) * ∏ i : Fin e, A (s i.succ.succ) (t i.succ.succ))) := by`. Establish `h₃ (s : Equiv.Perm (Fin (e + 2)))` using `(h₂ s).symm`. Simplify using `only [of_apply] at h₃`. Simplify using `only [h₃, Finset.mul_sum (Finset.univ : Finset (Equiv.Perm (Fin (e + 2))))]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[hT (t 0), hT (t 1), hr]`. Simplify using `only [mul_apply, transpose_apply, conjTranspose_apply, mul_comm (A _ _)]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hd, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[secondChernDensity, secondChernDensity, key, Complex.re_ofReal_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem secondChernDensity_chg_eq_norm_det_sq_mul {e : ℕ} (Θ : V (e + 2) → V (e + 2) → V (e + 2) → V (e + 2) → ℂ)
     (J A : Matrix (Fin (e + 2)) (Fin (e + 2)) ℂ) (T : V (e + 2) → V (e + 2))
@@ -142,7 +140,7 @@ section Curv
 variable {n r : ℕ} {H K : V n → Matrix (Fin r) (Fin r) ℂ} {z : V n}
 
 /- English proof (translation)
-Simplify using `only [chTwo, HermFrame.wedge, trace, diag_apply, mul_apply, Finset.sum_add_distrib, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chTwo_trace (H : V n → Matrix (Fin r) (Fin r) ℂ) (z a b c d : V n) : chTwo H z a b c d = kappa ^ 2 / 2 *
     ((curv H z a b * curv H z c d).trace + (curv H z c d * curv H z a b).trace -
@@ -150,7 +148,7 @@ theorem chTwo_trace (H : V n → Matrix (Fin r) (Fin r) ℂ) (z a b c d : V n) :
   simp only [chTwo, HermFrame.wedge, trace, diag_apply, mul_apply, Finset.sum_add_distrib, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Establish `hs` using `isSesq_curv h hu`. Set `L : V n →ₗ[ℂ] Matrix (Fin r) (Fin r) ℂ` to `⟨⟨fun ξ => curv H z ξ η, fun _ _ => hs.add_left _ _ _⟩, fun _ _ => hs.smul_left _ _ _⟩`. Express the relevant statement in the definitionally equal form `L _ = ∑ a, x a • L (u a)`. Simplify using `only [map_sum, map_smul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem curv_sum_left (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (x : Fin n → ℂ) (u : Fin n → V n) (η : V n) :
     curv H z (∑ a, x a • u a) η = ∑ a, x a • curv H z (u a) η := by
@@ -161,7 +159,7 @@ theorem curv_sum_left (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (x : Fin n
   simp only [map_sum, map_smul]
 
 /- English proof (translation)
-Establish `hs` using `isSesq_curv h hu`. Set `L : V n →ₛₗ[starRingEnd ℂ] Matrix (Fin r) (Fin r) ℂ` to `⟨⟨fun η => curv H z ξ η, fun _ _ => hs.add_right _ _ _⟩, fun _ _ => hs.smul_right _ _ _⟩`. Express the relevant statement in the definitionally equal form `L _ = ∑ a, (starRingEnd ℂ) (x a) • L (u a)`. Simplify using `only [map_sum, map_smulₛₗ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem curv_sum_right (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (x : Fin n → ℂ) (u : Fin n → V n) (ξ : V n) :
     curv H z ξ (∑ a, x a • u a) = ∑ a, star (x a) • curv H z ξ (u a) := by
@@ -172,7 +170,7 @@ theorem curv_sum_right (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (x : Fin 
   simp only [map_sum, map_smulₛₗ]
 
 /- English proof (translation)
-Rewrite using `[Matrix.sum_mul, trace_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_sum, trace_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, trace_smul, trace_smul, smul_eq_mul, smul_eq_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_sum_mul_sum (x y : Fin n → ℂ) (M N : Fin n → Matrix (Fin r) (Fin r) ℂ) :
     ((∑ a, x a • M a) * ∑ c, y c • N c).trace = ∑ a, ∑ c, x a * y c * (M a * N c).trace := by
@@ -183,7 +181,7 @@ theorem trace_sum_mul_sum (x y : Fin n → ℂ) (M N : Fin n → Matrix (Fin r) 
   rw [Matrix.smul_mul, Matrix.mul_smul, trace_smul, trace_smul, smul_eq_mul, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[chTwo_trace, trace_mul_comm (curv H z _ η'), trace_mul_comm (curv H z (∑ c, y c • u c) η)]`. Simplify using `only [curv_sum_left h hu, trace_sum_mul_sum]`. Simplify using `only [chTwo_trace, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[trace_mul_comm (curv H z (u c) η'), trace_mul_comm (curv H z (u c) η)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -198,7 +196,7 @@ theorem chTwo_sum_left (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (x y : Fi
   ring
 
 /- English proof (translation)
-Rewrite using `[chTwo_trace, trace_mul_comm (curv H z ξ' (∑ c, y c • u c)), trace_mul_comm (curv H z ξ (∑ c, y c • u c))]`. Simplify using `only [curv_sum_right h hu, trace_sum_mul_sum]`. Simplify using `only [chTwo_trace, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[trace_mul_comm (curv H z ξ' (u c)), trace_mul_comm (curv H z ξ (u c))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -213,7 +211,7 @@ theorem chTwo_sum_right (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (x y : F
   ring
 
 /- English proof (translation)
-Establish `e (M N : Matrix (Fin r) (Fin r) ℂ) : (A⁻¹ * M * A * (A⁻¹ * N * A)).trace = (M * N).trace`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ hA, trace_mul_comm, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hA]`. Use extensionality with `a b c d`. Simplify using `only [chTwo_trace, h, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem chTwo_conj {A : Matrix (Fin r) (Fin r) ℂ} (hA : IsUnit A.det)
     (h : ∀ ξ η, curv H z ξ η = A⁻¹ * curv K z ξ η * A) : chTwo H z = chTwo K z := by
@@ -224,7 +222,7 @@ theorem chTwo_conj {A : Matrix (Fin r) (Fin r) ℂ} (hA : IsUnit A.det)
   simp only [chTwo_trace, h, e]
 
 /- English proof (translation)
-Establish `hc (ξ η : V n) (i j : Fin r) : ContinuousAt (fun w => curv H w ξ η i j) z` using `(h.curv (j := 0) hu (by norm_cast) ξ η i j).continuousAt`. Simplify using `only [chTwo, HermFrame.wedge]`. Use `continuousAt_const.mul (tendsto_finset_sum _ fun i _ => tendsto_finset_sum _ fun j _ => ?_)` and prove the remaining obligations. Conclude with `((((hc ..).mul (hc ..)).add ((hc ..).mul (hc ..))).sub ((hc ..).mul (hc ..))).sub ((hc ..).mul (hc ..))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousAt_chTwo (h : MContDiffAt ∞ H z) (hu : IsUnit (H z).det) (a b c d : V n) :
     ContinuousAt (fun w => chTwo H w a b c d) z := by
@@ -242,11 +240,11 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+*
   {h : Met p σ E r}
 
 /- English proof (translation)
-Establish `ho` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (a'.U ⊓ a.U))`. Establish `hm` using `ho.mem_nhds (ChartGlue.mem_over c.e hy (mem_ptsIn_inf.2 ⟨ha', ha⟩))`. Establish `hA (i j : Fin r) : DifferentiableOn ℂ (fun v => Chart.tr p σ a a' (c.e.symm v) i j) (c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ (a'.U ⊓ a.U))` using `c.holo _ _`. Establish `hAu : IsUnit (Chart.tr p σ a a' (c.e.symm (c.e y))).det`. Rewrite using `[c.e.left_inv hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isUnit_iff_isUnit_det _).1 (Chart.isUnit_tr a a' ha ha')`. Establish `hu : IsUnit (h.G a (c.e.symm (c.e y))).det`. Rewrite using `[c.e.left_inv hy]`. Conclude with `(h.posDef a y ha).det_pos.ne'.isUnit`. Use `chTwo_conj hAu fun ξ η => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← curv_changeFrame (A := fun v => Chart.tr p σ a a' (c.e.symm v)) (((H a y ha).mContDiffAt c hy).of_le (by norm_cast)) hu (fun i j => (((ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn D _ _ ho (hA i j)).contDiffAt hm).of_le (by norm_cast)).restrict_scalars ℝ) h …`. Use extensionality with `i j`. Rewrite using `[mdbar_apply, GlobalTheory.dbar_eq_zero ((hA i j).differentiableAt (ho.mem_nhds hv))]`. Use the proof step `rfl)]`. Conclude with `curv_congr (eventually_of_mem hm fun v hv => h.trans a a' _ (mem_ptsIn_inf.1 hv.2).2) ξ η`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chTwo_frame (H : h.IsCInf) (c : AlgChart p σ D) (a a' : Chart E r) {y : CxPts p σ} (hy : y ∈ c.e.source)
     (ha : y ∈ ptsIn p σ a.U) (ha' : y ∈ ptsIn p σ a'.U) :
@@ -275,7 +273,7 @@ theorem chTwo_frame (H : h.IsCInf) (c : AlgChart p σ D) (a a' : Chart E r) {y :
 variable {L : LB X} {φ : Weight p σ L} {e : ℕ}
 
 /- English proof (translation)
-Rewrite using `[secondChernDensityOfMetric, chTwo_frame H c a _ hy ha (h.isVB.mem_pick y)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ch2Dens_eq (H : h.IsCInf) (c : AlgChart p σ (e + 2)) (a : Chart E r) {y : CxPts p σ} (hy : y ∈ c.e.source)
     (ha : y ∈ ptsIn p σ a.U) :
@@ -283,13 +281,13 @@ theorem ch2Dens_eq (H : h.IsCInf) (c : AlgChart p σ (e + 2)) (a : Chart E r) {y
   rw [secondChernDensityOfMetric, chTwo_frame H c a _ hy ha (h.isVB.mem_pick y)]
 
 /- English proof (translation)
-Establish `ha` using `h.isVB.mem_pick y`. Establish `ho` using `ChartGlue.isOpen_over c.e c'.e.open_source`. Establish `hm` using `ho.mem_nhds (ChartGlue.mem_over c.e hy hy')`. Establish `e₂ : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hy)`. Establish `hd` using `((H _ y ha).mContDiffAt c' hy').of_le (j := 2) (by norm_cast)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (h.G (h.isVB.pick y) (c'.e.symm (c'.e y))).det`. Rewrite using `[c'.e.left_inv hy']`. Conclude with `(h.posDef _ y ha).det_pos.ne'.isUnit`. Establish `hl (j : Fin (e + 2)) : fderiv ℂ (c'.e ∘ c.e.symm) (c.e y) (bas _ j) = ∑ b, MixDens.transMat c c' y b j • bas _ b`. Use extensionality with `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[MixDens.transMat, bas, Finset.sum_apply, Pi.single_apply]`. Establish `hc (ξ η : V (e + 2)) : curv (fun u => h.G (h.isVB.pick y) (c.e.symm u)) (c.e y) ξ η = curv (fun u => h.G (h.isVB.pick y) (c'.e.symm u)) (c'.e y) (fderiv ℂ (c'.e ∘ c.e.symm) (c.e y) ξ) (fderiv ℂ (c'.e ∘ c.e.symm) (c.e y) η)`. Rewrite using `[curv_congr (H' := fun v => h.G (h.isVB.pick y) (c'.e.symm ((c'.e ∘ c.e.symm) v))) (eventually_of_mem hm fun v hv => by simp only [Function.comp_apply, c'.e.left_inv hv.2]), curv_comp_holo (H := fun v => h.G (h.isVB.pick y) (c'.e.symm v)) (e₂ ▸ hd) (e₂ ▸ hu) (contDiffAt_euclidean …`. Establish `hm : chernMat φ c y = chg (MixDens.transMat c c' y) (chernMat φ c' y)` using `(MixDens.chernMat_isForm k X p σ (e + 2) L φ hφ).1 c c' y hy hy'`. Establish `ht` using `secondChernDensity_chg_eq_norm_det_sq_mul (chTwo (fun u => h.G (h.isVB.pick y) (c'.e.symm u)) (c'.e y)) (MixDens.transMat c c' y) (chernMat φ c' y) (fderiv ℂ (c'.e ∘ c.e.symm) (c.e y)) hl (fun x y => chTwo_sum_left hd hu x y _) (fun x y => chTwo_sum_right hd hu x y _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[secondChernDensityOfMetric, secondChernDensityOfMetric, ← MixDens.det_transMat, hm, ← ht]`. Use `congrArg (secondChernDensity e · _) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a b c d`. Rewrite using `[chTwo_trace, chTwo_trace, hc, hc, hc, hc]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ch2Dens_trans (H : h.IsCInf) (hφ : φ.IsCInf) (c c' : AlgChart p σ (e + 2)) {y : CxPts p σ}
     (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) :
@@ -325,11 +323,11 @@ theorem ch2Dens_trans (H : h.IsCInf) (hφ : φ.IsCInf) (c c' : AlgChart p σ (e 
   rw [chTwo_trace, chTwo_trace, hc, hc, hc, hc]
 
 /- English proof (translation)
-Introduce `v hv`. Establish `ha` using `h.isVB.mem_pick (c.e.symm v)`. Establish `hm` using `(ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) _)).mem_nhds (show v ∈ _ from ⟨hv, ha⟩)`. Establish `hK : MContDiffAt ∞ (fun u => h.G (h.isVB.pick (c.e.symm v)) (c.e.symm u)) v`. Use `(H _ _ ha).mContDiffAt c (c.e.map_target hv)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[c.e.right_inv hv]`. Then use the resulting hypothesis. Establish `hA : ContinuousAt (fun v => chernMat φ c (c.e.symm v)) v` using `((MixDens.chernMat_isForm k X p σ (e + 2) L φ hφ).2.1 c).continuousAt (c.e.open_target.mem_nhds hv)`. Establish `hc : ContinuousAt (fun w => secondChernDensity e (chTwo (fun u => h.G (h.isVB.pick (c.e.symm v)) (c.e.symm u)) w) (chernMat φ c (c.e.symm w))) v`. Unfold `secondChernDensity`. Use `(Complex.continuous_re.continuousAt.comp ?_).neg.div_const _` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `tendsto_finset_sum _ fun s _ => tendsto_finset_sum _ fun t _ => ?_` and prove the remaining obligations. Conclude with `continuousAt_const.mul ((continuousAt_chTwo hK (h.posDef _ _ ha).det_pos.ne'.isUnit _ _ _ _).mul (tendsto_finset_prod _ fun i _ => continuousAt_pi.1 (continuousAt_pi.1 hA _) _))`. Use `(hc.congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [hm] with w hw`. Rewrite using `[ch2Dens_eq H c _ (c.e.map_target hw.1) hw.2, c.e.right_inv hw.1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_ch2Dens (H : h.IsCInf) (hφ : φ.IsCInf) (c : AlgChart p σ (e + 2)) :
     ContinuousOn (fun v => secondChernDensityOfMetric h φ e c (c.e.symm v)) c.e.target := by
@@ -355,7 +353,7 @@ theorem continuousOn_ch2Dens (H : h.IsCInf) (hφ : φ.IsCInf) (c : AlgChart p σ
 end Main
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ H hφ` and use `⟨⟨fun c c' _ hy hy' => ch2Dens_trans H hφ c c' hy hy', continuousOn_ch2Dens H hφ⟩, fun c a _ hy ha => ch2Dens_eq H c a hy ha⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isDens_ch2Dens : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (E : X.Modules) (r : ℕ) (h : Met p σ E r) (L : LB X) (φ : Weight p σ L) (e : ℕ), h.IsCInf → φ.IsCInf → IsDens (secondChernDensityOfMetric h φ e) ∧ ∀ (c : AlgChart p σ (e + 2)) (cE : Chart E r), ∀ y ∈ c.e.source, y ∈ ptsIn p σ cE.U → secondChernDensityOfMetric h φ e c y = secondChernDensity e (chTwo (fun u => h.G cE (c.e.symm u)) (c.e y)) (chernMat φ c y) :=
   fun _ _ _ _ _ _ _ _ _ _ _ H hφ =>

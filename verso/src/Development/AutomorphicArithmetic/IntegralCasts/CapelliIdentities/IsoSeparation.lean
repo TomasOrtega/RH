@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Coef
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IrreducibleProjectionExists
 
 /- English proof (translation)
-Introduce `H M _ _ _ _ _ ρ Y σ h F hF h0`. Consider the cases of `σ with`. Consider the case `mk V ρ' hs hi => exact UpperTheory.irreducible_projection_exists ρ' ρ hi Y h hF h0`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 -/
 theorem UpperTheory.Reformulated.B.IsoSeparation.isoSep :
     ∀ {H M : Type} [inst : Group H] [inst_1 : TopologicalSpace H] [inst_2 : IsTopologicalGroup H] [inst_3 : AddCommGroup M]

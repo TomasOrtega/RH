@@ -20,9 +20,9 @@ def IsFCoc {r : ℕ} (ρ : GE N →* GL (Fin r) (X.O0 i)) (y : ↥(DecV N v) →
 variable {bkP i v hv}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, fun g a => by simp only [MulEquiv.symm_apply_apply]⟩`. Introduce and unpack `⟨c, hc, h⟩`. Establish `: (fun g a => (bkP.br i v hv).toLL (y ((bkP.br i v hv).e.symm g) a)) = c`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g a`. Rewrite using `[← h, MulEquiv.apply_symm_apply]`. Unfold `IsFCoc`. Rewrite using `[this]`. Conclude with `hc`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFCoc_iff {r : ℕ} {ρ : GE N →* GL (Fin r) (X.O0 i)} {y : ↥(DecV N v) → Fin r → X.O0 i} :
     IsFCoc bkP i v hv ρ y ↔ ∃ c ∈ Formalism.WeaklyAdmissibleFiltrations.finiteCocycles (PDv bkP i v hv) (repV bkP i v hv ρ),
@@ -39,9 +39,9 @@ theorem isFCoc_iff {r : ℕ} {ρ : GE N →* GL (Fin r) (X.O0 i)} {y : ↥(DecV 
     exact hc
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `isFCoc_iff.1 h`. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun g => (bkP.br i v hv).toLL (y g a)`. Repeatedly rewrite using `[← e]`. Conclude with `(continuous_apply a).comp (hc.1.1.comp (bkP.br i v hv).e_cont)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Continuous fun g => (bkP.br i v hv).eO (y g a)` using `continuous_induced_rng.2 h1`. Simplify `(bkP.br i v hv).eO_symm_cont.comp h2` using `[Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsFCoc.continuous {r : ℕ} {ρ : GE N →* GL (Fin r) (X.O0 i)} {y : ↥(DecV N v) → Fin r → X.O0 i}
     (h : IsFCoc bkP i v hv ρ y) : Continuous y := by
@@ -54,9 +54,9 @@ theorem IsFCoc.continuous {r : ℕ} {ρ : GE N →* GL (Fin r) (X.O0 i)} {y : �
   simpa [Function.comp_def] using (bkP.br i v hv).eO_symm_cont.comp h2
 
 /- English proof (translation)
-Establish `e` using `h.1.2 ((bkP.br i v hv).e g) ((bkP.br i v hv).e g')`. Use function extensionality and compare the values at `a`. Establish `inj : Function.Injective (bkP.br i v hv).toLL` using `Subtype.val_injective.comp (bkP.br i v hv).eO.injective`. Apply `inj` to reduce the goal to its premises. Establish `e2` using `congrFun e a`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [← map_mul, MulEquiv.symm_apply_apply, Pi.add_apply] at e2`. Rewrite using `[e2, Pi.add_apply, map_add]`. Use `congr 1`. Simplify using `[LocBridge.rep, Matrix.mulVec, dotProduct, Matrix.toLinAlgEquiv'_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem IsFCoc.cocycle {r : ℕ} {ρ : GE N →* GL (Fin r) (X.O0 i)} {y : ↥(DecV N v) → Fin r → X.O0 i}
     (h : IsFCoc bkP i v hv ρ y) (g g' : ↥(DecV N v)) :

@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.DerFieldExt
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨f, hf, hx⟩` from `hW.exists_basicOpen_le (V := W) ⟨y, hy⟩ (h hy)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, hf⟩, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cover' (X : Scheme.{0}) {W₀ : X.Opens} (hW : IsAffineOpen W₀) {W : X.Opens} (h : W ≤ W₀) :
     W ≤ ⨆ i : {f : Γ(X, W₀) // X.basicOpen f ≤ W}, X.basicOpen i.1 := by
@@ -29,7 +29,7 @@ theorem cover' (X : Scheme.{0}) {W₀ : X.Opens} (hW : IsAffineOpen W₀) {W : X
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, hf⟩, hx⟩
 
 /- English proof (translation)
-The claim follows from `X.sheaf.eq_of_locally_eq' (fun i : {f : Γ(X, W₀) // X.basicOpen f ≤ W} => X.basicOpen i.1) W (fun i => homOfLE i.2) (cover' X hW h) s t (fun i => e i.1 i.2)`.
+A detailed English derivation is pending.
 -/
 theorem sep' (X : Scheme.{0}) {W₀ : X.Opens} (hW : IsAffineOpen W₀) {W : X.Opens} (h : W ≤ W₀) (s t : Γ(X, W))
     (e : ∀ (f : Γ(X, W₀)) (k : X.basicOpen f ≤ W), resG X k s = resG X k t) : s = t :=
@@ -37,25 +37,23 @@ theorem sep' (X : Scheme.{0}) {W₀ : X.Opens} (hW : IsAffineOpen W₀) {W : X.O
     W (fun i => homOfLE i.2) (cover' X hW h) s t (fun i => e i.1 i.2)
 
 /- English proof (translation)
-Introduce `X W₀ hW d₀ hadd hmul`. Establish `H : ∀ f : Γ(X, W₀), ∃ δ : Γ(X, X.basicOpen f) → Γ(X, X.basicOpen f), (∀ a b, δ (a + b) = δ a + δ b) ∧ (∀ a b, δ (a * b) = a * δ b + b * δ a) ∧ ∀ a, δ (resG X (X.basicOpen_le f) a) = resG X (X.basicOpen_le f) (d₀ a)`. Introduce `f`. Use `haveI := hW.isLocalization_basicOpen f`. Take `⟨δ, h1, h2, h3⟩` from `GlobalTheory.LocDerExt.der_exists f (RingHom.id _) (fun a => resG X (X.basicOpen_le f) (d₀ a)) (fun a b => by simp only [hadd, map_add]) (fun a b => by simp only [hmul, map_add, map_mul, RingHom.id_apply]; rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨δ, h1, fun a b => by simpa using h2 a b, h3⟩`. Use `choose δ δadd δmul δres using H`. Establish `compat : ∀ (f g : Γ(X, W₀)) (k : X.basicOpen g ≤ X.basicOpen f) (s : Γ(X, X.basicOpen f)), resG X k (δ f s) = δ g (resG X k s)`. Introduce `f g k s`. Use `haveI := hW.isLocalization_basicOpen f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.LocDerExt.der_unique f (resG X k) (fun s => resG X k (δ f s)) (fun s => δ g (resG X k s)) (fun a b => ?_) (fun a b => ?_) (fun a => ?_) s` and prove the remaining obligations. Simplify using `only [δmul, map_add, map_mul]`. Simplify using `only [δmul, map_mul]`. Express the relevant statement in the definitionally equal form `resG X k (δ f (resG X (X.basicOpen_le f) a)) = δ g (resG X k (resG X (X.basicOpen_le f) a))`. Rewrite using `[GlobalTheory.LocDerExt.res_res X, δres, δres, GlobalTheory.LocDerExt.res_res X]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `G : ∀ (W : X.Opens), W ≤ W₀ → ∀ s : Γ(X, W), ∃ t : Γ(X, W), ∀ (f : Γ(X, W₀)) (k : X.basicOpen f ≤ W), resG X k t = δ f (resG X k s)`. Introduce `W h s`. Take `⟨t, ht, -⟩` from `X.sheaf.existsUnique_gluing' (fun i : {f : Γ(X, W₀) // X.basicOpen f ≤ W} => X.basicOpen i.1) W (fun i => homOfLE i.2) (cover' X hW h) (fun i => δ i.1 (resG X i.2 s)) (fun i j => by`. Establish `e : X.basicOpen (i.1 * j.1) = X.basicOpen i.1 ⊓ X.basicOpen j.1` using `X.basicOpen_mul _ _`. Establish `ki : X.basicOpen (i.1 * j.1) ≤ X.basicOpen i.1` using `e.le.trans inf_le_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kj : X.basicOpen (i.1 * j.1) ≤ X.basicOpen j.1` using `e.le.trans inf_le_right`. Establish `k : X.basicOpen i.1 ⊓ X.basicOpen j.1 ≤ X.basicOpen (i.1 * j.1)` using `e.ge`. Establish `e' : resG X ki (δ i.1 (resG X i.2 s)) = resG X kj (δ j.1 (resG X j.2 s))`. Rewrite using `[compat _ _ ki, compat _ _ kj, GlobalTheory.LocDerExt.res_res X, GlobalTheory.LocDerExt.res_res X]`. Establish `e''` using `congrArg (resG X k) e'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e''` using `[GlobalTheory.LocDerExt.res_res X, GlobalTheory.LocDerExt.res_res X]`. Conclude with `e'')`. Conclude with `⟨t, fun f k => ht ⟨f, k⟩⟩`. Use `choose t ht using G`. Use `⟨fun W s => if h : W ≤ W₀ then t W h s else 0, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W h a b`. Simplify using `only [dif_pos h]`. Use `sep' X hW h _ _ (fun f k => ?_)` and prove the remaining obligations. Rewrite using `[map_add, ht W h _ f k, ht W h _ f k, ht W h _ f k, map_add, δadd]`. Introduce `W h a b`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_pos h]`. Use `sep' X hW h _ _ (fun f k => ?_)` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, ht W h _ f k, ht W h _ f k, ht W h _ f k, map_mul, δmul]`. Introduce `W W' h' h a`. Simplify using `only [dif_pos h, dif_pos (h'.trans h)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `sep' X hW (h'.trans h) _ _ (fun f k => ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (GlobalTheory.LocDerExt.res_res X h' k _).symm` and prove the remaining obligations. Rewrite using `[ht W' _ _ f k, ht W h a f (k.trans h'), GlobalTheory.LocDerExt.res_res X]`. Use function extensionality and compare the values at `a`. Simplify using `only [dif_pos (le_refl W₀)]`.
-
-Use `sep' X hW le_rfl _ _ (fun f k => ?_)` and prove the remaining obligations. Rewrite using `[ht W₀ _ _ f k, δres]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_field : ∀ (Z : Scheme.{0}) (U : Z.Opens), IsAffineOpen U → ∀ δ : Γ(Z, U) → Γ(Z, U),
     (∀ a b, δ (a + b) = δ a + δ b) → (∀ a b, δ (a * b) = a * δ b + b * δ a) →

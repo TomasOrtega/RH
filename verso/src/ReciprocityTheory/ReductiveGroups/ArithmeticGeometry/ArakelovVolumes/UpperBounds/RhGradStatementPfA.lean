@@ -10,31 +10,27 @@ open ReciprocityTheory.L2DbarEstimates
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `set k : ℝ → ℝ := fun t => -C * Real.log t with hkdef`. Use `set ψ : V n → ℝ := fun y => k (Ψ y) with hψdef`. Establish `hk : ContDiffAt ℝ 2 k (Ψ v0)` using `contDiffAt_const.mul (Real.contDiffAt_log.2 hΨ0.ne')`. Establish `hψ : ContDiffAt ℝ 2 ψ v0` using `hk.comp v0 hΨ`. Establish `hrd : DifferentiableAt ℝ rh v0` using `hrh.differentiableAt (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψd : DifferentiableAt ℝ ψ v0` using `hψ.differentiableAt (by simp)`. Establish `hΨd : DifferentiableAt ℝ Ψ v0` using `hΨ.differentiableAt (by simp)`. Establish `hkd : DifferentiableAt ℝ k (Ψ v0)` using `hk.differentiableAt (by simp)`. Establish `hmin : IsLocalMin (fun y => rh y - ψ y) v0` using `by filter_upwards [hle] with v hv`. Simplify using `only [hψdef, hkdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfd : fderiv ℝ rh v0 = fderiv ℝ ψ v0`. Establish `h` using `hmin.fderiv_eq_zero`. Rewrite `h` using `[fderiv_fun_sub hrd hψd]`. Conclude with `sub_eq_zero.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hwd : ∀ j, wd n j (fun y => (rh y : ℂ)) v0 = wd n j (fun y => (ψ y : ℂ)) v0`. Introduce `j`. Simplify using `only [wd, fderiv_ofReal_apply hrd, fderiv_ofReal_apply hψd, hfd]`. Establish `hdk : deriv k = fun t => -C * t⁻¹`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hkdef]`. Rewrite using `[deriv_const_mul_field', Real.deriv_log']`. Establish `hddk : deriv (deriv k) = fun t => C * (t ^ 2)⁻¹`. Rewrite using `[hdk]`. Use function extensionality and compare the values at `t`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[deriv_const_mul_field']`. Use `show -C * deriv (fun x : ℝ => x⁻¹) t = _`. Rewrite using `[deriv_inv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwdψ : ∀ j, wd n j (fun y => (ψ y : ℂ)) v0 = (((-C * (Ψ v0)⁻¹ : ℝ)) : ℂ) * wd n j (fun y => (Ψ y : ℂ)) v0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `j`. Rewrite using `[show (fun y => (ψ y : ℂ)) = fun y => (k (Ψ y) : ℂ) from rfl, wd_ofReal_comp hkd hΨd, hdk]`. Establish `hchain` using `leviChain n k Ψ v0 ξ hΨ hk`. Rewrite `hchain` using `[hddk, hdk]`. Establish `hmax : IsLocalMax (fun y => ψ y + (-1) * rh y) v0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `hmin.neg` as an intermediate fact. Use `this.congr ?_` and prove the remaining obligations. Use `filter_upwards with y`. Expand and normalize the polynomial expressions, which then agree. Establish `hcd : ContDiffAt ℝ 2 (fun y => ψ y + (-1) * rh y) v0` using `hψ.add (contDiffAt_const.mul hrh)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_re_nonpos_of_isLocalMax hcd hmax ξ`. Rewrite `h2` using `[ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_ofReal_add hψ (contDiffAt_const.mul hrh) ξ, ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_ofReal_const_mul (-1) hrh ξ]`. Establish `hψL : leviV n (fun y => (ψ y : ℂ)) v0 ξ = leviV n (fun y => (k (Ψ y) : ℂ)) v0 ξ` using `rfl`. Rewrite `h2` using `[hψL, hchain]`. Use `set N := Complex.normSq (∑ j, wd n j (fun y => (Ψ y : ℂ)) v0 * ξ j) with hN`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set LΨ := (leviV n (fun y => (Ψ y : ℂ)) v0 ξ).re`. Use `set Lr := (leviV n (fun y => (rh y : ℂ)) v0 ξ).re`. Establish `h3 : (-C * (Ψ v0)⁻¹) * LΨ + C * ((Ψ v0) ^ 2)⁻¹ * N ≤ Lr`. Simplify using `only [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero, Complex.neg_re, Complex.one_re, neg_mul, one_mul] at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlhs : Complex.normSq (∑ j, wd n j (fun y => (rh y : ℂ)) v0 * ξ j) = (C * (Ψ v0)⁻¹) ^ 2 * N`. Simplify using `only [hwd, hwdψ, mul_assoc, ← Finset.mul_sum, Complex.normSq_mul, Complex.normSq_ofReal, hN]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hlhs]`. Establish `hN0 : 0 ≤ N` using `Complex.normSq_nonneg _`.
-
-Establish `hi : 0 < (Ψ v0)⁻¹` using `inv_pos.2 hΨ0`. Establish `h4 : 0 ≤ (-C * (Ψ v0)⁻¹) * LΨ`. Establish `: -C * (Ψ v0)⁻¹ ≤ 0` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `h5 : (C * (Ψ v0)⁻¹) ^ 2 * N = C * (C * ((Ψ v0) ^ 2)⁻¹ * N)`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5]`. Conclude with `mul_le_mul_of_nonneg_left (by linarith) hC.le`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grad_le_of_minorant (rh Ψ : V n → ℝ) (v0 : V n) (C : ℝ) (hC : 0 < C)
     (hΨ0 : 0 < Ψ v0) (hrh : ContDiffAt ℝ 2 rh v0) (hΨ : ContDiffAt ℝ 2 Ψ v0) (ξ : Fin n → ℂ)
@@ -122,7 +118,7 @@ open ReciprocityTheory.ChartRestriction.G.AR.Up.ExhA
 
 open scoped MatrixOrder in
 /- English proof (translation)
-Take `⟨y, hy⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hM.nonneg`. Conclude with `⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_factor {m : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (hM : M.PosSemidef) :
     ∃ y : Matrix (Fin m) (Fin m) ℂ, M = yᴴ * y := by
@@ -130,11 +126,11 @@ theorem exists_factor {m : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (hM : M.PosSemi
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Establish `hH` using `hP.1`. Establish `hd : P.det.re = ∏ i, hH.eigenvalues i`. Rewrite using `[hH.det_eq_prod_eigenvalues]`. Simplify using `[← Complex.ofReal_prod]`. Establish `ht : P.trace.re = ∑ i, hH.eigenvalues i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hH.trace_eq_sum_eigenvalues]`. Simplify using `[← Complex.ofReal_sum]`. Establish `hnn : ∀ i, 0 ≤ hH.eigenvalues i` using `fun i => hP.eigenvalues_nonneg i`. Establish `hmR : (0 : ℝ) < m` using `by exact_mod_cast hm`. Establish `h` using `Real.geom_mean_le_arith_mean_weighted (Finset.univ : Finset (Fin m)) (fun _ => (m : ℝ)⁻¹) (fun i => hH.eigenvalues i) (fun _ _ => by positivity) (by simp [Finset.card_univ]; field_simp) (fun i _ => hnn i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hd, ht, ← Real.finsetProd_rpow _ _ (fun i _ => hnn i)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem amgm_psd {m : ℕ} (hm : 0 < m) {P : Matrix (Fin m) (Fin m) ℂ} (hP : P.PosSemidef) :
     P.det.re ^ ((m : ℝ)⁻¹) ≤ P.trace.re / m := by
@@ -155,13 +151,13 @@ theorem amgm_psd {m : ℕ} (hm : 0 < m) {P : Matrix (Fin m) (Fin m) ℂ} (hP : P
     _ = (∑ i, hH.eigenvalues i) / m := by rw [← Finset.mul_sum]; field_simp
 
 /- English proof (translation)
-Establish `hM : (A0⁻¹).PosDef` using `hA0.inv`. Take `⟨y, hy⟩` from `exists_factor hM.posSemidef`. Establish `hP : (y * A * yᴴ).PosSemidef` using `hA.posSemidef.mul_mul_conjTranspose_same y`. Establish `htr : (y * A * yᴴ).trace = (A * A0⁻¹).trace`. Rewrite using `[hy, Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ha, hai⟩` from `det_re_pos_im hA`. Take `⟨hb, hbi⟩` from `det_re_pos_im hA0`. Establish `hdet : (y * A * yᴴ).det.re = A.det.re * (A0.det.re)⁻¹`. Establish `e1 : (y * A * yᴴ).det = A.det * (A0⁻¹).det`. Rewrite using `[hy, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', det_eq_ofReal hA, det_eq_ofReal hA0]`. Simplify using `only [Complex.ofReal_re]`. Rewrite using `[← Complex.ofReal_inv, ← Complex.ofReal_mul, Complex.ofReal_re]`. Establish `h` using `amgm_psd hm hP`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hdet, htr, Real.mul_rpow ha.le (inv_nonneg.2 hb.le), Real.inv_rpow hb.le]`. Establish `hc : 0 < A0.det.re ^ ((m : ℝ)⁻¹)` using `Real.rpow_pos_of_pos hb _`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ _ := mul_le_mul_of_nonneg_left h hc.le`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem amgm {m : ℕ} (hm : 0 < m) {A A0 : Matrix (Fin m) (Fin m) ℂ} (hA : A.PosDef)
     (hA0 : A0.PosDef) :

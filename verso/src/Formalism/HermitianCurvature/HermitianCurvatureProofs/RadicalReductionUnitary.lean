@@ -14,7 +14,7 @@ attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebr
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.nonsing_inv_eq_ringInverse A`. Consider the case `exact Matrix.nonsing_inv_eq_ring_inverse A`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inv_eq_ring_inverse (A : Q.Mx k r) : A⁻¹ = Ring.inverse A := by
   first
@@ -45,15 +45,15 @@ def lieU (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : Submodule ℝ (Q.Mx k r
     · rw [Matrix.smul_mulVec, hX3, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[cinv, inv_eq_ring_inverse]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cinv_eq (g : Q.Mx k r) : cinv g = Ring.inverse (g + 1) * (g - 1) := by
   rw [cinv, inv_eq_ring_inverse]
 
 /- English proof (translation)
-Establish `h1 : ContDiffAt ℝ ∞ (fun x : Q.Mx k r => Ring.inverse (x + 1)) g`. Take `⟨u, hu⟩` from `hu`. Establish `: ContDiffAt ℝ ∞ Ring.inverse (u : Q.Mx k r)` using `contDiffAt_ringInverse ℝ u`. Rewrite `this` using `[hu]`. Conclude with `this.comp g (contDiffAt_id.add contDiffAt_const)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ContDiffAt ℝ ∞ (fun x : Q.Mx k r => x - 1) g` using `contDiffAt_id.sub contDiffAt_const`. Establish `: (cinv : Q.Mx k r → Q.Mx k r) = fun x => Ring.inverse (x + 1) * (x - 1)` using `funext cinv_eq`. Rewrite using `[this]`. Conclude with `h1.mul h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cinv_contDiffAt {g : Q.Mx k r} (hu : IsUnit (g + 1)) : ContDiffAt ℝ ∞ cinv g := by
   have h1 : ContDiffAt ℝ ∞ (fun x : Q.Mx k r => Ring.inverse (x + 1)) g := by
@@ -67,14 +67,14 @@ theorem cinv_contDiffAt {g : Q.Mx k r} (hu : IsUnit (g + 1)) : ContDiffAt ℝ �
   exact h1.mul h2
 
 /- English proof (translation)
-Rewrite using `[mul_smul_comm, mul_one, ← two_smul ℂ (1 : Q.Mx k r), smul_smul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem two_mul_half : ((1 : Q.Mx k r) + 1) * ((1 / 2 : ℂ) • 1) = 1 := by
   rw [mul_smul_comm, mul_one, ← two_smul ℂ (1 : Q.Mx k r), smul_smul]
   norm_num
 
 /- English proof (translation)
-Rewrite using `[smul_mul_assoc, one_mul, ← two_smul ℂ (1 : Q.Mx k r), smul_smul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem half_mul_two : ((1 / 2 : ℂ) • (1 : Q.Mx k r)) * (1 + 1) = 1 := by
   rw [smul_mul_assoc, one_mul, ← two_smul ℂ (1 : Q.Mx k r), smul_smul]
@@ -83,11 +83,11 @@ theorem half_mul_two : ((1 / 2 : ℂ) • (1 : Q.Mx k r)) * (1 + 1) = 1 := by
 def twoU (k r : ℕ) : (Q.Mx k r)ˣ := ⟨1 + 1, (1 / 2 : ℂ) • 1, two_mul_half, half_mul_two⟩
 
 /- English proof (translation)
-Establish `hinv : Ring.inverse ((1 : Q.Mx k r) + 1) = (1 / 2 : ℂ) • 1` using `Ring.inverse_unit (twoU k r)`. Establish `h1` using `(hasFDerivAt_ringInverse (𝕜 := ℝ) (twoU k r)).comp (1 : Q.Mx k r) ((hasFDerivAt_id (𝕜 := ℝ) (1 : Q.Mx k r)).add_const 1)`. Establish `h2 : HasFDerivAt (fun x : Q.Mx k r => x - 1) (ContinuousLinearMap.id ℝ (Q.Mx k r)) 1` using `(hasFDerivAt_id (1 : Q.Mx k r)).sub_const 1`. Establish `h3` using `h1.mul' h2`. Establish `hfun : (cinv : Q.Mx k r → Q.Mx k r) = (fun x : Q.Mx k r => Ring.inverse (id x + 1)) * (fun x : Q.Mx k r => x - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[cinv_eq]`. Both sides reduce to the same expression. Rewrite using `[hfun]`. Use `h3.congr_fderiv ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousLinearMap.ext fun h => ?_` and prove the remaining obligations. Simplify using `[hinv]`. Express the relevant statement in the definitionally equal form `((2 : ℂ)⁻¹ • (1 : Q.Mx k r)) * h = (2 : ℂ)⁻¹ • h`. Rewrite using `[smul_mul_assoc, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cinv_hasFDerivAt_one :
     HasFDerivAt (cinv : Q.Mx k r → Q.Mx k r) (ContinuousLinearMap.mul ℝ (Q.Mx k r) ((1 / 2 : ℂ) • 1)) 1 := by
@@ -108,11 +108,11 @@ theorem cinv_hasFDerivAt_one :
   rw [smul_mul_assoc, one_mul]
 
 /- English proof (translation)
-Set `Lv : Q.Mx k r →ₗ[ℂ] (Fin (2 * r + k + 1) → ℂ)` to `{ toFun := fun A => A *ᵥ v map_add' := fun A B => Matrix.add_mulVec A B v map_smul' := fun c A => Matrix.smul_mulVec c A v }`. Set `Lc` to `LinearMap.toContinuousLinearMap Lv`. Establish `hs : Summable (fun n : ℕ => ((n.factorial : ℂ))⁻¹ • X ^ n)` using `NormedSpace.expSeries_summable' (𝕂 := ℂ) X`. Establish `hpow : ∀ n : ℕ, (X ^ (n + 1)) *ᵥ v = 0` using `fun n => by`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : Lc (∑' n : ℕ, ((n.factorial : ℂ))⁻¹ • X ^ n) = ∑' n : ℕ, Lc (((n.factorial : ℂ))⁻¹ • X ^ n)` using `Lc.map_tsum hs`. Simplify using `only [Lc, LinearMap.coe_toContinuousLinearMap', Lv, LinearMap.coe_mk, AddHom.coe_mk] at key`. Rewrite using `[NormedSpace.exp_eq_tsum ℂ]`. Simplify using `only`. Rewrite using `[key, tsum_eq_single 0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `n hn`. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Rewrite using `[Matrix.smul_mulVec, hpow, smul_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exp_mulVec_eq_self_of_mulVec_eq_zero {X : Q.Mx k r} {v : Fin (2 * r + k + 1) → ℂ} (hv : X *ᵥ v = 0) :
     NormedSpace.exp X *ᵥ v = v := by
@@ -137,9 +137,9 @@ private theorem exp_mulVec_eq_self_of_mulVec_eq_zero {X : Q.Mx k r} {v : Fin (2 
     rw [Matrix.smul_mulVec, hpow, smul_zero]
 
 /- English proof (translation)
-Take `⟨hX1, hX2⟩` from `hX`. Establish `h1 : (1 : Q.Mx k r) ∈ Glev k r (Fin.last r)`. Simplify using `[Glev, UH]`. Establish `h` using `Formalism.FourierDecayAlt.P.LeftDerivativeCurves.lcurve_lev h1 hX1 1`. Simplify using `only [Complex.ofReal_one, one_smul, mul_one, Glev, Set.mem_setOf_eq] at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [UWset, Set.mem_setOf_eq]`. Conclude with `⟨h.1, fun a => h.2 a (by simp), exp_mulVec_eq_self_of_mulVec_eq_zero hX2⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem exp_mem_uwset_of_inLieW {z : Fin (2 * r + k + 1) → ℂ} {X : Q.Mx k r} (hX : InLieW k r z X) :
     NormedSpace.exp X ∈ UWset k r z := by
@@ -152,39 +152,35 @@ private theorem exp_mem_uwset_of_inLieW {z : Fin (2 * r + k + 1) → ℂ} {X : Q
   exact ⟨h.1, fun a => h.2 a (by simp), exp_mulVec_eq_self_of_mulVec_eq_zero hX2⟩
 
 /- English proof (translation)
-Set `L` to `lieU k r z`. Use `haveI : FiniteDimensional ℝ (Q.Mx k r) := inferInstance`. Use `haveI : CompleteSpace L := (Submodule.complete_of_finiteDimensional L).completeSpace_coe`. Take `⟨p, hp⟩` from `LinearMap.exists_leftInverse_of_injective L.subtype (Submodule.ker_subtype L)`. Set `P : Q.Mx k r →L[ℝ] L` to `LinearMap.toContinuousLinearMap p`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : ∀ Y : L, P (Y : Q.Mx k r) = Y` using `fun Y => by show p (L.subtype Y) = Y`. Rewrite using `[← LinearMap.comp_apply, hp, LinearMap.id_apply]`. Establish `hPmem : ∀ x, InLieW k r z x → (P x : Q.Mx k r) = x` using `fun x hx => by`. Use `hP ⟨x, hx⟩` as an intermediate fact. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Φ : L → L` to `fun Y => (2 : ℝ) • P (cinv (NormedSpace.exp (Y : Q.Mx k r)))`. Establish `hu1 : IsUnit ((1 : Q.Mx k r) + 1)` using `⟨twoU k r, rfl⟩`. Establish `he0 : NormedSpace.exp ((0 : L) : Q.Mx k r) = 1` using `by simp`. Establish `hexp : ∀ x : Q.Mx k r, ContDiffAt ℝ ∞ (NormedSpace.exp : Q.Mx k r → Q.Mx k r) x` using `fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt`. Establish `hΦc : ∀ Y : L, IsUnit (NormedSpace.exp (Y : Q.Mx k r) + 1) → ContDiffAt ℝ ∞ Φ Y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Y hY`. Establish `a1 : ContDiffAt ℝ ∞ (fun Y : L => NormedSpace.exp (Y : Q.Mx k r)) Y` using `(hexp _).comp Y L.subtypeL.contDiff.contDiffAt`. Establish `a0 : ContDiffAt ℝ ∞ (cinv : Q.Mx k r → Q.Mx k r) (NormedSpace.exp (Y : Q.Mx k r))` using `cinv_contDiffAt (k := k) (r := r) hY`. Establish `a2 : ContDiffAt ℝ ∞ ((cinv : Q.Mx k r → Q.Mx k r) ∘ fun Y : L => NormedSpace.exp (Y : Q.Mx k r)) Y` using `ContDiffAt.comp (g := (cinv : Q.Mx k r → Q.Mx k r)) (f := fun Y : L => NormedSpace.exp (Y : Q.Mx k r)) Y a0 a1`. Conclude with `(P.contDiff.contDiffAt.comp Y a2).const_smul (2 : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ0c : ContDiffAt ℝ ∞ Φ 0` using `hΦc 0 (by rw [he0]; exact hu1)`. Establish `hΦ0d : HasFDerivAt Φ ((ContinuousLinearEquiv.refl ℝ L : L ≃L[ℝ] L) : L →L[ℝ] L) 0`. Establish `hE : HasFDerivAt (fun Y : L => NormedSpace.exp (Y : Q.Mx k r)) ((1 : Q.Mx k r →L[ℝ] Q.Mx k r).comp L.subtypeL) 0` using `(hasFDerivAt_exp_zero (𝕂 := ℝ)).comp (0 : L) L.subtypeL.hasFDerivAt`. Establish `hC : HasFDerivAt (cinv : Q.Mx k r → Q.Mx k r) (ContinuousLinearMap.mul ℝ (Q.Mx k r) ((1 / 2 : ℂ) • 1)) (NormedSpace.exp ((0 : L) : Q.Mx k r))`. Rewrite using `[he0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `cinv_hasFDerivAt_one`. Establish `h` using `((P.hasFDerivAt).comp (0 : L) (hC.comp (0 : L) hE)).const_smul (2 : ℝ)`. Use `HasFDerivAt.congr_fderiv h ?_` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun Y => ?_` and prove the remaining obligations. Establish `hh : ((1 / 2 : ℂ) • (1 : Q.Mx k r)) * (Y : Q.Mx k r) = (1 / 2 : ℝ) • (Y : Q.Mx k r)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_mul_assoc, one_mul, RCLike.real_smul_eq_coe_smul (K := ℂ)]`. Evaluate the numerical expressions. Express the relevant statement in the definitionally equal form `(2 : ℝ) • P (((1 / 2 : ℂ) • (1 : Q.Mx k r)) * (Y : Q.Mx k r)) = Y`. Rewrite using `[hh, P.map_smul, hP, smul_smul]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : (∞ : WithTop ℕ∞) ≠ 0` using `by simp`. Set `f` to `ContDiffAt.toOpenPartialHomeomorph Φ hΦ0c hΦ0d hn`. Establish `hfc : (f : L → L) = Φ` using `rfl`. Establish `hU : ∀ᶠ Y : L in 𝓝 (0 : L), IsUnit (NormedSpace.exp (Y : Q.Mx k r) + 1)`. Establish `hc : ContinuousAt (fun Y : L => NormedSpace.exp (Y : Q.Mx k r) + 1) 0` using `(((hexp _).continuousAt).comp L.subtypeL.continuous.continuousAt).add continuousAt_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : IsUnit (NormedSpace.exp ((0 : L) : Q.Mx k r) + 1)` using `by rw [he0]; exact hu1`. Conclude with `hc.eventually_mem (Units.isOpen.mem_nhds h0)`. Establish `hD : ∀ᶠ Y : L in 𝓝 (0 : L), fderiv ℝ Φ Y ∈ Set.range (ContinuousLinearEquiv.toContinuousLinearMap : (L ≃L[ℝ] L) → L →L[ℝ] L)`. Establish `hcont : ContinuousAt (fderiv ℝ Φ) 0` using `(hΦ0c.fderiv_right (m := 0) (by simp)).continuousAt`. Conclude with `hcont.eventually_mem (ContinuousLinearEquiv.isOpen.mem_nhds ⟨ContinuousLinearEquiv.refl ℝ L, hΦ0d.fderiv.symm⟩)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, hVsub, hVo, hV0⟩` from `eventually_nhds_iff.mp (hU.and hD)`. Establish `hsym : ∀ a ∈ f.target ∩ f.symm ⁻¹' V, ContDiffAt ℝ ∞ f.symm a`. Introduce and unpack `a ⟨ha, haV⟩`. Take `⟨hu, e, he⟩` from `hVsub _ haV`. Establish `hcd` using `hΦc _ hu`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : HasFDerivAt Φ (e : L →L[ℝ] L) (f.symm a)`. Rewrite using `[show (e : L →L[ℝ] L) = fderiv ℝ Φ (f.symm a) from he]`. Conclude with `(hcd.differentiableAt (by simp)).hasFDerivAt`. Conclude with `f.contDiffAt_symm ha (by rw [hfc]; exact hd) (by rw [hfc]; exact hcd)`. Set `w : Q.Mx k r → L` to `fun g => (2 : ℝ) • P (cinv g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw : ∀ g : Q.Mx k r, IsUnit (g + 1) → ContDiffAt ℝ ∞ w g` using `fun g hg => ((P.contDiff.contDiffAt).comp g (cinv_contDiffAt (k := k) (r := r) hg)).const_smul (2 : ℝ)`. Establish `hGU : IsOpen {g : Q.Mx k r | IsUnit (g + 1)}` using `Units.isOpen.preimage (continuous_id.add continuous_const)`. Establish `hT : IsOpen (f.target ∩ f.symm ⁻¹' V)` using `f.isOpen_inter_preimage_symm hVo`. Establish `hwc : ContinuousOn w {g : Q.Mx k r | IsUnit (g + 1)}` using `fun g hg => (hw g hg).continuousAt.continuousWithinAt`. Establish `hΦ00 : Φ 0 = 0` using `by simp [Φ, cinv_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hw1 : w 1 = 0` using `by simp [w, cinv_one]`. Use `⟨{g : Q.Mx k r | IsUnit (g + 1)} ∩ w ⁻¹' (f.target ∩ f.symm ⁻¹' V), hwc.isOpen_inter_preimage hGU hT, ⟨hu1, ?_⟩, fun g => ((f.symm (w g) : L) : Q.Mx k r), ?_, ?_⟩` and prove the remaining obligations. Establish `h0t : Φ 0 ∈ f.target` using `ContDiffAt.image_mem_toOpenPartialHomeomorph_target hΦ0c hΦ0d hn`. Establish `h0s : (0 : L) ∈ f.source` using `ContDiffAt.mem_toOpenPartialHomeomorph_source hΦ0c hΦ0d hn`. Rewrite `h0t` using `[hΦ00]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show w 1 ∈ f.target`. Rewrite using `[hw1]`. Conclude with `h0t`. Use `show f.symm (w 1) ∈ V`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw1, ← hΦ00, ← hfc, f.left_inv h0s]`. Conclude with `hV0`. Introduce `g hg`. Conclude with `(L.subtypeL.contDiff.contDiffAt.comp g ((hsym (w g) hg.2).comp g (hw g hg.1))).contDiffWithinAt`. Introduce `g hg hgU set Y := f.symm (w g) with hYdef`.
-
-Establish `hY : InLieW k r z (Y : Q.Mx k r)` using `Y.2`. Use `⟨hY, ?_⟩` and prove the remaining obligations. Take `⟨huY, -⟩` from `hVsub _ hg.2.2`. Establish `h1 : Φ Y = w g` using `f.right_inv hg.2.1`. Establish `hdg : IsUnit (g + 1).det` using `(Matrix.isUnit_iff_isUnit_det _).mp hg.1`.
-
-Establish `hdY : IsUnit (NormedSpace.exp (Y : Q.Mx k r) + 1).det` using `(Matrix.isUnit_iff_isUnit_det _).mp huY`. Establish `h2 : P (cinv (NormedSpace.exp (Y : Q.Mx k r))) = P (cinv g)` using `smul_right_injective L (two_ne_zero' ℝ) h1`. Establish `h3` using `congrArg Subtype.val h2`. Rewrite `h3` using `[hPmem _ (cinv_lie (exp_mem_uwset_of_inLieW hY) hdY), hPmem _ (cinv_lie hgU hdg)]`. Conclude with `cinv_inj hdY hdg h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locLogOp (z : Fin (2 * r + k + 1) → ℂ) :
     ∃ O : Set (Q.Mx k r), IsOpen O ∧ (1 : Q.Mx k r) ∈ O ∧ ∃ Λ : Q.Mx k r → Q.Mx k r, ContDiffOn ℝ ∞ Λ O ∧

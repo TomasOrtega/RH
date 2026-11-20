@@ -25,11 +25,11 @@ open scoped ContDiff Real Topology
 namespace GlobalTheory.BcUnique
 
 /- English proof (translation)
-Establish `hg : Continuous fun w : ℂ => u w` using `hu.comp OnePoint.continuous_coe`. Take `⟨C, hC⟩` from `(isCompact_range hu).isBounded.exists_norm_le`. Set `b : ℕ → ContDiffBump (0 : ℂ)` to `fun n => ⟨1 / ((n : ℝ) + 1) / 2, 1 / ((n : ℝ) + 1), by positivity, half_lt_self (by positivity)⟩`. Establish `hb : Tendsto (fun n => (b n).rOut) atTop (𝓝 0)` using `tendsto_one_div_add_atTop_nhds_zero_nat`. Establish `hc (n : ℕ)` using `InnerProductSpace.bounded_harmonic_on_complex_plane_is_constant _ (GlobalTheory.T.weyl_lemma_mollified_harmonic _ hg h ((b n).normed volume) (b n).contDiff_normed (b n).hasCompactSupport_normed) (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isBounded_iff_forall_norm_le.2 ⟨∫ s, ‖(b n).normed volume s‖ * C, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `norm_integral_le_of_norm_le ((b n).integrable_normed.norm.mul_const C) (.of_forall fun s => ?_)` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.lsmul_apply, norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hC _ ⟨_, rfl⟩) (norm_nonneg _))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 (z : ℂ) : u z = u (0 : ℂ)` using `tendsto_nhds_unique (ContDiffBump.convolution_tendsto_right_of_continuous (μ := volume) hb hg z) ((ContDiffBump.convolution_tendsto_right_of_continuous (μ := volume) hb hg 0).congr fun n => hc n 0 z)`. Establish `e : u = fun _ => u (0 : ℂ)` using `Continuous.ext_on OnePoint.denseRange_coe hu continuous_const (by rintro _ ⟨z, rfl⟩; exact h0 z)`. Rewrite using `[congrFun e t, congrFun e t']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_of_weakly_harmonic (u : OnePoint ℂ → ℝ) (hu : Continuous u)
     (h : ∀ φ : ℂ → ℝ, ContDiff ℝ ∞ φ → HasCompactSupport φ → ∫ w : ℂ, u w * Laplacian.laplacian φ w = 0)
@@ -54,13 +54,11 @@ theorem const_of_weakly_harmonic (u : OnePoint ℂ → ℝ) (hu : Continuous u)
   rw [congrFun e t, congrFun e t']
 
 /- English proof (translation)
-Establish `hBc : IsCompact (B.e i '' K)` using `hK.image_of_continuousOn ((B.e i).continuousOn.mono hKs)`. Establish `hBt : B.e i '' K ⊆ (B.e i).target`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(B.e i).map_source (hKs hy)`. Establish `hH0 : ∀ v ∉ B.e i '' K, (dens (B.loc η i v)).re = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Distinguish the cases in `ht : v ∈ (B.e i).target`. Establish `e : B.loc η i v = 0` using `(dif_pos ht).trans (h0 ⟨(i, (B.e i).symm v), (B.e i).map_target ht⟩ fun hk => hv ⟨_, hk, (B.e i).right_inv ht⟩)`. Simplify using `[e, dens]`. Simplify using `[HolAtlas.loc, ht, dens]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcon : ContinuousOn (fun v => (dens (B.loc η i v)).re) (B.e i).target` using `Complex.continuous_re.comp_continuousOn ((hη.smooth i Finset.univ).continuousOn.div_const _)`. Establish `hHc : Continuous fun v => (dens (B.loc η i v)).re` using `continuous_iff_continuousAt.2 fun v => by`. Distinguish the cases in `ht : v ∈ (B.e i).target`. Conclude with `hcon.continuousAt ((B.e i).open_target.mem_nhds ht)`. Establish `: (fun v => (dens (B.loc η i v)).re) =ᶠ[𝓝 v] fun _ => 0` using `by filter_upwards [hBc.isClosed.isOpen_compl.mem_nhds (fun h => ht (hBt h))] with w hw`.
-
-Conclude with `hH0 w hw`. Conclude with `continuousAt_const.congr this.symm`. Conclude with `hHc.integrable_of_hasCompactSupport (HasCompactSupport.intro hBc hH0)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_dens_loc {X : Type} [TopologicalSpace X] {n : ℕ} (B : HolAtlas X n) {η : B.Fld} (hη : B.IsForm η)
     (i : B.ι) {K : Set X} (hK : IsCompact K) (hKs : K ⊆ (B.e i).source) (h0 : ∀ x : B.Pt, x.pt ∉ K → η x = 0) :
@@ -88,13 +86,13 @@ theorem integrable_dens_loc {X : Type} [TopologicalSpace X] {n : ℕ} (B : HolAt
   exact hHc.integrable_of_hasCompactSupport (HasCompactSupport.intro hBc hH0)
 
 /- English proof (translation)
-Rewrite using `[← Complex.re_ofReal_mul, dens, dens, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dens_real_smul {n : ℕ} (c : ℝ) (a : Alt n) : (dens ((c : ℂ) • a)).re = c * (dens a).re := by
   rw [← Complex.re_ofReal_mul, dens, dens, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_div_assoc]
 
 /- English proof (translation)
-Unfold `HolAtlas.loc`. Use `split_ifs`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Conclude with `(smul_zero _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem loc_fn_mul {X : Type} [TopologicalSpace X] {n : ℕ} (B : HolAtlas X n) (g : X → ℝ) (η : B.Fld) (i : B.ι)
     (v : V n) : B.loc (B.fn g * η) i v = (g ((B.e i).symm v) : ℂ) • B.loc η i v := by
@@ -105,7 +103,7 @@ theorem loc_fn_mul {X : Type} [TopologicalSpace X] {n : ℕ} (B : HolAtlas X n) 
   · exact (smul_zero _).symm
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_mul]`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.mul_apply, HolAtlas.fn, ← map_sum]`. Rewrite using `[show (∑ j, ((χ j x.pt : ℝ) : ℂ)) = 1 by exact_mod_cast h1 x.pt, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_sum_fn_mul {X : Type} [TopologicalSpace X] {n N : ℕ} (B : HolAtlas X n) (χ : Fin N → X → ℝ)
     (h1 : ∀ y, ∑ j, χ j y = 1) (η : B.Fld) : η = ∑ j, B.fn (χ j) * η := by
@@ -119,11 +117,11 @@ section Fam
 variable {M : Type} [TopologicalSpace M] (A : HolAtlas M 1)
 
 /- English proof (translation)
-Establish `e1` using `loc_fn_mul (famAtlas A) (fun y => χ y.1) ((famAtlas A).ddc ((famAtlas A).fn fun y => y.2.elim 0 φ) * γ) (j, sphFin) (appendV 1 1 (v, EuclideanSpace.single 0 w))`. Establish `e2` using `congrFun (ByParts.loc_mul (famAtlas A) ((famAtlas A).ddc ((famAtlas A).fn fun y => y.2.elim 0 φ)) γ (j, sphFin)) (appendV 1 1 (v, EuclideanSpace.single 0 w))`. Establish `e3` using `GlobalTheory.T.fibre_pullback_form_local_coordinates M A γ hγ j sphFin w ⟨w, rfl⟩ v`. Rewrite `e3` using `[sphFin_apply]`. Rewrite `e1` using `[famAtlas_symm_appendV]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1, loc_fn_mul, dens_real_smul, dens_real_smul, e3, ← GlobalTheory.T.density_standard_volume_form_product, e2]`. Distinguish the cases in `hv : appendV 1 1 (v, EuclideanSpace.single 0 w) ∈ ((famAtlas A).e (j, sphFin)).target`. Rewrite using `[GlobalTheory.T.ddc_laplacian_local_formula_sphere M A φ hφ j _ hv, smul_mul_assoc, dens_real_smul, appendV_last]`. Simplify using `only [PiLp.single_apply, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e4 : (famAtlas A).loc γ (j, sphFin) (appendV 1 1 (v, EuclideanSpace.single 0 w)) = 0` using `dif_neg hv`. Simplify using `[e4, dens]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dens_loc_prod {γ : (famAtlas A).Fld} (hγ : (famAtlas A).IsForm γ) (χ : M → ℝ) (j : A.ι) {φ : ℂ → ℝ}
     (hφ : ContDiff ℝ ∞ φ) (v : V 1) (w : ℂ) :
@@ -151,15 +149,15 @@ theorem dens_loc_prod {γ : (famAtlas A).Fld} (hγ : (famAtlas A).IsForm γ) (χ
 variable [T2Space M] [SecondCountableTopology M] [CompactSpace M] [MeasurableSpace M] [BorelSpace M]
 
 /- English proof (translation)
-Take `⟨-, C, -, -, P⟩` from `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ (famAtlas A)`. Take `⟨-, C', -, -⟩` from `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ A`. Establish `hG` using `(famAtlas A).isForm_fn (GlobalTheory.T.smooth_pullback_function_family_atlas M A φ hφ hc)`. Establish `h1` using `(C 0 _ _ hG hG).2.2.2.2.1`. Establish `h2` using `(C 0 _ _ h1 h1).2.2.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (famAtlas A).IsForm ((famAtlas A).ddc ((famAtlas A).fn fun y => y.2.elim 0 φ))` using `(C HermFrame.kappa _ _ h2 h2).2.2.1`. Establish `h4` using `(C 0 _ _ ((famAtlas A).isForm_fn (u := fun y => χ y.1) (smoothOn_fst A hχ)) (C 0 _ _ h3 hγ).2.1).2.1`. Establish `hKχ : IsCompact (tsupport χ)` using `(isClosed_tsupport χ).isCompact`. Establish `hK : IsCompact (tsupport χ ×ˢ (((↑) : ℂ → OnePoint ℂ) '' tsupport φ))` using `hKχ.prod (hc.isCompact.image OnePoint.continuous_coe)`. Establish `hKs : tsupport χ ×ˢ (((↑) : ℂ → OnePoint ℂ) '' tsupport φ) ⊆ ((famAtlas A).e (j, sphFin)).source` using `prod_mono hs (image_subset_range _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ x : (famAtlas A).Pt, x.pt ∉ tsupport χ ×ˢ (((↑) : ℂ → OnePoint ℂ) '' tsupport φ) → ((famAtlas A).fn (fun y => χ y.1) * ((famAtlas A).ddc ((famAtlas A).fn fun y => y.2.elim 0 φ) * γ)) x = 0`. Introduce `x hx`. Rewrite using `[Pi.mul_apply, Pi.mul_apply]`. Break down `not_and_or.1 hx with h | h` into its components or cases. Simplify using `[HolAtlas.fn, image_eq_zero_of_notMem_tsupport h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.T.ddc_vanishes_off_support M A φ hc x h, zero_mul, mul_zero]`. Establish `e1` using `HolAtlas.integral_eq_integral_chart_of_support (famAtlas A) _ (j, sphFin) _ h4 hK hKs h0`. Establish `e2` using `GlobalTheory.T.integral_product_fubini_complex_line _ (integrable_dens_loc (famAtlas A) h4 (j, sphFin) hK hKs h0)`. Use `(e1.trans e2).trans (integral_congr_ae (.of_forall fun w => ?_))` and prove the remaining obligations. Establish `h5` using `(((P M 1 A _ (isHolo_fib A w)).2 0 γ γ).2.2.2 hγ).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only []`. Rewrite using `[HolAtlas.integral_eq_integral_chart_of_support A _ j _ (C' 0 _ _ (A.isForm_fn hχ) h5).2.1 hKχ hs (fun x hx => by simp [HolAtlas.fn, image_eq_zero_of_notMem_tsupport hx]), ← integral_mul_const]`. Conclude with `integral_congr_ae (.of_forall fun v => dens_loc_prod A hγ χ j hφ v w)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_fn_mul_ddc_mul [MeasurableSpace (M × OnePoint ℂ)] [BorelSpace (M × OnePoint ℂ)]
     {γ : (famAtlas A).Fld} (hγ : (famAtlas A).IsForm γ) {χ : M → ℝ} {j : A.ι}
@@ -199,19 +197,17 @@ theorem integral_fn_mul_ddc_mul [MeasurableSpace (M × OnePoint ℂ)] [BorelSpac
   exact integral_congr_ae (.of_forall fun v => dens_loc_prod A hγ χ j hφ v w)
 
 /- English proof (translation)
-Take `⟨hone, C, -, -, P⟩` from `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ (famAtlas A)`. Take `⟨-, C', -, -⟩` from `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ A`. Take `⟨N, c, χ, hχ, hs, h1⟩` from `GlobalTheory.T.exists_finite_smooth_partition_unity_holAtlas A`. Establish `hsum (t : OnePoint ℂ) : A.integral ((famAtlas A).pullback A (fib t) γ) = ∑ j, A.integral (A.fn (χ j) * (famAtlas A).pullback A (fib t) γ)`. Rewrite using `[← GlobalTheory.T.holAtlas_integral_fin_sum_compact A _ fun j => (C' 0 _ _ (A.isForm_fn (hχ j)) (((P M 1 A _ (isHolo_fib A t)).2 0 γ γ).2.2.2 hγ).1).2.1, ← eq_sum_fn_mul A χ h1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcj (j : Fin N)` using `GlobalTheory.T.continuous_fibre_integral_cutoff M A γ hγ (χ j) (c j) (hχ j) (hs j)`. Use `const_of_weakly_harmonic (fun t => A.integral ((famAtlas A).pullback A (fib t) γ)) ?_ ?_ t t'` and prove the remaining obligations. Simplify using `only [hsum]`. Conclude with `continuous_finset_sum _ fun j _ => hcj j`. Introduce `φ hφ hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Use `letI : MeasurableSpace (M × OnePoint ℂ) := borel _`. Use `haveI : BorelSpace (M × OnePoint ℂ) := ⟨rfl⟩`. Establish `hGs` using `GlobalTheory.T.smooth_pullback_function_family_atlas M A φ hφ hc`. Establish `hG` using `(famAtlas A).isForm_fn hGs`. Establish `h2` using `(C 0 _ _ hG hG).2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(C 0 _ _ h2 h2).2.2.2.1`. Establish `h4 : (famAtlas A).IsForm ((famAtlas A).ddc ((famAtlas A).fn fun y => y.2.elim 0 φ) * γ)` using `(C 0 _ _ (C HermFrame.kappa _ _ h3 h3).2.2.1 hγ).2.1`. Establish `hz : (famAtlas A).integral 0 = 0`. Use `HolAtlas.integral_sub_of_isForm (famAtlas A) _ _ hone hone` as an intermediate fact. Rewrite `this` using `[sub_self, sub_self]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `ByParts.integral_fn_mul_ddc _ _ (famAtlas A) _ hGs γ hγ`. Rewrite `key` using `[hd, mul_zero, hz, eq_sum_fn_mul (famAtlas A) (fun j y => χ j y.1) (fun y => h1 y.1) (_ * γ), GlobalTheory.T.holAtlas_integral_fin_sum_compact _ _ fun j => (C 0 _ _ ((famAtlas A).isForm_fn (u := fun y => χ j y.1) (smoothOn_fst A (hχ j))) h4).2.1, Finset.sum_congr rfl fun j _ => i …`. Establish `hD : Continuous (iteratedFDeriv ℝ 2 φ)` using `hφ.continuous_iteratedFDeriv (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`. Establish `hlc : Continuous fun w => Laplacian.laplacian φ w / (4 * π)`. Rewrite using `[InnerProductSpace.laplacian_eq_iteratedFDeriv_complexPlane]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `fun_prop`. Establish `hls : HasCompactSupport fun w => Laplacian.laplacian φ w / (4 * π)`. Rewrite using `[InnerProductSpace.laplacian_eq_iteratedFDeriv_complexPlane]`. Conclude with `(hc.iteratedFDeriv (𝕜 := ℝ) 2).mono fun w hw h => hw (by simp [h])`. Establish `hint (j : Fin N) : Integrable fun w : ℂ => A.integral (A.fn (χ j) * (famAtlas A).pullback A (fib (w : OnePoint ℂ)) γ) * (Laplacian.laplacian φ w / (4 * π))` using `(((hcj j).comp OnePoint.continuous_coe).mul hlc).integrable_of_hasCompactSupport hls.mul_left`.
-
-Rewrite `key` using `[← integral_finset_sum _ fun j _ => hint j]`. Simplify using `only [← Finset.sum_mul, ← hsum] at key`. Simplify using `only [← mul_div_assoc, integral_div] at key`. Conclude with `(div_eq_zero_iff.1 key.symm).resolve_right (by positivity)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_fib_eq_of_ddc_eq_zero {γ : (famAtlas A).Fld} (hγ : (famAtlas A).IsForm γ)
     (hd : (famAtlas A).ddc γ = 0) (t t' : OnePoint ℂ) :
@@ -262,13 +258,13 @@ theorem integral_fib_eq_of_ddc_eq_zero {γ : (famAtlas A).Fld} (hγ : (famAtlas 
 end Fam
 
 /- English proof (translation)
-Introduce `M _ _ _ _ _ _ A α β hα hβ hd t t'`. Take `⟨-, C, -, -, P⟩` from `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ (famAtlas A)`. Take `⟨-, C', -, -⟩` from `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ A`. Establish `h1` using `C 0 _ _ hα.1 hβ.1`. Establish `h2` using `C 0 _ _ h1.2.2.2.2.1 (C 0 _ _ hβ.1 hβ.1).2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : (famAtlas A).ddc (α + β) = 0`. Rewrite using `[HolAtlas.ddc, h1.2.2.2.2.2.2.1, h2.2.2.2.2.2.1, smul_add]`. Conclude with `funext hd`. Establish `e (s : OnePoint ℂ) : A.integral ((famAtlas A).pullback A (fib s) α) + A.integral ((famAtlas A).pullback A (fib s) β) = A.integral ((famAtlas A).pullback A (fib s) (α + β))`. Establish `Q` using `(P M 1 A _ (isHolo_fib A s)).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `((Q 0 α α).2.2.2 hα.1).1`. Establish `hb` using `((Q 0 β β).2.2.2 hβ.1).1`. Use `HolAtlas.integral_sub_of_isForm A _ _ (C' 0 _ _ ha hb).1 hb` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Rewrite using `[(Q 0 α β).1, this, sub_add_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, e]`. Conclude with `integral_fib_eq_of_ddc_eq_zero A h1.1 hd' t t'`.
+A detailed English derivation is pending.
 -/
 theorem integral_fib_add_const : ∀ (M : Type) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [CompactSpace M] [MeasurableSpace M] [BorelSpace M] (A : HolAtlas M 1) (α β : (famAtlas A).Fld), (famAtlas A).IsRealForm 1 α → (famAtlas A).IsRealForm 1 β → (∀ x, (famAtlas A).ddc α x + (famAtlas A).ddc β x = 0) → ∀ t t' : OnePoint ℂ, A.integral ((famAtlas A).pullback A (fib t) α) + A.integral ((famAtlas A).pullback A (fib t) β) = A.integral ((famAtlas A).pullback A (fib t') α) + A.integral ((famAtlas A).pullback A (fib t') β) := by
   intro M _ _ _ _ _ _ A α β hα hβ hd t t'

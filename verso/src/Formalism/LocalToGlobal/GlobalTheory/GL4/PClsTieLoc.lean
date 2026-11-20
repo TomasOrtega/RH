@@ -8,23 +8,21 @@ open scoped TensorProduct
 namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 
 /- English proof (translation)
-Set `B` to `Algebra.traceForm ℚ E`. Set `b0` to `NumberField.integralBasis E`. Set `Dl : Submodule ℤ E` to `B.dualSubmodule (Submodule.span ℤ (Set.range b0))`. Establish `hDl : Dl = Submodule.span ℤ (Set.range (B.dualBasis (traceForm_nondegenerate ℚ E) b0))` using `LinearMap.BilinForm.dualSubmodule_span_of_basis B _ b0`. Establish `hDfg : Dl.FG`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hDl]`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Set `N : Submodule ℤ E` to `Submodule.span ℤ (Set.range (fun p : ℕ × 𝓞 E => x ^ p.1 * (p.2 : E)))`. Establish `hND : N ≤ Dl`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨⟨n, b⟩, rfl⟩`. Introduce `y hy`. Rewrite `hy` using `[NumberField.mem_span_integralBasis]`. Take `⟨c, rfl⟩` from `hy`. Take `⟨z, hz⟩` from `h n (b * c)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_one.2 ⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Use `show _ = Algebra.trace ℚ E (x ^ n * (b : E) * (c : E))`. Move the coercions through the operations in `[mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNfg : N.FG`. Establish `hn : IsNoetherian ℤ Dl` using `isNoetherian_of_fg_of_noetherian Dl hDfg`. Conclude with `isNoetherian_submodule.1 hn N hND`. Establish `hN0 : N ≠ ⊥`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: x ^ 0 * ((1 : 𝓞 E) : E) ∈ N` using `Submodule.subset_span ⟨(0, 1), rfl⟩`. Rewrite `this` using `[h0]`. Simplify using `at this`. Use `isIntegral_of_smul_mem_submodule (A := E) N hN0 hNfg x fun n hn => ?_` and prove the remaining obligations. Use `Submodule.span_induction (p := fun n _ => x • n ∈ N) ?_ ?_ ?_ ?_ hn` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce and unpack `_ ⟨⟨k, b⟩, rfl⟩`. Use `Submodule.subset_span ⟨(k + 1, b), ?_⟩` and prove the remaining obligations. Use `show x ^ (k + 1) * (b : E) = x * (x ^ k * (b : E))`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b _ _ ha hb`. Rewrite using `[smul_add]`. Conclude with `add_mem ha hb`. Introduce `r a _ ha`. Rewrite using `[smul_comm]`.
-
-Conclude with `N.smul_mem r ha`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_trace_pow_mul (E : Type) [Field E] [NumberField E] (x : E)
     (h : ∀ (n : ℕ) (b : 𝓞 E), Algebra.trace ℚ E (x ^ n * (b : E)) ∈ (algebraMap ℤ ℚ).range) :
@@ -69,7 +67,7 @@ theorem isIntegral_of_trace_pow_mul (E : Type) [Field E] [NumberField E] (x : E)
   · intro r a _ ha; rw [smul_comm]; exact N.smul_mem r ha
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.mem_integers_of_valuation_le_one` to reduce the goal to its premises. Introduce `v`. Use `h v` as an intermediate fact. Rewrite `this` using `[FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_int_of_adele (F : Type) [Field F] [NumberField F] (y : F)
     (h : algebraMap F (FiniteAdeleRing (𝓞 F) F) y ∈ intAd F) : y ∈ (algebraMap (𝓞 F) F).range := by
@@ -85,13 +83,11 @@ section Tens
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `hm using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, r, hr, rfl⟩` from `hx`. Proceed by induction on `hm' using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨a', ha', r', hr', rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨a * a', S₁.mul_mem ha ha', r * r', S₂.mul_mem hr hr', Algebra.TensorProduct.tmul_mul_tmul _ _ _ _⟩`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add y y' _ _ h1 h2 => rw [mul_add]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem h1 h2`. Consider the case `neg y _ h1 => rw [mul_neg]`. Conclude with `neg_mem h1`. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`.
-
-Consider the case `add y y' _ _ h1 h2 => rw [add_mul]`. Conclude with `add_mem h1 h2`. Consider the case `neg y _ h1 => rw [neg_mul]`. Conclude with `neg_mem h1`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_mem_pureClosure {R : Type} [CommRing R] [Algebra F R] (S₁ : Subring E) (S₂ : Subring R)
     {m m' : E ⊗[F] R}
@@ -114,9 +110,9 @@ theorem mul_mem_pureClosure {R : Type} [CommRing R] [Algebra F R] (S₁ : Subrin
   | neg y _ h1 => rw [neg_mul]; exact neg_mem h1
 
 /- English proof (translation)
-Proceed by induction on `hz using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨a, rfl⟩ | ⟨r, rfl⟩` into its components or cases. Conclude with `AddSubgroup.subset_closure ⟨a, a.2, 1, S₂.one_mem, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨1, S₁.one_mem, r, r.2, rfl⟩`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `one => exact AddSubgroup.subset_closure ⟨1, S₁.one_mem, 1, S₂.one_mem, rfl⟩`. Consider the case `add x y _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `neg x _ h1 => exact neg_mem h1`. Consider the case `mul x y _ _ h1 h2 => exact mul_mem_pureClosure S₁ S₂ h1 h2`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tensInt_le_pureClosure {R : Type} [CommRing R] [Algebra F R] (S₁ : Subring E) (S₂ : Subring R)
     {z : E ⊗[F] R} (hz : z ∈ tensInt (F := F) R S₁ S₂) :
@@ -138,30 +134,28 @@ def trT (F E R : Type) [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F
   TensorProduct.lift ((LinearMap.mul F R).comp ((Algebra.linearMap F R).comp (Algebra.trace F E)))
 
 /- English proof (translation)
-Simplify using `[trT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trT_tmul {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R] (a : E) (r : R) :
     trT F E R (a ⊗ₜ r) = algebraMap F R (Algebra.trace F E a) * r := by
   simp [trT]
 
 /- English proof (translation)
-Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `htrO : ∀ a : E, a ∈ intOE E → Algebra.trace F E a ∈ (algebraMap (𝓞 F) F).range`. Introduce and unpack `a ⟨a, rfl⟩`. Establish `: IsIntegral ℤ (Algebra.trace F E (a : E))` using `Algebra.isIntegral_trace a.2`. Take `⟨y, hy⟩` from `(IsIntegralClosure.isIntegral_iff (A := 𝓞 F)).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hy⟩`. Establish `htr : ∀ z ∈ tensInt (F` using `F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F), trT F E (FiniteAdeleRing (𝓞 F) F) z ∈ intAd F := by`. Introduce `z hz`. Use `tensInt_le_pureClosure _ _ hz` as an intermediate fact. Use `clear hz`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `this using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, r, hr, rfl⟩` from `hy`. Rewrite using `[trT_tmul]`. Use `(intAd F).mul_mem ?_ hr` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨o, ho⟩` from `htrO a ha`. Rewrite using `[← ho]`. Introduce `v`. Use `show ((o : F) : v.adicCompletion F) ∈ _`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `HeightOneSpectrum.valuation_le_one v o`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y y' _ _ h1 h2 => rw [map_add]`. Conclude with `add_mem h1 h2`.
+Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `neg y _ h1 => rw [map_neg]`. Conclude with `neg_mem h1`. Establish `hint : IsIntegral ℤ x`. Apply `isIntegral_of_trace_pow_mul E x` to reduce the goal to its premises. Introduce `n b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (x ^ n * (b : E)) ∈ tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F) := by`. Rewrite using `[map_mul, map_pow]`. Use `Subring.mul_mem _ (Subring.pow_mem _ hx n) (Subring.subset_closure (Or.inl ⟨⟨(b : E), b, rfl⟩, rfl⟩))` and prove the remaining obligations. Establish `h1` using `htr _ hw`. Establish `e1 : trT F E (FiniteAdeleRing (𝓞 F) F) (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (x ^ n * (b : E))) = algebraMap F (FiniteAdeleRing (𝓞 F) F) (Algebra.trace F E (x ^ n * (b : E))) := by show trT F E _ ((x ^ n * (b : E)) ⊗ₜ 1) = _`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[trT_tmul, mul_one]`. Rewrite `h1` using `[e1]`. Take `⟨o, ho⟩` from `mem_int_of_adele F _ h1`. Rewrite using `[← Algebra.trace_trace (R := ℚ) (S := F) (T := E), ← ho]`. Establish `: IsIntegral ℤ (Algebra.trace ℚ F (o : F))` using `Algebra.isIntegral_trace o.2`.
-
-Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).1 this`. Conclude with `⟨y, hy⟩`. Take `⟨y, hy⟩` from `(IsIntegralClosure.isIntegral_iff (A := 𝓞 E)).1 hint`. Conclude with `⟨y, hy⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_intOE_of_inclE (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsScalarTower ℚ F E] (x : E)

@@ -12,11 +12,11 @@ section Retract
 variable {R : Type u} [Ring R]
 
 /- English proof (translation)
-Set `q : LinearMap.ker S.g.hom →ₗ[R] W` to `Q ∘ₗ (LinearMap.ker S.g.hom).subtype`. Establish `hs : Function.Surjective q` using `fun w => ⟨⟨I w, hI w⟩, hQI w⟩`. Establish `hk : LinearMap.range S.moduleCatToCycles = LinearMap.ker q`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `hQ y`. Introduce `hx`. Take `⟨y, hy⟩` from `hex x.1 x.2 hx`. Conclude with `⟨y, Subtype.ext hy⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨S.moduleCatHomologyIso.toLinearEquiv ≪≫ₗ Submodule.quotEquivOfEq _ _ hk ≪≫ₗ q.quotKerEquivOfSurjective hs⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_homology_equiv_of_retract (S : ShortComplex (ModuleCat.{v} R))
     {W : Type*} [AddCommGroup W] [Module R W] (I : W →ₗ[R] S.X₂) (Q : S.X₂ →ₗ[R] W)
@@ -57,7 +57,7 @@ def degProj (A : Cube.{v} ι R) (p : ℕ) : Module.End R (∀ s, A.obj s) :=
   extend A p ∘ₗ restrictDeg A p
 
 /- English proof (translation)
-Distinguish the cases in `h : s.card = p`. Rewrite using `[if_pos h]`. Conclude with `extend_apply_of_eq A _ h`. Rewrite using `[if_neg h]`. Conclude with `extend_apply_of_ne A _ h`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degProj_apply (A : Cube.{v} ι R) (p : ℕ) (x : ∀ s, A.obj s) (s : Finset ι) :
     degProj A p x s = if s.card = p then x s else 0 := by
@@ -75,21 +75,21 @@ theorem degSign_apply (A : Cube.{v} ι R) (x : ∀ s, A.obj s) (s : Finset ι) :
     degSign A x s = (-1 : ℤ) ^ s.card • x s := rfl
 
 /- English proof (translation)
-The claim follows from `funext fun s => extend_apply_of_eq A x s.2`.
+A detailed English derivation is pending.
 -/
 theorem restrictDeg_extend (A : Cube.{v} ι R) (p : ℕ) (x : Term A p) :
     restrictDeg A p (extend A p x) = x :=
   funext fun s => extend_apply_of_eq A x s.2
 
 /- English proof (translation)
-The claim follows from `funext fun s => congrFun (h s.card) ⟨s, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ext_restrictDeg {A : Cube.{v} ι R} {x y : ∀ s, A.obj s}
     (h : ∀ p, restrictDeg A p x = restrictDeg A p y) : x = y :=
   funext fun s => congrFun (h s.card) ⟨s, rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Rewrite using `[restrictDeg_apply, degProj_apply, s.2]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem restrictDeg_degProj (A : Cube.{v} ι R) (p q : ℕ) (x : ∀ s, A.obj s) :
     restrictDeg A p (degProj A q x) = if p = q then restrictDeg A p x else 0 := by
@@ -98,7 +98,7 @@ theorem restrictDeg_degProj (A : Cube.{v} ι R) (p q : ℕ) (x : ∀ s, A.obj s)
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Rewrite using `[restrictDeg_apply, degSign_apply, s.2]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restrictDeg_degSign (A : Cube.{v} ι R) (p : ℕ) (x : ∀ s, A.obj s) :
     restrictDeg A p (degSign A x) = (-1 : ℤ) ^ p • restrictDeg A p x := by
@@ -107,9 +107,7 @@ theorem restrictDeg_degSign (A : Cube.{v} ι R) (p : ℕ) (x : ∀ s, A.obj s) :
   rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `extend A p (restrictDeg A p (degProj A q x)) = _`. Rewrite using `[restrictDeg_degProj]`. Use `split_ifs`. Both sides reduce to the same expression.
-
-Conclude with `map_zero _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem degProj_mul_degProj (A : Cube.{v} ι R) (p q : ℕ) :
     degProj A p * degProj A q = if p = q then degProj A p else 0 := by
@@ -121,7 +119,7 @@ theorem degProj_mul_degProj (A : Cube.{v} ι R) (p q : ℕ) :
   · exact map_zero _
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun s => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, degSign_apply, degSign_apply, smul_smul, ← mul_pow]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem degSign_mul_degSign (A : Cube.{v} ι R) : degSign A * degSign A = 1 := by
   refine LinearMap.ext fun x => funext fun s => ?_
@@ -131,14 +129,14 @@ theorem degSign_mul_degSign (A : Cube.{v} ι R) : degSign A * degSign A = 1 := b
 variable [LinearOrder ι]
 
 /- English proof (translation)
-The claim follows from `funext fun t => (d_apply_eq_totalD A (restrictDeg A p x) x (fun _ => rfl) t).symm`.
+A detailed English derivation is pending.
 -/
 theorem restrictDeg_totalD_succ (A : Cube.{v} ι R) (p : ℕ) (x : ∀ s, A.obj s) :
     restrictDeg A (p + 1) (totalD A x) = d A p (restrictDeg A p x) :=
   funext fun t => (d_apply_eq_totalD A (restrictDeg A p x) x (fun _ => rfl) t).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨t, ht⟩`. Take `rfl` from `Finset.card_eq_zero.1 ht`. Rewrite using `[restrictDeg_apply, totalD_apply]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem restrictDeg_totalD_zero (A : Cube.{v} ι R) (x : ∀ s, A.obj s) :
     restrictDeg A 0 (totalD A x) = 0 := by
@@ -148,9 +146,9 @@ theorem restrictDeg_totalD_zero (A : Cube.{v} ι R) (x : ∀ s, A.obj s) :
   simp
 
 /- English proof (translation)
-Establish `key : ∀ (p q : ℕ) (x : Term A p), q ≠ p → restrictDeg A q (extend A p x) = 0` using `fun p q x h => funext fun s => extend_apply_of_ne A x (by rw [s.2]; exact h)`. Use `ext_restrictDeg fun q => ?_` and prove the remaining obligations. Consider the cases of `q with`. Consider the case `zero => rw [restrictDeg_totalD_zero, key _ _ _ (by omega)]`. Consider the case `succ q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite using `[restrictDeg_totalD_succ]`. Distinguish the cases in `h : q = p`. Substitute `h` using the available equality. Rewrite using `[restrictDeg_extend, restrictDeg_extend]`. Rewrite using `[key _ _ _ h, key _ _ _ (by omega), map_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem totalD_extend (A : Cube.{v} ι R) (p : ℕ) (x : Term A p) :
     totalD A (extend A p x) = extend A (p + 1) (d A p x) := by
@@ -167,9 +165,9 @@ theorem totalD_extend (A : Cube.{v} ι R) (p : ℕ) (x : Term A p) :
     · rw [key _ _ _ h, key _ _ _ (by omega), map_zero]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ext_restrictDeg fun p => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, LinearMap.neg_apply, map_neg, restrictDeg_degSign]`. Consider the cases of `p with`. Consider the case `zero => simp [restrictDeg_totalD_zero]`. Consider the case `succ p`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite using `[restrictDeg_totalD_succ, restrictDeg_totalD_succ, restrictDeg_degSign, map_zsmul, pow_succ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem totalD_mul_degSign (A : Cube.{v} ι R) :
     (totalD A : Module.End R _) * degSign A = -(degSign A * totalD A) := by
@@ -192,17 +190,15 @@ variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R]
 open GlobalTheory.Cube
 
 /- English proof (translation)
-Establish `h1 : ∀ w, d A n (restrictDeg A n (I w)) = 0` using `fun w => by`. Rewrite using `[← restrictDeg_totalD_succ, hI, map_zero]`. Establish `h2 : ∀ w, Q (extend A n (restrictDeg A n (I w))) = w` using `fun w => (congrArg Q (hPI w)).trans (hQI w)`. Establish `h3 : ∀ x : Term A n, d A n x = 0 → Q (extend A n x) = 0 → ∃ y, restrictDeg A n (totalD A y) = x` using `fun x hx hx' => by`. Take `⟨y, hy⟩` from `hex (extend A n x) (by rw [totalD_extend, hx, map_zero]) (congrArg (extend A n) (restrictDeg_extend A n x)) hx'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, by rw [hy, restrictDeg_extend]⟩`. Establish `hd : ∀ (p : ℕ) (x : Term A p), ((cubeComplex A).d p (p + 1)).hom x = d A p x` using `fun p x => by rw [cubeComplex_d]; rfl`. Consider the cases of `n with`. Consider the case `zero`. Establish `h0 : (cubeComplex A).d 0 0 = 0` using `(cubeComplex A).shape 0 0 (by simp)`.
+Supply the required witnesses or components. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨e⟩` from `nonempty_homology_equiv_of_retract ((cubeComplex A).sc' 0 0 1) (restrictDeg A 0 ∘ₗ I) (Q ∘ₗ extend A 0) (fun w => (hd 0 _).trans (h1 w)) (fun y => by`. Express the relevant statement in the definitionally equal form `Q (extend A 0 (((cubeComplex A).d 0 0).hom y)) = 0`. Rewrite using `[h0]`. Conclude with `(congrArg Q (map_zero _)).trans (map_zero _)) h2`. Use the proof step `(fun x hx hx' => by`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy⟩` from `h3 x ((hd 0 _).symm.trans hx) hx'`. Rewrite `hy` using `[restrictDeg_totalD_zero]`. Conclude with `⟨0, (map_zero _).trans hy⟩)`. Conclude with `⟨((cubeComplex A).homologyIsoSc' 0 0 1 (by simp) (by simp)).toLinearEquiv ≪≫ₗ e⟩`. Consider the case `succ n`.
+Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨e⟩` from `nonempty_homology_equiv_of_retract ((cubeComplex A).sc' n (n + 1) (n + 1 + 1)) (restrictDeg A (n + 1) ∘ₗ I) (Q ∘ₗ extend A (n + 1)) (fun w => (hd (n + 1) _).trans (h1 w)) (fun y => by`. Express the relevant statement in the definitionally equal form `Q (extend A (n + 1) (((cubeComplex A).d n (n + 1)).hom y)) = 0`. Conclude with `(congrArg (fun z => Q (extend A (n + 1) z)) (hd n y)).trans ((congrArg Q (totalD_extend A n y).symm).trans (hQ _))) h2`. Use the proof step `(fun x hx hx' => by`. Take `⟨y, hy⟩` from `h3 x ((hd (n + 1) _).symm.trans hx) hx'`.
-
-Rewrite `hy` using `[restrictDeg_totalD_succ]`. Conclude with `⟨_, (hd n _).trans hy⟩)`. Conclude with `⟨((cubeComplex A).homologyIsoSc' n (n + 1) (n + 1 + 1) (by simp) (by simp)).toLinearEquiv ≪≫ₗ e⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_cubeHomology_equiv_of_retract (A : Cube.{v} ι R) (n : ℕ)
     {W : Type*} [AddCommGroup W] [Module R W] (I : W →ₗ[R] ∀ s, A.obj s)
@@ -250,17 +246,17 @@ theorem nonempty_cubeHomology_equiv_of_retract (A : Cube.{v} ι R) (n : ℕ)
       (by simp)).toLinearEquiv ≪≫ₗ e⟩
 
 /- English proof (translation)
-Establish `hPe : ∀ x, P (e x) = e (P x)` using `fun x => congr($heP x)`. Establish `hPP : ∀ x, P (P x) = P x` using `fun x => Φ.injective (by`. Rewrite using `[← hP, ← hP]`. Use `degProj_mul_degProj A n n` as an intermediate fact. Rewrite `this` using `[if_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congr($this (Φ x)))`. Establish `hI : ∀ w, e (P (I w)) = I w` using `fun w => by rw [← hIQ, hQI]`. Use `nonempty_cubeHomology_equiv_of_retract A n (Φ.toLinearMap ∘ₗ I) (Q ∘ₗ Φ.symm.toLinearMap) (fun w => ?_) (fun w => ?_) (fun y => ?_) (fun w => by simp [hQI]) fun x hx hx' hx'' => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `totalD A (Φ (I w)) = 0`. Establish `: T (e (P (I w))) = 0` using `congr($hTe (P (I w)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, ← hI, this, map_zero]`. Express the relevant statement in the definitionally equal form `degProj A n (Φ (I w)) = Φ (I w)`. Rewrite using `[hP, ← hI, hPe, hPP]`. Take `⟨y, rfl⟩` from `Φ.surjective y`. Establish `: e (T y) = 0` using `congr($heT y)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT]`. Express the relevant statement in the definitionally equal form `Q (Φ.symm (Φ (T y))) = 0`. Rewrite using `[Φ.symm_apply_apply, ← hQI (Q _), hIQ, ← hPe, this, map_zero, map_zero]`. Take `⟨x, rfl⟩` from `Φ.surjective x`. Rewrite `hx` using `[hT, map_eq_zero_iff _ Φ.injective]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx'` using `[hP, Φ.injective.eq_iff]`. Express the relevant statement in the definitionally equal form `Q (Φ.symm (Φ x)) = 0 at hx''`. Rewrite `hx''` using `[Φ.symm_apply_apply]`. Establish `h1 : e x = 0` using `by rw [← hx', ← hIQ, hx'', map_zero]`. Establish `h2 : x - e x = T (h x) + h (T x)` using `congr($hh x)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1, hx, map_zero, add_zero, sub_zero]`. Conclude with `⟨Φ (h x), by rw [hT, ← h2]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_cubeHomology_equiv_of_homotopy (A : Cube.{v} ι R) (n : ℕ)
     {V W : Type*} [AddCommGroup V] [Module R V] [AddCommGroup W] [Module R W]
@@ -307,9 +303,9 @@ variable {ι : Type} [LinearOrder ι] {K : Type u} [Field K]
 open GlobalTheory.Cube
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `f.rangeRestrict.exists_rightInverse_of_surjective f.range_rangeRestrict`. Take `⟨g, hg⟩` from `s.exists_extend`. Use `⟨g, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : g (f x) = s (f.rangeRestrict x)` using `congr($hg (f.rangeRestrict x))`. Rewrite using `[h1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val congr($hs (f.rangeRestrict x))`.
+A detailed English derivation is pending.
 -/
 theorem exists_comp_comp_eq_of_field {V W : Type*} [AddCommGroup V] [Module K V] [AddCommGroup W]
     [Module K W] (f : V →ₗ[K] W) : ∃ g : W →ₗ[K] V, ∀ x, f (g (f x)) = f x := by
@@ -321,29 +317,29 @@ theorem exists_comp_comp_eq_of_field {V W : Type*} [AddCommGroup V] [Module K V]
   exact congrArg Subtype.val congr($hs (f.rangeRestrict x))
 
 /- English proof (translation)
-Use `choose g hg using fun p => exists_comp_comp_eq_of_field (d A p)`. Use `set D : Module.End K (∀ s, A.obj s) := totalD A with hD`. Set `h : Module.End K (∀ s, A.obj s)` to `LinearMap.pi fun s => LinearMap.proj (φ := fun t : {t : Finset ι // t.card = s.card} => A.obj t.1) ⟨s, rfl⟩ ∘ₗ g s.card ∘ₗ restrictDeg A (s.card + 1)`. Establish `hr : ∀ p x, restrictDeg A p (h x) = g p (restrictDeg A (p + 1) x)` using `fun p x => by`. Use function extensionality and compare the values at `⟨s, hs⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Both sides reduce to the same expression.
 
-Substitute `hs` using the available equality. Both sides reduce to the same expression. Establish `hDD : D * D = 0` using `LinearMap.ext (totalD_totalD A)`. Establish `hDhD : D * h * D = D` using `LinearMap.ext fun x => ext_restrictDeg fun p => by`. Simplify using `only [Module.End.mul_apply, hD]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `p with`. Consider the case `zero => rw [restrictDeg_totalD_zero, restrictDeg_totalD_zero]`. Consider the case `succ p => rw [restrictDeg_totalD_succ, hr, restrictDeg_totalD_succ, hg]`. Establish `hεh : degSign A * h = -(h * degSign A)` using `LinearMap.ext fun x => ext_restrictDeg fun p => by`. Simplify using `only [Module.End.mul_apply, LinearMap.neg_apply, map_neg, restrictDeg_degSign, hr, map_zsmul, pow_succ]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hDε : D * degSign A = -(degSign A * D)` using `totalD_mul_degSign A`. Establish `hP : ∀ q, degProj A q * (D * h + h * D) = (D * h + h * D) * degProj A q` using `fun q => LinearMap.ext fun x => ext_restrictDeg fun p => by`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, map_add, restrictDeg_degProj, hD, hr, restrictDeg_totalD_succ]`. Consider the cases of `p with`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => split_ifs <;> simp [restrictDeg_totalD_zero]`. Consider the case `succ p`. Simplify using `only [restrictDeg_totalD_succ, hr, restrictDeg_degProj]`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨e, he⟩ : ∃ e : Module.End K (∀ s, A.obj s), e = 1 - (D * h + h * D)` from `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : D * e = 0`. Rewrite using `[he, mul_sub, mul_add, ← mul_assoc, ← mul_assoc, hDD, hDhD]`. Simplify using the standard rewrite rules. Establish `h2 : e * D = 0`. Rewrite using `[he, sub_mul, add_mul, mul_assoc h, hDD, hDhD]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h3 : e * e * e = e * e`. Establish `: e * e * e = e * (1 - (D * h + h * D)) * e` using `by rw [← he]`. Rewrite using `[this, mul_sub, mul_add, ← mul_assoc, h2, sub_mul, add_mul, mul_assoc e (h * D), mul_assoc h, h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ∀ q, degProj A q * e = e * degProj A q` using `fun q => by`. Rewrite using `[he, mul_sub, sub_mul, hP]`. Simplify using the standard rewrite rules. Establish `h5 : degSign A * e = e * degSign A`. Establish `a1 : degSign A * (D * h) = D * h * degSign A`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_assoc, ← neg_neg (h * _), ← hεh, mul_neg, ← mul_assoc D, hDε]`. Simplify using `[mul_assoc]`. Establish `a2 : degSign A * (h * D) = h * D * degSign A`. Rewrite using `[mul_assoc, hDε, ← mul_assoc, hεh]`. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[he, mul_sub, sub_mul, mul_add, add_mul, a1, a2]`. Simplify using the standard rewrite rules. Use `⟨e * e, h + e * h, ?_, ?_, ?_, ?_, fun q => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: e * e = e * (1 - (D * h + h * D))` using `by rw [← he]`. Rewrite using `[this, mul_sub, mul_add e, ← mul_assoc e D, h2, mul_add D, ← mul_assoc D e, h1, add_mul, ← mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [mul_one, zero_mul, zero_add, add_zero]`. Use `nth_rewrite 1 [he]`. Normalize the expressions using the abelian group laws. Rewrite using `[← mul_assoc, h1, zero_mul]`. Rewrite using `[mul_assoc, h2, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, h3, h3]`. Rewrite using `[← mul_assoc, h4, mul_assoc, h4, mul_assoc]`. Rewrite using `[← mul_assoc, h5, mul_assoc, h5, mul_assoc]`. Rewrite using `[mul_add, ← mul_assoc, h5, mul_assoc, hεh, add_mul, mul_neg, mul_assoc, neg_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cube.exists_contraction (A : Cube.{v} ι K) : ∃ e h : Module.End K (∀ s, A.obj s),
     1 - e = (totalD A : Module.End K _) * h + h * totalD A ∧
@@ -419,9 +415,9 @@ variable {K : Type u} [CommRing K] {V V' : Type*} [AddCommGroup V] [Module K V]
   [AddCommGroup V'] [Module K V']
 
 /- English proof (translation)
-Establish `a1 : D * (ε * e) = 0` using `by rw [← mul_assoc, hDε, neg_mul, mul_assoc, hDe]; simp`. Establish `a2 : ε * (ε * e) = e` using `by rw [← mul_assoc, hεε, one_mul]`. Establish `a3 : ε * e * D = 0` using `by rw [mul_assoc, heD, mul_zero]`. Establish `a4 : ε * e * ε = e` using `by rw [mul_assoc, ← hεe, a2]`. Establish `a5 : D * h = 1 - e - h * D` using `by rw [hh]; abel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a6 : D' * h' = 1 - e' - h' * D'` using `by rw [hh']; abel`. Simplify using `only [mul_add, add_mul, ← TensorProduct.map_mul, a1, a2, a3, a4, a5, a6, hεh]`. Use `TensorProduct.ext' fun x y => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, LinearMap.add_apply, TensorProduct.map_tmul, Module.End.one_apply, LinearMap.zero_apply, LinearMap.neg_apply, mul_one, one_mul, sub_tmul, tmul_sub, neg_tmul, zero_tmul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem tensor_homotopy {D e h ε : Module.End K V} {D' e' h' : Module.End K V'}
     (hh : 1 - e = D * h + h * D) (hDe : D * e = 0) (heD : e * D = 0) (hDε : D * ε = -(ε * D))
@@ -446,7 +442,7 @@ theorem tensor_homotopy {D e h ε : Module.End K V} {D' e' h' : Module.End K V'}
   abel
 
 /- English proof (translation)
-Use `LinearMap.ext ?_` and prove the remaining obligations. Introduce and unpack `⟨_, x, rfl⟩`. Use `hf p p` as an intermediate fact. Rewrite `this` using `[if_pos rfl]`. Conclude with `Subtype.ext congr($this x)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rangeRestrict_comp_subtype_of_orthogonal {f : ℕ → Module.End K V}
     (hf : ∀ p q, f p * f q = if p = q then f p else 0) (p : ℕ) :
@@ -458,7 +454,7 @@ theorem rangeRestrict_comp_subtype_of_orthogonal {f : ℕ → Module.End K V}
   exact Subtype.ext congr($this x)
 
 /- English proof (translation)
-Use `LinearMap.ext ?_` and prove the remaining obligations. Introduce and unpack `⟨_, x, rfl⟩`. Use `hf p q` as an intermediate fact. Rewrite `this` using `[if_neg h]`. Conclude with `Subtype.ext congr($this x)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rangeRestrict_comp_subtype_of_orthogonal_of_ne {f : ℕ → Module.End K V}
     (hf : ∀ p q, f p * f q = if p = q then f p else 0) {p q : ℕ} (h : p ≠ q) :
@@ -470,13 +466,13 @@ theorem rangeRestrict_comp_subtype_of_orthogonal_of_ne {f : ℕ → Module.End K
   exact Subtype.ext congr($this x)
 
 /- English proof (translation)
-Use `⟨∑ x : S, TensorProduct.map (LinearMap.range (f x.1.1)).subtype (LinearMap.range (g x.1.2)).subtype ∘ₗ LinearMap.proj x, LinearMap.pi fun x => TensorProduct.map (f x.1.1).rangeRestrict (g x.1.2).rangeRestrict, fun z => ?_, fun w => funext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, ← Finset.sum_coe_sort S]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.pi_apply]`. Rewrite using `[TensorProduct.map_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[LinearMap.sum_apply, LinearMap.pi_apply, map_sum, Finset.sum_eq_single x]`. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[TensorProduct.map_map, rangeRestrict_comp_subtype_of_orthogonal hf, rangeRestrict_comp_subtype_of_orthogonal hg, TensorProduct.map_id, LinearMap.id_apply]`. Introduce `y _ hy`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[TensorProduct.map_map]`. Distinguish the cases in `h : x.1.1 = y.1.1`. Establish `h' : x.1.2 ≠ y.1.2` using `fun h' => hy (Subtype.ext (Prod.ext h h')).symm`. Rewrite using `[rangeRestrict_comp_subtype_of_orthogonal_of_ne hg h', TensorProduct.map_zero_right, LinearMap.zero_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rangeRestrict_comp_subtype_of_orthogonal_of_ne hf h, TensorProduct.map_zero_left, LinearMap.zero_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_retraction_tensor_ranges {f : ℕ → Module.End K V} {g : ℕ → Module.End K V'}
     (hf : ∀ p q, f p * f q = if p = q then f p else 0)
@@ -545,7 +541,7 @@ theorem res_extTensor (A : Cube.{v} ι K) (B : Cube.{v} κ K) {w w' : Finset (ι
       TensorProduct.map (res A (monotone_part _ h)) (res B (monotone_part _ h)) := rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← sumVertex_part w, sumVertex_eq_map_disjSum, Finset.sum_map, Finset.sum_disjSum]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_parts {M : Type*} [AddCommMonoid M] (w : Finset (ι ⊕ₗ κ)) (F : ι ⊕ₗ κ → M) :
     ∑ j ∈ w, F j = ∑ i ∈ part (inlEmb ι κ) w, F (inlEmb ι κ i) +
@@ -554,7 +550,7 @@ theorem sum_parts {M : Type*} [AddCommMonoid M] (w : Finset (ι ⊕ₗ κ)) (F :
   rfl
 
 /- English proof (translation)
-Simplify using `only [Finset.card_eq_sum_ones]`. Conclude with `sum_parts w _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_parts (w : Finset (ι ⊕ₗ κ)) :
     w.card = (part (inlEmb ι κ) w).card + (part (inrEmb ι κ) w).card := by
@@ -562,7 +558,7 @@ theorem card_parts (w : Finset (ι ⊕ₗ κ)) :
   exact sum_parts w _
 
 /- English proof (translation)
-Establish `h1 : part (inlEmb ι κ) (w.filter (· < inlEmb ι κ i)) = (part (inlEmb ι κ) w).filter (· < i)` using `by ext; rw [mem_part, Finset.mem_filter]; simp`. Establish `h2 : part (inrEmb ι κ) (w.filter (· < inlEmb ι κ i)) = ∅` using `by ext; rw [mem_part, Finset.mem_filter]; simp`. Rewrite using `[cubeSign, card_parts, h1, h2, cubeSign]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cubeSign_inlEmb (w : Finset (ι ⊕ₗ κ)) (i : ι) :
     cubeSign w (inlEmb ι κ i) = cubeSign (part (inlEmb ι κ) w) i := by
@@ -575,7 +571,7 @@ theorem cubeSign_inlEmb (w : Finset (ι ⊕ₗ κ)) (i : ι) :
   simp
 
 /- English proof (translation)
-Establish `h1 : part (inlEmb ι κ) (w.filter (· < inrEmb ι κ k)) = part (inlEmb ι κ) w` using `by ext; rw [mem_part, Finset.mem_filter]; simp`. Establish `h2 : part (inrEmb ι κ) (w.filter (· < inrEmb ι κ k)) = (part (inrEmb ι κ) w).filter (· < k)` using `by ext; rw [mem_part, Finset.mem_filter]; simp`. Rewrite using `[cubeSign, card_parts, h1, h2, cubeSign, pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cubeSign_inrEmb (w : Finset (ι ⊕ₗ κ)) (k : κ) :
     cubeSign w (inrEmb ι κ k) =
@@ -614,13 +610,13 @@ theorem totalTensorEquiv_tmul (x : ∀ s, A.obj s) (y : ∀ t, B.obj t) (w : Fin
     totalTensorEquiv A B (x ⊗ₜ y) w = x (part (inlEmb ι κ) w) ⊗ₜ[K] y (part (inrEmb ι κ) w) := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x y`. Use function extensionality and compare the values at `w`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[LinearMap.add_apply, map_add, Pi.add_apply, TensorProduct.map_tmul, TensorProduct.map_tmul, totalTensorEquiv_tmul, totalTensorEquiv_tmul, totalD_apply, totalD_apply, totalD_apply, sum_parts, sum_tmul, tmul_sum]`. Use `congrArg₂ (· + ·) (Finset.sum_congr rfl fun i _ => ?_) (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Establish `h1 : part (inlEmb ι κ) (w.erase (inlEmb ι κ i)) = (part (inlEmb ι κ) w).erase i` using `by ext; simp`. Establish `h2 : part (inrEmb ι κ) (w.erase (inlEmb ι κ i)) = part (inrEmb ι κ) w` using `by ext; simp`. Establish `h3 : res (extTensor A B) (Finset.erase_subset (inlEmb ι κ i) w) (totalTensorEquiv A B (x ⊗ₜ y) _) = _` using `congrArg₂ (fun a b => a ⊗ₜ[K] b) (res_congr A x h1 _ (Finset.erase_subset _ _)) ((res_congr B y h2 _ (subset_refl _)).trans (res_self B _ _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(congrArg (cubeSign w (inlEmb ι κ i) • ·) h3).trans ?_` and prove the remaining obligations. Rewrite using `[cubeSign_inlEmb]`. Both sides reduce to the same expression. Establish `h1 : part (inlEmb ι κ) (w.erase (inrEmb ι κ k)) = part (inlEmb ι κ) w` using `by ext; simp`. Establish `h2 : part (inrEmb ι κ) (w.erase (inrEmb ι κ k)) = (part (inrEmb ι κ) w).erase k` using `by ext; simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : res (extTensor A B) (Finset.erase_subset (inrEmb ι κ k) w) (totalTensorEquiv A B (x ⊗ₜ y) _) = _` using `congrArg₂ (fun a b => a ⊗ₜ[K] b) ((res_congr A x h1 _ (subset_refl _)).trans (res_self A _ _)) (res_congr B y h2 _ (Finset.erase_subset _ _))`. Use `(congrArg (cubeSign w (inrEmb ι κ k) • ·) h3).trans ?_` and prove the remaining obligations. Rewrite using `[cubeSign_inrEmb, degSign_apply, TensorProduct.tmul_smul, ← TensorProduct.smul_tmul', smul_smul, mul_comm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem totalD_totalTensorEquiv (z : (∀ s, A.obj s) ⊗[K] (∀ t, B.obj t)) :
     totalD (extTensor A B) (totalTensorEquiv A B z) = totalTensorEquiv A B
@@ -661,13 +657,13 @@ theorem totalD_totalTensorEquiv (z : (∀ s, A.obj s) ⊗[K] (∀ t, B.obj t)) :
       rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x y`. Use function extensionality and compare the values at `w`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[LinearMap.sum_apply, map_sum, Finset.sum_apply, degProj_apply, card_parts]`. Establish `h : ∀ p : ℕ × ℕ, totalTensorEquiv A B (TensorProduct.map (degProj A p.1) (degProj B p.2) (x ⊗ₜ y)) w = if ((part (inlEmb ι κ) w).card, (part (inrEmb ι κ) w).card) = p then totalTensorEquiv A B (x ⊗ₜ y) w else 0` using `fun p => by`. Rewrite using `[TensorProduct.map_tmul, totalTensorEquiv_tmul, totalTensorEquiv_tmul, degProj_apply, degProj_apply]`. Distinguish the cases in `h1 : (part (inlEmb ι κ) w).card = p.1`. Distinguish the cases in `h2 : (part (inrEmb ι κ) w).card = p.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h1, if_pos h2]`. Conclude with `(if_pos (Prod.ext h1 h2)).symm`. Rewrite using `[if_neg h2, tmul_zero]`. Conclude with `(if_neg fun h => h2 (congrArg Prod.snd h)).symm`. Rewrite using `[if_neg h1, zero_tmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(if_neg fun h => h1 (congrArg Prod.fst h)).symm`. Rewrite using `[Finset.sum_congr rfl fun p _ => h p, Finset.sum_ite_eq]`. Simplify using `only [Finset.HasAntidiagonal.mem_antidiagonal]`.
+A detailed English derivation is pending.
 -/
 theorem degProj_totalTensorEquiv (n : ℕ) (z : (∀ s, A.obj s) ⊗[K] (∀ t, B.obj t)) :
     degProj (extTensor A B) n (totalTensorEquiv A B z) = totalTensorEquiv A B
@@ -740,15 +736,15 @@ noncomputable def trunc₂ExtTensorIso :
         (Finset.nonempty_iff_ne_empty.2 h.2))
 
 /- English proof (translation)
-Establish `hP` using `ordConnected_partsIn (inlEmb ι κ) (inrEmb ι κ) ordConnected_nonempty ordConnected_nonempty`. Establish `hb : ∀ {w w' : Finset (ι ⊕ₗ κ)} (_ : w = w') (h : w ⊆ w'), Function.Bijective (res C h)`. Introduce and unpack `w _ rfl h`. Establish `: ⇑(res C h) = id` using `funext (res_self C h)`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Function.bijective_id`. Set `ν : ∀ w, w ∈ partsIn (inlEmb ι κ) (inrEmb ι κ) {s | s.Nonempty} {t | t.Nonempty} → (extTensor A B).obj w →ₗ[K] C.obj w` to `fun w hw => res C (sumVertex_part w).le ∘ₗ μ _ _ hw.1 hw.2`. Establish `hν : ∀ {w w'} (h : w ⊆ w') hw hw' (x : (extTensor A B).obj w), ν w' hw' (res (extTensor A B) h x) = res C h (ν w hw x)` using `fun {w w'} h hw hw' x => by`. Establish `: ν w' hw' ∘ₗ res (extTensor A B) h = res C h ∘ₗ ν w hw` using `TensorProduct.ext' fun a b => (congrArg (res C (sumVertex_part w').le) (hnat hw.1 hw.2 (monotone_part _ h) (monotone_part _ h) a b)).trans ((res_res C _ _ _).trans (res_res C _ _ _).symm)`. Conclude with `LinearMap.congr_fun this x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails.
 
-Set `φ : supp (extTensor A B) _ hP ⟶ C` to `homMk (fun w => if hw : _ then ν w hw ∘ₗ (suppEquiv _ hP hw).toLinearMap else 0) fun {w w'} h x => by`. Distinguish the cases in `hw : w ∈ partsIn (inlEmb ι κ) (inrEmb ι κ) {s | s.Nonempty} {t | t.Nonempty}`. Establish `hw'` using `isUpperSet_partsIn_nonempty _ _ h hw`. Simplify using `only [dif_pos hw, dif_pos hw', LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[suppEquiv_res h hw hw', hν h hw hw']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `subsingleton_supp (extTensor A B) hP hw` as an intermediate fact. Rewrite using `[Subsingleton.elim x 0]`. Simplify using `only [map_zero]`. Use `⟨(trunc₂Iso φ fun s t hs ht => ?_).symm ≪≫ trunc₂Iso (trunc₂Incl (extTensor A B)) fun s t hs ht => trunc₂Incl_bijective _ hs ht⟩` and prove the remaining obligations. Establish `hw : sumVertex s t ∈ partsIn (inlEmb ι κ) (inrEmb ι κ) {s | s.Nonempty} {t | t.Nonempty}`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hs, ht]`. Establish `: (φ.app (sumVertex s t)).hom = ν _ hw ∘ₗ (suppEquiv _ hP hw).toLinearMap` using `dif_pos hw`. Rewrite using `[this]`. Conclude with `((hb (sumVertex_part _) _).comp (hμ _ _ hw.1 hw.2)).comp (suppEquiv _ hP hw).bijective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_trunc₂_iso_extTensor (C : Cube.{v} (ι ⊕ₗ κ) K)
     (μ : ∀ (s : Finset ι) (t : Finset κ), s.Nonempty → t.Nonempty →
@@ -807,11 +803,11 @@ open GlobalTheory.Cube Finset.HasAntidiagonal Module
 variable {ι κ : Type} [LinearOrder ι] [LinearOrder κ] [Finite ι] [Finite κ] {K : Type u} [Field K]
 
 /- English proof (translation)
-Take `⟨e, h, hh, hDe, heD, hee, hPe, hεe, hεh⟩` from `A.exists_contraction`. Take `⟨e', h', hh', hDe', heD', hee', hPe', -, -⟩` from `B.exists_contraction`. Establish `orth : ∀ {ι : Type} (A : Cube.{v} ι K) (e : Module.End K (∀ s, A.obj s)), e * e = e → (∀ p, degProj A p * e = e * degProj A p) → ∀ p q, (e * degProj A p) * (e * degProj A q) = if p = q then e * degProj A p else 0` using `fun A e hee hPe p q => by`. Rewrite using `[mul_assoc, ← mul_assoc (degProj A p), hPe, ← mul_assoc, ← mul_assoc, hee, mul_assoc, degProj_mul_degProj]`. Apply the tactic sequence `split_ifs <;> simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hA` using `fun p => nonempty_cubeHomology_equiv_of_homotopy A p (LinearEquiv.refl K _) _ _ e h (fun _ => rfl) (fun _ => rfl) hh hDe heD (hPe p) (LinearMap.range (e * degProj A p)).subtype (e * degProj A p).rangeRestrict (fun _ => rfl) (fun w => congr($(rangeRestrict_comp_subtype_of_orthogon …`. Establish `hB` using `fun p => nonempty_cubeHomology_equiv_of_homotopy B p (LinearEquiv.refl K _) _ _ e' h' (fun _ => rfl) (fun _ => rfl) hh' hDe' heD' (hPe' p) (LinearMap.range (e' * degProj B p)).subtype (e' * degProj B p).rangeRestrict (fun _ => rfl) (fun w => congr($(rangeRestrict_comp_subtype_of_ …`. Take `⟨I, Q, hIQ, hQI⟩` from `exists_retraction_tensor_ranges (orth A e hee hPe) (orth B e' hee' hPe') (antidiagonal n)`. Take `⟨E⟩` from `nonempty_cubeHomology_equiv_of_homotopy (extTensor A B) n (totalTensorEquiv A B) _ _ (TensorProduct.map e e') _ (totalD_totalTensorEquiv A B) (degProj_totalTensorEquiv A B n) (tensor_homotopy hh hDe heD (totalD_mul_degSign A) hεe hεh (degSign_mul_degSign A) hh') (by simp [add_mul …`. Rewrite using `[hIQ, ← Module.End.mul_apply, Finset.mul_sum, LinearMap.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [TensorProduct.map_mul]) hQI`. Conclude with `⟨E ≪≫ₗ LinearEquiv.piCongrRight fun x => TensorProduct.congr (hA x.1.1).some.symm (hB x.1.2).some.symm⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem nonempty_cubeHomology_extTensor_equiv (A : Cube.{v} ι K) (B : Cube.{v} κ K) (n : ℕ) :
     Nonempty ((cubeComplex (extTensor A B)).homology n ≃ₗ[K] ∀ x : antidiagonal n,
@@ -847,7 +843,7 @@ theorem nonempty_cubeHomology_extTensor_equiv (A : Cube.{v} ι K) (B : Cube.{v} 
     TensorProduct.congr (hA x.1.1).some.symm (hB x.1.2).some.symm⟩
 
 /- English proof (translation)
-Take `⟨E⟩` from `nonempty_cubeHomology_extTensor_equiv A B n`. Use `⟨Module.Finite.equiv E.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[E.finrank_eq, Module.finrank_pi_fintype, ← Finset.sum_coe_sort (antidiagonal n)]`. Conclude with `Finset.sum_congr rfl fun x _ => Module.finrank_tensorProduct`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cube_kuenneth (A : Cube.{v} ι K) (B : Cube.{v} κ K)
     (hA : ∀ p, Module.Finite K ((cubeComplex A).homology p))
@@ -861,11 +857,11 @@ theorem cube_kuenneth (A : Cube.{v} ι K) (B : Cube.{v} κ K)
   exact Finset.sum_congr rfl fun x _ => Module.finrank_tensorProduct
 
 /- English proof (translation)
-Establish `h0 : ∀ {ι : Type} [LinearOrder ι] (A : Cube.{v} ι K), Subsingleton ((cubeComplex (trunc₁ A)).homology 0)` using `fun A => ModuleCat.subsingleton_of_isZero ((exactAt_iff_isZero_homology _ _).1 (cubeComplex_trunc₁_exactAt_zero A))`. Establish `hf : ∀ {ι : Type} [LinearOrder ι] (A : Cube.{v} ι K), (∀ p, Module.Finite K ((cechComplex A).homology p)) → ∀ p, Module.Finite K ((cubeComplex (trunc₁ A)).homology p)` using `fun A hA p => by`. Consider the cases of `p with`. Consider the case `zero => have := h0 A`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ p => exact Module.Finite.equiv (truncHomologyIso A p).toLinearEquiv.symm`. Take `⟨h1, h2⟩` from `cube_kuenneth (trunc₁ A) (trunc₁ B) (hf A hA) (hf B hB) (n + 2)`. Set `E` to `(cubeHomologyMapIso (trunc₂ExtTensorIso A B) (n + 2)).toLinearEquiv`. Use `⟨Module.Finite.equiv E.symm, ?_⟩` and prove the remaining obligations. Use `h0 A` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h0 B` as an intermediate fact. Rewrite using `[E.finrank_eq, h2, Finset.Nat.antidiagonal_succ_succ', Finset.sum_cons, Finset.sum_cons, Finset.sum_map, Module.finrank_zero_of_subsingleton (M := (cubeComplex (trunc₁ A)).homology 0), Module.finrank_zero_of_subsingleton (M := (cubeComplex (trunc₁ B)).homology 0), zero_mul, mul_z …`. Conclude with `Finset.sum_congr rfl fun x _ => congrArg₂ (· * ·) (truncHomologyIso A x.1).toLinearEquiv.finrank_eq (truncHomologyIso B x.2).toLinearEquiv.finrank_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cech_kuenneth (A : Cube.{v} ι K) (B : Cube.{v} κ K)
     (hA : ∀ p, Module.Finite K ((cechComplex A).homology p))
@@ -897,7 +893,7 @@ theorem cech_kuenneth (A : Cube.{v} ι K) (B : Cube.{v} κ K)
     (truncHomologyIso B x.2).toLinearEquiv.finrank_eq
 
 /- English proof (translation)
-Take `⟨φ⟩` from `nonempty_trunc₂_iso_extTensor A B C μ hμ hnat`. Take `⟨h1, h2⟩` from `cech_kuenneth A B hA hB n`. Set `E` to `(cubeHomologyMapIso φ (n + 2)).toLinearEquiv`. Conclude with `⟨Module.Finite.equiv E.symm, E.finrank_eq.trans h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem cech_kuenneth_of_bijective (A : Cube.{v} ι K) (B : Cube.{v} κ K)
     (C : Cube.{v} (ι ⊕ₗ κ) K)

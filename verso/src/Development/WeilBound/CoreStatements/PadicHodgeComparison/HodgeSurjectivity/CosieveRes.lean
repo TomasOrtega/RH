@@ -30,7 +30,7 @@ attribute [instance] PM.ab PM.md
 def ent {n : ℕ} (i : Fin n → ι) : Finset ι := Finset.univ.image i
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨a, -, rfl⟩ := Finset.mem_image.1 hx exact Finset.mem_image_of_mem _ (Finset.mem_univ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ent_comp {m n : ℕ} (i : Fin n → ι) (θ : Fin m → Fin n) : ent (i ∘ θ) ⊆ ent i := fun x hx => by
   obtain ⟨a, -, rfl⟩ := Finset.mem_image.1 hx
@@ -113,7 +113,7 @@ def relS (Q : ObjectProperty C) (n : ℕ) : Submodule R (CH.Cn F n) where
   smul_mem' r _ hx s hs := by rw [Pi.smul_apply, hx s hs, smul_zero]
 
 /- English proof (translation)
-Introduce `s hs` and use `by change ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (F.map (GlobalTheory.CatH.toLast i s)).hom (z (GlobalTheory.CatH.face i s)) = 0 refine Finset.sum_eq_zero fun i _ => ?_ rw [hz _ (hQ (s.map (homOfLE (Fin.zero_le _))) hs), map_zero, smul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem d_mem_relS {Q : ObjectProperty C} (hQ : Cosieve Q) (n : ℕ) (z : CH.Cn F n) (hz : z ∈ relS F Q n) :
     CH.d F n z ∈ relS F Q (n + 1) := fun s hs => by
@@ -122,7 +122,7 @@ theorem d_mem_relS {Q : ObjectProperty C} (hQ : Cosieve Q) (n : ℕ) (z : CH.Cn 
   rw [hz _ (hQ (s.map (homOfLE (Fin.zero_le _))) hs), map_zero, smul_zero]
 
 /- English proof (translation)
-Introduce `_ _ φ h` and use `hQ φ.hom h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cosieve_res {Q : ObjectProperty C} (hQ : Cosieve Q) (U : ObjectProperty C) :
     Cosieve (fun T : U.FullSubcategory => Q T.obj) := fun _ _ φ h => hQ φ.hom h

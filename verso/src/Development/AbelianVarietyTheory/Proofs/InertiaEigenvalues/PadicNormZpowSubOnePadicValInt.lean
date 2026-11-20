@@ -9,11 +9,11 @@ namespace GlobalTheory.Cyc.LiftExp
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `succ n ih`. Take `⟨r, hr, h⟩` from `ih`. Use `⟨(n.choose 2 : ℕ) + (r + x * r), ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Padic.nonarchimedean _ _).trans (max_le ?_ ((Padic.nonarchimedean _ _).trans (max_le hr ?_)))` and prove the remaining obligations. Conclude with `IsUltrametricDist.norm_natCast_le_one _ _`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hx (norm_nonneg _) hr`. Establish `h2 : (1 + x) ^ n = 1 + (n * x + ((n.choose 2 : ℕ) * x ^ 2 + x ^ 3 * r))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[pow_succ, h2, Nat.choose_succ_succ' n 1, Nat.choose_one_right]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem one_add_pow_expand (x : ℚ_[l]) (hx : ‖x‖ ≤ 1) (n : ℕ) :
     ∃ r : ℚ_[l], ‖r‖ ≤ 1 ∧
@@ -34,32 +34,32 @@ theorem one_add_pow_expand (x : ℚ_[l]) (hx : ‖x‖ ≤ 1) (n : ℕ) :
       ring
 
 /- English proof (translation)
-Rewrite using `[Padic.add_eq_max_of_ne h.ne', max_eq_left h.le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_add_of_lt {a b : ℚ_[l]} (h : ‖b‖ < ‖a‖) : ‖a + b‖ = ‖a‖ := by
   rw [Padic.add_eq_max_of_ne h.ne', max_eq_left h.le]
 
 /- English proof (translation)
-Conclude with `hl.out.one_lt` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem one_lt_l : (1 : ℝ) < l := by exact_mod_cast hl.out.one_lt
 
 /- English proof (translation)
-The claim follows from `zpow_lt_zpow_right₀ one_lt_l h`.
+A detailed English derivation is pending.
 -/
 theorem zpow_lt {a b : ℤ} (h : a < b) : (l : ℝ) ^ a < (l : ℝ) ^ b :=
   zpow_lt_zpow_right₀ one_lt_l h
 
 /- English proof (translation)
-Establish `hl0 : (l : ℝ) ≠ 0` using `(zero_lt_one.trans one_lt_l).ne'`. Establish `hx : ‖u - 1‖ ≤ 1`. Rewrite using `[hu]; exact zpow_le_one_of_nonpos₀ one_lt_l.le (by omega)`. Take `⟨r, hr, h⟩` from `one_add_pow_expand (u - 1) hx n`. Rewrite `h` using `[add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : ‖(n : ℚ_[l]) * (u - 1)‖ = (l : ℝ) ^ (-((j : ℤ) + e))`. Rewrite using `[norm_mul, hn, hu, ← zpow_add₀ hl0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, norm_add_of_lt, hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Use `(Padic.nonarchimedean _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, hu]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[zpow_add₀ hl0, zpow_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `norm_cast`. Use `_ < _ := zpow_lt (by omega)`. Rewrite using `[norm_mul, norm_pow, hu]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, zpow_mul]`.
+Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Use `norm_cast`. Use `_ < _ := zpow_lt (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem norm_pow_sub_one_of (j : ℕ) (hj : 1 ≤ j) (u : ℚ_[l]) (hu : ‖u - 1‖ = (l : ℝ) ^ (-(j : ℤ)))
     (n : ℕ) (e c : ℤ) (hn : ‖(n : ℚ_[l])‖ = (l : ℝ) ^ (-e))
@@ -87,9 +87,7 @@ theorem norm_pow_sub_one_of (j : ℕ) (hj : 1 ≤ j) (u : ℚ_[l]) (hu : ‖u - 
       _ < _ := zpow_lt (by omega)
 
 /- English proof (translation)
-Use `norm_pow_sub_one_of j hj u hu n 0 0 (by` as an intermediate fact. Rewrite using `[neg_zero, zpow_zero, Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hl.out).2 hn)`. Use the proof step `(by rw [neg_zero, zpow_zero]; exact IsUltrametricDist.norm_natCast_le_one _ _)`. Use the proof step `(by omega) (by omega)`.
-
-Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_pow_coprime (j : ℕ) (hj : 1 ≤ j) (u : ℚ_[l]) (hu : ‖u - 1‖ = (l : ℝ) ^ (-(j : ℤ)))
     (n : ℕ) (hn : ¬ l ∣ n) : ‖u ^ n - 1‖ = (l : ℝ) ^ (-(j : ℤ)) := by
@@ -102,11 +100,9 @@ theorem norm_pow_coprime (j : ℕ) (hj : 1 ≤ j) (u : ℚ_[l]) (hu : ‖u - 1�
   simpa using this
 
 /- English proof (translation)
-Establish `hn : ‖(l : ℚ_[l])‖ = (l : ℝ) ^ (-(1 : ℤ))` using `by simp`. Establish `hj1` using `hj.1`. Use `push_cast`. Distinguish the cases in `h2 : l = 2`. Use `hj.2 h2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `norm_pow_sub_one_of j hj.1 u hu l 1 0 hn (by rw [neg_zero, zpow_zero]; exact IsUltrametricDist.norm_natCast_le_one _ _) (by omega) (by omega)`. Establish `h3 : 2 < l` using `lt_of_le_of_ne hl.out.two_le (Ne.symm h2)`. Take `⟨m, hm⟩` from `hl.out.dvd_choose_self (k := 2) two_ne_zero h3`. Use `norm_pow_sub_one_of j hj.1 u hu l 1 1 hn ?_ (by omega) (by omega)` and prove the remaining obligations. Rewrite using `[hm, Nat.cast_mul, norm_mul, hn]`.
-
-Conclude with `mul_le_of_le_one_right (by positivity) (IsUltrametricDist.norm_natCast_le_one _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_prime (j : ℕ) (hj : Lev l j) (u : ℚ_[l]) (hu : ‖u - 1‖ = (l : ℝ) ^ (-(j : ℤ))) :
     ‖u ^ l - 1‖ = (l : ℝ) ^ (-((j + 1 : ℕ) : ℤ)) := by
@@ -125,9 +121,9 @@ theorem norm_pow_prime (j : ℕ) (hj : Lev l j) (u : ℚ_[l]) (hu : ‖u - 1‖ 
     exact mul_le_of_le_one_right (by positivity) (IsUltrametricDist.norm_natCast_le_one _ _)
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => simpa using hu`. Consider the case `succ a ih`. Establish `h : Lev l (j + a)` using `⟨by have := hj.1; omega, fun h => by have := hj.2 h; omega⟩`. Rewrite using `[pow_succ, pow_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_pow_prime (j + a) h _ ih`.
+A detailed English derivation is pending.
 -/
 theorem norm_pow_prime_pow (a : ℕ) (j : ℕ) (hj : Lev l j) (u : ℚ_[l])
     (hu : ‖u - 1‖ = (l : ℝ) ^ (-(j : ℤ))) :
@@ -140,7 +136,7 @@ theorem norm_pow_prime_pow (a : ℕ) (j : ℕ) (hj : Lev l j) (u : ℚ_[l])
     exact norm_pow_prime (j + a) h _ ih
 
 /- English proof (translation)
-Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn l hl.out.ne_one`. Establish `hm0 : m ≠ 0` using `by rintro rfl; simp at hm`. Rewrite using `[padicValNat.mul (pow_ne_zero _ hl.out.ne_zero) hm0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hm, pow_mul, norm_pow_coprime (j + a) (by have := hj.1; omega) _ (norm_pow_prime_pow a j hj u hu) m hm]`. Use `push_cast`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 -/
 theorem norm_pow_nat (j : ℕ) (hj : Lev l j) (u : ℚ_[l])
     (hu : ‖u - 1‖ = (l : ℝ) ^ (-(j : ℤ))) (n : ℕ) (hn : n ≠ 0) :
@@ -154,13 +150,13 @@ theorem norm_pow_nat (j : ℕ) (hj : Lev l j) (u : ℚ_[l])
   simp
 
 /- English proof (translation)
-Introduce `l _ j hj u hu k hk`. Establish `hu1 : ‖u‖ = 1`. Establish `h : ‖u - 1‖ < ‖(1 : ℚ_[l])‖`. Rewrite using `[hu, norm_one]`. Conclude with `zpow_lt_one_of_neg₀ one_lt_l (by have := hj.1; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `norm_add_of_lt h` as an intermediate fact. Simplify using `using this`. Establish `hu0 : u ≠ 0` using `by rintro rfl; simp at hu1`. Establish `key` using `norm_pow_nat j hj u hu k.natAbs (Int.natAbs_ne_zero.2 hk)`. Unfold `padicValInt`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key]`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg k`. Simplify using the standard rewrite rules. Rewrite using `[Int.natAbs_neg, Int.natAbs_natCast, zpow_neg, zpow_natCast]`. Establish `: (u ^ n)⁻¹ - 1 = -((u ^ n - 1) * (u ^ n)⁻¹)` using `by field_simp; ring`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, norm_neg, norm_mul, norm_inv, norm_pow, hu1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_zpow_sub_one : ∀ (l : ℕ) [Fact l.Prime] (j : ℕ), Lev l j → ∀ u : ℚ_[l],
     ‖u - 1‖ = (l : ℝ) ^ (-(j : ℤ)) → ∀ k : ℤ, k ≠ 0 →

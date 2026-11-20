@@ -19,9 +19,9 @@ open GlobalTheory.SplitGLLift GlobalTheory.SplitUnitLift
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F}
 
 /- English proof (translation)
-Establish `hj : Continuous (LinearMap.inr F (Ainf F) (Af F) ∘ₗ GlobalTheory.AdelicU.singleFin v)`. Express the relevant statement in the definitionally equal form `Continuous fun a => ((0 : Ainf F), GlobalTheory.AdelicU.singleFin v a)`. Conclude with `continuous_const.prodMk (GlobalTheory.AdelicU.continuous_singleFin v)`. Establish `h1 : Continuous (GlobalTheory.AdelicU.Supp.singleTens E v)` using `GlobalTheory.AutFunCompare.continuous_tensNU (E := E) _ _ hj`. Establish `: IsModuleTopology (Fv F v) (Fv F v ⊗[F] E)` using `⟨rfl⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalRing (Fv F v ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (Fv F v) _`. Establish `h2 : Continuous ((splitAlgEquiv h τ).symm : Fv F v × Fv F v → Fv F v ⊗[F] E)` using `IsModuleTopology.continuous_of_linearMap (splitAlgEquiv h τ).symm.toLinearMap`. Conclude with `h1.comp h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_liftPair (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) :
     Continuous (liftPair h τ) := by
@@ -37,7 +37,7 @@ theorem continuous_liftPair (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) :
   exact h1.comp h2
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `show Continuous fun p : Matrix (Fin n) (Fin n) (Fv F v) × Matrix (Fin n) (Fin n) (Fv F v) => liftPair h τ (p.1 i j, p.2 i j)`. Conclude with `(continuous_liftPair h τ).comp (((continuous_fst.matrix_elem i j)).prodMk (continuous_snd.matrix_elem i j))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_liftMat (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {n : ℕ} :
     Continuous (liftMat (n := Fin n) h τ) := by
@@ -48,9 +48,7 @@ theorem continuous_liftMat (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {n : �
     (((continuous_fst.matrix_elem i j)).prodMk (continuous_snd.matrix_elem i j))
 
 /- English proof (translation)
-Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hp : Continuous (pairHom (J.map τ) hJ)` using `by show Continuous fun g : GL (Fin n) (Fv F v) => ((g : Matrix (Fin n) (Fin n) (Fv F v)), (J.map τ)⁻¹ * ((g⁻¹ : GL (Fin n) (Fv F v)) : Matrix (Fin n) (Fin n) (Fv F v))ᵀ * J.map τ)`. Use `Units.continuous_val.prodMk ?_` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul (Units.continuous_coe_inv.matrix_transpose)).matrix_mul continuous_const`. Use `show Continuous fun g => 1 + liftMat h τ (pairHom (J.map τ) hJ g - 1)`.
-
-Conclude with `continuous_const.add ((continuous_liftMat h τ).comp (hp.sub continuous_const))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_liftN (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hJ : IsUnit (J.map τ).det) : Continuous (liftN h τ J hJ) := by
@@ -64,7 +62,7 @@ theorem continuous_liftN (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {n : ℕ
   exact continuous_const.add ((continuous_liftMat h τ).comp (hp.sub continuous_const))
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `Units.continuous_iff.2 ⟨continuous_liftN h τ J hJ, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_liftN h τ J hJ).comp continuous_inv`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_liftU (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ε : F)
     (herm : ∀ i j, σ (J j i) = algebraMap F E ε * J i j) (hJ : IsUnit (J.map τ).det) :
@@ -74,7 +72,7 @@ theorem continuous_liftU (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {n : ℕ
   exact (continuous_liftN h τ J hJ).comp continuous_inv
 
 /- English proof (translation)
-Use `(continuous_liftU h τ J ε herm hJ).tendsto 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tendsto_liftU (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ε : F)
     (herm : ∀ i j, σ (J j i) = algebraMap F E ε * J i j) (hJ : IsUnit (J.map τ).det) :
@@ -83,7 +81,7 @@ theorem tendsto_liftU (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {n : ℕ} (
   rwa [map_one] at this
 
 /- English proof (translation)
-Introduce `h τ J ε herm hJ` and use `tendsto_liftU h τ J ε herm hJ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tendsto_liftU_one : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F} {n : ℕ} (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matrix (Fin n) (Fin n) E) (ε : F) (herm : ∀ i j, σ (J j i) = algebraMap F E ε * J i j) (hJ : IsUnit (J.map τ).det), Tendsto (GlobalTheory.SplitUnitLift.liftU h τ J ε herm hJ) (𝓝 1) (𝓝 1) := fun h τ J ε herm hJ => tendsto_liftU h τ J ε herm hJ
 

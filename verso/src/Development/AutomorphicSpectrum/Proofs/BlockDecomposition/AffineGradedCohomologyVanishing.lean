@@ -35,11 +35,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GrForm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T`. Establish `h` using `GlobalTheory.T.inOpen_finite_inf_iff (γ := dividedPowersBot O) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (U ∘ i) Finset.univ T`. Establish `e : (⨅ α ∈ (Finset.univ : Finset (Fin (n + 1))), (U ∘ i) α) = capO U i` using `by simp [capO]`. Rewrite `h` using `[e]`. Use `propext ⟨fun hT => ?_, fun hT a => ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(hT 0).1, capO U i, rfl, h.2 fun a _ => ?_⟩` and prove the remaining obligations. Take `⟨-, V, hV, hI⟩` from `hT a`. Rewrite `hV` using `[Set.mem_singleton_iff]`. Substitute `hV` using the available equality. Conclude with `hI`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, V, hV, hI⟩` from `hT`. Rewrite `hV` using `[Set.mem_singleton_iff]`. Substitute `hV` using the available equality. Conclude with `⟨h1, _, rfl, h.1 hI a (Finset.mem_univ _)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem capT_eq {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {ι : Type}
     (Q : ObjectProperty (Thick (LL q))) (U : ι → X.Opens) {n : ℕ} (i : Fin (n + 1) → ι) :
@@ -60,13 +60,11 @@ theorem capT_eq {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRi
     exact ⟨h1, _, rfl, h.1 hI a (Finset.mem_univ _)⟩
 
 /- English proof (translation)
-Use `le_bot_iff.1 (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hr, rfl⟩`. Establish `: ∃ p ∈ l, p.1 ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: (l.map Prod.fst).sum = 0` using `List.sum_eq_zero (by`. Introduce `x hx`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hc p hp)`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp, hp0⟩` from `this`. Establish `h0 : (dividedPowersBot K).dpow p.1 p.2 = 0`. Establish `: p.2 = 0` using `hl p hp`. Rewrite using `[this]`. Conclude with `(dividedPowersBot K).dpow_eval_zero hp0`.
-
-Simplify using `only [SetLike.mem_coe]`. Rewrite using `[List.prod_eq_zero (List.mem_map.2 ⟨p, hp, h0⟩)]`. Conclude with `Ideal.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_bot {K : Type} [CommRing K] {s : ℕ} (hs : 0 < s) : pdP (dividedPowersBot K) s = ⊥ := by
   refine le_bot_iff.1 (Ideal.span_le.2 ?_)
@@ -89,7 +87,7 @@ theorem dividedPowerFiltration_bot {K : Type} [CommRing K] {s : ℕ} (hs : 0 < s
   exact Ideal.zero_mem _
 
 /- English proof (translation)
-The claim follows from `dividedPowerFiltration_bot hs tf r x h := by simpa using h dv n hn := ⟨0, (n : K)⁻¹, by simp; exact mul_inv_cancel₀ (Nat.cast_ne_zero.2 hn)⟩`.
+A detailed English derivation is pending.
 -/
 theorem tfBase {K : Type} [Field K] [CharZero K] {s : ℕ} (hs : 0 < s) : TFBase (dividedPowersBot K) 1 s where
   nil := dividedPowerFiltration_bot hs
@@ -106,7 +104,7 @@ def zeroSerre (K : Type) [CommRing K] : Serre.{1} K where
     rw [key a, key b]⟩
 
 /- English proof (translation)
-Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Rewrite using `[Subsingleton.elim a b]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem subsingleton_H {K : Type} [CommRing K] (C : Cx.{1} K) (n : ℕ) (h : Subsingleton (C.X n)) : Subsingleton (C.H n) := by
   refine ⟨fun a b => ?_⟩
@@ -115,9 +113,9 @@ theorem subsingleton_H {K : Type} [CommRing K] (C : Cx.{1} K) (n : ℕ) (h : Sub
   rw [Subsingleton.elim a b]
 
 /- English proof (translation)
-Use `subsingleton_H _ a ?_` and prove the remaining obligations. Use `⟨fun x y => funext fun i => ?_⟩` and prove the remaining obligations. Establish `e` using `capT_eq (q := q) (TF l s) U i`. Take `⟨c', -⟩` from `GlobalTheory.T.coordinates_restrict_affine_open (c (i 0)) (capO_le U i 0) (ha _ i)`. Establish `: Subsingleton (HU (GF q r) (capT (fun α => SS q l s (U α)) i) b)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hV l s hb q c' r b hr hbr`. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cech_van (hV : StVan) {O : Type} [CommRing O] (l s : ℕ) (hb : TFBase (dividedPowersBot O) l s) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) {ι : Type} (U : ι → X.Opens) (d : ι → ℕ)
@@ -133,7 +131,7 @@ theorem cech_van (hV : StVan) {O : Type} [CommRing O] (l s : ℕ) (hb : TFBase (
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Take `⟨vb⟩` from `hB l s hb q U d c ha r hr`. Conclude with `GlobalTheory.T.affine_cover_higher_cohomology_vanishes (strV q) V hV U hU ha (CrystallineSemistableComparison.Pb.cechH (GF q r) (fun α => SS q l s (U α)) r) vb p`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cech_pos (hB : StVB) {O : Type} [CommRing O] (l s : ℕ) (hb : TFBase (dividedPowersBot O) l s) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) {ι : Type} [Fintype ι] (U : ι → X.Opens) (d : ι → ℕ) (V : X.Opens) (hV : IsAffineOpen V)
@@ -145,15 +143,13 @@ theorem cech_pos (hB : StVB) {O : Type} [CommRing O] (l s : ℕ) (hb : TFBase (d
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `hS K _ _ X q _ V hVa s r j hr hj`. Establish `hs : 0 < s` using `by omega`. Establish `hb : TFBase (dividedPowersBot K) 1 s` using `tfBase hs`. Take `⟨ι, _, U, d, c, hU, ha⟩` from `hC q V hVa`. Establish `hle : ∀ α, U α ≤ V` using `fun α => hU ▸ le_iSup U α`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinc : St (γ` using `dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (TF 1 s) (Set.range U) ≤ St (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (TF 1 s) {V} := by`. Introduce and unpack `T ⟨h1, W, ⟨α, rfl⟩, hI⟩`. Conclude with `⟨h1, V, rfl, fun x hx => hle α (hI hx)⟩`. Establish `hz` using `GlobalTheory.T.cech_refinement_cohomology_bijective (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (TF 1 s) (Or.inl ⟨rfl, 1, s, rfl⟩) (Set.range U) {V} hinc (by`. Introduce and unpack `W rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hU, sSup_range]) j`. Establish `hcech : ∀ a b, a + b = j → (zeroSerre K).P ((CrystallineSemistableComparison.Pb.cechH (GF q r) (fun α => SS q 1 s (U α)) b).cx.H a)`. Introduce `a b hab`. Distinguish the cases in `hbr : b = r`. Substitute `hbr` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Consider the cases of `a with`. Consider the case `zero => exact absurd (by omega) hj`. Consider the case `succ p => exact cech_pos hB 1 s hb q U d V hVa hU c ha b p hr`. Conclude with `cech_van hV 1 s hb q U d c ha r b a hr hbr`. Establish `hG` using `hS (O := K) (R := K) (I := ⊥) (γ := dividedPowersBot K) (p := 0) (X := X) (q := q) (κ := Ideal.Quotient.mk ⊥) (Λ := K) (GF q r) (TF 1 s) U (zeroSerre K) j hcech`.
-
-Conclude with `@Function.Injective.subsingleton _ _ _ (hz.1 r ((r : ℤ) + 1)).1 hG`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main (hV : StVan) (hB : StVB) (hC : StCover) : KH.GlobSerreSt → ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q]
     (V : X.Opens) (hV : IsAffineOpen V) (s r j : ℕ), r < s → j ≠ r → Subsingleton (HQ (KS q s {V}) r ((r : ℤ) + 1) j) := by
@@ -187,7 +183,7 @@ end GlobalTheory.CompanionTheory.GrForm
 namespace GlobalTheory.CompanionTheory.GrForm
 
 /- English proof (translation)
-Introduce `hL _ hP hS _` and use `main (GlobalTheory.T.graded_form_vanish_of_frame GlobalTheory.T.graded_form_frame hL hP) (GlobalTheory.T.graded_form_vector_bundle (GlobalTheory.T.graded_form_exists_of_cocycle GlobalTheory.T.graded_form_cocycle) GlobalTheory.T.graded_form_add GlobalTheory.T.graded_form_smul Glob …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gr_aff : KH.LocGr → KH.LocVan → KH.PolyTf → KH.GlobSerreSt → KH.GlobVanSt → ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q]
     (V : X.Opens) (hV : IsAffineOpen V) (s r j : ℕ), r < s → j ≠ r → Subsingleton (HQ (KS q s {V}) r ((r : ℤ) + 1) j) := fun hL _ hP hS _ =>

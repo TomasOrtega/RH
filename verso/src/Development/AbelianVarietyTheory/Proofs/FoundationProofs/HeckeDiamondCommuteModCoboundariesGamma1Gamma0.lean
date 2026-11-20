@@ -24,14 +24,14 @@ namespace GlobalTheory.HeckeFamilyMatrices.Comm
 open CongruenceSubgroup
 
 /- English proof (translation)
-Use function extensionality and compare the values at `γ`. Simplify using `[cj, Polynomial.map_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cj_sub {Γ : Type} (u v : Γ → ℂ[X]) : cj (u - v) = cj u - cj v := by
   funext γ
   simp [cj, Polynomial.map_sub]
 
 /- English proof (translation)
-Use `congrArg (ZMod.castHom h (ZMod m)) hx` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intCast_of_dvd {m n : ℕ} (h : m ∣ n) {x a : ℤ} (hx : ((x : ℤ) : ZMod n) = a) :
     ((x : ℤ) : ZMod m) = a := by
@@ -39,11 +39,11 @@ theorem intCast_of_dvd {m n : ℕ} (h : m ∣ n) {x a : ℤ} (hx : ((x : ℤ) : 
   simpa using this
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hσ`. Take `⟨h3, h4⟩` from `hτ`. Establish `h1' : ((σ 1 0 : ℤ) : ZMod N) = 0`. Simplify `h1)` using `using intCast_of_dvd (dvd_mul_right N l) (a := 0) (by simpa`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`. Rewrite using `[h1, h3]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[h1', h2, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isDia_mul {N l : ℕ} {d e : ℤ} {σ τ : SL(2, ℤ)} (hσ : GlobalTheory.Hk.IsDia N l d σ)
     (hτ : GlobalTheory.Hk.IsDia N l e τ) : GlobalTheory.Hk.IsDia N l (d * e) (σ * τ) := by
@@ -62,11 +62,11 @@ theorem isDia_mul {N l : ℕ} {d e : ℤ} {σ τ : SL(2, ℤ)} (hσ : GlobalTheo
     ring
 
 /- English proof (translation)
-Introduce `γ hγ`. Rewrite `hγ` using `[Gamma_mem]`. Take `⟨h00, h01, h10, h11⟩` from `hγ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `γ ∈ Gamma1 N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Gamma1_mem]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `h00)` using `using intCast_of_dvd (dvd_mul_right N l) (a := 1) (by simpa`. Simplify `h11)` using `using intCast_of_dvd (dvd_mul_right N l) (a := 1) (by simpa`. Simplify `h10)` using `using intCast_of_dvd (dvd_mul_right N l) (a := 0) (by simpa`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Express the relevant statement in the definitionally equal form `γ ∈ Gamma0 l`. Rewrite using `[Gamma0_mem]`. Simplify `h10)` using `using intCast_of_dvd (dvd_mul_left l N) (a := 0) (by simpa`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gamma_le_lev (N l : ℕ) : Gamma (N * l) ≤ Lev N l := by
   intro γ hγ
@@ -84,9 +84,9 @@ theorem gamma_le_lev (N l : ℕ) : Gamma (N * l) ≤ Lev N l := by
     simpa using intCast_of_dvd (dvd_mul_left l N) (a := 0) (by simpa using h10)
 
 /- English proof (translation)
-Establish `hcj : ∀ z ∈ B1 Γ w, cj z ∈ B1 Γ w` using `(cj_mem_Z1_cj_mem_B1_per_smul Γ w).2.1`. Establish `e : A (B (x + cj y + b)) - B (A (x + cj y + b)) = (A (B x) - B (A x)) + cj (A (B y) - B (A y)) + (A (B b) - B (A b))`. Simplify using `only [cj_sub, hAc, hBc, map_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (add_mem hx (hcj _ hy)) (sub_mem (hA _ (hB _ hb)) (hB _ (hA _ hb)))`.
+A detailed English derivation is pending.
 -/
 theorem comm_of_decomp {Γ : Subgroup SL(2, ℤ)} {w : ℕ} (A B : Module.End ℂ (Γ → ℂ[X]))
     (hA : ∀ z ∈ B1 Γ w, A z ∈ B1 Γ w) (hB : ∀ z ∈ B1 Γ w, B z ∈ B1 Γ w)
@@ -103,11 +103,11 @@ theorem comm_of_decomp {Γ : Subgroup SL(2, ℤ)} {w : ℕ} (A B : Module.End �
   exact add_mem (add_mem hx (hcj _ hy)) (sub_mem (hA _ (hB _ hb)) (hB _ (hA _ hb)))
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `mB f`. Take `⟨g', hg'⟩` from `mA f`. Establish `h1` using `eB f`. Establish `h2` using `eA g`. Establish `h3` using `eA f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `eB g'`. Rewrite `h2` using `[hg]`. Rewrite `h4` using `[hg']`. Establish `e : A (B (per Γ w ⇑f)) - B (A (per Γ w ⇑f)) = -A (per Γ w (FB ⇑f) - B (per Γ w ⇑f)) - (per Γ w (FA (FB ⇑f)) - A (per Γ w (FB ⇑f))) + (per Γ w (FB (FA ⇑f)) - B (per Γ w (FA ⇑f))) + B (per Γ w (FA ⇑f) - A (per Γ w ⇑f))`. Rewrite using `[hc f]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem (add_mem (sub_mem (neg_mem (hA _ h1)) h2) h4) (hB _ h3)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem per_comm {Γ : Subgroup SL(2, ℤ)} {w : ℕ} {k : ℤ} (A B : Module.End ℂ (Γ → ℂ[X]))
     (FA FB : (ℍ → ℂ) → ℍ → ℂ)
@@ -136,29 +136,27 @@ theorem per_comm {Γ : Subgroup SL(2, ℤ)} {w : ℕ} {k : ℤ} (A B : Module.En
   exact add_mem (add_mem (sub_mem (neg_mem (hA _ h1)) h2) h4) (hB _ h3)
 
 /- English proof (translation)
-Introduce `N l k hN hl hlN hk hodd q q' σ σ' τ τ' d d' hq hqNl hq' hq'Nl hσ hσ' hτ hτ' z hz`. Establish `hN0 : 0 < N` using `by omega`. Establish `hl0 : 0 < l` using `hl.pos`. Take `⟨bUl, bDd, bTq, bDia, -⟩` from `GlobalTheory.SlashUpperTriangularMatrices.bridge`. Take `⟨rT, rU, rD⟩` from `GlobalTheory.HeckeFamilyMatrices.CosetReps.dcReps_level N l hN hl hlN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `eqv` using `fun f => GlobalTheory.HeckeFamilyMatrices.HeckeEqv.period_map_equivariant N l k hN hl hlN hk f`. Establish `opT : ∀ (q : ℕ) (σ : SL(2, ℤ)), q.Prime → ¬ q ∣ N * l → IsDiam N l (q : ZMod N) σ → GlobalTheory.Hk.IsDia N l q σ ∧ (∀ z ∈ B1 (Lev N l) (k - 2), TqZ (Lev N l) (k - 2) q σ z ∈ B1 (Lev N l) (k - 2)) ∧ (∀ z, cj (TqZ (Lev N l) (k - 2) q σ z) = TqZ (Lev N l) (k - 2) q σ (cj z)) ∧ (∀ f …`. Introduce `q σ hq hqn hs`. Establish `dq : GlobalTheory.Hk.IsDia N l q σ` using `(bDia N l q σ).1 (by rwa [Int.cast_natCast])`. Establish `H` using `GlobalTheory.HeckeFamilyMatrices.HkC.hk_cocycle_coboundary_conj (Lev N l) (k - 2) (Fin (q + 1)) (dg 1 q) (tqFam q σ) (by simp [dg, Matrix.det_fin_two, hq.pos]) (rT q σ hq hqn hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨dq, H.2.1, H.2.2, fun f => ?_, fun f => (eqv f).1 q σ hq hqn hs⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `GlobalTheory.Hk.heckeT_modularForm N l q k σ hN0 hq hqn dq f`. Conclude with `⟨g, hg.trans (bTq _ _ _ _ hq.pos).symm⟩`. Establish `opU : (∀ z ∈ B1 (Lev N l) (k - 2), UlZ (Lev N l) (k - 2) l z ∈ B1 (Lev N l) (k - 2)) ∧ (∀ z, cj (UlZ (Lev N l) (k - 2) l z) = UlZ (Lev N l) (k - 2) l (cj z)) ∧ (∀ f : ModularForm (Lev N l) (k : ℤ), ∃ g : ModularForm (Lev N l) (k : ℤ), ⇑g = UlF (k : ℤ) l ⇑f) ∧ (∀ f : ModularForm ( …`. Establish `H` using `GlobalTheory.HeckeFamilyMatrices.HkC.hk_cocycle_coboundary_conj (Lev N l) (k - 2) (Fin l) (dg 1 l) (ulFam l) (by simp [dg, Matrix.det_fin_two, hl.pos]) rU`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨H.2.1, H.2.2, fun f => ?_, fun f => (eqv f).2.1⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `GlobalTheory.Hk.uOp_modularForm N l l k hN0 hl0 hl (dvd_mul_left l N) f`. Conclude with `⟨g, hg.trans (bUl _ _ _ hl0).symm⟩`. Establish `opD : ∀ (d : ZMod N) (τ : SL(2, ℤ)), IsDiam N l d τ → GlobalTheory.Hk.IsDia N l (mat τ 1 1) τ ∧ (∀ z ∈ B1 (Lev N l) (k - 2), DdZ (Lev N l) (k - 2) τ z ∈ B1 (Lev N l) (k - 2)) ∧ (∀ z, cj (DdZ (Lev N l) (k - 2) τ z) = DdZ (Lev N l) (k - 2) τ (cj z)) ∧ (∀ f : ModularForm (Lev N l) ( …`. Introduce `d τ hs`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `dτ : GlobalTheory.Hk.IsDia N l (mat τ 1 1) τ` using `(bDia N l (mat τ 1 1) τ).1 ⟨hs.1, rfl⟩`. Establish `H` using `GlobalTheory.HeckeFamilyMatrices.HkC.hk_cocycle_coboundary_conj (Lev N l) (k - 2) Unit (mat τ) (fun _ => mat τ) (by simp [mat]) (rD d τ hs)`. Use `⟨dτ, H.2.1, H.2.2, fun f => ?_, fun f => (eqv f).2.2 d τ hs⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `GlobalTheory.Hk.dia_modularForm N l k (mat τ 1 1) τ hN0 dτ f`. Conclude with `⟨g, hg.trans (bDd _ _ _).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨f, h, hES⟩` from `GlobalTheory.T.exists_eichlerShimura_decomposition_cocycle N (N * l) (Lev N l) k hN (Nat.mul_pos hN0 hl0) (gamma_le_lev N l) inf_le_left hodd hk z hz`. Take `⟨b, hb, rfl⟩ : ∃ b ∈ B1 (Lev N l) (k - 2), z = per (Lev N l) (k - 2) ⇑f + cj (per (Lev N l) (k - 2) ⇑h) + b` from `⟨_, hES, by abel⟩`. Establish `hh : ∃ g : ModularForm (Lev N l) (k : ℤ), ⇑g = ⇑h` using `⟨ModularFormClass.modularForm h, rfl⟩`. Take `⟨hm, hhm⟩` from `hh`. Establish `pair : ∀ (A B : Module.End ℂ (Lev N l → ℂ[X])) (FA FB : (ℍ → ℂ) → ℍ → ℂ), (∀ z ∈ B1 (Lev N l) (k - 2), A z ∈ B1 (Lev N l) (k - 2)) ∧ (∀ z, cj (A z) = A (cj z)) ∧ (∀ f : ModularForm (Lev N l) (k : ℤ), ∃ g : ModularForm (Lev N l) (k : ℤ), ⇑g = FA ⇑f) ∧ (∀ f : ModularForm (Lev N l) …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `A B FA FB ⟨hA, hAc, mA, eA⟩ ⟨hB, hBc, mB, eB⟩ hc`. Establish `hy` using `per_comm A B FA FB hA hB mA mB eA eB hc hm`. Rewrite `hy` using `[hhm]`. Conclude with `comm_of_decomp A B hA hB hAc hBc _ _ b (per_comm A B FA FB hA hB mA mB eA eB hc f) hy hb`. Establish `eT : ∀ (q : ℕ) (σ : SL(2, ℤ)), 0 < q → ∀ g, TqF (k : ℤ) q σ g = GlobalTheory.Hk.heckeT k q σ g` using `fun q σ hq g => bTq _ q σ g hq`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eU : ∀ g, UlF (k : ℤ) l g = GlobalTheory.Hk.uOp l g` using `fun g => bUl _ l g hl0`. Establish `eD : ∀ (τ : SL(2, ℤ)) g, DdF (k : ℤ) τ g = GlobalTheory.Hk.dia k τ g` using `fun τ g => bDd _ τ g`. Take `⟨dq, oTq⟩` from `opT q σ hq hqNl hσ`. Take `⟨dq', oTq'⟩` from `opT q' σ' hq' hq'Nl hσ'`. Take `⟨dτ, oDτ⟩` from `opD d τ hτ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨dτ', oDτ'⟩` from `opD d' τ' hτ'`. Use `⟨pair _ _ _ _ oTq oTq' ?_, pair _ _ _ _ oTq opU ?_, pair _ _ _ _ oTq oDτ ?_, pair _ _ _ _ opU oDτ ?_, pair _ _ _ _ oDτ oDτ' ?_⟩` and prove the remaining obligations. Introduce `f`. Simplify using `only [eT q σ hq.pos, eT q' σ' hq'.pos]`. Conclude with `GlobalTheory.Hk.heckeT_comm N l q q' k σ σ' hN0 hq hq' hqNl hq'Nl dq dq' f`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `f`. Simplify using `only [eT q σ hq.pos, eU]`. Conclude with `(GlobalTheory.Hk.uOp_heckeT_comm N l l q k σ hN0 hl0 hl (dvd_mul_left l N) hq hqNl dq f).symm`. Introduce `f`. Simplify using `only [eT q σ hq.pos, eD]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.Hk.heckeT_dia_comm N l q k (mat τ 1 1) σ τ hN0 hq hqNl dq dτ f`. Introduce `f`. Simplify using `only [eU, eD]`. Conclude with `GlobalTheory.Hk.uOp_dia_comm N l l k (mat τ 1 1) τ hN0 hl0 hl (dvd_mul_left l N) dτ f`. Introduce `f`.
-
-Simplify using `only [eD]`. Conclude with `(GlobalTheory.Hk.dia_mul N l k _ _ τ' τ (τ' * τ) hN0 dτ' dτ (isDia_mul dτ' dτ) f).trans (GlobalTheory.Hk.dia_mul N l k _ _ τ τ' (τ' * τ) hN0 dτ dτ' (by rw [mul_comm (mat τ 1 1)]; exact isDia_mul dτ' dτ) f).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heckeDiamond_commute_mod_coboundaries_gamma1Gamma0_alt : ∀ (N l k : ℕ), 5 ≤ N → l.Prime → ¬ l ∣ N → 3 ≤ k → Odd k →
   ∀ (q q' : ℕ) (σ σ' τ τ' : SL(2, ℤ)) (d d' : ZMod N), q.Prime → ¬ q ∣ N * l → q'.Prime → ¬ q' ∣ N * l →

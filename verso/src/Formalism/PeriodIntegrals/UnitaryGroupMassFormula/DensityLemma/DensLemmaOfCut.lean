@@ -78,9 +78,9 @@ def BigTheta : Prop :=
 def BigOf (CV : ℕ) : Prop := BigTheta → B.JtauOne → StepBig CV
 
 /- English proof (translation)
-Introduce `m ih k r Wp Wq _ _ _ _ _ _ D A ε mm F' γ μR θ hH hr hε hA' hmm hF hs hJ0 hrel hG hz hθ hi`. Distinguish the cases in `h0 : zc D γ = 0`. Conclude with `ih k r Wp Wq D A ε mm F' γ μR θ hH hr hε hA' hmm hF hs hJ0 hrel hG (by omega) hθ hi`. Take `⟨i, j, hij⟩` from `hR k r Wp Wq D γ hG (by omega)`. Establish `hy : Hyps CV D A ε mm F'` using `⟨hr, hε, hA', hmm, hF, hs, hJ0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_or_ge j (r + 1) with hj | hj` into its components or cases. Conclude with `hJ hA m ih k r Wp Wq D A ε mm F' γ μR θ i j hH hy hrel hG hz hij (by omega) hθ hi`. Establish `hjr : j = r + 1` using `le_antisymm hij.2.2.1 hj`. Substitute `hjr` using the available equality. Conclude with `hT hA m ih k r Wp Wq D A ε mm F' γ μR θ i hH hy hrel hG hz hij hθ hi`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem stepDown_of (CV : ℕ) (hR : RunExists) (hJ : DownJ CV) (hT : DownTop CV) (hA : StepAdm CV) :
     StepDown CV := by

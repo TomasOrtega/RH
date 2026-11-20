@@ -6,7 +6,7 @@ open scoped SchwartzMap
 namespace GlobalTheory.CompanionTheory.SchwartzMaj
 
 /- English proof (translation)
-Take `⟨Φ, r, hΦ, hr⟩` from `GlobalTheory.CompanionTheory.EisRk1.exists_schwartz_majorant f`. Use `⟨Φ, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ x]`. Conclude with `⟨Complex.ofReal_im _, by rw [Complex.ofReal_re]; exact hr x⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_nonneg_schwartz_majorant (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (f : SchwartzMap E ℂ) :

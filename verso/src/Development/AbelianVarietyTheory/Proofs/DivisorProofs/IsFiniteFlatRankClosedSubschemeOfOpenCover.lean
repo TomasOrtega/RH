@@ -8,9 +8,9 @@ namespace GlobalTheory.HilbAff
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-Establish `hU : iSup (fun i => (f i).opensRange) = ⊤`. Use `top_le_iff.mp fun x _ => ?_` and prove the remaining obligations. Take `⟨i, y, rfl⟩` from `hcov x`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨i, y, rfl⟩`. Use `IsZariskiLocalAtTarget.of_iSup_eq_top _ hU fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(P.arrow_mk_iso_iff (morphismRestrictOpensRange φ (f i))).mpr ?_` and prove the remaining obligations. Rewrite using `[← (H i).isoPullback_inv_snd]`. Conclude with `(P.cancel_left_of_respectsIso _ _).mpr (hq i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_isPullback_openImmersions (P : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget P]
     {X T : Scheme.{0}} (φ : X ⟶ T) {ι : Type u} {V : ι → Scheme.{0}} (f : ∀ i, V i ⟶ T)
@@ -28,15 +28,13 @@ theorem of_isPullback_openImmersions (P : MorphismProperty Scheme.{0}) [IsZarisk
 
 set_option backward.isDefEq.respectTransparency.types false in
 /- English proof (translation)
-Introduce `A B _ _ _ r T ι V f hf hcov g I hG`. Establish `H : ∀ i, IsPullback (pullback.snd (bc A B g (f i)) I.subschemeι) (pullback.fst (bc A B g (f i)) I.subschemeι ≫ pullback.snd _ (f i ≫ g)) (I.subschemeι ≫ pullback.snd _ g) (f i)` using `fun i => (IsPullback.of_hasPullback (bc A B g (f i)) I.subschemeι).flip.paste_vert (isPullback_bc A B g (f i))`. Establish `e : ∀ i, (I.comap (bc A B g (f i))).subschemeι ≫ pullback.snd _ (f i ≫ g) = (I.comapIso (bc A B g (f i))).hom ≫ (pullback.fst (bc A B g (f i)) I.subschemeι ≫ pullback.snd _ (f i ≫ g))` using `fun i => by`. Rewrite using `[← Category.assoc, Scheme.IdealSheafData.comapIso_hom_fst]`. Establish `hfin : ∀ i, IsFinite (pullback.fst (bc A B g (f i)) I.subschemeι ≫ pullback.snd _ (f i ≫ g))` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(hG i).1`. Rewrite `h` using `[e i, MorphismProperty.cancel_left_of_respectsIso @IsFinite.{0}]`. Conclude with `h`. Establish `hfl : ∀ i, Flat (pullback.fst (bc A B g (f i)) I.subschemeι ≫ pullback.snd _ (f i ≫ g))` using `fun i => by`. Establish `h` using `(hG i).2.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[e i, MorphismProperty.cancel_left_of_respectsIso @Flat.{0}]`. Conclude with `h`. Establish `: IsZariskiLocalAtTarget @Flat.{0}` using `HasRingHomProperty.instIsZariskiLocalAtTarget (P := @Flat.{0})`. Establish `: IsZariskiLocalAtTarget @IsFinite.{0}` using `inferInstance`. Establish `h1 : IsFinite (I.subschemeι ≫ pullback.snd _ g)` using `of_isPullback_openImmersions @IsFinite.{0} _ f hcov _ _ H hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : Flat (I.subschemeι ≫ pullback.snd _ g)` using `of_isPullback_openImmersions @Flat.{0} _ f hcov _ _ H hfl`. Use `⟨h1, h2, fun y => ?_⟩` and prove the remaining obligations. Take `⟨i, y', rfl⟩` from `hcov y`. Establish `h` using `(hG i).2.2 y'`. Rewrite `h` using `[e i, Scheme.Hom.finrank_comp_left_of_isIso, Scheme.Hom.finrank_of_isPullback _ _ _ _ (H i) y']`.
-
-Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_of_cover : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (r : ℕ)
     {T : Scheme.{0}} {ι : Type u} (V : ι → Scheme.{0}) (f : ∀ i, V i ⟶ T),

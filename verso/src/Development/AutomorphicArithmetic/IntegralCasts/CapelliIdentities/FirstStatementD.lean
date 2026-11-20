@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R ι H C _ _ _ _ Hv Cv _ _ res pres E Ev hcomm U T hU hT`. Establish `key : ∀ x : H, x ∈ U ↔ E x ∈ T`. Introduce `x`. Rewrite using `[hU, hT]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hcomm v x]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, map_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (Ev v).symm h` as an intermediate fact. Simplify using `using this`. Conclude with `⟨{ toFun := fun x => ⟨E x.1, (key x.1).1 x.2⟩ invFun := fun y => ⟨E.symm y.1, (key _).2 (by simpa using y.2)⟩ left_inv := fun x => by ext; simp right_inv := fun y => by ext; simp map_add' := fun x y => by ext; simp }⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.LocallyTrivialClassesAddEquiv.main :
     ∀ {R ι H C : Type} [inst : CommRing R] [inst_1 : AddCommGroup H] [inst_2 : _root_.Module R H] [inst_3 : AddCommGroup C]

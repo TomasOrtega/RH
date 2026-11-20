@@ -5,7 +5,7 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Establish `h : X.presheaf.germ V (genPt ξ) hx = X.presheaf.germ V p.1 hy ≫ X.presheaf.stalkSpecializes p.2` using `(X.presheaf.germ_stalkSpecializes hy p.2).symm`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem genMap_germ_eq_closedPointTo {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (p : Cpt ξ) (V : X.Opens) (hy : p.1 ∈ V) (hx : genPt ξ ∈ V) (b : Γ(X, V)) :
@@ -17,11 +17,11 @@ theorem genMap_germ_eq_closedPointTo {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ
   rfl
 
 /- English proof (translation)
-Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := p.1) (U := ⊤) trivial`. Establish `hgU : genPt ξ ∈ U` using `p.2.mem_open U.isOpen hpU`. Set `_ : Algebra Γ(X, U) (X.presheaf.stalk (genPt ξ))` to `(X.presheaf.germ U (genPt ξ) hgU).hom.toAlgebra`. Establish `_ : IsLocalization.AtPrime (X.presheaf.stalk (genPt ξ)) (hU.primeIdealOf ⟨genPt ξ, hgU⟩).asIdeal` using `hU.isLocalization_stalk ⟨genPt ξ, hgU⟩`. Take `⟨s, rfl⟩ : ∃ s : X.presheaf.stalk (genPt ξ), (Scheme.stalkClosedPointTo ξ).hom s = a` from `hξ.bij.2 a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨r, d⟩, rfl⟩` from `IsLocalization.mk'_surjective (hU.primeIdealOf ⟨genPt ξ, hgU⟩).asIdeal.primeCompl s`. Use `⟨X.presheaf.germ U p.1 hpU r, X.presheaf.germ U p.1 hpU d, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[genMap_germ_eq_closedPointTo ξ p U hpU hgU]`. Establish `hu` using `IsLocalization.map_units (X.presheaf.stalk (genPt ξ)) d`. Conclude with `(hu.map (Scheme.stalkClosedPointTo ξ).hom).ne_zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[genMap_germ_eq_closedPointTo ξ p U hpU hgU, genMap_germ_eq_closedPointTo ξ p U hpU hgU]`. Establish `h` using `congrArg (Scheme.stalkClosedPointTo ξ).hom (IsLocalization.mk'_spec (X.presheaf.stalk (genPt ξ)) r d)`. Conclude with `((Scheme.stalkClosedPointTo ξ).hom.map_mul _ _).symm.trans h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_frac_genMap {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (hξ : IsCptGen ξ) (p : Cpt ξ) (a : Ω) :

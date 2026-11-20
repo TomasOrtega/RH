@@ -8,7 +8,7 @@ open Matrix NumberField ComplexConjugate
 open scoped ComplexOrder
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `i`. Conclude with `hx i (Nat.zero_le _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cutSub_zero (K : Type) [Field K] [NumberField K] (r : ℕ) : cutSub K r 0 = ⊥ := by
   rw [eq_bot_iff]
@@ -18,7 +18,7 @@ theorem cutSub_zero (K : Type) [Field K] [NumberField K] (r : ℕ) : cutSub K r 
   exact hx i (Nat.zero_le _)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _ i hi`. Conclude with `absurd i.isLt (by omega)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cutSub_self (K : Type) [Field K] [NumberField K] (r : ℕ) : cutSub K r r = ⊤ := by
   rw [eq_top_iff]
@@ -26,9 +26,9 @@ theorem cutSub_self (K : Type) [Field K] [NumberField K] (r : ℕ) : cutSub K r 
   exact absurd i.isLt (by omega)
 
 /- English proof (translation)
-Introduce `B hB k b hb`. Establish `hB0 : B = ⊥` using `eq_bot_iff.2 (hB.trans (inf_le_right.trans (by rw [cutSub_zero])))`. Substitute `hB0` using the available equality. Establish `hk` using `kBasisIn_bot_eq b hb`. Substitute `hk` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `(latDeg_zero_fam D ⊥ b hb).le`.
+A detailed English derivation is pending.
 -/
 theorem flag_base {K : Type} [Field K] [NumberField K] {r : ℕ}
     (D : (K →+* ℂ) → Matrix (Fin r) (Fin r) ℂ) (Lp : Submodule (𝓞 K) (Fin r → K)) :
@@ -42,9 +42,9 @@ theorem flag_base {K : Type} [Field K] [NumberField K] {r : ℕ}
   exact (latDeg_zero_fam D ⊥ b hb).le
 
 /- English proof (translation)
-Introduce `B hB k b hb`. Establish `hBfg : B.FG` using `Submodule.FG.of_le hLp (hB.trans inf_le_left)`. Take `⟨k0, b0, hb0⟩` from `exists_kBasisIn (B ⊓ cutSub K r e')`. Take `⟨k1, b1, hb1⟩` from `exists_kBasisIn (B.map (projGe K r e'))`. Establish `h` using `hE K r e' k k0 k1 δ B b b0 b1 hδ hBfg hb hb0 hb1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0` using `hP (B ⊓ cutSub K r e') (inf_le_inf_right _ (hB.trans inf_le_left)) k0 b0 hb0`. Establish `h1` using `hG (B.map (projGe K r e')) (Submodule.map_mono hB) k1 b1 hb1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem flag_step (hE : GradedExtStatement) {K : Type} [Field K] [NumberField K] {r : ℕ}
     (δ : (K →+* ℂ) → Fin r → ℝ) (hδ : ∀ σ i, 0 < δ σ i) (Lp : Submodule (𝓞 K) (Fin r → K))
@@ -65,33 +65,29 @@ theorem flag_step (hE : GradedExtStatement) {K : Type} [Field K] [NumberField K]
   linarith
 
 /- English proof (translation)
-Use `choose x0 hx0 hx0j using exists_at Lp hsp`. Establish `hn : (0 : ℝ) < (Fintype.card (K →+* ℂ) : ℝ)` using `by exact_mod_cast Fintype.card_pos`. Use `set n : ℝ := (Fintype.card (K →+* ℂ) : ℝ) with hn_def`. Set `Gr : Fin r → Submodule (𝓞 K) (Fin r → K)` to `fun j => (Lp ⊓ cutSub K r (j + 1)).map (projGe K r j)`. Establish `hGrfg : ∀ j, (Gr j).FG` using `fun j => (Submodule.FG.of_le hLp inf_le_left).map _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `dd : Fin r → ℝ` to `fun j => Real.exp ((2 / n) * (Real.log (spanIdx (Gr j) ![x0 j] : ℝ) - Real.log |((Algebra.norm ℚ (x0 j j) : ℚ) : ℝ)|))`. Establish `hdd : ∀ j, 0 < dd j` using `fun j => Real.exp_pos _`. Use `⟨dd, hdd, ?_⟩` and prove the remaining obligations. Use `set δ := adMet r m g dd with hδdef`. Establish `hδ : ∀ σ a, 0 < δ σ a` using `adMet_pos r m g dd hdd hg0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hbot0 : ∀ j : Fin r, (j : ℕ) < m → latDeg (diagMet δ) (Gr j) ![x0 j] = 0`. Introduce `j hj`. Rewrite using `[latDeg_single δ _ j (x0 j) (gr_at Lp j _ (hx0 j))]`. Establish `hδj : ∀ σ, δ σ j = dd j` using `fun σ => by simp [hδdef, adMet, hj]`. Simplify using `only [hδj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[sum_log_single (x0 j j) (hx0j j) (dd j) (hdd j), Real.log_exp]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hGb : ∀ j : Fin r, (j : ℕ) < m → ∀ C ≤ Gr j, ∀ (k : ℕ) (c : Fin k → Fin r → K), IsKBasisIn C c → latDeg (diagMet δ) C c ≤ 0` using `fun j hj C hC k c hc => rankOne_le_zero hB δ hδ j (Gr j) (hGrfg j) (gr_at Lp j) (x0 j) (hx0 j) (hx0j j) (hbot0 j hj).le C hC k c hc`. Establish `hGt : ∀ p : Fin r, r ≤ (p : ℕ) + m → ∀ C ≤ Gr p, ∀ (k : ℕ) (c : Fin k → Fin r → K), IsKBasisIn C c → latDeg (diagMet δ) C c ≤ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p hp C hC k c hc`. Establish `hpr` using `p.isLt`. Establish `hjv : ((Fin.rev p : Fin r) : ℕ) = r - (p + 1)` using `Fin.val_rev p`. Establish `hj : ((Fin.rev p : Fin r) : ℕ) < m` using `by omega`. Establish `hpj : Fin.rev (Fin.rev p) = p` using `Fin.rev_rev p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hjp : ((Fin.rev p : Fin r) : ℕ) < p` using `by omega`. Establish `hpair` using `pair_int S m g h2m Lp hint (Fin.rev p) hj`. Rewrite `hpair` using `[hpj]`. Establish `hδj : ∀ σ, δ σ (Fin.rev p) = dd (Fin.rev p)` using `fun σ => by show adMet r m g dd σ (Fin.rev p) = _`. Unfold `adMet`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos hj]`. Establish `hδp : ∀ σ, δ σ p = (dd (Fin.rev p))⁻¹` using `fun σ => by`. Establish `h1 : ¬ (p : ℕ) < m` using `by omega`. Simplify using `[hδdef, adMet, h1, hp]`. Establish `htop` using `top_le_zero hN S (Fin.rev p) p hjp (Gr (Fin.rev p)) (Gr p) (hGrfg _) (hGrfg p) (gr_at Lp _) (gr_at Lp p) hpair (x0 (Fin.rev p)) (x0 p) (hx0 _) (hx0j _) (hx0 p) (hx0j p) δ (dd (Fin.rev p)) (hdd _) hδj hδp (hbot0 _ hj)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `rankOne_le_zero hB δ hδ p (Gr p) (hGrfg p) (gr_at Lp p) (x0 p) (hx0 p) (hx0j p) htop C hC k c hc`. Establish `hGm : ∀ C ≤ (Lp ⊓ cutSub K r (r - m)).map (projGe K r m), ∀ (k : ℕ) (c : Fin k → Fin r → K), IsKBasisIn C c → latDeg (diagMet δ) C c ≤ 0`. Introduce `C hC k c hc`. Establish `hδmid : ∀ σ (a : Fin r), m ≤ (a : ℕ) → (a : ℕ) + m < r → δ σ a = ‖σ (g a)‖`. Introduce `σ a h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1' : ¬ (a : ℕ) < m` using `by omega`. Establish `h2' : ¬ r ≤ (a : ℕ) + m` using `by omega`. Simplify using `[hδdef, adMet, h1', h2']`. Conclude with `mid_le_zero hN hA S m g hfix _ ((Submodule.FG.of_le hLp inf_le_left).map _) (mid_supp m Lp) (mid_int S m g hfix Lp hint) haniso δ hδ hδmid C hC k c hc`. Establish `P1 : ∀ e, e ≤ m → ∀ B ≤ Lp ⊓ cutSub K r e, ∀ (k : ℕ) (b : Fin k → Fin r → K), IsKBasisIn B b → latDeg (diagMet δ) B b ≤ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Proceed by induction on `e with`. Consider the case `zero => intro _`. Conclude with `flag_base _ Lp`. Consider the case `succ e ih`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `he`. Conclude with `flag_step hE δ hδ Lp hLp e (e + 1) (ih (by omega)) (hGb ⟨e, by omega⟩ (by show e < m; omega))`. Establish `P2` using `flag_step hE δ hδ Lp hLp m (r - m) (P1 m le_rfl) hGm`. Establish `P3 : ∀ t, t ≤ m → ∀ B ≤ Lp ⊓ cutSub K r (r - m + t), ∀ (k : ℕ) (b : Fin k → Fin r → K), IsKBasisIn B b → latDeg (diagMet δ) B b ≤ 0`. Introduce `t`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `t with`. Consider the case `zero => intro _`. Simplify using `using P2`. Consider the case `succ t ih`. Introduce `ht`.
-
-Conclude with `flag_step hE δ hδ Lp hLp (r - m + t) (r - m + t + 1) (ih (by omega)) (hGt ⟨r - m + t, by omega⟩ (by show r ≤ r - m + t + m; omega))`. Introduce `B hB k b hb`. Establish `hrm : r - m + m = r` using `by omega`. Use `P3 m le_rfl` as an intermediate fact. Rewrite `this` using `[hrm, cutSub_self, inf_top_eq]`.
-
-Conclude with `this B hB k b hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adapted_semistable (hB : LatDegBasisStatement) (hN : IntegralIndexStatement)
     (hA : AbsDetStatement) (hE : GradedExtStatement) {K : Type} [Field K] [NumberField K]

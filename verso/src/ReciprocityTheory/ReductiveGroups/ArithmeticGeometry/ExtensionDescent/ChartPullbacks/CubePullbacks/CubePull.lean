@@ -28,11 +28,11 @@ variable {X : Scheme.{0}}
 def idIsoL (L : LB X) : LB.Iso L L := ⟨fun p => L.g p.1 p.2⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨p₁, p₂⟩ ⟨q₁, q₂⟩`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Establish `h11 : x ∈ L.U p₁` using `hx.1.1`. Establish `h12 : x ∈ L.U p₂` using `hx.1.2`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h21 : x ∈ L.U q₁` using `hx.2.1`. Establish `h22 : x ∈ L.U q₂` using `hx.2.2`. Rewrite using `[map_mul, gU_res, gU_res]`. Use `erw [Transport.gU_div L L (p₁, p₂) (q₁, q₂) x hx.1 hx.2]`. Establish `c1` using `Transport.gU_cocycle hL x h11 h21 h22`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2` using `Transport.gU_cocycle hL x h11 h12 h22`. Use `show gU x (⟨h11, h12⟩ : x ∈ L.U p₁ ⊓ L.U p₂) (L.g p₁ p₂) = gU x (⟨h11, h21⟩ : x ∈ L.U p₁ ⊓ L.U q₁) (L.g p₁ q₁) * (gU x (⟨h12, h22⟩ : x ∈ L.U p₂ ⊓ L.U q₂) (L.g p₂ q₂))⁻¹ * gU x (⟨h21, h22⟩ : x ∈ L.U q₁ ⊓ L.U q₂) (L.g q₁ q₂)`. Rewrite using `[eq_mul_inv_of_mul_eq c2, ← c1, mul_right_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idIsoL_isGen {L : LB X} (hL : L.IsLB) : (idIsoL L).IsGen := by
   rintro ⟨p₁, p₂⟩ ⟨q₁, q₂⟩
@@ -72,7 +72,7 @@ theorem thetaPull_eq (L : LB G.left) (t : LB.Gen (Theta G L)) :
       (fun I => m.psum_comm I.down) t := rfl
 
 /- English proof (translation)
-Establish `hp` using `m.psum_comm k.down`. Simplify using `only [thφ] at hp ⊢`. Rewrite using `[Category.assoc, hp, ← Category.assoc, hab, Category.assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hψ2_of {Z W : Scheme.{0}} {a : Z ⟶ (G3 G').left} {h2 : Z ⟶ W} {b : W ⟶ (G3 G).left}
     (hab : a ≫ m.F3 = h2 ≫ b) (k : thK) :
@@ -187,9 +187,9 @@ namespace ReciprocityTheory.ChartRestriction.G.Out.CubePf
 open Semi
 
 /- English proof (translation)
-Introduce `S S' G G' _ _ _ _ m L c`. Establish `hL : (L.L.pull m.F).IsLB` using `LB.isLB_pull L.isLB m.F`. Establish `hr : (m.rigPull L.L L.rig).IsGen` using `LBxP.isGen_pullAlong L.L m.F m.e (fun _ : PUnit => eSec G) (fun _ => 1) (fun _ => eSec G') (fun _ => m.e_comm) L.rig L.rigGen`. Use `⟨hL, hr, ⟨cubical m L c hL hr, ?_⟩, sym_pull m L hL hr⟩` and prove the remaining obligations. Use `⟨idIsoL _, idIsoL_isGen hL, fun p => hr p.1 p.2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[thetaPull_eq]`. Conclude with `fun p => (cubical m L c hL hr).isGen p.1 p.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cubePull : CubePullSt := by
   intro S S' G G' _ _ _ _ m L c

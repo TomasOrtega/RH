@@ -14,7 +14,7 @@ open scoped TensorProduct in
 open NumberField IsDedekindDomain MeasureTheory Topology in
 variable {A : Type} [CommRing A] {M : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.UG.hform`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.HermLineZeros.hform_expand (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
     (x y : Fin M → A) (c : A) :
@@ -31,7 +31,7 @@ open scoped TensorProduct in
 open NumberField IsDedekindDomain MeasureTheory Topology in
 variable {A : Type} [CommRing A] {M : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.Formalism.UG.hform, Pi.single_apply, apply_ite s]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.HermLineZeros.hform_single (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
     (i j : Fin M) :
@@ -48,7 +48,7 @@ open NumberField IsDedekindDomain MeasureTheory Topology in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} in
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ, h.2.2.2 τ, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.HermLineZeros.conj_invol (h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) (e : E) : σ (σ e) = e := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -60,11 +60,9 @@ open NumberField IsDedekindDomain MeasureTheory Topology in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} in
 /- English proof (translation)
-Use `by_contra! hσ`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hreal : ComplexEmbedding.IsReal τ`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hx` using `h.2.2.2 τ x`. Rewrite `hx` using `[hσ x]`. Simplify `hx.symm` using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hcx` using `(h.2.1).isComplex (InfinitePlace.mk τ)`. Rewrite `hcx` using `[InfinitePlace.isComplex_mk_iff]`.
-
-Conclude with `hcx hreal`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HermLineZeros.exists_conj_ne (h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) : ∃ d, σ d ≠ d := by
   by_contra! hσ
@@ -84,13 +82,13 @@ open NumberField IsDedekindDomain MeasureTheory Topology in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} in
 /- English proof (translation)
-Take `⟨d, hd⟩` from `_root_.GlobalTheory.HermLineZeros.exists_conj_ne h`. Set `S : Subalgebra F E` to `AlgHom.equalizer σ (AlgHom.id F E)`. Establish `hS : S ≠ ⊤`. Introduce `hS`. Establish `hdS : d ∈ S` using `hS ▸ Algebra.mem_top`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hd hdS`. Establish `hle : Module.finrank F S ≤ 2` using `h.2.2.1 ▸ Submodule.finrank_le (Subalgebra.toSubmodule S)`. Establish `hne : Module.finrank F S ≠ 2`. Introduce `h2`. Apply `hS` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subalgebra.toSubmodule.injective` to reduce the goal to its premises. Rewrite using `[Algebra.top_toSubmodule]`. Conclude with `Submodule.eq_top_of_finrank_eq (h2.trans h.2.2.1.symm)`. Establish `hpos : 0 < Module.finrank F S` using `Module.finrank_pos`. Establish `hbot : S = ⊥` using `Subalgebra.finrank_eq_one_iff.mp (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `heS : e ∈ S` using `he`. Rewrite `heS` using `[hbot]`. Conclude with `Algebra.mem_bot.mp heS`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HermLineZeros.exists_of_fixed (h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) (e : E) (he : σ e = e) :
     ∃ f, algebraMap F E f = e := by
@@ -119,9 +117,9 @@ open NumberField IsDedekindDomain MeasureTheory Topology in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} in
 /- English proof (translation)
-Unfold `_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE _root_.Formalism.UG.hform`. Rewrite using `[map_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [AlgHom.coe_toRingHom, map_mul, _root_.GlobalTheory.HermLineZeros.conj_invol h, hJ.1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem hE_self_conj_fixed (h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) {M : ℕ}
     {J : Matrix (Fin M) (Fin M) E} (hJ : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsHermND σ J) (v : Fin M → E) :
@@ -139,13 +137,13 @@ open NumberField IsDedekindDomain MeasureTheory Topology in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} in
 /- English proof (translation)
-It suffices to establish `hv : ∃ v, _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE σ J v v ≠ 0 by`. Take `⟨v, hv⟩` from `hv`. Take `⟨a, ha⟩` from `_root_.GlobalTheory.HermLineZeros.exists_of_fixed h _ (hE_self_conj_fixed h hJ v)`. Use `⟨v, a, ?_, ha.symm⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hv (by rw [← ha, map_zero])`. Distinguish the cases in `hd : ∃ i, J i i ≠ 0`. Take `⟨i, hi⟩` from `hd`. Conclude with `⟨Pi.single i 1, by rwa [_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE, _root_.GlobalTheory.HermLineZeros.hform_single]⟩`. Use `push_neg at hd`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `i₀ : Fin M` to `⟨0, hM⟩`. Take `⟨j, hj⟩ : ∃ j, J i₀ j ≠ 0` from `by by_contra! hrow`. Conclude with `hJ.2 (Matrix.det_eq_zero_of_row_eq_zero i₀ hrow)`. Use `⟨Pi.single i₀ 1 + (J i₀ j)⁻¹ • Pi.single j 1, ?_⟩` and prove the remaining obligations. Establish `hji : J j i₀ = σ (J i₀ j)` using `(hJ.1 j i₀).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE, _root_.GlobalTheory.HermLineZeros.hform_expand, _root_.GlobalTheory.HermLineZeros.hform_single, _root_.GlobalTheory.HermLineZeros.hform_single, _root_.GlobalTheory.HermLineZeros.hform_single, _root_.GlobalTheor …`. Simplify using `only [AlgHom.coe_toRingHom, RingHom.coe_coe]`. Rewrite using `[inv_mul_cancel₀ hj, ← map_mul, inv_mul_cancel₀ hj, map_one]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HermLineZeros.exists_anisotropic (h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) {M : ℕ} (hM : 1 ≤ M)
     {J : Matrix (Fin M) (Fin M) E} (hJ : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsHermND σ J) :
@@ -179,27 +177,25 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h M hM J hJ K _ _`. Take `⟨y₀, a, ha, hy⟩` from `_root_.GlobalTheory.HermLineZeros.exists_anisotropic h hM hJ`. Set `φ : E →ₐ[F] K ⊗[F] E` to `Algebra.TensorProduct.includeRight`. Set `S` to `_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR K σ`. Set `JR` to `_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (F := F) K J`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set y : Fin M → K ⊗[F] E := fun i => φ (y₀ i)`. Use `⟨y, fun x => ?_⟩` and prove the remaining obligations. Establish `hSc : ∀ t : K, S (algebraMap K (K ⊗[F] E) t) = algebraMap K (K ⊗[F] E) t` using `fun t => by`. Simplify using `[S, _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Algebra.TensorProduct.algebraMap_apply]`. Establish `hSφ : ∀ e : E, S (φ e) = φ (σ e)` using `fun e => by simp [S, φ, _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyy : _root_.Formalism.UG.hform S JR y y = algebraMap K (K ⊗[F] E) (algebraMap F K a)`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← φ.commutes, ← hy]`. Simplify using `only [_root_.Formalism.UG.hform, _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE, map_sum, map_mul, y, hSφ, JR, _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, Matrix.map_apply, _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolu …`. Both sides reduce to the same expression. Establish `htr : Algebra.trace K (K ⊗[F] E) (_root_.Formalism.UG.hform S JR y y) = Module.finrank K (K ⊗[F] E) • algebraMap F K a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hyy, Algebra.trace_algebraMap]`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap F K).injective`. Establish `hfr : Module.finrank K (K ⊗[F] E) ≠ 0`. Rewrite using `[Module.finrank_baseChange, h.2.2.1]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set α := algebraMap F K (1 / 2) * Algebra.trace K (K ⊗[F] E) (_root_.Formalism.UG.hform S JR y y) with hα`. Use `set β := algebraMap F K (1 / 2) * Algebra.trace K (K ⊗[F] E) (_root_.Formalism.UG.hform S JR x y + _root_.Formalism.UG.hform S JR y x)`. Use `set γ := algebraMap F K (1 / 2) * Algebra.trace K (K ⊗[F] E) (_root_.Formalism.UG.hform S JR x x)`. Establish `hα0 : α ≠ 0`. Rewrite using `[hα, htr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `mul_ne_zero ?_ (smul_ne_zero hfr ?_)` and prove the remaining obligations. Rewrite using `[Ne, map_eq_zero_iff _ (algebraMap F K).injective]`. Evaluate the numerical expressions. Rewrite using `[Ne, map_eq_zero_iff _ (algebraMap F K).injective]`. Conclude with `ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Set `p : Polynomial K` to `Polynomial.C α * Polynomial.X ^ 2 + Polynomial.C β * Polynomial.X + Polynomial.C γ`. Establish `hp : p ≠ 0`. Introduce `hp`. Use `congrArg (Polynomial.coeff · 2) hp` as an intermediate fact. Simplify using `[p, Polynomial.coeff_X, Polynomial.coeff_C] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `hα0 this`. Use `(Polynomial.finite_setOf_isRoot hp).subset fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at ht ⊢`. Rewrite using `[Polynomial.IsRoot.def, ← ht]`. Establish `hsmul : t • y = algebraMap K (K ⊗[F] E) t • y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def]`. Establish `hexp` using `_root_.GlobalTheory.HermLineZeros.hform_expand S JR x y (algebraMap K (K ⊗[F] E) t)`. Rewrite `hexp` using `[hSc]`. Establish `hq : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.qR K σ J (x + t • y) = algebraMap F K (1 / 2) * Algebra.trace K (K ⊗[F] E) (_root_.Formalism.UG.hform S JR (x + algebraMap K (K ⊗[F] E) t • y) (x + algebraMap K (K ⊗[F] E) t • y))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hsmul]`. Both sides reduce to the same expression. Establish `htc : ∀ z, Algebra.trace K (K ⊗[F] E) (algebraMap K (K ⊗[F] E) t * z) = t * Algebra.trace K (K ⊗[F] E) z` using `fun z => by`. Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`. Rewrite using `[hq, hexp, mul_assoc (algebraMap K (K ⊗[F] E) t), map_add, map_add, map_add, htc, htc, htc, htc]`.
-
-Simplify using `only [p, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, α, β, γ, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HermLineZeros.finite_zeros_on_line : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ → ∀ (M : ℕ), 1 ≤ M → ∀ (J : Matrix (Fin M) (Fin M) E), _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsHermND σ J → ∀ (K : Type) [Field K] [Algebra F K], ∃ y : Fin M → K ⊗[F] E, ∀ x : Fin M → K ⊗[F] E, {t : K | _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.qR K σ J (x + t • y) = 0}.Finite := by
   intro F E _ _ _ _ _ σ h M hM J hJ K _ _

@@ -17,20 +17,20 @@ def dg (M : Matrix (Fin n) (Fin n) A) : Matrix (Fin (n + n)) (Fin (n + n)) A :=
   Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks M 0 0 1)
 
 /- English proof (translation)
-Simplify using `only [dg, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dg_mul (M N : Matrix (Fin n) (Fin n) A) : dg (M * N) = dg M * dg N := by
   simp only [dg, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
   simp
 
 /- English proof (translation)
-Simplify using `[dg, Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dg_one : dg (1 : Matrix (Fin n) (Fin n) A) = 1 := by
   simp [dg, Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Rewrite using `[← dg_one]`. Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b <;> simp only [dg, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.sub_apply, Formalism.UG.cT] <;> simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_sub_one_apply (M : Matrix (Fin n) (Fin n) A) (i j : Fin (n + n)) :
     (dg M - 1) i j = Sum.elim (fun a => Sum.elim (fun b => (M - 1) a b) (fun _ => 0)) (fun _ _ => 0)
@@ -41,13 +41,13 @@ theorem dg_sub_one_apply (M : Matrix (Fin n) (Fin n) A) (i j : Fin (n + n)) :
   rcases i with a | a <;> rcases j with b | b <;> simp only [dg, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.sub_apply, Formalism.UG.cT] <;> simp
 
 /- English proof (translation)
-Rewrite using `[dg, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_dg (M : Matrix (Fin n) (Fin n) A) : (dg M).det = M.det := by
   rw [dg, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]
 
 /- English proof (translation)
-The claim follows from `(Continuous.matrix_fromBlocks continuous_id continuous_const continuous_const continuous_const).matrix_reindex _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_dg [TopologicalSpace A] : Continuous (dg (A := A) (n := n)) :=
   (Continuous.matrix_fromBlocks continuous_id continuous_const continuous_const continuous_const).matrix_reindex _ _
@@ -60,13 +60,13 @@ def dgHom : Matrix (Fin n) (Fin n) A →* Matrix (Fin (n + n)) (Fin (n + n)) A w
 def diagGL : GL (Fin n) A →* GL (Fin (n + n)) A := Units.map (dgHom (A := A) (n := n))
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ continuous_dg`.
+A detailed English derivation is pending.
 -/
 theorem continuous_diagGL [TopologicalSpace A] : Continuous (diagGL (A := A) (n := n)) :=
   Continuous.units_map _ continuous_dg
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b <;> simp only [dg, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.sub_apply, Formalism.UG.cT] <;> simp [Matrix.one_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_map {B : Type} [CommRing B] (φ : A →+* B) (M : Matrix (Fin n) (Fin n) A) :
     (dg M).map φ = dg (M.map φ) := by
@@ -76,7 +76,7 @@ theorem dg_map {B : Type} [CommRing B] (φ : A →+* B) (M : Matrix (Fin n) (Fin
   rcases i with a | a <;> rcases j with b | b <;> simp only [dg, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.sub_apply, Formalism.UG.cT] <;> simp [Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `: 1`. Conclude with `dg_map φ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem bc_diagGL {B : Type} [CommRing B] (φ : A →+* B) (g : GL (Fin n) A) :
     Formalism.UG.bc φ (diagGL g) = diagGL (Formalism.UG.bc φ g) := by
@@ -84,7 +84,7 @@ theorem bc_diagGL {B : Type} [CommRing B] (φ : A →+* B) (g : GL (Fin n) A) :
   exact dg_map φ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b <;> simp only [dg, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.sub_apply, Formalism.UG.cT] <;> simp [Matrix.one_apply, eq_comm]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cT_dg (s : A →+* A) (M : Matrix (Fin n) (Fin n) A) :
     Formalism.UG.cT s (dg M) = Matrix.reindex finSumFinEquiv finSumFinEquiv
@@ -95,7 +95,7 @@ theorem cT_dg (s : A →+* A) (M : Matrix (Fin n) (Fin n) A) :
   rcases i with a | a <;> rcases j with b | b <;> simp only [dg, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.sub_apply, Formalism.UG.cT] <;> simp [Matrix.one_apply, eq_comm]
 
 /- English proof (translation)
-Establish `hg' : Formalism.UG.cT s (g : Matrix (Fin n) (Fin n) A) * J * (g : Matrix (Fin n) (Fin n) A) = J` using `hg`. Use `show Formalism.UG.cT s (dg (g : Matrix (Fin n) (Fin n) A)) * _ * dg (g : Matrix (Fin n) (Fin n) A) = _`. Rewrite using `[cT_dg, dg]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using `[hg']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diagGL_mem (s : A →+* A) (J K : Matrix (Fin n) (Fin n) A) {g : GL (Fin n) A}
     (hg : g ∈ Formalism.UG.UJ s J) :
@@ -119,7 +119,7 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b <;>`. Apply the tactic sequence `simp only [JR, GlobalTheory.WeilSchrodinger.DblTargetF.dblG, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.map_apply] <;> simp [dbl]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem JR_dblG (R : Type) [CommRing R] [Algebra F R] {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     JR (F := F) R (GlobalTheory.WeilSchrodinger.DblTargetF.dblG J) =
@@ -165,15 +165,13 @@ namespace GlobalTheory.DiagEmbU
 open GlobalTheory.WeilSchrodinger.DblTarget
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J`. Use `⟨diagU σ J, ?_, fun h => mtF_diagU σ J h, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Continuous.subtype_mk (continuous_diagGL.comp continuous_subtype_val) _`. Introduce `γ hγ`. Establish `h1 : (show HR (AF F) σ J from γ).1 ∈ HFin (AF F) σ J` using `Subgroup.mem_subgroupOf.mp hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨γ₀, hγ₀, he⟩` from `Subgroup.mem_map.mp h1`. Use `Subgroup.mem_subgroupOf.mpr (Subgroup.mem_map.mpr ⟨diagGL γ₀, ?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[dblG_eq]`. Conclude with `diagGL_mem _ J (-J) hγ₀`. Rewrite using `[bc_diagGL, he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `e h hs i j`. Rewrite using `[mtF_diagU]`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[dg_sub_one_apply]`. Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b <;> simp only [Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr, mul_zero]`. Conclude with `hs a b`. Introduce `e h y hy show (y : Formalism.IndefR.DatumF.AEF F E) = e * (Formalism.IndefR.DatumF.mtF σ _ (diagU σ J h)).det + (1 - e)`. Rewrite using `[mtF_diagU, det_dg]`.
-
-Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_diagEmb : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (J : Matrix (Fin n) (Fin n) E),

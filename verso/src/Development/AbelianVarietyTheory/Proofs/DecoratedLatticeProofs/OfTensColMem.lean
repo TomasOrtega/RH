@@ -16,13 +16,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n n' : Type}
 
 /- English proof (translation)
-Use `haveI := Comm.t2Space_matrix_of_isNonarchimedeanLocalField (k := k) (n := n) (n' := n')`. Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy₀⟩ : ∃ y₀, a y₀ ≠ 0 := by`. Assume the negation of the conclusion as `h0`. Use `push_neg at h0`. Conclude with `ha (funext h0)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hg` using `Comm.comp_mem_SB h (p := fun x₀ : Matrix n n' k => Matrix.of fun i j => Sum.elim (x₀ i) (fun _ => y₀ i) j) (s := fun x : Matrix n (n' ⊕ Fin 1) k => x.submatrix id Sum.inl) ?_ (by fun_prop) (fun x₀ => rfl)`. Establish `e : Ψ = (a y₀)⁻¹ • fun x₀ : Matrix n n' k => tensCol Ψ a (Matrix.of fun i j => Sum.elim (x₀ i) (fun _ => y₀ i) j)`. Use function extensionality and compare the values at `x₀`. Use `show Ψ x₀ = (a y₀)⁻¹ * (Ψ x₀ * a y₀)`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hg`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Break down `j with j | j` into its components or cases. Conclude with `continuous_id.matrix_elem i j`.
-
-Conclude with `continuous_const`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem of_tensCol_mem {Ψ : Matrix n n' k → ℂ} {a : (n → k) → ℂ}
     (h : tensCol Ψ a ∈ SB (Matrix n (n' ⊕ Fin 1) k)) (ha : a ≠ 0) : Ψ ∈ SB (Matrix n n' k) := by
@@ -47,13 +43,9 @@ theorem of_tensCol_mem {Ψ : Matrix n n' k → ℂ} {a : (n → k) → ℂ}
     · exact continuous_const
 
 /- English proof (translation)
-Use `haveI := Comm.t2Space_matrix_of_isNonarchimedeanLocalField (k := k) (n := n) (n' := n')`. Choose the witnesses or unpack the hypotheses as in `⟨η₀, hη₀⟩ : ∃ η₀, b η₀ ≠ 0 := by`. Assume the negation of the conclusion as `h0`. Use `push_neg at h0`. Conclude with `hb (funext h0)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hg` using `Comm.comp_mem_SB h (p := fun x₀ : Matrix n n' k => Matrix.of fun i j => Sum.elim (fun i => x₀ i j) (fun _ => η₀ j) i) (s := fun x : Matrix (n ⊕ Fin 1) n' k => x.submatrix Sum.inl id) ?_ (by fun_prop) (fun x₀ => rfl)`. Establish `e : Ψ = (b η₀)⁻¹ • fun x₀ : Matrix n n' k => tensRow Ψ b (Matrix.of fun i j => Sum.elim (fun i => x₀ i j) (fun _ => η₀ j) i)`. Use function extensionality and compare the values at `x₀`. Use `show Ψ x₀ = (b η₀)⁻¹ * (Ψ x₀ * b η₀)`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hg`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Break down `i with i | i` into its components or cases. Conclude with `continuous_id.matrix_elem i j`.
-
-Conclude with `continuous_const`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem of_tensRow_mem {Ψ : Matrix n n' k → ℂ} {b : (n' → k) → ℂ}
     (h : tensRow Ψ b ∈ SB (Matrix (n ⊕ Fin 1) n' k)) (hb : b ≠ 0) : Ψ ∈ SB (Matrix n n' k) := by
@@ -82,7 +74,7 @@ end GlobalTheory.FinPl.TensSB
 namespace GlobalTheory.FinPl
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n n' _ _ _ _`. Conclude with `⟨fun Ψ a hΨ ha => Comm.tensCol_mem hΨ ha, fun Ψ a h ha => TensSB.of_tensCol_mem h ha, fun Ψ b hΨ hb => Comm.tensRow_mem hΨ hb, fun Ψ b h hb => TensSB.of_tensRow_mem h hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem tens_SB_iff : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'],
     (∀ (Ψ : Matrix n n' k → ℂ) (a : (n → k) → ℂ), Ψ ∈ SB (Matrix n n' k) → a ∈ SB (n → k) → tensCol Ψ a ∈ SB (Matrix n (n' ⊕ Fin 1) k)) ∧

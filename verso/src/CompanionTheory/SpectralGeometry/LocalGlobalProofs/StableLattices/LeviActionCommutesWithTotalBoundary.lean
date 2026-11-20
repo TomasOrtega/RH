@@ -16,7 +16,7 @@ namespace GlobalTheory.CompanionTheory.RgCOBlock.LeviBd
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Substitute `h1` using the available equality. Establish `h3 : a * b = -(b * a)` using `eq_neg_of_add_eq_zero_left h2`. Rewrite using `[mul_assoc, h3]`. Use `noncomm_ring`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_mul_relation_rearrange_commRing {R : Type*} [Ring R] (a b c d : R) (h1 : b * c + c * b = d) (h2 : a * b + b * a = 0) :
     c * a * b - b * (c * a) = -(d * a) := by
@@ -26,7 +26,7 @@ theorem units_mul_relation_rearrange_commRing {R : Type*} [Ring R] (a b c d : R)
   noncomm_ring
 
 /- English proof (translation)
-Rewrite using `[units_mul_relation_rearrange_commRing (ann i) (ann l) (cre k) _ (CompanionTheory.D.LK.Car.ann_cre l k) (CompanionTheory.D.LK.Car.ann_ann i l)]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem term_ann (k i l : Pos n) :
     (cre k * ann i * ann l - ann l * (cre k * ann i) : Module.End ℂ (Cn n V)) =
@@ -35,7 +35,7 @@ theorem term_ann (k i l : Pos n) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h : (adL p q * ann l - ann l * adL p q : Module.End ℂ (Cn n V)) = ∑ i : Pos n, ∑ k : Pos n, adC p q i k • (cre k * ann i * ann l - ann l * (cre k * ann i))`. Simplify using `only [adL, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, smul_sub, ← Finset.sum_sub_distrib]`. Rewrite using `[h]`. Simplify using `only [term_ann, smul_neg, Finset.sum_neg_distrib, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adL_ann (p q : Fin n) (l : Pos n) :
     (adL p q * ann l - ann l * adL p q : Module.End ℂ (Cn n V)) = -∑ i : Pos n, adC p q i l • ann i := by
@@ -48,7 +48,7 @@ theorem adL_ann (p q : Fin n) (l : Pos n) :
     if_true]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, CompanionTheory.D.LK.lift_apply, CompanionTheory.D.LK.Car.ann_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_mul_ann (T : Module.End ℂ V) (i : Pos n) :
     ((lift n T : Module.End ℂ (Cn n V)) * ann i : Module.End ℂ (Cn n V)) = ann i * (lift n T : Module.End ℂ (Cn n V)) := by
@@ -57,7 +57,7 @@ theorem lift_mul_ann (T : Module.End ℂ V) (i : Pos n) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, CompanionTheory.D.LK.lift_apply, CompanionTheory.D.LK.Car.cre_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_mul_cre (T : Module.End ℂ V) (i : Pos n) :
     ((lift n T : Module.End ℂ (Cn n V)) * cre i : Module.End ℂ (Cn n V)) = cre i * (lift n T : Module.End ℂ (Cn n V)) := by
@@ -66,7 +66,7 @@ theorem lift_mul_cre (T : Module.End ℂ V) (i : Pos n) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [adL, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← lift_mul_ann, ← mul_assoc, ← lift_mul_cre, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem adL_mul_lift (T : Module.End ℂ V) (p q : Fin n) :
     (adL p q * (lift n T : Module.End ℂ (Cn n V)) : Module.End ℂ (Cn n V)) = (lift n T : Module.End ℂ (Cn n V)) * adL p q := by
@@ -81,7 +81,7 @@ theorem lift_mul (S T : Module.End ℂ V) :
     (lift n (S * T) : Module.End ℂ (Cn n V)) = (lift n S : Module.End ℂ (Cn n V)) * (lift n T : Module.End ℂ (Cn n V)) := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lift_sub (S T : Module.End ℂ V) :
     (lift n (S - T) : Module.End ℂ (Cn n V)) = (lift n S : Module.End ℂ (Cn n V)) - (lift n T : Module.End ℂ (Cn n V)) := by
@@ -89,7 +89,7 @@ theorem lift_sub (S T : Module.End ℂ V) :
   simp
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `[LinearMap.sum_apply, Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lift_sum {ι : Type*} (s : Finset ι) (f : ι → Module.End ℂ V) :
     (lift n (∑ i ∈ s, f i) : Module.End ℂ (Cn n V)) = ∑ i ∈ s, (lift n (f i) : Module.End ℂ (Cn n V)) := by
@@ -97,7 +97,7 @@ theorem lift_sum {ι : Type*} (s : Finset ι) (f : ι → Module.End ℂ V) :
   simp [LinearMap.sum_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lift_smul (c : ℂ) (S : Module.End ℂ V) :
     (lift n (c • S) : Module.End ℂ (Cn n V)) = c • (lift n S : Module.End ℂ (Cn n V)) := by
@@ -105,7 +105,7 @@ theorem lift_smul (c : ℂ) (S : Module.End ℂ V) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← adL_ann, lF, add_mul, mul_add, lift_mul_ann]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem lF_ann (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (l : Pos n) :
     (lF E p q * ann l - ann l * lF E p q : Module.End ℂ (Cn n V)) = -∑ i : Pos n, adC p q i l • ann i := by
@@ -113,7 +113,7 @@ theorem lF_ann (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (l : Pos
   abel
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.FarReg.BdProd.lF_cre]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem lF_cre' (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (l : Pos n) :
     (lF E p q * cre l - cre l * lF E p q : Module.End ℂ (Cn n V)) = ∑ k : Pos n, adC p q l k • cre k := by
@@ -121,7 +121,7 @@ theorem lF_cre' (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (l : Po
   abel
 
 /- English proof (translation)
-Rewrite using `[lF, add_mul, mul_add, adL_mul_lift, lift_sub, lift_mul, lift_mul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem lF_lift (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (T : Module.End ℂ V) :
     (lF E p q * (lift n T : Module.End ℂ (Cn n V)) - (lift n T : Module.End ℂ (Cn n V)) * lF E p q : Module.End ℂ (Cn n V)) =
@@ -140,9 +140,9 @@ def S2 (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] : Module.End ℂ (Cn
   ∑ i : Pos n, ∑ j : Pos n, ∑ k : Pos n, tc i j k • Wt3 V i j k
 
 /- English proof (translation)
-Unfold `bd S1 S2 tc Wt3`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i.1.2 = j.1.1 ∧ k.1.1 = i.1.1 ∧ k.1.2 = j.1.2`. Rewrite using `[if_pos ⟨rfl, rfl, h⟩, if_pos h, one_smul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun c => h c.2.2), if_neg h, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bd_eq (E : Fin n → Fin n → Module.End ℂ V) : bd (allT n) E = S1 E + S2 n V := by
   unfold bd S1 S2 tc Wt3
@@ -153,7 +153,7 @@ theorem bd_eq (E : Fin n → Fin n → Module.End ℂ V) : bd (allT n) E = S1 E 
   · rw [if_neg (fun c => h c.2.2), if_neg h, zero_smul]
 
 /- English proof (translation)
-Substitute `hc ha hb` using the available equality. Use `noncomm_ring`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem comm3 {R : Type*} [Ring R] (L c a b dc da db : R) (hc : L * c - c * L = dc) (ha : L * a - a * L = da)
     (hb : L * b - b * L = db) : L * (c * a * b) - c * a * b * L = dc * a * b + c * da * b + c * a * db := by
@@ -161,7 +161,7 @@ theorem comm3 {R : Type*} [Ring R] (L c a b dc da db : R) (hc : L * c - c * L = 
   noncomm_ring
 
 /- English proof (translation)
-Unfold `Wt3`. Rewrite using `[comm3 _ _ _ _ _ _ _ (lF_cre' E p q k) (lF_ann E p q j) (lF_ann E p q i)]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem term2 (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (i j k : Pos n) :
     (lF E p q * Wt3 V i j k - Wt3 V i j k * lF E p q : Module.End ℂ (Cn n V)) =
@@ -176,11 +176,11 @@ def Dc (p q : Fin n) (a b m : Pos n) : ℂ :=
   ∑ k : Pos n, tc a b k * adC p q k m - ∑ j : Pos n, tc a j m * adC p q b j - ∑ i : Pos n, tc i b m * adC p q a i
 
 /- English proof (translation)
-Simplify using `only [smul_sub, sub_smul, Finset.sum_sub_distrib]`. Establish `t1 : ∑ i, ∑ j, ∑ k, c i j k • ∑ m, d k m • w i j m = ∑ a, ∑ b, ∑ m, (∑ k, c a b k * d k m) • w a b m`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `t2 : ∑ i, ∑ j, ∑ k, c i j k • ∑ l, d l j • w i l k = ∑ a, ∑ b, ∑ m, (∑ j, c a j m * d b j) • w a b m`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `(Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans (Finset.sum_comm.trans (Finset.sum_congr rfl fun _ _ => Finset.sum_comm))`. Establish `t3 : ∑ i, ∑ j, ∑ k, c i j k • ∑ l, d l i • w l j k = ∑ a, ∑ b, ∑ m, (∑ i, c i b m * d a i) • w a b m`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Finset.smul_sum, Finset.sum_smul, smul_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[t1, t2, t3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reindex {M : Type*} [AddCommGroup M] [Module ℂ M] (c : Pos n → Pos n → Pos n → ℂ) (d : Pos n → Pos n → ℂ)
     (w : Pos n → Pos n → Pos n → M) :
@@ -207,7 +207,7 @@ theorem reindex {M : Type*} [AddCommGroup M] [Module ℂ M] (c : Pos n → Pos n
   rw [t1, t2, t3]
 
 /- English proof (translation)
-Establish `h : (lF E p q * S2 n V - S2 n V * lF E p q : Module.End ℂ (Cn n V)) = ∑ i : Pos n, ∑ j : Pos n, ∑ k : Pos n, tc i j k • (lF E p q * Wt3 V i j k - Wt3 V i j k * lF E p q)`. Simplify using `only [S2, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc, smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[h]`. Simplify using `only [term2]`. Conclude with `reindex tc (adC p q) (Wt3 V)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levi_commutator_bracket_part (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) :
     (lF E p q * S2 n V - S2 n V * lF E p q : Module.End ℂ (Cn n V)) =
@@ -221,11 +221,11 @@ theorem levi_commutator_bracket_part (E : Fin n → Fin n → Module.End ℂ V) 
   exact reindex tc (adC p q) (Wt3 V)
 
 /- English proof (translation)
-Establish `h : ∀ l : Pos n, (lF E p q * ((lift n (E l.1.1 l.1.2) : Module.End ℂ (Cn n V)) * ann l) - (lift n (E l.1.1 l.1.2) : Module.End ℂ (Cn n V)) * ann l * lF E p q : Module.End ℂ (Cn n V)) = (lift n (E p q * E l.1.1 l.1.2 - E l.1.1 l.1.2 * E p q) : Module.End ℂ (Cn n V)) * ann l - ∑ i …`. Introduce `l`. Establish `h1` using `lF_lift E p q (E l.1.1 l.1.2)`. Establish `h2` using `lF_ann E p q l`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (∑ i : Pos n, adC p q i l • ((lift n (E l.1.1 l.1.2) : Module.End ℂ (Cn n V)) * ann i)) = (lift n (E l.1.1 l.1.2) : Module.End ℂ (Cn n V)) * ∑ i : Pos n, adC p q i l • ann i`. Simplify using `only [Finset.mul_sum, mul_smul_comm]`. Rewrite using `[h3, eq_neg_of_add_eq_zero_left (show (∑ i : Pos n, adC p q i l • ann i) + (lF E p q * ann l - ann l * lF E p q) = 0 by rw [h2]; abel)]`. Use `noncomm_ring`. Establish `h0 : (lF E p q * S1 E - S1 E * lF E p q : Module.End ℂ (Cn n V)) = ∑ l : Pos n, (lF E p q * ((lift n (E l.1.1 l.1.2) : Module.End ℂ (Cn n V)) * ann l) - (lift n (E l.1.1 l.1.2) : Module.End ℂ (Cn n V)) * ann l * lF E p q)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [S1, Finset.mul_sum, Finset.sum_mul, Finset.sum_sub_distrib]`. Rewrite using `[h0, Finset.sum_congr rfl fun l _ => h l, Finset.sum_sub_distrib, Finset.sum_comm, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[lift_sub (n := n) (E p q * E l.1.1 l.1.2 - E l.1.1 l.1.2 * E p q), sub_mul, lift_sum, Finset.sum_mul]`. Simplify using `only [lift_smul, smul_mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levi_commutator_linear_part (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) :
     (lF E p q * S1 E - S1 E * lF E p q : Module.End ℂ (Cn n V)) =
@@ -258,7 +258,7 @@ section Coeff
 variable {lev : Fin n → ℕ} {p q : Fin n}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Conclude with `absurd (hm (not_lt.1 hc)) (not_le.2 h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem lt_of_lev (hm : Monotone lev) {s t : Fin n} (h : lev s < lev t) : s < t := by
   by_contra hc
@@ -274,18 +274,18 @@ def cZ (p q : Fin n) (a b m : Pos n) : ℂ :=
   if a.1.2 = p ∧ q = b.1.1 ∧ m.1.1 = a.1.1 ∧ m.1.2 = b.1.2 then 1 else 0
 
 /- English proof (translation)
-Simplify using `only [adC, Prod.ext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adC_eq (p q : Fin n) (i k : Pos n) : adC p q i k =
     (if q = i.1.1 ∧ k.1.1 = p ∧ k.1.2 = i.1.2 then 1 else 0) - (if i.1.2 = p ∧ k.1.1 = i.1.1 ∧ k.1.2 = q then 1 else 0) := by
   simp only [adC, Prod.ext_iff]
 
 /- English proof (translation)
-Distinguish the cases in `h : a.1.2 = b.1.1`. Establish `hlt : a.1.1 < b.1.2` using `lt_trans a.2 (h ▸ b.2)`. Rewrite using `[Finset.sum_eq_single (⟨(a.1.1, b.1.2), hlt⟩ : Pos n)]`. Establish `: tc a b (⟨(a.1.1, b.1.2), hlt⟩ : Pos n) = 1` using `if_pos ⟨h, rfl, rfl⟩`. Rewrite using `[this, one_mul, adC_eq, cX, cY]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h]`. Introduce `k _ hk`. Rewrite using `[tc, if_neg, zero_mul]`. Introduce and unpack `⟨-, e1, e2⟩`. Conclude with `hk (Subtype.ext (Prod.ext e1 e2))`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero]`. Simplify using `[cX, cY, h]`. Introduce `k _`. Simplify using `[tc, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levi_bracket_sum_first (a b m : Pos n) : ∑ k : Pos n, tc a b k * adC p q k m = cX p q a b m - cY p q a b m := by
   by_cases h : a.1.2 = b.1.1
@@ -305,23 +305,23 @@ theorem levi_bracket_sum_first (a b m : Pos n) : ∑ k : Pos n, tc a b k * adC p
       simp [tc, h]
 
 /- English proof (translation)
-Establish `hz : (∀ j : Pos n, tc a j m = 0) → ∑ j : Pos n, tc a j m * adC p q b j = 0` using `fun h => Finset.sum_eq_zero fun j _ => by rw [h, zero_mul]`. Distinguish the cases in `h1 : m.1.1 = a.1.1`. Distinguish the cases in `hlt : a.1.2 < m.1.2`. Rewrite using `[Finset.sum_eq_single (⟨(a.1.2, m.1.2), hlt⟩ : Pos n)]`. Establish `: tc a (⟨(a.1.2, m.1.2), hlt⟩ : Pos n) m = 1` using `if_pos ⟨rfl, h1, rfl⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, one_mul, adC_eq, cZ, cY]`. Simplify using `only [h1, true_and, and_true]`. Use `congr 1`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨e1, e2, e3⟩`. Conclude with `⟨e2, e1, e3⟩`. Introduce and unpack `⟨e1, e2, e3⟩`. Conclude with `⟨e2, e1, e3⟩`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e1, e2, e3⟩`. Conclude with `⟨e2, e1, e3⟩`. Introduce and unpack `⟨e1, e2, e3⟩`. Conclude with `⟨e2, e1, e3⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `j _ hj`. Rewrite using `[tc, if_neg, zero_mul]`. Introduce and unpack `⟨e1, -, e2⟩`. Conclude with `hj (Subtype.ext (Prod.ext e1.symm e2.symm))`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, cZ, cY, if_neg, if_neg, sub_zero]`. Introduce and unpack `⟨e1, e2, -, e3⟩`. Use `hlt (lt_of_lev hm ?_)` and prove the remaining obligations. Rewrite using `[e1, e3, ← hpq, ← e2]`. Conclude with `hb`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨e1, e2, -, e3⟩`. Use `hlt (lt_of_lev hm ?_)` and prove the remaining obligations. Rewrite using `[e1, hpq, e2, e3]`. Conclude with `hb`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tc, if_neg]`. Introduce and unpack `⟨e1, -, e2⟩`. Conclude with `hlt (by rw [e1, e2]; exact j.2)`. Rewrite using `[hz, cZ, cY, if_neg, if_neg, sub_zero]`. Conclude with `fun c => h1 c.2.2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun c => h1 c.2.2.1`. Introduce `j`. Rewrite using `[tc, if_neg]`. Conclude with `fun c => h1 c.2.1`.
+A detailed English derivation is pending.
 -/
 theorem levi_bracket_sum_second (hm : Monotone lev) (hpq : lev p = lev q) {a b : Pos n} (ha : inU lev a) (hb : inU lev b) (m : Pos n) :
     ∑ j : Pos n, tc a j m * adC p q b j = cZ p q a b m - cY p q a b m := by
@@ -372,23 +372,23 @@ theorem levi_bracket_sum_second (hm : Monotone lev) (hpq : lev p = lev q) {a b :
       exact fun c => h1 c.2.1
 
 /- English proof (translation)
-Establish `hz : (∀ i : Pos n, tc i b m = 0) → ∑ i : Pos n, tc i b m * adC p q a i = 0` using `fun h => Finset.sum_eq_zero fun i _ => by rw [h, zero_mul]`. Distinguish the cases in `h1 : m.1.2 = b.1.2`. Distinguish the cases in `hlt : m.1.1 < b.1.1`. Rewrite using `[Finset.sum_eq_single (⟨(m.1.1, b.1.1), hlt⟩ : Pos n)]`. Establish `: tc (⟨(m.1.1, b.1.1), hlt⟩ : Pos n) b m = 1` using `if_pos ⟨rfl, rfl, h1⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, one_mul, adC_eq, cX, cZ]`. Simplify using `only [h1, and_true]`. Use `congr 1`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨e1, e2, e3⟩`. Conclude with `⟨e3.symm, e1, e2⟩`. Introduce and unpack `⟨e1, e2, e3⟩`. Conclude with `⟨e2, e3, e1.symm⟩`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e1, e2, e3⟩`. Conclude with `⟨e1, e3.symm, e2⟩`. Introduce and unpack `⟨e1, e2, e3⟩`. Conclude with `⟨e1, e3, e2.symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `i _ hi`. Rewrite using `[tc, if_neg, zero_mul]`. Introduce and unpack `⟨e1, e2, -⟩`. Conclude with `hi (Subtype.ext (Prod.ext e2.symm e1))`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, cX, cZ, if_neg, if_neg, sub_zero]`. Introduce and unpack `⟨e1, e2, e3, -⟩`. Use `hlt (lt_of_lev hm ?_)` and prove the remaining obligations. Rewrite using `[e3, ← e2, ← hpq, ← e1]`. Conclude with `ha`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨e1, e2, e3, -⟩`. Use `hlt (lt_of_lev hm ?_)` and prove the remaining obligations. Rewrite using `[e3, hpq, e2, ← e1]`. Conclude with `ha`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tc, if_neg]`. Introduce and unpack `⟨e1, e2, -⟩`. Conclude with `hlt (by rw [e2, ← e1]; exact i.2)`. Rewrite using `[hz, cX, cZ, if_neg, if_neg, sub_zero]`. Conclude with `fun c => h1 c.2.2.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun c => h1 c.2.2.2`. Introduce `i`. Rewrite using `[tc, if_neg]`. Conclude with `fun c => h1 c.2.2`.
+A detailed English derivation is pending.
 -/
 theorem levi_bracket_sum_third (hm : Monotone lev) (hpq : lev p = lev q) {a b : Pos n} (ha : inU lev a) (hb : inU lev b) (m : Pos n) :
     ∑ i : Pos n, tc i b m * adC p q a i = cX p q a b m - cZ p q a b m := by
@@ -439,7 +439,7 @@ theorem levi_bracket_sum_third (hm : Monotone lev) (hpq : lev p = lev q) {a b : 
       exact fun c => h1 c.2.2
 
 /- English proof (translation)
-Rewrite using `[Dc, levi_bracket_sum_first, levi_bracket_sum_second hm hpq ha hb, levi_bracket_sum_third hm hpq ha hb]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Dc_eq_zero (hm : Monotone lev) (hpq : lev p = lev q) {a b : Pos n} (ha : inU lev a) (hb : inU lev b) (m : Pos n) :
     Dc p q a b m = 0 := by
@@ -447,9 +447,9 @@ theorem Dc_eq_zero (hm : Monotone lev) (hpq : lev p = lev q) {a b : Pos n} (ha :
   ring
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single (⟨(u, v), h⟩ : Pos n)]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Rewrite using `[if_neg, zero_smul]`. Introduce and unpack `⟨e1, e2⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hk (Subtype.ext (Prod.ext e1 e2))`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_ind {M : Type*} [AddCommGroup M] [Module ℂ M] {u v : Fin n} (h : u < v) (f : Pos n → M) :
     ∑ k : Pos n, (if k.1.1 = u ∧ k.1.2 = v then (1 : ℂ) else 0) • f k = f ⟨(u, v), h⟩ := by
@@ -462,11 +462,11 @@ theorem sum_ind {M : Type*} [AddCommGroup M] [Module ℂ M] {u v : Fin n} (h : u
   · simp
 
 /- English proof (translation)
-Establish `h1 : ∑ k : Pos n, (if q = l.1.1 ∧ k.1.1 = p ∧ k.1.2 = l.1.2 then (1 : ℂ) else 0) • E k.1.1 k.1.2 = if q = l.1.1 then E p l.1.2 else 0`. Distinguish the cases in `h : q = l.1.1`. Establish `hlt : p < l.1.2` using `lt_of_lev hm (by rw [hpq, h]; exact hl)`. Simplify using `only [h, true_and, if_true]`. Conclude with `sum_ind hlt fun k => E k.1.1 k.1.2`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Establish `h2 : ∑ k : Pos n, (if l.1.2 = p ∧ k.1.1 = l.1.1 ∧ k.1.2 = q then (1 : ℂ) else 0) • E k.1.1 k.1.2 = if l.1.2 = p then E l.1.1 q else 0`. Distinguish the cases in `h : l.1.2 = p`. Establish `hlt : l.1.1 < q` using `lt_of_lev hm (by rw [← hpq, ← h]; exact hl)`. Simplify using `only [h, true_and, if_true]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `sum_ind hlt fun k => E k.1.1 k.1.2`. Simplify using `[h]`. Simplify using `only [adC_eq, sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[h1, h2, hE p q l.1.1 l.1.2, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_zero (hm : Monotone lev) (hpq : lev p = lev q) {E : Fin n → Fin n → Module.End ℂ V} (hE : GlRel E)
     {l : Pos n} (hl : inU lev l) :
@@ -491,7 +491,7 @@ theorem lin_zero (hm : Monotone lev) (hpq : lev p = lev q) {E : Fin n → Fin n 
 end Coeff
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Assume the negation of the conclusion as `h`. Conclude with `hi (hx _ (CompanionTheory.D.LK.ann_ne h).2 i (mem_insert_self _ _))`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem ann_eq_zero {P : Pos n → Prop} {x : Cn n V} (hx : SuppIn P x) {i : Pos n} (hi : ¬P i) : ann i x = 0 := by
   funext A
@@ -499,22 +499,22 @@ theorem ann_eq_zero {P : Pos n → Prop} {x : Cn n V} (hx : SuppIn P x) {i : Pos
   exact hi (hx _ (CompanionTheory.D.LK.ann_ne h).2 i (mem_insert_self _ _))
 
 /- English proof (translation)
-Introduce `A h j hj`. Conclude with `hx _ (CompanionTheory.D.LK.ann_ne h).2 j (mem_insert_of_mem hj)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ann_supp {P : Pos n → Prop} {x : Cn n V} (hx : SuppIn P x) (i : Pos n) : SuppIn P (ann i x) := by
   intro A h j hj
   exact hx _ (CompanionTheory.D.LK.ann_ne h).2 j (mem_insert_of_mem hj)
 
 /- English proof (translation)
-Introduce `n lev V _ _ E hm hE x hx p q hpq`. Establish `h1 : (lF E p q * S1 E - S1 E * lF E p q : Module.End ℂ (Cn n V)) x = 0`. Rewrite using `[levi_commutator_linear_part, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : inU lev l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[lin_zero hm hpq hE hl]`. Use `funext fun A => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[Module.End.mul_apply, ann_eq_zero hx hl, map_zero]`. Establish `h2 : (lF E p q * S2 n V - S2 n V * lF E p q : Module.End ℂ (Cn n V)) x = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[levi_commutator_bracket_part]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : inU lev a`. Distinguish the cases in `hb : inU lev b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Dc_eq_zero hm hpq ha hb, zero_smul]`. Simplify using `only [Wt3, Module.End.mul_apply]`. Rewrite using `[ann_eq_zero (ann_supp hx a) hb, map_zero, smul_zero]`. Simplify using `only [Wt3, Module.End.mul_apply]`. Rewrite using `[ann_eq_zero hx ha, map_zero, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bd_eq]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h1 h2`. Simplify using `only [LinearMap.add_apply, map_add]`. Rewrite using `[sub_eq_zero.1 h1, sub_eq_zero.1 h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lF_bd : ∀ (n : ℕ) (lev : Fin n → ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V), Monotone lev → GlRel E → ∀ (x : Cn n V), SuppIn (inU lev) x →

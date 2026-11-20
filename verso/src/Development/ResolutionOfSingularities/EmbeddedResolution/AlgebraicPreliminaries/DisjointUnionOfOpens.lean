@@ -29,7 +29,7 @@ theorem sigma_ι_sigmaOpensDesc_assoc (Y : Scheme.{u}) {ι : Type u} (U : ι →
   simp
 
 /- English proof (translation)
-Establish `: ∀ i, IsAffine (U i).toScheme` using `fun i => hU i`. Conclude with `inferInstanceAs (IsAffine (∐ fun i => (U i).toScheme))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAffine_sigmaOpens (Y : Scheme.{u}) {ι : Type u} [Finite ι] (U : ι → Y.Opens)
     (hU : ∀ i, IsAffineOpen (U i)) : IsAffine (sigmaOpens Y U) := by
@@ -37,7 +37,7 @@ theorem isAffine_sigmaOpens (Y : Scheme.{u}) {ι : Type u} [Finite ι] (U : ι �
   exact inferInstanceAs (IsAffine (∐ fun i => (U i).toScheme))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ hx => e.injective (((hx.map e).eq_zero).trans (map_zero e).symm)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem isReduced_of_ringEquiv
     {A B : Type u} [CommRing A] [CommRing B] [_root_.IsReduced B] (e : A ≃+* B) :
@@ -45,7 +45,7 @@ private theorem isReduced_of_ringEquiv
   ⟨fun _ hx => e.injective (((hx.map e).eq_zero).trans (map_zero e).symm)⟩
 
 /- English proof (translation)
-Use `h` as an intermediate fact. Conclude with `isReduced_of_isReduced_stalk X`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isReduced_of_forall_isReduced_stalk (X : Scheme.{u})
     (h : ∀ x : X, _root_.IsReduced (X.presheaf.stalk x)) : IsReduced X := by
@@ -53,9 +53,9 @@ private theorem isReduced_of_forall_isReduced_stalk (X : Scheme.{u})
   exact isReduced_of_isReduced_stalk X
 
 /- English proof (translation)
-Use `isReduced_of_forall_isReduced_stalk _ ?_` and prove the remaining obligations. Introduce `x`. Take `⟨⟨i, y⟩, hx⟩` from `(sigmaMk fun i => (U i).toScheme).surjective x`. Establish `hx' : (Sigma.ι (fun i => (U i).toScheme) i).base y = x` using `by simpa using hx`. Substitute `hx'` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `isReduced_of_ringEquiv (((asIso ((Sigma.ι (fun i => (U i).toScheme) i).stalkMap y)).commRingCatIsoToRingEquiv).trans ((asIso (((U i).ι).stalkMap y)).commRingCatIsoToRingEquiv.symm))`.
+A detailed English derivation is pending.
 -/
 theorem isReduced_sigmaOpens (Y : Scheme.{u}) [IsReduced Y] {ι : Type u} (U : ι → Y.Opens) :
     IsReduced (sigmaOpens Y U) := by
@@ -73,14 +73,14 @@ instance instIsReducedOpensCoprod (Y : Scheme.{u}) [IsReduced Y] {ι : Type u} (
   isReduced_sigmaOpens Y U
 
 /- English proof (translation)
-Establish `hrh : HasRingHomProperty (@Etale.{u}) RingHom.Etale` using `inferInstance`. Conclude with `@HasRingHomProperty.instIsZariskiLocalAtSource (@Etale.{u}) _ hrh`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_isZariskiLocalAtSource : IsZariskiLocalAtSource (@Etale.{u}) := by
   have hrh : HasRingHomProperty (@Etale.{u}) RingHom.Etale := inferInstance
   exact @HasRingHomProperty.instIsZariskiLocalAtSource (@Etale.{u}) _ hrh
 
 /- English proof (translation)
-Establish `hloc : IsZariskiLocalAtSource (@Etale.{u})` using `etale_isZariskiLocalAtSource`. Conclude with `IsZariskiLocalAtSource.sigmaDesc hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_sigmaDesc {ι : Type u} {X : ι → Scheme.{u}} {Z : Scheme.{u}}
     (f : ∀ i, X i ⟶ Z) (hf : ∀ i, Etale (f i)) : Etale (Sigma.desc f) := by
@@ -88,7 +88,7 @@ theorem etale_sigmaDesc {ι : Type u} {X : ι → Scheme.{u}} {Z : Scheme.{u}}
   exact IsZariskiLocalAtSource.sigmaDesc hf
 
 /- English proof (translation)
-Establish `hloc : IsZariskiLocalAtSource (@Etale.{u})` using `etale_isZariskiLocalAtSource`. Conclude with `IsZariskiLocalAtSource.sigmaDesc fun i => inferInstance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u} (U : ι → Y.Opens) :
     Etale (sigmaOpensDesc Y U) := by
@@ -100,7 +100,7 @@ instance instEtaleOpensCoprodDesc (Y : Scheme.{u}) {ι : Type u} (U : ι → Y.O
   etale_sigmaOpensDesc Y U
 
 /- English proof (translation)
-Establish `: Etale (sigmaOpensDesc Y U)` using `etale_sigmaOpensDesc Y U`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u} (U : ι → Y.Opens) :
     LocallyOfFiniteType (sigmaOpensDesc Y U) := by
@@ -112,9 +112,9 @@ instance instLocallyOfFiniteTypeOpensCoprodDesc (Y : Scheme.{u}) {ι : Type u} (
   locallyOfFiniteType_sigmaOpensDesc Y U
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `y`. Establish `hy : y ∈ iSup U` using `by rw [hU]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hy`. Use `⟨(Sigma.ι (fun i => (U i).toScheme) i).base (⟨y, hi⟩ : ↥((U i).toScheme)), ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun f : (U i).toScheme ⟶ Y => f.base (⟨y, hi⟩ : ↥((U i).toScheme))) (sigma_ι_sigmaOpensDesc Y U i)`.
+A detailed English derivation is pending.
 -/
 theorem surjective_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u} (U : ι → Y.Opens)
     (hU : iSup U = ⊤) : Surjective (sigmaOpensDesc Y U) := by
@@ -127,7 +127,7 @@ theorem surjective_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u} (U : ι → Y.O
     (sigma_ι_sigmaOpensDesc Y U i)
 
 /- English proof (translation)
-Use `⟨(Y.affineOpenCover.3 (Y.affineOpenCover.4 x)).opensRange, isAffineOpen_opensRange _, ?_⟩` and prove the remaining obligations. Conclude with `Y.affineOpenCover.5 x`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_isAffineOpen_mem (Y : Scheme.{u}) (x : Y) :
     ∃ U : Y.Opens, IsAffineOpen U ∧ x ∈ U := by
@@ -136,9 +136,9 @@ private theorem exists_isAffineOpen_mem (Y : Scheme.{u}) (x : Y) :
   exact Y.affineOpenCover.5 x
 
 /- English proof (translation)
-Use `choose V hV hxV using exists_isAffineOpen_mem Y`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x : Y => (V x : Set Y)) (fun x => (V x).isOpen) (fun x _ => Set.mem_iUnion.mpr ⟨x, hxV x⟩)`. Use `⟨{ x : Y // x ∈ t }, inferInstance, fun i => V i.1, fun i => hV i.1, ?_⟩` and prove the remaining obligations. Use `TopologicalSpace.Opens.ext ?_` and prove the remaining obligations. Rewrite using `[TopologicalSpace.Opens.coe_iSup, TopologicalSpace.Opens.coe_top]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.eq_univ_of_univ_subset fun x _ => ?_` and prove the remaining obligations. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.mp (ht (Set.mem_univ x))`. Conclude with `Set.mem_iUnion.mpr ⟨⟨y, hy⟩, hxy⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_finite_affine_cover (Y : Scheme.{u}) [CompactSpace Y] :
     ∃ (ι : Type u) (_ : Finite ι) (U : ι → Y.Opens),
@@ -155,18 +155,18 @@ theorem exists_finite_affine_cover (Y : Scheme.{u}) [CompactSpace Y] :
   exact Set.mem_iUnion.mpr ⟨⟨y, hy⟩, hxy⟩
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Subsingleton (PrimeSpectrum k))`.
+A detailed English derivation is pending.
 -/
 private theorem subsingleton_spec_of_field (k : Type u) [Field k] :
     Subsingleton ↥(Spec (CommRingCat.of k)) :=
   inferInstanceAs (Subsingleton (PrimeSpectrum k))
 
 /- English proof (translation)
-Establish `hsub : Subsingleton ↥(Spec (CommRingCat.of k))` using `subsingleton_spec_of_field k`. Establish `hcs : CompactSpace ↥(Spec (CommRingCat.of k))` using `inferInstance`. Establish `hcY : CompactSpace ↥Y`. Prove the components needed by the constructor for the conclusion. Establish `h` using `(‹QuasiCompact p›).isCompact_preimage Set.univ isOpen_univ isCompact_univ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Rewrite `h` using `[Set.preimage_univ]`. Then use the resulting hypothesis. Take `⟨ι, hι, U, hUaff, hUsup⟩` from `exists_finite_affine_cover Y`. Establish `: Finite ι` using `hι`. Establish `hW : IsAffine (sigmaOpens Y U)` using `isAffine_sigmaOpens Y U hUaff`. Establish `: CompactSpace ↥(sigmaOpens Y U)` using `inferInstance`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨sigmaOpens Y U, sigmaOpensDesc Y U ≫ p, sigmaOpensDesc Y U, hW, isReduced_sigmaOpens Y U, ?_, ?_, etale_sigmaOpensDesc Y U, surjective_sigmaOpensDesc Y U hUsup, rfl⟩` and prove the remaining obligations. Use `infer_instance`. Conclude with `quasiCompact_of_compactSpace_of_subsingleton _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_affine_etale_cover_of_isReduced {k : Type u} [Field k] (Y : Scheme.{u})
     (p : Y ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] [QuasiCompact p] [IsReduced Y] :
@@ -190,7 +190,7 @@ theorem exists_affine_etale_cover_of_isReduced {k : Type u} [Field k] (Y : Schem
   · exact quasiCompact_of_compactSpace_of_subsingleton _
 
 /- English proof (translation)
-Establish `hrh : HasRingHomProperty (@Smooth.{u}) RingHom.Smooth` using `inferInstance`. Conclude with `@HasRingHomProperty.instIsZariskiLocalAtSource (@Smooth.{u}) _ hrh`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_isZariskiLocalAtSource : IsZariskiLocalAtSource (@Smooth.{u}) := by
   have hrh : HasRingHomProperty (@Smooth.{u}) RingHom.Smooth := inferInstance
@@ -200,7 +200,7 @@ instance instIsZariskiLocalAtSourceSmooth : IsZariskiLocalAtSource (@Smooth.{u})
   smooth_isZariskiLocalAtSource
 
 /- English proof (translation)
-The claim follows from `IsZariskiLocalAtSource.sigmaDesc hf`.
+A detailed English derivation is pending.
 -/
 theorem smooth_sigmaDesc {ι : Type u} {X : ι → Scheme.{u}} {Z : Scheme.{u}}
     (f : ∀ i, X i ⟶ Z) (hf : ∀ i, Smooth (f i)) : Smooth (Sigma.desc f) :=

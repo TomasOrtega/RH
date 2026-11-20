@@ -100,14 +100,14 @@ def Statement : Prop :=
     LiftUnderSupport k ∧ LiftForProducts k ∧ MultiplicityOne k
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isSmooth_ofChar_iff _).2 h.1.detChar, isIrreducible_ofChar _, (isUnitarisable_ofChar_iff _).2 fun _ => h.2 _⟩`.
+Supply the required witnesses or components.
 -/
 example (n : ℕ) {μ : kˣ →* ℂˣ} (h : IsUnitaryCharacter μ) : IsIrredUnitary (detRep (Fin n) μ) :=
   ⟨(isSmooth_ofChar_iff _).2 h.1.detChar, isIrreducible_ofChar _,
     (isUnitarisable_ofChar_iff _).2 fun _ => h.2 _⟩
 
 /- English proof (translation)
-Introduce `h` and use `by refine (h 0).2 ?_ have := inSupport_detRep (N := t + 2) μ 0 convert this using 3 simp ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (t : ℕ) (μ : kˣ →* ℂˣ) : ¬ SupportCondition t μ (detRep (Fin (t + 2)) μ) := fun h => by
   refine (h 0).2 ?_

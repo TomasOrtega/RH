@@ -9,19 +9,19 @@ open scoped ENNReal ContDiff
 namespace GlobalTheory.L2Limit
 
 /- English proof (translation)
-Establish `htel : a m - a (k + m) = ∑ i ∈ Finset.range k, (a (i + m) - a (i + m + 1))`. Use `Finset.sum_range_sub' (fun i => a (i + m)) k` as an intermediate fact. Simplify using `only [zero_add] at this`. Rewrite using `[← this]; exact Finset.sum_congr rfl fun i _ => by rw [add_right_comm]`. Establish `h1 : ‖a m - a (k + m)‖ ≤ ∑ i ∈ Finset.range k, ‖a (i + m) - a (i + m + 1)‖`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[htel]`. Conclude with `norm_sum_le _ _`. Establish `hg : ∀ i ∈ Finset.range k, (0:ℝ) < (1/2) ^ (i + m)` using `fun i _ => by positivity`. Establish `h2` using `Finset.sq_sum_div_le_sum_sq_div (Finset.range k) (fun i => ‖a (i + m) - a (i + m + 1)‖) hg`. Establish `hsg : ∑ i ∈ Finset.range k, ((1:ℝ)/2) ^ (i + m) ≤ 2 / 2 ^ m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∑ i ∈ Finset.range k, ((1:ℝ)/2) ^ (i + m) = (1/2) ^ m * ∑ i ∈ Finset.range k, ((1:ℝ)/2) ^ i`. Rewrite using `[Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => by rw [pow_add]; ring`. Rewrite using `[this]`. Use `sum_geometric_two_le k` as an intermediate fact. Establish `h2m : (0:ℝ) < (1/2) ^ m` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsum_pos : 0 < ∑ i ∈ Finset.range k, ((1:ℝ)/2) ^ (i + m) ∨ k = 0`. Break down `Nat.eq_zero_or_pos k with h | h` into its components or cases. Conclude with `Or.inr h`. Conclude with `Or.inl (Finset.sum_pos (fun i hi => hg i hi) ⟨0, by simp [h]⟩)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hsum_pos with hpos | hk` into its components or cases. Establish `h3 : (∑ i ∈ Finset.range k, ‖a (i + m) - a (i + m + 1)‖) ^ 2 ≤ (∑ i ∈ Finset.range k, ((1:ℝ)/2) ^ (i + m)) * ∑ i ∈ Finset.range k, ‖a (i + m) - a (i + m + 1)‖ ^ 2 / (1/2) ^ (i + m)`. Rewrite `h2` using `[div_le_iff₀ hpos, mul_comm]`. Then use the resulting hypothesis. Establish `h4 : ∑ i ∈ Finset.range k, ‖a (i + m) - a (i + m + 1)‖ ^ 2 / (1/2) ^ (i + m) = ∑ i ∈ Finset.range k, 2 ^ (i + m) * ‖a (i + m) - a (i + m + 1)‖ ^ 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_div_pow, div_div_eq_mul_div, div_one, mul_comm]`. Rewrite `h3` using `[h4]`. Establish `hn : 0 ≤ ∑ i ∈ Finset.range k, (2:ℝ) ^ (i + m) * ‖a (i + m) - a (i + m + 1)‖ ^ 2` using `Finset.sum_nonneg fun i _ => by positivity`. Combine the equalities or inequalities in the displayed calculation. Substitute `hk` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem norm_sub_sq_le (a : ℕ → ℂ) (m k : ℕ) :
     ‖a m - a (k + m)‖ ^ 2 ≤ 2 / 2 ^ m *
@@ -68,17 +68,15 @@ theorem norm_sub_sq_le (a : ℕ → ℂ) (m k : ℕ) :
   · subst hk; simp
 
 /- English proof (translation)
-Use `set c : ℕ → ℝ := fun j => (2:ℝ) ^ j * ‖a j - a (j + 1)‖ ^ 2 with hc`. Establish `hc0 : ∀ j, 0 ≤ c j` using `fun j => by positivity`. Establish `hfin : ∀ m k, ‖a m - a (k + m)‖ ^ 2 ≤ 2 / 2 ^ m * ∑' i, c (i + m)`. Introduce `m k`. Use `(norm_sub_sq_le a m k).trans (mul_le_mul_of_nonneg_left ?_ (by positivity))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Summable.sum_le_tsum _ (fun i _ => hc0 _) ((summable_nat_add_iff m).mpr hs)`. Establish `htail` using `tendsto_sum_nat_add c`. Establish `hcau : CauchySeq a`. Rewrite using `[Metric.cauchySeq_iff']`. Introduce `ε hε`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ m in atTop, 2 * ∑' i, c (i + m) < ε ^ 2`. Use `htail.const_mul 2` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Conclude with `this.eventually (gt_mem_nhds (by positivity))`. Take `⟨m, hm⟩` from `hev.exists_forall_of_atTop`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨m, fun N hN => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, N = k + m` from `⟨N - m, by omega⟩`. Establish `h1` using `hfin m k`. Establish `h2 : 2 / 2 ^ m * ∑' i, c (i + m) ≤ 2 * ∑' i, c (i + m)`. Use `mul_le_mul_of_nonneg_right ?_ (tsum_nonneg fun i => hc0 _)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `div_le_self (by norm_num) (one_le_pow₀ (by norm_num))`. Establish `h3 : dist (a (k + m)) (a m) ^ 2 < ε ^ 2`. Rewrite using `[dist_eq_norm, norm_sub_rev]`. Combine the linear relations using `[hm m le_rfl]`. Conclude with `lt_of_pow_lt_pow_left₀ 2 hε.le h3`.
-
-Take `⟨L, hL⟩` from `cauchySeq_tendsto_of_complete hcau`. Use `⟨L, hL, fun m => ?_⟩` and prove the remaining obligations. Establish `hlim : Tendsto (fun k => ‖a m - a (k + m)‖ ^ 2) atTop (𝓝 (‖a m - L‖ ^ 2))` using `(((hL.comp (tendsto_add_atTop_nat m)).const_sub (a m)).norm).pow 2`. Conclude with `le_of_tendsto' hlim fun k => hfin m k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_of_summable (a : ℕ → ℂ)
     (hs : Summable (fun j => (2:ℝ) ^ j * ‖a j - a (j + 1)‖ ^ 2)) :
@@ -128,20 +126,20 @@ noncomputable def limSec (F : ℕ → ι → Y → ℂ) : ι → Y → ℂ := fu
   if ∃ c, Tendsto (fun m => F m i y) atTop (𝓝 c) then limUnder atTop (fun m => F m i y) else 0
 
 /- English proof (translation)
-Unfold `limSec`. Rewrite using `[if_pos ⟨c, h⟩]`. Conclude with `h.limUnder_eq`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limSec_eq (F : ℕ → ι → Y → ℂ) (i : ι) (y : Y) {c : ℂ}
     (h : Tendsto (fun m => F m i y) atTop (𝓝 c)) : limSec F i y = c := by
   unfold limSec; rw [if_pos ⟨c, h⟩]; exact h.limUnder_eq
 
 /- English proof (translation)
-Establish `hg` using `A.g_ne la i j y hi hj`. Establish `hseq : (fun m => F m i y) = fun m => A.g la i j y * F m j y`. Use function extensionality and compare the values at `fun m => (hF m).2 i j y hi hj`. Distinguish the cases in `hc : ∃ c, Tendsto (fun m => F m j y) atTop (𝓝 c)`. Take `⟨c, hc⟩` from `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[limSec_eq F j y hc, limSec_eq F i y (by rw [hseq]; exact hc.const_mul _)]`. Establish `hc' : ¬ ∃ c, Tendsto (fun m => F m i y) atTop (𝓝 c)`. Introduce and unpack `⟨c, hc'⟩`. Apply `hc` to reduce the goal to its premises. Use `⟨(A.g la i j y)⁻¹ * c, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : Tendsto (fun m => A.g la i j y * F m j y) atTop (𝓝 c)`. Rewrite using `[← hseq]`. Conclude with `hc'`. Use `h2.const_mul (A.g la i j y)⁻¹` as an intermediate fact. Simplify `this` using `[← mul_assoc, inv_mul_cancel₀ hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Unfold `limSec`. Rewrite using `[if_neg hc, if_neg hc', mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limSec_trans (A : WeightedAtlas n Y ι La) (la : La) (F : ℕ → ι → Y → ℂ)
     (hF : ∀ m, A.IsSSec la (F m)) (i j : ι) (y : Y) (hi : y ∈ (A.chart i).source)
@@ -164,11 +162,11 @@ theorem limSec_trans (A : WeightedAtlas n Y ι La) (la : La) (F : ℕ → ι →
     rw [if_neg hc, if_neg hc', mul_zero]
 
 /- English proof (translation)
-Use `set T := (A.chart i).target with hTdef`. Establish `hT : MeasurableSet T` using `(A.chart i).open_target.measurableSet`. Set `G : ℕ → V n → ℂ` to `fun m => T.piecewise (F m i ∘ (A.chart i).symm) 0`. Establish `hG : ∀ m, StronglyMeasurable (G m)` using `fun m => (ContinuousOn.measurable_piecewise ((hF m).1 i).continuousOn continuousOn_const hT).stronglyMeasurable`. Establish `hS` using `StronglyMeasurable.measurableSet_exists_tendsto (l := atTop) hG`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `StronglyMeasurable.limUnder (l := atTop) hG`. Establish `hmeas : StronglyMeasurable ({v | ∃ c, Tendsto (fun m => G m v) atTop (𝓝 c)}.piecewise (fun v => limUnder atTop (fun m => G m v)) (fun _ => (0:ℂ)))` using `StronglyMeasurable.piecewise hS hL stronglyMeasurable_const`. Use `hmeas.measurable.aemeasurable.congr ?_` and prove the remaining obligations. Use `(ae_restrict_iff' hT).mpr (Eventually.of_forall fun v hv => ?_)` and prove the remaining obligations. Establish `hGv : (fun m => G m v) = fun m => F m i ((A.chart i).symm v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun m => by simp only [G, Set.piecewise_eq_of_mem _ _ _ hv, Function.comp_apply]`. Simplify using `only [Set.piecewise, Set.mem_setOf_eq, hGv, Function.comp_apply, limSec]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem limSec_aemeas (A : WeightedAtlas n Y ι La) (la : La) (F : ℕ → ι → Y → ℂ)
     (hF : ∀ m, A.IsSSec la (F m)) (i : ι) :
@@ -192,7 +190,7 @@ theorem limSec_aemeas (A : WeightedAtlas n Y ι La) (la : La) (F : ℕ → ι �
   simp only [Set.piecewise, Set.mem_setOf_eq, hGv, Function.comp_apply, limSec]
 
 /- English proof (translation)
-The claim follows from `ENNReal.measurable_ofReal.comp (A.aap_continuous_nsq la (F j - F (j + 1)) (fun i k y hi hk => by simp only [Pi.sub_apply]; rw [(hF j).2 i k y hi hk, (hF (j + 1)).2 i k y hi hk]; ring) (fun i => ((hF j).1 i).continuousOn.sub ((hF (j + 1)).1 i).continuousOn)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_step (A : WeightedAtlas n Y ι La) (la : La) (F : ℕ → ι → Y → ℂ)
     (hF : ∀ m, A.IsSSec la (F m)) (j : ℕ) :
@@ -204,35 +202,29 @@ theorem measurable_step (A : WeightedAtlas n Y ι La) (la : La) (F : ℕ → ι 
 end
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A la F K hK hF hn`. Use `set L := A.kap + la with hLdef`. Use `set e : ℕ → Y → ℝ≥0∞ := fun j y => ENNReal.ofReal (A.nsq L (F j - F (j + 1)) y) with he_def`. Establish `he : ∀ j, Measurable (e j)` using `measurable_step A L F hF`. Establish `hint : ∀ j, ∫⁻ y, e j y ∂A.mu ≤ ENNReal.ofReal (K / 4 ^ j)` using `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S : ℕ → Y → ℝ≥0∞ := fun m y => ∑' k, ENNReal.ofReal (2 ^ (k + m)) * e (k + m) y with hSdef`. Establish `hSm : ∀ m, Measurable (S m)` using `fun m => Measurable.ennreal_tsum fun k => measurable_const.mul (he _)`. Establish `hSint : ∀ m, ∫⁻ y, S m y ∂A.mu ≤ ENNReal.ofReal (K / 2 ^ m * 2)`. Introduce `m`. Use `show ∫⁻ y, ∑' k, ENNReal.ofReal (2 ^ (k + m)) * e (k + m) y ∂A.mu ≤ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[lintegral_tsum fun k => ((he (k + m)).const_mul _).aemeasurable]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `k`. Conclude with `lintegral_const_mul _ (he _)`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `_ ≤ ∑' k, ENNReal.ofReal (2 ^ (k + m)) * ENNReal.ofReal (K / 4 ^ (k + m)) := ENNReal.tsum_le_tsum fun k => by gcongr; exact hint _`. Use `_ = ∑' k, ENNReal.ofReal (K / 2 ^ m * (1 / 2) ^ k) := by`. Use `congr 1`. Use extensionality with `k`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Rewrite using `[show (4:ℝ) ^ (k + m) = 2 ^ (k + m) * 2 ^ (k + m) by rw [← mul_pow]; norm_num]`. Rewrite using `[pow_add, one_div_pow]`. Clear the denominators using the available nonvanishing facts. Use `_ = ENNReal.ofReal (∑' k, K / 2 ^ m * (1 / 2) ^ k) := (ENNReal.ofReal_tsum_of_nonneg (fun k => by positivity) (summable_geometric_two.mul_left _)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = ENNReal.ofReal (K / 2 ^ m * 2) := by rw [tsum_mul_left, tsum_geometric_two]`. Establish `hfin : ∀ᵐ y ∂A.mu, S 0 y < ⊤` using `ae_lt_top (hSm 0) ((hSint 0).trans_lt ENNReal.ofReal_lt_top).ne`. Establish `hpt : ∀ m, ∀ᵐ y ∂A.mu, ENNReal.ofReal (A.nsq L (F m - limSec F) y) ≤ ENNReal.ofReal (2 / 2 ^ m) * S m y`. Introduce `m`. Use `filter_upwards [hfin] with y hy`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set p := A.pick y`. Use `set E := Real.exp (-A.ph L p y) with hE`. Establish `hEpos : 0 < E` using `Real.exp_pos _`. Use `set a : ℕ → ℂ := fun j => F j p y with ha`. Establish `he_eq : ∀ j, e j y = ENNReal.ofReal (‖a j - a (j + 1)‖ ^ 2 * E)` using `fun j => rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set b : ℕ → ℝ := fun k => 2 ^ k * (‖a k - a (k + 1)‖ ^ 2 * E) with hb_def`. Establish `hb0 : ∀ k, 0 ≤ b k` using `fun k => by positivity`. Establish `hSb : ∀ m', S m' y = ∑' k, ENNReal.ofReal (b (k + m'))`. Introduce `m'`. Simplify using `only [hSdef, he_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `k`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Establish `hb : Summable b`. Establish `h0` using `hSb 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [add_zero] at h0`. Establish `hs` using `ENNReal.summable_toReal (h0 ▸ hy.ne)`. Use `hs.congr fun k => ?_` and prove the remaining obligations. Conclude with `ENNReal.toReal_ofReal (hb0 k)`. Establish `hb' : Summable (fun j => (2:ℝ) ^ j * ‖a j - a (j + 1)‖ ^ 2)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `(hb.div_const E).congr fun k => ?_` and prove the remaining obligations. Simplify using `only [hb_def]`. Clear the denominators using the available nonvanishing facts. Take `⟨Lm, hLm, hbd⟩` from `tendsto_of_summable a hb'`. Establish `hf : limSec F p y = Lm` using `limSec_eq F p y hLm`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hnsq : A.nsq L (F m - limSec F) y = ‖a m - Lm‖ ^ 2 * E` using `by show ‖F m p y - limSec F p y‖ ^ 2 * E = _`. Rewrite using `[hf]`. Rewrite using `[hnsq, hSb m, ← ENNReal.ofReal_tsum_of_nonneg (fun k => hb0 _) ((summable_nat_add_iff m).mpr hb), ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (hbd m) hEpos.le` as an intermediate fact.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← tsum_mul_right]`. Use `congr 2`. Use extensionality with `k`. Simplify using `only [hb_def]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `⟨limSec F, fun i j y hi hj => limSec_trans A L F hF i j y hi hj, fun i => limSec_aemeas A L F hF i, fun m => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`.
-
-Rewrite using `[show (4:ℝ) ^ m = 2 ^ m * 2 ^ m by rw [← mul_pow]; norm_num]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_l2_limit : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (la : La) (F : ℕ → ι → Y → ℂ) (K : ℝ), 0 ≤ K → (∀ m, A.IsSSec (A.kap + la) (F m)) → (∀ m, n0 A la (F m - F (m + 1)) ≤ ENNReal.ofReal (K / 4 ^ m)) → ∃ f : ι → Y → ℂ, (∀ i j y, y ∈ (A.chart i).source → y ∈ (A.chart j).source → f i y = A.g (A.kap + la) i j y * f j y) ∧ (∀ i, AEMeasurable (f i ∘ (A.chart i).symm) (volume.restrict (A.chart i).target)) ∧ ∀ m, n0 A la (F m - f) ≤ ENNReal.ofReal (4 * K / 4 ^ m) := by
   intro n Y _ _ _ _ _ ι La _ A la F K hK hF hn

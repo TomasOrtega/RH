@@ -23,7 +23,7 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 4000000
 
 /- English proof (translation)
-Use `delta PositivityTheory.Rg.Sw.Glob.phiS`. Rewrite using `[dif_pos h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiS_val {m : ℕ} {θ : InfFam D} {τ : D.what₂.Tau} {fr : Matrix (Fin m) (Fin m) ℂ} {c : ℝ} {Ψ : Mx D m n → ℂ}
     {P : PX m n} (h : tens θ τ fr (fP c P) Ψ ∈ schwartzA θ m n) : (phiS θ τ fr c Ψ P).1 = tens θ τ fr (fP c P) Ψ := by
@@ -31,7 +31,7 @@ theorem phiS_val {m : ℕ} {θ : InfFam D} {τ : D.what₂.Tau} {fr : Matrix (Fi
   rw [dif_pos h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `delta PositivityTheory.Rg.Sw.Glob.tens`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `(a * f (fr⁻¹ * compAt θ τ x) + g (fr⁻¹ * compAt θ τ x)) * Ψ x = _`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tens_add_smul {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ) (a : ℂ)
     (f g : (Fin m → Fin n → ℂ) → ℂ) (Ψ : Mx D m n → ℂ) :
@@ -43,11 +43,11 @@ theorem tens_add_smul {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (fr : Matri
   ring
 
 /- English proof (translation)
-Establish `hdet : IsUnit fr.det` using `hfr.1`. It suffices to establish `hU : ∀ U : Matrix (Fin V.rank) (Fin n) ℂ, f U = g U from funext hU`. Introduce `U`. Establish `hx` using `congrFun h (xL θ τ (fr * U))`. Establish `hc : compAt θ τ (xL θ τ (fr * U)) = fr * U`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrFun (compAt_xL hθ τ (fr * U)) τ`. Simplify `h1` using `[dirAt_self]`. Establish `hp : psi0 θ V n l s τ (xL θ τ (fr * U)) = 1` using `by show gAway V l s τ (fun τ' => compAt θ τ' (xL θ τ (fr * U))) * g0 D V.rank n (fun i j => finPart D (xL θ τ (fr * U) i j)) = 1`. Rewrite using `[compAt_xL hθ, gAway_dirAt, finPart_xL hθ, gaussian_at_zero_eq_one, one_mul]`. Establish `hinv : fr⁻¹ * (fr * U) = U`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul fr hdet, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `f (fr⁻¹ * compAt θ τ (xL θ τ (fr * U))) * psi0 θ V n l s τ (xL θ τ (fr * U)) = g (fr⁻¹ * compAt θ τ (xL θ τ (fr * U))) * psi0 θ V n l s τ (xL θ τ (fr * U)) at hx`. Rewrite `hx` using `[hc, hp, hinv, mul_one, mul_one]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_gaussian_vacuum_injective {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau}
     {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {ε : Fin V.rank → Bool} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ}

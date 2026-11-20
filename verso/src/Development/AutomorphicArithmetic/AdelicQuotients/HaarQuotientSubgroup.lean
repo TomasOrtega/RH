@@ -5,13 +5,11 @@ open PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory.G UpperTheory.Conv
 open MeasureTheory
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ T _ _ _ _ _ _ _ _ H hH μ j ν hp Φ hΦ hi`. Use `haveI : LocallyCompactSpace H := hH.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology H := TopologicalSpace.Subtype.secondCountableTopology (H : Set G)`. Take `⟨ρ₀, -, hρ₀, -⟩` from `normEx H T μ j ν hp`. Establish `hemb : MeasurableEmbedding (Subtype.val : H → G)` using `MeasurableEmbedding.subtype_coe hH.measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (Subtype.val : H → G)` using `Subtype.val_injective`. Establish `hex : ∃ ρ, IsNormAlong (fun x : H => (x : G)) (fun t => (j t : G)) ν ρ`. Use `⟨Function.extend Subtype.val (fun x : H => (ρ₀ x : ENNReal)) 0, hemb.measurable_extend hρ₀.1 measurable_const, fun x => ?_⟩` and prove the remaining obligations. Establish `e : ∀ t, Function.extend Subtype.val (fun x : H => (ρ₀ x : ENNReal)) 0 ((j t : G) * (x : G)) = (ρ₀ (j t * x) : ENNReal)` using `fun t => by`. Rewrite using `[← Subgroup.coe_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Conclude with `hinj.extend_apply _ _ _`. Simplify using `only [e]`. Conclude with `hρ₀.2 x`. Unfold `quotInt`. Rewrite using `[dif_pos hex]`.
-
-Establish `hn : IsNrm j ν (fun x : H => hex.choose (x : G))` using `⟨hex.choose_spec.1.comp measurable_subtype_coe, fun x => by`. Simplify `hex.choose_spec.2 x⟩` using `only [Subgroup.coe_mul]`. Conclude with `((quotEq H T μ j ν hp Φ hΦ hi _ hn).2.2).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.haar_quotient_subgroup :
     QSub := by

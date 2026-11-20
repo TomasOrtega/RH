@@ -9,7 +9,7 @@ open Function
 namespace QZ
 
 /- English proof (translation)
-The claim follows from `AddCircle.finite_torsion (1 : ℚ) hn`.
+A detailed English derivation is pending.
 -/
 theorem finite_setOf_nsmul_eq_zero {n : ℕ} (hn : 0 < n) : {x : QZ | n • x = 0}.Finite :=
   AddCircle.finite_torsion (1 : ℚ) hn
@@ -27,9 +27,9 @@ theorem toReal_mk (q : ℚ) : toReal (mk q) = ((q : ℝ) : AddCircle (1 : ℝ)) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨q, rfl⟩` from `mk_surjective x`. Rewrite `hx` using `[toReal_mk, AddCircle.coe_eq_zero_iff]`. Take `⟨n, hn⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mk_eq_zero_iff]`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `: ((n : ℚ) : ℝ) = (q : ℝ)` using `by simpa using hn`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toReal_injective : Injective toReal := by
   rw [injective_iff_map_eq_zero]
@@ -46,20 +46,20 @@ noncomputable def toComplex (x : QZ) : ℂ :=
   (AddCircle.toCircle (toReal x) : ℂ)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `toReal_injective (AddCircle.injective_toCircle one_ne_zero (Circle.ext h)) @[simp]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toComplex_injective : Injective toComplex := fun _ _ h =>
   toReal_injective (AddCircle.injective_toCircle one_ne_zero (Circle.ext h))
 
 @[simp]
 /- English proof (translation)
-Simplify using `[toComplex]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toComplex_zero : toComplex 0 = 1 := by
   simp [toComplex]
 
 /- English proof (translation)
-Simplify using `[toComplex, AddCircle.toCircle_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toComplex_add (x y : QZ) : toComplex (x + y) = toComplex x * toComplex y := by
   simp [toComplex, AddCircle.toCircle_add]
@@ -79,20 +79,20 @@ theorem toAddChar_apply (f : G →+ QZ) (g : G) : toAddChar f g = toComplex (f g
   rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `AddMonoidHom.ext fun a => toComplex_injective (DFunLike.congr_fun h a)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toAddChar_injective : Injective (toAddChar (G := G)) := fun _ _ h =>
   AddMonoidHom.ext fun a => toComplex_injective (DFunLike.congr_fun h a)
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[toComplex_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toAddChar_add (f f' : G →+ QZ) : toAddChar (f + f') = toAddChar f + toAddChar f' := by
   ext a
   simp [toComplex_add]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `(Module.Baer.of_divisible (AddCircle (1 : ℚ))).extension_property_addMonoidHom i hi (toAddCircle.toAddMonoidHom.comp f)`. Use `⟨toAddCircle.symm.toAddMonoidHom.comp g, AddMonoidHom.ext fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `DFunLike.congr_fun hg a`. Simplify using `only [AddMonoidHom.coe_comp, comp_apply, AddEquiv.coe_toAddMonoidHom] at h1 ⊢`. Rewrite using `[h1, AddEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_comp_eq_of_injective (i : G →+ H) (hi : Injective i) (f : G →+ QZ) :
     ∃ g : H →+ QZ, g.comp i = f := by
@@ -104,9 +104,9 @@ theorem exists_comp_eq_of_injective (i : G →+ H) (hi : Injective i) (f : G →
   rw [h1, AddEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Set `χ₀ : h.range →+ QZ` to `(QuotientAddGroup.lift h.ker χ hχ).comp (QuotientAddGroup.quotientKerEquivRange h).symm.toAddMonoidHom`. Take `⟨ψ, hψ⟩` from `exists_comp_eq_of_injective h.range.subtype h.range.subtype_injective χ₀`. Use `⟨ψ, AddMonoidHom.ext fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `DFunLike.congr_fun hψ ⟨h a, a, rfl⟩`. Establish `h2 : (QuotientAddGroup.quotientKerEquivRange h).symm ⟨h a, a, rfl⟩ = (a : G ⧸ h.ker)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[AddEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [AddMonoidHom.coe_comp, comp_apply, AddSubgroup.coe_subtype, χ₀, AddEquiv.coe_toAddMonoidHom, h2] at h1`. Simplify using `using h1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_comp_eq_of_ker_le (h : G →+ H) (χ : G →+ QZ) (hχ : h.ker ≤ χ.ker) :
     ∃ ψ : H →+ QZ, ψ.comp h = χ := by
@@ -124,7 +124,7 @@ theorem exists_comp_eq_of_ker_le (h : G →+ H) (χ : G →+ QZ) (hχ : h.ker �
   simpa using h1
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `CharacterModule.exists_character_apply_ne_zero_of_ne_zero ha`. Use `⟨toAddCircle.symm.toAddMonoidHom.comp (c : G →+ AddCircle (1 : ℚ)), fun h => hc ?_⟩` and prove the remaining obligations. Conclude with `(AddEquiv.map_eq_zero_iff toAddCircle.symm).mp h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_apply_ne_zero {a : G} (ha : a ≠ 0) : ∃ f : G →+ QZ, f a ≠ 0 := by
   obtain ⟨c, hc⟩ := CharacterModule.exists_character_apply_ne_zero_of_ne_zero ha
@@ -149,7 +149,7 @@ theorem evalHom_apply (a : G) (f : G →+ QZ) : evalHom G a f = f a :=
   rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf⟩` from `exists_apply_ne_zero hne`. Conclude with `hf (DFunLike.congr_fun ha f)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem evalHom_injective : Injective (evalHom G) := by
   rw [injective_iff_map_eq_zero]
@@ -162,7 +162,7 @@ instance [Finite G] : Finite (G →+ QZ) :=
   Finite.of_injective _ toAddChar_injective
 
 /- English proof (translation)
-Use `Fintype.ofFinite G` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Conclude with `AddChar.card_addChar_le G ℂ`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_hom_le [Finite G] : Nat.card (G →+ QZ) ≤ Nat.card G := by
   have := Fintype.ofFinite G
@@ -173,7 +173,7 @@ theorem card_hom_le [Finite G] : Nat.card (G →+ QZ) ≤ Nat.card G := by
         exact AddChar.card_addChar_le G ℂ
 
 /- English proof (translation)
-The claim follows from `card_hom_le.antisymm <| (Nat.card_le_card_of_injective _ evalHom_injective).trans card_hom_le`.
+A detailed English derivation is pending.
 -/
 theorem card_hom [Finite G] : Nat.card (G →+ QZ) = Nat.card G :=
   card_hom_le.antisymm <| (Nat.card_le_card_of_injective _ evalHom_injective).trans card_hom_le
@@ -217,7 +217,7 @@ instance [Finite N] : Finite (QZDual N) :=
   Finite.of_injective _ (toAddMonoidHomEquiv (A := N)).injective
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (toAddMonoidHomEquiv (A := N)).toEquiv).trans QZ.card_hom`.
+A detailed English derivation is pending.
 -/
 theorem card_eq [Finite N] : Nat.card (QZDual N) = Nat.card N :=
   (Nat.card_congr (toAddMonoidHomEquiv (A := N)).toEquiv).trans QZ.card_hom

@@ -13,13 +13,13 @@ import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThDistC
 namespace GlobalTheory.TransportLemma
 
 /- English proof (translation)
-Take `⟨hmem, hinj, hcov⟩` from `hS`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.mp hx`. Conclude with `(h₂ s).mpr (hmem s hs)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx y hy hxy`. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.mp hx`. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.mp hy`. Establish `h : (T : V → V) (s - t) ∈ M₁`. Rewrite using `[map_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxy`. Rewrite using `[hinj s hs t ht ((h₁ _).mp h)]`. Introduce `y hy`. Establish `hy' : T.symm y ∈ Λ₂` using `(h₂ _).mp (by simpa using hy)`. Take `⟨s, hs, hd⟩` from `hcov _ hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(T : V → V) s, Finset.mem_image_of_mem _ hs, ?_⟩` and prove the remaining obligations. Establish `h : (T : V → V) (T.symm y - s) ∈ M₁` using `(h₁ _).mpr hd`. Rewrite `h` using `[map_sub]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem transport {V : Type} [AddCommGroup V] [Module ℂ V] [DecidableEq V] (T : V ≃+ V)
     {Λ₁ Λ₂ M₁ M₂ : AddSubgroup V} {S : Finset V}
@@ -47,7 +47,7 @@ theorem transport {V : Type} [AddCommGroup V] [Module ℂ V] [DecidableEq V] (T 
     simpa using h
 
 /- English proof (translation)
-The claim follows from `@transport`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {V : Type} [inst : AddCommGroup V] [Module ℂ V] [inst_2 : DecidableEq V] (T : V ≃+ V) {Λ₁ Λ₂ M₁ M₂ : AddSubgroup V} {S : Finset V}, Formalism.L2.Th1.H.IsReps Λ₁ Λ₂ S → (∀ (x : V), (T : V → V) x ∈ M₁ ↔ x ∈ Λ₁) → (∀ (x : V), (T : V → V) x ∈ M₂ ↔ x ∈ Λ₂) → Formalism.L2.Th1.H.IsReps M₁ M₂ (Finset.image (⇑T : V → V) S) :=
   @transport

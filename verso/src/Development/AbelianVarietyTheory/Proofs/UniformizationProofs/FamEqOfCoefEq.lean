@@ -19,13 +19,11 @@ noncomputable section
 namespace GlobalTheory.UT.CoefDet
 
 /- English proof (translation)
-Establish `: JacobsonSpace Y` using `LocallyOfFiniteType.jacobsonSpace p`. Rewrite using `[← sub_eq_zero, ← basicOpen_eq_bot_iff]`. Assume the negation of the conclusion as `hne`. Establish `hn : ((Y.basicOpen (a - b) : Y.Opens) : Set Y).Nonempty` using `Set.nonempty_iff_ne_empty.2 fun e => hne (SetLike.coe_injective e)`. Take `⟨c, hcW, hc⟩` from `nonempty_inter_closedPoints hn (Y.basicOpen (a - b)).isOpen.isLocallyClosed`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `r` to `pointOfClosedPoint p c hc`. Set `z : Spec (CommRingCat.of F)` to `IsLocalRing.closedPoint F`. Establish `hz : r z ∈ Y.basicOpen (a - b)` using `(congrArg (· ∈ Y.basicOpen (a - b)) (pointOfClosedPoint_apply p c hc z)).mpr hcW`. Establish `hU : r z ∈ U` using `Y.basicOpen_le _ hz`. Establish `e` using `h r (pointOfClosedPoint_comp p c hc) z hU`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (gs r z U (a - b))`. Rewrite using `[gs_eq r z U hU, ← Scheme.mem_basicOpen _ _ z hU, ← Scheme.preimage_basicOpen]`. Conclude with `hz`. Rewrite `e` using `[gs_eq r z U hU, gs_eq r z U hU, ← sub_eq_zero, ← map_sub, ← map_sub]`. Rewrite `hu` using `[gs_eq r z U hU, e]`.
-
-Conclude with `not_isUnit_zero hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fn_ext_of_points {F : Type} [Field F] [IsAlgClosed F] {Y : Scheme.{0}} [IsReduced Y]
     (p : Y ⟶ Spec (CommRingCat.of F)) [LocallyOfFiniteType p] {U : Y.Opens} {a b : Γ(Y, U)}
@@ -49,15 +47,13 @@ theorem fn_ext_of_points {F : Type} [Field F] [IsAlgClosed F] {Y : Scheme.{0}} [
   exact not_isUnit_zero hu
 
 /- English proof (translation)
-Introduce `hL R _ _ _ I hA D F _ _ _ k s s' H`. Establish `hsm` using `D.toPre.P.isAb.smooth`. Set `p : (DegPre.BF D.toPre F).left ⟶ Spec (CommRingCat.of F)` to `(fst (TF (R := R) F) D.toPre.P.A).left`. Establish `hp : Smooth p` using `inferInstanceAs (Smooth (pullback.fst (TF (R := R) F).hom D.toPre.P.A.hom))`. Establish `: IsReduced (DegPre.BF D.toPre F).left` using `GlobalTheory.isReduced_of_smooth_of_isReduced p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fam_ext fun χ j => fn_ext_of_points p fun r hr z hz => ?_` and prove the remaining obligations. Set `r' : TF (R` to `R) F ⟶ DegPre.BF D.toPre F := Over.homMk r (by`. Rewrite using `[← Over.w (fst (TF (R := R) F) D.toPre.P.A), ← Category.assoc]`. Conclude with `(congrArg (· ≫ (TF (R := R) F).hom) hr).trans (Category.id_comp _))`. Take `⟨g, hg⟩` from `(gt_onto_divisible_kernel hL R I hA D F).1 (r' ≫ snd _ _)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `er : lift (𝟙 (TF (R` using `R) F)) g.b = r' := by`. Rewrite using `[hg]`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ (lift_snd _ _)` and prove the remaining obligations. Rewrite using `[lift_fst]`. Conclude with `Over.OverMorphism.ext hr.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hc⟩` from `H g`. Take `⟨J, hJ⟩` from `CoefBasic.exists_good' (Z := (TF (R := R) F).left) D.toPre.P.isLB z`. Establish `a` using `CoefBasic.isCoef_coef g hw χ s z J hJ`. Establish `a'` using `CoefBasic.isCoef_coef g hw χ s' z J hJ`. Rewrite `a` using `[hc χ, a', Units.mul_left_inj, Units.mul_left_inj, er]`.
-
-Conclude with `(sec_trans (s.s χ) r z hz (hJ.mem _ r)).trans ((congrArg _ a.symm).trans (sec_trans (s'.s χ) r z hz (hJ.mem _ r)).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fam_eq_of_coef_eq : LL → AllD fun {R} _ _ {I} D F _ _ => ∀ (k : ℕ) (s s' : Fam D.toPre F k), (∀ g : GtPtF D.toPre F, ∃ w : Frm D.toPre F k g.b, w.IsGen ∧ ∀ χ, coef s g w χ = coef s' g w χ) → s = s' := by
   intro hL R _ _ _ I hA D F _ _ _ k s s' H

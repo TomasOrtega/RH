@@ -23,11 +23,11 @@ section SlopeTestRemainingChoices
 open Polynomial
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hl' : minpoly ℚ_[l] x ∈ lifts (algebraMap ℤ_[l] ℚ_[l])` using `(lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem qb_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -44,7 +44,7 @@ private theorem qb_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegr
     exact ⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.MonicNormLtOne.mc_norm_lt y a ha`.
+A detailed English derivation is pending.
 -/
 private theorem qb_norm_lt {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [IsLocalRing R] [Algebra ℤ_[l] R]
     (y : R →ₐ[ℤ_[l]] PadicAlgCl l) (a : R) (ha : a ∈ maximalIdeal R) : ‖y a‖ < 1 :=
@@ -53,14 +53,14 @@ private theorem qb_norm_lt {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [IsL
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.QuotientBasisFiniteDimensional.qb_fd f`.
+A detailed English derivation is pending.
 -/
 private theorem qb_fd {l : ℕ} [Fact l.Prime] {ι : Type} [Finite ι] (f : ι → PadicAlgCl l) :
     ∃ K : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] K ∧ ∀ i, f i ∈ K :=
   _root_.UpperTheory.Reformulated.B.QuotientBasisFiniteDimensional.qb_fd f
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.FiniteModuleImageInFiniteExtension.qb_fdmod f`.
+A detailed English derivation is pending.
 -/
 private theorem qb_fdmod {l : ℕ} [Fact l.Prime] {M : Type} [AddCommGroup M] [Module ℤ_[l] M] [Module.Finite ℤ_[l] M]
     (f : M →ₗ[ℤ_[l]] PadicAlgCl l) :
@@ -74,14 +74,14 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algeb
 
 omit [IsLocalRing O] in
 /- English proof (translation)
-The claim follows from `(qb_intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) c).map (IsScalarTower.toAlgHom ℤ_[l] O (PadicAlgCl l)))`.
+A detailed English derivation is pending.
 -/
 private theorem qb_le (c : O) : ‖algebraMap O (PadicAlgCl l) c‖ ≤ 1 :=
   (qb_intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) c).map (IsScalarTower.toAlgHom ℤ_[l] O (PadicAlgCl l)))
 
 omit [IsLocalRing O] in
 /- English proof (translation)
-Establish `: x = (x - algebraMap O _ c) + algebraMap O _ c` using `by ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h.le (qb_le c))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem qb_le' {x : PadicAlgCl l} {c : O} (h : ‖x - algebraMap O _ c‖ < 1) : ‖x‖ ≤ 1 := by
   have : x = (x - algebraMap O _ c) + algebraMap O _ c := by ring
@@ -112,25 +112,21 @@ private def qbRing (K : IntermediateField ℚ_[l] (PadicAlgCl l)) (hK : ∀ c, a
   algebraMap_mem' c := ⟨hK c, c, by simp⟩
 
 /- English proof (translation)
-Set `A` to `qbRing K hK`. Establish `hu : ∀ a : A, IsUnit a ↔ ¬ ‖(a : PadicAlgCl l)‖ < 1`. Introduce and unpack `⟨x, hx, c, hc⟩`. Establish `hx1` using `qb_le' hc`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h hlt`. Take `⟨⟨y, hy, d, hd⟩, h1⟩` from `h.exists_right_inv`. Establish `h2 : x * y = 1` using `congrArg Subtype.val h1`. Establish `h3 : ‖x * y‖ < 1`. Rewrite using `[norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (qb_le' hd)).trans_lt hlt`. Rewrite `h3` using `[h2, norm_one]`. Conclude with `lt_irrefl _ h3`. Introduce `h`. Establish `h1 : ‖x‖ = 1` using `le_antisymm hx1 (not_lt.1 h)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : x ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`. Establish `hcu : IsUnit c`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Establish `h2` using `qb_norm_lt (IsScalarTower.toAlgHom ℤ_[l] O (PadicAlgCl l)) c hn`. Establish `h3 : x = (x - algebraMap O _ c) + algebraMap O _ c` using `by ring`. Apply `h` to reduce the goal to its premises. Use `show ‖x‖ < 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h3]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt hc h2)`. Take `⟨d, hd⟩` from `hcu.exists_right_inv`. Establish `hd' : algebraMap O (PadicAlgCl l) c * algebraMap O _ d = 1` using `by rw [← map_mul, hd, map_one]`. Use `IsUnit.of_mul_eq_one ⟨x⁻¹, inv_mem hx, d, ?_⟩ (Subtype.ext (mul_inv_cancel₀ h0))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : x⁻¹ - algebraMap O _ d = -(x - algebraMap O _ c) * (x⁻¹ * algebraMap O _ d)`. Establish `h5` using `mul_inv_cancel₀ h0`. Take the linear combination `(-x⁻¹) * hd' + algebraMap O _ d * h5`. Rewrite using `[h4, norm_mul, norm_neg, norm_mul, norm_inv, h1, inv_one, one_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (qb_le d)).trans_lt hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsLocalRing A := IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by`. Rewrite using `[hu, hu]`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `h1 : ‖(a : PadicAlgCl l) + (1 - a : A)‖ < 1` using `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt hn.1 hn.2)`.
-
-Simplify using `at h1`. Establish `hm : ∀ a : A, a ∈ maximalIdeal A ↔ ‖(a : PadicAlgCl l)‖ < 1` using `fun a => by`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, hu, not_not]`. Use `haveI : Module.Finite ℤ_[l] (integralClosure ℤ_[l] K) := IsIntegralClosure.finite ℤ_[l] ℚ_[l] K _`. Set `j : A →ₗ[ℤ_[l]] integralClosure ℤ_[l] K` to `{ toFun := fun a => ⟨⟨a.1, a.2.1⟩, (isIntegral_algHom_iff (K.val.restrictScalars ℤ_[l]) Subtype.val_injective).1 ((qb_intIff _).2 (qb_le' a.2.2.choose_spec))⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
-
-Use `haveI : Module.Finite ℤ_[l] A := Module.Finite.of_injective j fun a b h => Subtype.ext (congrArg (fun z : integralClosure ℤ_[l] K => ((z : K) : PadicAlgCl l)) h)`. Use `haveI : Module.Finite O A := Module.Finite.of_restrictScalars_finite ℤ_[l] O A`. Use `⟨A, co_finite O O A fun x => ?_, fun _ => Iff.rfl, hm⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `x.2.2`. Conclude with `⟨c, (hm _).2 hc⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem qb_ring [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
     (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K]
@@ -194,15 +190,13 @@ private theorem qb_ring [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
 
 omit [Module.Finite ℤ_[l] O] [Algebra ℤ_[l] O] [IsScalarTower ℤ_[l] O (PadicAlgCl l)] in
 /- English proof (translation)
-Introduce `N`. Establish `hl0 : (l : PadicAlgCl l) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hl : (l : A) ∈ maximalIdeal A`. Rewrite using `[hm]`. Use `qb_norm_lt (Algebra.ofId ℤ_[l] (PadicAlgCl l)) l (by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _)`. Simplify using `using this`. Establish `key : ∀ a : A, ‖(a : PadicAlgCl l)‖ < ‖(l : PadicAlgCl l) ^ N‖ → a ∈ maximalIdeal A ^ N`. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : (a : PadicAlgCl l) / (l : PadicAlgCl l) ^ N ∈ A`. Use `(hA _).2 ⟨div_mem ((hA _).1 a.2).1 (pow_mem (natCast_mem _ _) _), 0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, sub_zero, norm_div, div_lt_one (norm_pos_iff.2 (pow_ne_zero _ hl0))]`. Conclude with `ha`. Establish `h2 : a = ⟨_, h1⟩ * (l : A) ^ N` using `Subtype.ext (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use the proof step `field_simp)`. Rewrite using `[h2]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hl N)`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
-
-Introduce `x`. Establish `hc : Continuous fun y => ‖(f y : PadicAlgCl l) - f x‖` using `(hf.sub continuous_const).norm`. Establish `h2` using `hc.continuousAt (x := x) |>.eventually_lt (continuousAt_const (y := ‖(l : PadicAlgCl l) ^ N‖)) (by simpa using norm_pos_iff.2 (pow_ne_zero N hl0))`. Use `filter_upwards [h2] with y hy`. Conclude with `Ideal.Quotient.eq.mpr (key _ hy)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem qb_adic (K : IntermediateField ℚ_[l] (PadicAlgCl l)) (A : Subalgebra O (PadicAlgCl l)) [IsCO O A]
     (hA : ∀ x, x ∈ A ↔ x ∈ K ∧ ∃ c : O, ‖x - algebraMap O _ c‖ < 1)
@@ -236,7 +230,7 @@ private theorem qb_adic (K : IntermediateField ℚ_[l] (PadicAlgCl l)) (A : Suba
 
 omit [Module.Finite ℤ_[l] O] [Algebra ℤ_[l] O] [IsScalarTower ℤ_[l] O (PadicAlgCl l)] in
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `residue_surjective y`. Establish `h1` using `(res_eq_zero_iff O A _).2 ((hm (a - algebraMap O A c)).2 (h c rfl))`. Rewrite `h1` using `[map_sub, AlgHom.commutes, sub_eq_zero]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem qb_res (A : Subalgebra O (PadicAlgCl l)) [IsCO O A]
     (hm : ∀ a : A, a ∈ maximalIdeal A ↔ ‖(a : PadicAlgCl l)‖ < 1) (a : A) (y : ResidueField O)
@@ -248,13 +242,11 @@ private theorem qb_res (A : Subalgebra O (PadicAlgCl l)) [IsCO O A]
 end Ring
 
 /- English proof (translation)
-Use `choose P hP using hf`. Establish `hψ : ∀ v i g, ((ψ v i g : (PadicAlgCl l)ˣ) : PadicAlgCl l) = ∑ b, (∑ a, (P v).val i a * mat ρ (F.φ v g) a b) * (P v).inv b i` using `fun v i g => by`. Rewrite using `[← (hP v g).2 i]`. Simplify using `only [Units.val_mul, Matrix.mul_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `haveI : CompactSpace F.G₀ := isCompact_iff_compactSpace.1 (Subgroup.isClosed_of_isOpen _ F.η_open).isCompact`. Take `⟨K₁, h₁, hK₁⟩` from `GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem l F.G₀ n ρ hρ`. Take `⟨K₂, h₂, hK₂⟩` from `qb_fd fun x : F.Vl × Fin n × Fin n => (P x.1).val x.2.1 x.2.2`. Take `⟨K₃, h₃, hK₃⟩` from `qb_fd fun x : F.Vl × Fin n × Fin n => (P x.1).inv x.2.1 x.2.2`. Use `⟨fun v i => ?_, K₁ ⊔ (K₂ ⊔ K₃), inferInstance, fun i g => ?_, fun v i g => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hψ]`. Conclude with `continuous_finset_sum _ fun b _ => (continuous_finset_sum _ fun a _ => continuous_const.mul ((hρ a b).comp (F.φ_cont v))).mul continuous_const`. Use `(le_sup_left : K₁ ≤ _) ?_` and prove the remaining obligations. Set `M : Matrix (Fin n) (Fin n) K₁` to `Matrix.of fun a b => ⟨_, hK₁ g a b⟩`. Establish `hM : mat ρ g = M.map (algebraMap K₁ (PadicAlgCl l))` using `rfl`.
-
-Rewrite using `[GDet.lam, (UpperTheory.V.AlgebraTools.Det.repApi (mat ρ)).2.1, hM, Matrix.charpoly_map, Polynomial.coeff_map]`. Conclude with `mul_mem (pow_mem (neg_mem (one_mem _)) _) (SetLike.coe_mem _)`. Rewrite using `[hψ]`. Conclude with `sum_mem fun b _ => mul_mem (sum_mem fun a _ => mul_mem ((le_sup_left.trans le_sup_right : K₂ ≤ _) (hK₂ (v, i, a))) ((le_sup_left : K₁ ≤ _) (hK₁ _ a b))) ((le_sup_right.trans le_sup_right : K₃ ≤ _) (hK₃ (v, b, i)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem qb_field {l : ℕ} [Fact l.Prime] (F : GFrame l) {n : ℕ} (ρ : F.G₀ →* GL (Fin n) (PadicAlgCl l))
     (ψ : ∀ v, Fin n → F.Gv v →* (PadicAlgCl l)ˣ) (hρ : ∀ a b, Continuous fun g => mat ρ g a b)
@@ -288,7 +280,7 @@ private theorem qb_field {l : ℕ} [Fact l.Prime] (F : GFrame l) {n : ℕ} (ρ :
       ((le_sup_right.trans le_sup_right : K₃ ≤ _) (hK₃ (v, b, i)))
 
 /- English proof (translation)
-Apply `hj` to reduce the goal to its premises. Rewrite using `[GDet.tr, ← ((UpperTheory.V.CA.d_gmap D).2.2.1 j _).2, hD, map_zero, ← GDet.tr, (UpperTheory.V.AlgebraTools.Det.repApi ρ).2.2.1 hn, map_mul, map_mul, hy, mul_zero, Matrix.trace_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem qb_tr {n : ℕ} {A L G : Type} [CommRing A] [CommRing L] [Group G] (hn : 0 < n) (j : A →+* L)
     (hj : Function.Injective j) (D : GDet n A G) (ρ : G →* Matrix (Fin n) (Fin n) L) (hD : D.map j = GDet.ofRep ρ)
@@ -298,23 +290,21 @@ private theorem qb_tr {n : ℕ} {A L G : Type} [CommRing A] [CommRing L] [Group 
     (UpperTheory.V.AlgebraTools.Det.repApi ρ).2.2.1 hn, map_mul, map_mul, hy, mul_zero, Matrix.trace_zero]
 
 /- English proof (translation)
-Establish `hj : Function.Injective (A.val : A →+* PadicAlgCl l)` using `Subtype.val_injective`. Take `⟨D, hD, -⟩` from `groupDeterminant_existsUnique_descent_of_injective n A (PadicAlgCl l) F.G₀ _ hj (GDet.ofRep (mat ρ)) fun i g => by`. Take `⟨c, hc⟩` from `residue_surjective (r.Dbar.lam i (MonoidAlgebra.single g 1))`. Conclude with `⟨⟨_, (hA _).2 ⟨k1 i g, c, h1 i g c hc⟩⟩, rfl⟩`. Establish `hψA : ∀ v i g, ((ψ v i g : (PadicAlgCl l)ˣ) : PadicAlgCl l) ∈ A` using `fun v i g => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `residue_surjective (r.psib v i g : ResidueField O)`. Conclude with `(hA _).2 ⟨k2 v i g, c, h3 v i g c hc⟩`. Set `ψ' : ∀ v, Fin n → F.Gv v →* Aˣ` to `fun v i => MonoidHom.toHomUnits { toFun := fun g => ⟨ψ v i g, hψA v i g⟩ map_one' := Subtype.ext (by simp) map_mul' := fun g h => Subtype.ext (by simp) }`. Establish `hψ' : ∀ v i g, ((ψ' v i g : A) : PadicAlgCl l) = ψ v i g` using `fun _ _ _ => rfl`. Establish `hmap : ∀ i y, (GDet.ofRep (mat ρ)).lam i (MonoidAlgebra.mapRingHom F.G₀ (A.val : A →+* PadicAlgCl l) y) = (D.lam i y : A)` using `fun i y => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hD]`. Conclude with `((UpperTheory.V.CA.d_gmap D).2.2.1 _ y).2 i`. Establish `hlam : ∀ i g, (GDet.ofRep (mat ρ)).lam i (MonoidAlgebra.single g 1) = (D.lam i (MonoidAlgebra.single g 1) : A)` using `fun i g => by rw [← hmap, MonoidAlgebra.mapRingHom_single, map_one]`. Establish `hn : ∀ y, B.u.D.tr y = 0 → 0 < n` using `fun y hy => by`. Break down `Nat.eq_zero_or_pos n with rfl | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0` using `(UpperTheory.V.AlgebraTools.Det.chiApi B.u.D y).1`. Simplify using `only [GDet.tr, GDet.lam, Nat.zero_sub, pow_zero, one_mul, pow_one] at h0 hy`. Simplify using `[h0] at hy`. Conclude with `h`. Use `⟨⟨D, ψ', fun i => ?_, ?_, fun v i => ⟨?_, fun g => ?_, fun g => Subtype.ext (h4 v i g)⟩, fun i g => ?_, fun v g h => ?_, fun u g hg h => ?_⟩, hD, fun v i => MonoidHom.ext fun g => Units.ext rfl⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `qb_adic K A hA hm _ ?_` and prove the remaining obligations. Simplify using `only [← hlam]`. Conclude with `UpperTheory.V.AlgebraTools.Det.repCont (mat ρ) (continuous_matrix hρ) i`. Use `UpperTheory.V.CA.d_gext _ _ fun g i _ _ => ?_` and prove the remaining obligations. Establish `h` using `((UpperTheory.V.CA.d_gmap D).2.2.1 (res O A : A →+* ResidueField O) (MonoidAlgebra.single g 1)).2 i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[MonoidAlgebra.mapRingHom_single, map_one]`. Rewrite using `[h]`. Conclude with `qb_res A hm _ _ fun c hc => hlam i g ▸ h1 i g c hc`. Conclude with `qb_adic K A hA hm _ (hψ v i)`. Conclude with `qb_res A hm _ _ (h3 v i g)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hmap, ← (UpperTheory.V.AlgebraTools.Det.starApi F O A n).2.2.2.2.2 _ A.val, ← hlam, MonoidAlgebra.mapRingHom_single, map_one]`. Conclude with `(UpperTheory.V.AlgebraTools.Det.polarIffLam F O _ n _).1 (UpperTheory.V.AlgebraTools.Det.formRep F O _ n ρ P hP).2.2 i g`. Use `qb_tr (hn _ (B.u.Ord v g h)) _ hj D _ hD _ _ ?_` and prove the remaining obligations. Rewrite using `[← UpperTheory.V.AlgebraTools.Det.oElRep F O _ n ρ v (ψ v) (h5 v) g]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [GFrame.oEl, map_list_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, map_sub, MonoidAlgebra.mapRingHom_single, map_one]`.
-
-Both sides reduce to the same expression. Use `qb_tr (hn _ (B.u.I u g hg h)) _ hj D _ hD _ _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, map_one, map_one, MonoidAlgebra.mapRingHom_single, map_one, sub_eq_zero]`. Simplify using `[GDet.repAlg, mat, h2 u g hg]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem qb_pair {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     [Algebra O (PadicAlgCl l)] {n : ℕ} (r : Resid F O n) (B : UniversalOrdinaryDeterminantRing r)
@@ -387,23 +377,21 @@ private theorem qb_pair {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [Comm
     simp [GDet.repAlg, mat, h2 u g hg]
 
 /- English proof (translation)
-Introduce `l _ F O _ _ _ _ _ _ _ _ _ _ _ n r B ρ ψ hρ ⟨P, hP⟩ h1 h2 h3 h4 h5`. Take `⟨hψ, K₁, f₁, k1, k2⟩` from `qb_field F ρ ψ hρ h5`. Take `⟨K₀, f₀, k0⟩` from `qb_fdmod (IsScalarTower.toAlgHom ℤ_[l] O (PadicAlgCl l)).toLinearMap`. Establish `main : ∀ K : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] K → ∃ f : B.B →ₐ[O] PadicAlgCl l, B.u.Maps (f : B.B →+* PadicAlgCl l) (GDet.ofRep (mat ρ)) ψ ∧ ∀ f' : B.B →ₐ[O] PadicAlgCl l, (∀ x, f' x ∈ K) → B.u.Maps (f' : B.B →+* PadicAlgCl l) (GDet.ofRep (mat ρ)) ψ …`. Introduce `K _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨A, _, hA, hm⟩` from `qb_ring (O := O) (K ⊔ (K₀ ⊔ K₁)) fun c => (le_sup_left.trans le_sup_right : K₀ ≤ _) (k0 c)`. Take `⟨p, hD, hp⟩` from `qb_pair r B ρ ψ hρ hψ P hP h1 h2 h3 h4 h5 _ A hA hm (fun i g => (le_sup_right.trans le_sup_right : K₁ ≤ _) (k1 i g)) (fun v i g => (le_sup_right.trans le_sup_right : K₁ ≤ _) (k2 v i g))`. Take `⟨f, ⟨hf1, hf2⟩, hu⟩` from `B.univ A p`. Use `⟨A.val.comp f, ⟨?_, fun v i => ?_⟩, fun f' hK ⟨hf1', hf2'⟩ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hD, ← hf1, (UpperTheory.V.CA.d_gmap B.u.D).2.1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← hp, ← hf2]`. Both sides reduce to the same expression. Use `letI : Algebra ℤ_[l] B.B := ((algebraMap O B.B).comp (algebraMap ℤ_[l] O)).toAlgebra haveI : IsScalarTower ℤ_[l] O B.B := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hmem : ∀ x, f' x ∈ A` using `fun x => by`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `IsCO.res_surj (O := O) x`. Use `(hA _).2 ⟨(le_sup_left : K ≤ _) (hK x), c, ?_⟩` and prove the remaining obligations. Simplify using `using qb_norm_lt (f'.restrictScalars ℤ_[l]) _ hc`. Rewrite using `[← hu (f'.codRestrict A hmem) ⟨?_, fun v i => ?_⟩]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `(groupDeterminant_existsUnique_descent_of_injective n A (PadicAlgCl l) F.G₀ (A.val : A →+* PadicAlgCl l) Subtype.val_injective (GDet.ofRep (mat ρ)) fun i g => ?_).unique ?_ hD` and prove the remaining obligations. Establish `h` using `((UpperTheory.V.CA.d_gmap p.D).2.2.1 (A.val : A →+* PadicAlgCl l) (MonoidAlgebra.single g 1)).2 i`. Rewrite `h` using `[MonoidAlgebra.mapRingHom_single, map_one, hD]`. Conclude with `⟨_, h.symm⟩`. Rewrite using `[(UpperTheory.V.CA.d_gmap B.u.D).2.1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf1'`. Use `MonoidHom.ext fun g => Units.ext (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `congrArg Units.val (DFunLike.congr_fun ((hf2' v i).trans (hp v i).symm) g)`. Use `haveI : Algebra.IsAlgebraic ℤ_[l] (PadicAlgCl l) := (IsFractionRing.comap_isAlgebraic_iff (K := ℚ_[l])).2 inferInstance`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] O)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Function.Injective.of_comp (f := algebraMap O (PadicAlgCl l)) fun a b h => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, ← IsScalarTower.algebraMap_apply] at h`. Simplify using `only [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l)] at h`. Conclude with `IsFractionRing.injective ℤ_[l] ℚ_[l] ((algebraMap ℚ_[l] (PadicAlgCl l)).injective h)`. Use `haveI : Algebra.IsAlgebraic O (PadicAlgCl l) := Algebra.IsAlgebraic.extendScalars hinj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `fin : ∀ f : B.B →ₐ[O] PadicAlgCl l, ∃ K : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] K ∧ ∀ x, f x ∈ K` using `fun f => by haveI := exists_algebraicPoint_of_groupDeterminant O B.B (PadicAlgCl l) f haveI : Module.Finite ℤ_[l] f.range := Module.Finite.trans O f.range`. Take `⟨K, hK, h⟩` from `qb_fdmod (f.range.val.toLinearMap.restrictScalars ℤ_[l])`. Conclude with `⟨K, hK, fun x => h ⟨f x, x, rfl⟩⟩`. Take `⟨f, hf, -⟩` from `main ⊥ inferInstance`. Use `⟨f, hf, fun f' hf' => ?_⟩` and prove the remaining obligations.
-
-Take `⟨K, _, hK⟩` from `fin f`. Take `⟨K', _, hK'⟩` from `fin f'`. Take `⟨f'', -, hu⟩` from `main (K ⊔ K') inferInstance`. Rewrite using `[hu f (fun x => (le_sup_left : K ≤ _) (hK x)) hf, hu f' (fun x => (le_sup_right : K' ≤ _) (hK' x)) hf']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.W.exists_determinantPair_over_algebraicIntegers :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [Finite (ResidueField O)] [CharP (ResidueField O) l]

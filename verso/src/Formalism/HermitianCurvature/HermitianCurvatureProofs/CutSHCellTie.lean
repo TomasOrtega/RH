@@ -9,7 +9,7 @@ noncomputable section
 namespace Formalism.FourierDecayAlt.P.CutSH
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [D.castV, QuantumDeterminants.liftVec, Fin.coe_cast]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (congr 1; ext; simp only [Fin.coe_cast]; omega)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem castV_liftVec_liftVec_eq_castV_liftVec_succ {k j ρ m n : ℕ} (e : 1 + ρ = m) (h1 : j + m = n)
     (h2 : j + 1 + ρ = n) (v : Fin (2 * ρ + k + 1) → ℂ) :
@@ -20,7 +20,7 @@ private theorem castV_liftVec_liftVec_eq_castV_liftVec_succ {k j ρ m n : ℕ} (
   split_ifs <;> first | rfl | (exfalso; omega) | (congr 1; ext; simp only [Fin.coe_cast]; omega)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[JCTx5.castV_rfl, JCTx5.castV_rfl, JCTx5.castM_rfl]`. Conclude with `(PBH.domR_iota ht z z' c g).2 h`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem consC_castM_ιLev_mem_DomR_of_mem_DomR {k ρ m : ℕ} (e : 1 + ρ = m) {t : ℂ} (ht : t ≠ 0)
     (z z' : Fin (2 * ρ + k + 1) → ℂ) (c : Fin ρ → ℂ) (g : Q.Mx k ρ)
@@ -32,11 +32,11 @@ private theorem consC_castM_ιLev_mem_DomR_of_mem_DomR {k ρ m : ℕ} (e : 1 + �
   exact (PBH.domR_iota ht z z' c g).2 h
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P T hP hN j hj hPj hPj1 t ht x hx`. Establish `e : 1 + (P.r - (j + 1)) = P.r - j` using `by omega`. Establish `hz : (T.bs j).z = D.castV e (QuantumDeterminants.liftVec P.k 1 (P.r - (j + 1)) (T.bs (j + 1)).z)`. Apply `JCTx5.liftVec_inj (i := j)` to reduce the goal to its premises. Apply `PBH.castV_inj (show j + (P.r - j) = P.r by omega)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[T.z_lev j (by omega), castV_liftVec_liftVec_eq_castV_liftVec_succ e (show j + (P.r - j) = P.r by omega) (show j + 1 + (P.r - (j + 1)) = P.r by omega), T.z_lev (j + 1) hj]`. Establish `hz' : (T.bs j).z' = D.castV e (QuantumDeterminants.liftVec P.k 1 (P.r - (j + 1)) (T.bs (j + 1)).z')`. Apply `JCTx5.liftVec_inj (i := j)` to reduce the goal to its premises. Apply `PBH.castV_inj (show j + (P.r - j) = P.r by omega)` to reduce the goal to its premises. Rewrite using `[T.z'_lev j (by omega), castV_liftVec_liftVec_eq_castV_liftVec_succ e (show j + (P.r - j) = P.r by omega) (show j + 1 + (P.r - (j + 1)) = P.r by omega), T.z'_lev (j + 1) hj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, PBF.wCell_mul_GV hx.1 hx.2.1, P5.Rad.wCell_mem_omPlus hPj1.2.1 hPj1.2.2.1 hx.1 hx.2.1 hx.2.2⟩` and prove the remaining obligations. Rewrite using `[hz, hz']`. Conclude with `consC_castM_ιLev_mem_DomR_of_mem_DomR e ht _ _ x.1 x.2 hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_compatibility : CellTie := by
   intro Wp Wq _ _ _ _ _ _ P T hP hN j hj hPj hPj1 t ht x hx
@@ -60,6 +60,6 @@ theorem cell_compatibility : CellTie := by
 end Formalism.FourierDecayAlt.P.CutSH
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.CutSH.cell_compatibility`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.cell_compatibility_identity : Formalism.FourierDecayAlt.P.CutSH.CellTie := Formalism.FourierDecayAlt.P.CutSH.cell_compatibility

@@ -22,7 +22,7 @@ private lemma mat_lact_castFr_eq_map_mul {E : Type} [Field E] {r : ℕ} {Ψ Ψ' 
 open NumberField AlgebraicGeometry CategoryTheory in
 open scoped Matrix in
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private lemma emb_mulVec_eq_map_mulVec_emb {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (τ : E →+* ℂ) (A : Matrix (Fin r) (Fin r) E) (v : Fin r → E) :
@@ -33,7 +33,7 @@ private lemma emb_mulVec_eq_map_mulVec_emb {E : Type} [Field E] [NumberField E] 
 open NumberField AlgebraicGeometry CategoryTheory in
 open scoped Matrix in
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private lemma col_mul_eq_mulVec_col' {r : ℕ} (A M : Matrix (Fin r) (Fin r) ℂ) (j : Fin r) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.col (A * M) j = A *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.col M j := by
@@ -44,19 +44,19 @@ open NumberField AlgebraicGeometry CategoryTheory in
 open scoped Matrix in
 
 /- English proof (translation)
-Introduce `E _ _ _ r X X' a h x v τ i`. Establish `hΨ` using `h.psi`. Establish `hp` using `h.p0`. Establish `hA : IsUnit ((a : Matrix (Fin r) (Fin r) E).map τ).det`. Establish `h₀` using `(Matrix.isUnits_det_units a).map τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₀` using `[RingHom.map_det]`. Then use the resulting hypothesis. Unfold `_root_.Formalism.L2.PjFree.perFr`. Distinguish the cases in `hτ : τ ∈ X.Ψ`. Establish `hτ' : τ ∈ X'.Ψ` using `hΨ ▸ hτ`. Rewrite using `[dif_pos hτ', dif_pos hτ]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : X.p0 + i < r`. Establish `hi' : X'.p0 + i < r` using `hp ▸ hi`. Rewrite using `[dif_pos hi', dif_pos hi]`. Establish `hfin : (⟨X'.p0 + i, hi'⟩ : Fin r) = ⟨X.p0 + i, hi⟩` using `Fin.ext (by simp [hp])`. Rewrite using `[hfin, mat_lact_castFr_eq_map_mul hΨ a x τ hτ' hτ, emb_mulVec_eq_map_mulVec_emb, Matrix.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hA, Matrix.mul_one]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi' : ¬ X'.p0 + i < r` using `hp ▸ hi`. Rewrite using `[dif_neg hi', dif_neg hi]`. Establish `hτ' : τ ∉ X'.Ψ` using `hΨ ▸ hτ`. Rewrite using `[dif_neg hτ', dif_neg hτ]`. Distinguish the cases in `hσ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.conjEmb τ ∈ X.Ψ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hσ' : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.conjEmb τ ∈ X'.Ψ` using `hΨ ▸ hσ`. Rewrite using `[dif_pos hσ', dif_pos hσ]`. Distinguish the cases in `hj : X.p0 - 1 - i < r`. Establish `hj' : X'.p0 - 1 - i < r` using `hp ▸ hj`. Rewrite using `[dif_pos hj', dif_pos hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : (⟨X'.p0 - 1 - i, hj'⟩ : Fin r) = ⟨X.p0 - 1 - i, hj⟩` using `Fin.ext (by simp [hp])`. Rewrite using `[hfin, mat_lact_castFr_eq_map_mul hΨ a x _ hσ' hσ, col_mul_eq_mulVec_col', emb_mulVec_eq_map_mulVec_emb]`. Conclude with `h.hermC_eq _ _ _`. Establish `hj' : ¬ X'.p0 - 1 - i < r` using `hp ▸ hj`. Rewrite using `[dif_neg hj', dif_neg hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hσ' : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.conjEmb τ ∉ X'.Ψ` using `hΨ ▸ hσ`. Rewrite using `[dif_neg hσ', dif_neg hσ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GeoLevel.perFr_lact_of_isMatch : ∀ (E : Type) [Field E] [NumberField E]
     [IsCMField E] (r : ℕ) (X X' : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (a : GL (Fin r) E)

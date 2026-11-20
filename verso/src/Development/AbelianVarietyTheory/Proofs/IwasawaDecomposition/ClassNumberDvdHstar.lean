@@ -34,9 +34,9 @@ def toComap {F K : IntermediateField ℚ ℂ} (h : F ≤ K) : F →+* (F.comap K
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Rewrite using `[extend_span]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨a, ha, hy⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, Subtype.ext (hy.trans (he _).symm)⟩`. Introduce and unpack `⟨a, ha, hx⟩`. Conclude with `⟨⟨x.1.1, x.2⟩, ⟨a, ha, (congrArg Subtype.val hx).trans (he _)⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem image_comap {E : Type} [Field E] {F K : IntermediateField ℚ ℂ} (h : F ≤ K) (𝔞 : Ideal (𝓞 E)) (τ : E →+* ℂ)
     (e : E → K) (he : ∀ a, (e a : ℂ) = τ a) :
@@ -52,11 +52,11 @@ theorem image_comap {E : Type} [Field E] {F K : IntermediateField ℚ ℂ} (h : 
     exact ⟨⟨x.1.1, x.2⟩, ⟨a, ha, (congrArg Subtype.val hx).trans (he _)⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hcm : IsCMField H.E` using `H.isCMField_hostE`. Establish `hgal : IsGalois ℚ H.E` using `H.hostE_isGalois`. Set `f` to `toComap hFK`. Take `⟨β, hβ, hsp, hn⟩` from `typeNorm_of_kummer _ (typeExp H p q) _ (typeExp_add H _ _) F hV 𝔞 h𝔞`. Use `⟨f β, (map_ne_zero f).2 hβ, ?_, fun σ => hn (σ.comp f)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrArg (extend f) hsp`. Rewrite `h` using `[prod_typeExp, extend_span, Set.image_singleton, map_prod]`. Use `h.trans (Finset.prod_congr rfl fun g _ => ?_)` and prove the remaining obligations. Establish `e1` using `image_comap hFK 𝔞 (H.emb g) (fun a => e (H.sigmaOf g a)) fun _ => he _`. Establish `e2` using `image_comap hFK 𝔞 (ComplexEmbedding.conjugate (H.emb g)) (fun a => e (H.sigmaOf g (H.conj a))) fun a => (he _).trans (conjugate_emb_apply H g a).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_pow, map_pow]`. Conclude with `congrArg₂ (· * ·) (congrArg (· ^ p) e1) (congrArg (· ^ q) e2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kPsi_comap {R : Ranks} (H : Host R) {F K : IntermediateField ℚ ℂ} (hFK : F ≤ K) [FiniteDimensional ℚ F]
     (hV : kummerField H.φ₀ (classNumber H.E) ≤ F) (e : H.E →+* K) (he : ∀ a, (e a : ℂ) = H.φ₀ a) (p q : ℕ)
@@ -82,7 +82,7 @@ theorem kPsi_comap {R : Ranks} (H : Host R) {F K : IntermediateField ℚ ℂ} (h
   exact congrArg₂ (· * ·) (congrArg (· ^ p) e1) (congrArg (· ^ q) e2)
 
 /- English proof (translation)
-Take `⟨β, hsp⟩` from `capit_of_kummer _ F hV 𝔞`. Use `⟨toComap hFK β, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (extend (toComap hFK)) hsp`. Rewrite `h` using `[extend_span, Set.image_singleton]`. Conclude with `h.trans (image_comap hFK 𝔞 φ e he)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capit_comap {E : Type} [Field E] [NumberField E] (φ : E →+* ℂ) {F K : IntermediateField ℚ ℂ} (hFK : F ≤ K)
     [FiniteDimensional ℚ F] (hV : kummerField φ (classNumber E) ≤ F) (e : E →+* K) (he : ∀ a, (e a : ℂ) = φ a)
@@ -95,7 +95,7 @@ theorem capit_comap {E : Type} [Field E] [NumberField E] (φ : E →+* ℂ) {F K
   exact h.trans (image_comap hFK 𝔞 φ e he)
 
 /- English proof (translation)
-Establish `: NumberField F` using `NumberField.mk`. Take `⟨S, hS, h⟩` from `exists_gens F`. Conclude with `⟨S, hS, fun K hK z hz => h K hK F.val.toRingHom ⟨z, hz⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_gens_le (F : IntermediateField ℚ ℂ) [FiniteDimensional ℚ F] : ∃ S : Finset ℂ,
     (∀ z ∈ S, IsAlgebraic ℚ z) ∧ ∀ K : IntermediateField ℚ ℂ, (∀ z ∈ S, z ∈ K) → F ≤ K := by
@@ -104,21 +104,21 @@ theorem exists_gens_le (F : IntermediateField ℚ ℂ) [FiniteDimensional ℚ F]
   exact ⟨S, hS, fun K hK z hz => h K hK F.val.toRingHom ⟨z, hz⟩⟩
 
 /- English proof (translation)
-Establish `hcm : IsCMField B.host.E` using `B.host.isCMField_hostE`. Establish `hgal : IsGalois ℚ B.host.E` using `B.host.hostE_isGalois`. Take `⟨SF, hSF, hF⟩` from `exists_gens_le F`. Set `A : Finset ℕ` to `{B.ramOrder} ∪ Finset.univ.image B.T`. Set `SR : Finset ℂ` to `A.image fun N : ℕ => Complex.exp (2 * Real.pi * Complex.I / N)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨K, hfd, hKgal, hS, -, hconj⟩` from `GlobalTheory.exists_galois_subfield_conj_stable (S ∪ SF ∪ SR) (by`. Introduce `z hz`. Simplify using `only [Finset.mem_union] at hz`. Break down `hz with (hz | hz) | hz` into its components or cases. Use `exacts [hSa z hz, hSF z hz, by`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨N, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `isAlgebraic_exp N])`. Simplify using `only [Finset.mem_union] at hS`. Establish `hFK : F ≤ K` using `hF K fun z hz => hS z (by tauto)`. Take `⟨hEF, hh, -⟩` from `(kummerField_le_iff _).1 hV`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEK : ∀ x, B.host.φ₀ x ∈ K` using `fun x => hFK (hEF x)`. Establish `hR : ∀ N ∈ A, Complex.exp (2 * Real.pi * Complex.I / (N : ℕ)) ∈ K` using `fun N hN => by`. Establish `hz : Complex.exp (2 * Real.pi * Complex.I / N) ∈ SR` using `Finset.mem_image.2 ⟨N, hN, rfl⟩`. Conclude with `hS _ (by tauto)`. Establish `: NumberField K` using `{}`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [rootsField, sup_le_iff, cycField_le_iff] at hr`. Take `⟨⟨⟨⟨hr1, hr2⟩, hr3⟩, hr4⟩, hr5⟩` from `hr`. Use `⟨{ toPre := B LL := K starLL := starOf K hconj embLL := K.val starLL_cx := fun _ => rfl embE := B.host.φ₀.codRestrict K hEK embE_φ₀ := rfl LL0 := ⊤ coeffGaloisSubfield_isGalois := IsGalois.of_algEquiv IntermediateField.topEquiv.symm Ks := F.comap K.val Ks_le := le_top E_le_Ks := …` and prove the remaining obligations. Introduce `N hN`. Establish `h : rootOne N ∈ F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 
-Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hN`. Apply the tactic sequence `rcases hN with rfl | rfl | rfl | rfl | rfl <;> assumption`. Conclude with `⟨⟨_, hFK h⟩, h, rfl⟩`. Introduce `N hN`. Establish `h : rootOne N ∈ F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 
-Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hN`. Apply the tactic sequence `rcases hN with rfl | rfl | rfl <;> assumption`. Conclude with `⟨⟨_, hFK h⟩, h, rfl⟩`. Introduce `z`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Conclude with `fun hz => ⟨⟨z, hFK hz⟩, hz, rfl⟩`. Conclude with `fun z hz => ⟨⟨z, hS z (by tauto)⟩, trivial, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_base_ks (B : Pre) (F : IntermediateField ℚ ℂ) [FiniteDimensional ℚ F]
     (hV : kummerField B.host.φ₀ (classNumber B.host.E) ≤ F) (hr : rootsField B ≤ F)
@@ -191,11 +191,11 @@ section Ray
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hσ`. Take `⟨T, hT, H⟩` from `GlobalTheory.T.exists_two_primes_same_norm_of_trivial_frobenius E F σ hσ`. Use `choose P Q hne hP hQ nP nQ using fun v : {v : HeightOneSpectrum (𝓞 E) // v ∉ S ∪ T} => H v.1 (fun hv => v.2 (Or.inr hv)) (h v.1 fun hv => v.2 (Or.inl hv))`. Set `f : {v : HeightOneSpectrum (𝓞 E) // v ∉ S ∪ T} × Bool → HeightOneSpectrum (𝓞 F)` to `fun x => bif x.2 then P x.1 else Q x.1`. Establish `ho : ∀ x, (f x).asIdeal.under (𝓞 E) = x.1.1.asIdeal`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨v, _ | _⟩`. Use `exacts [(hQ v).over.symm, (hP v).over.symm]`. Use `GlobalTheory.T.not_injective_two_primes_equal_norm_cofinite E F _ (hS.union hT) f ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨v, b⟩ ⟨w, c⟩ e`. Take `rfl : v = w` from `Subtype.ext (HeightOneSpectrum.ext ((ho (v, b)).symm.trans (by rw [e]; exact ho (w, c))))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `rcases b with _ | _ <;> rcases c with _ | _`. Use `exacts [rfl, absurd e.symm (hne v), absurd e (hne v), rfl]`. Introduce and unpack `⟨v, _ | _⟩ exacts [nQ v, nP v]`.
+A detailed English derivation is pending.
 -/
 theorem aut_eq_one (S : Set (HeightOneSpectrum (𝓞 E))) (hS : S.Finite) (F : Type) [Field F] [NumberField F]
     [Algebra E F] (h : ∀ v : HeightOneSpectrum (𝓞 E), v ∉ S → IsFrob F v 1) (σ : F ≃ₐ[E] F) : σ = 1 := by
@@ -217,13 +217,13 @@ theorem aut_eq_one (S : Set (HeightOneSpectrum (𝓞 E))) (hS : S.Finite) (F : T
     exacts [nQ v, nP v]
 
 /- English proof (translation)
-Establish `hp0 : p ≠ 0` using `ne_zero_of_dvd_ne_zero hn hp`. Use `hM.numberField` as an intermediate fact. Take `⟨SM, hSM, hle⟩` from `exists_gens_le M`. Take `⟨L, hfd, hgal, hS, -, -⟩` from `GlobalTheory.exists_galois_subfield_conj_stable (insert (rootOne p) SM) (by`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases. Use `exacts [isAlgebraic_exp p, hSM z hz])`. Establish `hML : M ≤ L` using `hle L fun z hz => hS z (Finset.mem_insert_of_mem hz)`. Establish `: NumberField L` using `{}`. Set `` to `algOf φ M hM.emb_mem`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `` to `algOf φ L fun x => hML (hM.emb_mem x)`. Set `: Algebra M L` to `(IntermediateField.inclusion hML).toRingHom.toAlgebra`. Establish `: IsScalarTower E M L` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsGalois E L` using `IsGalois.tower_top_of_isGalois ℚ E L`. Establish `hq : natIdeal E n ≤ Ideal.span {(p : 𝓞 E)}` using `Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast hp)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : {v : HeightOneSpectrum (𝓞 E) | v.asIdeal ∣ natIdeal E n}.Finite` using `Ideal.finite_factors (natIdeal_ne_bot hn)`. Take `⟨x, hx⟩` from `GlobalTheory.T.rootsOfUnity_mem_rayClassField_of_multiple E M L _ p hp0 hq hM.isRayField (GlobalTheory.T.closure_frobeniusElements_eq_top E L _ hfin fun F _ _ _ => aut_eq_one _ hfin F) (GlobalTheory.T.absNorm_modEq_one_of_principal_rayClass E _ p hq) ⟨rootOne p, hS _ (Finset.mem_ …`. Establish `e : (x : ℂ) = rootOne p` using `congrArg Subtype.val hx`. Conclude with `e ▸ x.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rootOne_mem_ray [IsTotallyComplex E] (φ : E →+* ℂ) {n p : ℕ} (hn : n ≠ 0) (hp : p ∣ n)
     {M : IntermediateField ℚ ℂ} (hM : IsRayFieldIn φ (natIdeal E n) M) : rootOne p ∈ M := by
@@ -254,9 +254,9 @@ theorem rootOne_mem_ray [IsTotallyComplex E] (φ : E →+* ℂ) {n p : ℕ} (hn 
   exact e ▸ x.2
 
 /- English proof (translation)
-Rewrite using `[valueField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Set `` to `algOf φ₀ M hM.emb_mem`. Take `⟨k, hk, hk1⟩` from `GlobalTheory.T.exists_generator_pow_prime_one_mod_modulus E 𝔮 _ h𝔮 (GlobalTheory.T.rayClassField_finrank_pow_principal E M 𝔮 hM.isRayField) v`. Establish `hfin` using `Ideal.finite_factors h𝔮`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.T.algebraicHeckeCharacter_value_mem_kummerField E φ₀ I φ hφ χ n r hi he v _ k hk (GlobalTheory.T.tameHeckeCharacter_value_via_power_generator E χ (hfin.toFinset.erase v) (fun w hw => ?_) (fun w _ => ht w) v (Finset.notMem_erase _ _) _ k hk fun w hw => ?_)` and prove the remaining obligations. Distinguish the cases in `e : w = v`. Conclude with `e ▸ hv`. Conclude with `hu w fun h => hw (Finset.mem_erase.2 ⟨e, hfin.mem_toFinset.2 h⟩)`. Conclude with `hk1 w (Finset.mem_erase.1 hw).1 (hfin.mem_toFinset.1 (Finset.mem_erase.1 hw).2)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem valueField_le [IsGalois ℚ E] [IsTotallyComplex E] (φ₀ : E →+* ℂ) {𝔮 : Ideal (𝓞 E)} (h𝔮 : 𝔮 ≠ ⊥)
     {M : IntermediateField ℚ ℂ} [NumberField M] (hM : IsRayFieldIn φ₀ 𝔮 M) {I : Type} [Fintype I] (φ : I → E →+* ℂ)
@@ -278,7 +278,7 @@ theorem valueField_le [IsGalois ℚ E] [IsTotallyComplex E] (φ₀ : E →+* ℂ
   · exact hk1 w (Finset.mem_erase.1 hw).1 (hfin.mem_toFinset.1 (Finset.mem_erase.1 hw).2)
 
 /- English proof (translation)
-Introduce `x hx _` and use `h x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tameAt_of_unrAt {χ : HChar E} {v : HeightOneSpectrum (𝓞 E)} (h : χ.UnrAt v) : χ.TameAt v :=
   fun x hx _ => h x hx
@@ -290,29 +290,29 @@ section Omega
 variable {P : Pre} (D : FieldDat P) (C : Chars P)
 
 /- English proof (translation)
-Use `P.host.isCMField_hostE` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem host_cplx (P : Pre) : IsTotallyComplex P.host.E := by
   have := P.host.isCMField_hostE
   infer_instance
 
 /- English proof (translation)
-Set `` to `algOf P.host.φ₀ D.ray D.isRay.emb_mem`. Conclude with `GlobalTheory.T.classNumber_dvd_finrank_alt P.host.E D.ray _ (natIdeal_ne_bot (modulus_ne_zero P)) D.isRay.isRayField`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem classNumber_dvd_hstar : classNumber P.host.E ∣ D.hstar := by
   let := algOf P.host.φ₀ D.ray D.isRay.emb_mem
   exact GlobalTheory.T.classNumber_dvd_finrank_alt P.host.E D.ray _ (natIdeal_ne_bot (modulus_ne_zero P)) D.isRay.isRayField
 
 /- English proof (translation)
-The claim follows from `kummerField_mono _ D.hstar_pos.ne' (classNumber_dvd_hstar D)`.
+A detailed English derivation is pending.
 -/
 theorem kummer_le_V : kummerField P.host.φ₀ (classNumber P.host.E) ≤ D.V :=
   kummerField_mono _ D.hstar_pos.ne' (classNumber_dvd_hstar D)
 
 /- English proof (translation)
-Establish `: Finite {z : ℂ | z ^ n = a}`. Use `Set.Finite.subset (Polynomial.nthRoots n a).toFinset.finite_toSet fun z hz => ?_` and prove the remaining obligations. Simplify `hz` using `[Polynomial.mem_nthRoots (Nat.pos_of_ne_zero hn)]`. Use `IntermediateField.finiteDimensional_adjoin fun z hz => IsIntegral.of_pow (Nat.pos_of_ne_zero hn) ?_` and prove the remaining obligations. Rewrite using `[show z ^ n = a from hz]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`.
+A detailed English derivation is pending.
 -/
 theorem finite_adjoin_roots {n : ℕ} (hn : n ≠ 0) {a : ℂ} (ha : IsIntegral ℚ a) :
     FiniteDimensional ℚ (IntermediateField.adjoin ℚ {z : ℂ | z ^ n = a}) := by
@@ -324,17 +324,15 @@ theorem finite_adjoin_roots {n : ℕ} (hn : n ≠ 0) {a : ℂ} (ha : IsIntegral 
   exact ha
 
 /- English proof (translation)
-The claim follows from `IntermediateField.adjoin.finiteDimensional (isAlgebraic_exp N).isIntegral`.
+A detailed English derivation is pending.
 -/
 theorem finite_cycField (N : ℕ) : FiniteDimensional ℚ (cycField N) :=
   IntermediateField.adjoin.finiteDimensional (isAlgebraic_exp N).isIntegral
 
 /- English proof (translation)
-Use `D.good.numberField` as an intermediate fact. Use `D.good.isElliptic` as an intermediate fact. Establish `: (D.curve.baseChange ℂ).IsElliptic` using `inferInstanceAs (D.curve.map (algebraMap D.jField ℂ)).IsElliptic`. Establish `hfin` using `GlobalTheory.T.ellipticTorsionPointCoordinates_finite (D.curve.baseChange ℂ) 12 (by norm_num)`. Establish `h1 : FiniteDimensional ℚ ℚ⟮sqrtNegNat P.host.d⟯` using `IntermediateField.adjoin.finiteDimensional (IsIntegral.of_pow two_pos (by rw [sqrtNegNat_sq]; exact (isIntegral_natCast _).neg))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : FiniteDimensional ℚ (IntermediateField.adjoin ℚ (torsionCoords (D.curve.baseChange ℂ) 12))`. Use `hfin.to_subtype` as an intermediate fact. Conclude with `IntermediateField.finiteDimensional_adjoin fun z hz => (GlobalTheory.T.isAlgebraic_of_ellipticTorsionCoordinates_finite D.jField D.curve 12 hfin z hz).isIntegral`. Establish `h3` using `finite_adjoin_roots (n := 12) (a := (D.curve.Δ : ℂ)) (by norm_num) ((Algebra.IsIntegral.isIntegral (R := ℚ) D.curve.Δ).map D.jField.val)`. Unfold `FieldDat.M' discField torsionField hilbertField`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem finite_M' : FiniteDimensional ℚ D.M' := by
   have := D.good.numberField
@@ -353,7 +351,7 @@ theorem finite_M' : FiniteDimensional ℚ D.M' := by
   infer_instance
 
 /- English proof (translation)
-Establish `h1` using `finite_M' D`. Establish `h2` using `finite_cycField (rootOrder P)`. Establish `h3 : FiniteDimensional ℚ D.V` using `GlobalTheory.T.finiteDimensional_kummerFieldOfPowerIdealRoots _ _ _ D.hstar_pos.ne'`. Unfold `FieldDat.Om`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem finite_Om : FiniteDimensional ℚ D.Om := by
   have h1 := finite_M' D
@@ -363,9 +361,9 @@ theorem finite_Om : FiniteDimensional ℚ D.Om := by
   infer_instance
 
 /- English proof (translation)
-Use `Fact.mk hg` as an intermediate fact. Rewrite using `[Matrix.card_GL_field, ZMod.card]`. Use `Dvd.dvd.trans ?_ (Finset.dvd_prod_of_mem _ (Finset.mem_univ (⟨r - 1, by omega⟩ : Fin r)))` and prove the remaining obligations. Take `⟨s, rfl⟩ : ∃ s, r = s + 2` from `⟨r - 2, by omega⟩`. Use `⟨g ^ s, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show g ^ (s + 2) - g ^ (s + 1) = _`. Rewrite using `[mul_right_comm, Nat.mul_sub_one]`. Apply the tactic sequence `congr 1 <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dvd_card_GL {g r : ℕ} (hg : g.Prime) (hr : 2 ≤ r) : g * (g - 1) ∣ Nat.card (GL (Fin r) (ZMod g)) := by
   have := Fact.mk hg
@@ -378,11 +376,11 @@ theorem dvd_card_GL {g r : ℕ} (hg : g.Prime) (hr : 2 ≤ r) : g * (g - 1) ∣ 
   congr 1 <;> ring
 
 /- English proof (translation)
-Establish `hr : 2 ≤ P.R.r`. Use `P.R.two_le_m` as an intermediate fact. Use `P.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Establish `hf : P.R.f ≠ 0` using `mul_ne_zero two_ne_zero P.R.ord_pos.ne'`. Establish `hg : ∀ k, P.host.g k * (P.host.g k - 1) ∣ P.restRowsFiniteGroupCard` using `fun k => ((dvd_card_GL (P.host.g_prime k) hr).trans (dvd_pow_self _ hf)).trans (Finset.dvd_prod_of_mem (fun k : Fin 2 => Nat.card (GL (Fin P.R.r) (ZMod (P.host.g k))) ^ P.R.f) (Finset.mem_univ k))`. Establish `key : ∀ {N}, N ∣ rootOrder P → cycField N ≤ D.Om` using `fun h => (cycField_mono (rootOrder_ne_zero P) h).trans D.cycField_le_Om`. Establish `h1 : P.restRowsFiniteGroupCard ∣ rootOrder P` using `Nat.dvd_lcm_left _ _`. Establish `h2 : 3 ^ 4 * 5 ^ 4 ∣ rootOrder P` using `Nat.dvd_lcm_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sup_le (sup_le (sup_le (sup_le (key h1) (key ((hg 0).trans h1))) (key ((hg 1).trans h1))) (key ((dvd_mul_right _ _).trans h2))) (key ((dvd_mul_left _ _).trans h2))`.
+A detailed English derivation is pending.
 -/
 theorem rootsField_le_Om : rootsField P ≤ D.Om := by
   have hr : 2 ≤ P.R.r := by
@@ -403,9 +401,9 @@ theorem rootsField_le_Om : rootsField P ≤ D.Om := by
     (key ((dvd_mul_right _ _).trans h2))) (key ((dvd_mul_left _ _).trans h2))
 
 /- English proof (translation)
-Use `le_trans (sup_le (sup_le (imField_le_kummerField _ _) (cycField_le_kummerField _ _)) ?_) (kummer_le_V D)` and prove the remaining obligations. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `z ⟨i, hz⟩`. Establish `hγ : (D.basis.γ i : P.host.E) ∈ powIdealElts P.host.E (D.basis.h i)` using `⟨(D.basis.γ i).ne_zero, D.basis.c i, by`. Rewrite using `[← coe_toPrincipalIdeal, ← D.basis.pow_eq i, Units.val_pow_eq_pow_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl⟩`. Use `kummerField_mono _ (classNumber_ne_zero _) (orderOf_dvd_card : D.basis.h i ∣ _) (mem_kummerField _ ?_ hz)` and prove the remaining obligations. Establish `hσ : ∀ (σ : P.host.E ≃ₐ[ℚ] P.host.E) {x}, x ∈ powIdealElts P.host.E (D.basis.h i) → σ x ∈ powIdealElts P.host.E (D.basis.h i)` using `fun σ _ hx => map_mem_pow (σ : P.host.E →+* P.host.E) hx`. Conclude with `prod_mem_pow _ _ fun g _ => mul_mem_pow (npow_mem_pow (hσ _ hγ) _) (npow_mem_pow (hσ _ (hσ _ hγ)) _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem KPsi_le_V (j : ℕ) : D.KPsi j ≤ D.V := by
   refine le_trans (sup_le (sup_le (imField_le_kummerField _ _) (cycField_le_kummerField _ _)) ?_) (kummer_le_V D)
@@ -420,9 +418,9 @@ theorem KPsi_le_V (j : ℕ) : D.KPsi j ≤ D.V := by
   exact prod_mem_pow _ _ fun g _ => mul_mem_pow (npow_mem_pow (hσ _ hγ) _) (npow_mem_pow (hσ _ (hσ _ hγ)) _)
 
 /- English proof (translation)
-Use `host_cplx P` as an intermediate fact. Establish `: IsGalois ℚ P.host.E` using `P.host.hostE_isGalois`. Take `⟨c, -, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm P.R P.host`. Use `valueField_le _ (natIdeal_ne_bot (modulus_ne_zero P)) D.isRay _ hcm.bij χ n r hi he (fun v hv => hu v fun p hp ho => absurd ?_ hv) ht` and prove the remaining obligations. Take `⟨k, hk⟩` from `hp`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.dvd_span_singleton, hk, Nat.cast_mul]`. Conclude with `v.asIdeal.mul_mem_right _ ho`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_le_V (χ : HChar P.host.E) (n : P.R.Psi → ℤ) (r : ℤ) (hi : χ.HasInf (embPsi P.host) n)
     (he : ∀ i, Even (n i - r)) (hu : ∀ v, (∀ p, p ∣ modulus P → OverP P.host p v → p = 0) → χ.UnrAt v)
@@ -437,7 +435,7 @@ theorem value_le_V (χ : HChar P.host.E) (n : P.R.Psi → ℤ) (r : ℤ) (hi : �
   exact v.asIdeal.mul_mem_right _ ho
 
 /- English proof (translation)
-Use `host_cplx P` as an intermediate fact. Take `⟨n, hn, ho⟩` from `h.fin`. Use `value_le_V D χ (fun _ => 0) 0 (fun k => by simp [GlobalTheory.TypeValues.inf_eq_one χ hn ho k]) (fun _ => by simp) (fun v hv => h.unr v fun ho => ne_zero_of_dvd_ne_zero (modulus_ne_zero P) hp (hv p hp ho)) h.tame` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem delta_le_V {p : ℕ} (hp : p ∣ modulus P) {χ : HChar P.host.E} (h : IsDelta (H := P.host) p χ) :
     valueField χ 0 ≤ D.V := by
@@ -448,30 +446,28 @@ theorem delta_le_V {p : ℕ} (hp : p ∣ modulus P) {χ : HChar P.host.E} (h : I
   simpa using this
 
 /- English proof (translation)
-Simplify using `using value_le_V D C.chiPsi (fun _ => 2) 0 C.isChi.inf (fun _ => by simp) (fun v _ => C.isChi.unr v) fun v => tameAt_of_unrAt (C.isChi.unr v)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem chiPsi_le_V : valueField C.chiPsi 0 ≤ D.V := by
   simpa using value_le_V D C.chiPsi (fun _ => 2) 0 C.isChi.inf (fun _ => by simp) (fun v _ => C.isChi.unr v)
     fun v => tameAt_of_unrAt (C.isChi.unr v)
 
 /- English proof (translation)
-The claim follows from `(dvd_mul_left _ _).mul_right _`.
+A detailed English derivation is pending.
 -/
 theorem pde_dvd (P : Pre) : P.host.pde ∣ modulus P := (dvd_mul_left _ _).mul_right _
 
 /- English proof (translation)
-The claim follows from `dvd_mul_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem pde'_dvd (P : Pre) : P.host.pde' ∣ modulus P := dvd_mul_left _ _
 
 /- English proof (translation)
-Use `sup_le (sup_le (sup_le (sup_le (iSup_le fun j => ?_) ?_) ?_) ?_) ?_` and prove the remaining obligations. Take `⟨n, hn, hi⟩` from `(C.isMu0 j).inf`. Establish `hg : ∀ k, P.host.g k ∣ modulus P` using `fun k => by fin_cases k`. Conclude with `((dvd_mul_right _ _).mul_right _).mul_right _`. Conclude with `((dvd_mul_left _ _).mul_right _).mul_right _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `value_le_V D (C.mu0 j) n 0 hi (fun i => by` as an intermediate fact. Take `⟨z, hz⟩` from `(P.hc i).e_int j`. Establish `h1 : (n i : ℚ) = 2 * -(P.hc i).e j` using `hn i`. Rewrite `h1` using `[hz]`. Establish `h2 : n i = 2 * -z` using `by exact_mod_cast h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨-z, by rw [h2]; ring⟩)`. Use the proof step `(fun v hv => (C.isMu0 j).unr v fun k ho => (P.host.g_prime k).ne_zero (hv _ (hg k) ho)) (C.isMu0 j).tame`. Simplify using `using this.trans D.V_le_Om`. Simplify using `using (value_le_V D C.eta (fun _ => 1) 1 C.isEta.inf (fun _ => by simp) (fun v _ => C.isEta.unr v) fun v => tameAt_of_unrAt (C.isEta.unr v)).trans D.V_le_Om`. Conclude with `(delta_le_V D (pde_dvd P) C.isDel).trans D.V_le_Om`.
-
-Conclude with `(delta_le_V D (pde'_dvd P) C.isDel').trans D.V_le_Om`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨k, a, rfl⟩`. Conclude with `rootsField_le_Om D (om_mem_rootsField C k a)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem charField_le_Om : charField C ≤ D.Om := by
   refine sup_le (sup_le (sup_le (sup_le (iSup_le fun j => ?_) ?_) ?_) ?_) ?_
@@ -497,7 +493,7 @@ theorem charField_le_Om : charField C ≤ D.Om := by
     exact rootsField_le_Om D (om_mem_rootsField C k a)
 
 /- English proof (translation)
-The claim follows from `(listField_le_iff D C).2 ⟨D.imField_le_Om, D.M'_le_Om, D.ray_le_Om, rootsField_le_Om D, charField_le_Om D C, fun j _ _ => (KPsi_le_V D j).trans D.V_le_Om⟩`.
+A detailed English derivation is pending.
 -/
 theorem listField_le_Om : listField D C ≤ D.Om :=
   (listField_le_iff D C).2 ⟨D.imField_le_Om, D.M'_le_Om, D.ray_le_Om, rootsField_le_Om D, charField_le_Om D C,
@@ -506,13 +502,13 @@ theorem listField_le_Om : listField D C ≤ D.Om :=
 end Omega
 
 /- English proof (translation)
-Use `host_cplx P` as an intermediate fact. Use `finite_Om D` as an intermediate fact. Establish `hray : ∀ n : ℕ, n ≠ 0 → ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧ ∀ K : IntermediateField ℚ ℂ, (∀ z ∈ S, z ∈ K) → ∃ R, IsRayFieldIn P.host.φ₀ (natIdeal P.host.E n) R ∧ R ≤ K` using `fun n hn => by`. Take `⟨R, h⟩` from `exists_isRayFieldIn P.host.φ₀ hR (natIdeal_ne_bot hn)`. Use `h.numberField` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S, hS, hle⟩` from `exists_gens_le R`. Conclude with `⟨S, hS, fun K hK => ⟨R, h, hle K hK⟩⟩`. Use `choose ST hST hT using fun u => hray (P.T u) (P.T_prime u).ne_zero`. Take `⟨SG, hSG, hG⟩` from `hray _ (mul_ne_zero (P.host.g_prime 0).ne_zero (P.host.g_prime 1).ne_zero)`. Take `⟨B, rfl, hK', hS⟩` from `exists_base_ks P D.Om ((kummer_le_V D).trans D.V_le_Om) (rootsField_le_Om D) (D.ray_le_Om (rootOne_mem_ray _ (modulus_ne_zero P) (pde_dvd P) D.isRay)) (D.ray_le_Om (rootOne_mem_ray _ (modulus_ne_zero P) (pde'_dvd P) D.isRay)) (S₁ ∪ S₂ ∪ SG ∪ Finset.univ.biUnion ST ∪ ({15 ^ c, P.h …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Simplify using `only [Finset.mem_union, Finset.mem_biUnion, Finset.mem_image] at hz`. Break down `hz with (((hz | hz) | hz) | ⟨u, -, hz⟩) | ⟨N, -, rfl⟩` into its components or cases. Use `exacts [h₁ z hz, h₂ z hz, hSG z hz, hST u z hz, isAlgebraic_exp N])`. Simplify using `only [Finset.mem_union, Finset.mem_biUnion, Finset.mem_image, ← Base.mem_LL0C] at hS`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : B.KsC = D.Om` using `IntermediateField.ext hK'`. Establish `hN : ∀ N ∈ ({15 ^ c, B.host.pde ^ (2 * M), B.host.pde' ^ (2 * M)} : Finset ℕ), rootOne N ∈ B.fixedCoefficientFieldInComplex` using `fun N hN => hS _ (Or.inr ⟨N, hN, rfl⟩)`. Use `⟨B, rfl, (B.fieldsOK_iff D C c M).2 ⟨⟨hK ▸ listField_le_Om D C, hK.le⟩, ((chiPsi_le_V D C).trans D.V_le_Om).trans (hK.ge.trans B.KsC_le_LL0C), ⟨hN _ (by simp), hN _ (by simp), hN _ (by simp)⟩, fun u => hT u _ fun z hz => B.fixedField_le_coefficientField (hS z (Or.inl (Or.inr ⟨u, …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_base_fieldsOK (hR : RayField) (P : Pre) (D : FieldDat P) (C : Chars P) (c M : ℕ) (S₁ S₂ : Finset ℂ)
     (h₁ : ∀ z ∈ S₁, IsAlgebraic ℚ z) (h₂ : ∀ z ∈ S₂, IsAlgebraic ℚ z) :

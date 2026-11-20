@@ -9,17 +9,15 @@ noncomputable section
 namespace GlobalTheory.OddFrame
 
 /- English proof (translation)
-Establish `key : ∀ τ : ℍ, (f ∣[k] x) ((M : ℝ) +ᵥ τ) = (f ∣[k] x) τ`. Introduce `τ`. Establish `hT : (ModularGroup.T ^ (M : ℤ)) • τ = (M : ℝ) +ᵥ τ`. Rewrite using `[modular_T_zpow_smul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hδ : x * ModularGroup.T ^ (M : ℤ) * x⁻¹ ∈ Γ`. Establish `h1 : ModularGroup.T ^ (M : ℤ) ∈ CongruenceSubgroup.Gamma M`. Simplify using `using CongruenceSubgroup.ModularGroup_T_pow_mem_Gamma (M : ℤ) (M : ℤ) dvd_rfl`. Conclude with `hΓ ((CongruenceSubgroup.Gamma_normal M).conj_mem _ h1 x)`. Establish `e : (f ∣[k] x) ∣[k] (ModularGroup.T ^ (M : ℤ)) = f ∣[k] x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← SlashAction.slash_mul, (inv_mul_cancel_right (x * ModularGroup.T ^ (M : ℤ)) x).symm, SlashAction.slash_mul, hf.1 _ hδ]`. Establish `h` using `congrFun e τ`. Establish `hden : denom (ModularGroup.T ^ (M : ℤ) : SL(2, ℤ)) τ = 1`. Rewrite using `[ModularGroup.denom_apply, ModularGroup.coe_T_zpow]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[ModularForm.SL_slash_apply (f := f ∣[k] x), hT, hden, one_zpow, mul_one]`. Conclude with `h`. Introduce `w`. Distinguish the cases in `hw : 0 < w.im`. Establish `hw' : 0 < (w + M).im` using `by simp [hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [Function.comp_apply, ofComplex_apply_of_im_pos hw', ofComplex_apply_of_im_pos hw]`. Use `key ⟨w, hw⟩ using 2` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `[ofComplex_apply_of_im_pos hw', add_comm]`. Use `push_neg at hw`.
-
-Establish `hw' : (w + M).im ≤ 0` using `by simpa using hw`. Simplify using `[ofComplex_apply_of_im_nonpos hw', ofComplex_apply_of_im_nonpos hw]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slash_periodic_comp {M : ℕ} {Γ : Subgroup SL(2, ℤ)} {k : ℤ} {f : ℍ → ℂ}
     (hΓ : CongruenceSubgroup.Gamma M ≤ Γ) (hf : IsMF Γ k f) (x : SL(2, ℤ)) :
@@ -53,7 +51,7 @@ theorem slash_periodic_comp {M : ℕ} {Γ : Subgroup SL(2, ℤ)} {k : ℤ} {f : 
     simp [ofComplex_apply_of_im_nonpos hw', ofComplex_apply_of_im_nonpos hw]
 
 /- English proof (translation)
-The claim follows from `analyticAt_cuspFunction_zero (by exact_mod_cast hM) (slash_periodic_comp hΓ hf x) (mdiff_slash hf.2.1 k x) (hf.2.2 x)`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_cuspFunction_slash {M : ℕ} {Γ : Subgroup SL(2, ℤ)} {k : ℤ} {f : ℍ → ℂ}
     (hM : 0 < M) (hΓ : CongruenceSubgroup.Gamma M ≤ Γ) (hf : IsMF Γ k f) (x : SL(2, ℤ)) :
@@ -62,7 +60,7 @@ theorem analyticAt_cuspFunction_slash {M : ℕ} {Γ : Subgroup SL(2, ℤ)} {k : 
     (mdiff_slash hf.2.1 k x) (hf.2.2 x)
 
 /- English proof (translation)
-Simplify using `only [Function.Periodic.qParam, coe_vadd, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qParam_one_vadd_eq_exp_mul (M : ℕ) (τ : ℍ) :
     Function.Periodic.qParam (M : ℝ) (((1 : ℝ) +ᵥ τ : ℍ) : ℂ) =
@@ -73,7 +71,7 @@ theorem qParam_one_vadd_eq_exp_mul (M : ℕ) (τ : ℍ) :
   ring
 
 /- English proof (translation)
-Establish `h1` using `(hasFPowerSeriesOnBall_cuspFunction hh hg hs).hasFPowerSeriesAt`. Establish `h2 : HasFPowerSeriesAt (cuspFunction h g) (FormalMultilinearSeries.ofScalars ℂ fun m => (qExpansion h g).coeff m) 0`. Simplify `hg.hasFPowerSeriesAt` using `[qExpansion_coeff, div_eq_mul_inv, mul_comm]`. Simplify `congr_arg (FormalMultilinearSeries.coeff · m) (h1.eq_formalMultilinearSeries h2)` using `[FormalMultilinearSeries.coeff_ofScalars]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_unique_of_hasSum {h : ℝ} {g : ℍ → ℂ} {c : ℕ → ℂ} (hh : 0 < h)
     (hg : AnalyticAt ℂ (cuspFunction h g) 0)
@@ -87,15 +85,15 @@ theorem coeff_unique_of_hasSum {h : ℝ} {g : ℍ → ℂ} {c : ℕ → ℂ} (hh
     congr_arg (FormalMultilinearSeries.coeff · m) (h1.eq_formalMultilinearSeries h2)
 
 /- English proof (translation)
-Establish `hM' : (0 : ℝ) < M` using `by exact_mod_cast hM`. Use `⟨fun x n => ?_, fun γ hγ x n => ?_, fun hk x n => ?_⟩` and prove the remaining obligations. Use `set ζ := Complex.exp (2 * Real.pi * Complex.I / M)`. Establish `happ : ∀ τ : ℍ, (f ∣[k] (x * ModularGroup.T)) τ = (f ∣[k] x) ((1 : ℝ) +ᵥ τ)`. Introduce `τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[slash_mul_apply, modular_T_smul]`. Establish `hden : denom ((ModularGroup.T : SL(2, ℤ)) : GL (Fin 2) ℝ) τ = 1`. Rewrite using `[ModularGroup.denom_apply]`. Simplify using `[ModularGroup.T]`. Rewrite using `[hden, one_zpow, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∀ τ : ℍ, HasSum (fun m : ℕ => (ζ ^ m * co M k f x m) • Function.Periodic.qParam (M : ℝ) (τ : ℂ) ^ m) ((f ∣[k] (x * ModularGroup.T)) τ)`. Introduce `τ`. Establish `h` using `hasSum_qExpansion hM' (slash_periodic_comp hΓ hf x) (mdiff_slash hf.2.1 k x) (hf.2.2 x) ((1 : ℝ) +ᵥ τ)`. Rewrite using `[happ]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Rewrite using `[qParam_one_vadd_eq_exp_mul, co, smul_eq_mul, smul_eq_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(coeff_unique_of_hasSum hM' (analyticAt_cuspFunction_slash hM hΓ hf (x * ModularGroup.T)) hsum n).symm`. Simplify using `only [co, hf.slash_mul hγ x]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [co, slash_neg_of_odd hk f x]`. Rewrite using `[qExpansion_neg (analyticAt_cuspFunction_slash hM hΓ hf x)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem co_transform (M : ℕ) (Γ : Subgroup SL(2, ℤ)) (k : ℤ) (f : ℍ → ℂ) (hM : 0 < M)
     (hΓ : CongruenceSubgroup.Gamma M ≤ Γ) (hf : IsMF Γ k f) :

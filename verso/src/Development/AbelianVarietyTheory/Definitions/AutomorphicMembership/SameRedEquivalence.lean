@@ -39,7 +39,7 @@ structure Moves (F F' F'' : FlagD H r) (β : V ≃ₗ[K] V) (G' G'' : FlagD H r)
 variable {F F' F'' F₁ G' G'' : FlagD H r} {Λ Λ₁ : Submodule R V} {g : R} {β β₁ s s₁ s₂ : V ≃ₗ[K] V}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => by simp, fun h x hx => by rw [← neg_sub]; exact neg_mem (h x hx), fun h k x hx => by simpa using add_mem (k x hx) (h x hx)⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameRed_equivalence (F' F'' : FlagD H r) : Equivalence (SameRed F' F'') :=
   ⟨fun _ _ _ => by simp, fun h x hx => by rw [← neg_sub]; exact neg_mem (h x hx),
@@ -52,24 +52,24 @@ def mk (β : V ≃ₗ[K] V) (h : IsPairMap F F' F'' Λ g β) : RedMap F F' F'' �
 def out (b : RedMap F F' F'' Λ g) : V ≃ₗ[K] V := (Quot.out b).1
 
 /- English proof (translation)
-The claim follows from `(Quot.out b).2`.
+A detailed English derivation is pending.
 -/
 theorem isPairMap (b : RedMap F F' F'' Λ g) : IsPairMap F F' F'' Λ g b.out := (Quot.out b).2
 
 /- English proof (translation)
-The claim follows from `Quot.out_eq b`.
+A detailed English derivation is pending.
 -/
 theorem mk_out (b : RedMap F F' F'' Λ g) : mk b.out b.isPairMap = b := Quot.out_eq b
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e => ((sameRed_equivalence F' F'').comap Subtype.val).eqvGen_iff.1 (Quot.eq.1 e), fun e => Quot.sound e⟩`.
+Supply the required witnesses or components.
 -/
 theorem mk_eq_mk (h : IsPairMap F F' F'' Λ g β) (h₁ : IsPairMap F F' F'' Λ g β₁) :
     mk β h = mk β₁ h₁ ↔ SameRed F' F'' β β₁ :=
   ⟨fun e => ((sameRed_equivalence F' F'').comap Subtype.val).eqvGen_iff.1 (Quot.eq.1 e), fun e => Quot.sound e⟩
 
 /- English proof (translation)
-Rewrite using `[← b.mk_out, ← c.mk_out]`. Conclude with `(mk_eq_mk _ _).2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext {b c : RedMap F F' F'' Λ g} (h : SameRed F' F'' b.out c.out) : b = c := by
   rw [← b.mk_out, ← c.mk_out]; exact (mk_eq_mk _ _).2 h
@@ -80,13 +80,13 @@ instance (F : FlagD H r) (Λ : Submodule R V) : Nonempty (AutRed F Λ) :=
   ⟨RedMap.mk _ (isPairMap_refl (IsCong.refl F Λ 1))⟩
 
 /- English proof (translation)
-The claim follows from `sup_le ((fixSp_le _ _ _ _).trans ((wSp_eq F F').le.trans inf_le_left)) (X_le_perp_xPlus F)`.
+A detailed English derivation is pending.
 -/
 theorem fixSp_sup_le (F F' F'' : FlagD H r) (β : V ≃ₗ[K] V) : fixSp F F' F'' β ⊔ F.X ≤ perp H (xPlus F) :=
   sup_le ((fixSp_le _ _ _ _).trans ((wSp_eq F F').le.trans inf_le_left)) (X_le_perp_xPlus F)
 
 /- English proof (translation)
-Rewrite using `[corank, fixSp_congr h, corank]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem corank_congr (h : SameRed F' F'' β β₁) : corank F F' F'' β₁ = corank F F' F'' β := by
   rw [corank, fixSp_congr h, corank]
@@ -94,7 +94,7 @@ theorem corank_congr (h : SameRed F' F'' β β₁) : corank F F' F'' β₁ = cor
 variable [FiniteDimensional K V]
 
 /- English proof (translation)
-Rewrite using `[corank, ← (Submodule.submoduleOfEquivOfLe (fixSp_sup_le F F' F'' β)).finrank_eq]`. Conclude with `Submodule.finrank_quotient_add_finrank _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corank_add (F F' F'' : FlagD H r) (β : V ≃ₗ[K] V) :
     corank F F' F'' β + finrank K ↥(fixSp F F' F'' β ⊔ F.X) = finrank K (perp H (xPlus F)) := by
@@ -102,7 +102,7 @@ theorem corank_add (F F' F'' : FlagD H r) (β : V ≃ₗ[K] V) :
   exact Submodule.finrank_quotient_add_finrank _
 
 /- English proof (translation)
-Establish `a` using `corank_add F F' F'' β`. Establish `b` using `corank_add F F'' F' β.symm`. Rewrite `b` using `[h.fixSp_sup_X]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem corank_symm (h : IsPairMap F F' F'' Λ g β) : corank F F'' F' β.symm = corank F F' F'' β := by
   have a := corank_add F F' F'' β
@@ -113,20 +113,18 @@ theorem corank_symm (h : IsPairMap F F' F'' Λ g β) : corank F F'' F' β.symm =
 omit [FiniteDimensional K V] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, (corank_congr e).trans h.2.2.1, fun y y' a a' k => (h.2.2.2 y y' a a' k).congr (by simp) (e _ (perp_anti (X_le_xPlus F') k.2.1.2))⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsScalar.congr (h : IsScalar F F' F'' β) (e : SameRed F' F'' β β₁) : IsScalar F F' F'' β₁ :=
   ⟨h.1, h.2.1, (corank_congr e).trans h.2.2.1, fun y y' a a' k =>
     (h.2.2.2 y y' a a' k).congr (by simp) (e _ (perp_anti (X_le_xPlus F') k.2.1.2))⟩
 
 /- English proof (translation)
-Establish `key {G G₁ : FlagD H r} {A B : FlagD H r} (h1 : IsTransv A G) (h2 : IsTransv B G₁) (t : V ≃ₗ[K] V) (h3 : ∀ y ∈ norLift A G, t y ∈ norLift B G₁) (y : V) (hy : t y ∈ norLift B G₁) : y ∈ norLift A G`. Establish `: (norLift A G).map (t : V →ₗ[K] V) = norLift B G₁` using `Submodule.eq_of_le_of_finrank_eq (by rintro _ ⟨y, hy, rfl⟩; exact h3 y hy) (by`. Rewrite using `[LinearEquiv.finrank_map_eq, (norLift_decomp K V H r _ _ h1).1, (norLift_decomp K V H r _ _ h2).1])`. Rewrite `hy` using `[← this]`. Simplify using `using hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨h.2.1, h.1, (corank_symm hp).trans h.2.2.1, fun y y' a a' k => ?_⟩` and prove the remaining obligations. Take `⟨y', rfl⟩` from `β.surjective y'`. Establish `h1 : y ∈ norLift F F'` using `key h.1 h.2.1 (LinearEquiv.refl K V) (fun y hy => by`. Take `⟨b, b', e⟩` from `exists_isSig hy (zero_mem _)`. Conclude with `(h.2.2.2 _ _ _ _ e).1) y k.1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : y' ∈ norLift F' F` using `key h.1.symm h.2.1.symm β (fun y hy => by`. Take `⟨b, b', e⟩` from `exists_isSig (zero_mem _) hy`. Conclude with `(h.2.2.2 _ _ _ _ e).2.1) y' k.2.1`. Take `⟨b, b', e⟩` from `exists_isSig h1 h2`. Take `⟨rfl, rfl⟩` from `(h.2.2.2 _ _ _ _ e).unique h.2.1.disjoint_xPlus k`.
-
-Simplify using `using e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsScalar.symm (h : IsScalar F F' F'' β) (hp : IsPairMap F F' F'' Λ g β) : IsScalar F F'' F' β.symm := by
   have key {G G₁ : FlagD H r} {A B : FlagD H r} (h1 : IsTransv A G) (h2 : IsTransv B G₁) (t : V ≃ₗ[K] V)
@@ -153,13 +151,13 @@ omit [FiniteDimensional K V]
 namespace Carry
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(mem_isomGrp H _).2 fun _ _ => rfl, fun _ => Iff.rfl, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem refl (F : FlagD H r) : Carry (LinearEquiv.refl K V) F F :=
   ⟨(mem_isomGrp H _).2 fun _ _ => rfl, fun _ => Iff.rfl, by simp⟩
 
 /- English proof (translation)
-Use `⟨inv_mem h.1, fun x => by rw [← h.2.1]; simp, ?_⟩` and prove the remaining obligations. Rewrite using `[← h.2.1, map_sub, s.apply_symm_apply, ← neg_sub]`. Conclude with `neg_mem h.2.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm (h : Carry s F F₁) : Carry s.symm F₁ F := by
   refine ⟨inv_mem h.1, fun x => by rw [← h.2.1]; simp, ?_⟩
@@ -167,7 +165,7 @@ theorem symm (h : Carry s F F₁) : Carry s.symm F₁ F := by
   exact neg_mem h.2.2
 
 /- English proof (translation)
-Rewrite using `[mem_perp_iff, mem_perp_iff, s.surjective.forall]`. Simplify using `only [e, (mem_isomGrp H s).1 h.1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem perp_iff (h : Carry s F F₁) {A B : Submodule K V} (e : ∀ x, s x ∈ B ↔ x ∈ A) (x : V) :
     s x ∈ perp H B ↔ x ∈ perp H A := by
@@ -175,12 +173,12 @@ theorem perp_iff (h : Carry s F F₁) {A B : Submodule K V} (e : ∀ x, s x ∈ 
   simp only [e, (mem_isomGrp H s).1 h.1]
 
 /- English proof (translation)
-The claim follows from `h.perp_iff h.2.1 x`.
+A detailed English derivation is pending.
 -/
 theorem perp (h : Carry s F F₁) (x : V) : s x ∈ perp H F₁.X ↔ x ∈ perp H F.X := h.perp_iff h.2.1 x
 
 /- English proof (translation)
-Take `⟨x, hx, x', hx', rfl⟩` from `(isComp_iff _ _ _ _ _).1 e`. Use `(isComp_iff _ _ _ _ _).2 ⟨s x + a • (s F.z - F₁.z), add_mem ((h.2.1 x).2 hx) (Submodule.smul_mem _ _ h.2.2), s x' + a' • (s F'.z - G'.z), add_mem ((k.2.1 x').2 hx') (Submodule.smul_mem _ _ k.2.2), ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem isComp (h : Carry s F F₁) (k : Carry s F' G') {u : V} {a a' : K} (e : IsComp F F' u a a') :
     IsComp F₁ G' (s u) a a' := by
@@ -191,20 +189,20 @@ theorem isComp (h : Carry s F F₁) (k : Carry s F' G') {u : V} {a a' : K} (e : 
   abel
 
 /- English proof (translation)
-Rewrite using `[← exists_isComp_iff, ← exists_isComp_iff]`. Conclude with `⟨fun ⟨a, a', e⟩ => ⟨a, a', by simpa using h.symm.isComp k.symm e⟩, fun ⟨a, a', e⟩ => ⟨a, a', h.isComp k e⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem V0 (h : Carry s F F₁) (k : Carry s F' G') (x : V) : s x ∈ V0 F₁ G' ↔ x ∈ V0 F F' := by
   rw [← exists_isComp_iff, ← exists_isComp_iff]
   exact ⟨fun ⟨a, a', e⟩ => ⟨a, a', by simpa using h.symm.isComp k.symm e⟩, fun ⟨a, a', e⟩ => ⟨a, a', h.isComp k e⟩⟩
 
 /- English proof (translation)
-Simplify `h.V0 h x` using `only [← xPlus_sup, sup_idem]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem xPlus (h : Carry s F F₁) (x : V) : s x ∈ xPlus F₁ ↔ x ∈ xPlus F := by
   simpa only [← xPlus_sup, sup_idem] using h.V0 h x
 
 /- English proof (translation)
-The claim follows from `and_congr (h.V0 k x) (h.perp_iff h.xPlus x)`.
+A detailed English derivation is pending.
 -/
 theorem norLift (h : Carry s F F₁) (k : Carry s F' G') (x : V) : s x ∈ norLift F₁ G' ↔ x ∈ norLift F F' :=
   and_congr (h.V0 k x) (h.perp_iff h.xPlus x)
@@ -217,7 +215,7 @@ variable (h : Moves F F' F'' β G' G'' β₁ s₁ s₂)
 include h
 
 /- English proof (translation)
-Use `⟨h.base₁.symm, h.base₂.symm, h.fst.symm, h.snd.symm, s₁.surjective.forall.2 fun x hx => ?_, s₁.surjective.forall.2 fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← h.base₂.2.1, ← neg_mem_iff]`. Simplify using `using h.agree x ((h.base₁.perp x).1 hx)`. Rewrite using `[← h.snd.2.1, ← neg_mem_iff]`. Simplify using `using h.comm x ((h.fst.perp x).1 hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem symm : Moves F G' G'' β₁ F' F'' β s₁.symm s₂.symm := by
   refine ⟨h.base₁.symm, h.base₂.symm, h.fst.symm, h.snd.symm, s₁.surjective.forall.2 fun x hx => ?_,

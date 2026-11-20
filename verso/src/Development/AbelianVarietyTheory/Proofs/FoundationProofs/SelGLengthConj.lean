@@ -23,11 +23,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
 
 /- English proof (translation)
-Take `⟨⟨h1, h2⟩, x, hx⟩` from `hc`. Use `⟨⟨hf.comp h1, fun g h => ?_⟩, AlgebraTensorModule.map f (LinearMap.id : B →ₗ[Qp] B) x, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [h2, map_add, he]`. Establish `e` using `congrArg (AlgebraTensorModule.map f (LinearMap.id : B →ₗ[Qp] B)) (hx g)`. Rewrite `e` using `[map_sub, AlgebraTensorModule.map_tmul, LinearMap.id_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Use `congr 1`. Use `clear e hx`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a b => simp [actVB, he]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem blochKatoCocycle_map_equivariant (f : V →ₗ[LL] V) (hf : Continuous f) (he : ∀ g x, f (ρ g x) = ρ' g (f x))
     (c : G → V) (hc : c ∈ finiteCocycles PD ρ) : (fun g => f (c g)) ∈ finiteCocycles PD ρ' := by
@@ -46,9 +46,9 @@ theorem blochKatoCocycle_map_equivariant (f : V →ₗ[LL] V) (hf : Continuous f
     | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Take `⟨a, ⟨z, hz, rfl⟩, b, ⟨m, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hc`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Use `Submodule.mem_sup.2 ⟨_, ⟨fun g => f (z g), blochKatoCocycle_map_equivariant PD f hf he z hz, rfl⟩, _, ⟨Submodule.Quotient.mk (f m), rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `show Submodule.Quotient.mk (f (z g)) + Submodule.Quotient.mk (ρ' g (f m) - f m) = q (Submodule.Quotient.mk (z g) + Submodule.Quotient.mk (ρ g m - m))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hadd, hq, hq, map_sub, he]`.
+A detailed English derivation is pending.
 -/
 theorem hfD_map (L : Lattice (O := O) ρ) (L' : Lattice (O := O) ρ') (f : V →ₗ[LL] V)
     (hf : Continuous f) (he : ∀ g x, f (ρ g x) = ρ' g (f x))
@@ -86,7 +86,7 @@ theorem qMat_mk (U : Matrix (Fin k) (Fin k) O) (x : Fin k → LL) :
       Submodule.Quotient.mk ((U.map (algebraMap O LL)).mulVec x) := rfl
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[qMat_mk, qMat_mk, qMat_mk, Matrix.mulVec_mulVec, Matrix.map_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem qMat_mul (U U' : Matrix (Fin k) (Fin k) O) (x : (Fin k → LL) ⧸ stdG O LL k) :
     qMat LL U (qMat LL U' x) = qMat LL (U * U') x := by
@@ -94,7 +94,7 @@ theorem qMat_mul (U U' : Matrix (Fin k) (Fin k) O) (x : (Fin k → LL) ⧸ stdG 
   rw [qMat_mk, qMat_mk, qMat_mk, Matrix.mulVec_mulVec, Matrix.map_mul]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[qMat_mk, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem qMat_one (x : (Fin k → LL) ⧸ stdG O LL k) : qMat LL 1 x = x := by
   obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -107,7 +107,7 @@ section W
 variable {O : Type} [CommRing O] [IsDomain O] {Γ : Type} [Group Γ] {k : ℕ}
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem wkg_apply (M : Γ →* Matrix (Fin k) (Fin k) O) (g : Γ) (x : KOG O k) :
     WKG M g x = qMat (FractionRing O) (M g) x := by
@@ -115,7 +115,7 @@ theorem wkg_apply (M : Γ →* Matrix (Fin k) (Fin k) O) (g : Γ) (x : KOG O k) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[wkg_apply, wkg_apply, qMat_mul, qMat_mul, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qMat_equiv (M M' : Γ →* Matrix (Fin k) (Fin k) O) (U : Matrix (Fin k) (Fin k) O)
     (h : ∀ g, M' g * U = U * M g) (g : Γ) (x : KOG O k) :
@@ -131,7 +131,7 @@ variable {R : Type} [CommRing R] {G : Type} [Group G] [TopologicalSpace G]
   [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem res_map (rho rho' : Representation R G M) (u : M →ₗ[R] M) (hu : Continuous u)
     (he : ∀ g m, u (rho g m) = rho' g (u m)) {H : Type} [Group H] [TopologicalSpace H]
@@ -143,7 +143,7 @@ theorem res_map (rho rho' : Representation R G M) (u : M →ₗ[R] M) (hu : Cont
   rfl
 
 /- English proof (translation)
-Establish `hx' : resH1 rho J.subtype continuous_subtype_val x = 0` using `hx`. Conclude with `(res_map rho rho' u hu he J.subtype continuous_subtype_val x).trans ((congrArg _ hx').trans (map_zero _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ur_map (rho rho' : Representation R G M) (u : M →ₗ[R] M) (hu : Continuous u)
     (he : ∀ g m, u (rho g m) = rho' g (u m)) (J : Subgroup G) (x : H1 rho)
@@ -153,7 +153,7 @@ theorem ur_map (rho rho' : Representation R G M) (u : M →ₗ[R] M) (hu : Conti
     ((congrArg _ hx').trans (map_zero _))
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Use `congr 1`. Conclude with `Subtype.ext (funext fun g => hi _)`.
+Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_left_inv (rho rho' : Representation R G M) (u u' : M →ₗ[R] M) (hu : Continuous u)
     (hu' : Continuous u') (he : ∀ g m, u (rho g m) = rho' g (u m))
@@ -174,9 +174,9 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `show Submodule.Quotient.mk (Br.vecS Bw k ((U.map (algebraMap O (FractionRing O))).mulVec x)) = Submodule.Quotient.mk (((U.map Bw.eO.toRingHom).map (algebraMap (Br.Ow Bw) (Br.LLw Bw))).mulVec (Br.vecS Bw k x))`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `show Br.toLLK Bw (((U.map (algebraMap O (FractionRing O))).mulVec x) j) = _`.
+Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[RingHom.map_mulVec]`. Use `congr 1`. Conclude with `Matrix.ext fun a b => Br.toLLK_alg Bw (U a b)`.
+A detailed English derivation is pending.
 -/
 theorem phi_qMat {k : ℕ} (U : Matrix (Fin k) (Fin k) O) (x : KOG O k) :
     Br.phi Bw k (qMat (FractionRing O) U x) =
@@ -194,11 +194,9 @@ theorem phi_qMat {k : ℕ} (U : Matrix (Fin k) (Fin k) O) (x : KOG O k) :
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `hx`. Use `⟨cocycles1MapOfEquivariant rho rho' (qMat (FractionRing O) U) hu he c, ?_, rfl⟩` and prove the remaining obligations. Establish `key` using `hfD_map (P.PD Bw.Kw) (Br.lat Bw M) (Br.lat Bw M') (((U.map Bw.eO.toRingHom).map (algebraMap (Br.Ow Bw) (Br.LLw Bw))).mulVecLin) (continuous_const.matrix_mulVec continuous_id) ?_ (qMat (Br.LLw Bw) (U.map Bw.eO.toRingHom)) (map_add _) (fun _ => rfl) _ hc`. Establish `e : Br.Phi Bw rho' (cocycles1MapOfEquivariant rho rho' (qMat (FractionRing O) U) hu he c) = fun g => qMat (Br.LLw Bw) (U.map Bw.eO.toRingHom) (Br.Phi Bw rho c g)`. Use function extensionality and compare the values at `g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `phi_qMat Bw U _`. Use `show Br.Phi Bw rho' (cocycles1MapOfEquivariant rho rho' (qMat (FractionRing O) U) hu he c) ∈ HfD (P.PD Bw.Kw) (Br.lat Bw M')`. Rewrite using `[e]`. Conclude with `key`. Introduce `g v show Matrix.mulVec ((U.map Bw.eO.toRingHom).map (algebraMap (Br.Ow Bw) (Br.LLw Bw))) (Matrix.mulVec (((M (Br.ι Bw g)).map Bw.eO.toRingHom).map (algebraMap (Br.Ow Bw) (Br.LLw Bw))) v) = Matrix.mulVec (((M' (Br.ι Bw g)).map Bw.eO.toRingHom).map (algebraMap (Br.Ow Bw) (Br.LLw Bw …`.
-
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul, h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bk_map (P : LocPrime l) {k : ℕ} (rho rho' : Representation O ↥Gw (KOG O k))
     (M M' : ↥Gw →* Matrix (Fin k) (Fin k) O) (U : Matrix (Fin k) (Fin k) O)
@@ -241,9 +239,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (A : 
   (Sig : Set (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E))) {k : ℕ}
 
 /- English proof (translation)
-Use `(mem_Sel _ _ _ _ _).2 fun v => ?_` and prove the remaining obligations. Establish `hv` using `(mem_Sel _ _ _ _ _).1 hx v`. Use `(res_map (WKG M) (WKG M') (qMat (FractionRing O) U) continuous_of_discreteTopology (qMat_equiv M M' U h) (Dec (F := E) (A.1 v)).subtype continuous_subtype_val x).symm ▸ ?_` and prove the remaining obligations. Unfold `Formalism.GaloisCohomology.bkCond at hv ⊢`. Use `split_ifs at hv ⊢ with h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `Br.LlG at hv ⊢ split_ifs at hv ⊢ with h3`. Conclude with `bk_map (nb v h3) P _ _ _ _ U (fun g => h g) _ _ _ hv`. Discharge the goal by the elementary cases of `trivial`. Discharge the goal by the elementary cases of `trivial`. Conclude with `ur_map _ _ _ _ _ _ _ hv`.
+Check the elementary cases of the proposition. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem sel_map (M M' : Formalism.ConjugateSelfDual.G E Ω →* Matrix (Fin k) (Fin k) O) (U : Matrix (Fin k) (Fin k) O)
     (h : ∀ g, M' g * U = U * M g) (x : H1 (WKG M)) (hx : x ∈ Br.selG A l P nb Sig M) :
@@ -263,9 +261,9 @@ theorem sel_map (M M' : Formalism.ConjugateSelfDual.G E Ω →* Matrix (Fin k) (
   · exact ur_map _ _ _ _ _ _ _ hv
 
 /- English proof (translation)
-Use `Module.length_le_of_injective ((mapH1 (WKG M) (WKG M') (qMat (FractionRing O) U) continuous_of_discreteTopology (qMat_equiv M M' U h)).restrict (sel_map A l P nb Sig M M' U h)) ?_` and prove the remaining obligations. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e` using `congrArg (fun z => mapH1 (WKG M') (WKG M) (qMat (FractionRing O) U') continuous_of_discreteTopology (qMat_equiv M' M U' h') (Subtype.val z)) hxy`. Establish `hi' : ∀ m, qMat (FractionRing O) U' (qMat (FractionRing O) U m) = m` using `fun m => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[qMat_mul, hi, qMat_one]`. Simplify `e` using `only [LinearMap.restrict_apply, map_left_inv _ _ _ _ _ _ _ _ hi']`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sel_le (M M' : Formalism.ConjugateSelfDual.G E Ω →* Matrix (Fin k) (Fin k) O)
     (U U' : Matrix (Fin k) (Fin k) O) (hi : U' * U = 1)
@@ -285,7 +283,7 @@ theorem sel_le (M M' : Formalism.ConjugateSelfDual.G E Ω →* Matrix (Fin k) (F
 end Sel
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ A l _ O _ _ _ _ P nb Sig k M M' U h`. Establish `h' : ∀ g, M g * ((U⁻¹ : GL (Fin k) O) : Matrix (Fin k) (Fin k) O) = ((U⁻¹ : GL (Fin k) O) : Matrix (Fin k) (Fin k) O) * M' g` using `fun g => by`. Rewrite using `[Units.mul_inv_eq_iff_eq_mul, mul_assoc, h, ← mul_assoc, Units.inv_mul, one_mul]`. Conclude with `le_antisymm (sel_le A l P nb Sig M M' _ _ (Units.inv_mul U) h h') (sel_le A l P nb Sig M' M _ _ (Units.mul_inv U) h' h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selG_length_conj : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (A : Formalism.GaloisCohomology.Places E Ω) (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [Algebra ℤ_[l] O] [TopologicalSpace O] (P : LocPrime l) (nb : ∀ w, w ∈ Formalism.BasicNotions.placesOver E l → LocBridge l E Ω (ReciprocityTheory.Gal.Dec (F := E) (A.1 w)) O) (Sig : Set (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E))) (k : ℕ) (M M' : Formalism.ConjugateSelfDual.G E Ω →* Matrix (Fin k) (Fin k) O) (U : GL (Fin k) O), (∀ g, M' g * (U : Matrix (Fin k) (Fin k) O) = (U : Matrix (Fin k) (Fin k) O) * M g) → Module.length O (Formalism.MainNotions.N.Br.selG A l P nb Sig M) = Module.length O (Formalism.MainNotions.N.Br.selG A l P nb Sig M') := by
   intro E Ω _ _ _ _ A l _ O _ _ _ _ P nb Sig k M M' U h

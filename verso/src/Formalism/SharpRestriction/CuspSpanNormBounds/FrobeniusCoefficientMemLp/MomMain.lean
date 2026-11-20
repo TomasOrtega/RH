@@ -16,7 +16,7 @@ open NumberField Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold `cOfDpsi kaS gg`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem scale_turn (D : D7) :
     ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) * -Complex.I = cOfDpsi ((kaS D : ℝ) : ℂ) := by
@@ -33,50 +33,44 @@ def LowKOneAt (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn : 
         IsKTypeOf (epsSH D.R) σ (lowK (epsSH D.R) lam') S → IsKTypeOf (epsSH D.R) σ (lowK (epsSH D.R) lam') S' → S = S'
 
 /- English proof (translation)
-Introduce `_ τ lam' _ hHC H _ _ σ hDS S S' h1 h2` and use `h _ _ _ H σ hHC hDS S S' h1 h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lowKOneAt_of_mult (h : Formalism.MainNotions.DiscreteSeriesWeylDimension.LowKMultOne) (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn : ℝ) :
     LowKOneAt D large₂ C' Cl Cg cb Cu cT CT C0 Cn :=
   fun _ τ lam' _ hHC H _ _ σ hDS S S' h1 h2 => h _ _ _ H σ hHC hDS S S' h1 h2
 
 /- English proof (translation)
-Introduce `hH τ w w' θ W hW lam' hl A hA hT hT'`. Establish `hW'` using `hW`. Take `⟨hc1, -, hz, -, hTz, -, hG, hUW, -, -, -, hN, hq, -⟩` from `hW'`. Establish `hTpos : 0 < Tz D.R.k D.R.rS W.z` using `by rw [hTz]; exact hT`. Establish `hA'` using `hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hHC, hDSH, hB, -, hv0s, hv0ne, ⟨PS, hPS, hv0low⟩, hcN, hl2, -, -⟩` from `hA'`. Take `⟨-, hπiso, -⟩` from `rp_repOfHC _ _ W.z _ W.Wp W.π hz hTpos hc1`. Establish `hNt : Nontrivial W.Wp` using `by obtain ⟨g, -, hU⟩ := hc1; exact hU.1`. Establish `hσ : IsURepOn (UH (Hpk D.R.k D.R.rS)) A.σ` using `urep_of_DS hDSH`. Take `⟨hone, hmul, hiso⟩` from `Formalism.MainNotions.LeviCoordinates.discrete_series_unitary_rep hDSH`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS : IsHaarOn (Sset D.R.k D.R.rS W.z) (muS W.μW W.μN)` using `Formalism.MainNotions.BridgeCSB.muSHaar_of D τ w w' θ W hW`. Use `set c1 : ℂ := ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) with hc1def`. Establish `hB1 : IsBesselMapSm W.z (psi D.R.k D.R.rS W.z c1) A.σ W.π A.B` using `hB`. Establish `hDSH2` using `hDSH`. Take `⟨PD, hPD, hDS'⟩` from `hDSH2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hκ, hκe⟩` from `cayley_change hPS hPD`. Establish `hDS : IsDS (epsSH D.R) lam' (fun g => A.σ (PS⁻¹ * g * PS))`. Use `dsConjK_proved _ (epsSH D.R) lam' A.H _ _ hκ hDS'` as an intermediate fact. Simplify using `only [hκe] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S0, hS0⟩` from `hDS.2.2.2.2.2.1`. Establish `hset : {S | IsKTypeOf (epsSH D.R) (fun g => A.σ (PS⁻¹ * g * PS)) (lowK (epsSH D.R) lam') S} = {S0}`. Use extensionality with `S`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM1 hH τ lam' hl hHC A.H _ hDS S S0 h hS0`. Introduce `h`. Rewrite using `[Set.mem_singleton_iff.1 h]`. Conclude with `hS0`. Establish `hv0S : A.v0 ∈ S0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hv0low`. Unfold `lowKSub at h`. Rewrite `h` using `[hset, sSup_singleton]`. Conclude with `h`. Take `⟨hfd, hst, hirr, ⟨w0, hw0S, hw0ne, hwt⟩, -⟩` from `id hS0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hfd` as an intermediate fact. Establish `hsm : ∀ u ∈ S0, IsSmoothVec (k` using `D.R.k) (r := D.R.rS) A.σ u := fun u hu => hSm _ _ (epsSH D.R) lam' A.H A.σ hHC hDSH u ⟨S0, hfd, hu, kstable_Hpk hPS hst⟩`. Establish `hS0ne : S0 ≠ ⊥`. Introduce `hb; rw [hb] at hw0S; exact hw0ne (by simpa using hw0S)`. Use `set m : ℝ := A.cN * (Module.finrank ℂ W.Wp : ℝ) with hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm0 : 0 < m` using `mul_pos hcN (by exact_mod_cast Module.finrank_pos)`. Use `set a : ℝ := ‖A.v0‖ / Real.sqrt m with ha`. Establish `hαsq : ((‖(a : ℂ)‖₊ : ℝ≥0∞)) ^ 2 = ((‖A.v0‖₊ : ℝ≥0∞)) ^ 2 * (ENNReal.ofReal m)⁻¹`. Rewrite using `[← Formalism.MainNotions.BesselShellMomentBounds.ofReal_norm_sq, ← Formalism.MainNotions.BesselShellMomentBounds.ofReal_norm_sq, ← ENNReal.ofReal_inv_of_pos hm0, ← ENNReal.ofReal_mul (sq_nonneg _)]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.norm_real, Real.norm_eq_abs, sq_abs, ha, div_pow, Real.sq_sqrt hm0.le, div_eq_mul_inv]`. Establish `hM0 : ENNReal.ofReal m ≠ 0` using `(ENNReal.ofReal_pos.2 hm0).ne'`. Establish `hMt : ENNReal.ofReal m ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hαt : ((‖(a : ℂ)‖₊ : ℝ≥0∞)) ^ 2 ≠ ⊤` using `ENNReal.pow_ne_top ENNReal.coe_ne_top`. Establish `hN'` using `hN`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hS`, `hq` using `[hN']`. Establish `tw : ∀ u, IsSmoothVec (k` using `D.R.k) (r := D.R.rS) A.σ u → ∀ Φ0 : (Fin (D.R.rS + 1) → ℝ) → ℝ≥0∞, Measurable Φ0 → ∫⁻ x, Φ0 (fun i => lA D.R.k D.R.rS W.z (Matrix.of x) i) * (‖(a : ℂ) • A.B (A.σ (twT D.R.k D.R.rS) (A.σ (Matrix.of x) u))‖₊ : ℝ≥0∞) ^ 2 ∂W.νS = ((‖(a : ℂ)‖₊ : ℝ≥0∞)) ^ 2 * ∫⁻ x, Φ0 (fun i => lA D.R. …`. Introduce `u hu Φ0 hΦ0`. Rewrite using `[← twist_lintegral hLN hσ hz hTpos c1 hπiso hB1 (kapN D θ) hG hUW hS hq hu hΦ0, ← lintegral_const_mul' _ _ hαt]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[nnnorm_smul, ENNReal.coe_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun v => (a : ℂ) • A.B (A.σ (twT D.R.k D.R.rS) v), PS, w0, ?_, ?_, hPS, ?_, hw0ne, ?_⟩` and prove the remaining obligations. Rewrite using `[← scale_turn D]`. Conclude with `bessel_smul (bessel_twist A.σ hone hmul hiso hz hB1) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v hv`. Establish `h1` using `tw v hv (fun _ => 1) measurable_const`. Simplify using `only [one_mul] at h1`. Unfold `l2SG`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `hBS hH τ w w' θ W hW lam' hl A hA hT v hv`. Unfold `l2SG at h2 hl2`. Rewrite `h2` using `[hl2]`. Use `beta_reduce at h2`. Rewrite using `[hαsq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hl0 : l1 (lowK (epsSH D.R) lam') (lowK (epsSH D.R) lam') ≤ ((0 : ℕ) : ℝ)` using `by simp [l1]`. Conclude with `Submodule.subset_span ⟨_, _, _, hS0, hw0S, hwt, hl0, hl0⟩`. Introduce `F hF`. Take `⟨CF, hCF⟩` from `kinv_form hQ laLeftS_proved laRightK_proved hPS hσ hz hTpos c1 hπiso hB1 hG (by rw [hN'] at *; exact hS) (by rw [hN'] at *; exact hq) S0 hS0ne hst hirr hsm hF`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `eL : ∫⁻ x, F (fun i => lA D.R.k D.R.rS W.z (Matrix.of x) i) * (‖A.Φ (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2 ∂W.νS = ENNReal.ofReal (‖A.v0‖ ^ 2) * CF` using `hCF A.v0 hv0S`. Rewrite using `[eL]`. Unfold `Emom`. Establish `ew` using `tw w0 (hsm w0 hw0S) F hF`. Establish `e2 : ∫⁻ x, (fun g => F (fun i => lA D.R.k D.R.rS W.z g i)) (Matrix.of x) * (‖(a : ℂ) • A.B (A.σ (twT D.R.k D.R.rS) (A.σ (Matrix.of x) w0))‖₊ : ℝ≥0∞) ^ 2 ∂W.νS = ((‖(a : ℂ)‖₊ : ℝ≥0∞)) ^ 2 * (ENNReal.ofReal (‖w0‖ ^ 2) * CF)`.
-
-Rewrite using `[ew, hCF w0 hw0S]`. Use `erw [e2]`. Rewrite using `[hl2]`. Establish `hw0p : ENNReal.ofReal (‖w0‖ ^ 2) ≠ 0` using `(ENNReal.ofReal_pos.2 (by positivity)).ne'`. Establish `key : ∀ (M Wn V CF : ℝ≥0∞), M ≠ 0 → M ≠ ⊤ → Wn ≠ 0 → Wn ≠ ⊤ → V * CF = M * (Wn⁻¹ * (V * M⁻¹ * (Wn * CF)))`.
-
-Introduce `M Wn V CF h1 h2 h3 h4`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.mul_inv_cancel h1 h2, ENNReal.inv_mul_cancel h3 h4]`. Simplify using the standard rewrite rules. Use `_ = M * (Wn⁻¹ * (V * M⁻¹ * (Wn * CF))) := by ring`.
-
-Rewrite using `[hαsq, Formalism.MainNotions.BesselShellMomentBounds.ofReal_norm_sq]`. Conclude with `key _ _ _ _ hM0 hMt hw0p ENNReal.ofReal_ne_top`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem momNorm'_of_at (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn : ℝ)
     (hBS : BesselSchur' D large₂ C' Cl Cg cb Cu cT CT C0 Cn) (hM1 : LowKOneAt D large₂ C' Cl Cg cb Cu cT CT C0 Cn)
@@ -192,7 +186,7 @@ theorem momNorm'_of_at (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT
     exact key _ _ _ _ hM0 hMt hw0p ENNReal.ofReal_ne_top
 
 /- English proof (translation)
-The claim follows from `momNorm'_of_at D large₂ C' Cl Cg cb Cu cT CT C0 Cn hBS (lowKOneAt_of_mult hM1 D large₂ C' Cl Cg cb Cu cT CT C0 Cn) hSm hQ hLN`.
+A detailed English derivation is pending.
 -/
 theorem momNorm'_of (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn : ℝ)
     (hBS : BesselSchur' D large₂ C' Cl Cg cb Cu cT CT C0 Cn) (hM1 : Formalism.MainNotions.DiscreteSeriesWeylDimension.LowKMultOne)

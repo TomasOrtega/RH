@@ -35,14 +35,14 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace BoundaryDeletion
 
 /- English proof (translation)
-Rewrite using `[List.cons_getElem_drop_succ, List.take_append_drop]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem take_append_getElem_cons_drop {α : Type v} (L : List α) (i : ℕ)
     (h : i < L.length) : L.take i ++ L[i] :: L.drop (i + 1) = L := by
   rw [List.cons_getElem_drop_succ, List.take_append_drop]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hbe`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem sameNontrivialBoundary_congr_right {X : Scheme.{u}} (L₁ L₂ L₂' : List X.IdealSheafData)
     (h : L₂ = L₂') (hbe : MarkedIdealWithBoundary.SameNontrivialBoundary L₁ L₂') :
@@ -51,7 +51,7 @@ private theorem sameNontrivialBoundary_congr_right {X : Scheme.{u}} (L₁ L₂ L
   exact hbe
 
 /- English proof (translation)
-Substitute `h₁` using the available equality. Substitute `h₂` using the available equality. Conclude with `hbe`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem sameNontrivialBoundary_congr {X : Scheme.{u}} (L₁ L₁' L₂ L₂' : List X.IdealSheafData)
     (h₁ : L₁ = L₁') (h₂ : L₂ = L₂') (hbe : MarkedIdealWithBoundary.SameNontrivialBoundary L₁' L₂') :
@@ -61,7 +61,7 @@ private theorem sameNontrivialBoundary_congr {X : Scheme.{u}} (L₁ L₁' L₂ L
   exact hbe
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hp`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isPullback_congr {X₀ Y₀ : Scheme.{u}} (φ : Y₀ ⟶ X₀) (sbase : SequenceOfBlowups X₀)
     {t₁ t₂ : SequenceOfBlowups Y₀} (h : t₁ = t₂) (hp : IsPullbackBlowupSequence φ t₁ sbase) :
@@ -70,7 +70,7 @@ private theorem isPullback_congr {X₀ Y₀ : Scheme.{u}} (φ : Y₀ ⟶ X₀) (
   exact hp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hee : φ₁ = φ₂` using `eq_of_heq hφ`. Substitute `hee` using the available equality. Conclude with `hp`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isPullback_congr_marked (F : PrincipalizationAssignment.{u}) {X₀ : Scheme.{u}}
     (sbase : SequenceOfBlowups X₀) {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T₁ = T₂)
@@ -83,7 +83,7 @@ private theorem isPullback_congr_marked (F : PrincipalizationAssignment.{u}) {X�
   exact hp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hv`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isAdmissible_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T₁ = T₂) (hv : T₂.IsAdmissible) :
     T₁.IsAdmissible := by
@@ -91,7 +91,7 @@ private theorem isAdmissible_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h 
   exact hv
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hp`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem pred_dim_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T₁ = T₂) (P : ℕ → Prop)
     (hp : P T₂.krullDimSucc) : P T₁.krullDimSucc := by
@@ -99,7 +99,7 @@ private theorem pred_dim_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T�
   exact hp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `ho`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isOrderBoundedByMult_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T₁ = T₂)
     (ho : T₂.IsOrderBoundedByMult) : T₁.IsOrderBoundedByMult := by
@@ -107,7 +107,7 @@ private theorem isOrderBoundedByMult_of_eq {T₁ T₂ : MarkedIdealWithBoundary.
   exact ho
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `h₂`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem locallyOfFiniteType_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T₁ = T₂)
     (h₂ : AlgebraicGeometry.LocallyOfFiniteType T₂.structMap) :
@@ -116,7 +116,7 @@ private theorem locallyOfFiniteType_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{
   exact h₂
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hd`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isBalanced_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T₁ = T₂)
     (h₁ : AlgebraicGeometry.LocallyOfFiniteType T₁.structMap)
@@ -126,7 +126,7 @@ private theorem isBalanced_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : 
   exact hd
 
 /- English proof (translation)
-Establish `hEq` using `hshift.shift W hWP hWO hftW hWD E₁ E₂ E₁' E₂' Dv hBE₁ hBE₂ hV1 hV2`. Rewrite `hEq` using `[hlen, hlen']`. Conclude with `IsPullbackBlowupSequence.of_isomorphic hpull hEq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPullback_of_sameNontrivialBoundary
     (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u}) (j c : ℕ)
@@ -148,23 +148,21 @@ private theorem isPullback_of_sameNontrivialBoundary
   exact IsPullbackBlowupSequence.of_isomorphic hpull hEq
 
 /- English proof (translation)
-Use `hsm` as an intermediate fact. Establish `hPBb : (V.pullbackAlong Y qy hmap).boundary = Lbd.map (fun D => D.comap hmap)` using `(MarkedIdealWithBoundary.pullbackAlong_boundary V Y qy hmap).trans (congrArg (List.map (fun D => D.comap hmap)) hLbd)`. Establish `hjV : j < V.boundary.length`. Rewrite using `[hLbd]`. Conclude with `hjLbd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmaplen : (Lbd.map (fun D => D.comap hmap)).length = Lbd.length` using `by simp`. Establish `hlenPB : (V.pullbackAlong Y qy hmap).boundary.length = Lbd.length`. Rewrite using `[hPBb]`. Conclude with `hmaplen`. Establish `hjPB : j < (V.pullbackAlong Y qy hmap).boundary.length`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hlenPB]`. Conclude with `hjLbd`. Establish `hPW : P (V.pullbackAlong Y qy hmap).krullDimSucc` using `hP'`. Establish `hOW : (V.pullbackAlong Y qy hmap).IsOrderBoundedByMult` using `hO'`. Establish `hftW : AlgebraicGeometry.LocallyOfFiniteType (V.pullbackAlong Y qy hmap).structMap` using `hftV'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDW : (V.pullbackAlong Y qy hmap).IsBalanced hftW` using `hDb'`. Establish `hLTbe : MarkedIdealWithBoundary.SameNontrivialBoundary LT (V.pullbackAlong Y qy hmap).boundary` using `sameNontrivialBoundary_congr_right LT (V.pullbackAlong Y qy hmap).boundary (Lbd.map (fun D => D.comap hmap)) hPBb hfull.symm`. Establish `hPBV : (V.pullbackAlong Y qy hmap).IsAdmissible` using `MarkedIdealWithBoundary.validOfSameNontrivialBoundary ((V.pullbackAlong Y qy hmap).withBoundary LT) (V.pullbackAlong Y qy hmap).boundary hVv' hLTbe`. Establish `hsplit : (Lbd.take j).map (fun D => D.comap hmap) ++ (LT[c]'hcLT) :: (Lbd.drop (j + 1)).map (fun D => D.comap hmap) = Lbd.map (fun D => D.comap hmap)`. Rewrite using `[← hget]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun L : List V.scheme.IdealSheafData => L.map (fun D => D.comap hmap)) (take_append_getElem_cons_drop Lbd j hjLbd)`. Simplify `h` using `only [List.map_append, List.map_cons]`. Establish `hsplitLT : LT.take c ++ (LT[c]'hcLT) :: LT.drop (c + 1) = LT` using `take_append_getElem_cons_drop LT c hcLT`. Establish `hPBself : (V.pullbackAlong Y qy hmap).withBoundary ((Lbd.take j).map (fun D => D.comap hmap) ++ (LT[c]'hcLT) :: (Lbd.drop (j + 1)).map (fun D => D.comap hmap)) = V.pullbackAlong Y qy hmap` using `(congrArg (MarkedIdealWithBoundary.withBoundary (V.pullbackAlong Y qy hmap)) (hsplit.trans hPBb.symm)).trans (MarkedIdealWithBoundary.withBoundary_self _)`. Establish `hPBeq : (V.pullbackAlong Y qy hmap).withBoundary (LT.take c ++ (LT[c]'hcLT) :: LT.drop (c + 1)) = (V.pullbackAlong Y qy hmap).withBoundary LT` using `congrArg (MarkedIdealWithBoundary.withBoundary (V.pullbackAlong Y qy hmap)) hsplitLT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpullPB` using `hspec.isPullbackBlowupSequence_of_smooth V hVv hP hO hDb hjV Y qy hmap hqy hPBV hPW hOW hDW hjPB`. Establish `hpull1 : IsPullbackBlowupSequence hmap (A j ((V.pullbackAlong Y qy hmap).withBoundary ((Lbd.take j).map (fun D => D.comap hmap) ++ (LT[c]'hcLT) :: (Lbd.drop (j + 1)).map (fun D => D.comap hmap)))).toSequenceOfBlowups (A j V).toSequenceOfBlowups` using `isPullback_congr hmap (A j V).toSequenceOfBlowups (eq_of_heq ((A j).toSequenceOfBlowups_heq_of_eq hPBself.symm)) hpullPB`. Establish `hV1 : ((V.pullbackAlong Y qy hmap).withBoundary ((Lbd.take j).map (fun D => D.comap hmap) ++ (LT[c]'hcLT) :: (Lbd.drop (j + 1)).map (fun D => D.comap hmap))).IsAdmissible`. Rewrite using `[hPBself]`. Conclude with `hPBV`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hV2 : ((V.pullbackAlong Y qy hmap).withBoundary (LT.take c ++ (LT[c]'hcLT) :: LT.drop (c + 1))).IsAdmissible`. Rewrite using `[hPBeq]`. Conclude with `hVv'`. Establish `hlenE1 : ((Lbd.take j).map (fun D => D.comap hmap)).length = j`. Simplify using `only [List.length_map, List.length_take]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hlenE1' : (LT.take c).length = c`. Simplify using `only [List.length_take]`. Use linear arithmetic over natural numbers and integers. Establish `hres` using `isPullback_of_sameNontrivialBoundary P A j c hshift (V.pullbackAlong Y qy hmap) hPW hOW hftW hDW ((Lbd.take j).map (fun D => D.comap hmap)) ((Lbd.drop (j + 1)).map (fun D => D.comap hmap)) (LT.take c) (LT.drop (c + 1)) (LT[c]'hcLT) hpre hsuf hlenE1 hlenE1' hV1 hV2 hmap (A j V).to …`.
-
-Conclude with `isPullback_congr hmap (A j V).toSequenceOfBlowups (eq_of_heq ((A c).toSequenceOfBlowups_heq_of_eq hPBeq)) hres`.
+A detailed English derivation is pending.
 -/
 private theorem isPullbackBlowupSequence_pullbackAlong
     (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u}) (Bl : PrincipalizationAssignment.{u}) (j c : ℕ)
@@ -271,19 +269,19 @@ variable (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u}) (Bl : P
     (s'.proj s'.length ≫ (NontrivialBoundary.pullbackWithNontrivialBoundary S q).structMap))
 
 /- English proof (translation)
-Establish `hflatq : AlgebraicGeometry.Flat q` using `inferInstance`. Establish `hSmoothLast : AlgebraicGeometry.Smooth Dt.lastMap` using `Dt.smooth_lastMap`. Establish `hsm : AlgebraicGeometry.Smooth (s.proj s.length ≫ S.structMap)`. Establish `hsmU` using `hVU.smooth`. Rewrite `hsmU` using `[LowerDimReductionPullback.structureMorphism_derivedTriple]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hpb0` using `NontrivialBoundary.pullbackAlong_derivedTriple_eq S q s s' Dt hstar hV hV' hftS hftT hsm [] 0 0`. Establish `hOU` using `LowerDimReductionPullback.isOrderBoundedByMult_derivedTriple hstar S hV hm hO s hftS [] 0 hVU`. Establish `hDU` using `LowerDimReductionPullback.isBalanced_derivedTriple hstar S hV hm hO s hftS [] 0 hVU`. Establish `hOU'` using `LowerDimReductionPullback.isOrderBoundedByMult_derivedTriple hstar (NontrivialBoundary.pullbackWithNontrivialBoundary S q) hV' hm hO' s' hftT [] 0 hVU'`. Establish `hDU'` using `LowerDimReductionPullback.isBalanced_derivedTriple hstar (NontrivialBoundary.pullbackWithNontrivialBoundary S q) hV' hm hO' s' hftT [] 0 hVU'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUb : (MaxContactCoverData.derivedTriple S s hftS [] 0).boundary = s.boundary s.length`. Simplify using the standard rewrite rules. Establish `hjL : j < (s.boundary s.length).length` using `lt_of_lt_of_le hj (NontrivialBoundary.length_boundary_le_length_lastBoundary S s)`. Establish `hcLT : NontrivialBoundary.survivingBoundaryCount S q j < (s'.boundary s'.length).length` using `lt_of_lt_of_le (NontrivialBoundary.survivingBoundaryCount_lt_length S q j hj hlive) (NontrivialBoundary.length_boundary_le_length_lastBoundary (NontrivialBoundary.pullbackWithNontrivialBoundary S q) s')`. Establish `hget : ((s.boundary s.length)[j]'hjL).comap Dt.lastMap = (s'.boundary s'.length)[NontrivialBoundary.survivingBoundaryCount S q j]'hcLT` using `NontrivialBoundary.getElem_lastBoundary_comap_lastMap S q s s' Dt hstar hV hV' j hj hlive`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfull : MarkedIdealWithBoundary.SameNontrivialBoundary ((s.boundary s.length).map (fun D => D.comap Dt.lastMap)) (s'.boundary s'.length)` using `((NontrivialBoundary.ideal_and_boundary_comap_lastMap S q s s' Dt hstar hV hV').2).symm`. Establish `hpre : MarkedIdealWithBoundary.SameNontrivialBoundary (((s.boundary s.length).take j).map (fun D => D.comap Dt.lastMap)) ((s'.boundary s'.length).take (NontrivialBoundary.survivingBoundaryCount S q j))` using `NontrivialBoundary.sameNontrivialBoundary_lastBoundary_take S q s s' Dt hstar hV hV' j (le_of_lt hj)`. Establish `hpre1 : MarkedIdealWithBoundary.SameNontrivialBoundary (((s.boundary s.length).take (j + 1)).map (fun D => D.comap Dt.lastMap)) ((s'.boundary s'.length).take (NontrivialBoundary.survivingBoundaryCount S q j + 1))`. Establish `hh` using `NontrivialBoundary.sameNontrivialBoundary_lastBoundary_take S q s s' Dt hstar hV hV' (j + 1) hj`. Rewrite `hh` using `[NontrivialBoundary.survivingBoundaryCount_succ_of_ne_top S q j hj hlive]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hmapsplit : ((s.boundary s.length).take (j + 1)).map (fun D => D.comap Dt.lastMap) ++ ((s.boundary s.length).drop (j + 1)).map (fun D => D.comap Dt.lastMap) = (s.boundary s.length).map (fun D => D.comap Dt.lastMap)`. Rewrite using `[← List.map_append, List.take_append_drop]`. Establish `hltsplit : (s'.boundary s'.length).take (NontrivialBoundary.survivingBoundaryCount S q j + 1) ++ (s'.boundary s'.length).drop (NontrivialBoundary.survivingBoundaryCount S q j + 1) = s'.boundary s'.length` using `List.take_append_drop _ _`. Establish `happ` using `sameNontrivialBoundary_congr _ _ _ _ hmapsplit hltsplit hfull`. Establish `hsuf` using `NontrivialBoundary.sameNontrivialBoundary_cancel_left happ hpre1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVW'` using `isAdmissible_of_eq hpb0 hVU'`. Establish `hPW'` using `pred_dim_of_eq hpb0 P hPU'`. Establish `hOW'` using `isOrderBoundedByMult_of_eq hpb0 hOU'`. Establish `hftW'` using `locallyOfFiniteType_of_eq hpb0 hVU'.locallyOfFiniteType`. Establish `hDW'` using `isBalanced_of_eq hpb0 hftW' hVU'.locallyOfFiniteType hDU'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinner` using `isPullbackBlowupSequence_pullbackAlong P A Bl j (NontrivialBoundary.survivingBoundaryCount S q j) hspec hshift (MaxContactCoverData.derivedTriple S s hftS [] 0) hVU hPU hOU hVU.locallyOfFiniteType hDU (s'.obj s'.length) (Dt.lastMap ≫ (MaxContactCoverData.derivedTriple S s hftS [] …`. Conclude with `isPullback_congr_marked (A (NontrivialBoundary.survivingBoundaryCount S q j)) (A j (MaxContactCoverData.derivedTriple S s hftS [] 0)).toSequenceOfBlowups hpb0 Dt.lastMap Dt.lastMap HEq.rfl hinner`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPullbackBlowupSequence_derivedTriple
     (hstar : MaxContactCoverProperties.{u})
@@ -365,9 +363,9 @@ theorem isPullbackBlowupSequence_derivedTriple
 
 include Dt in
 /- English proof (translation)
-Establish `hjb : j < ((([] : List (s.obj s.length).IdealSheafData)) ++ List.drop 0 (s.boundary s.length)).length`. Simplify using `using lt_of_lt_of_le hj (NontrivialBoundary.length_boundary_le_length_lastBoundary S s)`. Establish `hjb' : NontrivialBoundary.survivingBoundaryCount S q j < ((([] : List (s'.obj s'.length).IdealSheafData)) ++ List.drop 0 (s'.boundary s'.length)).length`. Simplify using `using lt_of_lt_of_le (NontrivialBoundary.survivingBoundaryCount_lt_length S q j hj hlive) (NontrivialBoundary.length_boundary_le_length_lastBoundary (NontrivialBoundary.pullbackWithNontrivialBoundary S q) s')`. Take `⟨hmk, hEq, -⟩` from `LowerDimReductionPullback.appendLowerDimReduction_eq_append hstar hinv T P A Bl j hspec (fun S₀ _ i => A i S₀) (fun _ _ _ => rfl) S hV hm hO s [] 0 hftS hdimU hPU hVU hjb (by simp)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨hmk', hEq', -⟩` from `LowerDimReductionPullback.appendLowerDimReduction_eq_append hstar hinv T P A Bl (NontrivialBoundary.survivingBoundaryCount S q j) hspec' (fun S₀ _ i => A i S₀) (fun _ _ _ => rfl) (NontrivialBoundary.pullbackWithNontrivialBoundary S q) hV' hm hO' s' [] 0 hftT hdimU' hPU' hVU' hjb' …`. Rewrite using `[hEq, hEq']`. Use `isPullbackBlowupSequence_append_same_field q s _ s' _ hinv Dt ?_` and prove the remaining obligations. Conclude with `SequenceOfBlowupsPullback.toBlowupDataOfSeq (IsPullbackBlowupSequence.nonempty_sequenceOfBlowupsPullback (isPullbackBlowupSequence_derivedTriple (P := P) (A := A) (Bl := Bl) (j := j) (S := S) (q := q) (s := s) (s' := s') (Dt := Dt) (hftS := hftS) (hftT := hftT) (hstar := hstar) ( …`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isPullbackBlowupSequence_appendLowerDimReduction
     (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})

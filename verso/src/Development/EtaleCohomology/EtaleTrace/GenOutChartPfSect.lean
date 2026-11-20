@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace
 namespace LateralTheory.EtaleTrace.Cov
 
 /- English proof (translation)
-Establish `: Nonempty V` using `⟨⟨y, hy⟩⟩`. Rewrite using `[Scheme.algebraMap_germ_eq_germToFunctionField, Scheme.algebraMap_germ_eq_germToFunctionField]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem alg_germ_eq (X : Scheme.{0}) [IsIntegral X] {V : X.Opens} (s : Γ(X, V)) {y w : X} (hy : y ∈ V) (hw : w ∈ V) :
     algebraMap (X.presheaf.stalk w) X.functionField (X.presheaf.germ V w hw s) =
@@ -15,17 +15,17 @@ theorem alg_germ_eq (X : Scheme.{0}) [IsIntegral X] {V : X.Opens} (s : Γ(X, V))
   rw [Scheme.algebraMap_germ_eq_germToFunctionField, Scheme.algebraMap_germ_eq_germToFunctionField]
 
 /- English proof (translation)
-Establish `key : ∀ y : U, ∃ (V : X.Opens) (hV : y.1 ∈ V) (s : Γ(X, V)), algebraMap (X.presheaf.stalk y.1) X.functionField (X.presheaf.germ V y.1 hV s) = z`. Introduce `y`. Take `⟨a, ha⟩` from `hz y.1 y.2`. Take `⟨V, hyV, s, hs⟩` from `X.presheaf.exists_germ_eq (x := y.1) a`. Conclude with `⟨V, hyV, s, by rw [hs, ha]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose V hV s hs using key`. Set `W : U → X.Opens` to `fun y => V y ⊓ U`. Set `sf : ∀ y : U, Γ(X, W y)` to `fun y => X.presheaf.map (homOfLE inf_le_left : W y ⟶ V y).op (s y)`. Establish `hsf : ∀ (y : U) (w : X) (hw : w ∈ W y), algebraMap (X.presheaf.stalk w) X.functionField (X.presheaf.germ (W y) w hw (sf y)) = z`. Introduce `y w hw`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [sf, TopCat.Presheaf.germ_res_apply]`. Rewrite using `[alg_germ_eq X (s y) (hV y) hw.1, hs]`. Establish `hcompat : TopCat.Presheaf.IsCompatible X.presheaf W sf`. Introduce `i j`. Apply `TopCat.Presheaf.section_ext X.sheaf` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Use `congr 1`. Use `@Scheme.germToFunctionField_injective X _ (W i ⊓ W j) ⟨⟨w, hw⟩⟩ _ _ ?_` and prove the remaining obligations. Rewrite using `[← @Scheme.algebraMap_germ_eq_germToFunctionField X _ (W i ⊓ W j) ⟨⟨w, hw⟩⟩ w hw, ← @Scheme.algebraMap_germ_eq_germToFunctionField X _ (W i ⊓ W j) ⟨⟨w, hw⟩⟩ w hw]`. Simplify using `only [TopCat.Presheaf.germ_res_apply]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsf i w hw.1, hsf j w hw.2]`. Take `⟨t, ht, -⟩` from `TopCat.Sheaf.existsUnique_gluing' X.sheaf W U (fun y => homOfLE inf_le_right) (fun y hy => Opens.mem_iSup.2 ⟨⟨y, hy⟩, hV _, hy⟩) sf hcompat`. Use `⟨t, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1` using `hsf ⟨y, hy⟩ y (show y ∈ W ⟨y, hy⟩ from ⟨hV _, hy⟩)`. Rewrite `h1` using `[← ht ⟨y, hy⟩]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap _ _ (X.presheaf.germ (W ⟨y, hy⟩) y _ (X.presheaf.map (homOfLE inf_le_right : W ⟨y, hy⟩ ⟶ U).op t)) = z at h1`. Use `erw [TopCat.Presheaf.germ_res_apply] at h1`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem sect_exists (X : Scheme.{0}) [IsIntegral X] (U : X.Opens) (z : X.functionField)
     (hz : ∀ y ∈ U, z ∈ loc X y) : ∃ s : Γ(X, U), ∀ (y : X) (hy : y ∈ U),
@@ -65,9 +65,9 @@ theorem sect_exists (X : Scheme.{0}) [IsIntegral X] (U : X.Opens) (z : X.functio
   exact h1
 
 /- English proof (translation)
-Apply `TopCat.Presheaf.section_ext X.sheaf` to reduce the goal to its premises. Introduce `y hy`. Establish `: s = t`. Use `@Scheme.germToFunctionField_injective X _ U ⟨⟨y, hy⟩⟩ _ _ ?_` and prove the remaining obligations. Rewrite using `[← @Scheme.algebraMap_germ_eq_germToFunctionField X _ U ⟨⟨y, hy⟩⟩ y hy, ← @Scheme.algebraMap_germ_eq_germToFunctionField X _ U ⟨⟨y, hy⟩⟩ y hy]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h y hy`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sect_ext (X : Scheme.{0}) [IsIntegral X] (U : X.Opens) (s t : Γ(X, U))
     (h : ∀ (y : X) (hy : y ∈ U), algebraMap (X.presheaf.stalk y) X.functionField (X.presheaf.germ U y hy s) =
@@ -82,9 +82,9 @@ theorem sect_ext (X : Scheme.{0}) [IsIntegral X] (U : X.Opens) (s t : Γ(X, U))
   rw [this]
 
 /- English proof (translation)
-Introduce `X _ U R hR`. Establish `hex : ∀ z : R, ∃ s : Γ(X, U), ∀ (y : X) (hy : y ∈ U), algebraMap (X.presheaf.stalk y) X.functionField (X.presheaf.germ U y hy s) = z` using `fun z => sect_exists X U z (hR z z.2)`. Use `choose σ hσ using hex`. Use `⟨{ toFun := σ, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, hσ⟩` and prove the remaining obligations. Conclude with `sect_ext X U _ _ fun y hy => by simp [hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b; exact sect_ext X U _ _ fun y hy => by simp [hσ]`. Conclude with `sect_ext X U _ _ fun y hy => by simp [hσ]`. Introduce `a b; exact sect_ext X U _ _ fun y hy => by simp [hσ]`.
+A detailed English derivation is pending.
 -/
 theorem SectOfLoc_pf : SectOfLoc := by
   intro X _ U R hR
@@ -99,7 +99,7 @@ theorem SectOfLoc_pf : SectOfLoc := by
   · intro a b; exact sect_ext X U _ _ fun y hy => by simp [hσ]
 
 /- English proof (translation)
-The claim follows from `GenOutChart_of_sect SectOfLoc_pf h`.
+A detailed English derivation is pending.
 -/
 theorem GenOutChart_of_gen (h : ChartGen) : GenOutChart := GenOutChart_of_sect SectOfLoc_pf h
 

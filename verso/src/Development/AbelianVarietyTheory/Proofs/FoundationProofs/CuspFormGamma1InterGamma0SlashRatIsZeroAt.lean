@@ -7,7 +7,7 @@ noncomputable section
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : NeZero l := ⟨hl.ne'⟩`. Unfold `lev`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem finiteIndex_lev_of_pos' (N l : ℕ) (hN : 0 < N) (hl : 0 < l) : (lev N l).FiniteIndex := by
   haveI : NeZero N := ⟨hN.ne'⟩
@@ -16,7 +16,7 @@ private theorem finiteIndex_lev_of_pos' (N l : ℕ) (hN : 0 < N) (hl : 0 < l) : 
   infer_instance
 
 /- English proof (translation)
-Rewrite `hc`, the goal using `[isCusp_SL2Z_iff]`. Take `⟨c, rfl⟩` from `hc`. Conclude with `⟨g • c, by rw [← Rat.coe_castHom, OnePoint.map_smul]⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem isCusp_SL2Z_ratGL_smul' (g : GL (Fin 2) ℚ) {c : OnePoint ℝ} (hc : IsCusp c 𝒮ℒ) :
     IsCusp (Matrix.GeneralLinearGroup.map (Rat.castHom ℝ) g • c) 𝒮ℒ := by
@@ -25,9 +25,9 @@ private theorem isCusp_SL2Z_ratGL_smul' (g : GL (Fin 2) ℚ) {c : OnePoint ℝ} 
   exact ⟨g • c, by rw [← Rat.coe_castHom, OnePoint.map_smul]⟩
 
 /- English proof (translation)
-Introduce `N l k g hN hl _ f c hc`. Use `haveI := finiteIndex_lev_of_pos' N l hN hl`. Rewrite `hc` using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z]`. Rewrite using `[← OnePoint.IsZeroAt.smul_iff]`. Establish `h` using `isCusp_SL2Z_ratGL_smul' g hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z ((GlobalTheory.Hk.lev N l : Subgroup SL(2, ℤ)) : Subgroup (GL (Fin 2) ℝ))]`. Conclude with `f.zero_at_cusps' h`.
+A detailed English derivation is pending.
 -/
 theorem cuspForm_slash_rat_isZeroAt : ∀ (N l : ℕ) (k : ℤ) (g : GL (Fin 2) ℚ), 0 < N → 0 < l →
     0 < (g.det : ℚ) → ∀ f : CuspForm (GlobalTheory.Hk.lev N l) k, ∀ c : OnePoint ℝ,

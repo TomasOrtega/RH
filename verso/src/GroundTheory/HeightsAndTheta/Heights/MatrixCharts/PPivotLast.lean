@@ -11,9 +11,9 @@ open Matrix
 noncomputable section
 
 /- English proof (translation)
-Introduce `d S hS x`. Establish `h1` using `MCCusp.sq_le_inv_diag_mul_qf hS x (Fin.last d)`. Establish `h2` using `hPI d S hS`. Establish `hpos : 0 < S⁻¹ (Fin.last d) (Fin.last d)` using `hS.inv.diag_pos`. Establish `hp : 0 < pivot S d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `mul_nonpos_of_nonneg_of_nonpos hpos.le hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem PivotLast.proof (hPI : PivotInvDiag.Statement) : PivotLast.Statement := by
   intro d S hS x

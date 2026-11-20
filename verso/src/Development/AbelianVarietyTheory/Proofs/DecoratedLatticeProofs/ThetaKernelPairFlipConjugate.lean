@@ -27,7 +27,7 @@ namespace GlobalTheory.KernelFlip
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
 /- English proof (translation)
-Unfold `annih`. Rewrite using `[GlobalTheory.FockAdjoint.dRho_dag hθ L, GlobalTheory.FockAdjoint.dRho_dag hθ L, GlobalTheory.FockAdjoint.cdag_cplx τ hS hT, GlobalTheory.FockAdjoint.dRho_neg' hψ hθ hf]`. Use function extensionality and compare the values at `x`. Simplify using `only [dag, Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, map_add, map_mul, map_neg, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem annih_dag (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (L : AdjLaw ψ S T)
     {aS : Matrix (Fin S.rank) (Fin S.rank) ℂ} {bT : Matrix (Fin T.rank) (Fin T.rank) ℂ} (τ : D.what₂.Tau)
@@ -43,7 +43,7 @@ theorem annih_dag (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (L : AdjLaw ψ
   ring
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_dRho hθ hψ τ z hf) (GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.OrientedHeis.theta_dRho hθ hψ τ (J z) hf))`.
+A detailed English derivation is pending.
 -/
 theorem annih_theta (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (τ : D.what₂.Tau)
     (J : Matrix (Fin T.rank) (Fin S.rank) ℂ → Matrix (Fin T.rank) (Fin S.rank) ℂ)
@@ -53,7 +53,7 @@ theorem annih_theta (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (τ : D.what
     (GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.OrientedHeis.theta_dRho hθ hψ τ (J z) hf))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hg`. Consider the case `cons p l ih => exact annih_theta hψ hθ _ _ _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_theta (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (sS : RealMat S) (sT : RealMat T)
     (l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ)) {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g) :
@@ -63,7 +63,7 @@ theorem foldr_theta (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (sS : RealMa
   | cons p l ih => exact annih_theta hψ hθ _ _ _ ih
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons p l ih`. Simplify using `only [List.foldr_cons, List.map_cons]`. Rewrite using `[ih, annih_dag hψ hθ L p.1 (hS p.1) (hT p.1) _ (foldr_theta hψ hθ sS sT _ hg)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_dag (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (L : AdjLaw ψ S T) (sS : RealMat S) (sT : RealMat T)
     (hS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) (hT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ))
@@ -78,7 +78,7 @@ theorem foldr_dag (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (L : AdjLaw ψ
     rw [ih, annih_dag hψ hθ L p.1 (hS p.1) (hT p.1) _ (foldr_theta hψ hθ sS sT _ hg)]
 
 /- English proof (translation)
-Take `⟨hth, N, hN⟩` from `h`. Use `⟨L.theta Φ hth, N, fun l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[foldr_dag hψ hθ L sS sT hS hT l hth, hN _ (by simpa using hl)]`. Use function extensionality and compare the values at `x`. Simplify using `[dag]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fock_dag (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (L : AdjLaw ψ S T) (sS : RealMat S) (sT : RealMat T)
     (hS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) (hT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) {Φ : WO S T → ℂ}
@@ -90,19 +90,19 @@ theorem fock_dag (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (L : AdjLaw ψ 
   simp [dag]
 
 /- English proof (translation)
-Take `⟨μ, 𝓕, ⟨hμ, h𝓕, h1⟩, hc⟩` from `h`. Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.MixModel.lattice_Mx D S.rank T.rank`. Take `⟨j1, j2, j3, j4, -⟩` from `GlobalTheory.MixModel.lattice_Mx D T.rank S.rank`. Establish `: BorelSpace (WO T S)` using `⟨rfl⟩`. Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `eA : WO T S ≃+ WO S T` to `{ toFun := adjO S T invFun := adjO T S left_inv := fun x => hTS.invol x right_inv := fun y => hST.invol y map_add' := hST.add }`. Set `eH : WO T S ≃ₜ WO S T` to `⟨eA.toEquiv, hST.cont, hTS.cont⟩`. Set `eM : WO T S ≃ᵐ WO S T` to `eH.toMeasurableEquiv`. Establish `hHaar : (μ.map eM).IsAddHaarMeasure` using `AddEquiv.isAddHaarMeasure_map μ eA hST.cont hTS.cont`. Establish `hmp : MeasurePreserving eM μ (μ.map eM)` using `⟨eM.measurable, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmp' : MeasurePreserving eM.symm (μ.map eM) μ` using `MeasurePreserving.symm eM hmp`. Set `eG : ratL S T → ratL T S` to `fun g => ⟨adjO S T g, (hST.rat g).2 g.2⟩`. Establish `hbij : Function.Bijective eG`. Use `⟨fun g g' hg => ?_, fun g => ⟨⟨adjO T S g, (hTS.rat g).2 g.2⟩, Subtype.ext (hST.invol g)⟩⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun x : ratL T S => adjO T S (x : WO S T)) hg`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [eG, hTS.invol] at e`. Conclude with `Subtype.ext e`. Establish `hF : IsAddFundamentalDomain (ratL T S) (eM.symm ⁻¹' 𝓕) (μ.map eM)`. Use `h𝓕.preimage_of_equiv hmp'.quasiMeasurePreserving hbij fun g x => ?_` and prove the remaining obligations. Use `show adjO T S (adjO S T g + x) = (g : WO T S) + adjO T S x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hTS.add, hTS.invol]`. Establish `hpre : eM ⁻¹' (eM.symm ⁻¹' 𝓕) = 𝓕`. Use extensionality with `a`. Simplify using the standard rewrite rules. Use `⟨μ.map eM, eM.symm ⁻¹' 𝓕, ⟨hHaar, hF, ?_⟩, fun p => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MeasurableEquiv.map_apply, hpre, h1]`. Use `show starRingEnd ℂ (c p) = _`. Rewrite using `[hc p, MeasurableEquiv.restrict_map, hpre, integral_map_equiv, ← integral_conj, hx p]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Establish `ew : eM.symm (eM w) = w` using `eM.symm_apply_apply w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show starRingEnd ℂ (x p w * starRingEnd ℂ (Φ w)) = dag T S (x p) (eM w) * starRingEnd ℂ (dag T S Φ (eM w))`. Simplify using `only [dag]`. Establish `e2 : adjO T S (eM w) = w` using `hTS.invol w`. Rewrite using `[e2, map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem coef_dag (hST : AdjLaw ψ S T) (hTS : AdjLaw ψ T S) {X : Type} (x : X → WO T S → ℂ) (x' : X → WO S T → ℂ)
     (hx : ∀ p, x' p = dag T S (x p)) (Φ : WO T S → ℂ) (c : X → ℂ) (h : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsCoef T S x Φ c) :
@@ -152,13 +152,13 @@ end GlobalTheory.KernelFlip
 open GlobalTheory.KernelFlip in
 
 /- English proof (translation)
-Introduce `D ψ θ A B χA χB sA sB K₁ K₂ c hθ hsA hsB hK`. Take `⟨om, Φ₁, Φ₂, H, hF₁, hF₂, -, -, hK₁, hK₂, hc⟩` from `hK`. Establish `hψ : IsStdChar D ψ (-1)` using `H.std`. Establish `hBA : AdjLaw ψ B A` using `GlobalTheory.T.hermitianAdjoint_laws_standardCharacter D ψ hψ B A`. Establish `hAB : AdjLaw ψ A B` using `GlobalTheory.T.hermitianAdjoint_laws_standardCharacter D ψ hψ A B`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨om', H', hom'⟩` from `GlobalTheory.WeilConj.exists_conj_weilDatum D ψ B A χB χA om H`. Establish `hθK : ∀ (g : GA D A) (h : GA D B) (Φ : WO B A → ℂ), starRingEnd ℂ (thetaKO om' g h (dag B A Φ)) = thetaKO om h g Φ`. Introduce `g h Φ`. Simplify using `only [thetaKO]`. Rewrite using `[hom' h g Φ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dag]`. Rewrite using `[GlobalTheory.WeilConj.adjO_zero hBA, Complex.conj_conj]`. Use `⟨om', dag B A Φ₁, dag B A Φ₂, H', fock_dag hψ hθ hBA sB sA hsB hsA hF₁, fock_dag hψ hθ hBA sB sA hsB hsA hF₂, trivial, trivial, fun g h => ?_, fun g h => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hθK, hK₁]`. Rewrite using `[hθK, hK₂]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `coef_dag hAB hBA (fun g : GA D A => om (1, g) Φ₁) (fun g : GA D A => om' (g, 1) (dag B A Φ₁)) (fun g => hom' 1 g Φ₁) Φ₂ c hc`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KernelFlip.kernelPair_flip : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (sA : RealMat A) (sB : RealMat B) (K₁ K₂ : GA D A → GA D B → ℂ) (c : GA D A → ℂ), IsInfFam θ → (∀ τ, IsCartanInv (gramAt D A τ) (sA τ)) → (∀ τ, IsCartanInv (gramAt D B τ) (sB τ)) → GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsKernelPair ψ θ A B χA χB sA sB true (fun _ => True) (fun _ => True) K₁ K₂ c → GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsKernelPair ψ θ A B χA χB sA sB false (fun _ => True) (fun _ => True) K₁ K₂ c := by
   intro D ψ θ A B χA χB sA sB K₁ K₂ c hθ hsA hsB hK

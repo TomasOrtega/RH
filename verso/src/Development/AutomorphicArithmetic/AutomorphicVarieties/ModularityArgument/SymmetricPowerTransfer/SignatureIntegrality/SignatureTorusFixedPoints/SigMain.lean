@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open UpperTheory.V.Z.Sym.Sig in
 /- English proof (translation)
-Introduce `k _ _ _ _ O _ _ hO h2 Δ s hs hs0 V Ry hR χ hχ`. Take `⟨hJ, hJf, hJ2, hJ2f, hcG, hcS, hreg⟩` from `okLev k O hO h2 Δ s hs hs0 V Ry hR χ hχ`. Conclude with `⟨hcG, hcS, hcS, hJ, hJf, hJ2, hJ2f, hreg, fun t ht => (okG k O hO h2 Δ s hs hs0 V Ry hR χ hχ t ht).1, fun t ht => (okG k O hO h2 Δ s hs hs0 V Ry hR χ hχ t ht).2.1, fun t ht => (okG k O hO h2 Δ s hs hs0 V Ry hR χ hχ t ht).2.2, fun t ht => okGOrb k O hO h2 Δ s hs hs0 V Ry hR χ hχ t …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Sym.Sig.sigMain : UpperTheory.V.Z.Sym.Sig.SigMain := by
   intro k _ _ _ _ O _ _ hO h2 Δ s hs hs0 V Ry hR χ hχ

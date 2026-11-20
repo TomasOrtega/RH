@@ -11,11 +11,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hq : 0 < Real.log (q0 D)` using `Real.log_pos (by exact_mod_cast (GlobalTheory.ChiGrid.leastSplitAuxiliaryPrimeThetaChain_spec D).1.one_lt)`. Establish `one : ∀ {n : ℕ}, n ≠ 0 → (1 : ℝ) ≤ n` using `fun hn => by exact_mod_cast Nat.one_le_iff_ne_zero.2 hn`. Establish `h1 : (1 : ℝ) ≤ nRk D` using `one (by unfold nRk; omega)`. Establish `h2 : (1 : ℝ) ≤ D.host.g 0` using `one (D.host.g_prime 0).ne_zero`. Establish `h3 : (1 : ℝ) ≤ D.host.g 1` using `one (D.host.g_prime 1).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (1 : ℝ) ≤ D.host.pde` using `one D.host.pde_prime.ne_zero`. Establish `h5 : (1 : ℝ) ≤ D.host.pde'` using `one D.host.pde'_prime.ne_zero`. Establish `h6 : (1 : ℝ) ≤ |(discr D.host.E : ℝ)|`. Use `Int.one_le_abs (discr_ne_zero D.host.E)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : 0 ≤ Real.log (b * nRk D * D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde' * |(discr D.host.E : ℝ)|)` using `Real.log_nonneg (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hb h1) h2) h3) h4) h5) h6)`. Unfold `depth0 sizeP`. Use `gcongr`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem depth0_mono (D : D7) {C C' b : ℝ} (h : C ≤ C') (hb : 1 ≤ b) : depth0 D C b ≤ depth0 D C' b := by
   have hq : 0 < Real.log (q0 D) := Real.log_pos (by exact_mod_cast (GlobalTheory.ChiGrid.leastSplitAuxiliaryPrimeThetaChain_spec D).1.one_lt)
@@ -35,11 +35,9 @@ theorem depth0_mono (D : D7) {C C' b : ℝ} (h : C ≤ C') (hb : 1 ≤ b) : dept
   gcongr
 
 /- English proof (translation)
-Take `⟨G, hF, hT⟩` from `hp`. Take `⟨h1, h2⟩` from `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).2 I Lc G.pl ⟨1, CF, b⟩`. Take `⟨V⟩` from `GlobalTheory.ChiGridModel.nonempty_vertices D I Lc _ _ (GlobalTheory.ChiGrid.colY_isV D I Lc μ0 hL 0 (Nat.zero_le _)).sd h1 h2`. Use `⟨⟨G.pl, G.ch, V⟩, ⟨hF.values, fun v hv => ?_⟩, hT⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hF.roots v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hd : G.pl.depth ⟨1, CF, b⟩ v ≤ G.pl.depth ⟨1, CF', b⟩ v`. Unfold `Places.depth`. Use `split_ifs`. Conclude with `depth0_mono D h hb`. Conclude with `le_rfl`.
-
-Establish `hpos : 0 < Ideal.absNorm v.asIdeal` using `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)`. Conclude with `⟨_, hz.pow (pow_pos hpos _) (by rw [← pow_add, Nat.sub_add_cancel hd])⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gridPin_anti {D : D7} {I : Type} {Lc : LevCh D I} {μ0 : I} (hL : Lc.Is μ0) {CF CF' b : ℝ} (h : CF ≤ CF') (hb : 1 ≤ b)
     (hp : GridPin D Lc CF' b) : GridPin D Lc CF b := by
@@ -57,13 +55,13 @@ theorem gridPin_anti {D : D7} {I : Type} {Lc : LevCh D I} {μ0 : I} (hL : Lc.Is 
   exact ⟨_, hz.pow (pow_pos hpos _) (by rw [← pow_add, Nat.sub_add_cancel hd])⟩
 
 /- English proof (translation)
-Introduce `⟨G, _⟩` and use `(GlobalTheory.ChiGridModel.isEmpty_gridData Lc _ h).false G`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_gridPin {D : D7} {I : Type} (Lc : LevCh D I) (CF b : ℝ) (h : q0 D = D.host.g 0) : ¬ GridPin D Lc CF b :=
   fun ⟨G, _⟩ => (GlobalTheory.ChiGridModel.isEmpty_gridData Lc _ h).false G
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun CF _ Fm _ => CF < Fm.CF, ⟨0, fun CF _ => ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => CF + 1, fun _ => 0⟩, fun Fm CH _ h => lt_of_lt_of_le (lt_add_one CF) (h.2.2.1 Fm.CF (by simp [FamP.cMid]))⟩⟩⟩, fun _ _ _ => lt_irrefl _⟩`.
+Supply the required witnesses or components.
 -/
 theorem fixed_not_diagonal (𝒞 : FamClass) : ∃ P : ℝ → ∀ {eps : ℝ}, FamP eps → ℝ → Prop,
     (∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → Closed 𝒞 (P CF)) ∧ ∀ (eps : ℝ) (Fm : FamP eps) (CH : ℝ), ¬ P Fm.CF Fm CH :=
@@ -79,13 +77,13 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨G, h.field, h.list⟩`.
+Supply the required witnesses or components.
 -/
 theorem gridPin_of_fit (p : PtAt ex Csz) {CF : ℝ} {G : Grid p CF} (h : GridFit p G) : GridPin D p.R.toRealDat.toLevCh CF L.sc.b :=
   ⟨G, h.field, h.list⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨G, a, b⟩ := gridPin_anti hL h hb hp ⟨G, GridFit.of_twistAt ht h1 a h3 b⟩`.
+A detailed English derivation is pending.
 -/
 theorem fit_of_gridPin (p : PtAt ex Csz) {μ0} (hL : p.R.toRealDat.toLevCh.Is μ0) {CF CF' : ℝ} (h : CF ≤ CF') (hb : 1 ≤ L.sc.b)
     (hp : GridPin D p.R.toRealDat.toLevCh CF' L.sc.b) {xd v0 rep} (ht : GlobalTheory.EX.TwistAt L ex.nch xd v0 rep)
@@ -96,7 +94,7 @@ theorem fit_of_gridPin (p : PtAt ex Csz) {μ0} (hL : p.R.toRealDat.toLevCh.Is μ
 end Guard
 
 /- English proof (translation)
-Introduce `⟨_, _, t⟩` and use `(t.nonempty hi).elim h.false`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_gridPin_of_empty {D : D7} {I : Type} (Lc : LevCh D I) (CF b : ℝ) {i : D.ntw.Tw} (hi : D.ntw.NonzeroIndexPlace i)
     (h : IsEmpty (D.ntw.abelian₂ i)) : ¬ GridPin D Lc CF b := fun ⟨_, _, t⟩ => (t.nonempty hi).elim h.false
@@ -106,7 +104,7 @@ variable (hL : GlobalTheory.Published.LocalLanglandsGL)
 open GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.Top.GroupRetwisting in
 
 /- English proof (translation)
-Introduce `h` and use `Step.trans h (Step.of_all fun _ _ _ _ _ _ _ H w a P x l => (H w a P x l).imp fun _ t => t.1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem settingsFormsExist_of_grid : SettingsFormsExistGrid hL → SettingsFormsExist hL := fun h =>
   Step.trans h (Step.of_all fun _ _ _ _ _ _ _ H w a P x l => (H w a P x l).imp fun _ t => t.1)
@@ -114,7 +112,7 @@ theorem settingsFormsExist_of_grid : SettingsFormsExistGrid hL → SettingsForms
 open GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.Top.GroupRetwisting in
 
 /- English proof (translation)
-Introduce `h` and use `Step.trans h (Step.of_all fun _ _ _ _ _ _ _ H w a P x l => (H w a P x l).imp fun _ t => t.1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem seriesExist_of_grid : SeriesExistGrid hL → SeriesExist hL := fun h =>
   Step.trans h (Step.of_all fun _ _ _ _ _ _ _ H w a P x l => (H w a P x l).imp fun _ t => t.1)
@@ -122,7 +120,7 @@ theorem seriesExist_of_grid : SeriesExistGrid hL → SeriesExist hL := fun h =>
 open GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.Top.GroupRetwisting in
 
 /- English proof (translation)
-Introduce `h` and use `Step.trans h (Step.of_all fun _ _ _ _ _ _ _ H w a P x l => (H w a P x l).imp fun _ t => t.1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem moduliPointsExist_of_grid : ModuliPointsExistGrid hL → SB2 hL := fun h =>
   Step.trans h (Step.of_all fun _ _ _ _ _ _ _ H w a P x l => (H w a P x l).imp fun _ t => t.1)

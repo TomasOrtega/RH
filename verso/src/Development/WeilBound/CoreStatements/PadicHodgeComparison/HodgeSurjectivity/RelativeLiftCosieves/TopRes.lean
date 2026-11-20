@@ -10,11 +10,11 @@ open CategoryTheory
 namespace CrystallineSemistableComparison.Onto
 
 /- English proof (translation)
-Introduce `R _ C _ F U Q hU n`. Set `L : C ⥤ U.FullSubcategory` to `U.lift (𝟭 C) hU`. Establish `back : ∀ z : CH.Cn F n, ∀ s : ComposableArrows C n, (CH.Mor.restrict F U.ι).pullC n z (s ⋙ L) = z s` using `fun _ _ => rfl`. Use `⟨⟨fun z z' h => funext fun s => ?_, fun w => ⟨fun s => w (s ⋙ L), ?_⟩⟩, fun z => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← back z s, ← back z' s, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Both sides reduce to the same expression. Introduce `hz s hs`. Rewrite using `[← back z s]`. Conclude with `hz (s ⋙ L) hs`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz t ht`. Conclude with `hz (t ⋙ U.ι) ht`.
+A detailed English derivation is pending.
 -/
 theorem topRes_pf : TopRes := by
   intro R _ C _ F U Q hU n

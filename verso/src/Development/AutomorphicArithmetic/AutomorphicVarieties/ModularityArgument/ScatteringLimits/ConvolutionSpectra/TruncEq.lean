@@ -6,11 +6,11 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Introduce `P`. Take `⟨c1, c2, -, -, -, -, -, c8, -⟩` from `cutLaws (V := V) (Ioi T) (Ioi T) measurableSet_Ioi measurableSet_Ioi`. Rewrite `c1` using `[inter_self]`. Establish `cc : ∀ u, cut V (Ioi T) (cut V (Ioi T) u) = cut V (Ioi T) u` using `fun u => DFunLike.congr_fun c1 u`. Establish `jj : ∀ u, ContinuousLinearMap.adjoint J.toContinuousLinearMap (J u) = u` using `fun u => ext_inner_left ℂ fun v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ContinuousLinearMap.adjoint_inner_right]`. Conclude with `J.inner_map_map v u`. Establish `pa : ∀ h, P h = J (cut V (Ioi T) (ContinuousLinearMap.adjoint J.toContinuousLinearMap h))` using `fun _ => rfl`. Use `⟨?_, ?_, fun h => ⟨_, ?_, pa h⟩, fun u hu => ?_⟩` and prove the remaining obligations. Use extensionality with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.mul_apply, pa h, pa, jj, cc]`. Use `show ContinuousLinearMap.adjoint P = P`. Simplify using `only [P, ContinuousLinearMap.adjoint_comp, ContinuousLinearMap.adjoint_adjoint, c2.adjoint_eq, ContinuousLinearMap.comp_assoc]`. Conclude with `((c8 _).1 (cc _)).mono fun x hx h => hx (by simpa using h)`. Rewrite using `[pa, jj, (c8 u).2 (hu.mono fun x hx h => hx (by simpa using h))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prj {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] (J : L V →ₗᵢ[ℂ] H) (T : ℝ) :
@@ -33,21 +33,19 @@ private theorem prj {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] 
   · rw [pa, jj, (c8 u).2 (hu.mono fun x hx h => hx (by simpa using h))]
 
 /- English proof (translation)
-Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ J J' T Λ ho`. Take `⟨a1, a2, a3, a4⟩` from `prj J T`. Take `⟨b1, b2, b3, b4⟩` from `prj J' T`. Use `set P := J.toContinuousLinearMap ∘L cut V (Ioi T) ∘L ContinuousLinearMap.adjoint J.toContinuousLinearMap`. Use `set P' := J'.toContinuousLinearMap ∘L cut W (Ioi T) ∘L ContinuousLinearMap.adjoint J'.toContinuousLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `o1 : P * P' = 0`. Use extensionality with `h`. Use `ext_inner_left ℂ fun y => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.mul_apply, ← a2.isSymmetric.apply_clm, ContinuousLinearMap.zero_apply, inner_zero_right]`. Conclude with `ho _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `o2 : P' * P = 0`. Use `congrArg star o1` as an intermediate fact. Rewrite `this` using `[star_mul, a2.star_eq, b2.star_eq, star_zero]`. Then use the resulting hypothesis. Establish `t0 : IsTrunc J J' T (1 - P - P')`. Use `⟨((IsSelfAdjoint.one _).sub a2).sub b2, ?_, fun h => ⟨fun hh => ?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Use `show (1 - P - P') * (1 - P - P') = _`. Simplify using `only [mul_sub, sub_mul, a1, b1, o1, o2, mul_one, one_mul]`. Normalize the expressions using the abelian group laws. Take `⟨u, hu, eu⟩` from `a3 h`. Take `⟨v, hv, ev⟩` from `b3 h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨u, v, hu, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[← eu, ← ev]`. Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.one_apply] at hh`. Rewrite `hh` using `[sub_sub, sub_eq_zero]`. Conclude with `hh`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨u, v, hu, hv, rfl⟩`. Establish `e1 : P (J' v) = 0` using `by rw [← b4 v hv]; exact DFunLike.congr_fun o1 _`. Establish `e2 : P' (J u) = 0` using `by rw [← a4 u hu]; exact DFunLike.congr_fun o2 _`. Simplify using `[a4 u hu, b4 v hv, e1, e2]`. Use `⟨fun t1 => ?_, fun h => h ▸ t0⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ A B : H →L[ℂ] H, IsTrunc J J' T A → IsTrunc J J' T B → A * B = A` using `fun A B hA hB => by`. Use extensionality with `h`. Establish `h1 : B (h - B h) = 0` using `by rw [map_sub, sub_eq_zero]; exact (DFunLike.congr_fun hB.2.1 h).symm`. Establish `h2` using `(hA.2.2 _).2 ((hB.2.2 _).1 h1)`. Rewrite `h2` using `[map_sub, sub_eq_zero]`.
-
-Conclude with `h2.symm`. Establish `h1` using `congrArg star (key _ _ t1 t0)`. Rewrite `h1` using `[star_mul, t1.1.star_eq, t0.1.star_eq, key _ _ t0 t1]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.truncEq :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (J : L V →ₗᵢ[ℂ] H) (J' : L W →ₗᵢ[ℂ] H) (T : ℝ) (Λ : H →L[ℂ] H),

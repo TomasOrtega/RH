@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemRange
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A _ _ _ _ q _ hq`. Conclude with `isDiscreteValuationRing_of_height_eq_one q hq (Localization.AtPrime q)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem localizationAtPrime_isDiscreteValuationRing_of_height_eq_one :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A]

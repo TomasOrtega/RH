@@ -9,33 +9,27 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CompanionTheory.Factor
 
 /- English proof (translation)
-Introduce `H _ _ _ N Q hstar hQc hQinv hmin A hcomm`. Use `haveI : CompleteSpace Q := hQc.completeSpace_coe`. Set `σ : N → (Q →L[ℂ] Q)` to `fun T => (T.1.comp Q.subtypeL).codRestrict Q (fun v => hQinv T.1 T.2 v v.2)`. Establish `hσ : ∀ (T : N) (v : Q), ((σ T v : Q) : H) = T.1 v` using `fun _ _ => rfl`. Establish `hperp : ∀ T ∈ N, ∀ w ∈ Qᗮ, T w ∈ Qᗮ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hT w hw`. Rewrite `hw`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Establish `h1 : ⟪u, T w⟫_ℂ = ⟪(star T) u, w⟫_ℂ`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_left]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `hw _ (hQinv _ (hstar T hT) u hu)`. Establish `hproj : ∀ T ∈ N, ∀ w : H, Q.starProjection (T w) = T (Q.starProjection w)`. Introduce `T hT w`. Apply `Submodule.eq_starProjection_of_mem_orthogonal` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hQinv T hT _ (Submodule.starProjection_apply_mem Q w)`. Rewrite using `[← map_sub]`. Conclude with `hperp T hT _ (Submodule.sub_starProjection_mem_orthogonal w)`. Set `B : Q →L[ℂ] Q` to `(Q.orthogonalProjection).comp (A.comp Q.subtypeL)`. Establish `hB : ∀ v : Q, ((B v : Q) : H) = Q.starProjection (A v)` using `fun _ => rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `GlobalTheory.hilbert_schur_of_adjoint_closed N Q σ (by`. Introduce `g`. Use `⟨⟨star g.1, hstar g.1 g.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `⟪(star g.1) (x : H), (y : H)⟫_ℂ = ⟪(x : H), g.1 (y : H)⟫_ℂ`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_left])`. Use the proof step `(by`. Introduce `S hS hSinv`. Establish `hclosed : IsClosed ((S.map Q.subtype : Submodule ℂ H) : Set H)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hQc.isClosedEmbedding_subtypeVal.isClosedMap _ hS`. Establish `hle : S.map Q.subtype ≤ Q`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Establish `hinv : ∀ T ∈ N, ∀ v ∈ S.map Q.subtype, T v ∈ S.map Q.subtype`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `T hT _ ⟨x, hx, rfl⟩`. Conclude with `⟨σ ⟨T, hT⟩ x, hSinv ⟨T, hT⟩ x hx, rfl⟩`. Break down `hmin _ hclosed hle hinv with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Establish `hx' : (x : H) ∈ S.map Q.subtype` using `⟨x, hx, rfl⟩`. Rewrite `hx'` using `[h, Submodule.mem_bot]`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext hx')`. Use `right`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : (x : H) ∈ S.map Q.subtype`. Rewrite using `[h]`. Conclude with `x.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy, hyx⟩` from `hx`. Establish `: y = x` using `Subtype.ext hyx`. Conclude with `this ▸ hy)`. Use `B`. Use the proof step `(by`.
-
-Introduce `g`. Use extensionality with `v`. Express the relevant statement in the definitionally equal form `Q.starProjection (A (g.1 v)) = g.1 (Q.starProjection (A v))`. Establish `h` using `congrArg (fun X : H →L[ℂ] H => X (v : H)) (hcomm g.1 g.2)`. Establish `h' : g.1 (A v) = A (g.1 v)` using `h`.
-
-Rewrite using `[← h', hproj g.1 g.2])`. Use `⟨c, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : Q.starProjection (A v) = c • v`. Use `hB ⟨v, hv⟩` as an intermediate fact. Rewrite `this` using `[hc]`.
-
-Simplify using `using this.symm`. Rewrite using `[← h1]`. Conclude with `Submodule.sub_starProjection_mem_orthogonal _`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schur_on_minimal_subspace :
     ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (N : Set (H →L[ℂ] H))

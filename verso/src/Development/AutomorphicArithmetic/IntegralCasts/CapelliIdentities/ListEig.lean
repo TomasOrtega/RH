@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `M ι _ _ L c x l`. Proceed by induction on `l with`. Consider the case `nil => intro _`. Simplify using the standard rewrite rules. Consider the case `cons a l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `h`. Establish `h1 : L a x = c a • x` using `h a List.mem_cons_self`. Establish `h2` using `ih (fun i hi => h i (List.mem_cons_of_mem a hi))`. Rewrite using `[List.map_cons, List.map_cons, List.prod_cons, List.prod_cons, Module.End.mul_apply, h2, map_smul, h1, smul_smul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qk12.list_eig :
     ∀ {M ι : Type} [inst : AddCommGroup M]

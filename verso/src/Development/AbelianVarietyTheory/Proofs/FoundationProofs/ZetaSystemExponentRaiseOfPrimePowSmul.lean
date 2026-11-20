@@ -9,21 +9,21 @@ open scoped Matrix MatrixGroups
 namespace GlobalTheory.K4
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ ε X pr W e ψ N _ x c d k g cf c₀ m Y hadd hsmul hZ r n`. Take `⟨bB, hB, b, hb, hY⟩` from `hZ r n`. Establish `hl : ‖((l : ℕ) : Qbar l)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one _ l`. Establish `hlm : ‖((l : ℕ) : Qbar l) ^ m‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hl`. Establish `hpr : ∀ v : X.Fn l, pr (((l : ℤ_[l]) ^ m) • v) = ((l : ℕ) : Qbar l) ^ m • pr v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[hsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `⟨fun σ => ((l : ℤ_[l]) ^ m) • bB σ, ?_, fun y => ((l : ℕ) : Qbar l) ^ m • b y, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ hσ`. Take `⟨h1, h2⟩` from `hB σ hσ`. Use `⟨Submodule.smul_mem _ _ h1, fun u => ?_⟩` and prove the remaining obligations. Establish `: (((l : ℤ_[l]) ^ m) • bB σ) u - ((l : ℤ_[l]) ^ (c₀ + m)) • clsBmu X l n r N x c d k g σ u = ((l : ℤ_[l]) ^ m) • (bB σ u - ((l : ℤ_[l]) ^ c₀) • clsBmu X l n r N x c d k g σ u)`. Rewrite using `[smul_sub, smul_smul, ← pow_add, add_comm m c₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, LinearMap.map_smul, h2 u, smul_zero]`. Introduce `y i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `cf.O.mul_mem (cf.O.pow_mem (cf.O.natCast_mem l) m) (hb y i)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s y`. Establish `hYf : YfB X l pr W e ψ n r N (fun σ => ((l : ℤ_[l]) ^ m) • bB σ) s y = ((l : ℕ) : Qbar l) ^ m • YfB X l pr W e ψ n r N bB s y`. Unfold `YfB GlobalTheory.KA.push`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hpr, Matrix.mulVec_smul]`. Rewrite using `[hYf]`. Introduce `i`. Establish `h` using `hY s y i`. Unfold `Cg at h ⊢`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hrw : ((l : ℕ) : Qbar l) ^ m • Y r s y i - (((l : ℕ) : Qbar l) ^ m • YfB X l pr W e ψ n r N bB s y + (rhoK W e ψ s *ᵥ (((l : ℕ) : Qbar l) ^ m • b (y * (cycMod (F` using `ℚ) (Ω := Ω) l r s)⁻¹)) - ((l : ℕ) : Qbar l) ^ m • b y)) i = ((l : ℕ) : Qbar l) ^ m * (Y r s y i - (YfB X l pr W e ψ n r N bB s y + (rhoK W e ψ s *ᵥ b (y * (cycMod (F := ℚ) (Ω := Ω) l r s)⁻¹) - b y)) i) := by`. Simplify using `only [Matrix.mulVec_smul, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `show ‖_‖ ≤ _`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at hrw ⊢`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hrw, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem zetaSystem_exponent_raise_of_prime_pow_smul : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε)
   (pr : X.Fn l → Fin 2 → Qbar l) (W : R2 Ω l) (e : ℕ) (ψ : ZMod l → Qbar l) (N : ℕ) [NeZero N] (x : ZMod N)

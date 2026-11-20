@@ -22,7 +22,7 @@ theorem bcE_symm_apply {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintyp
     (a b : n) : ((bcE e).symm g : Matrix n n A) a b = e.symm ((g : Matrix n n B) a b) := rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(subst h; rfl)`. Consider the case `simp [castGL]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem castGL_symm_apply {a b : ℕ} (h : a = b) (R : Type) [CommRing R] (g : GL (Fin b) R) (x y : Fin a) :
     ((castGL h R).symm g : Matrix (Fin a) (Fin a) R) x y = (g : Matrix (Fin b) (Fin b) R) (Fin.cast h x) (Fin.cast h y) := by
@@ -70,7 +70,7 @@ def jQ (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det) {m : ℕ} (hk : m + 
   (jP I hdet).comp (MonoidHom.pi fun v => (toF I hk v).toMonoidHom.comp (Pi.evalMonoidHom _ v))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Rewrite using `[prP_apply]`. Use `jP_at I hdet (fun v => toF I hk v (g v)) v` as an intermediate fact. Use `show (toF I hk v).symm (bc (fstV I v) (bc (prV (E := E) (I.plc v)) (jP I hdet (fun v => toF I hk v (g v)) : GL (Fin R.k) _))) = g v`. Rewrite using `[this, MulEquiv.symm_apply_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prP_jQ (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det) {m : ℕ} (hk : m + 1 = R.k)
     (g : Fin nV → GL (Fin (m + 1)) Qq) : prP I hk (jQ I hdet hk g) = g := by
@@ -90,13 +90,13 @@ def HypAtP (I : LocId L p nV W Qq) : Prop :=
         (I.plc v).adicCompletionIntegers F)
 
 /- English proof (translation)
-Rewrite using `[stabStd_iff, ← map_inv, toF_symm, toF_symm]`. Establish `key : ∀ M : GL (Fin R.k) ((I.plc v).adicCompletion F), (∀ a b, ((castGL hk Qq).symm ((bcE (I.eQ v)).symm M) : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) a b ∈ (algebraMap W Qq).range) ↔ ∀ a b, (M : Matrix (Fin R.k) (Fin R.k) _) a b ∈ (I.plc v).adicCompletionIntegers F`. Introduce `M`. Establish `h1 : ∀ a b, ((castGL hk Qq).symm ((bcE (I.eQ v)).symm M) : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) a b ∈ (algebraMap W Qq).range ↔ (M : Matrix (Fin R.k) (Fin R.k) _) (Fin.cast hk a) (Fin.cast hk b) ∈ (I.plc v).adicCompletionIntegers F`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[castGL_symm_apply, bcE_symm_apply]`. Use `I.completion_integers_iff v ((I.eQ v).symm ((M : Matrix (Fin R.k) (Fin R.k) _) (Fin.cast hk a) (Fin.cast hk b)))` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `this`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h a b`. Use `(h1 (Fin.cast hk.symm a) (Fin.cast hk.symm b)).1 (h _ _)` as an intermediate fact. Simplify using `using this`. Introduce `h a b`. Conclude with `(h1 a b).2 (h _ _)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (frV I v)⁻¹ * X⁻¹ * frV I v = ((frV I v)⁻¹ * X * frV I v)⁻¹` using `by group`. Rewrite using `[key, e, key]`.
+A detailed English derivation is pending.
 -/
 theorem toF_symm_stab (I : LocId L p nV W Qq) {m : ℕ} (hk : m + 1 = R.k) (v : Fin nV)
     (X : GL (Fin R.k) ((I.plc v).adicCompletion F)) :

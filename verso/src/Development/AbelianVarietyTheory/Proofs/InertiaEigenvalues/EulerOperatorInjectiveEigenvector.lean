@@ -7,15 +7,15 @@ open scoped InnerProductSpace BigOperators
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι _ X x0 H _ _ _ a s B Z ha0 hC hB hB0 hZ v`. Establish `h` using `hZ v x0 (by simp) rfl`. Rewrite `h` using `[hB0, one_mul]`. Establish `ht0 : a v (x0 v) • B (Function.update x0 v (x0 v)) = 1` using `by simp [ha0, hB0]`. Establish `h2` using `h.update (x0 v) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[ht0]`. Set `g : X v → ℝ` to `fun x => if x = x0 v then 0 else ‖a v x‖`. Apply the tactic sequence `have hg0 : 0 ≤ g := fun x => by simp only [g]; split_ifs <;> simp`. Establish `hgsum : ∀ u : Finset (X v), ∑ x ∈ u, g x ≤ s v`. Introduce `u`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∑ x ∈ u, g x = ∑ x ∈ u.filter (fun x => ¬ x = x0 v), ‖a v x‖`. Simplify using `only [g]`. Rewrite using `[Finset.sum_ite]`. Simplify using the standard rewrite rules. Rewrite using `[e]; exact hC v _ (by simp)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hgs : Summable g` using `summable_of_sum_le hg0 hgsum`. Establish `h3` using `h2.norm_le_of_bounded hgs.hasSum (fun x => ?_)`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hx : x = x0 v`. Rewrite using `[hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[g]`. Rewrite using `[Function.update_of_ne hx]`. Simplify using `only [g, if_neg hx, norm_smul]`. Conclude with `(mul_le_mul_of_nonneg_left (hB _) (norm_nonneg _)).trans (by simp)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eulerOp_Zbound : ∀ (ι : Type) [DecidableEq ι] (X : ι → Type) (x0 : ∀ v, X v) (H : Type) [NormedAddCommGroup H] [NormedSpace ℂ H] [CompleteSpace H] (a : ∀ v, X v → ℂ) (s : ι → ℝ) (B : (∀ v, X v) → (H →L[ℂ] H)) (Z : ι → (H →L[ℂ] H)), (∀ v, a v (x0 v) = 1) → (∀ v (C : Finset (X v)), x0 v ∉ C → ∑ x ∈ C, ‖a v x‖ ≤ s v) → (∀ f, ‖B f‖ ≤ 1) → B x0 = 1 → (∀ v (f : ∀ v, X v), {w | f w ≠ x0 w}.Finite → f v = x0 v → HasSum (fun x => a v x • B (Function.update f v x)) (B f * Z v)) → ∀ v, ‖Z v - 1‖ ≤ s v := by
   intro ι _ X x0 H _ _ _ a s B Z ha0 hC hB hB0 hZ v
@@ -44,35 +44,31 @@ theorem eulerOp_Zbound : ∀ (ι : Type) [DecidableEq ι] (X : ι → Type) (x0 
       exact (mul_le_mul_of_nonneg_left (hB _) (norm_nonneg _)).trans (by simp)
 
 /- English proof (translation)
-Introduce `ι _ X x0 H _ _ _ a s B Z ha0 hZ hsum S v hv`. Establish `hprod : ∀ (T : Finset ι) (f : ∀ v, X v), (∀ w ∉ T, f w = x0 w) → (∏ᶠ u, a u (f u)) = ∏ u ∈ T, a u (f u)`. Introduce `T f hf`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hw` using `[Function.mem_mulSupport]`. Assume the negation of the conclusion as `h`. Conclude with `hw (by rw [hf w h, ha0])`. Establish `hfinU : ∀ (g : ∀ v, X v) (x : X v), {w | g w ≠ x0 w}.Finite → {w | Function.update g v x w ≠ x0 w}.Finite`. Introduce `g x hg`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(hg.insert v).subset` to reduce the goal to its premises. Introduce `w hw`. Distinguish the cases in `h : w = v`. Conclude with `Or.inl h`. Use `right`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify `hw` using `[Function.update_of_ne h]`. Set `e : {f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} // ∀ w ∉ S, f.1 w = x0 w} × X v → {f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} // ∀ w ∉ insert v S, f.1 w = x0 w}` to `fun p => ⟨⟨Function.update p.1.1.1 v p.2, hfinU _ _ p.1.1.2⟩, fun w hw => by`. Establish `h1 : w ≠ v` using `fun h => hw (h ▸ Finset.mem_insert_self _ _)`. Establish `h2 : w ∉ S` using `fun h => hw (Finset.mem_insert_of_mem h)`. Simplify using `only [Function.update_of_ne h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `p.1.2 w h2⟩`. Establish `he : Function.Bijective e`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, x⟩ ⟨g', x'⟩ h`. Establish `h' : Function.update g.1.1 v x = Function.update g'.1.1 v x'` using `congrArg (fun f => f.1.1) h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hx : x = x'` using `by simpa using congrFun h' v`. Substitute `hx` using the available equality. Establish `hg : g.1.1 = g'.1.1`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = v`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hw, g.2 v hv, g'.2 v hv]`. Simplify `congrFun h' w` using `[Function.update_of_ne hw]`. Conclude with `Prod.ext (Subtype.ext (Subtype.ext hg)) rfl`. Introduce `f`. Use `⟨(⟨⟨Function.update f.1.1 v (x0 v), hfinU _ _ f.1.2⟩, fun w hw => ?_⟩, f.1.1 v), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show Function.update f.1.1 v (x0 v) w = x0 w`. Distinguish the cases in `h : w = v`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h]; exact f.2 w (by simp [h, hw])`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[e]`. Establish `hsumI : Summable (fun f : {f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} // ∀ w ∉ insert v S, f.1 w = x0 w} => (∏ᶠ u, a u (f.1.1 u)) • B f.1.1)` using `hsum.comp_injective (f := fun f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} => (∏ᶠ u, a u (f.1 u)) • B f.1) Subtype.val_injective`. Establish `hsumS : Summable (fun f : {f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} // ∀ w ∉ S, f.1 w = x0 w} => (∏ᶠ u, a u (f.1.1 u)) • B f.1.1)` using `hsum.comp_injective (f := fun f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} => (∏ᶠ u, a u (f.1 u)) • B f.1) Subtype.val_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall` using `(Equiv.ofBijective e he).hasSum_iff.mpr hsumI.hasSum`. Establish `hfib : ∀ g : {f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} // ∀ w ∉ S, f.1 w = x0 w}, HasSum (fun x => ((fun f : {f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} // ∀ w ∉ insert v S, f.1 w = x0 w} => (∏ᶠ u, a u (f.1.1 u)) • B f.1.1) ∘ (Equiv.ofBijective e he)) (g, x)) (((∏ᶠ u, a u …`. Introduce `g`. Establish `hgv : g.1.1 v = x0 v` using `g.2 v hv`. Establish `key : ∀ x, ((fun f : {f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} // ∀ w ∉ insert v S, f.1 w = x0 w} => (∏ᶠ u, a u (f.1.1 u)) • B f.1.1) ∘ (Equiv.ofBijective e he)) (g, x) = (∏ᶠ u, a u (g.1.1 u)) • (a v x • B (Function.update g.1.1 v x))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Simplify using `only [Function.comp, Equiv.ofBijective_apply, e]`. Rewrite using `[smul_smul, hprod (insert v S) _ ?_, hprod S _ g.2, Finset.prod_insert hv]`. Use `congr 1`. Rewrite using `[Function.update_self, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `w hw`. Rewrite using `[Function.update_of_ne (by rintro rfl; exact hv hw)]`. Introduce `w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : w ≠ v` using `fun h => hw (h ▸ Finset.mem_insert_self _ _)`. Establish `h2 : w ∉ S` using `fun h => hw (Finset.mem_insert_of_mem h)`. Rewrite using `[Function.update_of_ne h1]`. Conclude with `g.2 w h2`. Repeatedly rewrite using `[key]`.
-
-Rewrite using `[smul_mul_assoc]`. Conclude with `(hZ v g.1.1 g.1.2 hgv).const_smul _`. Establish `h3` using `hall.prod_fiberwise hfib`. Establish `h4` using `hsumS.hasSum.mul_right (Z v)`. Rewrite using `[← h3.unique h4]`.
-
-Conclude with `hsumI.hasSum`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eulerOp_rec : ∀ (ι : Type) [DecidableEq ι] (X : ι → Type) (x0 : ∀ v, X v) (H : Type) [NormedAddCommGroup H] [NormedSpace ℂ H] [CompleteSpace H] (a : ∀ v, X v → ℂ) (s : ι → ℝ) (B : (∀ v, X v) → (H →L[ℂ] H)) (Z : ι → (H →L[ℂ] H)), (∀ v, a v (x0 v) = 1) → (∀ v (f : ∀ v, X v), {w | f w ≠ x0 w}.Finite → f v = x0 v → HasSum (fun x => a v x • B (Function.update f v x)) (B f * Z v)) → Summable (fun f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} => (∏ᶠ u, a u (f.1 u)) • B f.1) → ∀ (S : Finset ι) (v : ι), v ∉ S → HasSum (fun f : {f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} // ∀ w ∉ insert v S, f.1 w = x0 w} => (∏ᶠ u, a u (f.1.1 u)) • B f.1.1) ((∑' f : {f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} // ∀ w ∉ S, f.1 w = x0 w}, (∏ᶠ u, a u (f.1.1 u)) • B f.1.1) * Z v) := by
   intro ι _ X x0 H _ _ _ a s B Z ha0 hZ hsum S v hv
@@ -157,13 +153,13 @@ theorem eulerOp_rec : ∀ (ι : Type) [DecidableEq ι] (X : ι → Type) (x0 : �
   exact hsumI.hasSum
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.T.summable_finprod_of_finite_support_euler_sum ι X x0 (fun v x => ‖a v x‖) s (fun v x => norm_nonneg _) (by intro v; simp [ha0]) hs hC`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun f => ?_) h1` and prove the remaining obligations. Rewrite using `[norm_smul]`. Establish `hfin` using `f.2`. Establish `e1 : (∏ᶠ v, a v (f.1 v)) = ∏ v ∈ hfin.toFinset, a v (f.1 v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `w hw`. Rewrite `hw` using `[Function.mem_mulSupport]`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]`. Introduce `h; exact hw (by simp [h, ha0])`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : (∏ᶠ v, ‖a v (f.1 v)‖) = ∏ v ∈ hfin.toFinset, ‖a v (f.1 v)‖`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `w hw`. Rewrite `hw` using `[Function.mem_mulSupport]`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h; exact hw (by simp [h, ha0])`. Rewrite using `[e1, e2, norm_prod]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem eulerOp_normSummable (ι : Type) [DecidableEq ι] (X : ι → Type) (x0 : ∀ v, X v) (H : Type) [NormedAddCommGroup H] [NormedSpace ℂ H] (a : ∀ v, X v → ℂ) (s : ι → ℝ) (B : (∀ v, X v) → (H →L[ℂ] H)) (ha0 : ∀ v, a v (x0 v) = 1) (hs : Summable s) (hC : ∀ v (C : Finset (X v)), x0 v ∉ C → ∑ x ∈ C, ‖a v x‖ ≤ s v) (hB : ∀ f, ‖B f‖ ≤ 1) :
     Summable (fun f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} => ‖(∏ᶠ v, a v (f.1 v)) • B f.1‖) := by
@@ -189,35 +185,33 @@ theorem eulerOp_normSummable (ι : Type) [DecidableEq ι] (X : ι → Type) (x0 
     _ = _ := mul_one _
 
 /- English proof (translation)
-Introduce `ι _ X x0 H _ _ _ a s B Z ha0 hs hs1 hC hB hB0 hZ`. Set `t : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} → (H →L[ℂ] H)` to `fun f => (∏ᶠ v, a v (f.1 v)) • B f.1`. Establish `hnorm : Summable (fun f => ‖t f‖)` using `eulerOp_normSummable ι X x0 H a s B ha0 hs hC hB`. Establish `hsum : Summable t` using `hnorm.of_norm`. Set `A : Finset ι → Set {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite}` to `fun S => {f | ∀ w ∉ S, f.1 w = x0 w}`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `WS : Finset ι → (H →L[ℂ] H)` to `fun S => ∑' f : A S, t f`. Establish `hs0 : ∀ v, 0 ≤ s v` using `fun v => by simpa using hC v ∅ (by simp)`. Establish `hZb` using `eulerOp_Zbound ι X x0 H a s B Z ha0 hC hB hB0 hZ`. Establish `hrec : ∀ S v, v ∉ S → WS (insert v S) = WS S * Z v` using `fun S v hv => (eulerOp_rec ι X x0 H a s B Z ha0 hZ hsum S v hv).tsum_eq`. Establish `hbase : WS ∅ = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f0 : A ∅` to `⟨⟨x0, by simp⟩, fun w _ => rfl⟩`. Establish `hf0 : ∀ b : A ∅, b = f0` using `fun b => Subtype.ext (Subtype.ext (funext fun w => b.2 w (by simp)))`. Use `show ∑' f : A ∅, t f = 1`. Rewrite using `[tsum_eq_single f0 (fun b hb => absurd (hf0 b) hb)]`. Simplify using `[t, f0, ha0, hB0]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlim : Tendsto WS atTop (𝓝 (∑' f, t f))`. Establish `e : WS = fun S => ∑' f, (A S).indicator t f`. Use function extensionality and compare the values at `S`. Conclude with `tsum_subtype (A S) t`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `tendsto_tsum_of_dominated_convergence hnorm (fun f => ?_) (Eventually.of_forall fun S f => norm_indicator_le_norm_self _ _)` and prove the remaining obligations. Apply `tendsto_const_nhds.congr'` to reduce the goal to its premises. Use `filter_upwards [eventually_ge_atTop f.2.toFinset] with S hS`. Establish `hm : f ∈ A S`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hw (hS (by simpa using h))`. Conclude with `(Set.indicator_of_mem hm t).symm`. Take `⟨δ, hδ, hδS⟩` from `GlobalTheory.T.prod_one_sub_bounded_below_of_summable ι s hs0 hs1 hs`. Establish `hlow : ∀ S : Finset ι, ∀ y, (∏ v ∈ S, (1 - s v)) * ‖y‖ ≤ ‖WS S y‖`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro y`. Simplify using `[hbase]`. Consider the case `insert v S hv ih`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `y`. Rewrite using `[hrec S v hv, Finset.prod_insert hv, ContinuousLinearMap.mul_apply]`. Establish `h1 : ‖(Z v - 1) y‖ ≤ s v * ‖y‖` using `((Z v - 1).le_opNorm y).trans (mul_le_mul_of_nonneg_right (hZb v) (norm_nonneg _))`. Establish `h2 : ‖y‖ ≤ ‖Z v y‖ + ‖(Z v - 1) y‖`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hZy : (1 - s v) * ‖y‖ ≤ ‖Z v y‖` using `by nlinarith`. Establish `hP : 0 ≤ ∏ v ∈ S, (1 - s v)` using `Finset.prod_nonneg fun w _ => by linarith [hs1 w]`. Combine the equalities or inequalities in the displayed calculation. Establish `heig : ∀ S : Finset ι, ∀ y (z : ι → ℂ), (∀ v, Z v y = z v • y) → WS S y = (∏ v ∈ S, z v) • y`. Introduce `S`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro y z _`. Simplify using `[hbase]`. Consider the case `insert v S hv ih`. Introduce `y z hyz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hrec S v hv, ContinuousLinearMap.mul_apply, hyz v, map_smul, ih y z hyz, Finset.prod_insert hv, smul_smul]`. Establish `hWy : ∀ y, Tendsto (fun S => WS S y) atTop (𝓝 ((∑' f, t f) y))` using `fun y => ((ContinuousLinearMap.apply ℂ H y).continuous.tendsto _).comp hlim`. Establish `hlowW : ∀ y, δ * ‖y‖ ≤ ‖(∑' f, t f) y‖` using `fun y => ge_of_tendsto (hWy y).norm (Eventually.of_forall fun S => (mul_le_mul_of_nonneg_right (hδS S) (norm_nonneg y)).trans (hlow S y))`. Use `⟨∑' f, t f, hsum.hasSum, ?_, ?_⟩` and prove the remaining obligations. Introduce `y1 y2 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h1` using `hlowW (y1 - y2)`. Rewrite `h1` using `[map_sub, h, sub_self, norm_zero]`. Establish `h2 : ‖y1 - y2‖ ≤ 0` using `le_of_mul_le_mul_left (by rw [mul_zero]; exact h1) hδ`. Conclude with `sub_eq_zero.mp (norm_le_zero_iff.mp h2)`. Introduce `y z hyz`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Take `⟨φ, -, hφ⟩` from `exists_dual_vector ℂ y (norm_ne_zero_iff.mpr hy)`. Establish `h1 : Tendsto (fun S => (∏ v ∈ S, z v) • y) atTop (𝓝 ((∑' f, t f) y))` using `Tendsto.congr (fun S => heig S y z hyz) (hWy y)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : Tendsto (fun S => φ ((∏ v ∈ S, z v) • y)) atTop (𝓝 (φ ((∑' f, t f) y)))` using `(φ.continuous.tendsto _).comp h1`. Simplify using `only [map_smul, hφ, smul_eq_mul] at h2`. Establish `hy' : ((‖y‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr hy`. Establish `h3 : Tendsto (fun S => ∏ v ∈ S, z v) atTop (𝓝 (φ ((∑' f, t f) y) / ‖y‖))`. Use `(h2.div_const ((‖y‖ : ℂ))).congr (fun S => ?_)` and prove the remaining obligations.
-
-Conclude with `mul_div_cancel_right₀ _ hy'`. Establish `hP : HasProd z (φ ((∑' f, t f) y) / ‖y‖)` using `h3`. Rewrite using `[hP.tprod_eq]`. Conclude with `tendsto_nhds_unique h1 (h3.smul_const y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eulerOp_injective_eigen : ∀ (ι : Type) [DecidableEq ι] (X : ι → Type) (x0 : ∀ v, X v) (H : Type) [NormedAddCommGroup H] [NormedSpace ℂ H] [CompleteSpace H] (a : ∀ v, X v → ℂ) (s : ι → ℝ) (B : (∀ v, X v) → (H →L[ℂ] H)) (Z : ι → (H →L[ℂ] H)), (∀ v, a v (x0 v) = 1) → Summable s → (∀ v, s v < 1) → (∀ v (C : Finset (X v)), x0 v ∉ C → ∑ x ∈ C, ‖a v x‖ ≤ s v) → (∀ f, ‖B f‖ ≤ 1) → B x0 = 1 → (∀ v (f : ∀ v, X v), {w | f w ≠ x0 w}.Finite → f v = x0 v → HasSum (fun x => a v x • B (Function.update f v x)) (B f * Z v)) → ∃ W : H →L[ℂ] H, HasSum (fun f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} => (∏ᶠ v, a v (f.1 v)) • B f.1) W ∧ Function.Injective W ∧ ∀ (y : H) (z : ι → ℂ), (∀ v, Z v y = z v • y) → W y = (∏' v, z v) • y := by
   intro ι _ X x0 H _ _ _ a s B Z ha0 hs hs1 hC hB hB0 hZ

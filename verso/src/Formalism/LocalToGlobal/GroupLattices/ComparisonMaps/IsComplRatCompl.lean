@@ -11,12 +11,12 @@ variable {LL Kf : Type*} [Field LL] [Field Kf] {e : LL →+* Kf}
 def spanK (c0 : V0 →ₛₗ[e] W0) : Submodule Kf W0 := Submodule.span Kf (Set.range c0)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨x, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_spanK (c0 : V0 →ₛₗ[e] W0) (x : V0) : c0 x ∈ spanK c0 := Submodule.subset_span ⟨x, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (h := fun i a => a • c0 (b i)) (fun i => zero_smul _ _)]`. Use `conv_rhs => rw [← b.linearCombination_repr x]`. Rewrite using `[Finsupp.linearCombination_apply]`. Simplify using `only [Finsupp.sum, map_sum, LinearMap.map_smulₛₗ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lc_repr_lemma (c0 : V0 →ₛₗ[e] W0) (b : Module.Basis ι LL V0) (x : V0) :
     Finsupp.linearCombination Kf (fun i => c0 (b i)) (Finsupp.mapRange e (map_zero e) (b.repr x)) = c0 x := by
@@ -26,9 +26,7 @@ private theorem lc_repr_lemma (c0 : V0 →ₛₗ[e] W0) (b : Module.Basis ι LL 
   simp only [Finsupp.sum, map_sum, LinearMap.map_smulₛₗ]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨b i, rfl⟩)`. Rewrite using `[spanK, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← lc_repr_lemma c0 b x, ← Finsupp.range_linearCombination]`.
-
-Conclude with `LinearMap.mem_range_self _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_basis_eq (c0 : V0 →ₛₗ[e] W0) (b : Module.Basis ι LL V0) :
     Submodule.span Kf (Set.range fun i => c0 (b i)) = spanK c0 := by
@@ -40,9 +38,9 @@ theorem span_basis_eq (c0 : V0 →ₛₗ[e] W0) (b : Module.Basis ι LL V0) :
     exact LinearMap.mem_range_self _ _
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h1` using `linearIndependent_iff.1 hli _ ((lc_repr_lemma c0 b x).trans hx)`. Establish `h2 : b.repr x = 0`. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h3` using `DFunLike.congr_fun h1 i`. Simplify using `using h3`. Conclude with `b.repr.map_eq_zero_iff.1 h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inj_of_li (c0 : V0 →ₛₗ[e] W0) (b : Module.Basis ι LL V0)
     (hli : LinearIndependent Kf fun i => c0 (b i)) : Function.Injective c0 := by
@@ -58,7 +56,7 @@ theorem inj_of_li (c0 : V0 →ₛₗ[e] W0) (b : Module.Basis ι LL V0)
 def complK (c0 : V0 →ₛₗ[e] W0) : Submodule Kf W0 := Classical.choose (Submodule.exists_isCompl (spanK c0))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (Submodule.exists_isCompl (spanK c0))`.
+A detailed English derivation is pending.
 -/
 theorem isCompl_complK (c0 : V0 →ₛₗ[e] W0) : IsCompl (spanK c0) (complK c0) := Classical.choose_spec (Submodule.exists_isCompl (spanK c0))
 
@@ -74,9 +72,9 @@ def extK (c0 : V0 →ₛₗ[e] W0) (c1 : V1 →ₛₗ[e] W1) (b : Module.Basis �
       Submodule.projectionOnto (spanK c0) (complK c0) (isCompl_complK c0)
 
 /- English proof (translation)
-Establish `hm : c0 (b i) ∈ spanK c0` using `mem_spanK c0 (b i)`. Establish `hp` using `Submodule.projectionOnto_apply_left (isCompl_complK c0) ⟨c0 (b i), hm⟩`. Simplify using `only at hp`. Simplify using `only [extK, LinearMap.comp_apply]`. Rewrite using `[hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (LinearEquiv.ofEq _ _ (span_basis_eq c0 b).symm) (⟨c0 (b i), hm⟩ : spanK c0) = ⟨c0 (b i), Submodule.subset_span ⟨i, rfl⟩⟩` using `Subtype.ext rfl`. Rewrite using `[LinearEquiv.coe_toLinearMap, e2]`. Simplify using `only [extSpan, LinearMap.comp_apply]`. Rewrite using `[hli.repr_eq_single i _ rfl]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extK_basis (c0 : V0 →ₛₗ[e] W0) (c1 : V1 →ₛₗ[e] W1) (b : Module.Basis ι LL V0)
     (hli : LinearIndependent Kf fun i => c0 (b i)) (KL : V0 →ₗ[LL] V1) (i : ι) :
@@ -94,7 +92,7 @@ theorem extK_basis (c0 : V0 →ₛₗ[e] W0) (c1 : V1 →ₛₗ[e] W1) (b : Modu
   simp
 
 /- English proof (translation)
-Establish `e1 : ⇑(extK c0 c1 b hli KL) ∘ (fun i => c0 (b i)) = fun i => c1 (KL (b i))`. Use function extensionality and compare the values at `fun i => extK_basis c0 c1 b hli KL i`. Rewrite using `[← lc_repr_lemma c0 b x, Finsupp.apply_linearCombination, e1]`. Conclude with `lc_repr_lemma (c1.comp KL) b x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extK_apply (c0 : V0 →ₛₗ[e] W0) (c1 : V1 →ₛₗ[e] W1) (b : Module.Basis ι LL V0)
     (hli : LinearIndependent Kf fun i => c0 (b i)) (KL : V0 →ₗ[LL] V1) (x : V0) :
@@ -105,9 +103,9 @@ theorem extK_apply (c0 : V0 →ₛₗ[e] W0) (c1 : V1 →ₛₗ[e] W1) (b : Modu
   exact lc_repr_lemma (c1.comp KL) b x
 
 /- English proof (translation)
-Unfold `spanK at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, rfl⟩` from `hz`. Rewrite using `[hg, extK_apply]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add, map_add, hy, hz]`. Consider the case `smul a y _ hy => rw [map_smul, map_smul, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem extK_unique (c0 : V0 →ₛₗ[e] W0) (c1 : V1 →ₛₗ[e] W1) (b : Module.Basis ι LL V0)
     (hli : LinearIndependent Kf fun i => c0 (b i)) (KL : V0 →ₗ[LL] V1) (g : W0 →ₗ[Kf] W1)
@@ -122,7 +120,7 @@ theorem extK_unique (c0 : V0 →ₛₗ[e] W0) (c1 : V1 →ₛₗ[e] W1) (b : Mod
   | smul a y _ hy => rw [map_smul, map_smul, hy]
 
 /- English proof (translation)
-Establish `h1 : extK c0 c1 b hli KL y ∈ LinearMap.range (Finsupp.linearCombination Kf fun i => c1 (KL (b i)))` using `LinearMap.mem_range.2 ⟨_, rfl⟩`. Rewrite `h1` using `[Finsupp.range_linearCombination]`. Conclude with `Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨KL (b i), rfl⟩) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extK_mem_spanK (c0 : V0 →ₛₗ[e] W0) (c1 : V1 →ₛₗ[e] W1) (b : Module.Basis ι LL V0)
     (hli : LinearIndependent Kf fun i => c0 (b i)) (KL : V0 →ₗ[LL] V1) (y : W0) :
@@ -139,11 +137,11 @@ open TensorProduct
 variable {ι' : Type*}
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s g hs k hk`. Take `⟨φ, hφ⟩` from `LinearMap.exists_extend ((Finsupp.lapply k) ∘ₗ hv.repr)`. Set `c1 : LL →ₛₗ[e] Kf` to `{ toFun := e, map_add' := e.map_add, map_smul' := fun a x => e.map_mul a x }`. Establish `hφv : ∀ i, φ (v i) = if i = k then 1 else 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i`. Establish `h1` using `LinearMap.congr_fun hφ ⟨v i, Submodule.subset_span ⟨i, rfl⟩⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, Finsupp.lapply_apply] at h1`. Rewrite using `[h1, hv.repr_eq_single i _ rfl, Finsupp.single_apply]`. Establish `h2` using `congrArg (extK c0 c1 b hli φ) hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_sum, map_zero]`. Simplify using `only [map_smul, extK_apply] at h2`. Rewrite `h2` using `[Finset.sum_eq_single k (fun i _ hik => by rw [hφv, if_neg hik]; simp [c1]) (fun h => absurd hk h), hφv, if_pos rfl]`. Simplify `h2` using `[c1]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem li_core_lemma_2 {κ : Type*} (c0 : V0 →ₛₗ[e] W0) (b : Module.Basis ι LL V0)
     (hli : LinearIndependent Kf fun i => c0 (b i)) (v : κ → V0) (hv : LinearIndependent LL v) :
@@ -166,7 +164,7 @@ private theorem li_core_lemma_2 {κ : Type*} (c0 : V0 →ₛₗ[e] W0) (b : Modu
   simpa [c1] using h2
 
 /- English proof (translation)
-Conclude with `li_core_lemma_2 c0 b hli b' b'.linearIndependent`.
+A detailed English derivation is pending.
 -/
 theorem li_basis (c0 : V0 →ₛₗ[e] W0) (b : Module.Basis ι LL V0)
     (hli : LinearIndependent Kf fun i => c0 (b i)) (b' : Module.Basis ι' LL V0) :
@@ -174,7 +172,7 @@ theorem li_basis (c0 : V0 →ₛₗ[e] W0) (b : Module.Basis ι LL V0)
   exact li_core_lemma_2 c0 b hli b' b'.linearIndependent
 
 /- English proof (translation)
-Conclude with `li_core_lemma_2 c0 b hli v hv`.
+A detailed English derivation is pending.
 -/
 theorem li_of_li {κ : Type*} (c0 : V0 →ₛₗ[e] W0) (b : Module.Basis ι LL V0)
     (hli : LinearIndependent Kf fun i => c0 (b i)) (v : κ → V0) (hv : LinearIndependent LL v) :
@@ -199,7 +197,7 @@ def ratDom (e0 : V0 →ₛₗ[s] M0) (e1 : V1 →ₛₗ[s] M1) (f : M0 →ₗ[Cc
     exact ⟨a • y, by rw [LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, map_smul, hy]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ratDom (e0 : V0 →ₛₗ[s] M0) (e1 : V1 →ₛₗ[s] M1) (f : M0 →ₗ[Cc] M1) (x : V0) :
     x ∈ ratDom e0 e1 f ↔ ∃ y, e1 y = f (e0 x) := Iff.rfl
@@ -217,7 +215,7 @@ def ratPart (e0 : V0 →ₛₗ[s] M0) (e1 : V1 →ₛₗ[s] M1) (hinj : Function
     rw [Submodule.coe_smul, LinearMap.map_smulₛₗ, map_smul]
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec x.2`.
+A detailed English derivation is pending.
 -/
 theorem ratPart_spec (e0 : V0 →ₛₗ[s] M0) (e1 : V1 →ₛₗ[s] M1) (hinj : Function.Injective e1) (f : M0 →ₗ[Cc] M1)
     (x : ratDom e0 e1 f) : e1 (ratPart e0 e1 hinj f x) = f (e0 x) := Classical.choose_spec x.2
@@ -226,7 +224,7 @@ def ratCompl (e0 : V0 →ₛₗ[s] M0) (e1 : V1 →ₛₗ[s] M1) (f : M0 →ₗ[
   Classical.choose (Submodule.exists_isCompl (ratDom e0 e1 f))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (Submodule.exists_isCompl (ratDom e0 e1 f))`.
+A detailed English derivation is pending.
 -/
 theorem isCompl_ratCompl (e0 : V0 →ₛₗ[s] M0) (e1 : V1 →ₛₗ[s] M1) (f : M0 →ₗ[Cc] M1) :
     IsCompl (ratDom e0 e1 f) (ratCompl e0 e1 f) := Classical.choose_spec (Submodule.exists_isCompl (ratDom e0 e1 f))
@@ -237,9 +235,9 @@ def ratMap (e0 : V0 →ₛₗ[s] M0) (e1 : V1 →ₛₗ[s] M1) (hinj : Function.
     Submodule.projectionOnto (ratDom e0 e1 f) (ratCompl e0 e1 f) (isCompl_ratCompl e0 e1 f)
 
 /- English proof (translation)
-Establish `hx : x ∈ ratDom e0 e1 f` using `(mem_ratDom e0 e1 f x).2 ⟨y, h⟩`. Apply `hinj` to reduce the goal to its premises. Establish `hp` using `Submodule.projectionOnto_apply_left (isCompl_ratCompl e0 e1 f) ⟨x, hx⟩`. Simplify using `only at hp`. Simplify using `only [ratMap, LinearMap.comp_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify by unfolding definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[hp, ratPart_spec]`. Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratMap_eq (e0 : V0 →ₛₗ[s] M0) (e1 : V1 →ₛₗ[s] M1) (hinj : Function.Injective e1) (f : M0 →ₗ[Cc] M1)
     (x : V0) (y : V1) (h : e1 y = f (e0 x)) : ratMap e0 e1 hinj f x = y := by
@@ -252,7 +250,7 @@ theorem ratMap_eq (e0 : V0 →ₛₗ[s] M0) (e1 : V1 →ₛₗ[s] M1) (hinj : Fu
   exact h.symm
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `h x`. Rewrite using `[ratMap_eq e0 e1 hinj f x y hy]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratMap_spec (e0 : V0 →ₛₗ[s] M0) (e1 : V1 →ₛₗ[s] M1) (hinj : Function.Injective e1) (f : M0 →ₗ[Cc] M1)
     (h : ∀ x, ∃ y, e1 y = f (e0 x)) (x : V0) : e1 (ratMap e0 e1 hinj f x) = f (e0 x) := by

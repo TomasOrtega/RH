@@ -16,9 +16,9 @@ namespace GlobalTheory.HeightCounting.SerGlue
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B}
   {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'}
 /- English proof (translation)
-Establish `hD : Dof x'' = N.toD7` using `by show (w'.st x''.o.Z).toD7 = N.toD7`. Rewrite using `[ho]`. Both sides reduce to the same expression. Take `⟨ι', e', h⟩` from `copyAll_ex hN hG.pl hD`. Take `⟨h1, h2, h3, h4⟩` from `fr_same hE.1 ((heq_of_eq w'.C_eq).trans (hf.trans (heq_of_eq w.C_eq).symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, g'', hg, hg'', hX⟩` from `GlobalTheory.HeightCounting.SerMove.exists_geo_extN hExt x x''`. Establish `hO' : K.Over B.toPre` using `hE.1 ▸ hO`. Conclude with `⟨ι', e', h, ⟨(by with_unfolding_all exact (h1 :)), (by with_unfolding_all exact (h2 :)), (by with_unfolding_all exact (h3 :)), (by with_unfolding_all exact (h4 :))⟩, (by with_unfolding_all exact ((choice_heq hE.1 (p := (l.Pq)) (p' := (l''.Pq)) ((l.Pq_over)) ((l''.Pq_over)) (s := …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_move_alt (hKP : KPx B' f') (hF : Forced K B' T') (hS' : Start K B' f' T' w') (hO : K.Over B'.toPre)
     (hB : ∀ X : Stages, K.Over X.B.toPre → Formalism.IndefR.Links.HostHyp X.toD7 ∧ 8 * X.toD7.R.f * X.toD7.R.r + 4 ≤ X.toD7.R.nV)

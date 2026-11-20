@@ -28,11 +28,11 @@ noncomputable def centEquiv (G : HTGroup p) (P : Pair G) (hpos : ∀ y ∈ P.cen
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-Establish `hV : (toV G v P.β r : Matrix (Fin G.n) (Fin G.n) ℂ) = G.psi v (P.γ : G.C)` using `by show G.psi v (((r : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) = _`. Rewrite using `[hr]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, c, hc⟩`. Rewrite `hc` using `[hV]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨c, v, hv, z, hc, hz⟩`. Introduce and unpack `⟨μ, w, hw, z, hz, hpos⟩`. Establish `h1 : Fintype.card {v : InfinitePlace G.F // sigPosH (G.gram_herm v) = 1} ≤ 1` using `hG.le`. Establish `hvv : w = v` using `congrArg Subtype.val (Fintype.card_le_one_iff.1 h1 ⟨w, hw⟩ ⟨v, hv⟩)`. Substitute `hvv` using the available equality.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨z, hpos, μ, by rw [hV]; exact hz⟩`.
+Supply the required witnesses or components.
 -/
 theorem fix_iff_mark (G : HTGroup p) (hG : G.a = 1) (v : InfinitePlace G.F) (hv : sigPosH (G.gram_herm v) = 1)
     (P : Pair G) (r : grp G P.β) (hr : (r : G.Cˣ × ℚˣ) = (P.γ, P.c)) :

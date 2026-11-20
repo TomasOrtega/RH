@@ -8,7 +8,7 @@ open Polynomial
 namespace LateralTheory.CohomologicalPurity.Hz
 
 /- English proof (translation)
-Establish `h` using `modByMonic_add_div f (X - C a)`. Rewrite `h` using `[modByMonic_X_sub_C_eq_C_eval]`. Rewrite using `[add_comm]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma std_decomp {A : Type} [CommRing A] (f : A[X]) (a : A) :
     f = (X - C a) * (f /ₘ (X - C a)) + C (f.eval a) := by
@@ -17,7 +17,7 @@ lemma std_decomp {A : Type} [CommRing A] (f : A[X]) (a : A) :
   rw [add_comm]; exact h.symm
 
 /- English proof (translation)
-Use `conv_lhs => rw [std_decomp f a]`. Simplify using `[Polynomial.map_mul, Polynomial.map_sub]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma std_eval {A B : Type} [CommRing A] [CommRing B] (ψ : A →+* B) (f : A[X]) (a : A) (c : B) :
     (f.map ψ).eval c = (c - ψ a) * ((f /ₘ (X - C a)).map ψ).eval c + ψ (f.eval a) := by
@@ -25,7 +25,7 @@ lemma std_eval {A B : Type} [CommRing A] [CommRing B] (ψ : A →+* B) (f : A[X]
   simp [Polynomial.map_mul, Polynomial.map_sub]
 
 /- English proof (translation)
-Establish `h : f.derivative.eval a = (derivative ((X - C a) * (f /ₘ (X - C a)) + C (f.eval a))).eval a` using `congrArg (fun p => (derivative p).eval a) (std_decomp f a)`. Rewrite using `[h]`. Simplify using `[derivative_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma std_deriv {A : Type} [CommRing A] (f : A[X]) (a : A) :
     f.derivative.eval a = (f /ₘ (X - C a)).eval a := by
@@ -34,56 +34,50 @@ lemma std_deriv {A : Type} [CommRing A] (f : A[X]) (a : A) :
   rw [h]; simp [derivative_mul]
 
 /- English proof (translation)
-Rewrite using `[aeval_def, eval_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma aeval_eq_eval_map {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (p : A[X]) (x : B) :
     aeval x p = (p.map (algebraMap A B)).eval x := by
   rw [aeval_def, eval_map]
 
 /- English proof (translation)
-Introduce `A _ I f a hf hfa hu`. Use `set q := f /ₘ (X - C a) with hq`. Set `P : StandardEtalePair A` to `⟨f, hf, f.derivative * q, ⟨q, 0, 1, by ring⟩⟩`. Use `set φ := algebraMap A P.Ring with hφ`. Establish `hX` using `P.hasMap_X`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hroot : (f.map φ).eval P.X = 0`. Rewrite using `[← aeval_eq_eval_map]`. Conclude with `hX.1`. Establish `hgunit : IsUnit ((f.derivative.map φ).eval P.X * (q.map φ).eval P.X)`. Establish `h2` using `hX.2`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `IsUnit (aeval P.X (f.derivative * q)) at h2`. Rewrite `h2` using `[map_mul, aeval_eq_eval_map, aeval_eq_eval_map]`. Then use the resulting hypothesis. Establish `hqunit : IsUnit ((q.map φ).eval P.X)` using `isUnit_of_mul_isUnit_right hgunit`. Establish `hba : P.X - φ a ∈ I.map φ`. Establish `e` using `std_eval φ f a P.X`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[hroot]`. Establish `e2 : (P.X - φ a) * (q.map φ).eval P.X = -φ (f.eval a)` using `by linear_combination -e`. Take `⟨u, hu'⟩` from `hqunit`. Rewrite `e2` using `[← hu']`. Establish `e3 : P.X - φ a = ((P.X - φ a) * u) * ↑u⁻¹` using `by simp [mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e3, e2]`. Conclude with `Ideal.mul_mem_right _ _ (neg_mem (Ideal.mem_map_of_mem _ hfa))`. Establish `hmk : ∀ p : A[X], aeval (Ideal.Quotient.mk I a) p = Ideal.Quotient.mk I (p.eval a)`. Introduce `p`. Rewrite using `[← Ideal.Quotient.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `aeval_algebraMap_apply_eq_algebraMap_eval a p`. Establish `hga : IsUnit (Ideal.Quotient.mk I ((f.derivative * q).eval a))`. Rewrite using `[eval_mul, ← std_deriv, map_mul]`. Conclude with `hu.mul hu`. Establish `hm : P.HasMap (Ideal.Quotient.mk I a)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `aeval _ f = 0`. Rewrite using `[hmk]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hfa`. Express the relevant statement in the definitionally equal form `IsUnit (aeval _ (f.derivative * q))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hmk]`. Conclude with `hga`. Use `⟨P.Ring, inferInstance, φ, P.X, (RingHom.etale_algebraMap).mpr inferInstance, ⟨(P.lift _ hm : P.Ring →+* A ⧸ I), (AlgHom.comp_algebraMap (P.lift _ hm)).trans (Ideal.Quotient.algebraMap_eq I)⟩, ?_, hroot, hba, ?_, ?_⟩` and prove the remaining obligations. Use `set J := I.map φ with hJ`. Set `π` to `Ideal.Quotient.mk J`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `R'` to `(π.comp φ).range`. Establish `hXm : π P.X ∈ R'` using `⟨a, (Ideal.Quotient.eq.mpr hba).symm⟩`. Take `⟨v, hv⟩` from `hga`. Take `⟨u, hu2⟩` from `Ideal.Quotient.mk_surjective (↑v⁻¹ : A ⧸ I)`. Establish `hgu : ((f.derivative * q).eval a) * u - 1 ∈ I`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq, map_mul, map_one, ← hv, hu2]`. Simplify using the standard rewrite rules. Establish `hgb : π (aeval P.X P.g) = π (φ ((f.derivative * q).eval a))`. Apply `Ideal.Quotient.eq.mpr` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `aeval P.X (f.derivative * q) - _ ∈ J`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[aeval_eq_eval_map, ← hφ]`. Establish `hd` using `sub_dvd_eval_sub P.X (φ a) ((f.derivative * q).map φ)`. Establish `hev : ((f.derivative * q).map φ).eval (φ a) = φ ((f.derivative * q).eval a)`. Rewrite using `[eval_map, eval₂_at_apply]`. Rewrite `hd` using `[hev]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `hd`. Rewrite using `[hw]`. Conclude with `Ideal.mul_mem_right _ _ hba`. Set `mkP : A[X][X] →+* P.Ring` to `Ideal.Quotient.mk (Ideal.span {C P.f, X * C P.g - 1})`. Establish `hY : π (mkP X) ∈ R'`.
+Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, ?_⟩` and prove the remaining obligations. Establish `h1 : aeval P.X P.g * mkP X = 1` using `P.aeval_X_g_mul_mk_X`. Establish `e1 : π (aeval P.X P.g) * π (mkP X) = 1` using `by rw [← map_mul, h1, map_one]`. Establish `h3 : π (φ ((f.derivative * q).eval a)) * π (φ u) = 1`. Rewrite using `[← map_mul, ← map_mul, ← map_one π, ← map_one φ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq.mpr (by rw [← map_sub]; exact Ideal.mem_map_of_mem _ hgu)`. Express the relevant statement in the definitionally equal form `π (φ u) = _`. Take the linear combination `(-π (φ u)) * e1 + (π (mkP X) * π (φ u)) * hgb + π (mkP X) * h3`. Establish `hin : ∀ c : A[X], π (mkP (C c)) ∈ R'`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Polynomial.induction_on c (fun a0 => ⟨a0, rfl⟩) ?_ ?_` and prove the remaining obligations. Introduce `p1 p2 h1 h2`. Rewrite using `[C_add, map_add, map_add]`. Conclude with `add_mem h1 h2`. Introduce `n a0 ih`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[pow_succ, ← mul_assoc, C_mul, map_mul, map_mul]`. Conclude with `mul_mem ih hXm`. Establish `hall : ∀ p : A[X][X], π (mkP p) ∈ R'`. Introduce `p`. Use `Polynomial.induction_on p hin ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `p1 p2 h1 h2`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem h1 h2`. Introduce `n a0 ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, map_mul]`.
+By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_mem ih hY`. Introduce `s`. Take `⟨p, rfl⟩ : ∃ p, mkP p = s` from `Ideal.Quotient.mk_surjective s`. Take `⟨a', ha'⟩` from `hall p`. Conclude with `⟨a', Ideal.Quotient.eq.mp ha'.symm⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `B _ χ₁ χ₂ h hb`. Use `letI : Algebra A B := (χ₁.comp φ).toAlgebra`. Set `e₁ : P.Ring →ₐ[A] B` to `⟨χ₁, fun _ => rfl⟩`. Set `e₂ : P.Ring →ₐ[A] B` to `⟨χ₂, fun r => (congrArg (fun g : A →+* B => g r) h).symm⟩`. Use `StandardEtalePair.hom_ext (f := e₁) (g := e₂) hb` as an intermediate fact.
-
-Use extensionality with `s`. Conclude with `congrArg (fun e : P.Ring →ₐ[A] B => e s) this`. Introduce `B _ ψ c hc h1 h2`. Use `letI : Algebra A B := ψ.toAlgebra`. Establish `hm' : P.HasMap c`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `aeval c f = 0`. Rewrite using `[aeval_eq_eval_map]`. Conclude with `hc`. Express the relevant statement in the definitionally equal form `IsUnit (aeval c (f.derivative * q))`.
-
-Rewrite using `[map_mul, aeval_eq_eval_map, aeval_eq_eval_map]`. Conclude with `h1.mul h2`. Conclude with `⟨(P.lift c hm' : P.Ring →+* B), AlgHom.comp_algebraMap (P.lift c hm'), P.lift_X c hm'⟩`.
+A detailed English derivation is pending.
 -/
 theorem LeafRootStd_of : LeafRootStd := by
   intro A _ I f a hf hfa hu

@@ -10,7 +10,7 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.sepSt | exact GlobalTheory.Poinc.Sep.sepSt | (intros; apply GlobalTheory.Poinc.Sep.sepSt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.chartSeparation_data_defined_over_centre_field : GlobalTheory.Poinc.Sep.SepSt := by
   first | exact @GlobalTheory.Poinc.Sep.sepSt | exact GlobalTheory.Poinc.Sep.sepSt | (intros; apply GlobalTheory.Poinc.Sep.sepSt <;> assumption)

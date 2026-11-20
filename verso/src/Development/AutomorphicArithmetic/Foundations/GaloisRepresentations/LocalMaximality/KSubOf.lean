@@ -4,23 +4,21 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `gl sub S E _ _ _ _ act κ _ _ R M r hst hr`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `d e hK m hm c hc`. Establish `hW : WOk (fun _ : Finset κ => M) (fun l => act (r l))`. Use `⟨fun i j => ?_, fun s i _ x hx => hst _ (hr i) x hx⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show act (r i) * act (r j) = act (r j) * act (r i)`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Establish `hQ` using `sub S E act κ M r d e hK`. Establish `hcard : (img e).card = d` using `by simp [img]`. Use `gl κ E (fun _ => M) (fun l => act (r l)) (img e) d m hW hQ c hc ?_ ⟨0, Submodule.zero_mem _, fun _ _ => rfl, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. It suffices to derive a contradiction. Apply `hs` to reduce the goal to its premises. Establish `h1 : (s ∩ img e).card ≤ (img e).card` using `Finset.card_le_card Finset.inter_subset_right`. Rewrite `h1` using `[hcard]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1` after adjusting the coercions. Introduce `s hs`. Establish `h1 : (s ∩ img e).card ≤ s.card` using `Finset.card_le_card Finset.inter_subset_left`. Establish `hne : (s.card : ℤ) ≠ m`. Establish `: ((s ∩ img e).card : ℤ) ≤ s.card` using `by exact_mod_cast h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : c s ∈ (if (s.card : ℤ) = m then M else ⊥ : Submodule ℂ E)` using `hc.1 s (Set.mem_univ s)`. Rewrite `h2` using `[if_neg hne, Submodule.mem_bot]`. Rewrite using `[h2, map_zero]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n c hc L`. Take `⟨y, hy, rfl⟩` from `hc`. Establish `hval : ∀ i ∈ L, y (L.erase i) ∈ M`. Introduce `i _`. Establish `h2 : y (L.erase i) ∈ (if ((L.erase i).card : ℤ) = n - 1 then M else ⊥ : Submodule ℂ E)` using `hy (L.erase i) (Set.mem_univ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs at h2 with h`. Conclude with `h2`. Rewrite `h2` using `[Submodule.mem_bot]`. Rewrite using `[h2]`. Conclude with `M.zero_mem`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hexp : (kos act M r).D y L = ∑ i ∈ L, (GlobalTheory.cubeSign L i : ℤ) • act (r i) (y (L.erase i))`. Simplify using `[kos, acx, wd]`. Rewrite using `[hexp]`. Use `Submodule.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Use `Submodule.smul_of_tower_mem _ _ ?_` and prove the remaining obligations.
-
-Establish `h3 : act (r i) (y (L.erase i)) ∈ M.map (act (r i))` using `⟨_, hval i hi, rfl⟩`. Conclude with `(le_iSup₂_of_le (r i) (Set.mem_range_self i) le_rfl : M.map (act (r i)) ≤ sm act M (Set.range r)) h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.kSub_of :
     FiltrationBoundaryCriterion → SubQEx → KSub := by

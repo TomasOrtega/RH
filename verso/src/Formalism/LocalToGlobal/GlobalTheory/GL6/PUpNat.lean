@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.L2.Forms NumberField IsDedekindDomain Matr
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Introduce `τ`. Rewrite using `[Equiv.apply_symm_apply]`. Use `show ((Tf.val i hi).eY s).1 τ = atInf (embT D) (γ.1 : Matrix _ _ D.host.E) τ * (atInf (embT D) ((γ.1⁻¹ : GL _ D.host.E) : Matrix _ _ D.host.E) τ * ((Tf.val i hi).eY s).1 τ)`. Rewrite using `[← Matrix.mul_assoc, at_infinity_mul_inv, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upn_isTr_inv (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) (γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi))
     (s : (D.mem u).C.Y i) :
@@ -27,7 +27,7 @@ theorem upn_isTr_inv (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) (γ : UJ 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `i hi v c z hz`. Take `⟨γ, η, κ, h1, h2, h3, h4, h5, h6⟩` from `Tf.upN i hi v c z hz`. Use `⟨γ, η, κ, h1, h2, h3, h4, h5, fun h => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Rewrite using `[h6 h s _ (upn_isTr_inv Tf i hi γ s), Units.val_inv_eq_inv_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -42,7 +42,7 @@ theorem upNat_of_tied (Tf : FormsTied D u) : UpNat Tf := by
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `i hi v c g hg0`. Take `⟨γ, η, κ, h1, h2, h3, h4, h5⟩` from `Tf.dnN i hi v c g hg0`. Use `⟨γ, η, κ, h1, h2, h3, h4, fun h => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Rewrite using `[h5 h s _ (upn_isTr_inv Tf i hi γ s), Units.val_inv_eq_inv_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -55,19 +55,19 @@ theorem dnNat_of_tied (Tf : FormsTied D u) : DnNat Tf := by
   rfl
 
 /- English proof (translation)
-The claim follows from `rnd_roundUpN Tf (upNat_of_tied Tf) (dnNat_of_tied Tf) hL`.
+A detailed English derivation is pending.
 -/
 theorem rnd_roundUp_ofM (Tf : FormsTied D u) (hL : RUpLocM Tf) : Formalism.MainNotions.product_first_zeroth_parts.RoundUp D u :=
   rnd_roundUpN Tf (upNat_of_tied Tf) (dnNat_of_tied Tf) hL
 
 /- English proof (translation)
-The claim follows from `rnd_roundDnN Tf (upNat_of_tied Tf) (dnNat_of_tied Tf) hL`.
+A detailed English derivation is pending.
 -/
 theorem rnd_roundDn_ofM (Tf : FormsTied D u) (hL : RDnLocM Tf) : Formalism.MainNotions.product_first_zeroth_parts.RoundDn D u :=
   rnd_roundDnN Tf (upNat_of_tied Tf) (dnNat_of_tied Tf) hL
 
 /- English proof (translation)
-The claim follows from `rnd_linkAdmT_ofN fun D u Tf hc => ⟨upNat_of_tied Tf, dnNat_of_tied Tf, (h D u Tf hc).1, (h D u Tf hc).2, splitAtT_of_tied Tf.atT⟩`.
+A detailed English derivation is pending.
 -/
 theorem rnd_linkAdmT_ofM
     (h : ∀ (D : D7) (u : D.what₂.Word) (Tf : FormsTied D u), ChiFin Tf → RUpLocM Tf ∧ RDnLocM Tf) :

@@ -13,11 +13,11 @@ noncomputable section
 namespace BlockImageMetrics
 
 /- English proof (translation)
-Use `set Lr : (E → ℂ) →L[ℝ] (F → ℂ) := L.restrictScalars ℝ with hLr`. Establish `hev : fderiv ℝ (fun y => φ (L y)) =ᶠ[𝓝 z] fun y => (fderiv ℝ φ (Lr y)).comp Lr`. Establish `h1 : ∀ᶠ x in 𝓝 (L z), ContDiffAt ℝ 2 φ x` using `hφ.eventually (by simp)`. Establish `h2 : ∀ᶠ y in 𝓝 z, ContDiffAt ℝ 2 φ (L y)` using `(L.continuous.tendsto z).eventually h1`. Use `filter_upwards [h2] with y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : DifferentiableAt ℝ φ (Lr y)` using `hy.differentiableAt (by norm_num)`. Conclude with `(hd.hasFDerivAt.comp y Lr.hasFDerivAt).fderiv`. Establish `hd2 : DifferentiableAt ℝ (fderiv ℝ φ) (Lr z)` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hD : HasFDerivAt (fun y => (fderiv ℝ φ (Lr y)).comp Lr) ((ContinuousLinearMap.compL ℝ (E → ℂ) (F → ℂ) ℝ (fderiv ℝ φ (Lr z))).comp 0 + ((ContinuousLinearMap.compL ℝ (E → ℂ) (F → ℂ) ℝ).flip Lr).comp ((fderiv ℝ (fderiv ℝ φ) (Lr z)).comp Lr)) z` using `(hd2.hasFDerivAt.comp z Lr.hasFDerivAt).clm_comp (hasFDerivAt_const Lr z)`. Establish `hIw : L (Complex.I • w) = Complex.I • L w` using `L.map_smul _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `leviForm`. Rewrite using `[hev.fderiv_eq, hD.fderiv]`. Simplify using `[hLr, hIw]`.
+A detailed English derivation is pending.
 -/
 theorem leviForm_comp_clm {E F : Type} [Fintype E] [Fintype F] (L : (E → ℂ) →L[ℂ] (F → ℂ))
     {φ : (F → ℂ) → ℝ} {z : E → ℂ} (hφ : ContDiffAt ℝ 2 φ (L z)) (w : E → ℂ) :
@@ -42,11 +42,9 @@ theorem leviForm_comp_clm {E F : Type} [Fintype E] [Fintype F] (L : (E → ℂ) 
   simp [hLr, hIw]
 
 /- English proof (translation)
-Establish `hsm : ∀ z, L z ≠ 0 → ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fsMetric F).ρ (L z)` using `fun z hz => (isSmoothMetric_fs (J := F) (L z) hz).contDiffAt (isOpen_ne.mem_nhds hz)`. Use `⟨?_, fun z hz w _ => ?_⟩` and prove the remaining obligations. Unfold `IsSmoothHerm`. Rewrite using `[hA]`. Introduce `z hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((hsm z (hL z hz)).comp z (L.restrictScalars ℝ).contDiff.contDiffAt).contDiffWithinAt`. Establish `hz0` using `hL z hz.1`. Establish `hlog : ContDiffAt ℝ 2 (fun x => Real.log ((fsMetric F).ρ x)) (L z)` using `((hsm z hz0).of_le (WithTop.coe_le_coe.2 le_top)).log ((fsMetric F).pos _ hz0).ne'`. Rewrite using `[show (fun z => Real.log (A.h z)) = fun y => (fun x => Real.log ((fsMetric F).ρ x)) (L y) by rw [hA]]`. Rewrite using `[leviForm_comp_clm L hlog w]`.
-
-Conclude with `leviForm_log_fs_nonneg hz0 _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSemipositiveRel_of_linear {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {F : Type}
     [Fintype F] (A : HermLine ι) (L : ((Σ k, ι k) → ℂ) →L[ℂ] (F → ℂ))
@@ -70,7 +68,7 @@ def matCLM {κ J : Type} [Fintype κ] [Fintype J] (N : Matrix κ J ℤ) : (J →
   LinearMap.toContinuousLinearMap (Matrix.mulVecLin (N.map (Int.cast : ℤ → ℂ)))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[matCLM, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matCLM_apply {κ J : Type} [Fintype κ] [Fintype J] (N : Matrix κ J ℤ) (u : J → ℂ) :
     matCLM N u = fun i => ∑ j, (N i j : ℂ) * u j := by
@@ -87,13 +85,13 @@ theorem blockCLM_apply {K : Type} {ι : K → Type} (k₀ : K) (z : (Σ k, ι k)
     blockCLM k₀ z = fun i => z ⟨k₀, i⟩ := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `κ J _ _ N hN P`. Use `isSemipositiveRel_of_linear _ (matCLM N) ?_ ?_ ⊥ P` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Rewrite using `[matCLM_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `z hz h0`. Rewrite `h0` using `[matCLM_apply]`. Take `⟨i, hi⟩` from `hz ()`. Conclude with `hi (congrFun (hN z h0) _)`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `K _ _ ι _ k₀ P`. Use `isSemipositiveRel_of_linear _ (blockCLM k₀) ?_ ?_ ⊥ P` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Rewrite using `[blockCLM_apply]`. Simplify using `only [HermLine.ofMetrics]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_eq_single k₀ (fun k _ hk => by simp [unitDeg, hk]) (by simp)]`. Simplify using `[unitDeg]`. Introduce `z hz h0`. Take `⟨i, hi⟩` from `hz k₀`. Conclude with `hi (congrFun h0 i)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem proof : BlockImageMetrics.Statement := by
   constructor

@@ -10,7 +10,7 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 open ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `A hA ha W d hd hW _`. Take `⟨rfl, rfl⟩` from `eq_bot_of_isArithVar_line hd hW`. Rewrite using `[LineChart.geomDeg_eq_degree hL hA]`. Conclude with `ha` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ProjLineAmple.proof (hL : LaplacianLogGrowth.Statement) : ProjLineAmple.Statement := by
   intro A hA ha W d hd hW _

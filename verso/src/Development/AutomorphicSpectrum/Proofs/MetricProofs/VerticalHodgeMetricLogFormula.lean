@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ hx, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem zpow_finset_sum_divisor {α : Type*} (s : Finset α) (f : α → ℤ) {x : ℝ} (hx : x ≠ 0) :
     x ^ (∑ p ∈ s, f p) = ∏ p ∈ s, x ^ f p := by
@@ -25,15 +25,15 @@ private theorem zpow_finset_sum_divisor {α : Type*} (s : Finset α) (f : α →
   | @insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ hx, ih]
 
 /- English proof (translation)
-Introduce `K _ J _ II Ψ _ Ω _ _ W _ _ D Hd B z hz`. Establish `hP : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomogIdeal (ReciprocityTheory.ChartRestriction.G.Geo.mCoordIdeal D.y)` using `D.arith.2.1.2.1`. Establish `hpos` using `GroundTheory.Heights₂.Heights.LowerBoundFree.VertFactorPos.proof`. Establish `hsmooth` using `GroundTheory.Heights₂.Heights.LowerBoundFree.VertFactorSmooth.proof hpos`. Establish `hSB : ∀ p ∈ D.SB B, p ∈ D.S` using `fun p hp => (Finset.mem_filter.mp hp).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0` using `hz.1`. Establish `hLpos : 0 < (muLine Hd).h z` using `(muLine Hd).pos z hnz`. Establish `hVpos : ∀ p ∈ D.SB B, 0 < D.vertFactor p z` using `fun p hp => hpos II Ψ K J Ω W D p (hSB p hp) z hz`. Establish `hPpos : 0 < ∏ p ∈ D.SB B, D.vertFactor p z` using `Finset.prod_pos hVpos`. Establish `hF : (muVert Hd B).h z = (muLine Hd).h z * ∏ p ∈ D.SB B, D.vertFactor p z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `muVert`. Use `GroundTheory.Heights₂.Heights.LowerBoundFree.NbarSmooth.hermOfFun_h_of_mem hP ?_ hz (mul_pos hLpos hPpos)` and prove the remaining obligations. Introduce `w hw c hc`. Establish `hc' : ∀ k, ‖c k‖ ≠ 0` using `fun k => norm_ne_zero_iff.mpr (hc k)`. Establish `h1 : (muLine Hd).h (torusSmul c w) = (∏ k, ‖c k‖ ^ Hd.aMu k) * (muLine Hd).h w` using `(muLine Hd).smul c w hc`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ p ∈ D.SB B, D.vertFactor p (torusSmul c w) = (∏ k, ‖c k‖ ^ D.vdeg p k) * D.vertFactor p w` using `fun p hp => (hsmooth II Ψ K J Ω W D p (hSB p hp)).1 w hw c hc`. Establish `h3 : ∏ k, ‖c k‖ ^ muTwDeg Hd B k = (∏ k, ‖c k‖ ^ Hd.aMu k) * ∏ p ∈ D.SB B, ∏ k, ‖c k‖ ^ D.vdeg p k`. Rewrite using `[Finset.prod_comm, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [muTwDeg, Pi.add_apply, Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[zpow_add₀ (hc' k), zpow_finset_sum_divisor _ _ (hc' k)]`. Rewrite using `[h1, Finset.prod_congr rfl h2, Finset.prod_mul_distrib, h3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hF, Real.log_mul hLpos.ne' hPpos.ne', Real.log_prod fun p hp => (hVpos p hp).ne']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_muVert_h_of_mem : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (Hd : HodgeData D) (B : ℕ), ∀ z ∈ mcPts (mCoordIdeal D.y), Real.log ((muVert Hd B).h z) = Real.log ((muLine Hd).h z) + ∑ p ∈ D.SB B, Real.log (D.vertFactor p z) := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D Hd B z hz

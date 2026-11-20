@@ -13,11 +13,11 @@ namespace PositivityTheory.SiegelWeilFormula.AStep
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨hc, hfr⟩ : ∃ hc : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ, GlobalTheory.ThK.Dbl.inFrame d.b ((R.ι w) y) = Matrix.fromBlocks (↑(dilT hc w i₀ τ)) 0 0 ↑(dilT hc w i₀ (-τ))` from `⟨_, inFrame_dil' R w i₀ τ y hy⟩`. Take `⟨t, ht, hdet⟩` from `PositivityTheory.SiegelWeilFormula.Avac.isPar_of_frame d (R.ι w y) (by rw [hfr, Matrix.toBlocks_fromBlocks₂₁])`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PositivityTheory.SiegelWeilFormula.Avac.a_mul_par d ht h]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hdt : Matrix.GeneralLinearGroup.det t = Matrix.GeneralLinearGroup.det (dilT hc w i₀ τ)`. Use `ext`. Rewrite using `[hdet, hfr, Matrix.toBlocks_fromBlocks₁₁, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[hdt, det_dilT]`. Conclude with `absE_adrU hc w τ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, t', hp, k, hk, rfl⟩` from `d.ok.hgt.iwa h`. Rewrite using `[d.ok.hgt.val p t' hp k hk]`. Conclude with `NNReal.coe_nonneg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem a_dil {d : SD σ} (R : RD d) (w : InfinitePlace F) (i₀ : Fin d.n) (τ : ℝ) (y : GR d.n)
     (hy : IsDil (Pi.single i₀ 1) τ y) (h : d.G) : d.a (R.ι w y * h) = Real.exp (2 * τ) * d.a h ∧ 0 ≤ d.a h := by

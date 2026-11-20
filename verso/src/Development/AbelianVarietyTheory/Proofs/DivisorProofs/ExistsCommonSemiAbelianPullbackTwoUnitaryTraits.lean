@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.UPoinc.TraitUniq
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Conclude with `hK a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem jK_comp_spMap {V W : Type} [CommRing V] [IsDomain V] [CommRing W] [IsDomain W] (f : V →+* W)
     (fK : FractionRing V →+* FractionRing W) (hK : ∀ a, fK (algebraMap V _ a) = algebraMap W _ (f a)) :
@@ -28,13 +28,13 @@ theorem jK_comp_spMap {V W : Type} [CommRing V] [IsDomain V] [CommRing W] [IsDom
   exact hK a
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T T' W _ _ _ f f' fK fK' _ hdvr _ _ _ _ hK hK' hy`. Take `⟨tW, ⟨mW⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (spMap f) T.t`. Take `⟨tW', ⟨mW'⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (spMap f') T'.t`. Take `⟨tK, ⟨a⟩, ⟨b⟩⟩` from `T.gen`. Take `⟨tK', ⟨a'⟩, ⟨b'⟩⟩` from `T'.gen`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨uK, ⟨n⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (spMap fK ≫ T.y ≫ pullback.fst _ _) Xo.univ.t`. Take `⟨c₁⟩` from `GlobalTheory.TraitOrder.cancel rfl b n`. Establish `e' : spMap fK' ≫ T'.y ≫ pullback.fst _ _ = spMap fK ≫ T.y ≫ pullback.fst _ _`. Rewrite using `[← Category.assoc, ← hy, Category.assoc]`. Take `⟨c₂⟩` from `GlobalTheory.TraitOrder.cancel e' b' n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨d₁⟩` from `GlobalTheory.TraitOrder.comp (jK_comp_spMap f fK hK) a c₁`. Take `⟨d₂⟩` from `GlobalTheory.TraitOrder.comp (jK_comp_spMap f' fK' hK') a' c₂`. Take `⟨x₁⟩` from `GlobalTheory.TraitOrder.cancel rfl mW d₁`. Take `⟨x₂⟩` from `GlobalTheory.TraitOrder.cancel rfl mW' d₂`. Take `⟨ψ, -⟩` from `GlobalTheory.ModelUniqueChecks.existsUnique_map W (FractionRing W) tW tW' uK x₁ x₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨tW, ⟨mW⟩, GlobalTheory.TraitOrder.comp (Category.id_comp _) mW' ψ⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_common_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l)
     (c : Coeff l) (T T' : UTrait Xo c) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (f : T.V →+* W)

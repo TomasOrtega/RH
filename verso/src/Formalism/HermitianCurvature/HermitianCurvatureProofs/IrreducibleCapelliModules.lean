@@ -13,51 +13,51 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt
 
 /- English proof (translation)
-The claim follows from `qr_capSing_of singular_dominant exists_singular_maximal_vector`.
+A detailed English derivation is pending.
 -/
 theorem capelli_singular : Qr.CapSing := qr_capSing_of singular_dominant exists_singular_maximal_vector
 
 /- English proof (translation)
-The claim follows from `qr_topWeightSing_of exists_singular_maximal_vector capelli_singular`.
+A detailed English derivation is pending.
 -/
 theorem top_weight_singular : Qr.TopWeightSing := qr_topWeightSing_of exists_singular_maximal_vector capelli_singular
 
 /- English proof (translation)
-The claim follows from `qr_vecDown_of quantum_minor_polynomial polynomial_vanishing`.
+A detailed English derivation is pending.
 -/
 theorem vector_descent : Qr.VecDown := qr_vecDown_of quantum_minor_polynomial polynomial_vanishing
 
 /- English proof (translation)
-The claim follows from `qr_raiseNZ_of covariant_raising`.
+A detailed English derivation is pending.
 -/
 theorem raising_nonzero : Qr.RaiseNZ := qr_raiseNZ_of covariant_raising
 
 /- English proof (translation)
-The claim follows from `qr_lowerNZ_of vector_descent`.
+A detailed English derivation is pending.
 -/
 theorem lowering_nonzero : Qr.LowerNZ := qr_lowerNZ_of vector_descent
 
 /- English proof (translation)
-The claim follows from `qr_decomp_of exists_singular_maximal_vector capelli_singular capelli_stabilizer submodule_relations covariant_raising vector_descent raising_nonzero lowering_nonzero`.
+A detailed English derivation is pending.
 -/
 theorem branching_decomposition : Qr.Decomp :=
   qr_decomp_of exists_singular_maximal_vector capelli_singular capelli_stabilizer submodule_relations covariant_raising vector_descent
     raising_nonzero lowering_nonzero
 
 /- English proof (translation)
-The claim follows from `qr_multOne_of exists_singular_maximal_vector dual_minor span_singular_vectors`.
+A detailed English derivation is pending.
 -/
 theorem multiplicity_one : Qr.MultOne := qr_multOne_of exists_singular_maximal_vector dual_minor span_singular_vectors
 
 /- English proof (translation)
-The claim follows from `qr_irredCap_of exists_singular_maximal_vector capelli_singular capelli_stabilizer submodule_relations top_weight_singular dual_minor span_top_vectors multiplicity_one branching_decomposition capelli_independence`.
+A detailed English derivation is pending.
 -/
 theorem irreducible_capelli_modules : Qr.IrredCap :=
   qr_irredCap_of exists_singular_maximal_vector capelli_singular capelli_stabilizer submodule_relations top_weight_singular
     dual_minor span_top_vectors multiplicity_one branching_decomposition capelli_independence
 
 /- English proof (translation)
-The claim follows from `qr_branchingAlg_of branching_decomposition capelli_independence irreducible_capelli_modules`.
+A detailed English derivation is pending.
 -/
 theorem branching_algebraic : Qr.BranchingAlg := qr_branchingAlg_of branching_decomposition capelli_independence irreducible_capelli_modules
 

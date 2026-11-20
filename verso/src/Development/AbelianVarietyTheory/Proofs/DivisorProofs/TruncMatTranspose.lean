@@ -17,7 +17,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def idem (T : Finset (Pl F)) : AF F := ∑ v ∈ T, GlobalTheory.LatVac.liftV v 1
 
 /- English proof (translation)
-Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, GlobalTheory.LatVac.evFin_liftV]`. Rewrite using `[if_neg h]`. Conclude with `GlobalTheory.ThK.LocalOps.evFin_of_at h (GlobalTheory.LatVac.at_liftV v 1)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evFin_liftV_one (v w : Pl F) : evFin F w (GlobalTheory.LatVac.liftV v 1) = if w = v then 1 else 0 := by
   by_cases h : w = v
@@ -25,7 +25,7 @@ theorem evFin_liftV_one (v w : Pl F) : evFin F w (GlobalTheory.LatVac.liftV v 1)
   · rw [if_neg h]; exact GlobalTheory.ThK.LocalOps.evFin_of_at h (GlobalTheory.LatVac.at_liftV v 1)
 
 /- English proof (translation)
-Simplify using `only [idem, map_sum, evFin_liftV_one]`. Rewrite using `[Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evFin_idem (T : Finset (Pl F)) (w : Pl F) : evFin F w (idem T) = if w ∈ T then 1 else 0 := by
   classical
@@ -33,7 +33,7 @@ theorem evFin_idem (T : Finset (Pl F)) (w : Pl F) : evFin F w (idem T) = if w �
   rw [Finset.sum_ite_eq]
 
 /- English proof (translation)
-Use `conv_lhs => rw [idem, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ThK.LocalOps.liftV_one_mul, ← idem, evFin_idem, if_pos hv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mul_idem (T : Finset (Pl F)) : idem T * idem T = idem T := by
   classical
@@ -42,7 +42,7 @@ theorem idem_mul_idem (T : Finset (Pl F)) : idem T * idem T = idem T := by
   rw [GlobalTheory.ThK.LocalOps.liftV_one_mul, ← idem, evFin_idem, if_pos hv]
 
 /- English proof (translation)
-Rewrite using `[idem, Finset.sum_insert hv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem idem_insert {T : Finset (Pl F)} {v : Pl F} (hv : v ∉ T) :
     idem (insert v T) = GlobalTheory.LatVac.liftV v 1 + idem T := by
@@ -50,14 +50,14 @@ theorem idem_insert {T : Finset (Pl F)} {v : Pl F} (hv : v ∉ T) :
   rw [idem, Finset.sum_insert hv]; rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ThK.LocalOps.liftV_one_mul, evFin_idem, if_neg hv, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem liftV_mul_idem {T : Finset (Pl F)} {v : Pl F} (hv : v ∉ T) : GlobalTheory.LatVac.liftV v 1 * idem T = 0 := by
   classical
   rw [GlobalTheory.ThK.LocalOps.liftV_one_mul, evFin_idem, if_neg hv, map_zero]
 
 /- English proof (translation)
-Simplify using `[idem]`.
+Simplify using the standard rewrite rules.
 -/
 theorem idem_singleton (v : Pl F) : idem ({v} : Finset (Pl F)) = GlobalTheory.LatVac.liftV v 1 := by
   simp [idem]
@@ -65,7 +65,7 @@ theorem idem_singleton (v : Pl F) : idem ({v} : Finset (Pl F)) = GlobalTheory.La
 def truncMat {n : ℕ} (e : AF F) (A : Matrix (Fin n) (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E) := 1 + e • (A - 1)
 
 /- English proof (translation)
-Simplify using `only [truncMat, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he, Matrix.sub_mul, Matrix.mul_sub, h]`. Establish `he2 : e ^ 2 = e` using `by rw [sq, he]`. Apply the tactic sequence `match_scalars <;> ring_nf <;> simp only [he2] <;> ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem truncMat_mul {n : ℕ} {e : AF F} (he : e * e = e) {A B : Matrix (Fin n) (Fin n) (AE F E)} (h : A * B = 1) :
     truncMat e A * truncMat e B = 1 := by
@@ -75,14 +75,14 @@ theorem truncMat_mul {n : ℕ} {e : AF F} (he : e * e = e) {A B : Matrix (Fin n)
   match_scalars <;> ring_nf <;> simp only [he2] <;> ring
 
 /- English proof (translation)
-Simplify using `[truncMat, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem truncMat_transpose {n : ℕ} (e : AF F) (A : Matrix (Fin n) (Fin n) (AE F E)) :
     (truncMat e A)ᵀ = truncMat e Aᵀ := by
   simp [truncMat, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_sub]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [truncMat, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem truncMat_map (σ : E →ₐ[F] E) {n : ℕ} (e : AF F) (A : Matrix (Fin n) (Fin n) (AE F E)) :
     (truncMat e A).map (cA σ) = truncMat e (A.map (cA σ)) := by
@@ -90,7 +90,7 @@ theorem truncMat_map (σ : E →ₐ[F] E) {n : ℕ} (e : AF F) (A : Matrix (Fin 
   by_cases h : i = j <;> simp [truncMat, Matrix.one_apply, h]
 
 /- English proof (translation)
-Establish `h' : Aᵀ * (J * Ab) = J` using `by rw [← Matrix.mul_assoc, h]`. Rewrite using `[truncMat_transpose]`. Simplify using `only [truncMat, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, h']`. Establish `he2 : e ^ 2 = e` using `by rw [sq, he]`. Apply the tactic sequence `match_scalars <;> ring_nf <;> simp only [he2] <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem truncMat_unitary {n : ℕ} {e : AF F} (he : e * e = e) {A Ab J : Matrix (Fin n) (Fin n) (AE F E)}
     (h : Aᵀ * J * Ab = J) : (truncMat e A)ᵀ * J * truncMat e Ab = J := by
@@ -123,9 +123,9 @@ theorem mat_truncU_inv (T : Finset (Pl F)) {n : ℕ} {J : Matrix (Fin n) (Fin n)
     mat (truncU T k)⁻¹ = truncMat (idem T) (mat k⁻¹) := rfl
 
 /- English proof (translation)
-Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show truncMat (idem (insert v T)) (mat k) = truncMat (idem {v}) (mat k) * truncMat (idem T) (mat k)`. Establish `h0 : GlobalTheory.LatVac.liftV v 1 * idem T = 0` using `liftV_mul_idem hv`. Rewrite using `[idem_insert hv, idem_singleton]`. Unfold `truncMat`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.mul_add, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul, h0, zero_smul, add_zero, add_smul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem truncU_insert {T : Finset (Pl F)} {v : Pl F} (hv : v ∉ T) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J) :
     truncU (insert v T) k = truncU {v} k * truncU T k := by
@@ -139,7 +139,7 @@ theorem truncU_insert {T : Finset (Pl F)} {v : Pl F} (hv : v ∉ T) {n : ℕ} {J
   abel
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[mat_truncU, idem_singleton]`. Simplify using `only [truncMat, add_sub_cancel_left, smul_smul]`. Rewrite using `[mul_comm, GlobalTheory.ThK.LocalOps.liftV_one_mul, hu, map_zero, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem truncU_mem_UAt (v : Pl F) {n : ℕ} {X : Spc F E n} (k : UA σ X.J) :
     truncU {v} k ∈ UAt σ X (evFin F v) := by

@@ -20,11 +20,9 @@ open Neutral.B1
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Use `set π := atFin v (unif v) with hπ`. Establish `hπv : Valued.v (π : v.adicCompletion L) = WithZero.exp (-1)` using `unif_spec v`. Establish `hπ1 : ν.loc v π = 1` using `by rw [HChar.val_eq ν hu π (unif_spec v)]; exact hv`. Establish `hx0 : Valued.v (x : v.adicCompletion L) ≠ 0` using `by simp`. Use `set n := WithZero.log (Valued.v (x : v.adicCompletion L))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxv : Valued.v (x : v.adicCompletion L) = WithZero.exp n` using `(WithZero.exp_log hx0).symm`. Establish `hy : IsUnitAt v (x * π ^ n)` using `by show Valued.v ((x * π ^ n : (v.adicCompletion L)ˣ) : v.adicCompletion L) = 1`. Rewrite using `[Units.val_mul, map_mul, Units.val_zpow_eq_zpow_val, map_zpow₀, hπv, hxv, ← WithZero.exp_zsmul, ← WithZero.exp_add, smul_eq_mul]`. Simplify using the standard rewrite rules. Establish `h2` using `hu _ hy`.
-
-Rewrite `h2` using `[map_mul, map_zpow, hπ1, _root_.one_zpow, mul_one]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_eq_one_of_val {ν : HChar L} {v : HeightOneSpectrum (𝓞 L)} (hu : ν.UnrAt v) (hv : ν.val v = 1)
     (x : (v.adicCompletion L)ˣ) : ν.loc v x = 1 := by
@@ -44,7 +42,7 @@ theorem loc_eq_one_of_val {ν : HChar L} {v : HeightOneSpectrum (𝓞 L)} (hu : 
   exact h2
 
 /- English proof (translation)
-Simplify using `only [HChar.inf, HChar.locInf, infDiag, MonoidHom.comp_apply, MonoidHom.finset_prod_apply, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inf_eq_prod (ν : HChar L) (k : Lˣ) :
     ν.inf k = ∏ w ∈ (Finset.univ : Finset (InfinitePlace L)), ν.locInf w (atInf w k) := by
@@ -53,29 +51,25 @@ theorem inf_eq_prod (ν : HChar L) (k : Lˣ) :
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hνc : Continuous (ν : Ideles L →* ℂˣ)` using `ν.2.1`. Establish `hfin` using `(GlobalTheory.Mem.UnrAe.finite_ramified ν).union (Filter.eventually_cofinite.mp h)`. Use `set S := hfin.toFinset with hSdef`. Establish `hS : ∀ v ∉ S, ν.UnrAt v ∧ ν.val v = 1`. Introduce `v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hv` using `[S, not_or]`. Establish `hgood : ∀ v ∉ S, ∀ x, ν.loc v x = 1` using `fun v hv x => loc_eq_one_of_val (hS v hv).1 (hS v hv).2 x`. Establish `hprod : ∀ k : Lˣ, ν.inf k * ∏ v ∈ S, ν.locK v k = 1`. Introduce `k`. Establish `h0 : (ν.inf k * ∏ v ∈ S, ν.locK v k) * ∏ᶠ (v : HeightOneSpectrum (𝓞 L)) (_ : v ∉ S), ν.val v ^ GlobalTheory.Mem.Chr.ordF v k = 1` using `GlobalTheory.Mem.Chr.CharModel.productRule (ν : GlobalTheory.Mem.Chr.HChar L) S (fun v hv => (hS v hv).1) k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∏ᶠ (v : HeightOneSpectrum (𝓞 L)) (_ : v ∉ S), ν.val v ^ GlobalTheory.Mem.Chr.ordF v k = 1`. Apply `finprod_eq_one_of_forall_eq_one` to reduce the goal to its premises. Introduce `v`. Rewrite using `[finprod_eq_if]`. Distinguish the cases in `hv : v ∈ S`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (not_not.mpr hv)]`. Rewrite using `[if_pos hv, (hS v hv).2, _root_.one_zpow]`. Rewrite `h0` using `[hf, mul_one]`. Conclude with `h0`. Establish `key : ∀ p : ((v : S) → (v.1.adicCompletion L)ˣ) × ((w : (Finset.univ : Finset (InfinitePlace L))) → (w.1.Completion)ˣ), (∏ v : S, ν.loc v.1 (p.1 v)) * ∏ w : (Finset.univ : Finset (InfinitePlace L)), ν.locInf w.1 (p.2 w) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : Continuous fun p : ((v : S) → (v.1.adicCompletion L)ˣ) × ((w : (Finset.univ : Finset (InfinitePlace L))) → (w.1.Completion)ˣ) => (∏ v : S, ν.loc v.1 (p.1 v)) * ∏ w : (Finset.univ : Finset (InfinitePlace L)), ν.locInf w.1 (p.2 w)`. Apply `Continuous.mul` to reduce the goal to its premises. Apply `continuous_finset_prod` to reduce the goal to its premises. Introduce `v _`. Conclude with `(hνc.comp (GlobalTheory.Mem.Chr.Determ.continuous_localIdele v.1)).comp ((continuous_apply v).comp continuous_fst)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `continuous_finset_prod` to reduce the goal to its premises. Introduce `w _`. Conclude with `(hνc.comp (GlobalTheory.InfTypeLocal.continuous_infIdele L w.1)).comp ((continuous_apply w).comp continuous_snd)`. Establish `hd` using `GroundTheory.Global.denseRange_units_prod_pi S (Finset.univ : Finset (InfinitePlace L))`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hd.induction_on p (isClosed_eq hc continuous_const) (fun k => ?_)` and prove the remaining obligations. Use `beta_reduce`. Establish `e1 : (∏ v : S, ν.loc v.1 (Units.map ↑(algebraMap L (v.1.adicCompletion L)) k)) = ∏ v ∈ S, ν.locK v k` using `Finset.prod_coe_sort S (fun v => ν.locK v k)`. Establish `e2 : (∏ w : (Finset.univ : Finset (InfinitePlace L)), ν.locInf w.1 (Units.map ↑(algebraMap L w.1.Completion) k)) = ν.inf k`. Rewrite using `[inf_eq_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.prod_coe_sort _ (fun w => ν.locInf w (atInf w k))`. Conclude with `(congrArg₂ (· * ·) e1 e2).trans (by rw [mul_comm]; exact hprod k)`. Establish `hlocS : ∀ v ∈ S, ∀ x, ν.loc v x = 1`. Introduce `v hv x`. Establish `h0` using `key (Pi.mulSingle ⟨v, hv⟩ x, 1)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Simplify using `only at h0`. Rewrite `h0` using `[Fintype.prod_eq_single ⟨v, hv⟩ (fun v' hne => by rw [Pi.mulSingle_eq_of_ne hne, map_one]), Pi.mulSingle_eq_same]`. Simplify using `using h0`. Establish `hinf : ∀ w x, ν.locInf w x = 1`. Introduce `w x`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h0` using `key (1, Pi.mulSingle ⟨w, Finset.mem_univ w⟩ x)`. Simplify using `only at h0`. Rewrite `h0` using `[Fintype.prod_eq_single (⟨w, Finset.mem_univ w⟩ : (Finset.univ : Finset (InfinitePlace L))) (fun w' hne => by rw [Pi.mulSingle_eq_of_ne hne, map_one]), Pi.mulSingle_eq_same]`. Simplify using `using h0`. Establish `hall` using `GlobalTheory.Mem.Chr.Determ.eq_one_of_components (ψ := (ν : Ideles L →* ℂˣ)) hνc (fun v k => by`.
-
-Distinguish the cases in `hv : v ∈ S`. Conclude with `hlocS v hv _`. Conclude with `hgood v hv _)`. Use the proof step `(fun k => by`. Establish `h0` using `inf_eq_prod ν k`.
-
-Rewrite `h0` using `[Finset.prod_eq_one (fun w _ => hinf w _)]`. Conclude with `h0)`. Conclude with `Subtype.ext (MonoidHom.ext fun a => by rw [hall a]; rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one (ν : HChar L) (h : ∀ᶠ w in cofinite, ν.val w = 1) : ν = 1 := by
   classical
@@ -157,7 +151,7 @@ theorem eq_one (ν : HChar L) (h : ∀ᶠ w in cofinite, ν.val w = 1) : ν = 1 
 end FiniteInfinitePlaceProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ ω ω' h`. Establish `h1` using `FiniteInfinitePlaceProduct.eq_one (ω * ω'⁻¹) (h.mono fun w hw => by`. Rewrite using `[HChar.val_mul, HChar.val_inv, hw, mul_inv_cancel])`. Conclude with `mul_inv_eq_one.1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_infinite_product_eq_one : HeckeCharacterRigidity := by
   intro E _ _ _ ω ω' h

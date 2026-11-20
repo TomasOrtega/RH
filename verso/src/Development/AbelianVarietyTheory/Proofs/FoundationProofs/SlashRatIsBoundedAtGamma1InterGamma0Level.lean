@@ -5,7 +5,7 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : NeZero l := ⟨hl.ne'⟩`. Unfold `lev`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lev_finiteIndex_of_pos (N l : ℕ) (hN : 0 < N) (hl : 0 < l) : (lev N l).FiniteIndex := by
   haveI : NeZero N := ⟨hN.ne'⟩
@@ -14,7 +14,7 @@ theorem lev_finiteIndex_of_pos (N l : ℕ) (hN : 0 < N) (hl : 0 < l) : (lev N l)
   infer_instance
 
 /- English proof (translation)
-Rewrite `hc`, the goal using `[isCusp_SL2Z_iff]`. Take `⟨c, rfl⟩` from `hc`. Use `⟨g • c, ?_⟩` and prove the remaining obligations. Rewrite using `[← Rat.coe_castHom, OnePoint.map_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCusp_SL2Z_smul_ratGL (g : GL (Fin 2) ℚ) {c : OnePoint ℝ} (hc : IsCusp c 𝒮ℒ) :
     IsCusp (Matrix.GeneralLinearGroup.map (Rat.castHom ℝ) g • c) 𝒮ℒ := by
@@ -24,9 +24,7 @@ theorem isCusp_SL2Z_smul_ratGL (g : GL (Fin 2) ℚ) {c : OnePoint ℝ} (hc : IsC
   rw [← Rat.coe_castHom, OnePoint.map_smul]
 
 /- English proof (translation)
-Introduce `N l k g hN hl _ f c hc`. Use `haveI := lev_finiteIndex_of_pos N l hN hl`. Establish `key : IsCusp (Matrix.GeneralLinearGroup.map (Rat.castHom ℝ) g • c) (GlobalTheory.Hk.lev N l)`. Rewrite `hc`, the goal using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z]`. Conclude with `isCusp_SL2Z_smul_ratGL g hc`.
-
-Conclude with `OnePoint.IsBoundedAt.smul_iff.1 (f.bdd_at_cusps' key)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slash_rat_isBoundedAt :
     ∀ (N l : ℕ) (k : ℤ) (g : GL (Fin 2) ℚ), 0 < N → 0 < l → 0 < (g.det : ℚ) →

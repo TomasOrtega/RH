@@ -11,13 +11,13 @@ namespace UpperTheory.Gal.TP
 open Sub
 
 /- English proof (translation)
-Introduce `E _ _ _ hE hK _ hI n hn he U hA lam hl w₀ hw₀`. Take `⟨Bs, δ, 𝔞, hG, hX, hW⟩` from `hB E hE hI`. Take `⟨d₀, hd⟩` from `hT E Bs ⟨hG.cm, hK, hG.unram, hG.std, hG.inert, hG.psiP⟩ n hn _ rfl (hX n)`. Use `set t := 2 * (d₀ + n) + 1 with ht`. Take `⟨b, hb⟩` from `(Set.finite_range fun x : InfinitePlace (maximalRealSubfield E) × Fin n => (lam (Bs.emb x.1).1).w x.2).bddBelow`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, m, χX, χW, mX, mW, ψ, p, hκ, hj, hne, hu, hu'⟩` from `hC E hE n t he ⟨_, rfl⟩ Bs.emb (2 * b - ((n + t : ℕ) : ℤ)) w₀ hw₀`. Establish `key : ∀ j, ∃ U' lam', IsUp U lam κ m U' lam' (ψ j) (p j)` using `fun j => by`. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8⟩` from `hj j`. Take `⟨U', hL⟩` from `hd (n + t) (by omega) _ δ rfl (hW (n + t)) (χX j) (χW j) (mX j) (mW j) a1 a2 a3 a4 a5 a6 U (fun w => lam (Bs.emb w).1) hA (fun w => hl _) fun w k => by`. Establish `h1` using `a7 w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : b ≤ (lam (Bs.emb w).1).w k` using `hb ⟨(w, k), rfl⟩`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨U', hU E n t hn (by omega) Bs _ _ _ _ U hA lam hl U' hL κ m _ _ a8⟩`. Take `⟨U₁, l₁, h₁⟩` from `key 0`. Take `⟨U₂, l₂, h₂⟩` from `key 1`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨t, κ, m, U₁, U₂, l₁, l₂, ψ 0, ψ 1, p 0, p 1, he.add_odd ⟨_, rfl⟩, hκ, h₁, h₂, hne, hu, hu'⟩`.
+A detailed English derivation is pending.
 -/
 theorem twoUpOK_of_steps (hT : UpperTheory.TP.TLiftK) (hC : ChrPairs) (hU : UpOf) (hB : BaseNG) : TwoUpOK := by
   intro E _ _ _ hE hK _ hI n hn he U hA lam hl w₀ hw₀
@@ -40,7 +40,7 @@ theorem twoUpOK_of_steps (hT : UpperTheory.TP.TLiftK) (hC : ChrPairs) (hU : UpOf
   exact ⟨t, κ, m, U₁, U₂, l₁, l₂, ψ 0, ψ 1, p 0, p 1, he.add_odd ⟨_, rfl⟩, hκ, h₁, h₂, hne, hu, hu'⟩
 
 /- English proof (translation)
-The claim follows from `twoUpOK_of_steps h Chr.chrPairs_holds upOf baseNG`.
+A detailed English derivation is pending.
 -/
 theorem twoUpOK_of_k (h : UpperTheory.TP.TLiftK) : TwoUpOK := twoUpOK_of_steps h Chr.chrPairs_holds upOf baseNG
 

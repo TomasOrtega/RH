@@ -17,7 +17,7 @@ namespace GlobalTheory.ThK.EvAt0.PolD
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `c hc`. Rewrite using `[← Matrix.smul_mul, hu c hc, Matrix.zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_mul_right {n d d₁ : ℕ} {u : Matrix (Fin n) (Fin d₁) (AE F E)} (hu : At (evI F) u)
     (A : Matrix (Fin d₁) (Fin d) (AE F E)) : At (evI F) (u * A) := by

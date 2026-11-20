@@ -10,7 +10,7 @@ open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj Globa
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 /- English proof (translation)
-Introduce `hP hL _ large₂ _ _ _ _ _ _ _ _ _ _ _ _ hS ch hch CF hsc a u` and use `_root_.GlobalTheory.T.twisted_base_change_lift_exists hP hL large₂ hS ch hch.toIsBase CF hsc a u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twisted_theta_lift_automorphic_of_convergent : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → ∀ {D : D7} (large₂ : SizeData₂ D)
     {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
@@ -28,7 +28,7 @@ open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj Globa
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.twisted_theta_lift_automorphic_of_convergent | exact _root_.GlobalTheory.twisted_theta_lift_automorphic_of_convergent | (intros; apply _root_.GlobalTheory.twisted_theta_lift_automorphic_of_convergent <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twisted_theta_lift_automorphic : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → ∀ {D : D7} (large₂ : SizeData₂ D)
     {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}

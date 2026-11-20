@@ -6,13 +6,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.AbsHalfInv
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hk`. Establish `hu : IsUnit y.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 y.isUnit`. Take `⟨u, hu⟩` from `hu`. Establish `hdet : (Formalism.UG.bc (Ov E w).subtype y).val.det = ((u : Ov E w) : w.adicCompletion E)`. Rewrite using `[hu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(y.val.map (Ov E w).subtype).det = _`. Conclude with `(RingHom.map_det (Ov E w).subtype y.val).symm`. Rewrite using `[hdet]`. Establish `h1 : Valued.v ((u : Ov E w) : w.adicCompletion E) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).1 (u : Ov E w).2`. Establish `h2 : Valued.v (((u⁻¹ : (Ov E w)ˣ) : Ov E w) : w.adicCompletion E) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).1 ((u⁻¹ : (Ov E w)ˣ) : Ov E w).2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Valued.v ((u : Ov E w) : w.adicCompletion E) * Valued.v (((u⁻¹ : (Ov E w)ˣ) : Ov E w) : w.adicCompletion E) = 1`. Rewrite using `[← map_mul, ← Subring.coe_mul, Units.mul_inv, Subring.coe_one, map_one]`. Assume the negation of the conclusion as `hne`. Establish `hlt` using `lt_of_le_of_ne h1 hne`. Establish `: Valued.v ((u : Ov E w) : w.adicCompletion E) * Valued.v (((u⁻¹ : (Ov E w)ˣ) : Ov E w) : w.adicCompletion E) < 1` using `mul_lt_one_of_lt_of_le hlt h2`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h3]`. Conclude with `lt_irrefl _ this`.
+A detailed English derivation is pending.
 -/
 theorem v_det_KGL {E : Type} [Field E] [NumberField E] {w : Pl E} {n : ℕ} {k : GLw n w}
     (hk : k ∈ GlobalTheory.LFun.KGL w n) : Valued.v (k.val.det) = 1 := by
@@ -40,21 +40,21 @@ theorem v_det_KGL {E : Type} [Field E] [NumberField E] {w : Pl E} {n : ℕ} {k :
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.det_mul, map_mul, v_det_KGL hk, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem v_det_mul_left {E : Type} [Field E] [NumberField E] {w : Pl E} {n : ℕ} {k m : GLw n w}
     (hk : k ∈ GlobalTheory.LFun.KGL w n) : Valued.v ((k * m).val.det) = Valued.v m.val.det := by
   rw [Units.val_mul, Matrix.det_mul, map_mul, v_det_KGL hk, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.det_mul, map_mul, v_det_KGL hk, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem v_det_mul_right {E : Type} [Field E] [NumberField E] {w : Pl E} {n : ℕ} {k m : GLw n w}
     (hk : k ∈ GlobalTheory.LFun.KGL w n) : Valued.v ((m * k).val.det) = Valued.v m.val.det := by
   rw [Units.val_mul, Matrix.det_mul, map_mul, v_det_KGL hk, mul_one]
 
 /- English proof (translation)
-Establish `: ordL x = ordL y` using `by unfold ordL; simp only [h]`. Unfold `absHalf`. Rewrite using `[this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem absHalf_congr {E : Type} [Field E] [NumberField E] {w : Pl E} {x y : w.adicCompletion E}
     (h : Valued.v x = Valued.v y) : absHalf w x = absHalf w y := by
@@ -66,7 +66,7 @@ end GlobalTheory.BCT.AbsHalfInv
 
 open GlobalTheory.BCT.AbsHalfInv in
 /- English proof (translation)
-Introduce `E _ _ _ a b w m k h1 h2`. Use `⟨absHalf_congr ?_, absHalf_congr ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_div₀, map_pow, map_pow, map_pow, map_pow, Prod.fst_mul, Prod.snd_mul, v_det_mul_left h1, v_det_mul_left h2]`. Rewrite using `[map_div₀, map_div₀, map_pow, map_pow, map_pow, map_pow, Prod.fst_mul, Prod.snd_mul, v_det_mul_right h1, v_det_mul_right h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.BCT.absHalf_blockDet_KGL_invariant : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (m k : GLw a w × GLw b w),
     k.1 ∈ GlobalTheory.LFun.KGL w a → k.2 ∈ GlobalTheory.LFun.KGL w b →

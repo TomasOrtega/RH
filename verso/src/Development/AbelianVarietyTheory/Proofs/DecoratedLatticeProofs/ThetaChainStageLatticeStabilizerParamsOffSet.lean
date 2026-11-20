@@ -14,7 +14,7 @@ open GlobalTheory.AdelicU GlobalTheory.LFun Formalism.UG
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `e : (N : v.adicCompletion K) = ((algebraMap R K (N : R) : K) : v.adicCompletion K)`. Rewrite using `[map_natCast]`. Conclude with `(map_natCast (algebraMap K (v.adicCompletion K)) N).symm`. Rewrite using `[e, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `le_antisymm (v.intValuation_le_one _) (not_lt.1 fun h => hN ((v.intValuation_lt_one_iff_mem _).1 h))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_natCast_eq_one {R K : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] {v : HeightOneSpectrum R} {N : ℕ} (hN : (N : R) ∉ v.asIdeal) :
@@ -25,7 +25,7 @@ theorem valued_natCast_eq_one {R K : Type} [CommRing R] [IsDedekindDomain R] [Fi
   exact le_antisymm (v.intValuation_le_one _) (not_lt.1 fun h => hN ((v.intValuation_lt_one_iff_mem _).1 h))
 
 /- English proof (translation)
-Introduce `h` and use `by have := valued_natCast_eq_one (K := K) hN rw [h, map_zero] at this exact zero_ne_one this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero_of {R K : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] {v : HeightOneSpectrum R} {N : ℕ} (hN : (N : R) ∉ v.asIdeal) :
@@ -35,7 +35,7 @@ theorem natCast_ne_zero_of {R K : Type} [CommRing R] [IsDedekindDomain R] [Field
   exact zero_ne_one this
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, valued_natCast_eq_one hN, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_natCast_mem {R K : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] {v : HeightOneSpectrum R} {N : ℕ} (hN : (N : R) ∉ v.asIdeal) :
@@ -43,11 +43,11 @@ theorem inv_natCast_mem {R K : Type} [CommRing R] [IsDedekindDomain R] [Field K]
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, valued_natCast_eq_one hN, inv_one]
 
 /- English proof (translation)
-Introduce `y hy`. Use `latLoc_induction (p := fun y => y ∈ latLoc F L' v) (fun a ha x hx => ?_) (zero_mem _) (fun _ _ => add_mem) (fun _ => neg_mem) hy` and prove the remaining obligations. Establish `hN0` using `natCast_ne_zero_of (K := F) hN`. Establish `e : (fun i => a ⊗ₜ[F] x i) = fun i => (a * (N : Fv F v)⁻¹) ⊗ₜ[F] (((N : E) • x) i)`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.smul_apply, show (N : E) • x i = (N : F) • x i by`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_natCast, map_natCast], TensorProduct.tmul_smul,`. Use the proof step `TensorProduct.smul_tmul', Algebra.smul_def, map_natCast]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `tmul_mem_latLoc (mul_mem ha (inv_natCast_mem hN)) (h x hx)`.
+A detailed English derivation is pending.
 -/
 theorem latLoc_le {L L' : Submodule (𝓞 E) (Fin n → E)} {v : HeightOneSpectrum (𝓞 F)} {N : ℕ}
     (hN : (N : 𝓞 F) ∉ v.asIdeal) (h : ∀ x ∈ L, (N : E) • x ∈ L') : latLoc F L v ≤ latLoc F L' v := by
@@ -66,9 +66,9 @@ theorem latLoc_le {L L' : Submodule (𝓞 E) (Fin n → E)} {v : HeightOneSpectr
   exact tmul_mem_latLoc (mul_mem ha (inv_natCast_mem hN)) (h x hx)
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hN0` using `natCast_ne_zero_of (K := E) hN`. Establish `hm : (⟨(N : w.adicCompletion E)⁻¹, inv_natCast_mem hN⟩ : Ov E w) • (fun i => algebraMap E (w.adicCompletion E) (((N : E) • x) i)) = fun i => algebraMap E (w.adicCompletion E) (x i)`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `(N : w.adicCompletion E)⁻¹ * algebraMap E _ ((N : E) • x i) = _`. Rewrite using `[smul_eq_mul, map_mul, map_natCast, inv_mul_cancel_left₀ hN0]`. Express the relevant statement in the definitionally equal form `(fun i => algebraMap E (w.adicCompletion E) (x i)) ∈ latAt w L'`. Rewrite using `[← hm]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, h x hx, rfl⟩)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAt_le {L L' : Submodule (𝓞 E) (Fin n → E)} {w : HeightOneSpectrum (𝓞 E)} {N : ℕ}
     (hN : (N : 𝓞 E) ∉ w.asIdeal) (h : ∀ x ∈ L, (N : E) • x ∈ L') : latAt w L ≤ latAt w L' := by
@@ -93,14 +93,14 @@ open GlobalTheory.AdelicU GlobalTheory.LFun Formalism.UG
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [stabLoc, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stabLoc_congr (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) {L L' : Submodule (𝓞 E) (Fin n → E)}
     {v : HeightOneSpectrum (𝓞 F)} (hs : latLoc F L v = latLoc F L' v) : stabLoc σ J L v = stabLoc σ J L' v := by
   simp only [stabLoc, hs]
 
 /- English proof (translation)
-Establish `hst` using `stabLoc_congr σ J hs`. Simplify using `only [IsParamVec, IsSplitChart, IsInertChart, IsFrameAt, hst, ha]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isParamVec_congr {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E} {L L' : Submodule (𝓞 E) (Fin n → E)}
     {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = v)
@@ -111,7 +111,7 @@ theorem isParamVec_congr {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E} {L 
   simp only [IsParamVec, IsSplitChart, IsInertChart, IsFrameAt, hst, ha]
 
 /- English proof (translation)
-Unfold `IsParamFun IsParamVecOff`. Use `forall₂_congr fun v hv => forall₂_congr fun w h => ?_` and prove the remaining obligations. Conclude with `isParamVec_congr h (hs v hv) (ha w (h ▸ hv)) _ _ _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isParamFun_congr {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E} {L L' : Submodule (𝓞 E) (Fin n → E)}
     {S : Set (HeightOneSpectrum (𝓞 F))} (hs : ∀ v ∉ S, latLoc F L v = latLoc F L' v)
@@ -123,7 +123,7 @@ theorem isParamFun_congr {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E} {L 
   exact isParamVec_congr h (hs v hv) (ha w (h ▸ hv)) _ _ _
 
 /- English proof (translation)
-Use `v.isPrime` as an intermediate fact. Take `⟨Q, hQ, hl⟩` from `(Ideal.nonempty_primesOver v.asIdeal (S := 𝓞 E)).some`. Conclude with `⟨⟨Q, hQ, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hl.over.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_under_eq (v : HeightOneSpectrum (𝓞 F)) : ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v := by
   have := v.isPrime
@@ -131,9 +131,7 @@ theorem exists_under_eq (v : HeightOneSpectrum (𝓞 F)) : ∃ w : HeightOneSpec
   exact ⟨⟨Q, hQ, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hl.over.symm⟩
 
 /- English proof (translation)
-Use `⟨fun v hv => ?_, fun w hw => le_antisymm (latAt_le (hN w hw) h₁) (latAt_le (hN w hw) h₂)⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `exists_under_eq (E := E) v`. Establish `hv' : (N : 𝓞 F) ∉ (w.under (𝓞 F)).asIdeal` using `fun h => hN w hv (by`. Rewrite `h` using `[HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `h)`.
-
-Conclude with `le_antisymm (latLoc_le hv' h₁) (latLoc_le hv' h₂)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latLoc_latAt_eq {L L' : Submodule (𝓞 E) (Fin n → E)} {S : Set (HeightOneSpectrum (𝓞 F))} {N : ℕ}
     (h₁ : ∀ x ∈ L, (N : E) • x ∈ L') (h₂ : ∀ x ∈ L', (N : E) • x ∈ L)
@@ -152,9 +150,9 @@ end GlobalTheory.LatAgree
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Introduce `D c _ j _ s hs`. Take `⟨N, ⟨-, -, -, h₁, h₂⟩, hN⟩` from `hs.base`. Establish `h₁' : ∀ x ∈ GlobalTheory.AdelicU.frameLat s.V, (N : D.host.E) • x ∈ s.Λ` using `fun x hx => h₁ x (by rw [GlobalTheory.AdelicU.hermitianSpaceBaseLattice_eq_frameLattice]; exact hx)`. Establish `h₂' : ∀ x ∈ s.Λ, (N : D.host.E) • x ∈ GlobalTheory.AdelicU.frameLat s.V` using `fun x hx => by`. Use `h₂ x hx` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[GlobalTheory.AdelicU.hermitianSpaceBaseLattice_eq_frameLattice]`. Conclude with `this`. Take `⟨hloc, hat⟩` from `GlobalTheory.LatAgree.latLoc_latAt_eq (S := (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))) h₂' h₁' (fun w hw => hN w hw)`. Conclude with `⟨fun v hv => GlobalTheory.LatAgree.stabLoc_congr _ _ (hloc v hv), fun f B => GlobalTheory.LatAgree.isParamFun_congr hloc hat f B⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stabLoc_isParamFun_frameLat : ∀ D : D7, ForStage D fun c _ s =>
     (∀ v ∉ c.S, GlobalTheory.AdelicU.stabLoc D.sp.cm.sig s.V.gram s.Λ v =

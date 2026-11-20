@@ -25,9 +25,9 @@ def TopNe : Prop :=
   ∀ (D : Formalism.BasicNotions.D7) (w : Point D.host.E (D.R.rS + 1)), Dmin w (D.R.rS + 1) ≠ 0
 
 /- English proof (translation)
-Introduce `ha`. Apply `h` to reduce the goal to its premises. Rewrite using `[finprod_eq_prod f hf]`. Apply `Finset.prod_eq_zero (i := a)` to reduce the goal to its premises. Rewrite using `[Set.Finite.mem_toFinset]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Function.mem_mulSupport, ha]`. Conclude with `ha`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_finprod_ne_zero {α : Type*} (f : α → ℂ) (hf : (Function.mulSupport f).Finite)
     (h : ∏ᶠ a, f a ≠ 0) (a : α) : f a ≠ 0 := by
@@ -40,7 +40,7 @@ theorem ne_zero_of_finprod_ne_zero {α : Type*} (f : α → ℂ) (hf : (Function
   · exact ha
 
 /- English proof (translation)
-Set `σ : D.host.E →ₐ[ℚ] D.host.E` to `D.conjF.restrictScalars ℚ`. Establish `hb : Function.Bijective σ` using `Algebra.IsAlgebraic.algHom_bijective σ`. Conclude with `Algebra.norm_eq_of_algEquiv (AlgEquiv.ofBijective σ hb) x`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_conjF (D : Formalism.BasicNotions.D7) (x : D.host.E) :
     Algebra.norm ℚ (D.conjF x) = Algebra.norm ℚ x := by
@@ -49,7 +49,7 @@ theorem norm_conjF (D : Formalism.BasicNotions.D7) (x : D.host.E) :
   exact Algebra.norm_eq_of_algEquiv (AlgEquiv.ofBijective σ hb) x
 
 /- English proof (translation)
-The claim follows from `|Algebra.norm ℚ x| = |Algebra.norm ℚ x'| := by have e := local_product_formula D.host.F D.host.E D.sp.cm.deg2 D.conjF D.s.atP M hM have h1 := e x hx have h2 := e x' hx' simp only [h] at h1 have h3 := h1.symm.trans h2 have h4 := inv_injective h3 exact_mod_cast h4`.
+A detailed English derivation is pending.
 -/
 theorem absNorm_eq_of_modK (D : Formalism.BasicNotions.D7)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hM : ∀ p, (M p).OK)
@@ -65,29 +65,27 @@ theorem absNorm_eq_of_modK (D : Formalism.BasicNotions.D7)
   exact_mod_cast h4
 
 /- English proof (translation)
-Introduce `δ M hA T T' w w' κ th hf hf' hB hB'`. Establish `hk : kind w = κ`. Assume the negation of the conclusion as `hne`. Conclude with `hB (by simp [BBG, hne])`. Establish `hk' : kind w' = κ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hB' (by simp [BBG, hne])`. Establish `hp : ∏ᶠ p, BBtop M δ T T' p w (th p) ≠ 0`. Introduce `h0`. Conclude with `hB (by simp [BBG, hk, h0])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp' : ∏ᶠ p, BBtop M δ T T' p w' (th p) ≠ 0`. Introduce `h0`. Conclude with `hB' (by simp [BBG, hk', h0])`. Establish `hkk : kind w = kind w'` using `hk.trans hk'.symm`. Establish `hloc` using `fun p => hL D δ M p (hA p) T T' w w' hkk (th p) (ne_zero_of_finprod_ne_zero _ hf hp p) (ne_zero_of_finprod_ne_zero _ hf' hp' p)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hOK : ∀ p, (M p).OK` using `fun p => (hA p).1`. Unfold `PI.SupportParts.normG Gpt`. Break down `hcase : kind w with _ | ζ` into its components or cases. Establish `h0 : Dmin w D.R.rS = 0`. Unfold `kind at hcase`.
+Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Simplify using `[hne] at hcase`. Establish `hcase' : kind w' = none` using `hkk ▸ hcase`. Establish `h0' : Dmin w' D.R.rS = 0`. Unfold `kind at hcase'`.
+Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Simplify using `[hne] at hcase'`. Rewrite using `[h0, h0']`. Establish `hn` using `absNorm_eq_of_modK D M hOK _ _ (hT D w) (hT D w') (fun p => (hloc p).1)`. Simplify using `only [mul_zero, map_zero, sub_zero, map_mul, abs_mul, norm_conjF, hn]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hcase' : kind w' = some ζ` using `hkk ▸ hcase`. Establish `hr : Dmin w D.R.rS ≠ 0`. Unfold `kind at hcase`. Assume the negation of the conclusion as `hne`. Simplify using `[hne] at hcase`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Establish `hr' : Dmin w' D.R.rS ≠ 0`. Unfold `kind at hcase'`. Assume the negation of the conclusion as `hne`. Simplify using `[hne] at hcase'`. Establish `hz : zetaOf w = ζ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `kind at hcase`. Simplify `hcase` using `[hr]`. Establish `hz' : zetaOf w' = ζ`. Unfold `kind at hcase'`. Simplify `hcase'` using `[hr']`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Dmin w (D.R.rS + 1) = ζ * Dmin w D.R.rS`. Rewrite using `[← hz, zetaOf, div_mul_cancel₀ _ hr]`. Establish `e1' : Dmin w' (D.R.rS + 1) = ζ * Dmin w' D.R.rS`. Rewrite using `[← hz', zetaOf, div_mul_cancel₀ _ hr']`. Establish `hn` using `absNorm_eq_of_modK D M hOK _ _ hr hr' (fun p => (hloc p).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `g1 : ∀ x : D.host.E, ζ * x * D.conjF (ζ * x) - (T : D.host.E) * T' * (x * D.conjF x) = x * D.conjF x * (ζ * D.conjF ζ - (T : D.host.E) * T')`. Introduce `x`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e1', g1, g1]`.
-
-Simplify using `only [map_mul, abs_mul, norm_conjF, hn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem supportVec_of (hL : LocStep) (hT : TopNe) (D : Formalism.BasicNotions.D7) : PI.SupportParts.SupportVec D := by
   intro δ M hA T T' w w' κ th hf hf' hB hB'
@@ -150,7 +148,7 @@ theorem supportVec_of (hL : LocStep) (hT : TopNe) (D : Formalism.BasicNotions.D7
     simp only [map_mul, abs_mul, norm_conjF, hn]
 
 /- English proof (translation)
-Introduce `D` and use `supportVec_of hL hT D`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem supportVecAll_of (hL : LocStep) (hT : TopNe) : PI.SupportParts.SupportVecAll :=
   fun D => supportVec_of hL hT D

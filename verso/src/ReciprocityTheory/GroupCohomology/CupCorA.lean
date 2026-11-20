@@ -20,14 +20,14 @@ section Retr
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (U : Subgroup G)
 
 /- English proof (translation)
-The claim follows from `Quotient.eq.trans QuotientGroup.rightRel_apply`.
+A detailed English derivation is pending.
 -/
 theorem mkR_eq {a b : G} :
     Quotient.mk (QuotientGroup.rightRel U) a = Quotient.mk _ b ↔ b * a⁻¹ ∈ U :=
   Quotient.eq.trans QuotientGroup.rightRel_apply
 
 /- English proof (translation)
-Unfold `rep`. Use `congr 1`. Rewrite using `[mkR_eq]`. Simplify `U.inv_mem x.2` using `[mul_inv_rev]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rep_mul (x : U) (g : G) : rep U ((x : G) * g) = rep U g := by
   unfold rep
@@ -36,14 +36,14 @@ theorem rep_mul (x : U) (g : G) : rep U ((x : G) * g) = rep U g := by
   simpa [mul_inv_rev] using U.inv_mem x.2
 
 /- English proof (translation)
-Unfold `rep`. Conclude with `Quotient.out_eq _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mk_rep (g : G) : (Quotient.mk (QuotientGroup.rightRel U) (rep U g)) = Quotient.mk _ g := by
   unfold rep
   exact Quotient.out_eq _
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [retr, rep_mul, Subgroup.coe_mul, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem retr_mul (x : U) (g : G) : retr U ((x : G) * g) = x * retr U g := by
   apply Subtype.ext
@@ -55,9 +55,9 @@ Both sides reduce to the same expression.
 theorem retr_spec (g : G) : (retr U g : G) = g * (rep U g)⁻¹ := rfl
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Establish `hmem : (fun y => y * g⁻¹) ⁻¹' (U : Set G) ∈ nhds g`. Apply `(hU.preimage (continuous_mul_right g⁻¹)).mem_nhds` to reduce the goal to its premises. Simplify using `[U.one_mem]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `(continuousAt_const (y := rep U g)).congr` to reduce the goal to its premises. Use `filter_upwards [hmem] with y hy`. Establish `h1 : rep U ((⟨y * g⁻¹, hy⟩ : U) * g) = rep U g` using `rep_mul U ⟨y * g⁻¹, hy⟩ g`. Simplify using `using h1.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_rep (hU : IsOpen (U : Set G)) : Continuous (rep U) := by
   rw [continuous_iff_continuousAt]
@@ -71,7 +71,7 @@ theorem continuous_rep (hU : IsOpen (U : Set G)) : Continuous (rep U) := by
   simpa using h1.symm
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (continuous_id.mul (continuous_rep U hU).inv) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_retr (hU : IsOpen (U : Set G)) : Continuous (retr U) :=
   Continuous.subtype_mk (continuous_id.mul (continuous_rep U hU).inv) _
@@ -83,9 +83,9 @@ def cosetMul (g : G) (c : Quotient (QuotientGroup.rightRel U)) : Quotient (Quoti
   Quotient.mk _ (c.out * g)
 
 /- English proof (translation)
-Establish `key : ∀ h : G, ∀ c, cosetMul U h⁻¹ (cosetMul U h c) = c`. Introduce `h c`. Unfold `cosetMul`. Use `conv_rhs => rw [← Quotient.out_eq c]`. Rewrite using `[mkR_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : (c.out * h) * (Quotient.mk (QuotientGroup.rightRel U) (c.out * h)).out⁻¹ ∈ U` using `QuotientGroup.rightRel_apply.mp (Quotient.mk_out (c.out * h))`. Simplify `hw` using `[mul_inv_rev, mul_assoc]`. Conclude with `⟨Function.LeftInverse.injective (key g), Function.RightInverse.surjective (fun c => by`. Simplify using `using key g⁻¹ c)⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cosetMul_bij (g : G) : Bijective (cosetMul U g) := by
   have key : ∀ h : G, ∀ c, cosetMul U h⁻¹ (cosetMul U h c) = c := by
@@ -100,7 +100,7 @@ theorem cosetMul_bij (g : G) : Bijective (cosetMul U g) := by
     simpa using key g⁻¹ c)⟩
 
 /- English proof (translation)
-Rewrite using `[retr_spec]`. Simplify using `[rep, cosetMul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem out_mul (g : G) (c : Quotient (QuotientGroup.rightRel U)) :
     c.out * g = (retr U (c.out * g) : G) * (cosetMul U g c).out := by
@@ -118,7 +118,7 @@ def normF (n : ℕ) (F : (Fin (n + 1) → G) → M.V) (x : Fin (n + 1) → G) : 
   ∑ᶠ c : Quotient (QuotientGroup.rightRel U), M.rho c.out⁻¹ (F fun i => c.out * x i)
 
 /- English proof (translation)
-The claim follows from `finsum_eq_sum_of_fintype _`.
+A detailed English derivation is pending.
 -/
 theorem normF_eq [Fintype (Quotient (QuotientGroup.rightRel U))] (n : ℕ) (F : (Fin (n + 1) → G) → M.V)
     (x : Fin (n + 1) → G) :
@@ -126,21 +126,19 @@ theorem normF_eq [Fintype (Quotient (QuotientGroup.rightRel U))] (n : ℕ) (F : 
   finsum_eq_sum_of_fintype _
 
 /- English proof (translation)
-The claim follows from `M.cont.comp (continuous_const.prodMk continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rho (s : G) : Continuous (M.rho s) :=
   M.cont.comp (continuous_const.prodMk continuous_id)
 
 /- English proof (translation)
-Use `haveI : Fintype (Quotient (QuotientGroup.rightRel U)) := Fintype.ofFinite _`. Use `⟨?_, fun g x => ?_⟩` and prove the remaining obligations. Establish `: normF M U n F = fun x => ∑ c : Quotient (QuotientGroup.rightRel U), M.rho c.out⁻¹ (F fun i => c.out * x i)` using `funext (normF_eq M U n F)`. Rewrite using `[this]`. Use `continuous_finset_sum _ fun c _ => (continuous_rho M _).comp (hF.1.comp ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_pi fun i => continuous_const.mul (continuous_apply i)`. Rewrite using `[normF_eq, normF_eq, map_sum]`. Establish `key : ∀ c : Quotient (QuotientGroup.rightRel U), M.rho c.out⁻¹ (F fun i => c.out * (g • x i)) = M.rho g (M.rho (cosetMul U g c).out⁻¹ (F fun i => (cosetMul U g c).out * x i))`. Introduce `c`. Establish `e` using `out_mul U g c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : (fun i => c.out * (g • x i)) = fun i => retr U (c.out * g) • ((cosetMul U g c).out * x i)`. Use function extensionality and compare the values at `i`. Use `show c.out * (g * x i) = (retr U (c.out * g) : G) * ((cosetMul U g c).out * x i)`. Rewrite using `[← mul_assoc, ← mul_assoc, ← e]`. Rewrite using `[h1, hF.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show M.rho c.out⁻¹ (M.rho (retr U (c.out * g) : G) _) = _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Rewrite using `[show (retr U (c.out * g) : G) = c.out * g * ((cosetMul U g c).out)⁻¹ by`. Rewrite using `[eq_mul_inv_iff_mul_eq]`.
-
-Conclude with `e.symm]`. Use `group`. Simplify using `only [key]`. Conclude with `Fintype.sum_bijective _ (cosetMul_bij U g) _ _ fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normF_mem (n : ℕ) (F : (Fin (n + 1) → G) → M.V) (hF : F ∈ hcoch (M.resSub U) G n) :
     normF M U n F ∈ hcoch M G n := by
@@ -174,7 +172,7 @@ theorem normF_mem (n : ℕ) (F : (Fin (n + 1) → G) → M.V) (hF : F ∈ hcoch 
     exact Fintype.sum_bijective _ (cosetMul_bij U g) _ _ fun _ => rfl
 
 /- English proof (translation)
-Use `haveI : Fintype (Quotient (QuotientGroup.rightRel U)) := Fintype.ofFinite _`. Use function extensionality and compare the values at `x`. Simplify using `only [normF_eq, hd, map_sum, map_zsmul, Finset.smul_sum]`. Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normF_hd (n : ℕ) (F : (Fin (n + 1) → G) → M.V) :
     normF M U (n + 1) (hd n F) = hd n (normF M U n F) := by
@@ -185,7 +183,7 @@ theorem normF_hd (n : ℕ) (F : (Fin (n + 1) → G) → M.V) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use `haveI : Fintype (Quotient (QuotientGroup.rightRel U)) := Fintype.ofFinite _`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, normF_eq, map_add, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normF_add (n : ℕ) (F F' : (Fin (n + 1) → G) → M.V) :
     normF M U n (F + F') = normF M U n F + normF M U n F' := by
@@ -195,7 +193,7 @@ theorem normF_add (n : ℕ) (F F' : (Fin (n + 1) → G) → M.V) :
   simp only [Pi.add_apply, normF_eq, map_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use `haveI : Fintype (Quotient (QuotientGroup.rightRel U)) := Fintype.ofFinite _`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, normF_eq, map_smul, Finset.smul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normF_smul (n : ℕ) (r : R) (F : (Fin (n + 1) → G) → M.V) :
     normF M U n (r • F) = r • normF M U n F := by

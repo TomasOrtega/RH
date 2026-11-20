@@ -9,13 +9,13 @@ open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a t u`. Establish `h0 : ∀ w : Cm.UC E a, Commute (cap (a` using `a) t u) (Cm.uC E a w) := fun w => by`. Rewrite using `[← Cm.uC_capC]`. Conclude with `Commute.map (Subalgebra.mem_center_iff.1 (Cm.capC_mem_center t u) w).symm (Cm.uC E a)`. Establish `h1 : ∀ g, Commute (cap (a` using `a) t u) (rt E a g) := fun g => GlobalTheory.CompanionTheory.CTFin.Slice1.commute_rt_of_mem_Zalg (Cm.cap_mem_Zalg t u) g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, fun o => ?_, fun z => ?_, fun t' u' => ?_⟩` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `fin k => exact h1 _`. Consider the case `cpt k => exact h1 _`. Consider the case `lie X`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `h0 (Cm.ιC E a X)` as an intermediate fact. Rewrite `this` using `[Cm.uC_ιC]`. Conclude with `this`. Use `h0 (1 ⊗ₜ z)` as an intermediate fact. Rewrite `this` using `[Cm.uC_tmul, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `h0 (Cm.capC t' u')` as an intermediate fact. Rewrite `this` using `[Cm.uC_capC]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.S.capAct :
     UpperTheory.V.Cj.S.CapAct := by

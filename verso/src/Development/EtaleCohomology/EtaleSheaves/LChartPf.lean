@@ -16,7 +16,7 @@ def LSurjChart : Prop := ∀ (A : Type) [CommRing A] (I : Ideal A), I ≤ Ideal.
   ∃ g : A', IsUnit (φ g) ∧ Function.Surjective (algebraMap A (Localization.Away g))
 
 /- English proof (translation)
-The claim follows from `Algebra.IsStandardEtale.of_surjective (S := A) (Algebra.ofId A _) hs`.
+A detailed English derivation is pending.
 -/
 theorem isStandardEtale_of_surjective (A : Type) [CommRing A] (A' : Type) [CommRing A'] [Algebra A A']
     [Algebra.Etale A A'] (g : A') (hs : Function.Surjective (algebraMap A (Localization.Away g))) :
@@ -24,7 +24,7 @@ theorem isStandardEtale_of_surjective (A : Type) [CommRing A] (A' : Type) [CommR
   Algebra.IsStandardEtale.of_surjective (S := A) (Algebra.ofId A _) hs
 
 /- English proof (translation)
-Introduce `A _ I _ A' _ _ _ φ`. Take `⟨g, hg, hs⟩` from `h2 A I HenselianRing.jac (h1 A I) A' φ`. Conclude with `⟨g, hg, isStandardEtale_of_surjective A A' g hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LChart_of (h1 : LIdemLift) (h2 : LSurjChart) : LateralTheory.E.LEtaleLiftPf.LChart := by
   intro A _ I _ A' _ _ _ φ

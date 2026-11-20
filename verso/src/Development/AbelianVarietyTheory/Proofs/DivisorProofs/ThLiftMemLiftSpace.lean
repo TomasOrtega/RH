@@ -17,13 +17,13 @@ variable {H : Type} [Group H]
 def rt (k : H) (φ : H → ℂ) : H → ℂ := fun g => φ (g * k)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [rt, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rt_rt (k k' : H) (φ : H → ℂ) : rt k (rt k' φ) = rt (k * k') φ := by
   funext g; simp only [rt, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [rt, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rt_one (φ : H → ℂ) : rt 1 φ = φ := by
   funext g; simp only [rt, mul_one]
@@ -81,13 +81,11 @@ def liftSpace (om : Rep σ X W) (Φ : (Fin n × Fin d → AF F) → ℂ) (μ : M
   Submodule.span ℂ {G | ∃ Ψ ∈ datAt om Φ v, ∃ f' ∈ funAt f v, G = thLift om Ψ μ 𝓕 f'}
 
 /- English proof (translation)
-Introduce `φ hφ k hk`. Set `L : (UA σ X.J → ℂ) →ₗ[ℂ] (UA σ X.J → ℂ)` to `LinearMap.funLeft ℂ ℂ (fun g => g * k)`. Establish `hL : ∀ ψ, L ψ = rt k ψ` using `fun _ => rfl`. Rewrite using `[← hL]`. Use `(Submodule.span_le (p := (liftSpace om Φ μ 𝓕 f v).comap L)).2 ?_ hφ` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨Ψ, ⟨k₀, hk₀, h₀, hh₀, Φ', hΦ', rfl⟩, f', hf', rfl⟩`. Use `Submodule.subset_span ⟨om (k * k₀, h₀) Φ', ⟨k * k₀, (UAtSub σ X (evFin F v)).mul_mem hk hk₀, h₀, hh₀, Φ', hΦ', rfl⟩, f', hf', ?_⟩` and prove the remaining obligations. Establish `e : ∀ g h, om (g * k, h) (om (k₀, h₀) Φ') = om (g, h) (om (k * k₀, h₀) Φ')`. Introduce `g h`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `ext1`. Conclude with `mul_assoc _ _ _`. Both sides reduce to the same expression. Use function extensionality and compare the values at `g`.
-
-Simplify using `only [hL, rt, thLift_def, theta, e]`.
+Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rStable_liftSpace (om : Rep σ X W) (Φ : (Fin n × Fin d → AF F) → ℂ) (μ : Measure (UA σ W.J))
     (𝓕 : Set (UA σ W.J)) (f : UA σ W.J → ℂ) (v : Pl F) :
@@ -111,7 +109,7 @@ theorem rStable_liftSpace (om : Rep σ X W) (Φ : (Fin n × Fin d → AF F) → 
   simp only [hL, rt, thLift_def, theta, e]
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨om (1, 1) Φ, ⟨1, (UAtSub σ X (evFin F v)).one_mem, 1, (UAtSub σ W (evFin F v)).one_mem, Φ, Or.inl rfl, rfl⟩, rt 1 f, ⟨1, (UAtSub σ W (evFin F v)).one_mem, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[rt_one, show ((1 : UA σ X.J), (1 : UA σ W.J)) = 1 from rfl, map_one, Module.End.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem thLift_mem_liftSpace (om : Rep σ X W) (Φ : (Fin n × Fin d → AF F) → ℂ) (μ : Measure (UA σ W.J))
     (𝓕 : Set (UA σ W.J)) (f : UA σ W.J → ℂ) (v : Pl F) : thLift om Φ μ 𝓕 f ∈ liftSpace om Φ μ 𝓕 f v := by

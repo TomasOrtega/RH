@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.BoxPowerProbe
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.powerRosati_tauBal_action.1, GlobalTheory.powerRosati_tauBal_action.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem both_hold : BoxRosatiSt ∧ BoxTauBalSt :=
   ⟨GlobalTheory.powerRosati_tauBal_action.1, GlobalTheory.powerRosati_tauBal_action.2.1⟩
@@ -27,7 +27,7 @@ section General
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Use `GlobalTheory.BoxTauLin.isMonHom_of_coord pD.pw f f' ef` as an intermediate fact. Use `GlobalTheory.BoxTauLin.isMonHom_of_coord pD.pw g g' eg` as an intermediate fact. Conclude with `exists_ros GlobalTheory.globalFns_holds D'.P.isAb D'.P.isLB _ _ (both_hold.1 R D' D n pD f g f' g' hf hg ef eg hr)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conclusion_not_empty {D' D : DegPre R} {n : ℕ} (pD : IsPowDeg D' D n) (f g : D.P.A ⟶ D.P.A)
     (f' g' : D'.P.A ⟶ D'.P.A) (hf : IsMonHom f) (hg : IsMonHom g)
@@ -41,7 +41,7 @@ theorem conclusion_not_empty {D' D : DegPre R} {n : ℕ} (pD : IsPowDeg D' D n) 
     (both_hold.1 R D' D n pD f g f' g' hf hg ef eg hr)
 
 /- English proof (translation)
-The claim follows from `pow_ext pD.pw fun i => by rw [pD.c_pr, AddEquiv.apply_symm_apply, ca, Category.assoc, ef, ← Category.assoc, pD.c_pr]`.
+A detailed English derivation is pending.
 -/
 theorem c_compatible {D' D : DegPre R} {n : ℕ} (pD : IsPowDeg D' D n) (f : D.P.A ⟶ D.P.A) (f' : D'.P.A ⟶ D'.P.A)
     (a : D.X → D.X) (ef : ∀ i, f' ≫ pD.pw.pr i = pD.pw.pr i ≫ f) (ca : ∀ y, D.c (a y) = D.c y ≫ f) (x : D'.X) :
@@ -50,11 +50,11 @@ theorem c_compatible {D' D : DegPre R} {n : ℕ} (pD : IsPowDeg D' D n) (f : D.P
     rw [pD.c_pr, AddEquiv.apply_symm_apply, ca, Category.assoc, ef, ← Category.assoc, pD.c_pr]
 
 /- English proof (translation)
-Establish `one : ∀ (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A (𝟙 _) (𝟙 _)) rosatiε)), u.IsGen → LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ u (zero2 D.P.A)) (LB.oneGen D.P.L) → ∀ y y' z J, Good D.P.L z J → val (LB.pullGen D.P.L _ _ u (D.pt2 y y')) (𝟙 _) z J = 1`. Introduce `u hu hn y y' z J hJ`. Use `val_corr hJ (GlobalTheory.PowBalanceProbe.tauBal_id D u hu hn y y') (𝟙 _)` as an intermediate fact. Rewrite `this` using `[val_mul hJ]`. Conclude with `mul_eq_left.1 this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h y y' z J hJ`. Take `⟨u, hu, hn⟩` from `exists_ros GlobalTheory.globalFns_holds D.P.isAb D.P.isLB _ _ hr`. Use `val_corr hJ (h u hu hn y y') (𝟙 _)` as an intermediate fact. Rewrite `this` using `[val_mul hJ, one u hu hn y y' z J hJ, _root_.mul_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h u hu hn y y'`. Use `corr_of_val D.P.isLB fun z J hJ => ?_` and prove the remaining obligations. Rewrite using `[val_mul hJ, one u hu hn y y' z J hJ, _root_.mul_one]`. Conclude with `h y y' z J hJ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauBal_id_iff (D : DegPre R) (hr : RosatiAdj D.P.A D.P.L (𝟙 _) (𝟙 _)) (a a' : D.X → D.X) :
     D.TauBal (𝟙 _) (𝟙 _) a a' ↔ ∀ y y' z J, Good D.P.L z J →
@@ -79,11 +79,11 @@ theorem tauBal_id_iff (D : DegPre R) (hr : RosatiAdj D.P.A D.P.L (𝟙 _) (𝟙 
 end General
 
 /- English proof (translation)
-Establish `inj : Function.Injective (Units.map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing InhTate.R))).inv.hom.toMonoidHom)` using `Units.map_injective (Scheme.ΓSpecIso (CommRingCat.of (FractionRing InhTate.R))).symm.commRingCatIsoToRingEquiv.injective`. Establish `h' : piK ^ a = piK ^ b` using `inj (by rw [map_zpow, map_zpow]; exact h)`. Establish `aux : ∀ k : ℕ, piK ^ k = 1 → k = 0` using `fun k hk => by`. Establish `e : algebraMap InhTate.R (FractionRing InhTate.R) (PowerSeries.X ^ k) = algebraMap InhTate.R (FractionRing InhTate.R) 1`. Rewrite using `[map_pow, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Units.val hk`. Establish `e'` using `congrArg PowerSeries.constantCoeff (IsFractionRing.injective _ _ e)`. Assume the negation of the conclusion as `h0`. Simplify using `[h0] at e'`. Establish `fin : ¬ IsOfFinOrder piK` using `fun hf => by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, e⟩` from `isOfFinOrder_iff_pow_eq_one.1 hf`. Conclude with `hk.ne' (aux k e)`. Conclude with `(injective_zpow_iff_not_isOfFinOrder.2 fin) h'`.
+A detailed English derivation is pending.
 -/
 theorem pi_zpow_injective {a b : ℤ} (h : pi0 ^ a = pi0 ^ b) : a = b := by
   have inj : Function.Injective (Units.map
@@ -104,18 +104,18 @@ theorem pi_zpow_injective {a b : ℤ} (h : pi0 ^ a = pi0 ^ b) : a = b := by
   exact (injective_zpow_iff_not_isOfFinOrder.2 fin) h'
 
 /- English proof (translation)
-Introduce `_` and use `⟨⊤, trivial, cg _ _ 1, cg_isGen _ _ 1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem rosati_tate : RosatiAdj tatePre.P.A tatePre.P.L (𝟙 _) (𝟙 _) :=
   fun _ => ⟨⊤, trivial, cg _ _ 1, cg_isGen _ _ 1⟩
 
 /- English proof (translation)
-Introduce `_` and use `trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_tate (z : (TK InhTate.R).left) (J) : Good tatePre.P.L z J := fun _ => trivial
 
 /- English proof (translation)
-Unfold `val`. Use `erw [tau_isConst a b]`. Conclude with `gm_res _ z _ ((good_tate z J).mem _ _) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem val_tau_tate (a b : ℤ) (z : (TK InhTate.R).left) (J) :
     val (tatePre.tau a b) (𝟙 _) z J = gm (𝟙 _) z ⊤ (pi0 ^ (2 * a * b)) := by
@@ -124,7 +124,7 @@ theorem val_tau_tate (a b : ℤ) (z : (TK InhTate.R).left) (J) :
   exact gm_res _ z _ ((good_tate z J).mem _ _) _
 
 /- English proof (translation)
-Establish `: Subsingleton (TK InhTate.R).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum (FractionRing InhTate.R)))`. Conclude with `pi_zpow_injective (unit_ext fun x _ => by rw [Subsingleton.elim x z]; exact h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gm_pi_zpow_injective (z : (TK InhTate.R).left) {a b : ℤ}
     (h : gm (𝟙 _) z ⊤ (pi0 ^ a) = gm (𝟙 _) z ⊤ (pi0 ^ b)) : a = b := by
@@ -133,15 +133,15 @@ theorem gm_pi_zpow_injective (z : (TK InhTate.R).left) {a b : ℤ}
   exact pi_zpow_injective (unit_ext fun x _ => by rw [Subsingleton.elim x z]; exact h)
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Nonempty (PrimeSpectrum (FractionRing InhTate.R)))`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_TK : Nonempty (TK InhTate.R).left :=
   inferInstanceAs (Nonempty (PrimeSpectrum (FractionRing InhTate.R)))
 
 /- English proof (translation)
-Use `(tauBal_id_iff tatePre rosati_tate a a').trans ⟨fun h y y' => ?_, fun h y y' z J _ => ?_⟩` and prove the remaining obligations. Take `⟨z⟩` from `nonempty_TK`. Use `h y y' z (fun _ => PUnit.unit) (good_tate _ _)` as an intermediate fact. Use `erw [val_tau_tate, val_tau_tate] at this`. Use `gm_pi_zpow_injective z this` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `erw [val_tau_tate, val_tau_tate]`. Establish `k : ∀ y y' : ℤ, 2 * a y * y' = 2 * y * a' y'` using `fun y y' => by linarith [h y y']`. Conclude with `congrArg (fun t : ℤ => gm (𝟙 _) z ⊤ (pi0 ^ t)) (k y y')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tauBal_tate_iff (a a' : ℤ → ℤ) :
     tatePre.TauBal (𝟙 _) (𝟙 _) a a' ↔ ∀ y y', a y * y' = y * a' y' := by
@@ -156,7 +156,7 @@ theorem tauBal_tate_iff (a a' : ℤ → ℤ) :
     exact congrArg (fun t : ℤ => gm (𝟙 _) z ⊤ (pi0 ^ t)) (k y y')
 
 /- English proof (translation)
-Take `⟨D', ⟨p⟩⟩` from `GlobalTheory.PowActProbe.exists_pow _ _ tateData n`. Conclude with `⟨D'.toPre, p, fun _ => by simp, rosati_tate, fun _ => (Category.comp_id _).symm, (tauBal_tate_iff _ _).2 fun y y' => by ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem premises_met (m : ℤ) (n : ℕ) :
     ∃ (D' : DegPre InhTate.R) (pD : IsPowDeg D' tatePre n),
@@ -168,15 +168,13 @@ theorem premises_met (m : ℤ) (n : ℕ) :
     (tauBal_tate_iff _ _).2 fun y y' => by ring⟩
 
 /- English proof (translation)
-Establish `e1 : ∀ i, 𝟙 _ ≫ pD.pw.pr i = pD.pw.pr i ≫ 𝟙 _` using `fun _ => by simp`. Establish `hr` using `both_hold.1 _ D' tatePre n pD _ _ _ _ inferInstance inferInstance e1 e1 rosati_tate`. Take `⟨z⟩` from `nonempty_TK`. Take `⟨J', hJ', -⟩` from `exists_good D'.P.L D'.P.isLB z (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Establish `H` using `(tauBal_id_iff D' hr _ _).1 h (pD.xe.symm y) (pD.xe.symm y') z J' hJ'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJ` using `good_tate z (fun _ => PUnit.unit)`. Establish `t₁` using `GlobalTheory.TauBalBox.tau_box pD hJ hJ' (pD.xe.symm fun i => a (pD.xe (pD.xe.symm y) i)) (pD.xe.symm y')`. Establish `t₂` using `GlobalTheory.TauBalBox.tau_box pD hJ hJ' (pD.xe.symm y) (pD.xe.symm fun i => a' (pD.xe (pD.xe.symm y') i))`. Establish `cc : ∀ p q : D'.X, DVR.cP D' (TK InhTate.R) p = DVR.cP D' (TK InhTate.R) q` using `fun p q => pow_ext pD.pw fun i => toUnit_unique _ _`. Rewrite `t₁` using `[cc (pD.xe.symm fun i => a (pD.xe (pD.xe.symm y) i)) (pD.xe.symm y), H]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `t₂` using `[cc (pD.xe.symm fun i => a' (pD.xe (pD.xe.symm y') i)) (pD.xe.symm y')]`. Establish `E` using `t₁.symm.trans t₂`. Use `erw [AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply] at E`. Establish `s : ∀ p q : Fin n → ℤ, ∏ i, val (tatePre.tau (p i) (q i)) (𝟙 _) z (fun _ => PUnit.unit) = gm (𝟙 _) z ⊤ (pi0 ^ (2 * ∑ i, p i * q i))` using `fun p q => by`. Use `(Finset.prod_congr rfl fun i _ => val_tau_tate (p i) (q i) z _).trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_prod, Finset.mul_sum]`. Use `congrArg _ ?_` and prove the remaining obligations. Simplify using `only [_root_.mul_assoc]`. Conclude with `(map_prod ((zpowersHom _ pi0).comp (MonoidHom.id (Multiplicative ℤ))) (fun i => Multiplicative.ofAdd (2 * (p i * q i))) Finset.univ).symm`. Use `gm_pi_zpow_injective z ((s (fun i => a (y i)) y').symm.trans (E.trans (s y (fun i => a' (y' i)))))` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_of_tauBal_pow {D' : DegPre InhTate.R} {n : ℕ} (pD : IsPowDeg D' tatePre n) (a a' : ℤ → ℤ)
     (h : D'.TauBal (𝟙 _) (𝟙 _) (fun y => pD.xe.symm fun i => a (pD.xe y i))
@@ -210,7 +208,7 @@ theorem sum_of_tauBal_pow {D' : DegPre InhTate.R} {n : ℕ} (pD : IsPowDeg D' ta
   linarith
 
 /- English proof (translation)
-Introduce `h` and use `by have := sum_of_tauBal_pow pD (fun _ => 0) (fun t => t) h (fun _ => 1) (fun _ => 1) simp at this omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conclusion_can_fail {D' : DegPre InhTate.R} {n : ℕ} (pD : IsPowDeg D' tatePre (n + 1)) :
     ¬ D'.TauBal (𝟙 _) (𝟙 _) (fun y => pD.xe.symm fun i => (fun _ : ℤ => (0 : ℤ)) (pD.xe y i))
@@ -220,7 +218,7 @@ theorem conclusion_can_fail {D' : DegPre InhTate.R} {n : ℕ} (pD : IsPowDeg D' 
   omega
 
 /- English proof (translation)
-Use `⟨fun h => ?_, both_hold.1 R D' D _ pD f g f' g' hf hg ef eg⟩` and prove the remaining obligations. Use `GlobalTheory.BoxTauLin.isMonHom_of_coord pD.pw f f' ef` as an intermediate fact. Use `GlobalTheory.BoxTauLin.isMonHom_of_coord pD.pw g g' eg` as an intermediate fact. Take `⟨u, hu, -⟩` from `exists_ros GlobalTheory.globalFns_holds D'.P.isAb D'.P.isLB _ _ h`. Conclude with `(GlobalTheory.PowBalanceProbe.hom_and_adjoint pD 0 ef eg u hu).2.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rosati_iff {R : Type} [CommRing R] [IsDomain R] {D' D : DegPre R} {n : ℕ} (pD : IsPowDeg D' D (n + 1))
     (f g : D.P.A ⟶ D.P.A) (f' g' : D'.P.A ⟶ D'.P.A) (hf : IsMonHom f) (hg : IsMonHom g)

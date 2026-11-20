@@ -25,7 +25,7 @@ def cast {R : Type} [CommRing R] {x y : Sp R ⟶ X} (h : x = y) {F : Type} [AddC
     (M : LieModel G x F) : LieModel G y F := h ▸ M
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_left {R : Type} [CommRing R] {x y : Sp R ⟶ X} (h : x = y) {F : Type} [AddCommGroup F]
     [Module R F] (M : LieModel G x F) (e : F) : ((cast h M).pt e).left = (M.pt e).left := by
@@ -33,7 +33,7 @@ theorem cast_left {R : Type} [CommRing R] {x y : Sp R ⟶ X} (h : x = y) {F : Ty
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨j, hj, -⟩` from `GlobalTheory.T.lie_model_existsUnique_semilinear X G A B c a E E' M M'`. Use `⟨j, fun e => ?_⟩` and prove the remaining obligations. Use `hj e` as an intermediate fact. Simplify `this` using `[LieModel.Lifts]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_tr {A B : Type} [CommRing A] [CommRing B] (a : Sp A ⟶ X) (b : Sp B ⟶ X) (c : A →+* B)
     (h : spMap c ≫ a = b) {E E' : Type} [AddCommGroup E] [AddCommGroup E'] [Module A E] [Module B E']
@@ -46,7 +46,7 @@ theorem exists_tr {A B : Type} [CommRing A] [CommRing B] (a : Sp A ⟶ X) (b : S
   simpa [LieModel.Lifts] using this
 
 /- English proof (translation)
-Establish `: dualMap (d.comp c) = (dualMap d).comp (dualMap c)`. Apply the tactic sequence `ext a <;> simp [dualMap]`. Simplify using `only [this, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spMap_dual_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (c : A →+* B) (d : B →+* C) :
     spMap (dualMap d) ≫ spMap (dualMap c) = spMap (dualMap (d.comp c)) := by
@@ -56,16 +56,16 @@ theorem spMap_dual_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (c
   rfl
 
 /- English proof (translation)
-The claim follows from `M.inj (Over.OverMorphism.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem pt_left_inj {A : Type} [CommRing A] {a : Sp A ⟶ X} {E : Type} [AddCommGroup E] [Module A E]
     (M : LieModel G a E) {u v : E} (h : (M.pt u).left = (M.pt v).left) : u = v :=
   M.inj (Over.OverMorphism.ext h)
 
 /- English proof (translation)
-Establish `hr : Set.range z ⊆ Set.range x`. Introduce and unpack `_ ⟨t, rfl⟩`. Use `Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of A) z h` as an intermediate fact. Conclude with `(this.ge (Set.mem_univ t) : t ∈ z ⁻¹ᵁ x.opensRange)`. Use `⟨(Spec.preimage (IsOpenImmersion.lift x z hr)).hom, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (Spec.preimage (IsOpenImmersion.lift x z hr)).hom) ≫ x = z`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage, IsOpenImmersion.lift_fac]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {R A : Type} [CommRing R] [CommRing A] [IsLocalRing A] (x : Sp R ⟶ X) [IsOpenImmersion x]
     (z : Sp A ⟶ X) (h : z (IsLocalRing.closedPoint A) ∈ x.opensRange) : ∃ a : R →+* A, spMap a ≫ x = z := by
@@ -80,11 +80,11 @@ theorem exists_lift {R A : Type} [CommRing R] [CommRing A] [IsLocalRing A] (x : 
 variable [Smooth G.hom]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `exists_tr x y ψ hψ MR My`. Use `letI : Algebra R A := ψ.toAlgebra`. Use `letI : Module R Fy := Module.compHom Fy ψ`. Use `haveI : IsScalarTower R A Fy := ⟨fun s r e => by`. Express the relevant statement in the definitionally equal form `(ψ s * r) • e = ψ s • r • e`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul]⟩`. Set `j' : F →ₗ[R] Fy` to `{ toFun := j map_add' := j.map_add map_smul' := fun r e => j.map_smulₛₗ r e }`. Establish `hbc : IsBaseChange A j'` using `(GlobalTheory.T.lie_model_finite_base_change X G R x F MR).2.2 A Fy (cast hψ.symm My) j' fun e => by`. Rewrite using `[cast_left]`. Conclude with `hj e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨j, (Algebra.TensorProduct.basis A b).map hbc.equiv, fun k => ?_, hj⟩` and prove the remaining obligations. Simplify using `only [Module.Basis.map_apply, Algebra.TensorProduct.basis_apply, IsBaseChange.equiv_tmul, one_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem basis_tr {R A : Type} [CommRing R] [CommRing A] (ψ : R →+* A) (x : Sp R ⟶ X) (y : Sp A ⟶ X)
     (hψ : spMap ψ ≫ x = y) {F Fy : Type} [AddCommGroup F] [Module R F] [AddCommGroup Fy] [Module A Fy]
@@ -112,7 +112,7 @@ theorem basis_tr {R A : Type} [CommRing R] [CommRing A] (ψ : R →+* A) (x : Sp
 
 omit [Smooth G.hom] [GrpObj G] in
 /- English proof (translation)
-Rewrite using `[← B.sum_repr y, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[j.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ (⟨g (B.repr y k), _, rfl⟩ : g.range) (Submodule.subset_span ⟨k, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_range {A Ω : Type} [CommRing A] [Field Ω] (g : A →+* Ω) {Fq E : Type} [AddCommGroup Fq]
     [Module A Fq] [AddCommGroup E] [Module Ω E] {n : ℕ} (B : Module.Basis (Fin n) A Fq) (j : Fq →ₛₗ[g] E)
@@ -125,15 +125,15 @@ theorem mem_span_range {A Ω : Type} [CommRing A] [Field Ω] (g : A →+* Ω) {F
 variable [IsCommMonObj G]
 
 /- English proof (translation)
-Take `⟨j, B, hB, hj⟩` from `basis_tr φ x ξ hφ MR M b`. Establish `hc : (fun k => j (b k)) = B` using `funext fun k => (hB k).symm`. Use `⟨fun k => j (b k), ?_, ?_, fun q ψ hψ hg => ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `B.linearIndependent`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `B.span_eq`. Use `⟨by rw [hc]; exact B.linearIndependent, ?_⟩` and prove the remaining obligations. Take `⟨Fq, _, _, ⟨Mq⟩⟩` from `lieModel_exists X G (X.presheaf.stalk q.1) (X.fromSpecStalk q.1)`. Take `⟨β, Bq, hBq, hβ⟩` from `basis_tr (A := X.presheaf.stalk q.1) ψ x (X.fromSpecStalk q.1) hψ MR Mq b`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨jq, hjq⟩` from `exists_tr (A := X.presheaf.stalk q.1) (X.fromSpecStalk q.1) ξ (genMap ξ q) (spec_genMap ξ q) Mq M`. Establish `hcomp : ∀ e, jq (β e) = j e` using `fun e => pt_left_inj M (by`. Rewrite using `[hjq, hβ, ← Category.assoc, spMap_dual_comp, hg, hj])`. Establish `hcq : (fun k => j (b k)) = fun k => jq (Bq k)` using `funext fun k => by rw [hBq, hcomp]`. Use `le_antisymm (fun e he => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `(M.mem_lat_iff q e).1 he`. Take `⟨y, rfl⟩` from `Mq.onto v hv.1`. Establish `hy : e = jq y` using `pt_left_inj M (hv.2.trans (hjq y).symm)`. Rewrite using `[hy, hcq]`. Conclude with `mem_span_range (genMap ξ q) Bq jq y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `(M.mem_lat_iff q _).2 ⟨Mq.pt (β (b k)), Mq.tan _, by`. Express the relevant statement in the definitionally equal form `(M.pt (j (b k))).left = _`. Rewrite using `[← hcomp]`. Conclude with `hjq _⟩`.
+A detailed English derivation is pending.
 -/
 theorem frame_of_basis {R : Type} [CommRing R] (x : Sp R ⟶ X) {F : Type} [AddCommGroup F] [Module R F]
     (MR : LieModel G x F) {n : ℕ} (b : Module.Basis (Fin n) R F) {Ω : Type} [Field Ω] (ξ : Sp Ω ⟶ X)
@@ -167,21 +167,17 @@ theorem frame_of_basis {R : Type} [CommRing R] (x : Sp R ⟶ X) {F : Type} [AddC
       exact hjq _⟩
 
 /- English proof (translation)
-Take `⟨_, ⟨U, hU, rfl⟩, hy, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Use `replace hU : IsAffineOpen U := hU`. Set `R₀ : Type` to `Γ(X, U)`. Set `x₀ : Sp R₀ ⟶ X` to `hU.fromSpec`. Establish `: IsOpenImmersion x₀` using `inferInstanceAs (IsOpenImmersion hU.fromSpec)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨F₀, _, _, ⟨M₀⟩⟩` from `lieModel_exists X G R₀ x₀`. Take `⟨hfin, hproj, hbc⟩` from `GlobalTheory.T.lie_model_finite_base_change X G R₀ x₀ F₀ M₀`. Set `P : PrimeSpectrum R₀` to `hU.primeIdealOf ⟨y, hy⟩`. Establish `hP : x₀ P = y` using `hU.fromSpec_primeIdealOf ⟨y, hy⟩`. Use `haveI : Module.FinitePresentation R₀ F₀ := Module.finitePresentation_of_projective R₀ F₀`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : Module.Free (Localization.AtPrime P.asIdeal) (LocalizedModule P.asIdeal.primeCompl F₀) := Module.free_of_flat_of_isLocalRing`. Take `⟨f, hf, hfree, -⟩` from `Module.FinitePresentation.exists_free_localizedModule_powers P.asIdeal.primeCompl (LocalizedModule.mkLinearMap P.asIdeal.primeCompl F₀) (Localization.AtPrime P.asIdeal)`. Set `R : Type` to `Localization.Away f`. Set `x : Sp R ⟶ X` to `spMap (algebraMap R₀ R) ≫ x₀`. Establish `hopen : IsOpenImmersion (spMap (algebraMap R₀ R))` using `inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap R₀ (Localization.Away f)))))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx : IsOpenImmersion x` using `inferInstance`. Take `⟨F, _, _, ⟨MF⟩⟩` from `lieModel_exists X G R x`. Take `⟨β, hβ⟩` from `exists_tr x₀ x (algebraMap R₀ R) rfl M₀ MF`. Use `letI : Module R₀ F := Module.compHom F (algebraMap R₀ R)`. Use `haveI : IsScalarTower R₀ R F := ⟨fun s r e => by`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, mul_smul]`. Use the proof step `rfl⟩`. Set `β' : F₀ →ₗ[R₀] F` to `{ toFun := β map_add' := β.map_add map_smul' := fun r e => β.map_smulₛₗ r e }`. Establish `hb : IsBaseChange R β'` using `hbc R F MF β' hβ`. Use `haveI : IsLocalizedModule (Submonoid.powers f) β' := (isLocalizedModule_iff_isBaseChange (Submonoid.powers f) R β').2 hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : LocalizedModule (Submonoid.powers f) F₀ ≃ₗ[R] F` using `(IsLocalizedModule.linearEquiv (Submonoid.powers f) (LocalizedModule.mkLinearMap (Submonoid.powers f) F₀) β').extendScalarsOfIsLocalization (Submonoid.powers f) R`. Use `haveI : Module.Free R F := Module.Free.of_equiv e`. Use `haveI : Module.Finite R F := (GlobalTheory.T.lie_model_finite_base_change X G R x F MF).1`. Establish `hmem : P ∈ Set.range (spMap (algebraMap R₀ R))`. Use `PrimeSpectrum.localization_away_comap_range R f` as an intermediate fact.
-
-Establish `h2 : P ∈ PrimeSpectrum.basicOpen f` using `hf`. Rewrite `h2` using `[← SetLike.mem_coe, ← this]`. Conclude with `h2`. Take `⟨t, ht⟩` from `hmem`. Use `haveI : Nontrivial R := PrimeSpectrum.nontrivial t`.
-
-Use `⟨R, inferInstance, x, hx, F, inferInstance, inferInstance, MF, _, Module.finBasis R F, ?_⟩` and prove the remaining obligations. Use `⟨t, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(spMap (algebraMap R₀ R) ≫ x₀) t = y`. Rewrite using `[Scheme.Hom.comp_apply, ht, hP]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart (G : Over X) [GrpObj G] [Smooth G.hom] [IsCommMonObj G] (y : X) :
     ∃ (R : Type) (_ : CommRing R) (x : Sp R ⟶ X) (_ : IsOpenImmersion x) (F : Type) (_ : AddCommGroup F)
@@ -245,17 +241,15 @@ namespace GlobalTheory.CompanionTheory.Ar
 open GlobalTheory.CompanionTheory.Ar.LieTangent GlobalTheory.CompanionTheory.Ar.LieVB in
 
 /- English proof (translation)
-Introduce `X Ω _ ξ G _ _ Li _ _ M _ hs`. Use `haveI := hs`. Establish `hvb : M.lat.IsVB (Module.finrank Ω Li) ⊤`. Introduce `p _`. Take `⟨R, _, x, hx, F, _, _, MR, n, b, hp⟩` from `exists_chart G p.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgen : genPt ξ ∈ x.opensRange` using `p.2.mem_open x.opensRange.isOpen hp`. Take `⟨φ, hφ⟩` from `exists_lift x ξ hgen`. Take `⟨c, hli, hsp, hfr⟩` from `frame_of_basis x MR b ξ M φ hφ`. Establish `hn : n = Module.finrank Ω Li`. Rewrite using `[Module.finrank_eq_card_basis (Module.Basis.mk hli hsp.ge), Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hn` using the available equality. Use `⟨x.opensRange, hp, c, hsp, fun q _ hq => ?_⟩` and prove the remaining obligations. Establish `hq' : (X.fromSpecStalk q.1) (IsLocalRing.closedPoint (X.presheaf.stalk q.1)) ∈ x.opensRange`. Rewrite using `[Scheme.fromSpecStalk_closedPoint]`. Conclude with `hq`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ψ, hψ⟩` from `exists_lift (A := X.presheaf.stalk q.1) x (X.fromSpecStalk q.1) hq'`. Use `hfr q ψ hψ ?_` and prove the remaining obligations. Establish `h1 : spMap ((genMap ξ q).comp ψ) ≫ x = spMap φ ≫ x`. Establish `e1 : spMap ((genMap ξ q).comp ψ) = spMap (genMap ξ q) ≫ spMap ψ`. Simplify using `only [spMap, ← Spec.map_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation.
 
-Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, Category.assoc]`. Use `_ = spMap (genMap ξ q) ≫ X.fromSpecStalk q.1 := by rw [hψ]`. Use `_ = ξ := spec_genMap ξ q`.
-
-Use `_ = spMap φ ≫ x := hφ.symm`. Establish `h2` using `Spec.map_injective ((cancel_mono x).1 h1)`. Conclude with `congrArg (fun g => g.hom) h2`. Conclude with `⟨hvb, (Lat.isVBOn_dual_and_bidual X Ω ξ Li M.lat Set.univ _ hvb).1⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lieLat_isVB_of_smooth : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (G : Over X) [GrpObj G] [IsCommMonObj G] (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li), IsCptGen ξ → Smooth G.hom → M.lat.IsVB (Module.finrank Ω Li) ⊤ ∧ M.omLat.IsVB (Module.finrank Ω Li) ⊤ := by
   intro X Ω _ ξ G _ _ Li _ _ M _ hs

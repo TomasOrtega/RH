@@ -7,9 +7,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace GlobalTheory.CompanionTheory.SiteCup
 
 /- English proof (translation)
-Unfold `CH.Mor.pull CH.oneH`. Use `generalize_proofs p1 p2`. Rewrite using `[CrystallineSemistableComparison.P.mapH_cls]`. Use `congr 1`. Use function extensionality and compare the values at `s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `h _`. Use `p2 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Conclude with `h _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pull_unit_class {R R' : Type} [CommRing R] [CommRing R'] {C C' : Type 1} [Category.{0} C] [Category.{0} C']
     {σ : R →+* R'} (A : C ⥤ CommAlgCat.{0} R) (A' : C' ⥤ CommAlgCat.{0} R')
@@ -27,15 +27,15 @@ theorem pull_unit_class {R R' : Type} [CommRing R] [CommRing R'] {C C' : Type 1}
     exact h _
 
 /- English proof (translation)
-Introduce `R R' _ _ C C' _ _ Φ Φ' σ m`. Use `⟨?_, pull_unit_class _ _ m.o (fun T => RingHom.map_one (m.ρ T))⟩` and prove the remaining obligations. Introduce `i j k h x y`. Establish `hz : ∀ n (c : (CH.cx (CH.modF Φ.A)).X n), c ∈ (CH.cx (CH.modF Φ.A)).Z n → m.o.hom.f n c ∈ (CH.cx (CH.modF Φ'.A)).Z n`. Introduce `n c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearMap.mem_ker.mpr ?_` and prove the remaining obligations. Rewrite using `[m.o.hom.comm, LinearMap.mem_ker.mp hc, map_zero]`. Establish `ex` using `CrystallineSemistableComparison.Auxff.cls_out _ x`. Generalize the expression as in `Quotient.out x = z at ex`. Substitute `ex` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality.
 
-Establish `ey` using `CrystallineSemistableComparison.Auxff.cls_out _ y`. Generalize the expression as in `Quotient.out y = w at ey`. Substitute `ey` using the available equality. Take `⟨a, ha⟩` from `z`. Take `⟨b, hb⟩` from `w`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hc, e⟩` from `CrystallineSemistableComparison.P.cup_cls (CH.mulP Φ.A) h a b ha hb`. Take `⟨hc', e'⟩` from `CrystallineSemistableComparison.P.cup_cls (CH.mulP Φ'.A) h _ _ (hz _ _ ha) (hz _ _ hb)`. Rewrite using `[e]`. Unfold `CH.Mor.pull`. Rewrite using `[CrystallineSemistableComparison.P.mapH_cls _ _ _ _ (hz _ _ ha), CrystallineSemistableComparison.P.mapH_cls _ _ _ _ (hz _ _ hb), e', CrystallineSemistableComparison.P.mapH_cls _ _ _ _ (hz _ _ hc)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `s`. Simplify using `[CH.Mor.hom, CH.Mor.pullC, CH.mulP, CH.Pairing.cupC, SMor.o, CH.term, CH.modF]`. Apply the tactic sequence `congr 1 <;> exact m.nat _ _`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smor_cup : ∀ {R R' : Type} [CommRing R] [CommRing R'] {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {Φ : PDF R C}
     {Φ' : PDF R' C'} {σ : R →+* R'} (m : SMor Φ Φ' σ), (∀ {i j k : ℕ} (h : i + j = k) x y,

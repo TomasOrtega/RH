@@ -11,11 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R R' _ _ σ A Y A' Y' f f' φ ψ hA hY hcomm`. Establish `hχ : (ψ ≫ f.left) ≫ A.hom = Y'.hom ≫ spMap σ`. Rewrite using `[Category.assoc, Over.w f, hY]`. Establish `H` using `(GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id).1`. Use `⟨fun x ↦ ?_, fun x ↦ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `(H R R A.left Y.left A.hom Y.hom (RingHom.id R) f.left (ovw f) R' Y'.left Y'.hom σ ψ hY σ (ψ ≫ f.left) hχ rfl (fun _ ↦ rfl)).1 x`. Establish `e2` using `(H R R' A.left A'.left A.hom A'.hom σ φ hA R' Y'.left Y'.hom (RingHom.id R') f'.left (ovw f') σ (ψ ≫ f.left) hχ hcomm.symm (fun _ ↦ rfl)).1 x`. Simplify using `only [pO1]`. Rewrite using `[e1, e2]`. Establish `e1` using `(H R R A.left Y.left A.hom Y.hom (RingHom.id R) f.left (ovw f) R' Y'.left Y'.hom σ ψ hY σ (ψ ≫ f.left) hχ rfl (fun _ ↦ rfl)).2.1 x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `(H R R' A.left A'.left A.hom A'.hom σ φ hA R' Y'.left Y'.hom (RingHom.id R') f'.left (ovw f') σ (ψ ≫ f.left) hχ hcomm.symm (fun _ ↦ rfl)).2.1 x`. Simplify using `only [structureSheafH2Pullback]`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_over_baseChange_comm : ∀ (R R' : Type) [CommRing R] [CommRing R'] (σ : R →+* R') (A Y : Over (Sp R)) (A' Y' : Over (Sp R')) (f : Y ⟶ A) (f' : Y' ⟶ A') (φ : A'.left ⟶ A.left) (ψ : Y'.left ⟶ Y.left) (hA : φ ≫ A.hom = A'.hom ≫ spMap σ) (hY : ψ ≫ Y.hom = Y'.hom ≫ spMap σ), f'.left ≫ φ = ψ ≫ f.left → (∀ x, pullHO1 hY (pO1 f x) = pO1 f' (pullHO1 hA x)) ∧ ∀ x, pullHO2 hY (structureSheafH2Pullback f x) = structureSheafH2Pullback f' (pullHO2 hA x) := by
   intro R R' _ _ σ A Y A' Y' f f' φ ψ hA hY hcomm

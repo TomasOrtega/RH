@@ -5,51 +5,47 @@ open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory
 namespace PositivityTheory.HtPt.Gi
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ hv hp hO E _ _ c La _ _ EF N u h`. Use `h.free` as an intermediate fact. Use `h.finite` as an intermediate fact. Set `ρ : 𝓞 E →+* Module.End C (C ⊗[ℤ] La)` to `(Module.End.baseChangeHom ℤ C La).toRingHom.comp (Module.toModuleEnd ℤ La)`. Establish `hρ : ∀ (a : 𝓞 E) (s : C) (x : La), ρ a (s ⊗ₜ x) = s ⊗ₜ (a • x)` using `fun a s x => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : C ⊗[ℤ] La →ₗ[C] C ⊗[ℤ] La →ₗ[C] C` to `LinearMap.BilinForm.baseChange C EF`. Establish `he : ∀ (s t : C) (x y : La), e (s ⊗ₜ x) (t ⊗ₜ y) = (EF x y : C) * (s * t)` using `fun s t x y => by`. Simplify using `only [e, LinearMap.BilinForm.baseChange_tmul, zsmul_eq_mul]`. Establish `he1 : ∀ x y : La, e (1 ⊗ₜ x) (1 ⊗ₜ y) = (EF x y : C)` using `fun x y => by rw [he]; simp`. Set `T : Submodule O (C ⊗[ℤ] La)` to `Submodule.span O (Set.range fun x : La => (1 : C) ⊗ₜ[ℤ] x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hT : ∀ x : La, (1 : C) ⊗ₜ[ℤ] x ∈ T` using `fun x => Submodule.subset_span ⟨x, rfl⟩`. Set `b` to `Module.Free.chooseBasis ℤ La`. Set `B` to `Algebra.TensorProduct.basis C b`. Establish `hB : ∀ i, B i = 1 ⊗ₜ b i` using `fun i => Algebra.TensorProduct.basis_apply b i`. Use `choose b' hb' using fun i => h.unimod.2 (b.coord i)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrep : ∀ i y, e (1 ⊗ₜ b' i) y = B.repr y i`. Introduce `i y`. Establish `: e (1 ⊗ₜ b' i) = B.coord i` using `B.ext fun j => by`. Rewrite using `[Module.Basis.coord_apply, B.repr_self, hB, he1, hb', Module.Basis.coord_apply, b.repr_self]`. Simplify using `only [Finsupp.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hskew : ∀ x y, EF x y = -EF y x` using `fun x y => by`. Use `h.alt (x + y)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, LinearMap.add_apply, h.alt] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `eskew : ∀ x y, e x y = -e y x`. Introduce `x y`. Proceed by induction on `x with`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul s x`. Proceed by induction on `y with`.
+Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul t y => rw [he, he, hskew]`. Use `push_cast`.
+Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hTb : T = Submodule.span O (Set.range B)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(1 : C) ⊗ₜ[ℤ] x ∈ Submodule.span O (Set.range B)`. Rewrite using `[← b.sum_repr x, tmul_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[tmul_smul, ← hB]`. Conclude with `zsmul_mem (Submodule.subset_span (R := O) (Set.mem_range_self (f := B) i)) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[hB]`. Conclude with `hT _`. Establish `hsp : Submodule.span C (T : Set (C ⊗[ℤ] La)) = ⊤`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hTb, Submodule.span_span_of_tower, B.span_eq]`. Set `w : Fin N × Module.Free.ChooseBasisIndex ℤ (𝓞 E) → C ⊗[ℤ] La` to `fun q => ρ (RingOfIntegers.basis E q.2) (1 ⊗ₜ u q.1)`. Establish `hTw : T = Submodule.span O (Set.range w)`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := Ideal.span {(p : O)}) ?_ (IsAdicComplete.le_jacobson_bot _) ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hTb]`. Conclude with `Submodule.fg_span (Set.finite_range B)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨a, x', rfl⟩` from `h.span x`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(1 : C) ⊗ₜ[ℤ] _ ∈ Submodule.span O (Set.range w) ⊔ Ideal.span {(p : O)} • T`. Rewrite using `[tmul_add]`. Use `Submodule.add_mem_sup ?_ ?_` and prove the remaining obligations. Rewrite using `[tmul_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (RingOfIntegers.basis E).sum_repr (a i), Finset.sum_smul, tmul_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc, tmul_smul]`. Conclude with `zsmul_mem (Submodule.subset_span (R := O) (Set.mem_range_self (f := w) (i, k))) _`. Rewrite using `[tmul_smul, ← Nat.cast_smul_eq_nsmul O]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) (hT _)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `hT _`. Use `⟨ρ, T, e, fun a x => hρ a 1 x, rfl, ⟨?_, hsp, hTw⟩, he1, fun x => ?_, fun y hy => ?_, ?_, fun a x y => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Use `linearIndependent_of_top_le_span_of_card_eq_finrank (b := w) ?_ ?_` and prove the remaining obligations. Rewrite using `[← hsp, hTw, Submodule.span_span_of_tower]`. Rewrite using `[Module.finrank_baseChange, h.rank, Fintype.card_prod, Fintype.card_fin, ← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`. Use `eskew x x` as an intermediate fact. Establish `h2 : (2 : C) * e x x = 0` using `by linear_combination this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h2`. Conclude with `B.ext_elem fun i => by rw [← hrep, hy]; simp`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Rewrite using `[hTb, ← B.sum_repr y]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `hy _ (hT (b' i))`. Rewrite using `[← hrep, ← ho, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce and unpack `_ ⟨y, rfl⟩ x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨x, rfl⟩` from `hx`. Conclude with `⟨(EF x y : O), by rw [he1, map_intCast]⟩`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x x' _ _ hx hx'`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `Subring.add_mem _ hx hx'`. Consider the case `smul o x _ hx`.
-
-Rewrite using `[← algebraMap_smul C o x, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Subring.mul_mem _ ⟨o, rfl⟩ hx`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb]`.
-
-Consider the case `tmul s x`. Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul t y => rw [hρ, hρ, he, he, h.adj]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem free_on_lift : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [IsDomain O] [Algebra O C] (hv : v.Integers O) (hp : v (p : C) < 1) (hO : IsAdicComplete (Ideal.span {(p : O)}) O) (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (La : Type) [AddCommGroup La] [Module (𝓞 E) La] (EF : La →ₗ[ℤ] La →ₗ[ℤ] ℤ) (N : ℕ) (u : Fin N → La), IsPolLattice c p EF u → ∃ (ρ : 𝓞 E →+* Module.End C (C ⊗[ℤ] La)) (T : Submodule O (C ⊗[ℤ] La)) (e : C ⊗[ℤ] La →ₗ[C] C ⊗[ℤ] La →ₗ[C] C), (∀ (a : 𝓞 E) (x : La), ρ a (1 ⊗ₜ x) = 1 ⊗ₜ (a • x)) ∧ T = Submodule.span O (Set.range fun x : La => (1 : C) ⊗ₜ[ℤ] x) ∧ IsFreeOn ρ T (fun i => 1 ⊗ₜ u i) ∧ (∀ x y : La, e (1 ⊗ₜ x) (1 ⊗ₜ y) = (EF x y : C)) ∧ (∀ x, e x x = 0) ∧ (∀ y, (∀ x, e x y = 0) → y = 0) ∧ dualLat e T = T ∧ ∀ (a : 𝓞 E) x y, e (ρ a x) y = e x (ρ (RingOfIntegers.mapRingEquiv c a) y) := by
   intro p _ C _ _ _ v O _ _ _ hv hp hO E _ _ c La _ _ EF N u h

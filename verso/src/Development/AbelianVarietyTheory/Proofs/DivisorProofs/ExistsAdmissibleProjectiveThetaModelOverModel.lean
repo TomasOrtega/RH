@@ -20,7 +20,7 @@ namespace GlobalTheory.Poinc.SegreModel
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω}
 
 /- English proof (translation)
-Introduce `z` and use `by obtain ⟨i, h0, hi⟩ := h z refine ⟨i.1, left_ne_zero_of_mul h0, fun j => ?_⟩ have := hi (j, i.2) rwa [mul_div_mul_right _ _ (right_ne_zero_of_mul h0)] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasDiv_left {A B : Type} {a : A → Ω} {b : B → Ω} (h : M.HasDiv fun p : A × B => a p.1 * b p.2) :
     M.HasDiv a := fun z => by
@@ -30,7 +30,7 @@ theorem hasDiv_left {A B : Type} {a : A → Ω} {b : B → Ω} (h : M.HasDiv fun
   rwa [mul_div_mul_right _ _ (right_ne_zero_of_mul h0)] at this
 
 /- English proof (translation)
-Introduce `z` and use `by obtain ⟨i, h0, hi⟩ := h z refine ⟨i.2, right_ne_zero_of_mul h0, fun j => ?_⟩ have := hi (i.1, j) rwa [mul_div_mul_left _ _ (left_ne_zero_of_mul h0)] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasDiv_right {A B : Type} {a : A → Ω} {b : B → Ω} (h : M.HasDiv fun p : A × B => a p.1 * b p.2) :
     M.HasDiv b := fun z => by
@@ -40,7 +40,7 @@ theorem hasDiv_right {A B : Type} {a : A → Ω} {b : B → Ω} (h : M.HasDiv fu
   rwa [mul_div_mul_left _ _ (left_ne_zero_of_mul h0)] at this
 
 /- English proof (translation)
-Introduce `z` and use `by obtain ⟨i, h0, hi⟩ := h z have hne := Finset.prod_ne_zero_iff.1 h0 refine ⟨i k, hne k (Finset.mem_univ _), fun j => ?_⟩ have := hi (Function.update i k j) have e : ∏ l ∈ Finset.univ.erase k, t l (Function.update i k j l) = ∏ l ∈ Finset.univ.erase k, t l (i l) := Finset.prod_co …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasDiv_of_prod {K : Type} [Fintype K] {J : K → Type} {t : ∀ k, J k → Ω}
     (h : M.HasDiv fun i : ∀ k, J k => ∏ k, t k (i k)) (k : K) : M.HasDiv (t k) := fun z => by
@@ -57,11 +57,11 @@ theorem hasDiv_of_prod {K : Type} [Fintype K] {J : K → Type} {t : ∀ k, J k �
     e, Function.update_self, mul_div_mul_right _ _ h1] at this
 
 /- English proof (translation)
-Take `⟨i, hi, -⟩` from `h.1 (genericPoint M.Z)`. Take `⟨U, hU, hD, hR⟩` from `h.2 i hi`. Establish `hne : (U : Set M.Z).Nonempty` using `⟨genericPoint M.Z, hD ▸ RatModel.div_genericPoint hi⟩`. Establish `hle : ∀ x ∈ M.ringOn U, x ∈ F`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[hR]`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem _ h' => obtain ⟨j, rfl⟩ := h'`. Conclude with `hc i j hi`. Consider the case `algebraMap r => exact ho ⟨r, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`. Use `top_unique fun x _ => ?_` and prove the remaining obligations. Take `⟨a, b, -, rfl⟩` from `RatModel.exists_eq_div hU hne x`. Conclude with `div_mem (hle _ ((RatModel.mem_ringOn_iff_exists hne).2 ⟨a, rfl⟩)) (hle _ ((RatModel.mem_ringOn_iff_exists hne).2 ⟨b, rfl⟩))`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subfield_eq_top {J : Type} {c : J → Ω} (h : M.IsCl c) (F : Subfield Ω)
     (ho : Set.range (algebraMap o Ω) ⊆ F) (hc : ∀ i j, c i ≠ 0 → c j / c i ∈ F) : F = ⊤ := by
@@ -82,7 +82,7 @@ theorem subfield_eq_top {J : Type} {c : J → Ω} (h : M.IsCl c) (F : Subfield �
     (hle _ ((RatModel.mem_ringOn_iff_exists hne).2 ⟨b, rfl⟩))
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_surjective (Algebra.linearMap F Ω) fun x => ⟨⟨x, h ▸ trivial⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_eq_top (F : Subfield Ω) (h : F = ⊤) : Module.Finite F Ω :=
   Module.Finite.of_surjective (Algebra.linearMap F Ω) fun x => ⟨⟨x, h ▸ trivial⟩, rfl⟩
@@ -90,21 +90,17 @@ theorem finite_of_eq_top (F : Subfield Ω) (h : F = ⊤) : Module.Finite F Ω :=
 end GlobalTheory.Poinc.SegreModel
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρ hBig M₁ hM₁ K _ Jk _ t ht`. Take `⟨n, c, hc⟩` from `RatModel.exists_isCl_of_isProjOver hM₁`. Establish `hN2` using `S.N_ge`. Use `haveI hN0 : NeZero S.N := ⟨by omega⟩`. Use `haveI : NeZero (S.r * S.N) := ⟨Nat.mul_ne_zero (by have := S.r_pos; omega) (by omega)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : NeZero ((S.r * S.N) ^ 2) := ⟨pow_ne_zero _ (NeZero.ne _)⟩`. Use `haveI : Finite (AddSubgroup S.Gam) := Finite.of_injective (fun H : AddSubgroup S.Gam => (H : Set S.Gam)) SetLike.coe_injective`. Use `haveI : ∀ T₀ : AddSubgroup S.Gam, Finite (T₀ →+ ZMod S.N) := fun T₀ => Finite.of_injective (fun f : T₀ →+ ZMod S.N => (f : T₀ → ZMod S.N)) DFunLike.coe_injective`. Set `K₁` to `{k : K // Nonempty (Jk k)}`. Set `K₂` to `{d : Σ T : AddSubgroup S.Gam, (T →+ ZMod S.N) // S.FF d.1 d.2 ≠ 0}`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `letI : Fintype K₁ := Fintype.ofFinite _`. Use `letI : Fintype K₂ := Fintype.ofFinite _`. Set `J₂ : K₂ → Type` to `fun d => S.J × (d.1.1 → ZMod ((S.r * S.N) ^ 2))`. Set `B` to `(∀ k : K₁, Jk k.1) × (∀ d : K₂, J₂ d)`. Set `b : B → Ω` to `fun p => (∏ k : K₁, t k.1 (p.1 k)) * ∏ d : K₂, S.FF d.1.1 d.1.2 (p.2 d)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Finite B := inferInstance`. Use `letI : Fintype (Fin (n + 1) × B) := Fintype.ofFinite _`. Take `⟨p₀, hp₀⟩ : ∃ p, b p ≠ 0` from `by choose κ hκ using fun d : K₂ => Function.ne_iff.1 d.2`. Conclude with `⟨(fun k => k.2.some, κ), mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => ht _ _) (Finset.prod_ne_zero_iff.2 fun d _ => hκ d)⟩`. Take `⟨i₀, hi₀, -⟩` from `hc.1 (genericPoint M₁.Z)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x₀, hx₀⟩` from `S.th_ne`. Take `⟨Y, U₀, EE, hO, hD, hE, ⟨FinalForm⟩⟩` from `GlobalTheory.zhSt_holds o Ω S ρ hBig (Fin (n + 1) × B) (fun p => c p.1 * b p.2) ⟨(i₀, p₀), mul_ne_zero hi₀ hp₀⟩ (by`. Use `SegreModel.finite_of_eq_top _ (SegreModel.subfield_eq_top hc _ (Set.subset_union_left.trans Subfield.subset_closure) fun i j _ => Subfield.subset_closure (Or.inr ⟨(x₀, i, p₀), (x₀, j, p₀), ?_⟩))` and prove the remaining obligations. Rewrite using `[mul_div_mul_left _ _ hx₀, mul_div_mul_right _ _ hp₀])`. Establish `hb : Y.HasDiv b` using `SegreModel.hasDiv_right hD`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `SegreModel.hasDiv_left (a := fun q : ∀ k : K₁, Jk k.1 => ∏ k : K₁, t k.1 (q k)) (b := fun q : ∀ d : K₂, J₂ d => ∏ d : K₂, S.FF d.1.1 d.1.2 (q d)) hb`. Establish `h2` using `SegreModel.hasDiv_right (a := fun q : ∀ k : K₁, Jk k.1 => ∏ k : K₁, t k.1 (q k)) (b := fun q : ∀ d : K₂, J₂ d => ∏ d : K₂, S.FF d.1.1 d.1.2 (q d)) hb`. Take `⟨π, hπ⟩` from `hc.exists_isHom (M' := Y) (φ := AlgHom.id o Ω) (SegreModel.hasDiv_left hD)`. Use `⟨Y, π, U₀, EE, FinalForm, hπ, ?_, ⟨hO, fun T c' _ h => ?_⟩, hE, fun k hk => ?_⟩` and prove the remaining obligations. Use `haveI := M₁.sep haveI : IsProper (π ≫ M₁.s) := by`.
-
-Rewrite using `[hπ.inducedModelMorphism_comp_structureMap]`. Take `⟨m, j, hj, hs⟩` from `hO.proj`. Rewrite using `[← hs]`. Use `isProper_str o m` as an intermediate fact. Use `infer_instance`.
-
-Conclude with `IsProper.of_comp π M₁.s`. Conclude with `SegreModel.hasDiv_of_prod (t := fun d : K₂ => S.FF d.1.1 d.1.2) h2 ⟨⟨T, c'⟩, h⟩`. Conclude with `SegreModel.hasDiv_of_prod (t := fun k : K₁ => t k.1) h1 ⟨k, hk⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.exists_admissible_projective_theta_model : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real), S.Big → ∀ M₁ : RatModel o Ω, IsProjOver M₁.s → ∀ (K : Type) [Finite K] (Jk : K → Type) [∀ k, Finite (Jk k)] (t : ∀ k, Jk k → Ω), (∀ k j, t k j ≠ 0) → ∃ (Y : RatModel o Ω) (πY : Y.Z ⟶ M₁.Z) (U₀ : Y.Z.Opens) (EE : Y.Lat S.J) (_ : ZHOut ρ Y U₀ EE), M₁.IsHom Y (AlgHom.id o Ω) πY ∧ IsProper πY ∧ S.admitted Y U₀ ∧ S.IsEE Y U₀ EE ∧ ∀ k, Nonempty (Jk k) → Y.HasDiv (t k) := by
   intro o Ω _ _ _ _ S ρ hBig M₁ hM₁ K _ Jk _ t ht

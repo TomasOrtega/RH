@@ -14,28 +14,28 @@ def IsDerivBalanced (I : X.IdealSheafData) (m : ℕ) : Prop :=
   ∀ i < m, derivIdealSheafIterate k p i I ^ m ≤ I ^ (m - i)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isDerivBalanced_iff (I : X.IdealSheafData) (m : ℕ) :
     IsDerivBalanced k p I m ↔ ∀ i < m, derivIdealSheafIterate k p i I ^ m ≤ I ^ (m - i) :=
   Iff.rfl
 
 /- English proof (translation)
-The claim follows from `h i hi`.
+A detailed English derivation is pending.
 -/
 theorem IsDerivBalanced.derivIdealSheafIterate_pow_le {I : X.IdealSheafData} {m : ℕ} (h : IsDerivBalanced k p I m)
     {i : ℕ} (hi : i < m) : derivIdealSheafIterate k p i I ^ m ≤ I ^ (m - i) :=
   h i hi
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem isDerivBalanced_of_pow_le {I : X.IdealSheafData} {m : ℕ}
     (h : ∀ i < m, derivIdealSheafIterate k p i I ^ m ≤ I ^ (m - i)) : IsDerivBalanced k p I m :=
   h
 
 /- English proof (translation)
-Introduce `i hi`. Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Establish `h : derivIdealSheafIterate k p 0 I = I` using `derivIdealSheafIterate_zero k p I`. Conclude with `le_of_eq (by rw [h, Nat.sub_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDerivBalanced_one (I : X.IdealSheafData) : IsDerivBalanced k p I 1 := by
   intro i hi
@@ -60,7 +60,7 @@ theorem maxContactIdeal_one (I : X.IdealSheafData) : maxContactIdeal k p I 1 = I
   rfl
 
 /- English proof (translation)
-The claim follows from `derivIdealSheafIterate_ideal k p (m - 1) I U`.
+A detailed English derivation is pending.
 -/
 theorem maxContactIdeal_ideal (I : X.IdealSheafData) (m : ℕ) (U : X.affineOpens) :
     (maxContactIdeal k p I m).ideal U =
@@ -71,7 +71,7 @@ def IsMaxContactInvariant (I : X.IdealSheafData) (m : ℕ) : Prop :=
   maxContactIdeal k p I m * derivIdealSheaf k p I ≤ I
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem isMaxContactInvariant_of_mul_le {I : X.IdealSheafData} {m : ℕ}
     (h : maxContactIdeal k p I m * derivIdealSheaf k p I ≤ I) : IsMaxContactInvariant k p I m :=

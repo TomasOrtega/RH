@@ -11,7 +11,7 @@ noncomputable def lowDeg (f : ι → σ) (t : ℕ) : Submodule K (MvPolynomial �
   restrictSupport K {m | ∑ i, m (f i) < t}
 
 /- English proof (translation)
-Unfold `lowDeg`. Rewrite using `[mem_restrictSupport_iff]`. Conclude with `⟨fun h m hm => h (Finset.mem_coe.mpr hm), fun h m hm => h m (Finset.mem_coe.mp hm)⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_lowDeg {f : ι → σ} {t : ℕ} {R : MvPolynomial σ K} :
     R ∈ lowDeg f t ↔ ∀ m ∈ R.support, ∑ i, m (f i) < t := by
@@ -20,7 +20,7 @@ theorem mem_lowDeg {f : ι → σ} {t : ℕ} {R : MvPolynomial σ K} :
   exact ⟨fun h m hm => h (Finset.mem_coe.mpr hm), fun h m hm => h m (Finset.mem_coe.mp hm)⟩
 
 /- English proof (translation)
-Rewrite `h` using `[mem_lowDeg]`. Assume the negation of the conclusion as `hR`. Take `⟨m, hm⟩` from `Finset.nonempty_of_ne_empty (mt MvPolynomial.support_eq_empty.mp hR)`. Conclude with `absurd (h m hm) (Nat.not_lt_zero _)`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_lowDeg_zero {f : ι → σ} {R : MvPolynomial σ K}
     (h : R ∈ lowDeg f 0) : R = 0 := by
@@ -30,9 +30,9 @@ theorem eq_zero_of_mem_lowDeg_zero {f : ι → σ} {R : MvPolynomial σ K}
   exact absurd (h m hm) (Nat.not_lt_zero _)
 
 /- English proof (translation)
-Rewrite `h` using `[mem_lowDeg]`. Rewrite using `[R.as_sum, map_sum]`. Use `Submodule.sum_mem _ (fun m hm => ?_)` and prove the remaining obligations. Rewrite using `[pderiv_monomial, mem_lowDeg]`. Introduce `m' hm'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.mem_singleton.mp (support_monomial_subset hm')]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem pderiv_mem_lowDeg {f : ι → σ} {t : ℕ} (k : σ) {R : MvPolynomial σ K}
     (h : R ∈ lowDeg f t) : pderiv k R ∈ lowDeg f t := by
@@ -47,13 +47,13 @@ theorem pderiv_mem_lowDeg {f : ι → σ} {t : ℕ} (k : σ) {R : MvPolynomial �
     _ < t := h m hm
 
 /- English proof (translation)
-Rewrite `h` using `[mem_lowDeg]`. Rewrite using `[R.as_sum, map_sum]`. Use `Submodule.sum_mem _ (fun m hm => ?_)` and prove the remaining obligations. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h0 : m (f i) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Rewrite using `[mem_lowDeg]`. Introduce `m' hm'`. Rewrite using `[Finset.mem_singleton.mp (support_monomial_subset hm')]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt` using `h m hm`. Establish `key : ∑ i', (m - Finsupp.single (f i) 1 : σ →₀ ℕ) (f i') + 1 ≤ ∑ i', m (f i')` using `by classical`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ i), ← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Establish `h1 : (m - Finsupp.single (f i) 1 : σ →₀ ℕ) (f i) + 1 = m (f i)`. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : ∑ x ∈ Finset.univ.erase i, (m - Finsupp.single (f i) 1 : σ →₀ ℕ) (f x) ≤ ∑ x ∈ Finset.univ.erase i, m (f x)` using `Finset.sum_le_sum (fun x _ => by rw [Finsupp.tsub_apply]; exact Nat.sub_le _ _)`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pderiv_mem_lowDeg_of_succ {f : ι → σ} {t : ℕ} (i : ι) {R : MvPolynomial σ K}
     (h : R ∈ lowDeg f (t + 1)) : pderiv (f i) R ∈ lowDeg f t := by
@@ -81,9 +81,9 @@ theorem pderiv_mem_lowDeg_of_succ {f : ι → σ} {t : ℕ} (i : ι) {R : MvPoly
     omega
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `R hR`. Rewrite using `[pow_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_zero_of_mem_lowDeg_zero hR`. Consider the case `succ n ih`. Introduce `R hR`. Rewrite using `[pow_succ, Module.End.mul_apply]`. Conclude with `ih _ (hD n R hR)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_apply_eq_zero_of_lowDeg (D : Module.End K (MvPolynomial σ K)) (f : ι → σ)
     (hD : ∀ t R, R ∈ lowDeg f (t + 1) → D R ∈ lowDeg f t) :
@@ -105,14 +105,14 @@ section
 variable {K I J : Type} [CommRing K] [Fintype I] [Fintype J]
 
 /- English proof (translation)
-Simplify using `[gdelta, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gdelta_apply (κ : I → J → K) (R : MvPolynomial (I ⊕ J) K) :
     gdelta κ R = ∑ i, ∑ j, κ i j • pderiv (Sum.inl i) (pderiv (Sum.inr j) R) := by
   simp [gdelta, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[gdelta_apply]`. Use `Submodule.sum_mem _ (fun i _ => Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ ?_))` and prove the remaining obligations. Conclude with `pderiv_mem_lowDeg_of_succ (f := Sum.inl) i (pderiv_mem_lowDeg (Sum.inr j) h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gdelta_mem_lowDeg_inl (κ : I → J → K) {t : ℕ} {R : MvPolynomial (I ⊕ J) K}
     (h : R ∈ lowDeg (Sum.inl : I → I ⊕ J) (t + 1)) :
@@ -122,7 +122,7 @@ theorem gdelta_mem_lowDeg_inl (κ : I → J → K) {t : ℕ} {R : MvPolynomial (
   exact pderiv_mem_lowDeg_of_succ (f := Sum.inl) i (pderiv_mem_lowDeg (Sum.inr j) h)
 
 /- English proof (translation)
-Rewrite using `[gdelta_apply]`. Use `Submodule.sum_mem _ (fun i _ => Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ ?_))` and prove the remaining obligations. Conclude with `pderiv_mem_lowDeg (Sum.inl i) (pderiv_mem_lowDeg_of_succ (f := Sum.inr) j h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gdelta_mem_lowDeg_inr (κ : I → J → K) {t : ℕ} {R : MvPolynomial (I ⊕ J) K}
     (h : R ∈ lowDeg (Sum.inr : J → I ⊕ J) (t + 1)) :
@@ -134,7 +134,7 @@ theorem gdelta_mem_lowDeg_inr (κ : I → J → K) {t : ℕ} {R : MvPolynomial (
 end
 
 /- English proof (translation)
-Introduce `K I J _ _ _ κ R n h`. Conclude with `pow_apply_eq_zero_of_lowDeg (gdelta κ) Sum.inl (fun t R hR => gdelta_mem_lowDeg_inl κ hR) n R (mem_lowDeg.mpr h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vanL_holds : VanL := by
   intro K I J _ _ _ κ R n h
@@ -142,7 +142,7 @@ theorem vanL_holds : VanL := by
     (mem_lowDeg.mpr h)
 
 /- English proof (translation)
-Introduce `K I J _ _ _ κ R n h`. Conclude with `pow_apply_eq_zero_of_lowDeg (gdelta κ) Sum.inr (fun t R hR => gdelta_mem_lowDeg_inr κ hR) n R (mem_lowDeg.mpr h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vanR_holds : VanR := by
   intro K I J _ _ _ κ R n h

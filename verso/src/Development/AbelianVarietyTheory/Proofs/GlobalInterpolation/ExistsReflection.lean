@@ -9,21 +9,21 @@ namespace GlobalTheory.WittTransitivity
 variable {A : Type} [CommRing A] (c : A →+* A) {M : ℕ} (J : Matrix (Fin M) (Fin M) A)
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_left (x y z : Fin M → A) :
     hform c J (x - y) z = hform c J x z - hform c J y z := by
   simp only [Formalism.UG.hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_right (x y z : Fin M → A) :
     hform c J x (y - z) = hform c J x y - hform c J x z := by
   simp only [Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_smul_left (a : A) (x z : Fin M → A) :
     hform c J (a • x) z = c a * hform c J x z := by
@@ -31,7 +31,7 @@ theorem hform_smul_left (a : A) (x z : Fin M → A) :
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_smul_right (a : A) (x z : Fin M → A) :
     hform c J x (a • z) = a * hform c J x z := by
@@ -39,7 +39,7 @@ theorem hform_smul_right (a : A) (x z : Fin M → A) :
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, map_sum, map_mul, hc, hJ]`. Conclude with `Finset.sum_comm.trans (Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_hform (hc : ∀ a, c (c a) = a) (hJ : ∀ i j, c (J j i) = J i j) (x y : Fin M → A) :
     c (hform c J x y) = hform c J y x := by
@@ -48,9 +48,9 @@ theorem conj_hform (hc : ∀ a, c (c a) = a) (hJ : ∀ i j, c (J j i) = J i j) (
     (Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring)
 
 /- English proof (translation)
-Establish `key : ∀ j, hform c J x (Pi.single j 1) = ∑ i, c (x i) * J i j`. Introduce `j`. Simplify using `[Formalism.UG.hform, Pi.single_apply]`. Repeatedly rewrite using `[key]`. Simplify using `only [Formalism.UG.hform, Finset.sum_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem hform_eq_sum (x y : Fin M → A) :
     hform c J x y = ∑ j, hform c J x (Pi.single j 1) * y j := by
@@ -62,15 +62,15 @@ theorem hform_eq_sum (x y : Fin M → A) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Establish `hsingle : ∀ k l, hform c J (Pi.single k 1) (Pi.single l 1) = J k l`. Introduce `k l`. Simplify using `[Formalism.UG.hform, Pi.single_apply, apply_ite c]`. Establish `hcol : ∀ k, g *ᵥ Pi.single k 1 = fun i => g i k`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `key : (g.map c)ᵀ * J * g = J`. Use extensionality with `k l`. Establish `h1` using `hg (Pi.single k 1) (Pi.single l 1)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `h1` using `[hcol, hcol, hsingle]`. Rewrite using `[← h1]`. Simplify using `only [Formalism.UG.hform, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Establish `hdg : IsUnit g.det`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Matrix.det key`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `h3 : J.det * ((g.map c)ᵀ.det * g.det) = J.det * 1`. Take the linear combination `h2`. Establish `h4` using `hdet.mul_left_cancel h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isUnit_of_mul_isUnit_right (by rw [h4]; exact isUnit_one)`. Use `⟨Matrix.nonsingInvUnit g hdg, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Formalism.UG.UJ, Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_ofPred_eq, Formalism.UG.cT]`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_mem_UJ (hdet : IsUnit J.det) (g : Matrix (Fin M) (Fin M) A)
     (hg : ∀ y z, hform c J (g *ᵥ y) (g *ᵥ z) = hform c J y z) :
@@ -103,17 +103,17 @@ theorem exists_mem_UJ (hdet : IsUnit J.det) (g : Matrix (Fin M) (Fin M) A)
   exact key
 
 /- English proof (translation)
-Use `set s := hform c J x x - hform c J x' x with hs_def`. Take `⟨su, hsu⟩` from `hs`. Use `set b : A := ↑su⁻¹ with hb_def`. Establish `hbs : b * s = 1` using `by rw [hb_def, ← hsu, Units.inv_mul]`. Establish `hcb : c b * c s = 1` using `by rw [← map_mul, hbs, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set v := x - x' with hv`. Establish `hvv : hform c J v v = s + c s`. Establish `hxx : c (hform c J x x) = hform c J x x` using `conj_hform c J hc hJ x x`. Establish `e1 : c s = hform c J x x - hform c J x x'`. Rewrite using `[hs_def, map_sub, hxx, conj_hform c J hc hJ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hv, hform_sub_left, hform_sub_right, hform_sub_right, e1, hs_def, ← hx]`. Expand and normalize the polynomial expressions, which then agree. Use `set g : Matrix (Fin M) (Fin M) A := 1 - Matrix.of (fun k j => b * v k * hform c J v (Pi.single j 1)) with hg_def`. Establish `hgy : ∀ y, g *ᵥ y = y - (b * hform c J v y) • v`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hform_eq_sum c J v y]`. Use extensionality with `k`. Rewrite using `[hg_def, Matrix.sub_mulVec, Matrix.one_mulVec]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Matrix.of_apply]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hpres : ∀ y z, hform c J (g *ᵥ y) (g *ᵥ z) = hform c J y z`. Introduce `y z`. Rewrite using `[hgy, hgy, hform_sub_left, hform_sub_right, hform_sub_right, hform_smul_left, hform_smul_left, hform_smul_right, hform_smul_right, map_mul, conj_hform c J hc hJ v y, hvv]`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(hform c J y v * hform c J v z * c b) * hbs + (hform c J y v * hform c J v z * b) * hcb`. Take `⟨G, hG, hGg⟩` from `exists_mem_UJ c J hdet g hpres`. Use `⟨G, hG, ?_⟩` and prove the remaining obligations. Establish `hvx : hform c J v x = s` using `by rw [hv, hform_sub_left, hs_def]`. Rewrite using `[hGg, hgy, hvx, hbs, one_smul, hv, sub_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem exists_reflection (hc : ∀ a, c (c a) = a) (hJ : ∀ i j, c (J j i) = J i j)
     (hdet : IsUnit J.det) (x x' : Fin M → A) (hx : hform c J x x = hform c J x' x')
@@ -156,35 +156,31 @@ theorem exists_reflection (hc : ∀ a, c (c a) = a) (hJ : ∀ i j, c (J j i) = J
   rw [hGg, hgy, hvx, hbs, one_smul, hv, sub_sub_cancel]
 
 /- English proof (translation)
-Establish `hN : ∀ a : A, a * c a ≠ 0 → IsUnit (a * c a)`. Introduce `a ha`. Conclude with `hf _ (by rw [map_mul, hc, mul_comm]) ha`. Distinguish the cases in `h1 : (b - t) * c (b - t) = 0`. Distinguish the cases in `h1' : (b + t) * c (b + t) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_sub, hcb]`. Rewrite `h1'` using `[map_add, hcb]`. Establish `h4 : (2 * b) * (t + c t) = (2 * b) * 0` using `by linear_combination h1' - h1`. Establish `htc : t + c t = 0` using `(h2.mul hb).mul_left_cancel h4`. Establish `hct : c t = -t` using `by linear_combination htc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1`, `h1'` using `[hct]`. Establish `h5 : (2 : A) * (b * b - t * t) = 2 * 0` using `by linear_combination h1 + h1'`. Establish `hb2 : b * b = t * t` using `sub_eq_zero.mp (h2.mul_left_cancel h5)`. Establish `ht : IsUnit t` using `isUnit_of_mul_isUnit_left (by rw [← hb2]; exact hb.mul hb)`. Establish `key : ∀ w : A, IsUnit (w * c w) → IsUnit (w - c w) → IsUnit (w + c w) → ∃ u : A, u * c u = 1 ∧ IsUnit (b - c u * t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw hm hp`. Take `⟨e, he⟩` from `isUnit_of_mul_isUnit_right hw`. Establish `h0 : c (↑e⁻¹ : A) * w = 1`. Establish `h6` using `congrArg c (Units.inv_mul e)`. Rewrite `h6` using `[map_mul, he, hc, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h6`. Use `⟨w * ↑e⁻¹, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hprod : IsUnit ((w * b - c w * t) * (c w * b + w * t))`. Establish `e1 : (w * b - c w * t) * (c w * b + w * t) = b * t * (w - c w) * (w + c w)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(w * c w) * hb2`. Rewrite using `[e1]`. Conclude with `((hb.mul ht).mul hm).mul hp`. Establish `e2 : b - c (w * ↑e⁻¹) * t = c ↑e⁻¹ * (w * b - c w * t)`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take the linear combination `(-b) * h0`. Rewrite using `[e2]`. Conclude with `(isUnit_of_mul_isUnit_left (by rw [h0]; exact isUnit_one)).mul (isUnit_of_mul_isUnit_left hprod)`. Take `⟨θ, hθu⟩` from `hθ`. Establish `hcδ : c (θ - c θ) = -(θ - c θ)` using `by rw [map_sub, hc]; ring`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Distinguish the cases in `hd : (1 + (θ - c θ)) * c (1 + (θ - c θ)) = 0`. Rewrite `hd` using `[map_add, map_one, hcδ]`. Apply `key (2 + (θ - c θ))` to reduce the goal to its premises. Establish `e : (2 + (θ - c θ)) * c (2 + (θ - c θ)) = 3`. Rewrite using `[map_add, map_ofNat, hcδ]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hd`. Rewrite using `[e]`. Conclude with `hf 3 (map_ofNat c 3) h3`. Establish `e : 2 + (θ - c θ) - c (2 + (θ - c θ)) = 2 * (θ - c θ)`. Rewrite using `[map_add, map_ofNat, hcδ]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h2.mul hθu`. Establish `e : 2 + (θ - c θ) + c (2 + (θ - c θ)) = 2 * 2`. Rewrite using `[map_add, map_ofNat, hcδ]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h2.mul h2`. Apply `key (1 + (θ - c θ)) (hN _ hd)` to reduce the goal to its premises. Establish `e : 1 + (θ - c θ) - c (1 + (θ - c θ)) = 2 * (θ - c θ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_one, hcδ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h2.mul hθu`. Establish `e : 1 + (θ - c θ) + c (1 + (θ - c θ)) = 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_one, hcδ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h2`. Use `⟨-1, by rw [map_neg, map_one]; ring, ?_⟩` and prove the remaining obligations.
-
-Establish `e : b - c (-1) * t = b + t` using `by rw [map_neg, map_one]; ring`. Rewrite using `[e]`. Conclude with `isUnit_of_mul_isUnit_left (hN _ h1')`. Use `⟨1, by rw [map_one, one_mul], ?_⟩` and prove the remaining obligations. Establish `e : b - c 1 * t = b - t` using `by rw [map_one, one_mul]`.
-
-Rewrite using `[e]`. Conclude with `isUnit_of_mul_isUnit_left (hN _ h1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_one (hc : ∀ a, c (c a) = a) (hf : ∀ a, c a = a → a ≠ 0 → IsUnit a)
     (h2 : IsUnit (2 : A)) (h3 : (3 : A) ≠ 0) (hθ : ∃ θ, IsUnit (θ - c θ))
@@ -267,11 +263,11 @@ theorem exists_norm_one (hc : ∀ a, c (c a) = a) (hf : ∀ a, c a = a → a ≠
     exact isUnit_of_mul_isUnit_left (hN _ h1)
 
 /- English proof (translation)
-Establish `hxx : c (hform c J x x) = hform c J x x` using `conj_hform c J hc hJ x x`. Take `⟨u, hu, hut⟩` from `exists_norm_one c hc hf h2 h3 hθ (hform c J x x) (hform c J x' x) hxx hb`. Establish `hux : hform c J x x = hform c J (u • x') (u • x')`. Rewrite using `[hform_smul_left, hform_smul_right, ← hx]`. Take the linear combination `(-(hform c J x x)) * hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨g1, hg1, hg1x⟩` from `exists_reflection c J hc hJ hdet x (u • x') hux (by rw [hform_smul_left]; exact hut)`. Take `⟨g2, hg2, hg2e⟩` from `exists_mem_UJ c J hdet (c u • (1 : Matrix (Fin M) (Fin M) A)) (by`. Introduce `y z`. Simplify using `only [Matrix.smul_mulVec, Matrix.one_mulVec]`. Rewrite using `[hform_smul_left, hform_smul_right, hc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(hform c J y z) * hu)`. Use `⟨g2 * g1, mul_mem hg2 hg1, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, hg1x, hg2e]`. Simplify using `only [Matrix.smul_mulVec, Matrix.one_mulVec, smul_smul]`. Rewrite using `[mul_comm, hu, one_smul]`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem witt_transitive (A : Type) [CommRing A] (c : A →+* A) (hc : ∀ a, c (c a) = a)
     (hf : ∀ a, c a = a → a ≠ 0 → IsUnit a) (h2 : IsUnit (2 : A)) (h3 : (3 : A) ≠ 0)

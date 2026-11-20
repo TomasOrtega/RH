@@ -10,28 +10,26 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKMid.Pair
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_conjTranspose_mul_mul {n : ℕ} (M N : Matrix (Fin n) (Fin n) ℂ) (y z : Fin n → ℂ) :
     star y ⬝ᵥ (Mᴴ * N * M) *ᵥ z = star (M *ᵥ y) ⬝ᵥ N *ᵥ (M *ᵥ z) := by
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]
 
 /- English proof (translation)
-Introduce `p _ G P μ μ' ha hm hm'`. Take `⟨v, hv, x, hx, hxp⟩` from `hm`. Take `⟨v', hv', x', hx', hxp'⟩` from `hm'`. Establish `hvv : v = v'`. Establish `hc : Fintype.card {w : InfinitePlace G.F // sigPosH (G.gram_herm w) = 1} = 1` using `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[Fintype.card_eq_one_iff]`. Take `⟨w, hw⟩` from `hc`. Conclude with `congrArg Subtype.val ((hw ⟨v, hv⟩).trans (hw ⟨v', hv'⟩).symm)`. Substitute `hvv` using the available equality. Assume the negation of the conclusion as `hne`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hn` using `GlobalTheory.T.mark_norm_sq_eq_similitudeFactor p G P μ ⟨v, hv, x, hx, hxp⟩`. Take `⟨-, -, hlaw⟩` from `GlobalTheory.T.similitudePair_hermitianForm_invertible_similitude p G P v`. Establish `e` using `dot_conjTranspose_mul_mul (G.psi v P.γ) (G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C)) x x'`. Rewrite `e` using `[hlaw, hx, hx', Matrix.mulVec_smul, Matrix.smul_mulVec, star_smul, smul_dotProduct, dotProduct_smul, dotProduct_smul, smul_eq_mul, smul_eq_mul, smul_eq_mul]`. Establish `hc0 : ((P.c : ℚ) : ℝ) ≠ 0` using `by exact_mod_cast P.c.ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ : star μ * μ = (((P.c : ℚ) : ℂ))`. Rewrite using `[show star μ = (starRingEnd ℂ) μ from rfl, Complex.conj_mul', ← Complex.ofReal_pow, hn, Complex.ofReal_ratCast]`. Establish `hμ0 : star μ ≠ 0`. Introduce `h0`. Rewrite `hμ` using `[h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc0 (by exact_mod_cast hμ.symm)`. Establish `horth : star x ⬝ᵥ (G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C)) *ᵥ x' = 0`. Assume the negation of the conclusion as `hne0`. Establish `h1 : (((P.c : ℚ) : ℂ)) = star μ * μ'`. Rewrite `e` using `[← mul_assoc]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel₀ hne0 e`. Conclude with `hne (mul_left_cancel₀ hμ0 (hμ.trans h1))`. Take `⟨Z, hZ⟩` from `GlobalTheory.T.similitudePair_gram_inv_congruent p G P v`. Rewrite `horth`, `hxp`, `hxp'` using `[hZ, dot_conjTranspose_mul_mul]`. Establish `hx'0 : x' ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `rfl`. Simplify using `at hxp'`. Establish `hY : (Z : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ x' ≠ 0`. Introduce `h0`. Apply `hx'0` to reduce the goal to its premises.
-
-Use `congrArg (fun w => ((Z⁻¹ : GL (Fin G.n) ℂ) : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ w) h0` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec]`. Establish `hneg` using `GlobalTheory.T.hermitianForm_neg_on_orthogonal_of_positiveIndex_one (G.gram v) (G.gram_herm v) (G.gram_det v) hv _ _ hxp horth hY`. Conclude with `absurd hxp' (not_lt.mpr hneg.le)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mark_unique : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (μ μ' : ℂ), G.a = 1 →
     P.Mark μ → P.Mark μ' → μ = μ' := by

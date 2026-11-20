@@ -3,11 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.Pe
 open UpperTheory.V.Sd.Eis
 
 /- English proof (translation)
-Take `⟨C, hCc, hCx⟩` from `hC`. Establish `hK : IsCompact (C ×ˢ Set.Icc (-1 : ℝ) 1)` using `hCc.prod isCompact_Icc`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn hg.continuousOn`. Use `⟨M, fun x t ht => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hxγ⟩` from `hCx x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : g x = g (x - γ)`. Use `hgp γ hγ (x - γ)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `this`. Rewrite using `[h1]`.
-
-Conclude with `hM (x - γ, t) ⟨hxγ, ht⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.exists_bound_of_continuous_periodic_cocompact (A : Type) [AddCommGroup A] [TopologicalSpace A] (Γ : AddSubgroup A)
     (hC : Cocpt Γ) (g : A → ℝ → ℂ) (hg : Continuous (Function.uncurry g))
@@ -26,9 +24,9 @@ private theorem UpperTheory.exists_bound_of_continuous_periodic_cocompact (A : T
   exact hM (x - γ, t) ⟨hxγ, ht⟩
 
 /- English proof (translation)
-Introduce `A _ _ _ _ _ _ Γ hC μ D hDt f f' hf hf' hfp hf'p hd`. Take `⟨M, hM⟩` from `UpperTheory.exists_bound_of_continuous_periodic_cocompact A Γ hC f' hf' hf'p`. Take `⟨N, hN⟩` from `UpperTheory.exists_bound_of_continuous_periodic_cocompact A Γ hC f hf hfp`. Establish `hslice : ∀ (g : A → ℝ → ℂ), Continuous (Function.uncurry g) → ∀ t : ℝ, Continuous (fun x => g x t)` using `fun g hg t => hg.comp (continuous_id.prodMk continuous_const)`. Use `haveI hfin : MeasureTheory.IsFiniteMeasure (μ.restrict D) := MeasureTheory.isFiniteMeasure_restrict.2 hDt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ.restrict D) (F := fun t x => f x t) (F' := fun t x => f' x t) (x₀ := (0 : ℝ)) (bound := fun _ => M) (Icc_mem_nhds (by norm_num : (-1 : ℝ) < 0) (by norm_num : (0 : ℝ) < 1)) (Filter.Eventually.of_forall fun t => (hslice f hf …`. Conclude with `key.2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.eisenstein_period_derivative :
     UpperTheory.V.Sd.Eis.PerDeriv := by

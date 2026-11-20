@@ -13,23 +13,23 @@ def ev (f : ℕ → A) (P : A[X]) : A := P.sum fun j a => f j * a
 
 omit [Algebra ℂ A] in
 /- English proof (translation)
-The claim follows from `Polynomial.sum_add_index _ _ _ (by simp) (by simp [mul_add])`.
+A detailed English derivation is pending.
 -/
 theorem ev_add (f : ℕ → A) (P Q : A[X]) : ev f (P + Q) = ev f P + ev f Q :=
   Polynomial.sum_add_index _ _ _ (by simp) (by simp [mul_add])
 
 omit [Algebra ℂ A] in
 /- English proof (translation)
-The claim follows from `Polynomial.sum_monomial_index _ _ (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem ev_monomial (f : ℕ → A) (n : ℕ) (a : A) : ev f (monomial n a) = f n * a :=
   Polynomial.sum_monomial_index _ _ (by simp)
 
 omit [Algebra ℂ A] in
 /- English proof (translation)
-Proceed by induction on `Q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [ev_add, mul_add, mul_add, ev_add, hp, hq]`. Consider the case `monomial n b`. Rewrite using `[ev_monomial, ← mul_assoc, h]`. Use `clear h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [ev_add, add_mul, add_mul, ev_add, hp, hq]`. Consider the case `monomial k a => rw [monomial_mul_monomial, ev_monomial, ev_monomial, mul_assoc, add_comm]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ev_mul (f g : ℕ → A) (P Q : A[X]) (z : A) (h : ∀ j, z * g j = ev (fun i => f (j + i)) P) :
     z * ev g Q = ev f (P * Q) := by
@@ -44,7 +44,7 @@ theorem ev_mul (f g : ℕ → A) (P Q : A[X]) (z : A) (h : ∀ j, z * g j = ev (
 
 omit [Algebra ℂ A] in
 /- English proof (translation)
-The claim follows from `Polynomial.sum_over_range' _ (by simp) n h`.
+A detailed English derivation is pending.
 -/
 theorem ev_eq_sum (f : ℕ → A) (P : A[X]) (n : ℕ) (h : P.natDegree < n) :
     ev f P = ∑ j ∈ Finset.range n, f j * P.coeff j :=
@@ -52,7 +52,7 @@ theorem ev_eq_sum (f : ℕ → A) (P : A[X]) (n : ℕ) (h : P.natDegree < n) :
 
 omit [Algebra ℂ A] in
 /- English proof (translation)
-Simplify using `[ev, Polynomial.sum, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_ev (z : A) (f : ℕ → A) (P : A[X]) : z * ev f P = ev (fun i => z * f i) P := by
   simp [ev, Polynomial.sum, Finset.mul_sum, mul_assoc]
@@ -64,14 +64,14 @@ def Deg (L : LevelData A r) (Y : ℂ) (D : ℕ) (Z : ℂ → A) : Prop :=
 variable {L : LevelData A r} {Y : ℂ}
 
 /- English proof (translation)
-Take `⟨P, h1, h2⟩` from `h`. Conclude with `⟨P, h1.trans hDE, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Deg.mono {D E : ℕ} {Z : ℂ → A} (h : Deg L Y D Z) (hDE : D ≤ E) : Deg L Y E Z := by
   obtain ⟨P, h1, h2⟩ := h
   exact ⟨P, h1.trans hDE, h2⟩
 
 /- English proof (translation)
-Take `⟨P, h1, h2, h3⟩` from `h`. Take `⟨Q, k1, k2, k3⟩` from `h'`. Use `⟨P + Q, (natDegree_add_le _ _).trans (max_le h1 k1), fun s => ?_, fun m hm q => ?_⟩` and prove the remaining obligations. Rewrite using `[ev_add, ← h2, ← k2]`. Rewrite using `[ev_add, ← h3 m hm, ← k3 m hm, add_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Deg.add {D : ℕ} {Z W : ℂ → A} (h : Deg L Y D Z) (h' : Deg L Y D W) :
     Deg L Y D (fun y => Z y + W y) := by
@@ -82,11 +82,11 @@ theorem Deg.add {D : ℕ} {Z W : ℂ → A} (h : Deg L Y D Z) (h' : Deg L Y D W)
   · rw [ev_add, ← h3 m hm, ← k3 m hm, add_mul]
 
 /- English proof (translation)
-Take `⟨P, h1, h2, h3⟩` from `h`. Take `⟨Q, k1, k2, k3⟩` from `h'`. Use `⟨P * Q, natDegree_mul_le.trans (add_le_add h1 k1), fun s => ?_, fun m hm q => ?_⟩` and prove the remaining obligations. Use `show Z (Y + s) * W (Y + s) = _`. Rewrite using `[k2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ev_mul _ _ _ _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.commutes, h2, mul_ev]`. Simplify using `only [pow_add, map_mul]`. Use `show Z Y * W Y * m q = _`. Rewrite using `[mul_assoc, k3 m hm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ev_mul _ _ _ _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[h3 m hm]`. Simplify using `only [add_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Deg.mul {D E : ℕ} {Z W : ℂ → A} (h : Deg L Y D Z) (h' : Deg L Y E W) :
     Deg L Y (D + E) (fun y => Z y * W y) := by
@@ -105,7 +105,7 @@ theorem Deg.mul {D E : ℕ} {Z W : ℂ → A} (h : Deg L Y D Z) (h' : Deg L Y E 
     simp only [add_assoc]
 
 /- English proof (translation)
-Use `⟨monomial 0 a, natDegree_monomial_le _, fun s => ?_, fun m hm q => ?_⟩` and prove the remaining obligations. Rewrite using `[ev_monomial]`. Simplify using the standard rewrite rules. Rewrite using `[ev_monomial, ha m hm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem deg_const (a : A) (ha : ∀ m : ℕ → A, MulRel L m → ∀ q, a * m q = m q * a) :
     Deg L Y 0 (fun _ => a) := by
@@ -114,13 +114,13 @@ theorem deg_const (a : A) (ha : ∀ m : ℕ → A, MulRel L m → ∀ q, a * m q
   · rw [ev_monomial, ha m hm]; rfl
 
 /- English proof (translation)
-The claim follows from `deg_const a fun _ hm q => ((hm q).1 a ha).eq`.
+A detailed English derivation is pending.
 -/
 theorem deg_fn {a : A} (ha : a ∈ L.fns) : Deg L Y 0 (fun _ => a) :=
   deg_const a fun _ hm q => ((hm q).1 a ha).eq
 
 /- English proof (translation)
-Use `⟨monomial 0 (Z Y) + monomial 1 b, (natDegree_add_le _ _).trans (max_le ((natDegree_monomial_le _).trans zero_le_one) (natDegree_monomial_le _)), fun s => ?_, fun m hm q => ?_⟩` and prove the remaining obligations. Rewrite using `[ev_add, ev_monomial, ev_monomial, h1]`. Simplify using the standard rewrite rules. Rewrite using `[ev_add, ev_monomial, ev_monomial, h2 m hm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem deg_lin (Z : ℂ → A) (b : A) (h1 : ∀ s, Z (Y + s) = Z Y + algebraMap ℂ A s * b)
     (h2 : ∀ m : ℕ → A, MulRel L m → ∀ q, Z Y * m q = m q * Z Y + m (q + 1) * b) : Deg L Y 1 Z := by
@@ -131,7 +131,7 @@ theorem deg_lin (Z : ℂ → A) (b : A) (h1 : ∀ s, Z (Y + s) = Z Y + algebraMa
   · rw [ev_add, ev_monomial, ev_monomial, h2 m hm]; rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact deg_const _ (by simp)`. Consider the case `cons a l ih`. Simplify using `using (deg_fn (hl a (by simp))).mul (ih fun b hb => hl b (by simp [hb]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem deg_list (l : List A) (hl : ∀ a ∈ l, a ∈ L.fns) : Deg L Y 0 (fun _ => l.prod) := by
   induction l with
@@ -140,11 +140,11 @@ theorem deg_list (l : List A) (hl : ∀ a ∈ l, a ∈ L.fns) : Deg L Y 0 (fun _
     simpa using (deg_fn (hl a (by simp))).mul (ih fun b hb => hl b (by simp [hb]))
 
 /- English proof (translation)
-Establish `hc : L.c l ∈ L.fns` using `by simp [LevelData.fns]`. Establish `hci : L.ci l ∈ L.fns` using `by simp [LevelData.fns]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp only [LevelData.Tl]`. Use `deg_lin _ 1 (fun s => ?_) fun m hm q => ?_` and prove the remaining obligations. Simplify using `[add_right_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[add_mul, mul_add, (hm q).2.1 l, Algebra.commutes, add_assoc]`. Use `(deg_const _ fun m hm q => ?_).mono zero_le_one` and prove the remaining obligations. Conclude with `((hm q).1 _ hc).neg_left.eq`. Use `(deg_const _ fun m hm q => ?_).mono zero_le_one` and prove the remaining obligations. Simplify using `using ((hm q).1 _ hci).eq`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `(deg_const _ fun m hm q => ?_).mono zero_le_one` and prove the remaining obligations. Conclude with `(Commute.zero_left (m q)).eq`.
+A detailed English derivation is pending.
 -/
 theorem deg_Tl (l : Fin r) (i j : Fin 2) : Deg L Y 1 (fun y => L.Tl y l i j) := by
   have hc : L.c l ∈ L.fns := by simp [LevelData.fns]
@@ -161,9 +161,9 @@ theorem deg_Tl (l : Fin r) (i j : Fin 2) : Deg L Y 1 (fun y => L.Tl y l i j) := 
     exact (Commute.zero_left (m q)).eq
 
 /- English proof (translation)
-Proceed by induction on `l generalizing i j with`. Consider the case `nil`. Use `deg_const ((1 : Matrix (Fin 2) (Fin 2) A) i j) fun m _ q => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`. Consider the case `cons a l ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Simplify using `only [List.map_cons, List.prod_cons, Matrix.mul_apply, Fin.sum_univ_two, List.length_cons]`. Rewrite using `[add_comm l.length 1]`. Conclude with `((deg_Tl a i 0).mul (ih 0 j)).add ((deg_Tl a i 1).mul (ih 1 j))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_prod (l : List (Fin r)) (i j : Fin 2) :
     Deg L Y l.length (fun y => (l.map (L.Tl y)).prod i j) := by
@@ -177,7 +177,7 @@ theorem deg_prod (l : List (Fin r)) (i j : Fin 2) :
     exact ((deg_Tl a i 0).mul (ih 0 j)).add ((deg_Tl a i 1).mul (ih 1 j))
 
 /- English proof (translation)
-Establish `h` using `deg_prod (L := L) (Y := Y) (List.finRange r).reverse i j`. Simplify using `only [List.length_reverse, List.length_finRange] at h`. Simplify `h` using `only [LevelData.Tprod, List.ofFn_eq_map, List.map_reverse]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem deg_Tprod (i j : Fin 2) : Deg L Y r (fun y => L.Tprod y i j) := by
   have h := deg_prod (L := L) (Y := Y) (List.finRange r).reverse i j
@@ -185,9 +185,9 @@ theorem deg_Tprod (i j : Fin 2) : Deg L Y r (fun y => L.Tprod y i j) := by
   simpa only [LevelData.Tprod, List.ofFn_eq_map, List.map_reverse] using h
 
 /- English proof (translation)
-Use `deg_lin _ (-(L.ζb * L.GGi)) (fun s => ?_) fun m hm q => ?_` and prove the remaining obligations. Simplify using `only [LevelData.l0, add_right_comm Y s, map_add (algebraMap ℂ A) (Y + 1 / 2) s] noncomm_ring`. Establish `c1 : ∀ q, Commute (L.ζb * L.GGi) (m q)` using `fun q => ((hm q).1 _ (by simp [LevelData.fns])).mul_left ((hm q).1 _ (by simp [LevelData.fns]))`. Establish `c2 : Commute (algebraMap ℂ A (Y + 1 / 2) * (L.ζb * L.GGi)) (m q)` using `(Algebra.commute_algebraMap_left _ _).mul_left (c1 q)`. Rewrite using `[LevelData.l0, sub_mul, neg_mul, (hm q).2.2.2.1, c2.eq, (c1 (q + 1)).eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `noncomm_ring`.
+A detailed English derivation is pending.
 -/
 theorem forwardTaylorDegree_one_leftLetter : Deg L Y 1 L.l0 := by
   refine deg_lin _ (-(L.ζb * L.GGi)) (fun s => ?_) fun m hm q => ?_
@@ -201,9 +201,9 @@ theorem forwardTaylorDegree_one_leftLetter : Deg L Y 1 L.l0 := by
     noncomm_ring
 
 /- English proof (translation)
-Establish `h` using `(deg_list (L := L) (Y := Y) (List.ofFn L.c) (by`. Introduce `a ha`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 ha`. Simplify using `[LevelData.fns])).mul (deg_Tprod 0 0)`. Rewrite `h` using `[zero_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem deg_Ahat : Deg L Y r L.Ahat := by
   have h := (deg_list (L := L) (Y := Y) (List.ofFn L.c) (by
@@ -214,9 +214,9 @@ theorem deg_Ahat : Deg L Y r L.Ahat := by
   exact h
 
 /- English proof (translation)
-Establish `h` using `((deg_list (L := L) (Y := Y) (List.ofFn L.cb) (by`. Introduce `a ha`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 ha`. Simplify using `[LevelData.fns])).mul (deg_fn (a := L.GG) (by simp [LevelData.fns]))).mul`. Use the proof step `((forwardTaylorDegree_one_leftLetter.mul (deg_Tprod 0 0)).add ((deg_Tprod 1 0).mono (Nat.le_add_left _ _)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[zero_add, zero_add, add_comm 1 r]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem forwardTaylorDegree_plusHatR : Deg L Y (r + 1) L.R0 := by
   have h := ((deg_list (L := L) (Y := Y) (List.ofFn L.cb) (by
@@ -228,11 +228,11 @@ theorem forwardTaylorDegree_plusHatR : Deg L Y (r + 1) L.R0 := by
   exact h
 
 /- English proof (translation)
-Introduce `A _ _ r L Y`. Take `⟨P, h1, h2, h3⟩` from `deg_Ahat (L := L) (Y := Y)`. Take `⟨Q, k1, k2, k3⟩` from `forwardTaylorDegree_plusHatR (L := L) (Y := Y)`. Establish `hP : P.natDegree < r + 2` using `by omega`. Establish `hQ : Q.natDegree < r + 2` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨P.coeff, Q.coeff, fun s => ?_, fun s => ?_, fun m hm q => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h2, ev_eq_sum _ _ _ hP]`. Simplify using `only [Algebra.smul_def]`. Rewrite using `[k2, ev_eq_sum _ _ _ hQ]`. Simplify using `only [Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3 m hm, ev_eq_sum _ _ _ hP]`. Rewrite using `[k3 m hm, ev_eq_sum _ _ _ hQ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem taylor_plus : ∀ (A : Type) [Ring A] [Algebra ℂ A] (r : ℕ) (L : LevelData A r), ∀ Y : ℂ, ∃ Xa Xr : ℕ → A, (∀ s : ℂ, L.Ahat (Y + s) = ∑ j ∈ Finset.range (r + 2), s ^ j • Xa j) ∧ (∀ s : ℂ, L.R0 (Y + s) = ∑ j ∈ Finset.range (r + 2), s ^ j • Xr j) ∧ ∀ m : ℕ → A, MulRel L m → ∀ q, L.Ahat Y * m q = ∑ j ∈ Finset.range (r + 2), m (q + j) * Xa j ∧ L.R0 Y * m q = ∑ j ∈ Finset.range (r + 2), m (q + j) * Xr j := by
   intro A _ _ r L Y

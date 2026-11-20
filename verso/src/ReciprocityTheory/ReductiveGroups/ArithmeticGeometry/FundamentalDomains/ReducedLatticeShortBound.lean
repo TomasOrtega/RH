@@ -13,7 +13,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.MultiplicativeHeights.jForm ReciprocityTheory.MultiplicativeHeights.sgn`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem jForm_swap_eq_conj (p : ℕ) {n : ℕ} (x y : Fin n → ℂ) :
     ReciprocityTheory.MultiplicativeHeights.jForm p y x = conj (ReciprocityTheory.MultiplicativeHeights.jForm p x y) := by
@@ -23,9 +23,9 @@ private theorem jForm_swap_eq_conj (p : ℕ) {n : ℕ} (x y : Fin n → ℂ) :
   split_ifs <;> simp [mul_comm]
 
 /- English proof (translation)
-Establish `hdet : Matrix.det A ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp (Matrix.linearIndependent_rows_iff_isUnit.mp hA)).ne_zero`. Establish `hMe : (Matrix.of fun j k => (Q *ᵥ ReciprocityTheory.MultiplicativeHeights.embVec σ (A j)) k) = σ.mapMatrix A * Q.transpose`. Use extensionality with `j k`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.mulVec, dotProduct, ReciprocityTheory.MultiplicativeHeights.embVec]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hU : IsUnit (Matrix.of fun j k => (Q *ᵥ ReciprocityTheory.MultiplicativeHeights.embVec σ (A j)) k)`. Rewrite using `[hMe, Matrix.isUnit_iff_isUnit_det, Matrix.det_mul, Matrix.det_transpose, ← RingHom.map_det]`. Conclude with `isUnit_iff_ne_zero.mpr (mul_ne_zero ((map_ne_zero σ).mpr hdet) hQ)`. Conclude with `Matrix.linearIndependent_rows_iff_isUnit.mpr hU`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem linearIndependent_mulVec_embVec {K : Type} [Field K] [NumberField K] {n : ℕ} (σ : K →+* ℂ)
     (A : Matrix (Fin n) (Fin n) K) (Q : Matrix (Fin n) (Fin n) ℂ) (hA : LinearIndependent K A)
@@ -45,73 +45,67 @@ private theorem linearIndependent_mulVec_embVec {K : Type} [Field K] [NumberFiel
   exact Matrix.linearIndependent_rows_iff_isUnit.mpr hU
 
 /- English proof (translation)
-Take `⟨hξΛ, hξξ, hξ0⟩` from `hξ`. Establish `hcardpos : 0 < Fintype.card X.Ψ`. Apply the tactic sequence `apply QuadraticCoefficientForms.card_Psi_pos <;> assumption`. Establish `hcard : Fintype.card X.Ψ = fdeg E`. Apply the tactic sequence `apply QuadraticCoefficientForms.card_Psi <;> assumption`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `haveI : Nonempty X.Ψ := Fintype.card_pos_iff.mp hcardpos`. Take `⟨τ0⟩` from `(inferInstance : Nonempty X.Ψ)`. Establish `hpb : 1 ≤ X.p0 ∧ X.p0 < r`. Apply the tactic sequence `apply IsotropicIndexSums.isotropicIndex_bounds (hξ := hξξ) (hne := hξ0) (τ := τ0) <;> assumption`. Take `⟨hp1, hpr0⟩` from `hpb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hON : ∀ τ : X.Ψ, ∀ k l, hermC τ.1 X.Gm (f τ k) (f τ l) = if k = l then (if (k : ℕ) < X.p0 - 1 then 1 else -1) else 0` using `fun τ => (hf τ).2.2.1`. Establish `hSsym : ∀ x y : Fin (r - 2) → E, S.h x y = 0 → S.h y x = 0`. Introduce `x y hxy`. Apply `(map_eq_zero τ0.1).mp` to reduce the goal to its premises. Rewrite using `[hSQ, jForm_swap_eq_conj, ← hSQ, hxy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Break down `Nat.eq_zero_or_pos (r - 2) with hn | hn` into its components or cases. Use `haveI : IsEmpty (Fin (r - 2)) := by rw [hn]; infer_instance`. Use `⟨fun j => ∑ k, (0 : E) • β k + (0 : E) • ξ, fun j => isEmptyElim j, ?_, fun j => isEmptyElim j, fun j => isEmptyElim j, fun j => isEmptyElim j, fun j => isEmptyElim j, fun _ => linearIndependent_empty_type, fun _ j => isEmptyElim j, fun _ j => isEmptyElim j, fun _ w _ hw => absur …` and prove the remaining obligations. Apply the tactic sequence `apply IsotropicCombinations.cons_li (hli := hβind) (hla := linearIndependent_empty_type) <;> assumption`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlamξ : ∀ (c : Fin (r - 2) → E) (e : E), herm X.Gm (∑ k, c k • β k + e • ξ) ξ = 0`. Introduce `c e`. Apply the tactic sequence `apply IsotropicCombinations.herm_lam_ξ <;> assumption`. Establish `hpr : X.p0 - 1 ≤ r - 2` using `by omega`. Establish `h_inj : Function.Injective (fun τ : X.Ψ => τ.1)` using `Subtype.val_injective`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h_cm : ∀ τ : E →+* ℂ, (∃ i : X.Ψ, (fun τ : X.Ψ => τ.1) i = τ) ↔ ¬ ∃ i : X.Ψ, (fun τ : X.Ψ => τ.1) i = ComplexEmbedding.conjugate τ`. Introduce `τ`. Establish `h` using `X.cmType τ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : τ ∈ X.Ψ` using `by rw [← hi]; exact i.2`. Establish `hc : ComplexEmbedding.conjugate τ ∈ X.Ψ` using `by rw [← hj]; exact j.2`. Conclude with `(h.mp hτ) hc`. Introduce `hn'`. Conclude with `⟨⟨τ, h.mpr fun hc => hn' ⟨⟨_, hc⟩, rfl⟩⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h_short : ∀ v ∈ LB, v ≠ 0 → ∃ i : X.Ψ, Real.sqrt ep ^ 2 ≤ ReciprocityTheory.MultiplicativeHeights.normSq (Q i *ᵥ ReciprocityTheory.MultiplicativeHeights.embVec i.1 v)`. Introduce `v hv hv0`. Take `⟨e, he⟩` from `(hLB v).mp hv`. Establish `hne : ∀ e' : E, ∑ k, v k • β k + e • ξ ≠ e' • ξ`. Introduce `e'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `apply IsotropicCombinations.ne_smul_ξ (hli := hβind) (hc := hv0) <;> assumption`. Take `⟨τ, hτ⟩` from `hD4 _ he (hlamξ v e) hne`. Use `⟨τ, ?_⟩` and prove the remaining obligations. Rewrite `hτ` using `[IsotropicIndexSums.ucomp_drop (hx := hz) (hne := hξ0), hQf, (hf τ).2.2.2.1]`. Rewrite using `[Real.sq_sqrt hep.le]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hτ`. Establish `hD` using `hD5 E X.Ψ (r - 2) (X.p0 - 1) S (fun τ : X.Ψ => τ.1) Q LB (Real.sqrt ep) h_inj h_cm hpr (Real.sqrt_pos.mpr hep) hQ hSQ hLat hSD h_short`. Take `⟨hcov, v, hvL, hvli, hvmaj⟩` from `hD`. Rewrite `hcov`, `hvmaj` using `[hcard]`. Establish `hf1 : (1 : ℝ) ≤ (fdeg E : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hcard]`. Conclude with `Nat.one_le_iff_ne_zero.mpr hcardpos.ne'` after adjusting the coercions. Establish `hnR : (1 : ℝ) ≤ ((r - 2 : ℕ) : ℝ)` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hn.ne'`. Establish `hd1 : (1 : ℝ) ≤ dE E`. Unfold `dE`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Int.cast_abs]`. Conclude with `Int.one_le_abs (NumberField.discr_ne_zero (K := E))` after adjusting the coercions. Establish `hs : 0 < Real.sqrt ep` using `Real.sqrt_pos.mpr hep`. Establish `hs1 : Real.sqrt ep ≤ 1`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Real.sqrt_le_sqrt hep1`. Establish `hX : 1 ≤ ((fdeg E : ℝ) * ((r - 2 : ℕ) : ℝ)) ^ 3` using `one_le_pow₀ (one_le_mul_of_one_le_of_one_le hf1 hnR)`. Establish `hXd : 1 ≤ ((fdeg E : ℝ) * ((r - 2 : ℕ) : ℝ)) ^ 3 * dE E`. Establish `h` using `mul_le_mul hX hd1 zero_le_one (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hμpos : 0 < (d5mu (fdeg E) (r - 2) (dE E) (Real.sqrt ep))`. Unfold `d5mu`. Apply `div_pos _ hs` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hμ4 : 4 ≤ (d5mu (fdeg E) (r - 2) (dE E) (Real.sqrt ep))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `d5mu`. Rewrite using `[le_div_iff₀ hs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : 1 ≤ Real.sqrt ((r - 2 : ℕ) : ℝ)`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `Real.sqrt_le_sqrt hnR`. Establish `e1 : 2 * ReciprocityTheory.MultiplicativeHeights.approxR (r - 2) ((d5mu (fdeg E) (r - 2) (dE E) (Real.sqrt ep))) (rh / 40) = 320 * (Real.sqrt ((r - 2 : ℕ) : ℝ) * (d5mu (fdeg E) (r - 2) (dE E) (Real.sqrt ep))) / rh`. Unfold `ReciprocityTheory.MultiplicativeHeights.approxR`. Rewrite using `[div_div_eq_mul_div]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT320 : 320 * (d5mu (fdeg E) (r - 2) (dE E) (Real.sqrt ep)) ≤ 2 * ReciprocityTheory.MultiplicativeHeights.approxR (r - 2) ((d5mu (fdeg E) (r - 2) (dE E) (Real.sqrt ep))) (rh / 40)`. Rewrite using `[e1, le_div_iff₀ hrh]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hrh1 hμpos.le, mul_le_mul_of_nonneg_right hA hμpos.le]`. Establish `hT1 : 1 ≤ 2 * ReciprocityTheory.MultiplicativeHeights.approxR (r - 2) ((d5mu (fdeg E) (r - 2) (dE E) (Real.sqrt ep))) (rh / 40)` using `by linarith`. Establish `hTμ : 2 * (d5mu (fdeg E) (r - 2) (dE E) (Real.sqrt ep)) ^ 2 ≤ (2 * ReciprocityTheory.MultiplicativeHeights.approxR (r - 2) ((d5mu (fdeg E) (r - 2) (dE E) (Real.sqrt ep))) (rh / 40)) ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use polynomial arithmetic with `[mul_le_mul hT320 hT320 (by linarith) (by linarith), sq_nonneg (d5mu (fdeg E) (r - 2) (dE E) (Real.sqrt ep))]`. Take `⟨la, hlaL, hlali, hlaorth, hlapos, hlaneg, hlab1, hlab2⟩` from `ReciprocityTheory.MultiplicativeHeights.Closed.approx E X.Ψ (r - 2) (X.p0 - 1) S (fun τ : X.Ψ => τ.1) Q LB v ((d5mu (fdeg E) (r - 2) (dE E) (Real.sqrt ep))) (rh / 40) hpr hμpos (div_pos hrh (by norm_num)) (by linarith) hQ hSQ hSD.1 hcov hvL hvli hvmaj`. Use `choose ec hec using fun j => (hLB (la j)).mp (hlaL j)`. Establish `hu : ∀ (τ : X.Ψ) (j : Fin (r - 2)), X.ucomp z0 ξ (X.embV (∑ i, la j i • β i + ec j • ξ)) τ = ∑ k, (Q τ *ᵥ ReciprocityTheory.MultiplicativeHeights.embVec τ.1 (la j)) k • f τ k`. Introduce `τ j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[IsotropicIndexSums.ucomp_drop (hx := hz) (hne := hξ0), hQf]`. Establish `hcomb : ∀ (τ : X.Ψ) (w : Fin (r - 2) → ℂ), ∑ j, w j • X.ucomp z0 ξ (X.embV (∑ i, la j i • β i + ec j • ξ)) τ = ∑ k, (Q τ *ᵥ ∑ j, w j • ReciprocityTheory.MultiplicativeHeights.embVec τ.1 (la j)) k • f τ k`. Introduce `τ w`. Repeatedly rewrite using `[hu τ]`. Rewrite using `[IsotropicCombinations.comb_swap]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[IsotropicCombinations.qcomb]`. Establish `hone : ∀ (τ : X.Ψ) (j : Fin (r - 2)), Q τ *ᵥ ∑ i, (Pi.single j (1 : ℂ) : Fin (r - 2) → ℂ) i • ReciprocityTheory.MultiplicativeHeights.embVec τ.1 (la i) = Q τ *ᵥ ReciprocityTheory.MultiplicativeHeights.embVec τ.1 (la j)`. Introduce `τ j`. Use `congr 1`. Simplify using `[Pi.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hsn : ∀ j : Fin (r - 2), (Pi.single j (1 : ℂ) : Fin (r - 2) → ℂ) ≠ 0` using `fun j h => by simpa using congrFun h j`. Establish `hll : ∀ j1 j2 : Fin (r - 2), herm X.Gm (∑ i, la j1 i • β i + ec j1 • ξ) (∑ i, la j2 i • β i + ec j2 • ξ) = S.h (la j2) (la j1)`. Introduce `j1 j2`. Rewrite using `[hS (la j2) (la j1)]`. Apply the tactic sequence `apply IsotropicCombinations.herm_lam_lam <;> first | assumption | exact X.Gm_herm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : ∀ τ : X.Ψ, LinearIndependent ℂ (fun j => Q τ *ᵥ ReciprocityTheory.MultiplicativeHeights.embVec τ.1 (la j))` using `fun τ => linearIndependent_mulVec_embVec τ.1 la (Q τ) hlali (hQ τ)`. Establish `F2 : LinearIndependent E (Fin.cons ξ (fun j => (∑ i, la j i • β i + ec j • ξ)) : Fin (r - 2 + 1) → Fin r → E)`. Apply the tactic sequence `apply IsotropicCombinations.cons_li (hli := hβind) (hla := hlali) <;> assumption`. Establish `F3 : ∀ j k : Fin (r - 2), (j : ℕ) < X.p0 - 1 → X.p0 - 1 ≤ (k : ℕ) → herm X.Gm (∑ i, la j i • β i + ec j • ξ) (∑ i, la k i • β i + ec k • ξ) = 0`. Introduce `j k hj hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hll, hSsym _ _ (hlaorth j k hj hk)]`. Establish `F4 : ∀ j : Fin (r - 2), (j : ℕ) < X.p0 - 1 → ∀ τ : X.Ψ, 0 < (τ.1 (herm X.Gm (∑ i, la j i • β i + ec j • ξ) (∑ i, la j i • β i + ec j • ξ))).re`. Introduce `j hj τ`. Rewrite using `[hll, hSQ, ← hone τ j]`. Conclude with `(hlapos τ (Pi.single j (1 : ℂ)) (fun i hi => by rw [Pi.single_apply, if_neg]; rintro rfl; omega)).2 (hsn j)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Establish `F5 : ∀ j : Fin (r - 2), X.p0 - 1 ≤ (j : ℕ) → ∀ τ : X.Ψ, (τ.1 (herm X.Gm (∑ i, la j i • β i + ec j • ξ) (∑ i, la j i • β i + ec j • ξ))).re < 0`. Introduce `j hj τ`. Rewrite using `[hll, hSQ, ← hone τ j]`. Conclude with `hlaneg τ (Pi.single j (1 : ℂ)) (fun i hi => by rw [Pi.single_apply, if_neg]; rintro rfl; omega) (hsn j)`. Establish `F6 : ∀ (j : Fin (r - 2)) (τ : X.Ψ), ‖τ.1 (herm X.Gm (∑ i, la j i • β i + ec j • ξ) (∑ i, la j i • β i + ec j • ξ))‖ ≤ d6La r X.p0 (fdeg E) (dE E) ep rh ^ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `j τ`. Rewrite using `[hll]`. Apply `IsotropicCombinations.la_bound (hT := hT1) (hμ := hTμ) (hp0 := hp1)` to reduce the goal to its premises. Distinguish the cases in `hj : (j : ℕ) < X.p0 - 1`. Conclude with `Or.inl (hlab1 τ j hj)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Or.inr (hlab2 τ j (not_lt.mp hj))`. Establish `F7 : ∀ τ : X.Ψ, LinearIndependent ℂ fun j => X.ucomp z0 ξ (X.embV (∑ i, la j i • β i + ec j • ξ)) τ`. Introduce `τ`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `w hw`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw` using `[hcomb τ w]`. Establish `h0 : Q τ *ᵥ ∑ j, w j • ReciprocityTheory.MultiplicativeHeights.embVec τ.1 (la j) = 0` using `IsotropicIndexSums.coeff_unique (f := f τ) (hf := hON τ) (h := hw.trans (by simp : (0 : Fin r → ℂ) = ∑ k, (0 : Fin (r - 2) → ℂ) k • f τ k))`. Establish `h1 : ∑ j, w j • (Q τ *ᵥ ReciprocityTheory.MultiplicativeHeights.embVec τ.1 (la j)) = 0`. Use function extensionality and compare the values at `k`. Establish `h2` using `congrFun h0 k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[IsotropicCombinations.qcomb]`. Simplify `h2` using `[Finset.sum_apply]`. Conclude with `Fintype.linearIndependent_iff.mp (hM τ) w h1`. Establish `F8 : ∀ (τ : X.Ψ) (j : Fin (r - 2)), X.ucomp z0 ξ (X.embV (∑ i, la j i • β i + ec j • ξ)) τ ∈ Submodule.span ℂ (Set.range (f τ))`. Introduce `τ j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hu τ j]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `F9 : ∀ (τ : X.Ψ) (j k : Fin (r - 2)), (j : ℕ) < X.p0 - 1 → X.p0 - 1 ≤ (k : ℕ) → hermC τ.1 X.Gm (X.ucomp z0 ξ (X.embV (∑ i, la j i • β i + ec j • ξ)) τ) (X.ucomp z0 ξ (X.embV (∑ i, la k i • β i + ec k • ξ)) τ) = 0`. Introduce `τ j k hj hk`. Rewrite using `[hu τ j, hu τ k, IsotropicCombinations.hC_comb2_ortho (hf := hON τ), ← hSQ, hSsym _ _ (hlaorth j k hj hk), map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `WorkedExample : ∀ (τ : X.Ψ) (w : Fin (r - 2) → ℂ), (∀ j : Fin (r - 2), X.p0 - 1 ≤ (j : ℕ) → w j = 0) → w ≠ 0 → 0 < (hermC τ.1 X.Gm (∑ j, w j • X.ucomp z0 ξ (X.embV (∑ i, la j i • β i + ec j • ξ)) τ) (∑ j, w j • X.ucomp z0 ξ (X.embV (∑ i, la j i • β i + ec j • ξ)) τ)).re`. Introduce `τ w hw hw0`. Rewrite using `[hcomb τ w, IsotropicIndexSums.hC_comb_ortho (hf := hON τ)]`. Conclude with `(hlapos τ w hw).2 hw0`. Establish `LargeParameterEstimates : ∀ (τ : X.Ψ) (w : Fin (r - 2) → ℂ), (∀ j : Fin (r - 2), (j : ℕ) < X.p0 - 1 → w j = 0) → w ≠ 0 → (hermC τ.1 X.Gm (∑ j, w j • X.ucomp z0 ξ (X.embV (∑ i, la j i • β i + ec j • ξ)) τ) (∑ j, w j • X.ucomp z0 ξ (X.embV (∑ i, la j i • β i + ec j • ξ)) τ)).re < 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `τ w hw hw0`. Rewrite using `[hcomb τ w, IsotropicIndexSums.hC_comb_ortho (hf := hON τ)]`. Conclude with `hlaneg τ w hw hw0`. Establish `F12 : ∀ (τ : X.Ψ) (c : Fin (r - 2) → ℂ), (∑ k, c k • f τ k) ∈ Submodule.span ℂ ((fun j => X.ucomp z0 ξ (X.embV (∑ i, la j i • β i + ec j • ξ)) τ) '' {j | (j : ℕ) < X.p0 - 1}) → (∑ k : Fin (r - 2), if (k : ℕ) < X.p0 - 1 then 0 else ‖c k‖ ^ 2) ≤ (rh / 120) ^ 2 * ∑ k : Fin (r - 2), …`. Introduce `τ c hc`.
-
-Rewrite `hc` using `[Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨l, hl, hlc⟩` from `hc`. Rewrite `hlc` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype l (fun i a => a • X.ucomp z0 ξ (X.embV (∑ k, la i k • β k + ec i • ξ)) τ) (fun _ => zero_smul ℂ _)]`. Rewrite `hlc` using `[hcomb τ l]`. Establish `hcq` using `IsotropicIndexSums.coeff_unique (f := f τ) (hf := hON τ) (h := hlc)`.
-
-Establish `hws : ∀ j : Fin (r - 2), X.p0 - 1 ≤ (j : ℕ) → l j = 0`. Introduce `j hj`. Rewrite `hl` using `[Finsupp.mem_supported']`. Conclude with `hl j (by simp only [Set.mem_setOf_eq, not_lt]; exact hj)`. Establish `h3` using `(hlapos τ l hws).1`.
-
-Simplify using `only [hcq] at h3`. Rewrite `h3` using `[show rh / 40 / 3 = rh / 120 by ring]`. Conclude with `h3`. Conclude with `⟨fun j => (∑ i, la j i • β i + ec j • ξ), fun j => ⟨hec j, hlamξ _ _⟩, F2, F3, F4, F5, F6, F7, F8, F9, WorkedExample, LargeParameterEstimates, F12⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem reducedLattice_short_bound (hD5 : CoveringRadiusStatement) (r : ℕ) (X : DataX E r) (ξ : Fin r → E) (z0 : Frame X.Ψ r)
     (f : X.Ψ → Fin (r - 2) → Fin r → ℂ) (β : Fin (r - 2) → Fin r → E) (S : ReciprocityTheory.MultiplicativeHeights.HermForm E (r - 2))

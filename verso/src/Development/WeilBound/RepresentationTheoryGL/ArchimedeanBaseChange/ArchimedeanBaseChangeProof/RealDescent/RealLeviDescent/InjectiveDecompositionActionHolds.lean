@@ -9,13 +9,13 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ActionUnipotent
 namespace PositivityTheory.RgBcC.RealD
 
 /- English proof (translation)
-The claim follows from `injective_decomposition_action_of GlobalTheory.T.boundary_square_levi_real GlobalTheory.T.vanishing_kernel_levi_real GlobalTheory.T.injective_restriction_of_bdsq_vanish GlobalTheory.T.injective_unipotent_of_restriction (hcdecL_of GlobalTheory.T.harish_chandra_decomposition_levi) …`.
+A detailed English derivation is pending.
 -/
 theorem injective_decomposition_action_holds : InjectiveDecompositionAction :=
   injective_decomposition_action_of GlobalTheory.T.boundary_square_levi_real GlobalTheory.T.vanishing_kernel_levi_real GlobalTheory.T.injective_restriction_of_bdsq_vanish GlobalTheory.T.injective_unipotent_of_restriction (hcdecL_of GlobalTheory.T.harish_chandra_decomposition_levi) GlobalTheory.T.action_unipotent_radical_real
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.harish_chandra_decomposition_levi`.
+A detailed English derivation is pending.
 -/
 theorem hc_decomposition_levi_holds : HCdecLv := GlobalTheory.T.harish_chandra_decomposition_levi
 

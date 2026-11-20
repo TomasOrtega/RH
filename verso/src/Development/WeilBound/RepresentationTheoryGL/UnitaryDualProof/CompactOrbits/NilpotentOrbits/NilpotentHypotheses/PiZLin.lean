@@ -14,7 +14,7 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `piZ_lin' k Z hZ`.
+A detailed English derivation is pending.
 -/
 theorem piZ_lin [CharZero k] {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) :
     ∃ L : Matrix (Fin n) (Fin n) k →ₗ[k] Matrix (Fin n) (Fin n) k,
@@ -22,7 +22,7 @@ theorem piZ_lin [CharZero k] {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n)
   piZ_lin' k Z hZ
 
 /- English proof (translation)
-The claim follows from `bez' K R R' hRR hR'R hK c hc d a ha ζ h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem bez {M : Type*} [AddCommGroup M] [Module ℂ M] (K : Submodule ℂ M) (R R' : M →ₗ[ℂ] M)
     (hRR : R ∘ₗ R' = LinearMap.id) (hR'R : R' ∘ₗ R = LinearMap.id) (hK : ∀ m ∈ K, R m ∈ K) (c : ℝ) (hc : 1 < c)

@@ -9,17 +9,15 @@ open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspS
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 /- English proof (translation)
-Introduce `E _ _ n V`. Set `e` to `AdelicGLn.finiteRestrictedEquiv E n`. Set `f : (∀ v : HeightOneSpectrum (𝓞 E), (GLnLocal.integralGL (v.adicCompletion E) n : Set (GL (Fin n) (v.adicCompletion E)))) → GL (Fin n) (Af E)` to `fun x => e.symm (RestrictedProduct.structureMap _ _ Filter.cofinite x)`. Establish `hf : Continuous f` using `e.symm.continuous.comp RestrictedProduct.isEmbedding_structureMap.continuous`. Set `o : ∀ v : HeightOneSpectrum (𝓞 E), (GLnLocal.integralGL (v.adicCompletion E) n : Set (GL (Fin n) (v.adicCompletion E)))` to `fun v => ⟨1, one_mem _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ho : f o = 1`. Use `e.symm_apply_eq.2 ?_` and prove the remaining obligations. Rewrite using `[map_one]`. Both sides reduce to the same expression. Establish `hV : f ⁻¹' (V : Set (GL (Fin n) (Af E))) ∈ 𝓝 o` using `hf.continuousAt.preimage_mem_nhds (ho ▸ V.mem_nhds_one)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `hV` using `[nhds_pi, Filter.mem_pi']`. Take `⟨S, t, ht, hS⟩` from `hV`. Use `⟨S, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hek : ∀ v, e k v = cmp v k` using `fun v => Units.ext (Matrix.ext fun _ _ => rfl)`. Establish `hi : ∀ v : HeightOneSpectrum (𝓞 E), cmp v k ∈ GLnLocal.integralGL (v.adicCompletion E) n` using `fun v => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.AdelicU.mem_GLint_iff.1 (hk.2 v)`. Rewrite using `[GLnLocal.mem_integralGL_iff]`. Simplify using `only [GroundTheory.Global.mem_valuationInteger_iff]`. Conclude with `h`. Establish `hx : f (fun v => ⟨cmp v k, hi v⟩) = k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `e.symm_apply_eq.2 (DFunLike.ext _ _ fun v => ?_)` and prove the remaining obligations. Conclude with `(hek v).symm`. Rewrite using `[← hx]`. Use `hS fun v hv => ?_` and prove the remaining obligations. Establish `: (⟨cmp v k, hi v⟩ : (GLnLocal.integralGL (v.adicCompletion E) n : Set (GL (Fin n) (v.adicCompletion E)))) = o v` using `Subtype.ext (hk.1 v hv)`.
-
-Conclude with `this ▸ mem_of_mem_nhds (ht v)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.levelS :
     UpperTheory.V.Af.Smo.LevelS := by

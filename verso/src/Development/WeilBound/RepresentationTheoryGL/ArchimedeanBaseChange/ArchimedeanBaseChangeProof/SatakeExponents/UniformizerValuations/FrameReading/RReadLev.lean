@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealReadLeviSta
 namespace PositivityTheory.Rg.BcB.F.Tail.Levb
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.real_read_levi`.
+A detailed English derivation is pending.
 -/
 theorem rReadLev : PositivityTheory.Rg.BcB.F.Tail.RReadLev := GlobalTheory.T.real_read_levi
 

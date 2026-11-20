@@ -35,28 +35,28 @@ def hermFam (X Y : Matrix (Fin n) (Fin r) E) : Option (Fin r ⊕ Fin r) → Matr
 variable {σ J} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Introduce `_ ⟨d, _, e, _⟩` and use `⟨_, Matrix.blockTriangular_diagonal _, e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem leviMin_subset (X Y : Matrix (Fin n) (Fin r) E) : leviMin σ J X Y ⊆ minPar σ J X :=
   fun _ ⟨d, _, e, _⟩ => ⟨_, Matrix.blockTriangular_diagonal _, e⟩
 
 /- English proof (translation)
-Introduce and unpack `u ⟨B, hB, h1, e, -⟩`. Conclude with `⟨B, hB, e, fun i => ⟨1, by rw [h1]; rfl, map_one _⟩⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem unipMin_subset_minParOne (X : Matrix (Fin n) (Fin r) E) : unipMin σ J X ⊆ minParOne σ J X := by
   rintro u ⟨B, hB, h1, e, -⟩
   exact ⟨B, hB, e, fun i => ⟨1, by rw [h1]; rfl, map_one _⟩⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_isTorus h hJ hW`. Take `⟨τ, hc, hm, -, h0, h1⟩` from `exists_tau h hJ hW ha`. Establish `ha0 : a 0 = 1`. Establish `e` using `ha.add 0 0`. Rewrite `e` using `[add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel (e.symm.trans (mul_one _).symm)`. Establish `key : ∀ p : minParSub X h hJ hW, p.1 ∈ minParOne σ J X ↔ τ p = 0` using `fun p => by`. Use `⟨fun hp => h0 p.1 hp, fun hp => ?_⟩` and prove the remaining obligations. Use `h1 p` as an intermediate fact. Rewrite `this` using `[hp, ha0, inv_one, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Establish `hcl : IsClosed (minPar σ J X)` using `isClosed_minPar h hJ hW`. Establish `e : minParOne σ J X = Subtype.val '' (τ ⁻¹' {0})`. Use extensionality with `p`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hp`. Conclude with `⟨⟨p, minParOne_subset hp⟩, (key _).1 hp, rfl⟩`. Introduce and unpack `⟨q, hq, rfl⟩`. Conclude with `(key q).2 hq`. Rewrite using `[e]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hcl.isClosedEmbedding_subtypeVal.isClosedMap) _ (isClosed_singleton.preimage hc)`. Introduce `p hp q hq`. Use `(key (⟨p, minParOne_subset hp⟩ * ⟨q, minParOne_subset hq⟩)).2 (by` as an intermediate fact. Rewrite using `[hm, (key _).1 hp, (key _).1 hq, add_zero])`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minParOne_props (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :
     IsClosed (minParOne σ J X) ∧ ∀ p ∈ minParOne σ J X, ∀ q ∈ minParOne σ J X, p * q ∈ minParOne σ J X := by

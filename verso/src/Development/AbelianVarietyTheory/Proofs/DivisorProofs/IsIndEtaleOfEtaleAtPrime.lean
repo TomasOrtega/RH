@@ -12,21 +12,15 @@ noncomputable section
 namespace GlobalTheory.IndEtaleAtPrime
 
 /- English proof (translation)
-Set `L` to `Localization.AtPrime P`. Set `M` to `P.primeCompl`. Set `D0` to `(Functor.const (Discrete PUnit.{1})).obj (CommRingCat.of R)`. Set `s0 : D0 ⟶ (Functor.const _).obj (CommRingCat.of R)` to `𝟙 _`. Establish `hs0 : IsColimit (Cocone.mk _ s0)` using `GlobalTheory.IndEtFactorLoc.constColim R`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨j, Aj, _, instA, hAj, ⟨e⟩⟩` from `GlobalTheory.EtaleDescent.exists_etale_model_of_isColimit (GlobalTheory.IndEtaleLoc.Idx D0 s0 M) (GlobalTheory.IndEtaleLoc.diag D0 s0 M) (Cocone.mk _ (GlobalTheory.IndEtaleLoc.toLoc (s := s0) (M := M) L)) (GlobalTheory.IndEtaleLoc.isColimitToLoc L hs0) C`. Set `Re : Type` to `Localization.Away j.e`. Use `letI : Algebra R Re := (inferInstance : Algebra (D0.obj j.j) (Localization.Away j.e))`. Use `letI : Algebra Re L := (GlobalTheory.IndEtaleLoc.leg L j).toAlgebra`. Use `letI : Algebra Re Aj := instA`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.Etale Re Aj := hAj`. Set `e0 : R` to `j.e`. Establish `he0 : e0 ∈ M` using `j.mem`. Use `haveI : IsLocalization (Submonoid.powers e0) Re := (inferInstance : IsLocalization (Submonoid.powers j.e) (Localization.Away j.e))`. Use `haveI : IsScalarTower R Re L := IsScalarTower.of_algebraMap_eq (fun r => (GlobalTheory.IndEtaleLoc.leg_algebraMap (s := s0) (M := M) L j r).symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI hLoc : IsLocalization (M.map (algebraMap R Re)) L := IsLocalization.isLocalization_of_submonoid_le Re L (Submonoid.powers e0) M (Submonoid.powers_le.2 he0)`. Set `e' : L ⊗[Re] Aj ≃ₐ[L] C` to `e`. Use `letI rA : Algebra Aj (L ⊗[Re] Aj) := Algebra.TensorProduct.rightAlgebra`. Use `haveI hT : IsLocalization (Algebra.algebraMapSubmonoid Aj (M.map (algebraMap R Re))) (L ⊗[Re] Aj) := IsLocalization.tensorRight _ _`. Use `letI : Algebra Aj C := (e'.toRingHom.comp (algebraMap Aj (L ⊗[Re] Aj))).toAlgebra`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `eA : L ⊗[Re] Aj ≃ₐ[Aj] C` to `AlgEquiv.ofRingEquiv (f := e'.toRingEquiv) (fun _ => rfl)`. Use `haveI hCloc : IsLocalization (Algebra.algebraMapSubmonoid Aj (M.map (algebraMap R Re))) C := IsLocalization.isLocalization_of_algEquiv _ eA`. Use `letI : Algebra R Aj := ((algebraMap Re Aj).comp (algebraMap R Re)).toAlgebra`. Use `haveI : IsScalarTower R Re Aj := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Algebra.Etale R Re := (Algebra.Etale.of_isLocalizationAway j.e : Algebra.Etale (D0.obj j.j) (Localization.Away j.e))`.
-
-Use `haveI : Algebra.Etale R Aj := Algebra.Etale.comp R Re Aj`. Use `letI : Algebra R C := ((algebraMap L C).comp (algebraMap R L)).toAlgebra`. Use `haveI : IsScalarTower R L C := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsScalarTower R Aj C := IsScalarTower.of_algebraMap_eq (fun r => by`. Establish `key : ((1 : L) ⊗ₜ[Re] algebraMap Re Aj (algebraMap R Re r)) = algebraMap L (L ⊗[Re] Aj) (algebraMap R L r)`.
-
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply, IsScalarTower.algebraMap_apply R Re L]`. Generalize the expression as in `algebraMap R Re r = c`. Rewrite using `[Algebra.algebraMap_eq_smul_one (A := Aj) c, Algebra.algebraMap_eq_smul_one (A := L) c, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Both sides reduce to the same expression. Use `show algebraMap L C (algebraMap R L r) = e' ((1 : L) ⊗ₜ[Re] algebraMap Re Aj (algebraMap R Re r))`.
-
-Rewrite using `[key, AlgEquiv.commutes])`. Conclude with `GlobalTheory.IndEtaleLoc.isIndEtale_of_isLocalization R Aj C (Algebra.algebraMapSubmonoid Aj (M.map (algebraMap R Re))) (GlobalTheory.EtC.indEt_of_etale R Aj)`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIndEtale_of_etale_atPrime (R C : Type) [CommRing R] [CommRing C] (P : Ideal R) [P.IsPrime]
     [Algebra (Localization.AtPrime P) C] [Algebra.Etale (Localization.AtPrime P) C] :
@@ -84,13 +78,11 @@ theorem isIndEtale_of_etale_atPrime (R C : Type) [CommRing R] [CommRing C] (P : 
       (Algebra.algebraMapSubmonoid Aj (M.map (algebraMap R Re))) (GlobalTheory.EtC.indEt_of_etale R Aj)
 
 /- English proof (translation)
-Introduce `B O _ _ P _ _ _ _ h`. Establish `hp : RingHom.toMorphismProperty @RingHom.Etale ≤ MorphismProperty.isFinitelyPresentable.{0} CommRingCat.{0}`. Introduce `X Y f hf`. Use `CommRingCat.isFinitelyPresentable_hom f ?_` and prove the remaining obligations. Use `letI := f.hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.Etale X Y := hf`. Conclude with `RingHom.finitePresentation_algebraMap.2 inferInstance`. Unfold `IndEt GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale`. Rewrite using `[← MorphismProperty.ind_ind hp]`. Take `⟨J, _, _, D, t, s, hs, hj⟩` from `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `⟨J, inferInstance, inferInstance, D, (Functor.const J).map (CommRingCat.ofHom (algebraMap B (Localization.AtPrime P))) ≫ t, s, hs, fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `letI : Algebra (Localization.AtPrime P) (D.obj i) := (t.app i).hom.toAlgebra haveI : Algebra.Etale (Localization.AtPrime P) (D.obj i) := (hj i).1`. Conclude with `isIndEtale_of_etale_atPrime B (D.obj i) P`. Establish `h2` using `(hj i).2 show CommRingCat.ofHom (algebraMap B (Localization.AtPrime P)) ≫ t.app i ≫ s.app i = _`. Rewrite using `[h2]`.
-
-Use extensionality with `x`. Conclude with `(IsScalarTower.algebraMap_apply B (Localization.AtPrime P) O x).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem indEt_of_indEt_atPrime : ∀ (B O : Type) [CommRing B] [CommRing O] (P : Ideal B) [P.IsPrime]
     [Algebra (Localization.AtPrime P) O] [Algebra B O] [IsScalarTower B (Localization.AtPrime P) O],
@@ -119,7 +111,7 @@ theorem indEt_of_indEt_atPrime : ∀ (B O : Type) [CommRing B] [CommRing O] (P :
     exact (IsScalarTower.algebraMap_apply B (Localization.AtPrime P) O x).symm
 
 /- English proof (translation)
-The claim follows from `indEt_of_indEt_atPrime`.
+A detailed English derivation is pending.
 -/
 example : ∀ (B O : Type) [CommRing B] [CommRing O] (P : Ideal B) [P.IsPrime] [Algebra (Localization.AtPrime P) O] [Algebra B O] [IsScalarTower B (Localization.AtPrime P) O], IndEt (Localization.AtPrime P) O → IndEt B O :=
   indEt_of_indEt_atPrime

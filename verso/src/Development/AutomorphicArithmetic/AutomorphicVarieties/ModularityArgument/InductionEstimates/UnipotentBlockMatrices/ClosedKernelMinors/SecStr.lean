@@ -11,23 +11,21 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Take `⟨-, hUK, 𝒜, hfd, hA, hfix⟩` from `typeFin D`. Take `⟨O, hO, hOU⟩` from `D.isOpen`. Establish `hmem : ∀ g ∈ KG K n, g ∈ D.U ↔ (g : AdelicGLn.AdelicGL K n) ∈ O` using `fun g hg => ⟨fun h => ((hOU g).1 h).1, fun h => (hOU g).2 ⟨h, hg⟩⟩`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun k : KG K n => {y : G1 K n | (((k : G1 K n)⁻¹ * y : G1 K n) : AdelicGLn.AdelicGL K n) ∈ O}) (fun k => hO.preimage (continuous_subtype_val.comp (continuous_const.mul continuous_id))) (fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, by`. Use `(hmem 1 (one_mem _)).1 (one_mem _)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using this⟩)`. Set `c : KG K n → G1 K 2 →* G1 K n` to `fun k => (MulAut.conj ((k : G1 K n)⁻¹)).toMonoidHom.comp ι`. Establish `hc : ∀ k x, c k x = (k : G1 K n)⁻¹ * ι x * k` using `fun k x => by simp [c]`. Establish `hcc : ∀ k, Continuous (c k)` using `fun k => by`. Establish `: (c k : G1 K 2 → G1 K n) = fun x => (k : G1 K n)⁻¹ * ι x * k` using `funext (hc k)`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(continuous_const.mul hι).mul continuous_const`. Set `U : Subgroup (G1 K 2)` to `KG K 2 ⊓ ⨅ j : t, D.U.comap (c j)`. Establish `hU : ∀ x, x ∈ U ↔ x ∈ KG K 2 ∧ ∀ j : t, c j x ∈ D.U` using `fun x => by`. Simplify using `only [U, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `d : t → U → D.U` to `fun j x => ⟨c j x, ((hU x).1 x.2).2 j⟩`. Establish `hd : ∀ j, Continuous (d j)` using `fun j => ((hcc j).comp continuous_subtype_val).subtype_mk _`. Establish `hdm : ∀ j x y, d j (x * y) = d j x * d j y` using `fun j x y => Subtype.ext (map_mul (c j) _ _)`. Set `ℬ : Submodule ℂ (U → ℂ)` to `⨆ j : t, 𝒜.map (LinearMap.funLeft ℂ ℂ (d j))`. Establish `hin : ∀ j, ∀ a ∈ 𝒜, (fun x => a (d j x)) ∈ ℬ` using `fun j a ha => Submodule.mem_iSup_of_mem j ⟨a, ha, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcK : ∀ j : KG K n, ∀ x ∈ KG K 2, c j x ∈ KG K n` using `fun j x hx => by`. Rewrite using `[hc]`. Conclude with `mul_mem (mul_mem (inv_mem j.2) (hιK x hx)) j.2`. Take `⟨E, hE, hR, hP⟩` from `adm μ₂ τ hτ U inf_le_left ⟨⋂ j : t, {x | ((c j x : G1 K n) : AdelicGLn.AdelicGL K n) ∈ O}, isOpen_iInter_of_finite fun j => hO.preimage (continuous_subtype_val.comp (hcc j)), fun x hx => by`. Rewrite using `[hU, Set.mem_iInter]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fun h j => (hmem _ (hcK j x hx)).1 (h.2 j), fun h => ⟨hx, fun j => (hmem _ (hcK j x hx)).2 (h j)⟩⟩⟩`. Use `ℬ inferInstance (fun a ha => by`. Use `Submodule.iSup_induction _ (motive := fun a : U → ℂ => Continuous a ∧ ∀ u : U, (fun x => a (x * u)) ∈ ℬ) ha ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `j _ ⟨b, hb, rfl⟩`. Use `⟨(hA b hb).1.comp (hd j), fun u => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Use `hin j _ ((hA b hb).2 (d j u))` as an intermediate fact. Simplify `this` using `only [LinearMap.funLeft_apply, hdm]`. Conclude with `⟨continuous_zero, fun _ => zero_mem _⟩`. Conclude with `fun a b ha hb => ⟨ha.1.add hb.1, fun u => add_mem (ha.2 u) (hb.2 u)⟩)`. Use `⟨E, hE, hR, fun f hf hD g k hk hrep => hP _ (hf.comp ((continuous_const.mul hι).mul continuous_const)) hrep fun m => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, hj, hjk⟩` from `Set.mem_iUnion₂.1 (ht hk)`. Establish `hu : (j : G1 K n)⁻¹ * k ∈ D.U` using `(hmem _ (mul_mem (inv_mem j.2) hk)).2 hjk`. Establish `h` using `hin ⟨j, hj⟩ _ ((hA _ (hfix f hf hD (g * ι m * j))).2 ⟨_, hu⟩)`. Use `h using 3 with x` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `_ = g * ι m * j * (c j x * ((j : G1 K n)⁻¹ * k))`.
-
-Rewrite using `[hc, map_mul]`. Use `group`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem secStr_side {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ} (μ₂ : Measure (G1 K 2))
     [μ₂.IsHaarMeasure] (τ : Submodule ℂ (L2 μ₂)) (D : TypeDat K n) (hτ : CuspIrr μ₂ τ) (ι : G1 K 2 →* G1 K n)
@@ -87,15 +85,15 @@ private theorem secStr_side {K : Type} [Field K] [NumberField K] [IsTotallyCompl
   group
 
 /- English proof (translation)
-Introduce `K _ _ _ μ₂ _ τ₁ τ₂ D h₁ h₂`. Take `⟨-, hmul, -, hcont, -, -, -, -, -, -, hK, hcpt⟩` from `@blkLaws K _ _`. Take `⟨ι₁, d₁⟩ : ∃ ι : G1 K 2 →* G1 K (2 + 2), ∀ m, ι m = lv m 1 0` from `⟨MonoidHom.mk' (fun m => lv m 1 0) fun a b => by rw [hmul, mul_one, add_zero], fun _ => rfl⟩`. Take `⟨ι₂, d₂⟩ : ∃ ι : G1 K 2 →* G1 K (2 + 2), ∀ m, ι m = lv 1 m 0` from `⟨MonoidHom.mk' (fun m => lv 1 m 0) fun a b => by rw [hmul, mul_one, add_zero], fun _ => rfl⟩`. Establish `c₁ : Continuous ι₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : Continuous fun m : G1 K 2 => ((m, 1, 0) : G1 K 2 × G1 K 2 × ℝ)` using `continuous_id.prodMk continuous_const`. Conclude with `(hcont.comp' h).congr fun m => (d₁ m).symm`. Establish `c₂ : Continuous ι₂`. Establish `h : Continuous fun m : G1 K 2 => ((1, m, 0) : G1 K 2 × G1 K 2 × ℝ)` using `continuous_const.prodMk (continuous_id.prodMk continuous_const)`. Conclude with `(hcont.comp' h).congr fun m => (d₂ m).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : ∀ m₁ m₂, lv m₁ m₂ 0 = lv 1 m₂ 0 * ι₁ m₁` using `fun m₁ m₂ => by`. Rewrite using `[d₁, hmul, mul_one, one_mul, add_zero]`. Establish `e₂ : ∀ m₁ m₂, lv m₁ m₂ 0 = lv m₁ 1 0 * ι₂ m₂` using `fun m₁ m₂ => by`. Rewrite using `[d₂, hmul, mul_one, one_mul, add_zero]`. Take `⟨E₁, f₁, r₁, p₁⟩` from `secStr_side μ₂ τ₁ D h₁ ι₁ c₁ (fun x hx => by rw [d₁]; exact hK x hx 1 (one_mem _)) (hcpt _).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨E₂, f₂, r₂, p₂⟩` from `secStr_side μ₂ τ₂ D h₂ ι₂ c₂ (fun x hx => by rw [d₂]; exact hK 1 (one_mem _) x hx) (hcpt _).1`. Use `⟨E₁, E₂, f₁, f₂, r₁, r₂, fun f hf hD hS k hk => ⟨fun m₂ => ?_, fun m₁ => ?_⟩⟩` and prove the remaining obligations. Establish `h` using `(hS k).1 m₂`. Establish `e : (fun m₁ => f (lv m₁ m₂ 0 * k)) = fun m₁ => f (lv 1 m₂ 0 * ι₁ m₁ * k)` using `funext fun m₁ => by rw [← e₁]`. Rewrite `h`, the goal using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `p₁ f hf hD _ k hk h`. Establish `h` using `(hS k).2 m₁`. Establish `e : (fun m₂ => f (lv m₁ m₂ 0 * k)) = fun m₂ => f (lv m₁ 1 0 * ι₂ m₂ * k)` using `funext fun m₂ => by rw [← e₂]`. Rewrite `h`, the goal using `[e]`. Conclude with `p₂ f hf hD _ k hk h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.secStr :
     ∀ {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (D : TypeDat K (2 + 2)), CuspIrr μ₂ τ₁ → CuspIrr μ₂ τ₂ →

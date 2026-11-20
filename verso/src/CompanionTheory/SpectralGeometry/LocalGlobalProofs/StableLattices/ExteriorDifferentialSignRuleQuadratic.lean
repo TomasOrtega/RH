@@ -6,11 +6,11 @@ open scoped InnerProductSpace Kronecker
 namespace GlobalTheory.CompanionTheory.WedgeSplitCasimir
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.transpose_apply, jW]`. Distinguish the cases in `hs : s ∈ J.1`. Simplify using `[hs]`. Establish `hc : (insert s J.1).card = m + 1` using `by rw [Finset.card_insert_of_notMem hs, J.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_eq_single (⟨insert s J.1, hc⟩ : Sub n (m + 1))]`. Distinguish the cases in `h : s' ∉ J'.1 ∧ insert s J.1 = insert s' J'.1`. Rewrite using `[if_pos ⟨hs, rfl⟩, if_pos h, if_pos ⟨hs, h⟩]`. Rewrite using `[if_neg h, mul_zero, if_neg (fun h' => h h'.2)]`. Introduce `I _ hI`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg, zero_mul]`. Introduce and unpack `⟨_, h⟩`. Conclude with `hI (Subtype.ext h)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jW_mul_transpose (n m : ℕ) (J J' : Sub n m) (s s' : Fin n) :
     (jW n m * (jW n m)ᵀ) (J, s) (J', s') =
@@ -33,21 +33,21 @@ theorem jW_mul_transpose (n m : ℕ) (J J' : Sub n m) (s s' : Fin n) :
       exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `sq : ∀ a : ℕ, (-1 : ℂ) ^ a * (-1) ^ a = 1` using `fun a => by`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules. Distinguish the cases in `hss : s = s'`. Substitute `hss` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hs : s ∈ J'`. Rewrite using `[Finset.insert_erase hs, sq]`. Simplify using `[hs]`. Distinguish the cases in `hJ : J = J'`. Substitute `hJ` using the available equality.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hs, sq]`. Rewrite using `[if_neg (fun h => hs h.1), if_neg (fun h => hJ h.1), if_neg, sub_zero]`. Introduce and unpack `⟨h1, h2, h3⟩`. Apply `hJ` to reduce the goal to its premises. Rewrite using `[← Finset.erase_insert h1, h3, Finset.erase_insert h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h : J = J' ∧ s = s' => hss h.2), zero_sub]`. Distinguish the cases in `h : s ∈ J' ∧ s' ∉ J'.erase s ∧ J = insert s' (J'.erase s)`. Rewrite using `[if_pos h]`. Take `⟨h1, h2, h3⟩` from `h`. Take `⟨K, hK, rfl⟩ : ∃ K : Finset (Fin n), s ∉ K ∧ J' = insert s K` from `⟨J'.erase s, Finset.notMem_erase _ _, (Finset.insert_erase h1).symm⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h2`, `h3`, the goal using `[Finset.erase_insert hK]`. Substitute `h3` using the available equality. Rewrite using `[if_pos ⟨by simp [hss, hK], by simp [Ne.symm hss, h2], Finset.insert_comm _ _ _⟩]`. Rewrite using `[Finset.filter_insert, Finset.filter_insert]`. Break down `lt_or_gt_of_ne hss with hlt | hlt` into its components or cases.
+Rewrite the hypotheses and the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[if_neg (not_lt.2 hlt.le), if_pos hlt, Finset.card_insert_of_notMem (fun h => hK (Finset.mem_filter.1 h).1)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_pos hlt, if_neg (not_lt.2 hlt.le), Finset.card_insert_of_notMem (fun h => h2 (Finset.mem_filter.1 h).1)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2, h3⟩`. Apply `h` to reduce the goal to its premises. Establish `hs : s ∈ J'`. Establish `: s ∈ insert s' J'` using `h3 ▸ Finset.mem_insert_self s J`. Conclude with `(Finset.mem_insert.1 this).resolve_left hss`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hs, fun h => h2 (Finset.mem_of_mem_erase h), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.erase_insert h1, h3, Finset.erase_insert_of_ne (Ne.symm hss)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem anticomm {n : ℕ} (J J' : Finset (Fin n)) (s s' : Fin n) :
     (if s ∈ J' ∧ s' ∉ J'.erase s ∧ J = insert s' (J'.erase s) then
@@ -97,13 +97,13 @@ theorem anticomm {n : ℕ} (J J' : Finset (Fin n)) (s s' : Fin n) :
       rw [← Finset.erase_insert h1, h3, Finset.erase_insert_of_ne (Ne.symm hss)]
 
 /- English proof (translation)
-Introduce `hS hW k r m`. Use extensionality with `⟨J, s⟩ ⟨J', s'⟩`. Establish `h1 : qMat (wedge k r m) (vr k r false) (J, s) (J', s') = (wedge k r m).dC (Matrix.single s' s 1) J J'`. Simplify using `only [qMat, Matrix.sum_apply, Matrix.kroneckerMap_apply, (hS k r _).1]`. Rewrite using `[Finset.sum_eq_single s', Finset.sum_eq_single s]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Introduce `a _ ha`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Simplify using `[ha]`. Simplify using the standard rewrite rules. Rewrite using `[h1, hW, Matrix.sub_apply, jW_mul_transpose, anticomm, Matrix.one_apply]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Prod.mk.injEq, Subtype.ext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wedgeQ : StdD → (∀ (k r m : ℕ) (a b : Fin (2 * r + k + 1)) (J J' : Sub (2 * r + k + 1) m), (wedge k r m).dC (Matrix.single a b 1) J J' = if b ∈ J'.1 ∧ a ∉ J'.1.erase b ∧ J.1 = insert a (J'.1.erase b) then (-1) ^ ((J'.1.erase b).filter fun c => c < a).card * (-1) ^ ((J'.1.erase b).filter fun c => c < b).card else 0) → WedgeQ := by
   intro hS hW k r m

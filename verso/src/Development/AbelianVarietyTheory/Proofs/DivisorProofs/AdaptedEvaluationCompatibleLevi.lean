@@ -17,9 +17,9 @@ attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
 namespace GlobalTheory.ThKIsoSwap
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Establish `hx : x + a.1 + b.1 = x + b.1 + a.1` using `by abel`. Rewrite using `[hx]`. Simplify using `only [← mul_assoc, ← AddChar.map_add_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Simplify using `only [add_dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_comm {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (a b : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
@@ -34,7 +34,7 @@ theorem schr_comm {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
   ring
 
 /- English proof (translation)
-Rewrite using `[d.form]`. Conclude with `schr_comm ψ (d.e a) (d.e b) φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_comm {R : Type} [CommRing R] [Invertible (2 : R)] {W : Type} [AddCommGroup W] [Module R W] {B : W → W → R}
     {κ : Type} [Fintype κ] (d : Darboux B κ) (ψ : AddChar R ℂ) (a b : W) (φ : (κ → R) → ℂ) :
@@ -43,7 +43,7 @@ theorem rho_comm {R : Type} [CommRing R] [Invertible (2 : R)] {W : Type} [AddCom
   exact schr_comm ψ (d.e a) (d.e b) φ
 
 /- English proof (translation)
-Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaSum_smul {F : Type} [Field F] [NumberField F] {κ : Type} (c : ℂ) (Φ : (κ → AF F) → ℂ) :
     thetaSum F (c • Φ) = c * thetaSum F Φ := by
@@ -51,9 +51,9 @@ theorem thetaSum_smul {F : Type} [Field F] [NumberField F] {κ : Type} (c : ℂ)
   exact tsum_mul_left
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' he' χX χW om r s r' s' hP Ψ hΨ w`. Take `⟨L, hLc, hL⟩` from `GlobalTheory.T.continuous_linear_height_form F E σ B n d d₁ X W W₁ H' i₀ i₁ hH' H.x H.y w`. Use `⟨fun u => L (mat u.1⁻¹), hLc.comp ?_, fun u => ?_⟩` and prove the remaining obligations. Conclude with `Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_subtype_val)`. Take `⟨y, b, hy, hK1⟩` from `GlobalTheory.T.adapted_models_eigen_extension hK F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ hH χX χW om r s r' s' hP u.1 u.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hstd` using `hP.base.std`. Use `set φ := e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (incV F H'.y)) Ψ) with hφ`. Establish `hφs : φ ∈ schA F (Fin n × Fin d₁)` using `he₀.maps _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hstd _ Ψ hΨ)`. Establish `hφ' : M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) φ ∈ schA F (Fin n × Fin d₁)` using `GlobalTheory.HeisSchA.rho_mem_schA M₁ B.ψ hstd _ φ hφs`. Rewrite using `[hK1 Ψ hΨ, rho_comm, map_smul, he'.inv _ ⟨y, rfl⟩ _ hφ', thetaSum_smul, hL y b _ hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phase : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),
@@ -78,9 +78,9 @@ local instance borelUA {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
     (J : Matrix (Fin n) (Fin n) E) : BorelSpace (UA σ J) := ⟨rfl⟩
 
 /- English proof (translation)
-Establish `hlin : ∑' i, ∫⁻ u in s, ‖f i u‖ₑ ∂μ ≠ ⊤`. Rewrite using `[← lintegral_tsum (fun i => (hm i).enorm)]`. Use `ne_top_of_le_ne_top (b := ∫⁻ _ in s, ENNReal.ofReal C ∂μ) ?_ (lintegral_mono fun u => ?_)` and prove the remaining obligations. Rewrite using `[lintegral_const]; exact ENNReal.mul_ne_top ENNReal.ofReal_ne_top (by simpa using hs)`. Repeatedly rewrite using `[← ofReal_norm_eq_enorm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (hb u).1]`. Conclude with `ENNReal.ofReal_le_ofReal (hb u).2`. Conclude with `integral_tsum hm hlin`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_tsum_of_bound {ι G : Type*} [Countable ι] [MeasurableSpace G] (μ : Measure G) (s : Set G) (hs : μ s ≠ ⊤)
     (f : ι → G → ℂ) (hm : ∀ i, AEStronglyMeasurable (f i) (μ.restrict s)) (C : ℝ)
@@ -96,9 +96,9 @@ theorem integral_tsum_of_bound {ι G : Type*} [Countable ι] [MeasurableSpace G]
   exact integral_tsum hm hlin
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' he' χX χW om r s r' s' hP μ 𝓕 _ _ h1 Ψ hΨ`. Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Establish `hψ` using `hP.base.std`. Use `choose ℓ hℓc hℓ using phase hK F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' he' χX χW om r s r' s' hP Ψ hΨ`. Establish `hS` using `(summable_norm_iff (E := ℂ)).mpr (GlobalTheory.T.adapted_models_eigen_lift hK F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' he' χX χW om r s r' s' hP Ψ hΨ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `integral_tsum_of_bound μ 𝓕 (by simp [h1]) _ (fun w => ?_) (∑' w : Fin d₁ → E, ‖thetaSum F (e' (M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (incV F H'.y)) Ψ))))‖) (fun u => ?_)` and prove the remaining obligations. Repeatedly rewrite using `[hℓ w]`. Conclude with `((hψ.1.comp (hℓc w)).mul continuous_const).aestronglyMeasurable`. Repeatedly rewrite using `[hℓ _ u, norm_mul, GlobalTheory.StdCharFromIsStd.norm_psi hψ, one_mul]`. Conclude with `⟨hS, le_rfl⟩`.
+Rewrite the conclusion repeatedly using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem swap : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

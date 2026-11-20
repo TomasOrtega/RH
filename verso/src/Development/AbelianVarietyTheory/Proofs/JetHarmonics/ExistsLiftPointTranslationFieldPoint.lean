@@ -15,15 +15,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hx : x.left ≫ pullback.snd G.hom f = P.hom` using `Over.w x`. Establish `hT : T.hom = (e ≫ P.hom) ≫ f`. Rewrite using `[← Over.w g, hg, ← hx]`. Simplify using `only [Category.assoc, pullback.condition]`. Set `T' : Over S'` to `Over.mk (e ≫ P.hom)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `e' : T' ⟶ P` to `Over.homMk e rfl`. Set `r' : T' ⟶ (Over.pullback f).obj G` to `Over.homMk (pullback.lift r.left (e ≫ P.hom) ((Over.w r).trans hT)) (pullback.lift_snd _ _ _)`. Establish `hr' : r'.left ≫ pullback.fst G.hom f = r.left` using `pullback.lift_fst _ _ _`. Set `U : Over.mk (T'.hom ≫ f) ⟶ T` to `Over.homMk (𝟙 T.left) ((Category.id_comp _).trans hT)`. Establish `hU : ∀ z : T ⟶ G, (U ≫ z).left = z.left` using `fun z => Category.id_comp _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : lift e' r' ≫ translT ((Over.pullback f).obj G) x ≫ fst _ _ = e'`. Simplify using `[translT]`. Establish `h2 : lift e' r' ≫ translT ((Over.pullback f).obj G) x ≫ snd _ _ = (e' ≫ x) * r'`. Simplify using `only [translT, translPt, lift_snd, Hom.mul_def]`. Rewrite using `[← Category.assoc, comp_lift, lift_fst_assoc, lift_snd]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `(isGrpPullback_pullback G f).2 T' (e' ≫ x) r' (U ≫ g) (U ≫ r) ((hU g).trans (hg.trans (Category.assoc _ _ _).symm)) ((hU r).trans hr'.symm)`. Use `⟨(lift e' r').left, congrArg (fun z => z.left) (lift_fst e' r'), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (fun z : T' ⟶ (Over.pullback f).obj G => z.left ≫ pullback.fst G.hom f) (lift_snd e' r'))).trans hr'`. Conclude with `(Category.assoc _ _ _).trans (congrArg (fun z => z.left) h1)`. Establish `h4 : ((lift e' r').left ≫ (translT ((Over.pullback f).obj G) x).left) ≫ (snd P ((Over.pullback f).obj G)).left = ((e' ≫ x) * r').left` using `(Category.assoc _ _ _).trans (congrArg (fun z => z.left) h2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ pullback.fst G.hom f) h4)).trans (h3.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[← MonObj.comp_mul, hU, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_translT_general {S S' : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] (f : S' ⟶ S)
     (P : Over S') (x : P ⟶ (Over.pullback f).obj G) (T : Over S) (e : T.left ⟶ P.left) (r g : T ⟶ G)
@@ -63,7 +63,7 @@ theorem exists_lift_translT_general {S S' : Scheme.{0}} (G : Over S) [GrpObj G] 
     rw [← MonObj.comp_mul, hU, mul_comm]
 
 /- English proof (translation)
-Introduce `R _ _ G _ _ F _ _ x T e r g hg`. Conclude with `exists_lift_translT_general G (jK R) (TFK (R := R) F) x T e r g hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_lift_translT : ∀ (R : Type) [CommRing R] [IsDomain R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (F : Type) [Field F] [Algebra (FractionRing R) F] (x : TFK (R := R) F ⟶ (Over.pullback (jK R)).obj G) (T : Over (Spec (CommRingCat.of R))) (e : T.left ⟶ Spec (CommRingCat.of F)) (r g : T ⟶ G), g.left = e ≫ x.left ≫ pullback.fst G.hom (jK R) → ∃ ρ : T.left ⟶ (UnifPre.GF (G := G) F).left, ρ ≫ (fst (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left = e ∧ ρ ≫ UnifPre.gFK (G := G) F = r.left ∧ (ρ ≫ (translT ((Over.pullback (jK R)).obj G) x).left) ≫ (fst (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left = e ∧ (ρ ≫ (translT ((Over.pullback (jK R)).obj G) x).left) ≫ UnifPre.gFK (G := G) F = (r * g).left := by
   intro R _ _ G _ _ F _ _ x T e r g hg

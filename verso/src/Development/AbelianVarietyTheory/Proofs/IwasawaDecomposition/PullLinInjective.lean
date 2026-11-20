@@ -15,7 +15,7 @@ variable {O : Type} [CommRing O] {bar : O → O} {ψ : InvFun O} {X X₁ : Type}
   [AddCommGroup X₁] [Module O X₁] {m : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => pull_mem _ (h.mem i), fun i _ => h.nonneg i _, (linearOn_pull_iff e.surjective).2 h.linear, IsStrict.of_pull (r := e.symm.toLinearMap) e.symm.surjective (by simpa using h.strict)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCell_pull_equiv [Module.Finite O X] [Module.Finite O X₁] {γ : Fin m → LinearMap.BilinForm ℤ X₁}
     (h : IsCell bar ψ γ) (e : X ≃ₗ[O] X₁) : IsCell bar ψ fun i => pull e.toLinearMap (γ i) :=
@@ -33,7 +33,7 @@ Both sides reduce to the same expression.
 @[simp] theorem pullLin_apply (r : X →ₗ[O] X₁) (β : LinearMap.BilinForm ℤ X₁) : pullLin r β = pull r β := rfl
 
 /- English proof (translation)
-Introduce `β β' h` and use `LinearMap.ext₂ fun a b => by obtain ⟨a, rfl⟩ := hr a obtain ⟨b, rfl⟩ := hr b exact LinearMap.congr_fun₂ h a b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pullLin_injective {r : X →ₗ[O] X₁} (hr : Function.Surjective r) : Function.Injective (pullLin r) :=
   fun β β' h => LinearMap.ext₂ fun a b => by
@@ -42,9 +42,9 @@ theorem pullLin_injective {r : X →ₗ[O] X₁} (hr : Function.Surjective r) : 
     exact LinearMap.congr_fun₂ h a b
 
 /- English proof (translation)
-Unfold `genRank`. Establish `e : Submodule.span ℤ (Set.range fun i => pull r (γ i)) = (Submodule.span ℤ (Set.range γ)).map (pullLin r)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.equivMapOfInjective _ (pullLin_injective hr) _).finrank_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem genRank_pull {r : X →ₗ[O] X₁} (hr : Function.Surjective r) (γ : Fin m → LinearMap.BilinForm ℤ X₁) :
     genRank (fun i => pull r (γ i)) = genRank γ := by
@@ -56,11 +56,11 @@ theorem genRank_pull {r : X →ₗ[O] X₁} (hr : Function.Surjective r) (γ : F
   exact (Submodule.equivMapOfInjective _ (pullLin_injective hr) _).finrank_eq.symm
 
 /- English proof (translation)
-Use `exists_congr fun c => and_congr_right fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hr a`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `hr b`. Use `LinearMap.congr_fun₂ h a b` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`. Introduce `h`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.congr_fun₂ h (r a) (r b)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inRCone_pull_iff {r : X →ₗ[O] X₁} (hr : Function.Surjective r) {γ : Fin m → LinearMap.BilinForm ℤ X₁}
     {β : LinearMap.BilinForm ℤ X₁} : InRCone (fun i => pull r (γ i)) (pull r β) ↔ InRCone γ β := by
@@ -97,15 +97,15 @@ def orad (β : LinearMap.BilinForm ℤ X) : Submodule O X where
     exact hx _ y
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_orad {β : LinearMap.BilinForm ℤ X} {x : X} : x ∈ orad (O := O) β ↔ ∀ (a : O) (y : X), β (a • x) y = 0 :=
   Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Submodule.mem_comap, mem_orad, pull_apply, map_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `h a y`. Take `⟨y, rfl⟩` from `hr y`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h a y`. Introduce `h a y`. Conclude with `h a (r y)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orad_pull {r : X →ₗ[O] X₁} (hr : Function.Surjective r) (β : LinearMap.BilinForm ℤ X₁) :
     orad (pull r β) = (orad β).comap r := by
@@ -145,11 +145,11 @@ def cdimQ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] (N : Subm
 variable {bar ψ}
 
 /- English proof (translation)
-Rewrite using `[orad_pull hr]`. Use `set N := orad (O := O) β`. Set `e` to `qEquiv hr N`. Establish `key : ∀ δ : LinearMap.BilinForm ℤ (X₁ ⧸ N), pull (N.comap r).mkQ (pull e.toLinearMap δ) = pull r (pull N.mkQ δ)` using `fun δ => rfl`. Use extensionality with `k`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, δ', h1, h2, rfl⟩`. Use `⟨m, fun i => pull e.symm.toLinearMap (δ' i), isCell_pull_equiv h1 e.symm, ?_, genRank_pull e.symm.surjective _⟩` and prove the remaining obligations. Rewrite using `[← inRCone_pull_iff hr]`. Use `h2 using 2 with i` and compare the differences between its conclusion and the goal.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key, pull_pull_symm]`. Introduce and unpack `⟨m, δ, h1, h2, rfl⟩`. Use `⟨m, fun i => pull e.toLinearMap (δ i), isCell_pull_equiv h1 e, ?_, genRank_pull e.surjective _⟩` and prove the remaining obligations. Simplify using `only [key]`. Conclude with `(inRCone_pull_iff hr).2 h2`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cdimSet_pull {X X₁ : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] [AddCommGroup X₁] [Module O X₁]
     [Module.Finite O X₁] {r : X →ₗ[O] X₁} (hr : Function.Surjective r) (β : LinearMap.BilinForm ℤ X₁) :
@@ -173,11 +173,11 @@ theorem cdimSet_pull {X X₁ : Type} [AddCommGroup X] [Module O X] [Module.Finit
     exact (inRCone_pull_iff hr).2 h2
 
 /- English proof (translation)
-Use `haveI : Subsingleton (X ⧸ N) := ⟨fun a b => by`. Proceed by induction on `a using Submodule.Quotient.induction_on`. Proceed by induction on `b using Submodule.Quotient.induction_on`. Name the introduced variables `a b`. Rewrite using `[Subsingleton.elim a b]⟩`.
+Proceed by induction. Proceed by induction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨0, Fin.elim0, ⟨fun i => i.elim0, fun i => i.elim0, fun c _ => ?_, ?_⟩, ⟨Fin.elim0, fun i => i.elim0, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[ψ.eval_of_subsingleton]`. Simplify using the standard rewrite rules. Use `⟨1, 0, one_pos, fun i => i.elim0, fun β' _ _ => ?_, fun β' _ _ _ => ⟨1, Fin.elim0, one_pos, ?_⟩⟩` and prove the remaining obligations. Simplify using `[InvFun.evalZ, ψ.eval_of_subsingleton]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.sum_univ_zero, one_smul]`. Conclude with `LinearMap.ext₂ fun a b => by rw [Subsingleton.elim a 0]; simp`. Conclude with `LinearMap.ext₂ fun a b => by rw [Subsingleton.elim a 0]; simp`. Simplify using `[genRank]`.
+A detailed English derivation is pending.
 -/
 theorem zero_mem_cdimSet {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] [Subsingleton X] (N : Submodule O X)
     (β : LinearMap.BilinForm ℤ X) : 0 ∈ cdimSet bar ψ X N β := by
@@ -240,11 +240,9 @@ def carFun : InvFun O where
 variable {bar ψ}
 
 /- English proof (translation)
-Take `⟨n, s, hs⟩` from `Module.Finite.exists_fin' O X`. Rewrite using `[InvFun.evalZ, (carFun bar ψ).eval_eq hs]`. Simplify using `only [carFun]`. Use `split_ifs with h`. Establish `e : h.choose = pull s β` using `LinearMap.ext₂ fun a b => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.choose_spec.2.2 a b` as an intermediate fact. Rewrite using `[pull_apply]`. Conclude with `this.symm` after adjusting the coercions. Rewrite using `[e]`. Unfold `cdimQ`.
-
-Rewrite using `[cdimSet_pull hs]`. Conclude with `absurd ⟨pull s β, pull_mem s hβ, fun y => hp _, fun a b => rfl⟩ h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalZ_carFun {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] {β : LinearMap.BilinForm ℤ X}
     (hβ : β ∈ balForms bar X) (hp : ∀ y, 0 ≤ β y y) :

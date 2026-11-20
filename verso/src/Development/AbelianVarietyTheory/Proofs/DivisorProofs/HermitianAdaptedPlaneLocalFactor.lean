@@ -13,21 +13,19 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.MixXLeviU
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he g₁ m hL`. Establish `hs` using `hP.weil.isUSplitting`. Establish `hs₁` using `hP₁.weil.isUSplitting`. Establish `hm1 : (((m, 1) : UA σ X.J × UA σ W.J).1 : GL (Fin n) (AE F E)).1 = mat m` using `rfl`. Establish `h1 : ((((1 : UA σ W.J)) : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = 1` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun Φ hΦ => ?_, fun z Φ hΦ => ?_, fun u hu Φ hΦ => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Conclude with `hs₁.pres _ _ (he.maps _ (hs.pres _ _ hΦ))`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hs.impl (m, 1) _ Φ hΦ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ea : actAB (cA σ) ((m, 1) : UA σ X.J × UA σ W.J) (incM F H.ι * z * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ) = incM F H.ι * (mat g₁ * z) * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ`. Simplify using `only [actAB]`. Rewrite using `[h1, Matrix.transpose_one, Matrix.mul_one]`. Establish `hL3 : ((m : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) * incM F H.ι = incM F H.ι * mat g₁` using `hL.2.2`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hL3, Matrix.mul_assoc (incM F H.ι)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[ea, he.Heisenberg₂ (mat g₁ * z) _ (hs.pres _ _ hΦ), hs₁.impl (g₁⁻¹, 1) _ _ (he.maps _ (hs.pres _ _ hΦ))]`. Use `congr 1`. Simplify using `only [actAB]`. Rewrite using `[h1, Matrix.transpose_one, Matrix.mul_one, ← Matrix.mul_assoc]`. Establish `hi : (((g₁⁻¹ : UA σ X₁.J) : GL (Fin n₁) (AE F E)) : Matrix (Fin n₁) (Fin n₁) (AE F E)) * mat g₁ = 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_inv]`. Conclude with `Units.inv_mul _`. Rewrite using `[hi, Matrix.one_mul]`. Take `⟨z', rfl⟩` from `hu`. Simplify using `only [LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs.impl (m, 1) _ Φ hΦ]`. Establish `ea : actAB (cA σ) ((m, 1) : UA σ X.J × UA σ W.J) (Matrix.vecMulVec (incV F H.x) z') = Matrix.vecMulVec (incV F H.x) z'`. Simplify using `only [actAB]`. Rewrite using `[h1, Matrix.transpose_one, Matrix.mul_one]`. Establish `hx : ((m : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) *ᵥ incV F H.x = incV F H.x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show ((m : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = mat m from rfl, hL.1]`. Simplify using the standard rewrite rules. Use `conv_rhs => rw [← hx]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, mul_assoc]`.
-
-Rewrite using `[ea, he.inv _ ⟨z', rfl⟩ _ (hs.pres _ _ hΦ)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -78,13 +76,13 @@ theorem twist : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
     rw [ea, he.inv _ ⟨z', rfl⟩ _ (hs.pres _ _ hΦ)]
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he`. Use `GlobalTheory.T.hermitian_adapted_plane_vanish hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he ?_` and prove the remaining obligations. Introduce `g₁ m hL`. Take `⟨h1, h2, h3⟩` from `twist F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he g₁ m hL`. Establish `hs` using `hP.weil.isUSplitting`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs₁` using `hP₁.weil.isUSplitting`. Establish `hadm : ∀ l ∈ (adeleClass F).adm (Fin n₁ × Fin d), l ∘ₗ (om₁ (g₁⁻¹, 1) ∘ₗ e ∘ₗ om (m, 1)) ∈ (adeleClass F).adm (Fin n × Fin d)`. Introduce `l hl`. Establish `a1` using `hs₁.adm (g₁⁻¹, 1) l hl`. Establish `a2` using `GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n₁ d X W X₁ W M M₁ H.ι 1 _ e hP.good hP₁.good he _ a1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hs.adm (m, 1) _ a2`. Take `⟨c, hc⟩` from `GlobalTheory.T.hermitian_adapted_plane_factor hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he _ h1 h2 h3 hadm`. Use `⟨c, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `key` using `hc Φ hΦ`. Establish `hinv : ∀ y, om₁ (g₁, 1) (om₁ (g₁⁻¹, 1) y) = y` using `fun y => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, show ((g₁, 1) * (g₁⁻¹, 1) : UA σ X₁.J × UA σ W.J) = 1 from Prod.ext (mul_inv_cancel g₁) (mul_one _), map_one, Module.End.one_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem evalZero_levi_unit : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

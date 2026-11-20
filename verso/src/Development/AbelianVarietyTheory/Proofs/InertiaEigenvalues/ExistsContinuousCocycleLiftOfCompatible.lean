@@ -10,33 +10,29 @@ noncomputable section
 namespace GlobalTheory.CocycleLimit
 
 /- English proof (translation)
-Introduce `O _ G _ _ M _ _ _ _ _ _ _ ρ a r hopen hbasis w hw hstep`. Use `set N : ℕ → Submodule O M := fun n => powSub (M := M) a n with hN`. Establish `hclosedN : ∀ n, IsClosed ((N n : Submodule O M) : Set M)` using `fun n => AddSubgroup.isClosed_of_isOpen (N n).toAddSubgroup (hopen n)`. Establish `hex : ∀ g, ∃ x, ∀ k, x - w k g ∈ N (r + k)`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `C : ℕ → Set M` to `fun k => {x | x - w k g ∈ N (r + k)}`. Establish `hsub : ∀ k, C (k + 1) ⊆ C k`. Introduce `k x hx`. Establish `h1 : x - w (k + 1) g ∈ N (r + k)` using `powSub_anti a (by omega : r + k ≤ r + (k + 1)) hx`. Establish `h2` using `hstep k g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show x - w k g ∈ N (r + k)`. Establish `: x - w k g = (x - w (k + 1) g) + (w (k + 1) g - w k g)` using `by abel`. Rewrite using `[this]`. Conclude with `(N (r + k)).add_mem h1 h2`. Establish `hne : ∀ k, (C k).Nonempty` using `fun k => ⟨w k g, by simp [C, (N (r + k)).zero_mem]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hcl : ∀ k, IsClosed (C k)` using `fun k => (hclosedN (r + k)).preimage (continuous_id.sub continuous_const)`. Take `⟨x, hx⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed C hsub hne (hcl 0).isCompact hcl`. Conclude with `⟨x, fun k => Set.mem_iInter.1 hx k⟩`. Use `choose e he using hex`. Establish `hzero : ∀ x : M, (∀ k, x ∈ N (r + k)) → x = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hne`. Take `⟨n, hn⟩` from `hbasis ({x}ᶜ) (isOpen_compl_singleton.mem_nhds (Ne.symm hne))`. Establish `: x ∈ N (r + n)` using `hx n`. Conclude with `hn (powSub_anti a (by omega : n ≤ r + n) this) rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcoc : ∀ k g h, w k (g * h) - (w k g + ρ g (w k h)) ∈ N (r + k)`. Introduce `k g h`. Use `(hw k).2 g h` as an intermediate fact. Simplify using `only [quotRep_mk] at this`. Rewrite `this` using `[← Submodule.Quotient.mk_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(Submodule.Quotient.eq _).1 this`. Use `⟨e, ⟨?_, ?_⟩, fun k g => he g k⟩` and prove the remaining obligations. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g0 U hU`. Establish `hV : {y : M | y + e g0 ∈ U} ∈ nhds (0 : M)` using `(continuous_add_right (e g0)).continuousAt.preimage_mem_nhds (by simpa using hU)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `hbasis _ hV`. Set `q : G → M ⧸ powSub (M` to `M) a (r + n) := fun g => Submodule.Quotient.mk (w n g)`. Establish `hq : Continuous q` using `(hw n).1`. Establish `hsing : IsOpen ({q g0} : Set (M ⧸ powSub (M` using `M) a (r + n))) := by`. Rewrite using `[← (Submodule.isOpenQuotientMap_mkQ (powSub (M := M) a (r + n))).isQuotientMap.isOpen_preimage]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (Submodule.mkQ (powSub (M` using `M) a (r + n))) ⁻¹' {q g0} = (fun y => y - w n g0) ⁻¹' ((N (r + n) : Submodule O M) : Set M) := by`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Submodule.mkQ_apply, q, SetLike.mem_coe, N]`. Conclude with `Submodule.Quotient.eq _`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hopen (r + n)).preimage (continuous_id.sub continuous_const)`. Establish `hS : q ⁻¹' {q g0} ∈ nhds g0` using `(hsing.preimage hq).mem_nhds rfl`. Use `show e ⁻¹' U ∈ nhds g0`. Use `Filter.mem_of_superset hS ?_` and prove the remaining obligations. Introduce `g hg`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hg' : w n g - w n g0 ∈ N (r + n)` using `(Submodule.Quotient.eq _).1 hg`. Establish `hmem : e g - e g0 ∈ N (r + n)`. Establish `: e g - e g0 = (e g - w n g) + (w n g - w n g0) - (e g0 - w n g0)` using `by abel`. Rewrite using `[this]`. Conclude with `(N (r + n)).sub_mem ((N (r + n)).add_mem (he g n) hg') (he g0 n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `hn (powSub_anti a (by omega : n ≤ r + n) hmem)` as an intermediate fact. Simplify using `using this`. Introduce `g h`. Rewrite using `[← sub_eq_zero]`. Apply `hzero` to reduce the goal to its premises.
-
-Introduce `k`. Establish `: e (g * h) - (e g + ρ g (e h)) = (e (g * h) - w k (g * h)) - (e g - w k g) - ρ g (e h - w k h) + (w k (g * h) - (w k g + ρ g (w k h)))`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
-
-Use `(N (r + k)).add_mem ((N (r + k)).sub_mem ((N (r + k)).sub_mem (he _ k) (he _ k)) (powSub_stable ρ a _ g _ (he h k))) (hcoc k g h)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_continuous_cocycle_lift_of_compatible : ∀ {O : Type} [CommRing O] {G : Type} [Group G] [TopologicalSpace G] {M : Type} [AddCommGroup M] [Module O M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul O M] [T2Space M] [CompactSpace M] (ρ : Representation O G M) (a : O) (r : ℕ), (∀ n : ℕ, IsOpen ((powSub (M := M) a n : Submodule O M) : Set M)) → (∀ U ∈ nhds (0 : M), ∃ n : ℕ, ((powSub (M := M) a n : Submodule O M) : Set M) ⊆ U) → ∀ w : ℕ → G → M, (∀ k, (fun g => (Submodule.Quotient.mk (w k g) : M ⧸ powSub (M := M) a (r + k))) ∈ Z1 (quotRep ρ a (r + k))) → (∀ k g, w (k + 1) g - w k g ∈ powSub (M := M) a (r + k)) → ∃ e ∈ Z1 ρ, ∀ k g, e g - w k g ∈ powSub (M := M) a (r + k) := by
   intro O _ G _ _ M _ _ _ _ _ _ _ ρ a r hopen hbasis w hw hstep

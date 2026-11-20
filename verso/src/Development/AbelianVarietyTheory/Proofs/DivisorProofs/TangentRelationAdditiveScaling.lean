@@ -22,13 +22,13 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : 
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)
 
 /- English proof (translation)
-Use `corr_of_val D.P.isLB fun z J hJ => ?_` and prove the remaining obligations. Establish `k` using `TorusCoord.val_t_mul_points g GlobalTheory.globalFns_holds χ x x' z J hJ`. Establish `a` using `val_corr hJ (h.2 χ) ρ.left`. Establish `a₁` using `(val_mul hJ _ _ _).symm.trans (a.trans (val_mul hJ _ _ _))`. Establish `c : val (DegPre.cubAtT D T (DegPre.cT D T χ) p.b p'.b) ρ.left z J = TorusCoord.cubeVal g χ z J x x'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(val_cub D.cub ρ hJ _ _ _).trans ?_` and prove the remaining obligations. Unfold `TorusCoord.cubeVal`. Rewrite using `[hb, hb']`. Use `congr 1`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `s` using `((val_pull hJ _ _ _).symm.trans (val_corr hJ hs (𝟙 _))).trans (val_pull hJ _ _ _)`. Establish `s'` using `((val_pull hJ _ _ _).symm.trans (val_corr hJ hs' (𝟙 _))).trans (val_pull hJ _ _ _)`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Simplify using `only [Category.id_comp] at s s' ⊢`. Use `mul_right_cancel (k.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((congrArg₂ (· * ·) s s').trans a₁.symm).trans (congrArg (_ * ·) c)`.
+A detailed English derivation is pending.
 -/
 theorem corr_mul {T : Over (Spec (CommRingCat.of R))} {T' : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))}
     (ρ : (Over.map (thick R I e)).obj T' ⟶ T) (x x' : T' ⟶ thickObj R I e G) (p p' p'' : GtPt D T)
@@ -54,7 +54,7 @@ theorem corr_mul {T : Over (Spec (CommRingCat.of R))} {T' : Over (Spec (CommRing
   exact ((congrArg₂ (· * ·) s s').trans a₁.symm).trans (congrArg (_ * ·) c)
 
 /- English proof (translation)
-The claim follows from `map_mul (pushHom (isGrpPullback_pullback G (thick R I e)) T') x x'`.
+A detailed English derivation is pending.
 -/
 theorem fst_mul {T' : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (x x' : T' ⟶ thickObj R I e G) :
     (Over.map (thick R I e)).map (x * x') ≫ fstG I e G =
@@ -64,14 +64,14 @@ theorem fst_mul {T' : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (x x' : 
 end General
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp₂ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = spMap _ ≫ spMap _`. Rewrite using `[spMap_comp₂, spMap_comp₂]`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dual_over {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     spMap (dualMap f) ≫ (epsR A).hom = (epsR B).hom ≫ spMap f := by
@@ -81,7 +81,7 @@ theorem dual_over {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
   ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Rewrite using `[spMap_comp₂, spMap_comp₂]`. Use `congr 1`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, epsScaleR, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dual_scale {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (c : A) :
     spMap (epsScaleR (f c)) ≫ spMap (dualMap f) = spMap (dualMap f) ≫ spMap (epsScaleR c) := by
@@ -94,17 +94,15 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I} {A
   {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G)
 
 /- English proof (translation)
-Introduce `e`. Take `⟨ye, h₁, h₂, h₃⟩` from `h e`. Take `⟨ye', h₁', h₂', h₃'⟩` from `h' e`. Establish `hci : IsClosedImmersion (thick R I e)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hw` using `dual_over (Ideal.Quotient.mk (I ^ (e + 1)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρ : (Over.map (thick R I e)).obj (epsR (R ⧸ I ^ (e + 1))) ⟶ epsR R` to `Over.homMk (spMap (dualMap (Ideal.Quotient.mk (I ^ (e + 1))))) hw`. Establish `key : ∀ (w : epsR R ⟶ G) (we : Sp (DualNumber (R ⧸ I ^ (e + 1))) ⟶ (thickObj R I e G).left), we ≫ (fstG I e G).left = spMap (dualMap (Ideal.Quotient.mk (I ^ (e + 1)))) ≫ w.left → we ≫ (thickObj R I e G).hom = (epsR (R ⧸ I ^ (e + 1))).hom`. Introduce `w we hh`. Establish `h0` using `congrArg (· ≫ G.hom) hh`. Simplify using `only [Category.assoc, Over.w] at h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← cancel_mono (thick R I e), Category.assoc]`. Conclude with `h0.trans hw`. Set `x : epsR (R ⧸ I ^ (e + 1)) ⟶ thickObj R I e G` to `Over.homMk ye (key y ye h₁)`. Set `x' : epsR (R ⧸ I ^ (e + 1)) ⟶ thickObj R I e G` to `Over.homMk ye' (key y' ye' h₁')`. Establish `f : (Over.map (thick R I e)).map x ≫ fstG I e G = ρ ≫ y` using `Over.OverMorphism.ext h₁`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f' : (Over.map (thick R I e)).map x' ≫ fstG I e G = ρ ≫ y'` using `Over.OverMorphism.ext h₁'`. Establish `b : TorusCoord.im (U.gt e) x = ρ ≫ gm.b` using `Over.OverMorphism.ext h₂`. Establish `b' : TorusCoord.im (U.gt e) x' = ρ ≫ gm'.b` using `Over.OverMorphism.ext h₂'`. Use `⟨(x * x').left, ?_, ?_, fun χ => corr_mul (U.gt e) ρ x x' gm gm' gm'' ha b b' χ (h₃ χ) (h₃' χ)⟩` and prove the remaining obligations. Use `fst_mul x x'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[f, f', ← MonObj.comp_mul]`. Conclude with `congrArg (·.left) this`. Use `TorusCoord.im_mul (U.gt e) x x'` as an intermediate fact. Rewrite `this` using `[b, b', ← MonObj.comp_mul]`. Rewrite using `[ha.1]`.
-
-Conclude with `congrArg (·.left) this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tanRel_mul (y y' : epsR R ⟶ G) (gm gm' gm'' : GtPt D.toPre (epsR R)) (h : TanRel U y gm) (h' : TanRel U y' gm')
     (ha : GtPt.IsAdd gm gm' gm'') : TanRel U (y * y') gm'' := by
@@ -139,11 +137,11 @@ theorem tanRel_mul (y y' : epsR R ⟶ G) (gm gm' gm'' : GtPt D.toPre (epsR R)) (
     exact congrArg (·.left) this
 
 /- English proof (translation)
-Introduce `e`. Take `⟨ye, h₁, h₂, h₃⟩` from `h e`. Establish `hc : spMap (epsScaleR (Ideal.Quotient.mk (I ^ (e + 1)) c)) ≫ spMap (dualMap (Ideal.Quotient.mk (I ^ (e + 1)))) = spMap (dualMap (Ideal.Quotient.mk (I ^ (e + 1)))) ≫ (epsScale R c).left` using `dual_scale _ c`. Use `⟨spMap (epsScaleR (Ideal.Quotient.mk (I ^ (e + 1)) c)) ≫ ye, ?_, ?_, fun χ => ?_⟩` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) h₁).trans ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ y.left) hc).trans (Category.assoc _ _ _))`. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) h₂).trans ?_)` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ gm.b.left) hc).trans ((Category.assoc _ _ _).trans ?_))` and prove the remaining obligations. Conclude with `congrArg (_ ≫ ·) hp.1.symm`. Use `corr_of_val D.toPre.P.isLB fun z J hJ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s` using `((val_pull hJ _ _ _).symm.trans (val_corr hJ (h₃ χ) (spMap (epsScaleR (Ideal.Quotient.mk (I ^ (e + 1)) c))))).trans (val_pull hJ _ _ _)`. Establish `t` using `(val_corr hJ (hp.2 χ) (spMap (dualMap (Ideal.Quotient.mk (I ^ (e + 1)))))).trans (val_pull hJ _ _ _)`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Simplify using `only [Category.id_comp]`. Conclude with `s.trans ((congrArg (fun q => val (gm.s χ) q z J) hc).trans t.symm)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tanRel_scale (c : R) (y : epsR R ⟶ G) (gm gm' : GtPt D.toPre (epsR R)) (h : TanRel U y gm)
     (hp : GtPt.IsPull (epsScale R c).left gm gm') : TanRel U (epsScale R c ≫ y) gm' := by
@@ -166,7 +164,7 @@ theorem tanRel_scale (c : R) (y : epsR R ⟶ G) (gm gm' : GtPt D.toPre (epsR R))
     exact s.trans ((congrArg (fun q => val (gm.s χ) q z J) hc).trans t.symm)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ U` and use `⟨tanRel_mul U.toUnifPre, tanRel_scale U.toUnifPre⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : AllV fun {V} _ _ _ {D} {A} {G} _ _ U => (∀ (y y' : epsR V ⟶ G) (gm gm' gm'' : GtPt D.toPre (epsR V)), TanRel U.toUnifPre y gm → TanRel U.toUnifPre y' gm' → GtPt.IsAdd gm gm' gm'' → TanRel U.toUnifPre (y * y') gm'') ∧ ∀ (c : V) (y : epsR V ⟶ G) (gm gm' : GtPt D.toPre (epsR V)), TanRel U.toUnifPre y gm → GtPt.IsPull (epsScale V c).left gm gm' → TanRel U.toUnifPre (epsScale V c ≫ y) gm' :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ U => ⟨tanRel_mul U.toUnifPre, tanRel_scale U.toUnifPre⟩

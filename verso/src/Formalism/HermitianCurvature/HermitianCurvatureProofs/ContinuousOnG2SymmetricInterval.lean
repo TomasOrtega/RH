@@ -9,19 +9,19 @@ namespace Formalism.FourierDecayAlt.P.DiscFubiniVolume
 def ee (u t : ℝ) : ℂ := Complex.exp (Complex.I * ((u * t : ℝ) : ℂ))
 
 /- English proof (translation)
-The claim follows from `Complex.norm_exp_I_mul_ofReal (u * t)`.
+A detailed English derivation is pending.
 -/
 lemma ee_norm (u t : ℝ) : ‖ee u t‖ = 1 := Complex.norm_exp_I_mul_ofReal (u * t)
 
 /- English proof (translation)
-Unfold `ee`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma ee_cont (u : ℝ) : Continuous (ee u) := by unfold ee; fun_prop
 
 /- English proof (translation)
-Establish `hIu : Complex.I * (u : ℂ) ≠ 0` using `mul_ne_zero Complex.I_ne_zero (by exact_mod_cast hu)`. Establish `h0 : HasDerivAt (fun t : ℝ => ((u * t : ℝ) : ℂ)) ((u : ℝ) : ℂ) t`. Use `((hasDerivAt_id t).const_mul u).ofReal_comp` as an intermediate fact. Simplify using `using this`. Establish `h1 : HasDerivAt (fun t : ℝ => Complex.I * ((u * t : ℝ) : ℂ)) (Complex.I * u) t` using `h0.const_mul Complex.I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3` using `h1.cexp.div_const (Complex.I * u)`. Conclude with `h3.congr_deriv (by rw [mul_div_assoc, div_self hIu, mul_one]; rfl)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma hasDerivAt_V {u : ℝ} (hu : u ≠ 0) (t : ℝ) :
     HasDerivAt (fun t => ee u t / (Complex.I * u)) (ee u t) t := by
@@ -34,27 +34,27 @@ lemma hasDerivAt_V {u : ℝ} (hu : u ≠ 0) (t : ℝ) :
   exact h3.congr_deriv (by rw [mul_div_assoc, div_self hIu, mul_one]; rfl)
 
 /- English proof (translation)
-Rewrite using `[norm_div, ee_norm, norm_mul, Complex.norm_I, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_V {u : ℝ} (hu : 0 < u) (t : ℝ) : ‖ee u t / (Complex.I * u)‖ = 1 / u := by
   rw [norm_div, ee_norm, norm_mul, Complex.norm_I, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hu]
 
 /- English proof (translation)
-Use `set V : ℝ → ℂ := fun t => ee u t / (Complex.I * u) with hV`. Establish `hVd : ∀ x ∈ uIcc α β, HasDerivAt V (ee u x) x` using `fun x _ => hasDerivAt_V hu.ne' x`. Establish `hφ'c : ContinuousOn φ' (uIcc α β)` using `fun x hx => (h2 x hx).continuousAt.continuousWithinAt`. Establish `hi1 : IntervalIntegrable (fun t => (φ' t : ℂ)) volume α β` using `(Complex.continuous_ofReal.comp_continuousOn hφ'c).intervalIntegrable`. Establish `hi2 : IntervalIntegrable (fun t => (φ'' t : ℂ)) volume α β` using `(Complex.continuous_ofReal.comp_continuousOn h3).intervalIntegrable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hie : IntervalIntegrable (ee u) volume α β` using `(ee_cont u).intervalIntegrable _ _`. Establish `e1` using `integral_mul_deriv_eq_deriv_mul (u := fun t => (φ t : ℂ)) (v := V) (u' := fun t => (φ' t : ℂ)) (v' := ee u) (fun x hx => (h1 x hx).ofReal_comp) hVd hi1 hie`. Establish `e2` using `integral_mul_deriv_eq_deriv_mul (u := fun t => (φ' t : ℂ)) (v := V) (u' := fun t => (φ'' t : ℂ)) (v' := ee u) (fun x hx => (h2 x hx).ofReal_comp) hVd hi2 hie`. Establish `e3 : ∫ t in α..β, (φ' t : ℂ) * V t = (∫ t in α..β, (φ' t : ℂ) * ee u t) / (Complex.I * u)`. Rewrite using `[← intervalIntegral.integral_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [hV]`. Expand and normalize the polynomial expressions, which then agree. Establish `hVn` using `norm_V hu`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu2 : 0 < u ^ 2` using `by positivity`. Establish `b3 : ‖∫ t in α..β, (φ'' t : ℂ) * V t‖ ≤ (∫ t in α..β, |φ'' t|) / u`. Use `(intervalIntegral.norm_integral_le_integral_norm hαβ).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← intervalIntegral.integral_div]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[norm_mul, hVn, Complex.norm_real, Real.norm_eq_abs]`. Expand and normalize the polynomial expressions, which then agree. Establish `b2 : ‖∫ t in α..β, (φ' t : ℂ) * ee u t‖ ≤ (|φ' α| + |φ' β|) / u + (∫ t in α..β, |φ'' t|) / u`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use `(add_le_add_left (norm_sub_le _ _) _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hVn, hVn, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs]`. Use `b3` as an intermediate fact. Establish `e : |φ' β| * (1 / u) + |φ' α| * (1 / u) = (|φ' α| + |φ' β|) / u` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e1]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use `(add_le_add_left (norm_sub_le _ _) _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hVn, hVn, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, e3, norm_div, norm_mul, Complex.norm_I, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hu]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `b2' : ‖∫ t in α..β, (φ' t : ℂ) * ee u t‖ / u ≤ ((|φ' α| + |φ' β|) + ∫ t in α..β, |φ'' t|) / u ^ 2`. Rewrite using `[div_le_iff₀ hu]`. Combine the equalities or inequalities in the displayed calculation. Establish `e : |φ β| * (1 / u) + |φ α| * (1 / u) = (|φ α| + |φ β|) / u` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma ibp2 {φ φ' φ'' : ℝ → ℝ} {α β u : ℝ} (hαβ : α ≤ β) (hu : 0 < u)
     (h1 : ∀ x ∈ uIcc α β, HasDerivAt φ (φ' x) x) (h2 : ∀ x ∈ uIcc α β, HasDerivAt φ' (φ'' x) x)
@@ -108,15 +108,15 @@ def g1 (t : ℝ) : ℝ := -t / Real.sqrt (1 - t ^ 2)
 def g2 (t : ℝ) : ℝ := -1 / ((1 - t ^ 2) * Real.sqrt (1 - t ^ 2))
 
 /- English proof (translation)
-The claim follows from `((hasDerivAt_pow 2 t).const_sub 1).congr_deriv (by norm_num)`.
+A detailed English derivation is pending.
 -/
 lemma hp1 (t : ℝ) : HasDerivAt (fun y : ℝ => 1 - y ^ 2) (-(2 * t)) t :=
   ((hasDerivAt_pow 2 t).const_sub 1).congr_deriv (by norm_num)
 
 /- English proof (translation)
-Establish `hp : 0 < 1 - t ^ 2` using `by linarith`. Establish `hs : 0 < Real.sqrt (1 - t ^ 2)` using `Real.sqrt_pos.2 hp`. Establish `h2` using `(hp1 t).sqrt hp.ne'`. Establish `e : g1 t = -(2 * t) / (2 * Real.sqrt (1 - t ^ 2))`. Unfold `g1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `h2`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasDerivAt_g0 {t : ℝ} (ht : t ^ 2 < 1) : HasDerivAt g0 (g1 t) t := by
   have hp : 0 < 1 - t ^ 2 := by linarith
@@ -127,11 +127,11 @@ lemma hasDerivAt_g0 {t : ℝ} (ht : t ^ 2 < 1) : HasDerivAt g0 (g1 t) t := by
   rw [e]; exact h2
 
 /- English proof (translation)
-Establish `hp : 0 < 1 - t ^ 2` using `by linarith`. Establish `hs : 0 < Real.sqrt (1 - t ^ 2)` using `Real.sqrt_pos.2 hp`. Establish `hsq : Real.sqrt (1 - t ^ 2) ^ 2 = 1 - t ^ 2` using `Real.sq_sqrt hp.le`. Establish `h2` using `(hasDerivAt_neg t).div ((hp1 t).sqrt hp.ne') hs.ne'`. Establish `e : g2 t = (-1 * Real.sqrt (1 - t ^ 2) - -t * (-(2 * t) / (2 * Real.sqrt (1 - t ^ 2)))) / Real.sqrt (1 - t ^ 2) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `g2`. Use `set s := Real.sqrt (1 - t ^ 2)`. Rewrite using `[hsq]`. Clear the denominators using the available nonvanishing facts. Use polynomial arithmetic with `[hsq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 lemma hasDerivAt_g1 {t : ℝ} (ht : t ^ 2 < 1) : HasDerivAt g1 (g2 t) t := by
   have hp : 0 < 1 - t ^ 2 := by linarith
@@ -148,9 +148,9 @@ lemma hasDerivAt_g1 {t : ℝ} (ht : t ^ 2 < 1) : HasDerivAt g1 (g2 t) t := by
   rw [e]; exact h2
 
 /- English proof (translation)
-Apply `ContinuousOn.div continuousOn_const` to reduce the goal to its premises. Conclude with `((continuous_const.sub (continuous_id.pow 2)).mul (Real.continuous_sqrt.comp (continuous_const.sub (continuous_id.pow 2)))).continuousOn`. Introduce `x hx`. Rewrite `hx` using `[uIcc_of_le (by linarith)]`. Establish `: x ^ 2 < 1` using `by nlinarith [hx.1, hx.2]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : 0 < 1 - x ^ 2` using `by linarith`. Conclude with `(mul_pos hp (Real.sqrt_pos.2 hp)).ne'`.
+A detailed English derivation is pending.
 -/
 lemma continuousOn_g2_symmetric_interval {a : ℝ} (ha : a < 1) (ha0 : 0 ≤ a) : ContinuousOn g2 (uIcc (-a) a) := by
   apply ContinuousOn.div continuousOn_const
@@ -163,51 +163,49 @@ lemma continuousOn_g2_symmetric_interval {a : ℝ} (ha : a < 1) (ha0 : 0 ≤ a) 
     exact (mul_pos hp (Real.sqrt_pos.2 hp)).ne'
 
 /- English proof (translation)
-Establish `hu0 : 0 < u` using `by linarith`. Establish `hsu : 0 < Real.sqrt u` using `Real.sqrt_pos.2 hu0`. Establish `hsu2 : Real.sqrt u * Real.sqrt u = u` using `Real.mul_self_sqrt hu0.le`. Use `set a : ℝ := 1 - 1 / u with ha`. Establish `hia : 1 / u ≤ 1` using `by rw [div_le_one hu0]; exact hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hia0 : 0 < 1 / u` using `by positivity`. Establish `ha0 : 0 ≤ a` using `by linarith`. Establish `ha1 : a < 1` using `by linarith`. Establish `hcont : Continuous fun t => (g0 t : ℂ) * ee u t`. Unfold `g0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `(Complex.continuous_ofReal.comp (Real.continuous_sqrt.comp (continuous_const.sub (continuous_id.pow 2)))).mul (ee_cont u)`. Establish `hii : ∀ x y : ℝ, IntervalIntegrable (fun t => (g0 t : ℂ) * ee u t) volume x y` using `fun x y => hcont.intervalIntegrable x y`. Rewrite using `[← integral_add_adjacent_intervals (hii (-1) (-a)) (hii (-a) 1), ← integral_add_adjacent_intervals (hii (-a) a) (hii a 1)]`. Establish `hsq2 : Real.sqrt (2 / u) = Real.sqrt 2 / Real.sqrt u` using `Real.sqrt_div' 2 hu0.le`. Establish `hend : ∀ t : ℝ, 1 - t ^ 2 ≤ 2 / u → ‖(g0 t : ℂ) * ee u t‖ ≤ Real.sqrt 2 / Real.sqrt u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `t ht`. Unfold `g0`. Rewrite using `[norm_mul, ee_norm, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), ← hsq2]`. Conclude with `Real.sqrt_le_sqrt ht`. Establish `b1 : ‖∫ t in (-1 : ℝ)..(-a), (g0 t : ℂ) * ee u t‖ ≤ Real.sqrt 2 / Real.sqrt u * (1 / u)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(norm_integral_le_of_norm_le_const fun t ht => hend t ?_).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite `ht` using `[uIoc_of_le (by linarith)]`. Establish `h1 : 0 ≤ 1 + t` using `by linarith [ht.1]`. Establish `h2 : 1 + t ≤ 1 / u` using `by linarith [ht.2]`. Establish `h3 : 1 - t ≤ 2` using `by linarith [ht.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: 1 - t ^ 2 = (1 + t) * (1 - t)` using `by ring`. Rewrite using `[this, div_eq_mul_one_div 2 u]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[abs_of_nonneg (by linarith)]; ring`. Establish `b3 : ‖∫ t in a..1, (g0 t : ℂ) * ee u t‖ ≤ Real.sqrt 2 / Real.sqrt u * (1 / u)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(norm_integral_le_of_norm_le_const fun t ht => hend t ?_).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite `ht` using `[uIoc_of_le (by linarith)]`. Establish `h1 : 0 ≤ 1 - t` using `by linarith [ht.2]`. Establish `h2 : 1 - t ≤ 1 / u` using `by linarith [ht.1]`. Establish `h3 : 1 + t ≤ 2` using `by linarith [ht.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: 1 - t ^ 2 = (1 - t) * (1 + t)` using `by ring`. Rewrite using `[this, div_eq_mul_one_div 2 u]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[abs_of_nonneg (by linarith)]; ring`. Establish `hin : ∀ x ∈ uIcc (-a) a, x ^ 2 < 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Introduce `x hx`. Rewrite `hx` using `[uIcc_of_le (by linarith)]`. Use polynomial arithmetic with `[hx.1, hx.2]`. Establish `b2` using `ibp2 (φ := g0) (φ' := g1) (φ'' := g2) (α := -a) (β := a) (by linarith) hu0 (fun x hx => hasDerivAt_g0 (hin x hx)) (fun x hx => hasDerivAt_g1 (hin x hx)) (continuousOn_g2_symmetric_interval ha1 ha0)`. Establish `hpa : 0 < 1 - a ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s := Real.sqrt (1 - a ^ 2) with hs`. Establish `hs0 : 0 < s` using `Real.sqrt_pos.2 hpa`. Establish `hslo : 1 / Real.sqrt u ≤ s`. Establish `e1 : 1 / Real.sqrt u = Real.sqrt (1 / u)` using `by rw [Real.sqrt_div' 1 hu0.le, Real.sqrt_one]`. Rewrite using `[hs, e1]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[ha]`. Establish `: 1 - (1 - 1 / u) ^ 2 = 1 / u * (2 - 1 / u)` using `by ring`. Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hshi : s ≤ Real.sqrt 2 / Real.sqrt u`. Rewrite using `[hs, ← hsq2]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[ha]`. Establish `: 1 - (1 - 1 / u) ^ 2 = 1 / u * (2 - 1 / u)` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, div_eq_mul_one_div 2 u]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hg0a : |g0 (-a)| + |g0 a| ≤ 2 * (Real.sqrt 2 / Real.sqrt u)`. Simplify using `only [g0, neg_sq, abs_of_nonneg (Real.sqrt_nonneg _)]`. Rewrite using `[← hs]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinv : 1 / s ≤ Real.sqrt u`. Rewrite using `[div_le_iff₀ hs0]`. Use `mul_le_mul_of_nonneg_left hslo hsu.le` as an intermediate fact. Rewrite `this` using `[mul_one_div_cancel hsu.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg1a : |g1 (-a)| + |g1 a| ≤ 2 * Real.sqrt u`. Simplify using `only [g1, neg_sq, neg_neg, abs_div, abs_neg, abs_of_nonneg ha0, abs_of_nonneg (Real.sqrt_nonneg _)]`. Rewrite using `[← hs]`. Establish `: a / s ≤ 1 / s` using `div_le_div_of_nonneg_right (by linarith) hs0.le`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hint : ∫ t in (-a)..a, |g2 t| = 2 * (a / s)`. Establish `e : ∫ t in (-a)..a, |g2 t| = ∫ t in (-a)..a, -g2 t`. Apply `intervalIntegral.integral_congr` to reduce the goal to its premises. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hx2` using `hin x hx`. Establish `hp : 0 < 1 - x ^ 2` using `by linarith`. Establish `: g2 x ≤ 0`. Simplify using `only [g2]`. Conclude with `div_nonpos_of_nonpos_of_nonneg (by norm_num) (mul_nonneg hp.le (Real.sqrt_nonneg _))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[abs_of_nonpos this]`. Rewrite using `[e, intervalIntegral.integral_neg, integral_eq_sub_of_hasDerivAt (fun x hx => hasDerivAt_g1 (hin x hx)) ((continuousOn_g2_symmetric_interval ha1 ha0).intervalIntegrable)]`. Simplify using `only [g1, neg_sq, neg_neg]`. Rewrite using `[← hs]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hint' : ∫ t in (-a)..a, |g2 t| ≤ 2 * Real.sqrt u`. Rewrite using `[hint]`. Establish `: a / s ≤ 1 / s` using `div_le_div_of_nonneg_right (by linarith) hs0.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ‖∫ t in (-a)..a, (g0 t : ℂ) * ee u t‖ ≤ (2 * Real.sqrt 2 + 4) / (u * Real.sqrt u)`. Use `b2.trans ?_` and prove the remaining obligations. Establish `k1 : (|g0 (-a)| + |g0 a|) / u ≤ 2 * Real.sqrt 2 / (u * Real.sqrt u)`. Rewrite using `[div_le_div_iff₀ hu0 (by positivity)]`. Use `mul_le_mul_of_nonneg_right hg0a (by positivity : 0 ≤ u * Real.sqrt u)` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `k2 : ((|g1 (-a)| + |g1 a|) + ∫ t in (-a)..a, |g2 t|) / u ^ 2 ≤ 4 / (u * Real.sqrt u)`. Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`. Use `add_le_add hg1a hint'` as an intermediate fact. Establish `h4` using `mul_le_mul_of_nonneg_right this (by positivity : 0 ≤ u * Real.sqrt u)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: 2 * Real.sqrt 2 / (u * Real.sqrt u) + 4 / (u * Real.sqrt u) = (2 * Real.sqrt 2 + 4) / (u * Real.sqrt u)`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hends : Real.sqrt 2 / Real.sqrt u * (1 / u) = Real.sqrt 2 / (u * Real.sqrt u)` using `by field_simp`.
-
-Establish `h22 : Real.sqrt 2 ≤ 3 / 2`. Rewrite using `[Real.sqrt_le_left (by norm_num)]; norm_num`. Combine the equalities or inequalities in the displayed calculation. Apply `div_le_div_of_nonneg_right _ (by positivity); linarith` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem J_bound {u : ℝ} (hu : 1 ≤ u) :
     ‖∫ t in (-1 : ℝ)..1, (g0 t : ℂ) * ee u t‖ ≤ 10 / (u * Real.sqrt u) := by

@@ -3,13 +3,11 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.Tempered
 
 /- English proof (translation)
-Introduce `h d e hd he hsum htail`. Establish `hnn : ∀ i, 0 ≤ e i`. Introduce `i`. Assume the negation of the conclusion as `hneg`. Rewrite `hneg` using `[not_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlt : ∑ k ∈ Finset.univ.filter (fun k => i ≤ k), d k * e k < 0`. Apply `Finset.sum_neg` to reduce the goal to its premises. Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk`. Conclude with `mul_neg_of_pos_of_neg (hd k) (lt_of_le_of_lt (he hk) hneg)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨i, by simp⟩`. Combine the linear relations using `[htail i]`. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg fun k _ => mul_nonneg (hd k).le (hnn k)).1 hsum`. Introduce `i`. Break down `mul_eq_zero.1 (hz i (Finset.mem_univ i)) with h1 | h1` into its components or cases.
-
-Conclude with `absurd h1 (hd i).ne'`. Conclude with `h1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem weighted_antitone_eq_zero_of_tails_nonneg :
     ∀ (h : ℕ) (d e : Fin h → ℝ), (∀ i, 0 < d i) → Antitone e → ∑ i, d i * e i = 0 →

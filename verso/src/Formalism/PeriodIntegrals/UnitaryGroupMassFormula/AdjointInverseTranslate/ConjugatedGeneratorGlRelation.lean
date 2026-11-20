@@ -20,13 +20,13 @@ section Ec
 variable {n : ℕ} {H : Matrix (Fin n) (Fin n) ℂ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Establish `hFa : ContDiffAt ℝ ∞ F g` using `hF.contDiffAt (hU.mem_nhds hgU)`. Establish `ext : ∀ Z, inLH H Z → ∀ k ∈ U, inUH H k → RdV Z f k = fderiv ℝ F k (k * Z)` using `fun Z hZ k hk hkH => rd_extension_h n H E f F U k Z hH hU hk hkH hF hfF hZ`. Establish `hsm : ∀ Z : Matrix (Fin n) (Fin n) ℂ, ContDiffOn ℝ ∞ (fun k => fderiv ℝ F k (k * Z)) U` using `fun Z => (hF.fderiv_of_isOpen hU withTop_enat_infty_add_one_le_infty).clm_apply (mulRightRealCLM Z).contDiff.contDiffOn`. Establish `hc : DifferentiableAt ℝ (fderiv ℝ F) g` using `(hFa.fderiv_right (m := ∞) withTop_enat_infty_add_one_le_infty).differentiableAt (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ Z W : Matrix (Fin n) (Fin n) ℂ, fderiv ℝ (fun k => fderiv ℝ F k (k * Z)) g W = fderiv ℝ (fderiv ℝ F) g W (g * Z) + fderiv ℝ F g (W * Z)`. Introduce `Z W`. Establish `H'` using `(hc.hasFDerivAt.clm_apply (mulRightRealCLM Z).hasFDerivAt).fderiv`. Use `erw [H']`. Conclude with `add_comm _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : RdV X (RdV Y f) g = fderiv ℝ (fun k => fderiv ℝ F k (k * Y)) g (g * X)` using `rd_extension_h n H E (RdV Y f) _ U g X hH hU hgU hg (hsm Y) (ext Y hY) hX`. Establish `e2 : RdV Y (RdV X f) g = fderiv ℝ (fun k => fderiv ℝ F k (k * X)) g (g * Y)` using `rd_extension_h n H E (RdV X f) _ U g Y hH hU hgU hg (hsm X) (ext X hX) hY`. Establish `e3` using `ext _ (ana_bracket hX hY) g hgU hg`. Establish `hsym : IsSymmSndFDerivAt ℝ F g` using `hFa.isSymmSndFDerivAt (by rw [minSmoothness_of_isRCLikeNormedField]; norm_cast)`. Establish `hs2` using `hsym (g * X) (g * Y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, e3, hd, hd]`. Simplify using `only [Matrix.mul_sub, Matrix.mul_assoc, map_sub]`. Use `erw [hs2]`. Conclude with `add_sub_add_left_eq_sub _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma ana_rdBracket (hH : HInvol H) {f : Matrix (Fin n) (Fin n) ℂ → E} {X Y g : Matrix (Fin n) (Fin n) ℂ}
     (hf : SmoothOnH H f) (hX : inLH H X) (hY : inLH H Y) (hg : inUH H g) :
@@ -60,7 +60,7 @@ lemma ana_rdBracket (hH : HInvol H) {f : Matrix (Fin n) (Fin n) ℂ → E} {X Y 
   exact add_sub_add_left_eq_sub _ _ _
 
 /- English proof (translation)
-Unfold `EcH`. Rewrite using `[ana_hpart1_sub hH, ana_hpart2_sub hH, ana_rdSub hH hf (ana_hpartMem hH Z).1 (ana_hpartMem hH W).1 hg, ana_rdSub hH hf (ana_hpartMem hH Z).2.1 (ana_hpartMem hH W).2.1 hg, smul_sub]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma ana_Ec_sub (hH : HInvol H) {f : Matrix (Fin n) (Fin n) ℂ → E} {g : Matrix (Fin n) (Fin n) ℂ}
     (hf : SmoothOnH H f) (hg : inUH H g) (Z W : Matrix (Fin n) (Fin n) ℂ) :
@@ -72,7 +72,7 @@ lemma ana_Ec_sub (hH : HInvol H) {f : Matrix (Fin n) (Fin n) ℂ → E} {g : Mat
   abel
 
 /- English proof (translation)
-Unfold `EcH RdV hpart1 hpart2`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma ana_Ec_zero (H : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n) ℂ → E)
     (g : Matrix (Fin n) (Fin n) ℂ) : EcH H 0 f g = 0 := by
@@ -80,11 +80,11 @@ lemma ana_Ec_zero (H : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n) �
   simp
 
 /- English proof (translation)
-Take `⟨hX1, hX2, hZ, -⟩` from `ana_hpartMem hH Z`. Take `⟨hY1, hY2, hW, -⟩` from `ana_hpartMem hH W`. Establish `hEc : ∀ (Z' : Matrix (Fin n) (Fin n) ℂ) (f' : Matrix (Fin n) (Fin n) ℂ → E), EcH H Z' f' g = RdV (hpart1 H Z') f' g + Complex.I • RdV (hpart2 H Z') f' g` using `fun _ _ => rfl`. Establish `hE : ∀ V, inLH H V → ∀ W' : Matrix (Fin n) (Fin n) ℂ, RdV V (EcH H W' f) g = RdV V (RdV (hpart1 H W') f) g + Complex.I • RdV V (RdV (hpart2 H W') f) g` using `fun V hV W' => ana_rdLin hH Complex.I (ana_rdSmooth hH hf (ana_hpartMem hH W').1) (ana_rdSmooth hH hf (ana_hpartMem hH W').2.1) hV hg`. Establish `hZW` using `commutator_complex_expand (hpart1 H Z) (hpart2 H Z) (hpart1 H W) (hpart2 H W)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hZW` using `[← hZ, ← hW]`. Establish `hP` using `ana_sub (ana_bracket hX1 hY1) (ana_bracket hX2 hY2)`. Establish `hQ` using `ana_add (ana_bracket hX1 hY2) (ana_bracket hX2 hY1)`. Take `⟨h1, h2⟩` from `ana_hpart_unique hH hP hQ`. Rewrite using `[hEc Z, hEc W, hE _ hX1, hE _ hX2, hE _ hY1, hE _ hY2, hZW, hEc, h1, h2, ana_rdSub hH hf (ana_bracket hX1 hY1) (ana_bracket hX2 hY2) hg, ana_rdAdd hH hf (ana_bracket hX1 hY2) (ana_bracket hX2 hY1) hg, ← ana_rdBracket hH hf hX1 hY1 hg, ← ana_rdBracket hH hf hX2 hY2 hg, ← ana_rdBra …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_add, smul_sub, smul_smul, Complex.I_mul_I, neg_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma ana_EcComm (hH : HInvol H) (f : Matrix (Fin n) (Fin n) ℂ → E) (Z W g : Matrix (Fin n) (Fin n) ℂ)
     (hf : SmoothOnH H f) (hg : inUH H g) :
@@ -113,13 +113,13 @@ lemma ana_EcComm (hH : HInvol H) (f : Matrix (Fin n) (Fin n) ℂ → E) (Z W g :
 end Ec
 
 /- English proof (translation)
-Unfold `EabHGl`. Introduce `n H E _ _ f a b c d g hH hf hg`. Establish `hE : ∀ (i j : Fin n) (φ : Matrix (Fin n) (Fin n) ℂ → E), EabH H i j φ = EcH H (Matrix.single i j (1 : ℂ)) φ` using `fun _ _ _ => rfl`. Establish `hm : ∀ (i j k l : Fin n), Matrix.single i j (1 : ℂ) * Matrix.single k l 1 = if j = k then Matrix.single i l 1 else 0`. Introduce `i j k l`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Rewrite using `[if_pos rfl]`. Use `first`. Consider the case `rw [Matrix.single_mul_single_same, mul_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(ext p q; simp [Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq'])`. Rewrite using `[if_neg hjk] first`. Consider the case `exact Matrix.single_mul_single_of_ne hjk _ _`. Consider the case `(ext p q; simp [Matrix.mul_apply, Matrix.single_apply, ite_and, hjk, Finset.sum_ite_eq, Finset.sum_ite_eq'])`. Simplify using `only [hE]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ana_EcComm hH f _ _ g hf hg, ana_Ec_sub hH hf hg, hm, hm]`. Apply the tactic sequence `split_ifs <;> simp [ana_Ec_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem conjugated_generator_gl_relation : EabHGl := by
   unfold EabHGl
@@ -149,7 +149,7 @@ section Right
 variable {n : ℕ} {H : Matrix (Fin n) (Fin n) ℂ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Unfold `inUH at hs`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc sᴴ, hs, hH.2]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma ana_unitInv (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inUH H s) : s⁻¹ = H * sᴴ * H := by
   unfold inUH at hs
@@ -157,7 +157,7 @@ lemma ana_unitInv (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inUH H 
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc sᴴ, hs, hH.2]
 
 /- English proof (translation)
-Rewrite using `[ana_unitInv hH hs]`. Unfold `inUH at hs`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc sᴴ, hs, hH.2]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma ana_inv_mul (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inUH H s) : s⁻¹ * s = 1 := by
   rw [ana_unitInv hH hs]
@@ -165,7 +165,7 @@ lemma ana_inv_mul (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inUH H 
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc sᴴ, hs, hH.2]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.mul_nonsing_inv s (Matrix.isUnit_det_of_left_inverse (ana_inv_mul hH hs))`. Consider the case `exact mul_eq_one_comm.1 (ana_inv_mul hH hs)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma ana_mul_inv (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inUH H s) : s * s⁻¹ = 1 := by
   first
@@ -173,14 +173,14 @@ lemma ana_mul_inv (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inUH H 
   | exact mul_eq_one_comm.1 (ana_inv_mul hH hs)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨s, s⁻¹, ana_mul_inv hH hs, ana_inv_mul hH hs⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma isUnit_of_inUH (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inUH H s) : IsUnit s := ⟨⟨s, s⁻¹, ana_mul_inv hH hs, ana_inv_mul hH hs⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify by unfolding definitions. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[show ((t : ℂ) • (s⁻¹ * X * s)) = s⁻¹ * ((t : ℂ) • X) * s by rw [Matrix.mul_smul, Matrix.smul_mul], Matrix.exp_conj' s _ (isUnit_of_inUH hH hs)]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc s s⁻¹, ana_mul_inv hH hs, Matrix.one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma ana_rdRight (hH : HInvol H) {f : Matrix (Fin n) (Fin n) ℂ → E} {X s g : Matrix (Fin n) (Fin n) ℂ}
     (hs : inUH H s) : RdV X (fun x => f (x * s)) g = RdV (s⁻¹ * X * s) f (g * s) := by
@@ -195,9 +195,9 @@ lemma ana_rdRight (hH : HInvol H) {f : Matrix (Fin n) (Fin n) ℂ → E} {X s g 
   rw [← Matrix.mul_assoc s s⁻¹, ana_mul_inv hH hs, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[ana_hpart1_eq hH, ana_hpart1_eq hH, Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul]`. Use `congr 1`. Rewrite using `[ana_unitInv hH hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hH.1, Matrix.mul_assoc, ana_HH_left hH, hH.2, Matrix.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ana_conj_hpart1 (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inUH H s)
     (Z : Matrix (Fin n) (Fin n) ℂ) : s⁻¹ * hpart1 H Z * s = hpart1 H (s⁻¹ * Z * s) := by
@@ -210,9 +210,9 @@ lemma ana_conj_hpart1 (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inU
     hH.2, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[ana_hpart2_eq hH, ana_hpart2_eq hH, Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Use `congr 1`. Rewrite using `[ana_unitInv hH hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hH.1, Matrix.mul_assoc, ana_HH_left hH, hH.2, Matrix.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ana_conj_hpart2 (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inUH H s)
     (Z : Matrix (Fin n) (Fin n) ℂ) : s⁻¹ * hpart2 H Z * s = hpart2 H (s⁻¹ * Z * s) := by
@@ -225,7 +225,7 @@ lemma ana_conj_hpart2 (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inU
     hH.2, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `EcH`. Rewrite using `[rd_extension_h n H E f F U g _ hH hU hgU hg hF hfF (ana_hpartMem hH Z).1, rd_extension_h n H E f F U g _ hH hU hgU hg hF hfF (ana_hpartMem hH Z).2.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma ana_EcH_ext (hH : HInvol H) {f F : Matrix (Fin n) (Fin n) ℂ → E} {U : Set (Matrix (Fin n) (Fin n) ℂ)}
     {g : Matrix (Fin n) (Fin n) ℂ} (hU : IsOpen U) (hgU : g ∈ U) (hg : inUH H g) (hF : ContDiffOn ℝ ∞ F U)
@@ -236,7 +236,7 @@ lemma ana_EcH_ext (hH : HInvol H) {f F : Matrix (Fin n) (Fin n) ℂ → E} {U : 
     rd_extension_h n H E f F U g _ hH hU hgU hg hF hfF (ana_hpartMem hH Z).2.1]
 
 /- English proof (translation)
-Rewrite using `[ana_hpart1_add hH, ana_hpart2_add hH, Matrix.mul_add, Matrix.mul_add, map_add, map_add, smul_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma ana_Phi_add (hH : HInvol H) (L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] E) (g Z W : Matrix (Fin n) (Fin n) ℂ) :
     L (g * hpart1 H (Z + W)) + Complex.I • L (g * hpart2 H (Z + W)) =
@@ -246,9 +246,9 @@ lemma ana_Phi_add (hH : HInvol H) (L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] E) (
   abel
 
 /- English proof (translation)
-Establish `hr : ∀ (r : ℝ) (M : Matrix (Fin n) (Fin n) ℂ), L ((r : ℂ) • M) = (r : ℂ) • L M`. Introduce `r M`. Rewrite using `[show ((r : ℂ) • M) = r • M from Matrix.ext fun i j => by simp [Complex.real_smul], L.map_smul]`. Conclude with `(Complex.coe_smul r (L M)).symm`. Take `⟨x, y, rfl⟩ : ∃ x y : ℝ, c = x + y * Complex.I` from `⟨c.re, c.im, (Complex.re_add_im c).symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ana_hpart1_smul hH, ana_hpart2_smul hH, Matrix.mul_sub, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_smul, map_sub, map_add, hr, hr, hr, hr]`. Apply the tactic sequence `match_scalars <;> ring_nf <;> (try simp only [Complex.I_sq]) <;> ring_nf`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma ana_Phi_smul (hH : HInvol H) (L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] E) (g Z : Matrix (Fin n) (Fin n) ℂ)
     (c : ℂ) :
@@ -270,7 +270,7 @@ def anaPhi (hH : HInvol H) (L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] E) (g : Mat
   map_smul' c Z := ana_Phi_smul hH L g Z c
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `simp [Matrix.mul_apply, Matrix.single_apply, Matrix.sum_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq'] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma ana_conj_single (s : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     s⁻¹ * Matrix.single a b (1 : ℂ) * s = ∑ c, ∑ d, (s⁻¹ c a * s b d) • Matrix.single c d (1 : ℂ) := by
@@ -281,11 +281,11 @@ lemma ana_conj_single (s : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
 end Right
 
 /- English proof (translation)
-Introduce `n H E _ _ f a b s g hH hf hs hg`. Establish `hgs` using `ana_mul hg hs`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf (g * s) hgs`. Express the relevant statement in the definitionally equal form `EcH H (Matrix.single a b 1) (fun x => f (x * s)) g = ∑ c, ∑ d, (s⁻¹ c a * s b d) • EcH H (Matrix.single c d 1) f (g * s)`. Establish `h1 : EcH H (Matrix.single a b 1) (fun x => f (x * s)) g = EcH H (s⁻¹ * Matrix.single a b 1 * s) f (g * s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Unfold `EcH`. Rewrite using `[ana_rdRight hH hs, ana_rdRight hH hs, ana_conj_hpart1 hH hs, ana_conj_hpart2 hH hs]`. Rewrite using `[h1]`. Simplify using `only [ana_EcH_ext hH hU hgU hgs hF hfF]`. Express the relevant statement in the definitionally equal form `anaPhi hH (fderiv ℝ F (g * s)) (g * s) (s⁻¹ * Matrix.single a b 1 * s) = ∑ c, ∑ d, (s⁻¹ c a * s b d) • anaPhi hH (fderiv ℝ F (g * s)) (g * s) (Matrix.single c d 1)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ana_conj_single, map_sum]`. Simplify using `only [map_sum, map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eab_h_right : EabHRight := by
   intro n H E _ _ f a b s g hH hf hs hg

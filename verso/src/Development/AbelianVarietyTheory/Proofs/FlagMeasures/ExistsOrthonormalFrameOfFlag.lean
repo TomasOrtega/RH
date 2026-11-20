@@ -5,9 +5,9 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory
 
 /- English proof (translation)
-Apply `Submodule.eq_starProjection_of_mem_orthogonal` to reduce the goal to its premises. Conclude with `V.add_mem (h (U.starProjection_apply_mem x)) (((Uᗮ ⊓ V).starProjection_apply_mem x).2)`. Rewrite using `[← Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection h, ← Submodule.inf_orthogonal, Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection h]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_sub]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Uᗮ.sub_mem (U.sub_starProjection_mem_orthogonal x) (((Uᗮ ⊓ V).starProjection_apply_mem x).1)`. Rewrite using `[add_comm, ← sub_sub]`. Use `(Uᗮ ⊓ V)ᗮ.sub_mem ((Uᗮ ⊓ V).sub_starProjection_mem_orthogonal x) ?_` and prove the remaining obligations. Conclude with `Submodule.orthogonal_le (inf_le_left (a := Uᗮ) (b := V)) (U.le_orthogonal_orthogonal (U.starProjection_apply_mem x))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem starProjection_eq_add_inf_orthogonal {n : ℕ}
     (U V : Submodule ℂ (EuclideanSpace ℂ (Fin n))) (h : U ≤ V) (x : EuclideanSpace ℂ (Fin n)) :
@@ -27,11 +27,11 @@ theorem starProjection_eq_add_inf_orthogonal {n : ℕ}
         (U.le_orthogonal_orthogonal (U.starProjection_apply_mem x))
 
 /- English proof (translation)
-Proceed by induction on `l using Fin.induction with`. Consider the case `zero`. Use `(W 0).starProjection_apply_mem x` as an intermediate fact. Establish `h2 : (W 0).starProjection x = 0`. Establish `h3 : (W 0).starProjection x ∈ (⊥ : Submodule ℂ _)` using `h0 ▸ this`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h3`. Simplify using `[h2]`. Consider the case `succ i ih`. Establish `hf : univ.filter (fun k : Fin a => k.val < i.succ.val) = insert i (univ.filter (fun k : Fin a => k.val < i.castSucc.val))`. Use extensionality with `k`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [mem_filter, mem_univ, true_and, mem_insert, Fin.val_succ, Fin.val_castSucc, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hf, Finset.sum_insert (by simp), ← ih, add_comm]`. Conclude with `starProjection_eq_add_inf_orthogonal _ _ (hm (Fin.castSucc_le_succ i)) x`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem starProjection_flag_eq_sum {n a : ℕ}
     (W : Fin (a + 1) → Submodule ℂ (EuclideanSpace ℂ (Fin n))) (h0 : W 0 = ⊥) (hm : Monotone W)
@@ -56,29 +56,27 @@ theorem starProjection_flag_eq_sum {n a : ℕ}
     exact starProjection_eq_add_inf_orthogonal _ _ (hm (Fin.castSucc_le_succ i)) x
 
 /- English proof (translation)
-Set `e : (Fin n → ℂ) ≃ₗ[ℂ] EuclideanSpace ℂ (Fin n)` to `(WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).symm`. Set `V : Fin (a + 1) → Submodule ℂ (EuclideanSpace ℂ (Fin n))` to `fun l => (W l).map e.toLinearMap`. Establish `hV0 : V 0 = ⊥` using `by simp [V, h0]`. Establish `hVm : Monotone V` using `fun l k h => Submodule.map_mono (hm h)`. Establish `hVr : ∀ l, Module.finrank ℂ (V l) = Module.finrank ℂ (W l)` using `fun l => LinearEquiv.finrank_map_eq e (W l)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `P : Fin a → Submodule ℂ (EuclideanSpace ℂ (Fin n))` to `fun i => (V i.castSucc)ᗮ ⊓ V i.succ`. Establish `hP : ∀ i, Module.finrank ℂ (P i) = j i`. Introduce `i`. Establish `h1` using `Submodule.finrank_add_inf_finrank_orthogonal (hVm (Fin.castSucc_le_succ i))`. Establish `h2` using `hj i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hVr, hVr]`. Express the relevant statement in the definitionally equal form `Module.finrank ℂ ↥((V i.castSucc)ᗮ ⊓ V i.succ) = j i`. Use linear arithmetic over natural numbers and integers. Set `b : ∀ i, OrthonormalBasis (Fin (j i)) ℂ (P i)` to `fun i => (stdOrthonormalBasis ℂ (P i)).reindex (finCongr (hP i))`. Set `T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ` to `fun i => Matrix.of fun r c => (b i c : EuclideanSpace ℂ (Fin n)) r`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hT : ∀ i k c d, ((T i)ᴴ * T k) c d = inner ℂ (b i c : EuclideanSpace ℂ (Fin n)) (b k d : EuclideanSpace ℂ (Fin n))`. Introduce `i k c d`. Simplify using `only [Matrix.mul_apply, conjTranspose_apply, T, of_apply, EuclideanSpace.inner_eq_star_dotProduct, dotProduct, Pi.star_apply]`. Conclude with `Finset.sum_congr rfl fun r _ => mul_comm _ _`. Establish `hlt : ∀ i k : Fin a, i < k → ∀ c d, inner ℂ (b i c : EuclideanSpace ℂ (Fin n)) (b k d : EuclideanSpace ℂ (Fin n)) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i k h c d`. Establish `h1 : (b i c : EuclideanSpace ℂ (Fin n)) ∈ V k.castSucc` using `hVm (Fin.succ_le_castSucc_iff.2 h) (b i c).2.2`. Conclude with `Submodule.inner_right_of_mem_orthogonal h1 (b k d).2.1`. Establish `hproj : ∀ i y, (T i * (T i)ᴴ) *ᵥ y = ((P i).starProjection (e y)).ofLp`. Introduce `i y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[(b i).starProjection_eq_sum_rankOne, ← Matrix.mulVec_mulVec]`. Use extensionality with `r`. Simplify using `only [_root_.sum_apply, InnerProductSpace.rankOne_apply, WithLp.ofLp_sum, Finset.sum_apply, WithLp.ofLp_smul, Pi.smul_apply, smul_eq_mul, EuclideanSpace.inner_eq_star_dotProduct]`. Simplify using `only [Matrix.mulVec, dotProduct, T, of_apply, conjTranspose_apply, Pi.star_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mul_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun s _ => mul_comm _ _`. Use `⟨T, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `c d`. Rewrite using `[hT, ← Submodule.coe_inner, orthonormal_iff_ite.1 (b i).orthonormal, Matrix.one_apply]`. Introduce `i k hik`. Use extensionality with `c d`. Rewrite using `[hT, Matrix.zero_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_or_gt_of_ne hik with h | h` into its components or cases. Conclude with `hlt i k h c d`. Rewrite using `[inner_eq_zero_symm]`. Conclude with `hlt k i h d c`. Introduce `l y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `h1 : y ∈ W l ↔ e y ∈ V l`. Simplify using `[V]`. Rewrite using `[h1, ← Submodule.starProjection_eq_self_iff, starProjection_flag_eq_sum V hV0 hVm, Matrix.sum_mulVec]`. Simplify using `only [hproj]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Establish `h2` using `congrArg WithLp.ofLp h`. Rewrite `h2` using `[WithLp.ofLp_sum]`. Conclude with `h2`. Introduce `h`.
-
-Apply `WithLp.ofLp_injective 2` to reduce the goal to its premises. Rewrite using `[WithLp.ofLp_sum]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orthonormal_frame_of_flag (n a : ℕ) (j : Fin a → ℕ)
     (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)) (h0 : W 0 = ⊥) (hm : Monotone W)

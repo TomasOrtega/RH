@@ -6,7 +6,7 @@ open scoped MatrixGroups
 namespace GlobalTheory.KZ
 
 /- English proof (translation)
-Unfold `Tower.kmap`. Establish `: (AddMonoidHom.toIntLinearMap (MonoidHom.toAdditive (Units.map (RingEquiv.refl X.K).toMonoidHom))) = (LinearMap.id : Additive X.Kˣ →ₗ[ℤ] Additive X.Kˣ)`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[this, LinearMap.baseChange_id, AdicCompletion.map_id]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

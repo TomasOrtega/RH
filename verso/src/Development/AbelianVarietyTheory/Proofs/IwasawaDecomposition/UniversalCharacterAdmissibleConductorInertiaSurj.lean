@@ -9,15 +9,15 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.FormsStep
 
 /- English proof (translation)
-Introduce `_ D cf b0 b1 Sx T Sp hE F i Q M hQ P hP`. Take `⟨-, hadm⟩` from `hQ`. Establish `hcl : ∀ P ∈ Q, ∀ P', IsConjPl D.host P P' → P' ∈ Q` using `fun P hP P' h => by`. Take `⟨⟨P'', hP'', h''⟩, -⟩` from `hadm P hP`. Rewrite using `[GlobalTheory.GalChar.isConjPl_unique h h'']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP''`. Take `⟨-, χ, h1, h2, h3, h4, h5⟩` from `hadm P hP`. Establish `hsP : ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A P → ∀ b, ∃ σ ∈ Ine (F` using `D.host.E) A, χ σ = b := fun A hA b => by`. Take `⟨σ, hσ⟩` from `h5 A hA (Multiplicative.toAdd b)`. Conclude with `⟨σ.1, σ.2, Multiplicative.toAdd.injective hσ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hDel : GlobalTheory.GalChar.IsDel D.host T.cc (T.l i) M (GlobalTheory.GalChar.pair D.host P) χ`. Use `⟨h1, h2, h3, fun w hw => h4 w (fun e => hw (Or.inl e)) (fun e => hw (Or.inr e)), fun w hw A hA b => ?_⟩` and prove the remaining obligations. Break down `hw with rfl | hw` into its components or cases. Conclude with `hsP A hA b`. Conclude with `GlobalTheory.SpreadRestrict.surj_conj (X := T.ntw hE F (TwL.empty T)) χ h2 hw hsP A hA b`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hD` using `GlobalTheory.GalChar.isDel_delOf D.host T.cc (T.l i) ⟨χ, hDel⟩`. Establish `hcoord` using `(GlobalTheory.GalChar.universal_anticyclotomic_character_laws D.host T.cc (T.l i)).2.2.2.2.2.2.1 Q M hcl P hP`. Use `⟨fun A hA c => ?_, fun P' _ hne hnc A hA σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ, e⟩` from `hD.2.2.2.2 P (Or.inl rfl) A hA (Multiplicative.ofAdd c)`. Use `⟨⟨σ, hσ⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show Multiplicative.toAdd (GlobalTheory.GalChar.delU D.host T.cc (T.l i) Q M σ) ⟨P, hP⟩ = c`. Rewrite using `[hcoord, e, toAdd_ofAdd]`. Rewrite using `[hcoord, hD.2.2.2.1 P' (fun h => h.elim (fun e => hne e) (fun e => hnc e)) A hA σ hσ]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem universalCharacter_admissibleConductor_inertia_surjective : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (b0 b1 : Big D)
     (Sx : Finset (PlE D.host)) (T : TwR D.LL0 D.nd) (Sp : RingSpec D cf b0 b1 Sx T) (hE : IsEmpty D.nd.Loc) (F : TwF T)

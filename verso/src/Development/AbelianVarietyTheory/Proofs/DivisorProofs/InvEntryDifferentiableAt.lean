@@ -5,9 +5,7 @@ namespace GlobalTheory.InverseEntryDifferentiability
 open Matrix
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty]`. Conclude with `differentiableAt_const _`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`.
-
-Conclude with `(hh a (Finset.mem_insert_self a s)).mul (ih fun i hi => hh i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_differentiableAt {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F]
     {ι : Type} [DecidableEq ι] (h : ι → F → ℂ) (x : F) (s : Finset ι)
@@ -21,7 +19,7 @@ theorem prod_differentiableAt {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ
       (ih fun i hi => hh i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Repeatedly rewrite using `[Matrix.det_apply']`. Apply `DifferentiableAt.fun_sum` to reduce the goal to its premises. Introduce `σ _`. Apply `DifferentiableAt.const_mul` to reduce the goal to its premises. Conclude with `prod_differentiableAt (fun i y => g y (σ i) i) x Finset.univ (fun i _ => hg (σ i) i)`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem det_differentiableAt {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F]
     {n : Type} [Fintype n] [DecidableEq n] (g : F → Matrix n n ℂ) (x : F)
@@ -34,9 +32,9 @@ theorem det_differentiableAt {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ 
   exact prod_differentiableAt (fun i y => g y (σ i) i) x Finset.univ (fun i _ => hg (σ i) i)
 
 /- English proof (translation)
-Repeatedly rewrite using `[Matrix.adjugate_apply]`. Apply `det_differentiableAt (fun y => (g y).updateRow j (Pi.single i 1)) x` to reduce the goal to its premises. Introduce `k l`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Matrix.updateRow_self]`. Conclude with `differentiableAt_const _`. Simplify using `only [Matrix.updateRow_ne h]`. Conclude with `hg k l`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adjugate_differentiableAt {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F]
     {n : Type} [Fintype n] [DecidableEq n] (g : F → Matrix n n ℂ) (x : F)
@@ -53,9 +51,9 @@ theorem adjugate_differentiableAt {F : Type} [NormedAddCommGroup F] [NormedSpace
     exact hg k l
 
 /- English proof (translation)
-Establish `hdet : (f x).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`. Establish `key : (fun y : F => (f y)⁻¹ i j) = fun y => ((f y).det)⁻¹ * (f y).adjugate i j`. Use function extensionality and compare the values at `y`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']`. Rewrite using `[key]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((det_differentiableAt f x hf).inv hdet).mul (adjugate_differentiableAt f x hf i j)`.
+A detailed English derivation is pending.
 -/
 theorem inv_entry_differentiableAt {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F]
     {n : Type} [Fintype n] [DecidableEq n] (f : F → Matrix n n ℂ) (x : F)
@@ -70,7 +68,7 @@ theorem inv_entry_differentiableAt {F : Type} [NormedAddCommGroup F] [NormedSpac
   exact ((det_differentiableAt f x hf).inv hdet).mul (adjugate_differentiableAt f x hf i j)
 
 /- English proof (translation)
-Introduce `F _ _ n _ _ f x hf hu i j`. Conclude with `inv_entry_differentiableAt f x hf hu i j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F : Type} [inst : NormedAddCommGroup F] [inst_1 : NormedSpace ℂ F] {n : Type}
     [inst_2 : Fintype n] [inst_3 : DecidableEq n] (f : F → Matrix n n ℂ) (x : F),

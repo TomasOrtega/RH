@@ -14,7 +14,7 @@ section Ring
 variable {R : Type} [CommRing R] {M : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, dotProduct, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hform_eq_dotProduct_mulVec (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a z : Fin M → R) :
     (fun j => ∑ i, c (a i) * Jm i j) ⬝ᵥ z = Formalism.UG.hform c Jm a z := by
@@ -22,7 +22,7 @@ private theorem hform_eq_dotProduct_mulVec (c : R →+* R) (Jm : Matrix (Fin M) 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem smul_vecMulVec_left (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a : Fin M → R) (k : R) :
     k • Matrix.vecMulVec a (fun j => ∑ i, c (a i) * Jm i j) =
@@ -31,7 +31,7 @@ private theorem smul_vecMulVec_left (c : R →+* R) (Jm : Matrix (Fin M) (Fin M)
   simp [Matrix.vecMulVec_apply, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[qr, smul_vecMulVec_left, Matrix.vecMulVec_eq Unit, Matrix.det_one_add_replicateCol_mul_replicateRow, dotProduct_smul, smul_eq_mul, hform_eq_dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_qr (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a : Fin M → R) (k : R) :
     (qr c Jm a k).det = 1 + k * Formalism.UG.hform c Jm a a := by
@@ -39,7 +39,7 @@ theorem det_qr (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a : Fin M → R)
     dotProduct_smul, smul_eq_mul, hform_eq_dotProduct_mulVec]
 
 /- English proof (translation)
-Rewrite using `[qr, Matrix.add_mulVec, Matrix.one_mulVec, smul_vecMulVec_left, Matrix.vecMulVec_mulVec, hform_eq_dotProduct_mulVec]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qr_mulVec (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a z : Fin M → R) (k : R) :
     (qr c Jm a k).mulVec z = z + (k * Formalism.UG.hform c Jm a z) • a := by
@@ -56,7 +56,7 @@ variable {F E K : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [Field
   [TopologicalSpace K]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k e`. Simplify using `[iB, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add y₁ y₂ h₁ h₂ => rw [map_add, add_mul, h₁, h₂, add_mul, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem iB_mul_one_tmul (P : PlaceMap F K) (y : K ⊗[F] E) (s : E) :
     iB P y * ((1 : AF F) ⊗ₜ[F] s) = iB P (y * inclR K s) := by
@@ -67,13 +67,13 @@ theorem iB_mul_one_tmul (P : PlaceMap F K) (y : K ⊗[F] E) (s : E) :
   | add y₁ y₂ h₁ h₂ => rw [map_add, add_mul, h₁, h₂, add_mul, map_add]
 
 /- English proof (translation)
-Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_incl (σ : E →ₐ[F] E) (e : E) : sigR K σ (inclR K e) = inclR K (σ e) := by
   simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, incV, JR, Sa2.hf, Matrix.map_apply, sigR_incl, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_incV (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (a t : Fin M → E) :
     Formalism.UG.hform (sigR K σ) (JR K J) (incV K a) (incV K t) = inclR K (hf σ J a t) := by
@@ -82,17 +82,17 @@ theorem hform_incV (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 end Lift
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ M J _ K _ _ P L hL hSU a b x hx`. Take `⟨l, ka, kb, -, -, hl, hka, hkb, hX⟩` from `hx`. Establish `hdet : ((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)).det = 1`. Rewrite using `[hX, Matrix.det_mul, det_qr, det_qr, hka, hkb]`. Simplify using `using hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨hSU x hdet, ?_⟩` and prove the remaining obligations. Introduce `v hav hbv`. Establish `hfix : ∀ (c : Fin M → E) (k : K ⊗[F] E), hf σ J c v = 0 → (qr (sigR K σ) (JR K J) (incV K c) k).mulVec (incV K v) = incV K v`. Introduce `c k hc`. Rewrite using `[qr_mulVec, hform_incV, hc, map_zero, mul_zero, zero_smul, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hXv : ((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)).mulVec (incV K v) = incV K v`. Rewrite using `[hX, ← Matrix.mulVec_mulVec, hfix b kb hbv, hfix a ka hav]`. Establish `hsub : (((HA.mat (AF F) σ J (L x)).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) - 1).mulVec (vA v) = 0`. Use function extensionality and compare the values at `i`. Establish `hterm : ∀ j, (((HA.mat (AF F) σ J (L x)).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) - 1) i j * vA v j = iB P ((((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) - 1) i j * inclR K (v j))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[hL x i j, ← iB_mul_one_tmul]`. Both sides reduce to the same expression. Establish `hsum : ∑ j, (((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) - 1) i j * inclR K (v j) = ((((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) - 1).mulVec (incV K v)) i` using `rfl`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl (fun j _ => hterm j), ← map_sum]`. Establish `h0 : ((((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) - 1).mulVec (incV K v)) = 0`. Rewrite using `[Matrix.sub_mulVec, hXv, Matrix.one_mulVec, sub_self]`. Rewrite using `[hsum, h0, Pi.zero_apply, map_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Matrix.add_mulVec, sub_add_cancel]`. Use `_ = vA v := by rw [hsub, Matrix.one_mulVec, zero_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_plane : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ {M : ℕ} (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ {K : Type} [NontriviallyNormedField K] [Algebra F K] (P : PlaceMap F K) (L : HA K σ J →* HA (AF F) σ J), IsLift P σ J L → (∀ x : HA K σ J, ((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)).det = 1 → L x ∈ SUSupp σ J (P.inj 1)) → ∀ (a b : Fin M → E) (x : HA K σ J), IsQPairOf (sigR K σ) (JR K J) (incV K a) (incV K b) ((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) → L x ∈ PlaneSupp σ J (P.inj 1) a b := by
   intro F E _ _ _ _ _ σ _ M J _ K _ _ P L hL hSU a b x hx

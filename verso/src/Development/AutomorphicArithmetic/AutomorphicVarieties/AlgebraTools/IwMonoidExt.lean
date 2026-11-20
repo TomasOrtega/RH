@@ -3,23 +3,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Hecke
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `T H _ _ P f hgen h1 hmul hunit`. Set `U : T → Hˣ` to `fun a => if h : a ∈ P then (hunit a h).unit else 1`. Establish `hU : ∀ a ∈ P, (U a : H) = f a`. Introduce `a ha`. Simplify using `[U, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hUmul : ∀ a ∈ P, ∀ b ∈ P, U (a * b) = U a * U b`. Introduce `a ha b hb`. Use `ext`. Rewrite using `[Units.val_mul, hU _ (P.mul_mem ha hb), hU a ha, hU b hb, hmul a ha b hb]`. Establish `hcomm : ∀ a ∈ P, ∀ b ∈ P, Commute (U a) (U b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a ha b hb`. Use `show U a * U b = U b * U a`. Rewrite using `[← hUmul a ha b hb, ← hUmul b hb a ha, mul_comm a b]`. Establish `hU1 : U 1 = 1` using `Units.ext (by rw [hU 1 P.one_mem, h1]; rfl)`. Establish `hwd : ∀ a ∈ P, ∀ b ∈ P, ∀ c ∈ P, ∀ d ∈ P, a * b⁻¹ = c * d⁻¹ → U a * (U b)⁻¹ = U c * (U d)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb c hc d hd h`. Establish `h' : a * d = c * b`. Combine the equalities or inequalities in the displayed calculation. Establish `hU' : U a * U d = U c * U b`. Rewrite using `[← hUmul a ha d hd, ← hUmul c hc b hb, h']`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_eq_iff_eq_mul, mul_assoc, (hcomm d hd b hb).inv_left.eq, ← mul_assoc, eq_mul_inv_iff_mul_eq, hU']`. Use `choose A hA B hB hAB using hgen`. Set `θ : T →* Hˣ` to `{ toFun := fun t => U (A t) * (U (B t))⁻¹ map_one' := by show U (A 1) * (U (B 1))⁻¹ = 1`. Rewrite using `[hwd (A 1) (hA 1) (B 1) (hB 1) 1 P.one_mem 1 P.one_mem (by rw [← hAB 1]; simp), hU1]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use the proof step `map_mul' := fun t s => by show U (A (t * s)) * (U (B (t * s)))⁻¹ = U (A t) * (U (B t))⁻¹ * (U (A s) * (U (B s))⁻¹)`. Establish `he : A (t * s) * (B (t * s))⁻¹ = (A t * A s) * (B t * B s)⁻¹`. Rewrite using `[← hAB (t * s)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[_root_.mul_inv_rev]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-The two sides agree by associativity and commutativity. Rewrite using `[hwd _ (hA _) _ (hB _) _ (P.mul_mem (hA t) (hA s)) _ (P.mul_mem (hB t) (hB s)) he, hUmul _ (hA t) _ (hA s), hUmul _ (hB t) _ (hB s), _root_.mul_inv_rev]`. Establish `c1 : Commute (U (B t))⁻¹ (U (A s))` using `(hcomm _ (hB t) _ (hA s)).inv_left`. Establish `c2 : Commute (U (B t))⁻¹ (U (B s))⁻¹` using `(hcomm _ (hB t) _ (hB s)).inv_inv`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← mul_assoc (U (B t))⁻¹, c1.eq, mul_assoc, c2.eq] }`. Establish `hθ : ∀ a ∈ P, (θ a : H) = f a`. Introduce `a ha`. Use `show ((U (A a) * (U (B a))⁻¹ : Hˣ) : H) = f a`. Rewrite using `[hwd (A a) (hA a) (B a) (hB a) a ha 1 P.one_mem (by rw [← hAB a]; simp), hU1, inv_one, mul_one, hU a ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨θ, hθ, fun θ' h' => ?_⟩` and prove the remaining obligations. Establish `agree : ∀ a ∈ P, θ' a = θ a` using `fun a ha => Units.ext ((h' a ha).trans (hθ a ha).symm)`. Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `t`. Rewrite using `[hAB t, map_mul, map_mul, map_inv, map_inv, agree _ (hA t), agree _ (hB t)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.monoidExt :
     ∀ (T H : Type) [CommGroup T] [Monoid H] (P : Submonoid T) (f : T → H), (∀ t : T, ∃ a ∈ P, ∃ b ∈ P, t = a * b⁻¹) → f 1 = 1 → (∀ a ∈ P, ∀ b ∈ P, f (a * b) = f a * f b) → (∀ a ∈ P, IsUnit (f a)) → ∃! θ : T →* Hˣ, ∀ a ∈ P, (θ a : H) = f a := by

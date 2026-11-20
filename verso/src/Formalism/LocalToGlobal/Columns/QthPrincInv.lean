@@ -13,25 +13,23 @@ section Ext
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) {n c : ℕ}
 
 /- English proof (translation)
-Establish `hcoe : ∀ W : Sp E (n + c) ≃ₗ[E] Sp E (n + c), ((toGLm E (n + c) W : GL (Fin (n + c)) E) : Matrix (Fin (n + c)) (Fin (n + c)) E) = LinearMap.toMatrix' (W : Sp E (n + c) →ₗ[E] Sp E (n + c))`. Introduce `W`. Simplify using `only [toGLm, Matrix.GeneralLinearGroup.toLin, LinearMap.GeneralLinearGroup.generalLinearEquiv, MulEquiv.trans_apply, MulEquiv.symm_symm, MulEquiv.symm_mk, MulEquiv.coe_mk, Equiv.coe_fn_symm_mk, Units.coe_map, MonoidHom.coe_coe]`. Both sides reduce to the same expression. Use `set u : Fin (n + c) → E := Pi.single l 1 with hu0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hpi : ∀ y : Fin n → E, (Loc.inX E n c y) i = if h : (i : ℕ) < n then y ⟨i, h⟩ else 0`. Introduce `y`. Simplify using `only [Loc.inX, LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `hval : ((twZrExt (c` using `c) g) u) i = Loc.inX E n c (g (LinearMap.funLeft E E (Fin.castAdd c) u)) i + (u i - Loc.inX E n c (LinearMap.funLeft E E (Fin.castAdd c) u) i) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[twZrExt_apply]`. Both sides reduce to the same expression. Rewrite using `[hcoe, Matrix.sub_apply, LinearMap.toMatrix'_apply, LinearEquiv.coe_coe, ← hu0, hval, hpi, hpi]`. Distinguish the cases in `hi : (i : ℕ) < n`. Rewrite using `[dif_pos hi, dif_pos hi]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : (LinearMap.funLeft E E (Fin.castAdd c)) u ⟨i, hi⟩ = u i` using `rfl`. Rewrite using `[hu, sub_self, add_zero]`. Distinguish the cases in `hl : (l : ℕ) < n`. Establish `hu' : LinearMap.funLeft E E (Fin.castAdd c) u = Pi.single (⟨l, hl⟩ : Fin n) 1`. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hu0, LinearMap.funLeft_apply, Pi.single_apply, Fin.ext_iff]`. Rewrite using `[hu']`. Establish `h1 : (1 : Matrix (Fin (n + c)) (Fin (n + c)) E) i l = (1 : Matrix (Fin n) (Fin n) E) ⟨i, hi⟩ ⟨l, hl⟩`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hg ⟨i, hi⟩ ⟨l, hl⟩`. Rewrite `h2` using `[Matrix.sub_apply, LinearMap.toMatrix'_apply, LinearEquiv.coe_coe]`. Conclude with `h2`. Establish `hu' : LinearMap.funLeft E E (Fin.castAdd c) u = 0`. Use extensionality with `j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hu0, LinearMap.funLeft_apply, Pi.single_apply, Pi.zero_apply, Function.comp_apply]`. Rewrite using `[if_neg]`. Introduce `h`. Apply `hl` to reduce the goal to its premises. Rewrite using `[← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `j.isLt`. Establish `h1 : (1 : Matrix (Fin (n + c)) (Fin (n + c)) E) i l = 0`. Rewrite using `[Matrix.one_apply_ne]`. Introduce `h`. Apply `hl` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `hi`. Rewrite using `[hu', map_zero, Pi.zero_apply, h1, sub_zero, map_zero]`. Conclude with `zero_le'`. Rewrite using `[dif_neg hi, dif_neg hi, zero_add, sub_zero]`.
-
-Establish `h3 : u i - (1 : Matrix (Fin (n + c)) (Fin (n + c)) E) i l = 0`. Simplify using `[hu0, Pi.single_apply, Matrix.one_apply]`. Rewrite using `[h3, map_zero]`. Conclude with `zero_le'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qth_ext_close (g : Sp E n ≃ₗ[E] Sp E n) (N : ℕ) (hg : lqPrinc P N g) (i l : Fin (n + c)) :
     P.valuation E ((((toGLm E (n + c) (twZrExt (c := c) g) : GL (Fin (n + c)) E) : Matrix (Fin (n + c)) (Fin (n + c)) E) - 1) i l) ≤
@@ -94,19 +92,19 @@ theorem qth_ext_close (g : Sp E n ≃ₗ[E] Sp E n) (N : ℕ) (hg : lqPrinc P N 
     exact zero_le'
 
 /- English proof (translation)
-Unfold `lqPrinc at hg ⊢`. Introduce `i j`. Use `set A := LinearMap.toMatrix' ((g : Sp E n ≃ₗ[E] Sp E n) : Sp E n →ₗ[E] Sp E n) with hA`. Use `set B := LinearMap.toMatrix' ((((g⁻¹ : GLint E n P)) : Sp E n ≃ₗ[E] Sp E n) : Sp E n →ₗ[E] Sp E n) with hB`. Establish `hBA : B * A = 1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hA, hB, ← LinearMap.toMatrix'_comp]`. Establish `hc : ((((g⁻¹ : GLint E n P)) : Sp E n ≃ₗ[E] Sp E n) : Sp E n →ₗ[E] Sp E n).comp ((g : Sp E n ≃ₗ[E] Sp E n) : Sp E n →ₗ[E] Sp E n) = LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `hx : ((((g⁻¹ * g : GLint E n P)) : Sp E n ≃ₗ[E] Sp E n)) x = x`. Rewrite using `[inv_mul_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `hx`. Rewrite using `[hc, LinearMap.toMatrix'_id]`. Establish `hBle : ∀ a k, P.valuation E (B a k) ≤ 1`. Introduce `a k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB, LinearMap.toMatrix'_apply, LinearEquiv.coe_coe]`. Establish `hs : (Pi.single k (1 : E) : Sp E n) ∈ stdAt E n P` using `by show _ ∈ localization₂ P.asIdeal (stdLat E n)`. Rewrite using `[mem_localization_standardLattice]`. Introduce `t`. Rewrite using `[qth_intAt_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : t = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Establish `hmem : ((g⁻¹ : GLint E n P) : Sp E n ≃ₗ[E] Sp E n) ∈ stabL E n (stdAt E n P)` using `(g⁻¹ : GLint E n P).2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `((ChainCounts.mem_stabL_iff.1 hmem) _).2 hs`. Establish `h3` using `(mem_localization_standardLattice P _).1 h2 a`. Rewrite `h3` using `[qth_intAt_iff]`. Conclude with `h3`. Establish `hBm : B - 1 = -(B * (A - 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_sub, hBA, Matrix.mul_one, neg_sub]`. Rewrite using `[hBm, Matrix.neg_apply, Valuation.map_neg, Matrix.mul_apply]`. Use `Valuation.map_sum_le _ (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem qth_princ_inv {N : ℕ} (g : ↥(GLint E n P)) (hg : lqPrinc P N (g : Sp E n ≃ₗ[E] Sp E n)) :
     lqPrinc P N ((g⁻¹ : ↥(GLint E n P)) : Sp E n ≃ₗ[E] Sp E n) := by

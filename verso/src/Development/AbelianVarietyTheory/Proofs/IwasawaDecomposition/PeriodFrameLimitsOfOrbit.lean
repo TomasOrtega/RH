@@ -14,23 +14,19 @@ open scoped Matrix
 namespace GlobalTheory.OrbitNfac
 
 /- English proof (translation)
-Establish `hA : ∀ k : Fin m, ∃ A : Fin n → ℂ, ∑ j, A j • L0 j = Pi.single k 1` using `fun k => (Submodule.mem_span_range_iff_exists_fun ℂ).1 (hs ▸ Submodule.mem_top)`. Use `choose A hA using hA`. Use `set K : ℝ := ∑ k, ∑ j, ‖A k j‖ with hK`. Establish `hK0 : 0 ≤ K` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hAK : ∀ k j, ‖A k j‖ ≤ K` using `fun k j => (Finset.single_le_sum (f := fun j => ‖A k j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun k => ∑ j, ‖A k j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ k))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht : Tendsto (fun w => K * ∑ j, ∑ i, ‖L0 j i - L w j i‖) l (𝓝 (K * ∑ j : Fin n, ∑ i : Fin m, (0 : ℝ)))`. Use `Tendsto.const_mul _ (tendsto_finsetSum _ fun j _ => tendsto_finsetSum _ fun i _ => ?_)` and prove the remaining obligations. Use `((tendsto_const_nhds (x := L0 j i)).sub (hL j i)).norm` as an intermediate fact. Simplify using `using this`. Simplify using `only [Finset.sum_const_zero, mul_zero] at ht`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨2 * K, by positivity, ?_⟩` and prove the remaining obligations. Use `filter_upwards [ht.eventually (gt_mem_nhds (show (0 : ℝ) < 1 / 2 by norm_num))] with w hw ℓ k`. Use `set S : ℝ := ∑ j, ‖∑ i, ℓ i * L w j i‖ with hS`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `key : ∀ k, ‖ℓ k‖ ≤ K * S + ‖ℓ‖ / 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Establish `e1 : ℓ k = ∑ j, A k j * ((∑ i, ℓ i * L w j i) + ∑ i, ℓ i * (L0 j i - L w j i))`. Establish `e2 : ℓ k = ∑ i, ℓ i * (∑ j, A k j • L0 j) i`. Rewrite using `[hA k]`. Simplify using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring`. Establish `e3 : ∀ j, ‖A k j * ((∑ i, ℓ i * L w j i) + ∑ i, ℓ i * (L0 j i - L w j i))‖ ≤ K * ‖∑ i, ℓ i * L w j i‖ + ‖ℓ‖ * (K * ∑ i, ‖L0 j i - L w j i‖)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Establish `h1 : ‖∑ i, ℓ i * (L0 j i - L w j i)‖ ≤ ‖ℓ‖ * ∑ i, ‖L0 j i - L w j i‖`. Rewrite using `[Finset.mul_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (norm_le_pi_norm ℓ i) (norm_nonneg _)`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1]`.
-
-Conclude with `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => e3 j)`. Use `_ = K * S + ‖ℓ‖ * (K * ∑ j, ∑ i, ‖L0 j i - L w j i‖) := by`. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum]`. Use `_ ≤ K * S + ‖ℓ‖ / 2 := by nlinarith [norm_nonneg ℓ]`. Establish `h2 : ‖ℓ‖ ≤ K * S + ‖ℓ‖ / 2` using `(pi_norm_le_iff_of_nonneg (by positivity)).2 key`.
-
-Use `norm_le_pi_norm ℓ k` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem span_bound {α : Type} (l : Filter α) {n m : ℕ} (L : α → Fin n → Fin m → ℂ) (L0 : Fin n → Fin m → ℂ)
     (hL : ∀ j i, Tendsto (fun w => L w j i) l (𝓝 (L0 j i))) (hs : Submodule.span ℂ (Set.range L0) = ⊤) :
@@ -87,9 +83,9 @@ theorem span_bound {α : Type} (l : Filter α) {n m : ℕ} (L : α → Fin n →
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ} (X : Data E N)
 
 /- English proof (translation)
-Establish `hy` using `ReciprocityTheory.ChartRestriction.G.FD.OrthogonalFrameDomain.rmul_mem_dom X hx hb`. Establish `h` using `UnipMove.GraphH.maj_ortho X ho τ ((mat (rmul x b) τ)⁻¹ *ᵥ u)`. Rewrite `h` using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (Ne.isUnit (hy τ).1), Matrix.one_mulVec, GlobalTheory.MajInv.maj_rmul X hx hb]`. Establish `h2 : ‖((mat (rmul x b) τ)⁻¹ *ᵥ u) i‖ ^ 2 ≤ X.maj x τ u`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.single_le_sum (f := fun j => ‖((mat (rmul x b) τ)⁻¹ *ᵥ u) j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ i)`. Use polynomial arithmetic with `[sq_nonneg (‖((mat (rmul x b) τ)⁻¹ *ᵥ u) i‖ - 1), sq_nonneg ‖((mat (rmul x b) τ)⁻¹ *ᵥ u) i‖]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem coord_le {x b : Frame X.Ψ N} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ N) (ho : X.IsOrtho (rmul x b)) (τ : X.Ψ)
     (u : Fin N → ℂ) (i : Fin N) : ‖((mat (rmul x b) τ)⁻¹ *ᵥ u) i‖ ≤ 1 + X.maj x τ u := by
@@ -104,11 +100,11 @@ theorem coord_le {x b : Frame X.Ψ N} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ N)
   nlinarith [sq_nonneg (‖((mat (rmul x b) τ)⁻¹ *ᵥ u) i‖ - 1), sq_nonneg ‖((mat (rmul x b) τ)⁻¹ *ᵥ u) i‖]
 
 /- English proof (translation)
-Establish `hi` using `(ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.invF_mem X hb τ).2`. Establish `h` using `congrFun (congrFun (Matrix.nonsing_inv_mul (mat b τ) (Ne.isUnit (hb τ).1)) i) i`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq, Finset.sum_eq_single i]`. Conclude with `eq_inv_of_mul_eq_one_left h`. Introduce `a _ ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_gt_of_ne ha with h1 | h1` into its components or cases. Establish `: (mat b τ)⁻¹ i a = 0` using `hi i a h1`. Rewrite using `[this, zero_mul]`. Establish `: mat b τ a i = 0` using `(hb τ).2 a i h1`. Rewrite using `[this, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem inv_diag {b : Frame X.Ψ N} (hb : b ∈ Bor X.Ψ N) (τ : X.Ψ) (i : Fin N) :
     (mat b τ)⁻¹ i i = (b τ i i)⁻¹ := by
@@ -125,15 +121,15 @@ theorem inv_diag {b : Frame X.Ψ N} (hb : b ∈ Bor X.Ψ N) (τ : X.Ψ) (i : Fin
   · simp
 
 /- English proof (translation)
-Establish `hinv` using `(ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.invF_mem X hb τ).2`. Set `e : Fin (N - X.p0) → Fin N` to `fun k => ⟨X.p0 + k, by have := k.2; omega⟩`. Establish `h1` using `h (fun k => (mat b τ)⁻¹ i (e k)) ⟨i - X.p0, by have := i.2; omega⟩`. Establish `he : e ⟨i - X.p0, by have` using `i.2; omega⟩ = i := Fin.ext (by simp only [e]; omega)`. Simplify using `only [he] at h1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[inv_diag X hb, norm_inv]`. Use `h1.trans (mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun j _ => ?_) hK)` and prove the remaining obligations. Establish `e1 : ∑ k : Fin (N - X.p0), (mat b τ)⁻¹ i (e k) * perFr X x (v j) τ.1 k = ((mat (rmul x b) τ)⁻¹ *ᵥ Data.emb τ.1 (v j)) i`. Establish `e2 : mat (rmul x b) τ = mat x τ * mat b τ` using `rfl`. Rewrite using `[e2, Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = ∑ a, (mat b τ)⁻¹ i a * ((mat x τ)⁻¹ *ᵥ Data.emb τ.1 (v j)) a`. Use `Finset.sum_of_injOn e (fun a _ c _ hac => Fin.ext ?_) (fun _ _ => Finset.mem_coe.mpr (Finset.mem_univ _)) (fun a _ ha => ?_) (fun k _ => ?_)` and prove the remaining obligations. Use `congrArg Fin.val hac` as an intermediate fact. Simplify using `only [e] at this`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `ha' : (a : ℕ) < X.p0`. Assume the negation of the conclusion as `hc`. Conclude with `ha ⟨⟨a - X.p0, by have := a.2; omega⟩, by simp, Fin.ext (by simp only [e]; omega)⟩`. Establish `: (mat b τ)⁻¹ i a = 0` using `hinv i a (by show (a : ℕ) < i; omega)`. Rewrite using `[this, zero_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[perFr_pos X x (v j) τ k (e k).2]`. Rewrite using `[e1]`. Conclude with `coord_le X hx hb ho τ _ i`.
+A detailed English derivation is pending.
 -/
 theorem quot_bound {x b : Frame X.Ψ N} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ N) (ho : X.IsOrtho (rmul x b)) (τ : X.Ψ)
     {n : ℕ} (v : Fin n → Fin N → E) {K : ℝ} (hK : 0 ≤ K)
@@ -166,21 +162,19 @@ theorem quot_bound {x b : Frame X.Ψ N} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ 
   exact coord_le X hx hb ho τ _ i
 
 /- English proof (translation)
-Establish `hp` using `X.p0_le`. Establish `hy` using `ReciprocityTheory.ChartRestriction.G.FD.OrthogonalFrameDomain.rmul_mem_dom X hx hb`. Set `e : Fin X.p0 → Fin N` to `fun k => ⟨X.p0 - 1 - k, by have := k.2; omega⟩`. Establish `h1` using `h (fun k => b τ (e k) i) ⟨X.p0 - 1 - i, by omega⟩`. Establish `he : e ⟨X.p0 - 1 - i, by omega⟩ = i` using `Fin.ext (by simp only [e]; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [he] at h1`. Use `h1.trans (mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun j _ => ?_) hK)` and prove the remaining obligations. Establish `hc : conjEmb τ.1 ∉ X.Ψ` using `(X.cmType τ.1).1 τ.2`. Establish `e1 : ∑ k : Fin X.p0, b τ (e k) i * perFr X x (v j) (conjEmb τ.1) k = hermC τ.1 X.Gm (col (mat (rmul x b) τ) i) (Data.emb τ.1 (v j))`. Establish `e2 : mat (rmul x b) τ = mat x τ * mat b τ` using `rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2, UnipMove.GraphH.col_mul, Data.mulVec_eq_sum_col, ReciprocityTheory.ChartRestriction.G.FD.hermC_sum_left]`. Use `Finset.sum_of_injOn e (fun a _ c _ hac => Fin.ext ?_) (fun _ _ => Finset.mem_coe.mpr (Finset.mem_univ _)) (fun a _ ha => ?_) (fun k _ => ?_)` and prove the remaining obligations. Use `congrArg Fin.val hac` as an intermediate fact. Simplify using `only [e] at this`. Use `a.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `c.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ha' : X.p0 ≤ (a : ℕ)`. Assume the negation of the conclusion as `hc`. Conclude with `ha ⟨⟨X.p0 - 1 - a, by omega⟩, by simp, Fin.ext (by simp only [e]; omega)⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: col (mat b τ) i a = 0` using `(hb τ).2 a i (by show (i : ℕ) < a; omega)`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left, this, zero_mul]`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left, perFr_neg X x (v j) (conjEmb τ.1) hc τ (Formalism.L2.Pj.conjEmb_conjEmb τ.1).symm k (e k).2]`. Both sides reduce to the same expression. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (le_of_eq ?_) (coord_le X hx hb ho τ (Data.emb τ.1 (v j)) i)` and prove the remaining obligations. Use `set c := (mat (rmul x b) τ)⁻¹ *ᵥ Data.emb τ.1 (v j) with hcdef`. Establish `hv : Data.emb τ.1 (v j) = mat (rmul x b) τ *ᵥ c`. Rewrite using `[hcdef, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (Ne.isUnit (hy τ).1), Matrix.one_mulVec]`. Establish `hg : ∀ a, hermC τ.1 X.Gm (col (mat (rmul x b) τ) i) (col (mat (rmul x b) τ) a) = if i = a then 1 else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Use `congrFun (congrFun (ho τ) i) a` as an intermediate fact. Simplify `this` using `[ReciprocityTheory.ChartRestriction.G.FD.gram, Matrix.diagonal_apply, ReciprocityTheory.ChartRestriction.G.FD.sgn, hi]`. Rewrite using `[hv, Data.mulVec_eq_sum_col, ReciprocityTheory.ChartRestriction.G.FD.hermC_sum_right]`. Repeatedly rewrite using `[ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_right, hg]`.
-
-Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fil_bound {x b : Frame X.Ψ N} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ N) (ho : X.IsOrtho (rmul x b)) (τ : X.Ψ)
     {n : ℕ} (v : Fin n → Fin N → E) {K : ℝ} (hK : 0 ≤ K)
@@ -227,9 +221,9 @@ theorem fil_bound {x b : Frame X.Ψ N} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ N
   simp
 
 /- English proof (translation)
-Establish `h : ∀ τ i, ‖dmin X.Gm y τ i‖ = 1`. Introduce `τ i`. Unfold `dmin`. Rewrite using `[ho τ, ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.lminor_diagonal, norm_prod]`. Use `Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.sgn_sq X.p0 (Fin.castLE (Nat.le_of_lt_succ i.isLt) j) with h | h <;> rw [h] <;> simp`. Unfold `Data.nfac`. Simplify using `[h]`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem nfac_ortho {y : Frame X.Ψ N} (ho : X.IsOrtho y) (la : Wt X.Ψ N) : X.nfac la y = 1 := by
   have h : ∀ τ i, ‖dmin X.Gm y τ i‖ = 1 := by
@@ -242,15 +236,13 @@ theorem nfac_ortho {y : Frame X.Ψ N} (ho : X.IsOrtho y) (la : Wt X.Ψ N) : X.nf
   simp [h]
 
 /- English proof (translation)
-Establish `hpos : ∀ τ i, 0 < ‖b τ i i‖` using `fun τ i => norm_pos_iff.2 (ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bdiag_ne X hb τ i)`. Establish `hbc : ‖bchar la b‖ = ∏ τ, ∏ i, ‖b τ i i‖ ^ la τ i`. Unfold `bchar`. Simplify using `only [norm_prod, norm_zpow]`. Establish `hb0 : 0 < ‖bchar la b‖`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hbc]`. Conclude with `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => zpow_pos (hpos τ i) _`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.AR.Inst.normFactor_rightBorel_holds N X la x hx b hb`. Rewrite `h` using `[nfac_ortho X ho, eq_inv_mul_iff_mul_eq₀ hb0.ne', mul_one]`. Rewrite using `[← h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hb0, ?_⟩` and prove the remaining obligations. Rewrite using `[hbc, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_inv_distrib]`. Use `Finset.prod_le_prod (fun τ _ => inv_nonneg.2 (Finset.prod_nonneg fun i _ => (zpow_pos (hpos τ i) _).le)) fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow_eq_pow_sum, ← Finset.prod_inv_distrib]`. Use `Finset.prod_le_prod (fun i _ => inv_nonneg.2 (zpow_pos (hpos τ i) _).le) fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_or_gt X.p0 i with hi | hi` into its components or cases. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le ((hla τ i).1 hi)`. Rewrite using `[hm, zpow_natCast, Int.natAbs_natCast, ← inv_pow]`. Conclude with `pow_le_pow_left₀ (inv_nonneg.2 (norm_nonneg _)) (h1 τ i hi) m`. Take `⟨m, hm⟩` from `Int.exists_eq_neg_ofNat ((hla τ i).2 hi)`.
-
-Rewrite using `[hm, zpow_neg, inv_inv, zpow_natCast, Int.natAbs_neg, Int.natAbs_natCast]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (h2 τ i hi) m`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nfac_bound {x b : Frame X.Ψ N} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ N) (ho : X.IsOrtho (rmul x b))
     (la : Wt X.Ψ N) (hla : ∀ τ (j : Fin N), (X.p0 ≤ j → 0 ≤ la τ j) ∧ ((j : ℕ) < X.p0 → la τ j ≤ 0)) {R : ℝ}
@@ -281,13 +273,13 @@ theorem nfac_bound {x b : Frame X.Ψ N} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ 
     exact pow_le_pow_left₀ (norm_nonneg _) (h2 τ i hi) m
 
 /- English proof (translation)
-Take `⟨-, hγ, -, hd, hs⟩` from `h`. Establish `one : ∀ w : ℂ, T < w.im → X.nfac la (x (w + M)) = X.nfac la (x w)`. Introduce `w hw`. Take `⟨b, hb, hb1, e⟩` from `hs w hw`. Rewrite using `[e, ReciprocityTheory.ChartRestriction.G.AR.Inst.normFactor_rightBorel_holds N X la _ (GlobalTheory.MajInv.lact_mem_dom X (X.Γ_stab γ hγ) (hd w hw)) b hb, ReciprocityTheory.ChartRestriction.G.AR.Inst.normFactor_leftAction_holds N X la γ hγ _ (hd w hw)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[bchar, hb1]`. Proceed by induction on `k using Int.induction_on with`. Consider the case `zero => intro w _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `w hw`. Rewrite using `[← ih w hw, ← one (w + ((k : ℤ) : ℂ) * M) (by simpa using hw)]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `pred k ih`. Introduce `w hw`. Rewrite using `[← ih w hw, ← one (w + ((-(k : ℤ) - 1 : ℤ) : ℂ) * M) (by simpa using hw)]`. Use `congr 2`. Use `push_cast`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -316,17 +308,15 @@ theorem nfac_shift {T : ℝ} {M : ℕ} {γ : GL (Fin N) E} {x : ℂ → Frame X.
     ring
 
 /- English proof (translation)
-Use `set w0 : ℂ := ⟨0, T + 1⟩ with hw0`. Establish `h0 : T < w0.im` using `by simp [hw0]`. Establish `hm : 0 ≤ X.maj (x w0) τ u` using `ReciprocityTheory.ChartRestriction.G.FD.MajorantConjugateTransfer.maj_nonneg X (hd w0 h0) τ u`. Use `⟨1 + (2 + M ^ 2 + (1 + |T + 1|) ^ 2) * X.maj (x w0) τ u, by positivity, fun w h1 h2 h3 => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.majorant_harnack_holomorphic_half_plane E N X T x hx hd w0 w h0 (by linarith) τ u`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : w0.im - T = 1` using `by simp [hw0]`. Rewrite `h` using `[e0, one_mul]`. Establish `e1 : ‖w0 - w‖ ^ 2 = w.re ^ 2 + (T + 1 - w.im) ^ 2`. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`. Simplify using `[hw0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hs : 1 ≤ w.im ^ 2` using `by nlinarith`. Establish `e2 : w.re ^ 2 ≤ M ^ 2`. Rewrite using `[← sq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) h3 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (T + 1 - w.im) ^ 2 ≤ ((1 + |T + 1|) * w.im) ^ 2`. Establish `a1` using `le_abs_self (T + 1)`. Establish `a2` using `neg_abs_le (T + 1)`. Establish `a3` using `abs_nonneg (T + 1)`. Conclude with `sq_le_sq' (by nlinarith) (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e4 : ‖w0 - w‖ ^ 2 / (w.im - T) ≤ ‖w0 - w‖ ^ 2` using `div_le_self (sq_nonneg _) (by linarith)`. Establish `e5 : 2 + ‖w0 - w‖ ^ 2 / (w.im - T) ≤ (2 + M ^ 2 + (1 + |T + 1|) ^ 2) * w.im ^ 2`. Rewrite `e3` using `[mul_pow]`. Use polynomial arithmetic with `[sq_nonneg M]`. Establish `e6` using `mul_le_mul_of_nonneg_right e5 hm`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem maj_strip {T : ℝ} {x : ℂ → Frame X.Ψ N} (hx : DifferentiableOn ℂ x {w | T < w.im})
     (hd : ∀ w : ℂ, T < w.im → x w ∈ X.dom) (M : ℝ) (τ : X.Ψ) (u : Fin N → ℂ) :
@@ -365,21 +355,17 @@ namespace GlobalTheory
 open OrbitNfac in
 
 /- English proof (translation)
-Introduce `E _ _ _ N X T M γ x la n v Lp Lm hO hla ⟨hp, hm, hs⟩`. Use `choose Kp hKp0 hKp using fun τ : X.Ψ => span_bound imTop (fun w j (i : Fin (N - X.p0)) => perFr X (x w) (v j) τ.1 i) (fun j => Lp j τ) (fun j i => hp j τ i) (hs τ).1`. Use `choose Km hKm0 hKm using fun τ : X.Ψ => span_bound imTop (fun w j (i : Fin X.p0) => perFr X (x w) (v j) (conjEmb τ.1) i) (fun j => Lm j τ) (fun j i => hm j τ i) (hs τ).2`. Use `choose D hD0 hD using fun (τ : X.Ψ) (j : Fin n) => maj_strip X hO.2.2.1 hO.2.2.2.1 M τ (Data.emb τ.1 (v j))`. Establish `hall` using `(eventually_all.2 hKp).and (eventually_all.2 hKm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨R, hR⟩` from `eventually_atTop.1 (eventually_comap.1 hall)`. Use `set C : ℝ := ∑ τ, (Kp τ + Km τ) * ∑ j, D τ j with hC`. Establish `hS0 : ∀ τ, 0 ≤ ∑ j, D τ j` using `fun τ => Finset.sum_nonneg fun j _ => hD0 τ j`. Establish `hCτ : ∀ τ, (Kp τ + Km τ) * ∑ j, D τ j ≤ C` using `fun τ => Finset.single_le_sum (f := fun τ => (Kp τ + Km τ) * ∑ j, D τ j) (fun τ _ => mul_nonneg (add_nonneg (hKp0 τ) (hKm0 τ)) (hS0 τ)) (Finset.mem_univ τ)`. Use `⟨C ^ (∑ τ, ∑ i, (la τ i).natAbs), 2 * ∑ τ, ∑ i, (la τ i).natAbs, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `strip : ∀ w : ℂ, R ≤ w.im → T + 1 ≤ w.im → 1 ≤ w.im → |w.re| ≤ M → 0 < X.nfac la (x w) ∧ (X.nfac la (x w))⁻¹ ≤ (C * w.im ^ 2) ^ (∑ τ, ∑ i, (la τ i).natAbs)`. Introduce `w h1 h2 h3 h4`. Establish `hx` using `hO.2.2.2.1 w (by linarith)`. Establish `hb` using `ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf_mem X hx`. Establish `ho` using `ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.ortho_bOf X hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k1, k2⟩` from `hR w.im h1 w rfl`. Establish `hsum : ∀ τ, ∑ j, (1 + X.maj (x w) τ (Data.emb τ.1 (v j))) ≤ (∑ j, D τ j) * w.im ^ 2` using `fun τ => by`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun j _ => hD τ j w h2 h3 h4`. Establish `fin : ∀ τ (K : ℝ), 0 ≤ K → K ≤ Kp τ + Km τ → K * ∑ j, (1 + X.maj (x w) τ (Data.emb τ.1 (v j))) ≤ C * w.im ^ 2` using `fun τ K hK hK' =>`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `nfac_bound X hx hb ho la hla (fun τ i hi => (quot_bound X hx hb ho τ v (hKp0 τ) (k1 τ) i hi).trans (fin τ _ (hKp0 τ) (le_add_of_nonneg_right (hKm0 τ)))) (fun τ i hi => (fil_bound X hx hb ho τ v (hKm0 τ) (k2 τ) i hi).trans (fin τ _ (hKm0 τ) (le_add_of_nonneg_left (hKp0 τ))))`. Use `eventually_comap.2 (eventually_atTop.2 ⟨max R (max (T + 1) 1), fun t ht w hw => ?_⟩)` and prove the remaining obligations. Substitute `hw` using the available equality. Simplify using `only [max_le_iff] at ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2, h3⟩` from `ht`. Establish `hM : (0 : ℝ) < M` using `Nat.cast_pos.2 hO.1`. Establish `him : (w + ((-⌊w.re / M⌋ : ℤ) : ℂ) * M).im = w.im` using `by simp`. Establish `hre : (w + ((-⌊w.re / M⌋ : ℤ) : ℂ) * M).re = w.re - ⌊w.re / M⌋ * M` using `by simp; ring`. Establish `h` using `strip (w + ((-⌊w.re / M⌋ : ℤ) : ℂ) * M) (him ▸ h1) (him ▸ h2) (him ▸ h3) (by`.
-
-Rewrite using `[hre]`. Establish `a1` using `Int.sub_floor_div_mul_nonneg w.re hM`. Establish `a2` using `Int.sub_floor_div_mul_lt w.re hM`. Rewrite using `[abs_of_nonneg a1]`. Conclude with `a2.le)`.
-
-Rewrite `h` using `[nfac_shift X hO la _ w (by linarith), him, mul_pow, ← pow_mul]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nfac_inv_le_pow_of_isOrbit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) (X : Data E N) (T : ℝ) (M : ℕ) (γ : GL (Fin N) E) (x : ℂ → Frame X.Ψ N) (la : Wt X.Ψ N) (n : ℕ) (v : Fin n → Fin N → E) (Lp : Fin n → X.Ψ → Fin (N - X.p0) → ℂ) (Lm : Fin n → X.Ψ → Fin X.p0 → ℂ), IsOrbit X T M γ x → (∀ τ (j : Fin N), (X.p0 ≤ j → 0 ≤ la τ j) ∧ ((j : ℕ) < X.p0 → la τ j ≤ 0)) → ((∀ j (τ : X.Ψ) (i : Fin (N - X.p0)), Tendsto (fun w => perFr X (x w) (v j) τ.1 i) imTop (𝓝 (Lp j τ i))) ∧ (∀ j (τ : X.Ψ) (i : Fin X.p0), Tendsto (fun w => perFr X (x w) (v j) (conjEmb τ.1) i) imTop (𝓝 (Lm j τ i))) ∧ ∀ τ : X.Ψ, Submodule.span ℂ (Set.range fun j => Lp j τ) = ⊤ ∧ Submodule.span ℂ (Set.range fun j => Lm j τ) = ⊤) → ∃ (C : ℝ) (B : ℕ), ∀ᶠ w in imTop, 0 < X.nfac la (x w) ∧ (X.nfac la (x w))⁻¹ ≤ C * w.im ^ B := by
   intro E _ _ _ N X T M γ x la n v Lp Lm hO hla ⟨hp, hm, hs⟩

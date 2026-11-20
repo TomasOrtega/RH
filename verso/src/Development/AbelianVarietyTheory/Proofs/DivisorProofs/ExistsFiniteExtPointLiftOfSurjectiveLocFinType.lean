@@ -6,13 +6,11 @@ open AlgebraicGeometry CategoryTheory IsLocalRing ReciprocityTheory.ChartRestric
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X Y π hft hs K _ x`. Use `haveI : Surjective π := ⟨hs⟩`. Set `P` to `Limits.pullback π x`. Set `s : P ⟶ Sp K` to `Limits.pullback.snd π x`. Use `haveI : LocallyOfFiniteType s := inferInstanceAs (LocallyOfFiniteType (Limits.pullback.snd π x))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Surjective s := inferInstanceAs (Surjective (Limits.pullback.snd π x))`. Use `haveI : JacobsonSpace P := LocallyOfFiniteType.jacobsonSpace s`. Take `⟨p₀, -⟩` from `s.surjective (default : Sp K)`. Take `⟨z, -, hz⟩` from `nonempty_inter_closedPoints (Z := (Set.univ : Set P)) ⟨p₀, trivial⟩ isClosed_univ.isLocallyClosed`. Use `haveI : IsClosedImmersion (P.fromSpecResidueField z) := isClosed_singleton_iff_isClosedImmersion.mp hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsFinite (P.fromSpecResidueField z ≫ s) := isFinite_iff_locallyOfFiniteType_of_jacobsonSpace.2 inferInstance`. Set `φ` to `Spec.preimage (P.fromSpecResidueField z ≫ s)`. Establish `hφ : Spec.map φ = P.fromSpecResidueField z ≫ s` using `Spec.map_preimage _`. Use `⟨P.residueField z, inferInstance, φ.hom, P.fromSpecResidueField z ≫ Limits.pullback.fst π x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsFinite.SpecMap_iff, hφ]`.
-
-Use `infer_instance`. Establish `h2 : spMap φ.hom = P.fromSpecResidueField z ≫ s` using `hφ`. Rewrite using `[h2]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (P.fromSpecResidueField z ≫ ·) Limits.pullback.condition).trans (Category.assoc _ _ _).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_ext_point_lift_of_surjective_lft :
     ∀ {X Y : Scheme.{0}} (π : Y ⟶ X), LocallyOfFiniteType π → Function.Surjective π →

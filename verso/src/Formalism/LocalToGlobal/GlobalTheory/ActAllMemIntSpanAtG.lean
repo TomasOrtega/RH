@@ -16,13 +16,13 @@ section IntW
 variable {LL : Type} [Field LL] (Pl : Rows.Places LL) (w : Pl.Pl)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `e : ((u : intW Pl w) : LL) * (((u⁻¹ : (intW Pl w)ˣ) : intW Pl w) : LL) = 1` using `congrArg Subtype.val u.mul_inv`. Establish `h1 : Pl.val w ((u : intW Pl w) : LL) + Pl.val w (((u⁻¹ : (intW Pl w)ˣ) : intW Pl w) : LL) = 0`. Rewrite using `[← AddValuation.map_mul, e, AddValuation.map_one]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : (0 : WithTop ℤ) ≤ Pl.val w ((u : intW Pl w) : LL)` using `(u : intW Pl w).2`. Establish `hb : (0 : WithTop ℤ) ≤ Pl.val w (((u⁻¹ : (intW Pl w)ˣ) : intW Pl w) : LL)` using `(u⁻¹ : (intW Pl w)ˣ).1.2`. Conclude with `((add_eq_zero_iff_of_nonneg ha hb).1 h1).1`. Introduce `h`. Establish `hx0 : (x : LL) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `h` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_zero h`. Establish `hinv : (x : LL)⁻¹ ∈ intW Pl w` using `by show (0 : WithTop ℤ) ≤ Pl.val w (x : LL)⁻¹`. Rewrite using `[AddValuation.map_inv, h, neg_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hxy : x * ⟨_, hinv⟩ = 1` using `Subtype.ext (mul_inv_cancel₀ hx0)`. Conclude with `⟨⟨x, ⟨_, hinv⟩, hxy, by rw [mul_comm]; exact hxy⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem intW_isUnit_iff (x : intW Pl w) : IsUnit x ↔ Pl.val w (x : LL) = 0 := by
   constructor
@@ -57,9 +57,7 @@ instance intW_isLocalRing : IsLocalRing (intW Pl w) := by
   exact ne_of_gt (lt_of_lt_of_le (lt_min ha' hb') hle)
 
 /- English proof (translation)
-Break down `Int.eq_nat_or_neg z with ⟨m, rfl | rfl⟩` into its components or cases. Rewrite using `[zpow_natCast]`. Conclude with `pow_mem (u : intW Pl w).2 m`. Establish `e : ((u : intW Pl w) : LL) * (((u⁻¹ : (intW Pl w)ˣ) : intW Pl w) : LL) = 1` using `congrArg Subtype.val u.mul_inv`. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow, ← eq_inv_of_mul_eq_one_right e]`.
-
-Conclude with `pow_mem (u⁻¹ : (intW Pl w)ˣ).1.2 m`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_mem_intW (u : (intW Pl w)ˣ) (z : ℤ) : ((u : intW Pl w) : LL) ^ z ∈ intW Pl w := by
   rcases Int.eq_nat_or_neg z with ⟨m, rfl | rfl⟩
@@ -76,9 +74,9 @@ section Row
 variable {K : Type} [CommRing K]
 
 /- English proof (translation)
-Establish `h : rowAct K (n` using `n) (1 : Matrix (Fin r) (Fin r) K) = AlgHom.id K (MvPolynomial (Fin r × Fin n) K) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [rowAct, aeval_X, AlgHom.id_apply]`. Rewrite using `[Finset.sum_eq_single v.1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[Matrix.one_apply_ne' hc]`. Simplify using the standard rewrite rules. Rewrite using `[h, AlgHom.id_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowAct_one {r n : ℕ} (f : MvPolynomial (Fin r × Fin n) K) :
     rowAct K (1 : Matrix (Fin r) (Fin r) K) f = f := by
@@ -103,13 +101,13 @@ def wO (n : ℕ) (ν : Fin n → ℕ) : Submodule O (MvPolynomial (Fin n × Fin 
   Submodule.span O (MvPolynomial.map (Int.castRingHom K) '' (weyl ℤ n n le_rfl ν : Set (MvPolynomial (Fin n × Fin n) ℤ)))
 
 /- English proof (translation)
-Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem q hq`. Take `⟨w, rfl⟩` from `hq`. Establish `e : MvPolynomial.map O.subtype (applyWord O w (hw O le_rfl ν)) = MvPolynomial.map (Int.castRingHom K) (applyWord ℤ w (hw ℤ le_rfl ν))`. Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_hw_map (Int.castRingHom O) le_rfl ν, Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, MvPolynomial.map_map, RingHom.ext_int (O.subtype.comp (Int.castRingHom O)) (Int.castRingHom K)]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Unfold `wO`. Conclude with `Submodule.subset_span ⟨_, Submodule.subset_span ⟨w, rfl⟩, rfl⟩`. Consider the case `zero`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `Submodule.smul_mem (wO O n ν) c hx`. Rewrite `h` using `[Subring.smul_def, MvPolynomial.smul_eq_C_mul]`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem map_subtype_mem_wO_of_mem_weyl {n : ℕ} (ν : Fin n → ℕ) (p : MvPolynomial (Fin n × Fin n) O)
     (hp : p ∈ weyl O n n le_rfl ν) : MvPolynomial.map O.subtype p ∈ wO O n ν := by
@@ -150,15 +148,13 @@ def stabM (n : ℕ) (ν : Fin n → ℕ) : Submonoid (Matrix (Fin n) (Fin n) O) 
     exact hh _ (hg f hf)
 
 /- English proof (translation)
-Unfold `wO at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem q hq`. Take `⟨h, hh, rfl⟩` from `hq`. Establish `e : MvPolynomial.map (Int.castRingHom K) h = MvPolynomial.map O.subtype (MvPolynomial.map (Int.castRingHom O) h)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.map_map, RingHom.ext_int (O.subtype.comp (Int.castRingHom O)) (Int.castRingHom K)]`. Rewrite using `[e, ← Formalism.UG.P.wlocal_map_rowAct]`. Apply `map_subtype_mem_wO_of_mem_weyl` to reduce the goal to its premises. Establish `hw1` using `Formalism.UG.P.wlocal_map_weyl (Int.castRingHom O) le_rfl ν h hh`. Establish `hst` using `Formalism.UG.Final.WeylGLStableLocal O n n le_rfl ν (Matrix.nonsingInvUnit g hg)⁻¹ _ hw1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.UG.dwAct at hst`. Rewrite `hst` using `[inv_inv]`. Conclude with `hst`. Consider the case `zero`. Rewrite using `[map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`.
-
-Rewrite using `[Subring.smul_def, map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wO_stable [IsLocalRing O] {n : ℕ} (ν : Fin n → ℕ) (g : Matrix (Fin n) (Fin n) O) (hg : IsUnit g.det)
     {f : MvPolynomial (Fin n × Fin n) K} (hf : f ∈ wO O n ν) : rowAct K (g.map O.subtype) f ∈ wO O n ν := by
@@ -189,9 +185,9 @@ theorem wO_stable [IsLocalRing O] {n : ℕ} (ν : Fin n → ℕ) (g : Matrix (Fi
 end WO
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Consider the case `@insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `Submodule.mul_mem_mul (hx a (Finset.mem_insert_self a s)) (ih (fun i hi => hx i (Finset.mem_insert_of_mem hi)))`.
+A detailed English derivation is pending.
 -/
 theorem prod_mem_prod' {R A ι : Type*} [CommSemiring R] [CommSemiring A] [Algebra R A] (s : Finset ι)
     (N : ι → Submodule R A) (x : ι → A) (hx : ∀ i ∈ s, x i ∈ N i) : ∏ i ∈ s, x i ∈ ∏ i ∈ s, N i := by
@@ -210,7 +206,7 @@ def subAll {K : Type} [Field K] {ι : Type} {n : ℕ} (g : ι → Matrix (Fin n)
   MvPolynomial.aeval (fun v : ι × Fin n × Fin n => ∑ b, MvPolynomial.C (g v.1 b v.2.1) * MvPolynomial.X (v.1, b, v.2.2))
 
 /- English proof (translation)
-Establish `h : (subAll g).comp (rename (Prod.mk τ)) = (rename (Prod.mk τ)).comp (rowAct K (n` using `n) (g τ).transpose) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[subAll, rowAct, Matrix.transpose_apply]`. Conclude with `AlgHom.congr_fun h f`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subAll_rename {K : Type} [Field K] {ι : Type} {n : ℕ} (g : ι → Matrix (Fin n) (Fin n) K) (τ : ι)
     (f : MvPolynomial (Fin n × Fin n) K) :
@@ -242,21 +238,17 @@ def isO : Submodule (intW Pl w) (MvPolynomial (Tau × Fin n × Fin n) LL) where
     | neg x _ hx => rw [smul_neg]; exact (Formalism.MainNotions.flipTwoThree.IntSpanAtG Pl w lam).neg_mem hx
 
 /- English proof (translation)
-Establish `h1 : ∀ τ, MvPolynomial.rename (Prod.mk τ) (F τ) ∈ Submodule.span (intW Pl w) ((fun g => MvPolynomial.rename (Prod.mk τ) (MvPolynomial.map (Int.castRingHom LL) g)) '' (delSq ℤ n (lam τ) : Set (MvPolynomial (Fin n × Fin n) ℤ)))`. Introduce `τ`. Establish `hF'` using `hF τ`. Unfold `wO at hF'`. Use `revert hF'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `F τ = x0`. Introduce `hF'`. Proceed by induction on `hF' using Submodule.span_induction with`. Consider the case `mem q hq`. Take `⟨g, hg, rfl⟩` from `hq`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨g, hg, rfl⟩`. Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[Subring.smul_def, map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `prod_mem_prod' Finset.univ _ _ (fun τ _ => h1 τ)`. Rewrite `h2` using `[Submodule.prod_span]`. Use `(Submodule.span_le.2 ?_ : _ ≤ isO Pl w lam) h2` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha` using `[Set.mem_finset_prod]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, rfl⟩` from `ha`. Use `choose h hh hgh using fun τ => hg (Finset.mem_univ τ)`. Establish `e : ∏ τ ∈ Finset.univ, g τ = (1 : LL) • Formalism.MainNotions.flipTwoThree.ten (fun τ => MvPolynomial.map (Int.castRingHom LL) (h τ))`. Rewrite using `[one_smul]`. Unfold `Formalism.MainNotions.flipTwoThree.ten`.
-
-Use `Finset.prod_congr rfl (fun τ _ => ?_)` and prove the remaining obligations. Conclude with `(hgh τ).symm`. Rewrite using `[e]`. Use `show _ ∈ Formalism.MainNotions.flipTwoThree.IntSpanAtG Pl w lam`. Unfold `Formalism.MainNotions.flipTwoThree.IntSpanAtG`.
-
-Conclude with `AddSubgroup.subset_closure ⟨1, h, (intW Pl w).one_mem, hh, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ten_mem {F : Tau → MvPolynomial (Fin n × Fin n) LL}
     (hF : ∀ τ, F τ ∈ wO (intW Pl w) n (lam τ).natW) : Formalism.MainNotions.flipTwoThree.ten F ∈ isO Pl w lam := by
@@ -302,23 +294,19 @@ theorem ten_mem {F : Tau → MvPolynomial (Fin n × Fin n) LL}
   exact AddSubgroup.subset_closure ⟨1, h, (intW Pl w).one_mem, hh, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨r, f, hr, hf, rfl⟩` from `hx`. Establish `hT : Formalism.MainNotions.flipTwoThree.ten (fun τ => rowAct LL (((k τ).map (intW Pl w).subtype).transpose) (MvPolynomial.map (Int.castRingHom LL) (f τ))) ∈ isO Pl w lam`. Apply `ten_mem` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `τ`. Rewrite using `[← Matrix.transpose_map]`. Use `wO_stable (intW Pl w) _ (k τ).transpose (by rw [Matrix.det_transpose]; exact hk τ) ?_` and prove the remaining obligations. Unfold `wO`. Conclude with `Submodule.subset_span ⟨f τ, hf τ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hc : (∏ τ, ((k τ).map (intW Pl w).subtype).det ^ (lam τ).detShift) ∈ intW Pl w`. Use `prod_mem (fun τ _ => ?_)` and prove the remaining obligations. Take `⟨u, hu⟩` from `hk τ`. Establish `hd : ((k τ).map (intW Pl w).subtype).det = (((k τ).det : intW Pl w) : LL)` using `(RingHom.map_det (intW Pl w).subtype (k τ)).symm`. Rewrite using `[hd, ← hu]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `first`. Consider the case `exact zpow_mem_intW Pl w u _`. Consider the case `exact pow_mem (u : intW Pl w).2 _`. Establish `e : Formalism.MainNotions.flipTwoThree.actAll lam (fun τ => (k τ).map (intW Pl w).subtype) (r • Formalism.MainNotions.flipTwoThree.ten (fun τ => MvPolynomial.map (Int.castRingHom LL) (f τ))) = (∏ τ, ((k τ).map (intW Pl w).subtype).det ^ (lam τ).detShift) • r • Formalism.MainNotio …`. Unfold `Formalism.MainNotions.flipTwoThree.actAll`.
+Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[map_smul]`. Use `congr 1`. Use `show subAll (fun τ => (k τ).map (intW Pl w).subtype) (Formalism.MainNotions.flipTwoThree.ten _) = _`. Unfold `Formalism.MainNotions.flipTwoThree.ten`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl (fun τ _ => ?_)` and prove the remaining obligations. Conclude with `subAll_rename _ τ _`. Rewrite using `[e]`. Conclude with `(isO Pl w lam).smul_mem ⟨_, hc⟩ ((isO Pl w lam).smul_mem ⟨r, hr⟩ hT)`.
+Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Replace the relevant objects with their definitions.
 
-Consider the case `zero`. Unfold `Formalism.MainNotions.flipTwoThree.actAll`. Rewrite using `[map_zero, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`.
-
-Unfold `Formalism.MainNotions.flipTwoThree.actAll at hx hy ⊢`. Rewrite using `[map_add, smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx`. Unfold `Formalism.MainNotions.flipTwoThree.actAll at hx ⊢`.
-
-Rewrite using `[map_neg, smul_neg]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actAll_mem_intSpanAtG (k : Tau → Matrix (Fin n) (Fin n) (intW Pl w))
     (hk : ∀ τ, IsUnit (k τ).det) {p : MvPolynomial (Tau × Fin n × Fin n) LL}

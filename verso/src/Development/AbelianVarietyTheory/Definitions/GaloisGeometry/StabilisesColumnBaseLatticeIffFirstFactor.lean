@@ -32,11 +32,9 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   {I : LocId L p nV W Qq} {N : ℕ}
 
 /- English proof (translation)
-Introduce `a ha`. Unfold `Formalism.L2.Herm.dualL at hb`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem b hb => exact hb a ha`. Consider the case `zero => rw [Formalism.UG.P.csScale_hform_zero_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add b b' _ _ h h' => rw [Formalism.UG.P.csScale_hform_add_right]`. Conclude with `add_mem h h'`. Consider the case `smul r b _ h`. Rewrite using `[← algebraMap_smul E r b, Formalism.UG.P.csScale_hform_smul_right]`.
-
-Conclude with `mul_mem ⟨r, rfl⟩ h`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairInt_of_mem_dualL (hc : CMData F E) (S : HSpace E)
     (Λ : Submodule (𝓞 E) (Fin S.rank → E)) {b : Fin S.rank → E} (hb : b ∈ Formalism.L2.Herm.dualL hc S Λ) :
@@ -52,7 +50,7 @@ theorem pairInt_of_mem_dualL (hc : CMData F E) (S : HSpace E)
     exact mul_mem ⟨r, rfl⟩ h
 
 /- English proof (translation)
-The claim follows from `self_dual_lattice_at F E S.rank hc.sig S.gram v X.Lb T X.Lb_fin (fun x hx _y hy => pairInt_of_mem_dualL hc S X.Lb (X.Lb_int hy) x hx) (fun y hy => X.Lb_dual y (Submodule.subset_span hy)) hT`.
+A detailed English derivation is pending.
 -/
 theorem selfDualAt_stepLevelQ {S : HSpace E} {gp' : Fin 2 → ℕ} {T f : ℕ} {Q : Finset (HeightOneSpectrum (𝓞 F))}
     (hc : CMData F E) (X : Formalism.L2.Herm.StepLevelQ hc S gp' T f Q) (v : HeightOneSpectrum (𝓞 F)) (hT : (T : 𝓞 F) ∉ v.asIdeal) :
@@ -87,7 +85,7 @@ variable {D : D7} {X : Formalism.L2.Herm.Herm0 D} {u : D.what₂.Word} {w : D.wh
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hs : SplitStabL D.sp.cm.sig (D.sp.X (i + 1)).gram w' ((X.g u w hg).spl w' h) Lb (t.fr w' h)` using `splitStabL_of D.sp.cm.sig (D.sp.X (i + 1)).gram w' ((X.g u w hg).spl w' h) Lb (t.fr w' h) (fun y => (X.g u w hg).spl_sig w' h y) (split_integral_completion D.host.F D.host.E w' ((X.g u w hg).spl w' h) ((X.g u w hg).spl_alg w' h)) hdual (fun s => t.fr_lat w' h s)`. Establish `key : ∀ y : w'.adicCompletion D.host.F, y ∈ (algebraMap (w'.adicCompletionIntegers D.host.F) (w'.adicCompletion D.host.F)).range ↔ y ∈ w'.adicCompletionIntegers D.host.F` using `fun y => ⟨by rintro ⟨z, rfl⟩; exact z.2, fun h => ⟨⟨y, h⟩, rfl⟩⟩`. Rewrite using `[hs x hx, toFr_apply, mem_range_bc_iff _ (algMapV_injective D.host.F w')]`. Simplify using `only [key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stab_iff (w' : HeightOneSpectrum (𝓞 D.host.F)) (h : ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∈ w'.asIdeal)
     (hdual : SelfDualAt D.sp.cm.sig (D.sp.X (i + 1)).gram w' Lb)
@@ -113,14 +111,14 @@ theorem stab_iff (w' : HeightOneSpectrum (𝓞 D.host.F)) (h : ((D.what₂.place
   simp only [key]
 
 /- English proof (translation)
-Introduce `_ hx` and use `hx.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levelVL_le (w' : HeightOneSpectrum (𝓞 D.host.F)) :
     levelVL D.sp.cm.sig (D.sp.X (i + 1)).gram w' Lb ≤ UPts D.sp.cm.sig (D.sp.X (i + 1)).gram (w'.adicCompletion D.host.F) :=
   fun _ hx => hx.1
 
 /- English proof (translation)
-Introduce `w' h x hx` and use `(stab_iff t w' h (hdual w' h) x (levelVL_le w' (hU w' h hx))).1 (hU w' h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hypTJC_of_le
     (hU : ∀ w' : HeightOneSpectrum (𝓞 D.host.F), ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∈ w'.asIdeal →
@@ -130,7 +128,7 @@ theorem hypTJC_of_le
   fun w' h x hx => (stab_iff t w' h (hdual w' h) x (levelVL_le w' (hU w' h hx))).1 (hU w' h hx)
 
 /- English proof (translation)
-Introduce `w' h x hx h1 h2` and use `hU w' h ((stab_iff t w' h (hdual w' h) x hx).2 ⟨h1, h2⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hypTJ_of_ge
     (hU : ∀ w' : HeightOneSpectrum (𝓞 D.host.F), ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∈ w'.asIdeal →
@@ -140,7 +138,7 @@ theorem hypTJ_of_ge
   fun w' h x hx h1 h2 => hU w' h ((stab_iff t w' h (hdual w' h) x hx).2 ⟨h1, h2⟩)
 
 /- English proof (translation)
-Introduce `hT'` and use `not_mem_of_coprime ((Nat.Prime.coprime_iff_not_dvd hp).2 hT) _ hT' h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem T_not_mem {p T : ℕ} (hp : p.Prime) (hT : ¬ p ∣ T) (w' : HeightOneSpectrum (𝓞 D.host.F))
     (h : ((p : ℕ) : 𝓞 D.host.F) ∈ w'.asIdeal) : (T : 𝓞 D.host.F) ∉ w'.asIdeal :=
@@ -152,7 +150,7 @@ variable {gp : Fin 2 → ℕ} {f : ℕ} {Q : Finset (HeightOneSpectrum (𝓞 D.h
   (S : Formalism.L2.Herm.StepLevelQ D.sp.cm (D.sp.X (i + 1)) gp (D.mem u).A.T f Q)
 
 /- English proof (translation)
-Substitute `hLb hUl` using the available equality. Conclude with `hypTJC_of_le t (fun w' _ => S.Uloc_lev w') (fun w' h => selfDualAt_stepLevelQ D.sp.cm S w' (T_not_mem hg.1 hg.2.2.2.2.2 w' h))`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem hypTJC_stepLevelQ (hLb : Lb = S.Lb) (hUl : Uloc = S.Uloc) : HypTJC t := by
   subst hLb hUl
@@ -160,7 +158,7 @@ theorem hypTJC_stepLevelQ (hLb : Lb = S.Lb) (hUl : Uloc = S.Uloc) : HypTJC t := 
     (fun w' h => selfDualAt_stepLevelQ D.sp.cm S w' (T_not_mem hg.1 hg.2.2.2.2.2 w' h))
 
 /- English proof (translation)
-Substitute `hLb hUl` using the available equality. Conclude with `hypTJ_of_ge t (fun w' h => (S.Uloc_hyp w' (T_not_mem hg.1 (hgp 0) w' h) (T_not_mem hg.1 (hgp 1) w' h) (T_not_mem hg.1 hg.2.2.2.2.2 w' h) (fun hq => hQ w' hq h)).ge) (fun w' h => selfDualAt_stepLevelQ D.sp.cm S w' (T_not_mem hg.1 hg.2.2.2.2.2 w' h))`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem hypTJ_stepLevelQ (hLb : Lb = S.Lb) (hUl : Uloc = S.Uloc) (hgp : ∀ a, ¬ D.what₂.places.resChar w ∣ gp a)
     (hQ : ∀ w' ∈ Q, ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∉ w'.asIdeal) : HypTJ t := by
@@ -214,11 +212,11 @@ set_option maxHeartbeats 4000000 in
 include hU in
 
 /- English proof (translation)
-Establish `hδ0 : (reGL (rank_eq_first_level D.R) D.host.E).symm δ ∈ UJ (D.sp.cm.sig : D.host.E →+* D.host.E) D.sp.gram0` using `reGL_symm_mem_UJ (rank_eq_first_level D.R) _ _ _ (gramN_zero D) δ hδ`. Use `⟨hδ0, ?_⟩` and prove the remaining obligations. Establish `eδ : δ = reGL (rank_eq_first_level D.R) D.host.E ((reGL (rank_eq_first_level D.R) D.host.E).symm δ)` using `(MulEquiv.apply_symm_apply _ _).symm`. Use `set δ0 := (reGL (rank_eq_first_level D.R) D.host.E).symm δ with hδ0def`. Rewrite using `[mem_awayP_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ ((X.g u w hg).yG c').2) (bc_mem hδ0)) ((X.g u w hg).yG c).2, fun w' hw' => ?_⟩` and prove the remaining obligations. Establish `h1` using `hoff w' hw'`. Establish `e1 : ((locAt X u w hg B).yG c')⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ * (locAt X u w hg B).yG c = reGL (rank_eq_first_level D.R) _ ((((X.g u w hg).yG c').1)⁻¹ * bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ0 * ((X.g u w hg).yG c).1) := by`. Rewrite using `[eδ, map_mul, map_mul, map_inv, ← bc_reGL]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e1, bc_reGL, hU w']`. Conclude with `(Subgroup.mem_map_iff_mem (f := (reGL (rank_eq_first_level D.R) _).toMonoidHom) (reGL (rank_eq_first_level D.R) _).injective).1 h1`.
+A detailed English derivation is pending.
 -/
 theorem away_of_off (c c' : (D.gat u w hg).comp) (δ : GL (Fin (D.R.N 0)) D.host.E)
     (hδ : δ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)))
@@ -246,7 +244,7 @@ theorem away_of_off (c c' : (D.gat u w hg).comp) (δ : GL (Fin (D.R.N 0)) D.host
   exact (Subgroup.mem_map_iff_mem (f := (reGL (rank_eq_first_level D.R) _).toMonoidHom) (reGL (rank_eq_first_level D.R) _).injective).1 h1
 
 /- English proof (translation)
-Introduce `a b hab`. Apply `(X.g u w hg).gamI_inj c` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(reGL (rank_eq_first_level D.R) D.host.E).injective hab`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem gamI_inj_locAt (c : (D.gat u w hg).comp) : Function.Injective ((locAt X u w hg B).gamI c) := by
   intro a b hab
@@ -257,9 +255,9 @@ theorem gamI_inj_locAt (c : (D.gat u w hg).comp) : Function.Injective ((locAt X 
 set_option maxHeartbeats 4000000 in
 include hU in
 /- English proof (translation)
-Introduce `δ hδ hoff`. Take `⟨hδ0, hz⟩` from `away_of_off X T u hU w hg B c c δ hδ hoff`. Take `⟨γ, hγ⟩` from `((X.g u w hg).gamI_range c ⟨_, hδ0⟩).2 ((mem_map_conj _ _ _).2 hz)`. Use `⟨γ, ?_⟩` and prove the remaining obligations. Use `show reGL (rank_eq_first_level D.R) D.host.E ((X.g u w hg).gamI c γ).1 = δ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγ]`. Conclude with `MulEquiv.apply_symm_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem gamOnto_locAt (c : (D.gat u w hg).comp) : GamOnto ((T u).cls0).lev (locAt X u w hg B) c := by
   intro δ hδ hoff
@@ -273,9 +271,9 @@ theorem gamOnto_locAt (c : (D.gat u w hg).comp) : GamOnto ((T u).cls0).lev (locA
 set_option maxHeartbeats 4000000 in
 include hU in
 /- English proof (translation)
-Introduce `c c' δ hδ hoff`. Take `⟨hδ0, hz⟩` from `away_of_off X T u hU w hg B c c' δ hδ hoff`. Apply `(X.g u w hg).yG_bij.1` to reduce the goal to its premises. Establish `hz'` using `Subgroup.inv_mem _ hz`. Use `(DoubleCoset.eq _ _ _ _).2 ⟨⟨_, bc_mem hδ0⟩, Subgroup.mem_subgroupOf.2 ⟨_, hδ0, rfl⟩, ⟨_, ((mem_awayP_iff _ _ _).1 hz').1⟩, Subgroup.mem_subgroupOf.2 hz', Subtype.ext ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ((X.g u w hg).yG c').1 = bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((reGL (rank_eq_first_level D.R) D.host.E).symm δ) * ((X.g u w hg).yG c).1 * ((((X.g u w hg).yG c').1)⁻¹ * bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((reGL (r …`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem compInj_locAt : CompInj ((T u).cls0).lev (locAt X u w hg B) := by
   intro c c' δ hδ hoff
@@ -293,9 +291,9 @@ theorem compInj_locAt : CompInj ((T u).cls0).lev (locAt X u w hg B) := by
 set_option maxHeartbeats 4000000 in
 include hU in
 /- English proof (translation)
-Use `locHypC_of (rank_eq_first_level D.R) (locAt X u w hg B) _ B rfl (fun v => (X.lev0 u).Uloc v) hU ?_` and prove the remaining obligations. Introduce `v x0 hx0`. Establish `hfr` using `hB _ ((X.g u w hg).pl v).2`. Take `⟨h1, h2⟩` from `hTc _ ((X.g u w hg).pl v).2 x0 hx0`. Rewrite `h1`, `h2` using `[hfr]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨h1, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem locHypC_locAt (hB : FrRat X u w hg B) (hTc : HypTC (X.g u w hg)) : LocHypC ((T u).cls0).lev (locAt X u w hg B) := by
   refine locHypC_of (rank_eq_first_level D.R) (locAt X u w hg B) _ B rfl (fun v => (X.lev0 u).Uloc v) hU ?_
@@ -309,7 +307,7 @@ set_option maxHeartbeats 4000000 in
 include hU in
 
 /- English proof (translation)
-The claim follows from `((T u).cls0).y_bij good := locGood_locAt X u w hg B int := locInt_locAt X u w hg B hypP := locHyp_locAt X T u hU w hg B hB hT hypC := locHypC_locAt X T u hU w hg B hB hTc bad_p := bad_notOver u w hg actB := locAt_actB u w hg B hB comp := fun x => by obtain ⟨i, γ, k, hγ, hk, hkU, …`.
+A detailed English derivation is pending.
 -/
 theorem oneHyp_locAt (hB : FrRat X u w hg B) (hT : HypT (X.g u w hg)) (hTc : HypTC (X.g u w hg)) :
     OneHyp ((T u).cls0).toChart.lev (locAt X u w hg B) ((T u).cls0).toChart.y where
@@ -372,7 +370,7 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     {L : ColLevel R F E sp gp C A clsLat}
 
 /- English proof (translation)
-The claim follows from `self_dual_lattice_at F E R.k sp.cm.sig sp.gram0 v L.Lb A.T L.Lb_fin (fun x hx y hy => L.Lb_int y hy x hx) (fun y hy => L.Lb_dual y hy) hT`.
+A detailed English derivation is pending.
 -/
 theorem selfDualAt_col (L : ColLevel R F E sp gp C A clsLat) (v : HeightOneSpectrum (𝓞 F)) (hT : ((A.T : ℕ) : 𝓞 F) ∉ v.asIdeal) :
     SelfDualAt sp.cm.sig sp.gram0 v L.Lb :=
@@ -383,7 +381,7 @@ variable (t : Formalism.L2.Herm.GLevTie L G)
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hs : SplitStabL sp.cm.sig sp.gram0 w (t.spl w h) L.Lb (t.fr w h)` using `splitStabL_of sp.cm.sig sp.gram0 w (t.spl w h) L.Lb (t.fr w h) (fun y => t.spl_sig w h y) (split_integral_completion F E w (t.spl w h) (t.spl_alg w h)) hdual (fun s => t.fr_lat w h s)`. Establish `key : ∀ y : w.adicCompletion F, y ∈ (algebraMap (w.adicCompletionIntegers F) (w.adicCompletion F)).range ↔ y ∈ w.adicCompletionIntegers F` using `fun y => ⟨by rintro ⟨z, rfl⟩; exact z.2, fun h => ⟨⟨y, h⟩, rfl⟩⟩`. Rewrite using `[hs x hx, toFr_apply, mem_range_bc_iff _ (algMapV_injective F w)]`. Simplify using `only [key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stabilises_columnBaseLattice_iff_firstFactor (w : HeightOneSpectrum (𝓞 F)) (h : ((p : ℕ) : 𝓞 F) ∈ w.asIdeal) (hdual : SelfDualAt sp.cm.sig sp.gram0 w L.Lb)
     (x : GL (Fin R.k) (E ⊗[F] w.adicCompletion F)) (hx : x ∈ UPts sp.cm.sig sp.gram0 (w.adicCompletion F)) :
@@ -402,13 +400,13 @@ theorem stabilises_columnBaseLattice_iff_firstFactor (w : HeightOneSpectrum (�
   simp only [key]
 
 /- English proof (translation)
-Introduce `w h x hx` and use `(stabilises_columnBaseLattice_iff_firstFactor t w h (selfDualAt_col L w (hT w h)) x (L.Uloc_le w hx)).1 (L.Uloc_lev w hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hypTC_col (hT : ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ w.asIdeal → ((A.T : ℕ) : 𝓞 F) ∉ w.asIdeal) : HypTC t :=
   fun w h x hx => (stabilises_columnBaseLattice_iff_firstFactor t w h (selfDualAt_col L w (hT w h)) x (L.Uloc_le w hx)).1 (L.Uloc_lev w hx)
 
 /- English proof (translation)
-Introduce `w h x hx h1 h2` and use `by rw [L.Uloc_hyp w (hgp 0 w h) (hgp 1 w h) (hT w h)] exact (stabilises_columnBaseLattice_iff_firstFactor t w h (selfDualAt_col L w (hT w h)) x hx).2 ⟨h1, h2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hypT_col (hT : ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ w.asIdeal → ((A.T : ℕ) : 𝓞 F) ∉ w.asIdeal)
     (hgp : ∀ a (w : HeightOneSpectrum (𝓞 F)), ((p : ℕ) : 𝓞 F) ∈ w.asIdeal → ((gp a : ℕ) : 𝓞 F) ∉ w.asIdeal) : HypT t :=
@@ -423,14 +421,14 @@ section Rec
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `hn'` and use `not_mem_of_coprime ((Nat.Prime.coprime_iff_not_dvd hp).2 hn) _ hn' h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nat_not_mem {p n : ℕ} (hp : p.Prime) (hn : ¬ p ∣ n) (w' : HeightOneSpectrum (𝓞 D.host.F))
     (h : ((p : ℕ) : 𝓞 D.host.F) ∈ w'.asIdeal) : (n : 𝓞 D.host.F) ∉ w'.asIdeal :=
   fun hn' => not_mem_of_coprime ((Nat.Prime.coprime_iff_not_dvd hp).2 hn) _ hn' h
 
 /- English proof (translation)
-Introduce `hd` and use `hg.2.2.2.2.1 (((Nat.prime_dvd_prime_iff_eq hg.1 (D.host.g_prime a)).1 hd) ▸ D.host.g_level a)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_dvd_g {u : D.what₂.Word} {w : D.what₂.places.Pl} (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (a : Fin 2) :
     ¬ D.what₂.places.resChar w ∣ D.host.g a := fun hd =>
@@ -440,12 +438,12 @@ variable (X : Formalism.L2.Herm.Herm0 D) (u : D.what₂.Word) (w : D.what₂.pla
   (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
 
 /- English proof (translation)
-The claim follows from `hypTC_col _ (fun w' h => nat_not_mem hg.1 hg.2.2.2.2.2 w' h)`.
+A detailed English derivation is pending.
 -/
 theorem hypTC_rec : HypTC (X.g u w hg) := hypTC_col _ (fun w' h => nat_not_mem hg.1 hg.2.2.2.2.2 w' h)
 
 /- English proof (translation)
-The claim follows from `hypT_col _ (fun w' h => nat_not_mem hg.1 hg.2.2.2.2.2 w' h) (fun a w' h => nat_not_mem hg.1 (not_dvd_g hg a) w' h)`.
+A detailed English derivation is pending.
 -/
 theorem hypT_rec : HypT (X.g u w hg) :=
   hypT_col _ (fun w' h => nat_not_mem hg.1 hg.2.2.2.2.2 w' h) (fun a w' h => nat_not_mem hg.1 (not_dvd_g hg a) w' h)
@@ -453,7 +451,7 @@ theorem hypT_rec : HypT (X.g u w hg) :=
 variable {X} {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {c : LatCmp D}
 
 /- English proof (translation)
-The claim follows from `oneHyp_locAt X T u (sameUloc_of_joint X T u hJ) w hg K.B (K.fr_B u w hg) (hypT_rec X u w hg) (hypTC_rec X u w hg)`.
+A detailed English derivation is pending.
 -/
 theorem oneHyp_rec (K : CmpTied D X T Gt c) (hJ : Joint0 X.lev0 u (T u)) :
     OneHyp ((T u).cls0).toChart.lev (locAt X u w hg K.B) ((T u).cls0).toChart.y :=

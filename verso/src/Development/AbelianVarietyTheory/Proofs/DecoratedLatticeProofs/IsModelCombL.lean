@@ -13,7 +13,7 @@ namespace GlobalTheory.BiCombStable
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comb_apply (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c : WO S T →₀ ℂ) (f : WO S T → ℂ) (w : WO S T) :
     comb ψ S T c f w = ∑ x ∈ c.support, c x * (ψ (symplOH S T w x) * f (w + x)) := by

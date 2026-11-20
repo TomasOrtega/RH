@@ -9,9 +9,9 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]`. Establish `h2 : ∫⁻ x, ‖f x‖ₑ ^ (2 : ℝ≥0∞).toReal ∂μ = ENNReal.ofReal c ^ (2 : ℝ)`. Rewrite using `[ENNReal.ofReal_rpow_of_nonneg hc (by norm_num), Real.rpow_two, ← h]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `[enorm_eq_nnnorm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem eLpNorm_two_of_lintegral_sq {α E : Type*} [MeasurableSpace α] {μ : Measure α} [NormedAddCommGroup E]
     (f : α → E) (c : ℝ) (hc : 0 ≤ c) (h : ∫⁻ x, (‖f x‖₊ : ℝ≥0∞) ^ 2 ∂μ = ENNReal.ofReal (c ^ 2)) :
@@ -25,13 +25,11 @@ theorem eLpNorm_two_of_lintegral_sq {α E : Type*} [MeasurableSpace α] {μ : Me
   norm_num
 
 /- English proof (translation)
-Set `L : S →ₗᵢ[ℂ] Lp F 2 μ` to `{ toFun := fun v => (hm v v.2).toLp (Φ v) map_add' := fun v w => by`. Rewrite using `[← MemLp.toLp_add]`. Conclude with `MemLp.toLp_congr _ _ (hadd v v.2 w w.2)`. Use the proof step `map_smul' := fun c v => by`. Rewrite using `[RingHom.id_apply, ← MemLp.toLp_const_smul]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MemLp.toLp_congr _ _ (hsmul c v v.2)`. Use the proof step `norm_map' := fun v => by`. Express the relevant statement in the definitionally equal form `‖(hm v v.2).toLp (Φ v)‖ = _`. Rewrite using `[Lp.norm_toLp, hn v v.2, ENNReal.toReal_ofReal (norm_nonneg _)]`. Use `rfl }`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw w' hw'`. Establish `h` using `L.inner_map_map ⟨w', hw'⟩ ⟨w, hw⟩`. Rewrite `h` using `[L2.inner_def]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `integral_congr_ae ?_` and prove the remaining obligations.
-
-Use `filter_upwards [(hm w hw).coeFn_toLp, (hm w' hw').coeFn_toLp] with x h1 h2`. Express the relevant statement in the definitionally equal form `_ = ⟪((hm w' hw').toLp (Φ w')) x, ((hm w hw).toLp (Φ w)) x⟫_ℂ`. Rewrite using `[h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_inner_of_isometric {α E F : Type*} [MeasurableSpace α] {μ : Measure α} [NormedAddCommGroup E]
     [InnerProductSpace ℂ E] [NormedAddCommGroup F] [InnerProductSpace ℂ F] (S : Submodule ℂ E) (Φ : E → α → F)
@@ -61,11 +59,11 @@ theorem integral_inner_of_isometric {α E F : Type*} [MeasurableSpace α] {μ : 
   rw [h1, h2]
 
 /- English proof (translation)
-Introduce `hK k r ε mu R Wp _ _ _ _ z π u μW μN μG νq Bm hDS hS hB`. Take `⟨hae, -, -, hmeas⟩` from `GlobalTheory.T.quotientMeasure_ae_mem_and_measurable_besselModel hK k r ε mu R Wp z π u μW μN μG νq hDS hS`. Take `⟨-, -, -, hsm, -⟩` from `GlobalTheory.rep_basic_of_isDS hK k r ε mu R hDS`. Establish `hn : ∀ w ∈ R.sm, eLpNorm (fun x : Formalism.QuantumDeterminants.Mt k r => Bm (R.σ (Matrix.of x) w)) 2 νq = ENNReal.ofReal ‖w‖` using `fun w hw => eLpNorm_two_of_lintegral_sq _ _ (norm_nonneg _) (hB.2 w hw)`. Establish `hm : ∀ w ∈ R.sm, MemLp (fun x : Formalism.QuantumDeterminants.Mt k r => Bm (R.σ (Matrix.of x) w)) 2 νq` using `fun w hw => ⟨hmeas Bm hB.1 w hw, by rw [hn w hw]; exact ENNReal.ofReal_lt_top⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `integral_inner_of_isometric R.smSub (fun w (x : Formalism.QuantumDeterminants.Mt k r) => Bm (R.σ (Matrix.of x) w)) hm hn ?_ ?_` and prove the remaining obligations. Introduce `v hv w hw filter_upwards [hae] with x hx`. Simplify using `only [Pi.add_apply, map_add]`. Conclude with `hB.1.1 _ (hsm _ hx v hv) _ (hsm _ hx w hw)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c v hv filter_upwards [hae] with x hx`. Simplify using `only [Pi.smul_apply, map_smul]`. Conclude with `hB.1.2.1 c _ (hsm _ hx v hv)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isoBessel_polarised : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (Bm : R.H → Wp), R.IsDS ε mu → SideG k r z π u μW μN μG νq → IsIsoB R z π νq Bm → (∀ w ∈ R.sm, MemLp (fun x : Formalism.QuantumDeterminants.Mt k r => Bm (R.σ (Matrix.of x) w)) 2 νq) ∧ ∀ w ∈ R.sm, ∀ w' ∈ R.sm, ∫ x, ⟪Bm (R.σ (Matrix.of x) w'), Bm (R.σ (Matrix.of x) w)⟫_ℂ ∂νq = ⟪w', w⟫_ℂ := by
   intro hK k r ε mu R Wp _ _ _ _ z π u μW μN μG νq Bm hDS hS hB

@@ -13,11 +13,11 @@ set_option autoImplicit false
 namespace GlobalTheory.ConjArith
 
 /- English proof (translation)
-Take `⟨b₁, hb₁, -, n₁, h₁⟩` from `h 1 one_pos`. Take `⟨b, hb, hcop, n, hn⟩` from `h b₁ hb₁`. Establish `hb₁R : (b₁ : ℝ) ≠ 0` using `by exact_mod_cast hb₁.ne'`. Establish `key : (n₁ : ℤ) * b = n * b₁`. Establish `: (n₁ : ℝ) * b = n * b₁` using `by rw [← h₁, ← hn]; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hdvd : (b₁ : ℤ) ∣ n₁ * b` using `⟨n, by rw [key]; ring⟩`. Establish `hc : IsCoprime (b₁ : ℤ) (b : ℤ)` using `Nat.isCoprime_iff_coprime.mpr hcop.symm`. Take `⟨t, ht⟩` from `hc.dvd_of_dvd_mul_right hdvd`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (b₁ : ℝ) * x = b₁ * t` using `by rw [h₁, ht]; push_cast; ring`. Conclude with `mul_left_cancel₀ hb₁R this`.
+A detailed English derivation is pending.
 -/
 theorem int_of_coprime_denoms (x : ℝ)
     (h : ∀ k : ℕ, 0 < k → ∃ b : ℕ, 0 < b ∧ Nat.Coprime b k ∧ ∃ n : ℤ, (b : ℝ) * x = n) :
@@ -36,21 +36,19 @@ theorem int_of_coprime_denoms (x : ℝ)
   exact mul_left_cancel₀ hb₁R this
 
 /- English proof (translation)
-Establish `hn : n s₀ ≠ 0`. Introduce and unpack `h0`. Rewrite `hpos` using `[h0, mul_zero]`. Conclude with `lt_irrefl _ hpos`. Establish `h1 : m s₀ ∣ n s₀`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, -, -, hk⟩` from `h (m s₀).natAbs (Int.natAbs_pos.mpr hm)`. Establish `h2 : ((m s₀).natAbs : ℤ) ∣ a * b * m s₀` using `Dvd.dvd.mul_left (Int.natAbs_dvd.mpr dvd_rfl) _`. Establish `h3` using `dvd_add (hk s₀) h2`. Rewrite `h3` using `[sub_add_cancel]`. Conclude with `Int.natAbs_dvd.mp h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : n s₀ ∣ m s₀`. Take `⟨a, b, hb, ha, hk⟩` from `h (n s₀).natAbs (Int.natAbs_pos.mpr hn)`. Establish `hself : ((n s₀).natAbs : ℤ) ∣ n s₀` using `Int.natAbs_dvd.mpr dvd_rfl`. Establish `h3` using `dvd_sub hself (hk s₀)`. Rewrite `h3` using `[sub_sub_cancel, _root_.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ((n s₀).natAbs : ℤ) ∣ b * m s₀` using `ha.symm.dvd_of_dvd_mul_left h3`. Establish `hbc : IsCoprime ((n s₀).natAbs : ℤ) (b : ℤ)` using `Nat.isCoprime_iff_coprime.mpr hb.symm`. Conclude with `Int.natAbs_dvd.mp (hbc.dvd_of_dvd_mul_left h4)`. Establish `heq : n s₀ = m s₀`. Establish `h5` using `Int.natAbs_eq_of_dvd_dvd h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Break down `Int.natAbs_eq_natAbs_iff.mp h5 with h6 | h6` into its components or cases. Conclude with `h6.symm`. Rewrite `hpos` using `[h6]`. Use polynomial arithmetic with `[mul_self_nonneg (m s₀)]`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hD : ∀ k : ℕ, 0 < k → (k : ℤ) ∣ n s * m s₀ - n s₀ * m s`. Introduce `k hk`. Take `⟨a, b, -, -, hks⟩` from `h k hk`. Establish `e : n s * m s₀ - n s₀ * m s = (n s - a * b * m s) * m s₀ - (n s₀ - a * b * m s₀) * m s` using `by ring`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `dvd_sub ((hks s).mul_right _) ((hks s₀).mul_right _)`. Establish `hD0 : n s * m s₀ - n s₀ * m s = 0`. Apply `Int.eq_zero_of_abs_lt_dvd (hD _ (Nat.succ_pos (n s * m s₀ - n s₀ * m s).natAbs))` to reduce the goal to its premises. Rewrite using `[Int.abs_eq_natAbs]`. Use `push_cast`.
-
-Use linear arithmetic over natural numbers and integers. Rewrite `hD0` using `[heq]`. Establish `h7 : n s * m s₀ = m s * m s₀` using `by linarith`. Conclude with `mul_right_cancel₀ hm h7`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem int_core {S : Type} (m n : S → ℤ)
     (h : ∀ k : ℕ, 0 < k → ∃ a : ℤ, ∃ b : ℕ, Nat.Coprime b k ∧ IsCoprime a (k : ℤ) ∧
@@ -93,19 +91,17 @@ theorem int_core {S : Type} (m n : S → ℤ)
   exact mul_right_cancel₀ hm h7
 
 /- English proof (translation)
-Introduce `S f f' A hA hint hk hex`. Establish `hF : ∀ s, ∃ n : ℤ, f s / A = n`. Introduce `s`. Apply `int_of_coprime_denoms` to reduce the goal to its premises. Introduce `k hk0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, b, hb, hc, -, hs⟩` from `hk k hk0`. Take `⟨n, hn⟩` from `(hs s).1`. Conclude with `⟨b, hb, hc, n, by rw [← hn]; ring⟩`. Use `choose m hm using hF`. Use `choose n hn using hint`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcore : ∀ k : ℕ, 0 < k → ∃ a : ℤ, ∃ b : ℕ, Nat.Coprime b k ∧ IsCoprime a (k : ℤ) ∧ ∀ s, (k : ℤ) ∣ n s - a * b * m s`. Introduce `k hk0`. Take `⟨a, b, -, hc, ha, hs⟩` from `hk k hk0`. Use `⟨a, b, hc, ha, fun s => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `(hs s).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `: ((n s - a * b * m s : ℤ) : ℝ) = ((k * t : ℤ) : ℝ)`. Use `push_cast`. Rewrite using `[← hn s, ← ht, ← hm s]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Take `⟨s₀, hf0, hpos⟩` from `hex`. Establish `hmR : ((m s₀ : ℤ) : ℝ) * (n s₀ : ℝ) = f s₀ * f' s₀ / A`. Rewrite using `[← hm s₀, ← hn s₀]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hposZ : 0 < m s₀ * n s₀`. Establish `: (0 : ℝ) < ((m s₀ * n s₀ : ℤ) : ℝ)` using `by push_cast; rw [hmR]; exact div_pos hpos hA`. Conclude with `this` after adjusting the coercions. Establish `hm0 : m s₀ ≠ 0`. Introduce and unpack `h0`.
-
-Rewrite `hposZ` using `[h0, zero_mul]`. Conclude with `lt_irrefl _ hposZ`. Introduce `s`. Rewrite using `[hn s, hm s]`. Conclude with `int_core m n hcore s₀ hm0 hposZ s` after adjusting the coercions.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_eq_div : ∀ (S : Type) (f f' : S → ℝ) (A : ℝ), 0 < A → (∀ s, ∃ n : ℤ, f' s = n) →
     (∀ k : ℕ, 0 < k → ∃ (a : ℤ) (b : ℕ), 0 < b ∧ Nat.Coprime b k ∧ IsCoprime a (k : ℤ) ∧

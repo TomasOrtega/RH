@@ -10,16 +10,16 @@ open scoped LaurentSeries PowerSeries
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Rewrite using `[nab_apply_eq, nab_apply_eq, map_smul, map_sub, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_nab {a b : ℕ} (φ : Vc k a →ₗ[k⸨X⸩] Vc k b) (g : Vc k a →ₗ[k] Vc k a) (g' : Vc k b →ₗ[k] Vc k b)
     (h : ∀ x, φ (g x) = g' (φ x)) (x : Vc k a) : φ (nab g x) = nab g' (φ x) := by
   rw [nab_apply_eq, nab_apply_eq, map_smul, map_sub, h]
 
 /- English proof (translation)
-Proceed by induction on `f using Polynomial.induction_on generalizing x with`. Consider the case `C c`. Simplify using `only [Polynomial.aeval_C, Module.algebraMap_end_apply]`. Conclude with `φ.map_smul_of_tower c x`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply, hp, hq]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `monomial m c ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, map_mul (Polynomial.aeval (nab g')), Polynomial.aeval_X, Polynomial.aeval_X, Module.End.mul_apply, Module.End.mul_apply, ih, map_nab φ g g' h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_aeval_nab {a b : ℕ} (φ : Vc k a →ₗ[k⸨X⸩] Vc k b) (g : Vc k a →ₗ[k] Vc k a)
     (g' : Vc k b →ₗ[k] Vc k b) (h : ∀ x, φ (g x) = g' (φ x)) (f : Polynomial k) (x : Vc k a) :
@@ -34,9 +34,9 @@ theorem map_aeval_nab {a b : ℕ} (φ : Vc k a →ₗ[k⸨X⸩] Vc k b) (g : Vc 
       Polynomial.aeval_X, Module.End.mul_apply, Module.End.mul_apply, ih, map_nab φ g g' h]
 
 /- English proof (translation)
-Take `⟨f, hf, hN⟩` from `hN`. Use `⟨f, hf, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hN (φ x) hx`. Rewrite `h1`, the goal using `[mem_sh_iff_smul_mem]`. Express the relevant statement in the definitionally equal form `φ _ ∈ N`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_smul, map_nab φ g g' h, map_aeval_nab φ g g' h]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem comap {a b : ℕ} (φ : Vc k a →ₗ[k⸨X⸩] Vc k b) (g : Vc k a →ₗ[k] Vc k a)
     (g' : Vc k b →ₗ[k] Vc k b) (h : ∀ x, φ (g x) = g' (φ x)) (N : Submodule k⟦X⟧ (Vc k b)) (s : ℤ)
@@ -49,9 +49,9 @@ theorem comap {a b : ℕ} (φ : Vc k a →ₗ[k⸨X⸩] Vc k b) (g : Vc k a →�
   rwa [map_smul, map_nab φ g g' h, map_aeval_nab φ g g' h]
 
 /- English proof (translation)
-Take `⟨f, hf, hN⟩` from `hN`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h1` using `hN x hx`. Rewrite `h1`, the goal using `[mem_sh_iff_smul_mem]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨_, h1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ _ = _ • nab g' (Polynomial.aeval (nab g') f (φ x))`. Rewrite using `[map_smul, map_nab φ g g' h, map_aeval_nab φ g g' h]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map {a b : ℕ} (φ : Vc k a →ₗ[k⸨X⸩] Vc k b) (g : Vc k a →ₗ[k] Vc k a)
     (g' : Vc k b →ₗ[k] Vc k b) (h : ∀ x, φ (g x) = g' (φ x)) (N : Submodule k⟦X⟧ (Vc k a)) (s : ℤ)
@@ -66,9 +66,9 @@ theorem map {a b : ℕ} (φ : Vc k a →ₗ[k⸨X⸩] Vc k b) (g : Vc k a →ₗ
   rw [map_smul, map_nab φ g g' h, map_aeval_nab φ g g' h]
 
 /- English proof (translation)
-Introduce `k G _ _ l n _ _ _ R F r Dt M h1 h3 A N hN i hi`. Take `⟨B, Nb, A₁, j, p, hB, hj, hji, hp, hps, rfl⟩` from `hN`. Establish `oB` using `M.base_obj B Nb hB`. Establish `o1` using `F.obj_sub A₁ B j hj hji oB`. Establish `oA` using `F.obj_quot A₁ A p hp hps o1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `map _ _ _ (F.map_γ A₁ A p o1 oA hp i) _ _ (comap _ _ _ (F.map_γ A₁ B j o1 oB hj i) _ _ (M.base_e h1 h3 B Nb hB i hi))`.
+A detailed English derivation is pending.
 -/
 theorem model_ePoly : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n]
     {R : RingPG k l} (F : DFun R n G) {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt), Dt.T1 l → Dt.T3 l →

@@ -18,13 +18,13 @@ def adP (Z : Mat R S) (y x : NC R S) : ℂ :=
   Z y.1.1 x.1.1 * (if y.1.2 = x.1.2 then 1 else 0) - (if y.1.1 = x.1.1 then 1 else 0) * Z x.1.2 y.1.2
 
 /- English proof (translation)
-Simplify using `only [adP, Matrix.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma adCoeff_add (Z Z' : Mat R S) (y x : NC R S) : adP (Z + Z') y x = adP Z y x + adP Z' y x := by
   simp only [adP, Matrix.add_apply]; ring
 
 /- English proof (translation)
-Simplify using `only [adP, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma adCoeff_smul (c : ℂ) (Z : Mat R S) (y x : NC R S) : adP (c • Z) y x = c * adP Z y x := by
   simp only [adP, Matrix.smul_apply, smul_eq_mul]; ring
@@ -47,7 +47,7 @@ def tAct (k : ℕ) (actW : Mat R S →ₗ[ℂ] Module.End ℂ W) : Mat R S →�
     simp [factorOp, adCoeff_smul, mul_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Simplify using `[tAct, factorOp]`.
+Simplify using the standard rewrite rules.
 -/
 lemma tAct_apply (k : ℕ) (actW : Mat R S →ₗ[ℂ] Module.End ℂ W) (Z : Mat R S) (Ψ : (Fin k → NC R S) → W)
     (g : Fin k → NC R S) :
@@ -73,9 +73,9 @@ def IsUnitary (actW : Mat R S →ₗ[ℂ] Module.End ℂ W) (B : W →ₗ⋆[ℂ
     ∀ a b, sameBlock a b → ∀ x y, B (actW (Eab a b) x) y = B x (actW (Eab b a) y)
 
 /- English proof (translation)
-Use `⟨fun x y => by simp [mul_comm], fun x hx => ?_, fun a b _ x y => by simp⟩` and prove the remaining obligations. Establish `: star x * x = ((Complex.normSq x : ℝ) : ℂ)`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression. Simplify using `only [LinearMap.mk₂'ₛₗ_apply, this, Complex.ofReal_re]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Conclude with `Complex.normSq_pos.2 hx`.
+A detailed English derivation is pending.
 -/
 example : IsUnitary (R := 1) (S := 1) (W := ℂ) 0
     (LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun x y => star x * y) (fun _ _ _ => by simp [add_mul])
@@ -89,12 +89,12 @@ example : IsUnitary (R := 1) (S := 1) (W := ℂ) 0
 def kpart (Z : Mat R S) : Mat R S := Matrix.of fun a b => if sameBlock a b then Z a b else 0
 
 /- English proof (translation)
-Introduce `a b h` and use `by simp [kpart, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma isKC_kpart (Z : Mat R S) : IsKC (kpart Z) := fun a b h => by simp [kpart, h]
 
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `hab : sameBlock a b`. Simplify using `[kpart, hab]`. Simplify using `[kpart, hab, h a b hab]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma kpart_of_isKC {Z : Mat R S} (h : IsKC Z) : kpart Z = Z := by
   ext a b
@@ -130,7 +130,7 @@ def phiN (act : Mat R S →ₗ[ℂ] Module.End ℂ V) (N : Submodule ℂ V) (k :
   ∑ g, word act g ∘ₗ N.subtype ∘ₗ LinearMap.proj g
 
 /- English proof (translation)
-Simplify using `[phiN]`.
+Simplify using the standard rewrite rules.
 -/
 lemma phiN_apply (act : Mat R S →ₗ[ℂ] Module.End ℂ V) (N : Submodule ℂ V) (k : ℕ) (Ψ : (Fin k → NC R S) → N) :
     phiN act N k Ψ = ∑ g, word act g (Ψ g) := by

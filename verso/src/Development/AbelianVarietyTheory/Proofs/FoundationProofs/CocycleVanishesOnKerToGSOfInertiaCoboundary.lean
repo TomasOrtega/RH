@@ -7,19 +7,19 @@ open scoped Matrix
 namespace GlobalTheory.Ord2.GwCount
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ e S A W Y hN hY hc a ha`. Establish `hcoc : ∀ g h, Y (g * h) = Y g + mat W g *ᵥ Y h` using `fun g h => ((mem_Z1_iff_cocycle _ _).1 hY).2 g h`. Establish `hcont : Continuous Y` using `((mem_Z1_iff_cocycle _ _).1 hY).1`. Establish `h1 : Y 1 = 0`. Use `hcoc 1 1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[mat]`. Set `H : Subgroup (G ℚ Ω)` to `{ carrier := {g | Y g = 0 ∧ W g = 1} one_mem' := ⟨h1, map_one W⟩ mul_mem' := fun {g h} hg hh => ⟨by rw [hcoc, hg.1, hh.1]; simp, by rw [map_mul, hg.2, hh.2, one_mul]⟩ inv_mem' := fun {g} hg => by`. Use `⟨?_, by rw [map_inv, hg.2, inv_one]⟩` and prove the remaining obligations. Use `hcoc g g⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1, hg.1]`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this.symm }` using `[mat, hg.2]`. Establish `hH : ∀ g, g ∈ H ↔ Y g = 0 ∧ W g = 1` using `fun g => Iff.rfl`. Use `haveI : H.Normal := ⟨fun g hg h => by`. Rewrite `hg`, the goal using `[hH]`. Use `⟨?_, by rw [map_mul, map_mul, hg.2, mul_one, ← map_mul, mul_inv_cancel, map_one]⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : Y (g * h⁻¹) = Y h⁻¹`. Rewrite using `[hcoc, hg.1]`. Simplify using `[mat, hg.2]`. Rewrite using `[mul_assoc, hcoc, e1, ← hcoc, mul_inv_cancel, h1]⟩`. Establish `hcl : IsClosed (H : Set (G ℚ Ω))` using `(isClosed_singleton.preimage hcont).inter (isClosed_singleton.preimage hN.cont)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Subgroup.normalClosure (⋃ v ∈ (S : Set Pl)ᶜ, ⋃ B ∈ {B : ValuationSubring Ω | IsPlaceOver B v}, Inertia (F` using `ℚ) B) ≤ H := by`. Apply `Subgroup.normalClosure_le_normal` to reduce the goal to its premises. Introduce `τ hτ`. Simplify using `only [Set.mem_iUnion] at hτ`. Take `⟨v, hv, B, hB, hτ⟩` from `hτ`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv' : v ∉ S` using `by simpa using hv`. Establish `hτ' : τ ∈ Ine (F` using `ℚ) B := hτ`. Establish `hW : W τ = 1` using `hN.unr v hv' B hB hτ'`. Take `⟨x, hx⟩` from `hc v hv' B hB`. Use `(hH τ).2 ⟨?_, hW⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx τ hτ']`. Simplify using `[mat, hW]`. Establish `ha' : a ∈ NS Ω (S : Set Pl)`. Rewrite `ha` using `[toGS, QuotientGroup.ker_mk']`. Then use the resulting hypothesis. Conclude with `((hH a).1 (Subgroup.topologicalClosure_minimal _ hle hcl ha')).1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cocycle_zero_on_ker_toGS : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l) (Y : G ℚ Ω → Fin 2 → Qbar l), Nf e S A W → Y ∈ Z1 (Loc.colRep W) → (∀ q : Pl, q ∉ S → ∀ B : ValuationSubring Ω, IsPlaceOver B q → ∃ x : Fin 2 → Qbar l, ∀ s ∈ Ine (F := ℚ) B, Y s = mat W s *ᵥ x - x) → ∀ a ∈ (toGS Ω (S : Set Pl)).ker, Y a = 0 := by
   intro l _ Ω _ _ _ e S A W Y hN hY hc a ha

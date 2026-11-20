@@ -9,7 +9,7 @@ open GlobalTheory.Cris (dp0)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BadPt.exists_isIncl | exact GlobalTheory.BadPt.exists_isIncl | (intros; apply GlobalTheory.BadPt.exists_isIncl <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.pdivisible_tower_base_change_map_exists : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] (A : Over (Sp K)) [GrpObj A] (φ : A.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback A G (spMap (algebraMap R K)) φ → ∀ (Γ' : PDivGroup p R) (s : FinTower Γ' G) (𝒜 : PDivGroup p K) (t : 𝒜.TorsionTower A), (p : R) = 0 → ∃ κ : Γ'.baseChange K ⟶ 𝒜, s.IsIncl t φ κ ∧ Function.Surjective (κ.app 1) ∧ Function.Bijective (omegaMap _ _ κ) := by
   first | exact @GlobalTheory.BadPt.exists_isIncl | exact GlobalTheory.BadPt.exists_isIncl | (intros; apply GlobalTheory.BadPt.exists_isIncl <;> assumption)

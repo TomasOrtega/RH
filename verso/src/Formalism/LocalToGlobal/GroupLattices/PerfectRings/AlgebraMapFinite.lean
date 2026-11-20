@@ -24,7 +24,7 @@ Both sides reduce to the same expression.
 theorem toRes_apply (z : QuadraticAlgebra R π 0) : toRes π z = Ideal.Quotient.mk _ z.re := rfl
 
 /- English proof (translation)
-Introduce `q`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Conclude with `⟨⟨r, 0⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toRes_surjective : Function.Surjective (toRes π) := by
   intro q
@@ -32,9 +32,9 @@ theorem toRes_surjective : Function.Surjective (toRes π) := by
   exact ⟨⟨r, 0⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨c.im, by simp⟩`. Introduce and unpack `⟨d, hd⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨z.im, d⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [hd]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_span_om (z : QuadraticAlgebra R π 0) :
     z ∈ Ideal.span {(ω : QuadraticAlgebra R π 0)} ↔ π ∣ z.re := by
@@ -47,7 +47,7 @@ theorem mem_span_om (z : QuadraticAlgebra R π 0) :
     ext <;> simp [hd]
 
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[RingHom.mem_ker, toRes_apply, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton, mem_span_om]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_toRes : RingHom.ker (toRes π) = Ideal.span {(ω : QuadraticAlgebra R π 0)} := by
   ext z
@@ -59,7 +59,7 @@ def resEquiv : (QuadraticAlgebra R π 0 ⧸ Ideal.span {(ω : QuadraticAlgebra R
     (RingHom.quotientKerEquivOfSurjective (toRes_surjective π))
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr (resEquiv π).toEquiv`.
+A detailed English derivation is pending.
 -/
 theorem card_res :
     Nat.card (QuadraticAlgebra R π 0 ⧸ Ideal.span {(ω : QuadraticAlgebra R π 0)}) =
@@ -67,14 +67,14 @@ theorem card_res :
   Nat.card_congr (resEquiv π).toEquiv
 
 /- English proof (translation)
-Rewrite using `[RingHom.finite_algebraMap]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_finite : (algebraMap R (QuadraticAlgebra R π 0)).Finite := by
   rw [RingHom.finite_algebraMap]
   infer_instance
 
 /- English proof (translation)
-Introduce `x y h`. Simplify `congrArg QuadraticAlgebra.re h` using `[Algebra.algebraMap_eq_smul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem algebraMap_injective : Function.Injective (algebraMap R (QuadraticAlgebra R π 0)) := by
   intro x y h

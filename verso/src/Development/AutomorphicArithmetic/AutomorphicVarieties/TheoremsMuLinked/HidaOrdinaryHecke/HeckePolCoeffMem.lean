@@ -6,15 +6,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ l _ n c H hAx A _ _ _ θ a K _ I D ψ hU i g N`. Establish `hlc` using `hU.cont i N`. Take `⟨x, ⟨w, hw, B, σ, hB, hσ, rfl⟩, hxU⟩` from `hAx.dense.exists_mem_open (hlc.isOpen_fiber _) ⟨g, Set.mem_singleton _⟩`. Use `⟨D.lam i (MonoidAlgebra.single (H.prj σ⁻¹) 1), ?_, ?_⟩` and prove the remaining obligations. Establish `hf` using `hU.frob ⟨w, hw⟩ B σ hB hσ set_option synthInstance.maxHeartbeats 400000 in`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Generalize the expression as in `hR : Algebra.adjoin c.O (Set.range fun p : H.Wp × Fin n => H.gen θ a K (.inl p)) = R`. Establish `hgen : ∀ j, H.genW θ a K ⟨w, hw⟩ j ∈ R`. Introduce `j`. Substitute `hR` using the available equality. Unfold `UpperTheory.V.Hi.HSet.genW`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h`. Conclude with `Algebra.subset_adjoin ⟨(⟨w, hw⟩, _), rfl⟩`. Conclude with `Subalgebra.one_mem _`. Use `show (-1) ^ i * (D.chi _).coeff (n - i) ∈ R`. Rewrite using `[hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `R.mul_mem (R.pow_mem (R.neg_mem R.one_mem) _) ?_` and prove the remaining obligations. Unfold `UpperTheory.V.Hi.heckePol`. Rewrite using `[Polynomial.finset_sum_coeff]`. Use `R.sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_C_mul_X_pow]`.
-
-Use `split_ifs`. Conclude with `R.mul_mem (R.mul_mem (R.pow_mem (R.neg_mem R.one_mem) _) (R.pow_mem (R.natCast_mem _) _)) (hgen j)`. Conclude with `R.zero_mem`. Establish `h1` using `Set.mem_singleton_iff.mp hxU`. Conclude with `Ideal.Quotient.eq.mp h1.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.AnnihilatorQuotientFinite.frobS :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →

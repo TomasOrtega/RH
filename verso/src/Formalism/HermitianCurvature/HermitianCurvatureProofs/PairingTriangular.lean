@@ -12,7 +12,7 @@ variable {f : ℕ}
 def pair (σ z : V f) : ℝ := ∑ v, 2 * (σ v * z v).re
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.crystallineComparison.psi pair`. Use `congr 2`. Use `push_cast`. Use `Finset.sum_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[Complex.add_conj]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -26,7 +26,7 @@ lemma psi_mul (σ z : V f) :
   simp
 
 /- English proof (translation)
-Unfold `pair`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Simplify using `[add_mul, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma pair_add_left (σ σ' z : V f) : pair (σ + σ') z = pair σ z + pair σ' z := by
   unfold pair
@@ -35,7 +35,7 @@ lemma pair_add_left (σ σ' z : V f) : pair (σ + σ') z = pair σ z + pair σ' 
   simp [add_mul, mul_add]
 
 /- English proof (translation)
-Unfold `pair`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Simplify using `[Complex.smul_re, smul_mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma pair_smul_left (r : ℝ) (σ z : V f) : pair (r • σ) z = r * pair σ z := by
   unfold pair
@@ -45,7 +45,7 @@ lemma pair_smul_left (r : ℝ) (σ z : V f) : pair (r • σ) z = r * pair σ z 
   ring
 
 /- English proof (translation)
-Unfold `pair`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Simplify using `[add_mul, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma pair_add_right (σ z z' : V f) : pair σ (z + z') = pair σ z + pair σ z' := by
   unfold pair
@@ -54,7 +54,7 @@ lemma pair_add_right (σ z z' : V f) : pair σ (z + z') = pair σ z + pair σ z'
   simp [add_mul, mul_add]
 
 /- English proof (translation)
-Unfold `pair`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Simplify using `[Complex.smul_re, mul_smul_comm]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma pair_smul_right (r : ℝ) (σ z : V f) : pair σ (r • z) = r * pair σ z := by
   unfold pair
@@ -73,7 +73,7 @@ Both sides reduce to the same expression.
 lemma pairL_apply (σ z : V f) : pairL σ z = pair σ z := rfl
 
 /- English proof (translation)
-Unfold `pair`. Use `Finset.sum_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.ofReal_re]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma pair_conj (σ : V f) :
     pair σ (fun v => starRingEnd ℂ (σ v)) = ∑ v, 2 * Complex.normSq (σ v) := by
@@ -82,9 +82,9 @@ lemma pair_conj (σ : V f) :
   rw [Complex.mul_conj, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `h0` using `h (fun v => starRingEnd ℂ (σ v))`. Rewrite `h0` using `[pair_conj]`. Establish `h1 : ∀ v ∈ (Finset.univ : Finset (Fin f)), 2 * Complex.normSq (σ v) = 0` using `(Finset.sum_eq_zero_iff_of_nonneg (fun v _ => mul_nonneg (by norm_num) (Complex.normSq_nonneg _))).mp h0`. Use function extensionality and compare the values at `v`. Establish `h2` using `h1 v (Finset.mem_univ v)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma eq_zero_of_pair (σ : V f) (h : ∀ z, pair σ z = 0) : σ = 0 := by
   have h0 := h (fun v => starRingEnd ℂ (σ v))
@@ -102,20 +102,20 @@ variable (La : Submodule ℤ (V f)) [DiscreteTopology La] [IsZLattice ℝ La]
 def bR : Basis (Fin (finrank ℤ La)) ℝ (V f) := (Module.finBasis ℤ La).ofZLatticeBasis ℝ La
 
 /- English proof (translation)
-Simplify using `[bR]`.
+Simplify using the standard rewrite rules.
 -/
 lemma bR_apply (j : Fin (finrank ℤ La)) : bR La j = ((Module.finBasis ℤ La) j : V f) := by
   simp [bR]
 
 /- English proof (translation)
-Rewrite using `[bR_apply]`. Conclude with `((Module.finBasis ℤ La) j).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma bR_mem (j : Fin (finrank ℤ La)) : bR La j ∈ La := by
   rw [bR_apply]
   exact ((Module.finBasis ℤ La) j).2
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Module.Basis.ofZLatticeBasis_span ℝ La (Module.finBasis ℤ La)]`. Conclude with `Module.Basis.mem_span_iff_repr_mem ℤ (bR La) z`.
+A detailed English derivation is pending.
 -/
 lemma mem_iff (z : V f) : z ∈ La ↔ ∀ j, (bR La).repr z j ∈ Set.range (algebraMap ℤ ℝ) := by
   conv_lhs => rw [← Module.Basis.ofZLatticeBasis_span ℝ La (Module.finBasis ℤ La)]
@@ -124,26 +124,26 @@ lemma mem_iff (z : V f) : z ∈ La ↔ ∀ j, (bR La).repr z j ∈ Set.range (al
 def Tl : (Fin (finrank ℤ La) → ℝ) ≃L[ℝ] V f := (bR La).equivFun.symm.toContinuousLinearEquiv
 
 /- English proof (translation)
-Simplify using `[Tl, Basis.equivFun_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Tl_apply (y : Fin (finrank ℤ La) → ℝ) : Tl La y = ∑ j, y j • bR La j := by
   simp [Tl, Basis.equivFun_symm_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[Tl]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma Tl_symm_apply (z : V f) : (Tl La).symm z = fun j => (bR La).repr z j := by
   funext j
   simp [Tl]
 
 /- English proof (translation)
-Conclude with `congrFun ((bR La).equivFun.apply_symm_apply y) j`.
+A detailed English derivation is pending.
 -/
 lemma repr_Tl (y : Fin (finrank ℤ La) → ℝ) (j) : (bR La).repr (Tl La y) j = y j := by
   exact congrFun ((bR La).equivFun.apply_symm_apply y) j
 
 /- English proof (translation)
-Rewrite using `[Tl_apply, ← pairL_apply, map_sum]`. Simplify using `only [map_smul, pairL_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma pair_Tl (σ : V f) (y : Fin (finrank ℤ La) → ℝ) :
     pair σ (Tl La y) = ∑ j, y j * pair σ (bR La j) := by
@@ -160,9 +160,9 @@ def Lm : V f →ₗ[ℝ] (Fin (finrank ℤ La) → ℝ) where
     simp only [Pi.smul_apply, pair_smul_left, smul_eq_mul, RingHom.id_apply]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `σ hσ`. Apply `eq_zero_of_pair` to reduce the goal to its premises. Introduce `z`. Establish `hj : ∀ j, pair σ (bR La j) = 0` using `fun j => congrFun hσ j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← (Tl La).apply_symm_apply z, pair_Tl]`. Simplify using `[hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma Lm_inj : Function.Injective (Lm La) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -174,7 +174,7 @@ lemma Lm_inj : Function.Injective (Lm La) := by
   simp [hj]
 
 /- English proof (translation)
-Use `⟨Lm_inj La, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.injective_iff_surjective_of_finrank_eq_finrank]`. Conclude with `Lm_inj La`. Rewrite using `[Module.finrank_fin_fun, ZLattice.rank ℝ La]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Lm_bij : Function.Bijective (Lm La) := by
   refine ⟨Lm_inj La, ?_⟩
@@ -192,13 +192,13 @@ lemma Le_apply (σ : V f) (j) : Le La σ j = pair σ (bR La j) := rfl
 def ψd (m : Fin (finrank ℤ La) → ℤ) : V f := (Le La).symm (fun j => (m j : ℝ))
 
 /- English proof (translation)
-Rewrite using `[← Le_apply, ψd, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma pair_ψd (m : Fin (finrank ℤ La) → ℤ) (j) : pair (ψd La m) (bR La j) = m j := by
   rw [← Le_apply, ψd, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `m m' h`. Use function extensionality and compare the values at `j`. Establish `h1` using `pair_ψd La m j`. Rewrite `h1` using `[h, pair_ψd]`. Conclude with `h1.symm` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ψd_inj : Function.Injective (ψd La) := by
   intro m m' h
@@ -208,7 +208,7 @@ lemma ψd_inj : Function.Injective (ψd La) := by
   exact_mod_cast h1.symm
 
 /- English proof (translation)
-Simplify using `only [ψd]`. Rewrite using `[← map_sub]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma ψd_sub (m m' : Fin (finrank ℤ La) → ℤ) : ψd La (m - m') = ψd La m - ψd La m' := by
   simp only [ψd]
@@ -218,7 +218,7 @@ lemma ψd_sub (m m' : Fin (finrank ℤ La) → ℤ) : ψd La (m - m') = ψd La m
   simp
 
 /- English proof (translation)
-Rewrite using `[pair_Tl]`. Simplify using `[pair_ψd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma pair_ψd_Tl (m : Fin (finrank ℤ La) → ℤ) (y : Fin (finrank ℤ La) → ℝ) :
     pair (ψd La m) (Tl La y) = ∑ j, y j * (m j : ℝ) := by
@@ -226,7 +226,7 @@ lemma pair_ψd_Tl (m : Fin (finrank ℤ La) → ℤ) (y : Fin (finrank ℤ La) �
   simp [pair_ψd]
 
 /- English proof (translation)
-Rewrite using `[psi_mul, pair_ψd_Tl]`. Use `congr 2`. Use `push_cast`. Conclude with `Finset.sum_congr rfl (fun j _ => mul_comm _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 lemma psi_ψd_Tl (m : Fin (finrank ℤ La) → ℤ) (y : Fin (finrank ℤ La) → ℝ) :
     psi (ψd La m * Tl La y) =
@@ -237,9 +237,9 @@ lemma psi_ψd_Tl (m : Fin (finrank ℤ La) → ℤ) (y : Fin (finrank ℤ La) �
   exact Finset.sum_congr rfl (fun j _ => mul_comm _ _)
 
 /- English proof (translation)
-Use `show ∀ z ∈ La, psi (ψd La m * z) = 1`. Introduce `z hz`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : Fin (finrank ℤ La) → ℤ, ∀ j, (bR La).repr z j = n j := by`. Establish `h1` using `(mem_iff La z).mp hz`. Conclude with `⟨fun j => (h1 j).choose, fun j => by simpa using (h1 j).choose_spec.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (Tl La).apply_symm_apply z, psi_ψd_Tl, Tl_symm_apply]`. Establish `hs : (∑ j, ((m j : ℝ) : ℂ) * (((bR La).repr z j : ℝ) : ℂ)) = ((∑ j, m j * n j : ℤ) : ℂ)`. Use `push_cast`. Simplify using `[hn]`. Rewrite using `[hs, mul_comm, Complex.exp_int_mul_two_pi_mul_I]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ψd_mem (m : Fin (finrank ℤ La) → ℤ) : ψd La m ∈ dualSet La := by
   show ∀ z ∈ La, psi (ψd La m * z) = 1
@@ -254,13 +254,13 @@ lemma ψd_mem (m : Fin (finrank ℤ La) → ℤ) : ψd La m ∈ dualSet La := by
   rw [hs, mul_comm, Complex.exp_int_mul_two_pi_mul_I]
 
 /- English proof (translation)
-Establish `hσ' : ∀ z ∈ La, psi (σ * z) = 1` using `hσ`. Establish `hint : ∀ j, ∃ n : ℤ, pair σ (bR La j) = n`. Introduce `j`. Establish `h1` using `hσ' (bR La j) (bR_mem La j)`. Rewrite `h1` using `[psi_mul, Complex.exp_eq_one_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n, hn⟩` from `h1`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h2 : ((pair σ (bR La j) : ℝ) : ℂ) = (n : ℂ)`. Establish `hne : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h2` after adjusting the coercions. Use `choose m hm using hint`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Apply `(Le La).injective` to reduce the goal to its premises. Rewrite using `[ψd, LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `j`. Rewrite using `[Le_apply, hm]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ψd_surj (σ : V f) (hσ : σ ∈ dualSet La) : ∃ m, ψd La m = σ := by
   have hσ' : ∀ z ∈ La, psi (σ * z) = 1 := hσ
@@ -297,12 +297,12 @@ Both sides reduce to the same expression.
 lemma eD_apply (m : Fin (finrank ℤ La) → ℤ) : ((eD La m : dualSet La) : V f) = ψd La m := rfl
 
 /- English proof (translation)
-The claim follows from `(Tl La).toHomeomorph.measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 lemma Tl_emb : MeasurableEmbedding (Tl La) := (Tl La).toHomeomorph.measurableEmbedding
 
 /- English proof (translation)
-Use `haveI : (Measure.map (Tl La) (volume : Measure (Fin (finrank ℤ La) → ℝ))).IsAddHaarMeasure := (Tl La).isAddHaarMeasure_map _`. Conclude with `⟨_, Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _, Measure.isAddLeftInvariant_eq_smul _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma vol_eq : ∃ c : NNReal, 0 < c ∧
     (volume : Measure (V f)) = c • Measure.map (Tl La) (volume : Measure (Fin (finrank ℤ La) → ℝ)) := by
@@ -312,9 +312,9 @@ lemma vol_eq : ∃ c : NNReal, 0 < c ∧
     Measure.isAddLeftInvariant_eq_smul _ _⟩
 
 /- English proof (translation)
-Rewrite using `[(Tl_emb La).map_apply]`. Establish `hpre : (Tl La) ⁻¹' ZSpan.fundamentalDomain (bR La) = Set.univ.pi (fun _ => Set.Ico (0 : ℝ) 1)`. Use extensionality with `y`. Simplify using `[ZSpan.mem_fundamentalDomain, repr_Tl]`. Rewrite using `[hpre, MeasureTheory.volume_pi_pi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Real.volume_Ico]`.
+Simplify using the standard rewrite rules.
 -/
 lemma map_fd :
     Measure.map (Tl La) (volume : Measure (Fin (finrank ℤ La) → ℝ)) (ZSpan.fundamentalDomain (bR La)) = 1 := by
@@ -327,7 +327,7 @@ lemma map_fd :
   simp [Real.volume_Ico]
 
 /- English proof (translation)
-Establish `hfd` using `ZSpan.isAddFundamentalDomain (bR La) (volume : Measure (V f))`. Rewrite `hfd` using `[show Submodule.span ℤ (Set.range (bR La)) = La from Module.Basis.ofZLatticeBasis_span ℝ La _]`. Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain La volume hfd, hc, measureReal_def, Measure.smul_apply, map_fd]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma covol_eq (c : NNReal)
     (hc : (volume : Measure (V f)) = c • Measure.map (Tl La) (volume : Measure (Fin (finrank ℤ La) → ℝ))) :
@@ -349,43 +349,41 @@ namespace Formalism.FourierDecayAlt.P
 open MeasureTheory Filter Topology Finset Module Formalism.FourierDecayAlt.crystallineComparison Formalism.FourierDecayAlt.P.PairingConjugationLemmas
 
 /- English proof (translation)
-Introduce `f La _ _ N A hN0 hlsc hint hPD hsum z₀ S hS`. Take `⟨c, hcpos, hc⟩` from `vol_eq La`. Establish `hcR : (0 : ℝ) < c` using `hcpos`. Establish `hcov` using `covol_eq La c hc`. Use `set T := Tl La with hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint_tr : ∀ g : V f → ℂ, ∫ z, g z = (c : ℂ) * ∫ y, g (T y)`. Introduce `g`. Rewrite using `[hc, integral_smul_nnreal_measure, (Tl_emb La).integral_map, NNReal.smul_def, Complex.real_smul]`. Use `set N' : (Fin (finrank ℤ La) → ℝ) → ℝ := fun y => N (T y) with hN'`. Use `set A' : (Fin (finrank ℤ La) → ℤ) → ℂ := fun m => A (ψd La m) / (c : ℂ) with hA'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN'0 : ∀ y, 0 ≤ N' y` using `fun y => hN0 _`. Establish `hlsc' : LowerSemicontinuous N'` using `hlsc.comp T.continuous`. Establish `hint' : Integrable N'`. Establish `h1 : Integrable N (Measure.map T volume)`. Use `hint.smul_measure_nnreal (c := c⁻¹)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hc, smul_smul, inv_mul_cancel₀ hcpos.ne', one_smul]`. Then use the resulting hypothesis. Conclude with `((Tl_emb La).integrable_map_iff).1 h1`. Establish `hk : ∀ m : Fin (finrank ℤ La) → ℤ, (∫ y, (N' y : ℂ) * Complex.exp (2 * Real.pi * Complex.I * ∑ j, ((m j : ℝ) : ℂ) * (y j : ℂ))) + A' m = (crystallineComparison.fourier N (ψd La m) + A (ψd La m)) / (c : ℂ)`. Introduce `m`. Establish `hcC : (c : ℂ) ≠ 0` using `by exact_mod_cast hcR.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : crystallineComparison.fourier N (ψd La m) = (c : ℂ) * ∫ y, (N' y : ℂ) * Complex.exp (2 * Real.pi * Complex.I * ∑ j, ((m j : ℝ) : ℂ) * (y j : ℂ))`. Unfold `crystallineComparison.fourier`. Rewrite using `[hint_tr]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall (fun y => ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [hN']`. Rewrite using `[psi_ψd_Tl]`. Rewrite using `[h1, hA']`. Clear the denominators using the available nonvanishing facts. Establish `hPD' : ∀ (S0 : Finset (Fin (finrank ℤ La) → ℤ)) (c0 : (Fin (finrank ℤ La) → ℤ) → ℂ), 0 ≤ (∑ σ ∈ S0, ∑ σ' ∈ S0, A' (σ - σ') * c0 σ * starRingEnd ℂ (c0 σ')).re`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S0 c0`. Establish `hinj` using `ψd_inj La`. Establish `h` using `hPD (S0.image (ψd La)) (c0 ∘ Function.invFun (ψd La)) (by`. Introduce `σ hσ`. Take `⟨m, _, rfl⟩` from `Finset.mem_image.1 hσ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `ψd_mem La m)`. Establish `hsi : ∀ F : V f → ℂ, ∑ x ∈ S0.image (ψd La), F x = ∑ m ∈ S0, F (ψd La m)` using `fun F => Finset.sum_image (by intro x _ y _ h; exact hinj h)`. Simplify using `only [hsi] at h`. Simplify using `only [Function.comp_apply, Function.leftInverse_invFun hinj _, ← ψd_sub] at h`. Establish `e : (∑ σ ∈ S0, ∑ σ' ∈ S0, A' (σ - σ') * c0 σ * starRingEnd ℂ (c0 σ')) = (∑ σ ∈ S0, ∑ σ' ∈ S0, A (ψd La (σ - σ')) * c0 σ * starRingEnd ℂ (c0 σ')) / ((c : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl (fun σ' _ => ?_)` and prove the remaining obligations. Rewrite using `[hA']`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.div_ofReal_re]`. Conclude with `div_nonneg h hcR.le`. Establish `hsum' : Summable (fun m : Fin (finrank ℤ La) → ℤ => ‖(∫ y, (N' y : ℂ) * Complex.exp (2 * Real.pi * Complex.I * ∑ j, ((m j : ℝ) : ℂ) * (y j : ℂ))) + A' m‖)`. Repeatedly rewrite using `[hk]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `h` using `(Equiv.summable_iff (eD La)).2 hsum`. Use `(h.div_const (c : ℝ)).congr (fun m => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, eD_apply, norm_div]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set z₀' := T.symm z₀ with hz₀'`. Set `κ : V f → (Fin (finrank ℤ La) → ℤ)` to `fun z j => ⌊(bR La).repr (z - z₀) j⌋`. Establish `hκ : ∀ z ∈ S, (fun j => ((κ z j : ℤ) : ℝ)) = T.symm (z - z₀)`. Introduce `z hz`. Establish `hm` using `(mem_iff La (z - z₀)).1 (hS z hz)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hT, Tl_symm_apply]`. Use function extensionality and compare the values at `j`. Take `⟨n, hn⟩` from `hm j`. Simplify using `only [κ, ← hn, algebraMap_int_eq, eq_intCast, Int.floor_intCast]`. Establish `hκinj : ∀ x ∈ S, ∀ y ∈ S, κ x = κ y → x = y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx y hy h`. Establish `h1` using `hκ x hx`. Rewrite `h1` using `[h, hκ y hy]`. Establish `h2` using `T.symm.injective h1`. Simplify using `using h2.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `H` using `Formalism.FourierDecayAlt.P.herglotz_lower_semicontinuous (finrank ℤ La) N' A' hN'0 hlsc' hint' hPD' hsum' z₀' (S.image κ)`. Rewrite `H` using `[Finset.sum_image (by intro x hx y hy h; exact hκinj x hx y hy h)]`. Establish `hL : ∀ z ∈ S, N' (fun j => z₀' j + ((κ z j : ℤ) : ℝ)) = N z`. Introduce `z hz`. Establish `e1 : (fun j => z₀' j + ((κ z j : ℤ) : ℝ)) = z₀' + T.symm (z - z₀)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hκ z hz]`. Both sides reduce to the same expression. Simplify using `only [hN']`. Rewrite using `[e1, map_add, hz₀', ContinuousLinearEquiv.apply_symm_apply, ContinuousLinearEquiv.apply_symm_apply]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite `H` using `[Finset.sum_congr rfl hL]`. Establish `hR : (∑' m : Fin (finrank ℤ La) → ℤ, ‖(∫ y, (N' y : ℂ) * Complex.exp (2 * Real.pi * Complex.I * ∑ j, ((m j : ℝ) : ℂ) * (y j : ℂ))) + A' m‖) = (∑' σ : dualSet La, ‖crystallineComparison.fourier N σ + A (σ : V f)‖) / (c : ℝ)`. Repeatedly rewrite using `[hk]`. Rewrite using `[← Equiv.tsum_eq (eD La), ← tsum_div_const]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `tsum_congr (fun m => ?_)` and prove the remaining obligations. Rewrite using `[eD_apply, norm_div]`. Use `congr 1`. Simplify using the standard rewrite rules. Rewrite `H` using `[hR, le_div_iff₀ hcR]`.
-
-Rewrite using `[hcov]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem latticeHerglotzBound_statement : Formalism.FourierDecayAlt.crystallineComparison.LatticeHerglotzBound := by
   intro f La _ _ N A hN0 hlsc hint hPD hsum z₀ S hS

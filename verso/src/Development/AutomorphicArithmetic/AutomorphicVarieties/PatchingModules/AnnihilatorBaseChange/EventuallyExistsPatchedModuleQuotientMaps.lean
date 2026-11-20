@@ -8,17 +8,15 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `haveI h0 : Finite (Λ ⧸ maximalIdeal Λ) := ‹Finite (ResidueField Λ)›`. Use `haveI h1 : Finite (Λ ⧸ maximalIdeal Λ ^ j) := Ideal.finite_quotient_pow (IsNoetherian.noetherian _) j`. Use `haveI h2 : Finite (M ⧸ (maximalIdeal Λ ^ j • ⊤ : Submodule Λ M)) := Submodule.finite_quotient_smul _ (Module.Finite.fg_top)`. Establish `hle : ∀ x ∈ (maximalIdeal Λ ^ j • ⊤ : Submodule Λ M), x ∈ ((maximalIdeal Λ ^ j).map t • ⊤ : Submodule B M)`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_induction_on hx ?_ fun a b ha hb => Submodule.add_mem _ ha hb` and prove the remaining obligations. Introduce `a ha y _`. Rewrite using `[ht]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ ha) Submodule.mem_top`. Set `Q` to `M ⧸ ((maximalIdeal Λ ^ j).map t • ⊤ : Submodule B M)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `g : (M ⧸ (maximalIdeal Λ ^ j • ⊤ : Submodule Λ M)) → Q` to `fun q => Quotient.liftOn' q (fun x => Submodule.Quotient.mk x) (fun a b h => (Submodule.Quotient.eq _).2 (hle _ ((Submodule.quotientRel_def _).1 h)))`. Use `haveI : Finite Q := by`. Use `Finite.of_surjective g fun z => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `F : ℕ →o (Submodule B Q)ᵒᵈ` to `⟨fun n => OrderDual.toDual (maximalIdeal B ^ n • (⊤ : Submodule B Q)), fun m n h => OrderDual.toDual_le_toDual.2 (Submodule.smul_mono_left (Ideal.pow_le_pow_right h))⟩`. Take `⟨c, hc⟩` from `IsArtinian.monotone_stabilizes F`. Establish `h3 : (maximalIdeal B ^ c • (⊤ : Submodule B Q)) = maximalIdeal B ^ (c + 1) • (⊤ : Submodule B Q)` using `congrArg OrderDual.ofDual (hc (c + 1) (Nat.le_succ c))`. Establish `h4 : (maximalIdeal B ^ c • (⊤ : Submodule B Q)) = ⊥`. Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal B) _ (IsNoetherian.noetherian _) ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← mul_smul, ← pow_succ', ← h3]`. Rewrite using `[jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Use `⟨c, Submodule.smul_le.2 fun a ha z _ => ?_⟩` and prove the remaining obligations. Establish `h5 : a • (Submodule.Quotient.mk z : Q) ∈ (maximalIdeal B ^ c • (⊤ : Submodule B Q))` using `Submodule.smul_mem_smul ha Submodule.mem_top`. Rewrite `h5` using `[h4, Submodule.mem_bot]`.
-
-Conclude with `(Submodule.Quotient.mk_eq_zero _).1 h5`.
+A detailed English derivation is pending.
 -/
 private theorem power_maximal_ideal_le_map_power_smul_top (Λ B M : Type) [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [Finite (ResidueField Λ)]
     [CommRing B] [IsLocalRing B] [AddCommGroup M] [Module B M] [Module Λ M] [Module.Finite Λ M] (t : Λ →+* B)
@@ -59,15 +57,13 @@ private theorem power_maximal_ideal_le_map_power_smul_top (Λ B M : Type) [CommR
   exact (Submodule.Quotient.mk_eq_zero _).1 h5
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.smul_induction_on hx ?_ fun a b ha hb => Submodule.add_mem _ ha hb` and prove the remaining obligations. Introduce `t ht y _`. Use `Submodule.span_induction (p := fun t _ => ∀ y : X, t • y ∈ (K • ⊤ : Submodule R X)) ?_ ?_ ?_ ?_ ht y` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩ y`. Rewrite using `[← h]`. Conclude with `Submodule.smul_mem_smul hz Submodule.mem_top`. Introduce `y`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b _ _ ha hb y`. Rewrite using `[add_smul]`. Conclude with `Submodule.add_mem _ (ha y) (hb y)`. Introduce `a b _ hb y`. Rewrite using `[smul_eq_mul, mul_comm, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hb _`. Introduce `hx`. Use `Submodule.smul_induction_on hx ?_ fun a b ha hb => Submodule.add_mem _ ha hb` and prove the remaining obligations. Introduce `a ha y _`. Rewrite using `[h]`.
-
-Conclude with `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ ha) Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_map_smul_top_iff_mem_smul_top {R S X : Type} [CommRing R] [CommRing S] [AddCommGroup X] [Module R X] [Module S X]
     (π : R →+* S) (h : ∀ (a : R) (x : X), a • x = π a • x) (K : Ideal R) (x : X) :
@@ -95,9 +91,9 @@ private theorem mem_map_smul_top_iff_mem_smul_top {R S X : Type} [CommRing R] [C
     exact Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ ha) Submodule.mem_top
 
 /- English proof (translation)
-Substitute `hK` using the available equality. Establish `h1 : (K • ⊤ : Submodule R X).toAddSubgroup = (K.map π • ⊤ : Submodule S X).toAddSubgroup`. Use extensionality with `x`. Conclude with `(mem_map_smul_top_iff_mem_smul_top π h K x).symm`. Use `⟨QuotientAddGroup.quotientAddEquivOfEq h1, fun a z => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (a • x) : X ⧸ (K.map π • ⊤ : Submodule S X)) = π a • Submodule.Quotient.mk x`. Rewrite using `[h, Submodule.Quotient.mk_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem quotient_addEquiv_of_restricted_scalars {R S X : Type} [CommRing R] [CommRing S] [AddCommGroup X] [Module R X] [Module S X]
     (π : R →+* S) (h : ∀ (a : R) (x : X), a • x = π a • x) (K : Ideal R) (KS : Ideal S) (hK : K.map π = KS) :
@@ -112,19 +108,19 @@ private theorem quotient_addEquiv_of_restricted_scalars {R S X : Type} [CommRing
   rw [h, Submodule.Quotient.mk_smul]
 
 /- English proof (translation)
-Establish `hm : ∀ {A B : Type} [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B] (g : A →ₗ[R] B), (K • ⊤ : Submodule R A) ≤ (K • ⊤ : Submodule R B).comap g`. Introduce `A B _ _ _ _ g`. Rewrite using `[← Submodule.map_le_iff_le_comap, Submodule.map_smul'']`. Conclude with `smul_mono_right _ le_top`. Establish `hff : ∀ {A : Type} [AddCommGroup A] [Module R A] (x : A), (Submodule.Quotient.mk (f' • x) : A ⧸ (K • ⊤ : Submodule R A)) = f • Submodule.Quotient.mk x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A _ _ x`. Rewrite using `[← Submodule.Quotient.mk_smul, eq_comm, Submodule.Quotient.eq, ← sub_smul]`. Conclude with `Submodule.smul_mem_smul hf Submodule.mem_top`. Establish `hb : Function.Bijective (Submodule.mapQ _ _ p (hm p))`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Rewrite `hz` using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, ← LinearMap.range_eq_top.2 hp, ← Submodule.map_top, ← Submodule.map_smul'']`. Take `⟨y, hy, hxy⟩` from `hz`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Establish `h3 : x - y ∈ LinearMap.ker p` using `by rw [LinearMap.mem_ker, map_sub, hxy, sub_self]`. Simplify using `using Submodule.add_mem _ (hk h3) hy`. Introduce `z`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, rfl⟩` from `hp x`. Conclude with `⟨Submodule.Quotient.mk y, rfl⟩`. Set `e` to `LinearEquiv.ofBijective _ hb`. Establish `h3 : ∀ z, Submodule.mapQ _ _ φ (hm φ) (Submodule.mapQ _ _ ψ (hm ψ) z) = f • z`. Introduce `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Rewrite using `[Submodule.mapQ_apply, Submodule.mapQ_apply, h1, hff]`. Establish `h4 : ∀ z, Submodule.mapQ _ _ ψ (hm ψ) (Submodule.mapQ _ _ φ (hm φ) z) = f • z`. Introduce `z`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.mapQ_apply, Submodule.mapQ_apply, h2, hff]`. Use `⟨e.symm.toLinearMap ∘ₗ Submodule.mapQ _ _ φ (hm φ) ∘ₗ κ.toLinearMap, κ.symm.toLinearMap ∘ₗ Submodule.mapQ _ _ ψ (hm ψ) ∘ₗ e.toLinearMap, fun z => ?_, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, h3, map_smul, LinearEquiv.symm_apply_apply]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, h4, map_smul, LinearEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem quotient_linear_equiv_of_factorization {R X Y Z M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup Y] [Module R Y]
     [AddCommGroup Z] [Module R Z] [AddCommGroup M] [Module R M] (K : Ideal R) (f f' : R) (hf : f - f' ∈ K)
@@ -176,11 +172,11 @@ private theorem quotient_linear_equiv_of_factorization {R X Y Z M : Type} [CommR
       LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `letI : Module R Y := Module.compHom Y (θ.comp ρ)`. Use `letI : Module R (M ⧸ (Iy • ⊤ : Submodule R' M)) := Module.compHom _ ρ`. Take `⟨e, he⟩` from `quotient_addEquiv_of_restricted_scalars π hX K KS hKS`. Take `⟨e', he'⟩` from `quotient_addEquiv_of_restricted_scalars (X := Y) (θ.comp ρ) (fun _ _ => rfl) K KS' hKS'`. Set `κ' : (X ⧸ (K • ⊤ : Submodule R X)) ≃ₗ[R] (Y ⧸ (K • ⊤ : Submodule R Y))` to `((e.trans κ).trans e'.symm).toLinearEquiv fun a x => by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Simplify using `only [AddEquiv.trans_apply]`. Rewrite using `[AddEquiv.symm_apply_eq, he', AddEquiv.apply_symm_apply, he, hκ]`. Both sides reduce to the same expression. Set `p : M →ₗ[R] M ⧸ (Iy • ⊤ : Submodule R' M)` to `{ toFun := Submodule.Quotient.mk map_add' := fun _ _ => rfl map_smul' := fun a x => by`. Rewrite using `[hM]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `rfl }`. Set `φ' : Y →ₗ[R] M ⧸ (Iy • ⊤ : Submodule R' M)` to `{ toFun := φ, map_add' := φ.map_add, map_smul' := fun a x => hφ (ρ a) x }`. Set `ψ' : (M ⧸ (Iy • ⊤ : Submodule R' M)) →ₗ[R] Y` to `{ toFun := ψ, map_add' := ψ.map_add, map_smul' := fun a x => hψ (ρ a) x }`. Use `quotient_linear_equiv_of_factorization K f f' hf κ' p (Submodule.Quotient.mk_surjective _) (fun x hx => ?_) φ' ψ' h1 h2` and prove the remaining obligations. Conclude with `(mem_map_smul_top_iff_mem_smul_top ρ hM K x).1 (Submodule.smul_mono_left hI ((Submodule.Quotient.mk_eq_zero _).1 hx))`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem quotient_equiv_of_compatible_ring_homs {R R' S S' X Y M : Type} [CommRing R] [CommRing R'] [CommRing S] [CommRing S']
     [AddCommGroup X] [Module R X] [Module S X] [AddCommGroup Y] [Module S' Y] [AddCommGroup M] [Module R M] [Module R' M]
@@ -218,9 +214,9 @@ private theorem quotient_equiv_of_compatible_ring_homs {R R' S S' X Y M : Type} 
   exact (mem_map_smul_top_iff_mem_smul_top ρ hM K x).1 (Submodule.smul_mono_left hI ((Submodule.Quotient.mk_eq_zero _).1 hx))
 
 /- English proof (translation)
-Establish `h1 : (Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ Λ)) ^ 1).map g = ⊥`. Rewrite using `[pow_one, Ideal.map_span, Ideal.span_eq_bot]`. Introduce and unpack `_ ⟨_, ⟨p, rfl⟩, rfl⟩`. Simplify using `[hg]`. Establish `h2 : g.comp MvPowerSeries.C = i.comp lam`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a`. Simplify using `[hg]`. Unfold `kjIdeal`. Rewrite using `[Ideal.map_sup, h1, bot_sup_eq, Ideal.map_map, Ideal.map_map, h2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_constant_coeff_power_ideal_eq {Λ B S σ : Type} [CommRing Λ] [IsLocalRing Λ] [CommRing B] [CommRing S] (lam : Λ →+* B)
     (i : B →+* S) (g : MvPowerSeries σ Λ →+* S) (hg : ∀ z, g z = i (lam (MvPowerSeries.constantCoeff z))) (j : ℕ) :
@@ -236,7 +232,7 @@ private theorem map_constant_coeff_power_ideal_eq {Λ B S σ : Type} [CommRing �
   rw [Ideal.map_sup, h1, bot_sup_eq, Ideal.map_map, Ideal.map_map, h2]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hf s`. Take `⟨z', rfl⟩` from `hf' s'`. Establish `h1` using `h0 _ (h z z' rfl rfl) x`. Rewrite `h1` using `[map_sub, sub_smul, sub_eq_zero]`. Rewrite using `[h1, hκ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem quotient_equiv_congr_of_surjective_algHom {B A S S' Q Q' : Type} [CommRing B] [CommRing A] [CommRing S] [CommRing S'] [Algebra B A]
     [Algebra B S] [Algebra B S'] [AddCommGroup Q] [Module S Q] [AddCommGroup Q'] [Module S' Q'] (f : A →ₐ[B] S)
@@ -250,21 +246,17 @@ private theorem quotient_equiv_congr_of_surjective_algHom {B A S S' Q Q' : Type}
   rw [h1, hκ]
 
 /- English proof (translation)
-Introduce `l hl L G0 T Λ n O _ _ _ hO _ r B _ _ _ u J D A W m hP hA j`. Use `haveI := hO.complete`. Use `haveI := hO.finite`. Use `haveI hco : IsCO O (abelian₂ O Unit D) := co_mvps O O _`. Use `haveI : Finite (ResidueField (abelian₂ O Unit D)) := Finite.of_surjective _ (resMap_bijective O (abelian₂ O Unit D)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := A.b.fin`. Take `⟨e, he⟩` from `power_maximal_ideal_le_map_power_smul_top (abelian₂ O Unit D) B A.b.M A.b.lam.toRingHom A.b.smul_lam j`. Use `filter_upwards [piCong l L G0 T Λ n O r B u J D A W m hP hA e, Λ.U_le (eventually_ge_atTop j)] with N hN hjN`. Take `⟨κ, hκ, hκ0⟩` from `spCong B T.q n _ _ (fun j i => algebraMap O B (A.ut j i)) _ _ A.b.M hN.1 he`. Take `⟨-, hf, c, hc⟩` from `foCong l L G0 T Λ n O r B u J D A W m j N hjN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlm : (l : abelian₂ O Unit D) ∈ maximalIdeal (abelian₂ O Unit D)`. Introduce `hu`. Establish `h1` using `hu.map ((residue O).comp (MvPowerSeries.constantCoeff : abelian₂ O Unit D →+* O))`. Use `haveI := hO.char`. Rewrite `h1` using `[map_natCast, CharP.cast_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_isUnit_zero h1`. Establish `hs : ∀ Q : Fin T.q → Polynomial B, Function.Surjective (Sp.mk Q fun j i => algebraMap O B (A.ut j i))` using `fun Q => Ideal.Quotient.mkₐ_surjective B _`. Establish `key` using `fun a : W.R => quotient_equiv_congr_of_surjective_algHom _ _ (hs _) (hs _) κ hκ _ hκ0 _ _ (hN.2 a)`. Use `quotient_equiv_of_compatible_ring_homs (X := X0 m) (M := MN m N) m.π.toRingHom (m.ρ N).toRingHom (A.m N).θ.toRingHom (fun _ _ => rfl) (fun _ _ => rfl) _ _ _ (Ideal.span (Set.range fun p => (A.A N).s (MvPowerSeries.X p))) ?_ ?_ ?_ (fo W) (fEl (T.Nq N) W.t.U) ?_ κ ?_ (A.m N).φ (A.m …` and prove the remaining obligations. Rewrite using `[Ideal.map_map]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_constant_coeff_power_ideal_eq _ _ _ m.π_s j`. Rewrite using `[Ideal.map_map]`. Use `map_constant_coeff_power_ideal_eq _ _ _ (fun z => ?_) j` and prove the remaining obligations. Conclude with `(congrArg (A.m N).θ (m.specializationMap_comp_universalSection N z)).trans ((A.m N).theta_coefficientMap_eq z)`. Rewrite using `[Ideal.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Establish `h1 : MvPowerSeries.X p ∈ kjIdeal (abelian₂ O Unit D) (Fin T.q × Fin n) 1 j` using `Ideal.mem_sup_left (by rw [pow_one]; exact Ideal.subset_span (Set.mem_range_self p))`. Establish `h2` using `Ideal.mem_map_of_mem (m.ρ N).toRingHom (Ideal.mem_map_of_mem m.s.toRingHom h1)`. Establish `h3` using `m.specializationMap_comp_universalSection N (MvPowerSeries.X p)`. Conclude with `(congrArg (· ∈ _) h3).mp h2`.
-
-Rewrite using `[hc]`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Establish `h1 : MvPowerSeries.C ((l : abelian₂ O Unit D) ^ j) ∈ kjIdeal (abelian₂ O Unit D) (Fin T.q × Fin n) 1 j` using `Ideal.mem_sup_right (Ideal.mem_map_of_mem _ (Ideal.pow_mem_pow hlm j))`. Establish `h2` using `Ideal.mem_map_of_mem m.s.toRingHom h1`. Rewrite `h2` using `[map_pow, map_natCast, map_pow, map_natCast]`. Then use the resulting hypothesis.
-
-Conclude with `key`. Introduce `z`. Conclude with `((A.m N).φψ z).trans (congrArg (· • z) hf.symm)`. Introduce `z`. Conclude with `((A.m N).ψφ z).trans (congrArg (fun t => (A.m N).θ t • z) hf.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.eventually_exists_patchedModule_quotient_maps :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) (m : RMaps W), T.ProL → Adapted T (r := r) → ∀ j : ℕ, ∀ᶠ N in (Λ.U : Filter ℕ), ∃ (φ : (X0 m ⧸ ((kjIdeal (abelian₂ O Unit D) (Fin T.q × Fin n) 1 j).map m.s.toRingHom • ⊤ : Submodule W.R (X0 m))) →ₗ[W.R] (MN m N ⧸ ((kjIdeal (abelian₂ O Unit D) (Fin T.q × Fin n) 1 j).map m.s.toRingHom • ⊤ : Submodule W.R (MN m N)))) (ψ : (MN m N ⧸ ((kjIdeal (abelian₂ O Unit D) (Fin T.q × Fin n) 1 j).map m.s.toRingHom • ⊤ : Submodule W.R (MN m N))) →ₗ[W.R] (X0 m ⧸ ((kjIdeal (abelian₂ O Unit D) (Fin T.q × Fin n) 1 j).map m.s.toRingHom • ⊤ : Submodule W.R (X0 m)))), (∀ z, φ (ψ z) = fo W • z) ∧ ∀ z, ψ (φ z) = fo W • z := by

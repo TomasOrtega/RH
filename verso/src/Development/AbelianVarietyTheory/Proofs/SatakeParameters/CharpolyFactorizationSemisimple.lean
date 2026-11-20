@@ -27,7 +27,7 @@ def diagM {t : ℕ} (χ : Fin t → Γ →* kˣ) : Γ →* Matrix (Fin t) (Fin t
   map_mul' g h := by simp [Matrix.diagonal_mul_diagonal]
 
 /- English proof (translation)
-Simplify using `[blockM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockM_inl {a b n : ℕ} (e0 : Fin a ⊕ Fin b ≃ Fin n) (ρ₁ : Γ →* GL (Fin a) k)
     (ρ₂ : Γ →* GL (Fin b) k) (g : Γ) (p q : Fin a) :
@@ -35,7 +35,7 @@ theorem blockM_inl {a b n : ℕ} (e0 : Fin a ⊕ Fin b ≃ Fin n) (ρ₁ : Γ �
   simp [blockM]
 
 /- English proof (translation)
-Use `show (Matrix.reindex e0 e0 _).charpoly = _`. Rewrite using `[Matrix.charpoly_reindex, Matrix.charpoly_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockM_charpoly {a b n : ℕ} (e0 : Fin a ⊕ Fin b ≃ Fin n) (ρ₁ : Γ →* GL (Fin a) k)
     (ρ₂ : Γ →* GL (Fin b) k) (g : Γ) :
@@ -45,7 +45,7 @@ theorem blockM_charpoly {a b n : ℕ} (e0 : Fin a ⊕ Fin b ≃ Fin n) (ρ₁ : 
   rw [Matrix.charpoly_reindex, Matrix.charpoly_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Use `GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate.isSSRep_of_prod ((LinearEquiv.funCongrLeft k k e0).trans (LinearEquiv.sumArrowLequivProdArrow _ _ k k)) (fun g v => ?_) h₁ h₂` and prove the remaining obligations. Use `show _ = _`. Apply the tactic sequence `ext i <;> simp [blockM, Matrix.submatrix_mulVec_equiv, Matrix.fromBlocks_mulVec, LinearMap.funLeft] <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem blockM_ss {a b n : ℕ} (e0 : Fin a ⊕ Fin b ≃ Fin n) (ρ₁ : Γ →* GL (Fin a) k)
     (ρ₂ : Γ →* GL (Fin b) k) (h₁ : IsSSRep ρ₁) (h₂ : IsSSRep ρ₂) : IsSSRep (blockM e0 ρ₁ ρ₂).toHomUnits := by
@@ -55,7 +55,7 @@ theorem blockM_ss {a b n : ℕ} (e0 : Fin a ⊕ Fin b ≃ Fin n) (ρ₁ : Γ →
   ext i <;> simp [blockM, Matrix.submatrix_mulVec_equiv, Matrix.fromBlocks_mulVec, LinearMap.funLeft] <;> rfl
 
 /- English proof (translation)
-Introduce `W _`. Take `⟨W', hW'⟩` from `W.exists_isCompl`. Conclude with `⟨W', fun g v hv => by rw [h]; exact W'.smul_mem _ hv, hW'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ss_of_scalar {a : ℕ} (ρ : Γ →* GL (Fin a) k) (c : Γ → k)
     (h : ∀ g v, (ρ g : Matrix (Fin a) (Fin a) k).mulVec v = c g • v) : IsSSRep ρ := by
@@ -64,7 +64,7 @@ theorem ss_of_scalar {a : ℕ} (ρ : Γ →* GL (Fin a) k) (c : Γ → k)
   exact ⟨W', fun g v hv => by rw [h]; exact W'.smul_mem _ hv, hW'⟩
 
 /- English proof (translation)
-The claim follows from `| 0, χ => ss_of_scalar _ (fun _ => 0) fun g v => funext fun c => c.elim0 | t + 1, χ => by refine GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate.isSSRep_of_prod (ρ₁ := (diagM fun c : Fin t => χ (Fin.castAdd 1 c)).toHomUnits) (ρ₂ := (diagM fun c : Fin 1 => χ (Fin.natA …`.
+A detailed English derivation is pending.
 -/
 theorem diagM_ss : ∀ {t : ℕ} (χ : Fin t → Γ →* kˣ), IsSSRep (diagM χ).toHomUnits
   | 0, χ => ss_of_scalar _ (fun _ => 0) fun g v => funext fun c => c.elim0
@@ -82,7 +82,7 @@ theorem diagM_ss : ∀ {t : ℕ} (χ : Fin t → Γ →* kˣ), IsSSRep (diagM χ
       exact Or.inl rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.charpoly_diagonal _`.
+A detailed English derivation is pending.
 -/
 theorem diagM_charpoly {t : ℕ} (χ : Fin t → Γ →* kˣ) (g : Γ) :
     (diagM χ g).charpoly = ∏ c, (X - C ((χ c g : kˣ) : k)) :=
@@ -91,7 +91,7 @@ theorem diagM_charpoly {t : ℕ} (χ : Fin t → Γ →* kˣ) (g : Γ) :
 end Rep
 
 /- English proof (translation)
-Rewrite using `[← Finset.Ico_add_one_right_eq_Icc, Finset.prod_Ico_eq_prod_range, Nat.add_sub_cancel, Finset.prod_range]`. Conclude with `Finset.prod_congr rfl fun c _ => by rw [add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_Icc_eq_prod_fin {M : Type} [CommMonoid M] (t : ℕ) (f : ℕ → M) :
     ∏ c ∈ Finset.Icc 1 t, f c = ∏ c : Fin t, f ((c : ℕ) + 1) := by
@@ -100,17 +100,17 @@ theorem prod_Icc_eq_prod_fin {M : Type} [CommMonoid M] (t : ℕ) (f : ℕ → M)
   exact Finset.prod_congr rfl fun c _ => by rw [add_comm]
 
 /- English proof (translation)
-Introduce `D h5 i x r hr ρ hρ hch`. Use `set φ := algebraMap (D.nd.O i) (Kf D.nd i) with hφ`. Set `χK : Fin D.R.t → G D.host.E D.nd.Om →* (Kf D.nd i)ˣ` to `fun c => (Units.map φ.toMonoidHom).comp (D.nd.chi i ((c : ℕ) + 1))`. Set `e0 : Fin D.R.r ⊕ Fin D.R.t ≃ Fin D.R.nV` to `finSumFinEquiv.trans (finCongr rfl)`. Set `S` to `(blockM e0 (mapRep φ ρ) (diagM χK).toHomUnits).toHomUnits`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : IsSSRep S` using `blockM_ss e0 _ _ hρ (diagM_ss χK)`. Establish `hpoly : ∀ g, ((mapRep φ r g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Kf D.nd i)).charpoly = ((S g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Kf D.nd i)).charpoly`. Introduce `g`. Use `show (((r g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)).map φ).charpoly = (blockM e0 (mapRep φ ρ) (diagM χK).toHomUnits g).charpoly`. Rewrite using `[blockM_charpoly, Matrix.charpoly_map, hch g, Polynomial.map_mul, prod_Icc_eq_prod_fin, Polynomial.map_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show _ = (((ρ g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).map φ).charpoly * (diagM χK g).charpoly`. Rewrite using `[Matrix.charpoly_map, diagM_charpoly]`. Use `congr 1`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `[χK]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Pm, hPm⟩` from `h5.2.2.2 (Kf D.nd i) D.R.nV (mapRep φ r) S hr.2.1 hS hpoly`. Use `continuous_matrix fun p q => ?_` and prove the remaining obligations. Use `GlobalTheory.BlockJumpsCompare.continuous_of_comb (D.nd.O_adic i) (fun jk : Fin D.R.nV × Fin D.R.nV => ((Pm⁻¹ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Kf D.nd i)) (e0 (Sum.inl p)) jk.1 * (Pm : Matrix (Fin D.R.nV) (Fin D.R.nV) (Kf D.nd i)) jk.2 (e0 (Sum.inl q))) (h := fun jk …` and prove the remaining obligations. Establish `e1 : φ (((ρ g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)) p q) = ((S g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Kf D.nd i)) (e0 (Sum.inl p)) (e0 (Sum.inl q))` using `by show _ = blockM e0 (mapRep φ ρ) (diagM χK).toHomUnits g (e0 (Sum.inl p)) (e0 (Sum.inl q))`. Rewrite using `[blockM_inl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[e1, hPm g, Units.val_mul, Units.val_mul, Matrix.mul_apply, Fintype.sum_prod_type]`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show _ = _ * φ (((r g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)) j k)`. Express the relevant statement in the definitionally equal form `_ * (((r g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)).map φ) j k * _ = _`. Rewrite using `[Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem cont : ∀ (D : D7), Formalism.MainNotions.SumRepresentations.adm5 D → ∀ (i : D.nd.Loc) (x : D.nd.X i)
     (r : G D.host.E D.nd.Om →* GL (Fin D.R.nV) (D.nd.O i)), IsHeckeGalois D.nd i x r →

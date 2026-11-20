@@ -9,9 +9,9 @@ open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hK E _ _ _ r s φ m B hφ ⟨g, hg⟩`. Take `⟨b, hb, k, hk, rfl⟩` from `GroundTheory.Automorphic.Reduction.exists_adelicBorel_mul_maxCompact (K := E) (n := r + s) g`. Take `⟨X, m₁, m₂, rfl⟩` from `UpperTheory.upperTriangular_eq_unipotent_mul_levi _ r s b (GroundTheory.Automorphic.Reduction.mem_adelicBorel.1 hb)`. Use `⟨_, hK E (r + s) φ m B hφ k hk, m₁, m₂, ?_⟩` and prove the remaining obligations. Establish `hl : GroundTheory.Automorphic.AutomorphicForm.IsLeftInvariant φ.1` using `hφ.aut.left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hg` using `[mul_assoc, UpperTheory.constantTerm_unipotent_left_invariant E (r + s) r φ.1 hl]`. Rewrite `hg` using `[← GroundTheory.Automorphic.AutomorphicForm.constantTerm_rightTranslate]`. Conclude with `hg`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.S.iwa :
     UpperTheory.V.Cj.S.RtK → UpperTheory.V.Cj.S.Iwa := by

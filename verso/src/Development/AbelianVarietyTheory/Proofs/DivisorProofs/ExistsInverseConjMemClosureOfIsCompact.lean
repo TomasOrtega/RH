@@ -9,13 +9,11 @@ open scoped Quaternion Topology TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ _ _ _ H C hC g hW`. Set `K : Set (X × X)` to `(C ×ˢ C) ∩ {p | p.1 * p.2 = 1 ∧ p.2 * p.1 = 1}`. Establish `hK : IsCompact K`. Use `(hC.prod hC).inter_right ?_` and prove the remaining obligations. Conclude with `(isClosed_eq (continuous_fst.mul continuous_snd) continuous_const).inter (isClosed_eq (continuous_snd.mul continuous_fst) continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hcont : Continuous fun z : X × (X × X) => z.2.1 * z.1 * z.2.2` using `((continuous_snd.fst).mul continuous_fst).mul continuous_snd.snd`. Establish `hP : ∀ y ∈ K, ∀ᶠ z : X × (X × X) in 𝓝 (g, y), z.2.1 * z.1 * z.2.2 ∈ (closure H)ᶜ`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hcont.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Apply `isClosed_closure.isOpen_compl.mem_nhds` to reduce the goal to its premises. Conclude with `hne y.1 hy.1.1 y.2 hy.1.2 hy.2.1 hy.2.2`. Establish `hev` using `hK.eventually_forall_of_forall_eventually (x₀ := g) (P := fun w (y : X × X) => y.1 * w * y.2 ∈ (closure H)ᶜ) hP`. Take `⟨c, hc, c', hc', h1, h2, w, hw, hH⟩` from `hW _ hev`.
-
-Conclude with `hw (c, c') ⟨⟨hc, hc'⟩, h1, h2⟩ (subset_closure hH)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_inverse_conj_mem_closure_of_isCompact :
     ∀ (X : Type) [Monoid X] [TopologicalSpace X] [ContinuousMul X] [T2Space X] (H C : Set X),

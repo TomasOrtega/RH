@@ -17,19 +17,19 @@ def IsInertNbr (P : Ideal (𝓞 E)) (s : List ℕ) (N N' : Submodule (𝓞 E) (S
     Nonempty ((N' ⧸ (N ⊓ N').comap N'.subtype) ≃ₗ[𝓞 E] inType P s)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.2, h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsInertNbr.symm {P : Ideal (𝓞 E)} {s : List ℕ} {N N' : Submodule (𝓞 E) (Sp E n)}
     (h : IsInertNbr P s N N') : IsInertNbr P s N' N := ⟨h.2, h.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsInertNbr.symm, IsInertNbr.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isInertNbr_comm {P : Ideal (𝓞 E)} {s : List ℕ} {N N' : Submodule (𝓞 E) (Sp E n)} :
     IsInertNbr P s N N' ↔ IsInertNbr P s N' N := ⟨IsInertNbr.symm, IsInertNbr.symm⟩
 
 /- English proof (translation)
-Take `⟨⟨e1⟩, ⟨e2⟩⟩` from `h`. Conclude with `⟨⟨(quotMapEquiv (g.restrictScalars (𝓞 E)) N' N).symm.trans e1⟩, ⟨(quotMapEquiv (g.restrictScalars (𝓞 E)) N N').symm.trans e2⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsInertNbr.gmap {P : Ideal (𝓞 E)} {s : List ℕ} {N N' : Submodule (𝓞 E) (Sp E n)}
     (h : IsInertNbr P s N N') (g : Sp E n ≃ₗ[E] Sp E n) : IsInertNbr P s (gmap g N) (gmap g N') := by
@@ -38,7 +38,7 @@ theorem IsInertNbr.gmap {P : Ideal (𝓞 E)} {s : List ℕ} {N N' : Submodule (�
     ⟨(quotMapEquiv (g.restrictScalars (𝓞 E)) N N').symm.trans e2⟩⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (x i)`. Rewrite using `[Pi.smul_apply, ← hy, Pi.zero_apply, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_le_pow_right (List.le_sum_of_mem (List.get_mem s i)) hr)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inType_smul_eq_zero {P : Ideal (𝓞 E)} {s : List ℕ} {r : 𝓞 E} (hr : r ∈ P ^ s.sum) (x : inType P s) :
     r • x = 0 := by
@@ -49,13 +49,11 @@ theorem inType_smul_eq_zero {P : Ideal (𝓞 E)} {s : List ℕ} {r : 𝓞 E} (hr
   exact Ideal.mul_mem_right _ _ (Ideal.pow_le_pow_right (List.le_sum_of_mem (List.get_mem s i)) hr)
 
 /- English proof (translation)
-Take `⟨⟨e1⟩, ⟨e2⟩⟩` from `h`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.smul_le]`. Introduce `r hr x hx`. Establish `h0 : e1 (Submodule.Quotient.mk (r • (⟨x, hx⟩ : N))) = 0`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.Quotient.mk_smul, map_smul]`. Conclude with `inType_smul_eq_zero hr _`. Rewrite `h0` using `[LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`. Conclude with `(Submodule.mem_inf.1 (Submodule.mem_comap.1 h0)).1`. Rewrite using `[Submodule.smul_le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `r hr x hx`. Establish `h0 : e2 (Submodule.Quotient.mk (r • (⟨x, hx⟩ : N'))) = 0`. Rewrite using `[Submodule.Quotient.mk_smul, map_smul]`. Conclude with `inType_smul_eq_zero hr _`. Rewrite `h0` using `[LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`.
-
-Conclude with `(Submodule.mem_inf.1 (Submodule.mem_comap.1 h0)).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsInertNbr.smul_le {P : Ideal (𝓞 E)} {s : List ℕ} {N N' : Submodule (𝓞 E) (Sp E n)}
     (h : IsInertNbr P s N N') : (P ^ s.sum) • N ≤ N' ∧ (P ^ s.sum) • N' ≤ N := by
@@ -87,15 +85,15 @@ def DecoSet.inertNb (P : Ideal (𝓞 E)) (s : List ℕ) (d : DecoSet E n ST SG) 
   if h : (d.inertSet P s).Finite then h.toFinset else ∅
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1.symm, h.2.1.symm, h.2.2.symm⟩, fun h => ⟨h.1.symm, h.2.1.symm, h.2.2.symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem DecoSet.inertSet_symm {P : Ideal (𝓞 E)} {s : List ℕ} {d e : DecoSet E n ST SG} :
     e ∈ d.inertSet P s ↔ d ∈ e.inertSet P s := ⟨fun h => ⟨h.1.symm, h.2.1.symm, h.2.2.symm⟩, fun h => ⟨h.1.symm, h.2.1.symm, h.2.2.symm⟩⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[DecoSet.smul_val, DecoSet.smul_val]`. Conclude with `h1.gmap _`. Rewrite using `[DecoSet.smul_val, DecoSet.smul_val]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Deco.act, h2]`. Rewrite using `[DecoSet.smul_val, DecoSet.smul_val]`. Simplify using `only [Deco.act, h3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem DecoSet.smul_mem_inertSet {P : Ideal (𝓞 E)} {s : List ℕ} (a : UF E n × GLG E n SG)
     {d e : DecoSet E n ST SG} (h : e ∈ d.inertSet P s) : a • e ∈ (a • d).inertSet P s := by
@@ -109,7 +107,7 @@ theorem DecoSet.smul_mem_inertSet {P : Ideal (𝓞 E)} {s : List ℕ} (a : UF E 
     simp only [Deco.act, h3]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `DecoSet.smul_mem_inertSet a⁻¹ h` as an intermediate fact. Simplify `this` using `only [inv_smul_smul]`. Conclude with `DecoSet.smul_mem_inertSet a`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem DecoSet.smul_mem_inertSet_iff {P : Ideal (𝓞 E)} {s : List ℕ} (a : UF E n × GLG E n SG)
     {d e : DecoSet E n ST SG} : a • e ∈ (a • d).inertSet P s ↔ e ∈ d.inertSet P s := by
@@ -120,9 +118,9 @@ theorem DecoSet.smul_mem_inertSet_iff {P : Ideal (𝓞 E)} {s : List ℕ} (a : U
   · exact DecoSet.smul_mem_inertSet a
 
 /- English proof (translation)
-Use extensionality with `e`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Use `⟨a⁻¹ • e, ?_, smul_inv_smul a e⟩` and prove the remaining obligations. Rewrite using `[← DecoSet.smul_mem_inertSet_iff a, smul_inv_smul]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he`. Introduce and unpack `⟨e', he', rfl⟩`. Conclude with `DecoSet.smul_mem_inertSet a he'`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem DecoSet.inertSet_smul (P : Ideal (𝓞 E)) (s : List ℕ) (a : UF E n × GLG E n SG)
     (d : DecoSet E n ST SG) : (a • d).inertSet P s = (fun e => a • e) '' d.inertSet P s := by
@@ -136,9 +134,9 @@ theorem DecoSet.inertSet_smul (P : Ideal (𝓞 E)) (s : List ℕ) (a : UF E n ×
     exact DecoSet.smul_mem_inertSet a he'
 
 /- English proof (translation)
-Unfold `DecoSet.inertNb`. Establish `hfin : ((a • d).inertSet P s).Finite ↔ (d.inertSet P s).Finite`. Rewrite using `[DecoSet.inertSet_smul]`. Conclude with `Set.finite_image_iff (MulAction.injective a).injOn`. Distinguish the cases in `h : (d.inertSet P s).Finite`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos (hfin.2 h), dif_pos h, Set.Finite.mem_toFinset, Set.Finite.mem_toFinset]`. Conclude with `DecoSet.smul_mem_inertSet_iff a`. Rewrite using `[dif_neg (mt hfin.1 h), dif_neg h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem DecoSet.smul_mem_inertNb_iff {P : Ideal (𝓞 E)} {s : List ℕ} (a : UF E n × GLG E n SG)
     {d e : DecoSet E n ST SG} : a • e ∈ (a • d).inertNb P s ↔ e ∈ d.inertNb P s := by
@@ -165,7 +163,7 @@ def DecoPts.nbI (c : DecoPts S E n ST SG) (P : Ideal (𝓞 E)) (s : List ℕ) (d
   ((c.pts d).inertNb P s).map c.pts.symm.toEmbedding
 
 /- English proof (translation)
-Unfold `DecoPts.nbI`. Rewrite using `[Finset.mem_map_equiv, Equiv.symm_symm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem DecoPts.mem_nbI (c : DecoPts S E n ST SG) (P : Ideal (𝓞 E)) (s : List ℕ) (d e : S.D) :
     e ∈ c.nbI P s d ↔ c.pts e ∈ (c.pts d).inertNb P s := by
@@ -181,7 +179,7 @@ def heckeI (c : DecoPts S E n ST SG) (P : Ideal (𝓞 E)) (s : List ℕ) : LocOp
     (by intro g x; rfl)
 
 /- English proof (translation)
-Simplify using `only [heckeI, LocOp.ofNbr_op_apply, LinearMap.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeI_op_apply (c : DecoPts S E n ST SG) (P : Ideal (𝓞 E)) (s : List ℕ) (φ : S.EqFun) (d : S.D) :
     (((heckeI c P s).op φ : S.EqFun) : S.D → S.V) d = ∑ e ∈ c.nbI P s d, (φ : S.D → S.V) e := by

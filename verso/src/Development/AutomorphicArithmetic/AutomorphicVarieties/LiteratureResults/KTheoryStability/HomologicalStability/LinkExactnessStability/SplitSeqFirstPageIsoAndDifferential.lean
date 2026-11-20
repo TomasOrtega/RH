@@ -13,7 +13,7 @@ open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab GlobalTheory.SeqC
 namespace GlobalTheory.HomStab
 
 /- English proof (translation)
-Establish `hmem : stab R (n - p) n (Nat.sub_le n p) x ∈ (stab R (n - p) n (Nat.sub_le n p)).range` using `⟨x, rfl⟩`. Rewrite `hmem` using `[(GlobalTheory.T.stabilizer_stdSeq_iso_GL_of_complement R n p h).2]`. Conclude with `hmem`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_smul_stdSeq (R : Type) [CommRing R] (n p : ℕ) (h : p ≤ n) (x : GL (Fin (n - p)) R) :
     stab R (n - p) n (Nat.sub_le _ _) x • stdSeq R n p h = stdSeq R n p h := by
@@ -22,9 +22,9 @@ theorem stab_smul_stdSeq (R : Type) [CommRing R] (n p : ℕ) (h : p ≤ n) (x : 
   exact hmem
 
 /- English proof (translation)
-Introduce `R _ s hs n`. Use `⟨fun p q => if h : p ≤ n then ptH ℤ (stab R (n - p) n (Nat.sub_le _ _)) (stdSeq R n p h) (stab_smul_stdSeq R n p h) q else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `p q hp`. Establish `h : p ≤ n` using `by omega`. Simplify using `only [dif_pos h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(GlobalTheory.T.shapiro_lemma_transitive_groupHomology ℤ (GL (Fin n) R) (GL (Fin (n - p)) R) (SplitSet R n p) (stab R (n - p) n (Nat.sub_le _ _)) (stdSeq R n p h) (stab_smul_stdSeq R n p h) (GlobalTheory.T.stabilizer_stdSeq_iso_GL_of_complement R n p h).1 (GlobalTheory.T.stabiliz …`. Introduce `p q hp`. Establish `h0 : p ≤ n` using `by omega`. Simplify using `only [dif_pos hp, dif_pos h0]`. Conclude with `GlobalTheory.T.standardSeqPoint_comp_splitSeqDifferential R n p q hp (stab_smul_stdSeq R n (p + 1) hp) (stab_smul_stdSeq R n p h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem firstPage_split : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ n : ℕ,
     ∃ e : ∀ p q, grpH (GL (Fin (n - p)) R) q ⟶ groupHomology (splitRep R n p) q,
@@ -53,7 +53,7 @@ end
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab GlobalTheory.SeqCx UpperTheory.V.KL
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.HomStab.firstPage_split`. Consider the case `exact @GlobalTheory.HomStab.stab_smul_stdSeq`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.splitSeq_firstPage_iso_and_differential : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ n : ℕ, ∃ e : ∀ p q, grpH (GL (Fin (n - p)) R) q ⟶ groupHomology (splitRep R n p) q, (∀ p q, p + s ≤ n → IsIso (e p q)) ∧ ∀ p q, p + 1 ≤ n → e (p + 1) q ≫ hMap (splitD R n p) q = if Even p then grpHMap (stab R (n - (p + 1)) (n - p) (by omega)) q ≫ e p q else 0 := by
   first

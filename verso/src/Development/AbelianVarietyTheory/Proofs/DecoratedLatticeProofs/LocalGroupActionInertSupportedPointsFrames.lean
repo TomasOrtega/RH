@@ -22,7 +22,7 @@ namespace GlobalTheory.InertFrameAct
 variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSpectrum (𝓞 D.host.E)}
 
 /- English proof (translation)
-Use `show finAdEquiv D.host.F D.host.E (finPart D a) w = _`. Rewrite using `[finAdEquiv_apply h, ← GlobalTheory.EmbChart.map_evalV_map_sndA]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem compW_eq_toCompl (h : w.under (𝓞 D.host.F) = v) (a : AE D) :
     GlobalTheory.InertHomIdx.compW D w a = toCompl h (GlobalTheory.AdelicU.compFin D.host.F D.host.E v a) := by
@@ -31,9 +31,9 @@ theorem compW_eq_toCompl (h : w.under (𝓞 D.host.F) = v) (a : AE D) :
   rfl
 
 /- English proof (translation)
-Use `show GlobalTheory.EmbChart.tensAt D.host.E v ((InertChart.complEquiv hw h).symm z) * a = GlobalTheory.EmbChart.tensAt D.host.E v ((InertChart.complEquiv hw h).symm (z * GlobalTheory.InertHomIdx.compW D w a))`. Rewrite using `[GlobalTheory.EmbChart.tensAt_mul_right]`. Use `congr 1`. Apply `(InertChart.complEquiv hw h).injective` to reduce the goal to its premises. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply, compW_eq_toCompl h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem secW_mul (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v)
     (z : w.adicCompletion D.host.E) (a : AE D) :
@@ -47,7 +47,7 @@ theorem secW_mul (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.hos
   rfl
 
 /- English proof (translation)
-Rewrite using `[mul_comm, secW_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_secW (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v)
     (z : w.adicCompletion D.host.E) (a : AE D) :
@@ -55,7 +55,7 @@ theorem mul_secW (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.hos
   rw [mul_comm, secW_mul, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, mul_secW]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_map_secW (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v) {m n p : ℕ}
     (A : Matrix (Fin m) (Fin n) (AE D)) (M : Matrix (Fin n) (Fin p) (w.adicCompletion D.host.E)) :
@@ -64,7 +64,7 @@ theorem mul_map_secW (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D
   simp only [Matrix.mul_apply, Matrix.map_apply, map_sum, mul_secW]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, secW_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_secW_mul (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v) {m n p : ℕ}
     (M : Matrix (Fin m) (Fin n) (w.adicCompletion D.host.E)) (B : Matrix (Fin n) (Fin p) (AE D)) :
@@ -77,13 +77,13 @@ end GlobalTheory.InertFrameAct
 open GlobalTheory.InertFrameAct in
 
 /- English proof (translation)
-Introduce `D v w hw h S T k aS aT gS gT x`. Establish `hT : (mt T (embV T v gT)).map (GlobalTheory.InertHomIdx.compW D w) = (locMat D.sp.cm.sig T.gram h gT).1`. Establish `e` using `finMat_map_compAt D.sp.cm.sig T.gram h (embV T v gT)`. Rewrite `e` using `[proj_emb_self]`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : (mt S (embV S v gS⁻¹)).map (GlobalTheory.InertHomIdx.compW D w) = (locMat D.sp.cm.sig S.gram h gS⁻¹).1`. Establish `e` using `finMat_map_compAt D.sp.cm.sig S.gram h (embV S v gS⁻¹)`. Rewrite `e` using `[proj_emb_self]`. Conclude with `e`. Establish `hinv : (embV S v gS)⁻¹ = embV S v gS⁻¹` using `(map_inv _ _).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[actO, uPt, uPt, hinv, mul_map_secW, map_secW_mul, hT, hS]`. Use `congr 1`. Establish `h1 : aT.1 * (aT⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2 : aS.1 * (aS⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Simplify using `only [Units.val_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc aT.1 (aT⁻¹).1, h1, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.InertFrameAct.actO_uPt : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v) (S T : HSp D) (k : w.adicCompletion D.host.E) (aS : GL (Fin S.rank) (w.adicCompletion D.host.E)) (aT : GL (Fin T.rank) (w.adicCompletion D.host.E)) (gS : Gv S v) (gT : Gv T v) (x : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E)), actO S T (embV S v gS) (embV T v gT) (uPt hw h k aS aT x) = uPt hw h k aS aT ((aT⁻¹ * locMat D.sp.cm.sig T.gram h gT * aT).1 * x * (aS⁻¹ * locMat D.sp.cm.sig S.gram h gS⁻¹ * aS).1) := by
   intro D v w hw h S T k aS aT gS gT x

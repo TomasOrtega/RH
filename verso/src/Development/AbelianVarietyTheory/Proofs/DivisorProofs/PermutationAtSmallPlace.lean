@@ -15,13 +15,13 @@ namespace GlobalTheory.FramePerm
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hex : ∀ s : A, ∃ a : A, (a : G)⁻¹ * (κ * s) ∈ J`. Introduce `s`. Take `⟨k₁, k₂, hs⟩` from `h.1 s s.2`. Take `⟨a, ⟨ha, haJ⟩, -⟩` from `h.2 (κ * s) ⟨⟨κ, hκ⟩ * k₁, k₂, by rw [hs]; simp [mul_assoc]⟩`. Conclude with `⟨⟨a, ha⟩, haJ⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose f hf using hex`. Establish `hinj : Function.Injective f`. Introduce `s s' hss`. Establish `h1` using `hf s`. Establish `h2` using `hf s'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hss]`. Establish `h3 : (s : G)⁻¹ * s' ∈ J`. Use `J.mul_mem (J.inv_mem h1) h2` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Take `⟨k₁, k₂, hs'⟩` from `h.1 s' s'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu` using `(h.2 s' ⟨k₁, k₂, hs'⟩).unique ⟨s.2, h3⟩ ⟨s'.2, by simp [J.one_mem]⟩`. Conclude with `Subtype.ext hu`. Use `⟨Equiv.ofBijective f (Finite.injective_iff_bijective.mp hinj), fun s => ?_⟩` and prove the remaining obligations. Simplify `hf s` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem perm_of_isDC {G : Type} [Group G] (J : Subgroup G) (x : G) (A : Finset G) (h : Bridge.IsDC J x A) (κ : G)
     (hκ : κ ∈ J) : ∃ σ : Equiv.Perm A, ∀ s : A, ((σ s : A) : G)⁻¹ * κ * s ∈ J := by
@@ -47,11 +47,11 @@ theorem perm_of_isDC {G : Type} [Group G] (J : Subgroup G) (x : G) (A : Finset G
   simpa [mul_assoc] using hf s
 
 /- English proof (translation)
-Introduce `D V Pl0 pl ok i x l _ inc ev hev hl hx`. Take `⟨e, α, he, -, hs, hxα⟩` from `hx`. Take `⟨v, ε, ⟨a, rfl, -, ha⟩, hf, hv⟩` from `GlobalTheory.VacLat.place_of_primeIdem (Or.inl ⟨he, rfl⟩)`. Establish `h0 : ev (a ⊗ₜ[D.host.F] 1) = 0`. Use `hev.2.2.1 a fun v' hv' => ha v' ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Apply `hl` to reduce the goal to its premises. Rewrite `hv'` using `[← hv]`. Establish `h1 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ((l : ℕ) : 𝓞 D.host.F) ∈ (pl i.1.1).asIdeal` using `hv'`. Rewrite `h1` using `[map_natCast]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `GlobalTheory.SplitHeckeAdj.map_eq_one_of_supp (ev.comp (Formalism.L2.Theta.finPart D)) (e + Formalism.L2.Theta.cA D e) (by rw [hf]; exact h0) (Formalism.L2.Theta.mt V α) hs`. Rewrite using `[hxα]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_ev_eq_one_of_loc : ∀ {D : D7} (V : Formalism.BasicNotions.TH.HSp D) {Pl0 : Type} (pl : Pl0 → Pl D.host.E) (ok : Set Pl0) (i : ok × ℕ) (x : Bridge.Gf V) {l : ℕ} [Fact l.Prime] (inc : D.host.E →+* PadicAlgCl l) (ev : FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E →+* PadicAlgCl l), EvOk inc ev → ((l : ℕ) : 𝓞 D.host.E) ∉ (pl i.1.1).asIdeal → isLocEnv V pl ok i x → ((x : GL (Fin V.rank) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)).val).map ev = 1 := by
   intro D V Pl0 pl ok i x l _ inc ev hev hl hx
@@ -70,9 +70,9 @@ theorem map_ev_eq_one_of_loc : ∀ {D : D7} (V : Formalism.BasicNotions.TH.HSp D
   exact h2
 
 /- English proof (translation)
-Take `⟨k₁, h₁, k₂, h₂, hL, hk, hc⟩` from `l2 κ κ.2`. Establish `e1 : κ = ⟨k₁, h₁⟩ * ⟨k₂, h₂⟩` using `Subtype.ext hk`. Establish `e2 : ((κ' * (⟨k₂, h₂⟩ : J)⁻¹ : J) : G) = a⁻¹ * k₁ * s` using `by show (κ' : G) * k₂⁻¹ = _`. Rewrite using `[h, hk, mul_assoc a⁻¹, mul_assoc k₁, (hc s hs).eq]`. Use `group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3` using `l3 (κ' * (⟨k₂, h₂⟩ : J)⁻¹) (e2 ▸ Lc.mul_mem (Lc.mul_mem (Lc.inv_mem ha) hL) hs)`. Rewrite `e3` using `[map_mul, map_inv, mul_inv_eq_one]`. Rewrite using `[e3, e1, map_mul, l3 ⟨k₁, h₁⟩ hL, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_move {G : Type} [Group G] (J Lc : Subgroup G) (χ : J →* ℂˣ)
     (l2 : ∀ k ∈ J, ∃ k₁ ∈ J, ∃ k₂ ∈ J, k₁ ∈ Lc ∧ k = k₁ * k₂ ∧ ∀ l ∈ Lc, Commute k₂ l)
@@ -90,11 +90,11 @@ theorem chi_move {G : Type} [Group G] (J Lc : Subgroup G) (χ : J →* ℂˣ)
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p j t i h1 h2 κ κ' a s ha hs h`. Establish `hb` using `p.charW.base`. Establish `ha' : isLocEnv (Vc D j) p.R.pl (p.P.A3.A.ok t) i a` using `(p.R.B.L j t).hecke.hA_loc i ⟨h1, h2⟩ a ha`. Establish `hs' : isLocEnv (Vc D j) p.R.pl (p.P.A3.A.ok t) i s` using `(p.R.B.L j t).hecke.hA_loc i ⟨h1, h2⟩ s hs`. Use `hb.fam.tie.elim fun _ x => x.elim fun _ x => x.elim fun _ tie => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hb.lev.βV j).elim fun c hc => ?_` and prove the remaining obligations. Rewrite `hc` using `[one_pow]`. Use `ha'.elim fun e x => x.elim fun _ x => ?_` and prove the remaining obligations. Establish `he` using `x.1`. Establish `hsp` using `(tie.ok t _).1 (show (p.P.A3.A.ok t) × ℕ from i).1.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `GlobalTheory.SplitHeckeAdj.local_group (Vc D j) (p.R.βV j) (p.R.ΛV j) (p.R.datVt j t) hc _ e he fun PP hP => GlobalTheory.SplitHeckeAdj.off_of_splitOff hsp PP (hP.elim (fun h1 => Or.inl (hb.fam.Sb h1)) Or.inr)`. Use `hl.elim fun Lc l => ?_` and prove the remaining obligations. Establish `hA : a ∈ Lc` using `(GlobalTheory.SplitHeckeAdj.loc_supp _ ha' he).elim fun g hg => hg.2 ▸ l.1 g hg.1`. Establish `hS : s ∈ Lc` using `(GlobalTheory.SplitHeckeAdj.loc_supp _ hs' he).elim fun g hg => hg.2 ▸ l.1 g hg.1`. Conclude with `chi_move _ Lc _ l.2.1 l.2.2.1 κ κ' a s hA hS h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levChi_eq_of_loc : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) (i : (blk p j t).Pl × ℕ), 1 ≤ i.2 → i.2 ≤ (Vc D j).rank → ∀ (κ κ' : levJ p j t) (a s : Bridge.Gf (Vc D j)), a ∈ hkA p j t i → s ∈ hkA p j t i → (κ' : Bridge.Gf (Vc D j)) = a⁻¹ * κ * s → levChi p j t κ' = levChi p j t κ := by
   intro D L hT Gi Gl Kc Y cX ex Csz p j t i h1 h2 κ κ' a s ha hs h
@@ -120,7 +120,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
 /- English proof (translation)
-Substitute `hXX hcc` using the available equality. Establish `e4` using `io.injective (mul_right_cancel₀ hc (e1.trans e2.symm))`. Conclude with `Units.ext (hinj (mul_right_cancel₀ hX e4))`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chi_cancel {K R : Type} [Field K] [CommRing R] (io : K ≃+* ℂ) (emb : R →+* K) (hinj : Function.Injective emb)
     (u u' : Rˣ) (X X' : K) (hXX : X' = X) (hX : X ≠ 0) (c c' : ℂ) (hcc : c' = c) (hc : c ≠ 0)
@@ -130,7 +130,7 @@ theorem chi_cancel {K R : Type} [Field K] [CommRing R] (io : K ≃+* ℂ) (emb :
   exact Units.ext (hinj (mul_right_cancel₀ hX e4))
 
 /- English proof (translation)
-Establish `h : Bridge.IsDC (levJ p j t) ((p.R.B.L j t).hecke.hx i) (hkA p j t i)` using `(p.R.B.L j t).hecke.hDC i hR`. Conclude with `perm_of_isDC (levJ p j t) ((p.R.B.L j t).hecke.hx i) (hkA p j t i) h κ κ.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem perm_core (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) (i : (blk p j t).Pl × ℕ)
     (hR : 1 ≤ i.2 ∧ i.2 ≤ (Vc D j).rank) (κ : levJ p j t) :
@@ -139,25 +139,23 @@ theorem perm_core (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) (i : (blk p j t)
   exact perm_of_isDC (levJ p j t) ((p.R.B.L j t).hecke.hx i) (hkA p j t i) h κ κ.2
 
 /- English proof (translation)
-Establish `hN : N = (Vc D j).rank` using `Fin.equiv_iff_eq.mp ⟨rk.toEquiv⟩`. Establish `hR : 1 ≤ i.1.2 ∧ i.1.2 ≤ (Vc D j).rank` using `⟨i.2.1, by rw [← hN]; exact i.2.2.1⟩`. Establish `hp` using `perm_core p j t i.1 hR κ`. Use `hp.elim fun σ hσ => ?_` and prove the remaining obligations. Establish `hinj : Function.Injective (intEmb Lf)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x y hxy`. Conclude with `Subtype.ext (Subtype.ext hxy)`. Establish `loc : ∀ y ∈ hkA p j t i.1, ∀ τ, ((y : GL (Fin (Vc D j).rank) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)).val).map (ev τ) = 1`. Introduce `y hy τ`. Establish `hy' : isLocEnv (Vc D j) p.R.pl (p.P.A3.A.ok t) i.1 y` using `(p.R.B.L j t).hecke.hA_loc i.1 hR y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `map_ev_eq_one_of_loc (Vc D j) p.R.pl (p.P.A3.A.ok t) i.1 y _ (ev τ) (hev τ) i.2.2.2 hy'`. Establish `key : ∀ (κ' : levJ p j t) (a s : Bridge.Gf (Vc D j)), a ∈ hkA p j t i.1 → s ∈ hkA p j t i.1 → (κ' : Bridge.Gf (Vc D j)) = a⁻¹ * κ * s → kap κ' = kap κ ∧ chi κ' = chi κ`. Introduce `κ' a s ha hs he`. Establish `hmap : ∀ τ, (((κ' : Bridge.Gf (Vc D j)) : GL (Fin (Vc D j).rank) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)).val).map (ev τ) = (((κ : Bridge.Gf (Vc D j)) : GL (Fin (Vc D j).rank) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)).val).map (ev τ)`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha1` using `loc a ha τ`. Establish `hs1` using `loc s hs τ`. Establish `ha' : ((((a⁻¹ : Bridge.Gf (Vc D j)) : GL (Fin (Vc D j).rank) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)).val).map (ev τ)) = 1`. Establish `h0 : ((((a⁻¹ : Bridge.Gf (Vc D j)) : GL (Fin (Vc D j).rank) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)).val).map (ev τ)) * (((a : GL (Fin (Vc D j).rank) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)).val).map (ev τ)) = 1`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, Units.val_one, Matrix.map_one _ (ev τ).map_zero (ev τ).map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[ha1, mul_one]`. Then use the resulting hypothesis. Rewrite using `[he]`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.map_mul, ha', hs1, one_mul, mul_one]`. Establish `hmat : ∀ τ, kapMat p j t ev bs rk κ' τ = kapMat p j t ev bs rk κ τ`. Introduce `τ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `kapMat matOf`. Rewrite using `[hmap τ]`. Establish `hK : kap κ' = kap κ`. Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Matrix.ext` to reduce the goal to its premises. Introduce `a c`. Apply `hinj` to reduce the goal to its premises. Establish `h1` using `(hkap κ' τ).trans ((hmat τ).trans (hkap κ τ).symm)`. Conclude with `congrFun (congrFun h1 a) c`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hK, ?_⟩` and prove the remaining obligations. Establish `hL` using `levChi_eq_of_loc p j t i.1 hR.1 hR.2 κ κ' a s ha hs he`. Establish `hX : (∏ τ, intEmb Lf (kap κ τ).val.det ^ sh τ) ≠ 0`. Use `Finset.prod_ne_zero_iff.mpr fun τ _ => zpow_ne_zero _ ?_` and prove the remaining obligations. Conclude with `((Matrix.GeneralLinearGroup.det (kap κ τ)).isUnit.map (intEmb Lf)).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXX : (∏ τ, intEmb Lf (kap κ' τ).val.det ^ sh τ) = ∏ τ, intEmb Lf (kap κ τ).val.det ^ sh τ` using `congrArg (fun f : D.what₂.Tau → GL (Fin N) (intR Lf) => ∏ τ, intEmb Lf (f τ).val.det ^ sh τ) hK`. Establish `hcc : ((levChi p j t κ' : ℂˣ) : ℂ) = ((levChi p j t κ : ℂˣ) : ℂ)` using `congrArg (fun z : ℂˣ => (z : ℂ)) hL`. Establish `e1 : io (intEmb Lf (chi κ') * ∏ τ, intEmb Lf (kap κ' τ).val.det ^ sh τ) * ((levChi p j t κ' : ℂˣ) : ℂ) = 1` using `hchi κ'`. Establish `e2 : io (intEmb Lf (chi κ) * ∏ τ, intEmb Lf (kap κ τ).val.det ^ sh τ) * ((levChi p j t κ : ℂˣ) : ℂ) = 1` using `hchi κ`. Conclude with `chi_cancel io (intEmb Lf) hinj (chi κ) (chi κ') (∏ τ, intEmb Lf (kap κ τ).val.det ^ sh τ) (∏ τ, intEmb Lf (kap κ' τ).val.det ^ sh τ) hXX hX ((levChi p j t κ : ℂˣ) : ℂ) ((levChi p j t κ' : ℂˣ) : ℂ) hcc (levChi p j t κ).ne_zero e1 e2`.
-
-Use `⟨σ, fun s => ⟨⟨((σ s : hkA p j t i.1) : Bridge.Gf (Vc D j))⁻¹ * κ * s, hσ s⟩, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use `show (κ : Bridge.Gf (Vc D j)) * s = (σ s : Bridge.Gf (Vc D j)) * ((σ s : Bridge.Gf (Vc D j))⁻¹ * κ * s) group`. Conclude with `(key _ _ _ (σ s).2 s.2 rfl).1`. Conclude with `(key _ _ _ (σ s).2 s.2 rfl).2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem perm_gen (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) {l : ℕ} [Fact l.Prime] {N : ℕ}
     (e0 : D.what₂.LL →+* PadicAlgCl l) (b : Bool) (io : PadicAlgCl l ≃+* ℂ)
@@ -240,7 +238,7 @@ set_option maxHeartbeats 800000 in
 open Classical in
 
 /- English proof (translation)
-Introduce `_ e0 b io ev bs rk sh Lf _ kap chi hC`. Take `⟨-, -, -, hev, hkap, hchi⟩` from `hC`. Simplify using `only [GlobalTheory.FrameOf.frameOf]`. Introduce `i κ`. Conclude with `perm_gen p j (p.R.mu w) e0 b io ev bs rk sh Lf kap chi hev hkap hchi i κ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem permAt (p : PtAt ex Csz) (j : Fin D.R.m) (P : Formalism.CohomologicalDescent.LogSmallConstantBounds.Par) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) :
     PermAt p j P w := by
@@ -253,7 +251,7 @@ theorem permAt (p : PtAt ex Csz) (j : Fin D.R.m) (P : Formalism.CohomologicalDes
 end Point
 
 /- English proof (translation)
-Unfold `InRange AtPts`. Conclude with `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p _ _ j P W _ _ w _ _ _ => permAt p j P w⟩⟩⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem permSt : InRange fun _ _ _ _ p j P _ w => SmallAt p j P w → PermAt p j P w := by
   unfold InRange AtPts

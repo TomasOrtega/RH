@@ -17,9 +17,9 @@ namespace GlobalTheory.HomPairDescent
 open GlobalTheory.Spread
 
 /- English proof (translation)
-Establish `e₁` using `congrArg (fun a => a.left) (map_pow (pushHom h G') (𝟙 G') m)`. Establish `e₂` using `congrArg (fun a => a.left) (MonObj.comp_pow (𝟙 G) m (pushHom h G' (𝟙 G')))`. Rewrite `e₂` using `[Category.comp_id]`. Use `e₁.trans (e₂.symm.trans ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(𝟙 _ ≫ φ) ≫ _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem id_pow_left_comm {S S' : Scheme.{0}} {j : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G']
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G j φ) (m : ℕ) :
@@ -32,7 +32,7 @@ theorem id_pow_left_comm {S S' : Scheme.{0}} {j : S' ⟶ S} {G : Over S} [GrpObj
   rw [Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `(isGrpPullback_pullback A _).cancel ((isGrpPullback_pullback A _).congr (spMap_algHom_comp ρ).symm (bcMap_fst A.hom ρ).symm) (bcMap_snd A.hom ρ)`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_bcMap {k R S : Type} [CommRing k] [CommRing R] [CommRing S] [Algebra k R] [Algebra k S]
     (A : Over (Sp k)) [GrpObj A] (ρ : R →ₐ[k] S) :
@@ -42,13 +42,13 @@ theorem isGrpPullback_bcMap {k R S : Type} [CommRing k] [CommRing R] [CommRing S
     ((isGrpPullback_pullback A _).congr (spMap_algHom_comp ρ).symm (bcMap_fst A.hom ρ).symm) (bcMap_snd A.hom ρ)
 
 /- English proof (translation)
-Establish `hfw : f.left ≫ pullback.snd _ _ = pullback.snd _ _` using `Over.w f`. Take `⟨R, ψ, ⟨s, rfl⟩, hψ, hψf⟩` from `exists_fg_comp_eq A.hom B.hom (f.left ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ _) hfw)`. Use `⟨s, fun L hL => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hle : Algebra.adjoin K (s : Set Ω) ≤ L.toSubalgebra` using `Algebra.adjoin_le hL`. Set `ρ : Algebra.adjoin K (s : Set Ω) →ₐ[K] L` to `Subalgebra.inclusion hle`. Establish `hw : (bcMap A.hom ρ ≫ ψ) ≫ B.hom = pullback.snd _ _ ≫ spMap (algebraMap K L)`. Rewrite using `[Category.assoc, hψ, bcMap_fst_assoc, pullback.condition]`. Set `g₀ : pullback A.hom (spMap (algebraMap K L)) ⟶ pullback B.hom (spMap (algebraMap K L))` to `pullback.lift (bcMap A.hom ρ ≫ ψ) (pullback.snd _ _) hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f₀ : pullback A.hom (spMap (algebraMap K Ω)) ⟶ pullback B.hom (spMap (algebraMap K Ω))` to `f.left`. Establish `hf₀ : f₀ ≫ pullback.snd _ _ = pullback.snd _ _` using `hfw`. Establish `hψ₀ : bcMap A.hom (Algebra.adjoin K (s : Set Ω)).val ≫ ψ = f₀ ≫ pullback.fst _ _` using `hψf`. Use `⟨Over.homMk g₀ (pullback.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `bcMap A.hom L.val ≫ g₀ = f₀ ≫ bcMap B.hom L.val`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, bcMap_fst, pullback.lift_fst, bcMap_comp_of_eq_assoc A.hom ρ L.val (Algebra.adjoin K (s : Set Ω)).val fun _ ↦ rfl, hψ₀]`. Rewrite using `[Category.assoc, Category.assoc, bcMap_snd, pullback.lift_snd, bcMap_snd, reassoc_of% hf₀]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_descend {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (A B : Over (Sp K))
     [QuasiCompact A.hom] [QuasiSeparated A.hom] [LocallyOfFinitePresentation B.hom]
@@ -78,7 +78,7 @@ theorem exists_descend {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (A B : 
   · rw [Category.assoc, Category.assoc, bcMap_snd, pullback.lift_snd, bcMap_snd, reassoc_of% hf₀]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_epi φ, ← id_pow_left_comm h m, ← e, Over.comp_left, Over.comp_left, reassoc_of% ha, hb, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_eq_pow_of_epi {S S' : Scheme.{0}} {j : S' ⟶ S} {G H : Over S} [GrpObj G] {G' H' : Over S'}
     [GrpObj G'] {φ : G'.left ⟶ G.left} {ψ : H'.left ⟶ H.left} (h : IsGrpPullback G' G j φ) [Epi φ]
@@ -96,13 +96,13 @@ namespace GlobalTheory
 open HomPairDescent Spread
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ A B _ _ hA hB i r hi hr`. Use `hA.proper` as an intermediate fact. Use `hB.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hB.smooth` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `exists_descend A B i`. Take `⟨t, ht⟩` from `exists_descend B A r`. Set `L : IntermediateField K Ω` to `IntermediateField.adjoin K ((s ∪ t : Finset Ω) : Set Ω)`. Establish `hL : ((s ∪ t : Finset Ω) : Set Ω) ⊆ L` using `IntermediateField.subset_adjoin _ _`. Take `⟨i', hi'⟩` from `hs L ((Finset.coe_subset.2 Finset.subset_union_left).trans hL)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r', hr'⟩` from `ht L ((Finset.coe_subset.2 Finset.subset_union_right).trans hL)`. Establish `hfin : FiniteDimensional K L` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Establish `gA` using `isGrpPullback_bcMap A L.val`. Establish `gB` using `isGrpPullback_bcMap B L.val`. Take `⟨hepi, hmon⟩` from `FieldBaseChange.epi_and_isMonHom_iff L Ω L.val.toRingHom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `eA` using `(hepi _ _ _ _ _ gA.1).1`. Establish `eB` using `(hepi _ _ _ _ _ gB.1).1`. Conclude with `⟨L, hfin, i', r', (hmon _ _ _ _ _ _ i' i gA gB hi').1 hi, (hmon _ _ _ _ _ _ r' r gB gA hr').1 hr, fun m => ⟨comp_eq_pow_of_epi gA hi' hr' m, comp_eq_pow_of_epi gB hr' hi' m⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem homPair_descends_to_finite : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω] (A B : Over (Sp K)) [GrpObj A] [GrpObj B], IsAbelianScheme A → IsAbelianScheme B → ∀ (i : (Over.pullback (spMap (algebraMap K Ω))).obj A ⟶ (Over.pullback (spMap (algebraMap K Ω))).obj B) (r : (Over.pullback (spMap (algebraMap K Ω))).obj B ⟶ (Over.pullback (spMap (algebraMap K Ω))).obj A), IsMonHom i → IsMonHom r → ∃ (L : IntermediateField K Ω) (_ : FiniteDimensional K L) (i' : (Over.pullback (spMap (algebraMap K L))).obj A ⟶ (Over.pullback (spMap (algebraMap K L))).obj B) (r' : (Over.pullback (spMap (algebraMap K L))).obj B ⟶ (Over.pullback (spMap (algebraMap K L))).obj A), IsMonHom i' ∧ IsMonHom r' ∧ ∀ m : ℕ, (i ≫ r = 𝟙 _ ^ m → i' ≫ r' = 𝟙 _ ^ m) ∧ (r ≫ i = 𝟙 _ ^ m → r' ≫ i' = 𝟙 _ ^ m) := by
   classical

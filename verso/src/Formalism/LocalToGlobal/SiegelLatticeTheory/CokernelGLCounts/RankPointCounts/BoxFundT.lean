@@ -18,27 +18,25 @@ variable {P : Type} [Fintype P] [DecidableEq P] {α : P → Type} [∀ p, AddCom
 include hBd hτ hFd in
 
 /- English proof (translation)
-Set `c : (∀ q, α q) → ∀ p, A p` to `fun x p => (hFd p (τ p x + g p + B p x g)).exists.choose`. Establish `hc : ∀ x p, ((c x p : A p) : α p) + (τ p x + g p + B p x g) ∈ F p` using `fun x p => (hFd p (τ p x + g p + B p x g)).exists.choose_spec`. Set `Φ : (∀ q, α q) → ∀ q, α q` to `fun x p => τ p x + (c x p : α p)`. Establish `hΦ : ∀ (k : ℕ) (x x' : ∀ q, α q), (∀ q, h q < k → x q = x' q) → ∀ p, h p < k + 1 → Φ x p = Φ x' p`. Introduce `k x x' hxx p hp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ∀ q, h q < h p → x q = x' q` using `fun q hq => hxx q (by omega)`. Establish `h1 : τ p x = τ p x'` using `hτ p x x' e1`. Establish `h2 : B p x g = B p x' g` using `hBd p x x' g g fun q hq => ⟨e1 q hq, rfl⟩`. Use `show τ p x + ((hFd p (τ p x + g p + B p x g)).exists.choose : α p) = τ p x' + ((hFd p (τ p x' + g p + B p x' g)).exists.choose : α p)`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hit : ∀ (n : ℕ) p, h p < n → Φ (Φ^[n] 0) p = (Φ^[n] 0) p`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro p hp`. Conclude with `absurd hp (Nat.not_lt_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ k ih`. Introduce `p hp`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `hΦ k _ _ ih p hp`. Establish `uniq : ∀ x y : ∀ q, α q, ((∀ p, x p - τ p x ∈ A p) ∧ ∀ p, mlaw B x g p ∈ F p) → ((∀ p, y p - τ p y ∈ A p) ∧ ∀ p, mlaw B y g p ∈ F p) → x = y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `x y ⟨hx1, hx2⟩ ⟨hy1, hy2⟩`. Establish `step : ∀ (n : ℕ) p, h p < n → x p = y p`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro p hp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd hp (Nat.not_lt_zero _)`. Consider the case `succ k ih`. Introduce `p hp`. Establish `e1 : ∀ q, h q < h p → x q = y q` using `fun q hq => ih q (by omega)`. Establish `ht : τ p x = τ p y` using `hτ p x y e1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : B p x g = B p y g` using `hBd p x y g g fun q hq => ⟨e1 q hq, rfl⟩`. Establish `hx2' : ((⟨x p - τ p x, hx1 p⟩ : A p) : α p) + (τ p x + g p + B p x g) ∈ F p`. Establish `hm : x p + g p + B p x g ∈ F p` using `hx2 p`. Rewrite using `[show ((⟨x p - τ p x, hx1 p⟩ : A p) : α p) = x p - τ p x from rfl, show x p - τ p x + (τ p x + g p + B p x g) = x p + g p + B p x g by abel]`. Conclude with `hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy2' : ((⟨y p - τ p y, hy1 p⟩ : A p) : α p) + (τ p x + g p + B p x g) ∈ F p`. Establish `hm : y p + g p + B p y g ∈ F p` using `hy2 p`. Rewrite using `[ht, hb, show ((⟨y p - τ p y, hy1 p⟩ : A p) : α p) = y p - τ p y from rfl, show y p - τ p y + (τ p y + g p + B p y g) = y p + g p + B p y g by abel]`. Conclude with `hm`. Establish `h3 : x p - τ p x = y p - τ p y` using `congrArg Subtype.val ((hFd p _).unique hx2' hy2')`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h3` using `[ht]`. Conclude with `sub_left_injective h3`. Use function extensionality and compare the values at `p`. Conclude with `step _ p (Nat.lt_succ_self _)`. Establish `hfix : ∀ p, τ p (Φ^[Finset.univ.sup h + 1] 0) + (c (Φ^[Finset.univ.sup h + 1] 0) p : α p) = (Φ^[Finset.univ.sup h + 1] 0) p` using `fun p => hit _ p (Nat.lt_succ_of_le (Finset.le_sup (Finset.mem_univ p)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hsol : (∀ p, (Φ^[Finset.univ.sup h + 1] 0) p - τ p (Φ^[Finset.univ.sup h + 1] 0) ∈ A p) ∧ ∀ p, mlaw B (Φ^[Finset.univ.sup h + 1] 0) g p ∈ F p`. Prove the components needed by the constructor for the conclusion. Introduce `p`. Rewrite using `[← hfix p, add_sub_cancel_left]`. Conclude with `(c _ p).2`.
-
-Introduce `p show (Φ^[Finset.univ.sup h + 1] 0) p + g p + B p (Φ^[Finset.univ.sup h + 1] 0) g ∈ F p`. Rewrite using `[← hfix p]`. Rewrite using `[show τ p (Φ^[Finset.univ.sup h + 1] 0) + (c (Φ^[Finset.univ.sup h + 1] 0) p : α p) + g p + B p (Φ^[Finset.univ.sup h + 1] 0) g = (c (Φ^[Finset.univ.sup h + 1] 0) p : α p) + (τ p (Φ^[Finset.univ.sup h + 1] 0) + g p + B p (Φ^[Finset.univ.sup h + 1] 0) g) by abel]`. Conclude with `hc _ p`. Conclude with `⟨_, hsol, fun y hy => uniq y _ hy hsol⟩`.
+A detailed English derivation is pending.
 -/
 theorem box_fundT (g : ∀ q, α q) :
     ∃! γ : ∀ q, α q, (∀ p, γ p - τ p γ ∈ A p) ∧ ∀ p, mlaw B γ g p ∈ F p := by
@@ -112,43 +110,39 @@ theorem box_fundT (g : ∀ q, α q) :
 end TriT
 
 /- English proof (translation)
-Use `set T : (∀ q, α q) → (∀ q, α q) → (∀ q, α q) := fun γ g => mlaw B γ g with hTdef`. Establish `hT : ∀ γ, MeasurePreserving (T γ) (Measure.pi μ) (Measure.pi μ)`. Introduce `γ`. Use `shear_mp (Fintype.card P) P rfl α μ h (fun p g => γ p + B p γ g) (fun p => measurable_const.add ((hBm p).comp (measurable_const.prodMk measurable_id))) (fun p x x' hxx => by rw [hBd p γ γ x x' fun q hq => ⟨rfl, hxx q hq⟩])` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g p`. Simplify using `only [hTdef, mlaw]`. Normalize the expressions using the abelian group laws. Establish `hTm : ∀ γ, Measurable (T γ)` using `fun γ => (hT γ).measurable`. Establish `hT0 : ∀ γ, T γ 0 = γ`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ`. Use function extensionality and compare the values at `p`. Simplify using `[hTdef, mlaw, hB0]`. Set `Γs` to `{x : ∀ q, α q // ∀ p, x p - τ p x ∈ A p}`. Establish `hcount : Countable Γs`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (fun x : Γs => fun p => (⟨x.1 p - τ p x.1, x.2 p⟩ : A p))`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. It suffices to establish `H : ∀ n, ∀ p, h p < n → x.1 p = y.1 p from H (h p + 1) p (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro p hp`. Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Establish `hl : ∀ q, h q < h p → x.1 q = y.1 q` using `fun q hq => ih q (by omega)`. Establish `e` using `congrArg Subtype.val (congrFun hxy p)`. Simplify using `only at e`. Rewrite `e` using `[hτ p x.1 y.1 hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using e`. Conclude with `hinj.countable`. Use `choose inv hinvA hinvT using hinv`. Set `iv : Γs → Γs` to `fun γ => ⟨inv γ.1 γ.2, hinvA γ.1 γ.2⟩`. Establish `hiv1 : ∀ (γ : Γs) g, T (iv γ).1 (T γ.1 g) = g` using `fun γ g => (hinvT γ.1 γ.2 g).1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiv2 : ∀ (γ : Γs) g, T γ.1 (T (iv γ).1 g) = g` using `fun γ g => (hinvT γ.1 γ.2 g).2`. Establish `hivv : ∀ γ : Γs, iv (iv γ) = γ`. Introduce `γ`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e : ∀ g, T (iv (iv γ)).1 g = T γ.1 g`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hT0 (iv (iv γ)).1, ← hT0 γ.1, e]`. Set `ivE : Γs ≃ Γs` to `⟨iv, iv, hivv, hivv⟩`. Set `R : Set (∀ p, α p)` to `Set.pi Set.univ F`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : MeasurableSet R` using `MeasurableSet.univ_pi hF`. Establish `hRd` using `box_fundT h B hBd τ hτ A F hFd`. Establish `hK1 : Measure.pi μ K = ∑' γ : Γs, Measure.pi μ (K ∩ T γ.1 ⁻¹' R)`. Establish `hU : K = ⋃ γ : Γs, K ∩ T γ.1 ⁻¹' R`. Use extensionality with `g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨γ, ⟨hγA, hγF⟩, -⟩` from `hRd g`. Conclude with `Set.mem_iUnion.2 ⟨⟨γ, hγA⟩, hg, fun p _ => hγF p⟩`. Introduce `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, hg, -⟩` from `Set.mem_iUnion.1 hg`. Conclude with `hg`. Use `conv_lhs => rw [hU]`. Use `measure_iUnion ?_ fun γ => hK.inter (hTm γ.1 hR)` and prove the remaining obligations. Introduce `γ δ hγδ`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce and unpack `g ⟨-, hg1⟩ ⟨-, hg2⟩`. Apply `hγδ` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hRd g).unique ⟨γ.2, fun p => hg1 p (Set.mem_univ p)⟩ ⟨δ.2, fun p => hg2 p (Set.mem_univ p)⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR1 : Measure.pi μ R = ∑' γ : Γs, Measure.pi μ (R ∩ T γ.1 ⁻¹' K)`. Establish `hU : R = ⋃ γ : Γs, R ∩ T γ.1 ⁻¹' K`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨γ, ⟨hγA, hγK⟩, -⟩` from `hKd g`. Conclude with `Set.mem_iUnion.2 ⟨⟨γ, hγA⟩, hg, hγK⟩`. Introduce `hg`. Take `⟨γ, hg, -⟩` from `Set.mem_iUnion.1 hg`. Conclude with `hg`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hU]`. Use `measure_iUnion ?_ fun γ => hR.inter (hTm γ.1 hK)` and prove the remaining obligations. Introduce `γ δ hγδ`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce and unpack `g ⟨-, hg1⟩ ⟨-, hg2⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities.
 
-Apply `hγδ` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hKd g).unique ⟨γ.2, hg1⟩ ⟨δ.2, hg2⟩`. Establish `hterm : ∀ γ : Γs, Measure.pi μ (K ∩ T γ.1 ⁻¹' R) = Measure.pi μ (R ∩ T (iv γ).1 ⁻¹' K)`. Introduce `γ`.
-
-Establish `e : K ∩ T γ.1 ⁻¹' R = T γ.1 ⁻¹' (R ∩ T (iv γ).1 ⁻¹' K)`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage]`. Rewrite using `[hiv1 γ g]`. The claim follows by propositional logic.
-
-Rewrite using `[e]`. Conclude with `(hT γ.1).measure_preimage (hR.inter (hTm _ hK)).nullMeasurableSet`. Rewrite using `[hK1, tsum_congr hterm, show (∑' γ : Γs, Measure.pi μ (R ∩ T (iv γ).1 ⁻¹' K)) = ∑' γ : Γs, Measure.pi μ (R ∩ T γ.1 ⁻¹' K) from ivE.tsum_eq (fun γ => Measure.pi μ (R ∩ T γ.1 ⁻¹' K)), ← hR1]`. Conclude with `Measure.pi_pi μ F`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triFundT (P : Type) [Fintype P] [DecidableEq P] (α : P → Type) [∀ p, AddCommGroup (α p)]
     [∀ p, MeasurableSpace (α p)] [∀ p, MeasurableAdd₂ (α p)]

@@ -13,11 +13,11 @@ section Adjoint
 variable {σ τ : Type*} [Fintype σ] [Fintype τ]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C r => simp [algHom_C]`. Consider the case `add P Q hP hQ => simp [hP, hQ, Finset.sum_add_distrib]`. Consider the case `mul_X P k hP`. Establish `h1 : pderiv i (G (X k)) = C (M i k)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[hG, pderiv_X, Pi.single_apply, smul_eq_C_mul]`. Establish `h2 : ∑ j, M i j • G (P * pderiv j (X k)) = G P * C (M i k)`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using `[smul_eq_C_mul, mul_comm]`. Introduce `j _ hj`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[pderiv_X, Pi.single_apply, hj.symm]`. Simplify using the standard rewrite rules. Rewrite using `[map_mul, Derivation.leibniz, hP, h1, smul_eq_mul, smul_eq_mul, ← h2, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, map_add, smul_add, smul_eq_mul, smul_eq_mul, map_mul G (X k), mul_smul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_algHom_of_linear {R : Type*} [CommRing R]
     (G : MvPolynomial τ R →ₐ[R] MvPolynomial σ R) (M : σ → τ → R)
@@ -45,7 +45,7 @@ theorem pderiv_algHom_of_linear {R : Type*} [CommRing R]
 omit [Fintype τ] in
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C r => simp [algHom_C]`. Consider the case `add P Q hP hQ => simp [hP, hQ]`. Consider the case `mul_X P k hP => simp [hG, smul_eq_C_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem constantCoeff_algHom_of_linear {R : Type*} [CommRing R]
     (G : MvPolynomial τ R →ₐ[R] MvPolynomial σ R) (M : σ → τ → R)
@@ -57,11 +57,11 @@ theorem constantCoeff_algHom_of_linear {R : Type*} [CommRing R]
   | mul_X P k hP => simp [hG, smul_eq_C_mul]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on generalizing Q with`. Consider the case `C r`. Use `constantCoeff_algHom_of_linear G _ hG Q` as an intermediate fact. Rewrite `this` using `[constantCoeff_eq]`. Rewrite using `[algHom_C, algebraMap_eq, C_apply, C_apply, fockInner_monomial_left, fockInner_monomial_left, this]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[constantCoeff_eq]`. Consider the case `add P P' hP hP' => rw [map_add, fockInner_add_left, fockInner_add_left, hP, hP']`. Consider the case `mul_X P k hP`. Rewrite using `[mul_comm P, fockInner_X_mul_left, pderiv_algHom_of_linear G _ hG, map_mul, hF, Finset.sum_mul, ← fockInnerₛₗ_apply, ← fockInnerₛₗ_apply, map_sum, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fockInnerₛₗ_apply, fockInnerₛₗ_apply, smul_mul_assoc, fockInner_smul_left, fockInner_smul_right, fockInner_X_mul_left, hP]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fockInner_algHom_of_linear (F : MvPolynomial σ ℂ →ₐ[ℂ] MvPolynomial τ ℂ)
     (G : MvPolynomial τ ℂ →ₐ[ℂ] MvPolynomial σ ℂ) (M : σ → τ → ℂ)
@@ -87,11 +87,11 @@ theorem fockInner_algHom_of_linear (F : MvPolynomial σ ℂ →ₐ[ℂ] MvPolyno
 variable {T κ : Type*} [Fintype T] [Fintype κ] {p q : ℕ}
 
 /- English proof (translation)
-Use `fockInner_algHom_of_linear _ _ (fun v w => if v.1 = w.1 ∧ v.2.1 = w.2.1 then Sum.elim (fun _ => A v.1 v.2.2 w.2.2) (fun _ => B v.1 w.2.2 v.2.2) v.2.1 else 0) ?_ ?_ P Q` and prove the remaining obligations. Introduce and unpack `⟨t, a | b, k⟩`. Rewrite using `[colSubst_X_xVar, xForm_apply]`. Simplify using `[Fintype.sum_prod_type, ite_and, smul_eq_C_mul, apply_ite C]`. Rewrite using `[colSubst_X_yVar, yForm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Fintype.sum_prod_type, ite_and, smul_eq_C_mul, apply_ite C]`. Introduce and unpack `⟨t, a | b, k⟩`. Rewrite using `[colSubst_X_xVar, xForm_apply]`. Simplify using `[Fintype.sum_prod_type, ite_and, smul_eq_C_mul, apply_ite C, apply_ite star]`. Rewrite using `[colSubst_X_yVar, yForm_apply]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Fintype.sum_prod_type, ite_and, smul_eq_C_mul, apply_ite C, apply_ite star]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fockInner_colSubst (A B : T → Matrix κ κ ℂ) (P Q : Poly ℂ T p q κ) :
     fockInner (colSubst A B P) Q =
@@ -111,7 +111,7 @@ theorem fockInner_colSubst (A B : T → Matrix κ κ ℂ) (P Q : Poly ℂ T p q 
       simp [Fintype.sum_prod_type, ite_and, smul_eq_C_mul, apply_ite C, apply_ite star]
 
 /- English proof (translation)
-Rewrite using `[colAct_apply, colAct_apply, fockInner_colSubst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fockInner_colAct [DecidableEq κ] (g : T → GL κ ℂ) (P Q : Poly ℂ T p q κ) :
     fockInner (colAct ℂ T p q κ g P) Q = fockInner P (colAct ℂ T p q κ (star g) Q) := by
@@ -119,13 +119,13 @@ theorem fockInner_colAct [DecidableEq κ] (g : T → GL κ ℂ) (P Q : Poly ℂ 
   rfl
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ W`. Set `L : MvPolynomial σ ℂ →ₗ[ℂ] (Fin (Module.finrank ℂ W) → ℂ)` to `LinearMap.pi fun i => (fockInnerₛₗ σ ℂ).flip (b i)`. Establish `hL (P) (h : L P = 0) (w) (hw : w ∈ W) : fockInner P w = 0`. Use `congrArg W.subtype (b.sum_repr ⟨w, hw⟩)` as an intermediate fact. Rewrite `this` using `[map_sum, Submodule.subtype_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = w at this`. Rewrite using `[← this, ← fockInnerₛₗ_apply, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, fockInnerₛₗ_apply, fockInner_smul_right]`. Conclude with `mul_eq_zero_of_right _ (congrFun h i)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (L ∘ₗ W.subtype)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `hL x hx x x.2` as an intermediate fact. Rewrite `this` using `[fockInner_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Subtype.ext (fockNormSq_eq_zero.mp (RCLike.ofReal_eq_zero.mp this))`. Take `⟨x, hx⟩` from `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp)).mp hinj (L P)`. Conclude with `⟨x, x.2, hL _ (by rw [map_sub, ← hx]; simp)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fockInner_sub_eq_zero {σ : Type*} (W : Submodule ℂ (MvPolynomial σ ℂ))
     [FiniteDimensional ℂ W] (P : MvPolynomial σ ℂ) :

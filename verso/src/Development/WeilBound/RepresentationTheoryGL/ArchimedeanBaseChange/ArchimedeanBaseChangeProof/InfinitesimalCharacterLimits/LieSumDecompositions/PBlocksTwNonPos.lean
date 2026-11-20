@@ -13,9 +13,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 omit [IsCMField E] in
 
 /- English proof (translation)
-Establish `hd : (Module.finrank ℚ E : ℝ) ≠ 0`. Establish `: 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Conclude with `this.ne'` after adjusting the coercions. Unfold `pE`. Establish `e : (c + w * r * (Module.finrank ℚ E : ℂ)).re = c.re + w.re * r * (Module.finrank ℚ E : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.add_re, Complex.mul_re]`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pE_shift (a r : ℕ) (c w : ℂ) :
     pE E a r (c + w * r * (Module.finrank ℚ E : ℂ)) = pE E a r c + w.re * r := by
@@ -30,9 +30,9 @@ theorem pE_shift (a r : ℕ) (c w : ℂ) :
   ring
 
 /- English proof (translation)
-Introduce `φ hφ r hr hra c hc`. Take `⟨ψ, hψ, rfl⟩` from `Submodule.mem_map.1 hφ`. Establish `h0` using `expTw_holds E a ψ w (haut ψ hψ) r hr hra c hc`. Establish `h1` using `hV ψ hψ r hr hra _ h0`. Establish `e : c = (c - w * r * (Module.finrank ℚ E : ℂ)) + w * r * (Module.finrank ℚ E : ℂ)` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, pE_shift]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonPos_tw {a : ℕ} (V : Submodule ℂ (Sm E a)) (w : ℂ) (haut : ∀ φ ∈ V, IsAutForm φ)
     (hV : ∀ φ ∈ V, ∀ r, 0 < r → r < a → ∀ c ∈ Exp r φ.1, pE E a r c + w.re * r ≤ 0) :

@@ -251,7 +251,7 @@ section Basic₂
 variable {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Establish `e : ∀ {Z : Scheme.{0}} (r : Z ⟶ G.left) z J, val (L` using `(CP.triv G).L.L) (unitGen (diagφ w) diagε) r z J = 1 := fun r z J => val_unitGen _ _ _ _ _`. Establish `c : ∀ {Z : Over S} (z : Z.left) J (x y u : Z ⟶ G), cubV (CP.triv G).c z J x y u = 1` using `fun z J x y u => cubV_trivCub G z J x y u`. Conclude with `⟨unitGen_isGen _ _, fun Z x y v z J _ => by simp only [e, c, one_pow, _root_.mul_one], fun Z x z J _ => by simp only [e, val_sym_triv, one_pow, _root_.mul_one]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 example (w : G ⟶ G) : IsDiagIso (CP.triv G) w (unitGen _ _) := by
   have e : ∀ {Z : Scheme.{0}} (r : Z ⟶ G.left) z J,
@@ -262,7 +262,7 @@ example (w : G ⟶ G) : IsDiagIso (CP.triv G) w (unitGen _ _) := by
     fun Z x z J _ => by simp only [e, val_sym_triv, one_pow, _root_.mul_one]⟩
 
 /- English proof (translation)
-Establish `e : ∀ {Z : Scheme.{0}} (r : Z ⟶ (G ⊗ G).left) z J, val (L` using `(trivRig G).L) (unitGen (adjφ a a') adjε) r z J = 1 := fun r z J => val_unitGen _ _ _ _ _`. Conclude with `⟨unitGen_isGen _ _, fun Z x y v z J _ => by simp only [e, cubV_trivCub, _root_.mul_one], fun Z x y v z J _ => by simp only [e, cubV_trivCub, _root_.mul_one]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 example (a a' : G ⟶ G) : IsAdjIso (trivCub G) a a' (unitGen _ _) := by
   have e : ∀ {Z : Scheme.{0}} (r : Z ⟶ (G ⊗ G).left) z J,
@@ -271,7 +271,7 @@ example (a a' : G ⟶ G) : IsAdjIso (trivCub G) a a' (unitGen _ _) := by
     fun Z x y v z J _ => by simp only [e, cubV_trivCub, _root_.mul_one]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Inh.trivLB_isLB _, (TQ.torus S X).genWt_triv _ (isWt_charUnit (-χ))⟩`.
+Supply the required witnesses or components.
 -/
 example {X : Type} [AddCommGroup X] (χ : X) :
     IsWtBundle (TQ.torus S X) χ (Inh.trivLB _) (scaleGen (charUnit S X (-χ)) (unitGen _ _)) :=

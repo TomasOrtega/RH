@@ -8,17 +8,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T c' h X Y V hG hT hS`. Establish `hcb` using `cbFacts X hG`. Establish `hpr` using `prFacts l T.L Ω Y.s V`. Establish `hd : ∀ i, ∃ χ : V.η.ker →* (ResidueField c'.O)ˣ, IsOpen (χ.ker : Set V.η.ker) ∧ ∀ g, χ (V.pr g) = X.cb i g` using `fun i => descend l T.L Ω Y.s V _ (X.cb i) (hcb.1 i) (fun A v hA hv => hcb.2.1 i A (Y.away A v hA (by rwa [hS] at hv)))`. Use `choose χ hχo hχ using hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective χ`. Introduce `i j hij`. Apply `cbInj X hT` to reduce the goal to its premises. Conclude with `MonoidHom.ext fun g => by rw [← hχ, ← hχ, hij]`. Establish `hpol : V.frame.IsPolar c'.O (W.GDet.ofRep (W.diagRep χ))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `polar V.frame c'.O (ResidueField c'.O) 4 χ Fin.revPerm` to reduce the goal to its premises. Introduce `i g`. Take `⟨g1, rfl⟩` from `hpr.1 g`. Take `⟨g', hg', hconj⟩` from `hpr.2.1 g1`. Take `⟨σ, hσ, hσc⟩` from `Y.cc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hcb.2.2 σ hσ g1 g' (hσc g1 g' hg') i`. Establish `heps` using `hpr.2.2.1 c'.O (ResidueField c'.O) g1`. Rewrite using `[hconj]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_one, Units.val_pow_eq_pow_val, Units.val_zpow_eq_zpow_val, Fin.revPerm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `erw [hχ i g', hχ i.rev g1, heps, IsLocalRing.ResidueField.algebraMap_eq]`. Establish `e3 : ((4 : ℕ) : ℤ) - 1 = ((3 : ℕ) : ℤ)` using `by norm_num`. Rewrite using `[e3, zpow_natCast]`. Conclude with `key`. Use `⟨W.Resid.mk χ hχo hinj hpol (fun v i => (χ i).comp (V.frame.φ v)) ?_ (fun _ _ => 1) (fun _ _ _ _ => rfl), fun i g => hχ i g, fun v i g => rfl, fun v i => rfl⟩` and prove the remaining obligations.
-
-Introduce `v i`. Conclude with `(hχo i).preimage (V.frame.φ_cont v)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lk.residEx :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (X : OCh T c' h) (Y : SetD T) (V : Y.s.Lev), D.Good → T.Ok → V.S' = Y.s.S → ∃ r : W.Resid V.frame c'.O 4, (∀ i (g : G T.L Ω), r.chib i (V.pr g) = X.cb i g) ∧ (∀ (v : W.Vl l T.L) i (g : Dec (F := T.L) (Y.s.A v)), r.psib v i g = r.chib i (V.pr g)) ∧ (∀ v i, r.th v i = 1) := by

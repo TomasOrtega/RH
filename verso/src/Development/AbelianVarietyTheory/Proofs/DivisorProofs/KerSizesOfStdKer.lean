@@ -17,11 +17,11 @@ namespace GlobalTheory.ColRows
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `B X I hOk hP l Z L hT Gi Gl K Y cX ex t W Del h0 hS hW hDel hEta CY CT hH hX' hx hTa hlogT`. Establish `hNum` using `GlobalTheory.T.columnNormParameters_eq_natStepGap (I.rec7 l Z) L Del h0 hDel hEta`. Establish `hSz` using `GlobalTheory.T.trueColumns_prime_weight_sizes I hOk l Z L CY hH hX' hx hTa`. Use `⟨?_, ?_, hlogT⟩` and prove the remaining obligations. Take `⟨hX, -, hPr, -⟩` from `hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Consider the cases of `t`. Simplify using `only at hX hPr W hW ⊢`. Substitute `hX` using the available equality. Consider the cases of `eq_of_heq hPr`. Consider the cases of `eq_of_heq hW`.
+Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Conclude with `hSz`. Introduce `u`. Establish `h` using `GlobalTheory.T.sizeInequalitiesNoLevelPrime_columnNormParameters (I.rec7 l Z) L CY hH u`. Unfold `GlobalTheory.ColumnNormCompare.codeRec at h`. Apply the tactic sequence `convert h using 1 <;> first | exact hNum.symm | exact HEq.rfl | rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem kerSizes_of_stdKer : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex) (W : Formalism.L2.Col.Wts t.X t.Pr.Word (I.rec7 l Z).R) (Del h0 : ℕ), I.StdKer l Z t → HEq W B.wts → (I.rec7 l Z).s.Del = (Del : ℚ) → L.etaSz = ((I.rec7 l Z).R.m : ℝ) * (h0 : ℝ) → ∀ CY CT : ℝ, GlobalTheory.CoreHt.HtRowsS L CY → 8 ≤ L.sc.X' → 2 ≤ L.sc.x → (∀ u, 4 * L.sc.a < (((I.rec7 l Z).mem u).A.T : ℝ)) → (∀ u, Real.log ((((I.rec7 l Z).mem u).A.T : ℕ) : ℝ) ≤ CT * (I.rec7 l Z).R.m * L.sc.L) → GlobalTheory.ColRows.KerSizes t W Del h0 CY CT := by
   intro B X I hOk hP l Z L hT Gi Gl K Y cX ex t W Del h0 hS hW hDel hEta CY CT hH hX' hx hTa hlogT

@@ -9,7 +9,7 @@ def FP {X Y : Scheme.{0}} (f : X ⟶ Y) : Prop :=
   LocallyOfFinitePresentation f ∧ QuasiCompact f ∧ QuasiSeparated f
 
 /- English proof (translation)
-Take `⟨_, hp, hs⟩` from `h`. Use `hp` as an intermediate fact. Use `hs` as an intermediate fact. Use `⟨inferInstance, inferInstance, inferInstance⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem fp_of_curve {Ω : Type} [Field Ω] {C : Scheme.{0}} {c : C ⟶ Sp Ω} (h : IsCurve c) : FP c := by
   obtain ⟨_, hp, hs⟩ := h
@@ -37,7 +37,7 @@ def LeafTripleFP : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] [Alge
       (w0 : C0 ⟶ E0) (w1 : C1 ⟶ E1) (w2 : C2 ⟶ E2), PreChain R' c0 γ1 γ2 q' e1 e2 w0 w1 w2
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ C0 c0 hc0 C1 C2 γ1 γ2 h1 h2`. Take `⟨R, hR, D0, q, v0, hq, hsq⟩` from `hO k Ω c0 (fp_of_curve hc0)`. Take `⟨R', hR', E0, E1, q', e1, w0, w1, hq', he1, hs0, hs1, hc⟩` from `hP k Ω R hR c0 γ1 (fp_of_curve h1) q v0 hq hsq`. Conclude with `hT k Ω R' hR' c0 γ1 γ2 (fp_of_curve h2) q' e1 w0 w1 hq' he1 hs0 hs1 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem diagramDescent_of_objects_pairs_triples (hO : LeafObjFP) (hP : LeafPairFP) (hT : LeafTripleFP) : LeafDescendFP := by
   intro k _ Ω _ _ C0 c0 hc0 C1 C2 γ1 γ2 h1 h2

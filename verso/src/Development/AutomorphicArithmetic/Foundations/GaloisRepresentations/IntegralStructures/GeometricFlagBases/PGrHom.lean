@@ -8,25 +8,25 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Introduce `Γ k _ _ d ρ₀ c hinv`. Establish `mem : ∀ (i : ℕ) (v : Fin d → k), v ∈ low k c i ↔ ∀ j, i ≤ c j → v j = 0` using `fun _ _ => Iff.rfl`. Establish `hbt : ∀ g, (ρ₀ g : Matrix (Fin d) (Fin d) k).BlockTriangular c`. Introduce `g i j hij`. Establish `hv : (Pi.single j (1 : k) : Fin d → k) ∈ low k c (c j + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mem]`. Introduce `j' hj'`. Distinguish the cases in `h : j' = j`. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[Pi.single_apply, h]`. Establish `hw` using `(mem _ _).1 (hinv (c j + 1) g _ hv) i (by omega)`. Simplify `hw` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Set `D : Matrix (Fin d) (Fin d) k → Matrix (Fin d) (Fin d) k` to `fun M => Matrix.of fun i j => if c i = c j then M i j else 0`. Establish `hD : ∀ M i j, D M i j = if c i = c j then M i j else 0` using `fun _ _ _ => rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmul : ∀ M N : Matrix (Fin d) (Fin d) k, M.BlockTriangular c → N.BlockTriangular c → D (M * N) = D M * D N`. Introduce `M N hM hN`. Use extensionality with `i j`. Simplify using `only [hD, Matrix.mul_apply]`. Use `split_ifs with hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Distinguish the cases in `h1 : c i = c l`. Rewrite using `[if_pos h1, if_pos (h1 ▸ hij)]`. Rewrite using `[if_neg h1, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_gt_of_ne h1 with h | h` into its components or cases. Rewrite using `[hN (show c j < c l by omega), mul_zero]`. Rewrite using `[hM h, zero_mul]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`. Establish `hone : D 1 = 1`. Use extensionality with `i j`. Simplify using `only [hD, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp_all`. Establish `hunit : ∀ g h : Γ, D (ρ₀ g) * D (ρ₀ h) = D (ρ₀ (g * h))`. Introduce `g h`. Rewrite using `[← hmul _ _ (hbt g) (hbt h), map_mul, Units.val_mul]`. Use `⟨hbt, ⟨{ toFun := fun g => ⟨D (ρ₀ g), D (ρ₀ g⁻¹), ?_, ?_⟩, map_one' := ?_, map_mul' := ?_ }, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hunit, mul_inv_cancel, map_one, Units.val_one, hone]`. Rewrite using `[hunit, inv_mul_cancel, map_one, Units.val_one, hone]`. Apply `Units.ext show D (ρ₀ 1) = 1` to reduce the goal to its premises. Rewrite using `[map_one, Units.val_one, hone]`. Introduce `x y`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show D (ρ₀ (x * y)) = D (ρ₀ x) * D (ρ₀ y)`. Rewrite using `[hunit]`. Introduce `g i j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.grHom_of :
     GrHom := by

@@ -19,23 +19,21 @@ open ReciprocityTheory.AnForm.M.PLAux (chartPush chartPush_eq_zero isCompact_sym
 open scoped ContDiff
 
 /- English proof (translation)
-Establish `hgt' : ∀ j, tsupport (g j) ⊆ (P.chart j).target` using `fun j => (hgt j).trans inter_subset_left`. Establish `hcp : ∀ j x, 0 ≤ chartPush (P.chart j) (g j) x ∧ chartPush (P.chart j) (g j) x ≤ 1`. Introduce `j x`. Unfold `chartPush`. Distinguish the cases in `hx : x ∈ (P.chart j).source`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[indicator_of_mem hx]`. Conclude with `hg01 j _`. Rewrite using `[indicator_of_notMem hx]`. Conclude with `⟨le_rfl, zero_le_one⟩`. Establish `hsm : ∀ j, A.Smooth (fun x => chartPush (P.chart j) (g j) x - 1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j a`. Conclude with `ContDiffOn.sub (f := chartPush (P.chart j) (g j) ∘ (A.chart a).symm) (smooth_chartPush (P.compat j) (hgs j) (hgc j) (hgt' j) a) contDiffOn_const`. Establish `hC : ∀ j k, ∃ C : ℝ, 0 ≤ C ∧ ∀ y ∈ P.chart k '' closure (P.mid k), ∀ w, -C * ‖w‖ ^ 2 ≤ levi ((fun x => chartPush (P.chart j) (g j) x - 1) ∘ (P.chart k).symm) y w`. Introduce `j k`. Establish `h` using `contDiffOn_compat (P.compat k) isOpen_univ (hsm j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[preimage_univ, inter_univ]`. Use `levi_lower_bound_of_isCompact (P.chart k).open_target (h.of_le (WithTop.coe_le_coe.2 le_top)) (isClosed_closure.isCompact.image_of_continuousOn ((P.chart k).continuousOn.mono (P.closure_mid k))) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(P.chart k).map_source (P.closure_mid k hx)`. Use `choose C hC0 hC using hC`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨∑ j, ∑ k, C j k, ⟨?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `j a`. Conclude with `(hsm j a).mono (inter_subset_inter_right _ (preimage_mono (subset_univ _)))`. Introduce `j x _`. Apply the tactic sequence `constructor <;> linarith [hcp j x]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `j x hx`. Establish `hs : x ∈ (P.chart j).source` using `P.mid_subset_source j (P.inner_subset_mid j hx)`. Establish `h1 : chartPush (P.chart j) (g j) x = 1`. Unfold `chartPush`. Rewrite using `[indicator_of_mem hs]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hg1 j x hx`. Simplify using `[h1]`. Introduce `j`. Use `⟨(P.chart j).symm '' tsupport (g j), (isCompact_symm_image (hgc j) (hgt' j)).isClosed, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hgt j hy).2`. Introduce `x hx`. Simplify using `[chartPush_eq_zero (P.chart j) hx.2]`. Introduce `j k x hx w`. Establish `h` using `hC j k (P.chart k x) ⟨x, subset_closure hx.2, rfl⟩ w`.
-
-Establish `hle : C j k ≤ ∑ j, ∑ k, C j k` using `(Finset.single_le_sum (fun k _ => hC0 j k) (Finset.mem_univ k)).trans (Finset.single_le_sum (f := fun j => ∑ k, C j k) (fun j _ => Finset.sum_nonneg fun k _ => hC0 j k) (Finset.mem_univ j))`. Establish `h2 : 0 ≤ ‖w‖ ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cutoff_of_bumps {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] {D : ℕ} {A : FinHolAtlas D X}
     (P : PotentialCharts A) (g : Fin P.N → (Fin D → ℂ) → ℝ) (hgs : ∀ j, ContDiff ℝ ∞ (g j))
@@ -93,9 +91,9 @@ theorem cutoff_of_bumps {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Spac
     nlinarith
 
 /- English proof (translation)
-Establish `hcl : closure (P.inner j) ⊆ (P.chart j).source` using `(P.closure_inner j).trans (P.mid_subset_source j)`. Use `exists_smooth_bump_of_isCompact (isClosed_closure.isCompact.image_of_continuousOn ((P.chart j).continuousOn.mono hcl)) ((P.chart j).continuousOn_symm.isOpen_inter_preimage (P.chart j).open_target (P.isOpen_mid j)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨(P.chart j).map_source (hcl hx), by`. Rewrite using `[mem_preimage, (P.chart j).left_inv (hcl hx)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.closure_inner j hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_bumps {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] {D : ℕ} {A : FinHolAtlas D X}
     (P : PotentialCharts A) (j : Fin P.N) : ∃ g : (Fin D → ℂ) → ℝ, ContDiff ℝ ∞ g ∧ (∀ y, 0 ≤ g y ∧ g y ≤ 1) ∧

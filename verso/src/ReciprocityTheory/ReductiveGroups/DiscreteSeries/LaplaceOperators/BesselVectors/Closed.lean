@@ -6,12 +6,12 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.Spectra
 namespace ReciprocityTheory.ChartRestriction.DS.Lap.TopClosed
 
 /- English proof (translation)
-The claim follows from `nv NVHTop.intS`.
+A detailed English derivation is pending.
 -/
 theorem nvAll : NVStatement := nv NVHTop.intS
 
 /- English proof (translation)
-The claim follows from `TopFinal.besselNVG_of_nv nvAll`.
+A detailed English derivation is pending.
 -/
 theorem besselNVG : TopNV.BesselNVG := TopFinal.besselNVG_of_nv nvAll
 

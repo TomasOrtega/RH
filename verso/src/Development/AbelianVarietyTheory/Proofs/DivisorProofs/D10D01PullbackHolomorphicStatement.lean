@@ -7,7 +7,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionF
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TorsionForm.Pullback.d10_d01_comp_fst_eq_fderiv_of_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FD10D01PullbackHolomorphic.lean&line=28#L28)
 -/

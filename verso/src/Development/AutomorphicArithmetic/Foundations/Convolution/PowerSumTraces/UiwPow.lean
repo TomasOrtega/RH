@@ -5,7 +5,7 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [prj, ContinuousLinearMap.comp_apply]`. Conclude with `Submodule.starProjection_eq_self_iff.mpr (Submodule.starProjection_apply_mem _ _)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem prj_prj {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (V : Submodule ℂ H) : prj V ∘L prj V = prj V := by
@@ -14,9 +14,7 @@ private theorem prj_prj {H : Type*} [NormedAddCommGroup H] [InnerProductSpace �
   exact Submodule.starProjection_eq_self_iff.mpr (Submodule.starProjection_apply_mem _ _)
 
 /- English proof (translation)
-Use `ext1 v`. Establish `hle : (fixL μ w J).topologicalClosure ≤ LinearMap.eqLocus (rhoL μ w k : LL μ →ₗ[ℂ] LL μ) LinearMap.id`. Apply `Submodule.topologicalClosure_minimal` to reduce the goal to its premises. Unfold `fixL fixF rhoL`. Conclude with `iInf₂_le (AdelicGLn.localEmbedding w k) (Subgroup.mem_map_of_mem _ hk)`.
-
-Conclude with `isClosed_eq (rhoL μ w k).continuous continuous_id`. Conclude with `hle (Submodule.starProjection_apply_mem _ v)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem rhoL_prj {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (w : Pl K) (J : Subgroup (GL (Fin n) (w.adicCompletion K))) {k : GL (Fin n) (w.adicCompletion K)} (hk : k ∈ J) :
@@ -31,11 +29,11 @@ private theorem rhoL_prj {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Me
   exact hle (Submodule.starProjection_apply_mem _ v)
 
 /- English proof (translation)
-Establish `hs : {c : GL (Fin n) (w.adicCompletion K) ⧸ J | ∃ k ∈ J, c = QuotientGroup.mk (k * 1)} = {QuotientGroup.mk 1}`. Use extensionality with `c`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff, mul_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `QuotientGroup.eq.mpr (by simpa using hk)`. Introduce and unpack `rfl`. Conclude with `⟨1, J.one_mem, rfl⟩`. Unfold `Hop`. Rewrite using `[hs, finsum_mem_singleton]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `rhoL_prj` to reduce the goal to its premises. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul J (1 : GL (Fin n) (w.adicCompletion K))`. Rewrite using `[hh, one_mul]`. Conclude with `h.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hop_one {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (w : Pl K) (J : Subgroup (GL (Fin n) (w.adicCompletion K))) : Hop μ w J 1 = prj (fixL μ w J) := by
@@ -56,7 +54,7 @@ private theorem hop_one {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Mea
   exact h.2
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ w ν hν j`. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Rewrite using `[pow_zero, zero_smul, Uiw, GroundTheory.Automorphic.Parabolic.diagPow_zero, hop_one]`. Both sides reduce to the same expression. Rewrite using `[(UpperTheory.ConvolutionTheory.Tf.uiwPow K n μ w ν ν hν hν).2.1 j hj, Uiw, Hop, ContinuousLinearMap.comp_assoc, prj_prj]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.C.uiwPow :
     UpperTheory.ConvolutionTheory.C.UiwPow := by

@@ -1,17 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Λ _ _ _ N hsat`. Take `⟨k, snf⟩` from `Submodule.smithNormalForm (Module.finBasis ℤ Λ) N`. Use `⟨k, _, snf.bM, snf.f, snf.f.injective, ?_⟩` and prove the remaining obligations. Establish `ha : ∀ i, snf.a i ≠ 0`. Introduce `i h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `snf.snf i`. Rewrite `h1` using `[h, zero_smul]`. Conclude with `snf.bN.ne_zero i (Subtype.ext h1)`. Establish `hmem : ∀ i, snf.bM (snf.f i) ∈ N`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hsat _ (snf.a i) (ha i)` to reduce the goal to its premises. Rewrite using `[← snf.snf i]`. Conclude with `(snf.bN i).2`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hmem i`. Introduce `x hx`. Establish `hx' : (⟨x, hx⟩ : N) ∈ Submodule.span ℤ (Set.range snf.bN)`. Rewrite using `[snf.bN.span_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Discharge the goal by the elementary cases of `trivial`. Use `Submodule.apply_mem_span_image_of_mem_span N.subtype hx'` as an intermediate fact. Simplify using `only [Submodule.subtype_apply] at this`. Use `Submodule.span_le.mpr ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`.
-
-Simplify using `only [Submodule.subtype_apply, snf.snf i]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yha6.main :
     ∀ (Λ : Type) [inst : AddCommGroup Λ] [Module.Free ℤ Λ] [Module.Finite ℤ Λ] (N : Submodule ℤ Λ),

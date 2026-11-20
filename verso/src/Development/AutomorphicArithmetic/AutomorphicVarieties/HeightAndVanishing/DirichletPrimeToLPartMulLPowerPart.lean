@@ -25,16 +25,16 @@ def lPart (l : ℕ) (x : Γ) : Γ := x ^ (ordCompl[l] (orderOf x)) ^ Nat.totient
 def lPrime (l : ℕ) (x : Γ) : Γ := x * (lPart l x)⁻¹
 
 /- English proof (translation)
-The claim follows from `inv_mul_cancel_right _ _`.
+A detailed English derivation is pending.
 -/
 theorem lPrime_mul_lPart (l : ℕ) (x : Γ) : lPrime l x * lPart l x = x := inv_mul_cancel_right _ _
 
 end Parts
 
 /- English proof (translation)
-Distinguish the cases in `hr : r.Prime`. Distinguish the cases in `hN : N = 0`. Substitute `hN` using the available equality. Simplify using the standard rewrite rules. Conclude with `Nat.Coprime.pow_left _ (Nat.coprime_ordCompl hr hN)`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.factorization_eq_zero_of_not_prime N hr, pow_zero]`. Conclude with `Nat.coprime_one_left _`.
+A detailed English derivation is pending.
 -/
 theorem coprime_ordProj_ordCompl (r N : ℕ) : (ordProj[r] N).Coprime (ordCompl[r] N) := by
   by_cases hr : r.Prime
@@ -48,11 +48,11 @@ theorem coprime_ordProj_ordCompl (r N : ℕ) : (ordProj[r] N).Coprime (ordCompl[
 def idem (r N : ℕ) : ZMod N := ((ordCompl[r] N ^ Nat.totient (ordProj[r] N) : ℕ) : ZMod N)
 
 /- English proof (translation)
-Unfold `idem`. Rewrite using `[← Nat.cast_mul]`. Establish `hcop : (ordCompl[r] N).Coprime (ordProj[r] N)` using `(coprime_ordProj_ordCompl r N).symm`. Establish `hapos : 0 < ordProj[r] N` using `Nat.ordProj_pos N r`. Establish `he1 : ordCompl[r] N ^ Nat.totient (ordProj[r] N) ≡ 1 [MOD ordProj[r] N]` using `Nat.ModEq.pow_totient hcop`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd : ordCompl[r] N ∣ ordCompl[r] N ^ Nat.totient (ordProj[r] N)` using `dvd_pow_self _ (Nat.totient_pos.mpr hapos).ne'`. Establish `hA : ordCompl[r] N ^ Nat.totient (ordProj[r] N) * ordCompl[r] N ^ Nat.totient (ordProj[r] N) ≡ ordCompl[r] N ^ Nat.totient (ordProj[r] N) [MOD ordProj[r] N]`. Use `(he1.mul he1).trans ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `he1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hC : ordCompl[r] N ^ Nat.totient (ordProj[r] N) * ordCompl[r] N ^ Nat.totient (ordProj[r] N) ≡ ordCompl[r] N ^ Nat.totient (ordProj[r] N) [MOD ordCompl[r] N]` using `(Nat.modEq_zero_iff_dvd.mpr (dvd_mul_of_dvd_left hdvd _)).trans (Nat.modEq_zero_iff_dvd.mpr hdvd).symm`. Establish `key` using `(Nat.modEq_and_modEq_iff_modEq_mul hcop.symm).mp ⟨hA, hC⟩`. Rewrite `key` using `[Nat.ordProj_mul_ordCompl_eq_self N r]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).mpr key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mul_idem (r N : ℕ) : idem r N * idem r N = idem r N := by
   unfold idem
@@ -121,7 +121,7 @@ def PsiEven (e : ℕ) (ψ : DirichletCharacter O N) : Prop := ψ (-1) = (-1) ^ e
 def EV (l : ℕ) (ψ : DirichletCharacter O N) : Prop := Even (orderOf (chiP l ψ))
 
 /- English proof (translation)
-The claim follows from `lPrime_mul_lPart l ψ`.
+A detailed English derivation is pending.
 -/
 theorem dirichletPrimeToLPart_mul_lPowerPart (l : ℕ) (ψ : DirichletCharacter O N) : th0 l ψ * kap l ψ = ψ := lPrime_mul_lPart l ψ
 
@@ -151,12 +151,12 @@ def hLen (e : ℕ) (ψ : DirichletCharacter c.O N) : ℕ∞ :=
 def hn (e : ℕ) (ψ : DirichletCharacter c.O N) : ℝ := Chr.nrm l c.O (hLen Ω c e ψ)
 
 /- English proof (translation)
-The claim follows from `Chr.nrm_nonneg _ _`.
+A detailed English derivation is pending.
 -/
 theorem Vn_nonneg (e : ℕ) (ψ : DirichletCharacter c.O N) : 0 ≤ Vn Ω c e ψ := Chr.nrm_nonneg _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.trans hB⟩`.
+Supply the required witnesses or components.
 -/
 theorem VLe.mono {e : ℕ} {ψ : DirichletCharacter c.O N} {B B' : ℝ} (h : VLe Ω c e ψ B) (hB : B ≤ B') : VLe Ω c e ψ B' :=
   ⟨h.1, h.2.trans hB⟩
@@ -165,7 +165,7 @@ def orb (H : Subgroup (ZMod N)ˣ) : Finset (DirichletCharacter c.O N) :=
   (Set.toFinite {ψ : DirichletCharacter c.O N | ψ.toUnitHom.ker = H}).toFinset
 
 /- English proof (translation)
-The claim follows from `Set.Finite.mem_toFinset _`.
+A detailed English derivation is pending.
 -/
 theorem mem_orb {H : Subgroup (ZMod N)ˣ} {ψ : DirichletCharacter c.O N} : ψ ∈ orb c H ↔ ψ.toUnitHom.ker = H :=
   Set.Finite.mem_toFinset _
@@ -191,7 +191,7 @@ abbrev o : ℕ := ordC h.chi
 def N : ℕ := Nat.lcm (2 ^ (h.ex + 2)) h.q * (h.q1 * h.d)
 
 /- English proof (translation)
-Unfold `N`. Take `⟨hq1, -, hd, -, -⟩` from `h.pair`. Establish `hq : 0 < h.q` using `Nat.pos_of_ne_zero h.chi.ne.out`. Conclude with `Nat.mul_pos (Nat.lcm_pos (by positivity) hq) (Nat.mul_pos hq1.pos hd.pos)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem N_pos : 0 < h.N := by
   unfold N
@@ -202,19 +202,19 @@ theorem N_pos : 0 < h.N := by
 instance : NeZero h.N := ⟨h.N_pos.ne'⟩
 
 /- English proof (translation)
-The claim follows from `(Nat.dvd_lcm_left _ _).mul_right _`.
+A detailed English derivation is pending.
 -/
 theorem two_pow_dvd : 2 ^ (h.ex + 2) ∣ h.N := (Nat.dvd_lcm_left _ _).mul_right _
 /- English proof (translation)
-The claim follows from `(Nat.dvd_lcm_right _ _).mul_right _`.
+A detailed English derivation is pending.
 -/
 theorem q_dvd : h.q ∣ h.N := (Nat.dvd_lcm_right _ _).mul_right _
 /- English proof (translation)
-The claim follows from `(dvd_mul_right _ _).mul_left _`.
+A detailed English derivation is pending.
 -/
 theorem host_q1_dvd_N : h.q1 ∣ h.N := (dvd_mul_right _ _).mul_left _
 /- English proof (translation)
-The claim follows from `(dvd_mul_left _ _).mul_left _`.
+A detailed English derivation is pending.
 -/
 theorem d_dvd : h.d ∣ h.N := (dvd_mul_left _ _).mul_left _
 
@@ -231,25 +231,25 @@ def X {l : ℕ} [Fact l.Prime] (c : Coef l) (e : ℕ) : Finset (DirichletCharact
   (Set.toFinite (Chr.evenSet c.O h.H e)).toFinset
 
 /- English proof (translation)
-The claim follows from `Set.Finite.mem_toFinset _`.
+A detailed English derivation is pending.
 -/
 theorem mem_X {l : ℕ} [Fact l.Prime] {c : Coef l} {e : ℕ} {ψ : DirichletCharacter c.O h.N} :
     ψ ∈ h.X c e ↔ h.IsChar ψ ∧ PsiEven e ψ := Set.Finite.mem_toFinset _
 
 /- English proof (translation)
-Take `⟨-, h8, -⟩` from `h.pair`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 -/
 theorem host_q1_mod_four_eq_three : h.q1 % 4 = 3 := by
   obtain ⟨-, h8, -⟩ := h.pair
   omega
 /- English proof (translation)
-Take `⟨-, -, -, h16, -⟩` from `h.pair`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 -/
 theorem d_mod : h.d % 4 = 3 := by
   obtain ⟨-, -, -, h16, -⟩ := h.pair
   omega
 /- English proof (translation)
-Take `⟨-, h8, -, h16, -⟩` from `h.pair`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 -/
 theorem firstPrime_ne_secondPrime : h.q1 ≠ h.d := by
   obtain ⟨-, h8, -, h16, -⟩ := h.pair
@@ -281,14 +281,14 @@ def nIII (l : ℕ) (ψ : DirichletCharacter O h.N) : ℕ :=
 end Host
 
 /- English proof (translation)
-Take `⟨O, a, b, c⟩` from `existsO l n`. Conclude with `⟨⟨O, a, b⟩, c⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_coef (l : ℕ) [Fact l.Prime] (n : ℕ) [NeZero n] : ∃ c : Coef l, HasEnoughRootsOfUnity c.O n := by
   obtain ⟨O, a, b, c⟩ := existsO l n
   exact ⟨⟨O, a, b⟩, c⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨χ, 2, 3, 7, le_rfl, by norm_num, by norm_num, by norm_num, by norm_num, h⟩`.
+Supply the required witnesses or components.
 -/
 example (χ : PChar) (h : (3 * 7).Coprime χ.N) : Host := ⟨χ, 2, 3, 7, le_rfl, by norm_num, by norm_num, by norm_num, by norm_num, h⟩
 

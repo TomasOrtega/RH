@@ -15,7 +15,7 @@ def AbsSumAt (u : C) (f : PowerSeries C) (c : C) : Prop :=
 
 omit [CompleteSpace C] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `summable_of_ne_finset_zero (s := {0}) fun n hn => ?_` and prove the remaining obligations. Simplify using `[PowerSeries.coeff_C, Finset.notMem_singleton.1 hn]`. Rewrite using `[tsum_eq_single 0 fun n hn => by simp [PowerSeries.coeff_C, hn]]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem AbsSumAt.const (u a : C) : AbsSumAt u (PowerSeries.C a) a := by
   constructor
@@ -25,9 +25,9 @@ theorem AbsSumAt.const (u a : C) : AbsSumAt u (PowerSeries.C a) a := by
     simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `(hf.1.add hg.1).of_nonneg_of_le (fun _ => norm_nonneg _) fun n => ?_` and prove the remaining obligations. Rewrite using `[map_add, add_mul]`. Conclude with `norm_add_le _ _`. Rewrite using `[← hf.2, ← hg.2, ← hf.1.of_norm.tsum_add hg.1.of_norm]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, add_mul]`.
+A detailed English derivation is pending.
 -/
 theorem AbsSumAt.add {u : C} {f g : PowerSeries C} {a b : C} (hf : AbsSumAt u f a) (hg : AbsSumAt u g b) :
     AbsSumAt u (f + g) (a + b) := by
@@ -39,9 +39,9 @@ theorem AbsSumAt.add {u : C} {f g : PowerSeries C} {a b : C} (hf : AbsSumAt u f 
     simp only [map_add, add_mul]
 
 /- English proof (translation)
-Establish `e : ∀ n, PowerSeries.coeff n (f * g) * u ^ n = ∑ kl ∈ Finset.HasAntidiagonal.antidiagonal n, (PowerSeries.coeff kl.1 f * u ^ kl.1) * (PowerSeries.coeff kl.2 g * u ^ kl.2)` using `fun n => by`. Rewrite using `[PowerSeries.coeff_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun kl h => ?_` and prove the remaining obligations. Rewrite using `[← Finset.HasAntidiagonal.mem_antidiagonal.1 h, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Prove the components needed by the constructor for the conclusion. Simplify using `only [e]`. Conclude with `summable_norm_sum_mul_antidiagonal_of_summable_norm (f := fun n => PowerSeries.coeff n f * u ^ n) (g := fun n => PowerSeries.coeff n g * u ^ n) hf.1 hg.1`. Rewrite using `[← hf.2, ← hg.2, tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm hf.1 hg.1]`. Simplify using `only [e]`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem AbsSumAt.mul {u : C} {f g : PowerSeries C} {a b : C} (hf : AbsSumAt u f a) (hg : AbsSumAt u g b) :
     AbsSumAt u (f * g) (a * b) := by
@@ -61,9 +61,9 @@ theorem AbsSumAt.mul {u : C} {f g : PowerSeries C} {a b : C} (hf : AbsSumAt u f 
 open scoped BigOperators in
 variable {C : Type} [NontriviallyNormedField C] [CompleteSpace C] in
 /- English proof (translation)
-Establish `h : (fun n => PowerSeries.coeff n (algebraMap C (PowerSeries C) a) * u ^ n) = fun n => if n = 0 then a else 0`. Use function extensionality and compare the values at `n`. Apply the tactic sequence `rcases n with _ | n <;> simp [PowerSeries.coeff_C]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `summable_of_ne_finset_zero (s := {0}) fun n hn => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[congrFun h n, if_neg (by simpa using hn), norm_zero]`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem absSumAt_algebraMap (u a : C) :
     _root_.GlobalTheory.BddArc.AbsSumAt u (algebraMap C (PowerSeries C) a) a := by
@@ -80,9 +80,9 @@ private theorem absSumAt_algebraMap (u a : C) :
 open scoped BigOperators in
 variable {C : Type} [NontriviallyNormedField C] [CompleteSpace C] in
 /- English proof (translation)
-Establish `h : ∀ n, PowerSeries.coeff n (f + g) * u ^ n = PowerSeries.coeff n f * u ^ n + PowerSeries.coeff n g * u ^ n` using `fun n => by`. Rewrite using `[map_add, add_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => ?_) (Summable.add hf.1 hg.1)` and prove the remaining obligations. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_add_le _ _`. Repeatedly rewrite using `[h]`. Rewrite using `[(hf.1.of_norm).tsum_add hg.1.of_norm, hf.2, hg.2]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem absSumAt_add {u : C} {f g : PowerSeries C} {a b : C}
     (hf : _root_.GlobalTheory.BddArc.AbsSumAt u f a) (hg : _root_.GlobalTheory.BddArc.AbsSumAt u g b) :
@@ -100,9 +100,9 @@ private theorem absSumAt_add {u : C} {f g : PowerSeries C} {a b : C}
 open scoped BigOperators in
 variable {C : Type} [NontriviallyNormedField C] [CompleteSpace C] in
 /- English proof (translation)
-Establish `h : ∀ n, PowerSeries.coeff n (f * g) * u ^ n = ∑ kl ∈ Finset.HasAntidiagonal.antidiagonal n, (PowerSeries.coeff kl.1 f * u ^ kl.1) * (PowerSeries.coeff kl.2 g * u ^ kl.2)` using `fun n => by`. Rewrite using `[PowerSeries.coeff_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun kl hkl => ?_` and prove the remaining obligations. Rewrite using `[← Finset.HasAntidiagonal.mem_antidiagonal.1 hkl, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(summable_norm_sum_mul_antidiagonal_of_summable_norm hf.1 hg.1).congr fun n => by rw [h]`. Rewrite using `[tsum_congr h, ← tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm hf.1 hg.1, hf.2, hg.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem absSumAt_mul {u : C} {f g : PowerSeries C} {a b : C}
     (hf : _root_.GlobalTheory.BddArc.AbsSumAt u f a) (hg : _root_.GlobalTheory.BddArc.AbsSumAt u g b) :
@@ -121,9 +121,9 @@ private theorem absSumAt_mul {u : C} {f g : PowerSeries C} {a b : C}
 open scoped BigOperators in
 variable {C : Type} [NontriviallyNormedField C] [CompleteSpace C] in
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C c`. Rewrite using `[MvPolynomial.aeval_C, MvPolynomial.eval_C]`. Conclude with `absSumAt_algebraMap u c`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add]`. Conclude with `absSumAt_add hp hq`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, map_mul, MvPolynomial.aeval_X, MvPolynomial.eval_X]`. Conclude with `absSumAt_mul hp (h i)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BddArc.AbsSumAt.aeval {u : C} {ι : Type} {f : ι → PowerSeries C} {a : ι → C}
     (h : ∀ i, _root_.GlobalTheory.BddArc.AbsSumAt u (f i) (a i))
@@ -146,47 +146,39 @@ end GlobalTheory.BddArc
 
 open scoped BigOperators in
 /- English proof (translation)
-Use `set b := Module.Free.chooseBasis ℤ X with hb`. Set `M : Matrix (Module.Free.ChooseBasisIndex ℤ X) (Module.Free.ChooseBasisIndex ℤ X) ℚ` to `Matrix.of fun i j => (B (b i) (b j) : ℚ)`. Set `Bq` to `Matrix.toBilin' M`. Set `φ : X → Module.Free.ChooseBasisIndex ℤ X → ℚ` to `fun y i => (b.repr y i : ℚ)`. Establish `hφ : ∀ y z, ((B y z : ℤ) : ℚ) = Bq (φ y) (φ z)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y z`. Rewrite using `[Matrix.toBilin'_apply]`. Use `conv_lhs => rw [← b.sum_repr y, ← b.sum_repr z]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, Int.cast_sum, Int.cast_mul, Finset.mul_sum, M, φ, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hBsymm : LinearMap.IsSymm Bq`. Use `LinearMap.isSymm_iff_eq_flip.2 (LinearMap.ext₂ fun x y => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.flip_apply, Matrix.toBilin'_apply, Matrix.toBilin'_apply, Finset.sum_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [M, Matrix.of_apply, hsymm (b i) (b j)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hqpos : ∀ v, v ≠ 0 → 0 < Bq v v`. Introduce `v hv`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors ℤ) Finset.univ v`. Use `choose n hn using fun i => hd i (Finset.mem_univ i)`. Establish `hd0 : ((d : ℤ) : ℚ) ≠ 0` using `by exact_mod_cast nonZeroDivisors.coe_ne_zero d`. Use `set y : X := b.equivFun.symm n`. Establish `hy : φ y = ((d : ℤ) : ℚ) • v`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `hn i` as an intermediate fact. Simplify using `only [algebraMap_int_eq, eq_intCast, zsmul_eq_mul] at this`. Establish `hr : b.repr y i = n i` using `by rw [← b.equivFun_apply, LinearEquiv.apply_symm_apply]`. Simplify using `only [φ, Pi.smul_apply, smul_eq_mul, hr]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hy0 : y ≠ 0`. Introduce `h`. Apply `hv` to reduce the goal to its premises. Establish `h2 : ((d : ℤ) : ℚ) • v = 0` using `by rw [← hy, h]; funext i; simp [φ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(smul_eq_zero.1 h2).resolve_left hd0`. Establish `h1` using `hpos y hy0`. Establish `h2 : (0 : ℚ) < Bq (φ y) (φ y)` using `by rw [← hφ]; exact_mod_cast h1`. Rewrite `h2` using `[hy]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul] at h2`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h3 : 0 < ((d : ℤ) : ℚ) * ((d : ℤ) : ℚ)` using `mul_self_pos.2 hd0`. Use the polynomial consequences of the given equalities and inequalities. Use `haveI : Invertible (2 : ℚ) := invertibleOfNonzero two_ne_zero`. Take `⟨w, hw⟩` from `LinearMap.BilinForm.exists_orthogonal_basis hBsymm`. Establish `hexp : ∀ v, Bq v v = ∑ k, (w.repr v k) ^ 2 * Bq (w k) (w k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Use `conv_lhs => rw [← w.sum_repr v]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single k]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `l _ hlk`. Rewrite using `[hw hlk]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ k) h`. Establish `hdpos : ∀ k, 0 < Bq (w k) (w k)` using `fun k => hqpos _ (w.ne_zero k)`. Use `set A : ℚ := ∑ k, max 1 ((L : ℚ) / Bq (w k) (w k)) with hAdef`. Use `set T : ℚ := ∑ i, A * ∑ k, |w k i| with hTdef`. Establish `hA : 0 ≤ A` using `Finset.sum_nonneg fun k _ => le_trans zero_le_one (le_max_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoord : ∀ v, Bq v v ≤ L → ∀ i, |v i| ≤ T`. Introduce `v hv i`. Establish `hc : ∀ k, |w.repr v k| ≤ A`. Introduce `k`. Establish `h1 : (w.repr v k) ^ 2 * Bq (w k) (w k) ≤ L`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hv` using `[hexp]`. Use `le_trans ?_ hv` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun k => (w.repr v k) ^ 2 * Bq (w k) (w k)) (fun k _ => mul_nonneg (sq_nonneg _) (hdpos k).le) (Finset.mem_univ k)`. Establish `h2 : |w.repr v k| ≤ max 1 ((L : ℚ) / Bq (w k) (w k))`. Break down `le_or_gt (|w.repr v k|) 1 with h | h` into its components or cases.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h.trans (le_max_left _ _)`. Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (hdpos k)]`. Establish `h3 : |w.repr v k| ≤ (w.repr v k) ^ 2` using `by rw [← sq_abs]; nlinarith`. Use polynomial arithmetic with `[hdpos k]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h2.trans ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun k => max 1 ((L : ℚ) / Bq (w k) (w k))) (fun k _ => le_trans zero_le_one (le_max_left _ _)) (Finset.mem_univ k)`. Establish `hvi : v i = ∑ k, w.repr v k * w k i` using `by conv_lhs => rw [← w.sum_repr v]`. Simplify using `[Finset.sum_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hc k) (abs_nonneg _)`. Use `_ = A * ∑ k, |w k i| := (Finset.mul_sum _ _ _).symm`. Use `_ ≤ T := Finset.single_le_sum (f := fun i => A * ∑ k, |w k i|) (fun i _ => mul_nonneg hA (Finset.sum_nonneg fun k _ => abs_nonneg _)) (Finset.mem_univ i)`. Set `ψ : X → Module.Free.ChooseBasisIndex ℤ X → ℤ` to `fun y i => b.repr y i`.
-
-Establish `hψ : Function.Injective ψ`. Introduce `y z h`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Conclude with `congrFun h i`.
-
-Use `((Set.finite_Icc (fun _ => -⌈T⌉) (fun _ => ⌈T⌉)).preimage hψ.injOn).subset ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hy' : Bq (φ y) (φ y) ≤ L` using `by rw [← hφ]; exact_mod_cast hy`. Establish `h` using `hcoord _ hy'`. Use `⟨fun i => ?_, fun i => ?_⟩` and prove the remaining obligations.
-
-Establish `h4` using `(abs_le.1 ((h i).trans (Int.le_ceil T))).1 show -⌈T⌉ ≤ b.repr y i`. Simplify using `only [φ] at h4`. Conclude with `h4` after adjusting the coercions. Establish `h4` using `(abs_le.1 ((h i).trans (Int.le_ceil T))).2 show b.repr y i ≤ ⌈T⌉`. Simplify using `only [φ] at h4`.
-
-Conclude with `h4` after adjusting the coercions.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem finite_setOf_bilin_self_le_of_posDef {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (B : LinearMap.BilinForm ℤ X) (hsymm : ∀ y z, B y z = B z y) (hpos : ∀ y, y ≠ 0 → 0 < B y y) (L : ℤ) :
@@ -304,9 +296,9 @@ private theorem finite_setOf_bilin_self_le_of_posDef {X : Type} [AddCommGroup X]
 
 open scoped BigOperators in
 /- English proof (translation)
-Introduce `x y h`. Establish `h' : m • x = m • y` using `add_left_cancel h`. Apply `(Module.Free.chooseBasis ℤ X).repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Use `congrArg (fun z => (Module.Free.chooseBasis ℤ X).repr z i) h'` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [map_nsmul, Finsupp.smul_apply, nsmul_eq_mul] at this`. Conclude with `mul_left_cancel₀ (by exact_mod_cast hm) this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem injective_add_nsmul_of_ne_zero {X : Type} [AddCommGroup X] [Module.Free ℤ X] (a : X) {m : ℕ}
     (hm : m ≠ 0) : Function.Injective (fun χ : X => a + m • χ) := by
@@ -320,7 +312,7 @@ private theorem injective_add_nsmul_of_ne_zero {X : Type} [AddCommGroup X] [Modu
 
 open scoped BigOperators in
 /- English proof (translation)
-Establish `h` using `Finset.tsum_subtype' hS.toFinset g`. Rewrite `h` using `[hS.coe_toFinset]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hS, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tsum_subtype_eq_finsum_mem_of_finite {X M : Type} [AddCommMonoid M] [TopologicalSpace M]
     [T2Space M] (S : Set X) (hS : S.Finite) (g : X → M) : ∑' b : S, g b = ∑ᶠ x ∈ S, g x := by
@@ -330,35 +322,31 @@ private theorem tsum_subtype_eq_finsum_mem_of_finite {X M : Type} [AddCommMonoid
 
 open scoped BigOperators in
 /- English proof (translation)
-Use `set a : N.X := Multiplicative.toAdd (p : Multiplicative N.X × N.Gt).1 with ha`. Use `set q : N.X → ℤ := fun χ => β.be (a + m • χ) (a + m • χ) / (2 * (m : ℤ) ^ 2) with hq`. Establish `hm0 : m ≠ 0` using `hodd.pos.ne'`. Establish `hden : (0 : ℤ) < 2 * (m : ℤ) ^ 2` using `by positivity`. Establish `hq0 : ∀ χ, 0 ≤ q χ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `χ`. Use `Int.ediv_nonneg ?_ hden.le` and prove the remaining obligations. Distinguish the cases in `h : a + m • χ = 0`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(β.pos _ h).le`. Establish `hfin : ∀ K : ℤ, {χ | q χ ≤ K}.Finite`. Introduce `K`. Use `((finite_setOf_bilin_self_le_of_posDef β.be β.symm β.pos ((K + 1) * (2 * (m : ℤ) ^ 2))).preimage (injective_add_nsmul_of_ne_zero a hm0).injOn).subset ?_` and prove the remaining obligations. Introduce `χ hχ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage] at hχ ⊢`. Establish `h1` using `Int.lt_mul_ediv_self_add (x := β.be (a + m • χ) (a + m • χ)) hden`. Establish `h2 : 2 * (m : ℤ) ^ 2 * (β.be (a + m • χ) (a + m • χ) / (2 * (m : ℤ) ^ 2)) ≤ 2 * (m : ℤ) ^ 2 * K` using `mul_le_mul_of_nonneg_left hχ hden.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfinS : ∀ n : ℕ, {χ | q χ = n}.Finite` using `fun n => (hfin n).subset fun χ hχ => le_of_eq hχ`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Q : N.X → ℕ := fun χ => (q χ).toNat with hQdef`. Establish `hQ : ∀ χ, ((Q χ : ℕ) : ℤ) = q χ` using `fun χ => Int.toNat_of_nonneg (hq0 χ)`. Establish `hpow : ∀ χ, ((u ^ q χ : Cˣ) : C) = (u : C) ^ Q χ`. Introduce `χ`. Use `conv_lhs => rw [← hQ χ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val]`. Use `set f : N.X → C := fun χ => (u : C) ^ Q χ * N.txT m p χ with hf`. Establish `htw : (N.twist β u).tx m (N.twQ β u hm p) = ∑' χ, f χ`. Unfold `_root_.GlobalTheory.Ex.NumD.tx`. Use `tsum_congr fun χ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[N.twist_txT β u m hm hodd p χ]`. Conclude with `congrArg (· * N.txT m p χ) (hpow χ)`. Establish `hcoeff' : ∀ n : ℕ, PowerSeries.coeff n (N.arcTx β.be m p) = ∑ᶠ χ ∈ {χ | q χ = n}, N.txT m p χ`. Introduce `n`. Unfold `_root_.GlobalTheory.Ex.NumD.arcTx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.coeff_mk]`. Both sides reduce to the same expression. Establish `hcn : ∀ n : ℕ, ‖PowerSeries.coeff n (N.arcTx β.be m p)‖ ≤ 1`. Introduce `n`. Rewrite using `[hcoeff', finsum_mem_eq_finite_toFinset_sum _ (hfinS n)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun χ _ => hbd χ`. Establish `hnorm : ∀ χ, ‖f χ‖ ≤ ‖(u : C)‖ ^ Q χ` using `fun χ => by`. Rewrite using `[hf, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) (hbd χ)`. Establish `hQtend : Filter.Tendsto Q Filter.cofinite Filter.atTop`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Filter.tendsto_atTop.2 fun K => Filter.eventually_cofinite.2 ?_` and prove the remaining obligations. Use `(hfin K).subset fun χ hχ => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_le] at hχ ⊢`. Use `hQ χ` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsum : Summable f`. Use `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero ?_` and prove the remaining obligations. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Conclude with `squeeze_zero (fun χ => norm_nonneg _) hnorm ((tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hu).comp hQtend)`. Establish `hcoeff : ∀ n : ℕ, ∑' b : ↑(Q ⁻¹' {n}), f b = PowerSeries.coeff n (N.arcTx β.be m p) * (u : C) ^ n`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Establish `hset : Q ⁻¹' {n} = {χ | q χ = n}`. Use extensionality with `χ`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_setOf_eq]`. Use `hQ χ` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Establish `hterm : ∀ b : ↑(Q ⁻¹' {n}), f b = (u : C) ^ n * N.txT m p b`. Introduce `b`. Establish `hb : Q b = n` using `b.2`. Rewrite using `[hf]`.
-
-Simplify using `only [hb]`. Rewrite using `[tsum_congr hterm, tsum_mul_left, hset, tsum_subtype_eq_finsum_mem_of_finite _ (hfinS n), hcoeff', mul_comm]`. Establish `hfib` using `hsum.hasSum.tsum_fiberwise Q`. Rewrite `hfib` using `[show (fun n => ∑' b : ↑(Q ⁻¹' {n}), f b) = fun n => PowerSeries.coeff n (N.arcTx β.be m p) * (u : C) ^ n from funext hcoeff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Use `Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => ?_) (summable_geometric_of_lt_one (norm_nonneg _) hu)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_left (by positivity) (hcn n)`. Rewrite using `[htw]`. Conclude with `hfib.tsum_eq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem absSumAt_arcTx_twist_tx {C : Type} [NontriviallyNormedField C]
     [IsUltrametricDist C] [CompleteSpace C] (N : _root_.GlobalTheory.Ex.NumD C) {k : ℕ}
@@ -461,7 +449,7 @@ private theorem absSumAt_arcTx_twist_tx {C : Type} [NontriviallyNormedField C]
 open scoped BigOperators in
 
 /- English proof (translation)
-Introduce `C _ _ _ N k β m hm hodd ι p hbd F hF u hu`. Establish `h` using `_root_.GlobalTheory.BddArc.AbsSumAt.aeval (u := (u : C)) (fun i => absSumAt_arcTx_twist_tx N β m hm hodd (p i) (hbd i) u hu) F`. Rewrite `h` using `[hF]`. Rewrite using `[← h.2]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.eval_twist_tx_eq_zero_of_aeval_arcTx : ∀ (C : Type) [NontriviallyNormedField C]
     [IsUltrametricDist C] [CompleteSpace C] (N : _root_.GlobalTheory.Ex.NumD C) (k : ℕ)

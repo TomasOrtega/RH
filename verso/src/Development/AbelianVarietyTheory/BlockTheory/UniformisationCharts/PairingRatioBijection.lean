@@ -144,13 +144,13 @@ def ImageSt : Prop :=
       (PairingIs a a' ζ ↔ WeilIs P.A P.L (k : ℤ) x x' (Units.map (scal F).toMonoidHom ζ))
 
 /- English proof (translation)
-Introduce `α j` and use `by simp [liftFun]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {k : ℕ} (s : Fam D F k) : FamSmul (1 : F) s s := fun α j => by
   simp [liftFun]
 
 /- English proof (translation)
-The claim follows from `(h p rfl).2.2.2.1`.
+A detailed English derivation is pending.
 -/
 example {k : ℕ} (E : SecA F P k → Fam D F k → Prop) (p : QPair D F k) (x : TKF R F ⟶ P.A)
     (h : IsImageQ E (Qk.mk p) x) : x ^ k = 1 := (h p rfl).2.2.2.1

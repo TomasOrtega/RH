@@ -13,15 +13,13 @@ namespace GlobalTheory.CompanionTheory.Ar.ChMorph
 variable {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω']
 
 /- English proof (translation)
-Establish `hbase : f.base = g.base`. Use extensionality with `q`. Conclude with `hb q`. Use `Scheme.Hom.ext hbase fun U => ?_` and prove the remaining obligations. Use extensionality with `s`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `TopCat.Presheaf.section_ext X'.sheaf _ _ _ fun q hq => ?_` and prove the remaining obligations. Establish `hqg : g q ∈ U` using `hq`. Establish `hqf : f q ∈ U` using `by rw [hb q]; exact hqg`. Establish `hpf : genPt ξ ⤳ f q` using `RegAtDom.map_genPt hf ▸ (hall q).map f.continuous`. Establish `hpg : genPt ξ ⤳ g q` using `RegAtDom.map_genPt hg ▸ (hall q).map g.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (a b : X) (_ : a = b) (ha : genPt ξ ⤳ a) (hb : genPt ξ ⤳ b) (h1 : a ∈ U) (h2 : b ∈ U), genMap ξ ⟨a, ha⟩ ((X.presheaf.germ U a h1).hom s) = genMap ξ ⟨b, hb⟩ ((X.presheaf.germ U b h2).hom s)`. Introduce and unpack `a _ rfl ha hb h1 h2`. Both sides reduce to the same expression. Apply `hgen.inj ⟨q, hall q⟩` to reduce the goal to its premises. Establish `e1` using `RegAtDom.genMap_stalkMap hf q (hall q) hpf ((X.presheaf.germ U (f q) hqf).hom s)`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `RegAtDom.genMap_stalkMap hg q (hall q) hpg ((X.presheaf.germ U (g q) hqg).hom s)`. Rewrite `e1`, `e2` using `[Scheme.Hom.germ_stalkMap_apply]`. Establish `e3` using `key _ _ (hb q) hpf hpg hqf hqg`. Rewrite `e2` using `[← e3, ← e1]`. Use `(congrArg (genMap ξ' ⟨q, hall q⟩) ?_).trans e2.symm` and prove the remaining obligations.
-
-Conclude with `TopCat.Presheaf.germ_res_apply X'.presheaf _ q hqg _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hom_eq_of_points {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω') ⟶ X'}
     (hgen : IsCptGen ξ') (hall : ∀ q : X', genPt ξ' ⤳ q) {i : Ω →+* Ω'} {f g : X' ⟶ X}
@@ -53,15 +51,13 @@ variable {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} [Finite κ] {x : κ 
   {o' : Type} [CommRing o'] [Algebra o' Ω'] {κ' : Type} {y : κ' → Ω'}
 
 /- English proof (translation)
-Set `p' : Cpt M'.ξ` to `⟨q, M'.all q⟩`. Take `⟨h1, fa, -⟩` from `RegAtDom.regAt_dominates M.X Ω M.ξ M'.X Ω' M'.ξ f i hf p'`. Take `⟨h2, ga, gb⟩` from `RegAtDom.regAt_dominates M.X Ω M.ξ M'.X Ω' M'.ξ g i hg p'`. Use `replace gb := gb M'.tie.gen`. Take `⟨c, hc0, hc⟩` from `M.tie.cover ⟨f q, h1⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc'0, hc'⟩` from `M.tie.cover ⟨g q, h2⟩`. Establish `hu : unitAt M.ξ ⟨g q, h2⟩ (x c / x c')`. Use `gb _ (hc' c) ⟨?_, ga _ (hc' c), ?_⟩` and prove the remaining obligations. Conclude with `(map_ne_zero i).2 (div_ne_zero hc0 hc'0)`. Rewrite using `[← map_inv₀, inv_div]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fa _ (hc c')`. Establish `hin : InChart M.ξ x c ⟨g q, h2⟩`. Use `⟨hc0, fun j => ?_⟩` and prove the remaining obligations. Establish `: x j / x c = x j / x c' * (x c / x c')⁻¹`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `mul_mem (hc' j) hu.2.2`. Use `specializes_iff_forall_open.2 fun V hV hq => ?_` and prove the remaining obligations. Take `⟨a, ha, hau, hU⟩` from `GlobalTheory.T.chart_unit_basic_open o Ω κ x M c ⟨f q, h1⟩ ⟨V, hV⟩ ⟨hc0, hc⟩ hq`. Establish `hag : a ∈ regAt M.ξ ⟨g q, h2⟩` using `(M.tie.ring c hc0 a).1 ha _ hin`.
-
-Use `hU ⟨g q, h2⟩ hin (gb a hag ⟨(map_ne_zero i).2 hau.1, fa a hau.2.1, ?_⟩)` and prove the remaining obligations. Rewrite using `[← map_inv₀]`. Conclude with `fa _ hau.2.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specializes_of_dominates (M : PModel o x) (M' : PModel o' y) {i : Ω →+* Ω'} {f g : M'.X ⟶ M.X}
     (hf : Dominates M'.ξ M.ξ f i) (hg : Dominates M'.ξ M.ξ g i) (q : M'.X) : g q ⤳ f q := by
@@ -90,11 +86,9 @@ theorem specializes_of_dominates (M : PModel o x) (M' : PModel o' y) {i : Ω →
   exact fa _ hau.2.2
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x M o' _ Ω' _ _ κ' _ y M' i h`. Take `⟨f, hf, -⟩` from `GlobalTheory.T.dominates_of_coords_regular M.X Ω M.ξ o κ x M'.X Ω' M'.ξ i M.tie M'.tie.gen M'.all (fun r p' => by`. Take `⟨c, -, H⟩` from `h p'`. Conclude with `H _ (Subalgebra.algebraMap_mem _ r))`. Use the proof step `(fun p' => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc, H⟩` from `h p'`. Use `⟨c, (map_ne_zero i).2 hc, fun c' => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_div₀]`. Conclude with `H _ (Algebra.subset_adjoin ⟨c', rfl⟩))`. Use `⟨f, hf, fun g hg => ?_⟩` and prove the remaining obligations.
-
-Conclude with `hom_eq_of_points M'.tie.gen M'.all hg hf fun q => ((specializes_of_dominates M M' hf hg q).antisymm (specializes_of_dominates M M' hg hf q)).eq`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_dominates :
     ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x)

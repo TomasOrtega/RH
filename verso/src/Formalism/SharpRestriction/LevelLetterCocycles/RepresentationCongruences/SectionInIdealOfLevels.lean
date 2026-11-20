@@ -20,33 +20,29 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Establish `hlev' : ∀ s : ℕ, ∃ κ : ℕ, ∃ I : ℕ, ∃ g : Fin I → W.EE, ∃ c₀ : Fin I → Fin d → O, ∃ α : Fin I → ℕ → ℤ, s < e → (∀ i, InId W a e (α i) (g i) ∧ dvO W T e b (c₀ i) ∈ FilS W T a s (-(α i s))) ∧ ∀ k, lE W κ * h k = ∑ i, g i * algebraMap O W.EE (c₀ i k)`. Introduce `s`. Distinguish the cases in `hs : s < e`. Take `⟨κ, I, g, c₀, α, h1, h2⟩` from `hlev s hs`. Conclude with `⟨κ, I, g, c₀, α, fun _ => ⟨h1, h2⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, 0, fun i => Fin.elim0 i, fun i => Fin.elim0 i, fun i => Fin.elim0 i, fun h' => absurd h' hs⟩`. Use `choose κs I g c₀ α hsec using hlev'`. Establish `hlow' : ∀ t : ℕ, ∃ U : ℤ, t < e → ∀ u ≤ U, ∀ c : Fin d → O, dvO W T e b c ∈ FilS W T a t u`. Introduce `t`. Distinguish the cases in `ht : t < e`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU⟩` from `hlow t ht`. Conclude with `⟨U, fun _ => hU⟩`. Conclude with `⟨0, fun h' => absurd h' ht⟩`. Use `choose U hU using hlow'`. Use `set N : ℕ := ∑ s ∈ Finset.range e, ∑ i : Fin (I s), ∑ t ∈ Finset.range e, ((U t).natAbs + (α s i t).natAbs) with hN`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set κ : ℕ := ∑ s ∈ Finset.range e, κs s with hκ`. Take `⟨m, ε, -, hεd, hsum⟩` from `exists_partition_of_l_pow_levels W hC N (Finset.range e) ⟨0, Finset.mem_range.2 (by omega)⟩`. Use `choose! r hr hεr using hεd`. Establish `hlE : ∀ j, lE W j = algebraMap (LetA O n) W.EE (lA W ^ j)`. Introduce `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `[lE, lA]`. Establish `hκs : ∀ s < e, κs s ≤ κ` using `fun s hs => Finset.single_le_sum (f := κs) (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 hs)`. Set `σ` to `Σ s : Fin e, Fin (I s)`. Set `eqv` to `Fintype.equivFin σ`. Set `G' : σ → W.EE` to `fun p => algebraMap (LetA O n) W.EE ((∏ t ∈ (Finset.range e).erase (p.1 : ℕ), ps W t ^ N) * (r p.1 * lA W ^ (κ - κs p.1))) * g p.1 p.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Set `C' : σ → Fin d → O` to `fun p => c₀ p.1 p.2`. Set `A' : σ → ℕ → ℤ` to `fun p t => if t = (p.1 : ℕ) then α p.1 p.2 t else α p.1 p.2 t + N`. Establish `hmono : ∀ p : σ, InId W a e (A' p) (G' p) ∧ condNN W T a e b (A' p) (C' p)`. Introduce and unpack `⟨⟨s, hs⟩, i⟩`. Establish `hx : r s * lA W ^ (κ - κs s) ∈ W.AΔ` using `W.AΔ.mul_mem (hr s (Finset.mem_range.2 hs)) (l_pow_mem_invariants W _)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨inId_shift_levels W hR hs ((hsec s hs).1 i).1 hx, fun t ht => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality. Simplify using `only [A', if_true]`. Conclude with `((hsec t hs).1 i).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [A', hts, if_false]`. Use `hU t ht _ ?_ _` and prove the remaining obligations. Establish `h1 : (U t).natAbs + (α s i t).natAbs ≤ ∑ t' ∈ Finset.range e, ((U t').natAbs + (α s i t').natAbs)` using `Finset.single_le_sum (f := fun t' => (U t').natAbs + (α s i t').natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 ht)`. Establish `h2 : ∑ t' ∈ Finset.range e, ((U t').natAbs + (α s i t').natAbs) ≤ ∑ i' : Fin (I s), ∑ t' ∈ Finset.range e, ((U t').natAbs + (α s i' t').natAbs)` using `Finset.single_le_sum (f := fun i' => ∑ t' ∈ Finset.range e, ((U t').natAbs + (α s i' t').natAbs)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `h3 : ∑ i' : Fin (I s), ∑ t' ∈ Finset.range e, ((U t').natAbs + (α s i' t').natAbs) ≤ N` using `Finset.single_le_sum (f := fun s' => ∑ i' : Fin (I s'), ∑ t' ∈ Finset.range e, ((U t').natAbs + (α s' i' t').natAbs)) (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 hs)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN' : (((U t).natAbs : ℕ) : ℤ) + (((α s i t).natAbs : ℕ) : ℤ) ≤ (N : ℤ)`. Conclude with `h1.trans (h2.trans h3)` after adjusting the coercions. Rewrite `hN'` using `[Int.natCast_natAbs, Int.natCast_natAbs]`. Establish `e1` using `neg_abs_le (U t)`. Establish `e2` using `neg_abs_le (α s i t)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨m + κ, Fintype.card σ, fun j => G' (eqv.symm j), fun j => C' (eqv.symm j), fun j => A' (eqv.symm j), fun j => hmono (eqv.symm j), fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.sum_comp eqv.symm (fun p => G' p * algebraMap O W.EE (C' p k)), Fintype.sum_sigma]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_sum, hsum, ← hlE, lE, lE, lE, pow_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ s ∈ Finset.range e, algebraMap (LetA O n) W.EE (ε s) * lE W (κ - κs s) * (lE W (κs s) * h k) := by`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `: lE W κ = lE W (κ - κs s) * lE W (κs s)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[lE, lE, lE, ← pow_add, Nat.sub_add_cancel (hκs s (Finset.mem_range.1 hs))]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ s : Fin e, ∑ i : Fin (I s), G' ⟨s, i⟩ * algebraMap O W.EE (C' ⟨s, i⟩ k) := by`. Rewrite using `[Finset.sum_range (fun s => algebraMap (LetA O n) W.EE (ε s) * lE W (κ - κs s) * (lE W (κs s) * h k))]`.
-
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[(hsec s s.2).2 k, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [G', C']`. Rewrite using `[hεr s (Finset.mem_range.2 s.2), hlE]`.
-
-Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem section_in_ideal_of_levels (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (hC : Formalism.MainNotions.UnusedSlot80.KL.PsCoprime W)
     (T : LocLat G Qp LL O) (a : ZMod n) (e : ℕ) (he : 1 ≤ e) {d : ℕ} (b : Fin d → W.DD T)

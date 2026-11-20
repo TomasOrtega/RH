@@ -7,7 +7,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InvariantMetricIsometry
 namespace PI.IsoInvMetricW
 
 /- English proof (translation)
-The claim follows from `isoInvMetric_of (unit_of metric_mul) (invK_of metric_mul) (stab_of hermitian_vector_map) (hvCols_of hermitian_vector_map) norm1' (gen_of quotient_rank hermitian_vector_map) hW`.
+A detailed English derivation is pending.
 -/
 theorem isoInvMetric_of_hw (hW : HW) : PI.IsoInvMetric.IsoInvMetric :=
   isoInvMetric_of (unit_of metric_mul) (invK_of metric_mul) (stab_of hermitian_vector_map)

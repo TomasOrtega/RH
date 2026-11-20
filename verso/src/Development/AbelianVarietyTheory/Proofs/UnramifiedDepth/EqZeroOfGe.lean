@@ -7,7 +7,7 @@ open Formalism.L2.FormalSeriesBounds
 namespace GlobalTheory.TeichPair
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Nat.cast_succ, ← add_assoc, hf, ih, ← pow_mul, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iter_frob {k O : Type} [CommRing k] [CommRing O] {d : ℕ} {l : ℕ} (f : ZMod d → O →+* k)
     (hf : ∀ a x, f (a + 1) x = f a x ^ l) (a : ZMod d) (x : O) (n : ℕ) : f (a + n) x = f a x ^ l ^ n := by
@@ -16,25 +16,25 @@ theorem iter_frob {k O : Type} [CommRing k] [CommRing O] {d : ℕ} {l : ℕ} (f 
   | succ n ih => rw [Nat.cast_succ, ← add_assoc, hf, ih, ← pow_mul, pow_succ]
 
 /- English proof (translation)
-Establish `hq : 2 ≤ l ^ d` using `le_trans hl (Nat.le_self_pow (NeZero.ne d) l)`. Establish `hv : ∀ a x, f a x = f 0 x ^ l ^ a.val` using `fun a x => by`. Rewrite using `[← iter_frob f hf]`. Simplify using the standard rewrite rules. Establish `hd : ∀ x, f 0 x ^ l ^ d = f 0 x` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← iter_frob f hf]`. Simplify using the standard rewrite rules. Take `⟨N, hN⟩ : ∃ N, l ^ d = N + 2` from `⟨l ^ d - 2, by omega⟩`. Establish `hu : ∀ x, f 0 x ≠ 0 → f 0 x ^ (N + 1) = 1` using `fun x hx => by`. Apply `mul_right_cancel₀ hx` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← pow_succ, one_mul, show N + 1 + 1 = l ^ d by omega, hd]`. Set `H : Subgroup kˣ` to `{ carrier := {u | ∃ x, f 0 x = u} one_mem' := ⟨1, by simp⟩ mul_mem' := by`. Introduce and unpack `a b ⟨x, hx⟩ ⟨y, hy⟩`. Conclude with `⟨x * y, by simp [hx, hy]⟩`. Use the proof step `inv_mem' := by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a ⟨x, hx⟩`. Use `⟨x ^ N, ?_⟩` and prove the remaining obligations. Establish `h1` using `hu x (by rw [hx]; exact a.ne_zero)`. Rewrite using `[map_pow, hx]`. Rewrite `h1` using `[hx, pow_succ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Units.inv_eq_of_mul_eq_one_left h1).symm }`. Establish `hH : H ≤ rootsOfUnity (N + 1) k`. Introduce and unpack `a ⟨x, hx⟩`. Rewrite using `[mem_rootsOfUnity', ← hx]`. Conclude with `hu x (by rw [hx]; exact a.ne_zero)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsCyclic H := Subgroup.isCyclic_of_le hH`. Take `⟨⟨γ, x, hx⟩, hγ⟩` from `IsCyclic.exists_zpow_surjective (G := H)`. Establish `hx0 : f 0 x ≠ 0` using `by rw [hx]; exact γ.ne_zero`. Use `⟨x, fun a => by rw [hv]; exact pow_ne_zero _ hx0, fun a a' h => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨y, hy⟩` from `hsep a a' hne`. Apply `hy` to reduce the goal to its premises. Establish `hl0 : ∀ m : ℕ, l ^ m ≠ 0` using `fun m => pow_ne_zero _ (by omega)`. Distinguish the cases in `hy0 : f 0 y = 0`. Rewrite using `[hv a, hv a', hy0, zero_pow (hl0 _), zero_pow (hl0 _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hu y hy0`. Rewrite `h1` using `[pow_succ]`. Set `w : kˣ` to `Units.mkOfMulEqOne (f 0 y) (f 0 y ^ N) (by rw [mul_comm]; exact h1)`. Take `⟨m, hm⟩` from `hγ ⟨w, y, rfl⟩`. Establish `hm' : γ ^ m = w` using `congrArg Subtype.val hm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : γ ^ l ^ a.val = γ ^ l ^ a'.val`. Apply `Units.ext` to reduce the goal to its premises. Establish `h' : f a x = f a' x` using `h`. Rewrite `h'` using `[hv a, hv a', hx]`. Simplify using `using h'`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : w ^ l ^ a.val = w ^ l ^ a'.val`. Rewrite using `[← hm', ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm m, mul_comm m, zpow_mul, zpow_mul, zpow_natCast, zpow_natCast, h2]`. Establish `h4` using `congrArg Units.val h3`. Rewrite using `[hv a, hv a']`. Simplify `h4` using `[w]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_sep {k O : Type} [CommRing k] [IsDomain k] [CommRing O] {d : ℕ} [NeZero d] {l : ℕ} (hl : 2 ≤ l)
     (f : ZMod d → O →+* k) (hf : ∀ a x, f (a + 1) x = f a x ^ l)
@@ -130,9 +130,9 @@ instance maxId_prime (V : VF C) : (maxId V).IsPrime where
     simp at h'
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Establish `h1 : V.v z ≠ ⊤` using `fun h => hz (V.v.top_iff.1 h)`. Take `⟨t, ht⟩` from `WithTop.ne_top_iff_exists.1 h1`. Take `⟨N, hN⟩` from `exists_nat_gt t`. Use `h N` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `VF.Ge at this`. Rewrite `this` using `[← ht]`. Conclude with `absurd (WithTop.coe_le_coe.1 this) (not_le.2 hN)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ge {V : VF C} {z : C} (h : ∀ N : ℕ, V.Ge N z) : z = 0 := by
   by_contra hz
@@ -145,9 +145,9 @@ theorem eq_zero_of_ge {V : VF C} {z : C} (h : ∀ N : ℕ, V.Ge N z) : z = 0 := 
   exact absurd (WithTop.coe_le_coe.1 this) (not_le.2 hN)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using VF.Ge.zero (V := V) w`. Consider the case `succ m ih`. Establish `: a ^ (m + 1) - b ^ (m + 1) = a * (a ^ m - b ^ m) + b ^ m * (a - b)` using `by ring`. Rewrite using `[this]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ha.mul_int ih).add ((hb.pow m).mul_int h)`.
+A detailed English derivation is pending.
 -/
 theorem ge_pow_sub {V : VF C} {w : ℝ} {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) (h : V.Ge w (a - b)) (m : ℕ) :
     V.Ge w (a ^ m - b ^ m) := by
@@ -159,7 +159,7 @@ theorem ge_pow_sub {V : VF C} {w : ℝ} {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b
     exact (ha.mul_int ih).add ((hb.pow m).mul_int h)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using VF.Ge.one (V := V)`. Consider the case `succ n ih => rw [pow_succ]`. Use `push_cast`. Conclude with `ih.mul VF.ge_l`.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem ge_l_pow (V : VF C) (n : ℕ) : V.Ge n ((V.l : C) ^ n) := by
   induction n with
@@ -167,51 +167,45 @@ theorem ge_l_pow (V : VF C) (n : ℕ) : V.Ge n ((V.l : C) ^ n) := by
   | succ n ih => rw [pow_succ]; push_cast; exact ih.mul VF.ge_l
 
 /- English proof (translation)
-Establish `hl : 2 ≤ V.l` using `V.l_prime.two_le`. Establish `hq : 2 ≤ V.l ^ d` using `le_trans hl (Nat.le_self_pow (NeZero.ne d) _)`. Take `⟨N, hN⟩ : ∃ N, V.l ^ d = N + 2` from `⟨V.l ^ d - 2, by omega⟩`. Set `π` to `Ideal.Quotient.mk (maxId V)`. Establish `hπ : ∀ a b : intRing V, π a = π b ↔ V.MM ((a : C) - b)` using `fun a b => Ideal.Quotient.eq`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e' : ZMod d → O →+* intRing V` to `fun a => (e a).codRestrict (intRing V) (hint a)`. Set `f : ZMod d → O →+* (intRing V ⧸ maxId V)` to `fun a => π.comp (e' a)`. Establish `hf : ∀ a x, f (a + 1) x = f a x ^ V.l` using `fun a x => by show π _ = π _ ^ _`. Rewrite using `[← map_pow, hπ]`. Conclude with `hfrob a x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ∀ a a', a ≠ a' → ∃ x, f a x ≠ f a' x` using `fun a a' h => by`. Take `⟨x, hx⟩` from `hsep a a' h`. Use `⟨x, fun h' => ?_⟩` and prove the remaining obligations. Establish `h2 : 0 < V.v (e a x - e a' x)` using `(hπ _ _).1 h'`. Rewrite `h2` using `[hx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `lt_irrefl _ h2`. Take `⟨x, hx0, hxi⟩` from `exists_sep hl f hf hs`. Take `⟨ε, ⟨y, hy⟩, hε1, hε⟩` from `hunr`. Establish `hd : ∀ a x, f a x ^ V.l ^ d = f a x` using `fun a x => by`. Rewrite using `[← iter_frob f hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hfε : ∀ a, f a ε = 1` using `fun a => by show π _ = 1`. Rewrite using `[← map_one π, hπ]`. Conclude with `hε1 a`. Establish `hεp : ∀ m : ℕ, (V.l : O) ∣ ε ^ (m + 1) - ε` using `fun m => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `: ε ^ (m + 1 + 1) - ε = ε * (ε ^ (m + 1) - ε) + (ε * ε - ε)` using `by ring`. Rewrite using `[this, hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `dvd_add (ih.mul_left _) (dvd_mul_right _ _)`. Establish `hb : (V.l : O) ∣ (ε * x) ^ V.l ^ d - ε * x`. Take `⟨z, hz⟩` from `hε (x ^ V.l ^ d - x) fun a => by`. Establish `h1 : π (e' a (x ^ V.l ^ d)) = π (e' a x)` using `by show f a _ = f a _`. Rewrite using `[map_pow, hd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub]`. Conclude with `(hπ _ _).1 h1`. Establish `: (ε * x) ^ V.l ^ d - ε * x = (ε ^ (N + 1 + 1) - ε) * x ^ V.l ^ d + ε * (x ^ V.l ^ d - x)`. Rewrite using `[mul_pow, show N + 1 + 1 = V.l ^ d by omega]; ring`. Rewrite using `[this, hz]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `dvd_add ((hεp _).mul_right _) (dvd_mul_right _ _)`. Set `s : ℕ → O` to `fun n => (ε * x) ^ V.l ^ (d * n)`. Establish `hs1 : ∀ n, s (n + 1) = s n ^ V.l ^ d` using `fun n => by`. Simplify using `only [s]`. Rewrite using `[← pow_mul, ← pow_add, mul_add, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsc : ∀ n, ∃ y, s (n + 1) - s n = (V.l : O) ^ n * y` using `fun n => by`. Establish `h1` using `dvd_sub_pow_of_dvd_sub hb (d * n)`. Establish `h2 : s (n + 1) = ((ε * x) ^ V.l ^ d) ^ V.l ^ (d * n)`. Simplify using `only [s]`. Rewrite using `[← pow_mul, ← pow_add, mul_add, mul_one, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2]`. Use `dvd_trans (pow_dvd_pow _ ?_) h1` and prove the remaining obligations. Establish `: 1 ≤ d` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne d)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlim : ∀ a, ∃ z, ∀ n : ℕ, V.Ge n (z - e a (s n))` using `fun a => cpl (fun n => e a (s n)) fun n => by`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨z, hz⟩` from `hsc n`. Rewrite using `[← map_sub, hz, map_mul, map_pow, map_natCast]`. Simplify using `using (ge_l_pow V n).mul (hint a z)`. Use `choose ζ hζ using hlim`. Establish `hζi : ∀ a, V.Ge 0 (ζ a)` using `fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hζ a 0).add (by simpa using hint a (s 0))` as an intermediate fact. Simplify using `using this`. Establish `hζq : ∀ a, ζ a ^ V.l ^ d = ζ a` using `fun a => by`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_ge (V := V) fun n => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `ge_pow_sub (hζi a) (hint a _) (hζ a n) (V.l ^ d)`. Establish `h2` using `(hζ a (n + 1)).mono (w' := n) (by push_cast; linarith)`. Rewrite `h2` using `[hs1, map_pow]`. Simplify using `using h1.sub h2`. Set `ζ' : ZMod d → intRing V` to `fun a => ⟨ζ a, hζi a⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hζπ : ∀ a, π (ζ' a) = f a x` using `fun a => by`. Establish `h1 : π (ζ' a) = f a (s 1)`. Use `(hπ _ _).2 (lt_of_lt_of_le ?_ (hζ a 1))` and prove the remaining obligations. Conclude with `WithTop.coe_lt_coe.2 (zero_lt_one' ℝ)` after adjusting the coercions. Rewrite using `[h1, hs1, map_pow, hd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[s, hfε]`. Establish `hζ0 : ∀ a, ζ a ≠ 0` using `fun a h => by`. Apply `hx0 a` to reduce the goal to its premises. Rewrite using `[← hζπ, show ζ' a = 0 from Subtype.ext h, map_zero]`. Establish `hζN : ∀ a, ζ a ^ (N + 1) = 1` using `fun a => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_right_cancel₀ (hζ0 a)` to reduce the goal to its premises. Rewrite using `[← pow_succ, one_mul, show N + 1 + 1 = V.l ^ d by omega, hζq]`. Establish `hlπ : ((V.l : ℕ) : intRing V ⧸ maxId V) = 0`. Rewrite using `[← map_natCast π, ← map_zero π, hπ]`. Use `show 0 < V.v _`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[V.v_l]`. Establish `hNπ : ((N + 1 : ℕ) : intRing V ⧸ maxId V) ≠ 0` using `fun h => by`. Establish `h1 : ((N + 1 + 1 : ℕ) : intRing V ⧸ maxId V) = 0`. Rewrite using `[show N + 1 + 1 = V.l ^ d by omega, Nat.cast_pow, hlπ, zero_pow (NeZero.ne d)]`. Rewrite `h1` using `[Nat.cast_succ, h, zero_add]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `one_ne_zero h1`. Use `⟨s, N + 1, ζ, hsc, ?_, hζN, fun a a' h => hxi ?_, fun a => ?_, hζ⟩` and prove the remaining obligations. Use `le_antisymm (not_lt.1 fun h => hNπ ?_) (VF.ge_natCast (V := V) _)` and prove the remaining obligations. Rewrite using `[← map_natCast π, ← map_zero π, hπ]`. Use `show 0 < V.v _`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`. Use `show f a x = f a' x`. Rewrite using `[← hζπ, ← hζπ, show ζ' a = ζ' a' from Subtype.ext h]`. Assume the negation of the conclusion as `hne`. Establish `h1` using `geom_sum₂_mul (ζ' (a + 1)) (ζ' a ^ V.l) (N + 1)`.
-
-Establish `h2 : ζ' (a + 1) ^ (N + 1) - (ζ' a ^ V.l) ^ (N + 1) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ζ (a + 1) ^ (N + 1) - (ζ a ^ V.l) ^ (N + 1) = 0`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζN, hζN, one_pow, sub_self]`. Rewrite `h1` using `[h2, mul_eq_zero, sub_eq_zero]`.
-
-Break down `h1 with h1 | h1` into its components or cases. Establish `h3` using `congrArg π h1`. Rewrite `h3` using `[map_sum, map_zero]`. Simplify using `only [map_mul, map_pow, hζπ, ← hf] at h3`. Rewrite `h3` using `[geom_sum₂_self]`.
-
-Conclude with `mul_ne_zero hNπ (pow_ne_zero _ (hx0 _)) h3`. Conclude with `hne (congrArg Subtype.val h1)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_seq (V : VF C) (cpl : ∀ s : ℕ → C, (∀ n : ℕ, V.Ge n (s (n + 1) - s n)) → ∃ x, ∀ n : ℕ, V.Ge n (x - s n))
     {O : Type} [CommRing O] {d : ℕ} [NeZero d] (e : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (e a x))

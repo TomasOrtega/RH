@@ -11,7 +11,7 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hV.1, (h2 F K ι V).1 hV.2.1, hV.2.2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem isMultiProjPrime_of_vocab (h2 : VocabMultiHomogIdeal.Statement.{u})
     {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
@@ -20,9 +20,9 @@ private theorem isMultiProjPrime_of_vocab (h2 : VocabMultiHomogIdeal.Statement.{
   ⟨hV.1, (h2 F K ι V).1 hV.2.1, hV.2.2⟩
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum, finsum_eq_sum_of_support_subset]`. Introduce `W hW`. Rewrite `hW` using `[Function.mem_support]`. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hW (by rw [h0, zero_mul])`.
+A detailed English derivation is pending.
 -/
 private theorem finsum_mul_eq_finsupp_sum {α : Type*} (D : α →₀ ℤ) (J : α → ℤ) :
     ∑ᶠ W, D W * J W = D.sum fun W m => m * J W := by
@@ -35,13 +35,11 @@ private theorem finsum_mul_eq_finsupp_sum {α : Type*} (D : α →₀ ℤ) (J : 
   exact hW (by rw [h0, zero_mul])
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `V L i hV hi`. Establish `hL : L = (![] : Fin 0 → K → ℤ)` using `funext fun j => Fin.elim0 j`. Substitute `hL` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `h4 F K ι V i (isMultiProjPrime_of_vocab h2 hV.1) hV.2 hi`. Introduce `V n L A f g hV hs`. Take `⟨α, β, hf, hg, hfV, hgV, hαβ⟩` from `hs`. Establish `key` using `h5 F K ι n V (isMultiProjPrime_of_vocab h2 hV.1) hV.2 L A f g α β ((h1 F K ι f α).1 hf) ((h1 F K ι g β).1 hg) hfV hgV hαβ`. Use `key.trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hD : ∀ W, ratDiv V f g W = ReciprocityTheory.ChartRestriction.G.AI.I1.ratDiv V f g W`. Introduce `W`. Simplify using `only [ratDiv, ReciprocityTheory.ChartRestriction.G.AI.I1.ratDiv, Finsupp.sub_apply, Finsupp.mapRange_apply]`. Rewrite using `[h3 F K ι V f W, h3 F K ι V g W]`. Simplify using `only [cycEval, ReciprocityTheory.ChartRestriction.G.AI.I1.cycEval, hD]`.
-
-Conclude with `finsum_mul_eq_finsupp_sum _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IntNumIsFieldIntersection.proof (h1 : VocabMultiHomog.Statement.{u})
     (h2 : VocabMultiHomogIdeal.Statement.{u}) (h3 : VocabDivCycle.Statement.{u})

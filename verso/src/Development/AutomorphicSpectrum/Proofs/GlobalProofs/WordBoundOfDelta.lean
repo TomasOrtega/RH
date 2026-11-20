@@ -18,11 +18,11 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA.WordDelta
 
 /- English proof (translation)
-Establish `hrX : r • X ∈ HCSS.lieOf G` using `(GlobalTheory.T.lie_algebra_of_linear_group_closed hG).2.1 r X hX`. Establish `h1` using `(GlobalTheory.T.derived_action_of_smooth_vector hG hrep hv hX).1`. Establish `h2` using `(GlobalTheory.T.derived_action_of_smooth_vector hG hrep hv hrX).1`. Establish `h3 : HasDerivAt (fun t : ℝ => r * t) r 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).const_mul r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4 : HasDerivAt (fun t : ℝ => π (NormedSpace.exp ((r * t) • X)) v) (r • dRep π X v) 0`. Establish `h1' : HasDerivAt (fun t : ℝ => π (NormedSpace.exp (t • X)) v) (dRep π X v) (r * 0)`. Simplify using `using h1`. Conclude with `HasDerivAt.scomp (0 : ℝ) h1' h3`. Establish `h5 : (fun t : ℝ => π (NormedSpace.exp (t • (r • X))) v) = fun t : ℝ => π (NormedSpace.exp ((r * t) • X)) v`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[smul_smul, mul_comm]`. Rewrite `h2` using `[h5]`. Rewrite using `[h2.unique h4]`. Conclude with `(Complex.coe_smul r _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dRep_real_smul {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {v : H} (hv : IsSmoothVec G π v) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ HCSS.lieOf G) (r : ℝ) :
     dRep π (r • X) v = (r : ℂ) • dRep π X v := by
@@ -43,11 +43,11 @@ theorem dRep_real_smul {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Typ
   exact (Complex.coe_smul r _).symm
 
 /- English proof (translation)
-Establish `hl` using `GlobalTheory.T.lie_algebra_of_linear_group_closed hG`. Establish `key : ∀ s : Finset (Fin d), (∑ i ∈ s, r i • b i ∈ HCSS.lieOf G) ∧ dRep π (∑ i ∈ s, r i • b i) w = ∑ i ∈ s, (r i : ℂ) • dRep π (b i) w`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `t`. Simplify using `using hG.one_mem`. Simplify using `[dRep]`. Consider the case `insert i s hi ih`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Establish `hri` using `hl.2.1 (r i) _ (hb i)`. Use `⟨hl.1 _ _ hri ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.derived_action_additive hG hrep hw hw hri ih.1).1, ih.2, dRep_real_smul hG hrep hw (hb i)]`. Conclude with `(key Finset.univ).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dRep_sum {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {d : ℕ} (b : Fin d → Matrix (Fin n) (Fin n) ℂ) (hb : ∀ i, b i ∈ HCSS.lieOf G) (r : Fin d → ℝ) {w : H} (hw : IsSmoothVec G π w) :
     dRep π (∑ i, r i • b i) w = ∑ i, (r i : ℂ) • dRep π (b i) w := by
@@ -69,37 +69,33 @@ theorem dRep_sum {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [No
   exact (key Finset.univ).2
 
 /- English proof (translation)
-Introduce `n G H _ _ _ π hG hrep _ hQ d b hb hli hsp Y _ hYs hYd v hv`. Take `⟨Q, m, Mb, a, hm, hMb, ha, hadd, hsmul, hconj, hpos, hbd, hgrow⟩` from `hQ`. Take `⟨hsadd, hssmul, -⟩` from `GlobalTheory.T.smooth_vectors_invariant_subspace hG hrep`. Establish `hvs` using `hYs v hv`. Set `S : Submodule ℂ H` to `{ carrier := {x | IsSmoothVec G π x} add_mem' := fun {x y} hx hy => hsadd x y hx hy zero_mem' := by simpa using hssmul 0 v hvs smul_mem' := fun c x hx => hssmul c x hx }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Xf : Fin d → Module.End ℂ S` to `fun i => { toFun := fun x => ⟨dRep π (b i) x, (GlobalTheory.T.derived_action_of_smooth_vector hG hrep x.2 (hb i)).2⟩ map_add' := fun x y => Subtype.ext (GlobalTheory.T.derived_action_additive hG hrep x.2 y.2 (hb i) (hb i)).2.1 map_smul' := fun c x => Subtype.ext ((GlobalTheory.T. …`. Establish `hXc : ∀ i (x : S), ((Xf i x : S) : H) = dRep π (b i) x` using `fun _ _ => rfl`. Establish `hlie` using `GlobalTheory.T.lie_algebra_of_linear_group_closed hG`. Use `choose r hr using fun (p : Fin d × Fin d) => hsp _ (hlie.2.2.1 (b p.1) (b p.2) (hb p.1) (hb p.2))`. Establish `hcomm : ∀ i j, Xf i * Xf j - Xf j * Xf i = ∑ l, ((r (i, j) l : ℝ) : ℂ) • Xf l`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Use extensionality with `u`. Establish `h1` using `GlobalTheory.T.derived_action_commutator hG hrep u.2 (hb i) (hb j)`. Rewrite `h1` using `[show b i * b j - b j * b i = _ from hr (i, j), dRep_sum hG hrep b hb _ u.2]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sub, Submodule.coe_sum, Submodule.coe_smul, hXc]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h1.symm`. Establish `hQnn : ∀ x : H, 0 ≤ (Q x x).re` using `fun x => le_trans (by positivity) (hpos x)`. Set `A : ℝ` to `a * ∑ i, mnorm (b i)`. Establish `hmn : ∀ X : Matrix (Fin n) (Fin n) ℂ, 0 ≤ mnorm X` using `fun X => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hA : 0 ≤ A` using `mul_nonneg ha (Finset.sum_nonneg fun i _ => hmn _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : ∀ i (x : S), |2 * (Q (Xf i x) x).re| ≤ A * (Q x x).re`. Introduce `i x`. Use `(GlobalTheory.T.smooth_vector_hermitian_form_growth hG hrep Q Mb a hadd hsmul hconj hbd hgrow (hb i) x.2).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (hQnn x)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (Finset.single_le_sum (f := fun i => mnorm (b i)) (fun i _ => hmn _) (Finset.mem_univ i)) ha`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `V : Submodule ℂ S` to `Y.comap S.subtype`. Establish `hinj : Function.Injective (fun u : V => (⟨(u : S), u.2⟩ : Y))`. Introduce `u w h`. Conclude with `Subtype.ext (Subtype.ext (congrArg (fun y : Y => (y : H)) h))`. Set `f : V →ₗ[ℂ] Y` to `{ toFun := fun u => ⟨(u : S), u.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : FiniteDimensional ℂ V := FiniteDimensional.of_injective f hinj`. Establish `hV : ∀ u ∈ V, (∑ i, Xf i * Xf i) u ∈ V`. Introduce `u hu`. Establish `h1` using `hYd (u : H) hu`. Express the relevant statement in the definitionally equal form `(((∑ i, Xf i * Xf i) u : S) : H) ∈ Y`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h1` using `only [LinearMap.sum_apply, Module.End.mul_apply, Submodule.coe_sum, hXc]`. Take `⟨C, hC, hN⟩` from `GlobalTheory.T.hermitian_form_lie_word_growth (fun x y : S => Q x y) (fun x y z => hadd x y z) (fun c x y => hsmul c x y) (fun x y => hconj x y) (fun x hx => lt_of_lt_of_le (by`. Establish `: (x : H) ≠ 0` using `fun h => hx (Subtype.ext h)`. Use the proof step `positivity) (hpos x))`. Use `Xf (fun i j l => ((r (i, j) l : ℝ) : ℂ)) hcomm A hA hs V hV`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hword : ∀ (l : List (Fin d)) (u : S), (((l.map Xf).prod u : S) : H) = l.foldr (fun i w => dRep π (b i) w) (u : H)`. Introduce `l u`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply, hXc, List.foldr_cons, ih]`. Set `vS : S` to `⟨v, hvs⟩`. Establish `hvV : vS ∈ V` using `hv`. Set `K : ℝ` to `Real.sqrt (Q v v).re / Real.sqrt m`. Establish `hK : 0 ≤ K` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : 0 < Real.sqrt m` using `Real.sqrt_pos.2 hm`. Use `GlobalTheory.T.lie_basis_coordinate_growth_bound hG hrep b hb hsp _ (GlobalTheory.T.linearIndependent_coefficient_norm_bound b hli).choose_spec.1 (GlobalTheory.T.linearIndependent_coefficient_norm_bound b hli).choose_spec.2 (fun r w hw => dRep_sum hG hrep b hb r hw) hvs (C * (K + …` and prove the remaining obligations. Introduce `l`. Establish `h1` using `hN l vS hvV`. Rewrite `h1` using `[show ((l.map Xf).prod vS : S) = ((l.map Xf).prod vS : S) from rfl]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w : S := (l.map Xf).prod vS with hw`. Establish `hwv : (w : H) = l.foldr (fun i w => dRep π (b i) w) v` using `hword l vS`. Rewrite using `[← hwv]`. Establish `h2 : Real.sqrt m * ‖(w : H)‖ ≤ Real.sqrt (Q w w).re`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[mul_pow, Real.sq_sqrt hm.le]`. Conclude with `hpos w`. Establish `h3 : ‖(w : H)‖ ≤ C ^ (l.length + 1) * l.length.factorial * K`. Establish `h4 : Real.sqrt m * ‖(w : H)‖ ≤ C ^ (l.length + 1) * l.length.factorial * Real.sqrt (Q v v).re` using `h2.trans h1`. Establish `h5 : C ^ (l.length + 1) * l.length.factorial * K = (C ^ (l.length + 1) * l.length.factorial * Real.sqrt (Q v v).re) / Real.sqrt m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [K]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5, le_div_iff₀ hsm]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `h3.trans ?_` and prove the remaining obligations.
-
-Establish `h6 : K ≤ (K + 1) ^ (l.length + 1)`. Establish `h7 : (K + 1) ^ 1 ≤ (K + 1) ^ (l.length + 1)` using `pow_le_pow_right₀ (by linarith) (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[mul_pow]`. Establish `h8 : 0 ≤ C ^ (l.length + 1) * (l.length.factorial : ℝ)` using `by positivity`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem word_bound_of_delta : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) (hc : ∀ v, ContinuousOn (fun g => π g v) G) (hQ : AlmostIsom G π) {d : ℕ} (b : Fin d → Matrix (Fin n) (Fin n) ℂ) (hb : ∀ i, b i ∈ HCSS.lieOf G) (hli : LinearIndependent ℝ b) (hsp : ∀ X ∈ HCSS.lieOf G, ∃ r : Fin d → ℝ, X = ∑ i, r i • b i) (Y : Submodule ℂ H) [FiniteDimensional ℂ Y] (hYs : ∀ y ∈ Y, IsSmoothVec G π y) (hYd : ∀ y ∈ Y, ∑ i, dRep π (b i) (dRep π (b i) y) ∈ Y), ∀ v ∈ Y, WordBound G π v := by
   intro n G H _ _ _ π hG hrep _ hQ d b hb hli hsp Y _ hYs hYd v hv

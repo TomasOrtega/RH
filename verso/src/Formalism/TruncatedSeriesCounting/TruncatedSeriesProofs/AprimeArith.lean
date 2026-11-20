@@ -55,7 +55,7 @@ private lemma sig_lt (ℓ g h j : ℕ) (hℓ : 11 ≤ ℓ) :
   linarith
 
 /- English proof (authored)
-For the two rational terms use ℓ ≥ 11 and (ℓ−1)^(j+1) ≥ 10². Since log ℓ ≥ 1 and log h ≥ 0 for natural h under the real logarithm convention, log base ℓ of h is at most log h. Apply log_nat_le and substitute the three bounds into the assumption on rr.
+For the two rational terms use ℓ ≥ 11 and (ℓ−1)^(j+1) ≥ 10². Since log ℓ ≥ 1 and log h ≥ 0 for natural h under the real logarithm convention, log base ℓ of h is at most log h. Use the upper bound for the logarithm of a natural number and substitute the three bounds into the assumption on rr.
 -/
 private lemma rr_le (ℓ G h j : ℕ) (rr : ℝ) (hℓ : 11 ≤ ℓ) (hj : 1 ≤ j)
     (hrr : rr ≤ 20 * ((G : ℝ) / ℓ + (h : ℝ) / ((ℓ : ℝ) - 1) ^ (j + 1) + Real.logb ℓ h + 1)) :
@@ -83,7 +83,7 @@ private lemma rr_le (ℓ G h j : ℕ) (rr : ℝ) (hℓ : 11 ≤ ℓ) (hj : 1 ≤
 /- English proof (authored)
 Take C = 100000. Put G = w+S+η and z = G+1, so b ≥ 100000(j+1)z ≥ 200000z. This gives max(G,1) < b ≤ min(b₀,b₁) and η < b. Hence b₀ ≤ b+η < 2b ≤ 2b₁, which gives both comparisons with ℓb₁ because ℓ ≥ 11.
 
-For the final bound use g = max(G,1) ≤ z and H = b+η+S ≤ b+G in sig_lt and rr_le. The definition a₀ = 2 sigE + rr + 2g·ell and ell ≤ 3j+1 then give a₀ < 0.242b + (6j+20000)z by collecting the coefficients. For j ≥ 1, 6j+20000 ≤ 11000(j+1), so the second term is at most 0.11b. Thus a₀ < b/2 ≤ b₁/2.
+For the final bound use g = max(G,1) ≤ z and H = b+η+S ≤ b+G in the preceding bounds for the two exponents. The definition a₀ = 2σ + rr + 2g·ell and ell ≤ 3j+1 then with σ denoting the sigma exponent give a₀ < 0.242b + (6j+20000)z by collecting the coefficients. For j ≥ 1, 6j+20000 ≤ 11000(j+1), so the second term is at most 0.11b. Thus a₀ < b/2 ≤ b₁/2.
 -/
 theorem exists_constant_exponent_inequalities : AprimeArith := by
   refine ⟨100000, by norm_num, ?_⟩

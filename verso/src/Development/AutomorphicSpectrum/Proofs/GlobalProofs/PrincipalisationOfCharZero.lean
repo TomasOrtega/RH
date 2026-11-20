@@ -24,15 +24,15 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver
 open GlobalTheory.CompanionTheory.Hypotheses₂.SncBlowup GlobalTheory.CompanionTheory.Hypotheses₂.ResKSide GlobalTheory.CompanionTheory.Hypotheses₂.Resolution
 
 /- English proof (translation)
-Take `⟨hB, hA⟩` from `GlobalTheory.T.isClosed_cartier_locus_support g Z h₀ h₁ h₂`. Set `A : Closeds X₁` to `⟨_, hA⟩`. Set `O₁ : X₁.Opens` to `⟨_, hB.isOpen_compl⟩`. Set `O₂ : X₁.Opens` to `⟨_, hA.isOpen_compl⟩`. Establish `hO₁ : (O₁ : Set X₁) = ((Z.support : Set X₁) \ A)ᶜ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `¬ (x ∈ Z.support ∧ CartAt Z x) ↔ ¬ (x ∈ Z.support ∧ ¬ (x ∈ Z.support ∧ ¬ CartAt Z x))`. The claim follows by propositional logic. Take `⟨c₁, c₂⟩` from `GlobalTheory.T.vanishing_ideal_smooth_agrees_off g Z A O₁ h₂ (fun x hx => hx.1) hO₁`. Establish `hV : FinalTheorems.EffCartier (Z.comap V.ι)` using `GlobalTheory.effCartier_comap_of_isIso_restrict π Z V h₄ h₃.1`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. The claim follows by propositional logic. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsupp : ((Scheme.IdealSheafData.vanishingIdeal A).support : Set X₁) = A` using `Scheme.IdealSheafData.coe_support_vanishingIdeal A`. Use `⟨_, c₁, ?_, GlobalTheory.T.blowup_of_agreeing_ideal_cartier π Z _ O₁ O₂ h₃ ?_ c₂ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[hsupp]`. Introduce `x hx hxV`. Conclude with `hx.2 ((GlobalTheory.T.effCartier_restrict_iff_cartier_at Z V).1 hV x hxV)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ Z.support ∧ CartAt Z x`. Conclude with `Or.inr fun h => h.2 hx.2`. Conclude with `Or.inl hx`. Introduce `x hx hx'`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx'` using `[← SetLike.mem_coe, hsupp]`. Conclude with `hx hx'`. Use `(GlobalTheory.T.effCartier_restrict_iff_cartier_at Z O₂).2 fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `hx ⟨by_contra fun h => hc (GlobalTheory.T.cartier_at_of_not_mem_support Z x h), hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_centre_off {k : Type} [Field k] {X₁ X₂ : Scheme.{0}} (g : X₁ ⟶ Sp k) (Z : X₁.IdealSheafData) (π : X₂ ⟶ X₁)
     (V : X₁.Opens) (h₀ : Smooth g) (h₁ : IsIntegral X₁) (h₂ : Smooth (Z.subschemeι ≫ g)) (h₃ : FinalTheorems.Blowup π Z)
@@ -67,9 +67,9 @@ theorem exists_centre_off {k : Type} [Field k] {X₁ X₂ : Scheme.{0}} (g : X�
     exact hx ⟨by_contra fun h => hc (GlobalTheory.T.cartier_at_of_not_mem_support Z x h), hc⟩
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `id => exact fun _ _ => hX`. Consider the case `@step X₁ X₂ s E₁ Z π h₁ h₂ h₃ h₄ h₅ ih`. Introduce `hn hsm`. Establish `: Nonempty X₁` using `⟨π hn.some⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.isIntegral_blowup_of_smooth (s ≫ g) Z π (ih this h₂) h₅ (by simpa using hsm) hn`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_seq {k : Type} [Field k] {X X' : Scheme.{0}} {g : X ⟶ Sp k} {E : Closeds X} {s : X' ⟶ X}
     {E' : Closeds X'} (h : IsSncBlowupSeq g E s E') (hX : IsIntegral X) :
@@ -82,11 +82,11 @@ theorem isIntegral_of_seq {k : Type} [Field k] {X X' : Scheme.{0}} {g : X ⟶ Sp
     exact GlobalTheory.T.isIntegral_blowup_of_smooth (s ≫ g) Z π (ih this h₂) h₅ (by simpa using hsm) hn
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `id => exact fun _ _ _ => .id`. Consider the case `@step X₁ X₂ s E₁ Z π h₁ h₂ h₃ h₄ h₅ ih`. Introduce `hn V hV`. Establish `: Nonempty X₁` using `⟨π hn.some⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi : IsIntegral X₁` using `isIntegral_of_seq h₁ hX this h₂`. Establish `hp : IsProjOver (s ≫ g)` using `(Resolution.IsBlowupSeq.of_smooth h₁.isSmoothBlowupSeq).isProjOver hg`. Establish `hP : IsProper (s ≫ g)` using `isProper_of_isProjOver hp`. Establish `hs : IsSeparated s` using `IsSeparated.of_comp s g`. Take `⟨a, b⟩` from `GlobalTheory.T.isIso_restrict_of_blowup_comp s π Z V hi hs h₅ hn hV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Z', c₁, c₂, c₃⟩` from `exists_centre_off (s ≫ g) Z π (s ⁻¹ᵁ V) h₂ hi h₃ h₅ b`. Conclude with `.step Z' π (ih this V a) c₁ c₂ c₃`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem seq_of_iso {k : Type} [Field k] {X X' : Scheme.{0}} {g : X ⟶ Sp k} {E : Closeds X} {s : X' ⟶ X}
     {E' : Closeds X'} (h : IsSncBlowupSeq g E s E') (hX : IsIntegral X) (hg : IsProjOver g) :
@@ -112,15 +112,15 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂
 open GlobalTheory.CompanionTheory.Hypotheses₂.SncBlowup GlobalTheory.CompanionTheory.Hypotheses₂.ResKSide GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver in
 
 /- English proof (translation)
-Introduce `H k _ _ d Y f hY hd hp I hI`. Establish `hsm : Smooth f` using `SmoothOfRelativeDimension.smooth d f`. Establish `hP : IsProper f` using `isProper_of_isProjOver hp`. Take `⟨X', s, E', hseq, hsm', hcart, hsnc, hiso⟩` from `H k d Y f hd inferInstance inferInstance I ⊥ (not_subset_of_ne_bot hI) (fun x hx => hx.elim)`. Take `⟨y, hy⟩` from `GlobalTheory.Principalise.nonempty_compl_support hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hne : Nonempty X'`. Take `⟨w, hw⟩` from `(s ∣_ I.support.compl).homeomorph.surjective ⟨y, hy⟩`. Conclude with `⟨(s ⁻¹ᵁ I.support.compl).ι w⟩`. Establish `hint : IsIntegral X'` using `isIntegral_of_seq hseq hY hne hsm'`. Establish `hproj : IsProjOver (s ≫ f)` using `(Resolution.IsBlowupSeq.of_smooth hseq.isSmoothBlowupSeq).isProjOver hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdense : Dense ((s ⁻¹ᵁ I.support.compl : X'.Opens) : Set X')`. Use `dense_compl_of_snc _ hsnc` as an intermediate fact. Rewrite `this` using `[Scheme.IdealSheafData.support_comap]`. Conclude with `this.mono fun x hx => hx`. Establish `hrel : SmoothOfRelativeDimension d (s ≫ f)` using `relDim_of_dense _ _ hdense (relDim_preimage s f _ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SmoothOfRelativeDimension (0 + d) (Scheme.Opens.ι I.support.compl ≫ f)` using `inferInstance`. Simplify using `using this))`. Establish `hc` using `seq_of_iso hseq hY hp hne I.support.compl hiso`. Use `⟨X', s, hint, hrel, hproj, hc.mono ?_, hiso, hcart, hsnc⟩` and prove the remaining obligations. Introduce `x hx`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hx`.
+A detailed English derivation is pending.
 -/
 theorem principalisation_of_charZero : PrincipalisationCharZero → GlobalTheory.Published.Principalisation := by
   intro H k _ _ d Y f hY hd hp I hI

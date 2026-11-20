@@ -9,9 +9,9 @@ open GlobalTheory.Mum GlobalTheory.Mum.Conj
 namespace GlobalTheory.Mum.Conj
 
 /- English proof (translation)
-Introduce `R _ _ A N τ x x' θ h hx`. Establish `ex : x' = twK τ ≫ x` using `Over.OverMorphism.ext (by rw [hx, Over.comp_left, twK_left])`. Substitute `ex` using the available equality. Establish `eM : mTw A τ = twK τ ▷ A.A`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mTw_fst, whiskerRight_fst]`. Rewrite using `[mTw_snd, whiskerRight_snd]`. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.Tor.symLift_pull A.isLB (twK τ) h _ (thTw A N τ θ).isGen fun r z J hJ => by show val (genCast _ _) r z J = _`. Rewrite using `[val_genCast]`. Conclude with `(val_pull hJ _ _ r).trans (by rw [eM])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symLift_thTw : ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) (N : ℕ) (τ : Kb R →ₐ[FractionRing R] Kb R) (x x' : TFK (R := R) (Kb R) ⟶ A.A) (θ : ThetaGrp A.A A.L (N : ℤ) (TFK (R := R) (Kb R))), SymLift A.A A.L N N x θ → x'.left = spMap τ.toRingHom ≫ x.left → SymLift A.A A.L N N x' (thTw A N τ θ) := by
   intro R _ _ A N τ x x' θ h hx

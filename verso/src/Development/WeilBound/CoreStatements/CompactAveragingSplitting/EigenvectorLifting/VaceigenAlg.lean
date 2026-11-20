@@ -8,19 +8,17 @@ namespace PositivityTheory.ThK.Vac
 open scoped nonZeroDivisors Matrix
 
 /- English proof (translation)
-Establish `: Module.Finite R L` using `Module.Finite.iff_fg.2 hfg`. Establish `: Module.IsTorsionFree R V` using `Module.IsTorsionFree.trans_faithfulSMul R K V`. Establish `: Module.FinitePresentation R L` using `Module.finitePresentation_of_finite R L`. Establish `: Module.Projective R L` using `Module.Flat.projective_of_finitePresentation`. Take `⟨m, p, s, -, -, hps⟩` from `Module.Finite.exists_comp_eq_id_of_projective R L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsLocalizedModule R⁰ L.subtype`. Use `⟨fun s => ?_, fun y => ?_, fun {x y} h => ⟨1, by rw [Subtype.ext h]⟩⟩` and prove the remaining obligations. Rewrite using `[Module.End.isUnit_iff]`. Establish `hs : algebraMap R K s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Establish `: ⇑(algebraMap R (Module.End R V) s) = fun x => algebraMap R K s • x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(MulAction.toPerm (Units.mk0 _ hs)).bijective`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span R⁰ K (L : Set V) y (hsp ▸ Submodule.mem_top)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨(⟨_, ht⟩, t), rfl⟩`. Set `f : Fin m → V →ₗ[K] K` to `fun i => IsLocalizedModule.mapExtendScalars R⁰ L.subtype (Algebra.linearMap R K) K ((LinearMap.proj i : (Fin m → R) →ₗ[R] R) ∘ₗ s)`. Establish `hf : ∀ i (x : L), f i x = algebraMap R K (s x i)` using `fun i x => IsLocalizedModule.map_apply R⁰ L.subtype (Algebra.linearMap R K) ((LinearMap.proj i : (Fin m → R) →ₗ[R] R) ∘ₗ s) x`. Use `⟨m, fun i => p (Pi.single i 1), f, fun i => (p _).2, fun i x hx => ⟨_, (hf i ⟨x, hx⟩).symm⟩, fun x => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx : x ∈ Submodule.span K (L : Set V)` using `hsp ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Establish `h1 : p (s ⟨x, hx⟩) = ⟨x, hx⟩` using `LinearMap.congr_fun hps _`. Rewrite `h1` using `[pi_eq_sum_univ' (s ⟨x, hx⟩), map_sum]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Subtype.val h1`. Simplify using `only [map_smul, AddSubmonoidClass.coe_finsetSum, SetLike.val_smul] at h2`. Use `conv_lhs => rw [← h2]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hf i ⟨x, hx⟩, algebraMap_smul]`. Consider the case `zero => simp`.
-
-Consider the case `add x y _ _ hx hy => simp only [map_add, add_smul, Finset.sum_add_distrib, ← hx, ← hy]`. Consider the case `smul a x _ hx => simp only [map_smul, smul_eq_mul, mul_smul, ← Finset.smul_sum, ← hx]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dual_family (R K : Type) {V : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     [AddCommGroup V] [Module R V] [Module K V] [IsScalarTower R K V] (L : Submodule R V) (hfg : L.FG)
@@ -64,19 +62,19 @@ theorem dual_family (R K : Type) {V : Type} [CommRing R] [IsDedekindDomain R] [F
 open GlobalTheory.CompanionTheory.FinHeis in
 
 /- English proof (translation)
-Establish `hne : S.B φ φ ≠ 0` using `fun h => by simpa [h] using S.B_pos φ h0`. Establish `hχ : ∀ γ ∈ Γ, (starRingEnd ℂ) (χ γ) * χ γ = 1` using `fun γ hγ => by`. Establish `h` using `S.B_rho γ φ φ`. Rewrite `h` using `[hφ γ hγ]`. Simplify using `only [map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `mul_right_cancel₀ hne ?_` and prove the remaining obligations. Take the linear combination `h`. Establish `key : ∀ η : M, (∀ γ ∈ Γ, S.rho γ η = χ γ • η) → S.B η φ = 0 → η = 0`. Introduce `η hη h1`. Establish `hall : ∀ x, S.B η (S.rho x φ) = 0`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Distinguish the cases in `hx : x ∈ Γ`. Rewrite using `[hφ x hx, map_smul, h1, smul_zero]`. Assume the negation of the conclusion as `hn`. Use `hx (hΓ x fun γ hγ => mul_right_cancel₀ hn ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `S.B_rho γ η (S.rho x φ)`. Establish `h3 : S.rho γ (S.rho x φ) = S.c γ x ^ 2 • S.rho x (S.rho γ φ)`. Rewrite using `[S.rho_rho, S.rho_rho, smul_smul, add_comm x γ, pow_two, mul_assoc, S.c_mul_c_swap, mul_one]`. Rewrite `h2` using `[h3, hφ γ hγ, hη γ hγ]`. Simplify using `only [map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `h2 - S.c γ x ^ 2 * S.B η (S.rho x φ) * hχ γ hγ`. Establish `hle : Submodule.span ℂ (Set.range fun x => S.rho x φ) ≤ LinearMap.ker (S.B η)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hall x`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[show Submodule.span ℂ (Set.range fun x => S.rho x φ) = ⊤ from hc]`. Establish `h4 : S.B η η = 0` using `hle Submodule.mem_top`. Assume the negation of the conclusion as `hn`. Simplify `S.B_pos η hn` using `[h4]`. Use `⟨S.B φ φ' / S.B φ φ, sub_eq_zero.1 (key _ (fun γ hγ => ?_) ?_)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_smul, hφ γ hγ, hφ' γ hγ, smul_sub, smul_comm]`. Rewrite using `[← S.B_conj, map_sub, map_smul, smul_eq_mul, div_mul_cancel₀ _ hne, sub_self, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_of_eigen {X M : Type} [AddCommGroup X] [AddCommGroup M] [Module ℂ M] (S : Sys X M) (Γ : Set X) (χ : X → ℂ)
     (hΓ : ∀ x, (∀ γ ∈ Γ, S.c γ x ^ 2 = 1) → x ∈ Γ) {φ φ' : M} (h0 : φ ≠ 0) (hc : Cyclic S φ)
@@ -115,9 +113,9 @@ theorem line_of_eigen {X M : Type} [AddCommGroup X] [AddCommGroup M] [Module ℂ
   · rw [← S.B_conj, map_sub, map_smul, smul_eq_mul, div_mul_cancel₀ _ hne, sub_self, map_zero]
 
 /- English proof (translation)
-Establish `h : ∀ x : K, ‖ψ x‖ ≤ 1` using `fun x => by`. Take `⟨C, hC⟩` from `hO.exists_bound_of_continuousOn (f := fun y => ψ (y * x)) (by fun_prop)`. Assume the negation of the conclusion as `hn`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt C (not_le.1 hn)`. Use `hC k (natCast_mem O k)` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[← nsmul_eq_mul, AddChar.map_nsmul_eq_pow, norm_pow]`. Conclude with `absurd hk (not_lt.2 this)`. Establish `h1 : ‖ψ x‖ * ‖ψ (-x)‖ = 1`. Rewrite using `[← norm_mul, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one, norm_one]`. Use polynomial arithmetic with `[h x, h (-x), norm_nonneg (ψ x), norm_nonneg (ψ (-x))]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_addChar {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] (O : Subring K)
     (hO : IsCompact (O : Set K)) (ψ : AddChar K ℂ) (hψ : Continuous ψ) (x : K) : ‖ψ x‖ = 1 := by

@@ -14,9 +14,9 @@ namespace Formalism.EigenvalueLevelCeiling
 open Formalism.DivisionValues
 
 /- English proof (translation)
-Introduce `Y hY Q hQ`. Use `le_trans ?_ (Chebyshev.theta_le_log4_mul_x hY)` and prove the remaining obligations. Unfold `Chebyshev.theta`. Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ ?_` and prove the remaining obligations. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `hQ p hp`. Conclude with `Finset.mem_filter.mpr ⟨Finset.mem_Ioc.mpr ⟨h1.pos, Nat.le_floor h2⟩, h1⟩`. Introduce `p _ _`. Conclude with `Real.log_natCast_nonneg p`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chebyshev_theta_log_four : ThetaLog4 := by
   classical

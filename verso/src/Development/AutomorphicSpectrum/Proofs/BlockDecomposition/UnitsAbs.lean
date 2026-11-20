@@ -18,11 +18,11 @@ variable {R : Type} [CommRing R] {Th : Type u} [Category.{v} Th] {Ec : Type u'} 
   {C : Type u''} [Category.{v''} C]
 
 /- English proof (translation)
-Set `m' : Mor ((G ⋙ m.G) ⋙ F) (G ⋙ F') (RingHom.id R)` to `⟨𝟭 _, fun T => m.τ (G.obj T), fun φ x => m.nat (G.map φ) x⟩`. Establish `hz : d (G ⋙ F') 2 (fun s => m.τ _ (c s)) = 0`. Use `m'.d_pullC 2 c` as an intermediate fact. Rewrite `this` using `[hc, map_zero]`. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hz, ?_⟩` and prove the remaining obligations. Establish `e1` using `CrystallineSemistableComparison.P.mapH_cls m'.hom 2 c hc hz`. Establish `e2 : (Mor.restrict F' G).pull 2 (m.pull 2 x) = m'.pull 2 ((Mor.restrict F (G ⋙ m.G)).pull 2 x)`. Establish `a` using `(CrystallineSemistableComparison.P.pull_comp m (Mor.restrict F' G) 2 x).1`. Establish `b` using `(CrystallineSemistableComparison.P.pull_comp (Mor.restrict F (G ⋙ m.G)) m' 2 x).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a.symm.trans b`. Rewrite using `[e2, ← h]`. Conclude with `e1.symm`.
+A detailed English derivation is pending.
 -/
 theorem pull_transport (F : Th ⥤ ModuleCat.{w} R) (F' : Ec ⥤ ModuleCat.{w'} R) (m : Mor F F' (RingHom.id R)) (G : C ⥤ Ec)
     (x : H F 2) (c : Cn ((G ⋙ m.G) ⋙ F) 2) (hc : d _ 2 c = 0)
@@ -50,7 +50,7 @@ section Line
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `congrArg (fun k => k.hom y) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f))`.
+A detailed English derivation is pending.
 -/
 theorem gamma_nat {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (y : Γ(Spec (CommRingCat.of A), ⊤)) :
     (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom ((Spec.map (CommRingCat.ofHom f)).appTop.hom y) =
@@ -58,7 +58,7 @@ theorem gamma_nat {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (y : Γ
   congrArg (fun k => k.hom y) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f))
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Rewrite using `[D.nat (Spec.map (CommRingCat.ofHom f)) a b h, ← gamma_nat]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem u_map (D : E.LineData X) {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     (a b : Spec (CommRingCat.of A) ⟶ D.Y) (h : a ≫ D.f = b ≫ D.f) (a' b' : Spec (CommRingCat.of B) ⟶ D.Y)
@@ -71,11 +71,11 @@ theorem u_map (D : E.LineData X) {A B : Type} [CommRing A] [CommRing B] (f : A �
   rfl
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Establish `e : Spec.map (CommRingCat.ofHom (f₂.comp f₁)) = Spec.map (CommRingCat.ofHom f₂) ≫ Spec.map (CommRingCat.ofHom f₁)`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `h12 : (Spec.map (CommRingCat.ofHom f₂) ≫ Spec.map (CommRingCat.ofHom f₁) ≫ p₀) ≫ D.f = (Spec.map (CommRingCat.ofHom f₂) ≫ p₁) ≫ D.f`. Simplify `congrArg (Spec.map (CommRingCat.ofHom f₂) ≫ ·) h₁` using `only [Category.assoc]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `A` using `u_map D f₂ _ _ h₁ _ _ rfl rfl h12`. Establish `c` using `D.coc _ _ _ h12 h₂`. Establish `e3 : ∀ (a : Spec (CommRingCat.of U₂) ⟶ D.Y) (ha : a = Spec.map (CommRingCat.ofHom f₂) ≫ Spec.map (CommRingCat.ofHom f₁) ≫ p₀) (hh : a ≫ D.f = p₂ ≫ D.f), D.u a p₂ hh = D.u _ p₂ (h12.trans h₂)`. Introduce `a ha hh`. Substitute `ha` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Both sides reduce to the same expression. Rewrite using `[← A, ← map_mul, ← Units.val_mul, c, e3 _ (by rw [e, Category.assoc]) h₃]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem u_coc (D : E.LineData X) {U₀ U₁ U₂ : Type} [CommRing U₀] [CommRing U₁] [CommRing U₂]
     (f₁ : U₀ →+* U₁) (f₂ : U₁ →+* U₂) (f₃ : U₀ →+* U₂) (hf : f₃ = f₂.comp f₁)
@@ -100,7 +100,7 @@ theorem u_coc (D : E.LineData X) {U₀ U₁ U₂ : Type} [CommRing U₀] [CommRi
   rw [← A, ← map_mul, ← Units.val_mul, c, e3 _ (by rw [e, Category.assoc]) h₃]
 
 /- English proof (translation)
-Use `u_map D g' _ _ h' _ _ ?_ rfl h` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem u_square (D : E.LineData X) {U U' Q Q' : Type} [CommRing U] [CommRing U'] [CommRing Q] [CommRing Q']
     (m : U →+* U') (g : U →+* Q) (g' : U' →+* Q') (t : Q →+* Q') (comm : t.comp g = g'.comp m)
@@ -119,13 +119,13 @@ section Log
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `fil_le k A n (Ideal.subset_span ⟨1, le_rfl, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem dxi_mem (k : Bool) (A : PAlg l) (n : ℕ) : A.dxi n 1 ∈ JJ k A n :=
   fil_le k A n (Ideal.subset_span ⟨1, le_rfl, rfl⟩)
 
 /- English proof (translation)
-Consider the cases of `k`. Conclude with `A.dpow_dxi n m`. Establish `h` using `(A.dp_fil_pfil n).2 (A.dxi n 1) (Ideal.subset_span ⟨1, le_rfl, rfl⟩) (n := m)`. Conclude with `h.trans (A.dpow_dxi n m)`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dd_dxi (k : Bool) (A : PAlg l) (n m : ℕ) : (DD k A n).dpow m (A.dxi n 1) = A.dxi n m := by
   cases k
@@ -134,13 +134,13 @@ theorem dd_dxi (k : Bool) (A : PAlg l) (n m : ℕ) : (DD k A n).dpow m (A.dxi n 
     exact h.trans (A.dpow_dxi n m)
 
 /- English proof (translation)
-Establish `h1 : WittVector.teichmuller l u - 1 ∈ Ideal.span {A.xi}`. Establish `h0 : A.th (WittVector.teichmuller l u - 1) = 0`. Rewrite using `[map_sub, map_one]`. Conclude with `sub_eq_zero.2 hu`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h1`. Use `⟨fun m => algebraMap A.W A.Acr0 c ^ m * A.dxi0 m, fun m => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Express the relevant statement in the definitionally equal form `algebraMap A.W (Localization.Away (l : A.W)) c ^ m * dpw m A.xi = dpw m (c * A.xi)`. Simplify using `only [dpw, map_mul, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hd : v - 1 = A.toAcr n c * A.dxi n 1`. Rewrite using `[hv, ← toAcr_xi, ← map_mul, hc, map_sub, map_one]`. Simplify using `only [dlog, hd]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[DividedPowers.dpow_mul _ (dxi_mem k A n), dd_dxi, map_mul, map_pow]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isLog_dlog (k : Bool) (A : PAlg l) (n : ℕ) (u : A.A) (hu : A.sharp u = 1) (v : A.Acr n)
     (hv : v = A.toAcr n (WittVector.teichmuller l u)) :
@@ -168,21 +168,21 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {X : Scheme.{0}} {q : 
   {C : Type 1} [Category.{0} C] {G : C ⥤ El (PX q κ)} {D : E.LineData X}
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val (G.map φ).2`.
+A detailed English derivation is pending.
 -/
 theorem pt_hom {T T' : C} (φ : T ⟶ T') :
     Spec.map (CommRingCat.ofHom (mapU (G.map φ).1.hom)) ≫ (G.obj T).2.1 = (G.obj T').2.1 :=
   congrArg Subtype.val (G.map φ).2
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Λ.hp, Λ.hp]`. Conclude with `pt_hom φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_h (Λ : E.Lift G D) {T T' : C} (φ : T ⟶ T') :
     (Spec.map (CommRingCat.ofHom (mapU (G.map φ).1.hom)) ≫ Λ.p T) ≫ D.f = Λ.p T' ≫ D.f := by
   rw [Category.assoc, Λ.hp, Λ.hp]; exact pt_hom φ
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `A'.th (mapW f (WittVector.teichmuller l a)) = _`. Rewrite using `[mapW, WittVector.map_teichmuller]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mapU_sharp' {A A' : PAlg l} (f : A ⟶ A') (a : A.A) : mapU f (A.sharp a) = A'.sharp (PAlg.Hom.f f a) := by
   change A'.th (mapW f (WittVector.teichmuller l a)) = _
@@ -190,9 +190,9 @@ theorem mapU_sharp' {A A' : PAlg l} (f : A ⟶ A') (a : A.A) : mapU f (A.sharp a
   rfl
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Establish `wa` using `Λ.hw a (lift_h Λ a)`. Establish `wb` using `Λ.hw b (lift_h Λ b)`. Establish `wc` using `Λ.hw (a ≫ b) (lift_h Λ (a ≫ b))`. Establish `key` using `u_coc D (mapU (G.map a).1.hom) (mapU (G.map b).1.hom) (mapU (G.map (a ≫ b)).1.hom) (by rw [G.map_comp]; exact mapU_comp _ _) (Λ.p c₀) (Λ.p c₁) (Λ.p c₂) (lift_h Λ a) (lift_h Λ b) (lift_h Λ (a ≫ b))`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `key` using `[← wa, ← wb, ← wc, mapU_sharp', ← map_mul]`. Rewrite using `[Units.val_mul, Units.val_mul, map_mul]`. Express the relevant statement in the definitionally equal form `(G.obj c₂).1.obj.sharp (PAlg.Hom.f (G.map b).1.hom (Λ.w a) * Λ.w b) * _ = 1`. Rewrite using `[key, ← map_mul, Units.mul_inv, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sharp_r (Λ : E.Lift G D) {c₀ c₁ c₂ : C} (a : c₀ ⟶ c₁) (b : c₁ ⟶ c₂) (c : c₀ ⟶ c₂) (hc : c = a ≫ b) :
     (G.obj c₂).1.obj.sharp ((Units.map (PAlg.Hom.f (G.map b).1.hom).toMonoidHom (Λ.w a) * Λ.w b * (Λ.w c)⁻¹ :
@@ -236,7 +236,7 @@ def lam (Λ : E.Lift G D) : CLift (gG k n G) D where
     exact uJ_th k _ n (WittVector.teichmuller l (Λ.w φ).val) |>.symm
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv]`. Use `congr 2`. Conclude with `Units.ext (h _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem units_abs {A₁ A₂ B₁ B₂ : Type} [CommRing A₁] [CommRing A₂] [CommRing B₁] [CommRing B₂] (t₁ : A₁ →* B₁) (t₂ : A₂ →* B₂)
     (f : A₁ →+* A₂) (g : B₁ →+* B₂) (h : ∀ x, g (t₁ x) = t₂ (f x)) (wa : A₁ˣ) (wb wc : A₂ˣ) :
@@ -247,14 +247,14 @@ theorem units_abs {A₁ A₂ B₁ B₂ : Type} [CommRing A₁] [CommRing A₂] [
   exact Units.ext (h _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `mapAcr f n (A.toAcr n (WittVector.teichmuller l x)) = A'.toAcr n (WittVector.teichmuller l (PAlg.Hom.f f x))`. Rewrite using `[mapAcr_toAcr, mapW, WittVector.map_teichmuller]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tm_map {A A' : PAlg l} (f : A ⟶ A') (x : A.A) : mapAcr f n (tm A n x) = tm A' n (PAlg.Hom.f f x) := by
   change mapAcr f n (A.toAcr n (WittVector.teichmuller l x)) = A'.toAcr n (WittVector.teichmuller l (PAlg.Hom.f f x))
   rw [mapAcr_toAcr, mapW, WittVector.map_teichmuller]
 
 /- English proof (translation)
-The claim follows from `units_abs (tm (G.obj c₁).1.obj n) (tm (G.obj c₂).1.obj n) (PAlg.Hom.f (G.map b).1.hom) (mapAcr (G.map b).1.hom n) (tm_map n (G.map b).1.hom) (Λ.w a) (Λ.w b) (Λ.w c)`.
+A detailed English derivation is pending.
 -/
 theorem lam_r' (Λ : E.Lift G D) {c₀ c₁ c₂ : C} (a : c₀ ⟶ c₁) (b : c₁ ⟶ c₂) (c : c₀ ⟶ c₂) :
     Units.map ((gG k n G).map b).φ.toMonoidHom ((lam k n Λ).w a) * (lam k n Λ).w b * ((lam k n Λ).w c)⁻¹ =
@@ -263,7 +263,7 @@ theorem lam_r' (Λ : E.Lift G D) {c₀ c₁ c₂ : C} (a : c₀ ⟶ c₁) (b : c
     (tm_map n (G.map b).1.hom) (Λ.w a) (Λ.w b) (Λ.w c)
 
 /- English proof (translation)
-The claim follows from `congrArg Units.val (lam_r' k n Λ (s.map' 0 1) (s.map' 1 2) (s.map' 0 2))`.
+A detailed English derivation is pending.
 -/
 theorem lam_r (Λ : E.Lift G D) (s : ComposableArrows C 2) :
     ((lam k n Λ).r s).val = (G.obj (s.obj (Fin.last 2))).1.obj.toAcr n (WittVector.teichmuller l (Λ.r s).val) :=

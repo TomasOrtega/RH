@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.DownLift.ConjHalfGen
 
 /- English proof (translation)
-Unfold `LowZero`. Simplify using `only [Matrix.map_apply, map_eq_zero_iff f f.injective]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem lowZero_map_iff {A B : Type} [CommRing A] [CommRing B] (f : A ≃+* B) {b a : ℕ} (k : ℕ)
     (y : Matrix (Fin b) (Fin a) A) : LowZero k (y.map f) ↔ LowZero k y := by
@@ -28,7 +28,7 @@ theorem lowZero_map_iff {A B : Type} [CommRing A] [CommRing B] (f : A ≃+* B) {
   simp only [Matrix.map_apply, map_eq_zero_iff f f.injective]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [topL, Matrix.map_apply]`. Apply the tactic sequence `split_ifs <;> simp [hf]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem topL_map {A B : Type} [Zero A] [Zero B] (f : A → B) (hf : f 0 = 0) {b a : ℕ} (k : ℕ)
     (y : Matrix (Fin b) (Fin a) A) : topL k (y.map f) = (topL k y).map f := by
@@ -37,7 +37,7 @@ theorem topL_map {A B : Type} [Zero A] [Zero B] (f : A → B) (hf : f 0 = 0) {b 
   split_ifs <;> simp [hf]
 
 /- English proof (translation)
-Rewrite using `[topL_map f (map_zero f), RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_topL_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {b a : ℕ} (k : ℕ)
     (y : Matrix (Fin b) (Fin a) A) : (topL k (y.map f)).det = f (topL k y).det := by
@@ -45,20 +45,18 @@ theorem det_topL_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {b a
   rfl
 
 /- English proof (translation)
-The claim follows from `det_topL_map (f : A →+* B) k y`.
+A detailed English derivation is pending.
 -/
 theorem det_topL_mapE {A B : Type} [CommRing A] [CommRing B] (f : A ≃+* B) {b a : ℕ} (k : ℕ)
     (y : Matrix (Fin b) (Fin a) A) : (topL k (y.map f)).det = f (topL k y).det :=
   det_topL_map (f : A →+* B) k y
 
 /- English proof (translation)
-Establish `h : ∀ PP' ∈ ({PP} : Finset (Pl D.host.E)), LowZero r (y PP') ∧ IsUnit (topL r (y PP')).det`. Introduce `PP' hP`. Rewrite `hP` using `[Finset.mem_singleton]`. Substitute `hP` using the available equality. Conclude with `⟨hz, hu ▸ u.isUnit⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components.
 
-Unfold `omegaQ`. Rewrite using `[dif_pos h, Finset.prod_eq_single ⟨PP, Finset.mem_singleton_self PP⟩]`. Rewrite using `[_root_.zpow_neg_one]`. Use `congr 4`. Use `ext`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[hu]`. Introduce `x _ hx`. It suffices to derive a contradiction. Conclude with `hx (Subtype.ext (Finset.mem_singleton.1 x.2))`. Introduce `hx`.
-
-Conclude with `absurd (Finset.mem_attach _ _) hx`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem omegaQ_single {D : D7} {a b : ℕ} (PP : Pl D.host.E) (r : ℕ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) (hz : LowZero r (y PP)) (u : (kP PP)ˣ)
@@ -82,7 +80,7 @@ theorem omegaQ_single {D : D7} {a b : ℕ} (PP : Pl D.host.E) (r : ℕ) (ξ : �
     exact absurd (Finset.mem_attach _ _) hx
 
 /- English proof (translation)
-Unfold `omegaQ at h`. Use `split_ifs at h with h'`. Conclude with `h' PP (Finset.mem_singleton_self PP)`. Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem omegaQ_ne_zero {D : D7} {a b : ℕ} (PP : Pl D.host.E) (r : ℕ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (k : ℤ) (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) (h : omegaQ {PP} r ξ k y ≠ 0) :
@@ -101,49 +99,41 @@ namespace GlobalTheory.DownLift.ConjHalfGen
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D S T βS βT hrn ΛS ΛT N hBF hLS hLT e PP hidem ξ hξ Φ hΦ hlaw`. Take `⟨v, φ, ι, hch⟩` from `GlobalTheory.T.exists_idempotentPlaceChart_finiteAdeles D e PP hidem`. Take `⟨hsurj, hinj, hint, hred⟩` from `GlobalTheory.T.frameAdjoint_chart_bijective_conjugateHalf D S T βS βT e PP v φ ι hidem hch`. Use `haveI : Finite (IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v)) := Finite.of_equiv _ ι.toEquiv`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (GlobalTheory.SplitHecke.Ov D v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose σ hσH hσ using hsurj`. Use `set ω := omegaQ {PP} T.rank ξ (-1) with hω`. Use `set Φ' : Matrix (Fin S.rank) (Fin T.rank) (Fv D.host.F v) → ℂ := fun m => Φ (σ m) with hΦ'`. Use `set Φ₀' : Matrix (Fin S.rank) (Fin T.rank) (Fv D.host.F v) → ℂ := fun m => adjDat S T βS βT e ω (σ m) with hΦ₀'`. Use `set ξ' : (IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v))ˣ →* ℂˣ := (ξ PP).comp (Units.map (ι.symm : IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v) ≃+* kP PP).toMonoidHom) with hξ'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hξ'1 : ξ' ≠ 1`. Introduce `h1`. Apply `hξ` to reduce the goal to its premises. Use extensionality with `u`. Establish `h2` using `DFunLike.congr_fun h1 (Units.map (ι : kP PP ≃+* _).toMonoidHom u)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : Units.map (ι.symm : IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v) ≃+* kP PP).toMonoidHom (Units.map (ι : kP PP ≃+* _).toMonoidHom u) = u` using `by ext; simp`. Simplify using `only [hξ', MonoidHom.comp_apply, h3, MonoidHom.one_apply] at h2`. Rewrite using `[h2]`. Both sides reduce to the same expression. Establish `hA : ∀ (z : Matrix (Fin S.rank) (Fin T.rank) (GlobalTheory.SplitHecke.Ov D v)) (u : (IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v))ˣ), LowZero T.rank (z.map (IsLocalRing.residue (GlobalTheory.SplitHecke.Ov D v))) → (u : IsLocalRing.ResidueField (GlobalTheory.SplitHeck …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z u hz hu`. Use `set x := σ (z.map (algebraMap (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v)))`. Establish `hxH` using `hσH (z.map (algebraMap (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v)))`. Establish `hxr` using `hσ (z.map (algebraMap (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v)))`. Establish `hxI : IsIntM (frMapAdj S T βS βT x)` using `(hint x hxH).2 ⟨z, hxr⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hxR` using `hred x z hxI hxr`. Establish `hLZ : LowZero T.rank (redM PP (frMapAdj S T βS βT x))`. Rewrite using `[← lowZero_map_iff ι, hxR]`. Conclude with `hz`. Establish `hdet : ι (topL T.rank (redM PP (frMapAdj S T βS βT x))).det = (u : IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v))`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hu, ← hxR, det_topL_mapE ι]`. Use `show adjDat S T βS βT e ω x = _`. Unfold `adjDat`. Rewrite using `[if_pos ⟨hxH, hxI⟩, hω, omegaQ_single PP T.rank ξ _ hLZ (Units.map (ι.symm : IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v) ≃+* kP PP).toMonoidHom u)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[← hdet]`. Establish `hB : ∀ m, Φ₀' m ≠ 0 → ∃ z : Matrix (Fin S.rank) (Fin T.rank) (GlobalTheory.SplitHecke.Ov D v), m = z.map (algebraMap (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v)) ∧ LowZero T.rank (z.map (IsLocalRing.residue (GlobalTheory.SplitHecke.Ov D v))) ∧ IsUnit (topL T.rank (z.map (IsL …`. Introduce `m hm`. Establish `hm' : adjDat S T βS βT e ω (σ m) ≠ 0` using `hm`. Unfold `adjDat at hm'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs at hm' with hc`. Take `⟨z, hz⟩` from `(hint (σ m) hc.1).1 hc.2`. Establish `hR` using `hred (σ m) z hc.2 hz`. Take `⟨h1, h2⟩` from `omegaQ_ne_zero PP T.rank ξ (-1) _ hm'`. Use `⟨z, by rw [← hz, hσ], ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hR, lowZero_map_iff ι]`. Conclude with `h1`. Rewrite using `[← hR, det_topL_mapE ι]`. Conclude with `h2.map _`. Conclude with `absurd rfl hm'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hC : ∃ N : ℕ, (∀ m (z : Matrix (Fin S.rank) (Fin T.rank) (GlobalTheory.SplitHecke.Ov D v)), Φ' (m + (ϖ ^ N • z).map (algebraMap (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v))) = Φ' m) ∧ ∀ m, Φ' m ≠ 0 → ∃ z : Matrix (Fin S.rank) (Fin T.rank) (GlobalTheory.SplitHecke.Ov D v), al …`. Take `⟨N', hinv, hsupp⟩` from `GlobalTheory.T.schwartzBruhat_conjHalf_locallyConstant_compactSupport D S T βS βT e PP v φ ι hidem hch ΛS ΛT hLS hLT Φ hΦ ϖ hϖ`. Use `⟨N', fun m z => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Conclude with `hinv (σ m) _ (hσH m) (hσH _) z (by rw [hσ, hσ])`. Take `⟨z, hz⟩` from `hsupp (σ m) hm`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `⟨z, by rw [← hσ m]; exact hz⟩`. Establish `hD : ∀ h : GL (Fin S.rank) (GlobalTheory.SplitHecke.Ov D v), LowZero T.rank (h.val.map (IsLocalRing.residue (GlobalTheory.SplitHecke.Ov D v))) → ∀ m m' : Matrix (Fin S.rank) (Fin T.rank) (Fv D.host.F v), Φ' (h.val.map (algebraMap (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v)) …`. Introduce `h hLZ m m'`. Take `⟨κ, hsupp, hGf, hSt, hrκ, hoth, hact⟩` from `GlobalTheory.T.exists_unitary_supported_at_split_place_lift D S T βS βT e PP v φ ι hidem hch ΛS N hBF h`. Establish `hBT : redFn βS PP (finE S κ) ∈ blockTri (blk2 T.rank)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_blockTri]`. Introduce `i j hij`. Establish `hj : j.val < T.rank`. Apply the tactic sequence `by_contra hj; simp only [blk2, if_neg hj] at hij; split_ifs at hij <;> omega`. Establish `hi : T.rank ≤ i.val`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Assume the negation of the conclusion as `hi`. Simplify using `only [blk2, if_pos (Nat.lt_of_not_le hi)] at hij`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `congrFun (congrFun hrκ i) j`. Simplify using `only [Matrix.map_apply] at h1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h4` using `hLZ i j hi hj`. Simplify using `only [Matrix.map_apply] at h4`. Conclude with `ι.injective ((h1.trans h4).trans (map_zero ι).symm)`. Establish `hmove : ∀ y, σ (h.val.map (algebraMap (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v)) * y) = actO S T κ 1 (σ y)`. Introduce `y`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hinj _ _ (hσH _) (GlobalTheory.SplitHecke.isHalf_actO κ 1 (hσH y)) ?_` and prove the remaining obligations. Rewrite using `[hσ, hact, hσ]`. Use `show Φ (σ _) * adjDat S T βS βT e ω (σ m') = Φ (σ m) * adjDat S T βS βT e ω (σ _)`. Rewrite using `[hmove, hmove]`. Conclude with `hlaw κ hsupp hGf hSt hBT hoth (σ m) (σ m') (hσH m) (hσH m')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hpure` using `GlobalTheory.T.parahoric_schwartz_mem_span_datum_translates_alt (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v) S.rank T.rank hrn ϖ hϖ ξ' hξ'1 Φ' Φ₀' hA hB hC hD`. Apply the tactic sequence `let L : ((Matrix (Fin S.rank) (Fin T.rank) (Fv D.host.F v)) → ℂ) →ₗ[ℂ] (WO S T → ℂ) := { toFun := fun Ψ x => if IsHalf (cA D e) x then Ψ (rdAdj S T βS βT φ x) else 0 map_add' := fun Ψ Ψ' => by funext x; simp only [Pi.add_apply]; split_ifs <;> simp map_smul' := fun c Ψ => by funex …`. Establish `hLΦ : L Φ' = Φ`. Use function extensionality and compare the values at `x`. Use `show (if IsHalf (cA D e) x then Φ (σ (rdAdj S T βS βT φ x)) else 0) = Φ x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs with hx`. Rewrite using `[hinj _ x (hσH _) hx (hσ _)]`. Assume the negation of the conclusion as `hne`. Conclude with `hx (hΦ.1 x (Ne.symm hne))`. Establish `hmem` using `Submodule.mem_map_of_mem (f := L) hpure`.
-
-Rewrite `hmem` using `[Submodule.map_span, hLΦ]`. Use `Submodule.span_mono ?_ hmem` and prove the remaining obligations. Introduce and unpack `_ ⟨Ψ, ⟨γ, rfl⟩, rfl⟩`. Take `⟨g, hgs, hgx⟩` from `GlobalTheory.T.exists_supported_unitary_adjoint_action D S T βS βT e PP v φ ι hidem hch γ`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `i j`. Use `hgs i j` as an intermediate fact. Rewrite using `[Formalism.L2.Theta.cA_cA, add_comm]` and apply the resulting hypothesis. Use function extensionality and compare the values at `x show (if IsHalf (cA D e) x then adjDat S T βS βT e ω (σ (rdAdj S T βS βT φ x * γ.val)) else 0) = adjDat S T βS βT e ω (actO S T 1 g x) split_ifs with hx`. Establish `hgH` using `GlobalTheory.SplitHecke.isHalf_actO 1 g hx`.
-
-Rewrite using `[hinj _ (actO S T 1 g x) (hσH _) hgH (by rw [hσ, hgx])]`. Establish `hgH : ¬ IsHalf (cA D e) (actO S T 1 g x)`. Introduce `h'`. Use `GlobalTheory.SplitHecke.isHalf_actO (1 : GA D S)⁻¹ g⁻¹ h'` as an intermediate fact. Rewrite `this` using `[GlobalTheory.SplitHecke.actO_inv_actO]`.
-
-Conclude with `hx this`. Unfold `adjDat`. Rewrite using `[if_neg (fun h' => hgH h'.1)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_translT : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (Formalism.IndefR.Lev.EAf D)) (βT : GL (Fin T.rank) (Formalism.IndefR.Lev.EAf D)), T.rank ≤ S.rank → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), ∀ N : ℕ, IsBaseFrame S βS ΛS N → Submodule.IsLattice D.host.E ΛS → Submodule.IsLattice D.host.E ΛT → ∀ (e : AE D) (PP : Pl D.host.E), Formalism.L2.NTheta.IsIdemAt e PP → ∀ ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ, ξ PP ≠ 1 → ∀ Φ : WO S T → ℂ, IsSBHalf (cA D e) (latH S T ΛS ΛT) Φ → (∀ κ : GA D S, SuppAt e S κ → κ ∈ GfC S → finE S κ ∈ St βS → redFn βS PP (finE S κ) ∈ blockTri (blk2 T.rank) → (∀ PP', PP' ≠ PP → ¬ Formalism.IndefR.Lev.IsConjPl PP PP' → redFn βS PP' (finE S κ) = 1) → ∀ x x' : WO S T, IsHalf (cA D e) x → IsHalf (cA D e) x' → Φ (actO S T κ 1 x) * adjDat S T βS βT e (omegaQ {PP} T.rank ξ (-1)) x' = Φ x * adjDat S T βS βT e (omegaQ {PP} T.rank ξ (-1)) (actO S T κ 1 x')) → Φ ∈ Submodule.span ℂ (translT S T (cA D e) (adjDat S T βS βT e (omegaQ {PP} T.rank ξ (-1)))) := by
   classical

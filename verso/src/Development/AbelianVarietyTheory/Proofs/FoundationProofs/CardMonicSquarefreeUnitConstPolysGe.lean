@@ -6,13 +6,13 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare.SqCount
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a1, c1, e, hco, rfl, rfl⟩ : ∃ a1 c1 e : k[X], IsCoprime a1 c1 ∧ a = e * a1 ∧ c = e * c1 := by`. Take `⟨a1, c1, h1, h2, h3⟩` from `extract_gcd a c`. Conclude with `⟨a1, c1, GCDMonoid.gcd a c, (gcd_isUnit_iff _ _).1 h3, h1, h2⟩`. Establish `he : e ≠ 0` using `left_ne_zero_of_mul ha.ne_zero`. Establish `h' : a1 ^ 2 * b = c1 ^ 2 * d`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ (pow_ne_zero 2 he)` to reduce the goal to its premises. Take the linear combination `h`. Establish `u1 : IsUnit a1`. Apply `hd` to reduce the goal to its premises. Rewrite using `[← sq]`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hco.pow (m := 2) (n := 2)).dvd_of_dvd_mul_left ⟨b, h'.symm⟩`. Establish `u2 : IsUnit c1`. Apply `hb` to reduce the goal to its premises. Rewrite using `[← sq]`. Conclude with `(hco.symm.pow (m := 2) (n := 2)).dvd_of_dvd_mul_left ⟨d, h'⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hac : e * a1 = e * c1` using `eq_of_monic_of_associated ha hc ((associated_mul_unit_left e a1 u1).trans (associated_mul_unit_left e c1 u2).symm)`. Use `⟨hac, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hac]`. Conclude with `mul_left_cancel₀ (pow_ne_zero 2 hc.ne_zero) h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_mul_unique {k : Type} [Field k] {a b c d : k[X]} (ha : a.Monic) (hc : c.Monic)
     (hb : Squarefree b) (hd : Squarefree d) (h : a ^ 2 * b = c ^ 2 * d) : a = c ∧ b = d := by
@@ -38,13 +38,13 @@ theorem sq_mul_unique {k : Type} [Field k] {a b c d : k[X]} (ha : a.Monic) (hc :
   exact mul_left_cancel₀ (pow_ne_zero 2 hc.ne_zero) h
 
 /- English proof (translation)
-Proceed by induction on `hn : f.natDegree using Nat.strong_induction_on generalizing f with`. Consider the case `_ n ih`. Distinguish the cases in `hs : Squarefree f`. Conclude with `⟨1, f, monic_one, hf, hs, by simp⟩`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx, hu⟩ : ∃ x, x * x ∣ f ∧ ¬ IsUnit x := by`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hs fun x hx => by_contra fun hu => hc ⟨x, hx, hu⟩`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hf.ne_zero (by simpa using hx)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : (normalize x).Monic` using `monic_normalize hx0`. Establish `hass : Associated (normalize x) x` using `normalize_associated x`. Take `⟨h, rfl⟩` from `(hass.mul_mul hass).dvd.trans hx`. Establish `hh : h.Monic` using `(hy.mul hy).of_mul_monic_left hf`. Establish `hpos : 0 < (normalize x).natDegree` using `natDegree_pos_of_not_isUnit_of_dvd_monic hy (fun hu' => hu (hass.isUnit hu')) dvd_rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hn` using `[(hy.mul hy).natDegree_mul hh, hy.natDegree_mul hy]`. Take `⟨a, b, ha, hb, hsq, rfl⟩` from `ih h.natDegree (by omega) hh rfl`. Conclude with `⟨normalize x * a, b, hy.mul ha, hb, hsq, by ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sq_mul {k : Type} [Field k] {f : k[X]} (hf : f.Monic) :
     ∃ a b : k[X], a.Monic ∧ b.Monic ∧ Squarefree b ∧ f = a ^ 2 * b := by
@@ -76,11 +76,11 @@ noncomputable def monicSet (N : ℕ) : Finset (ZMod g)[X] :=
 variable {g}
 
 /- English proof (translation)
-Unfold `monicSet`. Rewrite using `[Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, -, rfl⟩`. Establish `hlt : (∑ i : Fin N, C (c i) * X ^ (i : ℕ) : (ZMod g)[X]).degree < (N : WithBot ℕ)` using `degree_sum_fin_lt c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨monic_X_pow_add hlt, ?_⟩` and prove the remaining obligations. Rewrite using `[natDegree_add_eq_left_of_degree_lt (by rwa [degree_X_pow]), natDegree_X_pow]`. Introduce and unpack `⟨hm, rfl⟩`. Use `⟨fun i => f.coeff i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [hm.as_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_range fun i => C (f.coeff i) * X ^ i]`.
+A detailed English derivation is pending.
 -/
 theorem mem_monicSet {N : ℕ} {f : (ZMod g)[X]} : f ∈ monicSet g N ↔ f.Monic ∧ f.natDegree = N := by
   unfold monicSet
@@ -96,9 +96,9 @@ theorem mem_monicSet {N : ℕ} {f : (ZMod g)[X]} : f ∈ monicSet g N ↔ f.Moni
     rw [Finset.sum_range fun i => C (f.coeff i) * X ^ i]
 
 /- English proof (translation)
-Unfold `monicSet`. Rewrite using `[Finset.card_image_of_injective]`. Simplify using `[ZMod.card]`. Introduce `c d h`. Establish `h'` using `add_left_cancel h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `congrArg (fun p => coeff p i) h'` as an intermediate fact. Simplify `this` using `[finset_sum_coeff, coeff_X_pow, Fin.val_inj]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_monicSet (N : ℕ) : (monicSet g N).card = g ^ N := by
   unfold monicSet
@@ -111,16 +111,16 @@ theorem card_monicSet (N : ℕ) : (monicSet g N).card = g ^ N := by
     simpa [finset_sum_coeff, coeff_X_pow, Fin.val_inj] using this
 
 /- English proof (translation)
-Rewrite using `[Monic, leadingCoeff, natDegree_divX_eq_natDegree_tsub_one, coeff_divX, Nat.sub_add_cancel hd]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monic_divX {k : Type} [Field k] {a : k[X]} (ha : a.Monic) (hd : 1 ≤ a.natDegree) : a.divX.Monic := by
   rw [Monic, leadingCoeff, natDegree_divX_eq_natDegree_tsub_one, coeff_divX, Nat.sub_add_cancel hd]
   exact ha
 
 /- English proof (translation)
-Rewrite using `[← card_monicSet]`. Use `Finset.card_le_card_of_injOn divX ?_ ?_` and prove the remaining obligations. Introduce `f hf`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, mem_monicSet, Finset.mem_coe] at hf ⊢`. Use `⟨monic_divX hf.1.1 (by omega), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[natDegree_divX_eq_natDegree_tsub_one]`. Use linear arithmetic over natural numbers and integers. Introduce `f hf f' hf' h`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, mem_monicSet] at hf hf'`. Rewrite using `[← divX_mul_X_add f, ← divX_mul_X_add f', h, hf.2, hf'.2]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_zero_const (n : ℕ) : ((monicSet g (n + 1)).filter fun f => f.coeff 0 = 0).card ≤ g ^ n := by
   rw [← card_monicSet]
@@ -134,19 +134,17 @@ theorem card_zero_const (n : ℕ) : ((monicSet g (n + 1)).filter fun f => f.coef
     rw [← divX_mul_X_add f, ← divX_mul_X_add f', h, hf.2, hf'.2]
 
 /- English proof (translation)
-Break down `n with _ | n` into its components or cases. Rewrite using `[Finset.filter_eq_empty_iff.2]`. Simplify using the standard rewrite rules. Introduce `f hf`. Rewrite `hf` using `[mem_monicSet]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[not_not]`. Conclude with `(irreducible_of_degree_eq_one (by rw [degree_eq_natDegree hf.1.ne_zero, hf.2]; rfl)).squarefree`. Establish `hc : ((Finset.univ : Finset (ZMod g)) ×ˢ monicSet g n).card = g ^ (n + 1)`. Rewrite using `[Finset.card_product, card_monicSet, Finset.card_univ, ZMod.card, pow_succ']`. Rewrite using `[← hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.card_le_card_of_forall_subsingleton (fun f p => ∃ a b : (ZMod g)[X], a.Monic ∧ Squarefree b ∧ p.2 = a ^ 2 * b ∧ f = (a * X + C p.1) ^ 2 * b) ?_ ?_` and prove the remaining obligations. Introduce `f hf`. Rewrite `hf` using `[Finset.mem_filter, mem_monicSet]`. Take `⟨⟨hm, hd⟩, hs⟩` from `hf`. Take `⟨a, b, ha, hb, hsq, rfl⟩` from `exists_sq_mul hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ a.natDegree`. Rewrite using `[Nat.one_le_iff_ne_zero]`. Introduce `h0`. Rewrite `h0` using `[ha.natDegree_eq_zero]`. Substitute `h0` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `hs (by simpa using hsq)`. Establish `ha'` using `monic_divX ha h1`. Use `⟨(a.coeff 0, a.divX ^ 2 * b), ?_, a.divX, b, ha', hsq, rfl, by rw [divX_mul_X_add]⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_product, mem_monicSet]`. Use `⟨Finset.mem_univ _, (ha'.pow 2).mul hb, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hd` using `[(ha.pow 2).natDegree_mul hb, ha.natDegree_pow]`. Use `show (a.divX ^ 2 * b).natDegree = n`. Rewrite using `[(ha'.pow 2).natDegree_mul hb, ha'.natDegree_pow, natDegree_divX_eq_natDegree_tsub_one]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `p - f ⟨-, a, b, ha, hb, h1, rfl⟩ f' ⟨-, c, d, hc, hd, h2, rfl⟩`.
-
-Take `⟨rfl, rfl⟩` from `sq_mul_unique ha hc hb hd (h1.symm.trans h2)`. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem card_not_squarefree (n : ℕ) : ((monicSet g (n + 1)).filter fun f => ¬ Squarefree f).card ≤ g ^ n := by
   rcases n with _ | n
@@ -188,11 +186,11 @@ end GlobalTheory.BadShare.SqCount
 open GlobalTheory.BadShare.SqCount in
 
 /- English proof (translation)
-Introduce `g _ N hN`. Take `⟨n, rfl⟩ : ∃ n, N = n + 1` from `⟨N - 1, by omega⟩`. Establish `hsub : monicSet g (n + 1) ⊆ sqSet g (n + 1) ∪ (((monicSet g (n + 1)).filter fun f => f.coeff 0 = 0) ∪ ((monicSet g (n + 1)).filter fun f => ¬ Squarefree f))`. Introduce `f hf`. Simplify using `only [Finset.mem_union, Finset.mem_filter, mem_sqSet]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `mem_monicSet.1 hf` as an intermediate fact. The claim follows by propositional logic. Establish `h1` using `(Finset.card_le_card hsub).trans ((Finset.card_union_le _ _).trans (Nat.add_le_add_left ((Finset.card_union_le _ _).trans (Nat.add_le_add (card_zero_const n) (card_not_squarefree n))) _))`. Rewrite `h1` using `[card_monicSet]`. Establish `h2 : ((g : ℝ)) ^ (n + 1) ≤ ((sqSet g (n + 1)).card : ℝ) + ((g : ℝ) ^ n + (g : ℝ) ^ n)` using `by exact_mod_cast h1`.
+Establish an intermediate fact. The claim follows by propositional logic. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.add_sub_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem GlobalTheory.BadShare.card_sqSet_ge : ∀ (g : ℕ) [Fact g.Prime], ∀ N : ℕ, 1 ≤ N →
     (g : ℝ) ^ N - 2 * (g : ℝ) ^ (N - 1) ≤ ((sqSet g N).card : ℝ) := by

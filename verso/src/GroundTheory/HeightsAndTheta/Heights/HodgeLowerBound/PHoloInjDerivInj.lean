@@ -8,7 +8,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 
 /- English proof (translation)
-Introduce `m f U hU hf hinj u hu`. Establish `hdet : LinearMap.det (fderiv ℂ f u : (Fin m → ℂ) →ₗ[ℂ] Fin m → ℂ) ≠ 0` using `IndefiniteRowSideFullHecke.ComplexSets.InjectiveHolomorphicJacobianNeZero.proof IndefiniteRowSideFullHecke.ComplexSets.HolomorphicKernelFibre.proof IndefiniteRowSideFullHecke.ComplexSets.CriticalFlatNotInjective.proof m U f hU hf.differentiableOn hinj u hu`. Establish `hunit : IsUnit (fderiv ℂ f u : (Fin m → ℂ) →ₗ[ℂ] Fin m → ℂ)` using `(LinearMap.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hdet)`. Conclude with `((Module.End.isUnit_iff _).1 hunit).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem HoloInjDerivInj.proof : HoloInjDerivInj.Statement := by
   intro m f U hU hf hinj u hu

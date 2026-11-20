@@ -29,7 +29,7 @@ namespace GlobalTheory.FibreKeyTheta
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[valAt', dif_pos ((top_le_iff_mem x U z).2 h), valAt, gs_eq x z U h]`. Use `show ((Sp ℂ).presheaf.germ ⊤ z trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom _)) = _`. Rewrite using `[Iso.hom_inv_id_apply]`. Conclude with `TopCat.Presheaf.germ_res_apply (Sp ℂ).presheaf (homOfLE ((top_le_iff_mem x U z).2 h)) z trivial _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toStk_valAt' (x : Sp ℂ ⟶ X) (U : X.Opens) (z : Sp ℂ) (h : x z ∈ U) (a : Γ(X, U)) :
     toStk z (valAt' x U a) = gs x z U a := by
@@ -40,7 +40,7 @@ theorem toStk_valAt' (x : Sp ℂ ⟶ X) (U : X.Opens) (z : Sp ℂ) (h : x z ∈ 
   exact TopCat.Presheaf.germ_res_apply (Sp ℂ).presheaf (homOfLE ((top_le_iff_mem x U z).2 h)) z trivial _
 
 /- English proof (translation)
-Rewrite using `[cst, gs_eq (𝟙 (Sp ℂ)) z ⊤ trivial]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cst_id (z : Sp ℂ) (a : ℂ) : cst (𝟙 (Sp ℂ)) z a = toStk z a := by
   rw [cst, gs_eq (𝟙 (Sp ℂ)) z ⊤ trivial]
@@ -50,9 +50,9 @@ def isoSymm {A B : LB X} (w : LB.Iso A B) : LB.Iso B A :=
   ⟨fun p => (res (fun _ hy => ⟨hy.2, hy.1⟩ : A.U p.1 ⊓ B.U p.2 ≤ B.U p.2 ⊓ A.U p.1) (w.s (p.2, p.1)))⁻¹⟩
 
 /- English proof (translation)
-Establish `le : ∀ p : A.ι × B.ι, A.U p.1 ⊓ B.U p.2 ≤ B.U p.2 ⊓ A.U p.1` using `fun p y hy => ⟨hy.2, hy.1⟩`. Introduce `p q`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `hm : (𝟙 X : X ⟶ X) y ∈ B.U p.2 ⊓ A.U p.1 ⊓ (B.U q.2 ⊓ A.U q.1)` using `⟨le p hy.1, le q hy.2⟩`. Establish `e` using `congrArg (gm (𝟙 X) y (B.U p.2 ⊓ A.U p.1 ⊓ (B.U q.2 ⊓ A.U q.1))) (hw (p.2, p.1) (q.2, q.1))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `(gm_res _ y _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div A B (𝟙 X) y (p.2, p.1) (q.2, q.1) hm) (gm_res _ y _ hm _))))`. Establish `v : ∀ p : A.ι × B.ι, y ∈ A.U p.1 ⊓ B.U p.2 → gm (𝟙 X) y (A.U p.1 ⊓ B.U p.2) (res (le p) (w.s (p.2, p.1)))⁻¹ = (gm (𝟙 X) y (B.U p.2 ⊓ A.U p.1) (w.s (p.2, p.1)))⁻¹` using `fun p hp => (map_inv _ _).trans (congrArg (·⁻¹) (gm_res _ y _ hp _))`. Use `((gm_res _ y _ hy _).trans ((v p hy.1).trans (congrArg (·⁻¹) e'))).trans (Eq.symm ?_)` and prove the remaining obligations. Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div B A (𝟙 X) y p q hy) ((gm_res _ y _ hy _).trans (v q hy.2)))).trans ?_` and prove the remaining obligations. Rewrite using `[mul_inv, mul_inv, inv_inv, mul_comm (gm (𝟙 X) y _ (A.g p.1 q.1))]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -78,27 +78,25 @@ end GlobalTheory.FibreKeyTheta
 open GlobalTheory.FibreKeyTheta in
 
 /- English proof (translation)
-Introduce `x S G _ L y Φ g u w θ fr s hL hΦ hw hθ hfr hu hs`. Set `km : x.P.A.left ⟶ pullback G.hom y` to `pullback.lift Φ x.P.A.hom hΦ.w`. Establish `km1 : km ≫ pullback.fst G.hom y = Φ` using `pullback.lift_fst _ _ _`. Establish `km2 : km ≫ pullback.snd G.hom y = x.P.A.hom` using `pullback.lift_snd _ _ _`. Establish `le : ∀ j : L.ι, Φ ⁻¹ᵁ L.U j ≤ km ⁻¹ᵁ (L.pull (pullback.fst G.hom y)).U (fun _ => j)` using `fun j p hp => mem_pull.2 ((congrArg (fun e => e p ∈ L.U j) km1).mpr hp)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `σ : ∀ j : L.ι, Γ(x.P.A.left, Φ ⁻¹ᵁ L.U j)` to `fun j => (km.appLE _ _ (le j)).hom (s.f (fun _ => j))`. Establish `hσv : ∀ {Z : Scheme.{0}} (r : Z ⟶ x.P.A.left) (z : Z) (j : L.ι), Φ (r z) ∈ L.U j → gs r z _ (σ j) = gs (r ≫ km) z _ (s.f (fun _ => j))` using `fun r z j h => gs_appLE km _ _ (le j) r z h _`. Establish `hσ : ∀ (p : x.P.A.left) j j', Φ p ∈ L.U j → Φ p ∈ L.U j' → gs (𝟙 _) p _ (σ j) = (gm Φ p (L.U j ⊓ L.U j') (L.g j j')).val * gs (𝟙 _) p _ (σ j')`. Introduce `p j j' h h'`. Rewrite using `[hσv _ p j h, hσv _ p j' h', Category.id_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(sec_trans s km p (le j h) (le j' h')).trans ?_` and prove the remaining obligations. Use `congr 2`. Simplify using `[trF, km1]`. Establish `hwD : PGen (isoSymm w)` using `(isGen_iff _).1 (isoSymm_isGen w hw)`. Take `⟨s', hs'⟩` from `sec_down hwD hL x.P.isLB σ hσ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `refl : LBIso x.P.L (x.P.L.pull (𝟙 _))` using `LBIso.chartPull (chartPullUnpull x.P.L _ rfl) (chartPullId _) (exists_iso_linComb (F := 𝟙 x.P.A.left) x.P.isLB (fun _ : PUnit => 𝟙 _) (fun _ => 1) fun _ _ _ => rfl)`. Take `⟨a, ha, -⟩` from `GlobalTheory.SectionBaseChange.generates GlobalTheory.allSixLaws.1.secBaseChange x.P (t := 𝟙 _) (φ := 𝟙 _) (IsPullback.of_horiz_isIso ⟨by simp⟩) x.P.isLB refl x.th x.th_ne s'`. Take `⟨pt⟩ : Nonempty (Sp ℂ)` from `⟨(⊥ : PrimeSpectrum ℂ)⟩`. Establish `key : ∀ i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ x.P.L.U i → a * valAt' (u.ex z).left (x.P.L.U i) (x.th.f i) = θ z * u.fr i z`. Introduce `i z hi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hri : (u.ex z).left pt ∈ x.P.L.U i` using `(top_le_iff_mem _ _ pt).1 hi`. Take `⟨j, hj⟩` from `exists_chart hL (Φ ((u.ex z).left pt))`. Establish `hj' : ⊤ ≤ ((u.ex z).left ≫ Φ) ⁻¹ᵁ L.U j` using `(top_le_iff_mem _ _ pt).2 hj`. Establish `hr0 : (u.ex z).left ≫ x.P.A.hom = 𝟙 _` using `by simpa using Over.w (u.ex z)`. Establish `hr1 : ((u.ex z).left ≫ km) ≫ pullback.snd G.hom y = 𝟙 _` using `by rw [Category.assoc, km2, hr0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hs j z ((u.ex z).left ≫ km) (by rw [Category.assoc, km1]) hr1 hj'`. Establish `hm : (u.ex z).left pt ∈ x.P.L.U i ⊓ (L.pull Φ).U (fun _ => j)` using `⟨hri, mem_pull.2 hj⟩`. Establish `e2` using `hu i (fun _ => j) z ((top_le_iff_mem _ _ pt).2 hm)`. Establish `e3` using `hs' (Sp ℂ) (u.ex z).left pt j i hj hri`. Rewrite `e3` using `[hσv _ pt j hj, ← toStk_valAt' ((u.ex z).left ≫ km) _ pt (le j hj), e1, ha i, gs_mul _ pt _ hri, gs_constFn _ _ _ pt hri, hr0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `erw [cst_id] at e3`. Rewrite `e3` using `[← toStk_valAt' _ _ pt hri]`. Establish `hm' : (u.ex z).left pt ∈ (L.pull Φ).U (fun _ => j) ⊓ x.P.L.U i` using `⟨mem_pull.2 hj, hri⟩`. Establish `gwv : gw (isoSymm w) (u.ex z).left pt j i = (gm (u.ex z).left pt (x.P.L.U i ⊓ (L.pull Φ).U (fun _ => j)) (w.s (i, fun _ => j)))⁻¹` using `(map_inv _ _).trans (congrArg (·⁻¹) (gm_res _ pt _ hm' _))`. Rewrite `e3` using `[gwv, Units.eq_inv_mul_iff_mul_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3' : toStk pt (valAt' (u.ex z).left (x.P.L.U i ⊓ (L.pull Φ).U (fun _ => j)) (w.s (i, fun _ => j)).val * (θ z * fr j z)) = toStk pt (a * valAt' (u.ex z).left (x.P.L.U i) (x.th.f i))`. Rewrite using `[map_mul, map_mul (toStk pt) a]`. Use `erw [toStk_valAt' _ _ pt hm, gs_unit _ pt _ hm]`. Conclude with `e3`. Establish `e4` using `(toStk pt).injective e3'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e2, ← e4]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨z0, hz0⟩` from `hθ`. Take `⟨i0, hi0⟩` from `exists_chart x.P.isLB ((u.ex z0).left pt)`. Establish `hi0' : ⊤ ≤ (u.ex z0).left ⁻¹ᵁ x.P.L.U i0` using `(top_le_iff_mem _ _ pt).2 hi0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ha0 : a ≠ 0`. Introduce `h0`. Establish `e` using `key i0 z0 hi0'`. Rewrite `e` using `[h0, zero_mul]`. Conclude with `mul_ne_zero hz0 (u.fr_ne i0 z0 hi0') e.symm`.
-
-Use `⟨a⁻¹, fun i z hi => ?_⟩` and prove the remaining obligations. Establish `e` using `key i z hi`. Use `show _ = a⁻¹ * θ z * u.fr i z`. Rewrite using `[mul_assoc, ← e, ← mul_assoc, inv_mul_cancel₀ ha0, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FibreKeyTheta.th_isFn_const_mul : ∀ (x : KeyIn ℂ) (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left) (y : Sp ℂ ⟶ S) (Φ : x.P.A.left ⟶ G.left) (g : ℕ) (u : HolUnif x.P.A x.P.L g) (w : LB.Iso (L.pull Φ) x.P.L) (θ : (Fin g → ℂ) → ℂ) (fr : L.ι → (Fin g → ℂ) → ℂ) (s : (L.pull (pullback.fst G.hom y)).Sec), L.IsLB → IsPullback Φ x.P.A.hom G.hom y → w.IsGen → (∃ z, θ z ≠ 0) → (∀ j z, ⊤ ≤ ((u.ex z).left ≫ Φ) ⁻¹ᵁ L.U j → fr j z ≠ 0) → (∀ k j z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (x.P.L.U k ⊓ (L.pull Φ).U j) → u.fr k z = valAt' (u.ex z).left (x.P.L.U k ⊓ (L.pull Φ).U j) (w.s (k, j)).val * fr (j PUnit.unit) z) → (∀ j z (p : Sp ℂ ⟶ pullback G.hom y), p ≫ pullback.fst _ _ = (u.ex z).left ≫ Φ → p ≫ pullback.snd _ _ = 𝟙 _ → ⊤ ≤ ((u.ex z).left ≫ Φ) ⁻¹ᵁ L.U j → valAt' p ((L.pull (pullback.fst G.hom y)).U (fun _ => j)) (s.f (fun _ => j)) = θ z * fr j z) → ∃ c₀ : ℂ, u.IsFn x.th (fun z => c₀ * θ z) := by
   intro x S G _ L y Φ g u w θ fr s hL hΦ hw hθ hfr hu hs

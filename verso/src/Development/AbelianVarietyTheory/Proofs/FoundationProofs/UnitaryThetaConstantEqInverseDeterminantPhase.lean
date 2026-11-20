@@ -15,34 +15,34 @@ namespace GlobalTheory.SymConst
 def ex (t : ℝ) : ℂ := Complex.exp (Real.pi * Complex.I * t)
 
 /- English proof (translation)
-Rewrite using `[ex, ex, ex, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ex_add (s t : ℝ) : ex (s + t) = ex s * ex t := by
   rw [ex, ex, ex, ← Complex.exp_add]; congr 1; push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[ex, ← Complex.exp_pi_mul_I, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ex_int (n : ℤ) : ex n = (-1 : ℂ) ^ n := by
   rw [ex, ← Complex.exp_pi_mul_I, ← Complex.exp_int_mul]; congr 1; push_cast; ring
 
 /- English proof (translation)
-Establish `: (2 * k : ℝ) = ((2 * k : ℤ) : ℝ)` using `by push_cast; ring`. Rewrite using `[h, ex_add, this, ex_int, zpow_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ex_congr {s t : ℝ} (k : ℤ) (h : s = t + 2 * k) : ex s = ex t := by
   have : (2 * k : ℝ) = ((2 * k : ℤ) : ℝ) := by push_cast; ring
   rw [h, ex_add, this, ex_int, zpow_mul]; simp
 
 /- English proof (translation)
-Rewrite using `[ex, ex, ← Complex.exp_conj]`. Use `congr 1`. Simplify using `[Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem ex_neg (t : ℝ) : ex (-t) = (starRingEnd ℂ) (ex t) := by
   rw [ex, ex, ← Complex.exp_conj]; congr 1; simp [Complex.conj_ofReal]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Complex.exp_eq_exp_iff_exists_int.1 h`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Complex.im hk`. Simplify using `at h2`. Use `Real.pi_pos` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ this.ne'` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ex_eq {s t : ℝ} (h : ex s = ex t) : ∃ k : ℤ, s = t + 2 * k := by
   obtain ⟨k, hk⟩ := Complex.exp_eq_exp_iff_exists_int.1 h
@@ -54,61 +54,61 @@ theorem ex_eq {s t : ℝ} (h : ex s = ex t) : ∃ k : ℤ, s = t + 2 * k := by
   linarith
 
 /- English proof (translation)
-Establish `hcomm : ∀ Q : V →ₗ[ℂ] V, (∀ x, Q (a x) = a (Q x)) → ∀ x, Q (C x) = C (Q x)`. Introduce `Q hQ x`. Take `⟨z, rfl⟩` from `hsurj x`. Rewrite using `[hC, map_sub, hQ, hC, map_smul, map_add, hQ]`. Establish `hskew : ∀ x y, H (C x) y = -H x (C y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y`. Take `⟨z, rfl⟩` from `hsurj x`. Take `⟨w, rfl⟩` from `hsurj y`. Rewrite using `[hC, hC]`. Simplify using `[ha, Complex.conj_ofNat]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `him : ∀ x y, (H y x).im = -(H x y).im` using `fun x y => by rw [hH x y]; simp`. Establish `hre : ∀ x y, (H y x).re = (H x y).re` using `fun x y => by rw [hH x y]; simp`. Establish `him0 : ∀ x, (H x x).im = 0` using `fun x => by have := him x x; linarith`. Establish `hCim : ∀ x y, (H (C x) y).im = (H (C y) x).im` using `fun x y => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hskew x y, him x (C y)]`. Simplify using the standard rewrite rules. Establish `hCre : ∀ x, (H (C x) x).re = 0` using `fun x => by`. Establish `h1` using `congrArg Complex.re (hskew x x)`. Rewrite `h1` using `[Complex.neg_re, hre (C x) x]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem : ∀ w : A, w ∈ (subLa m A).addSubgroupOf A ↔ ∃ v ∈ A, m • v = (w : V)` using `fun w => by`. Simplify using `[AddSubgroup.mem_addSubgroupOf, subLa]`. Use `haveI : AddGroup.FG A := (AddGroup.fg_iff_addSubgroup_fg A).2 hFG`. Use `haveI : Finite (A ⧸ (subLa m A).addSubgroupOf A) := by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `AddCommGroup.finite_of_fg_torsion _ fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨m, hm0, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, hmem]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨x, x.2, rfl⟩`. Set `ψ : V → ℝ` to `fun x => s * (H x x).re - (H (C x) x).im`. Establish `hφ : ∀ x : A, (-1 : ℂ) ^ (round (s * (H (x : V) (x : V)).re)) * Complex.exp (-(Real.pi : ℂ) * H (C (x : V)) (x : V)) = ex (ψ x)`. Introduce `x`. Take `⟨n, hn⟩` from `hq x x.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ψ]`. Rewrite using `[hn, round_intCast, sub_eq_add_neg, ex_add, ex_int, ex]`. Use `congr 2`. Rewrite using `[← Complex.re_add_im (H (C x) x), hCre]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hφ]`. Establish `res : ∀ Q : V →ₗ[ℂ] V, (∀ x ∈ A, Q x ∈ A) → ∃ Q' : A →+ A, ∀ x : A, (Q' x : V) = Q x` using `fun Q hQ => ⟨(Q.toAddMonoidHom.comp A.subtype).codRestrict A fun x => hQ x x.2, fun _ => rfl⟩`. Take `⟨P', hP'⟩` from `res P fun x hx => (hPS x hx).1`. Take `⟨S', hS'⟩` from `res S fun x hx => (hPS x hx).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨L', hL'⟩` from `res L fun x hx => (hLB x hx).1`. Establish `hmR : (m : ℝ) ≠ 0` using `by exact_mod_cast hm0.ne'`. Use `GlobalTheory.finsum_quotient_nonneg_of_swap_conj A _ (fun x : A => ex (ψ x)) P' S' L' ?_ ?_ ?_ (fun x => Subtype.ext (by simp [hP', hPP])) (fun x => Subtype.ext (by simp [hS', hSS])) (fun x => Subtype.ext (by simp [hP', hS', hSP])) (fun x => Subtype.ext (by simp [hP', hL', hLP])) …` and prove the remaining obligations. Introduce `x w hw`. Take `⟨v, hv, hvw⟩` from `(hmem w).1 hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, hay, hyv⟩` from `hm v hv`. Establish `hw' : (w : V) = y - a y` using `hvw.symm.trans hyv`. Take `⟨k1, h1⟩` from `hsemi x x.2 w w.2`. Take `⟨k2, h2⟩` from `hsemi w w.2 _ hay`. Take `⟨k3, h3⟩` from `hint x x.2 y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : (w : V) + a y = y` using `by rw [hw']; abel`. Rewrite `h2` using `[e1, ha]`. Establish `e2 : (H (C w) x).im = -((H x y).im + (H x (a y)).im) / 2`. Rewrite using `[hw', hC, him y x, him (a y) x]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e3 : (H (C w) w).im = -(H y (a y)).im`. Use `him y (a y)` as an intermediate fact. Rewrite using `[hw', hC]`. Simplify using `[ha, him0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e4 : (H w (a y)).im = (H y (a y)).im` using `by rw [hw']; simp [him0]`. Establish `e5 : (H x w).im = (H x y).im - (H x (a y)).im` using `by rw [hw']; simp`. Establish `e6 : (H (C (x + w)) (x + w)).im = (H (C x) x).im + (H (C w) w).im + 2 * (H (C w) x).im`. Use `hCim x w` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨k4, h4⟩` from `hint x x.2 _ hay`. Take `⟨k5, h5⟩` from `hint y hy _ hay`. Use `ex_congr (k1 - k2 + k4 + k5) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [ψ, AddSubgroup.coe_add]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `w hw`. Take `⟨v, hv, hvw⟩` from `(hmem w).1 hw`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨(hmem _).2 ⟨P v, (hPS v hv).1, by rw [hP', ← hvw, map_nsmul]⟩, (hmem _).2 ⟨S v, (hPS v hv).2, by rw [hS', ← hvw, map_nsmul]⟩⟩`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨v, hv, hvw⟩` from `(hmem _).1 hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hvw` using `[hL']`. Establish `hmC : (m : ℂ) ≠ 0` using `by exact_mod_cast hm0.ne'`. Use `(hmem _).2 ⟨(m : ℂ)⁻¹ • (x : V), hsd _ fun y hy => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k1, h1⟩` from `hint v hv _ (hLB y hy).1`. Take `⟨k2, h2⟩` from `hint _ (hLB x x.2).2 y hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg Complex.im (hLH x y)`. Rewrite `h3` using `[← hvw]`. Simplify using `at h3`. Use `⟨4 * k2 - k1, ?_⟩` and prove the remaining obligations. Establish `: ((m : ℂ))⁻¹ = ((m⁻¹ : ℝ) : ℂ)` using `by simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_smul, LinearMap.smul_apply, smul_eq_mul, this, Complex.im_ofReal_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite `h3` using `[h1, h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ hmC, one_smul]`. Introduce `hx`. Take `⟨v, hv, hvw⟩` from `(hmem _).1 hx`. Conclude with `(hmem _).2 ⟨L v, (hLB v hv).1, by rw [hL', ← hvw, map_nsmul]⟩`. Introduce `x`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[← ex_add]`. Use `congr 1`. Simplify using `only [ψ, AddSubgroup.coe_sub, hP']`. Establish `e1 : H (P x) (P x) = H x (P x)` using `by rw [hPH, hPP]`. Establish `e2 : H (C (P x)) (P x) = H (C x) (P x)` using `by rw [← hcomm P hPa, hPH, hPP]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e3 : H (C (P x)) x = H (C x) (P x)` using `by rw [← hcomm P hPa, hPH]`. Establish `e4` using `hPH x x`. Simplify using `only [map_sub, LinearMap.sub_apply, e1, e2, e3, e4, Complex.sub_re, Complex.sub_im]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [ψ, hS']`. Rewrite using `[← hcomm S hSa, hSH, hSH]`. Introduce `x`. Rewrite using `[← ex_neg]`. Simplify using `only [ψ, hL']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hcomm L hLa, hLH, hLH]`. Take `⟨y, hy, hay, hyv⟩` from `hm x x.2`. Establish `e1 : (2 * m : ℂ) • C x = y + a y`. Use `hC y` as an intermediate fact. Rewrite `this` using `[← hyv, ← Nat.cast_smul_eq_nsmul ℂ, map_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_smul, this, smul_smul]`. Simplify using the standard rewrite rules. Take `⟨k1, h1⟩` from `hint _ (hLB _ (add_mem hy hay)).2 x x.2`. Rewrite `h1` using `[← e1]`. Take `⟨k2, h2⟩` from `hq _ (add_mem (hLB x x.2).2 x.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k3, h3⟩` from `hq _ (hLB x x.2).2`. Take `⟨k4, h4⟩` from `hq _ x.2`. Establish `e2` using `hre (B x) x`. Simplify using `[e2] at h1 h2`. Use `ex_congr (m * (k2 - k3 - k4) - k1) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using the standard rewrite rules. Rewrite using `[← h1, ← h2, ← h3, ← h4]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem gauss_nonneg {V : Type} [AddCommGroup V] [Module ℂ V] (H : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
     (hH : ∀ x y, H y x = (starRingEnd ℂ) (H x y)) (s : ℝ) (A : AddSubgroup V) (hFG : A.FG)
@@ -280,25 +280,25 @@ Both sides reduce to the same expression.
 theorem hfL_apply (T : Tor D) (x y : VC D N N') : hfL T x y = Hf D T x y := rfl
 
 /- English proof (translation)
-Simplify using `[hfL_apply, Hf, Complex.conj_ofReal, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hfL_swap (T : Tor D) (x y : VC D N N') : hfL T y x = (starRingEnd ℂ) (hfL T x y) := by
   simp [hfL_apply, Hf, Complex.conj_ofReal, mul_comm]
 
 /- English proof (translation)
-Introduce `x hx y hy`. Establish `hal : ∀ x ∈ A, al D T x = ex (qH D T x)` using `fun x hx => by`. Take `⟨n, hn⟩` from `hq x hx`. Establish `e : al D T x = (-1 : ℂ) ^ (round (qH D T x))` using `rfl`. Rewrite using `[e, hn, round_intCast, ex_int]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩` from `Function.ne_iff.1 h0`. Establish `h1` using `hth.2 x hx z`. Establish `h2` using `hth.2 y hy (z + x)`. Establish `h3` using `hth.2 _ (add_mem hx hy) z`. Rewrite `h1` using `[hal _ hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hal _ hy]`. Rewrite `h3` using `[hal _ (add_mem hx hy)]`. Simplify using `only [U, ← hfL_apply, ← add_assoc] at h1 h2 h3`. Establish `h4 : th (z + x + y) ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h3` using `[h]`. Apply `hz` to reduce the goal to its premises. Rewrite using `[← h3]`. Simplify using the standard rewrite rules. Apply `ex_eq` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h1` using `[← h2, ← h3]`. Establish `e : Complex.exp (-(Real.pi : ℂ) * hfL T (z + x) y - Real.pi * hfL T y y / 2) * Complex.exp (-(Real.pi : ℂ) * hfL T z x - Real.pi * hfL T x x / 2) = ex (-(hfL T x y).im) * Complex.exp (-(Real.pi : ℂ) * hfL T z (x + y) - Real.pi * hfL T (x + y) (x + y) / 2)`. Rewrite using `[ex, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Establish `e1` using `Complex.sub_conj (hfL T x y)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite `e1` using `[← hfL_swap]`. Simplify using `only [map_add, LinearMap.add_apply]`. Move the coercions through the operations in `at e1 ⊢`. Take the linear combination `(-(Real.pi : ℂ) / 2) * e1`. Rewrite using `[sub_eq_add_neg, ex_add, ex_add, ← hfL_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_right_cancel₀ (mul_ne_zero h4 (Complex.exp_ne_zero (-(Real.pi : ℂ) * hfL T z (x + y) - Real.pi * hfL T (x + y) (x + y) / 2)))` to reduce the goal to its premises. Take the linear combination `-h1 + ex (qH D T x) * ex (qH D T y) * th (z + x + y) * e`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem semi (T : Tor D) (A : AddSubgroup (VC D N N')) (hq : ∀ x ∈ A, ∃ m : ℤ, qH D T x = m)
     (th : VC D N N' → ℂ) (hth : th ∈ ThSp D T A) (h0 : th ≠ 0) :
@@ -336,19 +336,19 @@ theorem semi (T : Tor D) (A : AddSubgroup (VC D N N')) (hq : ∀ x ∈ A, ∃ m 
   linear_combination -h1 + ex (qH D T x) * ex (qH D T y) * th (z + x + y) * e
 
 /- English proof (translation)
-Introduce `D cc δ hc N N' A A₁ hA hA₁ u hu huA hdt ⟨m, hm0, hm⟩ P S hPS hPP hPH hSS hSH hSP hPu hSu hLB th hth`. Distinguish the cases in `h0 : th = 0`. Substitute `h0` using the available equality. Use function extensionality and compare the values at `z`. Simplify using `[Iop, U]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Take `⟨-, -, hint, hsd, hFG, -, hq⟩` from `ThetaLine.theta_line D (InducedType.induced_type D).1 cc δ hc N N' A hA`. Take `⟨L, B, hL1, hLu, -, hLP, -, hLH⟩` from `hLB (4 * m) (by omega)`. Use `set a : VC D N N' →ₗ[ℂ] VC D N N' := (u.symm : VC D N N' →ₗ[ℂ] VC D N N') with ha`. Set `e` to `LinearMap.equivOfDetNeZero _ hdt`. Establish `he : ∀ x, e x = x - u.symm x` using `fun x => rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `C : VC D N N' →ₗ[ℂ] VC D N N'` to `((1 / 2 : ℂ) • (LinearMap.id + a)) ∘ₗ (e.symm : VC D N N' →ₗ[ℂ] VC D N N')`. Establish `hC : ∀ x, C (x - u.symm x) = (1 / 2 : ℂ) • (x + u.symm x)` using `fun x => by`. Rewrite using `[← he]`. Simplify using `[C, ha]`. Establish `hcom : ∀ Q : VC D N N' →ₗ[ℂ] VC D N N', (∀ x, Q (u x) = u (Q x)) → ∀ x, Q (a x) = a (Q x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Q hQ x`. Apply `u.injective` to reduce the goal to its premises. Rewrite using `[← hQ]`. Simplify using `[ha]`. Take `⟨c, r, hc1, hr, hcr, hfin⟩` from `GlobalTheory.UnitaryTheta.Constant.pull_eq_gauss_smul_intertwiner D cc δ hc N N' A A₁ hA hA₁ u hu huA hdt C hC m hm0 hm th hth h0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ, hsum⟩` from `gauss_nonneg (hfL (tor0 D cc δ)) (hfL_swap _) (Real.sqrt D.host.d / 2) A hFG hint hsd hq (semi _ A hq th hth h0) a C (fun x y => by rw [hfL_apply, ← hu]; simp [ha, hfL_apply]) hC (fun x => ⟨e.symm x, (e.apply_symm_apply x).symm.trans (he _)⟩) m hm0 hm P S L B hPS hPP hPH hSS hSH …`. Establish `hcr' : c = r * (LinearMap.det (LinearMap.id - a))⁻¹ * ρ` using `by rw [hcr, ← hsum]; rfl`. Rewrite using `[hfin]`. Use `congr 1`. Establish `hn : r * ρ = ‖LinearMap.det (LinearMap.id - a)‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc1` using `[hcr']`. Simplify using `only [norm_mul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr, abs_of_nonneg hρ] at hc1`. Use `norm_ne_zero_iff.2 hdt` as an intermediate fact. Clear denominators, using `at hc1` for the nonvanishing conditions. Conclude with `hc1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hcr', ← hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem const_of_symm : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ) (A A₁ : AddSubgroup (VC D N N')), KLat D (tor0 D cc δ) A → KLat D (tor0 D cc δ) A₁ → ∀ (u : VC D N N' ≃ₗ[ℂ] VC D N N'), (∀ z w, Hf D (tor0 D cc δ) (u z) (u w) = Hf D (tor0 D cc δ) z w) → (∀ x, x ∈ A ↔ u x ∈ A₁) → LinearMap.det (LinearMap.id - (u.symm : VC D N N' →ₗ[ℂ] VC D N N')) ≠ 0 → (∃ m : ℕ, 0 < m ∧ ∀ x ∈ A, ∃ y ∈ A, u.symm y ∈ A ∧ m • x = y - u.symm y) → ∀ (P S : VC D N N' →ₗ[ℂ] VC D N N'), (∀ x ∈ A, P x ∈ A ∧ S x ∈ A) → (∀ x, P (P x) = P x) → (∀ x y, Hf D (tor0 D cc δ) (P x) y = Hf D (tor0 D cc δ) x (P y)) → (∀ x, S (S x) = x) → (∀ x y, Hf D (tor0 D cc δ) (S x) (S y) = Hf D (tor0 D cc δ) x y) → (∀ x, S (P x) = S x - P (S x)) → (∀ x, P (u x) = u (P x)) → (∀ x, S (u x) = u (S x)) → (∀ M : ℕ, 0 < M → ∃ L B : VC D N N' →ₗ[ℂ] VC D N N', (∀ x ∈ A, L x ∈ A ∧ B x ∈ A) ∧ (∀ x, L (u x) = u (L x)) ∧ (∀ x, B (u x) = u (B x)) ∧ (∀ x, L (P x) = P (L x)) ∧ (∀ x y, Hf D (tor0 D cc δ) (B x) y = Hf D (tor0 D cc δ) x (B y)) ∧ ∀ x y, Hf D (tor0 D cc δ) (L x) (L y) = -Hf D (tor0 D cc δ) x y + M * Hf D (tor0 D cc δ) (B x) y) → ∀ th ∈ ThSp D (tor0 D cc δ) A, (fun z => th (u.symm z)) = ((‖LinearMap.det (LinearMap.id - (u.symm : VC D N N' →ₗ[ℂ] VC D N N'))‖ : ℂ) / LinearMap.det (LinearMap.id - (u.symm : VC D N N' →ₗ[ℂ] VC D N N'))) • Iop D (tor0 D cc δ) A A₁ th := by
   intro D cc δ hc N N' A A₁ hA hA₁ u hu huA hdt ⟨m, hm0, hm⟩ P S hPS hPP hPH hSS hSH hSP hPu hSu hLB th hth

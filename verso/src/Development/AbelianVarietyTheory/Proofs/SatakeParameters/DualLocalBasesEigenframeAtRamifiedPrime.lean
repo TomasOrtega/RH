@@ -27,14 +27,14 @@ namespace GlobalTheory.Proof.dualLocalBases_eigenframe_at_ramifiedPrime
 open GlobalTheory.DFrame
 
 /- English proof (translation)
-The claim follows from `D.host.conjE_apply (TaylorLogMetric.embT D τ) x`.
+A detailed English derivation is pending.
 -/
 theorem embT_conj (D : D7) (τ : D.what₂.Tau) (x : D.host.E) :
     TaylorLogMetric.embT D τ (D.host.conj x) = (starRingEnd ℂ) (TaylorLogMetric.embT D τ x) :=
   D.host.conjE_apply (TaylorLogMetric.embT D τ) x
 
 /- English proof (translation)
-Introduce `D p _ lm ι hι τ y`. Establish `halg : TaylorLogMetric.embT D τ y ∈ TaylorLogMetric.Qbar` using `mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) y).algHom (TaylorLogMetric.embT D τ).toRatAlgHom)`. Unfold `TaylorLogMetric.tauEmb TaylorLogMetric.lamC`. Rewrite using `[dif_pos halg, ← hι]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tauEmb_eq_iota : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lm : TaylorLogMetric.Qbar →+* ℂ_[p]) (ι : ℂ ≃+* ℂ_[p]), Formalism.L2.KerInert.IotaExt lm ι → ∀ (τ : D.what₂.Tau) (y : D.host.E), TaylorLogMetric.tauEmb D lm τ y = ι (TaylorLogMetric.embT D τ y) := by
   intro D p _ lm ι hι τ y
@@ -44,13 +44,11 @@ theorem tauEmb_eq_iota : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lm : TaylorLogMe
   rw [dif_pos halg, ← hι]
 
 /- English proof (translation)
-Introduce `D N N' L₁ L₁' a u w ha hu hw`. Use `Submodule.subset_span ⟨a, ha, Matrix.of fun i k => u i * w k, Submodule.subset_span ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨o, ho⟩` from `hw x hx`. Establish `: (Matrix.of fun i k => u i * w k).mulVec x = o • u`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.smul_apply]`. Rewrite using `[Algebra.smul_def]`. Use `show _ = (o : D.host.E) * u i`. Rewrite using `[ho, Finset.sum_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `L₁'.smul_mem o hu`. Use extensionality with `i k`.
-
-Simplify using `[Matrix.smul_apply, mul_assoc]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem outer_mem_YYl : ∀ (D : D7) (N N' : ℕ) (L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L₁' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (a : D.host.E) (u : Fin N' → D.host.E) (w : Fin N → D.host.E), a ∈ D.host.AA0 → u ∈ L₁' → (∀ x ∈ L₁, ∃ o : 𝓞 D.host.E, (o : D.host.E) = ∑ j, w j * x j) → (Matrix.of fun i k => a * u i * w k : Matrix (Fin N') (Fin N) D.host.E) ∈ TaylorLogMetric.YYl D L₁ L₁' := by
   intro D N N' L₁ L₁' a u w ha hu hw
@@ -69,9 +67,9 @@ theorem outer_mem_YYl : ∀ (D : D7) (N N' : ℕ) (L₁ : Submodule (𝓞 D.host
   · ext i k; simp [Matrix.smul_apply, mul_assoc]
 
 /- English proof (translation)
-Introduce `D cc δ X s N N' L₁ L₁' M hM ω hω`. Use `show (s.flatV N N') (ω • vecF D s M) ∈ TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) L₁ L₁'`. Establish `: (s.flatV N N') (ω • vecF D s M) = ω • TaylorLogMetric.embV D (TaylorLogMetric.tor0 D cc δ) M`. Use function extensionality and compare the values at `τ i j`. Simplify using `[Seam.flatV, vecF, TaylorLogMetric.embV, TaylorLogMetric.tor0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `AddSubgroup.subset_closure ⟨ω, hω, M, hM, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem smul_vecF_mem_laF : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (X : Fields) (s : Seam D X) (N N' : ℕ) (L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L₁' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (M : Matrix (Fin N') (Fin N) D.host.E), M ∈ TaylorLogMetric.YYl D L₁ L₁' → ∀ ω ∈ TaylorLogMetric.lamOf D cc δ, ω • GlobalTheory.DFrame.vecF D s M ∈ s.laF (TaylorLogMetric.tor0 D cc δ) L₁ L₁' := by
   intro D cc δ X s N N' L₁ L₁' M hM ω hω
@@ -83,9 +81,9 @@ theorem smul_vecF_mem_laF : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
   exact AddSubgroup.subset_closure ⟨ω, hω, M, hM, rfl⟩
 
 /- English proof (translation)
-Introduce `D X s N N' sc e e' he x y`. Use `show (∑ i, ∑ j, act D s N N' e x i * Formalism.L2.AlgTh.hSc X.Tau N N' sc i j * (starRingEnd ℂ) (y j)) = ∑ i, ∑ j, x i * Formalism.L2.AlgTh.hSc X.Tau N N' sc i j * (starRingEnd ℂ) (act D s N N' e' y j)`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Formalism.L2.AlgTh.hSc, Matrix.diagonal_apply]`. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using `only [act, LinearMap.coe_mk, AddHom.coe_mk, he, map_mul, embT_conj, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matH_act_adjoint : ∀ (D : D7) (X : Fields) (s : Seam D X) (N N' : ℕ) (sc : ℝ) (e e' : 𝓞 D.host.E), (e' : D.host.E) = D.host.conj (e : D.host.E) → ∀ x y : DVar X.Tau N N' → ℂ, matH (Formalism.L2.AlgTh.hSc X.Tau N N' sc) (GlobalTheory.DFrame.act D s N N' e x) y = matH (Formalism.L2.AlgTh.hSc X.Tau N N' sc) x (GlobalTheory.DFrame.act D s N N' e' y) := by
   intro D X s N N' sc e e' he x y
@@ -100,21 +98,19 @@ theorem matH_act_adjoint : ∀ (D : D7) (X : Fields) (s : Seam D X) (N N' : ℕ)
   · simp
 
 /- English proof (translation)
-Introduce `D cc δ X s N N' L₁ L₁' e x hx`. Use `show (s.flatV N N') (act D s N N' e x) ∈ TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) L₁ L₁'`. Establish `hx' : (s.flatV N N') x ∈ TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) L₁ L₁'` using `hx`. Establish `key : ∀ w ∈ TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) L₁ L₁', (fun τ i j => TaylorLogMetric.embT D τ (e : D.host.E) * w τ i j : TaylorLogMetric.VC D N N') ∈ TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) L₁ L₁'`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨ω, hω, A, hA, rfl⟩` from `hw`. Establish `: (fun τ i j => TaylorLogMetric.embT D τ (e : D.host.E) * (ω • TaylorLogMetric.embV D (TaylorLogMetric.tor0 D cc δ) A) τ i j : TaylorLogMetric.VC D N N') = ω • TaylorLogMetric.embV D (TaylorLogMetric.tor0 D cc δ) (e • A)`. Use function extensionality and compare the values at `τ i j`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [TaylorLogMetric.embV, TaylorLogMetric.tor0, Pi.smul_apply, smul_eq_mul, Matrix.smul_apply]`. Rewrite using `[Algebra.smul_def, map_mul]`. Use `show _ = ω * (TaylorLogMetric.embT D τ (e : D.host.E) * _)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `AddSubgroup.subset_closure ⟨ω, hω, e • A, (TaylorLogMetric.YYl D L₁ L₁').smul_mem e hA, rfl⟩`. Consider the case `zero`. Establish `: (fun τ i j => TaylorLogMetric.embT D τ (e : D.host.E) * (0 : TaylorLogMetric.VC D N N') τ i j : TaylorLogMetric.VC D N N') = 0`. Use function extensionality and compare the values at `τ i j`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) L₁ L₁').zero_mem`. Consider the case `add w₁ w₂ _ _ h₁ h₂`. Use `(TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) L₁ L₁').add_mem h₁ h₂` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ i j`. Simplify using `[mul_add]`. Consider the case `neg w _ h`. Use `(TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) L₁ L₁').neg_mem h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ i j`. Simplify using the standard rewrite rules. Establish `e1 : (s.flatV N N') (act D s N N' e x) = fun τ i j => TaylorLogMetric.embT D τ (e : D.host.E) * (s.flatV N N') x τ i j`. Use function extensionality and compare the values at `τ i j`. Simplify using `[Seam.flatV, act]`.
-
-Rewrite using `[e1]`. Conclude with `key _ hx'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_mem_laF : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (X : Fields) (s : Seam D X) (N N' : ℕ) (L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L₁' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (e : 𝓞 D.host.E) (x : DVar X.Tau N N' → ℂ), x ∈ s.laF (TaylorLogMetric.tor0 D cc δ) L₁ L₁' → GlobalTheory.DFrame.act D s N N' e x ∈ s.laF (TaylorLogMetric.tor0 D cc δ) L₁ L₁' := by
   intro D cc δ X s N N' L₁ L₁' e x hx
@@ -159,7 +155,7 @@ namespace GlobalTheory.Proof.dualLocalBases_eigenframe_at_ramifiedPrime
 open GlobalTheory.DFrame
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `show D.host.φ₀ ((D.host.conj) ((D.host.conj) y)) = _`. Rewrite using `[Formalism.HC.HostAx.conjE_apply, Formalism.HC.HostAx.conjE_apply, Complex.conj_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_conj' (D : D7) (y : D.host.E) : D.host.conj (D.host.conj y) = y := by
   apply D.host.φ₀.injective
@@ -167,64 +163,58 @@ theorem conj_conj' (D : D7) (y : D.host.E) : D.host.conj (D.host.conj y) = y := 
   rw [Formalism.HC.HostAx.conjE_apply, Formalism.HC.HostAx.conjE_apply, Complex.conj_conj]
 
 /- English proof (translation)
-The claim follows from `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun i _ => h i)`.
+A detailed English derivation is pending.
 -/
 theorem sum_le_one {p : ℕ} [Fact p.Prime] {ι' : Type} (S : Finset ι') (f : ι' → ℂ_[p]) (h : ∀ i, ‖f i‖ ≤ 1) :
     ‖∑ i ∈ S, f i‖ ≤ 1 :=
   IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun i _ => h i)
 
 /- English proof (translation)
-Introduce `D cc δ hcc hδ X s hs a₀ b₀ c₀ ha hd lam hlam hcm hlat N N' L L' hadm p _ lm hp ι hι cD hcD P P' κ hP hP' hκ`. Take `⟨cE, sE, δE, hcE, hδ2, hcδ, hsδ, hss, hsc, hinj, hδc, hpair, hkur, hbij, hsg⟩` from `GlobalTheory.T.inertiaInvolution_realPlacePairs D p hp ι`. Establish `htau : ∀ (τ : D.what₂.Tau) (y : D.host.E), TaylorLogMetric.tauEmb D lm τ y = ι (TaylorLogMetric.embT D τ y)` using `tauEmb_eq_iota D p lm ι hι`. Establish `htauR : ∀ z : Bool × HH D, TaylorLogMetric.tauEmb D lm (tauPl D z) = ⇑(rho D ι z)` using `fun z => funext fun y => htau _ y`. Establish `heig` using `fun z : Bool × HH D => GlobalTheory.Proof.IntegralEigenCombination.eigGen_integral_comb D cD hcD p lm (tauPl D z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose n r a hr ha hsum using heig`. Use `set c0 : Bool × HH D → ℂ_[p] := fun z => TaylorLogMetric.lamC lm (cD (tauPl D z)) with hc0`. Use `set cκ : Bool × HH D → ℂ_[p] := fun z => κ (tauPl D z) / c0 z with hcκdef`. Establish `hcκ1 : ∀ z, ‖cκ z‖ ≤ 1`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hcκdef, norm_div]`. Distinguish the cases in `h0 : ‖c0 z‖ = 0`. Rewrite using `[h0, div_zero]`. Conclude with `zero_le_one`. Conclude with `div_le_one_of_le₀ (hκ _) (norm_nonneg _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcκ : ∀ z, cκ z * c0 z = κ (tauPl D z)`. Introduce `z`. Distinguish the cases in `h0 : c0 z = 0`. Establish `h1` using `hκ (tauPl D z)`. Rewrite `h1` using `[show TaylorLogMetric.lamC lm (cD (tauPl D z)) = 0 from h0, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0, mul_zero]`. Conclude with `(norm_le_zero_iff.1 h1).symm`. Simplify using `only [hcκdef]`. Clear the denominators using the available nonvanishing facts. Establish `hA0 : ∀ z (α α' : Σ z : Bool × HH D, Fin (n z)), ‖rho D ι z (a α.1 α.2 * D.host.conj (a α'.1 α'.2))‖ ≤ 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `z α α'`. Rewrite using `[map_mul, norm_mul]`. Use `mul_le_one₀ (GlobalTheory.T.padic_norm_le_one_host_base_module_at_d D p hp _ _ (ha _ _)) (norm_nonneg _) ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.padic_norm_le_one_host_base_module_at_d D p hp ((rho D ι z).comp (D.host.conj : D.host.E →+* D.host.E)) _ (ha _ _)`. Establish `hgc : ∀ z α, ‖gc D cκ r z α‖ ≤ 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `z α`. Unfold `gc`. Use `split_ifs`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hcκ1 z) (norm_nonneg _) (hr _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hu : ∀ t, ‖uu D ι cκ r a t‖ ≤ 1`. Introduce `t`. Unfold `uu`. Use `sum_le_one _ _ fun α => sum_le_one _ _ fun α' => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_mul]`. Conclude with `mul_le_one₀ (mul_le_one₀ (hgc _ _) (norm_nonneg _) (hA0 _ _ _)) (norm_nonneg _) (hgc _ _)`. Use `⟨uu D ι cκ r a, hu, fun L₁ L₁' hadm₁ hL hL' => ?_⟩` and prove the remaining obligations. Establish `hPW : ∀ z, TaylorLogMetric.LocBasisW D (rho D ι z) L (P (tauPl D z))` using `fun z => by`. Use `hP.1 (tauPl D z)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[htauR]`. Then use the resulting hypothesis. Establish `hP'W : ∀ z, TaylorLogMetric.LocBasisW D (rho D ι z) L' (P' (tauPl D z))` using `fun z => by`. Use `hP'.1 (tauPl D z)` as an intermediate fact. Rewrite `this` using `[htauR]`. Then use the resulting hypothesis. Establish `hden` using `fun z : Bool × HH D => GlobalTheory.T.local_basis_unit_scalars_exist D p (rho D ι z) N N' L L₁ L' L₁' (P (tauPl D z)) (P' (tauPl D z)) hadm₁.2.2.1.1 hL hL' (hPW z) (hP'W z)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose σ σ' hσ hσ' hrow hcol using hden`. Take `⟨⟨hth1, hth0⟩, hcong⟩` from `GlobalTheory.T.pair_embeddings_congr_mod_root_minus_d D p hp ι cE sE δE hcE hδ2 hsδ hss hpair hkur`. Establish `hdualP : ∀ t, ((P (tauPl D (true, t))).map D.host.conj).transpose * P (tauPl D (false, t)) = 1` using `fun t => by`. Use `hP.2.2 hp (tauPl D (false, t))` as an intermediate fact. Rewrite `this` using `[(hsg t).1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hdualP' : ∀ t, ((P' (tauPl D (true, t))).map D.host.conj).transpose * P' (tauPl D (false, t)) = 1` using `fun t => by`. Use `hP'.2.2 hp (tauPl D (false, t))` as an intermediate fact. Rewrite `this` using `[(hsg t).1]`. Then use the resulting hypothesis. Establish `hσ0 : ∀ z, rho D ι z (σ z : D.host.E) ≠ 0` using `fun z => norm_ne_zero_iff.1 (by rw [hσ z]; exact one_ne_zero)`. Establish `hσ0' : ∀ z, rho D ι z (σ' z : D.host.E) ≠ 0` using `fun z => norm_ne_zero_iff.1 (by rw [hσ' z]; exact one_ne_zero)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hframe` using `GlobalTheory.T.dualFrame_columns_scaled_standard_vectors D p lm ι htau X s n N N' a r cκ c0 P P' σ σ' hσ0 hσ0' (fun z => (hPW z).1) hsum`. Establish `hfr : ∀ (i : DVar X.Tau N N') (x : (Bool × HH D) × Fin N × Fin N'), frameM (ι : ℂ →+* ℂ_[p]) (fun j => vecF D s (mat D a P P' σ σ' j)) (coef D ι cκ r σ σ') i x = κ (s.iT i.1) * TaylorLogMetric.chgB D lm P P' (s.iT i.1, i.2) ((0 : ZMod 1), (tauPl D x.1, x.2))`. Introduce `i x`. Rewrite using `[hframe]`. Distinguish the cases in `h : tauPl D x.1 = s.iT i.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcκ, h]`. Simplify using `[TaylorLogMetric.chgB, h]`. Establish `hmem : ∀ j : JJ D n N N', mat D a P P' σ σ' j ∈ TaylorLogMetric.YYl D L₁ L₁'`. Introduce `j`. Use `outer_mem_YYl D N N' L₁ L₁' (a j.1.1 j.1.2) (colR D P' σ' j.2.2) (rowL D P σ j.2.1) (ha _ _) (hcol _ _) ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨o, ho⟩` from `hrow j.2.1.1 j.2.1.2 x hx`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [rowL]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsep : ∀ τ ρ : Bool × HH D, ρ ≠ τ → ∀ α' : (Σ z : Bool × HH D, Fin (n z)), ∑ α, gc D cκ r τ α * rho D ι ρ (a α.1 α.2 * D.host.conj (a α'.1 α'.2)) = 0`. Introduce `τ ρ hne α'`. Rewrite using `[Fintype.sum_sigma]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ∀ z (k : Fin (n z)), gc D cκ r τ ⟨z, k⟩ * rho D ι ρ (a z k * D.host.conj (a α'.1 α'.2)) = if z = τ then cκ τ * rho D ι ρ (D.host.conj (a α'.1 α'.2)) * (r z k * rho D ι ρ (a z k)) else 0`. Introduce `z k`. Unfold `gc`. Use `split_ifs with hz`. Substitute `hz` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[zero_mul]`. Simplify using `only [h1]`. Rewrite using `[Finset.sum_eq_single τ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [if_true, ← Finset.mul_sum]`. Use `hsum τ (tauPl D ρ)` as an intermediate fact. Rewrite `this` using `[htauR]`. Rewrite using `[this, if_neg (fun h => hne (hbij.1 h)), mul_zero]`. Introduce `b _ hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using `[hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`. Establish `hd1` using `(GlobalTheory.T.dual_local_bases_pair_dual_mod_root_minus_d D p ι _ hth0 hcong P σ hσ hdualP).1`. Establish `hd2` using `(GlobalTheory.T.dual_local_bases_pair_dual_mod_root_minus_d D p ι _ hth0 hcong P' σ' hσ' hdualP').2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨JJ D n N N', inferInstance, fun j => vecF D s (mat D a P P' σ σ' j), coef D ι cκ r σ σ', cE, sE, δE, rho D ι, act D s N N', ⟨hδ2, hcδ, hsδ, fun y => by rw [hcE (cE y), hcE y, conj_conj'], hss, hsc, ?_, fun τ ρ => by simp only [rho, RingHom.coe_comp, Function.comp_apply, hδc (tau …` and prove the remaining obligations. Introduce `z z' h`. Apply `hinj` to reduce the goal to its premises. Use `RingHom.ext fun y => ι.injective ?_` and prove the remaining obligations. Use `congrArg (fun f : D.host.E →+* ℂ_[p] => f y) h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[rho]`. Introduce `j x`. Unfold `coef GlobalTheory.DFrame.pc`. Rewrite using `[norm_mul, norm_mul]`. Use `mul_le_one₀ (mul_le_one₀ (hgc _ _) (norm_nonneg _) ?_) (norm_nonneg _) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `split_ifs`. Rewrite using `[norm_inv, hσ]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use `split_ifs`.
-
-Rewrite using `[norm_inv, hσ']`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `e x i`. Establish `hact : ∀ i' : DVar X.Tau N N', (act D s N N' e) (Pi.single i' 1) i = if i = i' then TaylorLogMetric.embT D (s.iT i.1) (e : D.host.E) else 0`.
-
-Introduce `i'`. Simplify using `only [act, LinearMap.coe_mk, AddHom.coe_mk, Pi.single_apply, mul_ite, mul_one, mul_zero]`. Simplify using `only [hfr, Formalism.L2.Th1.GD.mapVec, hact]`. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by rw [if_neg (Ne.symm hb), map_zero, zero_mul]) (fun h => absurd (Finset.mem_univ i) h), if_pos rfl]`. Distinguish the cases in `h : tauPl D x.1 = s.iT i.1`.
-
-Rewrite using `[← h]`. Both sides reduce to the same expression. Simplify using `[TaylorLogMetric.chgB, h]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eigenframe_at_d : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), TaylorLogMetric.IsCurveIdeal D cc → TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → ∀ (X : Fields) (s : Seam D X), s.Ok → ∀ (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0), CmOK a₀ b₀ c₀ D.host.d → (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), TaylorLogMetric.admitted D N N' L L' → ∀ (p : ℕ) [Fact p.Prime] (lm : TaylorLogMetric.Qbar →+* ℂ_[p]), p = D.host.d → ∀ ι : ℂ ≃+* ℂ_[p], Formalism.L2.KerInert.IotaExt lm ι → ∀ (cD : D.what₂.Tau → ℂ), IsDgen D cD → ∀ (P : D.what₂.Tau → Matrix (Fin N) (Fin N) D.host.E) (P' : D.what₂.Tau → Matrix (Fin N') (Fin N') D.host.E) (κ : D.what₂.Tau → ℂ_[p]), GlobalTheory.KerStd.StdBases D lm L P → GlobalTheory.KerStd.StdBases D lm L' P' → (∀ τ, ‖κ τ‖ ≤ ‖TaylorLogMetric.lamC lm (cD τ)‖) → ∃ u : HH D → ℂ_[p], (∀ t, ‖u t‖ ≤ 1) ∧ ∀ L₁ L₁', TaylorLogMetric.admitted D N N' L₁ L₁' → TaylorLogMetric.EqAt D p L L₁ → TaylorLogMetric.EqAt D p L' L₁' → ∃ (J : Type) (_ : Fintype J) (v : J → DVar X.Tau N N' → ℂ) (A : J → (Bool × HH D) × Fin N × Fin N' → ℂ_[p]) (cE sE : D.host.E ≃+* D.host.E) (δE : D.host.E) (emb : Bool × HH D → (D.host.E →+* ℂ_[p])) (act : 𝓞 D.host.E → (DVar X.Tau N N' → ℂ) →ₗ[ℂ] (DVar X.Tau N N' → ℂ)), Formalism.L2.Th1.GD.IsEigenFrame ι (cmL a₀ b₀ D.host.d ha hd lam hlam) (ι (Complex.I * ((Real.sqrt D.host.d : ℝ) : ℂ))) (Formalism.L2.AlgTh.hSc X.Tau N N' (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))⁻¹) (s.laF (TaylorLogMetric.tor0 D cc δ) L₁ L₁') D.host.E cE sE δE emb act v A u ∧ ∀ i x, frameM (ι : ℂ →+* ℂ_[p]) v A i x = κ (s.iT i.1) * TaylorLogMetric.chgB D lm P P' (s.iT i.1, i.2) ((0 : ZMod 1), (tauPl D x.1, x.2)) := by
   intro D cc δ hcc hδ X s hs a₀ b₀ c₀ ha hd lam hlam hcm hlat N N' L L' hadm p _ lm hp ι hι cD hcD P P' κ hP hP' hκ

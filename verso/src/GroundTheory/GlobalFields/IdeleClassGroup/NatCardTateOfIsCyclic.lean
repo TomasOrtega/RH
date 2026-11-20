@@ -16,11 +16,11 @@ namespace IdeleClassLimit
 open FiniteSubfield
 
 /- English proof (translation)
-Substitute `hK hL` using the available equality. Establish `: Fact (F ≤ E)` using `⟨hFE⟩`. Establish `: IsGalois F.1 E.1` using `isGalois_of_normal (F := F) (E := E)`. Establish `hcycE : IsCyclic (E.1 ≃ₐ[F.1] E.1)`. Set `φ` to `QuotientGroup.lift (E.1.fixingSubgroup.subgroupOf F.1.fixingSubgroup) (restrictHom (F := F) (E := E)) (ker_restrictHom (F := F) (E := E)).ge`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `isCyclic_of_surjective φ fun x ↦ ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `restrictHom_surjective (F := F) (E := E) x`. Conclude with `⟨g, rfl⟩`. Take `⟨σ, hσ⟩` from `IsCyclic.exists_generator (α := E.1 ≃ₐ[F.1] E.1)`. Establish `hax` using `classFieldAxiom_ideleClassGroup (K := F.1) (L := E.1) σ hσ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr (tateZeroEquivGalois (F := F) (E := E)).toEquiv, GroundTheory.LocalField.natCard_tateZero_eq hσ, hax.1]`. Conclude with `(relIndex_fixingSubgroup hFE).symm`. Rewrite using `[Nat.card_congr (tateNegOneEquivGalois (F := F) (E := E)).toEquiv, GroundTheory.LocalField.natCard_tateNegOne_eq hσ, hax.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_tate_of_isCyclic (K L : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) [(L.subgroupOf K).Normal]
     [(L.subgroupOf K).FiniteIndex] {F E : FiniteSubfield} (hFE : F ≤ E)
@@ -48,7 +48,7 @@ theorem natCard_tate_of_isCyclic (K L : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) [(L.
       GroundTheory.LocalField.natCard_tateNegOne_eq hσ, hax.2]
 
 /- English proof (translation)
-Introduce `U V hVU _ hcyc`. Conclude with `natCard_tate_of_isCyclic (U : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) (V : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) (ofOpenSubgroup_le hVU) (fixingSubgroup_ofOpenSubgroup U).symm (fixingSubgroup_ofOpenSubgroup V).symm hcyc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem classFieldAxiom : ClassFieldAxiom (ℚ̄ ≃ₐ[ℚ] ℚ̄) IdeleClassLimit := by
   intro U V hVU _ hcyc

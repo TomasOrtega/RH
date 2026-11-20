@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa only [Finset.prod_empty] using differentiableOn_const (c := (1 : ℂ))`. Consider the case `insert a t ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a).mul ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem differentiableOn_prod_of_forall {E κ : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {S : Set E}
     (s : Finset κ) (φ : κ → E → ℂ) (h : ∀ k, DifferentiableOn ℂ (φ k) S) :
@@ -71,7 +71,7 @@ def linCombUnif (h : ∀ k z, u'.ex (F k z) = u.ex z ≫ f k) :
 end
 
 /- English proof (translation)
-Introduce `A A' _ _ L L' g g' u u' K _ f F ε hF`. Use `⟨linCombUnif u u' f F ε hF, ?_, ?_, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Both sides reduce to the same expression. Introduce `j z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
 Both sides reduce to the same expression.
 -/

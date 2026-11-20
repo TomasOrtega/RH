@@ -19,7 +19,7 @@ def gFib (a : ℝ) (G0 : Mx k r) (t : Mt k r) : ℝ :=
   B.gN (Matrix.of t) ^ (-a) * B.gN ((Matrix.of t)⁻¹ * G0) ^ (-a)
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem gN_nonneg (g : Mx k r) : 0 ≤ B.gN g := Real.sqrt_nonneg _
 

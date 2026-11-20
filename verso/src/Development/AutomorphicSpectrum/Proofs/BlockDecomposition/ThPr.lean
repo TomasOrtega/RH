@@ -19,18 +19,18 @@ def psiA (S : Finset (HeightOneSpectrum (𝓞 F))) (g : ∀ v : HeightOneSpectru
   else if (a : AF F).2 v * y () ∈ v.adicCompletionIntegers F then 1 else 0
 
 /- English proof (translation)
-Simplify using `[md, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_mul (a b : (AF F)ˣ) : md (a * b) = md a * md b := by
   simp [md, map_mul]
 
 /- English proof (translation)
-The claim follows from `(IdeleGroup.ideleModule F a).2`.
+A detailed English derivation is pending.
 -/
 theorem md_pos (a : (AF F)ˣ) : 0 < md a := (IdeleGroup.ideleModule F a).2
 
 /- English proof (translation)
-Establish `h` using `IdeleGroup.ideleModule_diagonal (K := F) t`. Establish `h2 : pr t = IdeleGroup.diagonal F t` using `rfl`. Rewrite using `[md, h2, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem md_pr (t : Fˣ) : md (pr t) = 1 := by
   have h := IdeleGroup.ideleModule_diagonal (K := F) t
@@ -39,7 +39,7 @@ theorem md_pr (t : Fˣ) : md (pr t) = 1 := by
   rfl
 
 /- English proof (translation)
-Unfold `th`. Rewrite using `[← (Equiv.mulRight k).tsum_eq (fun t : Fˣ => f (pr t * a))]`. Use `tsum_congr fun t => ?_` and prove the remaining obligations. Establish `: pr (t * k) = pr t * pr k` using `by simp [pr, map_mul]`. Simplify using `only [Equiv.coe_mulRight, this, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem th_pr (f : (AF F)ˣ → ℝ≥0∞) (k : Fˣ) (a : (AF F)ˣ) : th f (pr k * a) = th f a := by
   unfold th

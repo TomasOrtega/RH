@@ -15,18 +15,18 @@ namespace GlobalTheory.MassRatioInvBound
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[← Real.sqrt_sq (pow_nonneg (Real.sqrt_nonneg a) f), ← pow_mul, mul_comm, pow_mul, Real.sq_sqrt ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma sqrt_pow_eq_pow_sqrt (a : ℝ) (ha : 0 ≤ a) (f : ℕ) : Real.sqrt (a ^ f) = Real.sqrt a ^ f := by
   rw [← Real.sqrt_sq (pow_nonneg (Real.sqrt_nonneg a) f), ← pow_mul, mul_comm, pow_mul,
     Real.sq_sqrt ha]
 
 /- English proof (translation)
-Establish `hkpos : (0 : ℝ) < k` using `by exact_mod_cast (show 0 < k by omega)`. Establish `hk0 : (0 : ℝ) < (k : ℝ) ^ k` using `pow_pos hkpos k`. Establish `hn : (k - 1).factorial * k = k.factorial`. Rewrite using `[mul_comm]; exact Nat.mul_factorial_pred (by omega)`. Establish `hf : ((k - 1).factorial : ℝ) * k = (k.factorial : ℝ)` using `by exact_mod_cast hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf, le_div_iff₀ hk0, one_mul, Real.exp_one_pow]`. Establish `h` using `Real.pow_div_factorial_le_exp (x := (k : ℝ)) (Nat.cast_nonneg k) k`. Establish `hfac : (0 : ℝ) < k.factorial` using `by exact_mod_cast k.factorial_pos`. Rewrite `h` using `[div_le_iff₀ hfac]`. Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private lemma one_le_factorial_mul_exp_div_pow (k : ℕ) (hk : 1 ≤ k) :
     1 ≤ ((k - 1).factorial : ℝ) * k * (Real.exp 1) ^ k / (k : ℝ) ^ k := by
@@ -43,15 +43,15 @@ private lemma one_le_factorial_mul_exp_div_pow (k : ℕ) (hk : 1 ≤ k) :
   exact h
 
 /- English proof (translation)
-Establish `hkpos : (0 : ℝ) < k` using `by exact_mod_cast (show 0 < k by omega)`. Establish `hpi` using `Real.pi_pos`. Establish `hs0 : 0 < Real.sqrt (2 * v)` using `Real.sqrt_pos.mpr (by linarith)`. Establish `hrp : (2 * v) ^ ((1 : ℝ) / 2) = Real.sqrt (2 * v)` using `by rw [Real.sqrt_eq_rpow]`. Rewrite using `[hrp, sqrt_pow_eq_pow_sqrt (2 * v) (by linarith) f, pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hcol : (((k - 1).factorial : ℝ) * (v / Real.pi) ^ k) ^ f / Real.sqrt (2 * v) ^ f * L * (((Real.exp 1 * Real.pi / (k * v)) ^ k) ^ f * (2 * (k : ℝ) * Real.sqrt (2 * v)) ^ f) = ((((k - 1).factorial : ℝ) * (v / Real.pi) ^ k) * (Real.exp 1 * Real.pi / (k * v)) ^ k * (2 * (k : ℝ) * Rea …`. Rewrite using `[div_pow, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbase : (((k - 1).factorial : ℝ) * (v / Real.pi) ^ k) * (Real.exp 1 * Real.pi / (k * v)) ^ k * (2 * (k : ℝ) * Real.sqrt (2 * v)) / Real.sqrt (2 * v) = (((k - 1).factorial : ℝ) * k * (Real.exp 1) ^ k / (k : ℝ) ^ k) * 2`. Establish `hv0 : v ≠ 0` using `hv.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0 : (k : ℝ) ≠ 0` using `hkpos.ne'`. Establish `hp0 : Real.pi ≠ 0` using `hpi.ne'`. Establish `hs : Real.sqrt (2 * v) ≠ 0` using `hs0.ne'`. Rewrite using `[div_pow, div_pow, mul_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hcol, hbase, mul_pow]`. Establish `hA` using `one_le_factorial_mul_exp_div_pow k hk`. Establish `hAf : 1 ≤ (((k - 1).factorial : ℝ) * k * (Real.exp 1) ^ k / (k : ℝ) ^ k) ^ f` using `one_le_pow₀ hA`. Establish `h2 : 1 ≤ (2 : ℝ) ^ f * L`. Establish `h` using `mul_le_mul_of_nonneg_left hL (by positivity : (0 : ℝ) ≤ 2 ^ f)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[mul_inv_cancel₀ (by positivity)]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 -/
 theorem one_le_ratio_mul (f k : ℕ) (v L : ℝ) (hv : 0 < v) (hk : 1 ≤ k) (hL : ((2 : ℝ) ^ f)⁻¹ ≤ L) :
     1 ≤ (((k - 1).factorial : ℝ) * (v / Real.pi) ^ k) ^ f / Real.sqrt ((2 * v) ^ f) * L *
@@ -95,7 +95,7 @@ Both sides reduce to the same expression.
 theorem stdH_eq (D : D7) (j : ℕ) : Cnt.stdH D.host.E j = massTelescope_form D.host.E j := rfl
 
 /- English proof (translation)
-Unfold `Cnt.stdLat massTelescope_lat`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[Pi.basisFun_apply]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem stdLat_eq (D : D7) (j : ℕ) : Cnt.stdLat D.host.E j = massTelescope_lat D.host.E j := by
   unfold Cnt.stdLat massTelescope_lat
@@ -104,7 +104,7 @@ theorem stdLat_eq (D : D7) (j : ℕ) : Cnt.stdLat D.host.E j = massTelescope_lat
   simp [Pi.basisFun_apply]
 
 /- English proof (translation)
-Unfold `Cnt.massS Cnt.massU`. Rewrite using `[stdH_eq, stdLat_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem massS_eq (D : D7) (j : ℕ) :
     Cnt.massS D j = mass (massTelescope_form D.host.E j) (massTelescope_lat D.host.E j) := by
@@ -112,21 +112,19 @@ theorem massS_eq (D : D7) (j : ℕ) :
   rw [stdH_eq, stdLat_eq]
 
 /- English proof (translation)
-Introduce `D hM`. Establish `hk : 5 ≤ D.R.k` using `D.R.k_ge`. Establish `hrd : D.host.rdE = 2 * D.host.v`. Unfold `Formalism.BasicNotions.Host.v`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hv : 0 < D.host.v`. Unfold `Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE`. Establish `hd : (0 : ℝ) < |(NumberField.discr D.host.E : ℝ)|` using `abs_pos.mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero D.host.E))`. Conclude with `div_pos (Real.rpow_pos_of_pos hd _) two_pos`. Establish `hK : Formalism.HermitianLatticesTheory.IsCMUnram D.host.E` using `D.sp.cm.cmUnram`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `(GlobalTheory.EtaValueBound.lValEta_bounds D.host.E hK D.R.k (by omega)).1`. Rewrite `hL` using `[Formalism.MainNotions.StandardLattice.fDeg_host]`. Establish `hrat` using `hM D.R.k (by omega) (Fin D.R.k → D.host.E) (Fin (D.R.k - 1) → D.host.E) (massTelescope_form D.host.E D.R.k) (massTelescope_form D.host.E (D.R.k - 1)) (massTelescope_lat D.host.E D.R.k) (massTelescope_lat D.host.E (D.R.k - 1)) (massTelescope_symm D.host.E _) (massTelescope_symm D. …`. Unfold `massRatioRightSide at hrat`. Rewrite `hrat` using `[Formalism.MainNotions.StandardLattice.fDeg_host, Formalism.MainNotions.StandardLattice.vInv_host]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `one_le_ratio_mul D.R.f D.R.k D.host.v (lValEta D.host.E D.R.k) hv (by omega) hL`. Rewrite using `[massS_eq, massS_eq, hrd]`. Use `set a := mass (massTelescope_form D.host.E D.R.k) (massTelescope_lat D.host.E D.R.k) with ha`. Use `set b := mass (massTelescope_form D.host.E (D.R.k - 1)) (massTelescope_lat D.host.E (D.R.k - 1)) with hb`. Use `set R := (((D.R.k - 1).factorial : ℝ) * (D.host.v / Real.pi) ^ D.R.k) ^ D.R.f / Real.sqrt ((2 * D.host.v) ^ D.R.f) * lValEta D.host.E D.R.k with hR`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hb0 : 0 ≤ b`. Rewrite using `[hb]`. Unfold `mass`. Use `split_ifs`. Conclude with `Finset.sum_nonneg fun _ _ => by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Conclude with `le_rfl`. Establish `hRpos : 0 < R`. Establish `h2 : (0 : ℝ) < (2 ^ D.R.f)⁻¹` using `by positivity`. Establish `hLpos : 0 < lValEta D.host.E D.R.k` using `lt_of_lt_of_le h2 hL`. Establish `hpi` using `Real.pi_pos`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hR]`. Check the signs of the components of the expression. Establish `hbne : b ≠ 0`. Introduce `h0`. Rewrite `hrat` using `[h0, div_zero]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hab : a = R * b` using `by rw [← hrat, div_mul_cancel₀ a hbne]`. Rewrite using `[hab]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mass_pred_le : ∀ D : D7, UnitaryVolumeMass.stMassRatio D → Cnt.massS D (D.R.k - 1) ≤ Cnt.massS D D.R.k * ((Real.exp 1 * Real.pi / (D.R.k * D.host.v)) ^ (D.R.k * D.R.f) * (2 * (D.R.k : ℝ) * D.host.rdE ^ ((1 : ℝ) / 2)) ^ D.R.f) := by
   intro D hM

@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.Katz
 
 /- English proof (translation)
-Rewrite using `[coeff_mul, Finsupp.antidiagonal_single, Finset.sum_map]`. Rewrite using `[show (Finset.HasAntidiagonal.antidiagonal (1 : ℕ) : Finset (ℕ × ℕ)) = {(0, 1), (1, 0)} by decide]`. Rewrite using `[Finset.sum_pair (by simp)]`. Simplify using `only [Function.Embedding.coe_prodMap, Prod.map_apply, Function.Embedding.coeFn_mk, Finsupp.single_zero, coeff_zero_eq_constantCoeff_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_single_one_mul {σ R : Type} [CommRing R] [DecidableEq σ] (i : σ) (f g : MvPowerSeries σ R) :
     coeff (Finsupp.single i 1) (f * g) =
@@ -25,23 +25,21 @@ theorem coeff_single_one_mul {σ R : Type} [CommRing R] [DecidableEq σ] (i : σ
     Finsupp.single_zero, coeff_zero_eq_constantCoeff_apply]
 
 /- English proof (translation)
-Introduce `k _ d A _ _ x hx h0 f`. Establish `hev : ∀ i, evA k x hx (X i) = x i` using `GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k (Fin d) A x hx`. Set `c0 : MvPowerSeries (Fin d) k →ₐ[k] k` to `{ (constantCoeff : MvPowerSeries (Fin d) k →+* k) with commutes' := fun r => by simp [MvPowerSeries.algebraMap_apply] }`. Establish `hc0 : ∀ g, c0 g = constantCoeff g` using `fun _ => rfl`. Establish `h1 : (Bialgebra.counitAlgHom k A).comp (evA k x hx) = c0` using `GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k (Fin d) k _ _ (fun i => by simp [hev, h0]) (fun i => by simp [hev, h0, hc0])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(AlgHom.congr_fun h1 f).trans (hc0 f), ?_⟩` and prove the remaining obligations. Use `letI : Module kᵐᵒᵖ (Cot k A) := Module.compHom _ ((RingHom.id k).fromOpposite mul_comm)`. Use `haveI : IsCentralScalar k (Cot k A) := ⟨fun _ _ => rfl⟩`. Set `D : MvPowerSeries (Fin d) k →ₗ[k] Cot k A` to `∑ i, LinearMap.smulRight (coeff (Finsupp.single i 1)) (dUnit k (x i))`. Establish `hD : ∀ g, D g = ∑ i, lin g i • dUnit k (x i)` using `fun g => by simp [D, lin]`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin1 : ∀ i, lin (1 : MvPowerSeries (Fin d) k) i = 0` using `fun i => by`. Simplify using `[lin, coeff_one]`. Establish `hlinmul : ∀ (a b : MvPowerSeries (Fin d) k) i, lin (a * b) i = constantCoeff a * lin b i + lin a i * constantCoeff b` using `fun a b i => coeff_single_one_mul i a b`. Set `L : MvPowerSeries (Fin d) k →ₗ[k] TrivSqZeroExt k (Cot k A)` to `(TrivSqZeroExt.inlAlgHom k k (Cot k A)).toLinearMap ∘ₗ c0.toLinearMap + TrivSqZeroExt.inrHom k (Cot k A) ∘ₗ D`. Establish `hLf : ∀ g, (L g).fst = constantCoeff g` using `fun g => by simp [L, hc0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLs : ∀ g, (L g).snd = ∑ i, lin g i • dUnit k (x i)` using `fun g => by simp [L, hD, TrivSqZeroExt.snd_sum]`. Apply the tactic sequence `let ψ : MvPowerSeries (Fin d) k →ₐ[k] TrivSqZeroExt k (Cot k A) := AlgHom.ofLinearMap L (by ext <;> simp [hLf, hLs, hlin1]) (fun a b => by`. Use `ext`. Simplify using `[hLf]`. Rewrite using `[TrivSqZeroExt.snd_mul, hLs, hLs, hLs, hLf, hLf]`.
+Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hlinmul, add_smul, mul_smul, Finset.smul_sum, Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[op_smul_eq_smul, smul_comm])`. Establish `hψf : ∀ g, (ψ g).snd = ∑ i, lin g i • dUnit k (x i)` using `hLs`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : MvPowerSeries (Fin d) k →ₐ[k] TrivSqZeroExt k (Cot k A)` to `(AugCot.toSqZero (Bialgebra.counitAlgHom k A) (LinearMap.id (M := Cot k A))).comp (evA k x hx)`. Establish `hφf : ∀ g, (φ g).fst = Coalgebra.counit (R` using `k) (evA k x hx g) := fun g => by simp [φ]`. Establish `hφs : ∀ g, (φ g).snd = dUnit k (evA k x hx g)` using `fun g => by simp [φ]`. Establish `hlinX : ∀ i j, lin (X i : MvPowerSeries (Fin d) k) j = if j = i then 1 else 0` using `fun i j => by`. Simplify using `[lin, coeff_X, Finsupp.single_left_inj one_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hφψ : φ = ψ`. Use `GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k (Fin d) _ _ _ (fun i => ⟨2, ?_⟩) (fun i => ?_)` and prove the remaining obligations. Use `ext`. Simplify using `[pow_two, hφf, hev, h0]`. Simplify using `[pow_two, TrivSqZeroExt.snd_mul, hφf, hev, h0]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use `ext`. Rewrite using `[hφf, hev, h0]`. Conclude with `(constantCoeff_X i).symm.trans (hLf (X i)).symm`. Rewrite using `[hφs, hψf, hev]`. Simplify using `[hlinX]`.
-
-Rewrite using `[← hφs, ← hψf, hφψ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem counit_dUnit_evA : ∀ (k : Type) [CommRing k] (d : ℕ) (A : Type) [CommRing A] [Bialgebra k A] (x : Fin d → A) (hx : ∀ i, IsNilpotent (x i)), (∀ i, Coalgebra.counit (R := k) (x i) = 0) → ∀ f : MvPowerSeries (Fin d) k, Coalgebra.counit (R := k) (evA k x hx f) = constantCoeff f ∧ dUnit k (evA k x hx f) = ∑ i, lin f i • dUnit k (x i) := by
   intro k _ d A _ _ x hx h0 f

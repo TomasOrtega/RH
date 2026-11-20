@@ -11,19 +11,19 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.DegAsm
 
 /- English proof (translation)
-Establish `hb0 : 0 < b` using `by linarith`. Establish `hk1 : (1 : ℝ) ≤ k` using `by exact_mod_cast (by omega : 1 ≤ k)`. Establish `hk0 : (0 : ℝ) < k` using `by linarith`. Establish `hfk' : (f : ℝ) ≤ k` using `by exact_mod_cast hfk`. Establish `h1 : (b ^ (e * f)) ^ 42 = (Real.exp (42 * (e * Real.log b))) ^ f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.rpow_def_of_pos hb0, ← Real.exp_nat_mul, ← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, pow_mul, pow_mul, ← mul_pow, ← mul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hb8 : (256 : ℝ) ≤ b ^ 8`. Combine the equalities or inequalities in the displayed calculation. Establish `hk8 : (1 : ℝ) ≤ (k : ℝ) ^ 8` using `one_le_pow₀ hk1`. Establish `hg' : 256 * (k : ℝ) ^ 8 ≤ g`. Use `le_trans ?_ hg` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_pow]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hg0 : (0 : ℝ) < g` using `by linarith`. Establish `h2 : 32 / (g : ℝ) ≤ (1 / 8) * (1 / (k : ℝ) ^ 8)`. Rewrite using `[div_mul_div_comm, div_le_div_iff₀ hg0 (by positivity)]; linarith`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (32 / (g : ℝ)) ^ k ≤ (1 / 8) ^ k * (1 / (k : ℝ) ^ 8)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `pow_le_of_le_one (by positivity) (by rw [div_le_one (by positivity)]; exact hk8) (by omega)`. Establish `h4 : ((4 * k * f : ℕ) : ℝ) ^ 4 ≤ 256 * (k : ℝ) ^ 8`. Use `push_cast`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h5 : Real.exp (42 * (e * Real.log b)) ≤ 4 ^ k`. Combine the equalities or inequalities in the displayed calculation. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h6 : (32 / (g : ℝ)) ^ k * ((4 * k * f : ℕ) : ℝ) ^ 4 * Real.exp (42 * (e * Real.log b)) ≤ 1 / 2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `pow_le_pow_of_le_one (by norm_num) (by norm_num) hk`. Use `_ = 1 / 2 := by norm_num`. Conclude with `le_trans (pow_le_of_le_one (by positivity) (by linarith) (by omega)) h6`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem parith_small (k f g : ℕ) (b e : ℝ) (hb : 2 ≤ b) (hk : 9 ≤ k) (hf : 1 ≤ f) (hfk : f ≤ k)
     (he : 42 * (e * Real.log b) ≤ k) (hg : ((k : ℝ) * b) ^ 8 ≤ g) :
@@ -74,15 +74,13 @@ theorem parith_small (k f g : ℕ) (b e : ℝ) (hb : 2 ≤ b) (hk : 9 ≤ k) (hf
   exact le_trans (pow_le_of_le_one (by positivity) (by linarith) (by omega)) h6
 
 /- English proof (translation)
-Establish `hZk : 1 ≤ Z ^ k` using `one_le_pow₀ hZ`. Establish `h1 : ∑ s ∈ Finset.Ico 1 k, q ^ s ≤ 2 * Z ^ k`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at hs ⊢`. Use linear arithmetic over natural numbers and integers. Use `intros`. Check the signs of the components of the expression. Use `_ ≤ ∑ s ∈ Finset.range k, (1 / 2 : ℝ) ^ s * Z ^ k := by`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs and assume the hypotheses. Check the signs of the components of the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `s hs`. Establish `hs' : s ≤ k` using `(Finset.mem_range.1 hs).le`. Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ 2 * Z ^ k := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_mul]`. Use `gcongr`. Conclude with `sum_geometric_two_le k`. Establish `h2 : q' ^ k ≤ Z ^ k` using `by gcongr; linarith`. Establish `h3 : M * (∑ s ∈ Finset.Ico 1 k, q ^ s) ≤ M * (2 * Z ^ k)` using `by gcongr`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem parith_bracket (k : ℕ) (M q q' Z : ℝ) (hM0 : 0 ≤ M) (hq : 0 ≤ q) (hq' : 0 ≤ q') (hqq : q' ≤ q) (hZ : 1 ≤ Z)
     (hqZ : q ≤ 1 / 2 * Z) :
@@ -109,13 +107,11 @@ theorem parith_bracket (k : ℕ) (M q q' Z : ℝ) (hM0 : 0 ≤ M) (hq : 0 ≤ q)
   linarith
 
 /- English proof (translation)
-Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `h1 : Del ^ (3 * c + 6) ≤ U ^ (18 * r)`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.rpow_le_rpow_of_exponent_le hD` to reduce the goal to its premises. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = Del ^ (18 * r) := Real.rpow_natCast _ _`. Use `_ ≤ _ := by gcongr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show U ^ r * U * U = U ^ (r + 2) by ring, ← pow_mul, pow_add, pow_add]; ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `_ ≤ _ := by`. Apply `pow_le_pow_right₀ hU` to reduce the goal to its premises. Establish `a1 : (r + 1) ^ 3 ≤ (2 * r) ^ 3` using `by gcongr; omega`. Establish `a2 : (r + 2) * (10000 * (r + 1) ^ 3) ≤ (3 * r) * (10000 * (2 * r) ^ 3)` using `by gcongr; omega`. Establish `a3 : r ≤ r ^ 4` using `Nat.le_self_pow (by norm_num) r`.
-
-Establish `a4 : (3 * r) * (10000 * (2 * r) ^ 3) = 240000 * r ^ 4` using `by ring`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem parith_rest (r : ℕ) (hr : 1 ≤ r) (c f Del Db NT U : ℝ) (hc : c ≤ 4 * r) (hU : 1 ≤ U) (h8 : 8 ^ (r + 1) ≤ U)
     (hf : f ^ 2 ≤ U) (hD : 1 ≤ Del) (hDU : Del ≤ U) (hN : 0 ≤ NT) (hNU : NT ≤ U) (hDb : 0 ≤ Db) (hDbU : Db ≤ U ^ r) :
@@ -138,17 +134,15 @@ theorem parith_rest (r : ℕ) (hr : 1 ≤ r) (c f Del Db NT U : ℝ) (hc : c ≤
         omega
 
 /- English proof (translation)
-Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hf' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `h20 : (20 : ℝ) ≤ b ^ 5`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hw2 : 1 ≤ w ^ 2` using `one_le_pow₀ hw`. Establish `h1 : (20 * (f : ℝ) * w ^ 2) ^ (2 * (f : ℝ) * (6 + c)) ≤ b ^ ((9 * r) * (20 * r * f))`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.rpow_le_rpow_of_exponent_le (by nlinarith); push_cast; nlinarith` to reduce the goal to its premises. Use `_ = (20 * (f : ℝ) * w ^ 2) ^ (20 * r * f) := Real.rpow_natCast _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ (b ^ 5 * b ^ (2 * r) * b ^ 2) ^ (20 * r * f) := by gcongr`. Use `_ ≤ (b ^ (9 * r)) ^ (20 * r * f) := by gcongr`. Rewrite using `[← pow_add, ← pow_add]`. Conclude with `pow_le_pow_right₀ hb1 (by omega)`. Use `_ = _ := by rw [← pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : f ≤ r ^ 2 * f` using `Nat.le_mul_of_pos_left _ (by positivity)`. Use `set X := b ^ (r ^ 2 * f) with hX`. Establish `hX2 : b ^ f ≤ X` using `pow_le_pow_right₀ hb1 hn`. Establish `hX3 : 2 ≤ X` using `le_trans (le_trans hb (le_self_pow₀ hb1 (by omega))) hX2`. Establish `h2 : b ^ ((9 * r) * (20 * r * f)) = X ^ 180` using `by rw [hX, ← pow_mul]; congr 1; ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : w ^ f ≤ X` using `le_trans (by gcongr) hX2`. Establish `h4 : (20 * (f : ℝ) * w ^ 2) ^ (2 * (f : ℝ) * (6 + c)) * w ^ f ≤ X ^ 181`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : 1 ≤ X ^ 181` using `one_le_pow₀ (by linarith)`. Establish `h6 : X ^ 183 = X ^ 181 * X ^ 2` using `by ring`.
-
-Establish `h7 : 4 ≤ X ^ 2` using `by nlinarith`. Rewrite using `[h6]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem parith_const (r f : ℕ) (hr : 1 ≤ r) (hf : 1 ≤ f) (b w c : ℝ) (hb : 2 ≤ b) (hw : 1 ≤ w) (hwb : w ≤ b)
     (hc : c ≤ 4 * r) (hfb : (f : ℝ) ≤ b ^ (2 * r)) :
@@ -186,29 +180,25 @@ theorem parith_const (r f : ℕ) (hr : 1 ≤ r) (hf : 1 ≤ f) (b w c : ℝ) (hb
   nlinarith
 
 /- English proof (translation)
-Unfold `pairBd`. Simplify using `only []`. Generalize the expression as in `Formalism.HermitianLatticesTheory.fDeg K = f at *`. Generalize the expression as in `cf K = c at *`. Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hx1 : (1 : ℝ) ≤ x` using `by exact_mod_cast hx`. Establish `hx1' : (1 : ℝ) ≤ x'` using `by exact_mod_cast hx'`. Establish `hT1 : (1 : ℝ) ≤ T` using `by exact_mod_cast hT`. Establish `hD1 : (1 : ℝ) ≤ (T : ℝ) ^ (2 * f)` using `one_le_pow₀ hT1`. Establish `hDA : (T : ℝ) ^ (2 * f) ≤ A ^ 2` using `by rw [mul_comm, pow_mul]; gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `(T : ℝ) ^ (2 * f) = D at *`. Establish `hD0 : 0 ≤ D` using `by linarith`. Establish `hxx : (1 : ℝ) ≤ (x : ℝ) * x'` using `one_le_mul_of_one_le_of_one_le hx1 hx1'`. Establish `hY1 : (1 : ℝ) ≤ (x : ℝ) * x' * D ^ 2` using `one_le_mul_of_one_le_of_one_le hxx (one_le_pow₀ hD1)`. Establish `hYA : (x : ℝ) * x' * D ^ 2 ≤ A ^ 6 * (S * S') ^ 2`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hDY : D * x * x' ≤ ((x : ℝ) * x' * D ^ 2) ^ 7`. Use `le_trans ?_ (le_self_pow₀ hY1 (by norm_num))` and prove the remaining obligations. Establish `: D ≤ D ^ 2` using `le_self_pow₀ hD1 (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Generalize the expression as in `(x : ℝ) * x' * D ^ 2 = Y at *`. Establish `hY0 : 0 ≤ Y` using `by linarith`. Establish `hv0 : 0 ≤ Formalism.HermitianLatticesTheory.vInv K` using `by linarith`. Establish `hSS : 1 ≤ S * S'` using `one_le_mul_of_one_le_of_one_le hS hS'`. Establish `hS2 : 1 ≤ S ^ 2` using `one_le_pow₀ hS`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS2' : 1 ≤ S' ^ 2` using `one_le_pow₀ hS'`. Establish `hZ : 1 ≤ (S * S') ^ 14` using `one_le_pow₀ hSS`. Use `set V := (A * S ^ 2) * (A * S' ^ 2) with hV`. Establish `hVe : V = A ^ 2 * (S * S') ^ 2` using `by rw [hV]; ring`. Establish `hSS2 : 1 ≤ (S * S') ^ 2` using `one_le_pow₀ hSS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAV : A ≤ V`. Rewrite using `[hVe]`. Combine the equalities or inequalities in the displayed calculation. Establish `hYV : Y ≤ V ^ 3`. Use `le_trans hYA ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hVe, mul_pow (A ^ 2), ← pow_mul]`. Use `gcongr`. Conclude with `le_self_pow₀ hSS2 (by norm_num)`. Establish `h1 : Y ^ (6 * (r : ℝ) + 10 + 4 * c) ≤ V ^ (96 * r)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply `Real.rpow_le_rpow_of_exponent_le hY1` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = Y ^ (32 * r) := Real.rpow_natCast _ _`. Use `_ ≤ (V ^ 3) ^ (32 * r) := by gcongr`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = _ := by rw [← pow_mul]; congr 1; ring`. Establish `hB` using `parith_bracket k ((20 * (f : ℝ) * (2 * Formalism.HermitianLatticesTheory.vInv K) ^ 2) ^ (2 * (f : ℝ) * (6 + c)) * (2 * Formalism.HermitianLatticesTheory.vInv K) ^ f) ((32 / (g : ℝ)) ^ (k * f) * ((4 * k * f : ℕ) : ℝ) ^ (4 * f) * Y ^ 7) ((2 / (g : ℝ)) ^ (k * f) * ((4 * k * f : ℕ) : …`. Rewrite using `[mul_assoc _ D, mul_assoc _ (D * x)]`. Use `gcongr`. Use the proof step `norm_num)`.
-
-Use `hZ`. Use the proof step `(by`. Combine the equalities or inequalities in the displayed calculation. Establish `hB'` using `le_trans hB (mul_le_mul_of_nonneg_right (le_trans hco (pow_le_pow_left₀ (by linarith) hAV 183)) (by positivity))`. Establish `hV0 : 0 ≤ V` using `by linarith`.
-
-Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem parith_pair (K : Type) [Field K] [NumberField K] (k g r T x x' : ℕ) (hr : 1 ≤ r) (A S S' : ℝ) (hA : 1 ≤ A)
     (hS : 1 ≤ S) (hS' : 1 ≤ S') (hx : 1 ≤ x) (hx' : 1 ≤ x') (hxA : (x : ℝ) ≤ A * S ^ 2) (hxA' : (x' : ℝ) ≤ A * S' ^ 2)
@@ -288,7 +278,7 @@ theorem parith_pair (K : Type) [Field K] [NumberField K] (k g r T x x' : ℕ) (h
     _ = _ := by rw [← pow_mul, pow_add V, ← mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Real.mul_rpow hx.le hx'.le, Real.div_rpow hD hx.le, Real.div_rpow hD' hx'.le]`. Use `Real.rpow_pos_of_pos hx e` as an intermediate fact. Use `Real.rpow_pos_of_pos hx' e` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem parith_cancel (x x' Del Del' e : ℝ) (hx : 0 < x) (hx' : 0 < x') (hD : 0 ≤ Del) (hD' : 0 ≤ Del') :
     (x * x') ^ e * ((Del / x) ^ e * (Del' / x') ^ e) = Del ^ e * Del' ^ e := by
@@ -298,23 +288,21 @@ theorem parith_cancel (x x' Del Del' e : ℝ) (hx : 0 < x) (hx' : 0 < x') (hD : 
   field_simp
 
 /- English proof (translation)
-Establish `hS2 : 1 ≤ S ^ 2` using `one_le_pow₀ hS`. Establish `hS2' : 1 ≤ S' ^ 2` using `one_le_pow₀ hS'`. Establish `hAU : A ≤ A * S ^ 2` using `le_mul_of_one_le_right (by linarith) hS2`. Establish `hAU' : A ≤ A * S' ^ 2` using `le_mul_of_one_le_right (by linarith) hS2'`. Establish `hR` using `parith_rest r hr (cf K) (Formalism.HermitianLatticesTheory.fDeg K) Del Db ((T : ℝ) ^ Formalism.HermitianLatticesTheory.fDeg K) (A * S ^ 2) hc (by linarith) (by linarith) (by linarith) hD hDA (by positivity) (by linarith) (by linarith) hDbA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR'` using `parith_rest r hr (cf K) (Formalism.HermitianLatticesTheory.fDeg K) Del' Db' ((T : ℝ) ^ Formalism.HermitianLatticesTheory.fDeg K) (A * S' ^ 2) hc (by linarith) (by linarith) (by linarith) hD' hDA' (by positivity) (by linarith) (by linarith) hDbA'`. Establish `hfl : (⌊Del⌋₊ : ℝ) ≤ A * S ^ 2` using `le_trans (Nat.floor_le (by linarith)) hDA`. Establish `hfl' : (⌊Del'⌋₊ : ℝ) ≤ A * S' ^ 2` using `le_trans (Nat.floor_le (by linarith)) hDA'`. Use `set U := A * S ^ 2 with hU`. Use `set U' := A * S' ^ 2 with hU'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU1 : 1 ≤ U` using `by linarith`. Establish `hU1' : 1 ≤ U'` using `by linarith`. Establish `hD0 : 0 ≤ Del` using `by linarith`. Establish `hD0' : 0 ≤ Del'` using `by linarith`. Use `set C := (Del ^ ((k : ℝ) / 2) * Del' ^ ((k : ℝ) / 2)) * ((U * U') ^ (96 * r + 183) * (S * S') ^ (14 * k) * (U ^ (250000 * r ^ 4) * U' ^ (250000 * r ^ 4))) with hC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hC0 : 0 ≤ C` using `by positivity`. Establish `hterm : ∀ x ∈ Finset.Icc 1 ⌊Del⌋₊, ∀ x' ∈ Finset.Icc 1 ⌊Del'⌋₊, pairBd K k g r T x x' * (datBd K k r Del Db ((T : ℝ) ^ Formalism.HermitianLatticesTheory.fDeg K) x * datBd K k r Del' Db' ((T : ℝ) ^ Formalism.HermitianLatticesTheory.fDeg K) x') ≤ C`. Introduce `x hx x' hx'`. Take `⟨hx1, hx2⟩` from `Finset.mem_Icc.1 hx`. Take `⟨hx1', hx2'⟩` from `Finset.mem_Icc.1 hx'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxU : (x : ℝ) ≤ U` using `le_trans (by exact_mod_cast hx2) hfl`. Establish `hxU' : (x' : ℝ) ≤ U'` using `le_trans (by exact_mod_cast hx2') hfl'`. Establish `hP` using `parith_pair K k g r T x x' hr A S S' hA hS hS' hx1 hx1' hxU hxU' hT hTA hc hv hsm hco`. Establish `hx0 : (0 : ℝ) < x` using `by exact_mod_cast hx1`. Establish `hx0' : (0 : ℝ) < x'` using `by exact_mod_cast hx1'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hC, ← parith_cancel x x' Del Del' _ hx0 hx0' hD0 hD0']`. Unfold `datBd`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hC, pow_add U, pow_add U, pow_add U', pow_add U', mul_pow U, mul_pow S, pow_one, pow_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `U ^ (96 * r + 183) = a1`. Generalize the expression as in `U' ^ (96 * r + 183) = a2`. Generalize the expression as in `U ^ (250000 * r ^ 4) = a3`. Generalize the expression as in `U' ^ (250000 * r ^ 4) = a4`. Generalize the expression as in `S ^ (14 * k) = a5`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Generalize the expression as in `S' ^ (14 * k) = a6`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by`. Establish `a3 : r ≤ r ^ 4` using `Nat.le_self_pow (by norm_num) r`. Establish `: 1 + (96 * r + 183) + 250000 * r ^ 4 ≤ 300000 * r ^ 4` using `by omega`.
-
-Use `gcongr`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem parith_sum (K : Type) [Field K] [NumberField K] [StarRing K] (k g r T : ℕ) (hr : 1 ≤ r) (A S S' Del Del' Db Db' : ℝ)
     (hA : 1 ≤ A) (hS : 1 ≤ S) (hS' : 1 ≤ S') (hD : 1 ≤ Del) (hD' : 1 ≤ Del') (hDb : 1 ≤ Db) (hDb' : 1 ≤ Db')
@@ -383,9 +371,9 @@ theorem parith_sum (K : Type) [Field K] [NumberField K] [StarRing K] (k g r T : 
         gcongr
 
 /- English proof (translation)
-Establish `h1 : A ^ (300000 * r ^ 4) ≤ B ^ (Ch * (r : ℝ) ^ 4)`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.rpow_le_rpow_of_exponent_le (by linarith); push_cast; gcongr` to reduce the goal to its premises. Establish `h2 : (S ^ 2) ^ (300000 * r ^ 4) * S ^ (14 * k) ≤ S ^ (16 * (k : ℝ))`. Rewrite using `[← pow_mul, ← pow_add, show (16 * (k : ℝ)) = ((16 * k : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `pow_le_pow_right₀ hS (by omega)`. Establish `hB : 0 ≤ B` using `by linarith`. Rewrite using `[mul_pow, mul_assoc, mul_assoc, mul_assoc]`. Use `gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parith_abs (k r : ℕ) (A B S Ch : ℝ) (hA : 1 ≤ A) (hAB : A ≤ B) (hS : 1 ≤ S) (hCh : 300000 ≤ Ch)
     (hk : 300000 * r ^ 4 ≤ k) (E : ℝ) (hE : 0 ≤ E) :
@@ -405,35 +393,31 @@ theorem parith_abs (k r : ℕ) (A B S Ch : ℝ) (hA : 1 ≤ A) (hAB : A ≤ B) (
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `Ca hCa`. Use `⟨300000 * Ca, 42 * Ca, by linarith, ?_⟩` and prove the remaining obligations. Introduce `K _ _ _ k r m g T b Del Del' Db Db' S S' hfin hm hCm hmf hmk hCk hlog hb hv hvb hg hT hTb hS hS' hD hD' hDb hDb' hDA hDA' hDbA hDbA'`. Establish `hm42 : 42 ≤ m`. Establish `: (42 : ℝ) ≤ m` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hr : 1 ≤ r` using `by omega`. Establish `hrm : r ≤ m` using `by omega`. Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hm5 : 42 ^ 5 ≤ m ^ 5` using `by gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm4 : 42 ^ 4 ≤ m ^ 4` using `by gcongr`. Establish `hr4 : r ^ 4 ≤ m ^ 4` using `by gcongr`. Establish `hc : cf K ≤ 4 * r`. Establish `hf0 : (0 : ℝ) < Formalism.HermitianLatticesTheory.fDeg K` using `by exact_mod_cast (by omega : 0 < Formalism.HermitianLatticesTheory.fDeg K)`. Unfold `cf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfin]`. Use `push_cast`. Rewrite using `[Real.logb_mul (by norm_num) hf0.ne', Real.logb_self_eq_one (by norm_num), Real.logb]`. Establish `h2` using `Real.log_two_gt_d9`. Establish `hs : Real.sqrt r ≤ r` using `by rw [Real.sqrt_le_left (by linarith)]; nlinarith`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Real.log (Formalism.HermitianLatticesTheory.fDeg K) / Real.log 2 ≤ 2 * r`. Rewrite using `[div_le_iff₀ (by linarith)]; nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨f, hfdef⟩ : ∃ f, f = Formalism.HermitianLatticesTheory.fDeg K` from `⟨_, rfl⟩`. Rewrite `hmf`, `hmk`, `hlog`, `hDA`, `hDA'`, `hDbA`, `hDbA'` using `[← hfdef]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hf1 : 1 ≤ f` using `by omega`. Establish `hf1' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf1`. Establish `hm1' : (1 : ℝ) ≤ m` using `by linarith`. Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `hk1 : 42 ^ 5 * f ≤ k` using `le_trans (by gcongr) hmk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfb : (f : ℝ) ≤ b ^ (2 * r)`. Establish `hs : Real.sqrt r ≤ r` using `by rw [Real.sqrt_le_left (by linarith)]; nlinarith`. Combine the equalities or inequalities in the displayed calculation. Use `Real.exp_one_lt_d9` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `_ = _ := by rw [← pow_mul]`. Establish `hpow : ∀ n : ℕ, n ≤ m ^ 2 * f → b ^ n ≤ b ^ (Ca * (m : ℝ) ^ 2 * f)`. Introduce `n hn`. Rewrite using `[← Real.rpow_natCast]`. Apply `Real.rpow_le_rpow_of_exponent_le hb1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (n : ℝ) ≤ (m : ℝ) ^ 2 * f` using `by exact_mod_cast hn`. Establish `h2 : (0 : ℝ) ≤ (m : ℝ) ^ 2 * f` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hmf2 : m ^ 2 ≤ m ^ 2 * f` using `Nat.le_mul_of_pos_right _ hf1`. Establish `hmm : 42 * m ≤ m ^ 2` using `by rw [pow_two]; exact Nat.mul_le_mul_right m hm42`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : 1 ≤ b ^ (Ca * (m : ℝ) ^ 2 * f)` using `by simpa using hpow 0 (by omega)`. Establish `hTA : (T : ℝ) ^ f ≤ b ^ (Ca * (m : ℝ) ^ 2 * f)`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.rpow_le_rpow_of_exponent_le hb1` to reduce the goal to its premises. Use `gcongr`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_self_pow₀ hm1' (by norm_num)`. Establish `h8 : (8 : ℝ) ^ (r + 1) ≤ b ^ (Ca * (m : ℝ) ^ 2 * f)`. Use `le_trans ?_ (hpow (3 * (r + 1)) (by omega))` and prove the remaining obligations. Rewrite using `[pow_mul]`. Use `gcongr`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hf2 : (f : ℝ) ^ 2 ≤ b ^ (Ca * (m : ℝ) ^ 2 * f)`. Use `le_trans ?_ (hpow (2 * r * 2) (by omega))` and prove the remaining obligations. Rewrite using `[pow_mul]`. Use `gcongr`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsm` using `parith_small k f g b (Ca * (m : ℝ) ^ 2) hb (by omega) hf1 (by omega) (by linarith) hg`. Establish `hco` using `le_trans (parith_const r f hr hf1 b (2 * Formalism.HermitianLatticesTheory.vInv K) (cf K) hb (by linarith) hvb hc hfb) (pow_le_pow_left₀ (by positivity) (hpow (r ^ 2 * f) (by gcongr)) 183)`. Substitute `hfdef` using the available equality. Use `le_trans (parith_sum K k g r T hr _ S S' Del Del' Db Db' hA hS hS' hD hD' hDb hDb' hDA hDA' hDbA hDbA' hT hTA hc hv h8 hf2 hsm hco) ?_` and prove the remaining obligations. Establish `hAB : b ^ (Ca * (m : ℝ) ^ 2 * Formalism.HermitianLatticesTheory.fDeg K) ≤ b ^ (300000 * Ca * (m : ℝ) ^ 2 * Formalism.HermitianLatticesTheory.fDeg K)`.
-
-Apply `Real.rpow_le_rpow_of_exponent_le hb1` to reduce the goal to its premises. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkr : 300000 * r ^ 4 ≤ k` using `by omega`. Establish `hD0 : 0 ≤ Del` using `by linarith`.
-
-Establish `hD0' : 0 ≤ Del'` using `by linarith`. Conclude with `mul_le_mul (parith_abs k r _ _ S _ hA hAB hS (by linarith) hkr _ (by positivity)) (parith_abs k r _ _ S' _ hA hAB hS' (by linarith) hkr _ (by positivity)) (by positivity) (by positivity)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_pairBd_mul_datBd_le : ∀ Ca : ℝ, 1 ≤ Ca → ∃ Ch Cl : ℝ, 0 ≤ Ch ∧ ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (k r m g T : ℕ) (b Del Del' Db Db' S S' : ℝ), Module.finrank ℚ K = 2 * Formalism.HermitianLatticesTheory.fDeg K → m = 2 * r + 2 → Cl ≤ m → m ^ 4 ≤ Formalism.HermitianLatticesTheory.fDeg K → m ^ 5 * Formalism.HermitianLatticesTheory.fDeg K ≤ k → Cl * ((m : ℝ) ^ 2 * Real.log b) ≤ k → Real.log (Formalism.HermitianLatticesTheory.fDeg K) ≤ Real.sqrt r → 2 ≤ b → 1 ≤ Formalism.HermitianLatticesTheory.vInv K → 2 * Formalism.HermitianLatticesTheory.vInv K ≤ b → ((k : ℝ) * b) ^ 8 ≤ g → 1 ≤ T → (T : ℝ) ≤ b ^ (Ca * m) → 1 ≤ S → 1 ≤ S' → 1 ≤ Del → 1 ≤ Del' → 1 ≤ Db → 1 ≤ Db' → Del ≤ b ^ (Ca * (m : ℝ) ^ 2 * Formalism.HermitianLatticesTheory.fDeg K) * S ^ 2 → Del' ≤ b ^ (Ca * (m : ℝ) ^ 2 * Formalism.HermitianLatticesTheory.fDeg K) * S' ^ 2 → Db ≤ (b ^ (Ca * (m : ℝ) ^ 2 * Formalism.HermitianLatticesTheory.fDeg K) * S ^ 2) ^ r → Db' ≤ (b ^ (Ca * (m : ℝ) ^ 2 * Formalism.HermitianLatticesTheory.fDeg K) * S' ^ 2) ^ r → ∑ x ∈ Finset.Icc 1 ⌊Del⌋₊, ∑ x' ∈ Finset.Icc 1 ⌊Del'⌋₊, pairBd K k g r T x x' * (datBd K k r Del Db ((T : ℝ) ^ Formalism.HermitianLatticesTheory.fDeg K) x * datBd K k r Del' Db' ((T : ℝ) ^ Formalism.HermitianLatticesTheory.fDeg K) x') ≤ (Del ^ ((k : ℝ) / 2) * (b ^ (Ch * (m : ℝ) ^ 2 * Formalism.HermitianLatticesTheory.fDeg K)) ^ (Ch * (r : ℝ) ^ 4) * S ^ (16 * (k : ℝ))) * (Del' ^ ((k : ℝ) / 2) * (b ^ (Ch * (m : ℝ) ^ 2 * Formalism.HermitianLatticesTheory.fDeg K)) ^ (Ch * (r : ℝ) ^ 4) * S' ^ (16 * (k : ℝ))) := by
   intro Ca hCa

@@ -79,7 +79,7 @@ def ofObj {D : D7} (O : Obj D) : Obj2 D := extraObj O.ex
 def pointObj {C : FC} (p : Pt C) : Obj2 p.D := extraObj p.xa.ex
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem has_pointProperty_iff {C : FC} (p : Pt C) (QO : ∀ D : D7, Obj2 D → Prop) : p.Has (pointPropertyOfObjects QO) ↔ QO p.D (pointObj p) := Iff.rfl
 
@@ -110,7 +110,7 @@ Both sides reduce to the same expression.
 theorem layObj_ofPt {C : FC} (p : Pt C) : layObj (Lay.ofPt p) = pointObj p := rfl
 
 /- English proof (translation)
-Introduce `Y Y' H`. Consider the cases of `Y`. Consider the cases of `Y'`. Consider the cases of `H`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem layObj_injective {D : D7} : Function.Injective (layObj (D := D)) := by
   intro Y Y' H
@@ -124,13 +124,13 @@ Both sides reduce to the same expression.
 theorem pointObj_pt {C : FC} {D : D7} {Y : Lay D} (p : LedPart C Y) : pointObj p.pt = (layObj Y).tr (nPrime p.L) p.ht := rfl
 
 /- English proof (translation)
-The claim follows from `H _ _`.
+A detailed English derivation is pending.
 -/
 theorem allDiv.has_pt {QO : ∀ D : D7, Obj2 D → Prop} {C : FC} {D : D7} {Y : Lay D} (H : allDiv QO D Y) (p : LedPart C Y) :
     p.pt.Has (pointPropertyOfObjects QO) := H _ _
 
 /- English proof (translation)
-The claim follows from `H _ _`.
+A detailed English derivation is pending.
 -/
 theorem allDiv.ofPt_pt {QO : ∀ D : D7, Obj2 D → Prop} {C : FC} {D : D7} {Y : Lay D} (H : allDiv QO D Y) (p : LedPart C Y) :
     QO p.pt.D (ofObj (Obj.ofPt p.pt)) := H _ _
@@ -153,20 +153,20 @@ Both sides reduce to the same expression.
 theorem pointProperty_and (Q Q' : ∀ D : D7, Obj2 D → Prop) : pointPropertyOfObjects (fun D O => Q D O ∧ Q' D O) = (pointPropertyOfObjects Q).and (pointPropertyOfObjects Q') := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => ⟨fun N h => (H N h).1, fun N h => (H N h).2⟩, fun H N h => ⟨H.1 N h, H.2 N h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem allDiv_and_iff (Q Q' : ∀ D : D7, Obj2 D → Prop) (D : D7) (Y : Lay D) :
     allDiv (fun D O => Q D O ∧ Q' D O) D Y ↔ allDiv Q D Y ∧ allDiv Q' D Y :=
   ⟨fun H => ⟨fun N h => (H N h).1, fun N h => (H N h).2⟩, fun H N h => ⟨H.1 N h, H.2 N h⟩⟩
 
 /- English proof (translation)
-Introduce `N h` and use `hQ _ _ (H N h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem allDiv_mono {Q Q' : ∀ D : D7, Obj2 D → Prop} (hQ : ∀ D O, Q D O → Q' D O) {D : D7} {Y : Lay D} (H : allDiv Q D Y) :
     allDiv Q' D Y := fun N h => hQ _ _ (H N h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨O⟩ => ⟨⟨O.th⟩, ⟨O.errX⟩, ⟨O.nch⟩, ⟨O.xd⟩, ⟨O.lev⟩, ⟨O.X⟩, ⟨O.p0, ⟨O.amb0⟩⟩, ⟨O.amb⟩, ⟨O.gauge⟩, O.gatT, O.cmp, O.tw, O.Gy, ⟨O.ker⟩⟩, fun ⟨⟨th⟩, ⟨e⟩, ⟨n⟩, ⟨xd⟩, ⟨a⟩, ⟨b⟩, ⟨c, ⟨c0⟩⟩, ⟨d⟩, ⟨g⟩, gt, cm, tw, Gy, ⟨k⟩⟩ => ⟨⟨gt, th, cm, tw, Gy, e, n, xd, a, b, c, k, d, c0, g⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_objects_iff (D : D7) : Nonempty (Obj2 D) ↔
     Nonempty (ThetaX D) ∧ Nonempty (ErrX D) ∧ Nonempty (NChoice D) ∧ Nonempty (ThData D) ∧
@@ -183,38 +183,38 @@ theorem nonempty_objects_iff (D : D7) : Nonempty (Obj2 D) ↔
       ⟨⟨gt, th, cm, tw, Gy, e, n, xd, a, b, c, k, d, c0, g⟩⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨pointObj p⟩, ⟨(pointObj p).tr N h⟩⟩`.
+Supply the required witnesses or components.
 -/
 example {C : FC} (p : Pt C) (N : ∀ u, Submodule (𝓞 p.D.what₂.LL) (p.D.div.Nu u).V) (h : p.D.what₂.Word → ℝ) :
     Nonempty (Obj2 p.D) ∧ Nonempty (Obj2 (setDiv p.D N h)) :=
   ⟨⟨pointObj p⟩, ⟨(pointObj p).tr N h⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {C : FC} (p : Pt C) : (pointObj p).amb = p.xa.ex.amb ∧ (pointObj p).amb0 = p.xa.ex.amb0 ∧
     (pointObj p).gauge = p.xa.ex.gauge := ⟨rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example {C : FC} (p : Pt C) :
     p.Has (pointPropertyOfObjects fun D O => LocalQuadraticParts.PeterssonBoundAllEmbeddings D O.X O.amb) ↔ LocalQuadraticParts.PeterssonBoundAllEmbeddings p.D p.xa.X p.xa.ex.amb := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {D : D7} (O : Obj2 D) (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h : D.what₂.Word → ℝ) :
     (O.tr N h).amb.MtH = O.amb.MtH ∧ (O.tr N h).amb0.MtH = O.amb0.MtH ∧ (O.tr N h).gauge = O.gauge ∧
       (O.tr N h).X.kapR = O.X.kapR := ⟨rfl, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `_ _` and use `Y.gauge_def`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (D : D7) (Y : Lay D) : allDiv (fun D O => letI := D.host.cmStar; O.gauge.IsGauge) D Y := fun _ _ => Y.gauge_def
 
 /- English proof (translation)
-Introduce `H` and use `one_ne_zero (H (fun u => (D.div.Nu u).L) (fun _ => 1))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (D : D7) (Y : Lay D) : ¬ allDiv (fun D _ => D.div.h D.u₀ = 0) D Y := fun H =>
   one_ne_zero (H (fun u => (D.div.Nu u).L) (fun _ => 1))

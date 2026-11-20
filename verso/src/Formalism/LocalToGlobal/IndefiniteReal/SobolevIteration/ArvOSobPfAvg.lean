@@ -14,7 +14,7 @@ variable {X F : Type*} [TopologicalSpace X] [SecondCountableTopology X] [Measura
   [OpensMeasurableSpace X] [NormedAddCommGroup F]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hf`. Conclude with `(integrable_const C).mono' (aesm_of_continuousOn hKm hμK hf) ((ae_mem_of_compl hμK).mono fun k hk => hC k hk)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integrable_of_continuousOn {μ : Measure X} [IsFiniteMeasure μ] {K : Set X} (hK : IsCompact K)
     (hKm : MeasurableSet K) (hμK : μ Kᶜ = 0) {f : X → F} (hf : ContinuousOn f K) : Integrable f μ := by
@@ -24,9 +24,9 @@ theorem integrable_of_continuousOn {μ : Measure X} [IsFiniteMeasure μ] {K : Se
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Introduce `d Xs hXs`. Establish `h` using `contDiff_avgTerm (p := fun _ => (1 : ℂ)) hG hπ hw hXs hk`. Use `show ContDiff ℝ ∞ fun t => π (oneProd Xs t) (π (Matrix.of k) w)`. Establish `e : (fun t => π (oneProd Xs t) (π (Matrix.of k) w)) = fun t => avgTerm π (fun _ => (1 : ℂ)) w Xs t k`. Use function extensionality and compare the values at `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show π (oneProd Xs t) (π (Matrix.of k) w) = (1 : ℂ) • π (oneProd Xs t * Matrix.of k) w`. Rewrite using `[one_smul, hπ.2.1 _ (smooth_oneProd hπ hw Xs hXs t).2 _ hk]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothVec_rep {G : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hπ : IsGRep G π) {w : H} (hw : SmoothVec (lieG G) π w) {k : Fin n → Fin n → ℂ}
@@ -48,29 +48,27 @@ open Avg in
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `n H _ _ _ G s π hs hπ μ hμ p hp w hw`. Establish `hG` using `isUnit_det_of_cartan hs`. Take `⟨hprob, hae, -, -⟩` from `hμ`. Establish `hKc` using `isCompact_Kset hs`. Establish `hKm : MeasurableSet (Kset G s)` using `(isClosed_Kset G s).measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμK : μ (Kset G s)ᶜ = 0` using `ae_iff.1 hae`. Establish `hKae : ∀ᵐ k ∂μ, k ∈ Kset G s` using `hae`. Establish `hc0 : ContinuousOn (fun k : Fin n → Fin n → ℂ => p k • π (Matrix.of k) w) (Kset G s)` using `hp.continuousOn.smul ((hπ.2.2.2 w).comp continuous_id.continuousOn fun k hk => hk.1)`. Establish `hint` using `integrable_of_continuousOn hKc hKm hμK hc0`. Establish `hmove : ∀ {d : ℕ} (Xs : Fin d → Matrix (Fin n) (Fin n) ℂ), (∀ i, Xs i ∈ lieG G) → ∀ t : Fin d → ℝ, π (oneProd Xs t) (∫ k, p k • π (Matrix.of k) w ∂μ) = ∫ k, avgTerm π p w Xs t k ∂μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `d Xs hXs t`. Establish `hO : oneProd Xs t ∈ Formalism.QuantumDeterminants.UH G` using `(smooth_oneProd hπ hw Xs hXs t).2`. Establish `hc` using `((π (oneProd Xs t)).restrictScalars ℝ).integral_comp_comm hint`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (hKae.mono fun k hk => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `show π (oneProd Xs t) (p k • π (Matrix.of k) w) = p k • π (oneProd Xs t * Matrix.of k) w`. Rewrite using `[map_smul, hπ.2.1 _ hO _ hk.1]`. Both sides reduce to the same expression. Establish `hparam : ∀ {d : ℕ} (Xs : Fin d → Matrix (Fin n) (Fin n) ℂ), (∀ i, Xs i ∈ lieG G) → (∀ j : ℕ, iteratedFDeriv ℝ j (fun t => ∫ k, avgTerm π p w Xs t k ∂μ) = fun t => ∫ k, pIter (avgTerm π p w Xs) j t k ∂μ) ∧ ContDiff ℝ ∞ (fun t => ∫ k, avgTerm π p w Xs t k ∂μ)` using `fun Xs hXs => contDiff_integral_param hKc hKm hμK (fun k hk => contDiff_avgTerm hG hπ hw hXs hk.1) (fun j => contOn_pIter_avgTerm h4 hs hπ hw hp hXs j)`. Establish `hv : SmoothVec (lieG G) π (∫ k, p k • π (Matrix.of k) w ∂μ)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d Xs hXs`. Use `show ContDiff ℝ ∞ fun t => π (oneProd Xs t) (∫ k, p k • π (Matrix.of k) w ∂μ)`. Rewrite using `[funext fun t => hmove Xs hXs t]`. Conclude with `(hparam Xs hXs).2`. Use `⟨hv, fun l hl => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Z, L, hZ, -, hval⟩` from `OrbStPf.word_eval (one_mem_UH G) (mul_mem_UH₂ G) hπ.2.1 (fun Y hY t => expS_mem_UH hY t) l hl (zero_mem_lieG G)`. Establish `hd0 : ∀ v' : H, SmoothVec (lieG G) π v' → dL π l v' = OrbStPf.pds L (fun r => π (oneProd Z r) v') 0`. Introduce `v' hv'`. Establish `h` using `hval v' hv' 0`. Simplify using `only [zero_smul, NormedSpace.exp_zero, hπ.1, ContinuousLinearMap.one_apply] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `dL`. Rewrite using `[h]`. Both sides reduce to the same expression. Take `⟨hPI, hCD⟩` from `hparam Z hZ`. Establish `hsl : ContinuousOn (fun k => pIter (avgTerm π p w Z) L.length 0 k) (Kset G s)` using `pIter_contOn_slice (contOn_pIter_avgTerm h4 hs hπ hw hp hZ L.length) 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hintP` using `integrable_of_continuousOn hKc hKm hμK hsl`. Establish `e3 : ∀ k ∈ Kset G s, pIter (avgTerm π p w Z) L.length 0 k (fun i => Pi.single (L.get i) 1) = p k • dL π l (π (Matrix.of k) w)`. Introduce `k hk`. Establish `hk' : Matrix.of k ∈ Formalism.QuantumDeterminants.UH G` using `hk.1`. Establish `hsm` using `smoothVec_rep hG hπ hw hk'`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `pIter`. Rewrite using `[← pds_eq_iteratedFDeriv L (contDiff_avgTerm hG hπ hw hZ hk') 0]`. Establish `hfun : (fun t => avgTerm π p w Z t k) = fun t => (p k • ContinuousLinearMap.id ℝ H) (π (oneProd Z t) (π (Matrix.of k) w))`. Use function extensionality and compare the values at `t`. Use `show p k • π (oneProd Z t * Matrix.of k) w = p k • π (oneProd Z t) (π (Matrix.of k) w)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hπ.2.1 _ (smooth_oneProd hπ hw Z hZ t).2 _ hk']`. Both sides reduce to the same expression. Rewrite using `[hfun, OrbStPf.pds_clm L (p k • ContinuousLinearMap.id ℝ H) (f := fun t => π (oneProd Z t) (π (Matrix.of k) w)) (hsm _ Z hZ), hd0 _ hsm]`. Both sides reduce to the same expression. Establish `hmain : dL π l (∫ k, p k • π (Matrix.of k) w ∂μ) = ∫ k, pIter (avgTerm π p w Z) L.length 0 k (fun i => Pi.single (L.get i) 1) ∂μ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hd0 _ hv]`. Establish `e1 : (fun r => π (oneProd Z r) (∫ k, p k • π (Matrix.of k) w ∂μ)) = fun r => ∫ k, avgTerm π p w Z r k ∂μ` using `funext fun r => hmove Z hZ r`. Rewrite using `[e1, pds_eq_iteratedFDeriv L hCD 0, hPI L.length]`. Conclude with `ContinuousMultilinearMap.integral_apply hintP _`. Establish `hae3 : (fun k => pIter (avgTerm π p w Z) L.length 0 k (fun i => Pi.single (L.get i) 1)) =ᵐ[μ] fun k => p k • dL π l (π (Matrix.of k) w)` using `hKae.mono fun k hk => e3 k hk`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `((ContinuousMultilinearMap.apply ℝ (fun _ : Fin L.length => Fin (l.length + 1) → ℝ) H (fun i => Pi.single (L.get i) 1)).integrable_comp hintP).congr hae3`. Rewrite using `[hmain]`. Conclude with `integral_congr_ae hae3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avgSmooth_of (h4 : SobChart) : AvgSmooth := by
   intro n H _ _ _ G s π hs hπ μ hμ p hp w hw

@@ -16,9 +16,9 @@ namespace ModelTwistGenerated
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] {K : Type} [Fintype K] {ι : K → Type}
 
 /- English proof (translation)
-Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule] at ha hb ⊢`. Introduce `c hc`. Establish `: a * b * ∏ k, y ⟨k, c k⟩ ^ (-(β + γ) k) = (a * ∏ k, y ⟨k, c k⟩ ^ (-β k)) * (b * ∏ k, y ⟨k, c k⟩ ^ (-γ k))`. Rewrite using `[mul_mul_mul_comm, ← Finset.prod_mul_distrib]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, neg_add, zpow_add₀ (hc k)]`. Rewrite using `[this]`. Conclude with `Subalgebra.mul_mem _ (ha c hc) (hb c hc)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secOver_mul (y : (Σ k, ι k) → Ω) {β γ : K → ℤ} {a b : Ω} (ha : a ∈ secOver S y β)
     (hb : b ∈ secOver S y γ) : a * b ∈ secOver S y (β + γ) := by
@@ -35,7 +35,7 @@ theorem secOver_mul (y : (Σ k, ι k) → Ω) {β γ : K → ℤ} {a b : Ω} (ha
   exact Subalgebra.mul_mem _ (ha c hc) (hb c hc)
 
 /- English proof (translation)
-Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply]`. Introduce `c _`. Simplify using `only [Pi.zero_apply, neg_zero, zpow_zero, Finset.prod_const_one, mul_one]`. Conclude with `Subalgebra.one_mem _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_secOver (y : (Σ k, ι k) → Ω) : (1 : Ω) ∈ secOver S y 0 := by
   simp only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply]
@@ -44,9 +44,9 @@ theorem one_mem_secOver (y : (Σ k, ι k) → Ω) : (1 : Ω) ∈ secOver S y 0 :
   exact Subalgebra.one_mem _
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using one_mem_secOver (S := S) y`. Consider the case `succ m ih`. Establish `h` using `secOver_mul y ih ha`. Rewrite using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Rewrite using `[add_smul, one_smul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_mem_secOver (y : (Σ k, ι k) → Ω) {δ : K → ℤ} {a : Ω} (ha : a ∈ secOver S y δ) (m : ℕ) :
     a ^ m ∈ secOver S y ((m : ℤ) • δ) := by
@@ -62,7 +62,7 @@ theorem pow_mem_secOver (y : (Σ k, ι k) → Ω) {δ : K → ℤ} {a : Ω} (ha 
 variable [DecidableEq K]
 
 /- English proof (translation)
-Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule, IndefiniteRowSideFullHecke.Kleiman2.baseDeg]`. Introduce `c _`. Rewrite using `[Fintype.prod_eq_single k₀ fun k hk => by rw [Pi.single_eq_of_ne hk]; simp]`. Rewrite using `[Pi.single_eq_same, zpow_neg_one, ← div_eq_mul_inv]`. Conclude with `Algebra.subset_adjoin ⟨⟨k₀, i⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_mem_secOver (y : (Σ k, ι k) → Ω) (k₀ : K) (i : ι k₀) :
     y ⟨k₀, i⟩ ∈ secOver S y (IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) := by
@@ -74,9 +74,9 @@ theorem coord_mem_secOver (y : (Σ k, ι k) → Ω) (k₀ : K) (i : ι k₀) :
   exact Algebra.subset_adjoin ⟨⟨k₀, i⟩, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using one_mem_secOver (S := S) y`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.card_insert_of_notMem hj]`. Establish `h` using `secOver_mul y (coord_mem_secOver (S := S) y k₀ (e.symm j)) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `convert h using 2 <;> first | rfl | (push_cast; rw [add_smul, one_smul, add_comm])`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prod_coord_mem_secOver (y : (Σ k, ι k) → Ω) (k₀ : K) {N : ℕ} (e : ι k₀ ≃ Fin (N + 1))
     (s : Finset (Fin (N + 1))) :
@@ -94,21 +94,21 @@ variable {N : ℕ} {y : (Σ k, ι k) → Ω} {k₀ : K} (e : ι k₀ ≃ Fin (N 
 local notation "X" => IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm
 
 /- English proof (translation)
-Establish `hsubQ : (Q.sub I : Set Ω) = chartSecOver S y k₀ e β I`. Use `Set.ext fun t => ?_` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_sub_iff_gam]`. Use `exists_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[Kleiman.SubSystem.gam, hQ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : X i ≠ 0` using `(Kleiman.mem_support _).mp (I.2.2 hi)`. Establish `hcard` using `Finset.card_erase_add_one hi`. Establish `hxI : Kleiman.xProd I = X i * ∏ j ∈ I.1.erase i, X j` using `(Finset.mul_prod_erase I.1 _ hi).symm`. Establish `hxic : X i ^ c ∈ secOver S y ((c : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀)` using `pow_mem_secOver y (coord_mem_secOver y k₀ (e.symm i)) c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (∏ j ∈ I.1.erase i, X j) ^ c ∈ secOver S y ((c : ℤ) • (((I.1.erase i).card : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀))` using `pow_mem_secOver y (prod_coord_mem_secOver y k₀ e _) c`. Use extensionality with `t`. Rewrite using `[SetLike.mem_coe, twist_sub_eq_mul]`. Express the relevant statement in the definitionally equal form `t ∈ Kleiman.twistMod S X (c : ℤ) I * Q.sub I ↔ _`. Rewrite using `[Kleiman.twistMod_eq_span (c : ℤ) I hi, Submodule.mem_span_singleton_mul, zpow_natCast]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Establish `hb' : b ∈ chartSecOver S y k₀ e β I` using `by rw [← hsubQ]; exact hb`. Take `⟨n, hn⟩` from `hb'`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `secOver_mul y hxic hn`. Rewrite using `[show Kleiman.xProd I ^ n * (X i ^ c * b) = X i ^ c * (Kleiman.xProd I ^ n * b) by ring]`. Use `h using 2` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨n, hn⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components.
 
-Use `⟨(X i ^ c)⁻¹ * t, ?_, by field_simp⟩` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, hsubQ]`. Use `⟨n + c, ?_⟩` and prove the remaining obligations. Establish `h` using `secOver_mul y hP hn`. Rewrite using `[show Kleiman.xProd I ^ (n + c) * ((X i ^ c)⁻¹ * t) = (∏ j ∈ I.1.erase i, X j) ^ c * (Kleiman.xProd I ^ n * t) by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hxI]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring]`. Use `h using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcard]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem twist_sub_eq_chartSecOver (β : K → ℤ)
     (Q : Kleiman.LineBundle S (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm))
@@ -164,27 +164,23 @@ end ModelTwistGenerated
 open ModelTwistGenerated in
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ Ω _ _ y k₀ hS hM β`. Take `⟨i₀, -⟩` from `hM.1 k₀`. Establish `hpos : 0 < Fintype.card (ι k₀)` using `Fintype.card_pos_iff.mpr ⟨i₀⟩`. Use `set N := Fintype.card (ι k₀) - 1`. Establish `hcard : Fintype.card (ι k₀) = N + 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : ι k₀ ≃ Fin (N + 1)` to `Fintype.equivFinOfCardEq hcard`. Use `set x := IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm with hx`. Take `⟨Q, hQ⟩` from `BundleOfDeg.full S K ι Ω y k₀ N e hM β`. Take `⟨c₀, hc₀⟩` from `GroundTheory.Heights₂.Heights.Kleiman.Generated.full S Ω N x Q`. Use `⟨max c₀ 0, fun c hc => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lift c to ℕ using le_trans (le_max_right _ _) hc with m`. Use `set L := Q.twist (Kleiman.twistSys S x (m : ℤ)) with hL`. Establish `hgen : L.Generated` using `hc₀ m (le_trans (le_max_left _ _) hc)`. Establish `hfin : ∀ I : Kleiman.Chart x, ∃ T : Finset Ω, (T : Set Ω) ⊆ L.secs ∧ Submodule.span (Kleiman.chartRing S x I) (T : Set Ω) = L.sub I`. Introduce `I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨i, hi⟩` from `I.2.1`. Establish `hfg : (L.sub I).FG`. Rewrite using `[hL, twist_sub_eq_mul]`. Express the relevant statement in the definitionally equal form `(Kleiman.twistMod S x (m : ℤ) I * Q.sub I).FG`. Rewrite using `[Kleiman.twistMod_eq_span (m : ℤ) I hi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `(Submodule.fg_span_singleton _).mul (Q.fg I)`. Rewrite `hfg`, the goal using `[← hgen I]`. Take `⟨T, hT, hTs⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).mp hfg`. Conclude with `⟨T, hT, hTs.symm⟩`. Use `choose T hTsub hTspan using hfin`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `_ : Fintype (Kleiman.Chart x)` to `Fintype.ofFinite _`. Set `U : Finset Ω` to `Finset.univ.biUnion T`. Establish `hUsub : (U : Set Ω) ⊆ L.secs`. Introduce `z hz`. Take `⟨I, -, hzI⟩` from `Finset.mem_biUnion.mp hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hTsub I hzI`. Establish `hUspan : ∀ I, Submodule.span (Kleiman.chartRing S x I) (U : Set Ω) = L.sub I`. Introduce `I`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hgen I]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.span_mono hUsub`. Rewrite using `[← hTspan I]`. Conclude with `Submodule.span_mono fun z hz => Finset.mem_biUnion.mpr ⟨I, Finset.mem_univ _, hz⟩`. Establish `hsecs : L.secs = secOver S y (β + (m : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀)` using `hQ m`. Set `η : Fin U.card → Ω` to `fun j => (U.equivFin.symm j : Ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hrange : Set.range η = (U : Set Ω)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Conclude with `(U.equivFin.symm j).2`.
-
-Introduce `hz`. Conclude with `⟨U.equivFin ⟨z, hz⟩, by simp [η]⟩`. Establish `hη : ∀ j, η j ∈ secOver S y (β + (m : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀)`. Introduce `j`. Rewrite using `[← hsecs]`.
-
-Conclude with `hUsub (U.equivFin.symm j).2`. Use `⟨U.card, η, hη, (hCG S K ι Ω y k₀ N e hM _ U.card η hη).mpr fun I => ?_⟩` and prove the remaining obligations. Rewrite using `[hrange, hUspan I]`. Conclude with `twist_sub_eq_chartSecOver e β Q hQ m I`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ModelTwistGenerated.proof (hCG : ChartSecGen.Statement) : ModelTwistGenerated.Statement := by
   classical

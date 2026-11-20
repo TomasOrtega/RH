@@ -17,7 +17,7 @@ def cone : Prop :=
 end LateralTheory.EtaleFoundations.tqis
 
 /- English proof (translation)
-Establish `h : HomotopyCategory.quasiIso (Shv R) (ComplexShape.up ℤ) ((HomotopyCategory.quotient _ _).map f) ↔ (HomotopyCategory.subcategoryAcyclic (Shv R)).trW ((HomotopyCategory.quotient _ _).map f)`. Rewrite using `[HomotopyCategory.quasiIso_eq_trW_subcategoryAcyclic]`. Rewrite `h` using `[HomotopyCategory.quotient_map_mem_quasiIso_iff]`. Express the relevant statement in the definitionally equal form `HomologicalComplex.quasiIso (Shv R) (ComplexShape.up ℤ) f ↔ _`. Conclude with `h.trans ((ObjectProperty.trW_iff_of_distinguished (HomotopyCategory.subcategoryAcyclic (Shv R)) _ (HomotopyCategory.mappingCone_triangleh_distinguished f)).trans (HomotopyCategory.quotient_obj_mem_subcategoryAcyclic_iff_acyclic _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem qis_iff_cone {R : Type} [CommRing R] {K L : Cx R} (f : K ⟶ L) : QuasiIso f ↔ (mappingCone f).Acyclic := by
   have h : HomotopyCategory.quasiIso (Shv R) (ComplexShape.up ℤ) ((HomotopyCategory.quotient _ _).map f) ↔ (HomotopyCategory.subcategoryAcyclic (Shv R)).trW ((HomotopyCategory.quotient _ _).map f) := by
@@ -29,14 +29,14 @@ theorem qis_iff_cone {R : Type} [CommRing R] {K L : Cx R} (f : K ⟶ L) : QuasiI
     (HomotopyCategory.quotient_obj_mem_subcategoryAcyclic_iff_acyclic _))
 
 /- English proof (translation)
-The claim follows from `CochainComplex.isStrictlyGE_mappingCone f 0 0 (-1)`.
+A detailed English derivation is pending.
 -/
 theorem cone_ge {R : Type} [CommRing R] {I I' : Cx R} [I.IsStrictlyGE 0] [I'.IsStrictlyGE 0] (f : I ⟶ I') :
     (mappingCone f).IsStrictlyGE (-1) :=
   CochainComplex.isStrictlyGE_mappingCone f 0 0 (-1)
 
 /- English proof (translation)
-Introduce `R _ I I' J T T' _ _ _ τ τ' hτ hτ' hJ f _ u hc`. Take `⟨σ, hσ⟩` from `hC R τ τ' f u hτ hτ' hc`. Use `cone_ge f` as an intermediate fact. Rewrite using `[qis_iff_cone]`. Conclude with `hA R (-1) 0 σ hσ hJ ((qis_iff_cone f).1 inferInstance)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_tensor_preserves_quasiIso_of_acyclic_and_cone (hA : LateralTheory.EtaleFoundations.tqis.acyc) (hC : LateralTheory.EtaleFoundations.tqis.cone) :
     LateralTheory.EtaleFoundations.EtaleTensorPairQuasiIsoOfFlatQuasiIso := by

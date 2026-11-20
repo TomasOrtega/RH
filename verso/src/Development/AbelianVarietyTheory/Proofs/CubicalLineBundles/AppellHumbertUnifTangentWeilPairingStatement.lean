@@ -7,7 +7,7 @@ open scoped CategoryTheory.Obj
 open GlobalTheory GlobalTheory.CM
 
 /- English proof (citation)
-Apply `GlobalTheory.AHWeil.tangent_and_weil_of_isAH` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FAppellHumbertUnifTangentWeilPairing.lean&line=41#L41)
 -/

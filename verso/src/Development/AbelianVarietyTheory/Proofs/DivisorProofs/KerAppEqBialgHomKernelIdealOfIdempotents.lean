@@ -12,17 +12,15 @@ namespace GlobalTheory
 namespace PDivGroup
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`. Rewrite `ha` using `[RingHom.mem_ker]`. Set `x` to `Ideal.Quotient.mkₐ k (kerIdeal (v.app n))`. Establish `hv : ∀ c, x (v.app n c) = algebraMap k _ (counit c)` using `(kerIdeal_le_ker_iff (v.app n) x).1 fun b hb => by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hb`. Set `P` to `(ptsPush (G.A n) (x : G.A n →ₐ[k] _)).comp toPts`. Establish `hP : P (Hom.conv v n) = 1` using `WithConv.ofConv_injective (AlgHom.ext fun c => by`. Express the relevant statement in the definitionally equal form `x (v.app n c) = _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Use the proof step `simp)`. Establish `e : P (Hom.conv (u + v) n) = P (Hom.conv u n)`. Rewrite using `[add_conv, map_mul, hP, mul_one]`. Rewrite `e` using `[huv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e'` using `congrArg (fun y => y.ofConv a) e`. Express the relevant statement in the definitionally equal form `x a = x (u.app n a) at e'`. Rewrite `e'` using `[ha, map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 e'`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `b hb`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Establish `e` using `congrArg (fun f : G ⟶ G => Hom.app f n b) h1`. Express the relevant statement in the definitionally equal form `u.app n (v.app n b) = (1 : WithConv (G.A n →ₐc[k] G.A n)).ofConv b at e`. Establish `hb' : counit (R` using `k) b = 0 := hb`.
-
-Use `Eq.trans e ?_` and prove the remaining obligations. Simplify using `[hb']`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_app_eq_kerIdeal_of_idempotents (p : ℕ) [Fact p.Prime] (k : Type) [CommRing k]
     (G : PDivGroup p k) (u v : G ⟶ G) (huv : u + v = 𝟙 G) (h1 : u ≫ v = 0) (_h2 : v ≫ u = 0)

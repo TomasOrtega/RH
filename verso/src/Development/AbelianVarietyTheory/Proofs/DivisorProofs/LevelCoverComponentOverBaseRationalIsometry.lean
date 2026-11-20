@@ -21,13 +21,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {g : ℕ}
 
 /- English proof (translation)
-Establish `hM0 : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hp0 : pd ≠ 0` using `fun h0 => by`. Use `l₂.three_le` as an intermediate fact. Rewrite `this` using `[hM, h0]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hmap : l₂.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `Ideal.map_mono hle`. Introduce `a ha`. Establish `j₂` using `F.ex_eta k P hP a (Submodule.smul_mono_left hmap ha)`. Establish `j₁ : toUnit _ ≫ Xo₂.univ.eta a ^ pd = F₂.ex k₂ P₂ ((l.M : ℂ)⁻¹ • P₂ (F₂.t k₂ a))`. Rewrite using `[MonObj.comp_pow, F₂.ex_eta k₂ P₂ hP₂ a ha, ← GlobalTheory.CoverExp.pow_of_add (F₂.ex_add k₂ P₂ hP₂), hM, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, Nat.cast_mul, mul_inv, mul_left_comm, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hp0), _root_.mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : F.ex k P ((l.M : ℂ)⁻¹ • P (gam (F₂.t k₂ a))) = F.ex k P ((l.M : ℂ)⁻¹ • P (F.t k a))`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hh, ← map_smul h, hx, ← j₁, ← j₂, Over.comp_left, Over.comp_left, Category.assoc, heta]`. Establish `w₂ : (toUnit (Over.mk (F₂.u k₂ P₂))).left = F₂.u k₂ P₂`. Simplify using `using Over.w (toUnit (Over.mk (F₂.u k₂ P₂)))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `w₁ : (toUnit (Over.mk (F.u k P))).left = F.u k P`. Simplify using `using Over.w (toUnit (Over.mk (F.u k P)))`. Rewrite using `[w₂, w₁, ← Category.assoc, hu]`. Conclude with `(GlobalTheory.UnifPoint.div_eq_iff hP.2.1 (F.ex_add k P hP) (F.ex_ker k P hP) hM0 _ _).1 e`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mark_of_exp {D : Datum H} {l l₂ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli D l} {Xo₂ : Moduli D l₂}
     {r : Xo₂.X ⟶ Xo.X} (m : SABMap Xo₂.univ.t Xo.univ.t r) (pd : ℕ) (hM : l₂.M = l.M * pd) (hle : l₂.Mb ≤ l.Mb)
@@ -74,9 +74,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ}
 
 /- English proof (translation)
-Take `⟨w, hw, hw', -⟩` from `d.m.lin`. Take `⟨p, k, p₁, p₂, hk, hk'⟩` from `exists_pm_iso d.m e`. Establish `hL` using `Xo.univ.t.PP.isLB`. Establish `hL₂` using `d.Xo₂.univ.t.PP.isLB`. Take `⟨s, hs⟩` from `exists_up hL hL₂ hw p₁ hk hk' y₂.s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨y₀.x, y₀.x_over, y₀.u, y₀.tan, y₀.eig, y₀.basis, s, fun s' => ?_⟩, rfl, rfl, (frOver_iff d _ _).2 ⟨e, hu, w, p, ⟨hw, hw'⟩, p₁, p₂, hs⟩⟩` and prove the remaining obligations. Take `⟨s₂', hs'⟩` from `exists_down hL hL₂ hw p₁ s'`. Use `(existsUnique_congr fun a => ?_).1 (y₂.gen s₂')` and prove the remaining obligations. Conclude with `(scal_iff (fst (Over.mk y₂.x) d.Xo₂.univ.t.G).left (toΓ S a) y₂.s s₂').trans ((rel_scal_iff hL hL₂ p₁ hk p₂ (toΓ S a) hs hs').trans (scal_iff (fst (Over.mk y₀.x) Xo.univ.t.G).left (toΓ S a) s s').symm)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_frOver_down (d : DeltaDat Xo c n) {S : Type} [CommRing S] [Algebra c.F S] [Algebra d.c₂.F S]
     (y₂ : FrPt d.Xo₂ d.c₂ S) (y₀ : FrPt Xo c S) (e : y₂.x ≫ d.r = y₀.x) (hu : ∀ τ i, y₂.u τ i ≫ d.m.φ = y₀.u τ i) :
@@ -102,14 +102,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(congrArg σ₂ (Subtype.ext rfl)).trans h`.
+A detailed English derivation is pending.
 -/
 theorem good_comp (d : DeltaDat Xo c n) (σ₂ : d.c₂.F →+* ℂ) (h : GoodEmb d.c₂ σ₂) :
     GoodEmb c (σ₂.comp (d.eF : c.F →+* d.c₂.F)) :=
   (congrArg σ₂ (Subtype.ext rfl)).trans h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i <;> simp [genScal]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem genScal_eq {S : Type} [CommRing S] (t : Sˣ) :
     genScal (Dw := Dw) t = fun i => Option.elim i t (fun _ => 1) := by
@@ -122,39 +122,37 @@ open AlgebraicGeometry CategoryTheory in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D j H Dw l Xo c U dict d U₂ dict₂ hL hL₂ hd σ₂ hσ₂ k₂`. Establish `hσ : GoodEmb c (σ₂.comp (d.eF : c.F →+* d.c₂.F))` using `good_comp d σ₂ hσ₂`. Use `set σ := σ₂.comp (d.eF : c.F →+* d.c₂.F) with hσe`. Establish `hA : l.A = 1` using `hL.levA`. Establish `hA₂ : d.l₂.A = 1` using `hL₂.levA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `hL.unf σ hσ`. Establish `hU₂` using `hL₂.unf σ₂ hσ₂`. Take `⟨hr₀, hW⟩` from `hL.modelW σ hσ`. Take `⟨hr₂, hW₂⟩` from `hL₂.modelW σ₂ hσ₂`. Establish `hpq : Dw.p ≠ Dw.q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hp, hq, -⟩` from `hL.dat`. Take `⟨h1, h2⟩` from `hL.inR`. Establish `hk` using `D.R.m_add_three_le_k`. Rewrite using `[hp, hq]`. Simplify using `only [Ranks.sigW, Ranks.r]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hle : KA l ≤ KA d.l₂` using `by rw [KA, KA, hA, hA₂]`. Establish `hinc : (σ₂.comp (IntermediateField.inclusion d.c₂.le).toRingHom).comp (IntermediateField.inclusion hle).toRingHom = σ.comp (IntermediateField.inclusion c.le).toRingHom` using `RingHom.ext fun a => congrArg σ₂ (Subtype.ext rfl)`. Establish `hrel : ∀ τ : D.host.E →+* ℂ, relab c σ τ = relab d.c₂ σ₂ τ` using `fun τ => by`. Use extensionality with `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg σ₂ (Subtype.ext rfl)`. Take `⟨-, -, -, -, -, g, e, F, ik, φ, hEF, hper⟩` from `id hU`. Take `⟨-, -, -, -, -, g₂, e₂, F₂, ik₂, φ₂, hEF₂, hper₂⟩` from `id hU₂`. Take `rfl : g₂ = g` from `by simpa using Fintype.card_congr (e₂.trans e.symm)`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.UnifFamily.dom_nonempty ((U₂ σ₂).X k₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Take `⟨P₀, hP₀, hp₀, hu₀, -⟩` from `hper₂ k₂ ⟨x₀, hx₀⟩`. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Establish `hy : (F₂.u (ik₂ k₂) P₀ ≫ d.r) ≫ Xo.s = spMap (σ.comp (IntermediateField.inclusion c.le).toRingHom)`. Rewrite using `[CategoryTheory.Category.assoc, GlobalTheory.ClsVal.Cmp.point_over_of_ne hpq hA d hle, ← CategoryTheory.Category.assoc, F₂.over_σ _ P₀ hp₀, GlobalTheory.ClsVal.Cmp.spMap_comp', hinc]`. Take `⟨y, hyx⟩` from `GlobalTheory.NonIntegralFrameExample.exists_framed (c := c) (S := CAt σ) (F₂.u (ik₂ k₂) P₀ ≫ d.r) hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, x₁, t₁, hb⟩` from `hU.2.2.1 y`. Take `⟨P₁, hP₁, hp₁, hu₁, -⟩` from `hper k x₁`. Establish `hu : F₂.u (ik₂ k₂) P₀ ≫ d.r = F.u (ik k) P₁`. Rewrite using `[← hu₁, ← hb.1]`. Conclude with `hyx.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨gam, hl, hg, hh, hx⟩` from `GlobalTheory.CoverFrameMod.exists_isometry_of_cover F₂ F d.m hp₀ hp₁ hu`. Establish `gM` using `mark_of_exp d.m d.pd hd.2.1 hd.1.2.1 hd.2.2.2.2.2.1.1 F F₂ (ik k) (ik₂ k₂) hp₁ hp₀ hu gam hl hh hx`. Apply the tactic sequence `obtain ⟨a, ε, hε, hξ, hmul, -, hiso⟩ := GlobalTheory.TraceIsometry.exists_gl_of_trace_isometry D.host.E D.R.r ((U₂ σ₂).X k₂) ((U σ).X k) (fun τ => (hL₂.xiAbs σ₂ hσ₂ k₂ τ).trans (hL.xiAbs σ hσ k τ).symm) ((φ₂ k₂).symm.trans (gam.trans (φ k))) (fun u v => by`. Establish `e₁` using `hEF k (gam ((φ₂ k₂).symm u)) (gam ((φ₂ k₂).symm v))`. Establish `e₂` using `hEF₂ k₂ ((φ₂ k₂).symm u) ((φ₂ k₂).symm v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e₁` using `[hg]`. Rewrite `e₂` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `e₁.symm.trans e₂)`. Establish `hξ₀ : ((U σ).X k).ξ0 = ((U₂ σ₂).X k₂).ξ0` using `(hW k).2.trans (hW₂ k₂).2.symm`. Take `rfl : ε = 1` from `mul_right_cancel₀ ((U₂ σ₂).X k₂).ξ0_ne (by rw [← hξ, one_mul, hξ₀])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : ((U σ).X k).Gm = ((U₂ σ₂).X k₂).Gm` using `(hW k).1.trans (hW₂ k₂).1.symm`. Establish `hΨ : ∀ τ, τ ∈ ((U σ).X k).Ψ ↔ τ ∈ ((U₂ σ₂).X k₂).Ψ` using `fun τ => ((hU.2.1 k).2 τ).trans ((hU₂.2.1 k₂).2 τ).symm`. Establish `hp0 : ((U σ).X k).p0 = ((U₂ σ₂).X k₂).p0` using `(hU.2.1 k).1.trans (hU₂.2.1 k₂).1.symm`. Establish `hiso' : ∀ v w, herm ((U σ).X k).Gm ((a : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec v) ((a : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec w) = herm ((U₂ σ₂).X k₂).Gm v w` using `fun v w => by`. Rewrite using `[hiso, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgam : ∀ b, (φ k (gam b) : Fin D.R.r → D.host.E) = (a : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec (φ₂ k₂ b : Fin D.R.r → D.host.E)` using `fun b => by`. Rewrite using `[hmul (φ₂ k₂ b)]`. Simplify using the standard rewrite rules. Use `⟨k, a, hG.symm, fun v w => ?_, ?_⟩` and prove the remaining obligations. Establish `h'` using `hiso' v w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h'` using `[hG]`. Then use the resulting hypothesis. Introduce `x hx x' hmv`. Apply the tactic sequence `have hx' : x' ∈ ((U σ).X k).dom := GlobalTheory.FrameDom.mem_dom_of_isometry _ _ _ _ a hp0 hΨ hiso' x x' hx hmv`. Use `⟨hx', ?_⟩` and prove the remaining obligations. Take `⟨Q₁, hQ₁, hq₁, hqu₁, hqv₁, hqn₁⟩` from `hper k ⟨x', hx'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨Q₂, hQ₂, hq₂, hqu₂, hqv₂, hqn₂⟩` from `hper₂ k₂ ⟨x, hx⟩`. Take `⟨c₁, c₂⟩` from `GlobalTheory.CoverFrameRead.point_over d hd hpq hA hle hinc e e₂ F F₂ (ik k) (ik₂ k₂) hq₁ hq₂ gam hg gM (fun b i => by`. Rewrite using `[hQ₁, hQ₂, hgam, Equiv.apply_symm_apply, hrel]`. Conclude with `GlobalTheory.CoverFrameRead.perFr_move _ _ hΨ hp0 hG a hiso' x x' hmv _ _ _)`. Establish `hx₂ : ((U₂ σ₂).un k₂ ⟨x, hx⟩).x ≫ d.r = ((U σ).un k ⟨x', hx'⟩).x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hqu₁, hqu₂]`. Conclude with `c₁`. Establish `hu₂ : ∀ τ i, ((U₂ σ₂).un k₂ ⟨x, hx⟩).u τ i ≫ d.m.φ = ((U σ).un k ⟨x', hx'⟩).u τ i` using `fun τ i => c₂ ⟨τ, i⟩ _ _ (hqv₁ τ i) (hqv₂ τ i)`. Use `letI : Algebra c.F (CAt σ₂) := σ.toAlgebra`. Take `⟨z, hzx, hzu, ho⟩` from `exists_frOver_down (S := CAt σ₂) d ((U₂ σ₂).un k₂ ⟨x, hx⟩) ((U σ).un k ⟨x', hx'⟩) hx₂ hu₂`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `GlobalTheory.GeoLevel.exists_frBor_gen (σ := σ) ((U σ).un k ⟨x', hx'⟩) z hzx hzu`. Establish `hn' : (∀ τ i, ‖dmin ((U₂ σ₂).X k₂).Gm x τ i‖ = 1) → ∀ τ i, ‖dmin ((U σ).X k).Gm x' τ i‖ = 1`. Introduce `hn τ i`. Take `⟨τ, h₁⟩` from `τ`. Establish `h₂` using `(hΨ τ).1 h₁`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e' : dmin ((U σ).X k).Gm x' ⟨τ, h₁⟩ i = dmin ((U₂ σ₂).X k₂).Gm x ⟨τ, h₂⟩ i`. Unfold `dmin`. Rewrite using `[hmv τ h₂ h₁, GlobalTheory.FrameDom.gram_mul _ _ _ hiso' τ]`. Rewrite using `[e']`. Conclude with `hn _ _`.
-
-Use `⟨t, fun hn => ?_, z, ?_, ho⟩` and prove the remaining obligations. Conclude with `GlobalTheory.CoverFrameMod.norm_gen_eq_one_of_frOver d F₂ F (ik₂ k₂) (ik k) Q₂ Q₁ ((U₂ σ₂).un k₂ ⟨x, hx⟩) ((U σ).un k ⟨x', hx'⟩) z (fun i => Option.elim i t (fun _ => 1)) hq₂ hq₁ hqu₂ hqu₁ (hqn₂ hn) (hqn₁ (hn' hn)) ho ht`. Establish `e' : genScal (Dw` using `Dw) (S := CAt σ₂) t = fun i => Option.elim i t (fun _ => 1) := genScal_eq _`. Conclude with `e'.symm ▸ ht`.
+A detailed English derivation is pending.
 -/
 theorem over_comp : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r) (d : DeltaDat Xo c 0) (U₂ : ∀ σ : d.c₂.F →+* ℂ, Unf d.Xo₂ d.c₂ σ D.R.r) (dict₂ : ∀ σ : d.c₂.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U₂ σ).X k).Ψ D.R.r), Laws D j Xo c U dict → Laws D j d.Xo₂ d.c₂ U₂ dict₂ → d.IsLev → ∀ σ₂, GoodEmb d.c₂ σ₂ → ∀ k₂ : (U₂ σ₂).Comp, ∃ (k : (U (σ₂.comp (d.eF : c.F →+* d.c₂.F))).Comp) (δ : GL (Fin D.R.r) D.host.E), ((U₂ σ₂).X k₂).Gm = ((U (σ₂.comp (d.eF : c.F →+* d.c₂.F))).X k).Gm ∧ (∀ v w, herm ((U₂ σ₂).X k₂).Gm ((δ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec v) ((δ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec w) = herm ((U₂ σ₂).X k₂).Gm v w) ∧ GlobalTheory.LevModel.Over d σ₂ (U (σ₂.comp (d.eF : c.F →+* d.c₂.F))) (U₂ σ₂) k₂ k δ := by
   intro D j H Dw l Xo c U dict d U₂ dict₂ hL hL₂ hd σ₂ hσ₂ k₂

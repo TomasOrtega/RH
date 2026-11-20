@@ -12,7 +12,7 @@ set_option linter.unusedSectionVars false
 variable {𝕜 : Type*} [RCLike 𝕜] {n : Type*} [Fintype n] [LinearOrder n]
 
 /- English proof (translation)
-Take `⟨hre, him⟩` from `RCLike.pos_iff.1 hz`. Establish `hz' : z = (RCLike.re z : 𝕜)` using `by rw [← RCLike.re_add_im z, him]; simp`. Rewrite using `[hz', ← RCLike.ofReal_inv]`. Conclude with `RCLike.ofReal_pos.2 (inv_pos.2 hre)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rclike_inv_pos {z : 𝕜} (hz : 0 < z) : 0 < z⁻¹ := by
   obtain ⟨hre, him⟩ := RCLike.pos_iff.1 hz
@@ -41,7 +41,7 @@ def upperPosSubgroup (n 𝕜 : Type*) [RCLike 𝕜] [Fintype n] [LinearOrder n] 
     exact rclike_inv_pos (ha.2 i)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_upperPosSubgroup {g : GL n 𝕜} :
     g ∈ upperPosSubgroup n 𝕜 ↔
@@ -55,7 +55,7 @@ section Split
 variable [WellFoundedLT n] [LocallyFiniteOrderBot n]
 
 /- English proof (translation)
-Establish `e : (((Unitary.toUnits (iwasawaK g))⁻¹ * g : GL n 𝕜) : Matrix n n 𝕜) = ((iwasawaK g : Matrix n n 𝕜))ᴴ * g` using `rfl`. Rewrite using `[mem_upperPosSubgroup, e, iwasawaK_conjTranspose_mul]`. Use `⟨(blockTriangular_diagonal _).mul (iwasawaEquiv.symm g).2.2.2.1, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[diagonal_mul, (iwasawaEquiv.symm g).2.2.2.2 i, mul_one]`. Conclude with `RCLike.ofReal_pos.2 ((iwasawaEquiv.symm g).2.1.2 i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjTranspose_iwasawaK_mul_mem (g : GL n 𝕜) :
     (Unitary.toUnits (iwasawaK g))⁻¹ * g ∈ upperPosSubgroup n 𝕜 := by
@@ -70,9 +70,9 @@ noncomputable def kbSplit (g : GL n 𝕜) : unitaryGroup n 𝕜 × upperPosSubgr
   (iwasawaK g, ⟨_, conjTranspose_iwasawaK_mul_mem g⟩)
 
 /- English proof (translation)
-Use `symm`. Apply `eq_iwasawaK_of_mem` to reduce the goal to its premises. Establish `e : ((p.1 : Matrix n n 𝕜))ᴴ * (kbMul p : Matrix n n 𝕜) = ((p.2 : GL n 𝕜) : Matrix n n 𝕜)` using `by show ((p.1 : Matrix n n 𝕜))ᴴ * ((p.1 : Matrix n n 𝕜) * ((p.2 : GL n 𝕜) : Matrix n n 𝕜)) = _`. Rewrite using `[← Matrix.mul_assoc, show ((p.1 : Matrix n n 𝕜))ᴴ * p.1 = 1 from p.1.2.1, Matrix.one_mul]`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `p.2.2.1`. Rewrite using `[e]`. Take `⟨hre, him⟩` from `RCLike.pos_iff.1 (p.2.2.2 i)`. Conclude with `⟨hre.le, him⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iwasawaK_kbMul (p : unitaryGroup n 𝕜 × upperPosSubgroup n 𝕜) :
     iwasawaK (kbMul p) = p.1 := by
@@ -137,13 +137,13 @@ instance : SecondCountableTopology (upperPosSubgroup n ℝ) :=
 variable [WellFoundedLT n] [LocallyFiniteOrderBot n]
 
 /- English proof (translation)
-Establish `e : (upperPosSubgroup n ℝ : Set (GL n ℝ)) = (⋂ i, ⋂ j, {g : GL n ℝ | j < i → (g : Matrix n n ℝ) i j = 0}) ∩ ⋂ i, {g : GL n ℝ | 0 ≤ (g : Matrix n n ℝ) i i}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_upperPosSubgroup, mem_inter_iff, mem_iInter, mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hU, hpos⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun i j h => hU h, fun i => (hpos i).le⟩`. Introduce and unpack `⟨hU, hnn⟩`. Establish `hU' : (g : Matrix n n ℝ).IsUpperTriangular` using `fun i j h => hU i j h`. Use `⟨hU', fun i => lt_of_le_of_ne (hnn i) (Ne.symm ?_)⟩` and prove the remaining obligations. Establish `hdet` using `((isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hdet` using `[det_of_isUpperTriangular hU']`. Conclude with `Finset.prod_ne_zero_iff.1 hdet i (Finset.mem_univ i)`. Rewrite using `[e]`. Use `IsClosed.inter (isClosed_iInter fun i => isClosed_iInter fun j => ?_) (isClosed_iInter fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `h : j < i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, forall_const]`. Conclude with `isClosed_eq (Units.continuous_val.matrix_elem i j) continuous_const`. Simplify using `only [h, IsEmpty.forall_iff, ofPred_true, isClosed_univ]`. Conclude with `isClosed_le continuous_const (Units.continuous_val.matrix_elem i i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_upperPosSubgroup : IsClosed (upperPosSubgroup n ℝ : Set (GL n ℝ)) := by
   have e : (upperPosSubgroup n ℝ : Set (GL n ℝ)) =
@@ -175,9 +175,9 @@ noncomputable def kbInvHomeomorph : GL n ℝ ≃ₜ unitaryGroup n ℝ × upperP
   kbHomeomorph.symm.trans ((Homeomorph.refl _).prodCongr (Homeomorph.inv _))
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `kbHomeomorph.surjective g`. Establish `e : Unitary.toUnits q.1 * kbHomeomorph p * ((q.2 : GL n ℝ))⁻¹ = kbHomeomorph (q.1 * p.1, p.2 * q.2⁻¹)`. Simplify using `only [kbHomeomorph_apply, map_mul, Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc]`. Rewrite using `[e]`. Simplify using `only [kbInvHomeomorph, Homeomorph.trans_apply, Homeomorph.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Prod.ext rfl ?_` and prove the remaining obligations. Use `show (p.2 * q.2⁻¹)⁻¹ = q.2 * p.2⁻¹`. Rewrite using `[_root_.mul_inv_rev, inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kbInvHomeomorph_equivariant (q : unitaryGroup n ℝ × upperPosSubgroup n ℝ) (g : GL n ℝ) :
     kbInvHomeomorph (Unitary.toUnits q.1 * g * ((q.2 : GL n ℝ))⁻¹) = q * kbInvHomeomorph g := by
@@ -192,17 +192,15 @@ theorem kbInvHomeomorph_equivariant (q : unitaryGroup n ℝ × upperPosSubgroup 
   rw [_root_.mul_inv_rev, inv_inv]
 
 /- English proof (translation)
-Use `set H := haarGLReal μ₀ with hHdef`. Use `set f := kbInvHomeomorph (n := n)`. Use `set ν := Measure.map f H with hνdef`. Establish `hν : ν.IsMulLeftInvariant` using `⟨fun q => by`. Rewrite using `[hνdef, Measure.map_map (measurable_const_mul q) f.measurable]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e1 : (fun x => q * x) ∘ f = f ∘ (fun g => Unitary.toUnits q.1 * g * ((q.2 : GL n ℝ))⁻¹)`. Use function extensionality and compare the values at `fun g => (kbInvHomeomorph_equivariant q g).symm`. Establish `e2 : (fun g : GL n ℝ => Unitary.toUnits q.1 * g * ((q.2 : GL n ℝ))⁻¹) = (fun g => g * ((q.2 : GL n ℝ))⁻¹) ∘ (fun g => Unitary.toUnits q.1 * g)` using `rfl`. Establish `hmT : Measurable (fun g : GL n ℝ => Unitary.toUnits q.1 * g * ((q.2 : GL n ℝ))⁻¹)`. Rewrite using `[e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(measurable_mul_const _).comp (measurable_const_mul _)`. Rewrite using `[e1, ← Measure.map_map f.measurable hmT, e2, ← Measure.map_map (measurable_mul_const _) (measurable_const_mul _), map_mul_left_eq_self, map_mul_right_eq_self]⟩`. Establish `hνc : IsFiniteMeasureOnCompacts ν` using `IsFiniteMeasureOnCompacts.map H f`. Take `⟨c, key⟩ : ∃ c : ℝ≥0, ν = c • μK.prod μB` from `⟨_, isMulLeftInvariant_eq_smul ν (μK.prod μB)⟩`. Establish `hH : H = Measure.map f.symm ν`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hνdef, Measure.map_map f.symm.measurable f.measurable]`. Simplify using the standard rewrite rules. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Introduce `hc`. Rewrite `key` using `[hc, zero_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h0 : H Set.univ = 0` using `by rw [hH, key, Measure.map_zero, Measure.coe_zero, Pi.zero_apply]`. Conclude with `(IsOpenPosMeasure.open_pos Set.univ isOpen_univ Set.univ_nonempty) h0`. Rewrite using `[hH, key, Measure.map_smul]`. Use `congr 1`. Establish `e3 : ⇑f.symm = kbHomeomorph ∘ Prod.map id (fun b : upperPosSubgroup n ℝ => b⁻¹)`.
-
-Use function extensionality and compare the values at `p`. Both sides reduce to the same expression. Rewrite using `[e3, ← Measure.map_map kbHomeomorph.measurable (measurable_id.prodMap measurable_inv), ← Measure.map_prod_map _ _ measurable_id measurable_inv, Measure.map_id, Measure.inv_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarGLReal_eq_smul_map_kbHomeomorph (μ₀ : Measure (Matrix n n ℝ)) [μ₀.IsAddHaarMeasure]
     (μK : Measure (unitaryGroup n ℝ)) [μK.IsHaarMeasure]
@@ -243,9 +241,9 @@ theorem haarGLReal_eq_smul_map_kbHomeomorph (μ₀ : Measure (Matrix n n ℝ)) [
       ← Measure.map_prod_map _ _ measurable_id measurable_inv, Measure.map_id, Measure.inv_def]
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `haarGLReal_eq_smul_map_kbHomeomorph μ₀ μK μB`. Use `⟨c, hc, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[h, lintegral_smul_measure, lintegral_map hf kbHomeomorph.measurable]`. Use `lintegral_prod (μ := μK) (ν := μB.inv) _ (hf.comp kbHomeomorph.measurable).aemeasurable` as an intermediate fact. Simplify using `only [Function.comp_def] at this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, ENNReal.smul_def, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lintegral_haarGLReal_iwasawa (μ₀ : Measure (Matrix n n ℝ)) [μ₀.IsAddHaarMeasure]
     (μK : Measure (unitaryGroup n ℝ)) [μK.IsHaarMeasure]

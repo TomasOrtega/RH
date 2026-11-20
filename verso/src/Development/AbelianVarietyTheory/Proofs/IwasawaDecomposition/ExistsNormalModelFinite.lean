@@ -11,31 +11,29 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A R K _ _ _ κ ω S Z U s j _ sZ cU y h hω hκ hs hjs hU hfin`. Take `⟨⟨hD, hDed⟩, hchar, hfrac⟩` from `hω`. Use `letI : Algebra R K := ω.toAlgebra`. Establish `hκf : IsFinite (spMap κ)` using `(IsFinite.SpecMap_iff _).2 hκ`. Establish `hcomp : spMap (ω.comp κ) = spMap ω ≫ spMap κ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `hsR : IsProjOver (pullback.snd s (spMap κ))` using `GlobalTheory.ProjSpace.isProjOver_pullback_snd κ hs`. Establish `hbS : IsPullback (pullback.fst s (spMap κ)) (pullback.snd s (spMap κ)) s (spMap κ)` using `.of_hasPullback _ _`. Establish `hbP : IsPullback (pullback.fst (pullback.snd s (spMap κ)) (spMap ω)) (pullback.snd _ _) (pullback.snd s (spMap κ)) (spMap ω)` using `.of_hasPullback _ _`. Establish `hbig` using `hbP.paste_horiz hbS`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : IsPullback (pullback.fst sZ (spMap (ω.comp κ))) (pullback.snd sZ (spMap (ω.comp κ))) (j ≫ s) (spMap ω ≫ spMap κ)`. Rewrite using `[hjs, ← hcomp]`. Conclude with `.of_hasPullback _ _`. Set `e'` to `hbig.lift (pullback.fst sZ (spMap (ω.comp κ)) ≫ j) (pullback.snd sZ (spMap (ω.comp κ))) (by rw [Category.assoc]; exact hQ.w)`. Establish `he₁ : e' ≫ pullback.fst _ _ ≫ pullback.fst s (spMap κ) = pullback.fst sZ (spMap (ω.comp κ)) ≫ j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc]`. Conclude with `hbig.lift_fst _ _ _`. Establish `he₂ : e' ≫ pullback.snd _ _ = pullback.snd sZ (spMap (ω.comp κ))` using `hbig.lift_snd _ _ _`. Establish `hsq : IsPullback (pullback.fst sZ (spMap (ω.comp κ))) e' j (pullback.fst _ _ ≫ pullback.fst s (spMap κ))` using `IsPullback.of_bot (by rw [he₂]; exact hQ) (by rw [he₁]) hbig`. Establish `he' : IsOpenImmersion e'` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) hsq inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `P` to `pullback (pullback.snd s (spMap κ)) (spMap ω)`. Set `W : P.Opens` to `e'.opensRange`. Set `φ` to `pullback.lift y cU h`. Set `fW : U ⟶ W.toScheme` to `φ ≫ e'.isoOpensRange.hom`. Establish `hW : fW ≫ W.ι = φ ≫ e'` using `by simp [fW, W]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf0 : (y ≫ j) ≫ s = (cU ≫ spMap ω) ≫ spMap κ`. Rewrite using `[Category.assoc, hjs, h, Category.assoc, hcomp]`. Set `f : U ⟶ pullback s (spMap κ)` to `pullback.lift (y ≫ j) (cU ≫ spMap ω) hf0`. Establish `hf : fW ≫ W.ι ≫ pullback.fst _ _ = f`. Rewrite using `[← Category.assoc, hW]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, f, pullback.lift_fst]`. Rewrite using `[he₁, pullback.lift_fst_assoc]`. Simplify using `only [Category.assoc, f, pullback.lift_snd]`. Rewrite using `[pullback.condition, reassoc_of% he₂, pullback.lift_snd_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : fW ≫ W.ι ≫ pullback.snd _ _ = cU`. Rewrite using `[← Category.assoc, hW, Category.assoc, he₂, pullback.lift_snd]`. Establish `hfW : IsFinite fW` using `inferInstance`. Take `⟨Y, π', jQ, hπ', hY, hproj, hflat, hjQ2, hjQ1, hopen, hdense, hlast⟩` from `GlobalTheory.exists_normal_finite_model_of_finite_over_open R K (pullback s (spMap κ)) U (pullback.snd s (spMap κ)) cU f W fW hsR hU hfW hf hc`. Establish `hπ : IsFinite (π' ≫ pullback.fst s (spMap κ))` using `inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Y, π' ≫ pullback.fst s (spMap κ), π' ≫ pullback.snd s (spMap κ), jQ, hπ, ?_, hY, hproj, hflat, hjQ2, ?_, hopen, hdense, fun x ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`. Rewrite using `[reassoc_of% hjQ1, pullback.lift_fst]`. Rewrite using `[hlast x]`. Set `p : pullback (π' ≫ pullback.snd s (spMap κ)) (spMap ω) ⟶ P` to `pullback.lift (pullback.fst _ _ ≫ π') (pullback.snd _ _) (by simpa using pullback.condition)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : p ≫ pullback.fst _ _ = pullback.fst _ _ ≫ π'` using `pullback.lift_fst ..`. Establish `hx : π' (pullback.fst (π' ≫ pullback.snd s (spMap κ)) (spMap ω) x) = pullback.fst (pullback.snd s (spMap κ)) (spMap ω) (p x)`. Rewrite using `[← Scheme.Hom.comp_apply, ← hp, Scheme.Hom.comp_apply]`. Rewrite using `[Scheme.Hom.comp_apply, hx, ← Scheme.Hom.comp_apply (pullback.fst _ _) (pullback.fst s (spMap κ))]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨w, hw⟩`. Establish `hinv : e'.isoOpensRange.inv ≫ e' = W.ι` using `(Iso.inv_comp_eq _).2 e'.isoOpensRange_hom_ι.symm`. Establish `key : e'.isoOpensRange.inv ≫ pullback.fst sZ (spMap (ω.comp κ)) ≫ j = W.ι ≫ pullback.fst _ _ ≫ pullback.fst s (spMap κ)`. Rewrite using `[← he₁, reassoc_of% hinv]`. Use `⟨(e'.isoOpensRange.inv ≫ pullback.fst sZ (spMap (ω.comp κ))) w, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, key, Scheme.Hom.comp_apply (pullback.fst _ _) (pullback.fst s (spMap κ)), ← hw]`. Simplify using `only [Scheme.Hom.comp_apply]`. Introduce and unpack `⟨v, hv⟩`. Take `⟨q, hq1, hq2⟩` from `Scheme.exists_preimage_of_isPullback hsq v (p x) hv`. Use `⟨e'.isoOpensRange.hom q, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Scheme.Hom.comp_apply, ← Category.assoc, Scheme.Hom.isoOpensRange_hom_ι, Scheme.Hom.comp_apply, hq2]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normal_finite_model_of_finite_over_open_baseChange : ∀ (A R K : Type) [CommRing A] [CommRing R] [Field K] (κ : A →+* R) (ω : R →+* K) (S Z U : Scheme.{0}) (s : S ⟶ Sp A) (j : Z ⟶ S) [IsOpenImmersion j] (sZ : Z ⟶ Sp A) (cU : U ⟶ Sp K) (y : U ⟶ Z) (h : y ≫ sZ = cU ≫ spMap (ω.comp κ)), IsDedFrac ω → κ.Finite → IsProjOver s → j ≫ s = sZ → Geo.Tor.IsNormalScheme U → IsFinite (pullback.lift y cU h) → ∃ (Y : Scheme.{0}) (π : Y ⟶ S) (sY : Y ⟶ Sp R) (jQ : U ⟶ pullback sY (spMap ω)), IsFinite π ∧ π ≫ s = sY ≫ spMap κ ∧ Geo.Tor.IsNormalScheme Y ∧ IsProjOver sY ∧ Flat sY ∧ jQ ≫ pullback.snd _ _ = cU ∧ jQ ≫ pullback.fst _ _ ≫ π = y ≫ j ∧ IsOpenImmersion jQ ∧ Dense (Set.range jQ) ∧ ∀ x, x ∈ Set.range jQ ↔ π (pullback.fst sY (spMap ω) x) ∈ Set.range j := by
   intro A R K _ _ _ κ ω S Z U s j _ sZ cU y h hω hκ hs hjs hU hfin

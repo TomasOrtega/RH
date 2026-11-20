@@ -5,15 +5,15 @@ open scoped TensorProduct
 open GlobalTheory.TateLimit
 
 /- English proof (translation)
-Use `haveI : ∀ P : Submodule ℤ_[l] X, Finite (X ⧸ P) := fun P => Finite.of_surjective _ P.mkQ_surjective`. Set `f : X →ₗ[ℤ_[l]] X ⧸ lpow l X (c + 1)` to `(lpow l X (c + 1)).mkQ ∘ₗ LinearMap.lsmul ℤ_[l] X ((l : ℤ_[l]) ^ c)`. Establish `hf : lpow l X 1 ≤ LinearMap.ker f`. Introduce and unpack `_ ⟨y, rfl⟩`. Simplify using `only [f, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, LinearMap.lsmul_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨y, by rw [LinearMap.lsmul_apply, pow_add, mul_smul]⟩`. Set `g` to `(lpow l X 1).liftQ f hf`. Set `R` to `LinearMap.range g`. Establish `h1 : Nat.card R ≤ Nat.card (X ⧸ lpow l X 1)` using `Nat.card_le_card_of_surjective g.rangeRestrict g.surjective_rangeRestrict`. Set `p : X →ₗ[ℤ_[l]] (X ⧸ lpow l X (c + 1)) ⧸ R` to `R.mkQ ∘ₗ (lpow l X (c + 1)).mkQ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hp : lpow l X c ≤ LinearMap.ker p`. Introduce and unpack `_ ⟨y, rfl⟩`. Simplify using `only [p, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨Submodule.Quotient.mk y, rfl⟩`. Establish `hps : Function.Surjective p` using `R.mkQ_surjective.comp (lpow l X (c + 1)).mkQ_surjective`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Nat.card ((X ⧸ lpow l X (c + 1)) ⧸ R) ≤ Nat.card (X ⧸ lpow l X c)`. Use `Nat.card_le_card_of_surjective ((lpow l X c).liftQ p hp) fun z => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hps z`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card R]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `first`. Consider the case `exact Nat.mul_le_mul h1 h2`. Consider the case `exact (Nat.mul_le_mul h2 h1).trans_eq (mul_comm _ _)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem step (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X] [Module ℤ_[l] X] [Finite X]
     (c : ℕ) : Nat.card (X ⧸ lpow l X (c + 1)) ≤
@@ -49,11 +49,11 @@ private theorem step (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X] [Modul
     | exact (Nat.mul_le_mul h2 h1).trans_eq (mul_comm _ _)
 
 /- English proof (translation)
-Introduce `l _ X _ _ _ c`. Proceed by induction on `c with`. Consider the case `zero`. Establish `h : lpow l X 0 = ⊤`. Rewrite using `[eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Conclude with `⟨x, by simp⟩`. Use `haveI : Subsingleton (X ⧸ lpow l X 0) := Submodule.Quotient.subsingleton_iff.2 h`. Rewrite using `[pow_zero]`. Conclude with `(Nat.card_of_subsingleton (0 : X ⧸ lpow l X 0)).le`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ c ih`. Rewrite using `[pow_succ']`. Conclude with `(step l X c).trans (Nat.mul_le_mul_left _ ih)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.K.cardQuotPow :
     ∀ (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X] [Module ℤ_[l] X] [Finite X] (c : ℕ), Nat.card (X ⧸ lpow l X c) ≤ Nat.card (X ⧸ lpow l X 1) ^ c := by

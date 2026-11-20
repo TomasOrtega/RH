@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set A : Set T := ⋃ w ∈ W.filter (fun w => e w = 0), closure {w} with hA`. Use `set B : Set T := ⋃ w ∈ W.filter (fun w => 0 < e w), closure {w} with hB`. Establish `hAc : IsClosed A`. Rewrite using `[hA]`. Conclude with `Set.Finite.isClosed_biUnion (Finset.finite_toSet _) (fun _ _ => isClosed_closure)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBc : IsClosed B`. Rewrite using `[hB]`. Conclude with `Set.Finite.isClosed_biUnion (Finset.finite_toSet _) (fun _ _ => isClosed_closure)`. Establish `hSAB : S ⊆ A ∪ B`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hxw⟩` from `hcov x hx`. Break down `(hnn w hw).eq_or_lt with h | h` into its components or cases. Use `left`. Conclude with `Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_filter.2 ⟨hw, h.symm⟩)) hxw`. Use `right`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_filter.2 ⟨hw, h⟩)) hxw`. Establish `hSA : (S ∩ A).Nonempty`. Take `⟨w, hw, hew⟩` from `h0`. Conclude with `⟨w, hsub w hw (subset_closure rfl), Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_filter.2 ⟨hw, hew⟩)) (subset_closure rfl)⟩`. Establish `hSB : (S ∩ B).Nonempty`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw, hew⟩` from `hp`. Conclude with `⟨w, hsub w hw (subset_closure rfl), Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_filter.2 ⟨hw, hew⟩)) (subset_closure rfl)⟩`. Take `⟨x, _, hxA, hxB⟩` from `isPreconnected_closed_iff.1 hS A B hAc hBc hSAB hSA hSB`. Rewrite `hxA` using `[hA, Set.mem_iUnion₂]`. Rewrite `hxB` using `[hB, Set.mem_iUnion₂]`.
-
-Take `⟨i, hi, hxi⟩` from `hxA`. Take `⟨k, hk, hxk⟩` from `hxB`. Rewrite `hi`, `hk` using `[Finset.mem_filter]`. Conclude with `⟨i, hi.1, k, hk.1, hi.2, hk.2, x, hxi, hxk⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem closure_cover_meeting_pair (T : Type) [TopologicalSpace T] (S : Set T) (W : Finset T) (e : T → ℚ) (hS : _root_.IsPreconnected S)
     (hsub : ∀ w ∈ W, closure {w} ⊆ S) (hcov : ∀ x ∈ S, ∃ w ∈ W, x ∈ closure {w}) (hnn : ∀ w ∈ W, 0 ≤ e w)
@@ -53,7 +51,7 @@ theorem closure_cover_meeting_pair (T : Type) [TopologicalSpace T] (S : Set T) (
   exact ⟨i, hi.1, k, hk.1, hi.2, hk.2, x, hxi, hxk⟩
 
 /- English proof (translation)
-Introduce `T _ S W e` and use `closure_cover_meeting_pair T S W e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ (T : Type) [TopologicalSpace T] (S : Set T) (W : Finset T) (e : T → ℚ), _root_.IsPreconnected S →
     (∀ w ∈ W, closure {w} ⊆ S) → (∀ x ∈ S, ∃ w ∈ W, x ∈ closure {w}) → (∀ w ∈ W, 0 ≤ e w) →

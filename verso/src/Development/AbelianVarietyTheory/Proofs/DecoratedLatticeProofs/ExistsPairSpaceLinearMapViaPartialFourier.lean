@@ -16,21 +16,21 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Use `GlobalTheory.SplitWeil.secondCountable k` as an intermediate fact. Use `GlobalTheory.SplitWeil.t2Space k` as an intermediate fact. Take `⟨c, hc⟩` from `(GlobalTheory.SplitWeil.conductor_exists k).1 ψ hψ hne`. Use `set μ : Measure (n → k) := Measure.pi fun _ => ν with hμ`. Establish `hF : ∀ y, ∫ x, f x * (ψ (x ⬝ᵥ y) : ℂ) ∂μ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Establish `h1` using `h0 (-y)`. Simplify using `only [GlobalTheory.StepData.hat] at h1`. Rewrite using `[← h1]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[neg_dotProduct, neg_one_mul, neg_neg, dotProduct_comm]`. Use `set g : (n → k) → ℂ := fun x => f (x + a) with hgdef`. Establish `hg : g ∈ SB (n → k)` using `⟨hf.1.comp_continuous (continuous_add_const a), hf.2.comp_homeomorph (Homeomorph.addRight a)⟩`. Establish `hpsi : ∀ u v : k, (ψ (u + v) : ℂ) = ψ u * ψ v` using `fun u v => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AddChar.map_add_eq_mul, Circle.coe_mul]`. Establish `hpsi' : ∀ u : k, (ψ (-u) : ℂ) * ψ u = 1` using `fun u => by`. Rewrite using `[← hpsi, neg_add_cancel, AddChar.map_zero_eq_one, Circle.coe_one]`. Establish `hG : ∀ y, ∫ x, g x * (ψ (x ⬝ᵥ y) : ℂ) ∂μ = 0`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ x, g x * (ψ (x ⬝ᵥ y) : ℂ) = (ψ (-(a ⬝ᵥ y)) : ℂ) * (f (x + a) * ψ ((x + a) ⬝ᵥ y))`. Introduce `x`. Rewrite using `[add_dotProduct, hpsi, hgdef]`. Take the linear combination `(f (x + a) * (ψ (x ⬝ᵥ y) : ℂ)) * (hpsi' (a ⬝ᵥ y)).symm`. Repeatedly rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[integral_const_mul, integral_add_right_eq_self (fun x => f x * (ψ (x ⬝ᵥ y) : ℂ)) a, hF, mul_zero]`. Take `⟨s, hs⟩` from `FourierPi.fourier_inversion_pi μ hc hg`. Simplify using `only [hG, integral_zero] at hs`. Establish `hpos : ∀ r : kˣ, 0 < μ.real (FourierPi.box n r)`. Introduce `r`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `ENNReal.toReal_pos ((FourierPi.isOpen_box r).measure_pos μ ⟨0, ?_⟩).ne' (FourierPi.isCompact_box r).measure_lt_top.ne` and prove the remaining obligations. Simplify using `[FourierPi.box, cball]`. Establish `h2 : g 0 = 0`. Break down `mul_eq_zero.1 hs.symm with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `mul_pos (hpos s) (hpos (c * s⁻¹))` as an intermediate fact. Conclude with `this.ne' (by exact_mod_cast h)`. Conclude with `h`. Simplify `h2` using `[hgdef]`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_hat_eq_zero (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Circle) (hψ : Continuous ψ)
     (hne : ψ ≠ 1) {n : Type} [Fintype n] [DecidableEq n] {f : (n → k) → ℂ} (hf : f ∈ SB (n → k))
@@ -82,7 +82,7 @@ def withLast {n n' : Type} (x₀ : Matrix n n' k) (y : n → k) : Matrix n (n' �
   fromCols x₀ (Matrix.of fun r (_ : Unit) => y r)
 
 /- English proof (translation)
-Use extensionality with `r (j | u)`. Both sides reduce to the same expression. Consider the cases of `u`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem withLast_toCols {n n' : Type} (x : Matrix n (n' ⊕ Unit) k) :
     withLast x.toCols₁ (fun r => x r (Sum.inr ())) = x := by
@@ -91,9 +91,7 @@ theorem withLast_toCols {n n' : Type} (x : Matrix n (n' ⊕ Unit) k) :
   · cases u; rfl
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Break down `j with a | u` into its components or cases. Simplify using `only [withLast, Matrix.fromCols_apply_inl]`. Conclude with `continuous_const`. Simplify using `only [withLast, Matrix.fromCols_apply_inr, Matrix.of_apply]`.
-
-Conclude with `continuous_apply i`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_withLast {n n' : Type} (x₀ : Matrix n n' k) : Continuous (withLast x₀) := by
   refine continuous_matrix fun i j => ?_
@@ -102,7 +100,7 @@ theorem continuous_withLast {n n' : Type} (x₀ : Matrix n n' k) : Continuous (w
   · simp only [withLast, Matrix.fromCols_apply_inr, Matrix.of_apply]; exact continuous_apply i
 
 /- English proof (translation)
-Use `GlobalTheory.SplitWeil.t2Space k` as an intermediate fact. Establish `hcl : Topology.IsClosedEmbedding (withLast x₀)` using `Function.LeftInverse.isClosedEmbedding (f := fun x : Matrix n (n' ⊕ Unit) k => fun r => x r (Sum.inr ())) (fun y => rfl) (by fun_prop) (continuous_withLast x₀)`. Conclude with `⟨hΨ.1.comp_continuous (continuous_withLast x₀), hΨ.2.comp_isClosedEmbedding hcl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem slice_mem_SB {n n' : Type} [Fintype n] [Fintype n'] {Ψ : Matrix n (n' ⊕ Unit) k → ℂ}
     (hΨ : Ψ ∈ SB (Matrix n (n' ⊕ Unit) k)) (x₀ : Matrix n n' k) :
@@ -128,7 +126,7 @@ def partialHat (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Circle) (h
     exact integral_const_mul a _
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `Ψ h`. Use extensionality with `x`. Establish `h1` using `eq_zero_of_hat_eq_zero ν ψ hψ hne (slice_mem_SB Ψ.2 x.toCols₁) (fun η => congrFun h (x.toCols₁, η)) (fun r => x r (Sum.inr ()))`. Simplify `h1` using `[withLast_toCols]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem partialHat_injective (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Circle) (hψ : Continuous ψ)
     (hne : ψ ≠ 1) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] :
@@ -150,17 +148,17 @@ def coupleBil (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Circle) (h�
     (fun a g Ψ => by funext q; simp; ring)
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `t ht`. Set `b` to `Module.Free.chooseBasis ℂ (SB (Matrix Z n k))`. Use `set c := TensorProduct.equivFinsuppOfBasisLeft b t with hc`. Establish `ht' : t = c.sum fun i m => b i ⊗ₜ m`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← TensorProduct.equivFinsuppOfBasisLeft_symm_apply, LinearEquiv.symm_apply_apply]`. Establish `hm : ∀ (x₀ : Matrix n n' k) (η : n → k) (x : Matrix Z n k), ∑ i ∈ c.support, (b i).1 x * partialHat ν ψ hψ n n' (c i) (x₀, η) = 0`. Introduce `x₀ η x`. Establish `hrow : (fromRows x (Matrix.of fun (_ : Unit) r => η r)) (Sum.inr ()) = η`. Use function extensionality and compare the values at `r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `congrFun ht (x₀, fromRows x (Matrix.of fun (_ : Unit) r => η r))` as an intermediate fact. Simplify using `only [ht', Finsupp.sum, map_sum, TensorProduct.lift.tmul] at this`. Simplify `this` using `[coupleBil, Finset.sum_apply, hrow]`. Establish `hzero : c = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i : 1`. Distinguish the cases in `hi : i ∈ c.support`. Establish `hP : partialHat ν ψ hψ n n' (c i) = partialHat ν ψ hψ n n' 0`. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `p`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hli` using `(linearIndependent_iff'.mp b.linearIndependent) c.support (fun j => partialHat ν ψ hψ n n' (c j) p) (by`. Use extensionality with `x`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ZeroMemClass.coe_zero, Pi.zero_apply]`. Rewrite using `[← hm p.1 p.2 x]`. Conclude with `Finset.sum_congr rfl (fun j _ => mul_comm _ _)) i hi`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hli`. Simplify using `using partialHat_injective ν ψ hψ hne n n' hP`. Simplify using `[Finsupp.notMem_support_iff.mp hi]`. Rewrite using `[ht', hzero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coupleBil_injective (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Circle) (hψ : Continuous ψ)
     (hne : ψ ≠ 1) (n n' Z : Type) [Fintype n] [DecidableEq n] [Fintype n'] :
@@ -201,19 +199,17 @@ theorem coupleBil_injective (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar
   simp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν hν ψk hψ hne n n' Z _ _ _ _ _ _ M _ _ Bl`. Use `set T := TensorProduct.lift (coupleBil ν ψk hψ n n' Z) with hT`. Establish `hinj` using `coupleBil_injective ν ψk hψ hne n n' Z`. Set `eT` to `LinearEquiv.ofInjective T hinj`. Set `W : Submodule ℂ (SB (Matrix n n' k × Matrix (Z ⊕ Unit) n k))` to `(LinearMap.range T).comap (SB (Matrix n n' k × Matrix (Z ⊕ Unit) n k)).subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `res : W →ₗ[ℂ] LinearMap.range T` to `(SB (Matrix n n' k × Matrix (Z ⊕ Unit) n k)).subtype.restrict (fun x hx => hx)`. Set `Λ₀ : W →ₗ[ℂ] M` to `(TensorProduct.lift Bl).comp (eT.symm.toLinearMap.comp res)`. Take `⟨Λ, hΛ⟩` from `LinearMap.exists_extend Λ₀`. Establish `key : ∀ (Ψ₁ : SB (Matrix n (n' ⊕ Unit) k)) (Ψ₂ : SB (Matrix Z n k)) (Ξ : SB (Matrix n n' k × Matrix (Z ⊕ Unit) n k)), Ξ.1 = T (Ψ₂ ⊗ₜ Ψ₁) → Λ Ξ = Bl Ψ₂ Ψ₁`. Introduce `Ψ₁ Ψ₂ Ξ hΞ`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : Ξ ∈ W` using `⟨Ψ₂ ⊗ₜ Ψ₁, hΞ.symm⟩`. Establish `h1` using `LinearMap.congr_fun hΛ ⟨Ξ, hmem⟩`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype] at h1`. Rewrite using `[h1]`. Establish `h2 : res ⟨Ξ, hmem⟩ = eT (Ψ₂ ⊗ₜ Ψ₁)` using `Subtype.ext (by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.ofInjective_apply]`. Conclude with `hΞ)`. Simplify using `only [Λ₀, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, h2, LinearEquiv.symm_apply_apply, TensorProduct.lift.tmul]`. Use `⟨Λ, fun Ψ₁ Ψ₂ Ξ h => key Ψ₁ Ψ₂ Ξ (funext fun q => ?_), fun Ξ₁ a c Ψ₁ Ξ h1 h2 => key Ψ₁ a Ξ (funext fun q => ?_)⟩` and prove the remaining obligations. Rewrite using `[h q, hT, TensorProduct.lift.tmul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h2 q, hT, TensorProduct.lift.tmul]`. Establish `e : (fun y => Ψ₁.1 (withLast q.1 y)) = fun y => Ξ₁.1 q.1 * c.1 (Matrix.of fun r (_ : Unit) => y r)`. Use function extensionality and compare the values at `y`. Rewrite using `[h1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `_ = a.1 q.2.toRows₁ * GlobalTheory.StepData.hat ψk ν (-1) (fun y => Ψ₁.1 (withLast q.1 y)) (q.2 (Sum.inr ()))`. Rewrite using `[e]`. Simplify using `only [GlobalTheory.StepData.hat, mul_assoc]`. Rewrite using `[integral_const_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_pair_map : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), ν.IsAddHaarMeasure → ∀ (ψk : AddChar k Circle), Continuous ψk → ψk ≠ 1 → ∀ (n n' Z : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] [Fintype Z] [DecidableEq Z] (M : Type) [AddCommGroup M] [Module ℂ M] (Bl : SB (Matrix Z n k) →ₗ[ℂ] SB (Matrix n (n' ⊕ Unit) k) →ₗ[ℂ] M), ∃ Λ : SB (Matrix n n' k × Matrix (Z ⊕ Unit) n k) →ₗ[ℂ] M, (∀ (Ψ₁ : SB (Matrix n (n' ⊕ Unit) k)) (Ψ₂ : SB (Matrix Z n k)) (Ξ : SB (Matrix n n' k × Matrix (Z ⊕ Unit) n k)), (∀ q, Ξ.1 q = Ψ₂.1 q.2.toRows₁ * GlobalTheory.StepData.hat ψk ν (-1) (fun y => Ψ₁.1 (fromCols q.1 (Matrix.of fun r _ => y r))) (q.2 (Sum.inr ()))) → Λ Ξ = Bl Ψ₂ Ψ₁) ∧ ∀ (Ξ₁ : SB (Matrix n n' k)) (a : SB (Matrix Z n k)) (c : SB (Matrix n Unit k)) (Ψ₁ : SB (Matrix n (n' ⊕ Unit) k)) (Ξ : SB (Matrix n n' k × Matrix (Z ⊕ Unit) n k)), (∀ x, Ψ₁.1 x = Ξ₁.1 x.toCols₁ * c.1 (Matrix.of fun r _ => x r (Sum.inr ()))) → (∀ q, Ξ.1 q = Ξ₁.1 q.1 * (a.1 q.2.toRows₁ * GlobalTheory.StepData.hat ψk ν (-1) (fun y => c.1 (Matrix.of fun r _ => y r)) (q.2 (Sum.inr ())))) → Λ Ξ = Bl a Ψ₁ := by
   intro k _ _ _ _ _ _ ν hν ψk hψ hne n n' Z _ _ _ _ _ _ M _ _ Bl

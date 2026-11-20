@@ -8,13 +8,13 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Introduce `Γ F L _ _ _ _ _ _ _ hF M _ _ _ a ha v μ`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simpa using continuous_const`. Consider the case `add x y hx hy`. Simplify using `only [map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `hx.add hy`. Consider the case `tmul l m`. Set `b` to `Module.finBasis F M`. Establish `key : ∀ g, μ ((LinearMap.baseChange L (a g)) (l ⊗ₜ m)) = ∑ i, algebraMap F L (b.coord i (a g m)) * μ (l ⊗ₜ b i)`. Introduce `g`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.baseChange_tmul]`. Use `conv_lhs => rw [← b.sum_repr (a g m)]`. Rewrite using `[TensorProduct.tmul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul L, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities.
 
-Both sides reduce to the same expression. Repeatedly rewrite using `[key]`. Conclude with `continuous_finset_sum _ fun i _ => (hF.comp (ha m (b.coord i))).mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.extCont_of :
     ExtCont := by

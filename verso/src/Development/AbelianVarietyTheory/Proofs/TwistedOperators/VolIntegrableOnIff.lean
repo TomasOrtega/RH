@@ -12,16 +12,16 @@ namespace GlobalTheory.VolIdent
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `X hX` and use `GlobalTheory.FunObjModel.isAt_unique (hM.vtx X hX) (hM'.vtx X hX)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vol_nu_eq {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {t : T} (M M' : Vol G)
     (hM : M.Is t) (hM' : M'.Is t) : ∀ X : Node, X.InRange D.R.m → M.ν X = M'.ν X :=
   fun X hX => GlobalTheory.FunObjModel.isAt_unique (hM.vtx X hX) (hM'.vtx X hX)
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, -, a7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V X)`. Establish `e` using `vol_nu_eq M M' hM hM' X hX`. Establish `h1` using `(hM.vtx X hX).haar_fund`. Establish `h2` using `(hM'.vtx X hX).haar_fund`. Rewrite `h2`, the goal using `[← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `h1.1` as an intermediate fact. Conclude with `h1.2.setIntegral_eq h2.2 fun γ g => hf γ γ.2 g`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vol_setIntegral_eq {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {t : T} (M M' : Vol G)
     (hM : M.Is t) (hM' : M'.Is t) {X : Node} (hX : X.InRange D.R.m) (f : GA D (G.V X) → ℂ)
@@ -36,9 +36,9 @@ theorem vol_setIntegral_eq {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G 
   exact h1.2.setIntegral_eq h2.2 fun γ g => hf γ γ.2 g
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, -, a7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V X)`. Establish `e` using `vol_nu_eq M M' hM hM' X hX`. Establish `h1` using `(hM.vtx X hX).haar_fund`. Establish `h2` using `(hM'.vtx X hX).haar_fund`. Rewrite `h2`, the goal using `[← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `h1.1` as an intermediate fact. Conclude with `h1.2.integrableOn_iff h2.2 fun γ g => hf γ γ.2 g`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vol_integrableOn_iff {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {t : T} (M M' : Vol G)
     (hM : M.Is t) (hM' : M'.Is t) {X : Node} (hX : X.InRange D.R.m) (f : GA D (G.V X) → ℂ)

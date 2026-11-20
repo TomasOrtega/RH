@@ -14,7 +14,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.Slo
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `Submodule.smul_mem (𝔞 : FractionalIdeal (𝓞 F)⁰ F).coeToSubmodule (ε : 𝓞 F) hx` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_mul_mem (𝔞 : Frac F) (ε : (𝓞 F)ˣ) {x : F} (hx : x ∈ (𝔞 : FractionalIdeal (𝓞 F)⁰ F)) :
     ((ε : 𝓞 F) : F) * x ∈ (𝔞 : FractionalIdeal (𝓞 F)⁰ F) := by
@@ -26,13 +26,13 @@ def toQ (𝔞 𝔟 : Frac F) (x : Σ β : NzCls 𝔟, posCone 𝔞 (rep β)) : Q
   Quotient.mk _ ⟨(x.2.1, rep x.1), x.2.2.1, rep_mem x.1, x.2.2.2⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨β, ν, hν⟩ ⟨β', ν', hν'⟩ h`. Take `⟨ε, h1, h2⟩` from `Quotient.exact h`. Simplify using `only at h1 h2`. Establish `hβ : β = β'`. Rewrite using `[← Quotient.out_eq β, ← Quotient.out_eq β']`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Quotient.sound ⟨ε, h2⟩`. Substitute `hβ` using the available equality. Establish `hε : ((ε : 𝓞 F) : F) = 1`. Establish `h0` using `rep_ne_zero β`. Establish `: (((ε : 𝓞 F) : F) - 1) * rep β = 0` using `by unfold rep at h2 ⊢; rw [sub_mul, ← h2]; ring`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_right h0)`. Establish `hε' : (((ε⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) = 1`. Use `unit_inv_mul ε` as an intermediate fact. Rewrite `this` using `[hε, mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hε', one_mul]`. Establish `: (⟨ν, hν⟩ : posCone 𝔞 (rep β)) = ⟨ν', hν'⟩` using `Subtype.ext h1.symm`. Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem toQ_injective (𝔞 𝔟 : Frac F) : Function.Injective (toQ 𝔞 𝔟) := by
   rintro ⟨β, ν, hν⟩ ⟨β', ν', hν'⟩ h
@@ -53,24 +53,22 @@ theorem toQ_injective (𝔞 𝔟 : Frac F) : Function.Injective (toQ 𝔞 𝔟) 
   rw [this]
 
 /- English proof (translation)
-Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Conclude with `⟨(IsTotallyReal.complexEmbedding_isReal w.embedding).embedding⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_emb [IsTotallyReal F] : Nonempty (Emb F) := by
   obtain ⟨w⟩ := (inferInstance : Nonempty (InfinitePlace F))
   exact ⟨(IsTotallyReal.complexEmbedding_isReal w.embedding).embedding⟩
 
 /- English proof (translation)
-Introduce `c`. Proceed by induction on `c using Quotient.ind with`. Consider the case `_ p`. Take `⟨⟨ν, b⟩, hν, hb, hpos⟩` from `p`. Establish `hb0 : b ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Take `⟨τ⟩` from `exists_emb (F := F)`. Use `hpos τ` as an intermediate fact. Simplify using `at this`. Set `β : NzCls 𝔟` to `Quotient.mk _ ⟨b, hb, hb0⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Take `⟨ε, hε⟩ : (unitRel 𝔟).r (Quotient.out β) ⟨b, hb, hb0⟩` from `Quotient.exact (Quotient.out_eq β)`. Establish `h4` using `unit_inv_mul ε`. Establish `hrep : rep β = (((ε⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) * b`. Unfold `rep`. Simplify using `only at hε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[hε, ← mul_assoc, h4, one_mul]`. Establish `hprod : ((ε : 𝓞 F) : F) * ν * rep β = ν * b`. Rewrite using `[hrep]`. Take the linear combination `(ν * b) * h4`. Use `⟨⟨β, ((ε : 𝓞 F) : F) * ν, unit_mul_mem 𝔞 ε hν, fun τ => by rw [hprod]; exact hpos τ⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Quotient.sound` to reduce the goal to its premises. Use `⟨ε, ?_, ?_⟩` and prove the remaining obligations. Use `show ν = _ * (((ε : 𝓞 F) : F) * ν)`. Rewrite using `[← mul_assoc, h4, one_mul]`. Use `show b = ((ε : 𝓞 F) : F) * rep β`.
-
-Rewrite using `[hrep, ← mul_assoc, mul_comm ((ε : 𝓞 F) : F), h4, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toQ_surjective [IsTotallyReal F] (𝔞 𝔟 : Frac F) : Function.Surjective (toQ 𝔞 𝔟) := by
   intro c
@@ -97,7 +95,7 @@ theorem toQ_surjective [IsTotallyReal F] (𝔞 𝔟 : Frac F) : Function.Surject
     rw [hrep, ← mul_assoc, mul_comm ((ε : 𝓞 F) : F), h4, one_mul]
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔞 𝔟`. Use `⟨Equiv.ofBijective (toQ 𝔞 𝔟) ⟨toQ_injective 𝔞 𝔟, toQ_surjective 𝔞 𝔟⟩, fun k z x => ?_⟩` and prove the remaining obligations. Conclude with `qClass_mk 𝔞 𝔟 k z _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qFibres : ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F] (𝔞 𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F),
     ∃ e : (Σ β : GlobalTheory.SlopeTestRemainingChoices.EisFibre.NzCls 𝔟, GlobalTheory.SlopeTestRemainingChoices.EisFibre.posCone 𝔞 (GlobalTheory.SlopeTestRemainingChoices.EisFibre.rep β)) ≃ Quotient (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.qRel 𝔞 𝔟),

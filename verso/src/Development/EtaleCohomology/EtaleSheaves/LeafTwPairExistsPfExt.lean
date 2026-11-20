@@ -13,11 +13,11 @@ instance resKInj : (res (ZMod q) (tw q k)).IsKInjective := by
   infer_instance
 
 /- English proof (translation)
-Set `_` to `HasDerivedCategory.standard (Shv (ZMod q))`. Set `Φ` to `DerivedCategory.quotientCompQhIso (Shv (ZMod q))`. Take `⟨g, hg⟩` from `(IsKInjective.Qh_map_bijective ((HomotopyCategory.quotient _ _).obj T) L).2 (Φ.hom.app T ≫ inv (DerivedCategory.Q.map ε) ≫ DerivedCategory.Q.map a ≫ Φ.inv.app L)`. Take `⟨u, rfl⟩` from `(HomotopyCategory.quotient _ _).map_surjective g`. Use `⟨u, ⟨HomotopyCategory.homotopyOfEq _ _ ?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `(IsKInjective.Qh_map_bijective ((HomotopyCategory.quotient _ _).obj S) L).1` to reduce the goal to its premises. Establish `nat : ∀ {X Y : Cx (ZMod q)} (f : X ⟶ Y), DerivedCategory.Qh.map ((HomotopyCategory.quotient _ _).map f) = Φ.hom.app X ≫ DerivedCategory.Q.map f ≫ Φ.inv.app Y`. Introduce `X Y f`. Use `Φ.hom.naturality f` as an intermediate fact. Simplify using `only [Functor.comp_map] at this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, ← this]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `DerivedCategory.Qh.map ((HomotopyCategory.quotient _ _).map (ε ≫ u)) = _`. Rewrite using `[Functor.map_comp, Functor.map_comp, hg, nat ε, nat a]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_app_assoc, IsIso.hom_inv_id_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ext_homotopy {S T L : Cx (ZMod q)} (ε : S ⟶ T) [QuasiIso ε] (a : S ⟶ L) [L.IsKInjective] :
     ∃ u : T ⟶ L, Nonempty (Homotopy (ε ≫ u) a) := by
@@ -40,13 +40,13 @@ theorem ext_homotopy {S T L : Cx (ZMod q)} (ε : S ⟶ T) [QuasiIso ε] (a : S �
   simp only [Category.assoc, Iso.inv_hom_id_app_assoc, IsIso.hom_inv_id_assoc]
 
 /- English proof (translation)
-Introduce `q _ k T e ⟨_, ε, hε, he⟩`. Take `⟨u, ⟨H⟩⟩` from `ext_homotopy q (ε := ε) (a := resAug (tw q k))`. Use `⟨u, fun U ζ => ?_⟩` and prove the remaining obligations. Establish `h0 : ε.f 0 ≫ u.f 0 = (resAug (tw q k)).f 0`. Establish `hc` using `H.comm 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[dNext_eq _ (show (ComplexShape.up ℤ).Rel 0 1 by simp), prevD_eq _ (show (ComplexShape.up ℤ).Rel (-1) 0 by simp)]`. Establish `z1 : IsZero ((sgl (tw q k)).X 1)` using `HomologicalComplex.isZero_single_obj_X _ _ _ _ (by simp)`. Establish `z2 : IsZero ((res (ZMod q) (tw q k)).X (-1))`. Unfold `res InjectiveResolution.cochainComplex`. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ (by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn`. Express the relevant statement in the definitionally equal form `((n : ℕ) : ℤ) = -1 at hn`. Use the proof step `omega)`. Establish `e1 : H.hom 1 0 = 0` using `z1.eq_of_src _ _`. Establish `e2 : H.hom 0 (-1) = 0` using `z2.eq_of_tgt _ _`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hc` using `[e1, e2]`. Simplify using `using hc`. Rewrite using `[← he U ζ, map_map, map_map, h0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem leafTwResExt : LeafTwResExt := by
   intro q _ k T e ⟨_, ε, hε, he⟩
@@ -71,7 +71,7 @@ theorem leafTwResExt : LeafTwResExt := by
   rfl
 
 /- English proof (translation)
-The claim follows from `LeafTwPairExists_of h1 h2 leafTwResExt`.
+A detailed English derivation is pending.
 -/
 theorem LeafTwPairExists_of' (h1 : LeafTwTensEx) (h2 : LeafTwTensRes) : LateralTheory.E.CupProductRingLaws.LeafTwPairExists :=
   LeafTwPairExists_of h1 h2 leafTwResExt

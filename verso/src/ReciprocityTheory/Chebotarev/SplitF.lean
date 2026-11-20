@@ -5,11 +5,11 @@ open NumberField Filter Topology
 namespace ReciprocityTheory.Cheb
 
 /- English proof (translation)
-Establish `key : ∀ u : Finset α, ∑ a ∈ u, f a ≤ n * ∑' b, h b`. Introduce `u`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun b _ => ?_` and prove the remaining obligations. Establish `e : ∑ a ∈ u.filter (fun a => π a = b), h (π a) = ∑ a ∈ u.filter (fun a => π a = b), h b` using `Finset.sum_congr rfl fun a ha => by rw [(Finset.mem_filter.1 ha).2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, Finset.sum_const, nsmul_eq_mul]`. Establish `hc : (u.filter (fun a => π a = b)).card ≤ n`. Use `Set.ncard_le_ncard (s := ((u.filter (fun a => π a = b) : Finset α) : Set α)) (t := {a | π a = b}) (fun a ha => (Finset.mem_filter.1 ha).2) (hfib b).1` as an intermediate fact. Rewrite `this` using `[Set.ncard_coe_finset]`. Conclude with `this.trans (hfib b).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast hc) (hh0 b)`. Use `_ = n * ∑ b ∈ u.image π, h b := (Finset.mul_sum _ _ _).symm`. Use `_ ≤ n * ∑' b, h b := mul_le_mul_of_nonneg_left (hh.sum_le_tsum _ fun b _ => hh0 b) (Nat.cast_nonneg n)`. Establish `hs : Summable f` using `summable_of_sum_le (fun a => hf0 a) key`. Conclude with `⟨hs, hs.tsum_le_of_sum_le key⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fibre_sum_le {α β : Type*} (π : α → β) (f : α → ℝ) (h : β → ℝ) (n : ℕ) (hf0 : ∀ a, 0 ≤ f a)
     (hfh : ∀ a, f a ≤ h (π a)) (hh0 : ∀ b, 0 ≤ h b) (hh : Summable h)
@@ -40,23 +40,19 @@ theorem fibre_sum_le {α β : Type*} (π : α → β) (f : α → ℝ) (h : β �
   exact ⟨hs, hs.tsum_le_of_sum_le key⟩
 
 /- English proof (translation)
-Establish `hf0' : 0 ≤ ∑' a, f a` using `tsum_nonneg hf0`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `using hf0'`. Establish `hfin : ∀ b ∉ S, {a | π a = b ∧ f a = g b}.Finite` using `fun b hb => Set.finite_of_ncard_pos (lt_of_lt_of_le hk (hfib b hb))`. Set `A : β → Finset α` to `fun b => if hb : b ∉ S then (hfin b hb).toFinset else ∅`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hA : ∀ b a, a ∈ A b → π a = b ∧ f a = g b`. Introduce `b a ha`. Simplify using `only [A] at ha`. Use `split_ifs at ha with hb`. Apply the tactic sequence `all_goals simp at ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `all_goals exact ha`. Establish `hcard : ∀ b ∉ S, k ≤ (A b).card`. Introduce `b hb`. Simplify using `only [A, dif_pos hb]`. Rewrite using `[← Set.ncard_eq_toFinset_card _ (hfin b hb)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfib b hb`. Establish `hdisj : ∀ v : Finset β, (v : Set β).PairwiseDisjoint A`. Introduce `v b _ b' _ hbb'`. Rewrite using `[Function.onFun, Finset.disjoint_left]`. Introduce `a ha ha'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hbb' ((hA b a ha).1.symm.trans (hA b' a ha').1)`. Establish `hmain : ∀ v : Finset β, ∑ b ∈ v, (k : ℝ) * Sᶜ.indicator g b ≤ ∑' a, f a`. Introduce `v`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun b _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : b ∈ S`. Rewrite using `[Set.indicator_of_notMem (by simpa using hb), mul_zero]`. Conclude with `Finset.sum_nonneg fun a _ => hf0 a`. Rewrite using `[Set.indicator_of_mem (by simpa using hb)]`. Establish `e : ∑ a ∈ A b, f a = ∑ a ∈ A b, g b` using `Finset.sum_congr rfl fun a ha => (hA b a ha).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e, Finset.sum_const, nsmul_eq_mul]`. Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast hcard b hb) (hg0 b)`. Use `_ = ∑ a ∈ v.biUnion A, f a := (Finset.sum_biUnion (hdisj v)).symm`. Use `_ ≤ ∑' a, f a := hf.sum_le_tsum _ fun a _ => hf0 a`. Establish `h1 : ∑' b, (k : ℝ) * Sᶜ.indicator g b ≤ ∑' a, f a` using `tsum_le_of_sum_le' hf0' hmain`.
-
-Rewrite `h1` using `[Summable.tsum_mul_left _ (hg.indicator _)]`. Establish `h2 : ∑' b, g b = ∑' b, Sᶜ.indicator g b + ∑' b, S.indicator g b`. Rewrite using `[← Summable.tsum_add (hg.indicator _) (hg.indicator _)]`. Use `congr 1`. Use extensionality with `b`.
-
-Rewrite using `[add_comm, Set.indicator_self_add_compl_apply]`. Rewrite using `[h2, mul_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fibre_sum_ge {α β : Type*} (π : α → β) (f : α → ℝ) (g : β → ℝ) (k : ℕ) (hf0 : ∀ a, 0 ≤ f a)
     (hf : Summable f) (hg0 : ∀ b, 0 ≤ g b) (hg : Summable g) (S : Set β) (hS : S.Finite)

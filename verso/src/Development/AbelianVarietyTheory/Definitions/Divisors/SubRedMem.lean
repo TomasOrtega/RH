@@ -82,9 +82,9 @@ variable {D} in
 variable (π : D →ₐ[ℂ] ℂ) in
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul d c`. Rewrite using `[_root_.GlobalTheory.AnPer.Charts.Hom.ten_tmul, _root_.GlobalTheory.AnPer.Charts.Obj.red_tmul, _root_.GlobalTheory.AnPer.Charts.Obj.red_tmul, map_mul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `((_root_.GlobalTheory.AnPer.Charts.Hom.φc f).commutes (π d)).symm`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AnPer.Charts.Hom.red_ten
     {T T' : K.Obj} (f : T ⟶ T') (x : T.ten D) :
@@ -113,7 +113,7 @@ variable {D} in
 variable (π : D →ₐ[ℂ] ℂ) in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `T'.red π _ ∈ T'.J`. Rewrite using `[_root_.GlobalTheory.AnPer.Charts.Hom.red_ten]`. Conclude with `f.mem _ h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AnPer.Charts.Hom.ten_mem {T T' : K.Obj}
     (f : T ⟶ T') {x : T.ten D} (h : x ∈ T.tenJ π) :
@@ -133,11 +133,11 @@ variable (D : Type) [CommRing D] [Algebra ℂ D] in
 variable {D} in
 variable (π : D →ₐ[ℂ] ℂ) in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul d c`. Rewrite using `[_root_.GlobalTheory.AnPer.Charts.Obj.red_tmul, ← Algebra.smul_def]`. Establish `e : d ⊗ₜ[ℂ] c - (1 : D) ⊗ₜ (π d • c) = (Algebra.TensorProduct.includeLeft : D →ₐ[ℂ] D ⊗[ℂ] T.C) (d - algebraMap ℂ D (π d)) * ((1 : D) ⊗ₜ c)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, sub_tmul, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Rewrite using `[e]`. Use `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ?_)` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Consider the case `add x y hx hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add, tmul_add, add_sub_add_comm]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sub_one_tmul_red_mem_map_ker (T : K.Obj) (x : T.ten D) :
     x - (1 : D) ⊗ₜ T.red π x ∈
@@ -170,11 +170,11 @@ variable {D} in
 variable (π : D →ₐ[ℂ] ℂ) in
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hπ`. Take `⟨n, hn⟩` from `T.nil`. Establish `hle : T.tenJ π ≤ (RingHom.ker π).map (Algebra.TensorProduct.includeLeft : D →ₐ[ℂ] D ⊗[ℂ] T.C) ⊔ T.J.map (Algebra.TensorProduct.includeRight : T.C →ₐ[ℂ] D ⊗[ℂ] T.C)`. Introduce `x hx`. Establish `hx' : T.red π x ∈ T.J` using `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : x = (x - (1 : D) ⊗ₜ T.red π x) + (Algebra.TensorProduct.includeRight : T.C →ₐ[ℂ] D ⊗[ℂ] T.C) (T.red π x)`. Rewrite using `[Algebra.TensorProduct.includeRight_apply, sub_add_cancel]`. Rewrite using `[e]`. Conclude with `add_mem (Ideal.mem_sup_left (sub_one_tmul_red_mem_map_ker π T x)) (Ideal.mem_sup_right (Ideal.mem_map_of_mem _ hx'))`. Use `⟨m + n, eq_bot_iff.2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Ideal.map_pow, ← Ideal.map_pow, hm, hn]`. Simplify using `only [Ideal.zero_eq_bot, Ideal.map_bot, sup_bot_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AnPer.Charts.Obj.tenJ_nil
     (hπ : IsNilpotent (RingHom.ker π)) (T : K.Obj) : IsNilpotent (T.tenJ π) := by

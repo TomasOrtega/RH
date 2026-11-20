@@ -9,19 +9,17 @@ open scoped Topology
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Introduce `E _ _ _ a ho U Ξ f Y C c f₀ hS W hW lam hl q k A B hA hB`. Take `⟨hfl, hflow⟩` from `fieldFlow E a ho U Ξ Y C hS.fld W hW`. Take `⟨z, hz⟩` from `zwSz E a U Y C hS.fld W hW (k + 1)`. Take `⟨C₁, hC₁, hhom⟩` from `homSz (HV E a) (Fin Ξ.d → ℂ) q k z`. Take `⟨D₁, hD₁, hmv⟩` from `move E a ho U Ξ (q + 1) k C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL⟩` from `hl.bdd C`. Use `⟨C₁ * D₁ * Real.exp (B * L + A * C), by positivity, fun M hM w hw g x hg => ?_⟩` and prove the remaining obligations. Take `⟨hfield, hfz, hq⟩` from `twOps E a ho U Ξ W hfl g x`. Establish `hsm` using `((hq (q + 1)).1 w).1`. Establish `heq` using `(hq q).2 w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ t ∈ Set.Icc (0 : ℝ) 1, Sz k (Tw U Ξ w.1 g x) (flow (Zw U W g x) t (hOne E a)) (D₁ * (M * (Real.exp (B * L + A * C) * Real.exp (B * |lam (pt g x)| - A * f (pt g x)))))`. Introduce `t ht`. Establish `ht' : |t| ≤ 1` using `abs_le.2 ⟨by linarith [ht.1], ht.2⟩`. Take `⟨h, hh, h1, h2⟩` from `hS.root (pt g x) t ht'`. Establish `hn` using `abs_le.1 (hS.near (pt g x) t h ht' hh)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : flow (Zw U W g x) t (hOne E a) = sand h (hOne E a)`. Rewrite using `[hfz, hflow g h x t hh, ← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel_left]`. Rewrite using `[e]`. Use `hmv w g x h _ ⟨h1, h2⟩ ((hw (g * h) x (by rw [pt_mul]; linarith [hn.1])).mono ?_)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ hM` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Real.exp_add, pt_mul, hl.add]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `b1 : |lam (pt g x) + lam (infGL E a h)| ≤ L + |lam (pt g x)|`. Combine the linear relations using `[abs_add_le (lam (pt g x)) (lam (infGL E a h)), hL h ⟨h1, h2⟩]`. Establish `b2` using `mul_le_mul_of_nonneg_left b1 hB`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `b3` using `mul_le_mul_of_nonneg_left hn.1 hA`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `main` using `hhom (cone E a) (Zw U W g x) (Tw U Ξ w.1 g x) _ ho hfield hsm (hOne E a) hOne_mem_cone (hz g x) key`. Use `(main.congr ?_).mono (le_of_eq (by ring))` and prove the remaining obligations. Use `filter_upwards [ho.mem_nhds hOne_mem_cone] with p hp`.
-
-Conclude with `(heq p hp).symm`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.Cs.decK :
     UpperTheory.V.Lit.Geo.Cs.DecK := by

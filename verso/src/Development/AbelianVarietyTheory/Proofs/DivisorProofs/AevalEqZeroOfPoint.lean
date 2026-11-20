@@ -17,11 +17,11 @@ namespace GlobalTheory.HSElim
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Set `φ : K ≃ₐ[F] AlgebraicClosure F` to `IsAlgClosure.equiv F K (AlgebraicClosure F)`. Establish `hmap : ∀ {σ : Type} (x : σ → K) (a : MvPolynomial σ F), aeval (fun i => φ (x i)) a = φ (aeval x a)` using `fun x a => (AlgHom.congr_fun (MvPolynomial.comp_aeval (f := x) (φ : K →ₐ[F] AlgebraicClosure F)) a).symm`. Establish `key : aeval (fun p : Fin (e + 1) × Fin N => φ (s p.1 p.2)) f = 0`. Use `(hf.zero_iff _).2 ⟨fun j => φ (y j), ?_, fun a ha => ?_, fun i => ?_⟩` and prove the remaining obligations. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hy` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Use `congrFun h j` as an intermediate fact. Simplify using `using this`. Rewrite using `[hmap, hyP a ha, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg φ (hs i)` as an intermediate fact. Simplify `this` using `[map_sum, map_mul]`. Rewrite `key` using `[hmap (fun p : Fin (e + 1) × Fin N => s p.1 p.2)]`. Simplify using `using key`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem aeval_eq_zero_of_point {F K : Type} [Field F] [Field K] [Algebra F K] [IsAlgClosure F K]
     {N e δ : ℕ} {P : Ideal (MvPolynomial (Fin N) F)} {f : MvPolynomial (Fin (e + 1) × Fin N) F}
@@ -46,19 +46,17 @@ theorem aeval_eq_zero_of_point {F K : Type} [Field F] [Field K] [Algebra F K] [I
   simpa using key
 
 /- English proof (translation)
-Introduce `F _ _ D N d I g hD hp hcomp hdim hg hgI`. Take `⟨e, rfl⟩ : ∃ e, D = e + 1` from `⟨D - 1, by omega⟩`. Establish `hIh` using `GlobalTheory.ChowExists.isHomogeneous_of_component hcomp`. Take `⟨f0, hf0⟩` from `GlobalTheory.ChowExists.exists_isChowFormInt hp hIh hdim`. Take `⟨i0, hi0⟩` from `GlobalTheory.ChowExists.exists_X_notMem hf0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hJh` using `isHomogeneous_sup_span_singleton hIh hg`. Establish `hex : ∀ P ∈ (finite_projComponents (I ⊔ Ideal.span {g})).toFinset, ∃ f : MvPolynomial (Fin (e + 1) × Fin N) F, IsChowFormInt P e (hilbertDegree P) f`. Introduce `P hP`. Rewrite `hP` using `[Set.Finite.mem_toFinset]`. Establish `hPp` using `hP.1.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨e', h1, h2⟩` from `ringKrullDim_of_mem_projComponents_sup hIh hdim hg hgI hP`. Take `rfl : e = e'` from `by omega`. Conclude with `GlobalTheory.ChowExists.exists_isChowFormInt hPp (isHomogeneous_of_mem_projComponents hJh hP) h2`. Use `choose! f hf using hex`. Use `⟨∏ P ∈ (finite_projComponents (I ⊔ Ideal.span {g})).toFinset, f P, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun P hP => (hf P hP).ne_zero`. Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Establish `h1 : ∑ P ∈ (finite_projComponents (I ⊔ Ideal.span {g})).toFinset, (f P).totalDegree = (e + 1) * projSetDegree (I ⊔ Ideal.span {g})`. Rewrite using `[projSetDegree, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun P hP => GlobalTheory.ChowSection.totalDegree_of_isChowFormInt (hf P hP)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[h1, mul_assoc]`. Conclude with `Nat.mul_le_mul_left _ (projSetDegree_sup_le_of_isPrime hIh hi0 hg hgI)`. Introduce `K _ _ _ s y hy hyI hyg hs`. Rewrite using `[map_prod]`. Set `Jy : Ideal (MvPolynomial (Fin N) F)` to `RingHom.ker (aeval y : MvPolynomial (Fin N) F →ₐ[F] K)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJy : I ⊔ Ideal.span {g} ≤ Jy` using `sup_le (fun a ha => (RingHom.mem_ker).2 (hyI a ha)) ((Ideal.span_singleton_le_iff_mem _).2 ((RingHom.mem_ker).2 hyg))`. Establish `: Jy.IsPrime` using `RingHom.ker_isPrime _`. Take `⟨P, hPmin, hPle⟩` from `Ideal.exists_minimalPrimes_le hJy`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hy`. Establish `hPc : P ∈ projComponents (I ⊔ Ideal.span {g})` using `⟨hPmin, i, fun h => hi (by simpa using (RingHom.mem_ker).1 (hPle h))⟩`.
-
-Establish `hPf : P ∈ (finite_projComponents (I ⊔ Ideal.span {g})).toFinset` using `(Set.Finite.mem_toFinset _).2 hPc`. Conclude with `Finset.prod_eq_zero hPf (aeval_eq_zero_of_point (hf P hPf) s y hy (fun a ha => (RingHom.mem_ker).1 (hPle ha)) hs)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_elim_form : ∀ (F : Type) [Field F] [CharZero F] (D N d : ℕ)
     (I : Ideal (MvPolynomial (Fin N) F)) (g : MvPolynomial (Fin N) F), 1 ≤ D → I.IsPrime →

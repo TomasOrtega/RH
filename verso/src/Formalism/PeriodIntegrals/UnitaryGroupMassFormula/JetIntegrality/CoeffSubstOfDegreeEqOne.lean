@@ -7,7 +7,7 @@ namespace PI.JetsPhW.Low
 variable {K : Type*} [CommRing K]
 
 /- English proof (translation)
-The claim follows from `| 0, e, h => absurd h (Nat.not_lt_zero _) | d + 1, e, h => by classical rw [pow_succ', MvPowerSeries.coeff_mul] refine Finset.sum_eq_zero (fun x hx => ?_) rw [Finset.HasAntidiagonal.mem_antidiagonal] at hx by_cases hx1 : x.1 = 0 · rw [hx1, MvPowerSeries.coeff_zero_eq_constantCoef …`.
+A detailed English derivation is pending.
 -/
 theorem coeff_pow_eq_zero {σ : Type*} {A : MvPowerSeries σ K}
     (hA : MvPowerSeries.constantCoeff A = 0) :
@@ -29,7 +29,7 @@ theorem coeff_pow_eq_zero {σ : Type*} {A : MvPowerSeries σ K}
       rw [coeff_pow_eq_zero hA d x.2 (by omega), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.constantCoeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero hA)]`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `d hd`. Rewrite using `[map_pow, hA, zero_pow hd, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem const_subst {σ : Type*} {A : MvPowerSeries σ K} (hA : MvPowerSeries.constantCoeff A = 0)
     (f : PowerSeries K) :
@@ -41,11 +41,11 @@ theorem const_subst {σ : Type*} {A : MvPowerSeries σ K} (hA : MvPowerSeries.co
     rw [map_pow, hA, zero_pow hd, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero hA)]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := ({1, 2} : Finset ℕ)) ?_]`. Rewrite using `[Finset.sum_pair (by norm_num), pow_one, smul_eq_mul, smul_eq_mul]`. Introduce `d hd'`. Rewrite `hd'` using `[Function.mem_support]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff, Set.mem_singleton_iff]`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `hd'` to reduce the goal to its premises. Break down `Nat.lt_or_ge d 3 with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h0 : d = 0` using `by omega`. Substitute `h0` using the available equality. Rewrite using `[pow_zero, MvPowerSeries.coeff_one, if_neg he, smul_zero]`. Rewrite using `[coeff_pow_eq_zero hA d e (by omega), smul_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_subst_low {σ : Type*} {A : MvPowerSeries σ K}
     (hA : MvPowerSeries.constantCoeff A = 0) (f : PowerSeries K) {e : σ →₀ ℕ} (he : e ≠ 0)
@@ -71,7 +71,7 @@ theorem coeff_subst_low {σ : Type*} {A : MvPowerSeries σ K}
     · rw [coeff_pow_eq_zero hA d e (by omega), smul_zero]
 
 /- English proof (translation)
-Establish `he : e ≠ 0`. Introduce `h; rw [h, map_zero] at hd; exact absurd hd (by norm_num)`. Rewrite using `[coeff_subst_low hA f he (by omega), coeff_pow_eq_zero hA 2 e (by omega), mul_zero, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_subst_of_degree_eq_one {σ : Type*} {A : MvPowerSeries σ K}
     (hA : MvPowerSeries.constantCoeff A = 0) (f : PowerSeries K) {e : σ →₀ ℕ}
@@ -87,21 +87,21 @@ abbrev E1 : Fin 2 →₀ ℕ := Finsupp.single 1 1
 abbrev bivariateExponentMonomial : Fin 2 →₀ ℕ := Finsupp.single 0 1 + Finsupp.single 1 1
 
 /- English proof (translation)
-The claim follows from `Finsupp.degree_single _ _`.
+A detailed English derivation is pending.
 -/
 theorem degree_expX : Finsupp.degree E0 = 1 := Finsupp.degree_single _ _
 /- English proof (translation)
-The claim follows from `Finsupp.degree_single _ _`.
+A detailed English derivation is pending.
 -/
 theorem degree_expY : Finsupp.degree E1 = 1 := Finsupp.degree_single _ _
 /- English proof (translation)
-Rewrite using `[map_add, Finsupp.degree_single, Finsupp.degree_single]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem degree_expXY : Finsupp.degree bivariateExponentMonomial = 2 := by
   rw [map_add, Finsupp.degree_single, Finsupp.degree_single]
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg (fun d : Fin 2 →₀ ℕ => d 0) h` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem expXY_ne_zero : bivariateExponentMonomial ≠ 0 := by
   intro h
@@ -109,7 +109,7 @@ theorem expXY_ne_zero : bivariateExponentMonomial ≠ 0 := by
   simp at this
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg (fun d : Fin 2 →₀ ℕ => d 0) h` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem expX_ne_expY : E0 ≠ E1 := by
   intro h
@@ -117,13 +117,13 @@ theorem expX_ne_expY : E0 ≠ E1 := by
   simp at this
 
 /- English proof (translation)
-Establish `h0` using `congrArg (fun d : Fin 2 →₀ ℕ => d 0) hxy`. Establish `h1` using `congrArg (fun d : Fin 2 →₀ ℕ => d 1) hxy`. Simplify using `only [Finsupp.add_apply, Finsupp.single_apply] at h0 h1`. Evaluate the numerical expressions using `at h0 h1`. Establish `hx' : x 0 ≠ 0 ∨ x 1 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply the tactic sequence `exact hx (Finsupp.ext (fun i => by fin_cases i <;> simp [hc.1, hc.2]))`. Establish `hy' : y 0 ≠ 0 ∨ y 1 ≠ 0`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `push Not at hc`. Apply the tactic sequence `exact hy (Finsupp.ext (fun i => by fin_cases i <;> simp [hc.1, hc.2]))`. Break down `Nat.eq_zero_or_pos (x 0) with a0 | a0` into its components or cases. Use `right`. Apply the tactic sequence `refine ⟨Finsupp.ext (fun i => ?_), Finsupp.ext (fun i => ?_)⟩ <;> fin_cases i <;>`.
+Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp <;> omega`. Use `left`. Apply the tactic sequence `refine ⟨Finsupp.ext (fun i => ?_), Finsupp.ext (fun i => ?_)⟩ <;> fin_cases i <;>`. Apply the tactic sequence `simp <;> omega`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_add_eq_expXY {x y : Fin 2 →₀ ℕ} (hxy : x + y = bivariateExponentMonomial) (hx : x ≠ 0) (hy : y ≠ 0) :
     (x = E0 ∧ y = E1) ∨ (x = E1 ∧ y = E0) := by
@@ -148,15 +148,15 @@ theorem eq_of_add_eq_expXY {x y : Fin 2 →₀ ℕ} (hxy : x + y = bivariateExpo
       simp <;> omega
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coeff_mul]`. Establish `hsub : ({(E0, E1), (E1, E0)} : Finset ((Fin 2 →₀ ℕ) × (Fin 2 →₀ ℕ))) ⊆ Finset.HasAntidiagonal.antidiagonal bivariateExponentMonomial`. Introduce `q hq`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hq`. Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `hq with rfl | rfl` into its components or cases. Both sides reduce to the same expression. Conclude with `add_comm _ _`. Rewrite using `[← Finset.sum_subset hsub ?_]`. Rewrite using `[Finset.sum_pair (fun h => expX_ne_expY (congrArg Prod.fst h))]`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq hq'`. Rewrite `hq` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Distinguish the cases in `h1 : q.1 = 0`. Rewrite using `[h1, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hA, zero_mul]`. Distinguish the cases in `h2 : q.2 = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hB, mul_zero]`. It suffices to derive a contradiction. Apply `hq'` to reduce the goal to its premises. Break down `eq_of_add_eq_expXY hq h1 h2 with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases. Simplify using `[Prod.ext_iff, a, b]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Prod.ext_iff, a, b]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_expXY_mul {A B : MvPowerSeries (Fin 2) K} (hA : MvPowerSeries.constantCoeff A = 0)
     (hB : MvPowerSeries.constantCoeff B = 0) :
@@ -188,7 +188,7 @@ theorem coeff_expXY_mul {A B : MvPowerSeries (Fin 2) K} (hA : MvPowerSeries.cons
     · simp [Prod.ext_iff, a, b]
 
 /- English proof (translation)
-The claim follows from `coeff_subst_of_degree_eq_one hA f degree_expX`.
+A detailed English derivation is pending.
 -/
 theorem coeff_expX_subst {A : MvPowerSeries (Fin 2) K} (hA : MvPowerSeries.constantCoeff A = 0)
     (f : PowerSeries K) :
@@ -197,7 +197,7 @@ theorem coeff_expX_subst {A : MvPowerSeries (Fin 2) K} (hA : MvPowerSeries.const
   coeff_subst_of_degree_eq_one hA f degree_expX
 
 /- English proof (translation)
-The claim follows from `coeff_subst_of_degree_eq_one hA f degree_expY`.
+A detailed English derivation is pending.
 -/
 theorem coeff_expY_subst {A : MvPowerSeries (Fin 2) K} (hA : MvPowerSeries.constantCoeff A = 0)
     (f : PowerSeries K) :
@@ -206,7 +206,7 @@ theorem coeff_expY_subst {A : MvPowerSeries (Fin 2) K} (hA : MvPowerSeries.const
   coeff_subst_of_degree_eq_one hA f degree_expY
 
 /- English proof (translation)
-Rewrite using `[coeff_subst_low hA f expXY_ne_zero (by rw [degree_expXY]), pow_two, coeff_expXY_mul hA hA]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coeff_expXY_subst {A : MvPowerSeries (Fin 2) K} (hA : MvPowerSeries.constantCoeff A = 0)
     (f : PowerSeries K) :
@@ -218,7 +218,7 @@ theorem coeff_expXY_subst {A : MvPowerSeries (Fin 2) K} (hA : MvPowerSeries.cons
   ring
 
 /- English proof (translation)
-The claim follows from `coeff_subst_of_degree_eq_one (σ := Unit) hA f (Finsupp.degree_single _ _)`.
+A detailed English derivation is pending.
 -/
 theorem pcoeff1_subst {A : PowerSeries K} (hA : PowerSeries.constantCoeff A = 0)
     (f : PowerSeries K) :
@@ -227,9 +227,9 @@ theorem pcoeff1_subst {A : PowerSeries K} (hA : PowerSeries.constantCoeff A = 0)
   coeff_subst_of_degree_eq_one (σ := Unit) hA f (Finsupp.degree_single _ _)
 
 /- English proof (translation)
-Establish `h` using `coeff_subst_low (σ := Unit) hA f (e := Finsupp.single () 2) (by simp) (by rw [Finsupp.degree_single])`. Establish `h2 : PowerSeries.coeff 2 (A ^ 2) = (PowerSeries.coeff 1 A) ^ 2`. Rewrite using `[pow_two, PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_succ, Finset.Nat.sum_antidiagonal_succ, Finset.Nat.antidiagonal_zero, Finset.sum_singleton]`. Simplify using `[hA]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← h2]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pcoeff2_subst {A : PowerSeries K} (hA : PowerSeries.constantCoeff A = 0)
     (f : PowerSeries K) :

@@ -7,13 +7,13 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G Function
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.cases ?_ (fun c => ?_) i` and prove the remaining obligations. Simplify using `using h1`. Simplify using `using h.1 c`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i j`. Use `Fin.cases ?_ (fun j' => ?_) j` and prove the remaining obligations. Introduce `hij`. Simplify using `at hij`. Use `Fin.cases ?_ (fun c => ?_) i` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hij`. Simplify using `only [Fin.cons_succ, Fin.cons_zero]`. Conclude with `h2 j' (by simpa using hij.symm)`. Introduce `hij`. Simplify using `only [Fin.cons_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.2.1 c j' (by simpa using hij)`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Use `h.2.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem strip_cons {r : ℕ} {nu mu : Fin r → ℤ} {g e : ℕ} (h : Strip nu mu g) {f f' : ℤ} (h1 : f ≤ f')
     (h2 : ∀ c : Fin r, c.val = 0 → nu c ≤ f) (he : f' - f + g = e) :
@@ -43,7 +43,7 @@ def fstOf {s : ℕ} (A : Fin s → ℕ) (cp : ℕ → ℤ) (LLv : ChainLetters (
     if h : (n - 2) / 2 < s then cp ((n - 2) / 2) + A ⟨(n - 2) / 2, h⟩ - LLv.deg ⟨2 * ((n - 2) / 2), by omega⟩ else 0
 
 /- English proof (translation)
-Unfold `fstOf`. Rewrite using `[if_pos (by omega)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fstOf_odd {s : ℕ} (A : Fin s → ℕ) (cp : ℕ → ℤ) (LLv : ChainLetters (2 * s + 1)) (i : ℕ) :
     fstOf A cp LLv (2 * i + 1) = cp i := by
@@ -53,9 +53,9 @@ theorem fstOf_odd {s : ℕ} (A : Fin s → ℕ) (cp : ℕ → ℤ) (LLv : ChainL
   omega
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Unfold `fstOf`. Rewrite using `[if_neg (by omega)]`. Establish `hk : (2 * i.val + 2 - 2) / 2 = i.val` using `by omega`. Rewrite using `[dif_pos (by omega)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fstOf_even {s : ℕ} (A : Fin s → ℕ) (cp : ℕ → ℤ) (LLv : ChainLetters (2 * s + 1)) (i : Fin s) :
     fstOf A cp LLv (2 * i.val + 2) = cp i + A i - LLv.deg ⟨2 * i.val, by omega⟩ := by
@@ -70,7 +70,7 @@ def muOf {s r : ℕ} (fst : ℕ → ℤ) (ka : Fin (2 * s + 1 + 1) → Fin r →
   fun l => if l.val = 0 then 0 else Fin.cons (fst l.val) (ka ⟨l.val - 1, by omega⟩)
 
 /- English proof (translation)
-Simplify using `[muOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem muOf_succ {s r : ℕ} (fst : ℕ → ℤ) (ka : Fin (2 * s + 1 + 1) → Fin r → ℤ) (n : ℕ) (h : n + 1 < 2 * s + 1 + 1) :
     muOf fst ka ⟨n + 1, h⟩ = Fin.cons (fst (n + 1)) (ka ⟨n, by omega⟩) := by
@@ -90,9 +90,9 @@ structure LevFacts {s r : ℕ} (A0 : ℤ) (A C : Fin s → ℕ) (cp : ℕ → �
   hf : ∀ c : Fin r, c.val = 0 → ka (Fin.last _) c ≤ cp s
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `h0 : ¬ (2 * i.val + 1 = 0)` using `by omega`. Establish `h1 : (2 * i.val + 1 - 1) / 2 < s` using `by omega`. Establish `h2 : (2 * i.val + 1) % 2 = 1` using `by omega`. Simplify using `only [kLetters, Fin.val_mk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h0, dif_pos h1, if_pos h2]`. Use `congr 1`. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem kLetters_deg_odd {s : ℕ} (A0 : ℕ) (A C : Fin s → ℕ) (i : Fin s) :
     (kLetters A0 A C).deg ⟨2 * i.val + 1, by omega⟩ = A i := by
@@ -108,9 +108,9 @@ theorem kLetters_deg_odd {s : ℕ} (A0 : ℕ) (A C : Fin s → ℕ) (i : Fin s) 
   omega
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `h0 : ¬ (2 * i.val + 2 = 0)` using `by omega`. Establish `h1 : (2 * i.val + 2 - 1) / 2 < s` using `by omega`. Establish `h2 : ¬ ((2 * i.val + 2) % 2 = 1)` using `by omega`. Simplify using `only [kLetters, Fin.val_mk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h0, dif_pos h1, if_neg h2]`. Use `congr 1`. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem kLetters_deg_even {s : ℕ} (A0 : ℕ) (A C : Fin s → ℕ) (i : Fin s) :
     (kLetters A0 A C).deg ⟨2 * i.val + 2, by omega⟩ = C i := by
@@ -126,41 +126,37 @@ theorem kLetters_deg_even {s : ℕ} (A0 : ℕ) (A C : Fin s → ℕ) (i : Fin s)
   omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `⟨by unfold muOf; simp, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`. Break down `Nat.eq_zero_or_pos a with rfl | hpos` into its components or cases. Establish `hv : (kLetters A0.toNat A C).vec ⟨0, ha⟩ = true` using `by simp [kLetters]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[if_pos hv]`. Establish `e0 : muOf (fstOf A cp LLv) ka (Fin.castSucc ⟨0, ha⟩) = 0` using `by unfold muOf; simp`. Establish `e1 : muOf (fstOf A cp LLv) ka (Fin.succ ⟨0, ha⟩) = Fin.cons A0 0`. Unfold `muOf`. Simplify using `only [Fin.succ_mk, Nat.zero_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (by omega)]`. Use `fstOf_odd A cp LLv 0` as an intermediate fact. Simplify using `only [Nat.mul_zero, Nat.zero_add] at this`. Rewrite using `[this, hF.c0]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hch.1`. Establish `hdeg : (kLetters A0.toNat A C).deg ⟨0, ha⟩ = A0.toNat` using `by simp [kLetters]`. Rewrite using `[e0, e1, hdeg]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun c => ?_) i` and prove the remaining obligations. Simplify using `using hF.A0nn`. Simplify using the standard rewrite rules. Introduce `i j`. Use `Fin.cases ?_ (fun j' => ?_) j` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hij`. Simplify using `at hij`. Introduce `_`. Simplify using the standard rewrite rules. Rewrite using `[Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Int.toNat_of_nonneg hF.A0nn]`. Break down `Nat.even_or_odd' a with ⟨i, rfl | rfl⟩` into its components or cases. Take `⟨i', rfl⟩ : ∃ i', i = i' + 1` from `⟨i - 1, by omega⟩`. Establish `hi : i' < s` using `by omega`. Establish `hv : (kLetters A0.toNat A C).vec ⟨2 * (i' + 1), ha⟩ = false`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[kLetters]`. Rewrite using `[if_neg (by rw [hv]; simp)]`. Establish `hst` using `hch.2 ⟨2 * i' + 1, by omega⟩`. Rewrite `hst` using `[if_neg (by rw [hF.vecv]; simp)]`. Establish `e0 : muOf (fstOf A cp LLv) ka (Fin.castSucc ⟨2 * (i' + 1), ha⟩) = Fin.cons (cp i' + A ⟨i', hi⟩ - LLv.deg ⟨2 * i', by omega⟩) (ka (Fin.castSucc ⟨2 * i' + 1, by omega⟩))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `muOf_succ (fstOf A cp LLv) ka (2 * i' + 1) (by omega)`. Rewrite `h` using `[show fstOf A cp LLv (2 * i' + 1 + 1) = _ from fstOf_even A cp LLv ⟨i', hi⟩]`. Conclude with `h`. Establish `e1 : muOf (fstOf A cp LLv) ka (Fin.succ ⟨2 * (i' + 1), ha⟩) = Fin.cons (cp (i' + 1)) (ka (Fin.succ ⟨2 * i' + 1, by omega⟩))`. Establish `h` using `muOf_succ (fstOf A cp LLv) ka (2 * (i' + 1)) (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[fstOf_odd A cp LLv (i' + 1)]`. Conclude with `h`. Establish `hdeg : (kLetters A0.toNat A C).deg ⟨2 * (i' + 1), ha⟩ = C ⟨i', hi⟩` using `kLetters_deg_even A0.toNat A C ⟨i', hi⟩`. Rewrite using `[e0, e1, hdeg]`. Conclude with `strip_cons hst (hF.hc ⟨i', hi⟩) (fun c hc => hF.hd ⟨i', hi⟩ c hc) (hF.he ⟨i', hi⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : i < s` using `by omega`. Establish `hv : (kLetters A0.toNat A C).vec ⟨2 * i + 1, ha⟩ = true`. Simplify using `[kLetters]`. Rewrite using `[if_pos hv]`. Establish `hst` using `hch.2 ⟨2 * i, by omega⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hst` using `[if_pos (by rw [hF.vecv]; simp)]`. Establish `e0 : muOf (fstOf A cp LLv) ka (Fin.castSucc ⟨2 * i + 1, ha⟩) = Fin.cons (cp i) (ka (Fin.castSucc ⟨2 * i, by omega⟩))`. Establish `h` using `muOf_succ (fstOf A cp LLv) ka (2 * i) (by omega)`. Rewrite `h` using `[fstOf_odd A cp LLv i]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : muOf (fstOf A cp LLv) ka (Fin.succ ⟨2 * i + 1, ha⟩) = Fin.cons (cp i + A ⟨i, hi⟩ - LLv.deg ⟨2 * i, by omega⟩) (ka (Fin.succ ⟨2 * i, by omega⟩))`. Establish `h` using `muOf_succ (fstOf A cp LLv) ka (2 * i + 1) (by omega)`. Rewrite `h` using `[show fstOf A cp LLv (2 * i + 1 + 1) = _ from fstOf_even A cp LLv ⟨i, hi⟩]`. Conclude with `h`. Establish `hdeg : (kLetters A0.toNat A C).deg ⟨2 * i + 1, ha⟩ = A ⟨i, hi⟩` using `kLetters_deg_odd A0.toNat A C ⟨i, hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e0, e1, hdeg]`. Use `strip_cons hst (by have := hF.hw ⟨i, hi⟩; linarith) (fun c hc => hF.hb ⟨i, hi⟩ c hc) (by ring)` and prove the remaining obligations. Establish `hst` using `hch.2 (Fin.last (2 * s))`. Rewrite `hst` using `[if_pos (by rw [hF.vecv]; simp)]`. Establish `e1 : muOf (fstOf A cp LLv) ka (Fin.last (2 * s + 1)) = Fin.cons (cp s) (ka (Fin.castSucc (Fin.last (2 * s))))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `h` using `muOf_succ (fstOf A cp LLv) ka (2 * s) (by omega)`. Rewrite `h` using `[fstOf_odd A cp LLv s]`. Conclude with `h`. Rewrite `hst` using `[Fin.succ_last]`. Rewrite using `[e1]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Fin.cons_succ]`. Conclude with `hst.1 i`. Break down `Nat.eq_zero_or_pos i.val with h0 | hp` into its components or cases.
-
-Establish `: i.castSucc = 0` using `Fin.ext (by simp [h0])`. Rewrite using `[this, Fin.cons_zero]`. Conclude with `hF.hf i h0`. Establish `: i.castSucc = Fin.succ ⟨i.val - 1, by omega⟩` using `Fin.ext (by simp; omega)`. Rewrite using `[this, Fin.cons_succ]`.
-
-Conclude with `hst.2.1 ⟨i.val - 1, by omega⟩ i (by simp; omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain_of_facts {s r : ℕ} {A0 : ℤ} {A C : Fin s → ℕ} {cp : ℕ → ℤ} {LLv : ChainLetters (2 * s + 1)}
     {ka : Fin (2 * s + 1 + 1) → Fin r → ℤ} (hF : LevFacts A0 A C cp LLv ka) (hch : IsChain LLv ka) :
@@ -280,9 +276,9 @@ def SrcInjAt : Prop :=
     SrcOK C0 CE1 CE2 X j m rz ry z → SrcOK C0 CE1 CE2 X j m rz ry z' → z.2.2 = z'.2.2 → z.2.1.2 = z'.2.1.2 → z = z'
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Distinguish the cases in `hlt : l.val + 1 < 2 * s + 1 + 1`. Establish `e` using `congrFun h ⟨l.val + 1, hlt⟩`. Rewrite `e` using `[muOf_succ, muOf_succ]`. Use function extensionality and compare the values at `c`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2` using `congrFun e c.succ`. Simplify `e2` using `only [Fin.cons_succ]`. Establish `hl' : l = Fin.last _` using `Fin.ext (by simp only [Fin.val_last]; omega)`. Rewrite using `[hl']`. Conclude with `hl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muOf_inj {s r : ℕ} {fst fst' : ℕ → ℤ} {ka ka' : Fin (2 * s + 1 + 1) → Fin r → ℤ}
     (h : muOf fst ka = muOf fst' ka') (hl : ka (Fin.last _) = ka' (Fin.last _)) : ka = ka' := by
@@ -298,9 +294,9 @@ theorem muOf_inj {s r : ℕ} {fst fst' : ℕ → ℤ} {ka ka' : Fin (2 * s + 1 +
     exact hl
 
 /- English proof (translation)
-Introduce `X _ hD hH hc j m hm rz ry hd`. Use `⟨fun z => (muOf (fstOf (fun i => coarseA X.p (X.seg C0 CE1 CE2 j) (digitBlock rz ry) i) (fun l => cap X.p (X.seg C0 CE1 CE2 j) z.1 l) ((BD C0 CE1 CE2 X j m z.1).lettersAt z.2.1.1 z.2.1.2)) z.2.2, z.2.2 (Fin.last _), z.2.1.2), ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz z' hz' h`. Establish `h1` using `congrArg Prod.fst h`. Establish `h2` using `congrArg (fun t => t.2.1) h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun t => t.2.2) h`. Conclude with `hI C0 CE1 CE2 X j m rz ry z z' hz hz' (muOf_inj h1 h2) h3`. Introduce `z hz`. Establish `h` using `chain_of_facts (hF X hD hH hc j m hm rz ry hd z hz) hz.2.2.1`. Conclude with `⟨h.1, h.2, rfl, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem matchUp_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hF : LevFactsAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc)
     (hI : SrcInjAt) : MatchUpAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by

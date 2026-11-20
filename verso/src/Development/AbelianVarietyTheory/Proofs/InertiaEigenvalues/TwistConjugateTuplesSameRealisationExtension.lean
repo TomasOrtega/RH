@@ -23,19 +23,17 @@ namespace GlobalTheory.BigOn.Exp.TwConj
 open Classical in
 
 /- English proof (translation)
-Introduce `hDS hCW h1 h2 h3 D G _ _ Pl0 T0 A T _ R F κ v₀ O ph j B hH hL ψ ψ' t τ ht hc hf`. Establish `hC` using `hL.1`. Take `⟨n, hn⟩` from `GlobalTheory.ConjExt.exists_conj_pow hC.lev t`. Take `⟨a, -, ha, b, hb⟩` from `hn τ`. Establish `hxi' : B.de.chi * ψ'.chi = R.xi t ^ a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `MonoidHom.ext fun x => Circle.ext ?_` and prove the remaining obligations. Rewrite using `[ha x, ht.1]`. Simplify using `only [MonoidHom.mul_apply, Circle.coe_mul, map_mul, hf.1, hc.2]`. Establish `hQ' : R.Q t = B.de.Q ∪ ψ'.Q` using `by rw [hc.1, ht.2]`. Distinguish the cases in `hχ : R.xiH t ^ a = R.xiH t`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `e : R.xi t ^ a = R.xi t` using `GlobalTheory.ChrEqUnique.idc_unique D _ _ _ (GlobalTheory.ConjExt.chrEq_pow (hC.lev.xi t) a) (by rw [hχ]; exact hC.lev.xi t)`. Conclude with `hasTuples_of_laws hL Ext.refl ht ⟨by rw [hxi', e], hQ'⟩`. Establish `h0 : R.xiH t ≠ 1` using `fun h => hχ (by rw [h, one_pow])`. Establish `h0a : R.xiH t ^ a ≠ 1` using `fun h => h0 (by rw [← hb, h, one_pow])`. Establish `hlev` using `twLev_of_core hC hL.2.2.2.2.1 t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hleva` using `GlobalTheory.TwLevPow.twLev_pow R F hC _ _ _ _ hlev a b hb`. Take `⟨A0, R0, F0, v0, O0, hL0, hE0, hxi0, htr⟩` from `GlobalTheory.BaseRestrict.restrict_to_base T R F κ v₀ O ph j B hL`. Establish `hT0` using `htr _ _ _ _ hlev`. Establish `hT0a` using `htr _ _ _ _ hleva`. Apply the tactic sequence `obtain ⟨T', A', R', F', v', O', hL', hE', htup⟩ := GlobalTheory.T.realisation_extends_by_newTuples_keeping_laws h1 h2 h3 hDS hCW T R0 F0 κ v0 O0 ph j B hH hL0 Bool (fun b => if b then R.xiH t ^ a else R.xiH t) (fun b => if b then R.xi t ^ a else R.xi t) (fun _ => R.Q t) (fun b => …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases x <;> cases y`. Both sides reduce to the same expression. Conclude with `absurd hxy.symm hχ`. Conclude with `absurd hxy hχ`. Use the proof step `rfl)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun b t0 => by rw [hxi0]; cases b; exacts [h0, h0a])`. Use the proof step `(fun p hp => by`. Take `⟨𝔭, h𝔭, h𝔭'⟩` from `hT0.Q_de p hp`. Conclude with `⟨𝔭, h𝔭, fun _ => h𝔭'⟩)`. Take `⟨s, hs1, hs2⟩` from `htup false`.
-
-Take `⟨s', hs1', hs2'⟩` from `htup true`. Conclude with `hasTuples_of_laws hL' (hE0.trans hE') (t := s) (t' := s') ⟨hs1.trans ht.1, hs2.trans ht.2⟩ ⟨hs1'.trans hxi'.symm, hs2'.trans hQ'⟩`.
+A detailed English derivation is pending.
 -/
 theorem hasTuples_of_conj : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.CuspRapidDecay →
     GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →

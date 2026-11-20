@@ -8,17 +8,15 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `G _ _ H U Z W X _ _ _ _ _ _ _ _ ρ κ η Φ ev ψ hΦ hev hinj hψ hne`. Use `haveI := Fintype.ofFinite G`. Use `⟨∑ g : G, (ρ g⁻¹).comp (Φ.comp (ψ.comp (η g))), ?_, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, ψ x ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at h`. Conclude with `hne (LinearMap.ext h)`. Introduce `h0`. Establish `h1` using `congrArg (fun L => ev (L x)) h0`. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, map_sum, LinearMap.zero_apply, map_zero] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ g : G, ev (ρ g⁻¹ (Φ (ψ (η g x)))) = if g ∈ H then ev (Φ (ψ x)) else 0`. Introduce `g`. Use `split_ifs with hg`. Establish `e1` using `hψ ⟨g, hg⟩ x`. Establish `e2` using `hΦ ⟨g, hg⟩ (ψ x)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only at e1 e2`. Rewrite using `[e1, e2, Representation.inv_self_apply]`. Conclude with `hev g⁻¹ (by simpa using hg) _`. Rewrite `h1` using `[Finset.sum_congr rfl (fun g _ => key g), Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const]`. Establish `hc : (Finset.univ.filter (· ∈ H)).card ≠ 0`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Nat.pos_iff_ne_zero, Finset.card_pos]`. Conclude with `⟨1, by simp [H.one_mem]⟩`. Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul ℂ, smul_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases. Conclude with `hc (by exact_mod_cast h1)`.
-
-Conclude with `hx (hinj _ h1)`. Introduce `k x`. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, map_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight k) _ _ (fun g => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, map_mul, Module.End.mul_apply, mul_inv_rev, Representation.self_inv_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.avgMap :
     AvgMap := by

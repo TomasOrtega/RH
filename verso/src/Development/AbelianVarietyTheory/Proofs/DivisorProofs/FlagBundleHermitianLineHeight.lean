@@ -17,9 +17,9 @@ namespace GlobalTheory.LineNull
 open GlobalTheory.CurveDens
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Take `⟨U, t, t', ht, ht', hU⟩` from `AdjFlag.exists_frames hL hL' y`. Establish `a` using `AdjFlag.form_frame_pos (h.restrict hl hL) ht hU`. Establish `b` using `AdjFlag.form_frame_pos (h.restrict hl' hL') ht' hU`. Rewrite `a` using `[h.form_restrict hl hL t t hU]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b` using `[h.form_restrict hl' hL' t' t' hU]`. Establish `e` using `(hv U t t' y hU).symm.trans (hv' U t t' y hU)`. Conclude with `mul_right_cancel₀ a.ne' (mul_right_cancel₀ b.ne' e)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCosSq_unique {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {V L L' : X.Modules} {r : ℕ}
     (h : Met p σ V r) {l : L ⟶ V} {l' : L' ⟶ V} (hL : IsVB L 1) (hL' : IsVB L' 1) (hl : IsSubbundle l)
@@ -34,13 +34,11 @@ theorem isCosSq_unique {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
   exact mul_right_cancel₀ a.ne' (mul_right_cancel₀ b.ne' e)
 
 /- English proof (translation)
-Introduce `k _ B Y _ _ q p d hB hY π w E h H flB fl hfl A σ v hv α _ ε`. Take `⟨r, hr, -, h₂⟩` from `exists_ratSec_fam5 k B Y q p d hB.toIsArithVar hY.toIsArithVar hB.regular π w E h H flB fl hfl A`. Take `⟨v', hv', hlt⟩` from `h₂ σ`. Take `rfl : v = v'` from `isCosSq_unique _ (fl.isVB 1) ((flB.pull π).isVB 1) (fl.isSubbundle 1) ((flB.pull π).isSubbundle 1) hv hv'`. Generalize the expression as in `((fam5 π w H flB fl A 0).dual.tens (fam5 π w H flB fl A 4)).div hr = D at hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Establish `hset : {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ (D.supp : Set Y)} = (offSupp p σ D)ᶜ`. Use extensionality with `y`. Rewrite using `[Set.mem_compl_iff, offSupp, mem_ptsIn]`. Conclude with `not_not.symm`. Establish `hA : MeasurableSet {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ (D.supp : Set Y)}`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset]`. Conclude with `(isOpen_ptsIn _).measurableSet.compl`. Use `measure_mono_null (t := {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ (D.supp : Set Y)}) (fun y hy => ?_) ?_` and prove the remaining obligations. Rewrite using `[hset]`. Conclude with `fun hm => (hlt y hm).1.ne hy`.
-
-Conclude with `GlueCoverNull.glueMeas_null _ _ hA fun c => ChernNull.chart_null hY.toIsArithVar D.supp.isClosed (CartierDiv.genericPoint_notMem_supp D) σ c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem part_cosSq_one : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)

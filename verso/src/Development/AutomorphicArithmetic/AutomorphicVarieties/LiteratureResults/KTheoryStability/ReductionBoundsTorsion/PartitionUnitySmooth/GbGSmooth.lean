@@ -10,9 +10,9 @@ namespace PositivityTheory.KB.SmoothPartitionUnityBasic
 private def gb_g (s : ℝ) : ℝ := 1 / 2 + (s - 1 / 2) * Real.smoothTransition (2 * s - 1)
 
 /- English proof (translation)
-Use `show actM (g * g') h = actM g (actM g' h)`. Simplify using `only [actM, LinearMap.coe_mk, AddHom.coe_mk]`. Unfold `mkHS`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w i j`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [mat, Pi.mul_apply, _root_.mul_inv_rev, Units.val_mul, Matrix.conjTranspose_mul, Matrix.of_apply]`. Rewrite using `[show ∀ X : Matrix (Fin N) (Fin N) ℂ, (of fun i j => X i j) = X from fun _ => rfl]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem actL_mul_apply_eq_actL_actL {L : Type} [Field L] [NumberField L] {N : ℕ} (g g' : Gp L N) (h : HS L N) :
     actL (g * g') h = actL g (actL g' h) := by
@@ -26,9 +26,9 @@ private theorem actL_mul_apply_eq_actL_actL {L : Type} [Field L] [NumberField L]
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `⟨?_, fun s => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Unfold `gb_g fun_prop`. Unfold `gb_g`. Distinguish the cases in `hs : s ≤ 1 / 2`. Rewrite using `[Real.smoothTransition.zero_of_nonpos (by linarith)]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `Real.smoothTransition.nonneg (2 * s - 1)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Unfold `gb_g`. Rewrite using `[Real.smoothTransition.one_of_one_le (by linarith)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -47,15 +47,15 @@ private theorem contDiff_gb_g_and_half_le_and_eq_of_one_le : ContDiff ℝ (↑(�
     ring
 
 /- English proof (translation)
-Establish `hc : 0 ≤ 2 * δ * ‖h‖` using `by positivity`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases. Substitute `hN` using the available equality. Establish `: k = h` using `Subtype.ext (funext fun w => funext fun i => i.elim0)`. Rewrite using `[this, sub_self, norm_zero]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`. Establish `E` using `(hB L N hN).2.2.2.2.1 δ hδ h hh k hk`. Establish `hle : ∀ w i, ‖(h : InfinitePlace L → Fin N → Fin N → ℂ) w i i‖ ≤ ‖h‖` using `fun w i => ((norm_le_pi_norm _ i).trans (norm_le_pi_norm _ i)).trans (norm_le_pi_norm (h : InfinitePlace L → Fin N → Fin N → ℂ) w)`. Use `show ‖((k - h : HS L N) : InfinitePlace L → Fin N → Fin N → ℂ)‖ ≤ _`. Use `(pi_norm_le_iff_of_nonneg hc).2 fun w => (pi_norm_le_iff_of_nonneg hc).2 fun i => (pi_norm_le_iff_of_nonneg hc).2 fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `E w (Pi.single i 1) (Pi.single j 1)`. Simplify using `[mat] at e`. Establish `d : ((k - h : HS L N) : InfinitePlace L → Fin N → Fin N → ℂ) w i j = (k : InfinitePlace L → Fin N → Fin N → ℂ) w i j - (h : InfinitePlace L → Fin N → Fin N → ℂ) w i j` using `rfl`. Rewrite using `[d]`. Establish `x1` using `(Complex.abs_re_le_norm ((h : InfinitePlace L → Fin N → Fin N → ℂ) w i i)).trans (hle w i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `y1` using `(Complex.abs_re_le_norm ((h : InfinitePlace L → Fin N → Fin N → ℂ) w j j)).trans (hle w j)`. Establish `xy : ((h : InfinitePlace L → Fin N → Fin N → ℂ) w i i).re * ((h : InfinitePlace L → Fin N → Fin N → ℂ) w j j).re ≤ ‖h‖ * ‖h‖`. Combine the equalities or inequalities in the displayed calculation. Establish `hd` using `norm_nonneg ((k : InfinitePlace L → Fin N → Fin N → ℂ) w i j - (h : InfinitePlace L → Fin N → Fin N → ℂ) w i j)`. Establish `h4 : 0 ≤ 4 * δ ^ 2` using `by positivity`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e2 : ‖(k : InfinitePlace L → Fin N → Fin N → ℂ) w i j - (h : InfinitePlace L → Fin N → Fin N → ℂ) w i j‖ ^ 2 ≤ (2 * δ * ‖h‖) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(pow_le_pow_iff_left₀ hd hc two_ne_zero).1 e2`.
+A detailed English derivation is pending.
 -/
 private theorem norm_sub_le_two_mul_mul_norm_of_cl (hB : Basic) {L : Type} [Field L] [NumberField L] {N : ℕ} (δ : ℝ) (hδ : 0 ≤ δ)
     (h : HS L N) (hh : h ∈ Pos L N) (k : HS L N) (hk : Cl δ h k) : ‖k - h‖ ≤ 2 * δ * ‖h‖ := by
@@ -91,59 +91,53 @@ private theorem norm_sub_le_two_mul_mul_norm_of_cl (hB : Basic) {L : Type} [Fiel
   exact (pow_le_pow_iff_left₀ hd hc two_ne_zero).1 e2
 
 /- English proof (translation)
-Introduce `hB hP L _ _ N K hK hKP`. Establish `hPo : IsOpen (Pos L N)` using `(hP L N).1`. Take `⟨ε, hε, hεK⟩` from `hK.exists_cthickening_subset_open hPo hKP`. Establish `hK'c : IsCompact (Metric.cthickening ε K)` using `hK.cthickening`. Take `⟨f, hfs, hfc, hfr⟩` from `(Metric.isOpen_thickening (δ := ε) (E := K)).exists_contDiff_support_eq (n := ⊤)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `f0 : ∀ x, 0 ≤ f x` using `fun x => (hfr ⟨x, rfl⟩).1`. Establish `f1 : ∀ x, f x ≤ 1` using `fun x => (hfr ⟨x, rfl⟩).2`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm, hmK⟩ : ∃ m : ℝ, 0 < m ∧ ∀ x ∈ K, m ≤ f x := by`. Break down `K.eq_empty_or_nonempty with he | hne` into its components or cases. Conclude with `⟨1, one_pos, by simp [he]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨x0, hx0, hmin⟩` from `hK.exists_isMinOn hne hfc.continuous.continuousOn`. Use `⟨f x0, ?_, fun x hx => hmin hx⟩` and prove the remaining obligations. Establish `: x0 ∈ f.support` using `by rw [hfs]; exact Metric.self_subset_thickening hε K hx0`. Conclude with `lt_of_le_of_ne (f0 x0) (Ne.symm this)`. Use `set φ : HS L N → ℝ := fun x => f x / m with hφdef`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `φ0 : ∀ x, 0 ≤ φ x` using `fun x => div_nonneg (f0 x) hm.le`. Establish `φ1 : ∀ x, φ x ≤ 1 / m` using `fun x => div_le_div_of_nonneg_right (f1 x) hm.le`. Establish `φK : ∀ x ∈ K, 1 ≤ φ x` using `fun x hx => (one_le_div hm).2 (hmK x hx)`. Establish `φs : ∀ x, φ x ≠ 0 → x ∈ Metric.cthickening ε K` using `fun x hx => by`. Establish `: x ∈ f.support` using `fun h0 => hx (by simp [hφdef, h0])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hfs]`. Conclude with `Metric.thickening_subset_cthickening ε K this`. Establish `φc : ContDiff ℝ (↑(⊤ : ℕ∞)) φ` using `hfc.div_const m`. Use `set τ : Gm L N → HS L N →L[ℝ] HS L N := fun γ => actL ((emb L N γ)⁻¹) with hτ`. Establish `hfin : ∀ B : Set (HS L N), IsCompact B → B ⊆ Pos L N → {γ | ∃ h ∈ B, τ γ h ∈ Metric.cthickening ε K}.Finite`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `B hBc hBP`. Establish `F` using `(hP L N).2 (B ∪ Metric.cthickening ε K) (hBc.union hK'c) (Set.union_subset hBP hεK)`. Use `F.inv.subset ?_` and prove the remaining obligations. Introduce and unpack `γ ⟨h, hh, hγ⟩`. Use `show ∃ h ∈ _, ac γ⁻¹ h ∈ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨h, Or.inl hh, Or.inr ?_⟩` and prove the remaining obligations. Use `show actL (emb L N γ⁻¹) h ∈ _`. Rewrite using `[map_inv]`. Conclude with `hγ`. Use `set S : HS L N → ℝ := fun h => ∑ᶠ γ, φ (τ γ h) with hS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `τmul : ∀ γ δ h, τ δ (τ γ h) = τ (γ * δ) h`. Introduce `γ δ h`. Simplify using `only [hτ]`. Rewrite using `[← actL_mul_apply_eq_actL_actL, map_mul, _root_.mul_inv_rev]`. Establish `Sinv : ∀ γ h, S (τ γ h) = S h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `γ h`. Simplify using `only [hS, τmul]`. Conclude with `finsum_comp_equiv (Equiv.mulLeft γ) (f := fun δ => φ (τ δ h))`. Establish `Sloc : ∀ h0 ∈ Pos L N, ContDiffAt ℝ (↑(⊤ : ℕ∞)) S h0`. Introduce `h0 hh0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨r, hr, hrP⟩` from `Metric.isOpen_iff.1 hPo h0 hh0`. Establish `hBc : IsCompact (Metric.closedBall h0 (r / 2))` using `isCompact_closedBall h0 (r / 2)`. Establish `hBP : Metric.closedBall h0 (r / 2) ⊆ Pos L N` using `(Metric.closedBall_subset_ball (by linarith)).trans hrP`. Establish `heq : ∀ h ∈ Metric.ball h0 (r / 2), S h = ∑ γ ∈ (hfin _ hBc hBP).toFinset, φ (τ γ h)`. Introduce `h hh`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `γ hγ`. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `⟨h, Metric.ball_subset_closedBall hh, φs _ hγ⟩`. Establish `hc : ContDiff ℝ (↑(⊤ : ℕ∞)) (fun h => ∑ γ ∈ (hfin _ hBc hBP).toFinset, φ (τ γ h))` using `ContDiff.sum fun γ _ => φc.comp (τ γ).contDiff`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc.contDiffAt.congr_of_eventuallyEq (Filter.eventually_of_mem (Metric.ball_mem_nhds h0 (by linarith)) heq)`. Establish `Sfin : ∀ h ∈ Pos L N, (Function.support fun γ => φ (τ γ h)).Finite` using `fun h hh => (hfin {h} isCompact_singleton (by simpa using hh)).subset fun γ hγ => ⟨h, rfl, φs _ hγ⟩`. Take `⟨gc, g12, gid⟩` from `contDiff_gb_g_and_half_le_and_eq_of_one_le`. Establish `gpos : ∀ s, 0 < gb_g s` using `fun s => lt_of_lt_of_le (by norm_num) (g12 s)`. Use `set ψ : HS L N → ℝ := fun h => φ h / gb_g (S h) with hψ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `ψc : ContDiff ℝ (↑(⊤ : ℕ∞)) ψ`. Use `contDiff_iff_contDiffAt.2 fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ Pos L N`. Conclude with `φc.contDiffAt.div (gc.contDiffAt.comp x (Sloc x hx)) (gpos _).ne'`. Establish `hxK : x ∉ Metric.cthickening ε K` using `fun h => hx (hεK h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ev : ψ =ᶠ[nhds x] fun _ => 0` using `by filter_upwards [Metric.isClosed_cthickening.isOpen_compl.mem_nhds hxK] with y hy`. Establish `: φ y = 0` using `by_contra fun h => hy (φs y h)`. Simplify using `[hψ, this]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq ev`. Establish `ψ0 : ∀ h, 0 ≤ ψ h` using `fun h => div_nonneg (φ0 h) (gpos _).le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ψb : ∀ h, ψ h ≤ 2 / m` using `fun h => by show φ h / gb_g (S h) ≤ 2 / m`. Rewrite using `[div_le_iff₀ (gpos _)]`. Combine the equalities or inequalities in the displayed calculation. Establish `ψs : ∀ h, ψ h ≠ 0 → h ∈ Metric.cthickening ε K` using `fun h hh => φs h (fun h0 => hh (by simp [hψ, h0]))`. Take `⟨Lc, hL⟩` from `ψc.lipschitzWith_of_hasCompactSupport (HasCompactSupport.intro hK'c fun x hx => by_contra fun h => hx (ψs x h)) (by simp)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨R, hR⟩` from `hK'c.isBounded.exists_norm_le`. Use `set R0 := max R 0 with hR0`. Establish `hR0n : 0 ≤ R0` using `le_max_right _ _`. Establish `hLn : (0 : ℝ) ≤ Lc` using `Lc.2`. Establish `hC : 0 ≤ 16 / m + 4 * Lc * R0` using `by positivity`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ψ, Metric.cthickening ε K, 16 / m + 4 * Lc * R0, hK'c, hεK, ψc, ψs, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Rewrite using `[abs_of_nonneg (ψ0 h)]`. Establish `: 2 / m ≤ 16 / m` using `by gcongr; norm_num`. Combine the linear relations using `[ψb h, show 0 ≤ 4 * (Lc : ℝ) * R0 by positivity]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Introduce and unpack `h hh ⟨γ0, hγ0⟩`. Establish `hsupp` using `Sfin h hh`. Establish `Sge : 1 ≤ S h`. Establish `e : τ γ0⁻¹ h = ac γ0 h`. Simplify using `only [hτ, map_inv, inv_inv]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hfun : (fun γ => ψ (actL ((emb L N γ)⁻¹) h)) = fun γ => φ (τ γ h) * (gb_g (S h))⁻¹`. Use function extensionality and compare the values at `γ`. Use `show φ (τ γ h) / gb_g (S (τ γ h)) = _`. Rewrite using `[Sinv, div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[hfun, ← finsum_mul, gid _ Sge]`. Conclude with `mul_inv_cancel₀ (show S h ≠ 0 by linarith)`. Introduce `δ hδ h hh k hk`. Distinguish the cases in `hne : ψ k = ψ h`. Rewrite using `[hne, sub_self, abs_zero]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Check the signs of the components of the expression. Establish `hbd` using `norm_sub_le_two_mul_mul_norm_of_cl hB δ hδ h hh k hk`. Distinguish the cases in `hδ4 : 1 / 4 ≤ δ`. Establish `e1 : |ψ k - ψ h| ≤ 2 / m + 2 / m`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[abs_of_nonneg (ψ0 k), abs_of_nonneg (ψ0 h)]`. Conclude with `add_le_add (ψb k) (ψb h)`. Establish `e2 : 16 / m * (1 / 4) ≤ 16 / m * δ` using `mul_le_mul_of_nonneg_left hδ4 (by positivity)`. Establish `e3 : 0 ≤ 4 * (Lc : ℝ) * R0 * δ` using `by positivity`. Establish `e4 : 2 / m + 2 / m = 16 / m * (1 / 4)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `push_neg at hδ4`. Establish `hnh : ‖h‖ ≤ 2 * R0`. Establish `hor : h ∈ Metric.cthickening ε K ∨ k ∈ Metric.cthickening ε K`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hc`. Apply `hne` to reduce the goal to its premises. Rewrite using `[show ψ k = 0 from by_contra fun H => hc.2 (ψs k H), show ψ h = 0 from by_contra fun H => hc.1 (ψs h H)]`. Break down `hor with hm' | hm'` into its components or cases. Use `hR h hm'` as an intermediate fact.
-
-Establish `: R ≤ R0` using `le_max_left _ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hR k hm'`. Establish `h2 : R ≤ R0` using `le_max_left _ _`. Establish `h3 : ‖h‖ ≤ ‖k‖ + ‖k - h‖`.
-
-Use `norm_sub_le k (k - h)` as an intermediate fact. Simplify using `using this`. Establish `h4 : 2 * δ * ‖h‖ ≤ ‖h‖ / 2` using `by nlinarith [norm_nonneg h]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `d1 : |ψ k - ψ h| ≤ Lc * ‖k - h‖`.
-
-Use `hL.dist_le_mul k h` as an intermediate fact. Rewrite `this` using `[Real.dist_eq, dist_eq_norm]`. Then use the resulting hypothesis. Establish `d2 : (Lc : ℝ) * ‖k - h‖ ≤ Lc * (2 * δ * (2 * R0))` using `mul_le_mul_of_nonneg_left (hbd.trans (mul_le_mul_of_nonneg_left hnh (by positivity))) hLn`. Establish `d3 : 0 ≤ 16 / m * δ` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem pf_GBump : GBump := by
   intro hB hP L _ _ N K hK hKP

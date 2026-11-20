@@ -17,7 +17,7 @@ def tailF (p m : ℕ) (α : ℝ) (ν : Fin (p + 1) → ℝ) (x : TDom p m) : ℝ
     ∏ i : Fin (p + 1), ENNReal.ofReal (de (tailPt x) i.succ ^ (-(s0N (p + 1) m i.succ + ν i)))
 
 /- English proof (translation)
-Unfold `chF`. Conclude with `Finset.measurable_prod _ fun l _ => ENNReal.measurable_ofReal.comp ((cont_de l).measurable.pow_const _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma chF_meas (p m : ℕ) (ν : Fin (p + 1) → ℝ) : Measurable (chF p m ν) := by
   unfold chF
@@ -25,7 +25,7 @@ lemma chF_meas (p m : ℕ) (ν : Fin (p + 1) → ℝ) : Measurable (chF p m ν) 
     ENNReal.measurable_ofReal.comp ((cont_de l).measurable.pow_const _)
 
 /- English proof (translation)
-Unfold `tailF`. Establish `h` using `cont_tailPt (p := p) (m := m)`. Conclude with `((ENNReal.measurable_ofReal.comp (((cont_lsq 1).comp h).measurable.pow_const _)).mul (ENNReal.measurable_ofReal.comp (((cont_de 1).comp h).measurable.pow_const _))).mul (Finset.measurable_prod _ fun i _ => ENNReal.measurable_ofReal.comp (((cont_de i.succ).comp h).measurable.pow_c …`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma tailF_meas (p m : ℕ) (α : ℝ) (ν : Fin (p + 1) → ℝ) : Measurable (tailF p m α ν) := by
   unfold tailF
@@ -36,13 +36,13 @@ lemma tailF_meas (p m : ℕ) (α : ℝ) (ν : Fin (p + 1) → ℝ) : Measurable 
       ENNReal.measurable_ofReal.comp (((cont_de i.succ).comp h).measurable.pow_const _))
 
 /- English proof (translation)
-Simplify using `[s0N, Fin.val_succ]`.
+Simplify using the standard rewrite rules.
 -/
 lemma criticalExponent_succ (p m : ℕ) (i : Fin (p + 1)) : s0N (p + 1) m i.succ = s0N p m i := by
   simp [s0N, Fin.val_succ]
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `[s0N]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sum_s0N (p m : ℕ) : ∑ i, s0N p m i = 2 * p + m + 1 := by
   rw [Fin.sum_univ_castSucc]
@@ -50,7 +50,7 @@ lemma sum_s0N (p m : ℕ) : ∑ i, s0N p m i = 2 * p + m + 1 := by
   ring
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_succ, Fin.prod_univ_succ]`. Simplify using `only [Function.update_self, Function.update_of_ne (Fin.succ_ne_zero _)]`. Rewrite using `[show -(s 0 + (α + ν 0)) = -α + -(s 0 + ν 0) by ring, Real.rpow_add (hd 0)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma prod_update {p : ℕ} (d s ν : Fin (p + 1) → ℝ) (hd : ∀ l, 0 < d l) (α : ℝ) :
     ∏ l, d l ^ (-(s l + Function.update ν 0 (α + ν 0) l)) = d 0 ^ (-α) * ∏ l, d l ^ (-(s l + ν l)) := by
@@ -60,11 +60,11 @@ lemma prod_update {p : ℕ} (d s ν : Fin (p + 1) → ℝ) (hd : ∀ l, 0 < d l)
   ring
 
 /- English proof (translation)
-Establish `hL : 0 < 1 + ‖a0‖ ^ 2` using `by positivity`. Unfold `tailF chF`. Rewrite using `[lsq_scl_one, ← Fin.succ_zero_eq_one, de_scl a0 t hr q 0]`. Simplify using `only [de_scl a0 t hr q, criticalExponent_succ]`. Rewrite using `[← hr, ← ENNReal.ofReal_prod_of_nonneg (fun i _ => Real.rpow_nonneg (mul_nonneg hL.le (de_pos q i).le) _), ← ENNReal.ofReal_prod_of_nonneg (fun l _ => Real.rpow_nonneg (de_pos q l).le _), ← ENNReal.ofReal_mul (Real.rpow_nonneg hL.le _), ← ENNReal.ofReal_mul (mul_nonneg (Real.rpow …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[prod_update (de q) (s0N p m) ν (de_pos q) α, Finset.prod_congr rfl fun i _ => Real.mul_rpow hL.le (de_pos q i).le, Finset.prod_mul_distrib, ← Real.rpow_sum_of_pos hL, Real.mul_rpow hL.le (de_pos q 0).le]`. Rewrite using `[show (-2 + α) / 2 - α - ∑ i, (s0N p m i + ν i) = (-2 + α) / 2 + -α + ∑ i, -(s0N p m i + ν i) by`. Rewrite using `[Finset.sum_neg_distrib]`. Use the proof step `ring, Real.rpow_add hL, Real.rpow_add hL]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma tail_pt (p m : ℕ) (α : ℝ) (ν : Fin (p + 1) → ℝ) (a0 : ℂ) (t : ℝ) (hr : 1 + ‖a0‖ ^ 2 = t ^ 2)
     (q : Xp p m) :
@@ -91,13 +91,13 @@ lemma tail_pt (p m : ℕ) (α : ℝ) (ν : Fin (p + 1) → ℝ) (a0 : ℂ) (t : 
   ring
 
 /- English proof (translation)
-Establish `hL : 0 < 1 + ‖a0‖ ^ 2` using `by positivity`. Use `set t := Real.sqrt (1 + ‖a0‖ ^ 2) with ht_def`. Establish `ht : 0 < t` using `Real.sqrt_pos.2 hL`. Establish `htt : 1 + ‖a0‖ ^ 2 = t ^ 2` using `(Real.sq_sqrt hL.le).symm`. Establish `hc : Continuous fun q : Xp p m => ((Fin.cons a0 q.1, q.2) : TDom p m)` using `(cont_cons.comp (continuous_const.prodMk continuous_fst)).prodMk continuous_snd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : Measurable fun q : Xp p m => tailF p m α ν (Fin.cons a0 q.1, q.2)` using `(tailF_meas p m α ν).comp hc.measurable`. Establish `hpt : ∀ x : Xp p m, tailF p m α ν (Fin.cons a0 (sclL p m t x).1, (sclL p m t x).2) = tailF p m α ν (sclPt a0 t x)` using `fun x => by rw [sclL_apply]; rfl`. Rewrite using `[lint_scl hG ht]`. Simplify using `only [hpt, tail_pt p m α ν a0 t htt]`. Rewrite using `[lintegral_const_mul _ (chF_meas _ _ _), ← mul_assoc, ← ENNReal.ofReal_mul (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hreal : t ^ (4 * p + 2 * m + 2) * (1 + ‖a0‖ ^ 2) ^ ((-2 + α) / 2 - α - ∑ i, (s0N p m i + ν i)) = (1 + ‖a0‖ ^ 2) ^ (-(2 + α + 2 * ∑ i, ν i) / 2)`. Rewrite using `[show 4 * p + 2 * m + 2 = 2 * (2 * p + m + 1) by ring, pow_mul, ← htt, ← Real.rpow_natCast, ← Real.rpow_add hL, Finset.sum_add_distrib, sum_s0N]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hreal]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma tail_inner (p m : ℕ) (α : ℝ) (ν : Fin (p + 1) → ℝ) (a0 : ℂ) :
     ∫⁻ q : Xp p m, tailF p m α ν (Fin.cons a0 q.1, q.2) =
@@ -127,7 +127,7 @@ lemma tail_inner (p m : ℕ) (α : ℝ) (ν : Fin (p + 1) → ℝ) (a0 : ℂ) :
   rfl
 
 /- English proof (translation)
-Use `show ∫⁻ x : TDom p m, tailF p m α ν x = _`. Rewrite using `[split_cons _ (tailF_meas p m α ν), lintegral_congr fun w => tail_inner p m α ν w, lintegral_mul_const _ (by fun_prop)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma tail_eq (p m : ℕ) (α : ℝ) (ν : Fin (p + 1) → ℝ) :
     TailInt p m α ν = kc (2 + α + 2 * ∑ i, ν i) * CHInt p m (Function.update ν 0 (α + ν 0)) := by
@@ -137,7 +137,7 @@ lemma tail_eq (p m : ℕ) (α : ℝ) (ν : Fin (p + 1) → ℝ) :
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ z : ℂ, ‖z‖ ^ 2 = z.re ^ 2 + z.im ^ 2` using `fun z => by`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hL : (1 + (a.re ^ 2 + a.im ^ 2)) ≠ 0` using `by positivity`. Simplify using `only [key, Complex.sub_re, Complex.sub_im, Complex.mul_re, Complex.mul_im, Complex.div_ofReal_re, Complex.div_ofReal_im, Complex.star_def, Complex.conj_re, Complex.conj_im]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -153,27 +153,25 @@ private lemma norm_sq_add_norm_sq_sub_eq_complete_square (w B a : ℂ) :
   ring
 
 /- English proof (translation)
-Break down `y with ⟨a, b, r⟩` into its components or cases. Simplify using `only`. Establish `hlsq0 : ∀ w : ℂ, Lsq ((a, Fin.cons w b, r) : Xp (p + 1) m) 0 = 1`. Introduce `w`. Simplify using `[Lsq]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hrho : ∀ w : ℂ, rhoSq ((a, Fin.cons w b, r) : Xp (p + 1) m) 0 = rhoSq (tailPt ((a, b, r) : TDom p m)) 1 + ‖w‖ ^ 2`. Introduce `w`. Simplify using `[rhoSq, Lsq, tailPt, Fin.sum_univ_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbco : ∀ w : ℂ, bco ((a, Fin.cons w b, r) : Xp (p + 1) m) 0 = bco (tailPt ((a, b, r) : TDom p m)) 1 - w * star (a 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `w`. Simplify using `[bco, tailPt, Fin.sum_univ_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hL1 : Lsq (tailPt ((a, b, r) : TDom p m)) 1 = 1 + ‖a 0‖ ^ 2`. Simplify using `[Lsq, tailPt, Fin.sum_univ_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd1 : de (tailPt ((a, b, r) : TDom p m)) 1 ^ 2 = (1 + ‖a 0‖ ^ 2) * rhoSq (tailPt ((a, b, r) : TDom p m)) 1 + ‖bco (tailPt ((a, b, r) : TDom p m)) 1‖ ^ 2`. Rewrite using `[de, Real.sq_sqrt (add_nonneg (mul_nonneg (by linarith [one_le_lsq (tailPt ((a, b, r) : TDom p m)) 1]) (rhoSq_nonneg _ _)) (sq_nonneg _)), hL1]`. Establish `hM` using `one_le_rhoSq (tailPt ((a, b, r) : TDom p m)) 1`. Establish `hd1p` using `de_pos (tailPt ((a, b, r) : TDom p m)) 1`. Use `set M := rhoSq (tailPt ((a, b, r) : TDom p m)) 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := bco (tailPt ((a, b, r) : TDom p m)) 1`. Use `set d1 := de (tailPt ((a, b, r) : TDom p m)) 1`. Use `set L := 1 + ‖a 0‖ ^ 2 with hL_def`. Establish `hL : 0 < L` using `by positivity`. Use `set D := M + ‖B‖ ^ 2 / L with hD_def`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hD : 0 < D` using `add_pos_of_pos_of_nonneg (by linarith) (by positivity)`. Use `set c : ℂ := B * a 0 / ((L : ℝ) : ℂ) with hc_def`. Establish `hquad : ∀ w : ℂ, de ((a, Fin.cons w b, r) : Xp (p + 1) m) 0 ^ 2 = L * ‖w - c‖ ^ 2 + D`. Introduce `w`. Rewrite using `[de, Real.sq_sqrt (add_nonneg (mul_nonneg (by linarith [one_le_lsq ((a, Fin.cons w b, r) : Xp (p + 1) m) 0]) (rhoSq_nonneg _ _)) (sq_nonneg _)), hlsq0, hrho, hbco, one_mul, add_assoc, norm_sq_add_norm_sq_sub_eq_complete_square, hD_def, hc_def, hL_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hzero : ∀ w : ℂ, de ((a, Fin.cons w b, r) : Xp (p + 1) m) 0 ^ (-(s0N (p + 1) m 0 + ν 0)) = (L * ‖w - c‖ ^ 2 + D) ^ (-(2 + ν 0) / 2)`. Introduce `w`. Establish `hs : s0N (p + 1) m 0 = 2` using `by simp [s0N]`. Rewrite using `[hs, ← hquad w, ← Real.rpow_natCast, ← Real.rpow_mul (de_pos _ _).le]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `htp : tailPt ((a, b, r) : TDom p m) = (a, Fin.cons 0 b, r)` using `rfl`. Unfold `chF tailF`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [Fin.prod_univ_succ, de_cons, hzero]`. Rewrite using `[lintegral_mul_const _ (by fun_prop), kernel L D hL hD c (2 + ν 0), hL1]`. Establish `hkey : ENNReal.ofReal (L⁻¹ * D ^ (1 - (2 + ν 0) / 2)) = ENNReal.ofReal (L ^ ((-2 + ν 0) / 2)) * ENNReal.ofReal (d1 ^ (-ν 0))`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : D = d1 ^ 2 / L`. Rewrite using `[hd1, hD_def]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, Real.div_rpow (sq_nonneg _) hL.le, ← Real.rpow_natCast d1 2, ← Real.rpow_mul hd1p.le, show (1 - (2 + ν 0) / 2) = -ν 0 / 2 by ring, show ((2 : ℕ) : ℝ) * (-ν 0 / 2) = -ν 0 by push_cast; ring, show (-2 + ν 0) / 2 = -1 - (-ν 0 / 2) by ring, Real.rpow_sub hL, Real.rpow_neg_one]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[hkey, htp, show de ((a, Fin.cons 0 b, r) : Xp (p + 1) m) 1 = d1 from rfl]`. Simplify using `only [Fin.tail]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma ch_pt (p m : ℕ) (ν : Fin (p + 2) → ℝ) (y : TDom p m) :
     ∫⁻ w : ℂ, chF (p + 1) m ν (y.1, Fin.cons w y.2.1, y.2.2) =
@@ -242,7 +240,7 @@ lemma ch_pt (p m : ℕ) (ν : Fin (p + 2) → ℝ) (y : TDom p m) :
   ring
 
 /- English proof (translation)
-The claim follows from `continuous_snd.fst.prodMk ((cont_cons.comp (continuous_fst.prodMk continuous_snd.snd.fst)).prodMk continuous_snd.snd.snd)`.
+A detailed English derivation is pending.
 -/
 lemma cont_ins (p m : ℕ) : Continuous fun z : ℂ × TDom p m =>
     ((z.2.1, Fin.cons z.1 z.2.2.1, z.2.2.2) : Xp (p + 1) m) :=
@@ -250,9 +248,9 @@ lemma cont_ins (p m : ℕ) : Continuous fun z : ℂ × TDom p m =>
     ((cont_cons.comp (continuous_fst.prodMk continuous_snd.snd.fst)).prodMk continuous_snd.snd.snd)
 
 /- English proof (translation)
-Establish `hF` using `chF_meas (p + 1) m ν`. Establish `hT` using `tailF_meas p m (ν 0) (Fin.tail ν)`. Establish `step : ∀ a : Fin (p + 1) → ℂ, ∫⁻ z : (Fin (p + 1) → ℂ) × ((Fin m → ℂ) × ℝ), chF (p + 1) m ν (a, z) = ∫⁻ q : (Fin p → ℂ) × ((Fin m → ℂ) × ℝ), kc (2 + ν 0) * tailF p m (ν 0) (Fin.tail ν) (a, q)`. Introduce `a`. Rewrite using `[split_cons' (fun z => chF (p + 1) m ν (a, z)) (hF.comp measurable_prodMk_left)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lintegral_congr fun q => ch_pt p m ν (a, q)`. Use `show ∫⁻ x : Xp (p + 1) m, chF (p + 1) m ν x = kc (2 + ν 0) * ∫⁻ y : TDom p m, tailF p m (ν 0) (Fin.tail ν) y`. Rewrite using `[Measure.volume_eq_prod, lintegral_prod _ hF.aemeasurable, lintegral_congr fun a => (step a).trans (lintegral_const_mul _ (hT.comp measurable_prodMk_left)), lintegral_const_mul _ hT.lintegral_prod_right']`. Use `congr 1`. Rewrite using `[Measure.volume_eq_prod (Fin (p + 1) → ℂ), lintegral_prod _ hT.aemeasurable]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ch_step (p m : ℕ) (ν : Fin (p + 2) → ℝ) :
     CHInt (p + 1) m ν = kc (2 + ν 0) * TailInt p m (ν 0) (Fin.tail ν) := by

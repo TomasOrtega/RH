@@ -18,7 +18,7 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Heights₂.Heights.FieldNumbers.relDim_of_ringKrullDim_eq P _ h.2]`. Use `show ((((e + Fintype.card K : ℕ) : ℤ) - Fintype.card K : ℤ) : WithBot (WithTop ℤ)) = (((e : ℕ) : ℤ) : WithBot (WithTop ℤ))`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem relDim_of_isProjVar {P : Ideal (MRing ι ℂ)} {e : ℕ} (h : IsProjVar P e) :
     GroundTheory.Heights₂.Heights.FieldNumbers.relDim P = (e : ℕ) := by
@@ -30,9 +30,9 @@ theorem relDim_of_isProjVar {P : Ideal (MRing ι ℂ)} {e : ℕ} (h : IsProjVar 
   ring
 
 /- English proof (translation)
-Take `⟨hmin, hrel⟩` from `hW`. Establish `hWh : IsMultiHomogIdeal W` using `(GroundTheory.Heights₂.Heights.Bridge.isMultiHomogIdeal_iff W).mpr (ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_isMultiHomogIdeal_of_mem_minimalPrimes ((GroundTheory.Heights₂.Heights.Bridge.isMultiHomogIdeal_iff P).mp hP.1.multiHomog) ((GroundTheory.Heights₂.Heights.Bridge.isM …`. Use `⟨⟨hmin.1.1, hWh, hrel⟩, ?_⟩` and prove the remaining obligations. Use `hP.1.isPrime` as an intermediate fact. Establish `hPd` using `hP.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ringKrullDim (MRing ι ℂ ⧸ W) + 1 = ringKrullDim (MRing ι ℂ ⧸ P)` using `ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_dim_quot_minimal_add_one hsP hmin (fun h => by`. Rewrite `h` using `[hPd]`. Conclude with `ENat.natCast_ne_top _ (WithBot.coe_injective h))`. Rewrite `key` using `[hPd, show e + 1 + Fintype.card K = (e + Fintype.card K) + 1 by ring]`. Conclude with `ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_withBot_eq_of_add_one key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProjVar_of_mem_comps {P : Ideal (MRing ι ℂ)} {e : ℕ} {s : MRing ι ℂ} {c : K → ℕ}
     (hP : IsProjVar P (e + 1)) (hs : IsMultiHomog s c) (hsP : s ∉ P) {W : Ideal (MRing ι ℂ)}
@@ -55,11 +55,9 @@ theorem isProjVar_of_mem_comps {P : Ideal (MRing ι ℂ)} {e : ℕ} {s : MRing �
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `choose i hi using hP.relevant`. Establish `hpr` using `hP.isPrime`. Use `⟨∏ k, X ⟨k, i k⟩ ^ c k, ?_, ?_⟩` and prove the remaining obligations. Establish `h : IsWeightedHomogeneous (blockWeight ι) (∏ k, (X ⟨k, i k⟩ : MRing ι ℂ) ^ c k) (∑ k, c k • blockWeight ι ⟨k, i k⟩)` using `IsWeightedHomogeneous.prod _ _ _ fun k _ => (isWeightedHomogeneous_X ℂ _ _).pow (c k)`. Establish `hw : (∑ k, c k • blockWeight ι ⟨k, i k⟩) = c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k'`. Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`. Rewrite `h` using `[hw]`. Conclude with `h`. Introduce `hm`.
-
-Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp hm`. Conclude with `hi k (hpr.mem_of_pow_mem _ hk)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_form {P : Ideal (MRing ι ℂ)} (hP : IsMultiProjPrime P) (c : K → ℕ) :
     ∃ s : MRing ι ℂ, IsMultiHomog s c ∧ s ∉ P := by

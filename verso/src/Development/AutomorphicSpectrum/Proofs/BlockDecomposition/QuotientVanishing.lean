@@ -17,19 +17,15 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.LocVan
 
 /- English proof (translation)
-Introduce `n _ _ μ _ d μd _ W₁ W₂ hsep hW0 hW hp1 hp2 F hF hFT _ hvan`. Use `haveI := locallyCompact_GL n`. Use `haveI := secondCountable_GL n`. Use `haveI := sigmaFinite_twCent d μd`. Take `⟨P, hdiag, hzero, himg⟩` from `GlobalTheory.T.exists_basis_diagonal_twisted_centralizer n d W₁ W₂ hsep hW hp1 hp2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc : ∀ a ∈ twCent (thC n) d, ∀ b ∈ twCent (thC n) d, a * b = b * a`. Introduce `a ha b hb`. Take `⟨x, hx⟩` from `hdiag a ha`. Take `⟨y, hy⟩` from `hdiag b hb`. Establish `e : (P⁻¹ * a * P) * (P⁻¹ * b * P) = (P⁻¹ * b * P) * (P⁻¹ * a * P)` using `Units.ext (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Units.val_mul (P⁻¹ * a * P), Units.val_mul (P⁻¹ * b * P), hx, hy, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mul_comm _ _)`. Establish `e2 : P⁻¹ * (a * b) * P = P⁻¹ * (b * a) * P`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_left_cancel (mul_right_cancel e2)`. Use `haveI := invInvariant_twCent d μd hc`. Establish `hnorm : ∀ t ∈ twCent (thC n) d, ∀ X ∈ nilrad W₁ W₂, t.val * X * (t⁻¹ : GL (Fin n) ℂ).val ∈ nilrad W₁ W₂`. Introduce `t ht X hX`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `conj_mem t hX` as an intermediate fact. Rewrite `this` using `[(himg t ht).1, (himg t ht).2]`. Then use the resulting hypothesis. Take `⟨ρ, hρ, hρN⟩` from `GlobalTheory.T.compact_conj_twisted_centralizer n d μd W₁ W₂ hW hc hnorm (GlobalTheory.T.conj_compact_of_diagonal_nilradical n d μd W₁ W₂ P hW hdiag hzero)`. Rewrite using `[GlobalTheory.CompanionTheory.QuotNorm.quotIntegral_eq hF hFT hρ]`. Use `letI : MeasurableSpace (nilrad W₁ W₂) := borel _`.
-
-Use `haveI : BorelSpace (nilrad W₁ W₂) := ⟨rfl⟩`. Use `haveI := locallyCompact_nilrad W₁ W₂`. Use `haveI := secondCountable_nilrad W₁ W₂`. Set `ν : Measure (nilrad W₁ W₂)` to `Measure.addHaar`. Use `haveI : ν.IsAddHaarMeasure := by dsimp only [ν]; infer_instance`.
-
-Take `⟨w, hwm, hw⟩` from `GlobalTheory.T.exists_weight_nilradical_integral_one n W₁ W₂ hW ν (fun Y => GlobalTheory.T.nilradical_translation_measure_preserving n W₁ W₂ hW ν Y)`. Conclude with `GlobalTheory.T.integral_unfold_weighted_average μ ν uOf continuous_uOf.measurable w ρ F hwm hρ.1 hF hw hρN (fun q => hvan ν q)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quotVanish : QuotVanish := by
   intro n _ _ μ _ d μd _ W₁ W₂ hsep hW0 hW hp1 hp2 F hF hFT _ hvan

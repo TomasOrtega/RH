@@ -35,7 +35,7 @@ variable (i : k ≃+* K) (hi : ∀ x : k, valuation K (i x) ≤ 1 ↔ valuation 
 include hi
 
 /- English proof (translation)
-Use extensionality with `a b`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem map_alg (u : GL (Fin n) 𝒪[k]) :
     Matrix.GeneralLinearGroup.map i.toRingHom (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u) =
@@ -44,7 +44,7 @@ private theorem map_alg (u : GL (Fin n) 𝒪[k]) :
   ext a b; rfl
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hg`. Conclude with `⟨_, (map_alg i hi u).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem map_mem_KO {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) :
     Matrix.GeneralLinearGroup.map i.toRingHom g ∈ KO K (Fin n) := by
@@ -52,7 +52,7 @@ private theorem map_mem_KO {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) :
   exact ⟨_, (map_alg i hi u).symm⟩
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hy`. Use `⟨_, ⟨Matrix.GeneralLinearGroup.map (intEquiv i hi).symm.toRingHom u, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_alg i hi]`. Use `congr 1`. Use extensionality with `a b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -66,7 +66,7 @@ private theorem exists_KO {y : GL (Fin n) K} (hy : y ∈ KO K (Fin n)) :
   simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[redK_apply]`. Use `show _ = resEquiv (intEquiv i hi) ((redK k (Fin n) g : Matrix (Fin n) (Fin n) 𝓀[k]) a b)`. Rewrite using `[redK_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem red_map (g : KO k (Fin n)) :
     redK K (Fin n) ⟨Matrix.GeneralLinearGroup.map i.toRingHom g, map_mem_KO i hi g.2⟩ =
@@ -78,9 +78,9 @@ private theorem red_map (g : KO k (Fin n)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← redK_eq_one_iff ⟨g, hg⟩, ← redK_eq_one_iff ⟨_, map_mem_KO i hi hg⟩, red_map i hi ⟨g, hg⟩]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg (glEquiv (resEquiv (intEquiv i hi)) n).symm h` as an intermediate fact. Rewrite `this` using `[show Matrix.GeneralLinearGroup.map (resEquiv (intEquiv i hi)).toRingHom (redK k (Fin n) ⟨g, hg⟩) = glEquiv (resEquiv (intEquiv i hi)) n (redK k (Fin n) ⟨g, hg⟩) from rfl, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `map_one (Matrix.GeneralLinearGroup.map (resEquiv (intEquiv i hi)).symm.toRingHom)`. Introduce `h`. Rewrite using `[h, map_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_mem_KOne_iff {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) :
     Matrix.GeneralLinearGroup.map i.toRingHom g ∈ KOne K (Fin n) ↔ g ∈ KOne k (Fin n) := by
@@ -101,11 +101,11 @@ variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module �
 
 include he in
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `mem_fixed.2 fun y hy => ?_` and prove the remaining obligations. Take `⟨g, hg, rfl⟩` from `exists_KO i hi (GlobalTheory.StepData.KOne_le_KO hy)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `show P _ (e x) = e x`. Rewrite using `[← he, mem_fixed.1 hx g ((map_mem_KOne_iff i hi hg).1 hy)]`. Introduce `hw`. Use `⟨e.symm w, mem_fixed.2 fun g hg => ?_, by simp⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, e.apply_symm_apply, mem_fixed.1 hw _ ((map_mem_KOne_iff i hi (GlobalTheory.StepData.KOne_le_KO hg)).2 hg)]`.
+A detailed English derivation is pending.
 -/
 private theorem map_fixed :
     (fixed π (KOne k (Fin n))).map (e : V →ₗ[ℂ] W) = fixed P (KOne K (Fin n)) := by
@@ -126,9 +126,9 @@ private def fixEquiv : fixed π (KOne k (Fin n)) ≃ₗ[ℂ] fixed P (KOne K (Fi
   e.ofSubmodules _ _ (map_fixed i hi π P e he)
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `redK_surjective γ`. Rewrite using `[← red_map i hi g]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[levelZero_apply]`. Use `show e (levelZero π (redK k (Fin n) g) x : V) = P _ (e x)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[levelZero_apply, he]`.
+A detailed English derivation is pending.
 -/
 private theorem fixEquiv_level (γ : GL (Fin n) 𝓀[k]) (x : fixed π (KOne k (Fin n))) :
     fixEquiv i hi π P e he (levelZero π γ x) =
@@ -143,7 +143,7 @@ private theorem fixEquiv_level (γ : GL (Fin n) 𝓀[k]) (x : fixed π (KOne k (
 
 include he in
 /- English proof (translation)
-Establish `h : levelZero P (Matrix.GeneralLinearGroup.map (resEquiv (intEquiv i hi)).toRingHom γ) = (fixEquiv i hi π P e he).conj (levelZero π γ)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(fixEquiv i hi π P e he).surjective x`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply, fixEquiv_level]`. Rewrite using `[h, LinearMap.trace_conj']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem trace_level (γ : GL (Fin n) 𝓀[k]) :
     LinearMap.trace ℂ _ (levelZero P (Matrix.GeneralLinearGroup.map (resEquiv (intEquiv i hi)).toRingHom γ)) =
@@ -158,11 +158,11 @@ private theorem trace_level (γ : GL (Fin n) 𝓀[k]) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `hJ k _ _ _ _ K _ _ _ _ i hi j hj θ N V W _ _ _ _ π P e he a ha`. Take `⟨hok, hq, hn, hm⟩` from `ha`. Establish `hjr : ∀ x, j (algebraMap _ _ x) = algebraMap _ _ (resEquiv (intEquiv i hi) x)`. Introduce `x`. Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hj y (intEquiv i hi y) rfl`. Use `⟨hok, hq.trans (Nat.card_congr (resEquiv (intEquiv i hi)).toEquiv), hn, ?_⟩` and prove the remaining obligations. Unfold `Meets at hm ⊢`. Rewrite using `[← finsum_comp_equiv (glEquiv (resEquiv (intEquiv i hi)) N)]`. Establish `key : ∀ γ : GL (Fin N) 𝓀[k], star (JD θ a.D a.L N (glEquiv (resEquiv (intEquiv i hi)) N γ)) * LinearMap.trace ℂ _ (levelZero P (glEquiv (resEquiv (intEquiv i hi)) N γ)) = star (JD (θ.comp j.toMonoidHom) a.D a.L N γ) * LinearMap.trace ℂ _ (levelZero π γ)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ`. Rewrite using `[← hJ _ _ (resEquiv (intEquiv i hi)) j hjr θ a.D a.L N γ, ← trace_level i hi π P e he γ]`. Both sides reduce to the same expression. Rewrite using `[finsum_congr key]`. Conclude with `hm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.lblIso :
     JDIso → LblIso := by

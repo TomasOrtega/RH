@@ -11,25 +11,23 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Introduce `Ω _ _ ι _ x D hD`. Take `⟨i₀, hi₀⟩` from `hD.2.1.2.2 ()`. Establish `hx : x i₀ ≠ 0`. Introduce `h0`. Apply `hi₀` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[T.baseIdeal, T.multiConeMap, h0]`. Use `set S : Set Ω := Set.range fun j => x j / x i₀ with hS`. Take `⟨u, -, hu⟩` from `exists_maximal_algebraicIndependent (R := ℚ) (∅ : Set Ω) S (Set.empty_subset _) ((algebraicIndependent_empty_iff ℚ Ω).mpr (algebraMap ℚ Ω).injective)`. Establish `huS : u ⊆ S` using `hu.prop.2`. Establish `huI : AlgebraicIndepOn ℚ id u` using `hu.prop.1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : u.Finite` using `(Set.finite_range _).subset huS`. Establish `: Fintype u` using `hfin.fintype`. Use `set d := Fintype.card u`. Set `e : u ≃ Fin d` to `Fintype.equivFin u`. Set `t : Fin d → Ω` to `fun n => (e.symm n : Ω)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hrange : Set.range t = u`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, rfl⟩`. Conclude with `(e.symm n).2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `ha`. Conclude with `⟨e ⟨a, ha⟩, by simp [t]⟩`. Establish `ht : AlgebraicIndependent ℚ t` using `huI.comp e.symm e.symm.injective`. Establish `htS : ∀ n, t n ∈ IntermediateField.adjoin ℚ S` using `fun n => IntermediateField.subset_adjoin ℚ S (huS (e.symm n).2)`. Establish `halg : ∀ r ∈ S, IsAlgebraic (IntermediateField.adjoin ℚ (Set.range t)) r`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `r hr`. Rewrite using `[hrange]`. Distinguish the cases in `hru : r ∈ u`. Conclude with `isAlgebraic_algebraMap (⟨r, IntermediateField.subset_adjoin ℚ u hru⟩ : IntermediateField.adjoin ℚ u)`. Use `IntermediateField.isAlgebraic_adjoin_iff.mpr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Assume the negation of the conclusion as `hT`. Establish `hins : AlgebraicIndepOn ℚ id (insert r u)` using `(AlgebraicIndepOn.insert_iff hru).mpr ⟨huI, by rw [Set.image_id]; exact hT⟩`. Conclude with `hru (hu.mem_of_prop_insert ⟨hins, Set.insert_subset hr huS⟩)`. Establish `hcone : coneRatios (fun p : (Σ _ : Unit, ι) => x p.2) (fun _ => i₀) = S`. Use extensionality with `a`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, j⟩, rfl⟩`. Conclude with `⟨j, rfl⟩`. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨⟨(), j⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hA` using `CoordConeArithVar.full Unit (fun _ => ι) Ω (fun p => x p.2) (fun _ => i₀) d t ⟨()⟩ (fun _ => hx) ht (by rw [hcone]; exact htS) (by rw [hcone]; exact halg)`. Rewrite `hA` using `[mCoordIdeal_eq_ker_multiConeMap]`. Establish `hdim` using `hD.2.2.2.symm.trans hA.2.2.2`. Simplify using `only [Fintype.card_unit] at hdim`. Establish `hDd : D + 1 = d + 1 + 1` using `by exact_mod_cast hdim`.
-
-Use `⟨i₀, d, t, hx, by omega, ht, htS, fun j => halg _ ⟨j, rfl⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem BaseRatioBasis.proof : BaseRatioBasis.Statement := by
   classical

@@ -12,13 +12,13 @@ section Cosets
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (A.subgroupOf H) (⟨y, hy⟩ : H)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨(QuotientGroup.mk (⟨y, hy⟩ : H) : H ⧸ A.subgroupOf H), Set.mem_smul_set.mpr ⟨(((QuotientGroup.mk (⟨y, hy⟩ : H) : H ⧸ A.subgroupOf H).out : H) : G)⁻¹ * y, ?_, by simp [smul_eq_mul]⟩⟩` and prove the remaining obligations. Establish `hG : (((QuotientGroup.mk (⟨y, hy⟩ : H) : H ⧸ A.subgroupOf H).out : H) : G) = y * ((h : H) : G)`. Use `congrArg (fun x : H => (x : G)) hh` as an intermediate fact. Simplify using `using this`. Establish `hA : ((h : H) : G) ∈ A` using `Subgroup.mem_subgroupOf.mp h.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hH : ((h : H) : G) ∈ H` using `(h : H).2`. Rewrite using `[hG, mul_inv_rev, inv_mul_cancel_right]`. Conclude with `(SetLike.mem_coe).mpr (Subgroup.mem_inf.mpr ⟨A.inv_mem hA, H.inv_mem hH⟩)`. Introduce and unpack `⟨q, hq⟩`. Take `⟨z, hz, rfl⟩` from `Set.mem_smul_set.mp hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz' : z ∈ A ⊓ H` using `hz`. Conclude with `H.mul_mem (q.out : H).2 (Subgroup.mem_inf.mp hz').2`.
+A detailed English derivation is pending.
 -/
 lemma subgroup_eq_iUnion (A H : Subgroup G) :
     (H : Set G) = ⋃ q : H ⧸ A.subgroupOf H, ((q.out : H) : G) • ((A ⊓ H : Subgroup G) : Set G) := by
@@ -44,13 +44,13 @@ lemma subgroup_eq_iUnion (A H : Subgroup G) :
     exact H.mul_mem (q.out : H).2 (Subgroup.mem_inf.mp hz').2
 
 /- English proof (translation)
-Introduce `p q hpq`. Use `Set.disjoint_left.mpr ?_` and prove the remaining obligations. Introduce `y hy1 hy2`. Apply `hpq` to reduce the goal to its premises. Take `⟨a, ha, ha'⟩` from `Set.mem_smul_set.mp hy1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hb'⟩` from `Set.mem_smul_set.mp hy2`. Rewrite `ha'`, `hb'` using `[smul_eq_mul]`. Establish `hpq' : (((p.out : H) : G))⁻¹ * ((q.out : H) : G) = a * b⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, hb', ← ha', inv_mul_cancel_left]`. Establish `hmem : (p.out : H)⁻¹ * (q.out : H) ∈ A.subgroupOf H`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.mem_subgroupOf]`. Use `push_cast`. Rewrite using `[hpq']`. Conclude with `A.mul_mem (Subgroup.mem_inf.mp ha).1 (A.inv_mem (Subgroup.mem_inf.mp hb).1)`. Establish `key : (QuotientGroup.mk (p.out : H) : H ⧸ A.subgroupOf H) = QuotientGroup.mk (q.out : H)` using `QuotientGroup.eq.mpr hmem`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `key` using `[QuotientGroup.out_eq', QuotientGroup.out_eq']`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 lemma pairwise_disjoint_cosets (A H : Subgroup G) :
     Pairwise (Disjoint on fun q : H ⧸ A.subgroupOf H =>
@@ -74,9 +74,9 @@ lemma pairwise_disjoint_cosets (A H : Subgroup G) :
   rwa [QuotientGroup.out_eq', QuotientGroup.out_eq'] at key
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify `hx` using `[mul_assoc]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨g⁻¹ * y * g, h, by simp [mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 lemma mem_conj_map (K : Subgroup G) (g y : G) :
     y ∈ K.map (MulAut.conj g).toMonoidHom ↔ g⁻¹ * y * g ∈ K := by
@@ -95,17 +95,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Measu
   [BorelSpace G]
 
 /- English proof (translation)
-Establish `hAH : IsOpen ((A ⊓ H : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hA.inter hHo`. Establish `hfin : Finite (H ⧸ A.subgroupOf H)`. Take `⟨t, ht⟩` from `hH.elim_finite_subcover (fun q : H ⧸ A.subgroupOf H => ((q.out : H) : G) • ((A ⊓ H : Subgroup G) : Set G)) (fun q => hAH.smul _) (subgroup_eq_iUnion A H).subset`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.finite_univ_iff.mp ((t.finite_toSet).subset fun q _ => ?_)` and prove the remaining obligations. Establish `hq : ((q.out : H) : G) ∈ (H : Set G)` using `(q.out : H).2`. Take `⟨i, hi, hmem⟩` from `Set.mem_iUnion₂.mp (ht hq)`. Establish `hself : ((q.out : H) : G) ∈ ((q.out : H) : G) • ((A ⊓ H : Subgroup G) : Set G)` using `Set.mem_smul_set.mpr ⟨1, (A ⊓ H).one_mem, by simp⟩`. Establish `hiq : i = q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `Set.disjoint_left.mp (pairwise_disjoint_cosets A H hne) hmem hself`. Rewrite using `[← hiq]`. Conclude with `Finset.mem_coe.mpr hi`. Use `letI := Fintype.ofFinite (H ⧸ A.subgroupOf H)`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Establish `hcard : A.relIndex H = Fintype.card (H ⧸ A.subgroupOf H)`. Unfold `Subgroup.relIndex Subgroup.index`. Conclude with `Nat.card_eq_fintype_card`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← subgroup_eq_iUnion A H]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑' q : H ⧸ A.subgroupOf H, μ (((q.out : H) : G) • ((A ⊓ H : Subgroup G) : Set G)) := measure_iUnion (pairwise_disjoint_cosets A H) fun q => (hAH.smul _).measurableSet`. Use `_ = ∑' _q : H ⧸ A.subgroupOf H, μ ((A ⊓ H : Subgroup G) : Set G) := by`. Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[measure_smul]`.
-
-Use `_ = (A.relIndex H : ENNReal) * μ (A ⊓ H : Subgroup G) := by`. Rewrite using `[tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard]`.
+A detailed English derivation is pending.
 -/
 lemma measure_subgroup_eq (μ : Measure G) [IsMulLeftInvariant μ] (A H : Subgroup G)
     (hA : IsOpen (A : Set G)) (hH : IsCompact (H : Set G)) (hHo : IsOpen (H : Set G)) :
@@ -143,9 +141,9 @@ lemma measure_subgroup_eq (μ : Measure G) [IsMulLeftInvariant μ] (A H : Subgro
 end Measure
 
 /- English proof (translation)
-Use extensionality with `s hs`. Establish `hs' : s = ⋃ i, s ∩ T i` using `by rw [← Set.inter_iUnion, hT, Set.inter_univ]`. Establish `hd' : Pairwise (Disjoint on fun i => s ∩ T i)` using `fun i j hij => (hd hij).mono Set.inter_subset_right Set.inter_subset_right`. Establish `hm' : ∀ i, MeasurableSet (s ∩ T i)` using `fun i => hs.inter (hm i)`. Rewrite using `[hs', measure_iUnion hd' hm', measure_iUnion hd' hm']`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tsum_congr fun i => h i _ (hm' i) Set.inter_subset_right`.
+A detailed English derivation is pending.
 -/
 private theorem measure_eq_of_eq_on_partition {α ι : Type*} [MeasurableSpace α] [Countable ι]
     (μ ν : Measure α) (T : ι → Set α) (hT : ⋃ i, T i = Set.univ) (hd : Pairwise (Disjoint on T))
@@ -160,7 +158,7 @@ private theorem measure_eq_of_eq_on_partition {α ι : Type*} [MeasurableSpace �
   exact tsum_congr fun i => h i _ (hm' i) Set.inter_subset_right
 
 /- English proof (translation)
-Establish `hK : (K.map (MulAut.conj g⁻¹).toMonoidHom).map (MulAut.conj g).toMonoidHom = K`. Use extensionality with `y`. Simplify using `[mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 private theorem relIndex_map_conj_eq_relIndex_map_conj_inv {G : Type} [Group G] (K : Subgroup G) (g : G) :
     K.relIndex (K.map (MulAut.conj g).toMonoidHom)
@@ -175,35 +173,31 @@ private theorem relIndex_map_conj_eq_relIndex_map_conj_inv {G : Type} [Group G] 
         Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj g).injective
 
 /- English proof (translation)
-Unfold `PI.UnimodIdx`. Introduce `G _ _ _ _ _ μ _ hμ U hU hUb K hKo hKc hidx`. Establish `: LocallyCompactSpace G` using `hKc.locallyCompactSpace_of_mem_nhds_of_group (hKo.mem_nhds K.one_mem)`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `hKcl : IsClosed (K : Set G)` using `Subgroup.isClosed_of_isOpen K hKo`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hKpos : 0 < μ K` using `hKo.measure_pos μ ⟨1, K.one_mem⟩`. Establish `hKfin : μ K < ⊤` using `hKc.measure_lt_top`. Establish `hinv : IsMulLeftInvariant (map (· * g) μ)`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`. Use `_ = map (· * g) (map (h * ·) μ) := (map_map (measurable_mul_const g) (measurable_const_mul h)).symm`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = map (· * g) μ := by rw [map_mul_left_eq_self]`. Establish `he : MeasurableEmbedding (fun x : G => x * g)` using `(MeasurableEquiv.mulRight g).measurableEmbedding`. Establish `hfin : IsFiniteMeasureOnCompacts (map (· * g) μ)`. Prove the components needed by the constructor for the conclusion. Introduce `C hC`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he.map_apply]`. Establish `: IsCompact ((fun x : G => x * g) ⁻¹' C)` using `(Homeomorph.mulRight g).isCompact_preimage.mpr hC`. Conclude with `this.measure_lt_top`. Establish `hK'set : ((K.map (MulAut.conj g).toMonoidHom : Subgroup G) : Set G) = (fun y => g⁻¹ * y * g) ⁻¹' (K : Set G)`. Use extensionality with `y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [SetLike.mem_coe, Set.mem_preimage, mem_conj_map]`. Establish `hK'o : IsOpen ((K.map (MulAut.conj g).toMonoidHom : Subgroup G) : Set G)`. Rewrite using `[hK'set]`. Conclude with `hKo.preimage ((continuous_const.mul continuous_id).mul continuous_const)`. Establish `hcont : Continuous (MulAut.conj g).toMonoidHom`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: ⇑(MulAut.conj g).toMonoidHom = fun x => g * x * g⁻¹`. Use function extensionality and compare the values at `x`. Simplify using `[MulAut.conj_apply]`. Rewrite using `[this]`. Conclude with `(continuous_const.mul continuous_id).mul continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK'c : IsCompact ((K.map (MulAut.conj g).toMonoidHom : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_map]`. Conclude with `hKc.image hcont`. Establish `hconj : μ ((K.map (MulAut.conj g).toMonoidHom : Subgroup G) : Set G) = μ K`. Establish `h1` using `measure_subgroup_eq μ K (K.map (MulAut.conj g).toMonoidHom) hKo hK'c hK'o`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h2` using `measure_subgroup_eq μ (K.map (MulAut.conj g).toMonoidHom) K hK'o hKc hKo`. Rewrite using `[h1, h2, inf_comm, relIndex_map_conj_eq_relIndex_map_conj_inv, hidx g]`. Establish `hνK : map (· * g) μ K = μ K`. Rewrite using `[he.map_apply]`. Establish `hset : (fun x : G => x * g) ⁻¹' (K : Set G) = g⁻¹ • ((K.map (MulAut.conj g).toMonoidHom : Subgroup G) : Set G)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, Set.mem_smul_set_iff_inv_smul_mem, inv_inv, smul_eq_mul, mem_conj_map]`. Simplify using the standard rewrite rules. Rewrite using `[hset, measure_smul]`. Conclude with `hconj`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : haarScalarFactor (map (· * g) μ) μ = 1`. Establish `h` using `measure_isMulInvariant_eq_smul_of_isCompact_closure (map (· * g) μ) μ (s := (K : Set G)) (by rw [hKcl.closure_eq]; exact hKc)`. Rewrite `h` using `[hνK]`. Establish `h' : ((haarScalarFactor (map (· * g) μ) μ : NNReal) : ENNReal) * μ K = 1 * μ K`. Rewrite using `[one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.symm`. Establish `key : ((haarScalarFactor (map (· * g) μ) μ : NNReal) : ENNReal) = 1`. Conclude with `(ENNReal.mul_left_inj hKpos.ne' hKfin.ne).mp h'`. Conclude with `key` after adjusting the coercions. Establish `hKTo : IsOpen ((K ⊓ ⊤ : Subgroup G) : Set G)` using `by rw [inf_top_eq]; exact hKo`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hKTc : IsCompact ((K ⊓ ⊤ : Subgroup G) : Set G)` using `by rw [inf_top_eq]; exact hKc`. Establish `hKTcl : IsClosed ((K ⊓ ⊤ : Subgroup G) : Set G)` using `by rw [inf_top_eq]; exact hKcl`. Establish `hcov : (⋃ q : (⊤ : Subgroup G) ⧸ K.subgroupOf ⊤, ((q.out : (⊤ : Subgroup G)) : G) • ((K ⊓ ⊤ : Subgroup G) : Set G)) = Set.univ`. Rewrite using `[← subgroup_eq_iUnion K ⊤, Subgroup.coe_top]`. Establish `hTpos : ∀ q : (⊤ : Subgroup G) ⧸ K.subgroupOf ⊤, 0 < μ (((q.out : (⊤ : Subgroup G)) : G) • ((K ⊓ ⊤ : Subgroup G) : Set G))`.
-
-Introduce `q`. Rewrite using `[measure_smul]`. Conclude with `hKTo.measure_pos μ ⟨1, (K ⊓ ⊤).one_mem⟩`. Establish `hcount : Countable ((⊤ : Subgroup G) ⧸ K.subgroupOf ⊤)`. Use `Measure.countable_meas_pos_of_disjoint_iUnion (μ := μ) (fun q : (⊤ : Subgroup G) ⧸ K.subgroupOf ⊤ => (hKTo.smul ((q.out : (⊤ : Subgroup G)) : G)).measurableSet) (pairwise_disjoint_cosets K ⊤)` as an intermediate fact.
-
-Conclude with `Set.countable_univ_iff.mp (Set.Countable.mono (fun q _ => hTpos q) this)`. Use `measure_eq_of_eq_on_partition μ (map (· * g) μ) (fun q : (⊤ : Subgroup G) ⧸ K.subgroupOf ⊤ => ((q.out : (⊤ : Subgroup G)) : G) • ((K ⊓ ⊤ : Subgroup G) : Set G)) hcov (pairwise_disjoint_cosets K ⊤) (fun q => (hKTo.smul _).measurableSet) ?_` and prove the remaining obligations. Introduce `q s hs hsub`. Establish `hcl : IsCompact (closure s)` using `(hKTc.smul ((q.out : (⊤ : Subgroup G)) : G)).of_isClosed_subset isClosed_closure (closure_minimal hsub (hKTcl.smul ((q.out : (⊤ : Subgroup G)) : G)))`. Rewrite using `[measure_isMulInvariant_eq_smul_of_isCompact_closure (map (· * g) μ) μ hcl, hc, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimodIdx_main : PI.UnimodIdx := by
   unfold PI.UnimodIdx

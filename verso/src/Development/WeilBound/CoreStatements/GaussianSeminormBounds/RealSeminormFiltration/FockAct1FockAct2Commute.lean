@@ -17,9 +17,9 @@ def quartT (R L : ι → E) (A B : Matrix ι ι ℂ) : E :=
   ∑ i, ∑ j, ∑ k, ∑ l, (A i j * B k l) • (R i * R k * (L j * L l))
 
 /- English proof (translation)
-Unfold `quartT`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Fintype.sum_prod_type]`. Use `_ = ∑ y : ι × ι, ∑ x : ι × ι, (B y.1 y.2 * A x.1 x.2) • (R y.1 * R x.1 * (L y.2 * L x.2)) := by`. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (A x.1 x.2), hR x.1, hL x.2]`. Use `_ = _ := by simp only [Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quartT_comm (R L : ι → E) (hR : ∀ a b, R a * R b = R b * R a)
     (hL : ∀ a b, L a * L b = L b * L a) (A B : Matrix ι ι ℂ) :
@@ -37,17 +37,15 @@ theorem quartT_comm (R L : ι → E) (hR : ∀ a b, R a * R b = R b * R a)
     _ = _ := by simp only [Fintype.sum_prod_type]
 
 /- English proof (translation)
-Establish `key : ∀ i j k l, (A i j • (R i * L j)) * (B k l • (R k * L l)) = (A i j * B k l) • (R i * R k * (L j * L l)) + if j = k then (A i j * B k l) • (R i * L l) else 0`. Introduce `i j k l`. Establish `h1 : R i * L j * (R k * L l) = R i * (L j * R k) * L l` using `by simp only [mul_assoc]`. Rewrite using `[smul_mul_smul_comm, h1, hLR]`. Use `split_ifs with h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_add, add_mul, mul_one, smul_add, mul_assoc]`. Simplify using `only [add_zero, mul_assoc]`. Establish `h2 : quadT R L (A * B) = ∑ i, ∑ j, ∑ k, ∑ l, if j = k then (A i j * B k l) • (R i * L l) else 0`. Unfold `quadT`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[h2]`. Unfold `quadT quartT`. Rewrite using `[Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`.
-
-Conclude with `Finset.sum_congr rfl fun l _ => key i j k l`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quadT_mul (R L : ι → E)
     (hLR : ∀ a b, L a * R b = R b * L a + if a = b then 1 else 0) (A B : Matrix ι ι ℂ) :
@@ -83,7 +81,7 @@ theorem quadT_mul (R L : ι → E)
   exact Finset.sum_congr rfl fun l _ => key i j k l
 
 /- English proof (translation)
-Rewrite using `[quadT_mul R L hLR, quadT_mul R L hLR, h, quartT_comm R L hR hL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quadT_commute (R L : ι → E) (hR : ∀ a b, R a * R b = R b * R a)
     (hL : ∀ a b, L a * L b = L b * L a)
@@ -98,9 +96,9 @@ section Fock
 variable {σ : Type*} [DecidableEq σ]
 
 /- English proof (translation)
-Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pderiv a (pderiv b P) = pderiv b (pderiv a P)`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add P Q hP hQ => simp [hP, hQ]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X P n hP`. Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, hP, pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pd_pd (a b : σ) :
     ((pderiv a).toLinearMap * (pderiv b).toLinearMap : Module.End ℂ (MvPolynomial σ ℂ)) =
@@ -115,7 +113,7 @@ theorem pd_pd (a b : σ) :
     split_ifs <;> simp <;> ring
 
 /- English proof (translation)
-Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Simplify using `[mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mx_mx (a b : σ) :
     (LinearMap.mulLeft ℂ (X a) * LinearMap.mulLeft ℂ (X b) : Module.End ℂ (MvPolynomial σ ℂ)) =
@@ -124,7 +122,7 @@ theorem mx_mx (a b : σ) :
   simp [mul_left_comm]
 
 /- English proof (translation)
-Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[Derivation.leibniz]`. Simplify using `[Derivation.leibniz, h, pderiv_X_of_ne (Ne.symm h)]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pd_mx (a b : σ) :
     ((pderiv a).toLinearMap * LinearMap.mulLeft ℂ (X b) : Module.End ℂ (MvPolynomial σ ℂ)) =
@@ -142,9 +140,9 @@ section Lines
 variable {p q r s : ℕ}
 
 /- English proof (translation)
-Unfold `raiB`. Apply the tactic sequence `by_cases ha : linePos a = true <;> by_cases hb : linePos b = true`. Simplify using `only [ha, hb, if_true]`. Conclude with `mx_mx a b`. Establish `hne : b ≠ a` using `fun h => hb (h ▸ ha)`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ha, if_neg hb, mul_neg, neg_mul, pd_mx, if_neg hne, add_zero]`. Establish `hne : a ≠ b` using `fun h => ha (h ▸ hb)`. Rewrite using `[if_neg ha, if_pos hb, mul_neg, neg_mul, pd_mx, if_neg hne, add_zero]`. Rewrite using `[if_neg ha, if_neg hb, neg_mul_neg, neg_mul_neg, pd_pd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rai_rai (a b : Ln p q r s) : raiB a * raiB b = raiB b * raiB a := by
   unfold raiB
@@ -157,9 +155,9 @@ theorem rai_rai (a b : Ln p q r s) : raiB a * raiB b = raiB b * raiB a := by
   · rw [if_neg ha, if_neg hb, neg_mul_neg, neg_mul_neg, pd_pd]
 
 /- English proof (translation)
-Unfold `lowB`. Apply the tactic sequence `by_cases ha : linePos a = true <;> by_cases hb : linePos b = true`. Rewrite using `[if_pos ha, if_pos hb, pd_pd]`. Establish `hne : a ≠ b` using `fun h => hb (h ▸ ha)`. Rewrite using `[if_pos ha, if_neg hb, pd_mx, if_neg hne, add_zero]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : b ≠ a` using `fun h => ha (h ▸ hb)`. Rewrite using `[if_neg ha, if_pos hb, pd_mx, if_neg hne, add_zero]`. Rewrite using `[if_neg ha, if_neg hb, mx_mx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem low_low (a b : Ln p q r s) : lowB a * lowB b = lowB b * lowB a := by
   unfold lowB
@@ -172,11 +170,11 @@ theorem low_low (a b : Ln p q r s) : lowB a * lowB b = lowB b * lowB a := by
   · rw [if_neg ha, if_neg hb, mx_mx]
 
 /- English proof (translation)
-Unfold `lowB raiB`. Apply the tactic sequence `by_cases ha : linePos a = true <;> by_cases hb : linePos b = true`. Rewrite using `[if_pos ha, if_pos hb, pd_mx]`. Establish `hne : a ≠ b` using `fun h => hb (h ▸ ha)`. Rewrite using `[if_pos ha, if_neg hb, mul_neg, neg_mul, pd_pd, if_neg hne, add_zero]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : a ≠ b` using `fun h => ha (h ▸ hb)`. Rewrite using `[if_neg ha, if_pos hb, mx_mx, if_neg hne, add_zero]`. Rewrite using `[if_neg ha, if_neg hb, mul_neg, neg_mul, pd_mx]`. Distinguish the cases in `h : a = b`. Rewrite using `[if_pos h, if_pos h.symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem low_rai (a b : Ln p q r s) :
     lowB a * raiB b = raiB b * lowB a + if a = b then 1 else 0 := by
@@ -193,7 +191,7 @@ theorem low_rai (a b : Ln p q r s) :
     · rw [if_neg h, if_neg (Ne.symm h)]; abel
 
 /- English proof (translation)
-Unfold `omAct quadT omE`. Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, Matrix.entryLinearMap_apply, smul_add, Finset.sum_add_distrib, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_smul, smul_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem omAct_eq (A : Matrix (Ln p q r s) (Ln p q r s) ℂ) :
     omAct p q r s A = quadT raiB lowB A + (∑ l, A l l * (1 / 2 : ℂ)) • 1 := by
@@ -203,7 +201,7 @@ theorem omAct_eq (A : Matrix (Ln p q r s) (Ln p q r s) ℂ) :
     if_true, Finset.sum_smul, smul_smul]
 
 /- English proof (translation)
-Establish `hc` using `quadT_commute raiB lowB rai_rai low_low low_rai A B h`. Rewrite using `[omAct_eq, omAct_eq]`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, hc, smul_add, smul_smul]`. Rewrite using `[mul_comm (∑ l, A l l * (1 / 2 : ℂ))]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem omAct_commute (A B : Matrix (Ln p q r s) (Ln p q r s) ℂ) (h : A * B = B * A) :
     omAct p q r s A * omAct p q r s B = omAct p q r s B * omAct p q r s A := by
@@ -216,7 +214,7 @@ theorem omAct_commute (A B : Matrix (Ln p q r s) (Ln p q r s) ℂ) (h : A * B = 
 end Lines
 
 /- English proof (translation)
-Use `omAct_commute (Matrix.kroneckerMap (· * ·) Z 1) (Matrix.kroneckerMap (· * ·) 1 W) ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fockAct1_fockAct2_commute {p q r s : ℕ} (Z : Mat p q) (W : Mat r s) :
     fockAct1 p q r s Z * fockAct2 p q r s W = fockAct2 p q r s W * fockAct1 p q r s Z := by

@@ -12,7 +12,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsImageCocycleS
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf
 
 /- English proof (translation)
-Rewrite using `[CochainComplex.isStrictlyGE_iff]`. Introduce `i hi`. Conclude with `(restr (Int.castRingHom R)).map_isZero (L.isZero_of_isStrictlyGE 0 i hi)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem rcx_ge (R : Type) [CommRing R] (L : Cx R) [L.IsStrictlyGE 0] :
     ((rcx (Int.castRingHom R)).obj L).IsStrictlyGE 0 := by
@@ -21,13 +21,13 @@ private theorem rcx_ge (R : Type) [CommRing R] (L : Cx R) [L.IsStrictlyGE 0] :
   exact (restr (Int.castRingHom R)).map_isZero (L.isZero_of_isStrictlyGE 0 i hi)
 
 /- English proof (translation)
-Establish `gL` using `rcx_ge R L`. Establish `gB` using `rcx_ge R B`. Apply `UpperTheory.bijective_semiMap_op_of_bijective_cochain_pushforward` to reduce the goal to its premises. Use `haveI hC : (mappingCone ρ.toZ).IsStrictlyGE (-1) := by`. Rewrite using `[CochainComplex.isStrictlyGE_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Rewrite using `[mappingCone.isZero_X_iff]`. Conclude with `⟨((rcx (Int.castRingHom R)).obj L).isZero_of_isStrictlyGE 0 _ (by omega), ((rcx (Int.castRingHom R)).obj B).isZero_of_isStrictlyGE 0 _ (by omega)⟩`. Establish `hQ : ∀ {V U : Scheme.{0}} (a : V ⟶ U), Nonempty (Sx E 0 U) → Nonempty (Sx E 0 V)` using `fun a ⟨x⟩ => ⟨Sx.res a x⟩`. Establish `hsub : ∀ m, Subsingleton (CohomologyClass ((chains ℤ).obj E) (mappingCone ρ.toZ) m)` using `UpperTheory.subsingleton_cohomologyClass_chains_of_acy_locally_exact (mappingCone ρ.toZ) (-1) E (UpperTheory.acy_mappingCone_semiMap_of_injective R L B hL hB ρ _) (UpperTheory.bijective_semiMap_of_locally_surjective_on_cocycles R L B ρ (fun T => Nonempty (Sx E 0 T)) hQ hs hi)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Prove the components needed by the constructor for the conclusion. Establish `ex` using `(GlobalTheory.T.hypercohomology_mappingCone_second_variable_exact ℤ ((chains ℤ).obj E) ρ.toZ m).2.2`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `(ex x).1 hx`. Rewrite using `[Subsingleton.elim y 0, map_zero]`. Establish `ex` using `(GlobalTheory.T.hypercohomology_mappingCone_second_variable_exact ℤ ((chains ℤ).obj E) ρ.toZ (m + 1)).1`. Introduce `x`. Conclude with `(ex x).1 (Subsingleton.elim _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem semi_bij (R : Type) [CommRing R] (L B : Cx R) [L.IsStrictlyGE 0] [B.IsStrictlyGE 0]
     (hL : ∀ s, Injective (L.X s)) (hB : ∀ s, Injective (B.X s)) (ρ : SemiMap L B) (E : Spc)
@@ -64,15 +64,13 @@ private theorem semi_bij (R : Type) [CommRing R] (L B : Cx R) [L.IsStrictlyGE 0]
     exact (ex x).1 (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Introduce `R _ W L I _ _ hL hI ψ hψn hψc Z hZ hs hi E hE`. Set `ρ : SemiMap L (UpperTheory.Bc.Bc W I)` to `{ app := fun T s => ψ T s nat := fun g s a => hψn g s a comm := fun T s t a => hψc T s t a }`. Use `haveI : (UpperTheory.Bc.Bc W I).IsStrictlyGE 0 := by`. Rewrite using `[CochainComplex.isStrictlyGE_iff]`. Introduce `i hi'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Functor.map_isZero (UpperTheory.Bc.pw R W) (I.isZero_of_isStrictlyGE 0 i hi')`. Establish `hB : ∀ s, Injective ((UpperTheory.Bc.Bc W I).X s)` using `fun s => by haveI := hI s`. Conclude with `UpperTheory.injective_productPushforward_of_injective R W (I.X s)`. Establish `hbij` using `semi_bij R L (UpperTheory.Bc.Bc W I) hL hB ρ E (fun T hT n b hb => hs T (hE T hT) n b hb) (fun T hT n a ha hc => hi T (hE T hT) n a ha hc)`. Use `choose Θ hΘ hΘf using fun n => UpperTheory.exists_bijective_cohomologyClass_product_adjunction R W I E n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun n => (Θ n).comp (ρ.op.app E n), fun n => (hΘ n).comp (hbij n), ?_⟩` and prove the remaining obligations. Introduce `n α`. Take `⟨β', hβ'⟩` from `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap R R ρ).1 E n α`. Establish `e1` using `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap R R ρ).2 E n α β' hβ'`. Take `⟨β, hβ, hβf⟩` from `hΘf n β'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨β, ?_, ?_⟩` and prove the remaining obligations. Use `show Θ n (ρ.op.app E n (CohomologyClass.mk α)) = _`. Rewrite using `[e1, hβ]`. Introduce `p s h T y`. Rewrite using `[hβf p s h T y, hβ' p s h T]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.injectiveComplex_productSection_map_quasiIso :
     ∀ (R : Type) [CommRing R] (W : Scheme.{0}) (L I : Cx R) [L.IsStrictlyGE 0] [I.IsStrictlyGE 0],

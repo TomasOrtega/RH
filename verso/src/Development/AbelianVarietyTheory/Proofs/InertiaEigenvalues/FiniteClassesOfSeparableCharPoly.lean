@@ -50,31 +50,27 @@ def normHom : B.Aˣ →* fixG B where
     ring
 
 /- English proof (translation)
-Use `set Sq := (powMonoidHom 2 : B.Aˣ →* B.Aˣ).range`. Use `set φ : fixG B →* B.Aˣ ⧸ Sq := (QuotientGroup.mk' Sq).comp (fixG B).subtype`. Use `haveI : Finite (fixG B ⧸ φ.ker) := Finite.of_injective _ (QuotientGroup.kerLift_injective φ)`. Use `set M := {x : fixG B | ((x : B.Aˣ) : B.A) ^ 2 = 1}`. Use `haveI : Finite M := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: Finite {x : B.A | x ^ 2 = 1}` using `hmu.to_subtype`. Use `Finite.of_injective (fun x : M => (⟨((x.1 : B.Aˣ) : B.A), x.2⟩ : {x : B.A | x ^ 2 = 1})) ?_` and prove the remaining obligations. Introduce `a b h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `congrArg Subtype.val h`. Set `g : (fixG B ⧸ φ.ker) × M → fixG B ⧸ (normHom B).range` to `fun p => QuotientGroup.mk (Quotient.out p.1 * p.2.1)`. Use `Finite.of_surjective g ?_` and prove the remaining obligations. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective z`. Use `set x₀ : fixG B := Quotient.out (QuotientGroup.mk x : fixG B ⧸ φ.ker)`. Establish `hx₀ : x₀⁻¹ * x ∈ φ.ker`. Establish `: (QuotientGroup.mk x₀ : fixG B ⧸ φ.ker) = QuotientGroup.mk x` using `Quotient.out_eq' _`. Conclude with `QuotientGroup.eq.mp this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx₀` using `[MonoidHom.mem_ker]`. Simplify using `only [φ, MonoidHom.comp_apply, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff] at hx₀`. Take `⟨y, hy⟩` from `hx₀`. Rewrite `hy` using `[powMonoidHom_apply]`. Establish `hfix : B.σ ((y : B.A) ^ 2) = (y : B.A) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(x₀⁻¹ * x).2` as an intermediate fact. Rewrite using `[← Units.val_pow_eq_pow_val, hy]`. Conclude with `this`. Use `set ε : B.Aˣ := y * (sigU B y)⁻¹`. Establish `hε2 : (ε : B.A) ^ 2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : ((sigU B y : B.Aˣ) : B.A) ^ 2 = (y : B.A) ^ 2` using `by rw [sigU_val, ← map_pow, hfix]`. Establish `h1' : (sigU B y) ^ 2 = y ^ 2` using `Units.ext (by rw [Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, h1])`. Establish `h2 : ((sigU B y)⁻¹ : B.Aˣ) ^ 2 = (y ^ 2)⁻¹` using `by rw [inv_pow, h1']`. Rewrite using `[← Units.val_pow_eq_pow_val]`. Simplify using `only [ε, mul_pow, h2, mul_inv_cancel, Units.val_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Establish `hεfix : B.σ (ε : B.A) = ε`. Establish `hσ : B.σ (ε : B.A) * (ε : B.A) = 1`. Establish `hyinv : B.σ (((sigU B y)⁻¹ : B.Aˣ) : B.A) = ((y⁻¹ : B.Aˣ) : B.A)`. Establish `: B.σ (((sigU B y)⁻¹ : B.Aˣ) : B.A) * (y : B.A) = 1`. Combine the equalities or inequalities in the displayed calculation.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.mul_inv, mul_one]`. Use `_ = ((y⁻¹ : B.Aˣ) : B.A) := by rw [← mul_assoc, this, one_mul]`. Simplify using `only [ε, Units.val_mul, map_mul, hyinv]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Set `εG : fixG B` to `⟨ε, hεfix⟩`. Use `⟨(QuotientGroup.mk x, ⟨εG, hε2⟩), ?_⟩` and prove the remaining obligations. Use `show QuotientGroup.mk (x₀ * εG) = QuotientGroup.mk x`. Rewrite using `[QuotientGroup.eq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨y, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `hxy : ((x : fixG B) : B.Aˣ) = (x₀ : B.Aˣ) * y ^ 2`. Rewrite using `[hy]`.
-
-Simplify using the standard rewrite rules. Use `show ((y : B.A) * B.σ (y : B.A)) = (((x₀ * εG)⁻¹ * x : fixG B) : B.Aˣ).val`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, hxy, εG, ε]`. Simplify using `only [mul_inv_rev, inv_inv, Units.val_mul, Units.val_pow_eq_pow_val, sigU_val]`. Establish `: ((x₀ : B.Aˣ)⁻¹ : B.Aˣ).val * (x₀ : B.Aˣ).val = 1` using `Units.inv_mul _`.
-
-Establish `hy1 : (y : B.A) * ((y⁻¹ : B.Aˣ) : B.A) = 1` using `Units.mul_inv y`. Rewrite using `[sq]`. Take the linear combination `(-(B.σ (y : B.A) * (y : B.A))) * hy1 + (-(B.σ (y : B.A) * (y : B.A) * (y : B.A) * ((y⁻¹ : B.Aˣ) : B.A))) * this`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot (hsq : Finite (B.Aˣ ⧸ (powMonoidHom 2 : B.Aˣ →* B.Aˣ).range))
     (hmu : Set.Finite {x : B.A | x ^ 2 = 1}) : Finite (fixG B ⧸ (normHom B).range) := by
@@ -165,7 +161,7 @@ def toCl : fixG B ⧸ (normHom B).range → B.Cl :=
     rfl)
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k using Quot.ind with`. Consider the case `mk x => exact ⟨QuotientGroup.mk ⟨x.1, x.2⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 -/
 theorem toCl_surjective : Function.Surjective (toCl B) := by
   intro k
@@ -173,7 +169,7 @@ theorem toCl_surjective : Function.Surjective (toCl B) := by
   | mk x => exact ⟨QuotientGroup.mk ⟨x.1, x.2⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hsq` using `GlobalTheory.T.finite_units_mod_sq_of_finite_for_fields K.E (GlobalTheory.T.finite_units_mod_squares_of_unramifiedQuadratic K) B.A`. Establish `hmu` using `GlobalTheory.T.finite_setOf_sq_eq_one_of_finite_charZero K.E B.A`. Use `haveI := finite_quot B hsq hmu`. Conclude with `Finite.of_surjective _ (toCl_surjective B)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_Cl (K : UQ) (B : InvAlg K) : Finite B.Cl := by
   have hsq := GlobalTheory.T.finite_units_mod_sq_of_finite_for_fields K.E (GlobalTheory.T.finite_units_mod_squares_of_unramifiedQuadratic K) B.A
@@ -182,7 +178,7 @@ theorem finite_Cl (K : UQ) (B : InvAlg K) : Finite B.Cl := by
   exact Finite.of_surjective _ (toCl_surjective B)
 
 /- English proof (translation)
-Introduce `K B _` and use `finite_Cl K B`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_Cl_of_separable : ∀ (K : UQ) (B : InvAlg K), B.P.Separable → Finite B.Cl :=
   fun K B _ => finite_Cl K B

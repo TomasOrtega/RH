@@ -13,13 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.FlipDown
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc G' W hW G hG hM t i j hi hj eA eB Ψ hΨ`. Take `⟨L1, a1, b1, e1⟩` from `(hM.1.vert i j hi (by omega)).sp`. Take `⟨L2, a2, b2, e2⟩` from `(hM.1.vert i (j + 1) hi (by omega)).sp`. Establish `hω` using `hM.2.omT t i j hi hj`. Use `revert eA eB hω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(G.th t i j).ω = ω`. Use `revert ω`. Generalize the expression as in `(G.V i j).V = S at e1 ⊢`. Generalize the expression as in `(G.V i (j + 1)).V = U at e2 ⊢`. Substitute `e1 e2` using the available equality.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ω eA eB hω`. Establish `hω' : ω = W.om (.mu t i j)` using `eq_of_heq hω`. Substitute `hω'` using the available equality. Use `⟨Ψ, ?_, fun h g => rfl⟩` and prove the remaining obligations. Rewrite using `[← hW.ψ]`.
-
-Conclude with `⟨hΨ.1, hΨ.2, hΨ.3, hΨ.4⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kernel_down : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : Consts}

@@ -8,7 +8,7 @@ set_option autoImplicit false
 namespace GlobalTheory.FieldBC
 
 /- English proof (translation)
-Unfold `MvPolynomial.totalDegree`. Rewrite using `[MvPolynomial.support_map_of_injective P hf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem totalDegree_map_inj {σ R S : Type*} [CommSemiring R] [CommSemiring S] (f : R →+* S)
     (hf : Function.Injective f) (P : MvPolynomial σ R) :
@@ -17,9 +17,9 @@ theorem totalDegree_map_inj {σ R S : Type*} [CommSemiring R] [CommSemiring S] (
   rw [MvPolynomial.support_map_of_injective P hf]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c c' hle nab n P S _ inst _ h y k F`. Establish `hinj : Function.Injective (incF c c' hle)` using `(incF c c' hle).injective`. Use `⟨totalDegree_map_inj _ hinj P, ?_⟩` and prove the remaining obligations. Establish `e : inst = GlobalTheory.FieldBC.resAlg hle S` using `Algebra.algebra_ext _ _ (fun a => (h a).symm)`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[MvPolynomial.support_map_of_injective P hinj]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem polyNab_fieldBC : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c c' : Coeff l) (hle : c.F ≤ c'.F) (nab : NabV Xo c) (n : ℕ) (P : MvPolynomial (LtN Dw n) c.F) (S : Type) [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : AlgOver c c' hle S) (y : FrPt Xo c' S) (k : ℤ) (F : Fin n → LB.Sec (Out.LPow Xo.univ.t.G Xo.univ.t.PP.L k (ptO Xo y.x))), (MvPolynomial.map (incF c c' hle) P).totalDegree = P.totalDegree ∧ ∑ m ∈ (MvPolynomial.map (incF c c' hle) P).support, algebraMap c'.F S ((MvPolynomial.map (incF c c' hle) P).coeff m) * ∏ b, nabBC hle nab y k (F b) (colOf m b) = ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, nab (y.res hle h) k (F b) (colOf m b) := by
   intro E _ _ _ H Dw l Xo c c' hle nab n P S _ inst _ h y k F

@@ -17,25 +17,21 @@ namespace GlobalTheory.BcUnique
 open Filter Topology GlobalTheory.HermFrame
 
 /- English proof (translation)
-Introduce `M M' _ _ n n' r s A A' T T' f hf hT`. Take `⟨φ, hφh, hφ⟩` from `hT`. Use function extensionality and compare the values at `x`. Take `⟨hb, hc, ha⟩ : x.pt ∈ T'.U (T'.cover x.pt).choose ∧ f x.pt ∈ (A.e (A.cover (f x.pt)).choose).source ∧ f x.pt ∈ T.U (T.cover (f x.pt)).choose` from `⟨(T'.cover x.pt).choose_spec, (A.cover (f x.pt)).choose_spec, (T.cover (f x.pt)).choose_spec⟩`. Use `set b := (T'.cover x.pt).choose with hbd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set c := (A.cover (f x.pt)).choose with hcd`. Use `set a := (T.cover (f x.pt)).choose with had`. Use `set F : V n' → V n := A.e c ∘ f ∘ x.ch.symm with hFd`. Use `set K : V n → Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ := fun w => T.mid a ((A.e c).symm w) with hKd`. Use `set Φ : V n' → Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ := fun v => φ a b (x.ch.symm v) with hΦd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : x.ch.symm x.crd = x.pt` using `x.ch.left_inv x.2`. Establish `hFz : F x.crd = A.e c (f x.pt)` using `by simp only [hFd, Function.comp_apply, hx0]`. Use `set W := x.ch.target ∩ x.ch.symm ⁻¹' (T'.U b ∩ f ⁻¹' (T.U a ∩ (A.e c).source)) with hWd`. Establish `hWo : IsOpen W` using `x.ch.continuousOn_symm.isOpen_inter_preimage x.ch.open_target ((T'.isOpen b).inter (hf.1.isOpen_preimage _ ((T.isOpen a).inter (A.e c).open_source)))`. Establish `hzW : x.crd ∈ W` using `⟨x.ch.map_source x.2, by simp only [mem_preimage, hx0]; exact ⟨hb, ha, hc⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWn : W ∈ 𝓝 x.crd` using `hWo.mem_nhds hzW`. Use `set Wc := (A.e c).target ∩ (A.e c).symm ⁻¹' T.U a with hWcd`. Establish `hWco : IsOpen Wc` using `(A.e c).continuousOn_symm.isOpen_inter_preimage (A.e c).open_target (T.isOpen a)`. Establish `hFWc : F x.crd ∈ Wc`. Rewrite using `[hFz]; exact ⟨(A.e c).map_source hc, by simp only [mem_preimage, (A.e c).left_inv hc]; exact ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWcn : Wc ∈ 𝓝 (F x.crd)` using `hWco.mem_nhds hFWc`. Establish `hK1 : MContDiffAt 1 K (F x.crd)` using `fun i j => ((((T.smooth a).2.1 i j c).contDiffAt hWcn).of_le (by norm_cast))`. Establish `hKp : ∀ᶠ w in 𝓝 (F x.crd), (K w).PosDef` using `Filter.eventually_of_mem hWcn fun w hw => (T.posDef a _ hw.2).2.1`. Establish `hF : ContDiffAt ℂ 1 F x.crd` using `GlobalTheory.SCV.contDiffAt_of_differentiableOn ((hf.2 x.1.1 c).mono fun v hv => ⟨hv.1, hv.2.2.2⟩) hWn 1`. Establish `hΦh : ∀ i j, DifferentiableOn ℂ (fun v => Φ v i j) W` using `fun i j => (hφh a b i j x.1.1).mono fun v hv => ⟨hv.1, hv.2.2.1, hv.2.1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ1 : MContDiffAt 1 Φ x.crd` using `fun i j => (GlobalTheory.SCV.contDiffAt_of_differentiableOn (hΦh i j) hWn 1).restrict_scalars ℝ`. Establish `hΦ0 : ∀ η, mdbar Φ x.crd η = 0` using `fun η => Matrix.ext fun i j => congr($(GlobalTheory.dbar_eq_zero ((hΦh i j).differentiableAt hWn)) η)`. Establish `hΦt : ∀ᶠ v in 𝓝 x.crd, (Φ v).toBlocks₂₁ = 0` using `Filter.eventually_of_mem hWn fun v hv => (hφ a b _ hv.2.2.1 hv.2.1).1`. Establish `hmid : ∀ᶠ v in 𝓝 x.crd, T'.mid b (x.ch.symm v) = chg (Φ v) (K (F v))` using `Filter.eventually_of_mem hWn fun v hv => by`. Rewrite using `[(hφ a b _ hv.2.2.1 hv.2.1).2.2.2.2.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hKd, hFd, hΦd, Function.comp_apply, (A.e c).left_inv hv.2.2.2]`. Establish `hu : IsUnit (Φ x.crd).det`. Establish `h1` using `(T'.posDef b _ hb).2.1`. Rewrite `h1` using `[← hx0, hmid.self_of_nhds]`. Establish `h2` using `h1.det_pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h2` using `[det_chg]`. Use `Ne.isUnit fun h0 => h2 ?_` and prove the remaining obligations. Simplify using `[h0]`. Establish `hKF1 : MContDiffAt 1 (fun v => K (F v)) x.crd` using `fun i j => (hK1 i j).comp x.crd (hF.restrict_scalars ℝ)`. Establish `hKFp : ∀ᶠ v in 𝓝 x.crd, (K (F v)).PosDef` using `hF.continuousAt.eventually hKp`.
-
-Establish `key : extTrace (fun v => T'.mid b (x.ch.symm v)) x.crd = fun ξ η => extTrace K (F x.crd) (fderiv ℂ F x.crd ξ) (fderiv ℂ F x.crd η)`. Rewrite using `[extTrace_congr hmid, extTrace_chg hKF1 hKFp hΦ1 hu hΦ0 hΦt]`. Use function extensionality and compare the values at `ξ η`. Conclude with `extTrace_comp_holo hK1 hKp hF ξ η`. Use `show (ofValues (extTrace (fun v => T'.mid b (x.ch.symm v)) x.crd) : Alt n') = pull (fderiv ℂ F x.crd) (ofValues (extTrace K (A.e c (f x.pt))) : Alt n)`.
-
-Rewrite using `[key, ← hFz, GlobalTheory.FibTheta.pull_ofValues _ (GlobalTheory.LineForm.OmReal.isSesq_extTrace hK1 hKp)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcFld_isPull : ∀ {M M' : Type} [TopologicalSpace M] [TopologicalSpace M'] {n n' r s : ℕ} (A : HolAtlas M n) (A' : HolAtlas M' n') (T : HermSeq A r s) (T' : HermSeq A' r s) (f : M' → M), A.IsHolo A' f → T'.IsPull T f → bcFld T' = A.pullback A' f (bcFld T) := by
   intro M M' _ _ n n' r s A A' T T' f hf hT

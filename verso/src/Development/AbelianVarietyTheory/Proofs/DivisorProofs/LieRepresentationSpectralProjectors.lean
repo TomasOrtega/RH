@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.UPel.HT.LieProj
 
 /- English proof (translation)
-Establish `hp : ∀ k : ℕ, T ^ k * P = r ^ k • P`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', mul_assoc, ih, mul_smul_comm, h, smul_smul, pow_succ, mul_comm (r ^ k)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp' hq' => rw [map_add, add_mul, hp', hq', eval_add, add_smul]`. Consider the case `monomial k a`. Rewrite using `[aeval_monomial, eval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, smul_mul_assoc, hp, smul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_mul_of_mul_eq {g : ℕ} {T P : Matrix (Fin g) (Fin g) ℂ} {r : ℂ} (h : T * P = r • P) (q : ℂ[X]) :
     aeval T q * P = q.eval r • P := by
@@ -27,7 +27,7 @@ theorem aeval_mul_of_mul_eq {g : ℕ} {T P : Matrix (Fin g) (Fin g) ℂ} {r : �
       smul_smul]
 
 /- English proof (translation)
-Rewrite using `[Lagrange.basis_eq_prod_sub_inv_mul_nodal_div hr, mul_left_comm]`. Use `congr 1`. Conclude with `EuclideanDomain.mul_div_cancel' (X_sub_C_ne_zero r) (Lagrange.X_sub_C_dvd_nodal id hr)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem X_sub_C_mul_basis {s : Finset ℂ} {r : ℂ} (hr : r ∈ s) :
     (X - C r) * Lagrange.basis s id r = C (Lagrange.nodalWeight s id r) * Lagrange.nodal s id := by
@@ -36,31 +36,29 @@ theorem X_sub_C_mul_basis {s : Finset ℂ} {r : ℂ} (hr : r ∈ s) :
   exact EuclideanDomain.mul_div_cancel' (X_sub_C_ne_zero r) (Lagrange.X_sub_C_dvd_nodal id hr)
 
 /- English proof (translation)
-Set `pb` to `Field.powerBasisOfFiniteOfSeparable ℚ K`. Set `θ` to `pb.gen`. Set `T` to `Φ θ`. Set `f : ℂ[X]` to `(minpoly ℚ θ).map (algebraMap ℚ ℂ)`. Set `S : Finset ℂ` to `f.roots.toFinset`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hfmon : f.Monic` using `(minpoly.monic (Algebra.IsIntegral.isIntegral θ)).map _`. Establish `hnod : f.roots.Nodup` using `nodup_roots (Polynomial.Separable.map (Algebra.IsSeparable.isSeparable ℚ θ))`. Establish `hnodal : Lagrange.nodal S id = f`. Rewrite using `[Lagrange.nodal]`. Use `conv_rhs => rw [(IsAlgClosed.splits f).eq_prod_roots_of_monic hfmon]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_eq_multiset_prod, Multiset.toFinset_val, hnod.dedup]`. Both sides reduce to the same expression. Establish `hfT : aeval T f = 0`. Rewrite using `[aeval_map_algebraMap, show T = Φ.toRatAlgHom θ from rfl, aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `hroot : ∀ r : ℂ, r ∈ S ↔ aeval r (minpoly ℚ θ) = 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Rewrite using `[Multiset.mem_toFinset, mem_roots hfmon.ne_zero, IsRoot.def, eval_map_algebraMap]`. Establish `hmemS : ∀ τ : K →+* ℂ, τ θ ∈ S`. Introduce `τ`. Rewrite using `[hroot, show τ θ = τ.toRatAlgHom θ from rfl, aeval_algHom_apply, minpoly.aeval, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `himage : Finset.univ.image (fun τ : K →+* ℂ => τ θ) = S`. Use extensionality with `r`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Take `⟨τ, _, rfl⟩` from `Finset.mem_image.mp h`. Conclude with `hmemS τ`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `(hroot r).mp h`. Conclude with `Finset.mem_image.mpr ⟨(pb.lift r h').toRingHom, Finset.mem_univ _, pb.lift_gen r h'⟩`. Establish `hinjθ : ∀ τ τ' : K →+* ℂ, τ θ = τ' θ → τ = τ'`. Introduce `τ τ' h`. Use `pb.algHom_ext (f := τ.toRatAlgHom) (g := τ'.toRatAlgHom) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Conclude with `DFunLike.congr_fun this x`. Establish `hpoly : ∀ x : K, ∃ q : ℂ[X], Φ x = aeval T q ∧ ∀ τ : K →+* ℂ, τ x = q.eval (τ θ)`. Introduce `x`. Take `⟨h, -, hh⟩` from `pb.exists_eq_aeval x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h.map (algebraMap ℚ ℂ), ?_, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_map_algebraMap, hh, show T = Φ.toRatAlgHom θ from rfl, aeval_algHom_apply]`. Both sides reduce to the same expression. Rewrite using `[eval_map_algebraMap, hh, show τ θ = τ.toRatAlgHom θ from rfl, aeval_algHom_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `P : ℂ → Matrix (Fin g) (Fin g) ℂ` to `fun r => aeval T (Lagrange.basis S id r)`. Establish `heig : ∀ r ∈ S, T * P r = r • P r`. Introduce `r hr`. Establish `h` using `congrArg (aeval T) (X_sub_C_mul_basis hr)`. Simplify using `only [map_mul, map_sub, aeval_X, aeval_C, hnodal, hfT, mul_zero] at h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[sub_mul, sub_eq_zero, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`. Conclude with `h`. Establish `hinjS : Set.InjOn (id : ℂ → ℂ) S` using `fun _ _ _ _ h => h`. Use `⟨fun τ => P (τ θ), fun τ => ?_, ?_, fun τ x => ?_, fun τ x => ?_⟩` and prove the remaining obligations. Use `show aeval T (Lagrange.basis S id (τ θ)) * P (τ θ) = P (τ θ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_mul_of_mul_eq (heig _ (hmemS τ))]`. Use `Lagrange.eval_basis_self (v := id) hinjS (hmemS τ)` as an intermediate fact. Simplify using `only [id] at this`. Rewrite using `[this, one_smul]`. Establish `hne : S.Nonempty` using `⟨_, hmemS (IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := K)).toRingHom⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_image (f := P) (fun τ _ τ' _ h => hinjθ τ τ' h), himage]`. Use `show ∑ r ∈ S, aeval T (Lagrange.basis S id r) = 1`. Rewrite using `[← map_sum, Lagrange.sum_basis hinjS hne, map_one]`. Take `⟨q, hq, hτq⟩` from `hpoly x`. Rewrite using `[hq, aeval_mul_of_mul_eq (heig _ (hmemS τ)), hτq]`.
-
-Take `⟨q, hq, hτq⟩` from `hpoly x show aeval T (Lagrange.basis S id (τ θ)) * Φ x = _`. Rewrite using `[hq, ← map_mul, mul_comm, map_mul, aeval_mul_of_mul_eq (heig _ (hmemS τ)), hτq]`.
+A detailed English derivation is pending.
 -/
 theorem spectral (K : Type) [Field K] [NumberField K] (g : ℕ) (Φ : K →+* Matrix (Fin g) (Fin g) ℂ) :
     ∃ E : (K →+* ℂ) → Matrix (Fin g) (Fin g) ℂ, (∀ τ, E τ * E τ = E τ) ∧ ∑ τ, E τ = 1 ∧
@@ -135,7 +133,7 @@ end GlobalTheory.UPel.HT.LieProj
 namespace GlobalTheory.UPel.HT.LieProj
 
 /- English proof (translation)
-Establish `hI : Ideal.span {x} ≠ ⊥` using `by simpa [Ideal.span_singleton_eq_bot] using hx`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {x}))`. Conclude with `⟨y, _, fun h => hI (Ideal.absNorm_eq_zero_iff.mp h), by rw [mul_comm, hy]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mul_eq_nat {K : Type} [Field K] [NumberField K] {x : 𝓞 K} (hx : x ≠ 0) :
     ∃ (y : 𝓞 K) (N : ℕ), N ≠ 0 ∧ x * y = N := by
@@ -144,11 +142,11 @@ theorem exists_mul_eq_nat {K : Type} [Field K] [NumberField K] {x : 𝓞 K} (hx 
   exact ⟨y, _, fun h => hI (Ideal.absNorm_eq_zero_iff.mp h), by rw [mul_comm, hy]⟩
 
 /- English proof (translation)
-Establish `hcomm : ∀ a ∈ Set.range ψ, ∀ b ∈ Set.range ψ, a * b = b * a`. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Rewrite using `[← map_mul, mul_comm, map_mul]`. Use `letI : CommRing (Algebra.adjoin ℚ (Set.range ψ)) := Algebra.adjoinCommRingOfComm ℚ hcomm`. Set `ψ' : 𝓞 K →+* Algebra.adjoin ℚ (Set.range ψ)` to `ψ.codRestrict (Algebra.adjoin ℚ (Set.range ψ)) fun x => Algebra.subset_adjoin ⟨x, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hu : ∀ y : nonZeroDivisors (𝓞 K), IsUnit (ψ' y)`. Introduce `y`. Take `⟨y', N, hN, hy⟩` from `exists_mul_eq_nat (nonZeroDivisors.coe_ne_zero y)`. Use `IsUnit.of_mul_eq_one (ψ' y' * algebraMap ℚ _ (N : ℚ)⁻¹) ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul, hy, map_natCast, ← map_natCast (algebraMap ℚ (Algebra.adjoin ℚ (Set.range ψ))), ← map_mul, mul_inv_cancel₀ (by exact_mod_cast hN), map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(Algebra.adjoin ℚ (Set.range ψ)).val.toRingHom.comp (IsLocalization.lift (M := nonZeroDivisors (𝓞 K)) (S := K) hu), fun c => ?_⟩` and prove the remaining obligations. Use `IsLocalization.lift_eq (M := nonZeroDivisors (𝓞 K)) (S := K) hu c` as an intermediate fact. Simplify using `only [RingHom.comp_apply]`. Use `erw [this]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem extend {K : Type} [Field K] [NumberField K] {g : ℕ} (ψ : 𝓞 K →+* Matrix (Fin g) (Fin g) ℂ) :
     ∃ Φ : K →+* Matrix (Fin g) (Fin g) ℂ, ∀ c : 𝓞 K, Φ (c : K) = ψ c := by
@@ -172,7 +170,7 @@ theorem extend {K : Type} [Field K] [NumberField K] {g : ℕ} (ψ : 𝓞 K →+*
   rfl
 
 /- English proof (translation)
-Establish `hPid : IsIdempotentElem (Matrix.toLinAlgEquiv' P)` using `(show IsIdempotentElem P from h).map _`. Establish `hPtr : LinearMap.trace ℂ (Fin g → ℂ) (Matrix.toLinAlgEquiv' P) = 0` using `by show LinearMap.trace ℂ (Fin g → ℂ) (Matrix.toLin' P) = 0`. Rewrite using `[Matrix.trace_toLin'_eq, ht]`. Use `LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero (e := Matrix.toLinAlgEquiv' P) hPid hPtr` as an intermediate fact. Conclude with `(map_eq_zero_iff _ (Matrix.toLinAlgEquiv' (R := ℂ) (n := Fin g)).injective).mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idem_eq_zero {g : ℕ} {P : Matrix (Fin g) (Fin g) ℂ} (h : P * P = P) (ht : P.trace = 0) : P = 0 := by
   have hPid : IsIdempotentElem (Matrix.toLinAlgEquiv' P) := (show IsIdempotentElem P from h).map _
@@ -192,55 +190,51 @@ open GlobalTheory.UPel.HT
 namespace GlobalTheory.UPel.HT.LieProj
 
 /- English proof (translation)
-Introduce `p _ D R _ b σ ρ hT`. Take `⟨Φ, hΦ⟩` from `extend (ρ.comp (algebraMap (𝓞 D.F) D.O))`. Take `⟨E, hidem, hsum, hl, hr⟩` from `spectral D.F D.g Φ`. Establish `hΦ' : ∀ c : 𝓞 D.F, ρ (algebraMap (𝓞 D.F) D.O c) = Φ (c : D.F)` using `fun c => (hΦ c).symm`. Use `set lam : ℂ := σ b.ρ with hlam`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : ∀ i, Function.Injective (σ.comp (b.t i))`. Introduce `i`. Use `(injective_iff_map_eq_zero _).mpr fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Take `⟨y, N, hN, hy⟩` from `exists_mul_eq_nat h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (σ.comp (b.t i)) hy` as an intermediate fact. Rewrite `this` using `[map_mul, hx, zero_mul, map_natCast]`. Conclude with `hN (by exact_mod_cast this.symm)`. Set `τ : Fin D.a → (D.F →+* ℂ)` to `fun i => IsFractionRing.lift (hinj i)`. Establish `hτ : ∀ i (c : 𝓞 D.F), τ i (c : D.F) = σ (b.t i c)` using `fun i c => IsFractionRing.lift_algebraMap (hinj i) c`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hτinj : Function.Injective τ`. Introduce `i j hij`. Assume the negation of the conclusion as `hne`. Establish `hle : Ideal.span (Set.range fun x => b.t i x - b.t j x) ≤ RingHom.ker σ`. Rewrite using `[Ideal.span_le]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, map_sub]`. Rewrite using `[← hτ, ← hτ, hij, sub_self]`. Establish `h1 : (1 : R) ∈ RingHom.ker σ` using `hle (by rw [b.comax i j hne]; exact Submodule.mem_top)`. Rewrite `h1` using `[RingHom.mem_ker, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_ne_zero h1`. Establish `hroot : lam ^ 2 - D.tr * lam + D.nm = 0`. Use `congrArg σ b.ρ_root` as an intermediate fact. Simplify using `using this`. Establish `hnreal : (starRingEnd ℂ) lam ≠ lam`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Establish `hr` using `Complex.conj_eq_iff_re.mp h`. Rewrite `hroot` using `[← hr]`. Establish `h2 : (lam.re) ^ 2 - D.tr * lam.re + D.nm = 0` using `by exact_mod_cast hroot`. Establish `h3 : ((D.tr : ℝ)) ^ 2 - 4 * D.nm < 0` using `by exact_mod_cast D.disc_neg`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use polynomial arithmetic with `[sq_nonneg (2 * lam.re - D.tr)]`. Establish `hω : ∀ τ' : D.F →+* ℂ, (τ' (D.ω : D.F)) ^ 2 - D.tr * τ' (D.ω : D.F) + D.nm = 0`. Introduce `τ'`. Establish `h0 : D.ω ^ 2 - (D.tr : 𝓞 D.F) * D.ω + (D.nm : 𝓞 D.F) = 0`. Rewrite using `[← D.tr_eq, ← D.nm_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `congrArg (τ'.comp (algebraMap (𝓞 D.F) D.F)) h0` as an intermediate fact. Simplify using `only [map_sub, map_add, map_mul, map_pow, map_intCast, map_zero] at this`. Conclude with `this`. Establish `hτω : ∀ i, τ i (D.ω : D.F) = lam` using `fun i => by rw [hτ, b.t_ω]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hexp : ∀ x : D.F, Φ x = ∑ τ', τ' x • E τ'`. Introduce `x`. Rewrite using `[← mul_one (Φ x), ← hsum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun τ' _ => hl τ' x`. Use `set I := Finset.univ.image τ with hIdef`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set J := Finset.univ.image (fun i => (starRingEnd ℂ).comp (τ i)) with hJdef`. Establish `hJinj : Function.Injective fun i => (starRingEnd ℂ).comp (τ i)`. Introduce `i j h`. Apply `hτinj` to reduce the goal to its premises. Use extensionality with `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun f : D.F →+* ℂ => (starRingEnd ℂ) (f x)) h` as an intermediate fact. Simplify using `using this`. Establish `hnJ : ∀ τ' : D.F →+* ℂ, τ' (D.ω : D.F) = lam → τ' ∉ J`. Introduce `τ' hω' hm`. Take `⟨j, _, hj⟩` from `Finset.mem_image.mp hm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun f : D.F →+* ℂ => f (D.ω : D.F)) hj` as an intermediate fact. Simplify using `only [RingHom.comp_apply, hτω, hω'] at this`. Conclude with `hnreal this`. Set `coef : (D.F →+* ℂ) → ℂ` to `fun τ' => (D.m : ℂ) * ((if τ' ∈ I then 1 else 0) + (if τ' (D.ω : D.F) = lam then 0 else (D.n : ℂ)) - (if τ' ∈ J then 1 else 0))`. Establish `hdiff : ∀ c : 𝓞 D.F, ∑ τ', ((E τ').trace - coef τ') * τ' (c : D.F) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `c`. Establish `h1` using `hT c`. Establish `hI : ∑ i, σ (b.t i c) = ∑ τ', (if τ' ∈ I then τ' (c : D.F) else 0)`. Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_image (fun i _ j _ h => hτinj h)]`. Conclude with `Finset.sum_congr rfl fun i _ => (hτ i c).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hJ : ∑ i, (starRingEnd ℂ) (σ (b.t i c)) = ∑ τ', (if τ' ∈ J then τ' (c : D.F) else 0)`. Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_image (fun i _ j _ h => hJinj h)]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [hτ i c]`. Rewrite `h1` using `[hI, hJ, Finset.sum_filter, hΦ', hexp, Matrix.trace_sum]`. Rewrite `h1` using `[← Finset.sum_add_distrib, ← Finset.sum_sub_distrib, Finset.mul_sum, ← sub_eq_zero, ← Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun τ' _ => ?_` and prove the remaining obligations. Simplify using `only [coef, Matrix.trace_smul, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> first | ring1 | (exfalso; tauto)`. Establish `hlin` using `(linearIndependent_monoidHom (𝓞 D.F) ℂ).comp (fun τ' : D.F →+* ℂ => ((τ'.comp (algebraMap (𝓞 D.F) D.F)).toMonoidHom : 𝓞 D.F →* ℂ)) (by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a a' h`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 D.F))` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `DFunLike.congr_fun h x)`. Establish `hcoef : ∀ τ', (E τ').trace - coef τ' = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `Fintype.linearIndependent_iff.mp hlin _ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Rewrite using `[Finset.sum_apply]`. Simplify using `using hdiff c`. Establish `hmτ : ∀ i, (E (τ i)).trace = D.m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `i`. Establish `h` using `hcoef (τ i)`. Establish `h1 : τ i ∈ I` using `Finset.mem_image_of_mem _ (Finset.mem_univ _)`. Simplify using `only [coef, h1, hτω i, hnJ (τ i) (hτω i), if_true, if_false] at h`. Take the linear combination `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : ∀ τ', τ' ∉ I → τ' (D.ω : D.F) = lam → E τ' = 0`. Introduce `τ' hI' hω'`. Use `idem_eq_zero (hidem τ') ?_` and prove the remaining obligations. Establish `h` using `hcoef τ'`. Simplify using `only [coef, hI', hω', hnJ τ' hω', if_true, if_false] at h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take the linear combination `h`. Use `⟨fun i => E (τ i), fun i => hidem _, hmτ, fun i c => ?_, fun i c => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ', hl, hτ]`. Rewrite using `[hΦ', hr, hτ]`. Establish `hL : ∑ i, E (τ i) = ∑ τ', (if τ' ∈ I then E τ' else 0)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_image (fun i _ j _ h => hτinj h)]`. Establish `h1 : ((D.tr : ℂ) - lam) • (1 : Matrix (Fin D.g) (Fin D.g) ℂ) = ∑ τ', ((D.tr : ℂ) - lam) • E τ'`. Rewrite using `[← hsum, Finset.smul_sum]`. Rewrite using `[hL, h1, hΦ', hexp, ← Finset.sum_sub_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun τ' _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Distinguish the cases in `hI' : τ' ∈ I`. Take `⟨i, _, rfl⟩` from `Finset.mem_image.mp hI'`. Rewrite using `[if_pos hI', ← sub_smul, hτω i]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[if_neg hI', smul_zero]`. Distinguish the cases in `hω' : τ' (D.ω : D.F) = lam`. Rewrite using `[hzero τ' hI' hω', smul_zero, smul_zero, sub_zero]`. Establish `hq : (τ' (D.ω : D.F) - lam) * (τ' (D.ω : D.F) - ((D.tr : ℂ) - lam)) = 0`. Take the linear combination `hω τ' - hroot`.
-
-Establish `h2` using `sub_eq_zero.mp ((mul_eq_zero.mp hq).resolve_left (sub_ne_zero.mpr hω'))`. Rewrite using `[← sub_smul, h2, sub_self, zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_projectors : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (σ : R →+* ℂ) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ), b.IsType σ ρ → ∃ E : Fin D.a → Matrix (Fin D.g) (Fin D.g) ℂ, (∀ i, E i * E i = E i) ∧ (∀ i, (E i).trace = (D.m : ℂ)) ∧ (∀ i c, ρ (algebraMap (𝓞 D.F) D.O c) * E i = σ (b.t i c) • E i) ∧ (∀ i c, E i * ρ (algebraMap (𝓞 D.F) D.O c) = σ (b.t i c) • E i) ∧ (2 * σ b.ρ - D.tr) • ∑ i, E i = ρ (algebraMap (𝓞 D.F) D.O D.ω) - ((D.tr : ℂ) - σ b.ρ) • (1 : Matrix (Fin D.g) (Fin D.g) ℂ) := by
   intro p _ D R _ b σ ρ hT

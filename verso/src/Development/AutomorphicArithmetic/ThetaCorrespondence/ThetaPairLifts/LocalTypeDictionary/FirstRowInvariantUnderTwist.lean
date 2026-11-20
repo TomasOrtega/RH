@@ -16,11 +16,11 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : Consts}
   {G : GridData R.toLevCh sc} {W : G.Weil} {U : Set T}
 /- English proof (translation)
-Introduce `hP hS`. Take `⟨a, h1⟩` from `GlobalTheory.T.gridBottomLevel_le_formLevel_largeDepth`. Take `⟨b, h2⟩` from `_root_.GlobalTheory.T.vertex_pair_points_transformation_law hP hS`. Use `⟨max a b, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x₁, h1⟩` from `h1 ε CF (le_of_max_le_left hC)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x₂, h2⟩` from `h2 ε CF (le_of_max_le_right hC)`. Use `⟨max x₁ x₂, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hi hsc => ?_⟩` and prove the remaining obligations. Introduce `t a β hβ τ hτ u v x y k hk0`. Establish `hk` using `h1 D large₂ e (le_of_max_le_left hx) Γ Pl0 T A Ks R F s ch hi hsc t k hk0`. Establish `hC` using `h2 D large₂ e (le_of_max_le_right hx) Γ Pl0 T A Ks R F s ch hi hsc t a β hβ τ hτ x y k hk0 hk v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[formC_mul ch.S s.core.models.HX t u (y 0) k hk]`. Conclude with `hC _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem first_row_invariant_under_twist : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) a, ∀ β ∈ ch.S.supp t (ch.Phi a), ∀ τ, ch.S.IsExpansion t (ch.Phi a) β τ →

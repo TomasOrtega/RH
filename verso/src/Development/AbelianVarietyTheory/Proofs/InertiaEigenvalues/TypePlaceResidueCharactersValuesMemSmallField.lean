@@ -20,13 +20,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TypeChar
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 I0 T0 A3 T _ Rl cG S YS F _ hCore _ _ hroot j PP hPP x`. Take `⟨k, hk⟩` from `(hCore.lev.Pg PP).1 hPP`. Establish `hov` using `Rl.C.P.overP hk`. Take `⟨hn, -, -⟩` from `GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) PP hov`. Establish `hcard : Nat.card (kP PP) = D.host.g k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hn, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hfin : Finite (kP PP)` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact (D.host.g_prime k).ne_zero)`. Establish `: Fintype (kP PP)` using `Fintype.ofFinite _`. Establish `hu : Nat.card (kP PP)ˣ = D.host.g k - 1`. Rewrite using `[← hcard, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Fintype.card_units]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: NeZero (Nat.card (kP PP)ˣ)` using `⟨Nat.card_pos.ne'⟩`. Establish `h1 : ((Rl.chi ((j : ℕ) + 1) PP x : ℂˣ) : ℂ) ^ Nat.card (kP PP)ˣ = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]`. Rewrite `h1` using `[hu]`. Use `hroot k _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, pow_mul, h1, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_mem_smallField : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T0 : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (Rl : RealDat3 D A3 ↥T.Q.c.F) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS Rl cG S) (F : Face D A3.A), LawsJ T → GlobalTheory.Hk3.Core Rl.toRealDat F → IsGalois ℚ D.LL0 → Formalism.L2.Host.ValLL0 D Rl.C → (∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (embLL0 D).fieldRange) → ∀ (j : Fin D.R.m), ∀ PP ∈ Rl.Pg, ∀ x : (kP PP)ˣ, ((Rl.chi ((j : ℕ) + 1) PP x : ℂˣ) : ℂ) ∈ (embLL0 D).fieldRange := by
   classical

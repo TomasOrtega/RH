@@ -11,7 +11,7 @@ local notation "gPt" p:max => spMap (ValuationSubring.subtype (OO p))
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : interior (frontier D) = ∅` using `interior_frontier_preimage_of_isConstructible (f := id) continuous_id hD`. Establish `h2 : interior D = ∅` using `interior_eq_empty_iff_dense_compl.2 (hSg.mono h.subset_compl_left)`. Rewrite `h1` using `[frontier, h2, Set.diff_empty]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem interior_closure_eq_empty_of_isConstructible_of_disjoint_dense
     {Y : Type*} [TopologicalSpace Y] {D Sg : Set Y} (hD : Topology.IsConstructible D)
@@ -23,9 +23,9 @@ theorem interior_closure_eq_empty_of_isConstructible_of_disjoint_dense
   rwa [frontier, h2, Set.diff_empty] at h1
 
 /- English proof (translation)
-Introduce `X S _ _ f _ _ C Sg hC hSg h`. Establish `hD : Topology.IsConstructible (f '' C)` using `f.isConstructible_image hC`. Establish `h1` using `interior_closure_eq_empty_of_isConstructible_of_disjoint_dense hD hSg h`. Take `⟨x, hx⟩ : ((closure (f '' C))ᶜ).Nonempty` from `(interior_eq_empty_iff_dense_compl.1 h1).nonempty`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVU⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open hx isClosed_closure.isOpen_compl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨V, ⟨x, hxV⟩, hV, ?_⟩` and prove the remaining obligations. Conclude with `Set.disjoint_left.2 fun y hy hyV => hVU hyV (subset_closure hy)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isAffineOpen_disjoint_image_of_isConstructible_of_disjoint_dense :
     ∀ (X S : Scheme.{0}) [IsIntegral S] [IsNoetherian S] (f : X ⟶ S) [LocallyOfFiniteType f] [QuasiCompact f] (C : Set X) (Sg : Set S), Topology.IsConstructible C → Dense Sg → Disjoint (f '' C) Sg → ∃ V : S.Opens, (V : Set S).Nonempty ∧ IsAffineOpen V ∧ Disjoint (f '' C) V := by

@@ -24,7 +24,7 @@ open GlobalTheory.Member
 namespace GlobalTheory.MarkUniq
 
 /- English proof (translation)
-Rewrite `h` using `[← Nat.cast_smul_eq_nsmul F, ← Nat.cast_smul_eq_nsmul F]`. Conclude with `smul_right_injective _ hN h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nsmul_cancel (F : Type) [Field F] {M : Type} [AddCommGroup M] [Module F M] {N : ℕ} (hN : (N : F) ≠ 0)
     {x y : M} (h : N • x = N • y) : x = y := by
@@ -32,20 +32,18 @@ lemma nsmul_cancel (F : Type) [Field F] {M : Type} [AddCommGroup M] [Module F M]
   exact smul_right_injective _ hN h
 
 /- English proof (translation)
-Rewrite using `[smul_sub, ← h, ← h']`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma sub_eq_nsmul_sub {M : Type} [AddCommGroup M] {N : ℕ} {x y z w w' : M} (h : x - z = N • w) (h' : y - z = N • w') :
     x - y = N • (w - w') := by
   rw [smul_sub, ← h, ← h']; abel
 
 /- English proof (translation)
-Take `⟨h1, h2, -, -, h5, -⟩` from `GlobalTheory.T.adelicElementLattice_full_and_completion D V g`. Establish `hNE : (N : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr hN`. Establish `hNF : (N : D.host.F) ≠ 0` using `Nat.cast_ne_zero.mpr hN`. Establish `hu : u = N • ((N : D.host.E)⁻¹ • u)`. Rewrite using `[← Nat.cast_smul_eq_nsmul D.host.E, smul_smul, mul_inv_cancel₀ hNE, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(N : D.host.E)⁻¹ • u, ?_, hu⟩` and prove the remaining obligations. Use `((GlobalTheory.T.adelicCompletion_rational_points_and_approximation D.host.F D.host.E V.rank (latG V g) h1 h2).1 _).1 ?_` and prove the remaining obligations. Establish `e : N • finVec V ((N : D.host.E)⁻¹ • u) = N • w`. Rewrite using `[← h]`. Use `conv_rhs => rw [hu]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [finVec, Pi.smul_apply]`. Conclude with `(map_nsmul (TensorProduct.mk D.host.F (Af D.host.F) D.host.E 1) N _).symm`. Establish `e'` using `nsmul_cancel D.host.F hNF e`. Rewrite `hw` using `[h5, ← e']`.
-
-Conclude with `hw`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_of_finVec_eq_nsmul {D : D7} (V : HSp D) (g : GA D V) (N : ℕ) (hN : N ≠ 0)
     (u : Fin V.rank → D.host.E) (w : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) (hw : w ∈ latGHat V g)
@@ -68,7 +66,7 @@ lemma exists_of_finVec_eq_nsmul {D : D7} (V : HSp D) (g : GA D V) (N : ℕ) (hN 
   exact hw
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [finVec, Pi.sub_apply, TensorProduct.tmul_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma finVec_sub {D : D7} (V : HSp D) (u v : Fin V.rank → D.host.E) :
     finVec V (u - v) = finVec V u - finVec V v := by
@@ -76,11 +74,11 @@ lemma finVec_sub {D : D7} (V : HSp D) (u v : Fin V.rank → D.host.E) :
   simp only [finVec, Pi.sub_apply, TensorProduct.tmul_sub]
 
 /- English proof (translation)
-Take `⟨a, e, hae⟩` from `ht b`. Establish `h1 : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `by rw [l.coprime]; trivial`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 h1`. Establish `h2 : x • b ∈ Ideal.span {(l.M : 𝓞 E)} • (⊤ : Submodule (𝓞 E) B)`. Rewrite using `[← l.prod, mul_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul hx hb`. Rewrite `h2` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨e', -, he'⟩` from `h2`. Use `⟨y • a, Submodule.smul_mem_smul hy trivial, e' + y • e, ?_⟩` and prove the remaining obligations. Rewrite `he'` using `[Nat.cast_smul_eq_nsmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: b = x • b + y • b` using `by rw [← add_smul, hxy, one_smul]`. Rewrite using `[this, ← he', map_smul, smul_add, smul_comm l.M y e]`. Use `conv_lhs => rw [hae]`. Rewrite using `[smul_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 lemma half_surj {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (l : Level H) {A B : Type} [AddCommGroup A] [Module (𝓞 E) A] [AddCommGroup B] [Module (𝓞 E) B]
@@ -104,13 +102,13 @@ lemma half_surj {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reciproc
   abel
 
 /- English proof (translation)
-Take `⟨r1, -, -, -, r5⟩` from `GlobalTheory.T.rational_points_adelicUnitary_eq_unitary D V`. Take `⟨hγ, hΛ, hk⟩` from `hm`. Take `⟨hγ', hΛ', hk'⟩` from `hm'`. Take `⟨δ, hδ⟩` from `(r1 _).1 ((GQ V).mul_mem hγ' ((GQ V).inv_mem hγ))`. Take `⟨m1, m2⟩` from `(GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).1 _ δ (γ * h) hδ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg : γ' * γ⁻¹ * (γ * h) = γ' * h` using `by group`. Rewrite `m1`, `m2` using `[hg]`. Establish `hL : (C.M.X k).Λ = latG V (γ * h)` using `SetLike.ext' (hΛ.trans (Set.image_id _))`. Establish `hL' : (C.M.X k').Λ = latG V (γ' * h)` using `SetLike.ext' (hΛ'.trans (Set.image_id _))`. Use `⟨δ, hδ, fun v => by rw [hL, hL']; exact m1 v, fun a ha => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw, e⟩` from `hk a ha`. Take `⟨w', hw', e'⟩` from `hk' a ha`. Express the relevant statement in the definitionally equal form `finVec V (C.M.φ k (C.F.t k a) : Fin V.rank → D.host.E) - _ = _ at e`. Express the relevant statement in the definitionally equal form `finVec V (C.M.φ k' (C.F.t k' a) : Fin V.rank → D.host.E) - _ = _ at e'`. Establish `e2` using `congrArg (fun z => (finHom V (γ' * γ⁻¹)).1 *ᵥ z) e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec_sub, Matrix.mulVec_smul] at e2`. Rewrite `e2` using `[(r5 _ δ hδ).1, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, hg]`. Take `⟨x, hx, hx'⟩` from `exists_of_finVec_eq_nsmul V (γ' * h) l.M (by have := l.three_le; omega) ((δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ (C.M.φ k (C.F.t k a) : Fin V.rank → D.host.E) - (C.M.φ k' (C.F.t k' a) : Fin V.rank → D.host.E)) ((finHom V (γ' * γ⁻¹)).1 *ᵥ w - w') (sub_mem ((m2 w).1 hw) …`. Conclude with `⟨x, hL' ▸ hx, by rw [← hx']; abel⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma matched {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
     {c : Coeff l} {σ : c.F →+* ℂ} {V : HSp D} (C : Ctx Xo c σ V V.rank) (h : GA D V) (k k' : Fin C.F.n)
@@ -145,17 +143,17 @@ lemma matched {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.
   exact ⟨x, hL' ▸ hx, by rw [← hx']; abel⟩
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r C hC h`. Take `rfl : V.rank = r` from `C.hr`. Take `⟨-, r2, -, -, r5⟩` from `GlobalTheory.T.rational_points_adelicUnitary_eq_unitary D V`. Establish `hG : ∀ k, (C.M.X k).Gm = -V.gramᵀ` using `fun k => (hC.modelW k).1`. Use `⟨fun k k' γ γ' hm hm' => ?_, fun k γ γ' hm hm' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨δ, hδ, hΛ, hmk⟩` from `matched C h k k' γ γ' hm hm'`. Use `GlobalTheory.ClassUniq.eq_of_matched GlobalTheory.T.thetaUniformisation_complexAbelianVariety GlobalTheory.firstFiveLaws.1 _ H Dw l Xo _ C.g _ C.F _ C.M k k' δ hC.pos hC.good ((GlobalTheory.T.relabelEmbeddings_good_bijective_conj_compat _ H l c σ hC.good).2.2.2 Dw C.g C.e) hC.bas …` and prove the remaining obligations. Use `⟨_ - _, sub_mem ((hΛ _).1 (C.M.φ k (C.F.t k a)).2) (C.M.φ k' (C.F.t k' a)).2, ?_⟩` and prove the remaining obligations. Rewrite using `[hC.lA, one_smul]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Take `⟨δ, hδ, hΛ, hmk⟩` from `matched C h k k γ γ' hm hm'`. Establish `hφ : ∀ w ∈ (C.M.X k).Λ, ∃ b, (C.M.φ k b : Fin V.rank → D.host.E) = w` using `fun w hw => ⟨(C.M.φ k).symm ⟨w, hw⟩, by rw [LinearEquiv.apply_symm_apply]⟩`. Use `⟨δ, (hC.base.gam k δ).2 ⟨⟨by rw [hG k]; exact r2 _ δ hδ, hΛ⟩, fun b hb => ?_, fun a => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hM : l.M' = l.M` using `by rw [Level.M', hC.lA, Nat.lcm_one_right]`. Take `⟨a, ha, e, rfl⟩` from `half_surj l (C.F.t k) (fun b => hM ▸ C.F.t_surj k b) b hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hw'⟩` from `hmk a ha`. Take `⟨b', hb'⟩` from `hφ _ (sub_mem (add_mem hw ((hΛ _).1 (C.M.φ k e).2)) (C.M.φ k e).2)`. Use `⟨b', ?_⟩` and prove the remaining obligations. Rewrite using `[hb', map_add, map_nsmul, Submodule.coe_add, AddSubmonoidClass.coe_nsmul, Matrix.mulVec_add, Matrix.mulVec_smul, hw', smul_sub, smul_add]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Take `⟨b', hb'⟩` from `hφ _ (sub_mem ((hΛ _).1 (C.M.φ k a).2) (C.M.φ k a).2)`. Use `⟨b', ?_⟩` and prove the remaining obligations. Rewrite using `[hb', hC.lA, one_smul]`. Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `τ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hg : γ' * h = γ' * γ⁻¹ * (γ * h)` using `by group`. Establish `e` using `((GlobalTheory.T.archimedeanMatrix_unitary_continuous_multiplicative D V C.θ hC.inf).1 τ.1).2.1 (γ' * γ⁻¹) (γ * h)`. Rewrite `e` using `[← hg, (r5 _ δ hδ).2 τ.1 _ (hC.inf τ.1)]`. Express the relevant statement in the definitionally equal form `archM V (C.θ τ.1) (γ' * h) * C.x₀ τ.1 = (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map τ.1 * (archM V (C.θ τ.1) (γ * h) * C.x₀ τ.1)`. Rewrite using `[e, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mark_unique : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ h, (∀ k k' γ γ', C.Mark h k γ → C.Mark h k' γ' → k = k') ∧ ∀ k γ γ', C.Mark h k γ → C.Mark h k γ' → ∃ δ ∈ (C.M.X k).Γ, C.fr (γ' * h) k = lact δ (C.fr (γ * h) k) := by
   intro D H Dw l Xo c σ V r C hC h

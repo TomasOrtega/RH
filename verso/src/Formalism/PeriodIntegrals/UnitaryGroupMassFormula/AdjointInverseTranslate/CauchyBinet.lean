@@ -7,21 +7,19 @@ noncomputable section
 namespace AAInvW
 
 /- English proof (translation)
-Establish `hone : ∀ j : Fin m, w (φ (Fin.castLE hm j)) (φ (Fin.castLE hm j)) = 1`. Introduce `j`. Establish `h` using `hw (Fin.castLE hm j) (φ (Fin.castLE hm j)) (fun b hb hb' => by`. Use `hφ hb'` as an intermediate fact. Rewrite `hb` using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ hb)`. Rewrite using `[h, if_pos rfl]`. Rewrite using `[Finset.sum_eq_single (fun j => φ (Fin.castLE hm j))]`. Simplify using `only [hone, Finset.prod_const_one, one_smul]`. Introduce `c _ hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hinj : Function.Injective c`. Establish `hex : ∃ j, w (c j) (φ (Fin.castLE hm j)) = 0`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hc` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `j`. Take `⟨k, hk⟩` from `j`. Use `revert hk`. Use `Nat.strong_induction_on k ?_` and prove the remaining obligations. Introduce `k ih hk`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hex : ∃ b : Fin r, b.val < k ∧ c ⟨k, hk⟩ = φ b`. Take `⟨b, hbk, hb⟩` from `hex`. Establish `hbm : b.val < m` using `lt_trans hbk hk`. Establish `e1 : c ⟨b.val, hbm⟩ = φ (Fin.castLE hm ⟨b.val, hbm⟩)` using `ih b.val hbk hbm`. Establish `e2 : Fin.castLE hm ⟨b.val, hbm⟩ = b` using `Fin.ext rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[e2]`. Establish `e3` using `hinj (e1.trans hb.symm)`. Establish `e4 : b.val = k` using `congrArg Fin.val e3`. Use linear arithmetic over natural numbers and integers. Use `push_neg at hex`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hw'` using `hw (Fin.castLE hm ⟨k, hk⟩) (c ⟨k, hk⟩) (fun b hb => hex b hb)`. Establish `hne` using `hall ⟨k, hk⟩`. Rewrite `hne` using `[hw']`. Assume the negation of the conclusion as `hcon`. Conclude with `hne (if_neg hcon)`.
-
-Take `⟨j, hj⟩` from `hex`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ j) hj, zero_smul]`. Rewrite using `[hq c hinj, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem collapse {A : Type*} [AddCommGroup A] [Module ℂ A] {N r m : ℕ} (hm : m ≤ r)
     (φ : Fin r → Fin N) (hφ : Function.Injective φ) (w : Fin N → Fin N → ℂ)
@@ -72,27 +70,25 @@ theorem collapse {A : Type*} [AddCommGroup A] [Module ℂ A] {N r m : ℕ} (hm :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hR : ∀ C : Fin t → Fin N, (if StrictMono (fun l => κ (C l)) then (∑ σ : Equiv.Perm (Fin t), ((Equiv.Perm.sign σ : ℤ) : ℂ) * W (C ∘ σ)) • F C else 0) = ∑ σ : Equiv.Perm (Fin t), if StrictMono (fun l => κ (C l)) then W (C ∘ σ) • F (C ∘ σ) else 0`. Introduce `C`. Use `split_ifs with h`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF C σ, mul_smul]`. Use `first`. Consider the case `rw [Int.cast_smul_eq_zsmul ℂ, zsmul_eq_mul, mul_smul_comm]`. Consider the case `simp only [Algebra.smul_def, map_intCast, ← mul_assoc, (Int.cast_commute _ _).eq]`. Simplify using the standard rewrite rules.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hR]`. Rewrite using `[← Fintype.sum_prod_type']`. Use `symm`. Use `Finset.sum_bij_ne_zero (fun p _ _ => p.1 ∘ p.2) (fun _ _ _ => Finset.mem_univ _) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨C, σ⟩ _ h1 ⟨C', σ'⟩ _ h2 heq`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hC : StrictMono (fun l => κ (C l))`. Assume the negation of the conclusion as `hc`. Conclude with `h1 (by simp [hc])`. Establish `hC' : StrictMono (fun l => κ (C' l))`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 (by simp [hc])`. Establish `heq' : C ∘ σ = C' ∘ σ'` using `heq`. Establish `e1 : Set.range (fun l => κ (C l)) = Set.range (fun l => κ (C' l))`. Rewrite using `[← σ.surjective.range_comp (fun l => κ (C l)), ← σ'.surjective.range_comp (fun l => κ (C' l))]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use function extensionality and compare the values at `x`. Conclude with `congrArg κ (congrFun heq' x)`. Establish `e2 : (fun l => κ (C l)) = (fun l => κ (C' l))` using `by first`. Consider the case `exact (StrictMono.range_inj hC hC').1 e1`. Consider the case `exact (WellFounded.eq_strictMono_iff_eq_range wellFounded_lt hC hC').1 e1`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e3 : C = C'` using `funext fun l => hκ (congrFun e2 l)`. Substitute `e3` using the available equality. Establish `e4 : σ = σ'` using `Equiv.ext fun x => hC.injective (congrArg κ (congrFun heq' x))`. Rewrite using `[e4]`. Introduce `d _ hd`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective d`. Assume the negation of the conclusion as `hni`. Apply `hd` to reduce the goal to its premises. Simplify using `[hF0 d hni]`. Establish `hmono : Monotone ((fun l => κ (d l)) ∘ Tuple.sort (fun l => κ (d l)))` using `Tuple.monotone_sort _`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsm : StrictMono (fun l => κ ((d ∘ Tuple.sort (fun l => κ (d l))) l))` using `hmono.strictMono_of_injective ((hκ.comp hinj).comp (Tuple.sort (fun l => κ (d l))).injective)`. Establish `hcomp : (d ∘ Tuple.sort (fun l => κ (d l))) ∘ (Tuple.sort (fun l => κ (d l))).symm = d`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Use `⟨(d ∘ Tuple.sort (fun l => κ (d l)), (Tuple.sort (fun l => κ (d l))).symm), Finset.mem_univ _, ?_, ?_⟩` and prove the remaining obligations.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only`. Rewrite using `[if_pos hsm, hcomp]`. Conclude with `hd`. Conclude with `hcomp`. Introduce and unpack `⟨C, σ⟩ _ h1`.
-
-Establish `hC : StrictMono (fun l => κ (C l))`. Assume the negation of the conclusion as `hc`. Conclude with `h1 (by simp [hc])`. Simplify using `only`. Rewrite using `[if_pos hC]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grouping {A : Type*} [Ring A] [Algebra ℂ A] {t N : ℕ} (κ : Fin N → ℕ) (hκ : Function.Injective κ)
     (F : (Fin t → Fin N) → A)
@@ -168,9 +164,9 @@ theorem grouping {A : Type*} [Ring A] [Algebra ℂ A] {t N : ℕ} (κ : Fin N �
     rw [if_pos hC]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose]`. Establish `hT : (X * Y)ᵀ = fun l => ∑ k, Y k l • (fun a => X a k)`. Use extensionality with `l a`. Simplify using `[Matrix.transpose_apply, Matrix.mul_apply, Finset.sum_apply, mul_comm]`. Rewrite using `[hT]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `((Matrix.detRowAlternating (R := ℂ) (n := Fin m)).toMultilinearMap.map_sum (fun l k => Y k l • (fun a => X a k))).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Use `((Matrix.detRowAlternating (R := ℂ) (n := Fin m)).toMultilinearMap.map_smul_univ (fun l => Y (d l) l) (fun l a => X a (d l))).trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← Matrix.det_transpose]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -191,13 +187,13 @@ theorem det_mul_expand {m N : ℕ} (X : Matrix (Fin m) (Fin N) ℂ) (Y : Matrix 
   rfl
 
 /- English proof (translation)
-Establish `hF : ∀ (d : Fin m → Fin N) (τ : Equiv.Perm (Fin m)), (Matrix.of fun a l => X a ((d ∘ τ) l)).det = ((Equiv.Perm.sign τ : ℤ) : ℂ) * (Matrix.of fun a l => X a (d l)).det`. Introduce `d τ`. Conclude with `Matrix.det_permute' τ (Matrix.of fun a l => X a (d l))`. Establish `hF0 : ∀ d : Fin m → Fin N, ¬ Function.Injective d → (Matrix.of fun a l => X a (d l)).det = 0`. Introduce `d hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.Injective, not_forall] at hd`. Take `⟨p, q, hpq, hne⟩` from `hd`. Conclude with `Matrix.det_zero_of_column_eq hne (fun a => by simp [hpq])`. Rewrite using `[det_mul_expand X Y]`. Rewrite using `[grouping κ hκ (fun d => (Matrix.of fun a l => X a (d l)).det) hF hF0 (fun d => ∏ l, Y (d l) l)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun C _ => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[smul_eq_mul, mul_comm]`. Use `congr 1`. Rewrite using `[Matrix.det_apply]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Simplify using `[Units.smul_def, zsmul_eq_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cauchyBinet {m N : ℕ} (κ : Fin N → ℕ) (hκ : Function.Injective κ)
     (X : Matrix (Fin m) (Fin N) ℂ) (Y : Matrix (Fin N) (Fin m) ℂ) :

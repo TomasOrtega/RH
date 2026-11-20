@@ -21,23 +21,19 @@ open scoped ComplexOrder ENNReal NNReal ContDiff
 namespace GlobalTheory.FlatCont
 
 /- English proof (translation)
-Introduce `D ψ V V₀ W W₀ ρ σ dV dW vS vT χV χW om hom vU x hx Φ hΦ`. Establish `hmaj` using `GlobalTheory.T.flatThetaIntegrand_locallyUniform_majorant D ψ V V₀ W W₀ ρ σ dV dW vS vT χV χW om hom vU x hx Φ hΦ`. Establish `hmix` using `(GlobalTheory.T.weilMixedCoordinates_continuous_bounded_supNorm D ψ V V₀ W W₀ ρ σ dV dW vS vT χV χW om hom Φ hΦ).2`. Establish `hψ : Continuous ψ` using `hom.std.1.1`. Establish `htr : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : Continuous fun u : UX D ρ => (u.1.1 : Mx D ρ ρ)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hup : Continuous fun T : Mx D ρ ρ => upSum T`. Unfold `upSum`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `continuous_if_const _ (fun _ => (continuous_apply j).comp (continuous_apply i)) fun _ => continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpsi : Continuous fun u : UX D ρ => psiUni ψ u.1` using `hψ.comp (htr.comp (hup.comp hval))`. Establish `hxu : Continuous fun u : UX D ρ => (rat x : Mx D W.rank ρ) ⬝ u.1.1` using `continuous_const.matrix_mul hval`. Establish `hcq : ∀ u : UX D ρ, Continuous fun q : (GA D V × GA D W) × Mx D V₀.rank σ × WO V₀ W₀ => flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) q.2.1 (om q.1 Φ) q.2.2 u`. Introduce `u`. Unfold `flatFun`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_const.mul ?_` and prove the remaining obligations. Establish `hf : Continuous fun q : (GA D V × GA D W) × Mx D V₀.rank σ × WO V₀ W₀ => ((q.1, ((rat x : Mx D W.rank ρ) ⬝ u.1.1, q.2.1, q.2.2)) : (GA D V × GA D W) × Mx D W.rank ρ × Mx D V₀.rank σ × WO V₀ W₀)` using `by fun_prop`. Establish `h2` using `hmix.comp hf`. Simplify using `only [Function.comp_def] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcu : ∀ q : (GA D V × GA D W) × Mx D V₀.rank σ × WO V₀ W₀, Continuous fun u : UX D ρ => flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) q.2.1 (om q.1 Φ) q.2.2 u`. Introduce `q`. Unfold `flatFun`. Use `(continuous_star.comp hpsi).mul ?_` and prove the remaining obligations. Establish `hf : Continuous fun u : UX D ρ => ((q.1, ((rat x : Mx D W.rank ρ) ⬝ u.1.1, q.2.1, q.2.2)) : (GA D V × GA D W) × Mx D W.rank ρ × Mx D V₀.rank σ × WO V₀ W₀)` using `continuous_const.prodMk (hxu.prodMk continuous_const)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `hmix.comp hf`. Simplify using `only [Function.comp_def] at h2`. Conclude with `h2`. Use `haveI : SecondCountableTopology (AE D) := (Formalism.IndefR.Eqv.ae_facts D).2.2.2.1`. Use `haveI : ∀ m n : ℕ, SecondCountableTopology (Mx D m n) := fun m n => inferInstanceAs (SecondCountableTopology (Fin m → Fin n → AE D))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : ∀ m n : ℕ, FirstCountableTopology (Mx D m n) := fun m n => TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Use `haveI : ∀ S : HSp D, SecondCountableTopology (GA D S) := fun S => (Formalism.IndefR.Eqv.ga_facts D S).2.2.2.1`. Use `haveI : BorelSpace (UX D ρ) := ⟨rfl⟩`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `q₀`.
-
-Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds q₀.1`. Take `⟨M, hMi, hM⟩` from `hmaj K hK`. Establish `hev : ∀ᶠ q in nhds q₀, q.1 ∈ K` using `continuous_fst.continuousAt.preimage_mem_nhds hKn`. Establish `key : ContinuousAt (fun q : (GA D V × GA D W) × Mx D V₀.rank σ × WO V₀ W₀ => ∫ u, flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) q.2.1 (om q.1 Φ) q.2.2 u ∂vU.ν) q₀`. Use `continuousAt_of_dominated (bound := M) ?_ ?_ hMi ?_` and prove the remaining obligations.
-
-Conclude with `Filter.Eventually.of_forall fun q => (hcu q).aestronglyMeasurable`. Conclude with `hev.mono fun q hq => Filter.Eventually.of_forall fun u => hM q.1 hq q.2.1 q.2.2 u`. Conclude with `Filter.Eventually.of_forall fun u => (hcq u).continuousAt`. Conclude with `key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem flatAt_om_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V V₀ W W₀ : HSp D) (ρ σ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (vS : VolM D W.rank ρ) (vT : VolM D σ V₀.rank) (χV χW : (AE D)ˣ →* Circle) (om : Om V W), IsWeilDatumO ψ V W χV χW om → ∀ (vU : VolU D ρ) (x : Matrix (Fin W.rank) (Fin ρ) D.host.E), LinearIndependent D.host.E x.transpose → ∀ Φ, IsThetaFunO ψ V W Φ → Continuous fun q : (GA D V × GA D W) × Mx D V₀.rank σ × WO V₀ W₀ => flatAt ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 vU.ν (rat x) q.2.1 (om q.1 Φ) q.2.2 := by
   intro D ψ V V₀ W W₀ ρ σ dV dW vS vT χV χW om hom vU x hx Φ hΦ

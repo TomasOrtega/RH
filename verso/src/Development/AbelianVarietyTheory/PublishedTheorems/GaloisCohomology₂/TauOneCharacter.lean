@@ -16,7 +16,7 @@ abbrev tauOne (θ : (ZMod g)ˣ →* ℂˣ) : FDRep ℂ (Gn g 1) :=
   FDRep.of (GlobalTheory.GLp.Model.chRep (θ.comp (Matrix.GeneralLinearGroup.det (n := Fin 1))))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `LinearMap.trace ℂ ℂ (((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ) • LinearMap.id) = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem tauOne_character (θ : (ZMod g)ˣ →* ℂˣ) (y : Gn g 1) :
     (tauOne θ).character y = θ (Matrix.GeneralLinearGroup.det y) := by
@@ -24,15 +24,15 @@ theorem tauOne_character (θ : (ZMod g)ˣ →* ℂˣ) (y : Gn g 1) :
   simp
 
 /- English proof (translation)
-Take `⟨T, h1, -, h3⟩` from `GlobalTheory.Published.GreenModel.green_one L`. Establish `hc : GlobalTheory.GLq.IsCusp (tauOne θ).character`. Use `⟨one_pos, ?_, fun a h1 h2 => by omega⟩` and prove the remaining obligations. Use `GlobalTheory.Published.GreenModel.isIrr_hom ((Units.coeHom ℂ).comp (θ.comp (Matrix.GeneralLinearGroup.det (n := Fin 1) (R := ZMod g))))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `y`. Conclude with `tauOne_character θ y`. Take `⟨P, hP, e⟩` from `h3 _ hc`. Establish `hP' : IsCuspOf L P (tauOne θ).character` using `e ▸ (h1 P hP).1`. Use `⟨P, hP', ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : -P.coeff 0 ≠ 0` using `neg_ne_zero.2 hP.2.2.1`. Establish `hr : ∀ b : ZMod g, Formalism.CyclotomicNorms.rootsBar (X - C b) = {algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) b}` using `fun b => by`. Simplify using `[Formalism.CyclotomicNorms.rootsBar]`. Establish `hrP : Formalism.CyclotomicNorms.rootsBar P = {algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) (-P.coeff 0)}` using `(congrArg Formalism.CyclotomicNorms.rootsBar (GlobalTheory.Published.GreenModel.lab_eq hP)).trans (hr _)`. Establish `hcp : ((Matrix.GeneralLinearGroup.scalar (Fin 1) u : Gn g 1) : Mt g 1).charpoly = X - C (u : ZMod g)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.charpoly, Matrix.GeneralLinearGroup.scalar]`. Establish `hd : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 1) u) = u` using `by ext; simp [Matrix.GeneralLinearGroup.scalar]`. Establish `h4` using `hP'.2.2 (algebraMap _ _ (-P.coeff 0)) (by rw [hrP]; simp) (Matrix.GeneralLinearGroup.scalar (Fin 1) u) (by rw [hcp]; exact irreducible_X_sub_C _) (L.gen 1) (by rw [hcp, hr, hu]; simp)`. Establish `h5` using `GlobalTheory.GLq.Model.thetaOf_gen_pow L one_pos (GlobalTheory.Published.GreenModel.alg_pow hb) 1`. Rewrite `h4` using `[tauOne_character, hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_one] at h5`. Simplify using `only [Nat.sub_self, pow_zero, one_mul, Finset.range_one, Finset.sum_singleton, pow_one, h5] at h4`. Rewrite using `[h4, liftPoly, hrP]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_label (L : LabelDatum g) (θ : (ZMod g)ˣ →* ℂˣ) (u : (ZMod g)ˣ)
     (hu : algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) u = L.gen 1) :
@@ -67,9 +67,9 @@ theorem exists_label (L : LabelDatum g) (θ : (ZMod g)ˣ →* ℂˣ) (u : (ZMod 
   simp
 
 /- English proof (translation)
-Use `⟨LinearMap.id, fun e => (one_ne_zero : (1 : ℂ) ≠ 0) (LinearMap.congr_fun e (1 : ℂ)), fun k (v : ℂ) => ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.GLp.Model.tame_inc θ k`. Rewrite `e` using `[← hθ]`. Establish `e2 : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 k)) = Units.map i.toRingHom.toMonoidHom (Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.inc g 1 k))` using `by ext; simp`. Express the relevant statement in the definitionally equal form `((θ (Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.red g 1 k)) : ℂˣ) : ℂ) • v = ((χ (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 k))) : ℂˣ) : ℂ) • v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e2, ← e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inflates_one (i : ℚ_[g] ≃+* w.adicCompletion E) (θ : (ZMod g)ˣ →* ℂˣ) (χ : (w.adicCompletion E)ˣ →* ℂˣ)
     (hχ : GlobalTheory.SmGL.IsSmoothChar χ) (hθ : χ.comp (Units.map i.toRingHom.toMonoidHom) = GlobalTheory.GLp.Model.tame θ) :
@@ -85,15 +85,15 @@ theorem inflates_one (i : ℚ_[g] ≃+* w.adicCompletion E) (θ : (ZMod g)ˣ →
   rw [e2, ← e]; rfl
 
 /- English proof (translation)
-Use `⟨(GlobalTheory.GLp.Model.tame θ).comp (Units.map i.symm.toRingHom.toMonoidHom), ?_, ?_⟩` and prove the remaining obligations. Establish `hs` using `(isSC_tameRep θ).1.2.2.1 (1 : ℂ)`. Set `f : w.adicCompletion E →* Matrix (Fin 1) (Fin 1) ℚ_[g]` to `((Matrix.scalar (Fin 1)).comp i.symm.toRingHom).toMonoidHom`. Establish `hf : Continuous f` using `continuous_matrix fun a b => by`. Establish `: (fun x => f x a b) = i.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim b 0]`. Simplify using `[f]`. Rewrite using `[this]`. Conclude with `hi`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hs.preimage (Continuous.units_map f hf)` as an intermediate fact. Unfold `GlobalTheory.SmGL.IsSmoothChar`. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Establish `e2 : Matrix.GeneralLinearGroup.det (Units.map f x) = Units.map i.symm.toRingHom.toMonoidHom x` using `by ext; simp [f]`.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.GLp.Model.tame θ (Units.map i.symm.toRingHom.toMonoidHom x) = 1 ↔ ((GlobalTheory.GLp.Model.tame θ (Matrix.GeneralLinearGroup.det (Units.map f x)) : ℂˣ) : ℂ) • (1 : ℂ) = 1`. Rewrite using `[e2]`. Simplify using the standard rewrite rules. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_char (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i.symm) (θ : (ZMod g)ˣ →* ℂˣ) :
     ∃ χ : (w.adicCompletion E)ˣ →* ℂˣ, GlobalTheory.SmGL.IsSmoothChar χ ∧
@@ -121,9 +121,9 @@ theorem exists_char (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i.sy
     ext; simp
 
 /- English proof (translation)
-Take `⟨P, hP, e⟩` from `exists_label L θ u hu`. Establish `h1` using `H E Ω g A w h rc ⟨a, ha, ε, hε, hl⟩ i hi κ L t ht hT 1 (GlobalTheory.SmGL.IrrRep.det (Fin 1) χ hχ) (IrrGL.isCusp_ofChar χ hχ) _ P hP (inflates_one i θ χ hχ hθ)`. Establish `h2 : rc (cls (GlobalTheory.SmGL.IrrRep.det (Fin 1) χ hχ)) = _` using `hl.one χ hχ`. Rewrite `h1` using `[h2, e, WD.inePol_of_mem_Ine _ ht, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`. Establish `h3` using `congrArg (fun p => p.coeff 0) h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Units.ext ?_` and prove the remaining obligations. Simplify using `using h3`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rank_one (H : DepthZeroInertia) {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {ε : EpsFamily A} (hε : IsDeligneEps ε) {rc : IrrGL (w.adicCompletion E) → WD h} (hl : Laws a ha ε rc)
@@ -143,9 +143,9 @@ theorem rank_one (H : DepthZeroInertia) {a : Weil h →* (w.adicCompletion E)ˣ}
   simpa using h3
 
 /- English proof (translation)
-Take `⟨a, ha, ε, -, hl⟩` from `hr`. Use `⟨by rw [WD.inePol_of_mem_Ine _ ht, WD.charPol_natDegree, hl.dim], ?_⟩` and prove the remaining obligations. Use `natDegree_multiset_prod_X_sub_C_eq_card ((Formalism.CyclotomicNorms.rootsBar P).map L.teich)` as an intermediate fact. Rewrite `this` using `[Multiset.map_map, Multiset.card_map]`. Use `this.trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Formalism.CyclotomicNorms.rootsBar, ← (IsAlgClosed.splits _).natDegree_eq_card_roots, natDegree_map, hP.1.2.2.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem degrees {rc : IrrGL (w.adicCompletion E) → WD h} (hr : IsRec h rc) (L : LabelDatum g) (t : G E Ω)
     (ht : t ∈ Ine (F := E) A) (n : ℕ) (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (w.adicCompletion E)))
@@ -159,7 +159,7 @@ theorem degrees {rc : IrrGL (w.adicCompletion E) → WD h} (hr : IsRec h rc) (L 
   rw [Formalism.CyclotomicNorms.rootsBar, ← (IsAlgClosed.splits _).natDegree_eq_card_roots, natDegree_map, hP.1.2.2.2]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨p.2⟩ ∃ (w : HeightOneSpectrum (𝓞 ℚ)) (A : ValuationSubring (AlgebraicClosure ℚ)) (_ : IsPlaceOver A w) (i : ℚ_[p.1] ≃+* w.adicCompletion ℚ), Continuous i ∧ ∀ (L : LabelDatum p.1) (θ : (ZMod p.1)ˣ →* ℂˣ), ∃ (σ : GlobalTheory.SmGL.IrrRep (GL (Fin 1) (w.adicCompletion ℚ))) (P : (ZM …`.
+Supply the required witnesses or components.
 -/
 theorem data_exist (p : Nat.Primes) : haveI : Fact p.1.Prime := ⟨p.2⟩
     ∃ (w : HeightOneSpectrum (𝓞 ℚ)) (A : ValuationSubring (AlgebraicClosure ℚ)) (_ : IsPlaceOver A w)

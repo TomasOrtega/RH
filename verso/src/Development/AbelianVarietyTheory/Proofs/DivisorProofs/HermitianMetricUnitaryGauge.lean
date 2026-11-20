@@ -24,17 +24,17 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 namespace GlobalTheory.HermLB
 
 /- English proof (translation)
-Introduce `k _ X p L m t ht A hA hc h`. Use `⟨ProjSpace.toProjIso p t ht, ProjSpace.toProjIso_isGen p t ht, fun σ a b y ha hb => ?_⟩` and prove the remaining obligations. Set `π` to `ProjSpace.toProj p t ht`. Establish `hπ : π ≫ PSpace.str k m = p` using `ProjSpace.toProj_str p t ht`. Set `z` to `Points.PtsOver.map π hπ (spMap σ) y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `B` to `(ProjSpace.O1 k m).pull π`. Establish `hb' : y ∈ ptsIn p σ (B.U b)` using `hb`. Establish `hab : y ∈ ptsIn p σ (L.B.U a ⊓ B.U b)` using `mem_ptsIn_inf.2 ⟨ha, hb'⟩`. Establish `hz : z ∈ ptsIn (PSpace.str k m) σ ((ProjSpace.O1 k m).U (b PUnit.unit))` using `mem_of_mem_linComb (m := fun _ => z) (fun _ => rfl) hb' PUnit.unit`. Set `u : Γ(X, L.B.U a ⊓ B.U b)ˣ` to `(ProjSpace.toProjIso p t ht).s (a, b)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `r : Fin (m + 1) → ℂ` to `fun j => valR z.1 ((ProjSpace.O1 k m).U (b PUnit.unit)) ((ProjSpace.coord k m j).f (b PUnit.unit))`. Establish `hu : ev p σ _ u.val y ≠ 0` using `ev_ne_zero hab u.isUnit`. Establish `e (j) : valR y.1 (L.B.U a) ((t j).f a) = ev p σ _ u.val y * r j`. Establish `e₁ : resG X (inf_le_left : L.B.U a ⊓ B.U b ≤ L.B.U a) ((t j).f a) = u.val * resG X inf_le_right ((Cartier.secPull (ProjSpace.coord k m j) π).f b)` using `ProjSpace.secMaps_toProjIso p t ht j (a, b)`. Establish `e₂` using `congrArg (ev p σ _ · y) e₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ev_mul, ev_res _ hab] at e₂`. Conclude with `e₂.trans (congrArg (_ * ·) (Points.valR_appLE y.1 π _ hb' _))`. Establish `h0` using `(Weight.noCommonZero_combVal (p := PSpace.str k m) (σ := σ) (ProjSpace.iSup_nonzeroLocus_coord k m) (hA σ)).sum_pos hz`. Establish `h0' : 0 < ∑ c, ‖∑ j, A σ j c * r j‖ ^ 2` using `h0.trans_eq (Finset.sum_congr rfl fun c _ => congrArg (‖·‖ ^ 2) ((congrFun (Finset.sum_apply _ _ _) z).trans (Finset.sum_apply _ _ _)))`. Establish `e₃` using `(Weight.pull_φ (Weight.fsBasis (PSpace.str k m) σ (ProjSpace.O1_isLB k m) (ProjSpace.coord k m) (ProjSpace.iSup_nonzeroLocus_coord k m) (A σ) (hA σ)) π hπ b y).trans (Weight.fsBasis_φ _ _ _ _ _ _ _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h σ a y ha).trans (Eq.trans ?_ (congrArg (· + Real.log (‖ev p σ _ u.val y‖ ^ 2)) e₃.symm))` and prove the remaining obligations. Use `Eq.trans ?_ (Real.log_mul h0'.ne' (pow_ne_zero 2 (norm_ne_zero_iff.2 hu)))` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `congrArg _ (Finset.sum_congr rfl fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[← mul_pow, ← norm_mul, Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (‖·‖ ^ 2) (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[e j]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isometric_pull_fs_toProj : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (L : GlobalTheory.HermLB p) (m : ℕ) (t : Fin (m + 1) → L.B.Sec) (ht : ⨆ j, nonzeroLocus (t j) = ⊤)
     (A : (k →+* ℂ) → Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hA : ∀ σ, (A σ).det ≠ 0)

@@ -4,55 +4,49 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Simplify using `[sg]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sg_zero (R : Type) [CommRing R] : sg R 0 = 1 := by simp [sg]
 
 /- English proof (translation)
-Use `show (-1 : R) ^ (1 : ZMod 2).val = -1`. Rewrite using `[show (1 : ZMod 2).val = 1 from rfl, pow_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sg_one (R : Type) [CommRing R] : sg R 1 = -1 := by
   show (-1 : R) ^ (1 : ZMod 2).val = -1
   rw [show (1 : ZMod 2).val = 1 from rfl, pow_one]
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ hF S x L hx σ hσ`. Establish `hl : l ≠ 2` using `hF.l_odd`. Establish `h2O : IsUnit (2 : L.O')`. Assume the negation of the conclusion as `h`. Establish `hm : (2 : L.O') ∈ maximalIdeal L.O'` using `(mem_maximalIdeal _).mpr h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hr : residue L.O' 2 = 0` using `(residue_eq_zero_iff _).mpr hm`. Rewrite `hr` using `[map_ofNat]`. Establish `hd : l ∣ 2` using `(CharP.cast_eq_zero_iff (ResidueField L.O') l 2).mp (by exact_mod_cast hr)`. Establish `hp : l.Prime` using `Fact.out`. Break down `(Nat.dvd_prime Nat.prime_two).mp hd with h1 | h1` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hp.one_lt.ne' h1`. Conclude with `hl h1`. Establish `h2 : IsUnit (2 : L.R)`. Use `h2O.map (algebraMap L.O' L.R)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Establish `hpw : ∀ a b : Fin 3, Odd (w 3 a - w 3 b) → pw a b = 1`. Introduce `a b h`. Take `⟨k, hk⟩` from `h`. Use `show ((w 3 a - w 3 b : ℤ) : ZMod 2) = 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hk, Int.cast_add, Int.cast_mul, Int.cast_one, Int.cast_ofNat, show (2 : ZMod 2) = 0 from rfl, zero_mul, zero_add]`. Establish `hpw0 : ∀ a b : Fin 3, Even (w 3 a - w 3 b) → pw a b = 0`. Introduce `a b h`. Take `⟨k, hk⟩` from `h`. Use `show ((w 3 a - w 3 b : ℤ) : ZMod 2) = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hk, ← two_mul, Int.cast_mul, Int.cast_ofNat, show (2 : ZMod 2) = 0 from rfl, zero_mul]`. Apply `le_antisymm` to reduce the goal to its premises. Unfold `NRep.ee`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, i, j, hodd, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Ideal.subset_span` to reduce the goal to its premises. Establish `he` using `hσ.ent g i j`. Rewrite `he` using `[hpw i j hodd]`. Conclude with `he`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Establish `hy' : σ y = sg L.R 1 * y` using `hy`. Rewrite `hy'` using `[sg_one]`. Establish `hIm : L.ρ.ee ≤ maximalIdeal L.R`. Unfold `NRep.ee`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, i, j, hodd, rfl⟩`. Establish `hmem : S.u.r g i j ∈ S.u.ee` using `Ideal.subset_span ⟨g, i, j, hodd, rfl⟩`. Establish `hxm` using `hx hmem`. Rewrite `hxm` using `[← L.lies]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_comap.mp hxm`. Use `haveI : Nontrivial (L.R ⧸ L.ρ.ee) := Ideal.Quotient.nontrivial_iff.mpr (ne_top_of_le_ne_top (maximalIdeal.isMaximal L.R).ne_top hIm)`. Use `haveI : IsCO L.O' (L.R ⧸ L.ρ.ee) := co_quot L.O' L.R _ (Ideal.Quotient.mkₐ L.O' L.ρ.ee) (Ideal.Quotient.mkₐ_surjective _ _)`. Establish `key' : ∀ z (hz : z ∈ Algebra.adjoin O ((S.B : Set S.R) ∪ {x | ∃ g i j, x = S.ρ.r g i j})), Ideal.Quotient.mk L.ρ.ee (σ (L.ι ⟨z, hz⟩)) = Ideal.Quotient.mk L.ρ.ee (L.ι ⟨z, hz⟩)`. Introduce `z hz`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem z hz`. Break down `hz with hB | ⟨g, i, j, rfl⟩` into its components or cases. Establish `hb' : σ (L.b ⟨z, hB⟩) = sg L.R 0 * L.b ⟨z, hB⟩` using `hσ.base ⟨z, hB⟩`. Rewrite `hb'` using `[sg_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show Ideal.Quotient.mk _ (σ (L.b ⟨z, hB⟩)) = Ideal.Quotient.mk _ (L.b ⟨z, hB⟩)`. Rewrite using `[hb']`. Establish `he' : σ (L.ρ.r g i j) = sg L.R (pw i j) * L.ρ.r g i j` using `hσ.ent g i j show Ideal.Quotient.mk _ (σ (L.ρ.r g i j)) = Ideal.Quotient.mk _ (L.ρ.r g i j)`. Break down `Int.even_or_odd (w 3 i - w 3 j) with h | h` into its components or cases. Rewrite `he'` using `[hpw0 i j h, sg_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[he']`. Rewrite `he'` using `[hpw i j h, sg_one]`. Establish `hm : L.ρ.r g i j ∈ L.ρ.ee` using `Ideal.subset_span ⟨g, i, j, h, rfl⟩`. Rewrite using `[he', Ideal.Quotient.eq]`. Establish `hc : -1 * L.ρ.r g i j - L.ρ.r g i j = (-2) * L.ρ.r g i j` using `by ring`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_left _ _ hm`. Consider the case `algebraMap r => show Ideal.Quotient.mk _ (σ (L.ι (algebraMap O S.A r))) = Ideal.Quotient.mk _ (L.ι (algebraMap O S.A r))`. Rewrite using `[L.ι.commutes]`. Establish `hc` using `(σ.restrictScalars O).commutes r`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[AlgHom.restrictScalars_apply]`. Rewrite using `[hc]`. Consider the case `add a b ha hb iha ihb => show Ideal.Quotient.mk _ (σ (L.ι (⟨a, ha⟩ + ⟨b, hb⟩))) = Ideal.Quotient.mk _ (L.ι (⟨a, ha⟩ + ⟨b, hb⟩))`. Simplify using `only [map_add, iha, ihb]`. Consider the case `mul a b ha hb iha ihb => show Ideal.Quotient.mk _ (σ (L.ι (⟨a, ha⟩ * ⟨b, hb⟩))) = Ideal.Quotient.mk _ (L.ι (⟨a, ha⟩ * ⟨b, hb⟩))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, iha, ihb]`. Establish `huniq` using `L.univ (L.R ⧸ L.ρ.ee) ((Ideal.Quotient.mkₐ O L.ρ.ee).comp L.ι) (fun a => by show res L.O' _ (Ideal.Quotient.mkₐ L.O' L.ρ.ee (L.ι a)) = _`. Conclude with `res_map _ _)`. Establish `h1 : ∀ a : S.A, ((Ideal.Quotient.mkₐ L.O' L.ρ.ee).comp σ) (L.ι a) = ((Ideal.Quotient.mkₐ O L.ρ.ee).comp L.ι) a`. Introduce and unpack `⟨z, hz⟩`.
-
-Conclude with `key' z hz`. Establish `h2' : ∀ a : S.A, (Ideal.Quotient.mkₐ L.O' L.ρ.ee) (L.ι a) = ((Ideal.Quotient.mkₐ O L.ρ.ee).comp L.ι) a` using `fun a => rfl`. Establish `heq` using `huniq.unique h1 h2'`. Establish `hyq` using `AlgHom.congr_fun heq y`. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, hy'] at hyq`.
-
-Establish `hd` using `Ideal.Quotient.eq.mp hyq`. Establish `h2y : 2 * y ∈ L.ρ.ee`. Establish `hc : 2 * y = -((-1 * y) - y)` using `by ring`. Rewrite using `[hc]`. Conclude with `neg_mem hd`.
-
-Take `⟨u, hu⟩` from `h2`. Establish `hc : y = (↑u⁻¹ : L.R) * (2 * y)` using `by rw [← hu, ← mul_assoc, Units.inv_mul, one_mul]`. Use `show y ∈ L.ρ.ee`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_left _ _ h2y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.ep_ee :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ}, F.Ok C₀ → ∀ S : Space O F 3, ∀ (x : Ideal S.A) (L : S.Loc x), S.u.ee ≤ x → ∀ σ, L.IsInv σ → L.ρ.ee = Ideal.span (evp σ 1 : Set L.R) := by

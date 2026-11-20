@@ -7,7 +7,7 @@ namespace LateralTheory.KummerTheory.RedExPf
 open LateralTheory.KummerTheory.BockCut
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q)) n y, ← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q)) m y]`. Use `congr 1`. Conclude with `ULift.ext _ _ (by simpa using h)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem nsmul_congr {q : ℕ} {i : ℤ} {U : Scheme.{0}} (y : Sec (tw q i) U) {n m : ℕ}
     (h : (n : ZMod q) = (m : ZMod q)) : n • y = m • y := by
@@ -16,23 +16,21 @@ theorem nsmul_congr {q : ℕ} {i : ℤ} {U : Scheme.{0}} (y : Sec (tw q i) U) {n
   exact ULift.ext _ _ (by simpa using h)
 
 /- English proof (translation)
-Introduce `Q q _ h i`. Establish `hq : NeZero q` using `⟨ne_zero_of_dvd_ne_zero (NeZero.ne Q) h⟩`. Use `choose ρ hρ using fun (U : Scheme.{0}) (ζ : Prim Q Γ(U, ⊤)) => (hP Q Γ(U, ⊤)).2.2.2.2.2 q h ζ`. Set `M : Shv (ZMod Q)` to `(restr (ZMod.castHom h (ZMod q))).obj (tw q i)`. Set `e : ∀ U : Scheme.{0}, Prim Q Γ(U, ⊤) → Sec M U` to `fun U ζ => (twGen i (ρ U ζ) : Sec (tw q i) U)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he1 : ∀ (V U : Scheme.{0}) (g : V ⟶ U) ζ, Sec.res g (e U ζ) = e V (ζ.map g.appTop.hom)`. Introduce `V U g ζ`. Establish `hx : ρ V (ζ.map g.appTop.hom) = (ρ U ζ).map g.appTop.hom`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (g.appTop.hom ζ.1) ^ (Q / q) = g.appTop.hom ((ρ U ζ).1)`. Rewrite using `[hρ, map_pow]`. Use `show Sec.res (F := tw q i) g (twGen i (ρ U ζ)) = twGen i (ρ V (ζ.map g.appTop.hom))`. Rewrite using `[hx, (hT q i).2.2.2.1]`. Establish `he2 : ∀ (U : Scheme.{0}) (ζ ξ : Prim Q Γ(U, ⊤)) (a : (ZMod Q)ˣ), ξ.1 = ζ.1 ^ (a : ZMod Q).val → e U ξ = ((a ^ i : (ZMod Q)ˣ) : ZMod Q).val • e U ζ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `U ζ ξ a hξa`. Set `b : (ZMod q)ˣ` to `ZMod.unitsMap h a`. Establish `hb : ∀ x : ZMod Q, ((ZMod.castHom h (ZMod q) x : ZMod q)) = (x.val : ZMod q)` using `fun x => ZMod.cast_eq_val x`. Establish `hpow : (ρ U ξ).1 = (ρ U ζ).1 ^ (b : ZMod q).val`. Establish `h1 : (ρ U ζ).1 ^ q = 1` using `(hP q Γ(U, ⊤)).1 (ρ U ζ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hbv : (b : ZMod q).val = (a : ZMod Q).val % q` using `by show (ZMod.castHom h (ZMod q) (a : ZMod Q)).val = _`. Rewrite using `[hb, ZMod.val_natCast]`. Rewrite using `[hρ, hρ, hξa, hbv, ← pow_mul, mul_comm, pow_mul]`. Use `conv_lhs => rw [← Nat.div_add_mod (a : ZMod Q).val q]`. Rewrite `h1` using `[hρ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add, pow_mul, h1, one_pow, one_mul]`. Use `show twGen i (ρ U ξ) = _ • (twGen i (ρ U ζ) : Sec (tw q i) U)`. Rewrite using `[(hT q i).2.2.2.2.1 U (ρ U ζ) (ρ U ξ) b hpow]`. Apply `nsmul_congr` to reduce the goal to its premises. Rewrite using `[ZMod.natCast_zmod_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: ((b ^ i : (ZMod q)ˣ) : ZMod q) = ZMod.castHom h (ZMod q) ((a ^ i : (ZMod Q)ˣ) : ZMod Q)`. Rewrite using `[show b ^ i = ZMod.unitsMap h (a ^ i) from (map_zpow _ _ _).symm]`. Both sides reduce to the same expression. Rewrite using `[this, hb]`. Take `⟨φ, hφ, -⟩` from `(hT Q i).2.2.2.2.2 M e he1 he2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨π, hπ⟩` from `hZ (TZ Q i) (TZ q i) (fun U => AddMonoidHom.mk' (fun a => (Sec.map φ (show Sec (tw Q i) U from a) : Sec (tw q i) U)) (fun a b => map_add (φ.hom.app (op U)).hom a b)) (fun V U g a => by`. Use `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (φ.hom.naturality g.op)) a` as an intermediate fact. Conclude with `this.symm)`. Use `⟨π, fun U ζ ξ hξ => ?_⟩` and prove the remaining obligations. Rewrite using `[hπ]`.
-
-Establish `hx : ξ = ρ U ζ` using `Subtype.ext (by rw [hξ, hρ])`. Substitute `hx` using the available equality. Conclude with `hφ U ζ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem RedEx_of (hZ : ZHom) (hT : LateralTheory.EtaleFoundations.EtaleTateTwistSectionsLocallyGenerated) (hP : LateralTheory.EtaleFoundations.PrimitiveRootsOfUnityBasicIdentities) : RedEx := by
   intro Q q _ h i

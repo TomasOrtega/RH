@@ -20,7 +20,7 @@ namespace GlobalTheory.PPAS.ProdMk
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Establish `: SmoothOfRelativeDimension g₂ (pullback.fst A.hom B.hom)` using `(smoothOfRelativeDimension_isStableUnderBaseChange g₂).of_isPullback (IsPullback.of_hasPullback A.hom B.hom).flip h₂`. Rewrite using `[Over.tensorObj_hom, add_comm]`. Conclude with `smoothOfRelativeDimension_comp g₂ g₁ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_tensor {A B : Over S} {g₁ g₂ : ℕ} (h₁ : SmoothOfRelativeDimension g₁ A.hom)
     (h₂ : SmoothOfRelativeDimension g₂ B.hom) : SmoothOfRelativeDimension (g₁ + g₂) (A ⊗ B).hom := by
@@ -31,25 +31,25 @@ theorem smooth_tensor {A B : Over S} {g₁ g₂ : ℕ} (h₁ : SmoothOfRelativeD
   exact smoothOfRelativeDimension_comp g₂ g₁ _ _
 
 /- English proof (translation)
-Apply the tactic sequence `ext1 <;> simp [MonObj.one_comp, MonObj.comp_one]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_one_id_tensorHom {X Y : Over S} [GrpObj X] [GrpObj Y] (f : X ⟶ Y) [IsMonHom f] :
     lift (1 : X ⟶ X) (𝟙 X) ≫ (f ⊗ₘ f) = f ≫ lift (1 : Y ⟶ Y) (𝟙 Y) := by
   ext1 <;> simp [MonObj.one_comp, MonObj.comp_one]
 
 /- English proof (translation)
-Apply the tactic sequence `ext1 <;> simp [MonObj.one_comp, MonObj.comp_one]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_id_one_tensorHom {X Y : Over S} [GrpObj X] [GrpObj Y] (f : X ⟶ Y) [IsMonHom f] :
     lift (𝟙 X) (1 : X ⟶ X) ≫ (f ⊗ₘ f) = f ≫ lift (𝟙 Y) (1 : Y ⟶ Y) := by
   ext1 <;> simp [MonObj.one_comp, MonObj.comp_one]
 
 /- English proof (translation)
-Set `m : Over.mk (((Over.pullback s).obj X ⊗ (Over.pullback s).obj X).hom ≫ s) ⟶ Over.mk (((Over.pullback s).obj Y ⊗ (Over.pullback s).obj Y).hom ≫ s)` to `Over.homMk ((Over.pullback s).map f ⊗ₘ (Over.pullback s).map f).left (by`. Simplify using `only [Over.mk_hom]`. Rewrite using `[← Category.assoc, Over.w])`. Establish `hp : ((Over.pullback s).map f).left ≫ pullback.fst Y.hom s = pullback.fst X.hom s ≫ f.left`. Simplify using `[pullback.lift_fst]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e₁ : toBase X s (fst _ _) ≫ f = m ≫ toBase Y s (fst _ _)` using `by ext1`. Simplify using `only [toBase, Over.comp_left, Over.homMk_left, m, Category.assoc]`. Rewrite using `[← Category.assoc ((Over.pullback s).map f ⊗ₘ (Over.pullback s).map f).left, ← Over.comp_left, tensorHom_fst, Over.comp_left, Category.assoc, hp]`. Establish `e₂ : toBase X s (snd _ _) ≫ f = m ≫ toBase Y s (snd _ _)` using `by ext1`. Simplify using `only [toBase, Over.comp_left, Over.homMk_left, m, Category.assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc ((Over.pullback s).map f ⊗ₘ (Over.pullback s).map f).left, ← Over.comp_left, tensorHom_snd, Over.comp_left, Category.assoc, hp]`. Establish `h : ((Over.pullback s).map f ⊗ₘ (Over.pullback s).map f).left ≫ sqToBase Y s = (m ≫ lift (toBase Y s (fst _ _)) (toBase Y s (snd _ _))).left` using `rfl`. Rewrite using `[h, sqToBase, ← Over.comp_left, comp_lift, lift_map, e₁, e₂]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqToBase_tensorHom {T : Scheme.{0}} {X Y : Over S} (f : X ⟶ Y) (s : T ⟶ S) :
     sqToBase X s ≫ (f ⊗ₘ f).left =
@@ -76,7 +76,7 @@ theorem sqToBase_tensorHom {T : Scheme.{0}} {X Y : Over S} (f : X ⟶ Y) (s : T 
   rw [h, sqToBase, ← Over.comp_left, comp_lift, lift_map, e₁, e₂]
 
 /- English proof (translation)
-Simplify using `only [lam, map_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_add_cls {T : Scheme.{0}} {C D : Over T} [GrpObj C] (c d : Pic C.left) (x y : D ⟶ C) :
     lam (c + d) x y = lam c x y + lam d x y := by
@@ -84,7 +84,7 @@ theorem lam_add_cls {T : Scheme.{0}} {C D : Over T} [GrpObj C] (c d : Pic C.left
   abel
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.rel_ample_of_product_decomposition hB₁ hB₂ q₁ q₂ hq hL₁ a₁ hL₂ a₂ hL e`.
+A detailed English derivation is pending.
 -/
 theorem relAmple_of_isLimit {T : Scheme.{0}} [IsAffine T] {C B₁ B₂ : Over T} [GrpObj C] [GrpObj B₁]
     [GrpObj B₂] (hB₁ : IsAbelianScheme B₁) (hB₂ : IsAbelianScheme B₂) (q₁ : C ⟶ B₁) (q₂ : C ⟶ B₂)
@@ -94,7 +94,7 @@ theorem relAmple_of_isLimit {T : Scheme.{0}} [IsAffine T] {C B₁ B₂ : Over T}
   GlobalTheory.T.rel_ample_of_product_decomposition hB₁ hB₂ q₁ q₂ hq hL₁ a₁ hL₂ a₂ hL e
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.k_trivial_of_product_decomposition q₁ q₂ hq hL₁ k₁ hL₂ k₂ hL e`.
+A detailed English derivation is pending.
 -/
 theorem kTriv_of_isLimit {T : Scheme.{0}} {C B₁ B₂ : Over T} [GrpObj C] [GrpObj B₁] [GrpObj B₂]
     (q₁ : C ⟶ B₁) (q₂ : C ⟶ B₂) [IsMonHom q₁] [IsMonHom q₂] (hq : IsLimit (BinaryFan.mk q₁ q₂))
@@ -104,7 +104,7 @@ theorem kTriv_of_isLimit {T : Scheme.{0}} {C B₁ B₂ : Over T} [GrpObj C] [Grp
   GlobalTheory.T.k_trivial_of_product_decomposition q₁ q₂ hq hL₁ k₁ hL₂ k₂ hL e
 
 /- English proof (translation)
-Take `⟨L, hL, e⟩` from `CechPic.cls_surj (pull q₁.left (cls L₁ hL₁) + pull q₂.left (cls L₂ hL₂))`. Use `⟨L, hL, relAmple_of_isLimit hB₁ hB₂ q₁ q₂ hq hL₁ a₁ hL₂ a₂ hL e, kTriv_of_isLimit q₁ q₂ hq hL₁ k₁ hL₂ k₂ hL e, ?_⟩` and prove the remaining obligations. Rewrite using `[e, lam_add_cls, CechPic.lam_pull, CechPic.lam_pull, CechPic.pull_lam, CechPic.pull_lam, tensorHom_fst, tensorHom_snd, tensorHom_fst, tensorHom_snd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibre_prod {T : Scheme.{0}} [IsAffine T] {C B₁ B₂ : Over T} [GrpObj C] [GrpObj B₁] [GrpObj B₂]
     (hB₁ : IsAbelianScheme B₁) (hB₂ : IsAbelianScheme B₂) (q₁ : C ⟶ B₁) (q₂ : C ⟶ B₂) [IsMonHom q₁]
@@ -122,9 +122,9 @@ theorem fibre_prod {T : Scheme.{0}} [IsAffine T] {C B₁ B₂ : Over T} [GrpObj 
     tensorHom_fst, tensorHom_snd, tensorHom_fst, tensorHom_snd]
 
 /- English proof (translation)
-Use `⟨?_, ?_, fun Ω _ _ s => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← CechPic.pull_comp, ← CechPic.pull_comp, ← Over.comp_left, ← Over.comp_left, lift_one_id_tensorHom, lift_one_id_tensorHom, Over.comp_left, Over.comp_left, CechPic.pull_comp, CechPic.pull_comp, h₁.1, h₂.1, map_zero, map_zero, add_zero]`. Rewrite using `[map_add, ← CechPic.pull_comp, ← CechPic.pull_comp, ← Over.comp_left, ← Over.comp_left, lift_id_one_tensorHom, lift_id_one_tensorHom, Over.comp_left, Over.comp_left, CechPic.pull_comp, CechPic.pull_comp, h₁.2.1, h₂.2.1, map_zero, map_zero, add_zero]`. Take `⟨L₁, hL₁, a₁, k₁, e₁⟩` from `h₁.2.2 Ω s`. Take `⟨L₂, hL₂, a₂, k₂, e₂⟩` from `h₂.2.2 Ω s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hq` using `(isLimitMapConeBinaryFanEquiv (Over.pullback s) (fst A B) (snd A B)) (isLimitOfPreserves (Over.pullback s) (tensorProductIsBinaryProduct A B))`. Take `⟨L, hL, a, k, e⟩` from `fibre_prod (PolPull.isAbelianScheme_of_isGrpPullback hA (isGrpPullback_pullback A s)) (PolPull.isAbelianScheme_of_isGrpPullback hB (isGrpPullback_pullback B s)) ((Over.pullback s).map (fst A B)) ((Over.pullback s).map (snd A B)) hq hL₁ a₁ k₁ hL₂ a₂ k₂`. Use `⟨L, hL, a, k, ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_add, ← CechPic.pull_comp, ← CechPic.pull_comp, sqToBase_tensorHom, sqToBase_tensorHom, CechPic.pull_comp, CechPic.pull_comp, e₁, e₂]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPrincipalPol_tensor {A B : Over S} [GrpObj A] [GrpObj B] (hA : IsAbelianScheme A)
     (hB : IsAbelianScheme B) {c₁ : Pic (A ⊗ A).left} {c₂ : Pic (B ⊗ B).left}
@@ -162,7 +162,7 @@ def prod {S : Scheme.{0}} (P₁ P₂ : PPAS S) : PPAS S where
   isPol := ProdMk.isPrincipalPol_tensor P₁.isAb P₂.isAb P₁.isPol P₂.isPol
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fst P₁.A P₂.A, snd P₁.A P₂.A, inferInstanceAs (IsMonHom (fst P₁.A P₂.A)), inferInstanceAs (IsMonHom (snd P₁.A P₂.A)), ⟨tensorProductIsBinaryProduct P₁.A P₂.A⟩, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isProd_prod {S : Scheme.{0}} (P₁ P₂ : PPAS S) : (prod P₁ P₂).IsProd P₁ P₂ :=
   ⟨fst P₁.A P₂.A, snd P₁.A P₂.A, inferInstanceAs (IsMonHom (fst P₁.A P₂.A)),
@@ -170,7 +170,7 @@ theorem isProd_prod {S : Scheme.{0}} (P₁ P₂ : PPAS S) : (prod P₁ P₂).IsP
     ⟨tensorProductIsBinaryProduct P₁.A P₂.A⟩, rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `_ P₁ P₂` and use `⟨prod P₁ P₂, isProd_prod P₁ P₂⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_isProd : ∀ (S : Scheme.{0}) (P₁ P₂ : PPAS S), ∃ P : PPAS S, P.IsProd P₁ P₂ :=
   fun _ P₁ P₂ => ⟨prod P₁ P₂, isProd_prod P₁ P₂⟩

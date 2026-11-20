@@ -8,21 +8,17 @@ open AlgebraicGeometry CategoryTheory Limits Opposite GlobalTheory.QcSub
 namespace GlobalTheory.QcSub
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing Γ(X, W) := IsLocallyNoetherian.component_noetherian ⟨W, hW⟩`. Use `letI alg : Algebra Γ(X, W) (F.obj (op W)) := (α.app (op W)).hom.toAlgebra`. Set `S : Subalgebra Γ(X, W) (F.obj (op W))` to `{ sub F α V T W with algebraMap_mem' := algebraMap_mem_sub F α V T W }`. Set `s : Set Γ(X, W)` to `{g | ∃ j, X.basicOpen g ≤ V j}`. Establish `hs : Ideal.span s = ⊤`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hW.self_le_iSup_basicOpen_iff]`. Introduce `x hx`. Take `⟨j, hj⟩` from `hcov x`. Take `⟨g, hg, hxg⟩` from `hW.exists_basicOpen_le (V := V j) ⟨x, hj⟩ hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨g, j, hg⟩, hxg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hloc : ∀ g ∈ s, ∃ E : Finset (F.obj (op W)), ∀ b ∈ S.toSubmodule, ∃ m : ℕ, algebraMap Γ(X, W) (F.obj (op W)) g ^ m * b ∈ Submodule.span Γ(X, W) (E : Set _)`. Introduce and unpack `g ⟨j, hj⟩`. Establish `hD : IsAffineOpen (X.basicOpen g)` using `hW.basicOpen g`. Use `letI a1 : Algebra Γ(X, W) Γ(X, X.basicOpen g) := (X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom.toAlgebra`. Use `letI a2 : Algebra Γ(X, X.basicOpen g) (F.obj (op (X.basicOpen g))) := (α.app (op (X.basicOpen g))).hom.toAlgebra`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI a3 : Algebra (F.obj (op W)) (F.obj (op (X.basicOpen g))) := (F.map (homOfLE (X.basicOpen_le g)).op).hom.toAlgebra`. Use `letI a4 : Algebra Γ(X, W) (F.obj (op (X.basicOpen g))) := ((α.app (op (X.basicOpen g))).hom.comp (X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom).toAlgebra`. Use `haveI : IsScalarTower Γ(X, W) (F.obj (op W)) (F.obj (op (X.basicOpen g))) := IsScalarTower.of_algebraMap_eq fun r ↦ by`. Use `congr($(α.naturality (homOfLE (X.basicOpen_le g)).op).hom r)` as an intermediate fact. Simplify using `only [CommRingCat.comp_apply] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Use `haveI : IsScalarTower Γ(X, W) Γ(X, X.basicOpen g) (F.obj (op (X.basicOpen g))) := IsScalarTower.of_algebraMap_eq fun r ↦ rfl`. Use `haveI : IsLocalization.Away g Γ(X, X.basicOpen g) := hW.isLocalization_basicOpen g`. Use `haveI : IsLocalization.Away (algebraMap Γ(X, W) (F.obj (op W)) g) (F.obj (op (X.basicOpen g))) := isLocalizationAway F α hα hW g`. Set `N : Submodule Γ(X, X.basicOpen g) (F.obj (op (X.basicOpen g)))` to `(Algebra.adjoin Γ(X, X.basicOpen g) ((F.map (homOfLE hj).op).hom '' T j)).toSubmodule`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hN : N.FG` using `fg_adjoin_of_finite ((hT j).image _) (fun x _ ↦ hint _ hD x)`. Take `⟨E, hE⟩` from `GlobalTheory.T.exists_finset_pow_mul_mem_span_of_fg_localizationAway (R := Γ(X, W)) (A := F.obj (op W)) (R' := Γ(X, X.basicOpen g)) (A' := F.obj (op (X.basicOpen g))) g N hN`. Use `⟨E, fun b hb ↦ hE b ?_⟩` and prove the remaining obligations. Use `(mem_sub F α V T).mp hb j (X.basicOpen g) hD (X.basicOpen_le g) hj` as an intermediate fact. Rewrite `this` using `[gen_eq_adjoin]`.
-
-Conclude with `this`. Establish `hfg : S.toSubmodule.FG` using `GlobalTheory.T.submodule_fg_of_span_eq_top_of_locally_pow_mul_mem S.toSubmodule s hs hloc`. Use `letI := (subMap F α V T W).toAlgebra`. Establish `hfin : Module.Finite Γ(X, W) S.toSubmodule` using `Module.Finite.iff_fg.mpr hfg`. Set `e : S.toSubmodule ≃ₗ[Γ(X, W)] sub F α V T W` to `{ toFun := fun x ↦ ⟨x.1, x.2⟩ invFun := fun x ↦ ⟨x.1, x.2⟩ map_add' := fun _ _ ↦ rfl map_smul' := fun _ _ ↦ rfl left_inv := fun _ ↦ rfl right_inv := fun _ ↦ rfl }`.
-
-Conclude with `Module.Finite.equiv e`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem subMap_finite (X : Scheme.{0}) (_hX : IsNoetherian X) (F : X.Opensᵒᵖ ⥤ CommRingCat)
     (α : X.presheaf ⟶ F)

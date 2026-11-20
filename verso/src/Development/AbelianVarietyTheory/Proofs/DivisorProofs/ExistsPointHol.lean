@@ -14,9 +14,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.AnPer
 
 /- English proof (translation)
-Introduce `E _ _ _ W X e U hU he hW`. Establish `ha : ∀ f : Γ(X, U), AnalyticOnNhd ℂ (fun p => valAt' (e p) U f) W` using `fun f p hp => SCV.analyticAt_of_differentiableOn (he U f).2 ((he U f).1.mem_nhds ⟨hp, hW p hp⟩)`. Establish `hv : ∀ (f : Γ(X, U)) (p : E) (hp : p ∈ W), (Hol.mk _ (ha f)).fn p = evalPt (e p) U (hW p hp) f` using `fun f p hp => (Hol.fn_mk _ _ hp).trans (valAt'_eq_evalPt _ _ _ _)`. Set `ψ : Γ(X, U) →+* Hol W` to `{ toFun := fun f => Hol.mk _ (ha f) map_one' := Hol.ext_fn fun p hp => by rw [hv _ p hp, map_one, ← Hol.ev_apply p hp, map_one] map_mul' := fun f g => Hol.ext_fn fun p hp => by rw [Hol.fn_mul _ _ hp, hv _ p hp, hv _ p hp, hv _ p hp, map_mul] map_zero' := Hol.ext_fn fun p hp => by …`. Take `⟨x, hx, hxψ⟩` from `exists_evalPt_eq hU ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `h' : ∀ (p : E) (hp : p ∈ W), ⊤ ≤ (spMap (Hol.ev p hp : Hol W →+* ℂ) ≫ x) ⁻¹ᵁ U` using `fun p hp q _ => hx trivial`. Use `⟨x, hx, fun p hp => ext_evalPt hU (h' p hp) (hW p hp) (RingHom.ext fun f => ?_)⟩` and prove the remaining obligations. Rewrite using `[evalPt_spMap_comp _ x U hx, hxψ]`. Conclude with `(Hol.ev_apply p hp _).trans (hv f p hp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point_hol : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] (W : Opens E)
     (X : Scheme.{0}) (e : E → (Sp ℂ ⟶ X)) (U : X.Opens), IsAffineOpen U → IsHolTo (W : Set E) e → (∀ p ∈ W, ⊤ ≤ e p ⁻¹ᵁ U) →
@@ -39,13 +39,13 @@ theorem exists_point_hol : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace �
   exact (Hol.ev_apply p hp _).trans (hv f p hp)
 
 /- English proof (translation)
-Introduce `E _ _ W X S s _ x x' hs h`. Establish `: _root_.IsReduced (Hol W)` using `isReduced_of_injective (holSub W).val Subtype.val_injective`. It suffices to establish `IsDominant (equalizer.ι x x') from ext_of_isDominant_of_isSeparated s hs (equalizer.ι x x') (equalizer.condition _ _)`. Use `⟨?_⟩` and prove the remaining obligations. Establish `hd : Dense (Set.range fun p : W => PrimeSpectrum.comap (Hol.ev p.1 p.2 : Hol W →+* ℂ) default)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[dense_iff_closure_eq, ← PrimeSpectrum.zeroLocus_vanishingIdeal_eq_closure, PrimeSpectrum.zeroLocus_eq_univ_iff]`. Introduce `f hf`. Establish `: f = 0` using `Hol.ext_fn fun p hp => by`. Establish `h1` using `(PrimeSpectrum.mem_vanishingIdeal _ _).1 hf _ ⟨⟨p, hp⟩, rfl⟩`. Establish `h2 : Hol.ev p hp f ∈ (default : PrimeSpectrum ℂ).asIdeal` using `h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Ideal.eq_bot_of_prime (default : PrimeSpectrum ℂ).asIdeal, Ideal.mem_bot]`. Rewrite using `[← Hol.ev_apply p hp, ← Hol.ev_apply p hp, h2, map_zero]`. Rewrite using `[this]`. Conclude with `zero_mem _`. Use `Dense.mono ?_ hd` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Use `⟨equalizer.lift _ (h p.1 p.2) (default : PrimeSpectrum ℂ), ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun m : Sp ℂ ⟶ Sp (Hol W) => m (default : PrimeSpectrum ℂ)) (equalizer.lift_ι _ (h p.1 p.2))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem point_hol_ext : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (W : Opens E)
     (X S : Scheme.{0}) (s : X ⟶ S) [IsSeparated s] (x x' : Sp (Hol W) ⟶ X), x ≫ s = x' ≫ s →

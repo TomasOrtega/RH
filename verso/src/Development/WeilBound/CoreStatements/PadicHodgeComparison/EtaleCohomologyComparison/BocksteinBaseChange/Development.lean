@@ -43,14 +43,14 @@ def Pre.cmp {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl 
   nat := P.nat
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inr (Or.inr rfl))`.
+A detailed English derivation is pending.
 -/
 theorem t_inv_mem (l : ℕ) [Fact l.Prime] : (tQ l)⁻¹ ∈ Bcr l := Subring.subset_closure (Or.inr (Or.inr rfl))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `l _ K _ M hM hs n a b`. Take `⟨D, ⟨hL, ⟨e⟩, ⟨β⟩, ⟨κ⟩⟩, hsp⟩` from `hS l K`. Take `⟨P, hP⟩` from `h3 l K _ _ D (h1 l K) (h6 hI l K).1 hL e β κ`. Conclude with `h5 l K _ _ P _ (h2 l K) M ⟨hM, hs⟩ n (h4 l K _ _ P (h1 l K) (h6 hI l K).1 M ⟨hM, hs⟩ n).1 (hP _ _ (t_inv_mem l) (h2 l K).q_mem hsp M ⟨hM, hs⟩ ⟨hM, hs⟩ n) a b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _ K _`. Take `⟨D, ⟨hL, ⟨e⟩, ⟨β⟩, ⟨κ⟩⟩, -⟩` from `hS l K`. Take `⟨P, -⟩` from `h3 l K _ _ D (h1 l K) (h6 hI l K).1 hL e β κ`. Conclude with `⟨P.cmp (h6 hI l K).1 (h4 l K _ _ P (h1 l K) (h6 hI l K).1)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smooth_of (h1 : PeriodRingFacts) (h2 : BcrisRegularPeriodRing) (h3 : ComparisonPairing) (h4 : ComparisonInjectiveStrict) (h5 : ComparisonAdmissible) (h6 : EtaleSideSmoothAndSemistable)
     (hI : ZIn) (hS : SeamS) : SmoothModelCrystalline ∧ DeRhamComparisonSmooth := by
@@ -66,7 +66,7 @@ theorem smooth_of (h1 : PeriodRingFacts) (h2 : BcrisRegularPeriodRing) (h3 : Com
     exact ⟨P.cmp (h6 hI l K).1 (h4 l K _ _ P (h1 l K) (h6 hI l K).1)⟩
 
 /- English proof (translation)
-The claim follows from `Subring.closure_mono (Set.union_subset_union_right _ (by intro x hx rcases hx with h | h · exact Or.inl h · exact Or.inr (Or.inl h)))`.
+A detailed English derivation is pending.
 -/
 theorem bcr_le_bst (l : ℕ) [Fact l.Prime] : Bcr l ≤ Bst l :=
   Subring.closure_mono (Set.union_subset_union_right _ (by
@@ -76,9 +76,9 @@ theorem bcr_le_bst (l : ℕ) [Fact l.Prime] : Bcr l ≤ Bst l :=
     · exact Or.inr (Or.inl h)))
 
 /- English proof (translation)
-Establish `hd : DeRhamComparisonSemistable`. Introduce `l _ K _`. Take `⟨D, ⟨hL, ⟨e⟩, ⟨β⟩, ⟨κ⟩⟩, -⟩` from `hA l K`. Take `⟨P, -⟩` from `h3 l K _ _ D (h1 l K) (h6 hI l K).2 hL e β κ`. Conclude with `⟨P.cmp (h6 hI l K).2 (h4 l K _ _ P (h1 l K) (h6 hI l K).2)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨⟨?_, (smooth_of h1 h2 h3 h4 h5 h6 hI hS).1, hd.dr⟩, hd⟩` and prove the remaining obligations. Introduce `l _ K _ M hM n a b`. Take `⟨D, ⟨hL, ⟨e⟩, ⟨β⟩, ⟨κ⟩⟩, hsp⟩` from `hA l K`. Take `⟨P, hP⟩` from `h3 l K _ _ D (h1 l K) (h6 hI l K).2 hL e β κ`. Conclude with `h5 l K _ _ P _ (h2' l K) M hM n (h4 l K _ _ P (h1 l K) (h6 hI l K).2 M hM n).1 (hP _ _ (bcr_le_bst l (t_inv_mem l)) (h2' l K).q_mem hsp M hM hM n) a b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem narrow_of (h1 : PeriodRingFacts) (h2 : BcrisRegularPeriodRing) (h2' : BstRegularPeriodRing) (h3 : ComparisonPairing) (h4 : ComparisonInjectiveStrict) (h5 : ComparisonAdmissible) (h6 : EtaleSideSmoothAndSemistable)
     (hI : ZIn) (hS : SeamS) (hA : SeamAll) : CstNarrow ∧ DeRhamComparisonSemistable := by

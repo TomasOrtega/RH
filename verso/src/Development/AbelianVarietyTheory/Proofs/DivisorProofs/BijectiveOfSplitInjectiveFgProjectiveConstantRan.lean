@@ -9,19 +9,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R _ M N _ _ _ _ n hM hN f r hrf`. Take `⟨hMf, hMp, hMr⟩` from `hM`. Take `⟨hNf, hNp, hNr⟩` from `hN`. Establish `hinj : Function.Injective f` using `fun a b h => by`. Use `congrArg r h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hrf, hrf]`. Then use the resulting hypothesis. Set `K` to `LinearMap.ker r`. Set `π : N →ₗ[R] K` to `LinearMap.codRestrict K (LinearMap.id - f ∘ₗ r) (fun x => by show r (x - f (r x)) = 0`. Simplify using `[hrf])`. Establish `hπ : ∀ k : K, π (k : N) = k` using `fun k => by ext; simp [π, LinearMap.mem_ker.1 k.2]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `haveI : Module.Finite R K := Module.Finite.of_surjective π (fun k => ⟨k, hπ k⟩)`. Use `haveI : Module.Projective R K := Module.Projective.of_split K.subtype π (by ext k; simp [hπ])`. Set `e : N ≃ₗ[R] M × K` to `{ toFun := fun x => (r x, π x) map_add' := fun x y => by simp map_smul' := fun c x => by simp invFun := fun p => f p.1 + (p.2 : N) left_inv := fun x => by simp [π] right_inv := fun p => by`. Take `⟨m, k⟩` from `p`. Establish `hk : r (k : N) = 0` using `k.2`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using `[hrf, hk]`. Simplify using `[π, hrf, hk] }`. Establish `hK : Module.rankAtStalk (R` using `R) K = 0 := by`. Establish `h1` using `Module.rankAtStalk_eq_of_equiv e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h1` using `[Module.rankAtStalk_prod]`. Use function extensionality and compare the values at `p`. Establish `h2` using `congrFun h1 p`. Simplify using `only [Pi.add_apply, hMr p, hNr p] at h2`. Simplify using `only [Pi.zero_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Use `haveI : Subsingleton K := Module.rankAtStalk_eq_zero_iff_subsingleton.1 hK`. Use `⟨hinj, fun y => ⟨r y, ?_⟩⟩` and prove the remaining obligations. Establish `: π y = 0` using `Subsingleton.elim _ _`. Establish `h3` using `congrArg Subtype.val this`.
-
-Simplify using `[π, sub_eq_zero] at h3`. Conclude with `h3.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bijective_of_split_of_FP : ∀ (R : Type) [CommRing R] (M N : Type) [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N] (n : ℕ), FP R M n → FP R N n → ∀ (f : M →ₗ[R] N) (r : N →ₗ[R] M), (∀ x, r (f x) = x) → Function.Bijective f := by
   intro R _ M N _ _ _ _ n hM hN f r hrf

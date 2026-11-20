@@ -24,7 +24,7 @@ open Classical
 namespace GlobalTheory.IdemKerDiv
 
 /- English proof (translation)
-Simplify using `[resS, Ideal.Quotient.eq_zero_iff_mem]`.
+Simplify using the standard rewrite rules.
 -/
 theorem resS_eq_zero_iff_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (PP : Pl E) (x : Formalism.L2.Herm.intAf F E) :
@@ -32,13 +32,13 @@ theorem resS_eq_zero_iff_mem {F E : Type} [Field F] [NumberField F] [Field E] [N
   simp [resS, Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-Establish `hϖ0 : ϖ ≠ 0` using `by rintro rfl; exact hϖ2 (Ideal.zero_mem _)`. Take `⟨J, hJ⟩ : P.asIdeal ∣ Ideal.span {ϖ}` from `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hϖ)`. Establish `hJP : ¬ J ≤ P.asIdeal`. Introduce `h`. Apply `hϖ2` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: Ideal.span {ϖ} ≤ P.asIdeal ^ 2`. Rewrite using `[hJ, pow_two]`. Conclude with `Ideal.mul_mono_right h`. Conclude with `this (Ideal.mem_span_singleton_self ϖ)`. Take `⟨s, hsJ, hsP⟩` from `Set.not_subset.mp hJP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp : s * p ∈ Ideal.span {ϖ}`. Rewrite using `[hJ, mul_comm s p]`. Conclude with `Ideal.mul_mem_mul hp hsJ`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp hsp`. Use `⟨r, s, hsP, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hϖE : (ϖ : E) ≠ 0` using `by exact_mod_cast hϖ0`. Establish `h1 : (r : E) * (ϖ : E) = (s : E) * (p : E)` using `by exact_mod_cast hr`. Use `show (s : E) * ((ϖ : E)⁻¹ * (p : E)) = (r : E)`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-h1`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem intAt_inv_mul {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
     {ϖ p : 𝓞 E} (hϖ : ϖ ∈ P.asIdeal) (hϖ2 : ϖ ∉ P.asIdeal ^ 2) (hp : p ∈ P.asIdeal) :
@@ -66,37 +66,31 @@ theorem intAt_inv_mul {E : Type} [Field E] [NumberField E] (P : HeightOneSpectru
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Introduce `D Q es ϖ hid horth hϖ N hN hfix`. Establish `hE : ∀ P ∈ Q, toEAf D (es P) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun P hP => (GlobalTheory.IdemRes.resS_idem_eq_one D (es P) P (hid P hP)).1`. Establish `hϖ0 : ∀ P ∈ Q, ((ϖ P : 𝓞 D.host.E) : D.host.E) ≠ 0`. Introduce `P hP h`. Establish `: ϖ P = 0` using `by exact_mod_cast h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hϖ P hP).2 (this ▸ Ideal.zero_mem _)`. Establish `hmul : ∀ P ∈ Q, ∀ P' ∈ Q, es P * es P' = if P = P' then es P else 0`. Introduce `P hP P' hP'`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hid P hP).1.1`. Conclude with `GlobalTheory.SplitIdeleModulus.idemAt_mul_eq_zero (hid P hP) (hid P' hP') h`. Establish `hpp : (∑ P ∈ Q, es P * incA D ((ϖ P : D.host.E))) * (∑ P ∈ Q, es P * incA D ((ϖ P : D.host.E)⁻¹)) = ∑ P ∈ Q, es P`. Rewrite using `[Finset.sum_mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `P hP`. Rewrite using `[Finset.sum_eq_single P]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = es P := by rw [(hid P hP).1.1, mul_inv_cancel₀ (hϖ0 P hP), map_one, mul_one]`. Introduce `P' hP' hne`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `_ = 0 := by rw [hmul P hP P' hP', if_neg (Ne.symm hne), zero_mul]`. Introduce `h`. Conclude with `absurd hP h`. Establish `hoToS : ∀ x : 𝓞 D.host.E, ((oToS D.host.F D.host.E x : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) = toEAf D (incA D (x : D.host.E))`. Introduce `x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[GlobalTheory.IdemIntegral.toEAf_incA]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `hM PP hPP`. Use `(resS_eq_zero_iff_mem (F := D.host.F) (E := D.host.E) PP ⟨N, hN⟩).mpr ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨M, hMdef⟩ : ∃ M, M = toEAf D (∑ P ∈ Q, es P * incA D ((ϖ P : D.host.E))⁻¹) * N` from `⟨_, rfl⟩`. Rewrite `hM` using `[← hMdef]`. Set `eI : Pl D.host.E → Formalism.L2.Herm.intAf D.host.F D.host.E` to `fun P => if h : P ∈ Q then ⟨toEAf D (es P), hE P h⟩ else 0`. Establish `hsplit : (⟨N, hN⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = (∑ P ∈ Q, eI P * oToS D.host.F D.host.E (ϖ P)) * ⟨M, hM⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ((∑ P ∈ Q, eI P * oToS D.host.F D.host.E (ϖ P) : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) = toEAf D (∑ P ∈ Q, es P * incA D ((ϖ P : D.host.E)))`. Rewrite using `[map_sum]`. Use `push_cast`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `P hP`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [eI, dif_pos hP, map_mul, hoToS]`. Use `show N = ((∑ P ∈ Q, eI P * oToS D.host.F D.host.E (ϖ P) : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) * M`. Rewrite using `[hs, hMdef, ← mul_assoc, ← map_mul, hpp, hfix]`. Rewrite using `[hsplit]`. Use `Ideal.mul_mem_right _ _ (Ideal.sum_mem _ fun P hP => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hPe : P = PP`. Substitute `hPe` using the available equality. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (hϖ P hP).1)`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Use `(resS_eq_zero_iff_mem (F := D.host.F) (E := D.host.E) PP _).mp ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Simplify using `only [eI, dif_pos hP]`. Conclude with `GlobalTheory.TameProd.resS_idem_eq_zero (hid P hP) hPe _`. Introduce `hres`. Rewrite using `[map_sum, Finset.sum_mul]`. Use `Subring.sum_mem _ fun P hP => ?_` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Establish `hmem : (⟨N, hN⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) ∈ Ideal.map (oToS D.host.F D.host.E) P.asIdeal` using `(resS_eq_zero_iff_mem (F := D.host.F) (E := D.host.E) P ⟨N, hN⟩).mp (hres P hP)`. Establish `key : ∀ x : Formalism.L2.Herm.intAf D.host.F D.host.E, x ∈ Ideal.map (oToS D.host.F D.host.E) P.asIdeal → toEAf D (es P * incA D ((ϖ P : D.host.E))⁻¹) * (x : EAf D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span _ _ at hx`. Proceed by induction on `hx using Submodule.span_induction with`.
-
-Consider the case `mem y hy`. Take `⟨p, hp, rfl⟩` from `hy`. Rewrite using `[hoToS, ← map_mul, mul_assoc, ← map_mul]`. Conclude with `GlobalTheory.IdemIntegral.mem_of_idemAt (hid P hP) (intAt_inv_mul P (hϖ P hP).1 (hϖ P hP).2 hp)`. Consider the case `zero => simp`.
-
-Consider the case `add a b _ _ ha hb`. Rewrite using `[Subring.coe_add, mul_add]`. Conclude with `add_mem ha hb`. Consider the case `smul a b _ hb`. Rewrite using `[smul_eq_mul, Subring.coe_mul, mul_left_comm]`.
-
-Conclude with `mul_mem a.2 hb`. Conclude with `key _ hmem`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_div_iff : ∀ (D : D7) (Q : Finset (Pl D.host.E)) (es : Pl D.host.E → AE D) (ϖ : Pl D.host.E → 𝓞 D.host.E), (∀ PP ∈ Q, Formalism.L2.NTheta.IsIdemAt (es PP) PP) → (∑ PP ∈ Q, es PP) * cA D (∑ PP ∈ Q, es PP) = 0 → (∀ PP ∈ Q, ϖ PP ∈ PP.asIdeal ∧ ϖ PP ∉ PP.asIdeal ^ 2) → ∀ N : EAf D, ∀ hN : N ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, toEAf D (∑ PP ∈ Q, es PP) * N = N → (toEAf D (∑ PP ∈ Q, es PP * incA D ((ϖ PP : D.host.E)⁻¹)) * N ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ ∀ PP ∈ Q, resS D.host.F PP ⟨N, hN⟩ = 0) := by
   intro D Q es ϖ hid horth hϖ N hN hfix

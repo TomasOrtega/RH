@@ -30,18 +30,18 @@ Both sides reduce to the same expression.
 theorem coordF_tmul (i : Fin r) (a : k) (z : Fld P) : coordF P k i (a ⊗ₜ[F] z) = a ⊗ₜ[F] (powB P).repr z i := rfl
 
 /- English proof (translation)
-The claim follows from `Algebra.smul_def c y`.
+A detailed English derivation is pending.
 -/
 theorem smul_eq_map_mul (c : k ⊗[F] E) (y : k ⊗[F] Fld P) :
     c • y = Algebra.TensorProduct.map (AlgHom.id F k) (IsScalarTower.toAlgHom F E (Fld P)) c * y :=
   Algebra.smul_def c y
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add c c' h h' => rw [add_smul, map_add, h, h', add_mul]`. Consider the case `tmul a e`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add y y' h h' => rw [smul_add, map_add, h, h', map_add, mul_add]`. Consider the case `tmul a' z`. Rewrite using `[smul_eq_map_mul, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul, coordF_tmul, coordF_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Use `congr 1`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `(powB P).repr (algebraMap E (Fld P) e * z) i = e * _`. Rewrite using `[← Algebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordF_smul (i : Fin r) (c : k ⊗[F] E) (y : k ⊗[F] Fld P) : coordF P k i (c • y) = c * coordF P k i y := by
   induction c using TensorProduct.induction_on with
@@ -61,7 +61,7 @@ theorem coordF_smul (i : Fin r) (c : k ⊗[F] E) (y : k ⊗[F] Fld P) : coordF P
 def coordInv (w : Fin r → k ⊗[F] E) : k ⊗[F] Fld P := ∑ i, w i • ((1 : k) ⊗ₜ[F] powB P i)
 
 /- English proof (translation)
-Simplify using `only [coordInv, map_sum, coordF_smul, coordF_tmul, Module.Basis.repr_self]`. Rewrite using `[Finset.sum_eq_single j (fun i _ h => by rw [Finsupp.single_apply, if_neg h, TensorProduct.tmul_zero, mul_zero]) (by simp), Finsupp.single_eq_same, ← Algebra.TensorProduct.one_def, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordF_coordInv (w : Fin r → k ⊗[F] E) (j : Fin r) : coordF P k j (coordInv P k w) = w j := by
   simp only [coordInv, map_sum, coordF_smul, coordF_tmul, Module.Basis.repr_self]
@@ -69,9 +69,9 @@ theorem coordF_coordInv (w : Fin r → k ⊗[F] E) (j : Fin r) : coordF P k j (c
     (by simp), Finsupp.single_eq_same, ← Algebra.TensorProduct.one_def, mul_one]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp [coordInv]`. Consider the case `add y y' h h' => conv_rhs => rw [← h, ← h']`. Simplify using `only [coordInv, map_add, add_smul, Finset.sum_add_distrib]`. Consider the case `tmul a z`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [coordInv, coordF_tmul, smul_eq_map_mul, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, AlgHom.id_apply, IsScalarTower.coe_toAlgHom']`. Rewrite using `[← TensorProduct.tmul_sum]`. Use `congr 1`. Use `conv_rhs => rw [← (powB P).sum_repr z]`. Conclude with `Finset.sum_congr rfl fun i _ => (Algebra.smul_def _ _).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem coordInv_coordF (y : k ⊗[F] Fld P) : coordInv P k (fun i => coordF P k i y) = y := by
   induction y using TensorProduct.induction_on with

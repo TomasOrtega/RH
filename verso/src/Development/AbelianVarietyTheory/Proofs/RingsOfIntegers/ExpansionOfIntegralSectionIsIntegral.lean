@@ -22,9 +22,9 @@ namespace GlobalTheory.ExpInt
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.H1
 
 /- English proof (translation)
-Establish `e` using `H (fun k => J (r ≫ φ₁ k)) (fun k => J (r ≫ h ≫ φ₂ k)) (by`. Apply the tactic sequence `rintro (a | a) (b | b) e <;> exact congrArg (fun q => J (r ≫ q)) e)`. Establish `hm : r z ∈ LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k))` using `⟨hJ.mem φ₁ r, hJ.mem (fun k => h ≫ φ₂ k) r⟩`. Establish `le : LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k)) ≤ h ⁻¹ᵁ LB.wchart L φ₂ (fun k => J (r ≫ h ≫ φ₂ k))` using `fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Rewrite using `[sval_of s₂ (r ≫ h) z J (fun k => J (r ≫ h ≫ φ₂ k)) (fun k => by rw [Category.assoc])]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `congrArg (gs r z _) e`. Conclude with `((gs_res r z _ hm _).trans (gs_pull r h z _ (le hm.2) _)).symm.trans (e2.trans ((gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) (gs_res r z le_top hm _) (gs_res r z _ hm _))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secScal_sval {X Y Y' Z : Scheme.{0}} {L : LB X} {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
     {φ₁ : K₁ → (Y' ⟶ X)} {ε₁ : K₁ → ℤ} {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)}
@@ -45,7 +45,7 @@ theorem secScal_sval {X Y Y' Z : Scheme.{0}} {L : LB X} {K₁ K₂ : Type} [Fint
     (congrArg₂ (· * ·) (gs_res r z le_top hm _) (gs_res r z _ hm _))))
 
 /- English proof (translation)
-The claim follows from `gs_pull q p z ⊤ trivial _`.
+A detailed English derivation is pending.
 -/
 theorem gs_scal {R : Type} [CommRing R] {Y Z : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R)) (q : Z ⟶ Y) (z : Z)
     (a : R) : gs q z ⊤ (scal p a) = cst (q ≫ p) z a := gs_pull q p z ⊤ trivial _
@@ -55,13 +55,13 @@ section Mul
 variable {R : Type} [CommRing R] {Y : Scheme.{0}} {p : Y ⟶ Spec (CommRingCat.of R)} {L : LB Y}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨SecOps.secScale (scal p a) τ, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_secIsMul (a : R) (τ : LB.Sec L) : ∃ σ, SecIsMul p a σ τ :=
   ⟨SecOps.secScale (scal p a) τ, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `j` and use `by rw [h₁ j, h₂ j, ← _root_.mul_assoc, scal, scal, scal, map_mul, map_mul] exact congrArg (· * τ.f j) (map_mul _ _ _).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secIsMul_trans {a b : R} {ρ σ τ : LB.Sec L} (h₁ : SecIsMul p a ρ σ) (h₂ : SecIsMul p b σ τ) :
     SecIsMul p (a * b) ρ τ := fun j => by
@@ -69,13 +69,13 @@ theorem secIsMul_trans {a b : R} {ρ σ τ : LB.Sec L} (h₁ : SecIsMul p a ρ �
   exact congrArg (· * τ.f j) (map_mul _ _ _).symm
 
 /- English proof (translation)
-Introduce `j` and use `by rw [scal, map_one, map_one, Out.resTop, map_one, _root_.one_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secIsMul_one (σ : LB.Sec L) : SecIsMul p 1 σ σ := fun j => by
   rw [scal, map_one, map_one, Out.resTop, map_one, _root_.one_mul]
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `exists_secIsMul (p := p) u.val σ`. Establish `h₁` using `secIsMul_trans hρ h`. Rewrite `h₁` using `[Units.mul_inv]`. Conclude with `fun j => ((secIsMul_one (p := p) τ j).trans (h₁ j).symm).trans (hρ j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secIsMul_symm {u : Rˣ} {σ τ : LB.Sec L} (h : SecIsMul p (u⁻¹ : Rˣ).val σ τ) : SecIsMul p u.val τ σ := by
   obtain ⟨ρ, hρ⟩ := exists_secIsMul (p := p) u.val σ
@@ -86,7 +86,7 @@ theorem secIsMul_symm {u : Rˣ} {σ τ : LB.Sec L} (h : SecIsMul p (u⁻¹ : Rˣ
 end Mul
 
 /- English proof (translation)
-Establish `: IsDominant (jK V)` using `isDominant_jK`. Use `IsSchemeTheoreticallyDominant.of_isDominant (jK V)` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (pullback.fst G.hom (jK V))` using `IsSchemeTheoreticallyDominant.of_isPullback (IsPullback.of_hasPullback G.hom (jK V)).flip`. Conclude with `(pullback.fst G.hom (jK V)).app_injective W`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem generic_app_injective {V : Type} [CommRing V] [IsDomain V] (G : Over (Spec (CommRingCat.of V))) [Flat G.hom]
     (W : G.left.Opens) : Function.Injective ((pullback.fst G.hom (jK V)).app W).hom := by
@@ -97,11 +97,9 @@ theorem generic_app_injective {V : Type} [CommRing V] [IsDomain V] (G : Over (Sp
   exact (pullback.fst G.hom (jK V)).app_injective W
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `exists_secIsMul (p := G.hom) r σ`. Use `fun j => Eq.trans (generic_app_injective G _ (fn_ext fun y hy => ?_)) (hρ j)` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `exists_good L hL y (fun _ : Unit => (𝟙 _ ≫ pullback.fst G.hom (jK V)) ≫ 𝟙 G.left) (fun _ => j 0) (fun _ _ _ => rfl) (fun _ => Set.mem_iInter.1 hy 0)`. Establish `ej : ∀ a : Fin 1, J ((𝟙 _ ≫ pullback.fst G.hom (jK V)) ≫ 𝟙 G.left) = j a` using `fun a => by`. Rewrite using `[Subsingleton.elim a 0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e ()`. Establish `e₁` using `SectionScalarValuation.secScal_sval h (𝟙 _) y hJ`. Establish `e₂` using `secScal_sval h' (𝟙 _) y hJ`. Rewrite `e₂` using `[← e₁, sval_of σ _ y J j ej, sval_of σ' _ y J j ej, gs_scal, ← pullback.condition, ← Category.assoc]`. Use `(gs_pull (𝟙 _) _ y _ hy _).trans (Eq.trans ?_ (gs_pull (𝟙 _) _ y _ hy _).symm)` and prove the remaining obligations.
-
-Conclude with `e₂.trans (secIsMul_gs hρ _ y j hy).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem secIsMul_of_generic {V : Type} [CommRing V] [IsDomain V] (G : Over (Spec (CommRingCat.of V))) [Flat G.hom]
     {L : LB G.left} (hL : L.IsLB) (k : ℕ) (σ σ' : H0 L k)
@@ -124,7 +122,7 @@ theorem secIsMul_of_generic {V : Type} [CommRing V] [IsDomain V] (G : Over (Spec
   exact e₂.trans (secIsMul_gs hρ _ y j hy).symm
 
 /- English proof (translation)
-Establish `h : algebraMap V (FractionRing V) r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V _)).2 hr`. Establish `e : cst (q ≫ jK V) z r = cst q z (algebraMap V (FractionRing V) r)` using `cst_comp _ _ _ _`. Rewrite using `[e]`. Conclude with `IsUnit.of_mul_eq_one (cst q z (algebraMap V (FractionRing V) r)⁻¹) (by rw [← cst_mul, mul_inv_cancel₀ h, cst_one])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_cst {V : Type} [CommRing V] [IsDomain V] {Z : Scheme.{0}}
     (q : Z ⟶ Spec (CommRingCat.of (FractionRing V))) (z : Z) {r : V} (hr : r ≠ 0) : IsUnit (cst (q ≫ jK V) z r) := by
@@ -135,17 +133,17 @@ theorem isUnit_cst {V : Type} [CommRing V] [IsDomain V] {Z : Scheme.{0}}
     (by rw [← cst_mul, mul_inv_cancel₀ h, cst_one])
 
 /- English proof (translation)
-Introduce `V _ _ _ ϖ hϖ D A G _ _ U k σ s hs E hE`. Take `⟨r, hr, σ₁, f₁, h₁, hf₁, hE₁⟩` from `hE`. Use `U.smooth` as an intermediate fact. Establish `: Flat G.hom` using `inferInstance`. Establish `hσ₁ : SecIsMul G.hom r σ₁ σ` using `secIsMul_of_generic G U.LG.isLB k σ σ₁ s r hs h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hr hϖ`. Take `⟨σ₂, hσ₂⟩` from `exists_secIsMul (p := G.hom) (u⁻¹ : Vˣ).val σ₁`. Use `choose f₂ hf₂ using fun α => exists_secIsMul (p := D.toPre.P.A.hom) (u⁻¹ : Vˣ).val (f₁ α)`. Establish `hE₂ : ∀ e, U.ExpandsAt e k σ₂ f₂` using `fun e => expandsAt_secIsMul V _ D A G U e k _ σ₁ σ₂ f₁ f₂ hσ₂ hf₂ (hE₁ e)`. Establish `hσ : SecIsMul G.hom (ϖ ^ n) σ₂ σ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `secIsMul_trans hσ₂ hσ₁` as an intermediate fact. Rewrite `this` using `[Units.inv_mul_cancel_left]`. Then use the resulting hypothesis. Establish `hg : ∀ α, ∃ g : D.toPre.SecB k α, SecIsMul D.toPre.P.A.hom (ϖ ^ n) (f₂ α) g` using `fun α => by`. Consider the cases of `n with`. Consider the case `zero => exact ⟨f₂ α, by rw [pow_zero]; exact secIsMul_one _⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ m`. Conclude with `(GlobalTheory.ExtDiv.main V ϖ hϖ D A G U m k α (f₂ α)).1 (WeightPf.weightIndep V _ D A G U m k σ₂ f₂ ((GlobalTheory.ThickDiv.main V ϖ hϖ G _ σ₂ m).2 ⟨σ, hσ⟩) (hE₂ m) α)`. Use `choose g hg using hg`. Use `⟨g, fun e => expandsAt_cancel_pow V ϖ hϖ D A G U e n k σ σ₂ g f₂ hσ hg (hE₂ _), fun α => ?_⟩` and prove the remaining obligations. Use `SectionScalarValuation.secScal_of_sval D.toPre.P.isLB fun y J hJ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₁` using `secScal_sval (hf₁ α) (𝟙 _) y hJ`. Establish `e₂ : sval (f₁ α) (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) y J = _ * sval (g α) (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) y J` using `secIsMul_gs (secIsMul_trans (secIsMul_symm (hf₂ α)) (hg α)) _ y _ (hJ.mem _ _)`. Rewrite `e₂` using `[Category.assoc, Over.w]`. Rewrite `e₁` using `[e₂, gs_scal]`. Use `(IsUnit.mul_right_inj ?_).1 e₁` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e₃ : 𝟙 _ ≫ (DegPre.BF D.toPre (FractionRing V)).hom = ((fst (TF (R` using `V) (FractionRing V)) D.toPre.P.A).left ≫ jFK (R := V) (FractionRing V)) ≫ jK V := by`. Rewrite using `[Category.id_comp, Category.assoc]`. Conclude with `(Over.w (fst (TF (R := V) (FractionRing V)) D.toPre.P.A)).symm`. Rewrite using `[e₃]`. Conclude with `isUnit_cst _ y hr`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : UnifPre (maximalIdeal V) D A G) (k : ℕ) (σ : H0 U.LG.L k) (s : U.SecK k), GeneratorPullback.SecScal U.LG.L (fun _ : Fin 1 => pullback.fst G.hom (jK V)) (fun _ => ((k : ℕ) : ℤ)) s (fun _ : Fin 1 => 𝟙 G.left) (fun _ => ((k : ℕ) : ℤ)) σ (pullback.fst G.hom (jK V)) 1 → ∀ E : Fam D.toPre (FractionRing V) k, U.Expands k s E → ∃ g : ∀ α : D.toPre.X, D.toPre.SecB k α, (∀ e, U.ExpandsAt e k σ g) ∧ ∀ α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε k) (E.s α) (D.toPre.famφB α) (DegPre.famε k) (g α) (DegPre.prB D.toPre (FractionRing V)).left 1 := by
   intro V _ _ _ ϖ hϖ D A G _ _ U k σ s hs E hE

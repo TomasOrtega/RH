@@ -25,14 +25,14 @@ structure SES {A B C : Type*} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C]
   ND : ∀ b, NB (DB b) = 0
 
 /- English proof (translation)
-Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_eq_zero_iff {D N : M →+ M} (x : D.ker) :
     (QuotientAddGroup.mk x : T D N) = 0 ↔ (x : M) ∈ N.range := by
   rw [QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← QuotientAddGroup.mk_sub, mk_eq_zero_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mk_eq_mk_iff {D N : M →+ M} (x y : D.ker) :
     (QuotientAddGroup.mk x : T D N) = QuotientAddGroup.mk y ↔ (x : M) - y ∈ N.range := by
@@ -70,28 +70,28 @@ Both sides reduce to the same expression.
     (a : DA.ker) : Tmap f fD fN (QuotientAddGroup.mk a) = QuotientAddGroup.mk (kerMap f fD a) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.inj, h.exact, h.surj, h.fN, h.fD, h.gN, h.gD, h.ND, h.DN⟩`.
+Supply the required witnesses or components.
 -/
 theorem SES.swap (h : SES DA NA DB NB DC NC f g) : SES NA DA NB DB NC DC f g :=
   ⟨h.inj, h.exact, h.surj, h.fN, h.fD, h.gN, h.gD, h.ND, h.DN⟩
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `h.surj c`. Rewrite using `[← h.gN, ← h.gD, h.DN, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem SES.DN_C (h : SES DA NA DB NB DC NC f g) (c : C) : DC (NC c) = 0 := by
   obtain ⟨b, rfl⟩ := h.surj c
   rw [← h.gN, ← h.gD, h.DN, map_zero]
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨b, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Rewrite using `[AddMonoidHom.mem_ker, Tmap_mk, mk_eq_zero_iff, kerMap_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨b', rfl⟩` from `h.surj c`. Establish `h1 : g ((b : B) - NB b') = 0` using `by rw [map_sub, h.gN, hc, sub_self]`. Take `⟨a, ha⟩` from `(h.exact _).1 h1`. Establish `hb : DB (b : B) = 0` using `b.2`. Establish `haD : DA a = 0` using `h.inj (by rw [h.fD, ha, map_sub, hb, h.DN, sub_zero, map_zero])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨QuotientAddGroup.mk ⟨a, haD⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Tmap_mk, mk_eq_mk_iff, kerMap_coe]`. Conclude with `⟨-b', by rw [map_neg]; change _ = f a - b; rw [ha]; abel⟩`. Introduce and unpack `⟨y, hy⟩`. Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite `hy` using `[Tmap_mk, mk_eq_mk_iff, kerMap_coe]`. Take `⟨b', hb'⟩` from `hy`. Use `⟨- g b', ?_⟩` and prove the remaining obligations. Establish `h0 : g (f a) = 0` using `(h.exact _).2 ⟨a, rfl⟩`. Use `congrArg g hb'` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub, h0, h.gN, zero_sub]`. Rewrite using `[map_neg, this, neg_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_Tmap_g (h : SES DA NA DB NB DC NC f g) :
     (Tmap g h.gD h.gN).ker = (Tmap f h.fD h.fN).range := by
@@ -121,7 +121,7 @@ theorem ker_Tmap_g (h : SES DA NA DB NB DC NC f g) :
 def Rel (DB : B →+ B) (f : A →+ B) (g : B →+ C) (c : C) (a : A) : Prop := ∃ b, g b = c ∧ f a = DB b
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `h.surj c`. Establish `hc : DC (c : C) = 0` using `c.2`. Establish `h1 : g (DB b) = 0` using `by rw [h.gD, hb, hc]`. Take `⟨a, ha⟩` from `(h.exact _).1 h1`. Conclude with `⟨⟨a, h.inj (by rw [h.fN, ha, h.ND, map_zero])⟩, b, hb, ha⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rel (h : SES DA NA DB NB DC NC f g) (c : DC.ker) : ∃ a : NA.ker, Rel DB f g c a := by
   obtain ⟨b, hb⟩ := h.surj c
@@ -131,7 +131,7 @@ theorem exists_rel (h : SES DA NA DB NB DC NC f g) (c : DC.ker) : ∃ a : NA.ker
   exact ⟨⟨a, h.inj (by rw [h.fN, ha, h.ND, map_zero])⟩, b, hb, ha⟩
 
 /- English proof (translation)
-Take `⟨b, hb, ha⟩` from `h1`. Take `⟨b', hb', ha'⟩` from `h2`. Rewrite using `[mk_eq_mk_iff]`. Take `⟨x, hx⟩` from `(h.exact (b - b')).1 (by rw [map_sub, hb, hb', sub_self])`. Conclude with `⟨x, h.inj (by rw [h.fD, hx, map_sub, map_sub, ha, ha'])⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rel_unique (h : SES DA NA DB NB DC NC f g) {c : C} {a a' : NA.ker} (h1 : Rel DB f g c a)
     (h2 : Rel DB f g c a') : (QuotientAddGroup.mk a : T NA DA) = QuotientAddGroup.mk a' := by
@@ -142,13 +142,13 @@ theorem rel_unique (h : SES DA NA DB NB DC NC f g) {c : C} {a a' : NA.ker} (h1 :
   exact ⟨x, h.inj (by rw [h.fD, hx, map_sub, map_sub, ha, ha'])⟩
 
 /- English proof (translation)
-Set `δ0 : DC.ker →+ T NA DA` to `AddMonoidHom.mk' (fun c => QuotientAddGroup.mk (Classical.choose (exists_rel h c))) (fun c c' => by`. Rewrite using `[← QuotientAddGroup.mk_add]`. Use `rel_unique h (Classical.choose_spec (exists_rel h (c + c'))) ?_` and prove the remaining obligations. Take `⟨b, hb, ha⟩` from `Classical.choose_spec (exists_rel h c)`. Take `⟨b', hb', ha'⟩` from `Classical.choose_spec (exists_rel h c')`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b + b', by rw [map_add, hb, hb']; rfl, by`. Rewrite using `[map_add, ← ha, ← ha', ← map_add]`. Use the proof step `rfl⟩)`. Establish `hδ0 : ∀ (c : DC.ker) (a : NA.ker), Rel DB f g c a → δ0 c = QuotientAddGroup.mk a` using `fun c a hca => rel_unique h (Classical.choose_spec (exists_rel h c)) hca`. Use `⟨QuotientAddGroup.lift _ δ0 ?_, fun c a hca => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Rewrite `hc` using `[AddSubgroup.mem_addSubgroupOf]`. Take `⟨c0, hc0⟩` from `hc`. Take `⟨b0, rfl⟩` from `h.surj c0`. Rewrite using `[AddMonoidHom.mem_ker, hδ0 c 0 ⟨NB b0, by rw [h.gN, hc0], by rw [h.DN]; exact map_zero f⟩]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[QuotientAddGroup.lift_mk]`. Conclude with `hδ0 c a hca`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_delta (h : SES DA NA DB NB DC NC f g) :
     ∃ δ : T DC NC →+ T NA DA, ∀ (c : DC.ker) (a : NA.ker), Rel DB f g c a →
@@ -175,21 +175,21 @@ theorem exists_delta (h : SES DA NA DB NB DC NC f g) :
     exact hδ0 c a hca
 
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `exists_delta h`. Use `⟨δ, ker_Tmap_g h, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Take `⟨c, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Take `⟨a, b, hb, ha⟩` from `exists_rel h c`. Rewrite `hx` using `[AddMonoidHom.mem_ker, hδ c a ⟨b, hb, ha⟩, mk_eq_zero_iff]`. Take `⟨a', ha'⟩` from `hx`. Establish `hk : DB (b - f a') = 0` using `by rw [map_sub, ← h.fD, ha', ha, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨QuotientAddGroup.mk ⟨b - f a', hk⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Tmap_mk]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[kerMap_coe]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `g (b - f a') = c`. Rewrite using `[map_sub, (h.exact _).2 ⟨a', rfl⟩, sub_zero, hb]`. Introduce and unpack `⟨y, hy⟩`. Take `⟨b, rfl⟩` from `QuotientAddGroup.mk_surjective y`. Rewrite `hy` using `[Tmap_mk]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb : DB (b : B) = 0` using `b.2`. Rewrite using `[AddMonoidHom.mem_ker, ← hy, hδ _ 0 ⟨b, rfl, by rw [hb]; exact map_zero f⟩]`. Both sides reduce to the same expression. Use extensionality with `y`. Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[AddMonoidHom.mem_ker, Tmap_mk, mk_eq_zero_iff, kerMap_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Establish `hc : DC (g b) = 0` using `by rw [← h.gD, hb]; exact (h.exact _).2 ⟨a, rfl⟩`. Conclude with `⟨QuotientAddGroup.mk ⟨g b, hc⟩, hδ _ a ⟨b, rfl, hb.symm⟩⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx⟩`. Take `⟨c, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨a', b, hb, ha'⟩` from `exists_rel h c`. Rewrite `hx` using `[hδ c a' ⟨b, hb, ha'⟩, mk_eq_mk_iff]`. Take `⟨a'', ha''⟩` from `hx`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨b - f a'', ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, ← h.fD, ha'', map_sub, ha']`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem half_hexagon (h : SES DA NA DB NB DC NC f g) :
     ∃ δ : T DC NC →+ T NA DA, (Tmap g h.gD h.gN).ker = (Tmap f h.fD h.fN).range ∧
@@ -238,14 +238,14 @@ section Count
 variable {X Y Z : Type*} [AddCommGroup X] [AddCommGroup Y] [AddCommGroup Z]
 
 /- English proof (translation)
-Rewrite using `[← AddSubgroup.index_ker, AddSubgroup.card_mul_index]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_eq_ker_mul_range (φ : X →+ Y) :
     Nat.card X = Nat.card φ.ker * Nat.card φ.range := by
   rw [← AddSubgroup.index_ker, AddSubgroup.card_mul_index]
 
 /- English proof (translation)
-Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[card_eq_ker_mul_range ψ, hex]`. Establish `: Finite φ.range` using `Set.finite_range φ`. Conclude with `Nat.mul_ne_zero Nat.card_pos.ne' Nat.card_pos.ne'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_of_exact (φ : X →+ Y) (ψ : Y →+ Z) (hex : ψ.ker = φ.range) [Finite X] [Finite Z] :
     Finite Y := by
@@ -255,7 +255,7 @@ theorem finite_of_exact (φ : X →+ Y) (ψ : Y →+ Z) (hex : ψ.ker = φ.range
   exact Nat.mul_ne_zero Nat.card_pos.ne' Nat.card_pos.ne'
 
 /- English proof (translation)
-Rewrite using `[card_eq_ker_mul_range f₁, card_eq_ker_mul_range f₂, card_eq_ker_mul_range f₃, card_eq_ker_mul_range f₄, card_eq_ker_mul_range f₅, card_eq_ker_mul_range f₆, h₁, h₂, h₃, h₄, h₅, h₆]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_six {X₁ X₂ X₃ X₄ X₅ X₆ : Type*} [AddCommGroup X₁] [AddCommGroup X₂] [AddCommGroup X₃]
     [AddCommGroup X₄] [AddCommGroup X₅] [AddCommGroup X₆] (f₁ : X₁ →+ X₂) (f₂ : X₂ →+ X₃)
@@ -270,7 +270,7 @@ theorem card_six {X₁ X₂ X₃ X₄ X₅ X₆ : Type*} [AddCommGroup X₁] [Ad
 end Count
 
 /- English proof (translation)
-Take `⟨δ, h1, h2, h3⟩` from `half_hexagon h`. Take `⟨δ', h4, h5, h6⟩` from `half_hexagon h.swap`. Conclude with `card_six _ _ _ _ _ _ h1 h2 h3 h4 h5 h6`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_hexagon (h : SES DA NA DB NB DC NC f g) :
     Nat.card (T DA NA) * Nat.card (T DC NC) * Nat.card (T NB DB) =
@@ -280,7 +280,7 @@ theorem card_hexagon (h : SES DA NA DB NB DC NC f g) :
   exact card_six _ _ _ _ _ _ h1 h2 h3 h4 h5 h6
 
 /- English proof (translation)
-Take `⟨δ, h1, h2, h3⟩` from `half_hexagon h`. Take `⟨δ', h4, h5, h6⟩` from `half_hexagon h.swap`. Take `⟨_, _⟩` from `hA`. Take `⟨_, _⟩` from `hC`. Conclude with `⟨finite_of_exact _ _ h1, finite_of_exact _ _ h4⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isFin_mid (h : SES DA NA DB NB DC NC f g) (hA : IsFin DA NA) (hC : IsFin DC NC) :
     IsFin DB NB := by
@@ -291,7 +291,7 @@ theorem isFin_mid (h : SES DA NA DB NB DC NC f g) (hA : IsFin DA NA) (hC : IsFin
   exact ⟨finite_of_exact _ _ h1, finite_of_exact _ _ h4⟩
 
 /- English proof (translation)
-Take `⟨δ, h1, h2, h3⟩` from `half_hexagon h`. Take `⟨δ', h4, h5, h6⟩` from `half_hexagon h.swap`. Take `⟨_, _⟩` from `hB`. Take `⟨_, _⟩` from `hC`. Conclude with `⟨finite_of_exact _ _ h6, finite_of_exact _ _ h3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isFin_left (h : SES DA NA DB NB DC NC f g) (hB : IsFin DB NB) (hC : IsFin DC NC) :
     IsFin DA NA := by
@@ -302,11 +302,11 @@ theorem isFin_left (h : SES DA NA DB NB DC NC f g) (hB : IsFin DB NB) (hC : IsFi
   exact ⟨finite_of_exact _ _ h6, finite_of_exact _ _ h3⟩
 
 /- English proof (translation)
-Establish `hB` using `isFin_mid h hA hC`. Establish `key` using `card_hexagon h`. Take `⟨_, _⟩` from `hA`. Take `⟨_, _⟩` from `hB`. Take `⟨_, _⟩` from `hC`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1 : (Nat.card (T NA DA) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `e2 : (Nat.card (T NB DB) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `e3 : (Nat.card (T NC DC) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `key' : (Nat.card (T DA NA) : ℚ) * Nat.card (T DC NC) * Nat.card (T NB DB) = Nat.card (T DB NB) * Nat.card (T NA DA) * Nat.card (T NC DC)` using `by exact_mod_cast key`. Unfold `q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Clear the denominators using the available nonvanishing facts. Combine the linear relations using `[key']`.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem q_mul (h : SES DA NA DB NB DC NC f g) (hA : IsFin DA NA) (hC : IsFin DC NC) :
     q DB NB = q DA NA * q DC NC := by
@@ -325,20 +325,18 @@ theorem q_mul (h : SES DA NA DB NB DC NC f g) (hA : IsFin DA NA) (hC : IsFin DC 
   linarith [key']
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFin_of_finite [Finite M] (D N : M →+ M) : IsFin D N := ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Establish `h1 : Nat.card D.ker = Nat.card (T D N) * Nat.card N.range`. Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup (N.range.addSubgroupOf D.ker)]`. Use `congr 1`. Conclude with `Nat.card_congr (AddSubgroup.addSubgroupOfEquivOfLe (by`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hDN x)).toEquiv`. Establish `h2 : Nat.card N.ker = Nat.card (T N D) * Nat.card D.range`. Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup (D.range.addSubgroupOf N.ker)]`. Use `congr 1`. Conclude with `Nat.card_congr (AddSubgroup.addSubgroupOfEquivOfLe (by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hND x)).toEquiv`. Establish `h3` using `card_eq_ker_mul_range D`. Establish `h4` using `card_eq_ker_mul_range N`. Rewrite `h3` using `[h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `h4` using `[h2]`. Establish `h5 : Nat.card (T D N) * (Nat.card N.range * Nat.card D.range) = Nat.card (T N D) * (Nat.card N.range * Nat.card D.range)`. Combine the equalities or inequalities in the displayed calculation. Establish `h6 : Nat.card (T D N) = Nat.card (T N D)` using `Nat.eq_of_mul_eq_mul_right (Nat.mul_pos Nat.card_pos Nat.card_pos) h5`. Unfold `q`.
-
-Rewrite using `[h6]`. Conclude with `div_self (Nat.cast_ne_zero.2 Nat.card_pos.ne')`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_of_finite [Finite M] (D N : M →+ M) (hDN : ∀ x, D (N x) = 0) (hND : ∀ x, N (D x) = 0) :
     q D N = 1 := by

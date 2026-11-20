@@ -11,7 +11,7 @@ open scoped Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX σ E h H fl fl'`. Rewrite using `[← GlobalTheory.T.firstChern_tensor_add k X p D hX σ, ← GlobalTheory.T.firstChern_tensor_add k X p D hX σ, GlobalTheory.T.firstChern_isometric_eq k X p D hX σ _ _ (VMetric.isometric_grLB_tens_grLB_det k X p E h H fl), GlobalTheory.T.firstChern_isometric_eq k X p D hX σ _ _ (VMetr …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem c1F_grLB_add_grLB_flag_indep :
     ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ) (hX : IsRegVar p D) (σ : k →+* ℂ),

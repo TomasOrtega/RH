@@ -8,11 +8,11 @@ open NumberField IsDedekindDomain MeasureTheory ValuativeRel Matrix Formalism.Ba
 namespace GlobalTheory.PatResidue
 
 /- English proof (translation)
-Break down `a with (i | i) | ⟨s, u⟩` into its components or cases. Use `i.isLt` as an intermediate fact. Simplify using `only [zPos]`. Use linear arithmetic over natural numbers and integers. Use `i.isLt` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [zPos]`. Use linear arithmetic over natural numbers and integers. Establish `hs` using `s.isLt`. Establish `hu` using `u.isLt`. Establish `h2 : ((s : ℕ) + 1) * τ ≤ j * τ` using `Nat.mul_le_mul_right _ hs`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Nat.add_mul, one_mul]`. Simplify using `only [zPos]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem zPos_lt {κ τ l j : ℕ} (a : Ix (Fin κ ⊕ Fin l) (Fin τ) j) : zPos a < κ + l + j * τ := by
   rcases a with (i | i) | ⟨s, u⟩
@@ -30,15 +30,15 @@ theorem zPos_lt {κ τ l j : ℕ} (a : Ix (Fin κ ⊕ Fin l) (Fin τ) j) : zPos 
     omega
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with (i | i) | ⟨s, u⟩ <;> rcases b with (i' | i') | ⟨s', u'⟩ <;> simp only [zPos] at h`. Take `rfl` from `Fin.ext h`. Both sides reduce to the same expression. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `i'.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `rfl` from `Fin.ext (Nat.add_left_cancel h)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `i'.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Both sides reduce to the same expression. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `i'.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e1` using `PatPlaces.block_div (r := κ + l) (i := (s : ℕ)) u.isLt`. Establish `e2` using `PatPlaces.block_div (r := κ + l) (i := (s' : ℕ)) u'.isLt`. Rewrite `e1` using `[h, e2]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `rfl : s = s'` from `Fin.ext e1.symm`. Take `rfl : u = u'` from `Fin.ext (Nat.add_left_cancel h)`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem zPos_injective {κ τ l j : ℕ} {a b : Ix (Fin κ ⊕ Fin l) (Fin τ) j} (h : zPos a = zPos b) : a = b := by
   rcases a with (i | i) | ⟨s, u⟩ <;> rcases b with (i' | i') | ⟨s', u'⟩ <;> simp only [zPos] at h
@@ -66,25 +66,23 @@ theorem zPos_injective {κ τ l j : ℕ} {a b : Ix (Fin κ ⊕ Fin l) (Fin τ) j
     rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨hA, hB⟩ a b hab`. Distinguish the cases in `he : a = b`. Substitute `he` using the available equality. Rewrite using `[if_pos rfl]`. Break down `a with (i | i) | ⟨s, u⟩` into its components or cases.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(hA _ (by have := i.isLt; simp only [zPos]; omega)).1`. Conclude with `(hA _ (by have := i.isLt; simp only [zPos]; omega)).1`. Conclude with `absurd (by simp [FreeIx]) hab`. Rewrite using `[if_neg he]`. Establish `hne : zPos a ≠ zPos b` using `fun h => he (zPos_injective h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hs1` using `PatPlaces.symIdx_cases κ ρ (zPos a)`. Establish `hs2` using `PatPlaces.symIdx_cases κ ρ (zPos b)`. Break down `b with (j' | j') | ⟨s', u'⟩` into its components or cases. Use `(hA _ (by have := j'.isLt; simp only [zPos]; omega)).2 _ (zPos_lt a) hne ?_` and prove the remaining obligations. Break down `a with (i | i) | ⟨s, u⟩` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `i.isLt` as an intermediate fact. Use `j'.isLt` as an intermediate fact. Simplify using `only [zPos, FreeIx, FreeTop, Fin.lt_iff_val_lt_val] at hab hne hs1 hs2 ⊢`. Use linear arithmetic over natural numbers and integers. Use `i.isLt` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `j'.isLt` as an intermediate fact. Simplify using `only [zPos, FreeIx, FreeTop, Fin.lt_iff_val_lt_val] at hab hne hs1 hs2 ⊢`. Use linear arithmetic over natural numbers and integers. Use `left`. Simplify using `only [zPos]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `(hA _ (by have := j'.isLt; simp only [zPos]; omega)).2 _ (zPos_lt a) hne ?_` and prove the remaining obligations. Break down `a with (i | i) | ⟨s, u⟩` into its components or cases. Use `i.isLt` as an intermediate fact. Use `j'.isLt` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [zPos, FreeIx, FreeTop, Fin.lt_iff_val_lt_val] at hab hne hs1 hs2 ⊢`. Use linear arithmetic over natural numbers and integers. Use `i.isLt` as an intermediate fact. Use `j'.isLt` as an intermediate fact. Simplify using `only [zPos, FreeIx, FreeTop, Fin.lt_iff_val_lt_val] at hab hne hs1 hs2 ⊢`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis.
 
-Use linear arithmetic over natural numbers and integers. Use `left`. Simplify using `only [zPos]`. Use linear arithmetic over natural numbers and integers. Break down `a with (i | i) | ⟨s, u⟩` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (by simp [FreeIx]) hab`. Conclude with `absurd (by simp [FreeIx]) hab`. Establish `hlt : (s' : ℕ) < s`. Simplify using `only [FreeIx, not_le, Fin.lt_iff_val_lt_val] at hab`. Conclude with `hab`.
-
-Use `hB _ _ (by simp only [zPos]; omega) (zPos_lt _) (zPos_lt _) ?_` and prove the remaining obligations. Simplify using `only [zPos]`. Rewrite using `[PatPlaces.block_div u'.isLt, PatPlaces.block_div u.isLt]`. Conclude with `hlt`.
+A detailed English derivation is pending.
 -/
 theorem places_to_pattern (F : Type) [Zero F] [One F] (κ ρ l τ j : ℕ) (R : ℕ → ℕ → F) :
     ((∀ p', p' < κ + l → R p' p' = 1 ∧ ∀ p, p < κ + l + j * τ → p ≠ p' →
@@ -143,33 +141,33 @@ theorem places_to_pattern (F : Type) [Zero F] [One F] (κ ρ l τ j : ℕ) (R : 
         exact hlt
 
 /- English proof (translation)
-Introduce `hpat`. Use `⟨fun p' hp' => ?_, fun p p' h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `PatPlaces.zPos_surj (show p' < κ + l + j * τ by omega)`. Use `⟨?_, fun p hp hne hcond => ?_⟩` and prove the remaining obligations. Establish `h0` using `hpat a a (by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Break down `a with (i | i) | ⟨s, u⟩` into its components or cases. Simplify using `[FreeIx, FreeTop]`. Simplify using `[FreeIx, FreeTop]`. Simplify using `only [zPos] at hp' omega)`. Rewrite `h0` using `[if_pos rfl]`. Then use the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨c, rfl⟩` from `PatPlaces.zPos_surj hp`. Establish `hca : c ≠ a` using `fun h => hne (h ▸ rfl)`. Rewrite using `[hpat c a ?_, if_neg hca]`. Establish `hs1` using `PatPlaces.symIdx_cases κ ρ (zPos c)`. Establish `hs2` using `PatPlaces.symIdx_cases κ ρ (zPos a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `a with (i | i) | ⟨s', u'⟩` into its components or cases. Break down `c with (i' | i') | ⟨s, u⟩` into its components or cases. Use `i.isLt` as an intermediate fact. Use `i'.isLt` as an intermediate fact. Simplify using `only [zPos, FreeIx, FreeTop, Fin.lt_iff_val_lt_val] at hcond hne hs1 hs2 ⊢`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use `i.isLt` as an intermediate fact. Use `i'.isLt` as an intermediate fact. Simplify using `only [zPos, FreeIx, FreeTop, Fin.lt_iff_val_lt_val] at hcond hne hs1 hs2 ⊢`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[FreeIx]`. Break down `c with (i' | i') | ⟨s, u⟩` into its components or cases. Use `i.isLt` as an intermediate fact. Use `i'.isLt` as an intermediate fact. Simplify using `only [zPos, FreeIx, FreeTop, Fin.lt_iff_val_lt_val] at hcond hne hs1 hs2 ⊢`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use `i.isLt` as an intermediate fact. Use `i'.isLt` as an intermediate fact. Simplify using `only [zPos, FreeIx, FreeTop, Fin.lt_iff_val_lt_val] at hcond hne hs1 hs2 ⊢`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[FreeIx]`. Simplify using `only [zPos] at hp'`. Use linear arithmetic over natural numbers and integers. Take `⟨a, rfl⟩` from `PatPlaces.zPos_surj h2`. Take `⟨c, rfl⟩` from `PatPlaces.zPos_surj h3`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `a with (i | i) | ⟨s', u'⟩` into its components or cases. Use `i.isLt` as an intermediate fact. Simplify using `only [zPos] at h1`. Use linear arithmetic over natural numbers and integers. Use `i.isLt` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [zPos] at h1`. Use linear arithmetic over natural numbers and integers. Break down `c with (i | i) | ⟨s, u⟩` into its components or cases. Establish `h0 : zPos (Sum.inl (Sum.inl i) : Ix (Fin κ ⊕ Fin l) (Fin τ) j) - (κ + l) = 0`. Use `i.isLt` as an intermediate fact.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [zPos]`. Use linear arithmetic over natural numbers and integers. Rewrite `h4` using `[h0, Nat.zero_div]`. Conclude with `absurd h4 (Nat.not_lt_zero _)`. Establish `h0 : zPos (Sum.inl (Sum.inr i) : Ix (Fin κ ⊕ Fin l) (Fin τ) j) - (κ + l) = 0`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `i.isLt` as an intermediate fact. Simplify using `only [zPos]`. Use linear arithmetic over natural numbers and integers. Rewrite `h4` using `[h0, Nat.zero_div]`. Conclude with `absurd h4 (Nat.not_lt_zero _)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [zPos] at h4`. Rewrite `h4` using `[PatPlaces.block_div u'.isLt, PatPlaces.block_div u.isLt]`. Rewrite using `[hpat _ _ ?_, if_neg ?_]`. Introduce `h`. Consider the cases of `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `lt_irrefl _ h4`. Simplify using `only [FreeIx, Fin.le_iff_val_le_val]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem pattern_to_places (F : Type) [Zero F] [One F] (κ ρ l τ j : ℕ) (R : ℕ → ℕ → F) :
     (∀ (a b : Ix (Fin κ ⊕ Fin l) (Fin τ) j), ¬ FreeIx ρ a b → R (zPos a) (zPos b) = if a = b then 1 else 0) →
@@ -252,9 +250,9 @@ variable {E k : Type} [Field E] [NumberField E] [StarRing E] [Field k] [Valuativ
   [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hI` using `(GlobalTheory.T.residues_of_completionAtPrimeWithUniformizer E k P q ι ϖ hC hU).2.1`. Distinguish the cases in `hc : c`. Simplify using `only [if_pos hc]`. Establish `h0 : ι m - 1 = ι (m + algebraMap (𝓞 E) E (-1))`. Simplify using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, hI _ (hm.add (IntAt.coe P _)), reduction_add hm (IntAt.coe P _), reduction_coe]`. Simplify using `[add_neg_eq_zero]`. Simplify using `only [if_neg hc, sub_zero]`. Conclude with `hI m hm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem entry_iff {P : HeightOneSpectrum (𝓞 E)} {q : ℕ} {ι : E →+* k} {ϖ : kˣ} (hC : IsCompl P q ι ϖ)
     (hU : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) {m : E} (hm : IntAt P m) (c : Prop) [Decidable c] :
@@ -272,9 +270,9 @@ theorem entry_iff {P : HeightOneSpectrum (𝓞 E)} {q : ℕ} {ι : E →+* k} {�
 end Entry
 
 /- English proof (translation)
-Introduce `E k _ _ _ _ _ _ _ P q ι ϖ hC hU κ l ρ τ j M hM`. Establish `h : (∀ a b : Ix (Fin κ ⊕ Fin l) (Fin τ) j, ¬ FreeIx ρ a b → valuation k (ι (M (zPos a) (zPos b)) - (1 : Matrix (Ix (Fin κ ⊕ Fin l) (Fin τ) j) (Ix (Fin κ ⊕ Fin l) (Fin τ) j) k) a b) < 1) ↔ (∀ a b : Ix (Fin κ ⊕ Fin l) (Fin τ) j, ¬ FreeIx ρ a b → redP P (M (zPos a) (zPos b)) = if a …`. Use `forall_congr' fun a => forall_congr' fun b => imp_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Conclude with `entry_iff hC hU (hM _ _ (zPos_lt a) (zPos_lt b)) (a = b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `⟨pattern_to_places _ κ ρ l τ j fun p p' => redP P (M p p'), places_to_pattern _ κ ρ l τ j fun p p' => redP P (M p p')⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pattern_iff_places : ∀ (E k : Type) [Field E] [NumberField E] [StarRing E] [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (ι : E →+* k) (ϖ : kˣ), IsCompl P q ι ϖ → GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ → ∀ (κ l ρ τ j : ℕ) (M : ℕ → ℕ → E), (∀ p p', p < κ + l + j * τ → p' < κ + l + j * τ → IntAt P (M p p')) → ((∀ a b : Ix (Fin κ ⊕ Fin l) (Fin τ) j, ¬ FreeIx ρ a b → valuation k (ι (M (zPos a) (zPos b)) - (1 : Matrix (Ix (Fin κ ⊕ Fin l) (Fin τ) j) (Ix (Fin κ ⊕ Fin l) (Fin τ) j) k) a b) < 1) ↔ ((∀ p', p' < κ + l → redP P (M p' p') = 1 ∧ ∀ p, p < κ + l + j * τ → p ≠ p' → (κ + l ≤ p ∨ symIdx κ ρ p' < symIdx κ ρ p ∨ (p' = κ + ρ ∧ p < κ)) → redP P (M p p') = 0) ∧ (∀ p p', κ + l ≤ p' → p' < κ + l + j * τ → p < κ + l + j * τ → (p' - (κ + l)) / τ < (p - (κ + l)) / τ → redP P (M p p') = 0))) := by
   intro E k _ _ _ _ _ _ _ P q ι ϖ hC hU κ l ρ τ j M hM

@@ -37,63 +37,63 @@ Both sides reduce to the same expression.
 theorem hL_apply (x y : n → A) : D.hL x y = D.h x y := rfl
 
 /- English proof (translation)
-Simplify `(D.hL x).map_add y y'` using `only [hL_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem h_add_right (x y y' : n → A) : D.h x (y + y') = D.h x y + D.h x y' := by
   simpa only [hL_apply] using (D.hL x).map_add y y'
 
 /- English proof (translation)
-Simplify `(D.hL x).map_smul c y` using `only [hL_apply, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem h_smul_right (x y : n → A) (c : A) : D.h x (c • y) = c * D.h x y := by
   simpa only [hL_apply, smul_eq_mul] using (D.hL x).map_smul c y
 
 /- English proof (translation)
-Simplify `(D.hL x).map_sub y y'` using `only [hL_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem h_sub_right (x y y' : n → A) : D.h x (y - y') = D.h x y - D.h x y' := by
   simpa only [hL_apply] using (D.hL x).map_sub y y'
 
 /- English proof (translation)
-Simplify `(D.hL x).map_zero` using `only [hL_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem h_zero_right (x : n → A) : D.h x 0 = 0 := by
   simpa only [hL_apply] using (D.hL x).map_zero
 
 /- English proof (translation)
-Simplify `map_sum (D.hL x) y s` using `only [hL_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem h_sum_right {ι : Type} (s : Finset ι) (x : n → A) (y : ι → n → A) :
     D.h x (∑ i ∈ s, y i) = ∑ i ∈ s, D.h x (y i) := by
   simpa only [hL_apply] using map_sum (D.hL x) y s
 
 /- English proof (translation)
-Simplify using `only [h, hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_add_left (x x' y : n → A) : D.h (x + x') y = D.h x y + D.h x' y := by
   simp only [h, hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [h, hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem h_smul_left (x y : n → A) (c : A) : D.h (c • x) y = D.σA c * D.h x y := by
   simp only [h, hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `[h, hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_zero_left (y : n → A) : D.h 0 y = 0 := by
   simp [h, hform]
 
 /- English proof (translation)
-Simplify using `only [h, hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_sub_left (x x' y : n → A) : D.h (x - x') y = D.h x y - D.h x' y := by
   simp only [h, hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Conclude with `map_sum (AddMonoidHom.mk' (fun x => D.h x y) fun a b => D.h_add_left a b y) x s`.
+A detailed English derivation is pending.
 -/
 theorem h_sum_left {ι : Type} (s : Finset ι) (x : ι → n → A) (y : n → A) :
     D.h (∑ i ∈ s, x i) y = ∑ i ∈ s, D.h (x i) y := by
@@ -112,7 +112,7 @@ structure Hyp : Prop where
 variable {D}
 
 /- English proof (translation)
-Simplify using `only [h, hform, map_sum, map_mul, H.σσ, H.herm]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h_symm (H : D.Hyp) (x y : n → A) : D.h y x = D.σA (D.h x y) := by
   simp only [h, hform, map_sum, map_mul, H.σσ, H.herm]
@@ -120,7 +120,7 @@ theorem h_symm (H : D.Hyp) (x y : n → A) : D.h y x = D.σA (D.h x y) := by
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Rewrite using `[h_symm H, H.ef b a]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hab, Ne.symm hab]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fe (H : D.Hyp) (a b : Fin r) : D.h (D.f a) (D.e b) = if a = b then 1 else 0 := by
   rw [h_symm H, H.ef b a]
@@ -130,13 +130,13 @@ theorem fe (H : D.Hyp) (a b : Fin r) : D.h (D.f a) (D.e b) = if a = b then 1 els
   · simp [hab, Ne.symm hab]
 
 /- English proof (translation)
-Rewrite using `[h_symm H, H.ez, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ze (H : D.Hyp) (a : Fin r) : D.h D.z (D.e a) = 0 := by
   rw [h_symm H, H.ez, map_zero]
 
 /- English proof (translation)
-Rewrite using `[h_symm H, H.fz, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zf (H : D.Hyp) (a : Fin r) : D.h D.z (D.f a) = 0 := by
   rw [h_symm H, H.fz, map_zero]
@@ -156,19 +156,19 @@ def pW : (n → A) →ₗ[A] (n → A) := LinearMap.id - D.pU
 def Pi (S : (n → A) →ₗ[A] (n → A)) : (n → A) →ₗ[A] (n → A) := D.pU + D.pW ∘ₗ S ∘ₗ D.pW
 
 /- English proof (translation)
-Simplify using `only [pX, LinearMap.sum_apply, LinearMap.smulRight_apply, hL_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pX_apply (v : n → A) : D.pX v = ∑ a, D.h (D.f a) v • D.e a := by
   simp only [pX, LinearMap.sum_apply, LinearMap.smulRight_apply, hL_apply]
 
 /- English proof (translation)
-Simplify using `only [pXv, LinearMap.sum_apply, LinearMap.smulRight_apply, hL_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pXv_apply (v : n → A) : D.pXv v = ∑ a, D.h (D.e a) v • D.f a := by
   simp only [pXv, LinearMap.sum_apply, LinearMap.smulRight_apply, hL_apply]
 
 /- English proof (translation)
-Simplify using `only [pz, LinearMap.smulRight_apply, LinearMap.smul_apply, hL_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pz_apply (v : n → A) : D.pz v = (D.tz * D.h D.z v) • D.z := by
   simp only [pz, LinearMap.smulRight_apply, LinearMap.smul_apply, hL_apply, smul_eq_mul]
@@ -192,19 +192,19 @@ theorem Pi_apply (S : (n → A) →ₗ[A] (n → A)) (v : n → A) :
 variable {D}
 
 /- English proof (translation)
-Simplify using `[pU_apply, pX_apply, pXv_apply, pz_apply, h_add_right, h_sum_right, h_smul_right, H.ee, H.ef, H.ez]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_e_pU (H : D.Hyp) (a : Fin r) (v : n → A) : D.h (D.e a) (D.pU v) = D.h (D.e a) v := by
   simp [pU_apply, pX_apply, pXv_apply, pz_apply, h_add_right, h_sum_right, h_smul_right, H.ee, H.ef, H.ez]
 
 /- English proof (translation)
-Simplify using `[pU_apply, pX_apply, pXv_apply, pz_apply, h_add_right, h_sum_right, h_smul_right, fe H, H.ff, H.fz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_f_pU (H : D.Hyp) (a : Fin r) (v : n → A) : D.h (D.f a) (D.pU v) = D.h (D.f a) v := by
   simp [pU_apply, pX_apply, pXv_apply, pz_apply, h_add_right, h_sum_right, h_smul_right, fe H, H.ff, H.fz]
 
 /- English proof (translation)
-Simplify using `only [pU_apply, pX_apply, pXv_apply, pz_apply, h_add_right, h_sum_right, h_smul_right, ze H, zf H, mul_zero, Finset.sum_const_zero, zero_add]`. Take the linear combination `(D.h D.z v) * H.zz`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem h_z_pU (H : D.Hyp) (v : n → A) : D.h D.z (D.pU v) = D.h D.z v := by
   simp only [pU_apply, pX_apply, pXv_apply, pz_apply, h_add_right, h_sum_right, h_smul_right, ze H, zf H,
@@ -215,7 +215,7 @@ def IsW (D : Dat A n r) (w : n → A) : Prop :=
   (∀ a, D.h (D.e a) w = 0) ∧ (∀ a, D.h (D.f a) w = 0) ∧ D.h D.z w = 0
 
 /- English proof (translation)
-Conclude with `⟨fun a => by rw [pW_apply, h_sub_right, h_e_pU H, sub_self], fun a => by rw [pW_apply, h_sub_right, h_f_pU H, sub_self], by rw [pW_apply, h_sub_right, h_z_pU H, sub_self]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isW_pW (H : D.Hyp) (v : n → A) : IsW D (D.pW v) := by
   exact ⟨fun a => by rw [pW_apply, h_sub_right, h_e_pU H, sub_self],
@@ -223,20 +223,20 @@ theorem isW_pW (H : D.Hyp) (v : n → A) : IsW D (D.pW v) := by
     by rw [pW_apply, h_sub_right, h_z_pU H, sub_self]⟩
 
 /- English proof (translation)
-Take `⟨he, hf, hz⟩` from `hw`. Simplify using `[pU_apply, pX_apply, pXv_apply, pz_apply, he, hf, hz]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem pU_of_isW {w : n → A} (hw : IsW D w) : D.pU w = 0 := by
   obtain ⟨he, hf, hz⟩ := hw
   simp [pU_apply, pX_apply, pXv_apply, pz_apply, he, hf, hz]
 
 /- English proof (translation)
-Rewrite using `[pW_apply, pU_of_isW hw, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pW_of_isW {w : n → A} (hw : IsW D w) : D.pW w = w := by
   rw [pW_apply, pU_of_isW hw, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[pU_apply D (D.pU v), pX_apply D (D.pU v), pXv_apply D (D.pU v), pz_apply D (D.pU v)]`. Simplify using `only [h_f_pU H, h_e_pU H, h_z_pU H]`. Rewrite using `[← pX_apply, ← pXv_apply, ← pz_apply, ← pU_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pU_pU (H : D.Hyp) (v : n → A) : D.pU (D.pU v) = D.pU v := by
   rw [pU_apply D (D.pU v), pX_apply D (D.pU v), pXv_apply D (D.pU v), pz_apply D (D.pU v)]
@@ -244,59 +244,59 @@ theorem pU_pU (H : D.Hyp) (v : n → A) : D.pU (D.pU v) = D.pU v := by
   rw [← pX_apply, ← pXv_apply, ← pz_apply, ← pU_apply]
 
 /- English proof (translation)
-The claim follows from `pU_of_isW (isW_pW H v)`.
+A detailed English derivation is pending.
 -/
 theorem pU_pW (H : D.Hyp) (v : n → A) : D.pU (D.pW v) = 0 := pU_of_isW (isW_pW H v)
 
 /- English proof (translation)
-The claim follows from `pW_of_isW (isW_pW H v)`.
+A detailed English derivation is pending.
 -/
 theorem pW_pW (H : D.Hyp) (v : n → A) : D.pW (D.pW v) = D.pW v := pW_of_isW (isW_pW H v)
 
 /- English proof (translation)
-Rewrite using `[pW_apply, pU_pU H, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pW_pU (H : D.Hyp) (v : n → A) : D.pW (D.pU v) = 0 := by
   rw [pW_apply, pU_pU H, sub_self]
 
 /- English proof (translation)
-Simplify using `[pU_apply, pX_apply, pXv_apply, pz_apply, fe H, H.ee, ze H, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pU_e (H : D.Hyp) (b : Fin r) : D.pU (D.e b) = D.e b := by
   simp [pU_apply, pX_apply, pXv_apply, pz_apply, fe H, H.ee, ze H, ite_smul]
 
 /- English proof (translation)
-Simplify using `[pU_apply, pX_apply, pXv_apply, pz_apply, H.ff, H.ef, zf H, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pU_f (H : D.Hyp) (b : Fin r) : D.pU (D.f b) = D.f b := by
   simp [pU_apply, pX_apply, pXv_apply, pz_apply, H.ff, H.ef, zf H, ite_smul]
 
 /- English proof (translation)
-Simplify using `[pU_apply, pX_apply, pXv_apply, pz_apply, H.fz, H.ez, H.zz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pU_z_eq (H : D.Hyp) : D.pU D.z = D.z := by
   simp [pU_apply, pX_apply, pXv_apply, pz_apply, H.fz, H.ez, H.zz]
 
 /- English proof (translation)
-Rewrite using `[pW_apply, pU_e H, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pW_e (H : D.Hyp) (b : Fin r) : D.pW (D.e b) = 0 := by
   rw [pW_apply, pU_e H, sub_self]
 
 /- English proof (translation)
-Rewrite using `[pW_apply, pU_f H, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pW_f (H : D.Hyp) (b : Fin r) : D.pW (D.f b) = 0 := by
   rw [pW_apply, pU_f H, sub_self]
 
 /- English proof (translation)
-Rewrite using `[pW_apply, pU_z_eq H, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem orthogonal_proj_normal_zero (H : D.Hyp) : D.pW D.z = 0 := by
   rw [pW_apply, pU_z_eq H, sub_self]
 
 /- English proof (translation)
-Rewrite using `[pX_apply]`. Simplify using `[map_sum, map_smul, pW_e H]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pW_pX (H : D.Hyp) (u : n → A) : D.pW (D.pX u) = 0 := by
   rw [pX_apply]

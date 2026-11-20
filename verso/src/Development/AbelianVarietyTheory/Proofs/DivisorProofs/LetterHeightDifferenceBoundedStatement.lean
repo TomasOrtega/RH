@@ -15,7 +15,7 @@ open GlobalTheory.ShFam GlobalTheory.ShFam.Pad ReciprocityTheory.ChartRestrictio
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-The claim follows from `|(adlOf (O.Φ.C c) (O.met.hm c) (Finsupp.single (((fun _ => false), none, .inr (j : ℕ)) : Sym D.host.E) 1)).ht x - (adlOf (O.Φ.C c) (O.met.hm c) (Finsupp.single (((fun _ => false), none, .inl (((letters O.S.Dw).get j).1, (((letters O.S.Dw).get j).2 : ℕ))) : Sym D.host.E) 1)).ht x| …`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.letter_height_difference_bounded : ∀ (D : D7) (O : Setup D), ∃ C : ℝ, ∀ (c : O.s.Comp) (x : (O.var c).X)
     (j : Fin (letters O.S.Dw).length),

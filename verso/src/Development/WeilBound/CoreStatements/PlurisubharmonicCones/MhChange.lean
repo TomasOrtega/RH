@@ -15,9 +15,9 @@ noncomputable section
 namespace LevelTowerAlt.Comparison₂
 
 /- English proof (translation)
-Establish `e : ∑ k', T⁻¹ k' k • b k' = ∑ k', (T * T⁻¹) k' k • b₀ k'`. Simplify using `only [h, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`. Rewrite using `[e, Matrix.mul_nonsing_inv _ (IsUnit.mk0 _ hT)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply]`.
+A detailed English derivation is pending.
 -/
 theorem mh_inv {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] {r : ℕ} {b₀ b : Fin r → V}
     {T : Matrix (Fin r) (Fin r) Ω} (h : ∀ k, b k = ∑ k', T k' k • b₀ k') (hT : T.det ≠ 0) (k : Fin r) :
@@ -40,11 +40,11 @@ def MhQ (c : ∀ k, J k) (a : K → ℤ) (ρ : Ω) (x : ℝ) : Prop :=
 variable {ξ y z w}
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `hQ`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (hw.2 k _ (IsUnit.mk0 _ (hc k))).1`. Use `choose r hrv hrw using fun k => (hw.2 k _ (IsUnit.mk0 _ (hc' k))).2 (c k)`. Establish `hr0 : ∀ k, r k ≠ 0` using `fun k h0 => hc k (by rw [hrw k, h0, zero_mul])`. Use `⟨u * ∏ k, r k ^ a k, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `CxVal.mul hu (MuIndep.valAt_prod h Finset.univ fun k => CxVal.zpow (hrv k) (hr0 k) (a k))`. Establish `h2 : (∏ k, y ⟨k, c k⟩ ^ a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)`. Simplify using `only [div_zpow, Finset.prod_div_distrib] at h1`. Rewrite `h1` using `[div_mul_div_cancel₀ h2]`. Then use the resulting hypothesis. Rewrite using `[norm_mul, norm_prod, mul_assoc, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_zpow, ← mul_zpow, ← norm_mul, ← hrw k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mh_chg (h : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w) {c c' : ∀ k, J k} (hc : ∀ k, w ⟨k, c k⟩ ≠ 0)
     (hc' : ∀ k, w ⟨k, c' k⟩ ≠ 0) {a : K → ℤ} {ρ : Ω} {x : ℝ} (hQ : MhQ ξ y z w c a ρ x) : MhQ ξ y z w c' a ρ x := by
@@ -63,9 +63,9 @@ theorem mh_chg (h : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w) {c c' : ∀ 
     rw [norm_zpow, ← mul_zpow, ← norm_mul, ← hrw k]
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `hQ`. Take `⟨u', hu', rfl⟩` from `hQ'`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (hw.2 k _ (IsUnit.mk0 _ (hc k))).1`. Use `⟨u * u', ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `CxVal.mul hu hu'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, zpow_add₀ (hy _), Finset.prod_mul_distrib]`. Rewrite `h1` using `[div_mul_div_comm]`. Then use the resulting hypothesis. Simplify using `only [Pi.add_apply, zpow_add₀ (norm_ne_zero_iff.2 (hc _)), Finset.prod_mul_distrib, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mh_mul (hw : CoordsAt ξ y z w) {c : ∀ k, J k} (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) {a a' : K → ℤ} {ρ ρ' : Ω} {x x' : ℝ}
     (hQ : MhQ ξ y z w c a ρ x) (hQ' : MhQ ξ y z w c a' ρ' x') : MhQ ξ y z w c (a + a') (ρ * ρ') (x * x') := by
@@ -80,7 +80,7 @@ theorem mh_mul (hw : CoordsAt ξ y z w) {c : ∀ k, J k} (hc : ∀ k, w ⟨k, c 
     ring
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simpa using CxVal.one h, by simp⟩`. Consider the case `insert p S hp ih`. Rewrite using `[Finset.sum_insert hp, Finset.prod_insert hp, Finset.prod_insert hp]`. Conclude with `mh_mul hw hc (hQ p (Finset.mem_insert_self _ _)) (ih fun q hq => hQ q (Finset.mem_insert_of_mem hq))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mh_prod (h : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w) {c : ∀ k, J k} (hc : ∀ k, w ⟨k, c k⟩ ≠ 0)
     (S : Finset ℕ) {a : ℕ → K → ℤ} {ρ : ℕ → Ω} {x : ℕ → ℝ} (hQ : ∀ p ∈ S, MhQ ξ y z w c (a p) (ρ p) (x p)) :
@@ -102,13 +102,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Dc : ComponentData II (CMType H) K J Ω W} {Hd : HodgeData Dc} {S₀ : Finset ℕ}
 
 /- English proof (translation)
-Establish `hq'` using `fun τ => MuIndep.quot_basis Dc.j_le_N (b := d.b τ) (F := Hd.F τ) (d.adapted τ).1.2.2.2.1 (d.adapted τ).2.1 (d.adapted τ).2.2`. Establish `hco : ∀ τ k, ∃ t : Fin (Dc.N - Dc.j) → Ω, ∑ a, t a • (Hd.F τ).mkQ (d.b τ (tailIdx Dc.j_le_N a)) = (Hd.F τ).mkQ (bb τ (tailIdx Dc.j_le_N k))` using `fun τ k => (Submodule.mem_span_range_iff_exists_fun Ω).1 (by rw [(hq' τ).2]; trivial)`. Use `choose t ht using hco`. Use `⟨fun τ => Matrix.of fun a k => t τ k a, fun τ k => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : bb τ (tailIdx Dc.j_le_N k) - ∑ a, t τ k a • d.b τ (tailIdx Dc.j_le_N a) ∈ Hd.F τ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.Quotient.eq (Hd.F τ)).1 ?_` and prove the remaining obligations. Use `ht τ k` as an intermediate fact. Rewrite `this` using `[← map_smul]`. Rewrite `this` using `[← map_sum]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Or.F_eq τ, Submodule.mem_comap, map_sub, map_sum]`. Rewrite using `[← sub_eq_zero]`. Use `(Submodule.disjoint_def.1 (MuIndep.blocks_disjoint Or τ)) _ ?_ (sub_mem (hs τ k).1 (sum_mem fun a _ => Submodule.smul_mem _ _ (hs' τ a).1))` and prove the remaining obligations. Establish `e : s τ k - ∑ a, t τ k a • s' τ a = (Or.i τ (bb τ (tailIdx Dc.j_le_N k)) - ∑ a, Or.i τ (t τ k a • d.b τ (tailIdx Dc.j_le_N a))) - (Or.i τ (bb τ (tailIdx Dc.j_le_N k)) - s τ k) + ∑ a, t τ k a • (Or.i τ (d.b τ (tailIdx Dc.j_le_N a)) - s' τ a)`. Simplify using `only [map_smul, smul_sub, Finset.sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Use `show s τ k - ∑ a, t τ k a • s' τ a ∈ _`. Rewrite using `[e]`. Conclude with `add_mem (sub_mem h1 (hs τ k).2) (sum_mem fun a _ => Submodule.smul_mem _ _ (hs' τ a).2)`. Conclude with `GlobalTheory.T.tensor_wedge_det_change (CMType H) Ω (fun τ => W τ ⧸ Hd.F τ) (Dc.N - Dc.j) (fun τ a => (Hd.F τ).mkQ (d.b τ (tailIdx Dc.j_le_N a))) (fun τ a => (Hd.F τ).mkQ (bb τ (tailIdx Dc.j_le_N a))) (fun τ => Matrix.of fun a k => t τ k a) _ _ (fun τ => (hq' τ).1) (fun τ => (hq' …`.
+A detailed English derivation is pending.
 -/
 theorem mh_change (Or : CptOrigin Y S₀ Dc Hd) {bb : ∀ τ, Fin Dc.N → W τ}
     {s : CMType H → Fin (Dc.N - Dc.j) → Or.𝔐.Li} {lam : Ω}
@@ -151,7 +151,7 @@ theorem mh_change (Or : CptOrigin Y S₀ Dc Hd) {bb : ∀ τ, Fin Dc.N → W τ}
 end Main
 
 /- English proof (translation)
-Establish `h1 : ValAt ξ z (p : Ω) (p : ℂ)` using `⟨h, p, map_natCast _ p, map_natCast _ p⟩`. Take `⟨_, x, hx, -⟩` from `CxVal.inv h1 (Nat.cast_ne_zero.2 hp.ne_zero)`. Conclude with `not_not.2 ⟨Nat.cast_ne_zero.2 hp.ne_zero, natCast_mem _ _, x, hx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mh_char0 {X : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω] {ξ : Sp Ω ⟶ X} {z : Sp ℂ ⟶ X}
     (h : genPt ξ ⤳ centre z) {p : ℕ} (hp : p.Prime) : ¬ InFibre ξ p ⟨centre z, h⟩ := by
@@ -160,35 +160,33 @@ theorem mh_char0 {X : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω] {ξ : Sp 
   exact not_not.2 ⟨Nat.cast_ne_zero.2 hp.ne_zero, natCast_mem _ _, x, hx⟩
 
 /- English proof (translation)
-Introduce `hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B bb s lam hs hΛ z w hw hi`. Establish `h : genPt Or.𝔐.ξ ⤳ centre z` using `Or.𝔐.all _`. Establish `: CharZero Ω` using `algebraRat.charZero Ω`. Establish `htie : CoordTie ℤ Or.𝔐.ξ (fun c' : (k : K) → J k => ∏ k, Dc.y ⟨k, c' k⟩)` using `Or.𝔐.tie`. Establish `hS : ∀ p ∈ Dc.SB B, p ∈ Dc.S` using `fun p hp => (Finset.mem_filter.1 hp).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmc : w ∈ mcPts (mCoordIdeal Dc.y)` using `(GlobalTheory.T.complex_points_iff_centres Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y htie w).2 ⟨z, h, hw⟩`. Take `⟨d⟩` from `GlobalTheory.T.component_data_hodge_first E H D l (Xo l) c Y II K J Ω W Dc Hd S₀ Or z w hw`. Take `⟨s', hs'⟩` from `PhMuFree.exists_smallPart Or d`. Take `⟨Γ, hΓ, hpd, -⟩` from `PhMuFree.norm_eq Or hw hi d hs'`. Establish `hph` using `PhMuFree.phMu_eq Or hw hi d hs' hΓ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, hT, hΩ⟩` from `mh_change Or hs hΛ d hs'`. Establish `hu` using `GlobalTheory.T.unit_value_frame_domain Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y z w d.c d.f d.u htie h hw d.inDom d.unit`. Establish `hy : ∀ k, Dc.y ⟨k, d.c k⟩ ≠ 0` using `fun k => (hw.2 k _ (IsUnit.mk0 _ (d.inDom.1 k))).1`. Establish `hm : chartMono Dc.y d.c Hd.aMu ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)`. Establish `n₀ : lam * ∏ τ, (T τ).det ≠ 0` using `hΩ ▸ mul_ne_zero d.unit.1 hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlam : lam ≠ 0` using `left_ne_zero_of_mul n₀`. Establish `hd : ∀ τ, (T τ).det ≠ 0` using `fun τ => Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul n₀) τ (Finset.mem_univ τ)`. Establish `hex : ∃ c : (k : K) → J k, ∀ k, w ⟨k, c k⟩ ≠ 0` using `⟨d.c, d.inDom.1⟩`. Establish `hvert : ∀ p ∈ Dc.SB B, MvPolynomial.aeval Dc.y (Dc.vnum p) / MvPolynomial.aeval Dc.y (Dc.vden p) ≠ 0 ∧ MhQ Or.𝔐.ξ Dc.y z w d.c (Dc.vdeg p) (MvPolynomial.aeval Dc.y (Dc.vnum p) / MvPolynomial.aeval Dc.y (Dc.vden p)) (Dc.vertFactor p w)`. Introduce `p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv` using `Dc.vertical p (hS p hp)`. Take `⟨v, -, hv1⟩` from `VertFactorPos.exists_value hmc (Dc.S_prime p (hS p hp)).ne_zero hv hex.choose hex.choose_spec`. Use `⟨?_, mh_chg h hw hex.choose_spec d.inDom.1 ⟨v, ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨bf, bg, hf, hg, -⟩` from `hv.degrees`. Conclude with `div_ne_zero (fun h0 => hv.num_not_mem ((VertFactorPos.mem_mCoordIdeal_iff_of_homog _ hf).2 h0)) fun h0 => hv.den_not_mem ((VertFactorPos.mem_mCoordIdeal_iff_of_homog _ hg).2 h0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(GlobalTheory.T.valAt_iff_value_at Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y htie z w h hw _ _).2 hv1`. Simplify using `only [chartMono, Pi.neg_apply, _root_.zpow_neg, Finset.prod_inv_distrib] at h1`. Rewrite `h1` using `[← div_eq_mul_inv]`. Then use the resulting hypothesis. Rewrite using `[ComponentData.vertFactor, dif_pos hex, valAt_eq hmc hv1, zMono, norm_prod]`. Simplify using `only [norm_zpow]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ1 : MhQ Or.𝔐.ξ Dc.y z w d.c Hd.aMu (lam * ∏ τ, (T τ).det) (‖valAt Dc.y d.u w‖ * ∏ k, ‖w ⟨k, d.c k⟩‖ ^ Hd.aMu k)`. Use `⟨_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← hΩ]`. Use `show ValAt _ _ (d.u * chartMono Dc.y d.c Hd.aMu / chartMono Dc.y d.c Hd.aMu) _`. Rewrite using `[mul_div_cancel_right₀ _ hm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hu.2`. Establish `hQ` using `mh_mul hw d.inDom.1 hQ1 (mh_prod h hw d.inDom.1 (Dc.SB B) fun p hp => (hvert p hp).2)`. Establish `hA : 0 < ‖valAt Dc.y d.u w‖ * ∏ k, ‖w ⟨k, d.c k⟩‖ ^ Hd.aMu k` using `mul_pos (norm_pos_iff.2 hu.1) (Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (d.inDom.1 k)) _)`. Establish `hsq : ∀ τ, 0 < Real.sqrt (Γ τ).det.re` using `fun τ => Real.sqrt_pos.2 (PhMuFree.det_re_pos (hpd τ))`. Establish `hsq' : 0 < ∏ τ, Real.sqrt (Γ τ).det.re` using `Finset.prod_pos fun τ _ => hsq τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvp : ∀ p ∈ Dc.SB B, 0 < Dc.vertFactor p w` using `fun p hp => VertFactorPos.proof II _ K J Ω W Dc p (hS p hp) w hmc`. Establish `hvp' : 0 < ∏ p ∈ Dc.SB B, Dc.vertFactor p w` using `Finset.prod_pos hvp`. Establish `hh : (muVert Hd B).h w = (‖valAt Dc.y d.u w‖ * ∏ k, ‖w ⟨k, d.c k⟩‖ ^ Hd.aMu k) * (∏ p ∈ Dc.SB B, Dc.vertFactor p w) * ∏ τ, Real.sqrt (Γ τ).det.re`. Use `Real.log_injOn_pos ((muVert Hd B).pos w hmc.1) (mul_pos (mul_pos hA hvp') hsq') ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.vertical_hodge_metric_log_formula K J II _ Ω W Dc Hd B w hmc, Real.log_mul (mul_pos hA hvp').ne' hsq'.ne', Real.log_mul hA.ne' hvp'.ne', Real.log_prod fun p hp => (hvp p hp).ne', Real.log_prod fun τ _ => (hsq τ).ne']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ∑ τ, Real.log (Real.sqrt (Γ τ).det.re) = (∑ τ, Real.log (Γ τ).det.re) / 2`. Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun τ _ => Real.log_sqrt (PhMuFree.det_re_pos (hpd τ)).le`. Establish `e' : Real.log ((muLine Hd).h w) = phMu Hd w` using `rfl`. Rewrite using `[e, e', hph]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hP : ∏ p ∈ Dc.SB B, MvPolynomial.aeval Dc.y (Dc.vnum p) / MvPolynomial.aeval Dc.y (Dc.vden p) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun p hp => (hvert p hp).1`. Establish `hP' : ∏ p ∈ Dc.SB B, MvPolynomial.aeval Dc.y (Dc.vden p) / MvPolynomial.aeval Dc.y (Dc.vnum p) = (∏ p ∈ Dc.SB B, MvPolynomial.aeval Dc.y (Dc.vnum p) / MvPolynomial.aeval Dc.y (Dc.vden p))⁻¹`. Rewrite using `[← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun p _ => (inv_div _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h, s', fun τ => (T τ)⁻¹, Γ, fun τ => ⟨?_, mh_inv (hT τ) (hd τ), hΓ τ, hpd τ⟩, ?_, hw, fun c' hc' => ?_⟩` and prove the remaining obligations. Establish `hf` using `(PhMuFree.frames Or hw d hs' τ h).2.1`. Use `⟨hf.1, Eq.trans ?_ hf.2⟩` and prove the remaining obligations. Use `(Lat.patch_of_not _ _ _ fun p hp => mh_char0 h ?_).trans (Lat.patch_of_not _ _ _ fun p hp => mh_char0 h (Or.𝔐.S_prime p hp)).symm` and prove the remaining obligations. Conclude with `(Finset.mem_union.1 hp).elim (Or.𝔐.S_prime p) fun hp => Dc.S_prime p (hS p hp)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP']`. Conclude with `mul_ne_zero (inv_ne_zero hlam) (inv_ne_zero hP)`. Take `⟨u, hu1, hu2⟩` from `mh_chg h hw d.inDom.1 hc' hQ`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations. Use `hu1 using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Establish `e : ∏ τ, ((T τ)⁻¹).det = (∏ τ, (T τ).det)⁻¹`. Rewrite using `[← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Rewrite using `[hP', e, inv_inv]`. Use `show _ / ((∏ k, Dc.y ⟨k, c' k⟩ ^ (Hd.aMu + ∑ p ∈ Dc.SB B, Dc.vdeg p) k) * _) = _`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hh]`. Use `Eq.trans ?_ hu2` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem muHodge : MuHodge := by
   intro hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B bb s lam hs hΛ z w hw hi

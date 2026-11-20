@@ -22,7 +22,7 @@ def splitX (x1 : Fin (2 * (1 + ρ) + k + 1) → Fin j → ℂ) :
     x1 (U.eB k 1 ρ (Sum.inr 0)))
 
 /- English proof (translation)
-The claim follows from `hf.prod hg`.
+A detailed English derivation is pending.
 -/
 private theorem measurePreserving_prod_map {α β γ δ : Type*} {mα : MeasureSpace α} {mβ : MeasureSpace β} {mγ : MeasureSpace γ}
     {mδ : MeasureSpace δ} {f : α → β} {g : γ → δ}
@@ -32,17 +32,11 @@ private theorem measurePreserving_prod_map {α β γ δ : Type*} {mα : MeasureS
   hf.prod hg
 
 /- English proof (translation)
-Use `haveI a0_ : SFinite (volume : Measure (ℝ)) := inferInstance`. Use `haveI a1_ : SFinite (volume : Measure (ℂ)) := inferInstance`. Use `haveI a2_ : SFinite (volume : Measure (Fin j → ℂ)) := inferInstance`. Use `haveI a3_ : SFinite (volume : Measure (Fin j → ℝ)) := inferInstance`. Use `haveI a4_ : SFinite (volume : Measure (G.UT j → ℂ)) := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `haveI a5_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → ℂ)) := inferInstance`. Use `haveI a6_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin j → ℂ)) := inferInstance`. Use `haveI a7_ : SFinite (volume : Measure (Fin (2 * (1 + ρ) + k + 1) → Fin j → ℂ)) := inferInstance`. Use `haveI a8_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin 1 → ℂ)) := inferInstance`. Use `haveI a9_ : SFinite (volume : Measure (G.UT 1 → ℂ)) := inferInstance`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI a10_ : SFinite (volume : Measure (Fin 1 → ℝ)) := inferInstance`. Use `haveI a11_ : SFinite (volume : Measure (Fin 1 → Fin j → ℂ)) := inferInstance`. Use `haveI a12_ : SFinite (volume : Measure (G.UT (j + 1) → ℂ)) := inferInstance`. Use `haveI a13_ : SFinite (volume : Measure (Fin (j + 1) → ℝ)) := inferInstance`. Use `haveI a14_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin (j + 1) → ℂ)) := inferInstance`.
-
-Use `haveI hP : ∀ {α β : Type} [MeasureSpace α] [MeasureSpace β] [SFinite (volume : Measure α)] [SFinite (volume : Measure β)], SFinite (volume : Measure (α × β)) := fun {_ _} _ _ _ _ => inferInstance`. Establish `h0 : MeasurePreserving (fun x1 : Fin (2 * (1 + ρ) + k + 1) → Fin j → ℂ => fun i : U.Ix k 1 ρ => x1 (U.eB k 1 ρ i)) volume volume`. Use `volume_measurePreserving_piCongrLeft (fun _ : U.Ix k 1 ρ => Fin j → ℂ) (U.eB k 1 ρ).symm` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x1 i`.
-
-Take `⟨i', rfl⟩` from `(U.eB k 1 ρ).symm.surjective i`. Use `first`. Consider the case `simp [MeasurableEquiv.piCongrLeft_apply_apply]`. Consider the case `simp [Equiv.piCongrLeft_apply_apply]`. Establish `h1 : MeasurePreserving (fun x : U.Ix k 1 ρ → Fin j → ℂ => ((fun i : Fin 1 ⊕ Fin (2 * ρ + k + 1) => x (Sum.inl i)), (fun i : Fin 1 => x (Sum.inr i)))) volume volume` using `measurePreserving_sumPiEquivProdPi (fun _ => volume)`.
-
-Establish `h2 : MeasurePreserving (fun x : Fin 1 ⊕ Fin (2 * ρ + k + 1) → Fin j → ℂ => ((fun i : Fin 1 => x (Sum.inl i)), (fun i : Fin (2 * ρ + k + 1) => x (Sum.inr i)))) volume volume` using `measurePreserving_sumPiEquivProdPi (fun _ => volume)`. Establish `h3` using `MeasurePreserving.comp (measurePreserving_prod_map (MeasurePreserving.prod (volume_preserving_funUnique (Fin 1) (Fin j → ℂ)) (MeasurePreserving.id (volume : Measure (Fin (2 * ρ + k + 1) → Fin j → ℂ)))) (volume_preserving_funUnique (Fin 1) (Fin j → ℂ))) (MeasurePreserving.comp (me …`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem splitX_mp : MeasurePreserving (splitX (k := k) (j := j) (ρ := ρ)) volume volume := by
   haveI a0_ : SFinite (volume : Measure (ℝ)) := inferInstance
@@ -86,13 +80,13 @@ theorem splitX_mp : MeasurePreserving (splitX (k := k) (j := j) (ρ := ρ)) volu
   exact h3
 
 /- English proof (translation)
-Conclude with `volume_preserving_pi fun _ => volume_preserving_funUnique (Fin 1) ℂ`.
+A detailed English derivation is pending.
 -/
 theorem cy_mp : MeasurePreserving (fun y1 : Fin (2 * ρ + k + 1) → Fin 1 → ℂ => fun v => y1 v 0) volume volume := by
   exact volume_preserving_pi fun _ => volume_preserving_funUnique (Fin 1) ℂ
 
 /- English proof (translation)
-Use `haveI : IsEmpty (G.UT 1) := ⟨fun p => absurd p.2 (by rw [Subsingleton.elim p.1.2 p.1.1]; exact lt_irrefl _)⟩`. Use `haveI : IsProbabilityMeasure (volume : Measure (G.UT 1 → ℂ)) := by`. Rewrite using `[show (volume : Measure (G.UT 1 → ℂ)) = Measure.pi (fun _ => volume) from rfl, Measure.pi_of_empty]`. Use `infer_instance`. Conclude with `(volume_preserving_funUnique (Fin 1) ℝ).comp measurePreserving_snd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dy_mp : MeasurePreserving (fun q : (G.UT 1 → ℂ) × (Fin 1 → ℝ) => q.2 0) volume volume := by
   haveI : IsEmpty (G.UT 1) := ⟨fun p => absurd p.2 (by rw [Subsingleton.elim p.1.2 p.1.1]; exact lt_irrefl _)⟩
@@ -108,7 +102,7 @@ def srcQ (z : U.RC k j (1 + ρ) × U.RC k 1 ρ) : Bq k j ρ × Fq k j ρ :=
   (((cb z.1, cy z.2), dy z.2), ((cm z.1, ct z.1), z.1.2))
 
 /- English proof (translation)
-The claim follows from `Measure.measurePreserving_swap`.
+A detailed English derivation is pending.
 -/
 private theorem measurePreserving_prod_swap {α β : Type*} {mα : MeasureSpace α} {mβ : MeasureSpace β}
     [SFinite (volume : Measure α)] [SFinite (volume : Measure β)] :
@@ -116,7 +110,7 @@ private theorem measurePreserving_prod_swap {α β : Type*} {mα : MeasureSpace 
   Measure.measurePreserving_swap
 
 /- English proof (translation)
-The claim follows from `measurePreserving_prodAssoc volume volume volume`.
+A detailed English derivation is pending.
 -/
 private theorem measurePreserving_prod_assoc {α β γ : Type*} {mα : MeasureSpace α} {mβ : MeasureSpace β} {mγ : MeasureSpace γ}
     [SFinite (volume : Measure α)] [SFinite (volume : Measure β)] [SFinite (volume : Measure γ)] :
@@ -124,7 +118,7 @@ private theorem measurePreserving_prod_assoc {α β γ : Type*} {mα : MeasureSp
   measurePreserving_prodAssoc volume volume volume
 
 /- English proof (translation)
-The claim follows from `MeasurePreserving.symm _ (measurePreserving_prodAssoc volume volume volume)`.
+A detailed English derivation is pending.
 -/
 private theorem measurePreserving_prod_assoc_symm {α β γ : Type*} {mα : MeasureSpace α} {mβ : MeasureSpace β} {mγ : MeasureSpace γ}
     [SFinite (volume : Measure α)] [SFinite (volume : Measure β)] [SFinite (volume : Measure γ)] :
@@ -132,15 +126,9 @@ private theorem measurePreserving_prod_assoc_symm {α β γ : Type*} {mα : Meas
   MeasurePreserving.symm _ (measurePreserving_prodAssoc volume volume volume)
 
 /- English proof (translation)
-Use `haveI a0_ : SFinite (volume : Measure (ℝ)) := inferInstance`. Use `haveI a1_ : SFinite (volume : Measure (ℂ)) := inferInstance`. Use `haveI a2_ : SFinite (volume : Measure (Fin j → ℂ)) := inferInstance`. Use `haveI a3_ : SFinite (volume : Measure (Fin j → ℝ)) := inferInstance`. Use `haveI a4_ : SFinite (volume : Measure (G.UT j → ℂ)) := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI a5_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → ℂ)) := inferInstance`. Use `haveI a6_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin j → ℂ)) := inferInstance`. Use `haveI a7_ : SFinite (volume : Measure (Fin (2 * (1 + ρ) + k + 1) → Fin j → ℂ)) := inferInstance`. Use `haveI a8_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin 1 → ℂ)) := inferInstance`. Use `haveI a9_ : SFinite (volume : Measure (G.UT 1 → ℂ)) := inferInstance`.
-
-Use `haveI a10_ : SFinite (volume : Measure (Fin 1 → ℝ)) := inferInstance`. Use `haveI a11_ : SFinite (volume : Measure (Fin 1 → Fin j → ℂ)) := inferInstance`. Use `haveI a12_ : SFinite (volume : Measure (G.UT (j + 1) → ℂ)) := inferInstance`. Use `haveI a13_ : SFinite (volume : Measure (Fin (j + 1) → ℝ)) := inferInstance`. Use `haveI a14_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin (j + 1) → ℂ)) := inferInstance`.
-
-Use `haveI hP : ∀ {α β : Type} [MeasureSpace α] [MeasureSpace β] [SFinite (volume : Measure α)] [SFinite (volume : Measure β)], SFinite (volume : Measure (α × β)) := fun {_ _} _ _ _ _ => inferInstance`. Establish `g0` using `measurePreserving_prod_map (measurePreserving_prod_map (splitX_mp (k := k) (j := j) (ρ := ρ)) (MeasurePreserving.id (volume : Measure ((G.UT j → ℂ) × (Fin j → ℝ))))) (measurePreserving_prod_map (cy_mp (k := k) (ρ := ρ)) dy_mp)`. Establish `g1` using `MeasurePreserving.comp (measurePreserving_prod_map (measurePreserving_prod_map measurePreserving_prod_swap (MeasurePreserving.id _)) (MeasurePreserving.id _)) g0`. Establish `g2` using `MeasurePreserving.comp (measurePreserving_prod_map measurePreserving_prod_assoc (MeasurePreserving.id _)) g1`. Establish `g3` using `MeasurePreserving.comp (measurePreserving_prod_map (measurePreserving_prod_map (MeasurePreserving.id _) (measurePreserving_prod_map measurePreserving_prod_swap (MeasurePreserving.id _))) (MeasurePreserving.id _)) g2`.
-
-Establish `g4` using `MeasurePreserving.comp measurePreserving_prod_assoc g3`. Establish `g5` using `MeasurePreserving.comp (measurePreserving_prod_map (MeasurePreserving.id _) measurePreserving_prod_swap) g4`. Establish `g6` using `MeasurePreserving.comp measurePreserving_prod_assoc_symm g5`. Establish `g7` using `MeasurePreserving.comp (measurePreserving_prod_map measurePreserving_prod_assoc_symm (MeasurePreserving.id _)) g6`. Conclude with `g7`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem srcQ_mp : MeasurePreserving (srcQ (k := k) (j := j) (ρ := ρ)) volume volume := by
   haveI a0_ : SFinite (volume : Measure (ℝ)) := inferInstance
@@ -204,13 +192,13 @@ def phiQ (b : Bq k j ρ) : Bq k j ρ := ((-(G.wMat j *ᵥ b.1.1), b.1.2), b.2)
 def coreQ (p : Bq k j ρ × Fq k j ρ) : Bq k j ρ × Fq k j ρ := (phiQ p.1, psiQ p.1 p.2)
 
 /- English proof (translation)
-Use `haveI hP : ∀ {α β : Type} [MeasureSpace α] [MeasureSpace β] [SFinite (volume : Measure α)] [SFinite (volume : Measure β)], SFinite (volume : Measure (α × β)) := fun {_ _} _ _ _ _ => inferInstance`. Establish `hw : ∀ v : Fin j → ℂ, G.wMat j *ᵥ v = fun i : Fin j => v i.rev`. Introduce `v`. Use function extensionality and compare the values at `i`. Simplify using `[G.wMat, Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hr : MeasurePreserving (fun v : Fin j → ℂ => fun i : Fin j => v i.rev) volume volume`. Use `volume_measurePreserving_piCongrLeft (fun _ : Fin j => ℂ) Fin.revPerm` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v i`. Take `⟨i', rfl⟩` from `Fin.revPerm.surjective i`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Use `first`. Consider the case `(rw [MeasurableEquiv.piCongrLeft_apply_apply]; simp)`. Consider the case `(rw [MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_apply]; simp)`. Establish `hn : MeasurePreserving (fun v : Fin j → ℂ => -(G.wMat j *ᵥ v)) volume volume`. Repeatedly rewrite using `[hw]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact (Measure.measurePreserving_neg volume).comp hr`. Consider the case `exact (volume_preserving_pi fun _ => Measure.measurePreserving_neg (volume : Measure ℂ)).comp hr`. Conclude with `measurePreserving_prod_map (measurePreserving_prod_map hn (MeasurePreserving.id _)) (MeasurePreserving.id _)`.
+A detailed English derivation is pending.
 -/
 theorem phiQ_mp : MeasurePreserving (phiQ (k := k) (j := j) (ρ := ρ)) volume volume := by
   haveI hP : ∀ {α β : Type} [MeasureSpace α] [MeasureSpace β] [SFinite (volume : Measure α)]
@@ -233,7 +221,7 @@ theorem phiQ_mp : MeasurePreserving (phiQ (k := k) (j := j) (ρ := ρ)) volume v
   exact measurePreserving_prod_map (measurePreserving_prod_map hn (MeasurePreserving.id _)) (MeasurePreserving.id _)
 
 /- English proof (translation)
-Use `continuous_pi fun a => ?_` and prove the remaining obligations. Simplify using `only [uuQ, Matrix.vecMul, dotProduct, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cont_uuQ (cy' : Fin (2 * ρ + k + 1) → ℂ) :
     Continuous (fun cm' : Fin (2 * ρ + k + 1) → Fin j → ℂ => uuQ (k := k) (ρ := ρ) cy' cm') := by
@@ -242,7 +230,7 @@ theorem cont_uuQ (cy' : Fin (2 * ρ + k + 1) → ℂ) :
   fun_prop
 
 /- English proof (translation)
-Use `continuous_pi fun a => ?_` and prove the remaining obligations. Simplify using `only [uuQ', Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cont_uuQ' (cy' : Fin (2 * ρ + k + 1) → ℂ) :
     Continuous (fun cm' : Fin (2 * ρ + k + 1) → Fin j → ℂ => uuQ' (k := k) (ρ := ρ) cy' cm') := by
@@ -251,7 +239,7 @@ theorem cont_uuQ' (cy' : Fin (2 * ρ + k + 1) → ℂ) :
   fun_prop
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun c => ?_` and prove the remaining obligations. Simplify using `only [dltQ, uuQ', Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.vecMulVec_apply, Matrix.conjTranspose_apply, Pi.star_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cont_dltQ (b : Bq k j ρ) :
     Continuous (fun q : (Fin (2 * ρ + k + 1) → Fin j → ℂ) × (Fin j → ℂ) => dltQ b q.1 q.2) := by
@@ -262,19 +250,9 @@ theorem cont_dltQ (b : Bq k j ρ) :
   fun_prop
 
 /- English proof (translation)
-Use `haveI a0_ : SFinite (volume : Measure (ℝ)) := inferInstance`. Use `haveI a1_ : SFinite (volume : Measure (ℂ)) := inferInstance`. Use `haveI a2_ : SFinite (volume : Measure (Fin j → ℂ)) := inferInstance`. Use `haveI a3_ : SFinite (volume : Measure (Fin j → ℝ)) := inferInstance`. Use `haveI a4_ : SFinite (volume : Measure (G.UT j → ℂ)) := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `haveI a5_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → ℂ)) := inferInstance`. Use `haveI a6_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin j → ℂ)) := inferInstance`. Use `haveI a7_ : SFinite (volume : Measure (Fin (2 * (1 + ρ) + k + 1) → Fin j → ℂ)) := inferInstance`. Use `haveI a8_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin 1 → ℂ)) := inferInstance`. Use `haveI a9_ : SFinite (volume : Measure (G.UT 1 → ℂ)) := inferInstance`.
-
-Use `haveI a10_ : SFinite (volume : Measure (Fin 1 → ℝ)) := inferInstance`. Use `haveI a11_ : SFinite (volume : Measure (Fin 1 → Fin j → ℂ)) := inferInstance`. Use `haveI a12_ : SFinite (volume : Measure (G.UT (j + 1) → ℂ)) := inferInstance`. Use `haveI a13_ : SFinite (volume : Measure (Fin (j + 1) → ℝ)) := inferInstance`. Use `haveI a14_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin (j + 1) → ℂ)) := inferInstance`.
-
-Use `haveI hP : ∀ {α β : Type} [MeasureSpace α] [MeasureSpace β] [SFinite (volume : Measure α)] [SFinite (volume : Measure β)], SFinite (volume : Measure (α × β)) := fun {_ _} _ _ _ _ => inferInstance`. Use `haveI i1 : SigmaFinite (volume : Measure (G.UT j → ℂ)) := inferInstance`. Use `haveI i2 : SigmaFinite (volume : Measure (Fin j → ℝ)) := inferInstance`. Use `haveI i3 : SFinite (volume : Measure ((G.UT j → ℂ) × (Fin j → ℝ))) := inferInstance`. Establish `hu` using `cont_uuQ (k := k) (j := j) (ρ := ρ) b.1.2`.
-
-Establish `h1 : MeasurePreserving (fun p : (Fin (2 * ρ + k + 1) → Fin j → ℂ) × (Fin j → ℂ) => (p.1 + outerProductMatrix b, p.2 + rrQ b p.1)) volume volume`. Use `(measurePreserving_add_right volume (outerProductMatrix b)).skew_product (μc := volume) (μd := volume) (g := fun a c => c + rrQ b a) ?_ ?_` and prove the remaining obligations. Establish `hc : Continuous fun p : (Fin (2 * ρ + k + 1) → Fin j → ℂ) × (Fin j → ℂ) => p.2 + rrQ b p.1`. Unfold `rrQ`. Use `fun_prop`.
-
-Conclude with `hc.measurable`. Conclude with `Filter.Eventually.of_forall fun a => (measurePreserving_add_right volume (rrQ b a)).map_eq`. Establish `hd : Continuous fun x : ((Fin (2 * ρ + k + 1) → Fin j → ℂ) × (Fin j → ℂ)) × ((G.UT j → ℂ) × (Fin j → ℝ)) => dltQ b x.1.1 x.1.2` using `(cont_dltQ b).comp continuous_fst`. Establish `h2` using `h1.skew_product (μc := volume) (μd := volume) (g := fun (p : (Fin (2 * ρ + k + 1) → Fin j → ℂ) × (Fin j → ℂ)) (q : (G.UT j → ℂ) × (Fin j → ℝ)) => q + ((fun r : G.UT j => dltQ b p.1 p.2 r.1.1 r.1.2), (fun a => (dltQ b p.1 p.2 a a).im))) ?_ ?_`. Conclude with `h2`.
-
-Use `Continuous.measurable ?_` and prove the remaining obligations. Use `continuous_snd.add (Continuous.prodMk (continuous_pi fun r => ?_) (continuous_pi fun a => ?_))` and prove the remaining obligations. Conclude with `(continuous_apply r.1.2).comp ((continuous_apply r.1.1).comp hd)`. Conclude with `Complex.continuous_im.comp ((continuous_apply a).comp ((continuous_apply a).comp hd))`. Conclude with `Filter.Eventually.of_forall fun p => (measurePreserving_prod_map (measurePreserving_add_right volume (fun r : G.UT j => dltQ b p.1 p.2 r.1.1 r.1.2)) (measurePreserving_add_right volume (fun a => (dltQ b p.1 p.2 a a).im))).map_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem psiQ_mp (b : Bq k j ρ) : MeasurePreserving (psiQ b) volume volume := by
   haveI a0_ : SFinite (volume : Measure (ℝ)) := inferInstance
@@ -321,7 +299,7 @@ theorem psiQ_mp (b : Bq k j ρ) : MeasurePreserving (psiQ b) volume volume := by
         (measurePreserving_add_right volume (fun a => (dltQ b p.1 p.2 a a).im))).map_eq
 
 /- English proof (translation)
-Apply the tactic sequence `refine Continuous.prodMk (Continuous.prodMk ?_ ?_) (Continuous.prodMk ?_ ?_) <;>`. Apply the tactic sequence `refine continuous_pi fun a => ?_ <;> (try refine continuous_pi fun c => ?_) <;>`. Apply the tactic sequence `simp only [psiQ, outerProductMatrix, rrQ, dltQ, uuQ, uuQ', Pi.add_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.vecMulVec_apply, Matrix.conjTranspose_apply, Pi.star_apply, smul_eq_mul, Matrix.mulVec, Matrix.vecMul, dotProduct, Matrix.mul_apply, Matrix.of_ap …`. Use `fun_prop`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cont_psiQ : Continuous (fun p : Bq k j ρ × Fq k j ρ => psiQ p.1 p.2) := by
   refine Continuous.prodMk (Continuous.prodMk ?_ ?_) (Continuous.prodMk ?_ ?_) <;>
@@ -333,15 +311,7 @@ theorem cont_psiQ : Continuous (fun p : Bq k j ρ × Fq k j ρ => psiQ p.1 p.2) 
     fun_prop
 
 /- English proof (translation)
-Use `haveI a0_ : SFinite (volume : Measure (ℝ)) := inferInstance`. Use `haveI a1_ : SFinite (volume : Measure (ℂ)) := inferInstance`. Use `haveI a2_ : SFinite (volume : Measure (Fin j → ℂ)) := inferInstance`. Use `haveI a3_ : SFinite (volume : Measure (Fin j → ℝ)) := inferInstance`. Use `haveI a4_ : SFinite (volume : Measure (G.UT j → ℂ)) := inferInstance`.
-
-Use `haveI a5_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → ℂ)) := inferInstance`. Use `haveI a6_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin j → ℂ)) := inferInstance`. Use `haveI a7_ : SFinite (volume : Measure (Fin (2 * (1 + ρ) + k + 1) → Fin j → ℂ)) := inferInstance`. Use `haveI a8_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin 1 → ℂ)) := inferInstance`. Use `haveI a9_ : SFinite (volume : Measure (G.UT 1 → ℂ)) := inferInstance`.
-
-Use `haveI a10_ : SFinite (volume : Measure (Fin 1 → ℝ)) := inferInstance`. Use `haveI a11_ : SFinite (volume : Measure (Fin 1 → Fin j → ℂ)) := inferInstance`. Use `haveI a12_ : SFinite (volume : Measure (G.UT (j + 1) → ℂ)) := inferInstance`. Use `haveI a13_ : SFinite (volume : Measure (Fin (j + 1) → ℝ)) := inferInstance`. Use `haveI a14_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin (j + 1) → ℂ)) := inferInstance`.
-
-Use `haveI hP : ∀ {α β : Type} [MeasureSpace α] [MeasureSpace β] [SFinite (volume : Measure α)] [SFinite (volume : Measure β)], SFinite (volume : Measure (α × β)) := fun {_ _} _ _ _ _ => inferInstance`. Use `haveI o1 : SecondCountableTopology (G.UT j → ℂ) := inferInstance`. Use `haveI o2 : OpensMeasurableSpace (Fq k j ρ) := inferInstance`. Use `haveI o3 : OpensMeasurableSpace (Bq k j ρ) := inferInstance`. Use `haveI o4 : OpensMeasurableSpace (Bq k j ρ × Fq k j ρ) := inferInstance`.
-
-Conclude with `phiQ_mp.skew_product (μc := volume) (μd := volume) (g := psiQ) cont_psiQ.measurable (Filter.Eventually.of_forall fun b => (psiQ_mp b).map_eq)`.
+A detailed English derivation is pending.
 -/
 theorem coreQ_mp : MeasurePreserving (coreQ (k := k) (j := j) (ρ := ρ)) volume volume := by
   haveI a0_ : SFinite (volume : Measure (ℝ)) := inferInstance
@@ -380,7 +350,7 @@ def consR {α : Type*} [MeasurableSpace α] (p : (Fin j → α) × α) : Fin (j 
   (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (j + 1) => α) 0).symm (p.2, p.1)
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [consR]`. Consider the case `simp [consR, MeasurableEquiv.piFinSuccAbove_symm_apply]`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem consR_zero {α : Type*} [MeasurableSpace α] (p : (Fin j → α) × α) : consR p 0 = p.2 := by
   first
@@ -389,7 +359,7 @@ theorem consR_zero {α : Type*} [MeasurableSpace α] (p : (Fin j → α) × α) 
   | rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [consR]`. Consider the case `simp [consR, MeasurableEquiv.piFinSuccAbove_symm_apply]`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem consR_succ {α : Type*} [MeasurableSpace α] (p : (Fin j → α) × α) (b : Fin j) : consR p b.succ = p.1 b := by
   first
@@ -398,7 +368,7 @@ theorem consR_succ {α : Type*} [MeasurableSpace α] (p : (Fin j → α) × α) 
   | rfl
 
 /- English proof (translation)
-Conclude with `(MeasurePreserving.symm _ (measurePreserving_piFinSuccAbove (fun _ => (volume : Measure α)) 0)).comp Measure.measurePreserving_swap`.
+A detailed English derivation is pending.
 -/
 theorem consR_mp {α : Type*} [MeasureSpace α] [SigmaFinite (volume : Measure α)] :
     MeasurePreserving (consR (j := j) (α := α)) volume volume := by
@@ -409,7 +379,7 @@ def combF (p : (Fin (2 * ρ + k + 1) → Fin j → ℂ) × (Fin (2 * ρ + k + 1)
     Fin (2 * ρ + k + 1) → Fin (j + 1) → ℂ := fun v => consR (p.1 v, p.2 v)
 
 /- English proof (translation)
-Conclude with `(volume_preserving_pi fun _ => consR_mp).comp (MeasurePreserving.symm _ (measurePreserving_arrowProdEquivProdArrow _ _ _ (fun _ => volume) (fun _ => volume)))`.
+A detailed English derivation is pending.
 -/
 theorem combF_mp : MeasurePreserving (combF (k := k) (j := j) (ρ := ρ)) volume volume := by
   exact (volume_preserving_pi fun _ => consR_mp).comp
@@ -424,19 +394,13 @@ def rearrQ (p : Bq k j ρ × Fq k j ρ) :
   (((p.2.1.1, p.1.1.2), ((p.2.1.2, p.2.2.1), (p.2.2.2, p.1.2))), p.1.1.1)
 
 /- English proof (translation)
-Use `haveI a0_ : SFinite (volume : Measure (ℝ)) := inferInstance`. Use `haveI a1_ : SFinite (volume : Measure (ℂ)) := inferInstance`. Use `haveI a2_ : SFinite (volume : Measure (Fin j → ℂ)) := inferInstance`. Use `haveI a3_ : SFinite (volume : Measure (Fin j → ℝ)) := inferInstance`. Use `haveI a4_ : SFinite (volume : Measure (G.UT j → ℂ)) := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI a5_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → ℂ)) := inferInstance`. Use `haveI a6_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin j → ℂ)) := inferInstance`. Use `haveI a7_ : SFinite (volume : Measure (Fin (2 * (1 + ρ) + k + 1) → Fin j → ℂ)) := inferInstance`. Use `haveI a8_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin 1 → ℂ)) := inferInstance`. Use `haveI a9_ : SFinite (volume : Measure (G.UT 1 → ℂ)) := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI a10_ : SFinite (volume : Measure (Fin 1 → ℝ)) := inferInstance`. Use `haveI a11_ : SFinite (volume : Measure (Fin 1 → Fin j → ℂ)) := inferInstance`. Use `haveI a12_ : SFinite (volume : Measure (G.UT (j + 1) → ℂ)) := inferInstance`. Use `haveI a13_ : SFinite (volume : Measure (Fin (j + 1) → ℝ)) := inferInstance`. Use `haveI a14_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin (j + 1) → ℂ)) := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hP : ∀ {α β : Type} [MeasureSpace α] [MeasureSpace β] [SFinite (volume : Measure α)] [SFinite (volume : Measure β)], SFinite (volume : Measure (α × β)) := fun {_ _} _ _ _ _ => inferInstance`. Establish `g0` using `(MeasurePreserving.id (volume : Measure (Bq k j ρ × Fq k j ρ)))`. Establish `g1` using `MeasurePreserving.comp (measurePreserving_prod_map measurePreserving_prod_assoc (MeasurePreserving.id _)) g0`. Establish `g2` using `MeasurePreserving.comp (measurePreserving_prod_map measurePreserving_prod_swap (MeasurePreserving.id _)) g1`. Establish `g3` using `MeasurePreserving.comp measurePreserving_prod_swap g2`.
-
-Establish `g4` using `MeasurePreserving.comp measurePreserving_prod_assoc_symm g3`. Establish `g5` using `MeasurePreserving.comp (measurePreserving_prod_map (measurePreserving_prod_map measurePreserving_prod_assoc (MeasurePreserving.id _)) (MeasurePreserving.id _)) g4`. Establish `g6` using `MeasurePreserving.comp (measurePreserving_prod_map (measurePreserving_prod_map (measurePreserving_prod_map (MeasurePreserving.id _) measurePreserving_prod_assoc_symm) (MeasurePreserving.id _)) (MeasurePreserving.id _)) g5`. Establish `g7` using `MeasurePreserving.comp (measurePreserving_prod_map (measurePreserving_prod_map measurePreserving_prod_assoc_symm (MeasurePreserving.id _)) (MeasurePreserving.id _)) g6`. Establish `g8` using `MeasurePreserving.comp (measurePreserving_prod_map measurePreserving_prod_assoc (MeasurePreserving.id _)) g7`.
-
-Establish `g9` using `MeasurePreserving.comp (measurePreserving_prod_map (measurePreserving_prod_map (MeasurePreserving.id _) measurePreserving_prod_assoc_symm) (MeasurePreserving.id _)) g8`. Establish `g10` using `MeasurePreserving.comp (measurePreserving_prod_map (measurePreserving_prod_map (MeasurePreserving.id _) (measurePreserving_prod_map measurePreserving_prod_swap (MeasurePreserving.id _))) (MeasurePreserving.id _)) g9`. Establish `g11` using `MeasurePreserving.comp (measurePreserving_prod_map (measurePreserving_prod_map (MeasurePreserving.id _) measurePreserving_prod_assoc) (MeasurePreserving.id _)) g10`. Establish `g12` using `MeasurePreserving.comp (measurePreserving_prod_map measurePreserving_prod_assoc (MeasurePreserving.id _)) g11`. Establish `g13` using `MeasurePreserving.comp (measurePreserving_prod_map (measurePreserving_prod_map (MeasurePreserving.id _) measurePreserving_prod_assoc_symm) (MeasurePreserving.id _)) g12`.
-
-Establish `g14` using `MeasurePreserving.comp (measurePreserving_prod_map (measurePreserving_prod_map (MeasurePreserving.id _) (measurePreserving_prod_map measurePreserving_prod_swap (MeasurePreserving.id _))) (MeasurePreserving.id _)) g13`. Establish `g15` using `MeasurePreserving.comp (measurePreserving_prod_map (measurePreserving_prod_map (MeasurePreserving.id _) measurePreserving_prod_assoc) (MeasurePreserving.id _)) g14`. Establish `g16` using `MeasurePreserving.comp (measurePreserving_prod_map measurePreserving_prod_assoc_symm (MeasurePreserving.id _)) g15`. Conclude with `g16`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rearrQ_mp : MeasurePreserving (rearrQ (k := k) (j := j) (ρ := ρ)) volume volume := by
   haveI a0_ : SFinite (volume : Measure (ℝ)) := inferInstance
@@ -476,15 +440,7 @@ theorem rearrQ_mp : MeasurePreserving (rearrQ (k := k) (j := j) (ρ := ρ)) volu
   exact g16
 
 /- English proof (translation)
-Use `haveI a0_ : SFinite (volume : Measure (ℝ)) := inferInstance`. Use `haveI a1_ : SFinite (volume : Measure (ℂ)) := inferInstance`. Use `haveI a2_ : SFinite (volume : Measure (Fin j → ℂ)) := inferInstance`. Use `haveI a3_ : SFinite (volume : Measure (Fin j → ℝ)) := inferInstance`. Use `haveI a4_ : SFinite (volume : Measure (G.UT j → ℂ)) := inferInstance`.
-
-Use `haveI a5_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → ℂ)) := inferInstance`. Use `haveI a6_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin j → ℂ)) := inferInstance`. Use `haveI a7_ : SFinite (volume : Measure (Fin (2 * (1 + ρ) + k + 1) → Fin j → ℂ)) := inferInstance`. Use `haveI a8_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin 1 → ℂ)) := inferInstance`. Use `haveI a9_ : SFinite (volume : Measure (G.UT 1 → ℂ)) := inferInstance`.
-
-Use `haveI a10_ : SFinite (volume : Measure (Fin 1 → ℝ)) := inferInstance`. Use `haveI a11_ : SFinite (volume : Measure (Fin 1 → Fin j → ℂ)) := inferInstance`. Use `haveI a12_ : SFinite (volume : Measure (G.UT (j + 1) → ℂ)) := inferInstance`. Use `haveI a13_ : SFinite (volume : Measure (Fin (j + 1) → ℝ)) := inferInstance`. Use `haveI a14_ : SFinite (volume : Measure (Fin (2 * ρ + k + 1) → Fin (j + 1) → ℂ)) := inferInstance`.
-
-Use `haveI hP : ∀ {α β : Type} [MeasureSpace α] [MeasureSpace β] [SFinite (volume : Measure α)] [SFinite (volume : Measure β)], SFinite (volume : Measure (α × β)) := fun {_ _} _ _ _ _ => inferInstance`. Establish `hc : MeasurePreserving (fun x : Fin j → ℂ => fun _ : Fin 1 => x) volume volume`. Use `MeasurePreserving.symm _ (volume_preserving_funUnique (Fin 1) (Fin j → ℂ)) using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`. Consider the case `rfl`.
-
-Consider the case `(funext x i; rw [Subsingleton.elim i default]; first | rfl | simp)`. Conclude with `MeasurePreserving.comp (measurePreserving_prod_map (measurePreserving_prod_map (combF_mp (k := k) (j := j) (ρ := ρ)) (measurePreserving_prod_map combU_mp consR_mp)) hc) rearrQ_mp`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tgtQ_mp : MeasurePreserving (tgtQ (k := k) (j := j) (ρ := ρ)) volume volume := by
   haveI a0_ : SFinite (volume : Measure (ℝ)) := inferInstance
@@ -528,7 +484,7 @@ theorem dltQ_eq (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) :
   rfl
 
 /- English proof (translation)
-Unfold `rrQ uuQ r0`. Simplify using `only [Matrix.vecMul_vecMul, neg_smul, sub_eq_add_neg, add_assoc]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem rrQ_eq (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) :
     ct x + rrQ (((cb x, cy y), dy y) : Bq k j ρ) (cm x) = r0 x y := by
@@ -537,17 +493,17 @@ theorem rrQ_eq (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) :
   rfl
 
 /- English proof (translation)
-Take `⟨x, y⟩` from `z`. Establish `key : ∀ (r : Fin j → ℂ) (u : G.UT j → ℂ) (s : Fin j ⊕ G.UT j), combU (r, u) (eZ s) = Sum.elim r u s`. Introduce `r u s`. Simplify using `only [combU]`. Use `first`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `(rw [MeasurableEquiv.piCongrLeft_apply_apply]; cases s <;> rfl)`. Consider the case `(rw [MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_apply]; cases s <;> rfl)`. Simplify using `only [XC, aC, tgtQ, coreQ, psiQ, phiQ, srcQ, Prod.mk.injEq]`. Use `⟨⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v b`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun b' => ?_) b` and prove the remaining obligations. Apply the tactic sequence `simp only [combF, consR_zero, CX, Fin.cases_zero] try rfl`. Apply the tactic sequence `simp only [combF, consR_succ, CX, outerProductMatrix, Fin.cases_succ, Pi.add_apply] try rfl`. Use function extensionality and compare the values at `q`. Take `⟨s, rfl⟩` from `(eZ (j := j)).surjective q`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Break down `s with b | p` into its components or cases. Express the relevant statement in the definitionally equal form `SX x y 0 b.succ = _`. Simplify using `only [Sum.elim_inl, rrQ_eq, SX, Fin.cases_zero, Fin.cases_succ]`. Express the relevant statement in the definitionally equal form `SX x y p.1.1.succ p.1.2.succ = _`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inr, Pi.add_apply, dltQ_eq, SX, Fin.cases_succ]`. Use `congr 1`. Simplify using `[U.skewOf, G.strictUpper, Matrix.conjTranspose_apply, p.2, not_lt_of_gt p.2, Matrix.diagonal_apply_ne _ (ne_of_lt p.2)]`. Use function extensionality and compare the values at `a`. Use `Fin.cases ?_ (fun a' => ?_) a` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[SX, consR_zero]`. Simplify using `[SX, consR_succ, U.skewOf, G.strictUpper, dltQ_eq]`. Use function extensionality and compare the values at `c b`. Simplify using `[G.wMat, Matrix.mulVec, dotProduct]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem PsiL_eq (z : U.RC k j (1 + ρ) × U.RC k 1 ρ) :
     (XC z.1 z.2, aC z.1) = tgtQ (coreQ (srcQ z)) := by
@@ -586,7 +542,7 @@ theorem PsiL_eq (z : U.RC k j (1 + ρ) × U.RC k 1 ρ) :
     rfl
 
 /- English proof (translation)
-Establish `e : (fun z : U.RC k j (1 + ρ) × U.RC k 1 ρ => (XC z.1 z.2, aC z.1)) = tgtQ ∘ coreQ ∘ srcQ`. Use function extensionality and compare the values at `PsiL_eq`. Rewrite using `[e]`. Conclude with `tgtQ_mp.comp (coreQ_mp.comp srcQ_mp)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PsiL_mp : MeasurePreserving (fun z : U.RC k j (1 + ρ) × U.RC k 1 ρ => (XC z.1 z.2, aC z.1)) volume volume := by
   have e : (fun z : U.RC k j (1 + ρ) × U.RC k 1 ρ => (XC z.1 z.2, aC z.1)) = tgtQ ∘ coreQ ∘ srcQ :=

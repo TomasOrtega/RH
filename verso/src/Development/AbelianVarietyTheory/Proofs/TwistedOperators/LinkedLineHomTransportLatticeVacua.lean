@@ -19,11 +19,11 @@ namespace GlobalTheory.KapVac
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[Int.cast_one, one_mul]`. Establish `e : star ζ' ⬝ᵥ (l.τᴴ ⬝ (L.gram ⬝ l.τ)) *ᵥ ζ' = star ζ' ⬝ᵥ ((D.host.xi0 * star D.host.xi0) • L.gram) *ᵥ ζ'`. Rewrite using `[← Matrix.mulVec_mulVec, dotProduct_mulVec, ← Matrix.star_mulVec, ← Matrix.mulVec_mulVec, l.map, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, ← l.norm, star_neg, Matrix.mulVec_neg, neg_dotProduct_neg]`. Establish `hu : Unique (Fin L.rank)` using `by rw [h.1]; infer_instance`. Establish `h2` using `h.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [dotProduct, Matrix.mulVec, Fintype.sum_unique] at e h2`. Use function extensionality and compare the values at `i j`. Rewrite using `[Subsingleton.elim i default, Subsingleton.elim j default]`. Establish `a : star ζ' default ≠ 0` using `left_ne_zero_of_mul h2`. Establish `b : ζ' default ≠ 0` using `right_ne_zero_of_mul (right_ne_zero_of_mul h2)`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c` using `mul_left_cancel₀ a e`. Conclude with `mul_right_cancel₀ b c`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lnk_simil {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec L ζ') (l : Lnk L ζ L ζ') :
     l.τᴴ ⬝ (L.gram ⬝ l.τ) = (((1 : ℤ) : D.host.E) * (D.host.xi0 * star D.host.xi0)) • L.gram := by
@@ -43,11 +43,9 @@ theorem lnk_simil {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec 
   exact mul_right_cancel₀ b c
 
 /- English proof (translation)
-Introduce `h0`. Establish `e` using `l.map`. Rewrite `e` using `[h0, Matrix.zero_mulVec]`. Establish `hz : ζ = 0` using `neg_eq_zero.mp e.symm`. Establish `n : D.host.xi0 * star D.host.xi0 * (star ζ' ⬝ᵥ L.gram *ᵥ ζ') = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← l.norm, hz]`. Simplify using the standard rewrite rules. Break down `mul_eq_zero.1 n with h1 | h1` into its components or cases. Break down `mul_eq_zero.1 h1 with h3 | h3` into its components or cases. Conclude with `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D h3`.
-
-Conclude with `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D (star_eq_zero.1 h3)`. Conclude with `h.2 h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem lnk_tau_ne {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec L ζ') (l : Lnk L ζ L ζ') : l.τ ≠ 0 := by
   intro h0
@@ -63,7 +61,7 @@ theorem lnk_tau_ne {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec
   · exact h.2 h1
 
 /- English proof (translation)
-Take `⟨σ, _, hτσ⟩` from `GlobalTheory.Unf.LinkGram.exists_inv_of_rank_one h.1 h.1 l.τ (lnk_tau_ne h l)`. Introduce `x`. Use `⟨(rat σ : Mx D L.rank L.rank) ⬝ GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj L S x, ?_⟩` and prove the remaining obligations. Rewrite using `[Lnk.κ, ← Matrix.mul_assoc, ← rat_mul, hτσ, rat_one, Matrix.one_mul, GlobalTheory.Unf.LinkGram.ofAdj_starAdj]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_surj {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec L ζ') (l : Lnk L ζ L ζ') (S : HSp D) :
     Function.Surjective (l.κ S) := by
@@ -73,14 +71,14 @@ theorem kap_surj {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec L
   rw [Lnk.κ, ← Matrix.mul_assoc, ← rat_mul, hτσ, rat_one, Matrix.one_mul, GlobalTheory.Unf.LinkGram.ofAdj_starAdj]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.LinkKappa.kappa_props D L L S l.τ 1 (lnk_simil h l) (l.κ S) (fun _ => rfl)).1 v w`.
+A detailed English derivation is pending.
 -/
 theorem kap_add {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec L ζ') (l : Lnk L ζ L ζ') (S : HSp D)
     (v w : WO S L) : l.κ S (v + w) = l.κ S v + l.κ S w :=
   (GlobalTheory.LinkKappa.kappa_props D L L S l.τ 1 (lnk_simil h l) (l.κ S) (fun _ => rfl)).1 v w
 
 /- English proof (translation)
-Establish `e` using `(GlobalTheory.LinkKappa.kappa_props D L L S l.τ 1 (lnk_simil h l) (l.κ S) (fun _ => rfl)).2.2.2.2.1 v w`. Unfold `symplOH`. Rewrite using `[e, Int.cast_one, one_mul, mul_neg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_sympl {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec L ζ') (l : Lnk L ζ L ζ') (S : HSp D)
     (v w : WO S L) : symplOH L S (l.κ S v) (l.κ S w) = -symplOH S L v w := by
@@ -89,9 +87,9 @@ theorem kap_sympl {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec 
   rw [e, Int.cast_one, one_mul, mul_neg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Take `⟨v, rfl⟩` from `kap_surj h l S x`. Establish `e` using `congrFun hw v`. Simplify using `only [heisO] at e`. Establish `e2` using `congrArg (starRingEnd ℂ) e`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `e2` using `[map_mul, GlobalTheory.AdjLawPf.conj_psi ψ hψ]`. Simplify using `only [starRingEnd_apply, star_star] at e2`. Simplify using `only [heisO]`. Rewrite using `[kap_sympl h l, ← kap_add h l]`. Conclude with `e2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_heis (ψ : AddChar (AF D.host.F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1) {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E}
     (h : IsLineVec L ζ') (l : Lnk L ζ L ζ') (S : HSp D) (Ξ : WO L S → ℂ) (w' : WO S L)
@@ -109,7 +107,7 @@ theorem kap_heis (ψ : AddChar (AF D.host.F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1) 
   exact e2
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem half_mul_left {m n k : ℕ} {e : AE D} (M : Mx D m n) {x : Mx D n k} (hx : IsHalf e x) : IsHalf e (M ⬝ x) := by
   intro i j
@@ -117,7 +115,7 @@ theorem half_mul_left {m n k : ℕ} {e : AE D} (M : Mx D m n) {x : Mx D n k} (hx
   exact Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, hx]
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [← mul_assoc, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem half_mul_right {m n k : ℕ} {e : AE D} {x : Mx D m n} (hx : IsHalf e x) (M : Mx D n k) : IsHalf e (x ⬝ M) := by
   intro i j
@@ -125,14 +123,14 @@ theorem half_mul_right {m n k : ℕ} {e : AE D} {x : Mx D m n} (hx : IsHalf e x)
   exact Finset.sum_congr rfl fun l _ => by rw [← mul_assoc, hx]
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, mul_left_comm, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_smul {m n : ℕ} {e : AE D} (c : AE D) {x : Mx D m n} (hx : IsHalf e x) : IsHalf e (c • x) := by
   intro i j
   rw [Matrix.smul_apply, smul_eq_mul, mul_left_comm, hx]
 
 /- English proof (translation)
-Introduce `i j`. Use `show cA D e * cA D (x j i) = cA D (x j i)`. Rewrite using `[← map_mul, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_adj {m n : ℕ} {e : AE D} {x : Mx D m n} (hx : IsHalf e x) : IsHalf (cA D e) (adj x) := by
   intro i j
@@ -140,7 +138,7 @@ theorem half_adj {m n : ℕ} {e : AE D} {x : Mx D m n} (hx : IsHalf e x) : IsHal
   rw [← map_mul, hx]
 
 /- English proof (translation)
-Take `⟨h1, h2, v, ε, hv, h3⟩` from `he`. Conclude with `⟨by rw [← map_mul, h1], by rw [GlobalTheory.DualPairCheck.cA_cA, mul_comm, h2], v, ε, hv, by rw [GlobalTheory.DualPairCheck.cA_cA, add_comm, h3]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem split_conj {e : AE D} (he : IsSplitIdem D e) : IsSplitIdem D (cA D e) := by
   obtain ⟨h1, h2, v, ε, hv, h3⟩ := he
@@ -148,7 +146,7 @@ theorem split_conj {e : AE D} (he : IsSplitIdem D e) : IsSplitIdem D (cA D e) :=
     by rw [GlobalTheory.DualPairCheck.cA_cA, add_comm, h3]⟩
 
 /- English proof (translation)
-Take `⟨σ, hστ, _⟩` from `GlobalTheory.Unf.LinkGram.exists_inv_of_rank_one h.1 h.1 l.τ (lnk_tau_ne h l)`. Establish `h1 : IsHalf (cA D e) (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj L S (l.κ S w))` using `half_smul _ (half_mul_left _ (half_mul_right (half_adj hh) _))`. Rewrite `h1` using `[Lnk.κ, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj_ofAdj]`. Establish `h2` using `half_mul_left (rat σ : Mx D L.rank L.rank) h1`. Rewrite `h2` using `[← Matrix.mul_assoc, ← rat_mul, hστ, rat_one, Matrix.one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem kap_half {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec L ζ') (l : Lnk L ζ L ζ') (S : HSp D)
     {e : AE D} {w : WO S L} (hh : IsHalf e (l.κ S w)) : IsHalf (cA D e) w := by
@@ -160,9 +158,7 @@ theorem kap_half {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec L
   rwa [← Matrix.mul_assoc, ← rat_mul, hστ, rat_one, Matrix.one_mul] at h2
 
 /- English proof (translation)
-Introduce `D ψ hψ L S ζ ζ' h l Λ Ξ hv w hw`. Use `⟨?_, fun e he hh => ?_⟩` and prove the remaining obligations. Establish `e2 : (2 • l.κ S w : WO L S) = l.κ S (2 • w)` using `by rw [two_nsmul, two_nsmul, kap_add h l]`. Rewrite using `[e2]`. Conclude with `kap_heis ψ hψ h l S Ξ _ (hv.1 w hw)`.
-
-Conclude with `kap_heis ψ hψ h l S Ξ w (hv.2 (cA D e) (split_conj he) w hw (kap_half h l S hh))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kappa_vac : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), (∀ x, ‖ψ x‖ = 1) → ∀ (L S : HSp D) (ζ ζ' : Fin L.rank → D.host.E), IsLineVec L ζ' → ∀ (l : Lnk L ζ L ζ') (Λ : AddSubgroup (WO S L)) (Ξ : WO L S → ℂ), IsLatVac (heisO ψ S L) Λ (fun w => star (Ξ (l.κ S w))) → ∀ w ∈ Λ, heisO ψ L S (2 • l.κ S w) Ξ = Ξ ∧ ∀ e, IsSplitIdem D e → IsHalf e (l.κ S w) → heisO ψ L S (l.κ S w) Ξ = Ξ := by
   intro D ψ hψ L S ζ ζ' h l Λ Ξ hv w hw

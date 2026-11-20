@@ -16,7 +16,7 @@ variable {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m}
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hN` using `rlv_norm A v`. Conclude with `rlv_stab (A.eV v).1 (K.y c).1 (K.y c2).1 (K.y_lat c) (K.y_lat c2) g (rlv_locV (A.eV v).1 (A.Pv v) (rlvQ A v) hN hP.le hQ.le) (rlv_locV (A.eV v).1 (A.Pv v) (rlvQ A v) hN hP.ge hQ.ge)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stabiliser_of_class_local_eq (A : AtTTied u) (K : ClsTied u i hi) (v : (D.mem u).A.vT) (c c2 : (D.mem u).C.cls i)
     (g : GL (Fin (D.R.N i)) D.host.E)
@@ -35,13 +35,13 @@ theorem stabiliser_of_class_local_eq (A : AtTTied u) (K : ClsTied u i hi) (v : (
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨hdd, hfg, hH⟩` from `rlv_coordFacts (D := D) (u := u) i hi`. Establish `hgU' : g⁻¹ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi)` using `inv_mem hgU`. Establish `hg1 : cT (sigD D : D.host.E →+* D.host.E) (g : Matrix _ _ D.host.E) * gramN D i hi * (g : Matrix _ _ D.host.E) = gramN D i hi` using `hgU`. Establish `hg1' : cT (sigD D : D.host.E →+* D.host.E) ((g⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix _ _ D.host.E) * gramN D i hi * ((g⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix _ _ D.host.E) = gramN D i hi` using `hgU'`. Establish `hPd' : Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c)) ≤ Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (mulLat (g : Matrix _ _ D.host.E) (Formalism.L2.GlobalTheoryTheory.Comp …` using `hPd.ge`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPd'' : Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (mulLat (g : Matrix _ _ D.host.E) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c2))) ≤ Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (Formalism.L2.GlobalTheoryTheory.C …` using `hPd.le`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `rlv_dualQ (sigD D) rlv_sig_sig (gramN D i hi) hH _ hg1 (A.Pv v) (hfg c) (hdd c).le hPd'`. Establish `h1 : Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c2)) ≤ Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (mulLat ((g⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix _ _ D.host.E) (For …`. Use `rlv_locP_mulLat_le (A.Pv v) ((g⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix _ _ D.host.E) hPd''` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[rlv_mulLat_inv]`. Then use the resulting hypothesis. Establish `h2` using `rlv_dualQ (sigD D) rlv_sig_sig (gramN D i hi) hH _ hg1' (A.Pv v) (hfg c2) (hdd c2).le h1`. Establish `h3` using `rlv_locP_mulLat_le (rlvQ A v) (g : Matrix _ _ D.host.E) h2`. Establish `e3` using `rlv_mulLat_inv g⁻¹ (clsCrd D u i hi c)`. Rewrite `e3` using `[inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[e3]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem local_Q_eq_of_dual_P (A : AtTTied u) (v : (D.mem u).A.vT) (c c2 : (D.mem u).C.cls i)
     (g : GL (Fin (D.R.N i)) D.host.E) (hgU : g ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi))
@@ -78,15 +78,15 @@ theorem local_Q_eq_of_dual_P (A : AtTTied u) (v : (D.mem u).A.vT) (c c2 : (D.mem
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨hdd, -, hH⟩` from `rlv_coordFacts (D := D) (u := u) i hi`. Establish `hfgL : ∀ c1, (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c1))).FG` using `fun c1 => by`. Rewrite using `[hdd c1]`. Conclude with `Module.Finite.iff_fg.1 (tld_isLat (D := D) (u := u) i hi c1).1`. Establish `hBB : ∀ c1, Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c1))) ≤ Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) …` using `fun c1 => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdd c1]`. Establish `hgU' : g⁻¹ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi)` using `inv_mem hgU`. Establish `hg1 : cT (sigD D : D.host.E →+* D.host.E) (g : Matrix _ _ D.host.E) * gramN D i hi * (g : Matrix _ _ D.host.E) = gramN D i hi` using `hgU`. Establish `hg1' : cT (sigD D : D.host.E →+* D.host.E) ((g⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix _ _ D.host.E) * gramN D i hi * ((g⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix _ _ D.host.E) = gramN D i hi` using `hgU'`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `rlv_dualQ (sigD D) rlv_sig_sig (gramN D i hi) hH _ hg1 (A.Pv v) (hfgL c) (hBB c)` to reduce the goal to its premises. Rewrite using `[hdd c, hdd c2]`. Conclude with `hP.ge`. Establish `h1 : Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c2))) ≤ Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (mulLa …`. Rewrite using `[hdd c, hdd c2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `rlv_locP_mulLat_le (A.Pv v) ((g⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix _ _ D.host.E) hP.le` as an intermediate fact. Rewrite `this` using `[rlv_mulLat_inv]`. Then use the resulting hypothesis. Establish `h2` using `rlv_dualQ (sigD D) rlv_sig_sig (gramN D i hi) hH _ hg1' (A.Pv v) (hfgL c2) (hBB c2) h1`. Establish `h3` using `rlv_locP_mulLat_le (rlvQ A v) (g : Matrix _ _ D.host.E) h2`. Establish `e3` using `rlv_mulLat_inv g⁻¹ (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e3` using `[inv_inv]`. Rewrite `h3` using `[e3]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem local_dual_Q_eq_of_P (A : AtTTied u) (v : (D.mem u).A.vT) (c c2 : (D.mem u).C.cls i)
     (g : GL (Fin (D.R.N i)) D.host.E) (hgU : g ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi))
@@ -126,9 +126,7 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hN` using `rlv_norm A v`. Establish `hy : ∀ c1 (x : Fin (D.R.N i) → D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F), x ∈ Formalism.L2.GlobalTheoryTheory.Comp.hat D.host.F (Ld D u i hi c1) ↔ (((K.y c1).1⁻¹ : GL (Fin (D.R.N i)) _) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) _) *ᵥ x ∈ Formalism.L2.GlobalTheory …`. Introduce `c1 x`. Rewrite using `[dual_class_lattice_eq_global K c1]`. Conclude with `Formalism.L2.GlobalTheoryTheory.Comp.mem_hat_glob (dual_base_lattice_full K) _ x`.
-
-Conclude with `rlv_stab (A.eV v).1 (K.y c).1 (K.y c2).1 (hy c) (hy c2) g (rlv_locV (A.eV v).1 (A.Pv v) (rlvQ A v) hN hP.le hQ.le) (rlv_locV (A.eV v).1 (A.Pv v) (rlvQ A v) hN hP.ge hQ.ge)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabiliser_of_dual_local_eq (A : AtTTied u) (K : ClsTied u i hi) (v : (D.mem u).A.vT) (c c2 : (D.mem u).C.cls i)
     (g : GL (Fin (D.R.N i)) D.host.E)
@@ -163,7 +161,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Rewrite using `[K.lev.UlocAlt _ (A.eV v).2]`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨Formalism.UG.P.afsplit_bc_mem _ _ _ _ hU, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `stabiliser_of_class_local_eq A K v c c2 Γ hP (local_Q_eq_of_dual_P A v c c2 Γ hΓ hPd)`. Conclude with `stabiliser_of_local_transport K L fMe hfv v c c2 Γ (stabiliser_of_dual_local_eq A K v c c2 Γ hPd (local_dual_Q_eq_of_P A v c c2 Γ hΓ hP)) hF`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem local_unitary_of_matching {A : AtTTied u} (K : ClsTied u i hi) (L : LvTied u A i hi)
     (fMe : ∀ v, K.lev.fM (A.eV v).1 (A.eV v).2 ≃+ (D.mem u).A.Fv v) (hfv : FvTie L K fMe)
@@ -197,13 +195,11 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hk : ∀ k : K.lev.U, (k.1 : GL (Fin (D.R.N i)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ∈ UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)`. Introduce `k`. Use `first`. Consider the case `exact ((K.lev.U_eq _).1 k.2).1`. Consider the case `exact (K.lev.U_eq _).1 k.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ((K.lev.U_eq _).mp k.2).1`. Establish `e1` using `eq_mul_inv_of_mul_eq h1`. Establish `e2` using `eq_mul_inv_of_mul_eq h2`. Establish `e3 : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γd = (K.y c).1 * δ.1 * κd.1⁻¹ * (K.y c2).1⁻¹ := by`. Rewrite using `[← mul_inv_eq_iff_eq_mul.mpr h3.symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `group`. Establish `e : (K.y c3).1⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (γ2⁻¹ * γd⁻¹ * γ) * (K.y c1).1 = κ2.1⁻¹ * η2.1⁻¹ * κd.1 * δ.1⁻¹ * η.1 * κ.1 := by`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, e1, e2, e3]`. Use `group`. Rewrite using `[e]`.
-
-Establish `H` using `fun (x : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) => x.2`. Conclude with `mul_mem (mul_mem (mul_mem (mul_mem (mul_mem (inv_mem (hk κ2)) (inv_mem (H η2))) (hk κd)) (inv_mem (H δ))) (H η)) (hk κ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem matching_unitary_eq (K : ClsTied u i hi) (c c1 c2 c3 : (D.mem u).C.cls i) (γ γ2 γd : GL (Fin (D.R.N i)) D.host.E)
     (η η2 δ : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (κ κ2 κd : K.lev.U)
@@ -234,13 +230,13 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hκ` using `(K.lev.U_eq _).1 κ.2`. Establish `hκ2` using `(K.lev.U_eq _).1 κ2.2`. Establish `hκd` using `(K.lev.U_eq _).1 κd.2`. Rewrite using `[K.lev.U_eq]`. Use `⟨mul_mem (mul_mem (inv_mem η2.2) hκd.1) η.2, fun v' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : v' = (A.eV v).1`. Substitute `h` using the available equality. Establish `eη : η.1 = (K.y c).1⁻¹ * (bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ * (K.y c1).1) * κ.1⁻¹ := by rw [h1]; group`. Establish `eη2 : η2.1 = (K.y c2).1⁻¹ * (bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ2 * (K.y c3).1) * κ2.1⁻¹ := by rw [h2]; group`. Establish `eκd : κd.1 = (K.y c2).1⁻¹ * (bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γd)⁻¹ * ((K.y c).1 * δ.1) := by rw [h3]; group`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : bc (prV (E` using `D.host.E) (A.eV v).1) (η2.1⁻¹ * κd.1 * η.1) = bc (prV (E := D.host.E) (A.eV v).1) κ2.1 * bc (prV (E := D.host.E) (A.eV v).1) ((K.y c3).1⁻¹ * bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (γ2⁻¹ * γd⁻¹ * γ) * (K.y c1).1) * (bc (prV (E := D.host.E) (A.eV v).1) κ …`. Rewrite using `[eη, eη2, eκd]`. Simplify using `only [map_mul, map_inv, hδ]`. Use `group`. Rewrite using `[e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (mul_mem (hκ2.2 _) hloc) (inv_mem (hκ.2 _))`. Rewrite using `[map_mul, map_mul, map_inv, hη2 v' h, hη v' h, inv_one, one_mul, mul_one]`. Conclude with `hκd.2 v'`.
+A detailed English derivation is pending.
 -/
 theorem matching_move_mem_level {A : AtTTied u} (K : ClsTied u i hi) (v : (D.mem u).A.vT)
     (c c1 c2 c3 : (D.mem u).C.cls i) (γ γ2 γd : GL (Fin (D.R.N i)) D.host.E)
@@ -283,7 +279,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-The claim follows from `local_unitary_of_matching T.cls0 T.lv0 T.fMe0 T.fv0 v c c2 Γ hΓ hU hP hPd hF`.
+A detailed English derivation is pending.
 -/
 theorem local_unitary_of_matching_zero (T : Forms0 D u)
     (v : (D.mem u).A.vT) (c c2 : (D.mem u).C.cls 0) (Γ : GL (Fin (D.R.N 0)) D.host.E)
@@ -306,7 +302,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-The claim follows from `matching_move_mem_level (A := T.atT) T.cls0 v c c1 c2 c3 γ γ2 γd η η2 δ κ κ2 κd hη hη2 hδ h1 h2 h3 hloc`.
+A detailed English derivation is pending.
 -/
 theorem matching_move_mem_level_zero (T : Forms0 D u) (v : (D.mem u).A.vT)
     (c c1 c2 c3 : (D.mem u).C.cls 0) (γ γ2 γd : GL (Fin (D.R.N 0)) D.host.E)

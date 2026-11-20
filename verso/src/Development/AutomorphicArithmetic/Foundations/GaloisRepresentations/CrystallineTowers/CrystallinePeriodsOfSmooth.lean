@@ -19,11 +19,11 @@ def IsAdmP (P : LocPrime l) {d : ℕ} (G : Subgroup (PadicAlgCl l ≃ₐ[ℚ_[l]
     ∀ σ : G, (r σ).map (algebraMap ℚ_[l] P.R.BdR) * A.map (P.actQdR σ.1) = A
 
 /- English proof (translation)
-Establish `hι : ∀ y, T.eD (P.ιB (T.eB.symm y)) = PositivityTheory.LocInh.ιCD l y` using `RingHom.congr_fun ((PositivityTheory.LocInh.isCrisDR_iff _).1 T.incl)`. Establish `hinv : ∀ y : Per6.Bcris l, IsUnit y → (PositivityTheory.LocInh.ιCD l y)⁻¹ ∈ (PositivityTheory.LocInh.ιCD l).range` using `fun y hy => ⟨↑(hy.unit⁻¹), by rw [map_units_inv]; rfl⟩`. Establish `hle : Bcr l ≤ (PositivityTheory.LocInh.ιCD l).range`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (⟨a, rfl⟩ | rfl | rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨Per6.cB l a, PositivityTheory.LocInh.ιCD_cB a⟩`. Use `hinv _ (PositivityTheory.LocInh.isUnit_cB_l l)` as an intermediate fact. Rewrite `this` using `[PositivityTheory.LocInh.ιCD_cB, map_natCast]`. Then use the resulting hypothesis. Use `hinv _ (PositivityTheory.LocInh.cB_isFrac l).2.1` as an intermediate fact. Rewrite `this` using `[PositivityTheory.LocInh.ιCD_cB]`. Then use the resulting hypothesis.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨y, rfl⟩` from `hle hx`. Conclude with `⟨T.eB.symm y, by rw [← hι, RingEquiv.symm_apply_apply]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_range (T : LocTied6 l P AI) {x : Per6.BdR l} (hx : x ∈ Bcr l) : T.eD.symm x ∈ Set.range P.ιB := by
   have hι : ∀ y, T.eD (P.ιB (T.eB.symm y)) = PositivityTheory.LocInh.ιCD l y :=
@@ -42,9 +42,9 @@ theorem mem_range (T : LocTied6 l P AI) {x : Per6.BdR l} (hx : x ∈ Bcr l) : T.
   exact ⟨T.eB.symm y, by rw [← hι, RingEquiv.symm_apply_apply]⟩
 
 /- English proof (translation)
-Take `⟨A, B, hm, hAB, hσ⟩` from `h`. Use `⟨A.map T.eD.symm, B.map T.eD.symm, fun i j => ⟨mem_range T (hm i j).1, mem_range T (hm i j).2⟩, ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hAB, Matrix.map_one _ (map_zero _) (map_one _)]`. Use extensionality with `i j`. Apply `T.eD.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrFun (congrFun (hσ σ) i) j` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul, UpperTheory.Lit.Drps.eD_alg T, T.actD, RingEquiv.apply_symm_apply] at this ⊢`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAdmP_of_isAdm (T : LocTied6 l P AI) {d : ℕ} {G : Subgroup (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)}
     {r : G → Matrix (Fin d) (Fin d) ℚ_[l]} (h : IsAdm (Bcr l) G r) : IsAdmP P G r := by
@@ -59,9 +59,9 @@ theorem isAdmP_of_isAdm (T : LocTied6 l P AI) {d : ℕ} {G : Subgroup (PadicAlgC
     exact this
 
 /- English proof (translation)
-Take `⟨A, B, hm, hAB, hσ⟩` from `h`. Establish `hS : ∀ x ∈ Set.range P.ιB, T.eD x ∈ Set.range (T.eD ∘ P.ιB ∘ T.eB.symm)`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨T.eB y, by simp⟩`. Use `⟨A.map T.eD, B.map T.eD, fun i j => ⟨hS _ (hm i j).1, hS _ (hm i j).2⟩, ?_, fun σ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.map_mul, hAB, Matrix.map_one _ (map_zero _) (map_one _)]`. Use extensionality with `i j`. Use `congrArg T.eD (congrFun (congrFun (hσ σ) i) j)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul, T.actD] at this ⊢`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAdmD_of_isAdmP (T : LocTied l P AI) {d : ℕ} {G : Subgroup (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)}
     {r : G → Matrix (Fin d) (Fin d) ℚ_[l]} (h : IsAdmP P G r) :
@@ -86,7 +86,7 @@ def CrystallinePeriodMatrices : Prop :=
         (Set.range (T.eD ∘ P.ιB ∘ T.eB.symm)) (Formalism.BasicNotions.Loc.GK ⟨K, hK⟩) (M.mat n b)
 
 /- English proof (translation)
-Introduce `l _ P AI T K _ M hM hs n a b` and use `(UpperTheory.Lit.Cmp.locTied6 l P AI ⟨T⟩).elim fun FreeQuotientRank => isAdmD_of_isAdmP T (isAdmP_of_isAdm FreeQuotientRank (h l K M hM hs n a b))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem crystalline_periods_of_smooth (h : SmoothModelCrystalline) : CrystallinePeriodMatrices := fun l _ P AI T K _ M hM hs n a b =>
   (UpperTheory.Lit.Cmp.locTied6 l P AI ⟨T⟩).elim fun FreeQuotientRank => isAdmD_of_isAdmP T (isAdmP_of_isAdm FreeQuotientRank (h l K M hM hs n a b))

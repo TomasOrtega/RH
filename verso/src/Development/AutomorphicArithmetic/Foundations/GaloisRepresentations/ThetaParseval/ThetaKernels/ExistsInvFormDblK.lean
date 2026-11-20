@@ -22,13 +22,11 @@ end GlobalTheory.DblSplitForm
 namespace GlobalTheory.DblSplitForm
 open Formalism.IndefR.DatumF GlobalTheory.DblTargetDelta GlobalTheory.WeilSchrodinger.DblTargetF
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he`. Take `⟨f₀, hf₀, hf₀0⟩ : ∃ f₀ : WOF F E nS nT → ℂ, IsThetaFunOF σ JS JT ξ₀ B.ψ f₀ ∧ f₀ ≠ 0` from `_root_.GlobalTheory.T.exists_nonzero_theta_function F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ`. Take `⟨ℓ₁, hℓ₁, f, hf, hℓf⟩` from `_root_.GlobalTheory.T.exists_theta_functional_split_idempotent F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he f₀ hf₀ hf₀0`. Establish `hheis` using `_root_.GlobalTheory.DblHeis.heisOF_dblG_deltaT_k F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ`. Take `⟨ℓ, h1, h2⟩` from `exists_ext_form (Y := GlobalTheory.SplitInvFormF.conjHalf σ e nS (nT + nT)) (ρ := GlobalTheory.SplitInvFormF.heisL σ JS (dblG JT) ξ₀ B.ψ) (Θ := {g | IsThetaFunOF σ JS (dblG JT) ξ₀ B.ψ g}) (fun x hx x' hx' g => by show heisOF σ JS (dblG JT) ξ₀ B.ψ x (heisOF σ JS (dblG JT) ξ₀ B.ψ x …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.SplitInvFormF.heisOF_heisOF, GlobalTheory.SplitInvFormF.symplOHF_half he hx hx', AddChar.map_zero_eq_one, one_smul])`. Use the proof step `(fun g => GlobalTheory.SplitInvFormF.heisOF_zero g)`. Use the proof step `(fun u hu g hg => GlobalTheory.SplitInvFormF.exists_nsmul_fix he hu hg)`. Use the proof step `(dblForm ℓ₁) {p | ∃ a b, IsThetaFunOF σ JS JT ξ₀ B.ψ a ∧ IsThetaFunOF σ JS JT ξ₀ B.ψ b ∧ p = deltaT a b}`. Use the proof step `(fun u hu p hp => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, b, ha, hb, rfl⟩` from `hp`. Establish `hu' : ∀ i j, cAF σ e * u i j = u i j` using `hu`. Establish `ht : ∀ i j, cAF σ e * topR u i j = topR u i j` using `fun i j => hu' _ _`. Establish `hb' : ∀ i j, cAF σ e * (-botR u) i j = (-botR u) i j` using `fun i j => by show cAF σ e * -(u _ j) = -(u _ j)`. Rewrite using `[mul_neg, hu']`.
-
-Use `show dblForm ℓ₁ (heisOF σ JS (dblG JT) ξ₀ B.ψ u (deltaT a b)) = dblForm ℓ₁ (deltaT a b)`. Rewrite using `[hheis, dblForm_deltaT, dblForm_deltaT, hℓ₁ _ ht a ha, hℓ₁ _ hb' b hb])`. Use `⟨ℓ, fun u hu g hg => h1 u hu g hg, f, f, hf, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[h2 _ ⟨f, f, hf, hf, rfl⟩, dblForm_deltaT]`. Conclude with `mul_ne_zero hℓf ((map_ne_zero _).2 hℓf)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invForm_dbl_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

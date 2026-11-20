@@ -22,7 +22,7 @@ def colLex (r n : ℕ) : MonomialOrder (Fin r × Fin n) where
 
 open scoped MonomialOrder in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem colLex_lt_iff {r n : ℕ} {c d : Fin r × Fin n →₀ ℕ} :
     c ≺[colLex r n] d ↔ toLex (Finsupp.domCongr (cmIdx r n) c) < toLex (Finsupp.domCongr (cmIdx r n) d) := Iff.rfl

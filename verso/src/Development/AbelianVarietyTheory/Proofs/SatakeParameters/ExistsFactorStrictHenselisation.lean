@@ -8,23 +8,21 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing GlobalTheory.FormalInv.
 namespace GlobalTheory.StrictHensFactor
 
 /- English proof (translation)
-Introduce `A C B _ _ _ _ _ _ _ _ _ u`. Use `set P : Ideal C := (maximalIdeal B).comap (u : C →+* B) with hP`. Use `haveI hPp : P.IsPrime := Ideal.comap_isPrime _ _`. Set `L` to `Localization.AtPrime P`. Establish `hu : ∀ y : P.primeCompl, IsUnit ((u : C →+* B) y)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Use `y.2` as an intermediate fact. Assume the negation of the conclusion as `hy`. Conclude with `this ((IsLocalRing.mem_maximalIdeal _).2 hy)`. Set `b : L →+* B` to `IsLocalization.lift hu`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hb : b.comp (algebraMap C L) = (u : C →+* B)` using `IsLocalization.lift_comp hu`. Use `haveI hbloc : IsLocalHom b := by`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl x`. Rewrite using `[IsLocalization.AtPrime.isUnit_mk'_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `ha`. Establish `h1 : (u : C →+* B) a = (u : C →+* B) s * b (IsLocalization.mk' _ a s)` using `(IsLocalization.lift_mk'_spec _ _ _ _).1 rfl`. Establish `h2 : IsUnit ((u : C →+* B) a)`. Rewrite using `[h1]`. Conclude with `(hu s).mul hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).1 ha h2`. Take `⟨S, _, _, _, hloc, hsc, -, -, -, ι, _, _, _, Si, hmono, hcov, hA⟩` from `GlobalTheory.exists_strictHenselisation L (SeparableClosure (ResidueField L))`. Establish `hind : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap L S)`. Use `GlobalTheory.StrictHensUnion.indEtale_of_directed_union L S ι Si hmono hcov fun i => ?_` and prove the remaining obligations. Take `⟨A', _, _, _, q, _, ⟨e⟩⟩` from `hA i`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.StrictHensUnion.indEtale_of_algEquiv e (GlobalTheory.StrictHensUnion.indEtale_localization_of_etale L A' q.primeCompl)`. Establish `hstrict : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsStrictHenselisation (algebraMap L S)` using `⟨inferInstance, hsc, hloc, hind⟩`. Take `⟨g, hg⟩` from `GlobalTheory.NCyc.StrictLocLift.exists_ringHom_of_isStrictHenselisation (algebraMap L S) hstrict b`. Set `cR : C →+* S` to `(algebraMap L S).comp (algebraMap C L)`. Use `letI algAS : Algebra A S := (cR.comp (algebraMap A C)).toAlgebra`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `c : C →ₐ[A] S` to `{ cR with commutes' := fun a => rfl }`. Establish `hgc : g.comp cR = (u : C →+* B)`. Rewrite using `[← RingHom.comp_assoc, hg, hb]`. Set `w : S →ₐ[A] B` to `{ g with commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `g (cR (algebraMap A C a)) = algebraMap A B a`.
+By extensionality, compare the relevant components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.comp_apply, hgc]`. Conclude with `u.commutes a }`. Use `⟨S, inferInstance, inferInstance, algAS, c, w, ?_, P, hPp, algebraMap L S, hstrict, rfl, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `DFunLike.congr_fun hgc x`.
-
-Use extensionality with `a`. Rewrite using `[hP, Ideal.comap_comap, Ideal.mem_comap]`. Establish `: ((u : C →+* B).comp (algebraMap A C)) a = algebraMap A B a` using `u.commutes a`. Rewrite using `[this, IsLocalRing.mem_maximalIdeal, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, isUnit_map_iff]`.
+A detailed English derivation is pending.
 -/
 theorem exists_factor_strictHenselisation : ∀ (A C B : Type) [CommRing A] [IsLocalRing A] [CommRing C] [Algebra A C] [CommRing B] [HenselianLocalRing B] [IsSepClosed (ResidueField B)] [Algebra A B] [IsLocalHom (algebraMap A B)] (u : C →ₐ[A] B), ∃ (D : Type) (_ : CommRing D) (_ : IsLocalRing D) (_ : Algebra A D) (c : C →ₐ[A] D) (w : D →ₐ[A] B), w.comp c = u ∧ ∃ (P : Ideal C) (_ : P.IsPrime) (φ : Localization.AtPrime P →+* D), GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsStrictHenselisation φ ∧ φ.comp (algebraMap C (Localization.AtPrime P)) = (c : C →+* D) ∧ P.comap (algebraMap A C) = maximalIdeal A := by
   intro A C B _ _ _ _ _ _ _ _ _ u

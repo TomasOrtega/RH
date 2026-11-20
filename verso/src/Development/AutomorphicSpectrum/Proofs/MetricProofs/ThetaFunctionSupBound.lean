@@ -22,43 +22,43 @@ def hh (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) : ℂ := z ⬝ᵥ
 variable {Hm : Matrix (Fin g) (Fin g) ℂ}
 
 /- English proof (translation)
-Simplify using `[hh, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hh_add_left (z z' w : Fin g → ℂ) : hh Hm (z + z') w = hh Hm z w + hh Hm z' w := by
   simp [hh, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[hh, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hh_smul_left (c : ℂ) (z w : Fin g → ℂ) : hh Hm (c • z) w = c * hh Hm z w := by
   simp [hh, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `[hh, star_add, mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hh_add_right (z w w' : Fin g → ℂ) : hh Hm z (w + w') = hh Hm z w + hh Hm z w' := by
   simp [hh, star_add, mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[hh, star_smul, mulVec_smul, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hh_smul_right (c : ℂ) (z w : Fin g → ℂ) : hh Hm z (c • w) = star c * hh Hm z w := by
   simp [hh, star_smul, mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Simplify using `[hh, sub_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hh_sub_left (z z' w : Fin g → ℂ) : hh Hm (z - z') w = hh Hm z w - hh Hm z' w := by
   simp [hh, sub_dotProduct]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SiegelNormalForm.form_conj hH z w`.
+A detailed English derivation is pending.
 -/
 theorem hh_conj (hH : Hm.IsHermitian) (z w : Fin g → ℂ) : star (hh Hm z w) = hh Hm w z :=
   GlobalTheory.SiegelNormalForm.form_conj hH z w
 
 /- English proof (translation)
-Establish `h : Continuous fun w : Fin g → ℂ => Hm.mulVec (star w)` using `continuous_pi fun i => by`. Simplify using `only [mulVec, dotProduct, Pi.star_apply]`. Conclude with `continuous_finset_sum _ fun j _ => continuous_const.mul ((continuous_apply j).star)`. Simplify using `only [hh, dotProduct]`. Conclude with `continuous_finset_sum _ fun j _ => (continuous_apply j).mul ((continuous_apply j).comp h)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_hh_diag : Continuous fun w : Fin g → ℂ => hh Hm w w := by
   have h : Continuous fun w : Fin g → ℂ => Hm.mulVec (star w) :=
@@ -70,15 +70,15 @@ theorem continuous_hh_diag : Continuous fun w : Fin g → ℂ => hh Hm w w := by
   exact continuous_finset_sum _ fun j _ => (continuous_apply j).mul ((continuous_apply j).comp h)
 
 /- English proof (translation)
-Use `haveI : IsZLattice ℝ Λ := ⟨hs⟩`. Set `b` to `(Module.Free.chooseBasis ℤ Λ).ofZLatticeBasis ℝ Λ`. Introduce `w`. Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `exists_nat_gt ((∑ i, ‖b i‖) / ε)`. Establish `hC : 0 ≤ ∑ i, ‖b i‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hN0 : 0 < (N : ℝ)` using `lt_of_le_of_lt (div_nonneg hC hε.le) hN`. Establish `hN1 : 1 ≤ N` using `by exact_mod_cast hN0`. Establish `hNc : (N : ℂ) ≠ 0` using `by exact_mod_cast hN0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y : Fin g → ℂ := (ZSpan.floor b ((N : ℝ) • w) : Fin g → ℂ) with hy`. Establish `hyΛ : y ∈ Λ`. Establish `h : y ∈ Submodule.span ℤ (Set.range b)` using `(ZSpan.floor b ((N : ℝ) • w)).2`. Rewrite `h` using `[show Submodule.span ℤ (Set.range b) = Λ from Module.Basis.ofZLatticeBasis_span ℝ Λ _]`. Then use the resulting hypothesis. Use `⟨(N : ℂ)⁻¹ • y, ⟨N, hN1, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, mul_inv_cancel₀ hNc, one_smul]` and apply the resulting hypothesis. Establish `e1 : ZSpan.fract b ((N : ℝ) • w) = (N : ℝ) • w - y` using `rfl`. Establish `e2 : w - (N : ℂ)⁻¹ • y = ((N : ℝ)⁻¹) • ZSpan.fract b ((N : ℝ) • w)`. Rewrite using `[e1, smul_sub, smul_smul, inv_mul_cancel₀ hN0.ne', one_smul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[dist_eq_norm, e2, norm_smul, norm_inv, Real.norm_of_nonneg hN0.le, inv_mul_lt_iff₀ hN0]`. Use `lt_of_le_of_lt (ZSpan.norm_fract_le b _) ?_` and prove the remaining obligations. Rewrite `hN` using `[div_lt_iff₀ hε, ]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem dense_torsion (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
     (hs : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) :
@@ -111,21 +111,19 @@ theorem dense_torsion (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
     rwa [div_lt_iff₀ hε, ] at hN
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨w₀, hw₀⟩ : ∃ w, e w ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `h0 (funext h)`. Establish `hnear : ∀ᶠ w in 𝓝 w₀, e w ≠ 0` using `he.continuous.continuousAt.eventually_ne hw₀`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : ∀ᶠ w in 𝓝 w₀, DifferentiableAt ℂ (fun w => f w / e w) w` using `hnear.mono fun w hw => by`. Simplify using `only [div_eq_mul_inv]`. Conclude with `hf.differentiableAt.mul (he.differentiableAt.inv hw)`. Establish `hmax : IsLocalMax (norm ∘ fun w => f w / e w) w₀`. Establish `hc : ∀ w, e w ≠ 0 → ‖f w / e w‖ = C` using `fun w hw => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[norm_div, hn, mul_div_assoc, div_self (norm_ne_zero_iff.2 hw), mul_one]`. Use `filter_upwards [hnear] with w hw`. Simplify using `only [Function.comp, hc w hw, hc w₀ hw₀, le_refl]`. Establish `hev` using `Complex.eventually_eq_of_isLocalMax_norm hd hmax`. Use `set c := f w₀ / e w₀ with hcdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ∀ᶠ w in 𝓝 w₀, f w = c * e w` using `by filter_upwards [hev, hnear] with w h1 h2`. Rewrite using `[← h1]`. Clear the denominators using the available nonvanishing facts. Establish `hc0 : c ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hn w₀` as an intermediate fact. Establish `h1 : f w₀ = 0`. Use `hne.self_of_nhds` as an intermediate fact. Rewrite using `[this, h, zero_mul]`. Rewrite `this` using `[h1, norm_zero]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_pos hC (norm_pos_iff.2 hw₀)).ne this`. Use `⟨c, hc0, funext fun w => ?_⟩` and prove the remaining obligations. Set `φ : ℂ → ℂ` to `fun t => f (w₀ + t • (w - w₀)) - c * e (w₀ + t • (w - w₀))`. Establish `hl : Differentiable ℂ fun t : ℂ => w₀ + t • (w - w₀)` using `by fun_prop`. Establish `hφ : Differentiable ℂ φ` using `(hf.comp hl).sub ((he.comp hl).const_mul c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `ha : AnalyticOnNhd ℂ φ Set.univ` using `fun t _ => hφ.analyticAt t`. Establish `hz : φ =ᶠ[𝓝 0] 0`. Establish `hc : Tendsto (fun t : ℂ => w₀ + t • (w - w₀)) (𝓝 0) (𝓝 w₀)`. Use `hl.continuous.tendsto 0` as an intermediate fact. Simplify using `using this`.
-
-Use `filter_upwards [hc.eventually hne] with t ht`. Simplify using `[φ, ht]`. Use `ha.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ (0 : ℂ)) hz (Set.mem_univ (1 : ℂ))` as an intermediate fact. Simplify using `only [φ, one_smul, add_sub_cancel, Pi.zero_apply] at this`. Simplify using `using sub_eq_zero.1 this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_eq_const_mul {f e : (Fin g → ℂ) → ℂ} (hf : Differentiable ℂ f)
     (he : Differentiable ℂ e) (C : ℝ) (hC : 0 < C) (hn : ∀ w, ‖f w‖ = C * ‖e w‖) (h0 : e ≠ 0) :
@@ -184,21 +182,19 @@ open Complex Matrix Filter Topology
 variable {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ}
 
 /- English proof (translation)
-Use `haveI : IsZLattice ℝ Λ := ⟨hs⟩`. Establish `hmc : (m : ℂ) ≠ 0` using `by exact_mod_cast (show m ≠ 0 by omega)`. Set `b0` to `Module.Free.chooseBasis ℤ Λ`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ Λ) = 2 * g`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, ZLattice.rank ℝ Λ, Module.finrank_pi_fintype]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`. Set `v : (Module.Free.ChooseBasisIndex ℤ Λ → Fin m) → Λ` to `fun a => ∑ k, ((a k : ℕ) : ℤ) • b0 k`. Establish `hv : ∀ a k, b0.repr (v a) k = ((a k : ℕ) : ℤ)` using `fun a k => by`. Use `b0.repr_sum_self (fun k => ((a k : ℕ) : ℤ))` as an intermediate fact. Conclude with `congrFun this k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ a, (m : ℂ) • ((m : ℂ)⁻¹ • (v a : Fin g → ℂ)) ∈ Λ` using `fun a => by`. Rewrite using `[smul_smul, mul_inv_cancel₀ hmc, one_smul]`. Conclude with `(v a).2`. Use `choose s hs' using fun a => hrep _ (hmem a)`. Use `⟨_, inferInstance, s, ?_, fun a b hab => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Fintype.card_fun, Fintype.card_fin, hcard, pow_mul]`. Establish `h1 : (m : ℂ)⁻¹ • ((v a : Fin g → ℂ) - (v b : Fin g → ℂ)) ∈ Λ`. Use `Λ.sub_mem (Λ.add_mem (hs' a) hab) (hs' b)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `h2 : v a - v b = (m : ℤ) • (⟨_, h1⟩ : Λ)`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e : ∀ y : Fin g → ℂ, (m : ℤ) • ((m : ℂ)⁻¹ • y) = y` using `fun y => by`. Use extensionality with `i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `[mul_inv_cancel_left₀ hmc]`. Simplify using `only [Submodule.coe_sub, Submodule.coe_smul]`. Conclude with `(e _).symm`. Use function extensionality and compare the values at `k`. Establish `h3` using `congrArg (fun y => b0.repr y k) h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_smul, Finsupp.coe_sub, Pi.sub_apply, Finsupp.coe_smul, Pi.smul_apply, hv, smul_eq_mul] at h3`. Establish `h4 : ((a k : ℕ) : ℤ) - ((b k : ℕ) : ℤ) = 0`. Use `Int.eq_zero_of_abs_lt_dvd ⟨_, h3⟩ ?_` and prove the remaining obligations. Use `(a k).2` as an intermediate fact. Use `(b k).2` as an intermediate fact.
-
-Rewrite using `[abs_lt]`. Use linear arithmetic over natural numbers and integers. Conclude with `Fin.ext (by omega)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_reps (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
     (hs : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (m : ℕ) (hm : 1 ≤ m) {Ix : Type}
@@ -246,36 +242,32 @@ theorem exists_reps (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
     exact Fin.ext (by omega)
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem real_smul_eq (t : ℝ) (z : Fin g → ℂ) : t • z = (t : ℂ) • z := by
   ext i
   simp
 
 /- English proof (translation)
-Use `haveI : IsZLattice ℝ Λ := ⟨hs⟩`. Use `choose k hk using hint`. Set `Ef : LinearMap.BilinForm ℤ Λ` to `LinearMap.mk₂ ℤ k (fun a b c => Int.cast_injective (α := ℝ) (by`. Rewrite using `[Int.cast_add, ← hk, ← hk, ← hk, Submodule.coe_add, hh_add_left, add_im]))`. Use the proof step `(fun t a c => Int.cast_injective (α := ℝ) (by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, Int.cast_mul, ← hk, ← hk, Submodule.coe_smul, show (t • (a : Fin g → ℂ)) = (t : ℂ) • (a : Fin g → ℂ) by ext i; simp, hh_smul_left]`. Use the proof step `simp))`. Use the proof step `(fun c a b => Int.cast_injective (α := ℝ) (by`. Rewrite using `[Int.cast_add, ← hk, ← hk, ← hk, Submodule.coe_add, hh_add_right, add_im]))`. Use the proof step `(fun t c a => Int.cast_injective (α := ℝ) (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_mul, Int.cast_mul, ← hk, ← hk, Submodule.coe_smul, show (t • (a : Fin g → ℂ)) = (t : ℂ) • (a : Fin g → ℂ) by ext i; simp, hh_smul_right]`. Use the proof step `simp))`. Establish `hE : ∀ l l' : Λ, (Ef l l' : ℝ) = (hh Hm l l').im` using `fun l l' => (hk l l').symm`. Set `Bf : (Fin g → ℂ) →ₗ[ℝ] Module.Dual ℝ (Fin g → ℂ)` to `LinearMap.mk₂ ℝ (fun z w => (hh Hm z w).im) (fun a b c => by rw [hh_add_left, add_im]) (fun t a c => by rw [real_smul_eq, hh_smul_left]; simp) (fun c a b => by rw [hh_add_right, add_im]) (fun t c a => by rw [real_smul_eq, hh_smul_right]; simp)`. Establish `hBf : ∀ z w, Bf z w = (hh Hm z w).im` using `fun _ _ => rfl`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hinj : Function.Injective Bf`. Use `(injective_iff_map_eq_zero Bf).2 fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1` using `hpos z hne`. Establish `h2 : Bf z (I • z) = 0` using `by rw [hz]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h2` using `[hBf, hh_smul_right]`. Simplify using `only [star_def, conj_I, neg_mul, neg_im, mul_im, I_re, I_im, zero_mul, one_mul, zero_add, neg_eq_zero] at h2`. Conclude with `h1.ne' h2`. Establish `hsurj : Function.Surjective Bf` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq (K := ℝ) (V := Fin g → ℂ)).symm).1 hinj`. Establish `hbij : Function.Bijective Ef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `⟨(injective_iff_map_eq_zero Ef).2 fun l hl => ?_, fun φ => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[ZeroMemClass.coe_zero, map_zero]`. Establish `hall : ∀ l' : Λ, Bf l l' = 0` using `fun l' => by`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hBf, ← hE, hl]`. Simplify using the standard rewrite rules. Set `b0` to `Module.Free.chooseBasis ℤ Λ`. Set `b` to `b0.ofZLatticeBasis ℝ Λ`. Use `b.ext fun i => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[show b i = (b0 i : Fin g → ℂ) from Module.Basis.ofZLatticeBasis_apply ℝ Λ b0 i]`. Conclude with `hall _`. Set `b0` to `Module.Free.chooseBasis ℤ Λ`. Set `b` to `b0.ofZLatticeBasis ℝ Λ`. Set `Φ : Module.Dual ℝ (Fin g → ℂ)` to `b.constr ℝ fun i => ((φ (b0 i) : ℤ) : ℝ)`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hΦ : ∀ l : Λ, Φ l = (φ l : ℝ)`. Establish `: ((Φ.restrictScalars ℤ) ∘ₗ Λ.subtype) = (Algebra.linearMap ℤ ℝ) ∘ₗ φ`. Use `b0.ext fun i => ?_` and prove the remaining obligations. Establish `e : (b0 i : Fin g → ℂ) = b i` using `(Module.Basis.ofZLatticeBasis_apply ℝ Λ b0 i).symm`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.restrictScalars_apply, Algebra.linearMap_apply, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify `b.constr_basis ℝ (fun i => ((φ (b0 i) : ℤ) : ℝ)) i` using `[Φ]`. Introduce `l`. Simplify using `using LinearMap.congr_fun this l`. Take `⟨w, hw⟩` from `hsurj Φ`. Establish `hwl : ∀ l : Λ, (hh Hm w l).im = (φ l : ℝ)` using `fun l => by`.
-
-Rewrite using `[← hBf, hw, hΦ]`. Use `⟨⟨w, huni w fun l => ⟨_, hwl l⟩⟩, LinearMap.ext fun l => ?_⟩` and prove the remaining obligations. Use `Int.cast_injective (α := ℝ) ?_` and prove the remaining obligations. Rewrite using `[hE]`. Conclude with `hwl l`.
-
-Conclude with `GlobalTheory.card_le_pow_of_linearIndependent_theta_principal GlobalTheory.SiegelNormalForm.exists_normal_form (GlobalTheory.ClassicalTheta.card_le_pow_of_linearIndependent GlobalTheory.fourierCoeff_unitCube_translate_of_entire_periodic (GlobalTheory.entire_periodic_eq_zero_of_fo …`.
+A detailed English derivation is pending.
 -/
 theorem card_le_of_unimodular (Λ : Submodule ℤ (Fin g → ℂ)) [hd : DiscreteTopology Λ]
     (hs : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (hH : Hm.IsHermitian)
@@ -376,19 +368,17 @@ def psi (Hm : Matrix (Fin g) (Fin g) ℂ) (Λ : Submodule ℤ (Fin g → ℂ)) (
     ring
 
 /- English proof (translation)
-Establish `hinj : Function.Injective fun a => psi Hm Λ (ρ a)`. Introduce `a b hab`. Use `hρ a b (huni _ fun l => ?_)` and prove the remaining obligations. Establish `h1` using `DFunLike.congr_fun hab (Multiplicative.ofAdd l)`. Simplify using `only [psi, MonoidHom.coe_mk, OneHom.coe_mk, toAdd_ofAdd] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 h1`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[hh_sub_left, sub_im]`. Establish `hpi : (2 * (Real.pi : ℂ) * I) ≠ 0` using `by simp [Real.pi_ne_zero]`. Establish `h2 : (((hh Hm (ρ a) l).im - (hh Hm (ρ b) l).im : ℝ) : ℂ) = (n : ℂ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises. Use `push_cast`. Take the linear combination `hn`. Conclude with `h2` after adjusting the coercions. Establish `hind : LinearIndependent ℂ (fun a (l : Multiplicative Λ) => psi Hm Λ (ρ a) l)` using `(linearIndependent_monoidHom (Multiplicative Λ) ℂ).comp _ hinj`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hind`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc a`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, e a w ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `he a (funext h)`. Establish `key : ∀ w a, c a * e a w = 0`. Introduce `w`. Apply `hind (fun a => c a * e a w)` to reduce the goal to its premises. Use function extensionality and compare the values at `l`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h` using `congrFun hc (w + T (Multiplicative.toAdd l))`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, hlaw] at h ⊢`. Apply `mul_left_cancel₀ (hA (Multiplicative.toAdd l) w)` to reduce the goal to its premises. Rewrite using `[mul_zero, ← h, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [ofAdd_toAdd]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.1 (key w a)).resolve_right hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_law (Λ : Submodule ℤ (Fin g → ℂ))
     (huni : ∀ w : Fin g → ℂ, (∀ l : Λ, ∃ k : ℤ, (hh Hm w l).im = k) → w ∈ Λ)
@@ -442,14 +432,14 @@ open Complex Matrix Filter Topology
 variable {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ}
 
 /- English proof (translation)
-Simplify using `only [hh, dotProduct]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_hh_left (v : Fin g → ℂ) : Differentiable ℂ fun w => hh Hm w v := by
   simp only [hh, dotProduct]
   fun_prop
 
 /- English proof (translation)
-Establish `hc : (hh Hm r w).re = (hh Hm w r).re`. Rewrite using `[← hh_conj hH w r]`. Simplify using the standard rewrite rules. Rewrite using `[hh_add_left, hh_add_right, hh_add_right, hh_smul_left, hh_smul_left, hh_smul_right, hh_smul_right]`. Simplify using `only [star_def, conj_natCast, add_re, mul_re, natCast_re, natCast_im, zero_mul, sub_zero, hc, mul_im, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -469,7 +459,7 @@ def tr (Hm : Matrix (Fin g) (Fin g) ℂ) (m : ℕ) (θ : (Fin g → ℂ) → ℂ
   θ (r + (m : ℂ) • w) * cexp (-(Real.pi * m * hh Hm w r))
 
 /- English proof (translation)
-Establish `h1 : Differentiable ℂ fun w : Fin g → ℂ => r + (m : ℂ) • w` using `by fun_prop`. Conclude with `(hθ.comp h1).mul ((((differentiable_hh_left r).const_mul (Real.pi * (m : ℂ))).neg).cexp)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentiable_tr (m : ℕ) {θ : (Fin g → ℂ) → ℂ} (hθ : Differentiable ℂ θ)
     (r : Fin g → ℂ) : Differentiable ℂ (tr Hm m θ r) := by
@@ -478,9 +468,9 @@ theorem differentiable_tr (m : ℕ) {θ : (Fin g → ℂ) → ℂ} (hθ : Differ
     ((((differentiable_hh_left r).const_mul (Real.pi * (m : ℂ))).neg).cexp)
 
 /- English proof (translation)
-Establish `hmc : (m : ℂ) ≠ 0` using `by exact_mod_cast (show m ≠ 0 by omega)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, θ x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hθ (funext h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1` using `congrFun h ((m : ℂ)⁻¹ • (x - r))`. Simplify using `only [tr, Pi.zero_apply] at h1`. Rewrite `h1` using `[smul_smul, mul_inv_cancel₀ hmc, one_smul, add_sub_cancel]`. Conclude with `(mul_ne_zero hx (Complex.exp_ne_zero _)) h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_ne_zero {m : ℕ} (hm : 1 ≤ m) {θ : (Fin g → ℂ) → ℂ} (hθ : θ ≠ 0) (r : Fin g → ℂ) :
     tr Hm m θ r ≠ 0 := by
@@ -496,11 +486,11 @@ theorem tr_ne_zero {m : ℕ} (hm : 1 ≤ m) {θ : (Fin g → ℂ) → ℂ} (hθ 
   exact (mul_ne_zero hx (Complex.exp_ne_zero _)) h1
 
 /- English proof (translation)
-Establish `hmc : (m : ℂ) ≠ 0` using `by exact_mod_cast (show m ≠ 0 by omega)`. Establish `e1 : r + (m : ℂ) • (w + (m : ℂ)⁻¹ • (l : Fin g → ℂ)) = (r + (m : ℂ) • w) + l`. Rewrite using `[smul_add, smul_smul, mul_inv_cancel₀ hmc, one_smul, add_assoc]`. Establish `e2 : hh Hm r l - hh Hm l r = 2 * I * (hh Hm r l).im`. Rewrite using `[← hh_conj hH r l, star_def, Complex.sub_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [tr, psi, MonoidHom.coe_mk, OneHom.coe_mk, toAdd_ofAdd]`. Rewrite using `[e1, hθ, hh_add_left, hh_add_left, hh_smul_left, hh_smul_left]`. Establish `e3 : cexp (Real.pi * (hh Hm r l + m * hh Hm w l) + Real.pi / 2 * hh Hm l l) * cexp (-(Real.pi * m * (hh Hm w r + (m : ℂ)⁻¹ * hh Hm l r))) = cexp (Real.pi * m * hh Hm w l + Real.pi / 2 * hh Hm l l) * cexp (2 * Real.pi * I * (hh Hm r l).im) * cexp (-(Real.pi * m * hh Hm w r))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Establish `e4 : (m : ℂ) * ((m : ℂ)⁻¹ * hh Hm l r) = hh Hm l r` using `mul_inv_cancel_left₀ hmc _`. Take the linear combination `(Real.pi : ℂ) * e2 - (Real.pi : ℂ) * e4`. Take the linear combination `(χ l * θ (r + (m : ℂ) • w)) * e3`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tr_translate (Λ : Submodule ℤ (Fin g → ℂ)) (hH : Hm.IsHermitian) {m : ℕ} (hm : 1 ≤ m)
     {θ : (Fin g → ℂ) → ℂ} (χ : Λ → ℂ)
@@ -530,25 +520,23 @@ theorem tr_translate (Λ : Submodule ℤ (Fin g → ℂ)) (hH : Hm.IsHermitian) 
   linear_combination (χ l * θ (r + (m : ℂ) • w)) * e3
 
 /- English proof (translation)
-Establish `hprop : ∀ i, ∃ c : ℂ, c ≠ 0 ∧ f i = c • tr Hm m θ (r i)` using `fun i => by`. Use `exists_eq_const_mul (hfd i) (differentiable_tr m hθd _) (Real.exp (-(Real.pi / 2) * (hh Hm (r i) (r i)).re)) (Real.exp_pos _) (fun w => ?_) (tr_ne_zero hm hθ0 _)` and prove the remaining obligations. Establish `h` using `hnorm i w`. Rewrite `h` using `[re_hh_expand hH]`. Establish `hX : ‖f i w‖ = ‖θ (r i + (m : ℂ) • w)‖ * Real.exp (-(Real.pi * ((1 : ℕ) : ℝ) / 2) * ((hh Hm (r i) (r i)).re + 2 * m * (hh Hm w (r i)).re + (m : ℝ) ^ 2 * (hh Hm w w).re)) * Real.exp ((Real.pi * ((m ^ 2 : ℕ) : ℝ) / 2) * (hh Hm w w).re)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h, mul_assoc, ← Real.exp_add]`. Simplify using the standard rewrite rules. Establish `hN : ‖tr Hm m θ (r i) w‖ = ‖θ (r i + (m : ℂ) • w)‖ * Real.exp (-(Real.pi * m * (hh Hm w (r i)).re))`. Simplify using `only [tr]`. Rewrite using `[norm_mul, Complex.norm_exp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Simplify using the standard rewrite rules. Rewrite using `[hX, hN, mul_assoc, ← Real.exp_add, mul_left_comm, ← Real.exp_add]`. Use `congr 2`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `choose c hc0 hfe using hprop`. Establish `hχ0 : ∀ l, χ l ≠ 0` using `fun l h => by`. Use `hχ l` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_ne_one this`. Take `⟨J, _, s, hcard, hinj⟩` from `exists_reps Λ hs m hm r hrep`. Establish `hli : LinearIndependent ℂ (fun a => f (s a))`. Use `linearIndependent_of_law Λ huni (fun a => r (s a)) hinj _ (fun a => ?_) (fun l => (m : ℂ)⁻¹ • (l : Fin g → ℂ)) (fun l w => χ l * cexp (Real.pi * m * hh Hm w l + Real.pi / 2 * hh Hm l l)) (fun l w => mul_ne_zero (hχ0 l) (Complex.exp_ne_zero _)) (fun a l w => ?_)` and prove the remaining obligations. Rewrite using `[hfe]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul_ne_zero (hc0 _) (tr_ne_zero hm hθ0 _)`. Simplify using `only [hfe, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[tr_translate Λ hH hm χ hθ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsp : F ∈ Submodule.span ℂ (Set.range fun a => f (s a))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hF`. Set `eqv` to `Fintype.equivFin J`. Establish `h1 : LinearIndependent ℂ (fun k => f (s (eqv.symm k)))` using `hli.comp _ eqv.symm.injective`. Establish `h2 : F ∉ Submodule.span ℂ (Set.range fun k => f (s (eqv.symm k)))`. Rewrite using `[show (Set.range fun k => f (s (eqv.symm k))) = Set.range fun a => f (s a) from eqv.symm.surjective.range_comp fun a => f (s a)]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `linearIndependent_fin_cons.2 ⟨h1, h2⟩`. Establish `h4` using `card_le_of_unimodular Λ hs hH hpos χ hχ hint huni (m ^ 2) (Nat.one_le_pow _ _ hm) (Fintype.card J + 1) _ (fun k => by`. Use `Fin.cases ?_ (fun j => ?_) k` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Conclude with `⟨hFd, hFl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Fin.cons_succ]`. Conclude with `⟨hfd _, hfl _⟩) h3`. Use linear arithmetic over natural numbers and integers. Establish `hsp' : F ∈ Submodule.span ℂ (Set.range f)` using `Submodule.span_mono (Set.range_comp_subset_range s f) hsp`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hsp'`.
-
-Conclude with `⟨d, hd.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_of_reps (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
     (hs : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (hH : Hm.IsHermitian)
@@ -644,7 +632,7 @@ section Frame
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {P : RigLB G} {z : Sp ℂ ⟶ S} {g : ℕ}
 
 /- English proof (translation)
-Establish `h : Continuous fun w : Fin g → ℂ => ‖θ w‖ * Real.exp (-(Real.pi * n / 2) * (hh a.Hm w w).re)` using `hθ.norm.mul (Real.continuous_exp.comp (continuous_const.mul (Complex.continuous_re.comp continuous_hh_diag)))`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_nrm (a : ArchFrame P z g) (n : ℕ) {θ : (Fin g → ℂ) → ℂ} (hθ : Continuous θ) :
     Continuous (a.nrm n θ) := by
@@ -657,13 +645,11 @@ theorem continuous_nrm (a : ArchFrame P z g) (n : ℕ) {θ : (Fin g → ℂ) →
 end Frame
 
 /- English proof (translation)
-Introduce `S G _ _ P z g a hint huni _ m θ Ix _ r f hm hθ hθ0 hrep _ hf hnorm`. Take `⟨hH, hpos, hχ, -⟩` from `a.ah`. Use `haveI := a.u.discrete`. Establish `hs` using `a.u.full`. Establish `hall : ∀ i w, a.nrm (m ^ 2) (f i) w = a.nrm 1 θ (r i + (m : ℂ) • w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `hl : Continuous fun w : Fin g → ℂ => r i + (m : ℂ) • w` using `by fun_prop`. Use `Continuous.ext_on (dense_torsion a.u.Λ hs) (continuous_nrm a (m ^ 2) (hf i).1.continuous) ((continuous_nrm a 1 hθ.1.continuous).comp hl) (fun w hw => by` as an intermediate fact. Take `⟨N, hN, hw⟩` from `hw`. Conclude with `hnorm i w N hN hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrFun this`. Use `⟨hall, fun F hF => ?_⟩` and prove the remaining obligations. Conclude with `span_of_reps a.u.Λ hs hH hpos a.χ hχ hint huni m hm θ hθ.1 (fun l w => by`. Use `hθ.2 l w` as an intermediate fact. Rewrite using `[pow_one] at this)` and apply the resulting hypothesis.
-
-Use `hθ0 r f hrep (fun i => (hf i).1) (fun i w => hall i w) (fun i => (hf i).2) F hF.1 hF.2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem theta_span : ∀ {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {P : RigLB G} {z : Sp ℂ ⟶ S} {g : ℕ} (a : ArchFrame P z g), (∀ l l' : a.u.Λ, ∃ k : ℤ, (a.herm l l').im = k) → (∀ w : Fin g → ℂ, (∀ l : a.u.Λ, ∃ k : ℤ, (a.herm w l).im = k) → w ∈ a.u.Λ) → (∀ l l' : a.u.Λ, a.χ (l + l') = a.χ l * a.χ l' * Complex.exp (Real.pi * Complex.I * (a.herm l l').im)) → ∀ (m : ℕ) (θ : (Fin g → ℂ) → ℂ) (Ix : Type) [Fintype Ix] (r : Ix → Fin g → ℂ) (f : Ix → (Fin g → ℂ) → ℂ), 1 ≤ m → a.IsTheta 1 θ → θ ≠ 0 → (∀ w : Fin g → ℂ, (m : ℂ) • w ∈ a.u.Λ → ∃ i, w - r i ∈ a.u.Λ) → (∀ i, (m : ℂ) • r i ∈ a.u.Λ) → (∀ i, a.IsTheta (m ^ 2) (f i)) → (∀ i (w : Fin g → ℂ) (N : ℕ), 1 ≤ N → (N : ℂ) • w ∈ a.u.Λ → a.nrm (m ^ 2) (f i) w = a.nrm 1 θ (r i + (m : ℂ) • w)) → (∀ i w, a.nrm (m ^ 2) (f i) w = a.nrm 1 θ (r i + (m : ℂ) • w)) ∧ ∀ F, a.IsTheta (m ^ 2) F → ∃ c : Ix → ℂ, F = ∑ i, c i • f i := by
   intro S G _ _ P z g a hint huni _ m θ Ix _ r f hm hθ hθ0 hrep _ hf hnorm

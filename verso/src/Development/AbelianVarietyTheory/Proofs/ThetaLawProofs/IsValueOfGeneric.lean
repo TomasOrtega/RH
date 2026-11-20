@@ -14,15 +14,13 @@ noncomputable section
 namespace GlobalTheory.KeySpec
 
 /- English proof (translation)
-Introduce `K _ _ f x hf hx`. Use `haveI := RingHom.ker_isPrime r`. Use `haveI : CharZero (S ⧸ RingHom.ker r) := (RingHom.kerLift r).charZero`. Take `⟨y', hy⟩` from `exists_keyPB_ring y (Ideal.Quotient.mk (RingHom.ker r))`. Set `F` to `FractionRing (S ⧸ RingHom.ker r)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨xF, hxF⟩` from `exists_keyPB_ring y' (algebraMap _ F)`. Establish `hr` using `RingHom.kerLift_injective r`. Establish `er : (RingHom.kerLift r).comp (Ideal.Quotient.mk (RingHom.ker r)) = r` using `RingHom.ext fun a => RingHom.kerLift_mk r a`. Establish `e : (IsFractionRing.lift (K` using `F) hr).comp (algebraMap _ F) = RingHom.kerLift r := RingHom.ext fun a => IsFractionRing.lift_algebraMap hr a`. Establish `h1` using `hF F k (IsFractionRing.lift hr) xF xk (GlobalTheory.KeyCancel.keyPB_cancel _ _ _ y' xF xk _ _ hxF (e.symm ▸ GlobalTheory.KeyCancel.keyPB_cancel _ _ _ y y' xk _ _ hy (er.symm ▸ hk)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : (κ F xF : F) = algebraMap _ F (Ideal.Quotient.mk (RingHom.ker r) u)`. Apply `(IsFractionRing.lift (K := F) hr).injective` to reduce the goal to its premises. Rewrite using `[← h1, h, IsFractionRing.lift_algebraMap, RingHom.kerLift_mk]`. Establish `hz : ∀ a ∈ RingHom.ker r, f a = 0` using `fun a ha => (show a ∈ RingHom.ker f from hf ▸ ha)`. Set `g` to `Ideal.Quotient.lift (RingHom.ker r) f hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eg : g.comp (Ideal.Quotient.mk _) = f` using `RingHom.ext fun a => Ideal.Quotient.lift_mk (RingHom.ker r) f hz`. Establish `hg : RingHom.ker g = ⊥`. Use `le_antisymm (fun a ha => ?_) bot_le` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `: a ∈ RingHom.ker f` using `ha`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hf ▸ this)`. Conclude with `valueAt_bot hF hxF h2 K g x hg (GlobalTheory.KeyCancel.keyPB_cancel _ _ _ y y' x _ _ hy (eg.symm ▸ hx))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valueAt_of_point {κ : Rule} (hF : Funct κ) {S k : Type} [CommRing S] [Field k] [CharZero k] {y : KeyIn S} {u : S}
     (r : S →+* k) {xk : KeyIn k} (hk : KeyPB xk y r) (h : (κ k xk : k) = r u) : ValueAt κ y u (RingHom.ker r) := by
@@ -54,13 +52,13 @@ theorem valueAt_of_point {κ : Rule} (hF : Funct κ) {S k : Type} [CommRing S] [
   exact valueAt_bot hF hxF h2 K g x hg (GlobalTheory.KeyCancel.keyPB_cancel _ _ _ y y' x _ _ hy (eg.symm ▸ hx))
 
 /- English proof (translation)
-Introduce `κ hF hU S _ _ _ _ y u h K _ _ f x hx`. Establish `h0 : ValueAt κ y u ⊥` using `fun K _ _ f x hf hx => h K f x ((RingHom.injective_iff_ker_eq_bot f).2 hf) hx`. Distinguish the cases in `hp : RingHom.ker f = ⊥`. Conclude with `h0 K f x hp hx`. Use `haveI := RingHom.ker_isPrime f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨O, _, _, _, _, φ, hφ, hm⟩` from `GlobalTheory.exists_complete_discreteValuationRing_of_prime_lt (⊥ : Ideal S) (RingHom.ker f) (bot_lt_iff_ne_bot.2 hp)`. Use `haveI : CharZero O := charZero_of_injective_ringHom ((RingHom.injective_iff_ker_eq_bot φ).2 hφ)`. Take `⟨yO, hy⟩` from `exists_keyPB_ring y φ`. Take `⟨u', hu'⟩` from `exists_unit_dvr hF hU O yO`. Establish `e : φ u = u'` using `(h0.map_bot φ hφ hy).unique (hu' ⊥)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : RingHom.ker ((IsLocalRing.residue O).comp φ) = RingHom.ker f`. Rewrite using `[← RingHom.comap_ker, IsLocalRing.ker_residue, hm]`. Use `haveI : CharZero (IsLocalRing.ResidueField O) := charZero_of_inj_zero fun n hn => by`. Establish `: (n : S) ∈ RingHom.ker ((IsLocalRing.residue O).comp φ)`. Rewrite using `[RingHom.mem_ker, map_natCast, hn]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hk, RingHom.mem_ker, map_natCast]`. Conclude with `this` after adjusting the coercions. Take `⟨xk, hxk⟩` from `exists_keyPB_ring yO (IsLocalRing.residue O)`. Use `valueAt_of_point hF ((IsLocalRing.residue O).comp φ) (GlobalTheory.keyPB_trans _ _ _ y yO xk _ _ hy hxk) ?_ K f x hk.symm hx` and prove the remaining obligations. Rewrite using `[hu' _ _ _ xk rfl hxk, RingHom.comp_apply, e]`.
+A detailed English derivation is pending.
 -/
 theorem isValue_of_generic : ∀ κ : Rule, Funct κ → UnitSp κ → ∀ (S : Type) [CommRing S] [IsDomain S] [IsNoetherianRing S] [CharZero S] (y : KeyIn S) (u : S), (∀ (K : Type) [Field K] [CharZero K] (f : S →+* K) (x : KeyIn K), Function.Injective f → KeyPB x y f → (κ K x : K) = f u) → IsValue κ y u := by
   intro κ hF hU S _ _ _ _ y u h K _ _ f x hx

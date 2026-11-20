@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.VacThetaIndep
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.VacThetaInd.psi_half_symp_theta_indep`.
+A detailed English derivation is pending.
 -/
 theorem vacuum_character_theta_indep : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →
     ∀ (v : Pl F) (θ θ' : 𝓞 E), (θ : E) + σ θ = 1 → (θ' : E) + σ θ' = 1 → ∀ γ ∈ latAtV X W v,

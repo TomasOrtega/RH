@@ -6,7 +6,7 @@ namespace LateralTheory.E.LeafTrdegDimPf
 open Algebra
 
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic (Algebra.adjoin k (s : Set F)) F` using `⟨fun x => IntermediateField.isAlgebraic_adjoin_iff.1 (h.isAlgebraic x)⟩`. Take `⟨t, hts, hb⟩` from `exists_isTranscendenceBasis_subset (R := k) (A := F) (s : Set F)`. Rewrite using `[← hb.cardinalMk_eq_trdeg]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem trdeg_le_card (k F : Type) [Field k] [Field F] [Algebra k F] (s : Finset F)
     (h : Algebra.IsAlgebraic (IntermediateField.adjoin k (s : Set F)) F) :
@@ -19,11 +19,11 @@ theorem trdeg_le_card (k F : Type) [Field k] [Field F] [Algebra k F] (s : Finset
     _ = (s.card : Cardinal) := by simp
 
 /- English proof (translation)
-Introduce `k F Ω _ _ _ _ _ _ _ _ n s hs hF R hR`. Establish `hFT : Algebra.FiniteType k R` using `(Subalgebra.fg_iff_finiteType R).1 hR`. Take `⟨d, hd1, hd2⟩` from `GlobalTheory.exists_ringKrullDim_eq_and_trdeg_eq k R`. Establish `h1 : Algebra.trdeg k R ≤ Algebra.trdeg k Ω` using `trdeg_le_of_injective R.val Subtype.val_injective`. Establish `h2 : Algebra.trdeg k Ω = Algebra.trdeg k F` using `GlobalTheory.trdeg_eq_of_isAlgebraic_top k F Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `trdeg_le_card k F s hF`. Establish `hdn : (d : Cardinal) ≤ (n : Cardinal)`. Rewrite using `[← hd2]`. Conclude with `h1.trans (h2 ▸ h3.trans (by exact_mod_cast hs))`. Establish `: d ≤ n` using `by exact_mod_cast hdn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd1]`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem LeafTrdegDim_of : LateralTheory.E.LeafCurveVCut.LeafTrdegDim := by
   intro k F Ω _ _ _ _ _ _ _ _ n s hs hF R hR

@@ -4,7 +4,7 @@ import Mathlib
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.KummerStep.kummer_step) | (exact GlobalTheory.KummerStep.kummer_step) | (intros; apply GlobalTheory.KummerStep.kummer_step <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.picard_torsion_trivial_of_torsors_have_sections : ∀ (B : Type) [CommRing B] (q : ℕ), 0 < q → IsUnit (q : B) →
     (∃ ζ : B, ζ ^ q = 1 ∧ ∀ k : ℕ, 0 < k → k < q → IsUnit (1 - ζ ^ k)) →

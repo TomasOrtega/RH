@@ -14,13 +14,11 @@ open GlobalTheory.ModelData
 namespace GlobalTheory.RescaleMatch
 
 /- English proof (translation)
-Establish `hj : jFK (R` using `R') F ≫ jK R' ≫ spMap f = jFK (R := R) F ≫ jK R := (congrArg (_ ≫ ·) (Geo.Tor.spMap_comp f _).symm).trans ((Geo.Tor.spMap_comp _ _).symm.trans ((congrArg spMap (RingHom.ext fun x => (hF x).symm)).trans (Geo.Tor.spMap_comp _ _)))`. Establish `hx : D'.xK x ≫ PsiEvenPull.proj hD = jK R' ≫ specOf f ≫ (D.c (hD.xe x)).left`. Rewrite using `[← hD.c_pr x, ← Category.assoc]`. Both sides reduce to the same expression. Establish `hpt : (jFK (R` using `R') F ≫ D'.xK x) ≫ PsiEvenPull.proj hD = jFK (R := R) F ≫ D.xK (hD.xe x) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hx, ← Category.assoc (jK R'), ← Category.assoc]`. Conclude with `(congrArg (· ≫ _) hj).trans (Category.assoc _ _ _)`. Establish `z : Sp F` using `(default : PrimeSpectrum F)`. Use `(ArcPsiOn.genRel_iff_val D'.P.isLB D.P.isLB hD.w _ _ _ z).2 ⟨hpt, fun J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `e` using `ArcPull.psi_val hD (jFK (R := R) F) (jFK (R := R') F) hj hJ hJ' x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `TauTwist.val_psi_rescale q x (jFK (R := R') F) hJ'`. Establish `e₂` using `TauTwist.unitAt_spMap (𝟙 (Sp F)) (algebraMap (FractionRing R') F) z (q x)`. Rewrite `e₂` using `[Category.id_comp]`. Establish `e₃ : (TauTwist.unitAt (𝟙 (Sp F)) z (Units.map (algebraMap (FractionRing R') F).toMonoidHom (q x))).val = toStk z (algebraMap (FractionRing R') F (q x))` using `gm_val _ z ⊤ trivial _`. Rewrite using `[zpow_neg_one, ← e₃, ← Units.val_mul]`.
-
-Conclude with `congrArg Units.val ((congrArg₂ (· * ·) rfl (((val_pull hJ' _ _ _).trans (by rw [Category.id_comp])).trans e₁)).trans ((mul_left_comm _ _ _).trans (congrArg₂ (· * ·) e₂ (e.symm.trans ((val_pull hJ _ _ _).trans (by rw [Category.id_comp])).symm))))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genRel_rescale {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {f : R →+* R'}
     {D : DegPre R} {D' : DegPre R'} (hD : IsPullDeg f D D') (q : D'.X → (FractionRing R')ˣ) (F : Type) [Field F]
@@ -51,19 +49,17 @@ theorem genRel_rescale {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [Is
       (e.symm.trans ((val_pull hJ _ _ _).trans (by rw [Category.id_comp])).symm))))
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H D l c O _ β O' _ _ b a R _ _ f D' hD u₀ uK hu q Φ hΦ hq`. Substitute `hΦ` using the available equality. Use `letI := H.starRing`. Take `⟨inst, o', hs, ho⟩` from `exists_oAct_of_isPullDeg hG O' R f a.D₀ D' hD (𝓞 E) a.oa`. Establish `hw` using `TauTwist.halfUnit_add_star H`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht : TauTwist.IsScalarForm (𝓞 E) fun y x : D'.X => uK ^ a.be (hD.xe y) (hD.xe x)` using `⟨fun y x x' => by rw [map_add, map_add, zpow_add], fun y x => by rw [a.be_symm], fun r y x => by rw [hs, hs, a.be_adj]; rfl⟩`. Take `rfl : q = fun y => uK ^ a.be (hD.xe y) (hD.xe (H.w0 • y))` from `funext fun y => by`. Establish `h₁ : a.be (hD.xe y) (H.bar H.w0 • hD.xe y) = a.be (hD.xe y) (H.w0 • hD.xe y)`. Rewrite using `[← a.be_adj, a.be_symm]`. Establish `h₂ : a.be (hD.xe y) ((H.w0 + H.bar H.w0) • hD.xe y) = a.be (hD.xe y) (hD.xe y)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show H.w0 + H.bar H.w0 = 1 from hw, one_smul]`. Rewrite `h₂` using `[add_smul, map_add, h₁]`. Rewrite using `[hq, hs, ← h₂]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Set `e : D'.X ≃ₗ[𝓞 E] a.D₀.X` to `{ hD.xe with map_smul' := hs }`. Establish `he : ∀ y, hD.xe (e.symm y) = y` using `fun y => e.apply_symm_apply y`. Set `oW : (TauTwist.rescale D' fun y => uK ^ a.be (hD.xe y) (hD.xe (H.w0 • y))).OAct (𝓞 E)` to `(TauTwist.twistAct (D := D') hw ht o' :)`. Establish `ev` using `TauTwist.psiEven_twist (D := D') ht H.w0 (PsiEvenPull.psiEven_pull hG _ _ f _ _ hD a.even)`. Establish `bi` using `TauTwist.tauBimult_twist (D := D') hw ht (tauBimult_of_isPullDeg hG _ _ f _ _ hD a.bimult)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨inst, oW, hD.he, hD.w, e.symm, ⟨pull_grp hD, hD.w_gen, hD.w_rig, fun x => ?_, fun y => ?_, fun F _ _ _ _ uF hF huF y => ?_⟩, he, ev, bi⟩` and prove the remaining obligations. Establish `e₀` using `congrArg (fun z => z.left ≫ pullback.fst a.D₀.P.A.hom (specOf f)) (ho x)`. Establish `e₂ : ((Over.pullback (specOf f)).map (a.oa.onB.act x)).left ≫ pullback.fst a.D₀.P.A.hom (specOf f) = pullback.fst _ _ ≫ (a.oa.onB.act x).left` using `pullback.lift_fst _ _ _`. Simplify using `only [Over.comp_left, Category.assoc, e₂] at e₀`. Conclude with `e₀.trans (Category.assoc _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(hD.c_pr (e.symm y)).trans (by rw [he])`. Establish `k` using `genRel_rescale hD (fun y => uK ^ a.be (hD.xe y) (hD.xe (H.w0 • y))) F hF (e.symm y)`. Establish `v : algebraMap (FractionRing R) F ((uK ^ a.be (hD.xe (e.symm y)) (hD.xe (H.w0 • e.symm y)) : (FractionRing R)ˣ) : FractionRing R) = uF ^ (a.be y y / 2)`. Rewrite using `[show uK ^ a.be (hD.xe (e.symm y)) (hD.xe (H.w0 • e.symm y)) = _ from hq (e.symm y), he, Units.val_zpow_eq_zpow_val, map_zpow₀, hu, huF]`. Use `beta_reduce at k`.
-
-Rewrite `k` using `[v, he]`. Conclude with `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_match_rescale : GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (O' : Type) [CommRing O'] [IsDomain O'] (b : O →+* O') (a : ArcIn D l β O' b) (R : Type) [CommRing R] [IsDomain R] (f : O' →+* R) (D' : DegPre R) (hD : IsPullDeg f a.D₀ D') (u₀ : R) (uK : (FractionRing R)ˣ), (uK : FractionRing R) = algebraMap R _ u₀ → ∀ (q : D'.X → (FractionRing R)ˣ) (Φ : D'.P.A.left ⟶ a.D₀.P.A.left), Φ = PsiEvenPull.proj hD → (∀ y, q y = uK ^ (a.be (hD.xe y) (hD.xe y) / 2)) → ∃ (_ : Module (𝓞 E) (TauTwist.rescale D' q).X) (oW : letI := H.starRing; (TauTwist.rescale D' q).OAct (𝓞 E)) (he : _) (w : _) (e : _), GlobalTheory.LN.Match a f u₀ (TauTwist.rescale D' q) oW Φ he w e ∧ (∀ y, hD.xe (e y) = y) ∧ (TauTwist.rescale D' q).PsiEven ∧ (TauTwist.rescale D' q).TauBimult := by
   intro hG E _ _ _ H D l c O _ β O' _ _ b a R _ _ f D' hD u₀ uK hu q Φ hΦ hq

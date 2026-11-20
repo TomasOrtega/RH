@@ -11,7 +11,7 @@ section Pairing
 variable {A : Type*} [AddCommGroup A] {L : Type*} [Field L] (N : ℕ) (e : A → A → L)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `hpow P Q hP hQ`. Rewrite `h1` using `[h, zero_pow hN]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_ne_zero (hpow : ∀ P Q, N • P = 0 → N • Q = 0 → e P Q ^ N = 1) (hN : N ≠ 0)
     {P Q : A} (hP : N • P = 0) (hQ : N • Q = 0) : e P Q ≠ 0 := by
@@ -21,7 +21,7 @@ theorem pairing_ne_zero (hpow : ∀ P Q, N • P = 0 → N • Q = 0 → e P Q ^
   exact zero_ne_one h1
 
 /- English proof (translation)
-Establish `h` using `hl 0 0 R (nsmul_zero N) (nsmul_zero N) hR`. Rewrite `h` using `[add_zero]`. Establish `hne` using `pairing_ne_zero N e hpow hN (nsmul_zero N) hR`. Conclude with `mul_left_cancel₀ hne (h.symm.trans (mul_one _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pairing_zero_left
     (hl : ∀ P Q R, N • P = 0 → N • Q = 0 → N • R = 0 → e (P + Q) R = e P R * e Q R)
@@ -33,7 +33,7 @@ theorem pairing_zero_left
   exact mul_left_cancel₀ hne (h.symm.trans (mul_one _).symm)
 
 /- English proof (translation)
-Establish `h` using `hr P 0 0 hP (nsmul_zero N) (nsmul_zero N)`. Rewrite `h` using `[add_zero]`. Establish `hne` using `pairing_ne_zero N e hpow hN hP (nsmul_zero N)`. Conclude with `mul_left_cancel₀ hne (h.symm.trans (mul_one _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pairing_zero_right
     (hr : ∀ P Q R, N • P = 0 → N • Q = 0 → N • R = 0 → e P (Q + R) = e P Q * e P R)
@@ -45,13 +45,13 @@ theorem pairing_zero_right
   exact mul_left_cancel₀ hne (h.symm.trans (mul_one _).symm)
 
 /- English proof (translation)
-Rewrite using `[nsmul_swap, hP, nsmul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_nsmul_eq_zero {P : A} (hP : N • P = 0) (a : ℕ) : N • a • P = 0 := by
   rw [nsmul_swap, hP, nsmul_zero]
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => rw [zero_nsmul, pow_zero, pairing_zero_left N e hl hpow hN hR]`. Consider the case `succ a ih`. Rewrite using `[succ_nsmul, hl _ _ _ (nsmul_nsmul_eq_zero N hP a) hP hR, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing_nsmul_left
     (hl : ∀ P Q R, N • P = 0 → N • Q = 0 → N • R = 0 → e (P + Q) R = e P R * e Q R)
@@ -63,7 +63,7 @@ theorem pairing_nsmul_left
     rw [succ_nsmul, hl _ _ _ (nsmul_nsmul_eq_zero N hP a) hP hR, ih, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => rw [zero_nsmul, pow_zero, pairing_zero_right N e hr hpow hN hP]`. Consider the case `succ a ih`. Rewrite using `[succ_nsmul, hr _ _ _ hP (nsmul_nsmul_eq_zero N hR a) hR, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing_nsmul_right
     (hr : ∀ P Q R, N • P = 0 → N • Q = 0 → N • R = 0 → e P (Q + R) = e P Q * e P R)
@@ -75,11 +75,11 @@ theorem pairing_nsmul_right
     rw [succ_nsmul, hr _ _ _ hP (nsmul_nsmul_eq_zero N hR a) hR, ih, pow_succ]
 
 /- English proof (translation)
-Establish `haP` using `nsmul_nsmul_eq_zero N hP a`. Establish `hcQ` using `nsmul_nsmul_eq_zero N hQ c`. Establish `hbP` using `nsmul_nsmul_eq_zero N hP b`. Establish `hdQ` using `nsmul_nsmul_eq_zero N hQ d`. Establish `hsum : N • (b • P + d • Q) = 0` using `by rw [nsmul_add, hbP, hdQ, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPQ : N • (P + Q) = 0` using `by rw [nsmul_add, hP, hQ, add_zero]`. Establish `halt : e Q P * e P Q = 1`. Establish `h` using `hself (P + Q) hPQ`. Rewrite `h` using `[hl P Q _ hP hQ hPQ, hr P P Q hP hP hQ, hr Q P Q hQ hP hQ, hself P hP, hself Q hQ]`. Rewrite using `[← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hl _ _ _ haP hcQ hsum, hr _ _ _ haP hbP hdQ, hr _ _ _ hcQ hbP hdQ, pairing_nsmul_left N e hl hpow hN hP hbP, pairing_nsmul_left N e hl hpow hN hP hdQ, pairing_nsmul_left N e hl hpow hN hQ hbP, pairing_nsmul_left N e hl hpow hN hQ hdQ, pairing_nsmul_right N e hr hpow hN hP hP, pa …`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem pairing_comb
     (hl : ∀ P Q R, N • P = 0 → N • Q = 0 → N • R = 0 → e (P + Q) R = e P R * e Q R)
@@ -117,9 +117,7 @@ variable {ℓ : ℕ} [hℓ : Fact ℓ.Prime] {A : Type*} [AddCommGroup A]
 omit hℓ in
 
 /- English proof (translation)
-Use `⟨⟨fun j => (t : ℕ → A) (j + 1), fun j => ?_, fun j => TateModule.nsmul_succ t (j + 1)⟩, ?_⟩` and prove the remaining obligations. Use `show ℓ ^ j • (t : ℕ → A) (j + 1) = 0`. Rewrite using `[add_comm, TateModule.pow_nsmul_add t 1 j, h]`. Use `Subtype.ext (funext fun j => ?_)` and prove the remaining obligations. Rewrite using `[AddSubgroup.coe_nsmul, Pi.smul_apply]`.
-
-Conclude with `(TateModule.nsmul_succ t j).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TateModule.exists_eq_nsmul_of_apply_one_eq_zero (t : TateModule ℓ A)
     (h : (t : ℕ → A) 1 = 0) : ∃ s : TateModule ℓ A, t = ℓ • s := by
@@ -131,7 +129,7 @@ theorem TateModule.exists_eq_nsmul_of_apply_one_eq_zero (t : TateModule ℓ A)
     exact (TateModule.nsmul_succ t j).symm
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨s, hs⟩` from `TateModule.exists_eq_nsmul_of_apply_one_eq_zero (b i) h0`. Establish `h` using `congrArg (fun u => b.repr u i) hs`. Simplify using `only [Module.Basis.repr_self, Finsupp.single_eq_same, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul] at h`. Conclude with `(mem_nonunits_iff.mp PadicInt.p_nonunit) (isUnit_iff_exists_inv.mpr ⟨_, h.symm⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TateModule.basis_apply_one_ne_zero {ι : Type*} (b : Module.Basis ι ℤ_[ℓ] (TateModule ℓ A))
     (i : ι) : ((b i : TateModule ℓ A) : ℕ → A) 1 ≠ 0 := by

@@ -15,17 +15,13 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Use `choose! n hnN hnv hnw using h`. Use `set T := (finite_valuation_ne_one F t).toFinset \ S with hT`. Establish `hP : ∏ v ∈ T, n v ∈ N` using `N.prod_mem (fun v hv => hnN v (Finset.mem_sdiff.1 hv).2)`. Establish `hU : t * (∏ v ∈ T, n v)⁻¹ ∈ sUnits F S`. Rewrite using `[mem_sUnits]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `key : w.valuation F ((∏ v ∈ T, n v : Fˣ) : F) = w.valuation F (t : F)`. Rewrite using `[Units.coe_prod, map_prod]`. Distinguish the cases in `hwT : w ∈ T`. Rewrite using `[Finset.prod_eq_single w]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hnv w hw`. Introduce `v hv hne`. Conclude with `hnw v (Finset.mem_sdiff.1 hv).2 w hw hne.symm`. Introduce `h'`. Conclude with `absurd hwT h'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : w.valuation F (t : F) = 1`. Assume the negation of the conclusion as `hc`. Conclude with `hwT (Finset.mem_sdiff.2 ⟨by simpa using hc, hw⟩)`. Rewrite using `[h1]`. Use `Finset.prod_eq_one (fun v hv => ?_)` and prove the remaining obligations.
-
-Conclude with `hnw v (Finset.mem_sdiff.1 hv).2 w hw (fun e => hwT (e ▸ hv))`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, key]`. Conclude with `mul_inv_cancel₀ (by simp)`. Establish `: t = t * (∏ v ∈ T, n v)⁻¹ * ∏ v ∈ T, n v` using `by group`. Rewrite using `[this]`.
-
-Conclude with `Subgroup.mul_mem_sup hU hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sUnits_sup_of_local_orders {F : Type} [Field F] [NumberField F]
     (S : Finset (HeightOneSpectrum (𝓞 F))) (N : Subgroup Fˣ) (t : Fˣ)
@@ -62,15 +58,15 @@ theorem mem_sUnits_sup_of_local_orders {F : Type} [Field F] [NumberField F]
   exact Subgroup.mul_mem_sup hU hP
 
 /- English proof (translation)
-Take `⟨w, w', hne, hw, hw'⟩` from `two_places_of_isSquare F E δ θ σ hq v hsq`. Take `⟨hc1, hc2⟩` from `conj_places_transitive F E δ θ σ hq`. Establish `hwS : w ∉ SE` using `by rw [hover, hw]; exact hv`. Establish `hw'S : w' ∉ SE` using `by rw [hover, hw']; exact hv`. Take `⟨-, π, hπ, hπ'⟩` from `hSE w hwS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `(isQuad_basic F E δ θ σ hq).2.2.2.1 π`. Establish `hun : ∀ x : HeightOneSpectrum (𝓞 E), x.under (𝓞 F) ∉ S → (x.under (𝓞 F)).valuation F (a ^ 2 - δ * b ^ 2) = x.valuation E π * x.valuation E (σ π)`. Introduce `x hx`. Rewrite using `[← map_mul, hab, valuation_unramified_of_unit F E δ θ σ hq x (hS _ hx).1 (hδ _ hx)]`. Use `⟨a, b, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hun w (hw ▸ hv)` as an intermediate fact. Rewrite `this` using `[hw]`. Rewrite using `[this, hπ]`. Break down `hc2 w w' (hw'.trans hw.symm) with h | h` into its components or cases. Conclude with `absurd h.symm hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, hπ' w' hw'S hne.symm, mul_one]`. Introduce `u hu huv`. Take `⟨x, hx⟩` from `(places_over F E).2.1 u`. Take `⟨x', hx', hxx⟩` from `hc1 x`. Use `hun x (hx ▸ hu)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hx]`. Rewrite using `[this, ← hxx, hπ' x (by rw [hover, hx]; exact hu) (by rintro rfl; exact huv (hx.symm.trans hw)), hπ' x' (by rw [hover, hx', hx]; exact hu) (by rintro rfl; exact huv ((hx'.trans hx).symm.trans hw)), mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_uniformizer_of_split {F E : Type} [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] {δ : F} {θ : E} {σ : E ≃ₐ[F] E} (hq : IsQuad δ θ σ)
@@ -110,23 +106,21 @@ theorem exists_norm_uniformizer_of_split {F E : Type} [Field F] [NumberField F] 
         (by rintro rfl; exact huv ((hx'.trans hx).symm.trans hw)), mul_one]
 
 /- English proof (translation)
-Introduce `F _ _ δ hδ`. Take `⟨E, _, _, _, θ, σ, hq⟩` from `exists_isQuad F δ hδ`. Take `⟨T, -, hT⟩` from `exists_admissible_superset_finite_places E ∅`. Take `⟨S₁, hS₁, hS₁'⟩` from `exists_superset_mem_sUnits F {δ} (T.image (fun w => w.under (𝓞 F)))`. Take `⟨S, hS, hadm⟩` from `exists_admissible_superset_finite_places F S₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hδS : δ ∈ sUnits F S` using `hS₁' S hS δ (by simp)`. Take `⟨SE, hSE⟩` from `(places_over F E).1 S`. Establish `hadmE : admitted E SE` using `hT.mono (fun w hw => (hSE w).2 (hS (hS₁ (Finset.mem_image_of_mem _ hw))))`. Use `⟨S, hadm, hδS, fun t ht => ?_⟩` and prove the remaining obligations. Use `mem_sUnits_sup_of_local_orders S _ t (fun v hv => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht0 : v.valuation F (t : F) ≠ 0` using `by simp`. Distinguish the cases in `hsq : IsSquare (algebraMap F (v.adicCompletion F) δ)`. Take `⟨a, b, h1, h2⟩` from `exists_norm_uniformizer_of_split hq S SE hadm hadmE hSE ((mem_sUnits F S δ).1 hδS) v hv hsq`. Establish `h0 : a ^ 2 - δ * b ^ 2 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero h1.symm`. Use `⟨(Units.mk0 _ h0) ^ (-(WithZero.log (v.valuation F (t : F)))), Subgroup.zpow_mem _ ((mem_normSub _ _ _).2 ⟨a, b, rfl⟩) _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_mk0, map_zpow₀, h1, ← WithZero.exp_zsmul]`. Simplify using `[WithZero.exp_log ht0]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu huv`. Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_mk0, map_zpow₀, h2 u hu huv, one_zpow]`. Take `⟨h2, π, hπ, hπ'⟩` from `hadm v hv`. Establish `hval : ∀ x : F, Valued.v (algebraMap F (v.adicCompletion F) x) = v.valuation F x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`. Establish `hev` using `evenNorms_of_odd_place F v (by have := hval 2; rwa [map_ofNat, h2] at this) _ ((hval _).trans ((mem_sUnits F S δ).1 hδS v hv)) hsq`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `ht v hv`. Take `⟨m, hm⟩` from `hev a b (by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Rewrite `hab` using `[hc.1, hc.2]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hab)`. Rewrite `hm` using `[← hab, hval]`. Establish `hπ0 : π ≠ 0`. Introduce `h`. Rewrite `hπ` using `[h, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero hπ.symm`. Use `⟨((Units.mk0 _ hπ0) ^ (-m)) ^ 2, ⟨π ^ (-m), 0, by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_zpow_eq_zpow_val, Units.val_mk0, map_pow, map_zpow₀, hπ, hm, ← WithZero.exp_zsmul, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules. Introduce `u hu huv`.
-
-Rewrite using `[Units.val_pow_eq_pow_val, Units.val_zpow_eq_zpow_val, Units.val_mk0, map_pow, map_zpow₀, hπ' u hu huv, one_zpow, one_pow]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adm_mem_sUnits_local_norm_mem_sUnits_sup_normSub :
     ∀ (F : Type) [Field F] [NumberField F] (δ : Fˣ), ¬ IsSquare (δ : F) →

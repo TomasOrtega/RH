@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FrameRead
 
 /- English proof (translation)
-Establish `h` using `Formalism.GradedWeylDivisibility.bidetMem R n n 1 (fun _ => n) (fun _ => le_refl n) (fun _ => id)`. Establish `hb : bideterminant R (r` using `n) (n := n) (fun _ : Fin 1 => n) (fun _ => le_refl n) (fun _ => id) = detPol R n := by`. Simplify using `[bideterminant, initMinor, detPol]`. Establish `hs : shapeDeg (n` using `n) (fun _ : Fin 1 => n) = fun _ => 1 := by`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[shapeDeg, t.isLt]`. Rewrite `h` using `[hb, hs]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detPol_mem_dualWeyl_one (R : Type) [CommRing R] (n : ℕ) :
     detPol R n ∈ dualWeyl R n n (fun _ => 1) := by
@@ -28,11 +28,11 @@ theorem detPol_mem_dualWeyl_one (R : Type) [CommRing R] (n : ℕ) :
   exact h
 
 /- English proof (translation)
-Introduce `R _ n k ν f hf`. Proceed by induction on `k with`. Consider the case `zero => simpa using hf`. Consider the case `succ k ih`. Establish `h` using `(Formalism.GradedWeylDivisibility.dualWeylMul R n n (fun _ => 1) (fun a => ν a + k) (detPol R n) (detPol R n ^ k * f)).1 (detPol_mem_dualWeyl_one R n) ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `he : ((fun _ => 1) + fun a => ν a + k) = fun a : Fin n => ν a + (k + 1)`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[he, ← mul_assoc, ← pow_succ']`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem detPol_pow_mul_mem_dualWeyl : ∀ (R : Type) [CommRing R] (n k : ℕ) (ν : Fin n → ℕ) (f : MvPolynomial (Fin n × Fin n) R), f ∈ dualWeyl R n n ν → detPol R n ^ k * f ∈ dualWeyl R n n fun a => ν a + k := by
   intro R _ n k ν f hf

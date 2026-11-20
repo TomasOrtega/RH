@@ -15,17 +15,15 @@ def UniP (K : Type*) [CommRing K] [TopologicalSpace K] (M : ℕ) : Prop :=
     ∃ (a : Kˣ) (z : Fin M → K), (a : K) • y ∈ Ω ∧ z ∈ Ω ∧ z ⬝ᵥ ((a : K) • y) = 1
 
 /- English proof (translation)
-Use `⟨Set.pi Set.univ fun _ => {x | ν x ≤ 1}, isCompact_univ_pi fun _ => hc, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨z, hz⟩`. Establish `hex : ∃ j, y j ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hy0 : y = 0` using `funext hcon`. Rewrite `hz` using `[hy0, dotProduct_zero]`. Conclude with `zero_ne_one hz`. Take `⟨j, hj⟩` from `hex`. Use `haveI : Nonempty (Fin M) := ⟨j⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, hi⟩` from `Finite.exists_max (fun k => ν (y k))`. Establish `hyi : y i ≠ 0`. Introduce `h`. Establish `h2` using `hi j`. Simplify using `only [h, h0] at h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (hu _ hj).2 (not_lt.2 h2)`. Take `⟨w, hw⟩` from `(hu _ hyi).1`. Establish `hwi : ((w⁻¹ : Kˣ) : K) * y i = 1` using `by rw [← hw]; exact Units.inv_mul w`. Establish `hνw : ν ((w⁻¹ : Kˣ) : K) * ν (y i) = 1` using `by rw [← hm, hwi, h1]`. Use `⟨w⁻¹, Pi.single i 1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `k _ show ν ((((w⁻¹ : Kˣ) : K) • y) k) ≤ 1`. Rewrite using `[Pi.smul_apply, smul_eq_mul, hm, ← hνw]`. Conclude with `mul_le_mul_of_nonneg_left (hi k) (hn _)`. Introduce `k _ show ν ((Pi.single i (1 : K) : Fin M → K) k) ≤ 1`. Distinguish the cases in `hk : k = i`.
-
-Substitute `hk` using the available equality. Simplify using `[h1]`. Simplify using `[Pi.single_eq_of_ne hk, h0]`. Simplify using `[hwi]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem primitiveCompact_of_multiplicative {K : Type*} [CommRing K] [Nontrivial K] [TopologicalSpace K] (M : ℕ) (ν : K → ℝ)
     (h0 : ν 0 = 0) (h1 : ν 1 = 1) (hm : ∀ x y, ν (x * y) = ν x * ν y) (hn : ∀ x, 0 ≤ ν x)
@@ -62,13 +60,13 @@ theorem primitiveCompact_of_multiplicative {K : Type*} [CommRing K] [Nontrivial 
   · simp [hwi]
 
 /- English proof (translation)
-Take `⟨ΩA, cA, pA⟩` from `hA`. Take `⟨ΩB, cB, pB⟩` from `hB`. Set `f : (Fin M → A) × (Fin M → B) → (Fin M → A × B)` to `fun p i => (p.1 i, p.2 i)`. Establish `hf : Continuous f` using `continuous_pi fun i => ((continuous_apply i).comp continuous_fst).prodMk ((continuous_apply i).comp continuous_snd)`. Use `⟨f '' (ΩA ×ˢ ΩB), (cA.prod cB).image hf, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `y ⟨z, hz⟩`. Establish `h1 : (fun i => (z i).1) ⬝ᵥ (fun i => (y i).1) = 1`. Use `congrArg Prod.fst hz` as an intermediate fact. Simplify `this` using `[dotProduct, Prod.fst_sum]`. Establish `h2 : (fun i => (z i).2) ⬝ᵥ (fun i => (y i).2) = 1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg Prod.snd hz` as an intermediate fact. Simplify `this` using `[dotProduct, Prod.snd_sum]`. Take `⟨a, za, m1, m2, m3⟩` from `pA _ ⟨_, h1⟩`. Take `⟨b, zb, n1, n2, n3⟩` from `pB _ ⟨_, h2⟩`. Establish `hab : ((MulEquiv.prodUnits.symm (a, b) : (A × B)ˣ) : A × B) = ((a : A), (b : B))` using `rfl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨MulEquiv.prodUnits.symm (a, b), fun i => (za i, zb i), ⟨(_, _), ⟨m1, n1⟩, ?_⟩, ⟨(za, zb), ⟨m2, n2⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i <;> simp [f, hab]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify `m3` using `[dotProduct, Prod.fst_sum, hab]`. Simplify `n3` using `[dotProduct, Prod.snd_sum, hab]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem primitiveCompact_prod {A B : Type*} [CommRing A] [CommRing B] [TopologicalSpace A] [TopologicalSpace B] {M : ℕ}
     (hA : UniP A M) (hB : UniP B M) : UniP (A × B) M := by
@@ -96,11 +94,11 @@ theorem primitiveCompact_prod {A B : Type*} [CommRing A] [CommRing B] [Topologic
     · simpa [dotProduct, Prod.snd_sum, hab] using n3
 
 /- English proof (translation)
-Take `⟨Ω, c, p⟩` from `h`. Use `⟨(fun w i => e.symm (w i)) '' Ω, c.image (continuous_pi fun i => hc.comp (continuous_apply i)), ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨z, hz⟩`. Establish `h1 : (fun i => e (z i)) ⬝ᵥ (fun i => e (y i)) = 1`. Use `congrArg e hz` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[dotProduct, map_sum, map_mul]`. Take `⟨a, w, m1, m2, m3⟩` from `p _ ⟨_, h1⟩`. Use `⟨Units.map (e.symm : B →* A) a, fun i => e.symm (w i), ⟨_, m1, ?_⟩, ⟨w, m2, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `e.injective` to reduce the goal to its premises. Simplify `m3` using `[dotProduct, map_sum, map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem primitiveCompact_of_ringEquiv {A B : Type*} [CommRing A] [CommRing B] [TopologicalSpace A] [TopologicalSpace B] {M : ℕ}
     (e : A ≃+* B) (hc : Continuous e.symm) (h : UniP B M) : UniP A M := by
@@ -124,7 +122,7 @@ variable {L K : Type*} [Field L] [CommRing K] [Algebra L K]
 def gg (d : K) (p : L × L) : K := p.1 • (1 : K) + p.2 • d
 
 /- English proof (translation)
-Simplify using `only [gg, Algebra.smul_def, map_add, map_mul, mul_one]`. Take the linear combination `(algebraMap L K p.2 * algebraMap L K q.2) * hd`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem gg_mul {d : K} {D : L} (hd : d * d = algebraMap L K D) (p q : L × L) :
     gg d p * gg d q = gg d (p.1 * q.1 + D * (p.2 * q.2), p.1 * q.2 + p.2 * q.1) := by
@@ -136,7 +134,7 @@ variable (bs : Module.Basis (Fin 2) L K)
 def rr (x : K) : L × L := (bs.repr x 0, bs.repr x 1)
 
 /- English proof (translation)
-Use `bs.sum_repr x` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two, h0]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gg_rr (h0 : bs 0 = 1) (x : K) : gg (bs 1) (rr bs x) = x := by
   have := bs.sum_repr x
@@ -144,13 +142,13 @@ theorem gg_rr (h0 : bs 0 = 1) (x : K) : gg (bs 1) (rr bs x) = x := by
   exact this
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp [rr, gg, ← h0]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rr_gg (h0 : bs 0 = 1) (p : L × L) : rr bs (gg (bs 1) p) = p := by
   refine Prod.ext ?_ ?_ <;> simp [rr, gg, ← h0]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← gg_rr bs h0 x, ← gg_rr bs h0 y, gg_mul hd, rr_gg bs h0]`.
+A detailed English derivation is pending.
 -/
 theorem rr_mul (h0 : bs 0 = 1) {D : L} (hd : bs 1 * bs 1 = algebraMap L K D) (x y : K) :
     rr bs (x * y) = ((rr bs x).1 * (rr bs y).1 + D * ((rr bs x).2 * (rr bs y).2),
@@ -158,23 +156,23 @@ theorem rr_mul (h0 : bs 0 = 1) {D : L} (hd : bs 1 * bs 1 = algebraMap L K D) (x 
   conv_lhs => rw [← gg_rr bs h0 x, ← gg_rr bs h0 y, gg_mul hd, rr_gg bs h0]
 
 /- English proof (translation)
-Simplify using `[rr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rr_zero : rr bs (0 : K) = 0 := by simp [rr]
 
 /- English proof (translation)
-Rewrite using `[← h0]`. Simplify using `[rr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rr_one (h0 : bs 0 = 1) : rr bs (1 : K) = (1, 0) := by
   rw [← h0]; simp [rr]
 
 /- English proof (translation)
-Simplify using `[rr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rr_add (x y : K) : rr bs (x + y) = rr bs x + rr bs y := by simp [rr]
 
 /- English proof (translation)
-Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Use `rr_one bs h0` as an intermediate fact. Rewrite `this` using `[← h, rr_zero]`. Simplify using `using congrArg Prod.fst this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nontrivial_of_basis (h0 : bs 0 = 1) : Nontrivial K := by
   refine ⟨⟨0, 1, fun h => ?_⟩⟩
@@ -191,16 +189,16 @@ variable {L K : Type*} [NormedField L] [ProperSpace L]
 def Nf (D : L) (p : L × L) : L := p.1 ^ 2 - D * p.2 ^ 2
 
 /- English proof (translation)
-Simplify using `only [Nf]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Nf_mul (D : L) (p q : L × L) :
     Nf D (p.1 * q.1 + D * (p.2 * q.2), p.1 * q.2 + p.2 * q.1) = Nf D p * Nf D q := by
   simp only [Nf]; ring
 
 /- English proof (translation)
-Introduce `h`. Simplify using `only [Nf] at h`. Distinguish the cases in `hc : p.2 = 0`. Apply `hp` to reduce the goal to its premises. Use `Prod.ext ?_ hc` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[hc]`. Simplify using `using h`. Apply `hD (p.1 / p.2)` to reduce the goal to its premises. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Nf_ne {D : L} (hD : ∀ s, s * s ≠ D) {p : L × L} (hp : p ≠ 0) : Nf D p ≠ 0 := by
   intro h
@@ -215,25 +213,23 @@ theorem Nf_ne {D : L} (hD : ∀ s, s * s ≠ D) {p : L × L} (hp : p ≠ 0) : Nf
     linear_combination h
 
 /- English proof (translation)
-Establish `hcont : Continuous fun p : L × L => ‖Nf D p‖`. Unfold `Nf`. Use `fun_prop`. Establish `hs : IsCompact (Metric.sphere (0 : L × L) 1)` using `isCompact_sphere _ _`. Establish `hne : (Metric.sphere (0 : L × L) 1).Nonempty` using `⟨(1, 0), by simp [Prod.norm_def]⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q0, hq0, hmin⟩` from `hs.exists_isMinOn hne hcont.continuousOn`. Establish `hq00 : q0 ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hq0`. Establish `hm : 0 < ‖Nf D q0‖` using `norm_pos_iff.2 (Nf_ne hD hq00)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Metric.isCompact_of_isClosed_isBounded (isClosed_le hcont continuous_const) ?_` and prove the remaining obligations. Use `(Metric.isBounded_closedBall (x := (0 : L × L)) (r := 1 + 1 / ‖Nf D q0‖)).subset ?_` and prove the remaining obligations. Introduce `p hp`. Rewrite using `[mem_closedBall_zero_iff]`. Distinguish the cases in `hp0 : p = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hp0` using the available equality. Simplify using `only [norm_zero]`. Check the signs of the components of the expression. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : L, ‖w‖ = ‖p‖ := by`. Rewrite using `[Prod.norm_def]`.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `max_choice ‖p.1‖ ‖p.2‖ with h | h` into its components or cases. Conclude with `⟨p.1, h.symm⟩`. Conclude with `⟨p.2, h.symm⟩`. Establish `hpn : 0 < ‖p‖` using `norm_pos_iff.2 hp0`. Establish `hw0 : w ≠ 0`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `at hw`. Conclude with `hp0 (norm_eq_zero.1 hw.symm)`. Establish `hq : w⁻¹ • p ∈ Metric.sphere (0 : L × L) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, hw]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `h1 : ‖Nf D q0‖ ≤ ‖Nf D (w⁻¹ • p)‖` using `hmin hq`. Establish `h2 : Nf D p = w ^ 2 * Nf D (w⁻¹ • p)`. Simplify using `only [Nf, Prod.smul_fst, Prod.smul_snd, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ‖p‖ ^ 2 * ‖Nf D q0‖ ≤ 1`. Establish `h4 : ‖Nf D p‖ ≤ 1` using `hp`. Rewrite `h4` using `[h2, norm_mul, norm_pow, hw]`. Conclude with `(mul_le_mul_of_nonneg_left h1 (by positivity)).trans h4`. Establish `h5 : ‖p‖ ^ 2 ≤ 1 / ‖Nf D q0‖`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[le_div_iff₀ hm]`. Conclude with `h3`. Establish `h6 : 0 < 1 / ‖Nf D q0‖` using `by positivity`. Distinguish the cases in `h7 : ‖p‖ ≤ 1`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `push_neg at h7`. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem compact_Nf {D : L} (hD : ∀ s, s * s ≠ D) : IsCompact {p : L × L | ‖Nf D p‖ ≤ 1} := by
   have hcont : Continuous fun p : L × L => ‖Nf D p‖ := by
@@ -285,21 +281,19 @@ theorem compact_Nf {D : L} (hD : ∀ s, s * s ≠ D) : IsCompact {p : L × L | �
 variable [CommRing K] [Algebra L K] [TopologicalSpace K] (bs : Module.Basis (Fin 2) L K)
 
 /- English proof (translation)
-Use `haveI := nontrivial_of_basis bs h0`. Use `primitiveCompact_of_multiplicative M (fun x => ‖Nf D (rr bs x)‖) ?_ ?_ ?_ (fun _ => norm_nonneg _) ?_ ?_` and prove the remaining obligations. Simplify using `[rr_zero, Nf]`. Simplify using `[rr_one bs h0, Nf]`. Introduce `x y`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [rr_mul bs h0 hd, Nf_mul, norm_mul]`. Introduce `x hx show IsUnit x ∧ 0 < ‖Nf D (rr bs x)‖`. Establish `hxg` using `gg_rr bs h0 x`. Establish `hp : rr bs x ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Rewrite using `[← hxg, h]`. Simplify using `[gg]`. Establish `hn` using `Nf_ne hD hp`. Generalize the expression as in `rr bs x = p at hxg hp hn ⊢`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨isUnit_iff_exists_inv.2 ⟨gg (bs 1) (p.1 / Nf D p, -p.2 / Nf D p), ?_⟩, norm_pos_iff.2 hn⟩` and prove the remaining obligations. Rewrite using `[← hxg, gg_mul hd]`. Establish `e1 : p.1 * (p.1 / Nf D p) + D * (p.2 * (-p.2 / Nf D p)) = 1`. Clear the denominators using the available nonvanishing facts. Simplify using `only [Nf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : p.1 * (-p.2 / Nf D p) + p.2 * (p.1 / Nf D p) = 0`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1, e2]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[gg]`. Establish `: {x : K | ‖Nf D (rr bs x)‖ ≤ 1} = gg (bs 1) '' {p : L × L | ‖Nf D p‖ ≤ 1}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨rr bs x, hx, gg_rr bs h0 x⟩`. Introduce and unpack `⟨p, hp, rfl⟩ show ‖Nf D (rr bs (gg (bs 1) p))‖ ≤ 1`. Rewrite using `[rr_gg bs h0]`. Conclude with `hp`. Rewrite using `[this]`.
-
-Conclude with `(compact_Nf hD).image hg`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primitiveCompact_nonsplit (h0 : bs 0 = 1) {D : L} (hd : bs 1 * bs 1 = algebraMap L K D)
     (hD : ∀ s, s * s ≠ D) (hg : Continuous (gg (bs 1) : L × L → K)) (M : ℕ) : UniP K M := by
@@ -343,9 +337,9 @@ theorem primitiveCompact_nonsplit (h0 : bs 0 = 1) {D : L} (hd : bs 1 * bs 1 = al
     exact (compact_Nf hD).image hg
 
 /- English proof (translation)
-Use `primitiveCompact_of_multiplicative M (fun x => ‖x‖) norm_zero norm_one norm_mul (fun _ => norm_nonneg _) (fun x hx => ⟨isUnit_iff_ne_zero.2 hx, norm_pos_iff.2 hx⟩) ?_` and prove the remaining obligations. Establish `: {x : L | ‖x‖ ≤ 1} = Metric.closedBall 0 1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isCompact_closedBall _ _`.
+A detailed English derivation is pending.
 -/
 theorem primitiveCompact_normedField (M : ℕ) : UniP L M := by
   refine primitiveCompact_of_multiplicative M (fun x => ‖x‖) norm_zero norm_one norm_mul (fun _ => norm_nonneg _)
@@ -356,19 +350,17 @@ theorem primitiveCompact_normedField (M : ℕ) : UniP L M := by
   exact isCompact_closedBall _ _
 
 /- English proof (translation)
-Set `e : K ≃+* L × L` to `{ toFun := fun x => ((rr bs x).1 + s * (rr bs x).2, (rr bs x).1 - s * (rr bs x).2) invFun := fun w => gg (bs 1) ((w.1 + w.2) / 2, (w.1 - w.2) / (2 * s)) left_inv := fun x => by`. Establish `e1 : ((rr bs x).1 + s * (rr bs x).2 + ((rr bs x).1 - s * (rr bs x).2)) / 2 = (rr bs x).1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ((rr bs x).1 + s * (rr bs x).2 - ((rr bs x).1 - s * (rr bs x).2)) / (2 * s) = (rr bs x).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1, e2]`. Conclude with `gg_rr bs h0 x`. Use `right_inv := fun w => by`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [rr_gg bs h0]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_mul' := fun x y => by`. Simplify using `only [rr_mul bs h0 hd, ← hD]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Prod.snd_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use the proof step `map_add' := fun x y => by`. Simplify using `only [rr_add]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_add, Prod.snd_add]`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `only [Prod.fst_add, Prod.snd_add]`. Use `ring }`. Use `primitiveCompact_of_ringEquiv e ?_ (primitiveCompact_prod (primitiveCompact_normedField M) (primitiveCompact_normedField M))` and prove the remaining obligations. Use `show Continuous fun w : L × L => gg (bs 1) ((w.1 + w.2) / 2, (w.1 - w.2) / (2 * s))`. Conclude with `hg.comp (by fun_prop)`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem primitiveCompact_split (h0 : bs 0 = 1) {D : L} (hd : bs 1 * bs 1 = algebraMap L K D) {s : L} (hs : s ≠ 0)
     (hD : s * s = D) (h2 : (2 : L) ≠ 0) (hg : Continuous (gg (bs 1) : L × L → K)) (M : ℕ) : UniP K M := by
@@ -418,13 +410,13 @@ section Delta
 variable {F E : Type*} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hli : LinearIndependent F ![(1 : E), d]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `ht : t = 0`. Assume the negation of the conclusion as `ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hd` to reduce the goal to its premises. Use `⟨-(s / t), ?_⟩` and prove the remaining obligations. Establish `hht : algebraMap F E t ≠ 0` using `by simpa using ht`. Simplify using `only [Algebra.smul_def, mul_one] at hst`. Establish `h3 : algebraMap F E t * (algebraMap F E s / algebraMap F E t) = algebraMap F E s`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Apply `mul_left_cancel₀ hht` to reduce the goal to its premises. Rewrite using `[map_neg, map_div₀, mul_neg, h3]`. Take the linear combination `-hst`. Substitute `ht` using the available equality.
+Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Substitute using the available equality.
 
-Simplify using `using hst`. Apply the tactic sequence `refine ⟨basisOfLinearIndependentOfCardEqFinrank hli (by simp [h2]), ?_, ?_⟩ <;> simp`.
+Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem basis_of_not_mem (h2 : Module.finrank F E = 2) {d : E} (hd : d ∉ (algebraMap F E).range) :
     ∃ b : Module.Basis (Fin 2) F E, b 0 = 1 ∧ b 1 = d := by
@@ -447,21 +439,19 @@ theorem basis_of_not_mem (h2 : Module.finrank F E = 2) {d : E} (hd : d ∉ (alge
   refine ⟨basisOfLinearIndependentOfCardEqFinrank hli (by simp [h2]), ?_, ?_⟩ <;> simp
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : E, x ∉ (algebraMap F E).range := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `: (⊥ : Subalgebra F E) = ⊤`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `y`. Simplify `hcon y` using `[Algebra.mem_bot]`. Establish `h1` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.1 this`. Use linear arithmetic over natural numbers and integers. Take `⟨b0, h00, h01⟩` from `basis_of_not_mem h2 hx`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxx : x * x = algebraMap F E (b0.repr (x * x) 0) + algebraMap F E (b0.repr (x * x) 1) * x`. Use `b0.sum_repr (x * x)` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two, h00, h01]`. Simplify using `only [Algebra.smul_def, mul_one] at this`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set q := b0.repr (x * x) 0`. Use `set p := b0.repr (x * x) 1`. Establish `hδ : x - algebraMap F E (p / 2) ∉ (algebraMap F E).range`. Introduce and unpack `⟨c, hc⟩`. Apply `hx` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨c + p / 2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hc]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨b, hb0, hb1⟩` from `basis_of_not_mem h2 hδ`. Establish `h2F : algebraMap F E 2 = 2` using `map_ofNat _ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsq : b 1 * b 1 = algebraMap F E (q + p / 2 * (p / 2))`. Establish `hp2 : algebraMap F E p = 2 * algebraMap F E (p / 2)`. Rewrite using `[← h2F, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hb1, map_add, map_mul]`. Take the linear combination `hxx + x * hp2`. Use `⟨b, q + p / 2 * (p / 2), hb0, hsq, fun h0 => ?_⟩` and prove the remaining obligations. Rewrite `hsq` using `[h0, map_zero, hb1]`. Establish `: x - algebraMap F E (p / 2) = 0` using `mul_self_eq_zero.1 hsq`.
-
-Conclude with `hδ ⟨0, by rw [this, map_zero]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_delta [CharZero F] (h2 : Module.finrank F E = 2) :
     ∃ (b : Module.Basis (Fin 2) F E) (Δ : F), b 0 = 1 ∧ b 1 * b 1 = algebraMap F E Δ ∧ Δ ≠ 0 := by
@@ -505,19 +495,17 @@ theorem exists_delta [CharZero F] (h2 : Module.finrank F E = 2) :
 end Delta
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M v`. Take `⟨b, Δ, hb0, hb1, hΔ⟩` from `exists_delta (F := F) (E := E) hσ.2.2.1`. Use `haveI hprop : ProperSpace (Fv F v) := Formalism.BasicNotions.Examples₂.LocF.proper v`. Use `haveI hmt : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := TopK.isModTop (F := F) (E := E) (Fv F v)`. Use `haveI : ContinuousAdd (Fv F v ⊗[F] E) := IsModuleTopology.toContinuousAdd (Fv F v) _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI : ContinuousSMul (Fv F v) (Fv F v ⊗[F] E) := IsModuleTopology.toContinuousSMul (Fv F v) _`. Set `bs : Module.Basis (Fin 2) (Fv F v) (Fv F v ⊗[F] E)` to `Algebra.TensorProduct.basis (Fv F v) b`. Establish `h0 : bs 0 = 1`. Simplify using `[bs, Algebra.TensorProduct.basis_apply, hb0, Algebra.TensorProduct.one_def]`. Establish `hd : bs 1 * bs 1 = algebraMap (Fv F v) (Fv F v ⊗[F] E) (algebraMap F (Fv F v) Δ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Simplify using `only [bs, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, hb1, mul_one, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_eq_smul_one Δ, TensorProduct.smul_tmul, Algebra.algebraMap_self, RingHom.id_apply]`. Establish `hg : Continuous (gg (bs 1) : Fv F v × Fv F v → Fv F v ⊗[F] E)`. Unfold `gg`. Establish `c1 : Continuous fun p : Fv F v × Fv F v => p.1 • (1 : Fv F v ⊗[F] E)` using `by fun_prop`. Establish `c2 : Continuous fun p : Fv F v × Fv F v => p.2 • bs 1` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `c1.add c2`. Establish `hU : UniP (Fv F v ⊗[F] E) M`. Distinguish the cases in `hsq : ∃ s, s * s = algebraMap F (Fv F v) Δ`. Take `⟨s, hs⟩` from `hsq`. Establish `hD0 : algebraMap F (Fv F v) Δ ≠ 0` using `by simpa using hΔ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Conclude with `hD0 (by rw [← hs, mul_zero])`. Conclude with `primitiveCompact_split bs h0 hd hs0 hs two_ne_zero hg M`. Use `push_neg at hsq`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `primitiveCompact_nonsplit bs h0 hd hsq hg M`. Take `⟨Ω, hc, hp⟩` from `hU`. Establish `hcw : Continuous (fun (w : Fin M → Fv F v ⊗[F] E) (_ : Fin 1) => w)` using `continuous_pi fun _ => continuous_id`. Use `⟨(fun w _ => w) '' Ω, hc.image hcw, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨z, hz⟩`.
-
-Take `⟨a, w, m1, m2, m3⟩` from `hp (y 0) ⟨z, hz⟩`. Use `⟨a, fun _ => w, ⟨_, m1, ?_⟩, ⟨w, m2, rfl⟩, m3⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_compact_unimodular_vectors_mod_units : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (v : HeightOneSpectrum (𝓞 F)), ∃ Ω : Set (Fin 1 → Fin M → Fv F v ⊗[F] E), IsCompact Ω ∧ ∀ y : Fin 1 → Fin M → Fv F v ⊗[F] E, (∃ z : Fin M → Fv F v ⊗[F] E, z ⬝ᵥ y 0 = 1) → ∃ (a : (Fv F v ⊗[F] E)ˣ) (z : Fin 1 → Fin M → Fv F v ⊗[F] E), (a : Fv F v ⊗[F] E) • y ∈ Ω ∧ z ∈ Ω ∧ z 0 ⬝ᵥ ((a : Fv F v ⊗[F] E) • y) 0 = 1 := by
   intro F E _ _ _ _ _ σ hσ M v

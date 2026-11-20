@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BaseFrameUnimod
 
 /- English proof (translation)
-Set `f : M →ₗ[𝓞 E] M` to `((c⁻¹ • LinearMap.id : M →ₗ[E] M)).restrictScalars (𝓞 E)`. Prove the components needed by the constructor for the conclusion. Establish `hfg : (L.map f).FG` using `hL.fg.map f`. Establish `hle : Λ ≤ L.map f` using `fun x hx => ⟨c • x, h2 x hx, by simp [f, smul_smul, hc]⟩`. Conclude with `hfg.of_le hle`.
+Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff, ← hL.span_eq_top, Submodule.span_le]`. Introduce `x hx`. Establish `: x = c⁻¹ • (c • x)` using `by simp [smul_smul, hc]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (h1 x hx))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_of_squeeze {E M : Type} [Field E] [NumberField E] [AddCommGroup M] [Module E M] [Module (𝓞 E) M]
     [IsScalarTower (𝓞 E) E M] {L Λ : Submodule (𝓞 E) M} (hL : Submodule.IsLattice E L) {c : E} (hc : c ≠ 0)
@@ -32,13 +32,13 @@ theorem isLattice_of_squeeze {E M : Type} [Field E] [NumberField E] [AddCommGrou
     exact Submodule.smul_mem _ _ (Submodule.subset_span (h1 x hx))
 
 /- English proof (translation)
-Use `Set.Subset.antisymm (fun y hy => ?_) Submodule.subset_span` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact hy`. Consider the case `zero => intro x _`. Simplify `(algebraMap (𝓞 E) E).range.zero_mem` using `[Formalism.UG.hform]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `add y z _ _ hy hz`. Introduce `x hx`. Establish `: Formalism.UG.hform σ J x (y + z) = Formalism.UG.hform σ J x y + Formalism.UG.hform σ J x z`. Simplify using `[Formalism.UG.hform, mul_add, Finset.sum_add_distrib]`. Rewrite using `[this]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (hy x hx) (hz x hx)`. Consider the case `smul a y _ hy`. Introduce `x hx`. Establish `: Formalism.UG.hform σ J x (a • y) = algebraMap (𝓞 E) E a * Formalism.UG.hform σ J x y`. Simplify using `only [Formalism.UG.hform, Finset.mul_sum, Pi.smul_apply, Algebra.smul_def]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `mul_mem ⟨a, rfl⟩ (hy x hx)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_span_dualSet {E : Type} [Field E] [NumberField E] {n : Type} [Fintype n] (σ : E →+* E)
     (J : Matrix n n E) (L : Submodule (𝓞 E) (n → E)) :
@@ -63,13 +63,11 @@ theorem coe_span_dualSet {E : Type} [Field E] [NumberField E] {n : Type} [Fintyp
     exact mul_mem ⟨a, rfl⟩ (hy x hx)
 
 /- English proof (translation)
-Introduce `D V β Λ N hs hp ⟨_, hdual, hN, h1, h2⟩`. Take `⟨-, hJ⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm`. Establish `hL : Submodule.IsLattice D.host.E (Formalism.L2.Herm.crdLat V V.L0)` using `Formalism.MainNotions.StandardLattice.tMap_lattice (Formalism.L2.Herm.crd V) V.L0 V.standardTuple_isLattice`. Establish `hmem : ∀ x, x ∈ Formalism.L2.Herm.crdLat V V.L0 ↔ x ∈ L0c D V`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Express the relevant statement in the definitionally equal form `∑ i, V.frame.equivFun x i • V.frame i ∈ V.L0`. Rewrite using `[V.frame.sum_equivFun]` and apply the resulting hypothesis. Introduce `hv`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨V.frame.equivFun.symm v, ?_, V.frame.equivFun.apply_symm_apply v⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Conclude with `hv`. Use `⟨Matrix.ext fun i j => (hJ V).1 i j, (hJ V).2.isUnit, GlobalTheory.Proof.TotallyDefiniteMass.isTotDef_gram D.sp.cm V hs hp, isLattice_of_squeeze hL (Nat.cast_ne_zero.2 hN.ne') (fun x hx => h1 x ((hmem x).1 hx)) (fun x hx => (hmem _).2 (h2 x hx)), ?_⟩` and prove the remaining obligations. Rewrite using `[← coe_span_dualSet]`.
-
-Conclude with `congrArg SetLike.coe hdual`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDefUnimod_of_isBaseFrame : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), V.SigOK → V.IsPosDef → IsBaseFrame V β Λ N → IsDefUnimod D.sp.cm V.gram Λ := by
   intro D V β Λ N hs hp ⟨_, hdual, hN, h1, h2⟩

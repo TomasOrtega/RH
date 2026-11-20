@@ -4,9 +4,9 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `L _ _ N A hA`. Use `⟨Int.natAbs_pos.mpr (Algebra.norm_ne_zero_iff.mpr hA), ?_⟩` and prove the remaining obligations. Establish `hmem : ((Ideal.absNorm (Ideal.span {A.det}) : ℕ) : 𝓞 L) ∈ Ideal.span {A.det}` using `Ideal.absNorm_mem _`. Rewrite `hmem` using `[Ideal.absNorm_span_singleton, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc' : ((nrmDet A : ℕ) : 𝓞 L) = A.det * c` using `hc`. Use `⟨c • A.adjugate, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.mul_adjugate, smul_smul, hc', mul_comm]`. Rewrite using `[Matrix.smul_mul, Matrix.adjugate_mul, smul_smul, hc', mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.KT.scinv :
     ∀ (L : Type) [Field L] [NumberField L] (N : ℕ) (A : Matrix (Fin N) (Fin N) (𝓞 L)), A.det ≠ 0 →

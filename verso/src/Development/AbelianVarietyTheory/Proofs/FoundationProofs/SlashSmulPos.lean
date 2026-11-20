@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.HeckeFamilyMatrices.UlSemisimple
 
 /- English proof (translation)
-Unfold `toGL`. Rewrite using `[dif_neg hg]`. Simplify using `only [Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.det_fin_two]`. Simplify using `[Matrix.det_fin_two]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem toGL_det (g : Matrix (Fin 2) (Fin 2) ℤ) (hg : g.det ≠ 0) :
     (toGL g : Matrix (Fin 2) (Fin 2) ℝ).det = (g.det : ℝ) := by
@@ -21,7 +21,7 @@ theorem toGL_det (g : Matrix (Fin 2) (Fin 2) ℤ) (hg : g.det ≠ 0) :
   simp [Matrix.det_fin_two]
 
 /- English proof (translation)
-Rewrite using `[ModularForm.smul_slash]`. Use `congr 1`. Simplify using `only [UpperHalfPlane.σ]`. Rewrite using `[if_pos (by rw [Matrix.GeneralLinearGroup.val_det_apply, toGL_det g hg.ne']; exact_mod_cast hg)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem slash_smul_pos (k : ℤ) (g : Matrix (Fin 2) (Fin 2) ℤ) (hg : 0 < g.det) (c : ℂ) (f : ℍ → ℂ) :
     (c • f) ∣[k] toGL g = c • (f ∣[k] toGL g) := by
@@ -67,9 +67,9 @@ def oldSp (N l : ℕ) (k : ℤ) (χ : DirichletCharacter ℂ N) (hl : 0 < l) : S
     · rw [CuspForm.coe_smul, CuspForm.coe_smul, slash_smul_pos k _ hd, smul_add]
 
 /- English proof (translation)
-Establish `hpow : ∀ m : ℕ, ∀ y ∈ O, (U ^ m) y ∈ O`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro y hy`. Simplify using `using hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ m ih => intro y hy`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hU _ (ih y hy)`. Rewrite using `[aeval_eq_sum_range, LinearMap.sum_apply]`. Conclude with `O.sum_mem fun i _ => by rw [LinearMap.smul_apply]; exact O.smul_mem _ (hpow i x hx)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem {M : Type*} [AddCommGroup M] [Module ℂ M] (U : Module.End ℂ M) (O : Submodule ℂ M)
     (hU : ∀ x ∈ O, U x ∈ O) (p : ℂ[X]) (x : M) (hx : x ∈ O) : aeval U p x ∈ O := by
@@ -86,19 +86,17 @@ end GlobalTheory.HeckeFamilyMatrices.UlSemisimple
 open GlobalTheory.HeckeFamilyMatrices.UlSemisimple in
 
 /- English proof (translation)
-Introduce `N l k hN hl hlN hk χ α hα1 hα2 f hf n hn`. Establish `hl0 : 0 < l` using `hl.pos`. Use `set U := ulLin (k : ℤ) l hl0 with hUdef`. Use `set O := oldSp N l (k : ℤ) χ hl0 with hOdef`. Establish `hUO : ∀ F ∈ O, U F ∈ O`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `F ⟨f₁, f₂, h₁, h₂, rfl⟩`. Take `⟨g₁, g₂, hg₁, hg₂, he⟩` from `(GlobalTheory.T.heckeUl_semisimple_on_lOldSpace N l k hN hl hlN hk χ α hα1 f₁ f₂ h₁ h₂).1`. Conclude with `⟨g₁, g₂, hg₁, hg₂, he⟩`. Use `set c : ℂ := χ l * (l : ℂ) ^ (k - 2) with hc`. Establish `hcop : IsCoprime ((X - C α) ^ n) (X ^ 2 - C c)`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `IsCoprime.pow_left` to reduce the goal to its premises. Rewrite using `[(irreducible_X_sub_C α).coprime_iff_not_dvd, dvd_iff_isRoot, IsRoot.def]`. Simplify `hα2` using `[sub_eq_zero]`. Take `⟨A, B, hAB⟩` from `hcop`. Establish `key : aeval U A (aeval U ((X - C α) ^ n) ⇑f) + aeval U B (aeval U (X ^ 2 - C c) ⇑f) = ⇑f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun p => aeval U p ⇑f) hAB` as an intermediate fact. Simplify `this` using `only [map_add, map_mul, map_one, LinearMap.add_apply, Module.End.mul_apply, Module.End.one_apply]`. Establish `h1 : aeval U ((X - C α) ^ n) ⇑f = 0`. Rewrite using `[map_pow, map_sub, aeval_X, aeval_C, Module.End.pow_apply]`. Use `hn using 2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `F`. Simplify using `[hUdef, ulLin_apply, Module.algebraMap_end_apply]`. Establish `h2 : aeval U (X ^ 2 - C c) ⇑f ∈ O`. Take `⟨f₁, f₂, h₁, h₂, he⟩` from `GlobalTheory.T.hecke_Ul_sq_sub_mem_oldforms_Gamma1 N l k hN hl hlN hk χ f hf`. Use `⟨f₁, f₂, h₁, h₂, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← he, map_sub, aeval_C, map_pow, aeval_X, LinearMap.sub_apply, Module.algebraMap_end_apply, pow_two, Module.End.mul_apply]`. Both sides reduce to the same expression. Establish `hfO : ⇑f ∈ O`. Rewrite using `[← key, h1, map_zero, zero_add]`. Conclude with `aeval_mem U O hUO B _ h2`.
-
-Take `⟨f₁, f₂, h₁, h₂, he⟩` from `hfO`. Establish `hss` using `(GlobalTheory.T.heckeUl_semisimple_on_lOldSpace N l k hN hl hlN hk χ α hα1 f₁ f₂ h₁ h₂).2 n`. Rewrite `hn`, the goal using `[he]`. Conclude with `hss hn`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeckeFamilyMatrices.ul_semisimple : ∀ (N l k : ℕ), 5 ≤ N → l.Prime → ¬ l ∣ N → 3 ≤ k → ∀ (χ : DirichletCharacter ℂ N) (α : ℂ), α ^ 2 ≠ χ l * (l : ℂ) ^ (k - 1) → α ^ 2 ≠ χ l * (l : ℂ) ^ (k - 2) →
   ∀ f : CuspForm (Lev N l) (k : ℤ), (∀ γ : SL(2, ℤ), γ ∈ CongruenceSubgroup.Gamma0 (N * l) → ⇑f ∣[(k : ℤ)] γ = χ ((mat γ 1 1 : ℤ) : ZMod N) • ⇑f) →

@@ -13,11 +13,11 @@ open scoped BigOperators
 namespace GlobalTheory.ThetaConj
 
 /- English proof (translation)
-Take `⟨m, hm0, hm⟩` from `exists_integral_multiples ℤ ℚ (L := K) (Finset.univ.image c)`. Use `⟨(m * m).natAbs, Int.natAbs_pos.2 (mul_ne_zero hm0 hm0), fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `hm (c i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Use `⟨(m : 𝓞 K) * ⟨m • c i, h⟩, ?_⟩` and prove the remaining obligations. Establish `h2 : (((m * m).natAbs : ℕ) : K) = (m : K) * m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Int.cast_natCast, Int.natAbs_of_nonneg (mul_self_nonneg m)]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[h2]`. Express the relevant statement in the definitionally equal form `((m : 𝓞 K) : K) * (m • c i) = _`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_nat_common_denom {K : Type*} [Field K] [NumberField K] {ι : Type*} [Fintype ι] (c : ι → K) :
     ∃ k : ℕ, 0 < k ∧ ∀ i, ∃ a : 𝓞 K, (a : K) = (k : K) * c i := by
@@ -32,7 +32,7 @@ theorem exists_nat_common_denom {K : Type*} [Field K] [NumberField K] {ι : Type
   simp [mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `(YYl D L L').smul_mem (algebraMap (𝓞 D.host.K) (𝓞 D.host.E) a) hy`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smul_mem_YYl (D : D7) {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (a : 𝓞 D.host.K)
@@ -41,17 +41,15 @@ theorem smul_mem_YYl (D : D7) {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N
   exact h
 
 /- English proof (translation)
-Take `⟨s, y, y', hy, hy', hexp⟩` from `GlobalTheory.HomDual.exists_dual_family_hom D (GlobalTheory.exists_trace_dual_family_halfDifferent D) N N' L L' hL hL'`. Establish `hc : ∀ i, ∃ c : Fin r → D.host.K, ∑ j, c j • b j = y i` using `fun i => (Submodule.mem_span_range_iff_exists_fun D.host.K).1 (by rw [hb.2]; trivial)`. Use `choose c hc using hc`. Take `⟨k, hk, hden⟩` from `exists_nat_common_denom (K := D.host.K) (ι := (Fin s × Fin r) ⊕ (Fin s × Fin r)) (Sum.elim (fun p => c p.1 p.2) (fun p => hYY D (b p.2) (y' p.1)))`. Use `choose a ha using hden`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨k, hk, fun x hx => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `hi : ∀ i, ∃ t : 𝓞 D.host.K, (t : D.host.K) = hYY D x (y' i)` using `fun i => GlobalTheory.NormSum.TraceInt.hYY_integral D N N' L L' hL hL' x hx (y' i) (hy' i) choose t ht using hi`. Use `⟨fun j => ∑ i, t i * a (Sum.inl (i, j)), ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [hexp x]`. Rewrite using `[← Nat.cast_smul_eq_nsmul D.host.K]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [← hc, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← RingOfIntegers.coe_eq_algebraMap, ← RingOfIntegers.coe_eq_algebraMap, ha, ht]`. Simplify using `only [Sum.elim_inl]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Rewrite using `[hexp (b j), ← Nat.cast_smul_eq_nsmul D.host.K, Finset.smul_sum]`. Use `(YYl D L L').sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `ha (Sum.inr (i, j))` as an intermediate fact.
-
-Simplify using `only [Sum.elim_inr] at this`. Rewrite using `[← this]`. Conclude with `smul_mem_YYl D L L' _ (hy i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_comm_YYl (D : D7) (N N' r : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E)
     (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))

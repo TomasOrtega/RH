@@ -17,7 +17,7 @@ namespace UpperTheory.V.Sd
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [HChar.val, HChar.locK, HChar.loc]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, HChar.val_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem val_pow (ω : HChar F) (w : Pl F) (n : ℕ) : (ω ^ n).val w = ω.val w ^ n := by
   induction n with
@@ -25,13 +25,11 @@ private theorem val_pow (ω : HChar F) (w : Pl F) (n : ℕ) : (ω ^ n).val w = �
   | succ n ih => rw [pow_succ, pow_succ, HChar.val_mul, ih]
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `isOfFinOrder_iff_pow_eq_one.1 hω`. Use `finprod_induction (fun x : ℂ => ‖ι.symm x‖ ≤ 1) (by simp) ?_ ?_` and prove the remaining obligations. Introduce `x y hx hy`. Rewrite using `[map_mul, norm_mul]`. Conclude with `mul_le_one₀ hx (norm_nonneg _) hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Rewrite using `[map_pow, norm_pow]`. Use `pow_le_one₀ (norm_nonneg _) ?_` and prove the remaining obligations. Use `split_ifs`. Establish `h1 : (ι.symm ((ω.val w : ℂˣ) : ℂ)) ^ n = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, ← val_pow, h, ← pow_zero ω, val_pow]`. Simplify using the standard rewrite rules. Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_pow, norm_one]`. Conclude with `((pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2).le`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem norm_chiI {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (ω : HChar F) (hω : IsOfFinOrder ω) (c : Pl F → ℕ)
     (I : Ideal (𝓞 F)) : ‖ι.symm (chiI ω c I)‖ ≤ 1 := by
@@ -98,13 +96,13 @@ private def SS (k : ℕ) (c : Pl F → ℕ) (ω : HChar F) : Submodule ℂ (TR.S
 private def cf {k : ℕ} {c : Pl F → ℕ} {ω : HChar F} (φ : SS k c ω) : Ideal (𝓞 F) → ℂ := φ.2.2.choose_spec.choose
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, φ.2.2.choose_spec.choose_spec⟩`.
+Supply the required witnesses or components.
 -/
 private theorem cf_spec {k : ℕ} {c : Pl F → ℕ} {ω : HChar F} (φ : SS k c ω) : ∃ c₀, HasExp φ.1.1 k c₀ (cf φ) :=
   ⟨_, φ.2.2.choose_spec.choose_spec⟩
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `cf_spec φ`. Conclude with `(expUnique F _ k _ _ _ _ hd h).2 _ 𝔪.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem cf_eq {k : ℕ} {c : Pl F → ℕ} {ω : HChar F} (φ : SS k c ω) {c₀ a} (h : HasExp φ.1.1 k c₀ a) (𝔪 : Idx F) :
     cf φ 𝔪.1 = a 𝔪.1 := by
@@ -131,13 +129,13 @@ private def Phi {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (k : ℕ) (c : 
     simp
 
 /- English proof (translation)
-The claim follows from `congrArg ι.symm (cf_eq φ h 𝔪)`.
+A detailed English derivation is pending.
 -/
 private theorem Phi_eq {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {k : ℕ} {c : Pl F → ℕ} {ω : HChar F} (φ : SS k c ω) {c₀ a}
     (h : HasExp φ.1.1 k c₀ a) (𝔪 : Idx F) : Phi ι k c ω φ 𝔪 = ι.symm (a 𝔪.1) := congrArg ι.symm (cf_eq φ h 𝔪)
 
 /- English proof (translation)
-Rewrite using `[fT_apply, Phi_eq ι φ h, hkCoef, map_add, map_mul ι.symm _ (coefDiv _ _ _), coefDiv]`. Use `split_ifs with hd`. Rewrite using `[Phi_eq ι φ h]`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fT_Phi {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {k : ℕ} {c : Pl F → ℕ} {ω : HChar F} (φ : SS k c ω) {c₀ a}
     (h : HasExp φ.1.1 k c₀ a) (w : Pl F) (𝔪 : Idx F) :
@@ -154,7 +152,7 @@ private def hkS {k : ℕ} (hk1 : 1 ≤ k) (c : Pl F → ℕ) {ω : HChar F} (hω
     exact ⟨d, _, hd⟩⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `𝔪`. Take `⟨_, h⟩` from `cf_spec φ`. Take `⟨d, hd⟩` from `(holHk F k hk1 c ω hω φ.1 φ.2.1 w).2.2 _ _ h`. Rewrite using `[fT_Phi ι φ h, Phi_eq ι (hkS hk1 c hω w φ) hd]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem Phi_hkS {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {k : ℕ} (hk1 : 1 ≤ k) (c : Pl F → ℕ) {ω : HChar F}
     (hω : IsOfFinOrder ω) (w : Pl F) (φ : SS k c ω) :
@@ -165,9 +163,9 @@ private theorem Phi_hkS {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {k : �
   rw [fT_Phi ι φ h, Phi_eq ι (hkS hk1 c hω w φ) hd]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `φ h0`. Take `⟨_, h⟩` from `cf_spec φ`. Use `Subtype.ext (expInj F k hk1 c ω hω φ.1 φ.2.1 _ _ h fun 𝔪 h𝔪 => ?_)` and prove the remaining obligations. Use `congrFun h0 ⟨𝔪, h𝔪⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Phi_eq ι φ h]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem Phi_inj {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {k : ℕ} (hk1 : 1 ≤ k) (c : Pl F → ℕ) {ω : HChar F}
     (hω : IsOfFinOrder ω) : Function.Injective (Phi ι k c ω) := by

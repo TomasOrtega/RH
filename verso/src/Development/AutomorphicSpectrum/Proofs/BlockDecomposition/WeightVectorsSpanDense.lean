@@ -7,19 +7,17 @@ namespace GlobalTheory.CompanionTheory.RgDsHilb
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `n ε S hSf hSD hSK N _ _ e he`. Establish `hσ` using `rreg_isURepOn ε`. Establish `hD : IsDerivedOn ε (rreg ε) (smD ε (rreg ε)) (smE ε (rreg ε))` using `isDerivedOn_smE hσ`. Establish `hE : IsGlRep (smE ε (rreg ε))` using `hD.glRep`. Establish `hKU : IsKUnitary ε (smE ε (rreg ε))` using `isKUnitary_of_isInfUnitary (isInfUnitary_of_isDerivedOn hσ hD)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSK' : ∀ k ∈ Kset ε, ∀ x ∈ S, rreg ε k x ∈ S` using `hSK`. Use `haveI := hSf`. Use `haveI hS'f : FiniteDimensional ℂ (S.comap (smD ε (rreg ε)).subtype) := LinearEquiv.finiteDimensional (Submodule.comapSubtypeEquivOfLe hSD).symm`. Establish `hS'k : IsKStableSub ε (smE ε (rreg ε)) (S.comap (smD ε (rreg ε)).subtype)` using `isKStableSub_of_kStable hσ hD _ hS'f fun k hk v hv => ⟨⟨rreg ε k v, hD.kStable k hk _ v.2⟩, hSK' k hk _ hv, rfl⟩`. Set `T : Fin n → Module.End ℂ (S.comap (smD ε (rreg ε)).subtype)` to `fun c => (smE ε (rreg ε) c c).restrict (hS'k c c rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTs : ∀ c, (T c).IsSymmetric` using `fun c x z => hKU c c rfl (x : smD ε (rreg ε)) (z : smD ε (rreg ε))`. Establish `hcomm : Pairwise (Function.onFun Commute T)` using `fun a c _ => LinearMap.ext fun x => Subtype.ext (kUnit_diag_comm hE a c (x : smD ε (rreg ε)))`. Establish `htop` using `LinearMap.IsSymmetric.iSup_iInf_eq_top_of_commute hTs hcomm`. Set `e' : (S.comap (smD ε (rreg ε)).subtype) →ₗ[ℂ] N` to `e.comp (Submodule.comapSubtypeEquivOfLe hSD).toLinearMap`. Assume the negation of the conclusion as `hno`.
+Establish an intermediate fact. Introduce a local definition for the expression. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at hno`. Establish `hle : ∀ χ : Fin n → ℂ, (⨅ c, Module.End.eigenspace (T c) (χ c)) ≤ LinearMap.ker e'`. Introduce `χ x hx`. Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Establish `hxc : ∀ c, smE ε (rreg ε) c c (x : smD ε (rreg ε)) = χ c • (x : smD ε (rreg ε))` using `fun c => congrArg Subtype.val (Module.End.mem_eigenspace_iff.mp ((Submodule.mem_iInf _).mp hx c))`. Establish `hx0' : (x : smD ε (rreg ε)) ≠ 0` using `fun h => hx0 (Subtype.ext h)`. Establish `hxν : ∀ c, smE ε (rreg ε) c c (x : smD ε (rreg ε)) = (((χ c).re : ℝ) : ℂ) • (x : smD ε (rreg ε))` using `fun c => (hxc c).trans (congrArg (· • (x : smD ε (rreg ε))) (kUnit_eig_real hKU hx0' (hxc c)))`. Conclude with `hno (fun c => (χ c).re) (Submodule.comapSubtypeEquivOfLe hSD x) ((isWtOn_iff hσ hD (x : smD ε (rreg ε)) _).2 hxν)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hker : LinearMap.ker e' = ⊤` using `top_le_iff.mp (htop ▸ iSup_le hle)`. Use `he (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Establish `hy : (Submodule.comapSubtypeEquivOfLe hSD).symm y ∈ LinearMap.ker e'` using `hker ▸ Submodule.mem_top`. Establish `h2 : e' ((Submodule.comapSubtypeEquivOfLe hSD).symm y) = 0` using `hy`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Use `_ = 0 := h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepWtSpan : PositivityTheory.RgDs.Hilb.StepWtSpan := by
   intro n ε S hSf hSD hSK N _ _ e he

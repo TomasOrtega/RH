@@ -16,17 +16,17 @@ noncomputable section
 namespace GlobalTheory.ConeBound
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ`. Establish `hs : 2 ≤ (b + 2 - a') / 2` using `by have := hT.geo.eBig; omega`. Take `⟨n, g, S, f, hg, hS, hfS, hdec⟩` from `GlobalTheory.T.schwartz_finite_decomposition_stable hKP F E σ B (b + 2) a' G X om om' hT K hK Ψ hΨ`. Use `choose m hm hC' using fun i => GlobalTheory.T.config_A_schwartz_local_eval hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ (g i) (hg i) S hS`. Establish `hM : 0 < ∏ i, m i` using `Finset.prod_pos fun i _ => hm i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `GlobalTheory.T.idele_decay_integrable F E ((b + 2 - a') / 2) (∏ i, m i) hs hM`. Use `choose C hCb using fun i => hC' i N`. Use `⟨fun l => (∑ i, |C i|) * (GlobalTheory.IdeleDecay.decay F E N (∏ i, m i) l * (absE F E l : ℝ) ^ ((b + 2 - a') / 2)), (hN μ hμ).const_mul _, ?_⟩` and prove the remaining obligations. Introduce `k l y`. Establish `hrho : ∀ (w : Matrix (Fin (b + 2)) (Fin (b + 2 + a')) (AE F E)) (φ : Fin n → (Fin (b + 2) × Fin (b + 2 + a') → AF F) → ℂ), G.M.co.rho B.ψ w (∑ i, φ i) = ∑ i, G.M.co.rho B.ψ w (φ i)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `w φ`. Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Finset.sum_apply, Finset.mul_sum]`. Rewrite using `[hdec k, hrho, map_sum, Finset.sum_apply]`. Establish `hν : ‖((X.ν l : Circle) : ℂ)‖ = 1` using `Circle.norm_coe _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : ‖(((absE F E l : ℝ) : ℂ) ^ ((b + 2 - a') / 2))‖ = (absE F E l : ℝ) ^ ((b + 2 - a') / 2)`. Rewrite using `[norm_pow, Complex.norm_real, Real.norm_of_nonneg (NNReal.coe_nonneg _)]`. Rewrite using `[norm_mul, norm_mul, hν, mul_one, hr]`. Establish `hsum : ‖∑ i, e (G.M.co.rho B.ψ (shiftA H H' l) (pureA F (f k i) (g i))) y‖ ≤ (∑ i, |C i|) * GlobalTheory.IdeleDecay.decay F E N (∏ i, m i) l`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `(hCb i (f k i) (hfS k i) l y).trans ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.IdeleDecay.decay_mono (N := N) (Finset.dvd_prod_of_mem m (Finset.mem_univ i)) l`. Establish `h0` using `GlobalTheory.IdeleDecay.decay_nonneg N (m i) l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem coneIntegrand_bound : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

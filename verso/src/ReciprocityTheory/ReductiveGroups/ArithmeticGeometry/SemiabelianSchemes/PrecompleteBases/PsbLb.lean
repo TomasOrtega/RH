@@ -14,7 +14,7 @@ namespace LB
 variable {X Y Z : Scheme.{u}}
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `((X.presheaf.map (homOfLE h₁).op ≫ X.presheaf.map (homOfLE h₂).op).hom) (x : Γ(X, U)) = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma res_res {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (x : Γ(X, U)ˣ) :
     res h₂ (res h₁ x) = res (h₂.trans h₁) x := by
@@ -24,14 +24,14 @@ lemma res_res {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (x : Γ(X, U)�
   rfl
 
 /- English proof (translation)
-Rewrite using `[res_res]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma res_factor {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) {h : W ≤ U} (x : Γ(X, U)ˣ) :
     res h x = res h₂ (res h₁ x) := by
   rw [res_res]
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `((X.presheaf.map (homOfLE h).op ≫ f.app V).hom) (x : Γ(X, U)) = _`. Rewrite using `[Scheme.Hom.naturality]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma pullU_res (f : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) (x : Γ(X, U)ˣ) :
     pullU f V (res h x) = res (f.preimage_mono h) (pullU f U x) := by
@@ -41,7 +41,7 @@ lemma pullU_res (f : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) (x : Γ(X, U)ˣ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[pullU_res, res_res]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma res_pullU_eq (f : Y ⟶ X) {U U' : X.Opens} (hU' : U' ≤ U) {W : Y.Opens}
     (hW : W ≤ f ⁻¹ᵁ U) (hW' : W ≤ f ⁻¹ᵁ U') (x : Γ(X, U)ˣ) :
@@ -49,7 +49,7 @@ lemma res_pullU_eq (f : Y ⟶ X) {U U' : X.Opens} (hU' : U' ≤ U) {W : Y.Opens}
   rw [pullU_res, res_res]
 
 /- English proof (translation)
-Rewrite using `[res_factor (le_inf le_rfl le_rfl : L.U i ≤ L.U i ⊓ L.U i) (h.trans inf_le_left), hL.g_self, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma res_g_self {L : LB X} (hL : L.IsLB) (i : L.ι) {W : X.Opens} (h : W ≤ L.U i ⊓ L.U i) :
     res h (L.g i i) = 1 := by
@@ -57,7 +57,7 @@ lemma res_g_self {L : LB X} (hL : L.IsLB) (i : L.ι) {W : X.Opens} (h : W ≤ L.
     hL.g_self, map_one]
 
 /- English proof (translation)
-Establish `hW : W ≤ L.U i ⊓ L.U j ⊓ L.U k` using `le_inf h₁ (h₂.trans inf_le_right)`. Rewrite using `[res_factor (inf_le_left : L.U i ⊓ L.U j ⊓ L.U k ≤ L.U i ⊓ L.U j) hW, res_factor (le_inf (inf_le_left.trans inf_le_right) inf_le_right : L.U i ⊓ L.U j ⊓ L.U k ≤ L.U j ⊓ L.U k) hW, res_factor (le_inf (inf_le_left.trans inf_le_left) inf_le_right : L.U i ⊓ L.U j ⊓ L.U k ≤ L.U i ⊓ L. …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma res_cocycle {L : LB X} (hL : L.IsLB) (i j k : L.ι) {W : X.Opens}
     (h₁ : W ≤ L.U i ⊓ L.U j) (h₂ : W ≤ L.U j ⊓ L.U k) (h₃ : W ≤ L.U i ⊓ L.U k) :
@@ -71,14 +71,14 @@ lemma res_cocycle {L : LB X} (hL : L.IsLB) (i j k : L.ι) {W : X.Opens}
     ← map_mul, hL.cocycle]
 
 /- English proof (translation)
-Rewrite using `[res_pullU_eq f (le_refl (L.U i ⊓ L.U i)) h h, res_g_self hL i le_rfl, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma pull_g_self {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) (i : L.ι) {W : Y.Opens}
     (h : W ≤ f ⁻¹ᵁ (L.U i ⊓ L.U i)) : res h (pullU f _ (L.g i i)) = 1 := by
   rw [res_pullU_eq f (le_refl (L.U i ⊓ L.U i)) h h, res_g_self hL i le_rfl, map_one, map_one]
 
 /- English proof (translation)
-Establish `hW : W ≤ f ⁻¹ᵁ (L.U i ⊓ L.U j ⊓ L.U k)` using `fun _ hy => ⟨h₁ hy, (h₂ hy).2⟩`. Rewrite using `[res_pullU_eq f (inf_le_left : L.U i ⊓ L.U j ⊓ L.U k ≤ L.U i ⊓ L.U j) h₁ hW, res_pullU_eq f (le_inf (inf_le_left.trans inf_le_right) inf_le_right : L.U i ⊓ L.U j ⊓ L.U k ≤ L.U j ⊓ L.U k) h₂ hW, res_pullU_eq f (le_inf (inf_le_left.trans inf_le_left) inf_le_right : L.U i ⊓ L.U j ⊓ …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma pull_cocycle {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) (i j k : L.ι) {W : Y.Opens}
     (h₁ : W ≤ f ⁻¹ᵁ (L.U i ⊓ L.U j)) (h₂ : W ≤ f ⁻¹ᵁ (L.U j ⊓ L.U k))
@@ -94,7 +94,7 @@ lemma pull_cocycle {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) (i j k : L.ι) {W : Y.
     ← map_mul, ← map_mul, hL.cocycle]
 
 /- English proof (translation)
-Establish `hx : x ∈ (⨆ i, L.U i)` using `by rw [hL.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma mem_of_cover {L : LB X} (hL : L.IsLB) (x : X) : ∃ i, x ∈ L.U i := by
   have hx : x ∈ (⨆ i, L.U i) := by rw [hL.cover]; trivial
@@ -106,7 +106,7 @@ abbrev triv (X : Scheme.{u}) : LB X where
   g := fun _ _ => 1
 
 /- English proof (translation)
-The claim follows from `iSup_const g_self := fun _ => map_one _ cocycle := fun _ _ _ => by simp only [map_one, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem isLB_triv (X : Scheme.{u}) : (triv X).IsLB where
   cover := iSup_const
@@ -120,7 +120,7 @@ def dg (M L : LB X) (p q : M.ι × L.ι) : Γ(X, M.U p.1 ⊓ L.U p.2 ⊓ (M.U q.
       M.U p.1 ⊓ L.U p.2 ⊓ (M.U q.1 ⊓ L.U q.2) ≤ L.U p.2 ⊓ L.U q.2) (L.g p.2 q.2))⁻¹
 
 /- English proof (translation)
-Simplify using `only [dg, map_mul, map_inv, res_res]`.
+Simplify using the standard rewrite rules.
 -/
 lemma res_dg (M L : LB X) (p q : M.ι × L.ι) {W : X.Opens}
     (hW : W ≤ M.U p.1 ⊓ L.U p.2 ⊓ (M.U q.1 ⊓ L.U q.2)) :
@@ -132,7 +132,7 @@ lemma res_dg (M L : LB X) (p q : M.ι × L.ι) {W : X.Opens}
   simp only [dg, map_mul, map_inv, res_res]
 
 /- English proof (translation)
-Rewrite using `[res_dg, res_g_self hM, res_g_self hL, inv_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma dg_self {M L : LB X} (hM : M.IsLB) (hL : L.IsLB) (p : M.ι × L.ι) :
     res (le_inf le_rfl le_rfl : M.U p.1 ⊓ L.U p.2 ≤ M.U p.1 ⊓ L.U p.2 ⊓ (M.U p.1 ⊓ L.U p.2))
@@ -140,7 +140,7 @@ lemma dg_self {M L : LB X} (hM : M.IsLB) (hL : L.IsLB) (p : M.ι × L.ι) :
   rw [res_dg, res_g_self hM, res_g_self hL, inv_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[res_dg, res_dg, res_dg, mul_mul_mul_comm, ← mul_inv]`. Conclude with `congrArg₂ (fun a b => a * b⁻¹) (res_cocycle hM _ _ _ _ _ _) (res_cocycle hL _ _ _ _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dg_cocycle {M L : LB X} (hM : M.IsLB) (hL : L.IsLB) (p q r : M.ι × L.ι) :
     res (inf_le_left : M.U p.1 ⊓ L.U p.2 ⊓ (M.U q.1 ⊓ L.U q.2) ⊓ (M.U r.1 ⊓ L.U r.2) ≤
@@ -155,9 +155,7 @@ lemma dg_cocycle {M L : LB X} (hM : M.IsLB) (hL : L.IsLB) (p q r : M.ι × L.ι)
   exact congrArg₂ (fun a b => a * b⁻¹) (res_cocycle hM _ _ _ _ _ _) (res_cocycle hL _ _ _ _ _ _)
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `mem_of_cover hM x`. Take `⟨j, hj⟩` from `mem_of_cover hL x`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(i, j), ⟨hi, hj⟩⟩`. Use `g_self := dg_self hM hL`.
-
-Use `cocycle := dg_cocycle hM hL`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isLB_div {M L : LB X} (hM : M.IsLB) (hL : L.IsLB) : (div M L).IsLB where
   cover := by
@@ -171,7 +169,7 @@ theorem isLB_div {M L : LB X} (hM : M.IsLB) (hL : L.IsLB) : (div M L).IsLB where
 variable (L : LB X) {K K' : Type u} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-The claim follows from `le_inf (inf_le_left.trans (wchart_le L φ j k)) (inf_le_right.trans (wchart_le L φ j' k))`.
+A detailed English derivation is pending.
 -/
 lemma wchart_inter_le (φ : K → (Y ⟶ X)) (j j' : K → L.ι) (k : K) :
     wchart L φ j ⊓ wchart L φ j' ≤ φ k ⁻¹ᵁ (L.U (j k) ⊓ L.U (j' k)) :=
@@ -186,7 +184,7 @@ def ts {L : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : Gen (LinComb L φ
   t.s j
 
 /- English proof (translation)
-Rewrite using `[lcg, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow]`. Conclude with `congrArg (· ^ ε k) (res_res _ _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma res_lcg (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j j' : K → L.ι) {W : Y.Opens}
     (hW : W ≤ wchart L φ j ⊓ wchart L φ j') :
@@ -199,7 +197,7 @@ lemma res_lcg (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j j' : K → L.ι) {W : Y
   exact congrArg (· ^ ε k) (res_res _ _ _)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma isGen_iff {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : Gen (LinComb L φ ε)) :
     t.IsGen ↔ ∀ i j : K → L.ι,
@@ -208,7 +206,7 @@ lemma isGen_iff {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : Gen (LinComb L φ �
   Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[res_lcg]`. Conclude with `Finset.prod_eq_one fun k _ => by rw [pull_g_self hL (φ k), one_zpow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lcg_self {L : LB X} (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j : K → L.ι) :
     res (le_inf le_rfl le_rfl : wchart L φ j ≤ wchart L φ j ⊓ wchart L φ j) (lcg L φ ε j j) = 1 := by
@@ -216,7 +214,7 @@ lemma lcg_self {L : LB X} (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) 
   exact Finset.prod_eq_one fun k _ => by rw [pull_g_self hL (φ k), one_zpow]
 
 /- English proof (translation)
-Rewrite using `[res_lcg, res_lcg, res_lcg, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow]`. Conclude with `congrArg (· ^ ε k) (pull_cocycle hL (φ k) _ _ _ _ _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lcg_cocycle {L : LB X} (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (a b c : K → L.ι) :
     res (inf_le_left : wchart L φ a ⊓ wchart L φ b ⊓ wchart L φ c ≤ wchart L φ a ⊓ wchart L φ b)
@@ -233,7 +231,7 @@ lemma lcg_cocycle {L : LB X} (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → �
   exact congrArg (· ^ ε k) (pull_cocycle hL (φ k) _ _ _ _ _ _)
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Use `choose j hj using fun k => mem_of_cover hL ((φ k).base y)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, Set.mem_iInter.2 hj⟩`. Use `g_self := lcg_self hL φ ε`. Use `cocycle := lcg_cocycle hL φ ε`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isLB_linComb {L : LB X} (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
     (LinComb L φ ε).IsLB where
@@ -245,20 +243,20 @@ theorem isLB_linComb {L : LB X} (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K →
   cocycle := lcg_cocycle hL φ ε
 
 /- English proof (translation)
-The claim follows from `isLB_linComb hL _ _`.
+A detailed English derivation is pending.
 -/
 theorem isLB_pull {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) : (L.pull f).IsLB :=
   isLB_linComb hL _ _
 
 /- English proof (translation)
-The claim follows from `Finset.prod_eq_one fun k _ => k.elim`.
+A detailed English derivation is pending.
 -/
 lemma lcg_empty (i j : PEmpty.{u+1} → L.ι) :
     lcg L (Y := Y) (K := PEmpty) PEmpty.elim PEmpty.elim i j = 1 :=
   Finset.prod_eq_one fun k _ => k.elim
 
 /- English proof (translation)
-Rewrite using `[lcg_empty, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma lcg_empty_self (j : PEmpty.{u+1} → L.ι) :
     res (le_inf le_rfl le_rfl : wchart L (Y := Y) PEmpty.elim j ≤
@@ -267,7 +265,7 @@ lemma lcg_empty_self (j : PEmpty.{u+1} → L.ι) :
   rw [lcg_empty, map_one]
 
 /- English proof (translation)
-Rewrite using `[lcg_empty, lcg_empty, lcg_empty, map_one, map_one, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma lcg_empty_cocycle (a b c : PEmpty.{u+1} → L.ι) :
     res (inf_le_left : wchart L (Y := Y) PEmpty.elim a ⊓ wchart L PEmpty.elim b ⊓
@@ -284,7 +282,7 @@ lemma lcg_empty_cocycle (a b c : PEmpty.{u+1} → L.ι) :
   rw [lcg_empty, lcg_empty, lcg_empty, map_one, map_one, map_one, mul_one]
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨PEmpty.elim, Set.mem_iInter.2 fun k => k.elim⟩`. Use `g_self := lcg_empty_self L`. Use `cocycle := lcg_empty_cocycle L`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isLB_linComb_empty :
     (LinComb L (Y := Y) (K := PEmpty) PEmpty.elim PEmpty.elim).IsLB where
@@ -295,14 +293,14 @@ theorem isLB_linComb_empty :
   cocycle := lcg_empty_cocycle L
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma wchart_comp_le (h : Z ⟶ Y) (φ : K → (Y ⟶ X)) (j : K → L.ι) :
     wchart L (fun k => h ≫ φ k) j ≤ h ⁻¹ᵁ wchart L φ j :=
   fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k
 
 /- English proof (translation)
-Introduce `_ hy` and use `⟨wchart_comp_le L h φ i hy.1, wchart_comp_le L h φ j hy.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma wchart_comp_le₂ (h : Z ⟶ Y) (φ : K → (Y ⟶ X)) (i j : K → L.ι) :
     wchart L (fun k => h ≫ φ k) i ⊓ wchart L (fun k => h ≫ φ k) j ≤
@@ -317,14 +315,14 @@ lemma ts_pullGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (c : Gen (LinComb L φ 
     ts (pullGen L φ ε c h) j = res (wchart_comp_le L h φ j) (pullU h _ (ts c j)) := rfl
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 lemma pullU_comp (h : Z ⟶ Y) (f : Y ⟶ X) (U : X.Opens) (x : Γ(X, U)ˣ) :
     pullU (h ≫ f) U x = pullU h (f ⁻¹ᵁ U) (pullU f U x) := by
   ext; rfl
 
 /- English proof (translation)
-Rewrite using `[pullU_res, res_res, pullU_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma pull_res_comp (h : Z ⟶ Y) (f : Y ⟶ X) (U : X.Opens) {V : Y.Opens} (hV : V ≤ f ⁻¹ᵁ U)
     {W : Z.Opens} (hW : W ≤ h ⁻¹ᵁ V) (hW' : W ≤ (h ≫ f) ⁻¹ᵁ U) (x : Γ(X, U)ˣ) :
@@ -333,7 +331,7 @@ lemma pull_res_comp (h : Z ⟶ Y) (f : Y ⟶ X) (U : X.Opens) {V : Y.Opens} (hV 
   rfl
 
 /- English proof (translation)
-Rewrite using `[lcg, lcg, map_prod, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, map_zpow]`. Conclude with `congrArg (· ^ ε k) (pull_res_comp h (φ k) _ _ _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lcg_comp (φ : K → (Y ⟶ X)) (ε : K → ℤ) (h : Z ⟶ Y) (i j : K → L.ι) :
     lcg L (fun k => h ≫ φ k) ε i j =
@@ -344,9 +342,9 @@ lemma lcg_comp (φ : K → (Y ⟶ X)) (ε : K → ℤ) (h : Z ⟶ Y) (i j : K �
   exact congrArg (· ^ ε k) (pull_res_comp h (φ k) _ _ _ _ _).symm
 
 /- English proof (translation)
-Use `(isGen_iff L _).2 fun i j => ?_` and prove the remaining obligations. Establish `key` using `congrArg (fun x => res (wchart_comp_le₂ L h φ i j) (pullU h _ x)) ((isGen_iff L c).1 hc i j)`. Simplify using `only [map_mul, pullU_res, res_res] at key`. Rewrite using `[ts_pullGen, ts_pullGen, lcg_comp]`. Simplify using `only [res_res]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem isGen_pullGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (c : Gen (LinComb L φ ε)) (hc : c.IsGen)
     (h : Z ⟶ Y) : (pullGen L φ ε c h).IsGen := by
@@ -359,21 +357,21 @@ theorem isGen_pullGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (c : Gen (LinComb 
   exact key
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inl k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma wchart_inl_le (φ : K → (Y ⟶ X)) (φ' : K' → (Y ⟶ X)) (j : K ⊕ K' → L.ι) :
     wchart L (Sum.elim φ φ') j ≤ wchart L φ (j ∘ Sum.inl) :=
   fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inl k)
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inr k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma wchart_inr_le (φ : K → (Y ⟶ X)) (φ' : K' → (Y ⟶ X)) (j : K ⊕ K' → L.ι) :
     wchart L (Sum.elim φ φ') j ≤ wchart L φ' (j ∘ Sum.inr) :=
   fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inr k)
 
 /- English proof (translation)
-The claim follows from `inf_le_inf (wchart_inl_le L φ φ' j) (wchart_inl_le L φ φ' j')`.
+A detailed English derivation is pending.
 -/
 lemma wchart_inl_le₂ (φ : K → (Y ⟶ X)) (φ' : K' → (Y ⟶ X)) (j j' : K ⊕ K' → L.ι) :
     wchart L (Sum.elim φ φ') j ⊓ wchart L (Sum.elim φ φ') j' ≤
@@ -381,7 +379,7 @@ lemma wchart_inl_le₂ (φ : K → (Y ⟶ X)) (φ' : K' → (Y ⟶ X)) (j j' : K
   inf_le_inf (wchart_inl_le L φ φ' j) (wchart_inl_le L φ φ' j')
 
 /- English proof (translation)
-The claim follows from `inf_le_inf (wchart_inr_le L φ φ' j) (wchart_inr_le L φ φ' j')`.
+A detailed English derivation is pending.
 -/
 lemma wchart_inr_le₂ (φ : K → (Y ⟶ X)) (φ' : K' → (Y ⟶ X)) (j j' : K ⊕ K' → L.ι) :
     wchart L (Sum.elim φ φ') j ⊓ wchart L (Sum.elim φ φ') j' ≤
@@ -398,7 +396,7 @@ lemma ts_mulGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X))
         res (wchart_inr_le L φ φ' j) (ts t' (j ∘ Sum.inr)) := rfl
 
 /- English proof (translation)
-Rewrite using `[res_lcg, res_lcg, lcg, Fintype.prod_sum_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma lcg_sum (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (j j' : K ⊕ K' → L.ι) :
@@ -409,9 +407,9 @@ lemma lcg_sum (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (
   rfl
 
 /- English proof (translation)
-Use `(isGen_iff L _).2 fun j j' => ?_` and prove the remaining obligations. Establish `k₁` using `congrArg (res (wchart_inl_le₂ L φ φ' j j')) ((isGen_iff L t).1 ht (j ∘ Sum.inl) (j' ∘ Sum.inl))`. Establish `k₂` using `congrArg (res (wchart_inr_le₂ L φ φ' j j')) ((isGen_iff L t').1 ht' (j ∘ Sum.inr) (j' ∘ Sum.inr))`. Simplify using `only [map_mul, res_res] at k₁ k₂`. Rewrite using `[ts_mulGen, ts_mulGen, lcg_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, res_res]`. Rewrite using `[k₁, k₂]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGen_mulGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (t : Gen (LinComb L φ ε)) (t' : Gen (LinComb L φ' ε')) (ht : t.IsGen) (ht' : t'.IsGen) :
@@ -434,14 +432,14 @@ lemma ts_invGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : Gen (LinComb L φ �
     ts (invGen L φ ε t) j = (ts t j)⁻¹ := rfl
 
 /- English proof (translation)
-Simplify using `only [lcg, zpow_neg, Finset.prod_inv_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma lcg_neg (φ : K → (Y ⟶ X)) (ε : K → ℤ) (i j : K → L.ι) :
     lcg L φ (fun k => - ε k) i j = (lcg L φ ε i j)⁻¹ := by
   simp only [lcg, zpow_neg, Finset.prod_inv_distrib]
 
 /- English proof (translation)
-Use `(isGen_iff L _).2 fun i j => ?_` and prove the remaining obligations. Rewrite using `[ts_invGen, ts_invGen, lcg_neg, map_inv, map_inv, (isGen_iff L t).1 ht i j, mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isGen_invGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : Gen (LinComb L φ ε)) (ht : t.IsGen) :
     (invGen L φ ε t).IsGen := by
@@ -454,14 +452,14 @@ Both sides reduce to the same expression.
 lemma ts_oneGen (j : PEmpty.{u+1} → L.ι) : ts (oneGen L (Y := Y)) j = 1 := rfl
 
 /- English proof (translation)
-Use `(isGen_iff L _).2 fun i j => ?_` and prove the remaining obligations. Rewrite using `[ts_oneGen, ts_oneGen, lcg_empty, map_one, map_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isGen_oneGen : (oneGen L (Y := Y)).IsGen := by
   refine (isGen_iff L _).2 fun i j => ?_
   rw [ts_oneGen, ts_oneGen, lcg_empty, map_one, map_one, one_mul]
 
 /- English proof (translation)
-The claim follows from `wchart_inter_le M (K := PUnit) (fun _ => f) i j PUnit.unit`.
+A detailed English derivation is pending.
 -/
 lemma wchart_pu_le (M : LB X) (f : Y ⟶ X) (i j : PUnit.{u+1} → M.ι) :
     wchart M (K := PUnit) (fun _ => f) i ⊓ wchart M (K := PUnit) (fun _ => f) j ≤
@@ -477,7 +475,7 @@ lemma ts_genPull (M : LB X) (c : Gen M) (f : Y ⟶ X) (j : PUnit.{u+1} → M.ι)
         (pullU f _ (c.s (j PUnit.unit))) := rfl
 
 /- English proof (translation)
-Rewrite using `[lcg, Fintype.prod_unique, zpow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma lcg_pull (M : LB X) (f : Y ⟶ X) (i j : PUnit.{u+1} → M.ι) :
     lcg M (K := PUnit) (fun _ => f) (fun _ => 1) i j =
@@ -485,9 +483,9 @@ lemma lcg_pull (M : LB X) (f : Y ⟶ X) (i j : PUnit.{u+1} → M.ι) :
   rw [lcg, Fintype.prod_unique, zpow_one]
 
 /- English proof (translation)
-Use `(isGen_iff M _).2 fun i j => ?_` and prove the remaining obligations. Establish `key` using `congrArg (fun x => res (wchart_pu_le M f i j) (pullU f _ x)) (hc (i PUnit.unit) (j PUnit.unit))`. Simplify using `only [map_mul, pullU_res, res_res] at key`. Rewrite using `[ts_genPull, ts_genPull, lcg_pull]`. Simplify using `only [res_res]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem isGen_genPull (M : LB X) (c : Gen M) (hc : c.IsGen) (f : Y ⟶ X) :
     (genPull M c f).IsGen := by

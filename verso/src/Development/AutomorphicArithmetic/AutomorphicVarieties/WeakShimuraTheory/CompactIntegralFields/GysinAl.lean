@@ -7,11 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `P Ω _ _ _ l _ c D T hT k _ a ha W hW p p' hp hp' hs hs'`. Establish `ok` using `fun W => (std P D T hT W c le_rfl).2 k a ha`. Take `⟨r1, -, r3⟩` from `Gys.rootCharacters_ne_one_at_basepoint (T.fr W) a (ok W)`. Take `⟨y, y1, y2, y3, y4⟩` from `Gys.dataPs (T.fr W) a p hp hs.1`. Take `⟨y', y1', y2', y3', y4'⟩` from `Gys.dataPs (T.fr W) a p' hp' hs'.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W', s1, s2, hy, x, m, x1, x2, x3, ⟨g, hg⟩, hz⟩` from `Gys.cupEx P D T hT k a ha W hW (-wAl) (-wPs) r1 r3 Bool (fun b => cond b y y') fun b => by cases b; exacts [⟨y1', y2'⟩, ⟨y1, y2⟩]`. Take `⟨z, z1, z2⟩` from `hz true`. Take `⟨z', z1', z2'⟩` from `hz false`. Establish `hmu` using `Gys.mu_of (T.fr W) a hp fun v s hs => hs.1`. Take `⟨s, a1, a2, a3, a4, a5, a6⟩` from `Gys.ob (T.fr W') a (ok W') hmu x y z m _ x1 x2 x3 (hy true) y2 y3 z1 z2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s', b1, b2, b3, b4, b5, b6⟩` from `Gys.ob (T.fr W') a (ok W') hmu x y' z' m _ x1 x2 x3 (hy false) y2' y3' z1' z2'`. Conclude with `⟨W', s, s', s1, s2, a1, b1, a2, b2, ⟨fun g => (a5 g).trans (y4 g).symm, a6⟩, ⟨fun g => (b5 g).trans (y4' g).symm, b6⟩, ⟨fun g => (a3 g).trans (b3 g).symm, fun v => (a4 v).trans (b4 v).symm⟩, g, 1, 0, by decide, a3 g ▸ mul_ne_zero hg (((T.fr W').χ 0 g).isUnit.map a).ne_zero⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Ws.gysinAl :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → ∀ (k : Type) [Field k] (a : c.O →+* k), (∀ x ∈ maximalIdeal c.O, a x = 0) → ∀ W : Finset ℕ, (∀ w ∈ W, w.Prime ∧ T.Splits w) → ∀ p p' : PD T.ι (G T.F Ω) k, (T.fr W).IsRes a p → (T.fr W).IsRes a p' → p.In nP → p'.In nP →
